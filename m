@@ -4,137 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95F9DCFC50A
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 21:07:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC0DCFC50A
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 21:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B173E6B0032; Fri, 21 Nov 2025 16:07:50 -0500 (EST)
+	id 507F66B0062; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEEF56B0062; Fri, 21 Nov 2025 16:07:50 -0500 (EST)
+	id 4B8676B0088; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A04486B0092; Fri, 21 Nov 2025 16:07:50 -0500 (EST)
+	id 3CE086B0089; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D36C6B0032
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:07:50 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 470DB567FA
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 21:07:50 +0000 (UTC)
-X-FDA: 84135851100.30.364966E
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 632FD4000F
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 21:07:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ien0LKWy;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 27A7A6B0062
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C36FD1A060D
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 21:31:26 +0000 (UTC)
+X-FDA: 84135910572.01.AAA271A
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CA1DCC001C
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 21:31:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=MlrSi68j;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763759268;
+	s=arc-20220608; t=1763760685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Svi+I8ywJ8k5uxtzxqjpEGX4Qh9Fr5IeUT/6ziPIoB4=;
-	b=oNxmDz7ICbf2EFDQ+UWR15NOQmSgtX3IrqtUWuL91e7lhvJ47Ub5irOEfSZfenHT7k0ti6
-	/GC5q0mQV1hxIuLdLufGULbYeF6OBNeJTOZF7hzFGqw1ygjTPiQsEfZmHkbvZWp5v++GTm
-	ZWUzRATf8MdrsBSjGwGne/Zn569Nlww=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763759268; a=rsa-sha256;
+	bh=+byFGoWk/0V52ELeDrnzRQimZK8yvBtN44GDPwhdBk0=;
+	b=caLOXaY/S53JxP0m27VBybrW+jeRjaVt1dQEAEtx/6igabAIaGGjUoVTk3j9W3k8gNmDEp
+	Dt7tI8uf+o/o+CLKzuK8QGs4caOvxVDND4aAcTYpNIU5AMGiQ/IINL1U81Dbc2iSVfehad
+	HKP/RKApZ0DmtgxLembac3JH4nWsexE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763760685; a=rsa-sha256;
 	cv=none;
-	b=c55/zwU7c2nTAbkxsb27pPlU4Qlh+bz59MEKMSxfHdH9xDfLMAmUVhMp0D5VQP8ZKg6wR/
-	0Xn4dW1h1YtBW9B49BmqZ6gDinP1cXhqwzFH2SOF41gBbLKSPhYKd4sFETwT4oKxGATBp/
-	FYAgIMtAbUNWzvilUGf+W2NX05QIpz8=
+	b=eHAfxWTYi3g6Kn13gdvQamX/TSAT0krSGaa/JnukADXhU7G8poGzhRmng78CMh2Zq5SAc1
+	Tlsn3I4YMk4jDKcro99FWjnvN+PazeqPzrGbzKy5SetDefKwrBjkq62S9RPiu8WQCmJGtB
+	/aGf4HhONkhpdfXkJVMuMzmXiZM2Pa4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ien0LKWy;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4ee257e56aaso22882121cf.0
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:07:48 -0800 (PST)
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=MlrSi68j;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so4049705a12.2
+        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:31:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1763759267; x=1764364067; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Svi+I8ywJ8k5uxtzxqjpEGX4Qh9Fr5IeUT/6ziPIoB4=;
-        b=ien0LKWyjQaD3Ta0W5IElQlVdmeWeYWbCp39vTi31WS0fe7wQLdAPNs4rrQKlyADRg
-         6Q2bSvPgMdpJg8MiR8tkLdk92kVkTURSgLS6VzE8ShrpLVANtEjRVsGqs3+kjOrYHfh8
-         6aMiRleOow56g/+eRZSLFLG87Xm4A7HlJpIdu4Um45JpA8z6McdhY9KDrACKmKBiWCSs
-         xuSmPfaQJrvXrTOod3HlzitCMj27sCC1R/5hP4iMsj0eB54Od2ne0Dhn5cUZBrrVd08O
-         JQliYcr2RXomjcfg6Wkzl5mUssyQ56BJF9JlOfJzgerXJyVsvfR7RTCZbtsdFnfckXEN
-         Mx/A==
+        d=soleen.com; s=google; t=1763760683; x=1764365483; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+byFGoWk/0V52ELeDrnzRQimZK8yvBtN44GDPwhdBk0=;
+        b=MlrSi68jiBFU9rM2/JD9ACwJbAegoAWuYWAN97qd9X9YJUQmg86ibHyKXMHttmIiUA
+         XOt8VF/aiZrmZT/lzV0cTNhe3lULEsqMpAkKjLrqDSsflgm4+Y0aShERwrtL4X/nfSHy
+         G2saFn6ivUCFzVeEj43yfXIYiOjUetF6XcCxqTkDTHGNzaUmGIOTH+AqL63ZUUjqHlDf
+         4PlAackq/RWbEAEcZJZ8GuNnMr2JGEIuENIVOipA7AUj/MVZ0m8W5XxcC8tnd+pMHe4h
+         wRrDInchLYkl/SEPcY9u1jOPTUW/8SEt5JZWiGL1Sqzp3C7PD0KY2KEkstntxP0ZA81X
+         K8nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763759267; x=1764364067;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Svi+I8ywJ8k5uxtzxqjpEGX4Qh9Fr5IeUT/6ziPIoB4=;
-        b=eJiBvBwa/gQvbg8b8E5zmhh7IElp9RQRhGqOHiB/WSkQjJfQRylplwJRoRrcplu2FL
-         6K31LfDmg/A5Bjokw068Nmk+ssmti3FS9RQfUjKI0Apx7EAB5rwfhl0s/USHV4md1l45
-         ZWwIEvJrdpIv6PC663ScRT/rkT43tSw2WbSQfzbqNVmQ/E1bAZ5899dYsh1qQtq/EE+z
-         iZdqt+UQ97VWJDtmVmhXwsNcrfCuwYiLhdyFyJTxWQpY/Qg28OWpGtOf2tvHLolHC3vh
-         pfdGh4CVXcxht1Iqfesge+1A9krHiSEP8i/OkK2GnEtt7qDGKfzZ6kM1zoAy5X0wYYbp
-         EWMQ==
-X-Gm-Message-State: AOJu0YyLggMV+YXRq0hmZPp9fBj4/awqlU5eEHTrHQKT5S77pitWWASg
-	f2AyxOkYz00x6UWAct53T7hFna3oDCcWoqp/TRMoDEMkOwwtTZJmd43B1hLDwVoo5EU=
-X-Gm-Gg: ASbGncvK06pw//Hs5KWQjVOqQFVfUZviwFjqd1zLAdFAx2qkVea9aDXFiTZm/zn1hz8
-	g6zTWVGXN2zqhoJXckrrkpbVLMq9cSzvsp6E/MJ9tUWC+fkdgBGVuOzm1RpxPmuN22yjK8YgMEV
-	MxY0crQ6w0DvHOPQGL6cjmPeKtX6/tLxydv471sPzIUyGVyiHC2LmYhBZf+w1Xd8QrvN+ai+07b
-	p4GorZVE2rdA50FJ3RE8Z0EjN3wFy3Jk4PDvWDthpmyyHRynvphBbCgluP+EUNws3wFv6N5/rQP
-	0VqXTg512Uq1UUatYtRRLWn079ASYbLoFj1nw3cefZESDqFLHUvEnfjIIEO2QFK32u5ZH5QuTVD
-	TGkAg5WycD8go2FU+U//z3UxofOsi3tlLllX3TPjThSpSbdSTbeexQsDF6YVSQtl14w1zwZP2Y7
-	IgPNQ8Pgzf32S8UTI/FLYAVHKE2ny6E+iC2yawgCOqURbWI7VnAWrNyow30wWtFfEXTh/AWg==
-X-Google-Smtp-Source: AGHT+IHB54I5/pxWYI0YylL4DbWXryCZhFk7bd7fb71QpMMtzOgbCdkOeFKpCqsEbmreSLGZDE/f8Q==
-X-Received: by 2002:a05:622a:c6:b0:4eb:a457:394 with SMTP id d75a77b69052e-4ee587d2ef1mr64635291cf.12.1763759267374;
-        Fri, 21 Nov 2025 13:07:47 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ee48e65e3bsm42420991cf.17.2025.11.21.13.07.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 13:07:46 -0800 (PST)
-Date: Fri, 21 Nov 2025 16:07:35 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, kees@kernel.org, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	rientjes@google.com, jackmanb@google.com, cl@gentwo.org,
-	harry.yoo@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, zhengqi.arch@bytedance.com,
-	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	fabio.m.de.francesco@linux.intel.com, rrichter@amd.com,
-	ming.li@zohomail.com, usamaarif642@gmail.com, brauner@kernel.org,
-	oleg@redhat.com, namcao@linutronix.de, escape@linux.alibaba.com,
-	dongjoo.seo1@samsung.com
-Subject: Re: [RFC LPC2026 PATCH v2 00/11] Specific Purpose Memory NUMA Nodes
-Message-ID: <aSDUl7kU73LJR78g@gourry-fedora-PF4VCD3F>
-References: <20251112192936.2574429-1-gourry@gourry.net>
- <aktv2ivkrvtrox6nvcpxsnq6sagxnmj4yymelgkst6pazzpogo@aexnxfcklg75>
+        d=1e100.net; s=20230601; t=1763760683; x=1764365483;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+byFGoWk/0V52ELeDrnzRQimZK8yvBtN44GDPwhdBk0=;
+        b=E1SF0ckwP106ppsLwn82uqo2Qyf1f1n20dxgUWEQxSfMEsdF1Pp65urqSHh5c+97ww
+         2A2dlgEisljinPLG/nw35tjw/jx6jhMF75mfGEbvhG1HUeB5ZZbyB6FctH+VkNOUDZYY
+         ey5OUjwyYA1bJ17qHNsAKxX5Qt1H3+pF5aAjLVdhY8mSYe4WCcKUASjz4Q5nSLjwQiiG
+         ho+Tet7SYKKZCgT26oAqPulNIKuAueu7xfp0wA/q/Ka5/UWr7yAtwJa9T9ePGI+85uUy
+         dBXwFrrbcXNOEwz0SLAsouhu7x45i5G3ZyanfAEGXc51OClNA2X0T6MJGrXT7vjtlRvP
+         RuJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPBq9tG6dilcXSkLHuFpDp/FAk8cz3hPKqwOUilXoVKOFrYQCpJhBlLefd7K3Cl0d+ILWhkDGmGA==@kvack.org
+X-Gm-Message-State: AOJu0Yxaop5O4dXoHlFOsp484FjK1ZtM0QPgetEt/q3AqB3eBJ1SWGf3
+	+qXEhIOb+C2cdJQkt043cAv+EMl0tR2I5SrTImy/bpax6Oq4rI6CdrXC1/tvDUOQvvb4WnMTth1
+	dh6Zjq8bIdYs9FE0in2nAjFSrix5I6gUpOnW0OWYKrA==
+X-Gm-Gg: ASbGncvFS9aiOU+aRxBb+jzGHuifnEAqEylpMuwKYAAP6ZNIS/0mGEk6GMFhuSb2767
+	Npf8uFmlfwCLrzEEReMYXKxu4R2Q8sk6X5yP3WZsyaKEHwXser/+IK//xdMnABhZeu43L4FYkh4
+	Mpn3zxwpik6Yc2Pcz0az2IBVYE0gCHmJ9RDX10Y2hyLUWxv0f01hx708sWfCs/98/Pzt8fVlhEy
+	JkA35VQg0nXgrCoLPU5vI/1AXoaOwHRjPc9a6YfLfYOQOnqO4yCtOo12jIOUQGpdmub
+X-Google-Smtp-Source: AGHT+IHb/TNH6HpXoXxdJqBqtls7NiUE5U9WcaIN1X3bEaIYHVHMwMKVOTZ0kii/oe8jLFgQnVtKbwI5uYAd2wY8FI4=
+X-Received: by 2002:a05:6402:20d1:10b0:640:f8a7:aa25 with SMTP id
+ 4fb4d7f45d1cf-64555d0426fmr2711637a12.30.1763760682926; Fri, 21 Nov 2025
+ 13:31:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aktv2ivkrvtrox6nvcpxsnq6sagxnmj4yymelgkst6pazzpogo@aexnxfcklg75>
-X-Stat-Signature: gkm5ofpd4qs4pjksr4kics4qa4jcrqt1
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-5-pasha.tatashin@soleen.com> <mafs08qfz1h3c.fsf@kernel.org>
+In-Reply-To: <mafs08qfz1h3c.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 21 Nov 2025 16:30:46 -0500
+X-Gm-Features: AWmQ_bmySwNVArPJNxXTzBmV6LhGk1Wdy9I8BgPPnIaZuGaVx8wlezdZ8VKPhXs
+Message-ID: <CA+CK2bDSSJhjx8fH1rsb3unS099pKWze-=WX1B2ZnE0LCMXUAw@mail.gmail.com>
+Subject: Re: [PATCH v6 04/20] liveupdate: luo_session: add sessions support
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
+	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
+	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 632FD4000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763759268-654144
-X-HE-Meta: U2FsdGVkX1/uBsxkc8XJZfsOhmo8V7tn5fkBastMwE7FsU+RgI9eP4yDCLIAkxJ+aipXHMiOAQAvW6VbVRkpCE/KRpIKGLy8aNstUYq+Aoc9yVs4s/ZyJ+G483sPGn9/wjaFS/QDc1H8xXsfNK5ypOW6dTmEmYd48O84eagmmphtH7JRoQwjxoQfMHPPuDXF6wqeqh5kXD8N4ByEFWUT7nr9NI9/x2euEFFykpLRju85ichH11+v5cKvZa7kPfKhSLlgCbsD9jpAd2ONJ9/+4tKwcupz5kpxZoJVOjbAqYuQ0zH7rnhKwP9as/GqKeEBGw0jCL9wOM5kZr9cAh39ByN8nVvi/XhzoYjsalKPtj0n3W7WpYrBoilLx6m+LR6nQmzwd9tYFkhWmyktwMbnbKkfZmeQPolqOyH5zeY1b8QbO/c+rjXyhfZHpt6JiVnOTN6XCsK6A08gZe+qASKZANVQ6vPnEdEv7wc1WEI5b6UOSz4kK0GVRDLMvVVJNqvFLN5hUqM02h+IUfeNuViPvB+/mTvyTF6dMQU7Da1nijxAnUguQacuVpw4mHUv3EbA30Jyo1ZT2hRwWBnefWq0XCG5ykgB2RPudM/CBEqteJaqkLbQdW4KPcj3Pej5qbCuHFXm447fWiu8ehRAjip9iddxQYPpk14jaXiMT6Htm8fKnJGRl+zi6TEaA3qwnWvgtoe+Dnhz/5lw5N18fbi1lbWeqQqv4ZdLIbjfkOHG61beaW1mHWXNISs2zA01r4/svTG773H7/Uge7RqvyOyHs3dPyd6/CpxS7uCdyBfgRbo/JLjSUNG0QEoVoVw/CHevPRDkeuEPgdT8od9kFY726krpmWwdjl7nfjNWhL+8ACxFoH0DySXwPFSXRXlMI9/n26MhiVwB/hUOJclIiIb/bXQPOjduyzTPPfDg8lqFTmGI+x5QiTm8ICknNgScadNbg6Dk4XqmdbWOIcWileq
- MqPKuSIO
- CFBO5xrkYL7atOkkzxDuMiuDKViKlh3r5BhvlTxUoDGhyU/F8WZGZ33QxKNVPH1pvOsjEEAOxrXjmYy7fg2wAnjzbBfDvLBLA7Lw9oKcLcC65Y5ufOo0xHX8nPQG/wsZ2V967dl03MedpO0MuVKzydBdEUKgpTQXDMNNsEzx7Iz2TzePSOd+63LPR/25PZocZ46f0q/VkhdBfmoEcltYm6FFnaHc1G+VaEysFx88xKT9sxyfUpvZ9ODOh7iTGyumJG8oIC4FYbYTSpq2SS93s+CerqRWkyOwdO3WP2/09BFsleK8JYmAHE2y/opR/5Rb4yAiOSWGp8uEfCUFXAYRNtL/caAP6UoJ57uUI6wG8aGtJTSvBRjI2vLUmnEOrbPh7pZhUV+1O+Dry6NYUhwSdbMgxdg==
+X-Rspamd-Queue-Id: CA1DCC001C
+X-Stat-Signature: xofx8mrqo5jjywhjetyykuc4qb6pi8g1
+X-HE-Tag: 1763760684-751324
+X-HE-Meta: U2FsdGVkX19q8Op0UAmLTZWJzr3k/vgQiOPPazyFE8M1LuB2enSU1sVT73w9cS2yDdsFtXX+k/vh/+mIONkhWiRIhx87ZVvoLzVvQERC4NJOAC5cj0fQLicm+B0c/m/0oDHYUP8Te87xTl6CitLNcbPyEB4csaBwBXwxQZrdJ+4zeFOS4YWck3LLd49Wh4ECvlMChp5D6hXbSV0vTiviJyDbo9Nju8vIXYUbbXl2rtJEz2FFS8bfYkR+iRPoojAgO/nZQ8KrEsdjb9gCKav3yCXIDv9U3AkfcXyDboFQa8MS8TmOlc2FrNaHUM3xiTkMTSAsfz8sp1RxUvLcr1C9L964FqpK6cTy9Xma8c6lC0WHM4AF85Nll9/oLRxmpqHIkVkZxLzBsxg40D0hrLas89QRDDPHjkVisUpbVQa6nzSTjWUWEzJH8529LgxmmChWA0Osdi1bnMYX91fhPQI4dQJVj38P8D/i1iIj28bmUyLfynVjncsl1Q0EZh8CE11Vk4UJH7E1Hd45qRa/X1unNUHWw/oxGdCPB+JRG+ybxFgE37eRdgvR/2NV1H8lg+z7Xnl6sBbJfMhyklHqG+u1AEa3mq+X94ifW+MfCpiy4zdY3qU+hHU9JOcer9hYVNT4f4euLh/IlhoJpac9gWr09cpSDQPd0HkazKpcApD2H3EfYr3UhJRRO6LoilD279DsfTYPrs35EoS6WY5WuF+cnAZjaOyLstQSkgd4arY1dojt/VVHPUHjG39gPYmjsIe/QjvZxnNJmdx0bxob7rQBRtyQmp+FvTq8zzfi05Lcgs5ZxBjeXhDEKOg+seXjZYDJ+fMp+4Cn2Y/4myiyZA6TkKQSTkakNl+6Zgsj8Nsz2ye5NysZ/zLlhBYAtP/aje1dbYvlFJUrKYUklY70grCxgqW0lYC/6hIF9yc0zB7uqcwrrf3FIx+wFYTliLxOuAmIFhbBhJuulpyYwck93aa
+ JdF55Esf
+ vdPgXApJ8IiwMjGbRMJo4sjRFSYBGbwSmUIb1zb8qHllAM9OrgGLa3yBcpJg+WnRYE9eiyy3FrobipJ3NwZhrBNPwYh+8CUD84MFKBa4PjjDxkpxMWU6x0Vyd5If5dsJa/6p56yDfhAaA8feczXnzaOZW5FhGta4+V0B2UOTwPOO119h3DsLonewwW4DqifgMifS4okRoNMIKJPULPPqc5NjKHZaY4sERI4nivjchGadgIIS4jJz729+irEa9CnOUzS96Hkwad2/GJzuKKwVaUdyc18Fj/c9wSoX4MfcONT5+QkoLLBsYbkvpBw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,60 +134,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 06:02:02PM +1100, Alistair Popple wrote:
-> 
-> I'm interested in the contrast with zone_device, and in particular why
-> device_coherent memory doesn't end up being a good fit for this.
-> 
-> > - Why mempolicy.c and cpusets as-is are insufficient
-> > - SPM types seeking this form of interface (Accelerator, Compression)
-> 
-> I'm sure you can guess my interest is in GPUs which also have memory some people
-> consider should only be used for specific purposes :-) Currently our coherent
-> GPUs online this as a normal NUMA noode, for which we have also generally
-> found mempolicy, cpusets, etc. inadequate as well, so it will be interesting to
-> hear what short comings you have been running into (I'm less familiar with the
-> Compression cases you talk about here though).
-> 
+> >  /*
+> >   * The LUO FDT hooks all LUO state for sessions, fds, etc.
+> > - * In the root it allso carries "liveupdate-number" 64-bit property that
+> > + * In the root it also carries "liveupdate-number" 64-bit property that
+>
+> Nit: This needs a bit of patch massaging. Patch 2 added the typo, and
+> this patch fixes it. It would be better to just update patch 2.
 
-after some thought, talks, and doc readings it seems like the
-zone_device setups don't allow the CPU to map the devmem into page
-tables, and instead depends on migrate_device logic (unless the docs are
-out of sync with the code these days).  That's at least what's described
-in hmm and migrate_device.  
+Yeap, this is fixed.
 
-Assuming this is out of date and ZONE_DEVICE memory is mappable into
-page tables, assuming you want sparse allocation, ZONE_DEVICE seems to
-suggest you at least have to re-implement the buddy logic (which isn't
-that tall of an ask).
 
-But I could imagine an (overly simplistic) pattern with SPM Nodes:
+> > + * This structure is located at the beginning of a contiguous block of
+> > + * physical memory preserved across the kexec. It provides the necessary
+> > + * metadata to interpret the array of session entries that follow.
+> > + */
+> > +struct luo_session_header_ser {
+> > +     u64 pgcnt;
+>
+> Why do you need pgcnt here? Can't the size be inferred from count? And
+> since you use contiguous memory block, the folio will know its page
+> count anyway, right? The less we have in the ABI the better IMO.
 
-fd = open("/dev/gpu_mem", ...)
-buf = mmap(fd, ...)
-buf[0] 
-   1) driver takes the fault
-   2) driver calls alloc_page(..., gpu_node, GFP_SPM_NODE)
-   3) driver manages any special page table masks
-      Like marking pages RO/RW to manage ownership.
-   4) driver sends the gpu the (mapping_id, pfn, index) information
-      so that gpu can map the region in its page tables.
-   5) since the memory is cache coherent, gpu and cpu are free to
-      operate directly on the pages without any additional magic
-      (except typical concurrency controls).
+Right, I had pgnct because my allocators were using size as an
+argument, but we removed that, so pgcnt can also be removed.
 
-Driver doesn't have to do much in the way of allocationg management.
+> Same for other structures below.
+>
+> > +     u64 count;
+> > +} __packed;
+> > +
+> > +/**
+> > + * struct luo_session_ser - Represents the serialized metadata for a LUO session.
+> > + * @name:    The unique name of the session, copied from the `luo_session`
+> > + *           structure.
+> > + * @files:   The physical address of a contiguous memory block that holds
+> > + *           the serialized state of files.
+> > + * @pgcnt:   The number of pages occupied by the `files` memory block.
+> > + * @count:   The total number of files that were part of this session during
+> > + *           serialization. Used for iteration and validation during
+> > + *           restoration.
+> > + *
+> > + * This structure is used to package session-specific metadata for transfer
+> > + * between kernels via Kexec Handover. An array of these structures (one per
+> > + * session) is created and passed to the new kernel, allowing it to reconstruct
+> > + * the session context.
+> > + *
+> > + * If this structure is modified, LUO_SESSION_COMPATIBLE must be updated.
+> > + */
+> > +struct luo_session_ser {
+> > +     char name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> > +     u64 files;
+> > +     u64 pgcnt;
+> > +     u64 count;
+> > +} __packed;
+> > +
+> >  #endif /* _LINUX_LIVEUPDATE_ABI_LUO_H */
+> [...]
+> > +/* Create a "struct file" for session */
+> > +static int luo_session_getfile(struct luo_session *session, struct file **filep)
+> > +{
+> > +     char name_buf[128];
+> > +     struct file *file;
+> > +
+> > +     guard(mutex)(&session->mutex);
+> > +     snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
+> > +     file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
+>
+> Nit: You can return the file directly and get rid of filep.
 
-This is probably less compelling since you don't want general purposes
-services like reclaim, migration, compaction, tiering - etc.  
+I prefer returning error here.
 
-The value is clearly that you get to manage GPU memory like any other
-memory, but without worry that other parts of the system will touch it.
+>
+> > +     if (IS_ERR(file))
+> > +             return PTR_ERR(file);
+> > +
+> > +     *filep = file;
+> > +
+> > +     return 0;
+> > +}
+> [...]
+> > +int __init luo_session_setup_outgoing(void *fdt_out)
+> > +{
+> > +     struct luo_session_header_ser *header_ser;
+> > +     u64 header_ser_pa;
+> > +     int err;
+> > +
+> > +     header_ser = kho_alloc_preserve(LUO_SESSION_PGCNT << PAGE_SHIFT);
+>
+> Nit: The naming is a bit confusing here. At first glance I thought this
+> was just allocating the header, but it allocates the whole session
+> serialization buffer.
 
-I'm much more focused on the "I have memory that is otherwise general
-purpose, and wants services like reclaim and compaction, but I want
-strong controls over how things can land there in the first place".
+I made it a little clearer by adding "outgoing_buffer" local variable,
+and then assigning head_ser to this local variable.
 
-~Gregory
+> > +     if (IS_ERR(header_ser))
+> > +             return PTR_ERR(header_ser);
+> > +     header_ser_pa = virt_to_phys(header_ser);
+> > +
+> > +     err = fdt_begin_node(fdt_out, LUO_FDT_SESSION_NODE_NAME);
+> > +     err |= fdt_property_string(fdt_out, "compatible",
+> > +                                LUO_FDT_SESSION_COMPATIBLE);
+> > +     err |= fdt_property(fdt_out, LUO_FDT_SESSION_HEADER, &header_ser_pa,
+> > +                         sizeof(header_ser_pa));
+> > +     err |= fdt_end_node(fdt_out);
+> > +
+> > +     if (err)
+> > +             goto err_unpreserve;
+> > +
+> > +     header_ser->pgcnt = LUO_SESSION_PGCNT;
+> > +     INIT_LIST_HEAD(&luo_session_global.outgoing.list);
+> > +     init_rwsem(&luo_session_global.outgoing.rwsem);
+> > +     luo_session_global.outgoing.header_ser = header_ser;
+> > +     luo_session_global.outgoing.ser = (void *)(header_ser + 1);
+> > +     luo_session_global.outgoing.active = true;
+> > +
+> > +     return 0;
+> > +
+> > +err_unpreserve:
+> > +     kho_unpreserve_free(header_ser);
+> > +     return err;
+> > +}
+> [...]
+> > +int luo_session_deserialize(void)
+> > +{
+> > +     struct luo_session_header *sh = &luo_session_global.incoming;
+> > +     int err;
+> > +
+> > +     if (luo_session_is_deserialized())
+> > +             return 0;
+> > +
+> > +     luo_session_global.deserialized = true;
+> > +     if (!sh->active) {
+> > +             INIT_LIST_HEAD(&sh->list);
+> > +             init_rwsem(&sh->rwsem);
+>
+> Nit: it would be a bit simpler if LUO init always initialized this. And
+> then luo_session_setup_incoming() can fill the list if it has any data.
+> Slight reduction in code duplication and mental load.
 
+These are now statically initialized.
+
+>
+> > +             return 0;
+> > +     }
+> > +
+> > +     for (int i = 0; i < sh->header_ser->count; i++) {
+> > +             struct luo_session *session;
+> > +
+> > +             session = luo_session_alloc(sh->ser[i].name);
+> > +             if (IS_ERR(session)) {
+> > +                     pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
+> > +                             sh->ser[i].name, session);
+> > +                     return PTR_ERR(session);
+> > +             }
+> > +
+> > +             err = luo_session_insert(sh, session);
+> > +             if (err) {
+> > +                     luo_session_free(session);
+> > +                     pr_warn("Failed to insert session [%s] %pe\n",
+> > +                             session->name, ERR_PTR(err));
+> > +                     return err;
+> > +             }
+> > +
+> > +             session->count = sh->ser[i].count;
+> > +             session->files = sh->ser[i].files ? phys_to_virt(sh->ser[i].files) : 0;
+> > +             session->pgcnt = sh->ser[i].pgcnt;
+> > +     }
+> > +
+> > +     kho_restore_free(sh->header_ser);
+> > +     sh->header_ser = NULL;
+> > +     sh->ser = NULL;
+> > +
+> > +     return 0;
+> > +}
+> [...]
+>
+> --
+> Regards,
+> Pratyush Yadav
+
+Thanks!
+
+Pasha
 
