@@ -4,113 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B557CFA469
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 02:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9CDCCFA469
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 02:50:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B85DD6B002D; Thu, 20 Nov 2025 21:48:56 -0500 (EST)
+	id 323FB6B002F; Thu, 20 Nov 2025 21:50:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5D4F6B002E; Thu, 20 Nov 2025 21:48:56 -0500 (EST)
+	id 2FBA56B0030; Thu, 20 Nov 2025 21:50:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A74106B002F; Thu, 20 Nov 2025 21:48:56 -0500 (EST)
+	id 238F86B0031; Thu, 20 Nov 2025 21:50:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A0DE6B002D
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:48:56 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0606914046C
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:48:54 +0000 (UTC)
-X-FDA: 84133081788.20.F4AD38E
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 485B71C0007
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:48:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=hqjmAQGy;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 143226B002F
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:50:06 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84D0A12FCC3
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:50:03 +0000 (UTC)
+X-FDA: 84133084686.17.887F703
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EFB1120002
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:50:00 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jfFR0I50;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763693332;
+	s=arc-20220608; t=1763693401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mN56KAVECGZFLtl8e3BK+ApEqN4tpkmsSG1PhSyua4A=;
-	b=LgpqbHEjoLbIVvq6gBWQ0VKVj9+iModB1q0wVofAR8CjXLexF2/y1GSv/pOKKpkGO99emd
-	uFko/zDBLVZRUns2RhvEJBqbY1DbyjjJBXstiQIzbUjnjIVmTdDlVZfYsi9qdT7p5zvj7q
-	AEd5PxfpsUoNVXUU0CrV4aqbtmimi3A=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=80Dm5gxPWMx6QECH3luEPOXtrlbBKDhJX35ZwqQptoo=;
+	b=tVhudOen/1vp33+xviGMV5y1LIBCtnbAm4+oiQLDGQaiz5w5oou2seowH5FdcLVvjvgqya
+	T4mw5BhYt+GvUJ6cHtdPTiArnWIvBgEX1weYf3X43r0RbrX+74FYCoiawvH1jXKG+WSfDl
+	R7KgCGUakD5GdJY6JsfeJYTdAa5I1Ns=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=hqjmAQGy;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763693332; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jfFR0I50;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763693401; a=rsa-sha256;
 	cv=none;
-	b=Bbice4NgjCL80JMf1dTp21MbvsYdMSdGokfnDU0YVtVIp4oELs9pj+y7SS8sYjv3b383BI
-	LSxcBWkLlOVTDJQVeFwGttAth14w61kACmf8utfC59HZU+JFdZo6UL9TRLzaHEysCWM2gO
-	cK/qODIZyQjfN9+VbSkMOail7MXjvXY=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29808a9a96aso19256975ad.1
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:48:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763693331; x=1764298131; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mN56KAVECGZFLtl8e3BK+ApEqN4tpkmsSG1PhSyua4A=;
-        b=hqjmAQGyi7gUpVqkqROVUwKP0Rp+qkRN9YrhV/ve9e+RWgYaAqGMeT2IXLwt8ZDVfU
-         SiVti/h6MJ2NXCu1a/NAy+s7XaNAXUhAyPtm+jTYXEEUC474JUbmR31RE3ICkCGicjiB
-         EOXkjCTlAdKhErQ4a1cgO7vodDzOi1b/5UGMA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763693331; x=1764298131;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mN56KAVECGZFLtl8e3BK+ApEqN4tpkmsSG1PhSyua4A=;
-        b=qIIb5sjIslftH2PBrlDCQjrGUqCmZiGEt3AN3n2fwxQ5+IP6P6//S4isXykzrG1hOI
-         gizutJlgwJS1REGm4G2KYQaJuQJZMcWS6xNQ1va/TWpBalwSlAWsFeGUBQTqmOhuDW3Y
-         CBrmV9Js0OzFDcXGMWFSpsVcYzyZpRmKcwjWjiOh8UtZEyMfwsGsg0t4iYNqQyHFV9Kc
-         +qTS9+6m0ScyZXJy3tDZoICD2F54lBlIqAsioAMd+qcgPmi6d8C1owvOBJ1Eb9qKY6AE
-         UaYJ2FSZaHjQ1TPYzhkutm69JF5UaJQfyF3bgAdc4nqjpQIrxOjsrv87MGL/rcJ7q+z8
-         tERg==
-X-Forwarded-Encrypted: i=1; AJvYcCV3DSo2UTgNL0C6RldPfQbXDc0YVkDGMbhWIivYh1tPMlDwqlE6WTHhnHcYdobDEULOYcBOZ1kTSQ==@kvack.org
-X-Gm-Message-State: AOJu0YxEZFcDlGpCt0DXEVzHt/RIUPgxzcuf1E+uttr1GQ69+EIQ5M6F
-	k4I49esrKyiyfZk2nlv64k4HCHHTADv6lqk4NyOba6aBIp2AD6pilqSWV19A0K94DQ==
-X-Gm-Gg: ASbGnct059CyrACgzXgAiw6FAYeyY78Qq8nrvgm2MLdmpGaBzFJnHJG0LtqSbgIElvT
-	nDxxmFNAsXJM0ZlT2/6w/WuN9z5rp8Qcu5lElkXWBhpqoI3WJQRPHtHw3aAHWfoflYl2RAh0veO
-	DI24+8QcvVkrhu9RBI/EHHLX7e7/y+Ykn2wHceJ0STSPUDgfprg4Z3U950GTEB3xF6xrm9EOnlg
-	zwE2lGZkFGR4gYD71zY2yNZT1CnSltWYQs3biPN5LMYr1H5AXXsXxYB56A4NAMj6Z0xL5SYoNVV
-	cCdzqVIbuFLIc23PKlUE9SudsVijN7nyQpFSKVjq3+6Y7IPfO2W6GmY6lXc3BR2iyOF8FwzYGBT
-	PLJc4Dy33BshqeJm0Yiltd7OYNOt3JGaN+HS0Y8PK+VXL9BvoRvF0jGemclI6wmMVbn2QgFKKF6
-	oXFx3EgvV6DNM5JA==
-X-Google-Smtp-Source: AGHT+IGO8vM4e+LbFZ+U2TQaDlICVXlmzK2vO0o0gJ1AIsq/eHFmVseFKAQ/T+Qq1ikLdhGppW2GVA==
-X-Received: by 2002:a17:903:298b:b0:294:f70d:5e33 with SMTP id d9443c01a7336-29b6be8bfeemr11923735ad.12.1763693331090;
-        Thu, 20 Nov 2025 18:48:51 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:b321:53f:aff8:76e2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b15b851sm39168435ad.43.2025.11.20.18.48.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 18:48:50 -0800 (PST)
-Date: Fri, 21 Nov 2025 11:48:45 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Minchan Kim <minchan@kernel.org>, Yuwen Chen <ywen.chen@foxmail.com>, 
-	Richard Chang <richardycc@google.com>, Brian Geffon <bgeffon@google.com>, 
-	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org
-Subject: Re: [RFC PATCHv5 2/6] zram: add writeback batch size device attr
-Message-ID: <uboc64fpwzcs4phm2xppyvuf3h5clkijbiahsb2wd2vah3po5q@dnzh7ir6inqz>
-References: <20251120152126.3126298-1-senozhatsky@chromium.org>
- <20251120152126.3126298-3-senozhatsky@chromium.org>
+	b=bAYV3Hg2yR4S8G1GRKMwgski+Ab3W+CchngYgmW/X5B02YHrJK2mlnmLqjY4Y8Wu1mSZXL
+	hgO3uJ1Z9MIcDKoD7psqmCgf593XO0oUq3StJczXs8JD7R/+N2231Kl4SBNxAyNcMXXfiA
+	WNI5h/WQuAUOA9xv/Nel+a5BebYEpYE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763693401; x=1795229401;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=K94SV6QMRUsgclNuzA+uawtb5vLliCETVk2q+6FBiPQ=;
+  b=jfFR0I50Z2Wy40/5XoqTurY4v34uMmkyTSkj8xG2erERROlqblNNAxOl
+   Amh8XwAPBuzJgiwFhRN7vGwXXTOPijJEg3pmvyvRRIFke3rO8JMUcWM9t
+   fSqX7RfZUX5eIQIDobSsTDqgJHushNGcKmG8EOTpiPDDJpomXpE8Dh1EO
+   Lr9iiMMUiLfn+yp+d6X0XF/aLHuGTQnKW8l5ZSTpI8Kks8W9gI1tEAUWL
+   DBEZEfvOTXOcNvygQmHMFShK1JBSf0W0G69vLsx3eb63fIcTNYVJNiebV
+   ffm5whebgk33KOBgggDsp+Dq1Ep+sJGt0jYySExOsdtBCDerjFQVJjEZR
+   w==;
+X-CSE-ConnectionGUID: +0rzTTAvQbSKK1R70/0IVQ==
+X-CSE-MsgGUID: LAL5gayGTjWFIeGIlBM7ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="69647077"
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
+   d="scan'208";a="69647077"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 18:49:59 -0800
+X-CSE-ConnectionGUID: MZYcnEf9R3K4ZNCITvmalg==
+X-CSE-MsgGUID: qJ1axJZvShCPEE6KzU/tRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
+   d="scan'208";a="191994606"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 20 Nov 2025 18:49:57 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMHDe-0004rk-3A;
+	Fri, 21 Nov 2025 02:49:54 +0000
+Date: Fri, 21 Nov 2025 10:49:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Jann Horn <jannh@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Subject: error[E0609]: no field `vm_mm` on type `bindings::vm_area_struct`
+Message-ID: <202511211004.JW70Scx4-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120152126.3126298-3-senozhatsky@chromium.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 485B71C0007
-X-Stat-Signature: qkpkoje54569gzx98aggq1h589pcm7by
+X-Rspamd-Queue-Id: EFB1120002
+X-Stat-Signature: h6aqwygrmk8r895z4aj3t6g54jcq31mp
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763693332-333309
-X-HE-Meta: U2FsdGVkX1+Q9mE5mFY6oBwlj/0AxGeSIrMQPkMAjEYJC/WzYRw1Svba0KONaXLZyNrJUgoU+ECBryLEVNByd+zO9UeKQ+wTopDixDrp9E1UD9ptC9dQMwHNQ1F5HADuGmdPjYD+eKYo1JB5JIghqcYPOQa9puGDKMFsSOZHg4T2GQNdVO4qDSRhGgiiM6cr0+NXFuAXQ90/UgXcd5ouchDHM65q+F/80Vdu/hp4rB8NLHN95jxtsunRo12Lj6NJ932+Si7NK4duA1hxw8bNahWrzDX5XrVIUCp6OBMUpa0ECMZzXO8zh0LLRUHYmtWWzX7XYXDzgDnOZkoHVY7MvysVlHJoZ4ZD1t/scDtoVBmCLycdg3BiMrApe513ApVNx9000yKTx/vshRw15eY9J5ieV9OqgFG2Z05/PHBcZbPp5AM2HXTW1lYytasG+fYEliU7/oec6O9zQyXvkpJTYosKPa17F/s6aPsgBfcd5TW+m9IhnNtuum6vtGfM33FtfX6d6rou/F+WQ/nphMai1o9uBfoXWLsxp9T8qqf3pVdjfCudzS0ehHJ1MFgdPpSi5lcAo0Zm9Qm3d3vCQ4WsAPknUEkNHwF7UX0HIEKV8sVAKtEFXlXSuapcSIWmUvpbYkEcpge3dcowTfaeZ3wEEqng/6v7G4R0zmPmzXqeVTY30anBAsQD3lPtpPVfW244YB4BlAcz5fRoRO5LOIcRDjvjyIQtaId+/goQtOq123KDwzaJQUvihge5xbisG1btQAhp1LGxm//lCkhueZybFwsj4yTtWuxwm+7Dw/ZLTFDo87x7GxSHmM75wyU1bjAq8b6vFGLtH0nczqIG6vTC4vRZoIGCxYARBxRZ7TrzH8CerQvgThx+yFuEB/VJtm8Qy1WgWvb3M/U9bLspNRm7ePOXUmYGLbvrXWwd218H4XE+cyihyzZFc2yhpBlld1AMwgTs9Mk3icHI72cCZv5
- gtr3afAm
- iOmQdCjQwq6Jy6Ngai7D9Uei5DQ==
+X-HE-Tag: 1763693400-631320
+X-HE-Meta: U2FsdGVkX19OrEAhZixHE1AyDgoiyrI74c4L/FaHlttEIR2SpbH6VWmjzy96JT/p68DDwduL9SW99QYZZGE6PsPPWSlUe81Xv6Yx+3LavvXpN4/wwqUAYgnXP+RujbwWHy2Uzjr02gmcvLqeSjn5Ke0y1EqZjxYz/7fK/S7IbUoCv0znj1Q8kAAMJhlayZ513P2WhMpuS5lhv60ev+vXdjPQy9ug20kZ/fMF2QvRlKGnbrmAVmbNKGRLW3dMMa0xxqfqK49In6tVhZCiDYcEJQFPa2RntDFMo7Vt2j9fj6dUn3+mEk8qxQRSz6+L1o4Z2QJY2GzH1aVw1B1dQjLn/ELfSPYF7QRjEm5x2JOqHadaJz1jyDcz/7VXF0K22v1wkp8+Y1Qz93N/aNqEKyFY+Hgt+wXajOSs6uK5+8KJkMwHzERB4hmoT7e6uMlkEXWqVbiL7pYTNXd0muVJ1IWzM7jrfYNI6FP8/9/S0pNyJVIuIhsE0JBYCS88Iajb53VXSGff6/7ie6lXZDbn6KQOVUzkyQ7usO0vRNPBwMMVuPKcs+Gs8MuF7BrT6h07e09CzD5bIMDQ8Vl2rk4W9+GuV8hwV35CIwH4yaiYdmkMkjqgQHeP0f83iwAVgaMoSupp4FfQ2/lwWrmLwuL5GtJXIXrqy4so74Wygu3HNKgES+kPiLimTK3wMUtOikJuCOvnOymTnV3xofbju61y9Qm+u40h/JwSKM/wIykfQHGm1iVcFFMcGIt9B3s6J5dIvDi1mWgWwuwS0kILtRB+HC/W8qIlxFXSOXbVYOXT6G6YbpekUWhzwjC+qpGOW8onaTSVcMCMkwAPJHamWr36welVRa2U/z81lNKrRioi8u+hYHTbW1ekeXKFkQbtAL2faLPANkTlKpmUtuGgdJLtjhy06NUYSFsw5/81A5b0jKNxcGKe0+RkHh/X4qjfxg6KmEVfzgLjH42c/2fMRJvm/zQ
+ swDTIFq/
+ HYC63UFKyCw60lxJ695xpRAoiZqmXKMNE3gze9ZfCGyysvP96oJd/z1KCV/ByPc8uig/xSgfIs+YXGhDd2h53wQkLnI4+xVMI52iAIyLRDTTaRTqnacC9jZ7Wl3foU2mOA6Nh5Ai5rQZpjVtF8evRIWHYfvteNj8bYSfS6DiiwLzX/rB7gEPIjIYXL1AvqJ4kH4ySWxddU/HgObH4s/ERw8sdTm9vH1WBGhBeNH2b9/sk+zZXMgYxaChNjjUwlveVs5KPVnv6vggIjf967AXe7nNWjEyBTV2F1SMyYYyvMhYnY0K/TXbgolQDLxxlx/iY4FtqyUx8Mnb9YxhVdifM7cexjHofnm5Z7CuCbvYGZdkFSRv9i3KM8caTxZozTRQfUON8UgIFtPt3QBB/6KFN1iexYw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,29 +108,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/21 00:21), Sergey Senozhatsky wrote:
-> +static ssize_t writeback_batch_size_store(struct device *dev,
-> +					  struct device_attribute *attr,
-> +					  const char *buf, size_t len)
-> +{
-> +	struct zram *zram = dev_to_zram(dev);
-> +	u32 val;
-> +	ssize_t ret = -EINVAL;
-> +
-> +	if (kstrtouint(buf, 10, &val))
-> +		return ret;
-> +
-> +	if (!val)
-> +		val = 1;
-> +
-> +	down_read(&zram->init_lock);
-> +	zram->wb_batch_size = val;
-> +	up_read(&zram->init_lock);
-> +	ret = len;
-> +
-> +	return ret;
-> +}
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   fd95357fd8c6778ac7dea6c57a19b8b182b6e91f
+commit: 040f404b731207935ed644b14bcc2bb8b8488d00 mm: rust: add vm_area_struct methods that require read access
+date:   6 months ago
+config: um-randconfig-001-20251121 (https://download.01.org/0day-ci/archive/20251121/202511211004.JW70Scx4-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9e9fe08b16ea2c4d9867fb4974edf2a3776d6ece)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511211004.JW70Scx4-lkp@intel.com/reproduce)
 
-JFI, as was suggested by Andrew in v4 thread, this should use write
-lock.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511211004.JW70Scx4-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0609]: no field `vm_mm` on type `bindings::vm_area_struct`
+   --> rust/kernel/mm/virt.rs:58:56
+   |
+   58 |         unsafe { MmWithUser::from_raw((*self.as_ptr()).vm_mm) }
+   |                                                        ^^^^^ unknown field
+   |
+   = note: available field is: `_address`
+--
+>> error[E0609]: no field `__bindgen_anon_2` on type `bindings::vm_area_struct`
+   --> rust/kernel/mm/virt.rs:68:35
+   |
+   68 |         unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags }
+   |                                   ^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available field is: `_address`
+--
+>> error[E0609]: no field `__bindgen_anon_1` on type `bindings::vm_area_struct`
+   --> rust/kernel/mm/virt.rs:76:35
+   |
+   76 |         unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm_start }
+   |                                   ^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available field is: `_address`
+--
+>> error[E0609]: no field `__bindgen_anon_1` on type `bindings::vm_area_struct`
+   --> rust/kernel/mm/virt.rs:84:35
+   |
+   84 |         unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm_end }
+   |                                   ^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available field is: `_address`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
