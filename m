@@ -4,101 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADAD4CFC294
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 16:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D70BCFC294
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 16:57:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EDD36B0030; Fri, 21 Nov 2025 11:53:05 -0500 (EST)
+	id C43F96B002F; Fri, 21 Nov 2025 11:57:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09EED6B0092; Fri, 21 Nov 2025 11:53:05 -0500 (EST)
+	id C1B196B0031; Fri, 21 Nov 2025 11:57:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA8CA6B0093; Fri, 21 Nov 2025 11:53:04 -0500 (EST)
+	id B30DC6B008C; Fri, 21 Nov 2025 11:57:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D613F6B0030
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:53:04 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49F6A89BA8
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:53:02 +0000 (UTC)
-X-FDA: 84135209004.21.30CEE07
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6B0F140011
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:53:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CwR0dThi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=bivn=55=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=bivn=55=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763743980; a=rsa-sha256;
-	cv=none;
-	b=RRqiDzZqRfr0VA+y4+osQWC2FXTJh8lVBp0LmcqwRF5LWn/ySojxniI+cx6WScXe2wxYX/
-	sUU52tl/PrbdRprSGC7EaymKU29yuLkNWCjJFd1YTPPY0UeVIhTAabL2EJte6825MLhHDT
-	ftIWrPbLxUMCHBy45Zj5ZG0CRP1X8V8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CwR0dThi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=bivn=55=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=bivn=55=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A2FA76B002F
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:57:28 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E8181A0580
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:57:28 +0000 (UTC)
+X-FDA: 84135220176.17.A9E706C
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 383B21A0008
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:57:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ru9SycvS;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763743980;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763744246;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dxMVFyrGV973f+tIL2RtgyZFtLKXRbEFF8Cno6+C28o=;
-	b=o6L/SC9swZ0sjX6uXupa87i9sYFdFztN12bnXWk7q1+zZMb0LKGvYYOoFm4KZLCVqJxC9p
-	lmiyXuZJi6UztN/RzDxofB2XT0ekgHquOagtl5lMI7gJ6xDAHCV+PtVFXrSrqhwGz/NrXC
-	KNcNXvvB4Y3kS6Jh+YuqHSNXJf2CgLU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7801440999;
-	Fri, 21 Nov 2025 16:52:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55371C4CEF1;
-	Fri, 21 Nov 2025 16:52:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763743979;
-	bh=/N91HXefhxeC+TjibAfhi/hv2T3f07kYP8+CY074xk8=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=CwR0dThikFIafNMG35RxTBg/8KUFTGPmhKlmYXRNaUGj2yXcRYCV3v1uSFXTkjtAk
-	 PRDtKBcFAXgbG91NiCta34y1ZkSnjhNFH8OXuYA3nFMt8QwuQ4UYT6EXiYF6evBTO3
-	 zMleIxvRKih4ylPzjiWSpt3DNC/9/D6qRaL97vop7SJGpz+JJkhPHQowSh8ihiQVFc
-	 +lgZjrjElyHY2l5dul1xkXcXtNkrr3wc7uMDiA19qgG1zvGK+8rJB8Qv14TyPyBo/d
-	 MdGh2gMmfm+9JiXKKkZnbnlVgR9+faOr239I/hQVobOBFZ/CrXkmXe1s+bpxNtR+t8
-	 eIxvWWjguSakw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id D85F0CE0B6A; Fri, 21 Nov 2025 08:52:58 -0800 (PST)
-Date: Fri, 21 Nov 2025 08:52:58 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-	stable@vger.kernel.org,
-	syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Message-ID: <9df24d5f-99bf-4d8e-8761-dd5dd65e4c76@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
- <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
- <aRUggwAQJsnQV_07@casper.infradead.org>
- <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
- <f7abdb4c-b7e2-4fe4-9198-f313d0cacacb@lucifer.local>
- <18ae4b82-b18a-4ed8-8b72-4a9697a4dc8f@suse.cz>
+	bh=njFup3cLjwHxIn3p8KU09yVQnaMwciw+MjQfHk5ugHE=;
+	b=oJf00JVRYATyXYcWq06aPCbkN1S098nQJSytwBXFLqGR+x4AyZYLBbDURoABo3MtOiQMjp
+	9z4djJZthxBPdLjECw1NakTvUg7M95h/woQaYLwQGcbwDsLdidDS9f2d7kKuRGlNp896Oq
+	TD7PLvF7B/ADZg7ZFH9weYsAq7V1OUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763744246; a=rsa-sha256;
+	cv=none;
+	b=w7va7GoNNsJVDsc3PiogqO50sYZPITw78oHE31bDgYKc9fcpZDl52NPINE08/JvX5vBAuP
+	mKXSBI3JCoIMQjAaHn4NBIACf0M6lvGyM9BX6MCvsKe5fKNpN4BcDO0cay4er3LI9gpaeo
+	dLy4mNMYV9CEE8JK2noHWEOi7RazdhE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ru9SycvS;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b472842981fso285362466b.1
+        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 08:57:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763744244; x=1764349044; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=njFup3cLjwHxIn3p8KU09yVQnaMwciw+MjQfHk5ugHE=;
+        b=Ru9SycvSo296SgOwYHHeTQb1o1ZikXnZdX7SFhSgK2ZbfNzOV5fh+OZ9oWYYtOPPDs
+         BvUvSnrbu2af5A7A046x6Tm07AZ+lV5P0MHF7Komcfr6Sxlk3mbEApaVpkPUuBbDxPxB
+         tW97yS35+Rx3TO4TOIFhe4UVYqxt8BrOmli2eAUdS2mogTtrqGV+EiKEnFcjabX47Fzc
+         tmilxhHWcewFKv6pRkmup6CRc2Wo6hEn2TPSpkIgMDXHQDaJTCVRJMKpTHsSBGjoTa5a
+         iPIOZGwjsCJh/xCdRVu3MOootJ3Ryc7q+Is/C10JJVrm62lLdlxpKDB8u5nf8j3KSYM1
+         t+9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763744244; x=1764349044;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=njFup3cLjwHxIn3p8KU09yVQnaMwciw+MjQfHk5ugHE=;
+        b=am38wHE19yT2GO7PnadF9kKKCNjsHgP+DuW63Bd0RycSW1aIAQJzyqEbHQukMI9UiK
+         YHgZczc11etrD5TXO5DRfFHBt6EE+iGzKc/n77cI8RonF5prYSN68uUIvT8JzmKixHgA
+         3tcRry+g9GPIW+Mhyk/zsr6PMa/HkkjhM9MbfVb8fsHPgOMe3B/lMqQXgCVeNi5EVoZT
+         3HHjlRmOnAN90aIXDFwhm4TM//E65Uvu9M8oIgg3FZkdaBc91cYvh2VfnmgNvnt1S/p0
+         7CInH7mm9kQLl4gRrp3T6A83/4gzavoBwDnYQSNKuNlQ2MPZhpzJBmWyek1Bjj+SXM2p
+         iOCg==
+X-Forwarded-Encrypted: i=1; AJvYcCVG8+6eSV4bwunqIvvrblxdqG7NsYEigeMvWPCe4cKgfHjUOgYO+H/rl/BylZaCshsBZLqma2hBMg==@kvack.org
+X-Gm-Message-State: AOJu0YziMzoJfAsNBv1AN/R2gmHUtM0P/5ztNuhnRs2RabxKJPaZYDYX
+	CTcZ8DZ20f8h2/qKD1PrbGOWmuts+fS/G8mGK1JBessm3WG9XgDxgtyK1+O/43VdwPWFXB+82qg
+	pZp6Rzpz5Wpx7fTqpJy84igs18KB1PPk=
+X-Gm-Gg: ASbGncsQqY5SqRx9BWGZOB+KCEAYz6QAW/kb1uTni8YWrkUiz7C1w01EsEIc4ND0SSs
+	JOH20vCeirxc3CHvTbbERc7SPgJCe3hkdnDeAHxhaanBE4g3ZWKW7F7aLazKAYFZToQwzkCStt9
+	6X5+flwN2GffsTmqZTnCuj9EW4+L9u1o4bVXA7NI0UHwTATZVNPoYRRQ0F7al/S0pJTtrh5qBLP
+	vpitNGwPbFGY8RqKNfIBLjmENICZvkXxToSDvFkniivUA0HwXjauHEBetEc7SBL1vdFBPPaCKQN
+	WXgqo3amPuuS22yhNEftbLBKrOfoOFc=
+X-Google-Smtp-Source: AGHT+IFXBB8xZb4zfndX5tepAjmYqV8xwIlOQambPbarzMMFklf23b1YKoD52jlwRhNpWm/We5d3CKrKzeQ92cJ6rlM=
+X-Received: by 2002:a17:907:3f0a:b0:b73:780d:2bcf with SMTP id
+ a640c23a62f3a-b76715ab995mr334164266b.16.1763744244328; Fri, 21 Nov 2025
+ 08:57:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <18ae4b82-b18a-4ed8-8b72-4a9697a4dc8f@suse.cz>
-X-Rspamd-Queue-Id: 6B0F140011
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zfd5om9n7yh3zj4necjubqu9bt9xowwq
+References: <20251119114136.594108-1-youngjun.park@lge.com>
+ <CAMgjq7CgwjqE9XVy6EaNe0XARYOJsOER-Ch16wuZxWfq4EdFJw@mail.gmail.com>
+ <aR53i1G45XAqCzBd@yjaykim-PowerEdge-T330> <CAMgjq7C_ebrZv73VNBk-mhaSJwQXJur96R2OdW96YCM7vtJkzw@mail.gmail.com>
+ <aSAMu04In6dLboPs@yjaykim-PowerEdge-T330>
+In-Reply-To: <aSAMu04In6dLboPs@yjaykim-PowerEdge-T330>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 22 Nov 2025 00:56:47 +0800
+X-Gm-Features: AWmQ_bnlyhcp0spM9YtYdXyo-Vtpzcpf2Tw2kWOGqX2zjm7s48e0HsaK2_gbBK8
+Message-ID: <CAMgjq7A3vT027g0gJaBG8YBMeTZOLPP8e8KDkNX+foJ7cgJSZw@mail.gmail.com>
+Subject: Re: [PATCH] mm/swap: fix wrong plist empty check in swap_alloc_slow()
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: qws9cqijzs39dmkgnna68fta65e76erk
 X-Rspam-User: 
-X-HE-Tag: 1763743980-549328
-X-HE-Meta: U2FsdGVkX1+6pXrXXsNb0TTkNu9eurbulL9MPVhGFlSohN+LtbEaKTN25QxROpKdnNPHBTAzKFeGlLlA8Jmr5uoXmJ+nc4L0xsgvpYY9zwxzccvBKO/OdcOJvXgm9r8sEiPiwerCAW+1DRpDaSWRHKmDzR7FB56f34gOSAzbbNS/lmDzePeTMe61mfYPCgk05AR8PmsvOskN7OpdXC2m8s8UpK7MmCtnwlg2p850ZhfknpQyjkRb2Y0mnabpaRhmudavv6eY6M6YThu4XLf5VAzn2j5IFcEOgotvtjcRF8kDBz+0B/yJIRyQ/HvKcM4jsW0m6XhNP6hW81i1thzTF41lQDjr44chJPNwCQGtagXXA0pCFeFYCMawrJuvWtX3R/YjmklLNJyOGT4INakIN1KbiZzDxmGJbfZTILNOOlil7KYpJRgb1Mu4AxVpS8rZcLNN4gwS725e2tMTs8KT3XS3RlkGKmcAOkL3Utxp67RQxZu0VeuXknD+8r7Sr3qHZdbFcj79bC8gY6rDuFgOL4fuR0WUkBWrZSfSoilunsbG+ZCtmlMEy5wVG6haDJL7mG85Yrhra0GHSKS30bjoxA7DDpkIHsIKaQ8NApZFdrGF161uZI0KRHg+p6vYFGVbgrD+JVpn9onUeEpRHGUzDfoY1RtFj9z6pZDnerqMZDI0GVS9Mow5CUVWR14w4id+T29wYaS1KK52EPIFjzSZyA5OhflOL9U3cRumNVXJHnqrmShPGbP4P/pXk2wMZghYN4mYyEnSbUXtoRXNZKliBzwHpvJ7+c9IcHN6uZ0NVZXjtFqL2jlg7rd9L/i+1J9prus6EoTwF6fryVZICRRJwosm/cxofihI+v3ZO8tsnFxM767vefcMnklxQktIV4hLN/aMN3j2BA5DSysDXon23ueeSv9BI4SUSL0pZk5zZGsFjN6aGQIRHQBEokIwIAy9+9EvaTyP+QfWtpCztxt
- DEtL6dNh
- twpsjmI2SEN1KKGyoV9pa+DJVdgAUeft5+cE7unTl7Ay5k2mpE8+rIfSmKgHQCOiUwMCISGMk5SzyQP4u9+kgMOr901GIPw2LR7ExODa1rlNxRvSvy277VtQYIqmxNHm4zHGqW09ENllRCZWHP/VVqrZdGfX0C38mx7jZVZAlv/FLT5gOg3WkZYsBB4ylTVGFA6xlJpRugWOKdI0ZtM+F22RxMtcIRNVAaQpR33BiB65A6ldsWz7Xs3D+r2ckt/VBG/IMBeRPcHRTuFAmFVPCDz47pfVvQU3cSpsJafNuCm8dFoa+O+bbLWt74npP5h0H7sGxbyexCiCQ5Zs3RYGDLQQhc9YINEf6OgOzDUta47dH5ldEJorwDpI4gDXbMRz8AEZxZ8Ex7/9C7fTrHngRQNsfUTr0Z+1pnE6gNy9+Xnw0aVvI06EZfG/5Q0anH0+dBdow6EgEAN+e5G8UsdtHHPxjmsi6WKEXRow5BFej8wIq9DrT9hNlu3YZyrthe8c2cHil0Q4+tHWwrsRjgA2r2gf82Ls1noyS9UdORHy9f6e1iYXgnQ5gf1ZyP2DbOymVeDmgGAX3ez0eDnm3oaMldoLakyhUF58POir6IzuESeZ3Dq+FlT8DyHq1iCR3/aD+6u+T+bgVu15I4JYWglYHYzO418JmhW3u9SuZsRnqtGV9immGLTSOop9ebBep3YPq1FOi2CC1kKImuW8zk0qGGHh+5syEEqoAC0sOJxtZxDRZwsb8IEbZh1s7PwJQzeX8uSvHCe+mPYh8D8hSpWyKBfarJdt8nFiAQu3p
+X-Rspamd-Queue-Id: 383B21A0008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763744245-255158
+X-HE-Meta: U2FsdGVkX18VrSMjwjo84YWLr5g4gJ8+PFrdUa85Ey1dKWOhkGCCUziUHWH0yJmUdKXowSviE/j36Y5gIC0IGPk+MPXhgr31hpAeeoCIBdw41Ce3R6NPU7rNgOX5f4n5Utar7LKDKUtuJRKVv5/OgEcvzFm7bwWNahOEOJ/wpRpe7JfZPTYqYLcwPM8/1Lz/Ar0vQb5eeVaC5kO+Q/Mhf+pnF3PcObFPSeQ7CyqPI8rean58+GlbMAX49cPQOauEb/lkQc9tPRcZLHBHmb9aDt8hKC6qW0WfYkHGMMkJiHkiWJN0MLr/x2SzVGCrh2POvvurJJpxo486bhO+YRO0U3M+Pn39IdoNMP6zciOB4iMkay6Pr7QBoXEmOZB8OA5rI5u5/VVP4i7SZTQ3bOspvC1LgipOoca9OcJWESUxRphuipS0fOPPaWyQBcgfAtaQFTkyPj7p3aKcPyQfYqErzmThxBKmxmvLDtK98OODMvWjUMb9WGM935cDg5Ys9e2FLvd0rp5Qw35d6iVSyV5gBW0RSzh+tH9Usn67N6rbkdI2hAkg3jdi+AzlEFz8BOPc0N6HF7CO+DxrFBIbTYf2QO0yyvjaoYRMxkGrYdCNKj5Jrz1n8YM7vp0cx+ij/76UqkEiLEIVSRtawGtFpbp4/92WDTh6EUGqw9d3CPwyqdvrTfMn8EBVRNFM9BN98NDIFHTmhAyUm4bQdRF+iw+V0zM0SIhFoHMydVh+X8FsvGqE0DOk+JtbsKobxz5xwPBnwOtD27h4r3cdDQi7CTFIo4paIx7loYpeNq8K01D88MqKoTUwcbflxmwj5OgfS75c9tuoE9Enzq9sIUR9zlc7FYEwYcuSI7ZqU3aWLbQb+7nWtjs+b+j4nmeOIDLvq5165G3JPduiMYwb/eyWwaB7Sl8KmPFKRaSWPdHHqrqt4/w6aJfmhzYPWeR9eiG0kZYbhKjyJ18xfhBfZFlUeIb
+ OAvQf/nW
+ 9+wxT1v8yCmUwsPbbtVtMW7BF8u761wuS+bj5RFbFwCK+UfoDVxJnagG3h/sXNgvWfIEmoD0V+SvTIDPYXqaZhIqFKUha4I04lFisMifrBt9wqQ5wwWNNWWgPELYeGdZqMDdRIHMYq+oIJes6QzdxorGQ5BQBgvoOz/CYi7MkPt75ZIb4ny+/gHrHTjFdxEiJaCUIyFx958saWsppzuLFd45hWICOD0VQNpcN+SVJJ0W6owLYfluCaphkd8BVvQ6MOCJpscYey7pQ9wzrYAX62hBvReQeNPT0I4rl+WdOdjn+TAuHYy05JKHLDxNddZxCNOuu5cv6UOINQMuvgXPUie3/TrAVPlq9SzarmGFSk2f83vMJ7DAgk2birFDqxpoqEIA+DH8RjsIABGzjkzLy6ipPrzWFLIAwZoSxiyPQEduHRk4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,93 +120,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 10:08:19AM +0100, Vlastimil Babka wrote:
-> (sorry for the late reply)
+On Fri, Nov 21, 2025 at 2:54=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> On Thu, Nov 20, 2025 at 10:18:34AM +0800, Kairui Song wrote:
+> > On Thu, Nov 20, 2025 at 10:06=E2=80=AFAM YoungJun Park <youngjun.park@l=
+ge.com> wrote:
+> > >
+> > > I've investigated this further and noticed something about swap_sync_=
+discard.
+> > > During iteration, it doesn't perform an empty check on swap devices. =
+As a
+> > > result, if the iteration exits because the next device is full
+> > > (deleted by plist at this time), the
+> > > operation(swap I/O) fails even when other available swap devices rema=
+in.
+> > >
+> > > Should this be addressed?
+> > >
+> > > Best Regards,
+> > > Youngjun Park
+> >
+> > Actually after thinking about it again, swap_sync_discard should be
+> > looking at swap_active_head, not swap_avail_head. Changing to
+> > swap_active_head and also checking SWP_WRITEOK is a right fix I think,
+> > and should be good enough.
+> >
+>
+> Hi Kairui,
+>
+> Let me confirm if I understand your intention correctly.
+>
+> It seems the following changes would be made:
+> - Change from swap_avail_lock to swap_lock
+> - After sync_discard, reacquire the lock and check if the list was
+>   broken using SWP_WRITEOK instead. If broken, since we can't know
+>   the next si, restart the list traversal from the beginning.
+>
+> The advantage would be that it's only affected by swapoff changes,
+> so exceptional condition checks in this logic would occur less
+> frequently. Also, using swap_lock would be better in terms of
+> contention compared to swap I/O contention.
 
-And me for missing this!
+Yes, swap_lock is better here, I should use that but somehow forgot
+about it while working on something else, thanks for helping out!
 
-> On 11/13/25 12:05, Lorenzo Stoakes wrote:
-> >> > > I think one source of confusion for me with maple tree operations is - what
-> >> > > to do if we are in a position where some kind of reset is needed?
-> >> > >
-> >> > > So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
-> >> > > to me that we ought to set to the address.
-> >> >
-> >> > I think that's a separate problem.
-> >> >
-> >> > > > +++ b/mm/mmap_lock.c
-> >> > > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-> >> > > >  		if (PTR_ERR(vma) == -EAGAIN) {
-> >> > > >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
-> >> > > >  			/* The area was replaced with another one */
-> >> > > > +			mas_set(&mas, address);
-> >> > >
-> >> > > I wonder if we could detect that the RCU lock was released (+ reacquired) in
-> >> > > mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
-> >> >
-> >> > Dropping and reacquiring the RCU read lock should have been a big red
-> >> > flag.  I didn't have time to review the patches, but if I had, I would
-> >> > have suggested passing the mas down to the routine that drops the rcu
-> >> > read lock so it can be invalidated before dropping the readlock.
-> >>
-> >> There has been some academic efforts to check for RCU-protected pointers
-> >> leaking from one RCU read-side critical section to another, but nothing
-> >> useful has come from this.  :-/
-> > 
-> > Ugh a pity. I was hoping we could do (in debug mode only obv) something
-> > absolutely roughly like:
-> > 
-> > On init:
-> > 
-> > mas->rcu_critical_section = rcu_get_critical_section_blah();
-> 
-> AFAICT, get_state_synchronize_rcu()?
+And maybe you don't need the `SWP_WRITEOK` change, I was thinking that
+swapoff sets ~SWP_WRITEOK and then takes the device off
+swap_active_head, so to follow that convention you better check the
+flag. But actually no, that's not related, the existing
+get_swap_device_info is good enough.
 
-This would get a grace-period counter, and I believe that Lorenzo wants
-a per-task count of RCU read-side critical sections.  In theory, this
-is easy, but it does add overhead.  And in practice, there are a lot
-of different types of RCU readers, and keeping them all straight would
-be quite challenging.  But if you only care about a debug-only facility
-for preemptible RCU's rcu_read_lock() and rcu_read_unlock(), something
-could be done.
+Checking `plist_node_empty(&next->list)` just like what you are doing
+here is the right way I think.
 
-Besides, I didn't understand what Vlastimil was getting at...
-
-> > ...
-> > 
-> > On walk:
-> > 
-> > 	VM_WARN_ON(rcu_critical_section_blah() != mas->rcu_critical_section);
-> 
-> And here, poll_state_synchronize_rcu()?
-> 
-> It wouldn't detect directly that we dropped and reacquired the rcu read
-> lock, but with enough testing, that would at some point translate to a new
-> grace period between the first and second read lock, and we'd catch it then?
-
-Ah, good point.  And CONFIG_RCU_STRICT_GRACE_PERIOD=y would make it more
-likely to happen.  As would booting with rcupdate.rcu_expedited=1.
-
-> > But sounds like that isn't feasible.
-> I don't think what Paul says means your suggestion is not feasible. I think
-> he says there are no known ways to do this checking automagicallt. But your
-> suggestion is doing it manually for a specific case. I guess it depends on
-> how many maple tree functions we'd have to change and how ugly it would be.
-
-All good points!
-
-							Thanx, Paul
-
-> > I always like the idea of us having debug stuff that helps highlight dumb
-> > mistakes very quickly, no matter how silly they might be :)
-> > 
-> >>
-> >> But rcu_pointer_handoff() and unrcu_pointer() are intended not only for
-> >> documentation, but also to suppress the inevitable false positives should
-> >> anyone figure out how to detect leaking of RCU-protected pointers.
-> >>
-> >> 							Thanx, Paul
-> > 
-> > Cheers, Lorenzo
-> 
+Thanks!
 
