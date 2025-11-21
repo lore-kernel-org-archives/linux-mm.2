@@ -4,114 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39008CFA469
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 01:56:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1E8CFA466
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 02:27:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ACAD6B0023; Thu, 20 Nov 2025 20:56:22 -0500 (EST)
+	id B27C86B0029; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95CE06B0026; Thu, 20 Nov 2025 20:56:22 -0500 (EST)
+	id AD8496B002A; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89A916B0029; Thu, 20 Nov 2025 20:56:22 -0500 (EST)
+	id 9C7276B002B; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CADD6B0023
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:56:22 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 229F458DD3
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 01:56:22 +0000 (UTC)
-X-FDA: 84132949404.28.2B066AD
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3D08F20008
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 01:56:20 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=PlYxF3ap;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763690180; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8459A6B0029
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E845C03B7
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:27:09 +0000 (UTC)
+X-FDA: 84133026978.17.1EB84C9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7C002140008
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:27:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lFoLdmQy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763692027; a=rsa-sha256;
 	cv=none;
-	b=BgP674zvDuRJciNTR4Hc6HdV0QbKR/8EbqlFX6mSJujj/s+luOL76OaULGXIRfrJ32Hv0r
-	2u+klKLdYvXIMTquPEPvpdqb3khOs8ZW/hPK6e+LB7qhxu07O9ECY6kbC8sFCQ1HoJ3/Zc
-	4KsoA+z624LkDHFCHRJRLBjcmfcuM0s=
+	b=c4tz1CoQ76DerFA3lwwLOVc1Qz2xhr8ciFnjNT/l05fo0iG9/qtWykHjPYXECn8L3qWTcq
+	+UF6wnxJ2TFFWLPiO4m0VhC/DbLX87FNVuwYnrcnh2XZM5kG5zzfbJgo+7gjITzEitSnct
+	AUrvtCfBuIynCUBj9VCO2dlIs5kbHPE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=PlYxF3ap;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lFoLdmQy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763690180;
+	s=arc-20220608; t=1763692027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OViwcIPHyPF5+8ML/I7+PMGnT0G2LOCHMTt/vHjdb20=;
-	b=lyg49HIO1B18wUiWoNp8svThzIP+nVXaiACTJ6g2+GYML0uy5xMrjGqEt7RFzkUQNxjZf9
-	QdLDnsUKzd2BHvdBiGWTjaSOBfLut/CJ3pgek6/uGU3hyR08+YRwa1Chadb4k69Q1mmgXG
-	kue1YwElIxGN3i8nXcUDDbSO5F2+VHA=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so1327671b3a.1
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:56:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763690179; x=1764294979; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OViwcIPHyPF5+8ML/I7+PMGnT0G2LOCHMTt/vHjdb20=;
-        b=PlYxF3apDFbg8slw7xCs/Cy25rLfO3Rj4tk4fs3gEjL2mO9sXlVoVGH9mWin09HN8l
-         GIPd8+IDfjbVnZFPBDziasYPKQr3dxosqqTNISf2VmQnK4YzYzW8ycodRb+ZnmujvCP5
-         L3mbMUBVATl4GvfqP5LxbaR3c0VRzXmLDEGYg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763690179; x=1764294979;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OViwcIPHyPF5+8ML/I7+PMGnT0G2LOCHMTt/vHjdb20=;
-        b=sIC1iOONEvHlwaj6c2SAQ4yeixyf76ktFvXrgTBuyZXhimtBNiqg7kBfMb8Bwlu7EB
-         RKt/YyiHPbHY5wOxkLhdDCI78cYsLdDfV4Jn5Wq+dqK61/QXjM3ypPgqVNQ2hjGYDyFM
-         dYD0iHaiuYFGD0jeLHII87lKUrql3HKHkaQvtaXHrftOIkTUYSxehelRQJXuSzD/DuGx
-         cFcqTyyljH8YGmUVaqeENIbQwY2wybyi7kv1Y2sINavZO4xZ6SK3zLi+u7dfYGY9L7or
-         6pg0zyZhByVDhUTpUEEaojPAUrqFLzbCMXLnV7NtU9hR8k/er51tooFuQnKLQNt1ThcV
-         2HLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhxVoN1LVrgdP9OemE/dWXjacKECCloYNjitsGEw8yy4bcxIERJJMDKdFELzqEce8v60tj2NYFgA==@kvack.org
-X-Gm-Message-State: AOJu0YwWjgJAudM0LQ0O29lMKK13cNSpuC8UH9BNvrat8SLljzzi33ag
-	brZBeg8vcul2iBGww3NRltgwH0ms31J2XRLyuNuMLqKqO/A61AFTGtDqPwXr6u2aRw==
-X-Gm-Gg: ASbGnctkJPaIOeCpJyIq1fLu97J2/LjyM9y5GtcsfXv6emqd/uLDInkQX+fDqftdQE9
-	cVho1R12ygXPHDDofUZxiIW1EqU6wEuia2HjEOYPlNnyDQKXBY4lARo5XpngA5idzhceIxqJL6I
-	Jh2AZfRtwpSOVG0STuBrML+Pp1EBCS5iUrGMLYpUpz9xim55W42YZWLZroCHXscTN3okB+HHk1M
-	t+yGrc45EAkn5T3k0Cg8CCZu5G9a9+4R6XHlNNrRLmkPpxCrS3FFn5sY7mA28B9fk8D5X38J6rT
-	3Lbe5FYzo2yFdKqdG3uf7pm2NHXuq7DUwRtw4PqglWvP6fu2Qvw0QCB9nwgW1eW0/zGvRwLLVAM
-	cAmR1WRyqVEfQlbLNKGTYECNki2micvivy65DVtiHt4cYZwARfuofXG7V3N+SyZG+um+v6RNoFz
-	lr4LgoiZX6jH0Nri0=
-X-Google-Smtp-Source: AGHT+IGgE/KyAZL4wFe5YItWnpbOY1jW/qmnO0UUZOBfVTAHxChcoU8SYw4n2gxRVkYRqbrmyHSZew==
-X-Received: by 2002:a05:6a20:2448:b0:345:e30f:d6da with SMTP id adf61e73a8af0-36150f059e2mr471179637.37.1763690179156;
-        Thu, 20 Nov 2025 17:56:19 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:6762:7dba:8487:43a1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3ed379558sm4096703b3a.25.2025.11.20.17.56.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 17:56:18 -0800 (PST)
-Date: Fri, 21 Nov 2025 10:56:14 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Brian Geffon <bgeffon@google.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
-	Yuwen Chen <ywen.chen@foxmail.com>, Richard Chang <richardycc@google.com>, 
-	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org
-Subject: Re: [RFC PATCHv5 2/6] zram: add writeback batch size device attr
-Message-ID: <ajejtr7lff3dcvjrxgp7k3q3rykhjmxboxggldulhkinuqw6iy@pmbo2isvhf4q>
-References: <20251120152126.3126298-1-senozhatsky@chromium.org>
- <20251120152126.3126298-3-senozhatsky@chromium.org>
- <CADyq12ypYai3Q2QntCjvp26U_J3xWpO4J_DSV+UwCqLFinkcGg@mail.gmail.com>
+	bh=u6uY25pScRCT/k8xpqR3a/DRNPzwoEr+dHVE4MNK3sY=;
+	b=r2nIEv66pXUi0Pt+a2IqpccAat4jsh5CgAA7XcjdNJkZJ3MQa1J/1E+KVR8UbC1lwT8Kwj
+	h0uqrQ0za6CZ/qIp0Xhk0RmSbyA7zUPpdwmsIaPtdb1HoS8q8OKcGv8xMdnFwnpoYOaOVL
+	VsLjGsPtAHZuejVhCm2Yt/Hbccn6O8Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1FC0F437C9;
+	Fri, 21 Nov 2025 02:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4F8C4CEF1;
+	Fri, 21 Nov 2025 02:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763692026;
+	bh=mOd3L+VzE7HN86KMia2o3aoHwwJymju7EmznX6a9bBE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lFoLdmQybPjhFTl9NKDE3GA9XyRBFiDPFSm5OkaFO7L3719i5FOGXceWpqR540Szj
+	 fqUhT70IKEFMzCUB8egzkyky3L5BCTtD/FIfwe9MAZ0kxcQOohwcCUrlWR7RZSj6V1
+	 et76iFksUNpSzcdKXPbH7wx5Zc4QeDOQP08k/4WoBvGYMMNl6LMedDSoxvDQiPEeMu
+	 25xNcGa9sk/e1bUPPuJwPR13rlY4Bo4XhCmDQ6W6xWBM9DMjMO7rqAW6+yKLjm1Xbd
+	 gQsZd6fV+Uef9y2LL90egyg254zGJPPv1oYyHPRuVohx9imvG58v6wSxGzMlPyTaYG
+	 glQk9d+Nd2Jmw==
+From: SeongJae Park <sj@kernel.org>
+To: Honggyu Kim <honggyu.kim@sk.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	kernel_team@skhynix.com,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Fan Ni <nifan.cxl@gmail.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Raghavendra K T <rkodsara@amd.com>,
+	"Rao, Bharata Bhasker" <bharata@amd.com>,
+	Wei Xu <weixugc@google.com>,
+	Xuezheng Chu <xuezhengchu@huawei.com>,
+	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	damon@lists.linux.dev,
+	Yunjeong Mun <yunjeong.mun@sk.com>
+Subject: Re: [Linux Memory Hotness and Promotion] Notes from October 23, 2025
+Date: Thu, 20 Nov 2025 18:27:02 -0800
+Message-ID: <20251121022703.134685-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <98c0907c-0435-45d2-bd68-e97598b79d0e@sk.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADyq12ypYai3Q2QntCjvp26U_J3xWpO4J_DSV+UwCqLFinkcGg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3D08F20008
-X-Stat-Signature: tq3mmhcb7q183d1hqzkdxbzygksps8bt
-X-HE-Tag: 1763690180-622361
-X-HE-Meta: U2FsdGVkX1/9L9P7V3OFHCm9zDasDPgX+P58epdhsybRzDa7zze5061U2T36aEPAfeJHxzT4T6GTlELuObN1DDBA1TBlvZp1hrVGxHrQqqYq1hnxf/+vpGjZd2XGU4Gdku8bxs5JhHrHHPF6ytbt+gddmGONV4vt98YD2Wv5YN0zyBfqK3xrZLIeSo4S9KdHp6sIZuzbJ2PYGonS15rHBOAdg1966e1EPuxJLJSx8OjQKQmXmhUDtDsBifbG3F28Dn4Vk3TN331amWAbBSBuphAphTitf7WUg5vsXY+h3SE8ZaVbILNfRkr/IUdxWmkBoKJxHL77UiGjo4gtDItYDTx3HkaZA/tfs47EdLI41UOAPao1+TZ6EXe7WOfxJ/cipptsG+beuU5Lwu+b8EyvmN871iY8R3tM0URAnNDws6V+mZzMnQaVgVHkneV9ulSQXBboItCnSLrqqFkHF1RqyEftI0t7D2CDNM2WsXUQ4i6ywenXyR6bojv0/ZnaV3OQ/0cuyaeBuL5bGAa2B2lE+RW3zoCEHGaDWjWAqLgUnZTNg97ldBfd6W6juVFQF5/Qbij5i5/3iLcxTzzPEOa5GRum4eUrYM4ltVD4ZExG8iNhSmXxsdzdLA65UwOu156Drr3YRMITy1rlQJCU21XzW/aKZJYHr9F1DsLOKEQFgAZp63mxpMXM2a3FJuh9FqXWjaDwcT+y3C/lEW/eZak/ADiQF0aGp7gJ2gfNZijTcMDLsl7ziLbko7AvZPFR8OlfRLgBqOsfl2dusjzPAW7jegi8L6gmh97WMWXU5j61zJagpqoCm70Bzaoi/bi8dGYnuW3CKugvN5h+py+N4GxedJIOiQa7ug/VueqCY+yZ745CEAiwMw7Yh5FgsL4ERWRHBj+O/KycefaYN9P7coOa0Gp5xBCYYCebrNdfs2iz7KHDmNaF+Gf1NOVJAhsceCMPPt1n2dmEnBEcX6lnZlK
- IyW1eiSb
- aq6yD/7ZhhkPss6MJz0dG8m0HkWI4K6DMzZ1VKMEYozVgs+ae2GOs0ccchPb+MQ0AW42l3+iDeJB5w+oSwYKd/oJPwCMJLaslELeABNT5cLUuOgka3F1XjQVxyIyHMdWVMFM8fbQPp6aRBedZ6ER63HiY3z0MVM8gFSb2L60kgNwFNPgrpVj355u4Hq73EBeD/QelNGrbgS1Aqc1jgw3iIVta2wL/EQnDN/d+3OL+tYtHUbxXCT9B1cZXQZ7yES7lq/EiJ1qVGWEECBw51LE7K2XDM/h6Pwbb/ja1nWEpt3nPYou+aM8t/xPeZzqYd/iI/UsrE0hniDVmNyXEIFjPohbP/P0EY6HOGvclGp0mqBQCdJQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7C002140008
+X-Stat-Signature: sku1a77tsmwhghd37q97c3axkgzo6od9
+X-HE-Tag: 1763692027-838597
+X-HE-Meta: U2FsdGVkX1/yuOF0Fi2KH8CwazxqFezEatjcGVwZP/hKOA5YsdiUZ+AC0jTdi+GYemsbS9U4L7AR6cYmRtv0haTEInyhEQ++R9cMTje9MfvKaEjXmTuECYbTVv9iFL/pTaEaw0jmGfR1I8BlVjNxmFsSPNOeBMpt9FVYlskuMQLctwcEn+hvd4yHqJvtT/RziM6zaOWu3EM8I9mdeiJ8OLkiZHbJA3cJc5MZKo0ibQnggRllPoUbHsS2ClRWoMcsGMjtrsV4pKE/cNf9c7hpsR0Gt3tWbo7Y0AS2gArr3IiJmuR4FuPJ0qQ0GbYkQuLC/jSgP9WawxyD04gHSB1A0FPUwfTb10Aluz97dhdOywZjhE8FlCTKlpNGQMmihk+0dKeZ4icQOpIp5gKH0TEBnZsvMqMyLCpQkSoDMHl9w5x7mlysgBAZZWySYGFtO5N+ChghbtNtMpxOFv/Sv1GPUjIXZpqmVdt/K1/L9jEnpx2MbXe4XuFvT0CGW25UUc0cLrca4HtTbd20DO4qLKUFgwF9aT8OUTaWKzyxZlLBegceElV25/hWyxfsh0raQcaKixMVMKIlYDDEAYfoyfZJkjMwNoW+TS4859zlbQzawJVECyW+LuCc69s9tyFm0dQ1hqD2utQ+8yif5NITDbh1HjfqLuQygVggSGxaMa/eoyk0F/pObZ315Z0+xJ/MwgjrFRrssL6FLkZmVILaxoA60Q2Coura6DY8u0LGwak2TYOysE3Nd8dVyJ0ouy2U0lNBjztx7UetLU3xLKA4UDkx8lSZKAeCIsuBavovD4rXeVNhmb5Ji6qqvSHeAqYvF4jUyBr3ZXOlWxsS+DWbK4A2AgoL1YGSf9zIlYzF7KLapdlEWE0xT+cMpaqkswkZ+r2VzVutZ3OmGEvvhapnooXw515uR5SzuprlO8liZbpvF5cfJWinZpEjZbBIkfXGKxYZo3/PxpiGPOB4z8dxAqt
+ ELDspHca
+ BusD/M4sWGEVrcUd3pTieQLy/l6V6FBezuwVnmYcIXRmOEiuiCMlG1ROHxPLhmFxTK9IvNm+BA7r73Oi3+1ANqyZwSPFGaZQhvF4sYh28ufFgNEJbT/Je4Th2WJOmQW1vKFLAujtfyaJOyxaA9BAps52L4+e6B3PBgTeB/AHUqkQrWszJ50MRGsTMafLnhGVRXz7j6dlT2Mc+gswQWY+Cu0pqU90pCOR98E4EIHixM8h3Mj8IsWbfpSjtDkrcuTh+TktcAQuUG5Icn/VHoHiToT1G9tCzPPOTVjjh49Yut6RrFUY9IBLrZ24ylKnCh9cHt/yw0AENuhzNO7nLeK6u+5C3zQDu7jzacZctvi1o+zwoFAN1l15Em3F2zEyr7MdJnembsW6TGX9s4DO/2cSlxA/I0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,30 +106,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/20 10:57), Brian Geffon wrote:
-> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> > index 37c1416ac902..7904159e9226 100644
-> > --- a/drivers/block/zram/zram_drv.c
-> > +++ b/drivers/block/zram/zram_drv.c
-> > @@ -588,6 +588,42 @@ static ssize_t writeback_limit_show(struct device *dev,
-> >         return sysfs_emit(buf, "%llu\n", val);
-> >  }
-> >
-> > +static ssize_t writeback_batch_size_store(struct device *dev,
-> > +                                         struct device_attribute *attr,
-> > +                                         const char *buf, size_t len)
-> > +{
-> > +       struct zram *zram = dev_to_zram(dev);
-> > +       u32 val;
-> > +       ssize_t ret = -EINVAL;
-> > +
-> > +       if (kstrtouint(buf, 10, &val))
-> > +               return ret;
-> > +
-> > +       if (!val)
-> > +               val = 1;
-> 
-> IMO a value of 0 for the batch size doesn't make sense, -EINVAL?
+On Mon, 17 Nov 2025 20:36:59 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
 
-Ack.
+> Hi SJ, David, Ravi and all,
+> 
+> On 11/14/2025 10:42 AM, SeongJae Park wrote:
+[...]
+> > The memory capacity extension solution of HMSDK [1], which is developed by SK
+> > Hynix, is one good example.  To my understanding (please correct me if I'm
+> > wrong), HMSDK is providing separate solutions for bandwidth and capacity
+> > expansions.  The user should first understand whether their workload is
+> > bandwidth-hungry or capacity-hungry, and select a proper solution.  I suspect
+> > the concern from Ravi was one of the reasons.
+> 
+> Yeah, your understanding is correct in HMSDK cases.
+
+Thank you for confirming!
+
+> 
+> > I also recently developed a DAMON-based memory tiering approach [2] that
+> > implementing the main idea of TPP [3]: promoting and demoting hot and cold
+> > pages aiming a level of the faster node's space utilization.  I didn't see the
+> > bandwidth issue from my simple tests of it, but I think the very same problem
+> > can be applied to both DAMON-based approach and the original TPP
+> > implementation.
+> > 
+> >>
+> >> Ravi suggested adaptive interleaving of memory to optimize both bandwidth
+> >> and capacity utilization.  He suggested an approach of a migrator in
+> >> kernel space and a calibrator in userspace.  The calibrator would monitor
+> >> system bandwidth utilization and, using different weights, determine the
+> >> optimal weights for interleaving the hot pages for the highest bandwidth.
+> 
+> I also think that monitoring bandwidth makes sense.  We recently released a
+> tool called bwprof for bandwidth recording and monitoring based on intel pcm.
+> https://github.com/skhynix/hmsdk/blob/hmsdk-v4.0/tools/bwprof/bwprof.cc
+> 
+> This tool can be slightly changed to monitor bandwidth and write it to some
+> sysfs interface knobs for this purpose.
+
+Thank you for introducing the tool, I think that can be useful for not only
+this case but also general investigations and optimizations of this kind of
+memory systems.
+
+> 
+> >> If bandwidth saturation is not hit, only cold pages get demoted.  The
+> >> migrator reads the target interleave ratio and rearrange the hot pages
+> >> from the calibrator and demotes cold pages to the target node.  Currently
+> >> this uses DAMOS policies, Migrate_hot and Migrate_cold.
+> > 
+> > This implementation makes sense to me, especially if the aimed use case is for
+> > specific virtual address spaces.
+> 
+> I think the current issues of adaptive weighted interleave are as follows.
+> 1. The adaptive interleaving only works for virtual address mode.
+
+This is true.  But I don't really think this is an issue, since I found no
+clear physical address mode interleaving use case.  Since we have clear use
+case of virtual mode DAMOS-based interleaving, and I heard no problem from the
+use case, I think "all is well".
+
+By the way, interleaving in this context is somewhat confusing to me.
+Technically speaking it is DAMOS_MIGRATE_{HOT,COLD} towards multiple
+destination nodes with different weights.  And how it should be implemented on
+physical address space (whether to decide the migration target node of each
+page based on its physical address or its virtual address) was discussed on the
+patch series for the multiple migration destination node, but we didn't find
+good answer so far.  That's one of the reasons why physical mode
+DAMOS-migration to multiple destination nodes is not yet supported.
+
+I understand you are saying it would be nice if Ravi's general idea (optimizing
+both bandwidth and capacity) can be implemented for not only virtual address
+space but also for physical address space, since it would be easier for
+sysadmins?  I agree if so.  Please correct me if I'm getting you wrong, though.
+
+> 2. It scans the entire pages and redistributes them based on the given weight
+>     ratios so it limits the general usage as of now.
+
+I think it depends on the detailed usage.  In this specific use case, to my
+understanding (correct me if I'm wrong, Ravi), the user-space tool applies
+interleaving (or, DAMOS_MIGRATE_HOT to multiple destination nodes) only for
+hot pages.  Hence the scanning for interleaving will be executed only for
+DAMON-found hot pages.  Also the users may use DAMOS quota or similar features
+to further tune the overhead.
+
+Maybe my humble edit of the original mail made you be confused about Ravi's
+implementation details?  Sorry if that's the case.
+
+> 
+> > Nevertheless, if a physical address space
+> > based version is also an option, I think there could be yet another way to
+> > achive the goal (optimizing both bandwidth and capacity).
+> 
+> 3. As mentioned above, having physical address mode is needed, but it makes
+>     scanning the entire physical address space and redistribute them and it
+>     might require too much overhead in practice.
+
+Same to my comment to above reply to your second point, I think the overhead
+could be controlled by adjusting the target page hotness and/or DAMOS quota.
+Or, I might misreading your opinion.  Please feel free to correct it in the
+case.
+
+Anyway, my idea is not very different from Ravi's one.  It is just a more
+simply re-phrased version of it.  In essence, I only changed the word
+'interleave', which is not very clear its behavir on physical address to me, to
+'migrate_hot' and gave more concrete example using DAMON user-space tool
+example commands.
+
+> 
+> > My idea is tweaking TPP idea a little bit: migrate pages among NUMA nodees
+> > aiming a level of both space and bandwidth utilization of the faster (e.g.,
+> > DRAM) node.  In more detail, do the hot pages promotion and cold pages
+> > demotions for the target level of faster node space utilization, same to the
+> > original TPP idea.  But, stop the hot page promotions if the memory bandwidth
+> > consumption of the faster node exceeds a level.  In the case, instead, start
+> > demoting _hot_ pages until the memory bandwidth consumption on the faster node
+> > decreases below the limit level.
+[...]
+> As I mentioned at the top of this mail, I think this work makes sense in theory
+
+Glad to get publicly confirmed I'm not the one who sees what I see :D
+
+> but would like to find some practical workloads that can get benefits from this
+> work.  It would be grateful if someone can share practical use cases in large
+> scale memory systems.
+
+Fully agreed.  Buildable code is much better than words, and test results are
+even better than such code.
+
+Nevertheless, I have no good answer for the practical use cases of my idea, for
+now.  I even have no plan to find it by myself at the moment, mainly because I
+don't have CXL memory to test, for now.  So please don't be blocked by me.  I
+will be more than happy to help for any chance though, as always :)
+
+
+Thanks,
+SJ
+
+[...]
 
