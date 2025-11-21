@@ -4,101 +4,209 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B27CFC29A
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A32CFC29D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:42:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86C906B0093; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
+	id 1E3F06B008A; Fri, 21 Nov 2025 13:42:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8445B6B0096; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
+	id 194E36B0092; Fri, 21 Nov 2025 13:42:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75A126B009B; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
+	id 05CD26B009B; Fri, 21 Nov 2025 13:42:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 688E26B0093
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CDABEC0701
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:39:49 +0000 (UTC)
-X-FDA: 84135478098.02.9B9849D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C5897180012
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:39:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=spGMPaAp;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EA4F86B008A
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:42:58 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81981BAB50
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:42:55 +0000 (UTC)
+X-FDA: 84135485910.23.6950B65
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0186180002
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:42:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UnKYWy8x;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ZePVM5W;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UnKYWy8x;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ZePVM5W;
 	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763750573; a=rsa-sha256;
+	cv=none;
+	b=S2j49eBdS0MQYnrEmHOnLSR+lDJ0cSXHegMXzQDNG4dEVzy/Q16Zj/4Lln2E5xZ1YjYDgj
+	t13T/UazEXMi2bEWABA1J8fBllroHSgu3qMDwZHhdMwuGp5CZtRaPSBUU1UP68tyAoMsdx
+	c3WNguMA/ZhIFzwMH+GCKulNH/H4TzY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UnKYWy8x;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ZePVM5W;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UnKYWy8x;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ZePVM5W;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763750388;
+	s=arc-20220608; t=1763750573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZGim1gFQlbp4awWQERSAAqCxeHwBEmhY5jT9R2HIaaw=;
-	b=T1ec+otb7Ox6FlD3+Kr6ENnjT/gla8jCcmce/AIiD991oadaWdOix0QY51UN8RXZ9O+xgD
-	cMIAU2G2x2FzsYMKYs9+EaIlLInCeNnJocdHgETE8pfe4aiK6JmI9fKLpB5yOnC5To1TAU
-	XoCkTG1jUjjvTxRZQ186FydCRSO41dU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763750388; a=rsa-sha256;
-	cv=none;
-	b=SaYvA7XTvjF2gEPf5gl2WMNCOgtRsZVQlON/W3IWFdOUwj2snDZahNIYq0SdTt3yeAoOJl
-	GLHfsr3ddG4rwnhzW1uzdspGNeU2MRLHCDYIXVA4HWmO0nJiDCuyd15GkkISCJ0iz7MOud
-	J0wLoQ40z0ZpBghjFkzad/JL/u66xfY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=spGMPaAp;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8659A43E12;
-	Fri, 21 Nov 2025 18:39:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27F4C4CEF1;
-	Fri, 21 Nov 2025 18:39:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763750386;
-	bh=xo7srbGSrW7nCdBJFc8o6YWFx33eFaPj7TzvMtB85Bk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=spGMPaApavWt1fTH/GtxgRQiZ0pXFd/cKYklzrnPQcS8A7yQrI8oYy3oAXcoDVeop
-	 VsiUpeDvQckxRNqo8AkxPJSwv9TDG/+X5hYy3DPJnelcRNmTfHFDXV7zWO9a2aQb0R
-	 qhi4E83PExiupLftMLBKrcOZ6sgjUCETE5iPhutA=
-Date: Fri, 21 Nov 2025 10:39:45 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, david@kernel.org,
- lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- linux-mm@kvack.org
-Subject: Re: [Patch v3 2/2] mm/huge_memory: merge uniform_split_supported()
- and non_uniform_split_supported()
-Message-Id: <20251121103945.13934959041672e76dd34ecb@linux-foundation.org>
-In-Reply-To: <31B02667-2F69-442B-AD91-6C0A7823BA05@nvidia.com>
-References: <20251106034155.21398-3-richard.weiyang@gmail.com>
-	<20251117012239.lqm33uu4vl4y5zqc@master>
-	<337CD281-F5B3-47FE-82C3-ECB236450F60@nvidia.com>
-	<20251118033339.7rukw7vvjvlbj5jb@master>
-	<51358ABE-B0BE-48E1-95E3-C778D1F44622@nvidia.com>
-	<20251118103220.bd90932096d4e36f754de21b@linux-foundation.org>
-	<2AD36673-231C-41B9-905D-35BAB4CF63D2@nvidia.com>
-	<20251118140658.9078de6aab719b2308996387@linux-foundation.org>
-	<20251119005248.ddlbhokgjdmlkhkr@master>
-	<20251120131621.486cbccc8a713ddbd30dcfe6@linux-foundation.org>
-	<20251121090048.3n25tjhusu45xpoo@master>
-	<E7C2F025-4CA1-4739-8661-343D60D82F7C@nvidia.com>
-	<20251121085034.d8092d312da961b23c33a22c@linux-foundation.org>
-	<31B02667-2F69-442B-AD91-6C0A7823BA05@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	bh=ldBKjiorZcKSWMx/nlx25VPXqX0kjWoWAmr1aGdzduM=;
+	b=il14JSq33LyXfbHXYvkUtc6TAarnPZF7t7upA/SAlMDhIoZcsbvIqUooVqmz7T9NilaaKb
+	mJ68w2bmjoWxYITjf4/fxSVkmDd21sTvgaR6EXs/YAzxzSkeigcF4f9Ycli78zPnbIrJSj
+	xYvs4rtWa36SNunNZ+xxnthObSZWR9E=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0E7EE5BCC9;
+	Fri, 21 Nov 2025 18:42:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763750571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ldBKjiorZcKSWMx/nlx25VPXqX0kjWoWAmr1aGdzduM=;
+	b=UnKYWy8x4jc/1mtLqy8WJ6r81TuO/JefeO53rOMwLy+zmuNBfVRphZUpE1wGCOhsS4cEYv
+	6HBq1BSr+g/oTXNPoYJig0a4csUE27c2crKbt1SmYfqdgXBbM6kqKgyXpojSdOK7E4zgs0
+	iyMiFr55bPbvkRA+4zZ9d/q+/QmQV+0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763750571;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ldBKjiorZcKSWMx/nlx25VPXqX0kjWoWAmr1aGdzduM=;
+	b=8ZePVM5WojCur/oRcjlGiisf/UGtdzxReXY1X2x5xpWvoQOXwKLmN9q2cp1CBtynRysqj+
+	VJOcPx4zykO19hCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763750571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ldBKjiorZcKSWMx/nlx25VPXqX0kjWoWAmr1aGdzduM=;
+	b=UnKYWy8x4jc/1mtLqy8WJ6r81TuO/JefeO53rOMwLy+zmuNBfVRphZUpE1wGCOhsS4cEYv
+	6HBq1BSr+g/oTXNPoYJig0a4csUE27c2crKbt1SmYfqdgXBbM6kqKgyXpojSdOK7E4zgs0
+	iyMiFr55bPbvkRA+4zZ9d/q+/QmQV+0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763750571;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ldBKjiorZcKSWMx/nlx25VPXqX0kjWoWAmr1aGdzduM=;
+	b=8ZePVM5WojCur/oRcjlGiisf/UGtdzxReXY1X2x5xpWvoQOXwKLmN9q2cp1CBtynRysqj+
+	VJOcPx4zykO19hCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 974BF3EA61;
+	Fri, 21 Nov 2025 18:42:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id RUSaJKqyIGmdCwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 21 Nov 2025 18:42:50 +0000
+Message-ID: <68f18daf-cc45-479f-ac6f-0b4dce153ea7@suse.cz>
+Date: Fri, 21 Nov 2025 19:42:50 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/16] mm: replace pmd_to_swp_entry() with
+ softleaf_from_pmd()
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+ SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
+References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+ <3fb431699639ded8fdc63d2210aa77a38c8891f1.1762812360.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <3fb431699639ded8fdc63d2210aa77a38c8891f1.1762812360.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pt33hgq9yqo4tpmnndn4rttuzjnmpxfb
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5897180012
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763750387-708185
-X-HE-Meta: U2FsdGVkX18tBIgnYAtQ+givIywrdMzr78g9yg83tQHGfXNUt/tFJmVf2MBJCI/UvozoUu1tDC515tvwjzO1E3FvmYkCWlm2NCgQWFffM01ovtzp5ELW7c5IKCzKE1FhPgMcRM2nT1+3SCtWDAmsAyI0qTHkBDUP62kU5VHiFOtfNQ6Ej9D4i5czId6Z0Ru/VhCKZ3UYzGnZs8Ao+abg1pOOmWKO4UYqcmt8EYuQ04YwYRW6OZzI4HSbDf/PlnSRU3VwaJOoGPMKmcqYe0SXOyorYABHZ7LaHMdPvIgBdi1xEr5ZPOiM6Rg3doD5bJuH66RmGQbIlE63t9PQi4UyRfOTXSBDpzUO3cqlnYFzdI0JASi3WO1E28yzL67+0lt/gTRH1OQrMa1qI7ff5r56hKCRF/DJXWjfwsnnq7lnDZdr3gu6dlHX9xmuZJyDoAxgREZOIs6qOpvlbZPhC2DvIlAZmghDOONqw558Y8mHHQXTYDNBy4EWfO2VBf3qsPUyzw9rkIdq5T+Au/H30T7GPkxa1KwiiyxKlUFwTv3rmCT89aIdoHzJBylA4cc852cRl/hiHCezYC7DEf04giYQ7TVSvF6ZdouZqoAH/pJa8sqQW7aYpK0mtvHGplhopNugKC5yCOxIKyE0QU3Wv9jAEC72yln5c4cTHSs6QLwL4ypDuVZikg/dpfbxioFNUb5NlpQI0UTFXHwE78lKfXBPXQUyaLhHozycH54rMafyBGA6ypsR9oWv82nvjgIltm+xoSXAL1vazqLP342hqfW18JV6LFW38mt9bDVTe8iu4qRtTsidqrnqiVGnxtjn92I/BJsUZE8DYSf2ejTpm6C5X6NQbrp2X0+C5JPJk+GJ2sIgyHi6K83lqChCjG+elSMDLNl/nIQi+T2HS6/Zzc7C4Oh9C8ZksSfZwFJsT0IsGC66C4dexVHZ0SwM4rbdJUR2W5NDaEZHtZrgRIzJAc0
- jZzSQ+cT
- exT9YrH8x+ESSC8Gg+W9LCSGCNSNWV3jyiuPE9H3USS4EGluJEnAkGywKM8vOti4W88rInJqmftXADp8h0M1P7SKyUeZjWxMRaW9xFBouKRAKClQmTLnkWpP/7mOM4aG+qCcbzLy/qGcRQ3P8HhdeN879jtfUmEcJ25sjKXC3tA4JS6DlT4RIbp4L/FYDFY8/l+ue0XAMz1YCMeKQyd4dFkIOu3nLx2XUHIlf6hNDvI7MDGv1IIOoxs0/y2jz6ML5rGZrUYxAu3ncmeYE3Mz4W39ZBijb0i1UPBG4iKekYgBFybJ6X3jCwi5J6xBeqEoHtCln6E2R3rDPBRMiAYXweGnF6KgvTbi6+LqkncI62mouABHj/reYATCs5ez3L0yi2s+s8+pZSyBdLDOphaTB68JIllCxAfsmHwSW4GHuF5Drjtoc62aXW2bj2OKCA1eLKpncK1qbRhmhMcUyF4Hg08OAAA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0186180002
+X-Stat-Signature: hfkxrx1udi6kn1my5c3sxb9zzt7haxrn
+X-HE-Tag: 1763750572-199208
+X-HE-Meta: U2FsdGVkX18mH1sshFG6G4DgOS6UARuu1RGl7wGXwgq02UVpbybqz3tv9qRNfuuSmkvnUWmMGGwMNIz/mbIsRjUFRhaf/36BgCK0fgpLXeMnLN69iS57XFxh9HggV6Rbn+779JJd42WNaSCCcd6luURnpyJ8KwUABF9jku09rncPdGHVEyMflt0tTdE7+npemWyZO+o9gOV0iMEsuuzZ5P/KuROMy6dGzFb+aRs2pnd/m3ulmYsNNMCu2Idinlb005WkoWu3gJ3/nIHzJIO/TrrdCSP+86uzaHUBPcJxgbxNFqOniRq/iMdLskl0dZ+orWYcA1teYp/4pbTfwpQqBsNsgFzs2q0OydUu851s1oGMeR7He8p4GWMgXIbxKnzABtPndM4QUPvWfcVNnnrgWmTqFj+qeHri8Xd48wj6pyX4Quv14yKdfP9HE1K1PAtIQJxLP8MN6Wk/gkU3DZyk3hD4qVhs1i/N28PxtCkSemgS6F79gUXWOmOHdhINrViVbmaeyd7jqh8EF1J+5ZkrkQNzo7Q2ULwYGvnHEZxT3ZNw2FQ1xelIN2YpBF7Q12yvFFUFlUb6vSfqG7NqYaGo3ttgkyxjanUfFFRgcUJCUDjLp992WkwF2gdLiZvhdSd7zbdPFIEutMUyPhziZuRC0ye2tbd1QrgwTSk87XnhACwgmnG7AGJhwuwfqSCzjheS4L3b8nIHRotw2Wm59QjWdehj/EZgaqXMNIFfzUNoemQ0NUL71gbk2ON7zKPuWrydyA9vPwTnUXno6AZ4OEwdS6Nq33CveBC/WJdGEthGSQV/UH7DKkquUIGJdb6VAHo+t09TGk7RS/VDOh8VYAqPZw7DFBEGk7IxZbcwk/8DuvtrN8UA/HaZ+M3mFnFd1oFuOyzf4KjHMHrT7TFkEQfsdbCXT4UgibtL6RyMVgGkLeSBw+ITYFIsgLS/Z87rflgZNkZYAlWaGIH9e3kVmWX
+ YQJaaKQ2
+ b3Pnm0ZMmQNS5G2+gT4j/i8bLs5PPmFCGsEN5l1B/3UIXr7cdZhEWsMZarsCaBDaSq1xBOFSqalEEVR8rQ0+Y0sDoDVxNDNkD3nhfDA6eFJ40DcKl7dtJm6l+JTmYofGor1+/jsBaGtoH9z4iWmmasabsBGWghFw1txAu1p2jr7B07xXRnd0MwRpTnY/C/BW0TgpseVkJ5w46TB12RZrhW617CttCoNqPMIho67uWoOLWDIxyvaaqNonR0yunOua3iuH77eUFh8enQujHTzQ79ZEuUpfAL6n8OxvxyOrp5tZkEJk8IQy+yEgbDzSx+B8Mq4A1GwzIaZsG0bHn5GNaiyLXlCazwZmnqu+AceYPfTM3heJvOpRj2DJ8c5vIzpQCoHiCXIyVNvwoIeok4y8qOlBGz/p0ztYe86lZ0ChYUOX+B7BoqhbTw8KXeQzpilmhB19mpI+NJvWSp6kxV+e+AAeYujaYPTMNDPJjwlwkD06xI+Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,62 +215,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 21 Nov 2025 12:00:51 -0500 Zi Yan <ziy@nvidia.com> wrote:
+On 11/10/25 23:21, Lorenzo Stoakes wrote:
+> Introduce softleaf_from_pmd() to do the equivalent operation for PMDs that
+> softleaf_from_pte() fulfils, and cascade changes through code base
+> accordingly, introducing helpers as necessary.
 
-> On 21 Nov 2025, at 11:50, Andrew Morton wrote:
-> 
-> > On Fri, 21 Nov 2025 09:59:42 -0500 Zi Yan <ziy@nvidia.com> wrote:
-> >
-> >>>
-> >>> 2. A further cleanup attempt:
-> >>>
-> >>>  https://lkml.kernel.org/r/136E8B1C-3352-412C-8038-627F5CC8A112@nvidia.com
-> >>>
-> >>> This one is the related mail.
-> >>>
-> >>> I proposed one version in
-> >>>
-> >>>  http://lkml.kernel.org/r/20251114075703.10434-1-richard.weiyang@gmail.com
-> >>>
-> >>> But it is not proper, will do follow up work later.
-> >>
-> >> Please refrain from sending more patches related to __folio_split() and its
-> >> related functions until the above hotfix is merged.
-> >
-> > You're referring to
-> > https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com?
-> 
-> Yes.
-> 
-> >
-> >> I also have an ongoing
-> >> cleanup patchset[1] and want to get it in before any other changes.
-> >
-> > I remain unclear on the status of this patchset.  Is it considered good
-> > to upstream or is additional work required?
-> 
-> I am still having a discussion with David Hildenbrand about it and hopefully
-> get it sorted out soon. The reason is that the above hotfix is good for
-> backport but future user of folio_split_supported() can still dereference
-> a NULL folio->mapping unless they check folio->mapping != NULL beforehand.
-> I would like to avoid that by refactoring folio_split_support().
-> 
-> Wei’s further cleanup patch can come after my refactoring by just moving
-> a code hunk above.
-> 
+Some of that is adding new pte stuff too, so it could have been separate
+patch, but it's not a big deal.
 
-This is coming down to the wire.  I'm considering dropping
+> We are then able to eliminate pmd_to_swp_entry(), is_pmd_migration_entry(),
+> is_pmd_device_private_entry() and is_pmd_non_present_folio_entry().
+> 
+> This further establishes the use of leaf operations throughout the code
+> base and further establishes the foundations for eliminating is_swap_pmd().
+> 
+> No functional change intended.
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-mm-huge_memory-introduce-enum-split_type-for-clarity.patch
-mm-huge_memory-introduce-enum-split_type-for-clarity-fix.patch
-mm-huge_memory-merge-uniform_split_supported-and-non_uniform_split_supported.patch
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-and
+Assuming the below is fixed. Glad I could demonstrate I'm not just rubber
+stamping all this ;P
+(probably missed stuff anyway, as usual)
 
-mm-huge_memoryc-introduce-folio_split_unmapped.patch
-mm-huge_memoryc-introduce-folio_split_unmapped-v2.patch
-mm-huge_memoryc-introduce-folio_split_unmapped-v2-fix.patch
-mm-huge_memoryc-introduce-folio_split_unmapped-v2-fix-fix.patch
+> --- a/mm/page_table_check.c
+> +++ b/mm/page_table_check.c
+> @@ -8,7 +8,7 @@
+>  #include <linux/mm.h>
+>  #include <linux/page_table_check.h>
+>  #include <linux/swap.h>
+> -#include <linux/swapops.h>
+> +#include <linux/leafops.h>
+>  
+>  #undef pr_fmt
+>  #define pr_fmt(fmt)	"page_table_check: " fmt
+> @@ -179,10 +179,10 @@ void __page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
+>  EXPORT_SYMBOL(__page_table_check_pud_clear);
+>  
+>  /* Whether the swap entry cached writable information */
+> -static inline bool swap_cached_writable(swp_entry_t entry)
+> +static inline bool softleaf_cached_writable(softleaf_t entry)
+>  {
+> -	return is_writable_device_private_entry(entry) ||
+> -	       is_writable_migration_entry(entry);
+> +	return softleaf_is_device_private(entry) ||
 
-and we can revisit after the upcoming merge window.  Thoughts?
+Shouldn't there be softleaf_is_device_private_write(entry) ?
+
+> +		softleaf_is_migration_write(entry);
+>  }
+>  
+>  static void page_table_check_pte_flags(pte_t pte)
+> @@ -190,9 +190,9 @@ static void page_table_check_pte_flags(pte_t pte)
+>  	if (pte_present(pte)) {
+>  		WARN_ON_ONCE(pte_uffd_wp(pte) && pte_write(pte));
+>  	} else if (pte_swp_uffd_wp(pte)) {
+> -		const swp_entry_t entry = pte_to_swp_entry(pte);
+> +		const softleaf_t entry = softleaf_from_pte(pte);
+>  
+> -		WARN_ON_ONCE(swap_cached_writable(entry));
+> +		WARN_ON_ONCE(softleaf_cached_writable(entry));
+>  	}
+>  }
+>  
+> @@ -219,9 +219,9 @@ static inline void page_table_check_pmd_flags(pmd_t pmd)
+>  		if (pmd_uffd_wp(pmd))
+>  			WARN_ON_ONCE(pmd_write(pmd));
+>  	} else if (pmd_swp_uffd_wp(pmd)) {
+> -		swp_entry_t entry = pmd_to_swp_entry(pmd);
+> +		const softleaf_t entry = softleaf_from_pmd(pmd);
+>  
+> -		WARN_ON_ONCE(swap_cached_writable(entry));
+> +		WARN_ON_ONCE(softleaf_cached_writable(entry));
+>  	}
+>  }
+>  
 
