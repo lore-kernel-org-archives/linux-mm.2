@@ -4,120 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B97ACFC29A
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 19:40:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40009CFC29F
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 19:42:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F1166B0030; Fri, 21 Nov 2025 14:40:32 -0500 (EST)
+	id 9C2786B0029; Fri, 21 Nov 2025 14:42:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A1A26B0092; Fri, 21 Nov 2025 14:40:32 -0500 (EST)
+	id 999E66B002A; Fri, 21 Nov 2025 14:42:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28FB26B009F; Fri, 21 Nov 2025 14:40:32 -0500 (EST)
+	id 8AF6B6B008A; Fri, 21 Nov 2025 14:42:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 12FA66B0030
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 14:40:32 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF2BE13B9A8
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:40:29 +0000 (UTC)
-X-FDA: 84135630978.10.2A0A12D
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E1E2A100011
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:40:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Tdw69nCu;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3KsAgaQUKCH0npscphpphmf.dpnmjovy-nnlwbdl.psh@flex--morbo.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3KsAgaQUKCH0npscphpphmf.dpnmjovy-nnlwbdl.psh@flex--morbo.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763754028; a=rsa-sha256;
-	cv=none;
-	b=svry5qBMPRBGMM+y4kYCEi0B66MxxK6Fk5e+PH1c4vhfod8mPfhz5ZJ2QnwiNozQeXpmsD
-	JeyGesG1Nr3Oda02wRZK7+Un97zydiaDmZqNflRUr8L61C0Ew7/2Ao/dPo4vkZ5+XqadHe
-	/Ojs8Ai/rxFz7bRyN5Aoowq5397XBVw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Tdw69nCu;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3KsAgaQUKCH0npscphpphmf.dpnmjovy-nnlwbdl.psh@flex--morbo.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3KsAgaQUKCH0npscphpphmf.dpnmjovy-nnlwbdl.psh@flex--morbo.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 752616B0029
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 14:42:49 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 12DFA140719
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:42:49 +0000 (UTC)
+X-FDA: 84135636858.16.8B7F44A
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 33953C0015
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:42:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XjIbElVd;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763754028;
+	s=arc-20220608; t=1763754167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ObV+Zk4UGl+OHKUlzzzuAGKm0snV0PrXsMvOzsuqro=;
-	b=bxyqI9XgeBUpfPMnLQmACdoStrMUCYY6/QWZ1liEwUnaztyDfg/NTzgICbeyWZWO3RplfN
-	CHF55FdL/JkXHEqCJcCziQMlhmw8aej+z1ykRpRbFH7WW+sJbqrybpOMF2jwU2ILqxkGHt
-	4WHoMGi0DpkS+TPuv6oiwEstEujVh2M=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-340ad9349b3so4984718a91.1
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:40:27 -0800 (PST)
+	bh=tHczAXBW36ndePVrSwtAmC2KCcD+LQ9uYV0CS0eNwa8=;
+	b=ON3hRhnCWAf40g8TVSl1APHI80pI079xPaEoWPqapJ9CHi8wDQwsOr044pLhkEV1bajD4E
+	OMv5wGtr1e+q3WK2AQFTW1RAwFE0RItwVrMpyd9xJvNiZr16b1Ac7a6eSgd3jNvUruRj4B
+	cfS1TAEEt3L+g1tydPHT5Vk1OihWEiA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763754167; a=rsa-sha256;
+	cv=none;
+	b=QtP9YLt87M7Yg3n/E4sRH9T8UtPbCdtHIAXLhKSS/qdY/qmPnqxAmQGpitPX3ZoELi7FG/
+	Yvtt7R6BXr5lJenWe6V8rFXeq+mDYyPHZipBaiwpRWppnI9WXGWAsVrgI8jQ+8JTvRgK6a
+	g2Wxi+T4EzAZrK6rodeqbcGjRG1/ZWg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XjIbElVd;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ee19b1fe5dso31608481cf.0
+        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:42:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763754027; x=1764358827; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5ObV+Zk4UGl+OHKUlzzzuAGKm0snV0PrXsMvOzsuqro=;
-        b=Tdw69nCuoUSggJ48ubSpbMjAH/vk7Xns8kpi7FwK7PtevWXGhWtRktxQe6an2bZ7I6
-         XM6XF9apLiNc6eLcwGdZii6w304SfYU0v4VyPSdTMqiX37fEqKjWvKAqyPP3du1f54rw
-         UKtAhSTvqlIgjyqZOivBSTWSY5bt+hq0EDGV0uCi0EPHpVMvIj6p4h6T6t7EIkPgxe0g
-         tx6aHoOXx20OCGOY7ARSPz70aAXaJB2tGYiHfk0uYfS/P4zWDGKVTFcr3ug/cZCvrKiF
-         D2Rz8EJnSOTUKkfjFS+aafFmdReigdOWYzbJJYQeeCzyrLRIMlMeIXkjU6kD1JC6s7X0
-         IAPQ==
+        d=gourry.net; s=google; t=1763754166; x=1764358966; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tHczAXBW36ndePVrSwtAmC2KCcD+LQ9uYV0CS0eNwa8=;
+        b=XjIbElVds01M25RQtK9DuWrFh2cAGWeN1bomeAFL8TUqFw87r02rl5XO41mZzhYSJE
+         WrYDL5GFFvqWwYU7CydCsKYqcXCGT0AA1XaJbYc6PEwj4P7l6jbE0MoxjlQAIJ2o3lRj
+         Q/WDT0yCBAdggT3KvsYOGss1Mgq2/AmPOiairlRiChaF3q5F6TyD9jUCgdE18IFCf2SI
+         gUC2cb7JjmZCepZ1PWUuhnHtGJkPNKCNUNO3FwYSNxmoZN480+FCf66ThiVMsioS6+Jz
+         Ir8d7hVqTpk5rAmvc4v9VFmzGY/jl0wy8V7b+utcMVlI8Apm1yoqn/FZoHafK8pz70g2
+         T5iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763754027; x=1764358827;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5ObV+Zk4UGl+OHKUlzzzuAGKm0snV0PrXsMvOzsuqro=;
-        b=w3XmAu5DjsZKDRC+u7vUE0OEIxL4GU4UlwR3nkEezqWuBisoQy+9zWltN/aZzIkUoL
-         RAVbKSPaqEUs3qk/yPJK6xRy5jbIzJihxiDJEKUKZS7Fn7aqph5fykMFxfKx6iCBrN78
-         tm/dE+gCIyTU06Rm5Lwi4y2T5pD4HNt4e+J0VwV8oVcrZ1H3X7+5g5GXJMQ/+wbG7ISi
-         12rsrUuLxZyFUWZMftFBgieUg5qyqburNMg4+acCdMUT+R2ejhdpwno3rldJLH+Mk/0K
-         GyUZxy8I0tSiY4nqUJCeeOo9zA6iDirlm67HkKcgaSWeFuqstYePdnoGtyTTyiJuOvjU
-         UsWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUW/bihJR44Lkyu04goYKqbq4AGzF9RrCVOJb23Rt+nHWYw3+KAtBTOezU2boaywzIyufi+IetkkA==@kvack.org
-X-Gm-Message-State: AOJu0YyNXW7FlIk1rwRNTPGpBuvEu60QSkQsVb1BHyhImIuOvwXu45Zv
-	sqoVoxn19H8rAAvchHyBHaFGuPJWpfNp5V/Loc4aC9C4HW4eT+8dnFnfBjOIuCT3tG8RaQy7et4
-	r
-X-Google-Smtp-Source: AGHT+IHYGh5zV/fY6RILJsIKpbvv1F1nIeTXt6YbFfyOedqnc8pj8XMUszI38AOKmYkoqII6p7rKJtxK2Q==
-X-Received: from pjbch15.prod.google.com ([2002:a17:90a:f40f:b0:33b:9e06:6b9])
- (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:274c:b0:32b:9506:1780
- with SMTP id 98e67ed59e1d1-34733e60873mr4100051a91.9.1763754026636; Fri, 21
- Nov 2025 11:40:26 -0800 (PST)
-Date: Fri, 21 Nov 2025 19:39:44 +0000
-In-Reply-To: <20251121193957.1655580-1-morbo@google.com>
-Mime-Version: 1.0
-References: <20251121193957.1655580-1-morbo@google.com>
-X-Mailer: git-send-email 2.52.0.rc2.455.g230fcf2819-goog
-Message-ID: <20251121193957.1655580-3-morbo@google.com>
-Subject: [PATCH 2/2] memblock: annotate struct memblock_type with __counted_by_ptr
-From: Bill Wendling <morbo@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: Bill Wendling <morbo@google.com>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Justin Stitt <justinstitt@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Marc Herbert <Marc.Herbert@linux.intel.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>, 
-	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	"=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?=" <thomas.weissschuh@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E1E2A100011
-X-Stat-Signature: hf6tj9sr5swo1xq3xnh9pez7dtdbtfyy
+        d=1e100.net; s=20230601; t=1763754166; x=1764358966;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tHczAXBW36ndePVrSwtAmC2KCcD+LQ9uYV0CS0eNwa8=;
+        b=EXEXQHV8L2IGBGTok+XfpibtcOS8fP7r2EvGveMonD8GMwWm5wm7FCOs2lbu59ZSSc
+         vIpIT9zKYxUeeEveJA1TRPvJmPz9XPHypgnbg7CLQ/qer7Ywa7m/NG6MfiWbzZTs22q+
+         dNJPOTca+vsulUKHlIw1g/QI+k32Z0jelOOcM7NvOGFev6zcAvIGUYAb8shLsz4TU+N1
+         RJlyEMzyDHv27pCnJ1wnkVaQGSYC2rIzF7IvDhavhSwKdhA127H3kyNs0p09Ln+EzDYf
+         +6jaQOeAAByWtwfeNSnQi/RvZwGBPYcYywc1+T+iFVpLibD5YI3LlEJz1P91pl6dptID
+         r+qw==
+X-Gm-Message-State: AOJu0YzL6oHnIABnaMV4FDSyM6MYbRNrrfCYNOajXBz2nmzUChc8UFma
+	Trld+NwhHlxG5LFhCN2Wl/eauZsJo8Kg1UcBRT+RG5g1zZypLaZ0SOges5WQkVgG6co=
+X-Gm-Gg: ASbGncuyC6knihB1Bqf08L+1xqPoRYLSoIzpAOY1UCEAdQOcpTSv2Yxe40+Z4WGzx6B
+	K/EbByfKsw21gMW8IbfivadJljQVbHPQwdVZqAbni0360wQ22acMUI9fOjZT3ir04Q3yfgvJVyM
+	w/BtmCfgnpwN47Tyo3Dz20wZL512lMBPUkXma/+CYZZQQJGogdygfFkZEgj6m6yDikYjB3AsyfB
+	kimOHoWSrBprawmb7UrXgRzwekd1Hk2E5lw3aYNFXHdCj520/gk3BuJzKM30IGaSmnj76xe64LK
+	oRHZ5g4Db5Ja26SxTFtxqd7/F900BL4YLJqZ6602/8AsgjlPEjQuH5onm32ts7GqalyNhKXNN1D
+	NYuN6gbvXZKzWaCPX9j+TFCAVh1hcxbkTgl2D9zgdCUAsqBK9kcC61Lpv4XTsTIBUk3YoIAh5fq
+	BdMtJjrqGjfvPXaHdP6ancVRTG/QanDhWal8gWl9XsqF2fIpdjiZ0fQh+ONUVPpvr2a9wesQ==
+X-Google-Smtp-Source: AGHT+IFqNQg9VGR+ih9PF1dPXeGmqhotPlRcYalUXtahRUMLDoaN5FmikK8sTfrdHPaIneNGj/5byw==
+X-Received: by 2002:a05:622a:1b88:b0:4eb:a24d:8c17 with SMTP id d75a77b69052e-4ee58857093mr54018581cf.31.1763754166168;
+        Fri, 21 Nov 2025 11:42:46 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ee48e46ed0sm40315241cf.20.2025.11.21.11.42.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 11:42:45 -0800 (PST)
+Date: Fri, 21 Nov 2025 14:42:35 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+	hannes@cmpxchg.org, ziy@nvidia.com, linux-kernel@vger.kernel.org,
+	David Hildenbrand <david@redhat.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Rientjes <rientjes@google.com>
+Subject: Re: [PATCH v3] page_alloc: allow migration of smaller hugepages
+ during contig_alloc
+Message-ID: <aSDAq3Wj9XN2D9ER@gourry-fedora-PF4VCD3F>
+References: <20251121191540.253624-1-gourry@gourry.net>
+ <20251121113138.9955cb18d9b6c7ce812d5c0a@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251121113138.9955cb18d9b6c7ce812d5c0a@linux-foundation.org>
+X-Stat-Signature: i5xeojwi6b4n58rqdd6queazpi6kzoaw
 X-Rspam-User: 
-X-HE-Tag: 1763754027-728518
-X-HE-Meta: U2FsdGVkX19Bb71MleuTZDf5hML/mxWezJamzVBfRhq86gS43b0yrQnPa5VHlI5782TkSOS5U1vyw0IhTXELwzVGjuJD1VfVY9P6sNrtR1QA9dtmCkeHhf0qQk+6egj+Pjb9xa8yfpWK9O9uzALgF7OlOCpbqvY3CEqAgfMc9+zfmR6IMF+r9suKTC/sPHfG0FF5wGu21OgfR7CMJWSs/dRA0F2PznsMoCTKD2q/wETNqq4hTwzP4AeZqdaXXh859xROOgebpSyszo97inrhsayQAywkiKvntq7ObZ6L1YnEDMB2DCA0ldNa7QmMCekFZX3iK77fF3jzFVg/hwdWHvoGFIoVKlpv3EQXu+nkVlpWZMaV+7bbLA2VdQQbultSi0XAe9x6+/QuFVV/+0/S5a/cgbAoXicsIjk23gSTHtnG6gc7YDdqXFLHUjbv0O4/BXYClfeg9s23eE8JN2ysE6v7udwyzKFhSoC523cQjW9Eo9tiZmNuVnfEgMm+uSCKwifkwndKqo0JenNYq6hm/Vzod+gDJaokKXTBTMLp2ZozvDfjhLkGcTPYO13VnBylS9XvzoO7WfHpVUKCXRMG5gL8vqn+x5Y0BVem32F8u+QHjGJATY6mgpyyM2awJQCUr9F6k6FJuMloq2PZkcg6YscdWhxXA7Wx85xiNqP+a7QQGkA0KgxBU06OacD73aMRiAXHf4sarTKW8Goeeh+HidfthITmOwzsrEuuurBAxkhR6/j6FPAU8ZydUJxznOfTMBEKWcBSIk62zbu5vxVadiascE8tIjgeU6AA9PR3upTZ6DA0pLcilABQ8Nr1EcC/E0BXLDLpYJWJiyZ636Z0s1JYCBtHJ34Nr6P4f41wPY1zAuh/9QjLqtO1BEBHA3gZYXJHBTxPxyeQoxaGkWCqTNHNMMsqzGu3AF5h5qMAWQzf6Z1ssh5GQAAnEBsTlElDi4E8tdSv41Xz/Vo4c5r
- wrT8nyUl
- 2K2iqNSmfm2FSkPHtz4f3sd9qc6eIx+EyORM93rSPaepINkJskVwL3Se9goIS+xjkmBjtcuym4PgnsFy9lYf9iGVWehb8FoVSqm43l+c425QuzSl37ff6MvyY+SDgPCBvFdn4AZWlo96jV9A1sI60VRt56ofvUMyesN6fB/Wjf/mtu7lIFywr2H8LK7mNRNs490OL+Ei0tMlFn2YHARWZXEVdARH/utWzyNUrKUvtbLVcxKtJPrffds9w3wvPSqT6Olen1ma93UrfeWGIELvMCILEO+j0PQZxmbdWfdKdIXzZTdNIqG8Ea/gCczYXGp0H5hs/ZOtBKKabqq6EasBSkubsxoYBpOcdDyROmT7dFiwyr6tHEP/l7SteFGg/MCBTSyicrqrmbVpU3Q98bj20YJnuVynGlUvvbirZOYKYuBEa/+anYtb9bngJbs2oy44Mz179LkAuk6CgSfNua5LqHE2x+p0yEDgcxtij4gN8bblO3LmrUfkog6Ul1EjyKi1gL4sdp79vFzmenZXyQ3II2FopCr1EIDRN1iqhTSG8y5A1uQvcOx4d06cUnqDqgWJmPDOEwF9U2lXXGbHI/CirXhuZd5eo1ODBc/Nl8I99UyI3e6FwXg5/rC5BOTQkV1GIDZzIDf8XGT2qUlzc0+x4inCQR/51pnm8ssl0LZAlpVhWqDY8QUeqe+4eVGEKqCxljLCm96WS1TsPVO35d7MXsuYhZbJ7PSqPiDq8KrPMw3P9R5L0slLgVmeDfT4Mf38T+C13B+/JDKyPf8AVJHv2v6ohXVQs3QnhAMNJqU2Dlw0EVRWNQK4HSw3GRqwThio9ehxNl8QV0Nqs10JtRw1Pns+3c6Z9uEGAJSlUGgnWkg/l8DJaJ9xjD7f+lhhOaWlJutFA23e2WFNJUK8bIHdsYoebmgiQHl636jNBvatClTbJna5HNgJZh16qDbEuTHblgW1fxpnruc3NVVnDmxXHcAHyqa0c
- eNbniaJy
- mN/V3Sry3kG+9sRxgDcyV/S6OGXDfzrO
+X-Rspamd-Queue-Id: 33953C0015
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763754166-398227
+X-HE-Meta: U2FsdGVkX1/Dj9LasvdOrwSEIxVzSmiSfbjPx458n9z7T6maVEkopA7Uvssuc7ujqr5PnHyvC+QBefgoPk8uH9eIJ/nfwUqn1xGi8djhZl/C45Qfm3r8I1RcAYZMJeN3AxxyFpu+3YCJ1AyXWlCg3/U/Hr63zbr4uJhGhExk0gCdPOZUZECd4W/Nr5gzbsPFNIpwtNm/mxtJWRaFbRycDC8yGTYH1ZcOA4CpuNJqILgkbM1mvnPQQxebJltYLA9d4hjvfxsZoOE+ulDrzVtifaBnddLu0FUdliIULdGOT5SRQh91NScncERI/WGjZMAUpbqKg5FQwbxib0PlnuzRMOT7cGfstj/I9FZ8s34Rsq3bhGJ6zlT+0wyH2NBSO8+OYFePOfvMwUxRp3e7+Rsg5BS8eXVOA3oONBUdeWH0NX+9xwDhoYxMJi+MAb7ehhFAJGNd6ikjVk/bzizFn0USMpLLVoeNaRZ3R0dYEMrAaeOCqco1hQ4FXy5T15iNx0jwxW2lLvRGzybbSK26/owPpeDprVdWdWf/QejCybuZKLOTyaZ+M4JKg8kIFaiiwqTJZHtI140D1Dw/y5QOBaLpjhkPs5MzwZTwcKgWhOggzbEhtijMHdrXk/LKM18v+qp08WupXVuz8uc6fOSGI+F9Ud9MoZcwRXmx7nqO1kwcL4r7ksJadQ01VqxDfK2A4OmrGP3tS20ssAyl3M0+dZFltYraNjDSSIlOYTcLGR0E7WjxtdSSoQ3UOw4oEFdxcSZKXf7LXycVR5l8FsUYlqMvXbGp0LuLGD5ZnQpwDzdQgACqO+sQJG8yAc8s/QNZXFn5oJe/GHSuwUyZ59dLmYFekoG4gBO2uOoW1fWzv0b9XhPE0qH5w/gVJmY6SQli4WYSnICjpl56fqWO+7GUrLUol3PYPs6nhu8EP5x0ldVnKgXWrEQT/zxyawdF/IFMrcR+jxXFlVfgIAOytXGxetr
+ RCF6xCyP
+ MIwwvCpo5tYfXhb+SUGePjkQeA5f7z4JGjnYYb2hVy9s0HCVsnSa/UOoLINkvAp+Plq3XC0UIJzKeqUUdQgc8TJ/BO1qGO7lSYY/oePmDN1GRjPv6UG7Pnist7tdELpoA6GkD0ct6aBq5AgjirsPtXQ/2vMIQBL/ZS6lIQncq0mOagHcslqFw3mIHyBROfnYs67zkrcNS+i95N1aPO1Bdh9kUF5vhLk6FcBSTkhs+2O1jJkl5e5pCUzKu9o0Xn444NuCmQgUyINmjHhrA7f6Opw7PhKtkkqmpiBnr7PTv3DklgIlTDFs1Rpqrz3CmJKkAel39qqltpI44USDV/XR7pXsp9B7US0YuNy35QDg+lyJEdMSeA0gI4xf/gXSHa6s3mzrMxq0iDgEmGw9zkpvjOKGzPX/6xs35wbdRGebLwFXRVftm8My1gsbMb/cAHMmOjVg8B7+E1CdsyEpfVEWO990lH2YEmKzCBkvURMwERT5LiGqomzNQod2HatEzzQMAeYtrAM0pFvsFMJfMJNA6iCK1xETrp6sYVm/tz/9hVTLY1XI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,59 +124,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the '__counted_by_ptr' attribute to the 'regions' field of 'struct
-memblock_type'. The 'regions' field is an array of 'struct
-memblock_region' and its size is tracked by the 'max' field, which
-represents the total number of allocated regions.
+On Fri, Nov 21, 2025 at 11:31:38AM -0800, Andrew Morton wrote:
+> On Fri, 21 Nov 2025 14:15:40 -0500 Gregory Price <gourry@gourry.net> wrote:
+> 
+> > We presently skip regions with hugepages entirely when trying to do
+> > contiguous page allocation.  Instead, if hugepage migration is enabled,
+> > consider regions with hugepages smaller than the target contiguous
+> > allocation request as valid targets for allocation.
+> 
+> Why?  What benefit does this have to our users?
+> 
+> Some runtime testing results might be helpful?
 
-This annotation allows the Kernel Address Sanitizer (KASAN) to detect
-out-of-bounds accesses to the 'regions' array.
+If multiple types of hugepages are in use, alloc_contig is less reliable.
+In particular when 2MB and 1GB HugeTLB pages are present on the same system.
 
-Cc: Kees Cook <kees@kernel.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Marc Herbert <Marc.Herbert@linux.intel.com>
-Cc: Uros Bizjak <ubizjak@gmail.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Jeff Xu <jeffxu@chromium.org>
-Cc: "Michal Koutn=C3=BD" <mkoutny@suse.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: "Thomas Wei=C3=9Fschuh" <thomas.weissschuh@linutronix.de>
-Cc: John Stultz <jstultz@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-hardening@vger.kernel.org
-Cc: llvm@lists.linux.dev
-Signed-off-by: Bill Wendling <morbo@google.com>
----
- include/linux/memblock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The same logic is actually present in isolate_migrate_pages_block() as
+pointed out by David  which is called in the stack from alloc_contig -
+but it's unreachable because this filters those regions.
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 221118b5a16e..ba7f7c999a45 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -91,7 +91,7 @@ struct memblock_type {
- 	unsigned long cnt;
- 	unsigned long max;
- 	phys_addr_t total_size;
--	struct memblock_region *regions;
-+	struct memblock_region *regions __counted_by_ptr(max);
- 	char *name;
- };
-=20
---=20
-2.52.0.rc2.455.g230fcf2819-goog
+I allude to this in the second paragraph, but it is worth spelling out
+explicitly.  Will update.
 
+> 
+> > isolate_migrate_pages_block() already expects requests with hugepages
+> > to originate from alloc_contig, and hugetlb code also does a migratable
+> > check when isolating in folio_isolate_hugetlb().
+> > 
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> 
+> A Link: here might be illuminating.
+
+Ah, fair point
+
+Link: https://lore.kernel.org/linux-mm/6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com/
+
+"""
+However, it also means that we won't try moving 2MB folios to free up a
+1GB folio.
+
+That could be supported by allowing for moving hugetlb folios when their
+size is small enough to be served by the buddy, and the size we are
+allocating is larger than the one of these folios.
+"""
+
+> 
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -6849,8 +6849,19 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+> >  		if (PageReserved(page))
+> >  			return false;
+> >  
+> > -		if (PageHuge(page))
+> > -			return false;
+> > +		if (PageHuge(page)) {
+> > +			unsigned int order;
+> > +
+> > +			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
+> > +				return false;
+> > +
+> > +			/* Don't consider moving same size/larger pages */
+> 
+> Comment says "what" (which was fairly obvious).  Please reveal "why".
+> 
+
+ack.
+
+> > +			page = compound_head(page);
+> > +			order = compound_order(page);
+> > +			if ((order >= MAX_FOLIO_ORDER) ||
+> > +			    (nr_pages <= (1 << order)))
+> > +				return false;
+> > +		}
+> >  	}
+> >  	return true;
+> >  }
+> 
 
