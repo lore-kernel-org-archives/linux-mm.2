@@ -4,106 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F21DCFA478
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E611CFA47B
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676076B0089; Fri, 21 Nov 2025 02:45:09 -0500 (EST)
+	id 715906B008C; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FF996B008A; Fri, 21 Nov 2025 02:45:09 -0500 (EST)
+	id 6C6276B0092; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7736B008C; Fri, 21 Nov 2025 02:45:09 -0500 (EST)
+	id 5B4CE6B0093; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 386256B0089
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:45:09 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E35E712FE92
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:45:08 +0000 (UTC)
-X-FDA: 84133828296.26.7DED0FA
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F17DCA0002
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:45:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=OaV0nAYl;
-	spf=pass (imf15.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
-	dmarc=pass (policy=none) header.from=foxmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 46D826B008C
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE7FCB9B17
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:46:32 +0000 (UTC)
+X-FDA: 84133831824.05.654EE27
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2AAC440013
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:46:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U0ZI2gxJ;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763711107;
+	s=arc-20220608; t=1763711190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JE8n4ef2V3IJTTEd6KB/XXyiRp4NHkcmBEBh+dWI+Eo=;
-	b=nD70ZPrwyWGQKqlJZaZ1oS05vNfAB20PP6hBvl/r52bwZ9oVBzS3/2jIdQVrXz9ERDBS3h
-	QI69Ymp8JVPLggTusOpAm6bScYxjV3GiDhdUkSiyAa212fWZtuKmRNz98Qamvr+TBWQEYI
-	3huwEeYJNTISH70uliJHrCIhOSa6H0M=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zxfbvScOZ8nnvuFfdlDMmbK1JnwfXlue3I9knI5n2z0=;
+	b=OmPS7VUg7thVveIY0Olkc2H9j2AzcojJaqmKNpnWjy3YDZ6wpYoVaPnLhV/mINcyf1Krae
+	IKBP1kIBD/UIq7avt9WzRGqripqNVVKw1QnRngk9kR6W/hzWX0zFeYx8mFO1Tf019YKRsR
+	Md68pLCiMRVwmJk7L8l7ioNeFfP5ZNc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=OaV0nAYl;
-	spf=pass (imf15.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
-	dmarc=pass (policy=none) header.from=foxmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763711107; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U0ZI2gxJ;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763711190; a=rsa-sha256;
 	cv=none;
-	b=w56t7jYR5VHfcn6/XGwUwRAz0F+ZClAO73xiG3Mu4NSBnXjFyixjllDhupk+Yhcc6QX7QC
-	gKVvvBFjl0ySULcfaq1gwlYeBd+j5RiaiQLjeGOCHTe7jYD3czjPCx7WJs49MAwqBpzpXE
-	UUeYaru2Mra5YVSe7RBYCLOIp542BqU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1763711102;
-	bh=JE8n4ef2V3IJTTEd6KB/XXyiRp4NHkcmBEBh+dWI+Eo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OaV0nAYlcKk2X/m58z8OrlcGD3Q4LqZ8Fs7LVdOMBRjMRQKOCSmBQ3DSD8/pnE/+P
-	 CkIPtQM2P5aTyxLmCVWWmyuv+hLUJVNuVZO3S0ZLag6X4/YH1JmCP4QGsl/YMxRdW+
-	 yCT7/qTXY5TBYvf/kujez6fd6yluVDZ3tqzSV+2M=
-Received: from meizu-Precision-3660.meizu.com ([14.21.33.152])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id B3BBF8C0; Fri, 21 Nov 2025 15:44:59 +0800
-X-QQ-mid: xmsmtpt1763711099t8hwyz0vd
-Message-ID: <tencent_7F5D453FDCFFE315AE59E73779635F865D08@qq.com>
-X-QQ-XMAILINFO: M+6QKz8nsrJQcV7g5GXCXdXddYR3xutlAzsZVSuzte29feLFnTOMxmAPEh9kNF
-	 iDDT3V2c5wgSVJkE/ig65ixOvVUbF4jFsJDbGnJtVXftiC8voG+nJ1gMX9glvPqdrknDM9f6WT86
-	 vOxTMfql5WwcArtW7X5Hdk5hHgKQqlVblqg72Yb+eP37HYVbuVIRxz0uZ0yxtWwfJ+fuYb6YZ+MZ
-	 p1zenSbyTzr5nk/0mqz3RqYqRMXi7CuNFfUHY0sqzRcwyCi+2uGT++rWItcHPzbZ+n0Mv9+PG7/g
-	 BJL7qXFHhJfZgqXifzMY0sNidPjG7NOCLRAiO9T8qLnrZ/ZYuO8WCkwepVmaaRMOoo23Ki3rjdkC
-	 VPtEEEIEfMJC8c5JB6DrLbBS0pMVEXIdGdis99zvz+iLAgXSOh7pwRC85m1D7R2YJK88wT6lvQAA
-	 4yaPywPBVd2ZgckGZMQbCMv3xSyakKIKu60fMxqDc98depHRS4PK+A0BjMgGI5Wn3QPe3krwE2of
-	 t5Kh1WWe5Hetwu2jDmFocSdkidVidFQHpKHh+ylcqTDrT3Fsxn6no7B4ChtDZa91vX8ya46ikAif
-	 Gc1gYUVvd4Dtq9Ln1kqa/QViYhPKgCPJiP65b6jc8vMf05cWim/XRR4T/6aLFwHjPWN5KWvOkF8Y
-	 vjdC4O+ADC3XKKJ1rQ4tn5DcKqepDb2QaU87xKj7hF/DLKoIjgwu0+Nb8HXk2EQDlcp5gR8rFeTe
-	 tusEs/CKE2C1mDl7kD4ExmjrE9Ehc3uPI/6xDnf1eWXymidYrMKBauo03sW2cY0w/jSxu9BaBoG/
-	 EohW+UgeEDvZvn9NQn2gKQoSVZDeQ+La0qjGxGvb6n6LsxGWaSrVP1ht3cSxTwq24ePwxL8Pms/S
-	 woPi0ONgLsaEkR14q8BGgPxOKkPUawuBef/Z9FjY+PlCJ3nZT1abP3SGUW+9r97NHPepb0pEhM3C
-	 fIU5j6M8yeo/zHTWewXSd/Ux/B7zmK7BVacfbYLd64Y/F4bsDM1GwY7jxlfNRDgHAF/EmRkmsS2j
-	 dveR7kHANYytpKUZHfXbKcLGuWvWuLgaj4yLiuoIbNqWXgPlwzoMp/j4b40FV2tXA08uP0dijXGt
-	 lQrjpHMXlLnShJbWysHOXMmLz+5T1B0UfkxLvY/cpixufx+8I=
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-From: Yuwen Chen <ywen.chen@foxmail.com>
-To: senozhatsky@chromium.org
-Cc: akpm@linux-foundation.org,
-	bgeffon@google.com,
-	licayy@outlook.com,
-	linux-block@vger.kernel.org,
+	b=OQDIl4AffcUohTqtXXVOe6ldEU2Jcr9faUiMAFre8aRziTNZu7SzkneJAsfg7HdxzoukSv
+	bEuE90SccdDaD6T5s7BDLRsor0Lst8OPw66tq8OSSXnO/CXTKu84YzGxsziUp5bEAS7o73
+	AfGP9trO+WkgBUkJ2gpgRfrF7HTzT7w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763711190; x=1795247190;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=758owg6Uln4p10srjHlihJGGKUBXvqN48Kdezn62XI4=;
+  b=U0ZI2gxJT1kpSjykSDaMi/LmH1bH7WWsZw+6OeJA3ENMcBkR2Ut3zOZL
+   mhRuH7zIHzCS9aQCMsZNQf6NO/LL77m/cmPK2sZUQVVj2dAiTGHhqsnfo
+   w4BAt5VFP/VAKt1rHHGtpRPzZIh6AfJ2SnDgiMipdCMPby+UMnLNSgfx8
+   No8NlP6FxvceLraj5JVNfRcNV3iavimC/BK826LQ9nhy0T+lmqwUxZe9U
+   B3jnWFyQh2TGIprUOCnkNPa3nFtrBHuQ67Yrstwij5RbLFxouJ2vDU0/c
+   gy8GmWED9/h3qMzt/41AmRXbNJEY6uXCxEaeaM7LhXJlmsG/jsRcsixzT
+   Q==;
+X-CSE-ConnectionGUID: 8ePb9pbsRjmdM5OEjCeRfw==
+X-CSE-MsgGUID: 0CP2yMy6SZa1yrNRpyMMXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65732882"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
+   d="scan'208";a="65732882"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 23:46:28 -0800
+X-CSE-ConnectionGUID: 1yy6WW1mTWG4UU4LHkbYIg==
+X-CSE-MsgGUID: ECscD4sSTZm3PmhQiVjtig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
+   d="scan'208";a="190837512"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 20 Nov 2025 23:46:27 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMLqZ-00055L-1m;
+	Fri, 21 Nov 2025 07:46:23 +0000
+Date: Fri, 21 Nov 2025 15:45:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	minchan@kernel.org,
-	richardycc@google.com,
-	ywen.chen@foxmail.com
-Subject: Re: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
-Date: Fri, 21 Nov 2025 15:44:59 +0800
-X-OQ-MSGID: <20251121074459.3000341-1-ywen.chen@foxmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <upyms2wnksojg6ix7dha74bjm2gfhv6ieef65k3f2our4r6fp4@kjtpmu4mtbay>
-References: <upyms2wnksojg6ix7dha74bjm2gfhv6ieef65k3f2our4r6fp4@kjtpmu4mtbay>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Subject: error[E0609]: no field `mm` on type `bindings::task_struct`
+Message-ID: <202511211538.sHKbv5Gl-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F17DCA0002
-X-Stat-Signature: wbsgp4b4xpqjuxmmmbp6kwco7wqyezmx
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2AAC440013
+X-Stat-Signature: cs75sj6qec5thbmrqwn5ye6uts3izadu
 X-Rspam-User: 
-X-HE-Tag: 1763711105-278777
-X-HE-Meta: U2FsdGVkX1+r5z9Vhpl/HBvIeNqfVl2oN1rcp7iteeYk2SKIowdGx2ldXIt0U0oCsP/sV1Tdwd7s7TK4A7qCY7+FLwwndaIdA6pao0n47s1WSab0VPB8WZyjfCtSLN93K4FgtoC9U26IL3bsX+xI2uaCk0Zzo/Odd7kXnU8lXvVweUbnTKz4iEiZfmJqEqsMjCqbuBx0skc3352YVkBjpmS/72H7IFVw7rgchOsy9GPzuLLfKOyAQ4yh4lUwH2CBP5/nT6iYVkPSJtPPaP7pWqtPyBNg/45oAl/QXBYsXOoorbYn7g3jeeOi79oQJOKkMez2v9K5SODTdkOZTjpKFQdvbqtZTpHw2/WN+PNQg9g0wj1rAKTM2Nms3kXH0kUeege3StUVhmbbSUaN/nPH5sEtIq/m7cN8l12XwPlm6vpdAMcg28O5OoX85ATvy05nHgwISTpW/SkKgQu2M+zpSEh4qiLGaVlHDzKqfufJg3BqMvYJuvEfWkjt3E0Ip5dEaF/mTSz0T/WQvPJHoXxLyToBTdzoexZeqsWM7YLRPLrLxXm6Tm790SEOeqDMsTsAvwoFjkYi7umPOYu6gk+10lIV9IF9a03Jqua9W4fBw0Un+1Vkmf0JpjH49mUgKO7hRqNvewk9B86zlNSFrbUzZtK6pyO40XXVfAIu78s+plWEZjQo45Ycz4OxHw0vZQk/aj0ERhOvrYDQ4oP1GVOociI6i6fQF0b6Sz5CFWQdUvEgVEhu0AJBEAYDM6QYVjiOoiilkWTl4sErkhlkVD7TDgJgWLhBs9OkUb/f+9c3ZQJJDo9GLwg4UHdgDTBd2QiIaq50nfpfF/1E6cxGsYxkl8aYUu/Rtyc58bTQWcgVsmErUQ74TBMt974g89/zBvZ5bJLmxMnOhn6E5M+hoM/two1ndZ6JrfblsSC4fyxBdCjn6zJeqn4xrmvjsuRpzOeSen+T9NlIXgth50bYB5x
- FMYAu/h1
- qwT0JDjgJYxGWZhG8r45b65d8CgswtWPLNw1c3uOMXt6rqtyPGEFJcxeorRDnEgIf75Nra4krfWmcVygoJWU5KcxeQ9nOrbTskE0AAI79qymvdooC0qs2GQwr7BNloXcJnH+bIEm2CvgElVIxGHos1FW739030bZHhbdMhus4hGbhL+Ur8IpH+e8JwbKGaATQPP43Z8YtgVYG5iGlt+4s1XlYcQ==
+X-HE-Tag: 1763711189-949480
+X-HE-Meta: U2FsdGVkX19GQ2cPAybjUFOqSO1KA1p4vRpHADp5c99jXgouCO/cygO4fp9mPK1NlQmYTtjgVVp//9XNjCU4pjWFk/Jcf9rHeC8g7zrKsr+InFCivCjDYKQDl699kZB4YMMsC3bboo6d0L1a6n5OgP52Sbi8iv7wp9Jtspa8pQy0cdWtGTcdwAn7/MCI9rAVQT9jB4cbKHplqnTFl2bBz5eqpv6CCR0g+q3SQWjixJRRBDgwL+tBQ3A+FU0Zr+SazP71g3y4cOhINsCPoT6kbGOzJ/Vj7hZWdRh8VBQNexbgeE5zOWedSh3qEeFtAQmmJU6wvUWNW9FTrl3c298g6TZAIYoA1LnL33lczOqqcL8iNPvCuFyL6jpZnai9QyXqiOaU5Ju/Ac4JpnKFW1Wu3cdeJUYaEvQi/5ZMIhUJa9fiha5zyaBeJZk8d+ekYxU0a/KAerlDIwF6KqkMjSATBmeSFgrzrNaKJn6Hb0OMMJb2LXjFsZ1X3b/nC44MI/mntWTfLJt2qFAiAZB4aAiGWo94Fo/tFF/34Egc0lanH7iGC3CDIsb+JWBYjGqTpyt7KnN9Mi3hVHeBIwsY1eU2SvtppdczXgWRDobC+8DIfeC6LTcYJNriM7v9QNchnuGX6JeXg8tGy1R5wblp0KuHE11gh0rXxgFrMGOucYISryKnmjuviWapMjfEt5GJemZ+nyd0SaO6nPcU2PReZHQyZMX3q5O/I6AAPcpS9K2HgiPFtzS7CfOXqqw+3I8Trj388t8Wxr67Cqfjs1QUhQMIaRXKs5SO6LOzecxjfXH3F/9jk6GRt4WAANNTaxiRu1HCl3U7rZfwpiw8jwOCyRU39mWsO22rkzAiZk2z7aN8gzm2wVfCgXIVdEGrdpE5VbS7wXI2oYaoqV4Q0uvJONjpUcrVUAljP2pqmYQx1erDA1vxW0CMYHCMP1/XeuD0YXNIyiDS6A/qK5sr2BQUjZh
+ g9hQxF1T
+ H0pXEhqwW9Ps6FPoGF1M06ehdq7hH9WGht5oUHROv1e+h9tXE39tpOpef9JeY40OpKUpTfp+jX5MPxjw7Q/pB9pYntMZPW+zYE6kvWB9u7llH5+SrDJroB/SEKa7/Mu5o7KQUV+nBCG6VdHfzqHkIcHyUqlfZJFiIhOHmWwzLVUZIDAJeoQB/S7EvOJTW0dXU3TTQEl5BlXxK+oyTz9tUYC4yjOq0s4Ba0BBOYZk0Fz4wZ/DvSgDlM9bvV/frV6zj8Cz50ag+zP8uiPPIj29cYJ2X0UPF37Rv0cEe9F+Ta1e9dDICeazBM9MGUd4eoZlznFurV/zM6XbKWwPeOeFqY27EAr4wc4dlfESaK8tmuijqYAj2iuAuTk7ykpZnof0sIEDx2AI4zGU2c7zzLcmzHQSaZA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,18 +108,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 21 Nov 2025 16:32:27 +0900, Sergey Senozhatsky wrote:
-> Is "before" blk-plug based approach and "after" this new approach?
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   fd95357fd8c6778ac7dea6c57a19b8b182b6e91f
+commit: 6acb75ad7b9e1548ae7f7532312295f74e48c973 task: rust: rework how current is accessed
+date:   6 months ago
+config: um-randconfig-001-20251121 (https://download.01.org/0day-ci/archive/20251121/202511211538.sHKbv5Gl-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9e9fe08b16ea2c4d9867fb4974edf2a3776d6ece)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511211538.sHKbv5Gl-lkp@intel.com/reproduce)
 
-Sorry, I got the before and after mixed up.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511211538.sHKbv5Gl-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
 
-In addition, I also have some related questions to consult:
+>> error[E0609]: no field `mm` on type `bindings::task_struct`
+   --> rust/kernel/task.rs:286:44
+   |
+   286 |         let mm = unsafe { (*self.as_ptr()).mm };
+   |                                            ^^ unknown field
+   |
+   = note: available field is: `_address`
 
-1. Will page fault exceptions be delayed during the writeback processing?
-2. Since the loop device uses a work queue to handle requests, when
-the system load is relatively high, will it have a relatively large
-impact on the latency of page fault exceptions? Is there any way to solve
-this problem?
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
