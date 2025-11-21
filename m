@@ -4,153 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFB38CFA460
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 00:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34DF7CFA459
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 00:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 359246B0005; Thu, 20 Nov 2025 19:40:42 -0500 (EST)
+	id 303436B0012; Thu, 20 Nov 2025 19:55:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3097F6B0012; Thu, 20 Nov 2025 19:40:42 -0500 (EST)
+	id 2DAA46B0022; Thu, 20 Nov 2025 19:55:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D1046B0022; Thu, 20 Nov 2025 19:40:42 -0500 (EST)
+	id 1F54D6B0023; Thu, 20 Nov 2025 19:55:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 080046B0005
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:40:42 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0871B95F3
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 00:40:41 +0000 (UTC)
-X-FDA: 84132758682.18.71BC349
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B8286C0005
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 00:40:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b="bQ/usSFT";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W 6/D/Im";
-	spf=pass (imf10.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.156 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E67E6B0012
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:55:40 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6A110B619B
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 00:55:37 +0000 (UTC)
+X-FDA: 84132796314.12.CB60AF3
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 95DD714000A
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 00:55:35 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dNqLvNTo;
+	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.47 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763685639;
+	s=arc-20220608; t=1763686535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BWrF0R3qQL8kwm9npP1EvAhcAZRE+BA2fEO0OQij6hY=;
-	b=xlGAXC/wUSA+rwUAuieVVvSQ8yO7oUPC0ngqF54tiDmoiIph4Xi8XEya5NKHaeOymERUqj
-	uJ8dgpyRqz6+WRWJNIoxZg7X8pGMFkmEbe5jlJkQjGMMnWVuN5n5yDuGQvOYRdrvuFJrsQ
-	ugMacaxK/pY9Tn98nC91j9uC3QaqP74=
+	bh=kHLZzYBe5PNBBbWSU2flf4rsSrKORyD+grDX0snbHt0=;
+	b=8C4+wAo0VqXjf2ZrYbjr+Hz91IJk6uRMbMlq7S3WZk1Fv+voaXE7t/S9uaxlBC8CaaRJRL
+	yT6HtKgYwVjtNiAv1JPd6af0IIjZ4OpCqRwp/cHwBW9koSN5dMgn3qE+ucuZw8N0drBaYz
+	R0+DhVtryojCU9dxeczvPWfq9NiOsv8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b="bQ/usSFT";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W 6/D/Im";
-	spf=pass (imf10.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.156 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763685639; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dNqLvNTo;
+	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.47 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763686535; a=rsa-sha256;
 	cv=none;
-	b=UGTFGWvJQJ2sjMMWNzwI2vyTKPiFMlGsQWGIJjp4jBDu2QXApmuu37DpY0+kvFzDyzLAge
-	i3DsFsVn3j5dJAh5AF6Ftnjr6vVi3EHaZu/g3Fv1sD7r7Dk50XcMShfXrubNCHfK4W6RHM
-	fwvF96gKgl6JotHYLgY5UEy+Dn+8voQ=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 4F1D37A014B;
-	Thu, 20 Nov 2025 19:40:38 -0500 (EST)
-Received: from phl-imap-18 ([10.202.2.89])
-  by phl-compute-02.internal (MEProxy); Thu, 20 Nov 2025 19:40:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1763685638;
-	 x=1763772038; bh=BWrF0R3qQL8kwm9npP1EvAhcAZRE+BA2fEO0OQij6hY=; b=
-	bQ/usSFT6o+GWegKvvd8h3PcSB2A1hCVejwJtF7wsEdC7CwzuBGsDiHZbmkxFhTZ
-	d3UIol3MggwYKtr3/7m8xHyYxFZEfi8xy9RcSPvxuCsyc0MdounLwdBO/jy+bF8Q
-	QMRupKehNfw8HmjuvCCa78xT+NL7tm00BrGzRYcDVClQyvRaUh5RVCfj/DJfA9BN
-	x5s86jNR+3qTFD9TYEPKOzH5TaocL4t+30TypdxjRYVGuCBSF89ZL3JYk8ybXWdP
-	2HBXxNDUNKIY52H6XFTtq5eDJxYKvYA3BepZULCxBk8xlDM0LYJhphJ4jbnaB2do
-	BBa9XXH1Lha6uliQ1SziTA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763685638; x=
-	1763772038; bh=BWrF0R3qQL8kwm9npP1EvAhcAZRE+BA2fEO0OQij6hY=; b=W
-	6/D/ImpsP6E8UHOnHw0GHkvwQhWlYdOrwXFehCZFo9BlwYpK5+GOeFWB33eaI72c
-	o2iReqsiKaZ6t9qjAjpN0Xy115KlGnR65KX+g5UzbVBd/rcQlaiz8hiLAqer98qQ
-	XFoirt/2+8WdsP7ETLVokZeBr04/nTxLN1HgtZrk2DDl7wrTRs8onknGjWKUWLnj
-	5TIODtgQLz3kfaCb4wP0kgI7O8Hg2ukyYnBZhW4Sf5Xwx3Si8Z8pE8LMGUWysWV9
-	EbfxOHrI0s9K+yzOiA+ZKd4nSgH24XQr7oMuDcKfWL0sRgLVy6W4btuveDFkKOyb
-	MNY477StKsGD7B911h8LA==
-X-ME-Sender: <xms:BLUfaTcu-W1ZbFNKOZl9hEoK5kM2iKVgFY7hi_qwxdijBO8eYSBaQA>
-    <xme:BLUfaUDr4NrEmO5B9_8l2v3n4jQbNvi6XEqlmD-9LLSydDnUnrnRawFKgPpvTMRYP
-    Y7434dwhOkYoKdQMRD7qq4WJ2pf5tck8RcL6wMx-_En2tJAQ-vQQQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvdekheehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehlvgig
-    ucghihhllhhirghmshhonhdfuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtf
-    frrghtthgvrhhnpefgfeeflefggfffveffteetiedvtedtgfdvieevfeejfeefffevteej
-    tedufffgveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpegrlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepfeefpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehjohhroheskegshihtvghsrdhorhhgpdhrtg
-    hpthhtoheptghhrhhishhtihgrnhdrkhhovghnihhgsegrmhgurdgtohhmpdhrtghpthht
-    oheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthhtoheplhhoghgrnh
-    hgseguvghlthgrthgvvgdrtghomhdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhg
-    lhgvrdgtohhmpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpd
-    hrtghpthhtohepvhhivhgvkhdrkhgrshhirhgvugguhiesihhnthgvlhdrtghomhdprhgt
-    phhtthhopegrgigsohgvsehkvghrnhgvlhdrughkpdhrtghpthhtohepghhushhtrghvoh
-    grrhhssehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:BLUfaf3IMN_DjSt37FnR5cC7cKZKzm-Evis2a5redpwD9gpwNa4Mgw>
-    <xmx:BLUfabfYFOLIxRZxj2GcfZQhMAJrV3AvzpNs5lf-FrATezIBt46vVw>
-    <xmx:BLUfab6kKk0AxJC9j7DElLBpacsb7lCfW4srcPj5EWec1IZ1DQymrg>
-    <xmx:BLUfaYhbHXAT2tIz3nE8TBsZFON8yBhxofv_cAOU6AX3rp4HzrS3QQ>
-    <xmx:BrUfaRbHrZD02fwIphP49SQDR9cZINb17knsJOrpHoo-8nVEkFZAnwDT>
-Feedback-ID: i03f14258:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id BD7C115C0053; Thu, 20 Nov 2025 19:40:36 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	b=4BYiA41Fe7AQfXsJVbP0QzX1hVTIpz2fz3D9TWGOVfyhDyaOTzeQkiLhNB5zAQhPw+K79j
+	3Uyol5vo3GdVl/WfUPY5DZvTNl9o262ngNmY4yqbbQTDx1Rd++nGsWhQ5mp6gWBxs8Bcbh
+	Ou9oEiU6GLv1yLqt+Qcs7fC3YSaFrw8=
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-937262a397eso457140241.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:55:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763686535; x=1764291335; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kHLZzYBe5PNBBbWSU2flf4rsSrKORyD+grDX0snbHt0=;
+        b=dNqLvNTo1J9E9hqWpemMxOJNwAD+zd44iyq5XDnX48zQe3wim7ETTyD9B6wZGCvQOR
+         ARwrjXDDL9ckivAh2cNO/deU86c+K0y4h2W84J9oKJZ9DxVgJqS1Zvbyj+4ZYmziWm4k
+         50O7HQrwReRWwMy7rwNeVrxycEnk+k9Ztj+wS98TiD6jePRUJnLbqfhixrKtcSCbEF/R
+         OUWKdEmRWhDfLfZula0afgrM6/yBHkpKoAV20W8i2wdgAgWwTBO0HjcD0X0IErrIaLY/
+         t8VI1M5FMcnDtebc3Iyjm53AOmd2DNdppoH+Wb8o8MlMs3beiEn2SHzfzboS8Dj7hC0L
+         HQRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763686535; x=1764291335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kHLZzYBe5PNBBbWSU2flf4rsSrKORyD+grDX0snbHt0=;
+        b=Ff+CE6z4nkC2/iK6PaeOako8YslysqLylQt9peKkYOw6fT2dLZlC1La6XTSYrNRZXw
+         3Qmkrb34TPwHwvkqig1nHY28itHCsjUje7bQ4jH0i3XXeHQgaj4fFHZ/czkEyOhGkiBm
+         vkjw9Obpp0GrOtA/N9lBUu9xVVGdhuo+L+QV5kpkHcx4g7xPmKya3AYeA9oEloZhbSFH
+         upU0ipgsUUoSxIlN2WpUt5shACY32Vxb9gMXaxeAUTJtkKjlmjaGbroqUwME3er1Yn0D
+         eyUeC3SfzLAnbmaJqpfcU0SKi4KpEVAD0p6GL5YGFvvpV6vJDXlw11oCzWtENG6E8ZRm
+         tTcg==
+X-Gm-Message-State: AOJu0Yyr6hRnk+mSoDxdesBTp85HmsLUTGt3CVPmzX0sBSY/qcwpLUPS
+	jyS3Ai5XnYWl3ZwrbJx9cZmkwufqvmbbu1Rhll64mcbDqokuJWIWPWkb/L6a99+rRyXXWVdqaSA
+	eMc3dF10VH+/H0T5F8k7lDLvUeBL69gc=
+X-Gm-Gg: ASbGncvLXZSVGXU2WWTKLggGdOe7yGFODbioK65or59sObFrxjyC1/gl6gY0mO4zuEj
+	eqv/EiXZkLsv0XD+oRdcjb2NePjm9X+kG6uuoSrxyVfO5n3r9QKvGufnO55CXGHNsEvVBH6zy5n
+	gy2qHHfVWsgbBl9zjiVsARgurQ4NjBvmY5PZIenDWqPD9VItstTpnwAYhx7XKf3nm8uNDfTRKQq
+	I47E1njgc+1W2B+o1R375VR0mFHCfIoRlr6W5OAq6mPawgZ+HxBvaOvPGVERZKMlaHmUJ+3O3Mb
+	CKGg
+X-Google-Smtp-Source: AGHT+IHAaoEGZl6XRkd05ASzkTbefE+DNwCwl8/N/u7JtBpbbOs55W62/i12o3MXPTSFTfSA7kO7nFqg7LaE7pGAHAk=
+X-Received: by 2002:a05:6102:9d9:b0:5df:c1f6:be44 with SMTP id
+ ada2fe7eead31-5e1de18ef7fmr138107137.5.1763686534418; Thu, 20 Nov 2025
+ 16:55:34 -0800 (PST)
 MIME-Version: 1.0
-X-ThreadId: AE6BP-1UiBv7
-Date: Thu, 20 Nov 2025 17:40:15 -0700
-From: "Alex Williamson" <alex@shazbot.org>
-To: "Jason Gunthorpe" <jgg@ziepe.ca>
-Cc: "Leon Romanovsky" <leon@kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- "Logan Gunthorpe" <logang@deltatee.com>, "Jens Axboe" <axboe@kernel.dk>,
- "Robin Murphy" <robin.murphy@arm.com>, "Joerg Roedel" <joro@8bytes.org>,
- "Will Deacon" <will@kernel.org>,
- "Marek Szyprowski" <m.szyprowski@samsung.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Jonathan Corbet" <corbet@lwn.net>,
- "Sumit Semwal" <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- "Kees Cook" <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- "Ankit Agrawal" <ankita@nvidia.com>, "Yishai Hadas" <yishaih@nvidia.com>,
- "Shameer Kolothum" <skolothumtho@nvidia.com>,
- "Kevin Tian" <kevin.tian@intel.com>,
- "Krishnakant Jaju" <kjaju@nvidia.com>, "Matt Ochs" <mochs@nvidia.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, linux-hardening@vger.kernel.org,
- "Vivek Kasireddy" <vivek.kasireddy@intel.com>
-Message-Id: <cd6f8c6b-6950-4b06-8f2d-bb4ead660ead@app.fastmail.com>
-In-Reply-To: <20251121002344.GC233636@ziepe.ca>
-References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
- <20251120-dmabuf-vfio-v9-10-d7f71607f371@nvidia.com>
- <20251120170413.050ccbb5.alex@shazbot.org> <20251121002344.GC233636@ziepe.ca>
-Subject: Re: [PATCH v9 10/11] vfio/pci: Add dma-buf export support for MMIO regions
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B8286C0005
-X-Stat-Signature: 7qwfg175dgtm57ai63wu3q95mm5hnhr3
-X-Rspamd-Server: rspam02
+References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com> <20251117-swap-table-p2-v2-3-37730e6ea6d5@tencent.com>
+In-Reply-To: <20251117-swap-table-p2-v2-3-37730e6ea6d5@tencent.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 21 Nov 2025 08:55:23 +0800
+X-Gm-Features: AWmQ_bmbTGjlpcWP0xeiWj_dQjA5xaDW3CLNs0xGRE9GZVk-8bBV_xkAEmiUC8g
+Message-ID: <CAGsJ_4zSqQax-Ct-zz3uMZ_dD7vnvTjWZ_BsnXBnMVpVNNDYUA@mail.gmail.com>
+Subject: Re: [PATCH v2 03/19] mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 95DD714000A
+X-Stat-Signature: imuf5bc7kjgxcpexze6ygxjgywcibiao
 X-Rspam-User: 
-X-HE-Tag: 1763685639-426152
-X-HE-Meta: U2FsdGVkX1+uZjUlSJRnpBttq1dM3nqsMxqC/N4OZvm8vlBrKxywtC5cDusgBG7EIkLBofZBOrzzZn/32/T8GQ18Cs9YKb5PX3osFfbD6+PcBOeQuqlHqKo/IF/YpthKmb6uhKsrSkKNp/z5yX1wtR5JXisAfKhVEbxissbkexqfiJ8G6dNHyJnPTeaARMTGu9i5t4ndDpRlDLkMy37FPBOB0qCDEsKpB5Y439QKLDnjmIkbApI1erb3NMIQiNJCVlhwqPaMm+A8qDWCGoeAK3ob5ApjPOtsQzdeFoKS9tIiGDUYa6vtszLZKOdESlMvJoVnh+WrnFKTUDrUEjpMlkSAJ2SzPW0lUEPMHXHiBk9JcMipY2//v40FHNnd2wle1aZUoEUJUN4aWztFGc/SaQUitCR1wXSo3GVNsnixxq+AMLbvnAqOijWVgKck/o3iJrgjadkRdbWqhVWo7Uv8PCTLLUE0KzxVHVCkY2XqfhTiBYlLOo+LtlS7TPuIkXpk0B4/bU0f7bNetSCNbdmXtGJOZmA1yHHoQEN2JCdc+nb4Ur8/uMvY0GZ9hKwTZ3jjZVqm4m0pHLMgB5yxbN53h4RPejZ14MQf60sviKcUK/HZ/yp1vrhgi1XGSnTP8OwUlsrcWINBP0KG9YsB+bP1WX1TtC6TVNG8RVsHboPSmWAk/Rxv3I2L3cCkW/NjEF61/uFNv9dyNytYXKMVjtmCzlr8wRAb1fLha1a1YP3x+JkENWp9BaF3YrxbNabVcSCZsx3FzkUpjvRNmxN9/vb8RcLQD6ZxTYJ2jHiM1EvYxfd/WWdFB4xnVQZQoKIuA9R1RkM6x5wuVlpJkWZFe6AcJBWuXsjRvJm8jW7XNSpcBRCO8RFdMKGDEUTf0+V956KumCVVgvqR22vBARZxVyRVbDYxcHjahbP97DgPvb6HcDFMPDkEthzAUmXDdMsqCnFJ8soR73vZWIs7S9XipEX
- Duds5sDh
- EMWzh6ONamLGmPf14K66bBK7wycBz8PKPqyxYOloCYBnYmhlxycoKjtQ4AcTawylvykzuW9kSEdLz6CrcwDitMYv1Gm9ea4KcbWYZbSOZ6FVpvtXU98mKYDjwBzwmqmMCM5Cz09k6cN18Bq2XtjVrGjaaLnri/XuOlcupY+nOXzYFIMmzy8T/LPqFPXp68wGU3mDxCooLe9f6wEdHCJqJoBNN/PH2HNgN9wIvp2F7VpImrTE=
+X-HE-Tag: 1763686535-780641
+X-HE-Meta: U2FsdGVkX1/5awipBbtUyDdKo1pYrBxykV9YGb2Jti97mX1y5NjAJ4bglga9bRyp+SDV+fmPRnQgA9oHRVYbUaSVq/U9ARfHZtt6PfE9/I12+h4yZ9YOX1pjckemUqwpwUZKhqmCJUhchm6D41jaoBx0BofOXlaZ3cKeSQMGpbuq6IA7z1wXa2EB6itS8co7u/8lgaQPXEwUlEsTzfn4w2KrCOMPe+S0wZcDuA11mmfAusKy3dLyFa6qPhBZNK1+sBLBI5sSGo46Dj/1yaaui/IrWRvqiAcN1nPMpv7jcrZHsQosNx6vqpUHZ4/siPq75EuvKVLh4HPeRx35icC0X1PneZE+l0bd0G+V/yuGhJj9BRU0gjnzrS5YZ3eo0b5f5Uymd9Pka6EV0reTPKu0h96K9wpxcecgS68bIeJx51t8SvW8EVvadwJGVHeT0RbfXZDZtWWcFRuH51GVoYJsUFwgCCKf7iKTREMg3RUf8s4Mnp1UFi9S3Kduu7gfieLRBvW24O4OzzfcxXIKi/eoCoR3EyXbXLjRiTfoXVv5ng+OR1/PTZ4ti3v8zraCagjJruFh5kXzaVLImYbpwCEM+LFFgqWuxjhiUlHVhCeATkcRCkTRuRB2FetMepEH96GyaEZwbETaBm7y1ruU4Qo0Yk8S7q7acEf9cT/TshRukoksGvpNW0Haicfg/jsR3qFovszFFnvjHeyOTVK8EZoGfBW1rbkT8a2ppPwyRvxV99vtUNlSQZcM8yprKPRTn4K1ZkXvvfhh7L+7rfAAxZLHCVSGGkVZZ7CbHrXjSMEAs7C230JY6cisaDzzKgJ4rOdnWDVqaAJTxMcaMu4KTa24GRVzaXnn9P4qq3JHLGvHEF1tvoUNB5cjBBTABV2fzOgQT9YGqrf2+VkyvY0Wg1TlXsQ9vaJwUc+iVF2sJYVuAGzx9H04iuSJXpjYUz9nkXz8PP81z9vve28YQvk+VNj
+ 8MnbEQPc
+ HcG9LzeVWMEvHEiH8tGm2FDWowKueXnCm4v92SIHQePFM+HnyYZUgk0krVtz32aGvDEVOMymIlgVn+clo8Y046WEarJIOqgfNEOoeMlTiOxAexJC3H/7vbgFCaj/ToU95U3zMVJEDeAqjm5OuYT/pSrtQZZ04Fx/raboy8zIQdJk/88DQmuLhhPgl35P+gTx2U05RkW2poV+jiuTMZDzD0Sj+LBPzXlEut9WfTEFni4KPlRH8ND44TuwWWMm/hlu33XM2eR5cQOcjAB/6E2sgm3kMaOHlSrOBBzDQXEiHIQRR1MSxw41VZso7mUhtXL+dE0E2b2c1b8Hr1LBa2ik4Cxm0fMxBTvCM5b+QffPtJnG6SlVXVX9/byqXSDMCkHKSvgQW+cWhrTU/7KcTfMBlIZfutQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,26 +123,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025, at 5:23 PM, Jason Gunthorpe wrote:
-> On Thu, Nov 20, 2025 at 05:04:13PM -0700, Alex Williamson wrote:
->
->> @@ -2501,7 +2501,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
->>  err_undo:
->>         list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
->>                                          vdev.dev_set_list) {
->> -               if (__vfio_pci_memory_enabled(vdev))
->> +               if (vdev->vdev.open_count && __vfio_pci_memory_enabled(vdev))
->>                         vfio_pci_dma_buf_move(vdev, false);
->>                 up_write(&vdev->memory_lock);
->>         }
->> 
->> Any other suggestions?  This should be the only reset path with this
->> nuance of affecting non-opened devices.  Thanks,
->
-> Seems reasonable, but should it be in __vfio_pci_memory_enabled() just
-> to be robust?
+Hi Kairui,
 
-__vfio_pci_memory_enabled() currently only requires holding memory_lock, I don't think we want to create a dependency on dev_set->lock for this unique call path.  Thanks,
+>
+> +       /*
+> +        * If a large folio already belongs to anon mapping, then we
+> +        * can just go on and map it partially.
 
-Alex
+this is right.
+
+> +        * If not, with the large swapin check above failing, the page ta=
+ble
+> +        * have changed, so sub pages might got charged to the wrong cgro=
+up,
+> +        * or even should be shmem. So we have to free it and fallback.
+> +        * Nothing should have touched it, both anon and shmem checks if =
+a
+> +        * large folio is fully appliable before use.
+
+I'm curious about one case:
+
+- Process 1: nr_pages are in swap.
+- Process 2: "nr_pages - m" pages are in swap (with m slots already
+  unmapped).
+
+Sequence:
+
+1. Process 1 swap-ins the page, allocates it, and adds it to the
+   swapcache =E2=80=94 but the rmap hasn=E2=80=99t been added yet.
+2. Process 2 swap-ins the same folio and finds it in the swapcache, but
+   it=E2=80=99s not associated with anon_mapping yet.
+
+What will process 2 do in this situation? Does it go to out_nomap? If so,
+what happens on the second swapin attempt? Will it keep retrying
+indefinitely until Process 1 completes the rmap installation?
+
+> +        *
+> +        * This will be removed once we unify folio allocation in the swa=
+p cache
+> +        * layer, where allocation of a folio stabilizes the swap entries=
+.
+> +        */
+> +       if (!folio_test_anon(folio) && folio_test_large(folio) &&
+> +           nr_pages !=3D folio_nr_pages(folio)) {
+> +               if (!WARN_ON_ONCE(folio_test_dirty(folio)))
+> +                       swap_cache_del_folio(folio);
+> +               goto out_nomap;
+> +       }
+> +
+>         /*
+>          * Check under PT lock (to protect against concurrent fork() shar=
+ing
+>          * the swap entry concurrently) for certainly exclusive pages.
+>          */
+>         if (!folio_test_ksm(folio)) {
+> +               /*
+> +                * The can_swapin_thp check above ensures all PTE have
+> +                * same exclusivenss, only check one PTE is fine.
+
+typos? exclusive=C2=ADness ? Checking just one PTE is fine ?
+
+> +                */
+>                 exclusive =3D pte_swp_exclusive(vmf->orig_pte);
+> +               if (exclusive)
+> +                       check_swap_exclusive(folio, entry, nr_pages);
+>                 if (folio !=3D swapcache) {
+>                         /*
+>                          * We have a fresh page that is not exposed to th=
+e
+> @@ -4985,18 +4962,16 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>         vmf->orig_pte =3D pte_advance_pfn(pte, page_idx);
+>
+>         /* ksm created a completely new copy */
+> -       if (unlikely(folio !=3D swapcache && swapcache)) {
+> +       if (unlikely(folio !=3D swapcache)) {
+>                 folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSI=
+VE);
+>                 folio_add_lru_vma(folio, vma);
+>         } else if (!folio_test_anon(folio)) {
+>                 /*
+> -                * We currently only expect small !anon folios which are =
+either
+> -                * fully exclusive or fully shared, or new allocated larg=
+e
+> -                * folios which are fully exclusive. If we ever get large
+> -                * folios within swapcache here, we have to be careful.
+> +                * We currently only expect !anon folios that are fully
+> +                * mappable. See the comment after can_swapin_thp above.
+>                  */
+> -               VM_WARN_ON_ONCE(folio_test_large(folio) && folio_test_swa=
+pcache(folio));
+> -               VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+> +               VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) !=3D nr_pages=
+, folio);
+> +               VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
+
+We have this guard to ensure that a large folio is always added to the
+rmap in one shot, since we only support partial rmap addition for folios
+that have already been mapped before.
+
+It now seems you rely on repeated page faults to ensure the partially
+mapped process runs after the fully mapped one, which doesn=E2=80=99t look =
+ideal
+to me as it may cause priority inversion.
+
+Thanks
+Barry
 
