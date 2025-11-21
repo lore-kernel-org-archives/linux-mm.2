@@ -4,85 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0599FCFC266
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 12:43:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B68ECFC26F
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 13:02:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C8A06B0098; Fri, 21 Nov 2025 07:43:57 -0500 (EST)
+	id 920ED6B0022; Fri, 21 Nov 2025 08:02:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3789A6B009E; Fri, 21 Nov 2025 07:43:57 -0500 (EST)
+	id 8D1726B0023; Fri, 21 Nov 2025 08:02:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2685E6B009F; Fri, 21 Nov 2025 07:43:57 -0500 (EST)
+	id 7997C6B0024; Fri, 21 Nov 2025 08:02:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 117F46B0098
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:43:57 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AA47D13B471
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 12:43:56 +0000 (UTC)
-X-FDA: 84134581272.20.03E0141
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5252810000E
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 12:43:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UE6FRZgk;
-	spf=pass (imf14.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763729034;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C07F6B0022
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 08:02:13 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46A2B1405D7
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:02:11 +0000 (UTC)
+X-FDA: 84134627262.12.9A49CCB
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012051.outbound.protection.outlook.com [52.101.53.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 49CA080027
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:02:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=xJQuqDiO;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf02.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.53.51 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763730128; a=rsa-sha256;
+	cv=pass;
+	b=D+7HdzOjVwhgJPu+XDi287MxcUQ7A3EANRiUn4RKv3qm5BYKUFjJQ+wpeZ4JrxU2myRmcG
+	G+vXwgnH6mlmsF27+Kg91BeCn8TRbK8Y01kWL2XpkkXA336+tB5L6ofY+dwZhg6j/DoU4f
+	4MWO9frRbb4RB2l3Piqx6JQRLjRl+mM=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=xJQuqDiO;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf02.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.53.51 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763730128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UXNEr7vcm3thFtEulF8bEeGgEGO9nmCn0v+aGXpJLHk=;
-	b=R5DyZI2lexPqcMK+lbWY1+kJpehAHOonlcXWtHfKXOuuD0ZtCerjzyChmYucmQjcRdpXar
-	CmFkpkRUtVAecw4ftN1sq6SLu7oVCkHKEQ1poArNwBo8Ip2CPlJIuU6H3KZjI/jADVIqqW
-	abnQq1cEU95g6eu9BJzcgN0V84EZbCk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763729034; a=rsa-sha256;
-	cv=none;
-	b=7mX6DvO/DNTE5A5xTUXGV9uByilsppqml4kvDy5Ee1eRitJddojBse7VOXDxi39ceLd4v2
-	TixctDNrPMN9PPg8h6idMLprlex4tYi+bLl5sB9N5XsxdhbE4Dk50Xde5yni9p9e3tPOhZ
-	rG0l78y0EnEuR67kvY9gIFtwCK5CVAE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UE6FRZgk;
-	spf=pass (imf14.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1763729029; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
-	bh=UXNEr7vcm3thFtEulF8bEeGgEGO9nmCn0v+aGXpJLHk=;
-	b=UE6FRZgkiHBXbinsrDj8k26o4FnINr+H7Aogk7R3lvWG72XHnD/atRsndpq8RdAlJbxIP6Um2vJ0RgIrUCjJuXeJAtbzJJ/5a89xHbOBv2rXl+OL57MKPkCHg1Fe0LOi8AACSBtEglYTIQHnjZwQf4n+BPSomX8/7D8lEPjyzD8=
-Received: from 30.170.82.147(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Wt003i5_1763729026 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 21 Nov 2025 20:43:46 +0800
-Message-ID: <d7140963-3b21-4b51-9a9c-bcf8362bf1da@linux.alibaba.com>
-Date: Fri, 21 Nov 2025 20:43:45 +0800
+	bh=we2VkBdh5UZarUmXwwIF1Ksq7xaZVW9+cjtUQQE7VXo=;
+	b=SQrqJnvaKOYmbCIze4jZ9H0ovbmNfhsJw2B4vZ/g2SeC+GcS5MPap7wV7/BuSYOMtmmZtA
+	KGM8YJL1Qy/uZWELpsKBRfLIo5jsxnrDItQ+/9xD1cP+Gr/CTDQCi+HMTSTrlF+HHLlduL
+	4mQAwRYDFs7/jKwgA4YeUBzv+kVQKvM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CD3rffElwTKxTDrc56RKBK/4MgtW5zMmqfI3igvSVOCR6DLVd63XNSPGrq7FqZf2MzWM3xe4kTFMiFdHTuDjm5c6zHyXt1MR1CvxYvngv0QakjNCjMEUYbzRGJ1+h141tkaxW3275/HI4k7LPN1+yp5BaBPCCw1JcwoVOwDR9j6LubwXXkopY9wtd3zoEks5TaaHLYUmfN3/78o77BGCYwptZuH4D5NxWPhS/8kQuEvj17+b2LKDbN0dXHzCD0ZWlwVzBri1g9AlNVmSG4tFcm8L91dnX5dYM1dATipmhlpppuMf7mURR/4u8qzykKEgX8RVVq1A7GbqOtDZCwL2VA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=we2VkBdh5UZarUmXwwIF1Ksq7xaZVW9+cjtUQQE7VXo=;
+ b=ys4G5lsvtdaF8LHy2VI3rg5UTnonjMz0iAOE0YhC7VECV++Hhogcw+b1q2aNG4VoZwDa7SoDWet6nMKpT636cTLdFRIaLqlgRvEkVorUVJir1c4dUChXxBHs9bMbIMhwPB9sdLBVGKE1e6qdOlfjx31O8oMvLyJVNEzThjNTi3p08qxv5aMkhCx/IZXopgtXC9tdW412vh2gUwifIZZIgymqqy7fqS5AElf67dtIqZS0oaCxzBZzlKC3Wv/TwlWN9uyA6yK2LKTTPeY7CKGoW3fnDdaSIk6SapY3gZjLme6v0JFlU6x9jPl/ekCgxZ6y15UAwzKThoP8V7x1x0nH5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=we2VkBdh5UZarUmXwwIF1Ksq7xaZVW9+cjtUQQE7VXo=;
+ b=xJQuqDiOewq+ki709vhnE30NKFHE5RCWHCqEN1gIamsp9haSAwBlLSFomUHOSwL+Ww8/wMsZslwRNZkv/fao0cM5JkOv2Iv6vpfkAmhhR3u4VlyKQdjnaVdsEvgp9E/K5AXncUIIzbZVbtT7j/wLgh51JeKKF9f7BWZriHfB2b4=
+Received: from DM6PR08CA0024.namprd08.prod.outlook.com (2603:10b6:5:80::37) by
+ DM4PR12MB6279.namprd12.prod.outlook.com (2603:10b6:8:a3::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.11; Fri, 21 Nov 2025 13:02:04 +0000
+Received: from DS3PEPF000099E0.namprd04.prod.outlook.com
+ (2603:10b6:5:80:cafe::60) by DM6PR08CA0024.outlook.office365.com
+ (2603:10b6:5:80::37) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.14 via Frontend Transport; Fri,
+ 21 Nov 2025 13:02:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS3PEPF000099E0.mail.protection.outlook.com (10.167.17.203) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 13:02:04 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 21 Nov
+ 2025 05:02:04 -0800
+Date: Fri, 21 Nov 2025 07:01:44 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
+	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
+	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
+	<ira.weiny@intel.com>
+Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
+ populating guest memory
+Message-ID: <20251121130144.u7eeaafonhcqf2bd@amd.com>
+References: <20251113230759.1562024-1-michael.roth@amd.com>
+ <20251113230759.1562024-4-michael.roth@amd.com>
+ <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Yuwen Chen <ywen.chen@foxmail.com>
-Cc: akpm@linux-foundation.org, bgeffon@google.com, licayy@outlook.com,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, minchan@kernel.org, richardycc@google.com
-References: <ts32xzxrpxmwf3okxo4bu2ynbgnfe6mehf5h6eibp7dp3r6jp7@4f7oz6tzqwxn>
- <tencent_865DD78A73BC3C9CAFCBAEBE222B6EA5F107@qq.com>
- <buckmtxvdfnpgo56owip3fjqbzraws2wvtomzfkywhczckoqlt@fifgyl5fjpbt>
- <8c596737-95c1-4274-9834-1fe06558b431@linux.alibaba.com>
-In-Reply-To: <8c596737-95c1-4274-9834-1fe06558b431@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099E0:EE_|DM4PR12MB6279:EE_
+X-MS-Office365-Filtering-Correlation-Id: d59b55ab-e597-47da-00ce-08de28fe2b33
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?SzvDLJ2SyY2UhG070VcvTGGQtMXLdK/scKjblfPzxm38vDrctYo7Q6ATGXu3?=
+ =?us-ascii?Q?TSlxYo1YYIjmHGvVnHF18p2XwsEpq6FuvdsUm5+vR868BQs/HlGiqdySkAjH?=
+ =?us-ascii?Q?kjkexghXjRYIz5NLxSUpvmrHqGSGLaBM5AuAkehC3FkpXM/EM+W8LzKglKFE?=
+ =?us-ascii?Q?DCBq5QO9ZCHWu8ZCBJfTeOKUD46WFhd8TmE1ZgecHo9hxUIOLbPevVkNT/RI?=
+ =?us-ascii?Q?Q/7cUKp8yCBI11w6ZuvZp/AfHdR7SIpCxsuqLNbTbEOfyyTH6LBQqOVKLW86?=
+ =?us-ascii?Q?KFQNW5pv6DOBMAnSaGg2/r7+SBNjctQucaWfYJI/QRYQQSg0SS5GZxXlm0JK?=
+ =?us-ascii?Q?dwKH/6FbMDZmDGZ7qjsnSjS8OFS4glQqqx0ge583Mv0WOQu8fKAIovPFnwGz?=
+ =?us-ascii?Q?VU7JiKI33mt8TcUmZAFXK/OOIrqd3n8pJHFsnTh9epP6t1MLFkD/N0W45glp?=
+ =?us-ascii?Q?1KwBLwRHuB58RND5M6sy59ArsxsO2neWTMCTFJO8vl+lmFBWoTI4PTLWvHW2?=
+ =?us-ascii?Q?buDAQJrP/83NRUcday4KPraROzyMxRjpu32c6CgOli1lECFBvG0Vn37fB3wx?=
+ =?us-ascii?Q?WaRPO+oLzDmrDI0D6BaVLVa6BGQ5vG758RHtn0ZNSzKSDFkSPDGDRmGAKU5+?=
+ =?us-ascii?Q?RhK7XCNtQKAIGT6qe1xv7jbWq6ozdFq1yKiV2SlGwCK64gxl5JuqEyVamOJ5?=
+ =?us-ascii?Q?6AKeP9thmgml4CKeLCNRcO7ze8vCzUv1IDt8zbj/b2QcFvfSlPRxNIFBeSAv?=
+ =?us-ascii?Q?o8fFfBhG1ug7Vq3HkEMW7x1nNbuViyNhc0BxHT/YKxlBzZ5X17+X4TfGC0Af?=
+ =?us-ascii?Q?r2vIHglH5O6YlrJdGBF6P6coNOauwdEoH1gYlfVYmtu2fOxwKNYgFuKRl1+W?=
+ =?us-ascii?Q?3noFgckTloep2A/G4HyI76VWMmYj8dn32FOFbROSeCjvmaebHQs8dKulNWTb?=
+ =?us-ascii?Q?6KkoPq3KXvveWR/wBqDVq1IJirj0B42PhgSk76Dbh4ImG+1bvSFLqirpkFxj?=
+ =?us-ascii?Q?xFRBDLy1M45cDUVZ9eiV/4pEJx72VGmGVPQB7n+xZFKqEv1f6PE4R4xbr03r?=
+ =?us-ascii?Q?bDOMRtn3DNTZrpnk0JHGmUKF+Hx4hUeBN063MvTwG5E3qRzPXfn33EKQ+hH0?=
+ =?us-ascii?Q?AzBjm9WEdzd1jlkCNoB9TiQJrwuW/Cs/LeHcdb+dACECapfkuKDU2lY5O1SE?=
+ =?us-ascii?Q?Sl1STG6KbF2fBgK3wtg/u5hGDNyttyLJb7qtEfbZ5pNnx96Rr9LAnuGsaV92?=
+ =?us-ascii?Q?eL3iK9W1YLJdHVh8NSKtd1VvDz8fwJHghu76a7nd7JF8YEYQQCxKkD1BJl+7?=
+ =?us-ascii?Q?Bpc/RYP6u3DG82ApaXlLTw1BgPRDp7FKAZktag+yEH+jJ92Yi1rKAHNqv2cY?=
+ =?us-ascii?Q?0uyJyiu2aTz3YUXURcfiHvp8bz8Yz41/Z6kZ7CPeB6NKNaJT1aovM7aiRzqB?=
+ =?us-ascii?Q?57jBs3XNbwDeBxoAetvzHZbRZOwoWWlm2kz4wjAB8x8rPBzNB5I2kzVgDEuW?=
+ =?us-ascii?Q?n2PoVANhrefNWvjuxqSm4vQOR4kAwMlfFdT6IB5ScZrq74fEJdJko6W5hNZ0?=
+ =?us-ascii?Q?sopIJJ+RrxTS+8r6UQE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 13:02:04.3955
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d59b55ab-e597-47da-00ce-08de28fe2b33
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF000099E0.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6279
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 49CA080027
+X-Stat-Signature: 3nu4u5k3p8zsa64ztfj8dx41m8wonxko
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5252810000E
-X-Stat-Signature: 6xeg6gkcdpz65raunir59c89kcjpo5e9
-X-HE-Tag: 1763729032-851425
-X-HE-Meta: U2FsdGVkX1+TD0CiITFEoKfnKRkDt7h3AGtoy2W5QFYSaKQJhtlU4VNPNpKY3oGzW4dlRgJYPtCBj3210iGFN8KGmIpOjgdg1WrFS5VP44NuvgUAgnsFAf/uDXUUd1Jn/JrBOoorauGrtX0/Ni1veyj2lvO0uKqohp9XVKOluJcRu3PE8zU2MupZKndFiiH6wwDWLioux/JCdRIhBFgTzb6iVtvSX9Nh95LUtQoDiDehDTrScoFZhwFcJbVk+g4n4m4G//zT/rEnqMl7FvkNyeWztVdf+a/VH9bzJ27l+ndlu1aeF4WbasAARyyFQORR08YTxrr9ML3Vq7JXlxijHVL+Rh7fNJyhY90JoAbuQlKi+CtI9ONeAZ+Xb/ZrwZgeQlvR7r8csJjMD73AKeUOL6vZoxLYK+fhZZyeJZJ5zoVK7HMhnmwWPLdd8hvpabzzvAKkBCtpwvZ7rzhZsNf0mcXBuCrdYGzYmpmVv9Vki7a1nS1j3XlgogUVlVvRaVmuTIO8Y5iY96eD33F5LxIooqF17PUXTMkuK2pFxQZrguzi/M2o5Yj/wkkfOWqIFV4dr4A3YiZDs6E388pfLLtsJ12h3gRfSPyY1Y/Oclw9B8TBcfI1UHuTI2yjVNy7cSDoqRyEw5iZXyEjd7LHjYKM/1Msz659gxhlvBOb95EnwLFHFSdlhGuJBBsWvb9VhYvLvJx1GN72CKN3Us+Asw3sxQtS0gLGzqU/zQInBCDquUvmy+G/GCav3aRd8zcQftF2V347qh6/ro0X4iidRNhfhzEAH9uI0kuqdddDjM76vSdTUfpxkd/wUeqqXtvCrdn8hKlcNXrY/PzutVCrCOW68IGUBKjAk3AB26rNhKBABo57oe0xbastop62ayXEYmrcSNcfXW2jKjiqBuFlcsUJ0gCfxw20Y2JLRhd+ShvmNa6ZZezNYxgkEbE1GZXvb0+RoPZ9heTAfgNYChC/AVf
- SDxmWvTF
- KNkgRKUlddamLKOxms4luMS+lJ0PhHj7pNZXE8LX16JLbIesrmvvFKJn5FnXIYu62jTehubp50FAZ7ZslVTDSWdXilOk7fYQOFPaTlhYcLVKOcmkE1WKvyEnex/wr4Ks888u5KY7jjOb7RK+cMEL6p+RJ9ieqDDyjjoTe30ts2+K3AbPbChgHjErRhvjHO2xFP1RxRgcPwCprmHIavxay7GO/EAf4T2l/ZjHiW51gbboe0N07qKdc+c7R+5a5QzUScxWND1cFid4R9tansDlfxtGDWmxiSL79dAsHdOmKxmq7dJWJc9mBIbOqQjzg1iat7h5W86cz4WqF+LzuZilP2nIkIg==
+X-HE-Tag: 1763730128-742077
+X-HE-Meta: U2FsdGVkX19UR+TPgg8kGqMbTkVm60YLhbJNHJigNSRYLtYLwA3z4K8jFd/uK77oFipjMms22WGykPcfFaUSI5b9keZei4cwsau+yixSX9aLMjMzc3+vgSToWRvogI2mhVI6IJ8YuYq9qmKoDKj8aD6ccfOHwX1YzKDtxC+Zd9/dEWwjLbllyDupIabVcgYr3EauKcqEvQ3eirrKPY75r1vmPeJFV9zNMiC8xfBC5lxOb3SD/RClD/hvN51O6oaWpDCMOtHHmVkJxwMVhcso74WOCicsw3IyCjYYV2s5/vEaj2yUtD+6TZbgBcG7vV5ahirUqW7kIOAQOIsXsJihE1UgRT/RD/SLmOtBJttoFyCtMb4w4GGiaNVF3rfj2GaAgGRyhJDfp9py5u+wAQuOQ/ZPkweOdeuJPgrPGL/LBW8A6oWyBSQvm//71e261ivzzkEdIjvIvG7f3QwPxO7hm0WwIlP6apIozMM3UiTX80cejzmJ4z7XgKPlAlYLjNc7knhbuzwYRHzgyew6tgjuC/HA3fSdEMqF6MiOnYoR0HP+Rkmms4F1eUH/vbalouZoqnFsfQdy5RQn8zodTSqalaybKlh4XL/eyPElnCI0Rqp/puWrjafH3G44B0OEauUqv1mq3lPNQfn6BeE0qmc8quNz7ly3ica9eLP9AdCtRQg6EGbZsI3DRXw684v8Tl2WdekCg08vFNHbxlpOVT8ynE+5C5HsGE/aNY1/7IY4rmTnQYTXWy0cqEUpcqalYMnAPEe6kAEKZ1nyDIJafMs2eo8irw9QntR7BjR82ZIRopQinIPpunlMt/0RatIpYJ1vdHTEVRShdRjnYgQ+lBJQA4SXgnTY0KndKd93S4YS7ko0b9PnKThakW3oBNWl+4UJ+c2fUqOepDxt50j2qjjz5pJdIbuHHHXuUHVP/hGpiL8zZbZHDmxg0hOCAY3jdYDKPUoGuAPNvn+dC38D6M/
+ sR0LQYB1
+ l4Rj9FukrNVtNcHSbEQQGN3Nwm0gjWrq4kHLzfCz7MHB7CADG3B+V1bdfPu7MOL4ByJY0+7eiRKqhhPM6YRwSd/Fn8rAgxPg0FizcFmhoNdvhmlEgnMz02iCAAnjjYUMIWBzo9kplYrZ8MS9E7GllqdngRE/9ZhQPdqDqcpYgEWl5tT+VZ1raHZ6+Jg7+zseMnthr2j3sKQjlNxx8KtdUABC/focDdh8V1jlA9RyYt0rH2xJBjmxLMkcKMhlaQ88NSPneOcXhZ134wnEERJZcMWCQJLd70zfFQoVTdUSl9LWy51haQZ+4BfpJsQHSORiSIruY/hKY1cb1tAVV6I6RsH/ORgoJ7UuX/YSGk0EakQfz1UtU62Y8M0PSrOErladaA+H4Yh63h7OM013urjITM/C1+TlYcYOkwYiChamLbRw3kUxltnWceXM3Q1qVd5FROpA/CTUE2OsJkV263MLnbwnZh1MfLJ+3y/86VXaTQUlHUQtBqcducIoB06RhXGlF/R5l2z50NqySQiR8hzqtUrFDADdbsU8JT4MxCCGdB9AVznUkPLPTN9R9JRZwrlKlO7axQyeQM8rIHgTepFJrTWRB32X+w9LYiRwkxGnoPVDl/gwMi+bllszJ6yW9rNUGv72jkSpCMFx0qu0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,79 +175,337 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Nov 20, 2025 at 05:11:48PM +0800, Yan Zhao wrote:
+> On Thu, Nov 13, 2025 at 05:07:59PM -0600, Michael Roth wrote:
+> > Currently the post-populate callbacks handle copying source pages into
+> > private GPA ranges backed by guest_memfd, where kvm_gmem_populate()
+> > acquires the filemap invalidate lock, then calls a post-populate
+> > callback which may issue a get_user_pages() on the source pages prior to
+> > copying them into the private GPA (e.g. TDX).
+> > 
+> > This will not be compatible with in-place conversion, where the
+> > userspace page fault path will attempt to acquire filemap invalidate
+> > lock while holding the mm->mmap_lock, leading to a potential ABBA
+> > deadlock[1].
+> > 
+> > Address this by hoisting the GUP above the filemap invalidate lock so
+> > that these page faults path can be taken early, prior to acquiring the
+> > filemap invalidate lock.
+> > 
+> > It's not currently clear whether this issue is reachable with the
+> > current implementation of guest_memfd, which doesn't support in-place
+> > conversion, however it does provide a consistent mechanism to provide
+> > stable source/target PFNs to callbacks rather than punting to
+> > vendor-specific code, which allows for more commonality across
+> > architectures, which may be worthwhile even without in-place conversion.
+> > 
+> > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  arch/x86/kvm/svm/sev.c   | 40 ++++++++++++++++++++++++++------------
+> >  arch/x86/kvm/vmx/tdx.c   | 21 +++++---------------
+> >  include/linux/kvm_host.h |  3 ++-
+> >  virt/kvm/guest_memfd.c   | 42 ++++++++++++++++++++++++++++++++++------
+> >  4 files changed, 71 insertions(+), 35 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index 0835c664fbfd..d0ac710697a2 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> > @@ -2260,7 +2260,8 @@ struct sev_gmem_populate_args {
+> >  };
+> >  
+> >  static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pfn,
+> > -				  void __user *src, int order, void *opaque)
+> > +				  struct page **src_pages, loff_t src_offset,
+> > +				  int order, void *opaque)
+> >  {
+> >  	struct sev_gmem_populate_args *sev_populate_args = opaque;
+> >  	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+> > @@ -2268,7 +2269,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
+> >  	int npages = (1 << order);
+> >  	gfn_t gfn;
+> >  
+> > -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src))
+> > +	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_pages))
+> >  		return -EINVAL;
+> >  
+> >  	for (gfn = gfn_start, i = 0; gfn < gfn_start + npages; gfn++, i++) {
+> > @@ -2284,14 +2285,21 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
+> >  			goto err;
+> >  		}
+> >  
+> > -		if (src) {
+> > -			void *vaddr = kmap_local_pfn(pfn + i);
+> > +		if (src_pages) {
+> > +			void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
+> > +			void *dst_vaddr = kmap_local_pfn(pfn + i);
+> >  
+> > -			if (copy_from_user(vaddr, src + i * PAGE_SIZE, PAGE_SIZE)) {
+> > -				ret = -EFAULT;
+> > -				goto err;
+> > +			memcpy(dst_vaddr, src_vaddr + src_offset, PAGE_SIZE - src_offset);
+> > +			kunmap_local(src_vaddr);
+> > +
+> > +			if (src_offset) {
+> > +				src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
+> > +
+> > +				memcpy(dst_vaddr + PAGE_SIZE - src_offset, src_vaddr, src_offset);
+> > +				kunmap_local(src_vaddr);
+> IIUC, src_offset is the src's offset from the first page. e.g.,
+> src could be 0x7fea82684100, with src_offset=0x100, while npages could be 512.
+> 
+> Then it looks like the two memcpy() calls here only work when npages == 1 ?
 
+src_offset ends up being the offset into the pair of src pages that we
+are using to fully populate a single dest page with each iteration. So
+if we start at src_offset, read a page worth of data, then we are now at
+src_offset in the next src page and the loop continues that way even if
+npages > 1.
 
-On 2025/11/21 20:21, Gao Xiang wrote:
-> 
-> 
-> On 2025/11/21 17:12, Sergey Senozhatsky wrote:
->> On (25/11/21 16:23), Yuwen Chen wrote:
-> 
-> ..
-> 
-> 
->>>> I think page-fault latency of a written-back page is expected to be
->>>> higher, that's a trade-off that we agree on.  Off the top of my head,
->>>> I don't think we can do anything about it.
->>>>
->>>> Is loop device always used as for writeback targets?
->>>
->>> On the Android platform, currently only the loop device is supported as
->>> the backend for writeback, possibly for security reasons. I noticed that
->>> EROFS has implemented a CONFIG_EROFS_FS_BACKED_BY_FILE to reduce this
->>> latency. I think ZRAM might also be able to do this.
->>
->> I see.  Do you use S/W or H/W compression?
-> 
-> No, I'm pretty sure it's impossible for zram to access
-> file I/Os without another thread context (e.g. workqueue),
-> especially for write I/Os, which is unlike erofs:
-> 
-> EROFS can do because EROFS is a specific filesystem, you
-> could see it's a seperate fs, and it can only read (no
-> write context) backing files in erofs and/or other fses,
-> which is much like vfs/overlayfs read_iter() directly
-> going into the backing fses without nested contexts.
-> (Even if loop is used, it will create its own thread
-> contexts with workqueues, which is safe.)
-> 
->   In the other hand, zram/loop can act as a virtual block
-> device which is rather different, which means you could
-> format an ext4 filesystem and backing another ext4/btrfs,
-> like this:
-> 
->    zram(ext4) -> backing ext4/btrfs
-> 
-> It's unsafe (in addition to GFP_NOIO allocation
-> restriction) since zram cannot manage those ext4/btrfs
-> existing contexts:
-> 
->   - Take one detailed example, if the upper zram ext4
-> assigns current->journal_info = xxx, and submit_bio() to
-> zram, which will confuse the backing ext4 since it should
-> assume current->journal_info == NULL, so the virtual block
-> devices need another thread context to isolate those two
-> different uncontrolled contexts.
-> 
-> So I don't think it's feasible for block drivers to act
-> like this, especially mixing with writing to backing fses
-> operations.
+If src_offset is 0 we never have to bother with straddling 2 src pages so
+the 2nd memcpy is skipped on every iteration.
 
-In other words, a fs claims it can do file-backed-mounts
-without a new context only if:
+That's the intent at least. Is there a flaw in the code/reasoning that I
+missed?
 
-  - Its own implementation can be safely applied to any
-    other kernel filesystem (e.g., it shouldn't change
-    current->journal_info or do context save/restore before
-    handing over, for example); and its own implementation
-    can safely mount itself with file-backed mounts.
+> 
+> >  			}
+> > -			kunmap_local(vaddr);
+> > +
+> > +			kunmap_local(dst_vaddr);
+> >  		}
+> >  
+> >  		ret = rmp_make_private(pfn + i, gfn << PAGE_SHIFT, PG_LEVEL_4K,
+> > @@ -2331,12 +2339,20 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
+> >  	if (!snp_page_reclaim(kvm, pfn + i) &&
+> >  	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
+> >  	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
+> > -		void *vaddr = kmap_local_pfn(pfn + i);
+> > +		void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
+> > +		void *dst_vaddr = kmap_local_pfn(pfn + i);
+> >  
+> > -		if (copy_to_user(src + i * PAGE_SIZE, vaddr, PAGE_SIZE))
+> > -			pr_debug("Failed to write CPUID page back to userspace\n");
+> > +		memcpy(src_vaddr + src_offset, dst_vaddr, PAGE_SIZE - src_offset);
+> > +		kunmap_local(src_vaddr);
+> > +
+> > +		if (src_offset) {
+> > +			src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
+> > +
+> > +			memcpy(src_vaddr, dst_vaddr + PAGE_SIZE - src_offset, src_offset);
+> > +			kunmap_local(src_vaddr);
+> > +		}
+> >  
+> > -		kunmap_local(vaddr);
+> > +		kunmap_local(dst_vaddr);
+> >  	}
+> >  
+> >  	/* pfn + i is hypervisor-owned now, so skip below cleanup for it. */
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index 57ed101a1181..dd5439ec1473 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -3115,37 +3115,26 @@ struct tdx_gmem_post_populate_arg {
+> >  };
+> >  
+> >  static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> > -				  void __user *src, int order, void *_arg)
+> > +				  struct page **src_pages, loff_t src_offset,
+> > +				  int order, void *_arg)
+> >  {
+> >  	struct tdx_gmem_post_populate_arg *arg = _arg;
+> >  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+> >  	u64 err, entry, level_state;
+> >  	gpa_t gpa = gfn_to_gpa(gfn);
+> > -	struct page *src_page;
+> >  	int ret, i;
+> >  
+> >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+> >  		return -EIO;
+> >  
+> > -	if (KVM_BUG_ON(!PAGE_ALIGNED(src), kvm))
+> > +	/* Source should be page-aligned, in which case src_offset will be 0. */
+> > +	if (KVM_BUG_ON(src_offset))
+> 	if (KVM_BUG_ON(src_offset, kvm))
+> 
+> >  		return -EINVAL;
+> >  
+> > -	/*
+> > -	 * Get the source page if it has been faulted in. Return failure if the
+> > -	 * source page has been swapped out or unmapped in primary memory.
+> > -	 */
+> > -	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -	if (ret != 1)
+> > -		return -ENOMEM;
+> > -
+> > -	kvm_tdx->page_add_src = src_page;
+> > +	kvm_tdx->page_add_src = src_pages[i];
+> src_pages[0] ? i is not initialized. 
 
-So it's filesystem-specific internals to make sure it can
-work like this (for example ext4 on erofs, ext4 still uses
-loop to mount). The virtual block device layer knows
-nothing about what the upper filesystem did before the
-execution passes through, so it's unsafe to work like this.
+Sorry, I switched on TDX options for compile testing but I must have done a
+sloppy job confirming it actually built. I'll re-test push these and squash
+in the fixes in the github tree.
+
+> 
+> Should there also be a KVM_BUG_ON(order > 0, kvm) ?
+
+Seems reasonable, but I'm not sure this is the right patch. Maybe I
+could squash it into the preceeding documentation patch so as to not
+give the impression this patch changes those expectations in any way.
+
+> 
+> >  	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+> >  	kvm_tdx->page_add_src = NULL;
+> >  
+> > -	put_page(src_page);
+> > -
+> >  	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
+> >  		return ret;
+> >  
+> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> > index d93f75b05ae2..7e9d2403c61f 100644
+> > --- a/include/linux/kvm_host.h
+> > +++ b/include/linux/kvm_host.h
+> > @@ -2581,7 +2581,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
+> >   * Returns the number of pages that were populated.
+> >   */
+> >  typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> > -				    void __user *src, int order, void *opaque);
+> > +				    struct page **src_pages, loff_t src_offset,
+> > +				    int order, void *opaque);
+> >  
+> >  long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
+> >  		       kvm_gmem_populate_cb post_populate, void *opaque);
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 9160379df378..e9ac3fd4fd8f 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -814,14 +814,17 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> >  
+> >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> > +
+> > +#define GMEM_GUP_NPAGES (1UL << PMD_ORDER)
+> Limiting GMEM_GUP_NPAGES to PMD_ORDER may only work when the max_order of a huge
+> folio is 2MB. What if the max_order returned from  __kvm_gmem_get_pfn() is 1GB
+> when src_pages[] can only hold up to 512 pages?
+
+This was necessarily chosen in prep for hugepages, but more about my
+unease at letting userspace GUP arbitrarilly large ranges. PMD_ORDER
+happens to align with 2MB hugepages while seeming like a reasonable
+batching value so that's why I chose it.
+
+Even with 1GB support, I wasn't really planning to increase it. SNP
+doesn't really make use of RMP sizes >2MB, and it sounds like TDX
+handles promotion in a completely different path. So atm I'm leaning
+toward just letting GMEM_GUP_NPAGES be the cap for the max page size we
+support for kvm_gmem_populate() path and not bothering to change it
+until a solid use-case arises.
+
+> 
+> Increasing GMEM_GUP_NPAGES to (1UL << PUD_ORDER) is probabaly not a good idea.
+> 
+> Given both TDX/SNP map at 4KB granularity, why not just invoke post_populate()
+> per 4KB while removing the max_order from post_populate() parameters, as done
+> in Sean's sketch patch [1]?
+
+That's an option too, but SNP can make use of 2MB pages in the
+post-populate callback so I don't want to shut the door on that option
+just yet if it's not too much of a pain to work in. Given the guest BIOS
+lives primarily in 1 or 2 of these 2MB regions the benefits might be
+worthwhile, and SNP doesn't have a post-post-populate promotion path
+like TDX (at least, not one that would help much for guest boot times)
 
 Thanks,
-Gao Xiang
+
+Mike
+
+> 
+> Then the WARN_ON() in kvm_gmem_populate() can be removed, which would be easily
+> triggered by TDX when max_order > 0 && npages == 1:
+> 
+>       WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
+>               (npages - i) < (1 << max_order));
+> 
+> 
+> [1] https://lore.kernel.org/all/aHEwT4X0RcfZzHlt@google.com/
+> 
+> >  long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
+> >  		       kvm_gmem_populate_cb post_populate, void *opaque)
+> >  {
+> >  	struct kvm_memory_slot *slot;
+> > -	void __user *p;
+> > -
+> > +	struct page **src_pages;
+> >  	int ret = 0, max_order;
+> > -	long i;
+> > +	loff_t src_offset = 0;
+> > +	long i, src_npages;
+> >  
+> >  	lockdep_assert_held(&kvm->slots_lock);
+> >  
+> > @@ -836,9 +839,28 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> >  	if (!file)
+> >  		return -EFAULT;
+> >  
+> > +	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
+> > +	npages = min_t(ulong, npages, GMEM_GUP_NPAGES);
+> > +
+> > +	if (src) {
+> > +		src_npages = IS_ALIGNED((unsigned long)src, PAGE_SIZE) ? npages : npages + 1;
+> > +
+> > +		src_pages = kmalloc_array(src_npages, sizeof(struct page *), GFP_KERNEL);
+> > +		if (!src_pages)
+> > +			return -ENOMEM;
+> > +
+> > +		ret = get_user_pages_fast((unsigned long)src, src_npages, 0, src_pages);
+> > +		if (ret < 0)
+> > +			return ret;
+> > +
+> > +		if (ret != src_npages)
+> > +			return -ENOMEM;
+> > +
+> > +		src_offset = (loff_t)(src - PTR_ALIGN_DOWN(src, PAGE_SIZE));
+> > +	}
+> > +
+> >  	filemap_invalidate_lock(file->f_mapping);
+> >  
+> > -	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
+> >  	for (i = 0; i < npages; i += (1 << max_order)) {
+> >  		struct folio *folio;
+> >  		gfn_t gfn = start_gfn + i;
+> > @@ -869,8 +891,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> >  			max_order--;
+> >  		}
+> >  
+> > -		p = src ? src + i * PAGE_SIZE : NULL;
+> > -		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
+> > +		ret = post_populate(kvm, gfn, pfn, src ? &src_pages[i] : NULL,
+> > +				    src_offset, max_order, opaque);
+> Why src_offset is not 0 starting from the 2nd page?
+> 
+> >  		if (!ret)
+> >  			folio_mark_uptodate(folio);
+> >  
+> > @@ -882,6 +904,14 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> >  
+> >  	filemap_invalidate_unlock(file->f_mapping);
+> >  
+> > +	if (src) {
+> > +		long j;
+> > +
+> > +		for (j = 0; j < src_npages; j++)
+> > +			put_page(src_pages[j]);
+> > +		kfree(src_pages);
+> > +	}
+> > +
+> >  	return ret && !i ? ret : i;
+> >  }
+> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
+> > -- 
+> > 2.25.1
+> > 
 
