@@ -4,100 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1E8CFA466
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 02:27:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3211CCFA466
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 02:42:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B27C86B0029; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
+	id 72F8E6B0026; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD8496B002A; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
+	id 706ED6B002A; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C7276B002B; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
+	id 61DC56B002B; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8459A6B0029
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:27:09 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E845C03B7
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:27:09 +0000 (UTC)
-X-FDA: 84133026978.17.1EB84C9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7C002140008
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:27:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lFoLdmQy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763692027; a=rsa-sha256;
-	cv=none;
-	b=c4tz1CoQ76DerFA3lwwLOVc1Qz2xhr8ciFnjNT/l05fo0iG9/qtWykHjPYXECn8L3qWTcq
-	+UF6wnxJ2TFFWLPiO4m0VhC/DbLX87FNVuwYnrcnh2XZM5kG5zzfbJgo+7gjITzEitSnct
-	AUrvtCfBuIynCUBj9VCO2dlIs5kbHPE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lFoLdmQy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 511136B0026
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE38C1402FA
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:42:13 +0000 (UTC)
+X-FDA: 84133064946.11.72E6DB5
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E123B1C000D
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:42:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="OKLAh/Wv";
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763692027;
+	s=arc-20220608; t=1763692932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u6uY25pScRCT/k8xpqR3a/DRNPzwoEr+dHVE4MNK3sY=;
-	b=r2nIEv66pXUi0Pt+a2IqpccAat4jsh5CgAA7XcjdNJkZJ3MQa1J/1E+KVR8UbC1lwT8Kwj
-	h0uqrQ0za6CZ/qIp0Xhk0RmSbyA7zUPpdwmsIaPtdb1HoS8q8OKcGv8xMdnFwnpoYOaOVL
-	VsLjGsPtAHZuejVhCm2Yt/Hbccn6O8Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1FC0F437C9;
-	Fri, 21 Nov 2025 02:27:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4F8C4CEF1;
-	Fri, 21 Nov 2025 02:27:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763692026;
-	bh=mOd3L+VzE7HN86KMia2o3aoHwwJymju7EmznX6a9bBE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFoLdmQybPjhFTl9NKDE3GA9XyRBFiDPFSm5OkaFO7L3719i5FOGXceWpqR540Szj
-	 fqUhT70IKEFMzCUB8egzkyky3L5BCTtD/FIfwe9MAZ0kxcQOohwcCUrlWR7RZSj6V1
-	 et76iFksUNpSzcdKXPbH7wx5Zc4QeDOQP08k/4WoBvGYMMNl6LMedDSoxvDQiPEeMu
-	 25xNcGa9sk/e1bUPPuJwPR13rlY4Bo4XhCmDQ6W6xWBM9DMjMO7rqAW6+yKLjm1Xbd
-	 gQsZd6fV+Uef9y2LL90egyg254zGJPPv1oYyHPRuVohx9imvG58v6wSxGzMlPyTaYG
-	 glQk9d+Nd2Jmw==
-From: SeongJae Park <sj@kernel.org>
-To: Honggyu Kim <honggyu.kim@sk.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	kernel_team@skhynix.com,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Fan Ni <nifan.cxl@gmail.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Raghavendra K T <rkodsara@amd.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	Wei Xu <weixugc@google.com>,
-	Xuezheng Chu <xuezhengchu@huawei.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	damon@lists.linux.dev,
-	Yunjeong Mun <yunjeong.mun@sk.com>
-Subject: Re: [Linux Memory Hotness and Promotion] Notes from October 23, 2025
-Date: Thu, 20 Nov 2025 18:27:02 -0800
-Message-ID: <20251121022703.134685-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <98c0907c-0435-45d2-bd68-e97598b79d0e@sk.com>
-References: 
+	bh=aG1gNvX12mFbaTVukDWqvg7Sz0xqHjumlFfhuK5ypGQ=;
+	b=Sg85K1o5YmkkafJQMhtBdTYqLSqXPyiVSpkZO3KvveCVui9kF1RIUQnL7UB0zcd5i16BD3
+	mOjepVHr2WwMwTQglQXXaZ4OaWDPkb+M90G3JdXn6220Rs/AwfogxB0c0vpsniXL8OiviV
+	xhDNA2I4LfRj+TTqJ99EUffG8v5CJY8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763692932; a=rsa-sha256;
+	cv=none;
+	b=GhUP+Zv0K+6zvBhG2LqqruL6peSKmpXJ80CR+o9kmHVOGgVftIc+bpA0qSgW1dHbbALIVJ
+	wpuAH2RTU6pOxndr72+cveZMAcsyQG0UbIt1BX8lGK8A/QyRaF2pfnqFBWYIL3Jo4VCGzm
+	cRpVa9pcPc0WUYaqsoxxXpEEQ94nOMQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="OKLAh/Wv";
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64175dfc338so2762837a12.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:42:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763692930; x=1764297730; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aG1gNvX12mFbaTVukDWqvg7Sz0xqHjumlFfhuK5ypGQ=;
+        b=OKLAh/WvmzWN1g7Zc51MapiXUCsl2TXePQcrJoo4CW73mL8fT1BOs5VwA4uv8urCvw
+         2bv7s71fBpeDT/CPNAc898xMnTkP2CbF4NWHAynTbrSstbkqYIYiWetXjz6f5AkCCG0x
+         5Y/STGjvIs3AuiMNXlU0OJKb5n+FcCkRL2lC440Cp8n/89XTou5v7z/0YgRTemPooLwE
+         S3SyVUQbZU+fzcG98QJOeuEUozZnhugOuk4mHDbvyi6WbBySdxdVWw1j013iZs7WlNXK
+         LD/8NxeF19Cy2rMoVa503Lim6MlzfDpmkUMbFnlp8jda0GYyHRU2F3Wz6VC9UyoB9deG
+         FfAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763692930; x=1764297730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aG1gNvX12mFbaTVukDWqvg7Sz0xqHjumlFfhuK5ypGQ=;
+        b=WiVz3tLkVv9oDq+NQvwMmPm3xTiB+TnwcN7KlJDoVCWnE42KJCmJAGbE1BtPMkZWyL
+         MoDxg0JLBXC52lrV1NSVWoAJ4Q4uMksRke6A8PbffV0x7SHi9UgoqCF12klqW2LG3znn
+         iqj+z7VY4CSSwXamovC2q3ppCUzeW6jql+IwAoPU+tYhQnOU9wkbdvTFfLAZJ/2GbGka
+         REyyIhfbvmo7UcpMevJzOzuFZ2Nw/+tr+nq0CzEUOgIiX63jW2reLeM2aWsrM/Uk8FRh
+         MhoKEBvVLIBsH8C9gMngLgSbF3yXtMSHGDadTrgi4Ub4z8UX0BE5DjzpiQWBn4Upxlg0
+         ziZg==
+X-Gm-Message-State: AOJu0YzfsWBWoQbOT7GZw3mZ79sxskudd7+dtgqZ256CgcFH/0QI1dMQ
+	rAgD/6ij10DJFrSKNZSCJd77feE5x3IIRw8Msl3ABU15WQ0RC2T+eNv+T5PvJSlJ8vd9u9j6pVL
+	UE3fra8ogO51EXYxqbjqvAqBt9rfs2eQ=
+X-Gm-Gg: ASbGncu423MoMap1A10mqAR/Vw+nk7mJkG7mSJrNkzwmigO4HVUy7sTm/Vs3GRu88ac
+	TWhO6ntq7sxetyf2/VS3Iv3tYGzl/t7L/iTHLaLm3LIl0JcrgqeyQ7CH2Xx2eGMHD/Q6756IOGh
+	R6gGOG5e1Z2uzYnK9edCkAPpA0BIUa/ELVOjJKPeMS1pWZEV9LmjbKuSDKBqsUg44mYeBLDa7tT
+	USQUTm1CPj/ZwRGbvX2NHpiWHfLfB1Tgnm0+sI3uIrs5FjSaYLV5FsuFmEdEIBfb0AYR77DYte3
+	kJhIWxqyi0pkh8UxFZ9QpsIcqZgGDFA=
+X-Google-Smtp-Source: AGHT+IFIhnYEepkxXziqlUOUfduozhyl+4q52apImGvyha6PIl/kObL/KhTey6tNzbVpl9UVS8ZcSk482g2P748epa0=
+X-Received: by 2002:a05:6402:510b:b0:640:ccb0:f4da with SMTP id
+ 4fb4d7f45d1cf-6455469bf9fmr719414a12.29.1763692929878; Thu, 20 Nov 2025
+ 18:42:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
+ <20251117-swap-table-p2-v2-3-37730e6ea6d5@tencent.com> <CAGsJ_4zSqQax-Ct-zz3uMZ_dD7vnvTjWZ_BsnXBnMVpVNNDYUA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zSqQax-Ct-zz3uMZ_dD7vnvTjWZ_BsnXBnMVpVNNDYUA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 21 Nov 2025 10:41:33 +0800
+X-Gm-Features: AWmQ_bkT9_nY4s0wnqQFGfaNrU0zB4Zg3rHgZ_Puymj_6T3RSmTCG_WLjSidrSw
+Message-ID: <CAMgjq7BYNwVSX+=KDxmdFpUZ4gnTDjA7LU_Fi=J6SFUV8pAcUg@mail.gmail.com>
+Subject: Re: [PATCH v2 03/19] mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
+To: Barry Song <21cnbao@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7C002140008
-X-Stat-Signature: sku1a77tsmwhghd37q97c3axkgzo6od9
-X-HE-Tag: 1763692027-838597
-X-HE-Meta: U2FsdGVkX1/yuOF0Fi2KH8CwazxqFezEatjcGVwZP/hKOA5YsdiUZ+AC0jTdi+GYemsbS9U4L7AR6cYmRtv0haTEInyhEQ++R9cMTje9MfvKaEjXmTuECYbTVv9iFL/pTaEaw0jmGfR1I8BlVjNxmFsSPNOeBMpt9FVYlskuMQLctwcEn+hvd4yHqJvtT/RziM6zaOWu3EM8I9mdeiJ8OLkiZHbJA3cJc5MZKo0ibQnggRllPoUbHsS2ClRWoMcsGMjtrsV4pKE/cNf9c7hpsR0Gt3tWbo7Y0AS2gArr3IiJmuR4FuPJ0qQ0GbYkQuLC/jSgP9WawxyD04gHSB1A0FPUwfTb10Aluz97dhdOywZjhE8FlCTKlpNGQMmihk+0dKeZ4icQOpIp5gKH0TEBnZsvMqMyLCpQkSoDMHl9w5x7mlysgBAZZWySYGFtO5N+ChghbtNtMpxOFv/Sv1GPUjIXZpqmVdt/K1/L9jEnpx2MbXe4XuFvT0CGW25UUc0cLrca4HtTbd20DO4qLKUFgwF9aT8OUTaWKzyxZlLBegceElV25/hWyxfsh0raQcaKixMVMKIlYDDEAYfoyfZJkjMwNoW+TS4859zlbQzawJVECyW+LuCc69s9tyFm0dQ1hqD2utQ+8yif5NITDbh1HjfqLuQygVggSGxaMa/eoyk0F/pObZ315Z0+xJ/MwgjrFRrssL6FLkZmVILaxoA60Q2Coura6DY8u0LGwak2TYOysE3Nd8dVyJ0ouy2U0lNBjztx7UetLU3xLKA4UDkx8lSZKAeCIsuBavovD4rXeVNhmb5Ji6qqvSHeAqYvF4jUyBr3ZXOlWxsS+DWbK4A2AgoL1YGSf9zIlYzF7KLapdlEWE0xT+cMpaqkswkZ+r2VzVutZ3OmGEvvhapnooXw515uR5SzuprlO8liZbpvF5cfJWinZpEjZbBIkfXGKxYZo3/PxpiGPOB4z8dxAqt
- ELDspHca
- BusD/M4sWGEVrcUd3pTieQLy/l6V6FBezuwVnmYcIXRmOEiuiCMlG1ROHxPLhmFxTK9IvNm+BA7r73Oi3+1ANqyZwSPFGaZQhvF4sYh28ufFgNEJbT/Je4Th2WJOmQW1vKFLAujtfyaJOyxaA9BAps52L4+e6B3PBgTeB/AHUqkQrWszJ50MRGsTMafLnhGVRXz7j6dlT2Mc+gswQWY+Cu0pqU90pCOR98E4EIHixM8h3Mj8IsWbfpSjtDkrcuTh+TktcAQuUG5Icn/VHoHiToT1G9tCzPPOTVjjh49Yut6RrFUY9IBLrZ24ylKnCh9cHt/yw0AENuhzNO7nLeK6u+5C3zQDu7jzacZctvi1o+zwoFAN1l15Em3F2zEyr7MdJnembsW6TGX9s4DO/2cSlxA/I0A==
+X-Rspamd-Queue-Id: E123B1C000D
+X-Stat-Signature: mza4uwecsnocjdc1pm4f3ogf95xu7wbz
+X-HE-Tag: 1763692931-817778
+X-HE-Meta: U2FsdGVkX1/kkfrxdEVkDeH4f8Ck/n3IaSxrK8VlsTl2mwCS9SifaTQzwiZ2GwxlcrjJ9CzgiElBcT0EbtUvRkiNbG2uuUG61646WUc0MUR8mS0DpfaOX8gmn3QPZ4WCqN7395U+F99rmLucNnaiKWuRStjuoCff2VzS+bP0bRYtI3oba36pRHL6pbCdXKGHdB5miXcWwLOJbgBxJn+LlUT0J3ShMdMzKKWXL6Qe11WHu00HL578FYCPTwGJGvtNjv3FGrXY03ilAriBYpnLyMqWIeJwSIWbz5M3SdixTlVw0+uwREdQqZWa5rFqmrizaeP7chb0VzkJ7dEH2AU+k7HxVp1n/tJDRjEOlEoalsxmjQV4wweApAwVOnLWU9ewcDoP6IQiJ7oYiVvWmfsEFA/rePcM+TYV07oViRSyzz7/t4D60pTT6Ec3V90E2ZpFGCVsCMsOX2KAi/trHJwnF0wpcQeQ92shQqjS3j03TfurDNOPyUYMWuz0NiIxyunNAyYl5FNzuwluMNnTrTJmHmorgwrwC2hXCN2TX+Y5n18Z9e0Btlrl/cBlpBx8WD4w0AEzoJna175ZDFNLotmI8mdq0mnJAxmV4/xQUMfaxwBpKCKGuZazXEMRorxXCZ6rSDlHZZHxFFJuAWM5aMYhpiGWvJ00Tlx4+CKIHL7bz5SLZf42KvQPDFO06jgKbjSyL5auIqKiUzikSwHaLwC1O5x1aLz+kqof4QyWGYAEuhgAx1UOxwt7Nlp1pI3C88B/oWKbI2hmFKfjaJF4DMGi8McgMhI96l0xArAQLPF5k3WC70Y6tJme4jsB0M5MaJKcBpydsr2QFC8b7S/pSnwFOvsHVzSJYXw9dS/JsvqNtvHiD0t54VP4M4fne+zSZglxia5FcPCqu5mKRYieBCUXQkwMGEf8KadR5A8eCxZqEi6cy1ylZel6uBbandcPuVoWZ5o1iJlItHpvEJShZjo
+ nqXAL3Bg
+ yY/Q6dDrE+1znttoIoZ2S+Jonnv9Obwt58L+hG5/gDG6L8878ZXleb7sAWZt/snQyIuuvMFyfW4jm3wZ7CZEJIvg6wvqgdvc/WbQ59tGYNnqDf32Pk0wT//ZmuH2CiSdwGtoXYVpvz8OMiPPExXQNSRakvVSqAASu/HojSUxrWRGy2d4fq/Et2F58X9qN38rzobrD5PFcwwyKghyoMr0Ivc2dBeMu5UeGxveQqcL+WLTfzb/QdzbsVYOU3mrTCpEdHM3TOVqwyY04dqfh1AiTTdGCDRkpT4kEg0GgWDCKtzdBzqiXrhCJmYr9BaxUaZCN26YDlkte6bCuVntArSAtk3SJZRaFA3lhZ8E4fX0fx19GI74c15WqrGs0gEMnPNb9o+Bl6QQMViioXU2ZYTXtERVvRPN3V6m5faMrQF/GTCfjPJU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,142 +123,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Nov 2025 20:36:59 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
+On Fri, Nov 21, 2025 at 8:55=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> Hi Kairui,
+>
+> >
+> > +       /*
+> > +        * If a large folio already belongs to anon mapping, then we
+> > +        * can just go on and map it partially.
+>
+> this is right.
+>
 
-> Hi SJ, David, Ravi and all,
-> 
-> On 11/14/2025 10:42 AM, SeongJae Park wrote:
-[...]
-> > The memory capacity extension solution of HMSDK [1], which is developed by SK
-> > Hynix, is one good example.  To my understanding (please correct me if I'm
-> > wrong), HMSDK is providing separate solutions for bandwidth and capacity
-> > expansions.  The user should first understand whether their workload is
-> > bandwidth-hungry or capacity-hungry, and select a proper solution.  I suspect
-> > the concern from Ravi was one of the reasons.
-> 
-> Yeah, your understanding is correct in HMSDK cases.
+Hi Barry,
 
-Thank you for confirming!
+Thanks for the review.
 
-> 
-> > I also recently developed a DAMON-based memory tiering approach [2] that
-> > implementing the main idea of TPP [3]: promoting and demoting hot and cold
-> > pages aiming a level of the faster node's space utilization.  I didn't see the
-> > bandwidth issue from my simple tests of it, but I think the very same problem
-> > can be applied to both DAMON-based approach and the original TPP
-> > implementation.
-> > 
-> >>
-> >> Ravi suggested adaptive interleaving of memory to optimize both bandwidth
-> >> and capacity utilization.  He suggested an approach of a migrator in
-> >> kernel space and a calibrator in userspace.  The calibrator would monitor
-> >> system bandwidth utilization and, using different weights, determine the
-> >> optimal weights for interleaving the hot pages for the highest bandwidth.
-> 
-> I also think that monitoring bandwidth makes sense.  We recently released a
-> tool called bwprof for bandwidth recording and monitoring based on intel pcm.
-> https://github.com/skhynix/hmsdk/blob/hmsdk-v4.0/tools/bwprof/bwprof.cc
-> 
-> This tool can be slightly changed to monitor bandwidth and write it to some
-> sysfs interface knobs for this purpose.
+> > +        * If not, with the large swapin check above failing, the page =
+table
+> > +        * have changed, so sub pages might got charged to the wrong cg=
+roup,
+> > +        * or even should be shmem. So we have to free it and fallback.
+> > +        * Nothing should have touched it, both anon and shmem checks i=
+f a
+> > +        * large folio is fully appliable before use.
+>
+> I'm curious about one case:
+>
+> - Process 1: nr_pages are in swap.
+> - Process 2: "nr_pages - m" pages are in swap (with m slots already
+>   unmapped).
+>
+> Sequence:
+>
+> 1. Process 1 swap-ins the page, allocates it, and adds it to the
+>    swapcache =E2=80=94 but the rmap hasn=E2=80=99t been added yet.
 
-Thank you for introducing the tool, I think that can be useful for not only
-this case but also general investigations and optimizations of this kind of
-memory systems.
+Yes, whoever wants to use the folio will have to lock it first.
 
-> 
-> >> If bandwidth saturation is not hit, only cold pages get demoted.  The
-> >> migrator reads the target interleave ratio and rearrange the hot pages
-> >> from the calibrator and demotes cold pages to the target node.  Currently
-> >> this uses DAMOS policies, Migrate_hot and Migrate_cold.
-> > 
-> > This implementation makes sense to me, especially if the aimed use case is for
-> > specific virtual address spaces.
-> 
-> I think the current issues of adaptive weighted interleave are as follows.
-> 1. The adaptive interleaving only works for virtual address mode.
+> 2. Process 2 swap-ins the same folio and finds it in the swapcache, but
+>    it=E2=80=99s not associated with anon_mapping yet.
 
-This is true.  But I don't really think this is an issue, since I found no
-clear physical address mode interleaving use case.  Since we have clear use
-case of virtual mode DAMOS-based interleaving, and I heard no problem from the
-use case, I think "all is well".
+If P2 found it in the swap cache, it will try to acquire the folio lock.
 
-By the way, interleaving in this context is somewhat confusing to me.
-Technically speaking it is DAMOS_MIGRATE_{HOT,COLD} towards multiple
-destination nodes with different weights.  And how it should be implemented on
-physical address space (whether to decide the migration target node of each
-page based on its physical address or its virtual address) was discussed on the
-patch series for the multiple migration destination node, but we didn't find
-good answer so far.  That's one of the reasons why physical mode
-DAMOS-migration to multiple destination nodes is not yet supported.
+> What will process 2 do in this situation? Does it go to out_nomap? If so,
+> what happens on the second swapin attempt? Will it keep retrying
+> indefinitely until Process 1 completes the rmap installation?
 
-I understand you are saying it would be nice if Ravi's general idea (optimizing
-both bandwidth and capacity) can be implemented for not only virtual address
-space but also for physical address space, since it would be easier for
-sysadmins?  I agree if so.  Please correct me if I'm getting you wrong, though.
+P2 will wait on the folio lock, which I think is the right thing to
+do. After P1 finishes the rmap installation, P2 wakes up and tries to
+map the folio, no busy loop or repeated fault.
 
-> 2. It scans the entire pages and redistributes them based on the given weight
->     ratios so it limits the general usage as of now.
+If P1 somehow failed to install the rmap (eg. a concurrent partial
+unmap made part of the page table invalidated), it will remove the
+folio from swap cache then unlock it (the code right below). P2 also
+wakes up by then, and sees the invalid folio will then fallback to
+order 0.
 
-I think it depends on the detailed usage.  In this specific use case, to my
-understanding (correct me if I'm wrong, Ravi), the user-space tool applies
-interleaving (or, DAMOS_MIGRATE_HOT to multiple destination nodes) only for
-hot pages.  Hence the scanning for interleaving will be executed only for
-DAMON-found hot pages.  Also the users may use DAMOS quota or similar features
-to further tune the overhead.
+>
+> > +        *
+> > +        * This will be removed once we unify folio allocation in the s=
+wap cache
+> > +        * layer, where allocation of a folio stabilizes the swap entri=
+es.
+> > +        */
+> > +       if (!folio_test_anon(folio) && folio_test_large(folio) &&
+> > +           nr_pages !=3D folio_nr_pages(folio)) {
+> > +               if (!WARN_ON_ONCE(folio_test_dirty(folio)))
+> > +                       swap_cache_del_folio(folio);
+> > +               goto out_nomap;
+> > +       }
+> > +
+> >         /*
+> >          * Check under PT lock (to protect against concurrent fork() sh=
+aring
+> >          * the swap entry concurrently) for certainly exclusive pages.
+> >          */
+> >         if (!folio_test_ksm(folio)) {
+> > +               /*
+> > +                * The can_swapin_thp check above ensures all PTE have
+> > +                * same exclusivenss, only check one PTE is fine.
+>
+> typos? exclusive=C2=ADness ? Checking just one PTE is fine ?
 
-Maybe my humble edit of the original mail made you be confused about Ravi's
-implementation details?  Sorry if that's the case.
+Nice catch, indeed a typo, will fix it.
 
-> 
-> > Nevertheless, if a physical address space
-> > based version is also an option, I think there could be yet another way to
-> > achive the goal (optimizing both bandwidth and capacity).
-> 
-> 3. As mentioned above, having physical address mode is needed, but it makes
->     scanning the entire physical address space and redistribute them and it
->     might require too much overhead in practice.
+>
+> > +                */
+> >                 exclusive =3D pte_swp_exclusive(vmf->orig_pte);
+> > +               if (exclusive)
+> > +                       check_swap_exclusive(folio, entry, nr_pages);
+> >                 if (folio !=3D swapcache) {
+> >                         /*
+> >                          * We have a fresh page that is not exposed to =
+the
+> > @@ -4985,18 +4962,16 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >         vmf->orig_pte =3D pte_advance_pfn(pte, page_idx);
+> >
+> >         /* ksm created a completely new copy */
+> > -       if (unlikely(folio !=3D swapcache && swapcache)) {
+> > +       if (unlikely(folio !=3D swapcache)) {
+> >                 folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLU=
+SIVE);
+> >                 folio_add_lru_vma(folio, vma);
+> >         } else if (!folio_test_anon(folio)) {
+> >                 /*
+> > -                * We currently only expect small !anon folios which ar=
+e either
+> > -                * fully exclusive or fully shared, or new allocated la=
+rge
+> > -                * folios which are fully exclusive. If we ever get lar=
+ge
+> > -                * folios within swapcache here, we have to be careful.
+> > +                * We currently only expect !anon folios that are fully
+> > +                * mappable. See the comment after can_swapin_thp above=
+.
+> >                  */
+> > -               VM_WARN_ON_ONCE(folio_test_large(folio) && folio_test_s=
+wapcache(folio));
+> > -               VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+> > +               VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) !=3D nr_pag=
+es, folio);
+> > +               VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
+>
+> We have this guard to ensure that a large folio is always added to the
+> rmap in one shot, since we only support partial rmap addition for folios
+> that have already been mapped before.
+>
+> It now seems you rely on repeated page faults to ensure the partially
+> mapped process runs after the fully mapped one, which doesn=E2=80=99t loo=
+k ideal
+> to me as it may cause priority inversion.
 
-Same to my comment to above reply to your second point, I think the overhead
-could be controlled by adjusting the target page hotness and/or DAMOS quota.
-Or, I might misreading your opinion.  Please feel free to correct it in the
-case.
+We are mostly relying on folio lock now, I think there is no priority
+inversion issue from this part.
 
-Anyway, my idea is not very different from Ravi's one.  It is just a more
-simply re-phrased version of it.  In essence, I only changed the word
-'interleave', which is not very clear its behavir on physical address to me, to
-'migrate_hot' and gave more concrete example using DAMON user-space tool
-example commands.
-
-> 
-> > My idea is tweaking TPP idea a little bit: migrate pages among NUMA nodees
-> > aiming a level of both space and bandwidth utilization of the faster (e.g.,
-> > DRAM) node.  In more detail, do the hot pages promotion and cold pages
-> > demotions for the target level of faster node space utilization, same to the
-> > original TPP idea.  But, stop the hot page promotions if the memory bandwidth
-> > consumption of the faster node exceeds a level.  In the case, instead, start
-> > demoting _hot_ pages until the memory bandwidth consumption on the faster node
-> > decreases below the limit level.
-[...]
-> As I mentioned at the top of this mail, I think this work makes sense in theory
-
-Glad to get publicly confirmed I'm not the one who sees what I see :D
-
-> but would like to find some practical workloads that can get benefits from this
-> work.  It would be grateful if someone can share practical use cases in large
-> scale memory systems.
-
-Fully agreed.  Buildable code is much better than words, and test results are
-even better than such code.
-
-Nevertheless, I have no good answer for the practical use cases of my idea, for
-now.  I even have no plan to find it by myself at the moment, mainly because I
-don't have CXL memory to test, for now.  So please don't be blocked by me.  I
-will be more than happy to help for any chance though, as always :)
-
-
-Thanks,
-SJ
-
-[...]
+There might be priority inversion in the swap cache layer (so we have
+a schedule_timeout_uninterruptible workaround in
+__swap_cache_prepare_and_add now), that issue is resolved in the
+follow up commit "mm, swap: use swap cache as the swap in synchronize
+layer". Sorry I can't make it all happen in one place because the
+SYNC_IO swapin path has to be removed first for that to happen. That
+workaround is not a critical issue besides being ugly so I think
+that's fine for intermediate steps.
 
