@@ -4,153 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6651BCFA454
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 23:52:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72190CFA45A
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 00:04:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BA026B0022; Thu, 20 Nov 2025 18:52:02 -0500 (EST)
+	id AFD7C6B0028; Thu, 20 Nov 2025 19:04:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86A546B0023; Thu, 20 Nov 2025 18:52:02 -0500 (EST)
+	id AD4686B0029; Thu, 20 Nov 2025 19:04:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 732E36B0028; Thu, 20 Nov 2025 18:52:02 -0500 (EST)
+	id 9EA436B002A; Thu, 20 Nov 2025 19:04:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BF666B0022
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:52:02 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BD36C03FC
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:52:02 +0000 (UTC)
-X-FDA: 84132636084.19.8619247
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DBAB9180002
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:51:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="O/TpgM2l";
-	spf=pass (imf06.hostedemail.com: domain of elver@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EF8E6B0028
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:04:23 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 444BCB96BD
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 00:04:23 +0000 (UTC)
+X-FDA: 84132667206.21.DDA7B5A
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2A2C740014
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 00:04:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm2 header.b=A4DQbQTO;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="D dwiK8V";
+	spf=pass (imf11.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.156 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763682720;
+	s=arc-20220608; t=1763683461;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J9kvXa3Vdh1ip8zUpCqHWE2klTiidAnZMSHg4scU75Q=;
-	b=fOP+EG+MQ9lAds/zwWweZP6rkz4ZmCOabfY2c11cKvcq9RBHSF6MsZPNwqes9HR8UvgvrW
-	PY9FwOoDuQsPowJzyhvSViDMWfzJbfeRYeCQuzMCZ9HmA3qx4oh8ktbrk6EHZqIwLF4uoe
-	LZFNvjQgLPHK0Mlkx5dOz7isNqN4TV4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763682720; a=rsa-sha256;
-	cv=none;
-	b=P3rC6yMKGFbi1w5aMnAL6Y8vvfSmNIcEl8G7TprfbIXBdppUQRIS7krN3icgL20jYt/rfc
-	9M7ClHnGo5AH+20cjeJWV6N2cI2Eu5x3vPVK6LswLH/cJU1Zn3IlpLMGhcuPR2kTB2Y+Sm
-	JCO+gVpjliXU1AaZwMbI7+eat69Me6A=
+	bh=HjvLzwzMxld1mKMp0zyef95cQ5dfE6rG/eqr2WGdSgw=;
+	b=gYQVTox9d9VU3E+3zxOgm39Szcb4zhwYrMER7UZhT36msKxy61xXsXNBFjnz8sp1FooO3p
+	NBQ6/562YLQfFsMd3L68HR4AzoJcHGV279z8i/QrKtThxkennGEE/qzlJNMg39Ys5RbLht
+	CPx5yyDkNxXcsrjmrIhvf6rxChqQ8V0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="O/TpgM2l";
-	spf=pass (imf06.hostedemail.com: domain of elver@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4779cb0a33fso14120785e9.0
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:51:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763682718; x=1764287518; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J9kvXa3Vdh1ip8zUpCqHWE2klTiidAnZMSHg4scU75Q=;
-        b=O/TpgM2l1B0+cOBc22eu/GJBbhtbGHfv9ppJlk2menhl1lltKt/skIOcgWqf93fsNO
-         78yfZvTzsPkM7FP1umtQdidBiktmH93EnhES5jYYjUmftEDmSd4PdKACwBy6mw5WIIuL
-         vBBYKwicH9ndJakalVSGgWAn9UceJqtuQrGAJyEL8OhInXFZ1pHUTUR+PN9EY1SfHNLr
-         mJEreHnDpGFnWkm3y45tNZ088z9+vmgc43S/0XVKLWqVEOu3AzJBqevtueLVlAZfzJyR
-         SMmHzpk5gAIO1QgKCZtRNeveBL6xlfquheU3BxMWzNKg5GzPht/LApMbj7z2lZjnStOx
-         r24w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763682718; x=1764287518;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=J9kvXa3Vdh1ip8zUpCqHWE2klTiidAnZMSHg4scU75Q=;
-        b=P7/rPu3/sCEZfPAfAtfKrtX93vVWU0vUlA7x3epasXCA9O2vByHzPoTqYE6HKK8y1c
-         0GXIp3dwHLSFuKxtFqLFb4O2FcCHyJHiKBAyNgrl4fJBZOxKihgzJ7Cr57DTh2sidlzI
-         ZGbF9fAoHX7+wzsv38pjcJX8o4jfjoQf0/VrG6Vq3AdMle25lHUkwcTMNNOmh92ooOpU
-         5zNQbl1bw2UocIzgq4koHhqTIF3ZqS8+BCDGmP4eT6Y3Y0S2vqKWLoJvdjlePGi9aqVm
-         rtcQQjuZyN4T5FSuRAJqMH/UuIjOupXilfmuW2BbfzvbxG1qTYdkt16iX2YSXTt+feQ3
-         OrKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWkYzAmm58hWE/kd5wc6k3APM6WJ61pVwma4IA5SVP1ScROQdSYq9zmxIItw8wCd11QFf+G3xZaMA==@kvack.org
-X-Gm-Message-State: AOJu0YzJhFJFsM3b77pMUtYzv5YC0avPf4YnaBYgtswRgHN1bIbD+Orw
-	UOxpX55tF/0I+6vNI97zqsdVzh7d2JI2pskvQY/MdDHVs1MxVypxSTSURJRxLIavRA==
-X-Gm-Gg: ASbGncsFMG5Th7vqWT63ODRg/xIZTDn01EPm7JIgCqtt4Oc+/lNPPfxef2Bk7BnJW5F
-	3Emu9TwG6ERyIfBpoiJ4iK7QOYFrIttYAJQi/rLzBHorNNYuDGek0tYXfkigPro1k9X8igL2DuE
-	sV0zgHZ7fIv2fycoD0vZRMCSQ+1CVhPvPBWXqBH9sWRFYLloanUohqw8jk6a8aJhkFOnsDqK7vE
-	G+MMzuJU5B0EGncvbOce4XwodMW+T8kMDf7VJKcx/8vtUmukByGAbKXE6+dcNspE+BIkBTB9GuK
-	j3FkkeobARtZehCfhl+bJxQD8OPqlzaawzHvBo2hFYiyXSbJNsjht5ZhTP6Dk8rWc7Ms4KuHmGB
-	bf/bY4Gh3sar+VyaePSPgM6xFGCG7PCxgNmJu9Zun4ntivci1WLNP6E9n5Lo4sdf22Qs0V6X2Hq
-	wlFEv3iXLwa50ER4EMjKgzJf+QgrD64NOp6+Wc7SjPEiWhziJP4+DO/+OawgE=
-X-Google-Smtp-Source: AGHT+IHBj+lRJ2Qie5tQgt4+bdQcT9clHmhVuJ221UEaEkB+U77QKJJ8z44sTbdZcE/IcTJPd+pPPw==
-X-Received: by 2002:a05:600c:1909:b0:477:b642:9dc6 with SMTP id 5b1f17b1804b1-477c020137fmr3256875e9.34.1763682717840;
-        Thu, 20 Nov 2025 15:51:57 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:3b7e:2c14:f733:1774])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a97213b8sm72914765e9.1.2025.11.20.15.51.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 15:51:56 -0800 (PST)
-Date: Fri, 21 Nov 2025 00:51:48 +0100
-From: Marco Elver <elver@google.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
- for Context Analysis with Clang
-Message-ID: <aR-plHrWDMqRRlcI@elver.google.com>
-References: <20251120145835.3833031-2-elver@google.com>
- <20251120145835.3833031-4-elver@google.com>
- <CAHk-=whyKteNtcLON-gScv6tu8ssvKWdNw-k371ufDrjOv374g@mail.gmail.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm2 header.b=A4DQbQTO;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="D dwiK8V";
+	spf=pass (imf11.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.156 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763683461; a=rsa-sha256;
+	cv=none;
+	b=Uv+n0yTbqtMDeMiXPFzhI+St1ISfQxb0qdecfcJNhJSMJ/g/k7knO5bBYNZd2JlM6CRPNO
+	f5iMK09NsU8ja/vzmz/7sPTJVXl02KdxZ4uQ8tj4j/EHDZZYEvk65cYmldCpWgGWQo1UgB
+	i+2QTN5toaeb9LlN0MaoNd6VcIph2Mc=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 879FA7A016A;
+	Thu, 20 Nov 2025 19:04:19 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 20 Nov 2025 19:04:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1763683459;
+	 x=1763769859; bh=HjvLzwzMxld1mKMp0zyef95cQ5dfE6rG/eqr2WGdSgw=; b=
+	A4DQbQTOyZxcwypC3+L5HNDKquu8alZqgjdhfxqZhbERLv0+0bVTi2URYY9SzrLO
+	cIA7+3vgf/rnkv+XeyQZkg532nvGvpUxuRuwx8L/Uic271UWSaf9xReKLuEuvY74
+	TXftCb/sHWzhJltogSGXj4K0/ZbPmRRaXRFkmo3sRy+Z4z8++d48fHWnyoTm5Rd9
+	aH/FdoWkLMRiNni0STbqvQYOU5pdxxsY7e52rmKgWsiBf8fqGFqAxCDG3kL1PeG2
+	7GxTPsfg7ei7jvBCMfCyaQh0d+BBQYxa1SY8i0Kfw7zj/+JdqdB22GSLh+Fs90K6
+	u32o+RuLRjdGGSIuhBj9Zg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763683459; x=
+	1763769859; bh=HjvLzwzMxld1mKMp0zyef95cQ5dfE6rG/eqr2WGdSgw=; b=D
+	dwiK8V+/jfQWiXQ4xfgr/qIY0MMzH+L4GlO/SbVTzukbW8v4IZsujct5M/7WHsGU
+	KJYRNfKXTpBUBZzevF7fYkXShA08TaKjEn7NKAD0fgTmLpjMlQw7jiuEY0bMZwZn
+	VccsOxjUPSrk4Ypi3Td2udeXQFCQSKbah3t7VMkpMgQAXlzIHM3l/phBNUmqAbsT
+	DpQzFdvi8RlbqpLR/grhmVmP/RW6ZfN97T+HzwghRhTZ8ofBo2MW2Y7y3xw+jjnc
+	vC3t58oLkrJxxKLSXx/zPq4Pu6J9ROujv6iqpDupZqdrM1VaUpFUxHq5MXTwkadv
+	zU0wpSwt6t6kGWO6qd5gg==
+X-ME-Sender: <xms:gawfaQpKfCI9uTs4scyVMdG0pHsQRE0PiBFHB_XYgFSu1KW_IQsjVA>
+    <xme:gawfaW2e_QMZXgkEpQ4dQAIhH754U_TcX65CFkHK4BzhBZeujWK2leqdh1rKUCtjh
+    4tLTjYQmkHsFx6m9HuoO30v226Seho2vROg9ws3UOb7QkFzwUN8>
+X-ME-Received: <xmr:gawfaX3HsXWu4ErPEmHODuiTinVc3SxzIhtZwD7cdqamrNVqEBbkCxqj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvdekgeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepteetudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudet
+    hffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeeffedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheplhgvohhnsehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhoghgrnhhg
+    seguvghlthgrthgvvgdrtghomhdprhgtphhtthhopegrgigsohgvsehkvghrnhgvlhdrug
+    hkpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthht
+    ohepjhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepmhdrshiihihprhhofihskhhisehsrghmshhunhhgrdgt
+    ohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
+X-ME-Proxy: <xmx:gqwfaTc1qHnh0-i3KO6tJsUVtNtxTcxs3s7vL3whUFJvperGF6WN6g>
+    <xmx:gqwfaT4HBIK9hrr9a_hBvYAFnQ7rPa0nLaI-32DuwCrkmnxah0vROg>
+    <xmx:gqwfaQhMKw1KHBszqSGzGjVlPYaxt6EqZf0UcaWVJr34DnEzzh9nUg>
+    <xmx:gqwfaVrbusXEFt0RPAKnPhFRWA6SjT0BpwWPLXloz2sEwqtMNFS0HQ>
+    <xmx:g6wfae0YvvvtVTx0cpC_54SaFJugeR6HLLLdi1mavPKyN1Xc4JF--XDn>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 20 Nov 2025 19:04:15 -0500 (EST)
+Date: Thu, 20 Nov 2025 17:04:13 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <skolothumtho@nvidia.com>,
+ Kevin Tian <kevin.tian@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>,
+ Matt Ochs <mochs@nvidia.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ iommu@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH v9 10/11] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20251120170413.050ccbb5.alex@shazbot.org>
+In-Reply-To: <20251120-dmabuf-vfio-v9-10-d7f71607f371@nvidia.com>
+References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
+	<20251120-dmabuf-vfio-v9-10-d7f71607f371@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whyKteNtcLON-gScv6tu8ssvKWdNw-k371ufDrjOv374g@mail.gmail.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Stat-Signature: aogh6op6hbexznci5gnobwesawrx9py1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2A2C740014
+X-Stat-Signature: 6xk3ehpz3t3m61gj6yptcxnba4w8wa6g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DBAB9180002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763682719-883515
-X-HE-Meta: U2FsdGVkX1/tv8EKdXnDnQ/sHGjyoX1s9gCKmW1UTZu0DvmyZyYYJ7Bt4ZP/K0GxQOglf9iekusw0eYxQbCxM3N6sNvbcTy3POxC1/tZyXGwu78+SwHl0ueCqqBC6Mal9xqwNA9nEKe4Jy1VFivV0IMIbHq/4UgHTqjf8N2pIR1YdcjNsjNiZkx6KaNt8nzxymNrZ39XaX8dQJbIlEGPjpNmyDKqmD5OEiHzkAKPBfpzU85m9cv9kkwuTuKE+F6NvbanCxO2xUNuvklgZsXC6lrAziQ/UxX1hhllvt3fKhlk3/dxvlM5RjX6Y6Ot1cZBq0lRD5l3vDb15Gqni8WP/bs20hZoQUd0vRlynC0IFRRKOtJWj29ghH+ReiDyWDzYdHy/phkHX0tWuoGhV0lqncnGkUyjI9Lvy59SjMOjNi5Z95ebKCdJOLNhzm5tDQJVnZXzCFP4eL+Z/aD8HcTVtN5vgJW0y5nb38oYirqygW69gSxzviK8EAcydvmpBlS42urh7GB5HD25vtrgHU4avlQatRZ4UUK3FO4cjlWamZhhnE/jUS7BqAuxTQscOz+s8E8V6aGsR9LzDgve+ISArz0lU6fcZtbl5f0J0PcfnubBlBfLMNW5v9DQ2zgg89KEeOaw8E0W7QNNTMvI9Bll+7njkvc+GmXdfOKMKC/XhbVd8GSIKZVMYI28yjRKF9yL65oAj1iSqKg68SDdefubh6FUbDmQUu87igYLTT54daWhaOop8icO6xHs5NN5jdz1FbOWQw1+M+MCrhGDLBAb8WqWs0krgnzhZGl/BYTimk/0Vh+OOhLD47aW3gVJOxDg0kyXCBrytrmnWtj2WjdYyW9cC61wj+NY8g4ouqNGMQgV5YNFQKlig4lMqNbycBKOz1GLj0g5yRCbNqBnza4mLHHkLYCGB2AIFhb7+MfKxJ7zdv6k3PnvkGxkT8jLfLr6E7Rphxgr6RScSSnhjk9
- PS/5ReF8
- MolpswPDHOHHpUipA9b+ad1+Hft4YGCmSM+uzekRb51mDiqlz9cctQ4+/xX5CgbsQGBc4sUGADi/H8PpEuwagP2aRa9g1K4q2hTd2U0wLnFzqzMOg5JNaKQcqWmbSIMGRkqq7tCpKMuiOVgHZ+GIRqtedtbuKPOIbmmFks/1ZRAZwd1TFEs9G+l2v5gmQhksUpzyMOtaz01mazJob2ss8XQnQ/L0N2I4+IqTemXLfrRQ6KZrzYT1Ivg0DoOnRJqnUpDMjnixF16gGbJO65B3Bt4FCArvn9780xY/KlbjRcQEB19WqkELkTFsYQOm4l9sIL2hsL9tA4PdrCtFctmKNO9PXlNU1pWssVqL5IYXt2AFn707kUKISTGzOu4SEvhUGwWBYk2vC/A/r9Bik0Gw9kas/5nyCNOQ9xHZgk1//PMS5XQs=
+X-HE-Tag: 1763683460-831774
+X-HE-Meta: U2FsdGVkX1+09tdMyW/ECnRWfPVr4gsm2dJ9bO9oy6W0fwMVsQXB6HcTgTKWLNNDuPJL7N4D716zE+VZimt+DDJ+7S2MFeTv8SFwcW0UT30c3NlAMUdxZYWU3SmkMSbLes2q+5pMMbI+/Wu8jauSA/EUlE7Ft9fBWhtCydj9CicVvYg9kc2zVMB5/J73ePYkbGoBO6fOkc+xqCBTiivxzwCF/mwRCfQcW7nqNRe5Tg70LX1x4Vrzb7vdDgu0FQMcylSiXCuvsVi5JkPsNy/IweuwZIp/ldIbPiA0eNXtGYD5SIADzmEqtifXInDvdiTrYdk9FcvZ0jx2nhvDrEO/IztXsYBd+Sdlir4dePmIoUD85Nj5uIm55itVoa4Wv3/qO1TaIHH37zHJO1VyK2XbChSc2Bj3uimlr3/4P7iRGT0RbTuQytFXkqMbmPwDHQHwfPAmj2fYFiSJpuQfbDXCCKDFv2NlLz3vTHQQSkDMIBtp9bmiDXhB0r3Aovk2vgSbqNp7E1mwn4RWp31WfnBeMKZ9KRXqoUMfBISWSUBKQ7XXNqOnYm/HRaTMwF8+Be7AYc7sB7X7JMye0gat4oIY50Q7A0nLZd1BXyPYxk63FSujnkTIPTJlLdO1Xff97i+/S6PgjuqJL1s0ZwCuYq1mmjRyY/e5XBuxAgyp8GBGiZD0yN+jcqoWY4GK2IM5zuUbl2jcuPqkjI8UuYIW5MLbP/YzlFxoQ/zv+y02MIVD8WlLyNPPtOCXD+6MuUZMrKNxIJjTnlT4bNwNHHUtJB6RboPkQx3Z7yOQPi+rDwufQr8i3sQ3trWefXVXAqv7vbYWg7Xjr/NfuAzYme4iC9MAhxYgGonkaZ+/0nxt5qwNPuP6kW47WKgZXnuryT4HACOozKn+OSLk0aCUV8VcyrD46zS1gA9OzY3Lr0oPWVbFHcDd5KiYNkndUQbGuxqy0YY8VgjYe0HimXmgi22fK2m
+ r1KYBLd2
+ /5G6fsUfbbXiyCpq2BXVaoGhA352dy4kwQdeZi1/NniOgixf+E6x5DohXlOKASxVvsQzIvincsQZQ+pk9amnX+FcYwweZnvqbiPSgw5xaQESNyHDKtLq4NglHBVpdDLn7Z9qW0KjtI7pKEGdrF3vS8HoAT4UgvTfFtXp/aIq1sEsLZDIF+r8ZTCVIRlsCUcvCrFD5bDDuLKH3ggDc+IimhFNCZw46CpA96KyqiUF96MOglZZyald2dGQXbNcPqxSogKWoyclpCK5z9/8Ln6MiUmGFCNvgrDr8eLlH0hzRkVzuD9I4804djCFxYLBPSZHToZzjHOefl8wlIJWz+S+dEo9G1VqdIHhfEtMnJa5QlaZehuwiZfZyU6kHa15oqXTqTvUK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,482 +156,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 10:14AM -0800, Linus Torvalds wrote:
-> On Thu, 20 Nov 2025 at 07:13, Marco Elver <elver@google.com> wrote:
-[..]
-> > +#if defined(WARN_CONTEXT_ANALYSIS)
-> 
-> Note the 400+ added lines to this header...
-> 
-[..]
-> Please let's *not* do it this way, where the header contents basically
-> get enabled or not based on a compiler flag, but then everybody
-> includes this 400+ line file whether they need it or not.
+On Thu, 20 Nov 2025 11:28:29 +0200
+Leon Romanovsky <leon@kernel.org> wrote:
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 142b84b3f225..51a3bcc26f8b 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+...
+> @@ -2487,8 +2500,11 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>  
+>  err_undo:
+>  	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
+> -					 vdev.dev_set_list)
+> +					 vdev.dev_set_list) {
+> +		if (__vfio_pci_memory_enabled(vdev))
+> +			vfio_pci_dma_buf_move(vdev, false);
+>  		up_write(&vdev->memory_lock);
+> +	}
 
-Note, there are a good amount of kernel-doc comments in there, so we
-have 125 real code lines.
+I ran into a bug here.  In the hot reset path we can have dev_sets
+where one or more devices are not opened by the user.  The vconfig
+buffer for the device is established on open.  However:
 
-% cloc include/linux/compiler-context-analysis.h
-       1 text file.
-       1 unique file.
-       0 files ignored.
+bool __vfio_pci_memory_enabled(struct vfio_pci_core_device *vdev)
+{
+        struct pci_dev *pdev = vdev->pdev;
+        u16 cmd = le16_to_cpu(*(__le16 *)&vdev->vconfig[PCI_COMMAND]);
+	...
 
-github.com/AlDanial/cloc v 2.06  T=0.01 s (97.1 files/s, 41646.9 lines/s)
--------------------------------------------------------------------------------
-Language                     files          blank        comment           code
--------------------------------------------------------------------------------
-C/C++ Header                     1             37            267            125
--------------------------------------------------------------------------------
+Leads to a NULL pointer dereference.
 
-> Can we please just make the header file *itself* not have any
-> conditionals, and what happens is that the header file is included (or
-> not) using a pattern something like
-> 
->    -include $(srctree)/include/linux/$(context-analysis-header)
-> 
-> instead.
-> 
-> IOW, we'd have three different header files entirely: the "no context
-> analysis", the "sparse" and the "clang context analysis" header, and
-> instead of having a "-DWARN_CONTEXT_ANALYSIS" define, we'd just
-> include the appropriate header automatically.
-> 
-> We already use that "-include" pattern for <linux/kconfig.h> and
-> <linux/compiler-version.h>. It's probably what we should have done for
-> <linux/compiler.h> and friends too.
-> 
-> The reason I react to things like this is that I've actually seen just
-> the parsing of header files being a surprisingly big cost in build
-> times. People think that optimizations are expensive, and yes, some of
-> them really are, but when a lot of the code we parse is never actually
-> *used*, but just hangs out in header files that gets included by
-> everybody, the parsing overhead tends to be noticeable. There's a
-> reason why most C compilers end up integrating the C pre-processor: it
-> avoids parsing and tokenizing things multiple times.
-> 
-> The other reason is that I often use "git grep" for looking up
-> definitions of things, and when there are multiple definitions of the
-> same thing, I actually find it much more informative when they are in
-> two different files than when I see two different definitions (or
-> declarations) in the same file and then I have to go look at what the
-> #ifdef condition is. In contrast, when it's something where there are
-> per-architecture definitions, you *see* that, because the grep results
-> come from different header files.
-> 
-> I dunno. This is not a huge deal, but I do think that it would seem to
-> be much simpler and more straightforward to treat this as a kind of "N
-> different baseline header files" than as "include this one header file
-> in everything, and then we'll have #ifdef's for the configuration".
-> 
-> Particularly when that config is not even a global config, but a per-file one.
-> 
-> Hmm? Maybe there's some reason why this suggestion is very
-> inconvenient, but please at least consider it.
+I think the most straightforward fix is simply to test the open_count
+on the vfio_device, which is also protected by the dev_set->lock that
+we already hold here:
 
-Fair points; I gave this a shot, as a patch on top so we can skip the
-Sparse version.
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2501,7 +2501,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ err_undo:
+        list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
+                                         vdev.dev_set_list) {
+-               if (__vfio_pci_memory_enabled(vdev))
++               if (vdev->vdev.open_count && __vfio_pci_memory_enabled(vdev))
+                        vfio_pci_dma_buf_move(vdev, false);
+                up_write(&vdev->memory_lock);
+        }
 
-Reduced version below:
--------------------------------------------------------------------------------
-Language                     files          blank        comment           code
--------------------------------------------------------------------------------
-C/C++ Header                     1             26            189             80
--------------------------------------------------------------------------------
+Any other suggestions?  This should be the only reset path with this
+nuance of affecting non-opened devices.  Thanks,
 
-My suspicion (or I'm doing it wrong): there really isn't all that much
-we can conditionally -include, because we need at least the no-op stubs
-everywhere regardless because of annotations provided by common headers
-(spinlock, mutex, rcu, etc. etc.).
-
-If we assume that in the common case we need the no-op macros
-everywhere, thus every line in <linux/compiler-context-analysis.h> is
-required in the common case with the below version, the below experiment
-should be be close to what we can achieve.
-
-However, it might still be worthwhile for the code organization aspect?
-
-Thoughts?
-
-Thanks,
--- Marco
-
------- >8 ------
-
-From: Marco Elver <elver@google.com>
-Date: Thu, 20 Nov 2025 22:37:52 +0100
-Subject: [PATCH] compiler-context-analysis: Move Clang definitions to separate
- header
-
-In the interest of improving compile-times, it makes sense to move the
-conditionally enabled definitions when the analysis is enabled to a
-separate file and include it only with -include.
-
-A very unscientific comparison, on a system with 72 CPUs; before:
-
-  125.67 wallclock secs = ( 5681.04 usr secs + 367.63 sys secs / 4815.83% CPU )
-
-After:
-
-  125.61 wallclock secs = ( 5684.80 usr secs + 366.53 sys secs / 4817.95% CPU )
-
-[ Work in progress - with this version, there is no measurable
-  difference in compile times. ]
-
-Signed-off-by: Marco Elver <elver@google.com>
----
- Documentation/dev-tools/context-analysis.rst  |  10 +-
- .../linux/compiler-context-analysis-clang.h   | 144 ++++++++++++++++++
- include/linux/compiler-context-analysis.h     | 136 +----------------
- scripts/Makefile.context-analysis             |   3 +-
- 4 files changed, 153 insertions(+), 140 deletions(-)
- create mode 100644 include/linux/compiler-context-analysis-clang.h
-
-diff --git a/Documentation/dev-tools/context-analysis.rst b/Documentation/dev-tools/context-analysis.rst
-index e53f089d0c52..71b9c5e57eb4 100644
---- a/Documentation/dev-tools/context-analysis.rst
-+++ b/Documentation/dev-tools/context-analysis.rst
-@@ -99,10 +99,7 @@ Keywords
- ~~~~~~~~
- 
- .. kernel-doc:: include/linux/compiler-context-analysis.h
--   :identifiers: context_guard_struct
--                 token_context_guard token_context_guard_instance
--                 __guarded_by __pt_guarded_by
--                 __must_hold
-+   :identifiers: __must_hold
-                  __must_not_hold
-                  __acquires
-                  __cond_acquires
-@@ -119,6 +116,11 @@ Keywords
-                  __acquire_shared_ret
-                  context_unsafe
-                  __context_unsafe
-+
-+.. kernel-doc:: include/linux/compiler-context-analysis-clang.h
-+   :identifiers: __guarded_by __pt_guarded_by
-+                 context_guard_struct
-+                 token_context_guard token_context_guard_instance
-                  disable_context_analysis enable_context_analysis
- 
- .. note::
-diff --git a/include/linux/compiler-context-analysis-clang.h b/include/linux/compiler-context-analysis-clang.h
-new file mode 100644
-index 000000000000..534a41a25596
---- /dev/null
-+++ b/include/linux/compiler-context-analysis-clang.h
-@@ -0,0 +1,144 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Macros and attributes for compiler-based static context analysis that map to
-+ * Clang's "Thread Safety Analysis".
-+ */
-+
-+#ifndef _LINUX_COMPILER_CONTEXT_ANALYSIS_CLANG_H
-+#define _LINUX_COMPILER_CONTEXT_ANALYSIS_CLANG_H
-+
-+#ifndef WARN_CONTEXT_ANALYSIS
-+#error "This header should not be included"
-+#endif
-+
-+/*
-+ * These attributes define new context guard (Clang: capability) types.
-+ * Internal only.
-+ */
-+#define __ctx_guard_type(name)			__attribute__((capability(#name)))
-+#define __reentrant_ctx_guard			__attribute__((reentrant_capability))
-+#define __acquires_ctx_guard(...)		__attribute__((acquire_capability(__VA_ARGS__)))
-+#define __acquires_shared_ctx_guard(...)	__attribute__((acquire_shared_capability(__VA_ARGS__)))
-+#define __try_acquires_ctx_guard(ret, var)	__attribute__((try_acquire_capability(ret, var)))
-+#define __try_acquires_shared_ctx_guard(ret, var) __attribute__((try_acquire_shared_capability(ret, var)))
-+#define __releases_ctx_guard(...)		__attribute__((release_capability(__VA_ARGS__)))
-+#define __releases_shared_ctx_guard(...)	__attribute__((release_shared_capability(__VA_ARGS__)))
-+#define __assumes_ctx_guard(...)		__attribute__((assert_capability(__VA_ARGS__)))
-+#define __assumes_shared_ctx_guard(...)	__attribute__((assert_shared_capability(__VA_ARGS__)))
-+#define __returns_ctx_guard(var)		__attribute__((lock_returned(var)))
-+
-+/*
-+ * The below are used to annotate code being checked. Internal only.
-+ */
-+#define __excludes_ctx_guard(...)		__attribute__((locks_excluded(__VA_ARGS__)))
-+#define __requires_ctx_guard(...)		__attribute__((requires_capability(__VA_ARGS__)))
-+#define __requires_shared_ctx_guard(...)	__attribute__((requires_shared_capability(__VA_ARGS__)))
-+
-+/**
-+ * __guarded_by - struct member and globals attribute, declares variable
-+ *                only accessible within active context
-+ *
-+ * Declares that the struct member or global variable is only accessible within
-+ * the context entered by the given context guard. Read operations on the data
-+ * require shared access, while write operations require exclusive access.
-+ *
-+ * .. code-block:: c
-+ *
-+ *	struct some_state {
-+ *		spinlock_t lock;
-+ *		long counter __guarded_by(&lock);
-+ *	};
-+ */
-+#define __guarded_by(...)		__attribute__((guarded_by(__VA_ARGS__)))
-+
-+/**
-+ * __pt_guarded_by - struct member and globals attribute, declares pointed-to
-+ *                   data only accessible within active context
-+ *
-+ * Declares that the data pointed to by the struct member pointer or global
-+ * pointer is only accessible within the context entered by the given context
-+ * guard. Read operations on the data require shared access, while write
-+ * operations require exclusive access.
-+ *
-+ * .. code-block:: c
-+ *
-+ *	struct some_state {
-+ *		spinlock_t lock;
-+ *		long *counter __pt_guarded_by(&lock);
-+ *	};
-+ */
-+#define __pt_guarded_by(...)		__attribute__((pt_guarded_by(__VA_ARGS__)))
-+
-+/**
-+ * context_guard_struct() - declare or define a context guard struct
-+ * @name: struct name
-+ *
-+ * Helper to declare or define a struct type that is also a context guard.
-+ *
-+ * .. code-block:: c
-+ *
-+ *	context_guard_struct(my_handle) {
-+ *		int foo;
-+ *		long bar;
-+ *	};
-+ *
-+ *	struct some_state {
-+ *		...
-+ *	};
-+ *	// ... declared elsewhere ...
-+ *	context_guard_struct(some_state);
-+ *
-+ * Note: The implementation defines several helper functions that can acquire
-+ * and release the context guard.
-+ */
-+#define context_guard_struct(name, ...)								\
-+	struct __ctx_guard_type(name) __VA_ARGS__ name;							\
-+	static __always_inline void __acquire_ctx_guard(const struct name *var)				\
-+		__attribute__((overloadable)) __no_context_analysis __acquires_ctx_guard(var) { }	\
-+	static __always_inline void __acquire_shared_ctx_guard(const struct name *var)			\
-+		__attribute__((overloadable)) __no_context_analysis __acquires_shared_ctx_guard(var) { } \
-+	static __always_inline bool __try_acquire_ctx_guard(const struct name *var, bool ret)		\
-+		__attribute__((overloadable)) __no_context_analysis __try_acquires_ctx_guard(1, var)	\
-+	{ return ret; }											\
-+	static __always_inline bool __try_acquire_shared_ctx_guard(const struct name *var, bool ret)	\
-+		__attribute__((overloadable)) __no_context_analysis __try_acquires_shared_ctx_guard(1, var) \
-+	{ return ret; }											\
-+	static __always_inline void __release_ctx_guard(const struct name *var)				\
-+		__attribute__((overloadable)) __no_context_analysis __releases_ctx_guard(var) { }	\
-+	static __always_inline void __release_shared_ctx_guard(const struct name *var)			\
-+		__attribute__((overloadable)) __no_context_analysis __releases_shared_ctx_guard(var) { } \
-+	static __always_inline void __assume_ctx_guard(const struct name *var)				\
-+		__attribute__((overloadable)) __assumes_ctx_guard(var) { }				\
-+	static __always_inline void __assume_shared_ctx_guard(const struct name *var)			\
-+		__attribute__((overloadable)) __assumes_shared_ctx_guard(var) { }			\
-+	struct name
-+
-+/**
-+ * disable_context_analysis() - disables context analysis
-+ *
-+ * Disables context analysis. Must be paired with a later
-+ * enable_context_analysis().
-+ */
-+#define disable_context_analysis()				\
-+	__diag_push();						\
-+	__diag_ignore_all("-Wunknown-warning-option", "")	\
-+	__diag_ignore_all("-Wthread-safety", "")		\
-+	__diag_ignore_all("-Wthread-safety-pointer", "")
-+
-+/**
-+ * enable_context_analysis() - re-enables context analysis
-+ *
-+ * Re-enables context analysis. Must be paired with a prior
-+ * disable_context_analysis().
-+ */
-+#define enable_context_analysis() __diag_pop()
-+
-+/**
-+ * __no_context_analysis - function attribute, disables context analysis
-+ *
-+ * Function attribute denoting that context analysis is disabled for the
-+ * whole function. Prefer use of `context_unsafe()` where possible.
-+ */
-+#define __no_context_analysis	__attribute__((no_thread_safety_analysis))
-+
-+#endif /* _LINUX_COMPILER_CONTEXT_ANALYSIS_CLANG_H */
-diff --git a/include/linux/compiler-context-analysis.h b/include/linux/compiler-context-analysis.h
-index 03056f87a86f..33ad367fef3f 100644
---- a/include/linux/compiler-context-analysis.h
-+++ b/include/linux/compiler-context-analysis.h
-@@ -6,140 +6,7 @@
- #ifndef _LINUX_COMPILER_CONTEXT_ANALYSIS_H
- #define _LINUX_COMPILER_CONTEXT_ANALYSIS_H
- 
--#if defined(WARN_CONTEXT_ANALYSIS)
--
--/*
-- * These attributes define new context guard (Clang: capability) types.
-- * Internal only.
-- */
--# define __ctx_guard_type(name)			__attribute__((capability(#name)))
--# define __reentrant_ctx_guard			__attribute__((reentrant_capability))
--# define __acquires_ctx_guard(...)		__attribute__((acquire_capability(__VA_ARGS__)))
--# define __acquires_shared_ctx_guard(...)	__attribute__((acquire_shared_capability(__VA_ARGS__)))
--# define __try_acquires_ctx_guard(ret, var)	__attribute__((try_acquire_capability(ret, var)))
--# define __try_acquires_shared_ctx_guard(ret, var) __attribute__((try_acquire_shared_capability(ret, var)))
--# define __releases_ctx_guard(...)		__attribute__((release_capability(__VA_ARGS__)))
--# define __releases_shared_ctx_guard(...)	__attribute__((release_shared_capability(__VA_ARGS__)))
--# define __assumes_ctx_guard(...)		__attribute__((assert_capability(__VA_ARGS__)))
--# define __assumes_shared_ctx_guard(...)	__attribute__((assert_shared_capability(__VA_ARGS__)))
--# define __returns_ctx_guard(var)		__attribute__((lock_returned(var)))
--
--/*
-- * The below are used to annotate code being checked. Internal only.
-- */
--# define __excludes_ctx_guard(...)		__attribute__((locks_excluded(__VA_ARGS__)))
--# define __requires_ctx_guard(...)		__attribute__((requires_capability(__VA_ARGS__)))
--# define __requires_shared_ctx_guard(...)	__attribute__((requires_shared_capability(__VA_ARGS__)))
--
--/**
-- * __guarded_by - struct member and globals attribute, declares variable
-- *                only accessible within active context
-- *
-- * Declares that the struct member or global variable is only accessible within
-- * the context entered by the given context guard. Read operations on the data
-- * require shared access, while write operations require exclusive access.
-- *
-- * .. code-block:: c
-- *
-- *	struct some_state {
-- *		spinlock_t lock;
-- *		long counter __guarded_by(&lock);
-- *	};
-- */
--# define __guarded_by(...)		__attribute__((guarded_by(__VA_ARGS__)))
--
--/**
-- * __pt_guarded_by - struct member and globals attribute, declares pointed-to
-- *                   data only accessible within active context
-- *
-- * Declares that the data pointed to by the struct member pointer or global
-- * pointer is only accessible within the context entered by the given context
-- * guard. Read operations on the data require shared access, while write
-- * operations require exclusive access.
-- *
-- * .. code-block:: c
-- *
-- *	struct some_state {
-- *		spinlock_t lock;
-- *		long *counter __pt_guarded_by(&lock);
-- *	};
-- */
--# define __pt_guarded_by(...)		__attribute__((pt_guarded_by(__VA_ARGS__)))
--
--/**
-- * context_guard_struct() - declare or define a context guard struct
-- * @name: struct name
-- *
-- * Helper to declare or define a struct type that is also a context guard.
-- *
-- * .. code-block:: c
-- *
-- *	context_guard_struct(my_handle) {
-- *		int foo;
-- *		long bar;
-- *	};
-- *
-- *	struct some_state {
-- *		...
-- *	};
-- *	// ... declared elsewhere ...
-- *	context_guard_struct(some_state);
-- *
-- * Note: The implementation defines several helper functions that can acquire
-- * and release the context guard.
-- */
--# define context_guard_struct(name, ...)								\
--	struct __ctx_guard_type(name) __VA_ARGS__ name;							\
--	static __always_inline void __acquire_ctx_guard(const struct name *var)				\
--		__attribute__((overloadable)) __no_context_analysis __acquires_ctx_guard(var) { }	\
--	static __always_inline void __acquire_shared_ctx_guard(const struct name *var)			\
--		__attribute__((overloadable)) __no_context_analysis __acquires_shared_ctx_guard(var) { } \
--	static __always_inline bool __try_acquire_ctx_guard(const struct name *var, bool ret)		\
--		__attribute__((overloadable)) __no_context_analysis __try_acquires_ctx_guard(1, var)	\
--	{ return ret; }											\
--	static __always_inline bool __try_acquire_shared_ctx_guard(const struct name *var, bool ret)	\
--		__attribute__((overloadable)) __no_context_analysis __try_acquires_shared_ctx_guard(1, var) \
--	{ return ret; }											\
--	static __always_inline void __release_ctx_guard(const struct name *var)				\
--		__attribute__((overloadable)) __no_context_analysis __releases_ctx_guard(var) { }	\
--	static __always_inline void __release_shared_ctx_guard(const struct name *var)			\
--		__attribute__((overloadable)) __no_context_analysis __releases_shared_ctx_guard(var) { } \
--	static __always_inline void __assume_ctx_guard(const struct name *var)				\
--		__attribute__((overloadable)) __assumes_ctx_guard(var) { }				\
--	static __always_inline void __assume_shared_ctx_guard(const struct name *var)			\
--		__attribute__((overloadable)) __assumes_shared_ctx_guard(var) { }			\
--	struct name
--
--/**
-- * disable_context_analysis() - disables context analysis
-- *
-- * Disables context analysis. Must be paired with a later
-- * enable_context_analysis().
-- */
--# define disable_context_analysis()				\
--	__diag_push();						\
--	__diag_ignore_all("-Wunknown-warning-option", "")	\
--	__diag_ignore_all("-Wthread-safety", "")		\
--	__diag_ignore_all("-Wthread-safety-pointer", "")
--
--/**
-- * enable_context_analysis() - re-enables context analysis
-- *
-- * Re-enables context analysis. Must be paired with a prior
-- * disable_context_analysis().
-- */
--# define enable_context_analysis() __diag_pop()
--
--/**
-- * __no_context_analysis - function attribute, disables context analysis
-- *
-- * Function attribute denoting that context analysis is disabled for the
-- * whole function. Prefer use of `context_unsafe()` where possible.
-- */
--# define __no_context_analysis	__attribute__((no_thread_safety_analysis))
--
--#else /* !WARN_CONTEXT_ANALYSIS */
--
-+#if !defined(WARN_CONTEXT_ANALYSIS)
- # define __ctx_guard_type(name)
- # define __reentrant_ctx_guard
- # define __acquires_ctx_guard(...)
-@@ -168,7 +35,6 @@
- # define disable_context_analysis()
- # define enable_context_analysis()
- # define __no_context_analysis
--
- #endif /* WARN_CONTEXT_ANALYSIS */
- 
- /**
-diff --git a/scripts/Makefile.context-analysis b/scripts/Makefile.context-analysis
-index cd3bb49d3f09..6f94b555af14 100644
---- a/scripts/Makefile.context-analysis
-+++ b/scripts/Makefile.context-analysis
-@@ -2,7 +2,8 @@
- 
- context-analysis-cflags := -DWARN_CONTEXT_ANALYSIS		\
- 	-fexperimental-late-parse-attributes -Wthread-safety	\
--	-Wthread-safety-pointer -Wthread-safety-beta
-+	-Wthread-safety-pointer -Wthread-safety-beta		\
-+	-include $(srctree)/include/linux/compiler-context-analysis-clang.h
- 
- ifndef CONFIG_WARN_CONTEXT_ANALYSIS_ALL
- context-analysis-cflags += --warning-suppression-mappings=$(srctree)/scripts/context-analysis-suppression.txt
--- 
-2.52.0.rc2.455.g230fcf2819-goog
+Alex
 
