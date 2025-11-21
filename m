@@ -4,102 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E611CFA47B
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D81CFA47B
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 715906B008C; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
+	id B5BD36B0026; Fri, 21 Nov 2025 02:47:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C6276B0092; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
+	id B0C4C6B0029; Fri, 21 Nov 2025 02:47:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B4CE6B0093; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
+	id 9FB436B0093; Fri, 21 Nov 2025 02:47:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 46D826B008C
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:46:35 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE7FCB9B17
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:46:32 +0000 (UTC)
-X-FDA: 84133831824.05.654EE27
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2AAC440013
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:46:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=U0ZI2gxJ;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8DB336B0026
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:47:14 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4CBF51404D2
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:47:14 +0000 (UTC)
+X-FDA: 84133833588.21.371515C
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 621CC1C0009
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:47:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=U07e40b8;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763711190;
+	s=arc-20220608; t=1763711232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zxfbvScOZ8nnvuFfdlDMmbK1JnwfXlue3I9knI5n2z0=;
-	b=OmPS7VUg7thVveIY0Olkc2H9j2AzcojJaqmKNpnWjy3YDZ6wpYoVaPnLhV/mINcyf1Krae
-	IKBP1kIBD/UIq7avt9WzRGqripqNVVKw1QnRngk9kR6W/hzWX0zFeYx8mFO1Tf019YKRsR
-	Md68pLCiMRVwmJk7L8l7ioNeFfP5ZNc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qchs2neNeJ+pT407GR8IfWvCXYGTWBsYqw1z/CNcSjE=;
+	b=BHQh9HIBxQogZgvnV1nmU94g1/NOnxF8SSfLVINQoaa0OjxXK/1dE1coOd1+glfcT5H0V8
+	w2ZRNCby3jvuJIUwCGTwSt7XM5pi8fFi3HaVpOai8p4UuCoECil3Q3DugWs3Tj8u7gDh8P
+	giS018zsjBFBjBZlXY2JhCcaHhKGQ+E=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=U0ZI2gxJ;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763711190; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=U07e40b8;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763711232; a=rsa-sha256;
 	cv=none;
-	b=OQDIl4AffcUohTqtXXVOe6ldEU2Jcr9faUiMAFre8aRziTNZu7SzkneJAsfg7HdxzoukSv
-	bEuE90SccdDaD6T5s7BDLRsor0Lst8OPw66tq8OSSXnO/CXTKu84YzGxsziUp5bEAS7o73
-	AfGP9trO+WkgBUkJ2gpgRfrF7HTzT7w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763711190; x=1795247190;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=758owg6Uln4p10srjHlihJGGKUBXvqN48Kdezn62XI4=;
-  b=U0ZI2gxJT1kpSjykSDaMi/LmH1bH7WWsZw+6OeJA3ENMcBkR2Ut3zOZL
-   mhRuH7zIHzCS9aQCMsZNQf6NO/LL77m/cmPK2sZUQVVj2dAiTGHhqsnfo
-   w4BAt5VFP/VAKt1rHHGtpRPzZIh6AfJ2SnDgiMipdCMPby+UMnLNSgfx8
-   No8NlP6FxvceLraj5JVNfRcNV3iavimC/BK826LQ9nhy0T+lmqwUxZe9U
-   B3jnWFyQh2TGIprUOCnkNPa3nFtrBHuQ67Yrstwij5RbLFxouJ2vDU0/c
-   gy8GmWED9/h3qMzt/41AmRXbNJEY6uXCxEaeaM7LhXJlmsG/jsRcsixzT
-   Q==;
-X-CSE-ConnectionGUID: 8ePb9pbsRjmdM5OEjCeRfw==
-X-CSE-MsgGUID: 0CP2yMy6SZa1yrNRpyMMXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65732882"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="65732882"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 23:46:28 -0800
-X-CSE-ConnectionGUID: 1yy6WW1mTWG4UU4LHkbYIg==
-X-CSE-MsgGUID: ECscD4sSTZm3PmhQiVjtig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="190837512"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 20 Nov 2025 23:46:27 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMLqZ-00055L-1m;
-	Fri, 21 Nov 2025 07:46:23 +0000
-Date: Fri, 21 Nov 2025 15:45:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Subject: error[E0609]: no field `mm` on type `bindings::task_struct`
-Message-ID: <202511211538.sHKbv5Gl-lkp@intel.com>
+	b=j5DOYSH0OMyfG3EWvPUB7iYRKSBqf0cEI5d/X/Hrgl8MIJRlwMBfjn+H9bsGD+002bEEZc
+	VlAFqFJ8j5Okvq+adCtRkWv63l6006TPEw0O9YiNYRqQ4djboGvrLeXgw23BWkiC/Eg9Vg
+	pOdAp/gK1rZ/4eicvUQDCXIBB6DWhPc=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-297d4ac44fbso15721715ad.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:47:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1763711231; x=1764316031; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qchs2neNeJ+pT407GR8IfWvCXYGTWBsYqw1z/CNcSjE=;
+        b=U07e40b8aeh1LjTA0iauwoVkxbMse9Th6HJET0gJfhAvkZ3NNwRnhfgFLVPA6Ti+z4
+         GU7IQAPobpbjuQ4qVAdX38XbKAN8V6pP/vUGirc7i9NtxfMkBQJecxcGTj6uH9gJIB/R
+         JL7aUnRjoNDZao7BYvk4DWpCH0Li7fg2mLlGo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763711231; x=1764316031;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qchs2neNeJ+pT407GR8IfWvCXYGTWBsYqw1z/CNcSjE=;
+        b=mjtuD52aSQ3Z4tvwmTaMy1xelPuR1HXiLIlo7Fk9R0h/Yv+Dj8g0wwl4lmLITa/1tF
+         IZmohTSAH5JpbFBp1voyaKB0Fy1qUJ5flKKP40ahVj8NMAsDPP9WUFpvksbjbkmAjGTF
+         ViD41uLYWgpw41z0j5AcZyb6WzzlH6bkAMYY0npikgXZ9Ua8whniyFP6hVoaM6wcrz9M
+         D276gI8w+OQg8QDfJkcVUEp9yJ7DPrEW1DU05BK4INYwrwUx1aBUUjLsPJJ1IveOvzpD
+         wOM74CDug4PwhqofKEcKDyck5CHEJmj61xfI3rOMB+Wbwo4PTw3YXyY2dl7BFg+d69Nv
+         8RiA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcG148UQp9zueULdVF4qhG4zWN6+aIk7Fh5Hx/XKEpz6AZ3iXw5dWi9+0j6njaBjoLm9l0krPwuA==@kvack.org
+X-Gm-Message-State: AOJu0YwAx4bXN6IIbkoy0D1mV/EgnscbC14T3BZNsKLp8q+oufVyRBjm
+	m9Xvzj3pvlc1AO6gXChv/SNKhITh2JGa/gVXTN+aFI84TUkOhPEIqvd/O5xo0Xsw8g==
+X-Gm-Gg: ASbGncsUhBrxZF13/ak19RAQKb+zshWVB+uBQm6M1sl9D1PVTsExV0occ4YQb/hXXKW
+	P5/4QQMjKNeg9NgoPaQh4MdCSct5emIxAEMUXaapF32ESRtE/uMsb3VGj+lkhZCYxaWLpv4cMdA
+	NG35fl93pa6DTo3bMWj0ECULelVIqRk3Xbku+am4zsxwL+dRKrjSgai+hHsP1vXoM2q2f/WiS6C
+	T2l6Pdihsm8gbsvJbzLB3RHXxSOC41SVO8lSzI+GSWGfPyXednWPp4/BPxCxZQG8oAUvu0s4Ra0
+	Wc9pcE1yxiSGHsOzmstxxCpy8tfl3ctI+yHGsT+AC2Gw3txx246i3P9zSDYOS0mxVvJVH/EbVAr
+	d71V3HYrdXT4eiDF2oiYr/pBu3OkcpdJASy3wC33E6wTkJ2uQuIn+tP5fsSjdy/vizix9Qtc6yd
+	ewwS9exnjweMDf1A==
+X-Google-Smtp-Source: AGHT+IERlPIR7f/KYSSe+hXGKVpwH6YQfYqAT+vYeEopjrPnED6e4Dd4YOHg16rCMKqdZL/q+sSp3g==
+X-Received: by 2002:a17:903:384f:b0:29a:4a5:d688 with SMTP id d9443c01a7336-29b5e38c2efmr72888255ad.15.1763711231236;
+        Thu, 20 Nov 2025 23:47:11 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:b321:53f:aff8:76e2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-345af1e7c9dsm5602910a91.1.2025.11.20.23.47.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Nov 2025 23:47:10 -0800 (PST)
+Date: Fri, 21 Nov 2025 16:47:05 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Hannes Reinecke <hare@suse.de>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Yuwen Chen <ywen.chen@foxmail.com>, Richard Chang <richardycc@google.com>, 
+	Brian Geffon <bgeffon@google.com>, Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-block@vger.kernel.org, Minchan Kim <minchan@google.com>
+Subject: Re: [RFC PATCHv5 1/6] zram: introduce writeback bio batching
+Message-ID: <6yyispyqlczqeu2jjiwb5ypg26jq6gbnyxnmibtztl5ivzw6qa@h7abf3e5twqn>
+References: <20251120152126.3126298-1-senozhatsky@chromium.org>
+ <20251120152126.3126298-2-senozhatsky@chromium.org>
+ <90c06ff6-009f-430a-9b81-ca795e3115b0@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2AAC440013
-X-Stat-Signature: cs75sj6qec5thbmrqwn5ye6uts3izadu
+In-Reply-To: <90c06ff6-009f-430a-9b81-ca795e3115b0@suse.de>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 621CC1C0009
+X-Stat-Signature: 6z4n53ygpdb45b8dtdcct8o483tcihsb
 X-Rspam-User: 
-X-HE-Tag: 1763711189-949480
-X-HE-Meta: U2FsdGVkX19GQ2cPAybjUFOqSO1KA1p4vRpHADp5c99jXgouCO/cygO4fp9mPK1NlQmYTtjgVVp//9XNjCU4pjWFk/Jcf9rHeC8g7zrKsr+InFCivCjDYKQDl699kZB4YMMsC3bboo6d0L1a6n5OgP52Sbi8iv7wp9Jtspa8pQy0cdWtGTcdwAn7/MCI9rAVQT9jB4cbKHplqnTFl2bBz5eqpv6CCR0g+q3SQWjixJRRBDgwL+tBQ3A+FU0Zr+SazP71g3y4cOhINsCPoT6kbGOzJ/Vj7hZWdRh8VBQNexbgeE5zOWedSh3qEeFtAQmmJU6wvUWNW9FTrl3c298g6TZAIYoA1LnL33lczOqqcL8iNPvCuFyL6jpZnai9QyXqiOaU5Ju/Ac4JpnKFW1Wu3cdeJUYaEvQi/5ZMIhUJa9fiha5zyaBeJZk8d+ekYxU0a/KAerlDIwF6KqkMjSATBmeSFgrzrNaKJn6Hb0OMMJb2LXjFsZ1X3b/nC44MI/mntWTfLJt2qFAiAZB4aAiGWo94Fo/tFF/34Egc0lanH7iGC3CDIsb+JWBYjGqTpyt7KnN9Mi3hVHeBIwsY1eU2SvtppdczXgWRDobC+8DIfeC6LTcYJNriM7v9QNchnuGX6JeXg8tGy1R5wblp0KuHE11gh0rXxgFrMGOucYISryKnmjuviWapMjfEt5GJemZ+nyd0SaO6nPcU2PReZHQyZMX3q5O/I6AAPcpS9K2HgiPFtzS7CfOXqqw+3I8Trj388t8Wxr67Cqfjs1QUhQMIaRXKs5SO6LOzecxjfXH3F/9jk6GRt4WAANNTaxiRu1HCl3U7rZfwpiw8jwOCyRU39mWsO22rkzAiZk2z7aN8gzm2wVfCgXIVdEGrdpE5VbS7wXI2oYaoqV4Q0uvJONjpUcrVUAljP2pqmYQx1erDA1vxW0CMYHCMP1/XeuD0YXNIyiDS6A/qK5sr2BQUjZh
- g9hQxF1T
- H0pXEhqwW9Ps6FPoGF1M06ehdq7hH9WGht5oUHROv1e+h9tXE39tpOpef9JeY40OpKUpTfp+jX5MPxjw7Q/pB9pYntMZPW+zYE6kvWB9u7llH5+SrDJroB/SEKa7/Mu5o7KQUV+nBCG6VdHfzqHkIcHyUqlfZJFiIhOHmWwzLVUZIDAJeoQB/S7EvOJTW0dXU3TTQEl5BlXxK+oyTz9tUYC4yjOq0s4Ba0BBOYZk0Fz4wZ/DvSgDlM9bvV/frV6zj8Cz50ag+zP8uiPPIj29cYJ2X0UPF37Rv0cEe9F+Ta1e9dDICeazBM9MGUd4eoZlznFurV/zM6XbKWwPeOeFqY27EAr4wc4dlfESaK8tmuijqYAj2iuAuTk7ykpZnof0sIEDx2AI4zGU2c7zzLcmzHQSaZA==
+X-HE-Tag: 1763711232-617592
+X-HE-Meta: U2FsdGVkX19IFSKBZPPK8P/XRgp9FNGpziaLuP2KJYUw0qovjQgCi8JsxKeFvTSeXEpjABeQkVFjGNoUNqxFJQXo1Yo6MfbPC09VXC0eczEWGzLLYx+LQmneFld8PW7B4ZGv+rbJ0vmTAQKsnZJ/LnHnpocF6yBHrJ5ygbXMsMOxVXb+B9Urb1WZrJMyoa0KhW30gw4MXGD1js8Y87qOHTV9QeBbD86psmLHjou74XROXY+osiUocf57Yoe9I0Pzw0L3zB7U07FDKWtx9JmtlM7zka6aohpX+ddR8wh5dCgfy8uiIVAmkDkgTQvdz7l1olP6Lzl339XVqK78niqo1hhWeElK5fcj0VMP6mF63wvtuItfBWhP2+tjxUxBOz4idHvxRQrINyvUXr16k049VQeQKjJ5SDrkaBFabNFmsvO1duYpo/bFAPksH/4gblNSHKkZo9XcvrX92Mw1/2NN494PdBuN/IcZhGO2uvB3SC7MblnWflpQGsCsgFXTHIHi3h14i5DFPe4PHMc8xV5TKvY1qvcZmQL+B6sxovDQAQNIU7j1UQorR+j7guB5D7926HCDNWVHKdXhLpwlCf27wXrr5G2sdRIQvL4uBS6EmqnFdPex8TLxq13H1FJGyjhGAD1Sbq5HM9kxQMuWKtI5JuKolL7qrFEDErwByN2hq8kEmQSC5djsy9pYohaByFgC/2pn6QTATFiXE2Ca2IoOmjDgrRvn5+4HuwXXz8f1FPAVDdTg29mhk+KBf8OblzaMQZifMoEtpioI/wHOGKI4TzTQGGybXech9CxmyZ1P0sQ28PKJZ2xKvJooRXk7CNaSCuZX1a3aXt3CtIKnENSJYfAtHIaJp6MMhRNJfz6jPMvLNBUTBB9azIt5oLwEXgpN5gdIhrB3ZBy9HJXxZSoYcboJIbW2ojZxIEjOdaP4kLdAZMk76Gpew0mB8tufrPucW2VUbEVteRdwT/rkzj4
+ FaW0AJqt
+ /kNxjg92Uixgq/KItmbxFsTmxDqrv7yyMLPcr4vcixcSRpqWgQV6bsA9deoeA1/uVHCVfdK6C+wE5PWkd2dPv2FWA222e+iOxLg/JTM74xVH/OkvqI+Pd06dMnv6pQaiF49NODHBBnQlPv4eAuca8fhLKzn9T5fYALqECnvI9LVgfPVEA9Ijeh4rhPbeIW6JecFfP0FP1PT7bdclcozBlXxtOGopw/WX37AtBjZTOPUulj2RRFRR8FF+NDLZAUhA2q4QE66UHli6eU94ZmDNchMHtgmStHEQBu4jH9R5Ex9zaIZPTt5nbAIveaM3Owa+ari+ojHeI0kcT1RUsMyO4ylmT7hxjhez5oAYR4JFxkVQjj6g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,31 +120,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   fd95357fd8c6778ac7dea6c57a19b8b182b6e91f
-commit: 6acb75ad7b9e1548ae7f7532312295f74e48c973 task: rust: rework how current is accessed
-date:   6 months ago
-config: um-randconfig-001-20251121 (https://download.01.org/0day-ci/archive/20251121/202511211538.sHKbv5Gl-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9e9fe08b16ea2c4d9867fb4974edf2a3776d6ece)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511211538.sHKbv5Gl-lkp@intel.com/reproduce)
+On (25/11/21 08:40), Hannes Reinecke wrote:
+> > +static int zram_complete_done_reqs(struct zram *zram,
+> > +				   struct zram_wb_ctl *wb_ctl)
+> > +{
+> > +	struct zram_wb_req *req;
+> > +	unsigned long flags;
+> >   	int ret = 0, err;
+> > -	u32 index;
+> > -	page = alloc_page(GFP_KERNEL);
+> > -	if (!page)
+> > -		return -ENOMEM;
+> > +	while (1) {
+> > +		spin_lock_irqsave(&wb_ctl->done_lock, flags);
+> > +		req = list_first_entry_or_null(&wb_ctl->done_reqs,
+> > +					       struct zram_wb_req, entry);
+> > +		if (req)
+> > +			list_del(&req->entry);
+> > +		spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+> > +
+> > +		if (!req)
+> > +			break;
+> > +
+> > +		err = zram_writeback_complete(zram, req);
+> > +		if (err)
+> > +			ret = err;
+> > +
+> > +		atomic_dec(&wb_ctl->num_inflight);
+> > +		release_pp_slot(zram, req->pps);
+> > +		req->pps = NULL;
+> > +
+> > +		list_add(&req->entry, &wb_ctl->idle_reqs);
+> 
+> Shouldn't this be locked?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511211538.sHKbv5Gl-lkp@intel.com/
+See below.
 
-All errors (new ones prefixed by >>):
+> > +	}
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static struct zram_wb_req *zram_select_idle_req(struct zram_wb_ctl *wb_ctl)
+> > +{
+> > +	struct zram_wb_req *req;
+> > +
+> > +	req = list_first_entry_or_null(&wb_ctl->idle_reqs,
+> > +				       struct zram_wb_req, entry);
+> > +	if (req)
+> > +		list_del(&req->entry);
+> 
+> See above. I think you need to lock this to avoid someone stepping in
+> here an modify the element under you.
 
->> error[E0609]: no field `mm` on type `bindings::task_struct`
-   --> rust/kernel/task.rs:286:44
-   |
-   286 |         let mm = unsafe { (*self.as_ptr()).mm };
-   |                                            ^^ unknown field
-   |
-   = note: available field is: `_address`
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+->idle_reqs list is mutated by one and one task only: the one that
+does writeback.  ->done_reqs list, on the other hand, is accessed
+both from IRQ (bio completion) and from the writeback task.
 
