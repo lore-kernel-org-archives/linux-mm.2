@@ -4,122 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9240CFC512
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 23:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C01CFC510
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 23:45:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44DCC6B0024; Fri, 21 Nov 2025 18:20:55 -0500 (EST)
+	id 412E06B0029; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 425506B0026; Fri, 21 Nov 2025 18:20:55 -0500 (EST)
+	id 3EA776B002A; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33B446B0029; Fri, 21 Nov 2025 18:20:55 -0500 (EST)
+	id 2FFF86B002C; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 22D026B0024
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:20:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9C0FC0780
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 23:20:50 +0000 (UTC)
-X-FDA: 84136186260.30.EDB97B8
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DA7DC1A0005
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 23:20:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XwFRos2a;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F9396B0029
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DCB91304EB
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 23:45:00 +0000 (UTC)
+X-FDA: 84136247160.27.A84CEF3
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7472A1C0005
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 23:44:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=EOD73ij5;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.44 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763768698; a=rsa-sha256;
+	cv=none;
+	b=n6PkbuSilFHdiWENKxxdxYebo4LjMwdJzRCcLHXj9E4HFnpMH2s/dXdtwfCqLDN8OpxCoY
+	YIBPRzBpAL0AgZXkQPWrWHjXEg63ibWbIjY2GsM2aPLzgdqrzO1RiMRLxqsNa/2OWhCPFP
+	SiqLXyoZbx7qb4pm217+Gx19ltX4pgY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=EOD73ij5;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.44 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763767248;
+	s=arc-20220608; t=1763768698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tq9xbCdYMfzLFCvaBRsqdkWrBL/TNh6NYntuvvoNmzQ=;
-	b=jqy13s/83edgZEx8+VamU0NhP5ieUIkDRQxnRt9YgdAqje4D2cjrQoaRIRWLM1W+eD/uAE
-	GyzbOA17KFuf7vqHnzcCY78iY+TiYuFj7cKBg4LO6YT/N112YP6iGDv5C6X/aDB4UO62OK
-	lk83Fvl+vscINQDgMxssEsn8SnWNU6A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763767248; a=rsa-sha256;
-	cv=none;
-	b=WIiZLvYD8Q/VmJaYMDGLDayxUKNwRFGROlgWE79+5QybAEJe80PYVuUYBNfWgIHOAyTDOU
-	mZ4hkj9vSCFuepZV9uFkJwdvvQmYM844gI27S3fIlKcSFG7pwPifQyrRjbdPQX9sCsUhGd
-	10fDPlseImoJ2QLkB3R8mWZU2zJJ3Vo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XwFRos2a;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-642fcb38f35so1624186d50.1
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 15:20:48 -0800 (PST)
+	bh=94wkD2Iff42VLMlQNWegA9dtRPkkPQ7m6y0iMS1EKU4=;
+	b=ygiS/vdMJCd8F5nKG3NYiLLcGUz05G7+jSRWCNQAt9CPB43rv8+DqKdfhw9OW8cvEssz6/
+	H5cKAoQI0bx7EKHOJ3P6SMlgWN3V37FxFii+BhCRLqoEcxvs0mta3ylN0fkVjpNu/6BgC0
+	uwRv79oGTg6BO5/msoksWehwalvHnqk=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8824ce9812cso28377376d6.0
+        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 15:44:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763767248; x=1764372048; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tq9xbCdYMfzLFCvaBRsqdkWrBL/TNh6NYntuvvoNmzQ=;
-        b=XwFRos2ahbElMMc6FwiXIR+seTw8hoOWOQLnLHDZKs+0noXAGPg7Sp72U2ejvEplu9
-         aO7dYFUnCHmZuCd0orhfAZWd9SYbk6xGDSnyFHV+iGSJz/Rhhkdh49XBHQIBpq1fLNVc
-         pmY8uH5T5LumXtSzccPXFIsQlO8bzuHvLwj0dsb4C7JceIuZ/UHQsE1CvHnKRNNN0seD
-         hF/hxEFXtuA4102XccT5AqJIBtqn7fFFtO3f7E8GGNrp4sX8qgQZY4Nx17JKQAMzb7JX
-         cxAcU0/00horDntJZF1/hzvG09zNAeFK1Go1qe7doLFqlqUmFh+nfhlsRknsKZhmHnG5
-         RaDA==
+        d=ziepe.ca; s=google; t=1763768697; x=1764373497; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=94wkD2Iff42VLMlQNWegA9dtRPkkPQ7m6y0iMS1EKU4=;
+        b=EOD73ij58mx+3si5593Q/MuHlwoiXfWsbVzJAUzY1a7l4ReQnDhaPUIGO+xT+UcdOA
+         pXsLl0Ut/EWArhLrkD+SqIh6cIAOZZ0y4lrj72h4Csge77/wLo8PMqb7ni4PR0Z9Ub/G
+         W3EqXdgdTTDYE2TNFOBACCmlHM3WOT0C/W7yLKAQzXr0y5T/oiW7mW8vPb4phb8PPRuo
+         WCxyEx9niHhf+cZePyigXOz9Pjz42SgYZI8Omyzrtf5rZ9JcfI/DSvQ1vhSQoM1zsS+d
+         /0ii0UdesMRmXCFL6BJuiLkWqqhBaoubo4CCQpVseW2inFwUUjaNo5ZXvkxbKSMtAc8/
+         WsHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763767248; x=1764372048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Tq9xbCdYMfzLFCvaBRsqdkWrBL/TNh6NYntuvvoNmzQ=;
-        b=IQ3HoG7ci31LRTd0eHr7EUjJa/uGXbX4OJOArj0V5STd/aPhsudsrplkexlj9BoxAV
-         IpG1i9aXHX7XrSkm4MYTW7A/ZiRZ8ZZYpn4+iovcSM3MS8dpx9kxWrnanlbpBXbauHSe
-         cdO9tkohgRK0k+KHMuCymGt7BmpwpCz1VQ3kghVVmrUMp2cpj8cbeDseQsshDuRhYcdt
-         +aaiVGXC2qcktYLJsZYm/eQvFbyRDGayladhPMzKxlSTrpZ5JOZZC0NWjy9nM9mGZqbW
-         NalyQUR3RhVJPUeDVp8/onVujnD6X8fe9EguJ5rJ1yYp5ZlxdjODRUbJ0Gjvv69Hv9te
-         eLbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWPQzWYmRE9AaI+v4KdJXWcJuxAJ7b2u4jxsBJTx+dU9gFfHu4c31xA6feSHTAY1YhTulQg74/AxA==@kvack.org
-X-Gm-Message-State: AOJu0YwtBrowOluHWbHn+QHYjHksNfilY9bMraKEbz24OxxYsIkBNTtp
-	MevE0xP4OTvsMOBMAkL3pe7tTPnCHseeQXoYbCSJxXUqi0Kwnk76mxqfF11oVQ==
-X-Gm-Gg: ASbGncsXHfhYJ0BDaiSHFiM9jeoaXgfxJghR2YgU6D0tnAheoviR77ui9xpFMqcHFOS
-	HsF9r5G6DOfrn6HzzZc7bb9DtjiKVEbRV3s5xsgd90dI7ir1XgSOxOVZfXdnDJfLm3jc+OxuoJm
-	pdhAVMJ08SDhLqqFgeaH+t+dOx0iv+jlBpa703S+0c9/FLo0Fxw4iy3HDDoaFT2EABbn+XBeTL3
-	MjH1/BwU00hopGkowaltGkjubcah7wsTmw4PO6XhSS7oYpPMRsvwM2ZNBA3xyJTPNh5uVDCzSgM
-	NbS2SklOjvpaC8IHH46TKbjVr4QEzuQPXvXflsdl/HI/4zC+RzgXNJmFH49yOmBw2ZzkTEhF3ai
-	VGPrbyk6B0AYZsbzK8gzwOa71K2lshHt7mxp+hy4+neUPraBh5+RGc1Gjkd/JX3uN0z1BkpCy/l
-	plqNCltLo6OgtY9RHINH8myQ==
-X-Google-Smtp-Source: AGHT+IGyQP2VuMLSm+xaWSncG05tLOmwZ8qWKD5y5GuAXu9VCvpBCmfrlIYgSqlrR6tDWPPh8hcH9w==
-X-Received: by 2002:a53:cc85:0:b0:63f:beb2:951b with SMTP id 956f58d0204a3-64302ab4ec9mr1841480d50.42.1763767247782;
-        Fri, 21 Nov 2025 15:20:47 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:4c::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-642f7178824sm2123443d50.15.2025.11.21.15.20.47
+        d=1e100.net; s=20230601; t=1763768697; x=1764373497;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=94wkD2Iff42VLMlQNWegA9dtRPkkPQ7m6y0iMS1EKU4=;
+        b=qWNnIhQBtOclVC11CzlaG7nFVCKwASahOgEeA7HyCORVmicoOFGVkGNcMluZNzai/v
+         GTKcb8dH8A74i8U4JKXbUaj70wNpaa5wrc7/R7R62ijOeJi0gAL9XWmFHns5QwJGsp1K
+         jXy8/7yFEsJxBALanJdKQDhyyCUSQWIcxUxMKMauQtH0+oABrYkiWTkBjhRnDng3OmBy
+         dC7ARFsnSX7yA75HPanRS29GEN81JRZlnDs5W/AL1EwO//7hQ7nhoOJv+TnjYL93WZJS
+         QE1J6EW6Lg8ZGZd81jC6wsNkWc7qXBdlCRsQL2Ob4zymtE/ml/LkfiAyeuvST2AWd2sB
+         mkDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXtCrlqerd5Ic24qbLWFVPtJkszFmxi+a7vG1uUnfF/Ip06K3pR8JMq2zqv+WnYwOHxhx1AgfR1w==@kvack.org
+X-Gm-Message-State: AOJu0YxoJw8AyeZsuWCTJHxgCgiXbpcpRf759naHwIHZdSD3VbFNqXDC
+	Od1pxH8kWh+15P/1iKAXZk+l779gQhArI4N6OuN78QxFbOWgF1Rmq8PzRhnwdFqSndw=
+X-Gm-Gg: ASbGncuWHoYPHgWqdiVLWbIU8K6cYKT9OyIKvks/UP1bkzx9qtJIv6QnxHjyfqnhVBZ
+	nw+XfvWY1ILmkqDyedsZpy93uQXN9ElQAPycmu5TBCXFhBQH9YkRFZ/9zTvYkR7E+JwL4XzQAEo
+	K2QpKSwIIMJi/CQgmaQl5uWlP0KyYSWF0V2+vqVNhMdIN/KXVxLgvFU69dMlpSDC5MWJxhcZs+e
+	sRHyZEdHXhZ8zOoCX69gnHPQWKagCb4rfzZkSNgcVmfAkmSyn0uR/QWTjHU9QUiW6HpRus7IASD
+	1/5G3fMjqOSf6QTLvTlVqW7HBiTVXSsy0dWOeVDAsNYnUOeDjCyKFHVINOM9ZrwmUDbsIxWW/qA
+	NVjr0x0e6N1r0VGN30XV/y7DvGKIMT+7i4v3BNxrDX9089IvUBLTvYV5YH3T42b552jcXXryxU3
+	KJ0eSF7raVtSE379O2E9BSZGZs81r41iZC8z248dc8S9opAYrJimIEF1Iy
+X-Google-Smtp-Source: AGHT+IEos7T2Axz389Mmy3AFU8+Jfh3PFehz2HfOxc6qgzO/Its691H7QS0uM/0VDIYstKPPxEQUqg==
+X-Received: by 2002:a05:6214:226c:b0:87d:fc3e:6d9b with SMTP id 6a1803df08f44-8847c525de0mr61714186d6.42.1763768697300;
+        Fri, 21 Nov 2025 15:44:57 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e54c32csm48350666d6.37.2025.11.21.15.44.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 15:20:47 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
+        Fri, 21 Nov 2025 15:44:56 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vMaoC-00000001bmD-0arX;
+	Fri, 21 Nov 2025 19:44:56 -0400
+Date: Fri, 21 Nov 2025 19:44:56 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com,
-	Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH] mm/mm_init: Pull CONFIG_DEBUG_CHECK_PAGES out of CONFIG_DEBUG_VM
-Date: Fri, 21 Nov 2025 15:20:43 -0800
-Message-ID: <20251121232044.3120695-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <b1ae4706-b56b-432f-bde6-7d76e9b02598@suse.cz>
-References: 
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
+ entries, introduce leaf entries
+Message-ID: <20251121234456.GA383361@ziepe.ca>
+References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kjmtixjyghsue7fawayis8xnnr66cbcc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DA7DC1A0005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763767248-991526
-X-HE-Meta: U2FsdGVkX1+tJLgLA+xGxAMGJCnZF7vy/CNHX/b5ksLv3yKBdmGUVZDvAVcixswCfd/ufMXhSGJKUwZHF8UWBefoqMKq481LjU+sQ/roAs78v0FlwX5CZU8lrfi7/h9da/GF+fVEqc/c8B6LjztcYfmKU5tSzdkp3VfPMxWvf7oq1qx0c9A7F85csh0A1GNysIXVliAQeaouQmGjiFXX6F3eYxHPJl3hJG6+FBPi+CS9OAUQ5fyxXRMSCxpgb2MmCUXMf199E4LuyiiaOLuB2lQrqzRVPe/GQxWw9kfGeO16/Trmtl9u6tzJZENRaDCx6dyx0nX0iyvp4xn4W2CzBWi2b5Vo2jQfZOIxEbHyAH1x8Rj8impxrdTbccnRSj7CIGaCY0bB69alGyAreOM0fAZZXOtsRH4A6oxvatjhhWm5ddZ5bIk2/lH+LDfK7okCIi3EKPZfgzED1WsyspQqVoNMmIzxmdO1OnKn7W/hqFs79Elh4Is+Vy6X3XtMOfqvPRx5BnBXrwDE8LRAekJ4ExjJiixPoQbJVbi9qvhG9LhTkUCiqsWlTS3WrNOaJn8ASp2DVkkuXpOTtPl8bgGmrhBIuc6YnYtPrqbkW56l0F3Tl7dHuU1Hj0I4tvDMFKDHnZ+Cqn5WlwF83VEgfy9pj5gL6vCKK8zPHDHbf9OdwgnuhWCKlSa/LtkWtVm6PmdwxWuc7rt6ADsY5Xaf3F58JgolwbJuGC3bRngj6i5ib1GwoCklzsbN8egROyRPPMLuEsMAf5WJHkM0ixl3AdeA5YURAN/OBrRWob9sgrmnpLyYZAwC9f5NwuR82DvOGFnT43HTKeTDvGXWcNeRmzV5bHo+hZRMZV2W04O5dXr8Eahu75iTs2IDkx0qIwfc8p0dONCpj+TGCH3jm13FBpJU19Pc1hbWi1cr/46NJg6X5/0g44mNLNZygXf+6b/WOrn6k741C/YpKzsQ/nP/6hE
- GzX4Cgak
- FIzDnCwKK1mHSQ4PoFQkVwYXQUonBHmLCeqU7vlvaRpc3i5rgYQjD/EthXP9hHz1yuIZPUys+RaZYgzgj0/Je3gvxV9+CBY8Pey3cX3let9ZquydG/s+IAv8BqJrmadwxJUZ/xTwQvbx6i0udltJs6btfxKqrq4mzncvujPs5rT1Ttbm32Xt482uxA+zmmYAudokp53hNjjNYt12BBjXL6wNH33g2AU6ik1LEWNyBzgl2ZidSPxhW3ynurkOJpbe/DxIfur0rzj5p+Xq86kOFT4Achtj3mXHXaQYoapDKX6z8rrNOwzd49CznNH1yHCKGVgdRU3kTFu5ZYhWYiJKVTFe1OKKclV8HUYb1ZVdZG0nPzOdsESNT7m6GF0i55SwPplUhKcfFNYeX36pCjSWUlKvRtYvXGgCJyEZDkW8WpHCRJF24CvHqSofU4dgPs6f3il/gUTbmHKiXYQr8Al9Z95WCl7GEUY4aKY+6YPsXNI3E5IXBAp+SWNnibFkZ8Z0IRo5TCOpqdF/pt0J3IsIUKqw08B1a4yF3JtTcUM0F8L59LpPONzJIsZcUHw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7472A1C0005
+X-Stat-Signature: 9kutqbozkf71bssxnj7rammbof7ckbbb
+X-HE-Tag: 1763768698-898307
+X-HE-Meta: U2FsdGVkX18FmZY4FofxOv3ldMsSG2xcyT1rQp2WexgtT05eBa7LLt876AitAusHx2ZhYwkLEIW325ynpcipFngBp0PCf/ChgiV9hai63nnHZkZc9JWQrBltggqZ0XgqAiQGLN2OAgIkR1xAG4+JZv3KPD1Ie6I8oWdewEaVW5t5KsQkuz9WYr/1+rMjSrMK/iTbbbTS+1HNY9uHmldvyG543aqUsHawvrv7xC7US0QTpOp7HcudBUeK6QKoWYKEijXHdzlx5PcxOTEcF0jbtTMcD/AWQUSjRqG/khVF42MnGUF1PItmyljR4AQTdy2iZfix0qnJjSk9eYcPWpgAGaAsI8/xHS9Tbeia0YXwt/TXJqXK8q5vF0MJgFzqCQXZsb4S0BdUF75qsMRnX394M6mtpdYU12qb/jGaHYHABocWcDAhltGDxiv5gz0xUt4goZGvcL/DEuNfjUEIY04q0BkeT4fvOXDjRONMNSijaXxAhWMX8mS6D+BftCQbSLrpwZ0Sn03eoOOWfw6ZIXc29RToc530y766bMLNrlIfCCMKa9iDD9f3/dU3sTCxG1DSOdaQknTQ6x4iIL35Q0c+dCT4py1skPXMbVHb5gwM0RI3uwyiFZmZEcTUI3uN+XkQtbAQrpwePTE8zDY87GaqU0EmYWtvG2oCKNQLMgfvVreqL+bpYYspO3DRzn97dbfAlGtcq9x8yKKPYMPrvW4oh/nBMLrFU7DIkZ2xyyMgyU9CMJuEd9NqCUDXD+wTE6vMVB1xM0LWyFjD+30zL9mw/x3Vq6EHbEa1loJVGw5Wxd1M8rTN22Ou3AT7QJGyysAQvQayMxXWl5M7FUCEqp3Buajt4oSJqT9tX5ykJugo6XZhzJQHJf0JdSDXov1GZALHXa3GBqJojdah3+cBp1h022v8I48F2uVwczuAh47HvXRUd5ihgIDTzSVI9fWDJsMRjYtGK/UWmeDJJFkiIqH
+ 3lACDmDi
+ sTgdc1/8AOsPUzMR5AkmMsgYGL99BRU93XVFS9Ww0dsaF2iV2hSSOkKN2J4PuRoLj9eiVlpQBd18vuyfVRGGcH2Mj7OMD7Hwu/O/PuNc0EUSsy+w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,30 +167,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 21 Nov 2025 23:03:01 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
+On Mon, Nov 10, 2025 at 10:21:18PM +0000, Lorenzo Stoakes wrote:
+> There's an established convention in the kernel that we treat leaf page
+> tables (so far at the PTE, PMD level) as containing 'swap entries' should
+> they be neither empty (i.e. p**_none() evaluating true) nor present
+> (i.e. p**_present() evaluating true).
 
-> On 11/21/25 21:44, Joshua Hahn wrote:
-> > Use-after-free and double-free bugs can be very difficult to track down.
-> > The kernel is good at tracking these and preventing bad pages from being
-> > used/created through simple checks gated behind "check_pages_enabled".
-> > 
-> > Currently, the only ways to enable this flag is by building with
-> > CONFIG_DEBUG_VM, or as a side effect of other checks such as
-> > init_on_{alloc, free}, page_poisoning, or debug_pagealloc among others.
-> > These solutions are powerful, but may often be too coarse in balancing
-> > the performance vs. safety that a user may want, particularly in
-> > latency-sensitie production environments.
-> 
-> OK. Would a boot parameter work for you instead? It's more flexible than a
-> config option. Then we could perhaps also decouple it from
-> init_on_alloc/init_on_free as it's a bit odd side-effect for those anyway.
+I browsed through this series and want to give some encourgement that
+this looks nice and is a big step forward! Lots of details to check
+the conversions so I wouldn't give any tags due to lack of time..
 
-Hi Vlastimil, thanks for the quick review!
-
-Yes, I think a boot parameter would also work perfectly fine. There's nothing
-in particular about making it a build config that I think is necessary here.
-So happy to make it a boot parameter, and also decouple it like you suggested!
-
-I'll spin up something and submit a v2. Thanks again for your review!
-Joshua
+Jason
 
