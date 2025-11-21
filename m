@@ -4,99 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F188CFC29A
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:30:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7F4ACFC29A
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:36:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DE2A6B002E; Fri, 21 Nov 2025 13:30:54 -0500 (EST)
+	id 0C3B26B0022; Fri, 21 Nov 2025 13:36:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98DB76B008C; Fri, 21 Nov 2025 13:30:54 -0500 (EST)
+	id 09BF56B002F; Fri, 21 Nov 2025 13:36:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87C9C6B0092; Fri, 21 Nov 2025 13:30:54 -0500 (EST)
+	id F1AA46B0089; Fri, 21 Nov 2025 13:36:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 706586B002E
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:30:54 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 24F47C06D1
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:30:54 +0000 (UTC)
-X-FDA: 84135455628.25.1C1820B
-Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 70CBF180019
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:30:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b="tJF/sIc/";
-	dmarc=pass (policy=reject) header.from=gentwo.org;
-	spf=pass (imf06.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763749852; a=rsa-sha256;
-	cv=none;
-	b=iZq1k5io5wj6tAqnQX66H4V4quX7FmDqsiHXCxJiu3u/d71f+AlRzoG0wCufS2a1VxGxzj
-	cb+YiCDy2Bssy0yqgrZtf+D0lcphwXRSatWd0NlBMBs4wKQr2Q1r/TtSw2xmcCvEki/m22
-	+ZRuWuEEQSUuMnccVnzI4+HflXwIYds=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b="tJF/sIc/";
-	dmarc=pass (policy=reject) header.from=gentwo.org;
-	spf=pass (imf06.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E0E0C6B0022
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:36:40 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 94E064F121
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:36:40 +0000 (UTC)
+X-FDA: 84135470160.22.E67F939
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E9BD74000D
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:36:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QEx6H1kx;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763749852;
+	s=arc-20220608; t=1763750199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jWslEPu1h+kwOX+YdsgP+InMHvzad4h5A0TecdWZjCI=;
-	b=u/Sh2GzFA953IHqsnb3iUjC/a6AF7r8LJuNgU55kUTkbtHHwjcwqF8sY2rsFfuYvZ6sc9Q
-	dh4BH264qe5hAPqAfILTTn0UmxruvC1bdRsGTbQGCStm2u6FoTM1QJ+opwgmq1jKTS/npD
-	M99zMx1uy8KivzXXvpzlH+0agPuKxd4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1763749851;
-	bh=jWslEPu1h+kwOX+YdsgP+InMHvzad4h5A0TecdWZjCI=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=tJF/sIc/EnfMzSu+amtP0YEIwtKbY9i/YPE5RHldGP3WzOuUGkOgNn3ZrQxRVC1kn
-	 Hop2ettJhJjzv0M8nw5QrrHRo6jY587iX78MZxEcWLr2ARUawoQvtk5ChjQ4al40UE
-	 pSnQbJevEBvXKCuEiU/2n8lRuRMrjBZppPH3aB84=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 1D331402BA; Fri, 21 Nov 2025 10:30:51 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 19BFE402B9;
-	Fri, 21 Nov 2025 10:30:51 -0800 (PST)
-Date: Fri, 21 Nov 2025 10:30:51 -0800 (PST)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-    linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, 
-    Steven Rostedt <rostedt@goodmis.org>, 
-    Masami Hiramatsu <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
-    Tejun Heo <tj@kernel.org>, Martin Liu <liumartin@google.com>, 
-    David Rientjes <rientjes@google.com>, christian.koenig@amd.com, 
-    Shakeel Butt <shakeel.butt@linux.dev>, SeongJae Park <sj@kernel.org>, 
-    Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-    Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    "Liam R . Howlett" <liam.howlett@oracle.com>, 
-    Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>, 
-    Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>, 
-    linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-    Yu Zhao <yuzhao@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-    Mateusz Guzik <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v9 1/2] lib: Introduce hierarchical per-cpu counters
-In-Reply-To: <20251121100308.65b36af9e090a78a66144c6c@linux-foundation.org>
-Message-ID: <97a15b05-d61c-0035-82b7-37ac073c4055@gentwo.org>
-References: <20251120210354.1233994-1-mathieu.desnoyers@efficios.com> <20251120210354.1233994-2-mathieu.desnoyers@efficios.com> <20251121100308.65b36af9e090a78a66144c6c@linux-foundation.org>
-MIME-Version: 1.0
+	bh=OVr+23+Y4FDXkcZloV+7a0sszhj0dsWtyYoZGk6FN8E=;
+	b=IL9sJpOaLHLkKEAGw0eCOhKJXDViBxHpGs8Bjog13MuVFsm2Ge/1tgQVjLmDtrUl4VR+51
+	u2c+SfSFrhLFecjab4F8vAf6eOXVo8rWEcdRwRE4YddRpR2VZ+KSYY6fPCarrqxkQJgD32
+	YjAmFpMtUbGPy/eNSRHRhHTjuyNwq3k=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QEx6H1kx;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763750199; a=rsa-sha256;
+	cv=none;
+	b=qL2R7TGgxV/MxUGmjTlcFoqAPURz14oGTS9GdsWwr3bO7Wq5+7o0uz3ekPwmPgic53kUTR
+	M5lN6LdWJj2xgbIIlsskf106kt823WvXyN4VEPTxrU94HlJpRKZmTbvanY/Kb00+CXbsad
+	xyRYPIlTG3jf1NUIjhoABe9IQAsY+us=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 11AD660139;
+	Fri, 21 Nov 2025 18:36:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C2AC4CEF1;
+	Fri, 21 Nov 2025 18:36:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763750197;
+	bh=crGPPT0AtAuzG2UEVBlxUERhuPjW93cug8nah7uLwPI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QEx6H1kx4LH2VEQuGtG4dDTBfQimoEx6dOPrEkpMfabhu8lvBwbefk1rGdOBtVACD
+	 QZKA8vPhUokAEv0JJOZyDEHGcBf++sPmEabuLzPJH1etPYvKiGFWYCxM0l12ChfFsx
+	 m1HWtmpBhooqID4D5faCmw1veUK4HRjgPAR6uS0U=
+Date: Fri, 21 Nov 2025 10:36:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Chunyan Zhang <zhangchunyan@iscas.ac.cn>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, Peter Xu
+ <peterx@redhat.com>, Arnd Bergmann <arnd@arndb.de>, David Hildenbrand
+ <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
+ Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ linux-riscv@lists.infradead.org, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, devicetree@vger.kernel.org, Conor Dooley
+ <conor@kernel.org>, Deepak Gupta <debug@rivosinc.com>, Ved Shanbhogue
+ <ved@rivosinc.com>, linux-fsdevel@vger.kernel.org, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ linux-kernel@vger.kernel.org, Chunyan Zhang <zhang.lyra@gmail.com>
+Subject: Re: [PATCH V15 1/6] mm: softdirty: Add
+ pgtable_supports_soft_dirty()
+Message-Id: <20251121103636.22321ceb37093370e59cb6e1@linux-foundation.org>
+In-Reply-To: <dac6ddfe-773a-43d5-8f69-021b9ca4d24b@lucifer.local>
+References: <20251113072806.795029-1-zhangchunyan@iscas.ac.cn>
+	<20251113072806.795029-2-zhangchunyan@iscas.ac.cn>
+	<dac6ddfe-773a-43d5-8f69-021b9ca4d24b@lucifer.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E9BD74000D
+X-Stat-Signature: tye859q6fpknazibcud7656oqfhju1wp
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 70CBF180019
-X-Stat-Signature: edwzcwz7um6yqng89ftremryf51mqckk
-X-HE-Tag: 1763749852-298466
-X-HE-Meta: U2FsdGVkX189ivUBLJDp4nS1ibA5ZUZ7PiHo7XNkD36lUAs+gJpH4zhGxFSaXOc/OYPHGo85qKisdladHabA86qE2otW200v1cYIIh9UI4hYZ4TqG89UaL/BUvLu+AcLGvbPHHVNB5Ddm8gZfIAdMFOEI0y/4xvkEixjeTOjOcxphyUS9m4MmmUA4Fa2Javpdrx3MCNed08LLKSEvCQFnwxBTHPvKPkJU7tDQsuO010RAxslo/7+QLEaiiezQEwoQv+f3Fl++gUrqvMETGEDTAaljCpAvyjq+DTByBqkz1ywrJNWpAg6uJ8If/fHv+os/n4Lp/Fo72fcBmT5GW3kTYjSwv8UVPf5eRT1natZbQpy1MA6pR+68em2ZmLHByQrw0EFIcW7lo7ym7Rwn1iCHCbzL/6clHUTC56exStdCQ1RCbFShlsQEqqXbIlwPEeJaJpt3/wwBqQguU50epIOr4w5latkgUxFR+7zQ14Oah8Q/wTI6RyRbThyRMuU4BAbYXGOfltsuHXTsLIi1os4JEI1l888VqMUtU2L24GoiXHtOy4p84zI0y5NTrqxS0l3Ng721S8np/ar3B9VknbIKV/XX6lvLF+0wzzWwLcxiLxpwUbD4dAUETw4eBTZJ/Y8mZ5HPoRXclOXA4nDJAe64y8coQS7FF5qMqkgNkR0hhb7gEI9t/M470Gt1vHetICcwu2Xuje/p6jo3/MI3jY1Nlcf0tjHhPSYTbWvCzIWLBD+7WiYhpOiCE3L4nR+bdBnpOTAV3BV6BqMWYg/y2zFW0YmfB/L2jVX8eukDN/RzXrDaWx/U18QSlk8GuyYXDv30psijRhfeLONmnwHLTHsTbfz6jgfEzhber5sTQqNqbmHbrgqQfcZhCm0+ZDrJ8CQYXZAUZQGPfDglk28ia68Ll7frFGTaknrs7TOoNc7u4nuJWIwrmxWH0FQUqNvaHOY4dz4UWPbFraUcgO6NF7
- HUX5A4Xs
- eGJBm0+uWwcy0n1QWspa7uZYhE5VawcHoJkgzZAbdGJtXZenZNeBRmF2mttxV6Cqo4xhVVwWPNhMysftFsljf+FOZIcVxla7nHwXBLTLmtF2L5XrFO672Vlw9Gn0x/0dIHsdo16ys6vsO9RXop5qCoFG6YoqKRsGGDvogG6WjoP0C3M6xzQpAbIoenGQ32pUYnSOtYO1/ApxsTWGb31L1ibrzYVkhP5SIcmcNRlO33G3Fpo71pdcacU0Qi7gh8s1yOjvnBGirS7FHneegMIFRzVQjKrIj6qn6lTC3UTwvBzQuOdrjBlZSdc5x87Q+0qqoCVlc
+X-HE-Tag: 1763750198-877571
+X-HE-Meta: U2FsdGVkX18e2uWe34NfwK+NIvoDOo1mQiGsDLGcZDJGPKGuE3iqk7ML35ODn/gwE/RKjl+ZdrZ0x7wvdO4D/kZU5FWkJBzU942lV4eAOGJ9C9dgwT9eh66tYEvxrVF3LuZ7qGpk0i6mzeVmeus9scLoZHL6O2IZUQKlrDo1eldk5hHP8pXlKgl6Bas17e3GkOFxJ3Tt/x67iaGwSNt9mpvPYq8hkUzaiHFQJIASVpev0ylge3sm7msu2WEIMCTsJYh7q0OjJ0FyoMp/h3HXxsS5qZ+nNT0pft77C4+mV3lQCplFmg4vRYq29pUplRz04frXDti2TeuzKRC4JkE8tzwcxpjVesKUDq4g5AgtPreS+Y+iwr0k382hRYP770YiGf+a+KBuIG0YOeCby+rRMejIy87geLTbKAgU8C++nl5iefhfx1jlf7dThm39FXCkt/5l+Qt1xkKqyWNUiIrcxvVANPwb6E0/6cq/tmXvU9T08Owx2V6QQGoQoJ4j1vV9Nm6mA5GQlGjVOa/7t5Zmh1ZozjwZ6vE6zT8UVRButlGXAK0Qn86uol1zjzUG3k3k1QajV7R/w2Itom06so4SB1gE4WyS15+Ic4BxvMWO0cx6m8K8XvCbCzFWBAT09oHPsI1hslj5Z8fVb3s2e+00QMVWGmdjVYqTLEeX1zGMEm2NrOmVFn5mjOal+UtuqVEC/6rZvPBVRMYimCzTsXLhqUWOoLLtmVVyrjBHpAO268aiCJhRfatABA7kYHyICtdUOQoEs0d8oP7PSj11mIsSmSkUAZ/Ac8m0FZp/mITDHqcpEdfYFblSBGCdSkf383iBSxVZwOuxiaILMRTyWbiVz0rzZJUDgAbhr6L7rZU/sv/7WkoG5BS9nL3KGlt1QC5nbbYp/NkgXBFSl2PAKaEGPrkfuWMSyjH9EFwcLkzqqoZwPnD91o65V++5GHkLd2NWsFZQRI7n7VS3bPdUBRb
+ mQzDgEfE
+ ZTDyP8QF/DLAgZDVkO6KFTNHV1RQCmpFKuknuYor74ibzz9nSFDygCdfrvcJglzbFVE+dgOCzI4Cpx1H7fooo+6AED85hjXuJj17qPO415JSDnVRhWsbjG7XF3WdW7uyb5yfYPclefYiGl+esxKFjZX+F8qAzH5+xeDyz5FL1Zvfcr/KKSuNfyO+nopIA+SaIcrgIrAYqtNA/fSlpMVj1DsFIuQTCW7bd1pjgku/Y45VDDVV4/RdB4jwab+9lU51ipM5FTYMpKHRRz09O2S/7CoxlKQ6t+RBU3+z6QXvzTNLhjXH+BXrUeDEy3usy81mV8yENQhHRTGNUFWJgIBw+6lL8MN5E3FdVSvpvGBEM3RhenmkfL8MwytSE9KXVcJaFe9/C36IBFyFv9Rk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,19 +106,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 21 Nov 2025, Andrew Morton wrote:
+On Fri, 21 Nov 2025 16:57:17 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-> Have you identified other parts of the kernel which could use this?
+> This breaks the VMA tests. Don't worry it's not exactly an obvious thing.
+> 
+> You can test this via:
+> 
+> $ cd tools/testing/vma
+> $ make && ./vma
+> 
+> (Currently we also have another breakage too which I'll chase up separately.)
+> 
+> Andrew - Could we simply apply the attached fix-patch?
+> 
+> I know this is in mm-stable now so ugh maybe we'll have some commits where VMA
+> tests are broken (not nice for bisection), but anyway we need to fix this even
+> so even if it has to be a follow up patch.
 
-We need to compare this with the ZVC counters used for the vm statistics.
-Maybe this is better and we can scale counters easier in the VM.
-
-ZVCs were designed for systems with a large number of NUMA nodes and a
-handful of processors in each of those. What we have today is large number
-of processors in one socket (my employer is shooting high on that level).
-
-Hierachical counters may be better in that scenario. Maybe we can call
-them HVC (Hierachical VM Counters). ;-) )
-
+"mm: softdirty: add pgtable_supports_soft_dirty()" is still in
+mm-unstable so all is good.
 
 
