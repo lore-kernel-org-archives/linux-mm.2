@@ -4,100 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7F4ACFC29A
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:36:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B27CFC29A
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:39:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C3B26B0022; Fri, 21 Nov 2025 13:36:41 -0500 (EST)
+	id 86C906B0093; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09BF56B002F; Fri, 21 Nov 2025 13:36:41 -0500 (EST)
+	id 8445B6B0096; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1AA46B0089; Fri, 21 Nov 2025 13:36:40 -0500 (EST)
+	id 75A126B009B; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E0E0C6B0022
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:36:40 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 94E064F121
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:36:40 +0000 (UTC)
-X-FDA: 84135470160.22.E67F939
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E9BD74000D
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:36:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QEx6H1kx;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 688E26B0093
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:39:50 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CDABEC0701
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:39:49 +0000 (UTC)
+X-FDA: 84135478098.02.9B9849D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C5897180012
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:39:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=spGMPaAp;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763750199;
+	s=arc-20220608; t=1763750388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OVr+23+Y4FDXkcZloV+7a0sszhj0dsWtyYoZGk6FN8E=;
-	b=IL9sJpOaLHLkKEAGw0eCOhKJXDViBxHpGs8Bjog13MuVFsm2Ge/1tgQVjLmDtrUl4VR+51
-	u2c+SfSFrhLFecjab4F8vAf6eOXVo8rWEcdRwRE4YddRpR2VZ+KSYY6fPCarrqxkQJgD32
-	YjAmFpMtUbGPy/eNSRHRhHTjuyNwq3k=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QEx6H1kx;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763750199; a=rsa-sha256;
+	bh=ZGim1gFQlbp4awWQERSAAqCxeHwBEmhY5jT9R2HIaaw=;
+	b=T1ec+otb7Ox6FlD3+Kr6ENnjT/gla8jCcmce/AIiD991oadaWdOix0QY51UN8RXZ9O+xgD
+	cMIAU2G2x2FzsYMKYs9+EaIlLInCeNnJocdHgETE8pfe4aiK6JmI9fKLpB5yOnC5To1TAU
+	XoCkTG1jUjjvTxRZQ186FydCRSO41dU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763750388; a=rsa-sha256;
 	cv=none;
-	b=qL2R7TGgxV/MxUGmjTlcFoqAPURz14oGTS9GdsWwr3bO7Wq5+7o0uz3ekPwmPgic53kUTR
-	M5lN6LdWJj2xgbIIlsskf106kt823WvXyN4VEPTxrU94HlJpRKZmTbvanY/Kb00+CXbsad
-	xyRYPIlTG3jf1NUIjhoABe9IQAsY+us=
+	b=SaYvA7XTvjF2gEPf5gl2WMNCOgtRsZVQlON/W3IWFdOUwj2snDZahNIYq0SdTt3yeAoOJl
+	GLHfsr3ddG4rwnhzW1uzdspGNeU2MRLHCDYIXVA4HWmO0nJiDCuyd15GkkISCJ0iz7MOud
+	J0wLoQ40z0ZpBghjFkzad/JL/u66xfY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=spGMPaAp;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 11AD660139;
-	Fri, 21 Nov 2025 18:36:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C2AC4CEF1;
-	Fri, 21 Nov 2025 18:36:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8659A43E12;
+	Fri, 21 Nov 2025 18:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27F4C4CEF1;
+	Fri, 21 Nov 2025 18:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763750197;
-	bh=crGPPT0AtAuzG2UEVBlxUERhuPjW93cug8nah7uLwPI=;
+	s=korg; t=1763750386;
+	bh=xo7srbGSrW7nCdBJFc8o6YWFx33eFaPj7TzvMtB85Bk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QEx6H1kx4LH2VEQuGtG4dDTBfQimoEx6dOPrEkpMfabhu8lvBwbefk1rGdOBtVACD
-	 QZKA8vPhUokAEv0JJOZyDEHGcBf++sPmEabuLzPJH1etPYvKiGFWYCxM0l12ChfFsx
-	 m1HWtmpBhooqID4D5faCmw1veUK4HRjgPAR6uS0U=
-Date: Fri, 21 Nov 2025 10:36:36 -0800
+	b=spGMPaApavWt1fTH/GtxgRQiZ0pXFd/cKYklzrnPQcS8A7yQrI8oYy3oAXcoDVeop
+	 VsiUpeDvQckxRNqo8AkxPJSwv9TDG/+X5hYy3DPJnelcRNmTfHFDXV7zWO9a2aQb0R
+	 qhi4E83PExiupLftMLBKrcOZ6sgjUCETE5iPhutA=
+Date: Fri, 21 Nov 2025 10:39:45 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Chunyan Zhang <zhangchunyan@iscas.ac.cn>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, Peter Xu
- <peterx@redhat.com>, Arnd Bergmann <arnd@arndb.de>, David Hildenbrand
- <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
- Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- linux-riscv@lists.infradead.org, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, devicetree@vger.kernel.org, Conor Dooley
- <conor@kernel.org>, Deepak Gupta <debug@rivosinc.com>, Ved Shanbhogue
- <ved@rivosinc.com>, linux-fsdevel@vger.kernel.org, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- linux-kernel@vger.kernel.org, Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: Re: [PATCH V15 1/6] mm: softdirty: Add
- pgtable_supports_soft_dirty()
-Message-Id: <20251121103636.22321ceb37093370e59cb6e1@linux-foundation.org>
-In-Reply-To: <dac6ddfe-773a-43d5-8f69-021b9ca4d24b@lucifer.local>
-References: <20251113072806.795029-1-zhangchunyan@iscas.ac.cn>
-	<20251113072806.795029-2-zhangchunyan@iscas.ac.cn>
-	<dac6ddfe-773a-43d5-8f69-021b9ca4d24b@lucifer.local>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, david@kernel.org,
+ lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org
+Subject: Re: [Patch v3 2/2] mm/huge_memory: merge uniform_split_supported()
+ and non_uniform_split_supported()
+Message-Id: <20251121103945.13934959041672e76dd34ecb@linux-foundation.org>
+In-Reply-To: <31B02667-2F69-442B-AD91-6C0A7823BA05@nvidia.com>
+References: <20251106034155.21398-3-richard.weiyang@gmail.com>
+	<20251117012239.lqm33uu4vl4y5zqc@master>
+	<337CD281-F5B3-47FE-82C3-ECB236450F60@nvidia.com>
+	<20251118033339.7rukw7vvjvlbj5jb@master>
+	<51358ABE-B0BE-48E1-95E3-C778D1F44622@nvidia.com>
+	<20251118103220.bd90932096d4e36f754de21b@linux-foundation.org>
+	<2AD36673-231C-41B9-905D-35BAB4CF63D2@nvidia.com>
+	<20251118140658.9078de6aab719b2308996387@linux-foundation.org>
+	<20251119005248.ddlbhokgjdmlkhkr@master>
+	<20251120131621.486cbccc8a713ddbd30dcfe6@linux-foundation.org>
+	<20251121090048.3n25tjhusu45xpoo@master>
+	<E7C2F025-4CA1-4739-8661-343D60D82F7C@nvidia.com>
+	<20251121085034.d8092d312da961b23c33a22c@linux-foundation.org>
+	<31B02667-2F69-442B-AD91-6C0A7823BA05@nvidia.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E9BD74000D
-X-Stat-Signature: tye859q6fpknazibcud7656oqfhju1wp
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pt33hgq9yqo4tpmnndn4rttuzjnmpxfb
 X-Rspam-User: 
-X-HE-Tag: 1763750198-877571
-X-HE-Meta: U2FsdGVkX18e2uWe34NfwK+NIvoDOo1mQiGsDLGcZDJGPKGuE3iqk7ML35ODn/gwE/RKjl+ZdrZ0x7wvdO4D/kZU5FWkJBzU942lV4eAOGJ9C9dgwT9eh66tYEvxrVF3LuZ7qGpk0i6mzeVmeus9scLoZHL6O2IZUQKlrDo1eldk5hHP8pXlKgl6Bas17e3GkOFxJ3Tt/x67iaGwSNt9mpvPYq8hkUzaiHFQJIASVpev0ylge3sm7msu2WEIMCTsJYh7q0OjJ0FyoMp/h3HXxsS5qZ+nNT0pft77C4+mV3lQCplFmg4vRYq29pUplRz04frXDti2TeuzKRC4JkE8tzwcxpjVesKUDq4g5AgtPreS+Y+iwr0k382hRYP770YiGf+a+KBuIG0YOeCby+rRMejIy87geLTbKAgU8C++nl5iefhfx1jlf7dThm39FXCkt/5l+Qt1xkKqyWNUiIrcxvVANPwb6E0/6cq/tmXvU9T08Owx2V6QQGoQoJ4j1vV9Nm6mA5GQlGjVOa/7t5Zmh1ZozjwZ6vE6zT8UVRButlGXAK0Qn86uol1zjzUG3k3k1QajV7R/w2Itom06so4SB1gE4WyS15+Ic4BxvMWO0cx6m8K8XvCbCzFWBAT09oHPsI1hslj5Z8fVb3s2e+00QMVWGmdjVYqTLEeX1zGMEm2NrOmVFn5mjOal+UtuqVEC/6rZvPBVRMYimCzTsXLhqUWOoLLtmVVyrjBHpAO268aiCJhRfatABA7kYHyICtdUOQoEs0d8oP7PSj11mIsSmSkUAZ/Ac8m0FZp/mITDHqcpEdfYFblSBGCdSkf383iBSxVZwOuxiaILMRTyWbiVz0rzZJUDgAbhr6L7rZU/sv/7WkoG5BS9nL3KGlt1QC5nbbYp/NkgXBFSl2PAKaEGPrkfuWMSyjH9EFwcLkzqqoZwPnD91o65V++5GHkLd2NWsFZQRI7n7VS3bPdUBRb
- mQzDgEfE
- ZTDyP8QF/DLAgZDVkO6KFTNHV1RQCmpFKuknuYor74ibzz9nSFDygCdfrvcJglzbFVE+dgOCzI4Cpx1H7fooo+6AED85hjXuJj17qPO415JSDnVRhWsbjG7XF3WdW7uyb5yfYPclefYiGl+esxKFjZX+F8qAzH5+xeDyz5FL1Zvfcr/KKSuNfyO+nopIA+SaIcrgIrAYqtNA/fSlpMVj1DsFIuQTCW7bd1pjgku/Y45VDDVV4/RdB4jwab+9lU51ipM5FTYMpKHRRz09O2S/7CoxlKQ6t+RBU3+z6QXvzTNLhjXH+BXrUeDEy3usy81mV8yENQhHRTGNUFWJgIBw+6lL8MN5E3FdVSvpvGBEM3RhenmkfL8MwytSE9KXVcJaFe9/C36IBFyFv9Rk=
+X-Rspamd-Queue-Id: C5897180012
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763750387-708185
+X-HE-Meta: U2FsdGVkX18tBIgnYAtQ+givIywrdMzr78g9yg83tQHGfXNUt/tFJmVf2MBJCI/UvozoUu1tDC515tvwjzO1E3FvmYkCWlm2NCgQWFffM01ovtzp5ELW7c5IKCzKE1FhPgMcRM2nT1+3SCtWDAmsAyI0qTHkBDUP62kU5VHiFOtfNQ6Ej9D4i5czId6Z0Ru/VhCKZ3UYzGnZs8Ao+abg1pOOmWKO4UYqcmt8EYuQ04YwYRW6OZzI4HSbDf/PlnSRU3VwaJOoGPMKmcqYe0SXOyorYABHZ7LaHMdPvIgBdi1xEr5ZPOiM6Rg3doD5bJuH66RmGQbIlE63t9PQi4UyRfOTXSBDpzUO3cqlnYFzdI0JASi3WO1E28yzL67+0lt/gTRH1OQrMa1qI7ff5r56hKCRF/DJXWjfwsnnq7lnDZdr3gu6dlHX9xmuZJyDoAxgREZOIs6qOpvlbZPhC2DvIlAZmghDOONqw558Y8mHHQXTYDNBy4EWfO2VBf3qsPUyzw9rkIdq5T+Au/H30T7GPkxa1KwiiyxKlUFwTv3rmCT89aIdoHzJBylA4cc852cRl/hiHCezYC7DEf04giYQ7TVSvF6ZdouZqoAH/pJa8sqQW7aYpK0mtvHGplhopNugKC5yCOxIKyE0QU3Wv9jAEC72yln5c4cTHSs6QLwL4ypDuVZikg/dpfbxioFNUb5NlpQI0UTFXHwE78lKfXBPXQUyaLhHozycH54rMafyBGA6ypsR9oWv82nvjgIltm+xoSXAL1vazqLP342hqfW18JV6LFW38mt9bDVTe8iu4qRtTsidqrnqiVGnxtjn92I/BJsUZE8DYSf2ejTpm6C5X6NQbrp2X0+C5JPJk+GJ2sIgyHi6K83lqChCjG+elSMDLNl/nIQi+T2HS6/Zzc7C4Oh9C8ZksSfZwFJsT0IsGC66C4dexVHZ0SwM4rbdJUR2W5NDaEZHtZrgRIzJAc0
+ jZzSQ+cT
+ exT9YrH8x+ESSC8Gg+W9LCSGCNSNWV3jyiuPE9H3USS4EGluJEnAkGywKM8vOti4W88rInJqmftXADp8h0M1P7SKyUeZjWxMRaW9xFBouKRAKClQmTLnkWpP/7mOM4aG+qCcbzLy/qGcRQ3P8HhdeN879jtfUmEcJ25sjKXC3tA4JS6DlT4RIbp4L/FYDFY8/l+ue0XAMz1YCMeKQyd4dFkIOu3nLx2XUHIlf6hNDvI7MDGv1IIOoxs0/y2jz6ML5rGZrUYxAu3ncmeYE3Mz4W39ZBijb0i1UPBG4iKekYgBFybJ6X3jCwi5J6xBeqEoHtCln6E2R3rDPBRMiAYXweGnF6KgvTbi6+LqkncI62mouABHj/reYATCs5ez3L0yi2s+s8+pZSyBdLDOphaTB68JIllCxAfsmHwSW4GHuF5Drjtoc62aXW2bj2OKCA1eLKpncK1qbRhmhMcUyF4Hg08OAAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,24 +107,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 21 Nov 2025 16:57:17 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Fri, 21 Nov 2025 12:00:51 -0500 Zi Yan <ziy@nvidia.com> wrote:
 
-> This breaks the VMA tests. Don't worry it's not exactly an obvious thing.
+> On 21 Nov 2025, at 11:50, Andrew Morton wrote:
 > 
-> You can test this via:
+> > On Fri, 21 Nov 2025 09:59:42 -0500 Zi Yan <ziy@nvidia.com> wrote:
+> >
+> >>>
+> >>> 2. A further cleanup attempt:
+> >>>
+> >>>  https://lkml.kernel.org/r/136E8B1C-3352-412C-8038-627F5CC8A112@nvidia.com
+> >>>
+> >>> This one is the related mail.
+> >>>
+> >>> I proposed one version in
+> >>>
+> >>>  http://lkml.kernel.org/r/20251114075703.10434-1-richard.weiyang@gmail.com
+> >>>
+> >>> But it is not proper, will do follow up work later.
+> >>
+> >> Please refrain from sending more patches related to __folio_split() and its
+> >> related functions until the above hotfix is merged.
+> >
+> > You're referring to
+> > https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com?
 > 
-> $ cd tools/testing/vma
-> $ make && ./vma
+> Yes.
 > 
-> (Currently we also have another breakage too which I'll chase up separately.)
+> >
+> >> I also have an ongoing
+> >> cleanup patchset[1] and want to get it in before any other changes.
+> >
+> > I remain unclear on the status of this patchset.  Is it considered good
+> > to upstream or is additional work required?
 > 
-> Andrew - Could we simply apply the attached fix-patch?
+> I am still having a discussion with David Hildenbrand about it and hopefully
+> get it sorted out soon. The reason is that the above hotfix is good for
+> backport but future user of folio_split_supported() can still dereference
+> a NULL folio->mapping unless they check folio->mapping != NULL beforehand.
+> I would like to avoid that by refactoring folio_split_support().
 > 
-> I know this is in mm-stable now so ugh maybe we'll have some commits where VMA
-> tests are broken (not nice for bisection), but anyway we need to fix this even
-> so even if it has to be a follow up patch.
+> Wei’s further cleanup patch can come after my refactoring by just moving
+> a code hunk above.
+> 
 
-"mm: softdirty: add pgtable_supports_soft_dirty()" is still in
-mm-unstable so all is good.
+This is coming down to the wire.  I'm considering dropping
 
+mm-huge_memory-introduce-enum-split_type-for-clarity.patch
+mm-huge_memory-introduce-enum-split_type-for-clarity-fix.patch
+mm-huge_memory-merge-uniform_split_supported-and-non_uniform_split_supported.patch
+
+and
+
+mm-huge_memoryc-introduce-folio_split_unmapped.patch
+mm-huge_memoryc-introduce-folio_split_unmapped-v2.patch
+mm-huge_memoryc-introduce-folio_split_unmapped-v2-fix.patch
+mm-huge_memoryc-introduce-folio_split_unmapped-v2-fix-fix.patch
+
+and we can revisit after the upcoming merge window.  Thoughts?
 
