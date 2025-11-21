@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77F4CFA46E
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 04:01:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 853C9CFA448
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 04:01:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2101E6B002E; Thu, 20 Nov 2025 23:01:07 -0500 (EST)
+	id 98AA26B0030; Thu, 20 Nov 2025 23:01:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E8216B0030; Thu, 20 Nov 2025 23:01:07 -0500 (EST)
+	id 962056B0031; Thu, 20 Nov 2025 23:01:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FE6F6B0031; Thu, 20 Nov 2025 23:01:07 -0500 (EST)
+	id 7B4B86B0032; Thu, 20 Nov 2025 23:01:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 006DF6B002E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:01:06 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C258B13B006
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:06 +0000 (UTC)
-X-FDA: 84133263732.14.04F184A
+	by kanga.kvack.org (Postfix) with ESMTP id 691686B0030
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:01:09 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 325CC58F00
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:09 +0000 (UTC)
+X-FDA: 84133263858.30.5353EF9
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E44C3C000B
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:04 +0000 (UTC)
+	by imf10.hostedemail.com (Postfix) with ESMTP id 50F4BC0009
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:07 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
 	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763697665; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763697667; a=rsa-sha256;
 	cv=none;
-	b=uqSbxdaDBuT36GIYYCTxON0HxqrsK9OYVHgAWc9tGCpc2pSEwE2BMZrf0DYSXiPxV92ZKD
-	Q/tvTEEkbR5xRPAeShLTzXxrSNDdIA2AUWjZkUmNVh8xe4bTzxMOijN7+P8qVZE20Qz4E7
-	0AfrnBF3Fn+g3MwHG8i1R4pPP0Gw7iI=
+	b=2pIvTMu5LWHFcodHmeD/MSkpaQ78y1itC7ejUZlvaTGj9MmriSVH0yEPNA5hxdiXAKnZfT
+	Wjp+bTWXti/xN81Ct2JM8DXxR36/eoBtyGaDhg5m/PC3Zut3+y3d6db4/T8MdAwiNICz8K
+	tKWAJIpBzkj+nJtxAfnbkfVHoWVRmt4=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
 	dkim=none;
 	dmarc=none;
 	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763697665;
+	s=arc-20220608; t=1763697667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=HcK2DdBm4Zrq+7VoY/J5fRqhKAsS9JbhFClpFyicbzE=;
-	b=dHxo4jflsljI6az4Bgmbn+vrh2+irmeaKWcD/1+uIJaki8iStyYLXmIVos48KgHIu+yope
-	rftH9tLoRJpFZXp7B2jdFFTWtBQFZfCmijxEaitO6z4bVJs4ZJt9bwMtVWAMJJP3MGetB1
-	3JbBM/1O9c0Ie8p92RzycMimNlxHMGQ=
-X-AuditID: a67dfc5b-c2dff70000001609-76-691fe3fa2e4d
+	bh=KioVTqpk6hY6rwZucMMN/n2O7e0ULMLWPAHcDxDs+c4=;
+	b=dcQQ5am331Q88HOcLickKHFN0ohhbG56Ug/g6Mc0RUjnlAExOGH+RTx4DOPkHmI5eNVwV0
+	wUMJkNM10FK4K1CNEVrmti7bTeR6qYHaD8Xqwj/wK+WmlB9VedfBRAo1eTTEqyR8eHzvXH
+	9QY8CrCEB/zUAVwXGHpVRc3KRHKB7Ug=
+X-AuditID: a67dfc5b-c2dff70000001609-7f-691fe3fa945c
 From: Byungchul Park <byungchul@sk.com>
 To: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -78,48 +78,48 @@ Cc: linux-kernel@vger.kernel.org,
 	dtatulea@nvidia.com,
 	shivajikant@google.com,
 	io-uring@vger.kernel.org
-Subject: [PATCH net-next 2/3] netmem, devmem, tcp: access pp fields through @desc in net_iov
-Date: Fri, 21 Nov 2025 13:00:46 +0900
-Message-Id: <20251121040047.71921-2-byungchul@sk.com>
+Subject: [PATCH net-next 3/3] netmem: remove the pp fields from net_iov
+Date: Fri, 21 Nov 2025 13:00:47 +0900
+Message-Id: <20251121040047.71921-3-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251121040047.71921-1-byungchul@sk.com>
 References: <20251121040047.71921-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWRW0hTcRzH+29nZ2djw8NJ6rhMYWSBmGVp/QkRFcrTW1AvXUBHO7nRNtfm
-	ZWbRpMQLpNZLzu1h68E5nU7mZRdK8pJpXlqZOs2ZztQoL6glXgrblN6+/L7f74cffDEm0YgI
-	MKkim1YpRDIhykW4SzzTye3ZSOnpv3oC1m9qoHnayYJb1gUGNNS1AVjvq0Ch4cMTBP62bTNh
-	o7uIAV3uBQB/VDWgcK7Hz4Zfa+YR+KrYwYT+il4ULhcNIdDTVs6CQ10WFDq002w47DagcMq6
-	y4J91RYElky+RmCP8RDc6F8EcETnZkDTZDr81OVHoL6wHMCdzUBe/3aKnRxBtVjGGdRo1TOE
-	8ra/Z1Cuah+bMtpzqObaaGp4MIey15WilH3tOZtyOdcZ1NPHyyi1OjeBUCvtIyg1YOxmU+v2
-	iCshN7iJYlomzaVVp5IyuJJ3gR+U2hDN56IxVAtMvDLAwUg8nhxp3UHLALantb/Q4BnFT5Be
-	7xYzqENxAbnqdLDLABdj4lYWaa5qBUHjIH6LHN+dQYIawaPIWe0ACHL4eAJZ+VGzj48k65ve
-	7HE4+Dmy3a/bqxKBiLV0mhFkkrifTZqbtcz9QhjZUetFKgHfCA7UAUKqyJWLpLL4WEm+QqqJ
-	vZ0lt4PAijUP/9x0gjXP1U6AY0DI4/dyIqUES5Srzpd3AhJjCkP5USnhUoIvFuXfp1VZ6aoc
-	Ga3uBEcwRHiYf2YjT0zgmaJs+i5NK2nVf5eBcQRaoLvsUX5hKQ0CbP38Hd6o7VteU1zj1AOB
-	pz8z1TFqI0pM+PHw4hnXC5+q0JbBuZRyzx9mXhoci+/zXVxJBup5CxrDn0/sFl+T7GY/GpaH
-	t7oMPy8kvNTVfs+cSLMSachOqnmyQHRMspKUOBaz1aK3HHWcvc5pW2yI7RgfKhAiaokoLpqp
-	Uov+AbuWMSnBAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprKIsWRmVeSWpSXmKPExsXC5WfdrPvrsXymwe4HzBarf1RYLH+wg9Xi
-	55rnTBZzVm1jtFh9t5/NYs75FhaLr+t/MVus29XKZLFz13NGi1cz1rJZPD32iN3i/rJnLBZ7
-	2rczWzzqP8Fm8a71HIvF4bknWS0ubOtjtTh3eCWbxfaGB+wWl3fNYbO4t+Y/q8XJWStZLDru
-	7GWxOLZAzOLb6TeMFldn7mKyWHgn3uLS4UcsFrMb+xgtfv8Aqp999B67g7zHlpU3mTyuzZjI
-	4nFj3ykmj52z7rJ7LNhU6rF5hZbH5bOlHptWdbJ5bPo0id1j547PTB69ze/YPD4+vcXi8X7f
-	VTaPxS8+MHmcWXCE3ePzJrkAgSgum5TUnMyy1CJ9uwSujONAhxQ08Fdcab3O1sC4kKeLkYND
-	QsBEouELWxcjJwebgLrEjRs/mUFsEQEpiY87trN3MXJxMAusYZVYPmMrI0hCWCBG4ub/hywg
-	NouAqsTjhjOMIHN4BUwlJlysAAlLCMhLrN5wAGwOp4CZxL5HM8FahYBK1nQ+YJrAyLWAkWEV
-	o0hmXlluYmaOqV5xdkZlXmaFXnJ+7iZGYGQtq/0zcQfjl8vuhxgFOBiVeHhPcMpnCrEmlhVX
-	5h5ilOBgVhLhVXWUyRTiTUmsrEotyo8vKs1JLT7EKM3BoiTO6xWemiAkkJ5YkpqdmlqQWgST
-	ZeLglGpg1Pz+cZWWZO0ppof14eWv5oTK61TP2N6cYiKUWrx7Z/avBRz7PNQKmVaqZBZXa1x+
-	f2KZ2+1V9zIO/5PpPcCosNPIZxJT7ny3OJVP3y4fa2LV6vtYfSlL1mZ573b3p6x9h71n7Xhi
-	vmrKC+tASz2xy0c6r4m2WSdraZhF94jZBt2NcDN/mhSsxFKckWioxVxUnAgAthD0vqgCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHIsWRmVeSWpSXmKPExsXC9ZZnoe6vx/KZBgumilus/lFhsfzBDlaL
+	n2ueM1nMWbWN0WL13X42iznnW1gsvq7/xWyxblcrk8XOXc8ZLV7NWMtm8fTYI3aL+8uesVjs
+	ad/ObPGo/wSbxbvWcywWF7b1sVqcO7ySzWJ7wwN2i8u75rBZ3Fvzn9Xi5KyVLBYdd/ayWBxb
+	IGbx7fQbRourM3cxWSy8E29x6fAjFovZjX2MFr9/ANXPPnqP3UHOY8vKm0we12ZMZPG4se8U
+	k8fOWXfZPRZsKvXYvELL4/LZUo9NqzrZPDZ9msTusXPHZyaP3uZ3bB4fn95i8Xi/7yqbx5kF
+	R9g9Pm+SC+CP4rJJSc3JLEst0rdL4Mpo3zCDtWC+YMWcH3kNjF95uxg5OSQETCRWXT7ODmO/
+	/76eCcRmE1CXuHHjJzOILSIgJfFxx3agGi4OZoE1rBLLZ2xl7GLk4BAWcJdo3O4HUsMioCox
+	b/4cRhCbV8BUYvu3RYwQM+UlVm84ADaHU8BMYt+jmWBxIaCaNZ0PmEBmSgg8Ypf4++oVG0SD
+	pMTBFTdYJjDyLmBkWMUolJlXlpuYmWOil1GZl1mhl5yfu4kRGIvLav9E72D8dCH4EKMAB6MS
+	D+8JTvlMIdbEsuLK3EOMEhzMSiK8qo4ymUK8KYmVValF+fFFpTmpxYcYpTlYlMR5jb6VpwgJ
+	pCeWpGanphakFsFkmTg4pRoY1/nc706e/3nipjNPImzEZxWny4Xqbz380KqyjPsXk+j23Y0B
+	p4r28EaceHbQYqvdQsH7nnXhodMNuud+z9ncfi/SxrGnwOnQm9UhG37/Nagv2FuzeNGVCudo
+	jv/+R0NvLnj39/eTS3M19bbuu+j5ILFkU7D/XIuJLY4zaps0Vtg4y140lWlgV2Ipzkg01GIu
+	Kk4EAL4K3ZPBAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRa0hTYQCG+87Ozs6Gq+OUPK1oMpBAyDQ0vi5YEeEhyIKiG5SuPOjBOW1z
+	y0vBxEQdpClFR525Fd5nrpXuUqlomualcBhL1GRiShfN21KLzBn9e3jfh/fPi3NE91ExzihS
+	aaVCJpdiAlQQfTB79+qEhAlljTxYv5wGq8dtXLhimkKgvq4ZwPrRQgzq391G4VLjKgc+ceQg
+	0O6YAvAL24DByS43D36q+ozCl7lWDnQXdmNwJmcAhR3lPVz4vrmACwc6ajFo1Y7zoNOhx+CY
+	aY0Le0prUZg38gqFXYat0NP7DcChEgcCjSMxcLDDjcKyrAIAfy2v+2WdY7wjEup57UeE+sAW
+	oZSr5S1C2UtHeZTBoqae1QRTzn41ZanLxyjLfDGPstsWEOpO9gxGzU0Oo9RsyxBGPZ7+gVB9
+	htc8asGy8zRxSXAojpYzGlq5JzJWkJBrZrkpFb5p+mWFFiwJdYCPk0Q4OfuzEfEyRuwiXa4V
+	jpf9CTE5Z7PydECAcwgTl6xmm4AO4LgfEUVmWaO9DkoEkQ8r9MDLQiKCtHoegX+bErLe3Lax
+	wyf2kS3uko1ctO6Y8seRu0BgAJvqgD+j0CTJGHlEiCoxIV3BpIVcS06ygPWzqm79LrKBRWdU
+	OyBwIPURdvMljIgr06jSk9oBiXOk/sKgozsYkTBOlp5BK5NjlGo5rWoH23FUGiA8cZ6OFRHx
+	slQ6kaZTaOX/FsH5Yi2I9432yYmZOHX8wp8HPg1nLjJbdJ0BhpqsVO1SZviarthjTLzOVrqs
+	TaETlb2V5Zm97GJ1xYHWw8nHXjjjptnN3zWKwKuWRWNko54zM2yP2rut7c2NMEN/q7Ds6+Q5
+	5VnPTXReHf+0/3Kf+QqZESgezHP67T9ZOD/CulPMZ8T3pKgqQRYWzFGqZH8BoGkrzagCAAA=
 X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: E44C3C000B
+X-Rspamd-Queue-Id: 50F4BC0009
 X-Rspamd-Server: rspam07
-X-Stat-Signature: a1gr7p4z5g3wkt6d4d7ft8r1u5ttcgzw
+X-Stat-Signature: 9kwfkzne3ep1sizghzohdrschdoyycsu
 X-Rspam-User: 
-X-HE-Tag: 1763697664-282290
-X-HE-Meta: U2FsdGVkX18cZ1f870DUgCeB/QdgDZxA1Url2R9akV+YOoesMBQp7YfWBP/+HG+nw8MNufBHE/qiCxht5gmGY9ZS42xyY/a+mxtsbTIBjy4vqYZoD8jTfgoCh0yoQdFG/pqoeQL3Ao0Qwpfb3moOpDu4oZNC6Mml9qo6hY+bPnU9FxSB4mB/MYm9eMJeYocpy/UsuqPaR8H6kHKqmFliFtrQX6Y9gZlM4g/XDiA12bt3VteJ8CdwRTJLkpUmUkZwJy6LJ6nwyo7XjaxTL5JoNyMYcvH7nFtHssfCOHWAezD5twKPa1Pw+AYYeLb5FbxjHVhM/LTXoBzkoklIxF+0Kl9wsKSkp4ziP2NhrcMUi4QX/xM5HwRIybiTjbUzI63CsM5sYqDjJ44LZKML0RKNca0SX1CUGZyBSW4Ns4dafS7smL56HgiUXloms0dOzQBD+AY+NXhspjt31B6DJGRHqm9/goN8M4YCUa5OaTrnbM1GkExykHigcq/9xrU7U+yrmY38G8EragRq4okbM4qH2v1aPprIYqakVcXtfMBglO44O5UapaR+JMqKWXkF+4+Qg2EEPQS/dMT5ddh3/mOb8ME/s3NBvnzHHS5+iBmCofpLkQ+8zQesRcd1HsZMZt2yFBvMcu4ctteQU7Ck5ZfZSe8ruUPStPJJCt4sarq7q6KKk04nmTAzClORmfpayNMtqaiA7MuR7krU5LxR4jhFPtgUQQUYhWomB//yo/X+Q/AQCJ2C5I1U/r0X7CTXjFZ908cbnil3K0CD9jQH5s926Fk0Jyup4P5FqM0sFFA3tfryJ1ky3HefvO1I7BM5AecP1vcPFOD3faa7txLXGGExVBk4tYh7nQZbNBnniyoZM7p2yIOptGwnu0xKia2d2Q+Eo/hCfgs7bzn+7F1GQoTJ0sixpOY7isrU9BOgd0w48tFSnZUCVdkcMNcDJPz/vhbWnmTdQVCHBGYF9dBJ5mc
- GmugzT52
- slqY+PseZXuJfuF6mCEfgzWm015Y9hTgvNjCiEGYAjcgEBGYW1qWYMX/yr2idNtmwhuoZrjWgV+NOaEmOIxAY7Z2qhg==
+X-HE-Tag: 1763697667-58717
+X-HE-Meta: U2FsdGVkX185s/uDbtRnPclRRKmfAsfGwFF1uupvkIRHkX0+1tqcYsI16T7kGnAUvUE/m8jdyBDN9st24pJnBWC/Zm2SfNuBL8aGa20Mnmac+rToSNBGDhib6VjQzyyF2VTlDXsPii8hPDN2BQnNdqkhr8OqOwkwASuf3gAEQyU9JY0eb0B9yAYkeYZZk318F20fkBVZVBSTW1BLRBzXf6zIvH6xmOW+KIF1lHw8/MWKkfGPQCyMinWHGaF1x0kjr98oX1o94Ds5yt6cVsCzrEfz8qpQlkXsuWGi2Cg7YPRznnR6radx7A+MbY8b93aW7+Zw3i9WYcBWxDs9GOXMNe6ytVZXmbzNIYubItEdZihqQT1a/Ot+vfgeZ+32/xGOxCCnpV0aAU5em9WHEUDa2QbuaU+5yL6O1q+X18CoVHGqdGQqJXVLreFACwyI1fy1ONw3kfE4LhV66OqTjgOYjNaz9xoykmg3S3r/a3+JMIRw7tLe5PSXM5rt+tBTfoQmFFMGnPpblBwUx1ujIWQKtTHeoWlS8dFtqLoJAgQBJCwURBzrXXhWxx8TjJhuNv/revSHS5tr0b55GQJTdiI/9jOPjjcDoerm9txMJJHYWN6cnrl3CgTmlluDvdE4mwK9dxA1pNsPINc/tmDLjLNC5czPr+p1MHAbJofO71ls/ut7KRoSAxdqqDyn2Lg0Fher+hS0+8DBsB4P689A6TqQq6OnmvVcMdub3ZE8wKuFvr9SsAMYbX1VmLabXge00IJ1hx1J+mSTVhyjfPGpCk41iGr13vcXsjol7I+lu9uIWO6mDfDMwgzrXsEhsZEEiZJLbKkbR9vSsFdJ047atoOugt+OiggXELjdJq7wBl64TsQqidoYsl52GWHLc1u0jZz4uFRmRc2ndfjI5W0ldY6OerOwG5+DFWHqu661LCHoreAeTFqJTkdWn9oU2UxrGvmgRO1xj+WuX0REVP4gp1B
+ 4NeWU/Yb
+ 8tew/chDj0AiD5kLnIKGVo2lcT0apxCFOC9GfPWIctfoDGrn+0MatC5Vbde7wUR8WQ+US4XayQkeZExV7qzVdb/iTmQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,61 +128,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert all the legacy code directly accessing the pp fields in net_iov
-to access them through @desc in net_iov.
+Now that the pp fields in net_iov have no users, remove them from
+net_iov and clean up.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/skbuff.h | 4 ++--
- net/core/devmem.c      | 6 +++---
- net/ipv4/tcp.c         | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ include/net/netmem.h | 38 +-------------------------------------
+ 1 file changed, 1 insertion(+), 37 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index ff90281ddf90..86737076101d 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3778,8 +3778,8 @@ static inline dma_addr_t __skb_frag_dma_map(struct device *dev,
- 					    enum dma_data_direction dir)
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 9e10f4ac50c3..46def457dc65 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -93,23 +93,7 @@ enum net_iov_type {
+  *		supported.
+  */
+ struct net_iov {
+-	union {
+-		struct netmem_desc desc;
+-
+-		/* XXX: The following part should be removed once all
+-		 * the references to them are converted so as to be
+-		 * accessed via netmem_desc e.g. niov->desc.pp instead
+-		 * of niov->pp.
+-		 */
+-		struct {
+-			unsigned long _flags;
+-			unsigned long pp_magic;
+-			struct page_pool *pp;
+-			unsigned long _pp_mapping_pad;
+-			unsigned long dma_addr;
+-			atomic_long_t pp_ref_count;
+-		};
+-	};
++	struct netmem_desc desc;
+ 	struct net_iov_area *owner;
+ 	enum net_iov_type type;
+ };
+@@ -123,26 +107,6 @@ struct net_iov_area {
+ 	unsigned long base_virtual;
+ };
+ 
+-/* net_iov is union'ed with struct netmem_desc mirroring struct page, so
+- * the page_pool can access these fields without worrying whether the
+- * underlying fields are accessed via netmem_desc or directly via
+- * net_iov, until all the references to them are converted so as to be
+- * accessed via netmem_desc e.g. niov->desc.pp instead of niov->pp.
+- *
+- * The non-net stack fields of struct page are private to the mm stack
+- * and must never be mirrored to net_iov.
+- */
+-#define NET_IOV_ASSERT_OFFSET(desc, iov)                    \
+-	static_assert(offsetof(struct netmem_desc, desc) == \
+-		      offsetof(struct net_iov, iov))
+-NET_IOV_ASSERT_OFFSET(_flags, _flags);
+-NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
+-NET_IOV_ASSERT_OFFSET(pp, pp);
+-NET_IOV_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
+-NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
+-NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
+-#undef NET_IOV_ASSERT_OFFSET
+-
+ static inline struct net_iov_area *net_iov_owner(const struct net_iov *niov)
  {
- 	if (skb_frag_is_net_iov(frag)) {
--		return netmem_to_net_iov(frag->netmem)->dma_addr + offset +
--		       frag->offset;
-+		return netmem_to_net_iov(frag->netmem)->desc.dma_addr +
-+		       offset + frag->offset;
- 	}
- 	return dma_map_page(dev, skb_frag_page(frag),
- 			    skb_frag_off(frag) + offset, size, dir);
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index 1d04754bc756..ec4217d6c0b4 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -97,9 +97,9 @@ net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
- 	index = offset / PAGE_SIZE;
- 	niov = &owner->area.niovs[index];
- 
--	niov->pp_magic = 0;
--	niov->pp = NULL;
--	atomic_long_set(&niov->pp_ref_count, 0);
-+	niov->desc.pp_magic = 0;
-+	niov->desc.pp = NULL;
-+	atomic_long_set(&niov->desc.pp_ref_count, 0);
- 
- 	return niov;
- }
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index dee578aad690..f035440c475a 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2587,7 +2587,7 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
- 				if (err)
- 					goto out;
- 
--				atomic_long_inc(&niov->pp_ref_count);
-+				atomic_long_inc(&niov->desc.pp_ref_count);
- 				tcp_xa_pool.netmems[tcp_xa_pool.idx++] = skb_frag_netmem(frag);
- 
- 				sent += copy;
+ 	return niov->owner;
 -- 
 2.17.1
 
