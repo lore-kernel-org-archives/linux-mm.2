@@ -4,114 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CFBDCFC27B
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 13:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56FFFCFC27B
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 13:37:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98D846B00A0; Fri, 21 Nov 2025 08:36:47 -0500 (EST)
+	id 6A7E66B00A4; Fri, 21 Nov 2025 08:37:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93EE46B00A3; Fri, 21 Nov 2025 08:36:47 -0500 (EST)
+	id 659176B00A5; Fri, 21 Nov 2025 08:37:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82D546B00A4; Fri, 21 Nov 2025 08:36:47 -0500 (EST)
+	id 547A96B00A6; Fri, 21 Nov 2025 08:37:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FB626B00A0
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 08:36:47 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81AE913024A
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:36:45 +0000 (UTC)
-X-FDA: 84134714370.21.C002C19
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9DAD840011
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:36:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b="v/g8zWjx";
-	spf=pass (imf04.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.53 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 40D8B6B00A4
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 08:37:02 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42F2F4EF9E
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:37:00 +0000 (UTC)
+X-FDA: 84134715000.27.5AA70DA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8E0122000F
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:36:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i35emxhE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763732218; a=rsa-sha256;
+	cv=none;
+	b=ArtOMdOzD1BJ1uKJe5f6GCOKAH2Nl3+V7Hc2WyVvFrE0oZqaiA2aMbYwOmx3RDDbOteUfs
+	cZqvnLyDuDKmZBK6TGqB2kJDN4rYyL1f9BdXkH0yHYfrSMyYBk3Oso7axS84+NXkOsaCt0
+	bJykQNKX5Sk4q/vhu85JdQ6BD30hEag=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i35emxhE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763732203;
+	s=arc-20220608; t=1763732218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TzEyBCas7IooWk+MKSQXAh7ZMi3I77yN3jnhiz/DdHY=;
-	b=xc9ci8YCW69w1q6wpvq3zCdOZ+2SaZLSF8b9bTmTNzV58Cr3XW2g0D6HWXy3TVuBULeaXj
-	OW/qXe1jPpE4DYjf/qZ2YV7cwIbXImIxIdIo/bOsck03c8yddpIGY2PyiB+5gglr2xc9I2
-	M6tLNMVK2UsRhUSTpIlTzeOtRdjiTVo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b="v/g8zWjx";
-	spf=pass (imf04.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.53 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763732203; a=rsa-sha256;
-	cv=none;
-	b=UBaFWuOSKhYEv4kjQox+QgvFH99VZ80EZn2nTLJqDQaHepoblepV5uYzvNwhle31dcrKjw
-	GiqzzbSgHgx2H6SDHvEXEVpgxmP36smTZjYMs87OmQwgBfzkOBZvJg6Ar1n0Pdmcrv/5xE
-	IP3rXsytHcvUVhp7pBLTTuLIdvTjXEw=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477bf34f5f5so6875135e9.0
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:36:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763732202; x=1764337002; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TzEyBCas7IooWk+MKSQXAh7ZMi3I77yN3jnhiz/DdHY=;
-        b=v/g8zWjxFJ89VvbT6rTeMG64hJ653/Snk4elY4mnevJEx+7HbzCHoez2OUiPbvk0S5
-         6L1NI59I6H9QosUfSP016+JXVTGdMr8cuaqpgexhs7JwdbROBilTJ77hvDnCTA3RHsS8
-         rXQablA7CxfbMqMACU7lhd9JT54O288588k6cnWL4ghSmzGineMdhdESUN0y4Q1jU6Nv
-         Dr6JxPlpMAdtbfrR/zpGFjijqi9VB505TUPtvtIIgQi9KJGvCaFzK7scXqj+WtHRbevf
-         nRzk4cdnfyU7ICR0W9KSovhvuhUvn152KxMrdTSNYus5Z1dKlFH+S2PuwBksHkYwDph+
-         qDkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763732202; x=1764337002;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TzEyBCas7IooWk+MKSQXAh7ZMi3I77yN3jnhiz/DdHY=;
-        b=agMfwCZXuhd3/bgBZQbdGOPvPMW74hd5RAav1AQlcHONDAbr1paToJXo0zdwwRWsPt
-         kqVM3mpTdKFDFNjuvMOL8rGSpfBjhtfRIU0v5dVYygL3P7U0G420ZTXOVI7DBgz6mXhx
-         4UdLMoNV1jPesU8Kkz/lhYCBkcWTmuv7+InqmxDljs8AL2gsluoQEw3VbjTXhF19+AMQ
-         vbtNzQz7i/LKYAQCd07uNfVezwoK9nGXYKtDtz34Y5datFQipMaBTfW+8ND4hKNHVnul
-         e8/7MSkviDqGn0Z0HmOTFEqWh6gzQhnQQRomaWLM5ZupH5KFm61TYra1NaRIvinWhH9S
-         Ks9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUd0btf2EKVyQxrgk2LKblp+Qp6mgSVxrqIRJaQ+t///v2oa39iNeJfb5ef2avh5V8LqTFhrKWIhw==@kvack.org
-X-Gm-Message-State: AOJu0YyN7j3fOkT1zSijuf8gAZKnRfyY+EabmRqitnPjPqSUgFR8BCYz
-	8Jxt0qI2wPSqtu3Fx3nBC13STgFEPzo+k4IO8V2mhsXhkWprl0O3jbEttTp9CvA8oBzQ0eXv1J/
-	o1G/E
-X-Gm-Gg: ASbGncsJOBEqnyTgLmei4FLKjlM2NW9EVmW978cNpQYJ//LCGPdnVfwOYYlfesKBSs2
-	r9yJ+fSg8qTOuqSKsIsIN0FNdExVmu79OMzCDU0nCb3+xYs8sqyE54nKo0bPjb1G2wRgDIiK9Rf
-	pOSiyDMV5JZi2vjKtGHXTRc86JkG03Dy+5olyt6JoaU1hF3tsYVQW++X5NdhWy6dk5PuNCj+oBU
-	hOK+xBrXtzK1ICQ7tiDHeKTg6m9kd+Uw40dJzNgv61M31Wev61O8FTY5XxxauBL4ubvI+v1sdIi
-	P3UEgwvPXR6KBjJQxyQUF++TbnVuLfVrd8rOlYzMQiGD0rfCd6UFtDxuSUPAqD+9vXwRyMZ959M
-	zv67qWp+g4W/7ZjY5T+Aja5gNqorH0xWW5tCHsRx2BXjcYGYHKIYNHkWgNpVUiA5dN7Pc2Zjtvx
-	7MWWYY/TYOr6NAXjbo
-X-Google-Smtp-Source: AGHT+IHn72BgHYyXBAFrHrkEPwDLpmHZJhWH76OVXgjki7oj4pfilEmGcsYHhJxsG+r/JbIMusA7sA==
-X-Received: by 2002:a05:600c:470d:b0:477:89d5:fdac with SMTP id 5b1f17b1804b1-477c01f4f4emr28632935e9.31.1763732202028;
-        Fri, 21 Nov 2025 05:36:42 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-477bf3558d5sm43686925e9.1.2025.11.21.05.36.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 05:36:41 -0800 (PST)
-Date: Fri, 21 Nov 2025 16:36:38 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>, damon@lists.linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH next] mm/damon/tests/sysfs-kunit: fix use after free on error
- path
-Message-ID: <aSBq5uSPIqsqH8zO@stanley.mountain>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ps/C03GrU73xa5Wp33M/88ikT+6aQd9rzr+y25IqkQU=;
+	b=TabiZsbyT02HF0gNVTs7As56/HO3cAnT0U1BvAoX59ESme8XXNBVBF2IZBMa4RIIgLkqmV
+	zh1KuuhbV2UjttfMFpRhVtB1WMCTPx6xo6FRQ70XLI4Ne1FbSHLLZTzgoZDylkAcPnLDLc
+	vDnY5gqZHy/VE01G96SYZoDObeh/r+Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2257943A82;
+	Fri, 21 Nov 2025 13:36:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BB4C4CEF1;
+	Fri, 21 Nov 2025 13:36:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763732217;
+	bh=gmNU8aO4a+0cyi6R2ypDeco/WZeysrGhC1fhSvHHEmw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i35emxhE/HumLeVdn4T2hbgV1EKis8USH5PMwPQqjrJdbEVdFlICaKV9t9pBQ+C8w
+	 4/9EyDK39Bq0/57mVEfXnqWsU37JKELSoqWnt7XoDdpnYvuY0KNAnJw9qBgjXgNREn
+	 uaL0NQvZGiCJatDvarteEp9av6uL4Kp3uUMVuZSc8wXsDOSt7vKdazpwMpJG6wLuDa
+	 aF8pRoZIfy/vEjJvxuHacilp9Qj9eK/cwK6RKwZPUSP+MwF19AV7P4RVAbvdVR8c9w
+	 +C4YmPGo8rAvlE3OyvHUS1Kkm8Wbm+Kugv1+hpPRQZKHYKYmnqsTCL+Y3c3RLpt0a9
+	 pB0TVKRohObWw==
+Date: Fri, 21 Nov 2025 15:36:49 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: ranxiaokai627@163.com
+Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, graf@amazon.com,
+	pasha.tatashin@soleen.com, pratyush@kernel.org,
+	changyuanl@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kexec@lists.infradead.org,
+	ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH 2/2] liveupdate: Fix boot failure due to kmemleak access
+ to unmapped pages
+Message-ID: <aSBq8T8ETc3zjBf6@kernel.org>
+References: <20251120144147.90508-1-ranxiaokai627@163.com>
+ <20251120144147.90508-3-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Rspamd-Queue-Id: 9DAD840011
-X-Stat-Signature: jw8511kxcsyoaidc7m9wn4nxpupukuyb
-X-Rspamd-Server: rspam02
+In-Reply-To: <20251120144147.90508-3-ranxiaokai627@163.com>
+X-Rspamd-Queue-Id: 8E0122000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: b767cz14zjkiyxwni3oabjfwyx4wyutr
 X-Rspam-User: 
-X-HE-Tag: 1763732203-738187
-X-HE-Meta: U2FsdGVkX1/i9edXFbkh1nxMvAeIunfEAjt1ho8CjXqRuTQ/wTBPrwTxc1R+LWSTPKjnrkFDlLduzDjT8aN3D396BwIsFXnjfJ639mo8hpbEXjgi5G+lcWEy9DsAPtvYYHx7oQFTZOKSIgBzvrUhIYgHJ9QMJmXqh90MY6tyMtnZw1vhtInbqb6k5GB4T1wW6yujrypzmGzfkPj3Hcj6F9OuvR9d1HTJvCY02Oux/f8klb+G+gsAjnXq5PHS1EESFFOt/T3hlm7lEuse2ZVmjdgExhFifFR1898az++hqSRkIt+tL1fMlK+gpcGlUaGr39D1kL6v408FrCEKwyWP/he5rUg+ag7/pd4RXBTKoAWEvIhziauEEvwssqau3Yt7tGbLBuXtzBZmhAl6XxVo+Mv/ULwYK4X3jMy1BKPl7uk6mwDVGhoTVooYFGtcOXbBvxu22W7gRDznX4oFc/0JQBRDMw/AvYofdhI5UVb71uLvmQLbBrHVUWWtf0h6eAXAQQGUsrHKJ59pcOWOvle1vF8oJdppI8Dk8bLq6UOaTSr+IKJ0x/5nKYJGBiKBQYdGCA7+e4QoSqwN4XlsBdhULn+++v711pNwjFX107283L/ytDRvFivMm4T7XL0NyXRcbqEatySfwUs8fzbvavZuh1W9CHKkxdnb+iQoIYMiw9FybiF764IZoz2TIAS7Triu8NdeEOLTnbuWRCFHWToPCtInVy5sdXcIuLRzgzxpurIiF5hTBUGO0vBmulAvpGCZzegD/3GMgmaRRm0b68I0WWIrZnHQOr+JFndvmKM8AEPgrgRXmGxzOpvM7JbpQ2YHqQXTHAEpSLcKavIlm3fuUMbCrwFfcTUbSQ+vNRytYEi362VNGrmLORXBE+LBknbQ8heQpc9i4dmtvSQUeiuRUPdioTtWVtPyjIPLD2oP5lvcwbbAhjhmS/dQHYwMNfgonhDfz3eJOlcJA0++62K
- HOevDpkm
- klky5IvynqzvE6RUe+BAJZJCgVnsPVl+8zowljD9bmoJ8JPGlI0m3GPv8q8Uch/PoevSZNPL05GBcoGsXB7DK4ZjzeUa/c0hvXnoZWUv3VsI/MdryH1O43oWF0QwOxG1W9ius1Uaf6UeVxO7KW6UeccstQIxY4uoJQFYQAnHz4ZeRjYFByAV/6B05v6o+21A8rbSW/w3HMe0Q9PsFkO5NGdbgW0CBJtgiZt5omiUCgmN3gfZr5iak+o3y7B2ddIe19k4iRaWF0/7S37MgL3dgqWuY6C6EgDNM7vqZbCtUOKjUOyJDGsOHMcF1C7hLVP/gBjflTsHAfI6qaWE=
+X-HE-Tag: 1763732218-466622
+X-HE-Meta: U2FsdGVkX1+o4qfLSfo5w0O3wAhiNdMSwG9ghPgs12+AtHGOO9OCetLaGNX/CmKr+lIiTFBbBiF6u5acbcapEPW7zwyNMOWS0KdoIh/UljoZhhY6E+/mFOS7g6vIKpn5P+a+/M8sRUkC5fj7d/qGaJL4VgR5UTZ0fOslBe3O6u19vXEi90ZvHLRHU//UNyed4TP3hiU4y2XsP/zy+G/meH77AQwkPpe1JP56NMEKx54m+uugK4uMHGHNSOJ5wNal1UE0fK3L2KCakt3ZhmVVaY1W3fPcDCe2TutrzIO7FyNVjbEFYsYH/0bQ6QlqQ0hglllun4xilhBFe+6w+JyCRdusqTfRKpqG1Mmf+n+H4BMgWdsWmfRpLl2/zXpKAxAJ+cRev2Oyyt6cj+x/uf3jXxNUonnHGi4pxMCi5vHzg27L5RmZTlw446ruqPHpWYqr8Ff5KEGhvW3cQuiwOcU7C9jrUKNlQVNxD9mkNYAfeT4keLdmaD8hxEO7f0fhYAG8NL/8twsou0Skdaph0DT8wjGKsOdhhFE66KIxAm5AW5vqMlkglS1UflXv7BTogUXPd9H6Y2o4/nnhJzEzJ88ze0QAXvaCmRqQoycP8WfuDJlViLntxsUiWBJ3eVbMI778rUssFKhIRRewU1f6bEnmJuFsUxFOmDDsn8vuaebOgRyTfXwcBHz7Y8UYL9DRLdJJZJVGJ5I+DVLPE3fPFSScl6BwwzQMIQoe+w2ZLraPhLeISHeIuwtO/qVxRaDlOCm6iO59tfnvdthCjfKYzPFnKPeQ15Ef03R2tW/Y2OlhkacQTi58DZNu7Zae2vBT+TMOhn9xLlJgM3bH1oMxxklsNerEIia4dC1tnguTwM1WY3gj1Sih/JaaeZpIZpNIglQb/rtcgYCnRfhhRFCMFyLMO/JsxMZTL1aFaiEQovpbZfiojzMQq6y5qFLPjGKRra6O7N1aF8YH8mZ/pq/ChMZ
+ nXfcldfG
+ QOCf1Ceuj4eLIAqx0EytLoLzoYR6mG1N5RAkfw6eZXQVEAv3jvdogjDwP03vBq2fPvCpDn/11GtSapiKA7J6Ct6S81PEyL8/ZBuPrgBgiTOWKI0DEzNA6/LcW3JmHlVJXoDVSm9t/0B97ACPiOAidimExv7JlmTHmtFAxevyxokCnFxYXpMwMhFKDT4LIq6Lvqn/RYTHKQxbUv7JnK/BIOkG02aPSHxDEidGeBj4209zjRroBOjvjbYHeDDLMZdSABwBpuovO/gr7JMLCchwwX3bpyvwDcnK4cAvZ+X6Hkm2TH/wNmZqieZdSh+d5Xk/eKr3YgA5B/H8fEJQKqLjaEB8E/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,30 +96,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Re-order these frees to avoid dereferencing "sysfs_target" after it has
-been freed.
+On Thu, Nov 20, 2025 at 02:41:47PM +0000, ranxiaokai627@163.com wrote:
+> Subject: liveupdate: Fix boot failure due to kmemleak access to unmapped pages
 
-Fixes: ee131696794c ("mm/damon/tests/sysfs-kunit: handle alloc failures on damon_sysfs_test_add_targets()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- mm/damon/tests/sysfs-kunit.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please prefix kexec handover patches with kho: rather than liveupdate.
 
-diff --git a/mm/damon/tests/sysfs-kunit.h b/mm/damon/tests/sysfs-kunit.h
-index ce7218469f20..0c665ed255a3 100644
---- a/mm/damon/tests/sysfs-kunit.h
-+++ b/mm/damon/tests/sysfs-kunit.h
-@@ -76,8 +76,8 @@ static void damon_sysfs_test_add_targets(struct kunit *test)
- 	if (!ctx) {
- 		kfree(sysfs_targets->targets_arr);
- 		kfree(sysfs_targets);
--		kfree(sysfs_target);
- 		kfree(sysfs_target->regions);
-+		kfree(sysfs_target);
- 		kunit_skip(test, "ctx alloc fail");
- 	}
- 
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> 
+> When booting with debug_pagealloc=on while having:
+> CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
+> CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF=n
+> the system fails to boot due to page faults during kmemleak scanning.
+> 
+> This occurs because:
+> With debug_pagealloc enabled, __free_pages() invokes
+> debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
+> freed pages in the direct mapping.
+> Commit 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> releases the KHO scratch region via init_cma_reserved_pageblock(),
+> unmapping its physical pages. Subsequent kmemleak scanning accesses
+> these unmapped pages, triggering fatal page faults.
+> 
+> Call kmemleak_no_scan_phys() from kho_reserve_scratch() to
+> exclude the reserved region from scanning before
+> it is released to the buddy allocator.
+> 
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 224bdf5becb6..dd4942d1d76c 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -11,6 +11,7 @@
+>  
+>  #include <linux/cleanup.h>
+>  #include <linux/cma.h>
+> +#include <linux/kmemleak.h>
+>  #include <linux/count_zeros.h>
+>  #include <linux/kexec.h>
+>  #include <linux/kexec_handover.h>
+> @@ -654,6 +655,7 @@ static void __init kho_reserve_scratch(void)
+>  	if (!addr)
+>  		goto err_free_scratch_desc;
+>  
+> +	kmemleak_no_scan_phys(addr);
+
+There's kmemleak_ignore_phys() that can be called after the scratch areas
+allocated from memblock and with that kmemleak should not access them.
+
+Take a look at __cma_declare_contiguous_nid().
+
+>  	kho_scratch[i].addr = addr;
+>  	kho_scratch[i].size = size;
+>  	i++;
+
 -- 
-2.51.0
-
+Sincerely yours,
+Mike.
 
