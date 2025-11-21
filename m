@@ -4,117 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3211CCFA466
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 02:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2595ECFA469
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 02:46:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72F8E6B0026; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
+	id 7B0466B000C; Thu, 20 Nov 2025 21:46:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 706ED6B002A; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
+	id 787286B002B; Thu, 20 Nov 2025 21:46:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61DC56B002B; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
+	id 6C4496B000D; Thu, 20 Nov 2025 21:46:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 511136B0026
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:42:16 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE38C1402FA
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:42:13 +0000 (UTC)
-X-FDA: 84133064946.11.72E6DB5
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E123B1C000D
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:42:11 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 57E346B002B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:46:45 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7FBEC0436
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:46:42 +0000 (UTC)
+X-FDA: 84133076244.25.1B306AC
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BE6931C000D
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:46:40 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="OKLAh/Wv";
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b="RXKuJU/R";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763693201; a=rsa-sha256;
+	cv=none;
+	b=l0ExUMMWkdfIpgoOfAmL4E4ohMxhTFvDDsoK4ePaQmlJPOgm2u9jmFunNPoJPwajX90Gy2
+	XIbQiti6tzbqh5TbcS8pj0rBFxGLYagU25XH3yOn4gyAJUBySqKfs81byh4/0iNYRHZW3r
+	IYt8CH6qbv+8G3VjoVqGfwwvPr0TXQc=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="RXKuJU/R";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763692932;
+	s=arc-20220608; t=1763693201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aG1gNvX12mFbaTVukDWqvg7Sz0xqHjumlFfhuK5ypGQ=;
-	b=Sg85K1o5YmkkafJQMhtBdTYqLSqXPyiVSpkZO3KvveCVui9kF1RIUQnL7UB0zcd5i16BD3
-	mOjepVHr2WwMwTQglQXXaZ4OaWDPkb+M90G3JdXn6220Rs/AwfogxB0c0vpsniXL8OiviV
-	xhDNA2I4LfRj+TTqJ99EUffG8v5CJY8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763692932; a=rsa-sha256;
-	cv=none;
-	b=GhUP+Zv0K+6zvBhG2LqqruL6peSKmpXJ80CR+o9kmHVOGgVftIc+bpA0qSgW1dHbbALIVJ
-	wpuAH2RTU6pOxndr72+cveZMAcsyQG0UbIt1BX8lGK8A/QyRaF2pfnqFBWYIL3Jo4VCGzm
-	cRpVa9pcPc0WUYaqsoxxXpEEQ94nOMQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="OKLAh/Wv";
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64175dfc338so2762837a12.0
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:42:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763692930; x=1764297730; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aG1gNvX12mFbaTVukDWqvg7Sz0xqHjumlFfhuK5ypGQ=;
-        b=OKLAh/WvmzWN1g7Zc51MapiXUCsl2TXePQcrJoo4CW73mL8fT1BOs5VwA4uv8urCvw
-         2bv7s71fBpeDT/CPNAc898xMnTkP2CbF4NWHAynTbrSstbkqYIYiWetXjz6f5AkCCG0x
-         5Y/STGjvIs3AuiMNXlU0OJKb5n+FcCkRL2lC440Cp8n/89XTou5v7z/0YgRTemPooLwE
-         S3SyVUQbZU+fzcG98QJOeuEUozZnhugOuk4mHDbvyi6WbBySdxdVWw1j013iZs7WlNXK
-         LD/8NxeF19Cy2rMoVa503Lim6MlzfDpmkUMbFnlp8jda0GYyHRU2F3Wz6VC9UyoB9deG
-         FfAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763692930; x=1764297730;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aG1gNvX12mFbaTVukDWqvg7Sz0xqHjumlFfhuK5ypGQ=;
-        b=WiVz3tLkVv9oDq+NQvwMmPm3xTiB+TnwcN7KlJDoVCWnE42KJCmJAGbE1BtPMkZWyL
-         MoDxg0JLBXC52lrV1NSVWoAJ4Q4uMksRke6A8PbffV0x7SHi9UgoqCF12klqW2LG3znn
-         iqj+z7VY4CSSwXamovC2q3ppCUzeW6jql+IwAoPU+tYhQnOU9wkbdvTFfLAZJ/2GbGka
-         REyyIhfbvmo7UcpMevJzOzuFZ2Nw/+tr+nq0CzEUOgIiX63jW2reLeM2aWsrM/Uk8FRh
-         MhoKEBvVLIBsH8C9gMngLgSbF3yXtMSHGDadTrgi4Ub4z8UX0BE5DjzpiQWBn4Upxlg0
-         ziZg==
-X-Gm-Message-State: AOJu0YzfsWBWoQbOT7GZw3mZ79sxskudd7+dtgqZ256CgcFH/0QI1dMQ
-	rAgD/6ij10DJFrSKNZSCJd77feE5x3IIRw8Msl3ABU15WQ0RC2T+eNv+T5PvJSlJ8vd9u9j6pVL
-	UE3fra8ogO51EXYxqbjqvAqBt9rfs2eQ=
-X-Gm-Gg: ASbGncu423MoMap1A10mqAR/Vw+nk7mJkG7mSJrNkzwmigO4HVUy7sTm/Vs3GRu88ac
-	TWhO6ntq7sxetyf2/VS3Iv3tYGzl/t7L/iTHLaLm3LIl0JcrgqeyQ7CH2Xx2eGMHD/Q6756IOGh
-	R6gGOG5e1Z2uzYnK9edCkAPpA0BIUa/ELVOjJKPeMS1pWZEV9LmjbKuSDKBqsUg44mYeBLDa7tT
-	USQUTm1CPj/ZwRGbvX2NHpiWHfLfB1Tgnm0+sI3uIrs5FjSaYLV5FsuFmEdEIBfb0AYR77DYte3
-	kJhIWxqyi0pkh8UxFZ9QpsIcqZgGDFA=
-X-Google-Smtp-Source: AGHT+IFIhnYEepkxXziqlUOUfduozhyl+4q52apImGvyha6PIl/kObL/KhTey6tNzbVpl9UVS8ZcSk482g2P748epa0=
-X-Received: by 2002:a05:6402:510b:b0:640:ccb0:f4da with SMTP id
- 4fb4d7f45d1cf-6455469bf9fmr719414a12.29.1763692929878; Thu, 20 Nov 2025
- 18:42:09 -0800 (PST)
+	bh=0yYZn6QK5gg9APsMYldZKsKSIWjXDUkqOUS9S8IfOMQ=;
+	b=ArsFPKYpnt+AfDLmv3y9++ltnqbGdo4Ow0OuiPOFymugYnvsyPE+RulWFv4gpet1BoWcZf
+	pgPYgE2B+6dC9F3xwMhkqto5LM1ZtNrYLBX2YmGlKAARWPocLP+PbNI0b/ycnlliZBWmjL
+	1f1T5OmX1nuv9xOODE1PkeBa+B38qnw=
 MIME-Version: 1.0
-References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
- <20251117-swap-table-p2-v2-3-37730e6ea6d5@tencent.com> <CAGsJ_4zSqQax-Ct-zz3uMZ_dD7vnvTjWZ_BsnXBnMVpVNNDYUA@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zSqQax-Ct-zz3uMZ_dD7vnvTjWZ_BsnXBnMVpVNNDYUA@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 21 Nov 2025 10:41:33 +0800
-X-Gm-Features: AWmQ_bkT9_nY4s0wnqQFGfaNrU0zB4Zg3rHgZ_Puymj_6T3RSmTCG_WLjSidrSw
-Message-ID: <CAMgjq7BYNwVSX+=KDxmdFpUZ4gnTDjA7LU_Fi=J6SFUV8pAcUg@mail.gmail.com>
-Subject: Re: [PATCH v2 03/19] mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
-To: Barry Song <21cnbao@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763693196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0yYZn6QK5gg9APsMYldZKsKSIWjXDUkqOUS9S8IfOMQ=;
+	b=RXKuJU/RA1cAjc1XUBHWdIB9doG2Wk814x1wLnldU/d0slv40i246MHbcPxCVv8Z7ah4GX
+	tU01cPDa5Zxf/9up0Y0JiDZQe0KB46S33I1BVcb7IkEpeZNkoRR1xAhu/BizuIrlwYWvtW
+	gpBi8k0becQydlkbV7NHMiRxNgU9NF0=
+Date: Fri, 21 Nov 2025 02:46:31 +0000
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: hui.zhu@linux.dev
+Message-ID: <f5c4c443f8ba855d329a180a6816fc259eb8dfca@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH 0/3] Memory Controller eBPF support
+To: "Michal Hocko" <mhocko@suse.com>
+Cc: "Roman Gushchin" <roman.gushchin@linux.dev>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Muchun Song"
+ <muchun.song@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>, "Daniel 
+ Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>,
+ "Martin KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
+ <yonghong.song@linux.dev>, "John Fastabend" <john.fastabend@gmail.com>,
+ "KP Singh" <kpsingh@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>,
+ "Hao Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>, "Shuah 
+ Khan" <shuah@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Kees Cook" <kees@kernel.org>, "Tejun Heo"
+ <tj@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>, mkoutny@suse.com, "Jan 
+ Hendrik Farr" <kernel@jfarr.cc>, "Christian Brauner"
+ <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Brian 
+ Gerst" <brgerst@gmail.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
+In-Reply-To: <aR9p8n3VzpNHdPFw@tiehlicka>
+References: <cover.1763457705.git.zhuhui@kylinos.cn>
+ <87ldk1mmk3.fsf@linux.dev>
+ <895f996653b3385e72763d5b35ccd993b07c6125@linux.dev>
+ <aR9p8n3VzpNHdPFw@tiehlicka>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E123B1C000D
-X-Stat-Signature: mza4uwecsnocjdc1pm4f3ogf95xu7wbz
-X-HE-Tag: 1763692931-817778
-X-HE-Meta: U2FsdGVkX1/kkfrxdEVkDeH4f8Ck/n3IaSxrK8VlsTl2mwCS9SifaTQzwiZ2GwxlcrjJ9CzgiElBcT0EbtUvRkiNbG2uuUG61646WUc0MUR8mS0DpfaOX8gmn3QPZ4WCqN7395U+F99rmLucNnaiKWuRStjuoCff2VzS+bP0bRYtI3oba36pRHL6pbCdXKGHdB5miXcWwLOJbgBxJn+LlUT0J3ShMdMzKKWXL6Qe11WHu00HL578FYCPTwGJGvtNjv3FGrXY03ilAriBYpnLyMqWIeJwSIWbz5M3SdixTlVw0+uwREdQqZWa5rFqmrizaeP7chb0VzkJ7dEH2AU+k7HxVp1n/tJDRjEOlEoalsxmjQV4wweApAwVOnLWU9ewcDoP6IQiJ7oYiVvWmfsEFA/rePcM+TYV07oViRSyzz7/t4D60pTT6Ec3V90E2ZpFGCVsCMsOX2KAi/trHJwnF0wpcQeQ92shQqjS3j03TfurDNOPyUYMWuz0NiIxyunNAyYl5FNzuwluMNnTrTJmHmorgwrwC2hXCN2TX+Y5n18Z9e0Btlrl/cBlpBx8WD4w0AEzoJna175ZDFNLotmI8mdq0mnJAxmV4/xQUMfaxwBpKCKGuZazXEMRorxXCZ6rSDlHZZHxFFJuAWM5aMYhpiGWvJ00Tlx4+CKIHL7bz5SLZf42KvQPDFO06jgKbjSyL5auIqKiUzikSwHaLwC1O5x1aLz+kqof4QyWGYAEuhgAx1UOxwt7Nlp1pI3C88B/oWKbI2hmFKfjaJF4DMGi8McgMhI96l0xArAQLPF5k3WC70Y6tJme4jsB0M5MaJKcBpydsr2QFC8b7S/pSnwFOvsHVzSJYXw9dS/JsvqNtvHiD0t54VP4M4fne+zSZglxia5FcPCqu5mKRYieBCUXQkwMGEf8KadR5A8eCxZqEi6cy1ylZel6uBbandcPuVoWZ5o1iJlItHpvEJShZjo
- nqXAL3Bg
- yY/Q6dDrE+1znttoIoZ2S+Jonnv9Obwt58L+hG5/gDG6L8878ZXleb7sAWZt/snQyIuuvMFyfW4jm3wZ7CZEJIvg6wvqgdvc/WbQ59tGYNnqDf32Pk0wT//ZmuH2CiSdwGtoXYVpvz8OMiPPExXQNSRakvVSqAASu/HojSUxrWRGy2d4fq/Et2F58X9qN38rzobrD5PFcwwyKghyoMr0Ivc2dBeMu5UeGxveQqcL+WLTfzb/QdzbsVYOU3mrTCpEdHM3TOVqwyY04dqfh1AiTTdGCDRkpT4kEg0GgWDCKtzdBzqiXrhCJmYr9BaxUaZCN26YDlkte6bCuVntArSAtk3SJZRaFA3lhZ8E4fX0fx19GI74c15WqrGs0gEMnPNb9o+Bl6QQMViioXU2ZYTXtERVvRPN3V6m5faMrQF/GTCfjPJU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BE6931C000D
+X-Stat-Signature: zahhnse9exu1egk4uo51fye8ttehd458
+X-HE-Tag: 1763693200-356161
+X-HE-Meta: U2FsdGVkX19JffTV/wGxVHy3jb9WT9OKFimaiFsHWSHcXAyzUXAt2iWzLhOIbfm0XatgRgMqwnTaiVxn8allEBr0QGZuWxY+PsWS9TVPVAIF6Lf77hStKtFT4RjEFPP+mtAB6upj2N9V2VwcAVWI4yovxupiSi9d1pjZoOGIufJz+oH5P2cppqqSoClto8/be1+tpujzzGrhJ03T0mSfdccDYxdcKVVNvifAbCjQ9xH6tsw/Nz6JTg5O7xe+zmtnb5eAg1zCNNXePBvFpV+DErbccI7Luw4v46Hr4Dtnic4W2yLy+8sNKWy1y0Bu4fTyuk7Cn6mtxiH5JoqIIKIIVgFL/fsElyrleyzXbFSMzvoG6H8wtRrP14YKk4xc+IKn05i/2EQSElU3EtELD+8pLaE/UCDDye4QZrGTGD4z4qS1wMtK6WZqoSZinnvbAaQ83ofFUczifw4xub2mHP7AMG83n8jj0OtWAycsNGnfJngbE0zaGdDw5BO7s719oi2fFN8Niefo6StVsAd7RlLPNdr5ob8zqtifAI7iw14+wjDcp5Xlou4Aq9/yeD55IarI8/DT+3Z26o+PfmN6Zw2hgFwUwfFywsMnSb+DSkFcgnSWGWb/GbtGCtnTVdEApZ5FWQVtM9e2pC/0tHndL28DHz1ltGYQekSA3+LYqisgaCe7uw1d8eb8xuKGEArNDepv2HV18zh5lpl7oY3hCqLqPw/EJwtp9Wq1PDP5n+qUhWNI7vXDWQ+77xJsigOuqbahlvNvYJ1mZMktsnppT5OmAS/mijIyqXbPjB+gjIN9OxnHdqxKNSK0dFrAhGESMaAXPKeOMiCp+4srb98TPQxoxM2SK8yIaPfA1J+qdca2k1X3Zjv1hQpa/KiByQmDvGWkSqkSNi38T6uD6KC/z/YghN30YUP3c68WPGf+4xJ2blatzbDVBhO0Y/ZwdoBqxsl6Pc3qh7WtaP4vQCEs8E0
+ amDCm7jy
+ iv0l6i3RcgUH8WOqVD9WYn96lBy6jTOsX/gruz0MB9wllcYOmEGxlwX2aZG3niApNzUPtAfZ21Nxb7/noOpgIEff7W/+0im/40cOD/Ls+lfJ/2g1RLxZYXt5NRqEPPYu/wK+Ic+FmTP5yQ0J+LUdK7vXqC51H8g063oGRKy1dnEd+kzvc3GCyOUEk8Sf4A+1Qp4Iui3FveDeyF+lmrt0Y/c0ze3nR6SsT9djvh65UlmKxP3u/MGpytV68H3h5k3oCNd9wRoMcm9IVEeWLe5IbtgeC2phf92LAPUq3902rwt05g0IQbmm7X0ydzr74WRB2vzzdnG152/RsJlkYzh0ekupb7A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,148 +111,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 8:55=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
-e:
+2025=E5=B9=B411=E6=9C=8821=E6=97=A5 03:20, "Michal Hocko" <mhocko@suse.co=
+m mailto:mhocko@suse.com?to=3D%22Michal%20Hocko%22%20%3Cmhocko%40suse.com=
+%3E > =E5=86=99=E5=88=B0:
+
+
+>=20
+>=20On Thu 20-11-25 09:29:52, hui.zhu@linux.dev wrote:
+> [...]
+>=20
+>=20>=20
+>=20> I generally agree with an idea to use BPF for various memcg-related
+> >  policies, but I'm not sure how specific callbacks can be used in
+> >  practice.
+> >=20=20
+>=20>  Hi Roman,
+> >=20=20
+>=20>  Following are some ideas that can use ebpf memcg:
+> >=20=20
+>=20>  Priority=E2=80=91Based Reclaim and Limits in Multi=E2=80=91Tenant =
+Environments:
+> >  On a single machine with multiple tenants / namespaces / containers,
+> >  under memory pressure it=E2=80=99s hard to decide =E2=80=9Cwho shoul=
+d be squeezed first=E2=80=9D
+> >  with static policies baked into the kernel.
+> >  Assign a BPF profile to each tenant=E2=80=99s memcg:
+> >  Under high global pressure, BPF can decide:
+> >  Which memcgs=E2=80=99 memory.high should be raised (delaying reclaim=
+),
+> >  Which memcgs should be scanned and reclaimed more aggressively.
+> >=20=20
+>=20>  Online Profiling / Diagnosing Memory Hotspots:
+> >  A cgroup=E2=80=99s memory keeps growing, but without patching the ke=
+rnel it=E2=80=99s
+> >  difficult to obtain fine=E2=80=91grained information.
+> >  Attach BPF to the memcg charge/uncharge path:
+> >  Record large allocations (greater than N KB) with call stacks and
+> >  owning file/module, and send them to user space via a BPF ring buffe=
+r.
+> >  Based on sampled data, generate:
+> >  =E2=80=9CTop N memory allocation stacks in this container over the l=
+ast 10 minutes,=E2=80=9D
+> >  Reports of which objects / call paths are growing fastest.
+> >  This makes it possible to pinpoint the root cause of host memory
+> >  anomalies without changing application code, which is very useful
+> >  in operations/ops scenarios.
+> >=20=20
+>=20>  SLO=E2=80=91Driven Auto Throttling / Scale=E2=80=91In/Out Signals:
+> >  Use eBPF to observe memory usage slope, frequent reclaim,
+> >  or near=E2=80=91OOM behavior within a memcg.
+> >  When it decides =E2=80=9COOM is imminent,=E2=80=9D instead of just k=
+illing/raising
+> >  limits, it can emit a signal to a control=E2=80=91plane component.
+> >  For example, send an event to a user=E2=80=91space agent to trigger
+> >  automatic scaling, QPS adjustment, or throttling.
+> >=20=20
+>=20>  Prevent a cgroup from launching a large=E2=80=91scale fork+malloc =
+attack:
+> >  BPF checks per=E2=80=91uid or per=E2=80=91cgroup allocation behavior=
+ over the
+> >  last few seconds during memcg charge.
+> >=20
+>=20AFAIU, these are just very high level ideas rather than anything you =
+are
+> trying to target with this patch series, right?
+>=20
+>=20All I can see is that you add a reclaim hook but it is not really cle=
+ar
+> to me how feasible it is to actually implement a real memory reclaim
+> strategy this way.
+>=20
+>=20In prinicipal I am not really opposed but the memory reclaim process =
+is
+> rather involved process and I would really like to see there is
+> something real to be done without exporting all the MM code to BPF for
+> any practical use. Is there any POC out there?
+
+Hi Michal,
+
+I apologize for not delivering a more substantial POC.
+
+I was hesitant to add extensive eBPF support to memcg
+because I wasn't certain it aligned with the community's
+vision=E2=80=94and such support would require introducing many
+eBPF hooks into memcg.
+
+I will add more eBPF hook to memcg and provide a more
+meaningful POC in the next version.
+
+Best,
+Hui
+
+
+> --=20
+>=20Michal Hocko
+> SUSE Labs
 >
-> Hi Kairui,
->
-> >
-> > +       /*
-> > +        * If a large folio already belongs to anon mapping, then we
-> > +        * can just go on and map it partially.
->
-> this is right.
->
-
-Hi Barry,
-
-Thanks for the review.
-
-> > +        * If not, with the large swapin check above failing, the page =
-table
-> > +        * have changed, so sub pages might got charged to the wrong cg=
-roup,
-> > +        * or even should be shmem. So we have to free it and fallback.
-> > +        * Nothing should have touched it, both anon and shmem checks i=
-f a
-> > +        * large folio is fully appliable before use.
->
-> I'm curious about one case:
->
-> - Process 1: nr_pages are in swap.
-> - Process 2: "nr_pages - m" pages are in swap (with m slots already
->   unmapped).
->
-> Sequence:
->
-> 1. Process 1 swap-ins the page, allocates it, and adds it to the
->    swapcache =E2=80=94 but the rmap hasn=E2=80=99t been added yet.
-
-Yes, whoever wants to use the folio will have to lock it first.
-
-> 2. Process 2 swap-ins the same folio and finds it in the swapcache, but
->    it=E2=80=99s not associated with anon_mapping yet.
-
-If P2 found it in the swap cache, it will try to acquire the folio lock.
-
-> What will process 2 do in this situation? Does it go to out_nomap? If so,
-> what happens on the second swapin attempt? Will it keep retrying
-> indefinitely until Process 1 completes the rmap installation?
-
-P2 will wait on the folio lock, which I think is the right thing to
-do. After P1 finishes the rmap installation, P2 wakes up and tries to
-map the folio, no busy loop or repeated fault.
-
-If P1 somehow failed to install the rmap (eg. a concurrent partial
-unmap made part of the page table invalidated), it will remove the
-folio from swap cache then unlock it (the code right below). P2 also
-wakes up by then, and sees the invalid folio will then fallback to
-order 0.
-
->
-> > +        *
-> > +        * This will be removed once we unify folio allocation in the s=
-wap cache
-> > +        * layer, where allocation of a folio stabilizes the swap entri=
-es.
-> > +        */
-> > +       if (!folio_test_anon(folio) && folio_test_large(folio) &&
-> > +           nr_pages !=3D folio_nr_pages(folio)) {
-> > +               if (!WARN_ON_ONCE(folio_test_dirty(folio)))
-> > +                       swap_cache_del_folio(folio);
-> > +               goto out_nomap;
-> > +       }
-> > +
-> >         /*
-> >          * Check under PT lock (to protect against concurrent fork() sh=
-aring
-> >          * the swap entry concurrently) for certainly exclusive pages.
-> >          */
-> >         if (!folio_test_ksm(folio)) {
-> > +               /*
-> > +                * The can_swapin_thp check above ensures all PTE have
-> > +                * same exclusivenss, only check one PTE is fine.
->
-> typos? exclusive=C2=ADness ? Checking just one PTE is fine ?
-
-Nice catch, indeed a typo, will fix it.
-
->
-> > +                */
-> >                 exclusive =3D pte_swp_exclusive(vmf->orig_pte);
-> > +               if (exclusive)
-> > +                       check_swap_exclusive(folio, entry, nr_pages);
-> >                 if (folio !=3D swapcache) {
-> >                         /*
-> >                          * We have a fresh page that is not exposed to =
-the
-> > @@ -4985,18 +4962,16 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >         vmf->orig_pte =3D pte_advance_pfn(pte, page_idx);
-> >
-> >         /* ksm created a completely new copy */
-> > -       if (unlikely(folio !=3D swapcache && swapcache)) {
-> > +       if (unlikely(folio !=3D swapcache)) {
-> >                 folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLU=
-SIVE);
-> >                 folio_add_lru_vma(folio, vma);
-> >         } else if (!folio_test_anon(folio)) {
-> >                 /*
-> > -                * We currently only expect small !anon folios which ar=
-e either
-> > -                * fully exclusive or fully shared, or new allocated la=
-rge
-> > -                * folios which are fully exclusive. If we ever get lar=
-ge
-> > -                * folios within swapcache here, we have to be careful.
-> > +                * We currently only expect !anon folios that are fully
-> > +                * mappable. See the comment after can_swapin_thp above=
-.
-> >                  */
-> > -               VM_WARN_ON_ONCE(folio_test_large(folio) && folio_test_s=
-wapcache(folio));
-> > -               VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-> > +               VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) !=3D nr_pag=
-es, folio);
-> > +               VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
->
-> We have this guard to ensure that a large folio is always added to the
-> rmap in one shot, since we only support partial rmap addition for folios
-> that have already been mapped before.
->
-> It now seems you rely on repeated page faults to ensure the partially
-> mapped process runs after the fully mapped one, which doesn=E2=80=99t loo=
-k ideal
-> to me as it may cause priority inversion.
-
-We are mostly relying on folio lock now, I think there is no priority
-inversion issue from this part.
-
-There might be priority inversion in the swap cache layer (so we have
-a schedule_timeout_uninterruptible workaround in
-__swap_cache_prepare_and_add now), that issue is resolved in the
-follow up commit "mm, swap: use swap cache as the swap in synchronize
-layer". Sorry I can't make it all happen in one place because the
-SYNC_IO swapin path has to be removed first for that to happen. That
-workaround is not a critical issue besides being ugly so I think
-that's fine for intermediate steps.
 
