@@ -4,232 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 809BCCFC263
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 11:27:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05890CFC267
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 11:40:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 406FC6B00A2; Fri, 21 Nov 2025 06:27:01 -0500 (EST)
+	id 2C38C6B0026; Fri, 21 Nov 2025 06:40:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE5F6B00A3; Fri, 21 Nov 2025 06:27:01 -0500 (EST)
+	id 29B166B0029; Fri, 21 Nov 2025 06:40:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A6226B00A4; Fri, 21 Nov 2025 06:27:01 -0500 (EST)
+	id 1D7D06B0095; Fri, 21 Nov 2025 06:40:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1302A6B00A2
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 06:27:01 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BCCE160594
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:26:58 +0000 (UTC)
-X-FDA: 84134387316.28.554327F
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazolkn19010023.outbound.protection.outlook.com [52.103.32.23])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B5677A0004
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:26:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=XQgmvGC8;
-	spf=pass (imf25.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.23 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
-	dmarc=pass (policy=none) header.from=hotmail.de;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763724415;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E99A6B0026
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 06:40:26 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A2787160591
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:40:20 +0000 (UTC)
+X-FDA: 84134421000.12.65582AD
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 992A220007
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:40:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ok69cvs2;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763725219; a=rsa-sha256;
+	cv=none;
+	b=WGkD90v/OjWJbfo8h9J3t6aJDouCxfUnkBHUlTmJN19kemAN+42l3NnNf6JfYELIl3CcRk
+	DaUy1ta3EwS/n8EHcNwQoAX9n9E8WMUc4PL3Uu/9NiXOz8CAhCgBMEXGopRXgjpLxLyKGu
+	cYhCaB8tX4ToDCkveeSy+gEgsMWYxHM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ok69cvs2;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763725219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u9JbpQ65D/TNfcoH4iR2VrremkZhuKTi+gKg/P60g44=;
-	b=5/Nkwpxjv/X6CBsfCYQw16pqhr/JsbXaO0uqHMBqLBgJOigXYX4yIbCzl13+iKU0us0n9n
-	I/GgsAznAWVNahvVNZbjHTFqNh5PzS6Tg15HqBbvQ6uSllASFAt9GEue/o9sdV8TYIRG48
-	Z0ZAWv7HJl6uuqVdzSQyI9hiqXn3cCc=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=XQgmvGC8;
-	spf=pass (imf25.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.23 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
-	dmarc=pass (policy=none) header.from=hotmail.de;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763724415; a=rsa-sha256;
-	cv=pass;
-	b=ZoYo+DNn15euPW1rC+sSsXqWmbfrdSVJHXfR/k0YxDV6HKIoQ6bfFtmAD+AX8OF3HVtoGJ
-	jmzZqxGSXxRGmwmpbvUJlKCkeJj1ryVOpnePHTMSJsRhUDuy9I8trs80nxvtj7m8l6av7B
-	dsP0J+3Gt+vaqslIzdEV8Ab2MNUuTyI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HUY0INT/pDPmKHQgiWeynXhIpPhN5PPAC9JWqI+R/Fqt4AF1IaKGEpgSHalSz74oMCK+Q4vdGFZ8b+St4NYJLCot4ojmaYXyzzH6Dh0/jlh6tygLJFcfkEMD9TNDQbcw3c45hhkJQf+pLhHljI9AciSfMizwB4BsM2KgsQ2CeHnWiKQIAp9RCbCOq4GPB93PEnrNDPuiJrzN4pQib5clYb55Q1MK4JrKaHaBTv8HxBmIdiCsy9pQiERm5rUy+d0FBMLQRLeU99MbZedwlViIuxdKcMr8MFqA7SZQUEueNOr5hue1Zef+J2Vh8yvkeJgCPBZC7wlZTa05g0IHEsUbNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u9JbpQ65D/TNfcoH4iR2VrremkZhuKTi+gKg/P60g44=;
- b=XS9AOtvBOe1tgLejo07h+ys2ihfaaiOtlstrCjt2z3Efjnln/hiWaEwSYYYIDGYJIM3YFcIiNdE3hMquO9JhvP96Vgzaw4yC/pfLAsTML7GtYe9p2gehp+b77V5IobbrApwOVjmIpqmbt3zDxxQ5/ZYyaQHzw1JTdPDMQTZAtRENzKMMb6HmxX15xOaqNTkqZsOkroDI5BAJtH80K/hyNotyqsnZEQz4KbVSB1KmfKNK3STMi3jtkZjEu2pN0O+52xeUFlmTdvo76M1YF3c1W8hSS89VU7gQXpUKnHEnEND2MPqGmIBlFW4NcLJJNqo9y4irKiySO8S+p4a8NXXajA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u9JbpQ65D/TNfcoH4iR2VrremkZhuKTi+gKg/P60g44=;
- b=XQgmvGC87oQNDHgeVubqpbDG4duV6v4BXsvLuSYQpnpQwLr1pYI0e3CGeUN66zH9yGbRelMg3JAEJg8RoT5OTMplYtEp/N14x1iHSFhtZ3f7h/q4CbmUcWGsGOsMEEDlbe3/NrAMjW1Cz90jmB0EWWxgItSyx2v9fUAsAevumrJvDsZh0tzqUAzP3GCZqSw28F4u5nO6VM8XRIEWMvfpiAnn5f7dPcolb5KImYA5h9wkocVfexE2M1NPXiur53V9inqy/INa6L5qq8GqBsCmvlIU5ogre8BX4C7vnOjbwFIL181hCa+Md6PSflEGBoERmWSLtDOACd2scZUO5WTNcQ==
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4) by GVX0PF97A28093C.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::7d8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
- 2025 11:26:51 +0000
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49]) by GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49%8]) with mapi id 15.20.9343.009; Fri, 21 Nov 2025
- 11:26:51 +0000
-Message-ID:
- <GV2PPF74270EBEED0840E45459881C0EDD4E4D5A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-Date: Fri, 21 Nov 2025 12:26:48 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC][PATCH] exec: Move cred computation under exec_update_lock
-Content-Language: en-US
-From: Bernd Edlinger <bernd.edlinger@hotmail.de>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Alexey Dobriyan <adobriyan@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
- Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>,
- Will Drewry <wad@chromium.org>, Christian Brauner <brauner@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Serge Hallyn <serge@hallyn.com>, James Morris
- <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>,
- Helge Deller <deller@gmx.de>, Adrian Reber <areber@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
- Luis Chamberlain <mcgrof@kernel.org>,
- "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Frederic Weisbecker <frederic@kernel.org>, YueHaibing
- <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>,
- Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>,
- Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
- David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- "Joel Fernandes (Google)" <joel@joelfernandes.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Hans Liljestrand <ishkamiel@gmail.com>,
- Penglei Jiang <superman.xpt@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>
-References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <87tsyozqdu.fsf@email.froward.int.ebiederm.org>
- <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
- <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>
- <87a50gxo0i.fsf@email.froward.int.ebiederm.org>
- <GV2PPF74270EBEEAD4CACA124C05BE1CE45E4D5A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <87o6ovx38h.fsf@email.froward.int.ebiederm.org>
- <GV2PPF74270EBEEFA106F4EF26B087ED898E4D5A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-In-Reply-To: <GV2PPF74270EBEEFA106F4EF26B087ED898E4D5A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0152.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:98::19) To GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4)
-X-Microsoft-Original-Message-ID:
- <8d8912d7-ca7d-455f-81e4-8b9a638a9e94@hotmail.de>
+	bh=Vhd0z5G/L7h7MLT55sYTaC/qxnDz9iOOGe9BsQAb9Os=;
+	b=1+gKQ1oQdh8S/BCtHurwh/A3aPxg0984Z8p5gS0Snr0sr6GxqWbQaUmjTxbM258Zz8/XBt
+	tSH08UKLfkL8ct8bb+3JPrF5mdS2TpQtwYlBN0E/P9rSanJMUlgmR3boJBJsK967EEjwXa
+	C9NHjmNJWqEQBmUUJufXZbXxWOkKDHM=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so1076171f8f.3
+        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 03:40:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1763725217; x=1764330017; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vhd0z5G/L7h7MLT55sYTaC/qxnDz9iOOGe9BsQAb9Os=;
+        b=ok69cvs2kHEgsW8+JIqXAWRt7BpntEzoPQtTlnldamCcfusDgUxzfi45F4ivc0qh/0
+         trlCSoHXAGm/LFQKhx/cmLiCp5qkjm66fdUPn7I++be7bQGMicsa1nx8+oOXqyD43cQu
+         IL9XA0iPt7yKEapYhzeSf/M/3y00p+JS9+bCjJhTSoCArkwGGFOPsOlAMlMa6VJJqKvW
+         qQ+ziSp+rorNjoBfjxIlNAT7fomPwCuqemMOl1AdfsDeL2jIvtNDIJd9FSsIEJ+WWWTF
+         A4drEiQADBxTGBu6IukbXdP6gx0zGTXxBcnLgUnmdR0lLSw3XmSOu/b8rq3tcidPbh8V
+         d5wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763725217; x=1764330017;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vhd0z5G/L7h7MLT55sYTaC/qxnDz9iOOGe9BsQAb9Os=;
+        b=RDv7ycBOwvTFlJL7aH3SoTTLZZcag4Ad37TsyEe85+buqK4atc+7ZDdXj8XpwccMOc
+         9Gz0jtpK/WB/vJn0QS+wc+vKT7WjqLPkhkG/VXOE3E8f3ZMbeLxaP5xwz3fYhDmjxicQ
+         UyW3AHHC9yeDoYDjxpaHDflfcT+CYBbGQnfFywRvyzpdziPPB86Z+qt+CyMkJ7z2IXWI
+         w/Ceelaam+BllqHSHU2buel+le1/152frzeNsIVtrZ57Lf7Lchs+TZZNAxnlQtuGsywb
+         iEDGv0YlxY6XRV1+DDzmN2QMq3ynuTeee2SxYwFuqKNoJyhZleVXyx67FmnApgJ34yYF
+         zPLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWoUWCeBD6VhFkhgnuKej/GJgWP+/W4uHOJah8QQliCPy2q+gWSM0l7fNGvSgo8o1SK98F+qWImJg==@kvack.org
+X-Gm-Message-State: AOJu0Yy4Oqwb0Mp07GY64QFhSiFo9qtu0ikvhPoel14WOxbe+eWl+j5D
+	ro/9wjaG86KylsIIWyuaR1kEp4Yes14NVLH2kwbl+3CtdlQMhqCim2ryP38tjxqlLlE=
+X-Gm-Gg: ASbGncuK21FvzcJ/M/DrwJmdu8hSfXHCU44j/hDN6tnHXRMY1n0iR1k0QAyYmVu9y1s
+	y10j/54G4y4TT/J3lU2GM9Ujqq5sQflZZsy2+TR8JsIAIYuSRPCrMFprYEhdaDh0F06t/0yTukz
+	qbjyN1a7+3vEIqUM45/1kGOCDApznbFMl9qnigaFel55aMYU/k36YZD9O5xNJ8h5IXpH4hDL+qv
+	fwiXqTam4274Vly1JGQUQayCnBdUVHYkJa16mxVai/0TmaoZN3u4EkjaCBvOzDOY3tgShN5yGn6
+	pl3y7IUKtLICK4jTSO8dzcNh8z639sngIg6d6Xo156gsh041WEYbYlK5XHNUd79FbeO4RJt8Ug7
+	uYQfHXfeyYpywsSb/8y/M/jHxfXH8yuwU87tl6Hs0LRITRk7o22ij+0hlIPVafZoXNl06
+X-Google-Smtp-Source: AGHT+IEgsvla2icfCYM18HjMX7hO+ZfzwY8kLg+zvj18fqSOqNkdKKiBm7nhf0ttJREO7eB4OShiRA==
+X-Received: by 2002:a05:6000:2909:b0:42b:2c61:86f1 with SMTP id ffacd0b85a97d-42cc1d0cf81mr1931981f8f.35.1763725216785;
+        Fri, 21 Nov 2025 03:40:16 -0800 (PST)
+Received: from localhost ([2620:10d:c092:600::1:610c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fd9b45sm10401328f8f.43.2025.11.21.03.40.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 03:40:15 -0800 (PST)
+Date: Fri, 21 Nov 2025 06:40:11 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, pratmal@google.com,
+	sweettea@google.com, gthelen@google.com, weixugc@google.com
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+Message-ID: <20251121114011.GA71307@cmpxchg.org>
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PPF74270EBEE:EE_|GVX0PF97A28093C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b7cf753-2140-4035-c00f-08de28f0dd77
-X-MS-Exchange-SLBlob-MailProps:
-	Cq7lScuPrnqtIWTVy3iGwCmLGPV7Nste/Lq1zjGdPB5r7j/0FYwBqL/3N4zb96/DYVaWA/Hzpqdd3zc1gHszSs4PcKFfAvDXV0PZNqeltmYtCj8ye1LAlGqzSoGWj2fQ5vH/OW069pPReLFXR6mSgfToi7LwHV+VYv1jAcNuOAkIXkJAlARapV6LxybXljbg3qcp0FqMRDuRT/By7LA5jLijc38xzV1v8avmO9lK6f/D3oU6mWlSuOyLwKjj5e1cvjQxiQbBtaAN731Z9euKAq53s892biTywb7qbDgXvLcJSGdLQGo+EFiRzs44VZq6fzppKAqpCi7gAK80qpYvPK6nPbK1449kJCTEI7HdaHRdEFYJfilQI/9MdVWkLANoYdYl45G+7tc3Nx4bIDn0wimQ3oGDwmcJzTgei2infYHSLHDWtDnfZzTsKaMtkPuAaPK5T5CbBMjt/aZ8FUeiX0+usWgcYj3izEL7kWvCR6qU71uT/Eg+YJZDKDQzEjS3hbNv0CGu6XcylgtahqhZtF51MmstpfNTxcw5fZ3oTCcN4tWNso+MB+A0KNLG8qqYE+yXoadIE17uKuKHIU8UW9kzay5Z5FH8SGJxtls7IX66LVNdOa7Sybj/0KHM8fuHykrAsQIlwm7ZBXtFWkcF/uxIBEuwmmHjrWnTex9m4J84EJIWcX3lVf4txs4Vzf4H9tAQP9kqY7hoPJXgA2D6+A8qmZhJFyOTjR4x29AT1XHVOhvr4XgdaaXRZtyloIsHWnhIazrIo0s=
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|19110799012|41001999006|21061999006|23021999003|8060799015|12121999013|15080799012|51005399006|461199028|5072599009|6090799003|40105399003|3412199025|440099028;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RDZnTnFLSXREd1dHVlRrUTdsbDRTVnZDTnQzWEVoTm16RGZOalBxVkN2MkhJ?=
- =?utf-8?B?VzU0OGp3MDlpcWlHeFJUM1FYa1BGUm9mVDV3SkFLWWxjTVNvR2o0Z0piTW41?=
- =?utf-8?B?Uy9tWUlrV3hIUzRYRjNTNnA3R3pXMzJFUUhCWDNuamgxY3BzZ1drQmhqY3ds?=
- =?utf-8?B?c1ZHSE9OWlRRazh0Q2VGaGphWG0vUjdOam1YUGs4LzdSYW1odzlhK0tpZldx?=
- =?utf-8?B?Z0ZSNjdEcGlTT2Q4Y2RNdDNtV3BYUjFsZE55NUlKb3BLdDNKQ3gxeUx2aHZz?=
- =?utf-8?B?SmlqdXVmRmsvL3FTYTZTV0t6M1RGdndKNmpodXpqZmplZUJadzRoNGR1SnJG?=
- =?utf-8?B?ZS9RYkJIY21ENUR4WU5iTXY2bjMveGxkenNFQzJCdmgvbTU5R2FYd0lUdnJ4?=
- =?utf-8?B?c0FMNDlNQzRJN1EwS2VQNTlnQVI2bjdQS3NQSWJTQ3B6a3U5dnlRZGhjMmEr?=
- =?utf-8?B?YkpxYmVueHQ4VlJtd2JYbitPYkRGNElVc3pTSk16KzJUYkZkRHZ0c090dVhw?=
- =?utf-8?B?L3dXYTM2YllhMUVFRlZqam9NcmhBdEMza1FkQzB0NVpwaDEvMjNadkNpeEJh?=
- =?utf-8?B?TjI2ZzhaRkNxNXRZOExMTjZkQ3NkZ2Z1N3p2QmJFUWlxZkw1eTR0NU8rT3NF?=
- =?utf-8?B?N1BoUFBGQzdYaHcrTm5DWmZJT2Y5RC9hck5EVWtId3UrdzNnb2F3dzZPV3pD?=
- =?utf-8?B?NmVMbk5kcnI5UlNielZBSDF1UXpFTkZzYUQ0L3RqOVhtdHRyYnBaQyt0ZFM5?=
- =?utf-8?B?blJ6N2JrbjhWLzlwL3YydjZ5SkYzRlhhUTNjSkpnUjVBRFIrcnM3eEhZZDBE?=
- =?utf-8?B?alVtN1N0YXc3bC85MnFZMG4vNHh5TUJRVHE1TWpEY0xyVERBeWx4NXBMU2hW?=
- =?utf-8?B?WTE1SXVPZEFyMFAwNzcwZVdtU1IrMGFWMEE4UGFXYlJFVFhNVlZCZGEwbXUv?=
- =?utf-8?B?MTBRb3FiQTBnYnlUWlY5MjdsWHdwYjZSZjR1SzZuRmYwTWgzcUpoRDF3WkZS?=
- =?utf-8?B?MzQzUkg3MjE5bVZORTkxTXAwN25tK2FBYko5VnV5VE12TW01SHN5TlhmbnNk?=
- =?utf-8?B?Sk4yc3NObS96d1JRL3Y5UCt6dXUxQXRZWWUyNndpeFZtZENMY1NPd3hNNGhn?=
- =?utf-8?B?bEl6NjVBUVM5UGdUYjZqME1PS05iRzQ3TGIvdUE2dWp5M1RoNVJ3YktPbnRV?=
- =?utf-8?B?UVNNb3RzYmwremw3cjBmcjJxYktOZm0yZVdQWkhvMWNuZ0I3TExFNFpTRkFo?=
- =?utf-8?B?N3JxZ0owdTlxMS9sTDJqbldrV3BBYkVTOWxWVEcvZ2NuQWRtbVBqcDR4V3l2?=
- =?utf-8?B?OTBPdmthdTVEN1h1dFQ5QVBremxobnk4SXVZWVplRFBZWHQ2NGxoTjNRL2JU?=
- =?utf-8?B?a2FTMkh6dWVUNCsvNVk2d1VZb2RObkt6bmhwdEcxVjhrUjdMYjRlVXFDUE40?=
- =?utf-8?B?OFRqNVYyTmY5QTU5QXdEck5OUXhHZDhFamNpTmhxOWNDT2RWamx5dTJacGlu?=
- =?utf-8?B?KzFFK1YvRXgrZjJBaXhpNzdTM3NURUpqcEMxOHY4MzdDM1JlMUpBUXlReGpZ?=
- =?utf-8?B?dndpdzgzQkZqUXlSUVR6ZlcxV250bjA4RTZMK1VBM29NS2dsMXVBcXljdGZD?=
- =?utf-8?B?UzlTVmVRdlJwNldtVjZ2bXVZRUMyRXNXNDQ1bnVwRmFnd1RBTWV1KzZWUndm?=
- =?utf-8?B?SG9XbW1PczRjSkU2NUs3SEFJWmE0a2VJK0xiZmpwcVVXZnYzTFZMVWpHKzBm?=
- =?utf-8?Q?JwtW5DX8P0hESSxEkxjEleToyjYcTy9NU2Ic2Jh?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RVZZMEtOUEdUSWZGd2pqNFd4STVnTjU1WDVGWFNGZHpwWndjMGJxbER3T0U2?=
- =?utf-8?B?TWRRMDZ3QUx4WXNwYkladzJoZnZCNEtWM0RSaGhpVTR2N01WaGdzNzNJcmYx?=
- =?utf-8?B?dDJPQzRidG95N0hTVngyNkh6Z3ArY1QwdmphS1VVVGt2WDdqQmo1UlRINmts?=
- =?utf-8?B?NmdoMk0rc0JCNGxVVEVYUVBjdFFpU0VBaGVrc3FXaE5CRDVlakV3bm1Nd2FS?=
- =?utf-8?B?cnZrem5HUVRrUDRQVE1jdTNTTm1tWnp6MHBBYXB2L3lXQWQxSFE5QmJTRjg4?=
- =?utf-8?B?ZEtlVUdCcDZkdFJUUUo3aUlDdHZab08zNHllMVlTQ2ZvODJWT0NsY3lXL1p5?=
- =?utf-8?B?akhYVjNDL0QyNFBmN2hhTUVMb0xtYU16bmt0WXBpaE1ibEN3TXQ2enRhS1pV?=
- =?utf-8?B?UXE3R0xxcGR2V04wWjlKYWlmaG5CU0ZwRjFIaEo0NGRUN0NaUGthMm9YSWR6?=
- =?utf-8?B?QzZYWkdKL25Tc2taMHp2Mk1TbnF4Y2pDNitYMXBVc2hlZUg0eGEvakZOSWd5?=
- =?utf-8?B?d25GMW9yckI3S0FDMVh1U0ZJTHJtdGNiRHU1ekZkZFYzUWF4UzJFdFVNMmVr?=
- =?utf-8?B?ZHRlVUlYSU9vaTZjREtIT0VxY1B2bENaYVVJNWtlMDlkaEE3eVJSdE8ySHhM?=
- =?utf-8?B?cWJOSjlrWTVGelFOeThGSjJRUCtnSTkweUhpN0xuTnVINXFFOGIvRERpcUho?=
- =?utf-8?B?TS9PSmpsenZtSmdKUm1ycUZka2JOWEpZVlR6YkNOOGFzNFcvNHFsUUtJcTBt?=
- =?utf-8?B?OHlWQnlXdHRJUTJsT1dZMVZKRGExNWc2SUJ5bzRzRlVBa0xKVnd1RFQzRkNU?=
- =?utf-8?B?Q1FOMmJoQ3FWTkx3NkRqanFtdnJWQ0drcXdRdEsvbjkxSmprU0Z5MFYxdDNE?=
- =?utf-8?B?RzlrMjhXQitYRVNKaWEwaGNkV3pnNlJwREhMSDZDV1ZpRlRBci9mRzJuSldx?=
- =?utf-8?B?c0g5b1BuMjNlbkJ4K1lkKzFjbENvaEczejNPc0k5YW5vVzJOMHA1RTYzaUZR?=
- =?utf-8?B?U3N5ZDNtZlF2U0NieVpzbDB4RGtiSEYzZm1YNnY4SW83UUFvVGI3NU02ZEFy?=
- =?utf-8?B?ZmhoSzRpcURVRytNVGoyckF0T3lEcmRycXdTa0k1ejBmUWkvRERIZHpZWlRu?=
- =?utf-8?B?ZWZJdWFOL0tNVERiOEJPS29iblk1cE5jRUdIeXRQN0NTcVpIdlJOMThCQjZ1?=
- =?utf-8?B?ZlJXR1JwOTMxQkwzWE1zSzRWWTNteWpHbWE4bEhNZzdRQXA0RlV1SjFCaUZQ?=
- =?utf-8?B?aUtiYjk4OTRobVBSY0dhcmlRZFV3Vy9TcW4wQmtlUDhySG1tRW0yZzVzTkIz?=
- =?utf-8?B?QjlCNDV3S2dlQVVIUkVldlRKcGRDZTVETENEa2ZFOWdDUlYvMW5YMTF4SnJq?=
- =?utf-8?B?NjRLSHY4Q0xwc0dhS2ZaQkIvSEg1QTROUFMvalVhOWJFbGVFN2d2cGdRVFdR?=
- =?utf-8?B?NXdBcmR2dkVHdjIwL0FPVU9rUUtaZCtZUkpWRW50WGtqWDdoaklVTTdCemFz?=
- =?utf-8?B?L2puMzBTUlh2OGx0U2NYOVhZdWpaY094bS9KSy81ckcvck9VQ0RXYXlSV1Ex?=
- =?utf-8?B?WWhxWWNVa20wS0ViV3FaMUFQR2dmR1dmeGdQZU9FdnNHaGgzUkd1Uy9vWFVw?=
- =?utf-8?B?MVUrS2FwTHE3NC9DMUU2L0xQMTdRb3BqRU82TkFXZFJtdHZhM25hWm9QT2Z5?=
- =?utf-8?B?RHZqN01LZm1VN0x5YzgzNTFFU2FWUU1qOGpwajJhWkplVS9KMjhFYmREcG1J?=
- =?utf-8?Q?RYCAdsvXaFEBHOPK7nxYc1bYfuez69VCZ6i77hQ?=
-X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-87dd8.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b7cf753-2140-4035-c00f-08de28f0dd77
-X-MS-Exchange-CrossTenant-AuthSource: GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 11:26:50.9820
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVX0PF97A28093C
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B5677A0004
-X-Stat-Signature: uk5gisce76wtab1ugtetwopneo3xm45b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1763724415-565320
-X-HE-Meta: U2FsdGVkX1+ZAq0Lt5aIZvOYOJCYiKVpZcYKYKcr8hBsOp7HYZhJKJg5Exz1U/TwewsxryyNqnE/fvzfCiwLewLNj7f6F7Zz/QtAW96plTlibuGPsrn/BjIviiafS+1Mw54HJWODtqe/Q62WjWp5JD7nbQmGaxGvQWVQvKWvQX8UBU8X9diYSDr2y1A2zmMWPQxA680a7SKmPMbDhihzjFMEVtkymm1gJg1chDnQuPY+ThAwVFSVDAtSHj33T4eFEXzhMD7pxgnnD5agBDOSzDNyYV+7GTvpMDFAoQmUcLtBp/nEhTKrtlerk4t5Iv4w8lMuq3tD6b4HVoc5w5qz9on0kUn5B0SrOlI1qhRw3HMCN1u/uGbuSoIqnmb7WTSgGohCzqB6AT1/ExK7loO7veNRNhqDDq26zYIvfUbL7y3dkFi5tYtejnc4eoQYjOSw9uvQEJWMbLIsxUl5VZmiZ3uqXTCBzQiNZGbI9US333W3Al8vZCsrBPs4ktOTTZiDuN8y41LOs2D9wh7GLXWTrR8bTVisPxbEH57xFHg7nPXZAFKslJlP/H0t+5KpTC7wuu85maFgfpDQgqsd8kKsU1+RJ/A8HbviLRnN6XT/Y4jN3q1lx+37sTTl0/xRH4Ur1eIpNklUWsBFsP8XRRYbKqC2af4LvUNXtYq8ImuPpl0K9y8yMI7vi5MZLtB5EHL5KebLqi/eTAZ9bUr/Omrq8yFJeLIKtxpXiiRzQehoL6orwcMDYax+sTJZDAspPnCS5czo8qRE/wG/BTRUpTLvKB/bthbDgaDYod8MiY/nAzyTONTpRp+UVt1kYkWQdKyUkZLXKlh3PGy36VZvtV4cbqapV3eh4EFxs73YFEq/AsljYAPsUvLD5WKXBuqcKCH7MSj+7eODFAZ9io+428qZJqEsH040vBP6GhKuv9cOkuljcJmj+w3EWWdpBRVz2E/NNUo/kc/fHkboMwRw/QZ
- 4jurqX7u
- iO++Sc0XG/EFBmZ/PTXZjtJbWuslPaz9pk7IxhXSG0xTuNSs2KjWlFx7RJbOTTcwr4FDadreTu+0OU5oFLr3AN8Spg0m5xmrHwavXMKNfV5pBZibgd599xKO39a4Mee/HglCtFgWxguKO2VrSumXaPsTS4YDO+b6JneebbqfZ43fFySBqHFNOBWHfHA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 992A220007
+X-Stat-Signature: uqp8c81u9k4f8jxup684rmnkj4xaingq
+X-HE-Tag: 1763725218-27049
+X-HE-Meta: U2FsdGVkX19ZpS8JitKNcuKVzS+a4XtVGzPk51lSoiK7xwBMakKZ3fLeHW4kxrFdEl548zLgJQ+R3DAac01Pmk3mOeslpOiK8WidlwRXbGxbcrb11Ycjw9oGArttaWMwuA8ahgv9pd3rhBZwaEQ7kwMPWkhGs13ANf/2Dcreix3VI3BJ/GiGZJ0Pz16Ut2pSb3RYrZoGHB84rJUAfOn9aIl6RK097hF4lEctoA+GmsRxjjXPOArs3XMLmUyWLuI2lZTk+leloZFO3m70nxp6rcH6qb5YWTr/hzhxIjeWe0sIyUCeXtoduQYM6b3ZUQW8UufPxpiFO5Ad5K2h3dFahNv6tC6j+oGrQD9IQjPCd7a2CKbtls+s8pVxGJDlv2mRmmoGK1bJRlokReV/p8FHikV9IMsXhsmpVEpC9QAU8idxxzy/46Dxgd1nCxzX43asACuVbqi2CEmO7+kg21nFK6UErh7AtE60zrrfENLBGOCSUpud0264hlAvQ8BjqhcpuTOEo6j5BuQjNh1XPH+qHKqrwnfBILZ3okVYF+NzXMf2Ch0h3TyvQpVE6vncOIOxBdpvMFukzRnV5v6c/dTNStI7ajt3+hLnkikMXRBOlW1lIK53ZZ42aob7AT5AiTLLZNiSS9PybYr5R+j6htAKvkrdQwn1sh0pMIfF5ZseApjDKa+hPWR9maYun3gW6jHRVfiunR3YH/bVsEHsfxvEuJl9ISyjsAC12R8/83k91mlJn9BhVgSSLd4/N/V1kvAs8qtCfSIOINaS3IgkV1aTg646AbzGXtQ8MtZ8mx4qN/GUiQCQSm+2fBVeirS2/gQjJhQCbQ1o7OjHzrp21BZRVbyDACVz8Ygym+QvBmqLtSXrLH1m2VCDp2VpGL94OmdaaIfLBlQfaOxMh+1faZhmEDC2ZLly9/sbLuGV+2AbCwdyp9TnUqDCpXhW2vDWUrRR6HkW9NCJx48XzQnWuo/
+ EvpRgpid
+ 9nUmlDHySYE6ALYlEYJyPTDWSv+2NbelFJxoyWyzjkDfskZF97LIiaAcIsv5Z6V4jQHQ8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -238,122 +123,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/21/25 10:35, Bernd Edlinger wrote:
-> On 11/21/25 08:18, Eric W. Biederman wrote:
->> Bernd Edlinger <bernd.edlinger@hotmail.de> writes:
->>
->>> Hi Eric,
->>>
->>> thanks for you valuable input on the topic.
->>>
->>> On 11/21/25 00:50, Eric W. Biederman wrote:
->>>> "Eric W. Biederman" <ebiederm@xmission.com> writes:
->>>>
->>>>> Instead of computing the new cred before we pass the point of no
->>>>> return compute the new cred just before we use it.
->>>>>
->>>>> This allows the removal of fs_struct->in_exec and cred_guard_mutex.
->>>>>
->>>>> I am not certain why we wanted to compute the cred for the new
->>>>> executable so early.  Perhaps I missed something but I did not see any
->>>>> common errors being signaled.   So I don't think we loose anything by
->>>>> computing the new cred later.
->>>>
->>>> I should add that the permission checks happen in open_exec,
->>>> everything that follows credential wise is just about representing in
->>>> struct cred the credentials the new executable will have.
->>>>
->>>> So I am really at a loss why we have had this complicated way of
->>>> computing of computed the credentials all of these years full of
->>>> time of check to time of use problems.
->>>>
->>>
->>> Well, I think I see a problem with your patch:
->>>
->>> When the security engine gets the LSM_UNSAFE_PTRACE flag, it might
->>> e.g. return -EPERM in bprm_creds_for_exec in the apparmor, selinux
->>> or the smack security engines at least.  Previously that callback
->>> was called before the point of no return, and the return code should
->>> be returned as a return code the the caller of execve.  But if we move
->>> that check after the point of no return, the caller will get killed
->>> due to the failed security check.
->>>
->>> Or did I miss something?
->>
->> I think we definitely need to document this change in behavior.  I would
->> call ending the exec with SIGSEGV vs -EPERM a quality of implementation
->> issue.  The exec is failing one way or the other so I don't see it as a
->> correctness issue.
->>
->> In the case of ptrace in general I think it is a bug if the mere act of
->> debugging a program changes it's behavior.  So which buggy behavior
->> should we prefer?  SIGSEGV where it is totally clear that the behavior
->> has changed or -EPERM and ask the debugged program to handle it.
->> I lean towards SIGSEGV because then it is clear the code should not
->> handle it.
->>
->> In the case of LSM_UNSAFE_NO_NEW_PRIVS I believe the preferred way to
->> handle unexpected things happening is to terminate the application.
->>
->> In the case of LSM_UNSAFE_SHARE -EPERM might be better.  I don't know
->> of any good uses of any good uses of sys_clone(CLONE_FS ...) outside
->> of CLONE_THREAD.
->>
->>
->> Plus all of these things are only considerations if we are exec'ing a
->> program that transitions to a different set of credentials.  Something
->> that happens but is quite rare itself.
->>
->> In practice I don't expect there is anything that depends on the exact
->> behavior of what happens when exec'ing a suid executable to gain
->> privileges when ptraced.   The closes I can imagine is upstart and
->> I think upstart ran as root when ptracing other programs so there is no
->> gaining of privilege and thus no reason for a security module to
->> complain.
->>
->> Who knows I could be wrong, and someone could actually care.  Which is
->> hy I think we should document it.>>
-> 
-> 
-> Well, I dont know for sure, but the security engine could deny the execution
-> for any reason, not only because of being ptraced.
-> Maybe there can be a policy which denies user X to execute e.g. any suid programs.
-> 
-> 
-> Bernd.
-> 
+On Fri, Nov 21, 2025 at 01:31:43AM -0800, Chris Li wrote:
+> The current zswap requires a backing swapfile. The swap slot used
+> by zswap is not able to be used by the swapfile. That waste swapfile
+> space.
+>
+> The ghost swapfile is a swapfile that only contains the swapfile header
+> for zswap. The swapfile header indicate the size of the swapfile. There
+> is no swap data section in the ghost swapfile, therefore, no waste of
+> swapfile space.  As such, any write to a ghost swapfile will fail. To
+> prevents accidental read or write of ghost swapfile, bdev of
+> swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
+> flag because there is no rotation disk access when using zswap.
 
-Hmm, funny..
+Zswap is primarily a compressed cache for real swap on secondary
+storage. It's indeed quite important that entries currently in zswap
+don't occupy disk slots; but for a solution to this to be acceptable,
+it has to work with the primary usecase and support disk writeback.
 
-I installed this patch on top of
+This direction is a dead-end. Please take a look at Nhat's swap
+virtualization patches. They decouple zswap from disk geometry, while
+still supporting writeback to an actual backend file.
 
-commit fd95357fd8c6778ac7dea6c57a19b8b182b6e91f (HEAD -> master, origin/master, origin/HEAD)
-Merge: c966813ea120 7b6216baae75
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu Nov 20 11:04:37 2025 -0800
-
-but it does panic when I try to boot:
-
-[  0.870539]     TERM=1inux
-[  0.870573] Starting init: /bin/sh exists but couldn't execute it (error -14) 0.8705751 Kernel panic- not syncing: No working init found. Try passing i mit= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance
-[  0.870577] CPU: UID: 0 PID: 1 Comm: sh Not tainted 6.18.0-rc6+ #1 PREEMPT(voluntary)
-[  0.870579] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBo x 12/01/2006
-[  0.870580] Call Trace:
-[  0.870590]  <TASK>
-[  0.870592]  vpanic+0x36d/0x380
-[  0.870607]  ? __pfx_kernel_init+0x10/0x10
-[  0.870615]  panic+0x5b/0x60
-[  0.870617]  kernel_init+0x17d/0x1c0
-[  0.870623]  ret_from_fork+0x124/0x150
-[  0.870625}  ? __pfx_kernel_init+0x10/0x10
-[  0.870627]  ret_from_fork_asm+0x1a/0x30
-[  0.870632]  </TASK>
-[  0.8706631 Kernel Offset: 0x3a800000 from Oxffffffff81000000 (relocation ran ge: 0xffffffff80000000-0xffffffffbfffffff)
-[  0.880034] ---[ end Kernel panic - not syncing: No working init found. Try passing init option to kernel. See Linux Documentation/admin-guide/init.rst for guidance. 1---`
-
-
-Is that a known problem?
-
-Bernd.
-
+Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
 
