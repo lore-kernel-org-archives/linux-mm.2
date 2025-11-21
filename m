@@ -4,83 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98AAECFA76C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 10:15:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 653CCCFA46F
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 10:19:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F210F6B0028; Fri, 21 Nov 2025 05:15:31 -0500 (EST)
+	id C425E6B00A0; Fri, 21 Nov 2025 05:19:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED17F6B002E; Fri, 21 Nov 2025 05:15:31 -0500 (EST)
+	id C1A016B00A3; Fri, 21 Nov 2025 05:19:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0E606B00A2; Fri, 21 Nov 2025 05:15:31 -0500 (EST)
+	id B569C6B00A8; Fri, 21 Nov 2025 05:19:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CE1906B0028
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:15:31 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7AC4C4DAF9
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:15:31 +0000 (UTC)
-X-FDA: 84134207262.09.2069F78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A5A551A0008
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:15:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ApJRgqOo;
-	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A1A1B6B00A0
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:19:35 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2328DC0532
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:19:33 +0000 (UTC)
+X-FDA: 84134217426.11.9A6C155
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 387081C0009
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:19:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bSysSRdh;
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763720129;
+	s=arc-20220608; t=1763720371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=MT8eVZBoyeK8TutawHJm21yh1Xc0EZm5T3y3L+Zky/4=;
-	b=N5fRb3zx3hPAqLe/mm1QpVuPsLUbc+/8T9JZ+4ODIW1zwyeO1cVVVAlFSfm58Ctm0z2yv+
-	8XvjspAqbht1HzvruWT28Xe2mXnM3Le3IOUU669NTA6nwuI7c11okJHuF8H/Yqh3HqPOUp
-	HjBPQZP5IzyZU0Ln6pgj2QdqKqDFKaw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763720129; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Fl8adCxt/vfUb1UBb4u8ooJLjtthQIoaUka2HLaP68s=;
+	b=RgHB2d+ubYoNxxNmlFCSQQKD7j241u9Py0Odzeq0mFnPfU958iIah6oHy1kb2IPm/TkLu6
+	YpGpDBxHg9cbv0KuTII1v0VE8KeJiIIt1LJiuSmn2jI147eo9RgkgKh3K2kalDRmUJaAQe
+	TerZfkz8aQ0uxhwKuVY2OjcoaxEaMQQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763720371; a=rsa-sha256;
 	cv=none;
-	b=H86ib9vUAeVCKY8Vy8rliIIUwOMXBZ1VpZNSQ6aSlw7klJcSKBC1fSaeOL7FTGcgh1liso
-	1ixGPB2IOlWT85HazaBEaJHljs5MGOz9vySmvDbcPwdeI+C53VCs2JaBO+YTs7s6CYdJ0A
-	M7LDphWwBjfGJQWnvBnW0+0hHBT7KmE=
+	b=KKBwWTIIUtwgbYAgKS7hD/2bfO+Yb9xJ9+enBO4zGHDRn6KE+WZD4RLZnGaUtAZBFAcJIu
+	xHRs4F6z3AjVWOmeT4DJWoShpp8tZloD/zW+oCel46pzjZMCD5Vkxa+2U8qDfGBhTVcnF/
+	bw3JcuG5yospWTuBy0jYQj8gtynsYEc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ApJRgqOo;
-	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B87BE439C5;
-	Fri, 21 Nov 2025 10:15:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DADC4CEF1;
-	Fri, 21 Nov 2025 10:15:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763720128;
-	bh=+lOvK5Gef3aWIdihyE3CvtYqrG7U5mJvM07HnZGdpw8=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=ApJRgqOodTIbFXJch1ISnI79QIjOyIb30+sIMhKRAX8Z3w2RdnE+Qf8h30GtnTpcm
-	 yDgWqqtHBMisq7tlOTO/Yoo2l4kufDKAAa3VlM3RnfNAB1OdOp7K/HQBk72/9jcJ9Z
-	 /IURnUgsZUNNWpAjmfQnn80u7p9HZdCkD2pALNhc=
-Subject: Patch "mm, percpu: do not consider sleepable allocations atomic" has been added to the 6.1-stable tree
-To: akpm@linux-foundation.org,chenxinxin@xiaomi.com,cl@linux.com,dennis@kernel.org,fdmanana@suse.com,gregkh@linuxfoundation.org,linux-mm@kvack.org,mambaxin@163.com,mhocko@suse.com,tj@kernel.org,vbabka@suse.cz
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 21 Nov 2025 11:15:15 +0100
-In-Reply-To: <20251117085922.508060-1-mambaxin@163.com>
-Message-ID: <2025112115-stoppage-sulfite-1700@gregkh>
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bSysSRdh;
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42b3c5defb2so1158147f8f.2
+        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:19:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763720370; x=1764325170; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fl8adCxt/vfUb1UBb4u8ooJLjtthQIoaUka2HLaP68s=;
+        b=bSysSRdh9mFuq7XFDvyd1GW0OFJllSBJ9aVyyJDyf1RF1dfR0sd8Hc21fS2ILmObAa
+         6L47VjE8jX+MBPQLWqTR4kq1nRP6bPbzGVJ4UpldtJp9Rd1W5b54TY+zrKWxt4bMtuGY
+         GZkwgH8HFS1gXLHkSBq/rkoNTLJppyh/+mJScDQsB+MKXFPrvZvim1mDEsTpFBHqfKuW
+         ujr1h2RRgw3toRCutgpjk1AjlC++f5CBSBkcopVdcO6o4g76kQ0OppYqjAhrXO/op0gu
+         kzJb6SXOuZssheGvnxJmkkAhffRjSVmQIqaO/DjYfT9iYADqceKJ83yfp5E8eb9hmraj
+         dtvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763720370; x=1764325170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Fl8adCxt/vfUb1UBb4u8ooJLjtthQIoaUka2HLaP68s=;
+        b=YlnChjpnKMq+QU5tkSZkpYmpP3Np3xx3L5VIN2TBbkgvMQfEDVrv8kTsrR41tNzFzw
+         pbyZwpvwupBSJJzGZg0WL+68a80U+O96JgwFrLsv/bS9fy/HjR0vSOVTXO+l9LSwm9Ku
+         JmbmgrNF3P5Ii0JqzH/5FKJUpf79dlRmNjKw3DC9eCDETrQejlO03bJy3WxjMfrlobT3
+         YYLS9xiwI5gWCydhWzV7gkOMxGKRVpwWCjZzFYrS38DY3UXXOB1od/PUnyr8lMsmjBX7
+         +OJ8c/KDvy2cIDvXchi5mzOQ4ddAg3Vof4LX7Dj914SVtiR88hG/rAbr6FZSWK4hacHH
+         bLNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUa2D+HdwxEXnJYWmZwuMoO/a2hr1VZTV6DBTVuIqwfIwqfYP3vtUaA1jFyJWwfTdAgoX7Hah+v1A==@kvack.org
+X-Gm-Message-State: AOJu0YxZtmIrHjEk6zbctDF4NktPClgyX7P8l0/pQHSoP7YClwS9TMmE
+	VZfF/MHJaPOhgIFVZCSiNmuLMZDZHCg2VmSlPG64EpVnhoywD/c3WBg68kxqxOoBPnCJalx0s/u
+	nbPFVwY+1Z9dDD28pFWgQHY5ROlejkFc=
+X-Gm-Gg: ASbGncvgRyS0zE5vr2EJUAiFcYeFN3hWvfGXwXpU7F6DYxNCXx0AbbuSlviWl6dCSA3
+	+03QCYKcxMdwAlD6A/SLLH0fncaj+PP5je4kKMhYEQ4VTPbuhgP0BDPQTuGBEcinynZhviyiXrz
+	AKaUSYakBBGQFtkuJQ4w8d+nfDY/DEkL2pGXTYNnNdHxdro0pyDoEsOGRHfV2QpKI8ARM8f8IYN
+	TQBRdaSYceseLHGK5mJ+4bXqxDQfqUjZDke5VkhnpdFvm74ZN18+ZbMWeMO/eTuAa/fAQck4rWd
+	u71PMmY=
+X-Google-Smtp-Source: AGHT+IElXislacnBtN7hewvgqu//kJZz8mvsu9CWWiM8tZh0FD85j97qmCMQhR832hy/Q0IDxyA49/2qxmcG6Wrm+Hg=
+X-Received: by 2002:a05:6000:230f:b0:42b:4223:e62a with SMTP id
+ ffacd0b85a97d-42cc1cbe219mr1670964f8f.23.1763720369386; Fri, 21 Nov 2025
+ 02:19:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
-X-Rspamd-Server: rspam12
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
+In-Reply-To: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 21 Nov 2025 10:19:18 +0000
+X-Gm-Features: AWmQ_bkegNQvtsPMtSlpKShw9LLIgMIywaubLhmu7lM9NyTfyuvQs32PA1us8kc
+Message-ID: <CAKEwX=PQM_4Mp75R4yeQ=WoqOxj7EJK=FpgcemNSYDS3fLXQLw@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, pratmal@google.com, sweettea@google.com, 
+	gthelen@google.com, weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 387081C0009
+X-Stat-Signature: 49zqb7cn178guquzdnqfrs5z8q6k8fof
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A5A551A0008
-X-Stat-Signature: dboe54iyg4a7exjqjbouhanr47rxgeqd
-X-HE-Tag: 1763720129-206587
-X-HE-Meta: U2FsdGVkX18EsWlZ1w+fYDaKTd5TiD5osq53Hb/f1vRnXeTYYX7/GxXV+KU/Y3jyRVCah8W/4Ls9HhQqGydcMSf4uHsUEaVlN1eu25lYQvOdv/F/34JZoVSb94FOY+XPlpZZl29EG+Au8Wmnq0m00aUXDnuXxN8v7KF2qn9XRcW8o273o/IWBuECYxUZNqloq+LiMMKrXihIHIIx0Uw2thk57PE57J0u/LWfBBghnTGcztCOv42reJCE9vHzlktJJ+ZbZyrHaVAYEM3bM2V9xeFZU5EIYCVEvFQpcQUCxQf/js2vo9hlL/eHWQjTcMRKCNAsWDOWoYSAM31VIItp9FgpMNSe4wtWWXkp+2KKjFzaCelV22+lA0OItsRo2M9ooW96z3qyc8Ni0RBVlVdxgb1H22vJPHaVCWzZVSZ907FRuvqDt6SZecoNsbMksC7pgoFk8af5V8T+lf4DNYmaWjtslvbFO/KXllnNvxDOKT3uhSV/Wg9j8LVvCRhTJRI0szEiTeS0CQHAYFQRbcFIZ5Cj63o/av2gP/TNP2/sY94eyKhMq9lS7DAbwCvFn7uMTTjcNzIM5g8jnrSw1UVnVw1y9qZaEXVFX8kzYuV4Z6kufxhP+HfaODv9qM7eMEV0tOtWKgNe9SIzTneLH7ESq4HxExngjwDZp2nR8USHEbPa6h378mKb7KJYDcWaPKG6mmmRAbY5XUO9rhxIeJQ5Hqt+vU0ZUdiv6N7IKRSk5BPgdKGDbRQKQJM0TPmBFZRcOD/nvn0ShRvTCwAUoPlTD7tSxW6Kc9P6oATEQPcOEfagRbumHOE3o9piUGkvZ0ezQjs/yaPuHuJRYjtqLGBLu9UFP+tEn5z0JDgAiJ+DffXdoA5HeqEDKjlY3rP8ecX+b6jHEt0kMsvpUkiImCt0+wnT3rNvtRodZ7Sy2Mh+GLffk8qIL/igWF7supZHFG8wKxAKjITaDxUCBv9azu7
- ZCX3KJvZ
- U9GqOxM6btN+pwuiWYavdVE1quxDQ3zXB4F+u0+k2XdQXzIi2EAVf4sOMqCL6I6sglaDNcDWbaUlE+GjqMm7mfBKsM8KAdZo2c6l5L6fanx28BeMl2NFq+ym14PpX0/1ouLY4YFc74Qfv37BydTjiE0k6s6fTohJc5sVx4jqppUY4j3DV8/McXlNelLlWPIp93Ph7b/gs1OozjdtpfUaa4fyRRNvrFetEGHmdCD9sov6SixLn1vzmn+DLp9hJTyOU5QNHRraL+T6ibAv3gPkCu8vDNq/w0RA7fAE1hF2A4JPvmuf1KMZdS1Xd1SomaXIdvq21Dh5scqxFUpvXMQvpYucz/EW66fQbJyyLr5ky4gp5OM5SpTO6N7pn+pliFV1P1LqBeRjhoQn1gUp4LY7lHT7MFhSA7RyDd+kylRsTgaZOJzEQljA9dAPGpph8QS5ubab7BZUkKBMGn8P9f7XrSK/KecMG+rhvPjwzCmIZx22Xw3lYjfGZkieDXVGeRjmPydrweT6GFB6q5mV+2Q5Cr6X9Zl0HW+edsmKyFTwlBmkkhj9aLAORhga9rC2DkMaO7GfIInYRK1zv9ZTGr2QBEOeRyazL2ydD5PVBGn3eOhH5RVxujgccNFbZNFCUjWkjb/7gxvPzZ3woB+vX0fYMn4Kl2FJe91j88Ig7ExtrRLJYkrF8sbZj6cXQenEw3+zhjmGgUOVC12SbPqi7O4rOf1uMSBsUREkzcRMFrZYRhPXv8EI=
+X-HE-Tag: 1763720371-631522
+X-HE-Meta: U2FsdGVkX1/4JFbxvnR5WMax0q4wUWO4X0LIudzAQI+npnquyfqPykRz8HFJDVTsKbiK3FXBcxXY5U1FJ5ltuoPcMo/XriwMcN19clOBMb+4J4ZBSWuwzHg9ePzhXxxfxj3eulXWQlXOKpLqXj1XONmE+aXB2IC29JAp1MQln9Gz/JZuGjv0qCoYp8Ptdps6QcUEiOAl9wZkF9CwJgxhXsWdrZYO0xOeO4qmWDT9jS1JilUJygvO+D5P9DZF1paZlRes8JF1ZAACoJdFPTjEB8rdIQJJsw3A3IkQvNo6bCbtJD8g01Yxsu4aEYrqDtTsA3NoE9JwrSh39saskvaqIN/BQkStlUBCiUZqvMQtF/Og5QNLEyyQcosdjPpSp9Ul6QYBeqkPbLJrM1qAlR5vhQXqSFNORgLt2uwj8Qlm1oFULyAatpfduCogJVPdu2aIDYY4E2s7S1wA8QZxgIbkgi67z9Q3zp9CoIodw2LPDiF7OxGLfgfND/ep/z5oOjZ1kDcvdPrSIOmJRdweg1sPI/698PKtPF3OhQ5pFSs9hAXX0iHq8sKfXcRkpjSh9xz1fxXpKrAgIqZZ3MeQxPIAhR1uv2+R/lBj++IlH+91AHK9N5gV6pX9nnFxcrI+kpzamHBNZEIl81oJ3Jk6us0ehdCSgdX+8YFLHiznMbeQ2clIYwg4fpVRjhOm5GhnARTIoEbZw/zPbliHHy8UczzoX6FK9luc9gPmcXigp3YmO+3l15FZb5FX464KH8j413zxIsxbjpXLcfSlf+YuvX5c6YNSRZ3TIejfHNFlOh8ImXy6aXBhU3YKNmAzpKUuxtUb7p8rszMxDdtv2weQMJSMhtCLMgdboXoFpq/d8k6lmoa8/ikK8Esq23T2EIBxovmF6dbDbUj5uu/J65m8rtZnRwTm4oUvHL21+pfoHtaz7Qia3otDF67mdEuMSKsnneHBelbDwD8Vo8wlSjc9d2E
+ x0GpHUuY
+ cZE0dKMDbna5pvhY78iRr1bR4H3epuBsJDaXdUOLJ068bEpFSY+OJ1G2J/Ni6aYOt8dMuqjOEL+qTlHrObLjVA+6rFmiJkD4tE6nfHeKztI+AijAoRT1wiO7GQhGOPenhqGpjE1b4+EeJJPvWQzrSxEjupG3Y+02ucd+wytHCnknqrV/iUlCh0JVuZvhwO3PtVyLSgqjZ7XtQxTAdSc/vaeIw9ERUVmRk8W37qZZvrv39Z0ISzNNtl73CL/XHkv0DLuojsoAmu2JhFVuxk7CPZQBu3sZ9S4W3uS7N81IvfWAI9kCU6wFWry1ttl9lLHsMr7iRR+h1rsh/7dWsDJHqdQwpyO1xhC0pedK8avoCy2JoDaZfX/IM7CqJCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,113 +121,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Nov 21, 2025 at 9:32=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
+>
+> The current zswap requires a backing swapfile. The swap slot used
+> by zswap is not able to be used by the swapfile. That waste swapfile
+> space.
+>
+> The ghost swapfile is a swapfile that only contains the swapfile header
+> for zswap. The swapfile header indicate the size of the swapfile. There
+> is no swap data section in the ghost swapfile, therefore, no waste of
+> swapfile space.  As such, any write to a ghost swapfile will fail. To
+> prevents accidental read or write of ghost swapfile, bdev of
+> swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
+> flag because there is no rotation disk access when using zswap.
 
-This is a note to let you know that I've just added the patch titled
+Would this also affect the swap slot allocation algorithm?
 
-    mm, percpu: do not consider sleepable allocations atomic
+>
+> The zswap write back has been disabled if all swapfiles in the system
+> are ghost swap files.
 
-to the 6.1-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+I don't like this design:
 
-The filename of the patch is:
-     mm-percpu-do-not-consider-sleepable-allocations-atomic.patch
-and it can be found in the queue-6.1 subdirectory.
+1. Statically sizing the compression tier will be an operational
+nightmare, for users that have to support a variety (and increasingly
+bigger sized) types of hosts. It's one of the primary motivations of
+the virtual swap line of work. We need to move towards a more dynamic
+architecture for zswap, not the other way around, in order to reduce
+both (human's) operational overhead, AND actual space overhead (i.e
+only allocate (z)swap metadata on-demand).
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+2. This digs us in the hole of supporting a special infrastructure for
+non-writeback cases. Now every future change to zswap's architecture
+has to take this into account. It's not easy to turn this design into
+something that can support writeback - you're stuck with either having
+to do an expensive page table walk to update the PTEs, or shoving the
+virtual swap layer inside zswap. Ugly.
 
+3. And what does this even buy us? Just create a fake in-memory-only
+swapfile (heck, you can use zram), disable writeback (which you can do
+both at a cgroup and host-level), and call it a day.
 
-From stable+bounces-194937-greg=kroah.com@vger.kernel.org Mon Nov 17 10:02:24 2025
-From: mambaxin@163.com
-Date: Mon, 17 Nov 2025 16:59:22 +0800
-Subject: mm, percpu: do not consider sleepable allocations atomic
-To: dennis@kernel.org, tj@kernel.org, cl@linux.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, mhocko@suse.com, Vlastimil Babka <vbabka@suse.cz>, Filipe David Manana <fdmanana@suse.com>, chenxin <chenxinxin@xiaomi.com>
-Message-ID: <20251117085922.508060-1-mambaxin@163.com>
-
-From: Michal Hocko <mhocko@suse.com>
-
-[ Upstream commit 9a5b183941b52f84c0f9e5f27ce44e99318c9e0f ]
-
-28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-has fixed a reclaim recursion for scoped GFP_NOFS context.  It has done
-that by avoiding taking pcpu_alloc_mutex.  This is a correct solution as
-the worker context with full GFP_KERNEL allocation/reclaim power and which
-is using the same lock cannot block the NOFS pcpu_alloc caller.
-
-On the other hand this is a very conservative approach that could lead to
-failures because pcpu_alloc lockless implementation is quite limited.
-
-We have a bug report about premature failures when scsi array of 193
-devices is scanned.  Sometimes (not consistently) the scanning aborts
-because the iscsid daemon fails to create the queue for a random scsi
-device during the scan.  iscsid itself is running with PR_SET_IO_FLUSHER
-set so all allocations from this process context are GFP_NOIO.  This in
-turn makes any pcpu_alloc lockless (without pcpu_alloc_mutex) which leads
-to pre-mature failures.
-
-It has turned out that iscsid has worked around this by dropping
-PR_SET_IO_FLUSHER (https://github.com/open-iscsi/open-iscsi/pull/382) when
-scanning host.  But we can do better in this case on the kernel side and
-use pcpu_alloc_mutex for NOIO resp.  NOFS constrained allocation scopes
-too.  We just need the WQ worker to never trigger IO/FS reclaim.  Achieve
-that by enforcing scoped GFP_NOIO for the whole execution of
-pcpu_balance_workfn (this will imply NOFS constrain as well).  This will
-remove the dependency chain and preserve the full allocation power of the
-pcpu_alloc call.
-
-While at it make is_atomic really test for blockable allocations.
-
-Link: https://lkml.kernel.org/r/20250206122633.167896-1-mhocko@kernel.org
-Fixes: 28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Filipe David Manana <fdmanana@suse.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: chenxin <chenxinxin@xiaomi.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- mm/percpu.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1737,7 +1737,7 @@ static void __percpu *pcpu_alloc(size_t
- 	gfp = current_gfp_context(gfp);
- 	/* whitelisted flags that can be passed to the backing allocators */
- 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
--	is_atomic = (gfp & GFP_KERNEL) != GFP_KERNEL;
-+	is_atomic = !gfpflags_allow_blocking(gfp);
- 	do_warn = !(gfp & __GFP_NOWARN);
- 
- 	/*
-@@ -2237,7 +2237,12 @@ static void pcpu_balance_workfn(struct w
- 	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
- 	 * to move fully free chunks to the active list to be freed if
- 	 * appropriate.
-+	 *
-+	 * Enforce GFP_NOIO allocations because we have pcpu_alloc users
-+	 * constrained to GFP_NOIO/NOFS contexts and they could form lock
-+	 * dependency through pcpu_alloc_mutex
- 	 */
-+	unsigned int flags = memalloc_noio_save();
- 	mutex_lock(&pcpu_alloc_mutex);
- 	spin_lock_irq(&pcpu_lock);
- 
-@@ -2248,6 +2253,7 @@ static void pcpu_balance_workfn(struct w
- 
- 	spin_unlock_irq(&pcpu_lock);
- 	mutex_unlock(&pcpu_alloc_mutex);
-+	memalloc_noio_restore(flags);
- }
- 
- /**
-
-
-Patches currently in stable-queue which might be from mambaxin@163.com are
-
-queue-6.1/mm-percpu-do-not-consider-sleepable-allocations-atomic.patch
+Nacked-by: Nhat Pham <nphamcs@gmail.com>
 
