@@ -4,106 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C06D0CF2564
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 03:59:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 164E4CFA448
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 04:01:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A96846B002C; Thu, 20 Nov 2025 22:59:00 -0500 (EST)
+	id 2D3756B002C; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D9A6B002E; Thu, 20 Nov 2025 22:59:00 -0500 (EST)
+	id 2AA736B002E; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AADD6B0030; Thu, 20 Nov 2025 22:59:00 -0500 (EST)
+	id 1E7F56B0030; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 88D906B002C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 22:59:00 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8CA4813AF16
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 03:58:58 +0000 (UTC)
-X-FDA: 84133258356.01.E8ED7CB
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AC4751C0005
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 03:58:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763697536;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yu9GltKFCxKWEDeLTkgTUhsWJFS3QoNKpipjK+83gHo=;
-	b=oaPwz3LfH+RUWV0kQzZ0qthpaIrSotb4Fik7ffEfpGrfJj2Ur6LC6O+RBrzUFsIy/GiqRB
-	HtvVIY80FzGCLsmOzf/lXIijMRpPYf+Vf9hlbAqngAcGaMIKHHaM8SLzorWMBh485UU6x8
-	NWoHS3S7eKFAzXkq5ilNHKVjyPV1jig=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763697536; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DD926B002C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB5261A0199
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:02 +0000 (UTC)
+X-FDA: 84133263564.04.C3007ED
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BC367C0009
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:00 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763697661; a=rsa-sha256;
 	cv=none;
-	b=Vyc7tISRIYhKi0EYWExE3EtQ3R82q49OlrXkjI2AjDyShKVQEbhda7Sfxc09GbNZ4ntvq7
-	vyWJDQZr1e7UMvEyXrREJR2+1gF23IjWO7sUhTWZuVwXu4rNqPsigRuA/upvaOwgOkRhuR
-	DG4c3yu2EqPsl9AUSNZTYTFNHmnEKCw=
+	b=J70GZQWq27Kz5QqeJoKpAKOolgc6sEIgKJbdhAVRzNbvjgmka8pzTr9G69SMH48e1UrKao
+	AB97YiT61CiDwafTw6KP6zy4nyNsSkrr9gjd48j8bPdp1zeYAY447+mfGluZUxVdyvGhFf
+	eP7kk8HxeYZLlec2gShj43pyG/pSFXE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
+	imf10.hostedemail.com;
 	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dCLzb2RbzzKHMQK
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:58:19 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id EFF631A0359
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:58:49 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP3 (Coremail) with SMTP id _Ch0CgA3ARN44x9pgwPPBQ--.14892S2;
-	Fri, 21 Nov 2025 11:58:49 +0800 (CST)
-Message-ID: <f31661d8-21e4-4626-86bb-8a8daa5d47ef@huaweicloud.com>
-Date: Fri, 21 Nov 2025 11:58:48 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 05/26] mm: memcontrol: allocate object cgroup for
- non-kmem case
-To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <05ef300193bbe5bb7d2d97723efe928dab60429b.1761658310.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <05ef300193bbe5bb7d2d97723efe928dab60429b.1761658310.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_Ch0CgA3ARN44x9pgwPPBQ--.14892S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Ary3CFyrJw4rGFyDAr18Krg_yoW7XFWDpF
-	sxJFy3Aw4rArW7Gr1Ska9FvFyFka18XFW5K34xGw1xArsIqw15Jr12kw18AFyrAFyfGr1x
-	Jrs0yw1kGF4Yya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
-	0PDUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AC4751C0005
-X-Stat-Signature: 9y8463bthy3ncm4a87mjgn93befpzfqk
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763697661;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ipa5ZAfxugTULlo8iHx1WjCSpMuoDe1nh2tnqvJpiNM=;
+	b=Z2YroKa0JJr4hdBMujaeb0lzOhcqGhCeuwCv+2ntIjXAvK5M8Y/RaK8hgMqOzPMe4wPL8X
+	nQw8U2z9VU5K8zP5MR+DwLiWJWiNdXTskL8slIpUBQOvB8LCGqPKzGytJUhJ83QO0OUlv0
+	5s0LYuZJGPNlcRpe+MekvFShjfgB6ns=
+X-AuditID: a67dfc5b-c2dff70000001609-6d-691fe3faf41f
+From: Byungchul Park <byungchul@sk.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	hawk@kernel.org,
+	andrew+netdev@lunn.ch,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	ziy@nvidia.com,
+	willy@infradead.org,
+	toke@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	asml.silence@gmail.com,
+	axboe@kernel.dk,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	dsahern@kernel.org,
+	almasrymina@google.com,
+	sdf@fomichev.me,
+	dw@davidwei.uk,
+	ap420073@gmail.com,
+	dtatulea@nvidia.com,
+	shivajikant@google.com,
+	io-uring@vger.kernel.org
+Subject: [PATCH net-next 1/3] netmem, io_uring/zcrx: access pp fields through @desc in net_iov
+Date: Fri, 21 Nov 2025 13:00:45 +0900
+Message-Id: <20251121040047.71921-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBIsWRmVeSWpSXmKPExsXC9ZZnke6vx/KZBku28lus/lFhsfzBDlaL
+	n2ueM1nMWbWN0WL13X42iznnW1gsvq7/xWyxblcrk8XOXc8ZLV7NWMtm8fTYI3aL+8uesVjs
+	ad/ObPGo/wSbxbvWcywWF7b1sVqcO7ySzWJ7wwN2i8u75rBZ3Fvzn9Xi5KyVLBYdd/ayWBxb
+	IGbx7fQbRourM3cxWSy8E29x6fAjFovZjX2MFr9/ANXPPnqP3UHOY8vKm0we12ZMZPG4se8U
+	k8fOWXfZPRZsKvXYvELL4/LZUo9NqzrZPDZ9msTusXPHZyaP3uZ3bB4fn95i8Xi/7yqbx5kF
+	R9g9Pm+SC+CP4rJJSc3JLEst0rdL4MpoXvKDreALT0XP7ZNMDYynuboYOTkkBEwkVi5/wAhj
+	f2tsZAex2QTUJW7c+MkMYosISEl83LEdKM7FwSywhlVi+YytYA3CAnESD38sAGtgEVCVWL92
+	MRuIzStgKtGxZznUUHmJ1RsOMIM0SwgcY5d4+vMPG0RCUuLgihssExi5FzAyrGIUyswry03M
+	zDHRy6jMy6zQS87P3cQIjK9ltX+idzB+uhB8iFGAg1GJh/cEp3ymEGtiWXFl7iFGCQ5mJRFe
+	VUeZTCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE0hNLUrNTUwtSi2CyTBycUg2MVpsu
+	mxzp2FScyusT47rj7h/Jt9XWX17XSL5c+7j15fLtK1IiLjDMl6gXf+/YtTnnwISotbOcnslx
+	bjywIe38p6+714bZn92puMN8S+K+Az17XwufMLLdpxGvspnPqaYrceVTBc3uzQGXeLt/qKTp
+	XjSX13BcLrd/yxb2ks7y5eVdH8R/aq+3U2Ipzkg01GIuKk4EAKkE5lqrAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAwGRAm79CAMS/gMaCGludGVybmFsIgYKBApOO4Mt+uMfaTCOOjir+Hg4p+C4
+	BTj5rOcCOJyqtgE4q92PBjicz4QEOPWv+gM4rrqFAji5uucBOOqYrQY45cbiBzjfpuYEOLyH
+	twM44o/IBjjuhc4EOMOdyQU40LaOBTjOw6kGOLeA4Ac407qcBjjerP8FOMmaqQQ4iNy9BDjG
+	oBY49svsATjVmboCOKHcXzjSw+IEOJuBjgE4+/icBjibxd4HQB9ItKnZAkjWmJEESNi+ygJI
+	uZrdB0igsnVIs6gqSNPNdUiyqokGSLLykgdIubjzAkiNg+4GSPHl2gRI777VBkij6PACSMyg
+	xAdI87IeUBBaCjxkZWxpdmVyLz5gCmiDpPgGcPQMeIzbyQKAAcsKigEJCBgQNBj2gYEHigEJ
+	CAYQJxjY2PkDigEJCBQQGhjxuLcHigEKCAMQrAUYp5i1AYoBCQgTEF4Y4figB4oBCQgEECUY
+	r62jBooBCQgNEDUYiLynAYoBCQgYEB8Yq7DAA5ABCKABAKoBFGludm1haWw1LnNraHluaXgu
+	Y29tsgEGCgSmffyRuAH000fCARAIASIMDcgJH2kSBWF2c3ltwgEYCAMiFA0lQRxpEg1kYXl6
+	ZXJvX3J1bGVzwgEbCAQiFw1KV2VgEhBnYXRla2VlcGVyX3J1bGVzwgECCAkagAEAuSxiYklG
+	aIusnnStzTc8+QxM5e5ncem5ZVHeb2HzY8QvfOiwsiQCnYkGWFDtu8S2Ar5WHICr0h8eVG2M
+	n0ylQba81grQiQi1FX7kvPun43q8VverMW7mqYosZAjnp9DMwqkK7//qyr366Oew1XhNs8kw
+	HOSkVpsXN2KzXzeuHyIEc2hhMSoDcnNhp4l8S5ECAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: BC367C0009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 76k66rpzzkjtkcrmcy5styhpt7rggxnc
 X-Rspam-User: 
-X-HE-Tag: 1763697534-845143
-X-HE-Meta: U2FsdGVkX18FeD4BXEblVspOPG5M5T1AHkZr81WthrD2AD8cMUDLq0hpP69SrmEq+jnXXSOHt6krk0ZT5XA8ZR7hG2Qy1wLKQwMtqyzmiEz0GOpoD4vsSqet9VYZSHFc6o8vHE0bsWmSXQMwvdNqJyoCz5im8SnQLMPqE8lQY5bvnQjdrkFZCDFV/vdU+BNDv6Vt6XW7LIWbSWRqUz5XMzVcWG8VGuqnOs9iJdSjyeiXHanmbF+SD24fu3NQ6KiHfPT4oIpGGYNGX/Z9aaN9n662URI7Ok47U2lbEbpXm+E1WITym5dYY16mStTRXqkEFs1MzXG1aQVf0zfEVcLJmSQumwOIIkQdrdswRcsHC4FBXuyd9W2hpok9wwThHYVnEB+hY9YcSNMxrmT5FZO1EcvExYpXfXiNoi0tmqm2IAvLpoSCVcgnQYyfO8K+WLf7rHNjocbHI0XvnjG5AE87N+4E9vJlCAKTzrhK0dS2E0tTRKAginM0LNevrIp6G2qZ9op58mjkfzXFajHrKky3wMHmfIdbI2fNZTnSVts1Bi4lKArfHZK98JGX43yQCmBTz3RGxTe9IbpUW7DhgtRJJwwZfk9f2CS9Dup9B7bT4D7uTcuDcY8taDrkr10vRyrmqc+VvwZV8MnH4yqgo+yjcJ1YQja2oKtD0OiCmMcbliI5//flbCTARdDJdtun6/7DoDY2nYl5Cq5rCKb3MefgAdFud0gciz/EEVMRU98+eMG/0Pi9xGo4NOP38R9UGT5fAPIcIKr8WS2ZuToqX/bAEwIVaTBvhfKNwESu2SwvW6nLKYo3L/cGO1FFAJu526hY5e/PgdhAPLL2yBOfebsUsTEphCNDWbYQPLrUtUjVMdLzzyHqrGu09yjFKK6YNrDE3vmF4hC6IfYFoxxnplr2IyRfSgZHdGgIz7VzrennhByC93lWQpE+cEu0IJEnfNUl6JL3H4DPV4oINgSCGfU
- z+GVfKkZ
- AcyQq+Jk89DKvEfByjmKRf6cf1T1slCoRh26Fsn8FB6TWoj6UWRkGo4InG8OH6EwRLnCWJVKMja+LOnbGBXJ0L2GXsciEfzk8J3K+qqMbTe7avtSYuUkMnY1GsNfwunTlMfAh5r0gahqYFLc=
+X-HE-Tag: 1763697660-850056
+X-HE-Meta: U2FsdGVkX1/VMuhU4TPSRa+R0dROZ1d/ljrmxTXFQk4b8IeBEWshKXYxtDP+v2XG3GBEeI+cRMkfZr505FdVeE8I0Ecij3wGXY1x5mP53al3FkeDeoa5jqiGsDx4gThkiIfRGmvzEMbfGkEdAE6GmJ/sfUY9Vkm34nqB0cSvLsXVqhkGjmno4LGft43PRIK1S484G6/ub76GVBY6ORGhYUGlm9VHvJBZpBzAiQXn/zZ5rW5MpzLVbqvZR8lr8fGiOqG5IQX/F476fDciDyz6py1fFzEpdLXKJkLKKQAvi2+YC2NOLhhTwv9Z/PkbC1PhrIlzMVlOODccRUsIi6qBvFkxuJJLRqZaIcY8DYVdhUlieVADoMIrP06aTcfbSaXqx66SiVkkLNXGyhHtGQs2tcXTjBxYUlAvShldMw5G80GzlZoAzAoKdasP/DLg205H+rRZM8zv7VWBBV/VCCKgLFrYF4e+gbWEmNDq+IbTUJDkcT8vMs+Qseg/2LKLkDzat8l4jqykQF4sgCu/5RkGqvRcp2YjXRwz/GtlCJ3VeKM70RjUzgz3z/7RgaQ8N1OlqFgX0iwfIRA/X3vvVIQqutsoc7LZZ/XSNk7h6NTEHGw2AowSKyLwgt/damPn+ZNR1TkMe7MAvFbBl+ky0MVTnWlLOC9toYMOP6qDUHMbC5KyPe79qNwd6EfP/F85aLzXyIUwl43p+pyYqGmPiSEZj4jg4az5OU1MiQSCl+zMyfiYqdg8+H0wylMwyw8qNVL1msu39QmfH0rlsM56yDO3cYQwZ5mT9U6CbgVOvsR40MTtSqz9++1evb1kZ10VaQHaSw7Kum+AMPxfP/6xPPabLOwzP7ISTyyCqqi/x3rAkteZ+tfkneH8JtOQZhoJIObJiaTd30qkvi9JCm5ciXynJ5zcIiFvt7IJH6C5poy1XWV33aCY9+AwqmW9inklO16mjL3aYSHNWC31RXDD+k0
+ db9QF3HQ
+ NbTy+u8y9LeJ+5traDwM8j/Au4TADhMdxOzfdx3RTG6vz7FZTWyHtpJ/sqo62yxezUILuNtcTegDTX8WlUVXXf+AB6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,159 +125,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Convert all the legacy code directly accessing the pp fields in net_iov
+to access them through @desc in net_iov.
 
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ io_uring/zcrx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-On 2025/10/28 21:58, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> Pagecache pages are charged at allocation time and hold a reference
-> to the original memory cgroup until reclaimed. Depending on memory
-> pressure, page sharing patterns between different cgroups and cgroup
-> creation/destruction rates, many dying memory cgroups can be pinned
-> by pagecache pages, reducing page reclaim efficiency and wasting
-> memory. Converting LRU folios and most other raw memory cgroup pins
-> to the object cgroup direction can fix this long-living problem.
-> 
-> As a result, the objcg infrastructure is no longer solely applicable
-> to the kmem case. In this patch, we extend the scope of the objcg
-> infrastructure beyond the kmem case, enabling LRU folios to reuse
-> it for folio charging purposes.
-> 
-> It should be noted that LRU folios are not accounted for at the root
-> level, yet the folio->memcg_data points to the root_mem_cgroup. Hence,
-> the folio->memcg_data of LRU folios always points to a valid pointer.
-> However, the root_mem_cgroup does not possess an object cgroup.
-> Therefore, we also allocate an object cgroup for the root_mem_cgroup.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
->  mm/memcontrol.c | 51 +++++++++++++++++++++++--------------------------
->  1 file changed, 24 insertions(+), 27 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index d5257465c9d75..2afd7f99ca101 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -204,10 +204,10 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
->  	return objcg;
->  }
->  
-> -static void memcg_reparent_objcgs(struct mem_cgroup *memcg,
-> -				  struct mem_cgroup *parent)
-> +static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
->  {
->  	struct obj_cgroup *objcg, *iter;
-> +	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
->  
->  	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
->  
-> @@ -3302,30 +3302,17 @@ unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
->  	return val;
->  }
->  
-> -static int memcg_online_kmem(struct mem_cgroup *memcg)
-> +static void memcg_online_kmem(struct mem_cgroup *memcg)
->  {
-> -	struct obj_cgroup *objcg;
-> -
->  	if (mem_cgroup_kmem_disabled())
-> -		return 0;
-> +		return;
->  
->  	if (unlikely(mem_cgroup_is_root(memcg)))
-> -		return 0;
-> -
-> -	objcg = obj_cgroup_alloc();
-> -	if (!objcg)
-> -		return -ENOMEM;
-> -
-> -	objcg->memcg = memcg;
-> -	rcu_assign_pointer(memcg->objcg, objcg);
-> -	obj_cgroup_get(objcg);
-> -	memcg->orig_objcg = objcg;
-> +		return;
->  
->  	static_branch_enable(&memcg_kmem_online_key);
->  
->  	memcg->kmemcg_id = memcg->id.id;
-> -
-> -	return 0;
->  }
->  
->  static void memcg_offline_kmem(struct mem_cgroup *memcg)
-> @@ -3340,12 +3327,6 @@ static void memcg_offline_kmem(struct mem_cgroup *memcg)
->  
->  	parent = parent_mem_cgroup(memcg);
->  	memcg_reparent_list_lrus(memcg, parent);
-> -
-> -	/*
-> -	 * Objcg's reparenting must be after list_lru's, make sure list_lru
-> -	 * helpers won't use parent's list_lru until child is drained.
-> -	 */
-> -	memcg_reparent_objcgs(memcg, parent);
->  }
->  
->  #ifdef CONFIG_CGROUP_WRITEBACK
-> @@ -3862,9 +3843,9 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
->  static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  {
->  	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
-> +	struct obj_cgroup *objcg;
->  
-> -	if (memcg_online_kmem(memcg))
-> -		goto remove_id;
-> +	memcg_online_kmem(memcg);
->  
->  	/*
->  	 * A memcg must be visible for expand_shrinker_info()
-> @@ -3874,6 +3855,15 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  	if (alloc_shrinker_info(memcg))
->  		goto offline_kmem;
->  
-> +	objcg = obj_cgroup_alloc();
-> +	if (!objcg)
-> +		goto free_shrinker;
-> +
-> +	objcg->memcg = memcg;
-> +	rcu_assign_pointer(memcg->objcg, objcg);
-> +	obj_cgroup_get(objcg);
-> +	memcg->orig_objcg = objcg;
-> +
-
-Will it be better to add a helper function like obj_cgroup_init()?
-
->  	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
->  		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
->  				   FLUSH_TIME);
-> @@ -3896,9 +3886,10 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  	xa_store(&mem_cgroup_ids, memcg->id.id, memcg, GFP_KERNEL);
->  
->  	return 0;
-> +free_shrinker:
-> +	free_shrinker_info(memcg);
->  offline_kmem:
->  	memcg_offline_kmem(memcg);
-> -remove_id:
->  	mem_cgroup_id_remove(memcg);
->  	return -ENOMEM;
->  }
-> @@ -3916,6 +3907,12 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
->  
->  	memcg_offline_kmem(memcg);
->  	reparent_deferred_split_queue(memcg);
-> +	/*
-> +	 * The reparenting of objcg must be after the reparenting of the
-> +	 * list_lru and deferred_split_queue above, which ensures that they will
-> +	 * not mistakenly get the parent list_lru and deferred_split_queue.
-> +	 */
-> +	memcg_reparent_objcgs(memcg);
->  	reparent_shrinker_deferred(memcg);
->  	wb_memcg_offline(memcg);
->  	lru_gen_offline_memcg(memcg);
-
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index b1b723222cdb..f3ba04ce97ab 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -693,12 +693,12 @@ static void io_zcrx_return_niov(struct net_iov *niov)
+ {
+ 	netmem_ref netmem = net_iov_to_netmem(niov);
+ 
+-	if (!niov->pp) {
++	if (!niov->desc.pp) {
+ 		/* copy fallback allocated niovs */
+ 		io_zcrx_return_niov_freelist(niov);
+ 		return;
+ 	}
+-	page_pool_put_unrefed_netmem(niov->pp, netmem, -1, false);
++	page_pool_put_unrefed_netmem(niov->desc.pp, netmem, -1, false);
+ }
+ 
+ static void io_zcrx_scrub(struct io_zcrx_ifq *ifq)
+@@ -800,7 +800,7 @@ static void io_zcrx_ring_refill(struct page_pool *pp,
+ 		if (!page_pool_unref_and_test(netmem))
+ 			continue;
+ 
+-		if (unlikely(niov->pp != pp)) {
++		if (unlikely(niov->desc.pp != pp)) {
+ 			io_zcrx_return_niov(niov);
+ 			continue;
+ 		}
+@@ -1074,8 +1074,8 @@ static int io_zcrx_recv_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
+ 		return io_zcrx_copy_frag(req, ifq, frag, off, len);
+ 
+ 	niov = netmem_to_net_iov(frag->netmem);
+-	if (!niov->pp || niov->pp->mp_ops != &io_uring_pp_zc_ops ||
+-	    io_pp_to_ifq(niov->pp) != ifq)
++	if (!niov->desc.pp || niov->desc.pp->mp_ops != &io_uring_pp_zc_ops ||
++	    io_pp_to_ifq(niov->desc.pp) != ifq)
+ 		return -EFAULT;
+ 
+ 	if (!io_zcrx_queue_cqe(req, niov, ifq, off + skb_frag_off(frag), len))
 -- 
-Best regards,
-Ridong
+2.17.1
 
 
