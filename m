@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D79DBCFC29C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:03:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A15CFC29A
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:05:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10DEF6B000E; Fri, 21 Nov 2025 13:03:16 -0500 (EST)
+	id 5F4C86B002E; Fri, 21 Nov 2025 13:05:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E5F16B0010; Fri, 21 Nov 2025 13:03:16 -0500 (EST)
+	id 5A4B06B002F; Fri, 21 Nov 2025 13:05:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3E1D6B0029; Fri, 21 Nov 2025 13:03:15 -0500 (EST)
+	id 4958C6B0088; Fri, 21 Nov 2025 13:05:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0DD36B000E
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:03:15 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2031F160689
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:03:13 +0000 (UTC)
-X-FDA: 84135385866.14.879F0A9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 486A820018
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:03:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UVCk28fZ;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763748191; a=rsa-sha256;
-	cv=none;
-	b=4Di5FYuFJCSgy1AiFCWaBn+4U5jwBnDuEXWhPSKWqtMryFydRcHYMhPZ3Y+qUNYmC+wLeL
-	oKpU7fGrwXzKlnS8dKe9Yx3bafAQLxdZiFr9Y8UY4HZfivRDF6pvYrhd1PQoW1aExjO9KF
-	IE9BjuaA0uVO6+g8ZgWN+OlfzMSOOdE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UVCk28fZ;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 347976B002E
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:05:06 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D6EC9BAB44
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:05:05 +0000 (UTC)
+X-FDA: 84135390570.12.C1EDF64
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 45411A000B
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:05:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aBgTcmnw;
+	spf=pass (imf15.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763748191;
+	s=arc-20220608; t=1763748304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jTJHd/oI6HAFxUBZ2ga9xvOWXew8PhLyvCtlb3zwrRI=;
-	b=NvIZ/rCO7eZsYAtuCorL0dM/HBJ9JQqXrkWilPIKWVQeMqdeIXnQZHZxmCC28JsNvdd9ez
-	LXgEz/3nrfGAvImbQBFTvtXM4zlWsOHXRf6jeJRB6jO73m0KVmgNwjajgvvo5npKr1mKHn
-	2SPP8NMoQ7vtMJ8CQTmWNRBvvxpM09E=
+	bh=kC3icBuqtZ0GfaLUA3JxzPLWmRSzr8gw7aoWfCMFgK0=;
+	b=0T/0X/KWghTGgibk4F23Vd3AewJMX0kSdYBBvjOkGf75SQhaD0H+pPXEYNsQAborfmqYIe
+	U+IVRUt+Mc8R+pBbKSE4w+rgrcLZtzqGxfo20QPhg9bG534LIKZ2Sp/vwpa5dZdqKt9024
+	b3SxuS2aItETWlapqj1RDJzjExwcH2g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763748304; a=rsa-sha256;
+	cv=none;
+	b=IZJvZUj5ETMKfBAvAZSlrisZpx75tAK/eh2Does4g2YmOPBJ7cX+/+Y/vGseilqHl4hSmO
+	4rSbGFBh5iwAKVkeX1ZyyQiFSsZHktUbeUOJBkUMtxzNz8JIEbU3N5drq2B7UgeZexjQJ3
+	o5uqmqAs8N8hoSFVI+GJwQMqRlyacu8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aBgTcmnw;
+	spf=pass (imf15.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE7DC417CF;
-	Fri, 21 Nov 2025 18:03:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B58C4CEF1;
-	Fri, 21 Nov 2025 18:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763748189;
-	bh=mQlZ91jyc7X/wux2C7zhATU5EBZrjXavNWdp7ODBV5Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UVCk28fZGnSCPDypK4tq7cV4Hb5MHAuaX8VMyfe2aT25S3UoWIspYmgdE405EDyQQ
-	 mW9yDISISAIiaF1QxKvU8KmhzxTIGGFsIlypP0Vvx6Lkeko0DJkOBPGIpPRNm48awV
-	 qoovOHu5YjTiGK4ZfdCMb3e0aS4bR+81lSyP5Q6c=
-Date: Fri, 21 Nov 2025 10:03:08 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo
- <tj@kernel.org>, Christoph Lameter <cl@linux.com>, Martin Liu
- <liumartin@google.com>, David Rientjes <rientjes@google.com>,
- christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>, SeongJae
- Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett"
- <liam.howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Christian Brauner <brauner@kernel.org>, Wei Yang
- <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>, Miaohe
- Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, Yu Zhao
- <yuzhao@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, Mateusz
- Guzik <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>, Baolin
- Wang <baolin.wang@linux.alibaba.com>, Aboorva Devarajan
- <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v9 1/2] lib: Introduce hierarchical per-cpu counters
-Message-Id: <20251121100308.65b36af9e090a78a66144c6c@linux-foundation.org>
-In-Reply-To: <20251120210354.1233994-2-mathieu.desnoyers@efficios.com>
-References: <20251120210354.1233994-1-mathieu.desnoyers@efficios.com>
-	<20251120210354.1233994-2-mathieu.desnoyers@efficios.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+	by tor.source.kernel.org (Postfix) with ESMTP id B6090601B8;
+	Fri, 21 Nov 2025 18:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231CCC116C6;
+	Fri, 21 Nov 2025 18:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763748303;
+	bh=6jQ6lGWb2XGclgEVJ+zij91b54xGPUPNrXP9Fgrtip4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aBgTcmnwJrZ1+/3QcGrLPplzwWBbMG+3sWVbJLN1FsK+6Kd7TvClQcCxFCTylY8zh
+	 bfV/FQTodj3YEi+N3PF57piWGirT4j0ZXDbtvQRA80cYog4nLcINqIjq4+8pVQlCEO
+	 diWY6pz2yAwitgblNOcfwLJCKnM02+OEkF4tkSSiusXhvzMDGAX+K+LiEMpobifCDa
+	 tAga5HiW01jocQrnJg4JeQVKaoFqpO1fukO2xgYHh/Hf+Ubi+MZ792YjRom0ISUGgL
+	 XRNkFcXIL5uYrSSuBvlL4gQPCkE0wTsQO2lFHsDOD58f+G8DRIuICTeZpXjS/gcaSO
+	 JOIzIy32Es22g==
+Date: Fri, 21 Nov 2025 18:05:01 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] f2fs: improve readahead for POSIX_FADV_WILLNEED
+Message-ID: <aSCpzRW8mUhNnjHB@google.com>
+References: <20251121014202.1969909-1-jaegeuk@kernel.org>
+ <aSALfvLUObUGSx-e@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSALfvLUObUGSx-e@infradead.org>
+X-Stat-Signature: qd4ifgrx9bmn5nbxbzbx94eptwqmih5y
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 486A820018
-X-Stat-Signature: wjiyguz5grqtqqe76h91pgkrunbxushu
-X-HE-Tag: 1763748191-573119
-X-HE-Meta: U2FsdGVkX1/UihFknVyNRZnI4eCCGwyyHjKADIav5wt+CtWaDTLoYZUogDcULX2HKVpubxKoxIP8G2TjlFAdlU+RVQcdF4cQihQHvqBGBp5cvPITBaEE53FiMdFtjNzzJ7uHquXfz/T7jxbOldXO25Pgbd1qczYt6yx05O4PqRNQtbGIXh/5vwI/Eg/Plze+TSdR8nuif7MBnaV++77ccdM1vfbsxSMbxgEqzG+qOff8upZFsrfHfCrNJjQzhPqSGB7XR0tHuetDiZ0HuSQ4VVGyNucXpE3BRf5V46ZfTGTEC6g+gHBuT/S6PqZ4wrm8g3z1b1P+S9tDJHrsWnsNgANKjud1mActjfOJTImpWZ1CgD3kasU/oQLgtywTFp5PtJXttqK2OJQlBG5jZOh6UCVydKaBDpEroZAHLX/+mK6z1OY1GDL1MXvYL+DzlnTS9q8ag/76rp7Y7JfKI5Ohbz7u2ICWrbdA2kjcDgfZc5oK81l9lUw1ehI5si0j7k2Zjss7u9YpOotNpJlOYHWHwl6Mdgp9hix0QGsIgoi2akRQGH9bvk9h6WA0Pk13cIj0xs8yAvgTvgvqSrgR1hbILn8tJmFyiy/qNmaOlcPgpY5e897EdfLpYltri4YE3G10xgnrjuArk2C+A6wZyi7pzITLEFc0eOcUt+gfHSRfLCMt7O2VXm5WTsBEjxhaf6Qn2UOXC46oaU6ROp+myt8sEJ4YxTl8w5ApTsyRZ1+uz58O6vm8dpyzozUgbI9s14t7QuFruvRS7SS3pmTBfCNe8tKnjuRz7WgfeXv2eDefzVNzzWoBXDB3/5PYDrNFJis7q/DZAHKnT6JKjGGYkjgfzb+KldFVAqoqLL0JZgMhy65RBcOayQ7NLTnTYGRyPAagywT5kpumRKH8xeSph4nYfL3h2gWE4PQB43KnbvEgsbAKsLbpYe/BO+OHxCB2R469PCF+pqz87/V1kS/GF5c
- bdh6QzI3
- fM4UWWvJg6Vq6A2qIgki402+9Cu1WOcGzxjJ53GWH2R1WnyUMi6XPbnbeYcWR+GJ3RvOXGXC1x0rMXl67gTNNazRKkC36P75xQBoVTuE7YRL89Ni0safw0KkS/3M5AnYRdKbgGvTQammIIoXQsoQzm6N328wAkodSUXa0q8oGbzJ8IuYqV7EQ1vg0cdPOkQSBxg3o2TP2eQZ9Iu1g/9uwxLEkJDy6A0aiPHa9+L7ZrVPbki07IY8p0rxOmGb0kuPqwhUNgjJR604u9fT0T7sxiuaJzfbHu5j0y1UxjIrrFMakWQkjdiJ5HwHf2zDtMcu6auuWxzKiql3EbstLEj8gj81pFg==
+X-Rspamd-Queue-Id: 45411A000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763748304-430535
+X-HE-Meta: U2FsdGVkX184s+g26G8RaHDyuYUHrCf0WaH9BiTJY7RLYLDmtMFpxrcr0UGBP+2G9d5B68tO293VlMeUWeaCT3uJx6YDCItU61JUOZm5i9LYMD/P/qo5Byb60MS3qat8aEemO1J4pD1ryalUil/nDdSdMRYJob3aiTb5d6yEJEE27Ou3WWgGsrKJrtswPF4YTRZhUWMvk5zWHUZGXxfodmOEAGByuYWtt/q2w+4goWzIvqOrghmOxPJtoY1POgQd6OhKzvdgdzPMYNqBigghCc0qI2cCONccIPZYiYardPHmaf51nl/T/g4gKHha+V/vfEpngHkeo7b+fikx52KM8BZZwudboRccCB1r9akPqI2BWVIpyODhcDooXeBlIGpYTcwQt5DWMTuVJO0lTIhr8h/+K6NDeq0AZfXrRWaioGNQ2l17KpqQyVZ7ELsP6wxrNJSHUApE+9+2x5yhc0dVXg0/QmxyYhxdOhBbuVaPFC8jAyd5zUGO+NcFfb/6lYVxuH/gZExOwol9Q1VVakfEughSgLY6Ued/zk0gPc2XQ/EEOf33Xgq2fSsPzI8s0MOPuYIOAhW4HzKxqNmqtoU1tdvUQes5Z31lWi0PeyhvnP+lAd1epjUhBH6CpE/4CEltULX7s7Fpa2LFi0l2OcxBq3rFZvfaTZEzPEOZAdX2elQ4wHz/Pd1ywEZbqelhFxZ+jb9htUF9OYCdup94aWjNOGH0VQxE7Gm7OUYNl38aIh09341xPPiGrfJq1Vd9WYweCX3tNkyqu+ZHNwrZbkyODt7Xihxx67GLPZ5zCPkevvBLwVZp/VtOO+xRg24IWOjR9uQszKDAlnenLP7wYtOdT7nd/ORoO2jmzgIDw46wC0gffscqCswZmSlIbNkIWmr1rvtDT9Cx6R+D23S5Wyam7Cf4QLDqnFlHX1ZYbRwreOBOn6A+GXjEJethFJA33mAQdz4tA7X1uDpBN5qktCD
+ QTXmWee+
+ Ar7BqISe/+7ddmx8Z96hwkNpe2gQfA2s1z+V1MdYKYMg1SbYQyPQfYogQcxHiA8rJQ4UtvWAZuhwW3J9N0aeLdWZChgW1WDGjpmgHWEzVF+AVk9+Nic6b3yV6K7vzJHVFPpSf0W7SZnPkmwfpwNWgj1XSVBnAPVGbqvTfw9EvoeJ8fzE6CMaqlqAbtWR0//FWdHHherLTkcRjey/UYta0jCsIMQY8rfUvePMtIsvZeJPZ7rgxmfVVdDRc0TXngdWHTm1pbfv5R2pSGJ6rgl2UnA/fUqTUK0X3VQ4mraPXQjW761OYtXZLt8XyaZ7x/PznpAA7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,276 +94,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 20 Nov 2025 16:03:53 -0500 Mathieu Desnoyers <mathieu.desnoyers@eff=
-icios.com> wrote:
+On 11/20, Christoph Hellwig wrote:
+> On Fri, Nov 21, 2025 at 01:42:01AM +0000, Jaegeuk Kim wrote:
+> > This patch boosts readahead for POSIX_FADV_WILLNEED.
+> 
+> How?  That's not a good changelog.
+> 
+> Also open coding the read-ahead logic is not a good idea.  The only
+> f2fs-specific bits are the compression check, and the extent precaching,
+> but you surely should be able to share a read-ahead helper with common
+> code instead of duplicating the logic.
 
-> * Motivation
->=20
-> The purpose of this hierarchical split-counter scheme is to:
->=20
-> - Minimize contention when incrementing and decrementing counters,
-> - Provide fast access to a sum approximation,
-> - Provide a sum approximation with an acceptable accuracy level when
->   scaling to many-core systems.
-> - Provide approximate and precise comparison of two counters, and
->   between a counter and a value.
->=20
-> It aims at fixing the per-mm RSS tracking which has become too
-> inaccurate for OOM killer purposes on large many-core systems [1].
+Ok, let me try to write up and post a generic version of the changes.
 
-Presentation nit: the info at [1] is rather well hidden until one reads
-the [2/2] changelog.  You might want to move that material into the
-[0/N] - after all, it's the entire point of the patchset.
-
-> * Design
->=20
-> The hierarchical per-CPU counters propagate a sum approximation through
-> a N-way tree. When reaching the batch size, the carry is propagated
-> through a binary tree which consists of logN(nr_cpu_ids) levels. The
-> batch size for each level is twice the batch size of the prior level.
->=20
-> Example propagation diagram with 8 cpus through a binary tree:
->=20
-> Level 0:  0    1    2    3    4    5    6    7
->           |   /     |   /     |   /     |   /
->           |  /      |  /      |  /      |  /
->           | /       | /       | /       | /
-> Level 1:  0         1         2         3
->           |       /           |       /
->           |    /              |    /
->           | /                 | /
-> Level 2:  0                   1
->           |               /
->           |         /
->           |   /
-> Level 3:  0
->=20
-> For a binary tree, the maximum inaccuracy is bound by:
->    batch_size * log2(nr_cpus) * nr_cpus
-> which evolves with O(n*log(n)) as the number of CPUs increases.
->=20
-> For a N-way tree, the maximum inaccuracy can be pre-calculated
-> based on the the N-arity of each level and the batch size.
-
-Looks very neat.
-
-Have you identified other parts of the kernel which could use this?
-
->  include/linux/percpu_counter_tree.h | 239 +++++++++++++++
->  init/main.c                         |   2 +
->  lib/Makefile                        |   1 +
->  lib/percpu_counter_tree.c           | 443 ++++++++++++++++++++++++++++
->  4 files changed, 685 insertions(+)
->  create mode 100644 include/linux/percpu_counter_tree.h
->  create mode 100644 lib/percpu_counter_tree.c
-
-An in-kernel test suite would be great.  Like lib/*test*.c or
-tools/testing/.
-
-> diff --git a/include/linux/percpu_counter_tree.h b/include/linux/percpu_c=
-ounter_tree.h
-> new file mode 100644
-> index 000000000000..1f4938b67730
-> --- /dev/null
-> +++ b/include/linux/percpu_counter_tree.h
-> @@ -0,0 +1,239 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ OR MIT */
-> +/* SPDX-FileCopyrightText: 2025 Mathieu Desnoyers <mathieu.desnoyers@eff=
-icios.com> */
-> +
-> +#ifndef _PERCPU_COUNTER_TREE_H
-> +#define _PERCPU_COUNTER_TREE_H
-> +
-> +#include <linux/preempt.h>
-> +#include <linux/atomic.h>
-> +#include <linux/percpu.h>
-> +
-> +#ifdef CONFIG_SMP
-> +
-> +struct percpu_counter_tree_level_item {
-> +	atomic_t count;
-> +} ____cacheline_aligned_in_smp;
-> +
-> +struct percpu_counter_tree {
-> +	/* Fast-path fields. */
-> +	unsigned int __percpu *level0;
-> +	unsigned int level0_bit_mask;
-> +	union {
-> +		unsigned int *i;
-> +		atomic_t *a;
-> +	} approx_sum;
-> +	int bias;			/* bias for counter_set */
-> +
-> +	/* Slow-path fields. */
-> +	struct percpu_counter_tree_level_item *items;
-> +	unsigned int batch_size;
-> +	unsigned int inaccuracy;	/* approximation imprecise within =B1 inaccura=
-cy */
-> +};
-
-I find that understanding the data structure leads to understanding the
-code, so additional documentation for the various fields would be
-helpful.
-
-> +
-> +static inline
-> +int percpu_counter_tree_carry(int orig, int res, int inc, unsigned int b=
-it_mask)
-> +{
-> ...
-> +}
-> +
-> +static inline
-> +void percpu_counter_tree_add(struct percpu_counter_tree *counter, int in=
-c)
-> +{
-> ...
-> +}
-> +
-> +static inline
-> +int percpu_counter_tree_approximate_sum(struct percpu_counter_tree *coun=
-ter)
-> +{
-> ...
-> +}
-
-These are pretty large after all the nested inlining is expanded.  Are
-you sure that inlining them is the correct call?
-
-
-> +#else	/* !CONFIG_SMP */
-> +
->
-> ...
->
-> +#include <linux/percpu_counter_tree.h>
-> +#include <linux/cpumask.h>
-> +#include <linux/percpu.h>
-> +#include <linux/atomic.h>
-> +#include <linux/errno.h>
-> +#include <linux/slab.h>
-> +#include <linux/math.h>
-> +
-> +#define MAX_NR_LEVELS 5
-> +
-> +struct counter_config {
-> +	unsigned int nr_items;
-> +	unsigned char nr_levels;
-> +	unsigned char n_arity_order[MAX_NR_LEVELS];
-> +};
-> +
-> +/*
-> + * nr_items is the number of items in the tree for levels 1 to and
-> + * including the final level (approximate sum). It excludes the level 0
-> + * per-cpu counters.
-> + */
-
-That's referring to counter_config.nr_items?  Comment appears to be
-misplaced.
-
->
-> ...
->
-> +static
-> +int __percpu_counter_tree_init(struct percpu_counter_tree *counter,
-> +			       unsigned int batch_size, gfp_t gfp_flags,
-> +			       unsigned int __percpu *level0,
-> +			       struct percpu_counter_tree_level_item *items)
-> +{
-> +	/* Batch size must be power of 2 */
-> +	if (!batch_size || (batch_size & (batch_size - 1)))
-> +		return -EINVAL;
-
-It's a bug, yes?  Worth a WARN?
-
-> +	counter->batch_size =3D batch_size;
-> +	counter->bias =3D 0;
-> +	counter->level0 =3D level0;
-> +	counter->items =3D items;
-> +	if (!nr_cpus_order) {
-> +		counter->approx_sum.i =3D per_cpu_ptr(counter->level0, 0);
-> +		counter->level0_bit_mask =3D 0;
-> +	} else {
-> +		counter->approx_sum.a =3D &counter->items[counter_config->nr_items - 1=
-].count;
-> +		counter->level0_bit_mask =3D 1UL << get_count_order(batch_size);
-> +	}
-> +	counter->inaccuracy =3D batch_size * inaccuracy_multiplier;
-> +	return 0;
-> +}
-> +
->
-> ...
->
-> +int percpu_counter_tree_precise_sum(struct percpu_counter_tree *counter)
-> +{
-> +	return percpu_counter_tree_precise_sum_unbiased(counter) + READ_ONCE(co=
-unter->bias);
-> +}
-> +
-> +/*
-> + * Do an approximate comparison of two counters.
-> + * Return 0 if counters do not differ by more than the sum of their
-> + * respective inaccuracy ranges,
-> + * Return -1 if counter @a less than counter @b,
-> + * Return 1 if counter @a is greater than counter @b.
-> + */
-
-It would be nice to kerneldocify the exported API.
-
-Some fairly detailed words explaining the pros and cons of precise vs
-approximate would be helpful to people who are using this API.
-
-> +int percpu_counter_tree_approximate_compare(struct percpu_counter_tree *=
-a, struct percpu_counter_tree *b)
-> +{
-> +	int count_a =3D percpu_counter_tree_approximate_sum(a),
-> +	    count_b =3D percpu_counter_tree_approximate_sum(b);
-> +
-> +	if (abs(count_a - count_b) <=3D (a->inaccuracy + b->inaccuracy))
-> +		return 0;
-> +	if (count_a < count_b)
-> +		return -1;
-> +	return 1;
-> +}
-> +
->
-> ...
->
-> +static unsigned int __init calculate_inaccuracy_multiplier(void)
-> +{
-> +	unsigned int nr_levels =3D counter_config->nr_levels, level;
-> +	unsigned int level_items =3D 1U << nr_cpus_order;
-> +	unsigned int inaccuracy =3D 0, batch_size =3D 1;
-> +
-> +	for (level =3D 0; level < nr_levels; level++) {
-> +		unsigned int n_arity_order =3D counter_config->n_arity_order[level];
-> +
-> +		inaccuracy +=3D batch_size * level_items;
-> +		batch_size <<=3D n_arity_order;
-> +		level_items >>=3D n_arity_order;
-> +	}
-> +	return inaccuracy;
-> +}
-> +
-> +int __init percpu_counter_tree_subsystem_init(void)
-
-I'm not sure that the "subsystem_" adds any value.
-
-> +{
-> +
-> +	nr_cpus_order =3D get_count_order(nr_cpu_ids);
-
-Stray newline.
-
-> +	if (WARN_ON_ONCE(nr_cpus_order >=3D ARRAY_SIZE(per_nr_cpu_order_config)=
-)) {
-> +		printk(KERN_ERR "Unsupported number of CPUs (%u)\n", nr_cpu_ids);
-> +		return -1;
-> +	}
-> +	counter_config =3D &per_nr_cpu_order_config[nr_cpus_order];
-> +	inaccuracy_multiplier =3D calculate_inaccuracy_multiplier();
-> +	return 0;
-> +}
-
+> 
+> > 
+> > Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> > ---
+> >  fs/f2fs/data.c | 61 ++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  fs/f2fs/f2fs.h |  1 +
+> >  fs/f2fs/file.c |  9 +++++---
+> >  3 files changed, 68 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+> > index a0433c8a4d84..d95974d79fb3 100644
+> > --- a/fs/f2fs/data.c
+> > +++ b/fs/f2fs/data.c
+> > @@ -2710,6 +2710,67 @@ static void f2fs_readahead(struct readahead_control *rac)
+> >  	f2fs_mpage_readpages(inode, rac, NULL);
+> >  }
+> >  
+> > +int f2fs_readahead_pages(struct file *file, loff_t offset, loff_t len)
+> > +{
+> > +	struct inode *inode = file_inode(file);
+> > +	struct address_space *mapping = file->f_mapping;
+> > +	pgoff_t start_index = offset >> PAGE_SHIFT;
+> > +	loff_t endbyte = offset + len;
+> > +	pgoff_t end_index;
+> > +	unsigned long nrpages;
+> > +	unsigned long ra_pages = (16 * 1024 * 1024) / PAGE_SIZE;
+> > +	DEFINE_READAHEAD(ractl, NULL, &file->f_ra, mapping, start_index);
+> > +
+> > +	if (!S_ISREG(inode->i_mode))
+> > +		return -EOPNOTSUPP;
+> > +
+> > +	/* Should be read only. */
+> > +	if (!(file->f_mode & FMODE_READ))
+> > +		return -EBADF;
+> > +
+> > +	/* Do not support compressed file for large folio. */
+> > +	if (f2fs_compressed_file(inode))
+> > +		return -EINVAL;
+> > +
+> > +	if (!mapping || len < 0)
+> > +		return -EINVAL;
+> > +
+> > +	if (unlikely(!mapping->a_ops->read_folio && !mapping->a_ops->readahead))
+> > +		return -EINVAL;
+> > +
+> > +	/* Load extent cache at the first readahead. */
+> > +	f2fs_precache_extents(inode);
+> > +
+> > +	/*
+> > +	 * Careful about overflows. Len == 0 means "as much as possible".  Use
+> > +	 * unsigned math because signed overflows are undefined and UBSan
+> > +	 * complains.
+> > +	 */
+> > +	if (!len || endbyte > i_size_read(inode) || endbyte < len)
+> > +		endbyte = i_size_read(inode) - 1;
+> > +	else
+> > +		endbyte--;		/* inclusive */
+> > +
+> > +	/* First and last PARTIAL page! */
+> > +	end_index = endbyte >> PAGE_SHIFT;
+> > +
+> > +	if (start_index > end_index)
+> > +		return 0;
+> > +
+> > +	nrpages = end_index - start_index + 1;
+> > +
+> > +	while (nrpages) {
+> > +		unsigned long this_chunk = min(nrpages, ra_pages);
+> > +
+> > +		ractl.ra->ra_pages = this_chunk;
+> > +
+> > +		page_cache_sync_ra(&ractl, this_chunk << 1);
+> > +
+> > +		nrpages -= this_chunk;
+> > +	}
+> > +	return 0;
+> > +}
+> > +
+> >  int f2fs_encrypt_one_page(struct f2fs_io_info *fio)
+> >  {
+> >  	struct inode *inode = fio_inode(fio);
+> > diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+> > index 3340db04a7c2..934287cc5624 100644
+> > --- a/fs/f2fs/f2fs.h
+> > +++ b/fs/f2fs/f2fs.h
+> > @@ -4047,6 +4047,7 @@ int f2fs_init_bio_entry_cache(void);
+> >  void f2fs_destroy_bio_entry_cache(void);
+> >  void f2fs_submit_read_bio(struct f2fs_sb_info *sbi, struct bio *bio,
+> >  			  enum page_type type);
+> > +int f2fs_readahead_pages(struct file *file, loff_t offset, loff_t len);
+> >  int f2fs_init_write_merge_io(struct f2fs_sb_info *sbi);
+> >  void f2fs_submit_merged_write(struct f2fs_sb_info *sbi, enum page_type type);
+> >  void f2fs_submit_merged_write_cond(struct f2fs_sb_info *sbi,
+> > diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+> > index d7047ca6b98d..b6f71efd6d2a 100644
+> > --- a/fs/f2fs/file.c
+> > +++ b/fs/f2fs/file.c
+> > @@ -5305,9 +5305,12 @@ static int f2fs_file_fadvise(struct file *filp, loff_t offset, loff_t len,
+> >  		filp->f_mode &= ~FMODE_RANDOM;
+> >  		spin_unlock(&filp->f_lock);
+> >  		return 0;
+> > -	} else if (advice == POSIX_FADV_WILLNEED && offset == 0) {
+> > -		/* Load extent cache at the first readahead. */
+> > -		f2fs_precache_extents(inode);
+> > +	} else if (advice == POSIX_FADV_WILLNEED) {
+> > +		if (offset == 0 && len == -1) {
+> > +			f2fs_precache_extents(inode);
+> > +			return 0;
+> > +		}
+> > +		return f2fs_readahead_pages(filp, offset, len);
+> >  	}
+> >  
+> >  	err = generic_fadvise(filp, offset, len, advice);
+> > -- 
+> > 2.52.0.487.g5c8c507ade-goog
+> > 
+> > 
+> ---end quoted text---
 
