@@ -4,118 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE86CCFC500
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 19:49:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6067DCFC501
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 19:55:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB2736B0012; Fri, 21 Nov 2025 14:49:22 -0500 (EST)
+	id B8EF46B0008; Fri, 21 Nov 2025 14:55:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D528D6B00A4; Fri, 21 Nov 2025 14:49:22 -0500 (EST)
+	id B66686B0095; Fri, 21 Nov 2025 14:55:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B577D6B009B; Fri, 21 Nov 2025 14:49:22 -0500 (EST)
+	id AA3566B0098; Fri, 21 Nov 2025 14:55:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 92E186B0010
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 14:49:22 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F0A61A06CF
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:49:20 +0000 (UTC)
-X-FDA: 84135653280.10.5203598
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A42D218001E
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:49:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lu7g4J5p;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 988016B0008
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 14:55:56 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3FFCE13025A
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:55:56 +0000 (UTC)
+X-FDA: 84135669912.07.9979ABC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7630B1A0005
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:55:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1gsWB9CG;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763754558; a=rsa-sha256;
-	cv=none;
-	b=pXfOeLfOG6odbLdL+1kiaas4S0+t/aoRLo2kOn+jU3sy9tf1Z8KOYQIRAgfVOtb2ZI4l2h
-	ElQQehj9hhaU/ZXjFmmeynyxNuglIQLxAZv3LUjfyOCz7a8RwN0kBta8JqWnjO639CasmJ
-	lYKelOD79i0e/2KKCfVozQAkIdk94PE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lu7g4J5p;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763754558;
+	s=arc-20220608; t=1763754954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fCu4vGF6Xm1d3tl07Bb7cQ7dZZjuJ/g5WogLPoUkwxA=;
-	b=UGdY7dbsGv34nVo/q9H3GbLE4ZUTqlv+o7vsz7lZBANzZxVXdE6P9mTPVI+Je1/bV2wI+I
-	EfTaGZ+61YeP9ScumHZHVMbwaT6pXIT1wiPvdgVj2CBObGUnlJcb8leFa3gd+8wWKrefIE
-	L8wCAERLFpEZxet6TtB7qM+FW6GqPsM=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-880570bdef8so27210206d6.3
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:49:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1763754557; x=1764359357; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fCu4vGF6Xm1d3tl07Bb7cQ7dZZjuJ/g5WogLPoUkwxA=;
-        b=lu7g4J5p2bYe4VtN4/1zwXtBNCeeG/dNCAnEA7+z3Vo7HDA2ixo8a9zzJd6MDsIN3V
-         ab8cNhV+i2hysBEWKwphzLvvNaOMSKN7KtkiexYaXXRHKFtiEBVQIN6FzuBK0Uf0vN+j
-         GU3t2KcyUReoZsE7wrvLNI4QfSZh6wgOGa3JjEv9RyVX5ELgsmNoO1V/bAAUFWELYl1P
-         lnXfIE9BsK9C0LCDqzIlQL7/LRdgxKndopIB4X6t7czfpb47TDgNSwNRWkLVtl7JWG01
-         hZl6Rgap3lB+E6WYTypflJi3bjofIXDCNvznkNXAEkmOKLusPWVWzcB+k89NUYQOEbps
-         9Diw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763754557; x=1764359357;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fCu4vGF6Xm1d3tl07Bb7cQ7dZZjuJ/g5WogLPoUkwxA=;
-        b=EMXvsFodxrWnQG7pGfvNAaR5JA6qhqCfG9xzHBSvww7ElNRwM6zj6lwTsYTq4rmLfw
-         LrdxfIPw4UXetV9N95kQQymMBMndBSlB9enca+Yuu0RUYOd5ZHEJH1OUkl77FZYhSGjr
-         RfipHLu6HvfO0Vdo5VFqTgPWjhKJzZbfmKTdJcFXcyrpNP/qmiFDIm6dUCHi534qFNNG
-         i3MkldZ0S/MBAEWB0UC97hWh6kGWtDEYCavcH/dYIunzlsTgZb0lpzJTat/vWirckBcz
-         wB7UeXBYoOq/1MTnYDRunermmte6dr3K4SMJzCy6sRAj85PGUVpbM3M4pVsHzXGpiyvV
-         TcKw==
-X-Gm-Message-State: AOJu0Ywt+g6ufL7WRBgMnpAPB4/dY7wQlghPiCMmADUkCnUGvEc/yf2E
-	K6USqQLYV1Cu/qHlh7sCokM3huT2b1redBtF+fCOrOtluXCaQf2oEWRW/PLyZK9RYN8jG8iHeAy
-	ua+AM
-X-Gm-Gg: ASbGncvUBb8WtXt7DJ96rbeEL0YpRKniwZW10BG8QzSZSqWyUH4CWrc1qrH6Mcdrvt9
-	umwRPIAOqAgVWzCRx9tA9s+CNRiRLZAIK84ghKskn8GG3vdi4yU4msIEKVTPQhl5dymG2Vw02av
-	iPZt1Y/rqQU7K8z0UGRyJQC6eq3ZVav36XEd7vbdwjCPoz5XFlOXJJhU9NK+FEoXrxKH8U9BUBc
-	91RBeRQdh5L6z9Ko4DEjnDcXBpQTHRowFh7O647h0pUNkKEyWy4SWUqEbF8lIjaUusAXmv+xMP5
-	smdyQqnh5XcZC6XrffGe+fsRiysHw7Tvr+StgOgJGhkIDhD11yrWKjuGIEE+uWvHRQ+Gxfil8z9
-	1aBNEWNfvtg4XaSrm6XByJE4msmKOFmXwjsUAixFGt/cZVumSfH0MFMYSMwYZq0ADkzhTk9pXR0
-	wEFnOM3/E6Nij/aUqHTf93LHdeOnpk1ruk79mTfrEYeqqggJaWI75YoFcjbz4Y2pi7Kf9FHlzFH
-	38=
-X-Google-Smtp-Source: AGHT+IE2F33/aV15dBpLUqML4c2rwJTzLPxP1aiweOtFKKoG7RdiJY5ucGpqcZFX6ZZLkQZFa7NeSA==
-X-Received: by 2002:a05:6214:1d23:b0:81c:96cc:f7ec with SMTP id 6a1803df08f44-8847c4d6a27mr53002466d6.12.1763754557467;
-        Fri, 21 Nov 2025 11:49:17 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e574918sm44510266d6.46.2025.11.21.11.49.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 11:49:17 -0800 (PST)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: kernel-team@meta.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@redhat.com,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [RESEND PATCH 2/2] hugetlb: add __read_mostly to sysctl_hugetlb_shm_group
-Date: Fri, 21 Nov 2025 14:48:59 -0500
-Message-ID: <20251121194859.265259-2-gourry@gourry.net>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251121194859.265259-1-gourry@gourry.net>
-References: <20251121194859.265259-1-gourry@gourry.net>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	bh=TdwVRPLzKiQauOsJu0jJhEHQRniyilDOudPTuQE7QC4=;
+	b=fONQaxuZEIFiy/TdwZb2h6OMHqtlsKkbQH3mQWAdg7xnaUfkxaFp34K5zuTFNjxEIMQFpx
+	ly1AwdanE2fUTzrqRtcL5/I3b16yrOsmJCBji7Xj6GGx8u+MS/a1xb79K4oql4Pc87EhKB
+	ziWZ5tNzRWGfrZAK5Yq9t6LPcGU0fbc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763754954; a=rsa-sha256;
+	cv=none;
+	b=Xsbr0ZRiJiosQ45m7ZHskJoKoo5o00aZISYjXaatPz4zyXllLgZ8tU5PHF3DC4/GaYfeft
+	fg8giy7Bczftx2YXioNloFRFeZuH9cAMLco83ajGtiIFlKOi0L70+ySlEZkGfwe5tLZeAF
+	KVd5FRZiC1siGBqSYEUdq2MYHpL89ZE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1gsWB9CG;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D5E54197A;
+	Fri, 21 Nov 2025 19:55:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01299C4CEF1;
+	Fri, 21 Nov 2025 19:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763754952;
+	bh=ZJ2imUn9Mco77w7/pdIgQXc4oF4zUj7dqNGxM1kbtZk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=1gsWB9CGDheDWsUEWoqPq+K2Og2h9mfP0NvvauyDN66X4mW929BZ9UKFHwPQXSfGy
+	 Gg/r2nAupA9992Bws/OHN7TpqhJa/fZ+kEl8obZ1dppTp69FiQnjzoYkWIqOioVhAF
+	 8wQM/kxEwdZcv6ztDi7xcMyEi6B3+NUgFaO93Jbo=
+Date: Fri, 21 Nov 2025 11:55:50 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Claudio
+ Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Peter Xu
+ <peterx@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Arnd Bergmann
+ <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Axel
+ Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
+ Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Kairui
+ Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, SeongJae Park
+ <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn
+ <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v3 07/16] mm: avoid unnecessary use of is_swap_pmd()
+Message-Id: <20251121115550.8a8f9b39189b215849ce165d@linux-foundation.org>
+In-Reply-To: <67c63cce-f1b8-48d3-83a6-6de1f2d86dda@lucifer.local>
+References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+	<8a1704b36a009c18032d5bea4cb68e71448fbbe5.1762812360.git.lorenzo.stoakes@oracle.com>
+	<a623f785-6928-4037-b4be-5d42b46aa603@suse.cz>
+	<67c63cce-f1b8-48d3-83a6-6de1f2d86dda@lucifer.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: fe1rf9sa7h1iufjfyy1hcb9h3gfn818s
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A42D218001E
-X-Stat-Signature: bdeq891ojk8qazfsbpz64dnc9kp5bh8p
-X-HE-Tag: 1763754558-591439
-X-HE-Meta: U2FsdGVkX1+FG6qFO/PW5qYqLSIYpHxKlW2oDIFGIJajw0Bij+QNx81SP2FInpT0afi1jed5D1klGKtU2yDATzGKEi/MHqHjYXDG5nx3wI1LBg+6VLXkhtJwWKx7O9fvV6NHwAeBDNRQFj7jNMUVOa3LWNV82uBlqt2d7v+6RhWMYViXoEPG2AEoqY9HUySTLQRrj0q99RAW7HlksuQcERw4slhc//2LzqtHfbZUcSIVF9hwHPKAyAKX2QZDPQP0sBXiuZAgxMb5wo46D49ESK4kbelnCk8OShKGiNq12/2bVVfaN9T3GaYANMOQp4i5Cgb/NBxZkr7nKe0qBkrzEdh+peVUwk/JzoPgNXvpikFSshVw4wjJhrHYgLPFds9oBen7olHm8VamPRFJFawcRd4dhGKToCjgtva+uFsTldGE/Idi9nCp0ppXHlVqibvT00iJeMEdk3JuvVjxYYgL4wlBGN+5WOjEe6jfBoL0InRqexkP47fWUoFDF1ObxM3/yQRsGG0YdoGmyCHtDqBjEqDF2HESr9yNrp+gvYx9u7rplwshe3CJL8U33jkmzwtkcJKjAHF9vFBeGKpTG8J2IsC7SUY5nIf7jyj++5KYHBtR+7LmAs2voQ6yYfQSYGbT6yZOnCQIK9sTzKiXGzmJSveJDcUhm354iibGq8McvwmK0Ftd81kiBP3CwUkRMwwZwBrBexoQTr6DABWx7L6rw4pscfP7zZxeFCeIBMBFVNMSvumFR5rXAv6vNFLyyJoNlGZ0n2Fe76om77OYHY3zrniiXVe2L1saLaEwz0Xm9/EysZPLOcfNoxYAXWzK/mu/dbCcSph0y+/EFPAs+gRqHwXTa42LPtlO4NmJ5k1QtfkdtckE4VXTwpF+RfVx6BeYJ2Pn1QE4WZhqX+Uz7D1G9NDKpqLj7inl/sIhEWmmb7KKCMhPICgU29i+EMLslpHQFgJC7xsU5ILrviK1Z1W
- 7qdj+SIo
- P+Nvb5xWRmnAFPI9Sjoebox9sJt2g8q4WNNCG80Xcg/ddL+hEiOAJOHE6lsXkTYwkQYELiQGSq5PCDSC0sUBlTQQcE8GAG4j4PNg9KfRIjy7FTfxT4NQW0fZGTUmZwqnZ6yAoXPEqeDkgIfemgNHvy9d83ei9KYjjVF6AgkHPbY04CS37lYFEZPDzrjvrZQEltUnlj6o+fXjju8odYKhenUfGibcEUncD/iti7LnMo2guVMPUGFyKQv8TCQupjyWufvb3JGj98DMo5lwoy1PM3AuAOMVdxm9w+j8XdHc6i5XE4kpsipHWUDTxdeSHre4L1P6rMBFSVsybtCGTNCBhAmTFTrZHW3xE6gOhVhK7juIE7kLjHLwv6PCEQ8Z0VngoRAxWmErIe0ajq/fqe7rWP9GtezeieIaI/56rSPRIvkOs9hHKPfK/kh/5zolbDvCQL1g8
+X-Rspamd-Queue-Id: 7630B1A0005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763754954-685406
+X-HE-Meta: U2FsdGVkX1/InknCeWj8YcrQ5WB1SA+1kY8EcltHLSAkNM5pFbArDy7KCRwuCN77JKVrz6RqDXzQIvT4Smr9zfm/QBbT7iaXvPxDXfNuYRcS3jNgjEEekTc39ViAgpu63O+qPHcNz49YQBxjZgkGgrfqtWm7cJKuHsg8xGlARhMdx7HX1BEBvA7at2UY2BNJsMSi0yH7lOZqpVtl/NUniub2dFJWLoGjYnObs605xJMzUfyoJg1nM8ebxawJzqtXfHH40pm7Wdry7t/C3yiQpLnkWRZQ4YKcwplFVQomGDI/01EJDUbtfsc9CsqxX0Z8U0+Ev9CX71ObtifBIYUbNelL2vnMVfszvFuDoyXK3gq2PNdltXVxNBtmZyVQy618PmgLlFHzBomBWiQx37zWkQv/Vn84/jdSXVQIRVwa444TxYdp0lBgwHsRHIW2WmiMT1PSq9879+goiFkv5AbNwK+1AEm36nYf0rq+k9Wt0u1IS0fROwn6omOZyA2t+wuy/y2LdrYICK023a1yZtXQoQMsOn8n9ZqPPOl0w4sCRJ8FqicK9pX8zh7U0tnvVJRESdQuFlTCSkcJ/LEuSqdbxwYZ71HiOV/ZJFKXVfSvoTfcHCTvrjDA/8LpM23jpg64ruAY/3zCZ7fxedSnHujqPzgBcBRczm0GcG9MifxZTsxB1h81ycuf3rAIEFq639QwDmtBWr15G/f8NsZLsoghKm6aHXsOHPHt97ACldfHaeSUrJHvY+Sk/ZxLG9uicKctmzx8OPt6DC+P8D//zGARqkvy1v4LtvqayUwWlYH8vkimYfvIccizXWfNcSBdOfwVaGgIrGdmUvZcLOBu/0MOTAe5r1UFey4t19HjpkZHAFD2LQnViqfiJW9nz5OrTD6jYn0Bh44PtA3rmUzkcxfi3XoSLeDRykheVxVNdwyy5qCSr71g5GNfzXCWaeeS46Q6PSeELcHVlW23xSP6rfZ
+ zS93/JPS
+ EFM0AhK15uZcVXYgaoyBiWajjjTAkKs3As67XhsZhHm5WF/pe2ioynJ+M2KERToo9TTlo7TpmugmhHAWpfCAfVIiEKcTteKpL2AZJQCEr72kd90f9iTQhQXAlGMc82X0uquUGvPkGvGnpgZeyhJbzE84VRujig0O0+d/EK2N4Z+rT9phK1bNF42HiPwwrJ5pG5sXO2mOpOvKuuq7xS9idJ1khmdWiYE3p5n7gu20oYcdOSpDgxsqjz+0SVX43aaVVkr/upIZ0Q5UMf8KrZQRuBc/kGTNzd2Fie0IuZdTVQ2XiZn4K000yfeL6Iko+xmGWpqquk+vIUTNGOr/jzOqPF3FtQLk/hNG/TCh+1lBypSItSJu3rWMGNU4JDm8HYOQ9idz/+C1tL0PROsoztG9XczMgR3E2/E7uuBFr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,29 +124,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sysctl bits are mostly-read values.
+On Fri, 21 Nov 2025 19:25:46 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Acked-by: Oscar Salvador <osalvador@suse.de>
----
- include/linux/hugetlb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> > > To add to the confusion in this terminology we use is_swap_pmd() in an
+> > > inconsistent way similar to how is_swap_pte() was being used - sometimes
+> > > adopting the convention that pmd_none(), !pmd_present() implies PMD 'swap'
+> >
+> > 			       !pmd_none()
+> >
+> > ?
+> 
+> Yeah sorry this is a typo.
+> 
+> Andrew, if it's easy to fix could you?
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index d5282d52493b..d6705157c41d 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -172,7 +172,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
- 
- struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
- 
--extern int sysctl_hugetlb_shm_group;
-+extern int sysctl_hugetlb_shm_group __read_mostly;
- extern struct list_head huge_boot_pages[MAX_NUMNODES];
- 
- void hugetlb_bootmem_alloc(void);
--- 
-2.51.1
+a few hours ago ;)
 
+> If too late then never mind :)
+
+"too late" is a thing I try to avoid!
 
