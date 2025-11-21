@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64C8DCFC500
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:55:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE501CFC29F
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:55:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F0F56B009B; Fri, 21 Nov 2025 13:55:47 -0500 (EST)
+	id CB0BE6B00A3; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A1976B009E; Fri, 21 Nov 2025 13:55:47 -0500 (EST)
+	id C12E96B009F; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 871F66B00A0; Fri, 21 Nov 2025 13:55:47 -0500 (EST)
+	id 9F0516B00A3; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CCE26B009B
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:55:47 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A8071A06A6
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:55:47 +0000 (UTC)
-X-FDA: 84135518334.08.AD02DBD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 80DB26B009F
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECF57C070F
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:55:46 +0000 (UTC)
+X-FDA: 84135518292.14.4726AC1
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8F5EDC000F
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6842C1C0002
 	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:55:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=nH76roIl;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763751345; a=rsa-sha256;
-	cv=none;
-	b=b3hfndfDmghKkIP9nEhs//WHgsOFgGUKNsIQwOw/G8jCPp9rbSI0QuamLS4Ej5ph+wcjjb
-	AFBFOJXsQz9iDzypYsk3sG1ps0vbBDXXhsy0y98H3eMoWCNCaaIzxaCx/FV1HlLLhM+LbB
-	GDtLYZSkfRpmzlFWDD5Yqalr8LSOGJU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=nH76roIl;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=VheqOwN6;
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763751345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zO4x19k55VdNyjCXU0v5aeF8BxFoVMCPY3uuyYoVlXM=;
-	b=47lW2OoJ9ZOO38s7pZKl0wXYzlWoT9A3OVmAJo0in8U+e/eF9BkFS9Npdja5u+MmRvUBde
-	XgAksHXItpQWFc9eF0bNtQwwY/4GWzBY7/hI0J8Wtka4zSO4368Md/QseNk4Z6KKY5vzoZ
-	RzNW9k0DhnqN8wKzxk2pLgtNtquFdBE=
+	bh=A/tEc5tFrvTtBuLMXuLE+3Ir+qQmPEaILfulPI2BDOU=;
+	b=TgjIqIz2XLHzrIezrMswpcj9S1SvP3rfPeaZJFKoRbTaU1w1Cp8T4bHWkVCYCS1d3Lbntw
+	TjBTjNYZ543izUfWelpteazTdPmvo0JLU6sTZp82WGXWwWjFqPRsSncuaG70FADpXGOb/1
+	4DS3jAP8c9aSoli3mAOHYNiUboBOKZg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=VheqOwN6;
+	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763751345; a=rsa-sha256;
+	cv=none;
+	b=GMKLxyfoXcDL+3BZ39NpKuYnN7lNyc5IStu8Eqqh9GisW6wSax9tUVfw/aLCwSYLcBrACp
+	gnoBQB47JkJlhJdZ4ibvTqT1Lycste9m0v+79zGNBjSdIgGVeQH3gB+Pa38TJ3EIx0DsKH
+	Du3dSucFHnjd31Dau35kL62MHEHgwDA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=zO4x19k55VdNyjCXU0v5aeF8BxFoVMCPY3uuyYoVlXM=; b=nH76roIl0112QJWoy/rkGn3t87
-	EyFym6veATc3+d+Igg0TZTizEsouClhXPB2EyopQhBpAAqz7LwzcCiTEPleamTMdqxZ6mGoiatW6+
-	k7bF6Fm2q6udc5ch5aO9f2jrgPbatrR10bIV3Hvo9Xpc+pcAcXO43YjdYDYIGn20gRmRMLcwyicd7
-	oZxd1UmQsE/qPepAOJC7MIRLqaZIS4ptelmM7Dwf44BTBqGkxqg+WOMpLn1ZwGsPZQu3uFxG3qLdA
-	p0NU7UCRHskoD7BSjnP4awN70aUY8lQEBZlHihf6FK7990sik6jch/OUi1X6KpGomsgKwGQ/JIVYo
-	0yHP3o6Q==;
+	bh=A/tEc5tFrvTtBuLMXuLE+3Ir+qQmPEaILfulPI2BDOU=; b=VheqOwN6A2nhqQpeYKL3X+7bW4
+	oVtNF6AZIrS/xvOmeFyApFmstN2D+jPT8I5GrBf6IL6Rz0UH4BVH6zAc7qeqped0EUPzhe7CoyvVV
+	NQQar/MYTER9IuKdSs3nAjWJhTZFQk21AXMc8N4+T1VmUkAfj1gG4uRFEiiTGOpWU3qV8OKywzvpg
+	D8qT6uHRmzt07V2KuvF939mh1wXIDct2V+tldBrFe7gSTEkVGtD4hNTMfC98BbJ5+fEIjOj34Qz0e
+	WRyo5RcMjfkA8AezN/s3fVFIo9I4TaRW/2Eg09a9LqZRhKu6zPuCq0KC0ODVPc7SsUxivt1USi7N/
+	vrIIiHJg==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1vMWI9-000000003i4-1Es7;
+	id 1vMWI9-000000003i4-1QJt;
 	Fri, 21 Nov 2025 13:55:34 -0500
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -76,22 +76,22 @@ Cc: linux-mm@kvack.org,
 	bp@alien8.de,
 	Yu-cheng Yu <yu-cheng.yu@intel.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC v5 1/8] x86/mm: Introduce Remote Action Request MSRs
-Date: Fri, 21 Nov 2025 13:54:22 -0500
-Message-ID: <20251121185530.21876-2-riel@surriel.com>
+Subject: [RFC v5 3/8] x86/mm: Introduce X86_FEATURE_RAR
+Date: Fri, 21 Nov 2025 13:54:24 -0500
+Message-ID: <20251121185530.21876-4-riel@surriel.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251121185530.21876-1-riel@surriel.com>
 References: <20251121185530.21876-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8F5EDC000F
-X-Stat-Signature: iekp1qgxn8eubi8pdzsdgkwzgoe1e8jf
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6842C1C0002
+X-Stat-Signature: gfectp3dm58homhyne6yh8isjtjsymat
 X-Rspam-User: 
-X-HE-Tag: 1763751345-38727
-X-HE-Meta: U2FsdGVkX19Xv25wniE+4e1qeH3GPAAQBpm6R0SCJlLjXFJdrtLqVuyRocaDL/SUiqYW7nv3zNuVodU2z2aK0SX5J6kUBtanzaWlIGnD8WbGMy1fyKBluyGMaW+xn9+Soiugb42SnnzQ6TUCzuQOz0GCsemw0zVbdimBgKHf80uf0l326lby4nciKybm/4Qceb3ZQxjcbBUL9VAhsvPOfcK1FYbK6qjUlZb7uxUIN8kHER5l/ygNGwsV8YX9ZD4oLztgrsbqWwKCkubXlg+fOBDvxWxMDOWKCQLpKr6MvawrsbP2/0q5LsJUJhkiQ4TgH9YmxdDHZvNOVQKlxkRQ6RxPw5YW1RGJPw39N4BmKhXTFPk6aXqFJgKgMy8eLldMao6s//AEPN5udOKcnzzfZdJvuAK5u2pOnDc3dE0uIarjU9VA37zJeWjUkkw6Ulio4HWw3R/5MyQhZVu8FSh5COfuoD153tzWwLkMXGJ2Eh/DJXbXMd1Z/nH1MG2xnXiMsoMuikXjWqV1mUDlYEqyq0NEI2Wg52nEV5AWud2Dn+OoDgtILQdg2xGRZLUYoTVYXkjizfbJ67ic9Rtne8/JwC41tXs9ACP4i+GM/AakXYzk6mGAvTu8I473cM1rbJGHtVVT28pq4RTPgU3mA3n31VKmF3m2IzUL/ZcSceUkuGuUM7/3T+OTepW2RsAnKHRxLx7DfA8OaY2RW7Q9KovfkvpbzYYrlA6ntjuS4bj8Ka0rQ7ZVN1k+r4xezhxLW+CW0LkJ33phspG+ryE+sYfjOiuDzKCSy/EZMkc2bFSG8hBZ6kAAJk/MFSktQ4wz2FJE0nZyRht110XdIIqQ0T/i+KLrRa/87qgmJSbVGksg2ifWwLADdY5jyvXu81dR7VeuoUshkV6u9tgzP/yo0asJIT6nRx/VPqexZS+/CI3KuW8Qx5nNCU+J9UykuZQxSReMN+D04NmY/j+VUmA0kTS
- Mc37xAML
- dwLyXPejk+HOrAawd2Q3/Wah6w0S8r4gSyWeohghtfBxzNLkSEEDfPQw7ifA0vnXQihrtu6sD5AeXUNliScmACG9gEChiqTku0l9AJ+5LaAYEELOMBGe96SLTU6VoNUY7BPwrKjAxztinbT+OedMinrjwNkZD26CbIMYGSap/jPXsbdRKKLLYyjBQSVk60IYGKTJY/bDcVFlHugB7NSsJ9CpUMLpBNGm+YuYk5gMKorLx9oL3RvIxL+ruoX9e8n1vB7SXZf+JIqysiVuMirt+oUjzvVNLlRX7BDMKQk9DBbmpjiA=
+X-HE-Tag: 1763751345-247647
+X-HE-Meta: U2FsdGVkX18/SmqmlctHc/BmySt+NXjv2JSqiWOGJkEmdhbUoRYgJTWrDVHbqz7zj2+VTSaKVSb3Q8pT/N7xwqTzjuTakK1pCCol0EbLkMHXYqhxbqAzXFCVnI9Gm+aOPKv75++EAGE+YCpPxPPJiveFlcGqk4xVjHMrMNSCCYVaJOQb/nUl6kBc0xwbNrKfV6nRI5jU0ENthepdo0yuDV/xiDAWbgsUzPUNAZrbOZYdL39rncGxJ6a/3DlxdAHMLEifmhfKlWVDliUsZ0vnQS4x1TCpWQ6j2i7r1fq+k6cd878pNU1IUtcXg6Jq8xTqWMOcwZqgpOfypGxq1GSekzRBxg6kC3hAwFo0Z7cr4Vk4h1Z8xGCmMyM2b0+11c5Zak5Goq6STqimWD0UX7MKBwlN9fOQUDF7gTZzHa4j4O/d9bT8tD9WoRZir+jyW9ABdg1ss3qvYKvcSGYTZH7oBZTmx9ouDqZPAtNLc2h1bExR9LamtjgiroCTnJTYq7fKhDtAYEeSCelzK9pLTJjYIRt9xAIdvuNI5BWvbQXrDM06eVpw+dfqtP9Ds0iAmW1uhcweM0wk9AahqNvIiHtM1Oyc6APPNVTHOk1z41MYxNxmb5vP9YqG7cR7FapahPg5T0ho4moW4MiSaSMVDMawX7qCDvQ6qPRjv470LWdR3XHpfmN90fogGvSeHL5w87UQqq7FvdrMmlWoM7fogTzwTkTF9sm+lY2lCcFfeDBZqnD3UAYJK0fJTF/DINocX1uCQr82a9KMuXuYL3z2B82OqeuiTGQErVlhfCNdj/ESpSTTpCGG0GMnd0PUxYElTZFqF1aQXnoapCVo3ZGmwkDU8o6SC+0O/LySIfl1wwpAiQrZDPO5Hz/mEAUa+jqRO4GgZEAEasEPBuBHwowXEje0cSFRWNTybocPEO3/v7TmN1YpLV0tZAn5RiUNLFIhlkt5BBkSm+g0GTXkWHuOZ2O
+ 7R8ixySJ
+ milR3gZQi1RHinIr6r97nqI81rzSvEPIgNbaW4oPXAWa2R0EURbo3bpCR+wJB/6cy3x/CNdcxIWSfoYJwRX53rDDpi/J7UFFkSYLwTgcMZcZCpeNSJEXa2lZdB2t0fayFwWvfF9ZHEVMGnqT0JaBAoLFYhll2JxTZCFx0YRQvuFnoTuaVtxzGWwhBiHcAqn+QYCGfKz/obiOaw84lmLzV/67mF8uJ1U41mwZMdRSY2QDtDc5v6LfCXqGIavHiBERPOC9Lm8TKDlILWtdS5PCl/9w0yG8vJMNaHr++LPhOvVp5SLlocO4HH/oq45E7WHV7JrYqWBnGHj0TUBgf885XS3wPUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,59 +102,63 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yu-cheng Yu <yu-cheng.yu@intel.com>
 
-Remote Action Request (RAR) is a model-specific feature to speed
-up inter-processor operations by moving parts of those operations
-from software to hardware.
+Introduce X86_FEATURE_RAR and enumeration of the feature.
 
-The current RAR implementation handles TLB flushes and MSR writes.
-
-This patch introduces RAR MSRs.  RAR is introduced in later patches.
-
-There are five RAR MSRs:
-
-  MSR_CORE_CAPABILITIES
-  MSR_IA32_RAR_CTRL
-  MSR_IA32_RAR_ACT_VEC
-  MSR_IA32_RAR_PAYLOAD_BASE
-  MSR_IA32_RAR_INFO
+[riel: moved initialization to intel.c and disabling to Kconfig.cpufeatures]
 
 Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- arch/x86/include/asm/msr-index.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/x86/Kconfig.cpufeatures       | 4 ++++
+ arch/x86/include/asm/cpufeatures.h | 2 +-
+ arch/x86/kernel/cpu/intel.c        | 9 +++++++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 3d0a0950d20a..69d9e96e8324 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -110,6 +110,8 @@
- 
- /* Abbreviated from Intel SDM name IA32_CORE_CAPABILITIES */
- #define MSR_IA32_CORE_CAPS			  0x000000cf
-+#define MSR_IA32_CORE_CAPS_RAR_BIT		  1
-+#define MSR_IA32_CORE_CAPS_RAR			  BIT(MSR_IA32_CORE_CAPS_RAR_BIT)
- #define MSR_IA32_CORE_CAPS_INTEGRITY_CAPS_BIT	  2
- #define MSR_IA32_CORE_CAPS_INTEGRITY_CAPS	  BIT(MSR_IA32_CORE_CAPS_INTEGRITY_CAPS_BIT)
- #define MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT_BIT  5
-@@ -122,6 +124,17 @@
- #define SNB_C3_AUTO_UNDEMOTE		(1UL << 27)
- #define SNB_C1_AUTO_UNDEMOTE		(1UL << 28)
- 
-+/*
-+ * Remote Action Requests (RAR) MSRs
-+ */
-+#define MSR_IA32_RAR_CTRL		0x000000ed
-+#define MSR_IA32_RAR_ACT_VEC		0x000000ee
-+#define MSR_IA32_RAR_PAYLOAD_BASE	0x000000ef
-+#define MSR_IA32_RAR_INFO		0x000000f0
+diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+index 733d5aff2456..6389f0a617c8 100644
+--- a/arch/x86/Kconfig.cpufeatures
++++ b/arch/x86/Kconfig.cpufeatures
+@@ -199,3 +199,7 @@ config X86_DISABLED_FEATURE_SEV_SNP
+ config X86_DISABLED_FEATURE_INVLPGB
+ 	def_bool y
+ 	depends on !BROADCAST_TLB_FLUSH
 +
-+#define RAR_CTRL_ENABLE			BIT(31)
-+#define RAR_CTRL_IGNORE_IF		BIT(30)
++config X86_DISABLED_FEATURE_RAR
++	def_bool y
++	depends on !BROADCAST_TLB_FLUSH
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index b6472e252491..5cb57a820198 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -76,7 +76,7 @@
+ #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
+ #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
+ #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
+-/* Free                                 ( 3*32+ 7) */
++#define X86_FEATURE_RAR			( 3*32+ 7) /* Intel Remote Action Request */
+ #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
+ #define X86_FEATURE_UP			( 3*32+ 9) /* "up" SMP kernel running on UP */
+ #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 98ae4c37c93e..b53bf3452d6a 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -719,6 +719,15 @@ static void intel_detect_tlb(struct cpuinfo_x86 *c)
+ 	cpuid_leaf_0x2(&regs);
+ 	for_each_cpuid_0x2_desc(regs, ptr, desc)
+ 		intel_tlb_lookup(desc);
 +
- #define MSR_MTRRcap			0x000000fe
++	if (cpu_has(c, X86_FEATURE_CORE_CAPABILITIES)) {
++		u64 msr;
++
++		rdmsrl(MSR_IA32_CORE_CAPS, msr);
++
++		if (msr & MSR_IA32_CORE_CAPS_RAR)
++			setup_force_cpu_cap(X86_FEATURE_RAR);
++	}
+ }
  
- #define MSR_IA32_ARCH_CAPABILITIES	0x0000010a
+ static const struct cpu_dev intel_cpu_dev = {
 -- 
 2.51.1
 
