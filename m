@@ -4,266 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECBAFCFC299
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 17:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31E48CFC29B
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 17:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DBDB6B0008; Fri, 21 Nov 2025 12:45:32 -0500 (EST)
+	id 842126B0023; Fri, 21 Nov 2025 12:50:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B3246B000E; Fri, 21 Nov 2025 12:45:32 -0500 (EST)
+	id 7F33E6B002E; Fri, 21 Nov 2025 12:50:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 354A56B0095; Fri, 21 Nov 2025 12:45:32 -0500 (EST)
+	id 6E1C96B008A; Fri, 21 Nov 2025 12:50:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BBFC6B0008
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 12:45:32 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C02721303A3
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:45:31 +0000 (UTC)
-X-FDA: 84135341262.27.5DF6BC2
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 407E71C0012
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:45:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VsjP47Jo;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=X1tG6UhQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763747128;
+	by kanga.kvack.org (Postfix) with ESMTP id 5D0E06B0023
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 12:50:22 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2FC581A0650
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:50:22 +0000 (UTC)
+X-FDA: 84135353484.23.364FA23
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 743D6180011
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:50:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FVyheUlJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763747420; a=rsa-sha256;
+	cv=none;
+	b=o3o+Jp2qdbsBEAHSO2Mjx4qkkTD6igGDLNttGwfHi0X4m/NqbDtn20r2Atk/Av+LnOg8un
+	aSL8Ov4xzMh6JZphUsJscteJ/BwTibTgEyrOs6Uy7GcNEo3LDndjLuwW0M+OPSa6D4Hl+N
+	hXFkpi153ax59fMwb6vqi59mccdGYZg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FVyheUlJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763747420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O8DN+hmdoxvpg/rt3SDu5F40muuq/G8b1+kX3kil0bw=;
-	b=Sc4r3Z8GPShG6hXrSmKZER5ZeLZbwhDl8ILSZknPTW1u8hE1IOMBqqiwbf9IKuYQo/MUJ6
-	/IhsTmArj6AgxYzsFDRNZJNv/0xQ0eqZ8gqYd9QF9db1IkfDPZXdSCLVhvH/3Hv6uRD6n4
-	ibkKVvsbOC5gkMrVLUDe97J/Blp0Ews=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763747128; a=rsa-sha256;
-	cv=pass;
-	b=1hh5UpnhHZzfhXERrm7RpS/Py4AAu4OCkDM72JVpkR2znanI+yBQXPSPwP1A78xyXxtl6C
-	ZHhAt408iu5UwUwUYytWIVhFN2Nac6JDXyfJQ2IxUSPaTtDz7wT1G1qWMnqhyUFALtdTBo
-	MUrzU5fE5We7zXkX+cYLa0HsnvuU41E=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VsjP47Jo;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=X1tG6UhQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ALEhEpS015309;
-	Fri, 21 Nov 2025 17:44:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=O8DN+hmdoxvpg/rt3S
-	Du5F40muuq/G8b1+kX3kil0bw=; b=VsjP47Jo3cbq4VDikgzzhmvlslSx7QZBG+
-	kqKxeIpK23D96x3gjg0PvN0hQWpqtX/3/qgxWUjE+0K6P31CRpCQcK8zZTvVX9O8
-	qxgOUO3BIJhhNRYqdFHKBWFqep7BYsOUWY3P4ZKkVsuybtFo6FkCI6dI263XKCWr
-	ygOSF2Nqh9H6PhcrDFl36EE7XvwbCRnfuy2GjAohx+asSI5TqJ/eOWZzOzxDMSe1
-	PBm5YMTi1YMZbJXBmxJVyMfenqHquoP8pUO85rw0tx1UzLXPbnD8Xtn4F971ntJm
-	GkQNFl8GXP20R4PDCpuy6Y2TFbsVChUZyAZ6HDxEQt3DX/YYZKKQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aejbuute6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Nov 2025 17:44:56 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5ALGAR2G002613;
-	Fri, 21 Nov 2025 17:44:55 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010012.outbound.protection.outlook.com [52.101.46.12])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefydw8ag-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Nov 2025 17:44:55 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O0g0gKnZg+fBgz50h4jPgVgmfnAc5MeVGrePeRv6tJnn03bXZ+mCv6tvI0cNBYrQwdI6ejbYrK++5k6cUfZfvSo9HQeHLVcwI7zHNa9GVamZFXomRtZUNP9UcYOIGHEzsTEoKiaEh1cOejwtvvavk6Km4IfzwsD1bEA5m/kMypx6p8S6KNxCjehmNOyFDwaZ/w0B5O/cGlrhejVbJYyhZfN7Z/WYcY6PtO3V89aLO1NasCAKr3/P1G6hg23uvvvLhF4CcjjQ4LJzms+3Csn6POWNy12D9StNssYfpaKm+Tes9mTj41Qy//ehMXIN8stdb25ZDY/jV8Xi1RgkLYDb1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O8DN+hmdoxvpg/rt3SDu5F40muuq/G8b1+kX3kil0bw=;
- b=oQP5ROrLkDOdLkCDFJyPJv6raSmOvymDUu9TVj1GfpeQsuUzfgIbvD2ZyUNw104j5GeaWGwQEcXVw8Sm8Mo/0Fa5ZxMnVr16BA3/eYv8MMuEPD5z+3+vZg4tIO6arZypZImRO8GWzw4DYTcJhE0Ig9Q2xGZ8wLNswmmRxVscINRo75z8BA+gkyWfOgFnUeujDp2HI1BEK5XD8lwHRiENBAEOBSl373ZjxESli6XRObohR9mzrxzpC2DLcCy0ke6EonhwJr+tXf7k1geq3bNvbk9K+Gp+wIZHZnlPrlDeJ0DwDaxVDDRMx/7bDaFkFYR1Xn+Knu+Ea7c6jRKH9ewUpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O8DN+hmdoxvpg/rt3SDu5F40muuq/G8b1+kX3kil0bw=;
- b=X1tG6UhQbOoDK4XfmTZxO+SycNdTEvw3zg9nsR5RMHsTVh0GrMqiIY8m5dcHSCGEooT1VF9GfHFrPG3q7CrsY+tZD4wgdNJyMgFYgGj9lL+7HvTSaHUeBUH+/UgjZDJjtmnfMuwG8QQBRa6AzWnDxAkvHHncaIAopHuVpJh/3qc=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by BL3PR10MB6044.namprd10.prod.outlook.com (2603:10b6:208:3b4::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.14; Fri, 21 Nov
- 2025 17:44:45 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
- 17:44:45 +0000
-Date: Fri, 21 Nov 2025 17:44:43 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@redhat.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-        Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Jann Horn <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>, Pedro Falcato <pfalcato@suse.de>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>,
-        Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] mm: introduce VMA flags bitmap type
-Message-ID: <c82d75d1-5795-4401-92f8-58df6ac8dbd3@lucifer.local>
-References: <cover.1763126447.git.lorenzo.stoakes@oracle.com>
- <195625e7d1a8ff9156cb9bb294eb128b6a4e9294.1763126447.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <195625e7d1a8ff9156cb9bb294eb128b6a4e9294.1763126447.git.lorenzo.stoakes@oracle.com>
-X-ClientProxiedBy: LO2P123CA0067.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1::31) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=lbpdozOYhy0BMLI8lFThkkg/d76zv4kCPJ/fwh1/PTM=;
+	b=yyLctM8ZlrNKRmBp0yq0ELlK46NlEM5g7nK03q4Ba31SJZN+EBxT9/DM9OEKYITAWsTbtj
+	/lGh/0sl9VbGvHHFhI69YuTtb3KL5XemOHQf/6rPjUeW1rmSILCVTgDI7tIxrAGCdLkdcN
+	pPeB7MdfD7rYtmqRCBR78zToBbbeIzs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763747420; x=1795283420;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=YckklQG/5FwUbczH+x3i0icUWdCO2DJMQNFuo3RKWck=;
+  b=FVyheUlJzVhJL3JGisYBBEkTlXOmx8yCJ5XvE8PCn2ptH6noFN/Mtv40
+   /I3vByKjLnHoqkLiww3VU/NOY/MlPRkLeUyAKG1V4CFhS1gXOxnCqP1Ej
+   Wre4+R8kYUUFUarf0df/QEtQhtajubJQld0Gxz4+YYe8pnr3Jb/sPHMrn
+   s6HPF2ZNSlaauiSS8ygN34RxGGXnX4jbQ/dbwNMewFZWC50AKwGA2Cg5i
+   qUELmN3lWL+O4TXAQZ//bP/ZfZ02G/u90AcxR6rq7zz1pKMxyh9vDlC7b
+   wh9W/eyiUnNhqxVSMypVcI+uLfGbc7BzeAwQHZ0KwYMzfZNgLYoZPo7Ba
+   g==;
+X-CSE-ConnectionGUID: oyHf2g22RCOcYpyEPIpLZA==
+X-CSE-MsgGUID: cM2h7DEEReatPXff/kJc5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="69465921"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="69465921"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 09:50:17 -0800
+X-CSE-ConnectionGUID: TALVmW4IQoSpoxqsJrQTWg==
+X-CSE-MsgGUID: pw0Ufr6DT1ewmiN2aWhOIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="222378181"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.110.60]) ([10.125.110.60])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 09:50:15 -0800
+Message-ID: <2837ea3e-c0b8-46b0-b8da-bf06906d124d@intel.com>
+Date: Fri, 21 Nov 2025 09:50:14 -0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|BL3PR10MB6044:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd1cc3f0-2eeb-4042-d611-08de2925a893
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?teal0lUUrT7PZNF3OiXt0nAOyrJmYGhEaCUhMhorgQIBeCf46MWU0X85uRlB?=
- =?us-ascii?Q?SvGweUB9tb6RVr9apSHDsWhWYP9r0dK5AQ8GOlUcFwjvjaSagrjzU0pEIHEU?=
- =?us-ascii?Q?1rxzVewzOApa5+hVwAfAUvv/41j+05Tq3QjW4se7IqV0b70ozkQDYu/5mRF+?=
- =?us-ascii?Q?ihZuccV5RB3F29gYbkFIMlu/GDhjrIImRRqT5sNj0+aEPOk1Rdtve6kwWE/f?=
- =?us-ascii?Q?15+l1ChPKV6RwO1lsq4hrV/ZkoUWa6zl/AdWur8uAR3QjQhx1ajW0sQDpHA1?=
- =?us-ascii?Q?79bv9W/THpm8oVtI+pqYoxoZGyGFE5aik0iPav1N+v6pjA7rX3U5tkQtCeoX?=
- =?us-ascii?Q?lyrCGCEpZ/WhnshUfbzQivVCUdMzyG19WSVbHN4eQyId2HBtcxQWa4PBpsCa?=
- =?us-ascii?Q?Vx6/WZAe4cZlI89Ov/lPL+l2SzxckTcajS1ZHj3vpLCQwbsyvQxpFF8liFt3?=
- =?us-ascii?Q?3m74Kyw5SyBsUgqaWT7aqEUX+t2F6DS7EYHbLBufw5VkOHjSXRRBxQVnTUHM?=
- =?us-ascii?Q?oySLmB2qcvb+D5nbuWjH0K08eNrofuvSqULLBzRQif4Dcu8jNgYcCWAwp4oq?=
- =?us-ascii?Q?7WifRBUtHburq4iNbrsgiMa2H9y5iZPTWDqZtU4bdEkBKE1drmYOw2jfavf3?=
- =?us-ascii?Q?S2Fuq9PPGyvr5r3iHG8QUTPmjWrOZEd7wOPCLeUpprIFLuKnjBvR1CXBtZV4?=
- =?us-ascii?Q?C62TmcZFuso/BZYPs462PWi+iFBoaO/EiWXmkVQGHYnXtJ9m8+tBVZxzJ5Hx?=
- =?us-ascii?Q?v0yk9Dv5JojPJPXxewMV6MxAjXiP186RZ+igEMhLtgX3/i1tu534t6PIOUC6?=
- =?us-ascii?Q?EyLxDa+KBFi64/faGC7rvHXlWv7B6TeOuF8zzDXxH0Lt5/C4rS5PO2tYJ7K5?=
- =?us-ascii?Q?5oAjdfTZJ/yppDiZfpOb118xjOdjiCRIT/itmnILY6WXhmVfBKgEKrmaug/R?=
- =?us-ascii?Q?D5Zsm+fCVQ1I814GJIJyeMS3UN3xNmTfEMzxWtKzEdTcG4gmg8MhvyRINsCG?=
- =?us-ascii?Q?FgFER6SEfx5lhgrjYmQQj3ez/jklA/Y56diVIOK0BQztOI7K6j53vwgjFhB0?=
- =?us-ascii?Q?TTXcIXMGe1DLVMdams8BZ/w6XtmIoGybgJ5tMpspplrHBI8j6iF+Vjv50uP+?=
- =?us-ascii?Q?WLg5JtvhxkTl90Dz73RtA9J0JB30dP7KM/wnI9M17e/2qSuRDIsmYORXhGTW?=
- =?us-ascii?Q?AOLTRxe3vaJRo/TAZmliRR/lY59pXM8VrRAH8KegFk/ZLO4kU4+RRnK8Khb2?=
- =?us-ascii?Q?wZ52qy4F5R2/A2eeuMMixuzXZxEj/CWq11epiJ+rs9wDBsAxDjgcDNjUVmt0?=
- =?us-ascii?Q?TpTazW/pwhLJ2d6fUoApaPWvv4Km/58LBUryczigLKOavJlS6xO1yE++H+zE?=
- =?us-ascii?Q?f3i6hOCfc0uh0In+NbW7fr2iD6N4Ac6UN+ldPbWESZKXzbUlwC1L3IJoV9WA?=
- =?us-ascii?Q?rSAvN50abMXhYdNPRrKCvWPXsWduS/OroPpaXGVcTviQFUXokmtBVw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bWEYQmRSItXf+R4GamYGiIces5gC4ydhZk1dS+nMlY0GktRpWrjbVzL846OS?=
- =?us-ascii?Q?8qEG0US17WwLOaxKg06O5sR5ZvyJx4wfG4jqARi8YOe/STjFqZ/HvBZPCvZo?=
- =?us-ascii?Q?uSPt0Al7VldbzC0SiN+QnnyS5Xy2OcV/+OMPfU+u4e2x/tEUl3eTRBSFdMtT?=
- =?us-ascii?Q?q29iZGbXqRsw7PJa6ZXB9uB0luHmPK9W2FhzAPXo+/Cb5SdRfyhwsrt4fJRF?=
- =?us-ascii?Q?0pKA+F4EiAoavkixorR3kowHe3l94JX7KKK4IAn8T4vzNRTYBCPy/GR542Yg?=
- =?us-ascii?Q?YOlbqomc2y3qTRWwzN6mvr4ZnTEl7VPjitVcJcve88ddE6Cxg7bofJ0Dc/Z7?=
- =?us-ascii?Q?FNkQ7mcjoJNzRkbeW3xcPHyFKhIYWmHsva1jdLpNkg3WVt1DWXvfdZ0hNOKn?=
- =?us-ascii?Q?sV3tPoXEM4AGBqMDq8ZX0++A0ICDm1G1uWpwMUC+FJYAwRWOXWrCyrmDotsA?=
- =?us-ascii?Q?cXfxDdcwed7jISl3mByKHK3UYgZYVgbh8ghPx+hNwBkw1pAPg5gknJ+OWRwa?=
- =?us-ascii?Q?OpGKXBtuFHracheOdqcY/wfUHn5wHwV7zU29vTYAuSJ9tRIY4ra5IdEoyWrN?=
- =?us-ascii?Q?+8mVIsTwrNFJ/endfFpkTAqwQJqD3+qmy6cCa5kUVmJgoMdAPzV9mrTT5VGH?=
- =?us-ascii?Q?m7EqAZ9pC4RI5AMAyvCPsjICPWXCT+/FwHaiKlsc2gDMkiCBKERiwTYd4ilQ?=
- =?us-ascii?Q?PEEq9GF3s5YnLLZ0BMqrUT9J4wr/P92voBFki35gzkDqvuX/b14GtXxFGO/L?=
- =?us-ascii?Q?0yol1ikDc2i1HTn77M32o5hSbQtW5FCsiiSVk1eX8rs/E2lF1I9BZEpbj47z?=
- =?us-ascii?Q?AwYvJiATK2lP4T+XGt62BzpZtakXFgCUOozdv5RS2ZM1nXZH5RQ/wzsVPATU?=
- =?us-ascii?Q?hPS9pz+eqYP27Vgz53MsZ+9KZTLzYTZbhoMGn2SWK4TPUfrVRItcXIMKxSxD?=
- =?us-ascii?Q?3AhHcIhuxhiXP04LqHOKchmE5H/5bX6WH+f2zm50IMW7RJ5u2gfyTnXdmyAs?=
- =?us-ascii?Q?8Nwftxfa+erzjW+OPPnPd5m3Y7R88TSmpwLGSeKqSDkb9yW/b1F3zqsa82Pb?=
- =?us-ascii?Q?MkaRp07qszQVgyTWHYmns2X8OcyBlux5ZX+Pl3Vnp5SMCwAayFPwfq04C5ca?=
- =?us-ascii?Q?sGcKthj6PZhn2zWvw2frW8MS5xT9jG/jbS1hVr3u6Z5XwATWF4/9q+C8gvdq?=
- =?us-ascii?Q?1eRuqwN0HstsPPAn67HU+Y+zvT7wbSTFLJ1GwV2hPTg98cetjGJUd34YA2X8?=
- =?us-ascii?Q?rIpG0UplktYGd+7SpfEJhMv6y9j4PCvZPOx0CckkZw0jYnQTf/a87dUcdGQp?=
- =?us-ascii?Q?bA1/7ACBNB8huGufVIakCJH6KWmoH0033PNLPjzLtb+e+8zpTznNsWo66HKQ?=
- =?us-ascii?Q?9pvHu9OX6tPnb9BltJ9mzmrpiQo2tD0c/coEIvyyY1+zhkMEJJFpNpy9CzJh?=
- =?us-ascii?Q?y1K0YwRIC1pYflSgy2Iciet+sHWNjK2sgaMWPv9ztONk4RkQ4A0rSR/19KHx?=
- =?us-ascii?Q?nKIky7VOZsPe5mBRu825Fq9v3HjT6On4ZHaXMv3+sQ1wc60MekbCD29TIv5v?=
- =?us-ascii?Q?ayY3oSGD9vzEXsyKap9xniTDWKnCWIFrv811PmCuaVU9y/Yy7gVQyZeQZQHh?=
- =?us-ascii?Q?fw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	yajqWlq/+jaNx/F0foxpdGTsKpADQ1I3tuwVgo4wn3rJy527BF7fHZaews+KDHsTOMNbxorT13gzFbCtYw/xV3hLRzYZ+cc72+5aFGvZg5B02r/vjQESx68A5LlT+OeJ1oIxZgZAiigf0NRatotr7tb9L6bHVHnTgpNs5n6gQ4OBODiNF1eTVNUgDwOKKNHgl42kOGqK15k3L3hzz+bfo+bmtpJj/cCsh5jvKNpMrVTCMvPC1FzfuGrJZHkJZjGfQsBJBqQyIIZ209rniY73+Rkb/WqtbfFjRsEVQv23B7OWIQbi9zJURkvrNr7v6yJKOuT/S5D/KvR3G4HceGkvGZvjTsIJm/daxvhDY9aMoJRdRFdGSbYriTaM1hpmLx6ELhc59vN02aJ2he6buGzefMKy/iCqVQdIFNGfiusvAJBC+VolU6kVgrERqD59jVWVkzE8WLIdbWGOmTgG1Jx7MhTY7eqAcf6gkGyTXKUSI0uTPaHK+UG9i9D31SxbMKWhctdUXvrfRlI8auASPciyAPb7gzgfYBFst55T4gu36KWRshq3GvTGESMHTcs98mFGunhG0iO8yr4qv4T4wzFEtrlAEICu8BmdUDWZeShUbvQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd1cc3f0-2eeb-4042-d611-08de2925a893
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 17:44:45.2863
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wy4O/uIL5IK7GtYh2K/kmga5WpA6ygH+MN6sLnh8BORhA67MtDNlLjCO6dch55XqzuLxNj30QbZtfV1XtSL5vIhjZiBKc7df2dAuW6/8Ags=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR10MB6044
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-21_05,2025-11-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2511210132
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX3lB+fNe38z5L
- hVRWB+U0QcIjfF2n5MwED3dKuJIQTi/5AKTSr8KhfRDkDzV0jUEKTmZFvl4Td0pTyUEjdlx20T/
- kKPZfb3WjA1IPM08lIk3hvFjFEloM7E/QBD9GA2rafI6H+Zu6A83me4o2eWm9aUGpl34zww2juC
- 9zCgCVZHoYC1J6IaTaHDwTqU1O+1Qu1OGbyoGB2BUDhBzYPfwRPGnas2s6QI9IKrrccOW7HPyCy
- NHPwwOhqz7TrR04+XAD1QMOFawd4ORq/OcmCKi+JwWKXXhVKeUbdH5b8QrVrclkLVMIzhgZe13T
- nknm/feNxoVAz5EnAptgnaxBlxznB2bK6LUi3zhzokODA3rmKUx3p0sJE9GfWFY+hTRVv90X2qI
- NQ4zrMGLIVFoj0nvNG7pdsKoDIoZDw==
-X-Proofpoint-GUID: tFu-sk1glznVmrhXSEogp3TFjhZrIlNm
-X-Proofpoint-ORIG-GUID: tFu-sk1glznVmrhXSEogp3TFjhZrIlNm
-X-Authority-Analysis: v=2.4 cv=Rdydyltv c=1 sm=1 tr=0 ts=6920a518 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=6io7pepS11fV4-GKOfUA:9 a=CjuIK1q_8ugA:10
-X-Rspamd-Server: rspam12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v7 30/31] x86/mm, mm/vmalloc: Defer kernel TLB flush
+ IPIs under CONFIG_COALESCE_TLBI=y
+To: Valentin Schneider <vschneid@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, rcu@vger.kernel.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker <frederic@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Jason Baron <jbaron@akamai.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Mel Gorman <mgorman@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Han Shen <shenhan@google.com>,
+ Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>,
+ Juri Lelli <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>,
+ Yair Podemsky <ypodemsk@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>
+References: <20251114150133.1056710-1-vschneid@redhat.com>
+ <20251114151428.1064524-10-vschneid@redhat.com>
+ <bad9eaaa-561a-498a-90d1-fe3a3ab8ba37@intel.com>
+ <xhsmh5xb3thh6.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <xhsmh5xb3thh6.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 743D6180011
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qjuz48erzhphsyk4fhuhfg33u41ojrex
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 407E71C0012
-X-Stat-Signature: wikt3qu79oa5f47dgnqt4bu8whimx8ou
-X-HE-Tag: 1763747128-101959
-X-HE-Meta: U2FsdGVkX1+J3bWFqVkxauB5TV586HQG8cEeqkEy+DYZNmAMjBFw1FNktrylf1+UihFjyvrw17Cepb33lMMR4dUaAkWAymL8mm+CugP6L/vosh3KVMYKfxMX6h9Upud9azOC1wahAEgTBTXHyeYrW0BgYIVIWuxD8VcnBTPIKSEXtkp9sApDrkrc22JqyIyJ/JTW9eNLYsWplRZT42uazHIvDqiiAUJ5ArZPrrHPA6va+Jvb0QcxIq6Z0tJASpuCsK+G4J0b/C7MtobiSuomfIECc4gMvBI8WK7ubTIBWz8SKVn1b66NXsfxZ9kbGaE8/5vBAJwFd9Qy3oOxKwbnlsOQj92E/3Uu5lgLWoSzZEhr+/dlBn3D9+AZsojlczTno/MOV7s8QZeqIoIOk5RnbG2A4ngMpo+vlvZk/Hijpth50o5ayxcLCbfGZlByxlJjwMG/lWHsKFiOV2CQ+TpD10M1JgwoX/XO/uroz0CS4u2SygAUBTwJtyPrCfrHKZ5k8VJ3x3X/B2BMyzOBsYobayTJ6zLuWLY6RvNEJmlmH9fwptY0Vl+OXpoZrKpKnCpztMb89XBAHOYUz3rUBpDWXkaGZzcRjS055TcwM7nOeND1g7vuDHcy2Fp7W08/dSM40ORBzztuZQUYs2VWOkLn9ae54uxVMlLKb1Ww4/5w1sI6Tl1MGOlPTMUIFHfylcr7UeFcGcwxFRAW7g+jIGFIXRMDIrZHI1oMPIub5okNy8RTRn+Dwdj2zwkembJ16+I4eLYggGWE9EYIAndRz7TnhsqsAP1yf8hoMsfTbQDzi0O8YLOhLvbhKGvn72lAQ8ucHoTzrS72g2eFHHtvZEcYLFrRYRVt4SvTxfn3P4RsOW0cKgYQQozp5MWtMO6b+Tabi11sDSwLtSGKAs72i16uPAppGaZVLEumDfCZ1WUcdSdLuvZ9YSwNTsY+buhTKuIFOcHPS14qQ+zvwz3Ooih
- XyfZkfae
- CvrWuijFAHGByA2GlJtshl3xZ/9Zin2h6a6VSaxruPbpdZS48RNwFIvnj6kucG7DhoObHrq15+OYKCxTJutfHJ/GzLhP5wiuxVGUOjAypYjPrKy+DRxJmQ473cVOs3IafESokaAFqBF6nRuznOBF6j0J03GAHQVU8YKYQFRY0GK8eGwDZhdWTFplwaSr6AE8+AYDys+VPn/xvyd5iqB9f/Ozu+WOVaJMvVzVkRxtI/35mOpA7dSMcD1to3mnbGtFQ+uT80dDQQDCDACOrC2Xeu0yl4b3Bu7daI45FDi791TS0q4/KcTrpDc77yPmi4zIY7FdpKCvfXPDbcgIH3Zk0C8lCD2apXr24CMwhy+T7vuC+242P0gXqwye0LMsUsR7Kbi3QCHK+8mS4lvQMhi/H6cF6lny9gk30MRoCCoXJ5oWPa1ageYiLk7KYglu6w2AIpdD9Ma8B07rgGjsXTBXt3Zyzi02hWrnfmz+g8sk/78j4bJLbzhq2hHlcIN+Zo+xoUSl58dFb9P8jHfrySZEo3BLmfE/hwFk9nWuY+uZqiAKznw2ZXj+lJrlriXVgdO3rNkUbcXad3F2Oka/7wPiwiTKlyTXrbvZjx2uU3GbwHA8Jvdc5KiM187w7VDTnH7sL2ObTCo0+tgpE/e2xFnL3wBgCipYsMkdxEA2V89OUGEFMt9skLkvk13l/orOn0y4B0F65XwaRbbcZc9YPiCAqAL6/eJXJ78jT6Sr1V4MU53j3dc2nnfT3mT7oGrT4xu/pDVEhibmZGIJMQr8=
+X-HE-Tag: 1763747419-92599
+X-HE-Meta: U2FsdGVkX18a2SpCbqxEYtuq5WDOACFq6zf9de31X930OpylIeQ5Yy+uOf6I8u7MpP4sFcgm+tfXxifaCvaY3F1gxcmL4OJh1QWRAcfWa/+l0cRncLMZ6s08pO0tcOZlLljSHx7NYqAP/E65sKmdeWh6UL4MjAuRFYaIVqLFvkEavrC0jvYW4UMswFf5HkHK6IQR9kO7hLOKR467tvow2OBRbhMiH3vF9g0v5JTyX9SJxig1vzWQQmOuZiJquvyUPbqUu5BiNSbQsUd7LxcVJVcSE3q7vAZrm05xVNaK0svW8ZKwh9VMzR+1SG5oyX0Cl9wULJpkFyJIy1b8/Eyd25onGVsyiU7SI91EduSFBK2JaTVu1VTz5W2UEOsqK1wuTNWQjflGbPPhlhQqr0vHbKEnxQc1w0W/TA7VrAtmeJDxzpDysjnsEik6tPmS2Jw4vqfGFUF/jXtSaceJztyJwpS4wriOzd6n6x3YOhZnZb3+yLjekLAzlG8xtafQcJA1xaFgylcI7wrCmPCuH2YlZg2PaXtqjw1jnjedwNdICdEr1VRXm0Sr71DZaBf6SYy/7AVO84KR+VGr/IksdgLai+lstB/qRCXJ4t4OxSbFNkK6UheheJlTI/Ft+05FQni8EfTl7jq4pUNkust2GO60u6oJi+UU0B7gmieIQBkEDU3f2C3H6+sI4YyPl59wcURlpVxmEgbyvugKpGxoFCpHuOUf/J1onVDXY7CHme0l5IVJcWZBERphybJVHjbBkFc8iaLzaVawCNl6cHbYUJw+sV4kVd0PFo1g+Scwf1JPqRnOYtCQUy6pConAHqI/YZZ268a5HNrmtP0f5Cpwi8RGOzQhAF/rW+sDMisbcnnroJshquD+wHUtuO7bnX1nIuyJM/demWMWh6VWVU1PjFe1VtzuAETGImFepHTkXUBv5OIGxkkOZR+kLeqy2/HWv7niTPoVqkV5M5ccWOJN+kl
+ D+qiSXQq
+ K2OWkccmLco5XZXA7ie0VTI8nx6i2Doh0SDdW7QMnbsg/mgYryI/cNY9CEkNfTqSyIntxfTPoCndKUwJCyn80kndmflpS8sEwKz54aBIRGNazeYH5Qo5/1GoguFKd67zDAEYVCOo1RHORIIbQaEfMCHTVAIl0Yb+5Ke7nphIYgQgeTXFoT70+ozUXkk1zWLqsSwo1XRNlsXYYDPPqfLSkeckM8wm5Hm+YHE1I/Z5gVUlx2SSbGhgXNkg0NHyOju1QJ43JOgj1Hj4qz5ETkTBSEMVb9bX0WYZBGcEr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -272,435 +179,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As Vlastimil noticed, something has gone fairly horribly wrong here in the
-actual commit [0] vs. the patch here for tools/testing/vma/vma_internal.h.
+On 11/21/25 09:37, Valentin Schneider wrote:
+> On 19/11/25 10:31, Dave Hansen wrote:
+>> On 11/14/25 07:14, Valentin Schneider wrote:
+>>> +static bool flush_tlb_kernel_cond(int cpu, void *info)
+>>> +{
+>>> +	return housekeeping_cpu(cpu, HK_TYPE_KERNEL_NOISE) ||
+>>> +	       per_cpu(kernel_cr3_loaded, cpu);
+>>> +}
+>>
+>> Is it OK that 'kernel_cr3_loaded' can be be stale? Since it's not part
+>> of the instruction that actually sets CR3, there's a window between when
+>> 'kernel_cr3_loaded' is set (or cleared) and CR3 is actually written.
+>>
+>> Is that OK?
+>>
+>> It seems like it could lead to both unnecessary IPIs being sent and for
+>> IPIs to be missed.
+>>
+> 
+> So the pattern is
+> 
+>   SWITCH_TO_KERNEL_CR3
+>   FLUSH
+>   KERNEL_CR3_LOADED := 1
+> 
+>   KERNEL_CR3_LOADED := 0
+>   SWITCH_TO_USER_CR3
+> 
+> 
+> The 0 -> 1 transition has a window between the unconditional flush and the
+> write to 1 where a remote flush IPI may be omitted. Given that the write is
+> immediately following the unconditional flush, that would really be just
+> two flushes racing with each other,
 
-We should only have the delta shown here, let me know if I need to help with a
-conflict resolution! :)
+Let me fix that for you. When you wrote "a remote flush IPI may be
+omitted" you meant to write: "there's a bug." ;)
 
-Thanks, Lorenzo
+In the end, KERNEL_CR3_LOADED==0 means, "you don't need to send this CPU
+flushing IPIs because it will flush the TLB itself before touching
+memory that needs a flush".
 
-[0]: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?h=mm-stable&id=c3f7c506e8f122a31b9cc01d234e7fcda46b0eca
+   SWITCH_TO_KERNEL_CR3
+   FLUSH
+   // On kernel CR3, *AND* not getting IPIs
+   KERNEL_CR3_LOADED := 1
 
-On Fri, Nov 14, 2025 at 01:26:11PM +0000, Lorenzo Stoakes wrote:
-> It is useful to transition to using a bitmap for VMA flags so we can avoid
-> running out of flags, especially for 32-bit kernels which are constrained
-> to 32 flags, necessitating some features to be limited to 64-bit kernels
-> only.
->
-> By doing so, we remove any constraint on the number of VMA flags moving
-> forwards no matter the platform and can decide in future to extend beyond
-> 64 if required.
->
-> We start by declaring an opaque types, vma_flags_t (which resembles
-> mm_struct flags of type mm_flags_t), setting it to precisely the same size
-> as vm_flags_t, and place it in union with vm_flags in the VMA declaration.
->
-> We additionally update struct vm_area_desc equivalently placing the new
-> opaque type in union with vm_flags.
->
-> This change therefore does not impact the size of struct vm_area_struct or
-> struct vm_area_desc.
->
-> In order for the change to be iterative and to avoid impacting performance,
-> we designate VM_xxx declared bitmap flag values as those which must exist
-> in the first system word of the VMA flags bitmap.
->
-> We therefore declare vma_flags_clear_all(), vma_flags_overwrite_word(),
-> vma_flags_overwrite_word(), vma_flags_overwrite_word_once(),
-> vma_flags_set_word() and vma_flags_clear_word() in order to allow us to
-> update the existing vm_flags_*() functions to utilise these helpers.
->
-> This is a stepping stone towards converting users to the VMA flags bitmap
-> and behaves precisely as before.
->
-> By doing this, we can eliminate the existing private vma->__vm_flags field
-> in the vma->vm_flags union and replace it with the newly introduced opaque
-> type vma_flags, which we call flags so we refer to the new bitmap field as
-> vma->flags.
->
-> We update vma_flag_[test, set]_atomic() to account for the change also.
->
-> We additionally update the VMA userland test declarations to implement the
-> same changes there.
->
-> Finally, we update the rust code to reference vma->vm_flags on update
-> rather than vma->__vm_flags which has been removed. This is safe for now,
-> albeit it is implicitly performing a const cast.
->
-> Once we introduce flag helpers we can improve this more.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  include/linux/mm.h               |  18 ++--
->  include/linux/mm_types.h         |  64 +++++++++++++-
->  rust/kernel/mm/virt.rs           |   2 +-
->  tools/testing/vma/vma_internal.h | 143 ++++++++++++++++++++++++++-----
->  4 files changed, 196 insertions(+), 31 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index ad000c472bd5..79345c44a350 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -919,7 +919,8 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
->  static inline void vm_flags_init(struct vm_area_struct *vma,
->  				 vm_flags_t flags)
->  {
-> -	ACCESS_PRIVATE(vma, __vm_flags) = flags;
-> +	vma_flags_clear_all(&vma->flags);
-> +	vma_flags_overwrite_word(&vma->flags, flags);
->  }
->
->  /*
-> @@ -938,21 +939,26 @@ static inline void vm_flags_reset_once(struct vm_area_struct *vma,
->  				       vm_flags_t flags)
->  {
->  	vma_assert_write_locked(vma);
-> -	WRITE_ONCE(ACCESS_PRIVATE(vma, __vm_flags), flags);
-> +	/*
-> +	 * The user should only be interested in avoiding reordering of
-> +	 * assignment to the first word.
-> +	 */
-> +	vma_flags_clear_all(&vma->flags);
-> +	vma_flags_overwrite_word_once(&vma->flags, flags);
->  }
->
->  static inline void vm_flags_set(struct vm_area_struct *vma,
->  				vm_flags_t flags)
->  {
->  	vma_start_write(vma);
-> -	ACCESS_PRIVATE(vma, __vm_flags) |= flags;
-> +	vma_flags_set_word(&vma->flags, flags);
->  }
->
->  static inline void vm_flags_clear(struct vm_area_struct *vma,
->  				  vm_flags_t flags)
->  {
->  	vma_start_write(vma);
-> -	ACCESS_PRIVATE(vma, __vm_flags) &= ~flags;
-> +	vma_flags_clear_word(&vma->flags, flags);
->  }
->
->  /*
-> @@ -995,12 +1001,14 @@ static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
->  static inline void vma_flag_set_atomic(struct vm_area_struct *vma,
->  				       vma_flag_t bit)
->  {
-> +	unsigned long *bitmap = ACCESS_PRIVATE(&vma->flags, __vma_flags);
-> +
->  	/* mmap read lock/VMA read lock must be held. */
->  	if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
->  		vma_assert_locked(vma);
->
->  	if (__vma_flag_atomic_valid(vma, bit))
-> -		set_bit((__force int)bit, &ACCESS_PRIVATE(vma, __vm_flags));
-> +		set_bit((__force int)bit, bitmap);
->  }
->
->  /*
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 3550672e0f9e..b71625378ce3 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -848,6 +848,15 @@ struct mmap_action {
->  	bool hide_from_rmap_until_complete :1;
->  };
->
-> +/*
-> + * Opaque type representing current VMA (vm_area_struct) flag state. Must be
-> + * accessed via vma_flags_xxx() helper functions.
-> + */
-> +#define NUM_VMA_FLAG_BITS BITS_PER_LONG
-> +typedef struct {
-> +	DECLARE_BITMAP(__vma_flags, NUM_VMA_FLAG_BITS);
-> +} __private vma_flags_t;
-> +
->  /*
->   * Describes a VMA that is about to be mmap()'ed. Drivers may choose to
->   * manipulate mutable fields which will cause those fields to be updated in the
-> @@ -865,7 +874,10 @@ struct vm_area_desc {
->  	/* Mutable fields. Populated with initial state. */
->  	pgoff_t pgoff;
->  	struct file *vm_file;
-> -	vm_flags_t vm_flags;
-> +	union {
-> +		vm_flags_t vm_flags;
-> +		vma_flags_t vma_flags;
-> +	};
->  	pgprot_t page_prot;
->
->  	/* Write-only fields. */
-> @@ -910,10 +922,12 @@ struct vm_area_struct {
->  	/*
->  	 * Flags, see mm.h.
->  	 * To modify use vm_flags_{init|reset|set|clear|mod} functions.
-> +	 * Preferably, use vma_flags_xxx() functions.
->  	 */
->  	union {
-> +		/* Temporary while VMA flags are being converted. */
->  		const vm_flags_t vm_flags;
-> -		vm_flags_t __private __vm_flags;
-> +		vma_flags_t flags;
->  	};
->
->  #ifdef CONFIG_PER_VMA_LOCK
-> @@ -994,6 +1008,52 @@ struct vm_area_struct {
->  #endif
->  } __randomize_layout;
->
-> +/* Clears all bits in the VMA flags bitmap, non-atomically. */
-> +static inline void vma_flags_clear_all(vma_flags_t *flags)
-> +{
-> +	bitmap_zero(ACCESS_PRIVATE(flags, __vma_flags), NUM_VMA_FLAG_BITS);
-> +}
-> +
-> +/*
-> + * Copy value to the first system word of VMA flags, non-atomically.
-> + *
-> + * IMPORTANT: This does not overwrite bytes past the first system word. The
-> + * caller must account for this.
-> + */
-> +static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long value)
-> +{
-> +	*ACCESS_PRIVATE(flags, __vma_flags) = value;
-> +}
-> +
-> +/*
-> + * Copy value to the first system word of VMA flags ONCE, non-atomically.
-> + *
-> + * IMPORTANT: This does not overwrite bytes past the first system word. The
-> + * caller must account for this.
-> + */
-> +static inline void vma_flags_overwrite_word_once(vma_flags_t *flags, unsigned long value)
-> +{
-> +	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-> +
-> +	WRITE_ONCE(*bitmap, value);
-> +}
-> +
-> +/* Update the first system word of VMA flags setting bits, non-atomically. */
-> +static inline void vma_flags_set_word(vma_flags_t *flags, unsigned long value)
-> +{
-> +	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-> +
-> +	*bitmap |= value;
-> +}
-> +
-> +/* Update the first system word of VMA flags clearing bits, non-atomically. */
-> +static inline void vma_flags_clear_word(vma_flags_t *flags, unsigned long value)
-> +{
-> +	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-> +
-> +	*bitmap &= ~value;
-> +}
-> +
->  #ifdef CONFIG_NUMA
->  #define vma_policy(vma) ((vma)->vm_policy)
->  #else
-> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> index a1bfa4e19293..da21d65ccd20 100644
-> --- a/rust/kernel/mm/virt.rs
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -250,7 +250,7 @@ unsafe fn update_flags(&self, set: vm_flags_t, unset: vm_flags_t) {
->          // SAFETY: This is not a data race: the vma is undergoing initial setup, so it's not yet
->          // shared. Additionally, `VmaNew` is `!Sync`, so it cannot be used to write in parallel.
->          // The caller promises that this does not set the flags to an invalid value.
-> -        unsafe { (*self.as_ptr()).__bindgen_anon_2.__vm_flags = flags };
-> +        unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags = flags };
->      }
->
->      /// Set the `VM_MIXEDMAP` flag on this vma.
-> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-> index 18659214e262..13ee825bdfcf 100644
-> --- a/tools/testing/vma/vma_internal.h
-> +++ b/tools/testing/vma/vma_internal.h
-> @@ -528,6 +528,15 @@ typedef struct {
->  	__private DECLARE_BITMAP(__mm_flags, NUM_MM_FLAG_BITS);
->  } mm_flags_t;
->
-> +/*
-> + * Opaque type representing current VMA (vm_area_struct) flag state. Must be
-> + * accessed via vma_flags_xxx() helper functions.
-> + */
-> +#define NUM_VMA_FLAG_BITS BITS_PER_LONG
-> +typedef struct {
-> +	DECLARE_BITMAP(__vma_flags, NUM_VMA_FLAG_BITS);
-> +} __private vma_flags_t;
-> +
->  struct mm_struct {
->  	struct maple_tree mm_mt;
->  	int map_count;			/* number of VMAs */
-> @@ -612,7 +621,10 @@ struct vm_area_desc {
->  	/* Mutable fields. Populated with initial state. */
->  	pgoff_t pgoff;
->  	struct file *vm_file;
-> -	vm_flags_t vm_flags;
-> +	union {
-> +		vm_flags_t vm_flags;
-> +		vma_flags_t vma_flags;
-> +	};
->  	pgprot_t page_prot;
->
->  	/* Write-only fields. */
-> @@ -658,7 +670,7 @@ struct vm_area_struct {
->  	 */
->  	union {
->  		const vm_flags_t vm_flags;
-> -		vm_flags_t __private __vm_flags;
-> +		vma_flags_t flags;
->  	};
->
->  #ifdef CONFIG_PER_VMA_LOCK
-> @@ -1372,26 +1384,6 @@ static inline bool may_expand_vm(struct mm_struct *mm, vm_flags_t flags,
->  	return true;
->  }
->
-> -static inline void vm_flags_init(struct vm_area_struct *vma,
-> -				 vm_flags_t flags)
-> -{
-> -	vma->__vm_flags = flags;
-> -}
-> -
-> -static inline void vm_flags_set(struct vm_area_struct *vma,
-> -				vm_flags_t flags)
-> -{
-> -	vma_start_write(vma);
-> -	vma->__vm_flags |= flags;
-> -}
-> -
-> -static inline void vm_flags_clear(struct vm_area_struct *vma,
-> -				  vm_flags_t flags)
-> -{
-> -	vma_start_write(vma);
-> -	vma->__vm_flags &= ~flags;
-> -}
-> -
->  static inline int shmem_zero_setup(struct vm_area_struct *vma)
->  {
->  	return 0;
-> @@ -1548,13 +1540,118 @@ static inline void userfaultfd_unmap_complete(struct mm_struct *mm,
->  {
->  }
->
-> -# define ACCESS_PRIVATE(p, member) ((p)->member)
-> +#define ACCESS_PRIVATE(p, member) ((p)->member)
-> +
-> +#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
-> +
-> +static __always_inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
-> +{
-> +	unsigned int len = bitmap_size(nbits);
-> +
-> +	if (small_const_nbits(nbits))
-> +		*dst = 0;
-> +	else
-> +		memset(dst, 0, len);
-> +}
->
->  static inline bool mm_flags_test(int flag, const struct mm_struct *mm)
->  {
->  	return test_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
->  }
->
-> +/* Clears all bits in the VMA flags bitmap, non-atomically. */
-> +static inline void vma_flags_clear_all(vma_flags_t *flags)
-> +{
-> +	bitmap_zero(ACCESS_PRIVATE(flags, __vma_flags), NUM_VMA_FLAG_BITS);
-> +}
-> +
-> +/*
-> + * Copy value to the first system word of VMA flags, non-atomically.
-> + *
-> + * IMPORTANT: This does not overwrite bytes past the first system word. The
-> + * caller must account for this.
-> + */
-> +static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long value)
-> +{
-> +	*ACCESS_PRIVATE(flags, __vma_flags) = value;
-> +}
-> +
-> +/*
-> + * Copy value to the first system word of VMA flags ONCE, non-atomically.
-> + *
-> + * IMPORTANT: This does not overwrite bytes past the first system word. The
-> + * caller must account for this.
-> + */
-> +static inline void vma_flags_overwrite_word_once(vma_flags_t *flags, unsigned long value)
-> +{
-> +	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-> +
-> +	WRITE_ONCE(*bitmap, value);
-> +}
-> +
-> +/* Update the first system word of VMA flags setting bits, non-atomically. */
-> +static inline void vma_flags_set_word(vma_flags_t *flags, unsigned long value)
-> +{
-> +	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-> +
-> +	*bitmap |= value;
-> +}
-> +
-> +/* Update the first system word of VMA flags clearing bits, non-atomically. */
-> +static inline void vma_flags_clear_word(vma_flags_t *flags, unsigned long value)
-> +{
-> +	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-> +
-> +	*bitmap &= ~value;
-> +}
-> +
-> +
-> +/* Use when VMA is not part of the VMA tree and needs no locking */
-> +static inline void vm_flags_init(struct vm_area_struct *vma,
-> +				 vm_flags_t flags)
-> +{
-> +	vma_flags_clear_all(&vma->flags);
-> +	vma_flags_overwrite_word(&vma->flags, flags);
-> +}
-> +
-> +/*
-> + * Use when VMA is part of the VMA tree and modifications need coordination
-> + * Note: vm_flags_reset and vm_flags_reset_once do not lock the vma and
-> + * it should be locked explicitly beforehand.
-> + */
-> +static inline void vm_flags_reset(struct vm_area_struct *vma,
-> +				  vm_flags_t flags)
-> +{
-> +	vma_assert_write_locked(vma);
-> +	vm_flags_init(vma, flags);
-> +}
-> +
-> +static inline void vm_flags_reset_once(struct vm_area_struct *vma,
-> +				       vm_flags_t flags)
-> +{
-> +	vma_assert_write_locked(vma);
-> +	/*
-> +	 * The user should only be interested in avoiding reordering of
-> +	 * assignment to the first word.
-> +	 */
-> +	vma_flags_clear_all(&vma->flags);
-> +	vma_flags_overwrite_word_once(&vma->flags, flags);
-> +}
-> +
-> +static inline void vm_flags_set(struct vm_area_struct *vma,
-> +				vm_flags_t flags)
-> +{
-> +	vma_start_write(vma);
-> +	vma_flags_set_word(&vma->flags, flags);
-> +}
-> +
-> +static inline void vm_flags_clear(struct vm_area_struct *vma,
-> +				  vm_flags_t flags)
-> +{
-> +	vma_start_write(vma);
-> +	vma_flags_clear_word(&vma->flags, flags);
-> +}
-> +
->  /*
->   * Denies creating a writable executable mapping or gaining executable permissions.
->   *
-> --
-> 2.51.0
->
+> but I could punt the kernel_cr3_loaded
+> write above the unconditional flush.
+
+Yes, that would eliminate the window, as long as the memory ordering is
+right. You not only need to have the KERNEL_CR3_LOADED:=1 CPU set that
+variable, you need to ensure that it has seen the page table update.
+
+> The 1 -> 0 transition is less problematic, worst case a remote flush races
+> with the CPU returning to userspace and it'll get interrupted back to
+> kernelspace.
+
+It's also not just "returning to userspace". It could well be *in*
+userspace by the point the IPI shows up. It's not the end of the world,
+and the window isn't infinitely long. But there certainly is still a
+possibility of getting spurious interrupts for the precious NOHZ_FULL
+task while it's in userspace.
 
