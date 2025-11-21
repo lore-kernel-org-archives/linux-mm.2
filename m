@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4408CFA76A
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 10:08:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16DCACFA761
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 10:09:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 159ED6B008C; Fri, 21 Nov 2025 05:08:59 -0500 (EST)
+	id 21CA46B0095; Fri, 21 Nov 2025 05:09:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131846B0092; Fri, 21 Nov 2025 05:08:59 -0500 (EST)
+	id 1CED06B0096; Fri, 21 Nov 2025 05:09:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 047526B0095; Fri, 21 Nov 2025 05:08:58 -0500 (EST)
+	id 0959E6B0098; Fri, 21 Nov 2025 05:09:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E55B06B008C
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:08:58 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78477C04EE
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:08:56 +0000 (UTC)
-X-FDA: 84134190672.01.E2F35C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DDDCC1A0004
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:08:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=naN1QqHO;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E4AA56B0095
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:08:59 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E2161A03EA
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:08:59 +0000 (UTC)
+X-FDA: 84134190798.22.8342D44
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DE242140008
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:08:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OE+Qdh+3;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763719734; a=rsa-sha256;
+	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763719738; a=rsa-sha256;
 	cv=none;
-	b=DdedWnK+ELQr+wQIK8/PXfBHimUzmHByDITCn6dGpu40k47BIUtJ6cjfahNWnkySZfPOAG
-	h/aRYo814ObIckhhyPq3ihdT5VLGZjkrJY1zf6Vlkcmmm9EkoVztU6Mbhll8Vk3ogg8FhV
-	1Ld22U0jSxG2QdunTdWiDG6xVbnuAKc=
+	b=39EITO6wJAVIVSZ6BxCvYlbx7p6MwKnu6F60sXFe2GhcgoS0Nv0r3AHK8/iVYXjKj1tunM
+	+a2KlSbOOnlByLqFMlMrFUwXv+Zv3z5luuAfkkE46GC5DQJDg6p5viZDcliAEmlxojTSoU
+	sfm0Kh5PiAjVikjF+qO31iSZozrjhYU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=naN1QqHO;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OE+Qdh+3;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763719734;
+	s=arc-20220608; t=1763719738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=72ur9heQS2VahQ03F/6if6cBBxItg8Y4yvJpLtod8+g=;
-	b=YJuBjycXVDiGWf1cUepYkBUnEZ55xxwwfeYsHdEgRPmKvW0+0bCjXA6vmKvj1aAdlGBqR6
-	rYG/ETkp0kUKooUHgEVl7sk6u8qSerBSG2EOgRyhJfcOS9DTbfnrt0P//rvO3fC9WhUQOC
-	kA60fakngalhTuKRPUDxbU/Zn4LEoKw=
+	bh=UcgRnCditBv2eJwMDHOifbkjHe6XRimmMmhDcR5tyHM=;
+	b=I4DBeInOh+0hOwoNg9JJzKi61tiiWXc2CrRuDDZCeIyQuLGCH+7oLddGlEBuS3jN2imziX
+	ntguQluEoFZksg9CWDZtrZEj0aFNKkFstEjx3oru39ExGUZcY0D0Btm7PeRfXI4ik1jG3V
+	J/R3DOpku3gTcEB7ffwZZKrtEO6DaHI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A05F6023B;
-	Fri, 21 Nov 2025 10:08:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78118C113D0;
-	Fri, 21 Nov 2025 10:08:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F283142DB7;
+	Fri, 21 Nov 2025 10:08:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E453C4CEF1;
+	Fri, 21 Nov 2025 10:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763719734;
-	bh=/4O75XRDp8O7RwbGHBVBhEBYFVjqE85gKdf6q0IBJeo=;
+	s=korg; t=1763719736;
+	bh=teCSbMiSab38p9A+cMQaGZJt+rU0hFJrpyjDOOXXwF4=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=naN1QqHOOflHQuOh9cPl6PCOWkXuHJLOEvKmgPuhneK3EZ4WDz30g1l3gHSFb7CFE
-	 uxIaD1oBEAHJYGRv+0JBLrANmxdYGvKFAVm8z/n1CPpgW8ujvss22VKdjgtVk91QoF
-	 3D78JpPQK5SGvU+R4ltn118FN+8jgji5tQnEWwkY=
-Subject: Patch "mm: memcg: add THP swap out info for anonymous reclaim" has been added to the 6.6-stable tree
-To: akpm@linux-foundation.org,akpm@linux-foundation.orgL,cerasuolodomenico@gmail.com,corbet@lwn.net,ddstreet@ieee.org,greg@kroah.com,gregkh@linuxfoundation.org,hannes@cmpxchg.org,lance.yang@linux.dev,leon.huangfu@shopee.com,linux-mm@kvack.org,lizefan.x@bytedance.com,mhocko@kernel.org,mhocko@suse.com,muchun.song@linux.dev,nphamcs@gmail.com,roman.gushchin@linux.dev,sashal@kernel.org,shakeelb@google.com,shy828301@gmail.com,sjenning@redhat.com,songmuchun@bytedance.com,tj@kernel.org,vernhao@tencent.com,vishal.moola@gmail.com,vitaly.wool@konsulko.com,yosryahmed@google.com
+	b=OE+Qdh+3HqBWvJcV0dSE/w5mnSLQodC0WE+vsT+llF41uCBKpRGuKVVll5tOJUYaJ
+	 be+QsuitoPEoBT22J5IDxblWcRGEXkgZQ1y3eyMdDAzzBSDyuhpWYCLP14sdqJ2vaE
+	 g525VcmKtzZ9jN+Gns6vYgQ9zcnVjUSxfwqodSMk=
+Subject: Patch "mm: memcg: change flush_next_time to flush_last_time" has been added to the 6.6-stable tree
+To: akpm@linux-foundation.org,bagasdotme@gmail.com,cerasuolodomenico@gmail.com,chrisl@kernel.org,corbet@lwn.net,ddstreet@ieee.org,greg@kroah.com,gregkh@linuxfoundation.org,gthelen@google.com,hannes@cmpxchg.org,ivan@cloudflare.com,lance.yang@linux.dev,leon.huangfu@shopee.com,linux-mm@kvack.org,lizefan.x@bytedance.com,longman@redhat.com,mhocko@kernel.org,mkoutny@suse.com,muchun.song@linux.dev,nphamcs@gmail.com,roman.gushchin@linux.dev,sashal@kernel.org,shakeelb@google.com,shy828301@gmail.com,sjenning@redhat.com,tj@kernel.org,vishal.moola@gmail.com,vitaly.wool@konsulko.com,weixugc@google.com,yosryahmed@google.com
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 21 Nov 2025 11:08:43 +0100
-In-Reply-To: <20251103075135.20254-2-leon.huangfu@shopee.com>
-Message-ID: <2025112143-pull-ravioli-93d5@gregkh>
+In-Reply-To: <20251103075135.20254-4-leon.huangfu@shopee.com>
+Message-ID: <2025112143-mummified-sauciness-e731@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Rspamd-Queue-Id: DDDCC1A0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9hdyf9151rcaqsof8ci6iwwn4o9y4mc6
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DE242140008
+X-Stat-Signature: 1m3wx5td4594ay3dtc5nndx5wmnpmhe1
 X-Rspam-User: 
-X-HE-Tag: 1763719734-745087
-X-HE-Meta: U2FsdGVkX19S+4mUQD/urK+z6EdKaCoNpHmMC7Kp5sTAo6VfASDf5clDs9rszKdXgnpEcQJ0I6KcFnZkCry3fgzoXS5IrLDYzo78a3JFA9/F64nKT3WIIw7fxxbRAgrBAeiSxBBv+wtIJ5y+a1jaigExvueTnC+zeN/2W/ndb8mQaxE34mwewKb2f2QsOCblBfcsj1+jNFwl/ndDpvbGGd82d4uml1toCTdDdTsp7TMsSEYcuo1KlmQ+GcBLnBkqmfGOp81893Xslj/2uJ+0RDW7ODIevDbqkiWtJErb/Xtgyv5QtdI9+VDB/kIp8asBPuJYtzurNZRDnUM2Q7Ussjb1cZbL8lCtx5iohbYrj2S1WR0c3XnzGgziy6HRNf9OvmOqTMhfv2A+GeiwsujthFIldpKiDDbbhqRiuiDp5+D6/gqxq1bOUX5XGr8Cm/ZEikp7vqxpJCHikoBs1E/3MxjPAgV6bMwSDWaQ5v2P0D9OoUWWhnQCZGGOcIfwCEA0KqFShm6rDWmB5zUtatCLZFXENVXUG2SbnDC44gxASlMARNrY4xZA1HhIde6CvucrAwb5Qi3t2FpRUvyBp0LqvZFElN14mC5KJqrzqIZNyjsH4dk+sMzUI13rlGctG/GEa1XnHbMmE3qKysywqEwqlOQVEX2On/34X6/ScGfOcUZD3Gjk3S/W6bv7HaGpDgv6FQgi8MiCLIWyyo77k7273CbgHJMSVEeocg3qQrmtNqdUdeid3Nwh3Xi3P1h4fqfRcg0c1ff3XMq7QzIAWOdpM0UWP0VpQfhXoeWHXMFi1XntCq9yoG7JQa7aZVyGWN3x2FW7Wo4cAo6/KSFr4509VvXjX8tV1sD+C++659sWFZZxH/Mg9qLTJwmEDq7ofONY4l7+3MI4Q0/1FhcalX1+PW/T/mmOSRl4jkailjD5uIObkPJ8IRTNKX8qMPR0471sKL3h4KITPMsjBjhISmt
- Ktn9GM+d
- TuSuiHnkpIY5X8jadjkSHMWlVRFfiWWPaVXMsNvHVRZaIF8COOGV23VOFtJs/Uv3YOvNPcIp4aWm7VbYmtqvW+FkgKnw4DjLjNN4BE4nL7OOFU7OfBimxoWrTeNCr8Ed2PY5gQUUR7VS184OjX3My7ILsjV5rPXqxeaiug8knTqBS+CJMgcea8NfX1Fn5Dbtd4ouXPL0sQkJlhtGC52F894YyxJvJsH/rOb+syBo8t+xIwqFWTw5xDOM+mQTbKR/ZjQfB4iQk4p0r0dbyCmBOa1xsrN4hnuVMbpttMThZJSJ4WGT7S7Mhh4DgG7ywIyp+vAIKtQg56F9iXKKWRGpJP4oL1sUY4Q/B8jXGC8r4ZaDG6WEKBzkd4okABrnd1Ohvtzzyj9/WrCdCPJB1jttDovbbjED4uI9GxXAL5FvZPEl0SUDSBTjbqg47ueLjty1SJDa62q6ReV7ld5FM+UfcLnAn0I+pXF90XeSAXmmDNhfefHEKVL+rKgw+bZtt9R9PqcsiqwtXuZaVlTxWGUYgqWmG6jq3le9WT6Y2xpnLrRoq2GiXvsdLwQf0OjdrPHecS+CK2Njy81zHYrOrKX1EB2Wec9Kia2tbzfoIGUhTV/KWr9T7lSoRsNgl6hwicoUcpnHDuat57lvbz4sMB3rA3MgT5iIbJLJgbbXGpBFecKgI4vOeS/go23hGowHFyLOWf5vcfaFAa/zjveM1aaniRD2H+AuBOxKimKRGI/AQiZ5zDcbGdmr+dATFr8SsiXiMiF4tM6DQLwqpSs2cCApeWrEo12u4t4bcVg7/uJpPCVnDWTAui0liqGDZ0MY7koa10z82PSLDXJsWYnWCmfyjBaE1HRgQCtzk552+ZOp8Bwk6gpMoepETtXOKGUC9l30i/k2ZzucK7lQ/M/0tyt+LcZdf5BD6SaSUIM287JzcKvGXws+4RStwTdee/RLBwydCOTn2aMY4uVS4SB97emuIyCX12FOF
- NNY7Z2Qq
- bfK2GjZb24WUQOs2twgRaOqW+PivBEAAN5ApokNBU1hBzaRl7YNJSz2UP5a9AF5Bjtj38/ObHYugwyH006BqfOl+QvN9xv+hW845BTCzmi0eh/Y2RGiJGZS74iR7u6OJE5GaeNMNNWQ=
+X-HE-Tag: 1763719737-87344
+X-HE-Meta: U2FsdGVkX1/yzINkX0SNvkuoE0k3QeYlkG6ocdeJeJdKGAL/Mt2vfKywlBkmty8pNKCjaWXh11+OlWP5UfRgm6av19puectFI/vURQuZA42DZxv8+sVcUfcQXJU+MiMcuEtSA50JIGJFNdteGJwTUbPDBT+ZJFm4GqZQnMrFY590xNePzaJuIJgNbRO4Wj+ACJSVzYm9T54dtpRhD2FqKpZfSJEwzteKvNQzkWuB9GgpbwSyILBEAROEeQ4xFLaJHf6nMdaj9x8HXzeNYBse5OGaEt/Bhd45P/eHo5fJvcf0zVNzbbeakSpKP9JagMUvn8Xqxb4Rx4HmRiWdRUgdo66EojLPG6FvuP5bKLgEvh0fIsc31KGIU7OavKsJuFhTbkfoSXmtMLRWTMGDBAu6WCUzKR8pp0j8SlFEfHqF979q/rDZaMaIPraXTb29g3ZkMRvZR8CeTfQ9YG84mQmafyI6cc5Ej6n9k25b9lDt5r2DfGMSDdTrty8y5SMd4fiATqe3hDIpOoxz8PMjA78DdYVyA0dGAhczCmy5hMhKUt/RQaXMIdCf4TkOh/02K4McIBrF3VoulqpUpwqqca0oe0Tm0S6c2czxBQOcx0eNHXrDyw+Jovyt7kMzOoXpqO8g9BTfqEFDoHAtEVjxFrbkpU7Qe9p3sxl6mVC9Iq0vB/IoBr38s5WKhc5tF1E8IXzzzb05v+T3IlymVf0/W6PDB4VUHvYqd6Y62BZtHZNOVZgvuuGRQAA2TYDzUTEQUoGeWfGZo5lD+IslmbSwLvN7yg4DdcsFBFshUCM1g8adNfoRbs8oojV/O7LNdHXvrZPU4bnyWTdl4EJerhzbWWhBNNH+UEfz6EHMKSuSkouj+Obvb8i1X1If8NR9jt4l3pAns3+aXLzy/2HMsY62CnXvaiGugZL5gC8P+Y5Zjan+wvvVqGbw4GZCvuI0tXE4pNLy5+XrhY2Os7BjZMaRgJh
+ ufN+qDPQ
+ lWAd0o91N3AFF2uU/yz23mfnqAGbx3XaLI1QYs9Y3Y9qyr2oyeWSf39ARBhO2slOozZ4tjr+fc8+4Rv4f+fgJpnDbUy7rRCbj/I1BUbXUF/Twc12FonHZe9LO7Vvdhfqv3Pwy24SaxH6q7Y6pVLjXI5K9RYBakUUmVwTuUbz5cgYm102TTnJCWFuVIL55NbzI9ur5MIxlh5m4hstgSLEydpO+8+eOnAcrpaqoLuDpzfO72juEsGM9zJfg+W3WRGCzbv9HumQ7urdTczTlSER93vKVue4pkRvc3SIpsm0BWD6rhl57MjzpyyZCFpgjozhpjJ8jbUpitYM7cIyQURwwEEFdX3rTvqvzphfPeevMYRNr/kHj8U3wuBUgxgARhOEyK41Qzeik8HN1SNLdcTm0XL/PhOcKj9+MdqDIjxZljvD2JN/PwB9Ou+Fe0k/lqUiXvIa/ibQ+Da8UztY2rLwBWVlqptABmAWvgEiYyRPHOtdfoVqQeFdP79aiiKclbA79EwQOBgXZTmN0gHwO8z4HBHl1uMlKZcYkJE7DQIOOhTJBvCKQdKfnlpvcLrP8VCbs+RPW/7A0NBglK7grlYJAS6wpLgeenDkEKXa2AxcsN4EtXTAnqjGvg8etAUoGVlB+G7Y38UEOgjd4/sVhshbhlPyS8fsTfLEsdjFHyFZj2UYm9cXSmMSNGEsEY7ZAFBKI+OLjmhmPHRl/ZqrKnOVRu9y2GH4WRM5RuiHFhxktAuh5kCSnAo8JIynWW/bdCWG5rbwKKPOG6r8tPSaVE9nyjiRARUPCSJB/qgiyeXZoLBOS9H4ni/eHVzmK44xo/iqDtxyC//rQVM/kfDplcprsnTDqokyisQnK/xTW2h549FImA5VgbBd5v9rCZGP/y8PWZuHNMZk+RBy7Xo55+UjAJvpEfgzTVdg1TsVlOpv6kNir6xpeb/4CNvdPNTVR9cZ/EY4gxCOfxh1qX1y1PYuS1JrB5X/l
+ 0cvRgILk
+ OiPg1WZCYfmGUqWPBvG85QIHPwYLIDS52Pmweod/prx34IfUpARc8ng9fysf42PuV21ozYZvhDMsBLI/5p2EOvcRtBS/V/TgXdydzrxv7VBiJ4+p0h/eS1VN94qTBgq9/0sBD5m2I2XGiFDnpm1nuN9ehYa2XG8c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,132 +94,107 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    mm: memcg: add THP swap out info for anonymous reclaim
+    mm: memcg: change flush_next_time to flush_last_time
 
 to the 6.6-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     mm-memcg-add-thp-swap-out-info-for-anonymous-reclaim.patch
+     mm-memcg-change-flush_next_time-to-flush_last_time.patch
 and it can be found in the queue-6.6 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From leon.huangfu@shopee.com Mon Nov  3 08:53:02 2025
+From leon.huangfu@shopee.com Mon Nov  3 08:53:16 2025
 From: Leon Huang Fu <leon.huangfu@shopee.com>
-Date: Mon,  3 Nov 2025 15:51:29 +0800
-Subject: mm: memcg: add THP swap out info for anonymous reclaim
+Date: Mon,  3 Nov 2025 15:51:31 +0800
+Subject: mm: memcg: change flush_next_time to flush_last_time
 To: stable@vger.kernel.org, greg@kroah.com
-Cc: tj@kernel.org, lizefan.x@bytedance.com, hannes@cmpxchg.org, corbet@lwn.net, mhocko@kernel.org, roman.gushchin@linux.dev, shakeelb@google.com, muchun.song@linux.dev, akpm@linux-foundation.org, sjenning@redhat.com, ddstreet@ieee.org, vitaly.wool@konsulko.com, lance.yang@linux.dev, leon.huangfu@shopee.com, shy828301@gmail.com, yosryahmed@google.com, sashal@kernel.org, vishal.moola@gmail.com, cerasuolodomenico@gmail.com, nphamcs@gmail.com, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Xin Hao <vernhao@tencent.com>, Michal Hocko <mhocko@suse.com>, Muchun Song <songmuchun@bytedance.com>
-Message-ID: <20251103075135.20254-2-leon.huangfu@shopee.com>
+Cc: tj@kernel.org, lizefan.x@bytedance.com, hannes@cmpxchg.org, corbet@lwn.net, mhocko@kernel.org, roman.gushchin@linux.dev, shakeelb@google.com, muchun.song@linux.dev, akpm@linux-foundation.org, sjenning@redhat.com, ddstreet@ieee.org, vitaly.wool@konsulko.com, lance.yang@linux.dev, leon.huangfu@shopee.com, shy828301@gmail.com, yosryahmed@google.com, sashal@kernel.org, vishal.moola@gmail.com, cerasuolodomenico@gmail.com, nphamcs@gmail.com, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chris Li <chrisl@kernel.org>, Bagas Sanjaya <bagasdotme@gmail.com>, Greg Thelen <gthelen@google.com>, Ivan Babrou <ivan@cloudflare.com>, Michal Koutny <mkoutny@suse.com>, Waiman Long <longman@redhat.com>, Wei Xu <weixugc@google.com>
+Message-ID: <20251103075135.20254-4-leon.huangfu@shopee.com>
 
-From: Xin Hao <vernhao@tencent.com>
+From: Yosry Ahmed <yosryahmed@google.com>
 
-[ Upstream commit 811244a501b967b00fecb1ae906d5dc6329c91e0 ]
+[ Upstream commit 508bed884767a8eb394640bae9edcdf082816c43 ]
 
-At present, we support per-memcg reclaim strategy, however we do not know
-the number of transparent huge pages being reclaimed, as we know the
-transparent huge pages need to be splited before reclaim them, and they
-will bring some performance bottleneck effect.  for example, when two
-memcg (A & B) are doing reclaim for anonymous pages at same time, and 'A'
-memcg is reclaiming a large number of transparent huge pages, we can
-better analyze that the performance bottleneck will be caused by 'A'
-memcg.  therefore, in order to better analyze such problems, there add THP
-swap out info for per-memcg.
+Patch series "mm: memcg: subtree stats flushing and thresholds", v4.
 
-[akpm@linux-foundation.orgL fix swap_writepage_fs(), per Johannes]
-  Link: https://lkml.kernel.org/r/20230913213343.GB48476@cmpxchg.org
-Link: https://lkml.kernel.org/r/20230913164938.16918-1-vernhao@tencent.com
-Signed-off-by: Xin Hao <vernhao@tencent.com>
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@suse.com>
+This series attempts to address shortages in today's approach for memcg
+stats flushing, namely occasionally stale or expensive stat reads.  The
+series does so by changing the threshold that we use to decide whether to
+trigger a flush to be per memcg instead of global (patch 3), and then
+changing flushing to be per memcg (i.e.  subtree flushes) instead of
+global (patch 5).
+
+This patch (of 5):
+
+flush_next_time is an inaccurate name.  It's not the next time that
+periodic flushing will happen, it's rather the next time that ratelimited
+flushing can happen if the periodic flusher is late.
+
+Simplify its semantics by just storing the timestamp of the last flush
+instead, flush_last_time.  Move the 2*FLUSH_TIME addition to
+mem_cgroup_flush_stats_ratelimited(), and add a comment explaining it.
+This way, all the ratelimiting semantics live in one place.
+
+No functional change intended.
+
+Link: https://lkml.kernel.org/r/20231129032154.3710765-1-yosryahmed@google.com
+Link: https://lkml.kernel.org/r/20231129032154.3710765-2-yosryahmed@google.com
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Tested-by: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Acked-by: Chris Li <chrisl@kernel.org> (Google)
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Greg Thelen <gthelen@google.com>
+Cc: Ivan Babrou <ivan@cloudflare.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutny <mkoutny@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
 Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeelb@google.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Wei Xu <weixugc@google.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Leon Huang Fu <leon.huangfu@shopee.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/cgroup-v2.rst |    9 +++++++++
- mm/memcontrol.c                         |    2 ++
- mm/page_io.c                            |    8 ++++----
- mm/vmscan.c                             |    1 +
- 4 files changed, 16 insertions(+), 4 deletions(-)
+ mm/memcontrol.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1532,6 +1532,15 @@ PAGE_SIZE multiple when read back.
- 		collapsing an existing range of pages. This counter is not
- 		present when CONFIG_TRANSPARENT_HUGEPAGE is not set.
- 
-+	  thp_swpout (npn)
-+		Number of transparent hugepages which are swapout in one piece
-+		without splitting.
-+
-+	  thp_swpout_fallback (npn)
-+		Number of transparent hugepages which were split before swapout.
-+		Usually because failed to allocate some continuous swap space
-+		for the huge page.
-+
-   memory.numa_stat
- 	A read-only nested-keyed file which exists on non-root cgroups.
- 
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -704,6 +704,8 @@ static const unsigned int memcg_vm_event
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	THP_FAULT_ALLOC,
- 	THP_COLLAPSE_ALLOC,
-+	THP_SWPOUT,
-+	THP_SWPOUT_FALLBACK,
- #endif
- };
+@@ -590,7 +590,7 @@ static DECLARE_DEFERRABLE_WORK(stats_flu
+ static DEFINE_PER_CPU(unsigned int, stats_updates);
+ static atomic_t stats_flush_ongoing = ATOMIC_INIT(0);
+ static atomic_t stats_flush_threshold = ATOMIC_INIT(0);
+-static u64 flush_next_time;
++static u64 flush_last_time;
  
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -208,8 +208,10 @@ int swap_writepage(struct page *page, st
- static inline void count_swpout_vm_event(struct folio *folio)
+ #define FLUSH_TIME (2UL*HZ)
+ 
+@@ -650,7 +650,7 @@ static void do_flush_stats(void)
+ 	    atomic_xchg(&stats_flush_ongoing, 1))
+ 		return;
+ 
+-	WRITE_ONCE(flush_next_time, jiffies_64 + 2*FLUSH_TIME);
++	WRITE_ONCE(flush_last_time, jiffies_64);
+ 
+ 	cgroup_rstat_flush(root_mem_cgroup->css.cgroup);
+ 
+@@ -666,7 +666,8 @@ void mem_cgroup_flush_stats(void)
+ 
+ void mem_cgroup_flush_stats_ratelimited(void)
  {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	if (unlikely(folio_test_pmd_mappable(folio)))
-+	if (unlikely(folio_test_pmd_mappable(folio))) {
-+		count_memcg_folio_events(folio, THP_SWPOUT, 1);
- 		count_vm_event(THP_SWPOUT);
-+	}
- #endif
- 	count_vm_events(PSWPOUT, folio_nr_pages(folio));
+-	if (time_after64(jiffies_64, READ_ONCE(flush_next_time)))
++	/* Only flush if the periodic flusher is one full cycle late */
++	if (time_after64(jiffies_64, READ_ONCE(flush_last_time) + 2*FLUSH_TIME))
+ 		mem_cgroup_flush_stats();
  }
-@@ -278,9 +280,6 @@ static void sio_write_complete(struct ki
- 			set_page_dirty(page);
- 			ClearPageReclaim(page);
- 		}
--	} else {
--		for (p = 0; p < sio->pages; p++)
--			count_swpout_vm_event(page_folio(sio->bvec[p].bv_page));
- 	}
  
- 	for (p = 0; p < sio->pages; p++)
-@@ -296,6 +295,7 @@ static void swap_writepage_fs(struct pag
- 	struct file *swap_file = sis->swap_file;
- 	loff_t pos = page_file_offset(page);
- 
-+	count_swpout_vm_event(page_folio(page));
- 	set_page_writeback(page);
- 	unlock_page(page);
- 	if (wbc->swap_plug)
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1922,6 +1922,7 @@ retry:
- 								folio_list))
- 						goto activate_locked;
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+					count_memcg_folio_events(folio, THP_SWPOUT_FALLBACK, 1);
- 					count_vm_event(THP_SWPOUT_FALLBACK);
- #endif
- 					if (!add_to_swap(folio))
 
 
 Patches currently in stable-queue which might be from leon.huangfu@shopee.com are
