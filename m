@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E3EBCFA477
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:05:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF71CFA47A
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:15:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 870D26B0027; Fri, 21 Nov 2025 02:05:20 -0500 (EST)
+	id 63F406B000E; Fri, 21 Nov 2025 02:15:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8219D6B002B; Fri, 21 Nov 2025 02:05:20 -0500 (EST)
+	id 6167D6B0010; Fri, 21 Nov 2025 02:15:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7370A6B002C; Fri, 21 Nov 2025 02:05:20 -0500 (EST)
+	id 553256B002C; Fri, 21 Nov 2025 02:15:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6313A6B0027
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:05:20 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C1C85908A
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:05:20 +0000 (UTC)
-X-FDA: 84133728000.09.90A0AA5
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 653A710000C
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:05:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=iuZ5EChK;
-	spf=pass (imf14.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 478F26B000E
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:15:07 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C226A4EC40
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:15:04 +0000 (UTC)
+X-FDA: 84133752528.20.1BF8B67
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 59B3E140007
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:15:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b="nnE58/jB";
+	spf=pass (imf26.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
 	dmarc=pass (policy=none) header.from=foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763708718;
+	s=arc-20220608; t=1763709303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TysMVlAgZHEtXel8Jzt/aImsWIJRorMNwBr5l76BKF4=;
-	b=cRQa1S59nt4K/eQGJiWxLzEBXR/gDyPw4ADe5zItbkOv9e0LjAF4/c/zc1P6iucmSwlwqe
-	4c0FO3ihAFFboE2OJYVJRR+xvCtE8L3UpA114WJMQxe7Edk6itrhZ3SRrQc1EM1XYuAJ4b
-	ix+5sUf6UyFEiExUNsROdHlOo5Lm1MQ=
+	bh=XIXqlDrtPhMmpwTQ8EsYrSQr66/V/dN5uVlu5UxsaNM=;
+	b=WTfaAv7QkYnHF6Ew7Mm6EO1r2Mem81HlfsX3UpA38ywGUYBkYUJ2LbMh48xYND3Mxa6BB8
+	PPLyAb2uz3s5bLVVtjW4H7Htd7HHbjPoms3leDZjk1xtdDRfFxXNOKevH130aplzX2UBZv
+	7xYEddGXjcXPUX7S0nVyQhChEKI6eSA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=iuZ5EChK;
-	spf=pass (imf14.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b="nnE58/jB";
+	spf=pass (imf26.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
 	dmarc=pass (policy=none) header.from=foxmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763708718; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763709303; a=rsa-sha256;
 	cv=none;
-	b=E5DtLafKxg38EVwH8ZUbY39WSvrFqD8Tpio5jZVQysua/GwTcfzwxc8DmX4DKHGt/KYvo/
-	yI6Upu+keIKQX2z0uGNcBJ6UnB5GPWTpHwu1uJ3dMvIq8zAyTerbR+IXJH+hc5IaGlVgWF
-	cWG+yaVWnFoi3X1KuSLb/w3yOLhrO10=
+	b=UYM+MVV7ZOWKWa8SWODH7cIYNtthVq3dzFyy71PZLiHQceuTAOqY1PC3oJ5QQjLmqp5B73
+	dttGHvkg29Qa1X+UW7p/08NNl0aN5XQ7Ll3D4vojZFn+KCPq2MlD3JpHskbLdNsNC/+Ce7
+	OuT6HT8wa7Eh7c3GIOgnU+bAR64E8l4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1763708710;
-	bh=TysMVlAgZHEtXel8Jzt/aImsWIJRorMNwBr5l76BKF4=;
+	s=s201512; t=1763709298;
+	bh=XIXqlDrtPhMmpwTQ8EsYrSQr66/V/dN5uVlu5UxsaNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iuZ5EChKC6jkK2ZgKAj/po40+MehtuavJznVvf+hIzCg/x6d2ZCcsvOta1FfvmAsI
-	 Vfa2DV6XyCotuOlzqyf8ywSN1YqzmN0792NUl2LyeNVJHIyYlhuv0joETvU5/df3VB
-	 YaPlIo5f5MXZrKRD7Um5A+Y3jUD2WqPTejVX+ndg=
-Received: from meizu-Precision-3660.meizu.com ([14.21.33.152])
+	b=nnE58/jByThWTH2D861d1sosQUHp7Hp0zPJcoytFsQ1wpTsHHYbhx9w+7bbxaeA6y
+	 8oF+JvZ+gN8e+kgg/Nn+alGzx7EFhowK/07fdvSaFrhsRRXeG8Lz6WArEnW23EA9/W
+	 KHofrWF2AFAZyJ8dkuLaKmZZTGuxw0khd4B+wpaA=
+Received: from meizu-Precision-3660.meizu.com ([112.91.84.72])
 	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id 147BFE15; Fri, 21 Nov 2025 15:05:07 +0800
-X-QQ-mid: xmsmtpt1763708707t7bqn4l5y
-Message-ID: <tencent_F47110578F73D23CE92FD0AE86A27F6ED507@qq.com>
-X-QQ-XMAILINFO: No7DFzN00JnRsm/HvCRPm7mM+Z5Zf+A3jcMf6GQa7PngQWsjn1DVc4Zf3OmB75
-	 7OyvzJR06jIr8MHHLn3oq/6M3Jl3C8d01YWHfGz7hCToWzPBNb+N34wwXUT199KOqgn5gajPlgXz
-	 R3WEO7ARSCcJKjjqIDr7dASUlBJXheJs502RWtOMEka+Cl/f57mM7WosbBDrMUa/AawcHg/b62YD
-	 +o6wWFPauYlknIME+pbUwY60tLMeWOnPaB8+S1DzPZQFJze1a5PM2fHBT3f8f9pBjS0m3oCVDidp
-	 lT3crhpxpzwliIVuAWD9s2X4uHo4o5aOxQCQDKarwf7cysiDsb1it/yCK+oV6qcNUfpu/jx7W9Sv
-	 1IcGqI++sM/adhUcCOS0HayqkhDmb7wC2QRTvNnZnCdyphw+6tUFjMM4A3IOzI9UnXDqwxJf5jGM
-	 mvVi/5bI3UTQX7ovlhrAGH9P0DMracp8oJHhJ3HkW4cl7PMSWTH0lrrBlS+iIDonbF6iWVmPjnZi
-	 Tj8/jyC61mdPRtBz9ghWbSpt44R7uHdiHMAkiyTKXQhBzc0GSJaH2jaGIaR0T7gFubEhKg9Y2y5G
-	 hL67ayKpwrWCudbR+v8u2iNV7JjiXYo8OF+Orj06MGWl4cwhIZod+k2cIlU1RGp8f7heGs3Vx0Ne
-	 A65aUJiquElqEoxFKnYPFLn7vfq4fyl0vcMgXegD7DT466F3vpau2oUxxqwubDSe83pIBdsJBxgM
-	 jET7VJArqe3THlxV+0iksnNTNd7uzpbHMfpA4ufeShVQGfoyV5ZJETn5qknlYqBdGUTWJhWNXhxr
-	 14o5jxV1pCcBRaBLU7U2roObPWkZxkHA7jljWIc9cq9GAolzMsCn++STrT/enbtncnFdPeKVllWJ
-	 iTGHb9pBmoIRkcBS0HrTYMR9OwZtTH8ATuuAOYXSs115S008KyrDOf3XQI2HIcuVQTVHVPAsvneW
-	 vnz++Uc6hyf267I1w6lYZ0kQ+VJSo3gslpQj3ruuwFsERHHUvH8y8s+YEy9ZxTtc5Upc6HMSP09z
-	 zMQzx/1qDpbygL6sHp89lnZqlfZgNB22lvlatxLA==
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+	id 3B700E79; Fri, 21 Nov 2025 15:14:55 +0800
+X-QQ-mid: xmsmtpt1763709295th2m2vzwp
+Message-ID: <tencent_301571E78C8FB8CE9FE3E5857DC174E5150A@qq.com>
+X-QQ-XMAILINFO: OeJ9zRfntlNPRRIugqvnJvF10UIOocD22inf83ArdpNR3mPDYc8qMEZdSLIt5i
+	 HYY8enqE8S7hNKhgtFBoU9hG0S8U5u/+MhiQVr7Who95bvGPbyKPwqC52CLEmw4JDWIo2xP7ugdn
+	 i5c9kO7+crS2kpqxHnLvzlWN7f1AQPLUmYFNOC6pytDhuCMCbCFHA/TyN2Wn21I5wNYundIEcKn/
+	 cuvzoVC5ixOoQQ4+ehdxcbLPM/QkFSWOp+g6vAKOPdu9nVW78bnRZ1nDidZKATWohBkxuexsKH8n
+	 79b5TUg+i79H0nivXfjzQfaji8l4HxSAAbol03QEWJhgBAYSe+gqI7djAuQhSl3Orw6+yGKw1gYZ
+	 7QEVPv17cf7JUSXVH4Rx0L4l5MTdbz29F7V8BAGOBF9fBOKnug3L2MKDvOr/FAwsYUEHoSiu8ipK
+	 62tvALA6dHLi7/tTGlD7/896pXYUo23WljoosgaPedPDJ7mjKqfAOXO+prZnihMdspjf5Q9A++VJ
+	 +LF0C90ksdFh9WerO0/y6WlZHGHphmEqrvu1tx/g44OFF2LiBjtTDk/ncJhk5OTgKeLKFs2ICxfO
+	 hjIMoLiMK4zp6aY17z8kVZm3Yh2IZlmjRo9eYSauT95tjy5sxBlxqQnzWCybT/ZkmAshKFBoGLQl
+	 4UGrGm9PX6g8sByc7K93xlNvRt6sHllYqC7OeSgm5HDxaq/v+Mebsuci0U5aRocFvQLNHmphXZqT
+	 u6yOaMETAi1vjOGbIBZugN07h50Y1zPOuleEDV+rYF+eAV+iBas5wqlyoK+U8qlwNLpAWyaaLK/4
+	 xkFn+VYWpji4WfKSiaGS4DDCTIK7mQtfCLDt0cWWYUGEpnbHw0Lt7kY/303zFZO8DhTvX9zS/zGQ
+	 xyv/nNjY3Rb/yeTh1OxOJYRu59wo/syYZxyjSYYx1R7LeqJrR6S9LUl95cFlJV2D7l9Wsi0Y9Ehs
+	 nceYyjuEe4jZ2PBnEDJlHY2IPm1a4UM6XznX2ZvgJPUGzZvmsUDMqYrQwumTND6jEqKWz7z042we
+	 Hg0bNfuV7bCLKzQ6Re0e6er86/QKtxiSuyGXtN4SQCI3BJMwe+RNVql59Wmho=
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
 From: Yuwen Chen <ywen.chen@foxmail.com>
 To: senozhatsky@chromium.org
 Cc: akpm@linux-foundation.org,
@@ -84,26 +84,25 @@ Cc: akpm@linux-foundation.org,
 	linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	minchan@google.com,
 	minchan@kernel.org,
 	richardycc@google.com,
 	ywen.chen@foxmail.com
-Subject: [RFC PATCHv5 1/6] zram: introduce writeback bio batching
-Date: Fri, 21 Nov 2025 15:05:07 +0800
-X-OQ-MSGID: <20251121070507.2999428-1-ywen.chen@foxmail.com>
+Subject: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
+Date: Fri, 21 Nov 2025 15:14:54 +0800
+X-OQ-MSGID: <20251121071454.2999571-1-ywen.chen@foxmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251120152126.3126298-2-senozhatsky@chromium.org>
-References: <20251120152126.3126298-2-senozhatsky@chromium.org>
+In-Reply-To: <20251120152126.3126298-1-senozhatsky@chromium.org>
+References: <20251120152126.3126298-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 653A710000C
-X-Stat-Signature: cs44uxrhikf3b9ku5trzs8h8h5nqofgz
+X-Rspamd-Queue-Id: 59B3E140007
+X-Stat-Signature: bsx4st3yk3ic6cjeqbw1nqsdq3pnu954
 X-Rspam-User: 
-X-HE-Tag: 1763708714-443111
-X-HE-Meta: U2FsdGVkX1+FjMjgu3HQUA5k4ddXPTjQuuWmp5mX/EMhXbVqvQAu6CFj7JqLXuWs4uuT2L12xYhKEl+uD4HbBQrlhILxCpIDiy/QiS40j1NV+lyhq/wEIBtBKgrSBuS6OrvpmOeGHctZqP0mQYlZtv3TMVwlQ3Y1iQYGgS2q0Izbi4Kox++UbtcusDW82bL6SO04bVTg6ACTdhOFzVQAnNuPY4ST+oXwwcT7f1ku0Uv5at78QhrZG4TnPAkQglOz+HaAxhlu1weEcXqhe4L57wndyyVF1ju/clEs3a0A/mugjacnZ7PZ/kP+xpkUugnrElWvsZ4l1Lhds9AvwhpXoTWf84nt6G0zaZAwgY4bDSTesDUjkhLj41aKi+xyUTA7MqS0rJjCx1MNnNCmoQ2wgmw0ZQBELzpBIGjWXAp3LdtTTZRGIG7StGzdz9ZtyJUiLCqnwMT1KkTyXabkQCNAHNNlnOXqI72OCDgSp2RB+I+Ksx8x29LJAobFVZ0psxUOOR+fZ8RgKKkI7WHOp/YQaLbFfaExEaDXzXp7ZOdOBJ8sHWXXqnf/s/fx/d5umZQzy0KI+qQOgwX2C6jlPvY/bwVgAp2BhqJbWaZAMJ3OxdMHc/dTKCuhAtWlmCUuJZcDDDMhf/UHnN/f4EZXPV/ooG01MBuSRoi0+L9af9Gc6m+iJBIn5hwTKNT7NHziqQT0/PDUWSbchg5ZIsopCqCBXRcQ++fmRCGAF6vEUCW6oyW7TXUmKD8/vof7gt0JgdzGxV1k6sV6GdO8kSEp7N+a8GEfmqxZE/2Fh4jN/EoWemThcFUPCiYHTg2PzZYhKl1RMI0r0kXLEwOoW52IAWtmZFfBJLcooV8wLk25RXdx6ikf8e3B3Isbaf4FIvp1hAc+jzw+D7MTqrJvgMTYwdz94c1cSscKjhqdkYS2yU5p27N0Lj8SR1DqVAN8n3SEfmQuOScbx9Y6im4j8Wzu7Q9
- y+iBfKLO
- +VLeMFyZn+8HLWtT6uXxuamV8Kf8nFj1JEPOiDHcNFnxtUxwANU9gDUPLaPss3o1lv1/nWhTqfvQKo9vhybo6pSiy80Ygox+1/J5D0JuH8tIW4Gp6OetXlY2v7EH4rziaDsbByZe1Dgpd2j/BN/S9ucfa6bAkR2iRH0N9A99hwGXEvn1Yi2W4RD8+JcAt3P6IX8UDeavyRcU4S/c8XeRryHbG2tzlJhV3+4T7g3zf77NyyEYz1T/tkAxt9mTgGaVDyGHJ0gNAmEi81a5k+I7RCwfHKxLHw+w2B02QYhQQwsSUoM3WIPZ5XvL34rji3g77snE8
+X-HE-Tag: 1763709301-728142
+X-HE-Meta: U2FsdGVkX1/JfqBUtgvvRrWXIMwWD2sVmZDp/9F4EAqr0rzLOLdlBNMDtFP/Jil9y0clxzCvVjGSqH2eeh+KGqScWRHo1RtqaPQrE8RvJ2rZcEOsOKyfUxUMQomoaQ+D0ufGZi106lJMr2yneDEDZo4MoAPvWSpDxd5GeezOmt/bkhS6Mx5iyOj9cWpYaJTuN/EX48AC14SY6m31Vb9qbus3Znz3Ok483OSMUh/DkpVZO1/zMx4e0PXV3smK2hvyl8eqh/E/unu03CqdTgMeGGqvv8bMlm/NOsDFQoWKM+Yt5PIX3+Li52mobvQXaJ5QAau0a2d1DCIY2Rc7wIM0WYnMqdj75OctpoZB0czy+1MXci1EIptHCSNo7w8OS89PngED1ZPh3KM4sCsB0U/O5R13Xd9wlHVUBe2F9DniJeRJbeSRSd2+xNfg+y5mBCipkc4Z3SCzfD+X1bYGwSTQz8Sp4EL/RHFGWFSm2+tvQIyCBfskGrQfdsU1r9UgpCQ2xKYU6qyFi2lxStUi0wc6txv9O06GbE2Hm398CsQyTvAl0GRjSyU42Z8aLD1Q5kDsc3zOnuyG+ypFj79dogM+ir5rgiXh+rZvFoofxqxF+ER62JCwCJRcAnisUaZPdUr6HGAWKCpLZYdpEQ/cG3YnJn7Thi5DBXghrY9XBVgjX0XiY1UxTOtzIOWc8fZ+skX9eh2NBYDacgBLCPbIbOr2YzQSUPx9LSm6aP9j3eCGYbns1geY4rEWiKhUB1Jnn8aY0OUm6vgaHyvsfLiOzdVwMOPeDlIplIQtVbwGwr5fx+NtNkOK+EwhlSZmvdAK4ilh4WELWgSNtZCaP31sHPgEZ73EctFJ8U8e98B6krZCwFoyAMDFuzsf5WZ3Fower6HJoOFFrgN3li6TIVAUYWcGcX2PGNquUb9RR+Ylosppeu+WZ7xIIj7IMNHj05boARRYQJT9d6JIKszwfdVO6E2
+ AXcQG3AD
+ 4LGagNVncfssKHNzHPCMHoy9y+YqrTUD2Ej+04uXCd8omHPw+6t0njLOia3CHLhmVYKAoVlqAETlQG9PqxJY/KJHqR8StvDJWsxqGI70kusCGw1fPapb0CfbDW0hwD1e795ZmSdA3n4DZHUUjE4vS+7R2ZAhBojes5cxiJz7jKbI8I5i8a8mMT/wHbuOmyFju6yFv+MlYMQ3yMH7ntlHjki4B/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,14 +111,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 21 Nov 2025 00:21:21 +0900, Sergey Senozhatsky wrote:
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Co-developed-by: Yuwen Chen <ywen.chen@foxmail.com>
-> Co-developed-by: Richard Chang <richardycc@google.com>
-> Suggested-by: Minchan Kim <minchan@google.com>
+On Fri, 21 Nov 2025 00:21:20 +0900, Sergey Senozhatsky wrote:
+> This is a different approach compared to [1].  Instead of
+> using blk plug API to batch writeback bios, we just keep
+> submitting them and track available of done/idle requests
+> (we still use a pool of requests, to put a constraint on
+> memory usage).  The intuition is that blk plug API is good
+> for sequential IO patterns, but zram writeback is more
+> likely to use random IO patterns.
 
-I rarely participate in community discussions and I'm not familiar
-with the processes here! I hope the community can be more friendly
-to new members. Indeed, you wrote that patch all by yourself.
+> I only did minimal testing so far (in a VM).  More testing
+> (on real H/W) is needed, any help is highly appreciated.
+
+I conducted a test on an NVMe host. When all requests were random,
+this fix was indeed a bit faster than the previous one.
+
+before:
+real	0m0.261s
+user	0m0.000s
+sys	0m0.243s
+
+real	0m0.260s
+user	0m0.000s
+sys	0m0.244s
+
+real	0m0.259s
+user	0m0.000s
+sys	0m0.243s
+
+after:
+real	0m0.322s
+user	0m0.000s
+sys	0m0.214s
+
+real	0m0.326s
+user	0m0.000s
+sys	0m0.206s
+
+real	0m0.325s
+user	0m0.000s
+sys	0m0.215s
+
+This result is something to be happy about. However, I'm also quite
+curious about the test results on devices like UFS, which have
+relatively less internal memory.
 
 
