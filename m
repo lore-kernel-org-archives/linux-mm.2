@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 164E4CFA448
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 04:01:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77F4CFA46E
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 04:01:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D3756B002C; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
+	id 2101E6B002E; Thu, 20 Nov 2025 23:01:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AA736B002E; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
+	id 1E8216B0030; Thu, 20 Nov 2025 23:01:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E7F56B0030; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
+	id 0FE6F6B0031; Thu, 20 Nov 2025 23:01:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DD926B002C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:01:05 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB5261A0199
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:02 +0000 (UTC)
-X-FDA: 84133263564.04.C3007ED
+	by kanga.kvack.org (Postfix) with ESMTP id 006DF6B002E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:01:06 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C258B13B006
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:06 +0000 (UTC)
+X-FDA: 84133263732.14.04F184A
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BC367C0009
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:00 +0000 (UTC)
+	by imf10.hostedemail.com (Postfix) with ESMTP id E44C3C000B
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:01:04 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
 	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763697661; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763697665; a=rsa-sha256;
 	cv=none;
-	b=J70GZQWq27Kz5QqeJoKpAKOolgc6sEIgKJbdhAVRzNbvjgmka8pzTr9G69SMH48e1UrKao
-	AB97YiT61CiDwafTw6KP6zy4nyNsSkrr9gjd48j8bPdp1zeYAY447+mfGluZUxVdyvGhFf
-	eP7kk8HxeYZLlec2gShj43pyG/pSFXE=
+	b=uqSbxdaDBuT36GIYYCTxON0HxqrsK9OYVHgAWc9tGCpc2pSEwE2BMZrf0DYSXiPxV92ZKD
+	Q/tvTEEkbR5xRPAeShLTzXxrSNDdIA2AUWjZkUmNVh8xe4bTzxMOijN7+P8qVZE20Qz4E7
+	0AfrnBF3Fn+g3MwHG8i1R4pPP0Gw7iI=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
 	dkim=none;
 	dmarc=none;
 	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763697661;
+	s=arc-20220608; t=1763697665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ipa5ZAfxugTULlo8iHx1WjCSpMuoDe1nh2tnqvJpiNM=;
-	b=Z2YroKa0JJr4hdBMujaeb0lzOhcqGhCeuwCv+2ntIjXAvK5M8Y/RaK8hgMqOzPMe4wPL8X
-	nQw8U2z9VU5K8zP5MR+DwLiWJWiNdXTskL8slIpUBQOvB8LCGqPKzGytJUhJ83QO0OUlv0
-	5s0LYuZJGPNlcRpe+MekvFShjfgB6ns=
-X-AuditID: a67dfc5b-c2dff70000001609-6d-691fe3faf41f
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=HcK2DdBm4Zrq+7VoY/J5fRqhKAsS9JbhFClpFyicbzE=;
+	b=dHxo4jflsljI6az4Bgmbn+vrh2+irmeaKWcD/1+uIJaki8iStyYLXmIVos48KgHIu+yope
+	rftH9tLoRJpFZXp7B2jdFFTWtBQFZfCmijxEaitO6z4bVJs4ZJt9bwMtVWAMJJP3MGetB1
+	3JbBM/1O9c0Ie8p92RzycMimNlxHMGQ=
+X-AuditID: a67dfc5b-c2dff70000001609-76-691fe3fa2e4d
 From: Byungchul Park <byungchul@sk.com>
 To: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -78,45 +78,48 @@ Cc: linux-kernel@vger.kernel.org,
 	dtatulea@nvidia.com,
 	shivajikant@google.com,
 	io-uring@vger.kernel.org
-Subject: [PATCH net-next 1/3] netmem, io_uring/zcrx: access pp fields through @desc in net_iov
-Date: Fri, 21 Nov 2025 13:00:45 +0900
-Message-Id: <20251121040047.71921-1-byungchul@sk.com>
+Subject: [PATCH net-next 2/3] netmem, devmem, tcp: access pp fields through @desc in net_iov
+Date: Fri, 21 Nov 2025 13:00:46 +0900
+Message-Id: <20251121040047.71921-2-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBIsWRmVeSWpSXmKPExsXC9ZZnke6vx/KZBku28lus/lFhsfzBDlaL
-	n2ueM1nMWbWN0WL13X42iznnW1gsvq7/xWyxblcrk8XOXc8ZLV7NWMtm8fTYI3aL+8uesVjs
-	ad/ObPGo/wSbxbvWcywWF7b1sVqcO7ySzWJ7wwN2i8u75rBZ3Fvzn9Xi5KyVLBYdd/ayWBxb
-	IGbx7fQbRourM3cxWSy8E29x6fAjFovZjX2MFr9/ANXPPnqP3UHOY8vKm0we12ZMZPG4se8U
-	k8fOWXfZPRZsKvXYvELL4/LZUo9NqzrZPDZ9msTusXPHZyaP3uZ3bB4fn95i8Xi/7yqbx5kF
-	R9g9Pm+SC+CP4rJJSc3JLEst0rdL4MpoXvKDreALT0XP7ZNMDYynuboYOTkkBEwkVi5/wAhj
-	f2tsZAex2QTUJW7c+MkMYosISEl83LEdKM7FwSywhlVi+YytYA3CAnESD38sAGtgEVCVWL92
-	MRuIzStgKtGxZznUUHmJ1RsOMIM0SwgcY5d4+vMPG0RCUuLgihssExi5FzAyrGIUyswry03M
-	zDHRy6jMy6zQS87P3cQIjK9ltX+idzB+uhB8iFGAg1GJh/cEp3ymEGtiWXFl7iFGCQ5mJRFe
-	VUeZTCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE0hNLUrNTUwtSi2CyTBycUg2MVpsu
-	mxzp2FScyusT47rj7h/Jt9XWX17XSL5c+7j15fLtK1IiLjDMl6gXf+/YtTnnwISotbOcnslx
-	bjywIe38p6+714bZn92puMN8S+K+Az17XwufMLLdpxGvspnPqaYrceVTBc3uzQGXeLt/qKTp
-	XjSX13BcLrd/yxb2ks7y5eVdH8R/aq+3U2Ipzkg01GIuKk4EAKkE5lqrAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAwGRAm79CAMS/gMaCGludGVybmFsIgYKBApOO4Mt+uMfaTCOOjir+Hg4p+C4
-	BTj5rOcCOJyqtgE4q92PBjicz4QEOPWv+gM4rrqFAji5uucBOOqYrQY45cbiBzjfpuYEOLyH
-	twM44o/IBjjuhc4EOMOdyQU40LaOBTjOw6kGOLeA4Ac407qcBjjerP8FOMmaqQQ4iNy9BDjG
-	oBY49svsATjVmboCOKHcXzjSw+IEOJuBjgE4+/icBjibxd4HQB9ItKnZAkjWmJEESNi+ygJI
-	uZrdB0igsnVIs6gqSNPNdUiyqokGSLLykgdIubjzAkiNg+4GSPHl2gRI777VBkij6PACSMyg
-	xAdI87IeUBBaCjxkZWxpdmVyLz5gCmiDpPgGcPQMeIzbyQKAAcsKigEJCBgQNBj2gYEHigEJ
-	CAYQJxjY2PkDigEJCBQQGhjxuLcHigEKCAMQrAUYp5i1AYoBCQgTEF4Y4figB4oBCQgEECUY
-	r62jBooBCQgNEDUYiLynAYoBCQgYEB8Yq7DAA5ABCKABAKoBFGludm1haWw1LnNraHluaXgu
-	Y29tsgEGCgSmffyRuAH000fCARAIASIMDcgJH2kSBWF2c3ltwgEYCAMiFA0lQRxpEg1kYXl6
-	ZXJvX3J1bGVzwgEbCAQiFw1KV2VgEhBnYXRla2VlcGVyX3J1bGVzwgECCAkagAEAuSxiYklG
-	aIusnnStzTc8+QxM5e5ncem5ZVHeb2HzY8QvfOiwsiQCnYkGWFDtu8S2Ar5WHICr0h8eVG2M
-	n0ylQba81grQiQi1FX7kvPun43q8VverMW7mqYosZAjnp9DMwqkK7//qyr366Oew1XhNs8kw
-	HOSkVpsXN2KzXzeuHyIEc2hhMSoDcnNhp4l8S5ECAAA=
+In-Reply-To: <20251121040047.71921-1-byungchul@sk.com>
+References: <20251121040047.71921-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRW0hTcRzH+29nZ2djw8NJ6rhMYWSBmGVp/QkRFcrTW1AvXUBHO7nRNtfm
+	ZWbRpMQLpNZLzu1h68E5nU7mZRdK8pJpXlqZOs2ZztQoL6glXgrblN6+/L7f74cffDEm0YgI
+	MKkim1YpRDIhykW4SzzTye3ZSOnpv3oC1m9qoHnayYJb1gUGNNS1AVjvq0Ch4cMTBP62bTNh
+	o7uIAV3uBQB/VDWgcK7Hz4Zfa+YR+KrYwYT+il4ULhcNIdDTVs6CQ10WFDq002w47DagcMq6
+	y4J91RYElky+RmCP8RDc6F8EcETnZkDTZDr81OVHoL6wHMCdzUBe/3aKnRxBtVjGGdRo1TOE
+	8ra/Z1Cuah+bMtpzqObaaGp4MIey15WilH3tOZtyOdcZ1NPHyyi1OjeBUCvtIyg1YOxmU+v2
+	iCshN7iJYlomzaVVp5IyuJJ3gR+U2hDN56IxVAtMvDLAwUg8nhxp3UHLALantb/Q4BnFT5Be
+	7xYzqENxAbnqdLDLABdj4lYWaa5qBUHjIH6LHN+dQYIawaPIWe0ACHL4eAJZ+VGzj48k65ve
+	7HE4+Dmy3a/bqxKBiLV0mhFkkrifTZqbtcz9QhjZUetFKgHfCA7UAUKqyJWLpLL4WEm+QqqJ
+	vZ0lt4PAijUP/9x0gjXP1U6AY0DI4/dyIqUES5Srzpd3AhJjCkP5USnhUoIvFuXfp1VZ6aoc
+	Ga3uBEcwRHiYf2YjT0zgmaJs+i5NK2nVf5eBcQRaoLvsUX5hKQ0CbP38Hd6o7VteU1zj1AOB
+	pz8z1TFqI0pM+PHw4hnXC5+q0JbBuZRyzx9mXhoci+/zXVxJBup5CxrDn0/sFl+T7GY/GpaH
+	t7oMPy8kvNTVfs+cSLMSachOqnmyQHRMspKUOBaz1aK3HHWcvc5pW2yI7RgfKhAiaokoLpqp
+	Uov+AbuWMSnBAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprKIsWRmVeSWpSXmKPExsXC5WfdrPvrsXymwe4HzBarf1RYLH+wg9Xi
+	55rnTBZzVm1jtFh9t5/NYs75FhaLr+t/MVus29XKZLFz13NGi1cz1rJZPD32iN3i/rJnLBZ7
+	2rczWzzqP8Fm8a71HIvF4bknWS0ubOtjtTh3eCWbxfaGB+wWl3fNYbO4t+Y/q8XJWStZLDru
+	7GWxOLZAzOLb6TeMFldn7mKyWHgn3uLS4UcsFrMb+xgtfv8Aqp999B67g7zHlpU3mTyuzZjI
+	4nFj3ykmj52z7rJ7LNhU6rF5hZbH5bOlHptWdbJ5bPo0id1j547PTB69ze/YPD4+vcXi8X7f
+	VTaPxS8+MHmcWXCE3ePzJrkAgSgum5TUnMyy1CJ9uwSujONAhxQ08Fdcab3O1sC4kKeLkYND
+	QsBEouELWxcjJwebgLrEjRs/mUFsEQEpiY87trN3MXJxMAusYZVYPmMrI0hCWCBG4ub/hywg
+	NouAqsTjhjOMIHN4BUwlJlysAAlLCMhLrN5wAGwOp4CZxL5HM8FahYBK1nQ+YJrAyLWAkWEV
+	o0hmXlluYmaOqV5xdkZlXmaFXnJ+7iZGYGQtq/0zcQfjl8vuhxgFOBiVeHhPcMpnCrEmlhVX
+	5h5ilOBgVhLhVXWUyRTiTUmsrEotyo8vKs1JLT7EKM3BoiTO6xWemiAkkJ5YkpqdmlqQWgST
+	ZeLglGpg1Pz+cZWWZO0ppof14eWv5oTK61TP2N6cYiKUWrx7Z/avBRz7PNQKmVaqZBZXa1x+
+	f2KZ2+1V9zIO/5PpPcCosNPIZxJT7ny3OJVP3y4fa2LV6vtYfSlL1mZ573b3p6x9h71n7Xhi
+	vmrKC+tASz2xy0c6r4m2WSdraZhF94jZBt2NcDN/mhSsxFKckWioxVxUnAgAthD0vqgCAAA=
 X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: BC367C0009
+X-Rspamd-Queue-Id: E44C3C000B
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 76k66rpzzkjtkcrmcy5styhpt7rggxnc
+X-Stat-Signature: a1gr7p4z5g3wkt6d4d7ft8r1u5ttcgzw
 X-Rspam-User: 
-X-HE-Tag: 1763697660-850056
-X-HE-Meta: U2FsdGVkX1/VMuhU4TPSRa+R0dROZ1d/ljrmxTXFQk4b8IeBEWshKXYxtDP+v2XG3GBEeI+cRMkfZr505FdVeE8I0Ecij3wGXY1x5mP53al3FkeDeoa5jqiGsDx4gThkiIfRGmvzEMbfGkEdAE6GmJ/sfUY9Vkm34nqB0cSvLsXVqhkGjmno4LGft43PRIK1S484G6/ub76GVBY6ORGhYUGlm9VHvJBZpBzAiQXn/zZ5rW5MpzLVbqvZR8lr8fGiOqG5IQX/F476fDciDyz6py1fFzEpdLXKJkLKKQAvi2+YC2NOLhhTwv9Z/PkbC1PhrIlzMVlOODccRUsIi6qBvFkxuJJLRqZaIcY8DYVdhUlieVADoMIrP06aTcfbSaXqx66SiVkkLNXGyhHtGQs2tcXTjBxYUlAvShldMw5G80GzlZoAzAoKdasP/DLg205H+rRZM8zv7VWBBV/VCCKgLFrYF4e+gbWEmNDq+IbTUJDkcT8vMs+Qseg/2LKLkDzat8l4jqykQF4sgCu/5RkGqvRcp2YjXRwz/GtlCJ3VeKM70RjUzgz3z/7RgaQ8N1OlqFgX0iwfIRA/X3vvVIQqutsoc7LZZ/XSNk7h6NTEHGw2AowSKyLwgt/damPn+ZNR1TkMe7MAvFbBl+ky0MVTnWlLOC9toYMOP6qDUHMbC5KyPe79qNwd6EfP/F85aLzXyIUwl43p+pyYqGmPiSEZj4jg4az5OU1MiQSCl+zMyfiYqdg8+H0wylMwyw8qNVL1msu39QmfH0rlsM56yDO3cYQwZ5mT9U6CbgVOvsR40MTtSqz9++1evb1kZ10VaQHaSw7Kum+AMPxfP/6xPPabLOwzP7ISTyyCqqi/x3rAkteZ+tfkneH8JtOQZhoJIObJiaTd30qkvi9JCm5ciXynJ5zcIiFvt7IJH6C5poy1XWV33aCY9+AwqmW9inklO16mjL3aYSHNWC31RXDD+k0
- db9QF3HQ
- NbTy+u8y9LeJ+5traDwM8j/Au4TADhMdxOzfdx3RTG6vz7FZTWyHtpJ/sqo62yxezUILuNtcTegDTX8WlUVXXf+AB6g==
+X-HE-Tag: 1763697664-282290
+X-HE-Meta: U2FsdGVkX18cZ1f870DUgCeB/QdgDZxA1Url2R9akV+YOoesMBQp7YfWBP/+HG+nw8MNufBHE/qiCxht5gmGY9ZS42xyY/a+mxtsbTIBjy4vqYZoD8jTfgoCh0yoQdFG/pqoeQL3Ao0Qwpfb3moOpDu4oZNC6Mml9qo6hY+bPnU9FxSB4mB/MYm9eMJeYocpy/UsuqPaR8H6kHKqmFliFtrQX6Y9gZlM4g/XDiA12bt3VteJ8CdwRTJLkpUmUkZwJy6LJ6nwyo7XjaxTL5JoNyMYcvH7nFtHssfCOHWAezD5twKPa1Pw+AYYeLb5FbxjHVhM/LTXoBzkoklIxF+0Kl9wsKSkp4ziP2NhrcMUi4QX/xM5HwRIybiTjbUzI63CsM5sYqDjJ44LZKML0RKNca0SX1CUGZyBSW4Ns4dafS7smL56HgiUXloms0dOzQBD+AY+NXhspjt31B6DJGRHqm9/goN8M4YCUa5OaTrnbM1GkExykHigcq/9xrU7U+yrmY38G8EragRq4okbM4qH2v1aPprIYqakVcXtfMBglO44O5UapaR+JMqKWXkF+4+Qg2EEPQS/dMT5ddh3/mOb8ME/s3NBvnzHHS5+iBmCofpLkQ+8zQesRcd1HsZMZt2yFBvMcu4ctteQU7Ck5ZfZSe8ruUPStPJJCt4sarq7q6KKk04nmTAzClORmfpayNMtqaiA7MuR7krU5LxR4jhFPtgUQQUYhWomB//yo/X+Q/AQCJ2C5I1U/r0X7CTXjFZ908cbnil3K0CD9jQH5s926Fk0Jyup4P5FqM0sFFA3tfryJ1ky3HefvO1I7BM5AecP1vcPFOD3faa7txLXGGExVBk4tYh7nQZbNBnniyoZM7p2yIOptGwnu0xKia2d2Q+Eo/hCfgs7bzn+7F1GQoTJ0sixpOY7isrU9BOgd0w48tFSnZUCVdkcMNcDJPz/vhbWnmTdQVCHBGYF9dBJ5mc
+ GmugzT52
+ slqY+PseZXuJfuF6mCEfgzWm015Y9hTgvNjCiEGYAjcgEBGYW1qWYMX/yr2idNtmwhuoZrjWgV+NOaEmOIxAY7Z2qhg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,48 +133,56 @@ to access them through @desc in net_iov.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- io_uring/zcrx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/skbuff.h | 4 ++--
+ net/core/devmem.c      | 6 +++---
+ net/ipv4/tcp.c         | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index b1b723222cdb..f3ba04ce97ab 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -693,12 +693,12 @@ static void io_zcrx_return_niov(struct net_iov *niov)
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index ff90281ddf90..86737076101d 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3778,8 +3778,8 @@ static inline dma_addr_t __skb_frag_dma_map(struct device *dev,
+ 					    enum dma_data_direction dir)
  {
- 	netmem_ref netmem = net_iov_to_netmem(niov);
- 
--	if (!niov->pp) {
-+	if (!niov->desc.pp) {
- 		/* copy fallback allocated niovs */
- 		io_zcrx_return_niov_freelist(niov);
- 		return;
+ 	if (skb_frag_is_net_iov(frag)) {
+-		return netmem_to_net_iov(frag->netmem)->dma_addr + offset +
+-		       frag->offset;
++		return netmem_to_net_iov(frag->netmem)->desc.dma_addr +
++		       offset + frag->offset;
  	}
--	page_pool_put_unrefed_netmem(niov->pp, netmem, -1, false);
-+	page_pool_put_unrefed_netmem(niov->desc.pp, netmem, -1, false);
+ 	return dma_map_page(dev, skb_frag_page(frag),
+ 			    skb_frag_off(frag) + offset, size, dir);
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 1d04754bc756..ec4217d6c0b4 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -97,9 +97,9 @@ net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
+ 	index = offset / PAGE_SIZE;
+ 	niov = &owner->area.niovs[index];
+ 
+-	niov->pp_magic = 0;
+-	niov->pp = NULL;
+-	atomic_long_set(&niov->pp_ref_count, 0);
++	niov->desc.pp_magic = 0;
++	niov->desc.pp = NULL;
++	atomic_long_set(&niov->desc.pp_ref_count, 0);
+ 
+ 	return niov;
  }
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index dee578aad690..f035440c475a 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2587,7 +2587,7 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+ 				if (err)
+ 					goto out;
  
- static void io_zcrx_scrub(struct io_zcrx_ifq *ifq)
-@@ -800,7 +800,7 @@ static void io_zcrx_ring_refill(struct page_pool *pp,
- 		if (!page_pool_unref_and_test(netmem))
- 			continue;
+-				atomic_long_inc(&niov->pp_ref_count);
++				atomic_long_inc(&niov->desc.pp_ref_count);
+ 				tcp_xa_pool.netmems[tcp_xa_pool.idx++] = skb_frag_netmem(frag);
  
--		if (unlikely(niov->pp != pp)) {
-+		if (unlikely(niov->desc.pp != pp)) {
- 			io_zcrx_return_niov(niov);
- 			continue;
- 		}
-@@ -1074,8 +1074,8 @@ static int io_zcrx_recv_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 		return io_zcrx_copy_frag(req, ifq, frag, off, len);
- 
- 	niov = netmem_to_net_iov(frag->netmem);
--	if (!niov->pp || niov->pp->mp_ops != &io_uring_pp_zc_ops ||
--	    io_pp_to_ifq(niov->pp) != ifq)
-+	if (!niov->desc.pp || niov->desc.pp->mp_ops != &io_uring_pp_zc_ops ||
-+	    io_pp_to_ifq(niov->desc.pp) != ifq)
- 		return -EFAULT;
- 
- 	if (!io_zcrx_queue_cqe(req, niov, ifq, off + skb_frag_off(frag), len))
+ 				sent += copy;
 -- 
 2.17.1
 
