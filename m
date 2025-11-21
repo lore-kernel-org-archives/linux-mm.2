@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE501CFC29F
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1662CFC500
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 18:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB0BE6B00A3; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
+	id E19516B009F; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C12E96B009F; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
+	id CAF166B009E; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F0516B00A3; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
+	id AB36E6B00A1; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 80DB26B009F
+	by kanga.kvack.org (Postfix) with ESMTP id 80A136B009E
 	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:55:49 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECF57C070F
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D73B31A068D
 	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:55:46 +0000 (UTC)
-X-FDA: 84135518292.14.4726AC1
+X-FDA: 84135518292.02.B99CA00
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6842C1C0002
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5354380006
 	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:55:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=VheqOwN6;
-	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=V2cZGPcn;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763751345; a=rsa-sha256;
+	cv=none;
+	b=kk7tU/NHL+Udjmmh4sLvGtpR2peOp0O+1oVchSQe9Vsa9DIPMORkJ2fhKrXR1RzCBMI7af
+	nQbj620WcVogbRNV6Jf9XaOvrO1AFGOzU8cnXq2LDBqdrJU3FGXqVRh9WROmtDZUJsWakI
+	y+bzOZUKvAQqLRKdZAqueRHEa+vIfzo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=V2cZGPcn;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763751345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A/tEc5tFrvTtBuLMXuLE+3Ir+qQmPEaILfulPI2BDOU=;
-	b=TgjIqIz2XLHzrIezrMswpcj9S1SvP3rfPeaZJFKoRbTaU1w1Cp8T4bHWkVCYCS1d3Lbntw
-	TjBTjNYZ543izUfWelpteazTdPmvo0JLU6sTZp82WGXWwWjFqPRsSncuaG70FADpXGOb/1
-	4DS3jAP8c9aSoli3mAOHYNiUboBOKZg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=VheqOwN6;
-	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763751345; a=rsa-sha256;
-	cv=none;
-	b=GMKLxyfoXcDL+3BZ39NpKuYnN7lNyc5IStu8Eqqh9GisW6wSax9tUVfw/aLCwSYLcBrACp
-	gnoBQB47JkJlhJdZ4ibvTqT1Lycste9m0v+79zGNBjSdIgGVeQH3gB+Pa38TJ3EIx0DsKH
-	Du3dSucFHnjd31Dau35kL62MHEHgwDA=
+	bh=QZeXt++V+t0s1eS9v+LvMKqHQ5JNcRneWedbaF2UH6k=;
+	b=BOxA5idoJiaF45Pin/4PzolQEYKk1ywjXeXBtqkMZC+qZs6F91jMUbV73FKoYLQRGbmhqS
+	CwOuDeQEQ7r9MWOdLuSLPMKTEQLIGVvJs2TjYNstpTLYvE1W+M6jo9ERqyPnePVVdkON5q
+	tFx8CX27Ea8j3MRhwJ8HWTxWHISyP9Q=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=A/tEc5tFrvTtBuLMXuLE+3Ir+qQmPEaILfulPI2BDOU=; b=VheqOwN6A2nhqQpeYKL3X+7bW4
-	oVtNF6AZIrS/xvOmeFyApFmstN2D+jPT8I5GrBf6IL6Rz0UH4BVH6zAc7qeqped0EUPzhe7CoyvVV
-	NQQar/MYTER9IuKdSs3nAjWJhTZFQk21AXMc8N4+T1VmUkAfj1gG4uRFEiiTGOpWU3qV8OKywzvpg
-	D8qT6uHRmzt07V2KuvF939mh1wXIDct2V+tldBrFe7gSTEkVGtD4hNTMfC98BbJ5+fEIjOj34Qz0e
-	WRyo5RcMjfkA8AezN/s3fVFIo9I4TaRW/2Eg09a9LqZRhKu6zPuCq0KC0ODVPc7SsUxivt1USi7N/
-	vrIIiHJg==;
+	bh=QZeXt++V+t0s1eS9v+LvMKqHQ5JNcRneWedbaF2UH6k=; b=V2cZGPcnVGCAfaYJVus1PjGNkk
+	1LgJTD4zRtBrvfL6GIFzkTlh3Cn4EdjH0th5asMeRZs/L2eu2bKiYnflBqvDu4Wfn3WDUTuD0p/5+
+	cTp0PDC+HmNQmnQAjId5p9phZjPoJvqm5qu+z/2X2EIlLDftXuXm2uRBbTSF4Qo/HnJL0SZeaMoLy
+	st+YhpzVoaY8os/mh3R43kh5YHypIcnUpa7UnIi4ja5N4DDMk8KeyHi+CakKAjYIu2ycB0Wu3u7Zf
+	7F7son2vDjjhVS70376Lt6lIFmdKStihMwmxt5NmamnCVn6hcgUyr4XQZl0wOPh2pHCcEg6U/Q0PH
+	4qbTRr5w==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1vMWI9-000000003i4-1QJt;
+	id 1vMWI9-000000003i4-1VoD;
 	Fri, 21 Nov 2025 13:55:34 -0500
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -76,22 +76,22 @@ Cc: linux-mm@kvack.org,
 	bp@alien8.de,
 	Yu-cheng Yu <yu-cheng.yu@intel.com>,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC v5 3/8] x86/mm: Introduce X86_FEATURE_RAR
-Date: Fri, 21 Nov 2025 13:54:24 -0500
-Message-ID: <20251121185530.21876-4-riel@surriel.com>
+Subject: [RFC v5 4/8] x86/apic: Introduce Remote Action Request Operations
+Date: Fri, 21 Nov 2025 13:54:25 -0500
+Message-ID: <20251121185530.21876-5-riel@surriel.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251121185530.21876-1-riel@surriel.com>
 References: <20251121185530.21876-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6842C1C0002
-X-Stat-Signature: gfectp3dm58homhyne6yh8isjtjsymat
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5354380006
+X-Stat-Signature: ho7osuh9amu365nmtezuob1adtwf5oh8
 X-Rspam-User: 
-X-HE-Tag: 1763751345-247647
-X-HE-Meta: U2FsdGVkX18/SmqmlctHc/BmySt+NXjv2JSqiWOGJkEmdhbUoRYgJTWrDVHbqz7zj2+VTSaKVSb3Q8pT/N7xwqTzjuTakK1pCCol0EbLkMHXYqhxbqAzXFCVnI9Gm+aOPKv75++EAGE+YCpPxPPJiveFlcGqk4xVjHMrMNSCCYVaJOQb/nUl6kBc0xwbNrKfV6nRI5jU0ENthepdo0yuDV/xiDAWbgsUzPUNAZrbOZYdL39rncGxJ6a/3DlxdAHMLEifmhfKlWVDliUsZ0vnQS4x1TCpWQ6j2i7r1fq+k6cd878pNU1IUtcXg6Jq8xTqWMOcwZqgpOfypGxq1GSekzRBxg6kC3hAwFo0Z7cr4Vk4h1Z8xGCmMyM2b0+11c5Zak5Goq6STqimWD0UX7MKBwlN9fOQUDF7gTZzHa4j4O/d9bT8tD9WoRZir+jyW9ABdg1ss3qvYKvcSGYTZH7oBZTmx9ouDqZPAtNLc2h1bExR9LamtjgiroCTnJTYq7fKhDtAYEeSCelzK9pLTJjYIRt9xAIdvuNI5BWvbQXrDM06eVpw+dfqtP9Ds0iAmW1uhcweM0wk9AahqNvIiHtM1Oyc6APPNVTHOk1z41MYxNxmb5vP9YqG7cR7FapahPg5T0ho4moW4MiSaSMVDMawX7qCDvQ6qPRjv470LWdR3XHpfmN90fogGvSeHL5w87UQqq7FvdrMmlWoM7fogTzwTkTF9sm+lY2lCcFfeDBZqnD3UAYJK0fJTF/DINocX1uCQr82a9KMuXuYL3z2B82OqeuiTGQErVlhfCNdj/ESpSTTpCGG0GMnd0PUxYElTZFqF1aQXnoapCVo3ZGmwkDU8o6SC+0O/LySIfl1wwpAiQrZDPO5Hz/mEAUa+jqRO4GgZEAEasEPBuBHwowXEje0cSFRWNTybocPEO3/v7TmN1YpLV0tZAn5RiUNLFIhlkt5BBkSm+g0GTXkWHuOZ2O
- 7R8ixySJ
- milR3gZQi1RHinIr6r97nqI81rzSvEPIgNbaW4oPXAWa2R0EURbo3bpCR+wJB/6cy3x/CNdcxIWSfoYJwRX53rDDpi/J7UFFkSYLwTgcMZcZCpeNSJEXa2lZdB2t0fayFwWvfF9ZHEVMGnqT0JaBAoLFYhll2JxTZCFx0YRQvuFnoTuaVtxzGWwhBiHcAqn+QYCGfKz/obiOaw84lmLzV/67mF8uJ1U41mwZMdRSY2QDtDc5v6LfCXqGIavHiBERPOC9Lm8TKDlILWtdS5PCl/9w0yG8vJMNaHr++LPhOvVp5SLlocO4HH/oq45E7WHV7JrYqWBnGHj0TUBgf885XS3wPUw==
+X-HE-Tag: 1763751345-484991
+X-HE-Meta: U2FsdGVkX188wUOBXvo/yY047I4CwrtFMa36v2vo1kqmCBJ4yVngi65MSAfGtQLyyKMYjhqNlYv+03zMkLmsWTw3mDKrM6ux6pamKh7GGBpL+W1Mu6qZQpJ5kaL9Tz73KsD+ffL7Sccg9FsEpMgDsjyFuWqgXvQTK4+utZoeMJ7ksGalO9zPtpWM7F2j2LIBR0srQdSH5DSzFN6lODysw+rSjmM+p8nTFtVd+iph0s71rn/qmCBWiG3bbR82ZELuBjv84OPD8Bc2Olc60ywCOVmYe/KuElAbl5H4bCo5YcxfRf9TrKOuU0UMJSJXG9mBzX906fFXFiPT58FQDwUupY2i699fghN9OJmqBUdKV1MUhtTKBodeAcTso5IcHS2rpS4ij9TGMonDrpgDAh1XLcmzuoXdjs28Ca8Xxq42ThOee7Uzh+ss9X873g49cLv5MdHzlM8YCvsMtnouiMw1OLd1eSebQpw3SBTRY6GP7+YNJwxX0c+9sscOWHG82o20fXrcrf/QVeUaJdVLJsDnBXHgRgUTzrUGvSQynkW8J5L5P0WXacB6Is/UjxO4De0ff7c6eivgo5YmMpd/Pipfw/tV0gPVsxrli4tC+Z+ifIB/WGbFPPrMlTrx+41Rh4hXA27q7WHmF/4ZPAUB2seOJW2V8P8xL/XwHL/ghTw05ECtupBCleXTCPiIKyyOW8Umgmv0LfdHyTmWU3eBWzdeqT2RXYATftj9EQ3q0FVGvzdQRqUyBCgLXMAqxEEwTFN88MMvNsyeCYntLinXeksDcZV51c78OOrnAjtbFj1l7SllV8a89rVlV6TkkmdTtNM4mffsSdSwe/sQGvZGmNSHUyuBoo+2cRl4Y0VB/9EYisHthW2pwSfo811FJoTrQR+PsNk3DwTctneuhu7Wd1R+QGuZ97oDkXUlfDd0F/FIfVjweK94t91SQeM0240q6PLYFq/eVI+1VS+i0nEhN+y
+ pYFT/uZp
+ DN0tf40qUzIMysVv6TF7TXRr8LzBY4FGQUgFyZCXvEGVEvmib3ecLGWYyIX3caLjTM2SKJ2cqym8yO2eQ2ZC3WFlGvV54JLS/3Yn24oVmXeiwQwp3aC53o5ImX0tW8/UXr2G4lXnWx6CD4PCUYrgElhv1Gcph60PY9YNHUx3IEFKh05APEpFu0aIvbSgqL7XcAp/notmNZMbn4A3pJvPgW1r97MBo065IWPZTFxhKW9AiolZmweBYWlOpBnc8PL4w7OBqNq5ps6MH/6OtMNXy9JETxTHLT6G6+muc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,63 +102,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yu-cheng Yu <yu-cheng.yu@intel.com>
 
-Introduce X86_FEATURE_RAR and enumeration of the feature.
+RAR TLB flushing is started by sending a command to the APIC.
+This patch adds Remote Action Request commands.
 
-[riel: moved initialization to intel.c and disabling to Kconfig.cpufeatures]
+Because RAR_VECTOR is hardcoded at 0xe0, POSTED_MSI_NOTIFICATION_VECTOR
+has to be lowered to 0xdf, reducing the number of available vectors by
+13.
+
+[riel: refactor after 6 years of changes, lower POSTED_MSI_NOTIFICATION_VECTOR]
 
 Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- arch/x86/Kconfig.cpufeatures       | 4 ++++
- arch/x86/include/asm/cpufeatures.h | 2 +-
- arch/x86/kernel/cpu/intel.c        | 9 +++++++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/apicdef.h     | 1 +
+ arch/x86/include/asm/irq_vectors.h | 7 ++++++-
+ arch/x86/include/asm/smp.h         | 1 +
+ arch/x86/kernel/apic/ipi.c         | 5 +++++
+ arch/x86/kernel/apic/local.h       | 3 +++
+ 5 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
-index 733d5aff2456..6389f0a617c8 100644
---- a/arch/x86/Kconfig.cpufeatures
-+++ b/arch/x86/Kconfig.cpufeatures
-@@ -199,3 +199,7 @@ config X86_DISABLED_FEATURE_SEV_SNP
- config X86_DISABLED_FEATURE_INVLPGB
- 	def_bool y
- 	depends on !BROADCAST_TLB_FLUSH
-+
-+config X86_DISABLED_FEATURE_RAR
-+	def_bool y
-+	depends on !BROADCAST_TLB_FLUSH
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index b6472e252491..5cb57a820198 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -76,7 +76,7 @@
- #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
- #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
- #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
--/* Free                                 ( 3*32+ 7) */
-+#define X86_FEATURE_RAR			( 3*32+ 7) /* Intel Remote Action Request */
- #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
- #define X86_FEATURE_UP			( 3*32+ 9) /* "up" SMP kernel running on UP */
- #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 98ae4c37c93e..b53bf3452d6a 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -719,6 +719,15 @@ static void intel_detect_tlb(struct cpuinfo_x86 *c)
- 	cpuid_leaf_0x2(&regs);
- 	for_each_cpuid_0x2_desc(regs, ptr, desc)
- 		intel_tlb_lookup(desc);
-+
-+	if (cpu_has(c, X86_FEATURE_CORE_CAPABILITIES)) {
-+		u64 msr;
-+
-+		rdmsrl(MSR_IA32_CORE_CAPS, msr);
-+
-+		if (msr & MSR_IA32_CORE_CAPS_RAR)
-+			setup_force_cpu_cap(X86_FEATURE_RAR);
-+	}
- }
+diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
+index be39a543fbe5..1b0bf20f0c7d 100644
+--- a/arch/x86/include/asm/apicdef.h
++++ b/arch/x86/include/asm/apicdef.h
+@@ -92,6 +92,7 @@
+ #define		APIC_DM_LOWEST		0x00100
+ #define		APIC_DM_SMI		0x00200
+ #define		APIC_DM_REMRD		0x00300
++#define		APIC_DM_RAR		0x00300
+ #define		APIC_DM_NMI		0x00400
+ #define		APIC_DM_INIT		0x00500
+ #define		APIC_DM_STARTUP		0x00600
+diff --git a/arch/x86/include/asm/irq_vectors.h b/arch/x86/include/asm/irq_vectors.h
+index 47051871b436..52a0cf56562a 100644
+--- a/arch/x86/include/asm/irq_vectors.h
++++ b/arch/x86/include/asm/irq_vectors.h
+@@ -97,11 +97,16 @@
  
- static const struct cpu_dev intel_cpu_dev = {
+ #define LOCAL_TIMER_VECTOR		0xec
+ 
++/*
++ * RAR (remote action request) TLB flush
++ */
++#define RAR_VECTOR			0xe0
++
+ /*
+  * Posted interrupt notification vector for all device MSIs delivered to
+  * the host kernel.
+  */
+-#define POSTED_MSI_NOTIFICATION_VECTOR	0xeb
++#define POSTED_MSI_NOTIFICATION_VECTOR	0xdf
+ 
+ #define NR_VECTORS			 256
+ 
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 84951572ab81..d3ef57e60360 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -123,6 +123,7 @@ void __noreturn mwait_play_dead(unsigned int eax_hint);
+ void native_smp_send_reschedule(int cpu);
+ void native_send_call_func_ipi(const struct cpumask *mask);
+ void native_send_call_func_single_ipi(int cpu);
++void native_send_rar_ipi(const struct cpumask *mask);
+ 
+ asmlinkage __visible void smp_reboot_interrupt(void);
+ __visible void smp_reschedule_interrupt(struct pt_regs *regs);
+diff --git a/arch/x86/kernel/apic/ipi.c b/arch/x86/kernel/apic/ipi.c
+index 98a57cb4aa86..9983c42619ef 100644
+--- a/arch/x86/kernel/apic/ipi.c
++++ b/arch/x86/kernel/apic/ipi.c
+@@ -106,6 +106,11 @@ void apic_send_nmi_to_offline_cpu(unsigned int cpu)
+ 		return;
+ 	apic->send_IPI(cpu, NMI_VECTOR);
+ }
++
++void native_send_rar_ipi(const struct cpumask *mask)
++{
++	__apic_send_IPI_mask(mask, RAR_VECTOR);
++}
+ #endif /* CONFIG_SMP */
+ 
+ static inline int __prepare_ICR2(unsigned int mask)
+diff --git a/arch/x86/kernel/apic/local.h b/arch/x86/kernel/apic/local.h
+index bdcf609eb283..833669174267 100644
+--- a/arch/x86/kernel/apic/local.h
++++ b/arch/x86/kernel/apic/local.h
+@@ -38,6 +38,9 @@ static inline unsigned int __prepare_ICR(unsigned int shortcut, int vector,
+ 	case NMI_VECTOR:
+ 		icr |= APIC_DM_NMI;
+ 		break;
++	case RAR_VECTOR:
++		icr |= APIC_DM_RAR;
++		break;
+ 	}
+ 	return icr;
+ }
 -- 
 2.51.1
 
