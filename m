@@ -4,128 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC0DCFC50A
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 21:31:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A21CFC281
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 22:03:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 507F66B0062; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
+	id 1D5226B0005; Fri, 21 Nov 2025 17:03:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8676B0088; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
+	id 1AC946B000D; Fri, 21 Nov 2025 17:03:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CE086B0089; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
+	id 09B846B0011; Fri, 21 Nov 2025 17:03:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 27A7A6B0062
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:31:27 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C36FD1A060D
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 21:31:26 +0000 (UTC)
-X-FDA: 84135910572.01.AAA271A
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CA1DCC001C
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 21:31:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=MlrSi68j;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id ECB696B0005
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:03:06 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9FE5E1A070C
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 22:03:06 +0000 (UTC)
+X-FDA: 84135990372.25.845160D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2F992A0017
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 22:03:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RtxKZ+rC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9vfBP/yP";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RtxKZ+rC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9vfBP/yP";
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763762584; a=rsa-sha256;
+	cv=none;
+	b=Py3+XYRVCAiNCHp+i0Z7xBgrWMjqGM577di51tnb1DRNvujwpWRY9UbRGC7RguwV3lCaec
+	6GgbKMU1ePtDpaVXmxzCPoWDelLRvKrd/99fuU1g2wvH63AWVoMSvQv/nmep6KRi6y+/hc
+	HkGRfcuAGv/Wf+Ngj+RLAvZ8D2RsH9Y=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RtxKZ+rC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9vfBP/yP";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RtxKZ+rC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9vfBP/yP";
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763760685;
+	s=arc-20220608; t=1763762584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+byFGoWk/0V52ELeDrnzRQimZK8yvBtN44GDPwhdBk0=;
-	b=caLOXaY/S53JxP0m27VBybrW+jeRjaVt1dQEAEtx/6igabAIaGGjUoVTk3j9W3k8gNmDEp
-	Dt7tI8uf+o/o+CLKzuK8QGs4caOvxVDND4aAcTYpNIU5AMGiQ/IINL1U81Dbc2iSVfehad
-	HKP/RKApZ0DmtgxLembac3JH4nWsexE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763760685; a=rsa-sha256;
-	cv=none;
-	b=eHAfxWTYi3g6Kn13gdvQamX/TSAT0krSGaa/JnukADXhU7G8poGzhRmng78CMh2Zq5SAc1
-	Tlsn3I4YMk4jDKcro99FWjnvN+PazeqPzrGbzKy5SetDefKwrBjkq62S9RPiu8WQCmJGtB
-	/aGf4HhONkhpdfXkJVMuMzmXiZM2Pa4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=MlrSi68j;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so4049705a12.2
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 13:31:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763760683; x=1764365483; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+byFGoWk/0V52ELeDrnzRQimZK8yvBtN44GDPwhdBk0=;
-        b=MlrSi68jiBFU9rM2/JD9ACwJbAegoAWuYWAN97qd9X9YJUQmg86ibHyKXMHttmIiUA
-         XOt8VF/aiZrmZT/lzV0cTNhe3lULEsqMpAkKjLrqDSsflgm4+Y0aShERwrtL4X/nfSHy
-         G2saFn6ivUCFzVeEj43yfXIYiOjUetF6XcCxqTkDTHGNzaUmGIOTH+AqL63ZUUjqHlDf
-         4PlAackq/RWbEAEcZJZ8GuNnMr2JGEIuENIVOipA7AUj/MVZ0m8W5XxcC8tnd+pMHe4h
-         wRrDInchLYkl/SEPcY9u1jOPTUW/8SEt5JZWiGL1Sqzp3C7PD0KY2KEkstntxP0ZA81X
-         K8nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763760683; x=1764365483;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+byFGoWk/0V52ELeDrnzRQimZK8yvBtN44GDPwhdBk0=;
-        b=E1SF0ckwP106ppsLwn82uqo2Qyf1f1n20dxgUWEQxSfMEsdF1Pp65urqSHh5c+97ww
-         2A2dlgEisljinPLG/nw35tjw/jx6jhMF75mfGEbvhG1HUeB5ZZbyB6FctH+VkNOUDZYY
-         ey5OUjwyYA1bJ17qHNsAKxX5Qt1H3+pF5aAjLVdhY8mSYe4WCcKUASjz4Q5nSLjwQiiG
-         ho+Tet7SYKKZCgT26oAqPulNIKuAueu7xfp0wA/q/Ka5/UWr7yAtwJa9T9ePGI+85uUy
-         dBXwFrrbcXNOEwz0SLAsouhu7x45i5G3ZyanfAEGXc51OClNA2X0T6MJGrXT7vjtlRvP
-         RuJA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPBq9tG6dilcXSkLHuFpDp/FAk8cz3hPKqwOUilXoVKOFrYQCpJhBlLefd7K3Cl0d+ILWhkDGmGA==@kvack.org
-X-Gm-Message-State: AOJu0Yxaop5O4dXoHlFOsp484FjK1ZtM0QPgetEt/q3AqB3eBJ1SWGf3
-	+qXEhIOb+C2cdJQkt043cAv+EMl0tR2I5SrTImy/bpax6Oq4rI6CdrXC1/tvDUOQvvb4WnMTth1
-	dh6Zjq8bIdYs9FE0in2nAjFSrix5I6gUpOnW0OWYKrA==
-X-Gm-Gg: ASbGncvFS9aiOU+aRxBb+jzGHuifnEAqEylpMuwKYAAP6ZNIS/0mGEk6GMFhuSb2767
-	Npf8uFmlfwCLrzEEReMYXKxu4R2Q8sk6X5yP3WZsyaKEHwXser/+IK//xdMnABhZeu43L4FYkh4
-	Mpn3zxwpik6Yc2Pcz0az2IBVYE0gCHmJ9RDX10Y2hyLUWxv0f01hx708sWfCs/98/Pzt8fVlhEy
-	JkA35VQg0nXgrCoLPU5vI/1AXoaOwHRjPc9a6YfLfYOQOnqO4yCtOo12jIOUQGpdmub
-X-Google-Smtp-Source: AGHT+IHb/TNH6HpXoXxdJqBqtls7NiUE5U9WcaIN1X3bEaIYHVHMwMKVOTZ0kii/oe8jLFgQnVtKbwI5uYAd2wY8FI4=
-X-Received: by 2002:a05:6402:20d1:10b0:640:f8a7:aa25 with SMTP id
- 4fb4d7f45d1cf-64555d0426fmr2711637a12.30.1763760682926; Fri, 21 Nov 2025
- 13:31:22 -0800 (PST)
+	bh=Yw2pxXis/Xz+P4oynkr/Rd16vF8hQAG4sC5aqFVU/w0=;
+	b=DATx/PPLfdksDXCuLq+jDWnTZ+Po720ldHe0l93Y/1NUi4uJIaHhwSEyVGfsC83Xi4JOJD
+	fD0osnCJxVZLnA14ykpc1nYhTi7uw7RD8zAIktQWMnpJJLL0pcgqdhVE4RwCbTsYnw2VU6
+	cbPgvPS/mMax3ixbghs1xI/lN+YnV0c=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5FDD62198D;
+	Fri, 21 Nov 2025 22:03:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763762582; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Yw2pxXis/Xz+P4oynkr/Rd16vF8hQAG4sC5aqFVU/w0=;
+	b=RtxKZ+rCkjc+P1J2ddY632Z/XKFO38IcSLMTt2tWkHTgfd46reS1kednob69VeL3EaGGgF
+	+SLB0ZOPs2/ehU+1xuXY8ywjgw0y7EVH1BFpwrUTepLzR8jFwhp15NHTsojckED91a1VJP
+	BF4zCcXLwYRvTkwnbkxkpYfOnc9IUqY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763762582;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Yw2pxXis/Xz+P4oynkr/Rd16vF8hQAG4sC5aqFVU/w0=;
+	b=9vfBP/yPdDXnOzOd4zvbe2TZr9zVEZ1D2NTjHJxsiMrubKiEkO8d4S6u5FPKvZRXihydzf
+	gBT9VPUYDa8C3+AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763762582; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Yw2pxXis/Xz+P4oynkr/Rd16vF8hQAG4sC5aqFVU/w0=;
+	b=RtxKZ+rCkjc+P1J2ddY632Z/XKFO38IcSLMTt2tWkHTgfd46reS1kednob69VeL3EaGGgF
+	+SLB0ZOPs2/ehU+1xuXY8ywjgw0y7EVH1BFpwrUTepLzR8jFwhp15NHTsojckED91a1VJP
+	BF4zCcXLwYRvTkwnbkxkpYfOnc9IUqY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763762582;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Yw2pxXis/Xz+P4oynkr/Rd16vF8hQAG4sC5aqFVU/w0=;
+	b=9vfBP/yPdDXnOzOd4zvbe2TZr9zVEZ1D2NTjHJxsiMrubKiEkO8d4S6u5FPKvZRXihydzf
+	gBT9VPUYDa8C3+AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 40C513EA61;
+	Fri, 21 Nov 2025 22:03:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id piAtD5bhIGkaQgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 21 Nov 2025 22:03:02 +0000
+Message-ID: <b1ae4706-b56b-432f-bde6-7d76e9b02598@suse.cz>
+Date: Fri, 21 Nov 2025 23:03:01 +0100
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-5-pasha.tatashin@soleen.com> <mafs08qfz1h3c.fsf@kernel.org>
-In-Reply-To: <mafs08qfz1h3c.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 21 Nov 2025 16:30:46 -0500
-X-Gm-Features: AWmQ_bmySwNVArPJNxXTzBmV6LhGk1Wdy9I8BgPPnIaZuGaVx8wlezdZ8VKPhXs
-Message-ID: <CA+CK2bDSSJhjx8fH1rsb3unS099pKWze-=WX1B2ZnE0LCMXUAw@mail.gmail.com>
-Subject: Re: [PATCH v6 04/20] liveupdate: luo_session: add sessions support
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
-	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
-	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mm_init: Pull CONFIG_DEBUG_CHECK_PAGES out of
+ CONFIG_DEBUG_VM
+Content-Language: en-US
+To: Joshua Hahn <joshua.hahnjy@gmail.com>,
+ David Hildenbrand <david@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kernel-team@meta.com, Kees Cook <kees@kernel.org>
+References: <20251121204454.2090245-1-joshua.hahnjy@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251121204454.2090245-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CA1DCC001C
-X-Stat-Signature: xofx8mrqo5jjywhjetyykuc4qb6pi8g1
-X-HE-Tag: 1763760684-751324
-X-HE-Meta: U2FsdGVkX19q8Op0UAmLTZWJzr3k/vgQiOPPazyFE8M1LuB2enSU1sVT73w9cS2yDdsFtXX+k/vh/+mIONkhWiRIhx87ZVvoLzVvQERC4NJOAC5cj0fQLicm+B0c/m/0oDHYUP8Te87xTl6CitLNcbPyEB4csaBwBXwxQZrdJ+4zeFOS4YWck3LLd49Wh4ECvlMChp5D6hXbSV0vTiviJyDbo9Nju8vIXYUbbXl2rtJEz2FFS8bfYkR+iRPoojAgO/nZQ8KrEsdjb9gCKav3yCXIDv9U3AkfcXyDboFQa8MS8TmOlc2FrNaHUM3xiTkMTSAsfz8sp1RxUvLcr1C9L964FqpK6cTy9Xma8c6lC0WHM4AF85Nll9/oLRxmpqHIkVkZxLzBsxg40D0hrLas89QRDDPHjkVisUpbVQa6nzSTjWUWEzJH8529LgxmmChWA0Osdi1bnMYX91fhPQI4dQJVj38P8D/i1iIj28bmUyLfynVjncsl1Q0EZh8CE11Vk4UJH7E1Hd45qRa/X1unNUHWw/oxGdCPB+JRG+ybxFgE37eRdgvR/2NV1H8lg+z7Xnl6sBbJfMhyklHqG+u1AEa3mq+X94ifW+MfCpiy4zdY3qU+hHU9JOcer9hYVNT4f4euLh/IlhoJpac9gWr09cpSDQPd0HkazKpcApD2H3EfYr3UhJRRO6LoilD279DsfTYPrs35EoS6WY5WuF+cnAZjaOyLstQSkgd4arY1dojt/VVHPUHjG39gPYmjsIe/QjvZxnNJmdx0bxob7rQBRtyQmp+FvTq8zzfi05Lcgs5ZxBjeXhDEKOg+seXjZYDJ+fMp+4Cn2Y/4myiyZA6TkKQSTkakNl+6Zgsj8Nsz2ye5NysZ/zLlhBYAtP/aje1dbYvlFJUrKYUklY70grCxgqW0lYC/6hIF9yc0zB7uqcwrrf3FIx+wFYTliLxOuAmIFhbBhJuulpyYwck93aa
- JdF55Esf
- vdPgXApJ8IiwMjGbRMJo4sjRFSYBGbwSmUIb1zb8qHllAM9OrgGLa3yBcpJg+WnRYE9eiyy3FrobipJ3NwZhrBNPwYh+8CUD84MFKBa4PjjDxkpxMWU6x0Vyd5If5dsJa/6p56yDfhAaA8feczXnzaOZW5FhGta4+V0B2UOTwPOO119h3DsLonewwW4DqifgMifS4okRoNMIKJPULPPqc5NjKHZaY4sERI4nivjchGadgIIS4jJz729+irEa9CnOUzS96Hkwad2/GJzuKKwVaUdyc18Fj/c9wSoX4MfcONT5+QkoLLBsYbkvpBw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2F992A0017
+X-Stat-Signature: h18znk5szd15cw5ikz634httc5hwjkhj
+X-HE-Tag: 1763762583-309619
+X-HE-Meta: U2FsdGVkX1+luiCkag0lRprihwhdCXnBMpVPb1fiRuhxP+pUGGL1t1fUiA3AE8Oa2GTvE5HLmWszA0kyTOIpK1FCout9thjKX6+95h7TJXrUC0KkDCLS1BpJaKZo06RmwYMmOZ8D9NmXI7jnp/3fufW0lzf3t29M6RryQN7xj0hKFQox0uFieK2qLfro+PUfR3L6doLyuVhn8Y/y+h+SGg23KZmwGV9J4cmiFVwArlXllUYBeUL6UI2RCYNpXPlQb2T1GhcgaAb2SFYjunJfuzMYKQd+gcwizqdJ8DIuoDeqdbkHlIw4Zpdx7iCa4OcR2XYLEt5kz7MVnIw/TUMDY+P7T7s4DVi8oy30nTsD85hpNrql28Mlj50xEOUSty2EaHqU0xpECb7A0ZXWFhu7HYKCL9WNVad6Kg2kLqlptA/gtwhOud7DSxJGJOVrRngLJT/1UArCqMa28X77ndRf472x2jfCfXjGJ/WHaRtbbl/nr6V8s9UBcpZ4u2ZgBXEsVLWW/+6CfNDoI5sp+Z5GHBopOkGv09ZlrrnwBw79nP87PW+oMPUeFiqcY+pjcecDSIpaa1JUwBZzwKFafCeAdM7F5D+mm9708gtFV7Y7qZQwbWf7AySy5RQqGi6tILOwC2cnDCdokcwqECStxIX5grhkXqorIYL5TNtLxOc+kv6FmTSdv1a7lT1cJwOaiEXaoadI7NNgegf+EQzSScQttVbRe907krVTfY/7uJDVsKKpxt2vVW7zuuN94/Qzf5iICQLuTa4e2erYTc3jZTOSbC5gCbsDTJnsMXWXrB+OcjaWYKRZw3XUERbIAK5wnRXvB66Lx8KXfWss8QGDmc92qk+53J1R3dKZxM/n2+D7VDUpizIOjd4Idvl0SEV2STmv1rHDHJzDWAV+QpWQ+1ZejV8rB4FNZvMIWJyt41VU8vGFXThDoAZJ4XoITJZjJVzyZil88/MJgbUxM+BNdgz
+ jSyQ7kTC
+ o/WOiKwrAUr8lw+WGZALNVfaCWYhtO8VzxpMM0weLrHUH6XNcZjbo2N1zmafymakpiSuTahJPCfHIY6O4Ot0lv7n6pZ4l9vlDrMDUHJ2BNmUTWpIOEAVs1d67oUsT0tWZsMrrfCX26dNTqj4c2zQjqosNf52L96QGS8lKgECtGkErXuYLvqADW56ik2lH3TQpwCx16Xm7CgFU1eKyO9tH+zuG0GmrndqtjP9v76+TtwPHNlmUp+t5a+lhLhEQAL1HgRBd1CQ4ENawxAuk2WKpQN2xaYFvBI3p8mZh+7FIEgtRyL6R4/32+StPNM4FIxihte3FxHxhu04M3VEKFNY+L9K2r34g1j0PNXnkOEzVZoRy8le8O6nDybWoJmtzlMmo/Hpj3YqvaNWveaqFbT26fYzWssnrKBwd9pxBpJFPvXRL0pU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,188 +182,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >  /*
-> >   * The LUO FDT hooks all LUO state for sessions, fds, etc.
-> > - * In the root it allso carries "liveupdate-number" 64-bit property that
-> > + * In the root it also carries "liveupdate-number" 64-bit property that
->
-> Nit: This needs a bit of patch massaging. Patch 2 added the typo, and
-> this patch fixes it. It would be better to just update patch 2.
+On 11/21/25 21:44, Joshua Hahn wrote:
+> Use-after-free and double-free bugs can be very difficult to track down.
+> The kernel is good at tracking these and preventing bad pages from being
+> used/created through simple checks gated behind "check_pages_enabled".
+> 
+> Currently, the only ways to enable this flag is by building with
+> CONFIG_DEBUG_VM, or as a side effect of other checks such as
+> init_on_{alloc, free}, page_poisoning, or debug_pagealloc among others.
+> These solutions are powerful, but may often be too coarse in balancing
+> the performance vs. safety that a user may want, particularly in
+> latency-sensitie production environments.
 
-Yeap, this is fixed.
+OK. Would a boot parameter work for you instead? It's more flexible than a
+config option. Then we could perhaps also decouple it from
+init_on_alloc/init_on_free as it's a bit odd side-effect for those anyway.
 
+> Introduce CONFIG_DEBUG_CHECK_PAGES, which sets is_check_pages_enabled
+> with no other side effects. Setting CONFIG_DEBUG_VM automatically
+> enables this as well as to have backwards compatibility.
+> 
+> Developed on top of 7f1dae318f81e508ef59835bc82bdf33e4cb1021 "mm: swap:
+> remove scan_swap_map_slots() references from comments" of mm-new.
+> 
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  mm/Kconfig.debug | 12 ++++++++++++
+>  mm/internal.h    |  2 +-
+>  mm/mm_init.c     |  8 ++++----
+>  3 files changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+> index 32b65073d0cc..366abde25026 100644
+> --- a/mm/Kconfig.debug
+> +++ b/mm/Kconfig.debug
+> @@ -45,6 +45,18 @@ config DEBUG_PAGEALLOC_ENABLE_DEFAULT
+>  	  Enable debug page memory allocations by default? This value
+>  	  can be overridden by debug_pagealloc=off|on.
+>  
+> +config DEBUG_CHECK_PAGES
+> +	bool "Debug VM page allocation/free sanity checks"
+> +	depends on DEBUG_KERNEL
+> +	default y if DEBUG_VM
+> +	help
+> +	  Enable sanity checking of pages after allocations / before freeing.
+> +	  This adds checks to catch double-frees, use-after-frees, and other
+> +	  sources of page corruption by inspecting page internals (flags,
+> +	  mapcount/refcount, memcg_data, etc.).
+> +
+> +	  This is automatically enabled if CONFIG_DEBUG_VM is set.
+> +
+>  config SLUB_DEBUG
+>  	default y
+>  	bool "Enable SLUB debugging support" if EXPERT
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 04c307ee33ae..b8decdfc0930 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -562,7 +562,7 @@ pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address);
+>  extern char * const zone_names[MAX_NR_ZONES];
+>  
+>  /* perform sanity checks on struct pages being allocated or freed */
+> -DECLARE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
+> +DECLARE_STATIC_KEY_MAYBE(CONFIG_DEBUG_CHECK_PAGES, check_pages_enabled);
+>  
+>  extern int min_free_kbytes;
+>  extern int defrag_mode;
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index c6812b4dbb2e..7f47b22864dd 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2523,7 +2523,7 @@ static int __init early_init_on_free(char *buf)
+>  }
+>  early_param("init_on_free", early_init_on_free);
+>  
+> -DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
+> +DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_CHECK_PAGES, check_pages_enabled);
+>  
+>  /*
+>   * Enable static keys related to various memory debugging and hardening options.
+> @@ -2588,10 +2588,10 @@ static void __init mem_debugging_and_hardening_init(void)
+>  
+>  	/*
+>  	 * Any page debugging or hardening option also enables sanity checking
+> -	 * of struct pages being allocated or freed. With CONFIG_DEBUG_VM it's
+> -	 * enabled already.
+> +	 * of struct pages being allocated or freed. With CONFIG_DEBUG_VM or
+> +	 * CONFIG_DEBUG_CHECK_PAGES it's enabled already.
+>  	 */
+> -	if (!IS_ENABLED(CONFIG_DEBUG_VM) && want_check_pages)
+> +	if (!IS_ENABLED(CONFIG_DEBUG_CHECK_PAGES) && want_check_pages)
+>  		static_branch_enable(&check_pages_enabled);
+>  }
+>  
+> 
+> base-commit: 7f1dae318f81e508ef59835bc82bdf33e4cb1021
 
-> > + * This structure is located at the beginning of a contiguous block of
-> > + * physical memory preserved across the kexec. It provides the necessary
-> > + * metadata to interpret the array of session entries that follow.
-> > + */
-> > +struct luo_session_header_ser {
-> > +     u64 pgcnt;
->
-> Why do you need pgcnt here? Can't the size be inferred from count? And
-> since you use contiguous memory block, the folio will know its page
-> count anyway, right? The less we have in the ABI the better IMO.
-
-Right, I had pgnct because my allocators were using size as an
-argument, but we removed that, so pgcnt can also be removed.
-
-> Same for other structures below.
->
-> > +     u64 count;
-> > +} __packed;
-> > +
-> > +/**
-> > + * struct luo_session_ser - Represents the serialized metadata for a LUO session.
-> > + * @name:    The unique name of the session, copied from the `luo_session`
-> > + *           structure.
-> > + * @files:   The physical address of a contiguous memory block that holds
-> > + *           the serialized state of files.
-> > + * @pgcnt:   The number of pages occupied by the `files` memory block.
-> > + * @count:   The total number of files that were part of this session during
-> > + *           serialization. Used for iteration and validation during
-> > + *           restoration.
-> > + *
-> > + * This structure is used to package session-specific metadata for transfer
-> > + * between kernels via Kexec Handover. An array of these structures (one per
-> > + * session) is created and passed to the new kernel, allowing it to reconstruct
-> > + * the session context.
-> > + *
-> > + * If this structure is modified, LUO_SESSION_COMPATIBLE must be updated.
-> > + */
-> > +struct luo_session_ser {
-> > +     char name[LIVEUPDATE_SESSION_NAME_LENGTH];
-> > +     u64 files;
-> > +     u64 pgcnt;
-> > +     u64 count;
-> > +} __packed;
-> > +
-> >  #endif /* _LINUX_LIVEUPDATE_ABI_LUO_H */
-> [...]
-> > +/* Create a "struct file" for session */
-> > +static int luo_session_getfile(struct luo_session *session, struct file **filep)
-> > +{
-> > +     char name_buf[128];
-> > +     struct file *file;
-> > +
-> > +     guard(mutex)(&session->mutex);
-> > +     snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
-> > +     file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
->
-> Nit: You can return the file directly and get rid of filep.
-
-I prefer returning error here.
-
->
-> > +     if (IS_ERR(file))
-> > +             return PTR_ERR(file);
-> > +
-> > +     *filep = file;
-> > +
-> > +     return 0;
-> > +}
-> [...]
-> > +int __init luo_session_setup_outgoing(void *fdt_out)
-> > +{
-> > +     struct luo_session_header_ser *header_ser;
-> > +     u64 header_ser_pa;
-> > +     int err;
-> > +
-> > +     header_ser = kho_alloc_preserve(LUO_SESSION_PGCNT << PAGE_SHIFT);
->
-> Nit: The naming is a bit confusing here. At first glance I thought this
-> was just allocating the header, but it allocates the whole session
-> serialization buffer.
-
-I made it a little clearer by adding "outgoing_buffer" local variable,
-and then assigning head_ser to this local variable.
-
-> > +     if (IS_ERR(header_ser))
-> > +             return PTR_ERR(header_ser);
-> > +     header_ser_pa = virt_to_phys(header_ser);
-> > +
-> > +     err = fdt_begin_node(fdt_out, LUO_FDT_SESSION_NODE_NAME);
-> > +     err |= fdt_property_string(fdt_out, "compatible",
-> > +                                LUO_FDT_SESSION_COMPATIBLE);
-> > +     err |= fdt_property(fdt_out, LUO_FDT_SESSION_HEADER, &header_ser_pa,
-> > +                         sizeof(header_ser_pa));
-> > +     err |= fdt_end_node(fdt_out);
-> > +
-> > +     if (err)
-> > +             goto err_unpreserve;
-> > +
-> > +     header_ser->pgcnt = LUO_SESSION_PGCNT;
-> > +     INIT_LIST_HEAD(&luo_session_global.outgoing.list);
-> > +     init_rwsem(&luo_session_global.outgoing.rwsem);
-> > +     luo_session_global.outgoing.header_ser = header_ser;
-> > +     luo_session_global.outgoing.ser = (void *)(header_ser + 1);
-> > +     luo_session_global.outgoing.active = true;
-> > +
-> > +     return 0;
-> > +
-> > +err_unpreserve:
-> > +     kho_unpreserve_free(header_ser);
-> > +     return err;
-> > +}
-> [...]
-> > +int luo_session_deserialize(void)
-> > +{
-> > +     struct luo_session_header *sh = &luo_session_global.incoming;
-> > +     int err;
-> > +
-> > +     if (luo_session_is_deserialized())
-> > +             return 0;
-> > +
-> > +     luo_session_global.deserialized = true;
-> > +     if (!sh->active) {
-> > +             INIT_LIST_HEAD(&sh->list);
-> > +             init_rwsem(&sh->rwsem);
->
-> Nit: it would be a bit simpler if LUO init always initialized this. And
-> then luo_session_setup_incoming() can fill the list if it has any data.
-> Slight reduction in code duplication and mental load.
-
-These are now statically initialized.
-
->
-> > +             return 0;
-> > +     }
-> > +
-> > +     for (int i = 0; i < sh->header_ser->count; i++) {
-> > +             struct luo_session *session;
-> > +
-> > +             session = luo_session_alloc(sh->ser[i].name);
-> > +             if (IS_ERR(session)) {
-> > +                     pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
-> > +                             sh->ser[i].name, session);
-> > +                     return PTR_ERR(session);
-> > +             }
-> > +
-> > +             err = luo_session_insert(sh, session);
-> > +             if (err) {
-> > +                     luo_session_free(session);
-> > +                     pr_warn("Failed to insert session [%s] %pe\n",
-> > +                             session->name, ERR_PTR(err));
-> > +                     return err;
-> > +             }
-> > +
-> > +             session->count = sh->ser[i].count;
-> > +             session->files = sh->ser[i].files ? phys_to_virt(sh->ser[i].files) : 0;
-> > +             session->pgcnt = sh->ser[i].pgcnt;
-> > +     }
-> > +
-> > +     kho_restore_free(sh->header_ser);
-> > +     sh->header_ser = NULL;
-> > +     sh->ser = NULL;
-> > +
-> > +     return 0;
-> > +}
-> [...]
->
-> --
-> Regards,
-> Pratyush Yadav
-
-Thanks!
-
-Pasha
 
