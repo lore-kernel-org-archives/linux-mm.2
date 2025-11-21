@@ -4,150 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F73CFC28C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 16:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F56FCFC28C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 16:33:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A435C6B0026; Fri, 21 Nov 2025 11:24:33 -0500 (EST)
+	id C07F06B000E; Fri, 21 Nov 2025 11:33:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1B876B0027; Fri, 21 Nov 2025 11:24:33 -0500 (EST)
+	id BB7866B002D; Fri, 21 Nov 2025 11:33:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 930766B0029; Fri, 21 Nov 2025 11:24:33 -0500 (EST)
+	id AA5FC6B002E; Fri, 21 Nov 2025 11:33:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FDF26B0026
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:24:33 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AB54C033D
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:24:29 +0000 (UTC)
-X-FDA: 84135137058.14.E74587A
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 63FF040014
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:24:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=iVYxelnp;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U vzaBNS";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf01.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.149 as permitted sender) smtp.mailfrom=alex@shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763742267; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 924BA6B000E
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:33:10 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B5811A04FE
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:33:08 +0000 (UTC)
+X-FDA: 84135158856.15.733D31D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DA87C1A0007
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:33:06 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jm1SpMw0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763742786; a=rsa-sha256;
 	cv=none;
-	b=PoSoOmod7D/jjaxXX2pyAJ6N1fn9SkovD1l6ycBd+WtzkDzi1kEhcbVnTSf1Dp7nbK6D+t
-	LrSV9X4SrnDADbepESCMEswXcw6qejoUkEO5v2DuPKhfr7ZyEtlgXN1JHHXixWQSq5yT6C
-	MDZL6OY7JYG0tIOe/Q8566nB6WZa4NY=
+	b=hGR6vQii3zaKNhk+bTAfipS1mdI+2bz5vjti60/STiKDWe5q6Iz1p9svIs89BBx6ZFwiWP
+	qpqG/lI5FhP1kVU0r0Hf+vItPszn8u9terXL6obAisTohVVSbFYMP2fpDYgFKvP8iyDtO4
+	biUaGlMZf0qFmb2VzcIlr5OrC2Ka+nU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=iVYxelnp;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U vzaBNS";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf01.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.149 as permitted sender) smtp.mailfrom=alex@shazbot.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jm1SpMw0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763742267;
+	s=arc-20220608; t=1763742786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y9sPmO9ctPmEofVcJL2ve0sLdAoEmPz/dsTzOswFhgc=;
-	b=WC1sNs2nKxkji1zABGhTTVoDdeS34h+TNFYbmJ8ntbtSltSCM/ezPYCqC57y+UVh9lpvY0
-	u4MJTXqUzIlfCv0W6R17dIwdYrUu6BMmO7ZsEWcv0gvZI7gaT23mpMzJhKo6i7qfsNuwTq
-	M2evkvk8r58Ke0aOv6vyZW6RYaasTNw=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id A04FF1D00156;
-	Fri, 21 Nov 2025 11:24:25 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 21 Nov 2025 11:24:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1763742265;
-	 x=1763828665; bh=y9sPmO9ctPmEofVcJL2ve0sLdAoEmPz/dsTzOswFhgc=; b=
-	iVYxelnp6m8nPDJCJD3pghiuY0JnfpXoWiKDtyC1ZfTMF8fUQtXTaMX5yXfbLont
-	ST9OiZCOgXI8ULRFc6aFOTV/tf4SKt4W5wcQbP9AJZVnFKNBeKTXaQz1YXBFdesO
-	ngWnz2nFnL1qztTi6xyP0b4aSzvPm+uN9ak+bIptT2djVNAQLdqCmwibU9kE5Aby
-	VpAiSzJm+BAVU4pwbqnka0BeOqzyT0bMUyCvk7dAaYRepF8yb8plimv6meD7DiWX
-	p8wl94vOATtCxVWlASjaMB/2zpgiQXfFwIjaAR+tnZBqkJApVj4qwHk4EVRiCEnp
-	1g+zDY1l5gB38/tTHqvG8Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763742265; x=
-	1763828665; bh=y9sPmO9ctPmEofVcJL2ve0sLdAoEmPz/dsTzOswFhgc=; b=U
-	vzaBNSi3AV9eHP0xV5OI+fIMqpbdDdLZSjxGvsQ1T9RKmeLAwjextymi2cVXU8uy
-	Be6PO+J6KI0iovHc0UiFA8B7rQiJTAIxOd4DhBWcsamEOEW5kjFnqKsB7FIrhxeQ
-	GuiIAMeDF55zh/ogS1yglOFCO/9flUPn1HBDtkEepyUIH7oJ3GvW0fdgq2cG3HNt
-	Rreb7R/CH8xTdpLKWo0BA9gScPfpMk/xxjgIGSyYgTlnJbiy/QOWhAmLxQpYZ6V3
-	7/Vl+Dl5oQsAGlnSZbuDQqBdTTIF2o/fTw+PlG/91H2n4QIdikT7RS5D+uM/ue4F
-	NdHheTOKT/rjN+6DYqXNw==
-X-ME-Sender: <xms:N5IgaVaQZaAe5t79XnH1rbSJrYlQplMMYdp0M6-Mr3uWvt823MEJDQ>
-    <xme:N5IgaSsBncHkvTAX8k6pT0FvMeuYcjAGM09pjfPKAWMwiWFbRzWYD5L220C8E6Pk7
-    g55i_BbOAKRyF9cw6sEpexN2O8LimadQjIefkoeLiQUv98iWdUI>
-X-ME-Received: <xmr:N5Igad-WFs5Ve-cFz6F4xXvv1f14eMC6yGbsbN7RyWZyEu__tXqKIFcs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedtgeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepteetudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudet
-    hffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeefhedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtoheplhgvohhnsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhoghgrnhhg
-    seguvghlthgrthgvvgdrtghomhdprhgtphhtthhopegrgigsohgvsehkvghrnhgvlhdrug
-    hkpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthht
-    ohepjhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepmhdrshiihihprhhofihskhhisehsrghmshhunhhgrdgt
-    ohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
-X-ME-Proxy: <xmx:N5IgaQ84u-HHIf2TcQNYp-qQlqRMCjkmlLokOX6AO2UGzSJhrElRBA>
-    <xmx:OJIgaXPtSD_NpuOHdtKoNjoojGX18VUQEBCkvknI_2nnhJz5NPrx0g>
-    <xmx:OJIgacOkV7PC26nL5WPRH0i6onKjj8iCzVuttmRsX2N7uBq0h1DUmQ>
-    <xmx:OJIgaVMFYRWTlkUhXAgJS6FxtMLkh8eI-ToaCrmBZCSefA8L7jXnYw>
-    <xmx:OZIgaTGK97vls5JNSW_jGH-7CSY683IBHOHRkaC1YrXeI4xtr5m3V3e5>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Nov 2025 11:24:20 -0500 (EST)
-Date: Fri, 21 Nov 2025 09:24:17 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- Shameer Kolothum <skolothumtho@nvidia.com>,
- Kevin Tian <kevin.tian@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>,
- Matt Ochs <mochs@nvidia.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- iommu@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, Alex Mastro <amastro@fb.com>,
- Nicolin Chen <nicolinc@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: Re: [PATCH v9 00/11] vfio/pci: Allow MMIO regions to be exported
- through dma-buf
-Message-ID: <20251121092417.7a6eaa2f.alex@shazbot.org>
-In-Reply-To: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
-References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
+	bh=75ixhreMUDWbh4dODxW//JGJm/lsZtMKbrWc/Gh2Zlo=;
+	b=MZlpf8HKg2ebBRJr+GteOfEPpRhGdG9z64m2OwKnbSMWAnW5K0DntWZqKDD6jmkcBV95dJ
+	6KOzt4gV8HL3l8Rn9YhGDt5a738R+krbWhiPV2KkDbI2uLXhjmTqLhmqmR8wwlPfLuH3Gu
+	7hCly33tNDdtrTlrUfw5jfD3S6U6Kjo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id F1A05602CA;
+	Fri, 21 Nov 2025 16:33:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98423C4CEF1;
+	Fri, 21 Nov 2025 16:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763742785;
+	bh=EnuteN5J9YttfHD5PxJfkcAGy9x3+mjN5oTZTsrJRc0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Jm1SpMw0uwR92glh2ACwsFKTfDLGr7/AYBZAfrYhstCZSQsBZTAdJRvKtfGt7/hwm
+	 vjNb2OoVl52n1Q2mzUK8yq/ei6+qCG9dAg4TKysjLBmNm7dCLUwal0ZuzaKL6XDhiz
+	 lTyD3RG3V2enine1j0EKVl7RdikW/s2lKpGVEZ+iQM1iiZ3vveJn3mUISWIpZ8GGJR
+	 Z0rtSrsfsWYbWl1aT3sQNcFdUdV/SF7qoqRuKmSjXX2MuFb3Iq6GMS6h8HPIrp05R8
+	 kOh2W1/40gdDHBO2h2U3+Hy7y/6DQgRs1qAlr1SLdH3A5vOEefYO88A+/A0S2RdJbg
+	 CfmbdJOX4xlug==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
+  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
+  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
+  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
+  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
+  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
+  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
+Subject: Re: [PATCH v6 04/20] liveupdate: luo_session: add sessions support
+In-Reply-To: <20251115233409.768044-5-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Sat, 15 Nov 2025 18:33:50 -0500")
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+	<20251115233409.768044-5-pasha.tatashin@soleen.com>
+Date: Fri, 21 Nov 2025 17:32:55 +0100
+Message-ID: <mafs08qfz1h3c.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 63FF040014
-X-Stat-Signature: nj3kcwtph8uhda1rnzpjsr9s3z6pxug4
-X-HE-Tag: 1763742267-376014
-X-HE-Meta: U2FsdGVkX19wuLGFeTisKgLLN4LJ9siZhtev7EOBvykMz365ChVTBmodi9i+Wr9jZxBVLpMvND+NizVGFXP5i6j/QGiHsEtcqP24l16M4vYHmtEjNIZZorBwYGyoI1SJv4GdiiXwt1pnmKhMxWGCy6pBTSG0lVbsbSs2nsP6gGlAqjmev2xgR7uL5w7hHv8ljjM/CuWCAV9aF24MtJFn8ze+w5ptrZVHYPqEfZTyVMF/8PdF9VhavjbVuUcd5xR+nVZ9yQ3/buYrxw9M1A51xgFylAHjxhk5DDaWOFT5v9c/qHQHfbh4X8epqnhv9ZFJxcYMQYBD/0teYW+g0tVwu/z24c5bk2ymz11oHOxFB+f0BbwWJJmAVAmXIEdX0DV4+k60iQ31XV7CkIVM1YuDKCR9LKx9/fJiei7DLRUQ9Zqtw68tce5ffrPC1GiLSX0yfLhRoB25kMslJH8mUVrFI0qf0RRvH+gBg4SmqFkqnHwVPp4lEMDXD2C9lay8R0Mz/lmSu2xXtl2DxNbEQReCJOy979KyGGjjvdCI72nwUBYK6MukIX8WiUOuqxaZTnXeQzXCKxyCp+w1tG6qGbVVIXnsTK9j4E+OMune63ACMzC27k4DH35qyGnLTHTpyVCj4ukJwG/D0b3AzyyrXxLJaQq4BR3KmGWQe2UD6er3iup+NjwU6knsf51FG7z4YOL+nhRXosEJRiO4MKSTg6e9T7/7Y/yp6OcEd1wvg9ffr0KR6qipso9J6tSE6oIaPmb+3Q+U8lllXKuIlwdLuYimKl47pZIkX1CF2qBol/+Zm8u83nrFPHmLd+EREUTTYHFLV2/9tZaLG2D+xU5Q43KUhHMhYWjDEzoZ9ngCvssEp8VrDKLWAysJCd90j8mYwAHIMeHTU3WGGCgdgPazo+syDvvyZSPSnQTF9/qkSdvgaapdrEtRBN4Rv0rrSMEy1FtDdFIMfqUyM8eMzuVr11H
- ASii2UjO
- 8NIi+cOzauzzEPfgWe5/fWjDWnkl+HwItyXachMR1WndNd+G62Y3STN002A5QTpYBualZrbJDNpy4TkBVm7ZdNBvDfW6pck82F11vMtn3vQ+JJ96hohd5kp6YJ3r4g60hTnF7uJK5ySnAVeheTGme5NiXoLcrAwHpbkfrsPmfDv8HtyoBAeEqumQEatVv1S79rM1zS/u+kZR47ahy4M4R4TMJVdxpA8Qt10NDly5xIvqNG0nmw81FpqhwLEwio76e+iphswuutegDqu4jqJhBMtv02hYyuJXKKACO5RH4jd/A45c0Tk4HLAhaSwWALuFOTwH3Ob2ubZALFPUO+JDo6Bc6kVIZlyXuMTdPmaAhS9EWxvaRy4oyPCRIPfCCNdUTzwH+
+X-Rspamd-Queue-Id: DA87C1A0007
+X-Stat-Signature: xgocto3z9mn7y5rsqbcgqxw3had55jag
+X-HE-Tag: 1763742786-937805
+X-HE-Meta: U2FsdGVkX187DQ/G4JzmNjdY3aXc6ptxas3CUwqpKaHeTcxX8k0MQxNZBMFFiz+NHgCC2AKtfXEJ5qGBg9IIWL4tSQaC8XCe6wx8/e/w8Ow3We9kFzwJ/q81OL42Sd/KTaTcX9HOK8sIRtTN5PLcF4seQRU6Zs/Igua1gewGpdVNPMxovDGZTVE9N6/cGfLr1Jufl40DAGq7yKoRXrM4TMQ7UVY/Hen2ZwffCMaIgPhJ4HAm1eD2naQg3kOxyWyyXwfC4USh3+kQVoJnmClRJNW0OD42RlEZZuO83sZTIEiUuCAYXwH+Pw6zAI8fSEVCZGhfGqh++4tgdxYgf8c3/yyooyMDwPDf2bADsu6iZeQMwyxIRp6VH7QD8GG5MWzfZYeghiVNnzCbDJMiryBrwG1jEAz8dCvo5CpofLkC7EtQUUJ7xAf3qXNgPoxH+Da6dX/fBpwbpS3ZkHXQlDUCMStbTRAe5nRarQgIon0ZB2KlmeKmJgPsTTYPf0x+0TKdF19cCHewtpAVju86V6POl8htB9lMfNfIXpOhflJzq/l8E691/Ej2lr5GKJgv4uiY+9nd7hQFJhYgIaRT0jbwndqo16EN1aEYvoG4TLl+FM1IdB+45AAl/ZtJmIssGK1SAt7RDTj/5TpsD0l3uw5fM/AF2+82sgAwaMACv81u+teV56WBdSzziy4UjxuTcOXGWkqwDe8cRYA5U9uInb3ego8QBc31lmKA4dMTWbEmKgphJaSK3wRBytUeKbOGiep4DoJ5Xx78zllw2d1jKHML2Md4EqlDrPLW/z4kPHDD/MwoHOdq0ADYs9cmX+p0+v6x+GctDf+3cZ3IuGy+Pg+padtQXmZkWpDYNbzQ+03cu6kxTgaS1Qzbc/Hn2YZ7wNg6soa3Jqgu6V7qyEAeaKwxkQof+AsYGKSYDhI82wgM0SvSEswOio5Z9YiqofKSQfJb2ADh2extHzLizaNtGeN
+ WyqziW3N
+ p872DYUdQXQldtSSJZ5GQkGWYANEDmgIWazCQnqeiOvmfQD1YF2NO+RVsDaSQeR+gJ2L4ekVJzGNDPsJRgPD12btjuK18NOLCge6aW218tLtnfJsqUkIE5WVULm4Tmf8+QVqHLjH7GO0U90olid7lsHZUAOjXvrMBb2FUzO39dn9JwkqHOAbcldjzCuimhpcMTsP3nzJcCsgB29m6dgxpqbcWf+CpXVjT6LB8iVdbmNyvXvindsuUlcVFayXBc5eGmfIUs0PccX3eUmoMV/pKrTvC/fpwK73PKYrH/hkjSJ0+LmAKE66yESKKTHONHwXDSsQPve5L0mlgpDOYvDbg6u3D4Ipb1BSqkpLL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,20 +117,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 20 Nov 2025 11:28:19 +0200
-Leon Romanovsky <leon@kernel.org> wrote:
+On Sat, Nov 15 2025, Pasha Tatashin wrote:
 
-> Changelog:
-> v9:
->  * Added Reviewed-by tags.
->  * Fixes to p2pdma documentation.
->  * Renamed dma_buf_map and unmap.
->  * Moved them to separate file.
->  * Used nvgrace_gpu_memregion() function instead of open-coded variant.
->  * Paired get_file_active() with fput().
+> Introduce concept of "Live Update Sessions" within the LUO framework.
+> LUO sessions provide a mechanism to group and manage `struct file *`
+> instances (representing file descriptors) that need to be preserved
+> across a kexec-based live update.
+>
+> Each session is identified by a unique name and acts as a container
+> for file objects whose state is critical to a userspace workload, such
+> as a virtual machine or a high-performance database, aiming to maintain
+> their functionality across a kernel transition.
+>
+> This groundwork establishes the framework for preserving file-backed
+> state across kernel updates, with the actual file data preservation
+> mechanisms to be implemented in subsequent patches.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+[...]
+>  
+>  #ifndef _LINUX_LIVEUPDATE_ABI_LUO_H
+>  #define _LINUX_LIVEUPDATE_ABI_LUO_H
+>  
+> +#include <uapi/linux/liveupdate.h>
+> +
+>  /*
+>   * The LUO FDT hooks all LUO state for sessions, fds, etc.
+> - * In the root it allso carries "liveupdate-number" 64-bit property that
+> + * In the root it also carries "liveupdate-number" 64-bit property that
 
-Applied to vfio next branch with the fixes discussed for v6.19.  I also
-pushed a tag, vfio-v6.19-dma-buf-v9+, for this work.  Thanks,
+Nit: This needs a bit of patch massaging. Patch 2 added the typo, and
+this patch fixes it. It would be better to just update patch 2.
 
-Alex
+>   * corresponds to the number of live-updates performed on this machine.
+>   */
+>  #define LUO_FDT_SIZE		PAGE_SIZE
+> @@ -51,4 +82,54 @@
+>  #define LUO_FDT_COMPATIBLE	"luo-v1"
+>  #define LUO_FDT_LIVEUPDATE_NUM	"liveupdate-number"
+>  
+> +/*
+> + * LUO FDT session node
+> + * LUO_FDT_SESSION_HEADER:  is a u64 physical address of struct
+> + *                          luo_session_header_ser
+> + */
+> +#define LUO_FDT_SESSION_NODE_NAME	"luo-session"
+> +#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v1"
+> +#define LUO_FDT_SESSION_HEADER		"luo-session-header"
+> +
+> +/**
+> + * struct luo_session_header_ser - Header for the serialized session data block.
+> + * @pgcnt: The total size, in pages, of the entire preserved memory block
+> + *         that this header describes.
+> + * @count: The number of 'struct luo_session_ser' entries that immediately
+> + *         follow this header in the memory block.
+> + *
+> + * This structure is located at the beginning of a contiguous block of
+> + * physical memory preserved across the kexec. It provides the necessary
+> + * metadata to interpret the array of session entries that follow.
+> + */
+> +struct luo_session_header_ser {
+> +	u64 pgcnt;
+
+Why do you need pgcnt here? Can't the size be inferred from count? And
+since you use contiguous memory block, the folio will know its page
+count anyway, right? The less we have in the ABI the better IMO.
+
+Same for other structures below.
+
+> +	u64 count;
+> +} __packed;
+> +
+> +/**
+> + * struct luo_session_ser - Represents the serialized metadata for a LUO session.
+> + * @name:    The unique name of the session, copied from the `luo_session`
+> + *           structure.
+> + * @files:   The physical address of a contiguous memory block that holds
+> + *           the serialized state of files.
+> + * @pgcnt:   The number of pages occupied by the `files` memory block.
+> + * @count:   The total number of files that were part of this session during
+> + *           serialization. Used for iteration and validation during
+> + *           restoration.
+> + *
+> + * This structure is used to package session-specific metadata for transfer
+> + * between kernels via Kexec Handover. An array of these structures (one per
+> + * session) is created and passed to the new kernel, allowing it to reconstruct
+> + * the session context.
+> + *
+> + * If this structure is modified, LUO_SESSION_COMPATIBLE must be updated.
+> + */
+> +struct luo_session_ser {
+> +	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +	u64 files;
+> +	u64 pgcnt;
+> +	u64 count;
+> +} __packed;
+> +
+>  #endif /* _LINUX_LIVEUPDATE_ABI_LUO_H */
+[...]
+> +/* Create a "struct file" for session */
+> +static int luo_session_getfile(struct luo_session *session, struct file **filep)
+> +{
+> +	char name_buf[128];
+> +	struct file *file;
+> +
+> +	guard(mutex)(&session->mutex);
+> +	snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
+> +	file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
+
+Nit: You can return the file directly and get rid of filep.
+
+> +	if (IS_ERR(file))
+> +		return PTR_ERR(file);
+> +
+> +	*filep = file;
+> +
+> +	return 0;
+> +}
+[...]
+> +int __init luo_session_setup_outgoing(void *fdt_out)
+> +{
+> +	struct luo_session_header_ser *header_ser;
+> +	u64 header_ser_pa;
+> +	int err;
+> +
+> +	header_ser = kho_alloc_preserve(LUO_SESSION_PGCNT << PAGE_SHIFT);
+
+Nit: The naming is a bit confusing here. At first glance I thought this
+was just allocating the header, but it allocates the whole session
+serialization buffer.
+
+> +	if (IS_ERR(header_ser))
+> +		return PTR_ERR(header_ser);
+> +	header_ser_pa = virt_to_phys(header_ser);
+> +
+> +	err = fdt_begin_node(fdt_out, LUO_FDT_SESSION_NODE_NAME);
+> +	err |= fdt_property_string(fdt_out, "compatible",
+> +				   LUO_FDT_SESSION_COMPATIBLE);
+> +	err |= fdt_property(fdt_out, LUO_FDT_SESSION_HEADER, &header_ser_pa,
+> +			    sizeof(header_ser_pa));
+> +	err |= fdt_end_node(fdt_out);
+> +
+> +	if (err)
+> +		goto err_unpreserve;
+> +
+> +	header_ser->pgcnt = LUO_SESSION_PGCNT;
+> +	INIT_LIST_HEAD(&luo_session_global.outgoing.list);
+> +	init_rwsem(&luo_session_global.outgoing.rwsem);
+> +	luo_session_global.outgoing.header_ser = header_ser;
+> +	luo_session_global.outgoing.ser = (void *)(header_ser + 1);
+> +	luo_session_global.outgoing.active = true;
+> +
+> +	return 0;
+> +
+> +err_unpreserve:
+> +	kho_unpreserve_free(header_ser);
+> +	return err;
+> +}
+[...]
+> +int luo_session_deserialize(void)
+> +{
+> +	struct luo_session_header *sh = &luo_session_global.incoming;
+> +	int err;
+> +
+> +	if (luo_session_is_deserialized())
+> +		return 0;
+> +
+> +	luo_session_global.deserialized = true;
+> +	if (!sh->active) {
+> +		INIT_LIST_HEAD(&sh->list);
+> +		init_rwsem(&sh->rwsem);
+
+Nit: it would be a bit simpler if LUO init always initialized this. And
+then luo_session_setup_incoming() can fill the list if it has any data.
+Slight reduction in code duplication and mental load.
+
+> +		return 0;
+> +	}
+> +
+> +	for (int i = 0; i < sh->header_ser->count; i++) {
+> +		struct luo_session *session;
+> +
+> +		session = luo_session_alloc(sh->ser[i].name);
+> +		if (IS_ERR(session)) {
+> +			pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
+> +				sh->ser[i].name, session);
+> +			return PTR_ERR(session);
+> +		}
+> +
+> +		err = luo_session_insert(sh, session); 
+> +		if (err) {
+> +			luo_session_free(session);
+> +			pr_warn("Failed to insert session [%s] %pe\n",
+> +				session->name, ERR_PTR(err));
+> +			return err;
+> +		}
+> +
+> +		session->count = sh->ser[i].count;
+> +		session->files = sh->ser[i].files ? phys_to_virt(sh->ser[i].files) : 0;
+> +		session->pgcnt = sh->ser[i].pgcnt;
+> +	}
+> +
+> +	kho_restore_free(sh->header_ser);
+> +	sh->header_ser = NULL;
+> +	sh->ser = NULL;
+> +
+> +	return 0;
+> +}
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
