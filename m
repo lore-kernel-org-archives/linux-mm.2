@@ -4,114 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88BDBCFC296
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 17:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7801BCFC296
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 17:25:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A166B0089; Fri, 21 Nov 2025 12:24:52 -0500 (EST)
+	id D8DC46B0022; Fri, 21 Nov 2025 12:25:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDA1E6B008A; Fri, 21 Nov 2025 12:24:52 -0500 (EST)
+	id D17266B002D; Fri, 21 Nov 2025 12:25:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA1BA6B008C; Fri, 21 Nov 2025 12:24:52 -0500 (EST)
+	id BDF216B008A; Fri, 21 Nov 2025 12:25:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AD20D6B0089
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 12:24:52 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54082160418
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:24:52 +0000 (UTC)
-X-FDA: 84135289224.23.C1719CF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A1CEDA000E
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:24:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NqvjpH15;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763745890; a=rsa-sha256;
-	cv=none;
-	b=QEM6PE/yr5lSilqemz2Bj9G7+kJBSnM3FQhruWMFo/AFVV3DNKlQuLDW89u2tCmP9wlM4x
-	XxaSAADK3PZTgkP1zKHuri+atzXBUN0HPErcZHi9ijwSaIJrQMlTVcoceSNxq5b/aesNzW
-	hTNdQPxT/jpTt+0UHuSRVFX5t99nyQg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NqvjpH15;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763745890;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A67DB6B0022
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 12:25:01 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 69358160205
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:25:01 +0000 (UTC)
+X-FDA: 84135289602.15.1376ED0
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012061.outbound.protection.outlook.com [40.93.195.61])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 97E758000B
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 17:24:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BQgG8BRZ;
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.61 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763745898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q3UtWfdswSztxASBdq4DUFI4nPElpEFJz9/fkNz0qkw=;
-	b=zzf6kp5zemPjvsyiQ+vE7imqul2Kr8Qca3e5h6xDx7ENXOLnpv9KnsB3nD+yAggHOiDgBc
-	l9uXrvakWyOrpfTai2ESNLiQMuR3K8CmFJd/c1zAw9CYBUClpqVRulLoWjFsJmlnp3bgDY
-	xmukujbpyAEKJlB07tribYPOdDJxmyM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DACFC602D6;
-	Fri, 21 Nov 2025 17:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288DEC116C6;
-	Fri, 21 Nov 2025 17:24:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763745889;
-	bh=iLWWijEcNLY22PnrPHaN8TmaoBcSCk/mzyMLvRR5Lpw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NqvjpH15rDvRPADzp9cQpVvPzPZMUwntgy4CLucIHzmAAoaFAa1O9t64x0fc32+GO
-	 Rk1Joc6dEWzo8vC2U7X4HBDzUd4tsjQkJezsCwcFwjxLkNBLg0whG0bHASBfM3cAI+
-	 Y7OM1tCbB+z0Gjj2NGR+rd7dw4c8evj+NHsfr0zAW3Sse8ShLDBMUvK6HoGNoNr5te
-	 sK4pT7zrPkKutrscPoFBX0zV3URxm3TId6RqnYHfyPTZcSG/kV2VTrd5trgHLgulEe
-	 3sid5yQ/ObfU1dd9T+i1+vTVZTjmVe6pHzXKmbL99FUcIeiWM69z1GdRtnL1U3+PNM
-	 yw6pE7S0Y7axw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
-  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
-  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
-  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
-  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
-  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
-Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems
- callbacks
-In-Reply-To: <20251115233409.768044-7-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Sat, 15 Nov 2025 18:33:52 -0500")
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
-	<20251115233409.768044-7-pasha.tatashin@soleen.com>
-Date: Fri, 21 Nov 2025 18:24:38 +0100
-Message-ID: <mafs0wm3jz4bt.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	bh=qW2J3G4xubUOytNnfYK+CiQVXZu7G5VnmEgDaWl9cGI=;
+	b=gHxnhxp3ggtbWE0Jgk52KmX4Dxe+5M/imcYGKT1EGA2X/YEfHczlCOG+k9n7DNXP7E4bsV
+	oQlWLnCa6+/lhnfpKCvJQ9eZ4ecDq7xxuCOqX3aW/OrrrIsTm7IBJ+838S1bpgkGfsdZk0
+	Tce1br2x7YoRGZFVmHHzsdniN+uCWNk=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BQgG8BRZ;
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.61 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763745898; a=rsa-sha256;
+	cv=pass;
+	b=l3h2HBUmCTztY6N0loVeqwkwPd33q4XXSCYVdb5IfStpAA5iQwUkkAdo1g2VPQZxx8WdWM
+	tDYX0oP8bdvGBT9zvQA4AzFQtC3Uw5Iv2SlvnoxhNwk439TGr9ZqjxfH69tQ/XBzwSkB8+
+	QvZ6RTt+0/xNEPTSyGjOBsiIV+af1ps=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sULaSPyCcio7iCZ0Al5fF9411KMWRTHDydl3gb0mrgXjRIyaLjMVK5FJKfn4+HRoA/Kcd6Ek6ZUmBLv7AEqktgAOAXWWfQ3airJQ3A5vL7AUjOuYwCtHz+5CHzZbRQ+pCuz/FrbzPzrJyEI90PhM6Q+k6Ryc1AS46It7syne4/lcA/TaagHT+qs47uE0n9MQRvLq2PjOEYq0dYVODIw/PwbKwxShBHxbVgtVHYJb241sDfPNh6tX+sx8nYFAZO6jvkYPWbI+9K9rBvfww0pI0JmfPaEhEGuZORa7M9n6TUuKKtRmPLXM+1vBjnTWzfVBJuDzu76lrhRR9qNwLTLWeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qW2J3G4xubUOytNnfYK+CiQVXZu7G5VnmEgDaWl9cGI=;
+ b=RV6+tiH0+ox0zFDsdrivrRU3hvRk0ZYIx28PesOWXpuK/p8gm7Y4WkRN9MQocH+Tzy7+JUTO4MAbBKlDCWMkfESdwYYwgtfuWFfjhDe+wcC0KMWAG1FOhsenK9vxQtpyYavkPolsZSUvXQVOXGP8n28GnGSFhk0WUGZ/0OGPJ04PgFCIsY/G/KUDv2xPBjcSic6jRsr8+yHUdDQINZNM/xX2U5MDWt3CY5AfBaBSC+UWZqOtghTKJI4ECAxa5JCpaGUtbrbbBU4MaS0zwz4Dak8C1s3riaqSfpW4ObrMm81GR38fhJhXTXGing0vubDGOsQVO0JpdXeK+tlmPMswpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qW2J3G4xubUOytNnfYK+CiQVXZu7G5VnmEgDaWl9cGI=;
+ b=BQgG8BRZuX9RrDoWVh07Jpu1BkKHRN39908CYQZQviljOU3E1AbS2MzUAd3JKaooEbVCgqtIzoNhQu2xuQMT2zDnejSnKi6IXpJX0C2p/COL6TYGG8o93Ry2C5c6UfajTjZ0UN1n8EviS8MAnCFjTpuUFlxw0mJoFAnCDLe90mOn0iRkJrsad39iXIpxVTMNwNMArsYqP7pceXDh5If/OSlqt7R0ciai56fQYOq1YctauysZeaIkJ1R0J6MXqFnhDxfa0NeoLy3oqbxeW8r8oP19uAlFM+IHZBg01JuGEzNQF/1mJQEgAKiU9IPJKs5Bt3ruLVFh+153uzBRuATL4g==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ IA1PR12MB8357.namprd12.prod.outlook.com (2603:10b6:208:3ff::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.14; Fri, 21 Nov
+ 2025 17:24:55 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
+ 17:24:55 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/3] mm/huge_memory: prevent NULL pointer dereference
+ in try_folio_split_to_order()
+Date: Fri, 21 Nov 2025 12:24:50 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <D9725DC7-8B7E-460D-8859-09F78312DC9C@nvidia.com>
+In-Reply-To: <fa8c3018-f4a9-466e-af4c-6f97e3247b3b@kernel.org>
+References: <20251120035953.1115736-1-ziy@nvidia.com>
+ <20251120035953.1115736-2-ziy@nvidia.com>
+ <875584d7-5a68-4f7a-8549-2a9cd6c7f9d8@kernel.org>
+ <FCFED9E9-56A9-4260-8B42-D0BCFC83C506@nvidia.com>
+ <c29e2ec1-c607-4467-b500-617584c8fb6c@kernel.org>
+ <73075A18-3C07-46F5-B8C8-9018D2CD22DE@nvidia.com>
+ <fa8c3018-f4a9-466e-af4c-6f97e3247b3b@kernel.org>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A1CEDA000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rkpio9ub4x5qi1uecgosx3qdpxsqb5tb
+X-ClientProxiedBy: DM6PR01CA0005.prod.exchangelabs.com (2603:10b6:5:296::10)
+ To DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB8357:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a748da6-64f2-487c-c7af-08de2922e328
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XeV0KSVnkr0Rues7E73uWV/P//kN0l69VzqkIaWnHXNfI2tlJ/KW+JVKjXRL?=
+ =?us-ascii?Q?+RgLyVrG5xyXI5pvfhFyZcBBKPNpvV9ci+WPiqNeU5LY8PNP10IIQ6QO3gWU?=
+ =?us-ascii?Q?dC6huQPCYT7QxqzcKPk4YHqNb79wWwtoDd8FRN7fRqj9zBksjHMrz2psO2Wb?=
+ =?us-ascii?Q?OcDS54WHeb0Xs35W5IdkXYd/Yo2I28yp2vLVfwlJNTRERX1kxWTXl/cC/1Ts?=
+ =?us-ascii?Q?l59P5bk+B3VSnXmNz61pvBqbvC0JPxVXqj3sAhZeza/h8uNp2KhVHFAWR4R5?=
+ =?us-ascii?Q?of5U++Nl8SJIESdROKI+wDnUtF00PXoyDSH+45oJwGP2cIHP2hakB2Ud6UR4?=
+ =?us-ascii?Q?/+PiRMT38WZB6Jrkxh25N+yBl46thO8CkRtmdWIQTWhV4JB2nOGYmeQ035Gq?=
+ =?us-ascii?Q?YrxBA1H5sUNNmh/497xYHeZwv35WpDUdovFXVmTFlNeJmGUR40xprO8rrMw8?=
+ =?us-ascii?Q?Ruwoq6f4cNWYu2LfayjqD2BnGzBkOKirlTrf4QBi3+uyAkSh9gaL2mapEAuQ?=
+ =?us-ascii?Q?teFOTg2Zux/dSP4RQVbXVy6Krpguos9cC+fYoQM3L+kaI6HcDKEISqCbn8x3?=
+ =?us-ascii?Q?AG1scKYLKHuQrHS7iskXXAAloAfgapCk7U5Td2taNwFIkVcFGmVfLaFdll3Y?=
+ =?us-ascii?Q?r3i9IEMAKZgKmXlY+ZHRjc0NTv/gGDRypLyNSGnlFcPoTeLQAQryf2SbPRUA?=
+ =?us-ascii?Q?3gMZUvyUNRC+Ifyydn9B1GaRQhc3+YlZ8JT9kTnhVhIPcP+XPNPg0EhYRXqI?=
+ =?us-ascii?Q?JW+5zVnw4kz4TvSxMU/vw9On4E0kF6niSixx5Coce8g0hdyKPBREEz2Bs8K9?=
+ =?us-ascii?Q?pLMnIaFExDMSriBAtCjDkZ7B/HteVGYYqDeugpI7UT5xA35jneqFofGEk9ns?=
+ =?us-ascii?Q?tTro3el5jj753/aP/0YrZy7p94T15C8LcPVt9tLcdJY2s9A11kX0BYgDDZNd?=
+ =?us-ascii?Q?SZidhTugH318APe8HrpiZ91tIsou4dJSuZNqObm78a09ciJeZvqJvGs/N9B4?=
+ =?us-ascii?Q?wTNaVOSgN3GYJw7uJ4Hoew4tYiZdYt7xSVlakBCCNlMlpFt17S8j7+JrjtUg?=
+ =?us-ascii?Q?wAdG8JYmhcggHaQVdj0E5CmkHANuB1dfTwgOjFwMYEXkVAnkwuOz9JGayCzf?=
+ =?us-ascii?Q?k8wA6sEMffg3EQFUH6bYptaTh4V6jeRZHBkm0NbqjbvWBNUOvPAt7vVdQsCZ?=
+ =?us-ascii?Q?aUKJElOGkiFS9jRqppe3THiR/ifu+YIuR2DjE3daQD7LuOj57LiAT4vO0AEq?=
+ =?us-ascii?Q?ZE2jPUE5V+mxYQ9EoamqqNCiujvPnUDvg0oN567WR5eFkt/6xB2yttpqx0zN?=
+ =?us-ascii?Q?8XLGbIbYeo4/KrY4T0KIsA2os/YzMA2ol5xXupgigsDSkX1TTZMK8pfvXqlI?=
+ =?us-ascii?Q?PDI9ld71dhPOFpOAeI62objqNNJOp72WR4niil0zgXmYY83a55p31vbCem0V?=
+ =?us-ascii?Q?vbBOeYBsoJrPlgBQIvqXFXzxXDOueJEO?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Xy+StMAlCAt3rw1UvGu+XJYvNZ9s48fGdf02BY57BPinhiCzo8QWkLc1mFfJ?=
+ =?us-ascii?Q?iKxPd8RKv3DZcbPYTLMQPdNH30ZLM2BZ2MQ2Gm1NEiCSaImiOV3t0ZA7O2Be?=
+ =?us-ascii?Q?5BN5tA8nBT+NdLcYWRnNoF/9oHQr04NN3vf/iTRNg0LbTMGYk+tqDdF57q6x?=
+ =?us-ascii?Q?og/GBpoHxUe5692zSuujK3bFVQ4wbQN1LrAJwhPJYuC4fr5tfCv8j1S43DiJ?=
+ =?us-ascii?Q?gxHqb63OwNJbJs/X+Y0DKXb87yjZKSTA0ishrO6Fu1P6lCArw4zBFt2ShYBh?=
+ =?us-ascii?Q?f1/Laven5f1DrBFCT+FjG4JTAX9F51YAggqorgv0NGJQGa2yajQHST3j6EbT?=
+ =?us-ascii?Q?pHkFMcJT/3lGQzKhltNvpf7pR2rE41X3j2gE1PsOZS3N9FTt080qupey0G6S?=
+ =?us-ascii?Q?TbfcYTZwDs6Peciq68M8dR4pomZbcQR0tV7jEwc9QeUTqnhkcfsLfV856Shq?=
+ =?us-ascii?Q?0Qjeb6SwbTVJyhuSEhawSFAMa5JT789XUBLyCjzzmUpvW8fau+EgczO8ObJk?=
+ =?us-ascii?Q?P9sFdaoILRDiDGhrVLGUq7YgisskhK0VkgBYjxjhrxJJA8L7IjS52rlSik2o?=
+ =?us-ascii?Q?VA8rQghoz+re3tir7kntRkIQPYxSgQu6ljpH9f/g2gibeRiYqbmBodTXAUBD?=
+ =?us-ascii?Q?yZl7ZTFPxa5NHlAjZK2Dwy6FqaMspDRxAQ8OdaYEsrkbI2omo8gTMqK/Vj3v?=
+ =?us-ascii?Q?V1zO1vXCDIOW4HgZ+JlkOKzqut1E+rW9VVgXfXOH69ytIE/6PUhNaPzD6s+F?=
+ =?us-ascii?Q?QCVzkydWluc2kaKYRht4AF6Ez2bYNT4DONeBANx3dd9qZX/D/YrZJJER0ipF?=
+ =?us-ascii?Q?CfoAIBvfrcZdOUGFmbzL/oyq3Bp4xuTfHOmW3xYDmgQo882h0tJ72QVyPMLq?=
+ =?us-ascii?Q?qA49XCEa5oiWrmb0rd14J6KldOCZVvXVnZD73GO8hu2tCw5rrBrknsCR75c7?=
+ =?us-ascii?Q?BahUsKZNUaxLRf7YAqCNhasRVOguSuUM+GDog5jWFopZI5ZTr2bKIm0UC9y5?=
+ =?us-ascii?Q?7oC71hLQoL0mitFDmlAsau8Mljsne2aucho7SG8/8YzQ1rm9o6gfi6GNVbxW?=
+ =?us-ascii?Q?CzLUYSSYTUrO9DEn+PzFJexIWLDg1vN2p8031Z2M0AqKTwbuKespoWnmcXJ5?=
+ =?us-ascii?Q?U68otwgLu+fm5QPsC2m6J00Y2pEB0fXBIjUJMNpC9robjypLQj2LC9iqUsa9?=
+ =?us-ascii?Q?0YDoU1V7zvOAHbpuFsOHTUugiJtDFOYYLXjP3I5g56PClu0gzg/5aDB/QFq1?=
+ =?us-ascii?Q?zTgbaFWeR/dNYS70TTS3dZauNb+UiPR2ootFnXao3GICKvj515UlMLkjg4ZM?=
+ =?us-ascii?Q?/qyeTvAS+uJqN9+An0wL9m8zGs4c9oUB704neizLcynKzNkEiUqaAWFjsmZf?=
+ =?us-ascii?Q?ked1LGFIg5/0+UB35eV4JNmYaMnjlHRZlzCh+AMTdXmU7GsA7gfdpkEVANrq?=
+ =?us-ascii?Q?gyJPDtiffhgJCM2Qu99zAiurl9cnCbVz74n7n8IW5Tzq3/swpbFalETToGgJ?=
+ =?us-ascii?Q?2vYELpqiLrsfbMI3NUtpaj7zjfOMoXJOUsG1Mam6uJ+aX/lq/YFGqIQt8U3V?=
+ =?us-ascii?Q?avE8FIlpD0az+MoYF/gz55WWqbLqeynVKoBYX5hh?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a748da6-64f2-487c-c7af-08de2922e328
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 17:24:55.1171
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U3/KFI5zHu7g8TNep7JzHVnGa81L7WSBPc6Z8bx5B5QGCJHUvJILcx75OOIY9Ije
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8357
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 97E758000B
+X-Stat-Signature: 4pgqcqjrjuummiowxcy6d13cd5iru31m
 X-Rspam-User: 
-X-HE-Tag: 1763745890-837090
-X-HE-Meta: U2FsdGVkX193dy6I86IK7LE1mX11ZBDJ8Bm7xpXi+mh+b+k5ifsTgEAQCba4DpwCr/h+UkP7lxcph7RnHqUdmFzLBc0kvRFrgcwxqoY2MzgGy5oEYD9qT0EK/suyEn+EFXrYn5y9rwPrAAYEmA1AMSOzV3z1XUShhVcFMVuA08weSIeu3qgyYqzAWnFGt+4Xwt1/GBrPcR25DyPYTSDrdxG41uaKb/kejaErJWQYiuxp4cD+SR/N7oNVvdilKJxFyj6zF2rijvmcvEWT/GNif9jwNPNnJtEgmFsPKwffB9h9l0YgHLbYjyFH0PM9GebPvox5FZwRgU432NjPF+0GvRgzZ4/FXW7AmwA+nUq3XpoYyeyaBKSoQsKgREq2rnfnvcFFlIbsjDSwyjAwlDvOPyAk5B0vGVqzJKgQZRQa8TEDG6s5HM2fAdrxSIevOe2O74VlPj2jfyTPUSe8UvkPxUbArzHmKu9+cM6loy5T9EuGan9jdWzzfEoJ4KyH6++qpe0CYxpQo6hblQM0OaYse/Eay3swngzDfAQRxKSd2Z/xE8GS/6l9RhwsScCfHoYj9tfFOBT3uTBGZSXFa/aT+/Penwx+bhkU6i6JEV8iadl7st01XnnJmSWwoPi/GqK5ivjaTU29IGhdX+vHUiLoUC4++IoVbsFJN59WDkqKwRlFfjfWec1z7GSuNNHzSA8MAa7SgMOxiOO04b6CWocApFDV1drX83cMn767KVGTnmxt5+ltBiIg2Rs0vMcuD/Hijqf56XL0QOLyBGKFk/sj+OYU7lKH247+GB/aVGON1lagSdOVOikywWdSLtqbeTr1wzWFRdQKhhTotnWtmkwFcddtPfYVW/pxVY0Rf2mdJIKcM4v/jzoXYGIrDByxcy7fGei24AzgL3f95oGKideaKxzZ2fyqhM7nA5o8CpFwx6scFVyxg8zg2B3e7SZXpf3jEEBihOQp0JNthBtsr01
- kptfQwi5
- t4ht8QWXGDS77N3l34D9inHUE7F/N08mnGZ9JasK0RnDKSAEzJf/Dp+DMSTtAr5XT0ualjUX2Hsktiq7JzZvqxa3fq4N+UdFe0iNkqtqrTkN7m/fT+0Ya5CM/TJ3cpWSox4vbhDzBXkmYjgziwvkygXrrZIPuBKYOU+XLDQ7TKOZCwX5ejdodLR6db5+xvai9SYkHcIPWM58M5a5dpyZb9wDbkzD5OYXFqNM1cqdcOKyyjXXVYuiz+yjoOf/vEAR3gmnCMcMX0ur+mAywddzSwALvo4MKv9v4QJP8llAZVvKNY9LZtZxvAKr2K0CBdtQh6eZTULEJWVtMQ8JBaQJcIaLlWJqExDZQGBC7sgxPmcWb/hVHBdEcn3dtMRU7hSepRn2mNBd8pFChuss=
+X-HE-Tag: 1763745898-950142
+X-HE-Meta: U2FsdGVkX19v2geUdIADZsMNxEEhr09N+Sr52xY7HIUG2FyDPyeM8Tpv8R3fjN/a2SjpvEQ/BQdJ8Aoh6hWiCkmIsUr9Ts8XthxJb4eF8ggRjMKIySBFcJgZY/Jt96TyuCLbAAbG1jmNeEdbLk8EWvAJxvZ1rsCTCZh9lrsrKTcNYHc2YJYn1VV2nk6GzO2bsMJ5Ezv49wwCY7ZlsdvrVCmV06sgwBR2XYZljjYZi2Nk823+EO4NcvdCG32KqRaX1qJvueMJxxmN9d3KlGkobqzhN3a3i3xCCF6k2GT0zlnQSxvv5Qtxyb4D//bbTZ7+ka9bXd3i6Fm/1Vt1eVdpDz7sPlEHDPmEUh3y32/6iBKjG1+wi73qQYGVHJczpLsSzZenInnF/ycIXKsKZ/+fGO3eX+i294YDMjA2igH2pL6/tUCtFP79g59TxBIbk8l/TYIlNL/gWelAtGkYHpqbZxJg4gejrOqo1zYKHqRHKDMtFC56zkMEe4210HHFN+WQsT9Zb3RQgOdI/ptFJGGbuvgFLB4ir5L+Lud3HjnAIu1YAAWdq3O2Y0y1ZlvVpbk1yLulWO59ioJrr4RQVD+ee2XJKQmtsvdjkwybKYS41erWS9fF56WayTy21RkYgow3UMSQM+g85noXqAUxCyK5AAUFlMFjV/EaCpHTryk77ohb5NTZXHTJE9swCBzegxTTtPAsPG7OEYoeRx4Wpd1OsVvqmC2X0iIhRZhcmZHIWvTn80mGDQulM5ODmRSsvF5hC5Mf14BWgACkseFr8Wp5lPdXcf/iwh3147FuNlcwRzZymYs6M4ya7zvFtKviRh6s0UgcU6fEr1VUgmEH/y9qZIwFh/+syHxFFPvKqlwBzcQ0IZXjzM7rfcKuwHW/V9WPBoLwXfDYpi8HtL55e0mee0/5890DgpU4v9d4sYLcjjKDGWePhRBvWvmezojOf3clo78Ht0lm4/1yMG4LAAW
+ bJwHOJyT
+ nrol7mb9AwdJCO3MTAqRynWrGPY900f4Ov65Wb2M9XOaFjnPXsnaYcVCk18c/aWiSE6InHjdx388LwsPlCoEop6SO2PwtUV6tsUGtPee8nnKyce6b2qUfoaGBtR3eCNWtpSvu/CfVZds/xlHOolFrWhQcgmnNbQg0ULnb+MZ1IAzOzhKgCvba8+ziBGBO/WGLiG3N8z8vJokNIpRjP2qSIzZUThfVgtFU37CKu00e3OeJALAZPpkF8WjzX4OALsKtsgLlq3RiOIeLbu/S9gsoleIPCT/vUrN2CQheOip7GwPv8pwehY9BnKhvFz1VTK3aVdGbzX5sU8t7rVE/C+bjPO8+yAWq1HHUY6cqQHk63c2uqWCC+VQHZipSgxAO/o/QrG62s+374gLa6pLnzmYiKxyupA49fWHjPKOnGsK3BwIJLpi01M5J7C2Vrtb8KEfAzh1pfr/vlCRmwzj9gGZO7LjGxYm/iZsJ2D3h
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,978 +193,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15 2025, Pasha Tatashin wrote:
+On 21 Nov 2025, at 12:09, David Hildenbrand (Red Hat) wrote:
 
-> This patch implements the core mechanism for managing preserved
-> files throughout the live update lifecycle. It provides the logic to
-> invoke the file handler callbacks (preserve, unpreserve, freeze,
-> unfreeze, retrieve, and finish) at the appropriate stages.
+>>>
+>>> BTW, I wonder if the is_huge_zero_folio() check should go into folio_=
+split_supported() and just return in -EINVAL. (we shouldn't really trigge=
+r that). Similarly we could add a hugetlb sanity check.
+>>
+>> Yeah, is_huge_zero_folio() should return -EINVAL not -EBUSY, except
+>> the case the split happens before a process writes 0 to a zero large f=
+olio
+>> and gets a new writable large folio, in which we can kinda say it look=
+s like
+>> -EBUSY. But it is still a stretch.
 >
-> During the reboot phase, luo_file_freeze() serializes the final
-> metadata for each file (handler compatible string, token, and data
-> handle) into a memory region preserved by KHO. In the new kernel,
-> luo_file_deserialize() reconstructs the in-memory file list from this
-> data, preparing the session for retrieval.
+> I see what you mean, but I think this has less to do with actual races.=
+ SO yeah, -EINVAL is likely the tight thing.
 >
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-[...]
-> +
-> +static LIST_HEAD(luo_file_handler_list);
-> +
-> +/* 2 4K pages, give space for 128 files per session */
-> +#define LUO_FILE_PGCNT		2ul
-> +#define LUO_FILE_MAX							\
-> +	((LUO_FILE_PGCNT << PAGE_SHIFT) / sizeof(struct luo_file_ser))
-> +
-> +/**
-> + * struct luo_file - Represents a single preserved file instance.
-> + * @fh:            Pointer to the &struct liveupdate_file_handler that m=
-anages
-> + *                 this type of file.
-> + * @file:          Pointer to the kernel's &struct file that is being pr=
-eserved.
-> + *                 This is NULL in the new kernel until the file is succ=
-essfully
-> + *                 retrieved.
-> + * @serialized_data: The opaque u64 handle to the serialized state of th=
-e file.
-> + *                 This handle is passed back to the handler's .freeze(),
-> + *                 .retrieve(), and .finish() callbacks, allowing it to =
-track
-> + *                 and update its serialized state across phases.
-> + * @retrieved:     A flag indicating whether a user/kernel in the new ke=
-rnel has
-> + *                 successfully called retrieve() on this file. This pre=
-vents
-> + *                 multiple retrieval attempts.
-> + * @mutex:         A mutex that protects the fields of this specific ins=
-tance
-> + *                 (e.g., @retrieved, @file), ensuring that operations l=
-ike
-> + *                 retrieving or finishing a file are atomic.
-> + * @list:          The list_head linking this instance into its parent
-> + *                 session's list of preserved files.
-> + * @token:         The user-provided unique token used to identify this =
-file.
-> + *
-> + * This structure is the core in-kernel representation of a single file =
-being
-> + * managed through a live update. An instance is created by luo_preserve=
-_file()
-> + * to link a 'struct file' to its corresponding handler, a user-provided=
- token,
-> + * and the serialized state handle returned by the handler's .preserve()
-> + * operation.
-> + *
-> + * These instances are tracked in a per-session list. The @serialized_da=
-ta
-> + * field, which holds a handle to the file's serialized state, may be up=
-dated
-> + * during the .freeze() callback before being serialized for the next ke=
-rnel.
-> + * After reboot, these structures are recreated by luo_file_deserialize(=
-) and
-> + * are finally cleaned up by luo_file_finish().
-> + */
-> +struct luo_file {
-> +	struct liveupdate_file_handler *fh;
-> +	struct file *file;
-> +	u64 serialized_data;
-> +	bool retrieved;
-> +	struct mutex mutex;
-> +	struct list_head list;
-> +	u64 token;
-> +};
-> +
-> +static int luo_session_alloc_files_mem(struct luo_session *session)
-> +{
-> +	size_t size;
-> +	void *mem;
-> +
-> +	if (session->files)
-> +		return 0;
-> +
-> +	WARN_ON_ONCE(session->count);
-> +
-> +	size =3D LUO_FILE_PGCNT << PAGE_SHIFT;
-> +	mem =3D kho_alloc_preserve(size);
-> +	if (IS_ERR(mem))
-> +		return PTR_ERR(mem);
-> +
-> +	session->files =3D mem;
-> +	session->pgcnt =3D LUO_FILE_PGCNT;
+Sure. Will move it and use -EINVAL.
 
-I think this is a layering violation. luo_session should take care of
-managing the session, including the memory it needs. luo_files should
-take care of managing the file, including the memory it needs for _the
-file_. I think proper layering will make the code a lot easier to grok
-and modify later. When I want to see how sessions are handled, I can do
-to luo_session.c. I won't have to poke into luo_files.c.
+>>
+>> Ack on adding hugetlb sanity check.
+>>
+>> OK, just to reiterate my above idea on renaming folio_split_supported(=
+).
+>> Are you OK with renaming it to folio_split_check(), so that returning =
+-EBUSY
+>> and -EINVAL looks more reasonable? The benefit is that we no longer ne=
+ed
+>> to worry about we need to always do folio->mapping check before
+>> folio_split_supported(). (In addition, I would rename can_split_folio(=
+)
+>> to folio_split_refcount_check() for clarification)
+> I guess having some function that tells you "I performed all checks I c=
+ould without taking locks/references (like anon_vma) and starting with th=
+e real magic" is what you have in mind.
 
-So I think luo_session_preserve_fd() should first make sure there is
-memory available to store the file in the session, and only then call
-luo_preserve_file().
+Yes.
 
-> +
-> +	return 0;
-> +}
-> +
-> +static void luo_session_free_files_mem(struct luo_session *session)
-> +{
-> +	/* If session has files, no need to free preservation memory */
-> +	if (session->count)
-> +		return;
-> +
-> +	if (!session->files)
-> +		return;
-> +
-> +	kho_unpreserve_free(session->files);
-> +	session->files =3D NULL;
-> +	session->pgcnt =3D 0;
-> +}
-> +
-> +static bool luo_token_is_used(struct luo_session *session, u64 token)
-> +{
-> +	struct luo_file *iter;
-> +
-> +	list_for_each_entry(iter, &session->files_list, list) {
-> +		if (iter->token =3D=3D token)
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +/**
-> + * luo_preserve_file - Initiate the preservation of a file descriptor.
-> + * @session: The session to which the preserved file will be added.
-> + * @token:   A unique, user-provided identifier for the file.
-> + * @fd:      The file descriptor to be preserved.
-> + *
-> + * This function orchestrates the first phase of preserving a file. Upon=
- entry,
-> + * it takes a reference to the 'struct file' via fget(), effectively mak=
-ing LUO
-> + * a co-owner of the file. This reference is held until the file is eith=
-er
-> + * unpreserved or successfully finished in the next kernel, preventing t=
-he file
-> + * from being prematurely destroyed.
-> + *
-> + * This function orchestrates the first phase of preserving a file. It p=
-erforms
-> + * the following steps:
-> + *
-> + * 1. Validates that the @token is not already in use within the session.
-> + * 2. Ensures the session's memory for files serialization is allocated
-> + *    (allocates if needed).
-> + * 3. Iterates through registered handlers, calling can_preserve() to fi=
-nd one
-> + *    compatible with the given @fd.
-> + * 4. Calls the handler's .preserve() operation, which saves the file's =
-state
-> + *    and returns an opaque private data handle.
-> + * 5. Adds the new instance to the session's internal list.
-> + *
-> + * On success, LUO takes a reference to the 'struct file' and considers =
-it
-> + * under its management until it is unpreserved or finished.
-> + *
-> + * In case of any failure, all intermediate allocations (file reference,=
- memory
-> + * for the 'luo_file' struct, etc.) are cleaned up before returning an e=
-rror.
-> + *
-> + * Context: Can be called from an ioctl handler during normal system ope=
-ration.
-> + * Return: 0 on success. Returns a negative errno on failure:
-> + *         -EEXIST if the token is already used.
-> + *         -EBADF if the file descriptor is invalid.
-> + *         -ENOSPC if the session is full.
-> + *         -ENOENT if no compatible handler is found.
-> + *         -ENOMEM on memory allocation failure.
-> + *         Other erros might be returned by .preserve().
-> + */
-> +int luo_preserve_file(struct luo_session *session, u64 token, int fd)
-> +{
-> +	struct liveupdate_file_op_args args =3D {0};
-> +	struct liveupdate_file_handler *fh;
-> +	struct luo_file *luo_file;
-> +	struct file *file;
-> +	int err;
-> +
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	if (luo_token_is_used(session, token))
-> +		return -EEXIST;
-> +
-> +	file =3D fget(fd);
-> +	if (!file)
-> +		return -EBADF;
-> +
-> +	err =3D luo_session_alloc_files_mem(session);
-> +	if (err)
-> +		goto  exit_err;
-> +
-> +	if (session->count =3D=3D LUO_FILE_MAX) {
-> +		err =3D -ENOSPC;
-> +		goto exit_err;
-> +	}
+>
+> For these we don't have to prefix with "folio_split" if it sounds weird=
+=2E
+>
+> folio_check_splittable() ?
 
-Similarly, luo_file has no business knowing the size of a session.
-Checking session->count should also be done in
-luo_session_preserve_fd(). luo_preserve_file() should never be called if
-there is no space _in the session_ to accommodate the file.
+Sounds good to me.
 
-> +
-> +	err =3D -ENOENT;
-> +	list_for_each_entry(fh, &luo_file_handler_list, list) {
-> +		if (fh->ops->can_preserve(fh, file)) {
-> +			err =3D 0;
-> +			break;
-> +		}
-> +	}
-> +
-> +	/* err is still -ENOENT if no handler was found */
-> +	if (err)
-> +		goto exit_err;
-> +
-> +	luo_file =3D kzalloc(sizeof(*luo_file), GFP_KERNEL);
-> +	if (!luo_file) {
-> +		err =3D -ENOMEM;
-> +		goto exit_err;
-> +	}
-> +
-> +	luo_file->file =3D file;
-> +	luo_file->fh =3D fh;
-> +	luo_file->token =3D token;
-> +	luo_file->retrieved =3D false;
-> +	mutex_init(&luo_file->mutex);
-> +
-> +	args.handler =3D fh;
-> +	args.session =3D (struct liveupdate_session *)session;
-> +	args.file =3D file;
-> +	err =3D fh->ops->preserve(&args);
-> +	if (err) {
-> +		mutex_destroy(&luo_file->mutex);
-> +		kfree(luo_file);
-> +		goto exit_err;
-> +	} else {
-> +		luo_file->serialized_data =3D args.serialized_data;
-> +		list_add_tail(&luo_file->list, &session->files_list);
-> +		session->count++;
-> +	}
-> +
-> +	return 0;
-> +
-> +exit_err:
-> +	fput(file);
-> +	luo_session_free_files_mem(session);
-> +
-> +	return err;
-> +}
-> +
-> +/**
-> + * luo_file_unpreserve_files - Unpreserves all files from a session.
-> + * @session: The session to be cleaned up.
-> + *
-> + * This function serves as the primary cleanup path for a session. It is
-> + * invoked when the userspace agent closes the session's file descriptor.
-> + *
-> + * For each file, it performs the following cleanup actions:
-> + *   1. Calls the handler's .unpreserve() callback to allow the handler =
-to
-> + *      release any resources it allocated.
-> + *   2. Removes the file from the session's internal tracking list.
-> + *   3. Releases the reference to the 'struct file' that was taken by
-> + *      luo_preserve_file() via fput(), returning ownership.
-> + *   4. Frees the memory associated with the internal 'struct luo_file'.
-> + *
-> + * After all individual files are unpreserved, it frees the contiguous m=
-emory
-> + * block that was allocated to hold their serialization data.
-> + */
-> +void luo_file_unpreserve_files(struct luo_session *session)
-> +{
-> +	struct luo_file *luo_file;
-> +
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	while (!list_empty(&session->files_list)) {
+>
+> Regarding can_split_folio(), I was wondering whether we can just get ri=
+d of it and use folio_expect_ref_count() instead?
+>
+> For the two callers that need extra_pins, we could just have something =
+simple helper in huge_memory.c like
+>
+> /* Number of folio references from the pagecache or the swapcache. */
+> unsigned int folio_cache_references(const struct folio *folio)
+> {
+> 	if (folio_test_anon(folio) && !folio_test_swapcache(folio))
+> 		return 0;
+> 	return folio_nr_pages(folio);
+> }
 
-Continuing with the layering thing, the list belongs to the session, so
-it should traverse it. luo_session_release() should traverse the list
-and call luo_file_unpreserve() on each file in the list. The body of
-this loop becomes luo_file_unpreserve().
+OK, I will give this a try in a separate patch in an updated version of t=
+his
+series.
 
-> +		struct liveupdate_file_op_args args =3D {0};
-> +
-> +		luo_file =3D list_last_entry(&session->files_list,
-> +					   struct luo_file, list);
-> +
-> +		args.handler =3D luo_file->fh;
-> +		args.session =3D (struct liveupdate_session *)session;
-> +		args.file =3D luo_file->file;
-> +		args.serialized_data =3D luo_file->serialized_data;
-> +		luo_file->fh->ops->unpreserve(&args);
-> +
-> +		list_del(&luo_file->list);
-> +		session->count--;
+Thank you for the feedback.
 
-... and these two go into luo_session_release().
-
-> +
-> +		fput(luo_file->file);
-> +		mutex_destroy(&luo_file->mutex);
-> +		kfree(luo_file);
-> +	}
-> +
-> +	luo_session_free_files_mem(session);
-> +}
-> +
-> +static int luo_file_freeze_one(struct luo_session *session,
-> +			       struct luo_file *luo_file)
-> +{
-> +	int err =3D 0;
-> +
-> +	guard(mutex)(&luo_file->mutex);
-> +
-> +	if (luo_file->fh->ops->freeze) {
-
-Nit: "if (!luo_file->fh->ops->freeze) return 0;" would make this tad bit
-neater. You probably don't even need the mutex since ops are const.
-
-> +		struct liveupdate_file_op_args args =3D {0};
-> +
-> +		args.handler =3D luo_file->fh;
-> +		args.session =3D (struct liveupdate_session *)session;
-> +		args.file =3D luo_file->file;
-> +		args.serialized_data =3D luo_file->serialized_data;
-> +
-> +		err =3D luo_file->fh->ops->freeze(&args);
-> +		if (!err)
-> +			luo_file->serialized_data =3D args.serialized_data;
-
-Then this can be:
-
-	if (err)
-		return err;
-
-	luo_file->serialized_data =3D args.serialized_data;
-	return 0;
-
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +static void luo_file_unfreeze_one(struct luo_session *session,
-> +				  struct luo_file *luo_file)
-> +{
-> +	guard(mutex)(&luo_file->mutex);
-> +
-> +	if (luo_file->fh->ops->unfreeze) {
-
-Same here.
-
-> +		struct liveupdate_file_op_args args =3D {0};
-> +
-> +		args.handler =3D luo_file->fh;
-> +		args.session =3D (struct liveupdate_session *)session;
-> +		args.file =3D luo_file->file;
-> +		args.serialized_data =3D luo_file->serialized_data;
-> +
-> +		luo_file->fh->ops->unfreeze(&args);
-> +	}
-> +
-> +	luo_file->serialized_data =3D 0;
-
-The file will also need to be unpreserved after unfreeze. Resetting the
-data here is not the right thing, since unpreserve is responsible for
-freeing things, and it won't have access to its data.
-
-> +}
-> +
-> +static void __luo_file_unfreeze(struct luo_session *session,
-> +				struct luo_file *failed_entry)
-> +{
-> +	struct list_head *files_list =3D &session->files_list;
-> +	struct luo_file *luo_file;
-> +
-> +	list_for_each_entry(luo_file, files_list, list) {
-> +		if (luo_file =3D=3D failed_entry)
-> +			break;
-> +
-> +		luo_file_unfreeze_one(session, luo_file);
-> +	}
-> +
-> +	memset(session->files, 0, session->pgcnt << PAGE_SHIFT);
-> +}
-> +
-> +/**
-> + * luo_file_freeze - Freezes all preserved files and serializes their me=
-tadata.
-> + * @session: The session whose files are to be frozen.
-> + *
-> + * This function is called from the reboot() syscall path, just before t=
-he
-> + * kernel transitions to the new image via kexec. Its purpose is to perf=
-orm the
-> + * final preparation and serialization of all preserved files in the ses=
-sion.
-> + *
-> + * It iterates through each preserved file in FIFO order (the order of
-> + * preservation) and performs two main actions:
-> + *
-> + * 1. Freezes the File: It calls the handler's .freeze() callback for ea=
-ch
-> + *    file. This gives the handler a final opportunity to quiesce the de=
-vice or
-> + *    prepare its state for the upcoming reboot. The handler may update =
-its
-> + *    private data handle during this step.
-> + *
-> + * 2. Serializes Metadata: After a successful freeze, it copies the fina=
-l file
-> + *    metadata=E2=80=94the handler's compatible string, the user token, =
-and the final
-> + *    private data handle=E2=80=94into the pre-allocated contiguous memo=
-ry buffer
-> + *    (session->files) that will be handed over to the next kernel via K=
-HO.
-> + *
-> + * Error Handling (Rollback):
-> + * This function is atomic. If any handler's .freeze() operation fails, =
-the
-> + * entire live update is aborted. The __luo_file_unfreeze() helper is
-> + * immediately called to invoke the .unfreeze() op on all files that were
-> + * successfully frozen before the point of failure, rolling them back to=
- a
-> + * running state. The function then returns an error, causing the reboot=
-()
-> + * syscall to fail.
-> + *
-> + * Context: Called only from the liveupdate_reboot() path.
-> + * Return: 0 on success, or a negative errno on failure.
-> + */
-> +int luo_file_freeze(struct luo_session *session)
-> +{
-> +	struct luo_file_ser *file_ser =3D session->files;
-> +	struct luo_file *luo_file;
-> +	int err;
-> +	int i;
-> +
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	if (!session->count)
-> +		return 0;
-
-Same comment about layering here...
-
-> +
-> +	if (WARN_ON(!file_ser))
-> +		return -EINVAL;
-> +
-> +	i =3D 0;
-> +	list_for_each_entry(luo_file, &session->files_list, list) {
-> +		err =3D luo_file_freeze_one(session, luo_file);
-> +		if (err < 0) {
-> +			pr_warn("Freeze failed for session[%s] token[%#0llx] handler[%s] err[=
-%pe]\n",
-> +				session->name, luo_file->token,
-> +				luo_file->fh->compatible, ERR_PTR(err));
-> +			goto exit_err;
-> +		}
-> +
-> +		strscpy(file_ser[i].compatible, luo_file->fh->compatible,
-> +			sizeof(file_ser[i].compatible));
-> +		file_ser[i].data =3D luo_file->serialized_data;
-> +		file_ser[i].token =3D luo_file->token;
-> +		i++;
-> +	}
-> +
-> +	return 0;
-> +
-> +exit_err:
-> +	__luo_file_unfreeze(session, luo_file);
-> +
-> +	return err;
-> +}
-> +
-> +/**
-> + * luo_file_unfreeze - Unfreezes all files in a session.
-> + * @session: The session whose files are to be unfrozen.
-> + *
-> + * This function rolls back the state of all files in a session after th=
-e freeze
-> + * phase has begun but must be aborted. It is the counterpart to
-> + * luo_file_freeze().
-> + *
-> + * It invokes the __luo_file_unfreeze() helper with a NULL argument, whi=
-ch
-> + * signals the helper to iterate through all files in the session  and c=
-all
-> + * their respective .unfreeze() handler callbacks.
-> + *
-> + * Context: This is called when the live update is aborted during
-> + *          the reboot() syscall, after luo_file_freeze() has been calle=
-d.
-> + */
-> +void luo_file_unfreeze(struct luo_session *session)
-> +{
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	if (!session->count)
-> +		return;
-
-... and here.
-
-> +
-> +	__luo_file_unfreeze(session, NULL);
-> +}
-> +
-> +/**
-> + * luo_retrieve_file - Restores a preserved file from a session by its t=
-oken.
-> + * @session: The session from which to retrieve the file.
-> + * @token:   The unique token identifying the file to be restored.
-> + * @filep:   Output parameter; on success, this is populated with a poin=
-ter
-> + *           to the newly retrieved 'struct file'.
-> + *
-> + * This function is the primary mechanism for recreating a file in the n=
-ew
-> + * kernel after a live update. It searches the session's list of deseria=
-lized
-> + * files for an entry matching the provided @token.
-> + *
-> + * The operation is idempotent: if a file has already been successfully
-> + * retrieved, this function will simply return a pointer to the existing
-> + * 'struct file' and report success without re-executing the retrieve
-> + * operation. This is handled by checking the 'retrieved' flag under a l=
-ock.
-> + *
-> + * File retrieval can happen in any order; it is not bound by the order =
-of
-> + * preservation.
-> + *
-> + * Context: Can be called from an ioctl or other in-kernel code in the n=
-ew
-> + *          kernel.
-> + * Return: 0 on success. Returns a negative errno on failure:
-> + *         -ENOENT if no file with the matching token is found.
-> + *         Any error code returned by the handler's .retrieve() op.
-> + */
-> +int luo_retrieve_file(struct luo_session *session, u64 token,
-> +		      struct file **filep)
-> +{
-> +	struct liveupdate_file_op_args args =3D {0};
-> +	struct luo_file *luo_file;
-> +	int err;
-> +
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	if (list_empty(&session->files_list))
-> +		return -ENOENT;
-
-... and here.
-
-> +
-> +	list_for_each_entry(luo_file, &session->files_list, list) {
-> +		if (luo_file->token =3D=3D token)
-> +			break;
-> +	}
-> +
-> +	if (luo_file->token !=3D token)
-> +		return -ENOENT;
-> +
-> +	guard(mutex)(&luo_file->mutex);
-> +	if (luo_file->retrieved) {
-> +		/*
-> +		 * Someone is asking for this file again, so get a reference
-> +		 * for them.
-> +		 */
-
-Should we even allow this? Is there a use case?
-
-> +		get_file(luo_file->file);
-> +		*filep =3D luo_file->file;
-> +		return 0;
-> +	}
-> +
-> +	args.handler =3D luo_file->fh;
-> +	args.session =3D (struct liveupdate_session *)session;
-> +	args.serialized_data =3D luo_file->serialized_data;
-> +	err =3D luo_file->fh->ops->retrieve(&args);
-> +	if (!err) {
-> +		luo_file->file =3D args.file;
-> +
-> +		/* Get reference so we can keep this file in LUO until finish */
-> +		get_file(luo_file->file);
-> +		*filep =3D luo_file->file;
-> +		luo_file->retrieved =3D true;
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +static int luo_file_can_finish_one(struct luo_session *session,
-> +				   struct luo_file *luo_file)
-> +{
-> +	bool can_finish =3D true;
-> +
-> +	guard(mutex)(&luo_file->mutex);
-> +
-> +	if (luo_file->fh->ops->can_finish) {
-
-Same nitpick about doing "if (!luo_file->fh->ops->can_finish)".
-
-> +		struct liveupdate_file_op_args args =3D {0};
-> +
-> +		args.handler =3D luo_file->fh;
-> +		args.session =3D (struct liveupdate_session *)session;
-> +		args.file =3D luo_file->file;
-> +		args.serialized_data =3D luo_file->serialized_data;
-> +		args.retrieved =3D luo_file->retrieved;
-> +		can_finish =3D luo_file->fh->ops->can_finish(&args);
-> +	}
-> +
-> +	return can_finish ? 0 : -EBUSY;
-> +}
-> +
-> +static void luo_file_finish_one(struct luo_session *session,
-> +				struct luo_file *luo_file)
-> +{
-> +	struct liveupdate_file_op_args args =3D {0};
-> +
-> +	guard(mutex)(&luo_file->mutex);
-> +
-> +	args.handler =3D luo_file->fh;
-> +	args.session =3D (struct liveupdate_session *)session;
-> +	args.file =3D luo_file->file;
-> +	args.serialized_data =3D luo_file->serialized_data;
-> +	args.retrieved =3D luo_file->retrieved;
-> +
-> +	luo_file->fh->ops->finish(&args);
-> +}
-> +
-> +/**
-> + * luo_file_finish - Completes the lifecycle for all files in a session.
-> + * @session: The session to be finalized.
-> + *
-> + * This function orchestrates the final teardown of a live update sessio=
-n in the
-> + * new kernel. It should be called after all necessary files have been
-> + * retrieved and the userspace agent is ready to release the preserved s=
-tate.
-> + *
-> + * The function iterates through all tracked files. For each file, it pe=
-rforms
-> + * the following sequence of cleanup actions:
-> + *
-> + * 1. If file is not yet retrieved, retrieves it, and calls can_finish()=
- on
-> + *    every file in the session. If all can_finish return true, continue=
- to
-> + *    finish.
-> + * 2. Calls the handler's .finish() callback (via luo_file_finish_one) to
-> + *    allow for final resource cleanup within the handler.
-> + * 3. Releases LUO's ownership reference on the 'struct file' via fput()=
-. This
-> + *    is the counterpart to the get_file() call in luo_retrieve_file().
-> + * 4. Removes the 'struct luo_file' from the session's internal list.
-> + * 5. Frees the memory for the 'struct luo_file' instance itself.
-> + *
-> + * After successfully finishing all individual files, it frees the
-> + * contiguous memory block that was used to transfer the serialized meta=
-data
-> + * from the previous kernel.
-> + *
-> + * Error Handling (Atomic Failure):
-> + * This operation is atomic. If any handler's .can_finish() op fails, th=
-e entire
-> + * function aborts immediately and returns an error.
-> + *
-> + * Context: Can be called from an ioctl handler in the new kernel.
-> + * Return: 0 on success, or a negative errno on failure.
-> + */
-> +int luo_file_finish(struct luo_session *session)
-> +{
-> +	struct list_head *files_list =3D &session->files_list;
-> +	struct luo_file *luo_file;
-> +	int err;
-> +
-> +	if (!session->count)
-> +		return 0;
-
-Layering comment again.
-
-> +
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	list_for_each_entry(luo_file, files_list, list) {
-> +		err =3D luo_file_can_finish_one(session, luo_file);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	while (!list_empty(&session->files_list)) {
-> +		luo_file =3D list_last_entry(&session->files_list,
-> +					   struct luo_file, list);
-> +
-> +		luo_file_finish_one(session, luo_file);
-> +
-> +		if (luo_file->file)
-> +			fput(luo_file->file);
-> +		list_del(&luo_file->list);
-> +		session->count--;
-> +		mutex_destroy(&luo_file->mutex);
-> +		kfree(luo_file);
-> +	}
-> +
-> +	if (session->files) {
-> +		kho_restore_free(session->files);
-> +		session->files =3D NULL;
-> +		session->pgcnt =3D 0;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * luo_file_deserialize - Reconstructs the list of preserved files in th=
-e new kernel.
-> + * @session: The incoming session containing the serialized file data fr=
-om KHO.
-> + *
-> + * This function is called during the early boot process of the new kern=
-el. It
-> + * takes the raw, contiguous memory block of 'struct luo_file_ser' entri=
-es,
-> + * provided by the previous kernel, and transforms it back into a live,
-> + * in-memory linked list of 'struct luo_file' instances.
-> + *
-> + * For each serialized entry, it performs the following steps:
-> + *   1. Reads the 'compatible' string.
-> + *   2. Searches the global list of registered file handlers for one that
-> + *      matches the compatible string.
-> + *   3. Allocates a new 'struct luo_file'.
-> + *   4. Populates the new structure with the deserialized data (token, p=
-rivate
-> + *      data handle) and links it to the found handler. The 'file' point=
-er is
-> + *      initialized to NULL, as the file has not been retrieved yet.
-> + *   5. Adds the new 'struct luo_file' to the session's files_list.
-> + *
-> + * This prepares the session for userspace, which can later call
-> + * luo_retrieve_file() to restore the actual file descriptors.
-> + *
-> + * Context: Called from session deserialization.
-> + */
-> +int luo_file_deserialize(struct luo_session *session)
-> +{
-> +	struct luo_file_ser *file_ser;
-> +	u64 i;
-> +
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	if (!session->files)
-> +		return 0;
-
-Layering again.
-
-> +
-> +	file_ser =3D session->files;
-> +	for (i =3D 0; i < session->count; i++) {
-> +		struct liveupdate_file_handler *fh;
-> +		bool handler_found =3D false;
-> +		struct luo_file *luo_file;
-> +
-> +		list_for_each_entry(fh, &luo_file_handler_list, list) {
-> +			if (!strcmp(fh->compatible, file_ser[i].compatible)) {
-> +				handler_found =3D true;
-> +				break;
-> +			}
-> +		}
-> +
-> +		if (!handler_found) {
-> +			pr_warn("No registered handler for compatible '%s'\n",
-> +				file_ser[i].compatible);
-> +			return -ENOENT;
-> +		}
-> +
-> +		luo_file =3D kzalloc(sizeof(*luo_file), GFP_KERNEL);
-> +		if (!luo_file)
-> +			return -ENOMEM;
-> +
-> +		luo_file->fh =3D fh;
-> +		luo_file->file =3D NULL;
-> +		luo_file->serialized_data =3D file_ser[i].data;
-> +		luo_file->token =3D file_ser[i].token;
-> +		luo_file->retrieved =3D false;
-> +		mutex_init(&luo_file->mutex);
-> +		list_add_tail(&luo_file->list, &session->files_list);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * liveupdate_register_file_handler - Register a file handler with LUO.
-> + * @fh: Pointer to a caller-allocated &struct liveupdate_file_handler.
-> + * The caller must initialize this structure, including a unique
-> + * 'compatible' string and a valid 'fh' callbacks. This function adds the
-> + * handler to the global list of supported file handlers.
-> + *
-> + * Context: Typically called during module initialization for file types=
- that
-> + * support live update preservation.
-> + *
-> + * Return: 0 on success. Negative errno on failure.
-> + */
-> +int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
-> +{
-> +	static DEFINE_MUTEX(register_file_handler_lock);
-> +	struct liveupdate_file_handler *fh_iter;
-> +
-> +	if (!liveupdate_enabled())
-> +		return -EOPNOTSUPP;
-> +
-> +	/*
-> +	 * Once sessions have been deserialized, file handlers cannot be
-> +	 * registered, it is too late.
-> +	 */
-> +	if (WARN_ON(luo_session_is_deserialized()))
-> +		return -EBUSY;
-> +
-> +	/* Sanity check that all required callbacks are set */
-> +	if (!fh->ops->preserve || !fh->ops->unpreserve ||
-> +	    !fh->ops->retrieve || !fh->ops->finish) {
-
-Should check can_preserve here, right?
-
-> +		return -EINVAL;
-> +	}
-> +
-> +	guard(mutex)(&register_file_handler_lock);
-> +	list_for_each_entry(fh_iter, &luo_file_handler_list, list) {
-> +		if (!strcmp(fh_iter->compatible, fh->compatible)) {
-> +			pr_err("File handler registration failed: Compatible string '%s' alre=
-ady registered.\n",
-> +			       fh->compatible);
-> +			return -EEXIST;
-> +		}
-> +	}
-> +
-> +	if (!try_module_get(fh->ops->owner))
-> +		return -EAGAIN;
-> +
-> +	INIT_LIST_HEAD(&fh->list);
-> +	list_add_tail(&fh->list, &luo_file_handler_list);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * liveupdate_get_token_outgoing - Get the token for a preserved file.
-> + * @s:      The outgoing liveupdate session.
-> + * @file:   The file object to search for.
-> + * @tokenp: Output parameter for the found token.
-> + *
-> + * Searches the list of preserved files in an outgoing session for a mat=
-ching
-> + * file object. If found, the corresponding user-provided token is retur=
-ned.
-> + *
-> + * This function is intended for in-kernel callers that need to correlat=
-e a
-> + * file with its liveupdate token.
-> + *
-> + * Context: Can be called from any context that can acquire the session =
-mutex.
-> + * Return: 0 on success, -ENOENT if the file is not preserved in this se=
-ssion.
-> + */
-> +int liveupdate_get_token_outgoing(struct liveupdate_session *s,
-> +				  struct file *file, u64 *tokenp)
-> +{
-> +	struct luo_session *session =3D (struct luo_session *)s;
-> +	struct luo_file *luo_file;
-> +	int err =3D -ENOENT;
-> +
-> +	list_for_each_entry(luo_file, &session->files_list, list) {
-> +		if (luo_file->file =3D=3D file) {
-> +			if (tokenp)
-> +				*tokenp =3D luo_file->token;
-> +			err =3D 0;
-> +			break;
-> +		}
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +/**
-> + * liveupdate_get_file_incoming - Retrieves a preserved file for in-kern=
-el use.
-> + * @s:      The incoming liveupdate session (restored from the previous =
-kernel).
-> + * @token:  The unique token identifying the file to retrieve.
-> + * @filep:  On success, this will be populated with a pointer to the ret=
-rieved
-> + *          'struct file'.
-> + *
-> + * Provides a kernel-internal API for other subsystems to retrieve their
-> + * preserved files after a live update. This function is a simple wrapper
-> + * around luo_retrieve_file(), allowing callers to find a file by its to=
-ken.
-> + *
-> + * The operation is idempotent; subsequent calls for the same token will=
- return
-> + * a pointer to the same 'struct file' object.
-> + *
-> + * The caller receives a pointer to the file with a reference incremente=
-d. The
-> + * file's lifetime is managed by LUO and any userspace file
-> + * descriptors. If the caller needs to hold a reference to the file beyo=
-nd the
-> + * immediate scope, it must call get_file() itself.
-> + *
-> + * Context: Can be called from any context in the new kernel that has a =
-handle
-> + *          to a restored session.
-> + * Return: 0 on success. Returns -ENOENT if no file with the matching to=
-ken is
-> + *         found, or any other negative errno on failure.
-> + */
-> +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
-> +				 struct file **filep)
-> +{
-> +	struct luo_session *session =3D (struct luo_session *)s;
-> +
-> +	return luo_retrieve_file(session, token, filep);
-> +}
-> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_int=
-ernal.h
-> index 5185ad37a8c1..1a36f2383123 100644
-> --- a/kernel/liveupdate/luo_internal.h
-> +++ b/kernel/liveupdate/luo_internal.h
-> @@ -70,4 +70,13 @@ int luo_session_serialize(void);
->  int luo_session_deserialize(void);
->  bool luo_session_is_deserialized(void);
->=20=20
-> +int luo_preserve_file(struct luo_session *session, u64 token, int fd);
-> +void luo_file_unpreserve_files(struct luo_session *session);
-> +int luo_file_freeze(struct luo_session *session);
-> +void luo_file_unfreeze(struct luo_session *session);
-> +int luo_retrieve_file(struct luo_session *session, u64 token,
-> +		      struct file **filep);
-> +int luo_file_finish(struct luo_session *session);
-> +int luo_file_deserialize(struct luo_session *session);
-> +
->  #endif /* _LINUX_LUO_INTERNAL_H */
-
---=20
-Regards,
-Pratyush Yadav
+Best Regards,
+Yan, Zi
 
