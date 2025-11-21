@@ -4,118 +4,208 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E43F4CFA474
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 05:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA2F2CFA477
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 06:15:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E02E6B0022; Fri, 21 Nov 2025 00:38:46 -0500 (EST)
+	id A44E86B000D; Fri, 21 Nov 2025 01:15:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 190AD6B0026; Fri, 21 Nov 2025 00:38:46 -0500 (EST)
+	id A1CC56B0010; Fri, 21 Nov 2025 01:15:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0809E6B0027; Fri, 21 Nov 2025 00:38:46 -0500 (EST)
+	id 90B526B0022; Fri, 21 Nov 2025 01:15:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E64596B0022
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 00:38:45 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 95F1FC0487
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:38:42 +0000 (UTC)
-X-FDA: 84133509684.20.BEA312D
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AB4A64000E
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:38:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="hsK/R+QE";
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763703520;
+	by kanga.kvack.org (Postfix) with ESMTP id 7D8ED6B000D
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 01:15:37 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C2A21A045E
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 06:15:37 +0000 (UTC)
+X-FDA: 84133602714.08.FADA8DC
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013002.outbound.protection.outlook.com [40.93.201.2])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 16104140011
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 06:15:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ThlUUDdW;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.93.201.2 as permitted sender) smtp.mailfrom=shivankg@amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763705734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZf9JOxQ86iiFnhVwWUq/d7v0XLERMhRMClwCQw1iKw=;
-	b=55YP2gg+jgtdo/z1w98DWVcSJ51niXwlFgFdyyC97M1+NBQiKbgmP3fysoXUlm1EbSkhZV
-	udUHY/bhHTbF/khOfhPz3erYwtlTrjOElVz0cx4hlyeJ8kxZA3/Hbirez3I/ftZJMfLfSh
-	eClGHyy3NsaAJOCtHb2IiGjYgeYdxP0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="hsK/R+QE";
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763703520; a=rsa-sha256;
-	cv=none;
-	b=E3DtR4EzsGCrlEn84U2kiLER4gPws+T8DT5BMn/WeJd8dZtaCORcU09yF1YYJwjFQZTXi1
-	UZ4w1yKmhVpYdvVV5ZVODSwgrl8tacoOyzH0H2+km2DkER/NFYWs4x29ZOlOItleufKUfq
-	oUGA8tn6hu/lX123NN/omJVntOJ3brU=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b73a9592fb8so346274266b.1
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:38:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763703519; x=1764308319; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aZf9JOxQ86iiFnhVwWUq/d7v0XLERMhRMClwCQw1iKw=;
-        b=hsK/R+QEr0fkScgidt9WiploxpmNzxjDOpyMiNlgEklOuyPjgs+dWZK3jkZBNCRlhr
-         fQjP/mqhKHCCZSbY45pSNZRGoyJHgnX2Cjs/GpeZbJXnH+WrpxmnSq+v+j0oh6G5TJoq
-         xgms9vo+TT7mBAk0O1EnukDqN8Ppb6grtR3n+y6akXzIYp9B1+d8syz9GOhQSNUf2GRW
-         uHLIMSNF7u4X4qyLpulRCQ3TXSxaJ5uTKU2I1AIVUMnD4gyGuEEYsbyuot+OXuVSnV5I
-         JLIpa0e0gsgInWRAsmfy07V2LssH8fKdMYqc7wrq+dqh+4byzZrJe67fKNhfLHkl3NBd
-         Ou7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763703519; x=1764308319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aZf9JOxQ86iiFnhVwWUq/d7v0XLERMhRMClwCQw1iKw=;
-        b=Frulk+5hKpSnRVlfCNYk/14/uBc0SSoxFhrMN0/vCuBe1SFYWQyKoGzP8mm9vlN2TD
-         9TFUG11I8glSI/f04yvNnIQwIhjkuDPlozrsVPj9fEdtymEDH6I6CrsOjVfw/TSPGMjG
-         PzH13okBV1RzbDTjLWp2Ij57QTyZ8CDnjhASRLByB8eyldvECeLGx5fHjtKFSoVQ5Pyw
-         UKcBupaCRFyfvOYUNrcEF9G3a5oZPiqqE+htTCz8zyNTVM2qhCfZl9soj3w0tU1xZnGr
-         6siEoKnzbtl/00KClmKQbFDikZIMMbtgiQZo+KtgyxU6LmJpNwSGhSQWv8FaZkTlrEgf
-         7gHQ==
-X-Gm-Message-State: AOJu0Yyf53fVX/6fPjtPHtuUMnSEqeiNdVGxj/P63/yf9OSfSa8mn53I
-	nbH7HMk1rPJ1tXbYa8pojRpHMpRf6PX4whrBa+F6o9lx9VUPvdkZlAPrsOHzvQ1G4bp2kV6K97p
-	aR9YzV2Ex+xjJaGnsqyVjlFadOj+tArc=
-X-Gm-Gg: ASbGncuDCVdetf05A/WPwd6ERqa2qNhzUIQtBeyjF8BoUPMfoa6mCYPPpFUVmz7lFhA
-	Mh7AggFUkRCmbNYnzclCXHZaSwyJVjseENtTPhRncrCYbAvhu9yRKRX++7PymFfcpdf3K6X9Da/
-	2N6soKra/d0ckbFyxibcTxROx0XrHo/7foN9zleYcdHFghVeBKDhPkz1EPbRmjQ4qYMcJE0OWGi
-	aJWdbqiMDQ1FY7WWEPijS9WtoLqaG3VjWa2osgNfov9IG6/1Qj6Ind9bSFTNWmb4cNuAJY6q9E+
-	lJkURXsdtXeIOAyQ71FmngttkmupogQ=
-X-Google-Smtp-Source: AGHT+IFePgQgKlH/eH2vCzGJPecA0fdnSvAa9+WyV7mxD0ypgAIxV85s/UVnPWH74w8a7bE8RBszO0q0qp1OZFNqWwc=
-X-Received: by 2002:a17:907:c0b:b0:b70:4f7d:24f8 with SMTP id
- a640c23a62f3a-b766ef48d60mr132631166b.22.1763703518710; Thu, 20 Nov 2025
- 21:38:38 -0800 (PST)
+	bh=+y6lrQA/QuFX1k5mPJEaAt45DTVBEnGWrI1nHorFwCg=;
+	b=2bkTVDudsQMeOAF2RFUPRx0Obx0+DQhZkiVmH7yGG+qnme/Vmk7FVJkXfXGF1kP5ZST+Tl
+	9LtC8Nw2Dk132mmJ5K9OhpTgdB2JenqucDhoJTrf8Upeg41kMOe3gdNCNZvpBBi9PXC1OL
+	8HI4lyhvAdUixKoNIxZa4/PzbBtYOwQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763705734; a=rsa-sha256;
+	cv=pass;
+	b=tFJmg8i6H8HKUheSIK8XXvP9fJYqPCV3CT2m9RXbmQeBjTogATCTKuNDkov9EPKUVDziG2
+	fIYJlAUT7S+lkef47U3GfFpQNugRaT9QJ6HLhDEAaP3TSKHnPWe7kPk/mcMh4HRUNJmOnd
+	0vsQakJc5Uvzi/BeG1kr9+xf++NoBXw=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ThlUUDdW;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.93.201.2 as permitted sender) smtp.mailfrom=shivankg@amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HcHXVul5kbglMDdpLMj+BK4+xPj3H7a7SgIkGq4tnvbnqlRKwmcNujf2OjeRM0Occvthh4TmnU6Z58AN/7JgxaFp1F/e/7qVa1xBYmG5DXWvKmKGbfXUsoz+1zZG7wlL2BvV/NB6XZ/WnrTZbhK3fyNWaDq9TeLTVCCXlrNMv2jlY5Rj/bFNOMiXVKjIbcRyoKxsoWxzDuPVVWCc8p/BQNJwIfUlPJ+huUbccLeSJChLB490YMha/oITU8eCdaMsqQiwfIgv8/yDT1MKRVxkFlGzPVOr69FsK9ohw5dS/fEbVEUQIfq8T/4aAIAH9kZohEVRYRO7t5PA3Rh2gEz3Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+y6lrQA/QuFX1k5mPJEaAt45DTVBEnGWrI1nHorFwCg=;
+ b=yK9ESlsI1bMkcyFnV0lVrw8+CyxX70THgiEd7DBEzoUACwhGM5ZPEhrmYER/Nqm0duY3igkC3HM5nE/55QsoCNp8k5KSzcEa/dRZ/Q5pTUZD05U+UUg6WgU9gEyx4sqIdoRr/gPYqyxgrM/T8vsuN68ozb1w+7o2NJUNdH+7AlxTyb6yYRmWPyudNQcBE7y0vbA6NbBtCReX5r9He26lvlDMYeXMIx6CF4orj3R4pppCDknLm7Xj0An9sog7TMgg8QFaSN5OPb8Kf8NIlhCPPkBennQjNL2xGNrhQGlzZ142Hpms1Lb0oI09ftEsdCyiz3DVpO2R4cnWQIlHwCyhLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+y6lrQA/QuFX1k5mPJEaAt45DTVBEnGWrI1nHorFwCg=;
+ b=ThlUUDdW0aWXnr3wxfGTacCs7yPQ8gs41hD3Y9lay6AfwxEHm1BPAK03MbxPSaPIQ2yR5MKlKKzwshUzX0M0NBBUQeS/H9HVezWS7HZ7Oo4z9cAWmcGtYbcu6ZBaT6kYXXBqR6Dd2OhOddqxXbVF5XJtM1iUsiPWBWH/MqpPEmg=
+Received: from MW4PR12MB7465.namprd12.prod.outlook.com (2603:10b6:303:212::18)
+ by MN2PR12MB4206.namprd12.prod.outlook.com (2603:10b6:208:1d5::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
+ 2025 06:15:31 +0000
+Received: from MW4PR12MB7465.namprd12.prod.outlook.com
+ ([fe80::6b00:b9eb:486a:f10b]) by MW4PR12MB7465.namprd12.prod.outlook.com
+ ([fe80::6b00:b9eb:486a:f10b%4]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
+ 06:15:31 +0000
+Message-ID: <99e1a117-d6b6-44bb-a5f4-77a36b266b69@amd.com>
+Date: Fri, 21 Nov 2025 11:45:22 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 2/2] mm/khugepaged: map dirty/writeback pages failures
+ to EAGAIN
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Dev Jain <dev.jain@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+References: <20251120065043.41738-6-shivankg@amd.com>
+ <20251120065043.41738-10-shivankg@amd.com>
+ <6c1d6b80-d290-4110-9a49-53e7404136bc@arm.com>
+ <33476cb4-318b-49db-9cc1-a354eca9e883@amd.com>
+ <ef4a0c2c-62d1-46de-9ea2-dd946857a03a@linux.dev>
+ <81e34d93-9031-4840-a0d0-56d488f3bc17@kernel.org>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <81e34d93-9031-4840-a0d0-56d488f3bc17@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4PR01CA0114.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:266::14) To MW4PR12MB7465.namprd12.prod.outlook.com
+ (2603:10b6:303:212::18)
 MIME-Version: 1.0
-References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
- <20251117-swap-table-p2-v2-3-37730e6ea6d5@tencent.com> <CAGsJ_4zSqQax-Ct-zz3uMZ_dD7vnvTjWZ_BsnXBnMVpVNNDYUA@mail.gmail.com>
- <CAMgjq7BYNwVSX+=KDxmdFpUZ4gnTDjA7LU_Fi=J6SFUV8pAcUg@mail.gmail.com> <CAGsJ_4y1VyyJj8zfrA7zDOUJ9OSGo6z6KO1zX6n3iigvYpYheQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4y1VyyJj8zfrA7zDOUJ9OSGo6z6KO1zX6n3iigvYpYheQ@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 21 Nov 2025 13:38:02 +0800
-X-Gm-Features: AWmQ_bko2-SSnRjj3i3fNSewSpvOlFhK-yP5ju5e19sYcZBHIvpeWIbxWCvBgQ8
-Message-ID: <CAMgjq7DaviOqRoiTGUKdY9N8k_p7yDjzfbzxVP_iiz8mc1DqWw@mail.gmail.com>
-Subject: Re: [PATCH v2 03/19] mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
-To: Barry Song <21cnbao@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AB4A64000E
-X-Stat-Signature: e1eet5a98mn41eyziqbgtayrdonix3sr
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB7465:EE_|MN2PR12MB4206:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2548558e-35a3-42a4-4f39-08de28c55fa5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?STFJY2JYOWoxSGczSmhUSGRKT3g3a2c1QVIrczZRWHE4WTJKYWFYRFFoanRD?=
+ =?utf-8?B?bEJGSlV4L1dHRVFkRVUrREhOMmt6RzFRMGtvTzhEOS8yWlF6eUxzbkVETkd0?=
+ =?utf-8?B?WjUzeEJLZ2RqQmg2SjFGS1c1YXF1QWo1WUgwSVV4QWVLRTNmOGgrN3pYRW5q?=
+ =?utf-8?B?VjlKdDRqZlBhY1lwNnc1RHdmVmZtMU9XVnVmV3ZlcUlHbkVtZzkya2hUdmEz?=
+ =?utf-8?B?U2RjaWhYZktkcHhqSlFFd05NMFgvVUl6ZUp0elQxclJnZU5qV2kwTHRUVW0z?=
+ =?utf-8?B?ajBDMXJTQXJRYkp3RVZ6aENsS2JKb01wWHdNNmFMKzU5alRVdEFhMDErTEEx?=
+ =?utf-8?B?TDhmcWtsVVI5Tks0bi8zMDRjajlvbUZibUR0bjZkdUtIV1lQaVBqRERlRjNy?=
+ =?utf-8?B?TXZlUEhkRlpKMEZhUmxNcXNtWVVQbmR4MFhGUkRFQ01rYzQxVnYrUU1aaEZ1?=
+ =?utf-8?B?Q3QrRGhVVERkb2YvOHJ4UzN1NXl1YnFnak9VOU9yN1B6TUhGK2tlSzZMQU8y?=
+ =?utf-8?B?STJac0lDTDBNSDhxRTZqVTdHL0dsd1RWZmZVOVRTbFo0akQ1UEdISVdYU0tJ?=
+ =?utf-8?B?V2ZpVnJSczZUUlRPTHVhOHNNci9KMWkzN2YzaGRpOWVtVlE2TVYwdnVWa3BZ?=
+ =?utf-8?B?SzBPaE12SVRPYjAzTDhoSWNvaUZiTEtXM2dDNU16bXpXa1U5dXZOOXJMTWJU?=
+ =?utf-8?B?MlRZN3FDM1FuaFo3bWRLNk1mWVVBY04xZStzcklSN09ZN3RZVmNXZGwzWmVQ?=
+ =?utf-8?B?Wk51UUI4RWo0RVZxTzlRMUxMVjJkYS8zdE45QUxsRmhBV0VUWGU2d0Y4aER6?=
+ =?utf-8?B?R2lmQ2pBQUtubEM5RGJYeHhxYWNZUEU5SkxqK1g0Zm5tTWRXRWtMSW5GMlV3?=
+ =?utf-8?B?dlZxMTVYN2xpUE9NQzAxQUhXTjZ3NVBKTFRTUDdMUDAzVHgrcVNjM2hRdWN4?=
+ =?utf-8?B?NHFPdnk3N2dQOW8zemNncVJham4rTmduTDEwbmVmM21ZTXVJU0lNRmpOVlNr?=
+ =?utf-8?B?OW1HRU40OENGT0hMejQvTXppRTRFL0dsbUF3L0xRQXMyMkVVL01qME44TE0x?=
+ =?utf-8?B?U3V1RmlOMTZlWVp6WG5xWmRydjlzV0xMT3ROQTlWbUVnVmpMc2YxcHRpT21N?=
+ =?utf-8?B?R0xsWngyZFBodjhSWlM0S1hzWFRmVjFEc2U4RXJzMENPbFNvMkZCUUhERjVw?=
+ =?utf-8?B?SllxSit6YzRFSjVHWFQzMXpsOUE0b3pDVzllblBTakZYdGdGM3lHMmwzSGdN?=
+ =?utf-8?B?Z2x6ZWxaSmZiK3pFemhadHVoV0oyaHhBS1dHK2FpWWdwQ0FqbmFhQzgxK2F0?=
+ =?utf-8?B?a0JxaHg0Vk5TQi9kdkhscGdOZEo3N0Y0L2dmRVp6dHpqeUtiK3I2eFZTZ3Yr?=
+ =?utf-8?B?eUFxTlFxZktyUXgySnFNVFdrektEQjlGNVo2ZnlFOUtWcG9CODFDbFdDeFRJ?=
+ =?utf-8?B?c0ZmMk9WR0FJdXNNS1llUkZSeE96bkJaNmNaMVJ1UjIvWHRYTkt4T2tnSmFB?=
+ =?utf-8?B?K0FuaHh4ZHlTcWpxM04xN095VWZTR016UldNcE8vSnJ5dDc1QWZCeFZEcTQz?=
+ =?utf-8?B?aXAxVnRkZXEwZVZnWVNwdXBCQUdKazVPWmIzWWlXZktwMlZWWkVyd3pURGtq?=
+ =?utf-8?B?WHJqb2xrempTMkJ2TnYwblY5QWYwQVdDcTVTS1kxWmZSY2VMWnU4Z1Z0Skxm?=
+ =?utf-8?B?aStSWlI3YzVUM2J4dHpRU1RHOUo3THIxR3Z2emhQeENWam8vREF3R3BKaWkr?=
+ =?utf-8?B?SDRxRFZFSW1VRStHemhuR0FmWGFReDk0TENjQzhNSWFiYytPTVljLzZralNK?=
+ =?utf-8?B?V01oMUNTLzRUMS9PVjNmb2V1VFNEL1VOZ1dzVnZYTUFtemhjc00zMVBySFZQ?=
+ =?utf-8?B?NGJOUmJhdVA5bDhGaU1RekVEQitKRzV3aHdrbVJQTGZjQ0FDREJINDBWK2la?=
+ =?utf-8?B?SE1mLzBuOXh6WHRySDJwK2VpQytxeitwRDRXTzdDRnphbHhZaGZLRWNZbk5h?=
+ =?utf-8?B?VFZzRWs1dEdnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB7465.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L0VlTEo0cmhIcFZRWm0zdkNGaFpqcGE0SkFIY3BCYWY0dk5MWWd5RVlqdWd2?=
+ =?utf-8?B?WlZTcmtEZmdORzlzazNLbndpN1NXdHlBY3VkOUFKY3pKYUtjUGYvRkloZnpn?=
+ =?utf-8?B?SllrZ0ZjdnJCWGZBdHk4bHFaZmNvNU5FazY2eUx3QkZGTlo4OCtFanlTMTM5?=
+ =?utf-8?B?aU8venU5STlpTGtSNzE4bVRZc1U0cUE0U1JyeDhxQ3VwamVLU0ZKSEdVVWk4?=
+ =?utf-8?B?YmlEWERiTzRmVUE3em5TbC8vR0lUc1pFRWNPZkYwUVIrcEU0UjBIRjZzYmxH?=
+ =?utf-8?B?WnRGZ2NTUGxreldWMVJ6aHc1VTAvd2EvT0MrTEgwbDA3a2VQdGgwZXduN29X?=
+ =?utf-8?B?a21qaUFqNWh1S3BEeWp6NnVGN2dKbDIyVmsrZUVMaVpIVFdMMHRlTzVFNXVw?=
+ =?utf-8?B?TnlqY3djaWg5S1NVTzJSTG5VN2JySzFkekxSRms4T09zci9KTFB4Rml6MHVy?=
+ =?utf-8?B?em5nczRRRFgrdWwveGNURGEyWlBCa21yb3BGSmZ0WGRiUTN1S3ZKN3lyZ3dk?=
+ =?utf-8?B?VjRIZEgxbU5CUnZTNk0zZktSM0MzdHhEeURyMUQvVGI4N093YkwyRnh3aWt0?=
+ =?utf-8?B?RSt0V2dza2FzdHN5c05hWEVSY0ZSQmQreTY4clFRbXZiT2o5NzhsM3BGMFRH?=
+ =?utf-8?B?YlltOXh5akdXbS9kMlRXVjRHYndoc01MRkU4cnp4b2tHSHdMemQzdzgyRGpj?=
+ =?utf-8?B?MExrZnVSZjg3aUlVYnA4aisza0NKNENJeGtQRTBJTEJBYnd2ajdZbzRmSGs5?=
+ =?utf-8?B?U1c0Zi92dG1XRzZITzdQLytZTkVIek94RDVpVzVndWkyZEV5Q0VlbmF0U2Ey?=
+ =?utf-8?B?b2hlcDkweGhoa2I0TmNHNCsyOUtxUFZ3WkJ2YW51SEh4KzZhQkhmQ05oOVh1?=
+ =?utf-8?B?YjV0dmUvVGdNbDgzT2dTS0FRcFA3Wmo0cGFhbkxNRnFSekVvTTRKMGl6TExD?=
+ =?utf-8?B?MGR0WlpCbnFwMkNydlI5cG91QzM1M1FVRXBpQlJDM0h6ZlVPQ1pXQVh2Wkcz?=
+ =?utf-8?B?a2hqR0xTK1FoVUo4Tnl6clM3Z2hGdnJ2YUxmZTFBZ0QyNFhjWlFpd1RIQWJO?=
+ =?utf-8?B?T0xrWjFrY1RFb3pPQ1FBakdRTDRzMm9WNU5qY2svVWROT3FYeFYvbXVIczVZ?=
+ =?utf-8?B?SzVzN1hERXVWMTViWEw2bmNHb0ZERTZySFh4eHQ0OHVEZXY5MFdmVmF0Yito?=
+ =?utf-8?B?N1JpYjJlWVZMZnJyT3lHOFhYQUMvcGY4ck1IamdOcjVvblovZ1k2VHFlaW1y?=
+ =?utf-8?B?Q0UwWkttSVBwSjdxTW1lbVFaMVpjS2R1aFgxcFFwdFZkVGdhL2YzbUZyczNl?=
+ =?utf-8?B?TjVvZ2tmbHJTOXFKeVQ1T0JKV3hpUE9IZkJWOVR2MkwvN1dXa1dxTzRWSGhr?=
+ =?utf-8?B?ZSttd0s4S0JsU1RSVjQyNjM1WUJ0eCtSRFVISUJTQXB1cVdEbEJsemRUQWVX?=
+ =?utf-8?B?UzVFM3lCZk50cWZTU2gvR2YyU0RGRXdCTkVnRlI4ZFRsb2lNbGRrTFk5cldB?=
+ =?utf-8?B?WlV1ZER4MjVBQzZIcTVQTGxpNCsrdjdCNVhHY2hXRmZKZjFXcy94aHViZmFE?=
+ =?utf-8?B?QlpvWTgrQWI1QlI2YnNmSzgzS3d6Z29KOE94WFhUQjZiSEtNeERWOGhadlV5?=
+ =?utf-8?B?QWtJL3hzRC9iZWxqQm56USt2Vm9IMXU4a0FXY05XeWlIVHF3WitjNEhkdzdG?=
+ =?utf-8?B?bUNjR2dsVm5XbWljaDlZa3lPT2t3c090ejU4WTR3RmF6dVhSakRYQ1QzSWJS?=
+ =?utf-8?B?R0VMMUlmN3VQVTdia0F6R1BhY2h1cys0QnkvUmZIMGtRYThSeE4rZjRUM2FE?=
+ =?utf-8?B?Q1dBOFBrd0tCQWFWOUtWU0xnTUxyeWxSRzdFMUZPYmorMC9ObnhXcDdtMStp?=
+ =?utf-8?B?bmorcTNnZE56VTVOV0lRcGEzRnN0WExKN1l1Y1czY29oYTg2a2cvZnMxUEt1?=
+ =?utf-8?B?cXBzVnFqZ2YyemZHQ0l4eXJVUmtTbEEvR2tRdlZKTGh6czQvQk5iclg5OUdq?=
+ =?utf-8?B?d1V0OGg4SlU2aHhoNUdzTjJnL1BINXExclAyQ3BacFRVSi8rRDBsdVFwdFha?=
+ =?utf-8?B?ZkU3OUpEUmsrV1pHaFR1NHVMaDRkcU1Yd1ZmVXh3V24xdVFuSERhNjdLbkxu?=
+ =?utf-8?Q?bc0pRn33y9ILqzcuEiKVMU/h1?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2548558e-35a3-42a4-4f39-08de28c55fa5
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB7465.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 06:15:31.2933
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FF9FEFadsKS9b2iMmN2diZsJGHzaKwH/zgPvB17ooN6ZIfNm8yrJ2UV0LUmUQhblu7oFIimecIuY3VlFQaHK5g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4206
+X-Stat-Signature: iupytd9aq8ejp7b9dqxzejj34w5foect
 X-Rspam-User: 
-X-HE-Tag: 1763703520-292280
-X-HE-Meta: U2FsdGVkX197vfEkGA/+g7gowDk77jUp3rYPCwv2vuu4qwxukicJ0Vl+NGGwBQsjO+HTHj7j2LKzAqO1pZGLQyDORTJikZeXjoMSp8w/JVM/TLneKW5NperSRa5Xz2Pkw8xH6Eoy5f+woVONQrSL8mvSks/+x7lyirnBpnp455PPBwQUrlzw55WjUjX4hVn9JWywURdeKzJ81lL5dopqioPZnZyqFSYFQB6V7J21pq5L6eotxYn61tZsfEegYfDIamA/do4BamMI+Rax1sPpefLc1fk69hlDkjrXAMExdlNBGDSKKtThCA3P+R+hUU40dJ0qcKT1J08otan9NIKo5qQWhuh0w8CcUDYC/SJI12rWnBfdAVl/dhohCp/S+pb2KkUYAUVoS22l2yEiP+3fTeXmBCtIygBmUXbs+X7JK4wFPhcUI/yJ292d8iD44+V8ddp51c0LXncg2B2sJtDDt7SVndG3/JnJw0SUoVwoZ3Ed/cig5ZZ33eiswYImAN+4COhlKxzWu5r+Q/ezN8UdIedVY5NXqmOm6dA1cxdjBMJu/IJboNXQr2mNUStFkaIoxHiU0FMcVbgLiU3MZ+YlComs70jCEE0fH5DeiKHnQ/ZXbjTNXyuyWEQlkJt1fWyn9i/ch8wlR6MoGTq7gq06rShdIT6FXEMH+x15IqSdD2fin7lL0qXe3CXc2l3qE8mG/1nEDlGPOTnrg2/VtItsgUf4MvqHlBV4gEnBj416VZorsgfl2/xMJOwAAm0yBJ+kIx4lFWXTMnrkKMasBwrziBhUApgA15nyfeEK2lgOQWiqZaEG8ht0fxMWwKyQpSq74+MSNvi9qGHohzCTLwau29KWh67hB8qikF4vy7g8UFrS0k7bdj7Y0LhnN8fN/lAUkssxkscGySfQ6MkIGVLrjRRJ120WVChiEqfoGuPuwKn7pAceU1aVdfkOg2EfGLO8TgZezuLLx6nHLGX+/dU
- MiIlq+TF
- q3km9zaPvuEdz+8/ixmr2dtndYEz2iJC4GQE7rTWqqfjg6OJrOjGARvEewRGZdgwT4vBCw/pH/eH/OtfIzuudgpukIwA3x9hxR61fQhEi2l2bVT6mlsVeiGCOCvjJCdb5nlUDbpJguABEJhJf8o4SBHPnLYnDmKYdnUC/tPEKS+RkpvXBL1AON5uaJdrV3EgzIe0dgDUE/wjrSTNZMWmzninebpXHBJ+8pxKDOvvh0u7BDbf+cksa+uWcyRyfu7ZqQ8X0SlsOzheN90W98lBjlbqcBpqDXRO9lv+JEAQBXIPyW232+J5S68q0LQZiQsCgK4mb2eNHGQVPaGvF4nTHhcmdNCNxY849RkFZux1PXfw5yijG7J1bkLFt32V8YhaJ0urj8oVo0VZJIXjM1M1MvCN36ypT8A09CQAJPdrmypieCew=
+X-Rspamd-Queue-Id: 16104140011
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763705733-319506
+X-HE-Meta: U2FsdGVkX18GR6q/0ZSiT4PWXRtVUN1k28lULJMoTj/7WEQOCvmwjW1fVzuFxwREh23RjYSXFAMrN1Ju7mO/nsuJ2F3Eo00Q6Wgf3F+6xe0cS+A3Vu5mfgjW2xDalZ05TFl+DyVChNTtiKX//dpZC8isGwnH31l7SMslXF9ipbx0kn4HXhYe+5FiONOT1XG/+Wi0UzQg9eDG33tvIFZdBxGO3BauJjsjws63saKnLm60Jfi0+9kGOWDCkr/FGWsEI/u4UBSoMVL8ig8sMQiJHtNxqxHPEO42z3mrIYmg0mzTLimN4Na2L9AQhQrccbdS/b5fkq3+jWs5LY5qr4BMcg2KbeMe9ptXK7Kg+5oXzUco6Tj0P6Ydm+RUdiCT0yTDbx4dSwRggPp/l2po+AqBo0/+yf2o2ZNbSsZ1MTbSJPObn/mxRNPL6eK8q/MZV5r1ZZeBwf9LDP6CFkdOoSe9RuqoG2xxJr4x7vfVEw0rzq2emW7dHZdf24zaBbAdDpdTRS9ysBZQjdYXrAyfusD20Kdfl9bChy9BbhLjq8hcC5FyFDaIa8ogSdBku2cRZs6a8b5IyZxIjyGAPGzySTIKsROx2Eu4DJbMIsw/c8Q+m6Wt0MX1VGEF9IYb1eSjQZhwYgqamTFcJ+SlJUoUGWJrL6bEMClq7f15Z6gtw59O6nRKYZHeq3jvz0egklHYTud2QfL1gnIw7vfvG/wrIfzAYD7PTnqs6Tnsn7S5XwaqXm9MBAzhUkRWGYNchITTk1jP1ycdoq+pg2iXGioeC5WXg1INZsPjHpCse54Q1WHcnUt0QUEviLOJhr1Y9EbczS4NiGHcJLcK9udw3kQwFSjCdXQcJK67QWBHOf9lyvx5RPkXMiC4vncrfGZTZ18Fi+LUxN9bLKhDpfY0HuOjSOIUB0BE8/1Zhhbb6cK2mcapecDDdrQBsKojXAPoEA3ugDp6CDLLSf/Od4/nSyVqToI
+ 5t10O4Ue
+ JWCgZMEOUmxqZJF4oG72RFFCkJWFr/Nhah3nSJ5h4QAhHmCkM6tPcefFVi2mzYJ4EPXyCbhCybQL1vQTEWps0+fAsl6xY82Kq4ld+Y6CSRKXdLkTe8eeWHtsmPRkDldvdgSexZcLvz5Eh/ztPqH3cWOzGEPqyu7Vprp7Y6R/h+FAyJJ7HX8YBK0SlFCUzVn1McCPx6BjwShn9bwMWTp5PsoU2XadjpR+RQR3dG8A09me8zfeEMEgSvXgqcXwBAILV0lBewa+iYAga/KFFqR9aVDju6MXhqpsevFA0Pe7wORCCa3CIeQbtSHLJp6ytcjqacBfRGjY55+y8KjLR5vnCmS7n6+6l4RwQ+Tkz+gQN+Wr13ZVWLbpd8zcSgfLMItAkLaRTKOFmCX7P3aI46jgl8tWoybj+d4teKZHWV6h+xEZLCSysRCGoMnk37CwGk2CUlyCwVgE2syRXqHpmDxxJxSRli0+rPLKfbJEInUxzqwk7l++Z9tYVOnPuTLtT7UHn0211ZtNSJSPdnk8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,129 +214,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 12:56=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
-te:
->
-> On Fri, Nov 21, 2025 at 10:42=E2=80=AFAM Kairui Song <ryncsn@gmail.com> w=
-rote:
-> >
-> > On Fri, Nov 21, 2025 at 8:55=E2=80=AFAM Barry Song <21cnbao@gmail.com> =
-wrote:
-> > >
-> > > Hi Kairui,
-> > >
-> > > >
-> > > > +       /*
-> > > > +        * If a large folio already belongs to anon mapping, then w=
-e
-> > > > +        * can just go on and map it partially.
-> > >
-> > > this is right.
-> > >
-> >
-> > Hi Barry,
-> >
-> > Thanks for the review.
-> >
-> > > > +        * If not, with the large swapin check above failing, the p=
-age table
-> > > > +        * have changed, so sub pages might got charged to the wron=
-g cgroup,
-> > > > +        * or even should be shmem. So we have to free it and fallb=
-ack.
-> > > > +        * Nothing should have touched it, both anon and shmem chec=
-ks if a
-> > > > +        * large folio is fully appliable before use.
-> > >
-> > > I'm curious about one case:
-> > >
-> > > - Process 1: nr_pages are in swap.
-> > > - Process 2: "nr_pages - m" pages are in swap (with m slots already
-> > >   unmapped).
-> > >
-> > > Sequence:
-> > >
-> > > 1. Process 1 swap-ins the page, allocates it, and adds it to the
-> > >    swapcache =E2=80=94 but the rmap hasn=E2=80=99t been added yet.
-> >
-> > Yes, whoever wants to use the folio will have to lock it first.
-> >
-> > > 2. Process 2 swap-ins the same folio and finds it in the swapcache, b=
-ut
-> > >    it=E2=80=99s not associated with anon_mapping yet.
-> >
-> > If P2 found it in the swap cache, it will try to acquire the folio lock=
-.
-> >
-> > > What will process 2 do in this situation? Does it go to out_nomap? If=
- so,
-> > > what happens on the second swapin attempt? Will it keep retrying
-> > > indefinitely until Process 1 completes the rmap installation?
-> >
-> > P2 will wait on the folio lock, which I think is the right thing to
-> > do. After P1 finishes the rmap installation, P2 wakes up and tries to
-> > map the folio, no busy loop or repeated fault.
->
-> Right. The folio lock might help. But consider this case:
-> p1 runs on a small core,
-> p2(partially unmapped) runs on a big core,
-> p2 grabs the folio lock before p1 and therefore goes to out_nomap.
-> After p2 unlocks the folio and wakes p1, p1 may not preempt the
-> current task on its CPU in time. p2 may repeatedly fault and take the
-> lock again. But yes, the race window is small though mTHP might
-> increase the race address range.
-
-P2 would remove the folio from the swap cache if I understand you
-correctly. Because from P2's perspective, the page table supporting
-the folio is gone, so it would remove the folio from swap cache and
-try to fallback to order 0. This may lead to repeated IO indeed
-though.
-
->
-> For small folios, this problem does not exist =E2=80=94 whoever gets the =
-lock
-> first can map it first.
-> Ideally, we would enhance the rmap API so it can partially add new
-> anon mappings.
-
-Yes, a very insightful idea. That's also one of the reasons why I
-added a WARN_ON and this comment below:
-"This will be removed once we unify folio allocation in the swap cache".
-
-By then we can either split the folio or map it partially. We just
-can't do that right now because the folio may not belong to a single
-VMA / Cgroup.
-
-> I guess we may defer handling this problem till someone reports it?
-
-Yeah, that's what I have in mind too. In later phases this will be
-improved, and so far the worst thing could happen is repeated fault /
-IO, and the time window is really tiny and only happens for the
-particular case as you described.
 
 
-> > If P1 somehow failed to install the rmap (eg. a concurrent partial
-> > unmap made part of the page table invalidated), it will remove the
-> > folio from swap cache then unlock it (the code right below). P2 also
-> > wakes up by then, and sees the invalid folio will then fallback to
-> > order 0.
->
-> Yes, I understand this is the case for p1. The concern is that p2 is
-> partially unmapped.
->
-> >
-> > >
-> > > > +        *
-> > > > +        * This will be removed once we unify folio allocation in t=
-he swap cache
-> > > > +        * layer, where allocation of a folio stabilizes the swap e=
-ntries.
-> > > > +        */
-> > > > +       if (!folio_test_anon(folio) && folio_test_large(folio) &&
-> > > > +           nr_pages !=3D folio_nr_pages(folio)) {
-> > > > +               if (!WARN_ON_ONCE(folio_test_dirty(folio)))
-> > > > +                       swap_cache_del_folio(folio);
-> > > > +               goto out_nomap;
-> > > > +       }
-> > > > +
+On 11/20/2025 6:59 PM, David Hildenbrand (Red Hat) wrote:
+> On 11/20/25 13:24, Lance Yang wrote:
+>>
+>>
+>> On 2025/11/20 16:17, Garg, Shivank wrote:
+>>>
+>>>
+>>> On 11/20/2025 1:33 PM, Dev Jain wrote:
+>>>>
+>>>> On 20/11/25 12:20 pm, Shivank Garg wrote:
+>>>
+>>>> SCAN_PAGE_NOT_CLEAN is confusing - NOT_CLEAN literally means dirty, so why not SCAN_PAGE_DIRTY?
+>>>> Or SCAN_PAGE_DIRTY_OR_UNDER_WRITEBACK? Since folio_test_writeback() is true as a result of
+>>>> the folio being dirty, maybe just SCAN_PAGE_DIRTY can do.
+>>>>
+>>>> Reviewed-by: Dev Jain <dev.jain@arm.com>
+>>>>
+>>> Thanks for the review.
+>>>
+>>> I chose not to use SCAN_PAGE_DIRTY because dirty and writeback have different meanings[1]:
+>>>
+>>>       Dirty: Memory that is waiting to be written back to disk
+>>> Writeback: Memory that is actively being written back to disk
+>>>
+>>> [1] https://www.kernel.org/doc/Documentation/filesystems/proc.txt
+>>>
+>>> IIUC, a page under writeback is no longer dirty, so using SCAN_PAGE_DIRTY would be misleading
+>>> for pages in the writeback state.
+>>>
+>>> I considered SCAN_PAGE_DIRTY_OR_WRITEBACK initially but felt it was too long.
+>>
+>> Nit: If SCAN_PAGE_DIRTY_OR_WRITEBACK 
+> 
+> I would prefer that here.
+> 
+
+I agree on this. 
+If the consensus is SCAN_PAGE_DIRTY_OR_WRITEBACK, I'll use it in v3.
+
+Thanks,
+Shivank
 
