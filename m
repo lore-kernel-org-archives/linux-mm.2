@@ -4,110 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B032CFC510
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 00:05:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6B59CFC516
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 00:30:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE6796B0026; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
+	id C8E466B0023; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B70AE6B002C; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
+	id C3EC16B0026; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A37EC6B002D; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
+	id B2D506B002A; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ECF56B0026
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D482B16058D
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:05:08 +0000 (UTC)
-X-FDA: 84136297896.02.901D094
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2C76D4000C
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:05:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lo+1hFAx;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763769906; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CDBF6B0023
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8EF1E89819
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:30:46 +0000 (UTC)
+X-FDA: 84136362492.04.71F1FA8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id EC715120008
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:30:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RXNhbq0i;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763771444; a=rsa-sha256;
 	cv=none;
-	b=g0XdmeIPCfWu0gWeKrLQik+vHdahSDLtjiOcipn9OtHukcT8E3UD1fpdS/9Z76auJ+Oxac
-	1p2cDXzZKjWwcLLCFxO8XhAVJ6qYnPffleykP/BxIvVyYpsihsuea94jybeoMrKXW/Muq6
-	2eHWfvf4VAH1AhJTrfNUgltyIyNOwnk=
+	b=nQST7haCz6nDDilUy3wE4Ou1SK+m3veetp/GfHP8471li+NRz1SjSMTTvUdMerEPmi6awX
+	PxtlbclIaNMQIQDxqRZoFBxZUaQFkfvLiuJq0JLhxulTrm4FBzaRrhkXdVRlz0MKKfHrlX
+	GQVseALPyLJXpEI1NZ4lPU9OiY+1+LI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lo+1hFAx;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RXNhbq0i;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763769906;
+	s=arc-20220608; t=1763771444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XnTxzMXAj4C+H3rJQAtbVjm3gxEOt7ieVLNhLtxygHk=;
-	b=chJAT5cYSxbN5RQYZgMOVG9+DhcxIhi9+IA9meTz8GcyYz4nXMdE+MS9qU1LqTs95tmg86
-	w6bN7GmgN6esa3bCrnGgSdG6UJPsPPjgNKFXs7mTno39sW226MSv9vp/xup9+zQSm0dUk1
-	NOVqnkQJGQnm0PuoX27zacbXtLWcnAQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763769906; x=1795305906;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lKk63OBIxTgAZL2BQA9bHbccK1TAmQ6Nota8WFvpBkg=;
-  b=lo+1hFAxH06+sytQZxKbwsDz0D4+BSsgFqQn+9GNccChG+4jv4Mn5OHt
-   fK/gvRxyVI13LnIYqns1QtNh87sxMgAj3pfoQHY6JMRP8QQVEuiy7hb0P
-   05ZCLzPmyYifqbRErYklia0iA4h5QCek86ussYMTzmrKDwBQ4kgBNiyBF
-   +ZbUF+0Ldp70eI9mPN57stORcg1exZ+xWSjZnxHPRI9tXkVy3exhF5yJV
-   Mp72Yv03CgCCjJWcug/Yi+SJylt1vYGLEoqb7U5tm6T5JIXpDrIGGC2kW
-   TRp+QsrlFIk6I3ZS2EzUf1TbAjec22yRtgbtnefe8BNUsnjmWhfFWEUeD
-   A==;
-X-CSE-ConnectionGUID: pus5V8RQT8mfZpIBYvIMog==
-X-CSE-MsgGUID: 6+JDVoUMSwGDql+/oDE2RQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="76980193"
-X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
-   d="scan'208";a="76980193"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 16:05:04 -0800
-X-CSE-ConnectionGUID: 0m1MqlNQSeC7xJO5WxDOzw==
-X-CSE-MsgGUID: PhKw3WinTWa2mGSgArHQNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
-   d="scan'208";a="196760418"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 21 Nov 2025 16:04:59 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMb7Y-0006zb-2u;
-	Sat, 22 Nov 2025 00:04:56 +0000
-Date: Sat, 22 Nov 2025 08:04:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Eugen Hristev <eugen.hristev@linaro.org>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	tglx@linutronix.de, andersson@kernel.org, pmladek@suse.com,
-	rdunlap@infradead.org, corbet@lwn.net, david@redhat.com,
-	mhocko@suse.com
-Cc: oe-kbuild-all@lists.linux.dev, tudor.ambarus@linaro.org,
-	mukesh.ojha@oss.qualcomm.com, linux-arm-kernel@lists.infradead.org,
-	linux-hardening@vger.kernel.org, jonechou@google.com,
-	rostedt@goodmis.org, linux-doc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
-	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: Re: [PATCH 01/26] kernel: Introduce meminspect
-Message-ID: <202511220712.LEcYEMJx-lkp@intel.com>
-References: <20251119154427.1033475-2-eugen.hristev@linaro.org>
+	bh=caPpzwgFJCpIRNcWVPdH/CQvo8SKA+31Tzw9iIc6zug=;
+	b=akVzirYaQjr+jRUS8uqV+CyYR8OICsKE8t8bqX4NCeLcavYdiYhueHsiATqPB8FMiKbCVA
+	5VKOr/dRvSVjWP+5PxOxl/2Ru1cVmQnUzaLfkyuRFffT/sPklJs3iE4HPs/pmGNi4iP9gS
+	tTB+RzXwQXPr3HWcmhaxmQopQ4uocRg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 490B560172;
+	Sat, 22 Nov 2025 00:30:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BC8C4CEF1;
+	Sat, 22 Nov 2025 00:30:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763771443;
+	bh=HrtqBDzf+I3rKg+UOEYgJj3ACzu3sah0DecsWx8zL74=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RXNhbq0iFJqvm+8e+PfetKLRUs0dvxWyh4wKv1MUYoYDttoC19RFCdiculI5ThaBF
+	 wY+KhdoV1023JPv5UQPO8/Jb7HJmkkgB+PI0fhqxOm1yKcXQBI/vBE0KVCu2yru5gR
+	 x0wqamHVgXXGR9VZNOiO+xAigOLeYN7WkLZmlSiuaRdO23ovq/h4waRwZRwuHqch7v
+	 RaAmQ+anT2MyJ53JD5y/DZlMlAsuOBKE53ahGW5iYhq6bGBdh8m/qvndDiGFN4lICe
+	 6FOf7Vqrd5CVI0Dts/dPCadwR34Ag6tqIJfAnX8qv9vPz6KTwaOz8IM/pMd+El12Ph
+	 dmf1eGGDJFVSw==
+Date: Fri, 21 Nov 2025 16:30:43 -0800
+From: Kees Cook <kees@kernel.org>
+To: Bill Wendling <morbo@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Marc Herbert <Marc.Herbert@linux.intel.com>,
+	Uros Bizjak <ubizjak@gmail.com>, Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	John Stultz <jstultz@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH 2/2] memblock: annotate struct memblock_type with
+ __counted_by_ptr
+Message-ID: <202511211525.05CB7E1AEC@keescook>
+References: <20251121193957.1655580-1-morbo@google.com>
+ <20251121193957.1655580-3-morbo@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251119154427.1033475-2-eugen.hristev@linaro.org>
+In-Reply-To: <20251121193957.1655580-3-morbo@google.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2C76D4000C
-X-Stat-Signature: bseaybtsfftti17xtb87tej8trmefqzw
-X-HE-Tag: 1763769905-146410
-X-HE-Meta: U2FsdGVkX1+zXu7YNwNkC3+yIZjNqHBApxU949yHfbz8BRuTNTbRjBchUx+S8tkPumbIIWiMyHjf2ccbM/yg3l6aDZ7X5WkGuLfVY0aAeffGfXYAvKnIMnKIrATcQPlskK6AWByky3f5WPal+JYbhINirA1arZJbx+zncWXwRH3kwTLHO451BA6leURB2RtchfnFiE21aDGm06Vo2tBAFg3DXhhZOYoVzIIXLkBUcGNMezoKrM00ZpU2dgIgpwAkRAyE3DmRroO2jBtdBipKCKMVQww/+U8gDOrahmb05UjJonHjMQZe6r20Asemsjz2U5PFgPbVpcGOU9xujd/7MpPwYjNhpbE7KIrW9SATEXCCE/biO/4EoVVBw0lcUg+U1PyibnySqClFMmukubyDPV4Fk8R3HZ7kyQj1zygVZBXvyf+FP+1Imqik5pckzaR2CI24mVRI42l9kIN3ucMEkd0PPX3NbGHavWB47RZBgUh26S3H3AjnWo1vTeK3/UQeVB7OFMMyjAr/6by1hZB7YFoyz7ThBiPyUM3NXq1lUa9y5SgqH8MlmIg7p0xyI2sV6oTocVUzOxIaAl39hr/IJmpWxBcnSjkSywitbhv4UCkfTT6P40eePukjPEnxPETGc5w8xgS7S3wEutuUxkYc4s7jnyQZlqn2yAfM3nxv0CF6Vb4zHtNhfaoccxrNgmqICXCIbFQyDmytOQFxAb2LS6nWEHo6Oew5KYvK55GEpdz3L6xHV7KVKGHFUO0S8+1JuIfV9V+Pz/xNAXpbirhFKr5+/qOZTuXSmVgF0Q/0UG98z5SJAmu0SgTf1Jx52+ywQt2AYS2BCkH/RSH+eOB81F2iyHOGJ2mCnR1HVufZRfEQZGANVTnB4icVV8GD0ABkLmHWxJg7482auIUWUEDrhjGdQdfYR84KUXzMIJ8Nq4KydHFMGI4Avtu7zrj3gydIkUR3qsqRW5xyb2Dee3I
- q6cX5H7y
- 732as1EMQ7XH9UIbL5KcAn3IUrZapwgtaUy90YMh8DZ5dIYgfX1h2Bn3SoTMXOWe6ugVBvbLZV4ifRhpDIGqHVKu/O6KFOBPPsNWioZprpIiTHMmEsuxF6Tj1z+D+xvMlCa1nCMDF5q3xkUihkghIZ8CPAHuUQGIBT3/O436OPG95I6JFtlF2tpmRZDO7JZDmaNvUm/cT360nZlIkvl+gLdEUYFRLPE0SXTYhqZD0qXoBept3N4xYbBEQhHPH17+BsUOJ9Wg8yo4UKc4Mb1tYPekKa7U3vo/Oz9OwuGDfGNuD4wo/haTQ8zOT9jCUxw4G4hlwcNUJtnuhNyOhCA80UR8FENVffKDtGfW3qS5xMhD75RfuWIKOQ4VaYao7NpVSNF23CIjD7CFlr3TkPzugdMmCTlhi48jjkSQonIOG8ML21hD4dNDWLWnQyKAx6uAADBxJ
+X-Rspamd-Queue-Id: EC715120008
+X-Stat-Signature: f73zy6wq451t347j6nbxk3rqtcszamig
+X-HE-Tag: 1763771444-598188
+X-HE-Meta: U2FsdGVkX18kSsRYneSVHKwctL0lYySGMCiwBx+ayK8XLizcGsLbJCBiI+dtRN9nS8jXLgf5nMqNeAgeYmHVbTIAMYXW42KnuPy5mEVHJBdCE88qCpp3UUvwNfiXke/C/joG8YhBzTF7UlDZhFX+Ko0tsO/OAmGFDL5p6WNv4+/z1CWA8aRIw3QZ7wBqM9onNG9vhXmZjy6I4qYXtHGrcFfrIgDNgm9YJqjZnESfHvLukywM+R8YrbMoVF3qZgmHt+H0YuDzLCVO7nYFJkwgSMuPKO0XN1MhUZViDFZ4GtG+haJryxZb/1bDMUf0F3wKKcNyNNU6ABEPlvJBmU3tpCddYyG9GEXfObytwPQYS4nFIKpxvdr4XS//8hos5XzlQLhbMbGhbnZzJlic/+dMab3th6CXffTJcC1ItKkTErU6IY1e8Bihuu0Z6JYz3hb58ekpRz64k0ikDFwNeMZvs7dYAS9t6nZNU0w91RuksKlx+lE0YEisv3H6DQWplcZ9juTP7bgyiN75k8hmXC8t5p9rgAy35RiDiTAp8lK0gjmSuYkv1P5O2G1XZnTG+xD+sdQtvcvnZAZDuVrZrCEQadEm4kxHezK3UWfj36qAHv6gqd7xX4FLKDp5kcHFpJAA76vpsbnXZoJsbghDhW+2jNyWfR5N/qPLCWYSe7i1MtsQiJ+wEOg4maw+s4NduGdg+MOFy+2xxUOrYYktexrWLikmW48fA+WO6yWTbEdT+SI09kRokDgi58byJuDpEjHqv3w7mEnKCO0yHpEsAUu5puJdI/lyEHpiM9W3BZhKLcYklAeI5JoLBWkbLXIihP0NsQTnkUG0Bt84qcodUpaxrsBEbNmJMMoirVJv2xCfr923aT1r+HelWufbopinhFa1EJ4yUr5HXFV7a/TFLDOp7ldeetLO41zNwR023MKv0WS2DUgH9wUy4Y9mOyfFM0qv0HUAumAODPl/m0QQAm+
+ uqCfVjXn
+ EvUuCM2krCCBeatiMgoVWr8Lo+GsGk8b+3wgIZAg8CtlDNEvg0A4mxaFmCSDSHRjTEvr07EpiS1G3AxUobCWp/22qfkXkvW0X6bA20XLzVRSRhTSrjplz23w88oQzg6qXlmOY2JNSSTwISbg+BbxksZPiRmKb8lKtz9JBQxoo5d/V06uGRkJ8EmFj03tuektMjQm3TjRlNGEpg/as2+kHFcAPH2Jjeb+dIvh8//hRcScdf3YpktE7nTh6SmSb2tnrt/slI0ZxaIYsJ6sjsRIWz+02TEN1YfhkqZdHNeFnWiW+WWfO4AhgD298ZPRcd1Flxu1U9A9wMOq2NsjiJxdLl3qwfzNIS/tjaLlnfd7ZPJjpJJc1bb3rE0s0GA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,40 +113,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Eugen,
+On Fri, Nov 21, 2025 at 07:39:44PM +0000, Bill Wendling wrote:
+> Add the '__counted_by_ptr' attribute to the 'regions' field of 'struct
+> memblock_type'. The 'regions' field is an array of 'struct
+> memblock_region' and its size is tracked by the 'max' field, which
+> represents the total number of allocated regions.
 
-kernel test robot noticed the following build warnings:
+As part of any counted_by annotation patch, there needs to be discussion
+in the commit log about how it's been shown to be a safe annotation
+to make. e.g. in this case, if all allocations of "regions" have a
+corresponding "max" assignment, etc. If just "git grep" can't find them
+all, using something like Coccinelle or CodeQL to search for struct
+memblock_type::regions assignments can work.
 
-[auto build test WARNING on rppt-memblock/fixes]
-[also build test WARNING on linus/master v6.18-rc6]
-[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next next-20251121]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Here's what I used in the past for flexible arrays, but it was slow
+due to Coccinelle needing --recursive-includes to see the structs,
+but should be adaptable for counted_by on pointers:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Eugen-Hristev/kernel-Introduce-meminspect/20251119-235912
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
-patch link:    https://lore.kernel.org/r/20251119154427.1033475-2-eugen.hristev%40linaro.org
-patch subject: [PATCH 01/26] kernel: Introduce meminspect
-config: nios2-randconfig-r131-20251122 (https://download.01.org/0day-ci/archive/20251122/202511220712.LEcYEMJx-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251122/202511220712.LEcYEMJx-lkp@intel.com/reproduce)
+@flex_match@
+identifier STRUCT, COUNTED, ARRAY;
+type COUNTED_TYPE, ARRAY_TYPE;
+attribute name __counted_by;
+@@
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511220712.LEcYEMJx-lkp@intel.com/
+        struct STRUCT {
+                ...
+                COUNTED_TYPE COUNTED;
+                ...
+                ARRAY_TYPE ARRAY[] __counted_by(COUNTED);
+        };
 
-sparse warnings: (new ones prefixed by >>)
->> kernel/meminspect/meminspect.c:15:1: sparse: sparse: symbol 'meminspect_notifier_list' was not declared. Should it be static?
+@missed_counted_assignment@
+identifier flex_match.STRUCT;
+struct STRUCT *P;
+identifier flex_match.COUNTED;
+identifier flex_match.ARRAY;
+identifier ALLOC =~ ".*alloc.*";
+@@
 
-vim +/meminspect_notifier_list +15 kernel/meminspect/meminspect.c
+        P = ALLOC(...);
+        ... when != P->COUNTED
+*       P->ARRAY
 
-    14	
-  > 15	ATOMIC_NOTIFIER_HEAD(meminspect_notifier_list);
-    16	
+
+> This annotation allows the Kernel Address Sanitizer (KASAN) to detect
+> out-of-bounds accesses to the 'regions' array.
+
+I think you mean UBSan here (and CONFIG_FORTIFY_SOURCE)?
+
+> ---
+>  include/linux/memblock.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 221118b5a16e..ba7f7c999a45 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -91,7 +91,7 @@ struct memblock_type {
+>  	unsigned long cnt;
+>  	unsigned long max;
+>  	phys_addr_t total_size;
+> -	struct memblock_region *regions;
+> +	struct memblock_region *regions __counted_by_ptr(max);
+>  	char *name;
+>  };
+
+For the handful of places I spot checked, yeah, it looks like a nice
+annotation.
+
+-Kees
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kees Cook
 
