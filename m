@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66764CFD313
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 22:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE2F9CFD312
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 22:24:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F01396B009B; Sat, 22 Nov 2025 17:24:34 -0500 (EST)
+	id 3B6DC6B00A8; Sat, 22 Nov 2025 17:24:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED8616B009D; Sat, 22 Nov 2025 17:24:34 -0500 (EST)
+	id 318FA6B00A9; Sat, 22 Nov 2025 17:24:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2A7B6B009E; Sat, 22 Nov 2025 17:24:34 -0500 (EST)
+	id 16AC86B00AA; Sat, 22 Nov 2025 17:24:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B77A26B009B
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:24:34 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 891E61A02D7
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:24:34 +0000 (UTC)
-X-FDA: 84139673268.07.BDD1B42
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CA26140013
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:24:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Cuc1y7+7;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id EAE506B00A8
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:24:37 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8767160181
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:24:37 +0000 (UTC)
+X-FDA: 84139673394.04.D76A3AF
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BEF7E1C0005
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:24:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QwWAvaFl;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763850272;
+	s=arc-20220608; t=1763850275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4XTUTAjFFy7b91C6Dw70mD3UF1HxwVkQgHbYFhkd9nI=;
-	b=o0zG6WDTJAplSFjCsm3BDnDfDssxqmyDhHjVoKbyo5V19EYWxuCt8v9jtx52xQW2QIt8Bd
-	zmrOmi4JRpUJ7C6cQ5/e1gVQRcxiEd+h+WgiRe8fTjwz0cVgioE4AsFbGVKOesrz9J4L3S
-	o743H9ieAu89/6p4v1iNqKhf1h19uvg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763850272; a=rsa-sha256;
+	bh=F5tajeHzp9hDN07gnwZlVCQmxSUhZpHiffHO9VM3nds=;
+	b=MDf4m3mjUoA4WQvmKvNye0Pm+cCiLXTQJ6N/nDiYDARdXhqsr/xj/W0HNuyZOy74t+Ix6r
+	YZwr8FLEx9gpTty+Mt8DE33en3xNceHaP35gzWMtfGsTj2bgetUH49NKXx7m+D00EGYBnh
+	HOMYRYxhYMc7A+yELxr+LaKruzkaydE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763850275; a=rsa-sha256;
 	cv=none;
-	b=HVT+YTjK+aenc9yveYYUxGe2GvaNHz5ueemWNI30A4E3gOb09xxeTt3p1JLN12mU2Ak+UU
-	zT8/fiSEcUUjVm0dRtWR6h8au+/Hk3K0SWhuyn1s0MZ9kg/DAjROzaq1WbHj2LelwXJmRj
-	tyluHQUVXj/lSn0bUTqwTS8QbdpyWf0=
+	b=c/GcYdwBLnLKhxh2v7s/7rIn6C9DFQzKehGbHyBM2ly9wqEHAnw6xCiGCxGn0viZwy/ySA
+	U5hnPhmjVxMfdisyTySynvbqLsIQbP2aWKlh0L+82BMVUnPmC2V2u9wD+OOjStUChQNvFh
+	WJ/wVH+ZeROXVpbFg6aVVl2b3RkddEs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Cuc1y7+7;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-787e35ab178so30360097b3.2
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 14:24:32 -0800 (PST)
+	imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QwWAvaFl;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78a712cfbc0so30081407b3.1
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 14:24:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763850272; x=1764455072; darn=kvack.org;
+        d=soleen.com; s=google; t=1763850275; x=1764455075; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4XTUTAjFFy7b91C6Dw70mD3UF1HxwVkQgHbYFhkd9nI=;
-        b=Cuc1y7+7pjcB2XswLKOlQEpPNx7DZ/CEWXvzU5ISkC72ksIJXX79X0CyUz8yvOoPr3
-         qH+TXvJCwDAnd5bejG31rkI20mNDsTZ9Y5Obb8YhsHIca8/z//tVgvT4gUpOWNSsUOKB
-         4Qb1y4ECeXKSWQLEYlBiz20oecUqELDTQot6HguaVE8MCqfcwMIOWGzBoKjYBZxzSLXq
-         zdjuavmx0drCD0GKwQwFh6hzRVd6ZxjY/0pP+AImxGqbheF4Drlw5nsqg6qyPKyuxA+e
-         ElBbPKQXr6+p9tRuRQBdROPsFBnRW7832aHMIJYX6nl7scTr1pRGbv5GAQ1kGZvegJ9n
-         UBqA==
+        bh=F5tajeHzp9hDN07gnwZlVCQmxSUhZpHiffHO9VM3nds=;
+        b=QwWAvaFl6qrlnAcgkfCzL2L71zONRKqAoMcI24jGVqU3KpXn/SU+vWVYyvpdM6/bXr
+         il3lYbyJsnGmB0VNhIF3jECLM9LsQd6495fkE3Iv2S4yv4ET2nafZ4SE0bJwcfwVlZl4
+         czAd324eF9eVVot6QSpY30LTBmF4+XuYVs3s1yR/vCGTHD/7wHD5hH7kFAhLmf11bSY4
+         J6r//KmQoe+2UhfzGiVSm5WidMxx794gzUM+6jpe2SbTHFxqY0+xNStxD5yghMrjqapa
+         ZxvwggFluLJ+IFkWvYOeURjJmv04XDXWX/hlvDLn3+oP7IRyBRThhdsN0Dv6hBmkmbDS
+         coSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763850272; x=1764455072;
+        d=1e100.net; s=20230601; t=1763850275; x=1764455075;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4XTUTAjFFy7b91C6Dw70mD3UF1HxwVkQgHbYFhkd9nI=;
-        b=Gv/kefGVKDz6chBhy76Iv4gm9Lfl3TvP9TNG5cFEldNTL+6mdABlZXgvApTslc3e4P
-         8YRGpFn8whozm3ZTGy9RB1SICkE2cXNVkIg1cmLDMjUAV9pzRpx+jZDc+ASWIsMZl5m3
-         7c0Ft19LV336p5L64DKgFtgGYuI1Zy8LLNZVzNVMMVv9RbhMoFcgrWBGJEcEv3GIx951
-         UsHqOGB8u0V6TrYOxC3MpRlvXYMDRbnB1DUg8KceCkhJr8bC2mfNkqyPrOJuQOazpo2G
-         YSEhGLbP5G7q3hCbyh9vA19hh3O41yeF3c5AhfZelq+9JvJ82eTLNlTPEcMi90Vh5s7B
-         6T7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWbqRmB8bLF8VkaBS7W9OG+8YdKYtSFoWOjm68+Pj5Vddhm2aR4jeG5EkYUK+g0HOcc8Ozd5nTnDg==@kvack.org
-X-Gm-Message-State: AOJu0YyBx6Hbn4nr4JrrxTOH6AXDbyUEeckm+YSq7CWflMzd8HfZYISx
-	CkTXuTiY+C/eafU8WRkjeC85b8UDkuAn/VHXRiy6uN9Tzz8gITsxbr9cPSIP/0OEfk4=
-X-Gm-Gg: ASbGncs22y37js19lw6HTJj0dCz8GqHNxmY42Sh3mcDoqf3T1OHWJlLc+MdQEKcaN4p
-	XLqOJjTb9/ypOMmM2PLAklu76TUW/UIEkZORhkqffx7nJ5zUPHNOnqnHgDLdSztEzJnJmIFlozb
-	kc5WIIHCPO5beLwxy3wWD4Vkdyq9m0AKgzdgwcHoSOiQmh3sZLkm60QS9i5vJ2c/5Xhl32gsC8B
-	q0iJBm+ZwazyUzlraAW8nklIEZ2/F63O4qAUnN7beTopX3XCKCY38LpLaXHh+1Sa33APAiWWkHL
-	/OdtjAfMVRkP+2VqtEWIkBMEs6nATiZHaYjcWFfzDuv7h+0/twPPc30oVEfdETzjatqHBP8vc1N
-	otYG3JpbChWmL1QMnF8Xz7wrJDiVqxPcswJbkpjmDO+ozcIbcc4PSiFC0jLBGBm1uCmqJOG+zVa
-	Eeace130ZhAfKn1j3JKQbL8tHlBesgq6qsKtQPwsoQAEFisDLu0mlJyFMbzjiMo7iplLjLt9qJI
-	fXRU6U=
-X-Google-Smtp-Source: AGHT+IH/eqBoS3mqhMhh4qvlka6WRIlDgWiw3QW9H2yTNLjxyq2DnfCNF4kdPEPBkXHTMSk/UtfxGQ==
-X-Received: by 2002:a05:690e:4286:10b0:641:f5bc:6960 with SMTP id 956f58d0204a3-64302b3f670mr4232320d50.76.1763850271944;
-        Sat, 22 Nov 2025 14:24:31 -0800 (PST)
+        bh=F5tajeHzp9hDN07gnwZlVCQmxSUhZpHiffHO9VM3nds=;
+        b=X31v2j+MOBL2uiMwYyjvueE+TCV5a9eGoIrBH5yl9WGJi0p5jgS0b6u0gr6me174lT
+         qZNu25GQ+3dNjGFLeP4/OzqaKEG7XJeuB3ci+2E1vW7McsM+ZZx/kXkZfMz1Q33eGsR7
+         moON4CPcKdp36l1saaPTtLktq+SkzvtyiaIRfcfc4mNjYp3g+Ck8LJQVj/La5h8SCPN8
+         afrqwh4NQOu7ujCEwkM2YKzQhNZ5373oCHd4Kg26uG8l3xHgNuuAMKfJJJx6oA1TmmUI
+         Md9ztuizvTWCl3GsmBgIqB12AYIaEKb7VELQmHVQEeJE9bIhqdPSYyp4407eSxh8sRTC
+         tZbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWodWMzFKslCdARZhnwRFBcL3o02u0UCcIQbpORuaj9vMqU2Imlq7q0B1xz1R8GQgf/0xpWbOQang==@kvack.org
+X-Gm-Message-State: AOJu0Yz6VtVsarV386T/ssLvfxVuklimStalIEt0D79QeRvSCWQpC959
+	T73xc23Nu+xJ3eWfr0CtDnieP6M5dfnOxxu8jPF3WGBfZZiLHRTzmVv6PAhXu9G+anM=
+X-Gm-Gg: ASbGnctvUwyuXxEGzfrtmPGDIwOKZY0BFrIlrITUg3eO3aqLQ6sUVy4C5VpKBa6fz3g
+	0xVSAXwJjU/p8BZiq/fW4I9dtMyH9ArQ2LxhqR2416hoeXY2CIcYfGk4SG6UeOlesZxDYPkwTrb
+	tJszYvrobiJB2c2CjBlbR+uLxlflQcVI9/sU7qoPKXLOB0cZ0rwYZ57MILmjMt8zUdjsOz0Etg2
+	ichpqkQhtmi11AflkW+p3Cjty2QyOxkxjIaMTS+p44S6X9OnzA+iMOdfU7xtwFLNbDJ6PN1OAPk
+	8+dqdZocMHZF/uI2pYwQh0lpUR24U4LuywYiSMMwe9zTd9XpGgB7pYcMVJPnJ/3DYCcbNAXm3u7
+	AQ6J1jJvcowxRdO4omPOqa7YSd8CEyggSiM44uhQhB3nGqQ/TeCxMH5rOEVJN26oFg6Hz3tpl9B
+	ulBDQUlrMSyQ7yUvRFxsAZdLieY+LhQrMyyWryqrDphIuK4RbYoiicYyfQEoit6enHW7/HUveF0
+	5TuHYg=
+X-Google-Smtp-Source: AGHT+IFD6osaS2sP17uSKoOpkdrgAaGoOW4xxaV4WzN7kWyXMlqtMJ1zAdZWqXZh/Duto084HHI0jg==
+X-Received: by 2002:a05:690c:968a:b0:786:896d:8858 with SMTP id 00721157ae682-78a8b54d4a4mr55406797b3.47.1763850274503;
+        Sat, 22 Nov 2025 14:24:34 -0800 (PST)
 Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79779a4esm28858937b3.0.2025.11.22.14.24.30
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79779a4esm28858937b3.0.2025.11.22.14.24.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 14:24:31 -0800 (PST)
+        Sat, 22 Nov 2025 14:24:33 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -166,22 +166,22 @@ To: pratyush@kernel.org,
 	hughd@google.com,
 	skhawaja@google.com,
 	chrisl@kernel.org
-Subject: [PATCH v7 18/22] selftests/liveupdate: Add kexec test for multiple and empty sessions
-Date: Sat, 22 Nov 2025 17:23:45 -0500
-Message-ID: <20251122222351.1059049-19-pasha.tatashin@soleen.com>
+Subject: [PATCH v7 19/22] selftests/liveupdate: add test infrastructure and scripts
+Date: Sat, 22 Nov 2025 17:23:46 -0500
+Message-ID: <20251122222351.1059049-20-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.52.0.rc2.455.g230fcf2819-goog
 In-Reply-To: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
 References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: abeuewjzebncwsf5b7mz1nd7tiwa7hkt
+X-Stat-Signature: 3im4owadonwq7oejsgxc5exowzu8n5sk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CA26140013
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763850272-212026
-X-HE-Meta: U2FsdGVkX1+8xckxh0yPn+DVUkTXgxkt9vMCjDHK4CUbfNPw7iD0ESDYSZuXpXlkYRhkN0lYKIKXlj7NZaqiq16eLO7+qD1WQBixILQhvOGr+7oxewkUdysXS6N3sk+ywzp7ieFXI61m7DfbDL/AyjFzP9rWHGj2RhKSWB38uVTHAQJA181kZxAif1IXMojfoDp+NzTaFexqCmNJIjDlRxTPkydaA/feMd4zZLAZa5U/V0W3tmL7LQSYTarHRHFe04n57p3roBqn70DK+Hw9ZfOmljEEa5ZIB3vTlOV9vDSdxkZJXd/psDnr2geY/A7euV4VIi6n8X2ac5jjtW0fmF6UwQDwirKj73z+BmYs1pHLvmzM4PVRBGwMOHbR7hslDGdyzC1vs+rhjSzEDVDHGWLcJAqbHaTYMqdYlgKp7njMj2ux+hXP/LQefAYFmA2Crp9Hk9LzTDc+ldWVn363deExWmQPLygu4cYylZUeCIPaMwiQHPSjTqDqRyd3/Q3PYhdndos5TxGcK/uO5RBJ9fSRu0soKn+9GuhoLxxbZ0IaoTuwFqHcWD7niwUtbo574NJZMUMKet87ql64PanQZbQpeSpKHlPBLFP214rlbErUFiSSbHOg7IcI+Va5WS9coKw5P/AbIRR4MoMWlh37wt2pRZS9JQedzVtAJR69EfIzyfJvtjHAsvmmc0l5FAgGAG+rHuNTvv83ZXdSOheoXfdAZ2CyG1oxHuFDPH+OgstFPUNW02XCRmc1durkRlcwdgKEchUQNO6Obb/q6d4R/T9WRfORso9ZBovVJ018WoK5d5NchYfGVMUyy9bh3bXn/SIJVb29BMA0Sm+cSSrARN1GqGVaSXaNuvhc/Eq0ti/E7juGzCCbUtOpiauSJoKaiK3djl/c2H+ZGfxneGf3xTz00cDrsrsSbj2ECOkSyXKreQCr/SurVIBE0puchNvlwMXKMqXwLdNrE6aD+lN
- NorI9JJq
- XfEm4NP71yFOlujZdBUTDjkmZBN7Tfbl52xi6sy7R/l6g9f5yPdEv7Be8R3BzdEu+yMlJMc7lTSbQlFHuG/1BmhXJIFlNxnV3JjahXiX0OVG+n0zqYQtHmKHleBNeFwMlqAYhQZ8lJqmIxl2Yv5iwcbYEVl9woOBkvTDHNuIygYwki+lpiXyWvP5dV2AXeiQ6uHHbDccG4/IGrG8uTBGg24oLj++kSUfRgY3u1qoHiGmhdunCUE7uhTOqYmgqHf3srUlU3hWZ0Y2e7TuIvxgfyGP8yvijVlBEJl/L+WSaeCsW55hjzii+wG5TUZifaCR8yyhHcTNfVNhRpopebzkAci+ECTQgZ3Xwx70hOt8sBwUajs3+QeIol5NSkpfCO4xMT9CZJJjJaaNmpFk=
+X-Rspamd-Queue-Id: BEF7E1C0005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763850275-850534
+X-HE-Meta: U2FsdGVkX196YOMp1u6ngi0cqByuoArU00FJ3xToZN5ROhdzsLJGXnkw5LIIhYbBec6pOXVZerxnOv1BMp0zLw+xd5STwre6vLhOs+raOx/vckrMXvBmaWyNuytoJ2IBeDtk6XzvzCclCucspNOp0hUZprjzl6UfDvuFPD2EHVPBcV5p0J/PPsAlE31mTqXHaEVAL4uE+23C4/i7876w5V9pZ+BnNL0dC5eMg8Nyh27OD8dOnlHdVgc+ouywXQ1ao7TMc/yRho8wAdHYvCxtIgl3j0jBS16IpCu3P8cmOwQxyfT3YloLpEW+pt/IbKHLFSwp87hNxdr1o/53vwNMLSHVnfX202l8lBYdZJKQ6ZUuMBQHobTnEE0KtGa2ChIFnZd6rXRdC/85o7snwENb6Ag84aHk70yZJwpp++OyoU3wAPEFkznywKbcIF+7a+hNSwRssR1y9QqFmsZZoOPUZz/8qLOno04/BVPJdGXmeFvj5Ub4G6hiNHMn2s4/2HSaNlqCslA+5sgJBLn10eTPq3u6Mf9IYsuDeaAdeVApPEN6ism4f31/zfBTj5qU+nlHdj/KhELUVmLKM9kLspXaNwivzogy5lJvVk/9pLBYjR9cacq+AEo1gMB9XldGc1CJDMxcB5T0/cx2Iis1DkVtXzsq1QaPGDmKT8QXK5eJqd6UhVrxJX2gLUIohcjMRkFbET0SDcSFivAtmT3+Z5R10Q7kFKKgd9ufEDJY3KsxuZ4ICdN3S3emKNYfJPpasbnOWEdc3VzpP5RUwHVeRHhLhglKeZJJNja8A3iFzsMwG6/oQLNs+DQPPQoy7wb1TQGODtgtZdKTGeJv9oJmT13CW8ngx1lQ40ybgC21O7VTaWjxObhKVX2vQI2Kur4gG0qbripPjhssJiV5KMsBaxhtSSt9+uNP9Mmb/6+wxgmZ6nncKoBY5T6iq0J1ZbMG5bUSfkzZ8kD0LrDVQukdeMR
+ jYyC5EC+
+ KgCiHolylaXZVjlXXhGqCWKbCjkbd3642OrlZAmvGy5Kv5f7VGkgJ6RMzvAYyMz4A1ZN6v7HOqAywlBFLNswINMtvGMi4PfcyQ93xC83Yl8/cavF5eXUYz5QRJXCDva+JJRso80OTAhXeHyLPfu1gNq6iA9TzGJDZbxxrpihoDsUD4mNmTJtOEEgQZRZ6CCHMYS2O0tH89j/lVTusC/VWoFN1/kNuHxZoYmhzfC6U8PQRHpzYYON70dHSxgSb9cA3nsdjyWpleB7OlQuls8DtHZIlAUdVKzKgS/cyG1+7lm0HdmVdFjVWalLlVhv9MzwXZcYbgvUhP9GNk4PWd3FDE+v/4eg3VOv7amz/btjWm5GOzw5bc6Qo9L21xrZbJBCSbQym42/kQrawXtN2StxjpD2XhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,232 +190,597 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new kexec-based selftest, luo_kexec_multi_session, to
-validate the end-to-end lifecycle of a more complex LUO scenario.
+Add the testing infrastructure required to verify the liveupdate
+feature. This includes a custom init process, a test orchestration
+script, and a batch runner.
 
-While the existing luo_kexec_simple test covers the basic end-to-end
-lifecycle, it is limited to a single session with one preserved file.
-This new test significantly expands coverage by verifying LUO's ability
-to handle a mixed workload involving multiple sessions, some of which
-are intentionally empty. This ensures that the LUO core correctly
-preserves and restores the state of all session types across a reboot.
+The framework consists of:
 
-The test validates the following sequence:
+init.c:
+A lightweight init process that manages the kexec lifecycle.
+It mounts necessary filesystems, determines the current execution
+stage (1 or 2) via the kernel command line, and handles the
+kexec_file_load() sequence to transition between kernels.
 
-Stage 1 (Pre-kexec):
+luo_test.sh:
+The primary KTAP-compliant test driver. It handles:
+- Kernel configuration merging and building.
+- Cross-compilation detection for x86_64 and arm64.
+- Generation of the initrd containing the test binary and init.
+- QEMU execution with automatic accelerator detection (KVM, HVF,
+ or TCG).
 
-  - Creates two empty test sessions (multi-test-empty-1,
-    multi-test-empty-2).
-  - Creates a session with one preserved memfd (multi-test-files-1).
-  - Creates another session with two preserved memfds
-    (multi-test-files-2), each containing unique data.
-  - Creates a state-tracking session to manage the transition to
-    Stage 2.
-  - Executes a kexec reboot via the helper script.
-
-Stage 2 (Post-kexec):
-
-  - Retrieves the state-tracking session to confirm it is in the
-    post-reboot stage.
-  - Retrieves all four test sessions (both the empty and non-empty
-    ones).
-  - For the non-empty sessions, restores the preserved memfds and
-    verifies their contents match the original data patterns.
-  - Finalizes all test sessions and the state session to ensure a clean
-    teardown and that all associated kernel resources are correctly
-    released.
-
-This test provides greater confidence in the robustness of the LUO
-framework by validating its behavior in a more realistic, multi-faceted
-scenario.
+run.sh:
+A wrapper script to discover and execute all `luo_*.c`
+tests across supported architectures, providing a summary of
+pass/fail/skip results.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- tools/testing/selftests/liveupdate/Makefile   |   1 +
- .../selftests/liveupdate/luo_multi_session.c  | 162 ++++++++++++++++++
- 2 files changed, 163 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/luo_multi_session.c
+ tools/testing/selftests/liveupdate/init.c     | 174 ++++++++++
+ .../testing/selftests/liveupdate/luo_test.sh  | 296 ++++++++++++++++++
+ tools/testing/selftests/liveupdate/run.sh     |  68 ++++
+ 3 files changed, 538 insertions(+)
+ create mode 100644 tools/testing/selftests/liveupdate/init.c
+ create mode 100755 tools/testing/selftests/liveupdate/luo_test.sh
+ create mode 100755 tools/testing/selftests/liveupdate/run.sh
 
-diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-index bbbec633970c..080754787ede 100644
---- a/tools/testing/selftests/liveupdate/Makefile
-+++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -5,6 +5,7 @@ LIB_C += luo_test_utils.c
- TEST_GEN_PROGS += liveupdate
- 
- TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
-+TEST_GEN_PROGS_EXTENDED += luo_multi_session
- 
- TEST_FILES += do_kexec.sh
- 
-diff --git a/tools/testing/selftests/liveupdate/luo_multi_session.c b/tools/testing/selftests/liveupdate/luo_multi_session.c
+diff --git a/tools/testing/selftests/liveupdate/init.c b/tools/testing/selftests/liveupdate/init.c
 new file mode 100644
-index 000000000000..0ee2d795beef
+index 000000000000..ed11e04d0796
 --- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_multi_session.c
-@@ -0,0 +1,162 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/tools/testing/selftests/liveupdate/init.c
+@@ -0,0 +1,174 @@
++// SPDX-License-Identifier: GPL-2.0
 +
 +/*
 + * Copyright (c) 2025, Google LLC.
 + * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ *
-+ * A selftest to validate the end-to-end lifecycle of multiple LUO sessions
-+ * across a kexec reboot, including empty sessions and sessions with multiple
-+ * files.
 + */
++#include <fcntl.h>
++#include <linux/kexec.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/mount.h>
++#include <sys/reboot.h>
++#include <sys/syscall.h>
++#include <sys/wait.h>
++#include <unistd.h>
 +
-+#include "luo_test_utils.h"
++#define COMMAND_LINE_SIZE 2048
++#define KERNEL_IMAGE "/kernel"
++#define INITRD_IMAGE "/initrd.img"
++#define TEST_BINARY "/test_binary"
 +
-+#define SESSION_EMPTY_1 "multi-test-empty-1"
-+#define SESSION_EMPTY_2 "multi-test-empty-2"
-+#define SESSION_FILES_1 "multi-test-files-1"
-+#define SESSION_FILES_2 "multi-test-files-2"
-+
-+#define MFD1_TOKEN 0x1001
-+#define MFD2_TOKEN 0x2002
-+#define MFD3_TOKEN 0x3003
-+
-+#define MFD1_DATA "Data for session files 1"
-+#define MFD2_DATA "First file for session files 2"
-+#define MFD3_DATA "Second file for session files 2"
-+
-+#define STATE_SESSION_NAME "kexec_multi_state"
-+#define STATE_MEMFD_TOKEN 998
-+
-+/* Stage 1: Executed before the kexec reboot. */
-+static void run_stage_1(int luo_fd)
++static int mount_filesystems(void)
 +{
-+	int s_empty1_fd, s_empty2_fd, s_files1_fd, s_files2_fd;
-+
-+	ksft_print_msg("[STAGE 1] Starting pre-kexec setup for multi-session test...\n");
-+
-+	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
-+	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
-+
-+	ksft_print_msg("[STAGE 1] Creating empty sessions '%s' and '%s'...\n",
-+		       SESSION_EMPTY_1, SESSION_EMPTY_2);
-+	s_empty1_fd = luo_create_session(luo_fd, SESSION_EMPTY_1);
-+	if (s_empty1_fd < 0)
-+		fail_exit("luo_create_session for '%s'", SESSION_EMPTY_1);
-+
-+	s_empty2_fd = luo_create_session(luo_fd, SESSION_EMPTY_2);
-+	if (s_empty2_fd < 0)
-+		fail_exit("luo_create_session for '%s'", SESSION_EMPTY_2);
-+
-+	ksft_print_msg("[STAGE 1] Creating session '%s' with one memfd...\n",
-+		       SESSION_FILES_1);
-+
-+	s_files1_fd = luo_create_session(luo_fd, SESSION_FILES_1);
-+	if (s_files1_fd < 0)
-+		fail_exit("luo_create_session for '%s'", SESSION_FILES_1);
-+	if (create_and_preserve_memfd(s_files1_fd, MFD1_TOKEN, MFD1_DATA) < 0) {
-+		fail_exit("create_and_preserve_memfd for token %#x",
-+			  MFD1_TOKEN);
++	if (mount("devtmpfs", "/dev", "devtmpfs", 0, NULL) < 0) {
++		fprintf(stderr, "INIT: Warning: Failed to mount devtmpfs\n");
++		return -1;
 +	}
 +
-+	ksft_print_msg("[STAGE 1] Creating session '%s' with two memfds...\n",
-+		       SESSION_FILES_2);
-+
-+	s_files2_fd = luo_create_session(luo_fd, SESSION_FILES_2);
-+	if (s_files2_fd < 0)
-+		fail_exit("luo_create_session for '%s'", SESSION_FILES_2);
-+	if (create_and_preserve_memfd(s_files2_fd, MFD2_TOKEN, MFD2_DATA) < 0) {
-+		fail_exit("create_and_preserve_memfd for token %#x",
-+			  MFD2_TOKEN);
-+	}
-+	if (create_and_preserve_memfd(s_files2_fd, MFD3_TOKEN, MFD3_DATA) < 0) {
-+		fail_exit("create_and_preserve_memfd for token %#x",
-+			  MFD3_TOKEN);
++	if (mount("debugfs", "/debugfs", "debugfs", 0, NULL) < 0) {
++		fprintf(stderr, "INIT: Failed to mount debugfs\n");
++		return -1;
 +	}
 +
-+	close(luo_fd);
-+	daemonize_and_wait();
++	if (mount("proc", "/proc", "proc", 0, NULL) < 0) {
++		fprintf(stderr, "INIT: Failed to mount proc\n");
++		return -1;
++	}
++
++	return 0;
 +}
 +
-+/* Stage 2: Executed after the kexec reboot. */
-+static void run_stage_2(int luo_fd, int state_session_fd)
++static long kexec_file_load(int kernel_fd, int initrd_fd,
++			    unsigned long cmdline_len, const char *cmdline,
++			    unsigned long flags)
 +{
-+	int s_empty1_fd, s_empty2_fd, s_files1_fd, s_files2_fd;
-+	int mfd1, mfd2, mfd3, stage;
++	return syscall(__NR_kexec_file_load, kernel_fd, initrd_fd, cmdline_len,
++		       cmdline, flags);
++}
 +
-+	ksft_print_msg("[STAGE 2] Starting post-kexec verification...\n");
++static int kexec_load(void)
++{
++	char cmdline[COMMAND_LINE_SIZE];
++	int kernel_fd, initrd_fd, err;
++	ssize_t len;
++	int fd;
 +
-+	restore_and_read_stage(state_session_fd, STATE_MEMFD_TOKEN, &stage);
-+	if (stage != 2) {
-+		fail_exit("Expected stage 2, but state file contains %d",
-+			  stage);
++	fd = open("/proc/cmdline", O_RDONLY);
++	if (fd < 0) {
++		fprintf(stderr, "INIT: Failed to read /proc/cmdline\n");
++
++		return -1;
 +	}
 +
-+	ksft_print_msg("[STAGE 2] Retrieving all sessions...\n");
-+	s_empty1_fd = luo_retrieve_session(luo_fd, SESSION_EMPTY_1);
-+	if (s_empty1_fd < 0)
-+		fail_exit("luo_retrieve_session for '%s'", SESSION_EMPTY_1);
++	len = read(fd, cmdline, sizeof(cmdline) - 1);
++	close(fd);
++	if (len < 0)
++		return -1;
 +
-+	s_empty2_fd = luo_retrieve_session(luo_fd, SESSION_EMPTY_2);
-+	if (s_empty2_fd < 0)
-+		fail_exit("luo_retrieve_session for '%s'", SESSION_EMPTY_2);
++	cmdline[len] = 0;
++	if (len > 0 && cmdline[len - 1] == '\n')
++		cmdline[len - 1] = 0;
 +
-+	s_files1_fd = luo_retrieve_session(luo_fd, SESSION_FILES_1);
-+	if (s_files1_fd < 0)
-+		fail_exit("luo_retrieve_session for '%s'", SESSION_FILES_1);
++	strncat(cmdline, " luo_stage=2", sizeof(cmdline) - strlen(cmdline) - 1);
 +
-+	s_files2_fd = luo_retrieve_session(luo_fd, SESSION_FILES_2);
-+	if (s_files2_fd < 0)
-+		fail_exit("luo_retrieve_session for '%s'", SESSION_FILES_2);
++	kernel_fd = open(KERNEL_IMAGE, O_RDONLY);
++	if (kernel_fd < 0) {
++		fprintf(stderr, "INIT: Failed to open kernel image\n");
++		return -1;
++	}
 +
-+	ksft_print_msg("[STAGE 2] Verifying contents of session '%s'...\n",
-+		       SESSION_FILES_1);
-+	mfd1 = restore_and_verify_memfd(s_files1_fd, MFD1_TOKEN, MFD1_DATA);
-+	if (mfd1 < 0)
-+		fail_exit("restore_and_verify_memfd for token %#x", MFD1_TOKEN);
-+	close(mfd1);
++	initrd_fd = open(INITRD_IMAGE, O_RDONLY);
++	if (initrd_fd < 0) {
++		fprintf(stderr, "INIT: Failed to open initrd image\n");
++		close(kernel_fd);
++		return -1;
++	}
 +
-+	ksft_print_msg("[STAGE 2] Verifying contents of session '%s'...\n",
-+		       SESSION_FILES_2);
++	err = kexec_file_load(kernel_fd, initrd_fd, strlen(cmdline) + 1,
++			      cmdline, 0);
 +
-+	mfd2 = restore_and_verify_memfd(s_files2_fd, MFD2_TOKEN, MFD2_DATA);
-+	if (mfd2 < 0)
-+		fail_exit("restore_and_verify_memfd for token %#x", MFD2_TOKEN);
-+	close(mfd2);
++	close(initrd_fd);
++	close(kernel_fd);
 +
-+	mfd3 = restore_and_verify_memfd(s_files2_fd, MFD3_TOKEN, MFD3_DATA);
-+	if (mfd3 < 0)
-+		fail_exit("restore_and_verify_memfd for token %#x", MFD3_TOKEN);
-+	close(mfd3);
++	return err ? : 0;
++}
 +
-+	ksft_print_msg("[STAGE 2] Test data verified successfully.\n");
++static int run_test(int stage)
++{
++	char stage_arg[32];
++	int status;
++	pid_t pid;
 +
-+	ksft_print_msg("[STAGE 2] Finalizing all test sessions...\n");
-+	if (luo_session_finish(s_empty1_fd) < 0)
-+		fail_exit("luo_session_finish for '%s'", SESSION_EMPTY_1);
-+	close(s_empty1_fd);
++	snprintf(stage_arg, sizeof(stage_arg), "--stage=%d", stage);
 +
-+	if (luo_session_finish(s_empty2_fd) < 0)
-+		fail_exit("luo_session_finish for '%s'", SESSION_EMPTY_2);
-+	close(s_empty2_fd);
++	pid = fork();
++	if (pid < 0)
++		return -1;
 +
-+	if (luo_session_finish(s_files1_fd) < 0)
-+		fail_exit("luo_session_finish for '%s'", SESSION_FILES_1);
-+	close(s_files1_fd);
++	if (!pid) {
++		static const char *const argv[] = {TEST_BINARY, stage_arg, NULL};
 +
-+	if (luo_session_finish(s_files2_fd) < 0)
-+		fail_exit("luo_session_finish for '%s'", SESSION_FILES_2);
-+	close(s_files2_fd);
++		execve(TEST_BINARY, argv, NULL);
++		fprintf(stderr, "INIT: execve failed\n");
++		_exit(1);
++	}
 +
-+	ksft_print_msg("[STAGE 2] Finalizing state session...\n");
-+	if (luo_session_finish(state_session_fd) < 0)
-+		fail_exit("luo_session_finish for state session");
-+	close(state_session_fd);
++	waitpid(pid, &status, 0);
 +
-+	ksft_print_msg("\n--- MULTI-SESSION KEXEC TEST PASSED ---\n");
++	return (WIFEXITED(status) && WEXITSTATUS(status) == 0) ? 0 : -1;
++}
++
++static int is_stage_2(void)
++{
++	char cmdline[COMMAND_LINE_SIZE];
++	ssize_t len;
++	int fd;
++
++	fd = open("/proc/cmdline", O_RDONLY);
++	if (fd < 0)
++		return 0;
++
++	len = read(fd, cmdline, sizeof(cmdline) - 1);
++	close(fd);
++
++	if (len < 0)
++		return 0;
++
++	cmdline[len] = 0;
++
++	return !!strstr(cmdline, "luo_stage=2");
 +}
 +
 +int main(int argc, char *argv[])
 +{
-+	return luo_test(argc, argv, STATE_SESSION_NAME,
-+			run_stage_1, run_stage_2);
++	int current_stage;
++
++	if (mount_filesystems())
++		goto err_reboot;
++
++	current_stage = is_stage_2() ? 2 : 1;
++
++	printf("INIT: Starting Stage %d\n", current_stage);
++
++	if (current_stage == 1 && kexec_load()) {
++		fprintf(stderr, "INIT: Failed to load kexec kernel\n");
++		goto err_reboot;
++	}
++
++	if (run_test(current_stage)) {
++		fprintf(stderr, "INIT: Test binary returned failure\n");
++		goto err_reboot;
++	}
++
++	printf("INIT: Stage %d completed successfully.\n", current_stage);
++	reboot(current_stage == 1 ? RB_KEXEC : RB_AUTOBOOT);
++
++	return 0;
++
++err_reboot:
++	reboot(RB_AUTOBOOT);
++
++	return -1;
 +}
+diff --git a/tools/testing/selftests/liveupdate/luo_test.sh b/tools/testing/selftests/liveupdate/luo_test.sh
+new file mode 100755
+index 000000000000..7d155956e2ff
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/luo_test.sh
+@@ -0,0 +1,296 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++set -ue
++
++CROSS_COMPILE="${CROSS_COMPILE:-""}"
++
++test_dir=$(realpath "$(dirname "$0")")
++kernel_dir=$(realpath "$test_dir/../../../..")
++
++workspace_dir=""
++headers_dir=""
++initrd=""
++KEEP_WORKSPACE=0
++
++source "$test_dir/../kselftest/ktap_helpers.sh"
++
++function get_arch_conf() {
++	local arch=$1
++	if [[ "$arch" == "arm64" ]]; then
++		QEMU_CMD="qemu-system-aarch64 -M virt -cpu max"
++		KERNEL_IMAGE="Image"
++		KERNEL_CMDLINE="console=ttyAMA0"
++	elif [[ "$arch" == "x86" ]]; then
++		QEMU_CMD="qemu-system-x86_64"
++		KERNEL_IMAGE="bzImage"
++		KERNEL_CMDLINE="console=ttyS0"
++	else
++		echo "Unsupported architecture: $arch"
++		exit 1
++	fi
++}
++
++function usage() {
++	cat <<EOF
++$0 [-d build_dir] [-j jobs] [-t target_arch] [-T test_name] [-w workspace_dir] [-k] [-h]
++Options:
++	-d)	path to the kernel build directory (default: .luo_test_build.<arch>)
++	-j)	number of jobs for compilation
++	-t)	run test for target_arch (aarch64, x86_64)
++	-T)	test name to run (default: luo_kexec_simple)
++	-w)	custom workspace directory (default: creates temp dir)
++	-k)	keep workspace directory after successful test
++	-h)	display this help
++EOF
++}
++
++function cleanup() {
++	local exit_code=$?
++
++	if [ -z "$workspace_dir" ]; then
++		ktap_finished
++		return
++	fi
++
++	if [ $exit_code -ne 0 ]; then
++		echo "# Test failed (exit code $exit_code)."
++		echo "# Workspace preserved at: $workspace_dir"
++	elif [ "$KEEP_WORKSPACE" -eq 1 ]; then
++		echo "# Workspace preserved (user request) at: $workspace_dir"
++	else
++		rm -fr "$workspace_dir"
++	fi
++	ktap_finished
++}
++trap cleanup EXIT
++
++function skip() {
++	local msg=${1:-""}
++	ktap_test_skip "$msg"
++	exit "$KSFT_SKIP"
++}
++
++function fail() {
++	local msg=${1:-""}
++	ktap_test_fail "$msg"
++	exit "$KSFT_FAIL"
++}
++
++function detect_cross_compile() {
++	local target=$1
++	local host=$(uname -m)
++
++	if [ -n "$CROSS_COMPILE" ]; then
++		return
++	fi
++
++	[[ "$host" == "arm64" ]] && host="aarch64"
++	[[ "$target" == "arm64" ]] && target="aarch64"
++
++	if [[ "$host" == "$target" ]]; then
++		CROSS_COMPILE=""
++		return
++	fi
++
++	local candidate=""
++	case "$target" in
++		aarch64) candidate="aarch64-linux-gnu-" ;;
++		x86_64)  candidate="x86_64-linux-gnu-" ;;
++		*)       skip "Auto-detection for target '$target' not supported. Please set CROSS_COMPILE manually." ;;
++	esac
++
++	if command -v "${candidate}gcc" &> /dev/null; then
++		CROSS_COMPILE="$candidate"
++	else
++		skip "Compiler '${candidate}gcc' not found. Please install it (e.g., 'apt install gcc-aarch64-linux-gnu') or set CROSS_COMPILE."
++	fi
++}
++
++function build_kernel() {
++	local build_dir=$1
++	local make_cmd=$2
++	local kimage=$3
++	local target_arch=$4
++
++	local kconfig="$build_dir/.config"
++	local common_conf="$test_dir/config"
++	local arch_conf="$test_dir/config.$target_arch"
++
++	echo "# Building kernel in: $build_dir"
++	$make_cmd defconfig
++
++	local fragments=""
++	if [[ -f "$common_conf" ]]; then
++		fragments="$fragments $common_conf"
++	fi
++
++	if [[ -f "$arch_conf" ]]; then
++		fragments="$fragments $arch_conf"
++	fi
++
++	if [[ -n "$fragments" ]]; then
++		"$kernel_dir/scripts/kconfig/merge_config.sh" \
++			-Q -m -O "$build_dir" "$kconfig" $fragments >> /dev/null
++	fi
++
++	$make_cmd olddefconfig
++	$make_cmd "$kimage"
++	$make_cmd headers_install INSTALL_HDR_PATH="$headers_dir"
++}
++
++function mkinitrd() {
++	local build_dir=$1
++	local kernel_path=$2
++	local test_name=$3
++
++	# 1. Compile the test binary and the init process
++	"$CROSS_COMPILE"gcc -static -O2 \
++		-I "$headers_dir/include" \
++		-I "$test_dir" \
++		-o "$workspace_dir/test_binary" \
++		"$test_dir/$test_name.c" "$test_dir/luo_test_utils.c"
++
++	"$CROSS_COMPILE"gcc -s -static -Os -nostdinc -nostdlib		\
++			-fno-asynchronous-unwind-tables -fno-ident	\
++			-fno-stack-protector				\
++			-I "$headers_dir/include"			\
++			-I "$kernel_dir/tools/include/nolibc"		\
++			-o "$workspace_dir/init" "$test_dir/init.c"
++
++	cat > "$workspace_dir/cpio_list_inner" <<EOF
++dir /dev 0755 0 0
++dir /proc 0755 0 0
++dir /debugfs 0755 0 0
++nod /dev/console 0600 0 0 c 5 1
++file /init $workspace_dir/init 0755 0 0
++file /test_binary $workspace_dir/test_binary 0755 0 0
++EOF
++
++	# Generate inner_initrd.cpio
++	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list_inner" > "$workspace_dir/inner_initrd.cpio"
++
++	cat > "$workspace_dir/cpio_list" <<EOF
++dir /dev 0755 0 0
++dir /proc 0755 0 0
++dir /debugfs 0755 0 0
++nod /dev/console 0600 0 0 c 5 1
++file /init $workspace_dir/init 0755 0 0
++file /kernel $kernel_path 0644 0 0
++file /test_binary $workspace_dir/test_binary 0755 0 0
++file /initrd.img $workspace_dir/inner_initrd.cpio 0644 0 0
++EOF
++
++	# Generate the final initrd
++	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list" > "$initrd"
++	local size=$(du -h "$initrd" | cut -f1)
++}
++
++function run_qemu() {
++	local qemu_cmd=$1
++	local cmdline=$2
++	local kernel_path=$3
++	local serial="$workspace_dir/qemu.serial"
++
++	local accel="-accel tcg"
++	local host_machine=$(uname -m)
++
++	[[ "$host_machine" == "arm64" ]] && host_machine="aarch64"
++	[[ "$host_machine" == "x86_64" ]] && host_machine="x86_64"
++
++	if [[ "$qemu_cmd" == *"$host_machine"* ]]; then
++		if [ -w /dev/kvm ]; then
++			accel="-accel kvm"
++		fi
++	fi
++
++	cmdline="$cmdline liveupdate=on panic=-1"
++
++	echo "# Serial Log: $serial"
++	timeout 30s $qemu_cmd -m 1G -smp 2 -no-reboot -nographic -nodefaults	\
++		  $accel							\
++		  -serial file:"$serial"					\
++		  -append "$cmdline"						\
++		  -kernel "$kernel_path"					\
++		  -initrd "$initrd"
++
++	local ret=$?
++
++	if [ $ret -eq 124 ]; then
++		fail "QEMU timed out"
++	fi
++
++	grep "TEST PASSED" "$serial" &> /dev/null || fail "Liveupdate failed. Check $serial for details."
++}
++
++function target_to_arch() {
++	local target=$1
++	case $target in
++	     aarch64) echo "arm64" ;;
++	     x86_64) echo "x86" ;;
++	     *) skip "architecture $target is not supported"
++	esac
++}
++
++function main() {
++	local build_dir=""
++	local jobs=$(nproc)
++	local target="$(uname -m)"
++	local test_name="luo_kexec_simple"
++	local workspace_arg=""
++
++	set -o errtrace
++	trap skip ERR
++
++	while getopts 'hd:j:t:T:w:k' opt; do
++		case $opt in
++		d) build_dir="$OPTARG" ;;
++		j) jobs="$OPTARG" ;;
++		t) target="$OPTARG" ;;
++		T) test_name="$OPTARG" ;;
++		w) workspace_arg="$OPTARG" ;;
++		k) KEEP_WORKSPACE=1 ;;
++		h) usage; exit 0 ;;
++		*) echo "Unknown argument $opt"; usage; exit 1 ;;
++		esac
++	done
++
++	ktap_print_header
++	ktap_set_plan 1
++
++	if [ -n "$workspace_arg" ]; then
++		workspace_dir="$(realpath -m "$workspace_arg")"
++		mkdir -p "$workspace_dir"
++	else
++		workspace_dir=$(mktemp -d /tmp/luo-test.XXXXXXXX)
++	fi
++
++	echo "# Workspace created at: $workspace_dir"
++	headers_dir="$workspace_dir/usr"
++	initrd="$workspace_dir/initrd.cpio"
++
++	detect_cross_compile "$target"
++
++	local arch=$(target_to_arch "$target")
++
++	if [ -z "$build_dir" ]; then
++		build_dir="$kernel_dir/.luo_test_build.$arch"
++	fi
++
++	mkdir -p "$build_dir"
++	build_dir=$(realpath "$build_dir")
++	get_arch_conf "$arch"
++
++	local make_cmd="make -s ARCH=$arch CROSS_COMPILE=$CROSS_COMPILE -j$jobs"
++	local make_cmd_build="$make_cmd -C $kernel_dir O=$build_dir"
++
++	build_kernel "$build_dir" "$make_cmd_build" "$KERNEL_IMAGE" "$target"
++
++	local final_kernel="$build_dir/arch/$arch/boot/$KERNEL_IMAGE"
++	mkinitrd "$build_dir" "$final_kernel" "$test_name"
++
++	run_qemu "$QEMU_CMD" "$KERNEL_CMDLINE" "$final_kernel"
++	ktap_test_pass "$test_name succeeded"
++}
++
++main "$@"
+diff --git a/tools/testing/selftests/liveupdate/run.sh b/tools/testing/selftests/liveupdate/run.sh
+new file mode 100755
+index 000000000000..3f6b29a26648
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/run.sh
+@@ -0,0 +1,68 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++OUTPUT_DIR="results_$(date +%Y%m%d_%H%M%S)"
++SCRIPT_DIR=$(dirname "$(realpath "$0")")
++TEST_RUNNER="$SCRIPT_DIR/luo_test.sh"
++
++TARGETS=("x86_64" "aarch64")
++
++GREEN='\033[0;32m'
++RED='\033[0;31m'
++YELLOW='\033[1;33m'
++NC='\033[0m'
++
++PASSED=()
++FAILED=()
++SKIPPED=()
++
++mkdir -p "$OUTPUT_DIR"
++
++TEST_NAMES=()
++while IFS= read -r file; do
++    TEST_NAMES+=("$(basename "$file" .c)")
++done < <(find "$SCRIPT_DIR" -maxdepth 1 -name "luo_*.c" ! -name "luo_test_utils.c")
++
++if [ ${#TEST_NAMES[@]} -eq 0 ]; then
++    echo "No tests found in $SCRIPT_DIR"
++    exit 1
++fi
++
++for arch in "${TARGETS[@]}"; do
++    for test_name in "${TEST_NAMES[@]}"; do
++        log_file="$OUTPUT_DIR/${arch}_${test_name}.log"
++        echo -n "  -> $arch $test_name ... "
++
++        if "$TEST_RUNNER" -t "$arch" -T "$test_name" > "$log_file" 2>&1; then
++            echo -e "${GREEN}PASS${NC}"
++            PASSED+=("${arch}:${test_name}")
++        else
++            exit_code=$?
++            if [ $exit_code -eq 4 ]; then
++                echo -e "${YELLOW}SKIP${NC}"
++                SKIPPED+=("${arch}:${test_name}")
++            else
++                echo -e "${RED}FAIL${NC}"
++                FAILED+=("${arch}:${test_name}")
++            fi
++        fi
++    done
++    echo ""
++done
++
++echo "========================================="
++echo "             TEST SUMMARY                "
++echo "========================================="
++echo -e "PASSED: ${GREEN}${#PASSED[@]}${NC}"
++echo -e "FAILED: ${RED}${#FAILED[@]}${NC}"
++for fail in "${FAILED[@]}"; do
++    echo -e "  - $fail"
++done
++echo -e "SKIPPED: ${YELLOW}${#SKIPPED[@]}${NC}"
++echo "Logs: $OUTPUT_DIR"
++
++if [ ${#FAILED[@]} -eq 0 ]; then
++    exit 0
++else
++    exit 1
++fi
 -- 
 2.52.0.rc2.455.g230fcf2819-goog
 
