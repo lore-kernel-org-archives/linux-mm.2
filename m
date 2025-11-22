@@ -4,110 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71475CF64B1
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 07:55:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80F06CFC51E
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 08:39:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC0A26B0026; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
+	id 60D7F6B0008; Sat, 22 Nov 2025 03:39:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B97E86B0027; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
+	id 5E5436B000E; Sat, 22 Nov 2025 03:39:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD4C36B0028; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
+	id 4FA8C6B0011; Sat, 22 Nov 2025 03:39:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BB646B0026
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 402F78A11C
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 07:55:52 +0000 (UTC)
-X-FDA: 84137484144.29.B92251F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8B79A1C0007
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 07:55:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Z2EDKPMk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763798150; a=rsa-sha256;
-	cv=none;
-	b=5evb3j5B1awX1ETwvRLMICrun0woGwHP7MqZLuoqJvyv0nQe+PJbA1S28Dyi+ctNKTQXGq
-	aQwtSDIgQpVbJXv7Z86OqyHLKlGB0+BF0UbJP2AGgZskrfNe/aDJesNZ1OHGzaL7OU/G64
-	mpIN2QtLm/snyuVo9NJXkUgAS8LZb00=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Z2EDKPMk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B8856B0008
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 03:39:36 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7D995733E
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 08:39:32 +0000 (UTC)
+X-FDA: 84137594184.25.B7C67A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DD23E100004
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 08:39:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hn3xKEfg;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763798150;
+	s=arc-20220608; t=1763800770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QWHXPiJRYKkrps01kIqZqRVu3P4qRHYIVg+MRqwWDCs=;
-	b=ZLKQ9WIZcv+x0fG7DG/T9cTlxyUg1RoJcsnOtNggXHf2lDrZz6AIpkMctgh9C38Pnak778
-	mT/ucVDixQWQuDJY0y4fkXEtZFeoBEk14gBigK4bAmITTOwDTAnlQADpZCeToVut3BPIVo
-	k7DLMvQQlPtI7YmUfrSUygiq1+Cb01o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763798150; x=1795334150;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SXw40nk81lfewjY1S+9hPKCWNPlyLR4zHML4HwWfuNQ=;
-  b=Z2EDKPMk3krhLF/gubiVNh7Vkrj/Z4q7HbudVUI2N6oQtI4iI4cF41ZR
-   q90z++dU09sUVNC3WCJWjWJMA3cjqMmmBHl6eBAD2i5+fG/L150uPjTXR
-   jZ6uzG25CGOq6TWQHyHBtmQQ2Tsz02MYvLmQnqC/B1vZcs9XgFShCuyLv
-   nPz82wipUiDiMk0MiU4c/Q2ZBi6dr716lv4plEQH8jkmn3r/jd4MSy7a2
-   Y3Pz32uk4sQvT0N9Y4qTtXrH0H/Ih5na+MQfUTyOQpr53WoxNgJSWgkeJ
-   x8S6zCMNZzvcVUmvvFlS/9dZYgygSSb3R+DmmbBIDDJ8KozKwShtPLgfa
-   A==;
-X-CSE-ConnectionGUID: PfQGknuLRiynI8DYBT7eWg==
-X-CSE-MsgGUID: tqQQoWYSTuyrXq0yDbphow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="69748448"
-X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
-   d="scan'208";a="69748448"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 23:55:48 -0800
-X-CSE-ConnectionGUID: wOeO3mLQSJuDwYi3qD24uQ==
-X-CSE-MsgGUID: AycttFy4TB+6j12x7ifhWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
-   d="scan'208";a="222833433"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 21 Nov 2025 23:55:43 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMiT6-0007Gp-1a;
-	Sat, 22 Nov 2025 07:55:40 +0000
-Date: Sat, 22 Nov 2025 15:54:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Eugen Hristev <eugen.hristev@linaro.org>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	tglx@linutronix.de, andersson@kernel.org, pmladek@suse.com,
-	rdunlap@infradead.org, corbet@lwn.net, david@redhat.com,
-	mhocko@suse.com
-Cc: oe-kbuild-all@lists.linux.dev, tudor.ambarus@linaro.org,
-	mukesh.ojha@oss.qualcomm.com, linux-arm-kernel@lists.infradead.org,
-	linux-hardening@vger.kernel.org, jonechou@google.com,
-	rostedt@goodmis.org, linux-doc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
-	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: Re: [PATCH 23/26] soc: qcom: Add minidump driver
-Message-ID: <202511221521.2OINSDPK-lkp@intel.com>
-References: <20251119154427.1033475-24-eugen.hristev@linaro.org>
+	bh=zJKLCh7cpr5AtHzzXLaFNWbIv71GEiwpjh2QbJvz0Cc=;
+	b=tzT6lSM+XkOHd5uJ7lAO2cTGmU9fH/XC+O+OH1/538kqk5grVkFYGyL6OTSGih0hFlsEB9
+	IXimdZImwwrSLe1TWTvk9wbBoZhoDbc2v4JjffUQzr2P78ev0g7UqgVT8InrWEulDpdA9j
+	dchV7p6dEplKsUqmHu7XfsXz6Lsahuo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hn3xKEfg;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763800770; a=rsa-sha256;
+	cv=none;
+	b=79olbL3drXo/I/KT9bjszpHtJwBcpEbZ028LkI2ZweQp04djQ0ibfD5LrBAM8OvITlJf4K
+	+rdZpJT8dT5w9qS1Gv6EzjeyT6Ru4x8edDO9nh0QtyYiSt8/tY3KlNGSC7PTX2aoI8CDD8
+	7nsjxyQYgpLqI31JQq1JIm9rF436Ve8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2552F600AE
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 08:39:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E08C19424
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 08:39:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763800769;
+	bh=eIrHWW5A6lKD0/BrIVHqggfOPIkJw2CT4IrFB4RUFy0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Hn3xKEfgIi8NR0urX40/DdFKtC5sT96BQrFiZlwzTE4gT5B9MEHpk4HJWmytCgvCY
+	 GYpScu8PDronCIcXkRfk6k5ejhz4eatn90/Z2xlx0aLadobLadUYEW2jXPcMpYWFbY
+	 xTv1fY1L0BybkTgQSj7BmnzUailkJCKe98LG0zMr4rU4WqY3aioXHsuXZP5WsfwQdj
+	 tcxSvuNHT/72FDPR4KlO9oOLIMsPSEsmeCCyGZ6awcqyG3339ORrQISawbU12EmRuA
+	 NiSsNzloq6E28jlLxHDfAqrvTlJa4K+15YiaXbE92dfPQ0AO7iQhPFQdbClfJ5FDDC
+	 hAb/eLKRFrjaw==
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-78a6c7ac38fso31231437b3.0
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:39:29 -0800 (PST)
+X-Gm-Message-State: AOJu0YxIS1+xtXuQNGrNmSMZxg4Zl6cLOAKnJhgCD4CKZxKSdz5Fospv
+	sIyCfXqCptZN7+0geN6sIDO5qAsL9Rj1MooIgd11iDhQPLVEJuNU8798ur2VmoH8yI0wSwx/1rS
+	OG8uyNRYAGGmOp3wzGwyiAQ0d0R0FD1zhiHDMPwMeeg==
+X-Google-Smtp-Source: AGHT+IFfJxdmZNjSNnf0AHrqAcz6LumoNxr8cDdmoD2LZf0UfxJPkMXAl+gXo6XEPz/lRicT/7V9koWN2DqgnBWr9Ac=
+X-Received: by 2002:a05:690c:6605:b0:786:5620:faf8 with SMTP id
+ 00721157ae682-78a8b54b2ecmr43342727b3.47.1763800769029; Sat, 22 Nov 2025
+ 00:39:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251119154427.1033475-24-eugen.hristev@linaro.org>
-X-Rspamd-Queue-Id: 8B79A1C0007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: pk8zcsoif8sag3su6wmduewz9qjzhqct
+References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com> <20251117-swap-table-p2-v2-1-37730e6ea6d5@tencent.com>
+In-Reply-To: <20251117-swap-table-p2-v2-1-37730e6ea6d5@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 22 Nov 2025 00:39:18 -0800
+X-Gmail-Original-Message-ID: <CACePvbUjanBSkLZ-sM+kWo60dyHHoaH3S3S=T8UWNdDw5BOtmA@mail.gmail.com>
+X-Gm-Features: AWmQ_bn5ZBNFjYSrcpOep7HISFbP9Rm9TpfICk7TPeaTbzIbUFC3nGDc14h_lJk
+Message-ID: <CACePvbUjanBSkLZ-sM+kWo60dyHHoaH3S3S=T8UWNdDw5BOtmA@mail.gmail.com>
+Subject: Re: [PATCH v2 01/19] mm, swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DD23E100004
+X-Stat-Signature: xsrm58c6eqfb7yut717stfmpe87u3uzk
 X-Rspam-User: 
-X-HE-Tag: 1763798149-741076
-X-HE-Meta: U2FsdGVkX18v88cIFOYHEVP0D3NTUcVsZYJAlIHQS8mzlRPCCWoMoZK6RCQf+7ssC+REbz5bUniUWtFsVJFMPSAJ4q8B56+poCV6Y3IeER40IM5LqYes1f51uHej9jnL8whZiYaYXcZSgnwIFLFRnngkzS61ZwGyfjgYHLRVJnXaFjv4kTOLSWEbSKi0zTuVIeTEEh29oul/5ERMWKw4ykxhUzn07QwCJaW7zcU0LIe6F7WjdZpTupEhPiFhhXXTw7GtGQzvZ4p7oV0R+wzA8SHhT24QXyt4qKlkQD/WdiGHNFTEy3gRbWuovzy5OjKxSWPcGt4LG2pT/QV6yNSOQSmzaJajEJdphBBfrmpnveDFmTeShsWRxq/pWVb/HAphA5lhUGCU4XXLu6rNZmuHqhysDqyhI183kNugyHGNKt2c7n3IKJ43adQQgFk1kMIwR2ISBinnvkqGm7ym5OXwg0cJQ0pl80yThY/5pGZn/OR8w4Xm7fmgSl66k1e11WZaFYwQ5Xi9DD1pBOf48lgS5RJlkdiWyf9hn7yF3UQCzC1t/LmQrTNLJlK7cnC4bvpSgGJxlCXf0mJ1v3docvRrvcQTrNa21o5n+mhK3Nao0UCXX6Po5WWvuE4PtRiKoxdL1uYZYhuX2zIJb7CEx5bOrXQ2KyE+fbP0OKIaNLQrYP6taOWikAavU0nsemJMo63FjKIpwgOz/czYsSJOyJxF/BJDdvf7vOJ4Exp3aEwgGyUTdXNHHbmhkN9jkzGSxWTWfvEV9F0ub0SYgIwJxiQ1RmqXYzNU0/DC1WawROw2b6TxyWQE31bp8O3DN68rxhACMP3Uod7Z4gXfyZQpQK6DVWJ90VpDMrkKJDY7boTNWesBHw8uWaj+WU7jE1qiR4P7DaTjj0TFYcHXfIEKPEoOd0BncBtWZbfJgt5LGOt5J54IQ4HvIGtPGUD6lMoMFSctLbw6NRtTllT7S0XkY8C
- Au/pRCCD
- 2sXdzcRj6oT28s1rqMmorMAmcqc+41U4e1DnCPbPo40pTNg5EClN7Z6Xm5BLNeAxQYgXFl62UOLEOB9I6Z14xAQksu/zwTAcrfhJzETPAQbjh2vuqkbSt7bCqe6f2H24RDhtf/S7j8+d+Dm7SuCwtJml5iOUIeA6Kem0tbFpypzD/Gtq/5FRXTBh6CccfDEtkSZ+gAHl1241eFmSUdiuheye6LCEMTKxYZ3XyiONwDAZe/jW1okpV4G2sYfC/Y6gAkVxyEb6i6Yqh4vXG69R7/Yjk2w6rB+xJN71YMazg+GWo8ObM7HFiPysgXn7JrvKXUf6bDD/0dhFiJI7OWaTDTfMJDUa1cYy87cX798zDTjJruSCm2rZNEVivgZ+bv97jftPqw6ePYj61uK8Vv9rQ+rrFymjFDdr/TAgR
+X-HE-Tag: 1763800770-378469
+X-HE-Meta: U2FsdGVkX18Wo03JHi6GsjqR8gWMY6tWoLOQNRM3H1YAURVyeThr0jFnKPgrBLjZ2zBTj5VG9V0cPOTnvDxGBx+l62me4DuyJtwYLkZ28pjC4RN3Alehrr02hcdONkTVdT3ULwIVz7zPdxvLjzGsq1KBtvBwkPgWuc6Bz5DYDFqfWuE4Wbq4b47bKODQr+ku6Ftb9WguhcBuDNyGTuOixYAA28vWyALkjDnb2bMYMEwhwgiz3xcXrKUf6pGTKg7YKueixFo51MiBWrZO4zblOT5bOaxN00vGk3xAZZSG7KADSB6MFS6MVoX0oi+AepccY/MA9J2cxYuC14QivFDQ0b5jpSftl5FgPPSZU0Ead6MODV428qmjvPmS40IAuybh3a8N3Q4/7FdnYXKSM/Ke5RRtzrawWqxJEzBoD1W6p9YWUYtctJOy2MV6m3v1bdoAtnXf/81kQvqpT3gJHlLNc/jfzu7JmdmaTTswfhT49mTyr7ahqyf5p4MIt0Mzn6TscEfiSt04lFN9MNJmPkzTEgLWOYvffp1nxy/xIo8KIbgLEu573BZuJ3etBFhNJ70EGwdv+7JA0sKktQkhX8RWJHFqP1E9M84HPjjMJOzKSt7K5GiJiUgJJyR8e9oBPryg70csH1qflNCDmSL4FwI8HZ5Z3qhKwt8LYCKjzp0qhKAR9Mk/Me8Jswhnyw3J/Q4J7qUZ+HFZLcsmVAS5snYLVd/ZQC7QEqwZkwTFHoVcmErXkBUNaVpYE7gLDSYGF+E0FbPFPwZcme+MvKgzz3zEcJ5oXcUdhrGDO30R1gRS//w/2Sqrf/bIrtnlGYFCgCZBkpv9NHlXaeqU1lzOFZmMKGMgRyimEQ4eOX9sEuh5LKeE1xQVcHyP0GMJcYoIHGd87WPAgga8ePO69GxgIrbFa0FUS5OfTZpR+H/fMoZqGcEoSFZ4P2Sk8lvg0IYNtJ+DOdYEQ6UwD3yPh01LjTx
+ rJF+mHE/
+ aQrG3YkLrWQkN6zE78V8lvSevHXvTMz7JYTjnA5d/KdJuZT9One5qK5Bs48FtzyWTKAZATStN38DRyt7PootcdBpLefxjErAFKnAykbT/DHfJaM8NPqVr0AGRFiH0AB826TGHIoPFa1EMrJ8roim0PBqqfQze+c8CeNrFAxAuzswOgkIkHmNRIAdnv6N2yZBu0onpQQ4ROq8c65hej8IFwPiFVIDQG6+kwCG4nGorDpaZzNQQuoIQPM2e5V+7niDxPkaRZ7PTVJoTK7VpRFUbxh2FNi5rd6b4Xxo6BDxWinmm8dBL6NEHHk+vHS5Mx1ZsME7cEXDMTH2a8yRrYHFKRXHNpL5WRzaUvjZuQE+7gBKcdbwfVSzxX5UkYMbTPesWyDE9EnZiYdXmKivS/+K28KTu7A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,152 +110,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Eugen,
+Acked-by: Chris Li <chrisl@kernel.org>
 
-kernel test robot noticed the following build warnings:
+Chris
 
-[auto build test WARNING on rppt-memblock/fixes]
-[also build test WARNING on linus/master v6.18-rc6]
-[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next next-20251121]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Eugen-Hristev/kernel-Introduce-meminspect/20251119-235912
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
-patch link:    https://lore.kernel.org/r/20251119154427.1033475-24-eugen.hristev%40linaro.org
-patch subject: [PATCH 23/26] soc: qcom: Add minidump driver
-config: nios2-randconfig-r123-20251122 (https://download.01.org/0day-ci/archive/20251122/202511221521.2OINSDPK-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251122/202511221521.2OINSDPK-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511221521.2OINSDPK-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/soc/qcom/minidump.c:108:35: sparse: sparse: restricted __le32 degrades to integer
->> drivers/soc/qcom/minidump.c:154:22: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le32 [usertype] seq_num @@     got unsigned int enum meminspect_uid const id @@
-   drivers/soc/qcom/minidump.c:154:22: sparse:     expected restricted __le32 [usertype] seq_num
-   drivers/soc/qcom/minidump.c:154:22: sparse:     got unsigned int enum meminspect_uid const id
->> drivers/soc/qcom/minidump.c:184:19: sparse: sparse: unsigned value that used to be signed checked against zero?
-   drivers/soc/qcom/minidump.c:183:39: sparse: signed value source
-
-vim +108 drivers/soc/qcom/minidump.c
-
-    93	
-    94	/**
-    95	 * qcom_md_get_region_index() - Lookup minidump region by id
-    96	 * @md: minidump data
-    97	 * @id: minidump region id
-    98	 *
-    99	 * Return: On success, it returns the internal region index, on failure,
-   100	 *	returns	negative error value
-   101	 */
-   102	static int qcom_md_get_region_index(struct minidump *md, int id)
-   103	{
-   104		unsigned int count = le32_to_cpu(md->toc->region_count);
-   105		unsigned int i;
-   106	
-   107		for (i = 0; i < count; i++)
- > 108			if (md->regions[i].seq_num == id)
-   109				return i;
-   110	
-   111		return -ENOENT;
-   112	}
-   113	
-   114	/**
-   115	 * register_md_region() - Register a new minidump region
-   116	 * @priv: private data
-   117	 * @e: pointer to inspect entry
-   118	 *
-   119	 * Return: None
-   120	 */
-   121	static void __maybe_unused register_md_region(void *priv,
-   122						      const struct inspect_entry *e)
-   123	{
-   124		unsigned int num_region, region_cnt;
-   125		const char *name = "unknown";
-   126		struct minidump_region *mdr;
-   127		struct minidump *md = priv;
-   128	
-   129		if (!(e->va || e->pa) || !e->size) {
-   130			dev_dbg(md->dev, "invalid region requested\n");
-   131			return;
-   132		}
-   133	
-   134		if (e->id < ARRAY_SIZE(meminspect_id_to_md_string))
-   135			name = meminspect_id_to_md_string[e->id];
-   136	
-   137		if (qcom_md_get_region_index(md, e->id) >= 0) {
-   138			dev_dbg(md->dev, "%s:%d region is already registered\n",
-   139				name, e->id);
-   140			return;
-   141		}
-   142	
-   143		/* Check if there is a room for a new entry */
-   144		num_region = le32_to_cpu(md->toc->region_count);
-   145		if (num_region >= MAX_NUM_REGIONS) {
-   146			dev_dbg(md->dev, "maximum region limit %u reached\n",
-   147				num_region);
-   148			return;
-   149		}
-   150	
-   151		region_cnt = le32_to_cpu(md->toc->region_count);
-   152		mdr = &md->regions[region_cnt];
-   153		scnprintf(mdr->name, MAX_REGION_NAME_LENGTH, "K%.8s", name);
- > 154		mdr->seq_num = e->id;
-   155		if (e->pa)
-   156			mdr->address = cpu_to_le64(e->pa);
-   157		else if (e->va)
-   158			mdr->address = cpu_to_le64(__pa(e->va));
-   159		mdr->size = cpu_to_le64(ALIGN(e->size, 4));
-   160		mdr->valid = cpu_to_le32(MINIDUMP_REGION_VALID);
-   161		region_cnt++;
-   162		md->toc->region_count = cpu_to_le32(region_cnt);
-   163	
-   164		dev_dbg(md->dev, "%s:%d region registered %llx:%llx\n",
-   165			mdr->name, mdr->seq_num, mdr->address, mdr->size);
-   166	}
-   167	
-   168	/**
-   169	 * unregister_md_region() - Unregister a previously registered minidump region
-   170	 * @priv: private data
-   171	 * @e: pointer to inspect entry
-   172	 *
-   173	 * Return: None
-   174	 */
-   175	static void __maybe_unused unregister_md_region(void *priv,
-   176							const struct inspect_entry *e)
-   177	{
-   178		struct minidump_region *mdr;
-   179		struct minidump *md = priv;
-   180		unsigned int region_cnt;
-   181		unsigned int idx;
-   182	
-   183		idx = qcom_md_get_region_index(md, e->id);
- > 184		if (idx < 0) {
-   185			dev_dbg(md->dev, "%d region is not present\n", e->id);
-   186			return;
-   187		}
-   188	
-   189		mdr = &md->regions[0];
-   190		region_cnt = le32_to_cpu(md->toc->region_count);
-   191	
-   192		/*
-   193		 * Left shift one position all the regions located after the
-   194		 * region being removed, in order to fill the gap.
-   195		 * Then, zero out the last region at the end.
-   196		 */
-   197		memmove(&mdr[idx], &mdr[idx + 1], (region_cnt - idx - 1) * sizeof(*mdr));
-   198		memset(&mdr[region_cnt - 1], 0, sizeof(*mdr));
-   199		region_cnt--;
-   200		md->toc->region_count = cpu_to_le32(region_cnt);
-   201	}
-   202	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Sun, Nov 16, 2025 at 10:12=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> __read_swap_cache_async is widely used to allocate and ensure a folio is
+> in swapcache, or get the folio if a folio is already there.
+>
+> It's not async, and it's not doing any read. Rename it to better present
+> its usage, and prepare to be reworked as part of new swap cache APIs.
+>
+> Also, add some comments for the function. Worth noting that the
+> skip_if_exists argument is an long existing workaround that will be
+> dropped soon.
+>
+> Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swap.h       |  6 +++---
+>  mm/swap_state.c | 50 +++++++++++++++++++++++++++++++++-----------------
+>  mm/swapfile.c   |  2 +-
+>  mm/zswap.c      |  4 ++--
+>  4 files changed, 39 insertions(+), 23 deletions(-)
+>
+> diff --git a/mm/swap.h b/mm/swap.h
+> index d034c13d8dd2..0fff92e42cfe 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -249,6 +249,9 @@ struct folio *swap_cache_get_folio(swp_entry_t entry)=
+;
+>  void *swap_cache_get_shadow(swp_entry_t entry);
+>  void swap_cache_add_folio(struct folio *folio, swp_entry_t entry, void *=
+*shadow);
+>  void swap_cache_del_folio(struct folio *folio);
+> +struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_flags,
+> +                                    struct mempolicy *mpol, pgoff_t ilx,
+> +                                    bool *alloced, bool skip_if_exists);
+>  /* Below helpers require the caller to lock and pass in the swap cluster=
+. */
+>  void __swap_cache_del_folio(struct swap_cluster_info *ci,
+>                             struct folio *folio, swp_entry_t entry, void =
+*shadow);
+> @@ -261,9 +264,6 @@ void swapcache_clear(struct swap_info_struct *si, swp=
+_entry_t entry, int nr);
+>  struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+>                 struct vm_area_struct *vma, unsigned long addr,
+>                 struct swap_iocb **plug);
+> -struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_flags=
+,
+> -               struct mempolicy *mpol, pgoff_t ilx, bool *new_page_alloc=
+ated,
+> -               bool skip_if_exists);
+>  struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t flag,
+>                 struct mempolicy *mpol, pgoff_t ilx);
+>  struct folio *swapin_readahead(swp_entry_t entry, gfp_t flag,
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index b2230f8a48fc..08252eaef32f 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -402,9 +402,29 @@ void swap_update_readahead(struct folio *folio, stru=
+ct vm_area_struct *vma,
+>         }
+>  }
+>
+> -struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+> -               struct mempolicy *mpol, pgoff_t ilx, bool *new_page_alloc=
+ated,
+> -               bool skip_if_exists)
+> +/**
+> + * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap =
+cache.
+> + * @entry: the swapped out swap entry to be binded to the folio.
+> + * @gfp_mask: memory allocation flags
+> + * @mpol: NUMA memory allocation policy to be applied
+> + * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
+> + * @new_page_allocated: sets true if allocation happened, false otherwis=
+e
+> + * @skip_if_exists: if the slot is a partially cached state, return NULL=
+.
+> + *                  This is a workaround that would be removed shortly.
+> + *
+> + * Allocate a folio in the swap cache for one swap slot, typically befor=
+e
+> + * doing IO (e.g. swap in or zswap writeback). The swap slot indicated b=
+y
+> + * @entry must have a non-zero swap count (swapped out).
+> + * Currently only supports order 0.
+> + *
+> + * Context: Caller must protect the swap device with reference count or =
+locks.
+> + * Return: Returns the existing folio if @entry is cached already. Retur=
+ns
+> + * NULL if failed due to -ENOMEM or @entry have a swap count < 1.
+> + */
+> +struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
+> +                                    struct mempolicy *mpol, pgoff_t ilx,
+> +                                    bool *new_page_allocated,
+> +                                    bool skip_if_exists)
+>  {
+>         struct swap_info_struct *si =3D __swap_entry_to_info(entry);
+>         struct folio *folio;
+> @@ -452,12 +472,12 @@ struct folio *__read_swap_cache_async(swp_entry_t e=
+ntry, gfp_t gfp_mask,
+>                         goto put_and_return;
+>
+>                 /*
+> -                * Protect against a recursive call to __read_swap_cache_=
+async()
+> +                * Protect against a recursive call to swap_cache_alloc_f=
+olio()
+>                  * on the same entry waiting forever here because SWAP_HA=
+S_CACHE
+>                  * is set but the folio is not the swap cache yet. This c=
+an
+>                  * happen today if mem_cgroup_swapin_charge_folio() below
+>                  * triggers reclaim through zswap, which may call
+> -                * __read_swap_cache_async() in the writeback path.
+> +                * swap_cache_alloc_folio() in the writeback path.
+>                  */
+>                 if (skip_if_exists)
+>                         goto put_and_return;
+> @@ -466,7 +486,7 @@ struct folio *__read_swap_cache_async(swp_entry_t ent=
+ry, gfp_t gfp_mask,
+>                  * We might race against __swap_cache_del_folio(), and
+>                  * stumble across a swap_map entry whose SWAP_HAS_CACHE
+>                  * has not yet been cleared.  Or race against another
+> -                * __read_swap_cache_async(), which has set SWAP_HAS_CACH=
+E
+> +                * swap_cache_alloc_folio(), which has set SWAP_HAS_CACHE
+>                  * in swap_map, but not yet added its folio to swap cache=
+.
+>                  */
+>                 schedule_timeout_uninterruptible(1);
+> @@ -509,10 +529,6 @@ struct folio *__read_swap_cache_async(swp_entry_t en=
+try, gfp_t gfp_mask,
+>   * and reading the disk if it is not already cached.
+>   * A failure return means that either the page allocation failed or that
+>   * the swap entry is no longer in use.
+> - *
+> - * get/put_swap_device() aren't needed to call this function, because
+> - * __read_swap_cache_async() call them and swap_read_folio() holds the
+> - * swap cache folio lock.
+>   */
+>  struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+>                 struct vm_area_struct *vma, unsigned long addr,
+> @@ -529,7 +545,7 @@ struct folio *read_swap_cache_async(swp_entry_t entry=
+, gfp_t gfp_mask,
+>                 return NULL;
+>
+>         mpol =3D get_vma_policy(vma, addr, 0, &ilx);
+> -       folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
+> +       folio =3D swap_cache_alloc_folio(entry, gfp_mask, mpol, ilx,
+>                                         &page_allocated, false);
+>         mpol_cond_put(mpol);
+>
+> @@ -647,9 +663,9 @@ struct folio *swap_cluster_readahead(swp_entry_t entr=
+y, gfp_t gfp_mask,
+>         blk_start_plug(&plug);
+>         for (offset =3D start_offset; offset <=3D end_offset ; offset++) =
+{
+>                 /* Ok, do the async read-ahead now */
+> -               folio =3D __read_swap_cache_async(
+> -                               swp_entry(swp_type(entry), offset),
+> -                               gfp_mask, mpol, ilx, &page_allocated, fal=
+se);
+> +               folio =3D swap_cache_alloc_folio(
+> +                       swp_entry(swp_type(entry), offset), gfp_mask, mpo=
+l, ilx,
+> +                       &page_allocated, false);
+>                 if (!folio)
+>                         continue;
+>                 if (page_allocated) {
+> @@ -666,7 +682,7 @@ struct folio *swap_cluster_readahead(swp_entry_t entr=
+y, gfp_t gfp_mask,
+>         lru_add_drain();        /* Push any new pages onto the LRU now */
+>  skip:
+>         /* The page was likely read above, so no need for plugging here *=
+/
+> -       folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
+> +       folio =3D swap_cache_alloc_folio(entry, gfp_mask, mpol, ilx,
+>                                         &page_allocated, false);
+>         if (unlikely(page_allocated))
+>                 swap_read_folio(folio, NULL);
+> @@ -771,7 +787,7 @@ static struct folio *swap_vma_readahead(swp_entry_t t=
+arg_entry, gfp_t gfp_mask,
+>                         if (!si)
+>                                 continue;
+>                 }
+> -               folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, =
+ilx,
+> +               folio =3D swap_cache_alloc_folio(entry, gfp_mask, mpol, i=
+lx,
+>                                                 &page_allocated, false);
+>                 if (si)
+>                         put_swap_device(si);
+> @@ -793,7 +809,7 @@ static struct folio *swap_vma_readahead(swp_entry_t t=
+arg_entry, gfp_t gfp_mask,
+>         lru_add_drain();
+>  skip:
+>         /* The folio was likely read above, so no need for plugging here =
+*/
+> -       folio =3D __read_swap_cache_async(targ_entry, gfp_mask, mpol, tar=
+g_ilx,
+> +       folio =3D swap_cache_alloc_folio(targ_entry, gfp_mask, mpol, targ=
+_ilx,
+>                                         &page_allocated, false);
+>         if (unlikely(page_allocated))
+>                 swap_read_folio(folio, NULL);
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 94e0f0c54168..a2bb09867f1e 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1573,7 +1573,7 @@ static unsigned char swap_entry_put_locked(struct s=
+wap_info_struct *si,
+>   *   CPU1                              CPU2
+>   *   do_swap_page()
+>   *     ...                             swapoff+swapon
+> - *     __read_swap_cache_async()
+> + *     swap_cache_alloc_folio()
+>   *       swapcache_prepare()
+>   *         __swap_duplicate()
+>   *           // check swap_map
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 5d0f8b13a958..a7a2443912f4 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1014,8 +1014,8 @@ static int zswap_writeback_entry(struct zswap_entry=
+ *entry,
+>                 return -EEXIST;
+>
+>         mpol =3D get_task_policy(current);
+> -       folio =3D __read_swap_cache_async(swpentry, GFP_KERNEL, mpol,
+> -                       NO_INTERLEAVE_INDEX, &folio_was_allocated, true);
+> +       folio =3D swap_cache_alloc_folio(swpentry, GFP_KERNEL, mpol,
+> +                                      NO_INTERLEAVE_INDEX, &folio_was_al=
+located, true);
+>         put_swap_device(si);
+>         if (!folio)
+>                 return -ENOMEM;
+>
+> --
+> 2.51.2
+>
 
