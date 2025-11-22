@@ -4,107 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6B59CFC516
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 00:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADCD3CFC516
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 00:50:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8E466B0023; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
+	id ED8126B0010; Fri, 21 Nov 2025 19:50:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3EC16B0026; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
+	id E88D76B0026; Fri, 21 Nov 2025 19:50:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2D506B002A; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
+	id D9ED16B0028; Fri, 21 Nov 2025 19:50:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CDBF6B0023
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:30:48 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8EF1E89819
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:30:46 +0000 (UTC)
-X-FDA: 84136362492.04.71F1FA8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EC715120008
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:30:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RXNhbq0i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763771444; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C89C56B0010
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:50:21 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 739F7BB2CC
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:50:21 +0000 (UTC)
+X-FDA: 84136411842.07.D83F71B
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D65EFC000A
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:50:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763772619; a=rsa-sha256;
 	cv=none;
-	b=nQST7haCz6nDDilUy3wE4Ou1SK+m3veetp/GfHP8471li+NRz1SjSMTTvUdMerEPmi6awX
-	PxtlbclIaNMQIQDxqRZoFBxZUaQFkfvLiuJq0JLhxulTrm4FBzaRrhkXdVRlz0MKKfHrlX
-	GQVseALPyLJXpEI1NZ4lPU9OiY+1+LI=
+	b=PI27/5wgWsVqKZ/mrfTKWVpSPaM8haA71eHWVQfBBfu/rCvo4VKk/2DSTuwib6deqsALWN
+	E/on3XMP9Hlvdbu3TBTv9S4VZFMoatmO/Jh1sFIVlr2xjrkl1k538cSBztCw3kG2AHJyrv
+	gBrWjLmH83y91wlmM/vQDPrG14P4oqo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RXNhbq0i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763771444;
+	s=arc-20220608; t=1763772619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=caPpzwgFJCpIRNcWVPdH/CQvo8SKA+31Tzw9iIc6zug=;
-	b=akVzirYaQjr+jRUS8uqV+CyYR8OICsKE8t8bqX4NCeLcavYdiYhueHsiATqPB8FMiKbCVA
-	5VKOr/dRvSVjWP+5PxOxl/2Ru1cVmQnUzaLfkyuRFffT/sPklJs3iE4HPs/pmGNi4iP9gS
-	tTB+RzXwQXPr3HWcmhaxmQopQ4uocRg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 490B560172;
-	Sat, 22 Nov 2025 00:30:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BC8C4CEF1;
-	Sat, 22 Nov 2025 00:30:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763771443;
-	bh=HrtqBDzf+I3rKg+UOEYgJj3ACzu3sah0DecsWx8zL74=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RXNhbq0iFJqvm+8e+PfetKLRUs0dvxWyh4wKv1MUYoYDttoC19RFCdiculI5ThaBF
-	 wY+KhdoV1023JPv5UQPO8/Jb7HJmkkgB+PI0fhqxOm1yKcXQBI/vBE0KVCu2yru5gR
-	 x0wqamHVgXXGR9VZNOiO+xAigOLeYN7WkLZmlSiuaRdO23ovq/h4waRwZRwuHqch7v
-	 RaAmQ+anT2MyJ53JD5y/DZlMlAsuOBKE53ahGW5iYhq6bGBdh8m/qvndDiGFN4lICe
-	 6FOf7Vqrd5CVI0Dts/dPCadwR34Ag6tqIJfAnX8qv9vPz6KTwaOz8IM/pMd+El12Ph
-	 dmf1eGGDJFVSw==
-Date: Fri, 21 Nov 2025 16:30:43 -0800
-From: Kees Cook <kees@kernel.org>
-To: Bill Wendling <morbo@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Marc Herbert <Marc.Herbert@linux.intel.com>,
-	Uros Bizjak <ubizjak@gmail.com>, Tejun Heo <tj@kernel.org>,
-	Jeff Xu <jeffxu@chromium.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH 2/2] memblock: annotate struct memblock_type with
- __counted_by_ptr
-Message-ID: <202511211525.05CB7E1AEC@keescook>
-References: <20251121193957.1655580-1-morbo@google.com>
- <20251121193957.1655580-3-morbo@google.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=5e1PSYrFHOYQuG3hxMVOVuOVwvEq14TGUuiH8ML57Eg=;
+	b=AKRV9Ye9rXkzpioWIIeub1fUBKq8pbjIr4ppNejbPsW51vb515eNEwOdFk1eSCp7MxHFrq
+	ZJ0mmBmqMMVeV3EhYkyYGTWjJLau4QbX50RJGT5y7wSdKozJm0LDDW/fgHBJbwj5m3YP1S
+	msbOvWL5kDafUevSl/HzgzTXQ+Vyt1E=
+X-AuditID: a67dfc5b-c45ff70000001609-cf-692108c499c7
+Date: Sat, 22 Nov 2025 09:50:07 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+	hawk@kernel.org, andrew+netdev@lunn.ch, david@redhat.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	ziy@nvidia.com, willy@infradead.org, toke@redhat.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, axboe@kernel.dk,
+	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org,
+	almasrymina@google.com, sdf@fomichev.me, dw@davidwei.uk,
+	ap420073@gmail.com, dtatulea@nvidia.com, shivajikant@google.com,
+	io-uring@vger.kernel.org
+Subject: Re: [PATCH net-next 1/3] netmem, io_uring/zcrx: access pp fields
+ through @desc in net_iov
+Message-ID: <20251122005007.GA57205@system.software.com>
+References: <20251121040047.71921-1-byungchul@sk.com>
+ <72e3ecdf-343e-4d1b-9886-67d48372a06e@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251121193957.1655580-3-morbo@google.com>
+In-Reply-To: <72e3ecdf-343e-4d1b-9886-67d48372a06e@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHe885OzsuR6el+WagubBQySwUXsTUD0nHL6KI0QXSozvmaJsy
+	L2kROUwtyWu3uUmtC94zWDKd2ChnllYmirpMbYkmXitN0QrLaZLffvyeP//n+fBQuGiOcKak
+	ihROqWBlYlJACGbsHxxopdykPsZRd1SzlI4qrI08tFw7jqGyagNANUOFJCp7f4VAC09+4qiu
+	KRtDxqZxgCbVj0k01jbCR5/KvxCoObcBRyOFr0k0m91JoC5DAQ91mqtI1JBp5aOepjISDdf+
+	4aF2TRWBrg4+I1CbbidafDMNUG9pE4buD0ajbvMIgbSqAoB+La3mtS+H+cEuTH3VB4zpUxcT
+	jMXUgTFGzRCf0elTmaeVnkzPu1RGX32NZPRzJXzG2DiPMflZsyTzfWyAYL6aeknmra6Vz8zr
+	XcK3nRIESDiZNI1THgyMEST0//BIGsPSV/Ky8ExwE8sDdhSkfWF76QK5waYiFW5jgnaHA9Zx
+	no1Jej+0WJbXvAPtBaf6W/h5QEDhdA4PWlV3QB6gqB20BFbm+9oyQhrBou76NS2iE2DHjP26
+	3r66apSwMU57QsvKBGaL4PRuWLFC2bQdfQROfMsBNnak98Lnhlf/riym4OiY/zrvgi8qLUQR
+	oDWbWjWbWjX/W3UArwYiqSJNzkplvt4JGQppundcolwPVj+h/NLv041griuyBdAUENsLw2P3
+	SEU8Ni05Q94CIIWLHYSTfqtKKGEzLnDKxGhlqoxLbgG7KULsJDy8eF4ios+yKdw5jkvilBtT
+	jLJzzgQi1yBevM/JuNQtaFYR4HXM7FKkjXPdF+EX1N7XXRcYHo9rrUOhrktOJ4pXFDDqeOj1
+	9JDYqGjHGxcj9Kp4txL2bue90IdmtbzP4O9ZDWNUC7msTl617FWrClabkHdiWLMiLNLjY3D9
+	memQo5+nKi5vfTSf0mnEb0fdmguTjYqJ5AT2kCeuTGb/Aq6Cpg0FAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYRyHe885OzsOFyeddVAonZhNTSsUXlAjieqloMQvQma69NCGOmWb
+	5gJDMS0XXhHSuWIROHVascTLKBPnJbU0XeYSb1i2nKWmFVqiOSPy28Pzf36f/hTuMka4U1KZ
+	kpXLxMlCkkfwzofmHu6kvKRHBi0CaFjNhPrpFg5cq7dhUFvXBKBhopiE2sGbBPzx+BcOH5ny
+	MNhqsgFor2gg4Wz3DBdOVX8i4LNbzTicKX5JwoW8AQKa7/Vy4JumIg4cMNeSsDl7mgstJi0J
+	J+s3ObBXU0vA2+PPCdit2wt/9n8BcKTShMEH43Fw2DxDwKqcIgB/r271VV2T3BMHUGPtewy9
+	qyglkLWtD0Otmgku0hnT0dMaP2R5nY6MdQUkMi6XcVFrywqGCnMXSPRtdoxAi20jJHr4eQlD
+	r3SdXLRi3B9JX+SFJbLJ0gxWHnQ8nicZ/S5Km8UyN9S5eDYox9TAiWLoYKatJAd3MEH7MGPT
+	No6DSdqXsVrXtr2A9mfmRzu4asCjcDqfw0zn3AVqQFGudCJTUxjsaPg0ZEqGG7e1Cy1h+r46
+	/9V7mN7Kj4SDcdqPsW7MYY4Epz0Y/Qbl0E50ODO3lA8c7EZ7M+1NPVgJ4Gt2rDU71pr/ax3A
+	64BAKstIEUuTQwIVSRKVTJoZmJCaYgRbH6/OWi9tAd8tZzoATQGhMz/yiqfUhSPOUKhSOgBD
+	4UIB3x6ypfiJYtV1Vp4aJ09PZhUdwIMihPv4Z6PZeBf6qljJJrFsGiv/d8UoJ/dskKIMCRis
+	r2oUxQx7iwoaNpVP1odGC8qRImqXHdqn9KIL0SHnqIM+BklCRICrOab3UumNMi+3WHH6afOQ
+	b2yBbbdB9GJNK2sKqqgNE7TfyQoKDY+YPGbUfzikOLlyqiaibHHeZ6RYNdBT5C+Lut//Vlfs
+	eXl9SuoZuHxNvxDYJSQUEvFRP1yuEP8BF23cqO0CAAA=
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EC715120008
-X-Stat-Signature: f73zy6wq451t347j6nbxk3rqtcszamig
-X-HE-Tag: 1763771444-598188
-X-HE-Meta: U2FsdGVkX18kSsRYneSVHKwctL0lYySGMCiwBx+ayK8XLizcGsLbJCBiI+dtRN9nS8jXLgf5nMqNeAgeYmHVbTIAMYXW42KnuPy5mEVHJBdCE88qCpp3UUvwNfiXke/C/joG8YhBzTF7UlDZhFX+Ko0tsO/OAmGFDL5p6WNv4+/z1CWA8aRIw3QZ7wBqM9onNG9vhXmZjy6I4qYXtHGrcFfrIgDNgm9YJqjZnESfHvLukywM+R8YrbMoVF3qZgmHt+H0YuDzLCVO7nYFJkwgSMuPKO0XN1MhUZViDFZ4GtG+haJryxZb/1bDMUf0F3wKKcNyNNU6ABEPlvJBmU3tpCddYyG9GEXfObytwPQYS4nFIKpxvdr4XS//8hos5XzlQLhbMbGhbnZzJlic/+dMab3th6CXffTJcC1ItKkTErU6IY1e8Bihuu0Z6JYz3hb58ekpRz64k0ikDFwNeMZvs7dYAS9t6nZNU0w91RuksKlx+lE0YEisv3H6DQWplcZ9juTP7bgyiN75k8hmXC8t5p9rgAy35RiDiTAp8lK0gjmSuYkv1P5O2G1XZnTG+xD+sdQtvcvnZAZDuVrZrCEQadEm4kxHezK3UWfj36qAHv6gqd7xX4FLKDp5kcHFpJAA76vpsbnXZoJsbghDhW+2jNyWfR5N/qPLCWYSe7i1MtsQiJ+wEOg4maw+s4NduGdg+MOFy+2xxUOrYYktexrWLikmW48fA+WO6yWTbEdT+SI09kRokDgi58byJuDpEjHqv3w7mEnKCO0yHpEsAUu5puJdI/lyEHpiM9W3BZhKLcYklAeI5JoLBWkbLXIihP0NsQTnkUG0Bt84qcodUpaxrsBEbNmJMMoirVJv2xCfr923aT1r+HelWufbopinhFa1EJ4yUr5HXFV7a/TFLDOp7ldeetLO41zNwR023MKv0WS2DUgH9wUy4Y9mOyfFM0qv0HUAumAODPl/m0QQAm+
- uqCfVjXn
- EvUuCM2krCCBeatiMgoVWr8Lo+GsGk8b+3wgIZAg8CtlDNEvg0A4mxaFmCSDSHRjTEvr07EpiS1G3AxUobCWp/22qfkXkvW0X6bA20XLzVRSRhTSrjplz23w88oQzg6qXlmOY2JNSSTwISbg+BbxksZPiRmKb8lKtz9JBQxoo5d/V06uGRkJ8EmFj03tuektMjQm3TjRlNGEpg/as2+kHFcAPH2Jjeb+dIvh8//hRcScdf3YpktE7nTh6SmSb2tnrt/slI0ZxaIYsJ6sjsRIWz+02TEN1YfhkqZdHNeFnWiW+WWfO4AhgD298ZPRcd1Flxu1U9A9wMOq2NsjiJxdLl3qwfzNIS/tjaLlnfd7ZPJjpJJc1bb3rE0s0GA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D65EFC000A
+X-Stat-Signature: zt9fx95is8ne5z3ectk5z3n3qa3r91u8
+X-HE-Tag: 1763772616-73726
+X-HE-Meta: U2FsdGVkX1/Ebb59WqKZS0j5kKmS79H6O6fi7eb+qaSMWyngVR3JeKPrBcOhIKM30UydlZ48sPADuKJlCoxNSEdwCnR6wY76Zo/QzlYH+cLLyExP7Z4+zXvt9rsA/C7kpXrOufepq2uhe5MHYX02FGdT9g6oI0zHZNzvvGqmYetiLN2SeoHOeXKwlu58DEFJakz+vAoxyfskuU0yramtZiSDF+xcpQ9hTtFl9Uebynwz2rf9MsM0bKEVZEFZk3lmiY1/kanuCsPd1+saVf1qkjJ5JkTSee2D3maCePoaZaGbuCDrhzJfXSJUuYSJLwtYkW4lwoAuNQ1ToviweYC7alw+8Iu7A6wkS5wE/fg1i3o69qcYhOWSVnqPOvawlLxJHRq24oGSnQU/tRV+jIKz1fs9bt8RlBkrtZUkZAF0+S3NxK0wt86U+QgstdDp7ijP6uP5VlEjJNqHoOHvS3yl2lf+QK6AqGS3g1+b8j8MyLerK6pgInWcfehFSJjhSOuqJTCrC6uNyCphHKPZ4MU4pwiToAYP84uoNgtk6UGa35zmUt1Sc9Qk1qhnOKqHM7okbpQqIrhAyIScHXxZ2qRTS8ZY3CsxJtf8lNHYkud1kjwGfkW7Pn4pVMzQ3E5zPQypZ2xCPNWxKtXFr/7vpG7H+HhPEhYPKT9XimzQ+n0ADyC1ag9LHBtYx6WJJxmWaOzqdMz037HjXTiUscfhqWLfN816J7gVtpjtgaCDvpT1pAV2vsVXIHnkKQ/tcyqy9wFWy1O9Ol+06kxapdgHBtjgWvIbJ4c08QGvmN8o/llTa8duZsPVL7UluY6luG5N/4WVWlwMd3KlkzFmFoIhNQwwpPBs0dC5HBHkrEHWsD1VLpWqUEe2rVoUWp9XOm4ED2uEksG5hFpojuq96w5i2mx09e93CQ3yWAnEMMXRP/ZxvhAlmot2mC4cpFTT5cb5tX4aDKfmoU+ig2e2OSjdQFt
+ zs0lqwdc
+ BDkAA+N3gg8ivDYN1nNxYZwgi5VeNoeMFsUIj/aMvNJljuNMjfU3DUGqkKJ5SU3kwzPYQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,76 +116,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 07:39:44PM +0000, Bill Wendling wrote:
-> Add the '__counted_by_ptr' attribute to the 'regions' field of 'struct
-> memblock_type'. The 'regions' field is an array of 'struct
-> memblock_region' and its size is tracked by the 'max' field, which
-> represents the total number of allocated regions.
-
-As part of any counted_by annotation patch, there needs to be discussion
-in the commit log about how it's been shown to be a safe annotation
-to make. e.g. in this case, if all allocations of "regions" have a
-corresponding "max" assignment, etc. If just "git grep" can't find them
-all, using something like Coccinelle or CodeQL to search for struct
-memblock_type::regions assignments can work.
-
-Here's what I used in the past for flexible arrays, but it was slow
-due to Coccinelle needing --recursive-includes to see the structs,
-but should be adaptable for counted_by on pointers:
-
-@flex_match@
-identifier STRUCT, COUNTED, ARRAY;
-type COUNTED_TYPE, ARRAY_TYPE;
-attribute name __counted_by;
-@@
-
-        struct STRUCT {
-                ...
-                COUNTED_TYPE COUNTED;
-                ...
-                ARRAY_TYPE ARRAY[] __counted_by(COUNTED);
-        };
-
-@missed_counted_assignment@
-identifier flex_match.STRUCT;
-struct STRUCT *P;
-identifier flex_match.COUNTED;
-identifier flex_match.ARRAY;
-identifier ALLOC =~ ".*alloc.*";
-@@
-
-        P = ALLOC(...);
-        ... when != P->COUNTED
-*       P->ARRAY
-
-
-> This annotation allows the Kernel Address Sanitizer (KASAN) to detect
-> out-of-bounds accesses to the 'regions' array.
-
-I think you mean UBSan here (and CONFIG_FORTIFY_SOURCE)?
-
-> ---
->  include/linux/memblock.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Nov 21, 2025 at 01:02:44PM +0000, Pavel Begunkov wrote:
+> On 11/21/25 04:00, Byungchul Park wrote:
+> > Convert all the legacy code directly accessing the pp fields in net_iov
+> > to access them through @desc in net_iov.
 > 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 221118b5a16e..ba7f7c999a45 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -91,7 +91,7 @@ struct memblock_type {
->  	unsigned long cnt;
->  	unsigned long max;
->  	phys_addr_t total_size;
-> -	struct memblock_region *regions;
-> +	struct memblock_region *regions __counted_by_ptr(max);
->  	char *name;
->  };
+> Byungchul, that was already converted in the appropriate tree.
 
-For the handful of places I spot checked, yeah, it looks like a nice
-annotation.
+Nice!
 
--Kees
-
--- 
-Kees Cook
+	Byungchul
+> 
+> --
+> Pavel Begunkov
+> 
 
