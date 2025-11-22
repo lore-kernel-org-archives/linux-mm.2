@@ -4,104 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C701FCFC515
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 01:41:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 901ECCFC516
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 01:43:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9C026B0006; Fri, 21 Nov 2025 20:41:26 -0500 (EST)
+	id D157D6B0012; Fri, 21 Nov 2025 20:43:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C73AA6B0010; Fri, 21 Nov 2025 20:41:26 -0500 (EST)
+	id CECB96B0023; Fri, 21 Nov 2025 20:43:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB0286B0011; Fri, 21 Nov 2025 20:41:26 -0500 (EST)
+	id C29D46B0026; Fri, 21 Nov 2025 20:43:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AC3346B0006
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 20:41:26 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 39E7013057A
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 01:41:24 +0000 (UTC)
-X-FDA: 84136540488.11.7AEBC76
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 462494000A
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 01:41:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=rsg.ci.i.u-tokyo.ac.jp header.s=rs20250326 header.b=tJWKa5Jq;
-	spf=pass (imf27.hostedemail.com: domain of odaki@rsg.ci.i.u-tokyo.ac.jp designates 49.212.243.89 as permitted sender) smtp.mailfrom=odaki@rsg.ci.i.u-tokyo.ac.jp;
-	dmarc=pass (policy=none) header.from=u-tokyo.ac.jp
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AAFE86B0012
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 20:43:08 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 612A24F228
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 01:43:08 +0000 (UTC)
+X-FDA: 84136544856.07.53E8783
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B4D8712000D
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 01:43:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bf1Lrxck;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763775682;
+	s=arc-20220608; t=1763775786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fbvFIVW4lXzs0g+EYOEeGYBf26Jgl0xz0flv6OQ4R3o=;
-	b=e31WFLOZ5Zg0JCztO4mv8i9vw3JZ3llIYrXOQ20mVZgJoJKRFKMUq2MgQyCJ9mMi+S4Xud
-	R5hN2Ge4X5Ul6sBQ9fviaaFS1ldr4N3C+hcg8iVgwWFve42kbJO7pie3pcHCkb4oNRKE8X
-	XYunbWXLTbR3K1z7kW4GWz76oYwgu/A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763775682; a=rsa-sha256;
-	cv=none;
-	b=W9ZF6BoOZFRg4WT84cu2VBkq/4jUiPoFsGVjdw7QTsA9YHMfE8Zr1wKvu7uHbVNYt0WhSN
-	x20WXcaJSuq3PWr73SFjNA7lVXJt7irPOmOhLlOCpELgQthBdfgd2N+nao4znh6rPCJygE
-	hd1krdI73TPUVn0qUEkaXwzBheKZLsQ=
+	bh=Xez0ILCDjGjovJMqblUCb7oWOEPPLTl9RQsRHOAq81E=;
+	b=vS7H1c/i0ohvhoN4cuAROYlBetagd4ELgcuDeOLZrncwSsz59gxIHQaeKt7ZrHxizxNrbn
+	5LPpd6oe55quui849OdJf/4qOSAo8H3aiDa8BG+JY2/DDaUxErjV7CmBJaCDlRGg/7PahV
+	Cs95OqSU4qbWoU+Th/ZPUBxeOaYPYKo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=rsg.ci.i.u-tokyo.ac.jp header.s=rs20250326 header.b=tJWKa5Jq;
-	spf=pass (imf27.hostedemail.com: domain of odaki@rsg.ci.i.u-tokyo.ac.jp designates 49.212.243.89 as permitted sender) smtp.mailfrom=odaki@rsg.ci.i.u-tokyo.ac.jp;
-	dmarc=pass (policy=none) header.from=u-tokyo.ac.jp
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5ALAGeVN067190
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 21 Nov 2025 19:16:40 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=fbvFIVW4lXzs0g+EYOEeGYBf26Jgl0xz0flv6OQ4R3o=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=Message-ID:Date:Subject:To:From;
-        s=rs20250326; t=1763720200; v=1;
-        b=tJWKa5Jq6xibMk5dnQD1IBgZkqZYgXVanhHG7xhBDEHOiOSXD6vYQBx/JxASfFy7
-         80GYh6y+xf3JYKcCNPrlgCx0uc6wRScGzy8fjKnf3BWNYf4MEKyMSZilnSI9T2yv
-         z7E5xPHAiIAraBEwiiFBaDvtibC+ra4EV/A7hZlD6zmV7UDh9zoN2CX79IcmHb7g
-         hyWfycSDMXRL9fLpNSy+fGE9WHzp0HVxlUNhFl6ObJ0Bri8IOCthSFr4eL7+Cnwx
-         L/HE+A7sSi2bDaY6UV6bXmZSHMD49/7cnNVwiDthnaZK1xBSuUbuMRz6PnUYhR5b
-         WL/zWgyycBnKIoZmvscDTA==
-Message-ID: <8b750d6a-fcd0-40ac-9ecd-e827bc517aac@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 21 Nov 2025 19:16:39 +0900
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bf1Lrxck;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763775786; a=rsa-sha256;
+	cv=none;
+	b=1eZEpaOVz0MOcPgOtWkuNUBZAlaoP6LHeD3p4xIWJs9OVNqxSv3PEnfGnKBOyVxoERNLrr
+	6018jBB0E1hkQ32OfKvMRfNDCGJpmtYLCqVl17yulepg8oh6FpaecMa4Ukvfdv3lM0UVrI
+	ko6TJbkGfBn9e3k/1G36ycHarwA/2Dk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 76DB341923;
+	Sat, 22 Nov 2025 01:43:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A2DC4AF0B;
+	Sat, 22 Nov 2025 01:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763775785;
+	bh=FcVar3XxCqm2ZJVsBh/RSi2lBnjq1avyQFtaa1b+fYo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bf1LrxckvPXcFurZMJJlnfu5zjFswMMQGWAbumWk6UsfZ7OboCY4EhE7R+istWA1w
+	 TwcO39KJQSeOW+SvaWN0fgn6tHYgCC/Aete+PJ6RXDDOcJTUpefAfZAJa613DUJMMl
+	 ON4T9HItaqB1mnLwkCDphaEPucYYhzkV8wzII+OTARGClOijkyT/OgkqeZJ5ilwfOd
+	 y3uX+NjjYr/IKCtAV+v4+RyvU+WanfP3OL5wDsWQwMSY26I7/NcuLZ0OMsvHyZ+8PU
+	 rhSkmOk7hSp2azZSQKRQnxWn/im2hpmyJgHJ8rfeNa9uCqIRTn08JY7aWG/2MwDeyJ
+	 +JpVQ5+s8vTng==
+From: Kees Cook <kees@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Kees Cook <kees@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jann Horn <jannh@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marco Elver <elver@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-mm@kvack.org,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
+Date: Fri, 21 Nov 2025 17:42:58 -0800
+Message-Id: <20251122014304.3417954-2-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251122014258.do.018-kees@kernel.org>
+References: <20251122014258.do.018-kees@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mremap: allow VMAs with VM_DONTEXPAND|VM_PFNMAP when
- creating new mapping
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka
- <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>
-References: <20251120053546.2885836-1-vivek.kasireddy@intel.com>
- <976e9916-c949-4fa0-b92e-87f6841b5cbe@lucifer.local>
- <6e415c85-9ccd-4029-91fe-557d3946ef51@kernel.org>
- <4fdd31d7-2814-43ed-9674-d4b15b0ed780@lucifer.local>
- <584eeddb-9a21-4eff-a5c0-446204f9e59d@kernel.org>
- <75dc53b9-bcd3-4271-ba7e-2762bec36e3d@lucifer.local>
- <cad8a1a4-8eb0-4e18-99cf-e19f23cd8a0c@rsg.ci.i.u-tokyo.ac.jp>
- <9bc7573a-ab70-47c9-b6c2-4269479bedc6@lucifer.local>
- <c6dc4179-b2c8-4991-8bbe-662dd32a31f5@rsg.ci.i.u-tokyo.ac.jp>
- <a752bfd5-92ad-4283-959d-37f39bbe722e@lucifer.local>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <a752bfd5-92ad-4283-959d-37f39bbe722e@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: t6gucy3n499u63cy3uuhs7uep6ins69i
+X-Developer-Signature: v=1; a=openpgp-sha256; l=17532; i=kees@kernel.org; h=from:subject; bh=FcVar3XxCqm2ZJVsBh/RSi2lBnjq1avyQFtaa1b+fYo=; b=owGbwMvMwCVmps19z/KJym7G02pJDJmKosq6MQ6SGdx72BP2qcurX1wkcPfhmZaMClUOLr9ak 89PIhd2lLIwiHExyIopsgTZuce5eLxtD3efqwgzh5UJZAgDF6cATOTnC0aG7VutnYSzSi1unp5p bv2z6+2Ovamt87Zd3b+47onLN/XLExkZNrT3Tp4cvsuyOU/bd/WshX7vQwLU2Sblb18afmK5jvJ WNgA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B4D8712000D
+X-Stat-Signature: oz7ainfwhfeho3jy6kk7p37i4diq5uoe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 462494000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763775681-662226
-X-HE-Meta: U2FsdGVkX1/SIqIpJA9g8+8rrol8iQKlqY7CuyRV4/tuYB7DD/qKHRuyvU8wGC430TLhMhTUvTUcorRThSwfYqWBHZqxjeXppZvpYewzO2GwmTJW9TGOUEHBhJHbLNvTeE7yNLg8l+nUwf0MEw8U6gk9GW663qlCy0a0gxsZ3BqnD9e6QXerBpV1BDD342B4etScuqeTYfdIutyEwWC0TqsxNU1uyz6kAjl/J07wsYC4ssqeZX6z3SHxQK1AMGevrynEhfTeVL1eOcNAyH2gIJ9aZKX24NzwwkoKVIHhwz6oEMqE8HO064eodosFvyRNY9erxqYGXCKvpH828uDVwvT+mDXb33ZSYPrfMeItePyKV0h5gAEQi6rRpUz1dtCpkZCZfjpoo4dx57L4yv3VrrtwdcmK4a09u6eCGmOi3JMNg/eQF7SN9XoDJgXPpahwSRcGcggrXKRZbu7Fzfxiy9NDPLeXBo3ItmXKcyqoDG0C9rLQaeuM5k6dKhKf/J/LiPyvzVLUbg5m9tExkCVthflkm3LqJtFrQ4kqxOtP3L7zO52GlsgkezkvP+766gSt5xFSssO+TPQ2nAdYCn3jcp5eMUytSULtCer1ya7zAZSOZ5MCYFlJqxvx7bD4UOFt5CtJeglYLZXSpeQitCAVpEiUI6bY8DcWN8Kt6C/cbg+/BDCvXitlo+8xutuSvCt7VhiAKwIMLAmdyZ30dOKNzHzDWcndajdpO0dUC2no0SN6P126qzdgSuGa1i8hhYLqsbtGOIRyUH1QNtu+zprbAabk/UdcrFlsDcp1Qzmd2wuVPADNJgX5C9Dgz3OQXAMcRmkpBUzOZTj1MkqdiIBWZidEzAYPovocI2wbgchOeqGZfjdi7EQqq0KWw+KkXolE3n9J7CF76L0oGKKQyv31Wojkc88ymlzbDQlh4l35EuwN5b55b9k22m01H/8/bQrbnMtMfGh+W1Pk8hdX7W5
- /uNRi54U
- oQRahPTUNjtN2cY8R+VQZN+KCjQQq8/11W5nrsbrSGwv7pwAjfowTM1Rhao2RspJxGakHGRk7fcOIuN7UoQyFCGklrjDhHY0+P3pH/gPL+5t0lO9kbqcIKUZThLFHbOXaTsHA9TU/I5JmZuMi3z2FG5hsDHY/KOuQzRHSJTmodPgh1skv2M5EccIiYwGlQf5YGmf5pwo1EuvmWTsp8NIKW/LYe/ub/5VrwteYpjf7i6lUGkHiv6ZUDAZYeeXyvUXPO9rx38HIwG8PuHM2AxzQsOdjY4kP+GGno5w839VM21+bs+hlIbDfc0BfTx+IK6HfDd7KDvyW4DnnOEU/fSOaa6su5IE7GjWB5GU+XNb7tL68C+L2wEGSAbnvPO1ELlpCLhLeN/aI3fIVUc3oMTcuEJoZ9uaWGij8g7QkcQDVwOGaA0fTZ7UaiklivEBf7gZIcSEWSoer6NtHs/wtN/ZbgtC6ACarHIy51Mitac2T6FJOE7Los5jvy9H/1sQ2NbxJqI+Abmj8baxmYYbpWR6KkjoohQ==
+X-HE-Tag: 1763775786-344628
+X-HE-Meta: U2FsdGVkX19s5ym7aHswAYq+vvWCS9TUrEZf5ncSXCxzqKxi1XWypAyQMgtB5ezMlqEJabp7fZYcT3WuDzFm8nQJHYLJklEqJ8AMx5gP1bkxhpBgbKXA0N72RMzBKpASahD6iSU7KUMBfaCceLSV5oY+Bk93JP4kebbRN6XiZVW023UAsc5QyLPLkMpLxULxNTiZJN8Ob7iwOzEr2ZZ7Tsh1euzR2FqKP+lkKqTiqjWyQGvEPVLwzgmX5D52dlze0EUWESeJcu/Vvl8IUJKjlTKe8CptfScdVSz8bSmVzsmBJMaNX7Tv3qAtHVtTxV9SIEamEbn3DahElflJyCFSHcAJyks4XkIyNEJmsv1rQU7nrwpKzpRf071mNRbkx6BnBO4vnDkanjxsVe+lyUBZg3vg9OJQXapbxtH12AdyVYP6LJHAMiwe2VxZIOr2WjaII6udyTvJ/XfNUTcsFUmO0rgSQIwBMDLHXxRjWsUIfTF5EnhxzmuB4IDhKsUZwwkLU2HyI9uOZnIzOQ7YIJpLbNbq+UH+EPTb5B6RtCXvgBeIXTLiujrToVhk0Aui4blSBAPFiDrlcGcXrHbsBfnf889PHomy0AswXfFItrekT8sBUvyOY6X++NXps/buWqga4TZ9Ck76QEOXoAzW7KPx8XEG+mkdA0HCdQu4fSiBXc6X5qF5eghCGwIIJq/D9jg6nYGSrTdSW4pe6G5JO3QdMG9ez1xa0pDMKJp+0lMmWyTLIPezYkK8ljw9ilZgvDs0hT4rsEHJhsFw4tm1cQl+2QXZhFJpUzaPOcEOx8TD8dT6ii6Az77DoQb3dDCMGZTMYQaOMvPnB3rPpriVCyfMxpP1PMvuuVF8rlVxcDcXtwvEhdnulDPOOlMgudF7tzsoBed1OWlndgQXlMPyD9Y6dBwqqiUH9eRZJw7LP/78fLqfCWGb6pSIY/muA8O/OD9goh2eHtcxV6GyO5UdTd0
+ vZQ2jKyz
+ loRfFDn0p79qYi8JfceX+4mbUAnT9+sW9eP9X0UTQBeMRqB+rAMQdzzOvzKITgXDKATp8rP2mngrTsRnzlMxZTOlFhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,236 +128,399 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/11/21 18:10, Lorenzo Stoakes wrote:
-> On Fri, Nov 21, 2025 at 05:48:33PM +0900, Akihiko Odaki wrote:
->>
->>
->> On 2025/11/21 17:03, Lorenzo Stoakes wrote:
->>> On Fri, Nov 21, 2025 at 12:05:56PM +0900, Akihiko Odaki wrote:
->>>> Hi,
->>>>
->>>> I'm another QEMU developer who have been discussing the problem motivating
->>>> the mremap() usage.
->>>>
->>>
->>> Hmm for some reason this mail hasn't appeared at lore how strange.
->>>
->>>> On 2025/11/20 18:58, Lorenzo Stoakes wrote:
->>>>> On Thu, Nov 20, 2025 at 10:49:59AM +0100, David Hildenbrand (Red Hat) wrote:
->>>>>> On 11/20/25 10:35, Lorenzo Stoakes wrote:
->>>>>>> On Thu, Nov 20, 2025 at 10:16:26AM +0100, David Hildenbrand (Red Hat) wrote:
->>>>>>>> On 11/20/25 10:04, Lorenzo Stoakes wrote:
->>>>>>>>> Hi Vivek, thanks for the patch.
->>>>>>>>>
->>>>>>>>> In general though, let's please not make a fundamental change to mremap()
->>>>>>>>> behaviour in late -rc6. Late in cycle/during merge window we're really only
->>>>>>>>> interested in existing series, series that are less involved than this.
->>>>>>>>>
->>>>>>>>> On Wed, Nov 19, 2025 at 09:35:46PM -0800, Vivek Kasireddy wrote:
->>>>>>>>>> When mremap is used to create a new mapping, we should not return
->>>>>>>>>> -EFAULT for VMAs with VM_DONTEXPAND or VM_PFNMAP flags set because
->>>>>>>>>> the old VMA would neither be expanded nor shrunk in this case. This
->>>>>>>>>
->>>>>>>>> I guess you're trying to be succinct here and 'clone' each input VMA using
->>>>>>>>> the 0 source size input.
->>>>>>>>>
->>>>>>>>> However this can't work.
->>>>>>>>>
->>>>>>>>> This operation is not equivalent to an mmap(). It may seem to be for
->>>>>>>>> ordinary mappings but in practice it isn't:
->>>>>>>>>
->>>>>>>>> (syscall)
->>>>>>>>> -> do_mremap()
->>>>>>>>> -> mremap_at()
->>>>>>>>> -> expand_vma()
->>>>>>>>> -> move_vma()
->>>>>>>>> -> copy_vma_and_data()
->>>>>>>>> -> copy_vma()
->>>>>>>>>
->>>>>>>>> Essentially copying the properties of the VMA to the new region.
->>>>>>>>>
->>>>>>>>> But this doesn't work for PFN map.
->>>>>>>>>
->>>>>>>>> At _no point_ are you invoking the original f_op->mmap or
->>>>>>>>> f_op->mmap_prepare handler.
->>>>>>>>>
->>>>>>>>> And these handles for PFN maps set up page tables, because PFN maps
->>>>>>>>> literally do not exist as VMAs which have properties independent of their
->>>>>>>>> page tables like this.
->>>>>>>>
->>>>>>>> vfio-pci is a bit different, though, as it uses
->>>>>>>> vmf_insert_pfn()/vmf_insert_pfn_pmd()/vmf_insert_pfn_pud() at fault time to
->>>>>>>> insert PFNs, not at mmap time using remap_pfn_range() and friends.
->>>>>>>>
->>>>>>>> (see vfio_pci_mmap_page_fault() )
->>>>>>>
->>>>>>> It sets VM_DONTEXPAND but is fine with being expanded? :) That sounds like a
->>>>>>> bug there:
->>>>>>
->>>>>> Yeah, I am all confused about expansion. The example code looks like all it
->>>>>> wants to do is move a VM_PFNMAP mapping.
->>>>>>
->>>>>>             if (mremap(iov[i].iov_base, 0, iov[i].iov_len,
->>>>>>                 MREMAP_FIXED | MREMAP_MAYMOVE, cur) == MAP_FAILED) {
->>>>>>                 goto err;
->>>>>>             }
->>>>>>
->>>>>> I guess the expansion is because of iov[i].iov_len is bigger than the
->>>>>> original VMA?
->>>>>>
->>>>>> Is that maybe a bug in QEMU or why are we even expanding here?
->>>>>
->>>>> We're going from size 0 to iov[i].iov_len, which is saying 'please make a copy
->>>>> of this VMA at a new address'.
->>>>>
->>>>> There's never any moving, as input size is 0 :)
->>>>>
->>>>> It's a cute corner case way of using mremap().
->>>>>
->>>>> We're basically asking for a _copy_. But you can't get a copy of a
->>>>> VM_DONTEXPAND/VM_PFNMAP because you need to invoke mmap_prepare (or legacy mmap)
->>>>> to get something sensible and you are bypassing that on expansion, even if it's
->>>>> a 'clone' style expansion.
->>>>
->>>> Apparently fork() copies VM_PFNMAP without invoking mmap_prepare or legacy
->>>> mmap unless VM_DONTCOPY is set, so I wonder if mremap() can use the same
->>>> logic.
->>>
->>> It's because it's literally copying page tables in the exact same range exactly
->>> as they are to the exact same virtual address.
->>>
->>> You're asking for a _brand new mapping_ of effectively _any size whatsoever_ at
->>> a _new virtual address_ while _retaining the original mapping_.
->>>
->>> Also note that you're copying the VMA exactly as-is with _all internal private
->>> metadata_ duplicated, but now in another process.
->>>
->>> It's entirely different.
->>>
->>> For better or for worse (*ahem*) we've given huge flexibility to drivers to do
->>> what they want with this stuff. Which means -literally anything- might be stored
->>> in page tables, whcih means there might be alignment requirements for the
->>> mapping, which means that page tables may be established in .mmap,
->>> .mmap_prepare, which means that internal state might be tied to the VMA that is
->>> only correctly set up in .mmap[_prepare], etc. etc.
->>>
->>> So yes - if we exactly duplicate this with everything virtual, metadata being
->>> _exactly the same_ in a _brand new process_ - with the driver _knowing_ that a
->>> fork might happen (and setting VM_DONTCOPY in cases where it doesn't want it) -
->>> then we're good.
->>>
->>> But that's something very different from 'allow arbitrary copies of the VMA'.
->>>
->>> In terms of mremap() this is very simply an expansion and we won't be supporting
->>> this kind of operation there sorry.
->>>
->>> I may go work on an idea to allow this behaviour via a new approach, but it
->>> won't be in mremap().
->>>
->>> Note that I replied to Vivek with some ideas as to how to do this in userland
->>> (thanks to David for suggesting btw forgot to say ;) so you _should_ be able to
->>> get what you need here without needing mremap() to do something different.
->>
->> I understand that the logic to copy page table cannot be borrowed from
->> fork(), but I thought that copy_vma_and_data() could be extended to support
->> this scenario.
->>
->> If I understand it correctly, it does almost what we want; copying a VMA and
->> page table with a new size. It also calls vma->vm_ops->mremap to let drivers
->> know the new VMA. However it doesn't copy the page table if old_len == 0 and
->> clears the old page table entries, which prevents using the function to copy
->> VM_PFNMAP.
-> 
-> It doesn't almost do what we want at all. All the drivers known VM_PFNMAP and
-> VM_DONTEXPAND will _not_ be mremap()'d so unless you have a time machine I don't
-> know about we can't in any way take the existence of this callback to be
-> meaningful here :)
+Introduce type-aware kmalloc-family helpers to replace the common
+idioms for single, array, and flexible object allocations:
 
-Correct me if I'm wrong, but looking at check_prep_vma(), VM_PFNMAP is 
-checked only if MREMAP_DONTUNMAP is set or expansion is requested.
+	ptr = kmalloc(sizeof(*ptr), gfp);
+	ptr = kmalloc(sizeof(struct some_obj_name), gfp);
+	ptr = kzalloc(sizeof(*ptr), gfp);
+	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
+	ptr = kcalloc(count, sizeof(*ptr), gfp);
+	ptr = kmalloc(struct_size(ptr, flex_member, count), gfp);
 
-So it is already possible to move and shrink VM_PFNMAP, and if you need 
-to e.g., assert alignment requirements or synchronize metadata.
+These become, respectively:
 
-That said...
+	ptr = kmalloc_obj(*ptr, gfp);
+	ptr = kmalloc_obj(*ptr, gfp);
+	ptr = kzalloc_obj(*ptr, gfp);
+	ptr = kmalloc_objs(*ptr, count, gfp);
+	ptr = kzalloc_objs(*ptr, count, gfp);
+	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
 
-> 
->>
->> So my idea is simple: change copy_vma_and_data() to copy the page table
->> without clearing the old page table entries if !old_len && (vma->vm_flags &
->> VM_PFNMAP).
-> 
-> No, absolutely not.
-> 
-> I already went over the reasons, but to highlight:
-> 
-> - There may be alignment requirements that are no longer fulfilled.
-> 
-> - There may be metadata associated with the VMA that no longer exists in the
->    copied VMA.
-> 
-> - There may be some requirement that only one mapping exists at a time of the
->    given range.
+Beyond the other benefits outlined below, the primary ergonomic benefit
+is the elimination of needing "sizeof" nor the type name, and the
+enforcement of assignment types (they do not return "void *", but rather
+a pointer to the type of the first argument). The type name _can_ be
+used, though, in the case where an assignment is indirect (e.g. via
+"return").
 
-Obviously what I suggested goes against "the only one mapping exists at 
-a time" so, taking that into account, I agree that it will not work.
+These each return the newly allocated pointer to the type (which may be
+NULL on failure). For cases where the total size of the allocation is
+needed, the kmalloc_obj_sz(), kmalloc_objs_sz(), and kmalloc_flex_sz()
+family of macros can be used. For example:
 
-> 
-> And who knows what else.
-> 
-> we give drivers a great deal of freedom to do what they want with these
-> callbacks. We've built in the assumption that:
-> 
-> - VM_PFNMAP means .mmap[_prepare] will _always_ be called for any new mapping.
-> - VM_DONTEXPAND means that we will _never_ mremap() in a way that _copies_ the
->    VMA.
-> 
-> Now these semantics are non-obvious and may be inconvenient, but that ship has
-> sailed, and trying to do something different now is broken.
-> 
-> I don't particularly fancy auditing every single driver for this behaviour
-> (inevitably missing some) either. I am already having to do this for .mmap in my
-> .mmap_prepare work and that was... already an 'interesting' addition to my
-> workload :)
-> 
-> Also to be clear, as perhaps I've not been quite firm enough - I will NAK any
-> patch that tries to bolt on more 'special behaviour' to mremap().
-> 
-> It already has enough of that, if we had that time machine I mentioned I would
-> never have allowed this ridiculous 'cute' mremap(ptr, 0, new_size, ...)
-> behaviour.
-> 
-> Note that we explicitly disallow it for anon mappings, so there's already
-> non-obvious caveats on top of caveats on top of caveats.
-> 
-> There will be absolutely no more of this :)
-> 
->>
->> Of course we still need to respect VM_DONTEXPAND so it should be also
->> checked that the new VMA is a subset of the old one.
-> 
-> Yeah no, sorry.
-> 
->>
->> Can this work?
-> 
-> Nope, but I + David already suggested a way forward that should work - just
-> mmap() something new utilising the existing fd.
-> 
-> You could even explicit try to do this only when the mremap()-clone behaviour
-> fails.
-> 
-> I leave exploring the details of this to you guys ;)
-> 
->>
->> Regards,
->> Akihiko Odaki
-> 
-> Like I said, I may look into adding some _new_ kernel functionality that gives
-> you what you want. I will cc you and Vivek if/when I put something forward.
+	size = struct_size(ptr, flex_member, count);
+	ptr = kmalloc(size, gfp);
 
-Thank you.
+becomes:
 
-Regards,
-Akihiko Odaki
+	ptr = kmalloc_flex_sz(*ptr, flex_member, count, gfp, &size);
+
+With the *_sz() helpers, it becomes possible to do bounds checking of
+the final size to make sure no arithmetic overflow has happened that
+exceeds the storage size of the target size variable. E.g. it was possible
+before to end up wrapping an allocation size and not noticing, there by
+allocating too small a size. (Most of Linux's exposure on that particular
+problem is via newly written code as we already did bulk conversions[1],
+but we continue to have a steady stream of patches catching additional
+cases[2] that would just go away with this API.)
+
+Internal introspection of the allocated type now becomes possible,
+allowing for future alignment-aware choices to be made by the allocator
+and future hardening work that can be type sensitive. For example,
+adding __alignof(*ptr) as an argument to the internal allocators so that
+appropriate/efficient alignment choices can be made, or being able to
+correctly choose per-allocation offset randomization within a bucket
+that does not break alignment requirements.
+
+For the flexible array helpers, the internal use of __flex_counter()
+allows for automatically setting the counter member of a struct's flexible
+array member when it has been annotated with __counted_by(), avoiding
+any missed early size initializations while __counted_by() annotations
+are added to the kernel. Additionally, this also checks for "too large"
+allocations based on the type size of the counter variable. For example:
+
+	if (count > type_max(ptr->flex_count))
+		fail...;
+	size = struct_size(ptr, flex_member, count);
+	ptr = kmalloc(size, gfp);
+	ptr->flex_count = count;
+
+becomes (n.b. unchanged from earlier example):
+
+	ptr = kmalloc_flex_sz(*ptr, flex_member, count, gfp, &size);
+	ptr->flex_count = count;
+
+Note that manual initialization of the flexible array counter is still
+required (at some point) after allocation as not all compiler versions
+support the __counted_by annotation yet. But doing it internally makes
+sure they cannot be missed when __counted_by _is_ available, meaning
+that the bounds checker will not trip due to the lack of "early enough"
+initializations that used to work before enabling the stricter bounds
+checking. For example:
+
+	ptr = kmalloc_flex(*ptr, flex_member, count);
+	fill(ptr->flex, count);
+	ptr->flex_count = count;
+
+This works correctly before adding a __counted_by annotation (since
+nothing is checking ptr->flex accesses against ptr->flex_count). After
+adding the annotation, the bounds sanitizer would trip during fill()
+because ptr->flex_count wasn't set yet. But with kmalloc_flex() setting
+ptr->flex_count internally at allocation time, the existing code works
+without needing to move the ptr->flex_count assignment before the call
+to fill(). (This has been a stumbling block for __counted_by adoption.)
+
+Replacing all existing simple code patterns found via Coccinelle[3]
+shows what could be replaced immediately (also saving roughly 1000 lines):
+
+ 7863 files changed, 19639 insertions(+), 20692 deletions(-)
+
+This would take us from 24085 k*alloc assignments to 7467:
+
+$ git grep ' = kv\?[mzcv]alloc\(\|_array\)(' | wc -l
+24085
+$ git reset --hard HEAD^
+HEAD is now at 8bccc91e6cdf treewide: kmalloc_obj conversion
+$ git grep ' = kv\?[mzcv]alloc\(\|_array\)(' | wc -l
+7467
+
+This treewide change could be done at the end of the merge window just
+before -rc1 is released (as is common for treewide changes). Handling
+this API change in backports to -stable should be possible without much
+hassle by backporting the __flex_counter() patch and this patch, while
+taking conversions as-needed.
+
+The impact on my bootable testing image size (with the treewide patch
+applied) is tiny. With both GCC 13 (no __counted_by support) and GCC 15
+(with __counted_by) the images are actually very slightly smaller:
+
+$ size -G gcc-boot/vmlinux.gcc*
+      text       data        bss      total filename
+  29975593   21527689   16601200   68104482 gcc-boot/vmlinux.gcc13-before
+  29969263   21528663   16601112   68099038 gcc-boot/vmlinux.gcc13-after
+  30555626   21291299   17086620   68933545 gcc-boot/vmlinux.gcc15-before
+  30550144   21292039   17086540   68928723 gcc-boot/vmlinux.gcc15-after
+
+Link: https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b08fc5277aaa1d8ea15470d38bf36f19dfb0e125 [1]
+Link: https://lore.kernel.org/all/?q=s%3Akcalloc+-s%3ARe%3A [2]
+Link: https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/kmalloc_objs.cocci [3]
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Cc: linux-mm@kvack.org
+---
+ Documentation/process/deprecated.rst |  42 +++++++
+ include/linux/slab.h                 | 172 +++++++++++++++++++++++++++
+ 2 files changed, 214 insertions(+)
+
+diff --git a/Documentation/process/deprecated.rst b/Documentation/process/deprecated.rst
+index 1f7f3e6c9cda..eb72b75f5419 100644
+--- a/Documentation/process/deprecated.rst
++++ b/Documentation/process/deprecated.rst
+@@ -372,3 +372,45 @@ The helper must be used::
+ 			DECLARE_FLEX_ARRAY(struct type2, two);
+ 		};
+ 	};
++
++Open-coded kmalloc assignments for struct objects
++-------------------------------------------------
++Performing open-coded kmalloc()-family allocation assignments prevents
++the kernel (and compiler) from being able to examine the type of the
++variable being assigned, which limits any related introspection that
++may help with alignment, wrap-around, or additional hardening. The
++kmalloc_obj()-family of macros provide this introspection, which can be
++used for the common code patterns for single, array, and flexible object
++allocations. For example, these open coded assignments::
++
++	ptr = kmalloc(sizeof(*ptr), gfp);
++	ptr = kmalloc(sizeof(struct the_type_of_ptr_obj), gfp);
++	ptr = kzalloc(sizeof(*ptr), gfp);
++	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
++	ptr = kcalloc(count, sizeof(*ptr), gfp);
++	ptr = kmalloc(struct_size(ptr, flex_member, count), gfp);
++
++become, respectively::
++
++	ptr = kmalloc_obj(*ptr, gfp);
++	ptr = kzalloc_obj(*ptr, gfp);
++	ptr = kmalloc_objs(*ptr, count, gfp);
++	ptr = kzalloc_objs(*ptr, count, gfp);
++	ptr = kmalloc_flex(*ptr, flex_member, count, gfp);
++
++For the cases where the total size of the allocation is also needed,
++the kmalloc_obj_sz(), kmalloc_objs_sz(), and kmalloc_flex_sz() family of
++macros can be used. For example, converting these assignments::
++
++	total_size = struct_size(ptr, flex_member, count);
++	ptr = kmalloc(total_size, gfp);
++
++becomes::
++
++	ptr = kmalloc_flex_sz(*ptr, flex_member, count, gfp, &total_size);
++
++If `ptr->flex_member` is annotated with __counted_by(), the allocation
++will automatically fail if `count` is larger than the maximum
++representable value that can be stored in the counter member associated
++with `flex_member`. Similarly, the allocation will fail if the total
++size of the allocation exceeds the maximum value `*total_size` can hold.
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index cf443f064a66..1c5219d79cf1 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -12,6 +12,7 @@
+ #ifndef _LINUX_SLAB_H
+ #define	_LINUX_SLAB_H
+ 
++#include <linux/bug.h>
+ #include <linux/cache.h>
+ #include <linux/gfp.h>
+ #include <linux/overflow.h>
+@@ -965,6 +966,177 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
+ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
+ #define kmalloc_nolock(...)			alloc_hooks(kmalloc_nolock_noprof(__VA_ARGS__))
+ 
++#define __alloc_objs(ALLOC, VAR, COUNT, SIZE)				\
++({									\
++	size_t __obj_size = size_mul(sizeof(VAR), COUNT);		\
++	const typeof(_Generic(SIZE,					\
++			void *: (size_t *)NULL,				\
++			default: SIZE)) __size_ptr = (SIZE);		\
++	typeof(VAR) *__obj_ptr = NULL;					\
++	/* Does the total size fit in the *SIZE variable? */		\
++	if (!WARN_ON_ONCE(__size_ptr && __obj_size > type_max(*__size_ptr))) \
++		__obj_ptr = ALLOC;					\
++	if (!__obj_ptr)							\
++		__obj_size = 0;						\
++	if (__size_ptr)							\
++		*__size_ptr = __obj_size;				\
++	__obj_ptr;							\
++})
++
++#define __alloc_flex(ALLOC, VAR, FAM, COUNT, SIZE)			\
++({									\
++	const size_t __count = (COUNT);					\
++	size_t __obj_size = struct_size_t(typeof(VAR), FAM, __count);	\
++	/* "*SIZE = ...;" below is unbuildable when SIZE is "NULL" */	\
++	const typeof(_Generic(SIZE,					\
++			void *: (size_t *)NULL,				\
++			default: SIZE)) __size_ptr = (SIZE);		\
++	typeof(VAR) *__obj_ptr = NULL;					\
++	if (!WARN_ON_ONCE(!__can_set_flex_counter(__obj_ptr->FAM, __count)) && \
++	    !WARN_ON_ONCE(__size_ptr && __obj_size > type_max(*__size_ptr))) \
++		__obj_ptr = ALLOC;					\
++	if (__obj_ptr) {						\
++		__set_flex_counter(__obj_ptr->FAM, __count);		\
++	} else {							\
++		__obj_size = 0;						\
++	}								\
++	if (__size_ptr)							\
++		*__size_ptr = __obj_size;				\
++	__obj_ptr;							\
++})
++
++/**
++ * kmalloc_obj - Allocate a single instance of the given structure
++ * @VAR: Variable or type to allocate.
++ * @FLAGS: GFP flags for the allocation.
++ *
++ * Returns: newly allocated pointer to a @VAR on success, NULL on failure.
++ */
++#define kmalloc_obj(VAR, FLAGS)				\
++	__alloc_objs(kmalloc(__obj_size, FLAGS), VAR, 1, NULL)
++
++/**
++ * kmalloc_obj_sz - Allocate a single instance of the given structure and
++ *		 store total size
++ * @VAR: Variable or type to allocate.
++ * @FLAGS: GFP flags for the allocation.
++ * @SIZE: Pointer to variable to hold the total allocation size.
++ *
++ * Returns: newly allocated pointer to @VAR on success, NULL on failure.
++ * If @SIZE is non-NULL, the allocation will immediately fail if the total
++ * allocation size is larger than what the type of *@SIZE can represent.
++ * If @SIZE is non-NULL, *@SIZE is set to either allocation size on success,
++ * or 0 on failure.
++ */
++#define kmalloc_obj_sz(VAR, FLAGS, SIZE)		\
++	__alloc_objs(kmalloc(__obj_size, FLAGS), VAR, 1, SIZE)
++
++/**
++ * kmalloc_objs - Allocate an array of the given structure
++ * @VAR: Variable or type to allocate an array of.
++ * @COUNT: How many elements in the array.
++ * @FLAGS: GFP flags for the allocation.
++ *
++ * Returns: newly allocated pointer to array of @VAR on success, NULL on
++ * failure.
++ */
++#define kmalloc_objs(VAR, COUNT, FLAGS)			\
++	__alloc_objs(kmalloc(__obj_size, FLAGS), VAR, COUNT, NULL)
++
++/**
++ * kmalloc_objs_sz - Allocate an array of the given structure and store
++ *		     total size
++ * @VAR: Variable or type to allocate an array of.
++ * @COUNT: How many elements in the array.
++ * @FLAGS: GFP flags for the allocation.
++ * @SIZE: Pointer to variable to hold the total allocation size.
++ *
++ * Returns: newly allocated pointer to array of @VAR on success, NULL on
++ * failure. If @SIZE is non-NULL, the allocation will immediately fail if
++ * the total allocation size is larger than what the type of *@SIZE can
++ * represent. If @SIZE is non-NULL, *@SIZE is set to either allocation size
++ * on success, or 0 on failure.
++ */
++#define kmalloc_objs_sz(VAR, COUNT, FLAGS, SIZE)	\
++	__alloc_objs(kmalloc(__obj_size, FLAGS), VAR, COUNT, SIZE)
++
++/**
++ * kmalloc_flex - Allocate a single instance of the given flexible structure
++ * @VAR: Variable or type to allocate, along with its flexible array member.
++ * @FAM: The name of the flexible array member of the structure.
++ * @COUNT: How many flexible array member elements are desired.
++ * @FLAGS: GFP flags for the allocation.
++ *
++ * Returns: newly allocated pointer to @VAR on success, NULL on failure.
++ * If @FAM has been annotated with __counted_by(), the allocation will
++ * immediately fail if @COUNT is larger than what the type of the struct's
++ * counter variable can represent.
++ */
++#define kmalloc_flex(VAR, FAM, COUNT, FLAGS)		\
++	__alloc_flex(kmalloc(__obj_size, FLAGS), VAR, FAM, COUNT, NULL)
++
++/**
++ * kmalloc_flex_sz - Allocate a single instance of the given flexible
++ *		     structure and store total size
++ * @VAR: Variable or type to allocate, along with its flexible array member.
++ * @FAM: The name of the flexible array member of the structure.
++ * @COUNT: How many flexible array member elements are desired.
++ * @FLAGS: GFP flags for the allocation.
++ * @SIZE: Pointer to variable to hold the total allocation size.
++ *
++ * Returns: newly allocated pointer to @VAR on success, NULL on failure.
++ * If @FAM has been annotated with __counted_by(), the allocation will
++ * immediately fail if @COUNT is larger than what the type of the struct's
++ * counter variable can represent. If @SIZE is non-NULL, the allocation
++ * will immediately fail if the total allocation size is larger than what
++ * the type of *@SIZE can represent. If @SIZE is non-NULL, *@SIZE is set
++ * to either allocation size on success, or 0 on failure.
++ */
++#define kmalloc_flex_sz(VAR, FAM, COUNT, FLAGS, SIZE)	\
++	__alloc_flex(kmalloc(__obj_size, FLAGS), VAR, FAM, COUNT, SIZE)
++
++/* All kzalloc aliases for kmalloc_(obj|objs|fam)(|_sz). */
++#define kzalloc_obj(P, FLAGS)				\
++	__alloc_objs(kzalloc(__obj_size, FLAGS), P, 1, NULL)
++#define kzalloc_obj_sz(P, FLAGS, SIZE)			\
++	__alloc_objs(kzalloc(__obj_size, FLAGS), P, 1, SIZE)
++#define kzalloc_objs(P, COUNT, FLAGS)			\
++	__alloc_objs(kzalloc(__obj_size, FLAGS), P, COUNT, NULL)
++#define kzalloc_objs_sz(P, COUNT, FLAGS, SIZE)		\
++	__alloc_objs(kzalloc(__obj_size, FLAGS), P, COUNT, SIZE)
++#define kzalloc_flex(P, FAM, COUNT, FLAGS)		\
++	__alloc_flex(kzalloc(__obj_size, FLAGS), P, FAM, COUNT, NULL)
++#define kzalloc_flex_sz(P, FAM, COUNT, FLAGS, SIZE)	\
++	__alloc_flex(kzalloc(__obj_size, FLAGS), P, FAM, COUNT, SIZE)
++
++/* All kvmalloc aliases for kmalloc_(obj|objs|fam)(|_sz). */
++#define kvmalloc_obj(P, FLAGS)				\
++	__alloc_objs(kvmalloc(__obj_size, FLAGS), P, 1, NULL)
++#define kvmalloc_obj_sz(P, FLAGS, SIZE)			\
++	__alloc_objs(kvmalloc(__obj_size, FLAGS), P, 1, SIZE)
++#define kvmalloc_objs(P, COUNT, FLAGS)			\
++	__alloc_objs(kvmalloc(__obj_size, FLAGS), P, COUNT, NULL)
++#define kvmalloc_objs_sz(P, COUNT, FLAGS, SIZE)		\
++	__alloc_objs(kvmalloc(__obj_size, FLAGS), P, COUNT, SIZE)
++#define kvmalloc_flex(P, FAM, COUNT, FLAGS)		\
++	__alloc_flex(kvmalloc(__obj_size, FLAGS), P, FAM, COUNT, NULL)
++#define kvmalloc_flex_sz(P, FAM, COUNT, FLAGS, SIZE)	\
++	__alloc_flex(kvmalloc(__obj_size, FLAGS), P, FAM, COUNT, SIZE)
++
++/* All kvzalloc aliases for kmalloc_(obj|objs|fam)(|_sz). */
++#define kvzalloc_obj(P, FLAGS)				\
++	__alloc_objs(kvzalloc(__obj_size, FLAGS), P, 1, NULL)
++#define kvzalloc_obj_sz(P, FLAGS, SIZE)			\
++	__alloc_objs(kvzalloc(__obj_size, FLAGS), P, 1, SIZE)
++#define kvzalloc_objs(P, COUNT, FLAGS)			\
++	__alloc_objs(kvzalloc(__obj_size, FLAGS), P, COUNT, NULL)
++#define kvzalloc_objs_sz(P, COUNT, FLAGS, SIZE)		\
++	__alloc_objs(kvzalloc(__obj_size, FLAGS), P, COUNT, SIZE)
++#define kvzalloc_flex(P, FAM, COUNT, FLAGS)		\
++	__alloc_flex(kvzalloc(__obj_size, FLAGS), P, FAM, COUNT, NULL)
++#define kvzalloc_flex_sz(P, FAM, COUNT, FLAGS, SIZE)	\
++	__alloc_flex(kvzalloc(__obj_size, FLAGS), P, FAM, COUNT, SIZE)
++
+ #define kmem_buckets_alloc(_b, _size, _flags)	\
+ 	alloc_hooks(__kmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), _flags, NUMA_NO_NODE))
+ 
+-- 
+2.34.1
+
 
