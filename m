@@ -4,228 +4,215 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88B18CFC539
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 17:10:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84E22CFC522
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 17:15:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41D486B0008; Sat, 22 Nov 2025 12:10:21 -0500 (EST)
+	id DC3126B000C; Sat, 22 Nov 2025 12:15:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CDE36B000A; Sat, 22 Nov 2025 12:10:21 -0500 (EST)
+	id D73A86B000D; Sat, 22 Nov 2025 12:15:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26E266B000C; Sat, 22 Nov 2025 12:10:21 -0500 (EST)
+	id C14196B000E; Sat, 22 Nov 2025 12:15:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 042E56B0008
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 12:10:21 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8BB0C1A08B5
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:10:20 +0000 (UTC)
-X-FDA: 84138881400.16.6AD27C0
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazolkn19011025.outbound.protection.outlook.com [52.103.32.25])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 07D8D40005
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:10:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=iVB6XAxf;
-	dmarc=pass (policy=none) header.from=hotmail.de;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.25 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de
+	by kanga.kvack.org (Postfix) with ESMTP id 9DE646B000C
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 12:15:14 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B33212B86
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:15:14 +0000 (UTC)
+X-FDA: 84138893748.11.64DA549
+Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11020118.outbound.protection.outlook.com [52.101.189.118])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A092D160014
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:15:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=KVaB5FkM;
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.189.118 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763831417;
+	s=arc-20220608; t=1763831711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fh94mW012b4b4pM7k9F/n2kTOFskPj6U9WAq5+2R+pU=;
-	b=t+SAlvWnl6Zh21ZFA2wGqnYiQcd/zKiU4E6c944WS69rq9Y9iZpIME+3mnGIS8KovIZ6Gu
-	us1gla681msJdcEZM1NotrdoJ9VfrXocsmndSFnBhFm/6NarqgfU5XWoOPZ652NwTo8u/E
-	wd4ZYbYhpOHXaBOP/mA6xy4tzbCbALg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763831417; a=rsa-sha256;
+	bh=BWH3CcWBkeYbAxvYMywLu3eXiI3g/1qNhmOgwKQcVVQ=;
+	b=geUHh4kmqFBoB4Y9EeoTdZSMWBIqgPGvlpyWZYPC7Od0vSx8PRTQAI/x21rBNPDA7B8npm
+	K58JgdFa8bjqo1F/GiqLXTpYkzDYweiCABi4VfJ9Vb/AYFldl7H05H0kyf7LN7Q8zQpSk8
+	Br3JzPSkmK7KMdvHlYBtgxBn7jBHhlo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763831711; a=rsa-sha256;
 	cv=pass;
-	b=mfNR+Ix+H9lR/0XLeSprED4f+1yvunlQF4CbDe+2JRnspncY+dGQDFqvgaHXUE2i67e0rf
-	rnhFoJlG6lKQ9aUdYQVWSA3s/OpPbTJnfDw7TRxU7+zEK3ghTIzOXndXXQIleA7Ah1CgZZ
-	L83H4Aar60TV3k1iY+355LUJePbM4Dg=
+	b=j6h/DpRpSblbGFFwZDYnp5/80E3gdMAzgW8irFvUnIVftpo0fjMiQEk2pyLuda/DNb5iiU
+	wGDoo6jyU3tgthq6G4oTbe9Hog3XptbqAIZLgSWn/sVURm69RGqsuQe9VYqcVAQE2Pp49f
+	jLevPR6Gn2+7JUuUPv4Wpmhl4cNXyP8=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=iVB6XAxf;
-	dmarc=pass (policy=none) header.from=hotmail.de;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.25 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de
+	imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=KVaB5FkM;
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.189.118 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I1Q0QfGsxkbC5C7Na6dLYQ8+dKnycXKWlsoN3U5Hl9XlInMRX2WL91zy32ftyQ7ClaaK+4arR41Hkup7dBo3lTT/s+0qyyYpG1ddafFOcjVOlMzM10tdRHt6Sr1ty4r7ltRo29S0DexHFs4pA5aTzHKEfK9p6rL6wBC9wWgVdJd5FrOzAp/tUMWSpUER98ZmDs8+yQCAFjzSvXSWF6OmtAkorCRhc99xxNFBWl5r4gRn/Src5ri7ixGkLLTqfPXiunnCqehkmpaoSC0uIzhAKY4iU3gMROG4Xy2S47fzIIXh1Qm56SMRuN63+ZBwu46Wcrlz12lapp+KYmllc+WXAQ==
+ b=XnRlHBZUPrbazirVzRrKpXB2dGOxj31zBXtZfWL2V3AJTaHJCE4X5nWUNT8pLP9WAv1Zl2ulxVsWIsQOKwJF/LYdytsks2/szLvcbFliFz9UyIF7SqjdcKC2VHpN1QKoRz5LHv8tZ3hPvfEzaKHPk3m5ozYmfAupJVOP3p/lxH7N/2OVRmjRC8tY8Avz32Fc3Ag5ajfne8lkpUev/38t+mHHy4PCqA6Uwsgte9sz5Zpd9ZZFYpwXEQHUNFWMBVfC0ZNZR/DLiHVHXxuVdoXXKDnSG65UAJmfBCsOHdWKBKeBeOm8UhFwFekqfGOUFnfq0SjKNZzAm745rsqHT3tycg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fh94mW012b4b4pM7k9F/n2kTOFskPj6U9WAq5+2R+pU=;
- b=L/FpZZ8BFnI3FOWJD9K2S6hPuMMbpSnJzsv71FRIGIDHwnY0fM6edk2++EPBfAgnKPj+ha0VqAuylEyM9rap/W5MxaQYEUjgDg6frBBn91tYUT5j173YO59PoFKs1c1t6EE8qEatmqvcOzUsx9lSGmW/vND8Ye6zdtiMw3JoUIRkUTIQZBJS8Zcq54bABsfBa6Lo4E2+uBv5k9FfUzXT2kk7GGyGjwgOc1oBaMQQusdyrTz0zeQ37jfA1VsmWBCVD9JGLKoCAGT4XnFi5dDgmjY8NmWdiz88SzlBYIa/VnwStvKcrlyDefGaSw/Pu355ARdcnKoSLS8rBpwaykvvEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
+ bh=BWH3CcWBkeYbAxvYMywLu3eXiI3g/1qNhmOgwKQcVVQ=;
+ b=JiKbnL0pdgXlbHFicdiy2r0viCvo/pLtR3BC3nn4SNN8UAmh75x+luS8idTonIXoW6NvKn5YrfjXlYfj5tEqyfaSMIU/E/rji8zWrB3OaM26p+rmisiyjON0m0WfdGCopRhXhC+1rKcf8rVC+3GNcsdQdmnc7JuVovjA5xt65KX7kx6a/URrt9eG7DABi7dttppAyuHBJXBcX2TO6kdQmmWz38jcR+EaLYGYWJm6IT+eNGkOdYdRdsqdiRQ4EGY1JwL1LagR2U86tLQfuSlcvSWa/qzWrkR90S14k1YEMr+Vyb8U+GyYK9jrTMdmRyCGY/NNIzMhQx4N21ARZ9uPYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fh94mW012b4b4pM7k9F/n2kTOFskPj6U9WAq5+2R+pU=;
- b=iVB6XAxfqpg8ik8VljS+E9E+ibQ0fjQkgRtuprkulw4cKt6crm9uG41LnHr9eDeqgqC5LE7szgIKhVCwhQY4+0ofXlPySZPh+o/n4VqmtXJsd/RaNlUNc6PgB8FYM922xnk4JRkK1WiZSeD4qraCJ3syIeW+64ybib27yjgMmAuAWa85Kzdc6Qc7bMlPneBKTnKRqO/Z8vFqgT/vFBnLwypPsISQj3/DTV4ACXuGXq0/ZsYmgrtHgJDCeDsqXcAho5w7Qdzykb3dgL0sbd7pgnxS60KZKPH+M2rjPZHEVGWado++N/YZI7wUms5ApsWm8gUHX6BRVC6PJBTf8REdcw==
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4) by PRAP195MB1484.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:102:292::8) with Microsoft SMTP Server (version=TLS1_2,
+ bh=BWH3CcWBkeYbAxvYMywLu3eXiI3g/1qNhmOgwKQcVVQ=;
+ b=KVaB5FkMrKEpIPWU/kzxvHczmAxQrHZHnv6fV4oARziN2KrIUMZFHL2q5DiYghrrnbWDoGqVgqUeUI+l4HIhXM5r+HCzBdI8QoYXeszfYr4uxSsFQpIzEBVoegzpo5F3B2CiYlDuythd+uPpKfvw0OuiMTDl8H95F05KzmpRn/eobxSWbr5uowyY6bNOR1+ZJPb6DkGZp7I0M3PdFXG3dmcWX4UGsh5knFepeDHQx9taC4PTiqIFvAjXx2NdZcEmI+2NdMrv66zvAtSkyf0eGhQhC4SmWuA7vdesrb4tyd21xDntKZheKVC33S1rmSdQAXIPe/01tePI4yiKHpRE5A==
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by YT3PR01MB5908.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:5e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.15; Sat, 22 Nov
- 2025 17:10:13 +0000
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49]) by GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49%8]) with mapi id 15.20.9343.009; Sat, 22 Nov 2025
- 17:10:13 +0000
-Message-ID:
- <GV2PPF74270EBEE354926B365D9F3C60C22E4D2A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-Date: Sat, 22 Nov 2025 18:10:10 +0100
+ 2025 17:15:08 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4%2]) with mapi id 15.20.9343.011; Sat, 22 Nov 2025
+ 17:15:08 +0000
+Message-ID: <a3652f6b-cd3b-45ad-a3ad-e92369cf4068@efficios.com>
+Date: Sat, 22 Nov 2025 12:15:02 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18] exec: Fix dead-lock in de_thread with ptrace_attach
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Alexey Dobriyan <adobriyan@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
- Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>,
- Will Drewry <wad@chromium.org>, Christian Brauner <brauner@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Serge Hallyn <serge@hallyn.com>, James Morris
- <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>,
- Helge Deller <deller@gmx.de>, Adrian Reber <areber@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
- Luis Chamberlain <mcgrof@kernel.org>,
- "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Frederic Weisbecker <frederic@kernel.org>, YueHaibing
- <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>,
- Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>,
- Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
- David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- "Joel Fernandes (Google)" <joel@joelfernandes.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Hans Liljestrand <ishkamiel@gmail.com>,
- Penglei Jiang <superman.xpt@gmail.com>,
+Subject: Re: [PATCH v9 1/2] lib: Introduce hierarchical per-cpu counters
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
+ Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>,
+ christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>,
+ SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Ryan Lee <ryan.lee@canonical.com>, apparmor@lists.ubuntu.com,
- selinux@vger.kernel.org
-References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <87tsyozqdu.fsf@email.froward.int.ebiederm.org>
- <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
+ "Liam R . Howlett" <liam.howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>,
+ Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ Yu Zhao <yuzhao@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Mateusz Guzik <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Aboorva Devarajan <aboorvad@linux.ibm.com>
+References: <20251120210354.1233994-1-mathieu.desnoyers@efficios.com>
+ <20251120210354.1233994-2-mathieu.desnoyers@efficios.com>
+ <20251121100308.65b36af9e090a78a66144c6c@linux-foundation.org>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Content-Language: en-US
-From: Bernd Edlinger <bernd.edlinger@hotmail.de>
-In-Reply-To: <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20251121100308.65b36af9e090a78a66144c6c@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0339.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ea::13) To GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4)
-X-Microsoft-Original-Message-ID:
- <d6f1ddb4-a044-4200-8710-198bb521e69a@hotmail.de>
+X-ClientProxiedBy: YQZPR01CA0105.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:83::22) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PPF74270EBEE:EE_|PRAP195MB1484:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a0cab07-1e0e-4009-d723-08de29e9ffc3
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT3PR01MB5908:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3b40c22b-6a1d-4a79-9d84-08de29eaae6e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|51005399006|6090799003|5072599009|461199028|15080799012|23021999003|12121999013|8060799015|19110799012|440099028|3412199025|40105399003|12091999003|56899033;
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MVZvYk1tdzB6YXBjRFNZUTlMMHVtU1gxTGFCaEVKZlZvRC9RcVdzbDFRRTBa?=
- =?utf-8?B?U0J3QUo4V1B4ZTEzM3BIbjN0MS9HeTIwaEhnR3RnV1lBbWw2TzRKNkpLMmQ2?=
- =?utf-8?B?REZmSWppQkFhY1VCaVNsL1ZmN3UrNTRpemVNajJ2MFpROUVwYjJqVG9pcU5Q?=
- =?utf-8?B?dWJTSnZ5MzE3NldnMXlTb0QyRlRZbUsvK0lmZFZHcFpjbFZoRDV0a2d4b2Nj?=
- =?utf-8?B?cjVWbmF5SVdkc1pmbk9hdzF4eXR5dmdRSjVaQXE4c002OFRnWjRBaEQvMVgx?=
- =?utf-8?B?aEVKZGhGazFhNmZ4RktNcmhmdTJRNWZaNTQ4dU9qU0FaYjRKY1R0NDVrR2Fw?=
- =?utf-8?B?ZFVKdGpvdnlmR2xxR1FVNUtvWWVlcVJ1THdKRHZLSzFSV1kwSm5oVGs4a3dY?=
- =?utf-8?B?a1d0VUJZUWxMelBqeFUxbkIxaVhaWmJZb2J2ak9LMWRQdHdvUEd6bTF4eDZQ?=
- =?utf-8?B?Y2ZaUFZlNGRMaUxENG4vT3dvVWcycEZWdlpaeWltQSt2RGp1UkI0MmFaaGVt?=
- =?utf-8?B?cE1acTJYNjMxTGJSd0xaY0taWm1rQWlmNitMdzFjVk5NTThUbGxhUi9yUmdl?=
- =?utf-8?B?UW5wbzRKWXBCWFhqb2ZpRWJ5bmFNcHNoenI5d1B5NnhzRjNkcnpCbERWbkxL?=
- =?utf-8?B?WnpmM3Urd2FJM3dRd0dSU29OSFZZdk9VNVUxc2xtc0xDYmQ4ZzdNZXdrbk5E?=
- =?utf-8?B?czBnUlI5UG5mNGFMK0NiTHgzR2VmWW9lVjUwalMwSENseDVuSTNES2VaTEox?=
- =?utf-8?B?UURucHZEVFFPU0Zud3RXZG5LNGdNWVF1WkFWVkJlTWhmajhTNTdZSkxSQlJM?=
- =?utf-8?B?bUk5MmNRWlVVOXVzUnlqbjNKMG80MzJLQ3V0Ym9iRUg0YVRRRFF2enpHVUhR?=
- =?utf-8?B?b0VNbU8vYlM5WExyQzluTXlLRGQ0aGJTUjIzNmdZbnJVbVJDUjlLNllEeTRr?=
- =?utf-8?B?WnZQc09HREdTNFIrOGhEdWFSdHlETnJLWGR3VjlDNmttNFI3U01nQkhnejdM?=
- =?utf-8?B?dlBjYXV4OStpWVphMGJ4SW81N0xZaUk0OEZWR0ZiUjVDVWplcTBLVTNPL1Nm?=
- =?utf-8?B?ZTdHSUs2Z29RTjZPWWhaUVF5aDlPYXhhQk5oVzVWQmZvRjFpVE5hWGxhYlI0?=
- =?utf-8?B?NFl2Z1A0MjR6RmhsRUFHSzZ4bmNQNXhkRVVraTRYOWhLWStvNjlDdW02cHFB?=
- =?utf-8?B?V1NlTVE1VkttTGFaNG84MjVteUYweHU3cFB2ZEZMNU5yMmNobFZXc2h5aUMr?=
- =?utf-8?B?anRXRVZ4bmVwUlFhL0VQbmNVWlF5VXkxVFNiYWszVUlHRmp1Wmt3SHhoclpn?=
- =?utf-8?B?ejc0TDNVeGZpS2ZwNEtsTXNXVlZGSTlYdTBZVFIyZjhLYzNncjI4ZXNESnJv?=
- =?utf-8?B?a1FLaEErQlkzeU5zaGxpckU0dUdFTXczbnlITVUrNjhNOThXNDV3OWUxWU5U?=
- =?utf-8?B?OFpSVklHVGpyellGUkxqSEtWa1NZVVM5WEx5ZjJ2cGR1WDhqSnM5Zm1vWStF?=
- =?utf-8?B?OTNFcDl4bllVYUtRSGg1NEdMN0k4M2REclNQeG9RTHhVcWhZVTk0bFhpai9K?=
- =?utf-8?B?dkw2cnpQbUxWNHFQVktuZnJ6YXFVWUo2UnR4L0VyV2hGZzlMYmNrNi85RnJO?=
- =?utf-8?B?TlZiSUR0VkZhR3d3b3NuU3pnYkF2UmhXQWl5aTNyNlRCTWtsMU5DdEluMENU?=
- =?utf-8?B?dzE1TGNPYXhpYURvZXN2bGJSQU04RG5wMHRFR1pqYVJuR1JySVlzZnlRPT0=?=
+	=?utf-8?B?WnlvZ1dQVFlCWFZCczZyYXFXVkVNc1lyVXJ3bk53OWE4VXpFVU5ycU1Qbmd3?=
+ =?utf-8?B?V09kZVltaVVsZlUwQXV1VmpubFdEdkRXV09hWmVwL1BTY3pjakpud0dqbFYv?=
+ =?utf-8?B?RURGZm9vVXFRVXErdWZMMm1naVpxRE9qY0dsOFFuTE1MUXpEZnlzTGczdnpL?=
+ =?utf-8?B?VHhGQktFcDBLMm5xWjQ0bHBUOUdnWHZWeCt2Rm1PWEFFYktVM2tuU3hNT1Fo?=
+ =?utf-8?B?SFVsUFlHSUVKQStHTnRSMWQrMndoT25uNk9XNDdGdnFqU1RiRURZd1p0cmJs?=
+ =?utf-8?B?M3dzNDRxZWdRRHhYeElUdyswQk5yTk12TVNyZHBJY3VjOEg4bjF1R2pMeG1o?=
+ =?utf-8?B?emErazc3VmZnRG81eW5tc3QyNXpFdmUvT0J6dHJqeVlMU0czY1Uvdk9nVWRO?=
+ =?utf-8?B?Q1ZBNDM2Nk9jZVBmNm9GNHdSWkRiclpZZVNPd0xtZW9JZGJYUmVJd1N1U0Vn?=
+ =?utf-8?B?MXhITHFRdGUvenFRd2MwRElpTklON09sVjBZRXVOKzZ0SFpMWUVGbW92V3BH?=
+ =?utf-8?B?Q1p3Q1laOS9YWnI5U21YVzFHdDFJUGV1MDFXNUJaTE1rc2RpeE9yc2tQRjd4?=
+ =?utf-8?B?SzEzTkxMQjE2bUQ5c1BWU29vTVQ1VW96S1lpVmxkZHd3WFZmWWZRbkRIcGdr?=
+ =?utf-8?B?M0RPUGM5UEVYQzRKOWFGU1lSYmY3NXZHWG1QTmYrY2NFZjdyanRFeFM4Sjlm?=
+ =?utf-8?B?MTFKMTZUOENQdnRDdlVPZnhZVVEyaUMyNkQxVEt2TWJYdXpTRGkzNzlxK1M0?=
+ =?utf-8?B?RitkUmZURE0wVERvbS95SVZRcE9EamxSNlhjRFdWYWNxZXExcjVoN1NOMkpl?=
+ =?utf-8?B?VGZhckhoSnJJZmlsM25pckJjQVBreUIrVUhmM1FuNVlyKzZUbG1aSnp6WVYv?=
+ =?utf-8?B?NW14elRsaVA1aWExSTRaNTNtK2FrQWtWckpFdEQ4N1JaU1NadDZ5Q0VUMFMw?=
+ =?utf-8?B?bzdSeVRWU0FTcGNTUmtoV1k2Q0FQOVhIdDhDMGpyL2w2WCtvaHBKTC9QSDRv?=
+ =?utf-8?B?VW1Ualg5SFZjUmpsVFFWZDRXc0dMU0xjdmZtZ1NXUitBYUdSZXZPeFJtOUtw?=
+ =?utf-8?B?YTJEMythOHJOSnJ2Y25DdnFHQmllM29PRUdmWGZQUllPMnRpR2ZWTlFwR2Yv?=
+ =?utf-8?B?ZnI2N0VsaGtQbEZWckRuY0g4Z1k1emVNTjN1K3A2RTRXNk03Rmx0VjZ4N0FG?=
+ =?utf-8?B?Ukxja0VzVmRKQjBjeEdaNWt5VEpzcFFxQUtrT05ld2tlMzVQSHYwbUVVMm9T?=
+ =?utf-8?B?dklLQ2t0UkFPZVJSVkZsUnl1RWFQTFV6aDlJRTc1a2ZRR2hTbmFOT3dlTldI?=
+ =?utf-8?B?c2lsUm1hYzFpblVlbitOVDZjOXVSY2lLbVBSeFRJOGtpWUg0eXlkVzI0c0tF?=
+ =?utf-8?B?UUc4UVRqeGNGT1d3WU1aMU1oT3dqd3huU0Ryby9nRkNIMStoUENqSUhyeTQ1?=
+ =?utf-8?B?R3lzSmFONDlvRzlNOWkxQ0p6cU44Uk9DUlRxazhFMU5DeWxPTmJQY05PY3Jj?=
+ =?utf-8?B?cDlDMnRGalQwZCsycnFOV283eWVqckNyVHV1M3BmdE9SVUJXdGNHenkzWlFh?=
+ =?utf-8?B?Nm5YZ1ZhSCtFWGhtSU9qYVJBNUVxSERaMkRJOStDTGxnNWo5WjdCNUVFOUVn?=
+ =?utf-8?B?bTJ2aHFkWjlMdnQ0T3k5ZkU0SG1KRVVtUVROOHlVczFiQ1gzMGFYOHlmVkNo?=
+ =?utf-8?B?Ti9VRDA4cFB0bElRYVZNZTRPTGM4QWQ2UGhiSXZPUk5ZeERSV1hnTmo5OGcw?=
+ =?utf-8?B?WkswMkZRdHl2NWZRZXFEVytGL2ZOaTZnZXY4bFZHTUJSazZyUEc1NnpPa1dn?=
+ =?utf-8?B?N3BWTTI1aytvYlB4KzdzMEVPZkw2cG1tN28zL3Z6QmFqUHB6N0N1S3dMQTJv?=
+ =?utf-8?B?Y1A5MVR2T25HZVlxWTFnMCs1NU9zYlBlQ2RhSkcrUWJndkE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?anRiL1lsa2ZOdXB4WVowM3NkMklYNnJvbENhY1AxTzVVdk1wQ081S3FrK1gz?=
- =?utf-8?B?b2lXbnlJZzQwZ0VqZ291QnRLbmlmVW9zRExheEpEQXp5VVlhV1pJT2RlRmdH?=
- =?utf-8?B?UHVCdndmNTJUMFFZVmtLY2hyWnFPWTRsZFhJMHNRNHpYMnJHK1Q5d3JoT252?=
- =?utf-8?B?d1l6WUtKV1pUNStJRXNWNlVhRStBaVpsV1F2ZjNqUlA0WEY5a3pqUUswcVRS?=
- =?utf-8?B?SXM1RU9aTWgvMDBRQWs3TnB6QVlhRTRNNkFvYzJaWlFCOTVQTmozeEFXZ0pG?=
- =?utf-8?B?UzRzaEpKNlFRcEFzNTBqTWVNRWVSWXZkYzM0ZXdkbWFRTUNsMDROVE9mME00?=
- =?utf-8?B?bUNoWnlkWHIyckFYd2llSU9KZVNhSWRRQk1rNjBtTTFtMThQd0c2aWlCcnJS?=
- =?utf-8?B?WllFbGhuditkSVNETmh3RVpZZ05JNFpObUdDZFJ2Ni93OHRhT2lMSWU5KzdU?=
- =?utf-8?B?UEJ2eHlhYUk1K1RRdDV4L3BEbDBHRnVNWVliZ3RkL3ZNbzN4ZDlBYkhyY0RW?=
- =?utf-8?B?K1BZdVNkaFZ4bEFPZldNbGZxL1FCeGwvMmEwb3EzLzdKZ2JKWFo0YjBoOFFj?=
- =?utf-8?B?RG93RnJ1R3M2MzZqcHZsTXMxTXBUWjU3bFRYQW15ZzFDb3JRV0JWSUJ0SnJ0?=
- =?utf-8?B?ZllXMTlqQnFWQTNoa1FlWUxGMnNCTUpoR05mWlNMRzJwOFpyUDJ6K1NUd1cx?=
- =?utf-8?B?TmJWc083Vkt2M2wyUmZDK0lWVmo3dEpaMW1ZbURzK21SWTNYdFlRV08wMk1L?=
- =?utf-8?B?dXlSQUtwNU9yMzVtRE9zZ25UR0N1VmpoYU5ZZnRVUUxkclM1VG1aZ0RCMEgx?=
- =?utf-8?B?QzZVand4VmVLWVhmRll3MTNvYzViQndRNW1Gek5CQUpGdGorOEg5VFR0K1NL?=
- =?utf-8?B?VENHWW1RaFJEMmVqbDVMQUxGQzlHYzBPR29FT1lSYlNqbldIbmFFSFhNOUVX?=
- =?utf-8?B?ZUwvSFRka3R5T1JLZTJrTkpwcjZUdkRGL3dXUU5hdys1bkhkc05uZmJTUnhJ?=
- =?utf-8?B?K3AyeWhOQjY2UHVYRlExRm04QkZUaHpaNU12UFBUelE5ZjUrd2dLL2MrQ1RG?=
- =?utf-8?B?RTFaaC8rTnZMQitVYUlkUmRWSHBKNnJsWktFWjA5ZHBwOW01NGZ3SjR3WXhU?=
- =?utf-8?B?NnRSWUtsb3d3eUxVVXZSRDBDcXBaVmp3K3dvWHFHTXVKb0JDV21GSlpSb2tG?=
- =?utf-8?B?eDliSndRclQrMmU0dWRjY1o2OVhqa09SVnFXdG8xdGExY2ZnRCtLUmtaMTY3?=
- =?utf-8?B?U1B0aTIxQmRTN0xOeFFCTnNSYmhvWlN3Tng0eW1Wb2JqeEZndzBwY0cwWUw4?=
- =?utf-8?B?Zm5oUGVHZGc5WThQY2RGaHJZK0xpbm1lOFdQaGZXNVlieUNjVE9RMERIYTdp?=
- =?utf-8?B?N2VFcXF3YnJOa3VjRC9Pa0tzOCtmOFRQM0NNREpwamxqRnNkRTQ2MmZBeW5a?=
- =?utf-8?B?Y3BYOThobEtVYXhscG5Ja3plLzRSZzdtLzRUMnY4QUp4Mk4vZnNoUTN0Y3Qv?=
- =?utf-8?B?OE90TldmN1l2b0h1UFExeDU4bEs5Q1I0dXZOZFFBSnF6WUc5RTFUVHZVLzdY?=
- =?utf-8?B?c0tHNDZ3b0czT1pNMUViUDRob2hMVDZvd0NKUFZSVFYwaDI4OVI4R0h2ZkN6?=
- =?utf-8?B?Wk54WlR0bmdnVHdMd0lDL1ZzdmlrZlBtZjR2anJzQWczWjV1eWIySmRPV2NT?=
- =?utf-8?B?NlhoYTYzYzhHN3VNSGtjYzFaT0d2T0RnbUNkNWcrR3NjUWxSY0IxRlZqcE5X?=
- =?utf-8?Q?wCMBaYQO+gJGciPYFPG1rTFVHrFDvZQoT68y7EB?=
-X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-87dd8.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a0cab07-1e0e-4009-d723-08de29e9ffc3
-X-MS-Exchange-CrossTenant-AuthSource: GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+	=?utf-8?B?Zll3ejRrYkxRL3ZXWTBJRmZDK2NURzVOTW9Lc1U0TzcxVUNzQjVTNTNucEg5?=
+ =?utf-8?B?VTlReTVSMzVybisyK05lMjVqRUJrNWtxRVFMVGhlYU5QQ3F6QXYxK0EycHlz?=
+ =?utf-8?B?TFV6M0laaFg3ZUFEVnlweUQzYURBZ0xKUkZ3VEhaNlE0QlZPK0RjS0JqVnBn?=
+ =?utf-8?B?NUtta05SNjRObDBrMGsxMWJWbXRLb3RMYmpQUUpMVU1hUzcyK2dKTEtTZWRh?=
+ =?utf-8?B?ZysrT2U4VmlyZzFjZFE2U2I1b0xqZEUyVXc3aCt0OXErQ3lmbHJnd0JHUUwy?=
+ =?utf-8?B?K0lvaHZjVit3c1hYMElVWDN4VGNhdkNxdTdRaHdvNS9RMHFYVjRZM1M4T1lD?=
+ =?utf-8?B?M1htRmdXcnpoZnlrbXkvSWxsZUp6ZVMrbUZnZWVSU0NnWlVmVmZlRGNlc0pr?=
+ =?utf-8?B?UlNLMXBER0MvdzVnd3ZzenZqL1pFU2gzNDg4ZUcxSkYrRzlXZmpaUjNMVjRv?=
+ =?utf-8?B?d256NFB6Ymozam1GVVAyOHUxVk1ETWdNWkZLOEVyVUxhaXNna2RPeFZQZHFj?=
+ =?utf-8?B?QkhXMXlEcDdBVE1yS25KTndTTXorM2RUSlcvMGtNeFN1ZmlLd29RRlRvbklo?=
+ =?utf-8?B?NUtyS3g2S1JPQVdhUFZhY2VyNXYzT2FNZ3FqczB4Z2NjRExDTmt1V1YyUTh6?=
+ =?utf-8?B?eGxsOUN1YlhNdExSRGpWd2xaRkNZZ091Y3g5eUxVNVN3YTNwTFh3SHNacVJw?=
+ =?utf-8?B?M0hjQk9lK1liNlltWkIyM1JKa1R0MENDa0cxbkFVYjBBYUJSdFJSZlo3eE5D?=
+ =?utf-8?B?SlhmMktXN0RQV2ZsV2Ruc3l5NmFsWk9EQ1k2aFkwVEYvbmhRY0tkWENGUVlB?=
+ =?utf-8?B?MC9DVDNhYng3eDE0b3RXZ0o3akM3OGdyVlFzS1ZMRk43MndxQW9jS2U3Qnp5?=
+ =?utf-8?B?SkMzV2x4TC9sT3hQcmV1KzRJc0RjVXBpNGZYdDZMTEprVHBQaXBobjJONVhX?=
+ =?utf-8?B?YmlNUGlGc1ZJVnRiaHh6ZE5FaVBwc081cFc2Y1dUaTh3Q1FuaWJZS2xnSzJy?=
+ =?utf-8?B?RU5GOUdNTUhGYk5MOU00N1A4OE52czNoU01WN0MyYjBwU0ZwbGlRWXR1VFpY?=
+ =?utf-8?B?YXBPOG1NREZLRkVFTGNhendGaGwrbG5NeXlPZVpSUGdtZlQwYzNMWkQwNEpm?=
+ =?utf-8?B?SUN2TEpPRmM0RHZBNVlPL1E0OVV0WG5VOERVZmE3eDRlZlNtdkY0M3p5N3JH?=
+ =?utf-8?B?SjNrZUM1MzdzRkVUMURHVUVnbW1PQTR1bkM4N2JRcFc1bGhEMVZBVGZHZ1cz?=
+ =?utf-8?B?Z1VDaEFmODkyWjIrQWJid1lOT014MkZRd29Pd0V1V3cxM3R6TW9KYitLbkZP?=
+ =?utf-8?B?ZEI1YnVtQ1RjSjU3clZIZWNveDlCT2poQUhpR0pzbjZvQTdLaG0ybXNSZ3g1?=
+ =?utf-8?B?cnpFUWMzZHZQVDB3M1lPL09adDRuUXA3NlFZdExtS3c1ZFdCeUVzVkdlZ3Ro?=
+ =?utf-8?B?MDVwZDNPZkh5NHhYQUd6K05qV0t5UXdicy80NFljTGphNjhPMkFVcitEM1ZY?=
+ =?utf-8?B?RFFwRUdRclVIaFJnK1pVdmFBT1QyUHBqWnYwM3g3bHcvUFIyMHRwbzQyQ080?=
+ =?utf-8?B?UzlhVEphR3N0MXF5YkdEb0d6bFhMc1dXTUZsaXdoZXRpLzBWeVJQRGtONVow?=
+ =?utf-8?B?ZXN2MTZQVXNSOUd4Tzc1cUxWVFdBZmpPK0hWa1pjSVdNZXVZQUg2eERodlpN?=
+ =?utf-8?B?OS9JWTlRTUFySERFNGR2OVI1MEJBSEtlZFlFYWUvNUVkZXU3TU1Qdng3a21Q?=
+ =?utf-8?B?c0VCWWFBUDdWMFNvODQzc2pSYnhyWXVEaFBkemM5ZXhjTWxpKzE3NEIvek9s?=
+ =?utf-8?B?SEpMaTgyOVlrRi9qL0lNRi9ucDRYS09VY1dvcU1DZjR6aS82L01NdFZ1RUZH?=
+ =?utf-8?B?WDlvc0xlOFVSZHRKdXFYazlXVEdtbUhrTnhGaTF0QTZjb1hFTVpKTHZTZ01Y?=
+ =?utf-8?B?aEVLWlJ1WVlmOXowQ2tXajVYNzYwcDk5MEdXanBSVHVkOXdIcExiRUx0TlpG?=
+ =?utf-8?B?QWtOY1hUTy9EMnFIcjNjU1BuOUtWLzdMOTBpdEJuTWRrdldBbEpVN291YTFh?=
+ =?utf-8?B?ZkFkbmExK3BTUlI0aTBzRWFBVlVuby9zdmN0cTVGOGNlSzlnV0xMaU10bWxo?=
+ =?utf-8?B?RGFXVStRd016SFVOYklzZ3g1eGU1K005YkdTNWVIRUlmV2xTVGwwajB0cGR4?=
+ =?utf-8?B?RDFDcE9RZ3dnallWM2pwUTBxT0ZNOVBlcmw2YU5sTzNQODZ6N1FJUGZxMWpV?=
+ =?utf-8?Q?PcMNRWN0x+lyCfkhMfnboS136NQ/OEr8b6Jmq85YsE=3D?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b40c22b-6a1d-4a79-9d84-08de29eaae6e
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2025 17:10:13.3583
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2025 17:15:06.0363
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PRAP195MB1484
-X-Stat-Signature: 5wnixqagafbpo7k5m1t3go1yop9u5poj
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pmrMLkn1d/NQFXx23rDsjwgc6xz6dvyBiZQeIyhBSBgVHVCpK4JDacBmF1vnkUOyMz6HKbq2Q8rdRzMgCoKXIHEMENiUqOqSXb3BqfrtQqg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB5908
+X-Stat-Signature: qytfxt9asfd9bxxb4nxqdegoau5e6wcb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 07D8D40005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763831416-781542
-X-HE-Meta: U2FsdGVkX19Gj6OM5NirmZbQrSe8SdrfLRJlvMli0zvjk0c/c/o+n5mO7WNJdq37oRAhqWsR6J2DKu+GUHyPnU9nr5spBI4pyVPvwInui3IGwenzR9mwSOTDl1iL6stvCWE0OqdnZKI0GIFYt1PzSDLpzAHS7WPnO91+ObEQkKaW4TkwvGkXfw12OneDHHU8JnXSOeRlNx82uu8mlwSqZZOTOuXWOM12qUk63PagZhNcg2mhgkA/1ujEAwFiVXJX/lCoYtiTrdPsrBBbiU8l3nDvpOl3qq2Mo6BGvJvsMFVUmLz3PsD/+qgZdnE2zD8MyW1Smv6iNltgiyaWmWrpeL4T3DgkHE/y2cnAVfd1EflSlsNK7Sz3lkaW0MdMtTh6HT+WRIQmg14HSipPHdXRgEwsmJV0ipmFU4MwrCVqE5S4KlQl2PpjqmPigWIK1qin0KKeHk6lM8Sj42eKO7gpNQ10ZEB9/Q7ESlHS9FbtoGv1X5FFMchLTwuQOJZT07QnBCxjxcpnoAfe4Xz9usAJhf8Kv6BWUHaBb51JmzkXn00Tf0v0kBdgg/WftrsS8G8zq3AxEB2srzCS05N68loLknAXm97U1cJlc80bt67bWR/uc/6mxOaIXMmLuekFTlwXoh+UaxbSUd80eA6iM/IMpYT/VXi4T4zhNVj8o+2e2Aj6YIM2iR/qvDizgew+L5c2SW450QC4mxt09BUBBfBSRyrJfKoegkAPr4dXWIh+4DgRkdLZTNmjgQhCFQxligsPUl1dHTaK7Hwb6Nq3hkIxfurhUuHDpY75NnNPRpsK0BtaHoiFDp1AMcFBiP10AqONGkPGbEDp1oHEj2YkT4miDto7Hv8WbF0uRfQkHwMb6L8HFHgXMYHik/u2l7bvPnK3sCgqGZELRIz7c6lOhQ/5F6SfESxnIMvjJ5kOGx84Azp2jpOjclWFfsACGk5AE0JI403yF66UHQ05MDq1884
- Lc/e812S
- h5ZJGtMCnZqkAs2jPinuchHY8UegJthrwFgdHjoQPbqdGrVFM6RlCqn5lN+4uuxzroj6pJQurVbL126YLYT9VxYKsMo/wg1W3PnEojKO1eW3fCVLrbcIOWQfHwO0oibH5xIhs2dYDRnJn54qn/w+jZ1wc9aSJIYMV07IafsQHCMczdHaz2U+AcWa0hr+d3sk+r7BlkfTZOC5qJV31ZwAKu0t8Qjd2ckzUbuF6vPMjhJHLpoQQXLl4ItcMGyotI70I9O8cUyzckvJFS18OyYz1QYijLpj5iXoVLex0oLM5IRs1PYUWHbNW/M4Atrk4jABMmKMyFdkL5Afx6sm4J7/YzvM4PeP50veX7EHoeYha73JN33SRzQ432VoyoFSt7U7YFyV1d90i+Fc5G5QD08PbFv9XYoCfEVWLqJge5rir34H+1FlY88d3q8EjlVht+hbsHuXNHdylKJQgPDfKRETKXDP1lxmAiB2RpQke3Ql6rA429QF/5juKqHakGM15Qpd9gbtRnI8T6z/ZDlvnxo7Eb7BNKq+esGJAqsUZW3Gt8CShReZBNH0s0U03mPE+nQOG/pGEvWCM9k6DzJP43DnZ7JjKrg3t24DoHgif+SE+bUUD85nHGnYoHQTJQRuIwOd+HoHRW5rcaKYAnJEtI9IKsiKKgzGvEWeRaqkZMqnTUfN7Y80zQRzwAjiZCcXm5XQMlcsF9mJsBoh1E6dXRRcdd4f+wActQFoVTdQB
+X-Rspamd-Queue-Id: A092D160014
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763831711-840012
+X-HE-Meta: U2FsdGVkX1/TspIuOvsvr0F3rL+Qbe802h3izAc2CldWNgB9E/pmo08460XeAZ58bxLVa83YC2Bx4xMLhF9yA1HlrkW383znGoe9Tq+eqsyCP0MMvH0He8+l4W7v8Ev6l08gMcip3eP5s6Di8NWzDgnjhrdUn4cwPI8FUbE6VEfAqt3vIUPGFbeo5n5pLudelko268+v9twnsmBDKd/kf4xlAqEgU1rx8f6/JefV5/oXS3iHc4tVAUlbeJj9g+ACdLcWRTi+YMcezafVwMX4tso6h4jrk7Z9Xvr5/DdZyM5ZHiS70L+lMUFTVctdAINalZoiFutdsKpTRHTQZnnSXHNgjCOEc96H2hPdj8LBZxDGm5QtMOprzNyaRNhkCY2YuKpZ7/62F7NFWrwDOtH4dS5Epn6eogdUwdCHR3XlzMlkSIlIs8uV3Ws7vBluHo+2pSzpg6YYXWucaZIw5k9WkBGWSj5oCfKCsO+owxSeehre/Gx+CQ3rsMU0DoIxEufTdccg6C4JgSUyRbJ5ADVNshj0z0H4amD5715NzV3dgRya7ykmx+B78mQMnkYrZGaxeT6LpSdApW2OqdNdGJfNkdA/GNatXfLocSQkcOOeyXNpd5eWhWwtV8XcGBiFq9DeezDP3P7uJsTyInsCxxoJjYJdMFnnG0UkeeRkbnnLb1lk/lYaOQ0YzO4sssr+OKsJf287hhOQL7SEqhr+xXi+d/pEdrkTymm2tuHrtSEDdj8N2cX+4fjF6ck3xN6z0AveJ39OAz7xa4uRe53GN9KZ+PvEV6i0GogZQO++uUxRzMWsqeDHAIKp9sO8zPQKoBUoiilxfWJojqqQy45znKr+Al3NEHCoGuc1IzAfQIrdiQkPN7P2xHAni6RpZ5AnH4V6kp6aaXHeUv35bUYzYLRJRHOz6JSp06Fk+0CvzlIzsFZoON4/hseP2nzjrPTN8I81b0tDPyBev/7S2tYwxIj
+ meu1l8dg
+ nBIH4qf6NUqXyDT3zzKIX4neem3kARMYCWWxz5EwQ0Egmz4A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -234,110 +221,316 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 18:29, Eric W. Biederman wrote:
-> "Eric W. Biederman" <ebiederm@xmission.com> writes:
+On 2025-11-21 13:03, Andrew Morton wrote:
+> On Thu, 20 Nov 2025 16:03:53 -0500 Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
+>> ...
+>> It aims at fixing the per-mm RSS tracking which has become too
+>> inaccurate for OOM killer purposes on large many-core systems [1].
 > 
->> Bernd Edlinger <bernd.edlinger@hotmail.de> writes:
+> Presentation nit: the info at [1] is rather well hidden until one reads
+> the [2/2] changelog.  You might want to move that material into the
+> [0/N] - after all, it's the entire point of the patchset.
+
+Will do.
+
+>> The hierarchical per-CPU counters propagate a sum approximation through
+>> a N-way tree. When reaching the batch size, the carry is propagated
+>> through a binary tree which consists of logN(nr_cpu_ids) levels. The
+>> batch size for each level is twice the batch size of the prior level.
+>> ...
+
+> Looks very neat.
+
+I'm glad you like the approach :) When looking at this problem, a
+hierarchical tree approach seemed like a good candidate to solve the
+general problem.
+
+> 
+> Have you identified other parts of the kernel which could use this?
+
+I have not surveyed other possible users yet. At first glance, users
+of the linux/percpu_counter.h percpu_counter_read_positive() may
+be good candidates for the hierarchical tree. Here is a list:
+
+lib/flex_proportions.c
+157:		num = percpu_counter_read_positive(&pl->events);
+158:		den = percpu_counter_read_positive(&p->events);
+
+fs/file_table.c
+88:	return percpu_counter_read_positive(&nr_files);
+
+fs/ext4/balloc.c
+627:	free_clusters  = percpu_counter_read_positive(fcc);
+628:	dirty_clusters = percpu_counter_read_positive(dcc);
+
+fs/ext4/ialloc.c
+448:	freei = percpu_counter_read_positive(&sbi->s_freeinodes_counter);
+450:	freec = percpu_counter_read_positive(&sbi->s_freeclusters_counter);
+453:	ndirs = percpu_counter_read_positive(&sbi->s_dirs_counter);
+
+fs/ext4/extents_status.c
+1682:	nr = percpu_counter_read_positive(&sbi->s_es_stats.es_stats_shk_cnt);
+1694:	ret = percpu_counter_read_positive(&sbi->s_es_stats.es_stats_shk_cnt);
+1699:	ret = percpu_counter_read_positive(&sbi->s_es_stats.es_stats_shk_cnt);
+
+fs/ext4/inode.c
+3091:		percpu_counter_read_positive(&sbi->s_freeclusters_counter);
+3093:		percpu_counter_read_positive(&sbi->s_dirtyclusters_counter);
+
+fs/btrfs/space-info.c
+1028:	ordered = percpu_counter_read_positive(&fs_info->ordered_bytes) >> 1;
+1029:	delalloc = percpu_counter_read_positive(&fs_info->delalloc_bytes);
+
+fs/quota/dquot.c
+808:	percpu_counter_read_positive(&dqstats.counter[DQST_FREE_DQUOTS]));
+
+fs/ext2/balloc.c
+1162:	free_blocks = percpu_counter_read_positive(&sbi->s_freeblocks_counter);
+
+fs/ext2/ialloc.c
+268:	freei = percpu_counter_read_positive(&sbi->s_freeinodes_counter);
+270:	free_blocks = percpu_counter_read_positive(&sbi->s_freeblocks_counter);
+272:	ndirs = percpu_counter_read_positive(&sbi->s_dirs_counter);
+
+fs/jbd2/journal.c
+1263:	count = percpu_counter_read_positive(&journal->j_checkpoint_jh_count);
+1268:	count = percpu_counter_read_positive(&journal->j_checkpoint_jh_count);
+1287:	count = percpu_counter_read_positive(&journal->j_checkpoint_jh_count);
+
+fs/xfs/xfs_ioctl.c
+1149:		.allocino = percpu_counter_read_positive(&mp->m_icount),
+1150:		.freeino  = percpu_counter_read_positive(&mp->m_ifree),
+
+fs/xfs/xfs_mount.h
+736:	return percpu_counter_read_positive(&mp->m_free[ctr].count);
+
+fs/xfs/libxfs/xfs_ialloc.c
+732:	    percpu_counter_read_positive(&args.mp->m_icount) + newlen >
+1913:	 * Read rough value of mp->m_icount by percpu_counter_read_positive,
+1917:	    percpu_counter_read_positive(&mp->m_icount) + igeo->ialloc_inos
+
+mm/util.c
+965:	if (percpu_counter_read_positive(&vm_committed_as) < allowed)
+
+drivers/md/dm-crypt.c
+1734:			if (unlikely(percpu_counter_read_positive(&cc->n_allocated_pages) +
+2750:	 * Note, percpu_counter_read_positive() may over (and under) estimate
+2754:	if (unlikely(percpu_counter_read_positive(&cc->n_allocated_pages) >= dm_crypt_pages_per_client) &&
+
+io_uring/io_uring.c
+2502:	return percpu_counter_read_positive(&tctx->inflight);
+
+include/linux/backing-dev.h
+71:	return percpu_counter_read_positive(&wb->stat[item]);
+
+include/net/sock.h
+1435:	return percpu_counter_read_positive(sk->sk_prot->sockets_allocated);
+
+include/net/dst_ops.h
+48:	return percpu_counter_read_positive(&dst->pcpuc_entries);
+
+There are probably other use-cases lurking out there. Anything
+that requires sorting resources taken by objects used from many
+CPUs concurrently in order to make decisions are good candidates.
+
+The fact that the max inaccuracy is bounded means that we can perform
+approximate comparisons in a fast path (which is enough if the values
+to compare greatly vary), and only have to do the more expensive
+"precise" comparison when values are close to each other and we
+actually care about their relative order.
+
+I'm thinking memory usage tracking, runtime usage (scheduler ?), cgroups
+ressource accounting.
+
+> 
+>>   include/linux/percpu_counter_tree.h | 239 +++++++++++++++
+>>   init/main.c                         |   2 +
+>>   lib/Makefile                        |   1 +
+>>   lib/percpu_counter_tree.c           | 443 ++++++++++++++++++++++++++++
+>>   4 files changed, 685 insertions(+)
+>>   create mode 100644 include/linux/percpu_counter_tree.h
+>>   create mode 100644 lib/percpu_counter_tree.c
+> 
+> An in-kernel test suite would be great.  Like lib/*test*.c or
+> tools/testing/.
+
+I'll keep a note to port the tests from my userspace librseq
+percpu counters feature branch to the kernel. I did not do it
+initially because I wanted to see if the overall approach was
+deemed interesting for the kernel.
+
+>> +struct percpu_counter_tree {
+>>...
+>> +};
+> 
+> I find that understanding the data structure leads to understanding the
+> code, so additional documentation for the various fields would be
+> helpful.
+Will do.
+
+> 
+>> +
+>> +static inline
+>> +int percpu_counter_tree_carry(int orig, int res, int inc, unsigned int bit_mask)
+>> +{
+>> ...
+>> +}
+>> +
+>> +static inline
+>> +void percpu_counter_tree_add(struct percpu_counter_tree *counter, int inc)
+>> +{
+>> ...
+>> +}
+
+(x86-64 asm below when expanding the inline functions into a real function)
+
+00000000000006a0 <disasm_percpu_counter_tree_add>:
+[...]
+  6a4:   8b 4f 08                mov    0x8(%rdi),%ecx
+  6a7:   48 8b 17                mov    (%rdi),%rdx
+  6aa:   89 f0                   mov    %esi,%eax
+  6ac:   65 0f c1 02             xadd   %eax,%gs:(%rdx)
+  6b0:   41 89 c8                mov    %ecx,%r8d
+  6b3:   8d 14 06                lea    (%rsi,%rax,1),%edx
+  6b6:   41 f7 d8                neg    %r8d
+  6b9:   85 f6                   test   %esi,%esi
+  6bb:   78 18                   js     6d5 <disasm_percpu_counter_tree_add+0x35>
+  6bd:   44 21 c6                and    %r8d,%esi
+  6c0:   31 f0                   xor    %esi,%eax
+  6c2:   31 d0                   xor    %edx,%eax
+  6c4:   8d 14 31                lea    (%rcx,%rsi,1),%edx
+  6c7:   85 c8                   test   %ecx,%eax
+  6c9:   0f 45 f2                cmovne %edx,%esi
+  6cc:   85 f6                   test   %esi,%esi
+  6ce:   75 1d                   jne    6ed <disasm_percpu_counter_tree_add+0x4d>
+  6d0:   e9 00 00 00 00          jmp    6d5 <disasm_percpu_counter_tree_add+0x35>
+  6d5:   f7 de                   neg    %esi
+  6d7:   44 21 c6                and    %r8d,%esi
+  6da:   f7 de                   neg    %esi
+  6dc:   31 f0                   xor    %esi,%eax
+  6de:   31 d0                   xor    %edx,%eax
+  6e0:   89 f2                   mov    %esi,%edx
+  6e2:   29 ca                   sub    %ecx,%edx
+  6e4:   85 c8                   test   %ecx,%eax
+  6e6:   0f 45 f2                cmovne %edx,%esi
+  6e9:   85 f6                   test   %esi,%esi
+  6eb:   74 e3                   je     6d0 <disasm_percpu_counter_tree_add+0x30>
+  6ed:   e9 ae fb ff ff          jmp    2a0 <percpu_counter_tree_add_slowpath>
+
+>> +
+>> +static inline
+>> +int percpu_counter_tree_approximate_sum(struct percpu_counter_tree *counter)
+>> +{
+>> ...
+>> +}
+
+0000000000000710 <disasm_percpu_counter_tree_approximate_sum>:
+[...]
+  714:   48 8b 47 10             mov    0x10(%rdi),%rax
+  718:   8b 10                   mov    (%rax),%edx
+  71a:   8b 47 18                mov    0x18(%rdi),%eax
+  71d:   01 d0                   add    %edx,%eax
+  71f:   e9 00 00 00 00          jmp    724 <disasm_percpu_counter_tree_approximate_sum+0x14>
+
+> 
+> These are pretty large after all the nested inlining is expanded.  Are
+> you sure that inlining them is the correct call?
+
+percpu_counter_tree_add: 30 insn, 79 bytes
+percpu_counter_tree_approximate_sum: 5 insn, 16 bytes
+
+So I agree that inlining "add" may not be the right call there due
+to the relatively large footprint of bitwise operations used to pick
+the carry, and the fact that it contains a xadd which is ~9 cycles
+on recent CPUs, so adding the overhead of a function call should not
+be so significant.
+
+Inlining "approximate_sum" seems to be the right call, because the
+function is really small (16 bytes), and it only contains loads and
+a "add", which are faster than a function call.
+
+> 
+> 
+>> +#else	/* !CONFIG_SMP */
+>> +
 >>
->>> This introduces signal->exec_bprm, which is used to
->>> fix the case when at least one of the sibling threads
->>> is traced, and therefore the trace process may dead-lock
->>> in ptrace_attach, but de_thread will need to wait for the
->>> tracer to continue execution.
+>> ...
 >>
->> A small quibble it isn't a dead lock.  It isn't even really a live lock,
->> as it is possible to SIGKILL our way out.
->>
+>> +#include <linux/percpu_counter_tree.h>
+>> +#include <linux/cpumask.h>
+>> +#include <linux/percpu.h>
+>> +#include <linux/atomic.h>
+>> +#include <linux/errno.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/math.h>
+>> +
+>> +#define MAX_NR_LEVELS 5
+>> +
+>> +struct counter_config {
+>> +	unsigned int nr_items;
+>> +	unsigned char nr_levels;
+>> +	unsigned char n_arity_order[MAX_NR_LEVELS];
+>> +};
+>> +
+>> +/*
+>> + * nr_items is the number of items in the tree for levels 1 to and
+>> + * including the final level (approximate sum). It excludes the level 0
+>> + * per-cpu counters.
+>> + */
+> 
+> That's referring to counter_config.nr_items?  Comment appears to be
+> misplaced.
 
-That is of course what I meant to say with that sentence.  In my language an
-application process can "dead-lock" by waiting on a mutex forever.
-Indeed the original problem with the dead-lock (I think in mm_access) was
-worse, as both involved processes were only killable by "kill -9", but with the
-remaining problem in ptrace_attach, the debugger can be killed by a simple CTRL-C.
+Good point, I'll move it besides the "nr_items" field in counter_config.
+I'll also document the other fields.
 
-So if I understand you right, you want me use a different term here like
-"the trace process may be blocked in trace_attach" or so?
-Or could you please give me a concrete suggestion how to rephrase the patch
-description.
+>>...
+>> +	/* Batch size must be power of 2 */
+>> +	if (!batch_size || (batch_size & (batch_size - 1)))
+>> +		return -EINVAL;
+> 
+> It's a bug, yes?  Worth a WARN?
 
-BTW, unless there are objections I would also want to rephrase the description
-of cred_guard_mutex to replace the term "Deprecated" with "Not recommended",
-like this:
+I'll add a WARN_ON().
 
---- a/include/linux/sched/signal.h
-+++ b/include/linux/sched/signal.h
-@@ -260,11 +260,11 @@ struct signal_struct {
-        struct mutex cred_guard_mutex;  /* guard against foreign influences on
-                                         * credential calculations
-                                         * (notably. ptrace)
-                                         * Held while execve runs, except when
-                                         * a sibling thread is being traced.
--                                        * Deprecated do not use in new code.
-+                                        * Not recommended to use in new code.
-                                         * Use exec_update_lock instead.
-                                         */
+>>...
+> It would be nice to kerneldocify the exported API.
 
+OK
 
->> Thinking about this there is a really silly and simple way we can deal
->> with this situation for PTRACE_ATTACH.  We can send SIGSTOP and wait for
->> the thread to stop before doing anything with cred_guard_mutex.
->>
->> PTRACE_ATTACH already implies sending SIGSTOP so as long as we have
->> enough permissions to send SIGSTOP I don't see that being a problem.
->>
->> The worst case I can see is that we get a case where we stop the
->> process, the permission check fails under cred_guard_mutex and
->> and ptrace attach has fails and has to send SIGCONT to undo it's
->> premature SIGSTOP.  That might almost be visible, but it would still
->> be legitimate because we can still check that we have permission to
->> send SIGSTOP.
 > 
-> Bah no I am full of it.
-> 
-> The challenging behavior is in the semantics of the kernel operations.
-> We need to describe it as such please.
-> 
-> It is the same class of problem as a single threaded process calls exec
-> with a pipe attached to both stdin and stdout of the new process.
-> 
-> For the stdin and stdout we can say just use pull and nonblocking I/O.
-> 
-> The problem is that both PTRACE_ATTACH and PTRACE_SEIZE block over
-> the duration of exec, and if exec is waiting for a thread to exit,
-> and that thread is blocked in PTRACE_EVENT_EXIT waiting for that very
-> same tracer those processes will hang. Not deadlock.
-> 
-> 
-> I haven't seen anyone clearly describe the problem lately so I am
-> repeating it.
-> 
-> 
-> Just looking at the code I don't think there is any fundamental reason
-> to call commit_creds after de_thread.  If we can change that we can sort
-> this out without any change in userspace semantics.
-> 
-> If we can't move commit_creds we have to either give
-> PTRACE_ATTACH/PTRACE_SEIZE a non-block mode, or break out of
-> PTRACE_EVENT_EXIT in de_thread.
-> 
-> I will post a proof of concept of moving commit_creds in just a minute.
-> 
-> Eric
+> Some fairly detailed words explaining the pros and cons of precise vs
+> approximate would be helpful to people who are using this API.
 
-Note: I forgot to add apparmor and selinux mailing list to this patch, previous
-versions of this did try to avoid to touch the security engine code, and did
-instead temporarily install the new credentials, mostiy for the benefit of the
-security engines.  But that is considered an unacceptable solution, therefore
-I want to use instead a new option to ptrace_may_access.
-All security engines have to handle this option, but the advantage is, that the
-engines could detect and maybe also deny the unsafe execve.
+Good point.
 
-This is an alternative to Eric's patch: "exec: Move cred computation under
-exec_update_lock" that is supposed to solve the same problem, but tries instead
-to avoid any user visible API change.
+>> +int __init percpu_counter_tree_subsystem_init(void)
+> 
+> I'm not sure that the "subsystem_" adds any value.
 
+The symbol "percpu_counter_tree_init()" is already taken
+for initialization of individual counter trees, so I added
+"subsystem" here do distinguish between the two symbols.
+Looking at kernel bootup functions "subsystem_init" seems
+to be used at least once:
 
-Thanks
-Bernd.
+1108:	acpi_subsystem_init();
 
+> 
+>> +{
+>> +
+>> +	nr_cpus_order = get_count_order(nr_cpu_ids);
+> 
+> Stray newline.
+
+OK
+
+Thanks for the review!
+
+Mathieu
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
