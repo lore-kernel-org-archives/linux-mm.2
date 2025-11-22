@@ -4,117 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B07CCFC536
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 13:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2948CFC539
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 13:52:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A401B6B0005; Sat, 22 Nov 2025 08:43:57 -0500 (EST)
+	id EC1326B0008; Sat, 22 Nov 2025 08:52:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C9A96B0007; Sat, 22 Nov 2025 08:43:57 -0500 (EST)
+	id E71FE6B000A; Sat, 22 Nov 2025 08:52:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 892286B0008; Sat, 22 Nov 2025 08:43:57 -0500 (EST)
+	id D87956B000C; Sat, 22 Nov 2025 08:52:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7201F6B0005
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 08:43:57 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E99B81307C0
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:43:56 +0000 (UTC)
-X-FDA: 84138361272.26.F728421
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 111B0C000B
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:43:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=eVEjYypz;
-	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE84E6B0008
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 08:52:01 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F3D813BE20
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:52:01 +0000 (UTC)
+X-FDA: 84138381642.16.8E50760
+Received: from smtpx020.webglobe.com (smtpx020.webglobe.com [62.109.154.244])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1A725140002
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:51:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=mazyland.cz header.s=default header.b=PDSvH6BR;
+	dmarc=pass (policy=none) header.from=mazyland.cz;
+	spf=none (imf09.hostedemail.com: domain of milan@mazyland.cz has no SPF policy when checking 62.109.154.244) smtp.mailfrom=milan@mazyland.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763819519; a=rsa-sha256;
+	cv=none;
+	b=E1+oJQP5iFu4H6o8Z1VG9/l5ZKa2V9q4nyiOO16z6Aga8AB8wtI1vUdWaQevpHTnWjy6ju
+	07eBcfItMWxxL6lixYaXGU0BYaMkOWZs/+D6B3PBrK/n8WYbva+CTx0Y2JQcSXzY5XCOrM
+	LVN63OaA9rhYnO3912G+MNOBqNNkdxU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=mazyland.cz header.s=default header.b=PDSvH6BR;
+	dmarc=pass (policy=none) header.from=mazyland.cz;
+	spf=none (imf09.hostedemail.com: domain of milan@mazyland.cz has no SPF policy when checking 62.109.154.244) smtp.mailfrom=milan@mazyland.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763819035;
+	s=arc-20220608; t=1763819519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=skEifoSnF8Rut80XhCz/YHjVueIg7ytLGu1hExe5Elw=;
-	b=uxX96/hCzLV/SigIagvzOrdJWzDwgjXZ4IkQH+OKU01jW7fIgXZzUNdLppz9pd1FYc5Cuw
-	nLWSTE6OuxsKCtTJ4g9ZMPFuOobSF3LqI7bZZnKEDdsokK1zuaXXrjOdTNV2p+V3Jw5bwp
-	8901xn34iHzEmK4AIUDMr3UmclMBBH4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763819035; a=rsa-sha256;
-	cv=none;
-	b=HxoITQXeE0xX2TgUvpqMMdo8c+qDZFKuO0l5zFGPlB8lk77AofskcxGQWC+9te9vDad27z
-	4Z2ynzHNyWx2zAQLbSaPwSbCeVMaqkpT/fNTs83n8MHy6EyklhVSLcApkj2k++SFKI4Q0H
-	Qou9Y3byK7wGdmAMJN7BoFwWXPsXTKU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=eVEjYypz;
-	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29555b384acso36291495ad.1
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:43:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763819034; x=1764423834; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=skEifoSnF8Rut80XhCz/YHjVueIg7ytLGu1hExe5Elw=;
-        b=eVEjYypz9w02uYAjvVNwh8GZBVvluHtS9PRW/e0cT3I8U+6qzNmBIXgWYXwJTNOd+3
-         8Rr/l681RmDLcqBqcP2Ha75KoMwoeg7gvR2LgNWsOuuzIT9YPUGnsz/tAwbuDrFYBjkg
-         lUStLfgRQYvHd692sJ3LzVobMrPH90DCInxmc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763819034; x=1764423834;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=skEifoSnF8Rut80XhCz/YHjVueIg7ytLGu1hExe5Elw=;
-        b=eoEuZNxxE5fgmYDwajAtsVzDRy9Kqyst2lIrkIAUG+HHHdHYv/0M/ip6WCyhSjhS+o
-         PCk1rAkgMCw7yUonuIx2mrRhoF/3L5psOBkURLF76MSMOTQls4lFXz8qEDddgLvhcEY/
-         VqPlp+6DPI1bkb6JLCqs1IqMOUvPsP/+l26JI/fROtmeGFEGCzWf7xh3xqDCklO46yw+
-         LDxiJCkfNofehOwTDt+OLxIvIsoBWr8Iw9anI4dyJAm7EWuLNrl2IMWcxmo83cOVXqX4
-         2LomXjHPawAtKx1ajgmh6nIhENOsXa9M4I2MKOEGuC3rFD8RQIC5+w73r/YpM6V4rLrb
-         GcsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWU5pr3TZTjmsETeuvy/5wQmUjIaKH5jwqRagWHwTEOYsFMt5AxB12apQAt0hc6p8tDk/bSfkVjug==@kvack.org
-X-Gm-Message-State: AOJu0YzAdesQn+YSmvNMpx3ABlVmqEebtaS3RJ0yVF2UChk9FoGtMtHK
-	OM/zOPcshwPg/ajm/SEUVIkMeeiFeJmVZjImgDOFqNvSgzPmQc7tbdBTxKIday0LOg==
-X-Gm-Gg: ASbGncuJRjiJgXUBMILQR/zwc/uuYpcIHerG5BgFjKvttlJBgUL1qzzEgTTVVIMQJ1a
-	mjSBGR3P9TIqXfoxVkD/Tx6JXomPShaT59lrLkDbZ6n1whexIPbOZan+hMgj+LEqyd+WBmR2z5F
-	7mfHog94xfBQBBrANcYBCX0uyPAd9xsmn1DCL4EjS/njXeJKixbxQMRxGrsbFiXaVBp1GGgy5sr
-	olwoJQoc/0Atq4txidPAwNfE3OZVl+8ov4LnqDYMQ3X1S/yeI+FQ3+zi6qvdn7TGNjLeFlbNtvi
-	Fy2UV+2bURQq+BWji4hj9uoQvDBJxqTXyws4Oug6B02Nm9N9EfJBGRlMkzVSmX47/ebezWYShZV
-	4Z4WO/VLEF8jQk4tTZXNO+JMHv4/wYT3UJWvFtYUkfqxM6saG8jVR7P8ZI/8pl1mLL8+Ly5b6FP
-	pSUgZv2NFRYQT7PMBwz89MqY6wbK03bNnMUCPVRQqZmDwsnKN/F2c=
-X-Google-Smtp-Source: AGHT+IFEAzXxpBMN4+Cvpnq9Wz3bF/ejan4xQv2Z6/vy+0j3hfTRsuEa6ttfw6fKfrdggqzCKIk7CQ==
-X-Received: by 2002:a17:90b:4ec7:b0:341:88d5:a74e with SMTP id 98e67ed59e1d1-34733f4ac35mr5395298a91.29.1763819033721;
-        Sat, 22 Nov 2025 05:43:53 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:948e:149d:963b:f660])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-345b047616bsm5856992a91.9.2025.11.22.05.43.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 05:43:53 -0800 (PST)
-Date: Sat, 22 Nov 2025 22:43:48 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Yuwen Chen <ywen.chen@foxmail.com>, akpm@linux-foundation.org, bgeffon@google.com, 
-	licayy@outlook.com, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, minchan@kernel.org, richardycc@google.com
-Subject: Re: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
-Message-ID: <ztqfbzq7fwa5znw5ur45qlbnupgepaptzjaw2izsftbtth6zca@db4ruyaulqab>
-References: <ts32xzxrpxmwf3okxo4bu2ynbgnfe6mehf5h6eibp7dp3r6jp7@4f7oz6tzqwxn>
- <tencent_865DD78A73BC3C9CAFCBAEBE222B6EA5F107@qq.com>
- <buckmtxvdfnpgo56owip3fjqbzraws2wvtomzfkywhczckoqlt@fifgyl5fjpbt>
- <8c596737-95c1-4274-9834-1fe06558b431@linux.alibaba.com>
- <kvgy5ms2xlkcjuzuq7xx5lmjwx3frguosve7sqbp6wh3gpih5k@kjuwfbdd2cqz>
- <853796e3-fd44-4fc2-8fd2-5810342a6ebe@linux.alibaba.com>
+	bh=bkpfSprlu8mGib1c1nujr3uybcLVrrvCT0grlaS+iiU=;
+	b=nUspuP3bCXA3VAkhCfqap8WSRofqXB/Q6NAuTCwjRIjGpW/RcCuCbEXrMquXUlzT+ypf+t
+	fphd02/Z2FYoDDAheWwW4MO2rl8Z9UIY6oEJ8k8gABswl0Wt4wTrhXZOagGgy862ui5nY5
+	fUaIf0gpRTXnDbxuYr65Ls40XPEtk+o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mazyland.cz
+	; s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bkpfSprlu8mGib1c1nujr3uybcLVrrvCT0grlaS+iiU=; b=PDSvH6BRtX/qkR4mGWWMFMJ7Qr
+	RUcdAyXi00bDVuk74RuOjsK9cTjuuZ8+5bn2SxUaSJymq/gBTEgXgWlX3Q5gmMe4aDtygV82SZAfq
+	WXglxuheiEIXcoZyhVfDgrBS9eLX6TK9Cw0N1CDDb80mxwTBAHq6sgO1g3ayAJlllGA0=;
+Received: from [62.109.151.60] (helo=mailproxy10.webglobe.com)
+	by smtpx020.webglobe.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <milan@mazyland.cz>)
+	id 1vMo1o-0059ua-25; Sat, 22 Nov 2025 14:51:52 +0100
+Received: from 85-70-151-113.rcd.o2.cz ([85.70.151.113] helo=[192.168.2.14])
+	by mailproxy10.webglobe.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <milan@mazyland.cz>)
+	id 1vMo1o-00CJls-6Z; Sat, 22 Nov 2025 14:51:52 +0100
+Message-ID: <aa2ea539-368d-409e-afd6-f1e547497ed2@mazyland.cz>
+Date: Sat, 22 Nov 2025 14:51:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <853796e3-fd44-4fc2-8fd2-5810342a6ebe@linux.alibaba.com>
-X-Stat-Signature: jkqgtmpjre41omyfstirupu5ktxymuj5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] pm-hibernate: flush disk cache when suspending
+To: Askar Safin <safinaskar@gmail.com>, mpatocka@redhat.com
+Cc: Dell.Client.Kernel@dell.com, agk@redhat.com, brauner@kernel.org,
+ dm-devel@lists.linux.dev, ebiggers@kernel.org, kix@kix.es,
+ linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-lvm@lists.linux.dev, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org, linux-raid@vger.kernel.org,
+ lvm-devel@lists.linux.dev, msnitzer@redhat.com, mzxreary@0pointer.de,
+ nphamcs@gmail.com, pavel@ucw.cz, rafael@kernel.org, ryncsn@gmail.com,
+ torvalds@linux-foundation.org
+References: <c44942f2-cf4d-04c2-908f-d16e2e60aae2@redhat.com>
+ <20251103155345.1153213-1-safinaskar@gmail.com>
+Content-Language: en-US
+From: Milan Broz <milan@mazyland.cz>
+In-Reply-To: <20251103155345.1153213-1-safinaskar@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: milan@mazyland.cz
+X-Mailuser-Id: 923906
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1A725140002
+X-Stat-Signature: cqj85qhgn74xaanrjp4a3ss1bugmqum7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 111B0C000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763819034-935048
-X-HE-Meta: U2FsdGVkX1+R6eoA8w+tnFBCVKkcvEuuIZEIE/+Hv80fXp8bQQZ85Y4FQTf124ptV9+lnj6MAfBCP+mwMTF3b9mQ1yExSGPEiTL6ySTjKBKHjcZgKfxEeMZb4Gty1Sb/4/uhc2VtS4fjwEx4xAEkgZIW5xjhrL4B8Ixvf2zVGe5HBnuYFTtFVaNWDUVb41fKG/f0mAMbRrFw41H0KesMcrAIUP8NCBKPzuDQJ6tiSQt3/BhwlwL9ng3kVHforDi0PlIFf180/DKlGtVv/k8EnVbemU3La7CUI8817/1+l+WlDr9YwvZrcZxvRGD8hUG/86Aiz9iqIVtAcQ5dMAKqT4BfYR5Uf98TybkTXLx70HLot6Utxjt2MMH7awOcZfFSRTeTkYpYyfj/sqHn2Q3hDirf9r0GA0cFOtYWmKTOSwTJNyAUHBGzBSg+FM2WGXE+mS3V98Q1PVRIVc7ya0sz6Ks74KDt0UsBr6bkNV+wZothMDaXisFLrK+VQMAWhqNmdlZEJPfvSLaktMcZz7H/LLimUeEUsCNFp+ERyzNvd0wCWHoAqMeiJdEpX2DZDSSycCnOupen4IQSjrX446m1FhZPisTxscWqLOZ4oWhEylPTvewyA/FzVw2bhVJxUOyptuJ3PAjMOKYUlhQY/Kx1+oJ5l9OB3jj+0lCgdCPmdk0Woz8l4AdYAPYSfZ8baCFmqhyv5G+D/8gFSi+qZTMCQktoEvGPlxOsu1RcW77lTPWwQL1XS47sxKlah6qWy0EJ3xrd8rg7/U8gFN8Ts0XYQhqGY6sKnfkn7W8872Dp8Kevg1IkiatX9Iu0W7IcicD0JnsB0sWxP6U34Qsjzh9533AaG2P70WNhQ6BUP6oAzxNVwixiT/h0/Nrh9ygJLG4jn8iU6bZCL2oW//ScEMcSGDOaFBAmoo02dt6eyLmiQ+RjfrtP99Yr0Rd4rIxwSX1giUXpRMoUi9TJHWzR3ag
- JYSj+MMo
- FHFjKmPXUudd9m45qMndZ4wNmscebe8Yfyq2RnH5PWpvFx42zYqKefO/RYeiAODZCMDutThAMQRIsLyxaO2hL1E4w4ynT+spHD6sciq9Xvou1OU21Yd8ZPTgfQ8VWlx4/4lBGj6wFyZ5WNJQyoig7wVgIjlsiTousBie/r8FwFlwOZRFvilFjtSWTcOSu6wJit5KfyVICsHPiInJCquMYlHOsrvE9VqG3FxvH3ASSNx505drrGNBT9sz9DHAB1QrQhuRUC5v50d1JobH3TbPDZL1yMZgTOmLBW0rFBtuAsELD6UtuLJO7PN5nk7FbszaVLminMCT0/jxiQOYGMiMpS8j/s9M1MrTZrFlFZChg1OHSIXU=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1763819518-442864
+X-HE-Meta: U2FsdGVkX1+OpnEHhk3DNIjichL52zof/0cx8IuzMx2Qw2cZon/LnD9LNsaSoJlRL4vhwwo1q3NNv23dOc7+zoEARShjrNis5UJFRkHbsewAmuwbl9z2yfbLWXigvYgq8cbVl7DOpb6+bnInR+YycAo22rrnGUzF7QwZLnznieOPmp4BX9KQEsPi02MLTrxAMcB3jTilpSyebyGRh6qyD/VaPwD9wt1bKdaK7bAIuAT1p7EXtEn3gQwCneuZmN4bTjpUjvfOR4DBNVw6pDJUBTKmvfpNfAo/viMgH0gEiPGX0Bf7SOo5MCNDc5LeKvdAC2+DGZ7iiBpRAtOtqGLyD8sk+KSh9OoAE+V6FfOoRTpdMuXi4mG0A4IQoL0+X2zK6HF8G5LF/w6IjL5zRyD+X9EDY3hU+lG8INGOIfnvuRe9lVirNcvGXSFKA8Gg2fczWz1pD9woifeESUQ1m/zsBXK4F3fupDFkLDo/z3iTsgm9YFJEZvr+6SfQBHQ6DI7HPGYGAS9PHgt8wdavo6DIw1gjk9ZJFA0kGmIrmgv6EEd4JDcqY61vCxGuMOXmuYorRLf5GX9QFi6evDKjLotY+qBb9Xac/2Tfa2uJUfYp8rtypbiErqD9+f8kT1RqE4Bu9By+1cvhJubRiAUNgO1nqVVKlIi1Kt2zH5U1D3lt9pSwRInauljGscN2BNy/daJEnj4m8TY7PRuvFtP4lhMerofMNgqQHiu5lhVeJwkhn9sVhA487DX0yYiMHpErVIwi2RemAeeVUIEex53M7LiiLirvf4i4ohPflyOxA4p7ZdCAfjowlTGDbGf519v89wRp/pEN31Nt3Nc8yYTu2HE23OE/v4/UMxZitu47rwo/Ak6cN4dv26084wgic/JORyjsQIZc1JN/1lZ24JeLKtWE2MzQe6u/mo96bt8mQzCgZ8eqz2yi5JzGzWJV2BLZhAQq6Y5BiIlt/5pgurxWXW6
+ A7g4mDHE
+ mrqTsd93wxMjNdkGQOOqbau2dMkinYt9bT/c5ole5Mxdvdr2/K/ct6P066DzNcuBLNChuXFQWpwTzhfcZeulHS70/thXbvyVI7VhnHarhaid8NfoXFVyXlqaBge55bbS+TbGiowFvC7jzIwAIa/quZiIelAgj+obSFcp/WuYVHTICRK00Ey7+BVC8+9IXRBkG4ZlbrUwUnKgb7otaNEZgAhXSqB3nbthtjBUsxSfR1iAOmNGsKVlFRFIBXu+zyjXUG5MRFhsTWUFUXDY=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.034030, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,22 +107,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/22 20:24), Gao Xiang wrote:
-> zram(ext4) means zram device itself is formated as ext4.
+On 11/3/25 4:53 PM, Askar Safin wrote:
+> Mikulas Patocka <mpatocka@redhat.com>:
+>> [PATCH 1/2] pm-hibernate: flush disk cache when suspending
+>>
+>> There was reported failure that suspend doesn't work with dm-integrity.
+>> The reason for the failure is that the suspend code doesn't issue the
+>> FLUSH bio - the data still sits in the dm-integrity cache and they are
+>> lost when poweroff happens.
 > 
-> > 
-> > > zram(ext4) -> backing ext4/btrfs
-> > 
-> > This is not a valid configuration, as far as I'm concerned.
-> > Unless I'm missing your point.
-> 
-> Why it's not valid? zram can be used as a regular virtual
-> block device, and format with any fs, and mount the zram
-> then.
+> Thank you! I hope I will test this within 2 weeks.
 
-I thought you were talking about the backing device being
-ext4/btrfs.  Sorry, I don't have enough context/knowledge
-to understand what you're getting at.  zram has been doing
-writeback for ages, I really don't know what you mean by
-"to act like this".
+Hello,
+
+Did you manage to test the patches?
+
+This issue should not be forgotten, as dm-integrity corrupts data during suspend.
+
+Thanks,
+Milan
 
