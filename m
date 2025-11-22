@@ -4,136 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48ECCCFD2EB
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 20:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 777DACFD2F3
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 21:00:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B74D6B0010; Sat, 22 Nov 2025 15:34:00 -0500 (EST)
+	id B9DD96B0012; Sat, 22 Nov 2025 16:00:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48F836B0011; Sat, 22 Nov 2025 15:34:00 -0500 (EST)
+	id B4EA16B0023; Sat, 22 Nov 2025 16:00:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A4DB6B0012; Sat, 22 Nov 2025 15:34:00 -0500 (EST)
+	id A64406B0024; Sat, 22 Nov 2025 16:00:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2677A6B0010
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 15:34:00 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ADC171A09C9
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 20:33:59 +0000 (UTC)
-X-FDA: 84139394598.18.CE70062
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AE6951C0006
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 20:33:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=knlBzNrY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763843637; a=rsa-sha256;
-	cv=none;
-	b=GVpSPSSyOApjXA4raPMeVq0Lb6OYP8wwUNao8FMdzK9sWKuao1wxlgpOJc38TfxVEpU/jv
-	Bdsvw2DJe34ihxhGkmc3/AzX4g0nIU8QJmha/B/Pl7bf91LMpJ0J9SwRCt4UJVdRf97JW1
-	TyIJdhCRBxrWbHliV/2s7MCAldafQcg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=knlBzNrY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 90FFC6B0012
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 16:00:55 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08341BC72D
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 21:00:55 +0000 (UTC)
+X-FDA: 84139462470.11.FEF6308
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CB4FEC000B
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 21:00:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=JCktNlrJ;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763843637;
+	s=arc-20220608; t=1763845253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dFn2EwqFqpnjkFoKzC+88UIKZbJzPZxsjNZNiF3KFj4=;
-	b=OdM+ztoTBL7C8Kbc/rWQxel8cTTBDocFtc6zrL3JUS+YMbauLvpANSpfjT4/U7Zx+Q/GZO
-	l2pzsZXj+Je6lHhkz94Qc9MlejBQ793pxZ24xT1W4Ox9xivTbK/gPVxeJnTm1z4npILrEH
-	5gOCDVtX9hEDXMDte/1nHtJfwlfSbsc=
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-37b9728a353so32507791fa.0
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 12:33:57 -0800 (PST)
+	bh=jQGcvOhJEN1J1/uUViuAgWsDBHc/YH/i6gYOyi8rm/I=;
+	b=j7UHv2BH8dNO8oYlrP4w2LMcQuwDhf2/c9s+Q2r8NKuOy85yvYNJIoSDOvoz/mkhzu/tKf
+	nJqmqKpL6TfXaWBK4QQgHxMQHo5wdSSIdBZX/kn0gk9W1BLGtVnHifzCtfOqt9glgIsWDD
+	Wf4VbF6FVgz5431jkv1rHlmORys+yqk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763845253; a=rsa-sha256;
+	cv=none;
+	b=QPXqKfbRN5KNOg6aedsasB0L344+P7MhDaQJvbFfkduohe8f94s3nxAdq2blb9sq1BH0g2
+	ztI0jG4I1k7RoY5sat4SdrAXyeZQabngmZblZnua1dmAzFuUURlj0HNrC83GYJnTB5uKIv
+	wEPjNO6kpA7+vFY0MB1aMlWqDUlaHwM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=JCktNlrJ;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-644fcafdce9so4790662a12.1
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:00:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763843636; x=1764448436; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dFn2EwqFqpnjkFoKzC+88UIKZbJzPZxsjNZNiF3KFj4=;
-        b=knlBzNrYOz7BFU/NHoEceeeaEO57GeicKROaLynSPHipQG6ahPcryxDXihYpdfcSTW
-         6Lv+c4ATqxdbS+he+AvIGcv326seNzp4aOCAx82BD8WyPcuTYoojdWydIraa35bjyMgo
-         ZfhrVdeUrvSltDkTlDIDzyRiJ0r7B39ozeMbANhQgNKD0qcRTrZEkWDlyZtTcDG9uDdk
-         anQVggdkWBwSrU1GwkWCP0BMIjVr0adoAurgP/gKQZj7oe8zilaSODqbt+Qw3+A7ywJr
-         U7qmTEA8Ldeb5PLA3vqvp20kQJueMbv5X5caJeTaeGATCIJ5TsHB7P6oasckc24Ijim7
-         hauw==
+        d=linux-foundation.org; s=google; t=1763845251; x=1764450051; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jQGcvOhJEN1J1/uUViuAgWsDBHc/YH/i6gYOyi8rm/I=;
+        b=JCktNlrJnPZKfhgC0x+mmbg0G0TqhDdHMD1T69wuj34UTkn1h1npiHiNfodXJJynEn
+         7Y8BJ5QqIHaq2wEM8DVWWcC+PfMr8flOFozWQjL7ryZxu3wTqtINgZv7G2pBeXx+h58T
+         WtNUtCUpVE01Cj3c/8kUgGJLscdwOL6E63EHY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763843636; x=1764448436;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dFn2EwqFqpnjkFoKzC+88UIKZbJzPZxsjNZNiF3KFj4=;
-        b=PflmA8lVkc4qq/0e6PKlKrywJh9syqTmxbeW50ZODl9nOEvPgksYEoJhX4bbpt6cpi
-         b/VAG8w1hN9K1NXL6xMmUaS3GO2s5c8gowiVJ44i1mI/rlgC24dwQC0/5cGKtDUcV7bm
-         GF9CmeenqE59e73YmvwxGj6otMLRYBYuU1gqFRIqzdUbFPbl0mWfwggPKSSMCbzflTmr
-         kAW/QOqp5mw8GvvNBFPDtZ5btDoUPiV3bNbGVodynn60KZ6txuOL6gfWNPb/ZvePD271
-         8RXUS43O5dItG7UwI+diKdPSDiqRyc7Em3negD4CtYTIt54B/UDilTt1aXwlspbihUvQ
-         d9WA==
-X-Forwarded-Encrypted: i=1; AJvYcCXXdMo9zd8qaSCV1ouC4S9KeBPLev/zycC4JHIJ4KwXsUSJhLgYYIo+Rffgqr/O9tcWZgb65jk/Ig==@kvack.org
-X-Gm-Message-State: AOJu0YzlGN2hB7CqN8ZtKU33ccSuTkev0ZL2o1Xt9FBToRTqfGGY0t7F
-	MsOOF6XHrTKvaou5FpngqP4nw3dDx4pbQ/CxjP7WmrvM02zauTggJxcM
-X-Gm-Gg: ASbGncvTuMMNWPprLqBfvNr94kpCFPzCbcy8X0NWIhkAMzKfLqSW4uF4e8Uotiofu6W
-	G//NCJSsm1HcAwEU2uvix6zYZkMNjv5AUCVwqu3dcz5n2+a06qIF6CpUPXFVbJdHDYhTR2/q/3r
-	ZjAxZN7EU6hBUDPH6Eif30kGK3clWsOUV/+pxro76mbeR8Ey4c2ZUA66M1k2z9Ucoi8GorawGiN
-	EziHe8cVGU9eSAlKxKDM2ISIt9reGPcWT04bGyBWTqtts7pmk8j6wuJaPkAAw5Ow9HqZM6jGoMY
-	GoZ6MIeZ5rV15RLXZYvf3HOfFGJX3JIScbp40yT1QR289CfOxf3CFfI0De30bWBq1QYvrUL50+1
-	oBCYyn8xC6FpVqqVZXrt4LPqvhGWEvgdc6ZW4viS6Aocshx2sC8EzNvQ1hm4qs1pijXNoUJOokm
-	E6y6RHQkH2
-X-Google-Smtp-Source: AGHT+IFhSsUjwtf7XXEFFhGewe4/WzYwa1EvQXhZvrF755UE0d1dYIej0yvrkJ/oBfshVizcRSlPOQ==
-X-Received: by 2002:a05:651c:4416:10b0:37b:aac1:282e with SMTP id 38308e7fff4ca-37cd9287c95mr16773881fa.28.1763843635543;
-        Sat, 22 Nov 2025 12:33:55 -0800 (PST)
-Received: from localhost ([109.167.240.218])
-        by smtp.gmail.com with UTF8SMTPSA id 38308e7fff4ca-37cc6b597b2sm19299711fa.12.2025.11.22.12.33.54
+        d=1e100.net; s=20230601; t=1763845251; x=1764450051;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jQGcvOhJEN1J1/uUViuAgWsDBHc/YH/i6gYOyi8rm/I=;
+        b=H4u8lVKpUsoGQIqykAAZVjNAWwZmG/2idY4cjpw9NZnXQT8BanAJhl5rp+Ih8kZNcw
+         v1AEmRwFzfa6aCkRp2XKlbAmv9ZCO/jWtgsFizrZKUw9fzCjqBNo8b/KJ9HtSS8s511z
+         kwH+H8cuuQcgtwc2hNXtpQTmZkQyJImWwW4Gtf9+1diQfQtQR0ecvml2QYDW1nCyXaO/
+         qNk3C7SgDjs4Pam/LLAb5mLVfnfzpJLJ5A+zVK15IHUYmhRWgtO0dlfsIZXoDVvnJCCF
+         jK301OZxc8vg1l334Bw7BO4F8tJW5xCiIkXRtDSPNx8Y0bPKuzkZknjB8XectQ9DVWHg
+         biXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeo9h7fBkf9BzI7KmuKPywvC1sgW1Fl3sdYa5YK/Gr6xfsi9ySOcfOnyKJQyFgJRGzwJ/iDren4w==@kvack.org
+X-Gm-Message-State: AOJu0YyIsJWL5OfVhnk/2ne/6SH4xXA3fak1kQ1E5yfmEN0C3w+6xZ/M
+	FRgJyFE1by+DdVwFhC9/mKBO4ijd4gByoBdrHQLSCs+M1t0ZPeqoTdAhtyFDIwWnHjl2dr9B919
+	y6MQ8rvC2lg==
+X-Gm-Gg: ASbGncv3V+bpCEnUbiV6ImMFIO3lGwJK2nyytVDXYxP4b4jZzXCOXDY4XV6klOPsTkD
+	YpqRKfemsmrqul93BowECgJ2axhyhmxtCcaFB0rT9COavAlUaUAFveC53pxWYcohsmbmvfMI6iR
+	w37n/dU0RsLLlILOmdINnKqKf2nfYGmhGKnroaXAz/rjs9rP217aXWU4MTD13sx51Y+ND4Bm2VD
+	6sdyA1PGEAD+vqfIiFKdSyojUDfmT3fzQSUL+Dkxs40k85PUP13ywk/RFHrUP8vzwmD/8jenYfY
+	/ogtvGQPbZn0a/NzULpEbFgj+LSVnX97/zHPp2Pne73zr4GKhYLwT0F2OPbSz5x3fkwrYWYM89x
+	C59kUDP+zkKiGUuL2M3DxGbrN9ZXY+iK40VuQQwvK50b171597OCQ3wOSodkB6QORNGS2U7L5vM
+	mcnNoizyWLnLuzDxVu6ipRHEp84Y721M67ioR+OPv03d8zZkr3IKkKQlWu0CbC
+X-Google-Smtp-Source: AGHT+IGjmBeAjdwx2tp3eAgzg+py4jpXCajYBW5VvNA+Im6O4qLvCU4jXf2cauGiOVa4K90PiUoPVg==
+X-Received: by 2002:a17:907:1c25:b0:b73:594e:1c47 with SMTP id a640c23a62f3a-b76715b03c8mr660770466b.26.1763845250879;
+        Sat, 22 Nov 2025 13:00:50 -0800 (PST)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com. [209.85.128.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654ff3bbesm809655766b.51.2025.11.22.13.00.50
+        for <linux-mm@kvack.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Nov 2025 12:33:55 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: mpatocka@redhat.com
-Cc: Dell.Client.Kernel@dell.com,
-	agk@redhat.com,
-	brauner@kernel.org,
-	dm-devel@lists.linux.dev,
-	ebiggers@kernel.org,
-	kix@kix.es,
-	linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	lvm-devel@lists.linux.dev,
-	milan@mazyland.cz,
-	msnitzer@redhat.com,
-	mzxreary@0pointer.de,
-	nphamcs@gmail.com,
-	pavel@ucw.cz,
-	rafael@kernel.org,
-	ryncsn@gmail.com,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 1/2] pm-hibernate: flush disk cache when suspending
-Date: Sat, 22 Nov 2025 23:33:42 +0300
-Message-ID: <20251122203347.3484839-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <c44942f2-cf4d-04c2-908f-d16e2e60aae2@redhat.com>
-References: <c44942f2-cf4d-04c2-908f-d16e2e60aae2@redhat.com>
+        Sat, 22 Nov 2025 13:00:50 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477bf34f5f5so14850545e9.0
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:00:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCViGRBgiHXrW8SgnnTmeTrYcqpHaXxWj//exoffnQ+VsT5jVK2qFp04iRUoHwzYK4LDRmAV2X+ALA==@kvack.org
+X-Received: by 2002:a17:907:6e8d:b0:b70:7cd8:9098 with SMTP id
+ a640c23a62f3a-b76719d4d02mr618930666b.61.1763844895821; Sat, 22 Nov 2025
+ 12:54:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AE6951C0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5uwhroz1mcrot88njpmkcduxdgsg6xk9
+References: <20251122014258.do.018-kees@kernel.org> <20251122014304.3417954-2-kees@kernel.org>
+ <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+In-Reply-To: <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 22 Nov 2025 12:54:39 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjxj---dy5haOvNXjg_Xz-mDQciGL7OnJnpJpjYD9Moog@mail.gmail.com>
+X-Gm-Features: AWmQ_bnv84PkVSmG-NV-hwB1C2eg-gsEJfo3JVaH66sxShWKO-Vcyq708ZlrB18
+Message-ID: <CAHk-=wjxj---dy5haOvNXjg_Xz-mDQciGL7OnJnpJpjYD9Moog@mail.gmail.com>
+Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Marco Elver <elver@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org, 
+	Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Vegard Nossum <vegard.nossum@oracle.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>, Yafang Shao <laoar.shao@gmail.com>, 
+	Tony Ambardar <tony.ambardar@gmail.com>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763843637-814455
-X-HE-Meta: U2FsdGVkX19rtQEUtcLFDx1dwbQ4BjGGbcIZMnozFjUOBt0KHcqVVq8tsu+mOnOJdXADoFDYDePcdOmUQ5nCRroae1Q5p/740lY7NxfhxRxhNqWNNG6R7Ck0aPc2Vxsym8OxdCCjt6QqJ8g4o8Q5KAba9ky+iBQzX+tcIbUb8DD2o/le12XJUwe9b6LxLX6FFEgLTux3VfyfxyNgr/5JHMRYIRPCG1TCJp40l1B0Oy/rzkamhREgYbVOGeyq89MFhn/EKwRbBU6/1Pexbsg/n1dksSmvGYMB7gQPKlq8dBUH+JdDChXKnhLyHVALaYxViCOhPhnO+7qxU9kiURIMCb693BwkWFPKy8r2FKulLdkC+ap1cpcR2UmevUBnpgtBAbnomLOWx5uVlYmIVFZWI6fDue+zgkSjbblrajS8DT5yzk/vXfijRckC5k03rYU/y7pU5i/W60GIxc93klDciBYplvlsNCKDHVOW8AqDQ25rtg1xValHm7yP9nlJlBMRTWjtbbFuT4NLGuXjDg42Uf+k7JM+pscExdS/3RI7IumeIywE1jO9/dsdK4nh4mtoTgsg2YpGdXQHA8Twb+fxMzz11Oxg1irZlofVIXHZqOh8+3Erqm1w1A9HSF3w8mjhCWSvBx5Prpnsi8O+lorX6fg3nHU2hvDN6UO+E89gEnRWXSU7ZQRilwUtuSABsyHv2t9O9BF7FwEN5YZR0BzgM76DkgG16iVhcwf/g1TGTYi0PodZZSzpe0IVMsUINXUVEy56+rUS4nKQQ07SpNZVGukyEXd04JBLJ5i++3lrcqY2hV79BbllXouPg3WM7rwwb6SRyjkmNKFOpgihwK6BpiDHqk0xVLn8Wg6mcM5ZpOEbQ/22KqGUetoO0B78naV1RsXzdBRNdUa7EdnsZwM+BH71Sdj2PP2x5741Ka9wogqATNZLf4FPfQ44txNN+46aC0ccm1ACUhsUPB740RF
- M4qtEBns
- pdtIcXREUr+Yw62saK2iTtMZMSayGx6WJ838+3FG6fcCISJp1bYrqnLSq0QqgFNlpIqaLRCHGD7vnYMyT3J6VhXI1n3IjNPRBO4zOBvjuyR+qQwybhu48w9zaHX9FE7rI0VgGKUuuMJx350/E1a3OV8DSCehCHtw+H53hzc2/fx8n3QRNyhJMqYk+BiOgkptp4+x5dXWfl8lvC8I/q2j0MKhXBO5hO7xCgpakt3pp8HDEdgoRGSsHW+vBx8/FQmpQxemtGMNfpqCqkP4VgPCMne2x2mTQWNaDyLhCcwfDfiLy9iGPmINP8E/oGFC2CsEACLxnEZ/ZLtf14R7Q7BDxqtTW2MaCQr8BQ+MuiYufNQaPTI+DscHeJCW7OcG51BnH4NN7k2/l73bbFCaPeqJAJkhMLmJnS20aE1UcOyFW3szWPgCyuTOULVuur2XHM3FyMTVOXVrb5KurL3BNLVBW0o4dvdqll7gnSyHs9bvz+pungWFM9vx6RQnSQXa5fD5kKBCJCeWCKz4UT5Q1ml0GlO5pex5oddtPrrzEKq+SYk6TJ0lPfmmCjbS7hB0V/mWox26y
+X-Rspamd-Queue-Id: CB4FEC000B
+X-Stat-Signature: 4hy7ktibjy9rpupzb88r67p3kmmd6p6k
+X-HE-Tag: 1763845252-238536
+X-HE-Meta: U2FsdGVkX1/L4yuX3H+JhWABFz/e8jGQIr//LMZaw+mXqXBdUBeCFKPJDOgkB7bhf63A+qIBkPj/DeFW8lVWvlJ2k0LermXISIk/zvBH6Y8owFRa5KrbphjpIjjGq6dzK1vkRSDFNameW88y0c+Kvh1xBpx39D8aJ2TwAihJ55ELFkQgF2+Os0K7ITBkm8Lm34wYGIh0IAG3zCXvpWZ4TaUrE3gGuITiVMotyDv8uAnpnOrTavoCu4a4Pbmfh1NA6j+oBp3QJj0pc99QbJBYTJImuDyJbtigQ/tmnYvb9h3H4M3BM7ldNcaHLv+gIRbwn43595ZhCPUyZtCgzTutM11IRrfZSc4khyvE5janZjS6RPvZ2PrUlfvkUay98vZZ4FJD6t6zwT5wfb7NGbEDewsnx4M5UMkVxIegrYIAZQKo+uFfuZou+t7taP2N/sEaStgKi+wXgOT9Bkfk/+LkLzv99hT+fCVqQgI3Tf8w7OdPS/xVBdTX8tL/Ifc5ZGbERNgV5p8kOSVB782mcgBGFtP2OrIpYHRb+xrHgExNjJm1fe2mSfl1XUXwOokf10uZBQRJUGdSbBtxxjrsi8lSWUDlmH2vsYusxvxeQZU24FbMaahypzpPqiB7d8yZZcr4rWFZphNFjAP/nfn7EC2aGTlWJ53qXoisGIG8qc2BEagU10nM7kqb1jQbeun5KIPgJD4yu8h0wwWfv9K51mkN8FYVnyreVNxap4UsC5VOrGZ1BIaSL33eERMCV3H0FXMMBPd/aCZrXGEmNsiM7TSDzwb3qYijNd0tVXGlCBYusEbGoQPqtzblizk6Kjdh/rA0Jg+p9wxOieKbb5rMr48uFQ/30amTiV/49vr6Igag84iskl/2b1JL3SNOHb/30Biw+ZFl8u8ABQDbJEdn/AdmTJ/ybWofUVi8UE6/m70RhH0mLicukbwFbDU0BRJEtPeR6Y52m8+869ryVNNNcKp
+ bkqXElnz
+ Ad18cGtAoexsZv2VqkSg6S7ZuugKFw+B+OsfKWBdUu9eW8950thbIzE5C9Js5zHyR9KRzWOnNbdUwOV1KEThY7C96gX8ekDNPBeZbCVhmSvjqDoLninimmiczOAIT8hRQne2i7oEEA9bFK7nP6QNtXuQjQRCeZ09e/Itg0RT8gaqDsL+9pNvUudKz4I/BiBpgN/1o6HntHRmbn8chNnATfp5FPujgu7kalvXXj0iek2WGkL0sty/E0YHA3u0GnjMFJa+xjPU19vpL17Qp5pWNWI/eExF8lKkVvy9gcQX7PmHmSXWwFBnPTIyfvIYS95PYhDXpIDJhIVEFf1ZzmQalKQOOkV7PV60N3H+3GHTT8v6VTJZZ44/4wh+NT6tRuneOSVDh2T7Ux53fantQBN/Sn1VrInYXZ+oizO1JcCl+s+o1X5Fn6AJlbfc9Dr/ymq7RieNvm6jHr7IZisjMiAn++MKX9mLYvudNyy7mLKnHMq55eBrZ1Amgxhl2MpbcfA/Y3GMRn8NnIlVnfxckmzpAvhqn+6WM1bauCfrz2NdM1R+BHEiNCY+hL9Mha9WyKbodH0GU9l2gfJX1k8qP/SIyic1J6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,71 +139,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mikulas Patocka <mpatocka@redhat.com>:
-> [PATCH 1/2] pm-hibernate: flush disk cache when suspending
-> 
-> There was reported failure that suspend doesn't work with dm-integrity.
-> The reason for the failure is that the suspend code doesn't issue the
-> FLUSH bio - the data still sits in the dm-integrity cache and they are
-> lost when poweroff happens.
+Btw, I realize that we don't have a good way to do the alignment with
+the current kmalloc() interface (we do for some of the vmalloc
+interfaces).
 
-Your patchset is impossible to apply using "b4 shazam".
+So for now, it should just have some static build-time warning if the
+type of the object we allocate has a bigger alignment than the
+guaranteed slab allocation alignment (ARCH_KMALLOC_MINALIGN or
+whatever).
 
-Here is what I get when I try to apply it using "b4 shazam":
+And I really think the first version should do the minimal thing that
+actually matters, and strive to deal with the simple cases. The main
+things that matter are
 
+ - the return type should be a proper pointer type (so that you get
+warnings for mis-uses, but also so that you can use automatic typing)
 
-d-user@comp:/tmp$ git clone --depth=1 git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-Cloning into 'linux'...
-remote: Enumerating objects: 96577, done.
-remote: Counting objects: 100% (96577/96577), done.
-remote: Compressing objects: 100% (93936/93936), done.
-remote: Total 96577 (delta 7530), reused 20945 (delta 1607), pack-reused 0 (from 0)
-Receiving objects: 100% (96577/96577), 267.21 MiB | 1.85 MiB/s, done.
-Resolving deltas: 100% (7530/7530), done.
-Updating files: 100% (91166/91166), done.
-d-user@comp:/tmp$ cd linux
-d-user@comp:/tmp/linux$ b4 shazam 'c44942f2-cf4d-04c2-908f-d16e2e60aae2@redhat.com'
-Grabbing thread from lore.kernel.org/all/c44942f2-cf4d-04c2-908f-d16e2e60aae2@redhat.com/t.mbox.gz
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-Analyzing 15 messages in the thread
-WARNING: duplicate messages found at index 1
-   Subject 1: pm-hibernate: flush block device cache when hibernating
-   Subject 2: pm-hibernate: flush disk cache when suspending
-  2 is not a reply... assume additional patch
-WARNING: duplicate messages found at index 2
-   Subject 1: swsusp: make it possible to hibernate to device mapper devices
-   Subject 2: pm-hibernate: flush disk cache when suspending
-  2 is not a reply... assume additional patch
-Checking attestation on all messages, may take a moment...
----
-  ✓ [PATCH] pm-hibernate: flush block device cache when hibernating
-    ✓ Signed: DKIM/redhat.com
-  ✓ [PATCH RFC 2/2] swsusp: make it possible to hibernate to device mapper devices
-    ✓ Signed: DKIM/redhat.com
-  ✓ [PATCH 1/2] pm-hibernate: flush disk cache when suspending
-    ✓ Signed: DKIM/redhat.com
-  ERROR: missing [4/3]!
----
-Total patches: 3
----
-WARNING: Thread incomplete!
-Applying: pm-hibernate: flush block device cache when hibernating
-Applying: swsusp: make it possible to hibernate to device mapper devices
-Patch failed at 0002 swsusp: make it possible to hibernate to device mapper devices
-error: patch failed: kernel/power/swap.c:1591
-error: kernel/power/swap.c: patch does not apply
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-hint: When you have resolved this problem, run "git am --continue".
-hint: If you prefer to skip this patch, run "git am --skip" instead.
-hint: To restore the original branch and stop patching, run "git am --abort".
-hint: Disable this message with "git config advice.mergeConflict false"
+ - making the 'sizeof()' match the type
 
+so honestly, I think 99% of the gain would come from something fairly
+simple like
 
-It seems you should send patches not as a reply.
+    #define kmalloc_verify(type) \
+        BUILD_BUG_ON_ZERO(__alignof__(type) > ARCH_KMALLOC_MINALIGN)
 
-But I will apply your patches anyway, no need to resubmit.
+    #define kmalloc_size(type) \
+        (sizeof(type) + kmalloc_verify(type))
 
--- 
-Askar Safin
+    #define allocator(name, type, size, ...) \
+        (typeof(type) *)name(size, __VA_ARGS__)
+
+    #define kmalloc_obj(type, gfp) \
+        allocator(kmalloc, type, kmalloc_size(type), gfp)
+    #define kzalloc_obj(type, gfp) \
+        allocator(kzalloc, type, kmalloc_size(type), gfp)
+    #define kzalloc_struct(type, member, count, gfp) \
+        allocator(kzalloc, type, struct_size_t(typeof(type), member,
+count), gfp)
+
+The above macros are entirely untested. But they are simple enough
+that even if they are buggy and I miscounted the parentheses or used
+the wrong name somewhere, I think the idea is clear. No?
+
+(And I made that "allocator()" macro use __VA_ARGS__ because
+kzalloc_node() and friends would want that, but I think it's starting
+to hit diminishing returns at that point)
+
+Hmm?
+
+               Linus
 
