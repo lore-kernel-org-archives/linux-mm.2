@@ -4,119 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 864DACF64B1
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 07:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71475CF64B1
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 07:55:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 079CE6B0012; Sat, 22 Nov 2025 02:41:07 -0500 (EST)
+	id BC0A26B0026; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02A126B0022; Sat, 22 Nov 2025 02:41:06 -0500 (EST)
+	id B97E86B0027; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD2B86B0023; Sat, 22 Nov 2025 02:41:06 -0500 (EST)
+	id AD4C36B0028; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B6E776B0012
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 02:41:06 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69D001407EB
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 07:41:06 +0000 (UTC)
-X-FDA: 84137446932.22.66B6F7F
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7D3CC40011
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 07:41:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=W1Qh27oZ;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763797264; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB646B0026
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 02:55:52 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 402F78A11C
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 07:55:52 +0000 (UTC)
+X-FDA: 84137484144.29.B92251F
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8B79A1C0007
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 07:55:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Z2EDKPMk;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763798150; a=rsa-sha256;
 	cv=none;
-	b=sNcPdrXkpJB0HD3bua27vyU3sDH9Uky/AuyrQmc3/LoDPTNO7zPbBh47xB0UGVJchwyDOV
-	AyvkzLSadFnu4k2R88+g/iUw3cu4POgxWqztNGNWWQoY/e0NRg4mdJkuXMQYFxXbnUrt7O
-	u2sFLdQV2BDiliuX/YKkjgqXyLzBqjc=
+	b=5evb3j5B1awX1ETwvRLMICrun0woGwHP7MqZLuoqJvyv0nQe+PJbA1S28Dyi+ctNKTQXGq
+	aQwtSDIgQpVbJXv7Z86OqyHLKlGB0+BF0UbJP2AGgZskrfNe/aDJesNZ1OHGzaL7OU/G64
+	mpIN2QtLm/snyuVo9NJXkUgAS8LZb00=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=W1Qh27oZ;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Z2EDKPMk;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763797264;
+	s=arc-20220608; t=1763798150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LukW8/snVEFz9ku8flFGtdBZP5+NLLDt4ByDCK08AXY=;
-	b=4/HizjXwFhBjTh+JyDMKaiWBroNNQVHBWNBIqDLCcTFmWXod1CvUorcBG4WEJRF/5LvwVa
-	Kp9hu0rlo5TPLU/YzjbVQ73CQTLkohyAYDO1YHiFigqydwwiv3/GnCPXcH0LNW17XOTZd9
-	myD39tCfRjnr1vQmdsrQ1AFrmI1dUzc=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-29555415c5fso30516815ad.1
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 23:41:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763797263; x=1764402063; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LukW8/snVEFz9ku8flFGtdBZP5+NLLDt4ByDCK08AXY=;
-        b=W1Qh27oZTghG/6tF6ASbjxK5ZTCt4mGajKYkP2Urrm3UxcYc4V71p0do7duR+Xn+BS
-         Wa/3n1h8Z0RoGVAA/VZNg6P9QM6A1crGJQticj0MuPII8j70qdq825Ke0CeOquaBOiXa
-         CvtQz37+1knnk1xC8eYbQhOMpwCwj7AZiQejE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763797263; x=1764402063;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LukW8/snVEFz9ku8flFGtdBZP5+NLLDt4ByDCK08AXY=;
-        b=qI5/AwLkNG7ssWHefD3+4TRpL2mvMSmFgik3rBjanlJn871lIGLKKEWIh56kzwd5uW
-         2mg7d9kwhRwpA3I4Y/qIVL70PlUnGaiIDgCSTfBMqBeNLLQp3ZGesDvKy5ZhzT4Vnw2a
-         Iecz8IYHRhvOrkBKGbD5GeGAk5C/pTzBrppS9tKa5ElwRoo+qpf3LgFc27gLIZGBCmcH
-         stFOR3iw9/P3lXve85TIoM8N2RfF4EEX8W7NW9BXH6ozdCbf9EAzNOMKSTnbAoumwKR+
-         +vRGxvG0LnWpZhsXuDBUjn79yerIxvUQ1cMqYcZyGOukbFx+46i7StkYyEfamMtKI7Ey
-         5FPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVG/+QrYJBq4PDUBYoilUbur1/pWbYaCm9t3fXX+vKmfjcLjbo1uhCBR0BvK93Z50gBDpSrhik+sg==@kvack.org
-X-Gm-Message-State: AOJu0YwilOnO5315s+f8lfUqPEjVpxNs2ciBp/CGO1xGZGxpmI1EcgU6
-	GXABKRSPsBobhP0LcdGOclsZwZbIDR/1CX/MU5GmtSmAAbPZ2tYc5N21QIw5xPQXKmrXiO3PfkW
-	ExRg=
-X-Gm-Gg: ASbGnct6Shig4X2a9NiX1Dlpo3BwkPlgdYS7NLrOQfae7/GtvZHZ2rSiWkPkPDVsYQr
-	HunealNY5B7qj0p852XApVGNAuJSyz0EQcQqq+w+TOReQCP4VInfop5IqqjzIPnOMRaPAYYPg2I
-	TKUDgVnqSjqVHWqm+8FtolaYw6tNtNeC84i2ZsUMSnebt37aNtSlU5V1twjSel0TIduL2Ed/7SX
-	XCBFrBvb4XiIsKSKixyxN6SbmP8jnIs2qhLvD3UjGNwW3Q/8KQxPgIiO/hUzhqofv/Z0mCaPSHF
-	e403WSpIlit+ykaYMYiEvdhQ2lbFLQERGDsMD5ouQzAvJxvulf00sdzlpGH4eOJRiIU5379e8u9
-	5UhueCHJ82zcBJIZ3MSarhZYfrCh//U/dbPZydlf6+V+I2aLT7+8iZ4Kw/94y+MqO9Pk+hNUyjS
-	7koSiGMS2B2RrGVRFDrQUk8+fuCCgy2o4RDq+Wslup0uawmRnIZW/l+xgeYffqG3WAqZA/6IEn1
-	w==
-X-Google-Smtp-Source: AGHT+IG5fXLGOtdx1TXZEsH8pnjPldKBNeNKvpm0G0lpVW65pfoy/FrInnxHNz+d96LXs8VdsDk4Tg==
-X-Received: by 2002:a17:903:19d0:b0:295:2276:6704 with SMTP id d9443c01a7336-29b6c6cdf6cmr49815225ad.51.1763797263463;
-        Fri, 21 Nov 2025 23:41:03 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:948e:149d:963b:f660])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b138628sm77771555ad.31.2025.11.21.23.41.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 23:41:03 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Yuwen Chen <ywen.chen@foxmail.com>,
-	Richard Chang <richardycc@google.com>
-Cc: Brian Geffon <bgeffon@google.com>,
-	Fengyu Lian <licayy@outlook.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCHv6 6/6] zram: read slot block idx under slot lock
-Date: Sat, 22 Nov 2025 16:40:29 +0900
-Message-ID: <20251122074029.3948921-7-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.460.gd25c4c69ec-goog
-In-Reply-To: <20251122074029.3948921-1-senozhatsky@chromium.org>
-References: <20251122074029.3948921-1-senozhatsky@chromium.org>
+	bh=QWHXPiJRYKkrps01kIqZqRVu3P4qRHYIVg+MRqwWDCs=;
+	b=ZLKQ9WIZcv+x0fG7DG/T9cTlxyUg1RoJcsnOtNggXHf2lDrZz6AIpkMctgh9C38Pnak778
+	mT/ucVDixQWQuDJY0y4fkXEtZFeoBEk14gBigK4bAmITTOwDTAnlQADpZCeToVut3BPIVo
+	k7DLMvQQlPtI7YmUfrSUygiq1+Cb01o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763798150; x=1795334150;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SXw40nk81lfewjY1S+9hPKCWNPlyLR4zHML4HwWfuNQ=;
+  b=Z2EDKPMk3krhLF/gubiVNh7Vkrj/Z4q7HbudVUI2N6oQtI4iI4cF41ZR
+   q90z++dU09sUVNC3WCJWjWJMA3cjqMmmBHl6eBAD2i5+fG/L150uPjTXR
+   jZ6uzG25CGOq6TWQHyHBtmQQ2Tsz02MYvLmQnqC/B1vZcs9XgFShCuyLv
+   nPz82wipUiDiMk0MiU4c/Q2ZBi6dr716lv4plEQH8jkmn3r/jd4MSy7a2
+   Y3Pz32uk4sQvT0N9Y4qTtXrH0H/Ih5na+MQfUTyOQpr53WoxNgJSWgkeJ
+   x8S6zCMNZzvcVUmvvFlS/9dZYgygSSb3R+DmmbBIDDJ8KozKwShtPLgfa
+   A==;
+X-CSE-ConnectionGUID: PfQGknuLRiynI8DYBT7eWg==
+X-CSE-MsgGUID: tqQQoWYSTuyrXq0yDbphow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="69748448"
+X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
+   d="scan'208";a="69748448"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 23:55:48 -0800
+X-CSE-ConnectionGUID: wOeO3mLQSJuDwYi3qD24uQ==
+X-CSE-MsgGUID: AycttFy4TB+6j12x7ifhWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
+   d="scan'208";a="222833433"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 21 Nov 2025 23:55:43 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMiT6-0007Gp-1a;
+	Sat, 22 Nov 2025 07:55:40 +0000
+Date: Sat, 22 Nov 2025 15:54:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Eugen Hristev <eugen.hristev@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	tglx@linutronix.de, andersson@kernel.org, pmladek@suse.com,
+	rdunlap@infradead.org, corbet@lwn.net, david@redhat.com,
+	mhocko@suse.com
+Cc: oe-kbuild-all@lists.linux.dev, tudor.ambarus@linaro.org,
+	mukesh.ojha@oss.qualcomm.com, linux-arm-kernel@lists.infradead.org,
+	linux-hardening@vger.kernel.org, jonechou@google.com,
+	rostedt@goodmis.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
+	Eugen Hristev <eugen.hristev@linaro.org>
+Subject: Re: [PATCH 23/26] soc: qcom: Add minidump driver
+Message-ID: <202511221521.2OINSDPK-lkp@intel.com>
+References: <20251119154427.1033475-24-eugen.hristev@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119154427.1033475-24-eugen.hristev@linaro.org>
+X-Rspamd-Queue-Id: 8B79A1C0007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: pk8zcsoif8sag3su6wmduewz9qjzhqct
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7D3CC40011
-X-Stat-Signature: o3741epfhan88ac884c3xd6cxpc8hgg5
-X-HE-Tag: 1763797264-8961
-X-HE-Meta: U2FsdGVkX18S7KnhsjHZ9ikSW0+javfZJXcWKWwAE5kkf0oT47wRKR1cxGU3G+0bLh7iuZ+FipI0ACDVzmoXZHRFoxrqU4CxgtdU3lmlsN88FTbg21k2i8HJSKnO5oEPQqGdQIQFaZj5aVXXg/7+956fGvO035YKWdcUcJ+Lq4SnJLjGwXYyKOfHvkxnbdv95VqZsWpi/ilbgnO+jTKHls40NtIfAjwrlqTwQ1ZuSV1S+CUKHtET2KXaW/2xdAsPY3bnWw6/C/HapeOqPPqkKAWeX8Lv04W3W1+yk+yln+cv88aG1e5Keh6r0hcDDKVUHiysVjokKZZ1JNyn4iRDExp+NzyzVFYzXz1Xgqw5/YYhY40lEK36I/OLnNfvBi+HpKm5ruM15zbqTYDKieyd9K4jJqcJCP+8iIaKaz2y7edEuzEg4zXIZbul6ubPKEMHdA4K+B59JvUxayuiHmnpOvszkFAq55tfu1grMCK0vpEh3SemA95Fm7mFYnE/jDPZgi3m8KZnUxVWXEeXRJA34IbMZw1pLTaM2fc/PYjJSn0OHWGgBaEWj9/VaDzVBuCyQ3zW3zlredR83TSULvvFB117g91SMQXo4wTpq1tV0bUpsgYp19LmxUj8im/x/yAtwddd0yAb0T2MwLRkBwXc+8pOGCL/BVyc+YwYpAhNeLkWeoEKgZShEZ8TTYualg0UeUCfPhUxPOFnYs8qz6CQVSnuQVyAYSYIljsXlp3WjR4u8wDqTp0+fNb+rFoJFno7qaP+M7J5XUxsIRAStbIXY/GLY5mitayeV+KUw5XuSBDS585j4cNcQNcQhLtkD6rzi0Dk1VYPPPvYxLqcaWXrfVpTGG/hxL/4jEVbFTPCw2Kfx96s8Q2DA61LS1CAKCZz9nH1YIIwrcblN/oL6QbtAtjh2ghe2XrKnUUXPsHK3f/otsP2U6zBonM6CQkfpGJfvXTbv8OmTPVGKM4jMt3
- G6icjr52
- 8O3qj8ztbDun7kadPjQ6Ekb8P1SM9mwVfjCxXX+0RYFydR51IEeq4ZnVKGdRC/paIzn57Kqm2JO6nzFU4I6vYoCCFEOvhuoslbHrvR/HpQ2LyTnLC+qLivgc3AUZSPiIUj0p/T/zTfCVIIF8rL9yiPS+9tgx08e9IYnkzBFDGsWFIrSgJjaOI+t9gSt29lsMwgMG9aaXjxg8pD+uDm0jQqUc1fhTcIpDz2sLZmUaeKYuejBSBAkPxxb7jJCgi+RhhJKDoIZI/TI/9v+/lcgoxKLe+QKNLby9jZJPVPTqZAyexnk5R/mHXJei6FQ==
+X-HE-Tag: 1763798149-741076
+X-HE-Meta: U2FsdGVkX18v88cIFOYHEVP0D3NTUcVsZYJAlIHQS8mzlRPCCWoMoZK6RCQf+7ssC+REbz5bUniUWtFsVJFMPSAJ4q8B56+poCV6Y3IeER40IM5LqYes1f51uHej9jnL8whZiYaYXcZSgnwIFLFRnngkzS61ZwGyfjgYHLRVJnXaFjv4kTOLSWEbSKi0zTuVIeTEEh29oul/5ERMWKw4ykxhUzn07QwCJaW7zcU0LIe6F7WjdZpTupEhPiFhhXXTw7GtGQzvZ4p7oV0R+wzA8SHhT24QXyt4qKlkQD/WdiGHNFTEy3gRbWuovzy5OjKxSWPcGt4LG2pT/QV6yNSOQSmzaJajEJdphBBfrmpnveDFmTeShsWRxq/pWVb/HAphA5lhUGCU4XXLu6rNZmuHqhysDqyhI183kNugyHGNKt2c7n3IKJ43adQQgFk1kMIwR2ISBinnvkqGm7ym5OXwg0cJQ0pl80yThY/5pGZn/OR8w4Xm7fmgSl66k1e11WZaFYwQ5Xi9DD1pBOf48lgS5RJlkdiWyf9hn7yF3UQCzC1t/LmQrTNLJlK7cnC4bvpSgGJxlCXf0mJ1v3docvRrvcQTrNa21o5n+mhK3Nao0UCXX6Po5WWvuE4PtRiKoxdL1uYZYhuX2zIJb7CEx5bOrXQ2KyE+fbP0OKIaNLQrYP6taOWikAavU0nsemJMo63FjKIpwgOz/czYsSJOyJxF/BJDdvf7vOJ4Exp3aEwgGyUTdXNHHbmhkN9jkzGSxWTWfvEV9F0ub0SYgIwJxiQ1RmqXYzNU0/DC1WawROw2b6TxyWQE31bp8O3DN68rxhACMP3Uod7Z4gXfyZQpQK6DVWJ90VpDMrkKJDY7boTNWesBHw8uWaj+WU7jE1qiR4P7DaTjj0TFYcHXfIEKPEoOd0BncBtWZbfJgt5LGOt5J54IQ4HvIGtPGUD6lMoMFSctLbw6NRtTllT7S0XkY8C
+ Au/pRCCD
+ 2sXdzcRj6oT28s1rqMmorMAmcqc+41U4e1DnCPbPo40pTNg5EClN7Z6Xm5BLNeAxQYgXFl62UOLEOB9I6Z14xAQksu/zwTAcrfhJzETPAQbjh2vuqkbSt7bCqe6f2H24RDhtf/S7j8+d+Dm7SuCwtJml5iOUIeA6Kem0tbFpypzD/Gtq/5FRXTBh6CccfDEtkSZ+gAHl1241eFmSUdiuheye6LCEMTKxYZ3XyiONwDAZe/jW1okpV4G2sYfC/Y6gAkVxyEb6i6Yqh4vXG69R7/Yjk2w6rB+xJN71YMazg+GWo8ObM7HFiPysgXn7JrvKXUf6bDD/0dhFiJI7OWaTDTfMJDUa1cYy87cX798zDTjJruSCm2rZNEVivgZ+bv97jftPqw6ePYj61uK8Vv9rQ+rrFymjFDdr/TAgR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,41 +116,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Read slot's block id under slot-lock.  We release the
-slot-lock for bdev read so, technically, slot still can
-get freed in the meantime, but at least we will read
-bdev block (page) that holds previous know slot data,
-not from slot->handle bdev block, which can be anything
-at that point.
+Hi Eugen,
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 1f7e9e914d34..3428f647d0a7 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1995,14 +1995,14 @@ static int zram_read_page(struct zram *zram, struct page *page, u32 index,
- 		ret = zram_read_from_zspool(zram, page, index);
- 		zram_slot_unlock(zram, index);
- 	} else {
-+		unsigned long blk_idx = zram_get_handle(zram, index);
-+
- 		/*
- 		 * The slot should be unlocked before reading from the backing
- 		 * device.
- 		 */
- 		zram_slot_unlock(zram, index);
--
--		ret = read_from_bdev(zram, page, zram_get_handle(zram, index),
--				     parent);
-+		ret = read_from_bdev(zram, page, blk_idx, parent);
- 	}
- 
- 	/* Should NEVER happen. Return bio error if it does. */
+[auto build test WARNING on rppt-memblock/fixes]
+[also build test WARNING on linus/master v6.18-rc6]
+[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next next-20251121]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Eugen-Hristev/kernel-Introduce-meminspect/20251119-235912
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
+patch link:    https://lore.kernel.org/r/20251119154427.1033475-24-eugen.hristev%40linaro.org
+patch subject: [PATCH 23/26] soc: qcom: Add minidump driver
+config: nios2-randconfig-r123-20251122 (https://download.01.org/0day-ci/archive/20251122/202511221521.2OINSDPK-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251122/202511221521.2OINSDPK-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511221521.2OINSDPK-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/soc/qcom/minidump.c:108:35: sparse: sparse: restricted __le32 degrades to integer
+>> drivers/soc/qcom/minidump.c:154:22: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le32 [usertype] seq_num @@     got unsigned int enum meminspect_uid const id @@
+   drivers/soc/qcom/minidump.c:154:22: sparse:     expected restricted __le32 [usertype] seq_num
+   drivers/soc/qcom/minidump.c:154:22: sparse:     got unsigned int enum meminspect_uid const id
+>> drivers/soc/qcom/minidump.c:184:19: sparse: sparse: unsigned value that used to be signed checked against zero?
+   drivers/soc/qcom/minidump.c:183:39: sparse: signed value source
+
+vim +108 drivers/soc/qcom/minidump.c
+
+    93	
+    94	/**
+    95	 * qcom_md_get_region_index() - Lookup minidump region by id
+    96	 * @md: minidump data
+    97	 * @id: minidump region id
+    98	 *
+    99	 * Return: On success, it returns the internal region index, on failure,
+   100	 *	returns	negative error value
+   101	 */
+   102	static int qcom_md_get_region_index(struct minidump *md, int id)
+   103	{
+   104		unsigned int count = le32_to_cpu(md->toc->region_count);
+   105		unsigned int i;
+   106	
+   107		for (i = 0; i < count; i++)
+ > 108			if (md->regions[i].seq_num == id)
+   109				return i;
+   110	
+   111		return -ENOENT;
+   112	}
+   113	
+   114	/**
+   115	 * register_md_region() - Register a new minidump region
+   116	 * @priv: private data
+   117	 * @e: pointer to inspect entry
+   118	 *
+   119	 * Return: None
+   120	 */
+   121	static void __maybe_unused register_md_region(void *priv,
+   122						      const struct inspect_entry *e)
+   123	{
+   124		unsigned int num_region, region_cnt;
+   125		const char *name = "unknown";
+   126		struct minidump_region *mdr;
+   127		struct minidump *md = priv;
+   128	
+   129		if (!(e->va || e->pa) || !e->size) {
+   130			dev_dbg(md->dev, "invalid region requested\n");
+   131			return;
+   132		}
+   133	
+   134		if (e->id < ARRAY_SIZE(meminspect_id_to_md_string))
+   135			name = meminspect_id_to_md_string[e->id];
+   136	
+   137		if (qcom_md_get_region_index(md, e->id) >= 0) {
+   138			dev_dbg(md->dev, "%s:%d region is already registered\n",
+   139				name, e->id);
+   140			return;
+   141		}
+   142	
+   143		/* Check if there is a room for a new entry */
+   144		num_region = le32_to_cpu(md->toc->region_count);
+   145		if (num_region >= MAX_NUM_REGIONS) {
+   146			dev_dbg(md->dev, "maximum region limit %u reached\n",
+   147				num_region);
+   148			return;
+   149		}
+   150	
+   151		region_cnt = le32_to_cpu(md->toc->region_count);
+   152		mdr = &md->regions[region_cnt];
+   153		scnprintf(mdr->name, MAX_REGION_NAME_LENGTH, "K%.8s", name);
+ > 154		mdr->seq_num = e->id;
+   155		if (e->pa)
+   156			mdr->address = cpu_to_le64(e->pa);
+   157		else if (e->va)
+   158			mdr->address = cpu_to_le64(__pa(e->va));
+   159		mdr->size = cpu_to_le64(ALIGN(e->size, 4));
+   160		mdr->valid = cpu_to_le32(MINIDUMP_REGION_VALID);
+   161		region_cnt++;
+   162		md->toc->region_count = cpu_to_le32(region_cnt);
+   163	
+   164		dev_dbg(md->dev, "%s:%d region registered %llx:%llx\n",
+   165			mdr->name, mdr->seq_num, mdr->address, mdr->size);
+   166	}
+   167	
+   168	/**
+   169	 * unregister_md_region() - Unregister a previously registered minidump region
+   170	 * @priv: private data
+   171	 * @e: pointer to inspect entry
+   172	 *
+   173	 * Return: None
+   174	 */
+   175	static void __maybe_unused unregister_md_region(void *priv,
+   176							const struct inspect_entry *e)
+   177	{
+   178		struct minidump_region *mdr;
+   179		struct minidump *md = priv;
+   180		unsigned int region_cnt;
+   181		unsigned int idx;
+   182	
+   183		idx = qcom_md_get_region_index(md, e->id);
+ > 184		if (idx < 0) {
+   185			dev_dbg(md->dev, "%d region is not present\n", e->id);
+   186			return;
+   187		}
+   188	
+   189		mdr = &md->regions[0];
+   190		region_cnt = le32_to_cpu(md->toc->region_count);
+   191	
+   192		/*
+   193		 * Left shift one position all the regions located after the
+   194		 * region being removed, in order to fill the gap.
+   195		 * Then, zero out the last region at the end.
+   196		 */
+   197		memmove(&mdr[idx], &mdr[idx + 1], (region_cnt - idx - 1) * sizeof(*mdr));
+   198		memset(&mdr[region_cnt - 1], 0, sizeof(*mdr));
+   199		region_cnt--;
+   200		md->toc->region_count = cpu_to_le32(region_cnt);
+   201	}
+   202	
+
 -- 
-2.52.0.460.gd25c4c69ec-goog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
