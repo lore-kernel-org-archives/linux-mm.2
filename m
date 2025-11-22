@@ -4,107 +4,209 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D86AECFC539
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 13:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B929CFC538
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 14:05:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FD436B0008; Sat, 22 Nov 2025 08:59:09 -0500 (EST)
+	id 5BAB26B000A; Sat, 22 Nov 2025 09:05:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D5606B000A; Sat, 22 Nov 2025 08:59:09 -0500 (EST)
+	id 56B746B000C; Sat, 22 Nov 2025 09:05:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EAF16B000C; Sat, 22 Nov 2025 08:59:09 -0500 (EST)
+	id 4323F6B000D; Sat, 22 Nov 2025 09:05:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A39D6B0008
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 08:59:09 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A64F213BE4E
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:59:08 +0000 (UTC)
-X-FDA: 84138399576.26.CFB07C2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 83994140004
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 13:59:06 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YVcQ3xYT;
-	spf=pass (imf23.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763819946;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A2D06B000A
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 09:05:32 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E337DC0905
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 14:05:31 +0000 (UTC)
+X-FDA: 84138415662.11.E02D772
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EEDD714001A
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 14:05:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=oKVRyp4V;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763820328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8UK5OnmXlYIEWh0+dSSN9O2D+QPTH6oQPXvnBi8JkQU=;
-	b=W7UXZZbd0geynDqGuDzZrVISRfMzfnMRLs9KM2braT4QWEVVvom6aA+c3O46RGvv0+JbMO
-	PQ+KZdQBV6+B+0GrnxWhfV7XO3+cLQQatSFFzhNwnXxBJH5dEzoI1GEBZ3bNMmr56cM6Uo
-	uxiiudOrizXA52CQp+ERp2xFEDfSat4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YVcQ3xYT;
-	spf=pass (imf23.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763819946; a=rsa-sha256;
-	cv=none;
-	b=0kJH64bSz6RWgdln+uNrzGVlJcf97p8NwE+LkQxrlVCblYc6MyQRQyE3EFRx5t8fQRDzXX
-	cVYb87/gELzjBbb2+5jF/QkHgWGS7MV7W5hY24fY3LhWXrAEkmp+BsvyeEwcUbOcszJy76
-	hn1/5i5k+cMWgaoKkWfft+7nMA/UdgM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763819944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8UK5OnmXlYIEWh0+dSSN9O2D+QPTH6oQPXvnBi8JkQU=;
-	b=YVcQ3xYTbGY73sUMSmVcITkKsrWsT9sADr35TTEt6w9X2HN14vg4LG1gxuyucUWvDkjA4k
-	QPr0NZlDh/hvPRCUZ8kO3iRnjDwATRoX2hQMlkGOd13Nil7h3+jm0Xs6Q0vI0QqfTKwoY0
-	7mQ61AVk3epyLuIRgbaUjxmYnbXtbEY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-aHti6GnUNjuLgKIfBP9Ckw-1; Sat,
- 22 Nov 2025 08:58:57 -0500
-X-MC-Unique: aHti6GnUNjuLgKIfBP9Ckw-1
-X-Mimecast-MFC-AGG-ID: aHti6GnUNjuLgKIfBP9Ckw_1763819935
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 94C8319560B5;
-	Sat, 22 Nov 2025 13:58:52 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.4])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A28A130044DC;
-	Sat, 22 Nov 2025 13:58:45 +0000 (UTC)
-Date: Sat, 22 Nov 2025 21:58:33 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Chris Li <chrisl@kernel.org>, Kairui Song <ryncsn@gmail.com>,
-	youngjun.park@lge.com
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, pratmal@google.com,
-	sweettea@google.com, gthelen@google.com, weixugc@google.com
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-Message-ID: <aSHBiVT6Udh1UNnB@MiWiFi-R3L-srv>
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
- <CAMgjq7BgCocnkJAYd-BBBvzbu9zxmv4QCj+k62kcA3ThZcNv2A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+TYSaHShy2mIFDtkum4t0FoEMHws6I5LzOBEE8fQCLM=;
+	b=StFWLf7LPErH0QPPEdXM/fe5lx7el8f3zIZEKKEj4Uqab0+0Y75UuLUp/N9c6UKidhh0p3
+	m5p2iKsVNxQ/KWBZ2C8nPNxrcWOFN1YSC5WnxKbp6I7Mug1nSz48hCy/QMvX6nKMkmaUoc
+	w5Bo7bMG9RyhOq3XTeu49FeN1c2IIEM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763820328; a=rsa-sha256;
+	cv=fail;
+	b=YgmGzpS1DaOVinifomA+fPQkrRGgC2Sqq7hUEyMEnsFDk4YLuFGkB1x7UbH+x8/FxuaSd+
+	xOcYx9X/wkMCPp0MKOkPEArjqSkFPin6BDL+BvThZTDTXKoeZxESg5VEv7lkK5sM/jasK1
+	KprNlkxdDgqn+z+mvoius7xnRqJg9BU=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=oKVRyp4V;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763820328; x=1795356328;
+  h=date:from:to:cc:subject:message-id:
+   content-transfer-encoding:mime-version;
+  bh=hdZrAFcoHFQoss8wBZMBVfZV9NO6ssPUmeVgYOwQYaM=;
+  b=oKVRyp4V/iyzsOjb3OMTj/+E7MfoMYflFD+eWoHywA/SqYLXDntWLsbJ
+   KGrhhTLOrGlTHYug20S5ARUaaQl1cLvQ2SkRbdlCXaxJbZapplkLqSagM
+   W2JpXLvOWk7ccD3/VjUkn/OEpfJ41komPe3B6uz/xJOSKPTMYQbRMATwA
+   QIrz6W4yBEh+N32Ablz1sHffp1NpyHcRMq+BnUK/TlWSv8s+rzZE9KOl5
+   hktOQl7T+irxLgg5ZAzUEgf1iLxlr9oh+ntCYiF5h9MequOcJVdxh/4nK
+   ANXBFQnCnT+mtK/QKg+7FKCDBRAej+6U2/p2DF3GrOvp41xDK7zHuDDBG
+   Q==;
+X-CSE-ConnectionGUID: 1AjQkkGVQQKj7tArBmbVkQ==
+X-CSE-MsgGUID: YLgz6jFWSYO3qYn76aaMtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11621"; a="64896315"
+X-IronPort-AV: E=Sophos;i="6.20,218,1758610800"; 
+   d="scan'208";a="64896315"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2025 06:05:26 -0800
+X-CSE-ConnectionGUID: MaOa74G2Q9eVwsR1/F2lQQ==
+X-CSE-MsgGUID: 8Qy68ypOSUStjwSxjTYCaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,218,1758610800"; 
+   d="scan'208";a="215282159"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2025 06:05:26 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Sat, 22 Nov 2025 06:05:25 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Sat, 22 Nov 2025 06:05:25 -0800
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.53) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Sat, 22 Nov 2025 06:05:25 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s7gIySorFnajGbQo1I/IkXk85CiBwLOwyV2gg7KZxVD8iugBKx74favHHT4E9ggWE4TKG4/5HiNCmco38G145r0/kKcI3Wlb1O7gt19h2UFpbImTjctLF8x4mGc8B8qdgqsHHN7P5FMJ0U4QkSFeict2uXNXPuYHsbSfUpYmEJT0zHx8fUa7Jcj7ZzdJe7cGz3u9nv+DoaueE0ZM0KvwIVh0WyHUvH+p9jXHLGEUTY5fbI6r6kRo712Sd/9HQb47bnCR+T7FIkDvhiyT8sQRevuvF9lA+GW4exyc1YvRwakhEe2J/4pPaSIwGUJiE07kOGZBpMj/E9MGQ1LIK6iSdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=accw4raYDOREhgKe6yIWrpUZZKvddybqhS2tlZ2ZDvU=;
+ b=QrNkAjNcp7vLwn6iBrAjqcw3VWnYySF3HgZfeTZw4m3sF+xHCPMmPe8MkiJKSvVpyZ2T7v4mdRD0+3RkBaHmCXH3vJCtYMEep9sOrKnuNVM9r3CQpSFsMRTrd5KQWKUkqtnl86VU8rrrzFRCqnfrL7alcEdF5EHUgdQk1bQWlXcimPk+RvRGueJtiHRRUMPhWjXPraphQNnw4Wze/Gjc/0SUHnP3oqOHOVkLnCiof7c9zIl783aV7iBNrWksJ3DGYUvkQ4ZUI0Ntpdb7wRnnf9ftLA/8I+GzEPwkqURL3wnnA4Vqt5Gk69lGMrjAGsGppmJepP7eTPRXXlF7uLD6Dw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BY5PR11MB4165.namprd11.prod.outlook.com (2603:10b6:a03:18c::26)
+ by IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.14; Sat, 22 Nov
+ 2025 14:05:23 +0000
+Received: from BY5PR11MB4165.namprd11.prod.outlook.com
+ ([fe80::3876:1eb1:8e84:84e7]) by BY5PR11MB4165.namprd11.prod.outlook.com
+ ([fe80::3876:1eb1:8e84:84e7%6]) with mapi id 15.20.9343.011; Sat, 22 Nov 2025
+ 14:05:23 +0000
+Date: Sat, 22 Nov 2025 22:05:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+CC: <oe-kbuild-all@lists.linux.dev>, Andrew Morton
+	<akpm@linux-foundation.org>, Linux Memory Management List
+	<linux-mm@kvack.org>, Wei Yang <richard.weiyang@gmail.com>
+Subject: [linux-next:master 10747/11041]
+ tools/testing/selftests/../../../tools/testing/selftests/kselftest_harness.h:56:10:
+ fatal error: asm/types.h: No such file or directory
+Message-ID: <aSHDG6rUzgKnVgO4@rli9-mobl>
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7BgCocnkJAYd-BBBvzbu9zxmv4QCj+k62kcA3ThZcNv2A@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: 83994140004
-X-Stat-Signature: whogdgr48c3d51dh774ws8b8m3drc46b
-X-Rspamd-Server: rspam02
+X-ClientProxiedBy: SG2PR04CA0161.apcprd04.prod.outlook.com (2603:1096:4::23)
+ To BY5PR11MB4165.namprd11.prod.outlook.com (2603:10b6:a03:18c::26)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR11MB4165:EE_|IA1PR11MB6219:EE_
+X-MS-Office365-Filtering-Correlation-Id: df848ff3-c934-4018-c7ea-08de29d02daf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?7XZIrOAZfxykEJTOh/yhOSIUjGAaeJ33A/f7LATU+iV5/9CBWMt22zqoCg?=
+ =?iso-8859-1?Q?IcuL0RepcX5gaUxf/OlHJup1pzVXPrWGShkZfYC8lOqTlwsxRFzpaFexv5?=
+ =?iso-8859-1?Q?iBPCHVfxne0dlnk4qfBm1JpCpAYoFN96u6j/VHsSubsyOLpH4IF1uJsZva?=
+ =?iso-8859-1?Q?PPYmlv1cdm/hksrB1FMppfQvdcZUWE3zZB9daDMHdKnWl0RJcRUkVq88pc?=
+ =?iso-8859-1?Q?fXgGxM2nWIZCzS34MzucEENkzZnCQLvDBZV0dB14yR/fDuKVqYBJD1Ni5R?=
+ =?iso-8859-1?Q?/2sCMSa6Az/kTEyU2Wj8TaHii/HkFsYivK0pmFa2gVwH/kMK5QFuSjXAfb?=
+ =?iso-8859-1?Q?qeEU9hwsC5M/jE4Qc7QiyXAwrhcg4z6mHZjTdzfCm1vJlvb9JDIKI2RMSp?=
+ =?iso-8859-1?Q?1ipRY4823X2caJNo2AXav9NUvmof5sA1ZcH5odqDinSkmeWLWEdaLmBIt4?=
+ =?iso-8859-1?Q?GEZNf9r5xVFH7qF46WtQ0vs7FSTLOTInHGRW64Ifr+8JRwhz4K/LdUOym2?=
+ =?iso-8859-1?Q?GEbDIu/bLkGhaA7V1iVUEhNHeLAegIk2z/R2Y2p1Xa6HP9zOHZqu8LSnyy?=
+ =?iso-8859-1?Q?LZgwh+5XWyS9BLxXuom5vAvN0uXjyJzFQVDYYlKj/ugJwAjq8EDVYEwXVO?=
+ =?iso-8859-1?Q?+dnzcCGSFGx/z4NSmc8EwjCeQrY7i3Mw78rNjqLcGijvMKaVSWlbAcWZb3?=
+ =?iso-8859-1?Q?HfcYu/AkLHRTJJB52BtMV6uNPWjvs/q1GscOatVG2VlZNNCdBDUYS46qEk?=
+ =?iso-8859-1?Q?tqkOz2cKHY0h7lUWE7kXv2FZxneq9VpXQZhC6Yb648hwUkhdSwApNblhpx?=
+ =?iso-8859-1?Q?Lj8tH2vsAfyL2U1x4KFJcthJBsUCfsHxPFfgj4pJaZ1tlpS1SAmi2WfyiT?=
+ =?iso-8859-1?Q?ABP4J3Qa87W+vjCAkdNz6nOTCHRzHortD+J8GxFSp+UhK4PAn57qHogJ0c?=
+ =?iso-8859-1?Q?bLplVmLfqHC4/+8EcYMJ9OrjhaPckL7+Z5f5IlljSkNG9aPMnrSL5IYsle?=
+ =?iso-8859-1?Q?sknMIMS7ntxBj8pAwnf09M38p1PXp/H8iaFPwS8nqyoPwTvNYP3msB18d8?=
+ =?iso-8859-1?Q?W4T8fClgegQCBS+zOE6CwFmpzVZw2gIXNYenfRRwc8shE2BZuOG4jveVEK?=
+ =?iso-8859-1?Q?MGyMfby7pERhUy1XsPU4/KYIUpDSUn7SzGR9CxZxYA/6/t69EhFiecdOfe?=
+ =?iso-8859-1?Q?ODklJ4h+CvyFHy8PVMt+YnJdBL9ubhqjA3ij6Njo/8u6Uzj/g5FLUErIii?=
+ =?iso-8859-1?Q?kM7yK6oIb4ne6GVyMTDBs+MtKGjwJ3FJ+kF7wOQTfmB88gy8Rp2724qrno?=
+ =?iso-8859-1?Q?x64eE+wWtKsHhBAzq7m/gLE7rom2BLNMeQJqzXVpSWDV+cFASIEqzhgV6q?=
+ =?iso-8859-1?Q?zTyWQBEsbxJmp5y8StJn+eWTw8DvjHYVN4Yk9t0D5tcSPcm8kNl6M1RORm?=
+ =?iso-8859-1?Q?Y6QjuKVp+oH1roft9Kg/cgVouYKM4UVyszERzr9mA42o8GakHu656S/Ksf?=
+ =?iso-8859-1?Q?8bxtyntWcWGRzfm08IPU86BO7aTXZTgBD3ksVCRk38Mg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR11MB4165.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?wMUck7Bjk9e6t1ix/AbK1hWfMwdYqaci88Etmg1zEggjbW9t0CZ+U39rop?=
+ =?iso-8859-1?Q?s4SXTVOlin70VmM5V+MVQDi2NCqehqHUTP4brdsN1zpFwDGLHB7ns7o8Or?=
+ =?iso-8859-1?Q?ZCWU4u5hjQgOdgtS8QQJaq/Xwij3pHO1fdsup/fHYKvLQ4GmAtN+FUNzjh?=
+ =?iso-8859-1?Q?InQIAxXqLCh+gkkILPvx1ShF7tdeUuDwNJwo7aZNwXKvnjcLAWDEyGS/T9?=
+ =?iso-8859-1?Q?05tevT+dfmbAullj+1GrBEpHFn+dG15ll4FlcbNjWLS5O3G2fKvcQfiL4B?=
+ =?iso-8859-1?Q?xQGkRd21Jtwor3jVYcR+h84zQIQyOAltttHzbMxCPKnUQGMir+LCmUgfE7?=
+ =?iso-8859-1?Q?fyHaSG3P58fjSYvLbwxL7NwStEUEXxPBh/5it/1eigi4tRk56qtMSyn3Tp?=
+ =?iso-8859-1?Q?jvXmM/nEZLGhpsSGXW63OuzTVdZ9pmIpAWfeNv8W7MnwVPg4HkrspPrp6j?=
+ =?iso-8859-1?Q?BpVx7VPkG3fYAr+k6fJVGIohys7VTAFaqX+JR+jfKGHWqMFv7WaTjaQyTB?=
+ =?iso-8859-1?Q?nAMAZvn1BwBYcV0dZH74ogVBZkDOX459AjIk4FD3wJRYzo0kwmVZlDJpbd?=
+ =?iso-8859-1?Q?zO46Cx16+94svz6HTQLFiT0jcXp8qbDRVR9AJfqHAfpcc6z0Y0vYNiwNF5?=
+ =?iso-8859-1?Q?Ws4H57E5pbtr+5yezK1uUpQEzMqjiXzyGNKngUtJWxlTtodLvBarHHTmsn?=
+ =?iso-8859-1?Q?VxEFEFahtW7I/f9aw1mtD9RYCR3OkE6xg8mayHDKG0kZT17awSy9W3OlJg?=
+ =?iso-8859-1?Q?xU5NMhLeHBMiQ5b6mJubsktOYjrzg9iJZXLY6B24aO/mE4h6NY6AUMz6Yj?=
+ =?iso-8859-1?Q?+6Kt+057DoRf3G90jEfhHw3XqbUTkvLo3EgoDeawRe0/+8RSVtR3gTM1KV?=
+ =?iso-8859-1?Q?bSpBPcVLCumXOq3lRYi9XNcA931Pf9SLOsQOp3LOyfNbcz13Z5ZK+kQV1d?=
+ =?iso-8859-1?Q?S2kBsJ+7MCeCJ0sX4qY34SyKSsd56X4yKtT0fm5QSrGtdNNFaHFBiwhK+/?=
+ =?iso-8859-1?Q?UxCN1Nbh/usTi8z02KDQ9XQbo/gLizZaXLukuI5yMTdcZEqLZAShTpYfff?=
+ =?iso-8859-1?Q?5u9cfnSQu1GsHJi9PewqnJn/Bs/zHEHvs4Vu4EzjNXXfTrRnlxHsloLw3J?=
+ =?iso-8859-1?Q?rQLb28NtPkpttdMltDwrXBiTV5p9KiIl+H4I2JzYETw7w+XQJ/PC91FmNo?=
+ =?iso-8859-1?Q?qBD1nj5XXVccuoOWZxPxruTlF6M7XIPQXKHPC8KKkx8hZxSxnnhOC6dZiz?=
+ =?iso-8859-1?Q?o6A9Ko3MPzggANUi6RdKVZW9sXjQm6deYijCAbEU5B6Pz1cW51iKfAMRsq?=
+ =?iso-8859-1?Q?ITzOPpO7TnUdwKj+Hpp3clHvKsuBSosP5a3BJpdXHvq3f3Y97wUjkxx03h?=
+ =?iso-8859-1?Q?mq56qanNO/haP4SOcVAdHVeZBl06+YmW16YoGomifv6fDHid4tFtOgwYkg?=
+ =?iso-8859-1?Q?sgSAx5eoaY1oV29XIHFXJWfIUF6MyvjmA5g/xD1bQMHGWM48BjH3usuGMX?=
+ =?iso-8859-1?Q?USa3z/817FsduSPlVgcjgU1ZalYBDlWPuzaK+j5KWiKfSVSTh0P1GZ9PeU?=
+ =?iso-8859-1?Q?a3/gGHf9b2j2wxyWAt5tE9/b6/4dZZxDV2z1MoO/4fYdBC0PazlHidhpv8?=
+ =?iso-8859-1?Q?xQ6m4AK5cyZDtB0S+/PHJZtnKWGATe2jemRVlX4iFjnFX74jc7d3DL9g?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: df848ff3-c934-4018-c7ea-08de29d02daf
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4165.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2025 14:05:23.3243
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 25zLRWcBdbaZMzEwkQYb/Ro4R6IkEpL8bjbVBnSPnDgBSA7vAdJ789IRwYmpFIG0fW3Dut5IIoK0kU8bKqWS6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6219
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EEDD714001A
+X-Stat-Signature: jhmhtq1azkus3yje935qewbweao1gxur
 X-Rspam-User: 
-X-HE-Tag: 1763819946-213395
-X-HE-Meta: U2FsdGVkX19UITif4Aj0docmltqF8TSZ1rcwSmIe3Z092Hr19S8J79/fhKIu8rE61mv4yI9UxTrcK3GyqA24qSQGMwBr21T2dLC+AoEsf2jkA8/5AeOYbyBM1OC1+KYKg5Psi5XxmGNLIJJ8xqzp0uleqiTXQHEtiybX7/dfnuRXbUsvgd2LUpYHVdQ/mbgzwZy6MsMwgCDoi6n0/OxXi9dWtdxmdJoBm5oLq53Oku4hZwbvIBcnOW9mB2hgG0/hYGzu5yoX+s6OPdDL4ubXIOkQl34EO1mU2Wwk4i1xHyUTmsLTjviz+k2wLFkeUMcniLJ3v/8l6M3bQ4rNJ3hcs0x+WVoj0p6OrYl9jQOZi4oLC4KqRlIckBaR5QGaQ3rUoL6JCNXHyDVqfeISRUtTtZI1Y152Gyisdi9s1Ocs0wf+sHqL4to6WIf0DMFsAdqVI2Z+1GrwIn/Tw7t/hyrQXpvAYBwBi2e///5TLWzVsQeaHqN5dh+jR82c10X0BpE0Oetr1yEMzZYJX0g3AclRPT+coGM3PHgEc5Hyknz3Qbcf2trLN4aQV6GihsLr/TdvLrS7amYmlArf7vphfkoaOAAVih0Xi/lJlQG6SEwdSRfDRXjFFBAdkIrnkgkD3S4dG0XbqWCsQ0Cy7dJlJic1eXk/JKBzBnTpTTOMB2oYUDB3MR63X/IwpbzhOaRwpW7uNfL0hICxzzqATMe6TOqxXQKKjyVuuItEVNfy/kHS8YegdoMKsSAlwsLn6B1IpKOhxRlciAY+4JIVXmweK815qEmg7jsrvRtmfaS3CA6QXfKHbjWmZYh/wQzfVj8up0E6gsVJMSwMtfR4NPhYVJavLwnAfy/iH8tmej3lPjaTkEKUMY7BluDGofByPcvmo3SOFpagi2HprfnvGjtUjWma6n7UNFKhP6COkhoxuIoFYLEZJ1kQz/7PSILaHFRZVU2fDwqyss351uBsAj2ea7o
- ee6Rfbus
- o5DVNnmLYhXmaDQ3ePEhP6OuB+G4na7H6SUvjJAWWLNBOK09WNAuNIGuo+8EHI41Jx7tku8FxKEv2E/Kj4hI416iyrZw13iVxtUc1cyH2kiXSiTsjzx3iSZrYl8i+atNaLukrkqCM1ROR4UixS53Ne1EycdTXAmDc4jNhnXuKRPKilMnMKob5rEFEwvp/szDglRC10JI498TTUD50/D0MSeK14CVg3Mr9x0RcYOJ0NN8eRCadsdvGlY5ooOlYi7TCWIj0T1PXK/MYvwD+r3UenOwOuV7EiVf9pAcyl7tg4Q0Q6NYOoulAcKxdyil3hocHHhjCws1qUt9WpAOqJVt5DMBOG0AD7DiuxwGtsjnTPY8DpguIuY/o/fthgAGYvaP017ytInob1fLd/918rHYzfwtbLvezZGYXq4FId1PLOir0B5jjTkA/yC/FGg==
+X-HE-Tag: 1763820327-122907
+X-HE-Meta: U2FsdGVkX19u7B3+HCvFpguPAJtgCpW20FUPFOSddQPZ7PES0HBrxqwfLrFNqlpIJJcIMcQsJ6fUTPQCQxnSH/15UtEnHCtT+Z0u4fRxtdDv4XqlzuAS0NHASI7rTzUCeom7Cy7DNgzrJ1+ufQ1l6Ii2WWHfcaWxss4V7EXGOrDCFIDE588abwZeFMpEP4qp/4mqvyOoZ6AJTZDkshCEqPg6dGqV5467wAtTxEmIciY4dQ/Nk5ngHqFCNu8NEkQvvpzaNCK6aWIkmGrQZA0GOLALJdfbCxDllaym43olxzTDMhCVKKMFSTHX1Dw+KSAgv4zQxnlUCwh64HJLkgSUJalZvMKGD02xgzAVnBY0hU5ytyEu70n6iMMU1yFrFdVDg7Z7Vs1i1mGFxvgN6qpVGL86+hzrJeMrTt7VbDHnF69GgnCeCUEIPJ6XCeumcwI12i5qKwKCGkGxR1O0BylXPpmBY/Ij8Y8SqkIKbhRujxcx3xgahrkB7Qqcmqk7FJ2pW0/QMEKcWLCAumiDWFA0KsGBbjhba3lZ+c7xfsKSA0B46vVuthXXPgtvRXVpH78nbjldbCkuno8EXLGr4Er1inUkOFTAwmsVsWuh9ukKDNLzqyTYWjwSvt4cWXuf+kA4B0AtXzFqOCeiDqzIEc7KTlgnz56sslBaEqMAwV7Okzrj2E4gjuDC8KL8e+SXo3/nGZMkM9P3U6Q+FxP6vrfx1wo0QN6TuLKwDjlYcff3aYU2tR52LRFjNeB5BxhKzaWRhfGCaXMI1fMEToK2zjtGGOCNlgDAAAuRzv0VS5Y32LeuXM42T3ru6DXs3G7t4IzcNLC+C8kk17ZeeJu9KzipMIAA3hxMWa4AkaVChZ4hdh9SdW6qp4OR7RP9Jjx32eIctBnSDAA1cF+yRUvM1V9cK6lrHSQMirbdfs6bDRXg0EiFniZazJyFpf1bQDRpheE2xxsSGKLOy0kathvgh6L
+ ku/YXJ4D
+ v7EAflsnz7MIRpy1nOcwtQG+0yFFm4wz7XhVF/z5p+Ofojq54xW0OjZo06wBcAtI1VAOBZQ0PooGMlNmoDlE9k/xgXDlnPqK1CB2+kq5ccPyMfpzdvA9FeUS3j1u1re0UmkSKnyarebO7LfctG1KVRuWT4dXYu0dt9BlYYlkO11SYAmXKqVxdN6VB2w54S/YjSSRxMI6fooj+uwij0CSieyHyMPdXbNmsEzAjMqPnnwK9hUVw6+htgbiEDkGt5SLNwSxn6T7TlFM6jBaAxDCj0Cr9DqFioqqHDvK+aDSI0gT5Q9AdFTFFuPisZf21UhrFULgePsm/36sGNHKzFiFJSPBma330cSyX486j0pQ6RW9D0JPV+PsTeIt9STCHxdU/jMNVoq9NmVK/H9ljppDznsdHw5/208RG1zawbC9m94/hg10j+L9pzf/01nBG/MyCC4tAinj2GHHmHXqdJk1EV8sgT2mtkmYYdbHj6YzeUvJMhsmKLFaJ60B3Uu1PeYNkRVzSc0XSvGQNW2mOGOZva0UQtF7XGWQwnh2hsFZWFrTJXK0HsYNoaOGZuSVRAs2bhQUysHXxOXC4Nr2VrGXfW3/+iVMeiICq9k1rODTJCj9PvIeCfhFHwOk9H+Qoaz87sX3teu6cdy5Yh54aYfRu1xomT4YBZMJSxvqj0XBdWP8HgKmt6QXJspqu91LaTRF+TgPPovds9u3q8KrV2OuXA1ytJ//3T3R6rl/D0kAqZaf2nAFKlgQBSAzZ7Y3zUXHJRNQvFHwjPusyrLxSqyx+e6fQ0pnRGHyhbzlkKjJr9ssXCmpwZo0/tcFI8bsPLbYLZB61
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,289 +215,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add YoungJun to CC.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   d724c6f85e80a23ed46b7ebc6e38b527c09d64f5
+commit: b5f70e33435e84a3e8302a5019612630a42dceab [10747/11041] selftests: complete kselftest include centralization
+:::::: branch date: 31 hours ago
+:::::: commit date: 2 days ago
+config: riscv-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20251122/202511222145.tL2NICpQ-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251122/202511222145.tL2NICpQ-lkp@intel.com/reproduce)
 
-On 11/22/25 at 05:59pm, Kairui Song wrote:
-> On Fri, Nov 21, 2025 at 5:52â€¯PM Chris Li <chrisl@kernel.org> wrote:
-> >
-> > The current zswap requires a backing swapfile. The swap slot used
-> > by zswap is not able to be used by the swapfile. That waste swapfile
-> > space.
-> >
-> > The ghost swapfile is a swapfile that only contains the swapfile header
-> > for zswap. The swapfile header indicate the size of the swapfile. There
-> > is no swap data section in the ghost swapfile, therefore, no waste of
-> > swapfile space.  As such, any write to a ghost swapfile will fail. To
-> > prevents accidental read or write of ghost swapfile, bdev of
-> > swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
-> > flag because there is no rotation disk access when using zswap.
-> >
-> > The zswap write back has been disabled if all swapfiles in the system
-> > are ghost swap files.
-> 
-> Thanks for sharing this, I've been hearing about the ghost swapfile
-> design for a long time, glad to see it finally got posted.
-> 
-> >
-> > Signed-off-by: Chris Li <chrisl@kernel.org>
-> > ---
-> >  include/linux/swap.h |  2 ++
-> >  mm/page_io.c         | 18 +++++++++++++++---
-> >  mm/swap.h            |  2 +-
-> >  mm/swap_state.c      |  7 +++++++
-> >  mm/swapfile.c        | 42 +++++++++++++++++++++++++++++++++++++-----
-> >  mm/zswap.c           | 17 +++++++++++------
-> >  6 files changed, 73 insertions(+), 15 deletions(-)
-> 
-> In general I think this aligns quite well with what I had in mind and
-> an idea that was mention during LSFMM this year (the 3rd one in the
-> "Issues" part, it wasn't clearly described in the cover letter, more
-> details in the slides):
-> https://lore.kernel.org/all/CAMgjq7BvQ0ZXvyLGp2YP96+i+6COCBBJCYmjXHGBnfisCAb8VA@mail.gmail.com/
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/r/202511222145.tL2NICpQ-lkp@intel.com/
 
-Thanks for sharing the background and more information. When I checked
-Youngjun's swap.tiers patchset before his RFC, felt it would be more
-flexible to add zswap to memcg if zswap size can be decoupled from the
-back device. Chris's RFC can satisfy that, but I didn't thought you
-guys had planned more, e.g dynamic growth of swap size, and the zswap slot
-management being like swap table on swap slot. Looking forward to seeing
-the progress and more details.
+Note: the linux-next/master HEAD d724c6f85e80a23ed46b7ebc6e38b527c09d64f5 builds fine.
+      It may have been fixed somewhere.
 
-Thanks
-Baoquan
+All errors (new ones prefixed by >>):
 
-> 
-> The good part is that we will reuse everything we have with the
-> current swap stack, and stay optional. Everything is a swap device, no
-> special layers required. All other features will be available in a
-> cleaner way.
-> 
-> And /etc/fstab just works the same way for the ghost swapfile.
-> 
-> Looking forward to see this RFC get more updates.
-> 
-> >
-> > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > index 38ca3df68716042946274c18a3a6695dda3b7b65..af9b789c9ef9c0e5cf98887ab2bccd469c833c6b 100644
-> > --- a/include/linux/swap.h
-> > +++ b/include/linux/swap.h
-> > @@ -216,6 +216,7 @@ enum {
-> >         SWP_PAGE_DISCARD = (1 << 10),   /* freed swap page-cluster discards */
-> >         SWP_STABLE_WRITES = (1 << 11),  /* no overwrite PG_writeback pages */
-> >         SWP_SYNCHRONOUS_IO = (1 << 12), /* synchronous IO is efficient */
-> > +       SWP_GHOST       = (1 << 13),    /* not backed by anything */
-> >                                         /* add others here before... */
-> >  };
-> >
-> > @@ -438,6 +439,7 @@ void free_folio_and_swap_cache(struct folio *folio);
-> >  void free_pages_and_swap_cache(struct encoded_page **, int);
-> >  /* linux/mm/swapfile.c */
-> >  extern atomic_long_t nr_swap_pages;
-> > +extern atomic_t nr_real_swapfiles;
-> >  extern long total_swap_pages;
-> >  extern atomic_t nr_rotate_swap;
-> >
-> > diff --git a/mm/page_io.c b/mm/page_io.c
-> > index 3c342db77ce38ed26bc7aec68651270bbe0e2564..cc1eb4a068c10840bae0288e8005665c342fdc53 100644
-> > --- a/mm/page_io.c
-> > +++ b/mm/page_io.c
-> > @@ -281,8 +281,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
-> >                 return AOP_WRITEPAGE_ACTIVATE;
-> >         }
-> >
-> > -       __swap_writepage(folio, swap_plug);
-> > -       return 0;
-> > +       return __swap_writepage(folio, swap_plug);
-> >  out_unlock:
-> >         folio_unlock(folio);
-> >         return ret;
-> > @@ -444,11 +443,18 @@ static void swap_writepage_bdev_async(struct folio *folio,
-> >         submit_bio(bio);
-> >  }
-> >
-> > -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
-> > +int __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
-> >  {
-> >         struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-> >
-> >         VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-> > +
-> > +       if (sis->flags & SWP_GHOST) {
-> > +               /* Prevent the page from getting reclaimed. */
-> > +               folio_set_dirty(folio);
-> > +               return AOP_WRITEPAGE_ACTIVATE;
-> > +       }
-> > +
-> >         /*
-> >          * ->flags can be updated non-atomicially (scan_swap_map_slots),
-> >          * but that will never affect SWP_FS_OPS, so the data_race
-> > @@ -465,6 +471,7 @@ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
-> >                 swap_writepage_bdev_sync(folio, sis);
-> >         else
-> >                 swap_writepage_bdev_async(folio, sis);
-> > +       return 0;
-> >  }
-> >
-> >  void swap_write_unplug(struct swap_iocb *sio)
-> > @@ -637,6 +644,11 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
-> >         if (zswap_load(folio) != -ENOENT)
-> >                 goto finish;
-> >
-> > +       if (unlikely(sis->flags & SWP_GHOST)) {
-> > +               folio_unlock(folio);
-> > +               goto finish;
-> > +       }
-> > +
-> >         /* We have to read from slower devices. Increase zswap protection. */
-> >         zswap_folio_swapin(folio);
-> >
-> > diff --git a/mm/swap.h b/mm/swap.h
-> > index d034c13d8dd260cea2a1e95010a9df1e3011bfe4..bd60bf2c5dc9218069be0ada5d2d843399894439 100644
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> > @@ -195,7 +195,7 @@ static inline void swap_read_unplug(struct swap_iocb *plug)
-> >  }
-> >  void swap_write_unplug(struct swap_iocb *sio);
-> >  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
-> > -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
-> > +int __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
-> >
-> >  /* linux/mm/swap_state.c */
-> >  extern struct address_space swap_space __ro_after_init;
-> > diff --git a/mm/swap_state.c b/mm/swap_state.c
-> > index b2230f8a48fc2c97d61d4bfb2c25e9d1e2508805..f01a8d8f32deb956e25c3c24897b0e3f6c5a735c 100644
-> > --- a/mm/swap_state.c
-> > +++ b/mm/swap_state.c
-> > @@ -632,6 +632,13 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
-> >         struct swap_iocb *splug = NULL;
-> >         bool page_allocated;
-> >
-> > +       /*
-> > +        * The entry may have been freed by another task. Avoid swap_info_get()
-> > +        * which will print error message if the race happens.
-> > +        */
-> > +       if (si->flags & SWP_GHOST)
-> > +               goto skip;
-> > +
-> >         mask = swapin_nr_pages(offset) - 1;
-> >         if (!mask)
-> >                 goto skip;
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 94e0f0c54168759d75bc2756e7c09f35413e6c78..a34d1eb6908ea144fd8fab1224f1520054a94992 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -66,6 +66,7 @@ static void move_cluster(struct swap_info_struct *si,
-> >  static DEFINE_SPINLOCK(swap_lock);
-> >  static unsigned int nr_swapfiles;
-> >  atomic_long_t nr_swap_pages;
-> > +atomic_t nr_real_swapfiles;
-> >  /*
-> >   * Some modules use swappable objects and may try to swap them out under
-> >   * memory pressure (via the shrinker). Before doing so, they may wish to
-> > @@ -1158,6 +1159,8 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
-> >                         goto skip;
-> >         }
-> >
-> > +       if (!(si->flags & SWP_GHOST))
-> > +               atomic_sub(1, &nr_real_swapfiles);
-> >         plist_del(&si->avail_list, &swap_avail_head);
-> >
-> >  skip:
-> > @@ -1200,6 +1203,8 @@ static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
-> >         }
-> >
-> >         plist_add(&si->avail_list, &swap_avail_head);
-> > +       if (!(si->flags & SWP_GHOST))
-> > +               atomic_add(1, &nr_real_swapfiles);
-> >
-> >  skip:
-> >         spin_unlock(&swap_avail_lock);
-> > @@ -2677,6 +2682,11 @@ static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
-> >         struct inode *inode = mapping->host;
-> >         int ret;
-> >
-> > +       if (sis->flags & SWP_GHOST) {
-> > +               *span = 0;
-> > +               return 0;
-> > +       }
-> > +
-> >         if (S_ISBLK(inode->i_mode)) {
-> >                 ret = add_swap_extent(sis, 0, sis->max, 0);
-> >                 *span = sis->pages;
-> > @@ -2910,7 +2920,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
-> >         if (p->flags & SWP_CONTINUED)
-> >                 free_swap_count_continuations(p);
-> >
-> > -       if (!p->bdev || !bdev_nonrot(p->bdev))
-> > +       if (!(p->flags & SWP_GHOST) &&
-> > +           (!p->bdev || !bdev_nonrot(p->bdev)))
-> >                 atomic_dec(&nr_rotate_swap);
-> >
-> >         mutex_lock(&swapon_mutex);
-> > @@ -3030,6 +3041,19 @@ static void swap_stop(struct seq_file *swap, void *v)
-> >         mutex_unlock(&swapon_mutex);
-> >  }
-> >
-> > +static const char *swap_type_str(struct swap_info_struct *si)
-> > +{
-> > +       struct file *file = si->swap_file;
-> > +
-> > +       if (si->flags & SWP_GHOST)
-> > +               return "ghost\t";
-> > +
-> > +       if (S_ISBLK(file_inode(file)->i_mode))
-> > +               return "partition";
-> > +
-> > +       return "file\t";
-> > +}
-> > +
-> >  static int swap_show(struct seq_file *swap, void *v)
-> >  {
-> >         struct swap_info_struct *si = v;
-> > @@ -3049,8 +3073,7 @@ static int swap_show(struct seq_file *swap, void *v)
-> >         len = seq_file_path(swap, file, " \t\n\\");
-> >         seq_printf(swap, "%*s%s\t%lu\t%s%lu\t%s%d\n",
-> >                         len < 40 ? 40 - len : 1, " ",
-> > -                       S_ISBLK(file_inode(file)->i_mode) ?
-> > -                               "partition" : "file\t",
-> > +                       swap_type_str(si),
-> >                         bytes, bytes < 10000000 ? "\t" : "",
-> >                         inuse, inuse < 10000000 ? "\t" : "",
-> >                         si->prio);
-> > @@ -3183,7 +3206,6 @@ static int claim_swapfile(struct swap_info_struct *si, struct inode *inode)
-> >         return 0;
-> >  }
-> >
-> > -
-> >  /*
-> >   * Find out how many pages are allowed for a single swap device. There
-> >   * are two limiting factors:
-> > @@ -3229,6 +3251,7 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
-> >         unsigned long maxpages;
-> >         unsigned long swapfilepages;
-> >         unsigned long last_page;
-> > +       loff_t size;
-> >
-> >         if (memcmp("SWAPSPACE2", swap_header->magic.magic, 10)) {
-> >                 pr_err("Unable to find swap-space signature\n");
-> > @@ -3271,7 +3294,16 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
-> >
-> >         if (!maxpages)
-> >                 return 0;
-> > -       swapfilepages = i_size_read(inode) >> PAGE_SHIFT;
-> > +
-> > +       size = i_size_read(inode);
-> > +       if (size == PAGE_SIZE) {
-> > +               /* Ghost swapfile */
-> > +               si->bdev = NULL;
-> > +               si->flags |= SWP_GHOST | SWP_SOLIDSTATE;
-> > +               return maxpages;
-> > +       }
-> 
-> Here if we push things further, it might be a good idea to make better
-> use of the swap file header for detecting this kind of device, and
-> maybe add support for other info too. The header already has version
-> info embedded in case it will be extended.
-> 
+   In file included from proc-maps-race.c:26:
+>> tools/testing/selftests/../../../tools/testing/selftests/kselftest_harness.h:56:10: fatal error: asm/types.h: No such file or directory
+      56 | #include <asm/types.h>
+         |          ^~~~~~~~~~~~~
+   compilation terminated.
+--
+   In file included from get_syscall_info.c:10:
+>> tools/testing/selftests/../../../tools/testing/selftests/kselftest_harness.h:57:10: fatal error: ctype.h: No such file or directory
+      57 | #include <ctype.h>
+         |          ^~~~~~~~~
+   compilation terminated.
+--
+   In file included from hmm-tests.c:13:
+>> tools/testing/selftests/../../../tools/testing/selftests/kselftest_harness.h:57:10: fatal error: ctype.h: No such file or directory
+      57 | #include <ctype.h>
+         |          ^~~~~~~~~
+   compilation terminated.
+   vm_util.c:2:10: fatal error: string.h: No such file or directory
+       2 | #include <string.h>
+         |          ^~~~~~~~~~
+   compilation terminated.
+   thp_settings.c:2:10: fatal error: fcntl.h: No such file or directory
+       2 | #include <fcntl.h>
+         |          ^~~~~~~~~
+   compilation terminated.
+
+
+vim +56 tools/testing/selftests/../../../tools/testing/selftests/kselftest_harness.h
+
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  52  
+e80068be21824e tools/testing/selftests/kselftest_harness.h    Kees Cook        2020-06-22  53  #ifndef _GNU_SOURCE
+cee27ae5f1fb8b tools/testing/selftests/kselftest_harness.h    Shuah Khan       2024-05-16  54  #define _GNU_SOURCE
+e80068be21824e tools/testing/selftests/kselftest_harness.h    Kees Cook        2020-06-22  55  #endif
+369130b63178e0 tools/testing/selftests/kselftest_harness.h    Mickaël Salaün   2017-08-07 @56  #include <asm/types.h>
+65177e47d3035c tools/testing/selftests/kselftest_harness.h    Jakub Kicinski   2023-01-25 @57  #include <ctype.h>
+369130b63178e0 tools/testing/selftests/kselftest_harness.h    Mickaël Salaün   2017-08-07  58  #include <errno.h>
+73a3cde9767793 tools/testing/selftests/kselftest_harness.h    Thomas Weißschuh 2025-05-05  59  #include <linux/unistd.h>
+73a3cde9767793 tools/testing/selftests/kselftest_harness.h    Thomas Weißschuh 2025-05-05  60  #include <poll.h>
+369130b63178e0 tools/testing/selftests/kselftest_harness.h    Mickaël Salaün   2017-08-07  61  #include <stdbool.h>
+b5bb6d3068eabb tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-12-10  62  #include <stdint.h>
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  63  #include <stdio.h>
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  64  #include <stdlib.h>
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  65  #include <string.h>
+0ef67a888375b0 tools/testing/selftests/kselftest_harness.h    Kees Cook        2020-06-22  66  #include <sys/mman.h>
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  67  #include <sys/types.h>
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  68  #include <sys/wait.h>
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  69  #include <unistd.h>
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook        2015-06-16  70  
+
+:::::: The code at line 56 was first introduced by commit
+:::::: 369130b63178e0e2f863a2da2a5ad0238ded6d9d selftests: Enhance kselftest_harness.h to print which assert failed
+
+:::::: TO: Mickaël Salaün <mic@digikod.net>
+:::::: CC: Shuah Khan <shuahkh@osg.samsung.com>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
