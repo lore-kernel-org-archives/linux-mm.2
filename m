@@ -4,161 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C01CFC510
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 23:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B032CFC510
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 00:05:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 412E06B0029; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
+	id BE6796B0026; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EA776B002A; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
+	id B70AE6B002C; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FFF86B002C; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
+	id A37EC6B002D; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F9396B0029
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 18:45:03 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DCB91304EB
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 23:45:00 +0000 (UTC)
-X-FDA: 84136247160.27.A84CEF3
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7472A1C0005
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 23:44:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=EOD73ij5;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.44 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763768698; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ECF56B0026
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 19:05:11 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D482B16058D
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:05:08 +0000 (UTC)
+X-FDA: 84136297896.02.901D094
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2C76D4000C
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:05:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lo+1hFAx;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763769906; a=rsa-sha256;
 	cv=none;
-	b=n6PkbuSilFHdiWENKxxdxYebo4LjMwdJzRCcLHXj9E4HFnpMH2s/dXdtwfCqLDN8OpxCoY
-	YIBPRzBpAL0AgZXkQPWrWHjXEg63ibWbIjY2GsM2aPLzgdqrzO1RiMRLxqsNa/2OWhCPFP
-	SiqLXyoZbx7qb4pm217+Gx19ltX4pgY=
+	b=g0XdmeIPCfWu0gWeKrLQik+vHdahSDLtjiOcipn9OtHukcT8E3UD1fpdS/9Z76auJ+Oxac
+	1p2cDXzZKjWwcLLCFxO8XhAVJ6qYnPffleykP/BxIvVyYpsihsuea94jybeoMrKXW/Muq6
+	2eHWfvf4VAH1AhJTrfNUgltyIyNOwnk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=EOD73ij5;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.44 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lo+1hFAx;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763768698;
+	s=arc-20220608; t=1763769906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=94wkD2Iff42VLMlQNWegA9dtRPkkPQ7m6y0iMS1EKU4=;
-	b=ygiS/vdMJCd8F5nKG3NYiLLcGUz05G7+jSRWCNQAt9CPB43rv8+DqKdfhw9OW8cvEssz6/
-	H5cKAoQI0bx7EKHOJ3P6SMlgWN3V37FxFii+BhCRLqoEcxvs0mta3ylN0fkVjpNu/6BgC0
-	uwRv79oGTg6BO5/msoksWehwalvHnqk=
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8824ce9812cso28377376d6.0
-        for <linux-mm@kvack.org>; Fri, 21 Nov 2025 15:44:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1763768697; x=1764373497; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=94wkD2Iff42VLMlQNWegA9dtRPkkPQ7m6y0iMS1EKU4=;
-        b=EOD73ij58mx+3si5593Q/MuHlwoiXfWsbVzJAUzY1a7l4ReQnDhaPUIGO+xT+UcdOA
-         pXsLl0Ut/EWArhLrkD+SqIh6cIAOZZ0y4lrj72h4Csge77/wLo8PMqb7ni4PR0Z9Ub/G
-         W3EqXdgdTTDYE2TNFOBACCmlHM3WOT0C/W7yLKAQzXr0y5T/oiW7mW8vPb4phb8PPRuo
-         WCxyEx9niHhf+cZePyigXOz9Pjz42SgYZI8Omyzrtf5rZ9JcfI/DSvQ1vhSQoM1zsS+d
-         /0ii0UdesMRmXCFL6BJuiLkWqqhBaoubo4CCQpVseW2inFwUUjaNo5ZXvkxbKSMtAc8/
-         WsHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763768697; x=1764373497;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=94wkD2Iff42VLMlQNWegA9dtRPkkPQ7m6y0iMS1EKU4=;
-        b=qWNnIhQBtOclVC11CzlaG7nFVCKwASahOgEeA7HyCORVmicoOFGVkGNcMluZNzai/v
-         GTKcb8dH8A74i8U4JKXbUaj70wNpaa5wrc7/R7R62ijOeJi0gAL9XWmFHns5QwJGsp1K
-         jXy8/7yFEsJxBALanJdKQDhyyCUSQWIcxUxMKMauQtH0+oABrYkiWTkBjhRnDng3OmBy
-         dC7ARFsnSX7yA75HPanRS29GEN81JRZlnDs5W/AL1EwO//7hQ7nhoOJv+TnjYL93WZJS
-         QE1J6EW6Lg8ZGZd81jC6wsNkWc7qXBdlCRsQL2Ob4zymtE/ml/LkfiAyeuvST2AWd2sB
-         mkDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXtCrlqerd5Ic24qbLWFVPtJkszFmxi+a7vG1uUnfF/Ip06K3pR8JMq2zqv+WnYwOHxhx1AgfR1w==@kvack.org
-X-Gm-Message-State: AOJu0YxoJw8AyeZsuWCTJHxgCgiXbpcpRf759naHwIHZdSD3VbFNqXDC
-	Od1pxH8kWh+15P/1iKAXZk+l779gQhArI4N6OuN78QxFbOWgF1Rmq8PzRhnwdFqSndw=
-X-Gm-Gg: ASbGncuWHoYPHgWqdiVLWbIU8K6cYKT9OyIKvks/UP1bkzx9qtJIv6QnxHjyfqnhVBZ
-	nw+XfvWY1ILmkqDyedsZpy93uQXN9ElQAPycmu5TBCXFhBQH9YkRFZ/9zTvYkR7E+JwL4XzQAEo
-	K2QpKSwIIMJi/CQgmaQl5uWlP0KyYSWF0V2+vqVNhMdIN/KXVxLgvFU69dMlpSDC5MWJxhcZs+e
-	sRHyZEdHXhZ8zOoCX69gnHPQWKagCb4rfzZkSNgcVmfAkmSyn0uR/QWTjHU9QUiW6HpRus7IASD
-	1/5G3fMjqOSf6QTLvTlVqW7HBiTVXSsy0dWOeVDAsNYnUOeDjCyKFHVINOM9ZrwmUDbsIxWW/qA
-	NVjr0x0e6N1r0VGN30XV/y7DvGKIMT+7i4v3BNxrDX9089IvUBLTvYV5YH3T42b552jcXXryxU3
-	KJ0eSF7raVtSE379O2E9BSZGZs81r41iZC8z248dc8S9opAYrJimIEF1Iy
-X-Google-Smtp-Source: AGHT+IEos7T2Axz389Mmy3AFU8+Jfh3PFehz2HfOxc6qgzO/Its691H7QS0uM/0VDIYstKPPxEQUqg==
-X-Received: by 2002:a05:6214:226c:b0:87d:fc3e:6d9b with SMTP id 6a1803df08f44-8847c525de0mr61714186d6.42.1763768697300;
-        Fri, 21 Nov 2025 15:44:57 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e54c32csm48350666d6.37.2025.11.21.15.44.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 15:44:56 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vMaoC-00000001bmD-0arX;
-	Fri, 21 Nov 2025 19:44:56 -0400
-Date: Fri, 21 Nov 2025 19:44:56 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
- entries, introduce leaf entries
-Message-ID: <20251121234456.GA383361@ziepe.ca>
-References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+	bh=XnTxzMXAj4C+H3rJQAtbVjm3gxEOt7ieVLNhLtxygHk=;
+	b=chJAT5cYSxbN5RQYZgMOVG9+DhcxIhi9+IA9meTz8GcyYz4nXMdE+MS9qU1LqTs95tmg86
+	w6bN7GmgN6esa3bCrnGgSdG6UJPsPPjgNKFXs7mTno39sW226MSv9vp/xup9+zQSm0dUk1
+	NOVqnkQJGQnm0PuoX27zacbXtLWcnAQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763769906; x=1795305906;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lKk63OBIxTgAZL2BQA9bHbccK1TAmQ6Nota8WFvpBkg=;
+  b=lo+1hFAxH06+sytQZxKbwsDz0D4+BSsgFqQn+9GNccChG+4jv4Mn5OHt
+   fK/gvRxyVI13LnIYqns1QtNh87sxMgAj3pfoQHY6JMRP8QQVEuiy7hb0P
+   05ZCLzPmyYifqbRErYklia0iA4h5QCek86ussYMTzmrKDwBQ4kgBNiyBF
+   +ZbUF+0Ldp70eI9mPN57stORcg1exZ+xWSjZnxHPRI9tXkVy3exhF5yJV
+   Mp72Yv03CgCCjJWcug/Yi+SJylt1vYGLEoqb7U5tm6T5JIXpDrIGGC2kW
+   TRp+QsrlFIk6I3ZS2EzUf1TbAjec22yRtgbtnefe8BNUsnjmWhfFWEUeD
+   A==;
+X-CSE-ConnectionGUID: pus5V8RQT8mfZpIBYvIMog==
+X-CSE-MsgGUID: 6+JDVoUMSwGDql+/oDE2RQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="76980193"
+X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
+   d="scan'208";a="76980193"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 16:05:04 -0800
+X-CSE-ConnectionGUID: 0m1MqlNQSeC7xJO5WxDOzw==
+X-CSE-MsgGUID: PhKw3WinTWa2mGSgArHQNA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,217,1758610800"; 
+   d="scan'208";a="196760418"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 21 Nov 2025 16:04:59 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMb7Y-0006zb-2u;
+	Sat, 22 Nov 2025 00:04:56 +0000
+Date: Sat, 22 Nov 2025 08:04:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Eugen Hristev <eugen.hristev@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	tglx@linutronix.de, andersson@kernel.org, pmladek@suse.com,
+	rdunlap@infradead.org, corbet@lwn.net, david@redhat.com,
+	mhocko@suse.com
+Cc: oe-kbuild-all@lists.linux.dev, tudor.ambarus@linaro.org,
+	mukesh.ojha@oss.qualcomm.com, linux-arm-kernel@lists.infradead.org,
+	linux-hardening@vger.kernel.org, jonechou@google.com,
+	rostedt@goodmis.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org,
+	Eugen Hristev <eugen.hristev@linaro.org>
+Subject: Re: [PATCH 01/26] kernel: Introduce meminspect
+Message-ID: <202511220712.LEcYEMJx-lkp@intel.com>
+References: <20251119154427.1033475-2-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <20251119154427.1033475-2-eugen.hristev@linaro.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7472A1C0005
-X-Stat-Signature: 9kutqbozkf71bssxnj7rammbof7ckbbb
-X-HE-Tag: 1763768698-898307
-X-HE-Meta: U2FsdGVkX18FmZY4FofxOv3ldMsSG2xcyT1rQp2WexgtT05eBa7LLt876AitAusHx2ZhYwkLEIW325ynpcipFngBp0PCf/ChgiV9hai63nnHZkZc9JWQrBltggqZ0XgqAiQGLN2OAgIkR1xAG4+JZv3KPD1Ie6I8oWdewEaVW5t5KsQkuz9WYr/1+rMjSrMK/iTbbbTS+1HNY9uHmldvyG543aqUsHawvrv7xC7US0QTpOp7HcudBUeK6QKoWYKEijXHdzlx5PcxOTEcF0jbtTMcD/AWQUSjRqG/khVF42MnGUF1PItmyljR4AQTdy2iZfix0qnJjSk9eYcPWpgAGaAsI8/xHS9Tbeia0YXwt/TXJqXK8q5vF0MJgFzqCQXZsb4S0BdUF75qsMRnX394M6mtpdYU12qb/jGaHYHABocWcDAhltGDxiv5gz0xUt4goZGvcL/DEuNfjUEIY04q0BkeT4fvOXDjRONMNSijaXxAhWMX8mS6D+BftCQbSLrpwZ0Sn03eoOOWfw6ZIXc29RToc530y766bMLNrlIfCCMKa9iDD9f3/dU3sTCxG1DSOdaQknTQ6x4iIL35Q0c+dCT4py1skPXMbVHb5gwM0RI3uwyiFZmZEcTUI3uN+XkQtbAQrpwePTE8zDY87GaqU0EmYWtvG2oCKNQLMgfvVreqL+bpYYspO3DRzn97dbfAlGtcq9x8yKKPYMPrvW4oh/nBMLrFU7DIkZ2xyyMgyU9CMJuEd9NqCUDXD+wTE6vMVB1xM0LWyFjD+30zL9mw/x3Vq6EHbEa1loJVGw5Wxd1M8rTN22Ou3AT7QJGyysAQvQayMxXWl5M7FUCEqp3Buajt4oSJqT9tX5ykJugo6XZhzJQHJf0JdSDXov1GZALHXa3GBqJojdah3+cBp1h022v8I48F2uVwczuAh47HvXRUd5ihgIDTzSVI9fWDJsMRjYtGK/UWmeDJJFkiIqH
- 3lACDmDi
- sTgdc1/8AOsPUzMR5AkmMsgYGL99BRU93XVFS9Ww0dsaF2iV2hSSOkKN2J4PuRoLj9eiVlpQBd18vuyfVRGGcH2Mj7OMD7Hwu/O/PuNc0EUSsy+w=
+X-Rspamd-Queue-Id: 2C76D4000C
+X-Stat-Signature: bseaybtsfftti17xtb87tej8trmefqzw
+X-HE-Tag: 1763769905-146410
+X-HE-Meta: U2FsdGVkX1+zXu7YNwNkC3+yIZjNqHBApxU949yHfbz8BRuTNTbRjBchUx+S8tkPumbIIWiMyHjf2ccbM/yg3l6aDZ7X5WkGuLfVY0aAeffGfXYAvKnIMnKIrATcQPlskK6AWByky3f5WPal+JYbhINirA1arZJbx+zncWXwRH3kwTLHO451BA6leURB2RtchfnFiE21aDGm06Vo2tBAFg3DXhhZOYoVzIIXLkBUcGNMezoKrM00ZpU2dgIgpwAkRAyE3DmRroO2jBtdBipKCKMVQww/+U8gDOrahmb05UjJonHjMQZe6r20Asemsjz2U5PFgPbVpcGOU9xujd/7MpPwYjNhpbE7KIrW9SATEXCCE/biO/4EoVVBw0lcUg+U1PyibnySqClFMmukubyDPV4Fk8R3HZ7kyQj1zygVZBXvyf+FP+1Imqik5pckzaR2CI24mVRI42l9kIN3ucMEkd0PPX3NbGHavWB47RZBgUh26S3H3AjnWo1vTeK3/UQeVB7OFMMyjAr/6by1hZB7YFoyz7ThBiPyUM3NXq1lUa9y5SgqH8MlmIg7p0xyI2sV6oTocVUzOxIaAl39hr/IJmpWxBcnSjkSywitbhv4UCkfTT6P40eePukjPEnxPETGc5w8xgS7S3wEutuUxkYc4s7jnyQZlqn2yAfM3nxv0CF6Vb4zHtNhfaoccxrNgmqICXCIbFQyDmytOQFxAb2LS6nWEHo6Oew5KYvK55GEpdz3L6xHV7KVKGHFUO0S8+1JuIfV9V+Pz/xNAXpbirhFKr5+/qOZTuXSmVgF0Q/0UG98z5SJAmu0SgTf1Jx52+ywQt2AYS2BCkH/RSH+eOB81F2iyHOGJ2mCnR1HVufZRfEQZGANVTnB4icVV8GD0ABkLmHWxJg7482auIUWUEDrhjGdQdfYR84KUXzMIJ8Nq4KydHFMGI4Avtu7zrj3gydIkUR3qsqRW5xyb2Dee3I
+ q6cX5H7y
+ 732as1EMQ7XH9UIbL5KcAn3IUrZapwgtaUy90YMh8DZ5dIYgfX1h2Bn3SoTMXOWe6ugVBvbLZV4ifRhpDIGqHVKu/O6KFOBPPsNWioZprpIiTHMmEsuxF6Tj1z+D+xvMlCa1nCMDF5q3xkUihkghIZ8CPAHuUQGIBT3/O436OPG95I6JFtlF2tpmRZDO7JZDmaNvUm/cT360nZlIkvl+gLdEUYFRLPE0SXTYhqZD0qXoBept3N4xYbBEQhHPH17+BsUOJ9Wg8yo4UKc4Mb1tYPekKa7U3vo/Oz9OwuGDfGNuD4wo/haTQ8zOT9jCUxw4G4hlwcNUJtnuhNyOhCA80UR8FENVffKDtGfW3qS5xMhD75RfuWIKOQ4VaYao7NpVSNF23CIjD7CFlr3TkPzugdMmCTlhi48jjkSQonIOG8ML21hD4dNDWLWnQyKAx6uAADBxJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,15 +116,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 10:21:18PM +0000, Lorenzo Stoakes wrote:
-> There's an established convention in the kernel that we treat leaf page
-> tables (so far at the PTE, PMD level) as containing 'swap entries' should
-> they be neither empty (i.e. p**_none() evaluating true) nor present
-> (i.e. p**_present() evaluating true).
+Hi Eugen,
 
-I browsed through this series and want to give some encourgement that
-this looks nice and is a big step forward! Lots of details to check
-the conversions so I wouldn't give any tags due to lack of time..
+kernel test robot noticed the following build warnings:
 
-Jason
+[auto build test WARNING on rppt-memblock/fixes]
+[also build test WARNING on linus/master v6.18-rc6]
+[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next next-20251121]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Eugen-Hristev/kernel-Introduce-meminspect/20251119-235912
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
+patch link:    https://lore.kernel.org/r/20251119154427.1033475-2-eugen.hristev%40linaro.org
+patch subject: [PATCH 01/26] kernel: Introduce meminspect
+config: nios2-randconfig-r131-20251122 (https://download.01.org/0day-ci/archive/20251122/202511220712.LEcYEMJx-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251122/202511220712.LEcYEMJx-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511220712.LEcYEMJx-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> kernel/meminspect/meminspect.c:15:1: sparse: sparse: symbol 'meminspect_notifier_list' was not declared. Should it be static?
+
+vim +/meminspect_notifier_list +15 kernel/meminspect/meminspect.c
+
+    14	
+  > 15	ATOMIC_NOTIFIER_HEAD(meminspect_notifier_list);
+    16	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
