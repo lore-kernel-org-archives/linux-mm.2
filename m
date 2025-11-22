@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8211CFD30D
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 22:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DFB6CFD312
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 22:24:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED9686B0028; Sat, 22 Nov 2025 17:24:05 -0500 (EST)
+	id D51756B002A; Sat, 22 Nov 2025 17:24:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC7846B0029; Sat, 22 Nov 2025 17:24:05 -0500 (EST)
+	id D01926B002B; Sat, 22 Nov 2025 17:24:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA3066B002A; Sat, 22 Nov 2025 17:24:05 -0500 (EST)
+	id B7DC76B002C; Sat, 22 Nov 2025 17:24:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A71696B0028
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:24:05 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 605F64F394
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C8436B002A
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:24:07 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40FC1160A13
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:24:07 +0000 (UTC)
+X-FDA: 84139672134.21.016CF00
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 69CB6A0005
 	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:24:05 +0000 (UTC)
-X-FDA: 84139672050.07.E11EC1A
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8D93D180008
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:24:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="UXUde2p/";
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hPvA02Rk;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763850243; a=rsa-sha256;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763850245; a=rsa-sha256;
 	cv=none;
-	b=Mn8xJtyeiuU9QCmHg/KYabesgVvxqR4jGdB72A85kbbG0HjwFr5MMi9YXvZhWa6eXXCqGO
-	uEpqZG4gsm4nn8iq8gxHGEspN8XDno14qUaFk2Fmsx/rH+AzbcQjpgltynVwVLfyGro78F
-	xhqTVbb0IRGwAsk+Ib/CyuOgbwrmmME=
+	b=yh1f+ybFUKnMPaSfHeg7jwJoSEZXnSE0PAD9r/bxWoz/B1a7AWcZnwHkiH3J+OWkZ+x6/i
+	XXQZRqtBER9nltxm/xkJS0fg3ked7FxLNDNyD3iz4j+qqm+zVnVFOmNU42KI9nMcQQO2vy
+	+iBkqMfBdRUpl7DKscgGl2JLakgHqB8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="UXUde2p/";
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hPvA02Rk;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763850243;
+	s=arc-20220608; t=1763850245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5KiW0twGUwiDqt6nePE1kGiL7dytg0Q0KVXgthRcks=;
-	b=Twv4xgjooyBC9WD/IirgArwBFg1GadmWZjO7R6yprbt4HCozEOxhbK47RdkodTQRoWNhvl
-	7utSG2zZOKqGMVdEZx4aaM2ouP023RW5oMWxC0S0OJFohWtxIgP1Dthc2A6e5LMUsLn451
-	GZxhqfhi8zy6fPNeIZV6+KXSp3YgkXA=
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-78a7af9fe4fso33199247b3.2
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 14:24:03 -0800 (PST)
+	bh=f97FmhRHLdKBFhVEdbeaZSyOpcaCVspu56X5lhG/iHw=;
+	b=ZJ1NKlFtr2PhCtiJF2HWkho19u6TCDKmQI3CK8A2E2DAjD/nnjBFTtj2KTXK/UZpv9/Dzm
+	nSLQO663aefaTR3Ar/U4g1TQkX/tyhbCSq9IrrEYEp6rU6BLRQ0Hj5GmBULLwhbRU+qwnQ
+	ptjIsunzPPLg4G+1p6Nwc80/UUM4jUo=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-641e942242cso2515495d50.1
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 14:24:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763850242; x=1764455042; darn=kvack.org;
+        d=soleen.com; s=google; t=1763850244; x=1764455044; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=I5KiW0twGUwiDqt6nePE1kGiL7dytg0Q0KVXgthRcks=;
-        b=UXUde2p/zKkV6BrY88gYW2e1zhreYfwXASzHHifjEr2udo485TsUokKejQYxrApQty
-         tJWby2WJfpCZFHHdE8ZhLMybLN/mIXgavnB+2JWypWfdOKCU3/jHqliQPEUzhdGD8dNU
-         LZ/CZ+CEMDK2BiBvssr5XCJdWvy6yYjnMJc4SjhV8yy2hjaHCfchCNCTUWekwOTBr0JJ
-         9vEtf/In7ctFycEURLFpIzxR7obThUektEs82/MpBMPwAZdg+HIz9L96iwUe/1dvDEX8
-         tLOdf7mWENTBuP0hVY8VECO5H/2XT0Py3LQvVauQxmpTUbaLVF7yLgfwu5I5dSUwWCUh
-         COVw==
+        bh=f97FmhRHLdKBFhVEdbeaZSyOpcaCVspu56X5lhG/iHw=;
+        b=hPvA02RkKs5odpxVS3SbNtE8T1Ki6WqlZBUFXoacA5+Q1hI1slCzUcsr+PKkQVMMTU
+         qTBwKd73o5zJ8JNHsztLC433o9iF/uh7kDMOttP2LBMI7fOmgYoh+MB6di2OmYy+n5Qt
+         oFG4Tk0nTQX9F6J2ymaB3CfrrF18XXVIZkiSJzt8M3Bwmtp7d4112GQAPvEkLomhJ8Qr
+         IHBqDzAwA0WfPrZ8zZVkUUGwtO7qbwPCXMax/Yk0BLYciJugGVgt83X7A5eGjeT81CEn
+         f9KgVi1Z8JQvBKh845rodvhVjGWHiSncw6wrpl5sux3scEocaudx30Vs06olZ3yNid0p
+         4w7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763850242; x=1764455042;
+        d=1e100.net; s=20230601; t=1763850244; x=1764455044;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=I5KiW0twGUwiDqt6nePE1kGiL7dytg0Q0KVXgthRcks=;
-        b=o/KN1SL+HogieSXqDpyVjNmY320D1LBOCRqL1fSmT6peMge71EqpRWwRxMxDxSkKSj
-         cuhY1000NH3VfHAz3Xch3QPnd+tUDbGoaWyL7cGK9oQPxhnwNadqBEYf9DuVvaPMx7vL
-         FrUNi9fCWU3t138PPSLh7BCSTRcttzJgp0ncFOu6rajRB/F2MUYwgK2n7nH8KrQVwBM8
-         wi6kp3bVNWuyydtbLR2W4h+UI3oXkyCUQrDuqC6hs7+VyWF/RvuKrbgEqBwpTCYGC7om
-         3tt+EFRM9kXGzCvSo+ARzdfC1YGPeaYY7CE+OXV6JPrxqs40Ookf6WvB0i8sasY/gUJm
-         uBHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5qJWpXDKBR+5E4COHDj7Xzyul6u/t6x34A1HpWqNhTrqeZJIlkP6e8S/jswdg8XurgmxeUgfiAQ==@kvack.org
-X-Gm-Message-State: AOJu0YzqQPVmZqXW7aRn2irWUunNLFvZRaDKfEEruBVkmRxIGBLOXPzr
-	BtCdHQo9i3+p7Gl/f9L3juvlLIkxOE22ULyVkGZC2sanY4HlWytGm2U2uzqz8IPBVxQ=
-X-Gm-Gg: ASbGncu+qR+ZQurp9SZbm/vclHRxuK95DKGYhC5BSy0b9cmBhak+H42QGNr1xboRAaq
-	7jyWWPiBcYKardui1aoiAUKoiM+gYPCMZWjyA2AGS4xW5w/p5EP/tQ3Hl0WA81cQMme+6Y30Gpy
-	DJ9O5sefVgogfZmJ9ipRZvwXLLWMOyfsRQg5a1ZVlX99N+W7c+W+5uv60ifkgdN9Ukd7SQHKQBC
-	BUqOCrd5O410/SDN5Y9LBA2Z5LOgq3Hn3CHSmaqMHF2m0xHP85lg604ZVevObDR3/faSK9HRON8
-	8DgDjlFPOHWCcgYkTT6WS90NqaQxV/L9ST3EXkBYMNMtOJe0dM8FG5ecWupDUEZ3lFBOTq8kQUT
-	qsJHDaRDOwxVvrXTUezm6Pxh1+uSP/ZtGAQqpE2Tz60n9ZbxbqqDAS/agqJsNgP1axHeubUYPNe
-	bRVRy/CUYHkS5Gd0+jIEwOfrxGf8vVVfaVv6hWpU7nIxQ1A/RJXVznbTCK8wmsidtE+Y9V3fm1M
-	pxBw2U=
-X-Google-Smtp-Source: AGHT+IHuoY23QTvRNhRkhmDmGHRrDBpwbesFLAGgRZdemrA8LoJ/P/EIeiLQ/hTmePkctRQeLMtVhA==
-X-Received: by 2002:a05:690e:130d:b0:63f:abf6:1c9 with SMTP id 956f58d0204a3-64302a4b3fdmr5160190d50.25.1763850242430;
-        Sat, 22 Nov 2025 14:24:02 -0800 (PST)
+        bh=f97FmhRHLdKBFhVEdbeaZSyOpcaCVspu56X5lhG/iHw=;
+        b=KzJJsfwIGDaTVYZDuCxUwIQ3R8MtmcYfheer0lVhfZi80W3S3EM9X8sg9w+Rj2aIpI
+         M5752kBK+QKLNSfj5bbPH2uOumApDBJ/PUBXHO11VHOWrq7uV37sO+yk64IU3kSMV4dt
+         08gfq/VKGlfd7ofTtaTF5q2dT3BIEj3hdB8MabQAlkRMaBEHFOiWZkatKDdXohMt9OW2
+         KP3hgQlvpp/DeBIQTWdTEx/85TfC8m+w8SuTeS5U6d3IbsW0C1DjmUxkRMEHGRpBdi/u
+         7OkuwTAns/Ya9FuQTer3hD2YV8XvmphaNBO8HixfYNPfEi7R7S66OtnjCRume2eHy/ae
+         lVKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWcizbQ18lInVg5HIgnYFRg+nB6xQnr2e4wT7XW8ahWXSu13YzfD0hlTem7/JlwN4a+FwVNx7V+7A==@kvack.org
+X-Gm-Message-State: AOJu0YzxyxAfzIAjxO8ZT6DZ5GaG32OXldFxRokvAdV/tZNxMg2R7Y//
+	Azqc+GjzYctQgoJZWVJncfpNRvmNoI3BMGkeWJ1bPtWpbl3JKDa545uSWyBFoOetrZM=
+X-Gm-Gg: ASbGncsv69b3uC+Qnt64AYIXqGxAp6Oj+nmoVu85ilIluBeNQ+JVHM1FczNyIum22Du
+	xSFU3ImfV6gK5LXPfPCZcFa4d9sgSc5ikw+7LvaH/lNAjaNOfigGTKSnSjsz1/hR7Bu60+Sku9/
+	FQ9JDGu9TyIWuS5IDu2XNGg14kk3kztLfYJbSzWzOXPPqnKoiUEx12/+QThoqqBhORZNW7IRv51
+	pZng4r8P0OS2a/Cv3kuaE40M/BFwyYZy0vstJlCR/OWiTvlApjhmN2zPqZUu0cJAETq5IbrCt/L
+	BcusrhaL0wZSJwCJqL63EynTXANtlkUeT1Hm9/Dt3njozit8Imu7G6bwb7ktYCTLM4L6/AwmvKM
+	xAuSu9dwrST1ISdN0FAy1ovsCV868TOHcqYNxoKZ/tLsWggRoigGMKRcxJg50WDLDXDSJQDyvW3
+	0HmeDwSmReWQrasFSlU1cLU800s77XCj5/WnmoT3a6BxMYXdtSYj1I3EMykxAV4ml7PC/TtiuHF
+	SwWhLE=
+X-Google-Smtp-Source: AGHT+IGnrzCEuuylhqPkAjSlcdsyrO4o6aqtyMRDVxZk2R8kYrvFUB/uDbfsoHva1q9rBA+u1Xb6WA==
+X-Received: by 2002:a53:5003:0:b0:641:f5bc:6998 with SMTP id 956f58d0204a3-64302b38722mr3621491d50.84.1763850244299;
+        Sat, 22 Nov 2025 14:24:04 -0800 (PST)
 Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79779a4esm28858937b3.0.2025.11.22.14.24.00
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79779a4esm28858937b3.0.2025.11.22.14.24.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 14:24:02 -0800 (PST)
+        Sat, 22 Nov 2025 14:24:03 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -166,22 +166,22 @@ To: pratyush@kernel.org,
 	hughd@google.com,
 	skhawaja@google.com,
 	chrisl@kernel.org
-Subject: [PATCH v7 03/22] kexec: call liveupdate_reboot() before kexec
-Date: Sat, 22 Nov 2025 17:23:30 -0500
-Message-ID: <20251122222351.1059049-4-pasha.tatashin@soleen.com>
+Subject: [PATCH v7 04/22] liveupdate: luo_session: add sessions support
+Date: Sat, 22 Nov 2025 17:23:31 -0500
+Message-ID: <20251122222351.1059049-5-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.52.0.rc2.455.g230fcf2819-goog
 In-Reply-To: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
 References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8D93D180008
-X-Stat-Signature: 143atfu471xnr3y53ojwt57jwqbuoc58
+X-Rspamd-Queue-Id: 69CB6A0005
+X-Stat-Signature: 66yzxn1qng5d6otue9yo3e51g9nhqus1
 X-Rspam-User: 
-X-HE-Tag: 1763850243-780220
-X-HE-Meta: U2FsdGVkX1/1DBIOPqmccreqEeH+7yHW15ndLZo65nRqYQEf9IxDxJt/ElZZ2l9vUY564E6QUTo6j2UTVtHD/Ccdf62MFlwtJMv54pFizyPmhGEIGe8QlawH5APswRc1HCWvrJGSPl/Xsahw6jaZ5laT2Mw+5Zw2qDYSf6tV+rmIoZXZYHFbHvGUW58rcQFAZS8QUA2CH9Q7TDCyVaf+sMVEn8PGG0B7UKpxlRU4rIL5jHdOIiSUxtxntq6hu2z9dKmnF/hOddslPdUG7/YNpPoIXCew24UiKCcxhWWgcUfC6Hdnt5vHs/+zeDTqleDyUs8Ge64WKKEMhsjLfKJdiKx6yeABPVCVSP/uKn3gtEM0G7+hN1q+x7MmD5E2WVN90eDTwfht/isF/JmtXAteOJix7fXHzGgeiZCItsz1PjE66onysMGsAkqxA0o+wRUk2ushaR7dpSQgqTgTner7bxDJUqilTtJxA+OCy1/NmFNFcQdSyBRX2gBmEKS2c4Hfi7RxKdvzOD5s5/lD5B12UUlSSO/Gq6RO7gEpOH6b/xPyIaszHXrheUmPfroZ9Biw7nm8+ZASvdDc63X3fmfmf14SesfMzm02oTFhoz/AANPCJBTPIoLD2V8aA7Te4P0+mZjjP85FDgMaNpNAD78JuITb2qc5HPpf/scsoqLU9usBPyrBwfyRXC7JkIOjtl5eriA/OxKHc1nywmTwF7K66hyjxG7qzgSk7Yn0Fcqz23Pi/bXhwhSrpFH+CCWrc49EVAbAvoHNaqdHzAEGHwh+sFjEG6UhvAFNxKG3LEd308iIrKh+2X94E/7CyXebTw3I7G9xUnlwctFIyjBGFuxJc0oC49aT0kpcZdD7I74S27Zv9KfHNCywSjVVVli+xEsY2Z0PU/eVugVGkapcsIscQMxkl+KkAaHaCdryVnPu3f2ze+anSHdhrgpt+MsUoyD8g6TO/AB1HJAVimVylS+
- dWBTS6s0
- MOFq5cjDkcqHZNXFrI4+rI8i58G0yuLh3FQEFUBVLdwFMWm/73DkEXkB4+Q8+9RKg17sodwpkr6ykK7QyJh3K51PB6o7hUdeAumHicTR2GvDQWuWUqaHUUtdeAh5+O7X2RtQ/K/35GeqLTjzEUFNA9VAfF47Fn4rGwF7vzRUHL4V3wg4vduJaDM7cfrwl1PxmKYJSf5F75jO8ApdB5IG8Jt6iqg5KpHB09/8DC+xfIs1hiCm2mkWw24sk+sy9Dca2jd4WFFKsQ3PVnQlmNYtWn9Et3iJ1TjlMmFrVGr+AX8ES2a2KYUjmnd4MGq2UWIu4psA0gfiw0JZbSKkOYFw5J+ce+w0May8LnkVOEnQLovGdd5qFJQI66vbPVTaud8tAC8eyuOGMRrz0aQe/fJRu9yulPcxT21Wr017mHNdeEcYdEqIgGOvwlLV5fMER/Zkzstz94t4EV5IB5j0AK7RgnAzQ9weW+8FqvYiMXkc1nmfd8s6qacn+hxS3cw==
+X-HE-Tag: 1763850245-768122
+X-HE-Meta: U2FsdGVkX1+iPmw6k/m2FZN5QV5rj2+b0Lri9tWjX600zY3vfiioaYs1ntUVDj2JV2VOQoxK6114DmtjXMeCQVWxteonl9GM7pZxNupk7EJGFcYWBu+w0bzMwjydTbPbJK/xkEhXVOdseyOUtIgUKbBNGlPIvbX498uhm5peulHX2oYIa+aUbpEMTflQpGS9ON94RJwIS8RWGOcte/6XaGjFDKgtorqX4Ilt0jKkkBEVnKJkoocvrn8nA7FulcWnkZ75v8b+txNtlE+VORYL3OihB57cRmg8gS5khWoZBTcvLVNKzUetsBzqzcpgGKTd+dIsON3RrfBfecv4eqABqYeYu1GTjQJUE5sQX9f3CFi6D43b4tpT8/o6Gd8cP9ERxmI4GbeneU66MA5NroVu423NifYbU8OTHBMCywQfaA/YB5ytyyj/6SWLQ53FtCWyPTAg+G2yaEvRgHILDUxBpuECQPoP7XgS+w2IIbmFJnjXf6QaWW/WPoqttQlFlpUvGI/b8g7LnFeHvqHf3yzU5uxxhBfcM2L/rJD05QdcrT2d1wTPnWdqHwLS3mIq+jHZJu/bs8nZ5YKIeNYcslpSo7AWKan8/C/3DS4I/kzLA1JRZDqMmudGanwRz0UyZH1Y68JIELnKGjDdKqJuXeJpzgF7NoeyHLV4U4hypuI/C/kR+UslWMEvTTTp2G8XTU9crlqDg4ZUKOUI6cFE7oe6oo+bdwN7egMb/zTfUA1grfHl+iqVUHLrMpeCRHaa94Aigtb9F7uKUf6Kol/0sFtwBX3/VGoms/sLTMfJ2VZxA0+tsqVTGWYbPihEm85dzCvPtoEQtgQFms0nA6AzAVh+HW06vqvls9OC2YHgUHlH3d6Q0DZkAXo1Kd02FdBEaQitFlEF+wHJf2ZymtQdQ3kcLtUF5+Rt4AMvNHkz5S//Cmiar6jnAPeC4szfAgVxWnHaXWW3WLqc0umPI2nWtwS
+ 1eNDuvrS
+ QHtHzb3qwio9t9b/VovA3Z+d6HrWOzZtd5WKQH9SA8YEXoxN8kxFXIHEvNZdHzG5/DNCxxZ3yb2v0wQh6R2mLMX8gyDKQax300Cu9UUMKlgUeQBWxz4QULXucnlwic/7Pw7I/T12HHsT+BceUbSvAvM5DO4uzRPdpoq1yGEXGYH3hxMOmYhtNC/ECvxYP/wJKRs3SE1qQXx4q9/msthnJt2GhmZ9M9h81Uy2MQ1ZBPuh3o94UBjVm1DXdZBxcRR+EMPU5NAbZgaY7d0Pqb9w8bqigExWy5R1Q9O2gVTJyLJLdZqQMC62sFjnw5nEBQKeDbq2pdiA/WxzR+ISddIDB1OOqHNWVq7Gx31OzZGiEeufrLwTmHNY/epVGBug7DU/seIQlhLLV9feFWYJnrrHOzw7g5pjiZ4cjXXo6X0JjAnoWq1nfVJ68yBpMQGF9u951J8PY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,48 +190,696 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Modify the kernel_kexec() to call liveupdate_reboot().
+Introduce concept of "Live Update Sessions" within the LUO framework.
+LUO sessions provide a mechanism to group and manage `struct file *`
+instances (representing file descriptors) that need to be preserved
+across a kexec-based live update.
 
-This ensures that the Live Update Orchestrator is notified just
-before the kernel executes the kexec jump. The liveupdate_reboot()
-function triggers the final freeze event, allowing participating
-FDs perform last-minute check or state saving within the blackout
-window.
+Each session is identified by a unique name and acts as a container
+for file objects whose state is critical to a userspace workload, such
+as a virtual machine or a high-performance database, aiming to maintain
+their functionality across a kernel transition.
 
-If liveupdate_reboot() returns an error (indicating a failure during
-LUO finalization), the kexec operation is aborted to prevent proceeding
-with an inconsistent state. An error is returned to user.
+This groundwork establishes the framework for preserving file-backed
+state across kernel updates, with the actual file data preservation
+mechanisms to be implemented in subsequent patches.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 ---
- kernel/kexec_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/kho/abi/luo.h      |  71 +++++
+ include/uapi/linux/liveupdate.h  |   3 +
+ kernel/liveupdate/Makefile       |   3 +-
+ kernel/liveupdate/luo_core.c     |   9 +
+ kernel/liveupdate/luo_internal.h |  29 ++
+ kernel/liveupdate/luo_session.c  | 462 +++++++++++++++++++++++++++++++
+ 6 files changed, 576 insertions(+), 1 deletion(-)
+ create mode 100644 kernel/liveupdate/luo_session.c
 
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index a8890dd03a1d..3122235c225b 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -15,6 +15,7 @@
- #include <linux/kexec.h>
- #include <linux/mutex.h>
- #include <linux/list.h>
-+#include <linux/liveupdate.h>
- #include <linux/highmem.h>
- #include <linux/syscalls.h>
- #include <linux/reboot.h>
-@@ -1145,6 +1146,10 @@ int kernel_kexec(void)
- 		goto Unlock;
- 	}
+diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+index 8523b3ff82d1..a2d2940eca6b 100644
+--- a/include/linux/kho/abi/luo.h
++++ b/include/linux/kho/abi/luo.h
+@@ -28,6 +28,11 @@
+  *     / {
+  *         compatible = "luo-v1";
+  *         liveupdate-number = <...>;
++ *
++ *         luo-session {
++ *             compatible = "luo-session-v1";
++ *             luo-session-header = <phys_addr_of_session_header_ser>;
++ *         };
+  *     };
+  *
+  * Main LUO Node (/):
+@@ -36,11 +41,37 @@
+  *     Identifies the overall LUO ABI version.
+  *   - liveupdate-number: u64
+  *     A counter tracking the number of successful live updates performed.
++ *
++ * Session Node (luo-session):
++ *   This node describes all preserved user-space sessions.
++ *
++ *   - compatible: "luo-session-v1"
++ *     Identifies the session ABI version.
++ *   - luo-session-header: u64
++ *     The physical address of a `struct luo_session_header_ser`. This structure
++ *     is the header for a contiguous block of memory containing an array of
++ *     `struct luo_session_ser`, one for each preserved session.
++ *
++ * Serialization Structures:
++ *   The FDT properties point to memory regions containing arrays of simple,
++ *   `__packed` structures. These structures contain the actual preserved state.
++ *
++ *   - struct luo_session_header_ser:
++ *     Header for the session array. Contains the total page count of the
++ *     preserved memory block and the number of `struct luo_session_ser`
++ *     entries that follow.
++ *
++ *   - struct luo_session_ser:
++ *     Metadata for a single session, including its name and a physical pointer
++ *     to another preserved memory block containing an array of
++ *     `struct luo_file_ser` for all files in that session.
+  */
  
-+	error = liveupdate_reboot();
-+	if (error)
-+		goto Unlock;
+ #ifndef _LINUX_KHO_ABI_LUO_H
+ #define _LINUX_KHO_ABI_LUO_H
+ 
++#include <uapi/linux/liveupdate.h>
 +
- #ifdef CONFIG_KEXEC_JUMP
- 	if (kexec_image->preserve_context) {
- 		/*
+ /*
+  * The LUO FDT hooks all LUO state for sessions, fds, etc.
+  * In the root it also carries "liveupdate-number" 64-bit property that
+@@ -51,4 +82,44 @@
+ #define LUO_FDT_COMPATIBLE	"luo-v1"
+ #define LUO_FDT_LIVEUPDATE_NUM	"liveupdate-number"
+ 
++/*
++ * LUO FDT session node
++ * LUO_FDT_SESSION_HEADER:  is a u64 physical address of struct
++ *                          luo_session_header_ser
++ */
++#define LUO_FDT_SESSION_NODE_NAME	"luo-session"
++#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v1"
++#define LUO_FDT_SESSION_HEADER		"luo-session-header"
++
++/**
++ * struct luo_session_header_ser - Header for the serialized session data block.
++ * @count: The number of `struct luo_session_ser` entries that immediately
++ *         follow this header in the memory block.
++ *
++ * This structure is located at the beginning of a contiguous block of
++ * physical memory preserved across the kexec. It provides the necessary
++ * metadata to interpret the array of session entries that follow.
++ *
++ * If this structure is modified, `LUO_FDT_SESSION_COMPATIBLE` must be updated.
++ */
++struct luo_session_header_ser {
++	u64 count;
++} __packed;
++
++/**
++ * struct luo_session_ser - Represents the serialized metadata for a LUO session.
++ * @name:         The unique name of the session, provided by the userspace at
++ *                the time of session creation.
++ *
++ * This structure is used to package session-specific metadata for transfer
++ * between kernels via Kexec Handover. An array of these structures (one per
++ * session) is created and passed to the new kernel, allowing it to reconstruct
++ * the session context.
++ *
++ * If this structure is modified, `LUO_FDT_SESSION_COMPATIBLE` must be updated.
++ */
++struct luo_session_ser {
++	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
++} __packed;
++
+ #endif /* _LINUX_KHO_ABI_LUO_H */
+diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
+index df34c1642c4d..40578ae19668 100644
+--- a/include/uapi/linux/liveupdate.h
++++ b/include/uapi/linux/liveupdate.h
+@@ -43,4 +43,7 @@
+ /* The ioctl type, documented in ioctl-number.rst */
+ #define LIVEUPDATE_IOCTL_TYPE		0xBA
+ 
++/* The maximum length of session name including null termination */
++#define LIVEUPDATE_SESSION_NAME_LENGTH 64
++
+ #endif /* _UAPI_LIVEUPDATE_H */
+diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
+index 08954c1770c4..6af93caa58cf 100644
+--- a/kernel/liveupdate/Makefile
++++ b/kernel/liveupdate/Makefile
+@@ -1,7 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ luo-y :=								\
+-		luo_core.o
++		luo_core.o						\
++		luo_session.o
+ 
+ obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
+ obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index 9f9fe9a81b29..a0f7788cd003 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -118,6 +118,10 @@ static int __init luo_early_startup(void)
+ 	pr_info("Retrieved live update data, liveupdate number: %lld\n",
+ 		luo_global.liveupdate_num);
+ 
++	err = luo_session_setup_incoming(luo_global.fdt_in);
++	if (err)
++		return err;
++
+ 	return 0;
+ }
+ 
+@@ -154,6 +158,7 @@ static int __init luo_fdt_setup(void)
+ 	err |= fdt_begin_node(fdt_out, "");
+ 	err |= fdt_property_string(fdt_out, "compatible", LUO_FDT_COMPATIBLE);
+ 	err |= fdt_property(fdt_out, LUO_FDT_LIVEUPDATE_NUM, &ln, sizeof(ln));
++	err |= luo_session_setup_outgoing(fdt_out);
+ 	err |= fdt_end_node(fdt_out);
+ 	err |= fdt_finish(fdt_out);
+ 	if (err)
+@@ -211,6 +216,10 @@ int liveupdate_reboot(void)
+ 	if (!liveupdate_enabled())
+ 		return 0;
+ 
++	err = luo_session_serialize();
++	if (err)
++		return err;
++
+ 	err = kho_finalize();
+ 	if (err) {
+ 		pr_err("kho_finalize failed %d\n", err);
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index 8612687b2000..05ae91695ec6 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -19,4 +19,33 @@
+  */
+ #define luo_restore_fail(__fmt, ...) panic(__fmt, ##__VA_ARGS__)
+ 
++/**
++ * struct luo_session - Represents an active or incoming Live Update session.
++ * @name:       A unique name for this session, used for identification and
++ *              retrieval.
++ * @ser:        Pointer to the serialized data for this session.
++ * @list:       A list_head member used to link this session into a global list
++ *              of either outgoing (to be preserved) or incoming (restored from
++ *              previous kernel) sessions.
++ * @retrieved:  A boolean flag indicating whether this session has been
++ *              retrieved by a consumer in the new kernel.
++ * @mutex:      protects fields in the luo_session.
++ */
++struct luo_session {
++	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
++	struct luo_session_ser *ser;
++	struct list_head list;
++	bool retrieved;
++	struct mutex mutex;
++};
++
++int luo_session_create(const char *name, struct file **filep);
++int luo_session_retrieve(const char *name, struct file **filep);
++int __init luo_session_setup_outgoing(void *fdt);
++int __init luo_session_setup_incoming(void *fdt);
++int luo_session_serialize(void);
++int luo_session_deserialize(void);
++bool luo_session_quiesce(void);
++void luo_session_resume(void);
++
+ #endif /* _LINUX_LUO_INTERNAL_H */
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+new file mode 100644
+index 000000000000..ee363d1b2b10
+--- /dev/null
++++ b/kernel/liveupdate/luo_session.c
+@@ -0,0 +1,462 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++/**
++ * DOC: LUO Sessions
++ *
++ * LUO Sessions provide the core mechanism for grouping and managing `struct
++ * file *` instances that need to be preserved across a kexec-based live
++ * update. Each session acts as a named container for a set of file objects,
++ * allowing a userspace agent to manage the lifecycle of resources critical to a
++ * workload.
++ *
++ * Core Concepts:
++ *
++ * - Named Containers: Sessions are identified by a unique, user-provided name,
++ *   which is used for both creation in the current kernel and retrieval in the
++ *   next kernel.
++ *
++ * - Userspace Interface: Session management is driven from userspace via
++ *   ioctls on /dev/liveupdate.
++ *
++ * - Serialization: Session metadata is preserved using the KHO framework. When
++ *   a live update is triggered via kexec, an array of `struct luo_session_ser`
++ *   is populated and placed in a preserved memory region. An FDT node is also
++ *   created, containing the count of sessions and the physical address of this
++ *   array.
++ *
++ * Session Lifecycle:
++ *
++ * 1.  Creation: A userspace agent calls `luo_session_create()` to create a
++ *     new, empty session and receives a file descriptor for it.
++ *
++ * 2.  Serialization: When the `reboot(LINUX_REBOOT_CMD_KEXEC)` syscall is
++ *     made, `luo_session_serialize()` is called. It iterates through all
++ *     active sessions and writes their metadata into a memory area preserved
++ *     by KHO.
++ *
++ * 3.  Deserialization (in new kernel): After kexec, `luo_session_deserialize()`
++ *     runs, reading the serialized data and creating a list of `struct
++ *     luo_session` objects representing the preserved sessions.
++ *
++ * 4.  Retrieval: A userspace agent in the new kernel can then call
++ *     `luo_session_retrieve()` with a session name to get a new file
++ *     descriptor and access the preserved state.
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/anon_inodes.h>
++#include <linux/cleanup.h>
++#include <linux/err.h>
++#include <linux/errno.h>
++#include <linux/file.h>
++#include <linux/fs.h>
++#include <linux/io.h>
++#include <linux/kexec_handover.h>
++#include <linux/kho/abi/luo.h>
++#include <linux/libfdt.h>
++#include <linux/list.h>
++#include <linux/liveupdate.h>
++#include <linux/mutex.h>
++#include <linux/rwsem.h>
++#include <linux/slab.h>
++#include <linux/unaligned.h>
++#include <uapi/linux/liveupdate.h>
++#include "luo_internal.h"
++
++/* 16 4K pages, give space for 744 sessions */
++#define LUO_SESSION_PGCNT	16ul
++#define LUO_SESSION_MAX		(((LUO_SESSION_PGCNT << PAGE_SHIFT) -	\
++		sizeof(struct luo_session_header_ser)) /		\
++		sizeof(struct luo_session_ser))
++
++/**
++ * struct luo_session_header - Header struct for managing LUO sessions.
++ * @count:      The number of sessions currently tracked in the @list.
++ * @list:       The head of the linked list of `struct luo_session` instances.
++ * @rwsem:      A read-write semaphore providing synchronized access to the
++ *              session list and other fields in this structure.
++ * @header_ser: The header data of serialization array.
++ * @ser:        The serialized session data (an array of
++ *              `struct luo_session_ser`).
++ * @active:     Set to true when first initialized. If previous kernel did not
++ *              send session data, active stays false for incoming.
++ */
++struct luo_session_header {
++	long count;
++	struct list_head list;
++	struct rw_semaphore rwsem;
++	struct luo_session_header_ser *header_ser;
++	struct luo_session_ser *ser;
++	bool active;
++};
++
++/**
++ * struct luo_session_global - Global container for managing LUO sessions.
++ * @incoming:     The sessions passed from the previous kernel.
++ * @outgoing:     The sessions that are going to be passed to the next kernel.
++ */
++struct luo_session_global {
++	struct luo_session_header incoming;
++	struct luo_session_header outgoing;
++};
++
++static struct luo_session_global luo_session_global = {
++	.incoming = {
++		.list = LIST_HEAD_INIT(luo_session_global.incoming.list),
++		.rwsem = __RWSEM_INITIALIZER(luo_session_global.incoming.rwsem),
++	},
++	.outgoing = {
++		.list = LIST_HEAD_INIT(luo_session_global.outgoing.list),
++		.rwsem = __RWSEM_INITIALIZER(luo_session_global.outgoing.rwsem),
++	},
++};
++
++static struct luo_session *luo_session_alloc(const char *name)
++{
++	struct luo_session *session = kzalloc(sizeof(*session), GFP_KERNEL);
++
++	if (!session)
++		return ERR_PTR(-ENOMEM);
++
++	strscpy(session->name, name, sizeof(session->name));
++	INIT_LIST_HEAD(&session->list);
++	mutex_init(&session->mutex);
++
++	return session;
++}
++
++static void luo_session_free(struct luo_session *session)
++{
++	mutex_destroy(&session->mutex);
++	kfree(session);
++}
++
++static int luo_session_insert(struct luo_session_header *sh,
++			      struct luo_session *session)
++{
++	struct luo_session *it;
++
++	guard(rwsem_write)(&sh->rwsem);
++
++	/*
++	 * For outgoing we should make sure there is room in serialization array
++	 * for new session.
++	 */
++	if (sh == &luo_session_global.outgoing) {
++		if (sh->count == LUO_SESSION_MAX)
++			return -ENOMEM;
++	}
++
++	/*
++	 * For small number of sessions this loop won't hurt performance
++	 * but if we ever start using a lot of sessions, this might
++	 * become a bottle neck during deserialization time, as it would
++	 * cause O(n*n) complexity.
++	 */
++	list_for_each_entry(it, &sh->list, list) {
++		if (!strncmp(it->name, session->name, sizeof(it->name)))
++			return -EEXIST;
++	}
++	list_add_tail(&session->list, &sh->list);
++	sh->count++;
++
++	return 0;
++}
++
++static void luo_session_remove(struct luo_session_header *sh,
++			       struct luo_session *session)
++{
++	guard(rwsem_write)(&sh->rwsem);
++	list_del(&session->list);
++	sh->count--;
++}
++
++static int luo_session_release(struct inode *inodep, struct file *filep)
++{
++	struct luo_session *session = filep->private_data;
++	struct luo_session_header *sh;
++
++	/* If retrieved is set, it means this session is from incoming list */
++	if (session->retrieved)
++		sh = &luo_session_global.incoming;
++	else
++		sh = &luo_session_global.outgoing;
++
++	luo_session_remove(sh, session);
++	luo_session_free(session);
++
++	return 0;
++}
++
++static const struct file_operations luo_session_fops = {
++	.owner = THIS_MODULE,
++	.release = luo_session_release,
++};
++
++/* Create a "struct file" for session */
++static int luo_session_getfile(struct luo_session *session, struct file **filep)
++{
++	char name_buf[128];
++	struct file *file;
++
++	lockdep_assert_held(&session->mutex);
++	snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
++	file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
++	if (IS_ERR(file))
++		return PTR_ERR(file);
++
++	*filep = file;
++
++	return 0;
++}
++
++int luo_session_create(const char *name, struct file **filep)
++{
++	struct luo_session *session;
++	int err;
++
++	session = luo_session_alloc(name);
++	if (IS_ERR(session))
++		return PTR_ERR(session);
++
++	err = luo_session_insert(&luo_session_global.outgoing, session);
++	if (err)
++		goto err_free;
++
++	scoped_guard(mutex, &session->mutex)
++		err = luo_session_getfile(session, filep);
++	if (err)
++		goto err_remove;
++
++	return 0;
++
++err_remove:
++	luo_session_remove(&luo_session_global.outgoing, session);
++err_free:
++	luo_session_free(session);
++
++	return err;
++}
++
++int luo_session_retrieve(const char *name, struct file **filep)
++{
++	struct luo_session_header *sh = &luo_session_global.incoming;
++	struct luo_session *session = NULL;
++	struct luo_session *it;
++	int err;
++
++	scoped_guard(rwsem_read, &sh->rwsem) {
++		list_for_each_entry(it, &sh->list, list) {
++			if (!strncmp(it->name, name, sizeof(it->name))) {
++				session = it;
++				break;
++			}
++		}
++	}
++
++	if (!session)
++		return -ENOENT;
++
++	guard(mutex)(&session->mutex);
++	if (session->retrieved)
++		return -EINVAL;
++
++	err = luo_session_getfile(session, filep);
++	if (!err)
++		session->retrieved = true;
++
++	return err;
++}
++
++int __init luo_session_setup_outgoing(void *fdt_out)
++{
++	struct luo_session_header_ser *header_ser;
++	void *outgoing_buffer;
++	u64 header_ser_pa;
++	int err;
++
++	outgoing_buffer = kho_alloc_preserve(LUO_SESSION_PGCNT << PAGE_SHIFT);
++	if (IS_ERR(outgoing_buffer))
++		return PTR_ERR(header_ser);
++	header_ser = outgoing_buffer;
++	header_ser_pa = virt_to_phys(header_ser);
++
++	err = fdt_begin_node(fdt_out, LUO_FDT_SESSION_NODE_NAME);
++	err |= fdt_property_string(fdt_out, "compatible",
++				   LUO_FDT_SESSION_COMPATIBLE);
++	err |= fdt_property(fdt_out, LUO_FDT_SESSION_HEADER, &header_ser_pa,
++			    sizeof(header_ser_pa));
++	err |= fdt_end_node(fdt_out);
++
++	if (err)
++		goto err_unpreserve;
++
++	luo_session_global.outgoing.header_ser = header_ser;
++	luo_session_global.outgoing.ser = (void *)(header_ser + 1);
++	luo_session_global.outgoing.active = true;
++
++	return 0;
++
++err_unpreserve:
++	kho_unpreserve_free(header_ser);
++	return err;
++}
++
++int __init luo_session_setup_incoming(void *fdt_in)
++{
++	struct luo_session_header_ser *header_ser;
++	int err, header_size, offset;
++	u64 header_ser_pa;
++	const void *ptr;
++
++	offset = fdt_subnode_offset(fdt_in, 0, LUO_FDT_SESSION_NODE_NAME);
++	if (offset < 0) {
++		pr_err("Unable to get session node: [%s]\n",
++		       LUO_FDT_SESSION_NODE_NAME);
++		return -EINVAL;
++	}
++
++	err = fdt_node_check_compatible(fdt_in, offset,
++					LUO_FDT_SESSION_COMPATIBLE);
++	if (err) {
++		pr_err("Session node incompatible [%s]\n",
++		       LUO_FDT_SESSION_COMPATIBLE);
++		return -EINVAL;
++	}
++
++	header_size = 0;
++	ptr = fdt_getprop(fdt_in, offset, LUO_FDT_SESSION_HEADER, &header_size);
++	if (!ptr || header_size != sizeof(u64)) {
++		pr_err("Unable to get session header '%s' [%d]\n",
++		       LUO_FDT_SESSION_HEADER, header_size);
++		return -EINVAL;
++	}
++
++	header_ser_pa = get_unaligned((u64 *)ptr);
++	header_ser = phys_to_virt(header_ser_pa);
++
++	luo_session_global.incoming.header_ser = header_ser;
++	luo_session_global.incoming.ser = (void *)(header_ser + 1);
++	luo_session_global.incoming.active = true;
++
++	return 0;
++}
++
++int luo_session_deserialize(void)
++{
++	struct luo_session_header *sh = &luo_session_global.incoming;
++	static bool is_deserialized;
++	static int err;
++
++	/* If has been deserialized, always return the same error code */
++	if (is_deserialized)
++		return err;
++
++	is_deserialized = true;
++	if (!sh->active)
++		return 0;
++
++	/*
++	 * Note on error handling:
++	 *
++	 * If deserialization fails (e.g., allocation failure or corrupt data),
++	 * we intentionally skip cleanup of sessions that were already restored.
++	 *
++	 * A partial failure leaves the preserved state inconsistent.
++	 * Implementing a safe "undo" to unwind complex dependencies (sessions,
++	 * files, hardware state) is error-prone and provides little value, as
++	 * the system is effectively in a broken state.
++	 *
++	 * We treat these resources as leaked. The expected recovery path is for
++	 * userspace to detect the failure and trigger a reboot, which will
++	 * reliably reset devices and reclaim memory.
++	 */
++	for (int i = 0; i < sh->header_ser->count; i++) {
++		struct luo_session *session;
++
++		session = luo_session_alloc(sh->ser[i].name);
++		if (IS_ERR(session)) {
++			pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
++				sh->ser[i].name, session);
++			return PTR_ERR(session);
++		}
++
++		err = luo_session_insert(sh, session);
++		if (err) {
++			luo_session_free(session);
++			pr_warn("Failed to insert session [%s] %pe\n",
++				session->name, ERR_PTR(err));
++			return err;
++		}
++	}
++
++	kho_restore_free(sh->header_ser);
++	sh->header_ser = NULL;
++	sh->ser = NULL;
++
++	return 0;
++}
++
++int luo_session_serialize(void)
++{
++	struct luo_session_header *sh = &luo_session_global.outgoing;
++	struct luo_session *session;
++	int i = 0;
++
++	guard(rwsem_write)(&sh->rwsem);
++	list_for_each_entry(session, &sh->list, list) {
++		strscpy(sh->ser[i].name, session->name,
++			sizeof(sh->ser[i].name));
++		i++;
++	}
++	sh->header_ser->count = sh->count;
++
++	return 0;
++}
++
++/**
++ * luo_session_quiesce - Ensure no active sessions exist and lock session lists.
++ *
++ * Acquires exclusive write locks on both incoming and outgoing session lists.
++ * It then validates no sessions exist in either list.
++ *
++ * This mechanism is used during file handler un/registration to ensure that no
++ * sessions are currently using the handler, and no new sessions can be created
++ * while un/registration is in progress.
++ *
++ * Return:
++ * true  - System is quiescent (0 sessions) and locked.
++ * false - Active sessions exist. The locks are released internally.
++ */
++bool luo_session_quiesce(void)
++{
++	down_write(&luo_session_global.incoming.rwsem);
++	down_write(&luo_session_global.outgoing.rwsem);
++
++	if (luo_session_global.incoming.count ||
++	    luo_session_global.outgoing.count) {
++		up_write(&luo_session_global.outgoing.rwsem);
++		up_write(&luo_session_global.incoming.rwsem);
++		return false;
++	}
++
++	return true;
++}
++
++/**
++ * luo_session_resume - Unlock session lists and resume normal activity.
++ *
++ * Releases the exclusive locks acquired by a successful call to
++ * luo_session_quiesce().
++ */
++void luo_session_resume(void)
++{
++	up_write(&luo_session_global.outgoing.rwsem);
++	up_write(&luo_session_global.incoming.rwsem);
++}
 -- 
 2.52.0.rc2.455.g230fcf2819-goog
 
