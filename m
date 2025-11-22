@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFE48CFC515
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 05:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCF22CFC50C
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 05:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A81746B0022; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
+	id 05A096B0012; Sat, 22 Nov 2025 00:23:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94DE76B0026; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
+	id 00AD56B0022; Sat, 22 Nov 2025 00:23:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 815036B0023; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
+	id E3B596B0023; Sat, 22 Nov 2025 00:23:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 684F26B0012
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBA28C0641
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:18:16 +0000 (UTC)
-X-FDA: 84137086992.17.77F79A1
+	by kanga.kvack.org (Postfix) with ESMTP id CF9086B0012
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:23:00 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 965218A0A6
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:23:00 +0000 (UTC)
+X-FDA: 84137098920.22.C2CCD63
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 21BFB180009
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:18:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SJwdLMeF;
-	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id E180F40002
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:22:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=O71ZRjK7;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763788695;
+	s=arc-20220608; t=1763788979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a21mFOrYW7EF2pPoO72JM91N95zDCsdN4gaOlTsjcgM=;
-	b=XFoBgjTdLm3v37l2IbM6UL56fM6/057W+rYmYVHQ0MBZaFQf+l2Vrz0uAuZycIpJQnrYpa
-	LkJaI8M4cbeISw7cl+DlC0ysl+5lePZF/jn+YMcqLGzNmagaenGymtDS7u1p0s4tLyNdFx
-	QTwbnzsMOu9x0vAiZuD+ZI0mP58DdkE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SJwdLMeF;
-	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763788695; a=rsa-sha256;
+	bh=ctiiXJqj43yt6JFDqmOGbkwRPsJgQSrgpqu+YQaEadw=;
+	b=dLkUWYqgZnRSS2xgSssNLgxxTUTbp6oWtVUEybumdexBCn4F+NpnskUq2u2rxje1et9dKk
+	fiYrRF5CM0YBwfEz8xV8wWgp6+x/fKG5E+tz7rNnCCer4gOyMVFCfymiTftndmWPQagRX1
+	Oh1RSTmQr1HL1w0DwiaXYCmKbN9D1ko=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763788979; a=rsa-sha256;
 	cv=none;
-	b=UzhNuSRFZyfDXMncZdpEEMgxrnMdWP1IlRg41BvvMGOG9CKGitGCqh9mkIGQT4Mlz1/g+j
-	Pb2pPqq7gVC5SlZpQg1tyZL3jqF3xl/hOUXjd+UmWt5yg4d7jk/N7q+jqa7OzbVhQRElsM
-	ueU6mnQzfNh08iaEguslGk3cpXqX/7k=
+	b=TnXUttEdokF+k3SzdlsQv2a7Qimp1EBh/VwKNhKVhv1agrXxmPPNoTBS3GLkwKJ5SS8VAu
+	W+RsSLidDctfjfabdUf7bejC99vj5/6ohEbLnvtMzqbrdDmtsHDNBVpBRwyvv2R4NH5c7f
+	dZKbiuHscvfYCEyD+C4lEjnlsmRcN0E=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=O71ZRjK7;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=a21mFOrYW7EF2pPoO72JM91N95zDCsdN4gaOlTsjcgM=; b=SJwdLMeFBkF2KqNV6jfhdJ/TKL
-	k19kD1CgRMJvJ9174C+g2EXK/WbSoyN0Vy1aLXajePZWlWWr7uaNxBRzt8koHeZ3JQkp6wxEEjSKv
-	IEXa2504U+Zs2zGOXGzZttOK4QpBQqBX0CR9iT4ZLPe1bF3k2/TEx+U10GNEfmerqsEwheVMSuL8s
-	JY0ZAKjiKOlYWhPliWGPChHFBpEgdmRWt8xTRdQGYH0jsqnCc479ZlXe0mh89iLLvgyqBlcTyyXX7
-	4ojJYiUEKmA1fqd26Ym5WozMay98Oxus+y5hq7+ih6pabeas3AaYIGGrzIqSYiLzZFsRZhA1aMJ3w
-	FDOCIYXA==;
+	bh=ctiiXJqj43yt6JFDqmOGbkwRPsJgQSrgpqu+YQaEadw=; b=O71ZRjK77TRPcnC4NwHOF25PzM
+	QXIKzNKT5MHAYI9TGOp2dd9ftqObQfTYmmqaeudsDv+ftQNBr8lEf5215q5bHLh36kZ5KlHu+nUpY
+	oePTHC1A2TdwX92YkkNo79STpXJMmcxsDEUjETKuimRzLMtlv7Uet6XddETu2X2EslVlHPIOi8Y54
+	2ZRy/7DQWXkdKjJ2U4Ct3dDAUgN3pXND3NerPs+rDUUbb7Bj26zzf/zFxuzOOpRNbDd3WlaMGMmq8
+	h2UmE7ShTS8n/kkhvaLanI1hDi1wclKfrX7hDWjxcyofgAyAqLtUDPn0m70i7WUDS5mfoIGRRfQKe
+	XJUYTC0g==;
 Received: from [50.53.43.113] (helo=[192.168.254.34])
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vMg0Y-00000009HED-3nNK;
-	Sat, 22 Nov 2025 05:18:02 +0000
-Message-ID: <4807417b-a8f7-47a3-b38a-94ea7bdbf775@infradead.org>
-Date: Fri, 21 Nov 2025 21:18:01 -0800
+	id 1vMg5G-00000009HOl-42QK;
+	Sat, 22 Nov 2025 05:22:55 +0000
+Message-ID: <26083ba9-1979-4d14-8465-3f54f2f96d23@infradead.org>
+Date: Fri, 21 Nov 2025 21:22:53 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
+Subject: Re: [PATCH v13 2/2] ras: mem: Add ACPI RAS2 memory driver
 To: shiju.jose@huawei.com, rafael@kernel.org, bp@alien8.de,
  akpm@linux-foundation.org, rppt@kernel.org, dferguson@amperecomputing.com,
  linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
@@ -83,20 +82,20 @@ Cc: jonathan.cameron@huawei.com, linuxarm@huawei.com, rientjes@google.com,
  prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
  kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
 References: <20251121182825.237-1-shiju.jose@huawei.com>
- <20251121182825.237-2-shiju.jose@huawei.com>
+ <20251121182825.237-3-shiju.jose@huawei.com>
 Content-Language: en-US
 From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251121182825.237-2-shiju.jose@huawei.com>
+In-Reply-To: <20251121182825.237-3-shiju.jose@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 21BFB180009
-X-Stat-Signature: 6st6x3k59ax8tbdupdkqgp7b8xy5qyua
+X-Stat-Signature: mgtzoix71z8mes4amztbm1h5orpd3xak
 X-Rspam-User: 
-X-HE-Tag: 1763788694-606714
-X-HE-Meta: U2FsdGVkX18WjGVnrm8AHwdkEIv9rs6QAQo7MVIzEm/gVE2TdDYQPUw0lY7a5pOacyB09gpi+rPUo2sSH9ujTFdDDMeuIUm48T9VzNbVUaMJSjck5l2b53kv37BmihVUhA0Hl+eaLoDSTYwArAB+KmYRi5qsDfG1zNxri7MBlGYDEaxDQQ30/Wm/IFtrRN/5e+sR/5xJxL28Maj6Z5w+a/UyebHE1Ej/GDdJp0Q1fg7tEGY30lieLLfAsp8zeGEUpF7cJN5tO8xCltF4ufy1kfi8XAsPDxr6pAh1amABb4Z4m2pKSrSTeMn+M7x4eEisASgyBnrSoivCwURue5hTtRqtdNGD1q2YM7FfqEgzb6i0Cr2DHIIDrwG55j4+ZxPhqb+6/QiTT5rxrQu28MFj9n4o0AN40PGVUqnXhiMKD6kbHn+c6k5lSHtWYrkS4uH73ELWNdSvfd1TX9j5rUjLvyzy3IeNYIXh6U2xkNtdDtRlZ3lw2uKCFNsEV/KJw5wdlqUaprDbjkoEaTgDtMrYvLMCS2Owk5zsKTtjr4HGKddEZlH8GzryWaDqaCaZ4J0+6EP9+KPDxcZUTwaMng6DpUQn8ZpDuLP58ObQL51Amp/xKRKRpDFKQuhI6Bnup8cMHFL0xzooQAB8Du+NERctCf+4OpK5eCxu6urm80shFoYZqQK4AzgIs/Kvx+3McGGD+57Jygw9bPjF5fj89/Rjc2by/dMwF0FaOc9NJiWg8GkEuxGUlRwfrtm+I3YwgO+O8+jZAFQCfCi+v6AA0kZc2EWv4h/+Ore91RziDYG8DFA46Kie9NQJEbiNRoRdnnm9REccqqpEjWCuZXvMrojzKmWxpaIBCfMuCHgOwYUvJcP81s4osajyHPYh0iYf+Hmkj/7Fx53VJ0B5jqGyObH18obDqimLi8mfqYs4Vd9lnNN848dVqPVyrlPOZTg4mlDMYXFdcqzqGI8LZ0I0bgr
- AzzzO+wF
- mvlt0u5nLjuQvc7Ny5Cgmx9pEAyXbkLNyu8Dd1OElVfAGVcqdqe1idPvgSjCKmpDix9PsGPJj/sxAqtSyQft6PgkLtauaSW01ru+7GzALOK6Dyav4UT0usCUsgfcYtxJ2xdvYXq7A7uVg9UoacucdepKu3IgsvDxD1Gf0oYcgt7acV1fPNxskek6vIIfux1WjLISMGo2QuKxv6FU47umpFGv/9N30Bbl9ZWLkhhv00CJTa1STthXl8/C5WtVq6oiaMJeoZ+z+XAB7pnTlprKR14xr+9TgI9v3uReHNkuC92fmAS+lTIGHwkpJ5K/9sdhM0SiRS1B/ITWkoxbyNn9aGiJORH9+fwq1k8Gqz2GlB44N+dX6CfgvQSODg1jhXafXKL2vOa18AYWbO0Q=
+X-Rspamd-Queue-Id: E180F40002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763788978-504953
+X-HE-Meta: U2FsdGVkX19ry+/owvVF/Pbb5JOo3d8ud4+wA6yEwSOgqPScqy6so6LLw3Btixub7TCchsU2NX6lNB3O0bOm4Qtrm/slLIeB3HU1UXvrKBKiEJg5NIJm6TvI0COE6iPiG6pIaFdXKsMay1DpgWEJQwLaakxeJE9mUCOTM/6o38W3ad5w5AkUrTsiO38dMbtRPGQI9D23SMQ7KT4b1uPBM5Y7a4ZIcKz1D6+HmRYs0avhcrYDx9Kc/OdRI2RYHCdrPNF/OIjYqeFeTKCwmMPMblZAFwf78W3/Twj/67mxZBNj6wZN3HwmZmrTYd2ivAeiwTM8eY/ePYnhTUd0nbzGZOLFxpO+xVh4XNcrniAjH4mo7I8B01Y8S5AY5b+YCJVfe56K8Gm0jxKrQzg1H7zz6pXefpeJaoKyHBOqodKIjRs09X40uzMGmYKLpV0iPLi7nN+Lcf7RCCYrlfa2xR3n5pfdBRnCweq32MHzKqXhlKQ+k0F5tqvm/uOD8XUrajZrbERYgUetihfjhpm18kOlYidEmie92cPeGt4QZsulKZ+y43rvJhpaBtJkgZe6GdupMRNZeKLSUz5BGgUtIPe9Ii7bW6CPbEBqG9Z0UyLW3QsFTE/fIwJ3u6xAMT8QzXk8SUN1FvtlMeOFBISEILkhuoklHLrHQ9rHCqJl4DXXeAhujDADc3rXHYh+SHWUQyBfLYoYy5z2zzV8MBcB8ESbNKd9mw60UyfOzHOS1pB6nulxQxbt9kjKg9Daxg61FR3EaJiNN85YNHfSrAiVWzbWgtojh2hrP54xyinx6cSAH4BNR/BFlBHDQjjam3JsxjzaaxQgTvyH/4oxTYv5wKlUJlVYIj6W+xksLiztQeBJ4PB3baLQg85ze3lLJIAnv5dM2M6bYKHsPYJkihqRt/6QKr/B94GwNi8e5K/uJsjCvr+miIPoEN+48Z+qffc8V6rfuOTQEoRd4hMm7H5s/90
+ xMUURfl6
+ O7d5yZCz+Fz0oldXwB0TfXahvn7HLc4sQ3jyCMb7/DL3lJ/U+8GGuAosLNmPcQIlmocAtfEAl9nf2bMxYqWAjzX4wef1BEZdIgurpAlxRgzYdnoiWjOF/TTIJVqG5gSrA7zQPByKnCtXo2OzDwYFZqF3X7WdvsVwDAoIDHlLo2neFPB1VXbyej2/uubWUaIgTgpWhpnuTPSXFpchtraa38EABIuLkn/2jSlxQKOFbbnB4CmsR6cX7YfNwLufd2IyRBoZVVbYIP0c8CVVLYqClax5Lx2zSiugr2tdvLXWtWPPLdNO1NbzvtDM6dx9sLdsrce9anMAZdTWXqybfVNBLD9yMAulgA1hYpV1f+iiBHuiN5et4XosnOSCdhMzNMcl2gndq/XG4ffEJIB4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,28 +107,81 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 11/21/25 10:28 AM, shiju.jose@huawei.com wrote:
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index ca00a5dbcf75..bfa9f3f4def5 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -293,6 +293,18 @@ config ACPI_CPPC_LIB
->  	  If your platform does not support CPPC in firmware,
->  	  leave this option disabled.
+> diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
+> index 2cfa74fa1ffd..737a10da224f 100644
+> --- a/Documentation/edac/scrub.rst
+> +++ b/Documentation/edac/scrub.rst
+> @@ -340,3 +340,61 @@ controller or platform when unexpectedly high error rates are detected.
 >  
-> +config ACPI_RAS2
-> +	bool "ACPI RAS2 driver"
-> +	select AUXILIARY_BUS
-> +	select MAILBOX
-> +	select PCC
-> +	depends on NUMA_KEEP_MEMINFO
-> +	help
-> +	  This driver adds support for RAS2 feature table provides interfaces
-> +	  for platform RAS features, for eg. HW-based memory scrubbing.
+>  Sysfs files for scrubbing are documented in
+>  `Documentation/ABI/testing/sysfs-edac-ecs`
+> +
+> +3. ACPI RAS2 Hardware-based Memory Scrubbing
+> +
+> +3.1. On demand scrubbing for a specific memory region.
+> +
+> +3.1.1. Query the status of demand scrubbing
+> +
+> +# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_demand
+> +
+> +0
+> +
+> +3.1.2. Query what is device default/current scrub cycle setting.
+> +
+> +Applicable to both demand and background scrubbing.
+> +
+> +# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
+> +
+> +36000
+> +
 
-	                   features, e.g., for HW-based
+What units (above)?
 
-> +	  If your platform does not support RAS2 in firmware, leave this
-> +	  option disabled.
+> +3.1.3. Query the range of device supported scrub cycle for a memory region.
+> +
+> +# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/min_cycle_duration
+> +
+> +3600
+> +
+> +# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/max_cycle_duration
+> +
+> +86400
+> +
+
+ditto.
+
+> +3.1.4. Program scrubbing for the memory region in RAS2 device to repeat every
+> +43200 seconds (half a day).
+> +
+> +# echo 43200 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
+> +
+> +3.1.5. Start 'demand scrubbing'.
+> +
+> +When a demand scrub is started, any background scrub currently in progress
+> +will be stopped and then automatically restarted once the demand scrub has
+> +completed.
+
+Will it restart where it left off or at the beginning?
+
+> +
+> +# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_demand
+> +
+> +3.2. Background scrubbing the entire memory
+> +
+> +3.2.1. Query the status of background scrubbing.
+> +
+> +# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
+> +
+> +0
+> +
+> +3.2.2. Program background scrubbing for RAS2 device to repeat in every 21600
+> +seconds (quarter of a day).
+> +
+> +# echo 21600 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
+> +
+> +3.2.3. Start 'background scrubbing'.
+> +
+> +# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
 
 -- 
 ~Randy
