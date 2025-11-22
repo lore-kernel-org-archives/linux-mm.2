@@ -4,214 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 967EACFD2F3
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 21:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74AF2CFD2F3
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 21:54:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEA196B0024; Sat, 22 Nov 2025 16:26:56 -0500 (EST)
+	id 7DAF06B000D; Sat, 22 Nov 2025 16:54:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9AF06B0026; Sat, 22 Nov 2025 16:26:56 -0500 (EST)
+	id 7B1CF6B0023; Sat, 22 Nov 2025 16:54:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D62A16B0027; Sat, 22 Nov 2025 16:26:56 -0500 (EST)
+	id 6F0556B0024; Sat, 22 Nov 2025 16:54:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C286E6B0024
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 16:26:56 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 57C95130A69
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 21:26:56 +0000 (UTC)
-X-FDA: 84139528032.02.188B9DF
-Received: from YT6PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11022111.outbound.protection.outlook.com [40.107.193.111])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7236940002
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 21:26:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=hMstoJMK;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.111 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763846813; a=rsa-sha256;
-	cv=pass;
-	b=7K44YqlrKABRVbOTsia5IGsJJn7BiBLYy+xwSL/OZgAJLfKQk4/ohxgu/HxV2RWEID9Fi/
-	jIykYEFqavyIoMxffsNoxDKAj3usOzSTkM3rvDx/DY8bPzCRPQQZVnNvcNDjhuCGBb1y5l
-	WsdpehMrNLVm6Pg5CIhNVpzQY+HRL44=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=hMstoJMK;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.111 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763846813;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A37F6B000D
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 16:54:10 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7809140A48
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 21:54:09 +0000 (UTC)
+X-FDA: 84139596618.10.6A01A61
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 18DEB120005
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 21:54:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EnKfKq4E;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763848448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hykKQCuZ2eIhXReQYlOZ02Qc0g6cKm/Sss7742mrWZc=;
-	b=mB9rGn+RYVyANGj9hBMHy9t7nclSzQd4jUlumD5eE89TXOIgZM1gBsnIbJOxZOAsB959De
-	qPb6ghuIIKi1ZuxqrOkuIS/FrJNFEeI/P83hhrwfHBqv6+8OoTsRdag4bcckPwJpnSRc8r
-	8N/zJJHX5vceQyRUueRtnALWt1hZt00=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RDIrtaPxRqJXGgxDoFyYGn4ASD/Lp5vh8UhdO+b6xoshPxMX3NxS+xhkUs+LDQW4LYVmYWX+CUK77dTFe/Wc+2sbundira0uywurnU+/uYTAe2ZafeAR/5X9DsS8ziSWuTsvPUpuBHqhKc6axajgwCQc57Z3YLj3htUMdPr9Y/x5sSthYXZiDazU2W4zqizKEaR5E5czdACnQUg85YP3AADEREGnc0mBalZy0RnYOeAHxrQov0r8xHG38pOZhLc7qarvxwPtG03hAyUdOhC2zGqEFJh1R0WuUfB3vPMUuKeeo8ndqHsjP4N80zCDdYTDe8ddKCjrodVXndkkvOW7eA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hykKQCuZ2eIhXReQYlOZ02Qc0g6cKm/Sss7742mrWZc=;
- b=TwwvqFXK/ClORbpEGk+sOUIsaqqaZhnDUh0MDaLGqg/sAnPyvjDH56GvZZYsK/VIo3CnrhZdM3K0Uan7Wks9lKUpatcvSMy1pHRN9TnrOpUC8br/HQ6foBBc7B2ZdsDa4oYo6FQyOAAoUw3ZPxX4jgaqAxD7oEUVYkYPsebHgb4lq/GEQWgk1ZoeAuKOchGrgElzjawxj2NazVszn68rwZ4kr/QKSj6eFFZzBMii08AVh0INcCs1ed/WGx1Bl75woyR6E3TH9tLcein5rjARQSxwivJNiL58ReDqWCJrstvhP/aKygbJ+cKbUNBOLb7QOm85VvPKvRYAffs/0Czu0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hykKQCuZ2eIhXReQYlOZ02Qc0g6cKm/Sss7742mrWZc=;
- b=hMstoJMKIfnP1WZ7i0163P0ICaUX5QmH301Mc6cj9kxVcoDQg5OYrIOZ+/Fspsf/AZ4pXaewcg8lDx5CI1n5Yg100QvmPge1GJ3MfZuHoFRls4p/4Sli1NR6Ha8zwvGhBB3+9g+eAjRND80xG5CRcpEIajLizu0wAI+OgegP//T+dlYu4qWU1Hd2OR33KrfEHrqYumKrPyVv2LHkc63lJvFH2qL2KAlwUpWuVyL0nZ6m1ywjRf6Gk44N3CVZT0rKsMu/AvN7hSt4Kub7s8tLTv99zHq4lxxwBVg/15Hv296p+6AWMwrmH1Ws/OaVX0X5NvN5UV1yTSDrl/CllVtXXw==
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT3PR01MB5512.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:64::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.15; Sat, 22 Nov
- 2025 21:26:49 +0000
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4%2]) with mapi id 15.20.9343.011; Sat, 22 Nov 2025
- 21:26:49 +0000
-Message-ID: <c8001c6c-cedf-46c8-81e8-ac27f0d0f0a6@efficios.com>
-Date: Sat, 22 Nov 2025 16:26:47 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/2] lib: Introduce hierarchical per-cpu counters
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
- Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>,
- christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>,
- SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <liam.howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- Yu Zhao <yuzhao@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Mateusz Guzik <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>
-References: <20251120210354.1233994-1-mathieu.desnoyers@efficios.com>
- <20251120210354.1233994-2-mathieu.desnoyers@efficios.com>
- <20251121100308.65b36af9e090a78a66144c6c@linux-foundation.org>
- <a3652f6b-cd3b-45ad-a3ad-e92369cf4068@efficios.com>
-Content-Language: en-US
-In-Reply-To: <a3652f6b-cd3b-45ad-a3ad-e92369cf4068@efficios.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	bh=7Ar/tsmPZsMNL06hNZAMrHp3Essa84D5liQ/5iUwjfw=;
+	b=GarmXuXZcD+fITe7XwkevdQ4ZsXfpB7K9pDRXaB4Fa0npEYBrXX0qCHeaguSbadv1yYrLV
+	9Winxs77bPUgcgeOKRpILfZB5jaJmoNutb+fTvD50syhv4q0PHnnMkk8MOXNBKSEcCjXnE
+	BqflxHHxNV7k66jqeP3WZagRCWscbOs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763848448; a=rsa-sha256;
+	cv=none;
+	b=j0vVUxrY6Wg7RgWEGRR+J8oleLWYoRBcslZV0Sr+erxvQ2y9ST3byJBoZ7SMc+jjgeYmMT
+	fupkeH/ONmwMBOnhVbDWkxln4KfsLS3scaxmHhoKPk2sI/2AFcqet4OgVz0227F4uUNzku
+	UPSLCDu/fTWVC4VC2zYRRpGMbUtWPRc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EnKfKq4E;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 71C206013C;
+	Sat, 22 Nov 2025 21:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D408AC4CEF5;
+	Sat, 22 Nov 2025 21:54:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763848447;
+	bh=+KRHwAAUW4XO1yKTU+0wVlPm95HxskzXxng6AxzbgQY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EnKfKq4EYsbTTCoSd98l+D10UA8GVAzzirZRMQ9H0NOr9w2S8lQXCH4mAwe9fqYOe
+	 Uw4EZ6WCYYdIABl02YZ/vL29wizET8kLev0xacnVLkAUi0u9BirB9TwKkBcWOyNN5u
+	 5ID9/Fp1W/I+ikiZCJ175IpsGDIiEAnNRhntAG6g=
+Date: Sat, 22 Nov 2025 13:54:06 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>, Yuwen Chen <ywen.chen@foxmail.com>,
+ Richard Chang <richardycc@google.com>, Brian Geffon <bgeffon@google.com>,
+ Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-block@vger.kernel.org
+Subject: Re: [PATCHv6 0/6] zram: introduce writeback bio batching
+Message-Id: <20251122135406.dd38efa8bad778bce0daa046@linux-foundation.org>
+In-Reply-To: <20251122074029.3948921-1-senozhatsky@chromium.org>
+References: <20251122074029.3948921-1-senozhatsky@chromium.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0352.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:6b::21) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:be::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT3PR01MB5512:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b07b503-d54a-4b17-5de8-08de2a0dd876
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NndnYUh6azQ0MmdxT1JzWTNTb01zTkM0TEs2TkdSYVJIMFJwZjR0bmJUUHhR?=
- =?utf-8?B?VVlWVXM2MVVnNXlDdkpscGxJRzBMNmFScWhLUHowdHpSZkNHWXdWelQ3TXMz?=
- =?utf-8?B?azVkTGEvV2pYT1VIeFl0U096WTFtdk0yNy9PaXZLYzdXWjI5S1JHNlBzNCtn?=
- =?utf-8?B?TklvVjB3WEN4WGNCdkpGSTdMWm5vWFVIcER1WkhPeFdaUnQwVDFQdjMxOVJx?=
- =?utf-8?B?c0Y5VUdkZVY0bnc3cnBPaEdpSVBmOVU3L0UyVWRyQi9GenBNUDRINWppUkpa?=
- =?utf-8?B?UXlDTWxEN09tQlNxR21wSWN4UWhaZ0xOaSs1Q2FkN2psT3FhM1RVazFkTnhD?=
- =?utf-8?B?V2w4QWRINlRNZ0tuQjFiU3dTODA2cGd1Y3Z0dWdVOG1LZUt1bi82WnBCT0tI?=
- =?utf-8?B?eGZ5VkJsOTNtbkN5UVpXZHdpSDNwR1FndzFPdXNUckVvWXJnSlhzZnBYeWxH?=
- =?utf-8?B?S1BzKzRYYXUrRHQ1Um1SYUVPTmUzWFBaQUlEY0lJRkh2TnUrUS83NnJBbTd3?=
- =?utf-8?B?Tnl2UWw5ZHJtWFVFdXpUditDWFNuZVJUakYwR2dZaWo0WWVwcjIybVRzZVNG?=
- =?utf-8?B?SkRzdWpkTVlrUmcrWHhLSmhuSmVBRFQxckI2RlgxdTUrUVZwdjdFNGtoUEll?=
- =?utf-8?B?N2hLckRoUGtvZ25KdmpKTlphek1qREtBeVhTU2t4MWIrQUh5YVo0Q1NFMnBR?=
- =?utf-8?B?RnNOM3ZSaE9sa3hEU1VLckR1bGFlWllBRE5VZkFGUnZGOTVIMzZDaERtOFhL?=
- =?utf-8?B?RUpPZW9CVzFRaVNzYjFneTVtL1pzNjRQbmhJOVh4eXYwRXBRN01XbmprV3kx?=
- =?utf-8?B?aFNiMmFNd1Mvem1RN0tIUFFLcWppbnQwZXhTVTU5d012T1orOXNCVmRxOHp3?=
- =?utf-8?B?RGRNMkVmb2xibjR3eGhYZDNqa2J6eVhxeW9iemR0SXh5d0diQ2gybEZjSlNZ?=
- =?utf-8?B?V3dGKzZwbHpMS3BIdm4vb20zWUJaWGE4Wk9FZjR3SFJaQ0MyQmp2NUxNdXNh?=
- =?utf-8?B?RDFZV0ljbFNRR0NvSzhKNU5aRkVtUU9MeWVGRjdTMkFjOUZHb0U5bUw3bUhL?=
- =?utf-8?B?Mms3bERMUGNIQVBDYVFub2E4RHViZ3JsNWVMK2tpMVI5OEM4eE9nS2U5RjVT?=
- =?utf-8?B?RmRtMUR4eXdZdmpUWExtUkpja0VhSjhYMWl4U21BMEJIUFBoelRSVFpwQmJh?=
- =?utf-8?B?cEN0UHZFYjdYdXpkODU3T3lOV2lJcy9WOEEyRDF5bzFFdzdScHpvN3ptUjZo?=
- =?utf-8?B?T0JxZjd6Skx3d1FUUEREN2tvcC9WaHJTTHI1WjQ2dnRrNm5wS3RJMldNZzZr?=
- =?utf-8?B?NUJBN3hURlBmS0FOcVhTWFhFVFBzV2JkbmVzMkdQbDZ4dWZKdTNpWTRtbnNn?=
- =?utf-8?B?dUtTT0x1NmhzSm53TGI2KzNFdGNtOGhoS1F1S3dSYWczYlNubUNkeEZUTXhk?=
- =?utf-8?B?anI2ZkZ5eFhYdE5jL3RhdXNaTDBMNmY5Z1huVjBaa1YydEhCazhxU29jN0Yv?=
- =?utf-8?B?MDhyQ05iUko4VEJyRnlZTVgrTkRYeThLWW5XQUk1UWFNeCtUNnFRSng2ZHMy?=
- =?utf-8?B?bGxBb3NVOHdzNDVGb0N2Rm94UUNVMzBVbEVQUkgwckNCVHN0ckxhUVJBQmo4?=
- =?utf-8?B?RlJEZXN3UTBPcCs4cFdpd0poTzFDSWRYaEc3eFNxcE5qREFrUDUvWFRFK0dm?=
- =?utf-8?B?S05WZENkVVNER1JWVmFVRWN4VDBGYXJlM3FCb3dEbEQ0VWxLM0Y0Q3lSdkFB?=
- =?utf-8?B?WUErcmd2ZEpHd2VmQ3VrNlV3Z3dDL1ppUCttRDYwMXErTjhXTFZObjUrVnAr?=
- =?utf-8?B?MXRwa3FjYXEyZXF6Snkrd2F6SVhUbEU0NkJlUWs2dHdwbVczYnJDeWxVVEti?=
- =?utf-8?B?QjR3K3MyZndxaWVESmJQV0xwN2lOZVpWVjB1V3V2b2E1NFE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bnZKcnVRMFlzWUhwTGdaK1kwZzg4UUVEZnN2YUpINkN4RXg0T293dTh2UmZu?=
- =?utf-8?B?YnpDRVkxZnRPaGJWUURrTVUyUFFtRyszZWswZnh6aGtHalpGbm5zREtOalJU?=
- =?utf-8?B?c1VlNEJjNGs2WFk1Ynh0ZGJua2QraGdxTzZqWU53L2RxcUlxY0d1U0lEQWZR?=
- =?utf-8?B?Q3NzcEZJMnlXVy9mQ29NbEVaSlkzaW5UMVk4cTk2ZTBqR3JZR3RKVTBoSVI4?=
- =?utf-8?B?TEgzcFpxdmNHcnVBSElEdmlMNEMydDRORGRIcVRETG1hQk54VzhMdFJYN25n?=
- =?utf-8?B?T0prdnlUTFU1Z2JHYnpDTkVaRk9udStTeHlpL056b1E4bituUFNUTXgzZzJF?=
- =?utf-8?B?U3VwQXhxeFg4U2tOYlA0T2JYWlNDeDZjV21Uemd6VEJHVWJ4SHJNRmdzSzNZ?=
- =?utf-8?B?dnJ5Vzc1dCtGZEJMdmtOZWtkcldjek12S3RNVGtRMjVRcHNOZGZIRjVNQU1B?=
- =?utf-8?B?TU81Wk9rM05JZ2hTNHo0TTB3N2lvb2hmSkFiMWN3aDBtanBCbmJyQU51anQ4?=
- =?utf-8?B?aEcrWkZsNTVwNFE2eGNzQUZnVW5SMmozKzhLY1YvbEFERit2RUo5UXhuNjZo?=
- =?utf-8?B?eWN3aXEwWFJSMTNoQlBTS1Z2YzZoR0dRUkY1Y0FQRUdpeG1kWTBLWW5majR5?=
- =?utf-8?B?TWdGaWN4WWJsRVRwUGZETHVRbmYzRXBub0ZmdmVWcnIxamxkcXdpVEdsL1Uz?=
- =?utf-8?B?bkVJcjMzU0hYdUViaEUwWG5RRVlMUnlmaVNNcGxiUGg0TWM1ZHkyRWZubnow?=
- =?utf-8?B?aTdVSTJWOS84UUJvc29RR01ndnIyZWlrcGFvNXB5eEtYMHQ5aFZEM29PMUIy?=
- =?utf-8?B?Z0hLeFdDWnEvZmtvOHlNcDZwOG1peGZZWWhBbHdqREEvUFU0eGdVSkEybjBs?=
- =?utf-8?B?N1luTFZhYlMweFBvYUIxT09LMWFvYlAwUTFZODVIUjhIZmZVVmZEaEdaZ2FH?=
- =?utf-8?B?V1NwQ0FSL3Z5V3dWSGQyN3doZE5pVm1aU1lUMVFHRlFkU1FBcTBUL2VFQlF0?=
- =?utf-8?B?ZFRlK0FrT21ycGthNFpXSjY3S1RueTdHMzRXbXMvZ2x5OUdvK1JyWlR5M05G?=
- =?utf-8?B?SXk3c1NnN0hqaVlic0xuUkkvY0YxSVUzT0JuZ0lUTXIwOTN0akE3VWNrNktj?=
- =?utf-8?B?UmwvWDYyemE2M2txOU5hQTBnSGtqVUlQaVJSVXVvRmh1bFpRUk1SYmFrZktu?=
- =?utf-8?B?QjMxaUZ2RWJpdldhdHhOZTh0ODBpYUVxZlZRbGJDekxEMTVISWVzVVA5dFVJ?=
- =?utf-8?B?WFB3RUlpaFJkdHdkTUkrc0lGdTN2bGZ1ZU9ibVIvdk1GUmRaelVaKzRscGM1?=
- =?utf-8?B?akRSMy9pSVlQZ1ZJeEdWNEZHc2RwWml3OEk2RlhRbUZhd08zU20yRXMvSG13?=
- =?utf-8?B?TDlTb2kxVnJNRDQwK25DSGMvWGRhMGlmMnZ0M2thTmZQOWkzcnFUMVJ1enor?=
- =?utf-8?B?YmZDVlpQOWNkVFJqbGg3WVRRN2tqVG01OGZIU09Dd1RuVVIzSVBIQzQ3alR3?=
- =?utf-8?B?djRhNEt0bHFwL2szVFdBRGN4cmxTeWF1azBiSkNYZUFsZzZnQUdFVkFpVHRz?=
- =?utf-8?B?YWJQVWlQY3JSbWFYTS91aVQ1OC8xQnk0US82M2hETjJjVE5FcERFaUdtT0dY?=
- =?utf-8?B?Z2VNeFdZdXA3NFVhYXdqSkNiOVQ3OHdMZVdZRko1QmUreDFoc09GZXJSRm51?=
- =?utf-8?B?SEE1MWgwVzVRbS9jYWZ3ZDAxNndPVzRiUVBFTHRZK2xZaWRMV21IY1huaTVv?=
- =?utf-8?B?OUFhcW54T1FqNGx5L05zK1Z2QkhvQXFFUDM2dEtaQVJ4N3padXRtcXNtTGpK?=
- =?utf-8?B?MExFS3hZdGZ3bWNQQVA5aGpQNjc3MENTNkxOMDdmKzVOTHBsc25Ib0RVSFVG?=
- =?utf-8?B?bUdaMWE1c0prR0cxSHE3R1R4K3hOZVlMdmFGRHhkQ1RxZFQ3eWFvYXZYc09l?=
- =?utf-8?B?Y200eW5mM3Z3QnlmYVJTUFBnT1BDM1VIMWRQWk1LTXVQbnJ1M0MxbjdQTlV4?=
- =?utf-8?B?bmlJWHRDRWFCeXFXWHdjb3RzSXVJVE13bmR0Y2ZxWk1xeUtuc1hlWVpFNy9w?=
- =?utf-8?B?MERpVnpZcGZaK0ljNE0xYzFOajh3M3Q1ZFNEOTJBRXFOSlprM0gzdi95SzZt?=
- =?utf-8?B?OE9WVUQvZ1MxZWNYNE4veDdYaFZCQVloV2s5WXphaEZESUxtZFl1SFZseDlo?=
- =?utf-8?Q?R0GCgdkiEZtQn7iRFuDxJdA=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b07b503-d54a-4b17-5de8-08de2a0dd876
-X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2025 21:26:48.9546
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: klUc6QaSadqkLQzva2IvASubHKlnqnc5pvX+e3zT/aA4cE6ov/42/VIdH7HtzlRH/4ptZMN+GgnTgQQC0KGC/rXx/WydnVir8ycrQFv4lQs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB5512
+X-Stat-Signature: w4g9rnbaw8tfsiayy691jnb6m5sxs9kx
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7236940002
-X-Stat-Signature: r44kapcykafi8btf111ysb4wtmme4973
-X-HE-Tag: 1763846813-260717
-X-HE-Meta: U2FsdGVkX1+I5IuT5S6pLEFRoATiDdny+LPVM+wrmV9DstXO/Wt/orNV40FhhUK724PQyzNT+muxJ+Iwb/sMM5fWSMOWeFaVCAWZRihr9oHygcD4QYEuUChO1IysG2ZUN8345TPE0KfnWshxxrz5efAKDt28TPcdAF1TCS1R6a+ompcadowtv8ilX65s+S3AQNyiS7RZxAcfpVBEL4YmZN9z38/NpcSnPea8N8jOL+EIwpQKIpg9w4U/LHHrSnYfPmj7dU1VvYDvwHV9IBN5Q2ELSABQ1woCuPnTdhfFXcaATiBov+YsK6UVgd6tnaCFPeR+k2fXRV2kyg/IAANDkE9DRyVOuo8HoLk1PnZEuPDnrHTY0AQfWC3qdRxgWZfGZ57w6zzkrgHRHkfapLrGe5EycaYMMKZhGFcrcWRctP63noHB2zmhhOyBIiic+eTFVcfWUHv0pnnLhtmp2X4AOBtY6rkjl+kIXt7uSBdzBmTW04zexycpTjpOiGx4kvlRl/g18YugdCnQPBvRTlJ8C3wVa3XLcqjs8JK7d401nhAArpsua7KaUW7cD4Qsd4DiKSi1kCWOXzCz4qhxOXgjB68UNlecgs2k5WqSrfN5JWJWJ5PH+skU1h9wBTX/2d4Ntz9g+vGnWaesJjcVqX6VecoMJ/1E0vXbvaVRaq99veda7atWorl8l7nVxizEPdaSWg5BYqrAM9ElTaKw+3fS1xh4jVF/FU9hjs7yL1NYf9/O4pDDRVEfj/3IYyul8yGBvfkeEpPo5mTQX/le7QATEJXkU3kdVdhLEIzPAlEs7Iy7Ik6fw38mDUcyulaAnRn/7IZ1v5f+TwZv8gpi3D3jqWtBkcQTjlMIj/zydi9NuBBuwuC8lRaBk6d/Y4FGzl5nZJacgDwS7jNkwDOmHORdGCACu3nLJUDlUCrJ4/S9Yu/Na3bXZSKnHWA4rMPPc6dUHIEmvzSvUspJTTiLLhO
- CT2HBRiH
- HjuUsYXbEiXcYKYQhl4XIz0b1w1zmycERYg8R8/qlEaD+vIBqjvG/Be9A4G7o6GCf4vQJF6VXNx8j0A9rAX4XAw6MnO6myDHMVb6hbHeX9iLyT4JaoHqXcnlOYoVfN/5ODq0PecdP5cPP1Gr/UEF/p5osIbMGFhAv5Gj1kLZdk4Mz2DjuOwAuL0auHXRoN1iydVv8vtOtcZEGzHCXMv+JpyLyIDLFR/o3/qkNrbrXnnhibhIdU18OOUz5InCklaha2QhFGEu6AKBaqzdLS2UED391NL3N/YYxZAAG9PS3aVfRNG0TuJ1gpyt0zroSkgmGi+8G5qQzitzrBi0h285STv3i9eKzw9nRtlEduUkC6jhs1QiYyAdfDvJG4Cm84kPqnoLth6yg4h0QDJgWExBYhP5t13I+AA5ws+P6fhXLel/Pp4ut95b3LjWI/jmbyPgIyn9pmEHlkHKteGZ8KZbMq3hgdYEQc845oBpgppxypEfHlupDihU6XRTuGCJrduRW0c/A2DokWYmtbg/OvquDAE2E8uJ9NL/VunMjtBlp5EVfOOA=
+X-Rspamd-Queue-Id: 18DEB120005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763848447-58324
+X-HE-Meta: U2FsdGVkX19q3HhBUiwuxnWTavgDq7h8TxnxlBa6+0wPyihm20iRe3U18zGVO5PQM5Mh/Z3DA6/cxZ7yoIqTylCEHLjsaMIcYpM0AxNEslSKZsrYpSnhbJcVe3PjPPZjJCL0O3gZI8ayI/g/pjDxWT1ulgJYagDPZWt8yDKl47YREwDVdfLg6AVc9wqq4a4Ni9pNoXyr91D8m/p+AFSd1ts+rGDLUSWHUmretMtD6n0uLnp6wz/EcyO3PCQl0iLocscXCDw8sSyKQEEtRI1w1APgQG+6fJzf4z/ikJJe+xPFNJsLuRqKQIpnasBPs9MCZeJhx7kTlv+oXD6RRjss91H2fIxWjF7QP+PFNkP4e8iLgJhpn3enZYS0724oA1jNw1OljCEdWiQBzuXu91bj1P6qOXr03MpCBcI2YRaB2JfhwJVHxx/++Hg64hxNgNJ1wgz93bb4lk9t8cyGdJp285rvesvUvUpOgnks4tVvhfCRfEuCgbBoSfSH2J9el3Hq+sP4ic7tudnNptK8ci/KamweEg/+IsqYgBn87OQgaqpcxFH069f4AnitebnDR3v6CD47a9aZ0TIVs2x6p48cxas0SDaSXJYdWwgg4ILF5KKB6/bIX/d6k61frWdEPLQFeW9JBZWU65ZmlkZrdkh/tresy38th0cmFqpIDL+z5tnwfSOKopEW9S3coQrlVGhIyT1ocJisJHxUfQcMbC1+H9oIxqTE892pfDk7E6lTnV4iG8vyLbmBsT5fCU3yGMAliTPGMeTmt7CtS6dFuNUHvkiTz4uonjTM2tz/E3M76Ram5/AnigdNLbm5F1maQZPpzexseRIRD1AXz8fYMk3cYxAhNuj3OKrHisKcx5YxO5ZnkOD12RM3kdTQxJNCVWp/RdSv0m7CwBDQ6glORBkomh4e9t991Pc20q09emBi+FuqCodHG2pXhYbh4sTZ6tFRzZYh7AMBzDuKwTTjhUj
+ GLmVYzeT
+ QuALo2vIZyYKpgHYYVdribqAB2KYVeFD9tHshHLuG/DtYijR4s5TmdSNtjESHdYKJTRJ5uIhQAbsHz6qyCyoJpvxtFntM26CZU1KeKczKnBce/UFKEXWNoOfqdbmad9vPVJg8RiyGkwmbrJIL4FcFw2FvbDMpF7i3Z9Y1Wia7R23xo2bgnfr6BkOAaX5hmCK5GaO10KeShYnm6iEzH2zRC9iMNV+JJ6wrgAWZvRDGHafUPHGoCgYzIZJjxbLiKTFMtrLCQzLqCyj3ECk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -220,35 +92,258 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-22 12:15, Mathieu Desnoyers wrote:
->... 
-> The fact that the max inaccuracy is bounded means that we can perform
-> approximate comparisons in a fast path (which is enough if the values
-> to compare greatly vary), and only have to do the more expensive
-> "precise" comparison when values are close to each other and we
-> actually care about their relative order.
-> 
-> I'm thinking memory usage tracking, runtime usage (scheduler ?), cgroups
-> ressource accounting.
+On Sat, 22 Nov 2025 16:40:23 +0900 Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
 
-Another use-case worth explicitly mentioning is accounting the
-resources (memory, CPU, I/O) used by a given entity (process,
-cgroup) and enforce quota validation based on a configured
-capacity limit.
+> As writeback is becoming more and more common the longstanding
+> limitations of zram writeback throughput are becoming more
+> visible.  Introduce writeback bio batching so that multiple
+> writeback bio-s can be processed simultaneously.
 
-This is a comparison with a limit which can be much larger than
-the current resource usage value. Therefore, because the inaccuracy
-is known, it is possible to enforce the quota limit with an
-approximate comparison, and only use a precise sum when the current
-value is near the limit, and rate-limit the frequency at which precise
-limit validation is done.
+Thanks, I updated mm.git's mm-unstable branch to this version.
 
-Thanks,
+> v5 -> v6:
+> - added some comments to make code clearer
+> - use write lock for batch size limit store (Andrew)
+> - err on 0 batch size (Brian)
+> - pickup reviewed-by tags (Brian)
 
-Mathieu
+Here's how this v6 series altered mm-unstable:
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+ drivers/block/zram/zram_drv.c |  112 +++++++++++++++++---------------
+ 1 file changed, 62 insertions(+), 50 deletions(-)
+
+--- a/drivers/block/zram/zram_drv.c~b
++++ a/drivers/block/zram/zram_drv.c
+@@ -503,11 +503,13 @@ out:
+ #define INVALID_BDEV_BLOCK		(~0UL)
+ 
+ struct zram_wb_ctl {
++	/* idle list is accessed only by the writeback task, no concurency */
+ 	struct list_head idle_reqs;
+-	struct list_head inflight_reqs;
+-
++	/* done list is accessed concurrently, protect by done_lock */
++	struct list_head done_reqs;
++	wait_queue_head_t done_wait;
++	spinlock_t done_lock;
+ 	atomic_t num_inflight;
+-	struct completion done;
+ };
+ 
+ struct zram_wb_req {
+@@ -591,20 +593,18 @@ static ssize_t writeback_batch_size_stor
+ {
+ 	struct zram *zram = dev_to_zram(dev);
+ 	u32 val;
+-	ssize_t ret = -EINVAL;
+ 
+ 	if (kstrtouint(buf, 10, &val))
+-		return ret;
++		return -EINVAL;
+ 
+ 	if (!val)
+-		val = 1;
++		return -EINVAL;
+ 
+ 	down_write(&zram->init_lock);
+ 	zram->wb_batch_size = val;
+ 	up_write(&zram->init_lock);
+-	ret = len;
+ 
+-	return ret;
++	return len;
+ }
+ 
+ static ssize_t writeback_batch_size_show(struct device *dev,
+@@ -794,7 +794,8 @@ static void release_wb_ctl(struct zram_w
+ 		return;
+ 
+ 	/* We should never have inflight requests at this point */
+-	WARN_ON(!list_empty(&wb_ctl->inflight_reqs));
++	WARN_ON(atomic_read(&wb_ctl->num_inflight));
++	WARN_ON(!list_empty(&wb_ctl->done_reqs));
+ 
+ 	while (!list_empty(&wb_ctl->idle_reqs)) {
+ 		struct zram_wb_req *req;
+@@ -818,9 +819,10 @@ static struct zram_wb_ctl *init_wb_ctl(s
+ 		return NULL;
+ 
+ 	INIT_LIST_HEAD(&wb_ctl->idle_reqs);
+-	INIT_LIST_HEAD(&wb_ctl->inflight_reqs);
++	INIT_LIST_HEAD(&wb_ctl->done_reqs);
+ 	atomic_set(&wb_ctl->num_inflight, 0);
+-	init_completion(&wb_ctl->done);
++	init_waitqueue_head(&wb_ctl->done_wait);
++	spin_lock_init(&wb_ctl->done_lock);
+ 
+ 	for (i = 0; i < zram->wb_batch_size; i++) {
+ 		struct zram_wb_req *req;
+@@ -914,10 +916,15 @@ out:
+ 
+ static void zram_writeback_endio(struct bio *bio)
+ {
++	struct zram_wb_req *req = container_of(bio, struct zram_wb_req, bio);
+ 	struct zram_wb_ctl *wb_ctl = bio->bi_private;
++	unsigned long flags;
+ 
+-	if (atomic_dec_return(&wb_ctl->num_inflight) == 0)
+-		complete(&wb_ctl->done);
++	spin_lock_irqsave(&wb_ctl->done_lock, flags);
++	list_add(&req->entry, &wb_ctl->done_reqs);
++	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
++
++	wake_up(&wb_ctl->done_wait);
+ }
+ 
+ static void zram_submit_wb_request(struct zram *zram,
+@@ -930,49 +937,54 @@ static void zram_submit_wb_request(struc
+ 	 */
+ 	zram_account_writeback_submit(zram);
+ 	atomic_inc(&wb_ctl->num_inflight);
+-	list_add_tail(&req->entry, &wb_ctl->inflight_reqs);
++	req->bio.bi_private = wb_ctl;
+ 	submit_bio(&req->bio);
+ }
+ 
+-static struct zram_wb_req *select_idle_req(struct zram_wb_ctl *wb_ctl)
++static int zram_complete_done_reqs(struct zram *zram,
++				   struct zram_wb_ctl *wb_ctl)
+ {
+ 	struct zram_wb_req *req;
++	unsigned long flags;
++	int ret = 0, err;
+ 
+-	req = list_first_entry_or_null(&wb_ctl->idle_reqs,
+-				       struct zram_wb_req, entry);
+-	if (req)
+-		list_del(&req->entry);
+-	return req;
+-}
+-
+-static int zram_wb_wait_for_completion(struct zram *zram,
+-				       struct zram_wb_ctl *wb_ctl)
+-{
+-	int ret = 0;
+-
+-	if (atomic_read(&wb_ctl->num_inflight))
+-		wait_for_completion_io(&wb_ctl->done);
+-
+-	reinit_completion(&wb_ctl->done);
+-	while (!list_empty(&wb_ctl->inflight_reqs)) {
+-		struct zram_wb_req *req;
+-		int err;
++	while (atomic_read(&wb_ctl->num_inflight) > 0) {
++		spin_lock_irqsave(&wb_ctl->done_lock, flags);
++		req = list_first_entry_or_null(&wb_ctl->done_reqs,
++					       struct zram_wb_req, entry);
++		if (req)
++			list_del(&req->entry);
++		spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+ 
+-		req = list_first_entry(&wb_ctl->inflight_reqs,
+-				       struct zram_wb_req, entry);
+-		list_move(&req->entry, &wb_ctl->idle_reqs);
++		/* ->num_inflight > 0 doesn't mean we have done requests */
++		if (!req)
++			break;
+ 
+ 		err = zram_writeback_complete(zram, req);
+ 		if (err)
+ 			ret = err;
+ 
++		atomic_dec(&wb_ctl->num_inflight);
+ 		release_pp_slot(zram, req->pps);
+ 		req->pps = NULL;
++
++		list_add(&req->entry, &wb_ctl->idle_reqs);
+ 	}
+ 
+ 	return ret;
+ }
+ 
++static struct zram_wb_req *zram_select_idle_req(struct zram_wb_ctl *wb_ctl)
++{
++	struct zram_wb_req *req;
++
++	req = list_first_entry_or_null(&wb_ctl->idle_reqs,
++				       struct zram_wb_req, entry);
++	if (req)
++		list_del(&req->entry);
++	return req;
++}
++
+ static int zram_writeback_slots(struct zram *zram,
+ 				struct zram_pp_ctl *ctl,
+ 				struct zram_wb_ctl *wb_ctl)
+@@ -980,11 +992,9 @@ static int zram_writeback_slots(struct z
+ 	unsigned long blk_idx = INVALID_BDEV_BLOCK;
+ 	struct zram_wb_req *req = NULL;
+ 	struct zram_pp_slot *pps;
+-	struct blk_plug io_plug;
+-	int ret = 0, err;
++	int ret = 0, err = 0;
+ 	u32 index = 0;
+ 
+-	blk_start_plug(&io_plug);
+ 	while ((pps = select_pp_slot(ctl))) {
+ 		if (zram->wb_limit_enable && !zram->bd_wb_limit) {
+ 			ret = -EIO;
+@@ -992,13 +1002,14 @@ static int zram_writeback_slots(struct z
+ 		}
+ 
+ 		while (!req) {
+-			req = select_idle_req(wb_ctl);
++			req = zram_select_idle_req(wb_ctl);
+ 			if (req)
+ 				break;
+ 
+-			blk_finish_plug(&io_plug);
+-			err = zram_wb_wait_for_completion(zram, wb_ctl);
+-			blk_start_plug(&io_plug);
++			wait_event(wb_ctl->done_wait,
++				   !list_empty(&wb_ctl->done_reqs));
++
++			err = zram_complete_done_reqs(zram, wb_ctl);
+ 			/*
+ 			 * BIO errors are not fatal, we continue and simply
+ 			 * attempt to writeback the remaining objects (pages).
+@@ -1044,18 +1055,17 @@ static int zram_writeback_slots(struct z
+ 		bio_init(&req->bio, zram->bdev, &req->bio_vec, 1, REQ_OP_WRITE);
+ 		req->bio.bi_iter.bi_sector = req->blk_idx * (PAGE_SIZE >> 9);
+ 		req->bio.bi_end_io = zram_writeback_endio;
+-		req->bio.bi_private = wb_ctl;
+ 		__bio_add_page(&req->bio, req->page, PAGE_SIZE, 0);
+ 
+ 		zram_submit_wb_request(zram, wb_ctl, req);
+ 		blk_idx = INVALID_BDEV_BLOCK;
+ 		req = NULL;
++		cond_resched();
+ 		continue;
+ 
+ next:
+ 		zram_slot_unlock(zram, index);
+ 		release_pp_slot(zram, pps);
+-		cond_resched();
+ 	}
+ 
+ 	/*
+@@ -1065,10 +1075,12 @@ next:
+ 	if (req)
+ 		release_wb_req(req);
+ 
+-	blk_finish_plug(&io_plug);
+-	err = zram_wb_wait_for_completion(zram, wb_ctl);
+-	if (err)
+-		ret = err;
++	while (atomic_read(&wb_ctl->num_inflight) > 0) {
++		wait_event(wb_ctl->done_wait, !list_empty(&wb_ctl->done_reqs));
++		err = zram_complete_done_reqs(zram, wb_ctl);
++		if (err)
++			ret = err;
++	}
+ 
+ 	return ret;
+ }
+_
+
 
