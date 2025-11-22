@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60B31CFC50C
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 05:18:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFE48CFC515
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Nov 2025 05:18:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9015A6B0012; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
+	id A81746B0022; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B1706B0022; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
+	id 94DE76B0026; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A0896B0024; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
+	id 815036B0023; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 68C7D6B0022
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 684F26B0012
 	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 00:18:19 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A323BB33C
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBA28C0641
 	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:18:16 +0000 (UTC)
-X-FDA: 84137086992.24.0654C57
+X-FDA: 84137086992.17.77F79A1
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 02BE5160004
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:18:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DcFplpsW;
-	spf=none (imf08.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 21BFB180009
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 05:18:14 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SJwdLMeF;
+	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763788695;
@@ -35,39 +35,40 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c0gaRBfWvn8IGRhby2/UXuk4IKDiTlivJjHOE+H2YDs=;
-	b=7pGgy+UUaFgQfwCJOaTjLgtGEpaMCE3qTwpzGuVMuz7BYFuzFTC/K5wBmE/nSAfmEKjFjq
-	C9Pv+dURe0iiojiIQ+s7w+0dJ9OEbF4CuNFm2JC7z4aCV0ihF9h0FTdlOEDPNoEs/w6k+V
-	U2oteHx2vGPaz2MpvBRyJMdhXz6h334=
+	bh=a21mFOrYW7EF2pPoO72JM91N95zDCsdN4gaOlTsjcgM=;
+	b=XFoBgjTdLm3v37l2IbM6UL56fM6/057W+rYmYVHQ0MBZaFQf+l2Vrz0uAuZycIpJQnrYpa
+	LkJaI8M4cbeISw7cl+DlC0ysl+5lePZF/jn+YMcqLGzNmagaenGymtDS7u1p0s4tLyNdFx
+	QTwbnzsMOu9x0vAiZuD+ZI0mP58DdkE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SJwdLMeF;
+	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763788695; a=rsa-sha256;
 	cv=none;
-	b=ekOsDMthCVGmZ/xB9drl8ZRjcxixK4ujWQMd0WgUAalGQgzpOL4nS3N8FIwfG5vyeOsjx1
-	7MUIg+60dx98YOH96m7nXd+7V+X/8DkSNxH05HTzi3UF1mGZd2wSN0VgZKt5lfYewAGPee
-	sexROU1fNk5ywQTHMixOuREhRhKOioA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DcFplpsW;
-	spf=none (imf08.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	b=UzhNuSRFZyfDXMncZdpEEMgxrnMdWP1IlRg41BvvMGOG9CKGitGCqh9mkIGQT4Mlz1/g+j
+	Pb2pPqq7gVC5SlZpQg1tyZL3jqF3xl/hOUXjd+UmWt5yg4d7jk/N7q+jqa7OzbVhQRElsM
+	ueU6mnQzfNh08iaEguslGk3cpXqX/7k=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=c0gaRBfWvn8IGRhby2/UXuk4IKDiTlivJjHOE+H2YDs=; b=DcFplpsWT5k4pYl9D1693qDcog
-	qmhSlaUvFfSwk41c70YaZXY854MFLgRL6pV7U9NIziMzUGyNYq8Bta8WXPS9BX/dn4MMbeV/t525S
-	vZpX7WNOmG9QTlvAl+3djNu6JePghgOBig/SDgT4h74RITKZTZ00GJRth+gfiZLYoLQr+TrXlil0s
-	cJuUDOT7S0sS+cylMa595K5U3mNKhcHsGhvF0EG35nZZLST5WYsio9GBYxpD5IocpFGmZIkl2i3s2
-	wkhn+xfZZgC0D8+ihsr3c9g7pgSuNEqniLFsLWQ8IEl723qyupMikVdo9xngVFHNkDrfNA8t4w0zu
-	/mWmLYzQ==;
+	bh=a21mFOrYW7EF2pPoO72JM91N95zDCsdN4gaOlTsjcgM=; b=SJwdLMeFBkF2KqNV6jfhdJ/TKL
+	k19kD1CgRMJvJ9174C+g2EXK/WbSoyN0Vy1aLXajePZWlWWr7uaNxBRzt8koHeZ3JQkp6wxEEjSKv
+	IEXa2504U+Zs2zGOXGzZttOK4QpBQqBX0CR9iT4ZLPe1bF3k2/TEx+U10GNEfmerqsEwheVMSuL8s
+	JY0ZAKjiKOlYWhPliWGPChHFBpEgdmRWt8xTRdQGYH0jsqnCc479ZlXe0mh89iLLvgyqBlcTyyXX7
+	4ojJYiUEKmA1fqd26Ym5WozMay98Oxus+y5hq7+ih6pabeas3AaYIGGrzIqSYiLzZFsRZhA1aMJ3w
+	FDOCIYXA==;
 Received: from [50.53.43.113] (helo=[192.168.254.34])
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vMg0d-00000009HED-01iW;
-	Sat, 22 Nov 2025 05:18:07 +0000
-Message-ID: <af7b6cdc-c0a7-4896-ba6b-6bb933898d37@infradead.org>
-Date: Fri, 21 Nov 2025 21:18:05 -0800
+	id 1vMg0Y-00000009HED-3nNK;
+	Sat, 22 Nov 2025 05:18:02 +0000
+Message-ID: <4807417b-a8f7-47a3-b38a-94ea7bdbf775@infradead.org>
+Date: Fri, 21 Nov 2025 21:18:01 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 2/2] ras: mem: Add ACPI RAS2 memory driver
+Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
 To: shiju.jose@huawei.com, rafael@kernel.org, bp@alien8.de,
  akpm@linux-foundation.org, rppt@kernel.org, dferguson@amperecomputing.com,
  linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
@@ -82,20 +83,20 @@ Cc: jonathan.cameron@huawei.com, linuxarm@huawei.com, rientjes@google.com,
  prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
  kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
 References: <20251121182825.237-1-shiju.jose@huawei.com>
- <20251121182825.237-3-shiju.jose@huawei.com>
+ <20251121182825.237-2-shiju.jose@huawei.com>
 Content-Language: en-US
 From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251121182825.237-3-shiju.jose@huawei.com>
+In-Reply-To: <20251121182825.237-2-shiju.jose@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 02BE5160004
-X-Stat-Signature: x86ffaxsa1855p7rnd8b41qhfyn61rix
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 21BFB180009
+X-Stat-Signature: 6st6x3k59ax8tbdupdkqgp7b8xy5qyua
 X-Rspam-User: 
-X-HE-Tag: 1763788693-519780
-X-HE-Meta: U2FsdGVkX187SCXYS/SJtZSp62x5rONa50EUdEvUN7C18jUazpXYgteiMjWYmow0dT9MPspRK0R+JtoyrN9bECvKXdb6SwVlHY5xRD1CdRoPCfDmTCzKHcP3BO77EwvvLW0ulEyHrL8CcrxSR7zoo4CK2pF38EkH4SB1YhmkXcyv8M4+F76TNWYNen39wytqJ2piUailZqmrr8D9iH+PScmyVz+kajGRSLqAariWgYgJafPCqWrIss7STzsySAmVnQ789UW3VA7OUMDzMGhJdiP4me1oMjefu/EFsoPrf0TkmanXxso7wRWcicEXGQEkChEyhboanPNt1AlpUu/+eEZ8+SDwsIOVFQ6VaBJBFDoLhHEMauCr0vFRj+JXvThmIiA7MTiygy+zUjk2t1UzKpuou+6wRE3OwpBVSmtIGcPcG09ruHAw9o5pzHcyZyohXkX4GuREP19jRnN8qrm4rsVGtQRzcfglofQGTxBN7Q5JaYr3D/1lBt1PKD/iAwcBZZXMwYR4/Mm04j1mzjvY4evysB41JMpQcoPQxnKr3gIWDPXroWZd23vrZF8omvpt8uCxfBJZ9NlfbnEkzStHnzrAKqPAN7nIDoh20fdYz4OLTjcfTAOvjoLhFt2pc3dZ9/iISAV0VQYdN14EuN8rXpkEUmzmkA7ehhn90dtIm31Qw4Xx3PYh9ObpMfQPVyBQaj/XMndQN6A5T8fJF8tjkym5QAOHYiHuSCqTBPuz9Wrp653ueFZn+S5gPWT+4UylHJLY6KNxWMUT1w9LgiXl9vXf8kJqbwv7NeSAiBSwuem/TgErbzHlThAbNWkTjltyyEatCsvMEFVgSDKZ66cSbxiy8poEZzl+2F84prAVLDfhNJ9OKWr3U54soSTXn3n76wx4VB2w0AhlGBN49DUKZdec2VTS/Skv34ShRHpslUZVQmB3ARgV60SPIzoL9yUQd4CJTnF79iEhfI1E0zr
- q5bbt8Ew
- 29/s2rDnqYyRw4rGfZ1WkOI7sDTX40DaoiFquWNgRqUhMSL/TfDo6x9I9MT/iB87pqtYJV95E2n3xkUDhT8dGcZr16Hyc8RcyhRUJquY67QTh5UwfXRI+WXNH5EbSnGPoaeAwb4F4nl8TE+yzJdeqLz1y3f4BTp5xbmwSCooOvP2m103n59d/c7drHgwX+y3dMA898d4lX16RmghzC8m6rRT0/Lr+26/IBCluoMAznu4QVm77+gp0orKeBzVjVDM4S65LwGRdH9WcDHuxQ07o64/7kkINj1xuhPJaP5SDvW9zqYpSp0oihHv2hvjmbb8R3OEV3l7GecYXDcNNl5AAU2PiF1h1y1zJYGvbg31En7oqQvEaeE+5v4dyBhbwVUUeAe/DWBbYT67xxSo=
+X-HE-Tag: 1763788694-606714
+X-HE-Meta: U2FsdGVkX18WjGVnrm8AHwdkEIv9rs6QAQo7MVIzEm/gVE2TdDYQPUw0lY7a5pOacyB09gpi+rPUo2sSH9ujTFdDDMeuIUm48T9VzNbVUaMJSjck5l2b53kv37BmihVUhA0Hl+eaLoDSTYwArAB+KmYRi5qsDfG1zNxri7MBlGYDEaxDQQ30/Wm/IFtrRN/5e+sR/5xJxL28Maj6Z5w+a/UyebHE1Ej/GDdJp0Q1fg7tEGY30lieLLfAsp8zeGEUpF7cJN5tO8xCltF4ufy1kfi8XAsPDxr6pAh1amABb4Z4m2pKSrSTeMn+M7x4eEisASgyBnrSoivCwURue5hTtRqtdNGD1q2YM7FfqEgzb6i0Cr2DHIIDrwG55j4+ZxPhqb+6/QiTT5rxrQu28MFj9n4o0AN40PGVUqnXhiMKD6kbHn+c6k5lSHtWYrkS4uH73ELWNdSvfd1TX9j5rUjLvyzy3IeNYIXh6U2xkNtdDtRlZ3lw2uKCFNsEV/KJw5wdlqUaprDbjkoEaTgDtMrYvLMCS2Owk5zsKTtjr4HGKddEZlH8GzryWaDqaCaZ4J0+6EP9+KPDxcZUTwaMng6DpUQn8ZpDuLP58ObQL51Amp/xKRKRpDFKQuhI6Bnup8cMHFL0xzooQAB8Du+NERctCf+4OpK5eCxu6urm80shFoYZqQK4AzgIs/Kvx+3McGGD+57Jygw9bPjF5fj89/Rjc2by/dMwF0FaOc9NJiWg8GkEuxGUlRwfrtm+I3YwgO+O8+jZAFQCfCi+v6AA0kZc2EWv4h/+Ore91RziDYG8DFA46Kie9NQJEbiNRoRdnnm9REccqqpEjWCuZXvMrojzKmWxpaIBCfMuCHgOwYUvJcP81s4osajyHPYh0iYf+Hmkj/7Fx53VJ0B5jqGyObH18obDqimLi8mfqYs4Vd9lnNN848dVqPVyrlPOZTg4mlDMYXFdcqzqGI8LZ0I0bgr
+ AzzzO+wF
+ mvlt0u5nLjuQvc7Ny5Cgmx9pEAyXbkLNyu8Dd1OElVfAGVcqdqe1idPvgSjCKmpDix9PsGPJj/sxAqtSyQft6PgkLtauaSW01ru+7GzALOK6Dyav4UT0usCUsgfcYtxJ2xdvYXq7A7uVg9UoacucdepKu3IgsvDxD1Gf0oYcgt7acV1fPNxskek6vIIfux1WjLISMGo2QuKxv6FU47umpFGv/9N30Bbl9ZWLkhhv00CJTa1STthXl8/C5WtVq6oiaMJeoZ+z+XAB7pnTlprKR14xr+9TgI9v3uReHNkuC92fmAS+lTIGHwkpJ5K/9sdhM0SiRS1B/ITWkoxbyNn9aGiJORH9+fwq1k8Gqz2GlB44N+dX6CfgvQSODg1jhXafXKL2vOa18AYWbO0Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,28 +108,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 11/21/25 10:28 AM, shiju.jose@huawei.com wrote:
-> diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
-> index fc4f4bb94a4c..7e7afd2b2ba7 100644
-> --- a/drivers/ras/Kconfig
-> +++ b/drivers/ras/Kconfig
-> @@ -46,4 +46,16 @@ config RAS_FMPM
->  	  Memory will be retired during boot time and run time depending on
->  	  platform-specific policies.
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index ca00a5dbcf75..bfa9f3f4def5 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -293,6 +293,18 @@ config ACPI_CPPC_LIB
+>  	  If your platform does not support CPPC in firmware,
+>  	  leave this option disabled.
 >  
-> +config MEM_ACPI_RAS2
-> +	tristate "Memory ACPI RAS2 driver"
-> +	depends on ACPI_RAS2
-> +	depends on EDAC
-> +	depends on EDAC_SCRUB
+> +config ACPI_RAS2
+> +	bool "ACPI RAS2 driver"
+> +	select AUXILIARY_BUS
+> +	select MAILBOX
+> +	select PCC
+> +	depends on NUMA_KEEP_MEMINFO
 > +	help
-> +	  The driver binds to the auxiliary device added by the ACPI RAS2
-> +	  feature table parser. The driver uses a PCC channel subspace to
-> +	  communicating with the ACPI-compliant platform and provides
+> +	  This driver adds support for RAS2 feature table provides interfaces
+> +	  for platform RAS features, for eg. HW-based memory scrubbing.
 
-	  communicate with
+	                   features, e.g., for HW-based
 
-> +	  control of the HW-based memory scrubber parameters to the user
-> +	  through the EDAC scrub interface.
+> +	  If your platform does not support RAS2 in firmware, leave this
+> +	  option disabled.
 
 -- 
 ~Randy
