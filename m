@@ -4,82 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402B8CFA46B
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 14:49:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46735CFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 15:00:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 309D76B00AA; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
+	id 82AF16B00A5; Sun, 23 Nov 2025 10:00:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BA566B00AC; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
+	id 7DB736B00A6; Sun, 23 Nov 2025 10:00:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CFE46B00AF; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
+	id 6F0E76B00A7; Sun, 23 Nov 2025 10:00:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 05B2C6B00AA
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B155A4F856
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:49:55 +0000 (UTC)
-X-FDA: 84142156350.17.1F26A6D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E1F3C180008
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:49:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BC2D6B00A5
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:00:40 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 020221409E8
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 15:00:39 +0000 (UTC)
+X-FDA: 84142183440.09.B8ACA4E
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E1B9220023
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 15:00:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nXR2QW3s;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763910038; a=rsa-sha256;
+	cv=none;
+	b=sP42akTPPZEt+RWA+nUOWga7td0Yr0I5e4NFpOPMiKyfY8H2IFj4O5qr7SA2QPOHmI7sCn
+	WOzF1SlxP5nvHQrk7n8gWnQvKrwrFlmzwoCGpd5DFwPS3ETxR/fXcE2oPLoBjs14Pyanvk
+	Njg1OaEpEaZUKEVQ8Ka+ia66uiWFM5k=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nXR2QW3s;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763909394;
+	s=arc-20220608; t=1763910038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r4cvivWmwYGBXRU3wFox0Kq+V8RUc49+msN6IT5nft8=;
-	b=Fvs8nPZwsePWhMSBmxFuwTDOlStojWdfjdHpB6D9IZVH93QM6Cp6Oi/4Ro93ejlW4OFuZQ
-	f5JpLLG9rfDliPd9r9sTA6HUqYIc+ldjzm//hJMXdSMOxyCc3vgdnnpMWsE/BsTAj+q5bV
-	zIqfaoPmZ+6qMB4+gK30pxIfkBm4azY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763909394; a=rsa-sha256;
-	cv=none;
-	b=Y2MHbuoUQlSvUw6vJC0vKehMAFpGspr8x6gnHYBuEMi2PB1aQlPyOEGpMaa8q3/IZ0AMPe
-	v1avPY23xnvhip8c5TeDfGEnqNuMs+EJmQy0srTcBTB2IsvM/TkACaZixZsh/6H0DdI/kd
-	AWG35h2if50KGVcJlUfPvj/V7XFHVqo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57CF2339;
-	Sun, 23 Nov 2025 06:49:45 -0800 (PST)
-Received: from [10.164.10.248] (MacBook-Pro.blr.arm.com [10.164.10.248])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 36FA13F6A8;
-	Sun, 23 Nov 2025 06:49:47 -0800 (PST)
-Message-ID: <57cbf887-d181-418b-a6c7-9f3eff5d632a@arm.com>
-Date: Sun, 23 Nov 2025 20:19:45 +0530
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vPzOgo4wSLye7hvf6YZUBRjo/5vEsuGzogDqs/fKbqI=;
+	b=Nks6Jzqp6yXdRv90SNFTu4hI/NtrKXIRjtz2DwMnaeTrDK4ltw1FEpgpiONeH4POckzytX
+	lGILcmwCtc09H/ErBXDe+vadvBhPtZwMv/uhtla027KC/s+gGNLx4nTaweuyvOL/9aQ3I2
+	HK/YXVsZQIqWy5BRPpGL5KWVwEvNO00=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vPzOgo4wSLye7hvf6YZUBRjo/5vEsuGzogDqs/fKbqI=; b=nXR2QW3sDHw+B2LZ8F8viG138u
+	0L8ihS3bQBKbQOxJ3ryPGk7sKYNEQNvWa+F9g44RaQa1OnPPQM2ahtmAfnjF/sGxZu6l9eYU5OVou
+	k9bfETdHu0fmudYKb0DwT8sfK51WqjoQoE5tfDgDRjat/uDdIKyefd4mhrDw/aKUWn8Kp9ei0g+zQ
+	Jkr+whQxrInGOUbzXn2tjr64rdbCnUNwI73IgA25z2Z1MY1rHDW5+o1NBMEFJ3tXQlQbdRvBuylsq
+	tsfH0BRzvt/fKxN7cXR7TOV6MdveU9lFiMI52Ti4YcV6QPNBas6/ZajbC3jq9R7zCE8UJKZhEX/LV
+	tv6fUWTQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vNBZn-00000005hD1-2tpo;
+	Sun, 23 Nov 2025 15:00:31 +0000
+Date: Sun, 23 Nov 2025 15:00:31 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: oleg@redhat.com, brauner@kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/3] further damage-control lack of clone scalability
+Message-ID: <aSMhj2Q6BTMNSsA4@casper.infradead.org>
+References: <20251123063054.3502938-1-mjguzik@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: khugepaged: fix memory leak in collapse_file rollback
- path
-To: Shardul Bankar <shardul.b@mpiricsoftware.com>, shardulsb08@gmail.com
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com,
- akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, janak@mpiricsoftware.com
-References: <20251123132727.3262731-1-shardul.b@mpiricsoftware.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251123132727.3262731-1-shardul.b@mpiricsoftware.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251123063054.3502938-1-mjguzik@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1F3C180008
-X-Stat-Signature: 9zroi16arib9e9niq9gghytsdqs6bkwa
-X-HE-Tag: 1763909393-469374
-X-HE-Meta: U2FsdGVkX19/u4xCUcWJNcDPcvBg69L1IN5xVe43lPt7j++W0JELkdBWyBvIRJ/a+JoAoYUa7A6Wm65THp3Jl40c3qg9u5LFq3T+YPKRX/g6MLgBNSrcXzSEY4OU4s1d+ssXCVf5bLKPtd2JsvGL3Q7Gf4RuU0DsxkYlKBbOHMxTI3aFTbFbVunWLGyGGXFMr3c7B7t61lGoHcWvXiZGrMWTgXAMyFW2oGb3/nxqMlVEReXfIe1V0qluY/iNp+G0L2hd28z/nfNxvAGtvLp/15IvzqQEj7pNR4SKgRYo7bYgpb2959Tz+zH7aXMFbc+58BF0a9AnN0e251gtRvFfhRC33SaCc9DV5aVFmDO5OTIhv6YiqzOXQC0deNKbt2vsNZONBFwFgMh787dSP53UgtcYWpQnvbiXIpqySNzo/2cEEpNBqBQfWkCId+jgkbfBb5nvBTAPmdRUuRP8P9W92r+tq5X5lLXoqJkC9KFGqUsrWQPAdJ3HlVpNoreiF1yif7uARBgofhxov/4VdiNSceVseFE2ZVLowLw7ezF0j9ZYAn/X8KhdqqndrxbpCykZOo8sz8ebqNAj0cf/Sis7Y1XsIr8QSiCYIwhKm8EEmAekChExOWYHawG9gEiTduIQrnIlf3WcBS3C76aLCIy0kr8h4bXW9P8/t26Ac98hP1UesitV2WbmtiHJ49AQqIOQ9ByuJrJNKoOArtatQrYobTvBM4rhJxuDplLIp1A3+SjYSZI42ir8p51NdC1/RspFcXU5UW/KLnXy1m69lEvdUam/fy71bs/clOWrsG9m3xPTq9wUA82IoFQiB+fQ9eI6I/ghWQg2dSaf2/SzktON9Ub5l7kZnwFEyWcH8UBLRLJIM6/r2ZheXdi2NSDEv3WcndfSA/QXB6xtd4XTdZSVHM2yUvY/94w3CirBwqsYW6bAFy/kwKI0nvPImqzCD7CGWYh6g3FLQeU=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E1B9220023
+X-Stat-Signature: iw76onnh7bfwwnys8dq7qxz5usyx9r5f
+X-HE-Tag: 1763910035-829264
+X-HE-Meta: U2FsdGVkX18xqKE+/3h8cZmKcjsMIVBmpAZdCRrUIZaN98aIdvr8EPLy5m0OOWovoZBpZe6E1wkTr4/KH0GC95YKIPY0++8hTym41vX5EYQYGOACprsB9AYXSqf7R1DFnqnBG+D4XkTJDMywG1ij1ocfWe3IFwKLop5jK40UyMzxUleFjCjXavd4lfp65+1Smza1uUTd3XvRaRsks8cxD68t06YezDjDiWiv281xI9mc1sGuOw6zL02NPEosmFlBt4/wFib9LCxmaVxvOJAKyeIzB1PRewTD60UFRspOXSmO7fm2OXi2SYpJb9OYbAwo/e5C5LVlz87JyOUV6QasqlKGRmmEw/rhfxPD7M5E3pS2nvI+Ehqeg2MkdF7P+ev3se5OUYGEUT7LzKuQFNIgL0Rs3XDc5GI29nBhfzA2ErjNSyVWZQ0nDcaWEnHnAhQzmYyhIAZ9uhdU525Vc+hbZevSigvnZH4iD6H2zIeSDNxlK+uDeSNhgqaup4Okv/qGdbpLTe0MAmPhUhPWABQH7NqtwqpukS9GLnkIwY7IWqhIA+ikMw+LraVXVkdvz51n/Cv05nEblzf1yrdZV2xCUnHO4SlBt2O5Q77+DNgtLLNJF6Jth2+4GDg5Fjf28sOH842aX+kW6yPmLtGQoPQEWKtY+9kng1AdpVEPUK0pc4yvZcDDqzbkKimx5pklsrFTHX2tAARdDh75zqKZTgvfum7YE99y9y9nhGKPl6A++Iq9BtzbRa7YAksjN756kyjRdZELJwbOVWvUVJWbivWNWC+z8gMefF0PjvgfW+ZENfj6XRaxEoQrPk61oXQhGElLU3206p6sJ9LqiZQ9cTgc/6j2EH8FWvuQpKNZXEzV6CtOKIHIAfPG/aHJKfqO8cRmxBbcYim0rUdOrkQs1PFnF3Ud1RVK9N6015nmeMTBKetSWvRj4oQZH1qZ8udKSdGjfgrVy8EpqEWGkrF3dJq
+ 4gKjE909
+ P5vR7roLmvC937CDPefym5pNLoA43xUmW6RJekdCQwYHKIAy9K6lT93GeQaiWo8TsACcoB0RctM3Br6b+uKkH0GqtQPdu7ZJDFnx7VVHN9AIynD3BmMph7FH3B8S6EHcx/F3Vke46aiRMeXNhm0a6X11CFBGocxxYS2kaYH1hf7z/ChlJD6sVFQjayLuO2UbH/jOeJM1r2MFx2dbzycIY+zST1qQ0UAZJmvR0wpTpAnG6YP2w/yh1HPQhkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,61 +89,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Nov 23, 2025 at 07:30:51AM +0100, Mateusz Guzik wrote:
+> When spawning and killing threads in separate processes in parallel the
+> primary bottleneck on the stock kernel is pidmap_lock, largely because
+> of a back-to-back acquire in the common case.
+> 
+> Benchmark code at the end.
+> 
+> With this patchset alloc_pid() only takes the lock once and consequently
+> alleviates the problem. While scalability improves, the lock remains the
+> primary bottleneck by a large margin.
+> 
+> I believe idr is a poor choice for the task at hand to begin with, but
+> sorting out that out beyond the scope of this patchset. At the same time
+> any replacement would be best evaluated against a state where the
+> above relock problem is fixed.
 
-On 23/11/25 6:57 pm, Shardul Bankar wrote:
-> When collapse_file() fails after xas_create_range() succeeds, the
-> rollback path does not clean up pre-allocated XArray nodes stored in
-> xas->xa_alloc. These nodes are allocated by xas_nomem() when
-> xas_create() fails with GFP_NOWAIT and need to be freed.
->
-> The leak occurs because:
-> 1. xas_create_range() may call xas_nomem() which allocates a node
->     and stores it in xas->xa_alloc
-> 2. If the collapse operation fails later, the rollback path jumps
->     to the 'rollback:' label
-> 3. The rollback path cleans up folios but does not call xas_destroy()
->     to free the pre-allocated nodes in xas->xa_alloc
->
-> Fix this by calling xas_destroy(&xas) at the beginning of the rollback
-> path to free any pre-allocated nodes. This is safe because xas_destroy()
-> only frees nodes in xas->xa_alloc that were never inserted into the
-> XArray tree.
->
-> Note: This fixes the leak of pre-allocated nodes. A separate fix will
-> be needed to clean up empty nodes that were inserted into the tree by
-> xas_create_range() but never populated.
-
-No "fix" is needed in this case, the empty nodes are there in the tree
-and there is no leak.
-
->
-> Link: https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
-> Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
-> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-> ---
->   mm/khugepaged.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index abe54f0043c7..f2fe7924afa0 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2230,6 +2230,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
->   	goto out;
->   
->   rollback:
-> +	xas_destroy(&xas);
->   	/* Something went wrong: roll back page cache changes */
->   	if (nr_none) {
->   		xas_lock_irq(&xas);
-
-I believe that the correct explanation of this patch is - after xas_nomem, if someone else
-expands the tree and the retry for xas_create_range() trivially succeeds without using the
-node allocated from xas_nomem, then we need to free that node. Although now I am worried
-about other users of xas_nomem() which do not call xas_destroy() on failure path...
-
-I think this should work,
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+Good news!  The IDR is deprecated.  Bad news!  I'm not 100% sure that
+the XArray is quite appropriate for this usecase.  I am opposed to
+introducing more IDR APIs.  Have you looked at converting to the XArray?
+Or do you have a better data structure in mind than the XArray?
 
 
