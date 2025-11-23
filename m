@@ -4,134 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 413DCCFC518
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 12:16:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34FB8CFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 13:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F4756B0022; Sun, 23 Nov 2025 07:16:25 -0500 (EST)
+	id 0B3176B00A3; Sun, 23 Nov 2025 08:17:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A4776B0030; Sun, 23 Nov 2025 07:16:25 -0500 (EST)
+	id 08B776B00A4; Sun, 23 Nov 2025 08:17:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6947A6B00B0; Sun, 23 Nov 2025 07:16:25 -0500 (EST)
+	id F0A0A6B00AA; Sun, 23 Nov 2025 08:17:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 539836B0022
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 07:16:25 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05BE18A651
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 12:16:24 +0000 (UTC)
-X-FDA: 84141769530.06.CE3A4D3
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 333E880003
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 12:16:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gy2dblsM;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC9116B00A3
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 08:17:47 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 747365BEDC
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 13:17:47 +0000 (UTC)
+X-FDA: 84141924174.21.68B6372
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CAAEB120004
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 13:17:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O2K+aOH8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763903865; a=rsa-sha256;
+	cv=none;
+	b=gsLZJQBEZ9ttEeu0FoAOibMtifw3JZB+3IeWvAreAmRqlYVrfVxwikba6SPlodL+UV3Ztb
+	ZX21IMSRf/5Jgt4/Ijrw+Cq5mp0sTJFqIZ95QOcvX4dn7XV+bE0pqHaHY1T1pEZF10Axvy
+	3RBKLeAoayv9Ylbzueow2RyDRs80Fkg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O2K+aOH8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763900183;
+	s=arc-20220608; t=1763903865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vmnwA2LRgXHvVpWEUlTYwlypqcI9gTX6hAKhklpoPjU=;
-	b=A9Z0HG/XZxF5bFs+Vah4jGqArtuLSnjdhMmIX3BX5tP9ZNpJpnU0M00wUb57QqxDfplyQF
-	jnelxzkL4+j7P1lNy1PZWJ3VHsu5jH/PWLcm/cpk1CYPConHUgze3eI4W2EId+vt5305yb
-	yVefYrZ1eI69p8jKr1WuocIuWRoLFHs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gy2dblsM;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763900183; a=rsa-sha256;
-	cv=none;
-	b=UPO9LD1Aicz1OmYZkE/7iBc9qW8EIzKXZiuLpoDTD9sdIw+onk5/w6qrEGd6ANiXVldYGB
-	lDMr4tptgYK1LwMQvLOxfbKzXiOYpVlN2VFcgAx5vY1ijwAC0w9o7R/Qff6pEaSupSzXnU
-	mT0ipMpsIOH5flo4nu8B+TsVfs9AjHI=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so5442270a12.2
-        for <linux-mm@kvack.org>; Sun, 23 Nov 2025 04:16:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763900181; x=1764504981; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vmnwA2LRgXHvVpWEUlTYwlypqcI9gTX6hAKhklpoPjU=;
-        b=gy2dblsMY9iUz3yaOCMrzo4CAyoWzKBgW3WIxJtUxVgUQd9u4tvPjQx5Qj0ZSrqEGZ
-         pYYHnCsk4kIjIHzWDgOt6s2aRmLWm14NdhaGPmEn3xRrA0P06OsnY79SI+jW3q9rJnTr
-         bIFFJ+frGaHbliX1HEeTQvVNqzhIsidsKXoD0NLD7LjeCbeipv30skId9ZFhkwNxfz4a
-         vxc4YQ1/OcuT0dRTcum9i7wLCtGLhxpKsU6Vw5nN1/6S+YkanCAYg+g8KfNp2y4AtUb3
-         ZrwHuCo94MhKjuDG8la4mdxs95ZwfXrH1dl+ze/YfVmHnmpS/0cFSNtoMXph83ZA4sLD
-         VU4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763900181; x=1764504981;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vmnwA2LRgXHvVpWEUlTYwlypqcI9gTX6hAKhklpoPjU=;
-        b=o76EpN0Z/aG38H7ERAGG9k3gk4jrV82LkT+jAIpeTamDMrsncLzBM3PeCy6aLx2Cxy
-         xeMKUO3GGq5VENLLzIvjB0/s4MohMiltcMbLyqrevMKkQDXpcqE/kmsaa+YkvVn5R9Sr
-         DQkC36bLvrlMyP8iLI9B23uG11HbXW/5/beXjpiNdzNEP7cy4EzoN63jVzhi3hYmoLWY
-         frSUcW/tkv/AcF9hpjyOsI9pSlMz5g7UxoQadCbUj282mnP8hRZFHoFmCggdQzoD/TBR
-         LTm5YL3YGqQskfWlpcmZ5k/dCRwj+Z85BezuAQYItAnNiJxwn2lpH9cA6O72BohG0Bxj
-         zZwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXSNbsDSwT2WU6GFgL8jW/ylBpAUozkjeU5UHa9f458Ta4DihjmQUr78Brgb7k+S2T8/kWfoRNmvQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx4n1yg4PwXKsGu7jzA6WI7Mivkm122ywoaOSMhEZrhdeKgXuAp
-	U2xdGx6Ua005VHCNPXj76UdWDXkFYxSvVyexklThABYqJq1zO/ZziTiFWSptohUUMCVm2Yj3Y3t
-	hqAKDYR5PssxqJ3k7ViSGoMYGnhsULaEOLuNOSg8qLg==
-X-Gm-Gg: ASbGncuR71I/LY091a5b1Y0z2qLyvSQWMQQybEgQ/sT8mKU4GHInh8kojKLcNzrrKFW
-	BU1z1T6VAVIH+SynaQgi/x8VIh7CGCB9r3Jtc6DqkcSocA5PJrmSbp+m5vrZB4xlVzMS9gpRmNJ
-	UxPDKNjNAWQ3QZf/NvYxIFyu6JFQ+ruqi55BKxtjY5tDj7V9cMdCZqE6iRPO2m1Ol+pZjMrGsgv
-	I9tID48FH6O8cTEn8scqi86fMF7jvS4gkZi/aRrg/qottA3fhRYOXWqSclq4/H3bIntYd+GvZeo
-	sqs=
-X-Google-Smtp-Source: AGHT+IEImagg3AdF5WYifMqKzRIwHznKxuAvKL3KeryKA1i40NWKG5ne+tX3JUrb7aTNo7+cwTyqLluVcxsGwvMzoxU=
-X-Received: by 2002:a05:6402:1447:b0:643:ce6:a7e6 with SMTP id
- 4fb4d7f45d1cf-64555d22c5bmr7096672a12.31.1763900181343; Sun, 23 Nov 2025
- 04:16:21 -0800 (PST)
+	bh=mAXRkB2xS6mb56eSq0W4PuVYF2h+LzFqM165H/0m9hM=;
+	b=S4DfzWvzpZWe5x4TgO8glDk7fGimh0pRAzDfQohMDzIbj7ulRmbC7ATsjwmD6N8OVgGs3o
+	T7W23TfUWgN8/uY3xNqpv/X9rpUsSpRqCK5E2bx0qyRVSscTYAM0Q0Jcotd1EEJ2G6Gwdy
+	FbVNyJn3MzZvaJGHKNotAx/3xUP4c1g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D59A5601AA;
+	Sun, 23 Nov 2025 13:17:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D44EC113D0;
+	Sun, 23 Nov 2025 13:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763903864;
+	bh=3UH0sUpcsTOMjRwBlMwUCGFDDjKFaDmhv/y2Ls/sfXU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=O2K+aOH8CH0SgIG5qkAKVKBBGA5eKkh3RnxoxnzDXEB39VO7sKffUoMENpcavfnps
+	 +3G108dSrTGGkK6l+sHK5SKGat8idVDagp0VLT5RFHAN4fx8SD9xp6nsE9kHmJ1m7a
+	 yB60iAQX+2i7FuKGFtIOYh3O3TuWeYaowik+X8dTX6bahRATEELN1OSWldkowv3z3X
+	 xvsInynJh9iB6iwgTkJ1D2RULkuryOUftJ45zxbHXQ2h9lZVlqbuh1By4UjoIbMSve
+	 nvzKjQAeLIBGnEpTyAZg6rfoxw92k+s1mS3FdNTPNYWCvWa/3LuqDctZy3TbpWYmUP
+	 o0a4RG7zYDYQw==
+Message-ID: <10a90b15-3e26-451a-bebf-f7ad8ba67d1b@kernel.org>
+Date: Sun, 23 Nov 2025 14:17:37 +0100
 MIME-Version: 1.0
-References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
- <20251122222351.1059049-2-pasha.tatashin@soleen.com> <aSLsCxLhrnyUlcy4@kernel.org>
-In-Reply-To: <aSLsCxLhrnyUlcy4@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Sun, 23 Nov 2025 07:15:44 -0500
-X-Gm-Features: AWmQ_bn_xMt7b_XynypKNmLzsgZ0R3niD3BWBC1dy3KZJb4mBkKZVlkWV4PjVSU
-Message-ID: <CA+CK2bCN7x=eMwfTXF-2+vR=Gn3=41z6Xxx6wM1m7i-rxzug9w@mail.gmail.com>
-Subject: Re: [PATCH v7 01/22] liveupdate: luo_core: Live Update Orchestrator
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 333E880003
-X-Stat-Signature: bo5ejtx5xyfwmann4h8m7qdty3s5j373
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 2/7] mm: introduce clear_pages() and clear_user_pages()
+To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, x86@kernel.org
+Cc: akpm@linux-foundation.org, david@kernel.org, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
+ mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
+ tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+ boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+References: <20251121202352.494700-1-ankur.a.arora@oracle.com>
+ <20251121202352.494700-3-ankur.a.arora@oracle.com>
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <20251121202352.494700-3-ankur.a.arora@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1763900182-349340
-X-HE-Meta: U2FsdGVkX1+rWFO5IJEG1XRkMsbVU7u9EhhAOmIfgx2LVWNgcTB432Jy8deNGjQ4J9ftNA8/FJOc2v0ti438zMyMQIgtawL7iAbip6Chby/VTotOxFsRd8BCrmgSHV7SNYGRgyI4Gowyr/MlFuLR++Z8G617hEKu26xrmFGSf5/ckpobY4dyHfxFTc/CSuDIKO5eBXgUVcPWXoT+FEp76HV+9JwLoYbDxF7VYty1PkAEH2PDv2+gz862KTiloPQNNQne5rAXCqKyEU096crpWzWwH2Suf5k2j1ztTwZCaw/StmFktHav62C8rLpMCZFqUN7q7aLIlu8iBNUMMvbsjZiqxU4JUjAATdaL1FaXe6Nx8QJqus0LKOHFgoNw9keHjfQ+Wxz/FJ+O3uChq6Di0Ct18RxRtmOVleftFnM9pSW270fDBAb0g8AREE0Rp4LYno+C9q7sxPf1ZLfFgijVzhTnBxzfGgSYYgnEPGEjsZwnkzAurlfj8aXCv1qmzntcD9qk4oRuje3p2Mn7AhEnOrHS4llLv2xYCsbjolcOWsMoi+jS4AxGPuGB0+COJfnBgQs4AGZdoMioUW6mLPai2BKcvPmIot1UgKL1APnB69LbXSXzmluD3ZK37+HplmSV55aUZ67mM/UHq5TVj8h0vj4sO2Jp+Hp7Nq+MnVgvCBp4dQZR9ufxooCMMZCmoYsuFiYgWZQnbrK9YN2xDyWtRVdoCbyxuJZ+IhrbXmZ3lWzq3TEc1jvy9+7RUEH33Z9NilH+nNCCkFJTb2R8wW7FTXWijMItgmSN9vcCcHlBdT03lC2dhV7JFqgTIe019aJaYgkhfPOLoxWu7XYXyq5B1+SjeUv5tE1vpY+NL7Jkr5ZXSAAId5z2l0hA6RC/7n+4c6OmBBQNKlkpWpKXM5+yG3cSs8ltIC9EQAEiK0AFxL2PLKJ9oUQWIhaAkKXYduGzg6/ozPHrb8M2YtQdZ2G
- PdGgDv+s
- C/RuDEc7R3ybGDWRmwv5vQWUZsImakH/tyrgPrrlb77pph8TVid18fpmsjg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CAAEB120004
+X-Stat-Signature: cpu7hhnmop8xedx5cuh9zif9f6j3y1ga
+X-HE-Tag: 1763903865-689902
+X-HE-Meta: U2FsdGVkX18gGNDtRY6pd+22erAhIci5ZmG1kBN/YOZyKl0P72BTgHDhutxKDujsVcLBcke6UDj4MHew2paNTghw+P34OmW8gKU5Xoa1mI4y/1qmT7tiAxDllYHRaCX/9fFjjlupwqtgIi7OPEe7i8N+y8IVHDrrepja1ZCAsf3buhuGAYWgEz8gPp2488w68bf8hlTB9WcNdh8FmDx3Q32QwuFZ0enE8FcMN+0Ibs7apEi9AUCzmTmSB44UGC6nKdzz3FW+dK/azFtkxaho0ba6mp2JhtViY6ZN6WtoqMp/xaw/5u6XE3nzWhrikTWIDk6xLkoqC7zQXq1j2rxnEAQaiMRcAf7t/J9ltBOJgty1+CNdNArLgHOPiZtoTItDpk30r2GSFCGX/+ongZb7PhWfdSErg94lxZJ5DziZWsR8CRsu/7CHW6xhrOSYBs7T84jwdd5b7TcBUBPYYomEzwEsMpldBFjuzYwWl9tLqeA2D09EhbeIcsd00YfEmr1d06U3bAK/fOhCeFfFQuAc/H6HS1A9wzLXAIJltU92qDxnzmZK1DaP3ErE9ml0pmkkAkWKL4+WPE03C7lZ1/cTaLKOWP6gd1JRgBzid4VeLlGgSbvIkrbilAK5AmuqgOO5XsIra2Q3tiihvYMCr4Ri6U+FLobyAvcfknJWX/FD4fdmV84QU/SQ/tvQlmi8hQqnwi8nsWNInCSKB7iWV/VAfa8z8oV6+fQ4EcYhP9qU/a6PEFHmw2vbINs9cM9ciV8yT5VL/XyOEXRa5Yul2j0AjKa2ZhfBsqgseW6ClTs/FiGtCo0GJ7hPVbcowJmBf6Vd3lnmWcgXEcxAf8GaaLWOKk23IWKslLKeBDaOcbv8y5P2ePmYKXAFOKqtZtzuSeAcDPir1dZHx3VbSklO3RRsssuoL5nOyT89RlklTamNJgnrnRgZAtSHWC8YQ2u3HVTUyiRzETftpV8cWSS6NWm
+ crSXkA42
+ MVqTNqoVsMhN14CEIzUZMIc5fsojfxdMqK/8l1T0jZsd/i0drCgwllaoz06Q+Rn0w/YzY7cU3+j3OdS44WSGKP1Yr2zfyzvSaN0FREThvWNhc1EsKMIcpKVV0vbaA+XyJnBf3JAuV055XT0DVao7zi5NHMehLmHYt9jTPU5CNN4MCnEJ24J/NVvjyBOD8oWW9Hd/occTPlKypekgTZ6k+sobPpZHvo8a8075MRTD/P7NewD3foVQYzf4uNL64wlI9KA1DdOhjQ8Qi8Yd9Ao82+6ogkfoB3CKMRCdd9X18fiROCair/jAtFoOQUERq+4J0rpCQwIcFqxP45+vACG2EJQwATi93dwsWU3deN7KtFasUc0agN8DOdpq9+uKAPpS0x/eRrzhRws0/kMmJ4OG8RZLKtP8pVYCACTVt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,120 +99,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 23, 2025 at 6:12=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Sat, Nov 22, 2025 at 05:23:28PM -0500, Pasha Tatashin wrote:
-> > Introduce LUO, a mechanism intended to facilitate kernel updates while
-> > keeping designated devices operational across the transition (e.g., via
-> > kexec). The primary use case is updating hypervisors with minimal
-> > disruption to running virtual machines. For userspace side of hyperviso=
-r
-> > update we have copyless migration. LUO is for updating the kernel.
-> >
-> > This initial patch lays the groundwork for the LUO subsystem.
-> >
-> > Further functionality, including the implementation of state transition
-> > logic, integration with KHO, and hooks for subsystems and file
-> > descriptors, will be added in subsequent patches.
-> >
-> > Create a character device at /dev/liveupdate.
-> >
-> > A new uAPI header, <uapi/linux/liveupdate.h>, will define the necessary
-> > structures. The magic number for IOCTL is registered in
-> > Documentation/userspace-api/ioctl/ioctl-number.rst.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
->
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Thank you
 
->
-> with a few nits below
->
-> > ---
->
-> > diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-> > index a973a54447de..90857dccb359 100644
-> > --- a/kernel/liveupdate/Kconfig
-> > +++ b/kernel/liveupdate/Kconfig
-> > @@ -1,4 +1,10 @@
-> >  # SPDX-License-Identifier: GPL-2.0-only
-> > +#
-> > +# Copyright (c) 2025, Google LLC.
-> > +# Pasha Tatashin <pasha.tatashin@soleen.com>
-> > +#
-> > +# Live Update Orchestrator
-> > +#
->
-> If you are adding copyrights it should have Amazon and Microsoft as well.
-> I believe those from kexec_handover.c would work.
->
-> @Alex?
+Le 21/11/2025 à 21:23, Ankur Arora a écrit :
+> Introduce clear_pages(), to be overridden by architectures that
+> support more efficient clearing of consecutive pages.
+> 
+> Also introduce clear_user_pages(), however, we will not expect
+> this function to be overridden anytime soon.
+> 
+> We have to place the clear_user_pages() variant that uses
+> clear_user_page() into mm/util.c for now to work around
+> macro magic on sparc and m68k.
+> 
+> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> ---
+> 
+> Notes:
+>     - Use macros clear_pages, clear_user_page, instead of __HAVE_ARCH_CLEAR_PAGES,
+>       __HAVE_ARCH_CLEAR_USER_PAGE.
+> 
+>   include/linux/mm.h | 41 +++++++++++++++++++++++++++++++++++++++++
+>   mm/util.c          | 13 +++++++++++++
+>   2 files changed, 54 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6fa6c188f99a..c397ee2f6dd5 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3879,6 +3879,26 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
+>   				unsigned int order) {}
+>   #endif	/* CONFIG_DEBUG_PAGEALLOC */
+>   
+> +#ifndef clear_pages
+> +/**
+> + * clear_pages() - clear a page range for kernel-internal use.
+> + * @addr: start address
+> + * @npages: number of pages
+> + *
+> + * Use clear_user_pages() instead when clearing a page range to be
+> + * mapped to user space.
+> + *
+> + * Does absolutely no exception handling.
+> + */
+> +static inline void clear_pages(void *addr, unsigned int npages)
+> +{
+> +	do {
+> +		clear_page(addr);
+> +		addr += PAGE_SIZE;
+> +	} while (--npages);
 
-Sure, or I can remove all of them from Kconfig, whatever you prefer :-)
+Why a 'do while' instead of a 'while' ?
 
->
-> >  menu "Live Update and Kexec HandOver"
-> >       depends on !DEFERRED_STRUCT_PAGE_INIT
-> > @@ -51,4 +57,25 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
-> >         The default behavior can still be overridden at boot time by
-> >         passing 'kho=3Doff'.
-> >
-> > +config LIVEUPDATE
-> > +     bool "Live Update Orchestrator"
-> > +     depends on KEXEC_HANDOVER
-> > +     help
-> > +       Enable the Live Update Orchestrator. Live Update is a mechanism=
-,
-> > +       typically based on kexec, that allows the kernel to be updated
-> > +       while keeping selected devices operational across the transitio=
-n.
-> > +       These devices are intended to be reclaimed by the new kernel an=
-d
-> > +       re-attached to their original workload without requiring a devi=
-ce
-> > +       reset.
-> > +
-> > +       Ability to handover a device from current to the next kernel de=
-pends
-> > +       on specific support within device drivers and related kernel
-> > +       subsystems.
->
-> Sorry, somehow this slipped during v6 review.
-> These days LUO is less about devices and more about file descriptors :)
+Are you certain that this function will never ever be called with a nul 
+npages ?
 
-Device preservation through file descriptors: memfd, iommufd, vfiofd
-are all dependencies for preserving devices.
+> +}
+> +#endif
+> +
+>   #ifndef clear_user_page
+>   /**
+>    * clear_user_page() - clear a page to be mapped to user space
+> @@ -3901,6 +3921,27 @@ static inline void clear_user_page(void *addr, unsigned long vaddr, struct page
+>   }
+>   #endif
+>   
+> +/**
+> + * clear_user_pages() - clear a page range to be mapped to user space
+> + * @addr: start address
+> + * @vaddr: start address of the user mapping
+> + * @page: start page
+> + * @npages: number of pages
+> + *
+> + * Assumes that the region (@addr, +@npages) has been validated
+> + * already so this does no exception handling.
+> + */
+> +#ifdef clear_user_pages
+> +void clear_user_pages(void *addr, unsigned long vaddr,
+> +		struct page *page, unsigned int npages);
 
-That Kconfig description is correct and essential because the core
-complexity of the LUO is the preservation of device state and I/O
-across a kernel transition, which is a harder problem than just
-preserving memory or files, for that we could have used a file system
-instead of inventing something new with logic of can_preserve() etc.
+By doing this you forbid architectures to define it as a static inline, 
+is that wanted ?
 
-Device preservation requires exactly what is stated in the description
-for this config:
-"Ability to handover a device from current to the next kernel depends
-on specific support within device drivers and related kernel
-subsystems." The only subsystem that is getting upstreamed with this
-series is MEMFD, it is a hard pre-requirement for iommufd
-preservation; the other subsystems: VFIO, PCI, IOMMU are WIP.
+> +#else
+> +static inline void clear_user_pages(void *addr, unsigned long vaddr,
+> +		struct page *page, unsigned int npages)
+> +{
+> +	clear_pages(addr, npages);
+> +}
+> +#endif
+> +
+>   #ifdef __HAVE_ARCH_GATE_AREA
+>   extern struct vm_area_struct *get_gate_vma(struct mm_struct *mm);
+>   extern int in_gate_area_no_mm(unsigned long addr);
+> diff --git a/mm/util.c b/mm/util.c
+> index 8989d5767528..3c6cd44db1bd 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1344,3 +1344,16 @@ bool page_range_contiguous(const struct page *page, unsigned long nr_pages)
+>   }
+>   EXPORT_SYMBOL(page_range_contiguous);
+>   #endif
+> +
+> +#ifdef clear_user_page
+> +void clear_user_pages(void *addr, 
 
-> > +
-> > +       This feature primarily targets virtual machine hosts to quickly=
- update
-> > +       the kernel hypervisor with minimal disruption to the running vi=
-rtual
-> > +       machines.
-> > +
-> > +       If unsure, say N.
-> > +
-> >  endmenu
->
-> --
-> Sincerely yours,
-> Mike.
+What happens if clear_user_page is defined but not clear_user_pages ? In 
+that case it seems like the definition in linux/mm.h will conflict.
+
+unsigned long vaddr,
+> +		struct page *page, unsigned int npages)
+> +{
+> +	do {
+> +		clear_user_page(addr, vaddr, page);
+> +		addr += PAGE_SIZE;
+> +		vaddr += PAGE_SIZE;
+> +		page++;
+> +	} while (--npages);
+
+Same, are you sure npages will never be nul ?
+
+> +}
+> +#endif
+
 
