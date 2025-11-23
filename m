@@ -4,120 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C59CFD2F6
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 23:04:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAF11CFD2F6
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 23:09:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56E876B0010; Sun, 23 Nov 2025 18:04:19 -0500 (EST)
+	id 4DBEC6B000E; Sun, 23 Nov 2025 18:09:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 545D46B0011; Sun, 23 Nov 2025 18:04:19 -0500 (EST)
+	id 4B3AA6B0011; Sun, 23 Nov 2025 18:09:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45A976B0012; Sun, 23 Nov 2025 18:04:19 -0500 (EST)
+	id 3A2066B0012; Sun, 23 Nov 2025 18:09:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 383486B0010
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 18:04:19 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9A0EB6B47
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 23:04:18 +0000 (UTC)
-X-FDA: 84143402196.20.D615342
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1574410000C
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 23:04:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=aoueOxgS;
-	spf=pass (imf14.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763939057;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 222156B000E
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 18:09:51 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA35F1401CA
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 23:09:50 +0000 (UTC)
+X-FDA: 84143416140.26.B32555A
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011028.outbound.protection.outlook.com [52.101.52.28])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CCCE7A0013
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 23:09:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uqYSEsyC;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of apopple@nvidia.com designates 52.101.52.28 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763939388; a=rsa-sha256;
+	cv=pass;
+	b=5l1UxGpzfZLjIhI7wW+lmwbnOuQdTE9QAZIH0ojDf+LEYUMmASvz/votNiTSp7TW37r8dF
+	GyVDzbDV4AybfnqwqWsgNegMk7jml9bNcTz713SsI7jPgRbUFK13wZsnrjC8BYUuMZ8wQO
+	UpGa3PO+IqtGcPPBc26teAZUJaw9DeA=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uqYSEsyC;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of apopple@nvidia.com designates 52.101.52.28 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763939388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4To7b+FdJCfm7x6NN8dJ7gobBokX+TP0wT9HA/9D15M=;
-	b=Ru/iEm7rqIJwWB06bplPne9uCrDe2+gBHaUuOSy0msicy8SThfZsd3wG4e3Nk9IcCTuJGo
-	dNvY3YppeODqjM7IhDAoQxrEB0VjPuofWg/LiAtN2sK/u4aEtu7uIsHla6f+sBUbPmRQcd
-	oPgjpKKGEUsQ2oENuuMP6709AmFA5uQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=aoueOxgS;
-	spf=pass (imf14.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763939057; a=rsa-sha256;
-	cv=none;
-	b=fmx1sZJxqq7lN3V7ZElJxZ07j8dYw1i9l14sPl+qjY7qwx89vGGwvCn79pBadrB5K7TTjc
-	KJHHzHqFKKmDrjoqgOYTEBSvVFIX80wXStS+DMQ0MTtWeB9+AnXWUl539D2qg+HFvuSGZk
-	cU+o7rtZcxwUNeI3v+CP/SPt+jWmjR4=
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-78a6c7ac38fso39298487b3.0
-        for <linux-mm@kvack.org>; Sun, 23 Nov 2025 15:04:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763939056; x=1764543856; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4To7b+FdJCfm7x6NN8dJ7gobBokX+TP0wT9HA/9D15M=;
-        b=aoueOxgSbTi61h7Zmsfl8OFVKTlKHZv7esTabRyWcx5Pxgukp/MM3KzMY8TU7AuJmY
-         S3B6IvQXYeqrDGLbtqvEqJeToFslKe92113hKe4LE9gaaxR+P9ZocfAVnnoHmYZ9uVgS
-         jVmO+PSQq78HKs+FDK4hw1Sp1e6dTCRrkDqhuWnRXyyL29jOZTa8cKW5/OvEUteXXF0n
-         JUuska8qKO9Cjj7pbweVXlOv6/8EkJhwdQgcwGoSOsz/rxCa4hQJgRIJ7WBgsrVfDSGQ
-         wDgKhqDp+zeVc7Va5PirbG0ar43BLUgIvPsa3Db2SmurLxi21EZaMX2pI6SA6PwQsrNz
-         Gfjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763939056; x=1764543856;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4To7b+FdJCfm7x6NN8dJ7gobBokX+TP0wT9HA/9D15M=;
-        b=uA8Dsb/zpAeAkJqkprCkaILBXDq3wzKdo49ywXXe/rTis9II71Y+g28pfedKIw0pmr
-         2A2qdlE9+WZH14m2tIT30a/CgN/76HLWxP9YZXe28mX3IE0cfXhQzoxLmHrWOrkdNdLR
-         I4pmBqYa0XqTXjjoRO3pauZVFpWT5PuifhS6TiMJfGtTd02jhr0Qx6XAt55UwpTs9WDc
-         1x8qE2+JVeFHmlK7hjWZQdhr+TZIWFFp1KIdTxPr+C1oBJohzEc7+9d8vMSKBDGFO0EW
-         +Xp7xD4MjEkMuIM7hL4AYszne4eUycOXik7upyXFX0ZqQF+GRCQEn6kbAakddBfTYHgG
-         r8xA==
-X-Forwarded-Encrypted: i=1; AJvYcCXDBteVA+lJUnTeiZv2ZocdgE4mrJOxKACsm+yJR77Q+/jn6xkjd8MEj1onIsajs9XWB8c9Tec0mg==@kvack.org
-X-Gm-Message-State: AOJu0YygAhXnCO3CLzg/cHuwwUalGQSBC2x5khl2hiAnJn9JIaWXrDZB
-	1lNkub4+f6M96G4G6h6goANYgAUb58i80Ao/j2O3steUEWJb9Kkz06XEBmz8gjclfw==
-X-Gm-Gg: ASbGncuoAUOmuPCZseU1CDqFPyj6V9cDuudivMwlOsUcRzTtV/CUGOOsHszARJZKYwX
-	Pd/FgYbnBDDGzkTlthwX8RaVLsZqCrIUgiaLhAyRmEOkMmcvDEq96gUJCjReFZAIlvT/PRqVzs9
-	pSODZpS7PntuzFIeTJ2NjF61sbQc4ts0w1S2CkImkXeEdf5Fswhd1acgWgE92IA1UcU3z+/F3br
-	63I+VWxtdEQGu3V9QpqlrE11ixfsY6nDA/SGRPeaJiiivcmfcScWEaP75gekUTg6qg/7cKE0hgW
-	OoZKe8kKOJLhFAmIslyTVFJ+h0D4diZTz0ZkjfiQSavsJZlMDjJ6jelxVfVM7LkaEjLFmo8jfDY
-	Rwao+x635tlaohQh93uWQN8en79x90E7ZCeNnI0wWYiTiuJIo2Zm1y1Rs8SvGWZKwUMcrNUErSz
-	BlUkbgfV0ogMvXOxspLa5kTSx2D3y+QUBrDCMelOTt9Djv/W6jW7SzZMLbKenH1W8UxJvkjSHji
-	La/ObzzCw==
-X-Google-Smtp-Source: AGHT+IF756jrV2oLibW5tf5NDM6N2r7s/mEMmh86sg0+8QTIPkOqCx8s0LJAvVrt7NhG09kGSX/0rg==
-X-Received: by 2002:a53:d048:0:10b0:63f:add1:e6da with SMTP id 956f58d0204a3-64302ac84a7mr6154857d50.57.1763939055759;
-        Sun, 23 Nov 2025 15:04:15 -0800 (PST)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a7987f5efsm38723527b3.9.2025.11.23.15.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Nov 2025 15:04:14 -0800 (PST)
-Date: Sun, 23 Nov 2025 15:04:03 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-cc: Hugh Dickins <hughd@google.com>, Christoph Hellwig <hch@lst.de>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, 
-    Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-    Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-    Zi Yan <ziy@nvidia.com>, Eric Biggers <ebiggers@kernel.org>, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/11] mempool: factor out a mempool_alloc_from_pool
- helper
-In-Reply-To: <23fac529-7b4d-4095-8c64-0d4a9d08c9b1@suse.cz>
-Message-ID: <8d043756-b59c-f604-f859-3f4803bbcd23@google.com>
-References: <20251113084022.1255121-1-hch@lst.de> <20251113084022.1255121-7-hch@lst.de> <a8a2c740-2208-5692-cfc6-f475ae0f7d45@google.com> <7b1265bc-835e-4c7d-af75-f237c46bc3a7@suse.cz> <566ce586-4d53-f2d8-50b6-1f884f44d2c9@google.com>
- <23fac529-7b4d-4095-8c64-0d4a9d08c9b1@suse.cz>
+	bh=m5A1qpW2XzGCuzqf6WgpG0xC1gUnaMstS3VyXPt6boo=;
+	b=Yuz8k0jWNWKNeC5CU8CPsybRZPPFDop585qXDh/7hHibaa8inS+zc3JiAr/9UHIzZVTGmC
+	AuACzK98Ev13nPM0WyEOetw0xI+rKFOUqEa9VGbjwWFJmxy+3Zf++TF6ewtxNdpQkOdMK3
+	meGR+xrDESc8zITFzAeR+pTgTD0Y/dU=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TPEniEux2SR9THIP6z5jF0fC7aJyS/+mqP18jhWpKDZGQkzTBHLC9CLzJB+cmS4uCs4AjLPBMx1/u7wy6aqk1JjceySQF1lv5AGVjXNuPLjSH50pLe0uw+bd4dIWQ3YiK5LoUmU32BUMh/nEgadgdiFORApuJI2Qwfb64U+aYlEqGnEuloItAYyvz/zJRUZwZNHAlX8R/39lmzQvWaoTo80aZDilKmpkUvp1MyIOVap+HIyBjdu6hKhU7gvtIF1IB7lcH1hHumfnqH2Qk9aMBRcg9v3hpOEN1AP+zYRGDa2A5puUc3Lq5bUoba23StRYBuAhxHMeeuca2xgTp9nU9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m5A1qpW2XzGCuzqf6WgpG0xC1gUnaMstS3VyXPt6boo=;
+ b=tOBF5OM5n9YPLeFWW0UEX+9LyIvS+ZzxEAQ4E9PhZB3ViK/UznAscu22aFTFRZwljqARjgxwVn2UWD2riXeqXZqLw4h6eJ6j7sa99dFG6PxCTl5A81/uAXuRWbNf0/o8TppyCWbaZry9hJ2qH/1W2jucGbwmEqb+TMinKGFhzSGKf+lSkxBfiFbhkmuMH4tvWjq8EHMwo+A8nXvnKcEolRM/xanIRL9XNS/o7kHDt93/2Ad9CQJxUrfuJGtidT5RRVpIc3fstRVUzlYLW/KSRItc5N65aufnIryd/XvzM46IIsaYvfDx2yf2wllHNKV89rKOgg35fSt7DoD/S2FzdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m5A1qpW2XzGCuzqf6WgpG0xC1gUnaMstS3VyXPt6boo=;
+ b=uqYSEsyCPtdpkmJMVH8Jm9Yf0sJ8jMMMTTTaCMc/n1DUZ1UTpPB9yqYGL5vAmciBjm12meYr6h0e6B1lIJc5o/8AedkOTljpPMVovyx6U7+Zuwsom/9Z/OTJ9k3f6hrBv4rc3L20NK5zhctNg8CM2LvQhMbWgRFhO+JUbKpm74qJnzHGnClm7AOKhbRpn412NNa9u9aVUmZwle88Xl9yjQ7LELlYBDOQ2Rp3d98eh+MWJgx/zU+dTfd1i6vC5XPEGbEDcPGB6LziDpJBi9SLObQsmUY0fIHJSeNuYpIGp5MN5A27D6dlTYsEnim+bmYMpNzDRlAaQz+rNqBHpLctaw==
+Received: from IA0PR12MB7723.namprd12.prod.outlook.com (2603:10b6:208:431::10)
+ by SA5PPF8DEAB7A29.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d4) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.14; Sun, 23 Nov
+ 2025 23:09:43 +0000
+Received: from IA0PR12MB7723.namprd12.prod.outlook.com
+ ([fe80::ef74:9335:2c5b:2bc7]) by IA0PR12MB7723.namprd12.prod.outlook.com
+ ([fe80::ef74:9335:2c5b:2bc7%6]) with mapi id 15.20.9343.016; Sun, 23 Nov 2025
+ 23:09:43 +0000
+Date: Mon, 24 Nov 2025 10:09:37 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	cgroups@vger.kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com, 
+	ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com, 
+	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, tj@kernel.org, 
+	hannes@cmpxchg.org, mkoutny@suse.com, kees@kernel.org, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, rientjes@google.com, jackmanb@google.com, 
+	cl@gentwo.org, harry.yoo@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, zhengqi.arch@bytedance.com, 
+	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	fabio.m.de.francesco@linux.intel.com, rrichter@amd.com, ming.li@zohomail.com, usamaarif642@gmail.com, 
+	brauner@kernel.org, oleg@redhat.com, namcao@linutronix.de, escape@linux.alibaba.com, 
+	dongjoo.seo1@samsung.com
+Subject: Re: [RFC LPC2026 PATCH v2 00/11] Specific Purpose Memory NUMA Nodes
+Message-ID: <c5enwlaui37lm4uxlsjbuhesy6hfwwqbxzzs77zn7kmsceojv3@f6tquznpmizu>
+References: <20251112192936.2574429-1-gourry@gourry.net>
+ <aktv2ivkrvtrox6nvcpxsnq6sagxnmj4yymelgkst6pazzpogo@aexnxfcklg75>
+ <aSDUl7kU73LJR78g@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSDUl7kU73LJR78g@gourry-fedora-PF4VCD3F>
+X-ClientProxiedBy: SY5P300CA0089.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:248::26) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1574410000C
-X-Stat-Signature: bw6dzoshx3mt5pjuqm3h65ji7x6njefn
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB7723:EE_|SA5PPF8DEAB7A29:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77d7cf29-871e-4643-39ce-08de2ae56265
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?iORcL3r4SYCpVXyAIO+dXAWVkz8qzIogXcJanMZONS8QLrDkwsibT78ShPpF?=
+ =?us-ascii?Q?m2aJc1/7a3nqGoD+6hDVdXuPvSOvulEO41y+hPDGZYdtr7ukkjH0VSjtsGPB?=
+ =?us-ascii?Q?v1TNt/2T2KuUy+eYI51roM1v0EVyaoXReSFcz4zqI0l5C6ozNzjU0jLemMmZ?=
+ =?us-ascii?Q?syPpqixcU2HegrOoZVFmXftYlnJPC+xZytHnskwRpJeIPdgVMXejkQfT2kBZ?=
+ =?us-ascii?Q?UdRvuCo+OJQb6lVdirsUFHKkZkaTEL2vJ/JLJ8tOpxEO2/suz2z5sxrfkj0E?=
+ =?us-ascii?Q?LaOBSebvNND/3okAOs9T4v0GZjA15g0SOq4E2SBoK434cKA7z9GnJFRKccrg?=
+ =?us-ascii?Q?sya3O4p/ykjsUQ8iQnzibYIh3x5U8aPFLMYZ9LephaoTcleE5hgT+bjr3ELY?=
+ =?us-ascii?Q?ahuStpmGkVkYve8suOEHaLjw6xqfaj+Nh+/H2DevK+J1c1mRWOVGs7eX9sXX?=
+ =?us-ascii?Q?agLkq/erHSiDn07VeNqPYCp8R0bg04nqX3uEptn6uu5KTuX60wnY4SkedGHz?=
+ =?us-ascii?Q?9Dw9aDa95UkRh3dKi9tXTLNw0u3GUyPWNtnne8QIfc5ICBtQAuQbVTalDEyf?=
+ =?us-ascii?Q?1T04Lz+lBFrmS4Cg2iw2c50yzDOfJVveBVufw3hMf7gy1rwouui0yj0coLvk?=
+ =?us-ascii?Q?0IlZxyM7uh+s2+yyaO/KJoZnTwXFH1/jLW+BPos9+0Apl8u6VFpNZ4nlLB68?=
+ =?us-ascii?Q?zU+hJ9ik6RL6TVTm08bjJnygA2gh5JSlyxf70/1mP/3OVnp5DIX1GI6yAgu4?=
+ =?us-ascii?Q?cWA3w5vzyxgJOOfeIVBCvhSAiivjRzHqX0UJ6U5P1rLT9Ohvp1k1HEuDj5eX?=
+ =?us-ascii?Q?Q4+ODByAgEem/lzMP93k8xhTuzoyendmQ+ZfL4zYsmolOOU4z7+lPYrrs1d/?=
+ =?us-ascii?Q?Dn9pdeXI7J1sVr5RD8w2lT3i5qJoL1zFkL2iTwqhJO3Jk3NWDPPg5PHh0Xka?=
+ =?us-ascii?Q?mFUN/xe1CH6+9L/NxuyTUwki6ubelo/CrBMtM8TnYCGqHmXsCGHJ5NjJX9gY?=
+ =?us-ascii?Q?c/uZzqjXF2cJs1lSqJJLOwaCvJ8A2xuM9NLd4bFRAqHctheJJdJ8gSrjFmrl?=
+ =?us-ascii?Q?Q8Y6apvJOJuVeKiLQJ8D8DfuUHsqlsf44AEdeDSghbmc7nnRFXDB9vtf0yAu?=
+ =?us-ascii?Q?DfxgMD4lJhHX9GGxu+owtrq0z0mh4HLEf+INcoDjEeEfxXtd3aZysWk99CHe?=
+ =?us-ascii?Q?nPZlebEy96Fz79NXSwtVKEVNDW5xAso4TxhakMZnkt7IQv4N8E2xRcdJReH5?=
+ =?us-ascii?Q?l9kv+KFr6qhh1GkQg+x33+UoCLypUU382Ua5do6Qqk4GWr3CuJqnhhkpTxXF?=
+ =?us-ascii?Q?gevCRhb4ZcEYws+9Nm1E8w51/jBD+A9JfKsaG+05fnRjvfwED0p/NrUqQ/S4?=
+ =?us-ascii?Q?pXds4zIlHyfpkStsRQmruaZfnPfturVhbovQJrc8tb2SiyVdDUnVrm0DELjy?=
+ =?us-ascii?Q?y79GeGGKL3a0lkvgNf3W7b2NahOp7sOV?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB7723.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HE0Nkp4kCwacWzH/mWmywXOwvFeQQ56N1ens4/0bA+5zS8E2XWZ21gvYTAKC?=
+ =?us-ascii?Q?xJmdUO6eYoMzeXluYFVzYuupRh/cAajleXeM9keBhBmDBl8s++u9X0YIYRov?=
+ =?us-ascii?Q?Jdgk1G2dQbjOYv/C/zLGrPO0jeA/TKFGE1moX7noHJn7oIw4x4NO2qQ1x/pg?=
+ =?us-ascii?Q?evNRhxZ1Zw2ohLayFu4W/GCgiaZyPP+/hyoQWbjUqSEstz4KMotZIz34+Tt6?=
+ =?us-ascii?Q?nRpVtdK4ycA0FPZKGxYqVkIsVMTIFAxxQ/cKGHsIfn9wcoilS7HQH1/ut9IB?=
+ =?us-ascii?Q?GEmyFNfhUK0TvkH3B/LsXvT1Bjqfw6skyXQ1Sowx5sPEJmrqgVaBPP4k/hzG?=
+ =?us-ascii?Q?rDHp4hb30Hzj/KDX2nOJTdF4JVZlDsoHJqUBSEx6RzQaLr09weInRSgKRrf2?=
+ =?us-ascii?Q?Q5pTQleaN4eh731IIN79551whPNFifah/8VqKUWmwWsT6LD+7JthB38EsLQr?=
+ =?us-ascii?Q?fknnuQuYlwl4N2r8GpPj5nsv4R9uvo9V2ejVSqsRAtP2gBiV0akUfjbEDKjj?=
+ =?us-ascii?Q?jSYakuwJ/CCcssOSCYVPrMdTbQS9Po0rXKjTwMWIz5ll0GVRHV41hUOt9fVC?=
+ =?us-ascii?Q?CUOf8naLnDBBPQqRv5lIoUyVAwcwyljnjPRTLozIwIOkrUCzQcT1Hhfs5UTX?=
+ =?us-ascii?Q?AETuWd1gulXdm8myub8jaapGJhDAKXYQVLMYC/Ng7DrPfMkJbGo4tluhHM8L?=
+ =?us-ascii?Q?Sm1HkgJTGLGPVMC1j7MzpnpzsuB6i4y5zX0WIu4yGe7wk9CCmXC8mjAVnzF2?=
+ =?us-ascii?Q?eY3teshaHf3/rIep2EOi7IRNJmIKOUo+dgWlRkq7MOGb4BS3uXD2Rt18SfXK?=
+ =?us-ascii?Q?693GdgAayk4TjTdR1BTPinmoOU7FpTPcYHPaesh26iMKKHw1euJPoGFunYEX?=
+ =?us-ascii?Q?WrQ97wpCOshnL3Ms0qiMczrRDAsrx5ZnYovPMTqyD6tRlBpJPa52ksDhMSYh?=
+ =?us-ascii?Q?XzaPk5kL89HyKHqdPeMULDu+vmSGEB9arCO1wtc0xmEn2rTgRvup/SyGLhYF?=
+ =?us-ascii?Q?3x9oY+QAEb+FNNbodAD0gu78v7L6lU5o14mcXi7Vtz0ltrAbSFqbaAhIfyy9?=
+ =?us-ascii?Q?BNS7XB00DlQrZez/soy5a6tszsT0YW6NPiJmpLlm3JCG4zzNtBN3KYsNmDkO?=
+ =?us-ascii?Q?ny+CS9Z5AXaICuePLFL/GQu+Qa/AP7qTNxMAfuidspC++Fe1E5aAcW2QUGOQ?=
+ =?us-ascii?Q?XCwNdeS22BtBPEqhfg3nYRMSjAUtW1S5wzw/JLMtfOXCKGFElAu1e7XcRgJb?=
+ =?us-ascii?Q?DA8i8RNmec7rTEN3s2to5TmP3Kx881jwmtVLKbpW070ae2crRTyxj+w1sW67?=
+ =?us-ascii?Q?9bisjt8+6w3x5ZAcqwBii6p2w+cwMy7xjDfxJfVJ4Z1lLMx9vZQ+MGom2IU8?=
+ =?us-ascii?Q?NASpy417OuaWmlTr+YK53xYSBLkVVgBiNAcDP7vzbW11BLWitKm56f2uKMW2?=
+ =?us-ascii?Q?m371F8TiMbzjcD49lMOrKYZ69FNaAbvwnCd2dzpcFXXERTtbc02gQEBXtqxU?=
+ =?us-ascii?Q?bEBpPDje/zI9BmQD2s0b6zXsZWQzMToAyoKAX1d9XV1qk/aTOMsKENjL2sov?=
+ =?us-ascii?Q?fIChchNkraCOHK+jJIlWazUdoGXPX0EttcjBAhA6?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77d7cf29-871e-4643-39ce-08de2ae56265
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2025 23:09:43.5093
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CZ071WoQEJxyGb1/I/d6TqSksSJzXfg1oiSOvdEIDolZiWXOFBuDqDCJmczEfcOjSMXDsbyiBMhObydPjSYsNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF8DEAB7A29
 X-Rspam-User: 
-X-HE-Tag: 1763939056-121217
-X-HE-Meta: U2FsdGVkX1+OLa8EpZVNjrcjXTpNYWjColhDSGJ6mKp6kgtGF1m+HS4/lgajk9DGbTedgwJlBtNPtlV9iT7aOL6D2PWpJh16ZKqni/HuW/oL5xr4FSdxoZ7y1l46nkCaBssD+PsrV5Z+w6ZKUhoOCE5/pO0Y5K4XhaKkceTvZFBEnRml08Kv4wLeEbGRpYKBYu3FrmVM+Psd6Uzs0VR/4UrWDmP1rMFEGWczdgKAy6dJEvJXEFeJgwx6BGWyipw0lwRc6E2YT5oiYvg/W9V7F1cSUMKZ7WubUqMwz+gcL8OhtLzVI7P0K53/HJDBmecFCgjHqfJWgiFimfWBmMIxLs7Q4zMpHwZ1gtptyxfC5scu9P811jM+kKTZ0IkFkf8OxlmiIoTqkQWRH9ugJcz/0L6I2RRaAG1+rNZc9P7+nV5XxdigDdUdJm650cUJ6ed4MjYPalqAPY+MdPBXMTFkk+S/Rhj6JS4at9Mzc/WHBnBfLREE5Cxkeg4L/9I3MJMqbA1Qo40+2mCsoKolyMQNNjU9yAIa/ooTltmx8PqkwBnfafQMIpgYF4nKndhrBOnVrPbQDRyFsyH3V8jm06Vl6TzoDiJ2uRHsY8NUXEDW+ek8V2tV7+2qZlfPEW66y8lIXXYITNTSGCnSIeMHa9k25oOb2/D9CUg+X5GuHR9X0ASkbgdl4vGXXz0FtRUTXBY2gYwXaG5Y5AvGAlLE8qJH6MGkKsZHXIfpLHjMgP65vruzm0QANkxlXHYEdpbV3hmdEGGE4UViqBzoAUKYLuJB+wQpcc3DpIIaRDaQTisXENtWkrEgxlzz6Ky8fK0rOqGqGtPdaZzNueAgSZF2EiGcloIQN/noS0lZmK7bFkD4RqQEY29rmFsVZeIYNQHd2WHl7KHmbIWlVl75wXKIJnkxMsjbHfEHub0ZfnxtIcVPw7gJEP6hruaeJ/sP55MQFb/HpKcl8oCPwP2PMTOu3zA
- +29crafL
- 1GLGIIUIgfK3xwjgEW9vc0S3xLSRH1aI/QWWU6UWv7UGRBlHlKceIZZDVzStIZoua/degS47JVYQNgIfrwVxcnBgkrdpWp1vT00rsbiHUp5BaeV++ScSZ0sWs8TBQqb7p8moAFaDsfc9eioITech0DsJtqnXcX+T3gKQckgTBEYwh1UXpNwTPG/NXf+VF5Ob9sb2rqucDyhSWapp2USMADs0TI+u0F5e7n70GtDfn2zjG2pOOYtFEs0FdGEUPSFL7Cf68l1+uaag7H6iaV+vnx3zzuQWzlx0yGIWlhx8k7i3x53VpLl9WhvKXn8VSSOTTJlVogl3Z+BZzaoJN9I9BAP8IqVyqhuoK4zRNU+e00EuRCiC8h2PG/n3LZ/7Oi+Utp43TxEg8EUQMp2Slgq3LO8Yf7Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CCCE7A0013
+X-Stat-Signature: rpnuu17jhrzp7r6ykzhrbnhfipc4u87w
+X-HE-Tag: 1763939387-14628
+X-HE-Meta: U2FsdGVkX19z4SGGtKLlxgwCdywWzAA6VIqxmC5Y/Nhgq+VqWY+Lfp970JNzvCH8qXENSyYjkpCXnQG2hYnAv1+riOsVPIo7qIcjNZA2CxeWRc5Qc3o3wgBlcJCLvxKwbiqRbzMkHVRT17r4srUPi3VfpkSNFH4TxhtbsCgefDjkQCqGsJngFvZfTQAsSBUipMLP1NuRlq1VsivjtmdSvflNAlK2Gm2rhBMlhb6U2QTweLq3z1HlgpTTAflg/lfSHB9Dxwswl+SecS2Aqo+T+xrGWzPE/nMNC2r+t5BE0fyJG0WR7FLNZNi1s0i5GGLnNglUu8iou0Ib3T5xKAmbEfPYILL9/5h5+nigi0o5v2R9NhRUDrdtZx645/mEHuasqASaVILw7c5411Z188mRRlpiPSaZdGPgXNSVpRcbchMFLu2tTbhNEiLZtRmtVKKb50O+8AAdVPTctQ31T8kMHa1FwMeXHzZ9Bt8jTTvLxO/IWEiMMDqhh++alU7erKFQg19YgrXtdPpP9g7CTdmy7hY/wWXUjZdBK4LOrT7lntqIQ4/98/hIKEeZ7jeKhbg4RdCL+kFmJKdaReJmogWVXp9p9NjczNS29CzmS3qN0NNCX/OjzFcqX5aj+q+pJQRS2z6TzuhkADJkS7bzxvR7nyAtUHhl60K/6gdJTnVIA21PV+w2I9m8yGM6pz0/lliAVTf/+1GPJfidAn+nTDW5onB524+D6xdBX/9YjP9uJG5V+4MZVINwD19yT3uD8WzXW9juNvFnwfKLThnXTcyVw7XAYwEJK9/UQVivJKeJmpKc3ZZSxrTKBoeICKBuGhJeAn/FwYK3DdueXN8P4ojqQT+4ep50hzFu9M4nWCoGwj3NwuEIQNF5X5dmmHr0nvy7FP7gs1NgI/pRazh00Ht9SaXtSY3yRIoIlkYz8vMBA/NA0mWtdQVZDlnMEoLLt4AJuvWMDBGLLJWDjxLfzV6
+ lczuAmGF
+ 9F922W7uyM7LJ1VtT9cAfn1BJ0FW9q89dZY2vFbV7tMpPGEguO/zkqfcfE4DRMLyKBNo3aEHwdyXYfCtDnP48idizT70/szl5EGKwqt+VQa8mY7PAaazFuVjEQ1kIWV5GxvW1TRW9HmxFWo2nGizCNcu5hD1oN4C0L6KeL5W1Te0gDOKJ8+Frd0NYvyH8w0NGNukZpsKPBAG+E54Aee8HVq/BXD+2a4KOcrXelH8kmYxaNAbKmEY64sIMrKAPCYXYYhiPgCbj9MtwtNYnSPKbwbCsdTawSyW1yZU0HK+BtBSYiVsq0IVzo5sRS8o7fqJMWVYeFd/x8i4MDcKMgMbm0RuNNReOcX31ooqjlhWyVyY37JEZOXsXkT33p/NS25c657oAfTsxLGhvPz270OH8gyyHM3IE1SiwvrdvfQl76u3yq14z5VbbCt6joDVdZJlw1SIIrhSg918WxeHZggSwYpetBEpAbJs7piJ8nyZ1requV55ep081zjk2XOxsc7cp02wi8VznRHblpwNooRnCc9x9mIvU3Q3iOFjA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,163 +200,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 23 Nov 2025, Vlastimil Babka wrote:
-> On 11/23/25 18:49, Hugh Dickins wrote:
-> > On Sun, 23 Nov 2025, Vlastimil Babka wrote:
-> >> On 11/23/25 04:42, Hugh Dickins wrote:
-> >> > On Thu, 13 Nov 2025, Christoph Hellwig wrote:
-> >> > 
-> >> > 
-> >> > No, that is wrong, it breaks the mempool promise: linux-next oopses
-> >> > in swap_writepage_bdev_async(), which relies on bio_alloc(,,,GFP_NOIO)
-> >> > to return a good bio.
-> >> > 
-> >> > The refactoring makes it hard to see, but the old version always used
-> >> > to go back to repeat_alloc at the end, if __GFP_DIRECT_RECLAIM,
-> >> > whereas here it only does so the first time, when gfp_temp != gfp_mask.
-> >> > 
-> >> > After bisecting to here, I changed that "gfp_temp != gfp_mask" to
-> >> > "(gfp & __GFP_DIRECT_RECLAIM)", and it worked again.  But other patches
-> >> > have come in on top, so below is a patch to the final mm/mempool.c...
-> >> 
-> >> Thanks a lot Hugh and sorry for the trouble.
-> >> 
-> >> Looking closer I noticed we're also not doing as the comment says about
-> >> passing the limited flags to mempool_alloc_from_pool() on the first attempt.
-> >> 
-> >> I would also rather keep distinguishing the "retry with full flags" and
-> >> "retry because we can sleep" for now, in case there are callers that can't
-> >> sleep, but can benefit from memalloc context. It's hypothetical and I haven't
-> >> made an audit, but we can clean that up deliberately later and not as part
-> >> of a refactor patch.
-> >> 
-> >> So I'd amend this patch with:
-> >> 
-> >> diff --git a/mm/mempool.c b/mm/mempool.c
-> >> index c28087a3b8a9..224a4dead239 100644
-> >> --- a/mm/mempool.c
-> >> +++ b/mm/mempool.c
-> >> @@ -478,10 +478,15 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
-> >>                  * sleep in mempool_alloc_from_pool.  Retry the allocation
-> >>                  * with all flags set in that case.
-> >>                  */
-> >> -               element = mempool_alloc_from_pool(pool, gfp_mask);
-> >> -               if (!element && gfp_temp != gfp_mask) {
-> >> -                       gfp_temp = gfp_mask;
-> >> -                       goto repeat_alloc;
-> >> +               element = mempool_alloc_from_pool(pool, gfp_temp);
+On 2025-11-22 at 08:07 +1100, Gregory Price <gourry@gourry.net> wrote...
+> On Tue, Nov 18, 2025 at 06:02:02PM +1100, Alistair Popple wrote:
 > > 
-> > Haha, no.
+> > I'm interested in the contrast with zone_device, and in particular why
+> > device_coherent memory doesn't end up being a good fit for this.
 > > 
-> > I had got excited when I too thought that should be gfp_temp not gfp_mask,
-> > but (a) it didn't fix the bug and (b) I then came to see that gfp_mask
-> > there is correct.
+> > > - Why mempolicy.c and cpusets as-is are insufficient
+> > > - SPM types seeking this form of interface (Accelerator, Compression)
 > > 
-> > It's looking ahead to what will be tried next: mempool_alloc_from_pool()
-> > is trying to alloc from mempool, and then, if it will be allowed to wait,
-> > waiting a suitable length of time, before letting the caller try again.
-> > If you substitute gfp_temp there, then it just does the same pool->alloc,
-> > alloc from mempool sequence twice in a row with no delay between (because
-> > gfp_temp does not at first allow waiting).
+> > I'm sure you can guess my interest is in GPUs which also have memory some people
+> > consider should only be used for specific purposes :-) Currently our coherent
+> > GPUs online this as a normal NUMA noode, for which we have also generally
+> > found mempolicy, cpusets, etc. inadequate as well, so it will be interesting to
+> > hear what short comings you have been running into (I'm less familiar with the
+> > Compression cases you talk about here though).
+> > 
 > 
-> But it's not exactly the same sequence, because in the second pass the
-> pool->alloc() has the original gfp flags restored (by gfp_temp = gfp_mask)
-> so it can now e.g. reclaim there. It's preferred to try that first before
-> waiting on a mempool refill. AFAIU the idea is to try succeeding quickly if
-> objects to allocate are either cheaply available to alloc() or in the pool,
-> and if that fails, go for the more expensive allocations or waiting for refill.
-> 
-> AFAICS both the code before Christoph's changes, and after the changes with
-> my fixup do this:
-> 
-> 1. pool->alloc(limited gfp)
-> 2. allocate from pool, but don't wait if there's nothing
-> 3. pool->alloc(full gfp)
-> 4. allocate from pool, wait if there's nothing
-> 5. goto 3
-> 
-> Am I missing something?
+> after some thought, talks, and doc readings it seems like the
+> zone_device setups don't allow the CPU to map the devmem into page
+> tables, and instead depends on migrate_device logic (unless the docs are
+> out of sync with the code these days).  That's at least what's described
+> in hmm and migrate_device.  
 
-You are completely right: it was me who was missing that the second
-pool->alloc is with the full gfp, so not an identical repeat of the
-the first; and so it is correct not to wait after the first attempt,
-so you are right to call with gfp_temp instead of gfp_mask there.
+There are multiple types here (DEVICE_PRIVATE and DEVICE_COHERENT). The former
+is mostly irrelevant for this discussion but I'm including the descriptions here
+for completeness. You are correct in saying that the only way either of these
+currently get mapped into the page tables is via explicit migration of memory
+to ZONE_DEVICE by a driver. There is also a corner case for first touch handling
+which allows drivers to establish mappings to zero pages on a device if the page
+hasn't been populated previously on the CPU.
 
-(And this also addresses my slight concern, of whether it was
-appropriate to be doing a pool->alloc after waiting for a mempool
-free: your way, there is no such wait, at least not that most
-important first->second time: the wait would instead be inside
-the pool->alloc probably, reclaiming.)
+These pages can, in some sense at least, be mapped on the CPU. DEVICE_COHERENT
+pages are mapped normally (ie. CPU can access these directly) where as
+DEVICE_PRIVATE pages are mapped using special swap entries so drivers can
+emulate coherence by migrating pages back. This is used by devices without
+coherent interconnects (ie. PCIe) where as the former could be used by eg. CXL.
 
-Yes, your fixup is better in all ways than mine, please go ahead.
+> Assuming this is out of date and ZONE_DEVICE memory is mappable into
+> page tables, assuming you want sparse allocation, ZONE_DEVICE seems to
+> suggest you at least have to re-implement the buddy logic (which isn't
+> that tall of an ask).
 
-Thanks,
-Hugh
+That's basically what happens - GPU drivers need memory allocation and therefore
+re-implement some form of memory allocator. Agree that just being able to
+reuse the buddy logic probably isn't that compelling though and isn't really of
+interest (hence some of my original questions on what this is about).
 
+> But I could imagine an (overly simplistic) pattern with SPM Nodes:
 > 
-> > I agree it's confusing, and calls into question whether that was a good
-> > refactoring.  Maybe there's a form of words for the comment above which
+> fd = open("/dev/gpu_mem", ...)
+> buf = mmap(fd, ...)
+> buf[0] 
+>    1) driver takes the fault
+>    2) driver calls alloc_page(..., gpu_node, GFP_SPM_NODE)
+>    3) driver manages any special page table masks
+>       Like marking pages RO/RW to manage ownership.
+
+Of course as an aside this needs to match the CPU PTEs logic (this what
+hmm_range_fault() is primarily used for).
+
+>    4) driver sends the gpu the (mapping_id, pfn, index) information
+>       so that gpu can map the region in its page tables.
+
+On coherent systems this often just uses HW address translation services
+(ATS), although I think the specific implementation of how page-tables are
+mirrored/shared is orthogonal to this.
+
+>    5) since the memory is cache coherent, gpu and cpu are free to
+>       operate directly on the pages without any additional magic
+>       (except typical concurrency controls).
+
+This is roughly how things work with DEVICE_PRIVATE/COHERENT memory today,
+except in the case of DEVICE_PRIVATE in step (5) above. In that case the page is
+mapped as a non-present special swap entry that triggers a driver callback due
+to the lack of cache coherence.
+
+> Driver doesn't have to do much in the way of allocationg management.
 > 
-> I'd say it was intended to be good, apart from the bugs.
+> This is probably less compelling since you don't want general purposes
+> services like reclaim, migration, compaction, tiering - etc.  
+
+On at least some of our systems I'm told we do want this, hence my interest
+here. Currently we have systems not using DEVICE_COHERENT and instead just
+onlining everything as normal system managed memory in order to get reclaim
+and tiering. Of course then people complain that it's managed as normal system
+memory and non-GPU related things (ie. page-cache) end up in what's viewed as
+special purpose memory.
+
+> The value is clearly that you get to manage GPU memory like any other
+> memory, but without worry that other parts of the system will touch it.
 > 
-> > will make it clearer.  Perhaps mempool_alloc_from_pool() is better split
-> > into two functions.  Maybe gfp_temp could be named better.  Etc etc: I
-> > preferred not to mess around further with how Christoph did it, not now.
-> > 
-> > (I also wondered if it's right to pool->alloc before alloc from mempool
-> > after the wait was for a mempool element to be freed: but that's how it
-> > was before, and I expect it's been proved in the past that a strict
-> > pool->alloc before alloc from mempool is the best strategy.)
-> 
-> I'd think we better do it that way, otherwise se might be recovering more
-> slowly from a temporary memory shortage that cause a number of tasks to wait
-> in the mempool, which would then have to wait for mempool refills even
-> though new objects might be available to allocate thanks to the shortage
-> resolved.
-> 
-> >> +               if (!element) {
-> >> +                       if (gfp_temp != gfp_mask) {
-> >> +                               gfp_temp = gfp_mask;
-> >> +                               goto repeat_alloc;
-> >> +                       }
-> >> +                       if (gfp_mask & __GFP_DIRECT_RECLAIM) {
-> >> +                               goto repeat_alloc;
-> >> +                       }
-> > 
-> > I still prefer what I posted.
-> > 
-> > Hugh
-> > 
-> >>                 }
-> >>         }
-> >> 
-> >> 
-> >> With the followup commit fixed up during rebase, the diff of the whole
-> >> branch before/after is:
-> >> 
-> >> diff --git a/mm/mempool.c b/mm/mempool.c
-> >> index 5953fe801395..bb596cac57ff 100644
-> >> --- a/mm/mempool.c
-> >> +++ b/mm/mempool.c
-> >> @@ -555,10 +555,14 @@ void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask)
-> >>                  * sleep in mempool_alloc_from_pool.  Retry the allocation
-> >>                  * with all flags set in that case.
-> >>                  */
-> >> -               if (!mempool_alloc_from_pool(pool, &element, 1, 0, gfp_mask) &&
-> >> -                   gfp_temp != gfp_mask) {
-> >> -                       gfp_temp = gfp_mask;
-> >> -                       goto repeat_alloc;
-> >> +               if (!mempool_alloc_from_pool(pool, &element, 1, 0, gfp_temp)) {
-> >> +                       if (gfp_temp != gfp_mask) {
-> >> +                               gfp_temp = gfp_mask;
-> >> +                               goto repeat_alloc;
-> >> +                       }
-> >> +                       if (gfp_mask & __GFP_DIRECT_RECLAIM) {
-> >> +                               goto repeat_alloc;
-> >> +                       }
-> >>                 }
-> >>         }
-> >> 
-> 
+> I'm much more focused on the "I have memory that is otherwise general
+> purpose, and wants services like reclaim and compaction, but I want
+> strong controls over how things can land there in the first place".
+
+So maybe there is some overlap here - what I have is memoy that we want managed
+much like normal memory but with strong controls over what it can be used for
+(ie. just for tasks utilising the processing element on the accelerator).
+
+ - Alistair
+
+> ~Gregory
 > 
 
