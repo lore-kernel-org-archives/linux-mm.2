@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1BC7CFD315
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 03:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33793CFD312
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 03:05:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C1E06B00AF; Sat, 22 Nov 2025 22:04:57 -0500 (EST)
+	id 1DBB06B00A2; Sat, 22 Nov 2025 22:05:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 499066B00B0; Sat, 22 Nov 2025 22:04:57 -0500 (EST)
+	id 1B30F6B00A3; Sat, 22 Nov 2025 22:05:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B0356B00B1; Sat, 22 Nov 2025 22:04:57 -0500 (EST)
+	id 0C9896B00B1; Sat, 22 Nov 2025 22:05:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 263D46B00AF
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:04:57 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9EBF0BC9BA
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:04:56 +0000 (UTC)
-X-FDA: 84140379792.29.4A46822
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B8FC9100002
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:04:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hspwAEjy;
-	spf=pass (imf14.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EE5786B00A2
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:05:03 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D236140A99
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:05:03 +0000 (UTC)
+X-FDA: 84140380086.05.5B7D77B
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9A3C6120005
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:05:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dZvW/LcU";
+	spf=pass (imf29.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763867094;
+	s=arc-20220608; t=1763867101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BYRW6azGDUXIo5YayTW1Mj1pqj1rOHvVGag+WenlXHw=;
-	b=uP7DLRsrqyFgT06kEMTq+obYRoLUyNuZZ4kEjLi9c+YGffcB98mMp5rE/CZTOTRe28KbUK
-	XUOlvwUsd1nlqmj+daohtpC9QYq7syIXVgcPfF0p2yFEANCsRZ6PnguZDCRvZcznaP6k5S
-	UDnItoN+4yMRHFdaTCT6KJbmLAysruQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763867094; a=rsa-sha256;
-	cv=none;
-	b=HVaGQP5vzics88c5NIBxqrbsg0FNpVVQDhGjYaY0qXNnakw+DZ0gI1imZQd7bdcG0t5R1Y
-	X6iYlEJZRbUleubFA06ekpl8pede9kzd27Y9yuW0UEhvQcAIb9IrNrR2iS0YOjsx9dPOYl
-	qcLUSQX0spUhhYXRSa7ex6SZyQJm3gM=
+	bh=bNgBXVliADaREJ6nkSovsbUQBYpNGNtzg4nO0JMTz5A=;
+	b=rARgXRLTtVrKczIXhh69Xk0tEboQicfpFDgBtCOvk207kSvknQ8fMjZ3eAgr1R4sOAdx7F
+	xlxR7SZQBIG0QcHvnUwAgzIq3fTs5hnEYaNmnJJF0gyf1W+VMlfKRQH6hAgEw3FdNwZ+nP
+	P5Le1nMMbU2SuhWK+tFaLcR/oQ68Dg4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hspwAEjy;
-	spf=pass (imf14.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dZvW/LcU";
+	spf=pass (imf29.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7bab7c997eeso3513244b3a.0
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 19:04:54 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763867101; a=rsa-sha256;
+	cv=none;
+	b=4pfD4MjHMDhu7TmNmt6qSnRn3RZYS9AZxyWjU1csvn9w/1cNN6ve7vQjMkuagr3YBvn5Yk
+	nkaJTmoJqrVpSV0b/2uYWCW+AH87KTK1C/tVf2E9DWGPiyv6449dp7dYqtuk0gsatO5i/q
+	tH7j3rmJ/oPE1e5HoJJ4fkS5G7ztUwg=
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3438231df5fso4203450a91.2
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 19:05:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763867093; x=1764471893; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763867100; x=1764471900; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BYRW6azGDUXIo5YayTW1Mj1pqj1rOHvVGag+WenlXHw=;
-        b=hspwAEjy5JjHJS3qYSE5wy/ThgpQzkiBCO62xTzSAChp4WolYHC/ngK61SRjbBvkh9
-         fCXHdPaFOazG4s3sK2zh8POoiNFqkM2e+lRecGO/jLY44EBnAH5gxlXXgGRPfhe1tP5Z
-         McDR+R8fSi0V5zFXht1xwdtwCL5RSG9Cc1hkKjyJP7q3yQlDKZml45lgigsD6YRXlXtb
-         A/KZNrVQB7n4hMX4ZiUNXQRGrSG2IorgfQrbQ9i0hFTdB5DV/KKMH4oavh+jCM59Tm+4
-         wmjPWetghKYDvhK6neNzniQuoi3v0vmE1JPkoN/Nl8pKIJNkywIt9GtbDTwUYTg4M7Zz
-         9Emw==
+        bh=bNgBXVliADaREJ6nkSovsbUQBYpNGNtzg4nO0JMTz5A=;
+        b=dZvW/LcUcm1HR4gYO/dFdo0KxczlwhV7D6JALKgvaLA0ZKZdzyEeI/zlU9nolrh4Np
+         US+GW3tEe7Tllik5AOi0a3WhsTvI7XX3NhP2Vd5GuueOiTRqwoS9evDCNuHTGq8ClT8I
+         D28jCeZYIpKWe9uw8a9U8p9FGoiCqknTRP7s1r73lgvWQ3pcybsI/SW9A0bUVNcutrwC
+         GsfTAryRc92LqgpqVQTOAA7TExSPBD+bIH7AA4xm6NC1DxltiuF5GqTTOPZK/tb7d+Ga
+         4kJXw6h8xTZcTnRSRIKemFAPyiawcr6K0lyt9HCHskx2++o6zmZd8T620P630DdFLRv2
+         WakQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763867093; x=1764471893;
+        d=1e100.net; s=20230601; t=1763867100; x=1764471900;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=BYRW6azGDUXIo5YayTW1Mj1pqj1rOHvVGag+WenlXHw=;
-        b=JcZtaC8kS4ZddFqM7K6nS8fi3OGHB7g3tzVBiVlnYFk4nwd2fCuFe+ZUSOO+2iDSll
-         byXJ9YM3oKY8NNsCLvpnqFxetX9BO7cxcZBesL6VhqScpeHcbaNOVnLWd9kLYyaLQ6jv
-         MV1kEZ4KD1++5SP261neNEETMcYgvexDemCmGtV234Bo3JQaayUvjX+mLTWFruTo4b3d
-         15jKhdwEK+L/RpFnz2AIL5kyyPhZP4oyCgHj1spiQWghZBuKuAWlbCeg01TgajTi9Tt9
-         VYnFqwW291WjHAWNOyWJ6ookqJ/fB/yNHcnZp2MC7OreimxqE1klMe9llta2ZRiGwWA4
-         ADsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYeJyy6n3WEIkadeZB7UZBWjKlcd9zhKxcKULFdBiyBTBPP3Jfuol6Q2sKG6x8uksuLQUPgraSCw==@kvack.org
-X-Gm-Message-State: AOJu0Yx+fzN3H/Fu4pY0zZwze+OuXmib3YueIyF+9HvvVSgdMDvC/QPd
-	Gsfv22YbRS30CZsHWu1EJIRUpuwPgcJfUVDuBjQB9a+qYMVFOKROH1pj
-X-Gm-Gg: ASbGncuvprZRX3T0/2zean8O6cldydnUbJjdQlXqV76hcIq3TaGZX1gc8Tm49i2tOIe
-	yYd2J40nNLrYr/ZCWEyT0+2+R+1QINeH6G8pOnSA7OHLgBeteMiodJ6w+gFF8rFcNKSw1021H/i
-	mlmGBcjSRRz5Qvvu8GFSuJWGImhTFyETRJTibrTHFSiZo8KuINgwQbFN9K/KlsBzYKngsF1XGjm
-	Q570DlR+5skEBOh8Jbb6+vHHP5OS+ze8k4sy2bID61Gi6KbwMcNooKEWmIHWNMdeFwYyZXDqdn3
-	E7aAPiPARLQchZNzy3TBlQyxcOUzzD9ORgwHQNpoBvpr45sfh1rM4aHmzCUEPaEcvEk6JzeeuMr
-	NOy3NcuOr3bJ7afqYVEubIIKNrw30exOtyY0iy4xm+o3RNf0xJm+f7rkrf645dlCQ0gvkPC05Bm
-	fEm9yjdZVv2c+wYyRSf7uj2HfIsA==
-X-Google-Smtp-Source: AGHT+IE3hfifAkpHaJSXvz6DlDk/mLRkqhCxAj7umlvwCUa6+K6oYf7ysiGZkzcmZ2Uu6UQHGGi2tw==
-X-Received: by 2002:a05:6a00:a245:b0:7a4:1880:e25e with SMTP id d2e1a72fcca58-7c58e9f97d4mr6680830b3a.30.1763867093517;
-        Sat, 22 Nov 2025 19:04:53 -0800 (PST)
+        bh=bNgBXVliADaREJ6nkSovsbUQBYpNGNtzg4nO0JMTz5A=;
+        b=U9thJNhOVezCphahuAokApphb4x1b7xa/Rf2elfWWooXLMecGa9ElT0DK0bTJml/1A
+         cHQG9cTjWADK3t3ovtE/qc8Op99WAR0dL5vfRON4tm7jUoBHs+Uin7gICILrX55cMZ1E
+         JV00OtSYA9KfaB70DlRunHm7S2qbdP3rx/aP0d+3k3JYClLJMKy0lJd1aLwzWUcFOhDV
+         TocCtitlVnULQOj8X+O432SRk0HSmBGtQFvetgwkoDCErQsmMkwUsAi+PgN69aiWrUWN
+         h8szrbU1iXLQj6qZtc5AGjk5VJGmyevULz74+74kE8XKYtqRrQxd+kMuvdG7b+OrZ7qg
+         6xUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVANl0pQTgtFvZUhVjRFw4f2DJWh+Fld0brepUL/lvaLSZJYv6XznwBZq50TAXuIGaAO+4Y1LxdYw==@kvack.org
+X-Gm-Message-State: AOJu0YypLgm9mZeu0IPuqxWgDhzsC30ZqZPD8h6K5GPGJFBp+0gCXWZ/
+	/ul17+X562JOrnygz9YQnTH91DxMnD56ptLtlEdEPo2k0PabjAYZimmb
+X-Gm-Gg: ASbGncsd4ZAn/jXTwpJwEisWgtLFA+/15kfi/MV8fQZo1a+5mx7vB3Q9GsHi+bwLpTP
+	Zs1XIYiI/8iPQ1FHMFY+RaQW9RY4WlpCpP0nGC+rlDlBRK/uNufG7DnAVXtqOm/ML7wvMFTNNTe
+	lpCDYTZtDxQWEMMXTC1XZkWOam0VGgcyNYTMzHfs6UW+jL3HzhVpHLRv6/b9yja5D0wg+dNGkdE
+	QKzPoQzFuf61bJhYQFUDLCW3G6D33ztcP+mwYxcY1IvviZYejO4XxAGXVCUmGfIscuyLCZzhmP9
+	XgNuRX/VsqG9IUvhMt/XXmqrb7/buLTTUYbmeRegaoKAW7JE7oI9CR1nsZPobBpnHXoU8fhwilH
+	uiRt52G1yL68rCAHUFCxzZStfpjtiWk9fheFQ7lxF2QAUGj2VJT7Aa/6vgJrC7pCMhO/wCkiV0P
+	YcoP+4A5ufM/iSQJNzJqz+jJBw3m64wIaB15b9
+X-Google-Smtp-Source: AGHT+IHkIt5IF6kEl8boBJ4UTx4CK84Qp7kBat9UgYyfU8OeT0QKX8SHcmGNaB60bDxys3XwPHAOTQ==
+X-Received: by 2002:a17:90b:4c4e:b0:32b:c9c0:2a11 with SMTP id 98e67ed59e1d1-34733e563ffmr7489087a91.4.1763867100420;
+        Sat, 22 Nov 2025 19:05:00 -0800 (PST)
 Received: from chandna.localdomain ([106.222.235.50])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f024adcfsm10386095b3a.31.2025.11.22.19.04.46
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f024adcfsm10386095b3a.31.2025.11.22.19.04.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 19:04:53 -0800 (PST)
+        Sat, 22 Nov 2025 19:05:00 -0800 (PST)
 From: Sahil Chandna <chandna.sahil@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -112,24 +112,23 @@ To: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
 Cc: Sahil Chandna <chandna.sahil@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH v2 1/3] mm: pagewalk: simplify hugepage boundary calculation using min()
-Date: Sun, 23 Nov 2025 08:34:16 +0530
-Message-ID: <f802959f58865371ba1b10081bced98e3784c5e4.1763796152.git.chandna.sahil@gmail.com>
+	SeongJae Park <sj@kernel.org>
+Subject: [PATCH v2 2/3] mm/vmscan: use %pe to print error pointers
+Date: Sun, 23 Nov 2025 08:34:17 +0530
+Message-ID: <64e15c6b2ce86d7824f54e9e001b6f5b44af48b8.1763796152.git.chandna.sahil@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1763796152.git.chandna.sahil@gmail.com>
 References: <cover.1763796152.git.chandna.sahil@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9A3C6120005
+X-Stat-Signature: j7twx7fkrfwu557hprjq815spzzejms6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B8FC9100002
-X-Stat-Signature: 4s9qymedbi5udgj56ncw5ik9uk4w546a
-X-HE-Tag: 1763867094-250160
-X-HE-Meta: U2FsdGVkX190VNYDx6IAoGFlDvo+7ExyeX22zA1IKg/1cDZPdYq42OfGwtF0ypapFyySWum911K/Mo3gHjWApfUHTTrLWaGxB9/W06lo2/LcMGqPiNI7QmCfWGnhKAt61dJLk9SFvMMH0nwssUwxNcZagZE0VPOld/bSmwpkyVknHx2jhELKUV0VPOjkmj+hMn0zCmluVgFVZc7eMdYFwdliKdIj95v+D0cu+q02SU6myambLT77N3Hb33zI/wVsBzvhi3hcJp3yGQP7foBctYSzl1rczVI+V3qN/adn5xsTmGE3ncYmnPB0V+Lv9RDG0nubkbqPpt/mBpsFNJKu+xnaNRYL+UWQCRefdOhOuEAlQMURCdQYLlBJA/lDAYtVJG4cKt/pZvCh/bOh1OC5FmCaBvUIP4thAZjkuutpgyx+0zpEb9FsMNEQeju4j3Frc6VXthk/ftOkLxyqF7AwDQkSTMmsHC0Jhd7byNKIPPvWJ6jYOYqI9llbGibMGnGdfUig9JZqz9rED/+OSUPQRAF2WcA2GiadAy73uppcrxdMyvYFm8jji6Nd+RAv8RsqELc3uh4enmpBpAhd6I2abBr03352lBHHJnIjdJqnumICq7rgPFFshebSQ7BPSh5LCnWY5SwWIQBu24g7SCCHp5jQwWo26p8R5tU7iaLoPOsY7XobhsQ3g8N164Xc5XprKp0zS68QU53gHHLWjLJrnCZQIGHAOM4kmIGCw4OyaCmsnJadNwJyrASMqBstXvr7cVcPWa9aax3D7aux4uHkkH3UyuTt/+nRnceVjXX1TTyaoKebHXfOnU44BRCr8IUNGFlTTsIQ81/9yTOd7KIgGzKxCKZo4lYecSjiyxoeyRvZ+efGzFJGRf6YZ3ifMGr1vEs8HPkFkMKH2TFmZWO3QNjCK/tg8rqYslw1mNnmQ9/C53GHAyKzJI8JgobZG5FBIxYh74kQMAbDN4/sO48
- hbRLahhW
- M4GjnlYVt29Vo6FCUt8MfyocUEuBzgoLmDYm4PPKo7dA5mBP+nTWm9oXSaBnbOS+8dfH6g6oBEE6fcyKZxQGIpbZ4Ox+0Rq6wQB/pEk7NHn/JQ/4gbIFm+V1UC++OlhX23ETyiUs/RUBi9/W0Hc8M3xXGHHIHJi3ZcBJiZJw6qSmtu5scSbJuGDg3TP146XZk/1Q5yIcU6Qe4oz6LuGLpSd2ghmiDk8V/vryKHgAcFJp5SMssGjyTbFWZ1697ADc1eLGITOSDhBpGMfsOaxKGAWxZwZxzjMolRmDaeDwK/ExgD+6LSSE9q8BaKWhysyQjIBspahu+pjjK9Lx3ZYsx2xpgs99tPCWUM8dqAg/0aM96fQfKSZNA+27oi44LZuHgnQvTZgrMBouNQHveflV34l8/KIpPWgbS80kWbUroSOgdW6kkXmdijQ7Na4rky42fUdzLjFCgsC/wQCxqonl5D8cHpHI8BxO0rcMkekVdVvjFpLix82cUg5xtTYE/JEQ3gjNuqXiTIAMqEk+7qME52qkMNs1JRlrnhACyNzMmTacuNfD4C16SaWjfYllwQBsz1ARbYSU70mPSWSYcYrHJyXgvE/oDIAlxekC5
+X-HE-Tag: 1763867101-477884
+X-HE-Meta: U2FsdGVkX1/t47EPqyl7O6En22Q6l0QHg+BMk/jp6IUgg0uNUij515Wr6Cbj3+scMnvOvHasEbSbz5O7kQmD31y/yTP0j8eMJpEPXOb7jKrzJHtmSeNTW+GmTGNJ6U3JCjr9FEX0kN3/icZmCpnP1hpVZEo/3pA+2hgXg+I+sYykcyNQBLhgq/WewpxrDNhTbIqBmWr4Yakp3tD/vghdXcpslYAVarOitRjZQZlebYz+l1l8ISXrTm+YSwYa838b8JsMjEzP3pfzhlgXnkWfi9MEbPj1Vq2SjKAU549aoPj5a/uLVL6SnzrdN3yhCQhLTd0osMDUEpqOYlscJr0AntBHUrb6mXQGI9LXrJ+WuCQvEetbLaWf1fZjwVzCOdnfdrxo1AY2gLJYsX6DL9U0HX0P4gG/EmwGHb3M2ohFNR52cmub8IVQGLsxgBq5PZCdXDRv3sDW3sdX/XkLb+sQFv3hf2LfP71KXGtWhe6LBSrRABY/hJmevELlsdgb2cBkI6v2zxtWjq3TUkNyKzKfK3WCD2UHiS9IlBH601VMD4+kPjYk16FN8fAtoET0xPjKhumv3X2FyPWVKF19Stg3zj+MABw/pBSYEWpm69AsoEDfRvZN6S7jH1+Y81D0k5ozfQiPIL2788uqQQcZRRWB1nkwI9j3R2AG6af7MhY6ZJWMztTBHdckmBvrOv2o9xhOKneVh/wDuS14nHde95+7+w8EtAcqxyWDm9IGKqF1LGSEm98b9+15g9ilsCSCEizv6ACNbYuvvnDqY59/s9cJEprzigT/kDzKLFErFdpnbVovUm4H8uJbsnpMTYtAS455VVmzMjEo0SASmuN8vFY4WjyXLbV4++F5O1r8QT/1BDr1I5HSy5UvThHgZR3mnypHasEomHQeMpJ9nZd11JpFK8rvICLAuMKWhHiN5vO2UJ0xBSNjR1wiheq/5W2g+DN7+P+lotUVwiB77xqs58I
+ TDc+5wEF
+ jyNvQ7fVCRHjgAd6dD9Z8XJd9Xp9CYfaYPCfjFOFQTsuhIpheHkldL3Uy7Lv+DYnEDJql7DdQSkPosubwHg7A28hjMNk4tRNuT3dvll7BkxG6fsxQsneZAnDnXteks7reF4+StEgYwIN435xXUNR5sFZ7bPGzXCj79mF45xwyKmZv1SMH5iVFGl9YkwoCJM0YjLm+EmZYEB0PmqcS2MWOxLo0EvB/5GAmyUImilBgqnPRUziS/C3z/iMYrB/IHvCwboDjG96RZEzBHQn0zLFzbsn7VLGZ2p6GlqQqVF0Xi3eNlAo7/GsofR4zNueGMiOD8jaW1/odMSmGW0NrZX8jq8t+x5HhU9heEGMHZGWD1swtsjbIUYyosUAQG/UaDjcczhYxaaAU29TKakFpJT05bvFdsHfbi2YxAMMrOLVa32r3AdtiAKJjLrCi1EhJs6MbimeqjDBJYzWgdLYXsLgU6Ch1PSR5jooLqUjv7qgkvozFDL/Wjp0tn+Hj5OQ1eynni6dz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,43 +137,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the kernel-provided min() macro to compute the minimum value instead
-of an explicit ternary expression. This improves readability and matches
-common kernel style. Also change the return hugepage boundary expression
-by using bitmask for better clarity.
+Use the %pe printk format specifier to report error pointers directly
+instead of printing PTR_ERR() as a long value. This improves clarity,
+produces more readable error messages.
 
-This was flagged by Coccinelle
-(misc/minmax.cocci) as an opportunity to use min().
+This instance was flagged by the Coccinelle script
+(misc/ptr_err_to_pe.cocci) as an opportunity to adopt %pe.
 
 Found by: make coccicheck MODE=report M=mm/
-No functional change intended.
+No functional change intended
 
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Suggested-by: David Laight <david.laight.linux@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
 ---
-changes since v1:
-- Updated boundary calculation of huge page range for better clarity.
-- No Functional changes intended.
-link to v1: https://lore.kernel.org/all/ff24b3c573b766b187b55a38497fbad0a319b9f8.1763227530.git.chandna.sahil@gmail.com/
----
- mm/pagewalk.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/vmscan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 9f91cf85a5be..1d38763a502a 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -312,8 +312,7 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
- static unsigned long hugetlb_entry_end(struct hstate *h, unsigned long addr,
- 				       unsigned long end)
- {
--	unsigned long boundary = (addr & huge_page_mask(h)) + huge_page_size(h);
--	return boundary < end ? boundary : end;
-+	return min((addr | ~huge_page_mask(h)) + 1, end);
- }
- 
- static int walk_hugetlb_range(unsigned long addr, unsigned long end,
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index b2fc8b626d3d..7d5b41696cc3 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7500,8 +7500,8 @@ void __meminit kswapd_run(int nid)
+ 		pgdat->kswapd = kthread_create_on_node(kswapd, pgdat, nid, "kswapd%d", nid);
+ 		if (IS_ERR(pgdat->kswapd)) {
+ 			/* failure at boot is fatal */
+-			pr_err("Failed to start kswapd on node %d,ret=%ld\n",
+-				   nid, PTR_ERR(pgdat->kswapd));
++			pr_err("Failed to start kswapd on node %d,ret=%pe\n",
++				   nid, pgdat->kswapd);
+ 			BUG_ON(system_state < SYSTEM_RUNNING);
+ 			pgdat->kswapd = NULL;
+ 		} else {
 -- 
 2.50.1
 
