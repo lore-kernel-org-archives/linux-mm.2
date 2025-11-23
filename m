@@ -4,111 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD99DCFC518
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 14:20:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402B8CFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 14:49:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF9546B0023; Sun, 23 Nov 2025 09:20:09 -0500 (EST)
+	id 309D76B00AA; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD1436B00A3; Sun, 23 Nov 2025 09:20:09 -0500 (EST)
+	id 2BA566B00AC; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0DE46B00A5; Sun, 23 Nov 2025 09:20:09 -0500 (EST)
+	id 1CFE46B00AF; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A9B356B0023
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:20:09 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E9AFB669F
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:20:09 +0000 (UTC)
-X-FDA: 84142081338.05.744046A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 930C0180008
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:20:07 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 05B2C6B00AA
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:49:56 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B155A4F856
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:49:55 +0000 (UTC)
+X-FDA: 84142156350.17.1F26A6D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E1F3C180008
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:49:53 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hbj1LkgM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763907607; a=rsa-sha256;
-	cv=none;
-	b=UpSG30pKBxqTvQqThW7PUUqH7Ew9zAVzYJyK0KnjXcjLqQwZydv46BI5Q1FXSgjeoU/3UP
-	L9C0MK4rzlpySnqLSBwUk8+Fj+5f6v+5B/u99uRGuLgbLj24SJemHKKL5Z8zkgmODqW/gF
-	TCARNh1EuidOhKdwQ528cNfVV6D6/rA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hbj1LkgM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763907607;
+	s=arc-20220608; t=1763909394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kd+i/y4lRUeEe2vX993cUaAI51T+sV9btiar22RIqj4=;
-	b=a4bslcE9eCezhi4eGvZUeYkASX/plgLRnqfCMpQrOIsbknw3VYgcrfL38nfEdowtS9jvYC
-	QLeHfH2ObQTxmF5cZqfTE1qr1u3vhCCTcipEH0lp1cNlzi0pv6VPJemqENGciNGfpYtSRv
-	wBC44+8gu99z5lJEyWlEvzef3/d4tGk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E1E841B33;
-	Sun, 23 Nov 2025 14:20:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6C9C19421;
-	Sun, 23 Nov 2025 14:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763907606;
-	bh=64qKRjSfixLK9vi0MfPfl4EUkAb/R9lG3NziOFUwlpE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hbj1LkgM3jpINAAlPHZASq9E3rN1aUM0DEUqlztUnBTcbaIhVD5eucAidAB4gfABc
-	 Ib/eR9Q8tzeGw6sDgEvkL2B2/zkTWfjhmqk+7ZyH68Xbb1DS+tynJuS9mqdEBbbf4v
-	 av9ekCTiogcXBDCTmLSZPjlqmBa4qJFxmIprQYnor2Dfd/5TFyU9KRunnRPopVmGeG
-	 gpb1oBc8XkSK+NB6gJ+nJP8Gdawd4HCTlf+VbyUAsMpmj9ASWyh46Zc3etlr+NodPZ
-	 l0wLWZ7K50Y+YCRxWSjcr3VMVTEDGNMIUiWFXJGScmfzRyWPEnqc1rEJTmIEt++v8u
-	 nNVmbuEVxqR+A==
-Date: Sun, 23 Nov 2025 16:19:42 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v7 05/22] liveupdate: luo_core: add user interface
-Message-ID: <aSMX_pnUShilO_sj@kernel.org>
-References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
- <20251122222351.1059049-6-pasha.tatashin@soleen.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r4cvivWmwYGBXRU3wFox0Kq+V8RUc49+msN6IT5nft8=;
+	b=Fvs8nPZwsePWhMSBmxFuwTDOlStojWdfjdHpB6D9IZVH93QM6Cp6Oi/4Ro93ejlW4OFuZQ
+	f5JpLLG9rfDliPd9r9sTA6HUqYIc+ldjzm//hJMXdSMOxyCc3vgdnnpMWsE/BsTAj+q5bV
+	zIqfaoPmZ+6qMB4+gK30pxIfkBm4azY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763909394; a=rsa-sha256;
+	cv=none;
+	b=Y2MHbuoUQlSvUw6vJC0vKehMAFpGspr8x6gnHYBuEMi2PB1aQlPyOEGpMaa8q3/IZ0AMPe
+	v1avPY23xnvhip8c5TeDfGEnqNuMs+EJmQy0srTcBTB2IsvM/TkACaZixZsh/6H0DdI/kd
+	AWG35h2if50KGVcJlUfPvj/V7XFHVqo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57CF2339;
+	Sun, 23 Nov 2025 06:49:45 -0800 (PST)
+Received: from [10.164.10.248] (MacBook-Pro.blr.arm.com [10.164.10.248])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 36FA13F6A8;
+	Sun, 23 Nov 2025 06:49:47 -0800 (PST)
+Message-ID: <57cbf887-d181-418b-a6c7-9f3eff5d632a@arm.com>
+Date: Sun, 23 Nov 2025 20:19:45 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251122222351.1059049-6-pasha.tatashin@soleen.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: khugepaged: fix memory leak in collapse_file rollback
+ path
+To: Shardul Bankar <shardul.b@mpiricsoftware.com>, shardulsb08@gmail.com
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com,
+ akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, janak@mpiricsoftware.com
+References: <20251123132727.3262731-1-shardul.b@mpiricsoftware.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251123132727.3262731-1-shardul.b@mpiricsoftware.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 930C0180008
-X-Stat-Signature: tun6mq9yn4coa3h9j959ixduhwhagumr
-X-HE-Tag: 1763907607-329619
-X-HE-Meta: U2FsdGVkX1+QQvel8xiEGW6WS2VFSNx1Gub9/ujLrgd3GM9a/WUY8T7omHVyn2H0PnZ+2hHRZcDSOouP1+n1KK1z/BEpOQl0kNMNxcCETnvXbqAsdrYcdxcupGEHtxWEbgiGijH6QCEhGojd4XozxRcguIPfWWxaUFowbk27Lcdzpj4nzknJpHIgql9aBV+dESCvEVJwBQvW5gRnvhr+R/p3+laxsdWGUfbhJXGjeGc1VGupNwVU7mKRtBZ74W5/knBKK3fVJLXdwIQUQMKm5R4PLyL+eDmVPVraxUgGt7JxRdyrs84V9Ux6Do2r/FoSW2Ji1YgRxmd2WXKjvnxNu/edfqWKcTkbUszPwOjLeAlDjm4za3TjL0Y9tCZkHoUBASd+mGZsIRnNpgY+zC9lg5mO1ScNbqS9tNVTl4UdG9lEH7vksxBXKNnMybsCyo5481jk2oNHkVLrPw6bIgP3QEX6jl9LhIpSW4QR76b1fdaExSY+BE0iFa+vZK+4WNNRBVRUFLa5Ftao1Hp1K6v8zl/eMzNMGNOf5jN7UEdjpaklbmzA/nU2Sglhg+ZlVvez3VqaS9ZOSvmC9fcw0iPJVSbDz9oap+LQww2WGpWgFhNScYBvKUjkKpWAqq0ZNbLH3WASXRJdJ8GapB8DH/6Z87uxiNuxFOiSDqfZlOn2SQkoMhtMVBeqRYUbuMorZJY/0W5YeaKwECeDBpCYM18T8JJZQKAy0BGLwPm66aDlOLIIv3CSEjiSSU8BLv/qP+jlaI0Lj/JBmPL+0ntj58RVnUj6qaNys/EY5NebP3zRlkSzwUSJlgbDyddb6U5NvQeNG8seeMNo1BynAU8PbHiC2sG2URTNUgDboNMINJRNsAk++CZyHeBnqKzRSdz5vSoYBzGVK4LBiz7Ihgw/tiWStQJH87Cummow2yT5q3LOCpMTJbX5K7dxZywunB99Uy+Eh18dWTDtm/hBSSceW3A
- LUTYP0hC
- XNzG+R+6QazWP4j3dUQ/9XFxOcEJqAeS4EIs/wZVbJU8yhFINehb49CjSLW5QlWcHFZ1gfeArpFZ5IdMOQSOezv9w+ze/W/49iDliNpmLMRQ4Pv+IXkZ8HlgisDUxeZXAPx364uo6wpH3EojVRJZzOS45dJiJOTZ1ueOBusNHYvgWU3Vy7kYRR2WQpeTocIPEgbihYN4TcpVjxHV616ffmYow+J8bGIyjx7Vy0WlVXjm0JkYJykOktYPday+kkV8WXBFQoc/mOKNWcVzJ7O5y5HVRT2/rw9MIAs72cLv84c2s70VAQC1/PPUBVqOZCn0bPw1XzUQ9o+e/Z7tiDe+4g9nMjYamUCIL70P7U1ik6umBYCnpmSCoiVXLrEU59wKjNMae+PdVY6VoAkKwejr2TvpRnZck+LnERVgs+R/fz3l99PF6sxLsBXNtWtatPgF3XPLjdUnwQXBM+p8=
+X-Rspamd-Queue-Id: E1F3C180008
+X-Stat-Signature: 9zroi16arib9e9niq9gghytsdqs6bkwa
+X-HE-Tag: 1763909393-469374
+X-HE-Meta: U2FsdGVkX19/u4xCUcWJNcDPcvBg69L1IN5xVe43lPt7j++W0JELkdBWyBvIRJ/a+JoAoYUa7A6Wm65THp3Jl40c3qg9u5LFq3T+YPKRX/g6MLgBNSrcXzSEY4OU4s1d+ssXCVf5bLKPtd2JsvGL3Q7Gf4RuU0DsxkYlKBbOHMxTI3aFTbFbVunWLGyGGXFMr3c7B7t61lGoHcWvXiZGrMWTgXAMyFW2oGb3/nxqMlVEReXfIe1V0qluY/iNp+G0L2hd28z/nfNxvAGtvLp/15IvzqQEj7pNR4SKgRYo7bYgpb2959Tz+zH7aXMFbc+58BF0a9AnN0e251gtRvFfhRC33SaCc9DV5aVFmDO5OTIhv6YiqzOXQC0deNKbt2vsNZONBFwFgMh787dSP53UgtcYWpQnvbiXIpqySNzo/2cEEpNBqBQfWkCId+jgkbfBb5nvBTAPmdRUuRP8P9W92r+tq5X5lLXoqJkC9KFGqUsrWQPAdJ3HlVpNoreiF1yif7uARBgofhxov/4VdiNSceVseFE2ZVLowLw7ezF0j9ZYAn/X8KhdqqndrxbpCykZOo8sz8ebqNAj0cf/Sis7Y1XsIr8QSiCYIwhKm8EEmAekChExOWYHawG9gEiTduIQrnIlf3WcBS3C76aLCIy0kr8h4bXW9P8/t26Ac98hP1UesitV2WbmtiHJ49AQqIOQ9ByuJrJNKoOArtatQrYobTvBM4rhJxuDplLIp1A3+SjYSZI42ir8p51NdC1/RspFcXU5UW/KLnXy1m69lEvdUam/fy71bs/clOWrsG9m3xPTq9wUA82IoFQiB+fQ9eI6I/ghWQg2dSaf2/SzktON9Ub5l7kZnwFEyWcH8UBLRLJIM6/r2ZheXdi2NSDEv3WcndfSA/QXB6xtd4XTdZSVHM2yUvY/94w3CirBwqsYW6bAFy/kwKI0nvPImqzCD7CGWYh6g3FLQeU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,38 +88,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22, 2025 at 05:23:32PM -0500, Pasha Tatashin wrote:
-> Introduce the user-space interface for the Live Update Orchestrator
-> via ioctl commands, enabling external control over the live update
-> process and management of preserved resources.
-> 
-> The idea is that there is going to be a single userspace agent driving
-> the live update, therefore, only a single process can ever hold this
-> device opened at a time.
-> 
-> The following ioctl commands are introduced:
-> 
-> LIVEUPDATE_IOCTL_CREATE_SESSION
-> Provides a way for userspace to create a named session for grouping file
-> descriptors that need to be preserved. It returns a new file descriptor
-> representing the session.
-> 
-> LIVEUPDATE_IOCTL_RETRIEVE_SESSION
-> Allows the userspace agent in the new kernel to reclaim a preserved
-> session by its name, receiving a new file descriptor to manage the
-> restored resources.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 23/11/25 6:57 pm, Shardul Bankar wrote:
+> When collapse_file() fails after xas_create_range() succeeds, the
+> rollback path does not clean up pre-allocated XArray nodes stored in
+> xas->xa_alloc. These nodes are allocated by xas_nomem() when
+> xas_create() fails with GFP_NOWAIT and need to be freed.
+>
+> The leak occurs because:
+> 1. xas_create_range() may call xas_nomem() which allocates a node
+>     and stores it in xas->xa_alloc
+> 2. If the collapse operation fails later, the rollback path jumps
+>     to the 'rollback:' label
+> 3. The rollback path cleans up folios but does not call xas_destroy()
+>     to free the pre-allocated nodes in xas->xa_alloc
+>
+> Fix this by calling xas_destroy(&xas) at the beginning of the rollback
+> path to free any pre-allocated nodes. This is safe because xas_destroy()
+> only frees nodes in xas->xa_alloc that were never inserted into the
+> XArray tree.
+>
+> Note: This fixes the leak of pre-allocated nodes. A separate fix will
+> be needed to clean up empty nodes that were inserted into the tree by
+> xas_create_range() but never populated.
 
+No "fix" is needed in this case, the empty nodes are there in the tree
+and there is no leak.
+
+>
+> Link: https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
+> Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
+> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
 > ---
->  include/uapi/linux/liveupdate.h  |  64 +++++++++++
->  kernel/liveupdate/luo_core.c     | 179 ++++++++++++++++++++++++++++++-
->  kernel/liveupdate/luo_internal.h |  21 ++++
->  3 files changed, 263 insertions(+), 1 deletion(-)
+>   mm/khugepaged.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index abe54f0043c7..f2fe7924afa0 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2230,6 +2230,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+>   	goto out;
+>   
+>   rollback:
+> +	xas_destroy(&xas);
+>   	/* Something went wrong: roll back page cache changes */
+>   	if (nr_none) {
+>   		xas_lock_irq(&xas);
 
--- 
-Sincerely yours,
-Mike.
+I believe that the correct explanation of this patch is - after xas_nomem, if someone else
+expands the tree and the retry for xas_create_range() trivially succeeds without using the
+node allocated from xas_nomem, then we need to free that node. Although now I am worried
+about other users of xas_nomem() which do not call xas_destroy() on failure path...
+
+I think this should work,
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
 
