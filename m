@@ -4,110 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0EDCFD314
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 03:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEAA5CFC518
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 03:43:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 207046B0023; Sat, 22 Nov 2025 22:07:24 -0500 (EST)
+	id CBB356B0012; Sat, 22 Nov 2025 22:43:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B7CC6B0029; Sat, 22 Nov 2025 22:07:24 -0500 (EST)
+	id C93156B0022; Sat, 22 Nov 2025 22:43:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F4AA6B002B; Sat, 22 Nov 2025 22:07:24 -0500 (EST)
+	id BCFA86B00A5; Sat, 22 Nov 2025 22:43:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F1B806B0023
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:07:23 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8916B4F4F9
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:07:23 +0000 (UTC)
-X-FDA: 84140385966.17.BD5862A
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C956540011
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:07:21 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Bh7SMJby;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.161.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763867241; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id ABDA16B0012
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:43:09 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 607E51A0A46
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:43:09 +0000 (UTC)
+X-FDA: 84140476098.24.6CF007A
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 876A7160008
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:43:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=syNwRJDt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of hughd@google.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=hughd@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763869387; a=rsa-sha256;
 	cv=none;
-	b=kKuu7bqXtZ0K31ROtx3CdPN5ABxmSCGnzozZEpV2Uh4yukXkrsKjsfKu/cG4DXv4OAHTET
-	9Cyf65JfRVxtbOE7/lm3aKh9EnSYY5t8a1WIffUM/ZdstLY6ZExaX/jmUPAwrHEkTDIUpw
-	rVTEaVX+EUQl8X3qtVNzy52itlH8SVs=
+	b=yU67w3mOMwB4WBEC1OhSHA/Nmgrc6vegw5W6FgU0/Z+nyIZ3zxVLxybZbsgXkCYeIyp6nN
+	mU41Wh4unSxemroCWDCeLPeBO0/GkkWTdM3Tehb4Rhdb+OPl9T2kchJxx9FUFKKSmDF01a
+	FkTPXbWpoZfyBiIZjQZmUicURAYJwp0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Bh7SMJby;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.161.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=syNwRJDt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of hughd@google.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763867241;
+	s=arc-20220608; t=1763869387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YzGX8P+wyykXQ7vc9SLz2LBCv9ohbHyJk+lGTSCle7M=;
-	b=iWKLVqamkwn5jtjTlvBE4lMF4n3g+dL+6PGjJMMzyCxgf6UcQOqPgA/WyIuisOOS1iBxSQ
-	bIT3tTkICa2jESoGmP3zK/+znzIXXEu2i/IHMzOwmdlmBA9cDfVwnrux7aH7jVA1nheoDn
-	pWiRSKLOjDNQXu2lrv++2oDYSySat6I=
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-657a6028fbbso164702eaf.3
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 19:07:21 -0800 (PST)
+	bh=atGl1KFG9w/JBAL4HGSSXZEw0hkrZacc8aGE0xS3SqE=;
+	b=4v84P4O+kV6VQqzA4Nr9ghmVK/7zB6xVq8jDkOwayr6QpRlJSvmoYwEK5GlZnBa+Z6iUNB
+	QTzCTK+G1R5o5vZlVZjcaXBba+3s0IGtr84ZtpWf8Q87KklIulhlDWffvJs9FcuBlYkQ0q
+	YE8jEXD0V2/2AixQ2MbmRw/xkKxTKB8=
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6430834244aso775550d50.2
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 19:43:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763867241; x=1764472041; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YzGX8P+wyykXQ7vc9SLz2LBCv9ohbHyJk+lGTSCle7M=;
-        b=Bh7SMJbybk0heqgT1dSCtirqwrCzKxyLgAvphST8FK9skwBTzYVho5w6UwNPynb2fR
-         /G5b5PSrKjc8dUBRyZoPbcLV8vXllzHaD0nLauqHabUuoQK4MYy2pIq4VGXFp9ijA8va
-         HnllJMcMhel+R7PmxHEIZ7wQw2DcpnyVbkH/I=
+        d=google.com; s=20230601; t=1763869386; x=1764474186; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=atGl1KFG9w/JBAL4HGSSXZEw0hkrZacc8aGE0xS3SqE=;
+        b=syNwRJDtPTCPIekmJYs3IFAwM9f/zSbJOI6S9zRvkFfQzLoyKxrJNIaDIhHrSvpZdb
+         5GJII9lXrWJi7ifmm/VRElh0dQc04r7A/qrJfGEchqKaX7ySy/vMrNyb9Ad/Zv93sqMl
+         HGSzRYEQA1Qkv+tqBGRXpDlnKCdtJSdZUVMjY5tt4PlRLKbgFP5GwwUmRBN9EU3P+kUL
+         eXczvX6LFnfYBXmNBzAYd6OMsmyQrbxeAmnNspzg+pQDxJFptnb++XpkG49mELA9afM6
+         dDVNVzqKXAen+NjSiGGP2BQSCXP/iWlgqXUDy+DGqTPbpKZ+J9HWkfMOie+7/PQYssFE
+         5IKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763867241; x=1764472041;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YzGX8P+wyykXQ7vc9SLz2LBCv9ohbHyJk+lGTSCle7M=;
-        b=H3gDf+W05TmyXv+JZ8D6YuXkAdcjvPLJnZ2CRnFTp+EenZ1EDfNCD3vsKfHpL/CSmW
-         AcoTG5D7kHvR/oSiVQBh7km5bMNBKs1N0vuyMm4V9J2WYccBfnNlhvtav/jQazIIZQLr
-         Yy6brfaXbCewy38ve5KdX7RTBDK34M6acHVPFZDXaZHF4KjGbiMGF7aXeLkSm2/iVHEw
-         VHctDo9pNVpDFPOF5nJvpa2Qob1GN/rxVLx0EFY98G0SUxmTL5foF0EfeZ9G9aXsaMvq
-         Dta/95EB4SLqjJDezT5IrpW1R/oPCdy45I8zBX+ctUr9a0mR0u71wSq/krNvPDaORcJJ
-         S6Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCWPr93w+BeK8XNb2i4fDDaRa7euB7y+AX0SsslCqA4Zr22FjiJuhiDHE9+38usLvITXaPSPaD8Ayw==@kvack.org
-X-Gm-Message-State: AOJu0YzQb8bjBlxMuTYvNLPwzvjR5cHd40+QLnw3bClcG6zivA9UUWlN
-	tr1gRogWHeU9ls8QmTBmtW7/xpMCB32kcPM5xm+2ARsdmZu42H80+d6uVQQugZIa2273GAzB0Xq
-	prmfxwmiLCXKgXlUbmNXA8t1yutQFxz7bCs27wrGe
-X-Gm-Gg: ASbGnctLm1egnkp9DmqWWfoaWEmrPiHWiLNhE8K4WHmczuXUwoBxPhztIBr6GiReO1l
-	aDJovS/SuD1Phek2abHfJp16XmdrCu5+61RQzcxy0kgG153cIYzhbKDiu6i9KGdvuOxLyonJN0W
-	s2x5leAu+0v6ROcb9UTSatDxKXMR8b/k9iLcSNJQXhD5eCkbAD9x3/4iDdlQZFjiUnzNxkmA6/j
-	XIVUrnbIqQ3CfTX+3w0N1uX+8ma+gi1hJo7jqRP4xnIHsjB1p+20LVXBQXpXKOR+aRqiV6J
-X-Google-Smtp-Source: AGHT+IH62QYhk35Txtwjq8wG4yoHmmEcWYWzEQbTmojseIFIMUQkGoEz9EwWkrQ1f3vaMo197ym1x6UPl87mPLZvaek=
-X-Received: by 2002:a05:6820:810c:b0:656:b1fb:a8fd with SMTP id
- 006d021491bc7-65790a01bcamr2297931eaf.1.1763867240773; Sat, 22 Nov 2025
- 19:07:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763869386; x=1764474186;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=atGl1KFG9w/JBAL4HGSSXZEw0hkrZacc8aGE0xS3SqE=;
+        b=VjLZIe4+Fo+j8ePlBrNmBgYFrr9sa7y3+ARawX8JXVfjyDIJ6DBA9zS6vSTavJz4Kh
+         +8fRvcdat1ipVkNE6cAE7I3btjj15INFqFjwXw8S9CGJ7ggCJNWMtD/VrtkgvfKBgO1D
+         GZoMYVwjl9dYMkKTtHDLgeeGJUrYQqOsDPaDhTA7Y6SaRkhlnkZgVb1mK3Jiy2DNc9Ml
+         e5hPwMFsGk/UfSsF3qFWzgxSJi22mUWuilkABR7heIui0VgxvQroBYbpyqO+nVPrj+1l
+         lnYKuP5DvkWcpO0p2a+eF7OnxsMIbdgijFfjum/K+7NUoOzoiGpzOLMbSUa960aVrQYM
+         f32Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVw2xRJeXfi91CrcRM0FseaqbaCMNJTnAu8nQDQ5nsvWpd5XVTMtYenGkskmwTYk+QmnzySU9JCKg==@kvack.org
+X-Gm-Message-State: AOJu0YzQ9QJfRXkiFi9/wdHQaYXy6fZYkJTc3xEBdrGMXc0Aqhqbh7Gh
+	nkGgUuxfzxSe/8IBt4oQrt0SHrk9gl6/XYTr7BZacU7g0aJV4+TZQzj6ilPw5Idr2g==
+X-Gm-Gg: ASbGncsMW250I98ObF4EC1fiRmxZQn2T3Obl+5VXzFe5A74yTa+kqv1AzO1CTnRKtQl
+	F6LP70wDYeO8KhF1SzYycx9S+ZKCgohAGK1yIwN6AJqwmYSzGqqex9FgV2EQ+jcOZ9I2A8E80/J
+	91aWyjfKuHcmCVegHePaleH1v9CoCP8C3lBXbexBFuchedBdr1syDqAVTapEcdxwArb8LevRSWW
+	vH51Ofhfz+imMUmZqNZ16eh2MJs/zHC35aJM/V22WCLYYHYei1xhPjnF6ybAUfsujVcIBg74IWI
+	uK+O6EwoRP2kwGKCTH3X1RB2SS0aQ3LSYIVCD8sn0L9LT7iC85zqQXl8UpdCTOI0egAXsZPZgCg
+	h9PePRYxA2x/BrpH7e4QypE1AsBJ4iJ7UJxOrvlOohkKSBztOkQ5qLcOMKROwlel91Mc4atr5Er
+	TQlfaTr5n2YOWnAmMz5keE1eUToiYgt78ujXeizLiknB+d2gx5JI1Hj2HzmZ0c4ZCZU4FUloU=
+X-Google-Smtp-Source: AGHT+IGxGBlznVg0SJDf4cRndAQ7Zg95tSoW1YUzecdZ7j9X7Q+uJQzQQ08yWuk+41zaU5qKqnuE3g==
+X-Received: by 2002:a05:690c:4a05:b0:786:57f5:b49a with SMTP id 00721157ae682-78a8b4d4018mr62168257b3.29.1763869386403;
+        Sat, 22 Nov 2025 19:43:06 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79953584sm30955797b3.49.2025.11.22.19.43.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Nov 2025 19:43:05 -0800 (PST)
+Date: Sat, 22 Nov 2025 19:42:51 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@suse.cz>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+    Roman Gushchin <roman.gushchin@linux.dev>, 
+    Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+    Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+    Zi Yan <ziy@nvidia.com>, Eric Biggers <ebiggers@kernel.org>, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 06/11] mempool: factor out a mempool_alloc_from_pool
+ helper
+In-Reply-To: <20251113084022.1255121-7-hch@lst.de>
+Message-ID: <a8a2c740-2208-5692-cfc6-f475ae0f7d45@google.com>
+References: <20251113084022.1255121-1-hch@lst.de> <20251113084022.1255121-7-hch@lst.de>
 MIME-Version: 1.0
-References: <ts32xzxrpxmwf3okxo4bu2ynbgnfe6mehf5h6eibp7dp3r6jp7@4f7oz6tzqwxn>
- <tencent_865DD78A73BC3C9CAFCBAEBE222B6EA5F107@qq.com> <buckmtxvdfnpgo56owip3fjqbzraws2wvtomzfkywhczckoqlt@fifgyl5fjpbt>
- <8c596737-95c1-4274-9834-1fe06558b431@linux.alibaba.com> <kvgy5ms2xlkcjuzuq7xx5lmjwx3frguosve7sqbp6wh3gpih5k@kjuwfbdd2cqz>
- <853796e3-fd44-4fc2-8fd2-5810342a6ebe@linux.alibaba.com> <ztqfbzq7fwa5znw5ur45qlbnupgepaptzjaw2izsftbtth6zca@db4ruyaulqab>
- <2c6906d1-132e-401f-830f-ae771fe836c5@linux.alibaba.com> <nx6o4gwpetxjeyfbu4xyibulvldr3xz6lyfjrar62cidy5gxum@xmx4ojyq3mbf>
- <d3c01e18-c556-4892-8283-08765c5e6cb9@linux.alibaba.com>
-In-Reply-To: <d3c01e18-c556-4892-8283-08765c5e6cb9@linux.alibaba.com>
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-Date: Sun, 23 Nov 2025 12:07:07 +0900
-X-Gm-Features: AWmQ_blq4QB7hzrQX0d_c8FRyWq2ZibR4R0HIRRZtgGYhIyEzvf0zhw6MG5c5MQ
-Message-ID: <CA+_sParXyhzdDdWscTF-cqYzTkjwRtvs68B4C+ZWX9xcSS8uRQ@mail.gmail.com>
-Subject: Re: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: Yuwen Chen <ywen.chen@foxmail.com>, akpm@linux-foundation.org, 
-	Brian Geffon <bgeffon@google.com>, Fengyu Lian <licayy@outlook.com>, 
-	linux-block <linux-block@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>
-Content-Type: multipart/alternative; boundary="0000000000005148ca06443a58ef"
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C956540011
-X-Stat-Signature: saym184cobcg9y584aq3uwn7gopijg6u
-X-HE-Tag: 1763867241-771230
-X-HE-Meta: U2FsdGVkX1/i15gwLuXe5ZW6EgPC+m/NXayv1aPQ1Eh1ygKZe63n3NinrFdO19okVFZyq2OyHXiXPW3VjlksPvhNK2Ir86m0+TfTjdyqGGto8kqBi7SQRuebdtzyirKRC6AWY/Ww8Jgh6N2nRsaPCpwFqJMvdcfZ36TSn6mN+fFJZgw9+WZxFh2TjQaN6vN1HHGc+enKqTdD+Gw5cV6hlGiFpHVlFSIUyNhN2FGhSkrXil6zGxhdY+Idz79VAkH2R/ywME83BBtoExu1aCo0rb1EDmW6NIxnYqNzuOHB6Ru4FicNl7qgEHwJ/4XM7o7xIhlRBWZvPviyyKzfaFcz93ExWhC4XvnGxOYTmRHkWrJWVsOaPekzd7PjjdcOqbVjXV5raZoQaEXV7im7Js2dUv5TMWZn+sEdtI29Jlya7sF7rJ9+vPoQMlLRXo35KMJt3/uWRdZyljyhy9OGqN8b8DFtC4Hxvz2gf38VBbttyOkyjnzKWrQOA4ArNWFK+1qBinW3jvAkeABPl6lp8VoVlr3NhWXd1dBQbxF2m9px5bbxs9YvfQpvUpvVCIUGONe1X2VaTGfrRFr9DScVteEs/u7Sujfsf1LYALfn/w8u+R5xcnOvtwnfBozw3cu4MVXFB5y/oHwHs6AoGvRrC/QoLXD6XV70LX1qbCaUu/139ofJkg1wpEBFxudDFX5G/iYCkPVbPItGZn3gflfOTcUo6VGCRNgtDoOvQjHj5K/A8+y++S4wZk+CA366efdxqlYS8fQZsYvx9Y4TyeMMM/a8ZBZY34DuGXi3yJs5uiY0SSoeg3h0QWeKgK3Cq6XqXFAVGn3TmuWFwU4TOu26DiU6/ENCO/FNY94YYF4n7VWZFbuYJlNobXkXUoqoEDsloQWwL8CdMX98Cnz1QQaBdsam8Z4sR7JaMWTWMREYSm3nCWZydIBouwMFZn0Siy5btp8Cx4Ul471wANw=
+X-Rspamd-Queue-Id: 876A7160008
+X-Stat-Signature: cpysanmkmmu3wbx4ru3x41y8i3jdy3sh
+X-HE-Tag: 1763869387-454261
+X-HE-Meta: U2FsdGVkX18VnS5r6qmQlNkEYi9uPiRM17Mh+s9rRonVb0G/6/kDg1dQLnDdVFtUO6W9bb4bjdmsMiaPHyaFHz97pkAz0foKaZeYg1ZWvrOGITwbRDSjoze8dZYvOtjcF5532z8G9rdpbzyRf8bM6uJKcZq8A7WMGWos9/J3YIrz/M8Pydz6CQGelNX5FK2ayd8MBBsZrPOhmkXr2mGnGR90YHzJrCB+P5WCNUk9KVZzJk9jQ3qX1sq8m1EAOyqfy5VFn38GmQzxOWqkqz4f8xlMnqQK/F7CrA/r2gBDWmoSotfDpMU8wnVwtO2S98v3W3WnJT4bo6xA65VUq2KfWYxWW3PqeDu/NbQg6X1G+bXCtsdWbh10mxSfZjHEsOwDWQPfd4ZIdNNLRhEVAFp+oSjJW0u2L2nK2B9GqE0+N/W+VjDxET0AFmvfAsTd6KCGAIPAZ8oPF2YhgAhH2LjcTAqBszfYPXFhkFIt20okomkn7lX41/iTNooFtpA0BZQYzrfIhBrP4vuMU2yJ4qv+3yj1DCYdKrakwEB/N0+RZ72YTRkPhkXgOh5VYlp5Lj52qb5cZFR+QgDx6IB+Hrf9VYsHaow4btlqZWChePcxs6y+khuSKJZN7pzvkdJLgDVq63QyBMMRL1sppTMJ3kiZt6zUbfiFBGw3bjXyZ1pzsRkdORoMHAUMM5YDjwBc7T+xIcz+duRxCHMDm8cHnEHSjDeuB+0JXWH+AGGndUKPyI1il1nRiTxN2KIGYhrbE67lYFP8gJJeQLz4w/2z1keXVPwYlqGz/09VfJTJpS8EDkAOdfNV7Y+vSOEsOOgdK9ZNLMZ/GtRI4FLtHNnBd38nWCxti/FmHYUVjLmZL/d6n47mqNpe3Ex3Ld9BG/zkAk3DdLIhRfBqsAcWD8JE416KnTEPZaaqhgW7ckPwRK4eGFzfAMRJ9vbxRD47ThJE5nB2qJzU7H2KsU/cMKyxwyq
+ mFiLxExU
+ FV/pCU5TzWvo+8prXLiQl8QpfsqYAQ2fIJyR6b/l90W+/1wEw1Xh7jlz9oH+L7EXOaTjI1acwMDJ+RZCva+bkGXDQlx4HQL+D8zuUYyW8JQSWoPiY+sLRBUvt6ksaYJjLlApiqkqG/ekabpjaTKZIvRBa21BOryJHKDx05huIX/jkP0lm4nY0B4FHJVH5itKffocbufol10cmXW9kShRHTe9KbPfMRkoRbD3FFs2So38ac02QIZtu/HFCtCXMB1QQwnLapCIHa5pN7qsC+tv0KIt9RbzyDVYeeONXAVEdqYJ+Tx3dP+F0JRmCpT9VicSTUxRrVFRMKTD8fUKbBEoWjh1EMrp8CIMdYlfGhHIPPayC+IobOzdfrEPoJeDV8zrOwt/6sUwaneOSIPOIrR8BhrYhiDpnWeQrxw2F7cPzuhIDQ/g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,38 +123,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000005148ca06443a58ef
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, 13 Nov 2025, Christoph Hellwig wrote:
 
-On Sun, 23 Nov 2025, 10:23=E2=80=AFam Gao Xiang, <hsiangkao@linux.alibaba.c=
-om>
-wrote:
+> Add a helper for the mempool_alloc slowpath to better separate it from the
+> fast path, and also use it to implement mempool_alloc_preallocated which
+> shares the same logic.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+...
+> @@ -413,8 +457,6 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+>  {
+>  	gfp_t gfp_temp = mempool_adjust_gfp(&gfp_mask);
+>  	void *element;
+> -	unsigned long flags;
+> -	wait_queue_entry_t wait;
+>  
+>  	VM_WARN_ON_ONCE(gfp_mask & __GFP_ZERO);
+>  	might_alloc(gfp_mask);
+> @@ -428,53 +470,22 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+>  		element = pool->alloc(gfp_temp, pool->pool_data);
+>  	}
+>  
+> -	if (likely(element))
+> -		return element;
+> -
+> -	spin_lock_irqsave(&pool->lock, flags);
+> -	if (likely(pool->curr_nr)) {
+> -		element = remove_element(pool);
+> -		spin_unlock_irqrestore(&pool->lock, flags);
+> -		/* paired with rmb in mempool_free(), read comment there */
+> -		smp_wmb();
+> +	if (unlikely(!element)) {
+>  		/*
+> -		 * Update the allocation stack trace as this is more useful
+> -		 * for debugging.
+> +		 * Try to allocate an element from the pool.
+> +		 *
+> +		 * The first pass won't have __GFP_DIRECT_RECLAIM and won't
+> +		 * sleep in mempool_alloc_from_pool.  Retry the allocation
+> +		 * with all flags set in that case.
+>  		 */
+> -		kmemleak_update_trace(element);
+> -		return element;
+> -	}
+> -
+> -	/*
+> -	 * We use gfp mask w/o direct reclaim or IO for the first round.  If
+> -	 * alloc failed with that and @pool was empty, retry immediately.
+> -	 */
+> -	if (gfp_temp != gfp_mask) {
+> -		spin_unlock_irqrestore(&pool->lock, flags);
+> -		gfp_temp = gfp_mask;
+> -		goto repeat_alloc;
+> -	}
+> -
+> -	/* We must not sleep if !__GFP_DIRECT_RECLAIM */
+> -	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+> -		spin_unlock_irqrestore(&pool->lock, flags);
+> -		return NULL;
+> +		element = mempool_alloc_from_pool(pool, gfp_mask);
+> +		if (!element && gfp_temp != gfp_mask) {
 
->
-> I won't reply this anymore, good luck.
+No, that is wrong, it breaks the mempool promise: linux-next oopses
+in swap_writepage_bdev_async(), which relies on bio_alloc(,,,GFP_NOIO)
+to return a good bio.
 
+The refactoring makes it hard to see, but the old version always used
+to go back to repeat_alloc at the end, if __GFP_DIRECT_RECLAIM,
+whereas here it only does so the first time, when gfp_temp != gfp_mask.
 
-Cheers.
+After bisecting to here, I changed that "gfp_temp != gfp_mask" to
+"(gfp & __GFP_DIRECT_RECLAIM)", and it worked again.  But other patches
+have come in on top, so below is a patch to the final mm/mempool.c...
 
->
+> +			gfp_temp = gfp_mask;
+> +			goto repeat_alloc;
+> +		}
+>  	}
+>  
+> -	/* Let's wait for someone else to return an element to @pool */
+> -	init_wait(&wait);
+> -	prepare_to_wait(&pool->wait, &wait, TASK_UNINTERRUPTIBLE);
+> -
+> -	spin_unlock_irqrestore(&pool->lock, flags);
+> -
+> -	/*
+> -	 * FIXME: this should be io_schedule().  The timeout is there as a
+> -	 * workaround for some DM problems in 2.6.18.
+> -	 */
+> -	io_schedule_timeout(5*HZ);
+> -
+> -	finish_wait(&pool->wait, &wait);
+> -	goto repeat_alloc;
+> +	return element;
+>  }
+>  EXPORT_SYMBOL(mempool_alloc_noprof);
+...
 
---0000000000005148ca06443a58ef
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[PATCH] mempool: fix NULL from mempool_alloc_noprof()
 
-<div dir=3D"auto"><div><div class=3D"gmail_quote gmail_quote_container"><di=
-v dir=3D"ltr" class=3D"gmail_attr">On Sun, 23 Nov 2025, 10:23=E2=80=AFam Ga=
-o Xiang, &lt;<a href=3D"mailto:hsiangkao@linux.alibaba.com">hsiangkao@linux=
-.alibaba.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex"><br>
-I won&#39;t reply this anymore, good luck.</blockquote></div></div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">Cheers.</div><div dir=3D"auto"></div>=
-<div dir=3D"auto"></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_q=
-uote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-</blockquote></div></div></div>
+mempool_alloc_noprof() with __GFP_DIRECT_RECLAIM used to loop until it
+had allocated an element, but recently regressed to returning NULL when
+pool->alloc and mempool_alloc_from_pool() have both failed twice, causing
+oops in __swap_writepage() (and presumably others relying on mempool).
 
---0000000000005148ca06443a58ef--
+Fixes: 1d091d2c5bf3 ("mempool: factor out a mempool_alloc_from_pool helper")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+ mm/mempool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/mempool.c b/mm/mempool.c
+index 1558601600ba..dc9f2a1dc35f 100644
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -576,7 +576,7 @@ void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask)
+ 		 * with all flags set in that case.
+ 		 */
+ 		if (!mempool_alloc_from_pool(pool, &element, 1, 0, gfp_mask) &&
+-		    gfp_temp != gfp_mask) {
++		    (gfp_mask & __GFP_DIRECT_RECLAIM)) {
+ 			gfp_temp = gfp_mask;
+ 			goto repeat_alloc;
+ 		}
+-- 
+2.51.0
 
