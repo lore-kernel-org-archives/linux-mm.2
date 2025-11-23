@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C10CFD315
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 01:23:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C7DCFD315
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 01:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC0186B0092; Sat, 22 Nov 2025 20:23:41 -0500 (EST)
+	id 69C9A6B00AE; Sat, 22 Nov 2025 20:39:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C700E6B0093; Sat, 22 Nov 2025 20:23:41 -0500 (EST)
+	id 64D986B00AF; Sat, 22 Nov 2025 20:39:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B85A36B00A4; Sat, 22 Nov 2025 20:23:41 -0500 (EST)
+	id 5636E6B00B0; Sat, 22 Nov 2025 20:39:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A7AC16B0092
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 20:23:41 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B0CC1A09EE
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:23:41 +0000 (UTC)
-X-FDA: 84140124642.28.52E6A11
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 035334000A
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:23:37 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gyHzibOu;
-	spf=pass (imf27.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 409D66B00AE
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 20:39:31 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD26D5BF4D
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:39:30 +0000 (UTC)
+X-FDA: 84140164500.11.6C23828
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf21.hostedemail.com (Postfix) with ESMTP id F27A51C0007
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:39:27 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EyykmT1g;
+	spf=pass (imf21.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763861019;
+	s=arc-20220608; t=1763861969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VCIF5DLiQMx6oN9DUx9P7XFgjwtiupQtB75jei15lO8=;
-	b=RLGul/ScqnpF2Ap5mzsVDYJnIp0PRSfYw4njDhitZ/wUdFrGfycuZ66tL3r+VdCMt8JqoQ
-	sJnJSVRkXt5OlaJU9UdC9pTvsIpNNUsmxoL3Zae0zeaILPOSuAC7NIDzZIW9e+UimzEwK8
-	w3XyDGtr1UIAcEX2k7QPkAlR1xamLy8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763861019; a=rsa-sha256;
-	cv=none;
-	b=uxVL0F4pS14Z2MJJ/eRjwWeNeHJHSlcE8ZIla2AJA86hipJvrTwvAKmPhEJLpreKR6uUpw
-	gjFm7KLmbjKD8zVuWf7vxKGhyRpEm2JHETWxSVuwLJcDaptl1BjyDeszp5RvnYMSIgr4UZ
-	Sg2fQj7UfH3b0Hi+QTgMkEtMlF1/Vzw=
+	bh=R0FaNTVmYaM0SpQ82sulzhFW6ARj1Mibc6jdHQb9PbE=;
+	b=LKjE5bOKWeCM425Bgpjh8YxmWALSZ8Gwhw+PMPxCTqUUkEcLWA+3qU2m8EOLcwk0n7qJ7T
+	f0VsGFiPS3Nk8UvNtgbbVMfoOiaRRfs/1bQGlVMxyoswV3lO8OAlTBvnrFb0HJiKJBtIpx
+	cX59Li0Zs9rslQlwI2cZt9MVnboka6g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gyHzibOu;
-	spf=pass (imf27.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EyykmT1g;
+	spf=pass (imf21.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763861969; a=rsa-sha256;
+	cv=none;
+	b=WHv2k9Wu5iLsOqqq0HxXR5GvyiUdo5ljy5gXac2IrnquHhoaa9e1xxnrS4WXwPlUU59ccf
+	c8uwdLqZEm8Tnnce+miXbEBsTAeXXoiaO5xfW7FAt8FGbkAjATvPlhAPiclaAGmC8VO0jQ
+	qzOV6HaiUYji+vPIY7q0TT32gzli7ZQ=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1763861014; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=VCIF5DLiQMx6oN9DUx9P7XFgjwtiupQtB75jei15lO8=;
-	b=gyHzibOug5awWD6Ncq7JwAeH0/B/x+lGycfM+pF64R5vBKQ29kMQS2U1ghvp4hI87KJArtyfGONo9SAK35QVl0YRF14zsFWrSZ35m5zxkZkgHraJNYlQnz/xpltnqMNutlRla0dz2iKBH9iY2Z4kddrANT2mXK6RJKa7MwnWrzE=
-Received: from 30.170.82.147(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Wt66DMu_1763861012 cluster:ay36)
+	t=1763861964; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=R0FaNTVmYaM0SpQ82sulzhFW6ARj1Mibc6jdHQb9PbE=;
+	b=EyykmT1g9pR1NDRr+Co5D2ubkwkkNNFLEAJceQE3N9YCG2rR4D2Fw0zwhmTb/v437jCWP0CK7nKye1hDSeKedxZTwdU/DYw32QN+EOEqySK4XrztLjpOK6ZvOoNdtH5t/w87/k/R6cW2r72K/+UhOQ2LWOEYy2P+Iu90Kljujis=
+Received: from 30.170.82.147(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Wt66ic3_1763861962 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sun, 23 Nov 2025 09:23:33 +0800
-Message-ID: <d3c01e18-c556-4892-8283-08765c5e6cb9@linux.alibaba.com>
-Date: Sun, 23 Nov 2025 09:23:31 +0800
+          Sun, 23 Nov 2025 09:39:23 +0800
+Message-ID: <45155eea-2fde-4a72-8ea1-353bc4e14a7e@linux.alibaba.com>
+Date: Sun, 23 Nov 2025 09:39:21 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
@@ -73,21 +73,17 @@ References: <ts32xzxrpxmwf3okxo4bu2ynbgnfe6mehf5h6eibp7dp3r6jp7@4f7oz6tzqwxn>
  <8c596737-95c1-4274-9834-1fe06558b431@linux.alibaba.com>
  <kvgy5ms2xlkcjuzuq7xx5lmjwx3frguosve7sqbp6wh3gpih5k@kjuwfbdd2cqz>
  <853796e3-fd44-4fc2-8fd2-5810342a6ebe@linux.alibaba.com>
- <ztqfbzq7fwa5znw5ur45qlbnupgepaptzjaw2izsftbtth6zca@db4ruyaulqab>
- <2c6906d1-132e-401f-830f-ae771fe836c5@linux.alibaba.com>
- <nx6o4gwpetxjeyfbu4xyibulvldr3xz6lyfjrar62cidy5gxum@xmx4ojyq3mbf>
+ <d652n6zrqbkt4oltusd5egbnrvd5xz3k4kbmqnfuwuatdyuekn@22jscte4mx7m>
 From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <nx6o4gwpetxjeyfbu4xyibulvldr3xz6lyfjrar62cidy5gxum@xmx4ojyq3mbf>
+In-Reply-To: <d652n6zrqbkt4oltusd5egbnrvd5xz3k4kbmqnfuwuatdyuekn@22jscte4mx7m>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F27A51C0007
+X-Stat-Signature: 3scum68mikr33xysjb931neaoyxswoms
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 035334000A
-X-Stat-Signature: jtcw4darma3p1gyju6njym8c1otmu9oq
-X-HE-Tag: 1763861017-273602
-X-HE-Meta: U2FsdGVkX18MGDAtySuFUdzYy0Z3djEzNEeJUbUXFd+JrS18W1E2s9a0+4m9UOuSjAEeJ0etIdtg9mqyRQD6q+M5Idgz0C9QRtLaWvwFUoDY7kZ17UxmJEFO1TaqwnhFatvKWRGsJ+1jmz2aNtR39HLFgku+fLMnXl/tDnDhqfhMWNbCzXqsA27OeIANd5G23ftLxs+iXaVNDhAlwNjnHtexMTkcjFlmeP56rHLqShyARdO6oUhy8bDufdFVzaRXzPThdngr5e1mwmUmGsLCnaYQJI+CB91DfeJDIDGOzNE/sN1Tx5dGxOVEOWoP6301uqJefy1DsQevJjoAd8YgGJwMJvCsRplUs5ZLrtHo0CphcGpwnt9xabpjO9XDh7z64sn+Vt/ZHaAKsfczBcLDsXpU6lXPALseeczV5hlznuiiovg/YkWu4yz8keBeKzM0otuOS5lgmxwZPAQYCiMM/faiEBPxE1m2U6uXPGCAPilBvIa6vyIOwH89sNxL9cM3Q3jD9Xfb3sn2FJd5KpmP8SzO1+9XhvGOrc+I2OEhUwsBz5DKAb9OvKLsg2edrdBbO0ShcqRMBKELb0wthS41NFW+q+cxzMQOda8hc/2B1MQTFFRSrpGENEhgb7nqORiZbzB4Mb0uHnDRe0c9uOOMAG9PwZRe+VwQAXvFH29RieDg0ESURsPSdhE35nnko4ykoqEG4rJR1qO9UPRA3qpmc69IzKC7vZ0w24AZWto1CIef6U4v0PI2r9Up1S8Hf/MMdSoXHwFVWlVFUYF1gubee9gS5jdz33wF418HQJLqfRidEqWRSqBQmHpXnm1ZyHf5Zv/ohHlvAi2BaPy9vmdve/n0V8NokPeyQbrK5IEKwgUOjZL1wtchT/z6kFdaaBU2JyXxhNu9YXEKQLB52Besy8xpDeUMai68Vn05JQzGHHYjSMeJJzrbSMQiuxV4W+rLg7J7zVPSi1vOO+u0Cim
- v3sJ3zke
- 0GpMwfjOtnRmCKxpxUHHzldr/HuK16QW0ZNMDfOpxuC1SDNgrYHGGubpXluVgT5VCglr4rJCEuONIPVYMenbU6W2hwWWW6QSmbTXBq200U7xhucoH91MkuyhXuoMVgwk9n1p9e1ZR/I5K4snnSVMuNBzNSt4gx6AedruCQoXLT9wWQTKHnO6mcXebkKd1vHZzdkUYcWBH0PKpPIE9o9jY8hd0JR3oQuv1U/JA25kpen1TdwHiRBXzZO5+eNGfzwhiHdC4NNInN4yrw/iEe76b/qJSmi9XCBXbcq2FdRkEr72rqTQrGcgDjxSVw2NsuHcfA1cArZJAlEEmNKkVe00HgbjgWKROndAy/GAM
+X-HE-Tag: 1763861967-431509
+X-HE-Meta: U2FsdGVkX1+ssC8d/M0Wo0b14w9zikWpESIqqPfAzfK2NkgE+vs7JFVIyZeYmBsIsHUSmauC6H3o7NVf7s6rgijFR6G3n9bU4Dy4ACC7H0imAWNDP8xl18n/mqQsYa1ZjwzJ11sfK1W4oUt/Hz2IrCa9+hHkjlFsYFVwu6whI/E9LAc0HFTi7xy5sND7ZdocnPysAl0591dq5bwKOD6XCGH61zfTTPUGOeP6h2yiFDJdAFXrO//OU2fYZXj6H2t+p224O78Rjmi4gklrnFlTDnH5asXW6ijx8JU8kwrRm9MhpizKeo70Qd5GbLFhfI+FkmcnULEFNAnMTxvnN5o6j5DRoSSM138s03hbFUJbwzcKxJVqlffW27v20tZPgNx8g4e9gd5fPQlobPSTRcQ3eNuegMamD3GW2xyh0MTiFpPA+hMBsRHme1La4AMcq8CvPluoCQIQZ25ZYOyWgB3qPK1YXTGJx5geJH0DuOjWfjDsxqE2b3XFJ/dWpDYb4ckvndFHqYZS0qphmw2G6MTFXVWulzqKeV182dKuyDlj2ZS94shF/6ajuOrh2K4uSgiivo0pYagwaMBmo6agQUMUCGvmZ2y3X1kKrAX/5I4ALIh2I9iKEfaX6kuLNJdHrhE0MvC0nU28VpFwmrrBQ7r9HdtcxYAKRwrEyPrplAhFkx/W2156XPToSGbwwXcadz3SfFSIuSMBT4W1sorr92n9tEPNN4bcMjmKcYAipQwwCyaR4xJ39PnZeUz6FXPUKA9aPJpq2uc3xi4YBLW8VaDeHn1wTOa6qWJgsDmMm5xSGGrmS+x7n8KyVN/wIVfdc1nJ9WoU4OZlIT2fdiUgltmbMB2hRbz8ZCtrFzamr8nBsK81IcRhA/JxnA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,29 +94,32 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/11/23 08:08, Sergey Senozhatsky wrote:
-> On (25/11/22 22:09), Gao Xiang wrote:
->>> I thought you were talking about the backing device being
->>> ext4/btrfs.  Sorry, I don't have enough context/knowledge
->>> to understand what you're getting at.  zram has been doing
->>> writeback for ages, I really don't know what you mean by
->>> "to act like this".
+On 2025/11/23 08:22, Sergey Senozhatsky wrote:
+> On (25/11/22 20:24), Gao Xiang wrote:
+>>>
+>>>> zram(ext4) -> backing ext4/btrfs
+>>>
+>>> This is not a valid configuration, as far as I'm concerned.
+>>> Unless I'm missing your point.
 >>
->> I mean, if zram is formatted as ext4, and then mount it;
->> and then there is a backing file which is also in another
->> ext4, you'd need a workqueue to do writeback I/Os (or needs
->> a loop device to transit), was that the original question
->> raised by Yuwen?
+>> Why it's not valid? zram can be used as a regular virtual
+>> block device, and format with any fs, and mount the zram
+>> then.
 > 
-> We take pages of data from zram0 and write them straight to
-> the backing device.  Those writes don't go through vfs/fs so
-> fs on the backing device will simply be corrupted, as far as
-> I can tell.  This is not intendant use case for zram writeback.
+> If you want to move data between two filesystems, then just
+> mount both devices and cp/mv data between them.  zram is not
+> going to do that for you, zram writeback is for different
+> purpose.
 
-I'm pretty sure you don't understand what I meant.
-
-I won't reply this anymore, good luck.
+No, I know what zram writeback is and I was definitely not
+saying using zram writeback device to mount something (if
+you have interest, just check out my first reply, it's
+already clear.  Also you can know why loop devices need a
+workqueue or a kthread since pre-v2.6 in the first place
+just because of the same reason).  I want to stop here
+because it's none of my business.
 
 Thanks,
 Gao Xiang
+
 
