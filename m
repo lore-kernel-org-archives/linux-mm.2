@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A64FCFA46B
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 10:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AA65CFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 10:27:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3050E6B0006; Sun, 23 Nov 2025 05:27:20 -0500 (EST)
+	id BDED46B00A7; Sun, 23 Nov 2025 05:27:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28E7B6B000C; Sun, 23 Nov 2025 05:27:20 -0500 (EST)
+	id B8F1F6B00AA; Sun, 23 Nov 2025 05:27:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17D1F6B00A4; Sun, 23 Nov 2025 05:27:20 -0500 (EST)
+	id A7D976B00AC; Sun, 23 Nov 2025 05:27:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1C396B0006
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 05:27:19 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54702C0B90
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:27:19 +0000 (UTC)
-X-FDA: 84141494598.03.ABB1560
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A502B14000E
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:27:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=miOLm7bo;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B0EA6B00A7
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 05:27:25 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 249F812ED44
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:27:25 +0000 (UTC)
+X-FDA: 84141494850.13.A692D58
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 914B1160004
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:27:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l1nW6j9s;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763893637;
+	s=arc-20220608; t=1763893643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LjtyzGjmWcC5lVhfhDocKKlgPGW9LIlInxxfTZEqHBw=;
-	b=q4RcZ5pMOZoG9e2O9wt/P9IwASL9/qUsPaglrFcsRinluP2fBPPLgjdzUUtO+EQwQXKR9C
-	cgMCow9BKGoKKRI3kFQmI/NVdQid9RyV0aJLncbNlB42IRvNHhao601io3reKDmYPEQfSy
-	Lq+5HDb8hsdQ4sVwt22F3vY+GpyTwtQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763893637; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VA0pvSz7aljo4H8EOhEeYnm1pxpxxtMILjlDV6dqzzY=;
+	b=MxO2kzVrIlDKfSrcaKNqzSOmGc0rfDaxxcGFI8tXQKWNLvd9iMWmhdQ/C4XbfOJ8gJtDOL
+	3SRAPAqZFEu3Kq1I44RDnTV8MwppGVfANIMeYF4Ny8MOI3/LDfyPlgkjPlWIhB5PZTjDcl
+	ucxEkHxOOX+MsRQa9fi5N48ioK+l2gE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763893643; a=rsa-sha256;
 	cv=none;
-	b=q2nvE8ICKbA7XEi7k6HtiknV4Qkx9TqJptcqWz8Tvlg2YIiXPu5i0kCCNbrRUfkPYQfUTZ
-	PuAw1Yx+9t6gKaOubWOF3XZUEa/5+8VkjoeDtbde81iLHbraII8eOOzmG6EYAYkG2lnr/b
-	Pa84pAW2s5ZAz3tAbWZw6ykR1htuS5w=
+	b=p3p2bc7YBiuZ7r5QzWlo+X4WmyWgjlTj1fVQygFgkuaM5sT8on1nEc+ZigrQOO0/J0yULb
+	KWrs7Nl7/5Qi7IpkpEEGl+HBHIKcgbEIDpFVaC7TUW/OAvS8Tfd4GvP2qP6WnSvPFYjjDi
+	aVFQMhuQhcGvcpUMtNQQQeWuCm7Jo7c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=miOLm7bo;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l1nW6j9s;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E21F4383B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9300260158;
+	Sun, 23 Nov 2025 10:27:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54D7C116B1;
 	Sun, 23 Nov 2025 10:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254B9C113D0;
-	Sun, 23 Nov 2025 10:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763893636;
-	bh=uQ+XNRc47lHfiREiaIwuPCqXlDMz96Y+Ua7eszfUoWw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=miOLm7boejNLZkZWl7MecUiBUNqyViv6anj+8bxooagNb3kdikR5sNpE/yUgJ2OeH
-	 LOxKOzOxo+XdaqrY81kTYt5phmRtUbIqvbTj8/ytq4XGAu/bwVOtY6iqyr34WINb42
-	 rTtculAEvWMXO36PnaApcYiJF4kYrM+LiBbq/y/YHeh5RZ4wvWG4JhZmSPVvZTC/y3
-	 JPtMO7WwXssH5azIRYZ+l7z7Nopi7xlVVWLRWXfA9gZU0zAAqq6BbEecaBNL0kJZK4
-	 rjSc5qQhpyQkvTVGUuxCC8aRYwVcSOVyei0hy7xwXcU2ht25mTlFMsVaZ0tkQPhMIW
-	 r8fJUHurTqBLg==
+	s=k20201202; t=1763893642;
+	bh=WZL3dOi9JF12AwW63UbE2JZ210f4aDb9qSF2OCoPSt4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=l1nW6j9sn6FoE5js92l/pHRlJhGv8ZSxi/MPWghrw/vFeAL14TcupB8vZtV0DeKRg
+	 VGW2WRNd12kfuKspl6yPLZ/Fy0mFJiWPE/4UTbQ+EYKiWE37mHujvH/4+CQt2Aq4he
+	 GRbMEEWfedQePLiIIBwWKC7SX/nX+pETBeEyFN4KEQNqbw7W94uOqXY6UU7jhyG2/8
+	 Kn24IkHUtsDNlLP59DtKl3ZIL26IwZV81ePXPjOr9P134gxFm0gmjkbCpB2aLTbREs
+	 VvJ5v1vnKnH06yjlUNP8N1FuFLRhplm++wF28CVvtaLRH6ADHcqB+iGK1lC0YbZYDK
+	 1oK061Lqmu/Sg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-mm@kvack.org
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -85,21 +85,24 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH 0/5] mm, kvm: add guest_memfd support for uffd minor faults
-Date: Sun, 23 Nov 2025 12:27:02 +0200
-Message-ID: <20251123102707.559422-1-rppt@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: [PATCH 1/5] userfaultfd: move vma_can_userfault out of line
+Date: Sun, 23 Nov 2025 12:27:03 +0200
+Message-ID: <20251123102707.559422-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251123102707.559422-1-rppt@kernel.org>
+References: <20251123102707.559422-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A502B14000E
-X-Stat-Signature: ydqnwqn78ydorcwowh66omkyoa9ttajf
+X-Rspamd-Queue-Id: 914B1160004
+X-Stat-Signature: 9bdn67aowpzcqstksmwa1q7aucpfusfh
 X-Rspam-User: 
-X-HE-Tag: 1763893637-967540
-X-HE-Meta: U2FsdGVkX1+5taO0s6tV35B2CJ+kgxGwX91EyGtMpvPeG50NxOOlryXpArQhkzW6kJGmHuo+OYHXEaGM1PskVxPYD0EbSrpnIfXICUPArXO19LM2eOf3toeLVPb6SKgKKOcsG/lNxJCRowqbJS4PHp+FkwyQA8CQ9VL82uPpuazDk9aTG/JJJuPICgDngGPdBKQPQVhRWk7H+P/+mGhV/Uk1p4GXXec3gL+JRgoy40QNgVM2MpSbt+5nPnPpUa7a3eRenZ/JCMcu9zyaKI4PF1Xf1sOs7nE5pzKa657rGSNBSUBPhCTmx30fbvU7XU+/AJRXXAhflictj2N/9pI5NAATX5tKkh9rZfCOfAMb+wyHaUtprR3NocZKbafUIS73AJLcotgCUEcdgSNARyv9uKU1RhpVTdYRJgShwLNl+G1yO3NruY4UNRv+VJ9QGsbuf6vLtMghIEsDf5YR2awkd4/ombaFHNMZ1qgxwsbaiKiGzpGqfQXmbK219B2B0zhouFqpbo1cPTnyaQvzYIhe0fiMNjgqZ5DqbKzvf3dhQ9UssXrSwR4kc75KWeGYGBOm4yKyClRlVryF9Nr8rCfFbPNTyRa/Az+Khv1C5JADV7+umgeChlV8AnPlngwU+HN3ATtWbS2KHyIxuDRwpeEEzNQMH7dMsogjj8Tgf29AfNklNEU+Fj17xlzoidL3mvCnxeyp4454UnGZ9lKrA52itlc7Ps7e0/We0TJz6h+vz1KZV8NAuI55NNhSzH5wkQvy7b2nC/We19BnPzxzqNyz/jmgPWYdqtFM3wnvkZv+yjVsKaf+ek51L5CvH5GVM2BaWdPFnKIKKo7O6K1Qpz1TZuvpXEpIJaJSuUTeRd6c3w5hQSFnVi/s0Z/WBzxhvLp5TYBQ7KqwBofjoUnfkLHxMPc0pjRaSnu3CSegQuxWfYRQRe1lLBe3csGu5i6PcmuZiuMN6skEVwI/ZPLUK8w
- XkhlUqDA
- Ytn1FxFjkTmApeYAC5H2vlEXlZqwEzDCss4AV3yugAXUIC9FZ4m/4HHY5hkp4zBxC1y/CgKG6AHEOeAvjMonYV/JRgdUgeR7RMzxr0n9Rzl0LqoqVT7FBBuBtC1wTkKu5IyDAos9gcNkCqapZ3HzKi5t0upQ+ReJXY1sZUFyRZKO7olIJS/PYS+OZ16t/jlKdybFkkgsTjyGlssQih4c1V/pTQIKzW6vVTGswGnTqVLToj6w0xUAG9SqxQb6Q/Cty9KKujS9xsJplKE2fnOe5Wxh3NQ==
+X-HE-Tag: 1763893643-166621
+X-HE-Meta: U2FsdGVkX1+67f0YHDb64Sn/UmUDlvrdFMBRh78bH3rvFiaUulKJoaEUKsNvkDRIoBNErGcVcbezv79bh5IZPIVENxk66yzo4vsluLgsI2eFu8RSeHErlQCi4lifndUk7vSjlyMCi193p1qqFslH/4btRt8sBVJrtaWinu4YgtHVwpvm3abxkCXXirbpL0d7peuBsMpMYGJ3jexx9xmZa2Kh+kZnVz5RmvOpC5TBWaa93YV4bBhkpKZUI/bWfU0/t0rTouwVPi7sntVbpYhnsyEITfBViefmQzK65Hx+rRzCDF/YnfqV1fuPuVlStRbAEGFtC8BtRzlHRC1wqdfJRBOCVZueaVZWvrxpMi45T3vPdcoRohBrMGghR3gZktYjTkSwgSq54BB2fdLaQx/gJae7RzHJ/Px9B4i90cu8GSuVK6HAEZQVDTesWEi+C/3HPaiX+nfnR940tlul4doXIMxkjUpx35bNdPVUPCD3NnzA+O16wqp1eLuyFBpKVs0MXKuWgnd3UcRZdwZlzfWQQmhc3677KIWg9wCw9yr6AgXXKOKpqUccPX2hKhpY2h2lgq3hF9S5OS/unmn9nx2a0pLrWQFb7SZzMs6neOG2zPIulBcJmYtTZ0wFcoJjbuw+0ybUSPH3DF3HQqdJF0eOpL9P+i1jVe5mjezoOz4sV/9VLGQiByPdgXQ+QyW+dILogupbNMOADM78yDwB1SgabKoOfZFQA8YbzD9H9+KslYQRMoOzZKXCOIQS1epChw5rpfIEFv8OkaCwpS7tPPFRXn7FO1nq3E10JEwU94MC6xlL2iRARCZQP2Dwl//bt1RGQ33LcrRMmKyErSXtv4rxUuZiP/ey0hy6wusf/ZN6xchABdHNkPaUhmouH3A2ex7FAF9s8gZaxml0VkFc04q/AHO7DYSFcolNK/0V6xw9o7JEXgcpzjZ/m/SCbbcojObw20Gnl+/Fc3E8A01egCv
+ lTUzR/j0
+ tLCbUnToFZMjGJCVGSjsLIsJ9JQE6SAmttULKUC1MPo5O3CbAb1forwcbMN1SMJOJVgFqUBO04CAi69WqODCj7a6W8RzZIlX+vbaYpJu/6ydlXB1GAA7Ge5FXamEnflSKl08EIeb6vaCVVDtU6l0gwngxLGbz7TeHofbkf9XKoEOC1pHtVyFQcLdReDQ2mPLyaK1OZUozAFXpLF7x4ALZozDUvTwBMBpsRjVBIWzXI1cpbMgMBhbVAVWERNTXD8pQhS1lbijykONQ7jO4qdQyj0q3P6GAwa5233japtFlvyfpTp5kh0qG0CDhpz4rSrJk70R0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,57 +113,112 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+vma_can_userfault() has grown pretty big and it's not called on
+performance critical path.
 
-These patches allow guest_memfd to notify userspace about minor page
-faults using userfaultfd and let userspace to resolve these page faults
-using UFFDIO_CONTINUE.
+Move it out of line.
 
-To allow UFFDIO_CONTINUE outside of the core mm I added a get_shmem_folio()
-callback to vm_ops that allows an address space backing a VMA to return a
-folio that exists in it's page cache (patch 2)
+No functional changes.
 
-In order for guest_memfd to notify userspace about page faults, there is a
-new VM_FAULT_UFFD_MINOR that a ->fault() handler can return to inform the
-page fault handler that it needs to call handle_userfault() to complete the
-fault (patch 3).
+Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ include/linux/userfaultfd_k.h | 36 ++---------------------------------
+ mm/userfaultfd.c              | 34 +++++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+), 34 deletions(-)
+
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index c0e716aec26a..e4f43e7b063f 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -208,40 +208,8 @@ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+ 	return vma->vm_flags & __VM_UFFD_FLAGS;
+ }
  
-Patch 4 plumbs these new goodies into guest_memfd.
-
-This series is the minimal change I've been able to come up with to allow
-integration of guest_memfd with uffd and while refactoring uffd and making
-mfill_atomic() flow more linear would have been a nice improvement, it's
-way out of the scope of enabling uffd with guest_memfd.
-
-v2 changes:
-* Introduce VM_FAULF_UFFD_MINOR to avoid exporting handle_userfault()
-* Simplify vma_can_mfill_atomic()
-* Rename get_pagecache_folio() to get_shared_folio() and use inode
-instead of vma as its argument
-
-v1: https://lore.kernel.org/all/20251117114631.2029447-1-rppt@kernel.org
-
-Mike Rapoport (Microsoft) (4):
-  userfaultfd: move vma_can_userfault out of line
-  userfaultfd, shmem: use a VMA callback to handle UFFDIO_CONTINUE
-  mm: introduce VM_FAULT_UFFD_MINOR fault reason
-  guest_memfd: add support for userfaultfd minor mode
-
-Nikita Kalyazin (1):
-  KVM: selftests: test userfaultfd minor for guest_memfd
-
- include/linux/mm.h                            |   9 ++
- include/linux/mm_types.h                      |   3 +
- include/linux/userfaultfd_k.h                 |  36 +-----
- mm/memory.c                                   |   2 +
- mm/shmem.c                                    |  21 +++-
- mm/userfaultfd.c                              |  80 +++++++++++---
- .../testing/selftests/kvm/guest_memfd_test.c  | 103 ++++++++++++++++++
- virt/kvm/guest_memfd.c                        |  29 +++++
- 8 files changed, 232 insertions(+), 51 deletions(-)
-
-
-base-commit: 6a23ae0a96a600d1d12557add110e0bb6e32730c
+-static inline bool vma_can_userfault(struct vm_area_struct *vma,
+-				     vm_flags_t vm_flags,
+-				     bool wp_async)
+-{
+-	vm_flags &= __VM_UFFD_FLAGS;
+-
+-	if (vma->vm_flags & VM_DROPPABLE)
+-		return false;
+-
+-	if ((vm_flags & VM_UFFD_MINOR) &&
+-	    (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))
+-		return false;
+-
+-	/*
+-	 * If wp async enabled, and WP is the only mode enabled, allow any
+-	 * memory type.
+-	 */
+-	if (wp_async && (vm_flags == VM_UFFD_WP))
+-		return true;
+-
+-#ifndef CONFIG_PTE_MARKER_UFFD_WP
+-	/*
+-	 * If user requested uffd-wp but not enabled pte markers for
+-	 * uffd-wp, then shmem & hugetlbfs are not supported but only
+-	 * anonymous.
+-	 */
+-	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
+-		return false;
+-#endif
+-
+-	/* By default, allow any of anon|shmem|hugetlb */
+-	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
+-	    vma_is_shmem(vma);
+-}
++bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
++		       bool wp_async);
+ 
+ static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+ {
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index af61b95c89e4..8dc964389b0d 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1977,6 +1977,40 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 	return moved ? moved : err;
+ }
+ 
++bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
++		       bool wp_async)
++{
++	vm_flags &= __VM_UFFD_FLAGS;
++
++	if (vma->vm_flags & VM_DROPPABLE)
++		return false;
++
++	if ((vm_flags & VM_UFFD_MINOR) &&
++	    (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))
++		return false;
++
++	/*
++	 * If wp async enabled, and WP is the only mode enabled, allow any
++	 * memory type.
++	 */
++	if (wp_async && (vm_flags == VM_UFFD_WP))
++		return true;
++
++#ifndef CONFIG_PTE_MARKER_UFFD_WP
++	/*
++	 * If user requested uffd-wp but not enabled pte markers for
++	 * uffd-wp, then shmem & hugetlbfs are not supported but only
++	 * anonymous.
++	 */
++	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
++		return false;
++#endif
++
++	/* By default, allow any of anon|shmem|hugetlb */
++	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
++	    vma_is_shmem(vma);
++}
++
+ static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
+ 				     vm_flags_t vm_flags)
+ {
 -- 
 2.50.1
 
