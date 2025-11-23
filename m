@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4B0CFC518
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 09:27:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D15CFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 09:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D4126B000E; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
+	id DA37B6B00A5; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 784176B0092; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
+	id D7B4C6B00AA; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C0E76B0093; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
+	id C995D6B00A5; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BD676B000E
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E00C2C0B64
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:27:29 +0000 (UTC)
-X-FDA: 84141343818.25.65D886B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B46866B00A5
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6537D140B1D
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:29:16 +0000 (UTC)
+X-FDA: 84141348312.09.1CEEA43
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 32A6AC0015
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:27:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uv94iUmH;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id A4C5C180004
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:29:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khHRGrer;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763890154; a=rsa-sha256;
+	cv=none;
+	b=MPvEmU1LeTrfFORXyWCLOjg1R8GNciQeXmWP4nXADIvhP6VkN7pAO2YeAIdUEQ6THBTwbl
+	2yYX4mxvwIMReJfNgnmWNpKm1jnMF5K1vEX+C9pHtnDQ6/o3bfZlV9lgTYuQjcfjr5oawL
+	ALqul/h7uWHBiqzAh99p8MCZbxz3o6k=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khHRGrer;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763890048;
+	s=arc-20220608; t=1763890154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iGJBxA3HpMNht2r+f4Xo2T/V6gkIV+T8N1PxUbEDDvw=;
-	b=T9glsxaRUDemcgd7Z8yPTj0CtFuRijN+93286iZ46689sH/KULM9LQDrTz4nnq4L9/BYw6
-	edbF5N8cTz97/YoGuoxmWE/BX5Je5JBo6kguZPgjMGYWILjiMG83B0QXTPqvDRJrqU1r6h
-	kDr3dZ+Fb7lLp7L3keUbcKbeM88z+10=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uv94iUmH;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763890048; a=rsa-sha256;
-	cv=none;
-	b=2r5xHjSnEwOFcczYpm6exl/0FRw0lzcK/UIC1NHsj27dsg+ogap6dRG2YQdHv/vULILUeK
-	md9YygLwovElz+Gfjow2NxlzzzFDVq0pR86vBfOrkkm8x2BQqCwRRLYViIqg56yS/9roA+
-	FQxHH91kuh2GRSq+UGgM33aDyPUjOfY=
+	bh=LTn9qJIq+mYgVyaCUq4ZKMpQcmCFxb1ZUQd0WnibQp0=;
+	b=JDizuUZTmXajFkBWymOqrMvMG8VXCIj7Wt2CgLSHSu3dMoqQRMo5UDecq76TgnkkOdVHQj
+	6Z5yPwydb9VkgRNkFtJwGmIqEEQeE3wc6dyC/pPAR0TfihbY1MPhAgmQBczumDiGwA+q8o
+	eiDoFfD6J3JjJeIlFrmuC/JVsbsV7bw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05A0D4434A;
-	Sun, 23 Nov 2025 09:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E48C116B1;
-	Sun, 23 Nov 2025 09:27:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9861340E31;
+	Sun, 23 Nov 2025 09:29:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9630EC16AAE;
+	Sun, 23 Nov 2025 09:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763890046;
-	bh=5u89c6u7PmgUNyXcIwwe0ortgOiu9oUgVZBpk9oXbqY=;
+	s=k20201202; t=1763890153;
+	bh=BsCF5Vo0XWlxKJ/sd2YtUXNzzKo8ijMIlbF7CAcmddQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uv94iUmHued1v2Q4orS2+AolylSWhtdqajQaxRz+LM6oKZ1dsvahXFkJfRAbyEfCI
-	 J69bPl2Q5R+eo9qpF5RWgUiTwHb4Cnaejhd3cC3J1vp3lJVp/PNKwSBroHCdZs43Ji
-	 xkyGSqx4e7WI+Eoy3a4zMUzDcBKv9jur1CP769YTXrtu+e6ggpCztMqjPjC2FPmn+L
-	 g+xrh8j1qsLR9LDL1NT97JYL8+HxMuRg8YkboaEjLk4ct8HEtDKHNnxsTAXWhHzTuS
-	 epE8pdwJh5skTw58RJCZkBs3uTYO8QBPzVmcIHKrIP9SUKGQXIfqR+6Xtd7v/UpGeI
-	 1CuF6xraQ5nvw==
-Date: Sun, 23 Nov 2025 11:27:19 +0200
+	b=khHRGrerO0B4QAeiYUvcoYrCRZ7uhsJTe+ITJfW9iphjYhW1N0sKuW0fM2MRwJw5g
+	 l5TQWitHCTush7XpYYXn86yoAgIkRd9Jwskf2hII2lEiVCE7zf5OOfdvlMrwa8vZjW
+	 Ik5A1AzJIUJHNbsmi9XzwA+YcND1G9ACaXTYc4WHni5+e1Z1jhbXz3uCmnpCgQ2m3H
+	 xVSHgwZBltr02JD/bKnR+CeUVLQl/hSqnsw87N+adQ/1gUneAjaJhpHJc+n/0k18+T
+	 x1fX5UifmLzM5F0ekSp9B9Kvbm9Hhy2/LQg7y3Qe21gYlJvr175L8foN4YrQkfmFk/
+	 c90tmT+r9YtYg==
+Date: Sun, 23 Nov 2025 11:29:04 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: ranxiaokai627@163.com
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com,
-	changyuanl@google.com, graf@amazon.com, pasha.tatashin@soleen.com,
-	pratyush@kernel.org, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2] KHO: Fix boot failure due to kmemleak access to
- non-PRESENT pages
-Message-ID: <aSLTd7pAWgalkT7X@kernel.org>
-References: <20251122182929.92634-1-ranxiaokai627@163.com>
+To: Richard Weinberger <richard@nod.at>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, corbet@lwn.net, mhocko@suse.com,
+	surenb@google.com, vbabka@suse.cz, Liam.Howlett@oracle.com,
+	lorenzo.stoakes@oracle.com, david@kernel.org,
+	akpm@linux-foundation.org,
+	Vladimir Davydov <vdavydov@virtuozzo.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH] pagemap: Update BUDDY flag documentation
+Message-ID: <aSLT4J4UNh-0xiXN@kernel.org>
+References: <20251122211920.3410371-1-richard@nod.at>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251122182929.92634-1-ranxiaokai627@163.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 32A6AC0015
-X-Stat-Signature: 4e5otoqsk5bnjcs6jxptty7isbnh137b
+In-Reply-To: <20251122211920.3410371-1-richard@nod.at>
 X-Rspam-User: 
-X-HE-Tag: 1763890048-586824
-X-HE-Meta: U2FsdGVkX196oySPBGm/1p80Xf3P22rlCCtst3CdA2+PESJI058r6kRrttkfzFC36xo/khIPfmlRY+ahfWwlMd4eUFPXxImm949s6NneFfjKVD7leKGg7oHw4H02J3IVx4WH3ORDADQOTXOuBFR5Rz76IkgwSVAIYtdFGqtHiWnWExDvVE6Fo76uMaJyP+RjLniJN502MKZ4JWdsGphZMbi6N0EXN4NiOKV+vXutO402WCPML8M1u+sk/EuJ3no6GX2a5fTrY+Ev0aoof9dCvMtbtC7DamsyP3d+NT/WqFCYyUR2IOhuvIuKEI/i18FxgCfLnz5r9PmrIahHHjxhzCIpykTuRPQ4Bh3KTdHSiOY4v4t8iwiCKA31+s/DztGFyjFhBJqt5vQV7n+7149GYxtRNYGfg5ujRdrqYNR7eCLzYUHgJSCAC4fSczUqEPWZHk23osy4pgP0I/aF+jdTvArs9BEDUJDtfsJtL0mofgcrKZbLOQ24OWAs7px+FVdOzj/q7/u5Y3snx0INQHtCxCZtFOInVjWdztFViQ4bwJym5i2Oqf7zDfAykajsUpGiTEFLwNvDFgNbPIpQjqanBLnqI7ND+Jpmm5km0J2qFPNDOAVyk0FY7Q+QfHAZAxlS+CEwnqItolKgPk6JO1naAIOy01idRN6TJCt1h9Rg8XB/2xaDCd4Ddv3LQ5FIRwzhiWXu5W3yDpGM6nYcIyDN+pLHf2D+JfFSqHFUJRkIBEt+VqeiphHa3V0XMq/AykWnVWBYFKXws2D5jZrxxrBamtckC2yfVWUX5rjQtuluDMaRNh86oXqzJ8VwEUeMOyRHOAiDI+DvRjLWfHY5MAG67Fk/HJWyiPOdqZdcO5kIyvbeStF9e4jOvGAh8q6gdk+YGjQpHFuhIzCafvpdGfdpl5A5iQXhPUySuMFNwwQu8FSCFw8u3kN1uEEUbUI3+I3xaKD7NdKj8WmspLzwMKq
- 9ocguMNN
- QfOjGVE4clVEZuNnNFq3cztxeC0excEbU32tnITzTIEcYaeJkwZAetmEOQb88z/eaCyTXdzHlrSXPrD+bIny+RjL+33XH78isvuBFM/vzyROwTKHT+e7QZ4xa4B8GkfvJYS6i6Jkzrubs15xv9otR93XhWwY06MUpVtm/U+Re6DY+MTtSLD64XlqyrNurEjlyORP4P74o0B9o0204a9p2/ND4Koy96OhnRDjrYUPCLRS8yuvh8phZOdCkusp3vzZ86a2T/uWforuEJWt5zsV0Cydd+ZhbCKeuQW/3RGTHvt2XwyqpWs4ZzAr9JQvDt8lPaah+PJuGsxjDJKGdlKr2AE52l4o0cdA57jEaxOVvWiPl/Hk=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A4C5C180004
+X-Stat-Signature: kwgihijpeguqpk4kzo9e6ksjw4dei7tc
+X-HE-Tag: 1763890154-474046
+X-HE-Meta: U2FsdGVkX1+I85gAeCepunj/TbYLEhRwo88CFSDaMFx4ZJM9tDOUb/y1OIu6clQM7Ie8tgmEB5wNUGL/V2bSSZEUY7HpNryWTPgmxxeasd9IhVpSBU1mfKVrid2uENLa6rSP+/vkT/tPZOvrMLqfphJAAATl6J5cA7FYmK0FhWRmIypR4E1Skzka4X01VtDxyDwYwbsAB3tcCgt6oD61/TJuyA6oBvBkIP1ZAJnk7yHJ82ZynAJzcTF9kgL2+jMaIQR3FWYMPCfJN2EnjkB17klUVlYmvoZYZTMxvdqZnJa9K/QcIrBkNvYgCNmo7CabGrl6y6X2qBbPZPFR+7GfwHC9/I93EZgtUQuI5UkN2wOr5gAVZbWFQQAi469mgkvm2fqNUMDY9fWEDOKsNQxBWd2wQX9ZyahQB3/P2VN0lHHvDdGglRvbR/0tTEcWVoC/xUHZFLSCm5pmFlBNfs0vHKKeQyWTcg1srS9KxZcHecpkP/XN4r/vaqJbpk5huejIR7kGbj/87Nvd2PuCrmdRHPHG+uYscKjHXfJIXSJwf3PalSaRY1DqCuBeeVoztw+royO+drGqEb2MrQ/nrD0WVvMxb0QBvX35i33VbEOfHyCO7SGQMHVZtOmMJLqMyK5TGS58lTuDXVNuLttoAVfPdUZ6nlr55XohIUmDPsH5f8z2gBzijgKlmP9NCs/bOAxQuPnoggRxgnlMMkCLx1s3IOYMDjKV7DZen7uK99Tfmicq2Ai5PkGHnsiAtxgTKkH0QCEjjjTkdg9PWIJFxX4CsGiEPC2VBX+87tDP2Oxifqc2501N5zhYqh33LNgozDPYa35/XM/A7+2DDiA+yaNH/prBd0vK/Y7YNj2xztJciUG++IRpA7piXCCFoA1asddYWKQp46G2mNqFpI21vi8MwtVj2Z6lnoURomXwqcW+lPvb1UCtsTnaCaJpTJMNG3+oTFeYlgvaeFfSHpM0Sjw
+ 6u9phhen
+ yaDrqTVzNz+6DpTOE/quSVlrAidcZRpWqVoGJECW1T0jILZGJENg9V2Sgl0yRvjLD6/zx5IyGHwo+PgWYdKDzk2AoFJawB6ikjkqq2uffnHIqMWOLBhk4dKlEfCrPqNEmb/5OV8N/Wxp8EXOvSV5VUYJL4LZj2jpw0yreX1K20/e5N3rZaUeMi1LIF+KYaANNkORIok43U4dRpN8EHamPbAqCsbfRUkDnqKzB3DGU1Bqx+PHm3RRwish2oqxtbkEVSsolqFvOeBh43qO9ANUJetNCtFQ5mCGEbIJIptpumtFpLUKM5HYb7QA3K3HeE8UBLQomXzI/N6QE+EdKBZ2eK2QxO1A3t8v/7xUDoBlNqF+3yfJLUH2opSsZlhrLT5/VudHdOv9jZyAg096knkXCdFTdeD+Ae/Y7i3mOC4i+qBy0sTFyLUp5xMA4eHeadgO2NafR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,81 +98,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Sat, Nov 22, 2025 at 06:29:29PM +0000, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Sat, Nov 22, 2025 at 10:19:20PM +0100, Richard Weinberger wrote:
+> Since v4.6 the BUDDY flag is set for _all_ pages in the block
+> and no longer just for the first one.
+> This change was introduced by:
+> commit 832fc1de01ae ("/proc/kpageflags: return KPF_BUDDY for "tail" buddy pages")
 > 
-> When booting with debug_pagealloc=on while having:
-> CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
-> CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF=n
-> the system fails to boot due to page faults during kmemleak scanning.
+> Strictly speaking, this was an ABI change, but as nobody has noticed
+> since 2016, let's just update the documentation.
 > 
-> This occurs because:
-> With debug_pagealloc is enabled, __free_pages() invokes
-> debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
-> freed pages in the kernel page table.
-> Commit 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> triggers this when releases the KHO scratch region calling
-> init_cma_reserved_pageblock(). Subsequent kmemleak scanning accesses
-> these non-PRESENT pages, leading to fatal page faults.
-
-I believe this is more clear:
-
-With debug_pagealloc is enabled, __free_pages() invokes
-debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
-freed pages in the kernel page table.
-KHO scratch areas are allocated from memblock and noted by kmemleak. But
-these areas don't remain reserved but released later to the page allocator
-using init_cma_reserved_pageblock(). This causes subsequent kmemleak scans
-access non-PRESENT pages, leading to fatal page faults.
- 
-> Call kmemleak_ignore_phys() from kho_init() to exclude
-> the reserved region from kmemleak scanning before
-> it is released to the buddy allocator to fix this.
-
-I'd suggest
-
-Mark scratch areas with kmemleak_ignore_phys() after they are allocated
-from memblock to exclude them from kmemleak scanning before they are
-released to buddy allocator to fix this.
-
-> 
-
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-
-With the changes above
+> Cc: Vladimir Davydov <vdavydov@virtuozzo.com>>
+> Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+> Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Richard Weinberger <richard@nod.at>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  kernel/liveupdate/kexec_handover.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  Documentation/admin-guide/mm/pagemap.rst | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 224bdf5becb6..c729d455ee7b 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -11,6 +11,7 @@
->  
->  #include <linux/cleanup.h>
->  #include <linux/cma.h>
-> +#include <linux/kmemleak.h>
->  #include <linux/count_zeros.h>
->  #include <linux/kexec.h>
->  #include <linux/kexec_handover.h>
-> @@ -1369,6 +1370,7 @@ static __init int kho_init(void)
->  		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
->  		unsigned long pfn;
->  
-> +		kmemleak_ignore_phys(kho_scratch[i].addr);
->  		for (pfn = base_pfn; pfn < base_pfn + count;
->  		     pfn += pageblock_nr_pages)
->  			init_cma_reserved_pageblock(pfn_to_page(pfn));
+> diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
+> index e60e9211fd9b2..c57e61b5d8aa8 100644
+> --- a/Documentation/admin-guide/mm/pagemap.rst
+> +++ b/Documentation/admin-guide/mm/pagemap.rst
+> @@ -115,7 +115,8 @@ Short descriptions to the page flags
+>      A free memory block managed by the buddy system allocator.
+>      The buddy system organizes free memory in blocks of various orders.
+>      An order N block has 2^N physically contiguous pages, with the BUDDY flag
+> -    set for and _only_ for the first page.
+> +    set for all pages.
+> +    Before 4.6 only the first page of the block had the flag set.
+>  15 - COMPOUND_HEAD
+>      A compound page with order N consists of 2^N physically contiguous pages.
+>      A compound page with order 2 takes the form of "HTTT", where H donates its
 > -- 
-> 2.25.1
+> 2.51.0
 > 
 > 
 
