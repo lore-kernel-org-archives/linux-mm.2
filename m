@@ -4,145 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFB06CFC26D
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 07:09:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4B0CFC518
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 09:27:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 297D56B002B; Sun, 23 Nov 2025 02:09:13 -0500 (EST)
+	id 7D4126B000E; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26FD06B00A1; Sun, 23 Nov 2025 02:09:13 -0500 (EST)
+	id 784176B0092; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 184996B00A2; Sun, 23 Nov 2025 02:09:13 -0500 (EST)
+	id 6C0E76B0093; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0712A6B002B
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 02:09:13 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92E52130B93
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 07:09:12 +0000 (UTC)
-X-FDA: 84140995344.30.A92DC28
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1F49F100002
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 07:09:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=n2SgyKt1;
-	spf=pass (imf14.hostedemail.com: domain of maddy@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=maddy@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BD676B000E
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 04:27:30 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E00C2C0B64
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:27:29 +0000 (UTC)
+X-FDA: 84141343818.25.65D886B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 32A6AC0015
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:27:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uv94iUmH;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763881750;
+	s=arc-20220608; t=1763890048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWVoqRCJJQzeqwmG+uZqGF4Sif6dBJSA9rBhyQq0L5k=;
-	b=ScfMN6Vk1j7bn4jyuZprcVZEHgB8hNp2NZbqvyiXpeioBPJPDnk+CwGHJXlJc03hgA0Cab
-	UkdGy2h/1hnV45lpN8lzHhODBR7uQPFMsc19a40ryTSy5jmeD/PL2vYJbuDpdxeoqUm8Wr
-	kbtVI89BrW0dtGrw9w+AHTHHeZdhIDY=
+	bh=iGJBxA3HpMNht2r+f4Xo2T/V6gkIV+T8N1PxUbEDDvw=;
+	b=T9glsxaRUDemcgd7Z8yPTj0CtFuRijN+93286iZ46689sH/KULM9LQDrTz4nnq4L9/BYw6
+	edbF5N8cTz97/YoGuoxmWE/BX5Je5JBo6kguZPgjMGYWILjiMG83B0QXTPqvDRJrqU1r6h
+	kDr3dZ+Fb7lLp7L3keUbcKbeM88z+10=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=n2SgyKt1;
-	spf=pass (imf14.hostedemail.com: domain of maddy@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=maddy@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763881750; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uv94iUmH;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763890048; a=rsa-sha256;
 	cv=none;
-	b=NGj1ry365ozLBBMSKOr+XmC9kaE9iubCWx+lI5cLdOrf8cnJNhcLKOUF2voHKSbsgXX/fe
-	VmPptDW3yOsilokv8o/yZEZY3nf2cTHCGHVgrHZQp8JbyB8K4O2Le5+CmfBxJVj6gesM89
-	qD04b9j52dbWQqk7DV+9frnuwQREFkE=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AN57K1V012347;
-	Sun, 23 Nov 2025 07:08:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fWVoqR
-	CJJQzeqwmG+uZqGF4Sif6dBJSA9rBhyQq0L5k=; b=n2SgyKt1Imzb3KshltZ4kw
-	GCk30khNq5je2WSuwv7gP4nkkY/QSxrZyRHU99w3vKZ0cIk1O2Sopfz0x18sUrtU
-	wsvBlgijJfA1k4feoZVX25y0a1vJ3F1TS9tdywFHEvFzeufHZcaIWrTLY2uhRG0j
-	bzxN88XhDiNqMAaOuoyH7zYrLrP7whdYfVDgLQR7+So4NMZdw0JO01YWhwIn71C9
-	Q+yHhW8cqo93XVAd7fKEpzWfFIpVRIobew9C03V8aj+6p8U3oJmfRQlsbRFOyEky
-	KBwWy3d4Vo1zlBxfz3TwXg87Pz50yImWcDK1DSxVz2uZLHsMdvKa+LHHhHxWquqQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4phkt0a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Nov 2025 07:08:50 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AN78AsC025230;
-	Sun, 23 Nov 2025 07:08:49 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4phkt09-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Nov 2025 07:08:49 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AN6fQ9K030768;
-	Sun, 23 Nov 2025 07:08:48 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4akqgs10ne-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Nov 2025 07:08:48 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AN78kNd29491478
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 23 Nov 2025 07:08:46 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C134C20043;
-	Sun, 23 Nov 2025 07:08:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 28ED820040;
-	Sun, 23 Nov 2025 07:08:44 +0000 (GMT)
-Received: from li-ec1c5fcc-2902-11b2-a85c-a56d12941531.ibm.com (unknown [9.39.28.54])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 23 Nov 2025 07:08:43 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nadav Amit <nadav.amit@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Dave Vasilevsky <dave@vasilevsky.ca>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3] powerpc, mm: Fix mprotect on book3s 32-bit
-Date: Sun, 23 Nov 2025 12:38:42 +0530
-Message-ID: <176388153643.266380.17169073097404532999.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251116-vasi-mprotect-g3-v3-1-59a9bd33ba00@vasilevsky.ca>
-References: <20251116-vasi-mprotect-g3-v3-1-59a9bd33ba00@vasilevsky.ca>
+	b=2r5xHjSnEwOFcczYpm6exl/0FRw0lzcK/UIC1NHsj27dsg+ogap6dRG2YQdHv/vULILUeK
+	md9YygLwovElz+Gfjow2NxlzzzFDVq0pR86vBfOrkkm8x2BQqCwRRLYViIqg56yS/9roA+
+	FQxHH91kuh2GRSq+UGgM33aDyPUjOfY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 05A0D4434A;
+	Sun, 23 Nov 2025 09:27:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E48C116B1;
+	Sun, 23 Nov 2025 09:27:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763890046;
+	bh=5u89c6u7PmgUNyXcIwwe0ortgOiu9oUgVZBpk9oXbqY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uv94iUmHued1v2Q4orS2+AolylSWhtdqajQaxRz+LM6oKZ1dsvahXFkJfRAbyEfCI
+	 J69bPl2Q5R+eo9qpF5RWgUiTwHb4Cnaejhd3cC3J1vp3lJVp/PNKwSBroHCdZs43Ji
+	 xkyGSqx4e7WI+Eoy3a4zMUzDcBKv9jur1CP769YTXrtu+e6ggpCztMqjPjC2FPmn+L
+	 g+xrh8j1qsLR9LDL1NT97JYL8+HxMuRg8YkboaEjLk4ct8HEtDKHNnxsTAXWhHzTuS
+	 epE8pdwJh5skTw58RJCZkBs3uTYO8QBPzVmcIHKrIP9SUKGQXIfqR+6Xtd7v/UpGeI
+	 1CuF6xraQ5nvw==
+Date: Sun, 23 Nov 2025 11:27:19 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: ranxiaokai627@163.com
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com,
+	changyuanl@google.com, graf@amazon.com, pasha.tatashin@soleen.com,
+	pratyush@kernel.org, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v2] KHO: Fix boot failure due to kmemleak access to
+ non-PRESENT pages
+Message-ID: <aSLTd7pAWgalkT7X@kernel.org>
+References: <20251122182929.92634-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAxNiBTYWx0ZWRfX2E+dZydoBIjq
- j/a/Fuhl1XWmEEj5AHgqhURViq8wIUsLzFFYnFIPDULo8sKfC64ctWWtkuiBy/5BCSeTkGXVPce
- Q1P77wvL8O5Uub/5FHar82Ek5l3npYFRBmUn6YZ8j8yMhmLRmHPIYaUS2O0hoAhVsMuOPyngDLu
- QbGTjOg2AnDtHItFHSaPv8RUGU8Jm6BLkww3vhoF7tQyVbpZapuW2c1+MBVFLQ7Ssp+rQ8ELLT4
- 4W8/o2HcsIsCqHi2DZBFeWxzP50Vvqkhmyhg4KhOhL+Dw7URkF4FE4+p9xPCoLln3zxp/6qJ5DV
- 7fD0hLLjK9dtf3/bjd2gUim3IaF4ypPgp71M9c073fhgwlCB5u4i1D64PDD/naIH7beI1MkaVWC
- 9x3WW8VpHeebPQ7zNTM1xAg4IcQspA==
-X-Proofpoint-ORIG-GUID: FI8kl5yIzH5v47u0HKj_StUJaVkAQRz_
-X-Authority-Analysis: v=2.4 cv=CcYFJbrl c=1 sm=1 tr=0 ts=6922b302 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=qxS73Cczoj_2XmlJWXgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: OPEAhxgTMF36rTxy6rRkhAlgEqpEQIwu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-23_02,2025-11-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 clxscore=1011 adultscore=0 spamscore=0
- phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511220016
-X-Rspamd-Queue-Id: 1F49F100002
-X-Stat-Signature: j6cefwsg7is5uba971cjbwhcaxs99oyr
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251122182929.92634-1-ranxiaokai627@163.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 32A6AC0015
+X-Stat-Signature: 4e5otoqsk5bnjcs6jxptty7isbnh137b
 X-Rspam-User: 
-X-HE-Tag: 1763881749-589932
-X-HE-Meta: U2FsdGVkX1+b8zHgTvrWBVSoKgT4p9X+6PNlbXjFR53R237H78vWRGEQWCnnvnWjut7mFxeDN9r3Ri8WJmy2e7wyp+p1XANiL5v/bN/rkLtJveMIQJSH/nyrT8bUYRF2woTsWw+YBGHh4IEGmVh9Mo+CQd3QmtVPemz0+pAYdTnOdkC7kFoA0ep5tJdTSp7cpuMnblRrsgSSYlNMTlIQ+tl5+4iO7sfaOLEhVDF3eBcuepeY3wl02TWvICTOp9+PyFWTiGoIp4g+VMbkFWK881rlyFFlGkd9K90eoljwVqt9ox/mRcbvt8xrw7d89tvfHv46AQfBIB/4lxNDxn+LmdZYpYY2tmxMuWZUgPChZH+hInPgrGHYFsYAid6PbU4SC2jdqwB2jjqpqzKWGmM5CqhTn20bdmS92EpHhXaUu5MwvrVmB+GcPLwGysdyaPIJfx33WO09ea2F5PQwHB7ASTJ/U8981gbfJslYG2NXvLrPxa0yYOhdF7LxG7wZ9n61KeSPYIjlC8ATvo9FwMp8orq9nO9aWkA/3my9KwgWlknikpv8ZGy37c7Rof5HXvwd1OgTdsWt/Fcq2yuv3DvKwJcDXT5YH6S4vnLyXn34WdeoRjKISJURif4+esKPBtByfYF1NQGCX2Lybze3GxuZyPIQ9LEcloxwevegdMqkXwfa2MIHgtw2801zYFA4bRy9cbO2LmQdL6h6aJ1xtB2JYFuksMFjklDPkXeu+BRiCIpi4ZHqOXJFegM49gYWPJBpZOTwSsQet1Z1Y9GMRuoWd/pGKQ/wOvd8NvMaXBF7YunCR4ibDacbY3BK/nUk5TMtJJzgisAvV2IXxBYVW24gZnu+2p6moJP3zBW5MUv5v4sBmr9Bq60q4tujYsVNQAo4Eg1rc4vDwY3YOWUEBO9kUv/BHzFNkUkzFrnr4bGIg45kBulZAMT8W64xgAD5ENg9FdYVnuDtXnnIqpHm4vM
- QYkjBAo9
- H/8MSJTj1DIeKuB8IqW12ntVvfz7M/bcWiG3kEb3STkprWgPL/xUXPpSNvIjEEx4LTdsHdfL/VAr3HtaAaaSmvnflr1j9CWJgo50Ow9yRuDAJOwHRInEAIRMd3OaI1auoypbkvgqBBnWlAeuzJyNfNVcQtFLzrZ1Jzp4AveIrsR/H7+fTHcWpavUH6UzOGqDboaMgcQ/ABh72Es7DOMZ7pPdATq69BjysHP61oWL01Gg4bDI6p7c9fGK/cPTfGsZseK2kHdy9CtBDYY9ktGkPlchRuDw0BS1lIVQtCWTB9qbyUrx9x1uC+qPR3Ze4EsycUo63raLUtWLnK2Bte2oNqw0Vc8VCCDB60DiHmalKIqywJRrHF9PL+0VvBg==
+X-HE-Tag: 1763890048-586824
+X-HE-Meta: U2FsdGVkX196oySPBGm/1p80Xf3P22rlCCtst3CdA2+PESJI058r6kRrttkfzFC36xo/khIPfmlRY+ahfWwlMd4eUFPXxImm949s6NneFfjKVD7leKGg7oHw4H02J3IVx4WH3ORDADQOTXOuBFR5Rz76IkgwSVAIYtdFGqtHiWnWExDvVE6Fo76uMaJyP+RjLniJN502MKZ4JWdsGphZMbi6N0EXN4NiOKV+vXutO402WCPML8M1u+sk/EuJ3no6GX2a5fTrY+Ev0aoof9dCvMtbtC7DamsyP3d+NT/WqFCYyUR2IOhuvIuKEI/i18FxgCfLnz5r9PmrIahHHjxhzCIpykTuRPQ4Bh3KTdHSiOY4v4t8iwiCKA31+s/DztGFyjFhBJqt5vQV7n+7149GYxtRNYGfg5ujRdrqYNR7eCLzYUHgJSCAC4fSczUqEPWZHk23osy4pgP0I/aF+jdTvArs9BEDUJDtfsJtL0mofgcrKZbLOQ24OWAs7px+FVdOzj/q7/u5Y3snx0INQHtCxCZtFOInVjWdztFViQ4bwJym5i2Oqf7zDfAykajsUpGiTEFLwNvDFgNbPIpQjqanBLnqI7ND+Jpmm5km0J2qFPNDOAVyk0FY7Q+QfHAZAxlS+CEwnqItolKgPk6JO1naAIOy01idRN6TJCt1h9Rg8XB/2xaDCd4Ddv3LQ5FIRwzhiWXu5W3yDpGM6nYcIyDN+pLHf2D+JfFSqHFUJRkIBEt+VqeiphHa3V0XMq/AykWnVWBYFKXws2D5jZrxxrBamtckC2yfVWUX5rjQtuluDMaRNh86oXqzJ8VwEUeMOyRHOAiDI+DvRjLWfHY5MAG67Fk/HJWyiPOdqZdcO5kIyvbeStF9e4jOvGAh8q6gdk+YGjQpHFuhIzCafvpdGfdpl5A5iQXhPUySuMFNwwQu8FSCFw8u3kN1uEEUbUI3+I3xaKD7NdKj8WmspLzwMKq
+ 9ocguMNN
+ QfOjGVE4clVEZuNnNFq3cztxeC0excEbU32tnITzTIEcYaeJkwZAetmEOQb88z/eaCyTXdzHlrSXPrD+bIny+RjL+33XH78isvuBFM/vzyROwTKHT+e7QZ4xa4B8GkfvJYS6i6Jkzrubs15xv9otR93XhWwY06MUpVtm/U+Re6DY+MTtSLD64XlqyrNurEjlyORP4P74o0B9o0204a9p2/ND4Koy96OhnRDjrYUPCLRS8yuvh8phZOdCkusp3vzZ86a2T/uWforuEJWt5zsV0Cydd+ZhbCKeuQW/3RGTHvt2XwyqpWs4ZzAr9JQvDt8lPaah+PJuGsxjDJKGdlKr2AE52l4o0cdA57jEaxOVvWiPl/Hk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,21 +95,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 16 Nov 2025 01:40:46 -0500, Dave Vasilevsky wrote:
-> On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
-> unnoticed because all uses until recently were for unmaps, and thus
-> handled by __tlb_remove_tlb_entry().
+Hi,
+
+On Sat, Nov 22, 2025 at 06:29:29PM +0000, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
-> After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
-> tlb_gather_mmu() started being used for mprotect as well. This caused
-> mprotect to simply not work on these machines:
+> When booting with debug_pagealloc=on while having:
+> CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
+> CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF=n
+> the system fails to boot due to page faults during kmemleak scanning.
 > 
-> [...]
+> This occurs because:
+> With debug_pagealloc is enabled, __free_pages() invokes
+> debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
+> freed pages in the kernel page table.
+> Commit 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> triggers this when releases the KHO scratch region calling
+> init_cma_reserved_pageblock(). Subsequent kmemleak scanning accesses
+> these non-PRESENT pages, leading to fatal page faults.
 
-Applied to powerpc/next.
+I believe this is more clear:
 
-[1/1] powerpc, mm: Fix mprotect on book3s 32-bit
-      https://git.kernel.org/powerpc/c/78fc63ffa7813e33681839bb33826c24195f0eb7
+With debug_pagealloc is enabled, __free_pages() invokes
+debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
+freed pages in the kernel page table.
+KHO scratch areas are allocated from memblock and noted by kmemleak. But
+these areas don't remain reserved but released later to the page allocator
+using init_cma_reserved_pageblock(). This causes subsequent kmemleak scans
+access non-PRESENT pages, leading to fatal page faults.
+ 
+> Call kmemleak_ignore_phys() from kho_init() to exclude
+> the reserved region from kmemleak scanning before
+> it is released to the buddy allocator to fix this.
 
-cheers
+I'd suggest
+
+Mark scratch areas with kmemleak_ignore_phys() after they are allocated
+from memblock to exclude them from kmemleak scanning before they are
+released to buddy allocator to fix this.
+
+> 
+
+Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+
+With the changes above
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+> ---
+>  kernel/liveupdate/kexec_handover.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 224bdf5becb6..c729d455ee7b 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -11,6 +11,7 @@
+>  
+>  #include <linux/cleanup.h>
+>  #include <linux/cma.h>
+> +#include <linux/kmemleak.h>
+>  #include <linux/count_zeros.h>
+>  #include <linux/kexec.h>
+>  #include <linux/kexec_handover.h>
+> @@ -1369,6 +1370,7 @@ static __init int kho_init(void)
+>  		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
+>  		unsigned long pfn;
+>  
+> +		kmemleak_ignore_phys(kho_scratch[i].addr);
+>  		for (pfn = base_pfn; pfn < base_pfn + count;
+>  		     pfn += pageblock_nr_pages)
+>  			init_cma_reserved_pageblock(pfn_to_page(pfn));
+> -- 
+> 2.25.1
+> 
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
