@@ -4,92 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D15CFA46B
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 09:29:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A64FCFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 10:27:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA37B6B00A5; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
+	id 3050E6B0006; Sun, 23 Nov 2025 05:27:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7B4C6B00AA; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
+	id 28E7B6B000C; Sun, 23 Nov 2025 05:27:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C995D6B00A5; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
+	id 17D1F6B00A4; Sun, 23 Nov 2025 05:27:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B46866B00A5
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 04:29:16 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6537D140B1D
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:29:16 +0000 (UTC)
-X-FDA: 84141348312.09.1CEEA43
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F1C396B0006
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 05:27:19 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54702C0B90
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:27:19 +0000 (UTC)
+X-FDA: 84141494598.03.ABB1560
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A4C5C180004
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:29:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khHRGrer;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763890154; a=rsa-sha256;
-	cv=none;
-	b=MPvEmU1LeTrfFORXyWCLOjg1R8GNciQeXmWP4nXADIvhP6VkN7pAO2YeAIdUEQ6THBTwbl
-	2yYX4mxvwIMReJfNgnmWNpKm1jnMF5K1vEX+C9pHtnDQ6/o3bfZlV9lgTYuQjcfjr5oawL
-	ALqul/h7uWHBiqzAh99p8MCZbxz3o6k=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khHRGrer;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id A502B14000E
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:27:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=miOLm7bo;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763890154;
+	s=arc-20220608; t=1763893637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LTn9qJIq+mYgVyaCUq4ZKMpQcmCFxb1ZUQd0WnibQp0=;
-	b=JDizuUZTmXajFkBWymOqrMvMG8VXCIj7Wt2CgLSHSu3dMoqQRMo5UDecq76TgnkkOdVHQj
-	6Z5yPwydb9VkgRNkFtJwGmIqEEQeE3wc6dyC/pPAR0TfihbY1MPhAgmQBczumDiGwA+q8o
-	eiDoFfD6J3JjJeIlFrmuC/JVsbsV7bw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=LjtyzGjmWcC5lVhfhDocKKlgPGW9LIlInxxfTZEqHBw=;
+	b=q4RcZ5pMOZoG9e2O9wt/P9IwASL9/qUsPaglrFcsRinluP2fBPPLgjdzUUtO+EQwQXKR9C
+	cgMCow9BKGoKKRI3kFQmI/NVdQid9RyV0aJLncbNlB42IRvNHhao601io3reKDmYPEQfSy
+	Lq+5HDb8hsdQ4sVwt22F3vY+GpyTwtQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763893637; a=rsa-sha256;
+	cv=none;
+	b=q2nvE8ICKbA7XEi7k6HtiknV4Qkx9TqJptcqWz8Tvlg2YIiXPu5i0kCCNbrRUfkPYQfUTZ
+	PuAw1Yx+9t6gKaOubWOF3XZUEa/5+8VkjoeDtbde81iLHbraII8eOOzmG6EYAYkG2lnr/b
+	Pa84pAW2s5ZAz3tAbWZw6ykR1htuS5w=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=miOLm7bo;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9861340E31;
-	Sun, 23 Nov 2025 09:29:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9630EC16AAE;
-	Sun, 23 Nov 2025 09:29:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E21F4383B;
+	Sun, 23 Nov 2025 10:27:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254B9C113D0;
+	Sun, 23 Nov 2025 10:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763890153;
-	bh=BsCF5Vo0XWlxKJ/sd2YtUXNzzKo8ijMIlbF7CAcmddQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=khHRGrerO0B4QAeiYUvcoYrCRZ7uhsJTe+ITJfW9iphjYhW1N0sKuW0fM2MRwJw5g
-	 l5TQWitHCTush7XpYYXn86yoAgIkRd9Jwskf2hII2lEiVCE7zf5OOfdvlMrwa8vZjW
-	 Ik5A1AzJIUJHNbsmi9XzwA+YcND1G9ACaXTYc4WHni5+e1Z1jhbXz3uCmnpCgQ2m3H
-	 xVSHgwZBltr02JD/bKnR+CeUVLQl/hSqnsw87N+adQ/1gUneAjaJhpHJc+n/0k18+T
-	 x1fX5UifmLzM5F0ekSp9B9Kvbm9Hhy2/LQg7y3Qe21gYlJvr175L8foN4YrQkfmFk/
-	 c90tmT+r9YtYg==
-Date: Sun, 23 Nov 2025 11:29:04 +0200
+	s=k20201202; t=1763893636;
+	bh=uQ+XNRc47lHfiREiaIwuPCqXlDMz96Y+Ua7eszfUoWw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=miOLm7boejNLZkZWl7MecUiBUNqyViv6anj+8bxooagNb3kdikR5sNpE/yUgJ2OeH
+	 LOxKOzOxo+XdaqrY81kTYt5phmRtUbIqvbTj8/ytq4XGAu/bwVOtY6iqyr34WINb42
+	 rTtculAEvWMXO36PnaApcYiJF4kYrM+LiBbq/y/YHeh5RZ4wvWG4JhZmSPVvZTC/y3
+	 JPtMO7WwXssH5azIRYZ+l7z7Nopi7xlVVWLRWXfA9gZU0zAAqq6BbEecaBNL0kJZK4
+	 rjSc5qQhpyQkvTVGUuxCC8aRYwVcSOVyei0hy7xwXcU2ht25mTlFMsVaZ0tkQPhMIW
+	 r8fJUHurTqBLg==
 From: Mike Rapoport <rppt@kernel.org>
-To: Richard Weinberger <richard@nod.at>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, corbet@lwn.net, mhocko@suse.com,
-	surenb@google.com, vbabka@suse.cz, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, david@kernel.org,
-	akpm@linux-foundation.org,
-	Vladimir Davydov <vdavydov@virtuozzo.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH] pagemap: Update BUDDY flag documentation
-Message-ID: <aSLT4J4UNh-0xiXN@kernel.org>
-References: <20251122211920.3410371-1-richard@nod.at>
+To: linux-mm@kvack.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 0/5] mm, kvm: add guest_memfd support for uffd minor faults
+Date: Sun, 23 Nov 2025 12:27:02 +0200
+Message-ID: <20251123102707.559422-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251122211920.3410371-1-richard@nod.at>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A502B14000E
+X-Stat-Signature: ydqnwqn78ydorcwowh66omkyoa9ttajf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A4C5C180004
-X-Stat-Signature: kwgihijpeguqpk4kzo9e6ksjw4dei7tc
-X-HE-Tag: 1763890154-474046
-X-HE-Meta: U2FsdGVkX1+I85gAeCepunj/TbYLEhRwo88CFSDaMFx4ZJM9tDOUb/y1OIu6clQM7Ie8tgmEB5wNUGL/V2bSSZEUY7HpNryWTPgmxxeasd9IhVpSBU1mfKVrid2uENLa6rSP+/vkT/tPZOvrMLqfphJAAATl6J5cA7FYmK0FhWRmIypR4E1Skzka4X01VtDxyDwYwbsAB3tcCgt6oD61/TJuyA6oBvBkIP1ZAJnk7yHJ82ZynAJzcTF9kgL2+jMaIQR3FWYMPCfJN2EnjkB17klUVlYmvoZYZTMxvdqZnJa9K/QcIrBkNvYgCNmo7CabGrl6y6X2qBbPZPFR+7GfwHC9/I93EZgtUQuI5UkN2wOr5gAVZbWFQQAi469mgkvm2fqNUMDY9fWEDOKsNQxBWd2wQX9ZyahQB3/P2VN0lHHvDdGglRvbR/0tTEcWVoC/xUHZFLSCm5pmFlBNfs0vHKKeQyWTcg1srS9KxZcHecpkP/XN4r/vaqJbpk5huejIR7kGbj/87Nvd2PuCrmdRHPHG+uYscKjHXfJIXSJwf3PalSaRY1DqCuBeeVoztw+royO+drGqEb2MrQ/nrD0WVvMxb0QBvX35i33VbEOfHyCO7SGQMHVZtOmMJLqMyK5TGS58lTuDXVNuLttoAVfPdUZ6nlr55XohIUmDPsH5f8z2gBzijgKlmP9NCs/bOAxQuPnoggRxgnlMMkCLx1s3IOYMDjKV7DZen7uK99Tfmicq2Ai5PkGHnsiAtxgTKkH0QCEjjjTkdg9PWIJFxX4CsGiEPC2VBX+87tDP2Oxifqc2501N5zhYqh33LNgozDPYa35/XM/A7+2DDiA+yaNH/prBd0vK/Y7YNj2xztJciUG++IRpA7piXCCFoA1asddYWKQp46G2mNqFpI21vi8MwtVj2Z6lnoURomXwqcW+lPvb1UCtsTnaCaJpTJMNG3+oTFeYlgvaeFfSHpM0Sjw
- 6u9phhen
- yaDrqTVzNz+6DpTOE/quSVlrAidcZRpWqVoGJECW1T0jILZGJENg9V2Sgl0yRvjLD6/zx5IyGHwo+PgWYdKDzk2AoFJawB6ikjkqq2uffnHIqMWOLBhk4dKlEfCrPqNEmb/5OV8N/Wxp8EXOvSV5VUYJL4LZj2jpw0yreX1K20/e5N3rZaUeMi1LIF+KYaANNkORIok43U4dRpN8EHamPbAqCsbfRUkDnqKzB3DGU1Bqx+PHm3RRwish2oqxtbkEVSsolqFvOeBh43qO9ANUJetNCtFQ5mCGEbIJIptpumtFpLUKM5HYb7QA3K3HeE8UBLQomXzI/N6QE+EdKBZ2eK2QxO1A3t8v/7xUDoBlNqF+3yfJLUH2opSsZlhrLT5/VudHdOv9jZyAg096knkXCdFTdeD+Ae/Y7i3mOC4i+qBy0sTFyLUp5xMA4eHeadgO2NafR
+X-HE-Tag: 1763893637-967540
+X-HE-Meta: U2FsdGVkX1+5taO0s6tV35B2CJ+kgxGwX91EyGtMpvPeG50NxOOlryXpArQhkzW6kJGmHuo+OYHXEaGM1PskVxPYD0EbSrpnIfXICUPArXO19LM2eOf3toeLVPb6SKgKKOcsG/lNxJCRowqbJS4PHp+FkwyQA8CQ9VL82uPpuazDk9aTG/JJJuPICgDngGPdBKQPQVhRWk7H+P/+mGhV/Uk1p4GXXec3gL+JRgoy40QNgVM2MpSbt+5nPnPpUa7a3eRenZ/JCMcu9zyaKI4PF1Xf1sOs7nE5pzKa657rGSNBSUBPhCTmx30fbvU7XU+/AJRXXAhflictj2N/9pI5NAATX5tKkh9rZfCOfAMb+wyHaUtprR3NocZKbafUIS73AJLcotgCUEcdgSNARyv9uKU1RhpVTdYRJgShwLNl+G1yO3NruY4UNRv+VJ9QGsbuf6vLtMghIEsDf5YR2awkd4/ombaFHNMZ1qgxwsbaiKiGzpGqfQXmbK219B2B0zhouFqpbo1cPTnyaQvzYIhe0fiMNjgqZ5DqbKzvf3dhQ9UssXrSwR4kc75KWeGYGBOm4yKyClRlVryF9Nr8rCfFbPNTyRa/Az+Khv1C5JADV7+umgeChlV8AnPlngwU+HN3ATtWbS2KHyIxuDRwpeEEzNQMH7dMsogjj8Tgf29AfNklNEU+Fj17xlzoidL3mvCnxeyp4454UnGZ9lKrA52itlc7Ps7e0/We0TJz6h+vz1KZV8NAuI55NNhSzH5wkQvy7b2nC/We19BnPzxzqNyz/jmgPWYdqtFM3wnvkZv+yjVsKaf+ek51L5CvH5GVM2BaWdPFnKIKKo7O6K1Qpz1TZuvpXEpIJaJSuUTeRd6c3w5hQSFnVi/s0Z/WBzxhvLp5TYBQ7KqwBofjoUnfkLHxMPc0pjRaSnu3CSegQuxWfYRQRe1lLBe3csGu5i6PcmuZiuMN6skEVwI/ZPLUK8w
+ XkhlUqDA
+ Ytn1FxFjkTmApeYAC5H2vlEXlZqwEzDCss4AV3yugAXUIC9FZ4m/4HHY5hkp4zBxC1y/CgKG6AHEOeAvjMonYV/JRgdUgeR7RMzxr0n9Rzl0LqoqVT7FBBuBtC1wTkKu5IyDAos9gcNkCqapZ3HzKi5t0upQ+ReJXY1sZUFyRZKO7olIJS/PYS+OZ16t/jlKdybFkkgsTjyGlssQih4c1V/pTQIKzW6vVTGswGnTqVLToj6w0xUAG9SqxQb6Q/Cty9KKujS9xsJplKE2fnOe5Wxh3NQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,48 +108,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22, 2025 at 10:19:20PM +0100, Richard Weinberger wrote:
-> Since v4.6 the BUDDY flag is set for _all_ pages in the block
-> and no longer just for the first one.
-> This change was introduced by:
-> commit 832fc1de01ae ("/proc/kpageflags: return KPF_BUDDY for "tail" buddy pages")
-> 
-> Strictly speaking, this was an ABI change, but as nobody has noticed
-> since 2016, let's just update the documentation.
-> 
-> Cc: Vladimir Davydov <vdavydov@virtuozzo.com>>
-> Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-> Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Hi,
 
-> ---
->  Documentation/admin-guide/mm/pagemap.rst | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
-> index e60e9211fd9b2..c57e61b5d8aa8 100644
-> --- a/Documentation/admin-guide/mm/pagemap.rst
-> +++ b/Documentation/admin-guide/mm/pagemap.rst
-> @@ -115,7 +115,8 @@ Short descriptions to the page flags
->      A free memory block managed by the buddy system allocator.
->      The buddy system organizes free memory in blocks of various orders.
->      An order N block has 2^N physically contiguous pages, with the BUDDY flag
-> -    set for and _only_ for the first page.
-> +    set for all pages.
-> +    Before 4.6 only the first page of the block had the flag set.
->  15 - COMPOUND_HEAD
->      A compound page with order N consists of 2^N physically contiguous pages.
->      A compound page with order 2 takes the form of "HTTT", where H donates its
-> -- 
-> 2.51.0
-> 
-> 
+These patches allow guest_memfd to notify userspace about minor page
+faults using userfaultfd and let userspace to resolve these page faults
+using UFFDIO_CONTINUE.
 
+To allow UFFDIO_CONTINUE outside of the core mm I added a get_shmem_folio()
+callback to vm_ops that allows an address space backing a VMA to return a
+folio that exists in it's page cache (patch 2)
+
+In order for guest_memfd to notify userspace about page faults, there is a
+new VM_FAULT_UFFD_MINOR that a ->fault() handler can return to inform the
+page fault handler that it needs to call handle_userfault() to complete the
+fault (patch 3).
+ 
+Patch 4 plumbs these new goodies into guest_memfd.
+
+This series is the minimal change I've been able to come up with to allow
+integration of guest_memfd with uffd and while refactoring uffd and making
+mfill_atomic() flow more linear would have been a nice improvement, it's
+way out of the scope of enabling uffd with guest_memfd.
+
+v2 changes:
+* Introduce VM_FAULF_UFFD_MINOR to avoid exporting handle_userfault()
+* Simplify vma_can_mfill_atomic()
+* Rename get_pagecache_folio() to get_shared_folio() and use inode
+instead of vma as its argument
+
+v1: https://lore.kernel.org/all/20251117114631.2029447-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (4):
+  userfaultfd: move vma_can_userfault out of line
+  userfaultfd, shmem: use a VMA callback to handle UFFDIO_CONTINUE
+  mm: introduce VM_FAULT_UFFD_MINOR fault reason
+  guest_memfd: add support for userfaultfd minor mode
+
+Nikita Kalyazin (1):
+  KVM: selftests: test userfaultfd minor for guest_memfd
+
+ include/linux/mm.h                            |   9 ++
+ include/linux/mm_types.h                      |   3 +
+ include/linux/userfaultfd_k.h                 |  36 +-----
+ mm/memory.c                                   |   2 +
+ mm/shmem.c                                    |  21 +++-
+ mm/userfaultfd.c                              |  80 +++++++++++---
+ .../testing/selftests/kvm/guest_memfd_test.c  | 103 ++++++++++++++++++
+ virt/kvm/guest_memfd.c                        |  29 +++++
+ 8 files changed, 232 insertions(+), 51 deletions(-)
+
+
+base-commit: 6a23ae0a96a600d1d12557add110e0bb6e32730c
 -- 
-Sincerely yours,
-Mike.
+2.50.1
+
 
