@@ -4,100 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED7CFCFC518
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 19:55:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7922FCFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 20:10:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 429C46B002A; Sun, 23 Nov 2025 14:55:16 -0500 (EST)
+	id 7F7426B002B; Sun, 23 Nov 2025 15:10:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D9C26B002B; Sun, 23 Nov 2025 14:55:16 -0500 (EST)
+	id 7809D6B002C; Sun, 23 Nov 2025 15:10:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 316266B002C; Sun, 23 Nov 2025 14:55:16 -0500 (EST)
+	id 66FBE6B002D; Sun, 23 Nov 2025 15:10:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 214A36B002A
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:55:16 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99E9A1DE61B
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 19:55:15 +0000 (UTC)
-X-FDA: 84142925790.08.41B7EFD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DEC8C10000C
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 19:55:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=skTlV8tc;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 550A96B002B
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 15:10:09 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9B65140128
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 20:10:08 +0000 (UTC)
+X-FDA: 84142963296.12.F9FE750
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B77D4A0005
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 20:10:06 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AzTXLzjb;
+	spf=pass (imf25.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763927714;
+	s=arc-20220608; t=1763928607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ONzvLa3ZaViSZ5gG52gKU5AhTjht5Jg3NT5f81KKlSw=;
-	b=fjpW4tzvbg24H3HW5UUrGKE11CFoqmqla00tDbI2prfkdIGMmGd/QEbBHgfBRSsJPL31yC
-	41Em//QKNjAt8zlFtksgFcfHB3GfMVuVKszmpCIxSrwEoKR7sTJT2s33E4XdPTInpqqVDu
-	KxB5bxVOYrB3DMIEd3aomHhTb1WefQE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763927714; a=rsa-sha256;
-	cv=none;
-	b=jOWi37oAlwPiBlRBgIJHXJefiAGfCB5kerYBDzyfx2IbkDBKZZDJkNuLw0dnL8bAXMRBIB
-	rPQNcJ6rGy5ijFqM+45KC1k0wFofajxpPxJ+QbUOOvaY9k3zsdz4VVIu0D3yIHxZSs8YrO
-	jqTHPKUSQCvW/LZWcgcqhOjNKLtH0p0=
+	bh=kCNBLrjOr1foGs26XOE6a2gSNdqIv5bHIjwCsegLTIA=;
+	b=tNC0pQv8SolMR0GakgTlDHQAKplRimIHgmHpIyzQfbZ9OkaMOnCqOmtHk9O7TGvwsxmzYW
+	/m4oDoBBjlbAH577fSAo9RoKnCs734YAxHYpQ+Yrv74gimGuT8PAn0ei0FUdqRBw1hHovc
+	xlii1/ZsdrF1HjnfQ9GwvGDfFkv2MiY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=skTlV8tc;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8EFCF43699;
-	Sun, 23 Nov 2025 19:55:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75FCC113D0;
-	Sun, 23 Nov 2025 19:55:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763927712;
-	bh=ONzvLa3ZaViSZ5gG52gKU5AhTjht5Jg3NT5f81KKlSw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skTlV8tcUzDnx2NS3oZTafwFn37YIjjnSUVdOBv824NMHQ+dj9G0HAp8SEFSOrXTa
-	 Vm6RwVSDxdU5umROdYBSsirLxayteUVafAXZo3AbG60PFDpUDeajJitU5UVbG+3IfZ
-	 g8WG5HQIiQbHNZMhqCBJcFzTEHG0oL1zdIloVCRxiKWjWLZW0yTUrbXFRsbqmYv37M
-	 WTD7XlpSEIi5yc+d/whvBmMDK6vGXzlC0vRmzxl96b8QjYTOjfl+ZhGT7Hx2zdklFM
-	 izzBK/4PQb53PSkWoUsuMoOAcfpOPln+yrqaS8MfKbN8s0TcIQE403itH1Sw6ViSWq
-	 Nm1xpdMvXtnRg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 00/12] mm/damos/stat: introduce nr_snapshots, max_nr_snapshots and tracepoint
-Date: Sun, 23 Nov 2025 11:54:55 -0800
-Message-ID: <20251123195456.24755-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251123184329.85287-1-sj@kernel.org>
-References: 
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AzTXLzjb;
+	spf=pass (imf25.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763928607; a=rsa-sha256;
+	cv=none;
+	b=KJBPNmMlglKmy1dJ4S+IRqhkLVbBqtzNIy1gzn10SunkubHeJw8cuwdm6XST+Lp2x/B9+z
+	4lij24Xwp4FZheYQl7gnC0LX/0tP5XKQKV2rypoulW3cYvK9VJJexXKhdYw8B7l8nTNvt7
+	7864O5PARS4MdndyjBj4ZoJv09qwbw4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763928606;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kCNBLrjOr1foGs26XOE6a2gSNdqIv5bHIjwCsegLTIA=;
+	b=AzTXLzjbatT3fVpsVkpry2OJRiHaUJFfw0zNd6pedFFx6SgxVghvVnzhTHMhBnH1dGbuW5
+	c6QDl3RH0hr9ON+im/aB3kQElrTGU3XaPO2hxmpv4V4QOs/yFfLe/Av8YA4zfNJvREmou2
+	K59GfrBPbfYawPSOBVBMxBCB9QIfQUE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-hZe5QCUTOCOc5Rs5Q6zXug-1; Sun,
+ 23 Nov 2025 15:10:00 -0500
+X-MC-Unique: hZe5QCUTOCOc5Rs5Q6zXug-1
+X-Mimecast-MFC-AGG-ID: hZe5QCUTOCOc5Rs5Q6zXug_1763928599
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA10D195608A;
+	Sun, 23 Nov 2025 20:09:58 +0000 (UTC)
+Received: from fedora (unknown [10.45.224.57])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id B7C091955F1B;
+	Sun, 23 Nov 2025 20:09:56 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sun, 23 Nov 2025 21:09:58 +0100 (CET)
+Date: Sun, 23 Nov 2025 21:09:55 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: brauner@kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org
+Subject: Re: [PATCH 3/3] pid: only take pidmap_lock once on alloc
+Message-ID: <aSNp-TDtv0ZoILJ3@redhat.com>
+References: <20251123063054.3502938-1-mjguzik@gmail.com>
+ <20251123063054.3502938-4-mjguzik@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e7iwp8akaxr9acjpm7woqde9qk6q1nhw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251123063054.3502938-4-mjguzik@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B77D4A0005
+X-Stat-Signature: ojqqzbsjff1mtawzz5f5manphiwecfuh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DEC8C10000C
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763927713-5759
-X-HE-Meta: U2FsdGVkX1/1yfoaovKs/RjMrsEjD2LF0vbiOf4lbkcLA4188LxB/Jd095x+3viKadkf8blD0Jh0oeXBETfnWG+t2XSnKIycQSgqGQADfsWm7qJeFHy3IDv779xNVSdUvVvPsKYOE/bLc7W5CNyPHa3G5reFeDwrXxuAswQMDGhfxYPAhU7AAJ4c5GwrTeH1dgUh4JSkUpDNa2K7ygo2WTz58Y0VAT4R9lTO89Yn/nHtdWUcLHGLLdc3jNFSq1QbsgWUSTg3OxiT8ya/Ijtpr3MD1f4rR5XyujzAVVQZBNcHxu+1ATeWTsG4k9OFH8X+7F4BIb+5p7ePDqsNKIwU3ECyZCDnImqRfyzzrYOl/GI0JfL/bzLreTAwtJfqxuY3hNqWCed76LK6cqXLwWpxy4DzWsUHQwvl2OOyKkQ9dzX1PJcW850cWNlBlV6Ma9JEBQ2xQcVBltelZ9AjVNKo2APtcsaciC7rrL/2PQ4d35aRwYfxdQouXgpWJJYB7LGnZHM9tiOFcomG2GLb5TgP/32PLxlhGBxWANTnzkbd+Rdf2AA8fEyQvTp2aPVkcodmaooGTL+/iWUCnLmKk22dw5WcGVbnmABBclhlz8ikbyMSCltXtUhOQ9hJhKonsRMC5lQID71ByCQOnNhuQyAiCUobuZ2JCFTFsbXuXlKUDU/wY8eFSTCvunwHHc37vqGVFnOQbz6sNCoT+MpF1cSw//uA0kf77h6BdVyGCl3ZI5qzxW58Ex6ejUBHuuVy7NxSqk1EIglauntkmpwhQA5SAcwCBdVC00M1kJfWGE1P2l/XRUdV0pBxtlP+RF3d9NSDkDgha0ysC+sIKC0AWnD1eZkL6XEZyVm6p5OetfGRA2GkmFLTX5oqemYvuJpE8D18KwvTev/1PoThkN65/H6Ar/ugfpMRJavZs+eee2ZPnaz9Sk1TwAi/PqlMJ5loILUoAUjlunLI47cjHB2kshB
- 4axsHdLn
- Mpvs3j1EoLS8Mncz8m+n6h+uWWR6QZ2XR4BN8fNYUUekCsTqcrD9zE/2cvIHsBowwPoooCAcq8ECs7Ly0GdMODcsLVe+w1XtpuInxXeFh5kwaANVcVZElez2A8BbWGVDG08+UZT8G8OsX76Zgxe33q4DtrSWDW3sW56+M2xUlrXTXpBXUL5Izx/kbj/cRNxj/1i46CscGy2ZEMWZYmlUG7MRLMEynPYhgI3oT8XC68ptWtWwwe7OVz7TaFoqbG9qORNxUDD7AHhXr0ptsQwxXsw95gg==
+X-HE-Tag: 1763928606-417467
+X-HE-Meta: U2FsdGVkX1/9QmP16nhJUWZIIPezsrOf0rCOFetQhtKQ3OD2BMsPJUHi1UskRtVE1G8NEUNdCzYd+JVbpwqs2lA29eCpricu2E2bwjyCnsANVCLM1jhY85w+k/lCJwQqw9ZyrVTfK9A+m/umPoYJ3fS3y4g3y0oRUef3D4pgLouxWnwzBmpbdoTeK/bLPmHUuC0wnDgS1KhRsFHKUiEtTEXN0OUwfR8eYmAblBa82aHVf6exkHmwCBGjTL3H/khYMjVguOAz1FAP5AVuUkUN7I04lhHAg7ix0amCFv2fybCcdzJs9dINAHdbuQWgWvRdZSA73Rvi27QFiVF9011W+olMCBp6uNwyp0LOkhP2ZzcrPWVtHRd+zsqf2KDnFb8jHFnmNZrnDKZlVY+rGolYNvizzVvf38NLS+vbDBUoZrSPhu6fp+rdRaFIkijeMPSgotKQLm/LCcTGCujSXGo3FDHZO241b//J72OddksWsHNLo10YO77bL3YR2MCdtHOYNtCEtJOgizbWYGySsePxlPZ6XlGXdY1fj1UoxiE+cOxp5+QLHl43CRu+A4RcB8sImrChnppEwPd8xYmiz4j8EXOr7KzGieq1Vg5AH163xdWrcXiTZeTfaFM1CJc1A8acdU51JqT8gf3gxp7iliGC0PLbYLAXyysZVtWLqgD/1KDK2wCnaNgq68YvLe2yJGXUcniwNHzEbqLtDjV+p6ZWe+RI5uXJAheEW+0MP3+pXqpocwnYKowwnj3iHzfjDeWNflgNVZDzDQyBfOc7lVbh062rBf0U6Q34bfvblOu8HXXEII387VAN5nrQVR4CXfQ2GoXqmBDkC7pv26Kda9vbSkkgU4LCG8e4pJL4Vg1flqADzrnuHRllsY6rEYOQ+9XZ1wL69fWVl1w2rTvImTziyDEkT0Ax/CCdfUAkKpR01YzhQkX47krrm/rk3msa+tsB9etNOQlFHufxXZ8g9Jq
+ cErkepAn
+ juIkvRqzoJWaw7ZyqnF+Vk/B/K/ZPvX9HOdwkDCDQjT4ISBOWxHotvvbpK7v5uwOWGoA7CNsCqlPes6NnCyH01qkNTYDdZRKHAm/5NjxymV5Pxn+8Tra3WFQ3Q88vx7Rc7+rMFcdiy0NYC/137lAs5CgVbRw7bbg5iYvveu9tSSkz4eqM/wNopNHdCS/8F82VSkwGdTgNtOBeh2ib6ABnXY1djfH9GJX2oabMR2ipJW/57m2+aamQJipHb+A6hgzp7eDEMEZgcvmfBV76IB1sOresyjQFnmtxNeRlxepzmjZk0pq7Gzp9Fp76R0vJZfTaBW+OBo24bz0/OUJSVUvC8UcTsPaDSJd8dF7cj4IwLtRuXv7WF1V5M3Wt6xphRjvq62kNfW0oGzopUdY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,16 +105,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 23 Nov 2025 10:43:14 -0800 SeongJae Park <sj@kernel.org> wrote:
+On 11/23, Mateusz Guzik wrote:
+>
+> This reduces contention on the lock during parallel clone/exit.
+>
+> It remains the primary bottleneck in such a case.
+>
+> While here tidy up the code.
 
-> Introduce three changes for improving DAMOS stat's provided information,
-> deterministic control, and reading usability.
+Not sure I can review... But FWIW this patch looks good to me after the
+very quick glance. I'll try to actually read it tomorrow.
 
-FYI, I'm not aiming to make this be merged in 6.19-rc1.
+But please find a couple of minor "can't resist" nits below.
+
+> +	for (tmp = ns, i = ns->level; i >= 0; i--) {
+> +		int tid = set_tid[ns->level - i];
+>
+>  		if (tid) {
+>  			nr = idr_alloc(&tmp->idr, NULL, tid,
+> @@ -235,10 +261,8 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
+>  			 * a partially initialized PID (see below).
+>  			 */
+>  			nr = idr_alloc_cyclic(&tmp->idr, NULL, pid_min,
+> -					      pid_max, GFP_ATOMIC);
+> +					      pid_max[ns->level - i], GFP_ATOMIC);
+>  		}
+> -		spin_unlock(&pidmap_lock);
+> -		idr_preload_end();
+>
+>  		if (nr < 0) {
+>  			retval = (nr == -ENOSPC) ? -EAGAIN : nr;
+
+So. With or without this patch we have
+
+	if (tid) {
+		nr = idr_alloc(...);
+
+		if (nr == -ENOSPC)
+			nr = -EEXIST;
+	} else {
+		nr = idr_alloc_cyclic(...);
+	}
+
+	if (nr < 0) {
+		retval = (nr == -ENOSPC) ? -EAGAIN : nr;
+		goto out_free;
+	}
+
+and somehow this looks annoying to me... Perhaps it makes sense to make this
+code more symmetric (and imo more readable) ?
+
+	if (tid) {
+		nr = idr_alloc(...);
+
+		if (nr == -ENOSPC)
+			nr = -EEXIST;
+	} else {
+		nr = idr_alloc_cyclic(...);
+
+		if (nr == -ENOSPC)
+			nr = -EAGAIN;
+	}
+
+	if (nr < 0)
+		retval = nr;
+		goto out_free;
+	}
+
+> -	idr_preload(GFP_KERNEL);
+> -	spin_lock(&pidmap_lock);
+> -	if (!(ns->pid_allocated & PIDNS_ADDING))
+> -		goto out_unlock;
+> +	if (unlikely(!(ns->pid_allocated & PIDNS_ADDING)))
+> +		goto out_free;
+>  	pidfs_add_pid(pid);
+> -	for ( ; upid >= pid->numbers; --upid) {
+> +	for (upid = pid->numbers + ns->level; upid >= pid->numbers; --upid) {
+>  		/* Make the PID visible to find_pid_ns. */
+>  		idr_replace(&upid->ns->idr, pid, upid->nr);
+>  		upid->ns->pid_allocated++;
+
+So.. unless I am totally confused the current code has another
+idr_preload + idr_preload_end around pidfs_add_pid().
+
+AFAICS, this makes no sense, and your patch removes it. But perhaps this
+deserves a note in the changelog or even a separate patch?
 
 
-Thanks,
-SJ
+And another stupid question... I don't understand fs/pidfs.c, but it looks
+a bit strange to me that pidfs_add_pid() is called before the
 
-[...]
+	for (...)
+		idr_replace(...);
+
+loop. I don't see any problem, but to me it would look a bit better to do
+pidfs_add_pid(pid) when this pid is fully initialized...
+
+Oleg.
+
 
