@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F9D3CFC518
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 11:12:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01B7FCFC518
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 11:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B1846B0022; Sun, 23 Nov 2025 06:12:39 -0500 (EST)
+	id 2015A6B0092; Sun, 23 Nov 2025 06:27:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 389286B0023; Sun, 23 Nov 2025 06:12:39 -0500 (EST)
+	id 1B22B6B009D; Sun, 23 Nov 2025 06:27:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C5636B00A4; Sun, 23 Nov 2025 06:12:39 -0500 (EST)
+	id 079E86B00AA; Sun, 23 Nov 2025 06:27:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BE816B0022
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 06:12:39 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5FE5130C72
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 11:12:38 +0000 (UTC)
-X-FDA: 84141608796.28.C271582
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E71296B00A5
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 06:27:56 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F1AE130B52
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 11:27:56 +0000 (UTC)
+X-FDA: 84141647352.05.112EB7B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 26E22140007
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 11:12:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DD70297O;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id D3F7240008
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 11:27:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jZfhzArV;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763896357;
+	s=arc-20220608; t=1763897274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bbIAvYwMReu617r0r/eOdYEsD6bsMKtyldGLszVFpLc=;
-	b=gY4Hw5Jk0VK0WgaNB1npH6Ent5NqGFfX04TuL7BWbSd5PiNGASHh8Y7OHojySsR2ErdDEQ
-	7jZgnfQ2H7sDPuNNsTWIrsw00rX8WLZPTrTeYFrtApkvEeRJpaVwP70CycoYJtSliZMIXf
-	MP4TVkoCZ4LjrjtkMCHVJcFcXdIdJGs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763896357; a=rsa-sha256;
-	cv=none;
-	b=bfd07r6nvDnKZpPuMt5maYYiN4Q7R607WIZRy5ZffM02kwOuW/OJOP3+R3s5fnxMofKxPJ
-	06Vp7vpxHcKpLkGpv8yWYCQvVM4KgpYsqBnoEjBI+9OzP8PBCISzocfnkZ675iLip/QwkI
-	R6hJpAQrU0IidLPzf4DU4TqzVOFsNKU=
+	bh=i1ZFE3HUBX+e3MwLhoGDnF+w9zhyW17NQY5/2GOCYQE=;
+	b=Qt4ldDAh/wLqIDT/q/t2XNqyuFIzU13OKVRqOwV1elnQr0M7+itjD0IJrPFfikJLrbVhJz
+	wEUbich7C0zTdlryZOPT0gVnCeD2RTanR6A2Ipd1iDeF1aWaNQRxiLyvoGcp7Zos1WzwhZ
+	JQlsR1AZBNFiOdpjweMg/xOw1Cytn94=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DD70297O;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jZfhzArV;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763897274; a=rsa-sha256;
+	cv=none;
+	b=SY6fKtuasJIeFc5T2YiI5AE6VMc4IIk8tQwB1hCTtcpD3C1YfY/vF5TF6bv9CQfvOu7+P8
+	UMJxUVPxcZayyC75nRaqTI8hlW3PImINrm4lWWcZXoMk3YTPvJd1tQEXFWt3hU5j7FjCh1
+	SIq6cRcFdPkSOEFezxQNbJa6P4e74FQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 34E0360154;
-	Sun, 23 Nov 2025 11:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E672EC113D0;
-	Sun, 23 Nov 2025 11:12:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CE8F86015B;
+	Sun, 23 Nov 2025 11:27:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E13C113D0;
+	Sun, 23 Nov 2025 11:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763896355;
-	bh=Akr26sM3VEhR3kKN7o52n5Q0IG8yNVh9gdExmJrI8ek=;
+	s=k20201202; t=1763897273;
+	bh=RJWIVQsLtFDoyAvibb81H4g0e9OZxXyGb1K+TZ25eXY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DD70297OscX5jW+1bL2L8Z5+6LxRLvMSuqNcQmzITuFPIzMzmkRtlD/mIf3T2D858
-	 mLjthfkdI3QvX5wzmOddr/fDz3ZYEbjtxPo1YEND1/rowOhEwrqrpzC2boUYmSqpWC
-	 LJa9Y4iSUVo8vPl4T49RkU+H90guNy7wohSE0KXct5W8r9dxLkD1p0m6pifzJ+NS+d
-	 gQ4atTXM+NBkfw97j9VlyFdkIVV9vi3HLQHWP2WLZ7acpq+JnxntA0ebpsXBDISpJN
-	 uF6MX92LSt9PIFptSK1yfDhmlyBzzfbfcjg9RYfN9IA5CBhLECVurLPXjqk1yT2SZV
-	 LiaEhMRjyjibg==
-Date: Sun, 23 Nov 2025 13:12:11 +0200
+	b=jZfhzArVLsHjBLAt4XfmVUPyRn0SeJFdACvw4DklTg6IwoSkyvWAxaTwaUzX5RovI
+	 8Ro3Rybx/tN/ig+tzrDpbhvhKWQs91mVGH3w1TMmmJM8GuFTmx7TRTsvjR4gzEP3Wa
+	 FEDrs+JFT5Z5zVtyXtQ9gR2ileWiTGLSzoPSJMN6/ENL3Wo6C2Z8ZfNVbGgWThRiPv
+	 ACYYicPxsYIB9jNmgOh5MjWjbHIHPmz5Wa1wJtO4VeYlWidpQ4Gh4m9ob80amNlYY7
+	 CSHDsdJdaPIjLqr94IsAAz4Wy+fSieoJq2C2kUgoLQEWd5QCFEGKZRJZFGH7YDR9ja
+	 8Q5Wl2RANnndg==
+Date: Sun, 23 Nov 2025 13:27:31 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -93,22 +93,22 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v7 01/22] liveupdate: luo_core: Live Update Orchestrator
-Message-ID: <aSLsCxLhrnyUlcy4@kernel.org>
+Subject: Re: [PATCH v7 02/22] liveupdate: luo_core: integrate with KHO
+Message-ID: <aSLvo0uXLOaE2JW6@kernel.org>
 References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
- <20251122222351.1059049-2-pasha.tatashin@soleen.com>
+ <20251122222351.1059049-3-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251122222351.1059049-2-pasha.tatashin@soleen.com>
-X-Stat-Signature: 7d38n5e59aiophudnqfw8f43a6z4m8fd
+In-Reply-To: <20251122222351.1059049-3-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D3F7240008
+X-Stat-Signature: 9qrbd67ftek6kkohbwxuz86g7fdf6adc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 26E22140007
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763896356-1532
-X-HE-Meta: U2FsdGVkX1+WsTcQUpstknhouhSbCYqWDTXCoOjUbnaM75MKfOcZ55cRCnWpLvt46no0rB1TCGW0NLF2eILIKxLRuFFIGf5Kf5vYJfHAEwYy6JTJX9bihWLCIsSBFoNlcchBIiUxrz7C/SUAnwn2QcsdSP2JfiXf8C2ZMBwhPU3imOAxFUFWEseV5O1LVNd5WfRd3rmDt80hc+SQ4PgT4Zr+WpT2eBDsoafKA3Xc9tIN/IdDu4ZHwqsr7HY3DySCC28eJtuh0aJsYezs2a9ldxAuZBY+sDJtFSjaX+rOjsE/UAlkaMsqTgzyQ5ZT9Pik3piQtPBYa0ssE2Jk4qMBvjq8u6JfFnia6qrc6UOa/RHOXe+boLdmb5Pvc7a868sv4OsaLE3Wh8LF+8dPDpPb0Fao1PTSCeWeTaiejS/2/O1OWAwbzX0PhZbW5X5t8089JT/2m8WpMz2DKKTI4Ss8yAaFeLZyojaMkYoZGj/xI6yUvGZQTl7PGQox6yUFzp0jw5qF+g4XFeoDy0BCrx49PMUEQ/QXBf/EyNFSqPmJreY7q0dVXkpVbo+t5f3Q85swJpKA5PkJNJMLh4iP6Blxern0IMnWYY0y67ltH5Ejs5vJL2HenjoiIZbZauMxh+vmWJAQZbXnxWBfiCruV/ribN4hxmFtsaZKpTw/RWdopxHzxo2+LMqBuOM8Un1Spprs8rhEcL+nwxf4ngE5zA9R2uHWVDdqmrIKMmIk6gvCeZ2CXbSXPtmhPgnHWkiW8ilacXLtgqHNEjeRoEks/stwtOlsb0JFK7ijpCO0NCA7t709Eb7PQBpjbwVFgPsAOsZIt89dOqZYcFx9DC1BX+Q7x8j4qpNWYQjRz6Y5Ds4Jz2mAyjb66MTuTBpHsrnJ6/mwEX/MbEOi6HsF+HPuANAgytHsMWec1LpTEqrYP5GUXMRxP3Q/9z+iAvwdwui+uNttfutCM/8eQEvCtm2cgZU
- F0umXum6
- qQIFQdmlvtTs9hfjsfDsCzi/ol9DmWDU1YE/sZCPPfdcRj9YFTGu+jqckGDUxFFGLKvcAN6dra/pFyN5XJ0gxUdUtgxEHa5eNrIkLZjZ922r5ywrKlhYkA8sRsBvKYt4OHpf3meJ2VgYrcQ2DJs9U7VveAZ8qovzim0yDB4ZkwU9CCjO0m3+eAszmlaNIu6XicoxFpqU2O9E0LtaC62ikJwJh5jVich0aMxoYrlgTdZ3UGydRw+12B33EprtI8j8vi2nGR4A+nMuanqkqGd4nweNXJxSpduKHyDQGQwwEKPa8qPlXO3/wzlOxaDHJhdJg3HBQMW5jors1O2EKhLpBzNpXPtQKOtsCdQs9muLERleYtaH/mjEfhi6CkrVYK68HlvW3A8kqH6LardwK4fQZv3PHwC95C2+LzH/jRK+urQR4bpjL0wWON62/3JFJ7XztPOY0clqkfRvb2E8=
+X-HE-Tag: 1763897274-459617
+X-HE-Meta: U2FsdGVkX1+ET5bKD5AuK73g2ROf/3yPujM45jOJm21UiFklH98mOtdwpj+dwbCDgUCcRRe2fmiAHbrZrkJGAdKT6vUti1sbHo1NbX1ABYsIAioGhpTRSXD/VRi1tYi/nQCYak6Mc8543OlnOna3NdSki+b5I7mYgiFFrkLVCopVWAFpXJXtdwD3IcVTggfbLEeTniSE042zvVYZv8yBNkEdTTdKxBIFaH/gnnvfQ7CpOaJ+31wDzgmRVxFwVoeBq3N5s+Rtk2kj2OBc6hF85y8g+H0app4TYGQK11ZnTe4n/BE4u8xYsQQOFSuiDt3ucpMpxYsKHnkGL9LcHigYs6s9x3v+N3vSPnAEdJ5R0cnws6334x2a1yrxlLemPecC8fFqGYw6kMuw7xCMqm+4BMmEV3W6D9IwgrUnnym83fD2hMg+V91wB2LXTq9jeaCSv4HOpTUVeBmGynRfXZ79oIzS80k8eL83yam2D4d2lRbjTwqjlmjsLA8wRT/C2EjwrM+EbUzUxITK2UOCO2ny//3uepVtXfNNEtI5MDv/fK/t/8/cEuAbMNtk6QmB0NhzCVwsxZcF+ktMfB85x8G5gMtdqmEtlqRu4KpUB2mk9qY7HXDaz46yF9MhTFejNNSSyMxQL+1v4vnYVkqr7ueaLksLO74uriBHs6ob1ZcpwmIIV9x3Aq2ohWsWt9EhxqGpe6KQmkf0+YytV2UVyrhhIizNWnaAK4OVPl6k8+DGs8RtYaDEXJU5lB/0BGQaBzysTZBOOxxXj1PvOmzkSmyL1zROrMXle8SClwAkaANymaNwoPNyPu24CUxWeqXVnW1h2/rcP5/T8/CDwuf3U55V9opE7+ysZ3GgTyCrScrAF0YrXYpQuZJbR0kQ5srxrRGVJQe+Rl/kEQ/EgSn+uAEKeQOFGCeI0lCxbLvUIeVJpsiEbdOFPlztDVB/wKBDVx73PDICMg7eNe013jMz/ag
+ wiwZwxUm
+ E9RRnzKdgO/y4g2Ktjx29792IYgNeE6LBkjRq64teO4SjBPk4HMWE9Fr0nWvBHpGgqLJWysr9Z8/KaPVvv05UhFdCLy5iBloF1lb49gtPZVKBb2S9Em7UgyQH771I6nj5yCuoroiBPMp/aIf36D99zclXTj78x9qRZisJMjaimd0b+AzrkXbMdXmWljHiYnbdTKX1fEGIZBqfUIWPt+q8MuuOeQJ1FfPvCDWpZwrmQddjguqvHYVKyGTkBT1hlL58usxQZ1bmHoZDxwlP1Q8umeMObL18k4AhjUozDckpdBASBL+pqwLEPiyYHoiQwjbLqbATy/91pJMaG369jr08obSJrHNYzyppajqUTlsZKtuBvYaO8dem1SqsXujAJiJMKO6PbMuILL588dW3cAVs5ab5wcNizDuWrCdlz9Pd11tpL5/X80mndcQAZ98WyydnWGPlhGaiBFkwFJhPStLJaAi1w7dsytWT44MZI2pNkndvIME4aeFM8lEVIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,84 +117,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22, 2025 at 05:23:28PM -0500, Pasha Tatashin wrote:
-> Introduce LUO, a mechanism intended to facilitate kernel updates while
-> keeping designated devices operational across the transition (e.g., via
-> kexec). The primary use case is updating hypervisors with minimal
-> disruption to running virtual machines. For userspace side of hypervisor
-> update we have copyless migration. LUO is for updating the kernel.
+On Sat, Nov 22, 2025 at 05:23:29PM -0500, Pasha Tatashin wrote:
+> Integrate the LUO with the KHO framework to enable passing LUO state
+> across a kexec reboot.
 > 
-> This initial patch lays the groundwork for the LUO subsystem.
+> This patch implements the lifecycle integration with KHO:
 > 
-> Further functionality, including the implementation of state transition
-> logic, integration with KHO, and hooks for subsystems and file
-> descriptors, will be added in subsequent patches.
+> 1. Incoming State: During early boot (`early_initcall`), LUO checks if
+>    KHO is active. If so, it retrieves the "LUO" subtree, verifies the
+>    "luo-v1" compatibility string, and reads the `liveupdate-number` to
+>    track the update count.
 > 
-> Create a character device at /dev/liveupdate.
+> 2. Outgoing State: During late initialization (`late_initcall`), LUO
+>    allocates a new FDT for the next kernel, populates it with the basic
+>    header (compatible string and incremented update number), and
+>    registers it with KHO (`kho_add_subtree`).
 > 
-> A new uAPI header, <uapi/linux/liveupdate.h>, will define the necessary
-> structures. The magic number for IOCTL is registered in
-> Documentation/userspace-api/ioctl/ioctl-number.rst.
+> 3. Finalization: The `liveupdate_reboot()` notifier is updated to invoke
+>    `kho_finalize()`. This ensures that all memory segments marked for
+>    preservation are properly serialized before the kexec jump.
+> 
+> LUO now depends on `CONFIG_KEXEC_HANDOVER`.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-with a few nits below
-
 > ---
+>  include/linux/kho/abi/luo.h      |  54 +++++++++++
+>  kernel/liveupdate/luo_core.c     | 154 ++++++++++++++++++++++++++++++-
+>  kernel/liveupdate/luo_internal.h |  22 +++++
+>  3 files changed, 229 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/kho/abi/luo.h
+>  create mode 100644 kernel/liveupdate/luo_internal.h
+> 
+> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+> new file mode 100644
+> index 000000000000..8523b3ff82d1
+> --- /dev/null
+> +++ b/include/linux/kho/abi/luo.h
+> @@ -0,0 +1,54 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +/*
+> + * Copyright (c) 2025, Google LLC.
+> + * Pasha Tatashin <pasha.tatashin@soleen.com>
+> + */
+> +
+> +/**
+> + * DOC: Live Update Orchestrator ABI
+> + *
+> + * This header defines the stable Application Binary Interface used by the
+> + * Live Update Orchestrator to pass state from a pre-update kernel to a
+> + * post-update kernel. The ABI is built upon the Kexec HandOver framework
+> + * and uses a Flattened Device Tree to describe the preserved data.
+> + *
+> + * This interface is a contract. Any modification to the FDT structure, node
+> + * properties, compatible strings, or the layout of the `__packed` serialization
+> + * structures defined here constitutes a breaking change. Such changes require
+> + * incrementing the version number in the relevant `_COMPATIBLE` string to
+> + * prevent a new kernel from misinterpreting data from an old kernel.
 
-> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-> index a973a54447de..90857dccb359 100644
-> --- a/kernel/liveupdate/Kconfig
-> +++ b/kernel/liveupdate/Kconfig
-> @@ -1,4 +1,10 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# Copyright (c) 2025, Google LLC.
-> +# Pasha Tatashin <pasha.tatashin@soleen.com>
-> +#
-> +# Live Update Orchestrator
-> +#
+From v6 thread:
 
-If you are adding copyrights it should have Amazon and Microsoft as well.
-I believe those from kexec_handover.c would work.
+> > I'd add a sentence that stresses that ABI changes are possible as long they
+> > include changes to the FDT version.
+> > This is indeed implied by the last paragraph, but I think it's worth
+> > spelling it explicitly.
+> >
+> > Another thing that I think this should mention is that compatibility is
+> > only guaranteed for the kernels that use the same ABI version.
+> 
+> Sure, I will add both.
 
-@Alex?
+Looks like it fell between the cracks :/
 
->  menu "Live Update and Kexec HandOver"
->  	depends on !DEFERRED_STRUCT_PAGE_INIT
-> @@ -51,4 +57,25 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
->  	  The default behavior can still be overridden at boot time by
->  	  passing 'kho=off'.
+> +static int __init liveupdate_early_init(void)
+> +{
+> +	int err;
+> +
+> +	err = luo_early_startup();
+> +	if (err) {
+> +		luo_global.enabled = false;
+> +		luo_restore_fail("The incoming tree failed to initialize properly [%pe], disabling live update\n",
+> +				 ERR_PTR(err));
+
+What's wrong with a plain panic()?
+
+> +	}
+> +
+> +	return err;
+> +}
+> +early_initcall(liveupdate_early_init);
+> +
+
+...
+
+>  int liveupdate_reboot(void)
+>  {
+> -	return 0;
+> +	int err;
+> +
+> +	if (!liveupdate_enabled())
+> +		return 0;
+> +
+> +	err = kho_finalize();
+> +	if (err) {
+> +		pr_err("kho_finalize failed %d\n", err);
+
+Nit: why not %pe?
+
+> +		/*
+> +		 * kho_finalize() may return libfdt errors, to aboid passing to
+> +		 * userspace unknown errors, change this to EAGAIN.
+> +		 */
+> +		err = -EAGAIN;
+> +	}
+> +
+> +	return err;
+>  }
 >  
-> +config LIVEUPDATE
-> +	bool "Live Update Orchestrator"
-> +	depends on KEXEC_HANDOVER
-> +	help
-> +	  Enable the Live Update Orchestrator. Live Update is a mechanism,
-> +	  typically based on kexec, that allows the kernel to be updated
-> +	  while keeping selected devices operational across the transition.
-> +	  These devices are intended to be reclaimed by the new kernel and
-> +	  re-attached to their original workload without requiring a device
-> +	  reset.
+>  /**
+> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+> new file mode 100644
+> index 000000000000..8612687b2000
+> --- /dev/null
+> +++ b/kernel/liveupdate/luo_internal.h
+> @@ -0,0 +1,22 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
 > +
-> +	  Ability to handover a device from current to the next kernel depends
-> +	  on specific support within device drivers and related kernel
-> +	  subsystems.
+> +/*
+> + * Copyright (c) 2025, Google LLC.
+> + * Pasha Tatashin <pasha.tatashin@soleen.com>
+> + */
+> +
+> +#ifndef _LINUX_LUO_INTERNAL_H
+> +#define _LINUX_LUO_INTERNAL_H
+> +
+> +#include <linux/liveupdate.h>
+> +
+> +/*
+> + * Handles a deserialization failure: devices and memory is in unpredictable
+> + * state.
+> + *
+> + * Continuing the boot process after a failure is dangerous because it could
+> + * lead to leaks of private data.
+> + */
+> +#define luo_restore_fail(__fmt, ...) panic(__fmt, ##__VA_ARGS__)
 
-Sorry, somehow this slipped during v6 review.
-These days LUO is less about devices and more about file descriptors :) 
+Let's add this when we have more than a single callsite.
+Just use panic() in liveupdate_early_init() and add the comment there.
 
 > +
-> +	  This feature primarily targets virtual machine hosts to quickly update
-> +	  the kernel hypervisor with minimal disruption to the running virtual
-> +	  machines.
-> +
-> +	  If unsure, say N.
-> +
->  endmenu
+> +#endif /* _LINUX_LUO_INTERNAL_H */
+> -- 
+> 2.52.0.rc2.455.g230fcf2819-goog
+> 
 
 -- 
 Sincerely yours,
