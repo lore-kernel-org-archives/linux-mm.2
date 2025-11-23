@@ -4,105 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79E12CFA46B
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 13:28:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD73ECFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 14:16:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA2B76B00AE; Sun, 23 Nov 2025 08:28:09 -0500 (EST)
+	id F3BAF6B0023; Sun, 23 Nov 2025 09:16:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53956B00AF; Sun, 23 Nov 2025 08:28:09 -0500 (EST)
+	id EEC756B0029; Sun, 23 Nov 2025 09:16:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A69576B00B0; Sun, 23 Nov 2025 08:28:09 -0500 (EST)
+	id E02696B00A7; Sun, 23 Nov 2025 09:16:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9116E6B00AE
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 08:28:09 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D70913C14C
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 13:28:09 +0000 (UTC)
-X-FDA: 84141950298.23.59418FD
-Received: from sender3-of-o55.zoho.com (sender3-of-o55.zoho.com [136.143.184.55])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 438BE140004
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 13:28:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b="ECX/9Qks";
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf26.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.55 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763904487;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CC8876B0023
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 09:16:47 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3BB9E160C23
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:16:47 +0000 (UTC)
+X-FDA: 84142072854.25.04CE084
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 920B4C0015
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 14:16:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fnrpq6fX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763907405; a=rsa-sha256;
+	cv=none;
+	b=LQJgNIBTw56Cwn0nfqazJBypNshQ+5JH+NMvzy/CCTiAVGSfyUj5DDG8whx8BX8UZOfDlS
+	aZXVxxTh4vMR4b/iW8AJrfhqxITl5wIBjM/7Bx3tYh8O3Y6AdDBLlHH5CziPlpwiqlu3o9
+	DOQ1g8DzrWDFiErDSqhDzF4sEvXqut8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fnrpq6fX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763907405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=z4sx3QAQovEdKwkSldY/iP/zggzig89C+MwICVRnPPA=;
-	b=2d9pru55pqzlnrg656UHuaUyi6Q5zr2lLs1ExSb5mzEhoSZSS5Ip3O6iRrxmHwiIDB2TfF
-	UxyrOerRBDWSH44Z9zx+/FeZpi3G92KIFELTrMZz1hYZGe4/q2Km21WlyevEGCaLQ0+Lyx
-	UTSY0WUAsawyd9qYDEfiI6+llQXg+eM=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b="ECX/9Qks";
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf26.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.55 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763904487; a=rsa-sha256;
-	cv=pass;
-	b=1mBQutsyfDKk9xBAnWSSY/y9YdAMVz6Kx+zNlE8yJTbYL2F2lNINgA/TIaKE0m/EiUeZOG
-	kuyLwmyxTXvHH5w4+1sfmHtBUgSJYvM0SESMIv0P33771IfKolLCVvc9OySmPEwwcRNNHF
-	u+OypszCevXDEXlK5s0MWEYtJKIscyI=
-ARC-Seal: i=1; a=rsa-sha256; t=1763904459; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=dKCZOky5DTPQCCdJmO4uJEd2D87LxCHbV1Hj1niOq4imoazWQYETiXyBH3CUItguPbNZoLycTM7tUE6dRi8zRqJl8cBCaZpl0UafY/TP/d9IdgfIR0u9+aqdxRa3eQ8A4y6Qv5eazgz7ZbjLqAW8HCT3r3W5dthQC11J0+a4P40=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1763904459; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=z4sx3QAQovEdKwkSldY/iP/zggzig89C+MwICVRnPPA=; 
-	b=CSLznKNllvidbFG5M6hSuImdprxL7CQOuA7zc7O3izqXlBAok/4ig7XYCQnag3b3ln1qBuIZn6kR511XX89Wz2IjQAXtM4Irysw4D8kX3g37oZIOz8oyv8i1HWI8tvNAYf6U9keBTwkA3BY2EkK+Zp02/Cd76ReTPQu+dBI7pWo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=mpiricsoftware.com;
-	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763904459;
-	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=z4sx3QAQovEdKwkSldY/iP/zggzig89C+MwICVRnPPA=;
-	b=ECX/9Qks5EKECsuvXHwYYXd+vwCjZd5mYkEf+kQ9SO0kLT42zhKvWjPeqktrHoAD
-	ERl53Aa/+Zt4Pa3V8pebSeWbDZouQaUZmp25HoE43vOzQQDgugxl+u4U62Jhb1wOdTA
-	v6QZmjhyfPVj9MxEBtyBh/zYAaVMCkvTRSNEKCjE=
-Received: by mx.zohomail.com with SMTPS id 1763904457627667.1956568921231;
-	Sun, 23 Nov 2025 05:27:37 -0800 (PST)
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
-To: shardulsb08@gmail.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	janak@mpiricsoftware.com,
-	shardul.b@mpiricsoftware.com
-Subject: [PATCH] mm: khugepaged: fix memory leak in collapse_file rollback path
-Date: Sun, 23 Nov 2025 18:57:27 +0530
-Message-Id: <20251123132727.3262731-1-shardul.b@mpiricsoftware.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ViZWWcqvEhNBG0YfrZfq2524AMLeFOl0aaRed1DU+/8=;
+	b=CxYOawg0YEooDjzFNZcy8v1o3ciiSlQ+/SZ35z0YMwHmC4kZ1Jo9N8e1t8uxZElKBI8Jir
+	7RopI4dgoXg5raswuFAihGDseZz/VLUuEZRhJrU7b/qz5ZUyrf8JMxh+vMYLuG7BoVK3Lx
+	47BFDp3GwdCxVKnUg3dWv5YaGiQLiXQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 78FC160192;
+	Sun, 23 Nov 2025 14:16:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4957EC113D0;
+	Sun, 23 Nov 2025 14:16:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763907403;
+	bh=4Xz3KOznAYb3M8bxg5UGBUpO8Ca5J6a4kiLtZ6+lz2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fnrpq6fXUrx9QXPgz+DBX+Qxzr/8ycksAoTg+LwWybP0PSZk4FDpF6DgEmo2LweQ+
+	 9WRQNo+wYjPVEW84HwBUh6/j2fQvPZS1eYLtOuhesU/AlAoH9rCpA5u8O7ZN723wzg
+	 17RfltwDDU/LSt1+oAQljK15ipIKPcAWW9sSBlmt9LqlYSFx1yvFd5rHpqU6m+GBo0
+	 kRAAr9s8jITykV8Yvg2yjJze7/OSoExQCYaiTXAvO2qlXly5L1oNXj6uM0TmXpX4y/
+	 z4M0z8J9H5dkjewW9/VPnD4ib9jTFsbBfXNvgGsHvJ+Lk95kBH6wLcxwB4k4R6OfAq
+	 dV5bTMLRSo6Gg==
+Date: Sun, 23 Nov 2025 16:16:19 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v7 04/22] liveupdate: luo_session: add sessions support
+Message-ID: <aSMXM8ayzV2kx6Ws@kernel.org>
+References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
+ <20251122222351.1059049-5-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 438BE140004
-X-Stat-Signature: arwwm7dqp1cjsejsgbpu57s7gkbwpa68
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251122222351.1059049-5-pasha.tatashin@soleen.com>
 X-Rspam-User: 
-X-HE-Tag: 1763904487-114718
-X-HE-Meta: U2FsdGVkX19uFw89HWCKG2idMfSPnqV2fRaRqu4qKzWz2MfW25DTAfbhN/LB3jSflBKxz8E9qu0MOOcRKzNnS9ZPssAD+OiCjUTqSHRsGqLX7MMtSMtnlCNZ3X3j33WbySvnPYP+23sI8ZLGXToG6jJ/ghjTFWIVH7jcR3otW9ZknTPiOvNI01/gGUng7SgDqFj/YrTUeKYSnD4aeeOeqzU2WBOdjLsGcBf23wBZ2+gXECaOeNwD9GANGhPYbXIlT5PQiS0D6PQXbWpHg2Mpk5T17bKJCb+XGiCVJuzABgJPWkuhXNZs6QUZzoS9X+jpzv/lkaA5M8UsiTWAGisF1Oh9ykmJ81qy3WIxToRjRF6P8kqPLx7ZBe8FRBGjTHiQB5jTyIgrkpNwPfvi7cXL1uZskWSNcB2B1BTIoeVuReTUtRqQKp2NcUaeHIwgyp/X+LzE8xJfel/JBN/E4xExtLKWSjdXGHPFNh49QegVHBA9xjwYnttqcWOjqR/xh409En0TugTeZRtqpElgyY6QJCqRbB1YZ3lEUt2I/7wo+xFq8WqfnP0nTXovHHM81X1CeneVIgwdl9lMQC0mnAAmNpQby7tV/QIrOAuTtKYjTc0B6hSgN2TX6Lrp7cPjnpch/jSPU1sHPEp+6s9QshuNDEW+u+/NaqqzXswa8+iLXnxXb7DOATVy4ufgp/3LqgjFMvfFRSPvqu4AWmnPiHpc9OhXtWtC8mI7G9r8HrrEpXmnLr/M/i1ks9Fo+0JBC8Yp4oVtUgp46L/huVBTKqsYPsVYtsMCc9Gxd1Jl7Klk0KTft/VhPS//enbXjrOSGkHEa3TbOgoeHfmChJXVWvl+RoJ9JuZLSxFBXgYqkDcHLxg7KhFMLSyDDRvDU0YlrAkoqsQp2MDOBsl27lq9BaiS9CunrA9QLvLjlWcZ75tJOBU3MZ/WKNcOn5mzI6nJ90+eh+mxRCPYuLh2BcIz9lj
- vF5hjodT
- OjXrST9gPSZHObAVpSBspyrlD6MvY/kzy+PsZatfC4aKFVtiibIHvXcYFOIEtL386aMlmDGWi/r1oAeqFTZUksfC+L/W7MmnvxkDhd947NxTVuT8RF7bxLR5KUtc28aW6NoMno6Yrirwa2Au/uXh6GB3SM6bPTOtlA1CZm/0QwW9wO9NyrxVFvPWQ69+4K+KoYbrweCXNn9ZDc7Kf6L3HnD0wDvhyiMACuKpK5riX5/DEUJBAU9f9ETwi3dJFoQXy2SjyRn4omzEtZ/xLNDlnBacxS9SzcW4zz1GubcDmLmAH4ybKJBNqE6W7Ig9fn2rhwjppRzzKtDiHn+cNj/YIUso0Jdj1wDHsmo47cPG3Drw7T5MRSfEnMofFSqQbOD5Mkl3pHC+ZZcTQjqdMVVDaFpTRoQelpyZpItcSigi9OhneDg25lnQS+MxDQzbZiyyaHgFpYrdru1dmmHtEGPMuXNKSVOuNvnaa4Tf+u6CUFaY2jxCzbTKXURBLA6t/pobATM7X7P5MdWX7qoGwUNOJNS1Mrmj6PYy9nAjnvHgjxBLlCPnukftTP62DuSz5K87ZtWLv
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 920B4C0015
+X-Stat-Signature: awdkoyswcuw7fedkcgifjukb37oq9epi
+X-HE-Tag: 1763907405-479129
+X-HE-Meta: U2FsdGVkX19hm+4qyL9fgmWn82zBjFQTOLCEfkX6Ep2UU0iFMfVz0sargSc40fmmp6Kp6IcxG2mFwK6jylRHdX/en600KhBOh45wse0xzMrNxHPLlx3Xgfhq0iNtSNpNxHu0IpnlBwJxgHgFnVUajvilqQ0gvT9LRZMSqyKOhZvxA5h5qTJclNiWB3c/2ysePRElsRsL17/GG7T1u/Lovnbpyet78RMPRVQFTNx1KU1iYKqnQx0Kkm75YuWsXz2wAsVdBo9xo+eWV2DRmW1rl8nDes1iW9Yo7H+Qw83ZL5jw6eHSCMEBhSFv/EGMrxrMgGT/GWxsIFPI1xZx28lhKmBO1E3DEqcN1k/ocdoBDMQTaQeTkZyiJDFb5eTxIrhfXg7fryiresfFGS20G8UIBTTo/GbzlvgkafshyX/6yfkB1GoPs9/oHK0/xeUuWi1DdPJMwhs/qSyOTXQjjUeDuAlDt7px+QNtOTSwHdGKiLqHONImKFnqr4hwm+bVJdXzGbGs5i6aGyFGeUFWCBSv7uSVOR4TQia6DViab6G52q7rXoHK2HphMBJsmVcPpQ8dZkLGHHSrDsjWB3xon24yX0J2HpExTJrhppuQeOKQv3clyMeIiBbPmmCcUHnG0R37YKVo9Dmof+lWZ4ikqWeNVEA5+Wp+TxNWjWEwcHbgkrOlf7zS0ghfdHhWYPwAyNSD1U0yjO6zJWjVeB9yG0wqRsU8g9UowOp2FpdqiIjoOypdDmLN4V3q3XuFziyfITOgklv10uZ9qj8nvdoM6p4OhS2MvmjGaBSrervXFdJxm7GfRAAFHS/juBifTvD2S2b+3UhHG18peW6rdY/JCNqsLoigWfjXtMYN1bB9HFOMzaDJx4fLdyYAoqwZqpOVhOUOyoAPRFnxtp0vfaBxkhXuOB6Y0JtUSXwaWkERhUY8SaMIKzGX4fa7LUAYfeLrcw2lgWuPLzDlW4RcMiO4Sjf
+ tl0k6YuV
+ O5lLmE/FuyUrDp9yVuxHmxb0SlPjuVb+Xp5w8TwlQ1H81md0S2qDre/mkw27HDIXbFFYq8DJ8oGeNpVeqGMUgwfGAcfoJYqE5OWRKg/Vd61BAzIXkiQj3kdgTXpyUA7r8cNQsEmy8wDAxYBsoKtptPh50x4Oy2C/zzAZoQfMBCT2eka89kjzC+R1Ts2snHkIBkBkvdOBPgE9f7fvb2+eVDibFNWwpKLPz05BjBx8J8k+uDE8sf8YRv4PFJQ8szBDBJg1U11DwM35Nh1HtHgMbVuAbXGlKbtc+mpXs7ORNJBCJ3LF84P4EDiYVaCL+hq59HvmIrd5+qjsPzCABJbrFMCkQ/2y0HnNDUjt1RxLNOsFpV+k1AYfQ/6Jii5fuRo9kB7af9jjDiP4DDdCPspqn+kOJYztdRUQBe/zNpEJeb+1JojybnMCirB3sRs8WOqX2SG0QrbjFpku1YNg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,48 +117,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When collapse_file() fails after xas_create_range() succeeds, the
-rollback path does not clean up pre-allocated XArray nodes stored in
-xas->xa_alloc. These nodes are allocated by xas_nomem() when
-xas_create() fails with GFP_NOWAIT and need to be freed.
+On Sat, Nov 22, 2025 at 05:23:31PM -0500, Pasha Tatashin wrote:
+> Introduce concept of "Live Update Sessions" within the LUO framework.
+> LUO sessions provide a mechanism to group and manage `struct file *`
+> instances (representing file descriptors) that need to be preserved
+> across a kexec-based live update.
+> 
+> Each session is identified by a unique name and acts as a container
+> for file objects whose state is critical to a userspace workload, such
+> as a virtual machine or a high-performance database, aiming to maintain
+> their functionality across a kernel transition.
+> 
+> This groundwork establishes the framework for preserving file-backed
+> state across kernel updates, with the actual file data preservation
+> mechanisms to be implemented in subsequent patches.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/kho/abi/luo.h      |  71 +++++
+>  include/uapi/linux/liveupdate.h  |   3 +
+>  kernel/liveupdate/Makefile       |   3 +-
+>  kernel/liveupdate/luo_core.c     |   9 +
+>  kernel/liveupdate/luo_internal.h |  29 ++
+>  kernel/liveupdate/luo_session.c  | 462 +++++++++++++++++++++++++++++++
+>  6 files changed, 576 insertions(+), 1 deletion(-)
+>  create mode 100644 kernel/liveupdate/luo_session.c
+> 
 
-The leak occurs because:
-1. xas_create_range() may call xas_nomem() which allocates a node
-   and stores it in xas->xa_alloc
-2. If the collapse operation fails later, the rollback path jumps
-   to the 'rollback:' label
-3. The rollback path cleans up folios but does not call xas_destroy()
-   to free the pre-allocated nodes in xas->xa_alloc
+...
 
-Fix this by calling xas_destroy(&xas) at the beginning of the rollback
-path to free any pre-allocated nodes. This is safe because xas_destroy()
-only frees nodes in xas->xa_alloc that were never inserted into the
-XArray tree.
+> +int __init luo_session_setup_outgoing(void *fdt_out)
+> +{
+> +	struct luo_session_header_ser *header_ser;
+> +	void *outgoing_buffer;
+> +	u64 header_ser_pa;
+> +	int err;
+> +
+> +	outgoing_buffer = kho_alloc_preserve(LUO_SESSION_PGCNT << PAGE_SHIFT);
+> +	if (IS_ERR(outgoing_buffer))
+> +		return PTR_ERR(header_ser);
 
-Note: This fixes the leak of pre-allocated nodes. A separate fix will
-be needed to clean up empty nodes that were inserted into the tree by
-xas_create_range() but never populated.
+Should be 
+		return PTR_ERR(outgoing_buffer);
 
-Link: https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
-Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
----
- mm/khugepaged.c | 1 +
- 1 file changed, 1 insertion(+)
+Or, preferably, just drop outgoing_buffer and use header_ser everywhere.
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index abe54f0043c7..f2fe7924afa0 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2230,6 +2230,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 	goto out;
- 
- rollback:
-+	xas_destroy(&xas);
- 	/* Something went wrong: roll back page cache changes */
- 	if (nr_none) {
- 		xas_lock_irq(&xas);
+> +	header_ser = outgoing_buffer;
+> +	header_ser_pa = virt_to_phys(header_ser);
+> +
+> +	err = fdt_begin_node(fdt_out, LUO_FDT_SESSION_NODE_NAME);
+> +	err |= fdt_property_string(fdt_out, "compatible",
+> +				   LUO_FDT_SESSION_COMPATIBLE);
+> +	err |= fdt_property(fdt_out, LUO_FDT_SESSION_HEADER, &header_ser_pa,
+> +			    sizeof(header_ser_pa));
+> +	err |= fdt_end_node(fdt_out);
+> +
+> +	if (err)
+> +		goto err_unpreserve;
+> +
+> +	luo_session_global.outgoing.header_ser = header_ser;
+> +	luo_session_global.outgoing.ser = (void *)(header_ser + 1);
+> +	luo_session_global.outgoing.active = true;
+> +
+> +	return 0;
+> +
+> +err_unpreserve:
+> +	kho_unpreserve_free(header_ser);
+> +	return err;
+> +}
+
+...
+
+> +int luo_session_deserialize(void)
+> +{
+> +	struct luo_session_header *sh = &luo_session_global.incoming;
+> +	static bool is_deserialized;
+> +	static int err;
+> +
+> +	/* If has been deserialized, always return the same error code */
+> +	if (is_deserialized)
+> +		return err;
+
+is_deserialized and err are uninitialized here.
+
+> +
+> +	is_deserialized = true;
+> +	if (!sh->active)
+> +		return 0;
+> +
+
+...
+
+> +/**
+> + * luo_session_quiesce - Ensure no active sessions exist and lock session lists.
+> + *
+> + * Acquires exclusive write locks on both incoming and outgoing session lists.
+> + * It then validates no sessions exist in either list.
+> + *
+> + * This mechanism is used during file handler un/registration to ensure that no
+> + * sessions are currently using the handler, and no new sessions can be created
+> + * while un/registration is in progress.
+
+It makes sense to add something like this comment from luo_file.c here as well:
+
+	 * This prevents registering new handlers while sessions are active or
+	 * while deserialization is in progress.
+
+> + *
+> + * Return:
+> + * true  - System is quiescent (0 sessions) and locked.
+> + * false - Active sessions exist. The locks are released internally.
+> + */
+
+With those addressed:
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+
 -- 
-2.34.1
-
+Sincerely yours,
+Mike.
 
