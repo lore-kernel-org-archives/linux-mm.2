@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A971CCFD314
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 01:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C826ACFD315
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 01:53:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F15BD6B00A3; Sat, 22 Nov 2025 20:51:14 -0500 (EST)
+	id 2E52D6B00A7; Sat, 22 Nov 2025 20:53:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEDAF6B00B0; Sat, 22 Nov 2025 20:51:14 -0500 (EST)
+	id 2BC726B00AC; Sat, 22 Nov 2025 20:53:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0AAE6B00A3; Sat, 22 Nov 2025 20:51:14 -0500 (EST)
+	id 1D23E6B00B4; Sat, 22 Nov 2025 20:53:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CDD396B00A3
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 20:51:14 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 83A27160A6D
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:51:14 +0000 (UTC)
-X-FDA: 84140194068.16.444E9F8
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8A7ACC000E
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:51:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="jlh93hQ/";
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C0686B00A7
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 20:53:23 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 946788A55B
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:53:22 +0000 (UTC)
+X-FDA: 84140199444.25.1032EEE
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8E897180008
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:53:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MqhGvEEn;
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763862672;
+	s=arc-20220608; t=1763862800;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6nVpiFdX7itUjcz/kHm7teZ1ePNKGm4Y4akUt0BwQhs=;
-	b=n8xIzBsp6eobEDNzB9BNsFHLnyBUdMhR0d+QySLjiQnM4XltMOwoowT0zPoImljEKEfD1b
-	6iSsUnQwDKAubk9E6iWmCUidjKs5e713cTIOhA+nlgNtsMtDpxU1kym8w6MthTPyg+7BSz
-	fDmbb4oa93FXyTR5pRYHtCkX+4+3xKc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763862672; a=rsa-sha256;
-	cv=none;
-	b=E4sTg2wF0O8mpkD9iNZx79W1V0B387siJsXUD6Az7Iz+I8TzPGPz79CcdxM9AXo89f7fGN
-	P6syN5YLtomVoBG1ndKQQnGF4OviauHbLCbRZH2fzcGbRZCnYkIK5EKtYMbESoW90aXwd6
-	8k3aJ4vAJROqb2lp4W78IqGZBLIlYZg=
+	bh=61f1zN5+IdmGzSxmoozO60LTdckIHSp2dJdbkwe3278=;
+	b=D7nIeVB1rMDx45KErpaDeqOAJ7wc77X4s9yx8RvBDThH1ZKfJCCYfY1PZjwr+ZPfLs5Ddw
+	nG4lfETLVfBlD4HqUu4WaC9YClHf698brV4ocZSX6izD8DVulW5rHPsHcFLnE4H+sYFDWL
+	f4UrSG1fgxxdmTFgwkdc7E0UiZbMGtA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="jlh93hQ/";
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MqhGvEEn;
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so5643083a12.1
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:51:12 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763862800; a=rsa-sha256;
+	cv=none;
+	b=hwvsGpZh9PGZZcMvfSBJiDk+b7DGbEjNjWLmH9XjQSq9W5A2KZd0QozqldiU2eV7cBkg7C
+	2AxGm3T/9qNUpVZMuJAUF7q78fxJeHMNaz6eiJ2zHklvRBbB3h0+KmHB1bwEatsyJDwgEs
+	R/7oXiE3CcSifgDgCihnLzah43Fuf6s=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b73875aa527so505190866b.3
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 17:53:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763862671; x=1764467471; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763862799; x=1764467599; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6nVpiFdX7itUjcz/kHm7teZ1ePNKGm4Y4akUt0BwQhs=;
-        b=jlh93hQ/ihyTVh0LIuHvEAUEYxwyjqNh4o/lJvmBoLiw238G74jOLzkhXRCI8kCnjc
-         F1+s1qfq4+mRM9Aj6Wp1c96Nn1amysYYoJETob3qxg52gdcKdi+cS0vjGPrwmiSCuGrs
-         ia+g2r0eQSBEfW3W5YvsY5oJvVo1Etazzozj92kQol7hS5OoUjuh3RyUHa/Y+UeJhbnu
-         +671oHxTXIUFoOpc2buxx0HNqXavaejgrEM5bDXaHI4wIoHfADE5mA+6MW/SCHtxWWBI
-         sZP2hn0OPaJiHM/wjZO4CXjBEWjXizCbMaGVf258rYk0k/vCy/yvdjBPI364zsVIkVix
-         E5VA==
+        bh=61f1zN5+IdmGzSxmoozO60LTdckIHSp2dJdbkwe3278=;
+        b=MqhGvEEnGsmNuxS9TZ0VN2DyoLi9P5yqChfAOArglQ/D0nF4n9VR2K8Wzx/wvUu4zW
+         TWpVqQxlC3JIlFXdU2NsfdOl0vz1DhsAXvtpliRtrWmlS/UK3wsP2Kp6TLbLIoe+sL2Y
+         MdrPbWVbfGTnoKJcScYe4eemuTk8Em0Y/RdYrF59zQ+bWiTGsqre+j8tqvd9KmTQO8PW
+         sfAX+bhzHt76VpC+hHPn9CgCZ9n6bwN57x78C+8SmPQSEQXRK04EZZj39+J3snr2j1VS
+         0Xi/2iJrPLMtTHg+V3jmH7gxLhGuEsGveWsN2CFcK641sgBmvbE69fs97ZMi05MLA1XU
+         iVtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763862671; x=1764467471;
+        d=1e100.net; s=20230601; t=1763862799; x=1764467599;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6nVpiFdX7itUjcz/kHm7teZ1ePNKGm4Y4akUt0BwQhs=;
-        b=fO2KQybBmbsSA24A+aZ9L0XJjR4izm4F4vve7NhXt+DVnbIhfqhhQuIW/h6hFGREXR
-         3bIj/U37saf9OnShInKyGYm0IUj1oI8oA7nLeI36An1RfgiNWxnVfOcTgtjMP3SB4uJJ
-         HHQbltc3i2g5gwTkEfJqrbNAHrMvLaqzciPF63EydVOlj9x0QCFux1YNMxgiLUtt2pX8
-         QSUooHeI5PiprCWwz6RvSLs0419JA9RRkwg9CwVlSGzRaHfZ27HNY0ZQL4dWShRKTvJp
-         cgYpyuDOKpeUTrtH7fTdn1B1h5u2PhaE0ighxj9+FiYL7xrzKeGUUUSIJ6HHwsgJRILV
-         ri0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXALsUdxJIizEElQs/wOtOUE4nhGkgnI7vP2qO+RcKQgiU0GS/RGHcYk6gJCCtraZQAssku9nqo+g==@kvack.org
-X-Gm-Message-State: AOJu0YxQd1TCXagxMInGc1BokBbOIgzFOz13/77txFooh5PB6Y1ERL+J
-	3NT3/lOPds3fC9Az1HYfRhA+OiZdmPOm9sMcFw1vwFfFA3s6oQsJdJ02
-X-Gm-Gg: ASbGnctPpGn1ezfYncebotPyAHtKy5kEpsT6V5ly48UH9K/KEv/MiWBiS+TxIF1OK+3
-	UbsGnc2MT0wEyzff1CKAt8kzhcAkyrZtFFevSZ7KrqRBfIGlm3M9u+m95RKZlrXgfvyGm2XCJmW
-	HDYZmePVgB+NjgMj1/LDz2biaXCFmUTIRAabEbKnDqEgn7rjZtxPlf3umSAfXdjqavTcbVbntxW
-	4KbyVvMX3iNoeiGc14XwPAnVKTermpCYyGLqjvt7WHoR2E4SVVn1JnRjmCI7i+hkaxhQZVxDT9Q
-	vnjxh/D/RB5XOASYhI+/D+UxvTyVsRHRIvR5yh2ZBubez0xUAJt64MWorobmpBMpHxNwbW2Yrp1
-	VSU+A1Jn7CWIxZvosRgiXpkJs98/bnL2pqu9ZvvZ8mPHH0f2qO61lbQ4oegJnAXc0hYh4RmvitR
-	IKOi1J1KKJzXvIHw==
-X-Google-Smtp-Source: AGHT+IGDbJxR38k0CDgJ6xIfXSvddpH6S6Qzkfm01XRydYuyQe1EOms7msfODKCix83hDBowWzuBgA==
-X-Received: by 2002:a05:6402:1ed6:b0:637:ee0d:383d with SMTP id 4fb4d7f45d1cf-645543495b8mr7201615a12.3.1763862671082;
-        Sat, 22 Nov 2025 17:51:11 -0800 (PST)
+        bh=61f1zN5+IdmGzSxmoozO60LTdckIHSp2dJdbkwe3278=;
+        b=sbLnLk5Vcz4Ecgnxz/oONNKrcOZbh5OfujyDEpsxKkN/cXvfO83IqRG4HL9DrWELhv
+         OzEszkeqFr56ksAGqBuOuuoD69AFlyMa3D3ZwQl6RMxFw2rPpfZHc8rJStU6ZgZvFH5o
+         8Gi+9+F8UDgCHP4VnmnMQbsxxSuhNtrQc0BoVSa3jvbXJXRi1PBSI1kTzoNhAuB2Hf1e
+         jXlUaOltviI/M5iRWEhfjZ7LpW6XxtMIWmZ/VmKySrUvdvpHlwlxYd+imY8VCM0f+BoV
+         ysEKRV4su8Atzg38XhMkusOmbImYfN9koL01wx0P3NNIsMSRSEdLqcxwQI5mOz8sxEgY
+         kEiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpFmgjZWzuQ10LpEAwohvpbGpZZg94T5wRu+n7Qj30lQ7eZ2V0OydcouhSUfPdGIo/Vh6MyWbhUw==@kvack.org
+X-Gm-Message-State: AOJu0Yx1tgRmbnJh/xyTyqJZQvFfunK2iCO0Z4MD9C+B+egZfGEaBrT9
+	FNrPIrl/CU3ns1jEvJdNlymfKTsyHd0+9GkYxvXTYAeI08RJRfz6L8xE
+X-Gm-Gg: ASbGncs6JtoQjKpmvFMsnZh9DPHoddLbePmWqaOWz4IT9JS0/ldC3zz+xXNxDaQ7xSA
+	Rh/wnf7QkKMv/a+2tAeoln3sK8RpJQQKtgkaZ78pTfWoVXxZfrcpvZuKE3OlgYMUGMNgncq7Cu5
+	LDNUXxIuYNh5XcfvsxJBjez5dayPp4HbVOWgYbml+PLkGQSqZTYSyz2rSIeUYaarTVuS4nxpFUK
+	x9FHb82stQDGnuw31X0LrTLY3thULlJ8rdqaQJjyLtq3A5Q9ut1QI+5bM2tC9VE428RMbJWlqfR
+	LIQ/kXgu5U2HTo+RuJKoOwoJ0ws3pMxnLyMgpVIb3wn4uOzYVonw4bJ8rbxCDVtFSfSrnCy7n79
+	HTfdOPFbuEhJm8wOTrjuk7vcDFm9cdnVGFvUBJlB9QM2S76RLEv2sFE6AeMDjuzzWZlc9El6WYi
+	zIRNKqP0itqZB1vw==
+X-Google-Smtp-Source: AGHT+IGgteEPtCFCVDHZnVsW65MCuOfGB9JQX9QyVGHeZGsz1UpMiB2lrj254YidAvxOylkmpxiJ1w==
+X-Received: by 2002:a17:907:7287:b0:b73:8cea:62bb with SMTP id a640c23a62f3a-b767170cceamr817025266b.31.1763862798912;
+        Sat, 22 Nov 2025 17:53:18 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64536442993sm8555273a12.27.2025.11.22.17.51.09
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654cdd659sm881230066b.7.2025.11.22.17.53.17
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 22 Nov 2025 17:51:10 -0800 (PST)
-Date: Sun, 23 Nov 2025 01:51:08 +0000
+        Sat, 22 Nov 2025 17:53:18 -0800 (PST)
+Date: Sun, 23 Nov 2025 01:53:17 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: Zi Yan <ziy@nvidia.com>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -107,25 +107,25 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Wei Yang <richard.weiyang@gmail.com>,
 	Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] mm/huge_memory: replace can_split_folio() with
- direct refcount calculation
-Message-ID: <20251123015108.wxb7oyk7vlfrjlbi@master>
+Subject: Re: [PATCH v2 3/4] mm/huge_memory: make min_order_for_split() always
+ return an order
+Message-ID: <20251123015317.3pommq5h54xnau7e@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20251122025529.1562592-1-ziy@nvidia.com>
- <20251122025529.1562592-3-ziy@nvidia.com>
+ <20251122025529.1562592-4-ziy@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251122025529.1562592-3-ziy@nvidia.com>
+In-Reply-To: <20251122025529.1562592-4-ziy@nvidia.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: 5749hoeg9yw4843ruot7ytjfz37ho6wh
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8E897180008
+X-Stat-Signature: md5j5cyztkm1b7xhwi93b97j6gf6g7cq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A7ACC000E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763862672-934023
-X-HE-Meta: U2FsdGVkX19sxWwLX4R1OOSY02x++wiNhriMocV9P6YsvuAzw6RYH19OkiCEuqx8A68b9SRRb92D7a+/qYhvG6KvmegZcVAuvllicAM8OGrIalZZiz6mKOU4RBdZSKfVmQsLWe2bac8bKY/9aTAP9bXGHaQgg9Ei+HLqGkR5iXMooP7L1neDGocsnZAeae/Lh3GEqpcz66TuHXqVss4yM++FRsGSSNiPMFHZ2OaxyeWvEVC7EvedSAcWCuykqH11H8Lsj+Y3XyQGqY6eo/8vF/c/pqBVrGUr4pswnaMD8jKTNaTD8Kgha0/y+NyRjMZqgmSBHJOHMOs+xmmlk97eRT1gw2gzO6ldzOWBkwflFDM5We3O7ARzR3nu5e79MQYL2tczB8YXATRtiiPbp+tQ9gP6d/ohjCpPPhHvyJjO148OoySKk3vR2dwxeu7WQu7C6hwLciJ151kAtVJGQGEC61GpawH9DWFSQv8gekEPR2sHCjjY+dH6V8ujeOZjU+4I+b1H+e14jcmQG3vWuUO/vlyYd4uYucHOhGUOlGDg2UlpxrT//n22FaiUE+cN6fvnQIWCUVepO4Dg+SY4DeB4AKO5S6Zfhwg9nOv5W7UeZoKqqU/jKz4MgVkGNSxcwHtyCvSt9+Oni4XW2w/5Itwm/HUL5LM8KWW4wPXUmJSpk/baJ3Flv3UO2TaLqVGDTzjHxIdwj7eSbhR1DvAosd0Nr0P3GKF3ZV8y8FBe0Lyexxw1rjkJNJqO5zzmJOr5hCpwETXN2DKxgSOSkJ8mDJpjFLiAtB9tZIHTJZKvEvqoihG6EhERcTtopVes5x4h+NcDj8dndZx0YC8rX24vmlVGcnWQNVLBkCF2oyI3QBEIbGNzj29hQmPbIIAI+KseNmBBoeqTUngF63vzrl6TPijADxzQhhKc5drZz2G1LNSZdtV7qmnBBVLll1nUTB4UDQIo4H7OA2CtGfQc7kqJRE1
- Mf4ZxsxI
- AAWO8b2CtsTsxtCW9c7Rg00L4HHhryEBpo5COtDy0Idv47ojE4TLypdX5AFooA6vprf8SnQzUAGK0x0nzjUASM/xsUeWsZW6F5YARBQfNPzp7gXajyQJXihMJQAbpeJG+M1WEiQ/8ZwwzzWkOHYLHFgmcq3w6rQn8sKpDR1pug/j1Nk1yhPlFqSOgzEPUmRcu1FVs3HxicMQ+eWySHL9EHly/psgtuY6LO3y/Q/NrGWEa9FpiGWrMW6sMiwYYK9aiEeObXegrYy1dbdgaNwZHOTZ+xpuSGg6fP4yibk8t/kZ1onlzPvvKz47ZFvbkwaMSyLKbBnHgXxUJNowvy9V4ybrR4ueDOykgrF2Yjz0ymzUHU197jtxTUzqVq7bO76wSnK1N59inFksgZdf7LjpSNoPi1wpnAkhvtpAdq95iMojeV6SiwOySUfhxcWqKM/SOQrXW9VOJ9nUOR80PC1DIeGJxnVH8TMstVvXX+opbTxD8vRyeYcUQvX0+CbwZZ9jy62kPJcUpOnrPl0U0HcroCcJWA5CgMhUZV9EgjdRzqV/D8meRiywgooCIwgPxWOpX1JFeP9il/hh0GqAfv+HDtcNg+8513cj/64IaoO/d6Ei1B3qQ4RrXbC56fUYu+LQNdUceZ2AgICW+h6JYS++RwnHBxI/4t0NciKXKz/B/tOushA1gNH2B5ISAfgYowwk/H3GAhEhjRHD5f2+iVYbcEAZDFULpI3B4VoZNHlPKYXiCMK//4TCHQvUpG74Y0kOpb5IteI9QsInAwZ9rjx4h3asiXSlp+MjDlTUGSsN4M/i0wzJxF7kFvZVYxF711S/RI0P1
+X-HE-Tag: 1763862800-87007
+X-HE-Meta: U2FsdGVkX18isiPVE7+mb6fd/Y2qBMeHxEgl4jVHEr6+VSwWRwusykuSTZ4TU8kOQ1n/hSfcDDrcbyrty+EevW4IyjENncfYeWCteH5JHNsMHCSbkO2nLr+JTyx0UMwkjRxVPfcXsE0fL4/TdUC6DWK5vCdGqfgDlS39LEf/7XbKRSeP3nOr0dFc7NeVaSkz+6QUuz8UVVcSwrKipGxy2lwCE7gARyXvIV77rG/Gl/eGVrWUUT30oCtvECmMsSmmbLtsbJoAtuR9gyhJwSHUTRC7Fp/KP3Aa7wRubTGGYIcI0bY7Y04TKVLtWITVNevODi0zBp4q/gCuUVrSpga+nDknxAKecIDGXEubhdH/cfHw+XbTIRYRa3ivDjXAL5rlNwJtDH9GlvtSEmfpc/kQ9XuTjcYeA/tPRvJ6agrsmeKsYDO3nnimRHYyW5M1dqIQvwB+SHNIr2b8FGmrZQ9cWiwFYSqduJkybsyKBommNXamDrwHJZmvN8K9ujfKpHwJNre+QdKbB9Ua4EPXCpSftePV6Yb5MYJRw9bn/XDnFLVpQmnG2HnNVQHGQvZNy2G+RY0qpcZQyxMA1FV6Ej7hWgGBVX7uUuFbaDXyHcxZ6vulA5EBHPSy89AzW8//yrErsXDSaNBjrWx6XX+KBO0gTfd12r5ujhSozIiXAp7GknUc0oZ/pr2GHoHhdQhu6DitpnTTwnF1PCPFTdOpuv2aqvDUJZDEpx5vcUbIcqB8rxFAOCMzYwjt+kmYZl02jSlQoOG0XV+UpmFjfozQSS92X0OXGlykYXrYAySybrBR8Iu8LLsuWae5W6l/T+JwOFSna5zJEp6rabQMyeQk8tnn9vA6GQKBSHYzxAgIDf0uMMBo8mdSxaHbtW4kgZrSTKWi41/0PQTPZDRRc1Pppzps3aklCPrtC74bUTK2KeFzK0fLdCN98aCeadZY1oFR6Q1fmTIGuLX2DAmhszjyyan
+ XNsZWomt
+ aQexAoBHes3uw71jAai9vp5nkC737lQIkc8+K7ppJFy5a+sBDAzX171NS2UBCZgeJku2mLxKEXevPL2clMgAmAWmUZvQw6lH3Wms/59wYATOiAiO7C6FmgIJJBZNtEIbi+ZWEA40FCiTgBx2VU1szK3xS+YkVkH7KfOp05jDzgFgDHQSzQpDVvCgxkQzqd8WqggUA1eqmxbUoCQZvH/db3PPrEvMNHk0z/AaBmTgkNxpmK8dsWkftF4RrmtmjHNKkIzqBPJtkl7oX87qEBtsVIVptXSyWnxcA0BDJMbo3T7Z9QjPPzuCZZjinz96CB7DCEYtLfP002NNtwNbIO84RKOMKp02FAhjzMxHAMDsdoX1DeNx9kIKCsT+APnChH4LllhqubW2zmyx1AVConaVhpc3dQDe0+coyT4Qv2sdw5SjxYTbcsOUFwWPbINeQGzIqGjMpoJCOY7KCho4ZkAl2HFA7Ln2ma3BIKsgN482SFKaiMTJZjIRZGuaTOJyWssMmnxb21r5oJuaVFeYW0vwfJboh4jtdzE8VtTW+wWFHkJq6+CJgdaSxg77r9cMf+NHWM7OnrggphrIRXvVXUTxBKbztPJDqpYnTfpSaSjcZISsC35L5IDs3RyLL7yfDdBt+9zA8biQgknZefBjo56TAswl8xdX2gET7aU/bS1Ukya8ZG10sU2Irrl/XMNZzco4Jytn0tSqAGIURxjPbrTUuKfYYxqxXVFcm8accMvb6Ed61t5T7sDB+pD718xcHwgRza3vdfV7cY7L4sEI/Z/wfqRiu1ViuAFwIolHXxJvnY2qTbxc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,13 +134,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 09:55:27PM -0500, Zi Yan wrote:
->can_split_folio() is just a refcount comparison, making sure only the
->split caller holds an extra pin. Open code it with
->folio_expected_ref_count() != folio_ref_count() - 1. For the extra_pins
->used by folio_ref_freeze(), add folio_cache_references() to calculate it.
+On Fri, Nov 21, 2025 at 09:55:28PM -0500, Zi Yan wrote:
+>min_order_for_split() returns -EBUSY when the folio is truncated and cannot
+>be split. In commit 77008e1b2ef7 ("mm/huge_memory: do not change
+>split_huge_page*() target order silently"), memory_failure() does not
+>handle it and pass -EBUSY to try_to_split_thp_page() directly.
+>try_to_split_thp_page() returns -EINVAL since -EBUSY becomes 0xfffffff0 as
+>new_order is unsigned int in __folio_split() and this large new_order is
+>rejected as an invalid input. The code does not cause a bug.
+>soft_offline_in_use_page() also uses min_order_for_split() but it always
+>passes 0 as new_order for split.
 >
->Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>Fix it by making min_order_for_split() always return an order. When the
+>given folio is truncated, namely folio->mapping == NULL, return 0 and let
+>a subsequent split function handle the situation and return -EBUSY.
+>
+>Add kernel-doc to min_order_for_split() to clarify its use.
+>
 >Signed-off-by: Zi Yan <ziy@nvidia.com>
 
 LGTM, Thanks
