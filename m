@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC74ACFD316
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 18:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0FECCFC518
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 18:44:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 828D96B008A; Sun, 23 Nov 2025 13:43:50 -0500 (EST)
+	id C3CA76B009B; Sun, 23 Nov 2025 13:43:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6211D6B0099; Sun, 23 Nov 2025 13:43:50 -0500 (EST)
+	id BED456B0093; Sun, 23 Nov 2025 13:43:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C7726B0092; Sun, 23 Nov 2025 13:43:50 -0500 (EST)
+	id A972D6B009D; Sun, 23 Nov 2025 13:43:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 02BFA6B008A
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 13:43:49 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8BE2160179
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 18:43:49 +0000 (UTC)
-X-FDA: 84142745778.22.0F79EEE
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 850FB6B0092
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 13:43:50 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5E8461DF587
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 18:43:50 +0000 (UTC)
+X-FDA: 84142745820.23.E0E161F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 215F31C0007
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 18:43:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GDRk/cn/";
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id A358F140008
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 18:43:48 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iiM7b3dV;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763923428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RXIrqjw1RbZh9mM5rX7YXg46J4nnw4+UUqj3L7fdYI8=;
-	b=f3UQVqbH4IAVbe9cx3cu7Oi0CUvJda3BOO+5Jdb/sg+S/Bej8qx2v4sCol+hSvNmM0Fkeq
-	oWlErdZZdvh8fbWMQu0F3gIbFF8s21CY/K/0kcTNJDK17k1nq/uWj6M3H/7zXXQ1HuWtCb
-	b4TGPxAusooolxsNN94dI1dzN465pQQ=
+	bh=D9wQrkJ5b1Ofh27j+q7D2sfPqEa5Py/IFROhc3PXwtQ=;
+	b=qXRJFwg30wW7wc7IrOTjczfOhtXM03xIJO5lsWUQG8X2P1FW8WIkOkU9qFoq/sl+c0ZDbw
+	Vd634wcfrPxQCZgbtNNCL/tRgTU3VvCWXbFnCQNaLJ+olRdA/kbsv2XyekgAlEpBlXI3Dk
+	55DTdDrga4By6HhfWvkwmOWeBSHYZKE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GDRk/cn/";
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iiM7b3dV;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763923428; a=rsa-sha256;
 	cv=none;
-	b=xB9kiQdPb4W+RU2jpzucBGIjH4luYukf6Yg0kGbFXTlfLA+Nlr9/bFOQkQ77s1E6Mjza8l
-	dybM/7rwqSWwGmgVG/ozbh9+zXKy5yU+ZYnykzcqQ2ZT27M+NK7VIUkd0HDFyIn3bCCCom
-	ysmO5E8phah8qOvToqqdGz3vqoJ7rq8=
+	b=10UrR0TB9m5IGypnYkypgq633/OWlXfdJ3fC8k2WfdZKfVJq/RY+Y2AP87G8MQafzf72o6
+	S4DhbY2wMXNGCQFndmdrTP2NKb5dY/7tVMeJLvR7rTmgYL0Wjsy7vZXwSn5lN8c23yAiPO
+	AGoJcnfvY7b/keMKVEL7HGB/NTn8WQg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5318B440DF;
+	by sea.source.kernel.org (Postfix) with ESMTP id CB58B44365;
 	Sun, 23 Nov 2025 18:43:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61D8C19421;
-	Sun, 23 Nov 2025 18:43:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571F6C113D0;
+	Sun, 23 Nov 2025 18:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763923427;
-	bh=iXEcDN8E6cxYy3isQfAsdFaACSzfCgupWIVQKmv8ny4=;
+	bh=ihzFy5TOJPnYv7zeqZ3FA4BsW8yTIpVlYGwomLZgsUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDRk/cn/AEJQHJM38Tao7V9q2kGxm1ykxzMdjMBo54eYpg72gExF2HFdDNUPwdHgN
-	 wI02Rr2O7iYuV8vOhM1K4McnURJ9R89ykquKUPEO1JWyiqqsqjt6YLiS6g/3J/pP9Y
-	 noY4ltkqc5TWabMoj9UQPRKkzjyBGw7E7qcioIccd0m+fEMymoonFze+t/Kn2HuCGK
-	 M6lVuwXRhmteHw8B1K+ueIjL5wgFBEQIXlcy9afA5pw+zefV+qYquw6bBovJ7ZN2LS
-	 9NpJhnmd8SXc+mtaQEXW95AHxGqcrXYzQque2fZJXXbKrKEybK0rDGJ+pPKLHQUq3X
-	 VjFIbbEFgRUyg==
+	b=iiM7b3dVNQ4X2OiyrZkf0LKuyuwDddtr10cyC02fxUSnJKk6aEKb0yrRfFh9PQHQ9
+	 J165637B4tbSLIC4BlPYbwqLkm62A1Q2vuhmoKXxqi0favHEjmQyv5oiypoK1AsLC5
+	 lq4hZZdFZUC9t6hTVHEC3fQPhak49Zylx2V05NvGw4Q28SGOTR/4wKjKshgWq5rLJR
+	 6mx2lINXEmsh0AVIH/ulu6muPvzJRlSxS+N0PkvSNvXXxvkzAms0948oeBgls0AdSh
+	 unjZM2AGydYVFcS1GQCKFYDk1NDwOAm9B6IhSz/8dAWNWg0nOO8MjU7SQ7r7FhmoVJ
+	 g1LvJ8B+S016A==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -79,22 +80,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 09/12] Docs/mm/damon/design: update for max_nr_snapshots
-Date: Sun, 23 Nov 2025 10:43:23 -0800
-Message-ID: <20251123184329.85287-10-sj@kernel.org>
+Subject: [RFC PATCH 10/12] Docs/admin-guide/mm/damon/usage: update for max_nr_snapshots
+Date: Sun, 23 Nov 2025 10:43:24 -0800
+Message-ID: <20251123184329.85287-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251123184329.85287-1-sj@kernel.org>
 References: <20251123184329.85287-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 215F31C0007
-X-Stat-Signature: zw9zi9o6qrdacpnajgo46sbgzqfgp51r
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A358F140008
+X-Stat-Signature: 1eq979cf6hiqc6474bw5ust6ey33qfn8
 X-Rspam-User: 
-X-HE-Tag: 1763923427-747950
-X-HE-Meta: U2FsdGVkX1/SNDv3LWxgQ9+XzQqK595192s6ES0sLKjmr/LoQQmSJP2IkiJQHOQUzvOkc3Q23HdNlOnJo4oefsz3KzOICz3utzVT44aDdMNO9N/6sqvXKuc08NCFgDgwn2tpH4rkh7KAjNvmZArjRYiWXyyZnTOxiQaMVgG8RMSHwN4hJo/j6zZqoCClZ2/M3QGAriIeey5fOOT1GeH8+dCqAl46zWbLMAGQk0KrZ7PH0y7AX0RaF/3UGR1ofJ8UyPPCk0VwjP/sT1WByzc92pYwmrsauZnFK5iRmBqhVyE/rixa1nHfo3/S6euA02irhpHZdPkhQ4LIIYO6g35v5O2BnoTr9OXc9ZCJEgiZlwQotOOBsnSvvxoN4S9VVU/tjtuhzeQ1UASURtgSc6fEQgNMAFZrLmneH/6mfBY17SsK/yMr92pATGCsd/iWLBP84GAtzG/WiF/RfOqdOhzQceKuq6x0VYw43rhZ0VJr2MH8Y4sfxGtA0ZkRIGaO+PrvyZUK+iP/vRUYcRSCq2xCGNVSAIeit1/gR0Mev2lodL+mnDpK5rNbyQ+WFzm8lcPqUO4PgwKuGeLZrr7p9atmksOitaY+J2B+o3wBUI4y7obgmINe0uUyNbNpgZREq2mr3KxpnJZIZcg1mmjDLnLpH/wX71gQmBRyEsGMeLSvjvr/S4JmFDosQN8UZ3NCH0CwmsChuDjWhuTMhNfb0jaHpRameuSETLW8KPTb+76+PbDOO5UPgzbbPkBrChKTa1WBUhYpEGXHvFLexpNtaJQggCm8CYNVziBh4btl+3K8x7Ka7BaHAjcSjXaPoVPNCYvo80g/yoLCaZLwmpBgJqEuru9bib6jZirHJ2fahggPE4Nftsbkyk7T7QlEL74yfYZ7wWooM/xJ/Ieg/6FhKxS3J9N8D+mVbwMiNaMkQ3It/62Sg70pS8LiKoWknyHemQMTFlEkwasSH1N4DOjobo7
- 7P1C+nyS
- IJoJJ6Cco2hprpZOR4N5PLCrfkdkphKlLibEAmtj/OD8lZVJV9RjSCV6Cc4HfNNWKa/FUwnwxnGP/5/Hs5wqfC1S3vpOV9FdDa4xY2wvEfNWx4DGrNVLU7pvJj7nKEq1nUmTZxCSJ2bB/AYPn3KCwFIB+46wtSBZZgnS0yV0996A5UC7qL6Dj+crlzGxYSKJzssmWy5QzF/hIcf6B4Dk0vF+cRJqwZFbs7VjSqYqRon3GAXMu0jIsKgk+SZHug3usR0h83Yi+fjpDp0bSX37zaxKH5w==
+X-HE-Tag: 1763923428-22098
+X-HE-Meta: U2FsdGVkX18R2u2HRflLObaBUums8pfsBZBjGQesNgEYEFtjtgKQ7fvnsMKPfxhb5g84BU2djYsIFtz5VI5Zt8JoMK7ErQOS9F3AXRbpn2eHPyi6b28V6Zdf/tE8aeg1hcxvQKFSj4SmtETpRvs5T4iJrNVEkSoA+n/x2d7YJ9Yud9GA5mUoXXtWiC3neaviizr1cBvawlzv5kqK8TESMBaIytxROGMgdGxqMFfCMUAaY6uTIJKkKrG6I27Gy2rtf9TWWm9s8QJmtUHVN2t/wgyt0DOJT7rVspNRI/B93TUPYSZLD0Nl3kKV0yPTtP8QgQuWOF/exzBl0A1zFUKhF2LOjQ0OgXGrGoX0LlNwwpO+HkXnZ4W6SX/azCIKBsN8vJV41/cXqqcy06Wc4R1NhKxBMdQU6lFoZnzyeYibmSpWii6PUMePcIvBoJ6wJagWLPRtRCrN6ES2o61KTdZ2kA8w+fLwUuNBwUUb4R52Ane7b/gAwIofKWEYfS2Fpgr0jEU9c2YIrqFounrFg+jYOVNMFk/U5aym2LaEfHu/CKmqXnA2Uw8tZ92sdTO2xE1z9pCXHv0nHItmomiyT9B+gwyYY+0cmeEt7pGrjP5Pvs+P2EyVOINSDvuyVZQaSLd6tltaeRSIaKh8K0fftcVx37ZAQWA+p6U+jluM/RC5ILoY5CoUtj3yCZb9Fc6Fv0gbSmjn+WHqECRqqlLsHwubGh7vYCqmlxZ6t9TA2bQ8bgMDTRgX/6F8CF/JLOEhXVluuaeR+BVW6JwoSpQwAcKZdv5shJICiGM3TkxIIp/88nP3t2LMjz5hP0P/2ojZ7/TabyOEauC1PtfSObzyIP54DnvbS+sv99ebrzKFWTcxh0jsSLjYnsjJ5J6dLrVN4iP9JhtfkqHIxOInq6kfWnMQGrZuGHRihvmUoE4PsWnUiyPp8OY05np9IYTlpH4JAfGy8d12LeKAsWoNz80gdf9
+ CRVW4qX8
+ ++OAr8aeeJFnOx2zBuzWESnWtnWN7yYmuhLqbYjn8TIWoYdaf5PAJ5ex9RPOe3ywmX3y9h3peJW5UcZasDP9opdSP5b8Qoohkj7Z4fdOFB9Cm0M7tty2m22p+CSrRaXJgKwLhSepzoLMxv67lyKNr/F7cTdvolxDJym4J2u8cZNudYAE7psWI4TN1hLLzbnwQ/0tt/1gBOLJUdSRDn03QoJCyreQtBOFahMqd6RhSl7Ihi7x5PhWFOnZTDo6zStw7/kRBURjmsa8iyF5hfxG0v7eQ/acIucVYOOGd3M77jL5jjyb/3WD0bwEieKuvQ5+iqdg9tL3hszvUtZwnp/oQK+9VoQVawGsPpDUC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,37 +105,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON design document for the newly added snapshot level DAMOS
-deactivation feature, max_nr_snapshots.
+Update DAMON usage document for the newly added DAMON sysfs interface
+file, max_nr_snapshots.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 5cc7b7d662be..7fd819b8bbf7 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -720,6 +720,7 @@ scheme's execution.
- - ``qt_exceeds``: Total number of times the quota of the scheme has exceeded.
- - ``nr_snapshots``: Total number of DAMON snapshots that the scheme is tried to
-   be applied.
-+- ``max_nr_snapshots``: Upper limit of ``nr_snapshots``.
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index d0944bd78964..7da4c002cb39 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -87,7 +87,7 @@ comma (",").
+     │ │ │ │ │ │ │ │ 0/type,matching,allow,memcg_path,addr_start,addr_end,target_idx,min,max
+     │ │ │ │ │ │ │ :ref:`dests <damon_sysfs_dests>`/nr_dests
+     │ │ │ │ │ │ │ │ 0/id,weight
+-    │ │ │ │ │ │ │ :ref:`stats <sysfs_schemes_stats>`/nr_tried,sz_tried,nr_applied,sz_applied,sz_ops_filter_passed,qt_exceeds,nr_snapshots
++    │ │ │ │ │ │ │ :ref:`stats <sysfs_schemes_stats>`/nr_tried,sz_tried,nr_applied,sz_applied,sz_ops_filter_passed,qt_exceeds,nr_snapshots,max_nr_snapshots
+     │ │ │ │ │ │ │ :ref:`tried_regions <sysfs_schemes_tried_regions>`/total_bytes
+     │ │ │ │ │ │ │ │ 0/start,end,nr_accesses,age,sz_filter_passed
+     │ │ │ │ │ │ │ │ ...
+@@ -543,10 +543,11 @@ online analysis or tuning of the schemes.  Refer to :ref:`design doc
  
- "A scheme is tried to be applied to a region" means DAMOS core logic determined
- the region is eligible to apply the scheme's :ref:`action
-@@ -741,6 +742,10 @@ to exclude anonymous pages and the region has only anonymous pages, or if the
- action is ``pageout`` while all pages of the region are unreclaimable, applying
- the action to the region will fail.
+ The statistics can be retrieved by reading the files under ``stats`` directory
+ (``nr_tried``, ``sz_tried``, ``nr_applied``, ``sz_applied``,
+-``sz_ops_filter_passed``, ``qt_exceeds`` and ``nr_snapshots``), respectively.
+-The files are not updated in real time, so you should ask DAMON sysfs interface
+-to update the content of the files for the stats by writing a special keyword,
+-``update_schemes_stats`` to the relevant ``kdamonds/<N>/state`` file.
++``sz_ops_filter_passed``, ``qt_exceeds``, ``nr_snapshots`` and
++``max_nr_snapshots``), respectively.  The files are not updated in real time,
++so you should ask DAMON sysfs interface to update the content of the files for
++the stats by writing a special keyword, ``update_schemes_stats`` to the
++relevant ``kdamonds/<N>/state`` file.
  
-+Unlike normal stats, ``max_nr_snapshots`` is set by users.  If it is set as
-+non-zero and ``nr_snapshots`` be same to or greater than ``nr_snapshots``, the
-+scheme is deactivated.
-+
- To know how user-space can read the stats via :ref:`DAMON sysfs interface
- <sysfs_interface>`, refer to :ref:s`stats <sysfs_stats>` part of the
- documentation.
+ .. _sysfs_schemes_tried_regions:
+ 
 -- 
 2.47.3
 
