@@ -4,131 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C175CFD312
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 03:05:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0EDCFD314
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 03:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D26856B00B2; Sat, 22 Nov 2025 22:05:11 -0500 (EST)
+	id 207046B0023; Sat, 22 Nov 2025 22:07:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6976B00B3; Sat, 22 Nov 2025 22:05:11 -0500 (EST)
+	id 1B7CC6B0029; Sat, 22 Nov 2025 22:07:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC51D6B00B4; Sat, 22 Nov 2025 22:05:11 -0500 (EST)
+	id 0F4AA6B002B; Sat, 22 Nov 2025 22:07:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A725D6B00B2
-	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:05:11 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5693E140A98
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:05:11 +0000 (UTC)
-X-FDA: 84140380422.03.01128A0
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7698318000B
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:05:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XtLWa+AP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763867109; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F1B806B0023
+	for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:07:23 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8916B4F4F9
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:07:23 +0000 (UTC)
+X-FDA: 84140385966.17.BD5862A
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C956540011
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 03:07:21 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Bh7SMJby;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.161.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763867241; a=rsa-sha256;
 	cv=none;
-	b=pqTFSvep7x/pV8BXQB08RSB+gvj7m2YJgvhsrqpfq84ypOozEsZZEXMzFvMSJWvzO+2QQV
-	K53bq7MV2UYrTWhYyvDP7z9SvQVEorOU/xrP30ZM45zpMRUBkbdaLo1N4cI3XZ8VRL/tq0
-	oyoMOgnmpGs4m4w6yIm1zjs3FkzBm6U=
+	b=kKuu7bqXtZ0K31ROtx3CdPN5ABxmSCGnzozZEpV2Uh4yukXkrsKjsfKu/cG4DXv4OAHTET
+	9Cyf65JfRVxtbOE7/lm3aKh9EnSYY5t8a1WIffUM/ZdstLY6ZExaX/jmUPAwrHEkTDIUpw
+	rVTEaVX+EUQl8X3qtVNzy52itlH8SVs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XtLWa+AP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Bh7SMJby;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.161.49 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763867109;
+	s=arc-20220608; t=1763867241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PnnYqS1Gva2iq8RVemeTHL95j/HsRMm9CNrwh4z6Zcs=;
-	b=g/raqcamO//GqKuTHHduVb+Sa1wkcUMm4MYEtDx8hAfoeqzxpYHnsKonKjmHkkiyarzMZs
-	qL+PrM1DTJ71Rk7r1bM0ow7X1OsTh68OsC3zHX37pG1moDLDKKkzt1+KzEpghNJlwkzOaA
-	H1by9U61o1yQoKNPFtSGzH+BiSegh6A=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7bf0ad0cb87so3006127b3a.2
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 19:05:09 -0800 (PST)
+	bh=YzGX8P+wyykXQ7vc9SLz2LBCv9ohbHyJk+lGTSCle7M=;
+	b=iWKLVqamkwn5jtjTlvBE4lMF4n3g+dL+6PGjJMMzyCxgf6UcQOqPgA/WyIuisOOS1iBxSQ
+	bIT3tTkICa2jESoGmP3zK/+znzIXXEu2i/IHMzOwmdlmBA9cDfVwnrux7aH7jVA1nheoDn
+	pWiRSKLOjDNQXu2lrv++2oDYSySat6I=
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-657a6028fbbso164702eaf.3
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 19:07:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763867108; x=1764471908; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PnnYqS1Gva2iq8RVemeTHL95j/HsRMm9CNrwh4z6Zcs=;
-        b=XtLWa+AP6r+MD4HSztjAT2NAIELUAAL5mdp2LUld0+iRNw0jsG+1vGbZZgRM+N6wyH
-         VBoC6KOaxqkFB+acZAIbrNA/zQo4RcV0qt8D+VwGev3qibsXQywD5QOoriG0IiOMtG/D
-         CDzAtUxfoezrw2383H0bOaq+TE2OB0ISFBdhl3NqBHhoXDw8Qc34PDrizpEVVP/KsRpd
-         Fklry7LzaN4kFNxL3s6bIvz21u00zaVXkoQxN441lelY7DAFvrQumlonvurLPx8olQAO
-         yPS0Q2z7mWDUuOHesN8QYeqIYXflYM3xU9J5y39GD8enG6awZ92P1ZGs8ao31jC8lSkX
-         1m9g==
+        d=chromium.org; s=google; t=1763867241; x=1764472041; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YzGX8P+wyykXQ7vc9SLz2LBCv9ohbHyJk+lGTSCle7M=;
+        b=Bh7SMJbybk0heqgT1dSCtirqwrCzKxyLgAvphST8FK9skwBTzYVho5w6UwNPynb2fR
+         /G5b5PSrKjc8dUBRyZoPbcLV8vXllzHaD0nLauqHabUuoQK4MYy2pIq4VGXFp9ijA8va
+         HnllJMcMhel+R7PmxHEIZ7wQw2DcpnyVbkH/I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763867108; x=1764471908;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PnnYqS1Gva2iq8RVemeTHL95j/HsRMm9CNrwh4z6Zcs=;
-        b=jW59v3DX2JgPVRAMtqg/dag6UAjfzz4CeMD3yDoQByB/CeHxMP/hzjO2dh7TE5VCZ/
-         GMwdMn+P37B31aYLeQLcC1aJmZyMHkdlNqHPg8C/LW2lBeN17G2RbOH/I4b4GtgQO96y
-         gBq/UP/BOogawkxev4HvO0uk/H1QUEBflZ9R4BdxTNT/JXxOUegMUcmv9+gMCW5xN0U+
-         56smstQwOsf2ZqudN45RtX/fYA5JI1/8oU95Jb0IvlSmiwQj6SMtbfsDl4Wz6xh9gjBl
-         FEo3t1UoQDJOkJzUy5inLX3T/JfO9MR5PljGYX7ZHebt2ynUD9/EwTv9/ewe9+Vfef3S
-         hlrw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgDA2reb4YQVn8ZePzhnKBh8QJCoYs8pDuFAGxfNVxPFeYk16aLT6750I8CEK4oyf4lFQ09WSlIg==@kvack.org
-X-Gm-Message-State: AOJu0Yxolnt0AJsJWCTu4U4wwuURe7Uky4RGZq3HfAJfmETVzQ2AjqKI
-	2fk7EQeRo8zHy8Y6eiQKXrlvQ4ZAlyw+zPCqGpoIWub+mOynjEs5alHx
-X-Gm-Gg: ASbGncscQiBAOiuosw+O3XJBh3fITN0TOXrY9seCpBOe5SsQzeIoF+ZiEljwUwotJi0
-	+yKqn+j52z9D0lDE4wEQNybHTLRBCFzW5+q8tNLY8EFy2ekR+b6hnNCsu/+BM/VvzK2Jv1oxcHa
-	eg3Sy97BblAvZ3jUPLvPCpFSZzoiUjHrzmdz4lM5VJG60Kr0z9+nLIN77Hnhb3xXgWjPt8IjxET
-	IWS9cRcEh9coWyFgX9k4gCgCXhz6PJQkgH8Z1YvtazedWKJn3yBJDqLdEz+g1QBGCgM5XRoPVnC
-	5IBIdWKSj4kYwbkrajxJbLuer8XLKZOt7tWIfycO8RAitXCR6jsqwleA4Z9IZvvkNLZcfxqIFED
-	on3xiCxAAeX9THvjdiqFjLW48AjdepXSafpv8pbEPCXVWPGsqlTicBVYBJmdu90R9STy56ddpbU
-	P97o754Gx9bWZul9O7iK1+dZy3CQ==
-X-Google-Smtp-Source: AGHT+IFHuK7TqumMxHSpEjVPwsTdd0AYETlkSpyKy7kt0aWPWip9dphCpyMx2hcuSl0hHQG5gU/VzQ==
-X-Received: by 2002:a05:6a00:13a4:b0:7ab:8583:9cc7 with SMTP id d2e1a72fcca58-7c58db2cb6cmr7367436b3a.16.1763867108241;
-        Sat, 22 Nov 2025 19:05:08 -0800 (PST)
-Received: from chandna.localdomain ([106.222.235.50])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f024adcfsm10386095b3a.31.2025.11.22.19.05.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 19:05:07 -0800 (PST)
-From: Sahil Chandna <chandna.sahil@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	zhengqi.arch@bytedance.com,
-	Liam.Howlett@oracle.com,
-	weixugc@google.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Sahil Chandna <chandna.sahil@gmail.com>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH v2 3/3] mm/zswap: use %pe to print error pointers
-Date: Sun, 23 Nov 2025 08:34:18 +0530
-Message-ID: <0c00ceedce6e0d9aed35cee5faf15fd9126a1f70.1763796152.git.chandna.sahil@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1763796152.git.chandna.sahil@gmail.com>
-References: <cover.1763796152.git.chandna.sahil@gmail.com>
+        d=1e100.net; s=20230601; t=1763867241; x=1764472041;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YzGX8P+wyykXQ7vc9SLz2LBCv9ohbHyJk+lGTSCle7M=;
+        b=H3gDf+W05TmyXv+JZ8D6YuXkAdcjvPLJnZ2CRnFTp+EenZ1EDfNCD3vsKfHpL/CSmW
+         AcoTG5D7kHvR/oSiVQBh7km5bMNBKs1N0vuyMm4V9J2WYccBfnNlhvtav/jQazIIZQLr
+         Yy6brfaXbCewy38ve5KdX7RTBDK34M6acHVPFZDXaZHF4KjGbiMGF7aXeLkSm2/iVHEw
+         VHctDo9pNVpDFPOF5nJvpa2Qob1GN/rxVLx0EFY98G0SUxmTL5foF0EfeZ9G9aXsaMvq
+         Dta/95EB4SLqjJDezT5IrpW1R/oPCdy45I8zBX+ctUr9a0mR0u71wSq/krNvPDaORcJJ
+         S6Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCWPr93w+BeK8XNb2i4fDDaRa7euB7y+AX0SsslCqA4Zr22FjiJuhiDHE9+38usLvITXaPSPaD8Ayw==@kvack.org
+X-Gm-Message-State: AOJu0YzQb8bjBlxMuTYvNLPwzvjR5cHd40+QLnw3bClcG6zivA9UUWlN
+	tr1gRogWHeU9ls8QmTBmtW7/xpMCB32kcPM5xm+2ARsdmZu42H80+d6uVQQugZIa2273GAzB0Xq
+	prmfxwmiLCXKgXlUbmNXA8t1yutQFxz7bCs27wrGe
+X-Gm-Gg: ASbGnctLm1egnkp9DmqWWfoaWEmrPiHWiLNhE8K4WHmczuXUwoBxPhztIBr6GiReO1l
+	aDJovS/SuD1Phek2abHfJp16XmdrCu5+61RQzcxy0kgG153cIYzhbKDiu6i9KGdvuOxLyonJN0W
+	s2x5leAu+0v6ROcb9UTSatDxKXMR8b/k9iLcSNJQXhD5eCkbAD9x3/4iDdlQZFjiUnzNxkmA6/j
+	XIVUrnbIqQ3CfTX+3w0N1uX+8ma+gi1hJo7jqRP4xnIHsjB1p+20LVXBQXpXKOR+aRqiV6J
+X-Google-Smtp-Source: AGHT+IH62QYhk35Txtwjq8wG4yoHmmEcWYWzEQbTmojseIFIMUQkGoEz9EwWkrQ1f3vaMo197ym1x6UPl87mPLZvaek=
+X-Received: by 2002:a05:6820:810c:b0:656:b1fb:a8fd with SMTP id
+ 006d021491bc7-65790a01bcamr2297931eaf.1.1763867240773; Sat, 22 Nov 2025
+ 19:07:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <ts32xzxrpxmwf3okxo4bu2ynbgnfe6mehf5h6eibp7dp3r6jp7@4f7oz6tzqwxn>
+ <tencent_865DD78A73BC3C9CAFCBAEBE222B6EA5F107@qq.com> <buckmtxvdfnpgo56owip3fjqbzraws2wvtomzfkywhczckoqlt@fifgyl5fjpbt>
+ <8c596737-95c1-4274-9834-1fe06558b431@linux.alibaba.com> <kvgy5ms2xlkcjuzuq7xx5lmjwx3frguosve7sqbp6wh3gpih5k@kjuwfbdd2cqz>
+ <853796e3-fd44-4fc2-8fd2-5810342a6ebe@linux.alibaba.com> <ztqfbzq7fwa5znw5ur45qlbnupgepaptzjaw2izsftbtth6zca@db4ruyaulqab>
+ <2c6906d1-132e-401f-830f-ae771fe836c5@linux.alibaba.com> <nx6o4gwpetxjeyfbu4xyibulvldr3xz6lyfjrar62cidy5gxum@xmx4ojyq3mbf>
+ <d3c01e18-c556-4892-8283-08765c5e6cb9@linux.alibaba.com>
+In-Reply-To: <d3c01e18-c556-4892-8283-08765c5e6cb9@linux.alibaba.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+Date: Sun, 23 Nov 2025 12:07:07 +0900
+X-Gm-Features: AWmQ_blq4QB7hzrQX0d_c8FRyWq2ZibR4R0HIRRZtgGYhIyEzvf0zhw6MG5c5MQ
+Message-ID: <CA+_sParXyhzdDdWscTF-cqYzTkjwRtvs68B4C+ZWX9xcSS8uRQ@mail.gmail.com>
+Subject: Re: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: Yuwen Chen <ywen.chen@foxmail.com>, akpm@linux-foundation.org, 
+	Brian Geffon <bgeffon@google.com>, Fengyu Lian <licayy@outlook.com>, 
+	linux-block <linux-block@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>
+Content-Type: multipart/alternative; boundary="0000000000005148ca06443a58ef"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7698318000B
-X-Stat-Signature: fkdxk6tros3rxx5o4tgq8qqw4hs1zxg1
-X-HE-Tag: 1763867109-510779
-X-HE-Meta: U2FsdGVkX1+7GY9muhouug5r2T5N5AUUaPcCY1E3YX9XaRuhM26sUGaPH4XXqB1scX61xspn44FZPeoRwoGx2LrwZwBjvpj/ArXj+x/vvVlgdLKsIYVimdmkZeDrXWsZkoKlNVv5elgL7ryrlpm8nBcEySWWKB/8k6VXI7wV5UmF9oJTb0WlUNS+pgKnhP22J8zBj6sG4aLLL1XBjZrd1If6dxV0enA8quX0YbIE2x8L3w5s1iGy7zxlzkFZxQdw5f5wb7PczV12K0bKAZMdoz4ad0Nh9FVMVnQR4uUUcjuv2eZzAtfw51QwclAIyn2gdPTmNi3nQs8/L9tjyRRCZBW8kG5a3VG83hr5cyHWC2Ui5hGo7cugnDtDorZ0EmsBY5ABoKu7PR4RT3aXj6WuaDJUyqkn1yBdfJI2mDYnI6Y0tdhgkfqXT9u7vr8YyzLlZYi9/pG8BWm+w+89Gl4oC7gWsRkkLNXoZeuVTUReofw5AEvrSosiceFLi7tMyfacvJp4ZRrjSANcUZ6T0jMlt+UiWHq/1HNw7E66bi0JwRMXm2zxZzVB///9FGDwJB8Bfcc2egdLIvLeSNvU93wytHJLcrLWLiKgcWOHUeZxUaXj+vhgGavytdkz5UzIicdjrw/WsHnG4FYbv/PO7dJfwjz7olDWVPt73WU8rpW5/cSW9mQDbp6H1T8erYxFk/OxD/UOaKdiegNg/Yt3homsXMCcWNvNmCXut4uPjH9juVUO1obVCQ92YotEexCQt7GdYNZ5eeskPJcGk42RRCUpDbsmqzHhDF1tvsM1X4DqmR8fgzEYQQtCKIwDOoupon2lXLgXqeJ5zIMT1oJr/2E474IPHdKIEJmpfohWUL4p9gG+/qw90YcK0iXp8QFjSzBPoMJ2ygp3sNl6SGwZCTBa0sZQ4DVpkZkhcryfor5wUPO4ww5uWPEtB/7ZyJubVzyNYRIb5I7fNP1BqCZGgRF
- jjyEHB9g
- NgKSjDgEaNGZhDqHyssrrkTtNyHoi7t+e6ZlZy6yCRSbjIKpanttf0WljzSE7fqFf9+FYWnXANU5rpJFDsnHw1/bVqV12bIIZtfsp9uFszYybH+KkI9mhcsg5yDsGU5IvwAfJAe0uWsvlLzshW/bwmkoPaqDtMmYaO+l+GQOfw8D7ce4TkW9rwFWB5msjJ3m7pIM6b0nF+qjrPJiRqAA7imXWW+DOKQN85ALfLeKxhhd5OJ+8swMDpHyRa+rdJ39+S/RVzBgWK8vuX1i1XUxfvpNhErahAjqbyH0Q0jUJ5BbFWWpq7Gl+sQDHc1PBmrodxtkOj3z+2QjdMfw0ApfSf66pYSfO3BOVXYS7Pw9UJbq63zFIK6V/UP24zqcX5SJbkHZkLpU0NSngSgJSbaFhiu1bHDmYgTpn98DLTU6OTtEQ9PrrEZXFhwJLy1RL1CjUib80XnLLg1Vz10IDfKM9nB7Uu0Dw7CKm1g3SNYv5q2x59qRAR6WRhB3cPOKWJIaYMVewY1EMhDuDE2E9O0Z/DagMmSX5EHA3Mrj3
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C956540011
+X-Stat-Signature: saym184cobcg9y584aq3uwn7gopijg6u
+X-HE-Tag: 1763867241-771230
+X-HE-Meta: U2FsdGVkX1/i15gwLuXe5ZW6EgPC+m/NXayv1aPQ1Eh1ygKZe63n3NinrFdO19okVFZyq2OyHXiXPW3VjlksPvhNK2Ir86m0+TfTjdyqGGto8kqBi7SQRuebdtzyirKRC6AWY/Ww8Jgh6N2nRsaPCpwFqJMvdcfZ36TSn6mN+fFJZgw9+WZxFh2TjQaN6vN1HHGc+enKqTdD+Gw5cV6hlGiFpHVlFSIUyNhN2FGhSkrXil6zGxhdY+Idz79VAkH2R/ywME83BBtoExu1aCo0rb1EDmW6NIxnYqNzuOHB6Ru4FicNl7qgEHwJ/4XM7o7xIhlRBWZvPviyyKzfaFcz93ExWhC4XvnGxOYTmRHkWrJWVsOaPekzd7PjjdcOqbVjXV5raZoQaEXV7im7Js2dUv5TMWZn+sEdtI29Jlya7sF7rJ9+vPoQMlLRXo35KMJt3/uWRdZyljyhy9OGqN8b8DFtC4Hxvz2gf38VBbttyOkyjnzKWrQOA4ArNWFK+1qBinW3jvAkeABPl6lp8VoVlr3NhWXd1dBQbxF2m9px5bbxs9YvfQpvUpvVCIUGONe1X2VaTGfrRFr9DScVteEs/u7Sujfsf1LYALfn/w8u+R5xcnOvtwnfBozw3cu4MVXFB5y/oHwHs6AoGvRrC/QoLXD6XV70LX1qbCaUu/139ofJkg1wpEBFxudDFX5G/iYCkPVbPItGZn3gflfOTcUo6VGCRNgtDoOvQjHj5K/A8+y++S4wZk+CA366efdxqlYS8fQZsYvx9Y4TyeMMM/a8ZBZY34DuGXi3yJs5uiY0SSoeg3h0QWeKgK3Cq6XqXFAVGn3TmuWFwU4TOu26DiU6/ENCO/FNY94YYF4n7VWZFbuYJlNobXkXUoqoEDsloQWwL8CdMX98Cnz1QQaBdsam8Z4sR7JaMWTWMREYSm3nCWZydIBouwMFZn0Siy5btp8Cx4Ul471wANw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,40 +116,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the %pe printk format specifier to report error pointers directly
-instead of printing PTR_ERR() as a long value. This improves clarity,
-produces more readable error messages.
+--0000000000005148ca06443a58ef
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This instance was flagged by the Coccinelle script
-(misc/ptr_err_to_pe.cocci) as an opportunity to adopt %pe.
+On Sun, 23 Nov 2025, 10:23=E2=80=AFam Gao Xiang, <hsiangkao@linux.alibaba.c=
+om>
+wrote:
 
-Found by: make coccicheck MODE=report M=mm/
-No functional change intended.
+>
+> I won't reply this anymore, good luck.
 
-Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
----
- mm/zswap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index c1af782e54ec..c35604db32ad 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -749,8 +749,8 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 
- 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
- 	if (IS_ERR(acomp)) {
--		pr_err("could not alloc crypto acomp %s : %ld\n",
--				pool->tfm_name, PTR_ERR(acomp));
-+		pr_err("could not alloc crypto acomp %s : %pe\n",
-+				pool->tfm_name, acomp);
- 		ret = PTR_ERR(acomp);
- 		goto fail;
- 	}
--- 
-2.50.1
+Cheers.
 
+>
+
+--0000000000005148ca06443a58ef
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><div class=3D"gmail_quote gmail_quote_container"><di=
+v dir=3D"ltr" class=3D"gmail_attr">On Sun, 23 Nov 2025, 10:23=E2=80=AFam Ga=
+o Xiang, &lt;<a href=3D"mailto:hsiangkao@linux.alibaba.com">hsiangkao@linux=
+.alibaba.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex"><br>
+I won&#39;t reply this anymore, good luck.</blockquote></div></div><div dir=
+=3D"auto"><br></div><div dir=3D"auto">Cheers.</div><div dir=3D"auto"></div>=
+<div dir=3D"auto"></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_q=
+uote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+</blockquote></div></div></div>
+
+--0000000000005148ca06443a58ef--
 
