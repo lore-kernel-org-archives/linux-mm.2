@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0E8CFA46B
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 06:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 436F7CFC518
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 06:31:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A673F6B00A4; Sun, 23 Nov 2025 01:31:12 -0500 (EST)
+	id 5FBB56B00A7; Sun, 23 Nov 2025 01:31:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A16886B00A7; Sun, 23 Nov 2025 01:31:12 -0500 (EST)
+	id 5AB466B00AA; Sun, 23 Nov 2025 01:31:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DE2F6B00AA; Sun, 23 Nov 2025 01:31:12 -0500 (EST)
+	id 3FCA46B00AC; Sun, 23 Nov 2025 01:31:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 728166B00A4
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:31:12 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E8394F81E
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 06:31:12 +0000 (UTC)
-X-FDA: 84140899584.03.2318643
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1E34140003
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 06:31:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AlQpLPZQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763879470; a=rsa-sha256;
-	cv=none;
-	b=aChW5vauVS39fID+0lr9g7npJcecRC2f/SPcYVIBYK18IC0zQlCHBtJofX7o3bpljGOLzh
-	kjsMt+2CQD2En91AxaB4E81XioCJnHzkuag+BfejtV0lPnIQ9ICJ/9jSdhDmU+ZjpaQEO+
-	ljh3nFC286q7MWucPoqdzoNdBtxHqy0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AlQpLPZQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 237596B00A7
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 01:31:14 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0BD5BCB70
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 06:31:13 +0000 (UTC)
+X-FDA: 84140899626.22.51A2488
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E2C1A140008
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 06:31:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lGsnD5Bt;
+	spf=pass (imf23.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763879470;
+	s=arc-20220608; t=1763879472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xOD2aQKV3axDn07/bVdfc1LsSZxl6BJ8A2aT5B+TqvY=;
-	b=Gy++QpKxTP5RxPv+Xy4jPLJIN1v8Zn5n5bWn5AtjlvnpjjGtb5yRRPaseVr96tt1GGlf8E
-	hYn73HjNCRU4qB7osBBYsgdDMsvDxRN266waiqQbjjpGO/zeP/PS0MYMiXaV/cz3k3ncbB
-	CtGkv8MQxwc2P3opfAqF9eoIzESAMxA=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b73161849e1so485479466b.2
-        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:31:09 -0800 (PST)
+	bh=ighOjyvrf0/Zx4X8xYQ5PxpLMHcY6lBYspK5VjpofZs=;
+	b=IXSPf+FOcgdbyzQjrX+61cwoUvAP7lMVh9gyoL+6RKdE/frDfqlam+w3YVxW23ObhgTNZw
+	xhnrpiA3NWhBL7vktg82i3EC0gw9b1XoQL+1AMRlaoECVTYxBZYt/G2XYLTpJNFcWuBDyw
+	uTj7FpSYmZ+47ikAbOJrTp/Ub2kMGRs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lGsnD5Bt;
+	spf=pass (imf23.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763879472; a=rsa-sha256;
+	cv=none;
+	b=E1RXyUre6IU7PSRlK/n8HLaqxKXQt5pQ+cFKXO3UyN3bRQJ2ecnqPXhKYFGJtBAeTeQWWn
+	bpym9cjs+XvlZSZ/fOcTHu/srmVNCA1hoQYOlQAWkUZJUUA65+B6nMfT+RBgxmbVg/SPZa
+	6Q2cdDYxxZnhr7Aqa1BhLZGBbCYmWKg=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so5287011a12.1
+        for <linux-mm@kvack.org>; Sat, 22 Nov 2025 22:31:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763879469; x=1764484269; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763879470; x=1764484270; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xOD2aQKV3axDn07/bVdfc1LsSZxl6BJ8A2aT5B+TqvY=;
-        b=AlQpLPZQ0EJD12jw+YfzIB6biUgdHpDIOK9NMC0QoTfnnC97saDAJolxfhmVMpzXkE
-         k2Hp9DDAq+T+Mq2e88fnmK+Kvrxrk28PIXiNMb9E6sDzV0gMjYkWQeCMvnr+VU61nbdl
-         mg0g5orxXa/jjsjtby7agiCmvGZKfHKYAx4C+e303jMNZyRpRNLLNC1H2e2CepWHb13M
-         63U0FXMMS1jrb/OYnm6CkVA28siGEwmGdBiCTVBUxd1OF0qkUh3E1H6Ll1tKN2bt8EfF
-         Zko2H4G/41sBL9atx0oFo3IVsdBZ07CBnYpDMHI9S0FqpCeqHo+xKraL4trexj7yZ+Gn
-         HbSQ==
+        bh=ighOjyvrf0/Zx4X8xYQ5PxpLMHcY6lBYspK5VjpofZs=;
+        b=lGsnD5Btv4R0rCZJE/8ZRltjKYNQn7dk5LF92JWCHx66a7NWNEik26bZHKrrLEF7Io
+         bVdRSKa7Vcu53te33pAQjd+ETl9YxQV4SQZnGs3a5dZbmFfuqvrlkcd7e0HYzyACozLh
+         Otie2/ZOZr2eUTsPgCynnS5Ac3TppiIBBO7mk5HySqdJpwFS56zxik5NnAPud0ugd4UK
+         cWxMRk62tojKNZAy0XKAr4JMTP+91kWAtMJFnYP8kaHJQEKQxa5IrB8BRazJglcYMWI6
+         rqenSNGOEZU2JJNP97qSygtG7FstNJlbCY/8d//ASkONFGpOGfhnlX35xyPxOsBbm9TM
+         EgWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763879469; x=1764484269;
+        d=1e100.net; s=20230601; t=1763879470; x=1764484270;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xOD2aQKV3axDn07/bVdfc1LsSZxl6BJ8A2aT5B+TqvY=;
-        b=IR8h7T6qolFipi2tmuRjD3cbzdJdN9WELxGYsbjaYRJCEI1iuVlyFVjt5ckgx48pq/
-         /qEUBK3HhKx5U1B3y+mtu9DIjeCG+SuPRLXyM16AxD2n4S1KcIKPQX9wNN1HYOKcgduE
-         YKdI2QfB4Lor9B2VuQAkFL8aUTfqynKppOkhGFzIsO+dTiQQkOpDSUHM08nx+ns9lJf3
-         qd+wo3iBPXCvDrWKBs+DeV2IVwb+VBEYJYj7xnPu0wUYFedL61HBxScjKUyDPYWoDT5E
-         YMwu6WFDc6Gh4DLp1Z4/AjmuHSYwWhUF3JgtL7ImEKaftEVPeBUeIe4Pf1e9DgGQrpCn
-         hPgA==
-X-Forwarded-Encrypted: i=1; AJvYcCWAygB59RduHcgOtXYbWOLOG/Ulk2gzAP+Fk9LaLW5rMuTRggDGeNlkOdWtYRD4p0cphoy2pZNfCA==@kvack.org
-X-Gm-Message-State: AOJu0Yy5edJHr510DJwhzsUU2jBUnWDPqs5KFIdhJL5xlFQeijLKDNiq
-	wAobNRtozdOqlKeZsCin1TyAbBLpy+/QcxYaMruzH4NZAgAVaA6U4FNr
-X-Gm-Gg: ASbGncv9sMeBhNZf3yCDiuP1boqAJcPgakhz1CrWUfZl89XQAY68NGHveQgJFNaOq7E
-	71nUcZsFDCKixp0hN/3DcfWEwT/iQsygHhArTBDfgz3YW3DEVuQ3ucxnWmMznEQOC3P7yecC3wX
-	PU+rKzO1ko7sgDJtYclfWXE9CN8QZRf3iO1432xwnWCx03Bt5pfqraRyiFutb8C09TLigviP9bI
-	sVliwbLT9APtR2kHiMJFMizJApJ1kpeYPIfh02pTFMU6A2tGpDz58kYdkQvbLyXrKfKL20NgIJw
-	TIumo9oDdxLSn52B+DtmwgSIYR3Hzfkam1jvLZGkpcH/ER5GK/+uhciOP0qSJ2yo5V4aN/dzgIn
-	3dJ66uqhBEduriS0iRyuMFsO66oiwSuPvC0qeLnHG5M9QQQ7lUvoKMdF3KEg7lWEpTectkC4N67
-	2BCKk1Qk51KMjJcvqbSycJqf2/umhmMBybNI2lGVyCjJl2jnzP76Ti3+tAvaY=
-X-Google-Smtp-Source: AGHT+IE187VL3hUExsJspXYDW4wFYmYGutUdJGgD2n+2o5I+ckya4M5kz9tDUBfZuQeW/8hgUO5zZg==
-X-Received: by 2002:a17:906:181b:b0:b76:7fe7:ff37 with SMTP id a640c23a62f3a-b767fe8084emr434076066b.18.1763879468635;
-        Sat, 22 Nov 2025 22:31:08 -0800 (PST)
+        bh=ighOjyvrf0/Zx4X8xYQ5PxpLMHcY6lBYspK5VjpofZs=;
+        b=GXkkPxjjVZRNQaPhjTx8Er5S1LZs/nCbXDTZ1fKeumsQ03g/TW7yCIP1JUp0NWi2z9
+         sFoaGVAgXRGTzyT176uy+7fcTEDcMkG0Fsqi2UFEn7krCI5uOq2LzEAd1O2qoHQ/Gmzk
+         jpgJhKxMyEGNKJ1IOgrkffGjo/XVBxuvy2XqlP2GDT5o0kFqM/h4+7oFUWXLSB3PwmmB
+         iHr4eueQ/YqKu3UoQ3ESTsgI+23eZU8zJjVRB3C3mLANetwoC9JScPA4jMp364vUn4rZ
+         5MUEjUifIUmLd2xC8nxt49p02euuIrQUfvi2y+4bDk+y0VZLBBj2DlTZQGYISXSZVowd
+         MmBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcYcb0FlANMs9IT/CXm7EPn9s3WmueS0MjASkv8TYvLG3KJTQKOZrn57xshBTqXF3ZqZQVB48JXQ==@kvack.org
+X-Gm-Message-State: AOJu0YxzalOm3ocvF6nXWkcKSaWgZzQvUTfowY4hYQtIFZSzm9VrEUKo
+	5g+Q50rxC7xRHNME3GNuJMCj8VpalcXTZKoG2in5Fd+AH0jjFyqpK7Zy
+X-Gm-Gg: ASbGnctEnR41grCSLu0R2VpvHL3/k3d53rjm+V03tQI9t2CoSwVqLG7Cd3VLUXcFXrc
+	/WshhNgjvuyPTCNGQ1qYpb0iEeCHqkcQHiydZPq9AJDr4tc/gabO12FCN3aV5fASD1Lh/s/VN63
+	G9KpFJkRoqVKc6v1nNwjmyj52Xh9eYLjeOqGDY1DtGqAGM64dzKqtKx4mjv3fiX98hWCgdfIhZv
+	oHhTiXudbBgNvKVONUGkOCiYa5ysL5VeNYF++nQpl+fJYEZDqowkYHSew+PA1vqrwZ+cMfk1MFD
+	4JA/3cpJi44+ZZdoYeXVgfAwnPFq6JSlHBzsULHEimqHGbCDoZ9Pyd4NtUKyhuOlOGn6dSvoKY9
+	wD+SW9dhrhzcZWmoC7NIRA2mV7q2s3HK80HBNN7aAC5HAksAMF9sDNc4zyR23U5+EGyqVGaDk6m
+	fXAmKRhVim0D2WO6uf5+e6pNf8AddUEHoFrjTSk1rn8dXkPKWt8Qh+yRmpv/EkVRNa3MkORg==
+X-Google-Smtp-Source: AGHT+IG+zh4ATHjbiK5vyKe+SzwhMWh4xwNYt1jBoUD/n+vAKGF6wzNqxClWwQoSqksxMaxVIvFoJA==
+X-Received: by 2002:a17:907:7286:b0:b3d:73e1:d809 with SMTP id a640c23a62f3a-b767173270emr1002823866b.48.1763879470281;
+        Sat, 22 Nov 2025 22:31:10 -0800 (PST)
 Received: from f.. (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654cf0435sm929432866b.4.2025.11.22.22.31.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654cf0435sm929432866b.4.2025.11.22.22.31.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 22:31:08 -0800 (PST)
+        Sat, 22 Nov 2025 22:31:09 -0800 (PST)
 From: Mateusz Guzik <mjguzik@gmail.com>
 To: oleg@redhat.com
 Cc: brauner@kernel.org,
@@ -98,22 +98,22 @@ Cc: brauner@kernel.org,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	Mateusz Guzik <mjguzik@gmail.com>
-Subject: [PATCH 1/3] idr: add idr_prealloc_many
-Date: Sun, 23 Nov 2025 07:30:52 +0100
-Message-ID: <20251123063054.3502938-2-mjguzik@gmail.com>
+Subject: [PATCH 2/3] ns: pad refcount
+Date: Sun, 23 Nov 2025 07:30:53 +0100
+Message-ID: <20251123063054.3502938-3-mjguzik@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251123063054.3502938-1-mjguzik@gmail.com>
 References: <20251123063054.3502938-1-mjguzik@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E2C1A140008
+X-Stat-Signature: ztgywso7u9gfewuaefk99ss19heufaew
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1E34140003
-X-Stat-Signature: 9fey79mixqttdxb19fd984rf9d99ny5p
-X-HE-Tag: 1763879469-80303
-X-HE-Meta: U2FsdGVkX19XJpNNYjTFJAr+XPjazzO2TMkQkmlslBgydSvkjNEFbeOZP/aJnmMNwgnTEqkOElqIEy88OY9D5XQUUiZH/9km2bqyzxLdmkBPSbSnXK4bqse8Qy1Yy7BQ5d6vycsm88OGj30SKJMUDu1IZfvK6HszafXg1MNxBvGoXUolLIlj6Q0XpZWqTOFJDF59MUyHH71K3IoZbvFvMYwIYxm4Qv3hqfPWga4lFR4YgyLaiGiBwESVJMqSG3zeFUs4O8BxwIXhqmTQUbnHdvG6RiP+5ku1h0BINTt1vzH9qxV3pjR6BzBgHhAcT92qn+fIdI+VmHbGYbw0bkWf8qT6irbdMqhrKmvBsK8c4ZOEY4t77If4+OMC+wALjDub7am/1Ep2pCYbgrFENwHfGd1SiTcWXGgibJSRC5fX7OJwjw4laL4yDOLGxtSh26QNQvb4JBrQGBBZuY/ZBrJZpa9439HYx05hosvjiADLJpEZF95JRPTDIOmGzrHUg4AKVYZJ+t8g3CWQnVD69tgwLQTozcNBDtVmA72QvnVQ/TqSWFiXkrhKeLoHg/oFHM5k50DxQu8YSRClMSyine3847//J0TgPY4jMLS64KmpWLb26V4m1f6MXsAuoe5f73/pWK4qUtfK7g3rhnGYlcbAZESlRsW7J2b1f5GCOVwATQLNfiwsXcCuGgYD0S27IcmhUikkfrE8CiXNs/Jpa3pokZP3/eSogVBGX+29+4aTqXvlpWpQlYPtCTM1QSamOlgDVb/XIWxWQqp0QFvJnpG0w+5Un0qvDgiU/G5Qq5wfIDWvvBqDWJBQoiRdpRW3rFczrTwL0HNUXcOP8P/Bm0JiAkALYciBn7J38OHgsa2IgzmXoVCbvWTPIWbrFEt6lGNFxk/I5nTW2hGqtnnEHWb0aEMeGbAmjLsUA5Qdnsowxu0B6JnRaSZECpWby0fLhESvGJQpEV4xd3W3P7bHsq7
- PFpv/0Wy
- tXae9FLgV2hKIh+IkQaVfWuziKlfs6MfvTOLXSDi3n5ZGM+Swe5i96qyEasyIbt2sHlGo4PowRcm4FzR1l2NMvLL0GX+g6lFsKxefMG3/4d2h/ndWLnRFk1hcOVbJopy4pIqCUbWiX33xUye3ewicM6gosPpdwClYLoiJYKabS3nLh/FQPYq3GL9i50eZYHOQS8EC+S5QHQhB1EQr1mgMN8PWeucnhfbfbbxAAFrb4Knf4wDUlbajzMzFTqR1zYWByugmIvaNJJ/2ZSdxnpfq55Lw/6dKjcyGfAD+20d01B+iNPQG8KbtXzINtyjoCdXLJl1C+/cEqHGTOFd9BOLl8h2E5ccSkAihIIl3X8jLxNSuKztBfq2rTfBgqM1qSrcSIZmjJvFBcutJEjEa+2gcdJ5SiMrBxH9fm2vPNClkPL45Q8scYlawFWyVwjExQ1TmM151gozEfPJmfjQ=
+X-HE-Tag: 1763879471-499040
+X-HE-Meta: U2FsdGVkX18KbNlbaHjsPz19pOiA4VKjR7Kz009/OGboYwd2I1kvG584NwNa9ChJ1p24bShH+5yB6355r4PQX52Pe98r+r2Ph4facba4gyTC+mBilLfbiY0c8z0vFLW2f7E0RNbIuIdDDNGl4VX8qpYD0233TyZxlFpZ5ia/G6OUFH9bnOgGRG9muA6JUb43L9cywb+oajwdE7RfTYwkTqGZCU/Gk1Tq6UTGRwQ2No2gfsz5uBV6goYmh4eOtgjZXdOrOHvxDt7yCLZoRVIizOUpiMwSoZoNw9JyuPyaItcO87wYaF7eUl3gQuHYDcPPADIlaCfjVAmHH6QbPg6hGw+nb0DJdrFExjgMA6NVnE01gHgOFbjt1IgqEHRz4i8TprF+V3IctdB3E8Sof458Tv3hKOgYBM6yw1Hwr8D4SAaOJcKIs9mGYLc17qgiwKI8zkyjPRhZH2ZblzerU+fGA12bASxIQtLzViqroBfPFiNceR2vyi1/vDhlPGehiiGZhUupTkOQkkD/ZjhbVPsvOsbJ69QMeS4lHeeGGP5bUg6/U+DIxCTD02XreFPyspiaIPICaku1vG3S+HDnX26O4ibO58uFfCXaW3+kaY3Cn072etyusBRhAw5ZEfcIGD51QpmNhw7S5EN/y1/+pI24KPvkVWxp8m1LrEsegNNnWnXzq8lOANykvmEddM++6xkphTfJ7wucSL6HbBtde7Vno6ob1Ro54PkDrnQFUyB3587H8TiqSGkLZBmmyPK2PoOfZ0a8PgDj/faWRKo3O9gc+vkfuqRhl9rf+f191gGgPLmRXlA+7Bd5yHXGOLaGBty6Xg8trVbOO74hmhVuMw8f+PgYQz7qxYd+O91J9fmCsM/zYw01fNowB37bj3bR2icIj2hoXvB0KMDU3JLmk8R5QTe6C+i+5tIdNyvjyjMt3V98VouMdJVEPnc23LHGWabQu2XYRX1FPkDjfQ+65ZD
+ bYIqPWqp
+ qrXU3Ryv5BLXfI8MwaAwMEctewhJW/cc5KRQ2M+ajv7B+ytiSDl19OpMRqfwDM8qzJ5oSkkf2CZVyKkyHv2sHr/BHUoRFBo9PIyee2tC0mLw/RkqKf0NKASVr/FzOMusVeN9Lwp7rFzT70ylf2Yhpn+s6CcLYRYZr6goEf2kQ20VXWTp036c7bsSZ5mlj15jRAG0iZ0ROLBjB2XlrsBTwURQFsiq+WC9pXW40kTAm2RiCfIgCkuRpdVlWfGRMV5xntbGny5pcp+ExxagDyzxTk7zcQNKQaZb5Rn4k0ADGXz72iRkvO7n3njRTO1OdWDhY0HzEpt3U53kVUzNcV/5LjZ3ifKqEmBpSTdkWuIPhKAjM+Fqq+BMKCSkN8qthr2ki5bkJyrnbL7amL7nKILvkpNDLTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,61 +122,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Note no effort is made to make sure structs embedding the namespace are
+themselves aligned, so this is not guaranteed to eliminate cacheline
+bouncing due to refcount management.
+
 Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
 ---
- include/linux/idr.h |  1 +
- lib/radix-tree.c    | 19 +++++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ include/linux/ns/ns_common_types.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/idr.h b/include/linux/idr.h
-index 789e23e67444..c9aeae695442 100644
---- a/include/linux/idr.h
-+++ b/include/linux/idr.h
-@@ -110,6 +110,7 @@ static inline void idr_set_cursor(struct idr *idr, unsigned int val)
- #define idr_unlock_irqrestore(idr, flags) \
- 				xa_unlock_irqrestore(&(idr)->idr_rt, flags)
- 
-+void idr_preload_many(int nr, gfp_t gfp_mask);
- void idr_preload(gfp_t gfp_mask);
- 
- int idr_alloc(struct idr *, void *ptr, int start, int end, gfp_t);
-diff --git a/lib/radix-tree.c b/lib/radix-tree.c
-index 976b9bd02a1b..2e71024e5323 100644
---- a/lib/radix-tree.c
-+++ b/lib/radix-tree.c
-@@ -1459,6 +1459,22 @@ int radix_tree_tagged(const struct radix_tree_root *root, unsigned int tag)
- }
- EXPORT_SYMBOL(radix_tree_tagged);
- 
-+/**
-+ * idr_preload_many - preload for idr_alloc()
-+ * @gfp_mask: allocation mask to use for preloading
-+ * @nr: how many calls to preload for
-+ *
-+ * Preallocate memory to use for n calls to idr_alloc().  This function
-+ * returns with preemption disabled.  It will be enabled by idr_preload_end().
-+ */
-+void idr_preload_many(int nr, gfp_t gfp_mask)
-+{
-+	WARN_ON_ONCE(!nr);
-+	if (__radix_tree_preload(gfp_mask, nr * IDR_PRELOAD_SIZE))
-+		local_lock(&radix_tree_preloads.lock);
-+}
-+EXPORT_SYMBOL(idr_preload_many);
-+
- /**
-  * idr_preload - preload for idr_alloc()
-  * @gfp_mask: allocation mask to use for preloading
-@@ -1468,8 +1484,7 @@ EXPORT_SYMBOL(radix_tree_tagged);
+diff --git a/include/linux/ns/ns_common_types.h b/include/linux/ns/ns_common_types.h
+index b332b019b29c..0014fbc1c626 100644
+--- a/include/linux/ns/ns_common_types.h
++++ b/include/linux/ns/ns_common_types.h
+@@ -108,11 +108,13 @@ extern const struct proc_ns_operations utsns_operations;
+  * @ns_tree: namespace tree nodes and active reference count
   */
- void idr_preload(gfp_t gfp_mask)
- {
--	if (__radix_tree_preload(gfp_mask, IDR_PRELOAD_SIZE))
--		local_lock(&radix_tree_preloads.lock);
-+	idr_preload_many(1, gfp_mask);
- }
- EXPORT_SYMBOL(idr_preload);
- 
+ struct ns_common {
++	struct {
++		refcount_t __ns_ref; /* do not use directly */
++	} ____cacheline_aligned_in_smp;
+ 	u32 ns_type;
+ 	struct dentry *stashed;
+ 	const struct proc_ns_operations *ops;
+ 	unsigned int inum;
+-	refcount_t __ns_ref; /* do not use directly */
+ 	union {
+ 		struct ns_tree;
+ 		struct rcu_head ns_rcu;
 -- 
 2.48.1
 
