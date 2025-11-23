@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1031CFC518
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 15:48:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80961CFA46B
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Nov 2025 16:05:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13B746B0010; Sun, 23 Nov 2025 10:48:20 -0500 (EST)
+	id 5ABAB6B0005; Sun, 23 Nov 2025 11:05:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EC766B009D; Sun, 23 Nov 2025 10:48:20 -0500 (EST)
+	id 5830C6B00B2; Sun, 23 Nov 2025 11:05:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1CF46B00B0; Sun, 23 Nov 2025 10:48:19 -0500 (EST)
+	id 4BFC46B00B3; Sun, 23 Nov 2025 11:05:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DC0E76B0010
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 10:48:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D5F41A0910
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 15:48:19 +0000 (UTC)
-X-FDA: 84142303518.01.9E45BA5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E639F40012
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 15:48:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FwmBbpCf;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AC626B0005
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 11:05:33 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5EAA84D7D
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 16:05:32 +0000 (UTC)
+X-FDA: 84142346904.27.EDD54C7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 262B01C0006
+	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 16:05:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aEj7LDNR;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763912897;
+	s=arc-20220608; t=1763913931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xprb9sN9U15WUIFyZC5rcnGUo+YD9mERduN2wuSaO24=;
-	b=HQ/WDwcrMGWgBzfAawjmnoaekhIZWnVBv3A1eG/7kcIM8KPxUwN8BBvMMCK52ODVQZi7on
-	IQElHCSn6aY/kAUjurlXhTIta5SV97LZMujZO4Gm6I3ipvEj9QqlZfbvVEg6UFb3WDpX/2
-	iCSnq72HT/YWTw2NNmOnI0QoFhrCBfA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763912897; a=rsa-sha256;
-	cv=none;
-	b=u1LJhOJdDSudPCKxDm96LpFVknmPP+S45pFgsiBX1WY8a3zLvxPmiel4T7H6W3DtzqHp+w
-	m7ve6aTsdDTcJKuzbO1lRYgZearhJeh5XY6xG5+tA7XirMGOyryxvFPugaeIpuVwGhOZdG
-	jpLjOh8nILcsRcnD95LDdsWFombVVo4=
+	bh=0AKZfVSNRNcEM/ElJbcEk8kddpeVZcPmjjX0jUr6E8Y=;
+	b=UeunMSxwFuAdjAsUVn8h/XgBl75WHbwvIOWsQtDgPIHTp0pOOpw+SjnzSsvsOe2eVM92Po
+	fn3VIuRyn1tKAdZpqhQzwXERna9iY/Pg6IPMh2Scu0CaMhLWlfFQ18FSKoAzTmCS//5WsS
+	HnsXbHO+wxrYGYNtQt49ThqjskLFDmE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FwmBbpCf;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aEj7LDNR;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763913931; a=rsa-sha256;
+	cv=none;
+	b=vdiTmcXP3w3NkYvX3IpGY3SxATCq3FMu/J5WbOPzOix/rfk4O5Z1Z3PVW2zu6HHFzo5DLk
+	Ful7Wi2gQf+3MlCn+CKJqoSVlSpN7oS2PqNS7QbC9slQUlT1NSSUF28lAkKLXVjMPLe93d
+	wh5WcYbPBWFL/KW6GiBPIoO/GcDgqww=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 034C560197;
-	Sun, 23 Nov 2025 15:48:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8D3C113D0;
-	Sun, 23 Nov 2025 15:47:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CB02C4026C;
+	Sun, 23 Nov 2025 16:05:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38118C113D0;
+	Sun, 23 Nov 2025 16:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763912896;
-	bh=o5jgDCNTQXVfP4NRsI3yDEVhzmocDH9FvcpdxoKKU7c=;
+	s=k20201202; t=1763913929;
+	bh=iVWayNIJ4hSH3Fqh4iv5N9nJbnfnFx1jKHx44lnHwXU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FwmBbpCfluPNbVa8nNxo6qv3CPg0ynY53dii+jFo759U2j2PAl5zeYmMh6E0JMmPE
-	 WwQpU6awV4qjEG5YxIwCRw4y/63MIxWorq1LmMs1/LKoONkHSSD3bEHobrUldnrFet
-	 asluAC12CMOLpH/awxcqBQtCuel236oFDPMgCPkjjCkWS4yuB+7o8J80uY8GPTGfnO
-	 plEEB3X7ErYve841jf0cyBHV+SsmHnhw2xsC5ZhkJfQ4u2+/tXjuGdsXZDi3B/6Pa9
-	 dfKYcuPNcyq4pk7JqWEnQT+r2TfKtLTkX0MGEj2KVmiJpZ1loep4NwxtG/3KgfeoSr
-	 9eG3ny7UxekUg==
-Date: Sun, 23 Nov 2025 17:47:52 +0200
+	b=aEj7LDNRFeKh3Brh5+Tnr8ys08Au6/iNifFEu4npSUjlpEkRYtPbFWkAjmIarvG8o
+	 mEzqiU89wuYLBYXVGdOOOAk8rx0Dazs0GlcpSaYsgNGo5lwL5m2Jf7CBz0vNZ+4wqz
+	 +z5CncVvHnb/uxJJcDP6+g3aw8zEFJbufD0NkRidmC1MmbAfTQHK3+qGpE2iZYHImm
+	 2SQQG4LklKSH6FB+hsmnVgb9xIEjTOlGc1BRau9nScUKdf2XVH0eOEYomBOlHHJwME
+	 Ar/tB4blesu7ifnYesL6JbhCDzsdhbiEJAcWwDtaXpVLrgYFZGAydc4FmD5GjGcEzi
+	 qrOWnGFWJObLA==
+Date: Sun, 23 Nov 2025 18:05:04 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -93,22 +93,22 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v7 14/22] mm: memfd_luo: allow preserving memfd
-Message-ID: <aSMsqD5mB2mHHH9v@kernel.org>
+Subject: Re: [PATCH v7 08/22] docs: add luo documentation
+Message-ID: <aSMwsLstAutayHbC@kernel.org>
 References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
- <20251122222351.1059049-15-pasha.tatashin@soleen.com>
+ <20251122222351.1059049-9-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251122222351.1059049-15-pasha.tatashin@soleen.com>
-X-Stat-Signature: hryfriox6ic6fk9zwz7qfwxqbabuimyu
+In-Reply-To: <20251122222351.1059049-9-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 262B01C0006
+X-Stat-Signature: as9jpjta6uymur7hpbbm5n9f7rz33don
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E639F40012
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763912897-156074
-X-HE-Meta: U2FsdGVkX18U1OHtvxBRPRNI7s4xY1W67N3bL75LmrDTTuOcky99KcVbf+3M0jLvAHYykcTVROTbKfiMPj9qXU4tf+p57XmN05Vik2XQIE6Y+cDA+xjizXUFn4rlk1kqrHgDnuM1veG8TGAxinI2P05XL0kvvjLIHADtGFoulDPJBJBja4/0e5vtRoE6hTPfTStCJDRO+rGB2xNz0HsMhRbAC3OsFQ+xn8f99cjvnyYbmp7J0qd04vtgrR3vnP8QP9DXzmQ29sRxKvhYPtD6T2gmDIXe0j+AB46OsA20eaaesxSxtk/ZjQB+hE1lGHXpROOAKRCTZUM44w404+4sdZ/5TxsMwUzligORvrDBx8MDEii9iMRCzMPj+4bj1bqG5gTXGGvPJnwplLtJna6NIQjemKJbVRlXcWgiZwWY/uBOXoxS4wI/Aj3Zfr2+atSDdsJZzbC00nQteIOM44XEqaTpZ9tSezYBZUlRmsKllRkPNyYjW0UYiZ7Ly3FPO5giP6zCFJa38kXa+A6pO5maXldpNWomh6LVZNMGZYk0WSg35XWTXG0RxqS1bjw2h8vyU8WHG1vDy5de3X9/4LERgPiK5w4iR1gqgxoG7lS3C7VpR1DRbmKlK5p8kvopjcrahtMjU4DfxtX79vzU1qCxJqr1LNBwQS4jNQ19COjqBu3jZF6Lx3bEe805eU8hVPygOY0MDF5/zWrQIjJTQ9eFwpjJfrdluDbxcDc+EUVhYDWV961eNHXK0Sai++pDYvzmx+VY83Qlbhv4zf5L+ptNRkql6zDVA5+2Wd+k2WbieJeTC4UCAIcAwU6QGyhhD9LeD8b4/bhG7hmHjtqQZwmIW8lYEO3N9nsFabi6Ry2v4XRrEco1w3Jvvthb9+JIBPyrwp6qnsGik2toqYNcWqgDrLl+zLYPV/t9/Em1wUbP3smZ/Kc5h3am+IsD1NQhv/KthVrrb9cQJCn3im3bCcR
- 1VubhflM
- o+exl4mW2EC7HWvWND9NLp4kh4cAry/GX5U6ul+iS8sX7HOqcSBtcoHoqDqfaACbtPpV0hGE0iF5IHQ++TD3ONSXJYtltKfmB1W1UwZKdUiGgHnM9FHuDZn34e1/v7ogaToatGSqp9/JNQLqOVbPbzzR13WMl/OcGRtiCtzedfIcnrOigt5lGoR58Utv2Oaaej1K9b40wmFrFSNfA35jMu7eIUEvOiozyxSUhljgKTD2ZwS36IXO+ic4Fz7HaKYZBQwhyMFbDnQl8ek2cMtnsjqUqdYON3pHg9HwH2vwHEmfVMtY7h2p2Mt31vXuBY9f2j/MwD/gpJ7V77DzSSUYnoto48g4xFOy7EHTFJVOR3sTB1MZxgwJhSk9sjNEn70X1GaAWMfwzn7knj0qyMgyH7X3AmM1uHJJ1oug32d8xxG5V/RZmPWzzyv8gKZEt3B7BdELw+3gqVZlBYEo=
+X-HE-Tag: 1763913930-153924
+X-HE-Meta: U2FsdGVkX1+QBwJiK/HPQsY26h0Vr19qvvxKV0XCfVLNR1BNJ4HcmrAQQh3NodJnfSZAJoLw7K5qdgYSVCQjVO2XNThXAmyGjK/zd7tc7GVSq3YWd4LrjA5i4ltel4SL546x2QOMGGBpxD0Nuuu6Sai6ISgqVlR5cE0mbrjJKZ8eEjDiurB8wX9qnlcvQdjsZ0BRZpxmpikirZFrsRDspaBblDYs0LIJG80LRmrEQ8be/maqQLd8MMP1WufXaTywv2xXMYslJHPMnvV/1E32Q80YH73OnkeZlwaas6fdHsy2LoyKrx8ZRb7dHDXp2eJxHAN9tUzxAYlDH0xYMgOZ7HLLO9Bo8IyJoCgaDeHd8spz9jfiY1hiovvkW0nYcZ0a270Hb4fCCg/AxT0u+lE4qbtc7/s5Whe6iWiVSO9hi6fg8g0W0QbBEluFVFTIy4ZYqN6f+vm4sQrwUz5320J5RHNcaIrV5luC7HbAbIT1Qf3xIIzuzkibK2+JjryKf2srr++OBVz6RUj3pEwr3bJyrda8b1D7XQnpnOmPyiRarfRgoZewb76dw3mOuN/lUrKYhQGiWGI9haKBASdi2GPmNZCjl+aRLsQ3ciVvecq2QuMS59b9lgXfpnW7GVmPLppgy9HQxzeru8eqXWRDUpC756uHS7GJf1YikV/s4I+962pDKTZ7kdBDpg/a4rTNMWkZdQmF+eKUmIFABPgQCzgDFYJb87pvwCKm5tEgQU74hWhTUrZGVXbHijeBLDFaLVUQCxDZ8D9rxD9ljdg1tnptcZiS9dTOJyOlKqtpYNygF96fgdypCVxo87a7TMRkG+Ah2m25NkgdU3oE9ueDD8ClMCmYps//d2KynoATR/Ul9mh/BGKSXUY4eFrpIlrYNw8sg1nxOk+Riu0f/LZSj7JKhyG2s2X7U01lSmmoTNg79n5NQ0CL/sWF1uQ9bsfl5IEChOJq+8gDYlZN4BRvgL7
+ k82fuOez
+ FPzM+OpJeULkRuYFmcJKc75rDQjgffRMj3+aZNSJ90xU+zzbhq6s63NWIEPFXI1o2YkxjQde9Qec0mc1w6y6/SSz1mn5+OMRxBIwYs1R+xb7HoOumwbUCxn5z4NL9Qs4j+hKlgw9CUBU9kDtdfHWSSaizwHI+vlER/uDehLo9aZ4VvAUQpu9bucfTgE25wFxVeAPJdmVOgZkT8E4C5dZ8WYpEELDXkJwUvrYsUpJe2ps0zbTAtQZa1H7NaqIJIi4uN7t2OgiydTbA2EFd+xzLbSPh2swtvusoV5VcOEjFHYqLVY+jjqeKEoVGDIK/zTbPhPrEAxYtJpr5zFasLtjT3eghY5JThyoxMqX3RJoQ5mMBDEf2tLB7Wo4NsXJOOb6jN6qIuSjpncZ4RKH/wNmrWyWDlg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,134 +117,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22, 2025 at 05:23:41PM -0500, Pasha Tatashin wrote:
-> From: Pratyush Yadav <ptyadav@amazon.de>
+On Sat, Nov 22, 2025 at 05:23:35PM -0500, Pasha Tatashin wrote:
+> Add the documentation files for the Live Update Orchestrator
 > 
-> The ability to preserve a memfd allows userspace to use KHO and LUO to
-> transfer its memory contents to the next kernel. This is useful in many
-> ways. For one, it can be used with IOMMUFD as the backing store for
-> IOMMU page tables. Preserving IOMMUFD is essential for performing a
-> hypervisor live update with passthrough devices. memfd support provides
-> the first building block for making that possible.
-> 
-> For another, applications with a large amount of memory that takes time
-> to reconstruct, reboots to consume kernel upgrades can be very
-> expensive. memfd with LUO gives those applications reboot-persistent
-> memory that they can use to quickly save and reconstruct that state.
-> 
-> While memfd is backed by either hugetlbfs or shmem, currently only
-> support on shmem is added. To be more precise, support for anonymous
-> shmem files is added.
-> 
-> The handover to the next kernel is not transparent. All the properties
-> of the file are not preserved; only its memory contents, position, and
-> size. The recreated file gets the UID and GID of the task doing the
-> restore, and the task's cgroup gets charged with the memory.
-> 
-> Once preserved, the file cannot grow or shrink, and all its pages are
-> pinned to avoid migrations and swapping. The file can still be read from
-> or written to.
-> 
-> Use vmalloc to get the buffer to hold the folios, and preserve
-> it using kho_preserve_vmalloc(). This doesn't have the size limit.
-> 
-> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
-> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
 
-...
+> +Public API
+> +==========
+> +.. kernel-doc:: include/linux/liveupdate.h
+> +
+> +.. kernel-doc:: include/linux/kho/abi/luo.h
 
-> +static int memfd_luo_retrieve_folios(struct file *file,
-> +				     struct memfd_luo_folio_ser *folios_ser,
-> +				     u64 nr_folios)
-> +{
-> +	struct inode *inode = file_inode(file);
-> +	struct address_space *mapping = inode->i_mapping;
-> +	struct folio *folio;
-> +	long i = 0;
-> +	int err;
-> +
-> +	for (; i < nr_folios; i++) {
-> +		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
-> +		phys_addr_t phys;
-> +		u64 index;
-> +		int flags;
-> +
-> +		if (!pfolio->pfn)
-> +			continue;
-> +
-> +		phys = PFN_PHYS(pfolio->pfn);
-> +		folio = kho_restore_folio(phys);
-> +		if (!folio) {
-> +			pr_err("Unable to restore folio at physical address: %llx\n",
-> +			       phys);
-> +			goto put_folios;
-> +		}
-> +		index = pfolio->index;
-> +		flags = pfolio->flags;
-> +
-> +		/* Set up the folio for insertion. */
-> +		__folio_set_locked(folio);
-> +		__folio_set_swapbacked(folio);
-> +
-> +		err = mem_cgroup_charge(folio, NULL, mapping_gfp_mask(mapping));
-> +		if (err) {
-> +			pr_err("shmem: failed to charge folio index %ld: %d\n",
-> +			       i, err);
-> +			goto unlock_folio;
-> +		}
-> +
-> +		err = shmem_add_to_page_cache(folio, mapping, index, NULL,
-> +					      mapping_gfp_mask(mapping));
-> +		if (err) {
-> +			pr_err("shmem: failed to add to page cache folio index %ld: %d\n",
-> +			       i, err);
-> +			goto unlock_folio;
-> +		}
-> +
-> +		if (flags & MEMFD_LUO_FOLIO_UPTODATE)
-> +			folio_mark_uptodate(folio);
-> +		if (flags & MEMFD_LUO_FOLIO_DIRTY)
-> +			folio_mark_dirty(folio);
-> +
-> +		err = shmem_inode_acct_blocks(inode, 1);
-> +		if (err) {
-> +			pr_err("shmem: failed to account folio index %ld: %d\n",
-> +			       i, err);
-> +			goto unlock_folio;
-> +		}
-> +
-> +		shmem_recalc_inode(inode, 1, 0);
-> +		folio_add_lru(folio);
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +	}
-> +
-> +	return 0;
-> +
-> +unlock_folio:
-> +	folio_unlock(folio);
-> +	folio_put(folio);
-> +	i++;
- 
-I'd add a counter and use it int the below for loop.
+Please add 
 
-> +put_folios:
-> +	/*
-> +	 * Note: don't free the folios already added to the file. They will be
-> +	 * freed when the file is freed. Free the ones not added yet here.
-> +	 */
-> +	for (; i < nr_folios; i++) {
-> +		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
-> +
-> +		folio = kho_restore_folio(pfolio->pfn);
-> +		if (folio)
-> +			folio_put(folio);
-> +	}
-> +
-> +	return err;
-> +}
+   :functions:
+
+here, otherwise "DOC: Live Update Orchestrator ABI" is repeated here as
+well in the generated html.
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
