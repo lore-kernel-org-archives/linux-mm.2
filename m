@@ -4,214 +4,230 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1FB3CFD31C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 09:34:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 499ADCFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 09:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47CA06B000A; Mon, 24 Nov 2025 04:34:08 -0500 (EST)
+	id 6A9C36B0011; Mon, 24 Nov 2025 04:53:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4592D6B0023; Mon, 24 Nov 2025 04:34:08 -0500 (EST)
+	id 680DE6B0022; Mon, 24 Nov 2025 04:53:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F4D36B0024; Mon, 24 Nov 2025 04:34:08 -0500 (EST)
+	id 5216C6B0023; Mon, 24 Nov 2025 04:53:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C33C6B000A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:34:08 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A96A513A42E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:34:07 +0000 (UTC)
-X-FDA: 84144989334.20.B110D36
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E56004000A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:34:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=b0EQD1h4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of yan.y.zhao@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763976844; a=rsa-sha256;
-	cv=fail;
-	b=RVcEEKx9M0IMxiApWs+uVyYfFyAeqIT+RLgxHgkc/mp405KrEdcrXX3CXAuo1ATM+GyiC9
-	6Aw/oxofPYG97pVibDoo1T7oBESTxUdeej6gfhRBPeQJHon1fo3QVX73IajhK3ZlRyduSf
-	mNyaWbR/aH3mboqad572FSnCHJI/i/I=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=b0EQD1h4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of yan.y.zhao@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 300C46B0011
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:53:35 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC8D9B7C56
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:53:32 +0000 (UTC)
+X-FDA: 84145038264.22.3D45FB4
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3A44D40010
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:53:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VNu4bxbT;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nZq3dqz4;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763976844;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763978009;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YF0rIX7xtIR3jObRnuKuAuvnkV8gnjduQQIOZqIDVP8=;
-	b=UdTDZ83HzmEdwBzUbwmcEVxQay4m1hpTIlnHSZ01AaaWSCcWxNEY1SZIAP7ymrP/mN4s45
-	pNgKwhZwpLJyFP1N6b0kWBRuB2Ltm1CLM/ynHe8LDbZY2MyzPjt1sHOIFdHB2rG8IVNaEI
-	pz9Fk5uzHUEUHh4NNI0qRyY0np2aN8E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763976844; x=1795512844;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=8jF/1EIuMWmsmL9IIW+gL6fBGy3Ejw8VcR3Ysaeph50=;
-  b=b0EQD1h43Dqkpioi7XNZ31bNBseLMrDFOx8i8DY+irvhwYwK+KdrT4fq
-   ZS7wc/o/9IeDS0zr0vhEce2PYHRwPFHleMbG+ftE5+Xw6gVqFPnuxE6Ad
-   3kuoTHGN8wS0iWvC3YtiqQaarNvYQTSHw+f2hKU5BbujY310dBz547D/z
-   VC6GzY88biKxkS+L6PkiJR2a4Z+bI/5byNsr41W9gZevJ29bYOtsLx6uO
-   H3W3mMzWZbgLUGI2zrdCB4LiSHb6hv8T77P0pz4M+ADmruQnJwyvnTM2Y
-   b5VTQOKtc4HJUQjsog9cJ2WkdWbZYv1OzOGEUsddXlX8a/YweVnoHVWNI
-   g==;
-X-CSE-ConnectionGUID: 6s4j+x+tRmqB5m1vNRsDVw==
-X-CSE-MsgGUID: 4P8yud77RyCKnshDESNlyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="88624048"
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="88624048"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:34:02 -0800
-X-CSE-ConnectionGUID: fbU8yIebTQGqMkRLLZ93hw==
-X-CSE-MsgGUID: JhZaraUZQdqgZkSDl8fvhA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="197211296"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:34:02 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 24 Nov 2025 01:34:01 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Mon, 24 Nov 2025 01:34:01 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.69) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 24 Nov 2025 01:34:01 -0800
+	bh=IgtbYCZ7MK0wOk8Dgsv5sBLaURSe19QANtfwiJmT3OQ=;
+	b=3ceAmcujRbTankrEq/tzU6IEqr4swr4O8QiWhAoWkamlZZVi1MvsPT02PjB3Ccl/dIQxx2
+	JaAE0PdfBxgmp1d9v3i4KT9avKJYUmmoCNh6FbUsImmSRAAw5wCIOMsvAHGwA32A3C5nr1
+	MlHGXiWFdJ79hgSlwYsF1bGWCn97IvE=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VNu4bxbT;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nZq3dqz4;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763978009; a=rsa-sha256;
+	cv=pass;
+	b=Mi/OtI1H++ai7rudD32TbHQAe2/KyLbSfPPGA8abN6XkWkLpwjHm5qndtsei65Z300goKS
+	q0hT1atZCrz0gN702Oa14dNkK3DyZV8uKGC+ThYlLJKPcE3LhvhxWL1Ic2XDY0aTsgBTRj
+	kBb7KgfjtIfNNEam6lqtk8pU67ebvL4=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AO8v3rB692550;
+	Mon, 24 Nov 2025 09:53:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=IgtbYCZ7MK0wOk8Dgs
+	v5sBLaURSe19QANtfwiJmT3OQ=; b=VNu4bxbTOMPd4bj+7GeqjbgLqUiGr1L8pX
+	4vYypfbSGxImXBoQilWUOSkmvgDTlxdbHquunKOa7NUynnppNtzNn1Xi2Fz/PjOw
+	9q5R2fmHer6QL0yYseG+L44TL2hJrv3BLZsBk/SF/4FjrWmpwL0JEwsNBB3i4CYL
+	0SYj+tJPhXgBnqQirytE0ZauoXHWZl0WZUkOU2QNx7B4Qa87ckAsMEOLoMRGEGcm
+	gnLfOQ7cwHp8SJeyxcE2jT4NhCFYGg2RC8fQBfHvYfW+2t2obVkpsks46kqiBqY3
+	jFeWxVfH4sB41FgXNszPn75PWexMhm3KQWP1879br9VERx94lyyw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak8d2sq9a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Nov 2025 09:53:24 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AO8K2PK022298;
+	Mon, 24 Nov 2025 09:53:23 GMT
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012066.outbound.protection.outlook.com [40.93.195.66])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3mbnr72-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Nov 2025 09:53:23 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vVid7Cce7NDR5e0zUaufcJPqhxEKA7OtXS7AwDxPv4Zd9Gt9KOdMqxcpv4G7tkvLFCwbcBG5iNKsmOeUX1oVO3QqRj3Kn0UrDxmhYfXLKqq2nedROFr4GFQVOgnwNr2enN2JLEC0N2mKHLzGpMszHBn85rUmdd9n5eECyyw6H2EjBEX4rKIwpQk5dxFP+CUP3xrkT8Aifzpo54gGKQbfQEQ3BSR/wV3klhr+N5cLyzhkDcAxu32/gwzwTtvoFcmP8uw45RJInYhBm7tuhz7Pi1gRVAjgvlsLdtBYTY2q118cBXTlYo83dFFg2P8tEftGK8+HWEwER4vCc3ILNmuXLA==
+ b=UzXOb+dZ4mgUKg3MCY/MT7XzIBp3WHj5336vgWJJTaPVvF6tzkrhpGGdcuSjL8sVH1B4VTSxoZ1LD12KTIVuX44/W0Flt8fbcmIBNt6wzn1r2DR7U2seYJzAK+VpC21scqnzoHl3/R2/mmTyDD+Mspg2zVHsnjhfP9TLaQutQJDsXjQLFzElCfzWj25Z9e7L9VoC/pHPgk7TiYGqv3+r4pkt8RQ8KrX75PH28jCEJE1VD/FECIUPKXqALs3cQMEEqbVEmnPCtxNSOCQfaTOTemXBP8Yk6n06qTZi6Rkn80hKc0JGpKuHztI8zqC+L0izhTtiz3WZNj+QV6Px8SSpjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YF0rIX7xtIR3jObRnuKuAuvnkV8gnjduQQIOZqIDVP8=;
- b=pn3KiHjh7b4P5abJUSINQcQEUAR1OiTiq+PzdnG7ki+bu840NgO4glKGcXA50YXjdjQ4spKiGi58JkN51wrDpxHAqSzQnoG5lJCCdeHCWjkiubyc9TDG2ejRGXyINZ8M+OkOUbZgHS2tJLGBefjJnpT3zaE3JJwHDJusHaMYASRQ3NYZHatfpjXKFA1gf72XiMDzqg3hjTe3OW25Q/xKUeZ4aGrb5URoMY/mwR4FxlkzsDi3bBQmpgeKxqAkriWgLE+QyPVb88PyD+vp2/nrw/89ZylXHRapK+Ro445bMCDa3Pi84qitXTgpE+5fHeZlYZr0MZbnoYffFZJLFE4O5g==
+ bh=IgtbYCZ7MK0wOk8Dgsv5sBLaURSe19QANtfwiJmT3OQ=;
+ b=CAzlg8omajU0WUE06MQJcsj0WAaUc7BmfgPuCKIOaVQrv6bwPf/QkvtS59sFVUOT0aHAasyj9eyhHiynXTXOs9zU/ZeCSOAa48swbAW3MEprwo5v9I8PlBQD7q7FXGqVsJW8QQcTaehpbyChjJ7M0bKg8K69AUGWjoAwoiZJTSs5c/QNA1lsSogiqim7A6X/pQSZLDnJdx89EOlG0BEOi1CNWdJRiD814xBqLDYBDTUwYlbHEU0uZ70HWw3q0u/8e50En818pBSPmqGtRjfOyM2CUNEGqMz5PieCDrrInD/sRMDhQmTxaCk+I+Z3bj1lwsjWElTOelYBkJNB9ALlIQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- CH3PR11MB7346.namprd11.prod.outlook.com (2603:10b6:610:152::12) with
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IgtbYCZ7MK0wOk8Dgsv5sBLaURSe19QANtfwiJmT3OQ=;
+ b=nZq3dqz4qxfmgrLaZ/MBjun0ZNl+omdgDN0hOo1X7NoCk+FlpZSjaGUP6+ROaBUrg8e2Mc0kP0OVXmmi5Wst6cPzPzaMaAZqR60pVkGhkv6MrgtR8zidtn0JdK0kVEk8lZ2Jf3rwSs3gV47JlLM9p0GmyNgvcPAf4hm2eytADAo=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by DM3PPF72E3677A1.namprd10.prod.outlook.com (2603:10b6:f:fc00::c2f) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
- 2025 09:33:57 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.9343.016; Mon, 24 Nov 2025
- 09:33:57 +0000
-Date: Mon, 24 Nov 2025 17:31:46 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Michael Roth <michael.roth@amd.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
-	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
-	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
-	<ira.weiny@intel.com>
-Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
-Message-ID: <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20251113230759.1562024-1-michael.roth@amd.com>
- <20251113230759.1562024-4-michael.roth@amd.com>
- <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
- <20251121130144.u7eeaafonhcqf2bd@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+ 2025 09:53:16 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.016; Mon, 24 Nov 2025
+ 09:53:16 +0000
+Date: Mon, 24 Nov 2025 09:53:13 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: syzbot <syzbot+3e03c904429660114599@syzkaller.appspotmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, pfalcato@suse.de,
+        syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+Subject: Re: [syzbot] [mm?] WARNING in vma_modify (2)
+Message-ID: <744134e8-387e-4429-b878-87161a45113f@lucifer.local>
+References: <69229bf5.a70a0220.2ea503.006d.GAE@google.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251121130144.u7eeaafonhcqf2bd@amd.com>
-X-ClientProxiedBy: SI2P153CA0032.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::23) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+In-Reply-To: <69229bf5.a70a0220.2ea503.006d.GAE@google.com>
+X-ClientProxiedBy: LO4P123CA0086.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:190::19) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|CH3PR11MB7346:EE_
-X-MS-Office365-Filtering-Correlation-Id: 621fdb85-64d3-4863-9ef1-08de2b3c9783
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DM3PPF72E3677A1:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e239651-730c-429a-4dd5-08de2b3f4a64
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?r/yhARB4dDFWU/N5EOVBXGsP2oT5TMuW/9FCaebkigvZA3xHsRNVnNfV+Oau?=
- =?us-ascii?Q?Evy61mLpgjfl6OBbIBsbSF2qEdfIflReMSEC0k6kUNtMduh+jfKdr+ZTj10f?=
- =?us-ascii?Q?Qz5iL4jIO7X9uecUBoRSm0/aNRL5VlPiUvVLNYl5g7xQwVUInAw5YWAnVMV5?=
- =?us-ascii?Q?z8JyorPPsrSXDRf0JmglWwlOCxUNayy4o9o75BJ1GeqIFgFLEbvAEDbKxy8D?=
- =?us-ascii?Q?ykH2mYpuY3PDJ60nyzD6LfdlVl64ubd2Ne09/bx3NMCUACH12gbXKVfJDIwT?=
- =?us-ascii?Q?AwKL3biwviE1/aY1+jJ8tiGvsrz80eI/HgMeB19sCTZ2gGFCUSLAjZkbR3sF?=
- =?us-ascii?Q?M40Mao0uBWPNYgRMxfrVUSFf3K2sfvHNw5hZ7YEWXLU89xPF8ShckO8s/GQm?=
- =?us-ascii?Q?SNjJFtSmgAHiz61MzLy9gkFmQKuO8p9XB6GsX/q9yVCZl2s2E0Bk4gKcVYOY?=
- =?us-ascii?Q?3Idi7xuBrHRn0Br6tjpuCPMGYkkeoRSqr3VsLHW7sIN2FrG3gmTJhC0tpl5K?=
- =?us-ascii?Q?Vp7mcPBJwgG9cYkBg/Cxr9FEBCmNBzlOp5A+kpq5PmcsB3PzuwobC5170A/q?=
- =?us-ascii?Q?5tqkNEyyPLfW+d96Pit6/ToqgWscPRnjbNS/EUHMX+OnGrZArtq0uzuP6Ep5?=
- =?us-ascii?Q?iU6ZgK/SpAwt03/pV8A8zOAeDp0yWUU4sjq89M+PMHPHMpKFnJSd0YCjp1Vc?=
- =?us-ascii?Q?MQOD9t0ermIvpHLxGthh+3+1gVsCDLQX/X1bw8y8cVWjEt9j//warOKcL3jI?=
- =?us-ascii?Q?1gYBKmtsqm9um+tKkdXAXLhHBgVdl1GNOvZ2vigxywDiY7dlez40L30LjtRn?=
- =?us-ascii?Q?/NMk0JLU4mMya7M9Edwf/PfXBY7L953G9B7PsGFB97VVPxYKl8qEWrqSbPf+?=
- =?us-ascii?Q?dyRsG7CfqVXOntKjxFT+i14bprIDG1Vt+eMmbM0aYLe9RfBC8OzonOgOOsWw?=
- =?us-ascii?Q?uiObD/WwXo6JG8wgmkw9nQpcAzN4x+hfwQlgH+ewwvpqBQK3ifCXVVKwl/kx?=
- =?us-ascii?Q?zvrgJHfGtNHpUpcI9RFvIuknIpMPGYCAE3hVCCYsCZehEkMdrjuhCVtM7Ogb?=
- =?us-ascii?Q?FOEdnCJdcm710ZRO4fmFje/bcVgZrxOuihKlNrlLmEVc4SQnN7Sna1ZhN6Ff?=
- =?us-ascii?Q?urybM/Of0zqxRN5h/PAATLY3CSsEDypy9ZO8sjSl09BuguC5qeUdqCJ3FC00?=
- =?us-ascii?Q?O8Lvdt4CMxAUxcB+QcNnwciUQPv117rPuzt+dBkYbvG4op/vOefuH078yiSB?=
- =?us-ascii?Q?ijR7SeKJ7fHWBQV3ordSHyBaOXZkPJ1zbssHwHsgJ5bqiSh4ke7yWTOJsjRd?=
- =?us-ascii?Q?JqgX5nb+qDUR2BZAFSA6E3ITe59x4k/Gl9R5gV0gcoXSW8OkWgPk63e1/cdP?=
- =?us-ascii?Q?tX/xTC4ZqnrbpUVLQY/0k2hQs0zdwouNumHWYFhlOHoaGh2tnsVN62ZrwaY5?=
- =?us-ascii?Q?ne5U1/fb1+TYv6aPQifKwJsdCZrYF2ygnJqxzxTUhxIakSl7xOgY5Q=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qtBwu1AHxPwYMIhNGBR50Lx0XxzKgmPTcE19qNgF2XsK7Z9K9ygrwCwXQE2l?=
+ =?us-ascii?Q?7Yw2ShIsLXwtmvAmELiFWoB/23OQFHGt/cHnUHykE6RZTJCPAZ5mFMJaBMNx?=
+ =?us-ascii?Q?hlvABSNJY5OxWSnsajY7vt4l3ZPam9hoB/uiE6ksD82KIxJi+WbG49HK27XN?=
+ =?us-ascii?Q?kniOBSLHJR1cEb6e445THoxd0CoQe5ZB1p4CazA/3r+6Eh1gVwrWcivmNHl1?=
+ =?us-ascii?Q?ggcD10HcFKw90jd3ooPz9vR9fgEzbAJ/wqHWbmJd1MsUAB+1PDD9mtItv1X0?=
+ =?us-ascii?Q?ix5IYzpZ9hTQrPVWvx/dVIdKBEZ8bqDJ5nxK0rIKDrawheDtLk68BRjLGxXw?=
+ =?us-ascii?Q?FDZYJP3OcTvNEPPWEwbVJazd9csIZdttkWj1PQgXL78mOEkTFpT3G4/uYpCR?=
+ =?us-ascii?Q?uppsKZvdVh3nOYUN+nI/opEn9o/98ZmFS0wwTJ/QHRWTFX7C9ztTXB4oB2wj?=
+ =?us-ascii?Q?iKyOvov5ZJajZFsuuAeUJyTF3Sak4PFjWsp0VeYCpBt7Fj8M/LZfN6bEemFz?=
+ =?us-ascii?Q?7Wy5h55AF9TF2J91usu0LRdUq8elhRx291O2o6GRpYz+pkVI4EDMirJWaeXI?=
+ =?us-ascii?Q?q16NQ1RlKEX6pEISpA1rUkSBVP0nmxIbCMnrSFflqKOOXzTUfNS2kB6HPOSM?=
+ =?us-ascii?Q?pVon8ChUb8U3+0xqECYVe//Clk53flT4X+1VEe2tXuo7zMOl1abveaU1ntx1?=
+ =?us-ascii?Q?IqeizXRVIh04q+o+RajGkKWSF+72TyiYnAp4u/lYCx02e9wZ4HbuslPL9vrJ?=
+ =?us-ascii?Q?GAH+S09gJM3ZaLKva4k8KBECI5QNtKnTK6kWpg453XrorqBksNf1Bb962Mit?=
+ =?us-ascii?Q?R4diLYloKQnn49OeLxz5WZMnUpxX6wkXneu8DdZ7SXfz9ibUXPNuihzc2hSn?=
+ =?us-ascii?Q?b184H8TSCxRgrAScQ3pvf6dzC8VxaPO2WbJ/b8+jr7npcT5CEU7hK/OXBXbS?=
+ =?us-ascii?Q?nVxbJMiKZ9IG6T5ibbiF1KikXqo6X7YNcmh5bALYbdfL0u+3xrUQqpSP4Q5a?=
+ =?us-ascii?Q?3VLnklgbznUKrsMOcAhOQFFa8CQDpJQFc084sLjFiDB/YrA9V+aGm1I0LxEM?=
+ =?us-ascii?Q?NJvk2Biq8o7uuAkVnxHkIW0SoV/4sUyo4O4dcffC5JkQY9mkT7fwYoMI/03v?=
+ =?us-ascii?Q?mwHGqaEkzN9vNoSqEqVzXUdN43SWa7ezv8Zbx8GOxNIgD0Dnwj6ugIwTEb3X?=
+ =?us-ascii?Q?tf1NiEuZEKJJnyvkhHwd1exXwS/p7m+IfOmAlEf1hw/056GvtMSevf0R7yEX?=
+ =?us-ascii?Q?JPrH0ack+D/PYUcj5lvfhaSRc4oOaydDNJrPEsrK5V0M3dev093ADFGOfU7V?=
+ =?us-ascii?Q?uCb8j2Wl4FLl2qzn8/kjqUUY5LJntUxLlfDBWsGn593HSgiR5D+zKzoe9FMJ?=
+ =?us-ascii?Q?tqmhtAFE+3EB5YxGMnr/gDxNZhPGK/M0n56mSUXXLR+uru0mDA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+DTDBPg0QJ3gAxnjaM6sqSdD7OMigD2Bq5Xe8ZlFaE7qsu0Nv//si3C7rpm7?=
- =?us-ascii?Q?Xb0/8zFu150u17yWBCbFxU48FJyeEUEGKtA/qYIp7kIDL6vmrsv264cs5dx3?=
- =?us-ascii?Q?4uhRatxwvkH11+Zk8us4eskXi2fjxOdbAqsbi6sOnewXkWB1iZDt+VegeKm2?=
- =?us-ascii?Q?L10doHv4eGJw/bEXDJ9lud8ICnv2O6aR1cxTu0A/+jsd5PvuHf1XMaTnHcTv?=
- =?us-ascii?Q?xEleZRXozncq5j5oPvMID3rOG4QSyTGDsF3qbYFq1uPiN8Vkeb05j0NyBxy2?=
- =?us-ascii?Q?CS4MQkxoRc2FlWoEfB2dEIYruqgDpSSihTGd1nnF5YKWzQhUtUdyEFNhtxEi?=
- =?us-ascii?Q?/Lpt1DW0RkjJUzTbtQs2eBZSIiAYX37QzT/zpHij9UZbaJXMcuSrOvGdne+x?=
- =?us-ascii?Q?um3V2oqqzgZZGBrRjW09EH9foQrQeXQY3xMqdmvfI3YZoAsXrd8y1UgI/9ZN?=
- =?us-ascii?Q?XJDwVKBzZMpx0DWGKE2PEGSKQY7OEOXkbt4ZfIfFtAOiSkXxFYCCepyL81XV?=
- =?us-ascii?Q?UreMFDMlpdb0FZKV0coOpds8gJTTbkj0jDLdWwwTfU6agzIpI82k9mroOuTG?=
- =?us-ascii?Q?LLy6EsqBDltUCXCZ1WiP7FxwJ3slpNz04vbD3v1pKfBSWjA87XZSoaKOyP6+?=
- =?us-ascii?Q?TGSBPJDOMCTzKjx15lVlL1R6SSiwbCa/wPJ9JMCwUEKAjRoUSsMLqRG6d8HD?=
- =?us-ascii?Q?8kzheC64Cje4lYibQhtTnbc2ptmKDkQVypyO/tSPQC/kodNi9nxQNXqlAJ+C?=
- =?us-ascii?Q?3vQOPbY40mijwdGYAz6W9ySeacFCI2OWjGC84tO2QNt5Qglok6bmEd+nd5iy?=
- =?us-ascii?Q?sYJ18SPPxDezVNOlFf1mJ9I2I2nD5A32c7opQXxrwNbtLQ05cGD1JB9dD4HC?=
- =?us-ascii?Q?piZxOa5zC/B7RovRKxEi0yyGeOFMtpZmwFm4OU9Z9699eNxY8sM3En+YxePq?=
- =?us-ascii?Q?eBfJIRIY77YaM0bVA1PGQ+KCUQGIVBXktfsdgjYicx2ZUsHVJ8p67KerJisq?=
- =?us-ascii?Q?eMLGl1bg26Ds9VcxL5Gq5p6YgtDjTlvK0jdsB8uR+gw+U5OmzNO+qOqCEAbu?=
- =?us-ascii?Q?C4RsV5Ed/OVQy7y+Ot/ZvFyo68hlnIZwaiiTi1O9HtfIIWkFRzRnzfi0xhfv?=
- =?us-ascii?Q?YwI0OR/vbAq43+Plz/YrtUGVTvuLT1RQfRQISkF3/X9HTMT7Hzo3PSOb51mY?=
- =?us-ascii?Q?GYQ6HtiOaoXoKJbIyPIKQztSjei/55cBOs4+Ixk79AReW6gFElJJ7aYCKY+c?=
- =?us-ascii?Q?SDRaQu9r79GUUWE4TdD2tr74F39UfzqTeieou3DqeSs1AZLnC/0tmRne9dj2?=
- =?us-ascii?Q?J3CZPIoa5gqLMrVSfB+jp4hnZmplGM0LH7XE4yXUL0WKXo/DQbt5vgSN/1Wn?=
- =?us-ascii?Q?ya1H4CLDgndHb4YoLmqgTDD6xxrzb/329QSxnu7ddyPY0CcxfZRMUUoxBTwb?=
- =?us-ascii?Q?ho/ae5e2bhdf0RtYKYA9XSJ1KO2Jw4+sZJsa2sCFW0drETQrOFmsoP7t1Ehd?=
- =?us-ascii?Q?YZKZEm5pAVeG24aa+pgdtgFTirpHLJZ+fDqM7e0Uycuz1EBeXyKjdhZg8YV5?=
- =?us-ascii?Q?zj2v3smQ63nCuijN7tIDKBcjtXKFlR2SBLoJJRhu?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 621fdb85-64d3-4863-9ef1-08de2b3c9783
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0R85lLj/XoisN03oZpF6UYpU0YImziCNb6EdazAi+n47T9ebrTVmJw0YE7ue?=
+ =?us-ascii?Q?2V6ykMd+H7IYRz8bvI3lwvIR+JiC/OCiiTbUenEP8TiCIYQG/GpeR4SleyEF?=
+ =?us-ascii?Q?I1xbWEFFQQjiSzBde5z8bu+dPVgW9stIi2gcujPwO4fLcvuwDIWCkGyKWNyh?=
+ =?us-ascii?Q?LQGg6Y/LLc1eeg/jEHqhmTzzxcJwuFOVa4MnNvmlGkGFdGxsG+4ZEZLMhQ5j?=
+ =?us-ascii?Q?2p0qKmthl9F+ijEf5XXuyN5hgEqitZkM6WJ1BNGfpUMXBHubUiag+G8xKnlD?=
+ =?us-ascii?Q?7cOF0gKb07myatGvfuPH1q2hYOxZz3YaO38bUTXhGpmXJK5WFBONgYqw/zWY?=
+ =?us-ascii?Q?Sno5wjc2hxYFnd3G8txrb9DpHXcTTwolUzYnfMzNXRyaOGH9AcKmG/TkeFix?=
+ =?us-ascii?Q?HTHQOLzEui/+yqF4uYaQgfzm+a6iABdY4NX/+tRjmiPWil6JA8JXzGJjFcOw?=
+ =?us-ascii?Q?UoioE041Sx+fv1e/Fc2V0uelNmjpdASxZZAmWd53CajA4TkIWjKrNpQTX3uS?=
+ =?us-ascii?Q?KM/+PSpeW09HALSNFVGFTOj4w7mWBhaUVqm521cWSXvbkWyTxpqm09QZTz2G?=
+ =?us-ascii?Q?E3a3szxXT8J8gLCCrZUrd+aMCx+/4pVWBsZXCjFx9rluZmQOYCblBj19A7JQ?=
+ =?us-ascii?Q?VWspLB9ioJ9BmoHtNsN5sfNHhtAo6hdsgl8UOIzrav+j1Xp3NmEXNa5qSuT5?=
+ =?us-ascii?Q?FHsWW9AEtvdmKj3sH8CD/i4+EhXRk8X7N0KnK3fB6slFLR26IE2aPkeNjobD?=
+ =?us-ascii?Q?sZQ2ax+cj01KlK+1vsogMsoeO4+g94j6UvesLQihDfqEkQj3DUP4/AAZqydA?=
+ =?us-ascii?Q?5ixlTss73AdvM9S1DLFaG8siQbyfc2hukLUq3ppzYvERKO6Tz0PPKPmI1za6?=
+ =?us-ascii?Q?WJKwpWnAfMOq2JE8o6Ubs3M9HTlsEQCPXGsCIjffIcL9VDqLpIxUHl/Uz9ZQ?=
+ =?us-ascii?Q?IbJqo2jfZS+zysqv1LByILFFmNawthIzfparLFEDD4ooIedT5JpMPVRiL64h?=
+ =?us-ascii?Q?17LkdmQ2bCxONl/3YGXSgXHE9T2U6p76j0AVYG9bVEJ7j1B1pYIrGccRHXso?=
+ =?us-ascii?Q?fYNDmp9eNYdyHZk5pfCUDTD0DRlmuS8h2F30yT+fBrkeU6AYEFWwqIzoGpg0?=
+ =?us-ascii?Q?6ru36oKgJjHUxxv+PObvjZByNejg394QsXNy44AcvcJIwQJpJlWnrFfJ27t2?=
+ =?us-ascii?Q?i56b5LcVKtzXuLycsIyJ2UKRdqxvJvk8Ecuucf8T8VbYmVLG9Otxzn1DereS?=
+ =?us-ascii?Q?GoOPgmVaRkQwQaoVu8plYcZkRlZv+bL24SRMZw4gSbEzLDyyRixvzCMtIp/F?=
+ =?us-ascii?Q?I/SLuPTh5EM2gJitUeDXcqnpiP6pLXKs+SlmOQbGp8EF6NrUMlMRR5+ClKCK?=
+ =?us-ascii?Q?WG7pVdUPC1SS4TsC03zh9Z4MtTVGfzufubrT+DmqIy5NxdJQvGCFSJCYs+Wt?=
+ =?us-ascii?Q?3AY27dvLRZHkFMplJeH4vqxfWsWGQarVIyNLWUHHYT+oKNqLZbluSoTVxC4F?=
+ =?us-ascii?Q?oXh+ojHnYSR+7gSHr9J8gpunSpPFdzlYkTNbV/2gzeBssIJux7dv2rQcRR+P?=
+ =?us-ascii?Q?VF7mvHUXkrCCLpw4ehm5gwAmlZ/0aqkUGuoQQoT2mk6kzyG+SQOvdJS20XuX?=
+ =?us-ascii?Q?wQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	SHwVqTN8ky5rLW5jh1j6KyNoecnIuA0+UaFppuOcMc6Oc7P3AhT0Z1OzrP3tZ3MFf3b6RDqNisP+Slbi/2a/QcHqoVN1co6c/8f6le8sse4snkEJ2xfVR18WMTu11jYWdmsBI2L1ATwixB3/yAkO9/2HhrdtI1+ZFcS+PasJARsCueGPD16Uro3gGXVqPJXGRbBZEnbNMYbBPRlxAr3OelgEBwkgPxx4iXLe77I9y3cWQAuuxpLXAPXhkEade9AYYPlew4qPQ9H2gqBELUlXy/jsks5wjrG2xa0L8dzaIJsrNnOtWgk3xuJ7aiLhbrvchpMUE73MT40Ph8FxFyuL0v9NRKpKuItTF/WOvwTtzG9srX+kiqqQ9XFb4HcOjolHZ0kET7lmLv8QKa6fWVdxscT/kK8i9wMrbbLGZiivWcuYmy/XyuUwWXP8zeEg+rZpbz7pqlyDH5PHeGAEYw/ghh9c3SNn4APMp8N3t2979KnJ3NsD66HhoqrO5UBSOuMRVx2WcYKQW08vPk7EJgPw0yZoLSf2JU6ldhBCXkVQodYbKqb6kFy/WO1sWirJED5+9INsP7CkUEdEMhzMovDCG5VIHSZ6fW/gBSurg3DoOGM=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e239651-730c-429a-4dd5-08de2b3f4a64
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 09:33:57.5741
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 09:53:16.6262
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nOsTQbx3ZFsJTdxlSkwEvqNSD0ErOkbX/MfNWKiZlcL9HTTjBhJiK7wU5zfUCp3iFOX5BdEeeWXzuQ3y9ZGLZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7346
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E56004000A
-X-Stat-Signature: ge1eeodhpay7dwzrzp5xm9mwhchhd1st
+X-MS-Exchange-CrossTenant-UserPrincipalName: ocMD2QD6Ov42o+hjTq1fxJwZFcRXbOGyNr1099zCwCzZFjeb3PlQ6LLbF2dhZqrhxm4UtDIZTyoLr1j4peEyf986/Ax42b+cM0OaYvZQmoY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF72E3677A1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-24_04,2025-11-21_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ bulkscore=0 malwarescore=0 phishscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2511240087
+X-Authority-Analysis: v=2.4 cv=QPJlhwLL c=1 sm=1 tr=0 ts=69242b15 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=edf1wS77AAAA:8 a=3g80flMcAAAA:8 a=oHvirCaBAAAA:8 a=hSkVLCK3AAAA:8
+ a=4RBUngkUAAAA:8 a=57IzYBeHg-RZcTWZjaQA:9 a=BhMdqm2Wqc4Q2JL7t0yJfBCtM/Y=:19
+ a=CjuIK1q_8ugA:10 a=slFVYn995OdndYK6izCD:22 a=DcSpbTIhAlouE1Uv7lRv:22
+ a=3urWGuTZa-U-TZ_dHwj2:22 a=cQPPKAXgyycSBL8etih5:22 a=_sbA2Q-Kp09kWB8D3iXc:22
+ cc=ntf awl=host:12098
+X-Proofpoint-GUID: CidYJSH2NylOTx9YxaRtKF2qs4DQrnMq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI0MDA4NyBTYWx0ZWRfX9+7M4CaXORgI
+ ITn/80rmUlBiIKq4xKhcV9qP52FSfFhmhh7EKolJueggtbNce1/lzsN+OWpEHwxg2hyq2C6NzHd
+ vJ/AWYmUpnAjtyGOBBHr1f2YCJN+ZsV3hXkrzJ2K/fcyvLoL7M6OjbRYJpAv3OtFfA8ZiTsYm+M
+ ZwORrIydCX64UTcvN9P5i0wEb31l7FoVd/JV9Z4yoa9pJybiaAw8FZJTIO0XRl6PzYx5D550OQc
+ Pl6R4Y/fqxAjydtPPMmoOymAyvDLjNymeLVAEeEvPWs5H9IXnsf7hBWan4hLdZiT2//c6504axk
+ 3Uoa/wYnw4FzAwJFuHhdCyzCZffi0RPyC4a6prUK52ZpMTNE0zjcC1O4932TVmCPY5b53SP0v1N
+ HJR1yr/8iIyhZb80+QsLbblb7R23QGQfriHVMqK72b5L87ORjp0=
+X-Proofpoint-ORIG-GUID: CidYJSH2NylOTx9YxaRtKF2qs4DQrnMq
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3A44D40010
+X-Stat-Signature: mk3o9icn1y5iqc4n1yzwtohw6x1fzzu4
 X-Rspam-User: 
-X-HE-Tag: 1763976843-217764
-X-HE-Meta: U2FsdGVkX1+Gzhv4dsQ04b419h4vtdVb2z05t6uw2p3fdDCoFZ9jVz45sf6iQ2xyg56qhtPkjqt4qCZCOAYgwwWVW+lxgtv14my7kTGgs532+WkkUdvQ1ScQf4gmM26UvUO3kRH9N9c59b91eH+w1IC1qdIiM9/bd2u2DnphV28nfQxWCDXoB5GL6gBTa63g/pH5ZS/E7gUfnvBbiRKpcOCmtZiugJVQAp+zClUA81pFIWG4HUcX0U6FwMeGaaFLOyTvsGf5pvfb939qeIevR8w9blmdlcpn/owJ7cF6nPo2vuBtKJ5c+q9TbNm8QdS9rfBRI7vL0QECl8XEIQ5FCIutPfd8lHC5OAsWNwewWNu73VqKhzjFZQiiQIHHh2nVTCNiRzgK9c54WCcpLkZnTdq/iH1PZNoC4lMutXJcx9wJydXvx1Ip0aai1i+oqcwih8AWLxzHqH3b1ZbxQhAlpFvYAIvDe74fAitSdJlI9UEi8VWPdcfqHEf3F3iRs1UA5yOqqs9RAYAgyfwM1RINBkHz8lqciPJYvK1wQYCiHsf/GjpETEHviS741cJKD5PHRDlddBecxQuXtO3Uy/jMzxlEzk986QpnhJ8MguG7znqCj2jsBFl73p/h2dI2wSBJUgHXQ10r1SuroG0Uxc9ZkWofslVBfd3G4zVp9VN9uv0ZENknUk+E1nGqkwGLBVG2GylfH/C974+Zwt9AsRzCV5yVkcz8iHloX2591VykztYDop4utBeLExVUc2Ho7aOs1YKr4Ywl8aGXisR5X4x7LigJnjJCVXSZiNwhP43LC+C28BP4UdMjWZVgRpA8CWGVKvKkcMivMpBjpnyIRqQg6tx4qzhNuysvhsc2zJfQI3Qu17eQ4EH603MgX2FWkY5cvc4/oHtUxi1OB6CWPl8VlBgrziSL+KOmwoc38Iacn5UUUBGyMvUDnocXBMnZSsItQj9t1LGA2yH1rt2KW4o
- D83BqrQK
- xapJVje6xOq/0txKNV1Pnak0bUjEWC3SZOxqpg08Z3iroVOI2RdzUF5uGEAnq4i6YJPnbU0tRg8mUU7D0jdxBRsxvM2AYjIIL6/pDojVkt9o9coMi/fKla4L1IZBUVNNOZjqil8ETmIqhEfU=
+X-HE-Tag: 1763978008-747025
+X-HE-Meta: U2FsdGVkX1/tgqnH9Go9x/LfJb0UWUyvw4By3A1HO+4t5hakdmHeiSOSGGivTKw7bdhVcDymMoG/vXXTQY58zMpeez98uRp1t+/u5FIdWAry0IOAncKkNJUC0wRwcrk5Upz0+A8KKECAxCHDoXctihF/J0IpkLBGUdGaklSnM3rp7vdML2QrVN8BpbMeda0yf4GS/eEGsF3Xq04WGbCdw92nUVDF227ykBBD9/c4kfrzEDBBkFQEvGk9cnakV9Lb1VBX2cBYKu5EOA53/iVIYvpIP/UefvqFJw3jr3qXtJGTD6nlXxNcsMFIpe/+WfZRBa8KFng04VNqI6cajzNGiPWp/NMz7u+9hcUNc53zVAcNNJsKTepkJE/MJHw5kK2PpIaQD45zxja4YTy6p+wn3zhgEMttYaXDZ3w4Fbl5aC4HRaI7ZdKycU7tVe6qcDqeD9AHQHOgyuTLAG4x3Shh8M7hSKJnTEuPVP/Nm9ORQuGi/v2wlGQTrs04optDWKVb5AORlox7tnvZTYSga7yucL54pe+FcW2Ni1R8Zv8XXW6E9PEowgwyw1LkG/jlCodZ6Yikmi68+VrJKeRXFusyb/uSJbc5E9CFgzJgnMuR6QXNh9FyWHaE9VipLzP5RsRXIe8N8cnBm1cujBl0RJmHDDs+P9/Vf9SF0aoA3WK5kamnM4VIKKGVQai04cZsr/g0CqWST+HpimApGfMfLFtEQ0L5Znkm0l3PfG8OTFoaWkPAHLLiIjS92hGIMVOoSABZ+hxDId9hhpDLbIm8DDSoHOeBki2M/H1SvqEd14Ab8/HaVi4HN6E203ZVLuBzMhkjaoDuPedBXn2hkbPkflLVFZmyybYc4eqob0wxrknuGBRydRJZGE63HaDjHmV8fxVMhE6YiRAb5sEpiXnh7t5hkeWPAOG1dQ8AsgPkZnhfOj6YkxwxnpEQUPIWrYj4bStpqNKSKv7ZwmdlY6Axh0m
+ CQMoUGyH
+ 7s6ocsftiTegElGwEgwd2DBs27cYvckm1sZIJuHs/B2cMzFYUykYMvt/XqOBrJ5PpPHT+SRp5MaR++VINmRvPFCxsB6+disG/Gvy42lSIO43N59IjE17VCoCaJPO5JEI+UtKOIZFYweMowPbryelSw9zotMrgY36HK8gpf1sARJk6Xs+bXfKMpAyObhFmUcmPkFE2lFz/vapcbtYtQhNBdCL/r9XyJ/u5wOism8GbcgqlG3oZ0N9B11XapkdYDKXinJSB63O6sJwr06AhXRBwV+WDEXGEd7B90VjrSdPaPvAt3CxbprFyAb+iHwwCZcyVj1KMjFCEvLKb8dT+XXh/Pu9VzXnH8Wvq/V060eYopuc4qohP7wkL7/tZQuQwT+Wjtfn/tSTQ0xNvR5r0DyCOZ5+PYjh4RjAiQLQxF/GSFA0/P45DSoXs535i2PDZhReFypl8X3RxP1ZVUvAWwoba35XPtW8KMulDDgyX5gTGCdzLVxvmgkfh97y0tLL42rHgOCWFHdiGBZNFqaCe1U/rfDzpNipwRxZYBV35b63PTeKc0fUNS3tfsfSYQLyGiBQIm2kmMHu3aWL6NvpUC53ZWYbfwZdRERwzb2jV2mjykqtHctJRH8clN+h9ug4EEX/255gwyMXGV3L63KMq1SfrED6PTSDv6r6Sd2tkwtkXUBdpNRzMxK2+WVNVDOTMnCu2GZPTlAyU9UyIeSb+zGqMkxOJ4xOq2aHA0ZNW83d/B6djVCR31F4YMQJ7R0+/vl6OIAzc3tRLCq9g7pQeho8hPP6B/mzoYgsBfhtPhVNnn0Ui3nwLWcFpxSIG4Mnb57C9RTdV2YC1vGoSt4Xd4iQHZlb/gXS9S1+tGqfzBGs53ueGO+KbtYBBJUYLnIob4omsmb62GkwbOnO+/dJAWJTHMUFXN+KTKc5dx8iXvjSi1h97a7ejvdb6/rn6ytk0SvqeB2deAiMAubjhD46w9Fj6DG0sOfNK
+ rO8+MWgf
+ jKGgI7Opz4vpKZu9OHshlYoArh//LA7erEs17pA3y8xiDmCu9XeLGe3o1OF1M7gxEmo2FPkHddAqk+RZVg9wNki3h1mFXA2eUS63S2E/gUlkruA1OuNVc7+bDYowMQDvhcYpVSyAiRLUHjviVcOYsxSRNaAHOr6QxN4dzj4Ktqrw6+3mdru/DdFjF1AupNz5RpzDq4q/wI7nCzTCpkgGHK2OK/sRnvntkYISYoy9DZPJBqzO72B3XIgv8mldP73+I1xUkwQRIX8m37CcPprQrkjYpzpKGUfbm518bte7qR90UyTf2XLfmaM8+f7LIzdHhuWGV5o2IT7xep5vEQnbNJl9J8DbSQm9NUj7Jm/gjBuKEXWNHHNwqiZXBCFoK2AljiFTESIvtII=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -220,389 +236,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 07:01:44AM -0600, Michael Roth wrote:
-> On Thu, Nov 20, 2025 at 05:11:48PM +0800, Yan Zhao wrote:
-> > On Thu, Nov 13, 2025 at 05:07:59PM -0600, Michael Roth wrote:
-> > > Currently the post-populate callbacks handle copying source pages into
-> > > private GPA ranges backed by guest_memfd, where kvm_gmem_populate()
-> > > acquires the filemap invalidate lock, then calls a post-populate
-> > > callback which may issue a get_user_pages() on the source pages prior to
-> > > copying them into the private GPA (e.g. TDX).
-> > > 
-> > > This will not be compatible with in-place conversion, where the
-> > > userspace page fault path will attempt to acquire filemap invalidate
-> > > lock while holding the mm->mmap_lock, leading to a potential ABBA
-> > > deadlock[1].
-> > > 
-> > > Address this by hoisting the GUP above the filemap invalidate lock so
-> > > that these page faults path can be taken early, prior to acquiring the
-> > > filemap invalidate lock.
-> > > 
-> > > It's not currently clear whether this issue is reachable with the
-> > > current implementation of guest_memfd, which doesn't support in-place
-> > > conversion, however it does provide a consistent mechanism to provide
-> > > stable source/target PFNs to callbacks rather than punting to
-> > > vendor-specific code, which allows for more commonality across
-> > > architectures, which may be worthwhile even without in-place conversion.
-> > > 
-> > > Suggested-by: Sean Christopherson <seanjc@google.com>
-> > > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > > ---
-> > >  arch/x86/kvm/svm/sev.c   | 40 ++++++++++++++++++++++++++------------
-> > >  arch/x86/kvm/vmx/tdx.c   | 21 +++++---------------
-> > >  include/linux/kvm_host.h |  3 ++-
-> > >  virt/kvm/guest_memfd.c   | 42 ++++++++++++++++++++++++++++++++++------
-> > >  4 files changed, 71 insertions(+), 35 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > > index 0835c664fbfd..d0ac710697a2 100644
-> > > --- a/arch/x86/kvm/svm/sev.c
-> > > +++ b/arch/x86/kvm/svm/sev.c
-> > > @@ -2260,7 +2260,8 @@ struct sev_gmem_populate_args {
-> > >  };
-> > >  
-> > >  static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pfn,
-> > > -				  void __user *src, int order, void *opaque)
-> > > +				  struct page **src_pages, loff_t src_offset,
-> > > +				  int order, void *opaque)
-> > >  {
-> > >  	struct sev_gmem_populate_args *sev_populate_args = opaque;
-> > >  	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-> > > @@ -2268,7 +2269,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
-> > >  	int npages = (1 << order);
-> > >  	gfn_t gfn;
-> > >  
-> > > -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src))
-> > > +	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_pages))
-> > >  		return -EINVAL;
-> > >  
-> > >  	for (gfn = gfn_start, i = 0; gfn < gfn_start + npages; gfn++, i++) {
-> > > @@ -2284,14 +2285,21 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
-> > >  			goto err;
-> > >  		}
-> > >  
-> > > -		if (src) {
-> > > -			void *vaddr = kmap_local_pfn(pfn + i);
-> > > +		if (src_pages) {
-> > > +			void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
-> > > +			void *dst_vaddr = kmap_local_pfn(pfn + i);
-> > >  
-> > > -			if (copy_from_user(vaddr, src + i * PAGE_SIZE, PAGE_SIZE)) {
-> > > -				ret = -EFAULT;
-> > > -				goto err;
-> > > +			memcpy(dst_vaddr, src_vaddr + src_offset, PAGE_SIZE - src_offset);
-> > > +			kunmap_local(src_vaddr);
-> > > +
-> > > +			if (src_offset) {
-> > > +				src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
-> > > +
-> > > +				memcpy(dst_vaddr + PAGE_SIZE - src_offset, src_vaddr, src_offset);
-> > > +				kunmap_local(src_vaddr);
-> > IIUC, src_offset is the src's offset from the first page. e.g.,
-> > src could be 0x7fea82684100, with src_offset=0x100, while npages could be 512.
-> > 
-> > Then it looks like the two memcpy() calls here only work when npages == 1 ?
-> 
-> src_offset ends up being the offset into the pair of src pages that we
-> are using to fully populate a single dest page with each iteration. So
-> if we start at src_offset, read a page worth of data, then we are now at
-> src_offset in the next src page and the loop continues that way even if
-> npages > 1.
-> 
-> If src_offset is 0 we never have to bother with straddling 2 src pages so
-> the 2nd memcpy is skipped on every iteration.
-> 
-> That's the intent at least. Is there a flaw in the code/reasoning that I
-> missed?
-Oh, I got you. SNP expects a single src_offset applies for each src page.
-
-So if npages = 2, there're 4 memcpy() calls.
-
-src:  |---------|---------|---------|  (VA contiguous)
-          ^         ^         ^
-          |         |         |
-dst:      |---------|---------|   (PA contiguous)
-
-
-I previously incorrectly thought kvm_gmem_populate() should pass in src_offset
-as 0 for the 2nd src page.
-
-Would you consider checking if params.uaddr is PAGE_ALIGNED() in
-snp_launch_update() to simplify the design?
-
-> > 
-> > >  			}
-> > > -			kunmap_local(vaddr);
-> > > +
-> > > +			kunmap_local(dst_vaddr);
-> > >  		}
-> > >  
-> > >  		ret = rmp_make_private(pfn + i, gfn << PAGE_SHIFT, PG_LEVEL_4K,
-> > > @@ -2331,12 +2339,20 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
-> > >  	if (!snp_page_reclaim(kvm, pfn + i) &&
-> > >  	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
-> > >  	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
-> > > -		void *vaddr = kmap_local_pfn(pfn + i);
-> > > +		void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
-> > > +		void *dst_vaddr = kmap_local_pfn(pfn + i);
-> > >  
-> > > -		if (copy_to_user(src + i * PAGE_SIZE, vaddr, PAGE_SIZE))
-> > > -			pr_debug("Failed to write CPUID page back to userspace\n");
-> > > +		memcpy(src_vaddr + src_offset, dst_vaddr, PAGE_SIZE - src_offset);
-> > > +		kunmap_local(src_vaddr);
-> > > +
-> > > +		if (src_offset) {
-> > > +			src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
-> > > +
-> > > +			memcpy(src_vaddr, dst_vaddr + PAGE_SIZE - src_offset, src_offset);
-> > > +			kunmap_local(src_vaddr);
-> > > +		}
-> > >  
-> > > -		kunmap_local(vaddr);
-> > > +		kunmap_local(dst_vaddr);
-> > >  	}
-> > >  
-> > >  	/* pfn + i is hypervisor-owned now, so skip below cleanup for it. */
-> > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > > index 57ed101a1181..dd5439ec1473 100644
-> > > --- a/arch/x86/kvm/vmx/tdx.c
-> > > +++ b/arch/x86/kvm/vmx/tdx.c
-> > > @@ -3115,37 +3115,26 @@ struct tdx_gmem_post_populate_arg {
-> > >  };
-> > >  
-> > >  static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> > > -				  void __user *src, int order, void *_arg)
-> > > +				  struct page **src_pages, loff_t src_offset,
-> > > +				  int order, void *_arg)
-> > >  {
-> > >  	struct tdx_gmem_post_populate_arg *arg = _arg;
-> > >  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-> > >  	u64 err, entry, level_state;
-> > >  	gpa_t gpa = gfn_to_gpa(gfn);
-> > > -	struct page *src_page;
-> > >  	int ret, i;
-> > >  
-> > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
-> > >  		return -EIO;
-> > >  
-> > > -	if (KVM_BUG_ON(!PAGE_ALIGNED(src), kvm))
-> > > +	/* Source should be page-aligned, in which case src_offset will be 0. */
-> > > +	if (KVM_BUG_ON(src_offset))
-> > 	if (KVM_BUG_ON(src_offset, kvm))
-> > 
-> > >  		return -EINVAL;
-> > >  
-> > > -	/*
-> > > -	 * Get the source page if it has been faulted in. Return failure if the
-> > > -	 * source page has been swapped out or unmapped in primary memory.
-> > > -	 */
-> > > -	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
-> > > -	if (ret < 0)
-> > > -		return ret;
-> > > -	if (ret != 1)
-> > > -		return -ENOMEM;
-> > > -
-> > > -	kvm_tdx->page_add_src = src_page;
-> > > +	kvm_tdx->page_add_src = src_pages[i];
-> > src_pages[0] ? i is not initialized. 
-> 
-> Sorry, I switched on TDX options for compile testing but I must have done a
-> sloppy job confirming it actually built. I'll re-test push these and squash
-> in the fixes in the github tree.
-> 
-> > 
-> > Should there also be a KVM_BUG_ON(order > 0, kvm) ?
-> 
-> Seems reasonable, but I'm not sure this is the right patch. Maybe I
-> could squash it into the preceeding documentation patch so as to not
-> give the impression this patch changes those expectations in any way.
-I don't think it should be documented as a user requirement.
-
-However, we need to comment out that this assertion is due to that
-tdx_vcpu_init_mem_region() passes npages as 1 to kvm_gmem_populate().
-
-> > 
-> > >  	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
-> > >  	kvm_tdx->page_add_src = NULL;
-> > >  
-> > > -	put_page(src_page);
-> > > -
-> > >  	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
-> > >  		return ret;
-> > >  
-> > > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > > index d93f75b05ae2..7e9d2403c61f 100644
-> > > --- a/include/linux/kvm_host.h
-> > > +++ b/include/linux/kvm_host.h
-> > > @@ -2581,7 +2581,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
-> > >   * Returns the number of pages that were populated.
-> > >   */
-> > >  typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> > > -				    void __user *src, int order, void *opaque);
-> > > +				    struct page **src_pages, loff_t src_offset,
-> > > +				    int order, void *opaque);
-> > >  
-> > >  long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
-> > >  		       kvm_gmem_populate_cb post_populate, void *opaque);
-> > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > > index 9160379df378..e9ac3fd4fd8f 100644
-> > > --- a/virt/kvm/guest_memfd.c
-> > > +++ b/virt/kvm/guest_memfd.c
-> > > @@ -814,14 +814,17 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> > >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
-> > >  
-> > >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> > > +
-> > > +#define GMEM_GUP_NPAGES (1UL << PMD_ORDER)
-> > Limiting GMEM_GUP_NPAGES to PMD_ORDER may only work when the max_order of a huge
-> > folio is 2MB. What if the max_order returned from  __kvm_gmem_get_pfn() is 1GB
-> > when src_pages[] can only hold up to 512 pages?
-> 
-> This was necessarily chosen in prep for hugepages, but more about my
-> unease at letting userspace GUP arbitrarilly large ranges. PMD_ORDER
-> happens to align with 2MB hugepages while seeming like a reasonable
-> batching value so that's why I chose it.
+On Sat, Nov 22, 2025 at 09:30:29PM -0800, syzbot wrote:
+> Hello,
 >
-> Even with 1GB support, I wasn't really planning to increase it. SNP
-> doesn't really make use of RMP sizes >2MB, and it sounds like TDX
-> handles promotion in a completely different path. So atm I'm leaning
-> toward just letting GMEM_GUP_NPAGES be the cap for the max page size we
-> support for kvm_gmem_populate() path and not bothering to change it
-> until a solid use-case arises.
-The problem is that with hugetlb-based guest_memfd, the folio itself could be
-of 1GB, though SNP and TDX can force mapping at only 4KB.
+> syzbot found the following issue on:
 
-Then since max_order = folio_order(folio) (at least in the tree for [1]), 
-WARN_ON() in kvm_gmem_populate() could still be hit:
+Hi, thanks for the report!
 
-folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &max_order);
-WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
-        (npages - i) < (1 << max_order));
+>
+> HEAD commit:    fe4d0dea039f Add linux-next specific files for 20251119
 
-TDX is even easier to hit this warning because it always passes npages as 1.
+Hm this is quite far behind!
 
-[1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com
+This is a known issue that has already been fixed in linux-next.
 
- 
-> > Increasing GMEM_GUP_NPAGES to (1UL << PUD_ORDER) is probabaly not a good idea.
-> > 
-> > Given both TDX/SNP map at 4KB granularity, why not just invoke post_populate()
-> > per 4KB while removing the max_order from post_populate() parameters, as done
-> > in Sean's sketch patch [1]?
-> 
-> That's an option too, but SNP can make use of 2MB pages in the
-> post-populate callback so I don't want to shut the door on that option
-> just yet if it's not too much of a pain to work in. Given the guest BIOS
-> lives primarily in 1 or 2 of these 2MB regions the benefits might be
-> worthwhile, and SNP doesn't have a post-post-populate promotion path
-> like TDX (at least, not one that would help much for guest boot times)
-I see.
+It'll all be rebased so no syz command is going to be too useful here I think!
 
-So, what about below change?
+Cheers, Lorenzo
 
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -878,11 +878,10 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-                }
-
-                folio_unlock(folio);
--               WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
--                       (npages - i) < (1 << max_order));
-
-                ret = -EINVAL;
--               while (!kvm_range_has_memory_attributes(kvm, gfn, gfn + (1 << max_order),
-+               while (!IS_ALIGNED(gfn, 1 << max_order) || (npages - i) < (1 << max_order) ||
-+                      !kvm_range_has_memory_attributes(kvm, gfn, gfn + (1 << max_order),
-                                                        KVM_MEMORY_ATTRIBUTE_PRIVATE,
-                                                        KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-                        if (!max_order)
-
-
-
-> 
-> > 
-> > Then the WARN_ON() in kvm_gmem_populate() can be removed, which would be easily
-> > triggered by TDX when max_order > 0 && npages == 1:
-> > 
-> >       WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
-> >               (npages - i) < (1 << max_order));
-> > 
-> > 
-> > [1] https://lore.kernel.org/all/aHEwT4X0RcfZzHlt@google.com/
-> > 
-> > >  long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
-> > >  		       kvm_gmem_populate_cb post_populate, void *opaque)
-> > >  {
-> > >  	struct kvm_memory_slot *slot;
-> > > -	void __user *p;
-> > > -
-> > > +	struct page **src_pages;
-> > >  	int ret = 0, max_order;
-> > > -	long i;
-> > > +	loff_t src_offset = 0;
-> > > +	long i, src_npages;
-> > >  
-> > >  	lockdep_assert_held(&kvm->slots_lock);
-> > >  
-> > > @@ -836,9 +839,28 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> > >  	if (!file)
-> > >  		return -EFAULT;
-> > >  
-> > > +	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-> > > +	npages = min_t(ulong, npages, GMEM_GUP_NPAGES);
-> > > +
-> > > +	if (src) {
-> > > +		src_npages = IS_ALIGNED((unsigned long)src, PAGE_SIZE) ? npages : npages + 1;
-> > > +
-> > > +		src_pages = kmalloc_array(src_npages, sizeof(struct page *), GFP_KERNEL);
-> > > +		if (!src_pages)
-> > > +			return -ENOMEM;
-> > > +
-> > > +		ret = get_user_pages_fast((unsigned long)src, src_npages, 0, src_pages);
-> > > +		if (ret < 0)
-> > > +			return ret;
-> > > +
-> > > +		if (ret != src_npages)
-> > > +			return -ENOMEM;
-> > > +
-> > > +		src_offset = (loff_t)(src - PTR_ALIGN_DOWN(src, PAGE_SIZE));
-> > > +	}
-> > > +
-> > >  	filemap_invalidate_lock(file->f_mapping);
-> > >  
-> > > -	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-> > >  	for (i = 0; i < npages; i += (1 << max_order)) {
-> > >  		struct folio *folio;
-> > >  		gfn_t gfn = start_gfn + i;
-> > > @@ -869,8 +891,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> > >  			max_order--;
-> > >  		}
-> > >  
-> > > -		p = src ? src + i * PAGE_SIZE : NULL;
-> > > -		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
-> > > +		ret = post_populate(kvm, gfn, pfn, src ? &src_pages[i] : NULL,
-> > > +				    src_offset, max_order, opaque);
-> > Why src_offset is not 0 starting from the 2nd page?
-> > 
-> > >  		if (!ret)
-> > >  			folio_mark_uptodate(folio);
-> > >  
-> > > @@ -882,6 +904,14 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> > >  
-> > >  	filemap_invalidate_unlock(file->f_mapping);
-> > >  
-> > > +	if (src) {
-> > > +		long j;
-> > > +
-> > > +		for (j = 0; j < src_npages; j++)
-> > > +			put_page(src_pages[j]);
-> > > +		kfree(src_pages);
-> > > +	}
-> > > +
-> > >  	return ret && !i ? ret : i;
-> > >  }
-> > >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
-> > > -- 
-> > > 2.25.1
-> > > 
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1011b212580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=151bfd5098f42253
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3e03c904429660114599
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12ed9658580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11b0f884580000
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/8ba50fe0f8f3/disk-fe4d0dea.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/b6fd6a81a075/vmlinux-fe4d0dea.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/78cb38ef15c3/bzImage-fe4d0dea.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+3e03c904429660114599@syzkaller.appspotmail.com
+>
+>     7f6714fc0000-7f6715b1dfff: ffff8880734eea00
+>     7f6715b1e000-7f6715b8dfff: 0000000000000000
+>     7f6715b8e000-7f6715b91fff: ffff8880734ee8c0
+>     7f6715b92000-7f6715b93fff: ffff8880734ee780
+>     7f6715b94000-7f6715b95fff: ffff8880734ee640
+>     7f6715b96000-7ffdfe1f0fff: 0000000000000000
+>     7ffdfe1f1000-7ffdfe211fff: ffff8880734ee500
+>     7ffdfe212000-ffffffffffffffff: 0000000000000000
+> ------------[ cut here ]------------
+> WARNING: mm/vma.c:818 at vma_merge_existing_range mm/vma.c:818 [inline], CPU#1: syz.0.17/6004
+> WARNING: mm/vma.c:818 at vma_modify+0x1614/0x1a70 mm/vma.c:1611, CPU#1: syz.0.17/6004
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 6004 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+> RIP: 0010:vma_merge_existing_range mm/vma.c:818 [inline]
+> RIP: 0010:vma_modify+0x1614/0x1a70 mm/vma.c:1611
+> Code: 0b 90 e9 c4 ec ff ff e8 ea e5 a8 ff 90 0f 0b 90 e9 04 ec ff ff e8 dc e5 a8 ff 4c 89 f7 48 c7 c6 60 e6 96 8b e8 5d 85 f2 ff 90 <0f> 0b 90 e9 6a ec ff ff e8 bf e5 a8 ff e9 59 ed ff ff e8 b5 e5 a8
+> RSP: 0018:ffffc90002ee7ae8 EFLAGS: 00010282
+> RAX: ffffffff8b5d946d RBX: 0000200000ffe000 RCX: ffff8880326c3d00
+> RDX: 0000000000000000 RSI: ffffffffffffffff RDI: ffffffffffffffff
+> RBP: ffffc90002ee7c20 R08: ffffc90002ee7667 R09: 1ffff920005dcecc
+> R10: dffffc0000000000 R11: fffff520005dcecd R12: 0000200000ffe000
+> R13: dffffc0000000000 R14: ffffc90002ee7c00 R15: 1ffff920005dcf84
+> FS:  0000555555b5c500(0000) GS:ffff888125b72000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f1609b292d0 CR3: 0000000073528000 CR4: 00000000003526f0
+> Call Trace:
+>  <TASK>
+>  vma_modify_flags+0x1e8/0x230 mm/vma.c:1652
+>  mlock_fixup+0x24b/0x3b0 mm/mlock.c:481
+>  apply_vma_lock_flags+0x285/0x390 mm/mlock.c:554
+>  __do_sys_munlock mm/mlock.c:691 [inline]
+>  __se_sys_munlock+0x150/0x270 mm/mlock.c:680
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f6714d8f749
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffdfe210298 EFLAGS: 00000246 ORIG_RAX: 0000000000000096
+> RAX: ffffffffffffffda RBX: 00007f6714fe5fa0 RCX: 00007f6714d8f749
+> RDX: 0000000000000000 RSI: 0000000000003000 RDI: 0000200000ffd000
+> RBP: 00007f6714e13f91 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f6714fe5fa0 R14: 00007f6714fe5fa0 R15: 0000000000000002
+>  </TASK>
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+>
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+>
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+>
+> If you want to undo deduplication, reply with:
+> #syz undup
 
