@@ -4,190 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4223CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 12:50:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7AECFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 13:22:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F18DA6B002A; Mon, 24 Nov 2025 07:50:32 -0500 (EST)
+	id D353B6B0012; Mon, 24 Nov 2025 08:22:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC95D6B002B; Mon, 24 Nov 2025 07:50:32 -0500 (EST)
+	id CE69A6B0024; Mon, 24 Nov 2025 08:22:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDF816B002C; Mon, 24 Nov 2025 07:50:32 -0500 (EST)
+	id BAEC36B0027; Mon, 24 Nov 2025 08:22:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CDED16B002A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 07:50:32 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7304688B34
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:50:32 +0000 (UTC)
-X-FDA: 84145484304.02.9B73425
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4AD731C000D
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:50:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=web.de header.s=s29768273 header.b=HG1Eed+i;
-	dmarc=pass (policy=quarantine) header.from=web.de;
-	spf=pass (imf20.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.3 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763988630; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FD2A6B0012
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:22:45 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 56EE01A0358
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:22:45 +0000 (UTC)
+X-FDA: 84145565490.06.F9BEBC5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A0A7180002
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:22:43 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763990563; a=rsa-sha256;
 	cv=none;
-	b=VHSvjfbqROc3wHEPJprMP+fLJ1WzwC8+wM9XWojyhpQdHdvKLdJvnt8YhYMDwG1514zBsZ
-	xjranXSvm2gD7RtBlu+gzCE7MOdRGLgB8x8PyZK0oMETiSCi4PxNg0FWlE/qhED05uP7Fv
-	j7vyARoV8bbN0mDDxctjnu7wSyT8C6U=
+	b=kusWo3a6tXG2357i5lTMi5v53GUtwpuUbcQmcCBMq+xJBePyFnL0d/okUiNrFcaN2v0evA
+	eZs+i4FWCiBO/KNhuzfkx38IHpFwu4MzRC2TovomVVrAFVyQxLvFBdPqLt6c9KgZikqQmi
+	hmBT1ig9MYqQs9cF7sHvfNam4TV9qCE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=web.de header.s=s29768273 header.b=HG1Eed+i;
-	dmarc=pass (policy=quarantine) header.from=web.de;
-	spf=pass (imf20.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.3 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763988630;
+	s=arc-20220608; t=1763990563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FhQgIdmKbTQxoKI+nq85UeEN0e9sut2QP9anR5RMr8E=;
-	b=jZgxeQJ3NT3GxBA5KFukVNd/X1UpUL0sUBc07cp1yxy0672CBATqv8pBD6ky/zlZkh6xTs
-	Dg3KXbjmHOFPUqzZcbV6Qt/xTeRMeGZmaQkCprSdEczXBuingEHxhVBxGCf03kTlNe+3mE
-	vZWwtqGP/f20EA+NBm4bhTZOMP67cs4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1763988628; x=1764593428; i=markus.elfring@web.de;
-	bh=FhQgIdmKbTQxoKI+nq85UeEN0e9sut2QP9anR5RMr8E=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=HG1Eed+iGkLo16kbTvJK/fO14URJ29t01j8kdnXmZRixq7u14EbHNThSdodLu/FE
-	 s1psod1fZwGk6+TkQwCZVSywKPEPfR89BbR7031Nn6VNs3kYNveT+yX6+lTqiY0VR
-	 acAUREN0HFGomC2AdTHSBFsAYET1BaFT5UNYw2ClnBg3QCAVIUmf7w6I0shmXrJ30
-	 idvGtjC+tjnyFLZgr8zIb//Rri9hasLKjn5i1+BjUx0C3JAhYVPKV8YRm+UiBcl7N
-	 +iDtGfQV0S/HtD/fEDH+m5mENOCoUftXPMSJE7cN35UR9HMN0pdzxKr5O/v7NX4zL
-	 j923h8XNCqfejx03ZA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.241]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MLAVa-1vfb8g1ZNi-00Rj9L; Mon, 24
- Nov 2025 13:50:28 +0100
-Message-ID: <71d406fb-9fb1-44a9-912a-7a0d270b9577@web.de>
-Date: Mon, 24 Nov 2025 13:50:23 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=EDGbPPsRPziooSK7Hh0RxfwOuXGzBG+EdJKmYVIhHpg=;
+	b=dB1axsIB72UQBpijC4caWvu3+1iFECyPJ0v9L+eCmwTlr2+8xfCJU39sH/VQmJvrG+O2qU
+	9r07df2Tr2H4Vc1cRs9SXESDik6Xc4sGThbLGcyFLNywzUluIGrcbmjNpn/43YVdUuAosQ
+	QihRBjucH8hctAkMzukcpGC9KXEq/BM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 433AD497;
+	Mon, 24 Nov 2025 05:22:35 -0800 (PST)
+Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F32D3F73B;
+	Mon, 24 Nov 2025 05:22:37 -0800 (PST)
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	x86@kernel.org
+Subject: [PATCH v5 00/12] Nesting support for lazy MMU mode
+Date: Mon, 24 Nov 2025 13:22:16 +0000
+Message-ID: <20251124132228.622678-1-kevin.brodsky@arm.com>
+X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Kees Cook <kees@kernel.org>, cocci@inria.fr,
- linux-hardening@vger.kernel.org, linux-mm@kvack.org,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org,
- llvm@lists.linux.dev, Alexander Lobakin <aleksander.lobakin@intel.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Bill Wendling <morbo@google.com>,
- Christoph Lameter <cl@linux.com>, David Rientjes <rientjes@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Harry Yoo <harry.yoo@oracle.com>, Jakub Kicinski <kuba@kernel.org>,
- Jan Hendrik Farr <kernel@jfarr.cc>, Jann Horn <jannh@google.com>,
- Jonathan Corbet <corbet@lwn.net>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Justin Stitt <justinstitt@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Marco Elver <elver@google.com>, Matthew Wilcox <willy@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Pekka Enberg <penberg@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Randy Dunlap <rdunlap@infradead.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Sasha Levin <sashal@kernel.org>,
- Tony Ambardar <tony.ambardar@gmail.com>,
- Vegard Nossum <vegard.nossum@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
- Yafang Shao <laoar.shao@gmail.com>
-References: <20251122014304.3417954-4-kees@kernel.org>
-Subject: Re: [cocci] [PATCH v5 4/4] coccinelle: Add kmalloc_objs conversion
- script
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20251122014304.3417954-4-kees@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:amsw7UHqOOQu1W5nt8hwneDl1fOvyTGxaKbM/EvmWg36soK67jd
- NVzD/JFRQsE0ej5GzqAq1hrGR1oQ8nlsAf72fRjlHkFo7IftOxVdsV0XQ9BRvbDDGDe7KyK
- i4HOZGwF3BFySJvKFKdQ9UVTYA6ylOHAlIcJ8JNlgNFxheFoVetTSLKXum3Hirf9fGX9OSx
- JNfJAONi4B9Exo5tB2Ihw==
-UI-OutboundReport: notjunk:1;M01:P0:gFNAj9rDq0E=;O0N9q9zOXIeNoPvY7WCp5zB7aZw
- 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
- R7dzVIYFj5JrZ0+My9hvasRPbIDNUTdNye/8iK
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A0A7180002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: maa9z5e7ryzh84syyrsbo8gwsgczfuer
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4AD731C000D
-X-Stat-Signature: q9apxuqbb6t49i37s15phpk5jgsejdxh
-X-HE-Tag: 1763988630-149672
-X-HE-Meta: U2FsdGVkX18iTRiOiJOj7ncnnl1FPpARlkG0bCSxW7UIjrL5iMy6/L/tath5peVPGlCkDkBt8DmcKMY8lHQkhS+3mNm7v+mCTVlldsPjKAoI1Sr2uJZ5viHRtwKIJhP6OZf/pb4GnvYznDbMxtR73AAhnd05QKCpudFfzgPxjVVFhsOg3y57LRU40UJMMYdtytu7kkuuTjmaTRomh5ogTErrv+5vZMWRKahv52rLTH+KGdtRxTQ4SMTDF9c1Lrqztc8uRbxVk2Yy8ZwkTtkGrgCb8pKW+hAxmWxUVxbBdT8QVeYHfoe79cH9JwEGRUvuXA3fg9VqBZU4vJpYNAZiJYceoIyN2Iiwm6o7nlgbaGF/DwkrM08g9yis4ih/8aPSkzzSyiO5baBZoDhkCD/nKyDqa7leVUlrQVfoUpDy8R7wvTbEF/ug0jjp9F5Sp2ebAeAk29Cpsqo3iUmhSd8OUpSqih5aAP3Ht7sZmNrKHLwuKC1vSOZZHVmOCB0rlosXYD9PjWYVHIWYiand1GBSv6Lt58UAg+ZE/EKqrL1rHqhI7F845uUfUckFdAcm74SrgiSUMG1i8Ck8bHY+5IRG4m5OLpX11g6pW9YNY1/SrCttbtAu//NCHmNiEOGV8T/2rlk4EJUjk+Rlmqc8ObWEX1sULoPIKxl1KfXBfQTzaoZ3soMLk3YuhmANoEAzjRFGP08qRZDQRuJ7rXCR2Jp9ZGAVyWUFskt7R3C3CmV0IGlbtOdokGE/NE/C/wlAFOYbhGsete8FwTc9MLjxj3/t+3v6CYZad54Z1jsFtt4nHKwSzIboKYLsQgsBidhTzeK+bejS8fIkxk1j3oedJLr08dZeiYY+bLzPsZzW3zc04MYm/xOyjBOE45fHVFszKnROtpw5SEyg6vTcywnFexEtNJVNxoYr5LVrLSemp07uGzGHFkm1/Ie4jRjhWanSJKNDEF30mzlvq0DlTBjeHhq
- YL6hvY07
- sFPiO9Oo3dJxYYe/l7sjarksEcYMZGDHzJkXLvwnJDRZ/aJq/sU1Yg72w+LVYzz1gFCKATXav+5Scfi9GUY7lO5nZkXGUWd1ZXuXw3yyrZlWv7dRIwQtuXSIZo+CgbwCBV25DsmNn5sa/dfo=
+X-HE-Tag: 1763990563-689716
+X-HE-Meta: U2FsdGVkX18sLCGdKQa93N882NVNmrCsEeKhxIffioBm6JpsWbq0aSdhcAzfST44F0NDmbDaOgwguWV3CctvZSSitF9Jos2CTC9VXXhlRFxVLGFr/D6+PHsQ6s0z491lD1uTj/Ef3ivcNdOJkPpVGCutJJfpXjuZeGHzPaEEJNtYxxs8Xn1aGcTiZ2N0yL06FFX7K40RlCxEK8g7/ePgSSwQ11E7XupZAUO8l4fxgeTFPac1GFEpL1794RC04S/v+wDQNXebOaZFhow373FPQcxSymTOfhk3JfaviC/LyYdP8j4Z1rXVHRbe3EXEO3adI3bFQf/y3lgs7N/d14nMJpcswbqpVJngcBgpgscFFx3X1zNBypVj1AEb0Uwle2sacmw+0wOjWiMBk9PHYXgeQnURTnTmEQjC3wy7jHjj/je6i78P2TbN1aXYwHb6wKsAJJJ2Hv8UGznjyUfgkCnGQLCrdJuiQ0+dp6za8jIh/OmQsBi3fs9PApXoMtkR8MxpfR1yo8mgD3CosTbvT8lopUk8thKfLCXW6nUaD63FAzXRYIvRDgaZLFlPjwpJdCY+equ3sq4iktsMQEU1wWPV0HYzXwddfkDRkn9f+vI+ujsI5EN1lOZ89prxodD+GGDJpDgitpE4HCcPLmfnufQa2j8vqBNYqVgUB32DZOAo+zRJR2IdAAFEclj7EPxY3PazSER3SHIuY0JPnWd9eO3MTcPuytbz39JCDoG2gXUWLPjenDdbupCtujmReSbvt9tZNb/nju4bCnb2zyGvHeAE45t/JyB4mt30dICBaEnjj1l1iA+E5ZUodGlsB1XiUuoSFtmGC13xeW4I/EL3/XHIlD03nkoUKJMEox2ilcKSw7wdET5t7YqkFL7zZ2oeOWV/VkqIc/0u1u0holySa009QAsAq0DPuq7zMGWLYSvWP8/krcpmmtJTMkd5n61ZfDenROlQjCdizrwNAP8ErO/
+ wX1KYgmg
+ p06Y4sQH1aFhyB7ZEO8vwt1hV2FSHl4z++1VLZoDJHWwCHn5J5bHmgjhFf5Lu++pgT5U++wSR2KgiYV90+V+vX7oAcEhJoCysNfFWeYR/S+kHrkwzcGk9nW5KzQ3+nbNxbII8npsDhxdyh36QNPVbAwZMv/F+XqDw8N25/HeR3mOhr4b8yMOIUi5m2iC6avN9UIfibON62TBRTP558XiwHJv6GlWi8EIeUCAqD8b/AaOljr8zCcx10q45GLs+G2SKIKuI2c0jmujixLQ6L1tXe1hxVqONR76KxB8VPdwgfwx7oQWFLC6aHg4W+7EWG+/16tu42S8nLBAD9YD1X9HPRclaSLfQ/o1d3kmPFNwqTTSvI6K17Ypv2JHthKXdqiQj2LS/666FMGdXaOBgZm0ggVimwlAgmMFRLW5B6MHCtypjARVN2ms46rDz2VVwxzVL3U++HRe1nD7x5vQXwtIyohdgFRLBNlWDCUqxOyKIdZFZ2Xqd2mpFk0+M2OmNq4szEfERftz4u0nOh/MmpiXRVIy0lDdjfXGyTd/D8H1z3fq8PHJ8pSdsA0P/jSndRhrh0tW1epz5Lib8sbMuOIw4TeZWyO+rhjQGRKk2lWwiWS+X+A27xKxgeEgxIoW5OUGYAC+9Shm+q5jn8VG1d8uW/JEHLHglM9PSfMYeULqPfO3GtBawT31JVxEpHEwdDX2uMTWGp7zaHlDM5WsvE1wEYVQpbEP2mJNXGW3NUlOJP+p3BMZpIRRm91JxByBTJugqhWGK+Fs+ckLMD+Arf7gbHdrcwppnr3MgcMe13MRfEkoz/+qnKCx5y75EOA/8rBVmI7AueK908la7Rewhd6GfPO/hcm6BNGoUuXSdRTThylTTuRPgl5QEewxxHuzLC4Kh94BNLYVvXxrBZQBm7/HuNQdL893xkJ9V4a6UBFocInkMPIo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,57 +117,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Finds and converts sized kmalloc-family of allocations into the
-> typed kmalloc_obj-family of allocations.
+When the lazy MMU mode was introduced eons ago, it wasn't made clear
+whether such a sequence was legal:
 
-See also:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.18-rc7#n94
+	arch_enter_lazy_mmu_mode()
+	...
+		arch_enter_lazy_mmu_mode()
+		...
+		arch_leave_lazy_mmu_mode()
+	...
+	arch_leave_lazy_mmu_mode()
+
+It seems fair to say that nested calls to
+arch_{enter,leave}_lazy_mmu_mode() were not expected, and most
+architectures never explicitly supported it.
+
+Nesting does in fact occur in certain configurations, and avoiding it
+has proved difficult. This series therefore enables lazy_mmu sections to
+nest, on all architectures.
+
+Nesting is handled using a counter in task_struct (patch 8), like other
+stateless APIs such as pagefault_{disable,enable}(). This is fully
+handled in a new generic layer in <linux/pgtable.h>; the arch_* API
+remains unchanged. A new pair of calls, lazy_mmu_mode_{pause,resume}(),
+is also introduced to allow functions that are called with the lazy MMU
+mode enabled to temporarily pause it, regardless of nesting.
+
+An arch now opts in to using the lazy MMU mode by selecting
+CONFIG_ARCH_LAZY_MMU; this is more appropriate now that we have a
+generic API, especially with state conditionally added to task_struct.
+
+---
+
+Background: Ryan Roberts' series from March [1] attempted to prevent
+nesting from ever occurring, and mostly succeeded. Unfortunately, a
+corner case (DEBUG_PAGEALLOC) may still cause nesting to occur on arm64.
+Ryan proposed [2] to address that corner case at the generic level but
+this approach received pushback; [3] then attempted to solve the issue
+on arm64 only, but it was deemed too fragile.
+
+It feels generally difficult to guarantee that lazy_mmu sections don't
+nest, because callers of various standard mm functions do not know if
+the function uses lazy_mmu itself.
+
+The overall approach in v3/v4 is very close to what David Hildenbrand
+proposed on v2 [4].
+
+Unlike in v1/v2, no special provision is made for architectures to
+save/restore extra state when entering/leaving the mode. Based on the
+discussions so far, this does not seem to be required - an arch can
+store any relevant state in thread_struct during arch_enter() and
+restore it in arch_leave(). Nesting is not a concern as these functions
+are only called at the top level, not in nested sections.
+
+The introduction of a generic layer, and tracking of the lazy MMU state
+in task_struct, also allows to streamline the arch callbacks - this
+series removes 67 lines from arch/.
+
+Patch overview:
+
+* Patch 1: cleanup - avoids having to deal with the powerpc
+  context-switching code
+
+* Patch 2-4: prepare arch_flush_lazy_mmu_mode() to be called from the
+  generic layer (patch 8)
+
+* Patch 5-6: new API + CONFIG_ARCH_LAZY_MMU
+
+* Patch 7: ensure correctness in interrupt context
+
+* Patch 8: nesting support
+
+* Patch 9-12: replace arch-specific tracking of lazy MMU mode with
+  generic API
+
+This series has been tested by running the mm kselftests on arm64 with
+DEBUG_VM, DEBUG_PAGEALLOC, KFENCE and KASAN. It was also build-tested on
+other architectures (with and without XEN_PV on x86).
+
+- Kevin
+
+[1] https://lore.kernel.org/all/20250303141542.3371656-1-ryan.roberts@arm.com/
+[2] https://lore.kernel.org/all/20250530140446.2387131-1-ryan.roberts@arm.com/
+[3] https://lore.kernel.org/all/20250606135654.178300-1-ryan.roberts@arm.com/
+[4] https://lore.kernel.org/all/ef343405-c394-4763-a79f-21381f217b6c@redhat.com/
+---
+Changelog
+
+v4..v5:
+
+- Rebased on mm-unstable
+- Patch 3: added missing radix_enabled() check in arch_flush()
+  [Ritesh Harjani]
+- Patch 6: declare arch_flush_lazy_mmu_mode() as static inline on x86
+  [Ryan Roberts]
+- Patch 7 (formerly 12): moved before patch 8 to ensure correctness in
+  interrupt context [Ryan]. The diffs in in_lazy_mmu_mode() and
+  queue_pte_barriers() are moved to patch 8 and 9 resp.
+- Patch 8:
+  * Removed all restrictions regarding lazy_mmu_mode_{pause,resume}().
+    They may now be called even when lazy MMU isn't enabled, and
+    any call to lazy_mmu_mode_* may be made while paused (such calls
+    will be ignored). [David, Ryan]
+  * lazy_mmu_state.{nesting_level,active} are replaced with
+    {enable_count,pause_count} to track arbitrary nesting of both
+    enable/disable and pause/resume [Ryan]
+  * Added __task_lazy_mmu_mode_active() for use in patch 12 [David]
+  * Added documentation for all the functions [Ryan]
+- Patch 9: keep existing test + set TIF_LAZY_MMU_PENDING instead of
+  atomic RMW [David, Ryan]
+- Patch 12: use __task_lazy_mmu_mode_active() instead of accessing
+  lazy_mmu_state directly [David]
+- Collected R-b/A-b tags
+
+v4: https://lore.kernel.org/all/20251029100909.3381140-1-kevin.brodsky@arm.com/
+
+v3..v4:
+
+- Patch 2: restored ordering of preempt_{disable,enable}() [Dave Hansen]
+- Patch 5 onwards: s/ARCH_LAZY_MMU/ARCH_HAS_LAZY_MMU_MODE/ [Mike Rapoport]
+- Patch 7: renamed lazy_mmu_state members, removed VM_BUG_ON(),
+  reordered writes to lazy_mmu_state members [David Hildenbrand]
+- Dropped patch 13 as it doesn't seem justified [David H]
+- Various improvements to commit messages [David H]
+
+v3: https://lore.kernel.org/all/20251015082727.2395128-1-kevin.brodsky@arm.com/
+
+v2..v3:
+
+- Full rewrite; dropped all Acked-by/Reviewed-by.
+- Rebased on v6.18-rc1.
+
+v2: https://lore.kernel.org/all/20250908073931.4159362-1-kevin.brodsky@arm.com/
+
+v1..v2:
+- Rebased on mm-unstable.
+- Patch 2: handled new calls to enter()/leave(), clarified how the "flush"
+  pattern (leave() followed by enter()) is handled.
+- Patch 5,6: removed unnecessary local variable [Alexander Gordeev's
+  suggestion].
+- Added Mike Rapoport's Acked-by.
+
+v1: https://lore.kernel.org/all/20250904125736.3918646-1-kevin.brodsky@arm.com/
+---
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: x86@kernel.org
+---
+Alexander Gordeev (1):
+  powerpc/64s: Do not re-activate batched TLB flush
+
+Kevin Brodsky (11):
+  x86/xen: simplify flush_lazy_mmu()
+  powerpc/mm: implement arch_flush_lazy_mmu_mode()
+  sparc/mm: implement arch_flush_lazy_mmu_mode()
+  mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+  mm: introduce generic lazy_mmu helpers
+  mm: bail out of lazy_mmu_mode_* in interrupt context
+  mm: enable lazy_mmu sections to nest
+  arm64: mm: replace TIF_LAZY_MMU with in_lazy_mmu_mode()
+  powerpc/mm: replace batch->active with in_lazy_mmu_mode()
+  sparc/mm: replace batch->active with in_lazy_mmu_mode()
+  x86/xen: use lazy_mmu_state when context-switching
+
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/pgtable.h              |  41 +----
+ arch/arm64/include/asm/thread_info.h          |   3 +-
+ arch/arm64/mm/mmu.c                           |   4 +-
+ arch/arm64/mm/pageattr.c                      |   4 +-
+ .../include/asm/book3s/64/tlbflush-hash.h     |  20 ++-
+ arch/powerpc/include/asm/thread_info.h        |   2 -
+ arch/powerpc/kernel/process.c                 |  25 ---
+ arch/powerpc/mm/book3s64/hash_tlb.c           |  10 +-
+ arch/powerpc/mm/book3s64/subpage_prot.c       |   4 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   1 +
+ arch/sparc/Kconfig                            |   1 +
+ arch/sparc/include/asm/tlbflush_64.h          |   5 +-
+ arch/sparc/mm/tlb.c                           |  14 +-
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/boot/compressed/misc.h               |   1 +
+ arch/x86/boot/startup/sme.c                   |   1 +
+ arch/x86/include/asm/paravirt.h               |   1 -
+ arch/x86/include/asm/pgtable.h                |   1 +
+ arch/x86/include/asm/thread_info.h            |   4 +-
+ arch/x86/xen/enlighten_pv.c                   |   3 +-
+ arch/x86/xen/mmu_pv.c                         |   6 +-
+ fs/proc/task_mmu.c                            |   4 +-
+ include/linux/mm_types_task.h                 |   5 +
+ include/linux/pgtable.h                       | 147 +++++++++++++++++-
+ include/linux/sched.h                         |  45 ++++++
+ mm/Kconfig                                    |   3 +
+ mm/kasan/shadow.c                             |   8 +-
+ mm/madvise.c                                  |  18 +--
+ mm/memory.c                                   |  16 +-
+ mm/migrate_device.c                           |   8 +-
+ mm/mprotect.c                                 |   4 +-
+ mm/mremap.c                                   |   4 +-
+ mm/userfaultfd.c                              |   4 +-
+ mm/vmalloc.c                                  |  12 +-
+ mm/vmscan.c                                   |  12 +-
+ 36 files changed, 282 insertions(+), 161 deletions(-)
 
 
-=E2=80=A6
-> +++ b/scripts/coccinelle/api/kmalloc_objs.cocci
-> @@ -0,0 +1,168 @@
-=E2=80=A6
-> +// Comments:
-=E2=80=A6
-
-* Please omit such an empty information line.
-
-* Would a field like =E2=80=9CKeywords=E2=80=9D become helpful?
-
-
-> +virtual patch
-
-Will additional operation modes become relevant after clarification of imp=
-lementation details?
-
-
-=E2=80=A6
-> +def alloc_array(name):
-> +	func =3D "FAILED_RENAME"
-> +	if name =3D=3D "kmalloc_array":
-> +		func =3D "kmalloc_objs"
-=E2=80=A6
-
-* I suggest to avoid duplicate variable assignments.
-
-* How do you think about to collaborate with the Python data structure =E2=
-=80=9Cdictionary=E2=80=9D?
-
-
-=E2=80=A6
-> +type TYPE;
-> +TYPE *P;
-> +TYPE INST;
-> +expression VAR;
-> +expression GFP;
-=E2=80=A6
-
-Such repetition of SmPL key words can eventually be also avoided.
-
-Regards,
-Markus
-
+base-commit: 1f1edd95f9231ba58a1e535b10200cb1eeaf1f67
+-- 
+2.51.2
 
 
