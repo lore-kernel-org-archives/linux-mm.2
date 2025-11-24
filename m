@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F08E4CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 15:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D9ECFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 15:37:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 541D56B0030; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
+	id E20036B0007; Mon, 24 Nov 2025 10:37:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F3406B0062; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
+	id DD0756B002D; Mon, 24 Nov 2025 10:37:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E2346B007B; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
+	id D0D5E6B0088; Mon, 24 Nov 2025 10:37:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 280806B0030
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2A8AB9605
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:36:00 +0000 (UTC)
-X-FDA: 84145901280.05.8D8EEBB
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 99B68C001A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:35:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4leP8n0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BA58D6B0007
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:37:57 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6823B13AC5E
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:37:57 +0000 (UTC)
+X-FDA: 84145906194.27.F3D9278
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B57E380003
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:37:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nA8jmYYS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763998675; a=rsa-sha256;
+	cv=none;
+	b=gNoKrPnYuYodAr6tM65aiPry9FWcri0xw4LsUW/humlIPwZJgkCSU6MFrLZ0BAyaFx9OPE
+	QS+DK4ZdoiV1n8FZ53RquoGwtha/U2uM37XEHrITBKgLwIFkv4f/70XdUyirLyqy1iPD98
+	jWilqUeSirXGaYK5xAv+v2K5eMff6Ck=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nA8jmYYS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763998558;
+	s=arc-20220608; t=1763998675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f/c/O5TKtgGGymGcTcmYoASb8codPVbLlWqOHdDHpBE=;
-	b=CeJ38dysHXjLLAc9oEldSd5Z6w2SRDCSk1/+N0Z+iX46tiCbKchihBN9cxv6V8Nwc+DJrL
-	dBLGrjBt8b5n9yfDjsptZt5pPLzMg1is1opCK6WgzV6mryTo6FGm7nhxSSZfqC2C5Wi0pr
-	jIhFDpi+sx7nwIr20M30Ezi+t1OCR4g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763998558; a=rsa-sha256;
-	cv=none;
-	b=r8Y6BEH0eCtSjRVTGOLRtLXum6MOMjn7MP0G/5ibMw1ZRV28ZIPTnglGz2YhcTb8tVIkf8
-	gh1nzCYBFM7oH1RvRRjcfXYAiG4Dp6HIHZ8G9F268MIb7SYjR0oNrVImmYleSgL9YI1Opr
-	ax2eHf3NrGIX4gh5BpbbNLIAe1Z9g5E=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4leP8n0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37a56a475e8so38680871fa.3
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 07:35:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763998557; x=1764603357; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f/c/O5TKtgGGymGcTcmYoASb8codPVbLlWqOHdDHpBE=;
-        b=H4leP8n0VOvIEdo8ouR6+I/F3T2pzBwPkXw7ZPd5bLvP7JKRyungrXoDu9Feu/Rh4u
-         jgKGV4GhCUb+6Cgl549t8Em04BjBAnZAabnXbUad7JBqyKH4Ca1KKvy8GyWeW4vel0ju
-         R/nFGFAymY7xm3PuFY/p92Plb48AKHzMj2l4QOXU0lIyp+lekrTtW1twU8pLat84HcVg
-         JZFj0IOoS7LLFTlbgmoASRoOzfa1JVIWiR3dV56VrozLNeKuIkBY2h5JyRv0FsYyd8NI
-         K8+pyY+DJq5avBGeL0HEg+5NqNN+sUdRMvj/srtMjBDqJiU+SOmIvOUkeex6e1jGihfp
-         /lwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763998557; x=1764603357;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f/c/O5TKtgGGymGcTcmYoASb8codPVbLlWqOHdDHpBE=;
-        b=bKiRIQ7xjgSZUe+o2Qsgo1EltWCJu7RyjMwF7z0Lb+BLBsZrJ4RUUYfxYqwXAy/IMm
-         M0ca/Lk5N19jH4QiN9Z0ZaO24SiEwBbN2lK0citEfODGMbi+nO0AJ3uHZbq0s6p07YF3
-         1LZb/2FQVjV555EvR4k3maKHzQ0T9N3Of26Wch85nGbWrq8k6iQCZYdMlhX5TDFx6Flp
-         EUqCuBWQwj23wfvxvDVatdFxrz7K8nMnMsXWiXsDclPI0cgOryDU7uDMLpl2OwkxZ7Mq
-         uTB8eY8dJyYYkuRp9m2Vj2oWbyLiIC4V6ITwdTobY9LXI0nlKGCQed95Ng/lzD9HPLpI
-         4CwA==
-X-Forwarded-Encrypted: i=1; AJvYcCVncTAWpjqVjtd5jMQzkSOhHQ/6aP6ukyRiUFpE80lU20ms0wdzSOQR6LcPVskgEEXBL5KEUoVnEA==@kvack.org
-X-Gm-Message-State: AOJu0YzgSWh5uHjQyKLvZXIT8WtnYXu5z6RmoxhSHmSSG/ZhBD+TSdUk
-	ByBJ6RO3inXOjiOV82f1yptFk/miRHGPTfP51go1XL9XCS3y40m7HO8I9ins0uQkqRSNRe+rrkI
-	E3OgQkPX+E8HhXM9Lq8QBUQRcBNIvXig=
-X-Gm-Gg: ASbGncsiX0wK9pHT1WUCs8NoUAlAc8G2GEnUe663wGin/E+yaoUhkRVPG7joPnyHTCJ
-	zNmFFRfOF7pzGfjkfXItRkGCiBFjfYFVDRJ447WpdRuDFHamTnTNJwnOkoj3e/NqN7Y6q5OPIt3
-	MDrN+4sdADOwhqEwahC2DSmWA6rtxhuTEY/6ZlF5S/blC+gywJjUdosAYsSlqNEwKuFguEVEQUZ
-	NLZIJamMhkFclNkwNGpsCTbnPnHnj2203mFeL0vxER2/WlWCehKH3gLgppua2Vw3cUf3hU=
-X-Google-Smtp-Source: AGHT+IGZo+cJTsJ/l9Z0UNu5+VlabmL/ON9V2rsmIF8uupV9Rr2IE4TxltyWVMuhu6O9ZwnyinfR2dX/xUawDZPjijQ=
-X-Received: by 2002:a05:651c:214f:b0:37a:2bcc:279e with SMTP id
- 38308e7fff4ca-37cd922ef9fmr27320591fa.23.1763998556601; Mon, 24 Nov 2025
- 07:35:56 -0800 (PST)
+	bh=4T2xVe9EBQULE050Ujmipw0itriXOtnPEblTcat0NMk=;
+	b=PngXMFrx4G4RGii+Dzi6tpxEoSkt2evP5T3Km0xdd8EygwvSWwxvb4Qt/UHrkM6PIgAAAE
+	tViE049BVRQdXFtlyDwzCDA0/iAK5qmJbRVUeXmUe399tAm41xvlVUZnoxefQUPvoGRmEl
+	3dQVxu8LK//5chhNhlT+2HZTXzeiw3M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 71B5F44300;
+	Mon, 24 Nov 2025 15:37:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C17AC4CEF1;
+	Mon, 24 Nov 2025 15:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763998674;
+	bh=hfU9q5a5jY4q1RimA224UIWPe1crK121VIC+KWwOW78=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nA8jmYYSKp1h5nrFWDUH0fv9L4HlVdktdC2eOAgJOhsevXdNAA0dRnKOEjKGCSFxu
+	 zkVqLXNWWfzIjnxmeqDP69ZCnOeAZrVUP21Z7swBQGQ/Egz1wT7Lcf2pVb8j2O+pm1
+	 MpDik2ESFCtQdGU2mPhPyNdeXBhgkA1FQNJ1juzK2K37DIe3vgHlvef+Rstd+Eh3C8
+	 BAKw9tACy76A9y9Nvf8sfsv9KypjyPkNktiuknQU/wXWtENDdB/xKQJWdIl8S1OJkU
+	 UFiPRP+BgyfejHwiljtQ8r1s0Sdsmy2V9DWGYWzfzNoftt6O2vLKA4yzSBKxQnaoDn
+	 fph8bfpOt2UVA==
+From: SeongJae Park <sj@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 12/12] mm/damon/core: add trace point for damos stat per apply interval
+Date: Mon, 24 Nov 2025 07:37:49 -0800
+Message-ID: <20251124153750.73833-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251124101545.0250445c@gandalf.local.home>
+References: 
 MIME-Version: 1.0
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <20251121114011.GA71307@cmpxchg.org>
- <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
-In-Reply-To: <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 24 Nov 2025 07:35:44 -0800
-X-Gm-Features: AWmQ_bmk8dMpPu_Lq2VxCeHSu-A4alLXd-dMZD2NiiPgIKONLTgdK4vxibKHc58
-Message-ID: <CAKEwX=MnS0jXOiWmNB_+hBu1Sc2Mseu_S6-g5oNO2AcfGOg5tQ@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-To: Chris Li <chrisl@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
-	weixugc@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: oeo78eoemxnkahgmkgr45gt463zhh8iy
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99B68C001A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763998558-295854
-X-HE-Meta: U2FsdGVkX1+lpjLJk0dpvV3pxOC8+ZtOxLUKCmSj+aqF5Km0cRDd3iwi8nvjvqKDypragRfnLUfXj6mEjrPzIS7FcDVsWslXWCih291ulbz4NECgR9UcHJrf5kRt2sngSvp5vvfsiqdziqyqARdubfA2ko+vDm1RsuLjnjKc4yMc/bs9/XgY7LZv03Kvzgrq0+TSKO/NcdSZFx2NAYQwgvJGvwIfB7uLf3R/Bz6lASH33kE7N3kBTQzOI0kRy9+FjkEbJMCnEHViRWZ6y7rlL25MjA2PdIbOivZf9J1WB7u298E5kCOq6SZTWCok4z00LI1l4/bK67ocJ6Rg1L7/wETwqJJRoFELFbOvD9YHJhNwzCodGJbAKWewl7UYsxmIa2Hy3521k5mtgiDoYBtU3EO7673sX3boQEE4HOqnjmBavR3Pu+jHu6jW400lqCU3ncfj7npRExEECyP91U/BdPcTHo8phjqqNJHOGdPs3vTSbJas93S3BXOdibhPWUD/ZblR2VJkyiYn22uEY4/uKjbcK4rHnuYUxEBSPB+BIyYaXIUK1rVTNdIrj54lbal6L5ysKFQzdQDEQsyqD9CQnzLVPQV6Qw/YelnnGIhy2w5M3x2wpNyMfA9h/18ZdFsgtz/3CSGbN9bhrYXENw+Oqq6GjMtZeb8lurfK//0cIbGr3pxer/+WbKuPXIiiqWfBbMYxYaIYngeoyMtmLu0xGs3WkzDpvOpB/00qO5bcu0ie2liyM7024vAFx4Zo2kHIQ2HzYLsxBcqzZeLLbNXwBMMDOTAQzQLsLCGATLt+giwNrNgRB3E+KbZzO12drRgVLz+MQfchxm/4tlqVSZABoVoTGg2ScpLrDeF425FNEuarEmjpgLQcs7e8j+l1/fwXq9/yXWhb25QFiH4D1bx55UlKKl9kiUpzf+T3Ft0X5Mhk996sy7T9eLXepii1qHzqptXTIPjP8s/ep3I6dqR
- +4xZvvpj
- MVm+W7Ktv8K6yzxjSSdm7XsY7QVEmH/3hYvJwFBrLBGRGHqlAGcnUUk/a8knegbxYRRzozdTy2YsLZVidoCE8O8TNucmmAh0G+9rM6V71+17H7/GSkz9bz7Th/L4UFeu/gXq0No9eTX2HMxmaDWiILqcM97i8wIz72SbpdT6q/0xSkk1qs2gT5sFduNLeRB0n6M7m1/d5c1mREjBss3x5HtvF7yFiEC2zXcA7APiih1pesfGWEIkTaHGQVzBW1qv2Fchl+ykgo++ycFxE+UdiRmNMHMW+YVk/gMxUfODvvtImxIgC6DyQL/igdMMs/CHiEjkgfWBzfb72ve7y2ThpiFmltO/i5KZRLJrHJ9rEm96TbFLsresqZindeEkY2UYfxig2B9tss7zjkVcFfSTFaR8nLg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B57E380003
+X-Stat-Signature: cequizr1bukqubaxqd687oweqshzssxa
+X-HE-Tag: 1763998675-570
+X-HE-Meta: U2FsdGVkX1/5ufBw5rSGybQWxQdcWzuehEkiobw9m0farXWAQ11RXe/1TLnkC1xxzcG+AOc/thzQsycz2z0YXCyzKICyP9C0AZDlmJo9N+j344PZTkDVGeWIuf1ACqZ4F6P8xtIMFEVYRDzIaO3G3wrmQ3rcMbeoX1Ar9xnrVhsC8T5af+Gn3XX9MxMvA9AaH0cSeJl2/BqNIJjBM27cJKytaa56rReaahJ1pj8IJo3OLlhxsD1Q2Pf1Imb3WzKV/2fgh72jXNKm22buJE5/JDXORCAJ2Yzlc6ymWEIYMMzS0xppBAuioA3EyrbDUht8aCy+L7bCTSevYi0PytN46K+3OAmxHfhCaGY8U1IXneO68jknH9h7M8DT/uDkSFHylZMZIFCacLm+jhhnP8pynbmUpF7DSMo4zOmeSrfJfrQR6xVIVbqRWRpfBn+W3yKyvi8SoG/Wl+iNYLyWyrd/zKKG+vd+4ZrWgEGb0PWzxKQuxZ3TnHGERrnZpV7Htg820BXl6tKj8OIW+Vi+S3DpCdfadBvU2tXDZiqp4eSaw5UojuxBHTSrKDPhsYzV3NtSuQHVSf8MLB1jA8XkZJ/tY6O37vYpW0i/otJKYa9vGRYMsEqqbU/Sc8FBr/bySPCuWgrXietE7d78Hl9qxYV4PmZtnpZT3WzslDDB/IMbMmP0En+YtQPGHOB3bKT+2lQ/9P3/tAKsCqZNF2ZpxhE9KLhWgLVnKWgQnnmcgO6TXO2ue4omzHkXXRiC5OJLU1q2lgWaWjgJ4bvEOenMw2lhWQtruk4npQaGauTQTEOEOgGFHJIHH3tHqDTH1XKEhM9eE7C6Pf9aMKTV4B+F6XRd2yOxGoyVtS9SUkvS8F2hHfscKO4t9pVpbwqAtR8k1Fi5VWlLT91NP5qmrZxGtfbV3BpTKaHNsmyyNQ6TTlkovm+x/uj2huZ+kTZ5bBIWDIz8LaoNFYMDrOlqZ7Ke+K0
+ +1Zh7adX
+ aID+gPQxA6/JHTTAoVrhG1rElCDkO45twVIa0xT1vj+dPslLy0fZElz1950h5qnifB3TQDEgOtbip5oXXnvKrsvTZOZYk1kwXZTYel9GA954hOMAzTVyaN8OveCjLF1wL8sDw5Etv1VMmNB9h8KfHO7vhKP/p4XLXYV+Wd0npONord6dOF26RXx5qtJhkGwTuGN4txV0A65pjkVjYPEtJ+BepcBx8ZM2LWgPPZ6+IOc2fB+YJjya1DNNBbmQTeoFth1vsbQOgi1Lom0dt9cRqm9wlE1EMH7bUeOX/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,80 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 5:52=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
->
-> On Fri, Nov 21, 2025 at 3:40=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
-rg> wrote:
-> >
-> > On Fri, Nov 21, 2025 at 01:31:43AM -0800, Chris Li wrote:
-> > > The current zswap requires a backing swapfile. The swap slot used
-> > > by zswap is not able to be used by the swapfile. That waste swapfile
-> > > space.
-> > >
-> > > The ghost swapfile is a swapfile that only contains the swapfile head=
-er
-> > > for zswap. The swapfile header indicate the size of the swapfile. The=
-re
-> > > is no swap data section in the ghost swapfile, therefore, no waste of
-> > > swapfile space.  As such, any write to a ghost swapfile will fail. To
-> > > prevents accidental read or write of ghost swapfile, bdev of
-> > > swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
-> > > flag because there is no rotation disk access when using zswap.
-> >
-> > Zswap is primarily a compressed cache for real swap on secondary
-> > storage. It's indeed quite important that entries currently in zswap
-> > don't occupy disk slots; but for a solution to this to be acceptable,
-> > it has to work with the primary usecase and support disk writeback.
->
-> Well, my plan is to support the writeback via swap.tiers.
->
-> > This direction is a dead-end. Please take a look at Nhat's swap
-> > virtualization patches. They decouple zswap from disk geometry, while
-> > still supporting writeback to an actual backend file.
->
-> Yes, there are many ways to decouple zswap from disk geometry, my swap
-> table + swap.tiers design can do that as well. I have concerns about
-> swap virtualization in the aspect of adding another layer of memory
-> overhead addition per swap entry and CPU overhead of extra xarray
-> lookup. I believe my approach is technically superior and cleaner.
+On Mon, 24 Nov 2025 10:15:45 -0500 Steven Rostedt <rostedt@goodmis.org> wrote:
 
-True, but the static nature of the current swapfile infrastructure
-also imposes an space overhead and/or operational overhead.
+> On Sun, 23 Nov 2025 10:43:26 -0800
+> SeongJae Park <sj@kernel.org> wrote:
+> 
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+[...]
+> I wonder if the above would look better (and still produce good assembly)
+> if it was:
+[...]
+> I have no real preference. I just think keeping the "if ()" statement out
+> of the main code as a more aesthetic look. But the above should be
+> equivalent in actual functionality.
 
-I did play around with a prototype with a ghost swapfile for virtual
-swap, but had to stop because of the swapfile overhead for larger
-virtual swap space.
+Thank you for this suggestion, Steve!  I'll update this patch as you suggested
+in the next version.
 
-> Both faster and cleaner. Basically swap.tiers + VFS like swap read
-> write page ops. I will let Nhat clarify the performance and memory
 
-That just solves static placement, no? Backend transfer requires
-something extra/orthogonal.
+Thanks,
+SJ
 
-> overhead side of the swap virtualization.
->
-> I am not against swap entry redirection. Just the swap virtualization
-
-There will be redirection either way. I don't think it's avoidable.
-The only option is whether to shove it into the backend (what zram is
-doing), or having a generalized module (swap virtualization).
-
-Or do a page table walk every time you want to do backend transfer
-(what swapoff is doing).
-
-> series needs to compare against the alternatives in terms of memory
-> overhead and throughput.
-> Solving it from the swap.tiers angle is cleaner.
->
-> > Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
->
-> I take that the only relevant part is you are zswap maintainer and I
-> am the swap maintainer. Fine. I got the message. I will leave the
-> zswap alone. I will find other ways to address the memory base swap
-> tiers in swap.tiers.
-
-Please keep this discussion technical and not pull ranks unnecessarily.
-
->
-> Chris
+[...]
 
