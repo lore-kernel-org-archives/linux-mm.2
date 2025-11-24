@@ -4,117 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E94CFD352
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 20:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D662CFD356
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 20:39:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE7916B00A7; Mon, 24 Nov 2025 15:24:49 -0500 (EST)
+	id 8D5A26B0093; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B98086B00A8; Mon, 24 Nov 2025 15:24:49 -0500 (EST)
+	id 8AD466B0095; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A874B6B00AA; Mon, 24 Nov 2025 15:24:49 -0500 (EST)
+	id 7C30A6B009D; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FC3C6B00A7
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:24:49 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE916596CD
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:24:44 +0000 (UTC)
-X-FDA: 84146628888.16.95D7FFD
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C97CB40003
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:24:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T6+gboTq;
-	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 691B46B0093
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4D30130A6A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:39:01 +0000 (UTC)
+X-FDA: 84146664882.10.ED733BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F1CD310000E
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:38:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=evZkZ5Us;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764015882;
+	s=arc-20220608; t=1764016740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IiChoaoTy3xp1KwBD38ptOMR00qAvPdTrRxD/8PtEUo=;
-	b=qBGSIPM83ZrV6/JmxdoWm3Asb/fspfoIoPe9a0kKkQ1vlLzD6VVaq+V5ZUY3C8fD0Eh/rq
-	2HE3a1jVby4rheat+EW6ZRi3jhBX1YgN9DhTcDD2W2pKlXj1T7vqD1MVfRX8pqOGFF9oWJ
-	3c1CwZvtlYyKFY1GgDqv/jmKw3bMRqU=
+	bh=xF2KQDlHr/Ur1xWmQRwefTmJhLRhuQUIbwSk3r7yzZE=;
+	b=lJ6197i32xwcji+pAjVs43I46fB3vnGTOVxDYri8CIdDfn0krnXVjvft+hG8U/c6pqy1hR
+	qrHweUDbe6ymHsCwoUrN/HQ6kxg/Pzv2CK/KFAhFyOkqsfKETamnK4Ik3xRqogKodO8xb8
+	wb5gbZ7RP2lBPTtkSsA8hTFlHdH5NiM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T6+gboTq;
-	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764015882; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=evZkZ5Us;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764016740; a=rsa-sha256;
 	cv=none;
-	b=3oQEXWE5bsF+5PuQqICdH1pbrfEo2/z0LDmpmi4mMXyEvNMHBxkj1B1zqYZ8BdxC+kUteS
-	P7qbsPa3T2KQXoVx4PPbM0M4fyzgu15K5sdQGluesvgTvLe05eIAAsE0EFr1Wzzlc48zYj
-	wTvGlN7SpSEAr5/+De5OygF9tQimaNY=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b3ac40ae4so2662609f8f.0
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:24:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764015881; x=1764620681; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IiChoaoTy3xp1KwBD38ptOMR00qAvPdTrRxD/8PtEUo=;
-        b=T6+gboTqrwRUkd1tzGTPlGdfdDRH3/8MP6Zj9eeIEkSWjSkFFxjEpq2W9ciTtJubE2
-         ST2vVDheBrtNZposETlJDHYiLEJPmQB1j2UHSCNnYIvjOK5dVJ2GjUrMd2IlMy6SmgnW
-         YK1CXv9b5zrNQm3HsXLs61eB/OIZlE8jUwgpNKFBZ2Rw87mpSVpGhKY1VbaE1DJ9ohkV
-         WZwSLilMyxSsZI/yAjx7bo0fTX0/O5wdjqpdg4uRwMT9L/XWLzGFrtbF8J5kRZ4hVjrY
-         mwknUDeHen9XMBYvSzJdetb0+9g14p3UmwtvkRH5ivH3GbAM94lu97Ww9duXYwTAKv99
-         LP/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764015881; x=1764620681;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IiChoaoTy3xp1KwBD38ptOMR00qAvPdTrRxD/8PtEUo=;
-        b=IkvO2v3TDOXUIKzavDlwW40+yhBavZqybEW67XmJ1jdAuDP9lS8s28gQ5C5zqlj99t
-         1MlOu2yi19xNuLitUjw5sKhOptZpI8QoYfvUvIJkDGVRtimpIHaOhkRmWpeofcO7tqId
-         sS45WQBZ4U5NHcsXGVBInPo8VuKdlzFinNjKn+j8mQ6NarU8OSKM5ATPxHeJf7jG1UpG
-         oP2xGF2Xog1UYyH+3h9roXBMpj2H1WnydIwrJEabLUXlTo+38GeQGKnhTyNRe7TDf7Pc
-         2qKEGxiEdLj4uWp9UkzTpLieI2dF13gfq6JyD77g8wwvcOXE+qg/Sfp2o187Xa1h4tYW
-         znlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXB9pGwju53aMcBC4BrUSX3STvGZyZAKMVOTIFM75bEkUj0sLkbiM1ihxN/+9iLjIR/bF8NLLqZoQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy0EHIP8TyWThVc3vQyIKoeL4qvTsCwio3BQiGbMVo1wBrHOnn+
-	MHKhJxETUfZB1K0evUXOwTRg8PtyrXCzQsMHOxz+8yANAdlv4wUUf483oIbdyED6uV+K4Fr5JmO
-	svtDAz9OLCeVFhX0LgL9E3ts5lxVwVSw=
-X-Gm-Gg: ASbGncvNLVZGl7RnGGuRHh5NtO0bqFHJTuwvlvE6g/0b7n1OgVyNnNG8phACYn8VW9R
-	dYCwmwOkT0aDANLMet0ckNLrwwUOiyXHg/yxysqbtZctwLE1dmNah++wfgZFVDGF2eWntRYm10x
-	YbeGSH9SQQoFIEpIr1gOGdpj8JSSiDzawzwaCLALMfm5QXgZyfgpuyP7u0Kwdtqj/PCVfUvNBO6
-	yzv2mMEoHf0pwALKVrWJtJaHiFPPXLqdNVHBqwBsCPenqbMj/hzwDHZ8kUJ1Q/PqWqjFqOu135Z
-	ViKhBw==
-X-Google-Smtp-Source: AGHT+IHyvMg1OP4YhqthFM4jwYvuvUpeG+CQp3JLm03pUaPviprT4b6UX3gQddWaehp381zWSvQRFszjTeUirHDaTuw=
-X-Received: by 2002:a05:6000:2f83:b0:42b:3d7c:c7cf with SMTP id
- ffacd0b85a97d-42cc1acaa38mr12614121f8f.15.1764015880811; Mon, 24 Nov 2025
- 12:24:40 -0800 (PST)
+	b=zE6rcGWxZqrhcU02ljB3jriKP0P+bFIDxDkc0Q1kpDF+5yqYpDYSGOPdFITA9SgVM+7oKk
+	B7HSCwHRsMes8Kf8PQhgVjnPxv60806GysLF/Z2gMtKb/CoLzjjgpn/9JFOaFPiLM6XLtk
+	C/8ZWFjk9i7SUP2h3KLawnEjuhkVwcw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BC2A14016B;
+	Mon, 24 Nov 2025 20:38:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8EBC4CEF1;
+	Mon, 24 Nov 2025 20:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764016738;
+	bh=JLdIJ7QZP3U00BhhJOkbi1WT14KAskMlSFeurQ7aMlg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=evZkZ5UskrSLOHY1/mNMNWBXcNJsOx/pv8d25Cq5RbPbYFU+mewNWmC4bIco+jJ4w
+	 yzzy0LoaIeOAP3NdBCrb6CiIFZRtSQu3gkC8dlLBksOtGyoPGpLel4GpJBhQjoZMM5
+	 kmwhK7dZueujrAMnNGDV2VKcaEdYEWJ5MfLT1CQhbfL+0QUM2dRF4jur40/ZFOp9sO
+	 dLpkAp8Vkk5OnKyuaIbMjwlXDEo1yDdarWroTIOTqsFrFXaQBpicKQLLWJm04gHgR2
+	 gHUC3FJqEIWa74F6D+HX775twAOiLFzrPXDfaWPtbpUvggCxxszPeBXAFANkjviinZ
+	 5f5828/aSw2VQ==
+Date: Mon, 24 Nov 2025 12:38:57 -0800
+From: Kees Cook <kees@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marco Elver <elver@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
+Message-ID: <202511241119.C547DEF80@keescook>
+References: <20251122014258.do.018-kees@kernel.org>
+ <20251122014304.3417954-2-kees@kernel.org>
+ <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <20251121114011.GA71307@cmpxchg.org>
- <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
- <20251124172717.GA476776@cmpxchg.org> <2a8fd7bd35939b9aa4a7267c93e1fda995137966@linux.dev>
-In-Reply-To: <2a8fd7bd35939b9aa4a7267c93e1fda995137966@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 24 Nov 2025 12:24:29 -0800
-X-Gm-Features: AWmQ_bmJGItDDvrT1Ru90PZDDoSKhm-AeynhzjkqGowc_LN4e4KjMXMF6jtsJBg
-Message-ID: <CAKEwX=Pq=9nLb+SrTXkBWH2yyoYzzOSJqdeASweFh+EpEokKzg@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org, pratmal@google.com, 
-	sweettea@google.com, gthelen@google.com, weixugc@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C97CB40003
-X-Stat-Signature: a6yygxedt1iepxsngc4htjs5oi57g1sf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F1CD310000E
+X-Stat-Signature: kwu37ku71346zare3hdgpudi8wrs1ewz
 X-Rspam-User: 
-X-HE-Tag: 1764015882-215525
-X-HE-Meta: U2FsdGVkX1+zIq6+hHuEJbkebpys6AA7ygs1Y2JiUDzIxJWSQkaL2MpZqGa/e9jI5/1kVQ9gXFmJkydmM/1GxggxcQtp256FeiApBI9OopAbH151DdTNhSR+8oVTgjFIzuYzyD5ASxPvwhVP55RzOQHHzNHSo1x0i2vIWHnossvl67uihotBpdVq4uJAOBt7QEIcTQIxJeDHdBcFNxkj+VHQVnzWi9hxCbLpxBFJeY3laPyA16sMvAaZtfUM+N89Dpq0nyHYqmHEd0NkqNE+qCtukDK5pPHcqJUFJCj6zWKpkMCLOUfvKKtjX0YgKdbLwmuWZnzo47HZIwd0McWs3Ts0OJIQtmjviAkS8jjjgRI1++88lz2m1bP4IUCsXM2nocchBcePsEAP+MaMZRYNTzaze1Lm388Sed2pk34XHQyj0O5U10wnnhzcKM5ijQ5UIOxJkcc5bZs/Xa1N01+YXFadUsp6Nql74Jebffsv1U5K3oDR2as8KLLcF6sadAhQDZC6GSYn9C8d6nhTrk94VSWjMxAHXBlgEEQC1kpa5ui0U2kU+AJaPWO3O+p9cZCHNUkXJuVas+gouWXoGhBepC9PsuzFtol6jUrHUpQ1YTh9IKx5UxqU/1L/I6lVsmqYlG3VZo99K2Hw0UkjVUoGlvMQlxcKHZ/vmCEkM70qRa1rSUlZ+iMu6RaVcfOiJY034NOkwY1LypBxL+Ga6t1ltxTT4Muv9IzeYUyxCP5vPEdKMMqkSAF8O3Zpt6GmoRzox/Y5pi7+kfleEKgoqFn/44ahUbfGrpw08mvx7aMnDycIWPwm3ERDgzXpLotpTiGOxiPCAp8zAAm1om4pHgj4qD7ng2yDCHlCl+yc09MpMExPhUI5kOd/lB7CckZvJqhmYZ5fp7+5D6/6OhwdDETlj+d+6PenPBTjNBFEJVQhbKI22XMihy2V7SbRNW4Uyz6YwJP4Dk1n151pWN0Oyd9
- oL4HT7/l
- vwWya2609evHGqvGx/TZSE6KeMTwvG93NdkMeq5DFwCDHrU94zYmVENuKxObNsK6DmtgtB98kwXVkYw6FiEOsG+kle5H+sSHFwF1icYFtcTm8L1AZ2wJwIncuhnKbRYDfsASmeyqxuswSKkzHDb84JAQR0niX5F7LHuvdYI2L6pmtcfolGegdbnhPo6T14eMpHTGwduj2NqzWcBCGKJ/AHOg4kMU1JTSFFGBPeWmCqKBfNuYrIt2wmZP6UebljQH84AfobOyVSVmquhe0B/EeDYH8KCVmdFgPMoBVRcBuCjTlYbo73qiMkkRb54UeaQZePIwst+K4ZsaU97+ogo0c3eyCapmW24yNLMBM1Ny+/XIuw/T2kttYI1SbqPVCG4fmu+sBDAE2/foTABcjo0Jj+p7LL2IcMfHGNC6N
+X-HE-Tag: 1764016739-267442
+X-HE-Meta: U2FsdGVkX18t468DiawJCLhkxleZnorLqiRu/SkFfjEt9gondEaOeLCZMY9773bo0WmvLRZinlkuZpibeeRKtq2FeKvYgwiuQkW6BEPXvh9BmDhi4CcDNNuRP0e8yNlorWZAmQBuOoS2kF9EkMZDlCTEG2GvmjgWhGrenJkwy+vevD5ij310N+tjQdZ6frP4Z0P6Ov93mk2UklTOQDlpOEfYX53SZ793YxZn/zDdhVu+P3FIXb3qmcfzXmh7bgRi/7Is791SjCqPQpmAeeTnaC6Ozz82HDWTcMNxca4bL9aQSraN6vu6XgRrpC8nAW2Wscc6wQ2NjXO4pUN6bnBcPCc9B/MAxm2ZJ9QmBXb5GTyJHSfhL7nsq6tGFw185aBHJSop8szjj0UXhnQORemBCIE6RnsM8BLVwfqo0frR6ikzzvHz+do7uQkkvFscAbH9Syu3ERVYMaAH/7m6fQjFkg+uQ51ZIUdr3Zwgtc1dFZzVhQaI1iljkBvPxZTlUpG9/itM1DMR13klTX2lo4UhMsqUe/Ggnj+3jHnHx8z09ZIti9RPqW9SN8BdKuoU4QeWascrHIqQ5tistLdvebS96kvNAE7SQGyeD5txlgaWwB5l5KJdqYPcFdn/9WG9/UdKEp81yqmTlHY1cfG+qST3yWfY0BFyHMA/pL3YzhnrGpqEHVWMbnnUhP8xSU8IBbDtZdCkkls/EZtxiivz/1OtOXYVD7tQw1ovbYqjsm/Agv18R23gRDuf/env8RMk9AWQ40W7AWzfvy7PuhxgqEzM1r8fTQYx9d/CQGynEl8Ob/tcdsRvwWzTlmzrzA5q9DG5fpz21CIIH2UARxad0ndK7jjcQ7PAL16S56yXdnwpFGvgJugg/Hpe1vGOnAI3WhFEo21DylX9CSZAnT09/zpDCUED0LGkD+Ef92HnvByrhDfEe8F0A6+0ae8arda2Zky8/3MpeTP8ttv+cj4Rdm4
+ X0tc4m/a
+ tFhABZ6DhoCi4THbaLeXklofM2eDDcdYO1123aU+sO4XuDPTwkBYCvWa8sHZEyUz+2hmzjwOQJTQIOzHboQ+DBrkt4PNQAcHCisstqos7ZRUWFrpZhllpdRyLU8/xhthpLICTDTAIgJhELCqL+CpoAnWY6YEpnicQ+kMHJjhIlsjqbS2AuShMPI/Vhx8nKY4jktuMEoGHR849JyTlO6osSoQs6mO7kV8Lb9l5zVDzZ0xpjxPhdRQ/FzE2vkUWoFP9q1uX2LveM2zkbgXsivMHgyjZF26h8bYbhyWmUtplVzzNoUwns2FChSxj1xAyUeBJ8EqdQD4E9rlY3ngusRnGU6lOcwiZiV0Obd4NZ1+UinzBDRQcxvVeh1ahj8FpwDVyQxG29iQP72lRCYUo90zFtc3pcDD6q6QDvNqGQA3onjY7bRzY/Zr9y9xAU0ni70e/6G5U
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,142 +121,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 11:32=E2=80=AFAM Yosry Ahmed <yosry.ahmed@linux.dev=
-> wrote:
->
-> On Mon, Nov 24, 2025 at 12:27:17PM -0500, Johannes Weiner wrote:
-> > On Fri, Nov 21, 2025 at 05:52:09PM -0800, Chris Li wrote:
-> > > On Fri, Nov 21, 2025 at 3:40=E2=80=AFAM Johannes Weiner <hannes@cmpxc=
-hg.org> wrote:
-> > > >
-> > > > On Fri, Nov 21, 2025 at 01:31:43AM -0800, Chris Li wrote:
-> > > > > The current zswap requires a backing swapfile. The swap slot used
-> > > > > by zswap is not able to be used by the swapfile. That waste swapf=
-ile
-> > > > > space.
-> > > > >
-> > > > > The ghost swapfile is a swapfile that only contains the swapfile =
-header
-> > > > > for zswap. The swapfile header indicate the size of the swapfile.=
- There
-> > > > > is no swap data section in the ghost swapfile, therefore, no wast=
-e of
-> > > > > swapfile space.  As such, any write to a ghost swapfile will fail=
-. To
-> > > > > prevents accidental read or write of ghost swapfile, bdev of
-> > > > > swap_info_struct is set to NULL. Ghost swapfile will also set the=
- SSD
-> > > > > flag because there is no rotation disk access when using zswap.
-> > > >
-> > > > Zswap is primarily a compressed cache for real swap on secondary
-> > > > storage. It's indeed quite important that entries currently in zswa=
-p
-> > > > don't occupy disk slots; but for a solution to this to be acceptabl=
-e,
-> > > > it has to work with the primary usecase and support disk writeback.
-> > >
-> > > Well, my plan is to support the writeback via swap.tiers.
-> >
-> > Do you have a link to that proposal?
-> >
-> > My understanding of swap tiers was about grouping different swapfiles
-> > and assigning them to cgroups. The issue with writeback is relocating
-> > the data that a swp_entry_t page table refers to - without having to
-> > find and update all the possible page tables. I'm not sure how
-> > swap.tiers solve this problem.
-> >
-> > > > This direction is a dead-end. Please take a look at Nhat's swap
-> > > > virtualization patches. They decouple zswap from disk geometry, whi=
-le
-> > > > still supporting writeback to an actual backend file.
-> > >
-> > > Yes, there are many ways to decouple zswap from disk geometry, my swa=
-p
-> > > table + swap.tiers design can do that as well. I have concerns about
-> > > swap virtualization in the aspect of adding another layer of memory
-> > > overhead addition per swap entry and CPU overhead of extra xarray
-> > > lookup. I believe my approach is technically superior and cleaner.
-> > > Both faster and cleaner. Basically swap.tiers + VFS like swap read
-> > > write page ops. I will let Nhat clarify the performance and memory
-> > > overhead side of the swap virtualization.
-> >
-> > I'm happy to discuss it.
-> >
-> > But keep in mind that the swap virtualization idea is a collaborative
-> > product of quite a few people with an extensive combined upstream
-> > record. Quite a bit of thought has gone into balancing static vs
-> > runtime costs of that proposal. So you'll forgive me if I'm a bit
-> > skeptical of the somewhat grandiose claims of one person that is new
-> > to upstream development.
-> >
-> > As to your specific points - we use xarray lookups in the page cache
-> > fast path. It's a bold claim to say this would be too much overhead
-> > during swapins.
-> >
-> > Two, it's not clear to me how you want to make writeback efficient
-> > *without* any sort of swap entry redirection. Walking all relevant
-> > page tables is expensive; and you have to be able to find them first.
-> >
-> > If you're talking about a redirection array as opposed to a tree -
-> > static sizing of the compressed space is also a no-go. Zswap
-> > utilization varies *widely* between workloads and different workload
-> > combinations. Further, zswap consumes the same fungible resource as
-> > uncompressed memory - there is really no excuse to burden users with
-> > static sizing questions about this pool.
->
-> I think what Chris's idea is (and Chris correct me if I am wrong), is
-> that we use ghost swapfiles (that are not backed by disk space) for
-> zswap. So zswap has its own swapfiles, separate from disk swapfiles.
->
-> memory.tiers establishes the ordering between swapfiles, so you put
-> "ghost" -> "real" to get today's zswap writeback behavior. When you
-> writeback, you keep page tables pointing at the swap entry in the ghost
-> swapfile. What you do is:
-> - Allocate a new swap entry in the "real" swapfile.
-> - Update the swap table of the "ghost" swapfile to point at the swap
->   entry in the "real" swapfile, reusing the pointer used for the
->   swapcache.
->
-> Then, on swapin, you read the swap table of the "ghost" swapfile, find
-> the redirection, and read to the swap table of the "real" swapfile, then
-> read the page from disk into the swap cache. The redirection in the
-> "ghost" swapfile will keep existing, wasting that slot, until all
-> references to it are dropped.
->
-> I think this might work for this specific use case, with less overhead
-> than the xarray. BUT there are a few scenarios that are not covered
-> AFAICT:
+I extracted -- from your kind and loving feedback :) -- a number of
+specific concerns you seem to have about this proposal:
 
-Thanks for explaining these issues better than I could :)
+- You don't like the additional ..._sz set of helpers.
+- Alignment isn't taken into account.
+- You found the ...set_flex_counter() usage unreadable.
 
+To me, it seems like the primary issue with this patch is that it
+probably needs to be at least 2 patches if not more, where we can
+iterate on each aspect.
+
+The area of _agreement_, I think, is that type-based allocation is
+a good idea. You even recently used it as an example in an unrelated
+thread[1] discussing variable declarations in the middle of functions,
+and used (a form of) this API proposal, which I whole-heartedly agree
+with. i.e. that once we have type-based allocators, we can do things like:
+
+  __auto_type var = alloc_obj(struct whatever, gfp);
+
+So, taking each issue in turn...
+
+On Sat, Nov 22, 2025 at 11:53:33AM -0800, Linus Torvalds wrote:
+> In particular, I intensely dislike that horrendous 'SIZE' parameter to
+> those helper macros
+> [...]
+> The argument for that horror is also just silly:
 >
-> - You still need to statically size the ghost swapfiles and their
->   overheads.
+> On Fri, 21 Nov 2025 at 17:43, Kees Cook <kees@kernel.org> wrote:
+> >
+> > These each return the newly allocated pointer to the type (which may be
+> > NULL on failure). For cases where the total size of the allocation is
+> > needed, the kmalloc_obj_sz(), kmalloc_objs_sz(), and kmalloc_flex_sz()
+> > family of macros can be used. For example:
+> >
+> >         size = struct_size(ptr, flex_member, count);
+> >         ptr = kmalloc(size, gfp);
+> >
+> > becomes:
+> >
+> >         ptr = kmalloc_flex_sz(*ptr, flex_member, count, gfp, &size);
+> 
+> That thing is ACTIVELY WORSE than the code it replaces.
+> 
+> One of them makes sense and is legible toi a normal human.
+> 
+> The other does not.
+> 
+> The alleged advantage is apparently that you can do it on one line,
+> but when that one line is just horrible garbage, that is not an
+> advantyage at all.
+> 
+> And the impact of that crazy SIZE on the macro expansions makes the
+> whole thing entirely illegible.
+> 
+> I will not merge anything this broken.
+> 
+> The whole "limit to pre-defined size" argument is also just crazy,
+> because now the SIZE parameter suddenly gets a second meaning. EVEN
+> WORSE.
 
-Yes.
+(Size calculation)
 
->
-> - Wasting a slot in the ghost swapfile for the redirection. This
->   complicates static provisioning a bit, because you have to account for
->   entries that will be in zswap as well as writtenback. Furthermore,
->   IIUC swap.tiers is intended to be generic and cover other use cases
->   beyond zswap like SSD -> HDD. For that, I think wasting a slot in the
->   SSD when we writeback to the HDD is a much bigger problem.
+The benefit is not that it is done in one line, but rather than the size
+calculations (which there is no exception handling for) gets built into
+the allocation so that wrapping and truncations get communicated back
+to the caller in the only way we have available: returning NULL from
+the allocation.
 
-Yep. We are trying to get away from static provisioning as much as we
-can - this design digs us deeper in the hole. Who the hell know what's
-the zswap:disk swap split is going to be? It's going to depend on
-access patterns and compressibility.
+I'm not sure what you mean by "limit to pre-defined size". There's no
+such design in those helpers, except from the perspective of "detect
+and refuse to truncate overflows into too-small storage". Is that what
+you meant?
 
->
-> - We still cannot do swapoff efficiently as we need to walk the page
->   tables (and some swap tables) to find and swapin all entries in a
->   swapfile. Not as important as other things, but worth mentioning.
+The persistent problem we have over and over in Linux is the lack of
+feedback from overflowed arithmetic. This is being worked on[2] at the
+same time, but I'm trying to find a way that we can get at "normal"
+error handling, since just exploding if an overflow happens isn't a very
+friendly way to deal with such conditions, but C doesn't give us much to
+work with. If it's _part_ of the allocation, though, we have a natural
+way to say "but you can't store 1024 into a u8".
 
-Yeah I left swapoff out of it, because it is just another use case.
-But yes we can't do swapoff efficiently easily either.
+For code like:
 
-And in general, it's going to be a very rigid design for more
-complicated backend change (pre-fetching from one tier to another, or
-compaction).
+	u8 size;
+	...
+	size = struct_size(ptr, flex_member, count);
+	ptr = kmalloc(size, gfp);
+
+While struct_size() is designed to deal with overflows beyond SIZE_MAX,
+it can't do anything about truncation of its return value since it has
+no visibility into the lvalue type. So this code pattern happily
+truncates, allocates too little memory, and then usually does stuff like
+runs a for-loop based on "count" instead of "size" and walks right off
+the end of the heap allocation, clobbering whatever follows it.
+
+If we have a clean way to build the size into the allocation, then we
+can report back a NULL allocation when something goes wrong with the
+calculation or the storage of the calculation.
+
+Now, an alternative could be to keep the allocation and the size reporting
+separate with some kind of __must_check "give me the size of this thing"
+function, but I don't really like this because it feels much less
+ergonomic to me:
+
+	u8 size;
+	...
+	__auto_type ptr = kmalloc_flex(struct whatever, counter, count, gfp);
+	if (flex_size(ptr, counter, &size)) {
+		kfree(ptr);
+		return -EINVAL;
+	}
+
+> [...]
+> Because once you give that "alloc_obj()" an actual type, it should
+> take the alignment of the type into account too.
+
+(Alignment)
+
+Sure, but that's the whole point of trying to switch to type-based
+allocation: so that we CAN get at the alignment. That would be a "next
+step" approach in my mind, since we could bucketize allocations by type
+(or alignment), instead of by size. But that's more of a follow-on, in
+my opinion. I'd like to get some agreement on the exposed interface for
+this API first, and then move to enhancing the internals to take
+advantage of the new information.
+
+> I also think this part:
+> 
+> +       typeof(VAR) *__obj_ptr = NULL;                                  \
+> +       if (!WARN_ON_ONCE(!__can_set_flex_counter(__obj_ptr->FAM, __count)) && \
+> 
+> absolutely needs to die.  You just set __obj_ptr to NULL, and then you
+> use __obj_ptr->FAM. Now, it so happens that __can_set_flex_counter()
+> only cares about the *type*, but dammit, this kind of code sequence is
+> simply not acceptable, and it needs to make that *explicit* by using
+> sane syntax like perhaps just spelling that out, using VAR, not that
+> NULL value.
+> 
+> IOW. making it use something like "typeof(VAR.FAM)" might work. Not
+> that crazy garbage.
+
+(set_flex_counter)
+
+I get your objection. We have other places where we do "((TYPE *)NULL)->member"
+explicitly to get at types, but I see what you mean that is feels very
+wrong to see the "->" after setting something to NULL in that it's
+separated from the NULL-ness.
+
+One of the reasons for using __obj_ptr was because "VAR" may be a type
+and not a variable, so "VAR.FAM" isn't possible. Doing it the following
+way seemed uglier to me than using __obj_ptr->FAM:
+
+	if (!WARN_ON_ONCE(!__can_set_flex_counter(((typeof(VAR) *)NULL)->FAM, __count)) &&
+
+since we literally already have "((typeof(VAR) *)NULL)" with __obj_ptr.
+
+But perhaps much of this could be collapsed into the
+__can_set_flex_counter() helper instead.
+
+What do you think?
+
+-Kees
+
+[1] https://lore.kernel.org/all/CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com/
+[2] https://github.com/llvm/llvm-project/pull/148914
+
+-- 
+Kees Cook
 
