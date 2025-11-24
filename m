@@ -4,67 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8B59CFD356
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 21:44:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D04ACFD35C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 21:50:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C28F26B002B; Mon, 24 Nov 2025 16:44:33 -0500 (EST)
+	id C35546B002D; Mon, 24 Nov 2025 16:50:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDA266B002D; Mon, 24 Nov 2025 16:44:33 -0500 (EST)
+	id BE4686B002E; Mon, 24 Nov 2025 16:50:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC88F6B002E; Mon, 24 Nov 2025 16:44:33 -0500 (EST)
+	id AF9026B002F; Mon, 24 Nov 2025 16:50:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 95AE16B002B
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:44:33 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F8BE13B437
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:44:30 +0000 (UTC)
-X-FDA: 84146829900.05.BBF1C4C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E90AD40009
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:44:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=iYS4s0Ge;
-	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9802D6B002D
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:50:06 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6163C05AD
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:50:03 +0000 (UTC)
+X-FDA: 84146843886.03.634BAF8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 31335120003
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:50:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lg3mWYHU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764021002; a=rsa-sha256;
+	cv=none;
+	b=EbP1w8FGhUjSx7++a0lLsroeWt/RaN4hWGcSFkJ3JhFbvk/3KyKx3DIuPVq4Ogm8rXLsA+
+	gyYmKdB7ZJnStCozd7p+VcS3UimD6PMIGhTOiLhPCgXQpLTgEBPUgYWV222TdjFP5mmByA
+	9v+P3R/4NComEaojzHbRlYaPYJgkfKU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lg3mWYHU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764020669;
+	s=arc-20220608; t=1764021002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SUlF99W657ayuADOKzDUmOVkCyncPMqxdy/NyyNnkH4=;
-	b=L7X6fgWHzr9xUi+agDYXUiOLBtKOoA0tqUreaLh1BKoNVI5rtS0Au8UhNzkaSuGNv9Ko5G
-	iynH/ZDmyds9NQu1zLSDngH69n2k6qlKrnERSiecVB785u4XDFbmAOip5wteLf2sE9MYp8
-	LbL2FeeXvNlw7oQK+ri+a5xcvxtZrVs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764020669; a=rsa-sha256;
-	cv=none;
-	b=lfM14vgbQXtEu5PDDLM6IDajei/M+ARv5ceEjgI7t031/nr3ljR4KSPOGIG+k6lU5xWv1M
-	5i8dEIdO5XZh9KA/soLadd7EHQO6Fpx8GHwIMATREonOHYQQjFvVtlaFy72KuvuewE4fpI
-	GEiCPzk6/ujpcMKIfOjaEtrzswRJ18g=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=iYS4s0Ge;
-	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=SUlF99W657ayuADOKzDUmOVkCyncPMqxdy/NyyNnkH4=; b=iYS4s0GeWS1ULvqQotv3tAHC8R
-	xxqu6rXYTNSh/Cju3mOVXHckGXuANK4kN0epUwZo4hJ/hnHfY9O4BDB2S+WysWiuMouXizQgvY8rw
-	F7d0p7NOnwi/gos09F3Evi6KLDFoy3B2MeTSWybXlMZxi4s9J/vBqvfnBHR5yMzEJnoDjqPd36vpC
-	yMxpAo4fsBx5NlEptnHooDmU0MGJ/5Q7NZhnZexoavMzCOPNt1FrAqkdV2D6uXf80IH/rkh/Mj9CH
-	TWcxCcrLU9SwlZECIYN0U11dbbjzH/bMalezzpGAYGt6jIzBa4MYmEXtyS7sNd2Hb+DaoJZnf6v1u
-	luqhvyHw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNeM4-00000007a4O-2Sbg;
-	Mon, 24 Nov 2025 21:44:16 +0000
-Date: Mon, 24 Nov 2025 21:44:16 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Kees Cook <kees@kernel.org>
+	bh=J0hYb0ckUgutJxmejD8lrg32Ts/OE3u23WLau20AsUk=;
+	b=urhQtE49U3yceKB9rhQtiy8SA2egb8stZqWsSab5FnLUi0FdlomuVuP2eYYhJBneToH9c6
+	rntGo47RcgZVnMK+CaTlTlr+KKvYYYstiHsgDh5jfXa+WOqW9ljGZwbZ1oPPfdY+ar+Rcz
+	byttIN4/t04Lg7+SzNszm9pr4GUjHg0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E4142403DD;
+	Mon, 24 Nov 2025 21:50:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1119C4CEF1;
+	Mon, 24 Nov 2025 21:50:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764021000;
+	bh=RXREYcS3eD9QLzWOuycj1YtfjQVIS/r94kQe1cH/yZ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lg3mWYHUHm+9sQe0h0IVVvf46zbWO/OKPf1vaPwDN2Re0d81XGYko10tNsXGhBJr3
+	 4gZWIMWKu+2AhwVzSsVRrl8PKBSmz5mCqQR6dvytAXHUzKJuZy8Tb2R7b91w+015H0
+	 LdwPoXWiJgl/t4YPGdLx2cBcb2FplZ/rM5i1yq/S3cF5cbqW63qKXbaNxxLKpMd7s5
+	 cAsfJkUm4oR1MRGYCOsyip4ZPMP96+6VEJoV8rDWJhcnR5akI1ol/v9o/THTGoBHqj
+	 QjAxOZg0kJW2wJClUpjBtMm9oqVSwupJO1crsUY4BBZlSNl5W0Fac1tkIfu1CIc/BU
+	 fgbiBfdDHsAgA==
+Date: Mon, 24 Nov 2025 13:50:00 -0800
+From: Kees Cook <kees@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
 	Pekka Enberg <penberg@kernel.org>,
@@ -96,26 +98,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
 	linux-doc@vger.kernel.org, llvm@lists.linux.dev
 Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
-Message-ID: <aSTRsIUPeT5EC5An@casper.infradead.org>
+Message-ID: <202511241347.AF6790AFB@keescook>
 References: <20251122014258.do.018-kees@kernel.org>
  <20251122014304.3417954-2-kees@kernel.org>
  <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
  <202511241119.C547DEF80@keescook>
  <aSTKLsRNiEKtDqPI@casper.infradead.org>
  <202511241317.516BDE7B@keescook>
+ <aSTRsIUPeT5EC5An@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <202511241317.516BDE7B@keescook>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E90AD40009
-X-Stat-Signature: dquod1usimgqfidp48r59a4mxswmqrfg
+In-Reply-To: <aSTRsIUPeT5EC5An@casper.infradead.org>
 X-Rspam-User: 
-X-HE-Tag: 1764020668-277648
-X-HE-Meta: U2FsdGVkX1/m4TSrPz58h05/wG3H2sWc3DbA4Kt5P9yUAoDjQ21nyeslCjkKNPZGNELzzxx8s5DCdnmmpQEwJ5cifPTbF9Rt+YdeYzNJkMDU+qtbTVRV+c9levAcKUFHqT2USrp8fdHro8ZN2XI3KJmo0gJnJhnGda/hcirOrPeH8oVPMCOZ/f/2ae7HVRrAD+0JrKEESwjp+kas3Iy8W5zyMwUJos6bD2V+QIjqG7h2SI3Ans7dZ89ozeycmF+3M+jNsxBBvOsJfwVCgBqR+6aWbS2UAuG5eQi6qjkiNdd/UeHOvUPu/E7d0ravxVsZ57VEWUiXPyWNxU5QwjbMVPJ/ZP+Crzoue3ippG4ESfRmAVD7SMBmgmgdiIsHl6I3LlGwhJqdy3eC5kYh2XBy2EH4619PvexnGzm1IPukBOIkMRlwTIZXq/FjBawKUSDTfmK3jCx0oLEv9kVcBzVjokWaQzw7Gw6OEXjo0Lhbg/NNuJJsfVK6VC20OyM3yH1mUzpQOmGbN0kl4V3E8MLvbzv9Tqc4iUInu4LYt6G4yVqa3rAhNrgkdQTvP5WcLZYxw8CCmhOdBLGj2N7DO7FhS24EjTrT00ZBbHazAXdY7o4PHGcd/MkHydbzVJf33bGX3WYTC3KLO7AIfMUqqi5Vh0lCef/KwWcxrpE+4VY+km73ewJPNGlZhkpgUBSVYmtz//HLteOYc4QNlxhhVcnvEPktuK9ce8lCuut7yx1GkMgy8okPNijMRwp8z0dqEOXzd1AkNHbiHEOEUpXOEcXEg64/XE8I0Z+dwtawaUcHbUViYzsYso0j1RbYv20h6TcVEFtsTjkSE5qDi4UYjCjrxOTDkDjByI3VlZN7FNKaiXLswJ98hWu5CbHVny4GQ/TGkTFDAGVqjqwAW1xaLf/yjn41S0zPNtReRTphRIU7YtfnQW0QRg8LdJaS8uVBFXI5ywNLwydxPaKH4aWnYkk
- P5L8bAII
- bkqV8nUDNNd8XhZd325WLFPxD/f1bqond7RMvuEkyIB8Be+EREmnGFSdA7WOV7VjoU1QQu1DiJAx5umMId8qsf+NbRdS5XcU8LdH143S2kGQqaJG3+b3OrsChWtkiBonilZTJLZCmAqhnTprsEwtBnBmxUK6P+BQc9OuwivL++1I6qYwbiyT9WkLjHV5Xhl2SNE2rqGyBBUnpjO06mfG2KAI//QafIaFkei0NEwtOGrPqwmkBT8l0OzUi8QPv6xCeBBMbcujN7R8hu1jQwvbAjizj2gQg6VVr0HYryHM6rtq/Jpc1e6q2jjss/YW07hhWB+elJLgS3C/QoELiWGnBnEuJSt3sTG/UGGXj7pw3tDr5GQrptBGV8TecW35qJU2D9fY+Tju+84fQ9nVDf7o47tbzPQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 31335120003
+X-Stat-Signature: oefk5zz9kzxx7mib1hxwmrhpkdn6w6q3
+X-HE-Tag: 1764021001-825499
+X-HE-Meta: U2FsdGVkX1891gRrkdpJWMnydf5W5qhPu5GlFrIMRBBguzu5SfZ5QoGmkSGkvxHJpdo6IEVpdEklqlGP+HjA6QYeLaFVT3Bjq3nkvB07vnlthPtR/K1XALUFz1sXkMGVpkAcI6F6cxpD0CWQjTDJevVh/yA6/tarZxt7I8pIGhM88HOwB3giNriuJmpJk+feN9lFyfU+DPyEjEH3G+mfSiOgZrJ0dMfjgYPmSFBDEc/3v5xHxMLLWIwIYxTIZPQkFXpJiemqHXAKpNXQjR7Ntnsvp/dWK2pj7kHeK25eb3sCntLnpBWfxDJkZFpJChs9YjckOK6vXPTOSPNSY0bHHKOpQNwCV0oN/EqzLwyetpAOAoncyP2lUVmwq8Zf5KU4SoLnbEdpkAO6R4TlWxPjkaPqQQbn/pt6TMWU4xod1rx8KXfQU+Tw5IaZoh7sLplmkc+uQtp6f++tXOASATEWdxUWLQgiGkWLKWTxtnDoMb9UGgbV0UJxJTQrUO/MvTQG9RcUr8+gFPsiwYxzxYvJMvl45olIoPNYiiJfood9+bsil9w7PFqCkni5xY7XBpovWbYReTZQc32QihU7cdleUV24S2IrWHM1sktnhAlThnD3fGwwqYNUBV2MyD1M1w1SXXADM0HJtskDyR2UGI5/+B1BzmzFmpaVkRuU4HV0hhSnJXqXivrRs3+BhnOc3LlpVjWIqHY0HJxDZgy2lMu64r7dXiV7bDF4L/yCCWK/6Nth/AX8lwbFsuda07e1a7IKn6Xx1988q7DvEWA3dlY0+4LvK6/inn21vJPVSyeNW/LscS0W0g4jNSjx8Ibh055OJvv+m2KqGS+r1F22rQa4Aav9pSBIDfe+6XBaSlQ48EMijOW6NYMnSFunqAa6Lr0oU0RzgA8ImuzO9EAXNNLYogRnnbLrNXtSz+PY3onwgVHf/oELTMfGBEMnpf+pP+ZE0JubRzvQQnlHQZBp6nu
+ +oNayVCC
+ rDnjnmnctWm7L7hb3yRcMz/X9k7cNn22/euzmY5STZvbn6oOXosiiyKLa1xBsSjajTVDg07kESTCeAfQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,24 +127,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 01:20:21PM -0800, Kees Cook wrote:
-> Yes, -Wconversion (W=3) is mind-blowingly noisy, unfortunately.
+On Mon, Nov 24, 2025 at 09:44:16PM +0000, Matthew Wilcox wrote:
+> On Mon, Nov 24, 2025 at 01:20:21PM -0800, Kees Cook wrote:
+> > Yes, -Wconversion (W=3) is mind-blowingly noisy, unfortunately.
+> 
+> This third one is interesting.
+> 
+> include/linux/jump_label.h:126:44: error: conversion to ‘long unsigned int’ from ‘s32’ {aka ‘int’} may change the sign of the result [-Werror=sign-conversion]
+>   126 |         return (unsigned long)&entry->code + entry->code;
+> 
+> static inline unsigned long jump_entry_code(const struct jump_entry *entry)
+> {
+>         return (unsigned long)&entry->code + entry->code;
+> }
+> 
+> The warning is ... not the best phrased, but in terms of divining the
+> programmer's intent, I genuinely don't know if this code is supposed
+> to zero-extend or sign-extend the s32 to unsigned long.  I know what it
+> *does*, but I don't know if it was *supposed to do that*.
 
-This third one is interesting.
+This is my core frustration with C: we have SO many things where we have
+ambiguous intent. Yes, C may do exactly 1 thing with a given construct,
+but it isn't clear that the author's intent matches what actually
+happens.
 
-include/linux/jump_label.h:126:44: error: conversion to ‘long unsigned int’ from ‘s32’ {aka ‘int’} may change the sign of the result [-Werror=sign-conversion]
-  126 |         return (unsigned long)&entry->code + entry->code;
+> So I wuold be
+> in favour of enabling this warning ... if we have a small army of people
+> on tap to get the kernel to build.  There's 374 lines of errors to fix
+> from the header files included by scripts/mod/devicetable-offsets.s alone.
 
-static inline unsigned long jump_entry_code(const struct jump_entry *entry)
-{
-        return (unsigned long)&entry->code + entry->code;
-}
+I'm for it, but that is a LONG road. I have so many other hills to die
+on first. ;)
 
-The warning is ... not the best phrased, but in terms of divining the
-programmer's intent, I genuinely don't know if this code is supposed
-to zero-extend or sign-extend the s32 to unsigned long.  I know what it
-*does*, but I don't know if it was *supposed to do that*.  So I wuold be
-in favour of enabling this warning ... if we have a small army of people
-on tap to get the kernel to build.  There's 374 lines of errors to fix
-from the header files included by scripts/mod/devicetable-offsets.s alone.
+-- 
+Kees Cook
 
