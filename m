@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B798FCFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 13:26:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BA9CCFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 13:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DF876B0022; Mon, 24 Nov 2025 08:26:02 -0500 (EST)
+	id 0FBDC6B0010; Mon, 24 Nov 2025 08:53:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8626B002C; Mon, 24 Nov 2025 08:26:02 -0500 (EST)
+	id 0D3B56B0011; Mon, 24 Nov 2025 08:53:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F376F6B009E; Mon, 24 Nov 2025 08:26:01 -0500 (EST)
+	id 010A26B0012; Mon, 24 Nov 2025 08:53:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCF426B0022
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:26:01 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADD30B8DA1
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:26:01 +0000 (UTC)
-X-FDA: 84145573722.17.87DE884
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E6ED718000C
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:25:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CYTjpF4I;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763990760; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E08CE6B0010
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:53:37 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8FC331A0373
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:53:37 +0000 (UTC)
+X-FDA: 84145643274.18.EAAE30E
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 036D0A0007
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:53:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MGy5xitl;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763992416; a=rsa-sha256;
 	cv=none;
-	b=U4YZhFaNCO1z8e7cSVbGXOBgwdB2yOJxhdEZNF5G8lzSVKIOxeNNd9arFToQOQiqutWqWH
-	4YZb3lgUlCBxPyuhiC8gDkMwgIKI4ouEq3gwA+5BE7wVUSNjZDbfhNSv1PCDJgMG3P5cH8
-	rRcQMwRDKp7a0ZQzcmLedcjB6roCbQU=
+	b=8h6ok4RcKkrh4pM/rhV5dnkqXj61LqLEJOmpg1LXH6abScMN4s5YvUdwF+E5RNhj/JfLD4
+	h7hm6wvRSHdqmVkE5Q7X+YfXYlpckK4oPdqcQd8Ltlz281duGUymYdoWr9S3jyYyPT8thW
+	2ELwC+uMVjNT2+V3A9Bp6UuKvRB5t78=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CYTjpF4I;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MGy5xitl;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763990760;
+	s=arc-20220608; t=1763992416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VnvBX/XZZCUCV5Tjc3nbVAUiO6caprpKW+yLpMrITTs=;
-	b=LTYP38prgsSfvjnARoRZjxj5yT+vIMMEra1biHa9UOcQPTJow+tmJgC4wKH8oGB78kdP5S
-	lFk9RqdEDyZY94VysaB45psoj97r3YqhSNnVh/rSe61fFj93g8iCLX4wB/nI5tmM8OUOEL
-	h/PXo5TbJS3HkrnIf3jOL98T2rMLtXU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A6D31429DA;
-	Mon, 24 Nov 2025 13:25:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5B3C4CEF1;
-	Mon, 24 Nov 2025 13:25:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763990758;
-	bh=V3pNaPV0kKnax3zGGnv1AnsUhY0LbnCFMQ5OaJ21pJ0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CYTjpF4IqP6zSOrYyA371vjXfNJC7bd00OTA1CE5rpfF6muw17PEE2UxeKCi15eLq
-	 PQxSKfXFIgFWxfzPAYgfMtTjyX5g80i197Ya+zrjB7Sw9Cyy+NCIkFgg7jfzi5qcNW
-	 b41ni0lnkTl61chQhTW85fIs872WP5c4GTYZzcUuPdAI1GDVpCZrY9uEhS+l5nDImj
-	 l0XWnjCK579Po2HYhTBgnPZthYY/E19895OxnfPmAoIi8XVq96ZrczHVKeplcZsaDA
-	 USypK0KqHUs4xEfdivciT9uT3FLODj0pbwolLV7dU9zvVaL6JKk6X10jIl6OpLZxVN
-	 I1Nmy/oMt9gXA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: ranxiaokai627@163.com,  rppt@kernel.org,  akpm@linux-foundation.org,
-  catalin.marinas@arm.com,  changyuanl@google.com,  graf@amazon.com,
-  pasha.tatashin@soleen.com,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v3] KHO: Fix boot failure due to kmemleak access to
- non-PRESENT pages
-In-Reply-To: <mafs0see3zkug.fsf@kernel.org> (Pratyush Yadav's message of "Mon,
-	24 Nov 2025 13:16:55 +0100")
-References: <20251124025943.94469-1-ranxiaokai627@163.com>
-	<mafs0see3zkug.fsf@kernel.org>
-Date: Mon, 24 Nov 2025 14:25:55 +0100
-Message-ID: <mafs0ms4bzhng.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=wsiXRQfBIuP1X/ymVHWC9NM13GowOoMIRmlz9r9QKOA=;
+	b=0AmAzgKmrVxjobb4E+4KI27z/XHijacXQJN3ZBGHhzNo/V/KXYOSbeDBmgr27JEwfYaOn0
+	IXN+KIoesRBMsOfOwB3G4+Sk5cpg55AbItOta6BdfLPDzVO8VeNi21HLXe4NMdroAIuDHw
+	0jJN3EpnF7RUXEVahqpjMSx34BTuGjI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wsiXRQfBIuP1X/ymVHWC9NM13GowOoMIRmlz9r9QKOA=; b=MGy5xitlEXRgJzKX90CcI9Djmw
+	FeSO6alWPJG+LQE5W2S50TW3ENcP7eei5BrW7O01CGZh1qageGDB93Y+MuqW9EvMw7iAKIeYtgdT6
+	Ww4shm6OCj+ixtOET0VHfG7sTqBFlCNwPJJPg/s2mxZu8AC3CzpV70mRabqNF27hB8JxoCcmXpVFA
+	KXycB0lrCWMDHmiyBCgEV2OoC/VvL728y8VD2hTaPwjp0sF0V2pm1s6ncvysqByCmOLbOtkP1MCld
+	WqXj6FNrftzGqRI/WK1yjnM67l/oFzgGqZdBIUaBeHWdwqOsjtxDsSRL/r5eQ3w+lOPzSyWpaAzLN
+	jt/Lk+wg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vNX0S-0000000744M-3Unf;
+	Mon, 24 Nov 2025 13:53:28 +0000
+Date: Mon, 24 Nov 2025 13:53:28 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+Subject: Re: [PATCH v4 08/16] slab: Remove folio references from kfree()
+Message-ID: <aSRjWB5nxda44UKF@casper.infradead.org>
+References: <20251113000932.1589073-1-willy@infradead.org>
+ <20251113000932.1589073-9-willy@infradead.org>
+ <aSPvgRQKAKgnAlih@hyeyoo>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E6ED718000C
-X-Stat-Signature: ptn57od9dtjo68huokeqf1qmg9w81rrt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSPvgRQKAKgnAlih@hyeyoo>
 X-Rspam-User: 
-X-HE-Tag: 1763990759-701509
-X-HE-Meta: U2FsdGVkX186+460vjHiOmSLiM0FvSe6FQPxUGmO1JnnPawERPWwLuPyuCD8/1G6v/n5K/5wPJ4F9mfDeueN87qE9ti/ofD4J4HjBal/qtCPtuxgEikkAgM2Y1B/9quJPvJz8z4X8CEesIxdqXH++BLFQsvbHRCx4ITlv/Nf7HBOC/TCcsZyQwL2WVYpWaAdQOvQvDc7/PPLWBFVbnXorVw8TeVEKaztywYeWH6nOYXteuPZz9Ivttlpb3weLC3C1JFJhuOSTmhlPHNqdk1wGVXRjpb5BsEsk7Cx801svZP4BolHaTYOShMQj6AFzaNig0UY8Xq5GmQyonL+pDtdoUOIP6cgTPpWOFBYoHow6R965VZzLl9RVnu4LIStn13L8XISvu4By9RV+kc4Z3K176w3EL8otq27Z36UzbgcRAyFUdvCEAHovRhz/kZfsz/MLwJNPRi7sUb4kv0cBOrVF4iWAQx7WtUhhyfngRG58l31RdxeSJl5aaks2Ml2RrEs0qim3fPWUswXiByc5rIeNmFrk5stjZuWk/v0Yt2KRtMg60rPhrF80/4MPTYoiViOMcbQuE897/pbpYxAT2jT/rxtZ2KCrZPN2kgEK4qPnJkbDJMPM8PehIx0+232uVaL1KjrD1pnSofNFBnnRnUTt2omF9HWDzhRRhJ5P/JzuhhfYQ6MY6MwpAD5IOmp1UDk1MBGkuAcI7BhBDDSaZjh6jEoGu38snN/DrfNvS+O3RtnszdVsgANWKILtJ9QZVzcGWTYsu5dm10tn1B0RdP9654rCf33t0SqZkIjhyfobd8RNz3M2M5J1sQ8djLGqktiOLNx/mWkiWw07fcUj+rNrvSEFhQVBUUY2AvVunzM45Ansg7qNP8uNA9bXhkjaN1QXzGW45yg8jURx0e8/hAFHFevalAvtHj8tZwaSzscavSaGlgQJnJ/bqhmc23UFUuuKO0Zf1hF41t/pZiPnD7
- RjbKtPYL
- FaF3hGU1c//lzyiBdJ3S7EUdXFaA4MWR4POXlF3W2X0c5DDosdXC3X/2z/pfDzxBfqixIBx2HIed//aO5wtFXhWm6oaxhU3dd/mkxa5/YCIG65BYZVf+vmbzBgp29wjgcMxWGgHpwuTfMyqrDOxanR93qFbgGhyi8yCMfINEXqcN+HzqgJ3clOWgVesQhzSeb504FhDeXmebHh0K521Jy0fIJ80G2gj6MXu0loQ1Fy8BC4eCpmAqINJovo+IXd4PQBFWoLAtZgcYrwma5AG0YidlHsw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 036D0A0007
+X-Stat-Signature: ejfjuxb8ac5w5mm5wejp3zkudnmxik93
+X-HE-Tag: 1763992414-73385
+X-HE-Meta: U2FsdGVkX1/IDxId0I8lAx8Kh2NHNllrvRCEyVluboTwaaxLqPf0vVnviB8MeBAWqGXXrdqTKTmvYPpecv0KhB6ft3roQb9LhVkGpFKPKQJlkuLNzWMH/xF7XRdr7XYfBtqke4QqpY6wklBXmLxixipQL9j7dcXsL3Y+LnOagKG9fZ5c3pLhxtivgGDucaTQgWVwDwh08BbzUOnBinNZw18kJ6tI+/YtCKlgtvH2VyEC5IzHQG4NKF1oSOrEeDFmdasQIqjkEWht9QAzGNEw+fPKWnVRQeuiOc3lThwzK/PcQZa3kYmRg7JCWxlPBAdWIx4dcZZY1/KmDP/BxgryHEXPZtLZdDu1LCL/+YbVh7R6PYyLFHw+YgrvXpNkrdAVTEbk5iIgiVjDNUW7AgIVe9EshVAoqjIrk3GIM/xoSnj+C7BhjliVkpdJABytjg2UVvI6P3ksjPRUvPSNL+q+4Afng6B4CDgO/I28a0bbm0DHrjoLv9C2+woE+foOMXfsg0Z39vi562eE7QxJoeubVIT8M+GQD5Ghxc8sD4RR5YzCuHw2qj3tm8oOkA1wgkmk2CsHOipKPUQpcfSzEWCw4VhgHGi2IZ27V63G9BGY38mm+wIapOTQsje2rb1pJvqHLw8RtyLUWFjyxPYSJ/IsTKpGk8mrD64/XwWCFGLGo4xXW9OhdMIQvA+mHvxtnPGAUtvUXqBWzTfsnWts2f/RAHzsH7gf2unQXFdtL+BRpbxDqKvxPVCaOzL5Ro8bGCcI/U5eqa1SS4I3cf8jPMoOCP/UCCFzXXESs1jTbrUPhiL8kDfGu50VuosUsPAYVAa4c3koxOuEjO0hbezyUHNW8dAeNaH8VJA43T2Rx3ihC7VCKz2Jv1QIL0QjZVbE2wNCbxtYEq04GG5oR1iSnyuzrFgoQaVAJl2r6oIcCdSTkskQM/wyBEkCC7dFvDvSfgvaJMZWBjTEY9OsyaZ7vKq
+ Zbhg4q+W
+ YsUznkXjpMpb4tBagWgQ8xIGwweUPv3avbycum32IHI8jdEuOktMCFyHT3Rp3Pl2b3rWpvBfReQHNj20Y8ZqLhRZoFxYdPGoXeM3TaGf8hzwVtx8hMp3SplhRaY7k9EtGirSo8Y2FsxTt121MaSFb+pjlR33uiWTTBEv4897mWEvpczM11gWCgPDkwboi5MzX72vG0D/wAXRhKs5WjZ4rEZUXF55RBPBvPfzpB65Wdzt41y24KWHbOMbh5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,66 +94,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24 2025, Pratyush Yadav wrote:
+On Mon, Nov 24, 2025 at 02:39:13PM +0900, Harry Yoo wrote:
+> > -	folio = virt_to_folio(object);
+> > -	if (unlikely(!folio_test_slab(folio))) {
+> > -		free_large_kmalloc(&folio->page, (void *)object);
+> > +	page = virt_to_page(object);
+> > +	slab = page_slab(page);
+> > +	if (!slab) {
+> 
+> nit: is it intentional to remove unlikely() hint?
 
-> On Mon, Nov 24 2025, ranxiaokai627@163.com wrote:
->
->> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->>
->> When booting with debug_pagealloc=on while having:
->> CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
->> CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF=n
->> the system fails to boot due to page faults during kmemleak scanning.
->>
->> This occurs because:
->> With debug_pagealloc is enabled, __free_pages() invokes
->> debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
->> freed pages in the kernel page table.
->> KHO scratch areas are allocated from memblock and noted by kmemleak. But
->> these areas don't remain reserved but released later to the page allocator
->> using init_cma_reserved_pageblock(). This causes subsequent kmemleak scans
->> access non-PRESENT pages, leading to fatal page faults.
->>
->> Mark scratch areas with kmemleak_ignore_phys() after they are allocated
->> from memblock to exclude them from kmemleak scanning before they are
->> released to buddy allocator to fix this.
->>
->> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
->> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> ---
->>  kernel/liveupdate/kexec_handover.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->> index 224bdf5becb6..c729d455ee7b 100644
->> --- a/kernel/liveupdate/kexec_handover.c
->> +++ b/kernel/liveupdate/kexec_handover.c
->> @@ -11,6 +11,7 @@
->>  
->>  #include <linux/cleanup.h>
->>  #include <linux/cma.h>
->> +#include <linux/kmemleak.h>
->>  #include <linux/count_zeros.h>
->>  #include <linux/kexec.h>
->>  #include <linux/kexec_handover.h>
->> @@ -1369,6 +1370,7 @@ static __init int kho_init(void)
->>  		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
->>  		unsigned long pfn;
->>  
->> +		kmemleak_ignore_phys(kho_scratch[i].addr);
->
-> Can you please put the explanation you gave in [0] for why this is not
-> necessary in KHO boot as a comment here?
+It is my understanding that the compiler treats NULL pointeer checks as
+unlikely by default so we don't need explicit annotations.
 
-And also an explanation of why this is necessary in the first place. You
-do explain that in the commit message, but a shorter version as a
-comment will make this a lot easier to understand instead of having to
-dig through git history.
-
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+I could have an incorrect understanding though!
 
