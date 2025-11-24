@@ -4,90 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EFADCFD31C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 09:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E398CFD31D
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 09:30:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72B2A6B0023; Mon, 24 Nov 2025 04:27:41 -0500 (EST)
+	id E0F466B0026; Mon, 24 Nov 2025 04:30:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702FF6B0024; Mon, 24 Nov 2025 04:27:41 -0500 (EST)
+	id DE69E6B0027; Mon, 24 Nov 2025 04:30:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 618AD6B0026; Mon, 24 Nov 2025 04:27:41 -0500 (EST)
+	id CD54B6B0028; Mon, 24 Nov 2025 04:30:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 49FE16B0023
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:27:41 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B166F6B0026
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:30:00 -0500 (EST)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 579A312A15
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:27:38 +0000 (UTC)
-X-FDA: 84144972996.19.A4B9CFF
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C0C8320009
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:27:34 +0000 (UTC)
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF246B7F98
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:29:57 +0000 (UTC)
+X-FDA: 84144978834.19.F79CF6A
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1EDB02000A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:29:54 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X7nJ2UMz;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763976456;
+	s=arc-20220608; t=1763976595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bKk3rLELPtCaq6kSIZA6Ay0Og8Sjup640I4FGfHPm18=;
-	b=GOXO7F6ymeeMIMsyStnPCKEoVpY4eLJQPn2IYQPKjTDg4oS1VDne2brtmT+4pqkxefC82s
-	/LlnBatFxUe0R5sRFJ4x/hQKtgJHb7pQ19aB+wqmhUMUl/cURvAGJ2k+Zk2lB/6YgBREnm
-	plPfx9z7jx9uJelW4pMv+THD/YqYxyY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763976456; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=WIEzxFEC/PnkxmuAIhUbJI67YAunydQmi9QG1iFd0E4=;
+	b=Aw/epDZ4y+SDyVABL0a4L4oJ7aXfVZuMspnlYyDnLeuVO+dfbcMCkIEonRDRVIj42eCgaz
+	4MRSqXRUS/fmz8Tl9HCusJmO7EPhPoEkvoMocmmiJiNZ39YuQq2MbMtqZkVwDwHMImnhu1
+	zrbUzz5yz8ibmROtFF7JfwWM6wZKkEk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763976595; a=rsa-sha256;
 	cv=none;
-	b=hOBJGzx/jAmR25spoW5Rs/6OcojPWodnNARe8k17xZ8ddNjrJvFcNG5rSF3uRXpOh9z8Ik
-	wjg8SrksT77LoZTuYqdhE42OUWMEW4Nha8gb/ZOrjHdDmH8mSF3ci55QEfRgBk0hPXX5ci
-	avdiXUSJV6IjV00YrWf6Gn8WSkqodKc=
+	b=ttIdZoNre6SBKwOTkNdlBxLZBh6CiViyM7jZr+QCj1yasQsmz8aXUOSyfWDOa/R9oHESgb
+	ngvy3Ixpsivba3/mPqy6PkD4Ajy3hiLJEtoCnEldst5vWjbJS+4IjnPwjFy88eamgmC1Dq
+	c5N5FwV14xRDNujUeHXmzu2pEJoBMgw=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X7nJ2UMz;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <0f292735-4b13-417f-bc65-82cebd2040a3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763976450;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bKk3rLELPtCaq6kSIZA6Ay0Og8Sjup640I4FGfHPm18=;
-	b=X7nJ2UMzDJHfWZPxEov3YNED1bugp2p6Vp1qyvTPFJ0oXYrT9AKVJQpzimu8qNi35CPj9Q
-	OAFP3YGNXwaDjxXq8uiNGscumIaaWgPPHFajoszsXAnaAKQqpRaDkDIM+TzwHtJJ5SEp8J
-	xiwO/Ix4kH9Pyinf19KdM7TL+TZilQs=
-Date: Mon, 24 Nov 2025 17:27:23 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm/khugepaged: Fix skipping of alloc sleep after second
- failure
-To: Zhiheng Tao <junchuan.tzh@antgroup.com>
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, shy828301@gmail.com, zokeefe@google.com,
- peterx@redhat.com, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-References: <1763965157-58413-1-git-send-email-junchuan.tzh@antgroup.com>
- <dfe192a8-4a88-407a-83c2-976d953a2227@kernel.org>
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dFL9j2N5PzJ46lR;
+	Mon, 24 Nov 2025 17:28:57 +0800 (CST)
+Received: from dubpeml500006.china.huawei.com (unknown [7.214.146.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1BE031400D3;
+	Mon, 24 Nov 2025 17:29:49 +0800 (CST)
+Received: from dubpeml100008.china.huawei.com (7.214.145.227) by
+ dubpeml500006.china.huawei.com (7.214.146.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 24 Nov 2025 09:29:48 +0000
+Received: from dubpeml100008.china.huawei.com ([7.214.145.227]) by
+ dubpeml100008.china.huawei.com ([7.214.145.227]) with mapi id 15.02.1544.036;
+ Mon, 24 Nov 2025 09:29:48 +0000
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Randy Dunlap <rdunlap@infradead.org>, "rafael@kernel.org"
+	<rafael@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "rppt@kernel.org"
+	<rppt@kernel.org>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>, "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "lenb@kernel.org"
+	<lenb@kernel.org>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "mchehab@kernel.org"
+	<mchehab@kernel.org>
+CC: Jonathan Cameron <jonathan.cameron@huawei.com>, Linuxarm
+	<linuxarm@huawei.com>, "rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: RE: [PATCH v13 2/2] ras: mem: Add ACPI RAS2 memory driver
+Thread-Topic: [PATCH v13 2/2] ras: mem: Add ACPI RAS2 memory driver
+Thread-Index: AQHcWxSpDw4Z/LYIh0qhRo3faUcQr7T+KJmAgANquEA=
+Date: Mon, 24 Nov 2025 09:29:48 +0000
+Message-ID: <9165f50de6fa43edba7a3e6d99eebe8b@huawei.com>
+References: <20251121182825.237-1-shiju.jose@huawei.com>
+ <20251121182825.237-3-shiju.jose@huawei.com>
+ <af7b6cdc-c0a7-4896-ba6b-6bb933898d37@infradead.org>
+In-Reply-To: <af7b6cdc-c0a7-4896-ba6b-6bb933898d37@infradead.org>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <dfe192a8-4a88-407a-83c2-976d953a2227@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.195.247.74]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Stat-Signature: 66eyaut8b6k4upr3rteaiqxpw4t6tm5h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C0C8320009
-X-Stat-Signature: xikaosc9pww8qpeh5ah5y7w1fzo66u81
-X-HE-Tag: 1763976454-770848
-X-HE-Meta: U2FsdGVkX1/0/EaN6meYfekrLawlwr2oMMd75tm8SayuCPufkCtF27LZbjYR0r9LIN7/7C7roQtkQmOBEnmJx9MlXUchvBPt4f1klxiOyFWQKSAfHQYpH6uaaX27a+aJT1WaWJy1VBnWeqKb2EM+X158k1027mSf3itfMxGFvW5kJ0CnGfL09YknwsNcwFKo7wHu8lp6Xp18flaOmowUhuk3kl6EL8/91jwdQyYp3joio7eEYl+HEoWz14bwW3fsO8bM+9zmsv96pSqBD6QgmGqMwQCKoUueTTSQAKFl3InztlrVFME/KmmxZXNJMI8oIAlAB6XF5t6Wip4FLkGhAy3HCNknrFNZhQec/jsF/asxcUVleel60ApmG6NnFHoycmuE4Vg1oZFnjouvguJ3LQED5eQAoSaHucmA6dikzoaN5y6v/VqgbvGBIfU1Gx2D0ck88lnlyHaBEPP1x+cy38gguQhOh0fFCaJ3XVp2PMCVFX+n9fV91AaGTpLSmulJPjcJZ3W0YdCDW1GdN+AwNCxCp6Vz34brHQKXWx2C15ADzLO78XI8NGrU4VI6DUI/vxWiVeRWlfj5i3Z/o/PoVREwsj6CjfXEcTNozv+v8tnPzccLwmpXAp8kgcdl2/fA4MrEhNsIOsNbespnKx/6D2XUr44K6m6i2c2bPymPAVYZM4qvdwVPXTgc9QbVAKEo6uF3+Q0GJ4edoLQLs0ZZ465bCzsCta3yhUyLtMSujXjnlikzKE4M3R+ihPAFrvi2wkmLPyMro9EfEDAV0WznObmzhZjQZhMVXIxvJ8PiusS6S+4tXVbyXgsQBSEomVBXLKI74My/MbByFXvPC7rZ1lR4VoZLWmzOAKKPdDKBYl6VNiMTQ3fyTGMYJya3k+8gWuAY3SEIUmROU9xB9GZl8mKKZoKa1Jyb2L82UcR9P2c0L8XzHDhheVMNtQXsoR1gbZRrZGAAqb1KNvPdPFH
- KqVkEXIs
- //5dccQ6kdOT7q48DiOYOnew79M+SS3V+erYeUIG2652N9tJGGYunrRdTfj4Migbc55eIKAUKyS+I13kw8WY7GCyE+X714bnLNx+8rkgJq7iuY7JnjnuXp1Z8YxsQUPQWWD5UtU/jrTcPz8X+ihDT1UwprdH0f7SvECkUD3mQaTtoauo+Gvyj9T94DyNYBNwjGmcg0tKF9hX5DepO+CWZHClz3Q==
+X-Rspamd-Queue-Id: 1EDB02000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763976594-391824
+X-HE-Meta: U2FsdGVkX1+1mtqvetfvf9fbPTcndWys/yBc7eRkyyx8XoWjPrHEUJmW/2oNYSqIc42BjGac4989piEAVvhAXxtqSyWm+4wwQgdJXKc0Ic04fQaHAmY9iudnHcV90/3AQTkLtrLlpfzvTv9Unqxhc4yZsQSWDuY3VZ3QG65BsM7NEpm4TfIn/6UwOkcsShAvEpZZ/7aqjSpNNxIaliBTeH6XPx5EF9/qRpMj1a0vpMiONPxHehSm7mANTMIz4Co95AokawD6eKeKJhNayWguOvDiTw3QQRJfQCTRnGbeBVWpbNYpcNYLL7uPe/Qx5Bf9qFXZ88N4rM8ftDnM/0rpThmYPxEXmMvApvrvWfUF7hsLJQ+fiRuL5Lo1djxNnT0tbLNztOpZH7NEibDwT488+9Mze1oyhVRNbCfFsOAvj1ZhiXfzoKTJR02CWD0WiFKSU5eYtWbMgRXHgg9OGwvaAKDNPOY1nBYyfYXQBlu2+fwQx9KALsiDjRD+461OG4kMWOxVHjCQLa2L88t3sjBA2uZ+EdJOGFhUBeNq/y/OuJyKP2rUqUUHt5aWyhzyYilQLm6+yX4VKXJYIbhW2sbH8XGr/hUb7lsoa8JMivPA7u6rYHjbKuSz/Q3J8dbhjf49PwdjBDVpXJOiBTZ+ogqONsLrzq24G42iAoRExuYS/+RbFqaJbqZsspLlTuRGNDK4s4ZXP9KmztEOtVfgoFz5UninarRi7QMqra8SqDMrvr2cMVyNXsrIzMxGcnwVabQJaXd16JbvX4yMdTUXWB14j7cSTnleVhSoZ4imIhlyuvjZIQDHR+hps71kgA4dlaoeqvLee3o9xjCYHZ18Bl5HZO1zPlxbe2knLoC3UkMtAhCX1alMxbqtaaLGNfyUxjoYG/ugt8FZCq/t2QG9iu8bg0Dz1rmAjjTMxMbqE+EnujtxNbYnCgF8SQKP8X8B04hZCqCNVExD46cRFxDsd2Z
+ 7oQ8YZ+n
+ gE1KAcU1nPl/OpXEyBXYXu61DoonZl57sgnXnuvS+H+4SsZY01vyNnUm1tr1+oojqlnhc1tqwr4aw2c8BqFCAlfnXpSX/xlUdJEa4f4sgPaMHjBIn8SnUas3KmBKfB+XJuHTENj7Ds42GyGdO0ucpIwT0Os58mzQ7eBim4KyNdFlg1kCM+57mmW7NnMXceI+e0mGa90F0kcP5l0JrqkvWXtpBzl73pKaRO9rM5w2+IHo/3OmYVr6pv2vYsFaaSutOBCLTLcFjFlb/Yux0NXB3d5JjfRzDxQBfXSnBeCozZ5qURlGWBHJ5w6184WJQfO7J/ZgVsEfnK946SU8rES/lIXtUvovsOLEOI6hBnZ4dwcmQXcNMQxgi3t2W+Wt9gWE14jEWF9d2gqFHBejeEV4pRJxEUrE8DBzwjl6GdMsMgADErAjAh5TmmieZ7uvrFj7LsAA2hTpsrzL3R3EBmaxyEHsddyHLV3ZlJ6SPw05MiuQlMweQ9w8UYi9jZzmU8aTQ6ezw7ECQ7vyFL9JQqy+cbOMvjdyAFpjjY6bVShrluRWAtGqrNqjf4mN2uCyqARImSWfeqaFBuq00oCOzjKO2FmzmXzDHjLxd/PnS8uOw0mbcxXh5mbIryhjTRtJDZZRVsMar+TMsVsGQx178JmtpdOUxqUF+gdsGFYaWaIxsav1Pl8Ez/aXnG4ThM87CzawIjqTced5qoSEDVhcBAIsfF9fb+aYLtZPptfFiLhnPATFnm3uP0ueoF1q0kNuoGyU74q8s9OrPslYBb3VwvDMyCWZiSd0qSEKOiCVYUmGVAnN379ySAAKfgac+b38hmkAswAYoyNkMxUmuG4/Wgk6lLc+0Y8xcHf+b0OqEzlq8tV/i/ra9cI+ZLUJOXRyGBGzOvHVYXZVfj97K/8ytkQt3s58o9DPSfNaCLZ3ZCSEbP7RCuw02Y6ZwIl2AIfx3KC4c3AwIwNzxZgjBl7pwxLWzHQD1gKon
+ ZneT70Gm
+ UMG3F0ZixFXyBT8Bvpf2sg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,40 +126,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/11/24 17:14, David Hildenbrand (Red Hat) wrote:
-> On 11/24/25 07:19, Zhiheng Tao wrote:
->> In khugepaged_do_scan(), two consecutive allocation failures cause
->> the logic to skip the dedicated 60s throttling sleep
->> (khugepaged_alloc_sleep_millisecs), forcing a fallback to the
->> shorter 10s scanning interval via the outer loop
->>
->> Since fragmentation is unlikely to resolve in 10s, this results in
->> wasted CPU cycles on immediate retries.
-> 
-> Why shouldn't memory comapction be able to compact a single THP in 10s?
-> 
-> Why should it resolve in 60s?
-> 
->>
->> Reorder the failure logic to ensure khugepaged_alloc_sleep() is
->> always called on each allocation failure.
->>
->> Fixes: c6a7f445a272 ("mm: khugepaged: don't carry huge page to the 
->> next loop for !CONFIG_NUMA")
-> 
-> What are we fixing here? This sounds like a change that might be better 
-> on some systems, but worse on others?
-
-Seems like we're not honoring khugepaged_alloc_sleep_millisecs on the
-second allocation failure... but is that actually a problem?
-
-> 
-> We really need more information on when/how an issue was hit, and how 
-> this patch here really moves the needle in any way.
-
-+1
-
-
+DQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBSYW5keSBEdW5sYXAgPHJkdW5s
+YXBAaW5mcmFkZWFkLm9yZz4NCj5TZW50OiAyMiBOb3ZlbWJlciAyMDI1IDA1OjE4DQo+VG86IFNo
+aWp1IEpvc2UgPHNoaWp1Lmpvc2VAaHVhd2VpLmNvbT47IHJhZmFlbEBrZXJuZWwub3JnOyBicEBh
+bGllbjguZGU7DQo+YWtwbUBsaW51eC1mb3VuZGF0aW9uLm9yZzsgcnBwdEBrZXJuZWwub3JnOw0K
+PmRmZXJndXNvbkBhbXBlcmVjb21wdXRpbmcuY29tOyBsaW51eC1lZGFjQHZnZXIua2VybmVsLm9y
+ZzsgbGludXgtDQo+YWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGlu
+dXgtZG9jQHZnZXIua2VybmVsLm9yZzsNCj50b255Lmx1Y2tAaW50ZWwuY29tOyBsZW5iQGtlcm5l
+bC5vcmc7IGxlby5kdXJhbkBhbWQuY29tOw0KPllhemVuLkdoYW5uYW1AYW1kLmNvbTsgbWNoZWhh
+YkBrZXJuZWwub3JnDQo+Q2M6IEpvbmF0aGFuIENhbWVyb24gPGpvbmF0aGFuLmNhbWVyb25AaHVh
+d2VpLmNvbT47IExpbnV4YXJtDQo+PGxpbnV4YXJtQGh1YXdlaS5jb20+OyByaWVudGplc0Bnb29n
+bGUuY29tOyBqaWFxaXlhbkBnb29nbGUuY29tOw0KPkpvbi5HcmltbUBhbWQuY29tOyBkYXZlLmhh
+bnNlbkBsaW51eC5pbnRlbC5jb207DQo+bmFveWEuaG9yaWd1Y2hpQG5lYy5jb207IGphbWVzLm1v
+cnNlQGFybS5jb207IGp0aG91Z2h0b25AZ29vZ2xlLmNvbTsNCj5zb21hc3VuZGFyYW0uYUBocGUu
+Y29tOyBlcmRlbWFrdGFzQGdvb2dsZS5jb207IHBnb25kYUBnb29nbGUuY29tOw0KPmR1ZW53ZW5A
+Z29vZ2xlLmNvbTsgZ3RoZWxlbkBnb29nbGUuY29tOw0KPndzY2h3YXJ0ekBhbXBlcmVjb21wdXRp
+bmcuY29tOyB3YnNAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsNCj5uaWZhbi5jeGxAZ21haWwuY29t
+OyB0YW54aWFvZmVpIDx0YW54aWFvZmVpQGh1YXdlaS5jb20+OyBaZW5ndGFvIChCKQ0KPjxwcmlt
+ZS56ZW5nQGhpc2lsaWNvbi5jb20+OyBSb2JlcnRvIFNhc3N1IDxyb2JlcnRvLnNhc3N1QGh1YXdl
+aS5jb20+Ow0KPmthbmdrYW5nLnNoZW5AZnV0dXJld2VpLmNvbTsgd2FuZ2h1aXFpYW5nIDx3YW5n
+aHVpcWlhbmdAaHVhd2VpLmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHYxMyAyLzJdIHJhczog
+bWVtOiBBZGQgQUNQSSBSQVMyIG1lbW9yeSBkcml2ZXINCj4NCj4NCj4NCj5PbiAxMS8yMS8yNSAx
+MDoyOCBBTSwgc2hpanUuam9zZUBodWF3ZWkuY29tIHdyb3RlOg0KPj4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvcmFzL0tjb25maWcgYi9kcml2ZXJzL3Jhcy9LY29uZmlnDQo+PiBpbmRleCBmYzRmNGJi
+OTRhNGMuLjdlN2FmZDJiMmJhNyAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvcmFzL0tjb25maWcN
+Cj4+ICsrKyBiL2RyaXZlcnMvcmFzL0tjb25maWcNCj4+IEBAIC00Niw0ICs0NiwxNiBAQCBjb25m
+aWcgUkFTX0ZNUE0NCj4+ICAJICBNZW1vcnkgd2lsbCBiZSByZXRpcmVkIGR1cmluZyBib290IHRp
+bWUgYW5kIHJ1biB0aW1lIGRlcGVuZGluZyBvbg0KPj4gIAkgIHBsYXRmb3JtLXNwZWNpZmljIHBv
+bGljaWVzLg0KPj4NCj4+ICtjb25maWcgTUVNX0FDUElfUkFTMg0KPj4gKwl0cmlzdGF0ZSAiTWVt
+b3J5IEFDUEkgUkFTMiBkcml2ZXIiDQo+PiArCWRlcGVuZHMgb24gQUNQSV9SQVMyDQo+PiArCWRl
+cGVuZHMgb24gRURBQw0KPj4gKwlkZXBlbmRzIG9uIEVEQUNfU0NSVUINCj4+ICsJaGVscA0KPj4g
+KwkgIFRoZSBkcml2ZXIgYmluZHMgdG8gdGhlIGF1eGlsaWFyeSBkZXZpY2UgYWRkZWQgYnkgdGhl
+IEFDUEkgUkFTMg0KPj4gKwkgIGZlYXR1cmUgdGFibGUgcGFyc2VyLiBUaGUgZHJpdmVyIHVzZXMg
+YSBQQ0MgY2hhbm5lbCBzdWJzcGFjZSB0bw0KPj4gKwkgIGNvbW11bmljYXRpbmcgd2l0aCB0aGUg
+QUNQSS1jb21wbGlhbnQgcGxhdGZvcm0gYW5kIHByb3ZpZGVzDQo+DQo+CSAgY29tbXVuaWNhdGUg
+d2l0aA0KVGhhbmtzIFJhbmR5IGZvciByZXZpZXdpbmcuIEkgd2lsbCBmaXguDQoNCj4NCj4+ICsJ
+ICBjb250cm9sIG9mIHRoZSBIVy1iYXNlZCBtZW1vcnkgc2NydWJiZXIgcGFyYW1ldGVycyB0byB0
+aGUgdXNlcg0KPj4gKwkgIHRocm91Z2ggdGhlIEVEQUMgc2NydWIgaW50ZXJmYWNlLg0KPg0KPi0t
+DQo+flJhbmR5DQo+DQoNClRoYW5rcywNClNoaWp1DQo=
 
