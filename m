@@ -4,89 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD525CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:09:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D79FCFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:12:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A1056B0026; Mon, 24 Nov 2025 11:09:00 -0500 (EST)
+	id D50CE6B002D; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0792D6B002A; Mon, 24 Nov 2025 11:09:00 -0500 (EST)
+	id D28866B002E; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0086B002B; Mon, 24 Nov 2025 11:08:59 -0500 (EST)
+	id C65A96B002F; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D23F96B0026
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:08:59 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E1F258CA9
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:08:59 +0000 (UTC)
-X-FDA: 84145984398.18.AC7C154
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C8D1910000D
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:08:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VALS34IF;
-	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764000537;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B55AC6B002D
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50BD088765
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:12:24 +0000 (UTC)
+X-FDA: 84145993008.25.2F5B91F
+Received: from sender3-of-o55.zoho.com (sender3-of-o55.zoho.com [136.143.184.55])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5192CC0014
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:12:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=KZNv80RP;
+	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf10.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.55 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764000742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f5lQkhkz6OWoOGD4pV4m1keUAERPOd0HtXnoXM4yTyY=;
-	b=rq6Aq9Cn3oNSLRN1rbZcInbspFtlxW19IbCo+TPS//pg0Q+6dJ0A2f0xG1/i2K2NSbt3yW
-	d2mzjTkmU8YuNqAdzBR4Sj/wvDYJde3np7S4j7sSP0l9OwelMPEzOWhAodXOxWG5+nqgdS
-	5Iokcm0rsaotYaXapXzyqUI/C7FK7Gk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VALS34IF;
-	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764000537; a=rsa-sha256;
-	cv=none;
-	b=rBH/3/ZWLyTkHMIpQW7FwziSsHhJmIYjFyVGT8cQWWnYM/eEe4SkqqAxKYZK2/k3nGCLpB
-	bsm5GmhPX6FDwjfevkQJiEjiUeD/EAZjiHyDIZiiRmacD+hC9IhKBsxOhiR9gy12k25yFK
-	i4hb85rDZhQO9k89MbCn8HHwq/UXfxQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 113F96016C;
-	Mon, 24 Nov 2025 16:08:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BEDC4CEF1;
-	Mon, 24 Nov 2025 16:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764000536;
-	bh=2BS6q8sZUqbRQw+PypR81r2K3Iad19CiwoNjOq57AjI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VALS34IFSLGOWzKE86Cz+sq9UEoIbMnxZQq4h9tfr4CJIeWiHQ64hsMoVXWxbvc8U
-	 00Xc44eBXLhsL6x7EFH8vOa14frtzrX7vHlruquxOIDCIgL+2VqkKK+qRjQFeh5CGy
-	 O7D8mXQugoT+sSfQ8SgGYWGo3dZfeeb3QYOlmC4rUd2dTQHKG5fLpEiakhxeUeXNOM
-	 ISlxlNvbvQGmb7/RUfmXXHVHnVOdwuisdsBKpn0PNaVang3tEmj7z5UpgBZXgrVPi/
-	 EX5ZCy0Kh2NKo8GqmhrfdOAkrJLvVJzDdgTbd8yTUtgqHTP24hJXiBN6iRhnH8AK9Z
-	 N5KwNyZnIKqjA==
-Date: Mon, 24 Nov 2025 17:08:52 +0100
-From: Alejandro Colomar <alx@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-man@vger.kernel.org, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] man/man2/mremap.2: fix incorrect reference to VM_MIXEDMAP
-Message-ID: <qxqyvoxrtv57wo6honuz765fe2ffjny3k2zpbo3w32wqgm3eeh@shgzoq6dy7ei>
-References: <20251121081609.52462-1-lorenzo.stoakes@oracle.com>
- <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
+	bh=2EdBP1XqtHyMX0ny76Q3jYc9Yy634St8QHi/DxGItwc=;
+	b=Ss/Vc+65feOAd7mJUahCjmNJBJmNj1drBHDGN1BeQvllgiQ05ugwY7i93sA+7Ty4sXnS2L
+	jO/QikZHxicG0I4XuMVV6iATQxkkq4CODoKAuulZh294PHJa1yJtSNZh3/0sN5p9i9gcwX
+	4wvuvocWze0Bg+BVeR2yZ7k6B9OPZys=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764000742; a=rsa-sha256;
+	cv=pass;
+	b=V6M1hTrrXNjwx0wt9gAUycjJcfGMFecV/9XNc0i5G26ViB/myPxWbd25clRqBi+nuWMWmU
+	AidpUpFeoIqnPG81bzwiMf9Mb28PXgm6TAApfNvf8YSSoM80Mb01FCNp2JNUOSHh+kRz8a
+	Kgq4VJjhfIuCHlrbK9sxgNwEH/nsnnc=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=KZNv80RP;
+	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf10.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.55 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
+ARC-Seal: i=1; a=rsa-sha256; t=1764000723; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=BzIOdzUKWIkEnzY4GTl/s/ksHKbba/ShARt1e1tdNJDhv0l7qMdLtYTcOb2BmOJ4cMeDoah5ZeoYE1wYLSCvvYnXx74NhcOvjr+Q+RbeijxeOaxOxyP0HFZg41a9Tb2r2PX938w7TdCr251I2DZ69cbL5JaknYH6h4ttSsAaa/8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764000723; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=2EdBP1XqtHyMX0ny76Q3jYc9Yy634St8QHi/DxGItwc=; 
+	b=BST2ERv9kICJH/q1jmISFupc+RtXfVan8G9WrPBVwAmmMdLA1JsA8Q+OvROrOKXhsAl4fGfaOQ7ZfeJ5eofsr/ViNo3ZWT5nmzo1NYGBx0sRfIVOgmcq3stO8tAzcH/tjz1AA/vbHOprtr49IjN5lYQB3PxdSXrzyQKk9QvG7ow=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
+	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764000723;
+	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=2EdBP1XqtHyMX0ny76Q3jYc9Yy634St8QHi/DxGItwc=;
+	b=KZNv80RPi7uab3yqYDUczxIMtzB7tzKMHePs8oKMJ2gt5KiRFmjaFy9AjEUz463M
+	WILnT+o+kElPzxUxP7NYe55mVQ719+s8D/3rpUbdvUY2IMTIq4Wbtgoom34KDCb7wQG
+	kyUpmU8e+S/q4AxGoyB6XhhqkE49WJ+oFUu/Z184=
+Received: by mx.zohomail.com with SMTPS id 176400071990975.64503086294087;
+	Mon, 24 Nov 2025 08:11:59 -0800 (PST)
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+To: linux-mm@kvack.org,
+	dev.jain@arm.com,
+	david@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	janak@mpiricsoftware.com,
+	shardul.b@mpiricsoftware.com,
+	shardulsb08@gmail.com
+Subject: [PATCH v2] mm: khugepaged: fix memory leak in collapse_file xas retry loop
+Date: Mon, 24 Nov 2025 21:41:49 +0530
+Message-Id: <20251124161149.1302507-1-shardul.b@mpiricsoftware.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <703387c8908a609c3de966574dfcf481c5a97216.camel@mpiricsoftware.com>
+References: <703387c8908a609c3de966574dfcf481c5a97216.camel@mpiricsoftware.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="suhmvda3b27n3t6q"
-Content-Disposition: inline
-In-Reply-To: <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C8D1910000D
-X-Stat-Signature: k8tcsqpghyypbx43twwfmbiap76c9ggj
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Stat-Signature: qmsp9awqpkyqpnn4quuf31pegrms9rq6
 X-Rspam-User: 
-X-HE-Tag: 1764000537-976363
-X-HE-Meta: U2FsdGVkX1+5PqS4Do4Eiv4ObhxQBpXF63760luwy1SqEWGj5jnSGYistOwcI4qVkI6u46ZvODhBe4y4MLHEd8+a4fKJLS9rThgio5+i/ClXgZrbEZh9AoUQt2gFKdbuQjxM87T514MeGGv4Anh7Jhu+8dQFTYUXZYWjSVNhjNJUxgh9V7hxbfV1IqQgHZRDoL7GN7kTWvf0zM4qyPCIWDKGXnMZA7A25+l+kgzz2/xUuqX8rjeE9vspf0Gws8j0gsR5yvema4yQCnP+Dwa0fd/tWadc3LVa5eYsXWuzUafqo5tqMIBJ+cs3bjhKMh5DeIflkxmi9ERD4FgBuOw1pblhuSKVLmOTjFIr8TaQ9PB0QbOh0fYfBCh6nKwvM6kLpSnmw3kjO/U+4bwd7CVewCfNkgnRGfMAlHTFkndioBp2TeMcjFfKj1U+8q/XsSqhslv5CobJCPiAT3ZfhG6d2uKuzLOzfKvwZcKu/92A2I3AjQiHZFY77hvpMQ9yc2iNYr+ssdhi5W2jWZvo30hLVwxkj0nly3ZD+G3Kj9KKntiwfU6NUcGV8x5ctXh8zjgNXEVnMNYyJ8Jtb5SqBHbog8ZssiCkJTpUUKGitAND74RXun5fnqfZs6TDco0qLfjIUCKbPyvlVcgR0Zv2XNq/ekhJeFIUHJRDqP8FS15ZPw+YL/fKzdZGCRU5P2HXOq0JKUT2CXP2Hv+DgpdIUlQXtiOpG10lM96ZRRh0/tjKEPLNnkBCtyQvKDyp99ahSbvDMGo0y6tBlbktuinvTsxht1c7svYvazbW3mt2TjJ69NvESU6oqp+LRjG/nlHB39/Wh8A3ovkuS+3D0jvJDugpLz4B705XMGuzFnPbg2//nk6W1FZZRP6ItMtyzVGgUZ5czjHhL7FZ1lm1x/E1hwve3CNY8YSCB17eDAcyDo84lFh0xQqgeuHzL94/K18Jg9s7wwlPnK9+oXCUT5Uqg4W
- 7fxHRh78
- EkK2brL3S51BC0UUKmKzRhg4Ud1Z5kxLJpTKiL/wxe8A/v8+0vOhzpR5U+s5+XGoPSLmmBCn7hnfdlw9QDtmcedtes8d5o22M4+lEdH0oqCw2S7Re8QZKXyaeHgN5ELYYlelBQYYTPHNYILv3WwV3aD6vSeuf2xUMContrMmvk5ZxgApkb5W2/XHwFQPvAXmk7JGMxNqjeAa6llk0y490LILe7RJR/u4zXq4lviHb0CyuWiC8hug8lminy+205yaCQ/gSrPQSt6BKYQvCMS5vHD/np/OXfAdlVtJrmIjMh+Uuyhp73funkALwlrvLKZQTrSHtQeG2WYfDtWqFqeU9YRxItuLE3CbMz7g3kzidqSUKNgZLpTpVA1XanDaMy2yK1rgmgohhOPhjKSwUWdNLtAJIDcPMun78HXcZtOABNDSdkC0veOlYEGYMcXbJ7mxFKhMoDKhPsz52d9Y41g/id8maW/MDhmCBFkqU
+X-Rspamd-Queue-Id: 5192CC0014
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1764000742-708100
+X-HE-Meta: U2FsdGVkX1/O6fowKlG/QAF5e5mLLbJMlE3cQiEb1vvsgdMUPmAd0ItYxYsOYHh1ORFBVjVuzFxM2hBs9pQYIk2Lt+Zk7uhiAhmnZ9S517UmRctxnFL0wFNZBnvJQxrNMaeDQzCF8f4Xzstd8y1KxKPOQUAL1gkwfef0E9PBMC1SLhZmjt5xB284bHBZ5SfHn9Xi9Dtw+F+DP8bkh++BXinQ2XW5WT4aA78adIfbS783PlwmD0SQn66lgcVi8UnKFff5m6ZCAbJFWc4d07Jm8TXUnELUXFYpIdhlEmAsELZTSGfk17nnrApJdUK7bPTZxv/O5xrAj8Y+R7DYxR+6YcHNu3YaCX+rgu0OmebleE5Tu7VRFYYVsx5xLDsNdez8ZWS+j0YjdZXqkThp6Yy9CYVPnNOW04TEEr7BPAdakcoNQDmUMKXQa7vB98VKGkGdm2uqs6gzzNOfWxR2jy7th6eziUnybn57jaqAW0IGZR3T6f3TBjYHH307HhOveWMRLYEwP4ldHoFD2mGgIWi64/n9QFkFhoawu3GAOu/Vxnr+WWUoYImbAXmgn+jn8xWnrJntl+/n5ts5v0qyu2spwMJFX3gkn+Szxfu8jB92UDVAoGPkA6u1Vdi+0m4jnMqxHekH4VzsEkUlpQxx8ydWxwCYt19nMQkvGSBV18TgF/DxgTTsNpLP/PWesVsX5Wb1INlr0sFjVED6lux9RwbuXeBMLjAC0SfIorIekQvMhq2OFbRJg7JWc3Ba48hlnM15yLA9wDY8IAuCTvB5YM0paSEXD2Rbsvc61PMWjL12GCMJbB4FlsE2ToSQcejzTkYVqni9HCjtZTXzMkIkF7aTf4TD7pkWWl/M7VieoQqvsaeq6YzGVt3iQWqFh0pnXktk8F3890KbSoFb6urq9Ypq+RhnBVkZsEesr3+iswAr0bbWKoFencCwTS+l7GtIudYQLrpUHKpqsT2EqS3CBiz
+ BrYOKUsR
+ sD+IMq0Cttg8TIxjUKn8vuZnrwUHqA2c4vjboT8aP5KGRGqywlojJm1navsU6zLDLqMONSAQSELl32SBcpRf9EJqZkIXY/BkieBWzWVd0nSOYj8wJzvWLC0Jq7yVflNlpdmhCR0EKqv8mwqHeHaPbvMFi1KOwAjHM3l/ppJz8nC3e/mFPH2Wj5St4WfK7p13IK5cmSewKToDttBDNjrmroCbIhoWAoTl+AfesQNTOMQGdHu2HD1PUdeY4x2S2ZBCH7264AqKuUDNPQtsShC55lssVgAcx2l2BCyB6fDjrxb3QX2ytB6vTtNede1KCB7tkEsWgRjx8Fw+irakXPMyC/bGJExJ3KHbbx3HySoAzp+vC9/LfAQ8muBHDJwSFCDsKcnRAluiWkl1FLLQ7B1DWrj2ruDQNowJEv0r3NLorrahrPMF+0Ggkrz0rqlxSN6J37WXB/8d3+SrvYLDnbMs3AsrFjDhIHghpqzS8H0iR3tjHqt4DtBWaXJAcgEi2yqhri7PEKoNjjhHX7hcZLKmY8GnBVw5geKAJJkcp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,98 +113,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+collapse_file() uses xas_create_range() in a retry loop that calls
+xas_nomem() on -ENOMEM and then retries. xas_nomem() may allocate a
+spare xa_node and store it in xas->xa_alloc.
 
---suhmvda3b27n3t6q
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-man@vger.kernel.org, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] man/man2/mremap.2: fix incorrect reference to VM_MIXEDMAP
-Message-ID: <qxqyvoxrtv57wo6honuz765fe2ffjny3k2zpbo3w32wqgm3eeh@shgzoq6dy7ei>
-References: <20251121081609.52462-1-lorenzo.stoakes@oracle.com>
- <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
-MIME-Version: 1.0
-In-Reply-To: <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
+If the lock is dropped after xas_nomem(), another thread can expand
+the xarray tree in the meantime. On the next retry, xas_create_range()
+can then succeed trivially without consuming the node stored in
+xas->xa_alloc. If we then either succeed or give up and go to the
+rollback path without calling xas_destroy(), that spare node leaks.
 
-Hi Lorenzo,
+Fix this by calling xas_destroy(&xas) in both the success case
+(!xas_error(&xas)) and the failure case where xas_nomem() returns
+false and we abort. xas_destroy() will free any unused spare node in
+xas->xa_alloc and is a no-op if there is nothing left to free.
 
-On Fri, Nov 21, 2025 at 08:20:12AM +0000, Lorenzo Stoakes wrote:
-> On Fri, Nov 21, 2025 at 08:16:09AM +0000, Lorenzo Stoakes wrote:
-> > We actually disallow VM_DONTEXPAND and VM_PFNMAP for VM_DONTUNMAP, the
-> > manpage incorrectly references VM_MIXEDMAP. Correct this.
->=20
-> Of course I ironically typo'd here :)
->=20
-> VM_DONTUNMAP -> MREMAP_DONTUNMAP
->=20
-> :P
+Link: https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
+Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+---
+ v2:
+ - Call xas_destroy() on both success and failure
+ - Explained retry semantics and xa_alloc / concurrency risk
+ - Dropped cleanup_empty_nodes from previous proposal
 
-:P
+ mm/khugepaged.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> >
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index abe54f0043c7..0794a99c807f 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1872,11 +1872,14 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	do {
+ 		xas_lock_irq(&xas);
+ 		xas_create_range(&xas);
+-		if (!xas_error(&xas))
++		if (!xas_error(&xas)) {
++			xas_destroy(&xas);
+ 			break;
++		}
+ 		xas_unlock_irq(&xas);
+ 		if (!xas_nomem(&xas, GFP_KERNEL)) {
+ 			result = SCAN_FAIL;
++			xas_destroy(&xas);
+ 			goto rollback;
+ 		}
+ 	} while (1);
+-- 
+2.34.1
 
-Thanks!  I've applied the patch, with the amendment.  I've also added CC
-tags for all the people in CC.
-<https://www.alejandro-colomar.es/src/alx/linux/man-pages/man-pages.git/com=
-mit/?h=3Dcontrib&id=3D466c43360f3874a890e910610d4d01ea135d020c>
-(use port 80)
-
-
-Have a lovely day!
-Alex
-
-> > ---
-> >  man/man2/mremap.2 | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/man/man2/mremap.2 b/man/man2/mremap.2
-> > index 6a6df8601..cbe960f77 100644
-> > --- a/man/man2/mremap.2
-> > +++ b/man/man2/mremap.2
-> > @@ -206,7 +206,7 @@ The
-> >  flag can be used only with mappings that are not
-> >  .B VM_DONTEXPAND
-> >  or
-> > -.BR VM_MIXEDMAP .
-> > +.BR VM_PFNMAP .
-> >  Before Linux 5.13, the
-> >  .B MREMAP_DONTUNMAP
-> >  flag could be used only with private anonymous mappings
-> > --
-> > 2.51.2
-> >
->=20
-> Cheers, Lorenzo
-
---=20
-<https://www.alejandro-colomar.es>
-Use port 80 (that is, <...:80/>).
-
---suhmvda3b27n3t6q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmkkgxQACgkQ64mZXMKQ
-wqlUZQ/9G8bz0/Tk9TsQUt2t30n9mdcLfS4up17YIY9gkiX5QOpFzYwQhDnb/2/l
-NFDJhdYmZRFMWXZTlTGjWm+QuFgJob20bC0nlaxmc5jutrJ88iaLsG8ROfOUG2z2
-zptzKOSQHCzpQLfOQbfcnTuo1dUCOflhML3ddH+Qyxq1+fGx2/BA//kePrz3FuKv
-bDOCVMI+Jgaf57aX7+UvgfHa9y7NL7O3EK5YLdHYetbQQiCb2+tkK8ZMKWRfjgAX
-QmKaxJg4zxaoOn2FsSVv1oc9f+mYwrrd55IQJFKJdR0UKz43KCtk5vX7WI2jMCpq
-oXZugSKohCAvPTHZ91E3EkmckRBpB4ushPvc0DulWslWfSMyEBMmFZpWEI1E0uss
-Shu+HRi9Vr1DJLOyGu1TTSYKlsc5FrjfLW5oUGfEkJlmjkxpnbO58vNLHTKs03C3
-JsedzI4LioADh3d/rAl/QVJjzh0IPz9SS+ptfrd6Ivs0/DcdaOPakqUs0hVKeAta
-VinIgeDKzOMBClqW6uqiegp7lPf9xxHkJWcWKHoehde8qLvR7QyEwmTcDgRatIEk
-LPGl/gHCZ/rBiBqB2Dp40y8lpk0xZWN/MKlqogMJi/InqBasHcdCLSmwbp1ZYRFF
-vqfebiU6TO54ToQT2EJ8DGfuQU/1htsj6FyIFuSGZ11hyXU24Kc=
-=AiEG
------END PGP SIGNATURE-----
-
---suhmvda3b27n3t6q--
 
