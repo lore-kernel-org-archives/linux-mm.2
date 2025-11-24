@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C147CFD352
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 20:08:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AF97CFD352
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 20:08:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C29E6B00A3; Mon, 24 Nov 2025 15:08:22 -0500 (EST)
+	id 667596B00A6; Mon, 24 Nov 2025 15:08:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 999F86B00A6; Mon, 24 Nov 2025 15:08:22 -0500 (EST)
+	id 5A2386B00AC; Mon, 24 Nov 2025 15:08:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 888DD6B00AA; Mon, 24 Nov 2025 15:08:22 -0500 (EST)
+	id 4BECC6B00A6; Mon, 24 Nov 2025 15:08:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 77B6A6B00A3
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:08:22 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E00889B1C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DEE96B00A6
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:08:23 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3067898C4
 	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:08:22 +0000 (UTC)
-X-FDA: 84146587644.13.871F368
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 53FF480009
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:08:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jzF4WKdQ;
+X-FDA: 84146587644.23.7C26071
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1BA1B1C0007
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:08:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DZRxIUiK;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3MrskaQgKCIs71378pupv33v0t.r310x29C-11zAprz.36v@flex--smostafa.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3MrskaQgKCIs71378pupv33v0t.r310x29C-11zAprz.36v@flex--smostafa.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764014900; a=rsa-sha256;
+	spf=pass (imf20.hostedemail.com: domain of 3M7skaQgKCIw82489qvqw44w1u.s421y3AD-220Bqs0.47w@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3M7skaQgKCIw82489qvqw44w1u.s421y3AD-220Bqs0.47w@flex--smostafa.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764014901; a=rsa-sha256;
 	cv=none;
-	b=tPtPXXVC7OGjKe0ST8+Q/ClvT8iquwokDP/LcvcZc/6YKv5KV2WWssAKMzhIOpctGBkiCO
-	Gndgp+AHFWtFVTUUtQhWSA0Aew+LIjQy02fPaYgFJd7XhVkAVsCPXrIx9y6zZC3mp1fLY+
-	svycrBism6+kM6C3FMjDG52EVB4nWUc=
+	b=K1L4JSV1+45rl0XNJ2leB4N8979rVtMn9KPOGX1Jqmo+CFWUTiFDKe66TRv3bRHwx6JAPJ
+	IU0VU10YijzgI54GUraLcUiOEYPkwpnZZoE/KYC/2nuURPFfpILbHsaFz0TfbdsSenmlFp
+	Tzaml04nJoOX4d/0nKrtbZqBeGO9tbA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jzF4WKdQ;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DZRxIUiK;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3MrskaQgKCIs71378pupv33v0t.r310x29C-11zAprz.36v@flex--smostafa.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3MrskaQgKCIs71378pupv33v0t.r310x29C-11zAprz.36v@flex--smostafa.bounces.google.com
+	spf=pass (imf20.hostedemail.com: domain of 3M7skaQgKCIw82489qvqw44w1u.s421y3AD-220Bqs0.47w@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3M7skaQgKCIw82489qvqw44w1u.s421y3AD-220Bqs0.47w@flex--smostafa.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764014900;
+	s=arc-20220608; t=1764014901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hbVDtgb8rBp8ziR20f2VdPbPb3JDkOdyP9SxZ3vHtis=;
-	b=h3hNmbB0oDdbgZCE955O2iGE257SCaA7SW7lrQL0qzwBAAd2YnhH+b14ga1BUoUFw9lzL5
-	Bj4geL3AHliM0ukh5JqEHF0aevRZYd4s74B1WTqDp6JtPjIvgWmvmkMttquaNmV3wHdYCj
-	kMNfagXwEIjbY8deAGX+Y0cQkVeMi5w=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-429cbed2b8fso2629066f8f.1
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:08:19 -0800 (PST)
+	bh=Ngu03ozlByRiFoMKVX4H/wPPA/ikA9JmIOYfKZmpaLQ=;
+	b=AQi5J0T2OGIp+Rr7xQloKglpSLl/bq0v2MQifIIRTdxr/T6soeDXbPZpF3pBpaBwGJoo7i
+	9uXedwcDdAXhRA70pGqWVS7FvWHXG+oqsAvhby0fw4ewZyNTqhNvnQB8qVWbsfwcZkjOBt
+	HZsaKATntKikNgLxmqt3LF/vdRBrUcw=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b56125e77so2236337f8f.3
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:08:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764014899; x=1764619699; darn=kvack.org;
+        d=google.com; s=20230601; t=1764014900; x=1764619700; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hbVDtgb8rBp8ziR20f2VdPbPb3JDkOdyP9SxZ3vHtis=;
-        b=jzF4WKdQzbpcG4YpNhoqaBteO0DjDWTkCb/RLjgm9Ztv7rLOeHWZJMTyZwYl9lf4rR
-         cF3I7/vCyVp4kDob/yMhO5sO0kvVhGz7i2oLu42UGitA4cJtzMAUpPt77MxDyk59FjSh
-         notZel46rkiDaaxL61BkTfJIqFfGCZPanpJuaGGoPUgw6bcMJ+pO0YjNV2kJPkbk0hhB
-         d7bP6Dr0sCzTN0irkN6NuaqHg7ojBZjmqP/P+m10IbzklAVG1ymAqI4SfKij782+wovU
-         rrTmFm73X/t+4ZxS88R8YjHHRQ0f2NDMhHFc79dxmCgYd2Tajy3ZaQjPcFbCVQ3mSut6
-         aK5Q==
+        bh=Ngu03ozlByRiFoMKVX4H/wPPA/ikA9JmIOYfKZmpaLQ=;
+        b=DZRxIUiKF/0DuS9BgHtnBQgn0EMhPofq/knlgibHfJEYz8bKkyQSxUt5zQodpjty2s
+         kxoqFREXfSMLcMAruJM+0oHaj22vdn0llr41cDLbY0WII4xykNvK/1yW0Qof21U6JDEu
+         zbxeBPiL5Wl3il9/ze/cHPbL7tPZdxIgsWbOd7+cS715egZ5udsQM0W3WS5xLOdA+MuE
+         7w7D0JIIobzHW+06XrHML1PNamkBMbwxsVSWKiQKWrxYQIOiMuvawyHLbQRjnrNx6vQC
+         hkR74YiPLGQ6ngW2/fGauTlkinHBl8XGpP0badaWqBoOedAKYHA8uVmLKgjU655H9B91
+         TC1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764014899; x=1764619699;
+        d=1e100.net; s=20230601; t=1764014900; x=1764619700;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hbVDtgb8rBp8ziR20f2VdPbPb3JDkOdyP9SxZ3vHtis=;
-        b=TvsBwX/1IoW4pa9/Bt8Xvy+0RRO9cs7WiHk5fJyzVJSd6OfIFW0JHyPx/61hW8C0n3
-         Ij+Xu3YhgN8NDY5m8OYcX00xl5JsxGB7GsfRsHMO4kOofJ/uy5PsD1K7h4lciLG8I7NU
-         eGdGM3jzfhX6ZaTws/9Ag7Jj+9n3K6Yw8EpZpfLrpf+ln69EW37ZHNDjclG6qxrFBtgz
-         aJwD/j9KzemGzajAl5JJcVvApZZ4roLxM05IC96FL2tsURMXgqpw5v2lU6rmYSMDgw4n
-         Gde9M6AX+hnYMTC+yp6SNT4V7CmzzbC9xkWocL+Ua9aDrB9wThiqrhpEKLNdywnr0PVD
-         eALg==
-X-Gm-Message-State: AOJu0YzAZQ5nhMVhY6yFU0kk/Nxcx6A1ss1PNuIVD2veDtFp0XGdUFzp
-	TlARslFPG264v0C3swdi4WcOUxAF/5ZzgEwCgkmT33vjm5RllYs9oBtamAFXaQXA3iMTzUgs+h9
-	3A2T7VSvp+lRT51yYwXG+hSa5HdV+bLY/u8/hyumcMU5W+uVdzUXrkDWd3Qhr5CfhQuHQF/mjY0
-	tnkiYanb5JUTMNXSnEY83H9E5lHYXsejQ9fl1ObUG8fg==
-X-Google-Smtp-Source: AGHT+IELGZPf6DUHRoEs9He1ETOOPZ7Kr5+C1bY4CAkNyhB8outgBkxo6CndGZpyoRi8wlt+uNVgOnWJUV6+6A==
-X-Received: from wrbev10.prod.google.com ([2002:a05:6000:23ca:b0:429:8b8f:9db4])
+        bh=Ngu03ozlByRiFoMKVX4H/wPPA/ikA9JmIOYfKZmpaLQ=;
+        b=kNlPyjNxYYA/8so2lMH44wcChyKgn0Ydk9+NIbZpBxPCUvIkQjZwZhW4CBVp3FU8RX
+         wquU6b5+3TMUsZBkckqiE1exwm469YdIu3LZ0NWEP53Aj4WjADnisePg8WRV1o/rK5k7
+         astLxwJnMLbBwr5sVarKH3gM3KXaUEV7ziiW6qg3/kTJS81znoGkmGPvchAbvVTqXrOX
+         MvMhnuDB0cmDF3DOA5XwA+qOrTidazQHgdmNC9Cj8KKfk0LP31CMPW6edc2EaV7IEy3A
+         YYGg3zzQZflvymQdLpVZ7ENJxTTXwBF+HCyb4aeA8H4ZKSfGGCi3Ba19VFM2VEZEFnHK
+         Syeg==
+X-Gm-Message-State: AOJu0Yz737rvfl7851M0vKQ9AFUZ6cFJ/XErySKbFiqd5OU8keXbaZT9
+	qahMDQA2eurtzOS6EYmRmX6JPWIGmumw3UsXTJN6zILQ7jwnu4pR7tcp7/PGjGOWqQ7KCkKUV9T
+	8IE0UVg8oR4FXPdR9B6ZkrwhJrzdSr6f71wRyNT3TppBb2yWxvUSyMjLtH2GDkTQLkNMnWwnO0n
+	yBEASpUTTxoQIh+RwE6YzPCL0whb7fSCAKeKjrHSUMkw==
+X-Google-Smtp-Source: AGHT+IECVEpnx2vzM6OsM8NmV1jTz+svgzK08aynDQT0IzGD5OgDIXmVO/7cpeDrwW2l1WNEm+YJw4E2NM/CVg==
+X-Received: from wrqo3.prod.google.com ([2002:a5d:4a83:0:b0:42c:c2d6:28a])
  (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2384:b0:42b:3b55:8927 with SMTP id ffacd0b85a97d-42cc1cba760mr13711892f8f.21.1764014898472;
- Mon, 24 Nov 2025 12:08:18 -0800 (PST)
-Date: Mon, 24 Nov 2025 20:08:08 +0000
+ 2002:a05:6000:3106:b0:429:cc1c:c2e with SMTP id ffacd0b85a97d-42e0f1e3499mr164660f8f.1.1764014899687;
+ Mon, 24 Nov 2025 12:08:19 -0800 (PST)
+Date: Mon, 24 Nov 2025 20:08:09 +0000
 In-Reply-To: <20251124200811.2942432-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20251124200811.2942432-1-smostafa@google.com>
 X-Mailer: git-send-email 2.52.0.460.gd25c4c69ec-goog
-Message-ID: <20251124200811.2942432-2-smostafa@google.com>
-Subject: [PATCH v3 1/4] drivers/iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+Message-ID: <20251124200811.2942432-3-smostafa@google.com>
+Subject: [PATCH v3 2/4] drivers/iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
 From: Mostafa Saleh <smostafa@google.com>
 To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org
@@ -97,14 +97,14 @@ Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
 	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
 	xiaqinxin@huawei.com, Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 53FF480009
+X-Rspamd-Queue-Id: 1BA1B1C0007
 X-Rspamd-Server: rspam07
-X-Stat-Signature: s8sqgjrdxwt4sx7qkb3qyhbdtifhp6oh
+X-Stat-Signature: a5j1sgbbcqd1ynkurn8d98sig687zmnd
 X-Rspam-User: 
-X-HE-Tag: 1764014899-315642
-X-HE-Meta: U2FsdGVkX1850Ef0ZyQ4U1Le1SdUZHMSqqUPH9RAfsan5veqv4M0TUG8KfyY8OzyYgVmiMbBlbJFvW8hnrmKIi7myPpsChyV56kjhf+c7DqHploh5sOIfzfi39FqCAqmVlZWfQhILLYD3m4pXUI0luN7nScWNW5C7mobA3GQh6pLikTjSSp2vtHACZ8AjgtYqeRL0PtigWPuRPa7fCzxlub78IeXpWV/BpjSP1+1Y4Rucgi8C8yGr40rjE1j+Kxzaz7PriYLTGCyPj/cjEV3XKc13Sf2ZHxt2wgLO71ut1HVYrOgnR8bPn8zYK6gkjQlyKkn7rwFTogbIPHwOQq6U7xjlolKRqU+SmEA1VOfesTALeFUrarFHLj7y4xIlCavIddDchd1ikjAzE+xXe5bJ3T6p10/JblAowPerg+9iyYfnsp1x3gkJi63kAaf5Ot4IzK+30kmdxLqdvUcejnFquV65GcCMDjBREaUAvaOo5fOEJ9+3ryVHWGK6fTcYhwKm7NABzkm7h7yqA6WEIz5YWGjoRuQ52iZAwJ8Eak7V6jY8PdVFXITFUCEuo4SDKpF0lOLrNeQmo54UIKfwKixeQBjAYXU7TJ9vJbz3UFhSlWhRSox5fxXHBv3Zy+9F7VMvrnU6nYKqaUt9ttteQwndTV9w8dl8ieRyKl50PMcY3YHCKuRI6OGUb0Cw26Utn/AA48SygWT38pu9MfM4G7WXRVN7D6gH7A4UglhRMvRpONi0Z2QZFfHb0lbpC+fiOQw9UTsVvAovjkAUurBbmw7LVGFzbNsl/p2La4GDLgK1cUF86bWNNFh3fEwQ99rbrpHEqYqBZHCktEVb45OUoe4FEyEaxFn4HuM1DLXeFEplajcXClft89dvDF6iQtUSuDj11kWAB/HrgAwMxlUIOucnOBVGcNwKsc7eeuDEeswwFrggb5lkPM5xJs2Y2n6bjP0B3IUrVkBJosVivAOY/c
- nefJPlDg
- 9fgZ8jtOHCK6MyM65GcGx7Ivakp/smSnT1f5e4Kfc2bwzZ8jgSsZy63nczqnsVrlgzb5g/06YCOr8Vw36hO0V1ngLkJvY5zZGz9kmXjhYxWRHQyS2xQsysReFS/kqT9QQ6Fpbc2wCc840ZDF/F/ZRxrHgCsbamOKQAD62lTxHspXJeL7EGHkdcCNkQLnwkKaaHC8L3qllHSHRtAQ/Tg5+3tHLFm2Crh2dy4+T7waf73eDz99dmNDmtdQ0PdVLjiEctV/RaA15brbw6Ljb0aMp346bSCc6GyWjGoxA9bIVfLE5sWnss/lchvnN/CLGRtU62I7kcA28T+2tdrdHfxf+I2K0+rp+EgslM7HUtOiaKtu+54LC+LOpkWO0Ju1PU01r0rtbHbn4rwtDJWPYmI0x1VBDleh3Lej76/+o5W/jPRVLRA0BNbW4CKPhyvRwu/awNR81m990Fm0TsiTlxj5F/I1vCu8BbFP5BwXbmgcAUCrtfoYGPtji+S7bT/47CigtIY4CY9KCu0hvm0qkvV0dFXUXqw/D8s2DKyCNkmgK2A/m+0GrhbB9AQ5SuoXiyU1EoeKQ
+X-HE-Tag: 1764014900-161827
+X-HE-Meta: U2FsdGVkX1/xzRlZKjELgJ+wq4oFJCbNNSL0t6ZShMZSTvHSoabuGgmRVDfYEW49mKnfp0qvjkFhDYHIBUKNGXcvX+Tx7rI0YE3mCG4a9EbZ1ydFdPqtKo0P6bDmhVfHD9TY8posIrxUlXy/nBGXcGun89Cf8OwYnEVRsjkPE9pFvRA3X4FNmtSt4xKFWSfl9SQcIZwm/qPV9jQeZ1+eh1YxT0073wLdmI9EIke3IRwO5H4lGfG35n/ifJjBvPZ+OzUAIiMDMDCe9R/IB3lPlF0DG4rvcktIaa8EkaQ4RNGxNLMv5/my9RQbiU+FJmWN1Z+Lj82ehcYmeo/KBa/2A5pzTE9N8UtOIzo9mjWvDIxcsIth6jJQX5sNUT1romHM6YIfG3zKhyqYJkj0EtihB/z4uoV6s2t95hzKLzU+R20HrTGXo9csqjKV2SuvmYb8Ci90CSTJVkj1zMLM9JtEL9P6Y/zrJhQpRIsRXBJQlCruYf3QyujgpfB4Ny5XMhu8YgQ0CtNEqx6nqt4yzVOeo+eRJRKDXPifazthDfA2eZGD9AdLflJRuCy6SXVsOTJdL6SV3MNRpcmNXKQjedkVRVpJn2w8dmYKjW289Jb4Nm52FombG6DL570g7RrgaN7cMNDX0mRCehiSEvU3WfYWa3S+FbY9U2psRfmN30PNmBt7GUZ/MX1raIgMPwR+q8LJX6D0Y8sgYXD5meS2yXzc7DURhfMtm8X3f7+E6BrygRaAcqadM5G9runK592bM33rsV+a39I7NQNu4HNLrpP+RPpZ+fx2MgK5jJq9g3YgWR4eiFKrIA4QaV2u4bNmgLv4a9eqZANM+NiNxVVkwC/eGwwVFLDKB+480bzmWyoDEliMu7TKBOwFCidYH4HNs6Pm+yKAVCdkDy/GCybHTUruYXXyykTR89oPBEQP79qKBJC48O36kuctt1y88Ex2c0P+fkNNFfLywqjpCRPjndn
+ /AKIyYTi
+ f5+bnxE0l3MzwKf3FPQuOlv+JvpIYscFJtuHzC7fin2Jyu5liIIejEzYPX/Hie+c6JQ1gfRcXzUNG1ekifHudfBNaOfX9sWbptNBxLSQ01rva0RofQmDtMgxcHP/i45LEbJ6AIptcL61NJMjh6cqQtS3Sl64L7eKGF1O6iYhqDZdxdaJWzTp7IiB8XgnKwI70pBqe12iRPHiSaz7uQRU98Htse3t8YcMNRbvtDDoQjyot/RIxQnK6CI/Cc4e40L+oFGgAwrDTRTZm+IxmMO00TP2ygoHJWe4BGEsc/Qo6TciE31X9sbtN9lrpISMSErYqGGoWx7RGHBxZLogQ6Ag/WWbbZB2UXW8cPs2zNwsyK+D1Vm62S64efmzvkOMhESn2hwnwA9RQI2WcluYup545bTr4tA+gPDV6aaSC0qANuKOKTQUjzxGCTwozSeow577mhRQPLopa2UbBb7PRsDYtCh9oPv066cZX2TxP1JXIIVUHdQ2amWhF1hyJyWGD8adjCpl+KthhlAzgl61pmAUBGVEpn5dtJ0W2TXIen3G+atjWOQPk7++FumQCXm6gqjXJF+/uIz9HmyNrjh0ytzOaevKJKEKVk/mfgBRmM4CYFhGsTUjyVyKeH5p4s4cXRYj7kibfGFyasyuj0po=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,165 +113,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
-page_ext.
+Add calls for the new iommu debug config IOMMU_DEBUG_PAGEALLOC:
+- iommu_debug_init: Enable the debug mode if configured by the user.
+- iommu_debug_map: Track iommu pages mapped, using physical address.
+- iommu_debug_unmap_begin: Track start of iommu unmap operation, with
+  IOVA and size.
+- iommu_debug_unmap_end: Track the end of unmap operation, passing the
+  actual unmapped size versus the tracked one at unmap_begin.
 
-This config will be used by the IOMMU API to track pages mapped in
-the IOMMU to catch drivers trying to free kernel memory that they
-still map in their domains, causing all types of memory corruption.
-
-This behaviour is disabled by default and can be enabled using
-kernel cmdline iommu.debug_pagealloc.
+We have to do the unmap_begin/end as once pages are unmapped we lose
+the information of the physical address.
+This is racy, but the API is racy by construction as it uses refcounts
+and doesn't attempt to lock/synchronize with the IOMMU API as that will
+be costly, meaning that possibility of false negative exists.
 
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- .../admin-guide/kernel-parameters.txt         |  6 ++++
- drivers/iommu/Kconfig                         | 19 +++++++++++
- drivers/iommu/Makefile                        |  1 +
- drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++++
- include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
- mm/page_ext.c                                 |  4 +++
- 6 files changed, 79 insertions(+)
- create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
- create mode 100644 include/linux/iommu-debug-pagealloc.h
+ drivers/iommu/iommu-debug-pagealloc.c | 26 +++++++++++++
+ drivers/iommu/iommu.c                 | 12 +++++-
+ include/linux/iommu-debug-pagealloc.h | 56 +++++++++++++++++++++++++++
+ 3 files changed, 92 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 6c42061ca20e..dddf435a1c11 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2557,6 +2557,12 @@
- 			1 - Bypass the IOMMU for DMA.
- 			unset - Use value of CONFIG_IOMMU_DEFAULT_PASSTHROUGH.
- 
-+	iommu.debug_pagealloc=
-+			[KNL,EARLY] When CONFIG_IOMMU_DEBUG_PAGEALLOC is set, this
-+			parameter enables the feature at boot time. By default, it
-+			is disabled and the system behave the same way as a kernel
-+			built without CONFIG_IOMMU_DEBUG_PAGEALLOC.
-+
- 	io7=		[HW] IO7 for Marvel-based Alpha systems
- 			See comment before marvel_specify_io7 in
- 			arch/alpha/kernel/core_marvel.c.
-diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-index 70d29b14d851..c9c1a1c1820e 100644
---- a/drivers/iommu/Kconfig
-+++ b/drivers/iommu/Kconfig
-@@ -383,4 +383,23 @@ config SPRD_IOMMU
- 
- 	  Say Y here if you want to use the multimedia devices listed above.
- 
-+config IOMMU_DEBUG_PAGEALLOC
-+	bool "Debug IOMMU mappings against page allocations"
-+	depends on DEBUG_PAGEALLOC && IOMMU_API && PAGE_EXTENSION
-+	help
-+	  This enables a consistency check between the kernel page allocator and
-+	  the IOMMU subsystem. It verifies that pages being allocated or freed
-+	  are not currently mapped in any IOMMU domain.
-+
-+	  This helps detect DMA use-after-free bugs where a driver frees a page
-+	  but forgets to unmap it from the IOMMU, potentially allowing a device
-+	  to overwrite memory that the kernel has repurposed.
-+
-+	  These checks are best-effort and may not detect all problems.
-+
-+	  Due to performance overhead, this feature is disabled by default.
-+	  You must enable "iommu.debug_pagealloc" from the kernel command
-+	  line to activate the runtime checks.
-+
-+	  If unsure, say N.
- endif # IOMMU_SUPPORT
-diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
-index 355294fa9033..8f5130b6a671 100644
---- a/drivers/iommu/Makefile
-+++ b/drivers/iommu/Makefile
-@@ -34,3 +34,4 @@ obj-$(CONFIG_IOMMU_SVA) += iommu-sva.o
- obj-$(CONFIG_IOMMU_IOPF) += io-pgfault.o
- obj-$(CONFIG_SPRD_IOMMU) += sprd-iommu.o
- obj-$(CONFIG_APPLE_DART) += apple-dart.o
-+obj-$(CONFIG_IOMMU_DEBUG_PAGEALLOC) += iommu-debug-pagealloc.o
 diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-new file mode 100644
-index 000000000000..4022e9af7f27
---- /dev/null
+index 4022e9af7f27..5665fd7360e0 100644
+--- a/drivers/iommu/iommu-debug-pagealloc.c
 +++ b/drivers/iommu/iommu-debug-pagealloc.c
-@@ -0,0 +1,32 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 - Google Inc
-+ * Author: Mostafa Saleh <smostafa@google.com>
-+ * IOMMU API debug page alloc sanitizer
-+ */
-+#include <linux/atomic.h>
-+#include <linux/iommu-debug-pagealloc.h>
-+#include <linux/kernel.h>
-+#include <linux/page_ext.h>
-+
-+static bool needed;
-+
-+struct iommu_debug_metadata {
-+	atomic_t ref;
-+};
-+
-+static __init bool need_iommu_debug(void)
-+{
-+	return needed;
-+}
-+
-+struct page_ext_operations page_iommu_debug_ops = {
-+	.size = sizeof(struct iommu_debug_metadata),
-+	.need = need_iommu_debug,
-+};
-+
-+static int __init iommu_debug_pagealloc(char *str)
-+{
-+	return kstrtobool(str, &needed);
-+}
-+early_param("iommu.debug_pagealloc", iommu_debug_pagealloc);
-diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
-new file mode 100644
-index 000000000000..83e64d70bf6c
---- /dev/null
-+++ b/include/linux/iommu-debug-pagealloc.h
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 - Google Inc
-+ * Author: Mostafa Saleh <smostafa@google.com>
-+ * IOMMU API debug page alloc sanitizer
-+ */
-+
-+#ifndef __LINUX_IOMMU_DEBUG_PAGEALLOC_H
-+#define __LINUX_IOMMU_DEBUG_PAGEALLOC_H
-+
-+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-+
-+extern struct page_ext_operations page_iommu_debug_ops;
-+
-+#endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
-+
-+#endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index d7396a8970e5..297e4cd8ce90 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -11,6 +11,7 @@
- #include <linux/page_table_check.h>
- #include <linux/rcupdate.h>
- #include <linux/pgalloc_tag.h>
-+#include <linux/iommu-debug-pagealloc.h>
+@@ -5,11 +5,13 @@
+  * IOMMU API debug page alloc sanitizer
+  */
+ #include <linux/atomic.h>
++#include <linux/iommu.h>
+ #include <linux/iommu-debug-pagealloc.h>
+ #include <linux/kernel.h>
+ #include <linux/page_ext.h>
  
- /*
-  * struct page extension
-@@ -89,6 +90,9 @@ static struct page_ext_operations *page_ext_ops[] __initdata = {
- #ifdef CONFIG_PAGE_TABLE_CHECK
- 	&page_table_check_ops,
- #endif
-+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-+	&page_iommu_debug_ops,
-+#endif
+ static bool needed;
++DEFINE_STATIC_KEY_FALSE(iommu_debug_initialized);
+ 
+ struct iommu_debug_metadata {
+ 	atomic_t ref;
+@@ -25,6 +27,30 @@ struct page_ext_operations page_iommu_debug_ops = {
+ 	.need = need_iommu_debug,
  };
  
- unsigned long page_ext_size;
++void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
++{
++}
++
++void __iommu_debug_unmap_begin(struct iommu_domain *domain,
++			       unsigned long iova, size_t size)
++{
++}
++
++void __iommu_debug_unmap_end(struct iommu_domain *domain,
++			     unsigned long iova, size_t size,
++			     size_t unmapped)
++{
++}
++
++void iommu_debug_init(void)
++{
++	if (!needed)
++		return;
++
++	pr_info("iommu: Debugging page allocations, expect overhead or disable iommu.debug_pagealloc");
++	static_branch_enable(&iommu_debug_initialized);
++}
++
+ static int __init iommu_debug_pagealloc(char *str)
+ {
+ 	return kstrtobool(str, &needed);
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 59244c744eab..4d1dc321e400 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -18,6 +18,7 @@
+ #include <linux/errno.h>
+ #include <linux/host1x_context_bus.h>
+ #include <linux/iommu.h>
++#include <linux/iommu-debug-pagealloc.h>
+ #include <linux/iommufd.h>
+ #include <linux/idr.h>
+ #include <linux/err.h>
+@@ -231,6 +232,8 @@ static int __init iommu_subsys_init(void)
+ 	if (!nb)
+ 		return -ENOMEM;
+ 
++	iommu_debug_init();
++
+ 	for (int i = 0; i < ARRAY_SIZE(iommu_buses); i++) {
+ 		nb[i].notifier_call = iommu_bus_notifier;
+ 		bus_register_notifier(iommu_buses[i], &nb[i]);
+@@ -2544,10 +2547,12 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
+ 	}
+ 
+ 	/* unroll mapping in case something went wrong */
+-	if (ret)
++	if (ret) {
+ 		iommu_unmap(domain, orig_iova, orig_size - size);
+-	else
++	} else {
+ 		trace_map(orig_iova, orig_paddr, orig_size);
++		iommu_debug_map(domain, orig_paddr, orig_size);
++	}
+ 
+ 	return ret;
+ }
+@@ -2609,6 +2614,8 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
+ 
+ 	pr_debug("unmap this: iova 0x%lx size 0x%zx\n", iova, size);
+ 
++	iommu_debug_unmap_begin(domain, iova, size);
++
+ 	/*
+ 	 * Keep iterating until we either unmap 'size' bytes (or more)
+ 	 * or we hit an area that isn't mapped.
+@@ -2629,6 +2636,7 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
+ 	}
+ 
+ 	trace_unmap(orig_iova, size, unmapped);
++	iommu_debug_unmap_end(domain, orig_iova, size, unmapped);
+ 	return unmapped;
+ }
+ 
+diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
+index 83e64d70bf6c..454303ec09c2 100644
+--- a/include/linux/iommu-debug-pagealloc.h
++++ b/include/linux/iommu-debug-pagealloc.h
+@@ -8,10 +8,66 @@
+ #ifndef __LINUX_IOMMU_DEBUG_PAGEALLOC_H
+ #define __LINUX_IOMMU_DEBUG_PAGEALLOC_H
+ 
++struct iommu_domain;
++
+ #ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+ 
++DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
++
+ extern struct page_ext_operations page_iommu_debug_ops;
+ 
++void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys,
++		       size_t size);
++void __iommu_debug_unmap_begin(struct iommu_domain *domain,
++			       unsigned long iova, size_t size);
++void __iommu_debug_unmap_end(struct iommu_domain *domain,
++			     unsigned long iova, size_t size, size_t unmapped);
++
++static inline void iommu_debug_map(struct iommu_domain *domain,
++				   phys_addr_t phys, size_t size)
++{
++	if (static_branch_unlikely(&iommu_debug_initialized))
++		__iommu_debug_map(domain, phys, size);
++}
++
++static inline void iommu_debug_unmap_begin(struct iommu_domain *domain,
++					   unsigned long iova, size_t size)
++{
++	if (static_branch_unlikely(&iommu_debug_initialized))
++		__iommu_debug_unmap_begin(domain, iova, size);
++}
++
++static inline void iommu_debug_unmap_end(struct iommu_domain *domain,
++					 unsigned long iova, size_t size,
++					 size_t unmapped)
++{
++	if (static_branch_unlikely(&iommu_debug_initialized))
++		__iommu_debug_unmap_end(domain, iova, size, unmapped);
++}
++
++void iommu_debug_init(void);
++
++#else
++static inline void iommu_debug_map(struct iommu_domain *domain,
++				   phys_addr_t phys, size_t size)
++{
++}
++
++static inline void iommu_debug_unmap_begin(struct iommu_domain *domain,
++					   unsigned long iova, size_t size)
++{
++}
++
++static inline void iommu_debug_unmap_end(struct iommu_domain *domain,
++					 unsigned long iova, size_t size,
++					 size_t unmapped)
++{
++}
++
++static inline void iommu_debug_init(void)
++{
++}
++
+ #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
+ 
+ #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
 -- 
 2.52.0.460.gd25c4c69ec-goog
 
