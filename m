@@ -4,121 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5A4BCFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:16:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C1C3CFD318
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:22:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A7146B0022; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
+	id 5C5376B000A; Mon, 24 Nov 2025 11:22:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4574B6B0023; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
+	id 5759C6B002D; Mon, 24 Nov 2025 11:22:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 392F36B002A; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
+	id 48C266B002E; Mon, 24 Nov 2025 11:22:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2754C6B0022
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E71FA13ACCB
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:16:03 +0000 (UTC)
-X-FDA: 84146002206.29.316F034
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0DA3916001A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:16:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=igl0mxAp;
-	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 367886B000A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:22:06 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DEDE12D9AB
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:22:03 +0000 (UTC)
+X-FDA: 84146017326.05.AB452CE
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 40B1140003
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:21:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="CYd/G4C9";
+	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764000962;
+	s=arc-20220608; t=1764001321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6beLxcxpvJofFupu+Pp8rnFaBGMhE6ymVXBxzN7ScaU=;
-	b=D+eYgvcDuB2cUvJoWtOHiicTPeTz/Pr3hzLFAA/zsGvzpyWYgpa0BRE3br9Z56gktLe/Pk
-	xdS1F55V2WstWXeBLxTmFG0IN1CT3SR0AZmL8IBslA9ugGplWuQ5G1yrUyxiWneGaxchU/
-	Pc7yJVZ6eF42TD0hOf7LHgQZySqeTek=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=igl0mxAp;
-	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764000962; a=rsa-sha256;
+	bh=7WX90pJ5tXKEJjUZci6+pSEheLnjdAzO/pRFmPh4C/M=;
+	b=evZRp9Ybz83AGwm+yHSY1InSi6pO1te83vsJTqVl+95EUAU3YD/NNMrs7SWsEPwK3MFRUn
+	KdWUlDet1Fu/zuL38vXbbt/lZ1G8huF+ulKJVizBOLLAzUdkQ+ZXniufG0UcLeqlOzu5WZ
+	u8B8SOHCGt5Tn9iAlmsteXpV6frRDYo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764001321; a=rsa-sha256;
 	cv=none;
-	b=vQbFg70HdwC8vOKsDahg1vvGiVhEkuJwL+n6BaNvhUycN0ZaZKdmW/9fpgEWeb7WWyVFAF
-	9VwqK5C+Kym1ylzcoLFmn4ki17dwJjEfMZJEybsmeU/W9J53h0xbx51mIeZ2jF03z/1BD9
-	jbsJk1PNdlG16vOpGOBb6Aoyi421MXE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=6beLxcxpvJofFupu+Pp8rnFaBGMhE6ymVXBxzN7ScaU=; b=igl0mxApDDmV2CGkLDpRPW/MOV
-	lUKY9WvBVk+fufApJzqDbEXQf5rEr6so61OrNktZy34q14BqvRZ6+jM7Jqg2URrAin2LY2s4DO3+a
-	XgF2W3630wCBBVsBuZ/1tqr7rne6tvArqQzkYx3+uCBd/7/K88Gnb6Gexrq/6lnMWarSEjSrwPLEK
-	vHmO4j9kSVFRVa2ao2P1zVEPPTxOqhWAnby34t4Dm26QSHWpslL8zfaTbeFjuxR162JXEagBqnKrG
-	CctHhxiKkXHm9pXkUgY2/Vw4NdrkNr1VMIpkh3FRdONuEXNDNJ/FqHFaZHzhug/C1K7OynWOaxEM/
-	4Rc4Ywmg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1vNZCu-0000000085j-0CbX;
-	Mon, 24 Nov 2025 11:14:29 -0500
-Message-ID: <340fd55d9d7d9436f18205bb458e9bd469b36c6c.camel@surriel.com>
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song
- <kasong@tencent.com>,  Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,  Barry Song
- <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, Chengming Zhou	
- <chengming.zhou@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, 	pratmal@google.com, sweettea@google.com,
- gthelen@google.com, weixugc@google.com
-Date: Mon, 24 Nov 2025 11:14:29 -0500
-In-Reply-To: <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
-	 <20251121114011.GA71307@cmpxchg.org>
-	 <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
+	b=LKZZ/aLY74dYjo2AdRJdPOF669BcTUKCfUPz6JJ9Mn8LJHFbEWlyQ22X30eK/vS3vUGNA3
+	cgZ2reSjcx8L7dC68Zfh4dPEfqn8VA8F8JwStfU29+xknUxzsDVzX6Px2jtyiXVrcV0H7n
+	6nN6NQJvO+5PLCYDcIOBOMYWv2O/+Zg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="CYd/G4C9";
+	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=7WX90pJ5tXKEJjUZci6+pSEheLnjdAzO/pRFmPh4C/M=; b=CYd/G4C9W9UeNAzrhTfgnXJ7YO
+	VOPKxJQJaMbZ55ev+OV74Ppn7hX9MSC9cBIxRm3Nqokzq4ptw4omqFhnFJKkjhf4VapV++OjIYUO+
+	3eG2URmbIu9fLo/iB6Cmy7zQfy2I3C0iHUYlNsRI8dE/wsjVba2WzxYCNSC4bQDWAHIgsXEtKYaU6
+	+Q+4ibDzfBLu+7MAiWIEJEy81cAFLuRuMFdEpN2FdJwZbThpClRpWsccaLIWENNf5r61qSPeuTd7N
+	dYAVRq8ksK4DGBuAthJhcbw7mhrfN78R8gBkJ1VO/7OONBlf5t6HDB/s0EPsLJggaC3I9XMwZLF04
+	nkA/+TsA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vNZK3-00000007Dpa-3piz;
+	Mon, 24 Nov 2025 16:21:51 +0000
+Date: Mon, 24 Nov 2025 16:21:51 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Cc: linux-mm@kvack.org, dev.jain@arm.com, david@kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, janak@mpiricsoftware.com,
+	shardulsb08@gmail.com
+Subject: Re: [PATCH v2] mm: khugepaged: fix memory leak in collapse_file xas
+ retry loop
+Message-ID: <aSSGH6IBIuK64EUX@casper.infradead.org>
+References: <703387c8908a609c3de966574dfcf481c5a97216.camel@mpiricsoftware.com>
+ <20251124161149.1302507-1-shardul.b@mpiricsoftware.com>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0DA3916001A
-X-Stat-Signature: yd1gcnww814ck7h1utpa3we1utaxcg93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124161149.1302507-1-shardul.b@mpiricsoftware.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 40B1140003
+X-Stat-Signature: 1zpdkohd5tx9dgbnbpsaqorwriptpouf
 X-Rspam-User: 
-X-HE-Tag: 1764000960-413032
-X-HE-Meta: U2FsdGVkX18tBNs4q5rfuBn5d/JvrrG1WKpI28HpNhiD5dpIAsfeUvur7thLs8aTcDXsbn5vmvS4S+O8VIwwKS1b0vha9bk2cmzwd9pQWXBS++W4lHNDRCS5lSgPQnrWpeGuiwWuT0j9eiYC7cL0yp1EWoJnbjgzlx6KQOwL+HSn2bCx1cYdab4+Ybmkc1Ses+Iu53to9L4LNAKDRIUbo1SuDDVrv1wgHgb8ETDxsw+XU+BRcXv7WangG1YM6abL3owerjj6dnpBo6xcLgtsHXToC4LoHi7IPtj8h5UwlMI6YpGx3ZNax8yF6IgY2A3ApMqM6D8EPc4uSTLm+ngnabxnjz+Ljr7bUgJdLKNHxhsVJ5v5b3l6MI2kjQZ2kmpYCMQ7NGzHCe5+XBQ6+Who+Oad1WC0FICLV5ydk3IBaefpPhkkrXgJa9gwypYaa8Qti0JS6+wI+k9rm+nfhRTWMSvPyADHLts4tuMBi3N694S92vKefnpbJKjfCfdxQ0xoR7aQ+5Co7oTgQ8XkimQqxmr5yzrW2rYzia2J03W95NtEK2ZYtwwbk3yNfTwosgGPypufzd3Ehz5qBNXMZOehiv3199OP4dE6eJq9xJ0IP3asf53K0g9ugeGuYEUvCfd0maejWGrQqrzjVp7LXd0SocajU22XczvQtk5BqnbB+vnZ2lD1g41tiCq2rtCi3RhiesoZpcaAzhOfT3q8sMCn2st8VBacL7TIRw+LNMH3wHxYbAiiwd9Io4gHU56eTIO7ngQF8J/5LTKJ3HKZKq6er9Ecu6Bs2OTdZEwdfGYob2YvdM5SeFxE2/xuVdoY/+u0DjAig3bKkUXk5VCusbM1FKDf6a8uQ83BihGT06Zpv+McBiqObbTnZC4Hda1XOaTjlmkd/OQA87HHY/XL8mB1GEpQY4XuuPGD8VzdbcjR+t6fc3kdOuTCpJ4aAv+IPB3bKbBLVLv1ET+Lm9s/RtF
- UFdzPen/
- S7TahfBG7SdiDwkQkiEzBg0f59dn4wGJohOws6194nAgE032WAJ4NeCTyFoMuuLxuZJ6ysel8I19r/hQKW0EWgsnK2MXWZyBqngcKQHOPUsC0aum+7mVJB+aT0TpaNiOC8F/G71lVBcj2c8vlm5SpQc6UzL3CRn/h0ecTIiCyMJt3y5rEAgYOMjHUoKeMDWEWUHAW/70xf13h8bjQ+DxLpfcu85zDNjXnyLAWgq2Onm4CIlNaT/vcV0QQK7dqJXXxW2B3kqq2mIesbCv52ZaDWW5afQ==
+X-HE-Tag: 1764001319-10581
+X-HE-Meta: U2FsdGVkX19TQk/wgEpr7OY3ZZtribS0zw21eE9qMMab+KwQEVh9lS7S+IcDrG6diQoS47oSq8C8hd3yVBkPDftOwfz+kwgGbf4KwR2XEpetmfyOjhDfAy5qIUC8r64cfO25wEfyJusoY1OjIQeSDEFvCEM4SWPu4FBUE6p768TQtUVL7vSch0vJXo/O56YWSMRy/KX5r0IM9E/v+yDogv7q/oXOztuIMPoDz2+4dDTEeYbFQGOYfWy/lu+MtJtclEZBLQHyl1QkG5TjpTesKb3HKMrZ1d8jaTA3SsAgV/VuJe0KHIAxvMjdzA4vlG9sUPWkIhKPTM7PHekA0/KEzlDOf/CODnEP7DS05dGyz+9oeJ/0Y7SyIvgHsWb/VI3B/rZcj4HFH8YWeeoFMndm8lr2uVpAvEYK2AyjQGeOmRkN4fVZ7zC/6f2YoNbOdc3GA7XMLS+6zRj4zPHXXr5ctgl1Awbwv/VbRb/Vp+Cp4kqnwCN7c8HWB2lUlqmI/vUGyDU9BQFmNFgoH9xMB45pgIdkpTWoD8fuXl/1fUwoCxs3HT+HuKxkYsJw5GyXdo6FXP9qSULl+PZVMAT9TItTvMGAHbRXkOLTRvjsv6U1SkO1GxhDA5RYANK0p47UyRyjx1GWylDkgqzk9uxr0TwDjdlUfT50LuJAJKKD+LnrGlkldxO8RTVW0Xqg+zZhHF+Iqhel9sJPgUMdCol6QghvkZeQ5erNJgZ1D5NodzIGe4VKxJe1d2ktJp5zkxUt+7v5UEJtDykE9iLJFNRnOzGyO+U1yF1Hpe8n1Zs3DHBiJWMzUOL109C7M6uRi/oI42qUZvwp8DpkTe4xT0dZ0DtsGHgVOQuhhepATNdv09fdS9EgLnQrfWMfq6eLAtcibLMfWNTi57xa7pS3bL8TZCcu0mWZyp+9P5RUCBIpEgiNg6MojC2pzsjellcMA/Dk3M1htkYaphHyAZvVjv6uikP
+ Dji9oAnN
+ xEZ9s3+OTik+XV9yeKRqAfqQY/oJ+A7mRVTyoxehdpYVuHFtb2fAmAEmXzrd0h+5MGWx1l/ctHzbtBjHjPhAJzvp+3oS7NeBPGGQ0ufHOB3N5VIMt+VsP/EucXERORNJtEJ8mGrELjH3JjG5Dmgl6mgI7RsSrC2gjuS98WqmmS8qInx9rJIojQQsyf57QlqDmrIp08ePMHXucr65nWqTBGEVd/4Q+sBnAhZPWKYEURV45WsYWlPxSspwuoEW3Caw/iZ/CEAPuHWmmYno2GV8YxTtMceF4nkyS3Db+GaPXja865Rr4fBh6u6DQICkUCECc9Ea5nPppLFx5Ts+YRaU83KI+47ymTVPeAtttHEDjo2+4/VRpcBe3TjaCIk1bjpBWcBT1Lv6xmZYJQWTvVgKrOXIZPlqrHeL99dUErg6BkC4+xViL1HISnqI3WYKEjd3bTy8XA0InV5DR1TGOoCl6iE+l4ASu5sx31uxXIV1f7hFc5PhJE9RBzEdKkF7veXcHWgiC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,28 +97,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2025-11-21 at 17:52 -0800, Chris Li wrote:
-> On Fri, Nov 21, 2025 at 3:40=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
-rg>
-> wrote:
-> >=20
-> >=20
-> > Zswap is primarily a compressed cache for real swap on secondary
-> > storage. It's indeed quite important that entries currently in
-> > zswap
-> > don't occupy disk slots; but for a solution to this to be
-> > acceptable,
-> > it has to work with the primary usecase and support disk writeback.
->=20
-> Well, my plan is to support the writeback via swap.tiers.
->=20
-How would you do writeback from a zswap entry in
-a ghost swapfile, to a real disk swap backend?
+On Mon, Nov 24, 2025 at 09:41:49PM +0530, Shardul Bankar wrote:
+> collapse_file() uses xas_create_range() in a retry loop that calls
+> xas_nomem() on -ENOMEM and then retries. xas_nomem() may allocate a
+> spare xa_node and store it in xas->xa_alloc.
+> 
+> If the lock is dropped after xas_nomem(), another thread can expand
+> the xarray tree in the meantime. On the next retry, xas_create_range()
+> can then succeed trivially without consuming the node stored in
+> xas->xa_alloc. If we then either succeed or give up and go to the
+> rollback path without calling xas_destroy(), that spare node leaks.
 
-That is the use case people are trying to solve.
+Then wouldn't freeing the excess node in xas_create_range() be the
+correct fix, instead of requiring the caller to think about this?
 
-How would your architecture address it?
-
---=20
-All Rights Reversed.
+> Fix this by calling xas_destroy(&xas) in both the success case
+> (!xas_error(&xas)) and the failure case where xas_nomem() returns
+> false and we abort. xas_destroy() will free any unused spare node in
+> xas->xa_alloc and is a no-op if there is nothing left to free.
+> 
+> Link: https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
+> Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
+> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+> ---
+>  v2:
+>  - Call xas_destroy() on both success and failure
+>  - Explained retry semantics and xa_alloc / concurrency risk
+>  - Dropped cleanup_empty_nodes from previous proposal
+> 
+>  mm/khugepaged.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index abe54f0043c7..0794a99c807f 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1872,11 +1872,14 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	do {
+>  		xas_lock_irq(&xas);
+>  		xas_create_range(&xas);
+> -		if (!xas_error(&xas))
+> +		if (!xas_error(&xas)) {
+> +			xas_destroy(&xas);
+>  			break;
+> +		}
+>  		xas_unlock_irq(&xas);
+>  		if (!xas_nomem(&xas, GFP_KERNEL)) {
+>  			result = SCAN_FAIL;
+> +			xas_destroy(&xas);
+>  			goto rollback;
+>  		}
+>  	} while (1);
+> -- 
+> 2.34.1
+> 
+> 
 
