@@ -4,67 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA306CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 05:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4870ECFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 05:31:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14B226B0024; Mon, 24 Nov 2025 00:30:05 -0500 (EST)
+	id A768C6B000C; Mon, 24 Nov 2025 00:31:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D51B6B0029; Mon, 24 Nov 2025 00:30:05 -0500 (EST)
+	id A269E6B002A; Mon, 24 Nov 2025 00:31:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F06036B002A; Mon, 24 Nov 2025 00:30:04 -0500 (EST)
+	id 915E36B002B; Mon, 24 Nov 2025 00:31:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D82CE6B0024
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 00:30:04 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57A4EB729B
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:30:02 +0000 (UTC)
-X-FDA: 84144374244.26.F0EA991
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DCA56B000C
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 00:31:19 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EEFF7140236
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:31:16 +0000 (UTC)
+X-FDA: 84144377352.03.B7AD473
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A3D0710000B
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:30:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MRnghpgd;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5CCA2120005
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:31:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N73ygbiK;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763962200;
+	s=arc-20220608; t=1763962275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6oP+yhzqbDj+r8aqmNkw74lkuup9E5oOvabx/V9yzpg=;
-	b=tHx9p1tSTDdvDbYOBSqG2zOtLZfj5QnPyjujuGplpjHLiVpsfHS6zyyWunYp8LheCl9+HT
-	fDsLUxQrju1V82PoOcssJ1gFr4DqcS5vQHnBT4JESS1a8eEfo93v52kVDBrrNJuaOj7foB
-	x58FdD9EiXc209YKHh/CxD+zrH5tIbk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763962200; a=rsa-sha256;
-	cv=none;
-	b=kmUIboJx6vQmA2ZIo90yLCY8ipoZbXAZ+ZbZ1xcCehvmpC2gChE+xH/Ot+TqulxgaBgSRK
-	NSwB/teG8BFOi8aYq2pdXvBgT0vCytfcIwDeBzPeKH6rR96KVg+voeFnthL2rhR7B1FBrM
-	x1zXY78wTPJpHnUbwzfsh6+Q0QK0kN8=
+	bh=0nsfloe6zyOU34DpXESBNlpvo8GR0vwQ2XkRL9zK9hQ=;
+	b=GfPBXuxXvrpCkMm/S59dqn1tJdAu093LsmsKkX++Xlj4wn7y2IfKJMSepwXp/wVF9kA4cs
+	+FeZzqFKmsTxGFHlcIKHWBxS5P3cBI7zl4y/aKqklhAwJiRnC4mU1q/LtoO01ChfMHfZ+K
+	NVN1qGRIr9khgBJkH7Gtoj9ed+AF8MM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MRnghpgd;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N73ygbiK;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763962275; a=rsa-sha256;
+	cv=none;
+	b=cL7mt6rbsjEIduIUSasSdDpsMWBaw5pdHJVVphhoaJ28pHGOfb/TtLDPSiyjVBsVlcOKjv
+	3SIpS75hai+5xRKVpj4yapIlbaaeJvME+esiT3bq5svwLcoNGaARpdp9WZU2efDtpVG4cf
+	1+D33CEKpBobRmmC5j6APC68jConyog=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B208760135;
-	Mon, 24 Nov 2025 05:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0F4C4CEF1;
-	Mon, 24 Nov 2025 05:29:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A675960160;
+	Mon, 24 Nov 2025 05:31:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4672EC4CEF1;
+	Mon, 24 Nov 2025 05:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763962199;
-	bh=avcnQohM/OC7Wf4uBeH1QDfwgtHGDe/RN/kIl6nBXVY=;
+	s=k20201202; t=1763962274;
+	bh=RWeJY9pJHBZ5U4aPZuJw/0Z5j5nXGO9gJXgSoHnl1Jo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MRnghpgd13pRJdYK6+YcIVwuhCJU32S6SQktdN6Mq+ySxvLUOGgr0o8gnuO66HPK1
-	 h66cNv/2EeVpqH+4atks6LnJT68kY/kLaiDptOqUUY3374opwcfNE6Odr7cOpnbB4A
-	 Rc72VNiqRugdTTPVTaaseoGDWgodD4EMggXgRsIjF/yVN/7rQnDrjgdh5JHgB5SHbG
-	 hn8jjeu95Jk6G7boj0DuB5csL1KP9cPJj/Wg0VZYOJbcsWes1anOGRHHkQCCphdyE7
-	 BsJnsCsvlrKE7JtLYsf/8iLqNlQC0EHW+/SgxVNp0lrt8b9VT0FDr1FwoGvLLnVcWr
-	 FWBqSXX7nAC1A==
-Date: Mon, 24 Nov 2025 07:29:34 +0200
+	b=N73ygbiKs2BhPqYtlO5jZRWbVaKbo+e+4T+IqZEHKKEzdE9g2qMn3x8qjg/NYZdpK
+	 RwOVa+22eRllg+5Y4ES4PXmjeHKwgi9j+fXiPfzAa7Temd8Vgh8CHpgEGbyuX990Sj
+	 HzaB7m9tXVgfRD+z9Bvkf7uqmUod3QhA/SL/AKuRI13cwf5NKDEJwQfDnQnE2+6MgP
+	 hPK2YB2ddPSiJiIDxLCU3yxjj4dNFLk2qGt/HqPcnPBgN/T01TVf7wqkN0GaozFfJ+
+	 npHKpCkjKuRjZS/cCD9GnWqf1KyMu2kc1yy5pVZkokJh6FkUyQVtDHVtOOXT32Q7eR
+	 4q7LnRP9e7lOg==
+Date: Mon, 24 Nov 2025 07:30:49 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -94,24 +93,23 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v7 17/22] selftests/liveupdate: Add kexec-based selftest
- for
-Message-ID: <aSPtPuBUcVT5Rifl@kernel.org>
+Subject: Re: [PATCH v7 18/22] selftests/liveupdate: Add kexec test for
+ multiple and empty sessions
+Message-ID: <aSPtiYSV9vkYvlBD@kernel.org>
 References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
- <20251122222351.1059049-18-pasha.tatashin@soleen.com>
+ <20251122222351.1059049-19-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251122222351.1059049-18-pasha.tatashin@soleen.com>
-X-Stat-Signature: huzstnsfjiauc3km4iara8tgzjwjnjct
+In-Reply-To: <20251122222351.1059049-19-pasha.tatashin@soleen.com>
+X-Rspamd-Queue-Id: 5CCA2120005
+X-Stat-Signature: u4mmkmx71fm536oazojbgep6wztzn95j
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A3D0710000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763962200-149112
-X-HE-Meta: U2FsdGVkX19lXD68kcVOzQ3KzuZCGrpB/UsGy3VAUte3hSl/OeO9mnAsWwR2dVZ5djYWLnt22J+mfpVkaYb/ekX6eso6bPEPcBT96KrJ0m0+mhyqHqTDHU8pScb7VxvJ/pEg1lIItd55Y0Xuky6Fypy5+oRQc32zQQAgtAkLNW5joaLXrif4+sG+jHjBq9IJiTnMnKSbNp8jRl+fjTpD2ObJOqHwWi2+T3hMZB99/BAKrq52EJBlulaVCiFBFM8uD4ewhgPVDcokh9Qc9TOGjll0klI1Jm0rIhbVShbXoPkhMTqirIUbC2t5VMjqvn2R2RnQb1qe/0h4bjbC/M/ndH9L8RdM/EzI5RgI/zbAstdGQ4aZn5VAdhOhCkpqc+LjkqUeuWi0iNF2aZsv56QEZjNgOY14ZY/9IZF0rpcj4ZS6D/LdBHOGDeTOa4qfWrjux35wqDMyVbwSahfDQ7SaVOE+kSnQNLBj0FZVDkdkkLGH+Tag9C63ZYUK5e7ygt0YDrw+Sktug1DiDyUy3O9ugjI2cuVncnxV6uBIQ3huHZuKH7L95ZnAsnB4iaqZ/UzaYAqRCFN50ZOeBlPLLmC8gMreVg9W/21LZFXn0PeqQc2LA5maJ+GNK4OIhg14XVFmnH0SqFoiE7YVB3MZeykc3OnK/IbCFWKvVohfkU/1obQeLTGQog47nm/Yvthp87MiFnGNsuwLWDuw3rGO6ectTbvVH9+42LPxgcwSNct1pF3Nhx0SmLQXq4gAJAxHZY5VH+CqiKdGKP3HGWhdVamD4bTVsbm+13fQvofHbI9ggKDHe19kunr3jrEJChKIX0EqJNPW92yrupHVK2E0L/5ZRzXgRxtLEzKQ60eBi+bDdJouoOY8uA87H/eJZsqdhrjEEaZi/sjltWVLCgu3wfCktzM188Z/3k7f72R9vfH4Fr5BkOZtYIrvtTYiW4M2zfrSjXVpvJlfQwz8MRadZtl
- O8zKl9kf
- w3nQOKxVBRoexkeetfsorTAw97/xkAbJKX4u102Hh2wGWjSISrmhdz81rnSUBqK+rJPZS9fPVQug+gY8ZSscHzQlmfUWfjipwLM+P28c9BiKhvJg9Xxy+v7uctB+TRJv7cwuGLdhFi4ZwfrgNzBGf+6hvd2xtarVPjUzaEGGcfYDtkHvlge6XJuEV0naRMC/YW0mNrPklXBb2iuYWrArfcFtSp3NKwAgffqY/Sp/MD3Q/mhN2zIttMqXnMLA70WQh5jGMwwns+2Ue4ppuJ7L0JJ6hBKUFQGx71NAZ3C3nfg+RFvX+ynaPmcF/gda3IpesmIsDDbLVFYw6jRY/rClHCvW1ph2TCGjvLOqZa8tnxgOQc2hlJQgGvYxZkJtpXSxgsxVu93aIH51QFw45BlKTAMTliPhtBgPCcmXPEPeh/rlXt7e/Dz889HblHQ==
+X-HE-Tag: 1763962275-540981
+X-HE-Meta: U2FsdGVkX1+7LGsGIoHNrhos27Jp8MXWMxBFI39gqzUIap47p9DO8F+64XQFYkXswYfZg+vkonPZW9EscsgTndtanJ8KpEhYncq626N6xrJi1wH93+2Ki6FNqXjlrv+R0Lj7BxStMgM7KVoYQli9PbWHmjQwWf1VJ1aNlpfcKFkEXQZZ7QEbFu+/8tWsJY96GlPaHoGsevUogsMUu1DNI3p3Cx8tjqyEQfzionwxKp+xr0gi2/oVNPRol2pVMXiKeOFEX8haXzr6/FIJUqQ5nVXhhaYjgQl/GQGB8pabkvO8f7IJJAZLOGHtJj/gpjNKNYeTJkZyIR8VDdpe2HVDoYXQ/u1Hyg8YCs7zHvdPXWaeyUyMKPs6T4A7fiHw5I47tUnujmdHqtvTF1N2RSGs1oCUvxAOU7rfLuqlLHpwmflwiWFdBQD8X/Wi954BlJ6Q0oJK4iSnyTg4MjP3kuszUZrq71exZlbj5QxyHAxMbegrwxPsYWmD1KbhsCdTPV+8OOl2tcRnrgjYmZPl/INUPzMfkUV+1GsELjorosGPWePpR+DdGAJeShlvCpCLv/jWPQkFxFMK5JlcoiiNw7FxjXAL17AJQnMLfGnvCYR86ggA1iDfWD9LdI/CkbDhdXO14FouLOX4hploItAHyCnt1edyL4NuCuNt/k9Z01BmTbma1Whq9SWAAf+u55UO0TTR83zgt0nV0qdID2jM/XcSS4Ox3Ik8N35O/QM3UMK2TuqdLW5ZmF/Sjst87nyHjsUK1Fq6ZXuIjx+fGC8q7DgaXQIFwbw7gZmCf7fisTyrr60c7pZpzSQNe+yKnmL9+6aFaK+On5/CkHuO6+ag6jUgdaNs98K6KxXw/AUl1hweK533KYWg4d0WaR6TjTgsr4bmnw7sTbaCB+NVzRcRz1Nmt/SC+Arz1P2qFttkol+P7MRZkoGHhrQoojObQZSaqg7C9F2upJt92WjRweFiTdy
+ s89lnPsw
+ CPXNoTYL0o1Fi4ziwefQvlS1/md/F/HcMm4BFf7zzblPDawLRdYi7v5pu5MJxzvJeThSQe4RGFwYpzNM56vNyh6MHm05FWVj+REMFkU8oHq7ruIcDi3Yi+leNgAnjM7QSOn2xYxBsn3cJ8rCndZ/L3UrEJ1hjGoO+GkNt9v2908qG4wfBuCLUGNelNF3ZAAht+pFQuTISmRnHNDopWRXL9FbRKYJMS6FUUlfDBlm4gbKxZclUkeFnhkRxFfSbCI+uYtifqjSsvzTGl4lwAOurYOfEXD4Ko4vVJUAx3XmGCB+9ygt3F6HE0agI7gdtuRptV9G1ZtrmzasEw0Wg1uTDo0qG8Hsk/DKinkJaOji2/oQjmwoGJdCvDeU76WsWSBxhG5jdwwHrPSVqFT6c6Esn22momg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,62 +118,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22, 2025 at 05:23:44PM -0500, Pasha Tatashin wrote:
-> Subject: selftests/liveupdate: Add kexec-based selftest for
-
-                                                         ^ for what? ;-)
-
-> Introduce a kexec-based selftest, luo_kexec_simple, to validate the
-> end-to-end lifecycle of a Live Update Orchestrator (LUO) session across
-> a reboot.
+On Sat, Nov 22, 2025 at 05:23:45PM -0500, Pasha Tatashin wrote:
+> Introduce a new kexec-based selftest, luo_kexec_multi_session, to
+> validate the end-to-end lifecycle of a more complex LUO scenario.
 > 
-> While existing tests verify the uAPI in a pre-reboot context, this test
-> ensures that the core functionality—preserving state via Kexec Handover
-> and restoring it in a new kernel—works as expected.
-> 
-> The test operates in two stages, managing its state across the reboot by
-> preserving a dedicated "state session" containing a memfd. This
-> mechanism dogfoods the LUO feature itself for state tracking, making the
-> test self-contained.
+> While the existing luo_kexec_simple test covers the basic end-to-end
+> lifecycle, it is limited to a single session with one preserved file.
+> This new test significantly expands coverage by verifying LUO's ability
+> to handle a mixed workload involving multiple sessions, some of which
+> are intentionally empty. This ensures that the LUO core correctly
+> preserves and restores the state of all session types across a reboot.
 > 
 > The test validates the following sequence:
 > 
 > Stage 1 (Pre-kexec):
->  - Creates a test session (test-session).
->  - Creates and preserves a memfd with a known data pattern into the test
->    session.
->  - Creates the state-tracking session to signal progression to Stage 2.
->  - Executes a kexec reboot via a helper script.
+> 
+>   - Creates two empty test sessions (multi-test-empty-1,
+>     multi-test-empty-2).
+>   - Creates a session with one preserved memfd (multi-test-files-1).
+>   - Creates another session with two preserved memfds
+>     (multi-test-files-2), each containing unique data.
+>   - Creates a state-tracking session to manage the transition to
+>     Stage 2.
+>   - Executes a kexec reboot via the helper script.
 > 
 > Stage 2 (Post-kexec):
->  - Retrieves the state-tracking session to confirm it is in the
->    post-reboot stage.
->  - Retrieves the preserved test session.
->  - Restores the memfd from the test session and verifies its contents
->    match the original data pattern written in Stage 1.
->  - Finalizes both the test and state sessions to ensure a clean
->    teardown.
 > 
-> The test relies on a helper script (do_kexec.sh) to perform the reboot
-> and a shared utility library (luo_test_utils.c) for common LUO
-> operations, keeping the main test logic clean and focused.
+>   - Retrieves the state-tracking session to confirm it is in the
+>     post-reboot stage.
+>   - Retrieves all four test sessions (both the empty and non-empty
+>     ones).
+>   - For the non-empty sessions, restores the preserved memfds and
+>     verifies their contents match the original data patterns.
+>   - Finalizes all test sessions and the state session to ensure a clean
+>     teardown and that all associated kernel resources are correctly
+>     released.
+> 
+> This test provides greater confidence in the robustness of the LUO
+> framework by validating its behavior in a more realistic, multi-faceted
+> scenario.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  tools/testing/selftests/liveupdate/Makefile   |   6 +
->  .../testing/selftests/liveupdate/do_kexec.sh  |  16 ++
->  .../selftests/liveupdate/luo_kexec_simple.c   |  89 ++++++
->  .../selftests/liveupdate/luo_test_utils.c     | 266 ++++++++++++++++++
->  .../selftests/liveupdate/luo_test_utils.h     |  44 +++
->  5 files changed, 421 insertions(+)
->  create mode 100755 tools/testing/selftests/liveupdate/do_kexec.sh
->  create mode 100644 tools/testing/selftests/liveupdate/luo_kexec_simple.c
->  create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.c
->  create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.h
+>  tools/testing/selftests/liveupdate/Makefile   |   1 +
+>  .../selftests/liveupdate/luo_multi_session.c  | 162 ++++++++++++++++++
+>  2 files changed, 163 insertions(+)
+>  create mode 100644 tools/testing/selftests/liveupdate/luo_multi_session.c
 
 -- 
 Sincerely yours,
