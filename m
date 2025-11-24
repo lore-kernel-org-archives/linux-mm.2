@@ -4,269 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51FA5CFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 12:44:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86C07CFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 12:45:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC3646B0022; Mon, 24 Nov 2025 07:43:59 -0500 (EST)
+	id E21466B0026; Mon, 24 Nov 2025 07:45:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73576B0024; Mon, 24 Nov 2025 07:43:59 -0500 (EST)
+	id DF9086B0027; Mon, 24 Nov 2025 07:45:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9148E6B0026; Mon, 24 Nov 2025 07:43:59 -0500 (EST)
+	id D367E6B0028; Mon, 24 Nov 2025 07:45:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A0F76B0022
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 07:43:59 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1ED3888E28
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:43:57 +0000 (UTC)
-X-FDA: 84145467714.09.E9D0E8C
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AD24EC000B
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:43:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hf5w+V2q;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="y//TFdoB";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763988233; a=rsa-sha256;
-	cv=pass;
-	b=pDPixLiLEmB6/cG0z6WUQeuvT9vIS7sw5cbF/Sh0L0jKAR8/hGfp+kmieY5JwyVOEmsK6Q
-	Gcs3bTCDTqzU7CE/SUUKnoT/1H69TLB9imsFkeEt8rW7uydoP7KMbzBjMHA2sulwu4X0VN
-	jIdir+G+xls/g6wNUlqtV3qDdAYcGIc=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hf5w+V2q;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="y//TFdoB";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763988233;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C14716B0026
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 07:45:22 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F9FC88D33
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:45:20 +0000 (UTC)
+X-FDA: 84145471200.25.510B601
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 81E98140013
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:45:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YHe1A4Uy;
+	spf=pass (imf26.hostedemail.com: domain of smostafa@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763988318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jdZKhJh8o/Z3mJ1Ft2yTlpGoLgWX0xjhzOLiG57OtLA=;
-	b=W+/p37Ps7G85tBModKZkHkotAfZ0rHXtJJozHK5aIJOiDeRsEq3PC2vUUZL+tQ2thD3bCi
-	ZrgkGfUecNv4bUETTZv4udiGkeXzui8IS6IgXcXhj2QIdDKVc9jowHf2AgzR23xz4WYFPL
-	+NJjMUx0TYBkjIZQHOYunjViya14M5c=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AOCVDgD1078643;
-	Mon, 24 Nov 2025 12:43:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=jdZKhJh8o/Z3mJ1Ft2
-	yTlpGoLgWX0xjhzOLiG57OtLA=; b=hf5w+V2qPVecSf/yJ/iN2gP1jLwoTUiRpu
-	06bhFAH7G/I3Etg1JiMYGN/UyTkIQA7FYQ8W8bR0JNtDSHN0S1BHFri0qjlxZzuT
-	07Uv8rvYyyqYNwy6AKjPhzN2YPGkJi8fTjoUZr4Q75ne3w7hrMm10uy4YdIbVkdJ
-	1iqjywrP8OuC5o5ZEGzeNlQmu7p96IUgN3otiwXiD/5U9npA5YvSJkgSlqraEo0U
-	zGDXK9uk4bxlJMzikqjO/b8oqafJ77510WNGPLGanKVjDD2hZlIPRhNnKLAzwwrG
-	9JNte3jWrbppVn/5WPtAIXtD/pEBr8W1Wu8lSkCwDuCH8C4yC8fA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak8dd9xwp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Nov 2025 12:43:27 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AOAwkoo022139;
-	Mon, 24 Nov 2025 12:43:27 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011034.outbound.protection.outlook.com [52.101.62.34])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3mbtfud-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Nov 2025 12:43:26 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=phQJf4fYwjVo4Ojd9hToUbOiVqMwOe4mdcclBth5cCClhTw0rItfjsfLTkYwrPQ8rabm71yP4T3ifffSVSNZLtpaFNO33Jq0sWzvfd31hY0PBtr3bnIk80aB8kFQsFGKvyl+7Q3+tpj2Tfl1xBIcvP+SfKO0y4X0rmimJj40HuaO1PmbFp/mdBznLzFgWL9MA3lrKxMp1pNV7xYiAM6V2cBVAHCzWyjw5YfhtkyEN/v/AZWli5EqLXwZgYB8xZlf/FXrYiJ8JgoO38zkEPRfISpReX/JjhtO7Zlqr5MPZdi6JMhtJNHRg4ghU8L5VfFUXAyhUaJpLuQfxdnFT2mY4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jdZKhJh8o/Z3mJ1Ft2yTlpGoLgWX0xjhzOLiG57OtLA=;
- b=xxjughtmo9TzmpH/crJKajLfBSv9RWoCIXSrjDKLDIpcn1lapKw1mjHh3W9zldrOmALocogIixwDMPkGeApIPScK5TxXktZr0/Z2A1gFTIUQsuFk/G1szXlA9WPC0YgkzhRk0MeFJ44l8e0k88KNyIk3ufYr+x9PxX/nWEQ1TBoFDyk4dVOq9uFZamBt9q29RPUhREQno/AavkhfufaW6rkz4ZNlkUfkOhyJOJ52onogk5GBpAHUu8jt40qnC+n4jal7WiIu/7/5LiNExo78Z5Ab6bB4oGDwdSwLbLypLdwhlontDAvkct7OGm4ta2+RsTQlct/cKOZypYha8nzK+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=6VWcEmhan/BNwTvurxtnj0t4NznWYHYqF0Rq1JXc1mQ=;
+	b=j85VcYUy6k/ulS/XaXw2pr+r4ZePRI4AO3Xi8LL4f764sljlMHIOYWy03nEB206ycsG6BV
+	+RfgKAIPL81WDRUwFewmapctQdmtYQ0EDn0QNu/e5UzZ/uNCJZPNrOmpI+vHCx9056YRBP
+	BTV3O6SvQ2AVX2pYOxoqD+x7SAR1Os4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763988318; a=rsa-sha256;
+	cv=none;
+	b=hnx6w8nDCutUv/tf5EbE9VNzvbHvZuFV1mU2Fg52CEiYGJuzb4nkb5pMsR3LI7GsfKnbgE
+	3zueR0q5vPXCS9Hpih86euToMa2v2m98X2VqlOcQ4hAwx1m+uQzJ3hgocRIcyvtS3Y1rJy
+	r4qowfW8ElufcldeM+qEbl1tNAD55jU=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YHe1A4Uy;
+	spf=pass (imf26.hostedemail.com: domain of smostafa@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ee243b98caso479561cf.1
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:45:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jdZKhJh8o/Z3mJ1Ft2yTlpGoLgWX0xjhzOLiG57OtLA=;
- b=y//TFdoBeITxz1/OE/JRAyu6ZXuYhrzoJzXVTv0iQlSuL0x91LIaZeJpOG8/gaXJ6SiW1OFHy+lK9Ovxjdkrh1WMmrCV1YDeSIMq7rEl2bxSAhZGU5pdh7ZHSKjgEDpinn1R/RqJ1JpMyrJ9M2VzR3Uu/JzcxS5Zlh1X3BrQOVE=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by IA1PR10MB6855.namprd10.prod.outlook.com (2603:10b6:208:424::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
- 2025 12:43:22 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.016; Mon, 24 Nov 2025
- 12:43:20 +0000
-Date: Mon, 24 Nov 2025 12:43:18 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@redhat.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-        Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Jann Horn <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>, Pedro Falcato <pfalcato@suse.de>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>,
-        Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] tools/testing/vma: eliminate dependency on
- vma->__vm_flags
-Message-ID: <09c2d927-6d34-4e72-a593-4a3f2b739a60@lucifer.local>
-References: <cover.1763126447.git.lorenzo.stoakes@oracle.com>
- <fb709773edcaf13d7a2c4cede046e454b4e88b1e.1763126447.git.lorenzo.stoakes@oracle.com>
- <4aff8bf7-d367-4ba3-90ad-13eef7a063fa@lucifer.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4aff8bf7-d367-4ba3-90ad-13eef7a063fa@lucifer.local>
-X-ClientProxiedBy: LO4P123CA0552.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:319::14) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=google.com; s=20230601; t=1763988317; x=1764593117; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6VWcEmhan/BNwTvurxtnj0t4NznWYHYqF0Rq1JXc1mQ=;
+        b=YHe1A4UyhPs8aA7F+Ep5JrV9QI40QjlQpmVy4PD5//l+ZYvQQvqcu3NCeDy/DfhWog
+         EJVkB881EEbNnQ1SQSeoXxenL/iCERDy2v7PREjIuFwLLW1xYd9DNfpyOL9Af6jgcErH
+         tcLmWkg4PfBtdj3+x0YEEp0Rmq4rDc1y7+U0DyzjAHIX8b/ehuULeKeVBe9tNiwm3NCk
+         il19nUcTggXU0VN41OYTWAUZGZ0ipDbFfmM1TaQdN8js3wGMSsXjKX1PCDtW5585LSm3
+         AHuCVSafQ1+dR1hKlt1i1L8n5Uu/rbd7SXOyUFqcN1YiRSoHCWQPY4wgkjKbfiIYPQaI
+         Q9pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763988317; x=1764593117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6VWcEmhan/BNwTvurxtnj0t4NznWYHYqF0Rq1JXc1mQ=;
+        b=Niv78LI1LyERXiZVHBQDNU/f9gu9wX4Jo1AoTamS+g64JpMBBCvVN4sdqwmTjmdg9D
+         lsX40J4sje4zN3DkKchQIy+Voa4ssAlFfs29fw/dTOVe9EdwjXB1GvtPEhMYegQ+1w6y
+         nvgQRbi+EurJy+lLfgXgUyekLOB4hdudllBrh5kQrkJFP4/GmxKleQZBn32vGEtCgUuL
+         qU8ndRT0TPgcH4XLIxIgDeAMI/xThcnuskSq03+hUE1XLIORAD8zODJJ8ILUFbA1RZWb
+         ncNX1fHQx/SESrnfs0BZ/LBuGirfMwf9tTohv2F1zzpIrCpOHRADk7GsRcN3+G2W8lAM
+         devg==
+X-Gm-Message-State: AOJu0YypP1tobmkwVzfwfU3kQPkGJ+SP7/J5J32y4ZWpoUtu64FxzVyF
+	Rsutex7Acli8Rd2San6Y5zgRX0V3/28P9Yh5vvtNisG5o8A3QIv58wJGdQttR3mkrzK45epdZRp
+	PhL6B2WBlnBlELLFXRx1ffoqAZXecJEa1csVwTG3t
+X-Gm-Gg: ASbGnctJ9LDBOviNoU44AvVC5JT7USun1iKxemWD99YW3yX1mE4qLetA/ieUut1Cbfq
+	FbvYri4GPiqHWyhAA4ThtB3OZtgCKkt7ojsvOJQi8gdyJetlavfRecgEJThgfAyfWOKpzRa1KSM
+	3HBdxuDD86KZkjCcMInGd7JAJ+EmUadP/9Gnb86O51FXsV8Lp4iHRVt3CkJey4WzBGHpXJRazG7
+	ur1fiPzQyTBETK1d0CHAsb2DcTgJegM/f0ASXXlPNWfp+pwRj6EfccOTi8cmYBl1vdO8SKGJm/8
+	kSNY6fCTwaN7S1fAxZIhguY=
+X-Google-Smtp-Source: AGHT+IGPjVCxfR9SKFA3FQOdCOVgD7/O9AanhIhyNvazavihPLZPPKf8lSGLvPhLVXD4pGKivK0LrnCUCoWz3BbimD8=
+X-Received: by 2002:ac8:5d14:0:b0:4ed:18ef:4060 with SMTP id
+ d75a77b69052e-4ee60ecb032mr9555211cf.8.1763988317334; Mon, 24 Nov 2025
+ 04:45:17 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|IA1PR10MB6855:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ec38604-f439-40d5-fd79-08de2b570c45
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?oY7XMXK/CFzXBatGfFfwBr4wU58IjKIka4ymKvCnAtt8j8HortYCkGT1F+kn?=
- =?us-ascii?Q?+G4RSUr/TtYsqthgXBuOsIyWrKK4YHYGjNaYYZc8PU/oMer9/p/++HkJFzjH?=
- =?us-ascii?Q?YEyzciNzcihJL9qC1jax0BNIyNxGxXnySuLleDWR5lv6CWGYinjKoK4fIA60?=
- =?us-ascii?Q?2DO/HeXrMwB1rimYErXsTtteGL3bOcV+3gDB1rQnMTAiVLM14GomCqjmmiKw?=
- =?us-ascii?Q?dJtOirK+cxgutk30FVpWXDsAekwBHpnP7E6T8wYSjCNaS8iqRLCffBmFpMTx?=
- =?us-ascii?Q?X2wLRWH/sJJpVJQCHNo8cx4Zdyk6OpQJN7YkCKAZwlqxTKIKUPavZ5cWIWnc?=
- =?us-ascii?Q?AqDnACibWWXvxOH9mCayLNZC4IbbVNoqoqreX0i10Hcz9NEWe2twdn0XgLGN?=
- =?us-ascii?Q?JcYUaxw9in4N3LkuBqIHJBnv5XjBVGC0tvdM2BgNoffKMxg2QuxL87gJJkMn?=
- =?us-ascii?Q?G/HqLWJoMNFAGZmLjHeR7waqaz1lYLk5uwWEr68I9wyJHqggUtlMAwCWF+gM?=
- =?us-ascii?Q?5qq6gjt2oVwTaLjPCnk0yB+l4csxmsznSfDIOJMFjAWWkBhZwasQltXVo3Jg?=
- =?us-ascii?Q?WZYGSJhYo3HUd1YPwhLAb/7g4JVUXhIl/eNGhQ4dwOmpdfYUYzjlf81Uz9M0?=
- =?us-ascii?Q?plxe+HZKZzhVwsGdQUVxS9wrk6bwSXrSkaQn3k9L73MtbPE/S50J10kHzvtH?=
- =?us-ascii?Q?EqYZ5kRhZZTuVHiBt5yvHvHWqA0mUbBj7wH9nV3G3Kfc53KsUg07UpiTyZgt?=
- =?us-ascii?Q?/98R4V+nBcFJJZbhBWAvCiBC3iJ+sQkDHi+1rnSv1Wlacoa8BmzB2n5XNhEj?=
- =?us-ascii?Q?dGPNG+8Xssi+CfXz7yZttSI7SteD3950GETBThGarl70/8LMf+HwZyuh5k58?=
- =?us-ascii?Q?rjyqAAJ7ADklvX3DgkDI+vfaIA2iVkW1rCDFGSy2W0DJIyhVRtQCyr7WaQMu?=
- =?us-ascii?Q?LXd/Zbwsp2mggORsznQxgXQ/2liOfyAUrHDIt8QbsJwCWapbwSw5Di1feRlr?=
- =?us-ascii?Q?4xAl6h0OpqWSLuvuXxblyjtzPOH12hiPt+VPTOAn1aMQFW68m2KAAewdV8RY?=
- =?us-ascii?Q?oEuDMrQ3YF9jZgIkTaRjdRVZpSB/85EL0AdlItswOkxtHTcV8foaYNus5H7w?=
- =?us-ascii?Q?3nDUS2WuetJxf7zj06MPW4xTsaWOWK6zkHQxt2X3GxL8tq0rFbYn1ujkES22?=
- =?us-ascii?Q?fNyafnN3Wi9fDE8f7tbpj0ZNWGfufsq3BArMWr7K9wYzZ6udkwfcEHztypaG?=
- =?us-ascii?Q?VBHF0R25lUVXVRFeRGbVp/QoB6IbHEf1zD/vM9k5M4wpPbtYDRFb4Oj6RcUX?=
- =?us-ascii?Q?ox8OTfLB97JItolIACF1ltiWq1UvukkzReA9kutGgBaS4gg8x+JT7+oth9Tz?=
- =?us-ascii?Q?hioTtxRAxDf4kX+/kim9UvSG0WO/grWaRvqWqv94LmU5Vgj7VUoC6pEmk9yf?=
- =?us-ascii?Q?U4I3FS4rk3Lhj8fWRBcJU6D1w00Kvk4i?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hdqz2/UtisjY42gjEVB/bWgFOkLbE5xI/1OwfpN/ALlzliGJsnxiSFb5msdf?=
- =?us-ascii?Q?zTlLlkrCzTQIkMTqDP2V3Zw3l/BdAl25HqJDzPQJCKND5UIeAepnrhYvs8zd?=
- =?us-ascii?Q?iWnxvqECL9K7Wxk21w3Fky940UZE/4oKT/4YY+q0LbutoHDa/AQw3aUzwVZ9?=
- =?us-ascii?Q?Oq7R1e7g1VOT5ZObWMYe43xiaHTeGhwvBsWoBAhLFgYaGIMQHypJIvmwLUPO?=
- =?us-ascii?Q?ovjIJyH8fAGzK/LTun2G2tAz3bCT9Uwfl+NGLA4GojwvW+g4NJCS7JZ5IPEm?=
- =?us-ascii?Q?LkKx6KAr8JXDgGXNA8ZpYRQqCoGPtwu3894Q6oZY+7GhKgyyF8urXfjywJgx?=
- =?us-ascii?Q?OyNNhihPtT9Dgr7heywk6n0Xm03enlT380cnVqL0I3tUhdElQsByjzR9hsoa?=
- =?us-ascii?Q?PL31BpEUHZOABp/8v/Pz7jA0iBNukNePqX34sCZzhxAMbiKDyfUdWkaTFKq8?=
- =?us-ascii?Q?KtMmpXuHAodXOWuad8H/rAO2XES9dchaQ0ycBYUflAMDqRsIRWQpC9WGslpS?=
- =?us-ascii?Q?uNQthq4XkgonwdmAT6rCRx4yN8nAiZUIpuIRkOqz6i54KPZ5EoWHCOD7jjg7?=
- =?us-ascii?Q?/OZ9zmX7JJo4/Geys/FLPql9s5ddUv2eVJM+bNQ94+qcVav2nUSQn0qx7F4r?=
- =?us-ascii?Q?Atcok5gxu8VpXoC9jCBjJV7vmbDXJQob+pHkd/9WWIdyfUcXLqtzuWfnd9+J?=
- =?us-ascii?Q?+23wlErR65mfIbsSJTxizj9xdxlSvR7nTitSc19i4xPvFEubTcSjLitZKPfH?=
- =?us-ascii?Q?0HDYwQgLx0+6r6n+EYNxqq1Pw3jF7eH/G/OL0voTjGBnUyYql2HJ8COWkJQw?=
- =?us-ascii?Q?Mx2r3BNWMJ/GD3FDqdduU753GncGS0vDiNESnSL6HjsCkilwNea+lCzE1FFw?=
- =?us-ascii?Q?k2+2x8b9JWF+aRmRKuGPeOhiH0hfCY8ivQOuJtZ8SpCcStOe7Oa4XZsjWaP1?=
- =?us-ascii?Q?Xh1iGtth/9U77/+pWJ087HPf693D/v4Xo1oz/blCxhDg7duJUlXTIzDcEbM4?=
- =?us-ascii?Q?8M8fl/N+6UToF2s1PHhcI6HOoaBw8eA+2e7HI7stp7kzX80BKDr+ZDMta3j3?=
- =?us-ascii?Q?CHMjPkInVBVwxYLQlsywllmnWNppEIyH3lKPylPDED5JSyVqahZz4yd4CTGR?=
- =?us-ascii?Q?2LIfq+7tUC9EYozzCV43Gke+i8CmXktlCRUxw9E5s4oCF2b5TMH13PL9HcBQ?=
- =?us-ascii?Q?nWKQwabJ9+ypE0znPJCEXFPu+pOnZRuDkpL9F20k69JhGhE7ux847Eg6Hoy0?=
- =?us-ascii?Q?9Z7vEzOpgRCfcfBkmShN0XJK3ULWJEjr/bCTnbQw2ZO4rzE4Il6V62x9++tZ?=
- =?us-ascii?Q?GncA7+JgBn+Ge2f8p84ktMXgZjPbWfD1g2kGrtT5UBFK2JSq2uMVb3fPjzLB?=
- =?us-ascii?Q?HFzX1YApzn6jXUf6RCy/9/iuvnIwm3j3Wd8g6bYHE7fMS09L1a5uwtGIlpch?=
- =?us-ascii?Q?waM0ldrles0mx+1F5Hf2S1pBaBGM5vpeeaBUaQXsd+S4SrcmbWysVUOCsB+L?=
- =?us-ascii?Q?1MNltIvaZ0cozsN/zo+kMN1WOFscPoVsfvhENmwfn6Z+nd1zQcQP2UyyNPaD?=
- =?us-ascii?Q?yFgzzmBbQiNm7TOH1e/+wWHCYqlja+ANPZcuPx3W673O9caDjoKpkd/nGLRs?=
- =?us-ascii?Q?nA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	cioHX7erE1FGLmj/pc0M1iw+WcyBKZpaZYKSdplcpPY5s0jh8ocDSDS6VL4mf9eNyA9oBzwz/clPYDLE/TSR4uiK47J8oyys0M+ktcIDiIqMvhuJjc3s8Eo1tKVaw0hmzLTVTc7j9pBZ3N98i3qM/6pmpSN4ZMP0UejuIdSbON91J9/KC1Lz6RYCvcqflN5AAFhcnIocmOw8ZoHH6wQuDje1CVoRSEpd1iqM+ZbQMaLi6zvRSpveYH4hKPvlrqogoA9Zk8WO+sSaQbRG2zpXy9qVDOXnCIBHmtHc96oXztTRkV5w3BeA9MXl64RzyQtmuO2V63dPbB65KAUMSQ+SUwBmdJuR1qIUuQcS0oLgKxEOlF5EcANFD3iiKZFQi/HhmTORxhQXBHp8651RjLtVBYogc56p7rEoS/rEJwY/3QF+2EzP/uBd4FQnUNlTZnwP5GT4WzR9z10/+bA3bm2FxGKAwjKXjVQ8gEPoknMiyk5ETgoa1jMK5hP3WaPcXboGuvBs9UkMq9xqMekkekFH9aEkSWEgCKHryXIgyDFUZfnCZt1/Xe2zJ1AJ3BcDgdMAogC0Rt0UffGknKve77F2M4gstoP2KyPJnkX1/GI3zEk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ec38604-f439-40d5-fd79-08de2b570c45
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 12:43:20.3263
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k1dk+joXqKelvOfd8vWGtNaxrp+VgqRo2J8FrwArqNLsYjkd9UIiZiNpzkUHFvi1CYidd5Qje6FLJ4QNfwFXxJZSThnD8CqAA+3bhtUMrOM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6855
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-24_05,2025-11-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- bulkscore=0 malwarescore=0 phishscore=0 suspectscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2511240112
-X-Proofpoint-GUID: zhqswuIFDSjTG_6bl3YHiaE4aG5iEpe9
-X-Authority-Analysis: v=2.4 cv=ObqVzxTY c=1 sm=1 tr=0 ts=692452ef b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=P9Ru0Q-n_PehIEPSeYkA:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:12098
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI0MDExMiBTYWx0ZWRfX2qZRZAM0dFVB
- y+Pvx3W5AuoMua8CmDQnLC8J1KzROHC8s8Tx+wez3WUJ23FJitSPPv1iN9nX7begD6/XojixmTi
- 4WnkPlJbYUEbvTX+b06HglDyS3qq/4xX4waY30YBkZaBwk/ONS2s+HUdATw65THywqk/m+VaOYj
- Et9YUKenUzP4xXfehTbSuS+TdnA5yrxzM1NqQ4x85RQ8GJX5Cm33im0TPNPG/DAgkcNIzdVuZg7
- D/ulsNOa8LrHTGLraAtmx6brQNjv+aL+HTIbEgCram77dGsXB0VVyC7PM0tyPHeEhULPzsCPSKk
- BxfkRSaYCDfTZA7agFLamBMIHs2B/JzyOPdjA1MDp9iyha/ioKXFmGqCg86VNw3vgvi4QQgPAoL
- /M2SKHVNcMu7SXTAql4Zy1BP1wI+92YejS1Y1TyghIPKXLoc6HU=
-X-Proofpoint-ORIG-GUID: zhqswuIFDSjTG_6bl3YHiaE4aG5iEpe9
-X-Rspamd-Queue-Id: AD24EC000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bfsxbpoddp769bz14qjtp9zar5bi353c
+References: <20251106163953.1971067-1-smostafa@google.com> <20251106163953.1971067-2-smostafa@google.com>
+ <aRWtX3n2I7El4Ykv@willie-the-truck> <aSQ9DsR0nAAvc4Pd@google.com>
+In-Reply-To: <aSQ9DsR0nAAvc4Pd@google.com>
+From: Mostafa Saleh <smostafa@google.com>
+Date: Mon, 24 Nov 2025 12:45:06 +0000
+X-Gm-Features: AWmQ_blA1bdjlFzoBd-B3IlCTsIeP9e4yZgrlAzqOFd_qVOZm4_QtkdjmvxtkT8
+Message-ID: <CAFgf54p1T_Vsx_QLX1XOJJz6v6K337G5T0Gw=V=9LL4h_CWZHQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] drivers/iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+To: Will Deacon <will@kernel.org>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, 
+	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz, 
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, Qinxin Xia <xiaqinxin@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: i8qfpaf733pmcacnj8yotp7za68cebd5
 X-Rspam-User: 
-X-HE-Tag: 1763988233-625812
-X-HE-Meta: U2FsdGVkX19kQlSKkYdjg7x6UWM0aSeB1lQK3n/fRhT/4jAgKHqOyw78rlp9l4t080iMJSS8+R0Bww/6QPF57AJKo+nNZQbkb9q+0ZFv/mOl0INDm0M4LIaByoshUMIujNyyy6r+25kCDnm76OqgSDT6Tp6RKw3N6CKxwhjpbdj1TylCCaW71aD5IFEnWIHBvIkfQDHhc/SKHxTZ5YiuqXEkEUqLkr68c9w5NDvv6fPlxJMVYuxHr4bu5F0k1Jso8Rfz3ZUyyOtYEBKT+AW6OqLNl6SVOzJGBw0vkcqZjG5Bb7npVWtCpMKN8jRVO4ylWMWdnLycp5+2z8ZSsfMbqkKHmLcTDWVlIYJjUn7I0Q5LrR6/k7ZvL6PCNn4/j3pwkkc36B2kOUlrW6uvXpBQntY5dc9AzkaA9aBoTrXRryKWiWLu+v5mybiEwz9ZVosaiX1WxB6FTaCzsRNYtoCEEhBG1R7ghsOI714XBXUBDogdFvv33LjNazIUqCz9i9GohR39VDTy9IrbY2zbzl661GZO3HKqHpJtOXbvBfqUkB4frHzYD7jiexGGgHzUt4V03jhmIV518cE2jElsYtIAF/NAZHDvNXw8NOWjhpIgcvaOHkLwl3O27Un1Ay06ZL4EbiTMrIYNlvkHLTj9NwhRAk5xF2Yzt/lDKu+8ax4Qeaz13fcIZkFKkQ6xcLFg6ezAWnO6CMdDFsuS9OUx9dnFohWow309IKy0ebcTKQ/lyUrilX2HzgVUIFIH/Bck3gcxypyBuC8t97kjmQj8rCDHbEP9hRrPDsQHjtzPvAVI/Ajeib2loSy7feXwOZsYj2mocyofvjDZE9UDpojQ7H4jbjVGOWjvWIctGNQd4Ncr1U6xUU/Z5JGtIs4w3S3py3cRo3uSJYcmymUtzKp6SmLI8jK6k36O5idTapN+penNhN6/K5ko3ngqY9EXYpHI2WmC9vanKeh+GqrpX+b0Cs3
- DWi9XB9o
- DVxalpOaX/fNnAU83dMgWhCuSedAft29yi45T5Hj1rzyA/0WB1xq6SAOiRdUiiCkNA+r4DX/ENOYaSW+plWwmiOYssumQFeyUm7jWrLX1gEByyphHLd+Mukvh0RgPCikCIuOMfgvexMfctTk1RSR+z6VqWJvqddeDWDsmv+g9LxV6ORpNB4ZLBLub8K4Yjv5PxSy2PYRFsd9RvNnuUF2xYUrfoevoqEqhUmhEkhcB8a5xAnHWPJdfiFpKUCOKDjhO6J7N0pWdOXE54EfeiKFOSS7JYOo17Dbqfaxg5DqjG+qqH943vUR7NjA4epLO7InHgfQknUeNV3KuE6YrxBKLO1Lvtq5K0fC8Ifk13/GvhnUxHuIeF3Yq5eAvi7auk/Nl/HCiNgzo/R6Jt/abxciP7HmORg4F43k6tAJLGu5oB9fFxI5gvnBEK51T9g2+rh/K08lFbaaQf5WsTd7UcntEAXPwySvJ6WwI/ydBsAm4oOh3egpJK1davxIspZfB4S3qdH8+/SD9JeCIKETNHLa7Vf2Az95HisrcZr3GhdEcyJu752mYQ3wEIkTXvAlC59qC7/N/OYY1T5SiuGfs90KRRpccCdMhYSE7/xWqPEXoZviyWvqAtd+KX9RvGMoNCX+9eYLRsBJ+hbOCXkQDPue6G9bka4hPoNZ/D53fo+Miuz0ndiaOme6WRzbvpTnd5Xg96rjX1S69LkDqNsSFpMm+QfpYltgaBQGpf/47y4J19+yjiP35+9mmGTKNFXnGojUkAvw8
+X-Rspamd-Queue-Id: 81E98140013
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763988318-856524
+X-HE-Meta: U2FsdGVkX1+ICrAWMVTSZPiqG9Vlc9Esx/783MmlimdlWHaC2A0gjXTol27lhV8/FbBR22jRyPjtqoL86ZnJZIr2we1CH4RSFPOZikuA42ol4dPY4hGUkUEUapdmPsfg+FZ9g4lGyt5+JzMMs4EIyamFZaKFtYUcII+EZE2xKvPkrFTsqHeYLr181ToYqEW8aUnPxL88H1/vuz13hTNxnSgxy3iGENl7ne8vVgXz5vH5YMKoG6z5W5qwdbX41FHxzjiprWP9u0wU+/tp7ypqcWLoSjmr6IuNFDVsJ49kZ65kaKYeCbWG/qJFD6IE8B4Pct5Ao/4Z5GWatVW2u6/u0FtDbquxnseidUW/NwnxSmyPa58PI4aRyty6oEDoCXI4N7cKEJuvOH/TjJAC/GCpdKIkvYvJdRDGPYhc3nLDBMsMWDX0hs7+CFiHdqFk+V6zOcE+P8f48az/aIznvpKVdWm4BUEomnVAk2uYWEyZHYbDMrHNrv7Xzx2pM/hwNJdJMjFt37BOB00RrPjbQPChKd/yp/hh+f85zzLhLlDbTeS+oIIb8XWVdRHHEfwqXu5V5KijxWXdarTRz4pDJA72lsLn4Hz8QGFL82RwTbGljeHap3weNkUqQWgLmGoL/kKaT+xUHdFGeMDQYb3ETX5Nlm1UqljnFI7YFTakFXUWn8/DrcflcoE4J+wmR2JhdzwWKM97qy1ZuzeNzA3PJFGnfKeu+XFUUwUdQcyeN29kl4OKknImEveky7uVb54hKrmkSxcr9q00tZfPA3Omey0TncVg9FY9kkLTHZ44yPgHWUqPGaqRHwS0Qjjk7fR2Nj5gQl2O9v7zlvTYL6e+1cBrOCca2MtHTL3o2JlU8zlic52CUqS05ixaCN+OyQXzP7yfsHDhEfeFLrI4PiJxxuk86BcfKNjVETRzCuzkujKcNEhrxW97cT7zvqJLDgnAwWF6A7KUFit4hn3zyziWK3k
+ f2SLsoTJ
+ 7850BiS/Q2ccvAji3Ghi1VpQHdL+GA/050guCSdowpI6mNaGHERi2ZWQtLUyU/yiKKEkNTL2Ww+TpCupzCr7zXj549dNwhnXygdOb37Q+iXlVf4INdDPstRXSPHC1CSu/oaRHjciaG6z5VpnYh5qMSCxk44AVgrDnRIvtkH5Go/yMesu6oZUC2OGzwnMQHiOAeEy4dlTSvUbKyVwwwTIAriy+pLzfgqVnXYjC1p5ovORLHtWRd8+SKC7hPRs+hH66de9mdhW56uKpXH+LUr3q7HhhBrxzLcJsYCAo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -275,70 +121,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
-
-It seems that the ordering of things has messed us up a bit here!
-
-So this patch (3/4) currently introduces an issue where vm_flags_reset() is
-missing from the VMA userland tests.
-
-Then 4/4, now with the vma_internal.h fixes in place, puts vm_flags_reset()
-back in place (this was my mistake in the series originally!).
-
-But then this fix-patch, now applied as the latest patch from me in mm-new,
-breaks the tests again by duplicating this function :)
-
-So, I'm not sure if too late for rebases - if not, then just squash this
-into 3/4.
-
-If it is - then just drop this patch altogether and we'll live with this
-being broken for a single commit!
-
-Cheers, Lorenzo
-
-On Fri, Nov 21, 2025 at 05:28:15PM +0000, Lorenzo Stoakes wrote:
-> Hi Andrew,
+On Mon, Nov 24, 2025 at 11:10=E2=80=AFAM Mostafa Saleh <smostafa@google.com=
+> wrote:
 >
-> Some small silly issue here, for some reason I seemed to have vm_flags_reset()
-> available from the VMA tests when I tested but err, that doesn't seem to be the
-> case at all.
+> On Thu, Nov 13, 2025 at 10:05:19AM +0000, Will Deacon wrote:
+> > Hi Mostafa,
+> >
+> > On Thu, Nov 06, 2025 at 04:39:50PM +0000, Mostafa Saleh wrote:
+> > > Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
+> > > page_ext.
+> > > This config will be used by the IOMMU API to track pages mapped in
+> > > the IOMMU to catch drivers trying to free kernel memory that they
+> > > still map in their domains, causing all types of memory corruption.
+> > > This behaviour is disabled by default and can be enabled using
+> > > kernel cmdline iommu.debug_pagealloc.
+> > >
+> > > Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> > > Tested-by: Qinxin Xia <xiaqinxin@huawei.com>
+> > > ---
+> > >  .../admin-guide/kernel-parameters.txt         |  6 ++++
+> > >  drivers/iommu/Kconfig                         | 15 +++++++++
+> > >  drivers/iommu/Makefile                        |  1 +
+> > >  drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++=
+++
+> > >  include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
+> > >  mm/page_ext.c                                 |  4 +++
+> > >  6 files changed, 75 insertions(+)
+> > >  create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
+> > >  create mode 100644 include/linux/iommu-debug-pagealloc.h
+> >
+> > This looks like a pretty handy feature to me, but I have some nits belo=
+w.
 >
-> Again I realise this is in mm-stable so this might be fiddly so we might have to
-> live with minor bisect pain :(
+> Thanks for taking the time to review the patches!
 >
-> Cheers, Lorenzo
+> >
+> > > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Docume=
+ntation/admin-guide/kernel-parameters.txt
+> > > index 6c42061ca20e..9a1c4ac8ba96 100644
+> > > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > > @@ -2557,6 +2557,12 @@
+> > >                     1 - Bypass the IOMMU for DMA.
+> > >                     unset - Use value of CONFIG_IOMMU_DEFAULT_PASSTHR=
+OUGH.
+> > >
+> > > +   iommu.debug_pagealloc=3D
+> > > +                   [KNL,EARLY] When CONFIG_IOMMU_DEBUG_PAGEALLOC is =
+set, this
+> > > +                   parameter enables the feature at boot time. By de=
+fault, it
+> > > +                   is disabled and the system will work mostly the s=
+ame as a
+> > > +                   kernel built without CONFIG_IOMMU_DEBUG_PAGEALLOC=
+.
+> >
+> > Can you be more specific about "mostly the same"?
 >
-> ----8<----
-> From afe5af105e7d64e39a4280c7fc8b34ad67cf0db0 Mon Sep 17 00:00:00 2001
-> From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Date: Fri, 21 Nov 2025 17:25:18 +0000
-> Subject: [PATCH] tools/testing/vma: add missing stub
+> The only difference is that the static key to gate the calls, I was not s=
+ure if
+> saying =E2=80=9Cexactly the same=E2=80=9D is correct, but I think it=E2=
+=80=99s better avoid =E2=80=9Cmostly=E2=80=9D as
+> it might be confusing and as the data in the cover letter shows no overhe=
+ad,
+> I will re-write the whole help anyway.
 >
-> The vm_flags_reset() function is not available in the userland VMA tests,
-> so add a stub which const-casts vma->vm_flags and avoids the upcoming
-> removal of the vma->__vm_flags field.
+
+Ah, I think I copied the base of this from the documenation of
+"debug_pagealloc=3D"
+which actually slightly changes system behviour by not using THP on some ar=
+chs,
+which is not relevant in our case, I will drop it then.
+
+Thanks,
+Mostafa
+
+> >
+> > > +
+> > >     io7=3D            [HW] IO7 for Marvel-based Alpha systems
+> > >                     See comment before marvel_specify_io7 in
+> > >                     arch/alpha/kernel/core_marvel.c.
+> > > diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+> > > index 70d29b14d851..6b5e9a2d936a 100644
+> > > --- a/drivers/iommu/Kconfig
+> > > +++ b/drivers/iommu/Kconfig
+> > > @@ -383,4 +383,19 @@ config SPRD_IOMMU
+> > >
+> > >       Say Y here if you want to use the multimedia devices listed abo=
+ve.
+> > >
+> > > +config IOMMU_DEBUG_PAGEALLOC
+> > > +   bool "Debug page memory allocations against IOMMU"
+> >
+> > Perhaps "IOMMU mappings" would make this a little clearer?
 >
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  tools/testing/vma/vma_internal.h | 7 +++++++
->  1 file changed, 7 insertions(+)
+> Will do.
 >
-> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-> index 37fd479d49ce..f90a9b3c1880 100644
-> --- a/tools/testing/vma/vma_internal.h
-> +++ b/tools/testing/vma/vma_internal.h
-> @@ -1760,4 +1760,11 @@ static inline int do_munmap(struct mm_struct *, unsigned long, size_t,
->  	return 0;
->  }
+> >
+> > > +   depends on DEBUG_PAGEALLOC && IOMMU_API && PAGE_EXTENSION
+> > > +   help
+> > > +     This config checks that a page is freed(unmapped) or mapped by =
+the
+> > > +     kernel is not mapped in any IOMMU domain.
+> >
+> > I can't really parse this sentence :/
 >
-> +static inline void vm_flags_reset(struct vm_area_struct *vma, vm_flags_t flags)
-> +{
-> +	vm_flags_t *dst = (vm_flags_t *)(&vma->vm_flags);
-> +
-> +	*dst = flags;
-> +}
-> +
->  #endif	/* __MM_VMA_INTERNAL_H */
-> --
-> 2.51.2
+> I will re-write it.
+>
+> >
+> > > It can help with debugging
+> > > +     use-after-free or out-of-bound maps from drivers doing DMA thro=
+ugh
+> > > +     the IOMMU API.
+> > > +     This santaizer can have false-negative cases where some problem=
+s
+> > > +     won't be detected.
+> >
+> > Maybe just say "The sanitizer is best-effort and can fail to detect pro=
+blems
+> > in the case that ...".
+>
+> Makes sense, will do.
+>
+> >
+> > > +     Expect overhead when enabling this and enabling the kernel comm=
+and
+> > > +     line iommu.debug_pagealloc.
+> >
+> > I'd reword this to say something like "Due to the overhead of the sanit=
+iser,
+> > iommu.debug_pagealloc must also be passed on the kernel command-line to
+> > enable this feature".
+>
+> Will do.
+>
+> >
+> > > +
+> > > +     If unsure, say N here.
+> > > +
+> > >  endif # IOMMU_SUPPORT
+> > > diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
+> > > index 355294fa9033..8f5130b6a671 100644
+> > > --- a/drivers/iommu/Makefile
+> > > +++ b/drivers/iommu/Makefile
+> > > @@ -34,3 +34,4 @@ obj-$(CONFIG_IOMMU_SVA) +=3D iommu-sva.o
+> > >  obj-$(CONFIG_IOMMU_IOPF) +=3D io-pgfault.o
+> > >  obj-$(CONFIG_SPRD_IOMMU) +=3D sprd-iommu.o
+> > >  obj-$(CONFIG_APPLE_DART) +=3D apple-dart.o
+> > > +obj-$(CONFIG_IOMMU_DEBUG_PAGEALLOC) +=3D iommu-debug-pagealloc.o
+> > > diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/io=
+mmu-debug-pagealloc.c
+> > > new file mode 100644
+> > > index 000000000000..385c8bfae02b
+> > > --- /dev/null
+> > > +++ b/drivers/iommu/iommu-debug-pagealloc.c
+> > > @@ -0,0 +1,32 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +/*
+> > > + * Copyright (C) 2025 - Google Inc
+> > > + * Author: Mostafa Saleh <smostafa@google.com>
+> > > + * IOMMU API debug page alloc sanitizer
+> > > + */
+> > > +#include <linux/atomic.h>
+> > > +#include <linux/iommu-debug-pagealloc.h>
+> > > +#include <linux/kernel.h>
+> > > +#include <linux/page_ext.h>
+> > > +
+> > > +static bool needed;
+> > > +
+> > > +struct iommu_debug_metadate {
+> > > +   atomic_t ref;
+> > > +};
+> >
+> > s/metadate/metadata/
+>
+> Ah, that's embarrassing, I will fix it.
+>
+> Thanks,
+> Mostafa
+>
+> >
+> > Will
 
