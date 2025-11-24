@@ -4,112 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B66BCFD31F
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 13:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B798FCFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 13:26:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 807CD6B009D; Mon, 24 Nov 2025 08:23:51 -0500 (EST)
+	id 0DF876B0022; Mon, 24 Nov 2025 08:26:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 791D96B009E; Mon, 24 Nov 2025 08:23:51 -0500 (EST)
+	id 0B8626B002C; Mon, 24 Nov 2025 08:26:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 631CC6B009F; Mon, 24 Nov 2025 08:23:51 -0500 (EST)
+	id F376F6B009E; Mon, 24 Nov 2025 08:26:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C4B96B009D
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:23:51 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17CAF14037E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:23:51 +0000 (UTC)
-X-FDA: 84145568262.08.44B46B7
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5E32218000C
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:23:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DCF426B0022
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:26:01 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADD30B8DA1
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:26:01 +0000 (UTC)
+X-FDA: 84145573722.17.87DE884
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E6ED718000C
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:25:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CYTjpF4I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763990760; a=rsa-sha256;
+	cv=none;
+	b=U4YZhFaNCO1z8e7cSVbGXOBgwdB2yOJxhdEZNF5G8lzSVKIOxeNNd9arFToQOQiqutWqWH
+	4YZb3lgUlCBxPyuhiC8gDkMwgIKI4ouEq3gwA+5BE7wVUSNjZDbfhNSv1PCDJgMG3P5cH8
+	rRcQMwRDKp7a0ZQzcmLedcjB6roCbQU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CYTjpF4I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763990629;
+	s=arc-20220608; t=1763990760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7d4Hx+/jSNJzFIDxPMp3ANPnah/DpPc1NXVsMX3uNvo=;
-	b=416Dh3iMzxCF6DszH4ezXwf194bawh6LJMGvnZZLnmJj709Y6WeSb52gy0eF1t4Z2dNcyd
-	Yb/MfQC0MoZYKAyPGRWXUl0MnhfQcRq77MYq6+0+j7fJdX/sPhZSuhXh/MNcICsBBNQS4t
-	USG2fdE9yRQPe8NalN6MMR5OMUpZJRI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763990629; a=rsa-sha256;
-	cv=none;
-	b=ZFDluyGRLHv1P5rZRHlFyCAm2rjqWzV/rSPV+1yFY0TSZaplEVYykaqBkJzH75Q/sXJOw1
-	xbQ5RnlT3UsKVP3vqFkw5l+ATdK5uahFdjQK5eLNoHP55dhqUZV4xy6RJAHAeUtdJFURp1
-	M+XYSnBTcE9DSiGYZZR97T8n1zNazfM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32E20169E;
-	Mon, 24 Nov 2025 05:23:41 -0800 (PST)
-Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 80E893F73B;
-	Mon, 24 Nov 2025 05:23:43 -0800 (PST)
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Will Deacon <will@kernel.org>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	sparclinux@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	x86@kernel.org
-Subject: [PATCH v5 12/12] x86/xen: use lazy_mmu_state when context-switching
-Date: Mon, 24 Nov 2025 13:22:28 +0000
-Message-ID: <20251124132228.622678-13-kevin.brodsky@arm.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251124132228.622678-1-kevin.brodsky@arm.com>
-References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VnvBX/XZZCUCV5Tjc3nbVAUiO6caprpKW+yLpMrITTs=;
+	b=LTYP38prgsSfvjnARoRZjxj5yT+vIMMEra1biHa9UOcQPTJow+tmJgC4wKH8oGB78kdP5S
+	lFk9RqdEDyZY94VysaB45psoj97r3YqhSNnVh/rSe61fFj93g8iCLX4wB/nI5tmM8OUOEL
+	h/PXo5TbJS3HkrnIf3jOL98T2rMLtXU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A6D31429DA;
+	Mon, 24 Nov 2025 13:25:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5B3C4CEF1;
+	Mon, 24 Nov 2025 13:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763990758;
+	bh=V3pNaPV0kKnax3zGGnv1AnsUhY0LbnCFMQ5OaJ21pJ0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CYTjpF4IqP6zSOrYyA371vjXfNJC7bd00OTA1CE5rpfF6muw17PEE2UxeKCi15eLq
+	 PQxSKfXFIgFWxfzPAYgfMtTjyX5g80i197Ya+zrjB7Sw9Cyy+NCIkFgg7jfzi5qcNW
+	 b41ni0lnkTl61chQhTW85fIs872WP5c4GTYZzcUuPdAI1GDVpCZrY9uEhS+l5nDImj
+	 l0XWnjCK579Po2HYhTBgnPZthYY/E19895OxnfPmAoIi8XVq96ZrczHVKeplcZsaDA
+	 USypK0KqHUs4xEfdivciT9uT3FLODj0pbwolLV7dU9zvVaL6JKk6X10jIl6OpLZxVN
+	 I1Nmy/oMt9gXA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: ranxiaokai627@163.com,  rppt@kernel.org,  akpm@linux-foundation.org,
+  catalin.marinas@arm.com,  changyuanl@google.com,  graf@amazon.com,
+  pasha.tatashin@soleen.com,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v3] KHO: Fix boot failure due to kmemleak access to
+ non-PRESENT pages
+In-Reply-To: <mafs0see3zkug.fsf@kernel.org> (Pratyush Yadav's message of "Mon,
+	24 Nov 2025 13:16:55 +0100")
+References: <20251124025943.94469-1-ranxiaokai627@163.com>
+	<mafs0see3zkug.fsf@kernel.org>
+Date: Mon, 24 Nov 2025 14:25:55 +0100
+Message-ID: <mafs0ms4bzhng.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5E32218000C
-X-Stat-Signature: jsde9qzmpgfnbjhn4hm3hgtk54zo5nuj
+Content-Type: text/plain
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E6ED718000C
+X-Stat-Signature: ptn57od9dtjo68huokeqf1qmg9w81rrt
 X-Rspam-User: 
-X-HE-Tag: 1763990629-893421
-X-HE-Meta: U2FsdGVkX18UnABa4z2DP1V9omdhiHlspaxijzahpqynoXrl3dx3c+C3M3T5waGERBaYCZ4spVH+GrquU/g8/lLagM05ndwJdyPKMDRsUzJTtf9Q93jwF2W9DxTnGlQ2dzIg1O98YBTzAivsjrNSLIGvh+SmVhmV8BX239osRXJ307LiHVpP/9UCymYUGDGlJC3LgLFb1jPAMEehrq+i/I6qijyEuFDEuHyv6dFLVJBv2QdCalqcasxo9yDqQMmQEJ81ukHrKz/JAryI7PRZR/jqJRvVU5SWSF/FCiS6RQLKA5IcLnLnC2Xea63mak7IzZgZ1k6uXwvKmHO9XB8PKYdZlRA4dgbQPHgwEe2z0YoWWFlnovXThPQGmbYnRy/LH1YgFNlfHOe5t13PNEZlvVGNgkwn6VFwb1MpGGm3QJtGzXP2uqCuZ1Z7gtBWNlyiBbgNIk4JRw1+LtdtTX6VTx+C9t+uBVeHDu1ZxxchfIhoVzv1O2i04t13iUVdYIGBBacrafTVtMyzzbQNA8bPiTIhsvw7WYl5RvbriwVw/qahQLsAk1RbMow3UOgWGoeYjaHP1tu6zG0oNEx6uJDWbL13FxHjyb6ausAVhcw7iwQ33TJhG5VPwyqIr8nmZEWQgudCskCMBlQqo7xMfiCzXJriumB76fnN/2+1j0+VRHNuAMjLj3/ZRJy3Dpvq8uAvlPrA268C0aunnOeJwFX4sx8ezzwNxmLM6Mp1uYke/tlb17VJgOOUBVRprCg7xyRQ1lreZIQ+sUXvrzmu4v5BYVtE3h76paOct6izuMJNGMRuEnIK1nwkSwAj6F0+iMIsP/srQJCLns3ZRWjcrbrnH3UeTjbYoCAz8Khxq61u69Q1OJrHn2Z5n9Y2GNDTH06hByM7ZURUzO+Cv1eHzy4ptuzTYPrXWzMSIwFPrwBdQatyBquhyNSxZDiNHWDdade90X424iDEtt636HYr4/Y
- YC5XIPS+
- vSkQtDlQF77qr30WffJaf4veLrc1DP6d4tRTr3Oz0ZLMLLpebRm2blVnhA/iU2ytIUgjUOwWO65fVV2W+v36FfwiAF9AiGncNoYcBpf3N9Hmy/NzfD+T+qYAFtIY6uo47x1WoEWK6i8mkWKLpYRHcbiBiWjju2iDg26bK9zdwFpZkYSeuxitUR/O2X+L0QYNDSgngqfkb9+9SqdEgcGIPohvQGcjB+czDiYvDxhAyzr/QWavJa8pnFJ2huSSxzF49f/zJkBNX9DHpEas5m1wWndkwvA==
+X-HE-Tag: 1763990759-701509
+X-HE-Meta: U2FsdGVkX186+460vjHiOmSLiM0FvSe6FQPxUGmO1JnnPawERPWwLuPyuCD8/1G6v/n5K/5wPJ4F9mfDeueN87qE9ti/ofD4J4HjBal/qtCPtuxgEikkAgM2Y1B/9quJPvJz8z4X8CEesIxdqXH++BLFQsvbHRCx4ITlv/Nf7HBOC/TCcsZyQwL2WVYpWaAdQOvQvDc7/PPLWBFVbnXorVw8TeVEKaztywYeWH6nOYXteuPZz9Ivttlpb3weLC3C1JFJhuOSTmhlPHNqdk1wGVXRjpb5BsEsk7Cx801svZP4BolHaTYOShMQj6AFzaNig0UY8Xq5GmQyonL+pDtdoUOIP6cgTPpWOFBYoHow6R965VZzLl9RVnu4LIStn13L8XISvu4By9RV+kc4Z3K176w3EL8otq27Z36UzbgcRAyFUdvCEAHovRhz/kZfsz/MLwJNPRi7sUb4kv0cBOrVF4iWAQx7WtUhhyfngRG58l31RdxeSJl5aaks2Ml2RrEs0qim3fPWUswXiByc5rIeNmFrk5stjZuWk/v0Yt2KRtMg60rPhrF80/4MPTYoiViOMcbQuE897/pbpYxAT2jT/rxtZ2KCrZPN2kgEK4qPnJkbDJMPM8PehIx0+232uVaL1KjrD1pnSofNFBnnRnUTt2omF9HWDzhRRhJ5P/JzuhhfYQ6MY6MwpAD5IOmp1UDk1MBGkuAcI7BhBDDSaZjh6jEoGu38snN/DrfNvS+O3RtnszdVsgANWKILtJ9QZVzcGWTYsu5dm10tn1B0RdP9654rCf33t0SqZkIjhyfobd8RNz3M2M5J1sQ8djLGqktiOLNx/mWkiWw07fcUj+rNrvSEFhQVBUUY2AvVunzM45Ansg7qNP8uNA9bXhkjaN1QXzGW45yg8jURx0e8/hAFHFevalAvtHj8tZwaSzscavSaGlgQJnJ/bqhmc23UFUuuKO0Zf1hF41t/pZiPnD7
+ RjbKtPYL
+ FaF3hGU1c//lzyiBdJ3S7EUdXFaA4MWR4POXlF3W2X0c5DDosdXC3X/2z/pfDzxBfqixIBx2HIed//aO5wtFXhWm6oaxhU3dd/mkxa5/YCIG65BYZVf+vmbzBgp29wjgcMxWGgHpwuTfMyqrDOxanR93qFbgGhyi8yCMfINEXqcN+HzqgJ3clOWgVesQhzSeb504FhDeXmebHh0K521Jy0fIJ80G2gj6MXu0loQ1Fy8BC4eCpmAqINJovo+IXd4PQBFWoLAtZgcYrwma5AG0YidlHsw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,65 +97,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We currently set a TIF flag when scheduling out a task that is in
-lazy MMU mode, in order to restore it when the task is scheduled
-again.
+On Mon, Nov 24 2025, Pratyush Yadav wrote:
 
-The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-mode in task_struct::lazy_mmu_state. We can therefore check that
-state when switching to the new task, instead of using a separate
-TIF flag.
+> On Mon, Nov 24 2025, ranxiaokai627@163.com wrote:
+>
+>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>>
+>> When booting with debug_pagealloc=on while having:
+>> CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
+>> CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF=n
+>> the system fails to boot due to page faults during kmemleak scanning.
+>>
+>> This occurs because:
+>> With debug_pagealloc is enabled, __free_pages() invokes
+>> debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
+>> freed pages in the kernel page table.
+>> KHO scratch areas are allocated from memblock and noted by kmemleak. But
+>> these areas don't remain reserved but released later to the page allocator
+>> using init_cma_reserved_pageblock(). This causes subsequent kmemleak scans
+>> access non-PRESENT pages, leading to fatal page faults.
+>>
+>> Mark scratch areas with kmemleak_ignore_phys() after they are allocated
+>> from memblock to exclude them from kmemleak scanning before they are
+>> released to buddy allocator to fix this.
+>>
+>> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+>> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> ---
+>>  kernel/liveupdate/kexec_handover.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>> index 224bdf5becb6..c729d455ee7b 100644
+>> --- a/kernel/liveupdate/kexec_handover.c
+>> +++ b/kernel/liveupdate/kexec_handover.c
+>> @@ -11,6 +11,7 @@
+>>  
+>>  #include <linux/cleanup.h>
+>>  #include <linux/cma.h>
+>> +#include <linux/kmemleak.h>
+>>  #include <linux/count_zeros.h>
+>>  #include <linux/kexec.h>
+>>  #include <linux/kexec_handover.h>
+>> @@ -1369,6 +1370,7 @@ static __init int kho_init(void)
+>>  		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
+>>  		unsigned long pfn;
+>>  
+>> +		kmemleak_ignore_phys(kho_scratch[i].addr);
+>
+> Can you please put the explanation you gave in [0] for why this is not
+> necessary in KHO boot as a comment here?
 
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
----
- arch/x86/include/asm/thread_info.h | 4 +---
- arch/x86/xen/enlighten_pv.c        | 3 +--
- 2 files changed, 2 insertions(+), 5 deletions(-)
+And also an explanation of why this is necessary in the first place. You
+do explain that in the commit message, but a shorter version as a
+comment will make this a lot easier to understand instead of having to
+dig through git history.
 
-diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
-index e71e0e8362ed..0067684afb5b 100644
---- a/arch/x86/include/asm/thread_info.h
-+++ b/arch/x86/include/asm/thread_info.h
-@@ -100,8 +100,7 @@ struct thread_info {
- #define TIF_FORCED_TF		24	/* true if TF in eflags artificially */
- #define TIF_SINGLESTEP		25	/* reenable singlestep on user return*/
- #define TIF_BLOCKSTEP		26	/* set when we want DEBUGCTLMSR_BTF */
--#define TIF_LAZY_MMU_UPDATES	27	/* task is updating the mmu lazily */
--#define TIF_ADDR32		28	/* 32-bit address space on 64 bits */
-+#define TIF_ADDR32		27	/* 32-bit address space on 64 bits */
- 
- #define _TIF_SSBD		BIT(TIF_SSBD)
- #define _TIF_SPEC_IB		BIT(TIF_SPEC_IB)
-@@ -114,7 +113,6 @@ struct thread_info {
- #define _TIF_FORCED_TF		BIT(TIF_FORCED_TF)
- #define _TIF_BLOCKSTEP		BIT(TIF_BLOCKSTEP)
- #define _TIF_SINGLESTEP		BIT(TIF_SINGLESTEP)
--#define _TIF_LAZY_MMU_UPDATES	BIT(TIF_LAZY_MMU_UPDATES)
- #define _TIF_ADDR32		BIT(TIF_ADDR32)
- 
- /* flags to check in __switch_to() */
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 4806cc28d7ca..98dbb6a61087 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -426,7 +426,6 @@ static void xen_start_context_switch(struct task_struct *prev)
- 
- 	if (this_cpu_read(xen_lazy_mode) == XEN_LAZY_MMU) {
- 		arch_leave_lazy_mmu_mode();
--		set_ti_thread_flag(task_thread_info(prev), TIF_LAZY_MMU_UPDATES);
- 	}
- 	enter_lazy(XEN_LAZY_CPU);
- }
-@@ -437,7 +436,7 @@ static void xen_end_context_switch(struct task_struct *next)
- 
- 	xen_mc_flush();
- 	leave_lazy(XEN_LAZY_CPU);
--	if (test_and_clear_ti_thread_flag(task_thread_info(next), TIF_LAZY_MMU_UPDATES))
-+	if (__task_lazy_mmu_mode_active(next))
- 		arch_enter_lazy_mmu_mode();
- }
- 
+[...]
+
 -- 
-2.51.2
-
+Regards,
+Pratyush Yadav
 
