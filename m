@@ -4,88 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98416CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 04:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2750CFD318
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 05:08:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EEE26B0011; Sun, 23 Nov 2025 23:28:30 -0500 (EST)
+	id A3DDA6B000D; Mon, 24 Nov 2025 00:08:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99F926B0022; Sun, 23 Nov 2025 23:28:30 -0500 (EST)
+	id A157C6B0010; Mon, 24 Nov 2025 00:08:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B5716B0023; Sun, 23 Nov 2025 23:28:30 -0500 (EST)
+	id 92B0D6B0011; Mon, 24 Nov 2025 00:08:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BACE6B0011
-	for <linux-mm@kvack.org>; Sun, 23 Nov 2025 23:28:30 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 282F212F958
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:28:30 +0000 (UTC)
-X-FDA: 84144219180.18.3F2C184
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4075414000A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:28:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YUZEid1p;
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F41F6B000D
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 00:08:20 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04F25C021A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:08:14 +0000 (UTC)
+X-FDA: 84144319350.24.7490873
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4089740013
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:08:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PGWFz4wk;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763958507;
+	s=arc-20220608; t=1763960893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=srYDs3N17c/LMXsTNhpR4pAyhQEFbr855gNJVIBMtnE=;
-	b=G5DXcrQINQBHjBr8kbJCydvdEDPb1qjOcvrRHed57yIL4YFjZpPZsY9uk1OGDn0CsOYCR4
-	Zi2Bs0izU7tXFeu91vaAwskb39W1WYfVkvyd6QhQXv5/VY5sy21z7i4umdumWhGqE5ruai
-	wxacQ7o5qCY+rylgCtkM8+I4++6GUr8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763958507; a=rsa-sha256;
+	bh=Kv5lKNyggtv57Xj6HWNXD5q3wcps9XYvZ+5HDRbjZNg=;
+	b=EAEE82Xgoy/Rkf4ll+xHVPd7MfKq6uBWYMzyXTh8Qpl8yaGN9Lp3NSe5fenyOP6MyFAEuc
+	XZHozETfTFpIKV1GVbV4nsAlsEZsni+8oOJCA/oispuWyeYbJI2gdItXE1UCb/zIhu0FMT
+	IhAUwnrpPhRtayYP2+fu47pWb4eHeNI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763960893; a=rsa-sha256;
 	cv=none;
-	b=8fuQidtFYBHkP6NBRz7YF2tjMPw4n2khV2DUnE0H/AQFAl1MOlNVOtd3Dj85pYhAoQRsza
-	a1o+JjIt4EyxZ8kN6oN3oz3eEGyD8iXMXtm0+sYmvD0klmTIgqy/InYGsK7EJHoMIRpusK
-	N8inPyCskE+CmLHmQfwFmPARMFNrUQ8=
+	b=lGqDjr0j1BZlNzh5in4T+5HAS61aSu7CU4+7P2qrwkLhVo5B3hAi/jTWF0RZrH9U5N8xO/
+	dIvaQkZwMOlZGoSe/0wIMEMv+znt3fvo7U2QCn6lyvzCPPQihqmFhHJuERjSrVMPufW6IQ
+	l4duGqyPGyzK6hEZaziZ033MG6H+/4A=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YUZEid1p;
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=srYDs3N17c/LMXsTNhpR4pAyhQEFbr855gNJVIBMtnE=; b=YUZEid1pl6TcQAkWbdpljd9vCD
-	d89lFjHClB320Dz82F+kc0CWp8wzIqCZ01lpJWSW7+n1Qg/hg4dyf3RcaZP6d1S7FWSdqp5X8hcoP
-	5iGyd/qfn66uIsyxM8/KuL6mse5tQycA/7Py6Zj4w5rPv4sSYUn4O1vqE9EO3izBaU9U66JxmNXcD
-	OlvM5d08+m/Guipv91qMe4erL6Wzf4Yd+c7NEx6w8NahIs9tDQMzCZjcMPk1MMB9XDM/8EH1p5tO1
-	qQdr3IxtMaz27qg6TnhkCESAs2NWxzC06pNSfpD8+N6H9fK7+pEwZhz4iW9d4JeWao9rAy3RY+2X1
-	98TqDC+w==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNOBY-00000006RgQ-3Vfw;
-	Mon, 24 Nov 2025 04:28:20 +0000
-Date: Mon, 24 Nov 2025 04:28:20 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Subject: Re: [PATCH v4 02/16] slab: Remove folio references from __ksize()
-Message-ID: <aSPe5P9Oo9ToafiS@casper.infradead.org>
-References: <20251113000932.1589073-1-willy@infradead.org>
- <20251113000932.1589073-3-willy@infradead.org>
- <aSPDauAEYs_RVNW1@hyeyoo>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PGWFz4wk;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B9904406F6;
+	Mon, 24 Nov 2025 05:08:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463A1C4CEF1;
+	Mon, 24 Nov 2025 05:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763960891;
+	bh=hieoIPxIhRSooVrU3/2wVozJyRs1qMXLmzpW8xV1wzY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PGWFz4wkyghWCM5P7ckMfeF1ztZvSWtS2QEwkzMCzyzCVgtFKGEkLgJqy/viT440v
+	 yaLEfYvDaQKnLSy6uR+9I+i+ZINn7SDTB+/qX8KrflY1cjgOHRmknnXDOV/u0/FvGu
+	 NNUNwqZ/xrD2U3CUlUTED32zlbalE8ApcvCTVV7fCZM+JTWXoXtS4lzsdcfGlmNLAZ
+	 /qzpXLU7vNgOw/YDtFTUPhAuvbAOle9zzBCqJRbhAWlNE1Pbz9cKm2a0gIDY1NPbmC
+	 0aQfUTilZ7Bh0ou+L5xM7SHml4e2W0OPll/Ctzpic/zP4fsRsIy5pDrE+VWMcYh228
+	 +PoEtTeYVePdw==
+Date: Mon, 24 Nov 2025 07:07:47 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v7 01/22] liveupdate: luo_core: Live Update Orchestrator
+Message-ID: <aSPoIw2keoueM2q8@kernel.org>
+References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
+ <20251122222351.1059049-2-pasha.tatashin@soleen.com>
+ <aSLsCxLhrnyUlcy4@kernel.org>
+ <CA+CK2bCN7x=eMwfTXF-2+vR=Gn3=41z6Xxx6wM1m7i-rxzug9w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aSPDauAEYs_RVNW1@hyeyoo>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bCN7x=eMwfTXF-2+vR=Gn3=41z6Xxx6wM1m7i-rxzug9w@mail.gmail.com>
 X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4075414000A
-X-Stat-Signature: txowgmosrwtpfixgi1gt9c3wpz3qnu3h
-X-HE-Tag: 1763958507-740454
-X-HE-Meta: U2FsdGVkX1+TxYgezSA8vxsIfRMcWLYGerWo8PNbTkZEh4opkRwnNJDDov9B6qqVMATx1XkUZEeteFoQjR7YPqMU1FUtPEMVBTlheSfat8Vsx+Y/nl6EI+D5ZQZQohVpmTXv7+pO1/fnd/52wbVnE0WgTIOHJwqhcfgH4GSWX9VLdUMxZr9WkUOgT9GJTVcBehR4c5dadmw3B9SNPCbqT+7CGZF34RO0oL/L4oTZjnRhRnjfDQLRN1lLCQReV+w7JQ5roQgw0CiqaFoxClxV4wAGzwti7hmzOMefanuveUeaZWZ+C3Kezjqz4uLDp4EkWJEn3ebiNkWWxozSISd55ZRwbPW1q8m4NJy6qxhJtebwC277KA5cjtmKiz1KC4hQPrY0MswjzMMNXL9mNH6pTwrdLdGydauhHjfsiJWLn3I161A036/5or6D5nXqG6WpOk/+7fx5LMGixS/D1/tUgCCo3Tpgsd70Sv63oyN7DcgcIHtTO/xsN8MCu4sGj2ByE5nhBEd8ZbjsHsdWnsbmERXEDyuo3IdIK/0YUikHloAflmJqZDqBnlz6Nwo8B1/5qSu6UG4xiOzeTJJU9UK8OfH8F95Ab08t0+7ZqNVfqqTy4d7kmIWaB4ij6GLOwxQzUHkBRYySLnabnmGvxIS90jHXsLV47+RvUYkRJ0i3lISEBiipKzUmhazxFu7Ghzk27ZYrn7VwU7mPezgr4HZLTOrlxuDsT+mt5VoIxyBe2uAzOmO0g7qjH23iAUlzaOzxkvFBOoOMCd9qfqotT1cxRORGnrDQw/rMOTQnPTsHWElfcB1QaYLWRXsq63IdidR492gBThF7gKv3f/siCY/pEcXiVdCwE+k9w3LcgbJ4AE5zQAqbE22X0depPjc9eMzCOk1ASJDGFCWG4LBmkIepU0LtZyKR8slcp7XPCaoSt+UjnGSlkjArZbff3kwXdj2Igamv1sxIi1rR/zjwwp/
- 3Ijvt2V2
- U27d6sYN8hbWVduDZkG4MkK0+4ljXweEqoBfBveGwjfA+nSdNLz8Y4ucy5ZYxw9xqeOYnw97LYgg73KHRzlUCJDZfsoWXIU38btRp+ROZt+bKkMxwLoHB9aVjdM/Bm8RfiU5sykFdILU39cougAgGmfbDjC7uBXxnMHxR7V9duBUX1H+eSwTUfLPOGeOvlm83EUTyxA7Z5zulNjTKd7DuQUrFSTgnPygEg0QsK2+r14rw46HsUxC3cucy0rXyzJZMdVUWAKFiiphpSQ+PBB6e7OZDNYU+ACVXWcgwgvJIU1T9DNc=
+X-Rspamd-Queue-Id: 4089740013
+X-Stat-Signature: 7ucastgo31hxocy96zqmd4hq3gattjo7
+X-HE-Tag: 1763960893-465882
+X-HE-Meta: U2FsdGVkX1/D3h+CWaVoMAoem5gglZdEL2QfxuiaNFhcU/EkXh0g1VQ4HU6l/skiJznmydFTWY8m5Mm/LtY+oYUzvQ+v6wdZYccDUHw8gSvKjIpuAr9XUjHMtT+e/WRArbv/6L0e00p4ljEBqv7uK9zWuXGt54lYuwTfVZSXW4kS9K5HVJWDq7v10AHTy2J1fZYTJs+ycvdm1ObWsTzxQMFHRupKrjYQ16kfNlyEYnUKdYZ+DCntS3TE8M4OKAFaP3LG1YQm7oLMRBGSg+lm2lt8OeN+veCTtBDWlCcfX0LKbg2zdvmWUUlIcx+pFbuFLDKAZV+M9Lr5bbuWlqpb258AKgqwANt/frXR0r8Z7bcWmr0+crQaDuW0SHcQNI+FB3BLh1DlY+VqdejykghDUtyB63aF48eB8mlf32dGXQOwEaCYFJlxWsqv4lcKx12YnFzWAS6dZ3USh4Z+/J89CsSYglhncUqRcYW+YOBY5F8c1EXLOH72/rgW98Zm298NTX7nH1JoGnMs59Xb40nBRFEaIJt3Q7qkPEH/1T7m57tnQb9xpa6jYmFNsbDuB2nIZLVw8jUUHpoCfcF+S4+jwh4LIEx0qEhgEtJlvr8ZSPZiSXcvD87sIgSK0QNE2/9ahTSnMuuFlx1yreFgXRB55YThakygyKZb6s2cjnUr8vVVjthxUZy2q14KkTy5jOaOxyk0pdFx/Az7jv7NLQmgrxwJU6W7Knzbhu5Dgr/S52CWmQHxljOVfmQJXOfg5FRgGJePbeGgLwXizrZduuh2SW6sCUABYgBXuZH6KgTmvtiB9RAHNFkfivQioacTqCY4vtqf08o2mi8Mf/B76KM4Y24MGOD2Zp8KIwskib+xRJmm4HTMxuuTzbFGWzNrU75APtzCdMK80H4MflJNIBBjx4BAs+5mp1YKAUbvis2zKn5pwu8BRBGrUpvBQZx824yM3mhnJCq3i/RlK6WC2Tt
+ Ckex8HNw
+ nXIXMD0TK7aXXcWMoJq2Ydf080uZvwRYh5ex+2kZK+gxoPAG96jLMB7i0Y1K0PA4/uEGSjypJWl/+hxNQzwtn0BH11ry3FAk4FwpumIdCFZEZP4ybSBnU9zIVJabqQP8RTukapnK1ighklSd5rLIYLbvJToNCrs+pLTtzOYNHhejVWuFluSjZ9UqMCwG9TkYV4ynKxshVuBNXM5RD9VuBxuA+URb9Axo3x1aXOMT52svR6RRdx448c+W88y8q4PBcMJAuSLRKU8s7/liZjfTTfBWd2t/PgNeXottsu1UFAqlEc0782nMFggOCjg+FOSKpfiHGQyBGuldn9C4h7YAlmXKVIlXylIOk2F+qNEWptOFsFg5UXlJ0z0LzlqZzKcbKeGW3/SRbEgfon1BiZgAKDBipCOMRS7cZpqo1u7EytXBeCQKcuQ7xQB4KjG971eFoye6NJuA8Dh3hKmCTwQEV9ia59+yspx1BEDMa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,48 +121,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 11:31:06AM +0900, Harry Yoo wrote:
-> >  size_t __ksize(const void *object)
-> >  {
-> > -	struct folio *folio;
-> > +	const struct page *page;
-> > +	const struct slab *slab;
-> >  
-> >  	if (unlikely(object == ZERO_SIZE_PTR))
-> >  		return 0;
-> >  
-> > -	folio = virt_to_folio(object);
-> > +	page = virt_to_page(object);
-> >  
-> > -	if (unlikely(!folio_test_slab(folio))) {
-> > -		if (WARN_ON(folio_size(folio) <= KMALLOC_MAX_CACHE_SIZE))
-> > -			return 0;
-> > -		if (WARN_ON(object != folio_address(folio)))
-> > -			return 0;
+On Sun, Nov 23, 2025 at 07:15:44AM -0500, Pasha Tatashin wrote:
+> On Sun, Nov 23, 2025 at 6:12 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > On Sat, Nov 22, 2025 at 05:23:28PM -0500, Pasha Tatashin wrote:
+> > > Introduce LUO, a mechanism intended to facilitate kernel updates while
+> > > keeping designated devices operational across the transition (e.g., via
+> > > kexec). The primary use case is updating hypervisors with minimal
+> > > disruption to running virtual machines. For userspace side of hypervisor
+> > > update we have copyless migration. LUO is for updating the kernel.
+> > >
+> > > This initial patch lays the groundwork for the LUO subsystem.
+> > >
+> > > Further functionality, including the implementation of state transition
+> > > logic, integration with KHO, and hooks for subsystems and file
+> > > descriptors, will be added in subsequent patches.
+> > >
+> > > Create a character device at /dev/liveupdate.
+> > >
+> > > A new uAPI header, <uapi/linux/liveupdate.h>, will define the necessary
+> > > structures. The magic number for IOCTL is registered in
+> > > Documentation/userspace-api/ioctl/ioctl-number.rst.
+> > >
+> > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > > Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> >
+> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> nit: we can still have these sanity checks even when we're not converting it
-> to folio?
+> Thank you
 > 
-> size_t size = large_kmalloc_size(page);
-> if (WARN_ON(size <= KMALLOC_MAX_CACHE_SIZE))
->     return 0;
-> if (WARN_ON(object & (size - 1))
->     return 0;
-> return size;
+> >
+> > with a few nits below
+> >
+> > > ---
+> >
+> > > diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> > > index a973a54447de..90857dccb359 100644
+> > > --- a/kernel/liveupdate/Kconfig
+> > > +++ b/kernel/liveupdate/Kconfig
+> > > @@ -1,4 +1,10 @@
+> > >  # SPDX-License-Identifier: GPL-2.0-only
+> > > +#
+> > > +# Copyright (c) 2025, Google LLC.
+> > > +# Pasha Tatashin <pasha.tatashin@soleen.com>
+> > > +#
+> > > +# Live Update Orchestrator
+> > > +#
+> >
+> > If you are adding copyrights it should have Amazon and Microsoft as well.
+> > I believe those from kexec_handover.c would work.
+> >
+> > @Alex?
+> 
+> Sure, or I can remove all of them from Kconfig, whatever you prefer :-)
 
-We could!  However, I decided that we had these extra warnings to catch
-some uses of ksize() on non-kmalloc-large objects, and so they were
-really caught by the new:
+Quick grepping shows that the vast majority of Kconfigs does not have
+copyright, let's just drop it.
 
-+       if (WARN_ON(!slab))
-+               return page_size(page);
+> > >  menu "Live Update and Kexec HandOver"
+> > >       depends on !DEFERRED_STRUCT_PAGE_INIT
+> > > @@ -51,4 +57,25 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
+> > >         The default behavior can still be overridden at boot time by
+> > >         passing 'kho=off'.
+> > >
+> > > +config LIVEUPDATE
+> > > +     bool "Live Update Orchestrator"
+> > > +     depends on KEXEC_HANDOVER
+> > > +     help
+> > > +       Enable the Live Update Orchestrator. Live Update is a mechanism,
+> > > +       typically based on kexec, that allows the kernel to be updated
+> > > +       while keeping selected devices operational across the transition.
+> > > +       These devices are intended to be reclaimed by the new kernel and
+> > > +       re-attached to their original workload without requiring a device
+> > > +       reset.
+> > > +
+> > > +       Ability to handover a device from current to the next kernel depends
+> > > +       on specific support within device drivers and related kernel
+> > > +       subsystems.
+> >
+> > Sorry, somehow this slipped during v6 review.
+> > These days LUO is less about devices and more about file descriptors :)
+> 
+> Device preservation through file descriptors: memfd, iommufd, vfiofd
+> are all dependencies for preserving devices.
+> 
+> That Kconfig description is correct and essential because the core
+> complexity of the LUO is the preservation of device state and I/O
+> across a kernel transition, which is a harder problem than just
+> preserving memory or files, for that we could have used a file system
+> instead of inventing something new with logic of can_preserve() etc.
+> 
+> Device preservation requires exactly what is stated in the description
+> for this config:
+> "Ability to handover a device from current to the next kernel depends
+> on specific support within device drivers and related kernel
+> subsystems." The only subsystem that is getting upstreamed with this
+> series is MEMFD, it is a hard pre-requirement for iommufd
+> preservation; the other subsystems: VFIO, PCI, IOMMU are WIP.
+ 
+Ok.
 
-Now, you could argue that we're now not warning for ksize(kmalloc() + N)
-for N in the range 1..4095.  But I'm not sure it's particularly useful
-to be warning for those cases.
-
-I suppose size <= KMALLOC_MAX_CACHE_SIZE would also catch an internal
-bug in kmalloc where we set PageLargeKmalloc on a small allocation,
-but given how few places actually call ksize(), I doubt this would be
-a useful self-check either.
+-- 
+Sincerely yours,
+Mike.
 
