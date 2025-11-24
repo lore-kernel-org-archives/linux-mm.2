@@ -4,204 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F842CFD362
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 22:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42789CFD366
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 22:54:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6273D6B0010; Mon, 24 Nov 2025 17:14:39 -0500 (EST)
+	id 2B8626B000C; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D66E6B0022; Mon, 24 Nov 2025 17:14:39 -0500 (EST)
+	id 268706B0023; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 477D76B0023; Mon, 24 Nov 2025 17:14:39 -0500 (EST)
+	id 1AC316B0027; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E8106B0010
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:14:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB8A81A058F
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:14:36 +0000 (UTC)
-X-FDA: 84146905752.19.EC9EA10
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012019.outbound.protection.outlook.com [52.101.53.19])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C966840013
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:14:33 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SZIKEBcl;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.19 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764022474; a=rsa-sha256;
-	cv=pass;
-	b=bAiUkRl81oukWUx3UrE2p5NBYbFzvcP6oug4FcHtWF1BZYULm1htgAd1q+1Lj3zv4FG8+f
-	4xtG1Z7nFH0FdMqQ24AUFrTXFOepbvOjo4xFNjS7a1f+41e4Z6PPMc23Ab4f0QceeSh0EX
-	kpQQLD7FE02nlAFt7wS9cA6owGav4kQ=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SZIKEBcl;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.19 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764022474;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 04C4A6B0023
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1824F140508
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:54:12 +0000 (UTC)
+X-FDA: 84147005544.12.C6FAB4E
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4827D180018
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:54:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IAhGGo9Y;
+	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764024850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2zX8Z9gfR9t5iDfSFji/391ATdoJJGfmw8idKu0a8Dw=;
-	b=CfayxdwYoiZR1bGrBMqW26ox4QXZ7wdik6IcV0NRFaqgMpYsaubuB2awGVIMGFzl5TwKaP
-	oggKSCzk8fzI8JjsRwWMUK+pysq2A6vz9EWaFTtWPAfi4V10QUIEJPwE6QbqqE4qL7Ir8R
-	JcsVYahdKoup6edAnid7bJpNjNlZp6g=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vhOkKWCWv1m2G/CfhaJHbjVcpvKsd6pWbOOUGI0wn9TXY2QjpI7MvTvd/JdN0Lu+UoBgFh4b2nVA4B/Aj1mrWON+rPYQdRqxIKi0l8j5x+GpP4em6SP9L7Ueny+KIKJDBUu1G1h+hkqwdRbkcmGKVee0/JoCfvpJBc+hYN0VJ9EiiV9x8pZvjXKpFoPQsOHawLREM7UvgkSsta6JqpNr3SQYhTFENks2+/zdqZ3y0NVI8EPZ9La1bH4W4Q4zrzrYaObqGTNscYpFB9yM5450+8OpZ7GXWy2KuQ0SQpxQYMEDuBn6atS/b8OO+PnDBj9R8SZxyX4aytDLcciViB3pKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2zX8Z9gfR9t5iDfSFji/391ATdoJJGfmw8idKu0a8Dw=;
- b=tdB+jxQD3Ro2NL6u7AUt+ytGp6wcRe+URcClnlohkKZ6O10uHqkqvaOPxe4fsn1D7a/7MnLnDTyraPz94/J6X/7P7d4/ClyJcpHEC2lTbb8IU7JAsk0yWlbLA2czvP75wv4101RT0W75hEpVqTgiwTakDTAlbydV8gpot5LTTyYly8D8jX7t3fnwk4BHSddkZPFz8GR5JvR96hGTXTMFtZUitLSXjRqnqjBUAGW4Q68CrK0yJc3stWwlDm/UsEz6/yIhbX9U20VYwv2Vj5x36f9rsKmQGSo9pwEt391+GQuLhQNxQez1vP3rF6aDWq+jX+Qk2LXG8x4IBhdHX45WYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2zX8Z9gfR9t5iDfSFji/391ATdoJJGfmw8idKu0a8Dw=;
- b=SZIKEBclYhx5mfHKDfd8Z0UZRoRZM1F7Sq/FcKWrd/BeMZlCTpRhnT4AzfXFKpRljdQm2pil40Xt5nw7NM47EjgskZjHVNsKw/Ic+3xYKC0PUVrtLycm1N7zFMcaMlbQxoLqhGX1EDoKvY8NiXFSVc+Tqr2uh9CiZ1Yyz+MAkfth10RIKpWPq0v9x1eRzSytCHasKeGGZa3CjA1a9S05NSJa9yvJh1JLLVnQ0VavFLDdke+2Z8cXgqHI7eIKKbCC2iWXgs+kMUPqm9BP5233V1eHOmiC/lwkYd8mkU3WRb295dckH2Uh6xIBbSLR1EU6CiTj5QMTzSGpXiCHyxBaMw==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by SJ2PR12MB7865.namprd12.prod.outlook.com (2603:10b6:a03:4cc::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
- 2025 22:14:28 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9343.011; Mon, 24 Nov 2025
- 22:14:28 +0000
-Message-ID: <51675d77-9453-43cc-bfda-f21a2edfeace@nvidia.com>
-Date: Tue, 25 Nov 2025 09:14:21 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm/huge_memory: replace can_split_folio() with
- direct refcount calculation
-To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251122025529.1562592-1-ziy@nvidia.com>
- <20251122025529.1562592-3-ziy@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20251122025529.1562592-3-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR04CA0018.namprd04.prod.outlook.com
- (2603:10b6:a03:40::31) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YWuMPsKKgatyo18s+vz5tnI0IJ4a05j03miER+N0IUE=;
+	b=tbnddeJoZkqbw0xNuKzCFDs0YN7WOMPy2CJPtsjW/58GhsH8CvihioFhYaFkuX0b4eKIQQ
+	FPJ6KBX2g9Xm1DiSYXhO6JTNprBu/BBIEwJlTKo2YIOVaXxbP3f3Ai1s+nAd3N+QKCYqvc
+	m9xab3OPmOnhS84LN93J8kEclsbNGlk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764024850; a=rsa-sha256;
+	cv=none;
+	b=Fn4CLBM0V4riZTRvIcHX+774FJMWtlIntRqNp+2XS5EFoaxw/xzQkYh0C6AC8sgJF6BK8R
+	oG+RUhVDK7sYGWYbMr+0aBgfdIZZr0MvNQGHP5fr5Fb8a6hliKQ9GnT4ktX/MH4H8E9HbA
+	WdhFx7K2C1YXgxPg0gaegrYWS5DTslw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IAhGGo9Y;
+	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-787e35ab178so45935977b3.2
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:54:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764024849; x=1764629649; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YWuMPsKKgatyo18s+vz5tnI0IJ4a05j03miER+N0IUE=;
+        b=IAhGGo9Y31q/PotWeO04hPu3Ar615RZivyl/AfYlwSLo3u5Q50eJgwSRsXNrlCjLbE
+         jtFUL9VgjMvjkYDno+VWC0WnCVu2fjAaXXaCRJS1dxZ6qPvkkWb0JevTA+ZxyZAAuM9o
+         MXshzKkkfdHWWLNnsEAlUigdI9DaXaJt+eUzG7R6ek+kb+MRHZjaSwywlm7ZXrdfKQmL
+         7955gdgzrIMx41zYKEJaDVIDhtZkr2+sXMxG9O5jppPS1sIJhM393OTT3tHNIX5qk3fR
+         qf4y2TVieO024IF++iTWlYL35gbCAfS0LH1qFicvUiOsZMW8QcYS6tGgyys4SWANisH7
+         UIMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764024849; x=1764629649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YWuMPsKKgatyo18s+vz5tnI0IJ4a05j03miER+N0IUE=;
+        b=I5xdxjPf8D5yF91MZ532ufZLwsquQF9oLV7ZQzEKDCp0JObnaZ7u+c0srlJnvg7/Hn
+         nLtvwb+NwooR/0AoCP8dl8pbd2zc2ICTOHJOn5vhTimvgy7gzrCHnxVUxafEckIl4lrD
+         oWMMgXhOu8ZWb268ySaqhoqRZLJzzDWS/UKkjujNY4SrhzF1L+U2kRB0YwP/6/Jf2ZcJ
+         OsS73hZDYetKc3TL4xwp1Ekq9LU+J9nJy+oVXCzH/XtsQqjWcLOo2sTLFGGdnMkzLGPJ
+         QE6V2+v53HI5IGDb/DALlGSo1t+5ydsD73BJreF7xU9Oef6dLDZobHNxb2i1+vWh1PEg
+         OOaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9xVXAtQwDImaVNgj3vcwa1S7bQcs76lY93B2A0IG9OEqkDvs4b43oOc2R+s+vs5DlW3znbk+MZA==@kvack.org
+X-Gm-Message-State: AOJu0YwT86kc5amY0FEri73wwPMYxs2XOsAMH6Lo6xyETILUCyAF9p+f
+	vSBzbuxqWB2ShMgkX1DE5nArS/IfjIvdQq5PxWVxk15qpjL4ZDW2gXeG
+X-Gm-Gg: ASbGncvbrWHcKs1OwXc6Dk7OvmNDvaTsYFTpPLzSZc80A4xw6afHkiJ9CF8zkGtYajg
+	N+uCdI0RClvFur+bktVL2FnEopZAcrv00nVvgH5qkCgUvDp6pkYS0C/WrKxLme9nKWy+cUaavhD
+	FpM1JloX4vJeyRUwWc5IExx0MAHWUx73e0p0Dyvl4BU31S7DYpa61eAuqJQZ53A4ncpQp3Rrpy9
+	x551llqNttsu4AEFju/DBx8RbLKDe8/J4aOnB7TTnPksvv+SIbvEIQ53QkuMDBX26VRpzZDtpoy
+	hF47ASakxz4lWJO/C54B86FTos9aWgvzdBd8VPFUQO9BZWmnp0N+PkdrNuUGU2Ns+oNEc5vJIFb
+	BMWSkdyFVkiLOBLTj9U6sCg8Hr+sQOHDdP+7zXOkPA9m+vo9PUPAnXg5+YJXu46G57x3zqv7M1+
+	Vp6ThbC4HPPcD1dMXizDUcFg==
+X-Google-Smtp-Source: AGHT+IHWNL6nbfpxwuN4vaoDOcaitVPmqOrTZpRhfU4dCtIL5A3x3tBs6D5XV9tHVYVPQP1fZTsyiw==
+X-Received: by 2002:a53:c043:0:20b0:641:f5bc:6962 with SMTP id 956f58d0204a3-64302b3f5afmr8307288d50.78.1764024849231;
+        Mon, 24 Nov 2025 14:54:09 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79925c85sm49604297b3.37.2025.11.24.14.54.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 14:54:08 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: [PATCH v2 1/2] mm/mm_init: Introduce a boot parameter for check_pages
+Date: Mon, 24 Nov 2025 14:54:06 -0800
+Message-ID: <20251124225408.2243564-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|SJ2PR12MB7865:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0fb15002-0217-4419-ac0c-08de2ba6d568
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RUxVeEl1aWJGY1BEVFRvSllVbllHSjdxQk1HNzYxSmptZGJFVWRaWnNOcktj?=
- =?utf-8?B?RTdWd1BHNSsvdmRsVTRhaDRxZlVYS0VaM2NRWXFJQlBIbzJ0MHk3TzU5K25N?=
- =?utf-8?B?TFp0ZmRlRVlSa3RuaW5ESHhTWS9qYjdmYzREQTNZamIrL0R2TGo5NTdqQzQz?=
- =?utf-8?B?R1JMV1lpbkE0NDI2NWFOYWU1N0Y2MjRPSEtSRTNwOTg0dTFyeXNqdStBSDhH?=
- =?utf-8?B?WVFTajU1YTZ5TE8zRkNwQVRCRkp0dTl4ZFlVejV2djRyYnhjM0hlMnl0OGtI?=
- =?utf-8?B?Mm1SNTk5cVYyY3pBSTJVbXZrcHU4VGw2REgzeE1SZmNnZitwYVRzajI1cWxL?=
- =?utf-8?B?WFB5OXRBOUg1cWhVZHkveWJydVZKRUo0MTVycVd3RHE2ZDlWNVRFNldrVWFC?=
- =?utf-8?B?ZDdQSDZPeUptRkJERjhkUmhRaGNJaUFLdE04QTRGZmIwdHY1WWUraHZwd2Ur?=
- =?utf-8?B?WmlMYnNGNFFLNzVSVG95NTlPT1gvZFUzRFlmWEo1RVFyQm9kTEx6UHJ6Ym9o?=
- =?utf-8?B?RHBQU0dEZjNocWRYaCtwZXh5MGtEQ3lmTmNaMmVpd0JGWVJXUzRkMUZYUnF2?=
- =?utf-8?B?bGtiTUk2OXFZcmcvR1VkTkZmTjgxRE4zNmxOdkRPaXFuYnY2elRzQ3pUbC84?=
- =?utf-8?B?NkltY2d2RWJ2T1lHRi9xSjFYRjJGN25Wc2FaYWM4cGlmRUljQWFyeEhCUDYy?=
- =?utf-8?B?UFlUeVkzWG9xRzRRL2FFRjYzQm5BS0FyTUxrcG5KUUlxRGlrWDBHT001U0kr?=
- =?utf-8?B?eUJQQklET0VrZWtUNEpvNEpTVE1LUG5Xdjk5djVubEYwbDBhYzFwSFFvZStE?=
- =?utf-8?B?Z1BwdnFiVGw3VkNNRUpxNWUxNHZUNFBZVTVUNldFMWtmK2FieWtLS2lEVGlT?=
- =?utf-8?B?bDNMUHhsWU94UnJnbmVCQ2ZIN1NYQks3YlVqdmJNNjJyUllGQ0JjZDd4K1JT?=
- =?utf-8?B?NmtrUmFrVGI1QUtMV3I0cUJ3MVFxQmtpdGl1Z1gxRzdhMERNbXQxRWdoU2FC?=
- =?utf-8?B?VGp2MndOQkZUSmRJa2lTK3pOTVRRSmtnT0pZd0ZXbDA4M3hHVDF4U3A3Yy9F?=
- =?utf-8?B?SWFuck9qTDZwdng4aHdOL1I2bDkxWFVPUjQvVXZRRDFvSEl6b1lhN1JxbDZR?=
- =?utf-8?B?L1l5akN0ZElmbnBKb0xlKzRrV0I0RHRES3pEQzJkTEEzcHNKb1RMd21FTmo5?=
- =?utf-8?B?TVhjVDBySlpGNlpoVEpXL09LMzdpZDducVdEWkdFWHA2Wkp5RkFMc2xBaHQx?=
- =?utf-8?B?a2l5RGhValRwRGYvNER2SW1icTFOKytIb1ZrdUs0YVpIZXlDZ21sN2ZxZkVv?=
- =?utf-8?B?ZjdQNk9mcFltOTVkUXF3eWo2bkJ3OVJEb0t6ajBOQ1RzdDduOGpnSW5JTUp2?=
- =?utf-8?B?cGZhWDRiNVI2OTZFbXgrL01jdU1HNDdJbG9LdCsyNXU5empRaFlvNzV3ZjBu?=
- =?utf-8?B?aFlJWlBLVVF1VjVKNW9vL1Y2RHNZVzJXcFFodlBFWkxTc0RUN1ExbkpwNHVR?=
- =?utf-8?B?QU1pbVFDaGhqeitzNTAvVDNmTExhUVFQTHZoVjB4SlU2TmxTejYvZWJlWllG?=
- =?utf-8?B?UFNhNXE5L1BVOVhGOU1pVVV3dGFpQmJIYjIrY3MrQXBWeUJJZzV3UWk3Uk9o?=
- =?utf-8?B?RW1Rc0pRcERLMVRSMG03dEZPaVZHZGE3UXpsTlF4V1R5eGM3ZFdnVzBGTVlG?=
- =?utf-8?B?c2FMM0orblRpZE1LZUlxSUlXMFpPYUcrRW1NVFN6VS94YnNoMzB6d2M1SGdl?=
- =?utf-8?B?KzM3VWw2bmJzRWNSWmhKOE9aN01VUjNSUlkyT1c3WURaa2ZLbFpEaVE5SlFS?=
- =?utf-8?B?czZvRThlb1JsbjZyNURVQ2xCWE8vR0J4UEllYS9MbDI0eXUxY2R5bEVlWUNN?=
- =?utf-8?B?ajVPUGNCQkpoOEZMVktySFdtS2lISVRlUG1IKzVOTzRBem5qK2IzNTlGcmxQ?=
- =?utf-8?Q?w4epKrQpZwuIoZtCXktzyfKYDMZ9wnd7?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dWo2N3VnOWYvcVg3cE5WYmJ1MmxJdkV1eTE1ZHFIaGNZM2R2dXQ3K0JlN2E2?=
- =?utf-8?B?bnVSL0VQNllSVkFNREJCTVdMdVk4NnRrSVdESkJMSG1MdHcrTVZWcjk4SnpE?=
- =?utf-8?B?UzN4TVpEV09FZUNVckVZZHhVc1NMY0ZOTjJzZmN1VzhLbStoa09KSlRUSk5o?=
- =?utf-8?B?NmVSMTM2b25TMHlPQnEwR3luN0Y3OG1jNURIRTVVaSsvdUhPZ2hkS21IZ2RM?=
- =?utf-8?B?aGY1N1JidW94bjhhUTkrREZSTmNqaHFiMk1NSWFJVGdXK3d6OXRmT1pTVGVD?=
- =?utf-8?B?M1ZHMVJ0b2QrMGlGeVpFT1l5dHBmUmxDdDBSMUJIUVJvSEcyUzVFL2Q4emo5?=
- =?utf-8?B?TTVGVk4wTHk5ZG40b0EyRURJMG1iVitZdnAwWW1nNk9UempBVHc1Q2lPaC9u?=
- =?utf-8?B?UHQ0UjY2M1dDQVNTTGM1Y0NaNlphV1lWd3UrQXdZZVRSZVNQd0ZQbzNQdnYv?=
- =?utf-8?B?bUtVMWQ3bWRadXpQNWU2QVg0MHc3NHJFTU04VjY2eXFUbWRwdStkNW5xQTQ2?=
- =?utf-8?B?RUlBZmVjQ3NYSDJuaHRMVDZJMjg0UnhjZENRV2hUT01xQlEveW1EaVJ4NnQz?=
- =?utf-8?B?emVpT05wMlNOZDBBMXJiNkI4eUllTnlRbVJZeTZjaWdBQ0pGU3lxK2wvWVNR?=
- =?utf-8?B?UE5QNGJqdC80YWxQWUd2Q20yT3llZElJaDN6NkNTSFE1VkZYWEhBenBHOHFD?=
- =?utf-8?B?eHVIb0o0SGJ4aTl3d1RDdnE1ckRNME1LaE0vb3FCNjcvd0pnSkFkTnR4MXBT?=
- =?utf-8?B?b01xUUtKL1FveGJWMUxSZkIwcXNBSlJlSFQyN0NPaWlsa3IrbWdkbTllOGhB?=
- =?utf-8?B?azBhNERUb0RDM0ZETE11K3YzZ3lER2FuaC9URWsvcjRqN2pTZjlWNjJYakZq?=
- =?utf-8?B?bHZENDc1V0l0eU16Ymp6V0FCckhmRWUrTG9vNHllOW04NGF3Z2hTd29pQ1hw?=
- =?utf-8?B?OVFqMFppbTJqTVg0VFNvRXkzaDgyTmYrV3RkcEJFOTJjMjJJNVRjZE5QaDB3?=
- =?utf-8?B?Y2UvR3BjaGU4Y1UvTjN0YTNwRVNSdFVmSE1QVFJDaTdQWTZOZk9wdkxWbGRI?=
- =?utf-8?B?RytoV3VmOTVZK21LdHRNVCswaTJSZ0ZDSytNamp2RUVPL2ZldzM3WmxEWWJr?=
- =?utf-8?B?WkNKa1VmY3RGamY1MGpHb2FxR09EZ29UdmhkSEZZYkttYzN5SW9yOW1Kb1h5?=
- =?utf-8?B?anVLRC8yNDNLaDlrWWdvUk02bTFrRVNuM3U4Y21wVjJ1SCs5b21FT215ZXRP?=
- =?utf-8?B?NTlpVHRQU3hHTHE0MVB3U1ZUM2pCY24wWjdtUENTOFRiMFFtS3BEWGZBeW5B?=
- =?utf-8?B?TmM3WnVUdzNNa0VMeW1ZOWM2b0RUQjBaa0ZRVVV0WmxLSUtKUXRPRklKWDdi?=
- =?utf-8?B?RHk4Nk1MdExxQzQyNXE0VU9lOCtJb2pqZ2FZaEVLWEhlN1dwK081d2E3c09n?=
- =?utf-8?B?YUo1cnYzdlU5MmxtbnpJaDN1S256UGRISWJDWHR1OTVxZlBZVmxJdUI0YzhM?=
- =?utf-8?B?clJxNlh4WUlieFdZSGZiZDRDSW1UakdiOVd2UjlhVVY4YllaOXFLZkZzWnM0?=
- =?utf-8?B?NlpoQkJHUjNEalE2L21UWnY5TTlKSzlTNEY3SGhodnBTTU5ZYTM3YzlsRUJa?=
- =?utf-8?B?YTJQc2VrUTRncjFpUHVWSEZpTjZCRmQ3a0ZXdE9qNkRBaXZwRm5ML3c3Y0VC?=
- =?utf-8?B?Q3ZMQXVvNGhkNGJHNHhRWmpuZDB3aXFrQzBrendyNldyUUNsQmpSOTFRYk5C?=
- =?utf-8?B?OEpGaUplZG9uWjAyK1pvOEFiMlhMVVVyTHBTNUVJb1JRZGFaaG9xclRWU3BO?=
- =?utf-8?B?K0FXSGFiWFM0STdKTGZLRkFTZlBmMG9wbUJ3d09IdUZ6cmRyaHI3MWdoQ2Rk?=
- =?utf-8?B?QkZyL1ptZ1lvWGk1enRUdTNUSVhvTjkxR2pWYlNtVStsWEVzekdacWMzMkZp?=
- =?utf-8?B?RjhTWFludHVNOHVrSUJKTXY3SE9KMEhPaXpUYk1pb2xaTU9ZaDQ0Rnk3VnZS?=
- =?utf-8?B?UFFXUnZMWGMzYjZrQXQ3bTh6eFhOa0dzZmtzM3doMTRSbFJON25kbzA3WlNJ?=
- =?utf-8?B?U2RQVWRSL1JxcEpwSlg4b3kxSllzQk1NMW9xRmtiUnppMUxlRzd1dE12UE9H?=
- =?utf-8?B?TTJnOGJQL0dnUFRhKzk5OFlLdW9HeWw3QzVZNXRFU2VtSExXd2VtYXo0cXU1?=
- =?utf-8?Q?6MinqyZ987h2YDmkPby33NeserxMrmKKSf3+VuRqXnSL?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0fb15002-0217-4419-ac0c-08de2ba6d568
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 22:14:27.9533
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E7feMcEDcbyFnSurn6D/vdg6eoDt9BM53q7s8By1679nUpo8Aho8k59w3shx0HUqDTgbhyQ8iokfBJdG8qAXbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7865
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C966840013
-X-Stat-Signature: oc9mhgqdr8ntmgijbwmxo7hkuuy6wx9w
-X-HE-Tag: 1764022473-458453
-X-HE-Meta: U2FsdGVkX1+Mnrn3fHXS8IL30L6MneR2I1FRK+MiyijhNnjiQSk7/wkCgS2R67C/Axe/pnEBIZw6GGG4fuWppOjPglPvcf0M0xLFep7lB2Dqd9dSDEGuOu96QUgHOg/fmsMbgx3+0CWbzZcmU3BVEqM84mmZZ5IzJhWh7T7Qha+xEl3Eoul2U4B29C9t5HotMryKgROlnds1VxoUmOIwmY9ffFfs5LALaXp5fqoFsbOt+rBgBZkPdHTd9HnaTx6tTIk5pNG4+xQUcnOwZy27DoMBmsxx1b7Sj/cZ3kLsyawtxZmIGc+Ov9OjfskQ4v1U8PtSzZQBiAS7qJRvaFIE2aaCqufnE3YmDrxSk3qhibzLTMfcCD+Yo4doeDoQTpAXBzeqm6sHgxbQdK4tg3+i5GC+mOXUNsOh6AfVZ8Cl15uExCzKZEkpp438vWtABnrlXHQDmkp6Wc+6fypCboXx48DKICWb2h902ieL3Cvtfh17miD+Je5CclINXAqwfBwlVLTR+2TeY6aoM4vElLh2PT0YsnW7ROibezueunmH+9GGppGRFvzHiJ800tu8wY4Z525+af9Sj1ezc/RhQ3OHgY2pPt5Qaqa38gz2PDSDkNEC4c3Y5b7UkeBq+hv0v4fT3TgFgq4rIeLTYpr0nhc2JJ0gq9eKqzpi19fiHtvHuhmTgA4Fwa4KlRVz2hoIw10dC7ShFdb+WlHVqWpnFPce89hOMPMkSIgjzobjgTAkpAW0jMW5Hiinq881hxF3GQ6B++C8hDtDYxeR1VUIuf9XddjVFJ7+eQZ1vRkUqPQ71I5EY8cAKbqrpXQfybJken1NkO/g4koxTNIZGRcEjVvWGcUkfdaq8GeSB3aU83rvHIk/01GB0K4ys7m6SW+JFeWVxjjxH7PXTFQZx+E9AEwK4glYL4jU2HppQJt/rgaDqtZjokzdVK3jNaleLIBg5p129GvLR5zWCa6UJfJ5nU5
- c2+LD9WX
- 5L6hqH7PS67jE9PJfoImNduPTfF4fDXWpI0iZD5ax4ODd0VWSc7v3tl9fmrtnBS/qQWNHKWm2GwJlg6AjgzI/P3ASAmPXy56Gf30uUq1y7yIkzut9W2FWq/lqUF+lcAvTf5pIBmzYIsYlGaK4RLxKbZHbbszcc6NM4rnH5UgTkbfWpCofJpclFyMc1nYA2rktcvS/WBLztmY4qu88Jtfm+neNxLharNjNLQRlsCjX8a/G+S1VVID+AhkBzQR/aZ6D51TeckMge0561tPzhv+tXBPtT/rrgGyLUVSM2bbeG7HTsOLEM1VM7wV7aQPPSkmntYULg31q4ZII1SNIJsuzyIydkWGctFkyDsamjSYT87y1/xEkvLse6JYn45JKN+xz1E4RIINhD7kXQxbowkv/xI51ohv55/JiNI/7W0Fg3oHETMyb2Kq/gNJ9ZblHunG2zaKQKKkWpwL6nbBG0CtssQLa9XV7ZAcuGQlYmPATQmzmLqUfYPCLTM628KkL8jmsbMIVQ31N0mWfV4IrKF2UR9cT1dSXrplJ/OYJu4FbEyuy1uAWGDM1QuQOik72R4L5rqvHe/kCI3jmfgM=
+X-Rspamd-Queue-Id: 4827D180018
+X-Stat-Signature: ode9anupqc46ziuihpzmji1ggaea6qoi
+X-HE-Tag: 1764024850-280560
+X-HE-Meta: U2FsdGVkX18A4PFTmjU3lFGGKYCCwfwnuZyyDJtsIdgTdV+dUkK3+DFeNYKkJ1e7ln9p3OCblXU0R6HLmAytPQY3PkmJEg7AxS+CC9sENvSED1cESLVHK/oToNYctUxUEkIsBTo4tC5Yava4zY8yU8z8WTdxQMBS/kLXQn8HpTKWVhE/Zn6Z9xRZf+zB4eeydAkrpBH7CpG5cqfX7yF8k58fEI+qmrUQn3Qo4+yfSg+20ye5Jq7Kjcj10R4SYVWDiC2VOENCDpzwx5MHD3MrEyxTcVuSGImf/075aEXZzRQM/4JMvLxJ6DvCaO0tWRzeo8yxEBP9YAIWaj5UNAw77NzcWAJjLPNInpYo6zXNF8CZxGX5aT758aMrj9VXx3Dubq9Ymnikl17O4PjyNrFbgOc0GDKYG7KmR3u1BsoiapQsupoBoNfC8xw6BTMTwf4rvaPJyFZ8GaxrNh1fPNP6CHBvKPJyhwgWYLDmPxsahkKn8d2bEiJR0NXEk+6AE61+J1v0Jl06STRNopd4tGDIJzQFYVlc34SKLTayM6/GUOg0i5dXPo0x0BmIj8YRuQ6mFiZzXualMuGtwXezav4W9/3UG2t5Srelyo/V4ynGrnmDO/Ydvkld+olWnsJjD9aT/HzZgnsn+rWtjLGiBd+BMiwmMFD3O1gs5ZWVBjaw/7wtv29WtmTkt1FMMJAfIrYBZ451PcTGRDCFS9FC7co2ju1eYFIiQQHf7GhpsrgOkM3xK0w5fpvKTyfI8/wwAX54z6UMIBh/7UnWNb20Ujs7sbJU8+unZJOW1E8cLfPLVWZeylmbMj6y8w7/r97YRXUIMnKASgfkZWxxx7AY86oQ76yNPrzHJlgNXsXMYEDoAGXUC2yHR7xSssrnB87DWgo+aRuEWwtSw5k/LHI1jTQSNwM2aR/cP/wRXJ8EnFvPIOTVeLA+F3ZCvf+wjKuLAFPgieKmt18OpFJzTYFDXAr
+ IM2DQIfw
+ qgFcmMf+dqs5z680RAmy4R/yeZIexQze/O3pZz1p6r1vdUCBRz7/W14qr6u2cShQt+MPO3LNvJZ1+46fGd5pdqgDKrteDbK8DWIXihKk6qvuwmxiGGy84+LER6Fr6QReWlD6Jrs7D50GBUVyGnYwUrSy+FsdgW9BpHqQqEjHYs6oM8h2XhfCA1FpXKCMY11UdYyejvr1tf2ns6C7fL0LS75kDLBxJL5m8sH6TUQrLmTWA4ocXPCxicpDMCU2mtXWm1WCMgR59bcMh98vn6AoxrP8F62CKWTj+WRf3qnBj8SK6snxOjQ+NOgR0nf849pb4gwdHQRqNbU6orfdQHWkIOFr5ipB8ha3KVnnm/mrJBLkTmG9JahBrxFs7RkqcCgPUr04yJNIiHgA8FFYDHBETDQWbuQpSHVlcgXFs6jJ07vAAypDG4Ix8EhgwiH4+fdMCArMKkHCwpZ71cAPG+bU0NxtEvlhsDurwYIoAgVYMEto8nsx4vmWsd21Xqojz9jmoY5Hrqqz1yj/eyYQUy69uFyaTm2Qnh0ddDyy9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -210,171 +121,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/22/25 13:55, Zi Yan wrote:
-> can_split_folio() is just a refcount comparison, making sure only the
-> split caller holds an extra pin. Open code it with
-> folio_expected_ref_count() != folio_ref_count() - 1. For the extra_pins
-> used by folio_ref_freeze(), add folio_cache_references() to calculate it.
-> 
-> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  include/linux/huge_mm.h |  1 -
->  mm/huge_memory.c        | 43 ++++++++++++++++-------------------------
->  mm/vmscan.c             |  3 ++-
->  3 files changed, 19 insertions(+), 28 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 97686fb46e30..1ecaeccf39c9 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -369,7 +369,6 @@ enum split_type {
->  	SPLIT_TYPE_NON_UNIFORM,
->  };
->  
-> -bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
->  int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->  		unsigned int new_order);
->  int folio_split_unmapped(struct folio *folio, unsigned int new_order);
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index c1f1055165dd..6c821c1c0ac3 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3455,23 +3455,6 @@ static void lru_add_split_folio(struct folio *folio, struct folio *new_folio,
->  	}
->  }
->  
-> -/* Racy check whether the huge page can be split */
-> -bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
-> -{
-> -	int extra_pins;
-> -
-> -	/* Additional pins from page cache */
-> -	if (folio_test_anon(folio))
-> -		extra_pins = folio_test_swapcache(folio) ?
-> -				folio_nr_pages(folio) : 0;
-> -	else
-> -		extra_pins = folio_nr_pages(folio);
-> -	if (pextra_pins)
-> -		*pextra_pins = extra_pins;
-> -	return folio_mapcount(folio) == folio_ref_count(folio) - extra_pins -
-> -					caller_pins;
-> -}
-> -
->  static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
->  {
->  	for (; nr_pages; page++, nr_pages--)
-> @@ -3776,17 +3759,26 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
->  	return 0;
->  }
->  
-> +/* Number of folio references from the pagecache or the swapcache. */
-> +static unsigned int folio_cache_references(const struct folio *folio)
+Use-after-free and double-free bugs can be very difficult to track down.
+The kernel is good at tracking these and preventing bad pages from being
+used/created through simple checks gated behind "check_pages_enabled".
 
-folio_cache_ref_count?
+Currently, the only ways to enable this flag is by building with
+CONFIG_DEBUG_VM, or as a side effect of other checks such as
+init_on_{alloc, free}, page_poisoning, or debug_pagealloc among others.
+These solutions are powerful, but may often be too coarse in balancing
+the performance vs. safety that a user may want, particularly in
+latency-sensitive production environments.
 
-> +{
-> +	if (folio_test_anon(folio) && !folio_test_swapcache(folio))
-> +		return 0;
-> +	return folio_nr_pages(folio);
-> +}
-> +
+Introduce a new boot parameter "check_pages", which enables page checking
+with no other side effects. It takes kstrbool-able inputs as an argument
+(i.e. 0/1, true/false, on/off, ...). This patch is backwards-compatible;
+setting CONFIG_DEBUG_VM still enables page checking.
 
-Does this belong to include/linux/mm.h with the other helpers?
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+v1 --> v2:
+- Changed check_pages from a build config into a boot config, as suggested
+  by Vlastimil.
+- Introduced the second patch, which decouples page checking from 
+  init_on_page_alloc and init_on_page_free.
+---
 
->  static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
->  					     struct page *split_at, struct xa_state *xas,
->  					     struct address_space *mapping, bool do_lru,
->  					     struct list_head *list, enum split_type split_type,
-> -					     pgoff_t end, int *nr_shmem_dropped, int extra_pins)
-> +					     pgoff_t end, int *nr_shmem_dropped)
->  {
->  	struct folio *end_folio = folio_next(folio);
->  	struct folio *new_folio, *next;
->  	int old_order = folio_order(folio);
->  	int ret = 0;
->  	struct deferred_split *ds_queue;
-> +	int extra_pins = folio_cache_references(folio);
->  
->  	VM_WARN_ON_ONCE(!mapping && end);
->  	/* Prevent deferred_split_scan() touching ->_refcount */
-> @@ -3956,7 +3948,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	struct folio *new_folio, *next;
->  	int nr_shmem_dropped = 0;
->  	int remap_flags = 0;
-> -	int extra_pins, ret;
-> +	int ret;
->  	pgoff_t end = 0;
->  
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> @@ -4036,7 +4028,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	 * Racy check if we can split the page, before unmap_folio() will
->  	 * split PMDs
->  	 */
-> -	if (!can_split_folio(folio, 1, &extra_pins)) {
-> +	if (folio_expected_ref_count(folio) != folio_ref_count(folio) - 1) {
->  		ret = -EAGAIN;
->  		goto out_unlock;
->  	}
-> @@ -4059,8 +4051,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	}
->  
->  	ret = __folio_freeze_and_split_unmapped(folio, new_order, split_at, &xas, mapping,
-> -						true, list, split_type, end, &nr_shmem_dropped,
-> -						extra_pins);
-> +						true, list, split_type, end, &nr_shmem_dropped);
->  fail:
->  	if (mapping)
->  		xas_unlock(&xas);
-> @@ -4134,20 +4125,20 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->   */
->  int folio_split_unmapped(struct folio *folio, unsigned int new_order)
->  {
-> -	int extra_pins, ret = 0;
-> +	int ret = 0;
->  
->  	VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_anon(folio), folio);
->  
-> -	if (!can_split_folio(folio, 1, &extra_pins))
-> +	if (folio_expected_ref_count(folio) != folio_ref_count(folio) - 1)
->  		return -EAGAIN;
->  
->  	local_irq_disable();
->  	ret = __folio_freeze_and_split_unmapped(folio, new_order, &folio->page, NULL,
->  						NULL, false, NULL, SPLIT_TYPE_UNIFORM,
-> -						0, NULL, extra_pins);
-> +						0, NULL);
->  	local_irq_enable();
->  	return ret;
->  }
-> @@ -4640,7 +4631,7 @@ static int split_huge_pages_pid(int pid, unsigned long vaddr_start,
->  		 * can be split or not. So skip the check here.
->  		 */
->  		if (!folio_test_private(folio) &&
-> -		    !can_split_folio(folio, 0, NULL))
-> +		    folio_expected_ref_count(folio) != folio_ref_count(folio))
->  			goto next;
->  
->  		if (!folio_trylock(folio))
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 92980b072121..3b85652a42b9 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1284,7 +1284,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  					goto keep_locked;
->  				if (folio_test_large(folio)) {
->  					/* cannot split folio, skip it */
-> -					if (!can_split_folio(folio, 1, NULL))
-> +					if (folio_expected_ref_count(folio) !=
-> +					    folio_ref_count(folio) - 1)
->  						goto activate_locked;
->  					/*
->  					 * Split partially mapped folios right away.
+ Documentation/admin-guide/kernel-parameters.txt |  8 ++++++++
+ mm/mm_init.c                                    | 11 ++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-
-Otherwise, LGTM
-Acked-by: Balbir Singh <balbirs@nvidia.com>
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6c42061ca20e..0ba9561440a7 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -669,6 +669,14 @@
+ 			nokmem -- Disable kernel memory accounting.
+ 			nobpf -- Disable BPF memory accounting.
+ 
++	check_pages=	[MM,EARLY] Enable sanity checking of pages after
++			allocations / before freeing. This adds checks to catch
++			double-frees, use-after-frees, and other sources of
++			page corruption by inspecting page internals (flags,
++			mapcount/refcount, memcg_data, etc.).
++			Format: { "0" | "1" }
++			Default: 0 (1 if CONFIG_DEBUG_VM is set)
++
+ 	checkreqprot=	[SELINUX] Set initial checkreqprot flag value.
+ 			Format: { "0" | "1" }
+ 			See security/selinux/Kconfig help text.
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index c6812b4dbb2e..01d46efc42b4 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2525,6 +2525,14 @@ early_param("init_on_free", early_init_on_free);
+ 
+ DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
+ 
++static bool _check_pages_enabled_early __initdata;
++
++static int __init early_check_pages(char *buf)
++{
++	return kstrtobool(buf, &_check_pages_enabled_early);
++}
++early_param("check_pages", early_check_pages);
++
+ /*
+  * Enable static keys related to various memory debugging and hardening options.
+  * Some override others, and depend on early params that are evaluated in the
+@@ -2591,7 +2599,8 @@ static void __init mem_debugging_and_hardening_init(void)
+ 	 * of struct pages being allocated or freed. With CONFIG_DEBUG_VM it's
+ 	 * enabled already.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_DEBUG_VM) && want_check_pages)
++	if (!IS_ENABLED(CONFIG_DEBUG_VM) && (_check_pages_enabled_early ||
++					     want_check_pages))
+ 		static_branch_enable(&check_pages_enabled);
+ }
+ 
+-- 
+2.47.3
 
