@@ -4,115 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42789CFD366
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 22:54:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB733CFD365
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 22:54:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B8626B000C; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
+	id 448546B0023; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 268706B0023; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
+	id 3EF576B0028; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AC316B0027; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
+	id 21AC36B0024; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 04C4A6B0023
+	by kanga.kvack.org (Postfix) with ESMTP id 044F96B000C
 	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:54:17 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1824F140508
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:54:12 +0000 (UTC)
-X-FDA: 84147005544.12.C6FAB4E
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4827D180018
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:54:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IAhGGo9Y;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 243AD1405EF
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:54:13 +0000 (UTC)
+X-FDA: 84147005586.20.66030CB
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 544A940002
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 22:54:11 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SFBUxJhx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764024851; a=rsa-sha256;
+	cv=none;
+	b=VVSkvQOBMnSjOurN5OptsHUvNHsvEEgFIyvOlRcf+3n8iw7C3BKh6xQXt5KjAIuaJhXfGE
+	EkuEOAIrKEMS0NMxG2dsANIcQVqf2I2YwZ/vzJ3S4GMACYJnQtMpccgj/xtKqlR/womHZ5
+	F7xHh8NVs5CVJNfXxjRNqli3podFvvE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SFBUxJhx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764024850;
+	s=arc-20220608; t=1764024851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YWuMPsKKgatyo18s+vz5tnI0IJ4a05j03miER+N0IUE=;
-	b=tbnddeJoZkqbw0xNuKzCFDs0YN7WOMPy2CJPtsjW/58GhsH8CvihioFhYaFkuX0b4eKIQQ
-	FPJ6KBX2g9Xm1DiSYXhO6JTNprBu/BBIEwJlTKo2YIOVaXxbP3f3Ai1s+nAd3N+QKCYqvc
-	m9xab3OPmOnhS84LN93J8kEclsbNGlk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764024850; a=rsa-sha256;
-	cv=none;
-	b=Fn4CLBM0V4riZTRvIcHX+774FJMWtlIntRqNp+2XS5EFoaxw/xzQkYh0C6AC8sgJF6BK8R
-	oG+RUhVDK7sYGWYbMr+0aBgfdIZZr0MvNQGHP5fr5Fb8a6hliKQ9GnT4ktX/MH4H8E9HbA
-	WdhFx7K2C1YXgxPg0gaegrYWS5DTslw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IAhGGo9Y;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-787e35ab178so45935977b3.2
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:54:10 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OkPGFrQcQy83MwqnxJzEu9f7EPjZBBQnl/KZG5BmF+o=;
+	b=WV8l0slX2x/2CZ5l9/xmK07f1H49OlG+AHsMiX/5OaSf27AjCfqMzf0/87iJJ/09rpVRVb
+	5K+f2axcWdD+/5KR9Khi7tFCfSq9pqJ7bmKpjJKzlMXCT1cgK7ytlyxzGmMi/1JYwJaHpp
+	iU+7aP0pxXvM6DQp9WYRurbHTTSXuqI=
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-640d43060d2so4211540d50.2
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:54:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764024849; x=1764629649; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YWuMPsKKgatyo18s+vz5tnI0IJ4a05j03miER+N0IUE=;
-        b=IAhGGo9Y31q/PotWeO04hPu3Ar615RZivyl/AfYlwSLo3u5Q50eJgwSRsXNrlCjLbE
-         jtFUL9VgjMvjkYDno+VWC0WnCVu2fjAaXXaCRJS1dxZ6qPvkkWb0JevTA+ZxyZAAuM9o
-         MXshzKkkfdHWWLNnsEAlUigdI9DaXaJt+eUzG7R6ek+kb+MRHZjaSwywlm7ZXrdfKQmL
-         7955gdgzrIMx41zYKEJaDVIDhtZkr2+sXMxG9O5jppPS1sIJhM393OTT3tHNIX5qk3fR
-         qf4y2TVieO024IF++iTWlYL35gbCAfS0LH1qFicvUiOsZMW8QcYS6tGgyys4SWANisH7
-         UIMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764024849; x=1764629649;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764024850; x=1764629650; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YWuMPsKKgatyo18s+vz5tnI0IJ4a05j03miER+N0IUE=;
-        b=I5xdxjPf8D5yF91MZ532ufZLwsquQF9oLV7ZQzEKDCp0JObnaZ7u+c0srlJnvg7/Hn
-         nLtvwb+NwooR/0AoCP8dl8pbd2zc2ICTOHJOn5vhTimvgy7gzrCHnxVUxafEckIl4lrD
-         oWMMgXhOu8ZWb268ySaqhoqRZLJzzDWS/UKkjujNY4SrhzF1L+U2kRB0YwP/6/Jf2ZcJ
-         OsS73hZDYetKc3TL4xwp1Ekq9LU+J9nJy+oVXCzH/XtsQqjWcLOo2sTLFGGdnMkzLGPJ
-         QE6V2+v53HI5IGDb/DALlGSo1t+5ydsD73BJreF7xU9Oef6dLDZobHNxb2i1+vWh1PEg
-         OOaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9xVXAtQwDImaVNgj3vcwa1S7bQcs76lY93B2A0IG9OEqkDvs4b43oOc2R+s+vs5DlW3znbk+MZA==@kvack.org
-X-Gm-Message-State: AOJu0YwT86kc5amY0FEri73wwPMYxs2XOsAMH6Lo6xyETILUCyAF9p+f
-	vSBzbuxqWB2ShMgkX1DE5nArS/IfjIvdQq5PxWVxk15qpjL4ZDW2gXeG
-X-Gm-Gg: ASbGncvbrWHcKs1OwXc6Dk7OvmNDvaTsYFTpPLzSZc80A4xw6afHkiJ9CF8zkGtYajg
-	N+uCdI0RClvFur+bktVL2FnEopZAcrv00nVvgH5qkCgUvDp6pkYS0C/WrKxLme9nKWy+cUaavhD
-	FpM1JloX4vJeyRUwWc5IExx0MAHWUx73e0p0Dyvl4BU31S7DYpa61eAuqJQZ53A4ncpQp3Rrpy9
-	x551llqNttsu4AEFju/DBx8RbLKDe8/J4aOnB7TTnPksvv+SIbvEIQ53QkuMDBX26VRpzZDtpoy
-	hF47ASakxz4lWJO/C54B86FTos9aWgvzdBd8VPFUQO9BZWmnp0N+PkdrNuUGU2Ns+oNEc5vJIFb
-	BMWSkdyFVkiLOBLTj9U6sCg8Hr+sQOHDdP+7zXOkPA9m+vo9PUPAnXg5+YJXu46G57x3zqv7M1+
-	Vp6ThbC4HPPcD1dMXizDUcFg==
-X-Google-Smtp-Source: AGHT+IHWNL6nbfpxwuN4vaoDOcaitVPmqOrTZpRhfU4dCtIL5A3x3tBs6D5XV9tHVYVPQP1fZTsyiw==
-X-Received: by 2002:a53:c043:0:20b0:641:f5bc:6962 with SMTP id 956f58d0204a3-64302b3f5afmr8307288d50.78.1764024849231;
-        Mon, 24 Nov 2025 14:54:09 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:4f::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79925c85sm49604297b3.37.2025.11.24.14.54.08
+        bh=OkPGFrQcQy83MwqnxJzEu9f7EPjZBBQnl/KZG5BmF+o=;
+        b=SFBUxJhxaqYLz8BpA/Ek415UMLLnzqji/qWU4xPBLqyLQHbIgCzNKMU8JQH2cmu6TH
+         pNpSCiQyxelAKTeHf08cmctT19GQwdu3CKvPLqnrkVusnDYFEDmJB7EpJMP0YIugRAPm
+         fQNHmLaEmVVQtJLA8WZe6WfcvvhRZPcZeXiICzwpAnYaqhP2G5HIURPR3XNYd9DPYF4y
+         G330mM/OhLBR98PQNBx60X+SHPIARIcPKl0lyvh9cdQVl0K1UJQBe2vvDm5vFN6DN7wP
+         qIk2HQoggH9E0rsCZqJWxlkY2H7Ljdj7Dk5oys40lIhuNmC04ivYZAka88UpgFDvLay7
+         ntVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764024850; x=1764629650;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OkPGFrQcQy83MwqnxJzEu9f7EPjZBBQnl/KZG5BmF+o=;
+        b=UZO8fHk+3kaPlBPYd9pBB4sqiJLCnvKD4+3ayYLi80x0wvvDegyL5j5z7IOOcoqDg+
+         n3CvgJUweBrb0UyaTEI9UPUSMUjL/bde/iQboFSBBz+1W1yC/E9bD65/knrU0ltozV1u
+         XtAe7HkCl1DVuRN02K7D5qxw7XzZjKYOyTzcod1NDX2qQo/EE9LIn85zCwDqIz3BuB26
+         4wPYaVEOVp7VyCP9NZ4j/LB2LfqVLJdR8Fhmn8Zg/4K0bNY4vhRoOnGKqtZ1aQJw3t/B
+         /mnP8gLzBOdqYi/sKjd2a++9CNJKUvlhjKrh35TMfDNq48/1xzbPYv/KzyI6mmK1XQaR
+         M3gA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+9zkJZ6wonIZ1e3QqP3WisAoMhnD6t7xngfQzE+8udsheC6jEOgKaNMIEtSCdM454pt5sb5ywzg==@kvack.org
+X-Gm-Message-State: AOJu0Yy49obw8q/8Y1q7z72HN141GpKcbSy5giGfLNKfAwQYKLPUHCH3
+	MquQCLKFTtFSImAoF88e/Og80SJ2ZG+tmYfZQaiSjWHQiCbmU9d1YdFz
+X-Gm-Gg: ASbGncuVftsj3o+r8yYcetZj6jKxCwl1g0fFxRgT1XjfYZwwdrRbyhtavHKWZgg0+KJ
+	IEPBIN+B/mtf3m7JDcPgToqcpdwX4OypzXBoxMvWS9UmcfIXUiibWB6kqnDe6zUMgK4I/3VMEnl
+	Yztlj53tViOrmMhn53Fr/wqN3S3ZMnnbGheSwG96/xPr7d+nJrGAOWC3qBYlyByw9WyfqtKKNcG
+	CcsIIsADmUy26Iy50iKkdhk7W7qTRuh7R2RCn+LMTrje0713/ziWk3wlbYKhKAByZ/OWWJW495c
+	znWwfn3Ls90pcWu2Vg8BiskJmdcsHQwvkI+aLVFWohE/GLp1wXA7cnhwIFLpQrDpKBo+ds5Xiia
+	FRbNx9KXKCkCzdFlR5uZ4lSYjooH0AqZ/Qc4PDSZDuAMV5QeP+eau/3ek/cwOoZZnXWb+9z55ew
+	uKdnIYEJPm5TqT8drPIRR36Q==
+X-Google-Smtp-Source: AGHT+IHQu+hk6/+e2su2tG4hNtS2lfQylKwKpETUyCBrjxURSXX4V7f1ntb4sZE/boplQjM8SDZYOw==
+X-Received: by 2002:a05:690e:168d:b0:63f:b5d8:9da9 with SMTP id 956f58d0204a3-64302a2f963mr9451894d50.12.1764024850286;
+        Mon, 24 Nov 2025 14:54:10 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:53::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a799278a3sm49039097b3.27.2025.11.24.14.54.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 14:54:08 -0800 (PST)
+        Mon, 24 Nov 2025 14:54:09 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
 	Mike Rapoport <rppt@kernel.org>,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [PATCH v2 1/2] mm/mm_init: Introduce a boot parameter for check_pages
-Date: Mon, 24 Nov 2025 14:54:06 -0800
-Message-ID: <20251124225408.2243564-1-joshua.hahnjy@gmail.com>
+Subject: [PATCH v2 2/2] mm/mm_init: decouple page checking and init_on_{alloc, free}
+Date: Mon, 24 Nov 2025 14:54:07 -0800
+Message-ID: <20251124225408.2243564-2-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251124225408.2243564-1-joshua.hahnjy@gmail.com>
+References: <20251124225408.2243564-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 544A940002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: kmndxw35ggae9ruso5wkmh19c6ozbh36
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4827D180018
-X-Stat-Signature: ode9anupqc46ziuihpzmji1ggaea6qoi
-X-HE-Tag: 1764024850-280560
-X-HE-Meta: U2FsdGVkX18A4PFTmjU3lFGGKYCCwfwnuZyyDJtsIdgTdV+dUkK3+DFeNYKkJ1e7ln9p3OCblXU0R6HLmAytPQY3PkmJEg7AxS+CC9sENvSED1cESLVHK/oToNYctUxUEkIsBTo4tC5Yava4zY8yU8z8WTdxQMBS/kLXQn8HpTKWVhE/Zn6Z9xRZf+zB4eeydAkrpBH7CpG5cqfX7yF8k58fEI+qmrUQn3Qo4+yfSg+20ye5Jq7Kjcj10R4SYVWDiC2VOENCDpzwx5MHD3MrEyxTcVuSGImf/075aEXZzRQM/4JMvLxJ6DvCaO0tWRzeo8yxEBP9YAIWaj5UNAw77NzcWAJjLPNInpYo6zXNF8CZxGX5aT758aMrj9VXx3Dubq9Ymnikl17O4PjyNrFbgOc0GDKYG7KmR3u1BsoiapQsupoBoNfC8xw6BTMTwf4rvaPJyFZ8GaxrNh1fPNP6CHBvKPJyhwgWYLDmPxsahkKn8d2bEiJR0NXEk+6AE61+J1v0Jl06STRNopd4tGDIJzQFYVlc34SKLTayM6/GUOg0i5dXPo0x0BmIj8YRuQ6mFiZzXualMuGtwXezav4W9/3UG2t5Srelyo/V4ynGrnmDO/Ydvkld+olWnsJjD9aT/HzZgnsn+rWtjLGiBd+BMiwmMFD3O1gs5ZWVBjaw/7wtv29WtmTkt1FMMJAfIrYBZ451PcTGRDCFS9FC7co2ju1eYFIiQQHf7GhpsrgOkM3xK0w5fpvKTyfI8/wwAX54z6UMIBh/7UnWNb20Ujs7sbJU8+unZJOW1E8cLfPLVWZeylmbMj6y8w7/r97YRXUIMnKASgfkZWxxx7AY86oQ76yNPrzHJlgNXsXMYEDoAGXUC2yHR7xSssrnB87DWgo+aRuEWwtSw5k/LHI1jTQSNwM2aR/cP/wRXJ8EnFvPIOTVeLA+F3ZCvf+wjKuLAFPgieKmt18OpFJzTYFDXAr
- IM2DQIfw
- qgFcmMf+dqs5z680RAmy4R/yeZIexQze/O3pZz1p6r1vdUCBRz7/W14qr6u2cShQt+MPO3LNvJZ1+46fGd5pdqgDKrteDbK8DWIXihKk6qvuwmxiGGy84+LER6Fr6QReWlD6Jrs7D50GBUVyGnYwUrSy+FsdgW9BpHqQqEjHYs6oM8h2XhfCA1FpXKCMY11UdYyejvr1tf2ns6C7fL0LS75kDLBxJL5m8sH6TUQrLmTWA4ocXPCxicpDMCU2mtXWm1WCMgR59bcMh98vn6AoxrP8F62CKWTj+WRf3qnBj8SK6snxOjQ+NOgR0nf849pb4gwdHQRqNbU6orfdQHWkIOFr5ipB8ha3KVnnm/mrJBLkTmG9JahBrxFs7RkqcCgPUr04yJNIiHgA8FFYDHBETDQWbuQpSHVlcgXFs6jJ07vAAypDG4Ix8EhgwiH4+fdMCArMKkHCwpZ71cAPG+bU0NxtEvlhsDurwYIoAgVYMEto8nsx4vmWsd21Xqojz9jmoY5Hrqqz1yj/eyYQUy69uFyaTm2Qnh0ddDyy9
+X-HE-Tag: 1764024851-366669
+X-HE-Meta: U2FsdGVkX19vOmKaL3a3w4VKbPsk8rYZCNRtMLI2mqCWua4JZxLQ1c04UKRS++i/1L8Jg8IlBt9fX3pO9zXRxp79f/Bw40zEicJL2U9woM0Vl7W9RuzILdKPuN+8intVnl7gSdh5gGU6yg+JhQ7hWSBH4oVfjyhbuyC6oqWWGnsdQUQSAsxe0tWlMjJ2RNvhhc7r1mPX/ded3fkCpmkbFE1goXSnjEgXlaywmWhnQ23xL1BkeYshZs5EjyFGDrTgWjQVgnWHTtk8ETruJHhSsE+s31H1zFXeQ38T9Qlu4fiyuQFu8lic8s17GjubOdEcdxgmDmJHplMGIJ5r04940SzzcjzVx+GgqbtmRFSup1Oel99HIzjW/ZhAYIzRoQPRmxYbYlmOYI/QNW5nD67tZxrykECMs9cSTOneDQsKfot1bCnYGbGdRj3ViCsGMNT+10iK2a37MHpBqj360heiPCJVxJJi73BcXdD4Mti7zGhUGxYzw5A9dstOdPbeNv2F1ThdLRYYXO4LCZuehqTEc0PVEeUz5HKnHBAkIMTZza7/f+Ty+KMU5SidteOZriGlkIp2hFvMAfv+F56+5kDyJ6e2GVyjg4HR7LRuAOR+rFHg8MTlCz5VgIgU8ceXjqf9Dv6xwz2EHK1GPLmfKLxYWo+6zqBdvMGK2LdwARPluXPL1ozkrvfh1zsAmL7AHUddcqS4XhCIt9duVijM0EqCaSE49GubKHZmFxBWroU/WWGgtMZr+L544VQWdYaJMeKstPh6wbezEhnmuOCZuS0g+WgTsGjKlPFjiFSQpdF9Za5P4BY87NjqzSwkzIKhGJu1wL0DmowmgJro0GDkX8Mt20HisOHEnlW++vap4pOjmqVSH9bC0o7iJVjw0HWVgLE4rMd/nMi2f7pHPWjzI9ztLmLknLVzPvmbQgg72VwFePxTigW8hAvr4+YELoW/Peyp44FUUFGw4C11kTR8bFA
+ 9rJEWwQ0
+ BGa9nt05HHEWPt8046LbZ1u8C9fmAVVXWhfTk2fCarqt2pqE4V6Lrrtf/xeDBOIHKYWzKgvKjYQ6iGbOh/h1k5rHbusIvVazTCAVhIHwO/rJQdoSP4ubyGUXR2iWhC4qrIoFtIRSnhSGWKBI8NjyguoGN/MI8pedvD+BqbRThKw1E5n4jFm4qcAWvbXmOs/TYrd/r7Nf0SlGTe1ucaXNvutej/RyQHRTgmRCttMDHRORM43JXPz0/3VyeKmtwXaQIUWzwROXxOT610il9JOiD5mU3jFvmUkb7g/M6rL14pvoiwF+TbuZbHBc+8EJ00S40cWN8fSg0rtyiJrpm+UT4e3s6WG1l5tL63UeSoe4BkjoNlmELRYbwSa6ojCYnK160zhRNDN4kdKao4F026G5qmSK3XZPI0/c9YruqYX4s0N7+7X96UCi+U8adjtq7pnU1dTiS3s4Zh0kq7iAeE4SVWBARR1xCEOBRdz5tNLqF7ousiHhX1LHp7c90yeoRi83m9olt6PmsiLkD1/W3lE+hSbtXLsD4oKIE7H29
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,83 +122,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use-after-free and double-free bugs can be very difficult to track down.
-The kernel is good at tracking these and preventing bad pages from being
-used/created through simple checks gated behind "check_pages_enabled".
+init_on_alloc and init_on_free protect the kernel by initializing
+allocated and freed pages to 0 on allocation time / deletion.
+Commit 700d2e9a36b93601270c1e15550acde2521386c5 ("mm, page_alloc: reduce
+page alloc/free sanity checks") removed page checking from hot pcp
+drain and refill paths, and instead coupled it with CONFIG_DEBUG_VM,
+debug_pagealloc, page poisoning, and init_on_{alloc, free}.
 
-Currently, the only ways to enable this flag is by building with
-CONFIG_DEBUG_VM, or as a side effect of other checks such as
-init_on_{alloc, free}, page_poisoning, or debug_pagealloc among others.
-These solutions are powerful, but may often be too coarse in balancing
-the performance vs. safety that a user may want, particularly in
-latency-sensitive production environments.
+As the commit suggests, the first three turn the kernel into a debug
+kernel, while the last hardens the kernel against leaking sensitive memory.
+While enabling page checking is relatively low-cost and tying it
+together with page initialization is not unreasonable, it does feel like
+a bit of a side-effect, rather than an obvious consequence.
 
-Introduce a new boot parameter "check_pages", which enables page checking
-with no other side effects. It takes kstrbool-able inputs as an argument
-(i.e. 0/1, true/false, on/off, ...). This patch is backwards-compatible;
-setting CONFIG_DEBUG_VM still enables page checking.
+With page checking now pulled out as a boot time parameter that can be
+set independently, let's decouple page checking and init_on_alloc and
+init_on_free.
 
+As a direct side effect, systems that have init_on_alloc or init_on_free
+will no longer have page checking enabled by default; they will either
+have to pass the check_pages boot parameter, build the kernel with
+CONFIG_DEBUG_VM, or enable debug_pagealloc / page poisoning.
+
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
-v1 --> v2:
-- Changed check_pages from a build config into a boot config, as suggested
-  by Vlastimil.
-- Introduced the second patch, which decouples page checking from 
-  init_on_page_alloc and init_on_page_free.
----
+ mm/mm_init.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
- Documentation/admin-guide/kernel-parameters.txt |  8 ++++++++
- mm/mm_init.c                                    | 11 ++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 6c42061ca20e..0ba9561440a7 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -669,6 +669,14 @@
- 			nokmem -- Disable kernel memory accounting.
- 			nobpf -- Disable BPF memory accounting.
- 
-+	check_pages=	[MM,EARLY] Enable sanity checking of pages after
-+			allocations / before freeing. This adds checks to catch
-+			double-frees, use-after-frees, and other sources of
-+			page corruption by inspecting page internals (flags,
-+			mapcount/refcount, memcg_data, etc.).
-+			Format: { "0" | "1" }
-+			Default: 0 (1 if CONFIG_DEBUG_VM is set)
-+
- 	checkreqprot=	[SELINUX] Set initial checkreqprot flag value.
- 			Format: { "0" | "1" }
- 			See security/selinux/Kconfig help text.
 diff --git a/mm/mm_init.c b/mm/mm_init.c
-index c6812b4dbb2e..01d46efc42b4 100644
+index 01d46efc42b4..59636d2c0178 100644
 --- a/mm/mm_init.c
 +++ b/mm/mm_init.c
-@@ -2525,6 +2525,14 @@ early_param("init_on_free", early_init_on_free);
+@@ -2566,19 +2566,15 @@ static void __init mem_debugging_and_hardening_init(void)
+ 		_init_on_free_enabled_early = false;
+ 	}
  
- DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
+-	if (_init_on_alloc_enabled_early) {
+-		want_check_pages = true;
++	if (_init_on_alloc_enabled_early)
+ 		static_branch_enable(&init_on_alloc);
+-	} else {
++	else
+ 		static_branch_disable(&init_on_alloc);
+-	}
  
-+static bool _check_pages_enabled_early __initdata;
-+
-+static int __init early_check_pages(char *buf)
-+{
-+	return kstrtobool(buf, &_check_pages_enabled_early);
-+}
-+early_param("check_pages", early_check_pages);
-+
- /*
-  * Enable static keys related to various memory debugging and hardening options.
-  * Some override others, and depend on early params that are evaluated in the
-@@ -2591,7 +2599,8 @@ static void __init mem_debugging_and_hardening_init(void)
- 	 * of struct pages being allocated or freed. With CONFIG_DEBUG_VM it's
- 	 * enabled already.
- 	 */
--	if (!IS_ENABLED(CONFIG_DEBUG_VM) && want_check_pages)
-+	if (!IS_ENABLED(CONFIG_DEBUG_VM) && (_check_pages_enabled_early ||
-+					     want_check_pages))
- 		static_branch_enable(&check_pages_enabled);
- }
+-	if (_init_on_free_enabled_early) {
+-		want_check_pages = true;
++	if (_init_on_free_enabled_early)
+ 		static_branch_enable(&init_on_free);
+-	} else {
++	else
+ 		static_branch_disable(&init_on_free);
+-	}
  
+ 	if (IS_ENABLED(CONFIG_KMSAN) &&
+ 	    (_init_on_alloc_enabled_early || _init_on_free_enabled_early))
 -- 
 2.47.3
 
