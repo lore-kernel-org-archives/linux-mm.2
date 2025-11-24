@@ -4,104 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57138CFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 18:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 074E3CFD34D
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 18:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A40226B0029; Mon, 24 Nov 2025 13:25:29 -0500 (EST)
+	id DE1446B000D; Mon, 24 Nov 2025 13:55:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F0D06B002A; Mon, 24 Nov 2025 13:25:29 -0500 (EST)
+	id D922F6B0027; Mon, 24 Nov 2025 13:55:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92DCF6B002B; Mon, 24 Nov 2025 13:25:29 -0500 (EST)
+	id CCF436B0028; Mon, 24 Nov 2025 13:55:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 82A476B0029
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:25:29 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 24E371A04EE
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 18:25:29 +0000 (UTC)
-X-FDA: 84146328378.15.112EF01
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 19B14180016
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 18:25:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IsawYECe;
-	spf=pass (imf06.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B92C06B000D
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:55:40 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7624B130965
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 18:55:40 +0000 (UTC)
+X-FDA: 84146404440.25.A6707EC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A70D140013
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 18:55:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nBm5f1U1;
+	spf=pass (imf04.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764008727;
+	s=arc-20220608; t=1764010538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=71o+PC47JuSXVbd2aeyANpOeKyMFPrn2rAw5uI8OTCw=;
-	b=CTiT4xHyHcqB7NXG8g5Gvwf+baD27BG8txsK8APUtQ5pY3iuW05clvVuB2pm923N/5IAnm
-	ro062vv7JFbzbMWcSe8t9i2MAZirs17b3erMz9uiXVrHmRvyw1vpJ4vK885xpBulaiWbkJ
-	ERKowVFVkcY0SzvKudXuu9/63F+hWwc=
+	bh=F14CVMhl/5alGcvF2OzICTuBVrUrhvErRXTXtYinCFk=;
+	b=XRG4QUrq0i/DnSPuQ9zW0bHB4p6EesBwyIFMw6Cm+7srx+gd6iOxlfp/6AlPGYTlogzCeb
+	hx6HokzIyiIkSszNAN14bEEQ0e+OVe1J/NCWbBH9cnIVdliGvOsG2rMeVpRM2ApjHsGONQ
+	281JMQcm9XdqG6+P4CFwfLlOP42zIT4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IsawYECe;
-	spf=pass (imf06.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764008727; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nBm5f1U1;
+	spf=pass (imf04.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764010538; a=rsa-sha256;
 	cv=none;
-	b=P5HD0MqABCOuRDrrj36mA6XEHlJkk5BPYFcWOCPej+/Yo3jGOmUz+Cqrp/wZu2FVnvaxXl
-	/+SjjBv1wUsfai6JIr9xgCfi9ZJ8Ss2adceXfp/BculR4QvmHAdCqy/WdBE3qm4IFJMiSS
-	8DuPF3CbFLmH3QP0JcCS0UUIwaQl3fU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764008726;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=71o+PC47JuSXVbd2aeyANpOeKyMFPrn2rAw5uI8OTCw=;
-	b=IsawYECeFryRg/j3eeXnXY5gmGDs8Ib8MM3unlrN7n8kfg1ThfXonR8sdakZpQPtmH+10Y
-	Gc4sFdtZXbk7s3OTZgVdyDdt9bMTtlEEFhxjwvplJhZeSdEPmrZ1CspkZRAxebiFSkstFJ
-	ELbDnoc4037kmpA5c5fhe12D/ePef1k=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-398-02jQGE2dMku_MVsE_7IE3Q-1; Mon,
- 24 Nov 2025 13:25:22 -0500
-X-MC-Unique: 02jQGE2dMku_MVsE_7IE3Q-1
-X-Mimecast-MFC-AGG-ID: 02jQGE2dMku_MVsE_7IE3Q_1764008721
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 345C6195608D;
-	Mon, 24 Nov 2025 18:25:21 +0000 (UTC)
-Received: from fedora (unknown [10.45.224.27])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 223621800451;
-	Mon, 24 Nov 2025 18:25:18 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 24 Nov 2025 19:25:20 +0100 (CET)
-Date: Mon, 24 Nov 2025 19:25:17 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: brauner@kernel.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] ns: pad refcount
-Message-ID: <aSSjDf_qQMvCteXY@redhat.com>
-References: <20251123063054.3502938-1-mjguzik@gmail.com>
- <20251123063054.3502938-3-mjguzik@gmail.com>
- <aSNZVv6BZCZcRsgs@redhat.com>
- <CAGudoHEsUV+fe4vY7G0FF3T_bki=Nh-QxmLk29+s6ySMqyf-Eg@mail.gmail.com>
+	b=sLZR3pvdw6sJkM203obB3pNH/q6MrmRTkW+W/HfAa2+E63kWvaCl2UEQgRAIWt8rEmCXZg
+	0Pi2ds3sqiynJ+69s/VDgF6ijsHiSD6W3A+t3QS+sZgwMgvvWppaX0uyXnbvNJO0NcB9tl
+	tzzqyr9Lp329t6DSCS8AYp4PEIkDFJ8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764010537; x=1795546537;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=3SE0/Et2OPNoa15k/OwfzwLXqIFiCevqJfyTaPRhQ9c=;
+  b=nBm5f1U1fAEE7LDHUu6HyGpuAa0hQ0RoMUhZ7X1RLoExjaR1kXdnLAPg
+   aVryqIaj/1jjxRg5/nuEHLuRJUHceuRooDnClvowMS5bbTwD74wMs2nsX
+   14AO4I/pnITB2mnV7ycUcv8FuAVuOoibnoDAsBdaXdUK/vsFkKeTdJyWr
+   mrj/hAzatphpUVeYWKgMIdeOsawna51xnh1VS4a1aic/4teRYMxCFia5u
+   WWRtrA+ELzj6pi0JUatyRzPGG7WLyx59+f76Spiw2IDGZVtfS4Gi7BExP
+   +KAHj+11FIOb3k47q8zEp0WUk44DpC24Zo52HEpOPKEoB1z1icsJtDLuQ
+   w==;
+X-CSE-ConnectionGUID: v/IhINgRRj22TLk+KxA6dw==
+X-CSE-MsgGUID: ZnE+Qt5xQfm96P9h8jPVvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66058546"
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
+   d="scan'208";a="66058546"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 10:55:36 -0800
+X-CSE-ConnectionGUID: G4rRd8piQeig9kvf1h1sEQ==
+X-CSE-MsgGUID: 7GI5Jl49QNujECSNvV7rRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
+   d="scan'208";a="191676686"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 10:55:34 -0800
+Date: Mon, 24 Nov 2025 20:55:31 +0200
+From: "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>
+To: "Stamatis, Ilias" <ilstam@amazon.co.uk>
+Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"nadav.amit@gmail.com" <nadav.amit@gmail.com>,
+	"david@kernel.org" <david@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"huang.ying.caritas@gmail.com" <huang.ying.caritas@gmail.com>,
+	"bhe@redhat.com" <bhe@redhat.com>,
+	"nh-open-source@amazon.com" <nh-open-source@amazon.com>
+Subject: Re: [PATCH] Reinstate "resource: avoid unnecessary lookups in
+ find_next_iomem_res()"
+Message-ID: <aSSqIzJWKTe9hs2f@smile.fi.intel.com>
+References: <20251124165349.3377826-1-ilstam@amazon.com>
+ <20251124085816.07dbf5a4ec6235b2943840a0@linux-foundation.org>
+ <c7411175b332f3befb5bebb6a75c7b91f2c1dbbc.camel@amazon.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGudoHEsUV+fe4vY7G0FF3T_bki=Nh-QxmLk29+s6ySMqyf-Eg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+In-Reply-To: <c7411175b332f3befb5bebb6a75c7b91f2c1dbbc.camel@amazon.co.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 19B14180016
-X-Stat-Signature: kqwf164igrcf54fyenn1fqcedoisf4rm
+X-Rspamd-Queue-Id: A70D140013
+X-Stat-Signature: uq6hec34nt7ao5kg5sxjgzx989e5xjna
 X-Rspam-User: 
-X-HE-Tag: 1764008726-21197
-X-HE-Meta: U2FsdGVkX1/329UEemV6HE56kzm+LXM04npMfUzwPzcU6cydkg0b10hV8MSUNh5evDuzH6qcGMMLldoLsvcYxUSmVN3GCAOwgICbnR4FfHQMLvWQ8EycDLUkUF4B6xixTkZw5sCrq2TaSXrnIamrE19Wf0baiAS6jAwc5W7Tgbf3K8UIXIZD+WQBzykr6cTrP6EPHhPlDyphYyebII4RpwAfGhjpVC/PXYmhPXxvd6gG856dSDvKtK57n+eCshKJ+0q8KNb0YH6955XkWyKamOeACkQeD3NMJqOGhWzCEt7SCMNqMjsRo7Wl2R99z7mY1mWF9Pyzz0TEOP1mj2XYiSRXxGrYMW9UjsT9jv1RuIGxTeb629eV4Uyc1Hhl8ZaINLxL4xFmgi+fYoHumAjHZFG3+RnkMC7xUndQjBLySTV4iGt5joWLPHUgng1Ozt4C9OXjLeTtX2CJ+DM6UnBeb990HHfOpug8uVSD6kFruVFESFtlgv9KtfPsRfOnG8FZN7igQ2HxmURoXHtpspnCajZbRkiOxMzZh91C7geJ42QePJ6olCu1X2Ap/N2prgZPx4qZxDxChvBFV/wbbgZW9xgYJhnm4puNo2V2qmTux5hu/M7ruSK17gFTvt1nheeIPjX6y7v9imcA75zw1T95gt4S/uwWmryPkSI8A/ZoSYINnfomQAzUPvOHtS/zaWZX0cJH7sFDLjA3SDghR+ceSwBPqEKRDxK3SxsqFeycwQTegQjXFju52BcS77PJCKgQto3nvoRR3zaWkdBd+IlLkmzxYTCCJygIKEyA82L9rEczPGowxKsRXpC/SlFMVvQNk2A+A9VVN0x9o2dYjU7W1CxZBr2buvmHvU3xXdUM+N7BVFue/IdsHSuxovBgmFPBIrLCwG6j8wDKH8FUMgP6D1KHPjDMO9HvMmw6c250Eee/dB1vBx6UQs2Toj7grJIR/PUQwAhBRIEaSpA+o61
- TEuoqhln
- N0pF46Z/04k8HvHHzY2groLnBuCW7i5JaE52dsktkUcMAhfWGIzzKpliU1EAtZqBOApvSEWHYwIlmDfT2VVFkgx13svZM28Fr0uicuk//2CF+50fboWpW7rXciCXCCh/QfrkX5R+ZYR7gaYVBm0WlD28D1xT+BPmSIM1z1LsElhoasBeUJLTzk98G1J2G+c6iNoyL/KLl1lz6p7zVkGFp5E0E2JpL5vz9otWXHAfSHTBjdD958SRVI4n217WsMeDBSx8pSSCLTAfmm0ryuBEF10vpystKEVmFA7S6+WbuzdtCuz1YmxKHC977ABaB+/b59H25cyKg9SuAAR6RXdoMWFQ27KoBc1IsvaFMosCe0+LHCqIvy7CxdRGV71pypTzukaxkf5u9nhgy5Vs=
+X-HE-Tag: 1764010537-838746
+X-HE-Meta: U2FsdGVkX19d8fRDgC+Z6FUgPh0Hnv/yQDIBwBxJst6hOOVuXpBtL/SEmP4mUfPZIFkrhFeiMIiaiLO8XERaJB2ydwnoipNU1L9ax/gxkAD196l2h5MJSXed+LMUvsr2W8+0H1z/iUwpQCdaZBTMyCxpooxcMHYQbqnpw2phbNDvoqCKH+aGP/IkGePeaVX5cTxFZZSEqjIkixSedRSZ3IVdM2D2toexcQ2jBz13vAF5nJhUlsD+yQ9sILVJWlaHTVCfmcC6XahersiP4Uyzf5cYuYUwypfGuGG55nIOXCZFPAha4ifF/TS8cQS642IYGv9iENdFwoPUCnMktgW0YkKsJ6yYBZ+IO5ps6hWjWZNp/Uw/4NiTBnDdaQ36sMbny+UQxnAGL9FkuHzJKWTzrkrkGbE2Vd7Lf3HnnIQNVXZqoen62IH6YE+AcuhGtulh0WepoGIexLtMlu5r0kMw/Yz8l1gyWyT5+K+8f2FyI45ldeqFiCQPEEk1xv/GvqTwB2WW8XCR4pS3totEVLrICeCWzms6TOaUN0uLtrPmDq/tm6mgOVOV7xGonmHxKEh+fYnCejEwcJMk6Xj3mZ3ASgi+WLsmy6+AxhlPAVeEjwfWLC5r5ZQOJKY3V4iy/0K4WEcniVnd42zz8vuYbb8ocFMJ+maqi1iNg4tHDBTnzwMGoyX3hZzRBuImMWvDgqm7fjUEU9ihTJto4MuK5kpx6xIkOFQ4PfAv4/VHSv+PhNZByH048Vq0FHX7S8vWvSRvN7HT0YF0DCAesNYWo72MolQipEBT8nMOduWH/hWBnjBTnAcMtN3WmiwN5YW2ZPX40AJt23tYO/aQmWkNtmt+Qzqnhc1lcIhXMPLk2PaKPvAjeGPfwa1Ua+2hBgdsBuPcvWxUVuqG7DlZ/1QC51vASnbjNba7tWQmyE/2M90M3Ta0e3gGF4X/diX0fhTMXcKVJ+V9kcWjmW8k85lnopN
+ Wqc54HlI
+ vQaihF3EiUoqaPQolVTPYga6gnlJfnYnysCX/RWHXBdL2bkFTdK/v5fvuRQfju/qqU3+GTiqJ6lvs8WNMg9Tbm8ER18JfLkc384OYFS+neGpLduOnnlA+YEM04FF/M0Hh2zMPP+PWCirfEKjWoMcGbbixI/7nOVmB4l6lZAM2pm8DdNPGJ8NFbiWkcyzF9/ep5JzpNsIZYUZalE5qzasOt0hjPWoYQIzIwW1BqXA3EukGVObCPQJrtZoLTFMyaHSa6Bm+9zwhi5Kzy/0hNAsnbADVzBTG+1d27hwSlxvwfgGlenU2gZ6kRr6m1pWRAQjSZlT6XFyGqqXqcwlC8tRiWjhR9pVnd2+yFxixG/euLTRfh/kRj+T/XcHOf2LKp63fmtRgYlkrZw7QSl4DZHRE1ZzdhlwMbyqo/n80x5qAsDhYyi+qMeImbcSz+4IursGuyal+V98yb6xhYscPcMo1+RC9u+t0Bkidde6w
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,31 +116,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/23, Mateusz Guzik wrote:
->
-> On Sun, Nov 23, 2025 at 7:58 PM Oleg Nesterov <oleg@redhat.com> wrote:
-> >
-> > On 11/23, Mateusz Guzik wrote:
-> > >
-> > >  struct ns_common {
-> > > +     struct {
-> > > +             refcount_t __ns_ref; /* do not use directly */
-> > > +     } ____cacheline_aligned_in_smp;
-> >
-> > Cough... stupid question. Why not just
-> >
-> >         refcount_t __ns_ref ____cacheline_aligned_in_smp;
-> >
-> > ? why do we need the anonymous struct?
-> >
->
-> This would merely align the offset of the field, with the rest
-> directly following.
+On Mon, Nov 24, 2025 at 06:01:35PM +0000, Stamatis, Ilias wrote:
+> On Mon, 2025-11-24 at 08:58 -0800, Andrew Morton wrote:
+> > On Mon, 24 Nov 2025 16:53:49 +0000 Ilias Stamatis <ilstam@amazon.com> wrote:
+> > 
+> > > Commit 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only
+> > > logic") removed an optimization introduced by commit 756398750e11
+> > > ("resource: avoid unnecessary lookups in find_next_iomem_res()"). That
+> > > was not called out in the message of the first commit explicitly so it's
+> > > not entirely clear whether removing the optimization happened
+> > > inadvertently or not.
+> > > 
+> > > As the original commit message of the optimization explains there is no
+> > > point considering the children of a subtree in find_next_iomem_res() if
+> > > the top level range does not match. Reinstating the optimization results
+> > > in significant performance improvements in systems with very large iomem
+> > > maps when mmaping /dev/mem.
+> > 
+> > It would be great if we could quantify "significant performance
+> > improvements"?
+> 
+> Hi Andrew and Andy,
+> 
+> You are right to call that out and apologies for leaving it vague.
+> 
+> I've done my testing with older kernel versions in systems where `wc -l
+> /proc/iomem` can return ~5k. In that environment I see mmaping parts of
+> /dev/mem taking 700-1500μs without the optimisation and 10-50μs with the
+> optimisation.
+> 
+> The real-world use case we care about is hypervisor live update where having to
+> do lots of these mmaps() serially can significantly affect the guest downtime
+> if the cost is 20-30x.
 
-Ah. I didn't bother to read the changelog and misunderstood the intent.
+Thanks for providing this information.
 
-OK, thanks. At least I have warned you that my question is stupid ;)
+> > It also would be good to know which exact function(s) is a bottleneck.
+> 
+> Perf tracing shows that ~95% of CPU time is spent in find_next_iomem_res(),
 
-Oleg.
+Have you investigated possibility to return that check directly into
+the culprit?
+
+> the full call stack being:
+> 
+>   find_next_iomem_res+0x3b ([kernel.kallsyms])
+>   walk_system_ram_range+0x98 ([kernel.kallsyms])
+>   pat_pagerange_is_ram+0x6e ([kernel.kallsyms])
+>   reserve_pfn_range+0x47 ([kernel.kallsyms])
+>   track_pfn_remap+0xb6 ([kernel.kallsyms])
+>   remap_pfn_range+0x3b ([kernel.kallsyms])
+>   mmap_mem+0x9e ([kernel.kallsyms])
+>   mm_struct_mmap_region+0x1f3 ([kernel.kallsyms])
+>   mmap_region+0xa3 ([kernel.kallsyms])
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
