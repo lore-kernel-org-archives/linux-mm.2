@@ -4,111 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31EEBCFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40832CFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:58:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CE386B002F; Mon, 24 Nov 2025 09:58:04 -0500 (EST)
+	id 92A196B0010; Mon, 24 Nov 2025 09:58:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A59A6B0031; Mon, 24 Nov 2025 09:58:04 -0500 (EST)
+	id 901EF6B0032; Mon, 24 Nov 2025 09:58:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E23B6B0032; Mon, 24 Nov 2025 09:58:04 -0500 (EST)
+	id 83E706B0062; Mon, 24 Nov 2025 09:58:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D7546B002F
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:58:04 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 475A988BB2
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:57:59 +0000 (UTC)
-X-FDA: 84145805478.23.FE2AE37
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 332C6100018
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:57:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yo98vvMZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763996277; a=rsa-sha256;
-	cv=none;
-	b=41g+gYbWkb5A7VEzxz7BvEqcfH0jHwOoihfq6wlIeQDKc0PzW4pu0Yz3Z1HoL7ai4mi+zL
-	avXyMv7N9+yMR9XFM/T1uzqPJeEJL/ts4Dw8jfIKRjRrG561bA7f6PBYIryJcgYCjEnYqs
-	ECfh5iDxNhoSyl8H6xNs6w/k5bZum7c=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yo98vvMZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 725FC6B0010
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:58:18 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D498B4F22F
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:58:15 +0000 (UTC)
+X-FDA: 84145806150.07.2E47C9C
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B1D851C0002
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:58:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFBHcHHZ;
+	spf=pass (imf21.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763996277;
+	s=arc-20220608; t=1763996293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eI58qe2UFaD6zmpjXRLJCwUCgHMI5ElUVf6AxpDkbdE=;
-	b=8PUB5X7D6dK8ahKafwIV3LbOo87E2/Zz7o1vsB2VrTt1p7koqsk2xgGIdTPnNUm5SeebfX
-	dOcagwEtCtUsTSJfIS5plTWOvV4lv/7hFk8Cw1FkHcFDXQSSxxk2tUABO+kBSZ/ItjWD5I
-	5gEoFQJhSg+4w2uBboTUSlTnWXPfdOE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EBD1E438D6;
-	Mon, 24 Nov 2025 14:57:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5B8C4CEF1;
-	Mon, 24 Nov 2025 14:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763996275;
-	bh=eT4pJrflwgRPMF4ryE6lrh/N+OcL3X6tkjV48AA+6HI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Yo98vvMZm/olLPqpxnPsvRURyK/2mRNeN/gLay7rE5jE+UrJoSq3l1gTUDijol2vR
-	 sTBC6XG3vdtj6VgW8PaH5OH2BDzAKQX0aG4V/3G8A8QI7mu1Z+GFyXK5+FOqp+/Zfr
-	 WhvErW8+LgmXEsRBaOewO3lQEgH594+zmhorrmc1Lj3BNCSUVI8PtG/9zDSMKmMpWh
-	 aGkZnmwGfxqEDUQx4p32IcugsCxlxtbiCRJHWSVA30dtIbZ/ImNdeJXs7fZ8y4b0x0
-	 vJ+7C5GiMTHLP+I3Um/3AkDZvYkTgOuQWucN73eVWfujBPE0D1D1mUEHqoTBVasuVh
-	 61m02b938kG6Q==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
-  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
-  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
-  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
-  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
-  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
-Subject: Re: [PATCH v7 04/22] liveupdate: luo_session: add sessions support
-In-Reply-To: <20251122222351.1059049-5-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Sat, 22 Nov 2025 17:23:31 -0500")
-References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
-	<20251122222351.1059049-5-pasha.tatashin@soleen.com>
-Date: Mon, 24 Nov 2025 15:57:45 +0100
-Message-ID: <mafs0ecpnzdee.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=3QlsGXLnolIwD4FFhjv81uv1vh4++PmTqjIYectZ3SI=;
+	b=hQT5d7yGUhFgFlwHVwZKyLOkzFZ4OjIcxcMKbHzr1X8VbJWZeMRGVG58oQ6rUX0792LZ+I
+	4vs1LR6y1JJ4TNg26mNjZQu9EXIVEXdOw7Za+JshbHm9glG1Uza9gdL70GQ57pL2/a/v+A
+	vL8ZXNQxIf3/Z7e/7JSvq0n8oEWW3N0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFBHcHHZ;
+	spf=pass (imf21.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763996293; a=rsa-sha256;
+	cv=none;
+	b=SB/UGG30xEayVaaLY9t5RugVAF4zyR1d5rDOpqecGGPUjuRRhnnIyCN5HjzjCh8JrLePTE
+	VTsmjBDVe91ZD5ckmaLFyB0oBQyhm/yQW7YRL6F1G0rJyP2RYgZVe200kfUQdY88PQZ7z0
+	FB1wZp780mPgoC2KGUpdHwLfjTHDmnU=
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-37b99da107cso38512161fa.1
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:58:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763996292; x=1764601092; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3QlsGXLnolIwD4FFhjv81uv1vh4++PmTqjIYectZ3SI=;
+        b=iFBHcHHZBGn4GgHxFUbWSvSnW2t7xVwMEhcy+ItZqnSaR7Bm6vkHHQBcqKx1ULV2Uc
+         GWsiElmocAWeAnpGqNTf11sLfvYPX9CK3hTCCwebOgpUVy1fufslxYmsVWAs3bU4kR13
+         9gueX3IAHk4OtxPDOlX/Dr8iV2OPm+NNJBU+kwHj2gKdEgEW+uC1xWYkJBRdZGXM3yjV
+         SxUsLz8lhLd8mAaHw+RxKP0hHFK8PIrl+2yjnfwKDFZyX2UzescnhQnnv5lXsDrs8HUt
+         x6f4s0psIUl348vWTp5CDxt660aMgBqOHmfL53mceoaQPgO1cc8HgZCgbydnMX386pg1
+         0itA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763996292; x=1764601092;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3QlsGXLnolIwD4FFhjv81uv1vh4++PmTqjIYectZ3SI=;
+        b=SjHOe0LMJJWos4Jhs1Yb2x7d6Q7D1Y3Hxdij8UzIapqOZZHh7yPIPMeOjJAyX5oJwL
+         Dtp14nOvT8iGFmKLQeHXZ21Zpau++YVslrCgfVuOnVmHHfKuoi7BXmJjEcdPqdQXmn2C
+         M24JBacp+p710TUw9OOJtDsTZ/UFS+RSG54XSNwRB0TnNMJt07uobiJRVpwPAyH7dNHk
+         sCBnomeP8HyIFG5Yflsa4/eYp1IsSTq8ZuF+0OaKBJA/FWoMeB05bIa3mIhkgRfjWCAo
+         U7DxfwRskChr02wSgKVc2bh9mqI5pDGusXZOCaKdi/NGeNoDIejA5iWlIKrry5l9gbhJ
+         gnVA==
+X-Forwarded-Encrypted: i=1; AJvYcCXySUX6OPFPlyqjOfroI9YwjW34uwvlruH2+BK5t9tDlWccnwfOQiEBYiJr0aNo/jvya254fENj6w==@kvack.org
+X-Gm-Message-State: AOJu0YwKYg9tuGwOrBKEgpiduLInW2DIqzxP6RxXkW7VJ8VH9MXbtn1y
+	U4Uwar85xRVOqY3b/OQzziYoGlywvX/l9Zogi7n62FEzXQK6Ltb3pMn5BFustNiIAwWqQdkKyQG
+	R68YZCj30zKloGB/LMKYTKxbLk3iMf2Q=
+X-Gm-Gg: ASbGncuGFppcWMmnD+BBORe+XNSZFsjF6TqSW9I/oXu4/RUf9H38/gLYkTq3oHV1ssX
+	RSyhTO7MhBk3U9S39lsS+/KXl2MgWMACmbTqeFBxIMI50uu8iOpoNOK6qxKExvKKrIlHAlvN+2f
+	vQu7HbCP1z1G1xnSH8zt/rI0BxnwPHbTM16kwSFXiTeBWCqn0uTEHRVlK1/ZJuHv2/rtWHQ0duJ
+	c7QyasIbplRckTbMJVEU3GC3ugcTYCk0hnWaGqFelLQwGm6V9RMKO3n6LwuIeQdsvOIT2k=
+X-Google-Smtp-Source: AGHT+IH4bfvEN5QLedqHox+9fwWISgxbndiZzzwqGEb0uKERYy8M/ijiJIVpVGtp53Gb+uwALvXIsa8Gd3Bxq3wS0aE=
+X-Received: by 2002:a2e:8696:0:b0:37b:991a:5440 with SMTP id
+ 38308e7fff4ca-37cd9272c3emr29452321fa.33.1763996291487; Mon, 24 Nov 2025
+ 06:58:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <454ejfdrzcdo5a4fmqeaf4nwhxwqnvgmcj7ussl7ws3lpdc7zg@67yqrig42erd>
+ <CACePvbWEXfuwk1MuhGn5JV674vJnmaGY2Q5=Am1O9bDVK_J0PA@mail.gmail.com>
+In-Reply-To: <CACePvbWEXfuwk1MuhGn5JV674vJnmaGY2Q5=Am1O9bDVK_J0PA@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 24 Nov 2025 06:57:59 -0800
+X-Gm-Features: AWmQ_bmKbDigl8CA7qdTUGEHk43khsmkFTje9u7BTCVkH4qAObfGxaLwfOYx7dQ
+Message-ID: <CAKEwX=PtXrKXiqDQ+s01OkCqO4LFbJUH0RD6K6hKGe=AKDjXHg@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Chris Li <chrisl@kernel.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B1D851C0002
+X-Stat-Signature: yo6jr8uxo8m51cyq1durg7wq8ki7aqct
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 332C6100018
-X-Stat-Signature: eo7orsrrmkmjrbsjnzffmckq39w8jgxj
-X-HE-Tag: 1763996276-601051
-X-HE-Meta: U2FsdGVkX1/ja50bve1qKIUJ+vl25SfOalQodb4c/lmLhsaI00oaH9/dAfx9AHoO2Roxm9qc3mGWZmReFuefwEIQiGmrs7/uvjW0S4vfVF3bpTSqm6ZhErCSn4nuHtJmycbEdmy+xitqlekeKbM7f9jgfykno2h/tT+QSdoYzmsUKTK2jvldKDSIzvGJBHlpFVdfvJUFpan4dAMHWVelZ5mOY6PttqxLxa4x2jfLtsx5zXIyknMsXdpovR7gS4fZaphGbnIPIFVFG2c0IwsM1c/9h1CBm5Y4eEPrXdJB7Rhh7PeRPBrQ+SZHjhIif9alThIGP0fud4hKRNveQDtNd5NsLzslQR9jwBMrOcv5uNavF0VdDHGrB7T5BFYM2N1oZI6O2pGyuC4l2Pppi3m37blD57cp8/mRQg4c57dcwaxyvkdwF8qtnxsBVRb6xusSJeMJXa5rDpOltNYgwwpLG3wrD0K3fh4u6hFdc0vw5TTLbIMHD3s3QlBud8V1n8T/oBFAsoo6HzVitdias7B90KUMcYxRyC418t+cojWVtL2JYZiXeRQeO6sYvvv5EDrgjgFwL6eNx7U9lX8fqYlIzJOKajyMjeKjbukJHrXGd8Ga/Ff13HUKRY22gaIIQQKmTWXmKs1wkAf4MSLgm4DibdsxQUNbKZxAVv8wFcI/e5K7D0UMznsfKbwZKdCjCZTn373KYEMyFxD410U043XFc0OiB3MCintu97MkS8ZcOWztr5r0QhKIa4pfDgAc69B0HZNQuedboA3WjARHPcgAGwX5wogtkIfkt2Vs6nd0KeFR0CB9p8NOPP6KuNI+6rKkNWKMjE2oNXex94iljyJf8IB91TYwyHPZ8ANQHrA20I0cagETdxvy+Qgtbee2zCnBPuFzjMcZRyaTLADLMgxEGlgo6fNrkpAmoZ2RVgkxHZ+hiBWT9CWpZX8SVTKoiaPfTH3nd00/Ojc8ja/5HlI
- yV+V+O4p
- x7Yy/dNi0gboLyhsoQ7mnnQmahPriXOoLdcnyZrarA2n2fH7KM9i22ky7ButEDynOIiWGSEheEP1EDrrbBQVdwwgfIkrO71A1aBjWlCOHN8U0JlKQmZf1VD59G3KCkTKPekcn/jugG0sKsAx5wu1mw6lNA/m3L8lGQWGgiQPT6joctcG7GgdoJB5mgV+3nc1kNbcW6IH2wENTeEFzwJTjT8up4jQOkPJuRdG8ERUSA8jvQkb910QPwN9Nd1WLBoD36FEG4zOkrYbF13AYp1Siv9x7bXJQpk8RLpyQYUBR9KrJLSKmlvWrRKz9h3aw+neyOYRfylSvqek2IcMPD6AfuM0lLAh96qCV1Y7752SirJ6cutZm7bPOCtz60Q==
+X-HE-Tag: 1763996293-936216
+X-HE-Meta: U2FsdGVkX1/1UyiBjvBTUq/WBZEBc0mQb0WHH2DtM6Pm8K9WxMbdnCGV0kaX/M82k+ITw+aAZD9OVangiVzevKkw364CXd6Kr+8bNZFFyeje/qMCAzdCDE0DeEL2l0L9pl5doMhuYRdbzbhacSm/I+lV0Lur6HMxYSq18miwGa7A0R2J06NipcTSnSV7zqBKd+pqw1HyNH/XeBPrbw2fK8fDCRbUiQEzyHWQvnE3WfY8+5Kt8mLipRsUhYAoyLABItiGv9W8TLVQ1/dSGrvV3ijf21D/kemaM8e0BZo5tppD55FCFFW/4nRvNKHoFOR1pkEVAoyrEGFql8IRxhKOW3jOwDuSyFbm5GOd2Fnw2pEeVJcjvDMxLFu4wSq8bw4bLQJbQO/6lGWXPg0dKbNJ1CjEa3tAmMXIWZr2apGNcAiNF5p2Q71hatr+5tce9NQCNqLhzhkcJ+9vjEPTl8rY+9NY+EhbjxKgOIU1ZlsXIkgsD4mAgZq8ari+23p0etyKE5NeKcFpt1vmnRT3Q4ZhnHwI4CMx2ETnM+xyk2GKfJoKVSP8Obl0a/7NbbYQsABppaWJ5F/paiYMSwgt0u8bbwHxm+XaJiKoveNdza4oMH/SjiAx5HgaDhnmdn8EGgTAtqGgSPDMzVqIsAiEsAV55kzAW3V0cJxHlyaNNv6eb1O1NgWTKa1tnkX1DQaE5qfsVtqyDCGxynuvWYwOXiOHBS7VFyDwrkEmvTAytxRU4u20OZ42M1vGIlwLRSJB3ugfZGkkH7A1dR52OznXUOmSxX1eI9c+MKEpY7M0QSo5SGwwwtIHIJSi5UpzrnKHfxmYxhwIcB1VhhvYLySjN0Jgmri2R7hgX+tCG5ckWbtKQoFdCi9yOWbNjWaxqKew82I0ek/xaE3jJdI3XrMpjp5lWCCZqeiJCzzMWCJzH6XAf2SyQNpwp1Bj9yEByHsA8AoLDgnApvOQPoYVnrqy6bd
+ WPsfEUJz
+ HElYERPtY3q49yVNYUiWDXFpFaaMWjRHO/JUbBI89tU3RlGqg45GwfpStjcrnQPbnP2DFlwj3L8RMMVqjlXKMOPk/XMsuQxvP9mQMP6z9y6KDINGOAJpm19gGbPkLRbrL/6fdMcscCc5KcFg6BCJruEMmQeB8gHS0WfBkR22a0/b6uUTK+PvIjzzqdkcgDLzGkK8fcK2b+1PTVl3aeXK4wvMSPxUOx7YJz7r5+eG/0J+4ntvQP+yiVZHvLLzU5EsLUvV09KS8/zokWFrMnk7zTU7kcCdXrfZn5TJ2S1dzPNUJd/DsI64tasSIYMWj7niF4mAa6odQFERNSpk2ulLyEjIaov1CWcjOn3/zMsPqEUiMkek8xujquUNsbg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,31 +121,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22 2025, Pasha Tatashin wrote:
-
-> Introduce concept of "Live Update Sessions" within the LUO framework.
-> LUO sessions provide a mechanism to group and manage `struct file *`
-> instances (representing file descriptors) that need to be preserved
-> across a kexec-based live update.
+On Fri, Nov 21, 2025 at 5:52=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
 >
-> Each session is identified by a unique name and acts as a container
-> for file objects whose state is critical to a userspace workload, such
-> as a virtual machine or a high-performance database, aiming to maintain
-> their functionality across a kernel transition.
+> On Fri, Nov 21, 2025 at 7:14=E2=80=AFAM Yosry Ahmed <yosry.ahmed@linux.de=
+v> wrote:
+> >
+> > On Fri, Nov 21, 2025 at 01:31:43AM -0800, Chris Li wrote:
+> > > The current zswap requires a backing swapfile. The swap slot used
+> > > by zswap is not able to be used by the swapfile. That waste swapfile
+> > > space.
+> > >
+> > > The ghost swapfile is a swapfile that only contains the swapfile head=
+er
+> > > for zswap. The swapfile header indicate the size of the swapfile. The=
+re
+> > > is no swap data section in the ghost swapfile, therefore, no waste of
+> > > swapfile space.  As such, any write to a ghost swapfile will fail. To
+> > > prevents accidental read or write of ghost swapfile, bdev of
+> > > swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
+> > > flag because there is no rotation disk access when using zswap.
+> > >
+> > > The zswap write back has been disabled if all swapfiles in the system
+> > > are ghost swap files.
+> > >
+> > > Signed-off-by: Chris Li <chrisl@kernel.org>
+> >
+> > This was brought up before, I think it's not the right way to go
+> > upstream. Even if it's good for the short-term, it's a behavior exposed
+> > to userspace that we'll have to maintain. With the ongoing work to
+> > decouple zswap and swap backends, this will end up being something we
+> > have to workaround indefinitely to keep the same userspace semantics.
 >
-> This groundwork establishes the framework for preserving file-backed
-> state across kernel updates, with the actual file data preservation
-> mechanisms to be implemented in subsequent patches.
->
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Actually, this doesn't need to be the short term solution. It can be
+> long term. I get  it your zswap maintainers do not want to get
+> involved in the ghost swapfile. I will leave you guys alone. Remember
+> 2023 LPC swap abstraction talk, the community picked my approach to
+> the VFS swap ops over the swap abstraction which the swap
+> virtualization is based on. I take some time to come up with the
+> cluster based swap allocator and swap table to clean up and speed up
+> the swap stack. Now I am finally able to circle back and fulfill my
+> promise of the VFS swap ops. Have a little faith I will solve this
+> swap entry redirection issue nicely for you, better than the swap
+> virtualization approach can.
 
-With Mike's comments addressed,
+Look man, I'm not married to any idea. If your VFS approach solve our
+problems, I can move on to other projects :) We have lots of
+swap/memory reclaim/MM problems to solve, both internally at Meta and
+upstream.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+But please explain how your VFS approach solved the 3 requirements I
+mentioned in the other email, and more specifically the backend
+transfer requirement.
 
-[...]
+I have explicitly asked about it in your submission for your 2024
+LSFMMBPF talk - at that time I have not seriously started the swap
+virtualization work, only at the design phase. You just handwaved it
+away and never really explained to me how you can achieve backend
+transfer with your design:
 
--- 
-Regards,
-Pratyush Yadav
+https://lore.kernel.org/all/CAF8kJuNFtejEtjQHg5UBGduvFNn3AaGn4ffyoOrEnXfHpx=
+6Ubg@mail.gmail.com/
+
+I understand that you had more pressing issues to fix at a time, so I
+did not bring it up during the conference. But it's an imperative
+requirement for us.
+
+swap.tiers is nice for initial placement and for hierarchy
+determination in general, but when the page is already placed on one
+tier and needs to be transferred to the tier, how will you move it
+from one tier to another?
+
+What zram is doing right now, IIUC, is building the redirection
+internally. I would like to try avoiding repeating that for zswap, and
+for every other future backends, by pulling it out of backend internal
+code and build a dedicated module for it. That is just swap
+virtualization.
 
