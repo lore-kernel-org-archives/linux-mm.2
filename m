@@ -4,57 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 454C5CFD317
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 13:23:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BAB7CFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 13:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A29BA6B0089; Mon, 24 Nov 2025 08:23:29 -0500 (EST)
+	id BD8E56B0092; Mon, 24 Nov 2025 08:23:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DA4B6B008A; Mon, 24 Nov 2025 08:23:29 -0500 (EST)
+	id B887F6B0093; Mon, 24 Nov 2025 08:23:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8F06B008C; Mon, 24 Nov 2025 08:23:29 -0500 (EST)
+	id A77276B0095; Mon, 24 Nov 2025 08:23:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76DCA6B0089
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:23:29 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E27558B33
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:23:29 +0000 (UTC)
-X-FDA: 84145567338.11.069CC11
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 91AA96B0092
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:23:37 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BE11A1403C6
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:23:34 +0000 (UTC)
+X-FDA: 84145567548.30.02E7EC9
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5B4D880009
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:23:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0B7D61C000D
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 13:23:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763990607; a=rsa-sha256;
-	cv=none;
-	b=JilMqDm1nUss14nZN996DRDNz/8khDeFMDi+WXeHhPc2c95u7z9AOyWDCxKugsfOZ21LZV
-	Xm9gaJyGo3kLEejZ6fn/89lJDf6jNJZEVAs2Exz6gt1Q9bod4BQbDf3DYDvDfkOiJ8OV2H
-	qdjg7kPOxCZjua+fpSIgBTjmFyPUr/M=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763990607;
+	s=arc-20220608; t=1763990613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Gj4iFN3ZQ6JLJ3lvMpJahEbnH4amdNlDjqaEep+jSnc=;
-	b=gvQawris7BLRm/EAK4o869uqzCM4hEGs9mSuzYMjUZNv2tklohceOizqzDZf51T/43m+xb
-	lQ2n8D15qFf8CmPKgC4EgODONNF1P9bOjzhegduqw6qY0SxW/GKm+6z12er/SoIw70tHxf
-	8s951TacUk4ytOpOlTl4sgCrhgr5na4=
+	bh=dSyxRnhYlcdu1xBdpSSZm2FOOGLwAL5f1r1w6ewElg0=;
+	b=OhE3gmQLZWCjQbIS5YkYyiMdTljz6IbIKFFyGracjkS0JP0vN5kMshbHOzz/g3ZQZwdB3W
+	6txS9AxipHg3KY+hinB/m9nHunD2wOOCDwuVSziXnAzkZe0AzhOpZSQhpqZ3KM+JpcgI4p
+	LfaLQbtpP0PI9BxR71ig8E8Nso70mAE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763990613; a=rsa-sha256;
+	cv=none;
+	b=sMQNOyMukG/ziyKZMo73iltwPZ6r8qj4EL9t31NeG4KFzKtZuhbuzxcwo6S7xTkL9YZyQn
+	QFbVAYdA2F62szdgwli+mCMBtmTDAfqjsq9jJnEeu45Qff2QMZiV859Ayu3DEiiIZhWXY9
+	be7O8ZmUjDkuKa1ZAxvz/RUTbdBtYRM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C3A11655;
-	Mon, 24 Nov 2025 05:23:19 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A1C19168F;
+	Mon, 24 Nov 2025 05:23:24 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7D3443F73B;
-	Mon, 24 Nov 2025 05:23:21 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F00C93F73B;
+	Mon, 24 Nov 2025 05:23:26 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -95,23 +94,22 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v5 08/12] mm: enable lazy_mmu sections to nest
-Date: Mon, 24 Nov 2025 13:22:24 +0000
-Message-ID: <20251124132228.622678-9-kevin.brodsky@arm.com>
+Subject: [PATCH v5 09/12] arm64: mm: replace TIF_LAZY_MMU with in_lazy_mmu_mode()
+Date: Mon, 24 Nov 2025 13:22:25 +0000
+Message-ID: <20251124132228.622678-10-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251124132228.622678-1-kevin.brodsky@arm.com>
 References: <20251124132228.622678-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5B4D880009
-X-Stat-Signature: uqzn3a1ktjtj7bfjdn3aqe6p8kgpfzwg
-X-HE-Tag: 1763990607-510396
-X-HE-Meta: U2FsdGVkX191DvXrQdsnfFm2JFlimx//9HgfbJ5gb3irKWZbf5RSkGxHRPM3BVwLldefrN0I5wZ7AA1+elV1JzmWsP2CiOj82Uqw8p3UQ3aDuppsrHDCbDckAPCzsBUcHCtGLkHeQ8H2o+n7g91q/BhZE4eu9eGPjt3uzQyYS4+YaAmL2SBVcferM6ol1L1wTUevgsd6mFh6YNNsB4zy4AXrufl4rrxyycCMMsgxoo5rbRbQsVOU9b3BgdO5BRwuYaBRlk6VFjdd/EzoJZVT/LRziO0b/nCd5/6/Xr0uOCEnqIY8bmUgTfB4KUSv66ZRUiEZ8nuu8Z6LMHZ7Y8m5xLKhDim4LMAMnruHXQyx6j/tLJsM6eeERI4aT85joOOje6ZVxNktfk7Jz7r3nTnxBD3RQC3Z4DygLTBG4QBFZp+/vSVbZoCk5r/Z6W0VekUROh8uagGZFivUsXG4FX+BRbo5QR9Ok54IPZn3FIxziX30I+O5MIe56KwdwdkMRbnATMHho8gadq+JP3VvZIu9JsHVkAA6nzC2ccCFhaDgWYT5vB6IGAy0QqZl2nbqBkmEfkOfMKnf8f+pA32PBScVRWWzKD8KPgGA4Y0xIe55XANNPddd1qIOBVXZ9NL+FVvBEt1IsIiqDmlc65f9lB0d2do25f5J7EfU9vM3vc6b6App9w1QwAwaahlBUkStYXDGIRva/WZOIKUx6XulBl5neUk3gQ6w6zCib3XKZIMAZJL6j+NFnM3k6jpXWnrexnSB0v0YEaXzJUxnHUCK916D7CRONsSgF96aJ8tfpSdrgWb8CLex0cnDCCOPxpnT5Au0Pvf3Su3mmG+SsosE8vJ7enhzn/r4QOUcqR8XARwfxobSzFxFSiZYp4BBGud1lVI69g5dLaYZvzY3GcDzybuCKvk3sjW5RlHtf7J6VCkeIkKmjQWwNPZ9mA5EtH1f+RmLOAo60SREBvFsyOuRvx5
- iwQUMUwM
- w9xS/uZ0LClvOYqYiFsgGSs6G+96H7QnR3tw9vewdpFS3oocDOC2++4/tpj8fa5SYWDu6hkn3icg86Ack/GZQZCrDwPVPKJZg2RSM46vEQv6rFg+8p/hhhWU/ezdY6U5gM90DHM1X/L4wqVEKMmjYndYq3jvP4eYqmQjXjQg/Nld7S8Z+UpQmr8wDLYVGmXgFqDIuJhfBPyLM9zsf1Vse7/pkOf/jEEeX1fA52Zujn0dy158MKRU47zcfiNCI5hTNitipgHe+TMd8YhQh7AbTIu0PkE6inegiPKBDKNAYWSoiEj3OE8kLHHN+3w==
+X-Rspamd-Queue-Id: 0B7D61C000D
+X-Stat-Signature: 19n1ao7wjouakq5twxowedk3eksau55z
+X-HE-Tag: 1763990612-688006
+X-HE-Meta: U2FsdGVkX1/Ga25Haajm2y8tga/jpTj6kWJUAlVhzQtHfNGqu1kmQRGh0Qiwfl4s5UkSMUwqaCgEOUA4JyqKxbtzpZ4OpC9OIOZJJLHC1v6bcuHWegYt1v1/8J2CwtL01qFIZlGZKyuGfqS55lbH7JRR8yoB0eGqT4c8h9zCjDdPN5iZ4/R6of7AMh305LxvFlEYRjiQ1Yu9jSOmFqZlGsm1IFu1ChMNukhrMk7o1m3rONusH8p+rpdkSZemRAlwCHj1krfJoJVg8MK+pyIVMtbyKW9SN01mS2Dmw0UL71RxwGzgWp/hV/Fo5RuDD8/lmxuvxRnWoTRZIHqDg2005P4PY3inCDmvfZwfUuoqGn9FS7LT4ZZPbNdkQp67PIlc4F8tK0Z44QHd0NNPs4VXrf2iY9BBl1C3FhmmWP+FailU4SETd6G/R2e3xu8KYJXB6y6jy0uTTd8AupyuhIH2FwRPiUDKdJi4IqXT6oAoScqtXrci49UqnSVkx5Zqkq5lXpkCOUIsJbjcsP1oooJVFX945HnZZMiM/uRT1BwLb7DBX3Ou+wVLX4ufya1sfM7u13kbmM65JIWAV0IDtmd2Au77puFL0sdP0dc4EPCPxLj2AXUuDJJQed97QXJ8hEqeEH2pLnyJ32Je1f6rJeHorAV3hZ3TMHwPde8l7e2M9MATAKxTJ4OMoXr5+roYBVFOIQoxF1g1lvvO4iHfXDskmX/qzi1VYO2LID/gpsl0oPMRrAnGmk255eI5JFMqDc/Gv8evo8rfBrB7FXemM3tfx/IrcAA60S0L31uKFNgsPAXOB2eqc52nHPn0k3ffpEs4nXmS74YLAutu0H7C7JuJqJ04bhA2pU3DGB1zkJvJn7KrQHFRQPE2ryKhsZh3B77TSWTyVhBWavLR2jb1Nkyr/l3oiClBcHDEYDcRSlfjJ9yqTTpMr5CZXYHu5U3KYI+mzVO7YovWe9jM+Rpd8wb
+ vjNubH64
+ uwq1LL0yQyAAF5SE0jrSO9Fm5ven8UEeRkXDNYuEZtevh08AxGah9EJBY/tDwrLpbaGQCM62Fsg10rPJ9nM4aSUyj5qFvd23iCTsddcAd/5aoYzkGdxALSfxrpyg+M8UrbAevRNfnC49sRTOrtAk9d7QYZcjL364UV6F4ClPhHtyb0nKhQekNjwzF6ONsQzZlQtOW03Y8ml1YiJDC9bl+Qe3cpt3zsfC33CG5tVSoDae0y4ll+Z8v3CjOC4BwRIm52UWbID8xMYpfBgXQ6LEzPpqIkd0SrXu87L1SZp82uPHhJ2/7UqbU1+Qlmw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,317 +118,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Despite recent efforts to prevent lazy_mmu sections from nesting, it
-remains difficult to ensure that it never occurs - and in fact it
-does occur on arm64 in certain situations (CONFIG_DEBUG_PAGEALLOC).
-Commit 1ef3095b1405 ("arm64/mm: Permit lazy_mmu_mode to be nested")
-made nesting tolerable on arm64, but without truly supporting it:
-the inner call to leave() disables the batching optimisation before
-the outer section ends.
+The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+mode. As a result we no longer need a TIF flag for that purpose -
+let's use the new in_lazy_mmu_mode() helper instead.
 
-This patch actually enables lazy_mmu sections to nest by tracking
-the nesting level in task_struct, in a similar fashion to e.g.
-pagefault_{enable,disable}(). This is fully handled by the generic
-lazy_mmu helpers that were recently introduced.
-
-lazy_mmu sections were not initially intended to nest, so we need to
-clarify the semantics w.r.t. the arch_*_lazy_mmu_mode() callbacks.
-This patch takes the following approach:
-
-* The outermost calls to lazy_mmu_mode_{enable,disable}() trigger
-  calls to arch_{enter,leave}_lazy_mmu_mode() - this is unchanged.
-
-* Nested calls to lazy_mmu_mode_{enable,disable}() are not forwarded
-  to the arch via arch_{enter,leave} - lazy MMU remains enabled so
-  the assumption is that these callbacks are not relevant. However,
-  existing code may rely on a call to disable() to flush any batched
-  state, regardless of nesting. arch_flush_lazy_mmu_mode() is
-  therefore called in that situation.
-
-A separate interface was recently introduced to temporarily pause
-the lazy MMU mode: lazy_mmu_mode_{pause,resume}(). pause() fully
-exits the mode *regardless of the nesting level*, and resume()
-restores the mode at the same nesting level.
-
-pause()/resume() are themselves allowed to nest, so we actually
-store two nesting levels in task_struct: enable_count and
-pause_count. A new helper in_lazy_mmu_mode() is introduced to
-determine whether we are currently in lazy MMU mode; this will be
-used in subsequent patches to replace the various ways arch's
-currently track whether the mode is enabled.
-
-In summary (enable/pause represent the values *after* the call):
-
-lazy_mmu_mode_enable()		-> arch_enter()	    enable=1 pause=0
-    lazy_mmu_mode_enable()	-> ø		    enable=2 pause=0
-	lazy_mmu_mode_pause()	-> arch_leave()     enable=2 pause=1
-	lazy_mmu_mode_resume()	-> arch_enter()     enable=2 pause=0
-    lazy_mmu_mode_disable()	-> arch_flush()     enable=1 pause=0
-lazy_mmu_mode_disable()		-> arch_leave()     enable=0 pause=0
-
-Note: in_lazy_mmu_mode() is added to <linux/sched.h> to allow arch
-headers included by <linux/pgtable.h> to use it.
+The explicit check for in_interrupt() is no longer necessary either
+as in_lazy_mmu_mode() always returns false in interrupt context.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h |  12 ----
- include/linux/mm_types_task.h    |   5 ++
- include/linux/pgtable.h          | 115 +++++++++++++++++++++++++++++--
- include/linux/sched.h            |  45 ++++++++++++
- 4 files changed, 158 insertions(+), 19 deletions(-)
+ arch/arm64/include/asm/pgtable.h     | 19 +++----------------
+ arch/arm64/include/asm/thread_info.h |  3 +--
+ 2 files changed, 4 insertions(+), 18 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index e596899f4029..a7d99dee3dc4 100644
+index a7d99dee3dc4..dd7ed653a20d 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -82,18 +82,6 @@ static inline void queue_pte_barriers(void)
+@@ -62,28 +62,16 @@ static inline void emit_pte_barriers(void)
  
- static inline void arch_enter_lazy_mmu_mode(void)
+ static inline void queue_pte_barriers(void)
  {
--	/*
--	 * lazy_mmu_mode is not supposed to permit nesting. But in practice this
--	 * does happen with CONFIG_DEBUG_PAGEALLOC, where a page allocation
--	 * inside a lazy_mmu_mode section (such as zap_pte_range()) will change
--	 * permissions on the linear map with apply_to_page_range(), which
--	 * re-enters lazy_mmu_mode. So we tolerate nesting in our
--	 * implementation. The first call to arch_leave_lazy_mmu_mode() will
--	 * flush and clear the flag such that the remainder of the work in the
--	 * outer nest behaves as if outside of lazy mmu mode. This is safe and
--	 * keeps tracking simple.
--	 */
+-	unsigned long flags;
 -
- 	set_thread_flag(TIF_LAZY_MMU);
+-	if (in_interrupt()) {
+-		emit_pte_barriers();
+-		return;
+-	}
+-
+-	flags = read_thread_flags();
+-
+-	if (flags & BIT(TIF_LAZY_MMU)) {
++	if (in_lazy_mmu_mode()) {
+ 		/* Avoid the atomic op if already set. */
+-		if (!(flags & BIT(TIF_LAZY_MMU_PENDING)))
++		if (!test_thread_flag(TIF_LAZY_MMU_PENDING))
+ 			set_thread_flag(TIF_LAZY_MMU_PENDING);
+ 	} else {
+ 		emit_pte_barriers();
+ 	}
  }
  
-diff --git a/include/linux/mm_types_task.h b/include/linux/mm_types_task.h
-index a82aa80c0ba4..11bf319d78ec 100644
---- a/include/linux/mm_types_task.h
-+++ b/include/linux/mm_types_task.h
-@@ -88,4 +88,9 @@ struct tlbflush_unmap_batch {
- #endif
- };
+-static inline void arch_enter_lazy_mmu_mode(void)
+-{
+-	set_thread_flag(TIF_LAZY_MMU);
+-}
++static inline void arch_enter_lazy_mmu_mode(void) {}
  
-+struct lazy_mmu_state {
-+	u8 enable_count;
-+	u8 pause_count;
-+};
-+
- #endif /* _LINUX_MM_TYPES_TASK_H */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8ff6fdb4b13d..24fdb6f5c2e1 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -230,39 +230,140 @@ static inline int pmd_dirty(pmd_t pmd)
-  * (In practice, for user PTE updates, the appropriate page table lock(s) are
-  * held, but for kernel PTE updates, no lock is held). The mode is disabled in
-  * interrupt context and calls to the lazy_mmu API have no effect.
-- * Nesting is not permitted.
-+ *
-+ * The lazy MMU mode is enabled for a given block of code using:
-+ *
-+ *   lazy_mmu_mode_enable();
-+ *   <code>
-+ *   lazy_mmu_mode_disable();
-+ *
-+ * Nesting is permitted: <code> may itself use an enable()/disable() pair.
-+ * A nested call to enable() has no functional effect; however disable() causes
-+ * any batched architectural state to be flushed regardless of nesting. After a
-+ * call to disable(), the caller can therefore rely on all previous page table
-+ * modifications to have taken effect, but the lazy MMU mode may still be
-+ * enabled.
-+ *
-+ * In certain cases, it may be desirable to temporarily pause the lazy MMU mode.
-+ * This can be done using:
-+ *
-+ *   lazy_mmu_mode_pause();
-+ *   <code>
-+ *   lazy_mmu_mode_resume();
-+ *
-+ * pause() ensures that the mode is exited regardless of the nesting level;
-+ * resume() re-enters the mode at the same nesting level. Any call to the
-+ * lazy_mmu_mode_* API between those two calls has no effect. In particular,
-+ * this means that pause()/resume() pairs may nest.
-+ *
-+ * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
-+ * currently enabled.
-  */
- #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
-+/**
-+ * lazy_mmu_mode_enable() - Enable the lazy MMU mode.
-+ *
-+ * Enters a new lazy MMU mode section; if the mode was not already enabled,
-+ * enables it and calls arch_enter_lazy_mmu_mode().
-+ *
-+ * Must be paired with a call to lazy_mmu_mode_disable().
-+ *
-+ * Has no effect if called:
-+ * - While paused - see lazy_mmu_mode_pause()
-+ * - In interrupt context
-+ */
- static inline void lazy_mmu_mode_enable(void)
+ static inline void arch_flush_lazy_mmu_mode(void)
  {
--	if (in_interrupt())
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
-+	if (in_interrupt() || state->pause_count > 0)
- 		return;
- 
--	arch_enter_lazy_mmu_mode();
-+	VM_WARN_ON_ONCE(state->enable_count == U8_MAX);
-+
-+	if (state->enable_count++ == 0)
-+		arch_enter_lazy_mmu_mode();
- }
- 
-+/**
-+ * lazy_mmu_mode_disable() - Disable the lazy MMU mode.
-+ *
-+ * Exits the current lazy MMU mode section. If it is the outermost section,
-+ * disables the mode and calls arch_leave_lazy_mmu_mode(). Otherwise (nested
-+ * section), calls arch_flush_lazy_mmu_mode().
-+ *
-+ * Must match a call to lazy_mmu_mode_enable().
-+ *
-+ * Has no effect if called:
-+ * - While paused - see lazy_mmu_mode_pause()
-+ * - In interrupt context
-+ */
- static inline void lazy_mmu_mode_disable(void)
+@@ -94,7 +82,6 @@ static inline void arch_flush_lazy_mmu_mode(void)
+ static inline void arch_leave_lazy_mmu_mode(void)
  {
--	if (in_interrupt())
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
-+	if (in_interrupt() || state->pause_count > 0)
- 		return;
- 
--	arch_leave_lazy_mmu_mode();
-+	VM_WARN_ON_ONCE(state->enable_count == 0);
-+
-+	if (--state->enable_count == 0)
-+		arch_leave_lazy_mmu_mode();
-+	else /* Exiting a nested section */
-+		arch_flush_lazy_mmu_mode();
-+
+ 	arch_flush_lazy_mmu_mode();
+-	clear_thread_flag(TIF_LAZY_MMU);
  }
  
-+/**
-+ * lazy_mmu_mode_pause() - Pause the lazy MMU mode.
-+ *
-+ * Pauses the lazy MMU mode; if it is currently active, disables it and calls
-+ * arch_leave_lazy_mmu_mode().
-+ *
-+ * Must be paired with a call to lazy_mmu_mode_resume(). Calls to the
-+ * lazy_mmu_mode_* API have no effect until the matching resume() call.
-+ *
-+ * Has no effect if called:
-+ * - While paused (inside another pause()/resume() pair)
-+ * - In interrupt context
-+ */
- static inline void lazy_mmu_mode_pause(void)
- {
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
- 	if (in_interrupt())
- 		return;
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+diff --git a/arch/arm64/include/asm/thread_info.h b/arch/arm64/include/asm/thread_info.h
+index f241b8601ebd..4ff8da0767d9 100644
+--- a/arch/arm64/include/asm/thread_info.h
++++ b/arch/arm64/include/asm/thread_info.h
+@@ -84,8 +84,7 @@ void arch_setup_new_exec(void);
+ #define TIF_SME_VL_INHERIT	28	/* Inherit SME vl_onexec across exec */
+ #define TIF_KERNEL_FPSTATE	29	/* Task is in a kernel mode FPSIMD section */
+ #define TIF_TSC_SIGSEGV		30	/* SIGSEGV on counter-timer access */
+-#define TIF_LAZY_MMU		31	/* Task in lazy mmu mode */
+-#define TIF_LAZY_MMU_PENDING	32	/* Ops pending for lazy mmu mode exit */
++#define TIF_LAZY_MMU_PENDING	31	/* Ops pending for lazy mmu mode exit */
  
--	arch_leave_lazy_mmu_mode();
-+	VM_WARN_ON_ONCE(state->pause_count == U8_MAX);
-+
-+	if (state->pause_count++ == 0 && state->enable_count > 0)
-+		arch_leave_lazy_mmu_mode();
- }
- 
-+/**
-+ * lazy_mmu_mode_pause() - Resume the lazy MMU mode.
-+ *
-+ * Resumes the lazy MMU mode; if it was active at the point where the matching
-+ * call to lazy_mmu_mode_pause() was made, re-enables it and calls
-+ * arch_enter_lazy_mmu_mode().
-+ *
-+ * Must match a call to lazy_mmu_mode_pause().
-+ *
-+ * Has no effect if called:
-+ * - While paused (inside another pause()/resume() pair)
-+ * - In interrupt context
-+ */
- static inline void lazy_mmu_mode_resume(void)
- {
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
- 	if (in_interrupt())
- 		return;
- 
--	arch_enter_lazy_mmu_mode();
-+	VM_WARN_ON_ONCE(state->pause_count == 0);
-+
-+	if (--state->pause_count == 0 && state->enable_count > 0)
-+		arch_enter_lazy_mmu_mode();
- }
- #else
- static inline void lazy_mmu_mode_enable(void) {}
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index b469878de25c..847e242376db 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1441,6 +1441,10 @@ struct task_struct {
- 
- 	struct page_frag		task_frag;
- 
-+#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
-+	struct lazy_mmu_state		lazy_mmu_state;
-+#endif
-+
- #ifdef CONFIG_TASK_DELAY_ACCT
- 	struct task_delay_info		*delays;
- #endif
-@@ -1724,6 +1728,47 @@ static inline char task_state_to_char(struct task_struct *tsk)
- 	return task_index_to_char(task_state_index(tsk));
- }
- 
-+#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
-+/**
-+ * __task_lazy_mmu_mode_active() - Test the lazy MMU mode state for a task.
-+ * @tsk: The task to check.
-+ *
-+ * Test whether @tsk has its lazy MMU mode state set to active (i.e. enabled
-+ * and not paused).
-+ *
-+ * This function only considers the state saved in task_struct; to test whether
-+ * current actually is in lazy MMU mode, in_lazy_mmu_mode() should be used
-+ * instead.
-+ *
-+ * This function is intended for architectures that implement the lazy MMU
-+ * mode; it must not be called from generic code.
-+ */
-+static inline bool __task_lazy_mmu_mode_active(struct task_struct *tsk)
-+{
-+	struct lazy_mmu_state *state = &tsk->lazy_mmu_state;
-+
-+	return state->enable_count > 0 && state->pause_count == 0;
-+}
-+
-+/**
-+ * in_lazy_mmu_mode() - Test whether we are currently in lazy MMU mode.
-+ *
-+ * Test whether the current context is in lazy MMU mode. This is true if both:
-+ * 1. We are not in interrupt context
-+ * 2. Lazy MMU mode is active for the current task
-+ *
-+ * This function is intended for architectures that implement the lazy MMU
-+ * mode; it must not be called from generic code.
-+ */
-+static inline bool in_lazy_mmu_mode(void)
-+{
-+	if (in_interrupt())
-+		return false;
-+
-+	return __task_lazy_mmu_mode_active(current);
-+}
-+#endif
-+
- extern struct pid *cad_pid;
- 
- /*
+ #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
+ #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
 -- 
 2.51.2
 
