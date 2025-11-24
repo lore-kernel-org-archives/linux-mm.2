@@ -4,89 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 001DBCFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:12:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00714CFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60CE36B0029; Mon, 24 Nov 2025 09:12:23 -0500 (EST)
+	id 57FED6B0029; Mon, 24 Nov 2025 09:18:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 596CC6B002B; Mon, 24 Nov 2025 09:12:23 -0500 (EST)
+	id 5306E6B002B; Mon, 24 Nov 2025 09:18:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AD136B002C; Mon, 24 Nov 2025 09:12:23 -0500 (EST)
+	id 41EBD6B002C; Mon, 24 Nov 2025 09:18:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 30EA16B0029
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:12:23 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F18D512B84
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:12:22 +0000 (UTC)
-X-FDA: 84145690524.02.E52B406
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 18F46140007
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:12:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ds+OwBMN;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DF3B6B0029
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:18:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC7204ED21
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:18:17 +0000 (UTC)
+X-FDA: 84145705434.09.5936277
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0BDCB4000F
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:18:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jwY/4Czd";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763993896; a=rsa-sha256;
+	cv=none;
+	b=v/i1A0iGD7a9p2lAxUdStuXxv20NG15iinOENt/wZcwxAZaihFo4/RitSnjngUlFc8Ymtl
+	LYmJPpGmjVsZ4eovUs5IsISUb8fvFZhmB3U6/f1pt5k0j8+QgEbzOyuGktU93xeMbwKbrv
+	JznctGnBi/GtkdYtIwf2mk3PhXOP7WY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jwY/4Czd";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763993541;
+	s=arc-20220608; t=1763993896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2xLp8kMMXDgoR0l2xfKWNkKZqzE7V4zLpt688TlFoHw=;
-	b=WJbyFqj4hBGT0YDcktnS6HX2SD1+VIKPhwdOwGhWEKlrGK7ZPpWBED5B/QMbwx6QPhuxAe
-	D7kWOrB2P1jao9uNx8sbHfqw7yWEERLhOwbd4kFWNnZymmXNcz2eKYh7aUHw6YZuGxWWUy
-	umqUKq5RsGZnXsXbj8FjJxFJ7hj9zLM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ds+OwBMN;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763993541; a=rsa-sha256;
-	cv=none;
-	b=6kwX3GiM+ky/dqAtoPLa0t0EAUn0creMHKYSM1R+8owL2tATtrUwORHXGpr5wAng8I2N3F
-	MdhgA8PdPOHn3bLyMZTjTsD1YbjiijVIa1sfONWfldcrnk/49ALZ5p9t39Q+PpWNrLortD
-	OdCaoxBIhGXTfLm5RM9Om9SXN5Ls/a0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=2xLp8kMMXDgoR0l2xfKWNkKZqzE7V4zLpt688TlFoHw=; b=Ds+OwBMNb+i7pxMGZKtgZpA21R
-	SajfQTbZDpJwwLTIDOlfgaBumLuVOJy0588kSbjR8F3LP2N1eyPONncdKVSND9JwyuzSO7mTXmQ6R
-	LbEsohiHHpd/nlXxCrJOJPnWYgGyVto322C/1SrU0ZRD2NGaZH8nDRMPqRAS7GGwH+gBUb46SpxVu
-	2sUmcLJpKXvBAJRX4A2gu5Zfg0okIVrYHAhAAASqGAvQAlThFgIwhU7klTlwTBNZ2iotuA0mSct0B
-	p5upXFt5qXD+Tm+npcJa6bu9CW/mgZDyMNc7YMz9AagwZVHPFFNQF6et68QQIYpAICDwZbCTat6LS
-	bbZIuLhA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNXIf-000000075NS-1PRu;
-	Mon, 24 Nov 2025 14:12:17 +0000
-Date: Mon, 24 Nov 2025 14:12:17 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Subject: Re: [PATCH v4 16/16] slab: Remove references to folios from
- virt_to_slab()
-Message-ID: <aSRnwXiY5cP6zs5Y@casper.infradead.org>
-References: <20251113000932.1589073-1-willy@infradead.org>
- <20251113000932.1589073-17-willy@infradead.org>
- <aSQErJNLLev2CDPa@hyeyoo>
+	bh=iIVOeLlAMzSzkUicW6ueGU9frfBx2birDEczttcvHHE=;
+	b=T9Gc1bou49iv9+ZZDYiMGbA/3Vb9+JfSlFCwkhjuo4T+rzDEyKvdhzGvVPRsbovmOoGATz
+	mSnnKEkhlP9BHLBvaFH8wULAVZclV5IobKivw9rOIR5TRd9fPGWSIS7SkZ7I4doMorqJL7
+	bKPZ1/drzZG2koxY17arrnImtz+Iu3Q=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1230D44070;
+	Mon, 24 Nov 2025 14:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C2BC4CEF1;
+	Mon, 24 Nov 2025 14:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763993894;
+	bh=a/6C0mF2h1YMNLw+DoImoO4DgoQDEX8r5mtUDpbvJqc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jwY/4CzdWYY3yql3el0w+panwPS8eTjG7NM5YCf3L3YhAsy5JwYjh7Es6LPXbY89K
+	 UzT72wJIiWxPTXvC40ejjtyyoevI1urf2RHf3q2IQUAdx3ePP+T4aUCoLSuGBW+5t9
+	 AyiGGmZu06pHbDaUwcXprsC2/AOzkRIQV4P+9nx22kKeJxYI/6ZX91Ahx+H6MJ6otw
+	 r5N1JbHHbfGXrrxqIl8Vle4agRInm92WILAzWl7GR78JqldJ+4Ahy0TaoQXDl+8qyU
+	 P/r56C1XkT4MDr3u/nrxsHIOTWIbg9bUxLNNU6+mmG6IXjp3Uu9lJEaRSB+6XeQQRZ
+	 piKMF1RKiWZwg==
+Message-ID: <53a032d0-a394-4040-ba9b-79610ec4b791@kernel.org>
+Date: Mon, 24 Nov 2025 15:18:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aSQErJNLLev2CDPa@hyeyoo>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 18F46140007
-X-Stat-Signature: ir3uc3jsbbc34rub48qgm1aine9i36dp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 12/12] x86/xen: use lazy_mmu_state when
+ context-switching
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+ <20251124132228.622678-13-kevin.brodsky@arm.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251124132228.622678-13-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0BDCB4000F
+X-Stat-Signature: 9ddbqkttmt3kzf3kj9kwcjzchsoj7xxb
 X-Rspam-User: 
-X-HE-Tag: 1763993540-977071
-X-HE-Meta: U2FsdGVkX1/cuY/6Jlkd+6PMZIIFLs/kkAI9beFXNwm6nJpqdTfIb6YYctCTFxO3LQmsfV6DujG1UpT52pwph/y4i2W5NRSNO5B47haK05V3MfePtA/iaDHL3eDUFQqx/CuQyY/Y/S2bFpcQtIX/Y9x7rUKm8yQK6PZcNzO8aUZZKHkxmaVZgTC4VDEtQ++dka+WVrsoqWQyv+0mWnXAwVrshXIwtCuc1eeTg1kDj0H8FXfQjRZzUm42vGi3zxZniJgTVJCyrBUVmhHcg1SPTmtp5IrPkIfpvibXbqwvPUdjII1wJWWUmO43KNkROYD9EYDF7RSanXzpvNjC4TpF3y5Y5FvLDnZDuBwzuQcFClw5HjDBRbeRbJh7J0WVulctEWWVdeXx51ZghufS7P2Uk9zV2YH6bJo8J1OFVI2UFuxwt3VQiqqig1Yn6gn1DM+9mxDvujyMtTcxM8gsc75gsMQzfo3NprbuA7LEjRxa2hlP616iOAp/PJ7HnyXXinj3gzaBddubV/xbyHefG1D2leSTt8XYTNcirJrxMAuwnOcFMBN75z0EuJzX+FtEFV3NtzLJVDyqxJvsRDVL/ZaHLhY/LFKLbHHPvvDu6xaNV+nbVLwuSFc5AAK3nXl5QDRx7zMw53WU/9+qKBG057WyHdc4YzNz7UNVGQ+ZjHtrkE7c8gxRcgZbDbhqrWcf+ayUfq7AwUNvLM8YMbWPDLuXYZlHyWam6ThmryDHvHNPmaaZUFzB1up1g3fo/UP6QMTfuqrsmzq6+NqW0z91vMR7JQcQYJ625D56xy7G9vzw68xIO5W5mmPWq5GVGDEDbsnQpMBeivoT1qGuFvkOwviTg2wqyoGgWGySyk42BX2zluu/KOAW+PeSvdeJSBoMIWtRurrzWKNuumbmWBflAoVk7aBuZRHCwEhP5LEk1eBt8MvVQBNcdNC5IO6J79sgNnyDgerSLHkP/K5k2MhbnSV
- BrA7ycO3
- GhdJccm6EyRIs72YlCXkmc8FX+h8SGJNM1aCny66S0KqsyVO5YR01kl2oWeSQ6flmeypNPMACXUL+px1XSRAIf3joz/cP/icnOUZnrpFGJ2hGJNFtBJHPVIdN3sme1nXa6EvRikSzs8EpkKfDKuR51wkg5bfNT8pVm7VCM0FVD/ffGy6PHWUlQ7fqgTzU+YIboo4smuNqetZJU4RXpDXeDfE9peHgrLtqmOEWfEOglht6U8IK19F4ip8Ze9YGGlJ+oGtcJ9rhAVD5g0YQdO072Ij4d2Z2aEODqxs2+/xIu0kF4EU=
+X-HE-Tag: 1763993895-421354
+X-HE-Meta: U2FsdGVkX1/XW3LLDoyEbyDHebSV9rgjn9mDqunKAPGJhLOfc3AdYX02nbttjZrfs3LBu6zlpam4yOSehNZEmMHcRkbPPc0GMfj18tAuHG3LIYiYSlWv/nHTx6SciPkWZWkoJF0KzMUDJGGWcCYkSeJi+jrxBOSmwzZGlRXIuBWvjVxyByzH/2g2LG1N+unixVMxcfVKXt84TvU+dka2DvvyVMwMtGKP5dSvtJ1oFOLgcxad2CQeXOPMyHT7RrW6agCX1x0G+GdvbMcGYOwmk5JgeChfjAOEi2XWy07FqTiXQ9THiE8MYbgRpfopPlrAGptRTWm/gYJhDVXmUINdg0+2guHmMMv8zoIAB2G3g+HddLDRAadM0wjJMHG7BHeOVp1n/H1eucp/9NYSruu6ncAfmiMSw9I157ZyGFdsWnb/x56O4UbIxznb1+gVi4vgMTw/SF8YGDPAq0+XSKhLPVOdxw7Ri5GiXvfiWPjhU7+cUI6ghNsrHW8rqDpixNVrLjrrcgYFPXL/JOXtYz/L0nyLdAg0vewbuH9GZ2tZpb9MUALUXySmIF7ysBlJZ+kRLSgfsMVeP19+/YLUw7jx//WHPywmxngZCYbj7/8RBxdenGz4Tc4yD4CQIpwS1na6AB7jApIM75euUB8+JzugJK+oj96x92CqThrPdRCO1WGkUmd5pA69g/OSECHUdD5i1YgKRnvnWFoG4NlOJE38mpmaGNDngxefYdJTuGarJjLNjoxmufyLSRkMtfvYJNjYYgvHVEM3z9N+ccozRfDg47tAE0J+boh1hTUvbNd4BzPrjqHXqOyIS1vuKddbSv9ueyJfc14HI1uGrRZeO9D2Cf1hckXncuUWtosxu3j4Th4OFPk6DRjOKOlgGdfb2UUPAwMhxk92PwqOImGxkfxCSoWXr+m5oVwy6PnXUvIPFwMRR8RvtVl9nzmd4RXvazfszm2p5KXxNpIrZ7kmz8E
+ oVYLM99w
+ /+H3IvF2Makx+eyNf8pKZVyxZq4utkwn5eLF9JAE1qhd8QIg9Jh57d5b3wmmAbxbNCL/3IpNspBE8LRNGdmZfPvp0NHChuq+1S0GRAC+vzZNRVWiecfyJrZij7ekj6zq+9W6oSiBKdEpLvjfZTKVOtnTYBoTeXWpOuyDUrDGeF2siwVcpDuWhC2fmJ51KDaBva/kcVCVbnKZQUZ8M9iJ4aUktEdkN7cjlFOu8CCyah3zQ94m2uHUdtXCVrefo2foZ2ZgpXAvEHRNDP2MBa0XVj2U8POeDgk/CO03mg5C4N0DhXygG6t0nkz4YVAxsURD5hPDLSgzG+pfzOrCbV11g/rF6b+F1pVt+tmG7MafnFpYGGo/5Heyy1NKfjS5e8XBLdnEo6BV3Sz36I8MgxjbYvzPeGOWESkBMo0RzmPuSzMr4R7LjGz0dAasG+i7x7IdS9ylB2qFJ+SC22I0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,21 +118,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 04:09:32PM +0900, Harry Yoo wrote:
-> By the way, there is one remaining code snippet that references folio in
-> alloc_from_pcs():
+On 11/24/25 14:22, Kevin Brodsky wrote:
+> We currently set a TIF flag when scheduling out a task that is in
+> lazy MMU mode, in order to restore it when the task is scheduled
+> again.
 > 
->   if (folio_nid(virt_to_folio(object)) != node)
+> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+> mode in task_struct::lazy_mmu_state. We can therefore check that
+> state when switching to the new task, instead of using a separate
+> TIF flag.
 > 
-> which won't work after separating struct slab from struct folio :)
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
 
-Oh, thank you!  This is a fairly silly thing to do today as there's
-an unnecessary use of compound_head() to go from page to folio.
-Each page knows which node it belongs to (and that's going to continue
-to be true until we get to an 8-byte struct page) so there's no need
-to do page_to_memdesc().  It'll be worth it once we do get to an 8 byte
-struct page as we'll know what kind of memdesc this is rather than
-having page_to_nid() figure it out.
+Nothing jumped at me, hoping for another pair of eyes from the XEN folks
 
-Patch soon.
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+
+-- 
+Cheers
+
+David
 
