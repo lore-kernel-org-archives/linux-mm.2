@@ -4,101 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F047FCFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 11:03:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC2FECFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 11:04:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45E0F6B0098; Mon, 24 Nov 2025 06:03:28 -0500 (EST)
+	id 439B56B0008; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435736B0099; Mon, 24 Nov 2025 06:03:28 -0500 (EST)
+	id 411D16B008C; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34B0B6B009B; Mon, 24 Nov 2025 06:03:28 -0500 (EST)
+	id 34F6A6B009B; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FCE66B0098
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:03:28 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FF346B0008
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
 Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A7CC64ECE7
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:03:27 +0000 (UTC)
-X-FDA: 84145214454.24.FC6D3AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 082341A0004
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:03:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tAXJgd8K;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763982206; a=rsa-sha256;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE82612B18
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:04:43 +0000 (UTC)
+X-FDA: 84145217646.24.EC2BCA7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CDCA1100017
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:04:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="D/l+DZ4P";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of rjones@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=rjones@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763982282; a=rsa-sha256;
 	cv=none;
-	b=GBhqOz4UvG25o57QFVnyfQ1Dq9UH4jqh6ucxBSbUkTVTXhXvni9MiROGR7LZhJohgmnwVC
-	dTWXg+lieki01FJv5bIGjWvRCQS8mj/UZnyro4l6xHTeKIn0k1l9neSbHqy6rCRLXOjwOy
-	TWhOKjr8EctVEO8Kriwx644E7ThBrUU=
+	b=EbdKs4dQnwuYswiJr6C0UBQOdkstP9DOOpoklWr1sdPXfIZsYIQONiAs6YrNvbgTomgw5z
+	2PyQfkXrUbR1PAfEHSrsZouiNF8kqkLaxjX79TppUDQThFRV7MTZSa+k4yOhFcPkISXJbq
+	QcJowmCOaINh/CJAG+tth1ZqCyWaqnI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tAXJgd8K;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="D/l+DZ4P";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of rjones@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=rjones@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763982206;
+	s=arc-20220608; t=1763982282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sy6WqMY6M1O1R0n5g1DBh8RjPYVNARXygJZgYeGGgjo=;
-	b=wGKMPL+yxppOmPK2kurugAM8UoDtGWxmVLelm5PQ20L4fZbkRR/LBTyrYPG2+azEqolMWz
-	Rv/X6UhhHxAwcGzATgvFVHLe3mYedkRcCBRXQizEDJES0hhVWtE1PzKYPGRS8CJBDwFbvo
-	IwfTv99r20HnY9nSlBDvEof+N5cIEbM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 357DE60190;
-	Mon, 24 Nov 2025 11:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E8FC4CEFB;
-	Mon, 24 Nov 2025 11:03:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763982204;
-	bh=dPX6RM/71Vh3Rg6mMUUHNMjki5uHeW9Di7AFUe06SIM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tAXJgd8KRu8Q5V9aLwauZ1k+fElq8tVU+jgRk9V8z9tI8Wt82uOnUMl4A41BAxhlH
-	 a97WXS50IpqSn9hKKdunuS4HBW2ES2f0Vv6k68wx8XxHSXmvVPAbatbuM8ocpG2k3s
-	 W78fXij3OS3qK5KaDT+OO9o+l8Csdaj/Xz161iBtcKql4r5F2AgBR/M2a25HYp1yHD
-	 b81IFqXfFkgCxXe0QBvBzGoAjRknxrnmYYbwqgP6tqBPcxW/GAuT4vGKtCGbRpmb86
-	 8p6A0ytk0HtSUfUyuLrEC3z7MWaPMnyKG8LvVPtKjJw3gd3LZCWvJj/PwioCnqL9fY
-	 mJK76Wr1oG7pQ==
-Message-ID: <a06e57ff-b77b-44fd-9b69-929d7647644b@kernel.org>
-Date: Mon, 24 Nov 2025 12:03:17 +0100
+	bh=dj4aD9OHkRc+idg8PqslDsENxuTCxgqBYCZ+pFPNN/8=;
+	b=GCOt7hgRlz0ITMJdRyt1fJq65U0JzAhRGDiDTbfSZRYh9qJOEB5KcQ5kZHnPpy1ytgH2+v
+	Xd4ONmXJO4bCoVRs8ePyDiTeGIbc4f5MxDWbknCPiViykp0uYGCFCu5eE6PJLsElZCimdW
+	cMgflup3MojLuEa2EZIHgSoFencjQkM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763982281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dj4aD9OHkRc+idg8PqslDsENxuTCxgqBYCZ+pFPNN/8=;
+	b=D/l+DZ4PLk0Px/FQnN1NwOFFpgytAMdTH4F6C4VWpmLzhCiWYeksTtni0Z4/5GgmxsM3hx
+	4s5uTxaSAJtnYz561Jss98VS800UgKtD9Hzj7Fiz+J8MPAyn+WPJtR0S3v/FhaccuLXoVg
+	q6YU63uslDc/iw3ksQPRgj+hQ+annls=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-HY_Y74OnOtiQcY1b1TE0NA-1; Mon,
+ 24 Nov 2025 06:04:35 -0500
+X-MC-Unique: HY_Y74OnOtiQcY1b1TE0NA-1
+X-Mimecast-MFC-AGG-ID: HY_Y74OnOtiQcY1b1TE0NA_1763982272
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28B741956054;
+	Mon, 24 Nov 2025 11:04:32 +0000 (UTC)
+Received: from localhost (unknown [10.45.224.26])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2E0743003761;
+	Mon, 24 Nov 2025 11:04:29 +0000 (UTC)
+Date: Mon, 24 Nov 2025 11:04:28 +0000
+From: "Richard W.M. Jones" <rjones@redhat.com>
+To: Pavel Machek <pavel@ucw.cz>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+	Eric Dumazet <edumazet@google.com>,
+	Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
+	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
+	Eric Dumazet <eric.dumazet@gmail.com>,
+	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com,
+	Mike Christie <mchristi@redhat.com>,
+	Yu Kuai <yukuai1@huaweicloud.com>, linux-block@vger.kernel.org,
+	nbd@other.debian.org
+Subject: Re: Userland used in writeback path was Re: [PATCH] nbd: restrict
+ sockets to TCP and UDP
+Message-ID: <20251124110428.GA13479@redhat.com>
+References: <20250909132243.1327024-1-edumazet@google.com>
+ <aRyzUc/WndKJBAz0@duo.ucw.cz>
+ <20251118181623.GK1427@redhat.com>
+ <aR2JjR1yKHCCPalO@duo.ucw.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] userfaultfd, shmem: use a VMA callback to handle
- UFFDIO_CONTINUE
-To: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
- <hughd@google.com>, James Houghton <jthoughton@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Nikita Kalyazin <kalyazin@amazon.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20251123102707.559422-1-rppt@kernel.org>
- <20251123102707.559422-3-rppt@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251123102707.559422-3-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aR2JjR1yKHCCPalO@duo.ucw.cz>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 082341A0004
-X-Stat-Signature: 4xxtwzsau1iwb4sdjfkae6xfk4kfye9z
-X-HE-Tag: 1763982205-92784
-X-HE-Meta: U2FsdGVkX1/Dy2FGr/u77BUbwNB9OQZAJnqVQb1vn53u+S4kF7LlbCo2wwYdWt6aTQ1KtEukvBUKXJoriOVUChUGHrLIpW2te5QvpECLiG91HKjTyz1ZNmXQAoKXTe0I+Cxh6S7bKnA4L9f2he3O4zjLgDmETj+Sxip2MPEA/TX4QAEz9ie7yLVEDQiXoHO8k7WCP66Gq/rNMVRe0diRKoHhvLfmgBUfWbe2UOSymCZNR6vWQosLlvnvS4qIKR37zMRZsRGLjcI/4n29u/SH9RF8C8gRkSWmRY8SStK/YZrVuE0Hbc8UY9jyyLpY9bCq9ZNEluf83bamuoBjZ1EErkBsc+xMgTIArMuWT6OODMWwsJKicfEwB4IYFSMZuc4kIbFsdACVxZ/PJfG4smh0+/uKBOcPYafzObBwfC7SEXgfin0SGGEu/KTmuB/RKxR8bBqsVzIMQ6PCEs0Z7OQA8ggWdwfcdc+APL9DEY1GHKxl4JleFXzn5XfMdufxPRW4pE2ySUzMlppQivx4xIx375FLBez3eDQkek0m6/YcquMRUFohDbfY6zoGmWbAbPOyspiqcScAABStjowhq1BzZf5wRwCo9aYRWKOiTFxWQtc2zpv9XBywZmaSQ0/BYkQ8sElQLa+S0dLaXyBrKT8njjGFtE9/YdHVl6JCXX2tFqvjbN+X1Y7urupi3U38ceK14Fd5QmJ9a2I5HQ2t+wbXuMtRLyeld2Oan66oZmH85vo9WUP87mI/AyUNoDMjtAdtMqBxkOtCcypu0NGRFO64Svawv1k9iiCWUpX4apaWP6Lc0+ZU79ayJ9lU75U6u/mLDomBWQc2KBggcM8Pa+GIPAAtjmChnksMQh1UL//P6R/xKVwpo3pcvQ3mwTgwzQqaEAEzM3LtqrJCyHqOFnWRLym2ZZoG8RAkDIRWiQb18W1GiUaK56xMeajT1iBLCcrE7fu/TREQ5qv+OWiorzP
- AdcAQTxV
- BUSbYSwsBvyN6vOieOj1d9MiXxP7M73hfJcxyKuS8brKEFCEgkViaBgtZon5qYvgaihUQG+oST4prwbeOLtObcND76r/5bO1svXZUQ9QyROr1iEHDUwPI239+uNfTstL5FXUa6JjJsagtnTifVsf1VrWODEvNjh51LF/avkrZrsqKFdR9ZHCCgdxvh4FVUW1UgfZMpA+YXwmi6qXzYRsNujxDbWA1tTiZ6QetJcQw3oMwrbbaJEk/Hua+US10iO2DyIwIyUg3IsSuNalNzYw0WOe85GZ7l59PZQFPiSEr+J+loV75pm9ft5wxFfySUOfcWZXOzNT+f5Ne5f0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CDCA1100017
+X-Stat-Signature: jpcnx5sufrp1ziyfz84ndmm4pw1yi8si
+X-HE-Tag: 1763982281-805182
+X-HE-Meta: U2FsdGVkX185hvXGKnlEnUeoaNWaFDUAfoRT4xVwBhlImiwgMsQHMq4wqYbfRTz+UGuZA2QjbLEO7klf2UpnttPIv+4vkCSus65TVtT7Kcci2ttOCCEY2IJc7bkwmCwrbv8TekBaY8kNNiGcxevLG0dxFl2P8ev0lL0ZSRbcX26IwBQtoddomf/HLF++WfpuIK8MGZExoM4iRB+2qjGjvgwvnDQvbDU2kIo6sZxAQgxOasMS7y7Yq2AYbyzISPOHfcnYVXlrmpJUd5hgBarLuZD3zQDj+KAiqeErm4j9SQYtW13ainiFlG84GrWqAxsSNV1tnlzSIMeXdta6POzn6FcaZeTnWtGqjHdyo5Mx9NS5Bsed0nCGypOprTyUpKWwsSSqCVb3IJdbBQMbQ2BAOGy71KTwJBd5u501Hye8FHufzy1Rqni8sqJobrht6ARxPk9oE+EQiFst73QZjdFYAWKpF1CN/bbk4UQkZot/X9GF/SrIUn5+65dhDYK1OjTBB3WYp6Ye4cjT7TpyDngefO/Rb4NLdWtFNg+3qEMBRPqlVRqgu6r6NNGh0J+Rr85YmPQksKZxyOHN7F0Dv9YJGaFOF3L/q5GBRI56cRj5UYOCmeXhMH/8aJbgs2x1CpIbYp6IJ1eoVrK1B5FtnVAP+hcQm1XkcTfXpoZZbhtLVABRcTkKnTiEB2yUTdUDsc6gEHEoUFa6sHm1B0wFxhprN+es1VjuBF23Lbn1s82jykbDvuaCQHpZu5fwcs0h5Yk6psd6PwvL9C4pw1KUBmzj1rD1lKWNdh/8iF6TY0xtb03qkwozSdoekVyKdnze6MNFnAUPx6D8rWNPCjwjqsawLZqpCbxMI1CS6wyq2Km7ZNlduCglDE/S9EBIf4wQpa6/vIsvynk78Td6YgEtsgroYK4/q5rebwUPcn/dnI2pJPTmWPsYt1Hi2oeCrvWVguB48mApLdwkhjelo8VwMNY
+ kTKV7Efi
+ Hx8qXOI6Avpt0TCy90jmVyz7K3OhXiLjyeyddA9Aa1/wYV2KA87S0uDieAQduISZew7htOysCwI2EVcRzqH7cx8HG8VFgbQakiHI8F8ftgZ+c5Gk1fCjW9BtY3Y9EtV8ruldo+fUrbmxjV8KBpdPollLcRU6VAKpYn4nJGME9Oq7NQ78YzPGnhP01oXYA+JNJVoMg5gB1yBs3mdLVwRSdk/YlRatsdwE55XK0dcJIp8bShPhPIuPC13qQ+PG2mNfacX5LDg08SXI/gSiPVHcKdWgFal9tmRcyL+9dg8lIgO6xR4nLDgmNZLx+3PfujWjKbtBN3whyAR1EyXLploLRGFLcy8uGHkysaCCQHL+BdZ2IJI1ZXZkY4iUcCl994xVr+vLs+1i+ADtj5u32KScTiaY82yKptWVwvBHzSWaUCHv3fDgu6AMEiKhEo96NWgakecZAOqDorCpExurjn2TfA1+yr0rqx6WKVTidnXOhUD/vRSHF1+tzxIbGM89cjO89kiKWGjnatlX/OGVaOjWXkK634u7XrooHhxZ5nKvDcdteT6qThX16AHnFey/MWkuYVN8l
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,35 +116,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/23/25 11:27, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Wed, Nov 19, 2025 at 10:10:37AM +0100, Pavel Machek wrote:
+> On Tue 2025-11-18 18:16:23, Richard W.M. Jones wrote:
+> > On Tue, Nov 18, 2025 at 06:56:33PM +0100, Pavel Machek wrote:
+> > > Hi!
+> > > 
+> > > > Recently, syzbot started to abuse NBD with all kinds of sockets.
+> > > > 
+> > > > Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
+> > > > made sure the socket supported a shutdown() method.
+> > > > 
+> > > > Explicitely accept TCP and UNIX stream sockets.
+> > > 
+> > > Note that running nbd server and client on same machine is not safe in
+> > > read-write mode. It may deadlock under low memory conditions.
+> > > 
+> > > Thus I'm not sure if we should accept UNIX sockets.
+> > 
+> > Both nbd-client and nbdkit have modes where they can mlock themselves
+> > into RAM.
 > 
-> When userspace resolves a page fault in a shmem VMA with UFFDIO_CONTINUE
-> it needs to get a folio that already exists in the pagecache backing
-> that VMA.
+> kernel needs memory. It issues write-back to get some.
+> nbd-client does syscall. Maybe writing to storage?
+> That syscall does kmalloc().
+> That kmalloc now needs something like PF_MEMALLOC flag.
 > 
-> Instead of using shmem_get_folio() for that, add a get_pagecache_folio()
+> mlock() is not enough.
 
-get_shared_folio()
+There are loads of use cases for NBD over a Unix domain socket that
+have nothing to do with storage.  nbdkit supports all sorts of purely
+virtual and remote devices.
 
-Given that the helper now no longer receives a VMA, I assume we can just 
-really call it get_folio() and the "shared" part would be implicit. 
-(from the inode)
+Practically, we use this feature successfully all the time without any
+issues, so we'd appreciate it not being broken over some very
+theoretical concern that you haven't even been able to demonstrate in
+a test case.
 
-> method to 'struct vm_operations_struct' that will return a folio if it
-> exists in the VMA's pagecache at given pgoff.
-> 
-> Implement get_pagecache_folio() method for shmem and slightly refactor
-> userfaultfd's mfill_atomic() and mfill_atomic_pte_continue() to support
-> this new API.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-
-Nothing else jumped at me :)
+Rich.
 
 -- 
-Cheers
+Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+Read my programming and virtualization blog: http://rwmj.wordpress.com
+virt-p2v converts physical machines to virtual machines.  Boot with a
+live CD or over the network (PXE) and turn machines into KVM guests.
+http://libguestfs.org/virt-v2v
 
-David
 
