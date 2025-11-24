@@ -4,115 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D662CFD356
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 20:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18452CFD355
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 20:44:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D5A26B0093; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
+	id 6BEE96B0011; Mon, 24 Nov 2025 15:44:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AD466B0095; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
+	id 6967E6B0024; Mon, 24 Nov 2025 15:44:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C30A6B009D; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
+	id 5D3006B0095; Mon, 24 Nov 2025 15:44:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 691B46B0093
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:39:04 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4D30130A6A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:39:01 +0000 (UTC)
-X-FDA: 84146664882.10.ED733BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F1CD310000E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:38:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=evZkZ5Us;
-	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CCEA6B0011
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:44:18 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82F291605A5
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:44:15 +0000 (UTC)
+X-FDA: 84146678070.12.3E602C6
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9DDC61C0012
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:44:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=c1PbeZxY;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764016740;
+	s=arc-20220608; t=1764017053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xF2KQDlHr/Ur1xWmQRwefTmJhLRhuQUIbwSk3r7yzZE=;
-	b=lJ6197i32xwcji+pAjVs43I46fB3vnGTOVxDYri8CIdDfn0krnXVjvft+hG8U/c6pqy1hR
-	qrHweUDbe6ymHsCwoUrN/HQ6kxg/Pzv2CK/KFAhFyOkqsfKETamnK4Ik3xRqogKodO8xb8
-	wb5gbZ7RP2lBPTtkSsA8hTFlHdH5NiM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=evZkZ5Us;
-	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764016740; a=rsa-sha256;
+	bh=BBE6LeQp/9dxs9+8oqbQWSo19CZnncAHHP/erXGXDYE=;
+	b=7Cbd1b7du/2N48Xap6GNd4MM6PVdseypyc7eoZ7z+KaJnfdyALhOhS2qYeIGWmnJUiOElU
+	cNHzFZGcunp0zpVoql3U/cjkwGvQLIwcgW7Y7YyU5Q3Ynm3bRURpvhnjcKtUn6G89oSbfo
+	w0EaBfMq0VdKwArZ2+i0VbmJwTRRvdA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764017053; a=rsa-sha256;
 	cv=none;
-	b=zE6rcGWxZqrhcU02ljB3jriKP0P+bFIDxDkc0Q1kpDF+5yqYpDYSGOPdFITA9SgVM+7oKk
-	B7HSCwHRsMes8Kf8PQhgVjnPxv60806GysLF/Z2gMtKb/CoLzjjgpn/9JFOaFPiLM6XLtk
-	C/8ZWFjk9i7SUP2h3KLawnEjuhkVwcw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC2A14016B;
-	Mon, 24 Nov 2025 20:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8EBC4CEF1;
-	Mon, 24 Nov 2025 20:38:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764016738;
-	bh=JLdIJ7QZP3U00BhhJOkbi1WT14KAskMlSFeurQ7aMlg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=evZkZ5UskrSLOHY1/mNMNWBXcNJsOx/pv8d25Cq5RbPbYFU+mewNWmC4bIco+jJ4w
-	 yzzy0LoaIeOAP3NdBCrb6CiIFZRtSQu3gkC8dlLBksOtGyoPGpLel4GpJBhQjoZMM5
-	 kmwhK7dZueujrAMnNGDV2VKcaEdYEWJ5MfLT1CQhbfL+0QUM2dRF4jur40/ZFOp9sO
-	 dLpkAp8Vkk5OnKyuaIbMjwlXDEo1yDdarWroTIOTqsFrFXaQBpicKQLLWJm04gHgR2
-	 gHUC3FJqEIWa74F6D+HX775twAOiLFzrPXDfaWPtbpUvggCxxszPeBXAFANkjviinZ
-	 5f5828/aSw2VQ==
-Date: Mon, 24 Nov 2025 12:38:57 -0800
-From: Kees Cook <kees@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Marco Elver <elver@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Alexander Potapenko <glider@google.com>,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-doc@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
-Message-ID: <202511241119.C547DEF80@keescook>
-References: <20251122014258.do.018-kees@kernel.org>
- <20251122014304.3417954-2-kees@kernel.org>
- <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+	b=rG+jjHgnse2xKGXHpOk57TCTKpWk30y/bf61v41XrC2w6YtoJb2k5rN3LBL1t4zVLXUiMA
+	ITCcbwYL7Hg2JMyWS4VWzQJWOBLCWUCyZJ/O+ME2OUL/31vIE/P9Emm3GpCL24PcxULn6L
+	rfsKtGUyBYPpHMYJEbBYRaMeBpRogFM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=c1PbeZxY;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-641677916b5so7083510a12.0
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:44:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1764017052; x=1764621852; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BBE6LeQp/9dxs9+8oqbQWSo19CZnncAHHP/erXGXDYE=;
+        b=c1PbeZxYCbcXcTHxTERWNbYN29Kwxva6xoHjRQpMXbbWx4HpuMi90n83Fu3u3mvO/1
+         DJRi+39bWzptsgJL5SYfUFie9+Z10x/PllMJulb2WRbgpx/jMp2yXQI7YRJnudsXsf7B
+         NKJxB/Qu3dgiXe6Jra09+ouGR2uT19d0BviBrH1xih8U4myAot8peyEagHMPxMvEhNfK
+         JaontJ35lkmz4rRptTnHSQqPmuyPTyz4wWPOQCxiEzqkUmFW4QEsqRUknPjizY6OCaPE
+         UTn/35NCsBRQPPXLRrCnS8c/HrJ7EWkAXc6GsWM4yHN9okbUeD5wLEejLCY4gEhns+Wm
+         Fl9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764017052; x=1764621852;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BBE6LeQp/9dxs9+8oqbQWSo19CZnncAHHP/erXGXDYE=;
+        b=KafkQn7RYMgXevfAXtGz9i6UBrQdMUMwsc1MznQ1gIYfxSsZs43FB7q2ok1BYRWkLp
+         z2qe/KIiu8A6/wUhnNwzYuwXiYtVceTHQEi5HRDxWLvpSkV+xxRWKevp+CdBv0/KCT3O
+         lLM3cSHRMIhjYCbHX/mvNfOF9uwtJAHeKM2x1DMtGJxxzsqHZpJQtJWxdtSG4appJiH1
+         XnkAfBSub0WquSVHRlaQSeFzkv3brus2dUNJuDf1wxX6Muq2d+bmLesofFeTGER7SiOY
+         dAOXayWOsIdpXID9KQmvNH0wZY71vHywtNN39K9tJEUjrt0BtKKgMYTGQzKFlJk0CDO/
+         kb4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVMnAsDCfNt9M2Ctao0N0za6FghQOp/5mFjz8fPdg/hXxPbGjc/Y0dQiTk3sxraAt/IHcPVSLcYZg==@kvack.org
+X-Gm-Message-State: AOJu0YwIV6sF/ZDPgtB5Yr65X+d3EERW1B1tC9aN6t0Ay2JkhEYBJLHB
+	Bu2mN8GQf3lbxp3Kl1MnYT+TIq+nnxQLUki82XZP3pG5QUAQ/oEl+xEmtEmX1VKNJsi/lCCN/cp
+	zj7zoJiZGB/9MMAwqyAn6rkExG84fVYvt8l7RPtr0Ug==
+X-Gm-Gg: ASbGncsH3zUyHC+j46BhXVwtJma+c7LioClO4PL0Z0KhXQLCaquktlpXyju1+kkKa7M
+	RyWKLy82uxHXUkRKu5zVxvSdWen6zZNFJGEr/bnW4xjzZaW8HL9wPKUQuEmthO+TijZx938aO0W
+	+W/p7Hke24UlXFzFdgacZ7wHigELUPKbezAgRYRuSPspTJMT3jk+Ey0HGCMZLCQPt4QU42IRgHY
+	DnfhfQW3F2u3Aup7IdFtZ//q7QFXWNkOnVdBFsFFzRqjDWuOq+ci5RVUPyguY4V0Nih6nlBLUr/
+	hpk=
+X-Google-Smtp-Source: AGHT+IGhvW1zbxphQtXzCMtZtUK6gJJpF4SpaRUxkwNlXNg4phdSf38kNJPBHFGIc5NhOi7Yie2O+dbmmBf+QzpJ1eA=
+X-Received: by 2002:a05:6402:35d0:b0:640:6653:65c1 with SMTP id
+ 4fb4d7f45d1cf-64554322775mr12262864a12.5.1764017051792; Mon, 24 Nov 2025
+ 12:44:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F1CD310000E
-X-Stat-Signature: kwu37ku71346zare3hdgpudi8wrs1ewz
+References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
+ <20251122222351.1059049-2-pasha.tatashin@soleen.com> <aSLsCxLhrnyUlcy4@kernel.org>
+ <CA+CK2bCN7x=eMwfTXF-2+vR=Gn3=41z6Xxx6wM1m7i-rxzug9w@mail.gmail.com> <aSPoIw2keoueM2q8@kernel.org>
+In-Reply-To: <aSPoIw2keoueM2q8@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Mon, 24 Nov 2025 15:43:34 -0500
+X-Gm-Features: AWmQ_bl-mLHs5xZHjLqaNQo3tDZr-xY0sDzlZu79iSrnbtwX9ynUfgq6sBNqNvg
+Message-ID: <CA+CK2bDqaVV9=gQUQr81euOJCN2d2vJGH+9fZw-Vcymuff3KdA@mail.gmail.com>
+Subject: Re: [PATCH v7 01/22] liveupdate: luo_core: Live Update Orchestrator
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9DDC61C0012
+X-Stat-Signature: iaxhfg75cnsgkihwjrkksk5zhsimsfum
 X-Rspam-User: 
-X-HE-Tag: 1764016739-267442
-X-HE-Meta: U2FsdGVkX18t468DiawJCLhkxleZnorLqiRu/SkFfjEt9gondEaOeLCZMY9773bo0WmvLRZinlkuZpibeeRKtq2FeKvYgwiuQkW6BEPXvh9BmDhi4CcDNNuRP0e8yNlorWZAmQBuOoS2kF9EkMZDlCTEG2GvmjgWhGrenJkwy+vevD5ij310N+tjQdZ6frP4Z0P6Ov93mk2UklTOQDlpOEfYX53SZ793YxZn/zDdhVu+P3FIXb3qmcfzXmh7bgRi/7Is791SjCqPQpmAeeTnaC6Ozz82HDWTcMNxca4bL9aQSraN6vu6XgRrpC8nAW2Wscc6wQ2NjXO4pUN6bnBcPCc9B/MAxm2ZJ9QmBXb5GTyJHSfhL7nsq6tGFw185aBHJSop8szjj0UXhnQORemBCIE6RnsM8BLVwfqo0frR6ikzzvHz+do7uQkkvFscAbH9Syu3ERVYMaAH/7m6fQjFkg+uQ51ZIUdr3Zwgtc1dFZzVhQaI1iljkBvPxZTlUpG9/itM1DMR13klTX2lo4UhMsqUe/Ggnj+3jHnHx8z09ZIti9RPqW9SN8BdKuoU4QeWascrHIqQ5tistLdvebS96kvNAE7SQGyeD5txlgaWwB5l5KJdqYPcFdn/9WG9/UdKEp81yqmTlHY1cfG+qST3yWfY0BFyHMA/pL3YzhnrGpqEHVWMbnnUhP8xSU8IBbDtZdCkkls/EZtxiivz/1OtOXYVD7tQw1ovbYqjsm/Agv18R23gRDuf/env8RMk9AWQ40W7AWzfvy7PuhxgqEzM1r8fTQYx9d/CQGynEl8Ob/tcdsRvwWzTlmzrzA5q9DG5fpz21CIIH2UARxad0ndK7jjcQ7PAL16S56yXdnwpFGvgJugg/Hpe1vGOnAI3WhFEo21DylX9CSZAnT09/zpDCUED0LGkD+Ef92HnvByrhDfEe8F0A6+0ae8arda2Zky8/3MpeTP8ttv+cj4Rdm4
- X0tc4m/a
- tFhABZ6DhoCi4THbaLeXklofM2eDDcdYO1123aU+sO4XuDPTwkBYCvWa8sHZEyUz+2hmzjwOQJTQIOzHboQ+DBrkt4PNQAcHCisstqos7ZRUWFrpZhllpdRyLU8/xhthpLICTDTAIgJhELCqL+CpoAnWY6YEpnicQ+kMHJjhIlsjqbS2AuShMPI/Vhx8nKY4jktuMEoGHR849JyTlO6osSoQs6mO7kV8Lb9l5zVDzZ0xpjxPhdRQ/FzE2vkUWoFP9q1uX2LveM2zkbgXsivMHgyjZF26h8bYbhyWmUtplVzzNoUwns2FChSxj1xAyUeBJ8EqdQD4E9rlY3ngusRnGU6lOcwiZiV0Obd4NZ1+UinzBDRQcxvVeh1ahj8FpwDVyQxG29iQP72lRCYUo90zFtc3pcDD6q6QDvNqGQA3onjY7bRzY/Zr9y9xAU0ni70e/6G5U
+X-HE-Tag: 1764017053-757232
+X-HE-Meta: U2FsdGVkX19JD/FAZLntvvNhO2wifqwshKSRKFcgeIPdH40/IbcKav/LZa93ajWFqZTVyC2Qmmaj7x06IAZrQC/8nRwDaC1Sym4+Xc1i72s6yPkL4prtGXuuTgbAIcMLjnldXiNIiylgT7m2raA0QwRhYpR8huOUEC8r0xKiBSimvRA1bFideiVOnggQ1vAmfClHmoYbJcemni60xeKVcEfOjfMB6ORQ9/cBibh5cJyjhN+tyg8ThUEYzFSesNw4ZVmYn2KsCymcgpwmhgdt20FS2Q0/2FA8Z6y8ZqZ7rj9i17RcK8wU8BIg3CTIxI7qwAqlVteyxSetufvRyJhYy+hzKORGRhb66Qvvp8JCqByffHxvxSYLoE3lskvX4v8w//ljcIu4c8jGZiyRjlwjgASLpDovU4o6UIcfxSdhvujjcXI5LGXmkEAsLvjUUHvpPY48/7MsH+7LMEOIg/nU7Caf3g3Rlp6txg4LBRWfiew/wwcnZ05KIWVuB+ZW3vWLZW7AJ+AI3gZ6h3FeNYlbhtZXd2RVYuSW9PUopxPw7rMYEi7pUBxGS1ANWIt2LTxF+2fOVzK75Z26v6MX8QngFoe0UF/zdl2Qe+j7xNb9IFVLsFR6nqeWzylJXn9F+03C88Mb7j+HwYtfSyqknT2Pp3D/dXPTNhNtf3A7Z90L68y0l8aPQsxr0P9AS43z+z+awVJPrqRrikARc6AT3w5JJxu2eqNwIQvQWRy/w6T8mFVXq8UoppL4ej5zfm8Lw+PB8LrnQS+0duOy1tbDuArOAJRb+G/EL9Mh8ngdhQSG04PD/LX2CJLyFQpRjhNVm/qVYInQTsIXUovwXu5JKQjELrhhyojta/KXFYiQD4iQbpBnjSURL+tpO0p4feO3Z2aMhg71DIGBBxIofW1mhGQO3ymyYH+tK0IBh+IxBGPUmYoXsiibJ8R1WIjlZgmJrF4oo4/+3ohRcnWwnqu8/Kq
+ +uitglke
+ mURSITsspC7aNPT9Hn0jj8e7CDMqDQnPC5SrbLJNuDcWelB5Zo/xTA/rN/RWGoNBDWnTBmXz/6JzDFq/WgWaexbdbKF5VT+Yqktawpykfo1TGsO85jrzZ9gUd5QDhnMyBSFaNAOyit4h8vj9d1qtAlEwXgwUfhYN4/w046OJCaUk679JvBb4Zwr8rcDl/D/aCq3xObBMfnnFBeFjkb91S4vnjU/ejWOfJWkZgBgrNG1PWQX9sw+qGlOHCqLyMhCJGhPny37UNZM+Q1yMlhyXHPud3xrLtSupB7/QWfnHUYQsH4n36fV2UxdQCsg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,172 +138,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I extracted -- from your kind and loving feedback :) -- a number of
-specific concerns you seem to have about this proposal:
-
-- You don't like the additional ..._sz set of helpers.
-- Alignment isn't taken into account.
-- You found the ...set_flex_counter() usage unreadable.
-
-To me, it seems like the primary issue with this patch is that it
-probably needs to be at least 2 patches if not more, where we can
-iterate on each aspect.
-
-The area of _agreement_, I think, is that type-based allocation is
-a good idea. You even recently used it as an example in an unrelated
-thread[1] discussing variable declarations in the middle of functions,
-and used (a form of) this API proposal, which I whole-heartedly agree
-with. i.e. that once we have type-based allocators, we can do things like:
-
-  __auto_type var = alloc_obj(struct whatever, gfp);
-
-So, taking each issue in turn...
-
-On Sat, Nov 22, 2025 at 11:53:33AM -0800, Linus Torvalds wrote:
-> In particular, I intensely dislike that horrendous 'SIZE' parameter to
-> those helper macros
-> [...]
-> The argument for that horror is also just silly:
+> > Sure, or I can remove all of them from Kconfig, whatever you prefer :-)
 >
-> On Fri, 21 Nov 2025 at 17:43, Kees Cook <kees@kernel.org> wrote:
-> >
-> > These each return the newly allocated pointer to the type (which may be
-> > NULL on failure). For cases where the total size of the allocation is
-> > needed, the kmalloc_obj_sz(), kmalloc_objs_sz(), and kmalloc_flex_sz()
-> > family of macros can be used. For example:
-> >
-> >         size = struct_size(ptr, flex_member, count);
-> >         ptr = kmalloc(size, gfp);
-> >
-> > becomes:
-> >
-> >         ptr = kmalloc_flex_sz(*ptr, flex_member, count, gfp, &size);
-> 
-> That thing is ACTIVELY WORSE than the code it replaces.
-> 
-> One of them makes sense and is legible toi a normal human.
-> 
-> The other does not.
-> 
-> The alleged advantage is apparently that you can do it on one line,
-> but when that one line is just horrible garbage, that is not an
-> advantyage at all.
-> 
-> And the impact of that crazy SIZE on the macro expansions makes the
-> whole thing entirely illegible.
-> 
-> I will not merge anything this broken.
-> 
-> The whole "limit to pre-defined size" argument is also just crazy,
-> because now the SIZE parameter suddenly gets a second meaning. EVEN
-> WORSE.
+> Quick grepping shows that the vast majority of Kconfigs does not have
+> copyright, let's just drop it.
 
-(Size calculation)
-
-The benefit is not that it is done in one line, but rather than the size
-calculations (which there is no exception handling for) gets built into
-the allocation so that wrapping and truncations get communicated back
-to the caller in the only way we have available: returning NULL from
-the allocation.
-
-I'm not sure what you mean by "limit to pre-defined size". There's no
-such design in those helpers, except from the perspective of "detect
-and refuse to truncate overflows into too-small storage". Is that what
-you meant?
-
-The persistent problem we have over and over in Linux is the lack of
-feedback from overflowed arithmetic. This is being worked on[2] at the
-same time, but I'm trying to find a way that we can get at "normal"
-error handling, since just exploding if an overflow happens isn't a very
-friendly way to deal with such conditions, but C doesn't give us much to
-work with. If it's _part_ of the allocation, though, we have a natural
-way to say "but you can't store 1024 into a u8".
-
-For code like:
-
-	u8 size;
-	...
-	size = struct_size(ptr, flex_member, count);
-	ptr = kmalloc(size, gfp);
-
-While struct_size() is designed to deal with overflows beyond SIZE_MAX,
-it can't do anything about truncation of its return value since it has
-no visibility into the lvalue type. So this code pattern happily
-truncates, allocates too little memory, and then usually does stuff like
-runs a for-loop based on "count" instead of "size" and walks right off
-the end of the heap allocation, clobbering whatever follows it.
-
-If we have a clean way to build the size into the allocation, then we
-can report back a NULL allocation when something goes wrong with the
-calculation or the storage of the calculation.
-
-Now, an alternative could be to keep the allocation and the size reporting
-separate with some kind of __must_check "give me the size of this thing"
-function, but I don't really like this because it feels much less
-ergonomic to me:
-
-	u8 size;
-	...
-	__auto_type ptr = kmalloc_flex(struct whatever, counter, count, gfp);
-	if (flex_size(ptr, counter, &size)) {
-		kfree(ptr);
-		return -EINVAL;
-	}
-
-> [...]
-> Because once you give that "alloc_obj()" an actual type, it should
-> take the alignment of the type into account too.
-
-(Alignment)
-
-Sure, but that's the whole point of trying to switch to type-based
-allocation: so that we CAN get at the alignment. That would be a "next
-step" approach in my mind, since we could bucketize allocations by type
-(or alignment), instead of by size. But that's more of a follow-on, in
-my opinion. I'd like to get some agreement on the exposed interface for
-this API first, and then move to enhancing the internals to take
-advantage of the new information.
-
-> I also think this part:
-> 
-> +       typeof(VAR) *__obj_ptr = NULL;                                  \
-> +       if (!WARN_ON_ONCE(!__can_set_flex_counter(__obj_ptr->FAM, __count)) && \
-> 
-> absolutely needs to die.  You just set __obj_ptr to NULL, and then you
-> use __obj_ptr->FAM. Now, it so happens that __can_set_flex_counter()
-> only cares about the *type*, but dammit, this kind of code sequence is
-> simply not acceptable, and it needs to make that *explicit* by using
-> sane syntax like perhaps just spelling that out, using VAR, not that
-> NULL value.
-> 
-> IOW. making it use something like "typeof(VAR.FAM)" might work. Not
-> that crazy garbage.
-
-(set_flex_counter)
-
-I get your objection. We have other places where we do "((TYPE *)NULL)->member"
-explicitly to get at types, but I see what you mean that is feels very
-wrong to see the "->" after setting something to NULL in that it's
-separated from the NULL-ness.
-
-One of the reasons for using __obj_ptr was because "VAR" may be a type
-and not a variable, so "VAR.FAM" isn't possible. Doing it the following
-way seemed uglier to me than using __obj_ptr->FAM:
-
-	if (!WARN_ON_ONCE(!__can_set_flex_counter(((typeof(VAR) *)NULL)->FAM, __count)) &&
-
-since we literally already have "((typeof(VAR) *)NULL)" with __obj_ptr.
-
-But perhaps much of this could be collapsed into the
-__can_set_flex_counter() helper instead.
-
-What do you think?
-
--Kees
-
-[1] https://lore.kernel.org/all/CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com/
-[2] https://github.com/llvm/llvm-project/pull/148914
-
--- 
-Kees Cook
+Done
 
