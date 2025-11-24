@@ -4,118 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81972CFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 11:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DA10CFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 11:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA7D36B0026; Mon, 24 Nov 2025 06:23:48 -0500 (EST)
+	id 6BD696B0026; Mon, 24 Nov 2025 06:47:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7E836B009E; Mon, 24 Nov 2025 06:23:48 -0500 (EST)
+	id 66DAC6B0029; Mon, 24 Nov 2025 06:47:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB1D6B009F; Mon, 24 Nov 2025 06:23:48 -0500 (EST)
+	id 55C406B002C; Mon, 24 Nov 2025 06:47:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ABFD96B0026
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:23:48 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DB616B0026
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:47:09 -0500 (EST)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD4BA58615
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:23:45 +0000 (UTC)
-X-FDA: 84145265610.22.D159B15
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 06CE0C0002
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:23:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Poa1wR6e;
-	spf=pass (imf10.hostedemail.com: domain of smostafa@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E121388250
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:47:08 +0000 (UTC)
+X-FDA: 84145324536.22.E67CC86
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B0BB440005
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:47:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763984827; a=rsa-sha256;
+	cv=none;
+	b=4TRSiVT1oQIU6nJKfl+WeX1HKPAbqz6lL2ukNahPQC8vU8O5u4RKiMfWpvaCimZxpP/jSR
+	I/JZcg1DQPxK5OEHPwtKi9AAFepXFZ8SDwkbkmVTmVqO8er+GaWbcCoz1ot2kOctCj/qt6
+	6s7oTcsmNRAFDew4wreYkPRd3zG1zfM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763983424;
+	s=arc-20220608; t=1763984827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A/9qmpcn6sF8ptPObBDBMptCfIXtJ3l0IrBw1r6Q5lI=;
-	b=4tLI8leLS4/f1Oo49Z/ICF6fGqdFkQiSzSZpDLmaRWr0K0zAHe2GFGqSEPECBgojcZHaC1
-	Kv16wOAIbmf+zw9nGztwmdmUGjpW7SZ1mX4kBAX277FJpvxnj0F2EXxjGdReswAhaePy0R
-	iod6tp5Yo8+FI6FRKyH5CZ/7/EjRsXc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Poa1wR6e;
-	spf=pass (imf10.hostedemail.com: domain of smostafa@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763983424; a=rsa-sha256;
-	cv=none;
-	b=k7GGn4uO2/+xFG0IIKVPuNU7YNDbmYYmNOyd7T2Izu15bEdZjDUNcGtEVPc7bPzHRkXoKA
-	TklciCF0sKiaejoQsDTCtcFwJUO13Cwj+LbEr2m9DxgD6WZKg5nuaECRwUjoIan8mbiRL3
-	ce8uzmPKe84OZpk++enPf7bMnFA9U4g=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4779e2ac121so95075e9.1
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 03:23:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763983422; x=1764588222; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A/9qmpcn6sF8ptPObBDBMptCfIXtJ3l0IrBw1r6Q5lI=;
-        b=Poa1wR6e1xhEp4eorXhJpcaTdgIyEN9YWUUaOv+QqrGJFDDZZoiSTQ0Nh5sWvtZ5Rc
-         jScCwyalQHs+MNwkYkOhDOTafgUFGLkyryxOikXc6OIhOBlDav0T+X2pSsk9v1ysCAD5
-         AXRaZIo7kjFETT3CNwuK+FIH2WrGQnQ1eFI8myBt/1u/Y5Ndh2+PE0Cx/0i2NU5+LiWP
-         z7oxl5XkQfbuiLToRQRNX+5hQ7oW4PeGq3WaM7MgS5tWqJ67m/cE+6SUM94YKVLZE+BL
-         71PIkO/Vc01DNASD8XciQpHkOpuCtXlFjdpv612X5gRr5TAqtk0h7NqkI8LaPxPSB0Km
-         FTQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763983422; x=1764588222;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A/9qmpcn6sF8ptPObBDBMptCfIXtJ3l0IrBw1r6Q5lI=;
-        b=i3LP3fUxCImHLvcxXtB060LwNP9cYPRsMSmBxisDFOaeY4QbS+V8FZzbOmv/eksMgT
-         k5+RSrBsiFy8Em138IVJEULYQz2icMhMURS7y0ym32QwU4bzC6S02Y3rQKI7mDEaGV4Q
-         6Nbi23v7mxt4woap79GWfirp1TulIL73ep3qjaKp5uO3L3yNl3sBjEC10WqaLelP1Q51
-         trk4pLqqTR96Cef8UWa53J2tWFZgil50vYfpHFs1AJEup4Hr67Ynhug7V4vV/8dfy+7b
-         7061NB5+vGTgfcVUX8RZP11H3zf+/GX4gyklRPDdaCJ865k89xoyfzZt97jA8JRbgwou
-         aB1w==
-X-Gm-Message-State: AOJu0YyDCc8IYGnK37R/Tjsl5sUcHouwoBB+tk939BWBY2D0xO0iSLKv
-	4spHgT1O8MQBr62mTj3VwZBU38UHGbAyE2MPmavsxHCxlH5JX4AUR/aZBx8sPq0BYQ==
-X-Gm-Gg: ASbGnct49QoPR7NzKQeOVgb5vEYS+83fS0tvI7S6eVqKpssPCtUrJIyeDY7SXDSVqk2
-	I/xgZEx9glsCGhY7aNdKkgOoVT5xJfQg6WYDMNCbkf73BsHm7H0qccm36Gwv0hD/uesO0l7eZyW
-	2LsLf3J//uhBuPEyPHlXp0Rsyr8ie33pVOHbvo1mfQawKtMC0I17npyPDnirv/od6hR+EiMuEaf
-	5p/qA5Ch3MpF0fMel8KzzBfTkYWCa5QRCyLFZjS3uMDOMfFMO6O3nlzrKxpdJSo+VCIRLK27L8P
-	PHiN04GjkiClBlxpc5vs106RymJtRs8n34CYS2Z/1riXF6RAd3d1xIQqzTMnUFMgZy0f8nS+FMq
-	nDg8/skYCljxv93KCFEKSV3oCdh/Rm/en7+DfiSZBRYFPGSHRkjate2WxHDkPKgx09bF5IeZ4hr
-	dPBGMZCeHL8DDNkOJ1xvdiQdTjH978CZHINRTJzyu3UE6ZzMwpEQ==
-X-Google-Smtp-Source: AGHT+IHPjRoPkJts63WSW1KmhvXOZnj4KJdKdrrFOfPPYFwb16nEkLhtHX2sQ0Em7vKdjEkEynh8tg==
-X-Received: by 2002:a05:600c:3b94:b0:477:1afe:b962 with SMTP id 5b1f17b1804b1-477c5ea32a2mr1726485e9.1.1763983422303;
-        Mon, 24 Nov 2025 03:23:42 -0800 (PST)
-Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf198a67sm200937725e9.0.2025.11.24.03.23.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 03:23:41 -0800 (PST)
-Date: Mon, 24 Nov 2025 11:23:38 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, Qinxin Xia <xiaqinxin@huawei.com>
-Subject: Re: [PATCH v2 2/4] drivers/iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
-Message-ID: <aSRAOv6WqFTxzy_C@google.com>
-References: <20251106163953.1971067-1-smostafa@google.com>
- <20251106163953.1971067-3-smostafa@google.com>
- <aRW6P7vhTIZvm2Qf@willie-the-truck>
+	 in-reply-to:in-reply-to:references:references;
+	bh=SgefOsFQ8wvgDR8vXzvR99q4T/uL7fdev/6bLSa9Vi0=;
+	b=7NowJQSxPepXWP/3bHjFTAFyySYTS7hGBdZhjYYw2JDybPZBj9pZXfDLx+3Exe2q2iIcP2
+	izKt7fDdcRTzsLAMk12ewssVLbsgJZ71z1ZZ6MJsz7XofInpCui7QZo2obo1h0OYtSUWeZ
+	2kRd7MThNOaZOn8Kx31V7Zcr/AVgg18=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB155497;
+	Mon, 24 Nov 2025 03:46:57 -0800 (PST)
+Received: from [10.164.136.37] (unknown [10.164.136.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2CB003F73B;
+	Mon, 24 Nov 2025 03:46:59 -0800 (PST)
+Content-Type: multipart/alternative;
+ boundary="------------thNrygBUgWfgiX81FPhfmB7K"
+Message-ID: <9d4774ec-41d4-4c6f-899a-991187e58897@arm.com>
+Date: Mon, 24 Nov 2025 17:16:56 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRW6P7vhTIZvm2Qf@willie-the-truck>
-X-Rspamd-Queue-Id: 06CE0C0002
-X-Stat-Signature: 797rzzyyxxuem1jumgos7ikwt4ekzhxu
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: khugepaged: fix memory leak in collapse_file rollback
+ path
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Shardul Bankar <shardul.b@mpiricsoftware.com>, shardulsb08@gmail.com
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ janak@mpiricsoftware.com
+References: <20251123132727.3262731-1-shardul.b@mpiricsoftware.com>
+ <36896775-5083-4b3e-9023-949de7722194@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <36896775-5083-4b3e-9023-949de7722194@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B0BB440005
+X-Stat-Signature: zm4oqr5jpsg9fm5j1se3cfubhozo8ppm
 X-Rspam-User: 
-X-HE-Tag: 1763983423-168982
-X-HE-Meta: U2FsdGVkX18PcpQbjn4CBF1IzlJt8Q49Ip6QObM6Hzfj+/XGfThxPTcXknfd1auXetMgZKTCrhaXxXgQCVeloxvZjxvb5AIhPA/Hjwek6t9L00XQ/VScHuVtlg7r0hcXaktWF6pAW2GOBDNmpGq7i3apSFZpvpCiDfXcSV1U/42J4iSptUwQiyINJitKFSQfR3nESepjexdQG0WmjU+KRogeG9OinNy95Gv5OjRXESIMy77oxyekrfBBxapeX8Dr9rq6yFPaCDAxt0sgHlz+JBKsgtMZ0xtR/BDM6u/fqb84uV2mMGR0Jtm7pHBoIwfBgqMGoSDYFY2Qww7bU8oHmrXfz+BNuWlZkebmMnus1M64BBFRVuCI57T0iVKlR+oz6jqSV2OOLsjZ2jYrqsedTD3PlNSiYPD8xIdXYDs7gtIoVVc9ru9X+UXq/lYveUgzHpf6iEIhf5p/i1Wl690qpR9K/qZ79dFS7c+u3U76Hy4EnRKxLQpN9aKrzOmvpf7/K3QARQ7SG0VjogKQFWOhtzxwwbdN5BqDraIfLEFWibeD/TV9oQi2PgoECDYkegYZu0g9LhCwND9bzSScQudo1CfUD8oQGh2KtRckLJbdnElg4B9O4Yrh+cefAaDZft/21l1FBlbqKFiCRsvkBpmKqp/qkJi7mopBfHcMOLfTidKVR27HeL1O9VyPBE99/V/AVN32746z//EuD3VarGnj/0DGsUVumEofvZJtz9ZIWnNXE7yDq3LibN6zHFdINPuG1YVow0A2RpVHhqskI7IyHAbkh+4khvHoGxIwJ/pSqACAUjwT5ryU6+BbFXEdwDuHLWGsDrJpNDjdETDso/rWV2bpAsdEDE3nZxq4sqHZVitiYYlKh3YiiKjlyVvAxewdbIiGCP+wXNiklHJzryQRPMg+yALZC1jMrDg2Ny/bVBsdrKK4b+zq33rO6IwD2R4IWYGDzp+MFY04kUjRbRp
- oi1QAOSz
- USsaG55IcFnJtSbse9a1Rx1v7NXglIvSmTCPPYNOzA7TKthx3yeEGdoOcHC5zsYEeRgRYkj/wu14OaJrRdY/l7oGRP+lYhGaKZMyRInKSZLugfvuhAc8W4kQAEXt65gPTmNQ8imekVFzW9HBfyKbDcj7XGmJ2gRKmAq3MflWa4O6vpLMJrTxmfQRsPQNZi+KRlwzSf5K4C3Meq+0YcGevGODEIYt9HftzphzBSSbumBe4mOGHngIMnkkPxFTaGfC7447wnAGuuwcDOYHHSWkcevWfkqRTHC8atHcfenCTaIm192wwqd+Zyr9kEh1swGzD/R2rUNHhwRv3GR1FmmvLlYTR8DlFOCYKY/kNlMc0CUPnFie4PlC6w8tdNpwCQEaKf5Lb+NI6o9EkKOSzfrlLUAbSqAFuj+NwZgRl
+X-HE-Tag: 1763984826-529642
+X-HE-Meta: U2FsdGVkX1+8Ctk0qNRn+zFEgRWSOiXRMRhshrFLUxoQ1qahX8xaO11fswvdHyN5JV3Q2+tW+r05y5GerhO8FIkcQPw9v+vCAtzx4EVpFJHNGzmNvX4gVuiZ4ZTyFdkoJgKq8F0ugKjjKdI79jMT7ArmgLXaV9JM0GOnIqmcFAqQ7bPx0yW5SqtfhGRYSf7kEjE8gxipudQcR4aHNvGk/YluSOVrC0X/jb5UBRx6wYNiHcChjIFkkHtPDsq474iSHA/VjApAHK6GBVgDys9gzYpoF8eK9ttxdo9jJnJh5fEHzDp1Mrtahq1vIfrw0ALY5Y2kSSi3rl5aM7uHHeXEZYoEi6ygLTuW+Q4HUyB9PHb3xrYcUVyqQj1rZBvFOEsfbLhJeeXizGI2QI0hytdYMR2/X9E5/uNZkQEkcUDAXCm+b28cbnB1pD5OPTTkaTTz+5cN5mOIlFRx20k1x2cVnl8ATGFToAA34sImBYkGLY6qS0tPwFZenx32WWeVcshUd3FHg0f3m4G1SD3+Un9+AF8Jj8LBpt9D/aESPSfOr+GN4HzFx6OhZb7YoivFNAABPN90BoEIFd5fHDs5SCdWTF6AzsyAP9nvwkV0+UF7CNY0GBjl1+OE8b94K++XVXTPTUJMzNXA7p98Wv1bcJMtllTHhTm0Dd3x3LwdEomFqcmoyyN1RDEG2CCYO7CKkDGPutfFkbjQyrsXWDjSjJpzwKmq/GZ4sr7hymFVEuK4x+Q9GYSSL5eFrvWj1BG6jeIK4QzdzqDHBwxztKlnMXVGhEtk3XGCHD33lgJdGsPSOVnMRinpjmhVB0QKvMJLtlzKpax+fKL6Y6y6LHDl9jesiJS52EgzYKXhja+yNBk+iF7uN3q2taW7sXSJnGZ6bOdzRoprgkIyZEK20aqC6itsstFGy7WyWKV3k0M8HrK1VrmALjT29YsxS5+ibQGg1GqGVCGIEJkubMx08OCX8/i
+ WCXFQXzr
+ dGXhwcgEoPUtX89DtDwhbbYPVpdeUrSo52cljmhiIN1Dx9JyD6dx4L2FLUhpuar+Koh1gQhuKEx0h7C26eqNE6QLcUtweuxTvV3R8pw2BttH5oNabuLzLArKLwas6DWKXSMoZXpDDIEyT3mu4DDKEEau+XbCTSkSOp26tIfq8QHx0TKtQEKt4SgUKR3Jq1Oc+crbxjjFPqpCa7wZY9brgkhAV/6N7c7buVt09UN0vhWDThcqn7Z/HJjbO3u1dImEcYjKXa3unvZ6ULYjeFdQ1KiG8twgJkT9LTYeyhQCp5Ddce1BmPGYLQpP2sqOZsWVmhhE1bQFPV8dyAcIDukL/CUDSDwBIS9LRZy60OiucTHujhfBDne2DkmpVquJW6USz0ta6ia4BKedygRHhcNKfYKkMgvvy+nJG5xIPs7HyGg3VjlPPWxr++nj5duAM/vCAgg4XhtfkDQXkgerouRwUZQy7l1t9q8O6Hr+U
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,74 +91,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 11:00:15AM +0000, Will Deacon wrote:
-> On Thu, Nov 06, 2025 at 04:39:51PM +0000, Mostafa Saleh wrote:
-> > Add calls for the new iommu debug config IOMMU_DEBUG_PAGEALLOC:
-> > - iommu_debug_init: Enable the debug mode if configured by the user.
-> > - iommu_debug_map: Track iommu pages mapped, using physical address.
-> > - iommu_debug_unmap: Track iommu pages unmapped, using IO virtual
-> >   address.
-> > - iommu_debug_remap: Track iommu pages, already mapped using IOVA.
-> > 
-> > We have to do the unmap/remap as once pages are unmapped we lose the
-> > information of the physical address.
-> > This is racy, but the API is racy by construction as it uses refcounts
-> > and doesn't attempt to lock/synchronize with the IOMMU API as that will
-> > be costly, meaning that possibility of false negative exists.
-> > 
-> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> > Tested-by: Qinxin Xia <xiaqinxin@huawei.com>
-> > ---
-> >  drivers/iommu/iommu-debug-pagealloc.c | 23 ++++++++++++
-> >  drivers/iommu/iommu.c                 | 14 ++++++-
-> >  include/linux/iommu-debug-pagealloc.h | 54 +++++++++++++++++++++++++++
-> >  3 files changed, 89 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-> > index 385c8bfae02b..a6a2f844b09d 100644
-> > --- a/drivers/iommu/iommu-debug-pagealloc.c
-> > +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> > @@ -5,11 +5,13 @@
-> >   * IOMMU API debug page alloc sanitizer
-> >   */
-> >  #include <linux/atomic.h>
-> > +#include <linux/iommu.h>
-> >  #include <linux/iommu-debug-pagealloc.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/page_ext.h>
-> >  
-> >  static bool needed;
-> > +DEFINE_STATIC_KEY_FALSE(iommu_debug_initialized);
-> >  
-> >  struct iommu_debug_metadate {
-> >  	atomic_t ref;
-> > @@ -25,6 +27,27 @@ struct page_ext_operations page_iommu_debug_ops = {
-> >  	.need = need_iommu_debug,
-> >  };
-> >  
-> > +void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
-> > +{
-> > +}
-> > +
-> > +void __iommu_debug_unmap(struct iommu_domain *domain, unsigned long iova, size_t size)
-> > +{
-> > +}
-> > +
-> > +void __iommu_debug_remap(struct iommu_domain *domain, unsigned long iova, size_t size)
-> > +{
-> > +}
-> 
-> Since the IOMMU API doesn't really have a "remap" operation, I wonder
-> whether it would be clearer to have unmap_begin() and unmap_end()
-> functions instead? You'd probably want to call them as a pair, so the
-> check for unmapped < size would move into unmap_end().
+This is a multi-part message in MIME format.
+--------------thNrygBUgWfgiX81FPhfmB7K
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-I guess that would be cleaner, but we have to pass both size and
-unmapped to unmap_end, I will give it a try.
 
-Thanks,
-Mostafa
+On 24/11/25 3:32 pm, David Hildenbrand (Red Hat) wrote:
+> On 11/23/25 14:27, Shardul Bankar wrote:
+>> When collapse_file() fails after xas_create_range() succeeds, the
+>> rollback path does not clean up pre-allocated XArray nodes stored in
+>> xas->xa_alloc. These nodes are allocated by xas_nomem() when
+>> xas_create() fails with GFP_NOWAIT and need to be freed.
+>>
+>> The leak occurs because:
+>> 1. xas_create_range() may call xas_nomem() which allocates a node
+>>     and stores it in xas->xa_alloc
+>
+> Do you mean that, if xas_create_range() failed, collapse_file() will 
+> call xas_nomem() to preallocate memory?
+>
+> I don't immediately see how xas_create_range() would call xas_nomem().
+>
+>> 2. If the collapse operation fails later, the rollback path jumps
+>>     to the 'rollback:' label
+>> 3. The rollback path cleans up folios but does not call xas_destroy()
+>>     to free the pre-allocated nodes in xas->xa_alloc
+>
+> Note that after we call xas_nomem(), we retry xas_create_range() -- 
+> that previously failed to to -ENOMEM.
+>
+> So the assumption is that the xas_create_range() call would consume 
+> that memory.
+>
+> I'm sure there is some corner case where it is not the case (some 
+> concurrent action? not sure)
 
-> 
-> Will
+Someone else can put slots in the xarray since we dropped the lock. I 
+cannot prove this, but surely
+
+disproving this is harder : )
+
+
+>
+>>
+>> Fix this by calling xas_destroy(&xas) at the beginning of the rollback
+>> path to free any pre-allocated nodes. This is safe because xas_destroy()
+>> only frees nodes in xas->xa_alloc that were never inserted into the
+>> XArray tree.
+>
+> Shouldn't we just call xas_destroy() in any case, also when everything 
+> succeeded?
+
+Yeah you are right. We should probably do
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index abe54f0043c7..0794a99c807f100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1872,11+1872,14@@ staticintcollapse_file(structmm_struct *mm, 
+unsignedlongaddr,
+do{
+xas_lock_irq(&xas);
+xas_create_range(&xas);
+- if(!xas_error(&xas))
++ if(!xas_error(&xas)) {
++ xas_destroy(&xas);
+break;
++ }
+xas_unlock_irq(&xas);
+if(!xas_nomem(&xas, GFP_KERNEL)) {
+result = SCAN_FAIL;
++ xas_destroy(&xas);
+gotorollback;
+}
+} while(1);
+
+
+--------------thNrygBUgWfgiX81FPhfmB7K
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 24/11/25 3:32 pm, David Hildenbrand
+      (Red Hat) wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:36896775-5083-4b3e-9023-949de7722194@kernel.org">On
+      11/23/25 14:27, Shardul Bankar wrote:
+      <br>
+      <blockquote type="cite">When collapse_file() fails after
+        xas_create_range() succeeds, the
+        <br>
+        rollback path does not clean up pre-allocated XArray nodes
+        stored in
+        <br>
+        xas-&gt;xa_alloc. These nodes are allocated by xas_nomem() when
+        <br>
+        xas_create() fails with GFP_NOWAIT and need to be freed.
+        <br>
+        <br>
+        The leak occurs because:
+        <br>
+        1. xas_create_range() may call xas_nomem() which allocates a
+        node
+        <br>
+            and stores it in xas-&gt;xa_alloc
+        <br>
+      </blockquote>
+      <br>
+      Do you mean that, if xas_create_range() failed, collapse_file()
+      will call xas_nomem() to preallocate memory?
+      <br>
+      <br>
+      I don't immediately see how xas_create_range() would call
+      xas_nomem().
+      <br>
+      <br>
+      <blockquote type="cite">2. If the collapse operation fails later,
+        the rollback path jumps
+        <br>
+            to the 'rollback:' label
+        <br>
+        3. The rollback path cleans up folios but does not call
+        xas_destroy()
+        <br>
+            to free the pre-allocated nodes in xas-&gt;xa_alloc
+        <br>
+      </blockquote>
+      <br>
+      Note that after we call xas_nomem(), we retry xas_create_range()
+      -- that previously failed to to -ENOMEM.
+      <br>
+      <br>
+      So the assumption is that the xas_create_range() call would
+      consume that memory.
+      <br>
+      <br>
+      I'm sure there is some corner case where it is not the case (some
+      concurrent action? not sure) <br>
+    </blockquote>
+    <br>
+    <p>Someone else can put slots in the xarray since we dropped the
+      lock. I cannot prove this, but surely</p>
+    <p>disproving this is harder : )</p>
+    <p><br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:36896775-5083-4b3e-9023-949de7722194@kernel.org"><br>
+      <blockquote type="cite">
+        <br>
+        Fix this by calling xas_destroy(&amp;xas) at the beginning of
+        the rollback
+        <br>
+        path to free any pre-allocated nodes. This is safe because
+        xas_destroy()
+        <br>
+        only frees nodes in xas-&gt;xa_alloc that were never inserted
+        into the
+        <br>
+        XArray tree.
+        <br>
+      </blockquote>
+      <br>
+      Shouldn't we just call xas_destroy() in any case, also when
+      everything succeeded? <br>
+    </blockquote>
+    <br>
+    <p>Yeah you are right. We should probably do</p>
+    <div
+style="color: #000000;background-color: #ffffff;font-family: Menlo, Monaco, 'Courier New', monospace;font-weight: normal;font-size: 12px;line-height: 18px;white-space: pre;"><div><span
+    style="color: #000000;">diff --git a/mm/khugepaged.c b/mm/khugepaged.c</span></div><div><span
+    style="color: #000000;">index abe54f0043c7.</span><span
+    style="color: #cd3131;">.0794a99c807f</span><span
+    style="color: #000000;"> </span><span style="color: #098658;">100644</span></div><div><span
+    style="color: #000000;">--- a/mm/khugepaged.c</span></div><div><span
+    style="color: #000000;">+++ b/mm/khugepaged.c</span></div><div><span
+    style="color: #000000;">@@ -</span><span style="color: #098658;">1872</span><span
+    style="color: #000000;">,</span><span style="color: #098658;">11</span><span
+    style="color: #000000;"> +</span><span style="color: #098658;">1872</span><span
+    style="color: #000000;">,</span><span style="color: #098658;">14</span><span
+    style="color: #000000;"> @@ </span><span style="color: #0000ff;">static</span><span
+    style="color: #000000;"> </span><span style="color: #0000ff;">int</span><span
+    style="color: #000000;"> </span><span style="color: #795e26;">collapse_file</span><span
+    style="color: #000000;">(</span><span style="color: #0000ff;">struct</span><span
+    style="color: #000000;"> mm_struct *</span><span
+    style="color: #001080;">mm</span><span style="color: #000000;">, </span><span
+    style="color: #0000ff;">unsigned</span><span style="color: #000000;"> </span><span
+    style="color: #0000ff;">long</span><span style="color: #000000;"> </span><span
+    style="color: #001080;">addr</span><span style="color: #000000;">,</span></div><div><span
+    style="color: #000000;">        </span><span style="color: #af00db;">do</span><span
+    style="color: #000000;"> {</span></div><div><span
+    style="color: #000000;">                </span><span
+    style="color: #795e26;">xas_lock_irq</span><span
+    style="color: #000000;">(&amp;xas);</span></div><div><span
+    style="color: #000000;">                </span><span
+    style="color: #795e26;">xas_create_range</span><span
+    style="color: #000000;">(&amp;xas);</span></div><div><span
+    style="color: #000000;">-               </span><span
+    style="color: #af00db;">if</span><span style="color: #000000;"> (!</span><span
+    style="color: #795e26;">xas_error</span><span
+    style="color: #000000;">(&amp;xas))</span></div><div><span
+    style="color: #000000;">+               </span><span
+    style="color: #af00db;">if</span><span style="color: #000000;"> (!</span><span
+    style="color: #795e26;">xas_error</span><span
+    style="color: #000000;">(&amp;xas)) {</span></div><div><span
+    style="color: #000000;">+                       </span><span
+    style="color: #795e26;">xas_destroy</span><span
+    style="color: #000000;">(&amp;xas);</span></div><div><span
+    style="color: #000000;">                        </span><span
+    style="color: #af00db;">break</span><span style="color: #000000;">;</span></div><div><span
+    style="color: #000000;">+               }</span></div><div><span
+    style="color: #000000;">                </span><span
+    style="color: #795e26;">xas_unlock_irq</span><span
+    style="color: #000000;">(&amp;xas);</span></div><div><span
+    style="color: #000000;">                </span><span
+    style="color: #af00db;">if</span><span style="color: #000000;"> (!</span><span
+    style="color: #795e26;">xas_nomem</span><span
+    style="color: #000000;">(&amp;xas, GFP_KERNEL)) {</span></div><div><span
+    style="color: #000000;">                        result = SCAN_FAIL;</span></div><div><span
+    style="color: #000000;">+                       </span><span
+    style="color: #795e26;">xas_destroy</span><span
+    style="color: #000000;">(&amp;xas);</span></div><div><span
+    style="color: #000000;">                        </span><span
+    style="color: #af00db;">goto</span><span style="color: #000000;"> rollback;</span></div><div><span
+    style="color: #000000;">                }</span></div><div><span
+    style="color: #000000;">        } </span><span
+    style="color: #af00db;">while</span><span style="color: #000000;"> (</span><span
+    style="color: #098658;">1</span><span style="color: #000000;">);</span></div>
+
+</div>
+    <p><br>
+    </p>
+  </body>
+</html>
+
+--------------thNrygBUgWfgiX81FPhfmB7K--
 
