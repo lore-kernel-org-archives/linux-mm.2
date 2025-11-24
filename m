@@ -4,116 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84CE6CFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A258CFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:49:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF30C6B0030; Mon, 24 Nov 2025 09:47:24 -0500 (EST)
+	id 741BD6B0022; Mon, 24 Nov 2025 09:49:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCA3D6B0031; Mon, 24 Nov 2025 09:47:24 -0500 (EST)
+	id 6F0E66B002F; Mon, 24 Nov 2025 09:49:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDFFA6B0032; Mon, 24 Nov 2025 09:47:24 -0500 (EST)
+	id 5B9C56B0032; Mon, 24 Nov 2025 09:49:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5FF16B0030
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:47:24 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7683313AD81
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:47:24 +0000 (UTC)
-X-FDA: 84145778808.09.48ECE23
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 742BB140014
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:47:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KDL5jjzQ;
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 47E416B0022
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:49:56 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6660C0458
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:49:55 +0000 (UTC)
+X-FDA: 84145785150.04.5429031
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EC2EB80012
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:49:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="L/ItU/kR";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=bgeffon@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763995794; a=rsa-sha256;
+	cv=none;
+	b=316lFtH0JBDZCjO44TxC2+F2s6VAb3P284xbQbJ+oln7DTdzV9bRHOS5YbyR1O0Xp0OBsw
+	crFZ6T93pXyiKqeEiwDotbSyRHCqU/HyztN/fR2e4sQSvA6IWxMqH6LmZLCCXn7kMa2fut
+	fCRbkaAhfpsjR42SCB3UIS4oEjw4Hzc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="L/ItU/kR";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=bgeffon@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763995642;
+	s=arc-20220608; t=1763995794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m5v8r359QRDyWmPKXXZF8Y2SUxEvfPW1olqpozKKF9Y=;
-	b=QtVu6l5aa4CTx9F6dioNV2EjkcLVUsfLHs1FjCwMlpaLmTT8alm/0hAXkm10bunzt1/XAu
-	pql3VRLmdW8JKIo6GuqElCoXk8+eKzmPJMNxabOUhk4QD0mA5vOuJSTJxhkHi0Z58Tx+Uk
-	QsPyc5hapsOQEcY/ZqHeandblVaYnRo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763995642; a=rsa-sha256;
-	cv=none;
-	b=cFkqNkUUuUWroCIsJV8rqIdgJIZrJrqITZK1fXN5TJkcgQDILXGUfGZnjZ1GvXSrpvM8nn
-	QVmoTDtTqCuxj4SeeiA4qkg5oXAA8o4FZwSpp6iXciOuYv5ESQ18/oFHYfxCZY9KJGOLII
-	d/wSpWyX1kUUzbhCoCJdRBCyvMDVNIo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KDL5jjzQ;
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso47633985e9.3
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:47:22 -0800 (PST)
+	bh=jfjvFTqZVsCNRnOOfiQNCDtSe9mdhB80/mf1pjQQ4eE=;
+	b=Z6bFeuBlwnLw89lwXcyDjs7pZVztMRJuwkgbgIMFkIXLv1+gsrtDszd1Q0HHi8Ltj1zmLJ
+	TvHpgpOvrupIN3FWVYhQazmWv9L/3dKzPFw08+A87mzFLTdrZu80TwxHzLf+mJU9IHomrh
+	sCjPyCVCbtNxXkO/sjJecw7+W4BRvRU=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-297e13bf404so362525ad.0
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:49:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763995641; x=1764600441; darn=kvack.org;
+        d=google.com; s=20230601; t=1763995793; x=1764600593; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m5v8r359QRDyWmPKXXZF8Y2SUxEvfPW1olqpozKKF9Y=;
-        b=KDL5jjzQSfVt7THwwu0wVp/2iJ1LwOa/t1sMfOjJocmgqxfwGWA3p6wQmfKpjs+EsP
-         4FEcAJZC9dCf48VZFPX3+5u9MuWWoPFIUlHWRwPCnt0o8LiGxhEBf/WoirqgsNqrOnUu
-         irgbai78sgJ5OsasB5fi0FODzBn0va8cZ0Ms8NP2Cowo3mpaMJ98mH/sD9wG7mEGI8yq
-         N+jBiygq8VG1ChZRM+JVpbsivKZy8R3dR+Ef3g3teaV1RTMDhMewNpFKMI1uMuAkB4Ch
-         RPx5bqapeC508syVTmbstD89tkrcRNbwh8UNZK40XAZXAdZlWp6iovNR/Bz7lUhCCaJr
-         ygPw==
+        bh=jfjvFTqZVsCNRnOOfiQNCDtSe9mdhB80/mf1pjQQ4eE=;
+        b=L/ItU/kRhGCVciu3VXrFoehMba0JQOuJQ++D6a3n4LyeG8tMlFez5w5pAY4D96AFV1
+         xPuW/L6XnWsDTXEmMbTYbaY7TnQoF2iUzUWxul+J0qSG74nGtqA2Y8jJK7EM2ALwfuxV
+         qDNIy1WL5mIY5+hYg4ke5rOTcnB57HgZwQyrgdXW+U29C4p2A33+Y5TONr0OvHyN/QcA
+         Zhjgo94UtPaRBDctb10EL/XE8rIE8H3YpRygkdUWOo5bAotx/S2OubqUkuua/f1rb3HM
+         iYvWuvPSXMPhuCniRVXtHUtKv4IkLDO1/G47J7TNZS/2BCUsFV0myg9Z5D+Sh4wKjoWT
+         q2zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763995641; x=1764600441;
+        d=1e100.net; s=20230601; t=1763995793; x=1764600593;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=m5v8r359QRDyWmPKXXZF8Y2SUxEvfPW1olqpozKKF9Y=;
-        b=OWAwSGd/z0K+OzMs9coAa9/H+Ozt2h5DgezOMb1TmrlhroD/36eMfmDj4W3W8Iw5m/
-         ukZzG/f8TVo2Dwe4nMscSu2B/3qcyisL2n4QpKmHCXvLU4ihxYHoNAES79mmTai2YwFV
-         upaXjXzSYG22bMT7utcSU5op8qHO2177qdMYZrUxfGQQs9Mqf1wB9w52uPoKc/LqIqk2
-         6WKennPBxiEaigtw56OGZ7sQNSwyPcM+DH4j/+Vr8eCvN86z0F2kYoXEK+enRJwnL5nI
-         fhtLVkgNwHeB/BsSp+5Hk6rAiJbP+jGgUXq4YXSeYjAzZJKpgMf4A007lortTZyWVjhW
-         2TfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXs7gty9pbTyX8f8OXS2d0MTh1FuXLkXFRTYS3jCpP8lnp5hQ5gKerpuetrsyuMswFABHPc9orB0A==@kvack.org
-X-Gm-Message-State: AOJu0YxezkDiNv9YTu0FqdY9z4pWSNuvHHJMznTDCDBj/3OMtosnwaHw
-	73Xsqpm88d162SBc1Iczlk5G7gk2wWzUccRlF/gdfsTaEzT7sYVbVJo8roGSvNLl+ggP8rwV8O9
-	CrVnpBc+ojnDPhBPLy7GBXMw0SgvRRZQ=
-X-Gm-Gg: ASbGncseX+0uTbkm1xlDobfNPSPBcgyIiSdDfyqqgYfwTZ9DngbFLDslpBPwvXgjEHk
-	Yolt7YxrAWqOu6kyH3BehRY1jX7pMykBwd1ZcLphsEgoln0f5oJmDY5MEn5pxWgQhjSQ8/vZI+R
-	1RziPMevAbO1KGNnRPg/1+v80v3BGo95YcZtDxJpuWAuGeYrvdNBK8mfsRvI5DoovK0bxGUt3Qj
-	oXaRtWPdLyRWiGq/tuHeQFTtNBzU12HlkBO25CDzDIsBqF+E9Gsh3ctWEqFtqo8slj3U9ySpG3/
-	6sYa5w==
-X-Google-Smtp-Source: AGHT+IHMNB8oFKl5ODH0B+syuOek9kjeTSYdf5fUxU6j3RsWceEJ8KYR7Wpk7xqjfValYPcMgjsoo2RtIHjEWkXarYg=
-X-Received: by 2002:a05:600c:8b35:b0:475:d8b3:a9d5 with SMTP id
- 5b1f17b1804b1-477c10d6fdamr123781255e9.10.1763995640453; Mon, 24 Nov 2025
- 06:47:20 -0800 (PST)
+        bh=jfjvFTqZVsCNRnOOfiQNCDtSe9mdhB80/mf1pjQQ4eE=;
+        b=lYGeUNzkdQnUCw3m794p7SVJbxU/VQwvk4w1qo9kViylQGhMCHe8qM2Zx2Asdm9c2s
+         qXVlhQdudTXkhrOsgIM0MzcJIOfRT3Q0PQduhe5fIY98irPF/9dTu4fYCHg3EwYKVKLx
+         iM7MAWuqd8gxU3V5V1fC3HOCWmuzP9Jb51FTIgzn5aNxrB/th5JHST/Yu2V+XONstl7z
+         AgRIHjKLWRDZ3R6LgOHZIdxxhUvpnDit8WFkERSoLg+cS6zXpjyd++CZDE5R8rdiyRsG
+         UUk4WsvZWCNwEY1rGkPB8YbdZwkCLg4SgnjB0JrNRM4+eyGXTMLWNhBJq4nrE5Mfl2qU
+         bvOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlnlxeVxYc1k7mrFB73IyjOLxpyWCTF/ZvG3zceS8UgUkgezBkzBfsX4CcPkXGmDF9TSN4g2HFyA==@kvack.org
+X-Gm-Message-State: AOJu0YwLjZ03q1rEB8Muz92QBic/7pjKHK0zjN5M/dqMye5DeriYe0yC
+	zAMEaM0IMr0IZnPa787Op1uh6dbxLOsiSi7PTkIli2tdchqIyf/zWlGQGyvMKsoG1tYF0aAOgZY
+	i80Rux/KlMG5rxcNmLyC5GI7mvf132xJGx9r0RPAZ
+X-Gm-Gg: ASbGncv3B34GCPjAc6WeBWUMBhixNTFXn+gQx8EaBS5slCHvnD33YMbexzfSfPgJH++
+	f2XBoNRf48w8pZm9TCWbszpTuDjyvX0tP2lEBU6LT1NLEwGVf72VBXIkfH9KJ52nM4JRud0ELgO
+	A66umHorNfXTOCTQ5pBbFyB6UoxYuipgIb8ju5e43yYQGHO307BaOblVTQ8hXpzy6o6JJJqsm5l
+	oaQ4dceVeyfXod2b3eZUDxnOD47xN/kZKun5rhf6V3PX6sNmNs0J3GzDQqasJTecdBqBvxy/CBg
+	Jmh6r5Pg5BDie4Odh83xWgJLSovVTmSls6FAkMFjvLg+nOud7b+J3Sg=
+X-Google-Smtp-Source: AGHT+IGRulCupwdJmFvYrXnXeObGMVRuegK6S63semZ187VZIMLLUPpXt4Cfo7EegvfgpRWvfboPuLskdmqfhkmc6Nc=
+X-Received: by 2002:a17:903:1a83:b0:290:be4a:40d2 with SMTP id
+ d9443c01a7336-29b7b3ce4abmr3467985ad.13.1763995792590; Mon, 24 Nov 2025
+ 06:49:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <CAKEwX=PQM_4Mp75R4yeQ=WoqOxj7EJK=FpgcemNSYDS3fLXQLw@mail.gmail.com>
- <CACePvbUxCN_2fHz0Ds=u52mmOvdhonvRgm6mPdcJcs5qLZj55Q@mail.gmail.com>
-In-Reply-To: <CACePvbUxCN_2fHz0Ds=u52mmOvdhonvRgm6mPdcJcs5qLZj55Q@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 24 Nov 2025 06:47:08 -0800
-X-Gm-Features: AWmQ_bk04teBfrN1E0yDgPAZJygZe-jy8wDdznUBiVdZ6lbIRzp2aG_l5nsgh74
-Message-ID: <CAKEwX=Ph6ynA8hRWchy2XeU2bB7ZSdcrZ-cu0X0KCgu8ZBfTVA@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-To: Chris Li <chrisl@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, pratmal@google.com, sweettea@google.com, 
-	gthelen@google.com, weixugc@google.com
+References: <20251120152126.3126298-1-senozhatsky@chromium.org> <20251120152126.3126298-7-senozhatsky@chromium.org>
+In-Reply-To: <20251120152126.3126298-7-senozhatsky@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Mon, 24 Nov 2025 09:49:15 -0500
+X-Gm-Features: AWmQ_blpQ0OcMlCrWbn5wsAoRlcnctjr4RkBtD0LFzY37dS1vA_aR_W8k-0e0sw
+Message-ID: <CADyq12xiQT+B4rUnWAgCVs1ULeJyYduOu0JVzNPuguu=5RmVpA@mail.gmail.com>
+Subject: Re: [RFC PATCHv5 6/6] zram: read slot block idx under slot lock
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Yuwen Chen <ywen.chen@foxmail.com>, Richard Chang <richardycc@google.com>, 
+	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: e9g15uohuguz9hpy9duyigfmkmpsm979
+X-Rspamd-Queue-Id: EC2EB80012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cusgifd5m6657jry7py4zmixzcsau4ua
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 742BB140014
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763995642-825068
-X-HE-Meta: U2FsdGVkX1+HeEi04LlXsJD0Tsu2F0kkDVxFyAEqhxNhD1WQdTbF4J6IVI40mqhPjSddhWeP4sIq9OtAC2JPGgqJPf6u2DPb4sDtdygiN+ysiHeULVHRN5PjPFzw496efJMhe1h1aPWiG8Xm29bbbqqZIhLef4XJ/ykpbyCFVpuwpB4vb9jsGnZ1Sy/lZj4UFFv99spyx+5JdIqjUbH/hNIREGGruePDQs4yyxsrPFPBlDyZuDZbj/6+H3GeR4Sf1VaME0tSDPQTGk0nuLYLTI/ablZEZtvu02TioJltNZ8lWBeV+qhbUARKPnhSLhqVJ5tIOhOZELqFtM9C207eDZ1J7+05F+UX2CL7i6TA+5+e1RmBinCNaoHr6bfzgB0xlz3Nlq5qnOJpMPiwsG2SdT2QlEOJUGQ8ahRq+5tFkP83Apjkr/HSCdymzTi4aS56d/m4T+/PLbVlY3fSY6q3cYWUb7B+XGqztCNBNR/IEvw7fkTgVZUh5XmmplDAOhH72wj0pV43ALiVLfGH/V1oOH2bwF5USHY77KMiBYWoVAnOwRtoFQ5oUN5CpIt4SSCLX1sPDDWTjV7p5NWBrixUEtt2FAZKLLik2m3t8l27hQN5GznGXOdUEX+FtTfEUzale6vY9HN82PxkCWXgN+tfzWf6U+v3l/hfPu+459dFulK0joWgKFS0utePN6XjG48vz0HQKEU3kFvAUYj6Tgh5i7/gClRz9GEdTcBOsRi/tsCyJpOpNMvOKmXdAwPqa8fqjM01XZJ511t5NAB7Lb7Nm01yFprFDMdFxHt57sXXbygzpxxZpvdcjjPjz8HCAW5puVqpToxxYKXKhwB8HkyzWI4hs/SBv4zEL9srIcttLYzDvZMi+eUn3nDHdXyNrqbMPZ/oYaF7OrSL3axX0xMdnQ+2PSWzBLNTpPjdq11ZyMjWlpzY4zS4jyPUisnXXWEHyW0HhYv6kgO1E4K/lx3
- ZbvqX5Ap
- GxxaVAdEEw+kevZFSrtkQsDj0OTex5cfjCeC84zeGSRn/SQwtE4CXuxHvLZIoxxMHL4frCEBlbwD4Ctu12upQic80DzNZXJGtH2dw0dCnjMriuXMycyAJbLO+Qg9dBEY8zNOGQmIGfx7Tecv2Uka6Kro0TnfAz+KT8b64kxcQv4470bHaCCA/PPGWjiLxATPNXLh/dGMoffBanlPlUY6qgPkS+9Fcisdyx56ERaSSR6jUoa/bafqwbBjxaagsCz1bV7Di/XoAin2QZfXSz49ssYNMlOCuRmP4b3WmhW8DTKwoDoo+FuXdo7pt5N5/RP9xwvOqN6LBCzTqCaAiKwDiEFKWY9imB3VM39+hi19y67YY49clvMZZYnu/PQ==
+X-HE-Tag: 1763995793-412964
+X-HE-Meta: U2FsdGVkX18wh/4A+tNyE/AsWIEdm49bJt8iT29eaBWeoappD3S7wdsHHanKhUIrZkCeY2hGziMdRt0hnk587UUE3BageF7bxdNuwOfJDo59OkunUYBBUVb0BAAvbL9WtH4hMa+n5SySgwpezQYsX5kpC0dys8vOibtSUXUUFeU6OmdvSAI+ZAU09d0KvKsAdJbKzqMyHqP5ESqz3ETrT/loYhfy2zFmIl65E5OIa3E+bGkVKtWlSduzdwFSQcrca4TJ2qyDYrMYnynEFvEpIp0XTUtUmfgNFg+f4PPyhkgdyBeSWK7GFcFDDGY8nmv5U2p9B1gcYfOp5PbxDnhjvAY2eVicwi8sGkJ0m633rQRcRs7y50Hsu36leEiDUDXKVdCHYnk/boBn55wQ+YtOkOJA1bBDk2PDTHI8ZJ8/SAtjNZ4r80sdX7N+Q607G4GBALA0I98Vok6fvMjqhJC4WG6REi30c+GrJcLDzWtIoHRnbGoi+jKrn/MFnN7+vSEx6DvFQIEBc54bl9WJUA/AcEdJvF3Ss5j7GbCIGMKP7pw2D4twDJTY3eC6ofEwJc2GVfMYzIigQk7GIZW5LAtOzW0jPYtPJeK/nfWLFDYS2wVua1pnFjw8PmOIrFBrUCw4jIWmGiFvsCYl4Q5+8/GZtvbjsXDWEFKpEpEhD8g/Jrwjw8JJ1dq417+JXmJrFdSoENJTieKYI5hmTXjPn/p90bc5zeM4ez8ZtMg6LlkUXDXgRapLvZfEu5OVd7LJtFJjElsIMoFD1Mj03wWxqer95Wditam9ztaUWI1zyOKW1R0mJONGGFYvw1a0fCnOJ0VPGGd6Kz6QtDsqmvbAAe9AzAJu2taIUZxrTID28Q7p49yrtekUqnA5IwOtK3mMQNCKF1xgoUni01RIDUmuWQ2+wCcPeRb5g1AqrYeBXrksH/w3/32rmZA4e0p4izowSh/ZECCMB/CabiEtu+CoUZ9
+ 2GJxeJ6N
+ uzotwcKyM+vD9KKQP1YDHQRaWXRjthgxVarMQqcbRRFicnHf8/VTZTr/gPf8LHA51bZ8649qi2Q92XTpzMUk7aPmShYQriWh6bFL2cBZHcMS01YJ0CFVmFOzTiiK5gzuv9nojI2CIZSsJ1rPS5wx7w/eqbVyOT/1BcLMuyn2/rtHdk3GnQvnV6yxe98LnNuKjRSFosPlaSn9gUB2MYhXDU81ni4rl2vSrkHZ8GR94vQlPEfo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,125 +119,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 21, 2025 at 5:52=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+On Thu, Nov 20, 2025 at 10:22=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> On Fri, Nov 21, 2025 at 2:19=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wro=
-te:
-> >
-> > On Fri, Nov 21, 2025 at 9:32=E2=80=AFAM Chris Li <chrisl@kernel.org> wr=
-ote:
-> > >
-> > > The current zswap requires a backing swapfile. The swap slot used
-> > > by zswap is not able to be used by the swapfile. That waste swapfile
-> > > space.
-> > >
-> > > The ghost swapfile is a swapfile that only contains the swapfile head=
-er
-> > > for zswap. The swapfile header indicate the size of the swapfile. The=
-re
-> > > is no swap data section in the ghost swapfile, therefore, no waste of
-> > > swapfile space.  As such, any write to a ghost swapfile will fail. To
-> > > prevents accidental read or write of ghost swapfile, bdev of
-> > > swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
-> > > flag because there is no rotation disk access when using zswap.
-> >
-> > Would this also affect the swap slot allocation algorithm?
-> >
-> > >
-> > > The zswap write back has been disabled if all swapfiles in the system
-> > > are ghost swap files.
-> >
-> > I don't like this design:
-> >
-> > 1. Statically sizing the compression tier will be an operational
-> > nightmare, for users that have to support a variety (and increasingly
-> > bigger sized) types of hosts. It's one of the primary motivations of
-> > the virtual swap line of work. We need to move towards a more dynamic
-> > architecture for zswap, not the other way around, in order to reduce
-> > both (human's) operational overhead, AND actual space overhead (i.e
-> > only allocate (z)swap metadata on-demand).
+> Read slot's block id under slot-lock.  We release the
+> slot-lock for bdev read so, technically, slot still can
+> get freed in the meantime, but at least we will read
+> bdev block (page) that holds previous know slot data,
+> not from slot->handle bdev block, which can be anything
+> at that point.
 >
-> Let's do it one step at a time.
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-I'm happy with landing these patches one step at a time. But from my
-POV (and admittedly limited imagination), it's a bit of a deadend.
+After taking another look I think this is a worthwhile improvement.
 
-The only architecture, IMO, that satisfies:
+Reviewed-by: Brian Geffon <bgeffon@google.com>
 
-1. Dynamic overhead of (z)swap metadata.
-
-2. Decouple swap backends, i.e no pre-reservation of lower tiers space
-(what zswap is doing right now).
-
-3. Backend transfer without page table walks.
-
-is swap virtualization.
-
-If you want to present an alternative vision, you don't have to
-implement it right away, but you have to at least explain to me how to
-achieve all these 3.
-
+> ---
+>  drivers/block/zram/zram_drv.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> > 2. This digs us in the hole of supporting a special infrastructure for
-> > non-writeback cases. Now every future change to zswap's architecture
-> > has to take this into account. It's not easy to turn this design into
-> > something that can support writeback - you're stuck with either having
-> > to do an expensive page table walk to update the PTEs, or shoving the
-> > virtual swap layer inside zswap. Ugly.
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index ecbd9b25dfed..1f2867cd587e 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -1994,14 +1994,14 @@ static int zram_read_page(struct zram *zram, stru=
+ct page *page, u32 index,
+>                 ret =3D zram_read_from_zspool(zram, page, index);
+>                 zram_slot_unlock(zram, index);
+>         } else {
+> +               unsigned long blk_idx =3D zram_get_handle(zram, index);
+> +
+>                 /*
+>                  * The slot should be unlocked before reading from the ba=
+cking
+>                  * device.
+>                  */
+>                 zram_slot_unlock(zram, index);
+> -
+> -               ret =3D read_from_bdev(zram, page, zram_get_handle(zram, =
+index),
+> -                                    parent);
+> +               ret =3D read_from_bdev(zram, page, blk_idx, parent);
+>         }
 >
-> What are you talking about? This patch does not have any page table
-> work. You are opposing something in your imagination. Please show me
-> the code in which I do expensive PTE walks.
-
-Please read my response again. I did not say you did any PTE walk in this p=
-atch.
-
-What I meant was, if you want to make this the general architecture
-for zswap and not some niche infrastructure for specialized use case,
-you need to be able to support backend transfer, i.e zswap writeback
-(zswap -> disk swap, and perhaps in the future the other direction).
-This will be very expensive with this design.
-
+>         /* Should NEVER happen. Return bio error if it does. */
+> --
+> 2.52.0.rc1.455.g30608eb744-goog
 >
-> > 3. And what does this even buy us? Just create a fake in-memory-only
-> > swapfile (heck, you can use zram), disable writeback (which you can do
-> > both at a cgroup and host-level), and call it a day.
->
-> Well this provides users a choice, if they don't care about write
-> backs. They can do zswap with ghost swapfile now without actually
-> wasting disk space.
->
-> It also does not stop zswap using write back with normal SSD. If you
-> want to write back, you can still use a non ghost swapfile as normal.
->
-> It is a simple enough patch to provide value right now. It also fits
-> into the swap.tiers long term roadmap to have a seperate tier for
-> memory based swapfiles. I believe that is a cleaner picture than the
-> current zswap as cache but also gets its hands so deep into the swap
-> stack and slows down other swap tiers.
->
-> > Nacked-by: Nhat Pham <nphamcs@gmail.com>
->
-> I heard  you, if you don't don't want zswap to have anything to do
-> with memory based swap tier in the swap.tiers design. I respect your
-> choice.
-
-Where does this even come from?
-
-I can't speak for Johannes or Yosry, but personally I'm ambivalent
-with respect to swap.tiers. My only objection in the past was there
-was not any use case at a time, but there seems to be one now. I won't
-stand in the way of swap.tiers landing, or zswap's integration into
-it.
-
-From my POV, swap.tiers solve a problem completely orthogonal to what
-I'm trying to solve, namely, the three points listed above. It's about
-definition of swap hierarchy, either at initial placement time, or
-during offloading from one backend to another, where as I'm trying to
-figure out the mechanistic side of it (how to transfer a page from one
-backend to another without page table walking). These two are
-independent, if not synergistic.
-
->
-> Chris
 
