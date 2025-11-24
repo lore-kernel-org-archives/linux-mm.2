@@ -4,79 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F9FCFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 15:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 394BACFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 15:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A18C6B0006; Mon, 24 Nov 2025 10:15:10 -0500 (EST)
+	id 935436B0028; Mon, 24 Nov 2025 10:18:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 079626B0010; Mon, 24 Nov 2025 10:15:10 -0500 (EST)
+	id 90CEF6B002A; Mon, 24 Nov 2025 10:18:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED10B6B002A; Mon, 24 Nov 2025 10:15:09 -0500 (EST)
+	id 849686B002B; Mon, 24 Nov 2025 10:18:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7C436B0006
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:15:09 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 83CABC02E9
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:15:09 +0000 (UTC)
-X-FDA: 84145848738.10.6FD7B5C
-Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ACDE5C001F
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:15:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	none
+	by kanga.kvack.org (Postfix) with ESMTP id 71AF36B0028
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:18:46 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3207B1403E1
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:18:46 +0000 (UTC)
+X-FDA: 84145857852.11.23C69E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9E63F4000A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:18:44 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u2liEfUn;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763997307;
+	s=arc-20220608; t=1763997524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6EhJZJdW5iHOgf7cM76HxMq4qtuClKsaC2pJ2nzhbUs=;
-	b=zPc7mxkiBj0tIJTW/JxjpdVyWdL9VSu+3cJLwxuii+RfHTPcn40jDhQLc2J/OIlG//bPuB
-	mpbn5cuHuMULKXf7ZTxAjBtQnoQOXB6oeGHDbzyh+b3givF2do78QNtPZwU8yZSwMUZfXK
-	J1OAau0br+YYtG+KlFU44RL+2Gowpbg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763997307; a=rsa-sha256;
-	cv=none;
-	b=QBJdInJKGhcr+zcoXtBojx31TABYSAfB0SiOMHW8VZ+/fncDvC8Cpof644AvFOkEOiYUBd
-	5wCnAIwY7jwpQP0DQJeOoBMz8Rv2tQhKUihpA4o+d/nsDvyB8Z3AzIBSSxz+MwZaJOA5Tq
-	uTi3F0nTulTquNFhpnaS4QjUU8sQO1A=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PRPIXdih8k6b+GWhTjSlpe/wu57YRmAOXyA7GndW1VU=;
+	b=Okcx6455/Uz4gIyB++a7csTYsx3MCwTO0r2RHiWVMosUJupCor4JpGE12wVle9Tv+l9GqO
+	SgrHNYmnq0gZeU4hxQThWLJK+3zWrUXNXy6SjgL+EgdUh5U9hgOHWI6xH9QTujFqOnTEMr
+	J+cdL7GT4BhP9ikpLgFszzYfcoeEaY4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	none
-Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D7021305FE;
-	Mon, 24 Nov 2025 15:15:06 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf16.hostedemail.com (Postfix) with ESMTPA id 916DB2001C;
-	Mon, 24 Nov 2025 15:15:04 +0000 (UTC)
-Date: Mon, 24 Nov 2025 10:15:45 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 12/12] mm/damon/core: add trace point for damos stat
- per apply interval
-Message-ID: <20251124101545.0250445c@gandalf.local.home>
-In-Reply-To: <20251123184329.85287-13-sj@kernel.org>
-References: <20251123184329.85287-1-sj@kernel.org>
-	<20251123184329.85287-13-sj@kernel.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u2liEfUn;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763997524; a=rsa-sha256;
+	cv=none;
+	b=lQAIMNAilMB5GIp8s8kIE2uYQ0j1uoR8E4so4TiRCQbQNDqqpP2sEVBg6hfkL/wUZITfM5
+	4beK1pGu4CvH0FpCArcrCgKVzsmhrJYICxhs+b0m95bZ136lO+FV88PoXBIxGarrWRrh/k
+	S3ymeTpvaUekN1SNzHB45xxd+yrrkCY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0208A60051;
+	Mon, 24 Nov 2025 15:18:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACCFC4CEF1;
+	Mon, 24 Nov 2025 15:18:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763997523;
+	bh=vdaVyZMAiIluQBulvS0o8xmpluVa2GUlqU3Na3bO7RM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=u2liEfUnaoAHwjJ2YtNML+mD+vnHhy8eX+Pr8pZMLZwwnqMe2KGe36hyrljDmxttb
+	 ekftnjQgkCblI1/2l/fw/F/M1Bs01N2Roen+57dPUoQIlseF46svsdt+BmoyjgTKfO
+	 IKeFOzfpR4BT7NGIvmVhKQf6DtKYV5w/8Z8MG8tJLhGMGzOuUPS3vLNNvRDG/zxghZ
+	 GtJVgrl+25KN4uKX9BfqaCnUogie2T522IK6RG/GWtDuhSNTmYBcGcQjyIjUtFS0/H
+	 r8omuK+D/KcKRTpre8t9ovp3/owsEN1zmTzR++WEpxZGZzW+kVFAgfZYjPjCJMv4gX
+	 grd/9IJVkNw8Q==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
+  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
+  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
+  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
+  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
+  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
+  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
+Subject: Re: [PATCH v7 09/22] MAINTAINERS: add liveupdate entry
+In-Reply-To: <20251122222351.1059049-10-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Sat, 22 Nov 2025 17:23:36 -0500")
+References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
+	<20251122222351.1059049-10-pasha.tatashin@soleen.com>
+Date: Mon, 24 Nov 2025 16:18:33 +0100
+Message-ID: <mafs0y0nvxxva.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18mhiH+8yhU3rLNz0uC4XgLk5UTtfo2JA0=
-X-HE-Meta: U2FsdGVkX1+nRZEW3e6XwJCJw6tJDlTKHwyHh7MykKmgcEJOcruyi41RFB+KBqDeklnJ8td/Dao+47YI27tMFW18xY7bwX7sLkzK1IIT689x9RsrYeGaP3UUFuTL04sSMlYXa+Ce41PehX79Q2WGOMbgNtPvvxOoMp44prXMClJZ/utaM5/rtQ+wkE6fnJrcCI9aEnee8FIgEtEENWxsH5teOKLh3CVKGD/PL3jKQqaWrRw7umcNDuXejN0GQqre+e1tsMIxI05twQiF+lCh0mdon2sr4k8AasnaZvGoSJwdgQPnGF5WkCU20LW7Ab7EQAjo9K9647YCoQYb7jX9ckSn+MjKVbGw
-X-Stat-Signature: amgdopewak89z9b311nn95u1tetxutom
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 9E63F4000A
+X-Stat-Signature: jeqnjquxgzzukepgqf6dniqbar8uctsw
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ACDE5C001F
-X-Rspamd-Server: rspam10
-X-HE-Tag-Orig: 1763997304-799272
-X-HE-Tag: 1763997307-91139
-X-HE-Meta: U2FsdGVkX1/mARTz4+aCE4d6+Es4/gyTHzyhe+d53/wv9bK6/tIJt/qcGrTMiAXBSFAr1NIB3VRG0C5B+7jsjXIiDycL6R0assRlMpmcDIp02CUAyObz9w53xSQqMEPzK+LFmkE+KjA27FBqdO7fB8UBIWMJcqyayT9AoxDftI/pntr50iW1PSu7Xz+sduNEtYagdCCXJDPxQ9lKltAjHKR48BP5WrtFEU6nylmfyX//vhsh7HH7hhwf06cdg0n7OFGDwpbatMzVqOoxFuVAfaZ/kxK95FExjW0POHygHCJgy4+9AQ0NQgU1Phx2h4tsKi0ouESErHUzQqO67yVgtEzOF4udRhohhyn/o0YERS909uyXkgrkcm5ADoJZKNAXL55oRv6RaWxTpsnRTPp+9p9kzut0oOQIu9hPiY566Y/PHCZitZHKmqgPXG+CL+xOqO4lFhwJHHntjKnt6vddJUHU/9Sq+7XIcaWR/KDgc5aW+6wJmccmC70WTHE5SBUHS1wr7LxYwI8rY8+jJpA2ytcvV9oeVKxf8YKFSoT97jRxm+XZKEtjrxv1GlIKIF9kwWhGohoO/nYfm34tJrBnFYHdTwctK+1PU+KxsydZB7L0VCE59B5rl/knlPnaJ0i5/kU9XzD+koJVXcdH9dFIgsfT8fcD/r8eTeh+cGl9v6G2otXJ+BwrjT4uNNFeMI8LLDzAovNZ6yKAFKgYmIGsN5dAi0tSvqcRjZ7NpKhx0x7yUI+2r3upPnDoedz8j6RXvnoSs5MV7qWri7JBPKib4f5MRH3d2+AFoUr4PRVJq99hJG2DnaeQRa1miGRLHonU72ixbPNS2KMZ9dioRw5S7CGt1WAl+2t8exaC4RZdvDzjvw5arMbcfKPwcijyENqxJ0w7A0aKONVoEcniImLflTFr0/KW4M3WK+ltGTkBW6I=
+X-HE-Tag: 1763997524-151928
+X-HE-Meta: U2FsdGVkX19fOI56x6wLGitgiZ2Y3nCuUGLJaEoY7yZBysafugxP8WswJxjWZR1l71w29exzrR97dM5p3oNPL/smS2H69hVSJFnJ3XzgZ5VrfJRpx/Mi1FY2gvchwHOnQgZ7qQF9k5WI29b2utMx+lkMPhPCzXlEcEBwarCvHTVKd7NoCProlKN6S5pFLFbnSkv878bMHoBaQqaecIMy0BUBXrewPwAzkDsbOXCkTesPgqFEoPcWFfnet1+6/IUHv9YPhnBLjMNjZrPdNTvHbhNE9Ml5LoeUAQqnH3WAaSOiP7OW/j4tKp27RrUE3kxDF3hnG1WFLPVmU91aowb4K4bIy2phBSaHh+9Y5XizW9fV4WXhcY5zx1MqzjifFW1xNv1vz12UKSZlOPrwkVNduo9PLeELduPc1JcGAGumzL4FAjDEG8m4wMF04RNtgyvtsnHoqdFu1eyZksFq2bWnr4/vLbz2MhbKrnKvdHPa1EKBuQ6wEC5PReUPf5k5ewitonYnucci5ofeB+dxi6DHZkynasxrXooMkAZO2Y62TifkAcx0AEIDdMRwq3JDPYLVapNjEKtNBTJnOE/YzQAJ4ECbDJ3UueoU0Yu/MVssjWV35P6YV/yn6YQE6/qaoElQ5xUooXkZ6ylJpCyaaH5XyHy0czLwLMOVwzKWhy7PQUNOIWIgDwCiD6Ld2+nAvAUZB2Sn4+DKR0GAMOYjKdNV1DieSKZVGyjW4lSKlAP3KepYBhfMWYBK1Q8nrvakylU6u8yhIacB1Ucak9FROQ9Ht3t98HnprDC0o1KozERyB82tp1mLlU/pTZjdswwrP7Pwi2NKrka1URm7e3Z4ez4HS5NamMk/ItY1N5AGrVwYIP7nUMBwNsJghFIP5QHll5+MzN3ZtUpG/6QaqOtZ1wTF2+djB/wbBSvEJs26MC8JbX7VmQKE7/RZ+r8eI87+q/XduFeGBmLjmWbkoORVSo3
+ +e+IESla
+ zw9AoYaTh7hLX+LBzUYsncXrPFjMS5U1/qnnZYwyt9JM2NTyA5urjmCxjmQn4mFwGQy479SsEKDNhfP1s4VjyFNAv/bH3ZfajuhR5fqR1JDv/sxUIH+hL3HTwEmWh7xRxG66pPjILnCypBNmYhj7xREzhMR62sYckwqJ8vum36AGvSpWYJYEqjPTaeqO+ZmYxHQhTgMxPKWubQsV2K5aeF9AufNw1+cMkgn81sHkNmVwVtWk7fnvgvLIAkwkrZ7HXj5ZSkxiaxyRRq5JNxum+ZyojWHmX0VaoBOOMqjPSvfIuzuXS3vjR7cnE1Iu9A15WBaG7c/M5N73TXIcsy/jxL4RLKw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,77 +117,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 23 Nov 2025 10:43:26 -0800
-SeongJae Park <sj@kernel.org> wrote:
+On Sat, Nov 22 2025, Pasha Tatashin wrote:
 
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2256,6 +2256,19 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
->  	quota->min_score = score;
->  }
->  
-> +static void damos_trace_stat(struct damon_ctx *c, struct damos *s)
-> +{
-> +	unsigned int cidx = 0, sidx = 0;
-> +	struct damos *siter;
-> +
-> +	damon_for_each_scheme(siter, c) {
-> +		if (siter == s)
-> +			break;
-> +		sidx++;
-> +	}
-> +	trace_damos_stat_after_apply_interval(cidx, sidx, &s->stat);
-> +}
-> +
->  static void kdamond_apply_schemes(struct damon_ctx *c)
->  {
->  	struct damon_target *t;
-> @@ -2294,6 +2307,8 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
->  			(s->apply_interval_us ? s->apply_interval_us :
->  			 c->attrs.aggr_interval) / sample_interval;
->  		s->last_applied = NULL;
-> +		if (trace_damos_stat_after_apply_interval_enabled())
-> +			damos_trace_stat(c, s);
->  	}
->  	mutex_unlock(&c->walk_control_lock);
->  }
+> Add a MAINTAINERS file entry for the new Live Update Orchestrator
+> introduced in previous patches.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-I wonder if the above would look better (and still produce good assembly)
-if it was:
+[...]
 
-static inline void damos_trace_stat(struct damon_ctx *c, struct damos *s)
-{
-	unsigned int cidx = 0, sidx = 0;
-	struct damos *siter;
-
-	if (!trace_damos_stat_after_apply_interval_enabled())
-		return;
-
-	damon_for_each_scheme(siter, c) {
-		if (siter == s)
-			break;
-		sidx++;
-	}
-	trace_damos_stat_after_apply_interval(cidx, sidx, &s->stat);
-}
-
-static void kdamond_apply_schemes(struct damon_ctx *c)
-{
-	struct damon_target *t;
-> @@ -2294,6 +2307,8 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
-			(s->apply_interval_us ? s->apply_interval_us :
-			 c->attrs.aggr_interval) / sample_interval;
- 		s->last_applied = NULL;
-		damos_trace_stat(c, s);
-	}
-	mutex_unlock(&c->walk_control_lock);
-}
-
-
-I have no real preference. I just think keeping the "if ()" statement out
-of the main code as a more aesthetic look. But the above should be
-equivalent in actual functionality.
-
--- Steve
+-- 
+Regards,
+Pratyush Yadav
 
