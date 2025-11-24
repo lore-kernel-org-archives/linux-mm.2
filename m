@@ -4,96 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C99B7CFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:03:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31673CFD317
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 14:10:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E90D6B000A; Mon, 24 Nov 2025 09:03:03 -0500 (EST)
+	id 5BA386B0012; Mon, 24 Nov 2025 09:10:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299C06B000C; Mon, 24 Nov 2025 09:03:03 -0500 (EST)
+	id 591D06B0022; Mon, 24 Nov 2025 09:10:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AFAF6B0010; Mon, 24 Nov 2025 09:03:03 -0500 (EST)
+	id 4CE1C6B0024; Mon, 24 Nov 2025 09:10:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 071E26B000A
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:03:03 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5C7EDB84E5
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:03:00 +0000 (UTC)
-X-FDA: 84145666920.18.EDEDD63
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C9AF6B0012
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:10:05 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77379C0408
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:10:02 +0000 (UTC)
+X-FDA: 84145684644.30.3F4FB35
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7E75040002
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:02:58 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tk0B7VIl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763992978; a=rsa-sha256;
-	cv=none;
-	b=dCXyErLjqbO6XcnIyRfppSPeRACaKTQNICKQKe4rFt4D2V8+KNLNJH+FAuCYprLjFZHtp/
-	2XT2bAY5XRc8f91fohPH/mEEi9ZLA0HYlYeK7H9hE6QPDsc7/MNUNIlTAG/WZ+tC8vTctw
-	G9enyX+O1NRiDReoMs+fm4Hm+J1xBoU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tk0B7VIl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 852BC10000C
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:10:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fn+KCCRj;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763992978;
+	s=arc-20220608; t=1763993400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hrrhBEvBnsSAF7PLd01zY2WLon58h0T57emDhSOGsp0=;
-	b=p4BReORdsXgatkFFk8ajzFrMzZNji+iU5UXubjEJ/zc/bPgt3Z8wfGUZcX2aS3MV6qjw5D
-	ph158yjnmDyixV88UAPL18ARfI016PTUiVSrCss+qSE1r5XR55dsfGoDm1UsDUgOuFMJdC
-	RN/Nzhm5RivDl2m02Pq1wPGDLFATfMA=
+	bh=8G5fnunS4XtYzsuHwEAt2+VrWQNWQA1EjOphxoaxaK0=;
+	b=xmgU6QbctOmFqGNN2diXca6/x5iWsgq+9MMVdxQHQuq4zTfuN1vANV/uHSnMeoIFZUYUcF
+	hlq5en4atrmT0xvNelJrXnhcsbDqlaZtbLNMMMwGVQd4btUFpcMH25HsSLYxUySLwZvm1L
+	ls4goB4ZkXSAQRjC0N5vlqscuo+aBzc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763993400; a=rsa-sha256;
+	cv=none;
+	b=uuEejvuQ7Zc+nvyGUMinoWsqDdgJVjeChgn3c+BPFcsF6bOqhx9RvO6zhhFRgxb2eZePvI
+	Nbcyv+BWlif7GfseJWS6d+1OgKCJjcy3ZKTdLQH5E2RPtuizjzrJKl9w99igGd/vZ1dRfP
+	0YdZqeINPrLLB7umD4Z3dX0XhwyRako=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fn+KCCRj;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 69425441F0;
-	Mon, 24 Nov 2025 14:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255FBC4CEF1;
-	Mon, 24 Nov 2025 14:02:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8396A4195B;
+	Mon, 24 Nov 2025 14:09:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1F8C116C6;
+	Mon, 24 Nov 2025 14:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763992977;
-	bh=YqylCEeliEvlrC1kKw4Lw3JI+SCsfpARExAMAiItCrQ=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Tk0B7VIlEUDDN2U3FV4pUKTeQsuTqvT4R/mnOJ2XNo00BuWSlKlsxf1vc63Mbl1j+
-	 tl9lO2sIHAiPxITXujuPruVokMbX+TW8F1K2MLEETyo1PQomIyCT71jNp43MdSr7ii
-	 DsiY2IoMnfhvQ8qs4u6S88ewRv60/rfWkl+zMX7tz7jYsAdnAf4hqRF1RoGrHSIIv4
-	 LFBqPbdfWO9gRktjIkr+weNioG4P7IXJO8N6A/L+VWxZUJBMtcVI6L2dQf0Fqdg9a3
-	 bEeI8vd8tI36SgIpIWy3UdqbRkYks3Vng4EsuztKrjfNmZCm13/fJr7/JSnwFNXvyp
-	 wPtrQFAItlUrA==
-Message-ID: <ff7b2ca9-d4d7-41b3-acd8-2d90294e59cd@kernel.org>
-Date: Mon, 24 Nov 2025 15:02:51 +0100
+	s=k20201202; t=1763993399;
+	bh=TWEkufK+gYKT1sSMXcHmAUd4hn/Rf+NblbWiRzqjYXE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Fn+KCCRjb50rns8DRSbP5eHwsxgoY/Kml4PeEgcCJeD26M9vYXui7/aT7inSMbIxf
+	 YzKx3Oxi12/SHccP4zqiAZBpkawAjBIrdIq6ojtNJ3MqzZIZs/6LWUcWZiW8b0FuJE
+	 Ml+dVSCPPiz4nA0kHauPvd8caafMtHO4bKeEncACk6GoCcx0j21HPCEQRfm6P0giCM
+	 Ly/blKcvqn2emQo6jii0GCNdl30wtJ7h2LuC/4FBTV86yMpoaQeq2/Vb5EVoAwqxwk
+	 Ook4PMLPReVXf+dc0dSemeN/A7u7VMwVtjwjGYoNs7r8xWNS2kh156oqM6wjxrgdtJ
+	 4TjfjsfNIahLg==
+Message-ID: <886f8f49-f113-445f-8f1e-3cdaabf7b38d@kernel.org>
+Date: Mon, 24 Nov 2025 15:09:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/7] treewide: provide a generic clear_user_page()
- variant
+Subject: Re: [PATCH v5 08/12] mm: enable lazy_mmu sections to nest
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+ <20251124132228.622678-9-kevin.brodsky@arm.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org
-Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
- peterz@infradead.org, tglx@linutronix.de, willy@infradead.org,
- raghavendra.kt@amd.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20251121202352.494700-1-ankur.a.arora@oracle.com>
- <20251121202352.494700-2-ankur.a.arora@oracle.com>
- <189bc218-8f19-4686-b2ee-5ddc6a0b4684@kernel.org>
- <d3d68f78-bd76-4cf2-b20f-a0f7c838124a@kernel.org>
 Content-Language: en-US
-In-Reply-To: <d3d68f78-bd76-4cf2-b20f-a0f7c838124a@kernel.org>
+In-Reply-To: <20251124132228.622678-9-kevin.brodsky@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7E75040002
-X-Stat-Signature: 7hap7orzgsrcd6jjbaftjsfqtmwxjfsh
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763992978-66647
-X-HE-Meta: U2FsdGVkX1/XpOxSqJuOIGrBcFnOCxar3SpsQBOKQm54oFZrw9upQBGKWrBTpRaLHO3gVy2YckyKswn+X2orjt59too2pD66HRRtsVkEAl1nPiWqxhv41s0BQFAn8axZ13Ayw4pk555bxWoEouYCJ2RrKxlWJqs4tjJ49c37f3xnsiFmsBcZRRzmk9o9wKS5Z6/ochNpOuEloIFYOVFoTeavM4GNyyj2U7JN5j4NHsVBV1aWeIAG0PqpSTlvZAk7z0Ecy3O0A9K3PgpXRRI6BVgy/vnYk/6bmS2r6s+QnQpH/pZjYjc5qf+HUAuxQ45LxpdRtbYu8GLAEQvYRhiAwH/4KUqO1QAkookTorTD7Yia8TujXpvFyOlEU2VKFxQqWES+l1bdyz01SEV3IhyExqGfs4Jzoe9cZ0/r0XyOxAJ2fj38U/zSGQ218S9cNY6eQtDy3KJDILWmYLl7WJ9hagN1Lthxu9Ay8xce1HvmL5jp1BXcBFd3z8NIX7qKUU/Ah4Q/cJR31vneRZtBP5Urs4qGw2Nn7dpfMLphVdJyGBrw4UYrpy73ixGqOLG7fswdK2SoqH2xSGA2E+SwdWoeeMQj5cDYp/fYPwL/9lFZmArJHXRQ0/JHc1fasxoz+yNpUXosl0k3Q0bFeldwwRr2hiAJAIiFYefYeRHHTxO10O7I2NbQ16fuSXfbXGRccgisJAUNa2NruWyGU/hHnd1YcpR9p8hjeYTqSo/AxjdLrzMtnCseLNLDciEQ81wLl8MkBaLLLtOc1CpUoq+z6osIACxbWZBsPyZ3oLNEA9Ol+JjdXzK9LggaFft0ZovmEUG05bJXZzT0W85P32FoKZZHg80OzhXFV2lkl36IFFyjwWaHoh8WHAOloTAu7XPTCcF3PrlUt/KHWHXGVD/ehRQFGYV+KbERvxMx8epq6CI/NyaPKo1xLh4vWfBTUQLFcVG6tyfz3hNn0FJSP/HPjbv
- drf03eDZ
- wyG6pNKi53Jx/k9Mg7ueXmp4VzDC4Zb5vgZiqiS43y0KPSD1vy1AkkHthrVlM4lmmui/ZXSbS6QhidqfNAl2yvn2YWefIwsKg8E/tq0hBLH3BTavPAgTaB4ERYZagu6yI7Wnj/rJ7Af+3p6/XZSpoRw061VmO3G1MS+KOwv5N6d9K7gQ1Gs9eLxKFToMn4Lg4bHpaDhhBNdk67ZFMLU9lGUzMudK0z0RpvJ9IG/aWgyVuRMKcr6y239Q7zxzCzrle+XFKtffaTmoYzQVrPq4R6neWjnJ7gS0FhRsug+QS0WXMaopuO8aOvMLyVUOni5fgOf/2yxgJamtGHIEL3QPZy2PXa6mV+A7wXyLyeyar1MNddHQrPuYmmq09vJKTyq0GMrC+
+X-Rspamd-Queue-Id: 852BC10000C
+X-Stat-Signature: fqii78cbfrceb49ee3nmyiburj77g1i5
+X-HE-Tag: 1763993400-570545
+X-HE-Meta: U2FsdGVkX1/e5N+lsqIOKA/5w7dJZSMnrEHKSexs6GkfyvQqzxHV1r6yWPz8MRwusRYkzKTJCKYn0klwkxsByMdjVyAcXFVKRA4hAxv7cz+0/OmDeBXlM/abRlnOOXw+66IrK89f8fU7cx70Qw5yxXYNEJ5fxutuyU05Be+gyJ1K6cbgDz/Fs/qnDA7RhloRe148Tfc6JR60qgn4u072InshoRzO7Yilt4Cvq+GvKkUKlfnBMHDZoEkcpWetmFDjx9bVj8ZNKwg9GYrpQHjwmIMUsL/Qvt1D75UYHk2MHoiGWFTVcVaoBwBg059lZFW3TTioWubBai1cxXMdo8zuVF6apBqBEEE4G7fjEodmsYJoE0WuRu/ba+smkBJ1jjYKcYPCGinADo9xgHu3Z7HXTFEkljFfNZBaOsdLgUpyC3adRocmfVJSbgufE3zZ7vuAsWA4rfqxMKsy3CxWJe7dyUL0bSeZ7gRbgbNkKjcWTpSHZXGsHOBPulTYO7UMNED0sWdcL4A6uC9AMpsFxzhXRHlEMIeEs+XBYR9iszYGXFYFFjuNdIq2gm9Al55LvhfNH3Csk3UN3Wo2HXwHsg2a7/OnU5+FIxY7xDDzj5KR+gGbnAfHuT+GWmDhAwgmCExw2dlx3DeGhAlEwxUeGxz8v+NHiKdQpjcRDWhF4qh57s8Vei2rddOQNbhvmeXkjY1R9NkLYLs3h8m8UO43QC0J/1dwDim/ENRn7vU5PJ9qzISo6kCQI1/HdHnj8MTlPv7dBIwyq4EmhBiN4vfPBeqzGCH3BpebXoG6OTpYc0zB6GabDJl5dH2HmVhE3sDc/ms/VjL7dLqS/OBuMBEDGpDGDcyqkqx+JnP2Nju4uzaihgSa5kp/RO356TQGhc3I+ZBaAtw0fBZjAzpfi3wqsGUnnD9ZqaHieiTtYooT+HAD06Lj3SQwZdpjU53IrXO6tjazjavylzQNUbX5TuQe82q
+ ck7veKch
+ ch4AOFjEb/W4xGdAQeithN7Bd+b5dgsrBwR1Vy4YqyaXhAPzVQAzs/LP/s9CHVjJi1QdqaSAvLHRlGvu8dHgQ7Hjq3DiDTfWxfdSh6c2gmOBG3hAYmsVBqez0kAvz25V7AfsFux4jgrqNDZOEtewDb4mZh1IOF2O6M2Fom243lME/rVknq7rzEtmyMRsyU/G5nt34TEsMzzCyapwYP+Hp9/a5i0A0dqSFztvEax5eLjpni9wnWlpYgduUnCvfoCFJqMRLNpFh4BL6qWpiIQStAscveNs6/JGt907l8Xs2VufaKpyXcRd5m2aYSCetwUQXaKGHgUxfZrUe2R+aVPWblLCJ+vQ9m3iwTyK5jxmRG1Vv9Ke7HmXi+erIdp6kvbF60yEycZiBmi8mQcqWtXaWq4Z0TdEbrFbUCYU9btAS9pFxC317MVPocOuTAHHkmuloslFcIlKfDF1W3fG24nZVELmQRsMWAr5lQ8vpiW2nx9Ds7gg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,82 +117,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/24/25 11:17, David Hildenbrand (Red Hat) wrote:
-> On 11/23/25 12:53, Christophe Leroy (CS GROUP) wrote:
->>
->>
->> Le 21/11/2025 à 21:23, Ankur Arora a écrit :
->>> From: David Hildenbrand <david@redhat.com>
->>>
->>> Let's drop all variants that effectively map to clear_page() and
->>> provide it in a generic variant instead.
->>>
->>> We'll use the macro clear_user_page to indicate whether an architecture
->>> provides it's own variant.
->>>
->>> We have to be a bit careful if an architecture provides a custom
->>> clear_user_highpage(), because then it's very likely that some special
->>> flushing magic is happening behind the scenes.
->>>
->>> Maybe at some point these should be CONFIG_ options.
->>>
->>> Note that for parisc, clear_page() and clear_user_page() map to
->>> clear_page_asm(), so we can just get rid of the custom clear_user_page()
->>> implementation. There is a clear_user_page_asm() function on parisc,
->>> that seems to be unused. Not sure what's up with that.
->>>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
->>
->> ...
->>
->>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>> index 7c79b3369b82..6fa6c188f99a 100644
->>> --- a/include/linux/mm.h
->>> +++ b/include/linux/mm.h
->>> @@ -3879,6 +3879,28 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
->>>     				unsigned int order) {}
->>>     #endif	/* CONFIG_DEBUG_PAGEALLOC */
->>>     
->>> +#ifndef clear_user_page
->>> +/**
->>> + * clear_user_page() - clear a page to be mapped to user space
->>> + * @addr: the address of the page
->>> + * @vaddr: the address of the user mapping
->>> + * @page: the page
->>> + */
->>> +static inline void clear_user_page(void *addr, unsigned long vaddr, struct page *page)
->>> +{
->>> +#ifdef clear_user_highpage
->>> +	/*
->>> +	 * If an architecture defines its own clear_user_highpage() variant,
->>> +	 * then we have to be a bit more careful here and cannot simply
->>> +	 * rely on clear_page().
->>> +	 */
->>> +	clear_user_highpage(page, vaddr);
->>> +#else
->>> +	clear_page(addr);
->>> +#endif
->>> +}
->>> +#endif
->>> +
->>>     #ifdef __HAVE_ARCH_GATE_AREA
->>>     extern struct vm_area_struct *get_gate_vma(struct mm_struct *mm);
->>>     extern int in_gate_area_no_mm(unsigned long addr);
->>
->>
->> Isn't it chicken and egg with clear_user_highpage() in linux/highmem.h ? :
+On 11/24/25 14:22, Kevin Brodsky wrote:
+> Despite recent efforts to prevent lazy_mmu sections from nesting, it
+> remains difficult to ensure that it never occurs - and in fact it
+> does occur on arm64 in certain situations (CONFIG_DEBUG_PAGEALLOC).
+> Commit 1ef3095b1405 ("arm64/mm: Permit lazy_mmu_mode to be nested")
+> made nesting tolerable on arm64, but without truly supporting it:
+> the inner call to leave() disables the batching optimisation before
+> the outer section ends.
 > 
-> No really, because we make use of clear_user_highpage() only when the
-> arch defines it, so the highmem.h variant is ignored?
+> This patch actually enables lazy_mmu sections to nest by tracking
+> the nesting level in task_struct, in a similar fashion to e.g.
+> pagefault_{enable,disable}(). This is fully handled by the generic
+> lazy_mmu helpers that were recently introduced.
 > 
-> Not that I particularly enjoy this way of handling it, so something
-> cleaner would be nice :)
+> lazy_mmu sections were not initially intended to nest, so we need to
+> clarify the semantics w.r.t. the arch_*_lazy_mmu_mode() callbacks.
+> This patch takes the following approach:
 > 
-> (in particular, relying on highmem.h defines in mm.h is a bit suboptimal)
+> * The outermost calls to lazy_mmu_mode_{enable,disable}() trigger
+>    calls to arch_{enter,leave}_lazy_mmu_mode() - this is unchanged.
+> 
+> * Nested calls to lazy_mmu_mode_{enable,disable}() are not forwarded
+>    to the arch via arch_{enter,leave} - lazy MMU remains enabled so
+>    the assumption is that these callbacks are not relevant. However,
+>    existing code may rely on a call to disable() to flush any batched
+>    state, regardless of nesting. arch_flush_lazy_mmu_mode() is
+>    therefore called in that situation.
+> 
+> A separate interface was recently introduced to temporarily pause
+> the lazy MMU mode: lazy_mmu_mode_{pause,resume}(). pause() fully
+> exits the mode *regardless of the nesting level*, and resume()
+> restores the mode at the same nesting level.
+> 
+> pause()/resume() are themselves allowed to nest, so we actually
+> store two nesting levels in task_struct: enable_count and
+> pause_count. A new helper in_lazy_mmu_mode() is introduced to
+> determine whether we are currently in lazy MMU mode; this will be
+> used in subsequent patches to replace the various ways arch's
+> currently track whether the mode is enabled.
+> 
+> In summary (enable/pause represent the values *after* the call):
+> 
+> lazy_mmu_mode_enable()		-> arch_enter()	    enable=1 pause=0
+>      lazy_mmu_mode_enable()	-> ø		    enable=2 pause=0
+> 	lazy_mmu_mode_pause()	-> arch_leave()     enable=2 pause=1
+> 	lazy_mmu_mode_resume()	-> arch_enter()     enable=2 pause=0
+>      lazy_mmu_mode_disable()	-> arch_flush()     enable=1 pause=0
+> lazy_mmu_mode_disable()		-> arch_leave()     enable=0 pause=0
+> 
+> Note: in_lazy_mmu_mode() is added to <linux/sched.h> to allow arch
+> headers included by <linux/pgtable.h> to use it.
+> 
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
-Correction: there is no highmem.h dependency, as clear_user_highpage() 
-comes directly from the architecture helpers in page.h
+Nothing jumped at me, so
+
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+
+Hoping we can get some more eyes to have a look.
 
 -- 
 Cheers
