@@ -4,107 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D79FCFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:12:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5A4BCFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:16:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D50CE6B002D; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
+	id 4A7146B0022; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D28866B002E; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
+	id 4574B6B0023; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C65A96B002F; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
+	id 392F36B002A; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B55AC6B002D
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:12:24 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50BD088765
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:12:24 +0000 (UTC)
-X-FDA: 84145993008.25.2F5B91F
-Received: from sender3-of-o55.zoho.com (sender3-of-o55.zoho.com [136.143.184.55])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5192CC0014
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:12:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=KZNv80RP;
-	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf10.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.55 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764000742;
+	by kanga.kvack.org (Postfix) with ESMTP id 2754C6B0022
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:16:04 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E71FA13ACCB
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:16:03 +0000 (UTC)
+X-FDA: 84146002206.29.316F034
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0DA3916001A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:16:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=igl0mxAp;
+	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764000962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2EdBP1XqtHyMX0ny76Q3jYc9Yy634St8QHi/DxGItwc=;
-	b=Ss/Vc+65feOAd7mJUahCjmNJBJmNj1drBHDGN1BeQvllgiQ05ugwY7i93sA+7Ty4sXnS2L
-	jO/QikZHxicG0I4XuMVV6iATQxkkq4CODoKAuulZh294PHJa1yJtSNZh3/0sN5p9i9gcwX
-	4wvuvocWze0Bg+BVeR2yZ7k6B9OPZys=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764000742; a=rsa-sha256;
-	cv=pass;
-	b=V6M1hTrrXNjwx0wt9gAUycjJcfGMFecV/9XNc0i5G26ViB/myPxWbd25clRqBi+nuWMWmU
-	AidpUpFeoIqnPG81bzwiMf9Mb28PXgm6TAApfNvf8YSSoM80Mb01FCNp2JNUOSHh+kRz8a
-	Kgq4VJjhfIuCHlrbK9sxgNwEH/nsnnc=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=KZNv80RP;
-	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf10.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.55 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
-ARC-Seal: i=1; a=rsa-sha256; t=1764000723; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=BzIOdzUKWIkEnzY4GTl/s/ksHKbba/ShARt1e1tdNJDhv0l7qMdLtYTcOb2BmOJ4cMeDoah5ZeoYE1wYLSCvvYnXx74NhcOvjr+Q+RbeijxeOaxOxyP0HFZg41a9Tb2r2PX938w7TdCr251I2DZ69cbL5JaknYH6h4ttSsAaa/8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764000723; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2EdBP1XqtHyMX0ny76Q3jYc9Yy634St8QHi/DxGItwc=; 
-	b=BST2ERv9kICJH/q1jmISFupc+RtXfVan8G9WrPBVwAmmMdLA1JsA8Q+OvROrOKXhsAl4fGfaOQ7ZfeJ5eofsr/ViNo3ZWT5nmzo1NYGBx0sRfIVOgmcq3stO8tAzcH/tjz1AA/vbHOprtr49IjN5lYQB3PxdSXrzyQKk9QvG7ow=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=mpiricsoftware.com;
-	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764000723;
-	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=2EdBP1XqtHyMX0ny76Q3jYc9Yy634St8QHi/DxGItwc=;
-	b=KZNv80RPi7uab3yqYDUczxIMtzB7tzKMHePs8oKMJ2gt5KiRFmjaFy9AjEUz463M
-	WILnT+o+kElPzxUxP7NYe55mVQ719+s8D/3rpUbdvUY2IMTIq4Wbtgoom34KDCb7wQG
-	kyUpmU8e+S/q4AxGoyB6XhhqkE49WJ+oFUu/Z184=
-Received: by mx.zohomail.com with SMTPS id 176400071990975.64503086294087;
-	Mon, 24 Nov 2025 08:11:59 -0800 (PST)
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
-To: linux-mm@kvack.org,
-	dev.jain@arm.com,
-	david@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com,
-	akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	janak@mpiricsoftware.com,
-	shardul.b@mpiricsoftware.com,
-	shardulsb08@gmail.com
-Subject: [PATCH v2] mm: khugepaged: fix memory leak in collapse_file xas retry loop
-Date: Mon, 24 Nov 2025 21:41:49 +0530
-Message-Id: <20251124161149.1302507-1-shardul.b@mpiricsoftware.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <703387c8908a609c3de966574dfcf481c5a97216.camel@mpiricsoftware.com>
-References: <703387c8908a609c3de966574dfcf481c5a97216.camel@mpiricsoftware.com>
+	bh=6beLxcxpvJofFupu+Pp8rnFaBGMhE6ymVXBxzN7ScaU=;
+	b=D+eYgvcDuB2cUvJoWtOHiicTPeTz/Pr3hzLFAA/zsGvzpyWYgpa0BRE3br9Z56gktLe/Pk
+	xdS1F55V2WstWXeBLxTmFG0IN1CT3SR0AZmL8IBslA9ugGplWuQ5G1yrUyxiWneGaxchU/
+	Pc7yJVZ6eF42TD0hOf7LHgQZySqeTek=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=igl0mxAp;
+	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764000962; a=rsa-sha256;
+	cv=none;
+	b=vQbFg70HdwC8vOKsDahg1vvGiVhEkuJwL+n6BaNvhUycN0ZaZKdmW/9fpgEWeb7WWyVFAF
+	9VwqK5C+Kym1ylzcoLFmn4ki17dwJjEfMZJEybsmeU/W9J53h0xbx51mIeZ2jF03z/1BD9
+	jbsJk1PNdlG16vOpGOBb6Aoyi421MXE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=6beLxcxpvJofFupu+Pp8rnFaBGMhE6ymVXBxzN7ScaU=; b=igl0mxApDDmV2CGkLDpRPW/MOV
+	lUKY9WvBVk+fufApJzqDbEXQf5rEr6so61OrNktZy34q14BqvRZ6+jM7Jqg2URrAin2LY2s4DO3+a
+	XgF2W3630wCBBVsBuZ/1tqr7rne6tvArqQzkYx3+uCBd/7/K88Gnb6Gexrq/6lnMWarSEjSrwPLEK
+	vHmO4j9kSVFRVa2ao2P1zVEPPTxOqhWAnby34t4Dm26QSHWpslL8zfaTbeFjuxR162JXEagBqnKrG
+	CctHhxiKkXHm9pXkUgY2/Vw4NdrkNr1VMIpkh3FRdONuEXNDNJ/FqHFaZHzhug/C1K7OynWOaxEM/
+	4Rc4Ywmg==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1vNZCu-0000000085j-0CbX;
+	Mon, 24 Nov 2025 11:14:29 -0500
+Message-ID: <340fd55d9d7d9436f18205bb458e9bd469b36c6c.camel@surriel.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song
+ <kasong@tencent.com>,  Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,  Barry Song
+ <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, Chengming Zhou	
+ <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, 	pratmal@google.com, sweettea@google.com,
+ gthelen@google.com, weixugc@google.com
+Date: Mon, 24 Nov 2025 11:14:29 -0500
+In-Reply-To: <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
+	 <20251121114011.GA71307@cmpxchg.org>
+	 <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Stat-Signature: qmsp9awqpkyqpnn4quuf31pegrms9rq6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0DA3916001A
+X-Stat-Signature: yd1gcnww814ck7h1utpa3we1utaxcg93
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5192CC0014
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1764000742-708100
-X-HE-Meta: U2FsdGVkX1/O6fowKlG/QAF5e5mLLbJMlE3cQiEb1vvsgdMUPmAd0ItYxYsOYHh1ORFBVjVuzFxM2hBs9pQYIk2Lt+Zk7uhiAhmnZ9S517UmRctxnFL0wFNZBnvJQxrNMaeDQzCF8f4Xzstd8y1KxKPOQUAL1gkwfef0E9PBMC1SLhZmjt5xB284bHBZ5SfHn9Xi9Dtw+F+DP8bkh++BXinQ2XW5WT4aA78adIfbS783PlwmD0SQn66lgcVi8UnKFff5m6ZCAbJFWc4d07Jm8TXUnELUXFYpIdhlEmAsELZTSGfk17nnrApJdUK7bPTZxv/O5xrAj8Y+R7DYxR+6YcHNu3YaCX+rgu0OmebleE5Tu7VRFYYVsx5xLDsNdez8ZWS+j0YjdZXqkThp6Yy9CYVPnNOW04TEEr7BPAdakcoNQDmUMKXQa7vB98VKGkGdm2uqs6gzzNOfWxR2jy7th6eziUnybn57jaqAW0IGZR3T6f3TBjYHH307HhOveWMRLYEwP4ldHoFD2mGgIWi64/n9QFkFhoawu3GAOu/Vxnr+WWUoYImbAXmgn+jn8xWnrJntl+/n5ts5v0qyu2spwMJFX3gkn+Szxfu8jB92UDVAoGPkA6u1Vdi+0m4jnMqxHekH4VzsEkUlpQxx8ydWxwCYt19nMQkvGSBV18TgF/DxgTTsNpLP/PWesVsX5Wb1INlr0sFjVED6lux9RwbuXeBMLjAC0SfIorIekQvMhq2OFbRJg7JWc3Ba48hlnM15yLA9wDY8IAuCTvB5YM0paSEXD2Rbsvc61PMWjL12GCMJbB4FlsE2ToSQcejzTkYVqni9HCjtZTXzMkIkF7aTf4TD7pkWWl/M7VieoQqvsaeq6YzGVt3iQWqFh0pnXktk8F3890KbSoFb6urq9Ypq+RhnBVkZsEesr3+iswAr0bbWKoFencCwTS+l7GtIudYQLrpUHKpqsT2EqS3CBiz
- BrYOKUsR
- sD+IMq0Cttg8TIxjUKn8vuZnrwUHqA2c4vjboT8aP5KGRGqywlojJm1navsU6zLDLqMONSAQSELl32SBcpRf9EJqZkIXY/BkieBWzWVd0nSOYj8wJzvWLC0Jq7yVflNlpdmhCR0EKqv8mwqHeHaPbvMFi1KOwAjHM3l/ppJz8nC3e/mFPH2Wj5St4WfK7p13IK5cmSewKToDttBDNjrmroCbIhoWAoTl+AfesQNTOMQGdHu2HD1PUdeY4x2S2ZBCH7264AqKuUDNPQtsShC55lssVgAcx2l2BCyB6fDjrxb3QX2ytB6vTtNede1KCB7tkEsWgRjx8Fw+irakXPMyC/bGJExJ3KHbbx3HySoAzp+vC9/LfAQ8muBHDJwSFCDsKcnRAluiWkl1FLLQ7B1DWrj2ruDQNowJEv0r3NLorrahrPMF+0Ggkrz0rqlxSN6J37WXB/8d3+SrvYLDnbMs3AsrFjDhIHghpqzS8H0iR3tjHqt4DtBWaXJAcgEi2yqhri7PEKoNjjhHX7hcZLKmY8GnBVw5geKAJJkcp
+X-HE-Tag: 1764000960-413032
+X-HE-Meta: U2FsdGVkX18tBNs4q5rfuBn5d/JvrrG1WKpI28HpNhiD5dpIAsfeUvur7thLs8aTcDXsbn5vmvS4S+O8VIwwKS1b0vha9bk2cmzwd9pQWXBS++W4lHNDRCS5lSgPQnrWpeGuiwWuT0j9eiYC7cL0yp1EWoJnbjgzlx6KQOwL+HSn2bCx1cYdab4+Ybmkc1Ses+Iu53to9L4LNAKDRIUbo1SuDDVrv1wgHgb8ETDxsw+XU+BRcXv7WangG1YM6abL3owerjj6dnpBo6xcLgtsHXToC4LoHi7IPtj8h5UwlMI6YpGx3ZNax8yF6IgY2A3ApMqM6D8EPc4uSTLm+ngnabxnjz+Ljr7bUgJdLKNHxhsVJ5v5b3l6MI2kjQZ2kmpYCMQ7NGzHCe5+XBQ6+Who+Oad1WC0FICLV5ydk3IBaefpPhkkrXgJa9gwypYaa8Qti0JS6+wI+k9rm+nfhRTWMSvPyADHLts4tuMBi3N694S92vKefnpbJKjfCfdxQ0xoR7aQ+5Co7oTgQ8XkimQqxmr5yzrW2rYzia2J03W95NtEK2ZYtwwbk3yNfTwosgGPypufzd3Ehz5qBNXMZOehiv3199OP4dE6eJq9xJ0IP3asf53K0g9ugeGuYEUvCfd0maejWGrQqrzjVp7LXd0SocajU22XczvQtk5BqnbB+vnZ2lD1g41tiCq2rtCi3RhiesoZpcaAzhOfT3q8sMCn2st8VBacL7TIRw+LNMH3wHxYbAiiwd9Io4gHU56eTIO7ngQF8J/5LTKJ3HKZKq6er9Ecu6Bs2OTdZEwdfGYob2YvdM5SeFxE2/xuVdoY/+u0DjAig3bKkUXk5VCusbM1FKDf6a8uQ83BihGT06Zpv+McBiqObbTnZC4Hda1XOaTjlmkd/OQA87HHY/XL8mB1GEpQY4XuuPGD8VzdbcjR+t6fc3kdOuTCpJ4aAv+IPB3bKbBLVLv1ET+Lm9s/RtF
+ UFdzPen/
+ S7TahfBG7SdiDwkQkiEzBg0f59dn4wGJohOws6194nAgE032WAJ4NeCTyFoMuuLxuZJ6ysel8I19r/hQKW0EWgsnK2MXWZyBqngcKQHOPUsC0aum+7mVJB+aT0TpaNiOC8F/G71lVBcj2c8vlm5SpQc6UzL3CRn/h0ecTIiCyMJt3y5rEAgYOMjHUoKeMDWEWUHAW/70xf13h8bjQ+DxLpfcu85zDNjXnyLAWgq2Onm4CIlNaT/vcV0QQK7dqJXXxW2B3kqq2mIesbCv52ZaDWW5afQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,54 +127,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_file() uses xas_create_range() in a retry loop that calls
-xas_nomem() on -ENOMEM and then retries. xas_nomem() may allocate a
-spare xa_node and store it in xas->xa_alloc.
+On Fri, 2025-11-21 at 17:52 -0800, Chris Li wrote:
+> On Fri, Nov 21, 2025 at 3:40=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
+rg>
+> wrote:
+> >=20
+> >=20
+> > Zswap is primarily a compressed cache for real swap on secondary
+> > storage. It's indeed quite important that entries currently in
+> > zswap
+> > don't occupy disk slots; but for a solution to this to be
+> > acceptable,
+> > it has to work with the primary usecase and support disk writeback.
+>=20
+> Well, my plan is to support the writeback via swap.tiers.
+>=20
+How would you do writeback from a zswap entry in
+a ghost swapfile, to a real disk swap backend?
 
-If the lock is dropped after xas_nomem(), another thread can expand
-the xarray tree in the meantime. On the next retry, xas_create_range()
-can then succeed trivially without consuming the node stored in
-xas->xa_alloc. If we then either succeed or give up and go to the
-rollback path without calling xas_destroy(), that spare node leaks.
+That is the use case people are trying to solve.
 
-Fix this by calling xas_destroy(&xas) in both the success case
-(!xas_error(&xas)) and the failure case where xas_nomem() returns
-false and we abort. xas_destroy() will free any unused spare node in
-xas->xa_alloc and is a no-op if there is nothing left to free.
+How would your architecture address it?
 
-Link: https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
-Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
----
- v2:
- - Call xas_destroy() on both success and failure
- - Explained retry semantics and xa_alloc / concurrency risk
- - Dropped cleanup_empty_nodes from previous proposal
-
- mm/khugepaged.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index abe54f0043c7..0794a99c807f 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1872,11 +1872,14 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 	do {
- 		xas_lock_irq(&xas);
- 		xas_create_range(&xas);
--		if (!xas_error(&xas))
-+		if (!xas_error(&xas)) {
-+			xas_destroy(&xas);
- 			break;
-+		}
- 		xas_unlock_irq(&xas);
- 		if (!xas_nomem(&xas, GFP_KERNEL)) {
- 			result = SCAN_FAIL;
-+			xas_destroy(&xas);
- 			goto rollback;
- 		}
- 	} while (1);
--- 
-2.34.1
-
+--=20
+All Rights Reversed.
 
