@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99EEACFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:02:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD525CFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 16:09:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E3336B0006; Mon, 24 Nov 2025 11:02:11 -0500 (EST)
+	id 0A1056B0026; Mon, 24 Nov 2025 11:09:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9943F6B0007; Mon, 24 Nov 2025 11:02:11 -0500 (EST)
+	id 0792D6B002A; Mon, 24 Nov 2025 11:09:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 882BD6B000C; Mon, 24 Nov 2025 11:02:11 -0500 (EST)
+	id ED0086B002B; Mon, 24 Nov 2025 11:08:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 705786B0006
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:02:11 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4087989844
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:02:06 +0000 (UTC)
-X-FDA: 84145967052.05.D3D5DE6
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 44BFB1C0013
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:02:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CkFtIVDY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of smostafa@google.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=smostafa@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764000124; a=rsa-sha256;
-	cv=none;
-	b=8Fy8r4J31iG+aIa4MVw1/+VCdjL0e4cjSTQWWp0hUk+jtK+C0T5Hu1XJN1jDsiWmizrp/L
-	/AcUqkoBBDmOG5NyAtmti5mPCyC7xpBdPQozYCVM7y0+naEX9dFmVMaV4oJNHiPfi/Ok/0
-	NvgSRnjxX7Cr+i1KpT9K+VsDBSb6vSA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CkFtIVDY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of smostafa@google.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=smostafa@google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D23F96B0026
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:08:59 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E1F258CA9
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:08:59 +0000 (UTC)
+X-FDA: 84145984398.18.AC7C154
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C8D1910000D
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:08:57 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VALS34IF;
+	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764000124;
+	s=arc-20220608; t=1764000537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bLdELsThxmeB5YvfJC736dRFpSpC/jFiigw/6IO1T6A=;
-	b=1t6rFOy0zd8zlEr11VaXUmwkGloSgFN8LM1qR0trTdlibU4g1hgcadx1lFaoMKO+kFAcYT
-	f+87lCRPN4aiixEN6b/l+EmNtU/Y1jN8DomDqdvW+T2uAtjfUVzBEYv7XycrQNLyS/pfOg
-	idTrbCrYRuf1OgAHAyA0rfd2RtCShxA=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477a1c8cc47so112585e9.0
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:02:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764000122; x=1764604922; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=bLdELsThxmeB5YvfJC736dRFpSpC/jFiigw/6IO1T6A=;
-        b=CkFtIVDYDyY4jMpnaPn9FBo2alfbO2ZambpmH5l8sZy6J1lVR7Ls8KxFNiawy2BbjO
-         UlBDuFnj//dRh4sG7m6hEJnv5nXEqDWpDbqFyEwat0ouayrSY5lNcafSGiH7987/ICpa
-         MGoXcMgip81eJkD/hfk24qBU181y66tsNEOuHuzehIqFEP5UvymhXcUJIWX6M3PhFLWs
-         mGt5zPyAP2C1H4bZXG5o7PC2J+qCgKnLIXTo2c6XABmb3tffH612gRQ3WO0QFFOX8koo
-         WaApJe6IbHTfoNWXYddNa/fuM6QFZCRjWbmqW+h6guOKowJkGsp/w4hLDQ9jBo5i049X
-         AZ5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764000122; x=1764604922;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bLdELsThxmeB5YvfJC736dRFpSpC/jFiigw/6IO1T6A=;
-        b=xAQ/HfrER/hgYruAjuxEvUJ1nZfhfnuGOysLckgHagWMR8UedItFNqyaSGt+7sraO1
-         kiSUnFfTRX4Qq8H/1NF9zzyL7cIRfya6FTbvMNJLWZlEEvn6N5gWSWMO4E8SOj6KxBCF
-         iSPcULqurde01mAvsHu3xb/IRRFKPqnVPtxa+oNo7cS8cCVr5nE+eSCzdCsPuevhahHc
-         DyUuRetkJ/A2cKKk9rZbRamvfHH36NYBunp2rU/HgpjBrNqNeMRNgQCBxCo7XJheDrxU
-         q8gwJgIhZb43NTrnrgodUlQTcyVUOYu4To7qC8vCHueCtBs9+WTBA3D/l5EkvmfkdU0c
-         mQwg==
-X-Gm-Message-State: AOJu0YwahevlQC3inFHpHSQP3UerD0B+gx4jQd+d0CWzdQUB9KDYdSBJ
-	Y5Z7IHm9+bMjGrGTjwYSM3KjzEHYpRYgUSf8pblAmhwkGqAeSsMQOaO/U+U4TMeTHQ==
-X-Gm-Gg: ASbGnctCejF9eJWH3EjIvO04DVP7yF2hmlC0OiY0MAnDyDUR0rGJATcd2uiNCiY+dbI
-	AziRl7DK88cHh4GC3bQnVUiH48kXaOjoGXx+J0qGz+ulyopoN8KR9RP0fTu2IRD7m7fJSPyPmod
-	8zeRu52HoIUgP7RYKuoXqD5clVsW7Cz4mREnErBCjk1k/qgqtmLAjMDnbaGw49CIPlEe4seLI4r
-	6RNKsJseSAPKb1MjPCiy+m5TNogtRAfciYLgRdB4BnYPEQGQJrq6uAHsEyM0G282ZOVzfMnCAr3
-	qh98YzxBJehMqt4weFuN95IY9kc8bdkHAyNFKHdGDHdIsGzdCxf0Hd7x8wSr80QPCyPZXEQZe6n
-	1mEg/eC6IF5htqQpMbLKg43i+eCMOnANAE90cI9jYxPxOQOyWKCTzT2z51Bl65w+qil5iArds0f
-	KltRpXY3PN1dc/NwzNjgP/P4X6TxH6gxpBj9hKKfaH8vijHQZbMg==
-X-Google-Smtp-Source: AGHT+IF87Of2xq3NRiXHoW9YLLU17xS9MSG7Pyejbfo/XW5RRV/9hA3ItGRGycpv5nRxS4fk6hR8OA==
-X-Received: by 2002:a05:600c:888b:b0:477:73f4:26b with SMTP id 5b1f17b1804b1-477c5e8f119mr2244225e9.3.1764000122272;
-        Mon, 24 Nov 2025 08:02:02 -0800 (PST)
-Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf1e86b3sm239817465e9.6.2025.11.24.08.02.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 08:02:01 -0800 (PST)
-Date: Mon, 24 Nov 2025 16:01:58 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, Qinxin Xia <xiaqinxin@huawei.com>
-Subject: Re: [PATCH v2 3/4] drivers/iommu-debug-pagealloc: Track IOMMU pages
-Message-ID: <aSSBdu-P-E75-_iY@google.com>
-References: <20251106163953.1971067-1-smostafa@google.com>
- <20251106163953.1971067-4-smostafa@google.com>
- <aRW6Tf_G2ObR__vE@willie-the-truck>
- <aSRRizzS39jI3BjH@google.com>
- <aSR7U4pI_mYryFzh@willie-the-truck>
+	bh=f5lQkhkz6OWoOGD4pV4m1keUAERPOd0HtXnoXM4yTyY=;
+	b=rq6Aq9Cn3oNSLRN1rbZcInbspFtlxW19IbCo+TPS//pg0Q+6dJ0A2f0xG1/i2K2NSbt3yW
+	d2mzjTkmU8YuNqAdzBR4Sj/wvDYJde3np7S4j7sSP0l9OwelMPEzOWhAodXOxWG5+nqgdS
+	5Iokcm0rsaotYaXapXzyqUI/C7FK7Gk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VALS34IF;
+	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764000537; a=rsa-sha256;
+	cv=none;
+	b=rBH/3/ZWLyTkHMIpQW7FwziSsHhJmIYjFyVGT8cQWWnYM/eEe4SkqqAxKYZK2/k3nGCLpB
+	bsm5GmhPX6FDwjfevkQJiEjiUeD/EAZjiHyDIZiiRmacD+hC9IhKBsxOhiR9gy12k25yFK
+	i4hb85rDZhQO9k89MbCn8HHwq/UXfxQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 113F96016C;
+	Mon, 24 Nov 2025 16:08:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BEDC4CEF1;
+	Mon, 24 Nov 2025 16:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764000536;
+	bh=2BS6q8sZUqbRQw+PypR81r2K3Iad19CiwoNjOq57AjI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VALS34IFSLGOWzKE86Cz+sq9UEoIbMnxZQq4h9tfr4CJIeWiHQ64hsMoVXWxbvc8U
+	 00Xc44eBXLhsL6x7EFH8vOa14frtzrX7vHlruquxOIDCIgL+2VqkKK+qRjQFeh5CGy
+	 O7D8mXQugoT+sSfQ8SgGYWGo3dZfeeb3QYOlmC4rUd2dTQHKG5fLpEiakhxeUeXNOM
+	 ISlxlNvbvQGmb7/RUfmXXHVHnVOdwuisdsBKpn0PNaVang3tEmj7z5UpgBZXgrVPi/
+	 EX5ZCy0Kh2NKo8GqmhrfdOAkrJLvVJzDdgTbd8yTUtgqHTP24hJXiBN6iRhnH8AK9Z
+	 N5KwNyZnIKqjA==
+Date: Mon, 24 Nov 2025 17:08:52 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-man@vger.kernel.org, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] man/man2/mremap.2: fix incorrect reference to VM_MIXEDMAP
+Message-ID: <qxqyvoxrtv57wo6honuz765fe2ffjny3k2zpbo3w32wqgm3eeh@shgzoq6dy7ei>
+References: <20251121081609.52462-1-lorenzo.stoakes@oracle.com>
+ <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="suhmvda3b27n3t6q"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aSR7U4pI_mYryFzh@willie-the-truck>
-X-Rspamd-Queue-Id: 44BFB1C0013
-X-Rspamd-Server: rspam07
-X-Stat-Signature: h44xwbnwm6duq8w9ggnm8awbtmftx8x5
+In-Reply-To: <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C8D1910000D
+X-Stat-Signature: k8tcsqpghyypbx43twwfmbiap76c9ggj
 X-Rspam-User: 
-X-HE-Tag: 1764000123-505138
-X-HE-Meta: U2FsdGVkX19TcyvZe95RlhWT2X8KL2YS4+5adCqHLmmZJ1Y3n/3ffw2AJqLRZyTcfxYpAKQGKgY35vXO9B17OY9c7tgj8W67S78OnxcYJ+TCxGx1LKEcsNq7H+RfAjMzZCIUHf1/zuc2JiJ2aVXzs114wGg5Jz+RlncQcAms2WUVgjpKWYB1ob/Y/OhiziwIBytOE8utqH03Rh0MObb9P1L56qZ6CPcEKADavRs0UZVKjxQGhm2sYnMxVB4MNa96gtxVrH21OEmowow8D/5+qJXIq9qm22+bFyb3sH6xW9XtsEtOjfhjvFhHh/lKWObXXKX94DeCF5hjMD2WpsM9JKxP+fS7D9uPw//H5IMJo0rrMzuaiBUhjTvjAO38Hfds6ktal04X3Xa8NSqlR87adS5W+oB5sLGUQjcoWgnbvGrgo/2Fu/TIUeqqJkNUbWe12t1ytT6Fq+qM1AjTuX2uaErNld9GHrvzxJFy1KLIJ6VuAqTKZB/8l3RKT4k/BfsyIbtCxQW1rkfEKc01dIW7YlttTgQq+7+bBLliXOBGC8bSsSGkggUSU3GTF9SeoaUYPFbvs9S+bzJWl+19jq6reU2BzfhwJN+VGAoQYeB8tjM6AtyJIJUdMO7u7zo7h9QddprmnqiBFhB2L30Yob/soFl8n4OCCdkn4otFWT4T+KRda7WNiBnIhhRID23rG4bo9UDTP/IiikAfOLKOA80EwlKlyW1qttDC2dhYxhoJAZLE+KOy2YiMUFkgrphTqcx8H6XTOB20BnXZJ5uewlJdaU66ILNxycrPO0wtQV9SDbQMqpljRFpD57yoSaog3Ec/Xu2qNAAbBOkdw4y2FxDbZFbqlKua/rkMlfasqfwFJ+5nkMgng+LNKasC+fGTGOx4I0aubkDsEZszjjD5HVMyI29uJdgKKAJnrYUlh5RTDT8bCivMOwTXz4u3KH8s6rHSchKCmPhaGVGXVymZqHA
- 77iG6qxK
- 0+knsIxfcjJTGWwz68BhLVIjZqVuw1gX300xp8rBLJECPMgWkSElisStpphChHW/OB+cNyt6l7V0BmuHjf8BvRMs8s8PeEJIx8D7Ny78u8D50PV+DqXh5WAy8cy6zko5leL4UfRnvxFLfD7NvQBYmrIZIjRJtGmLvMeT9E7k8chhsJ9c5AJ3wyC3EdXuGdVyeea5DLql1dntAFou9NqfOo3W3vD1qNQOLgG8EUlnINBSc/v22vEbcwZ1U0xmjNAJMSnrs3/luOPubuVyMV6Qmc1xUqKL5DZ7pVCyRMLgeQqxN7PA/d3jskHlFugMk44PtxVl+OT2uNI5hsIq2VrY056QGQxB9iL/7gYBtngMlABo9U1M=
+X-HE-Tag: 1764000537-976363
+X-HE-Meta: U2FsdGVkX1+5PqS4Do4Eiv4ObhxQBpXF63760luwy1SqEWGj5jnSGYistOwcI4qVkI6u46ZvODhBe4y4MLHEd8+a4fKJLS9rThgio5+i/ClXgZrbEZh9AoUQt2gFKdbuQjxM87T514MeGGv4Anh7Jhu+8dQFTYUXZYWjSVNhjNJUxgh9V7hxbfV1IqQgHZRDoL7GN7kTWvf0zM4qyPCIWDKGXnMZA7A25+l+kgzz2/xUuqX8rjeE9vspf0Gws8j0gsR5yvema4yQCnP+Dwa0fd/tWadc3LVa5eYsXWuzUafqo5tqMIBJ+cs3bjhKMh5DeIflkxmi9ERD4FgBuOw1pblhuSKVLmOTjFIr8TaQ9PB0QbOh0fYfBCh6nKwvM6kLpSnmw3kjO/U+4bwd7CVewCfNkgnRGfMAlHTFkndioBp2TeMcjFfKj1U+8q/XsSqhslv5CobJCPiAT3ZfhG6d2uKuzLOzfKvwZcKu/92A2I3AjQiHZFY77hvpMQ9yc2iNYr+ssdhi5W2jWZvo30hLVwxkj0nly3ZD+G3Kj9KKntiwfU6NUcGV8x5ctXh8zjgNXEVnMNYyJ8Jtb5SqBHbog8ZssiCkJTpUUKGitAND74RXun5fnqfZs6TDco0qLfjIUCKbPyvlVcgR0Zv2XNq/ekhJeFIUHJRDqP8FS15ZPw+YL/fKzdZGCRU5P2HXOq0JKUT2CXP2Hv+DgpdIUlQXtiOpG10lM96ZRRh0/tjKEPLNnkBCtyQvKDyp99ahSbvDMGo0y6tBlbktuinvTsxht1c7svYvazbW3mt2TjJ69NvESU6oqp+LRjG/nlHB39/Wh8A3ovkuS+3D0jvJDugpLz4B705XMGuzFnPbg2//nk6W1FZZRP6ItMtyzVGgUZ5czjHhL7FZ1lm1x/E1hwve3CNY8YSCB17eDAcyDo84lFh0xQqgeuHzL94/K18Jg9s7wwlPnK9+oXCUT5Uqg4W
+ 7fxHRh78
+ EkK2brL3S51BC0UUKmKzRhg4Ud1Z5kxLJpTKiL/wxe8A/v8+0vOhzpR5U+s5+XGoPSLmmBCn7hnfdlw9QDtmcedtes8d5o22M4+lEdH0oqCw2S7Re8QZKXyaeHgN5ELYYlelBQYYTPHNYILv3WwV3aD6vSeuf2xUMContrMmvk5ZxgApkb5W2/XHwFQPvAXmk7JGMxNqjeAa6llk0y490LILe7RJR/u4zXq4lviHb0CyuWiC8hug8lminy+205yaCQ/gSrPQSt6BKYQvCMS5vHD/np/OXfAdlVtJrmIjMh+Uuyhp73funkALwlrvLKZQTrSHtQeG2WYfDtWqFqeU9YRxItuLE3CbMz7g3kzidqSUKNgZLpTpVA1XanDaMy2yK1rgmgohhOPhjKSwUWdNLtAJIDcPMun78HXcZtOABNDSdkC0veOlYEGYMcXbJ7mxFKhMoDKhPsz52d9Y41g/id8maW/MDhmCBFkqU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,76 +95,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 03:35:47PM +0000, Will Deacon wrote:
-> On Mon, Nov 24, 2025 at 12:37:31PM +0000, Mostafa Saleh wrote:
-> > On Thu, Nov 13, 2025 at 11:00:29AM +0000, Will Deacon wrote:
-> > > On Thu, Nov 06, 2025 at 04:39:52PM +0000, Mostafa Saleh wrote:
-> > > > Using the new calls, use an atomic refcount to track how many times
-> > > > a page is mapped in any of the IOMMUs.
-> > > > 
-> > > > For unmap we need to use iova_to_phys() to get the physical address
-> > > > of the pages.
-> > > > 
-> > > > We use the smallest supported page size as the granularity of tracking
-> > > > per domain.
-> > > > This is important as it possible to map pages and unmap them with
-> > > > larger sizes (as in map_sg()) cases.
-> > > > 
-> > > > Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> > > > Tested-by: Qinxin Xia <xiaqinxin@huawei.com>
-> > > > ---
-> > > >  drivers/iommu/iommu-debug-pagealloc.c | 74 +++++++++++++++++++++++++++
-> > > >  1 file changed, 74 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-> > > > index a6a2f844b09d..0e14104b971c 100644
-> > > > --- a/drivers/iommu/iommu-debug-pagealloc.c
-> > > > +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> > > > @@ -27,16 +27,90 @@ struct page_ext_operations page_iommu_debug_ops = {
-> > > >  	.need = need_iommu_debug,
-> > > >  };
-> > > >  
-> > > > +static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
-> > > > +{
-> > > > +	struct page *page = phys_to_page(phys);
-> > > > +	struct page_ext *page_ext = page_ext_get(page);
-> > > > +
-> > > > +	return page_ext;
-> > > > +}
-> > > > +
-> > > > +static struct iommu_debug_metadate *get_iommu_data(struct page_ext *page_ext)
-> > > > +{
-> > > > +	return page_ext_data(page_ext, &page_iommu_debug_ops);
-> > > > +}
-> > > > +
-> > > > +static void iommu_debug_inc_page(phys_addr_t phys)
-> > > > +{
-> > > > +	struct page_ext *page_ext = get_iommu_page_ext(phys);
-> > > > +	struct iommu_debug_metadate *d = get_iommu_data(page_ext);
-> > > > +
-> > > > +	WARN_ON(atomic_inc_return(&d->ref) <= 0);
-> > > 
-> > > Is it worth dumping some information about the page in addition to the
-> > > WARN_ON()? That way, you might be able to benefit from other debug
-> > > options (e.g. PAGE_OWNER) if they are enabled.
-> > 
-> > These WARN_ON are for overflows, which should never happen.
-> > I initially thought about using the refcount_t, but it didn’t seem
-> > suitable as refcount_add() expects that the refcount is already “1”
-> > indicating that an object was already created which doesn’t fit
-> > in the semantics of what this is. Similar for refcount_dec().
-> > 
-> > In the next patch there is a WARN_ON for the refcount check
-> > to capture the mis-behaving context, I will add a debug print with
-> > the leaked physical address in that case as this is the important one.
-> 
-> I was thinking specifically about calling dump_page_owner().
 
-I see, that makes sense.
+--suhmvda3b27n3t6q
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-man@vger.kernel.org, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] man/man2/mremap.2: fix incorrect reference to VM_MIXEDMAP
+Message-ID: <qxqyvoxrtv57wo6honuz765fe2ffjny3k2zpbo3w32wqgm3eeh@shgzoq6dy7ei>
+References: <20251121081609.52462-1-lorenzo.stoakes@oracle.com>
+ <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
+MIME-Version: 1.0
+In-Reply-To: <0a072ec0-6d9d-4cd3-82e2-9df55ecb9aa7@lucifer.local>
 
-Thanks,
-Mostafa
+Hi Lorenzo,
 
-> 
-> Will
+On Fri, Nov 21, 2025 at 08:20:12AM +0000, Lorenzo Stoakes wrote:
+> On Fri, Nov 21, 2025 at 08:16:09AM +0000, Lorenzo Stoakes wrote:
+> > We actually disallow VM_DONTEXPAND and VM_PFNMAP for VM_DONTUNMAP, the
+> > manpage incorrectly references VM_MIXEDMAP. Correct this.
+>=20
+> Of course I ironically typo'd here :)
+>=20
+> VM_DONTUNMAP -> MREMAP_DONTUNMAP
+>=20
+> :P
+
+:P
+
+> >
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
+Thanks!  I've applied the patch, with the amendment.  I've also added CC
+tags for all the people in CC.
+<https://www.alejandro-colomar.es/src/alx/linux/man-pages/man-pages.git/com=
+mit/?h=3Dcontrib&id=3D466c43360f3874a890e910610d4d01ea135d020c>
+(use port 80)
+
+
+Have a lovely day!
+Alex
+
+> > ---
+> >  man/man2/mremap.2 | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/man/man2/mremap.2 b/man/man2/mremap.2
+> > index 6a6df8601..cbe960f77 100644
+> > --- a/man/man2/mremap.2
+> > +++ b/man/man2/mremap.2
+> > @@ -206,7 +206,7 @@ The
+> >  flag can be used only with mappings that are not
+> >  .B VM_DONTEXPAND
+> >  or
+> > -.BR VM_MIXEDMAP .
+> > +.BR VM_PFNMAP .
+> >  Before Linux 5.13, the
+> >  .B MREMAP_DONTUNMAP
+> >  flag could be used only with private anonymous mappings
+> > --
+> > 2.51.2
+> >
+>=20
+> Cheers, Lorenzo
+
+--=20
+<https://www.alejandro-colomar.es>
+Use port 80 (that is, <...:80/>).
+
+--suhmvda3b27n3t6q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmkkgxQACgkQ64mZXMKQ
+wqlUZQ/9G8bz0/Tk9TsQUt2t30n9mdcLfS4up17YIY9gkiX5QOpFzYwQhDnb/2/l
+NFDJhdYmZRFMWXZTlTGjWm+QuFgJob20bC0nlaxmc5jutrJ88iaLsG8ROfOUG2z2
+zptzKOSQHCzpQLfOQbfcnTuo1dUCOflhML3ddH+Qyxq1+fGx2/BA//kePrz3FuKv
+bDOCVMI+Jgaf57aX7+UvgfHa9y7NL7O3EK5YLdHYetbQQiCb2+tkK8ZMKWRfjgAX
+QmKaxJg4zxaoOn2FsSVv1oc9f+mYwrrd55IQJFKJdR0UKz43KCtk5vX7WI2jMCpq
+oXZugSKohCAvPTHZ91E3EkmckRBpB4ushPvc0DulWslWfSMyEBMmFZpWEI1E0uss
+Shu+HRi9Vr1DJLOyGu1TTSYKlsc5FrjfLW5oUGfEkJlmjkxpnbO58vNLHTKs03C3
+JsedzI4LioADh3d/rAl/QVJjzh0IPz9SS+ptfrd6Ivs0/DcdaOPakqUs0hVKeAta
+VinIgeDKzOMBClqW6uqiegp7lPf9xxHkJWcWKHoehde8qLvR7QyEwmTcDgRatIEk
+LPGl/gHCZ/rBiBqB2Dp40y8lpk0xZWN/MKlqogMJi/InqBasHcdCLSmwbp1ZYRFF
+vqfebiU6TO54ToQT2EJ8DGfuQU/1htsj6FyIFuSGZ11hyXU24Kc=
+=AiEG
+-----END PGP SIGNATURE-----
+
+--suhmvda3b27n3t6q--
 
