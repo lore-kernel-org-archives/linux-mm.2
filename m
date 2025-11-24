@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F013CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 08:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F476CFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 09:14:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 320876B0010; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
+	id 07DFE6B0005; Mon, 24 Nov 2025 04:14:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D1846B0011; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
+	id 02E0E6B000C; Mon, 24 Nov 2025 04:14:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E7206B0023; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
+	id E858E6B000D; Mon, 24 Nov 2025 04:14:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A7A96B0010
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AF1001602AC
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:39:00 +0000 (UTC)
-X-FDA: 84144850440.10.F9D4F82
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D5314140005
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:38:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HWpQ5BFN;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CB8386B0005
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 04:14:29 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 76EEA12B06
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:14:29 +0000 (UTC)
+X-FDA: 84144939858.20.6C96240
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B44BF1A0008
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 09:14:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SXTQAuyF;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763973538;
+	s=arc-20220608; t=1763975667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=OPfCmvzgTU+aPxqkSD4RFKKGWwazVYBT6hCsnbEQ8Eo=;
-	b=JwTF61s+nAThFxpJdye+8D5+FpTiucehQutYDytwCfClX8O0yHxFk+3o3HRzLzU0AJon4H
-	/vJhIkkujcAlLvtixM9mkgC05Y3/wXsHH7fiiEPqZIOpy7i8mSLPOIn6Mv3CDPqURMOLiD
-	LGZBqTu4UHMbPTjJaWiw5Rb/W26k8TA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/ROY6aBOw929Q83XYj4b7NFHo90qFgIeel/XzUeKsxo=;
+	b=BpWZgoaPVqTgL1RoDp4L4GEPwViB1uGcjxmGNv/sSLsl70DGppLDT/YMHZ7AYd08ECwrcT
+	be+s28/sG9F3914v/MkZcqwYGFyxW3NgY2VuK7dHUA/R6e1zoxsqnoCvpUo3VmdlRT2kih
+	OlYcMZyQ4Jki+j9HAAYCrenCeRFy4yM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HWpQ5BFN;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763973538; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SXTQAuyF;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763975667; a=rsa-sha256;
 	cv=none;
-	b=h41s5hlyTOnYqjCABzu7YjiaqrmPRse6Crp6Xq2z8Fjl9mdBXyKOLAIxvTuUviWcQHKYda
-	NTAhDZZYuxHIuepsu7FUkqjuDEfHrd8q+N+8O4XgAuaeCSYZ6TXQwRMHueRReSo04d/ruu
-	g7xEWC8pwnwXih0T1MtMoEKWn+fUGQA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763973538; x=1795509538;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=2C5rVuGkFTaSM2Oen8imI1+CyKeXfsB65iGjm6mbxHc=;
-  b=HWpQ5BFNJi8g5C9k8rkWUkmoAVgCVvlVWrIAZCuhMd5WRqO+sWX0OXBH
-   17kgh86u6vOtKYKGbV/wFgg/le4wWmlRejYTco8T+G8kQTpLhYIySSBEJ
-   9UndV2jbTqn2yNtw9u0dHBV8xIWTMYAU4KZQYubmzrDymRKcKbcYFeSGd
-   XFVP/Ir2SzBZaigwc+uFVczzrPFhZqZpmmDaD6/k/0o1yEz+ttOxzzzX1
-   /SGwS6nuiApOL7eMVsFzdSqMgPEVSqLZvMtvzQxepiLGysRyDmIDziC0u
-   DCnA/VXohN4q4aU6awcR8AxnMvp9pihKqZmMpmlLVOLFtoxvHcSI3c8/+
-   g==;
-X-CSE-ConnectionGUID: uZELm+dAR2+MwdnzUZ/OHQ==
-X-CSE-MsgGUID: KDSGbQw6RPOSDB2iyciS4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="77329070"
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="77329070"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 00:38:56 -0800
-X-CSE-ConnectionGUID: iQyDMvd9T0Kh8ams8KetZw==
-X-CSE-MsgGUID: dCQFDI1aTq+/epFKcHcLTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="197391053"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 24 Nov 2025 00:38:55 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vNS60-000000000Wt-1wH5;
-	Mon, 24 Nov 2025 08:38:52 +0000
-Date: Mon, 24 Nov 2025 16:38:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: include/linux/compiler_types.h:572:38: error: call to
- '__compiletime_assert_596' declared with attribute error: BUILD_BUG_ON
- failed: IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT)
-Message-ID: <202511241637.BoBE5PKN-lkp@intel.com>
+	b=KugJ0WrXmYcjySBpluSBfYd64TKM1tApoLcIuKLOKZ+Tz4jDqUiOyysc7usrgqCI1ETnp4
+	JJ5ijdPiSVDlUTaN4/sFa9i4XsRmgcL5T7z9Ish6ZIa1qg//au0Rfcqirw1TxjsSuCIOH0
+	2fYu7lu1gt7uoiwRxwyp0mTC1U6BmQY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7766243745;
+	Mon, 24 Nov 2025 09:14:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E224C4CEF1;
+	Mon, 24 Nov 2025 09:14:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763975666;
+	bh=wSDWGmfP4BtDUejlk4PTmqLCNqx1SpwKuu1hUD0HOvU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SXTQAuyFjbWMPPMUqKkaSRAcMBq36NrPA0oqdoKXV3fmzIS0S5/925qLXowvn1G1N
+	 LmvyD0AgBJth3FQh5Pf3Jkus83C7+orgUi0zUXtZZ7OdQAt0O2fHIxicEJqoFHGtWE
+	 cIwrdVCDkCF1fTZoEpJAlCP+/BjQy5rjmgpQWtcbH2mnbIN5T4V+zff4nPCKgaqOnw
+	 daYuNsI0OnLuHFh74PqJ8HDn44rn4hFk3SwpiHiGOgfdlKs8TcEhA2VjxLi6doHSMb
+	 U9xBiGp0l48mhchI5b7QDw78Xq+VH9rv38U5BuWxJUOfwXmrvLpusVcTaE4K+iBM7I
+	 qYy/y6vfTU9Wg==
+Message-ID: <dfe192a8-4a88-407a-83c2-976d953a2227@kernel.org>
+Date: Mon, 24 Nov 2025 10:14:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D5314140005
-X-Stat-Signature: 7dggenadte4pr6y1gzkbmpmzsdfenada
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: Fix skipping of alloc sleep after second
+ failure
+To: Zhiheng Tao <junchuan.tzh@antgroup.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, shy828301@gmail.com,
+ zokeefe@google.com, peterx@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <1763965157-58413-1-git-send-email-junchuan.tzh@antgroup.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <1763965157-58413-1-git-send-email-junchuan.tzh@antgroup.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B44BF1A0008
+X-Stat-Signature: 7oijee65h4ndy6ajh9bx1if6gsneeo1o
 X-Rspam-User: 
-X-HE-Tag: 1763973537-344496
-X-HE-Meta: U2FsdGVkX1/uw+7P/MaggKoeUsdOuackH9RRX55WBHVYx0vP4nhKNAwSDKWCiX8nNtRmFccaB4W4z1GPTz3aujLMeO8IsqkHJUyjqdSrXGk0XVKx9O4EQpQEmwL4uKPj7F06oTp+iCID4Z5JK2rOnoMzeHtmCkKvCWxD/hcLiKQ9W4XQp2o8EUSyremzRVFNLyPcBR/e8nFSc5xfwycQG6gAt6IOPIQoUHXgymvghRuvjdtLy5CpYe8GuiYho9RhSjHTRmRvxLJqhbEQ8RWtCXTDZREWDPdB1zHlSl6dEeLZGb0v8UodXhQZGy2HavVPNABvsb6fTOqQJtsjOMf/4MovJ69AJYYhy7/tyIaleFIy9i9/gZmLZ3n60MtojHsMZKNhNhX0er8l3SJHWfsDOTSZEt6552l0U/F1R3Kp8PnB+XJDzm/WPHE+0wP3Vof/2o8ZpbfhSWEoisL88HS5U4gQMEqTIij8rSN1QWsiI4tWavDf30g7vIFYISap2Oer58n7SQpDx8A2FLf/yv1i60/AQf3YUhsYj1Tpagtjypzd28xfbzB2gdz6aG+0TtAUhY03XlHJ4URsP3n6YmDJmrzVrmbfHyl3wKadplVosHhfl0zwmggeJGMGKtrLEPVOaGVfLaO3KkzSJvC4n2ZFrMz+L8QCXAddUObo3QMit90tD6t8oTxP2b1G0yaDdH2r7NQzS/QGWksmgwGxmzouTFXi8VHEQBLW2xLmQvwdp3d3gen+2qx7dkE9MxoTeO5kOStdkksDHkdgtYbWqmssNKUfwcWGqCXPX2kqVM8JeiJVz2VJXXNU3nWXqBf2lJumAGMAHgUGvZ6VkaJ6Nlm5vIkb6i0SPL2hwwR+JW007Sf95e7D4dnf3+2E3iUNSsj3HY1H4XAO4SrPi2hfHrqpSiGSab5jmqxIt8SeKDDxLaW8OZHD9EfFI13naELcn+oa4rghn+MjwlD7uZA6+lL
- plQmrk0S
- 9VCLgCiTHEWHroFoqbh2qFYxqoOWwXj7PqngixDtsrLtBKhYQaV9hHOm/T88hkjluEFbujgUYGU5lPG70NbcAGKaS8jHFN8LR6dRvDA7ohQrJmc/dTPdmVbKVweaqMmqZM8cQxzG+iR0P4SGN7axzugLoRXDpFpfrb33gxalJpYn6HCG/D//QY+p0OWCf+ZmXcmUzVUcW/bAzprJJnwFgIshKBY0BD4Y3vunVgu8sqJAVAK8G6eR4f7UZA4aiMYinn1E81KU9yTG+bmNraH+6NEoB0yzML5wxY3ATODb5F4hno6N62KwMviGpWD+J0T0tZqD2x2vZbd8FPNdcwp1tzMEld0U8zcFXymeamf5Wf2DNk3E=
+X-HE-Tag: 1763975667-898198
+X-HE-Meta: U2FsdGVkX1+2/1B7aGANZFKa/PtCD+utYHAVNSVSvPovcUNNsyQZfqZaGOXN/YCHUAGPOJRtfFbmIZgqtCBwrT4Wd6s1ldOPBOf9ANg+SaUOFzbkBFZ2HWrrNo/7jtCpn1nray1Ye5fziql4uEUM6mqebU8oe26YMAqnPpYGaCaNVx1fAyzR9rmuIMG+RKYyRrfk0nuGCJC/ujHpYv66U7vYLwBBECbxQkq2pXEAosdkYi8Qvd7YrH8q6O6GbVYQDQvCtaBVpyMKO8jX04GnPNCbVu4HwZiyhjQQEPboayBQiU3iDTpdKjfKGJr3EyqhYMMbRws6DgVrUEraGabz/KXqDTSGYkqe+gpQgQqfssSdRtDQ/hcWzxentZm2heboZ5PJ0Dko0lrh2JyhabP+S28Ui1UdpjVmJUJcBTGoL5SzS1UbcMLZUbqPSIK3z519i9rLvdBMq7aU80j9zAw7MK5CKGnGhumknmvxy9ND9X4xYJwTTm3uax6I9wboRWGL74VcPfqBvumuIyeAWYcrXyMIcjIkoQ7SbYsIkQcfIiN0ugCoEJv3KUV3h/6yqd8FwWs4iGDT0R/9O1FrPjZMsxJrWsl31Hy62mPL/5f5Xr9qGMTsw5N7YRqnc3AFrK7twqiBYRjRMXPVVs9tv0B8mhYLKkPxxTpHQMcz92qqe4KfUTw1lmOGA3mAgy8s6NSfxUB9FYkvc3mRfFKx8RNok54lzDmg3AK8twMfzLqOC7YdQOiT1JQWbVYhlZEkVp6eDTvCxeB46huOMwdS3vKzUuwskZmniRyvcg8Lurw+jLp/iUti/TKaoRx5JItrdO0E9ibvSu1EanqYpNC6tlHynrDAO/k1+x/ZdTZopBl1xgaAmqcidNkhG1bzNAS1ZMHI88BXVEcDO67G6rJkA01CzmamM7GSA2h5/smbkNc/4bcdhd2oXhivPdFtp7QaP2CzCgnty6wVkaWVq222YAh
+ qGgGrXHF
+ nJQ+xcuT9SuL8AmV2jcHEI1hBNBSinsBGWMA0rjNw0bs5IUgJMLfOnTx6jQphtrP5M+xAIAnYBFrIt6SM+nZzJ0fZq+lW5AvIJSL3FJjhZLRHga0Bgmx9G0+vitCAvSBMhAx1tST3BQPyLaVbsga4d0tlSwUtZI63G1MvG3HQol6xSURrcKvjnQ2G/KkABcqzv2kXitn3NflS9lZ9XXjCJ8qshT+bbSTwShMDZ6ukOxUzhLlgl7CF1yLHL+wwDBW3abNH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,69 +99,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
-commit: c090868f59ce888db838cf543d18f731d13ed498 Revert "hugetlb: make hugetlb depends on SYSFS or SYSCTL"
-date:   2 months ago
-config: mips-randconfig-r054-20251124 (https://download.01.org/0day-ci/archive/20251124/202511241637.BoBE5PKN-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251124/202511241637.BoBE5PKN-lkp@intel.com/reproduce)
+On 11/24/25 07:19, Zhiheng Tao wrote:
+> In khugepaged_do_scan(), two consecutive allocation failures cause
+> the logic to skip the dedicated 60s throttling sleep
+> (khugepaged_alloc_sleep_millisecs), forcing a fallback to the
+> shorter 10s scanning interval via the outer loop
+> 
+> Since fragmentation is unlikely to resolve in 10s, this results in
+> wasted CPU cycles on immediate retries.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511241637.BoBE5PKN-lkp@intel.com/
+Why shouldn't memory comapction be able to compact a single THP in 10s?
 
-All errors (new ones prefixed by >>):
+Why should it resolve in 60s?
 
-   In file included from <command-line>:
-   arch/mips/mm/init.c: In function 'arch_mm_preinit':
->> include/linux/compiler_types.h:572:38: error: call to '__compiletime_assert_596' declared with attribute error: BUILD_BUG_ON failed: IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT)
-     572 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                      ^
-   include/linux/compiler_types.h:553:4: note: in definition of macro '__compiletime_assert'
-     553 |    prefix ## suffix();    \
-         |    ^~~~~~
-   include/linux/compiler_types.h:572:2: note: in expansion of macro '_compiletime_assert'
-     572 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |  ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:50:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      50 |  BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-         |  ^~~~~~~~~~~~~~~~
-   arch/mips/mm/init.c:434:2: note: in expansion of macro 'BUILD_BUG_ON'
-     434 |  BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
-         |  ^~~~~~~~~~~~
+> 
+> Reorder the failure logic to ensure khugepaged_alloc_sleep() is
+> always called on each allocation failure.
+> 
+> Fixes: c6a7f445a272 ("mm: khugepaged: don't carry huge page to the next loop for !CONFIG_NUMA")
 
+What are we fixing here? This sounds like a change that might be better 
+on some systems, but worse on others?
 
-vim +/__compiletime_assert_596 +572 include/linux/compiler_types.h
-
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  558  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  559  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  560  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  561  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  562  /**
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  563   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  564   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  565   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  566   *
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  567   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  568   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  569   * compiler has support to do so.
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  570   */
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  571  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21 @572  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  573  
-
-:::::: The code at line 572 was first introduced by commit
-:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
-
-:::::: TO: Will Deacon <will@kernel.org>
-:::::: CC: Will Deacon <will@kernel.org>
+We really need more information on when/how an issue was hit, and how 
+this patch here really moves the needle in any way.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers
+
+David
 
