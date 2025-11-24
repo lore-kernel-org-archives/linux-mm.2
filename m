@@ -4,110 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC2FECFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 11:04:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18BA4CFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 11:04:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 439B56B0008; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
+	id 684806B008C; Mon, 24 Nov 2025 06:04:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 411D16B008C; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
+	id 65C166B009B; Mon, 24 Nov 2025 06:04:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34F6A6B009B; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
+	id 4FD9F6B009D; Mon, 24 Nov 2025 06:04:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FF346B0008
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:04:44 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE82612B18
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:04:43 +0000 (UTC)
-X-FDA: 84145217646.24.EC2BCA7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CDCA1100017
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:04:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="D/l+DZ4P";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of rjones@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=rjones@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763982282; a=rsa-sha256;
-	cv=none;
-	b=EbdKs4dQnwuYswiJr6C0UBQOdkstP9DOOpoklWr1sdPXfIZsYIQONiAs6YrNvbgTomgw5z
-	2PyQfkXrUbR1PAfEHSrsZouiNF8kqkLaxjX79TppUDQThFRV7MTZSa+k4yOhFcPkISXJbq
-	QcJowmCOaINh/CJAG+tth1ZqCyWaqnI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="D/l+DZ4P";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of rjones@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=rjones@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 38F1D6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 06:04:45 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07C23B8345
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:04:45 +0000 (UTC)
+X-FDA: 84145217730.25.A463010
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2913A14000B
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:04:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="h/v0K3u4";
+	spf=pass (imf26.hostedemail.com: domain of smostafa@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763982282;
+	s=arc-20220608; t=1763982283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dj4aD9OHkRc+idg8PqslDsENxuTCxgqBYCZ+pFPNN/8=;
-	b=GCOt7hgRlz0ITMJdRyt1fJq65U0JzAhRGDiDTbfSZRYh9qJOEB5KcQ5kZHnPpy1ytgH2+v
-	Xd4ONmXJO4bCoVRs8ePyDiTeGIbc4f5MxDWbknCPiViykp0uYGCFCu5eE6PJLsElZCimdW
-	cMgflup3MojLuEa2EZIHgSoFencjQkM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763982281;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dj4aD9OHkRc+idg8PqslDsENxuTCxgqBYCZ+pFPNN/8=;
-	b=D/l+DZ4PLk0Px/FQnN1NwOFFpgytAMdTH4F6C4VWpmLzhCiWYeksTtni0Z4/5GgmxsM3hx
-	4s5uTxaSAJtnYz561Jss98VS800UgKtD9Hzj7Fiz+J8MPAyn+WPJtR0S3v/FhaccuLXoVg
-	q6YU63uslDc/iw3ksQPRgj+hQ+annls=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-HY_Y74OnOtiQcY1b1TE0NA-1; Mon,
- 24 Nov 2025 06:04:35 -0500
-X-MC-Unique: HY_Y74OnOtiQcY1b1TE0NA-1
-X-Mimecast-MFC-AGG-ID: HY_Y74OnOtiQcY1b1TE0NA_1763982272
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28B741956054;
-	Mon, 24 Nov 2025 11:04:32 +0000 (UTC)
-Received: from localhost (unknown [10.45.224.26])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2E0743003761;
-	Mon, 24 Nov 2025 11:04:29 +0000 (UTC)
-Date: Mon, 24 Nov 2025 11:04:28 +0000
-From: "Richard W.M. Jones" <rjones@redhat.com>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-	Eric Dumazet <edumazet@google.com>,
-	Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
-	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
-	Eric Dumazet <eric.dumazet@gmail.com>,
-	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com,
-	Mike Christie <mchristi@redhat.com>,
-	Yu Kuai <yukuai1@huaweicloud.com>, linux-block@vger.kernel.org,
-	nbd@other.debian.org
-Subject: Re: Userland used in writeback path was Re: [PATCH] nbd: restrict
- sockets to TCP and UDP
-Message-ID: <20251124110428.GA13479@redhat.com>
-References: <20250909132243.1327024-1-edumazet@google.com>
- <aRyzUc/WndKJBAz0@duo.ucw.cz>
- <20251118181623.GK1427@redhat.com>
- <aR2JjR1yKHCCPalO@duo.ucw.cz>
+	bh=IxY0zFsSsb4UvWV8JkswEu93uViR5DhGzNdHTRi5eEs=;
+	b=yTTkf0d5a8HcsTam4YtS14hqQKLRcZjYyycaozC5KmeLK6wU2j5fHqcDMDtH16fim4NfXy
+	IkQupo0ju48eS3yrTNsDr+lrgCPe+WKoqGeFSaq6NeMJUUHw2hb5jH0kmF3/Vkaf10xH0Q
+	sg7GNKQnYvD8fK0TffQoZbW2t9xC0wA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="h/v0K3u4";
+	spf=pass (imf26.hostedemail.com: domain of smostafa@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763982283; a=rsa-sha256;
+	cv=none;
+	b=MgR+MV9IonhKyc2ql1cdrgG8QM5FZzxDU9FOPhER4P8o8PtIxznHGUL8TwC9k8zsJO2nE7
+	KkYNcbjH0A0C2a9eEg6yNOtGtlmlvsOt1wZSuie5FRG09PfItzJ1GkaSjvv1CCnIk4hccd
+	C4Jl/2P+ICzEtFEnA7E7r6Hq61sBw+4=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4779a4fb9bfso90835e9.0
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 03:04:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763982281; x=1764587081; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IxY0zFsSsb4UvWV8JkswEu93uViR5DhGzNdHTRi5eEs=;
+        b=h/v0K3u4RtLE74ZPfVj/CizrDO//8YczDoBiwSMUJlMW35OnArUfy/bxAmmmdECK9q
+         c/SVg1blAOffQIkZbaZSblMJn0ExqnStTc1pmh4qJtOdr8QHDSUy0LseAS+B8kArm94t
+         WZlV9s3R52UH5BVJZAB8vrbR1jJN2/uivOlM0Muf2i2CqMwlqUYNVaOuvj1R7myVigYr
+         rNBzhQFQDKr1zMzXR5SiWNKmUFVN3f4SAt6EuKCGvE0wgtB9b1dkgtK9naOgu3EnTJIP
+         isI+rxAwHXnd61yGUW5JQXTI6HLNyiJfPSW91mSuylY2QqQ5kUqLMQZQ8sfkH/rd+w3e
+         DN7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763982281; x=1764587081;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IxY0zFsSsb4UvWV8JkswEu93uViR5DhGzNdHTRi5eEs=;
+        b=MKbiPmbtVjrs3eoUXVNCaBvb1aPK1pzUghRMSb2w87XOP5WjnFu6q97hWF3W37HpIo
+         UsZVq9mbi2rIXRkhNl920lFuka0OzVTL9P/3M1zyPvlOuU1cCZPbOL0QTGoPGJ+G2bBY
+         J6qgYpVLJfKOAd62eu+JtsAHh8pdo35Nr8O+WzvMwkr8PBJPamCU8m4yqM4nPe2VbUeJ
+         dHv7V1s3l1uYrr8d9v4O7uJ/gm5Li+tTBOA+9I6CL4RxES+Vun0tzgYDljAqH+r/cGJF
+         5aM8mNOnlqV54GXvig1NNYyfvvGAYPvYyfEpDSnJukFCjOhqvEKxiWVy8scHmd+h+LLS
+         eZ7w==
+X-Gm-Message-State: AOJu0YwM2lMfRKBEUYiTBnAahITXDcdT7+8+Ilg2GXt81VRj60Wy8mci
+	zhv/0kzw73ZlqrBz6AhooBUeB8pWwqSe4kJOGhapzZ/ggIZRt+weWpp19DMsb9LdPw==
+X-Gm-Gg: ASbGncumJYPIL3lM8FWPofGbAKdmcRIqW9TnMLY2HPzddZkFJ2sOWnLMAhrxosD8Evm
+	2ffQCO7TWNKE4qErRuSZw+7NTaa4qyZ+1rQgtmNV/LsBntIrl0hCDJWs+1v+gDl1VL8+yR3sbC5
+	YVUIeZBQS1mtPDB8ElzwoN5MZvmccNU62pTpxVE0vw+kv9671aQ7i5WXtQmJx1s/DRmsomZRuF4
+	JjJsRy6jBZkHhyY9cxOVt0S0MO3wgTn9JZ210p/7zYes7ERezZzQHeQf3/ngab432g+w5ePmzOE
+	3Ftdb+f01CV34ECaoc586vuOGR8gPlOyBoLV9fgRSvtfJ1IHtOK5H9z1rnn/BWEY2R6VvbrxYiM
+	RMC5OoVYhY9ASNf4NVzJj9/T6clpTVWRiC0ZxzcOFbiSuYEXrlQw2UXPOU8h67aM0Z/01FrFlcc
+	354QXoTww3CUm9U0VyN1RHURPtgGf2XDdlHCCbUXusBIFStfLy8Q==
+X-Google-Smtp-Source: AGHT+IHfC/zx3CtUqS+QNQEXWjnlvj8ok2cj2JsEBQqJZIsdvVIDhcfsaBV55OT3BOjTGNisyGw1Aw==
+X-Received: by 2002:a05:600c:a402:b0:477:2f6f:44db with SMTP id 5b1f17b1804b1-477c5ea4a1fmr1591355e9.5.1763982281333;
+        Mon, 24 Nov 2025 03:04:41 -0800 (PST)
+Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf226c2asm188677715e9.10.2025.11.24.03.04.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 03:04:40 -0800 (PST)
+Date: Mon, 24 Nov 2025 11:04:37 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org,
+	Qinxin Xia <xiaqinxin@huawei.com>
+Subject: Re: [PATCH v2 1/4] drivers/iommu: Add page_ext for
+ IOMMU_DEBUG_PAGEALLOC
+Message-ID: <aSQ7xfQjkeAMHiLC@google.com>
+References: <20251106163953.1971067-1-smostafa@google.com>
+ <20251106163953.1971067-2-smostafa@google.com>
+ <55391dad-339b-47f8-8996-afe337b238e0@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aR2JjR1yKHCCPalO@duo.ucw.cz>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+In-Reply-To: <55391dad-339b-47f8-8996-afe337b238e0@infradead.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2913A14000B
+X-Stat-Signature: x5cmw3xw73xuudrmx87esckoomt4z5ps
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CDCA1100017
-X-Stat-Signature: jpcnx5sufrp1ziyfz84ndmm4pw1yi8si
-X-HE-Tag: 1763982281-805182
-X-HE-Meta: U2FsdGVkX185hvXGKnlEnUeoaNWaFDUAfoRT4xVwBhlImiwgMsQHMq4wqYbfRTz+UGuZA2QjbLEO7klf2UpnttPIv+4vkCSus65TVtT7Kcci2ttOCCEY2IJc7bkwmCwrbv8TekBaY8kNNiGcxevLG0dxFl2P8ev0lL0ZSRbcX26IwBQtoddomf/HLF++WfpuIK8MGZExoM4iRB+2qjGjvgwvnDQvbDU2kIo6sZxAQgxOasMS7y7Yq2AYbyzISPOHfcnYVXlrmpJUd5hgBarLuZD3zQDj+KAiqeErm4j9SQYtW13ainiFlG84GrWqAxsSNV1tnlzSIMeXdta6POzn6FcaZeTnWtGqjHdyo5Mx9NS5Bsed0nCGypOprTyUpKWwsSSqCVb3IJdbBQMbQ2BAOGy71KTwJBd5u501Hye8FHufzy1Rqni8sqJobrht6ARxPk9oE+EQiFst73QZjdFYAWKpF1CN/bbk4UQkZot/X9GF/SrIUn5+65dhDYK1OjTBB3WYp6Ye4cjT7TpyDngefO/Rb4NLdWtFNg+3qEMBRPqlVRqgu6r6NNGh0J+Rr85YmPQksKZxyOHN7F0Dv9YJGaFOF3L/q5GBRI56cRj5UYOCmeXhMH/8aJbgs2x1CpIbYp6IJ1eoVrK1B5FtnVAP+hcQm1XkcTfXpoZZbhtLVABRcTkKnTiEB2yUTdUDsc6gEHEoUFa6sHm1B0wFxhprN+es1VjuBF23Lbn1s82jykbDvuaCQHpZu5fwcs0h5Yk6psd6PwvL9C4pw1KUBmzj1rD1lKWNdh/8iF6TY0xtb03qkwozSdoekVyKdnze6MNFnAUPx6D8rWNPCjwjqsawLZqpCbxMI1CS6wyq2Km7ZNlduCglDE/S9EBIf4wQpa6/vIsvynk78Td6YgEtsgroYK4/q5rebwUPcn/dnI2pJPTmWPsYt1Hi2oeCrvWVguB48mApLdwkhjelo8VwMNY
- kTKV7Efi
- Hx8qXOI6Avpt0TCy90jmVyz7K3OhXiLjyeyddA9Aa1/wYV2KA87S0uDieAQduISZew7htOysCwI2EVcRzqH7cx8HG8VFgbQakiHI8F8ftgZ+c5Gk1fCjW9BtY3Y9EtV8ruldo+fUrbmxjV8KBpdPollLcRU6VAKpYn4nJGME9Oq7NQ78YzPGnhP01oXYA+JNJVoMg5gB1yBs3mdLVwRSdk/YlRatsdwE55XK0dcJIp8bShPhPIuPC13qQ+PG2mNfacX5LDg08SXI/gSiPVHcKdWgFal9tmRcyL+9dg8lIgO6xR4nLDgmNZLx+3PfujWjKbtBN3whyAR1EyXLploLRGFLcy8uGHkysaCCQHL+BdZ2IJI1ZXZkY4iUcCl994xVr+vLs+1i+ADtj5u32KScTiaY82yKptWVwvBHzSWaUCHv3fDgu6AMEiKhEo96NWgakecZAOqDorCpExurjn2TfA1+yr0rqx6WKVTidnXOhUD/vRSHF1+tzxIbGM89cjO89kiKWGjnatlX/OGVaOjWXkK634u7XrooHhxZ5nKvDcdteT6qThX16AHnFey/MWkuYVN8l
+X-HE-Tag: 1763982282-69556
+X-HE-Meta: U2FsdGVkX1+5KE4JVkre9pMhwYFAwT+vjp58aB7TGfEc+IvDRQz7TFAeq1C7gH0yEwES3bqAG5KZ3d5S9UF85qOE23N7rdtwPsFhSy2/Jwk93Ug9FFqgK840K4zhqrd8pKDKjQve7rNRpNxqu6C00Qu+Qi5rANu0b1vKVPYezlSawXNghNjo9ea6DOc2tQPnFc66UC6vrJ4rVI6r4WOgU7cRI7Uq8ghv/2MAMe2MetcZCREBv3Dm4nUeGkTVhqByDLdApdhoD66obNK0Jgo2q8gQIFBiAqIEo07TE3bEOH/j6qek3P8gqcdVVOqOm99x29wSDiLAHwwSrupUSnRs13IM6UHn6ZiWIl6V9Aqa6wh/xJcTIMauCorsETl3QIyGhiUlxosP/k3y7GRFlXbd6M+1YyuNXlwvO3ZwApv2ABV5yWBhHlUNvw5NUzBhf8FNIGLNAaMFZ4w3L3FeFs1wQ/A6IdfYqM8jVtCbPTsP7DGxL8teOk/z6UAiab/LvmCOeLFPJYESGIrk3JKjsSurd93lU95hbkYTp82/aJFTT4Et+LeE/fcSUkc/H1crSnDRegz26XS/K9IQqFhBB0y/72uya9+sGSiGybNJ/9pSgCcdOZYs6bz/f8BlJHTmu6NoFvEiVn2GzlFYtagv0biBvQJg92IgEwnmfX84m0AbPrOZRMyYqJDZQycPI17wM6H9om+6pkkAkW7jJOYdNTpJEhm4IMWLS/rCgKeh7zyaLo0w/c/fzYxCHCNDXvBrlfnKU7jZALjUZ1JTBkSLlWNB1qezVRhsj1syXJaIdicSmpTM3KK1YdhGNVjiikiWj+uHx7qq3My+ccv7IBtxhl1PJrpXLSisUDed05V0g+PdPxhMGA9qFX+BkKUAybYW5rBOfl2SNT8qtbdLUBI3i7ARKaayLml0dzOC415yuYw0VRH376bPyJTdsc9YNXPY5oH8WeFBXTuN2qXsr/RSKYQ
+ Kv/mK1f6
+ 0KabS+6UA9vy58K7IuuL6lUIg5+cKCerai8gnaU2OI1j+HGj8kDkt5dUBrmcUPOMD6N7BgslFlewf5refHthMHbtvdTohu95hySfPaUjQ0fGhYgVln92Le52asJUaTGomtxxWrybliggDEengaZ2Uaojm6/P/QZiNFmvZZQf4en1MBtLVj0FzkavIhfsg1joDujtujsWG5wGSgjloJTXHnoPNXeiZVrdw2dq7ldPIhUm9RrBk0/A5g1VDK8AL8x4P6Gat4Dkc0qn3ZNllUDuol5tckB2fa5gl3laMHzfHSRjH62kOoITsXALNArhDIP+IF7JpgNKJ8h9L/YyJiTTQqS1BFLSAjdCuxE9lykn3zkdp3uqgenEAyw2K5tV8kCM3wB5QTqSKCmzWHoReUuVT9agmJXQixndEswdY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,49 +126,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 10:10:37AM +0100, Pavel Machek wrote:
-> On Tue 2025-11-18 18:16:23, Richard W.M. Jones wrote:
-> > On Tue, Nov 18, 2025 at 06:56:33PM +0100, Pavel Machek wrote:
-> > > Hi!
-> > > 
-> > > > Recently, syzbot started to abuse NBD with all kinds of sockets.
-> > > > 
-> > > > Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
-> > > > made sure the socket supported a shutdown() method.
-> > > > 
-> > > > Explicitely accept TCP and UNIX stream sockets.
-> > > 
-> > > Note that running nbd server and client on same machine is not safe in
-> > > read-write mode. It may deadlock under low memory conditions.
-> > > 
-> > > Thus I'm not sure if we should accept UNIX sockets.
-> > 
-> > Both nbd-client and nbdkit have modes where they can mlock themselves
-> > into RAM.
+On Thu, Nov 06, 2025 at 11:50:11AM -0800, Randy Dunlap wrote:
 > 
-> kernel needs memory. It issues write-back to get some.
-> nbd-client does syscall. Maybe writing to storage?
-> That syscall does kmalloc().
-> That kmalloc now needs something like PF_MEMALLOC flag.
 > 
-> mlock() is not enough.
+> > diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+> > index 70d29b14d851..6b5e9a2d936a 100644
+> > --- a/drivers/iommu/Kconfig
+> > +++ b/drivers/iommu/Kconfig
+> > @@ -383,4 +383,19 @@ config SPRD_IOMMU
+> >  
+> >  	  Say Y here if you want to use the multimedia devices listed above.
+> >  
+> > +config IOMMU_DEBUG_PAGEALLOC
+> > +	bool "Debug page memory allocations against IOMMU"
+> > +	depends on DEBUG_PAGEALLOC && IOMMU_API && PAGE_EXTENSION
+> > +	help
+> > +	  This config checks that a page is freed(unmapped) or mapped by the
+> > +	  kernel is not mapped in any IOMMU domain. It can help with debugging
+> > +	  use-after-free or out-of-bound maps from drivers doing DMA through
+> > +	  the IOMMU API.
+> > +	  This santaizer can have false-negative cases where some problems
+> 
+> 	       sanitizer
 
-There are loads of use cases for NBD over a Unix domain socket that
-have nothing to do with storage.  nbdkit supports all sorts of purely
-virtual and remote devices.
+I will fix it.
 
-Practically, we use this feature successfully all the time without any
-issues, so we'd appreciate it not being broken over some very
-theoretical concern that you haven't even been able to demonstrate in
-a test case.
+Thanks,
+Mostafa
 
-Rich.
-
--- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-virt-p2v converts physical machines to virtual machines.  Boot with a
-live CD or over the network (PXE) and turn machines into KVM guests.
-http://libguestfs.org/virt-v2v
-
+> 
+> > +	  won't be detected.
+> > +	  Expect overhead when enabling this and enabling the kernel command
+> > +	  line iommu.debug_pagealloc.
+> > +
+> > +	  If unsure, say N here.
+> > +
+> >  endif # IOMMU_SUPPORT
+> 
+> 
+> -- 
+> ~Randy
+> 
 
