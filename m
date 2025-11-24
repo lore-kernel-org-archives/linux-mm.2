@@ -4,100 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C683BCFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 19:23:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54265CFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 19:25:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2642D6B00B0; Mon, 24 Nov 2025 14:23:08 -0500 (EST)
+	id A7E446B00A3; Mon, 24 Nov 2025 14:25:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2146B6B00B6; Mon, 24 Nov 2025 14:23:08 -0500 (EST)
+	id A2E7D6B00B4; Mon, 24 Nov 2025 14:25:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 104036B00B7; Mon, 24 Nov 2025 14:23:08 -0500 (EST)
+	id 8F6576B00B8; Mon, 24 Nov 2025 14:25:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EE8DF6B00B0
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:23:07 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6BA9CC0546
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:23:05 +0000 (UTC)
-X-FDA: 84146473530.26.2055EBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C197210000C
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:23:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kznAdjy3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764012183; a=rsa-sha256;
-	cv=none;
-	b=UNTfBAOhZpAh3AgR5eUyqwVVQSzYSdBhS3lLFWt5YHPSbNWWv6UWVK6TWF5f4k+U5JorOz
-	MIKQlUWpeh6LBrvmxy7LXN5TE09/LCNkZuRjQ3ORk56F+FF9tlia1FpseYHcA6nLKnRE+b
-	y4AhV0AWf2Tr6v9otXEZBLuAEwYy/Os=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kznAdjy3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7778A6B00A3
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:25:06 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 498C44F6F1
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:25:06 +0000 (UTC)
+X-FDA: 84146478612.11.AB6CA23
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 47D2EA000A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:25:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ih46kXcT;
+	spf=pass (imf15.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764012183;
+	s=arc-20220608; t=1764012304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dpPZ2Ka4AHKzWrVw9fZI8U9G0FESOhT/Q1nFfUzeQEw=;
-	b=0yCEPeaOay2X3uFAy0ScBQHHE/TctID/d8Nprju6OpeF+bpHtfJIGXAh+OsWUB25kh5HtD
-	yqOSplHFGk6fP9E59XM3NGyA8xNrTYhDeak6oN+/0IwUBZeUIZTRB6zCzBkqEAEbgXUBa+
-	PLNensH9K9q54VOLShLWVYoEXp7segU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C2BC60122;
-	Mon, 24 Nov 2025 19:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77013C4CEF1;
-	Mon, 24 Nov 2025 19:22:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764012182;
-	bh=EVW8rxvFH63h3jyD2ik3N8abrAtng6JWEIMfvjgB+CM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kznAdjy3fEZWRWT8KExUzkrJpgA8UyzN5PAEUkJc0Wd8oilFuvPZ0tsjiUHgVN6et
-	 jVtITKEAyD2aXjB0+YUE49lR74EVMCqAJdmxbNSfHgbw7pKyX2CT0ruButPwGeGcIa
-	 5K65ke6LF14HVuMfKIVVN27yqEhmcLVblJ27c4X+1GRk+G5RTSKRbKOuHUFq+ATrv5
-	 0F+n1t90upJbQ66jyr8TMBwwJQ1+D18bwwLyrPaJmIyhsATLQaiBlEqgJDGqWxo4Rc
-	 AFJOkjv141Xn/hMSIZzAkY2tzanD43ZXVi2kBjvtYg9G5ZnQ+y2xGknvy61+3pMYTF
-	 63q7Q/WR+s/OA==
-Message-ID: <34bafd06-250a-4019-8b34-5ddeedea1cb3@kernel.org>
-Date: Mon, 24 Nov 2025 20:22:56 +0100
+	bh=9jk37GvM71JhaWd5rL6T9q167IOkQkimPTz38uVA1jc=;
+	b=WM84vSEVtCZgjlo/X/oa5Nl/6ww13d7a0Fdq0OSx3eMYgIc2Gw35OBj1U/3ljHI2Jd71Ta
+	QcvOubAlvu5ERFFglE/t85MRjT2n7M1VuhVbKohfncb068CfbXDu/TcnE6eUVWXT6Fe4ua
+	jgUVR8Y0nNmaN4Xj2vqhXXYFvWgvc1A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764012304; a=rsa-sha256;
+	cv=none;
+	b=70Kkx4f4YS8GThjZBTQjceCv2DdeCDqKLI6zs8wB9QsJDGdV66A2qBFh2KI+8XgNPZknbf
+	Sw5pVMM6G1+eQKBjbs0C3xtHvkUonQ9x/VgaGDtrHQuDh4q6nkwcdBEBom1MmOE/1qivXP
+	i4DnOf5/xgMY0raTVrnWKSHNUgFBJuA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ih46kXcT;
+	spf=pass (imf15.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4775895d69cso19651195e9.0
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:25:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764012302; x=1764617102; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9jk37GvM71JhaWd5rL6T9q167IOkQkimPTz38uVA1jc=;
+        b=Ih46kXcTmYHKG4IX6bxfan7CD+GBgrVSt9WBFQx8i9RJ9E/KNi6MwVt5jSp4VE5Awa
+         GKddNhvtDe2nDSfhVnjdtz4nfHZGmuFzQikud2AD7BFbLkzQ2+IkzUJyitMl5ERCEGaY
+         I6SjU+pwTR6m5MUIUXHP6dfu5NXNmsvxfgXwt6mNGmomvxhaW5vZAmeI3nKB/16kM4/r
+         sQs8wriZZDqCVuKxQViqs4pYZdaZGECKuRi+iZqONj8XxnUpHAwbqPeoHP+RST/XU7Q+
+         Mdje32739Hb1XEExPEp8gw0vDqfL3u3LPAdv+eEJAc2CxO5SGXOL0BuauuHgDmTh8dOL
+         UKhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764012302; x=1764617102;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9jk37GvM71JhaWd5rL6T9q167IOkQkimPTz38uVA1jc=;
+        b=TZGMmc9FsF+oFPL2GksFQLbsdhxk6rX9Afk4ZOjUIs6gqWfOLOOZhSsZlH9Ktc01H4
+         MhoDx7nBXQ8g6W39isk/Tx8TXmUgpxAex03RTbSRuRMYmC2QGaaR6lFt2ngxqUFhovqe
+         ExBvH+5wnz/zGstX8a3ATKinKVGh3yWb/jygZuUV4hW+eOfY2iNq1NU/ycdb+ZznK71D
+         eHPzL1Yis5gpi7GRFfeRkWF/6/SJkRIfLzHn6+yos8V8OeHUqzfw6uGtRRUdamzZHEi7
+         WG6dvhefjnz3YjDRs4e5wK2iFXlLeUe4Ryv8ZTv71VtXHHp0FTwNepXWaTOC9Zrwy/We
+         Lbog==
+X-Forwarded-Encrypted: i=1; AJvYcCVMtMUNj295mDTzZF82ua4eu+7IoaP66EKT8ahEfTBkSGeJzaINWtjtaYr4mblFOrNyphbq4nGpeQ==@kvack.org
+X-Gm-Message-State: AOJu0YxL2WsrLpUy0gX3TfU9wX+mptpwWfss+tlmXQ8n8VJIDEXOQvKn
+	eB2aATLbfWvQDPSHXVIjIYCaa5ScfU2IijxqGFnegzONsLw8DIao6klY
+X-Gm-Gg: ASbGncs/TspiClaCNsExRRTytota+Ypm2+FcpYMuF0x5SzMojM5rAEsTijJfIziKZAG
+	fQO0+5zIy3ySnFuLJcDL3Nx1aSktK0oqfI7a4zYxa7Mcr9ZkYkduAzC3FLeMy4fpBQ9TNo1evwe
+	Nmgv1WFWoZvMKbXe1q4nJ2lkQb8FfkYOUTDtX7w9TCfdUkPvKFq80Wp0FePg1aP4EqfV3shXgcQ
+	VEv4EpFMQgcz5mPe9IZmQUlEw7vMIjHxu50K1IaXz0FTCz0ol+EF4PbJfChsZ+2dUbBfFjyGBci
+	LSV0HAZ5QPLtWicu37NZN1qo1PrWKLw0ltZnX6apQwRNENJEehYqBRrFhJxxx6YAKIRMFEVDRuM
+	w9TsExVZ2A3GToXujfGJ/fi43SxiwUbarvSyP7YiGPhEcNqeODGaVq4NlNOx1d//SA7Ghfo5bQU
+	WS/mPdmPLNRP2TwPnsqL1ZMmX5HZg2vWDSmwJ/lOYu2Qga+yjwVMRXQhUBGpBWTTQ=
+X-Google-Smtp-Source: AGHT+IFeHLsoYr2AmZntomxO2DLGMgEciJ8EAmlBYd3tNaV7xwLFtpLjqhrJ3Jk53gAvqzID4Fk9Ww==
+X-Received: by 2002:a05:600c:3115:b0:477:b48d:ba7a with SMTP id 5b1f17b1804b1-477c01fd202mr126949555e9.32.1764012302165;
+        Mon, 24 Nov 2025 11:25:02 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1126:4:ce0:a4eb:eabc:d420? ([2620:10d:c092:500::5:5b96])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf3ba1b4sm214863705e9.15.2025.11.24.11.25.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Nov 2025 11:25:01 -0800 (PST)
+Message-ID: <a0f875f1-45ad-4dfc-b5c8-ecb51b242523@gmail.com>
+Date: Mon, 24 Nov 2025 19:24:58 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm/huge_memory: replace can_split_folio() with
- direct refcount calculation
-To: Zi Yan <ziy@nvidia.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
- Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251122025529.1562592-1-ziy@nvidia.com>
- <20251122025529.1562592-3-ziy@nvidia.com>
- <df92a886-069a-450d-a551-dbfc3f629ead@kernel.org>
- <33A929D1-7438-43C1-AA4A-398183976F8F@nvidia.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <33A929D1-7438-43C1-AA4A-398183976F8F@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v8 12/17] x86/e820: temporarily enable KHO scratch for
+ memory below 1M
+To: Changyuan Lyu <changyuanl@google.com>, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>
+Cc: anthony.yznaga@oracle.com, arnd@arndb.de, ashish.kalra@amd.com,
+ benh@kernel.crashing.org, bp@alien8.de, catalin.marinas@arm.com,
+ corbet@lwn.net, dave.hansen@linux.intel.com, devicetree@vger.kernel.org,
+ dwmw2@infradead.org, ebiederm@xmission.com, graf@amazon.com, hpa@zytor.com,
+ jgowans@amazon.com, kexec@lists.infradead.org, krzk@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-mm@kvack.org, luto@kernel.org, mark.rutland@arm.com, mingo@redhat.com,
+ pasha.tatashin@soleen.com, pbonzini@redhat.com, peterz@infradead.org,
+ ptyadav@amazon.de, robh@kernel.org, rostedt@goodmis.org, rppt@kernel.org,
+ saravanak@google.com, skinsburskii@linux.microsoft.com, tglx@linutronix.de,
+ thomas.lendacky@amd.com, will@kernel.org, x86@kernel.org,
+ Breno Leitao <leitao@debian.org>, thevlad@meta.com
+References: <20250509074635.3187114-1-changyuanl@google.com>
+ <20250509074635.3187114-13-changyuanl@google.com>
+Content-Language: en-GB
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <20250509074635.3187114-13-changyuanl@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C197210000C
-X-Stat-Signature: s1pdmifsd3r7ddyrzfrtizb9m6zkkxfg
+X-Stat-Signature: mia5ofw1yyaubdph49mtq787h4jwzun5
 X-Rspam-User: 
-X-HE-Tag: 1764012183-373350
-X-HE-Meta: U2FsdGVkX1+hu17w6Yo1DMsURUFdhcxolJb5/uK1VLpJSWYKdOHpFfN4h+Wsgo6Vlc/l14quHZiqa8yKug8EcZKVPUnLrgqVd8bQdqe5Y9HtyAeGN+0hlFUcjW21sqRnfmvQo8pXH6hgt6x+9NN8uy8osPonmLZwgizn8QL6wvCCOYVBLYVRzhmb9sPRuJ4zY6w0ibBGN5xYUuwEwgsyjomBlkMkaNm8Xgz50iNJ5gAxEfplK3g1u2ltQvcWbNzF/E9QbqOaPtR5Fd8WvNizB+iTVRMgQaAM4dDUvRU0PUGPlCKGOg7U7A6leTg4Jr3aeDkqGwS7SebA05/cSGUHFnBbYKGznTZeHMrXIJsIUa68CWLeONdWSNZsbZwcXh376N4HB0nsvb/j/CDKuYHp+Qu0n8YhhAkOsLhUwSQ9IFQmJrSdIdwW+Q9Vh7FD3ZJrdS7ABSaq3Z3s9rMXbAP2uAoxnSb68zzAJREGPVmakodTJPM0tBwYo3tiS8XTzytGRBT9/httLEANG9EiRAlL9tFRLvxbP27WRf47L5qlkF0LWaSV2mOIiSX/9G8dqsnK4xFuxmXYiWzO/imaU4jXwSca7nEqhlM6725mkAAQSe3QVj9T/m0Xg39btrLBgQqO/zunuwype0aIGkS+/1O53A8nxNIwnQ4n80Ww5uwz1S1bShAuzCd7HqNJBd1CIHJ6uL60+arDnixpd7eV6eMiOGGNoj4oycnEMGCDd7w2EMqLHI0KvfBiZWyaDpoCsAUEO7kY7Xiu7+VTRdqAOXEGm9YKwSSdMo9VFgQlZqGa6YiBvcn4IhGE4OIrXGWa0KmsGiKxcvpW2ZiCczahSGV2wV6YPS5qBRGGDeKhm4TigMqUVo8BrOC1aD97GZ8p4CEuWAUN0YBYsH7u/YWlPZD6vr5zWJwApXXtdF6Kuao90YZSHIkNCP6nHkw09DND7W7bENgCqj8pry0ZkpE//Bv
- 6LsN4kSa
- T3qwYv3dARjkausljwl7G1Q6HB6yFdNnDVJvzFo4Ty4ZYW/pMMtQxcl+XJ/L9sdzwbW9YsWfUvNnQ2lAU4Q4NNBuCGZj9725uj/3xHxS11uMd6JqyqwHkDhPQZCKfPcRtbceMN7iJ2MG3ymenL6RXIE2Lhq1k37Bk8pkdVZVpuaDuz7DDONLiCFgxc71G0mqtlBKFIgTQxRjURuXBiI86rs9uTzlbS6icVRj0jdvFsiyL4C8XATDibAGyvLoYGhJiE8MUkk8l6eJNVrN07osy6mw2BZnySnTXAUUnl26Tnlku2OeHgVZQPIqKkOgN70Esq2BDgYHckj5mAn7BheHb3ZoJfZnR3nzbuDXwpPOGI9djeUz/HERTMb+vnYEDIQ6utellSasrWh0KnQAhU1cFYIKcHv+jQQ/pNA0KukK4kJWR/Kc=
+X-Rspamd-Queue-Id: 47D2EA000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1764012304-710826
+X-HE-Meta: U2FsdGVkX190vbGitAW5wMxEcHCjTsGk0/rhCTbJerbS4WA0lt5JdhnqRTZlnLPT9/PjBGtlmMr2SeAtQgjr5S1w/AzUfoDggeFdoHxcZp2PuxD7H8tamIQgGkYhVwC0Sioo5Yn2N6gKMhDY0hDx18hEvYJ1VAsIBJSRqRDZxBhJ6MQAO6I1LGP/jloayEmH2Uq2zz0kY0OjoWuGxxKYgPsFjtj78P2et92RCkrg3T5//GKKi3q+pcOF0/JCpppg6WxxDr+j6h+4863BmO3hbX5vkYnXG7/0dMafnzYDUEu+5HF2C8uiqanm0DFHlRUMhESE8Ui67WBQzR69ziSfkX33gcOFNEjtXHM1PiXaTq8iLLwVr+5BHEHU758bb3n8UeTegGxaybaJnSiA2M+bTjh7j+37peYWH9/vbC+5nvXoCRsIBDC8pcOdm+Au1Nhqr/0KeXtpy9tbGo/siZVqhhQqxp8DTs8HllxPBT5/G9JpVS/1NQpnS5AlcvJSNzObd8NOmwmtG7ODPC0RkFcJ6zwK8cOFU3cPM6x7BDnZ2MMb6IaeT5CUE9IhVjv2CQU+Bl+Y4ldsW3cIjKcdXmiZuTOQqAPSJMclzkzTsenXLpgKITLP+yYTSswIVuMSPydZRjZbFYfek7WwW8NkUpz+xSrPKimrFZEXsgNStg2rihmz8x46i9EvY5XoQTbw1/MuRD/mZE/PVO3eJHAGwZuD4BeQ1YGvKp357tb0fJokuHchk6Kg9MPVhnwZV9kOm/XW7m5jW5XdEDKJlzo1wbgqagABQtfiS+y127LyHyC9sF/HbxJhRsbX+r57Rv9Ifdm2OeMH1mqygDyWYPYCYZqliQI8E4WAv6ySH5gx9guWwYuFp1HnFsa+Mn4i8+lxLBRJ/Xgb/UULb7SwNxNlEu/rcexakxDSTfYgnLlVI8acyAutx8HeFyeScMzdaXCM6M4wAQ8KES47RHxqZ1BX8oj
+ aFXhoPuh
+ nxM1xNPh0d0vHOY+q02EOTs5tE7dNZ70MMT9hHng5mH9UgY9RgHRsHPpF1MKu68rTkLAI1wEgGMT0g68l6qxdBUT31CepxNzSj/wW6HvnUFCGS5GmnCCw7vRSk/ZBqkKGy6bAzPEKDxYpkIwXJUUmWGHI5jluF7YBnOTpjEawA3faE+hhmQum3VMiIQB50S6oI6x+jYCy+pAHO8SMpo+ntQqUCaeNNnutxRyjaRIQ4qODrUkgeGWkL0IwRPhOA+nJuMjPWufex0eRfSoWycjtcA8yIvYFXARDnTS41jHXGInjrtWbn6AyPRT/7lMnrxYVeqoUYLfTQe4ycRO3hsFOhGNX46H+JIH9ICFncfp+e+rjSM+CEa2eIjYiVEfxDydgYDsRfOsbkyhnha7MkObbZkI60Ue64Wqbu/H2QC9UhdXvk1oO9vhM/RaHX+fBRaXzeWT4xjfeK7bSlRMhucqy4gS46VL5ebgSkbO+Gtki/axC8aNxCklfk5T+Y64R1EwCBVCPBiCZKGjYFPyYaedEhfXzTr7bKE7FqUxfVRlIcRB1r71/PpgcWZov1q5J2sRHoSMpa8QC6Th4atxoZ9tQS08rivp7z72LwysPkAXvAZv0cDbF06+GkfFJDHSWAt9C1+Yj2B4YiiqVVlvE04LndbSvbOkCi5+KxDnfNZheQtegCL/FuLrcW3RdvQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,224 +136,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/24/25 18:05, Zi Yan wrote:
-> On 24 Nov 2025, at 5:41, David Hildenbrand (Red Hat) wrote:
+
+
+On 09/05/2025 08:46, Changyuan Lyu wrote:
+> From: Alexander Graf <graf@amazon.com>
 > 
->> On 11/22/25 03:55, Zi Yan wrote:
->>> can_split_folio() is just a refcount comparison, making sure only the
->>> split caller holds an extra pin. Open code it with
->>> folio_expected_ref_count() != folio_ref_count() - 1. For the extra_pins
->>> used by folio_ref_freeze(), add folio_cache_references() to calculate it.
->>>
->>> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>>    include/linux/huge_mm.h |  1 -
->>>    mm/huge_memory.c        | 43 ++++++++++++++++-------------------------
->>>    mm/vmscan.c             |  3 ++-
->>>    3 files changed, 19 insertions(+), 28 deletions(-)
->>>
->>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->>> index 97686fb46e30..1ecaeccf39c9 100644
->>> --- a/include/linux/huge_mm.h
->>> +++ b/include/linux/huge_mm.h
->>> @@ -369,7 +369,6 @@ enum split_type {
->>>    	SPLIT_TYPE_NON_UNIFORM,
->>>    };
->>>   -bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
->>>    int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->>>    		unsigned int new_order);
->>>    int folio_split_unmapped(struct folio *folio, unsigned int new_order);
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index c1f1055165dd..6c821c1c0ac3 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -3455,23 +3455,6 @@ static void lru_add_split_folio(struct folio *folio, struct folio *new_folio,
->>>    	}
->>>    }
->>>   -/* Racy check whether the huge page can be split */
->>> -bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
->>> -{
->>> -	int extra_pins;
->>> -
->>> -	/* Additional pins from page cache */
->>> -	if (folio_test_anon(folio))
->>> -		extra_pins = folio_test_swapcache(folio) ?
->>> -				folio_nr_pages(folio) : 0;
->>> -	else
->>> -		extra_pins = folio_nr_pages(folio);
->>> -	if (pextra_pins)
->>> -		*pextra_pins = extra_pins;
->>> -	return folio_mapcount(folio) == folio_ref_count(folio) - extra_pins -
->>> -					caller_pins;
->>> -}
->>> -
->>>    static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
->>>    {
->>>    	for (; nr_pages; page++, nr_pages--)
->>> @@ -3776,17 +3759,26 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
->>>    	return 0;
->>>    }
->>>   +/* Number of folio references from the pagecache or the swapcache. */
->>> +static unsigned int folio_cache_references(const struct folio *folio)
->>> +{
->>> +	if (folio_test_anon(folio) && !folio_test_swapcache(folio))
->>> +		return 0;
->>> +	return folio_nr_pages(folio);
->>> +}
->>> +
->>>    static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
->>>    					     struct page *split_at, struct xa_state *xas,
->>>    					     struct address_space *mapping, bool do_lru,
->>>    					     struct list_head *list, enum split_type split_type,
->>> -					     pgoff_t end, int *nr_shmem_dropped, int extra_pins)
->>> +					     pgoff_t end, int *nr_shmem_dropped)
->>>    {
->>>    	struct folio *end_folio = folio_next(folio);
->>>    	struct folio *new_folio, *next;
->>>    	int old_order = folio_order(folio);
->>>    	int ret = 0;
->>>    	struct deferred_split *ds_queue;
->>> +	int extra_pins = folio_cache_references(folio);
->>
->> Can we just inline the call do folio_cache_references() and get rid of extra_pins.
->> (which is a bad name either way)
->>
->>
->> if (folio_ref_freeze(folio, folio_cache_references(folio) + 1) {
->>
->>
->> BTW, now that we have this helper, I wonder if we should then also do for
->> clarification on the unfreeze path:
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 0acdc2f26ee0c..7cbcf61b7971d 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3824,8 +3824,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->>                           zone_device_private_split_cb(folio, new_folio);
->>   -                       expected_refs = folio_expected_ref_count(new_folio) + 1;
->> -                       folio_ref_unfreeze(new_folio, expected_refs);
->> +                       folio_ref_unfreeze(new_folio, folio_cache_references(new_folio) + 1);
->>                           if (do_lru)
->>                                  lru_add_split_folio(folio, new_folio, lruvec, list);
->> @@ -3868,8 +3867,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->>                   * Otherwise, a parallel folio_try_get() can grab @folio
->>                   * and its caller can see stale page cache entries.
->>                   */
->> -               expected_refs = folio_expected_ref_count(folio) + 1;
->> -               folio_ref_unfreeze(folio, expected_refs);
->> +               folio_ref_unfreeze(folio, folio_cache_references(folio) + 1);
->>                   if (do_lru)
->>                          unlock_page_lruvec(lruvec);
->>
->>
+> KHO kernels are special and use only scratch memory for memblock
+> allocations, but memory below 1M is ignored by kernel after early boot
+> and cannot be naturally marked as scratch.
 > 
-> Both make sense to me. Will make the change.
+> To allow allocation of the real-mode trampoline and a few (if any) other
+> very early allocations from below 1M forcibly mark the memory below 1M
+> as scratch.
 > 
-> By comparing folio_cache_references() with folio_expected_ref_count(),
-> one difference is that folio_expected_ref_count() does not give right
-> refcount for shmem in swapcache.
-
-Good point. Likely nobody runs into that right now because nobody can 
-really does anything with these folios before they were re-added to the 
-pagecache or mapped into page tables.
-
+> After real mode trampoline is allocated, clear that scratch marking.
 > 
-> This is the folio_expected_ref_count() code:
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Co-developed-by: Changyuan Lyu <changyuanl@google.com>
+> Signed-off-by: Changyuan Lyu <changyuanl@google.com>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> ---
+>  arch/x86/kernel/e820.c   | 18 ++++++++++++++++++
+>  arch/x86/realmode/init.c |  2 ++
+>  2 files changed, 20 insertions(+)
 > 
->          if (folio_test_anon(folio)) {
->                  /* One reference per page from the swapcache. */
->                  ref_count += folio_test_swapcache(folio) << order;
->          } else {
->                  /* One reference per page from the pagecache. */
->                  ref_count += !!folio->mapping << order;
->                  /* One reference from PG_private. */
->                  ref_count += folio_test_private(folio);
->          }
-> 
-> shmem in swapcache mean !folio_test_anon(folio) && folio_test_swapcache(folio).
+> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+> index 9920122018a0b..c3acbd26408ba 100644
+> --- a/arch/x86/kernel/e820.c
+> +++ b/arch/x86/kernel/e820.c
+> @@ -1299,6 +1299,24 @@ void __init e820__memblock_setup(void)
+>  		memblock_add(entry->addr, entry->size);
+>  	}
+>  
+> +	/*
+> +	 * At this point memblock is only allowed to allocate from memory
+> +	 * below 1M (aka ISA_END_ADDRESS) up until direct map is completely set
+> +	 * up in init_mem_mapping().
+> +	 *
+> +	 * KHO kernels are special and use only scratch memory for memblock
+> +	 * allocations, but memory below 1M is ignored by kernel after early
+> +	 * boot and cannot be naturally marked as scratch.
+> +	 *
+> +	 * To allow allocation of the real-mode trampoline and a few (if any)
+> +	 * other very early allocations from below 1M forcibly mark the memory
+> +	 * below 1M as scratch.
+> +	 *
+> +	 * After real mode trampoline is allocated, we clear that scratch
+> +	 * marking.
+> +	 */
+> +	memblock_mark_kho_scratch(0, SZ_1M);
+> +
+>  	/*
+>  	 * 32-bit systems are limited to 4BG of memory even with HIGHMEM and
+>  	 * to even less without it.
+> diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+> index f9bc444a3064d..9b9f4534086d2 100644
+> --- a/arch/x86/realmode/init.c
+> +++ b/arch/x86/realmode/init.c
+> @@ -65,6 +65,8 @@ void __init reserve_real_mode(void)
+>  	 * setup_arch().
+>  	 */
+>  	memblock_reserve(0, SZ_1M);
+> +
+> +	memblock_clear_kho_scratch(0, SZ_1M);
+>  }
+>  
+>  static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
 
-See below, it's actually
+Hello!
 
-folio_test_anon(folio) && folio_test_swapbacked(folio)&& 
-folio_test_swapcache(folio)
+I am working with Breno who reported that we are seeing the below warning at boot
+when rolling out 6.16 in Meta fleet. It is difficult to reproduce on a single host
+manually but we are seeing this several times a day inside the fleet.
 
-I think ...
+ 20:16:33  ------------[ cut here ]------------
+ 20:16:33  WARNING: CPU: 0 PID: 0 at mm/memblock.c:668 memblock_add_range+0x316/0x330
+ 20:16:33  Modules linked in:
+ 20:16:33  CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G S                  6.16.1-0_fbk0_0_gc0739ee5037a #1 NONE 
+ 20:16:33  Tainted: [S]=CPU_OUT_OF_SPEC
+ 20:16:33  RIP: 0010:memblock_add_range+0x316/0x330
+ 20:16:33  Code: ff ff ff 89 5c 24 08 41 ff c5 44 89 6c 24 10 48 63 74 24 08 48 63 54 24 10 e8 26 0c 00 00 e9 41 ff ff ff 0f 0b e9 af fd ff ff <0f> 0b e9 b7 fd ff ff 0f 0b 0f 0b cc cc cc cc cc cc cc cc cc cc cc
+ 20:16:33  RSP: 0000:ffffffff83403dd8 EFLAGS: 00010083 ORIG_RAX: 0000000000000000
+ 20:16:33  RAX: ffffffff8476ff90 RBX: 0000000000001c00 RCX: 0000000000000002
+ 20:16:33  RDX: 00000000ffffffff RSI: 0000000000000000 RDI: ffffffff83bad4d8
+ 20:16:33  RBP: 000000000009f000 R08: 0000000000000020 R09: 8000000000097101
+ 20:16:33  R10: ffffffffff2004b0 R11: 203a6d6f646e6172 R12: 000000000009ec00
+ 20:16:33  R13: 0000000000000002 R14: 0000000000100000 R15: 000000000009d000
+ 20:16:33  FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
+ 20:16:33  CR2: ffff888065413ff8 CR3: 00000000663b7000 CR4: 00000000000000b0
+ 20:16:33  Call Trace:
+ 20:16:33   <TASK>
+ 20:16:33   ? __memblock_reserve+0x75/0x80
+ 20:16:33   ? setup_arch+0x30f/0xb10
+ 20:16:33   ? start_kernel+0x58/0x960
+ 20:16:33   ? x86_64_start_reservations+0x20/0x20
+ 20:16:33   ? x86_64_start_kernel+0x13d/0x140
+ 20:16:33   ? common_startup_64+0x13e/0x140
+ 20:16:33   </TASK>
+ 20:16:33  ---[ end trace 0000000000000000 ]--- 
 
-> The above code gives 0, but folio_cache_references() gives folio_nr_pages(folio).
-> It should not cause any issue, since IIUC shmem in swapcache happens
-> when the folio has an additional ref,
-> folio_expected_ref_count() != folio_ref_count() anyway. For split, it is
-> not supported yet, 
 
-Right.
+Rolling out with memblock=debug is not really an option in a large scale fleet due to the
+time added to boot. But I did try on one of the hosts (without reproducing the issue) and I see:
 
-> so folio_expected_ref_count() in split code does not
-> affect shmem in swapcache. But folio_expected_ref_count() should be
-> fixed, right?
+[    0.000616]  memory.cnt  = 0x6
+[    0.000617]  memory[0x0]	[0x0000000000001000-0x000000000009bfff], 0x000000000009b000 bytes flags: 0x40
+[    0.000620]  memory[0x1]	[0x000000000009f000-0x000000000009ffff], 0x0000000000001000 bytes flags: 0x40
+[    0.000621]  memory[0x2]	[0x0000000000100000-0x000000005ed09fff], 0x000000005ec0a000 bytes flags: 0x0
+...
 
-We should better handle it, agreed.
+The 0x40 (MEMBLOCK_KHO_SCRATCH) is coming from memblock_mark_kho_scratch in e820__memblock_setup. I believe this
+should be under ifdef like the diff at the end? (Happy to send this as a patch for review if it makes sense).
+We have KEXEC_HANDOVER disabled in our defconfig, therefore MEMBLOCK_KHO_SCRATCH shouldnt be selected and
+we shouldnt have any MEMBLOCK_KHO_SCRATCH type regions in our memblock reservations.
 
-Staring at the history of folio_expected_ref_count() once again, back 
-when we had folio_expected_refs() in migration code we didn't seem to 
-handle it I think.
+The other thing I did was insert a while(1) just before the warning and inspected the registers in qemu.
+R14 held the base register, and R15 held the size at that point.
+In the warning R14 is 0x100000 meaning that someone is reserving a region with a different flag to MEMBLOCK_NONE
+at the boundary of MEMBLOCK_KHO_SCRATCH.
 
--static int folio_expected_refs(struct address_space *mapping,
--               struct folio *folio)
--{
--       int refs = 1;
--       if (!mapping)
--               return refs;
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index c3acbd26408ba..26e4062a0bd09 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -1299,6 +1299,7 @@ void __init e820__memblock_setup(void)
+                memblock_add(entry->addr, entry->size);
+        }
+ 
++#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+        /*
+         * At this point memblock is only allowed to allocate from memory
+         * below 1M (aka ISA_END_ADDRESS) up until direct map is completely set
+@@ -1316,7 +1317,7 @@ void __init e820__memblock_setup(void)
+         * marking.
+         */
+        memblock_mark_kho_scratch(0, SZ_1M);
 -
--       refs += folio_nr_pages(folio);
--       if (folio_test_private(folio))
--               refs++;
++#endif
+        /*
+         * 32-bit systems are limited to 4BG of memory even with HIGHMEM and
+         * to even less without it.
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index 88be32026768c..1cd80293a3e23 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -66,8 +66,9 @@ void __init reserve_real_mode(void)
+         * setup_arch().
+         */
+        memblock_reserve(0, SZ_1M);
 -
--       return refs;
--}
-
-
-gup.c doesn't care, because the pages are still mapped.
-
-khugepaged.c similarly.
-
-memfd.c doesn't care because the pages are still in the pagecache.
-
-So I suspect nothing is broken, but the migration case needs a second look.
-
-> 
-> Like:
-> 
->          if (folio_test_anon(folio)) {
->                  /* One reference per page from the swapcache. */
->                  ref_count += folio_test_swapcache(folio) << order;
->          } else {
-> 				/* One reference per page from shmem in the swapcache. */
->                  ref_count += folio_test_swapcache(folio) << order;
->                  /* One reference per page from the pagecache. */
->                  ref_count += !!folio->mapping << order;
->                  /* One reference from PG_private. */
->                  ref_count += folio_test_private(folio);
->          }
-> 
-> or simplified into
-> 
->     		if (!folio_test_anon(folio)) {
->                  /* One reference per page from the pagecache. */
->                  ref_count += !!folio->mapping << order;
->                  /* One reference from PG_private. */
->                  ref_count += folio_test_private(folio);
->          }
-> 		/* One reference per page from the swapcache (anon or shmem). */
->          ref_count += folio_test_swapcache(folio) << order;
-> ?
-
-That is incorrect I think due to swapcache being able to give false 
-positives (PG_owner_priv_1).
-
--- 
-Cheers
-
-David
++#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+        memblock_clear_kho_scratch(0, SZ_1M);
++#endif
+ }
+ 
+ static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
 
