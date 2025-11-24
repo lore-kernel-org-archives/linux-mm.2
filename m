@@ -4,84 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E9DBCFD351
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 19:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5902CFD353
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 19:19:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABDEB6B00AF; Mon, 24 Nov 2025 14:18:25 -0500 (EST)
+	id 5411A6B00B2; Mon, 24 Nov 2025 14:19:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6E416B00B1; Mon, 24 Nov 2025 14:18:25 -0500 (EST)
+	id 5192D6B00B3; Mon, 24 Nov 2025 14:19:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 935CF6B00B2; Mon, 24 Nov 2025 14:18:25 -0500 (EST)
+	id 456D76B00B4; Mon, 24 Nov 2025 14:19:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 740396B00AF
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:18:25 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40ED789A88
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:18:25 +0000 (UTC)
-X-FDA: 84146461770.19.51CF789
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C419C000E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:18:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=MApBI3CU;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf10.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764011903; a=rsa-sha256;
-	cv=none;
-	b=p2txqG4k8R9Xp3eEkdCIjNGUdj2oZ0bAGi49ZWLMIr4XCsuxBVN526n41jIGEC2HzJHfxx
-	LYv6KLDD8Rd8ddeIDKSdhv97itSh/7MLBm9ORfKfW+DcUgoz+Xm+JQhTpRFwsJKDY2yStD
-	T23pWtOBh7AVYPxMjdn0KWLtmmYCHWs=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=MApBI3CU;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf10.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 33B276B00B2
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:19:06 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0127D4F42A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:19:05 +0000 (UTC)
+X-FDA: 84146463492.09.4CD37EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6C86A1A0008
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:19:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LDbj0ZQG;
+	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764011903;
+	s=arc-20220608; t=1764011944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=FWuU+z9tqteR7ANOJ2Is90urzhAEwYLjoEGBOm7xxrw=;
-	b=SH+0lIyM5N8sctriCT6pM9mSMAs1JIfFeh8hN4ly0JVZtzdetijyb8FzvydxARfaNfD+nK
-	DhqlpYN5gHqQVvSwBFV9WajYrVM2csE63SY4NZ6fbRr9vk37lJpc8Uggy/G0LJmrArR62t
-	ijAHI0W67oOaegkXYgbNGiw9R5fljWU=
-Received: from macsyma.thunk.org (c-73-9-28-129.hsd1.il.comcast.net [73.9.28.129])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5AOJIBOL022178
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Nov 2025 14:18:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1764011894; bh=FWuU+z9tqteR7ANOJ2Is90urzhAEwYLjoEGBOm7xxrw=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=MApBI3CUCJ7yOsNwFQf/FaeOmO6y0wpdKU6JLaMIz+fXNW29HVbs4B2+42tDYAbs/
-	 d7M9sSYf8ZqW3FhQsTXpJgtLBPZDu9wnIpw0pPllaiNXIb7JqOdO1jElHEPN1bVNvc
-	 5pKaVdZrnQfJVzXWqT2K3AY9UXTDCzgFKi6JMbssI3TrB+f5RKpk9DE8ueJcpggPE0
-	 2Guz1ZuhT47MfBGa07+hMfITa9ARWxfL7RoVB9tVIIvOfl7X1J/144DuGE8D1xYEH3
-	 pxufjfti2O1KnePwOXW6YkDX4NELrvYCiDpk27KPpbFyDzF1H2oV0SPH9D5Hqk8RdG
-	 GbJpJX4RLxSXQ==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id 31EF34C85C03; Mon, 24 Nov 2025 13:18:11 -0600 (CST)
-Date: Mon, 24 Nov 2025 13:18:11 -0600
-From: "Theodore Tso" <tytso@mit.edu>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-xfs@vger.kernel.org
-Subject: [REGRESSION] generic/127 failure caused by "mm: Use folio_next_pos()"
-Message-ID: <20251124191811.GA26781@mac.lan>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lHZQrxncwBTWCzeqGPkR8xDH+h7aQjoOcp2UJdYjxiY=;
+	b=iU2t+yOktZijSpQY4vDFQ4ofSRNBai9B4iOlWDUUVb9ZTp9SsGPegT845CFTrHGC90Pr6v
+	AUky6IvDn+TnqDZke551JovrMtHimEYY9Z49xXTggT7Mz2cRnUEORql53AeQhJN7QS8SdM
+	9PwCazBBtBhwU12f/6ZWV35uDGhf9q0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764011944; a=rsa-sha256;
+	cv=none;
+	b=xCg8wXmxuBS4f3SJuiH9LuIiXxtUE4zafvAYci25xVCssz0KS+lr6dOi+nAD8VWsnKgBjH
+	E6Dkm+fGvVBP8ad4nCYbhzl06yXwNy+g7Ytct+Q1OLYX5JjyFC+7WVSvCJqUdyl7XM3pvH
+	R4GvxwmE6uDq9/koHzG0CuwFIQVuA9g=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LDbj0ZQG;
+	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C5F4F60176;
+	Mon, 24 Nov 2025 19:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A0EC4CEF1;
+	Mon, 24 Nov 2025 19:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764011943;
+	bh=t+5nJNWM+Y9E1sZZFzFFdEKO5nYArGysP+lyxJ+WiWo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LDbj0ZQGFEs1XljlcIAl5AguNWlJ2sdwfP5PuvL1kBcnHlpVMc0xttNSffAMR1DfK
+	 JTJXG3YjCb9GKC6nsQRhf/Uka9XG0q8hHih9tvEWurJ+QxeYXGj19IKUU0GS1CvSht
+	 DaHyXRnSe/Aqf21+xtYu4zGuaJXEuRhh3jqcGCfB/IpDBYFDgotbgGttBLck1n7p3u
+	 t9xcPkZJxd30PJOz4thDrZvu2CR7bQK2zA4bMLE7OXXN6jk0LNLrCPzZsqkc8A49NX
+	 SStDT2QQmUxLLLF1hsbLkW8LQWAnTDtD14xB9qDvVZ2FeHtGoxLWUmI4DLzcHMBqBI
+	 TJOD2z3d6twYQ==
+Date: Mon, 24 Nov 2025 11:19:02 -0800
+From: Kees Cook <kees@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Bill Wendling <morbo@google.com>, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Marc Herbert <Marc.Herbert@linux.intel.com>,
+	Uros Bizjak <ubizjak@gmail.com>, Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	John Stultz <jstultz@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH 2/2] memblock: annotate struct memblock_type with
+ __counted_by_ptr
+Message-ID: <202511241117.CBE8ADC2@keescook>
+References: <20251121193957.1655580-1-morbo@google.com>
+ <20251121193957.1655580-3-morbo@google.com>
+ <202511211525.05CB7E1AEC@keescook>
+ <20251122141614.80f1a845cd694b1b470107ca@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="NWlW6uYnq158lPXA"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20251122141614.80f1a845cd694b1b470107ca@linux-foundation.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6C86A1A0008
+X-Stat-Signature: ue6tnit4jq39yy3rxon7rkt9wgftb78i
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4C419C000E
-X-Stat-Signature: 5zczxn77dw5no9akfgq9f11d3he4gw61
-X-HE-Tag: 1764011903-368295
-X-HE-Meta: U2FsdGVkX18Q8u87Nmd0VQIjPHv4kwtrLiZ2SsGeVe3UUvszbV7oEzNfdIAub+fJ2S+RAdd25Ea4YxqjYfO3hCh9fZG8JXQAg33euAWZ2mHFZlIO3lfUnP8eoGXuosg4/5ENzOA1x7P5TzLp/ITTk18LauHZcpA5FDueFLbCwXP6HfJswMSHZCGoc8Fvt/zDgKSUy4T5aFHdm/akDSBgLEINmvCYG3aUrUeTce4uVPP80qe+DwkkbQXNjwvCak9CPz+gUB7AgVY5e04KiITG6xcIrsdLeWcwP2g3F+Intm7f6avGZuw+4qQ18OOVMFeymeQ0Yxpsrk0GnSlwaG7ds0cTa+xGhxKPLOGCaUlsKreQaT/laCQNbAmuGUN9a4WQYgE+OC2l1NHjxL1lxN12hkxMLDJPqMI8LChcDj+mwbHUDUsITmf0qbqdaDqju7NbRbk55eGb2Sjbi7aV3PjuvnTivzFfrcxeSFdbW3jt9zQR6Dwyk2Cn70XklAH/P4dH5SPD4dbK40V3s9Rko0jad7j+JAum5qMYnEG0VrwOrtwf48C7JVhTzjXvdbS7S2Rzag5SLaI1boOydi3vXYpwvVByoEzmt13ZW3poQCNdSh+Dv98DjNcjo2SZxNwEW2ua+3jS70eu9SBpsrTKGonNWf7fQ6CKP3GmJrmNSptqgbQKqOZ5q6/+wAcHBbU+O4VaSOlZbDrvaJVeqGX32JJ+emQwHfA9CGIUUGYuYoBtgW4rZIyhTvPCrmY2NvQL4P1btiAnScGcZh53irPGaIIvpzzajsvXHuE8QHKcuw6j+z1e6gcfy3PsiCIwfs1M/EcFBmRDB6gaoPAOrkqnqFqe1XJAZL9m6zVqicYKv5twzHcL+VVlOgX8IkLDZQog+T7v+kd0RK9n/F4NzeV7iT8ch0OBMB2FKd4+z+lNPCE4KZl2hETVsaTwtn/nnt6PXuwJ9Bit8DZ4NYlXzkBqHcv
- r2GGgf7+
- BCB6+8mOIMdnNWVPXIKYUVXp43Iexl8HzikhtR2aeBgu/AYtgVF2Zn4wIrFOvOE5em0Jq40gc9fFbbhUjgpiaCq54DG4YE48dR9TgKuBBsH0a57TKhrL748tqe6EGS4Vhp/Tqzj+iRqksjWKYpBbfmYc/aqKvfzJuSnUTY1V1S79z1MiFztRtW1h41yIRZOk+ACQoDJ3s6d/ibiNHnenFAh2G09CUIf9jkiDyalcT79ojodJp01J7fHUJi+pvxiiQsvnvdlps/z0cfMpj7921DpssZQjaIqtEyOuiKIpPgkZ1lj8U2abMFOanBoz3VV4LQzI2rVbXilzbSH+XlwhRVRKTHmTc8hbdR5VKSiFdLciugsTr4Mv+0yjvdGrsw4jWN9aRrTqJj0HWjQ5hyPokgVgT9SHMb0GrYqOC+oLna9WOBsnhwjZvM4LSgrHoCZyVFLZqAaGKqts+MlKCRbB2QlqpCyqIOlfS7UKKj2Tg4qmDsEmQ5Yc932kg1K3SZti5HSP1tTJAtMle1jQ=
+X-HE-Tag: 1764011944-550845
+X-HE-Meta: U2FsdGVkX19WMm6nUWYp8g8N+uHwbbc/nro3N3gmGn+4ZxQlBXWCj8ooi/V2ArptYx9FZB2FVqrrDeuKAg5qP1jTj9ZzUldPu0a2UrkzLGnjSebbkspWWAGDDvcSc/hj4aw4SvZHYJNQzNt2DKngS4rUhxF4HPsFlX8j8ncqCQnj6nAPOnmTJchiG6KPaKurz/MSIt2HZrKkMjzPMnQYbpbwNLa9giZU/3pk0MRJX5GPWk+BwiUXv0UXkOtN+ubgm/gILiAsyXNxSohOtQxnnqae4s6DtOyeDGddsdtRuCHd5KsojUqKOdaIbDrpsxJLTJpPipetoO284P54Ospl6cz3POhDocUSb+8IHVsq4qDAXRoQ0ACBn6VTp5yalnRNEYlL9YuEB1q3LdIduELh6UD/6/8XBPATOI8NqfdqBiHq5YF3Qc35vFk6l57OmJmSGkuKOFQypYii8HULePvA5ZXlYHZnH3fLnsc/M/HTKWuvQLWekbC7ZvAwyjJOV9H2BIhAh3gzqQsK/fkANLmHHpKyrd2/YUh5Lb9Jx3tMKylrtOQZSSxRKjtqhg2qVVWUAKK4hmt7J8SeHxxy15HWDent9FmUq3S41Gs3socy+Gber8Oqes/+Tuvk9hS13gfbP7upFH1AFgrDtFWvsDFdmfpH11hA3aZPqZzjqg9pHrQL/E4ClugB67F8yNd9ZPvucQgt8n7qb4F1XvoW4m7unUnN4HL+dM0hS3mePShy/VMihY4qFRq5zXyG3uAt7r5xS+9t0dNshKQV9n/TMWN4wMTbG2+apmsJtaIFZpd/Wh2mfI+oTJvOD7gKwBTKjQ1YR/NI78vRCiG0voTVrFfg0U+I4KWjpRLfVI3WOPB1ykOX/AZ7RQUeC+P4WDZ1kYwrhudpuq+TivVO5+tGiFaRGbxQy4psXErB6J+JkTMrxlLs4juiKM/ZYWL4CcTam3AwlubQaGtV5lL6rpoZki/
+ 7n5y5TM4
+ mB+zvPXITctZOctjMaVZ9WNSQmz6D4PVEEq7F9RtKpyEjyRdfLcdXmiculxP3KDgS3frMefITUZCgjwWBBfL23nRamGkJnAPwB2XMpuckI9AeeUOYLYqtxFa+OwCKOCXCmh+CW06VISkzB1FcaVXPQZjCd7AT0XLs0tpteBaMn5+ytVCgofK0H1YJKl+vkg8/Ba4oe9ov25BBJ4sGHrCNFtYw+u1Ys8klaUvOt4u0Cmlqn8km2zRxa2yosLiFMEiOy1nfUgV0C+y05JHKTIXpC0Pr+c/x5IIlnRTWVfN38MFBL58NK72N42A5a0OaYFcemzHERsZuX4PmyHrMx+/8E48hWh/VXONvGmgPYpza4JEkUI2bm5wCuYqyNnbRdpDQRoFL/drGGkJe/+I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,337 +114,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Nov 22, 2025 at 02:16:14PM -0800, Andrew Morton wrote:
+> On Fri, 21 Nov 2025 16:30:43 -0800 Kees Cook <kees@kernel.org> wrote:
+> 
+> > On Fri, Nov 21, 2025 at 07:39:44PM +0000, Bill Wendling wrote:
+> > > Add the '__counted_by_ptr' attribute to the 'regions' field of 'struct
+> > > memblock_type'. The 'regions' field is an array of 'struct
+> > > memblock_region' and its size is tracked by the 'max' field, which
+> > > represents the total number of allocated regions.
+> > 
+> > As part of any counted_by annotation patch, there needs to be discussion
+> > in the commit log about how it's been shown to be a safe annotation
+> > to make. e.g. in this case, if all allocations of "regions" have a
+> > corresponding "max" assignment, etc. If just "git grep" can't find them
+> > all, using something like Coccinelle or CodeQL to search for struct
+> > memblock_type::regions assignments can work.
+> 
+> How is anyone to know these things?  I can't find anything about this
+> in include/ or Documentation/ or in the relevant commits.
+> 
+> There should be a comment at the __counted_by() definition site, please.
+> 
+> And possibly write a Documentation/ file then change checkpatch to
+> direct people to that file if they add a counted_by?
 
---NWlW6uYnq158lPXA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This is a fair point, yes. The documentation and discussions around
+counted_by are very big in my mind (and for Bill), so it was mostly a
+consolidation/reminder and some extra detail on prior solutions, but
+for anyone new to that annotation, we should have collected common
+guidance. I will write something up.
 
-While testing the ext4 large blocksize patches I merged in
-linux-next/fs-next to pick up the mm changes needed to prevent the
-warnings when allocating larger blocks with GFP_NOFAIL, and I found
-some unrelated regressions with three tests, including generic/127
-(the other two regressions seem unrelated to this commit; I'll bisect
-them separately).
-
-Further testing found that regression occurred somewhere between
-fs-current and fs-next, and I also found that it was failing not just
-for ext4, but also for ext4.  A git bisect run localized the failure
-to this commit:
-
-commit 60a70e61430b2d568bc5e96f629c5855ee159ace
-Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-Date:   Fri Oct 24 18:08:18 2025 +0100
-
-    mm: Use folio_next_pos()
-    
-    This is one instruction more efficient than open-coding folio_pos() +
-    folio_size().  It's the equivalent of (x + y) << z rather than
-    x << z + y << z.
-    
-    Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-    Link: https://patch.msgid.link/20251024170822.1427218-11-willy@infradead.org
-
-I then checked out linux-next (aka linux-next/master) and verified
-that the problem was reproducible there, using
-
-kvm-xfstests -c ext4/4k generic/127 --fail-loop-count 0 --kernel-build
-
-And then when I reverted commit 60a70e61430b, the test passed.  I also
-checked and found that this commit was also causing generic/127 to
-fail for xfs:
-
-kvm-xfstests -c xfs/4k generic/127 --fail-loop-count 0 --kernel-build
-
-And, with the commit reverted the problem went away.
-
-The test logs for ext4 and xfs are attached.  Willy, could you take a
-look?  Many thanks!!
-
-							- Ted
-
-
---NWlW6uYnq158lPXA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=ext4-generic-127.log
-Content-Transfer-Encoding: quoted-printable
-
-=1Bc=1B[?7l=1B[2J=1B[0mSeaBIOS (version 1.17.0-debian-1.17.0-1)=0D
-Booting from ROM..=1Bc=1B[?7l=1B[2J=1B[!p=1B]104=07=1B[?7h[=1B[0;1;31mFAILE=
-D=1B[0m] Failed to start =1B[0;1;39mnbd-server.service=1B[0m - Network Bloc=
-k Device server.=0D=0D
-CMDLINE: "-c ext4/4k generic/127 --fail-loop-count 0"=0D
-KERNEL: kernel	6.18.0-rc6-next-20251124-xfstests #20 SMP PREEMPT_DYNAMIC Mo=
-n Nov 24 14:04:48 EST 2025 x86_64=0D
-FSTESTVER: blktests	4badb27 (Fri, 31 Oct 2025 19:53:27 +0900)=0D
-FSTESTVER: fio		fio-3.41 (Fri, 5 Sep 2025 14:21:17 -0600)=0D
-FSTESTVER: fsverity	v1.7 (Tue, 4 Nov 2025 17:28:17 -0800)=0D
-FSTESTVER: ima-evm-utils	v1.5 (Mon, 6 Mar 2023 07:40:07 -0500)=0D
-FSTESTVER: libaio  	libaio-0.3.108-82-gb8eadc9 (Thu, 2 Jun 2022 13:33:11 +0=
-200)=0D
-FSTESTVER: ltp		20250930 (Tue, 30 Sep 2025 13:53:45 +0200)=0D
-FSTESTVER: quota		v4.05-77-g22ff3d9 (Tue, 2 Sep 2025 08:12:02 -0400)=0D
-FSTESTVER: util-linux	v2.41.2 (Mon, 22 Sep 2025 12:56:34 +0200)=0D
-FSTESTVER: xfsprogs	v6.17.0 (Mon, 20 Oct 2025 16:49:00 +0200)=0D
-FSTESTVER: xfstests	v2025.11.04-12-g64e3dbda7 (Thu, 13 Nov 2025 19:58:03 -0=
-500)=0D
-FSTESTVER: xfstests-bld	gce-xfstests-202504292206-33-g3844cb58 (Thu, 13 Nov=
- 2025 21:05:49 -0500)=0D
-FSTESTVER: zz_build-distro	trixie=0D
-FSTESTCFG: "ext4/4k"=0D
-FSTESTSET: "generic/127"=0D
-FSTESTEXC: ""=0D
-FSTESTOPT: "fail_loop_count 0 aex"=0D
-MNTOPTS: ""=0D
-CPUS: "2"=0D
-MEM: "1969.56"=0D
-               total        used        free      shared  buff/cache   avai=
-lable=0D
-Mem:            1969         208        1749           0         143       =
- 1760=0D
-Swap:              0           0           0=0D
-BEGIN TEST 4k (1 test): Ext4 4k block Mon Nov 24 14:05:27 EST 2025=0D
-DEVICE: /dev/vdb=0D
-EXT_MKFS_OPTIONS: -b 4096=0D
-EXT_MOUNT_OPTIONS: -o block_validity=0D
-FSTYP         -- ext4=0D
-PLATFORM      -- Linux/x86_64 kvm-xfstests 6.18.0-rc6-next-20251124-xfstest=
-s #20 SMP PREEMPT_DYNAMIC Mon Nov 24 14:04:48 EST 2025=0D
-MKFS_OPTIONS  -- -F -q -b 4096 /dev/vdc=0D
-MOUNT_OPTIONS -- -o acl,user_xattr -o block_validity /dev/vdc /vdc=0D
-=0D
-generic/127  31s ...  [14:05:28][    3.901891] run fstests generic/127 at 2=
-025-11-24 14:05:28=0D
-[    4.092040] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (42) finished: extent logical block 25, len 15; IO logic=
-al block 25, len 8=0D
-[    4.101284] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (47) finished: extent logical block 25, len 15; IO logic=
-al block 25, len 8=0D
-[    4.125984] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (47) finished: extent logical block 35, len 9; IO logica=
-l block 39, len 1=0D
-[    4.129140] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (47) finished: extent logical block 35, len 4; IO logica=
-l block 36, len 3=0D
-[    4.181406] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (42) finished: extent logical block 3, len 14; IO logica=
-l block 8, len 9=0D
-[    4.194278] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (42) finished: extent logical block 31, len 11; IO logic=
-al block 31, len 10=0D
-[    4.198459] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (47) finished: extent logical block 3, len 14; IO logica=
-l block 8, len 9=0D
-[    4.207676] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (50) finished: extent logical block 25, len 15; IO logic=
-al block 25, len 8=0D
-[    4.217111] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (47) finished: extent logical block 31, len 11; IO logic=
-al block 31, len 10=0D
-[    4.221635] EXT4-fs warning (device vdb): ext4_convert_unwritten_extents=
-_endio:3774: Inode (41) finished: extent logical block 25, len 15; IO logic=
-al block 25, len 8=0D
- [14:05:39]- output mismatch (see /results/ext4/results-4k/generic/127.out.=
-bad)=0D
-    --- tests/generic/127.out	2025-11-13 21:05:49.000000000 -0500=0D
-    +++ /results/ext4/results-4k/generic/127.out.bad	2025-11-24 14:05:39.22=
-5714867 -0500=0D
-    @@ -1,7 +1,34117 @@=0D
-     QA output created by 127=0D
-    +/root/xfstests/ltp/fsx -q -l 262144 -o 65536 -S 191110531 -N 100000 -R=
- -W fsx_std_nommap=0D
-    +READ BAD DATA: offset =3D 0x11303, size =3D 0xf7b0, fname =3D /vdb/fsx=
-_std_nommap=0D
-    +OFFSET      GOOD    BAD     RANGE=0D
-    +0x14000     0x0000  0xfc9f  0x0=0D
-    +operation# (mod 256) for the bad data may be 252=0D
-    +0x14001     0x0000  0x9ffc  0x1=0D
-    ...=0D
-    (Run 'diff -u /root/xfstests/tests/generic/127.out /results/ext4/result=
-s-4k/generic/127.out.bad'  to see the entire diff)=0D
-Ran: generic/127=0D
-Failures: generic/127=0D
-Failed 1 of 1 tests=0D
-Xunit report: /results/ext4/results-4k/result.xml=0D
-=0D
-               total        used        free      shared  buff/cache   avai=
-lable=0D
-Mem:            1969         206        1822           0          28       =
- 1762=0D
-Swap:              0           0           0=0D
-END TEST: Ext4 4k block Mon Nov 24 14:05:39 EST 2025=0D
-
---NWlW6uYnq158lPXA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=xfs-generic-127.log
-Content-Transfer-Encoding: quoted-printable
-
-=1Bc=1B[?7l=1B[2J=1B[0mSeaBIOS (version 1.17.0-debian-1.17.0-1)=0D
-Booting from ROM..=1Bc=1B[?7l=1B[2J=1B[!p=1B]104=07=1B[?7h[=1B[0;1;31mFAILE=
-D=1B[0m] Failed to start =1B[0;1;39mnbd-server.service=1B[0m - Network Bloc=
-k Device server.=0D=0D
-CMDLINE: "-c xfs/4k generic/127 --fail-loop-count 0"=0D
-KERNEL: kernel	6.18.0-rc6-next-20251124-xfstests #20 SMP PREEMPT_DYNAMIC Mo=
-n Nov 24 14:04:48 EST 2025 x86_64=0D
-FSTESTVER: blktests	4badb27 (Fri, 31 Oct 2025 19:53:27 +0900)=0D
-FSTESTVER: fio		fio-3.41 (Fri, 5 Sep 2025 14:21:17 -0600)=0D
-FSTESTVER: fsverity	v1.7 (Tue, 4 Nov 2025 17:28:17 -0800)=0D
-FSTESTVER: ima-evm-utils	v1.5 (Mon, 6 Mar 2023 07:40:07 -0500)=0D
-FSTESTVER: libaio  	libaio-0.3.108-82-gb8eadc9 (Thu, 2 Jun 2022 13:33:11 +0=
-200)=0D
-FSTESTVER: ltp		20250930 (Tue, 30 Sep 2025 13:53:45 +0200)=0D
-FSTESTVER: quota		v4.05-77-g22ff3d9 (Tue, 2 Sep 2025 08:12:02 -0400)=0D
-FSTESTVER: util-linux	v2.41.2 (Mon, 22 Sep 2025 12:56:34 +0200)=0D
-FSTESTVER: xfsprogs	v6.17.0 (Mon, 20 Oct 2025 16:49:00 +0200)=0D
-FSTESTVER: xfstests	v2025.11.04-12-g64e3dbda7 (Thu, 13 Nov 2025 19:58:03 -0=
-500)=0D
-FSTESTVER: xfstests-bld	gce-xfstests-202504292206-33-g3844cb58 (Thu, 13 Nov=
- 2025 21:05:49 -0500)=0D
-FSTESTVER: zz_build-distro	trixie=0D
-FSTESTCFG: "xfs/4k"=0D
-FSTESTSET: "generic/127"=0D
-FSTESTEXC: ""=0D
-FSTESTOPT: "fail_loop_count 0 aex"=0D
-MNTOPTS: ""=0D
-CPUS: "2"=0D
-MEM: "1969.56"=0D
-               total        used        free      shared  buff/cache   avai=
-lable=0D
-Mem:            1969         212        1745           0         143       =
- 1756=0D
-Swap:              0           0           0=0D
-meta-data=3D/dev/vdd               isize=3D512    agcount=3D4, agsize=3D327=
-680 blks=0D
-         =3D                       sectsz=3D512   attr=3D2, projid32bit=3D1=
-=0D
-         =3D                       crc=3D1        finobt=3D1, sparse=3D1, r=
-mapbt=3D1=0D
-         =3D                       reflink=3D1    bigtime=3D1 inobtcount=3D=
-1 nrext64=3D1=0D
-         =3D                       exchange=3D0   metadir=3D0=0D
-data     =3D                       bsize=3D4096   blocks=3D1310720, imaxpct=
-=3D25=0D
-         =3D                       sunit=3D0      swidth=3D0 blks=0D
-naming   =3Dversion 2              bsize=3D4096   ascii-ci=3D0, ftype=3D1, =
-parent=3D0=0D
-log      =3Dinternal log           bsize=3D4096   blocks=3D16384, version=
-=3D2=0D
-         =3D                       sectsz=3D512   sunit=3D0 blks, lazy-coun=
-t=3D1=0D
-realtime =3Dnone                   extsz=3D4096   blocks=3D0, rtextents=3D0=
-=0D
-         =3D                       rgcount=3D0    rgsize=3D0 extents=0D
-         =3D                       zoned=3D0      start=3D0 reserved=3D0=0D
-Discarding blocks...Done.=0D
-BEGIN TEST 4k (1 test): XFS 4k block Mon Nov 24 14:06:31 EST 2025=0D
-DEVICE: /dev/vdd=0D
-XFS_MKFS_OPTIONS: -bsize=3D4096=0D
-XFS_MOUNT_OPTIONS: =0D
-FSTYP         -- xfs (debug)=0D
-PLATFORM      -- Linux/x86_64 kvm-xfstests 6.18.0-rc6-next-20251124-xfstest=
-s #20 SMP PREEMPT_DYNAMIC Mon Nov 24 14:04:48 EST 2025=0D
-MKFS_OPTIONS  -- -f -bsize=3D4096 /dev/vdc=0D
-MOUNT_OPTIONS -- /dev/vdc /vdc=0D
-=0D
-generic/127  31s ...  [14:06:33][    6.886269] run fstests generic/127 at 2=
-025-11-24 14:06:33=0D
-[    7.333668] vdd: writeback error on inode 137, offset 208896, sector 262=
-2528=0D
-[    7.338078] XFS (vdd): Corruption of in-memory data (0x8) detected at xf=
-s_trans_mod_sb+0x2b6/0x370 (fs/xfs/xfs_trans.c:353).  Shutting down filesys=
-tem.=0D
-[    7.341384] XFS (vdd): Please unmount the filesystem and rectify the pro=
-blem(s)=0D
-[    7.342570] XFS: Assertion failed: tp->t_blk_res >=3D tp->t_blk_res_used=
-, file: fs/xfs/xfs_trans.c, line: 120=0D
-[    7.344123] ------------[ cut here ]------------=0D
-[    7.344851] WARNING: fs/xfs/xfs_message.c:104 at assfail+0x33/0x3a, CPU#=
-1: kworker/1:0/23=0D
-[    7.346172] CPU: 1 UID: 0 PID: 23 Comm: kworker/1:0 Not tainted 6.18.0-r=
-c6-next-20251124-xfstests #20 PREEMPT(none) =0D
-[    7.347861] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.1=
-7.0-debian-1.17.0-1 04/01/2014=0D
-[    7.349936] Workqueue: xfs-conv/vdd xfs_end_io=0D
-[    7.350759] RIP: 0010:assfail+0x33/0x3a=0D
-[    7.351341] Code: 49 89 d0 41 89 c9 48 c7 c2 d8 18 a8 82 48 89 f1 48 89 =
-fe 48 c7 c7 e4 0c b0 82 e8 b8 fd ff ff 80 3d 59 6d ba 01 00 74 02 0f 0b <0f=
-> 0b e9 41 da ed ff 48 8d 45 10 48 89 e2 48 89 de 4c 89 34 24 48=0D
-[    7.354327] RSP: 0018:ffa00000000cbc00 EFLAGS: 00010246=0D
-[    7.355161] RAX: 0000000000000000 RBX: ff11000011dafbc8 RCX: 000000007ff=
-fffff=0D
-[    7.356328] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff82b=
-00ce4=0D
-[    7.357522] RBP: ff11000011dafd98 R08: 0000000000000000 R09: 00000000000=
-0000a=0D
-[    7.358681] R10: 000000000000000a R11: 0fffffffffffffff R12: 00000005000=
-2f3f8=0D
-[    7.359835] R13: 0000000000039a46 R14: ff11000011dafe68 R15: ff11000011d=
-afe68=0D
-[    7.361031] FS:  0000000000000000(0000) GS:ff110000fa430000(0000) knlGS:=
-0000000000000000=0D
-[    7.362325] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033=0D
-[    7.363273] CR2: 00007fbb37aaa350 CR3: 0000000002c2e003 CR4: 00000000007=
-71ef0=0D
-[    7.364422] PKRU: 55555554=0D
-[    7.364872] Call Trace:=0D
-[    7.365309]  <TASK>=0D
-[    7.365671]  xfs_trans_dup+0x16e/0x1c0=0D
-[    7.366287]  xfs_trans_roll+0x2e/0xd0=0D
-[    7.366906]  xfs_defer_trans_roll+0x53/0x130=0D
-[    7.367608]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
-[    7.368393]  xfs_defer_finish_noroll+0x2cd/0x500=0D
-[    7.369419]  xfs_trans_commit+0x4c/0x70=0D
-[    7.370486]  ? xfs_iomap_write_unwritten+0x180/0x320=0D
-[    7.371227]  xfs_iomap_write_unwritten+0xce/0x320=0D
-[    7.371932]  xfs_end_ioend+0x207/0x2b0=0D
-[    7.372517]  xfs_end_io+0xb5/0x100=0D
-[    7.373046]  process_one_work+0x18c/0x360=0D
-[    7.373697]  worker_thread+0x268/0x3b0=0D
-[    7.374265]  ? __pfx_worker_thread+0x10/0x10=0D
-[    7.374910]  kthread+0x10a/0x230=0D
-[    7.375422]  ? __pfx_kthread+0x10/0x10=0D
-[    7.375989]  ? __pfx_kthread+0x10/0x10=0D
-[    7.376577]  ret_from_fork+0x95/0x110=0D
-[    7.377142]  ? __pfx_kthread+0x10/0x10=0D
-[    7.377709]  ret_from_fork_asm+0x1a/0x30=0D
-[    7.378303]  </TASK>=0D
-[    7.378663] ---[ end trace 0000000000000000 ]---=0D
-[    7.379365] vdd: writeback error on inode 132, offset 184320, sector 888=
-=0D
-_check_xfs_filesystem: filesystem on /dev/vdd has dirty log=0D
-(see /results/xfs/results-4k/generic/127.full for details)=0D
-_check_xfs_filesystem: filesystem on /dev/vdd is inconsistent (r)=0D
-(see /results/xfs/results-4k/generic/127.full for details)=0D
-Trying to repair broken TEST_DEV file system=0D
-_check_dmesg: something found in dmesg (see /results/xfs/results-4k/generic=
-/127.dmesg)=0D
- [14:06:34]- output mismatch (see /results/xfs/results-4k/generic/127.out.b=
-ad)=0D
-    --- tests/generic/127.out	2025-11-13 21:05:49.000000000 -0500=0D
-    +++ /results/xfs/results-4k/generic/127.out.bad	2025-11-24 14:06:34.037=
-856472 -0500=0D
-    @@ -1,7 +1,25950 @@=0D
-     QA output created by 127=0D
-    -All 100000 operations completed A-OK!=0D
-    -All 100000 operations completed A-OK!=0D
-    -All 100000 operations completed A-OK!=0D
-    -All 100000 operations completed A-OK!=0D
-    -All 100000 operations completed A-OK!=0D
-    -All 100000 operations completed A-OK!=0D
-    ...=0D
-    (Run 'diff -u /root/xfstests/tests/generic/127.out /results/xfs/results=
--4k/generic/127.out.bad'  to see the entire diff)=0D
-Ran: generic/127=0D
-Failures: generic/127=0D
-Failed 1 of 1 tests=0D
-Xunit report: /results/xfs/results-4k/result.xml=0D
-=0D
-               total        used        free      shared  buff/cache   avai=
-lable=0D
-Mem:            1969         309        1719           0          30       =
- 1660=0D
-Swap:              0           0           0=0D
-END TEST: XFS 4k block Mon Nov 24 14:06:34 EST 2025=0D
-
---NWlW6uYnq158lPXA--
+-- 
+Kees Cook
 
