@@ -4,112 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4771CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 08:18:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F013CFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 08:39:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 119896B0022; Mon, 24 Nov 2025 03:18:58 -0500 (EST)
+	id 320876B0010; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F1866B0023; Mon, 24 Nov 2025 03:18:58 -0500 (EST)
+	id 2D1846B0011; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 006DD6B0026; Mon, 24 Nov 2025 03:18:57 -0500 (EST)
+	id 1E7206B0023; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E3B926B0022
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 03:18:57 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 224871A0251
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:18:55 +0000 (UTC)
-X-FDA: 84144799830.12.623EEA3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 869AE40006
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:18:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q4nb9B6N;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0A7A96B0010
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 03:39:01 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AF1001602AC
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:39:00 +0000 (UTC)
+X-FDA: 84144850440.10.F9D4F82
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D5314140005
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 08:38:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HWpQ5BFN;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763972333;
+	s=arc-20220608; t=1763973538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lf2u62oVr2kxx1dN5Y5JvPTrOEUR+mutjH93KwVf9Co=;
-	b=YHCPFFNFM/LglBMquv7fpLAF1PeVsgNt/KanyWJ6qcMyHJqCSrg91RXZ0RMMYnVVn43EYZ
-	mzxFnixLao83zvRaaO5Iw4aZmMefshLuC7qbRrGpzO2eFVy7kxYsdgX7UhAde1C5Zb33EG
-	1azsVqC5ay4ohNwR3Y2ggYxSt3sCcAo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763972333; a=rsa-sha256;
-	cv=none;
-	b=ckXqTOayPELIX5Qkd9vd3Mp74reEJtgRlQtiSdXxZNy+33Bd0VoNJpGp+1zdcJJG+S51SL
-	Xe2K4HT2PvzKIhDTjrr+lxbd4ePjSZfzXQyLgs4LToC24kcOkJEP1n1pou4k17w2kw6Z8g
-	9isfZuJfTljD+ML5Acg23Bks+IJ7iw8=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OPfCmvzgTU+aPxqkSD4RFKKGWwazVYBT6hCsnbEQ8Eo=;
+	b=JwTF61s+nAThFxpJdye+8D5+FpTiucehQutYDytwCfClX8O0yHxFk+3o3HRzLzU0AJon4H
+	/vJhIkkujcAlLvtixM9mkgC05Y3/wXsHH7fiiEPqZIOpy7i8mSLPOIn6Mv3CDPqURMOLiD
+	LGZBqTu4UHMbPTjJaWiw5Rb/W26k8TA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q4nb9B6N;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B57360183;
-	Mon, 24 Nov 2025 08:18:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A781AC4CEF1;
-	Mon, 24 Nov 2025 08:18:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763972332;
-	bh=WYWLQ0T4dkN8ERXG3u9J8ksvyh7k5Zp6ptzavMDxTI0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q4nb9B6NtVz90XW2XdKcz2w3HBHpJZR/aM1ZNR35r4yvDfhHSypM9mzA3W6YfsD/b
-	 CWTbTvQXuj2Ivelvod05bz13F/xMHSMh1eB4TIvqOhmzJgVuCYUbTaBRdIMDu+WsnQ
-	 Hv9hSiSlm6h42pfXMm7526csug76VGAcAJ2QBfe7LaRFocbC8f65jRuQcfxoz+Yj6F
-	 cDXFj8FL/XpKzmWpGWFT8PIva62JL2DAm1+v1Af9C+1qlUdrYFe5xrV3OBFSKfdEFW
-	 kYCoeLF1kbCOnDt1/j3vavEhYmdYkkkz/YxhVQ7NzlE5exG8jkVQg3JaMIns28yd2n
-	 VlYneYz7SNm7w==
-Date: Mon, 24 Nov 2025 10:18:28 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v7 06/22] liveupdate: luo_file: implement file systems
- callbacks
-Message-ID: <aSQU1LlPDDsN2rUw@kernel.org>
-References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
- <20251122222351.1059049-7-pasha.tatashin@soleen.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HWpQ5BFN;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763973538; a=rsa-sha256;
+	cv=none;
+	b=h41s5hlyTOnYqjCABzu7YjiaqrmPRse6Crp6Xq2z8Fjl9mdBXyKOLAIxvTuUviWcQHKYda
+	NTAhDZZYuxHIuepsu7FUkqjuDEfHrd8q+N+8O4XgAuaeCSYZ6TXQwRMHueRReSo04d/ruu
+	g7xEWC8pwnwXih0T1MtMoEKWn+fUGQA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763973538; x=1795509538;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=2C5rVuGkFTaSM2Oen8imI1+CyKeXfsB65iGjm6mbxHc=;
+  b=HWpQ5BFNJi8g5C9k8rkWUkmoAVgCVvlVWrIAZCuhMd5WRqO+sWX0OXBH
+   17kgh86u6vOtKYKGbV/wFgg/le4wWmlRejYTco8T+G8kQTpLhYIySSBEJ
+   9UndV2jbTqn2yNtw9u0dHBV8xIWTMYAU4KZQYubmzrDymRKcKbcYFeSGd
+   XFVP/Ir2SzBZaigwc+uFVczzrPFhZqZpmmDaD6/k/0o1yEz+ttOxzzzX1
+   /SGwS6nuiApOL7eMVsFzdSqMgPEVSqLZvMtvzQxepiLGysRyDmIDziC0u
+   DCnA/VXohN4q4aU6awcR8AxnMvp9pihKqZmMpmlLVOLFtoxvHcSI3c8/+
+   g==;
+X-CSE-ConnectionGUID: uZELm+dAR2+MwdnzUZ/OHQ==
+X-CSE-MsgGUID: KDSGbQw6RPOSDB2iyciS4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="77329070"
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="77329070"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 00:38:56 -0800
+X-CSE-ConnectionGUID: iQyDMvd9T0Kh8ams8KetZw==
+X-CSE-MsgGUID: dCQFDI1aTq+/epFKcHcLTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="197391053"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 24 Nov 2025 00:38:55 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vNS60-000000000Wt-1wH5;
+	Mon, 24 Nov 2025 08:38:52 +0000
+Date: Mon, 24 Nov 2025 16:38:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: include/linux/compiler_types.h:572:38: error: call to
+ '__compiletime_assert_596' declared with attribute error: BUILD_BUG_ON
+ failed: IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT)
+Message-ID: <202511241637.BoBE5PKN-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251122222351.1059049-7-pasha.tatashin@soleen.com>
-X-Stat-Signature: awc881mh39c4rbym6xbb6qgxyd9ykq8x
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D5314140005
+X-Stat-Signature: 7dggenadte4pr6y1gzkbmpmzsdfenada
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 869AE40006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763972333-488908
-X-HE-Meta: U2FsdGVkX18KW7ELswNS45pSEF3tPJ8LklD0rI1jZ/iwoJbQIsl7CyN7/Gw7NAEfEq8Wb2aMKOHtuAjOKJBzQjD1MDxnrcpe4FEX5Otp42OnMLdjqqV72mv7X/BtIV2lMu712P4dTYH2XYqnN/dsFpRUNvmr5T/r0s7hlpcVxoWNWg0sQW7kxlBT+wm5i9R7qdQ2Y33zISrQnoirakVucI5lUHVvaLvp25doDSgYRGkvUVSFrI+XR90WnVFpf0rz/973g60mvn9NJ103zAHQkzFG5Vs1nn3g7kzytfwpDhvYWU0Y1X5RvRKkbbBvxOCyc6UZMly//T5jjN7KFnHpD9UV8KKHY7n4eAO+KfDA1r7uxWyrWP7oEEnlC0tokSktefRAEE5WLSGx17dE9Av0EW+5/KwZh+hCRcxJA29pOCqbQ6iLNHuFTccg8kp5IlkqqISbl+xVuzO3K5Q9lid45WB+jIJ0aUc40/AwKHGpyJrJD27ARstBBxG5QYxl/4HFYB6dmkUxQZp8od4ADTQo0kIARPd4qzHBzhy9JYjnXpnp2jx3s9B8M+c4zckNGa48wVtnhXyjXzPwty1Y/P72R3Xp6ZAl91Wjj6FNvcakLbR3Fk9sjP4UM/kG4qaSFwmTAF7dTyYBQU+l4d4hA6674+LUcKN0lpzmKOjEbO01FOKf013dd36f8VNRDuiOG9nttrPNvlEDAJhdxX4ah278obFy+/l2SXx1lAXRyedZwdygogLnMA5xuY/p9hbAum+8WIDMFVU1tEmoAKajZBlP04Pb3JxmuwVagM2kLIm43+LVJb6MJnI+x5MlL73rI0NY08CHoMRHtdzz5z8gSzq0WIj5Gw3VpEvKCImPYF7dTz7grrd86WhkUqPWNWUye8+nTcSI3b1Jchzhxh8WzIJSSjej3JnDpUVjGUJ827IOn1YhtNrxtFgLTLUGYpGSlKc3g5p15OztiWvvBX3tDw1
- estodh/1
- imwwwCEvlR6Bsx1jEma5qHdigErRRhVhPaned/PHWImeEfBz0Vl1pVIDEsxfDzmWZuR4TtrN6BcM4r9M7+H+O3rirL9jXz9uXvuqYKCNratEHer7jMJ9sorwxYvAg3o//Unicdp9bvg3DpAGMwtu8OBIxpj8OmzIrBwFcWMArR/e/MhZWRdzylFBrrkoSN0jJHhIeRIzdT7YTsVpqv6VhU06RsoUByKJcaGM/LQmHxLfbxjmnPclzsWNObF1gWwcW1lL16AoZ7RH5Algzps8fO3qtYUrxNIW9lLGKVk1+7ninGHmE4nZ18V1f0WFCw/9un8pN/1SXtLy+cbg6siBwvy6g8nqelon85TkVbHNUBe01ncVl4SyWOaRZErfBS1YglJ7NuWZAbuI85bK2HLxDw8KMcTSITrOh05LAqSTp1rq2G7dYNmukvbdxKqNNE+60qx8n6oPY8mHpNhc=
+X-HE-Tag: 1763973537-344496
+X-HE-Meta: U2FsdGVkX1/uw+7P/MaggKoeUsdOuackH9RRX55WBHVYx0vP4nhKNAwSDKWCiX8nNtRmFccaB4W4z1GPTz3aujLMeO8IsqkHJUyjqdSrXGk0XVKx9O4EQpQEmwL4uKPj7F06oTp+iCID4Z5JK2rOnoMzeHtmCkKvCWxD/hcLiKQ9W4XQp2o8EUSyremzRVFNLyPcBR/e8nFSc5xfwycQG6gAt6IOPIQoUHXgymvghRuvjdtLy5CpYe8GuiYho9RhSjHTRmRvxLJqhbEQ8RWtCXTDZREWDPdB1zHlSl6dEeLZGb0v8UodXhQZGy2HavVPNABvsb6fTOqQJtsjOMf/4MovJ69AJYYhy7/tyIaleFIy9i9/gZmLZ3n60MtojHsMZKNhNhX0er8l3SJHWfsDOTSZEt6552l0U/F1R3Kp8PnB+XJDzm/WPHE+0wP3Vof/2o8ZpbfhSWEoisL88HS5U4gQMEqTIij8rSN1QWsiI4tWavDf30g7vIFYISap2Oer58n7SQpDx8A2FLf/yv1i60/AQf3YUhsYj1Tpagtjypzd28xfbzB2gdz6aG+0TtAUhY03XlHJ4URsP3n6YmDJmrzVrmbfHyl3wKadplVosHhfl0zwmggeJGMGKtrLEPVOaGVfLaO3KkzSJvC4n2ZFrMz+L8QCXAddUObo3QMit90tD6t8oTxP2b1G0yaDdH2r7NQzS/QGWksmgwGxmzouTFXi8VHEQBLW2xLmQvwdp3d3gen+2qx7dkE9MxoTeO5kOStdkksDHkdgtYbWqmssNKUfwcWGqCXPX2kqVM8JeiJVz2VJXXNU3nWXqBf2lJumAGMAHgUGvZ6VkaJ6Nlm5vIkb6i0SPL2hwwR+JW007Sf95e7D4dnf3+2E3iUNSsj3HY1H4XAO4SrPi2hfHrqpSiGSab5jmqxIt8SeKDDxLaW8OZHD9EfFI13naELcn+oa4rghn+MjwlD7uZA6+lL
+ plQmrk0S
+ 9VCLgCiTHEWHroFoqbh2qFYxqoOWwXj7PqngixDtsrLtBKhYQaV9hHOm/T88hkjluEFbujgUYGU5lPG70NbcAGKaS8jHFN8LR6dRvDA7ohQrJmc/dTPdmVbKVweaqMmqZM8cQxzG+iR0P4SGN7axzugLoRXDpFpfrb33gxalJpYn6HCG/D//QY+p0OWCf+ZmXcmUzVUcW/bAzprJJnwFgIshKBY0BD4Y3vunVgu8sqJAVAK8G6eR4f7UZA4aiMYinn1E81KU9yTG+bmNraH+6NEoB0yzML5wxY3ATODb5F4hno6N62KwMviGpWD+J0T0tZqD2x2vZbd8FPNdcwp1tzMEld0U8zcFXymeamf5Wf2DNk3E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,219 +106,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22, 2025 at 05:23:33PM -0500, Pasha Tatashin wrote:
-> This patch implements the core mechanism for managing preserved
-> files throughout the live update lifecycle. It provides the logic to
-> invoke the file handler callbacks (preserve, unpreserve, freeze,
-> unfreeze, retrieve, and finish) at the appropriate stages.
-> 
-> During the reboot phase, luo_file_freeze() serializes the final
-> metadata for each file (handler compatible string, token, and data
-> handle) into a memory region preserved by KHO. In the new kernel,
-> luo_file_deserialize() reconstructs the in-memory file list from this
-> data, preparing the session for retrieval.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
+commit: c090868f59ce888db838cf543d18f731d13ed498 Revert "hugetlb: make hugetlb depends on SYSFS or SYSCTL"
+date:   2 months ago
+config: mips-randconfig-r054-20251124 (https://download.01.org/0day-ci/archive/20251124/202511241637.BoBE5PKN-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 9.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251124/202511241637.BoBE5PKN-lkp@intel.com/reproduce)
 
-With some comments below
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511241637.BoBE5PKN-lkp@intel.com/
 
-> ---
->  include/linux/kho/abi/luo.h      |  39 +-
->  include/linux/liveupdate.h       |  98 ++++
->  kernel/liveupdate/Makefile       |   1 +
->  kernel/liveupdate/luo_file.c     | 882 +++++++++++++++++++++++++++++++
->  kernel/liveupdate/luo_internal.h |  38 ++
->  5 files changed, 1057 insertions(+), 1 deletion(-)
->  create mode 100644 kernel/liveupdate/luo_file.c
-> 
+All errors (new ones prefixed by >>):
 
-...
+   In file included from <command-line>:
+   arch/mips/mm/init.c: In function 'arch_mm_preinit':
+>> include/linux/compiler_types.h:572:38: error: call to '__compiletime_assert_596' declared with attribute error: BUILD_BUG_ON failed: IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT)
+     572 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                      ^
+   include/linux/compiler_types.h:553:4: note: in definition of macro '__compiletime_assert'
+     553 |    prefix ## suffix();    \
+         |    ^~~~~~
+   include/linux/compiler_types.h:572:2: note: in expansion of macro '_compiletime_assert'
+     572 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |  ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:50:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      50 |  BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |  ^~~~~~~~~~~~~~~~
+   arch/mips/mm/init.c:434:2: note: in expansion of macro 'BUILD_BUG_ON'
+     434 |  BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
+         |  ^~~~~~~~~~~~
 
-> +int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
-> +{
-> +	struct liveupdate_file_op_args args = {0};
-> +	struct liveupdate_file_handler *fh;
-> +	struct luo_file *luo_file;
-> +	struct file *file;
-> +	int err;
-> +
-> +	if (luo_token_is_used(file_set, token))
-> +		return -EEXIST;
-> +
-> +	file = fget(fd);
-> +	if (!file)
-> +		return -EBADF;
-> +
-> +	err = luo_alloc_files_mem(file_set);
-> +	if (err)
-> +		goto  err_files_mem;
-> +
-> +	if (file_set->count == LUO_FILE_MAX) {
 
-This can be checked before getting the file and allocating memory, can't it?
+vim +/__compiletime_assert_596 +572 include/linux/compiler_types.h
 
-> +		err = -ENOSPC;
-> +		goto err_files_mem;
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  558  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  559  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  560  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  561  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  562  /**
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  563   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  564   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  565   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  566   *
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  567   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  568   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  569   * compiler has support to do so.
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  570   */
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  571  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21 @572  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  573  
 
-The goto label should say what it does, not what the error was.
+:::::: The code at line 572 was first introduced by commit
+:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
 
-> +	}
-> +
-> +	err = -ENOENT;
-> +	luo_list_for_each_private(fh, &luo_file_handler_list, list) {
-> +		if (fh->ops->can_preserve(fh, file)) {
-> +			err = 0;
-> +			break;
-> +		}
-> +	}
-> +
-> +	/* err is still -ENOENT if no handler was found */
-> +	if (err)
-> +		goto err_files_mem;
-> +
-> +	luo_file = kzalloc(sizeof(*luo_file), GFP_KERNEL);
-> +	if (!luo_file) {
-> +		err = -ENOMEM;
-> +		goto err_files_mem;
-> +	}
-> +
-> +	luo_file->file = file;
-> +	luo_file->fh = fh;
-> +	luo_file->token = token;
-> +	luo_file->retrieved = false;
-> +	mutex_init(&luo_file->mutex);
-> +
-> +	args.handler = fh;
-> +	args.file = file;
-> +	err = fh->ops->preserve(&args);
-> +	if (err)
-> +		goto err_kfree;
-> +
-> +	luo_file->serialized_data = args.serialized_data;
-> +	list_add_tail(&luo_file->list, &file_set->files_list);
-> +	file_set->count++;
-> +
-> +	return 0;
-> +
-> +err_kfree:
-> +	mutex_destroy(&luo_file->mutex);
-
-Don't think we need this, luo_file is freed in the next line.
-
-> +	kfree(luo_file);
-> +err_files_mem:
-> +	fput(file);
-> +	luo_free_files_mem(file_set);
-
-I'd have the error path as
-
-err_free_luo_file:
-	kfree(luo_file);
-err_free_files_mem:
-	luo_free_files_mem(file_set);
-err_put_file:
-	fput(file);
-
-> +
-> +	return err;
-> +}
-
-...
-
-> +void luo_file_unpreserve_files(struct luo_file_set *file_set)
-> +{
-> +	struct luo_file *luo_file;
-> +
-> +	while (!list_empty(&file_set->files_list)) {
-
-list_for_each_entry_safe_reverse()?
-
-> +		struct liveupdate_file_op_args args = {0};
-> +
-> +		luo_file = list_last_entry(&file_set->files_list,
-> +					   struct luo_file, list);
-> +
-> +		args.handler = luo_file->fh;
-> +		args.file = luo_file->file;
-> +		args.serialized_data = luo_file->serialized_data;
-> +		luo_file->fh->ops->unpreserve(&args);
-> +
-> +		list_del(&luo_file->list);
-> +		file_set->count--;
-> +
-> +		fput(luo_file->file);
-> +		mutex_destroy(&luo_file->mutex);
-> +		kfree(luo_file);
-> +	}
-> +
-> +	luo_free_files_mem(file_set);
-> +}
-
-...
-
-> +int luo_file_finish(struct luo_file_set *file_set)
-> +{
-> +	struct list_head *files_list = &file_set->files_list;
-> +	struct luo_file *luo_file;
-> +	int err;
-> +
-> +	if (!file_set->count)
-> +		return 0;
-> +
-> +	list_for_each_entry(luo_file, files_list, list) {
-> +		err = luo_file_can_finish_one(file_set, luo_file);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	while (!list_empty(&file_set->files_list)) {
-
-list_for_each_entry_safe_reverse()?
-
-> +		luo_file = list_last_entry(&file_set->files_list,
-> +					   struct luo_file, list);
-> +
-> +		luo_file_finish_one(file_set, luo_file);
-> +
-> +		if (luo_file->file)
-> +			fput(luo_file->file);
-> +		list_del(&luo_file->list);
-> +		file_set->count--;
-> +		mutex_destroy(&luo_file->mutex);
-> +		kfree(luo_file);
-> +	}
-> +
-
-...
-
-> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-> index 1292ac47eef8..c8973b543d1d 100644
-> --- a/kernel/liveupdate/luo_internal.h
-> +++ b/kernel/liveupdate/luo_internal.h
-> @@ -40,6 +40,28 @@ static inline int luo_ucmd_respond(struct luo_ucmd *ucmd,
->   */
->  #define luo_restore_fail(__fmt, ...) panic(__fmt, ##__VA_ARGS__)
->  
-> +/* Mimics list_for_each_entry() but for private list head entries */
-> +#define luo_list_for_each_private(pos, head, member)				\
-> +	for (struct list_head *__iter = (head)->next;				\
-> +	     __iter != (head) &&						\
-> +	     ({ pos = container_of(__iter, typeof(*(pos)), member); 1; });	\
-> +	     __iter = __iter->next)
-
-Ideally something like this should go to include/linux/list.h, but it can
-be done later to avoid bikeshedding about the name :)
-
-And you can reuse most of list_for_each_entry, just replace the line that
-accesses __private member:
-
-#define luo_list_for_each_private(pos, head, member)			\
-	for (pos = list_first_entry(head, typeof(*pos), member);	\
-	     &ACCESS_PRIVATE(pos, member) != head;			\
-	     pos = list_next_entry(pos, member))
+:::::: TO: Will Deacon <will@kernel.org>
+:::::: CC: Will Deacon <will@kernel.org>
 
 -- 
-Sincerely yours,
-Mike.
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
