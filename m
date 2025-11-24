@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F40CFD317
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 10:42:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9022DCFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 10:43:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF0546B0027; Mon, 24 Nov 2025 05:42:00 -0500 (EST)
+	id D52D86B002A; Mon, 24 Nov 2025 05:43:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7A2C6B0029; Mon, 24 Nov 2025 05:42:00 -0500 (EST)
+	id CDC906B002B; Mon, 24 Nov 2025 05:43:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A41A96B002A; Mon, 24 Nov 2025 05:42:00 -0500 (EST)
+	id BA34A6B002C; Mon, 24 Nov 2025 05:43:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A09B6B0027
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:42:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2AB7F140287
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:42:00 +0000 (UTC)
-X-FDA: 84145160400.03.F72924D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A027C6B002A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:43:12 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 322C558434
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:43:12 +0000 (UTC)
+X-FDA: 84145163424.29.E9172BC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4E27D14000D
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:41:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j1a2FVZa;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8E2A61C0005
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:43:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FhkI/+ir";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763980990; a=rsa-sha256;
+	cv=none;
+	b=Lt/eR8NEvOwIOxZTgNMqjiL6D0kymbL9JPQjoxDAlPSb3F/a2b4y8uzJ0e3zUXe29hQJXA
+	8BpdoqYakiawlHV8H0dHr8X1YOm77nOjaDokb0p0r4Wr6EV/Sz4hHTywExx48n+rlV0zw6
+	X2MR9qq5DMsvMWZ74LP2yoR1ZkwRbvQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FhkI/+ir";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763980918;
+	s=arc-20220608; t=1763980990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=11ncs05OiSiw0wtTjwKub+RouC1QsmoQDwbSED4/9GE=;
-	b=IgwkGQRDH270QaIZrVns2ROhibm6zFgrK/vrr/A7ETRvhWYbIVlDjfaWNC7Ak2Dc1HTJ09
-	NEZBQN8NaR7MNDJy06bIeWFPnLmoIs0M/ig6EOGTNtE/7v6c2NYlNh4haT8FZ/7yK89Emf
-	Sc6f3BLsHy++M0JFN/fq4ly5KgMgalE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j1a2FVZa;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763980918; a=rsa-sha256;
-	cv=none;
-	b=hzBRlKAd5QXlT7967YkCggIkIkPx/utLre9Syn9t9PMJkYrfP2OXtEeyZ3sRrGsTdgArxS
-	kWKXv961WpPSRl/OlgT6JUA7b0CMN7kzOYgyW/ZTIG6Tb9blTVQv/cLb65wGIbUWUBduRR
-	thM5gWhG3ULI7Mj3Xt99sLFuYIOQRPM=
+	bh=kIevBit2LsYqWr+//U2F+2wvKyXvcZUoDycDBVMPR8k=;
+	b=l42jqnHyYqhR/gQnXtO2zIQxy2jCt8O7W84RDcIBXDGmGd4pl55eN4FkDzVgnmm606GZzI
+	8o9jeaXWOFmEnlHUiTsdG0vgS2huMCukiQUjvbx03YqSbzPWwd5W8woXwXRTFf/3swx1JG
+	TyLlfCYCRt+LzM2pif9QmKu2G218YO4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B5D1D6015E;
-	Mon, 24 Nov 2025 10:41:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59079C4CEF1;
-	Mon, 24 Nov 2025 10:41:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 09AC66016A;
+	Mon, 24 Nov 2025 10:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F97CC4CEF1;
+	Mon, 24 Nov 2025 10:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763980917;
-	bh=EO7ufPh1vH3SRe9Uruu6w05UeWYS/8oZujKWXV+wUw4=;
+	s=k20201202; t=1763980989;
+	bh=8yb/Zh8IAsTuyjN2fF0L3+H/I8uGrHqhJzE3awGGxmo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j1a2FVZaR/3FvkhClWt/458UA4QPePGf/qsYhFN6zX0RPzN60AMzud+mRQME82aJg
-	 b8jtC2DafmoFfdRpI2Uw+gZb1KZXBPy5VCT+520F6nR+Ox4YpLDVOYKSfp3eSJqgBZ
-	 yjIAYPZ08yJvqYOwbngqVPj7MzVcYyxU4pqD2HPvGtkCnJwfwc0V6rI/NEzVna1Hs1
-	 NmmZXipWwr49ADt0a9wmw1L3Dj+d25icLtCh2BmwVvuOkhIPchqfzXYDzIv3Q7P7GP
-	 T8GPXRtgB3gA0YxGyXBGzgN++WBuV48hbaNoFp2xsrhVEJy0i2w8RdzKGyM3Hnv6b5
-	 7g7WSW0+GhhxA==
-Message-ID: <df92a886-069a-450d-a551-dbfc3f629ead@kernel.org>
-Date: Mon, 24 Nov 2025 11:41:50 +0100
+	b=FhkI/+ir/Y5bu4smkD5Dwiy9+sPSNUS/9fjx2uGPQ6n0JvQh67miHY4FSU8MEIKgO
+	 amkv+wUp0mylorizSl0Pb4QmzLWVKpdEnBuKNfudku/Oez8D7WtlAEJ1eEUeIyFnhB
+	 CC77P1EYfJH8/puLaX1si83dJrEpDIH0i4Um/8KBXVx31RRjsfAc5V+rDskmrHiBl9
+	 1UTFas2ELYz8hA/saYlmBaqTivJ2nP8Q4p5shN4T8htWyMeco1Ow2Yoj3uopulzicA
+	 3UdW1zgTQMTIM9/m38MxRHcWJdMqunYrb5Ca5Rao2c/bxs+5W1msWTA4cMydYw9x9U
+	 JzlUeGdXQGVvQ==
+Message-ID: <257c778f-1997-4986-8a6b-ae42bffc46d6@kernel.org>
+Date: Mon, 24 Nov 2025 11:43:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm/huge_memory: replace can_split_folio() with
- direct refcount calculation
+Subject: Re: [PATCH v2 3/4] mm/huge_memory: make min_order_for_split() always
+ return an order
 To: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -81,20 +81,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20251122025529.1562592-1-ziy@nvidia.com>
- <20251122025529.1562592-3-ziy@nvidia.com>
+ <20251122025529.1562592-4-ziy@nvidia.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251122025529.1562592-3-ziy@nvidia.com>
+In-Reply-To: <20251122025529.1562592-4-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4E27D14000D
-X-Stat-Signature: wankkqk4shkharifwqdcwqyeze4znj67
 X-Rspam-User: 
-X-HE-Tag: 1763980918-943292
-X-HE-Meta: U2FsdGVkX19k8J0B7imAELU8nAYHxivE7HnsEr/Jw20ZCsKh/yo930dnsoFhavZCqG0XHg5icRctb1WVMWoZywdQWStdPLNuGp3nLSH7yCDmzs/XBghNjODQfD+LDVscB1ftGlb1gJiZmDdYKJ3iyp+qa1mdWIFKLZ38m9Ajr1yvrh6iGCaKEUfFOthadXmrlOGUgTkssdijFvJChacbNC7Z6DPULYHi2QUgw9MbAYvgJMlCHzxYgc0ha1ggYH3Q7TGEFnctMCzoaqS9euYIilywjYMGvTHAXq35146TYmagjc6MGn02KT5usz0kp9EZZCz+AhnFUa6N+nbsfikZB/FLsKXUy5owg/AJAQimvLExwMPzuPLg40KIgfpLpmIw1Rjy22ko1OrfysmFoynctmaBz7kfIj8vRG2Yvt5eLOefoCTMAuWPcYofihAU29vgMJ2Y6yUVtLpowjK6qWJWUIeV+gRpBX5XKmFOWo/MO120I9wIYV6OLw3EQdQ8FanJTzwTRZCmS4vLOSu1mz1Y2Qax8CgeDuT9fUeiOAa2v2ZA/2CbS69Qxx2s7VB2JaMYOOFQSIgDfhuh4P3XrW4Lv/g/mD83uN2oI4Ix+z0hQoh1SENpVfYcC4hIprQNUuIoH+spRRyOsC1Y4mk+NI4FHCk1UZksEFFHiKYn9KmmlgDAmUcsNnsmdQuubRPAfUXeL8REPS6hmHqV/oDG+sRvwm8gjjL537ue6Duz3Gp0gO9l5d53IlPBkhJIkSvUP0T9w5CgggZFxy48yj66diQXi7/znBucTl9KyKQ0EkSjvDkfuUU6nC43JrnzvKIQvbAHAjjJXZIkIIR9tMccYHIfKiu+tsJYRAK/OArsrCqh1auprVpkdfaPqBiN39HotPOZAuGsuMoCme7gCH4MmDV/EQyGbeVFC1X2DNraK6gGVKUnSFcM1OAL4SdE7hakeGuyV2Z4z1FV0aX/5RBBtH1
- 6CTjne2X
- mFrJ93d9CA8uU68D6CONc+wRiLJVLKZPd4OONQKmk8ByXbjJxUnBoST44uJb66Cza+vKD3nwlhRX2ZjdJh28Y9y0VjtPgbw2yzSD9dOlVEieOjoPap+MJ4z3lNDz5BuAyJxpyXZZo3+1uvmFekGjYZ1ltObRnAld8mTOp9GlShn8rSbnO5UY/mR24OzeUTlr6S4jAM8NKVA/MoZyeJZh9vMp/BSBwc0wPvKlJh+NdpOErd5BOzbumBRt/2j//cMR++i2a31D20saIOj6DFS1Ev4UIYq2/j9xQwO6znJiZDEXea6vqo/dUX7Y385a7N40oUFozMkAYQ5Tyj3MWFjvVNYRvRDUhnvaIV7thihGpmgVwLKSCC9+Lm0BmmSbvJChPZ0PgqSHmNj6/Wiyjvn3og8ZgFUgEp8oTV4ub5l1GpBSE/u6bMv7CD440FT2TVQE0ENfWmwc1TXt6CzY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8E2A61C0005
+X-Stat-Signature: 3tqqwkz9edmb7razwye85njnkbekeqs4
+X-HE-Tag: 1763980990-544801
+X-HE-Meta: U2FsdGVkX19ztanZFjw9CFNiKUwxwTtJK5SrlKNqvHPym6gKoDxjJ68G4KhZUZCjUyGVEQIbt9+j0R+G5fEDMxKWLcZaPZwvr6BOPZ+I3R57L12UwyUFpiImKy76cctDU9o2416mW3irSdZWaxi3CNUgDPrqkFmup+R8+XnboSEprbYzd6JjpZWIUHo9wOZcXCIpyrkKOhHtXCxSryinSvJUjza2cELwzqzPpcFOXtMfKAZZUHqxzvIdz84UO3nHTBn3AVrJdIqszyj/KMSxk8j9wZU6wEiORMwJR1qnRUG+ebVI+XgfRN+EB3aKCxXEXqBFZRTQynpmBcY2l3xTxnkqzJelH9IAMcFmfK4uZz56Sq/7BzKpghE6NcR70ZlKslR/qz0+lxjIUpn/+P2X3dw/uHoPONwA1k2KlvonJLWz3UNpVcgRfN9y61uMldkZwIq23CpsiFjj+3g4qKJ/2VeOvfKfbaGWm4a+dCrRAyRayIFk3hdO1Zk4RK+++BPEghiR0gAG+HXIN5G+ng4yMK+cKe0SJF+t6vWuuREiO71b7Ix0O6yHceceZwSRGyYkj7n2lWPMd+NhLZoZKvFAx51rJOAqjCtVgm7iBUtdDdjF9gitbwlxD5gOOW345X+Egy0ZOG+iw0/OJwd7DkEe00GFbHSMEvSvO1w+OC0jW31zJT5kBSH5xTInSrvvWNgZDQyjWKaVaPGAFVb1a5KBRX2fyjO18WwBoiJpitdJ2N3yZF+vnwtYNkEkuK0swRlXhW+iYFltf4v6SJBtFosoIti1VFmOpstcvuFjZDeaKmAIo2O9QiFxTsumY1zfsU0zh/3C+GY3dO8LkUG9OOv6AjBofRDQEuMJI5dQxVvtS7DzW59Bz5kOD64MLQn+of7dlCzXj45oWesZQ1AmnEI4iO9NASQg7JVct7BRaWU5ADN3EZJbbLQOCJvY/nsy8P+rOugRstxw2pHFEo5Ou6L
+ I9DY0Zli
+ IpvQtg915Ry5KcNpW5e+YpyCN1grq2PlC1ZGPgx9522RoaCuGAxjjgLz65LuTB/LvykIGeA3xJwXmI9CLjtHTqulOr4akuuX78a3ZlVc5Viq2gOCr2ykpicCLuzlgbE2hgvaa6HGbFJ5mQWnqi+g8zF+LUCsg+8xtgtldtKJYuN5Msu8KGoA/NavZKaagS3K4+OcMMVtV6/c2cQSOGZ2+15R73LJQH9jcH8mJA4xJZx2NJ3pFMzsZjIZH4pJ3s/v8G0Y1PjVHDY1xqm4p8MfAUzG4ZahdG/wNjp9SnW9ve7amZWqTrgk9cvpa3aW6oosROQEKbFgnxikq3egL0nGfyoP9/tIqT7F/Cd3M7dv/fDKTNaZDt/BEtX7fL8yswwAPMgjGJifTgXf4T6+uVZP/y354dLl3YIOApKX9i4ORD3wVX/Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,120 +104,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 11/22/25 03:55, Zi Yan wrote:
-> can_split_folio() is just a refcount comparison, making sure only the
-> split caller holds an extra pin. Open code it with
-> folio_expected_ref_count() != folio_ref_count() - 1. For the extra_pins
-> used by folio_ref_freeze(), add folio_cache_references() to calculate it.
+> min_order_for_split() returns -EBUSY when the folio is truncated and cannot
+> be split. In commit 77008e1b2ef7 ("mm/huge_memory: do not change
+> split_huge_page*() target order silently"), memory_failure() does not
+> handle it and pass -EBUSY to try_to_split_thp_page() directly.
+> try_to_split_thp_page() returns -EINVAL since -EBUSY becomes 0xfffffff0 as
+> new_order is unsigned int in __folio_split() and this large new_order is
+> rejected as an invalid input. The code does not cause a bug.
+> soft_offline_in_use_page() also uses min_order_for_split() but it always
+> passes 0 as new_order for split.
 > 
-> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Fix it by making min_order_for_split() always return an order. When the
+> given folio is truncated, namely folio->mapping == NULL, return 0 and let
+> a subsequent split function handle the situation and return -EBUSY.
+> 
+> Add kernel-doc to min_order_for_split() to clarify its use.
+> 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->   include/linux/huge_mm.h |  1 -
->   mm/huge_memory.c        | 43 ++++++++++++++++-------------------------
->   mm/vmscan.c             |  3 ++-
->   3 files changed, 19 insertions(+), 28 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 97686fb46e30..1ecaeccf39c9 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -369,7 +369,6 @@ enum split_type {
->   	SPLIT_TYPE_NON_UNIFORM,
->   };
->   
-> -bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
->   int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->   		unsigned int new_order);
->   int folio_split_unmapped(struct folio *folio, unsigned int new_order);
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index c1f1055165dd..6c821c1c0ac3 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3455,23 +3455,6 @@ static void lru_add_split_folio(struct folio *folio, struct folio *new_folio,
->   	}
->   }
->   
-> -/* Racy check whether the huge page can be split */
-> -bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
-> -{
-> -	int extra_pins;
-> -
-> -	/* Additional pins from page cache */
-> -	if (folio_test_anon(folio))
-> -		extra_pins = folio_test_swapcache(folio) ?
-> -				folio_nr_pages(folio) : 0;
-> -	else
-> -		extra_pins = folio_nr_pages(folio);
-> -	if (pextra_pins)
-> -		*pextra_pins = extra_pins;
-> -	return folio_mapcount(folio) == folio_ref_count(folio) - extra_pins -
-> -					caller_pins;
-> -}
-> -
->   static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
->   {
->   	for (; nr_pages; page++, nr_pages--)
-> @@ -3776,17 +3759,26 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
->   	return 0;
->   }
->   
-> +/* Number of folio references from the pagecache or the swapcache. */
-> +static unsigned int folio_cache_references(const struct folio *folio)
-> +{
-> +	if (folio_test_anon(folio) && !folio_test_swapcache(folio))
-> +		return 0;
-> +	return folio_nr_pages(folio);
-> +}
-> +
->   static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
->   					     struct page *split_at, struct xa_state *xas,
->   					     struct address_space *mapping, bool do_lru,
->   					     struct list_head *list, enum split_type split_type,
-> -					     pgoff_t end, int *nr_shmem_dropped, int extra_pins)
-> +					     pgoff_t end, int *nr_shmem_dropped)
->   {
->   	struct folio *end_folio = folio_next(folio);
->   	struct folio *new_folio, *next;
->   	int old_order = folio_order(folio);
->   	int ret = 0;
->   	struct deferred_split *ds_queue;
-> +	int extra_pins = folio_cache_references(folio);
 
-Can we just inline the call do folio_cache_references() and get rid of extra_pins.
-(which is a bad name either way)
-
-
-if (folio_ref_freeze(folio, folio_cache_references(folio) + 1) {
-
-
-BTW, now that we have this helper, I wonder if we should then also do for
-clarification on the unfreeze path:
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 0acdc2f26ee0c..7cbcf61b7971d 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3824,8 +3824,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
-  
-                         zone_device_private_split_cb(folio, new_folio);
-  
--                       expected_refs = folio_expected_ref_count(new_folio) + 1;
--                       folio_ref_unfreeze(new_folio, expected_refs);
-+                       folio_ref_unfreeze(new_folio, folio_cache_references(new_folio) + 1);
-  
-                         if (do_lru)
-                                 lru_add_split_folio(folio, new_folio, lruvec, list);
-@@ -3868,8 +3867,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
-                  * Otherwise, a parallel folio_try_get() can grab @folio
-                  * and its caller can see stale page cache entries.
-                  */
--               expected_refs = folio_expected_ref_count(folio) + 1;
--               folio_ref_unfreeze(folio, expected_refs);
-+               folio_ref_unfreeze(folio, folio_cache_references(folio) + 1);
-  
-                 if (do_lru)
-                         unlock_page_lruvec(lruvec);
-
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
