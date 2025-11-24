@@ -4,93 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57AA7CFA466
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 15:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F08E4CFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 15:36:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D6B16B0010; Mon, 24 Nov 2025 10:35:58 -0500 (EST)
+	id 541D56B0030; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986AC6B0023; Mon, 24 Nov 2025 10:35:58 -0500 (EST)
+	id 4F3406B0062; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89C726B002E; Mon, 24 Nov 2025 10:35:58 -0500 (EST)
+	id 3E2346B007B; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 78B026B0010
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:35:58 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B51D1A0438
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:35:56 +0000 (UTC)
-X-FDA: 84145901112.01.9FABE26
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E8F0C100016
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:35:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UmjEetKU;
-	spf=pass (imf05.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 280806B0030
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:36:02 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2A8AB9605
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:36:00 +0000 (UTC)
+X-FDA: 84145901280.05.8D8EEBB
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 99B68C001A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:35:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4leP8n0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763998554;
+	s=arc-20220608; t=1763998558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=itb/xXAfkYWCmjKDgDZEeu7vA227PwFJfdjmUe6C3a8=;
-	b=79nE1k/MqrrPRN60ca0+1GlMz3WF1I9+GWnw7b2H2yg111HBUnDDEyJxIohEnuE6GxIj70
-	ZsOj/aC0B/hs5PWgImmiDH6C9ctpgW5fX39f+lv4U0w2GplUzs9wopcTTmsbqmVOqzj+wG
-	WKf5k6iSbaG8TUv9+VzKP9ZNTQNFkHA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UmjEetKU;
-	spf=pass (imf05.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763998555; a=rsa-sha256;
+	bh=f/c/O5TKtgGGymGcTcmYoASb8codPVbLlWqOHdDHpBE=;
+	b=CeJ38dysHXjLLAc9oEldSd5Z6w2SRDCSk1/+N0Z+iX46tiCbKchihBN9cxv6V8Nwc+DJrL
+	dBLGrjBt8b5n9yfDjsptZt5pPLzMg1is1opCK6WgzV6mryTo6FGm7nhxSSZfqC2C5Wi0pr
+	jIhFDpi+sx7nwIr20M30Ezi+t1OCR4g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763998558; a=rsa-sha256;
 	cv=none;
-	b=bI8l92BrpKt3oLKfNouP8rkjI6LNKr0/1IffqjGoLJBPRuL4DhzJudsBitnPPcunHVc+zz
-	2sEJenLVvY3l9tN/gxvmeows4vgdVnefFEFeCsthNPKUD/z/OEyDIP6XjZiurW2jibh5PW
-	Ykc9KVTLo0gwyhreM/HreNmVdXkcY1M=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4EFB660168;
-	Mon, 24 Nov 2025 15:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C384C4CEF1;
-	Mon, 24 Nov 2025 15:35:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763998554;
-	bh=7VZeXfp6ZIRCC08fnhWtDnsbWcV7AvyrY5shwTqTDd8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UmjEetKUsP8vTi2+W9Jpienz7MdX9ymF4BAXdAIA5wp7OWWquN8S4o6M25N3aBP3j
-	 m16mRE5WLVsqyUxNOfcEDQJJv3+ljpL42Mv7HVj30PFQEjGmBIvoBphSk/QhY6/gp9
-	 tGZeXkz8UrIatNiVl+kFUo3CejtmPvWFcGyzUzXKI07aVx/WWx5pM4GkEfIUbHoDPV
-	 RmbYrnIQBRpy1LYlsd8wVSL3Gh6jVK/FGYJMm6aC43B57l486Pu0aWOH4MB4X+sGD2
-	 Ff91CMw3oECCDzLPmFB6ZOEFQiZ8plV/7laYbywsn/2TEMD2BGZET3yxeSSCDFsOZK
-	 tugDPAzLiRYRw==
-Date: Mon, 24 Nov 2025 15:35:47 +0000
-From: Will Deacon <will@kernel.org>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, Qinxin Xia <xiaqinxin@huawei.com>
-Subject: Re: [PATCH v2 3/4] drivers/iommu-debug-pagealloc: Track IOMMU pages
-Message-ID: <aSR7U4pI_mYryFzh@willie-the-truck>
-References: <20251106163953.1971067-1-smostafa@google.com>
- <20251106163953.1971067-4-smostafa@google.com>
- <aRW6Tf_G2ObR__vE@willie-the-truck>
- <aSRRizzS39jI3BjH@google.com>
+	b=r8Y6BEH0eCtSjRVTGOLRtLXum6MOMjn7MP0G/5ibMw1ZRV28ZIPTnglGz2YhcTb8tVIkf8
+	gh1nzCYBFM7oH1RvRRjcfXYAiG4Dp6HIHZ8G9F268MIb7SYjR0oNrVImmYleSgL9YI1Opr
+	ax2eHf3NrGIX4gh5BpbbNLIAe1Z9g5E=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4leP8n0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37a56a475e8so38680871fa.3
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 07:35:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763998557; x=1764603357; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f/c/O5TKtgGGymGcTcmYoASb8codPVbLlWqOHdDHpBE=;
+        b=H4leP8n0VOvIEdo8ouR6+I/F3T2pzBwPkXw7ZPd5bLvP7JKRyungrXoDu9Feu/Rh4u
+         jgKGV4GhCUb+6Cgl549t8Em04BjBAnZAabnXbUad7JBqyKH4Ca1KKvy8GyWeW4vel0ju
+         R/nFGFAymY7xm3PuFY/p92Plb48AKHzMj2l4QOXU0lIyp+lekrTtW1twU8pLat84HcVg
+         JZFj0IOoS7LLFTlbgmoASRoOzfa1JVIWiR3dV56VrozLNeKuIkBY2h5JyRv0FsYyd8NI
+         K8+pyY+DJq5avBGeL0HEg+5NqNN+sUdRMvj/srtMjBDqJiU+SOmIvOUkeex6e1jGihfp
+         /lwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763998557; x=1764603357;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f/c/O5TKtgGGymGcTcmYoASb8codPVbLlWqOHdDHpBE=;
+        b=bKiRIQ7xjgSZUe+o2Qsgo1EltWCJu7RyjMwF7z0Lb+BLBsZrJ4RUUYfxYqwXAy/IMm
+         M0ca/Lk5N19jH4QiN9Z0ZaO24SiEwBbN2lK0citEfODGMbi+nO0AJ3uHZbq0s6p07YF3
+         1LZb/2FQVjV555EvR4k3maKHzQ0T9N3Of26Wch85nGbWrq8k6iQCZYdMlhX5TDFx6Flp
+         EUqCuBWQwj23wfvxvDVatdFxrz7K8nMnMsXWiXsDclPI0cgOryDU7uDMLpl2OwkxZ7Mq
+         uTB8eY8dJyYYkuRp9m2Vj2oWbyLiIC4V6ITwdTobY9LXI0nlKGCQed95Ng/lzD9HPLpI
+         4CwA==
+X-Forwarded-Encrypted: i=1; AJvYcCVncTAWpjqVjtd5jMQzkSOhHQ/6aP6ukyRiUFpE80lU20ms0wdzSOQR6LcPVskgEEXBL5KEUoVnEA==@kvack.org
+X-Gm-Message-State: AOJu0YzgSWh5uHjQyKLvZXIT8WtnYXu5z6RmoxhSHmSSG/ZhBD+TSdUk
+	ByBJ6RO3inXOjiOV82f1yptFk/miRHGPTfP51go1XL9XCS3y40m7HO8I9ins0uQkqRSNRe+rrkI
+	E3OgQkPX+E8HhXM9Lq8QBUQRcBNIvXig=
+X-Gm-Gg: ASbGncsiX0wK9pHT1WUCs8NoUAlAc8G2GEnUe663wGin/E+yaoUhkRVPG7joPnyHTCJ
+	zNmFFRfOF7pzGfjkfXItRkGCiBFjfYFVDRJ447WpdRuDFHamTnTNJwnOkoj3e/NqN7Y6q5OPIt3
+	MDrN+4sdADOwhqEwahC2DSmWA6rtxhuTEY/6ZlF5S/blC+gywJjUdosAYsSlqNEwKuFguEVEQUZ
+	NLZIJamMhkFclNkwNGpsCTbnPnHnj2203mFeL0vxER2/WlWCehKH3gLgppua2Vw3cUf3hU=
+X-Google-Smtp-Source: AGHT+IGZo+cJTsJ/l9Z0UNu5+VlabmL/ON9V2rsmIF8uupV9Rr2IE4TxltyWVMuhu6O9ZwnyinfR2dX/xUawDZPjijQ=
+X-Received: by 2002:a05:651c:214f:b0:37a:2bcc:279e with SMTP id
+ 38308e7fff4ca-37cd922ef9fmr27320591fa.23.1763998556601; Mon, 24 Nov 2025
+ 07:35:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aSRRizzS39jI3BjH@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E8F0C100016
-X-Stat-Signature: 5f8ynknxt64zds6hf733oreifn87ttjs
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <20251121114011.GA71307@cmpxchg.org>
+ <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+In-Reply-To: <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 24 Nov 2025 07:35:44 -0800
+X-Gm-Features: AWmQ_bmk8dMpPu_Lq2VxCeHSu-A4alLXd-dMZD2NiiPgIKONLTgdK4vxibKHc58
+Message-ID: <CAKEwX=MnS0jXOiWmNB_+hBu1Sc2Mseu_S6-g5oNO2AcfGOg5tQ@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Chris Li <chrisl@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: oeo78eoemxnkahgmkgr45gt463zhh8iy
 X-Rspam-User: 
-X-HE-Tag: 1763998554-830721
-X-HE-Meta: U2FsdGVkX18kx+N8gF60FkjhjMqAv/BBsL8MXp+ygPc3FJ9FjjCN0KydyfqbEymEDNiBRfA+lpticRnmwfJHAWdVsy8yDFEcjhcdV2emf1aVkGhunkVydg4pxUKgr4XXrt45Ng7WrGsC9jjaVO5uzjHB/9yq9du8pNRrOOmvs4cnWAUEoP0UUMCQY0N4LMCvGgmqSuY6KYETFGWxcLJHHy3T6A/Fvg6b7xDSzoad/y/etx91M80PY6H3F6bETVPB1oml5YIFqP1aRqMjdc7UnWuYZv5lPegx0qJFCw9MdvGkSlk3Il3yKTIkrVnvO0AjKGeDHjoMwD5/0gDWrelMGmWlNBoMFR0muhVFgNYsZyRUKj7EL7JzCd1Y8cMkL8oW8ijlQN2EiJQtStayXITzMFDATpCmSuFzccqx7ydpbugfmjjGA/Dzejjs4NbxaztgZr+5OJ3jpkwsTLO774+4pC4Fi2YIsNzNt3Y3XPT403aNHp2HzVntCvraKuqwVoFlCYQOn9w0g4tiJz/xJfGZ2oCP3D/I3dXjogE9Qa4XAOC/2N9SyIVIaTqf6iBEIZUWgUeLaC39XeKqblMrcppdFg1uTr0bt8yJMtzQn/gO2wJeKRkBW2Z29PiJw41gPDv33avLIkokyNxJdGh3xr3v9YuoUb5DAavT7UDbLbn865aH8HOLUx3v7L8tSB5Zc//zrAlJW3J0JvcNcfQKjc3tDpwJWGo+UJBfmKTE+9WT25PF0dAzACobx5Q6lLIc7zR8FsA//PMPU4OKJboMQauuzI/PyUEZZfIp2sejTH40Ao99X5IGVQ3bYpwYEdbXzpgNBibTosbIwMecUPsAhiCs21q/NBJXjKUAO9tRxAahxoL9LtLK9+5fxSGG/P99fQ/vTvLP8WkGAC8=
+X-Rspamd-Queue-Id: 99B68C001A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763998558-295854
+X-HE-Meta: U2FsdGVkX1+lpjLJk0dpvV3pxOC8+ZtOxLUKCmSj+aqF5Km0cRDd3iwi8nvjvqKDypragRfnLUfXj6mEjrPzIS7FcDVsWslXWCih291ulbz4NECgR9UcHJrf5kRt2sngSvp5vvfsiqdziqyqARdubfA2ko+vDm1RsuLjnjKc4yMc/bs9/XgY7LZv03Kvzgrq0+TSKO/NcdSZFx2NAYQwgvJGvwIfB7uLf3R/Bz6lASH33kE7N3kBTQzOI0kRy9+FjkEbJMCnEHViRWZ6y7rlL25MjA2PdIbOivZf9J1WB7u298E5kCOq6SZTWCok4z00LI1l4/bK67ocJ6Rg1L7/wETwqJJRoFELFbOvD9YHJhNwzCodGJbAKWewl7UYsxmIa2Hy3521k5mtgiDoYBtU3EO7673sX3boQEE4HOqnjmBavR3Pu+jHu6jW400lqCU3ncfj7npRExEECyP91U/BdPcTHo8phjqqNJHOGdPs3vTSbJas93S3BXOdibhPWUD/ZblR2VJkyiYn22uEY4/uKjbcK4rHnuYUxEBSPB+BIyYaXIUK1rVTNdIrj54lbal6L5ysKFQzdQDEQsyqD9CQnzLVPQV6Qw/YelnnGIhy2w5M3x2wpNyMfA9h/18ZdFsgtz/3CSGbN9bhrYXENw+Oqq6GjMtZeb8lurfK//0cIbGr3pxer/+WbKuPXIiiqWfBbMYxYaIYngeoyMtmLu0xGs3WkzDpvOpB/00qO5bcu0ie2liyM7024vAFx4Zo2kHIQ2HzYLsxBcqzZeLLbNXwBMMDOTAQzQLsLCGATLt+giwNrNgRB3E+KbZzO12drRgVLz+MQfchxm/4tlqVSZABoVoTGg2ScpLrDeF425FNEuarEmjpgLQcs7e8j+l1/fwXq9/yXWhb25QFiH4D1bx55UlKKl9kiUpzf+T3Ft0X5Mhk996sy7T9eLXepii1qHzqptXTIPjP8s/ep3I6dqR
+ +4xZvvpj
+ MVm+W7Ktv8K6yzxjSSdm7XsY7QVEmH/3hYvJwFBrLBGRGHqlAGcnUUk/a8knegbxYRRzozdTy2YsLZVidoCE8O8TNucmmAh0G+9rM6V71+17H7/GSkz9bz7Th/L4UFeu/gXq0No9eTX2HMxmaDWiILqcM97i8wIz72SbpdT6q/0xSkk1qs2gT5sFduNLeRB0n6M7m1/d5c1mREjBss3x5HtvF7yFiEC2zXcA7APiih1pesfGWEIkTaHGQVzBW1qv2Fchl+ykgo++ycFxE+UdiRmNMHMW+YVk/gMxUfODvvtImxIgC6DyQL/igdMMs/CHiEjkgfWBzfb72ve7y2ThpiFmltO/i5KZRLJrHJ9rEm96TbFLsresqZindeEkY2UYfxig2B9tss7zjkVcFfSTFaR8nLg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,69 +121,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 12:37:31PM +0000, Mostafa Saleh wrote:
-> On Thu, Nov 13, 2025 at 11:00:29AM +0000, Will Deacon wrote:
-> > On Thu, Nov 06, 2025 at 04:39:52PM +0000, Mostafa Saleh wrote:
-> > > Using the new calls, use an atomic refcount to track how many times
-> > > a page is mapped in any of the IOMMUs.
-> > > 
-> > > For unmap we need to use iova_to_phys() to get the physical address
-> > > of the pages.
-> > > 
-> > > We use the smallest supported page size as the granularity of tracking
-> > > per domain.
-> > > This is important as it possible to map pages and unmap them with
-> > > larger sizes (as in map_sg()) cases.
-> > > 
-> > > Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> > > Tested-by: Qinxin Xia <xiaqinxin@huawei.com>
-> > > ---
-> > >  drivers/iommu/iommu-debug-pagealloc.c | 74 +++++++++++++++++++++++++++
-> > >  1 file changed, 74 insertions(+)
-> > > 
-> > > diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-> > > index a6a2f844b09d..0e14104b971c 100644
-> > > --- a/drivers/iommu/iommu-debug-pagealloc.c
-> > > +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> > > @@ -27,16 +27,90 @@ struct page_ext_operations page_iommu_debug_ops = {
-> > >  	.need = need_iommu_debug,
-> > >  };
-> > >  
-> > > +static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
-> > > +{
-> > > +	struct page *page = phys_to_page(phys);
-> > > +	struct page_ext *page_ext = page_ext_get(page);
-> > > +
-> > > +	return page_ext;
-> > > +}
-> > > +
-> > > +static struct iommu_debug_metadate *get_iommu_data(struct page_ext *page_ext)
-> > > +{
-> > > +	return page_ext_data(page_ext, &page_iommu_debug_ops);
-> > > +}
-> > > +
-> > > +static void iommu_debug_inc_page(phys_addr_t phys)
-> > > +{
-> > > +	struct page_ext *page_ext = get_iommu_page_ext(phys);
-> > > +	struct iommu_debug_metadate *d = get_iommu_data(page_ext);
-> > > +
-> > > +	WARN_ON(atomic_inc_return(&d->ref) <= 0);
-> > 
-> > Is it worth dumping some information about the page in addition to the
-> > WARN_ON()? That way, you might be able to benefit from other debug
-> > options (e.g. PAGE_OWNER) if they are enabled.
-> 
-> These WARN_ON are for overflows, which should never happen.
-> I initially thought about using the refcount_t, but it didn’t seem
-> suitable as refcount_add() expects that the refcount is already “1”
-> indicating that an object was already created which doesn’t fit
-> in the semantics of what this is. Similar for refcount_dec().
-> 
-> In the next patch there is a WARN_ON for the refcount check
-> to capture the mis-behaving context, I will add a debug print with
-> the leaked physical address in that case as this is the important one.
+On Fri, Nov 21, 2025 at 5:52=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+>
+> On Fri, Nov 21, 2025 at 3:40=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
+rg> wrote:
+> >
+> > On Fri, Nov 21, 2025 at 01:31:43AM -0800, Chris Li wrote:
+> > > The current zswap requires a backing swapfile. The swap slot used
+> > > by zswap is not able to be used by the swapfile. That waste swapfile
+> > > space.
+> > >
+> > > The ghost swapfile is a swapfile that only contains the swapfile head=
+er
+> > > for zswap. The swapfile header indicate the size of the swapfile. The=
+re
+> > > is no swap data section in the ghost swapfile, therefore, no waste of
+> > > swapfile space.  As such, any write to a ghost swapfile will fail. To
+> > > prevents accidental read or write of ghost swapfile, bdev of
+> > > swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
+> > > flag because there is no rotation disk access when using zswap.
+> >
+> > Zswap is primarily a compressed cache for real swap on secondary
+> > storage. It's indeed quite important that entries currently in zswap
+> > don't occupy disk slots; but for a solution to this to be acceptable,
+> > it has to work with the primary usecase and support disk writeback.
+>
+> Well, my plan is to support the writeback via swap.tiers.
+>
+> > This direction is a dead-end. Please take a look at Nhat's swap
+> > virtualization patches. They decouple zswap from disk geometry, while
+> > still supporting writeback to an actual backend file.
+>
+> Yes, there are many ways to decouple zswap from disk geometry, my swap
+> table + swap.tiers design can do that as well. I have concerns about
+> swap virtualization in the aspect of adding another layer of memory
+> overhead addition per swap entry and CPU overhead of extra xarray
+> lookup. I believe my approach is technically superior and cleaner.
 
-I was thinking specifically about calling dump_page_owner().
+True, but the static nature of the current swapfile infrastructure
+also imposes an space overhead and/or operational overhead.
 
-Will
+I did play around with a prototype with a ghost swapfile for virtual
+swap, but had to stop because of the swapfile overhead for larger
+virtual swap space.
+
+> Both faster and cleaner. Basically swap.tiers + VFS like swap read
+> write page ops. I will let Nhat clarify the performance and memory
+
+That just solves static placement, no? Backend transfer requires
+something extra/orthogonal.
+
+> overhead side of the swap virtualization.
+>
+> I am not against swap entry redirection. Just the swap virtualization
+
+There will be redirection either way. I don't think it's avoidable.
+The only option is whether to shove it into the backend (what zram is
+doing), or having a generalized module (swap virtualization).
+
+Or do a page table walk every time you want to do backend transfer
+(what swapoff is doing).
+
+> series needs to compare against the alternatives in terms of memory
+> overhead and throughput.
+> Solving it from the swap.tiers angle is cleaner.
+>
+> > Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
+>
+> I take that the only relevant part is you are zswap maintainer and I
+> am the swap maintainer. Fine. I got the message. I will leave the
+> zswap alone. I will find other ways to address the memory base swap
+> tiers in swap.tiers.
+
+Please keep this discussion technical and not pull ranks unnecessarily.
+
+>
+> Chris
 
