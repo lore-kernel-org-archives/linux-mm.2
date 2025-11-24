@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABD3CCFD355
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 21:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FB72CFD356
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 21:34:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2BE46B002E; Mon, 24 Nov 2025 16:20:26 -0500 (EST)
+	id 6C0246B000D; Mon, 24 Nov 2025 16:33:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDC9D6B002F; Mon, 24 Nov 2025 16:20:26 -0500 (EST)
+	id 696E36B002B; Mon, 24 Nov 2025 16:33:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCB506B0031; Mon, 24 Nov 2025 16:20:26 -0500 (EST)
+	id 5D4996B002D; Mon, 24 Nov 2025 16:33:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C90986B002E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:20:26 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63518C04F6
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:20:24 +0000 (UTC)
-X-FDA: 84146769168.17.B107794
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CF94540003
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:20:22 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 4C61E6B000D
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:33:59 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19A37BA3A2
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:33:59 +0000 (UTC)
+X-FDA: 84146803398.28.D0634A8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B7BB640013
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:33:56 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekqcbge6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VjaCuJvV;
+	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764019222;
+	s=arc-20220608; t=1764020037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l4JgFORQ4lI3CHQnttAjPtIP896vDjPpqA//MKwm16o=;
-	b=PjByG+runLk79BffCPSs9/plVWeZPQOCsAHR1e5pK2DFS7VMyOBqPEpY/1zN3ceijUdxpz
-	9ogHgTuMiiXtESV/uTfiwma0+gLeFqxD/L35DyGn9Ad6famCUhna5NERO7StuAZhZSoQvW
-	/px2fDn82qoEvU+ZvBuA+9csnbuGNlk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764019222; a=rsa-sha256;
+	bh=KFlI9oMmK8KOch+nom628TiyApNTBVZwzhoepQIUmfg=;
+	b=ZIv96i3jF6ARJOXpYEDqHF9ba12sMJ3ODaGKzqQkiC42egiTiVtSnKfgUIxulERmEwkVo2
+	zhFeZ3Qy4u8VjlE5SvFoQivxNhFgwByMStOZhlwaukRQE2S3vS7F/ToTCERbAyUkR8s/6G
+	JZPx0RuDzOz3ft+LhetxDl+9vRj38DQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764020037; a=rsa-sha256;
 	cv=none;
-	b=UNX2L4KOELbhjeKDwGYHeoJqLq0olCEurkMjogrV5ssaBJP0vcbWcyMco5JWEZjw+H865n
-	po9Cz5vWxhDtUNzR6G7kNN81n4W/LaEATCwfuNlh+d0a4COG3uVr1KH9jYSn5xiIv98arE
-	MJHOt7acs8NA3tS5ggZXrZeaP8SapbI=
+	b=zj2Xl8jJdLRVVLjJI+E+WDyS+3edFVfsGmDB2oivicmxWQjYz40vK1bCjpp2QnYDHKZ7jk
+	68Ku3tPGZtZWH5Mfe+vR4BOJIT5MTEowzK85sB89xf/Ki28FCxlCWmG3xk9dV7EwYdaFFk
+	NZ2LGzYw29hpw0jWue+B/2KbncAf8Sw=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekqcbge6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12BC36016B;
-	Mon, 24 Nov 2025 21:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B34C4CEF1;
-	Mon, 24 Nov 2025 21:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764019221;
-	bh=Y94JlBIHLA/laoTq4h3TEpMFWZb/beHXXRUBICAqz4c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ekqcbge6rAcDI+vCK69msAZ9ML3+CijFroR0b3AHsruJPJSvQ3noWvLTMSnppkKFl
-	 qXFyify01DoKJErGd0BBVdT105e/DEHg+sxCdybxEwiR2mhdmrcxeWnKu5ccjRczsO
-	 DNtfhJTJTxDkZNpH/0Gld6cIW5pFWKnN+GJHBT63x7sNsg/owugYAg10Ujmsn2D2xJ
-	 GdWhpkUqmbvxF6CZxjW6wV+OjEvSJRer7UWpG8RrLHChBv/kQWP/+Lm33186vc87VV
-	 BJuqTDJYc92FShtapn0/rmaoXHEkZxZcEDW3BJt6KnC/vP3D5RSaW0qntmn7G/CvoJ
-	 vpDa8V0/Ngkmg==
-Date: Mon, 24 Nov 2025 13:20:21 -0800
-From: Kees Cook <kees@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VjaCuJvV;
+	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=KFlI9oMmK8KOch+nom628TiyApNTBVZwzhoepQIUmfg=; b=VjaCuJvVsCAUOc2cB3tGbSpLHp
+	TEnpEW/iiCPQdHEu2kvEiksTgQw2JR04LylC1eGrJyWwfF6H/dXVC/DDsSf9qXo8JVX98ggTyDNj9
+	TbdAJWjPoGoKwvlzYdgysxdjeAZA97i3RDQCWN63bnAi0RuK6IzKNzdYMaVBEikTUsRPT9v9zgdvo
+	m9yGP3fNQSMq2tX5JOF3wgkX6flOHuU8oPstj1+wH/jIjJMYB5Gd6AMt2ej0dxAUMd4iiAUnBVNcF
+	gFBh04tustsd5kN6hXTAvMVHJTuxINIzonaGGaFFIhF4iX0ImzeAVac1J8mfTPP4dNG3lZVyYNBEu
+	DbZT0cAA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vNeBu-00000007ZJQ-0Ejv;
+	Mon, 24 Nov 2025 21:33:46 +0000
+Date: Mon, 24 Nov 2025 21:33:45 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Kees Cook <kees@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
 	Pekka Enberg <penberg@kernel.org>,
@@ -97,24 +96,26 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
 	linux-doc@vger.kernel.org, llvm@lists.linux.dev
 Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
-Message-ID: <202511241317.516BDE7B@keescook>
+Message-ID: <aSTPOYLVzgkWDZR-@casper.infradead.org>
 References: <20251122014258.do.018-kees@kernel.org>
  <20251122014304.3417954-2-kees@kernel.org>
  <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
  <202511241119.C547DEF80@keescook>
  <aSTKLsRNiEKtDqPI@casper.infradead.org>
+ <202511241317.516BDE7B@keescook>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aSTKLsRNiEKtDqPI@casper.infradead.org>
-X-Stat-Signature: a4q5z1s8b9zfkdhu8tjgoqdh9gqykchp
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <202511241317.516BDE7B@keescook>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CF94540003
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1764019222-910315
-X-HE-Meta: U2FsdGVkX19L9DJCp4wZ4/mF2ZmfKB3qZOZq5k3jcSuRFJqUg4HkI8aPgs1RHh1kcTCRdVpYFYEzVe8KoYgngqji2tih/OIJgI33Yl00VkBMNg19e1A7mzuhrZUjtWyosgh0PWsBUJ/fQcfiK5SQfk+H9yPcT8jfeI5zEMwQq2oNAml7xfRq7CGQdWbT8Bmil2U5gz6qw8RISP9G3lv2gPT1OxdijKsTaiVu5kRJ+dUyKWbqiGZOUBkU98/1v4bDdgEdfgujFql8hRO+WM6lbQNueOCOSprLXUbkjaqpaHre0PQu6WT558Cjt7UhHDdY4ilOa9b3XhiT8G1TLx5F1jdsbR4xyywMCN1EGW2Fbf2gUtsYZUYQ70hnQvHc6LmleSaBKrzlsyKZV7h+jPaE+EQ//FC+inGZOaoLIZzdvTL5PuU1jLLiPyDAn7cIu6tAdrjD4/8w/2VENR85CYS6f62OCwfnCytW/vFyfU8pfm9iQp6eFdHH7T5tUPgDpKm6a/m+rSkrhJ/mlLV8wbW7giaj/fNDXm7BTAzHT27yEGvWB4ooAaNQkXoEg09Eu7sYZ0+kwrXf02DHY1o+pxSSSyjJVHj1LBf56bmdf/fwqj2aLax04qq3CtMOoJSh2NSUa1PEm42FW5vQvnUeprym+0ta3z+k8+CkeGNevsn74s4y4Cf7DiSBAcZ371TjeiZo8EFq2F9sg9zHTNhUxWrfHMvFr3eIfLIDRIoBJVZjC68dX5tjSgk6bt9fNCUm5mZYSvz/crZZIpiL5BPmrpvs2OzL7zW/q15NRSdsRzAtUc6FUHp/OAG9hccqx3ein3RjtmOle+LMhnHqzzsEAL3ddKKa5+kWdXqAlFfRVxGr9HLv7m9S71qXwYlvRcmhr5BYPpC1sudW1j/Ri+o1cFta3rwmjiOkJugj1RzW7nwUCeAa7AW648RIEtTSkOW0W4aBUwS6Gd/WdIwuRO3hQ41
- +QPHtg9q
- gk3QlszlNRniuNZ83imsbWR4VTOeyR015AQTUHa+AuVRyEQQZioZ0BCyiyFfH264j+FtI8mGCjBnrmwWRhT2FaD/lTsKCBJm4NEr3YjeD6SolKJ2jUhoiBt4EvaRxECY8IP1GCkWapsfKTSTmdDTIrkHtTXORCs0hB+No4K9hVO/LIjD+4lyDfyz95V2JJu73wG0i7uVlH9l83auM+InPTLlnvpkolG1Xz+rDSlGDuFQyswLHsP/FjisWV4KRCVPAeTZkSdyuOYln8ZJLbiZ/oTPzHeGFWasmahJL/eZPmfvTDviqP5VCEADpamjdMFQ9zxvtYSQtOxzoXA+LPtAvXiEp0A8kAVPPEEa/qFr9fCQjW6GYyJBNCJ+aZQ==
+X-Rspamd-Queue-Id: B7BB640013
+X-Stat-Signature: dwhxibkfo547wzm9a46mbo5yjwgbrg3y
+X-HE-Tag: 1764020036-318700
+X-HE-Meta: U2FsdGVkX1+9KXWfTxE6o8JlBPphnVXv39jSv9ICI/Pu+k8lQ54cfMWSrBntauKeWr2MeU7lZs7dF4M2q0L9FaVdMEoGC1aIj5xbK0Y/wtIMWzVYFLhawFp3STHed4Hf/yHeOxOk2Xv6R2jF0DxexhuXlNsj3D8sRWVdb833KpcTvHrFzx2ujpOrso2UcxZTplOGSJ8QqCQ7gjKP2be4Zk4G9ng1QpU+P62MG703drpxbgs6x/xi5FlTaNoVNyEutnnjxBQlv49rxpKOwxQUD7M131A2+AMUVXLwZVGUq5OMq+WQSm5btbJZkKbyFUHhI8HCX1P4kaV18H7UeCAY/yEz0X//krxW+mcXZvGDHaGzlA7oRhUfZK3gRIRhV/3a5vOchf6X+/A+OLckA4SDx60ahlKtM6xA0pw6mAWOTSmTQpo2gTplJiwp80mlcVROV601p0mlRfVAZS0hvnLoL8ZDEf66RrPqjCfYqFOPLp77eUvP94Dzm4Co7x9fE3ok12kXsChHtG/xINORRnDC4CqNd+3GVoSyfxlINEDzn/pdwDjsYzr9+mdrjlA/908bxzNQTsKFlgJ9/J7EC+yhuHU9d8UseSLweIfO53ZkuZb49QuewUiRdxamkqHYItNrnTyE2m4qkzOT+KqBMjRcHg/T7Z7wZLRNqPh3eojc+X6mqETMtKXCsmgM1Ut9+kg7ABcxyAEfFXFpQFogew3JG05B3JatvLcfEEYvis4WSQFDQkODg9hWkuoWGoOv3ifiO7Ypkbl1ggJwGrKA7eaI7HCTtHC+0MRW8by0D+R422NCT2ehMhHib9YVSUUo26/iwGJPR7XZzz23Eir/baGtdjSCgd0ClXYo3Jws8uI5747QNn6BcMp3yRMaOV8Wx6e/05EABkTm6W6NnKP3L19y1Fu+g9zRYDN4Lx8iPiUMKw1+4hz1ZZ/WojjypRM6dL0d5WfNiYtG3ie7eodqBQH
+ 95IFhlMZ
+ Yk9lpCLyquWSj60Eh2sP7YxMJsLXSTAbOWkFt18GtIyNz3jB9VXfrFNakBNeRLR2TERfciiDJCXET4Oo0Ol6m/mXpPrwh5q59CNj2rQUL4qR1yNblvj509iZgavFq6qeEkmAG5hzWP9rTTsgx+ncOlYvcbYCwCpqWVHKm9plUX7Q+ubnhtMpvY3GMwI8Qw8Cj4zFr4zacLrie7PC5jy9rXOvzlpxfScBJYiBPkWQy4AQL534D6B2hQZOI5J88HCZxOAxkZ65cMBXHltazTkhcvoBVXBweNCmmOJlJBbp7zpLPVoiEFqAnHi7RSBmAyR3G1DJC4UgnFFIAOqnstQRsBQZCkU1p3QJv5lrjcYPbtvmIjSPKNIUkPb+M9ycOw31Txo29IUcc5vY5gfiCErdqFxsi+wUIPdVeJQV198qw5Xh6xAkdMVI33dTWjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,36 +124,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 09:12:14PM +0000, Matthew Wilcox wrote:
-> On Mon, Nov 24, 2025 at 12:38:57PM -0800, Kees Cook wrote:
-> > For code like:
-> > 
-> > 	u8 size;
-> > 	...
-> > 	size = struct_size(ptr, flex_member, count);
-> > 	ptr = kmalloc(size, gfp);
-> > 
-> > While struct_size() is designed to deal with overflows beyond SIZE_MAX,
-> > it can't do anything about truncation of its return value since it has
-> > no visibility into the lvalue type. So this code pattern happily
-> > truncates, allocates too little memory, and then usually does stuff like
-> > runs a for-loop based on "count" instead of "size" and walks right off
-> > the end of the heap allocation, clobbering whatever follows it.
+On Mon, Nov 24, 2025 at 01:20:21PM -0800, Kees Cook wrote:
+> > Maybe such a warning already exists and it's just too noisy to even
+> > start thinking about turning it on?
 > 
-> Have we investigated a compiler warning like
-> -Wimplicit-arithmetic-truncation that would complain about this kind of
-> thing and could be shut up by an explicit cast:
-> 
-> 	size = (u8)struct_size(ptr, flex_member, count);
-> 
-> or arithmetic that can be proven to not overflow:
-> 	size = struct_size(ptr, flex_member, count) & 0xff;
-> 
-> Maybe such a warning already exists and it's just too noisy to even
-> start thinking about turning it on?
+> Yes, -Wconversion (W=3) is mind-blowingly noisy, unfortunately.
 
-Yes, -Wconversion (W=3) is mind-blowingly noisy, unfortunately.
+It looks like GCC isn't smart enough.  The first warning I saw was legit
+and easy to fix.  The second one is bogus:
 
--- 
-Kees Cook
+include/linux/err.h: In function ‘PTR_ERR_OR_ZERO’:
+include/linux/err.h:120:24: error: conversion from ‘long int’ to ‘int’ may change value [-Werror=conversion]
+  120 |                 return PTR_ERR(ptr);
+
+But GCC can prove that this isn't true; it just chooses not to:
+
+#define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+
+static inline bool __must_check IS_ERR(__force const void *ptr)
+{
+        return IS_ERR_VALUE((unsigned long)ptr);
+}
+
+static inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
+{
+        if (IS_ERR(ptr))
+                return PTR_ERR(ptr);
+
+So GCC knows in this path that 'ptr' is in the range [-4095..-1] and
+the conversion from long to int will not change the value.
+
+I imagine that fixing this is not high on the GCC developer priority
+list, but if we filed a bug that might change?
 
