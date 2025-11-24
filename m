@@ -4,104 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C016CFD318
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 17:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A62CFD340
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 17:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 476026B0026; Mon, 24 Nov 2025 12:38:09 -0500 (EST)
+	id F2EEA6B0012; Mon, 24 Nov 2025 12:43:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4263B6B0027; Mon, 24 Nov 2025 12:38:09 -0500 (EST)
+	id EDF806B0022; Mon, 24 Nov 2025 12:43:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 314FC6B0028; Mon, 24 Nov 2025 12:38:09 -0500 (EST)
+	id DCEA56B0023; Mon, 24 Nov 2025 12:43:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BFD06B0026
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:38:09 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B59FD13B176
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:38:08 +0000 (UTC)
-X-FDA: 84146209056.30.88F5C29
-Received: from sender3-of-o52.zoho.com (sender3-of-o52.zoho.com [136.143.184.52])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BE467A0016
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:38:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=lTpppgPt;
-	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.52 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764005887; a=rsa-sha256;
-	cv=pass;
-	b=7fQRdbmMSBUQuKi9YeMNcvXyw3+mzclvDNZ7GHyIAYHJ8yq2kEccVDcOCjXB7+NIUU7cLj
-	f8HgZ8p/uG+c4KNME6ZTV9v3R1fPq4pK+LJANY606Z5nybcm4cHcGbpeKGoySXEiKUdaiB
-	I4yJ9c8m7u230QyyNFelpqBNyqrIrsE=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=mpiricsoftware.com header.s=mpiric header.b=lTpppgPt;
-	dmarc=pass (policy=quarantine) header.from=mpiricsoftware.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shardul.b@mpiricsoftware.com designates 136.143.184.52 as permitted sender) smtp.mailfrom=shardul.b@mpiricsoftware.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764005886;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C5D396B0012
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 12:43:40 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69659C04E9
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:43:40 +0000 (UTC)
+X-FDA: 84146223000.19.ABA5DAA
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AED55C0015
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:43:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=PYZq+3N6;
+	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764006218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R8m+NhBlevjY7KyauSa05XI58p+o1dvP2cF9/uZRii4=;
-	b=OQjKpt1BgWWkgACxIM2FRpaYCND3Lii+0USyJuvbR7Q+1bMwsR800wo8xdkfgRipHrU3XG
-	T8rg9aE5D415KiiTaBq91lDSK4Y/tkIRY3kRmvTrHKzNY+Dmfw+uTs3K33hMJRoTPJwP43
-	rPNOcT+zwazn5BVTo/O8RdNWq4+uy9Q=
-ARC-Seal: i=1; a=rsa-sha256; t=1764005878; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=e9EMJ7C9V7nfcvE1RkIz5sC1zenMutYXhUVITHZRQIeQwm2t8Lqi234J6GVJS9aFZ7R1yhfKauTyvHWKfH6VG0ozASwZPhIHfgYY58ll59slah96bxdrRLj5Lw0y2QHBNkNw6bg7VQUlFbi+jn2uf7RDgfQp2G8Bb6oZSUXI7kg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764005878; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=R8m+NhBlevjY7KyauSa05XI58p+o1dvP2cF9/uZRii4=; 
-	b=kwL0cQzMxLZXPtmxyvwPXwNloVKqu5Hx+yuX5Ngv3DT3j5Qr74ZyZ6b5lrExPWimgUR8NUssO90xdzeNejRYWa9bpgxLTNOFHEShiPpmmRbxyzgWFhr5cgPH7ZW3/oaTzeruagG6gbtvetMOhAZIZCJ40qQtmECVWIOFwz3Ufow=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=mpiricsoftware.com;
-	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764005878;
-	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=R8m+NhBlevjY7KyauSa05XI58p+o1dvP2cF9/uZRii4=;
-	b=lTpppgPtFvuHA49IswZAI3ZoKkDDtySWa8cCh4Khbeyp9cMVvV8Rgy6kfAw3hy3L
-	jDA5WF0GpLnrbu6w+LIi/NLkUppOKc+vkZt12i0dR6PfC1Baevf7MRc6s+LszPHdkCU
-	YppXczSVyQ1EDAwCVVhNbllffiE1xPA8/L7FDxxE=
-Received: by mx.zohomail.com with SMTPS id 1764005875356485.54990985986535;
-	Mon, 24 Nov 2025 09:37:55 -0800 (PST)
-Message-ID: <7a31f01ac0d63788e5fbac15192c35229e1f980a.camel@mpiricsoftware.com>
-Subject: Re: [PATCH v2] mm: khugepaged: fix memory leak in collapse_file xas
- retry loop
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, dev.jain@arm.com, david@kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+a785d07959bc94837d51@syzkaller.appspotmail.com, 
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	janak@mpiricsoftware.com, shardulsb08@gmail.com
-Date: Mon, 24 Nov 2025 23:07:46 +0530
-In-Reply-To: <aSSGH6IBIuK64EUX@casper.infradead.org>
-References: 
-	<703387c8908a609c3de966574dfcf481c5a97216.camel@mpiricsoftware.com>
-	 <20251124161149.1302507-1-shardul.b@mpiricsoftware.com>
-	 <aSSGH6IBIuK64EUX@casper.infradead.org>
+	bh=Z/I9K/FvlzwwzFcfXNsTEhQVXUvQTpjTeN/OkRnIVAw=;
+	b=PMWRZ/fRWJQs23JZLChBZkGx519Xcgxw8qlxBsyQkZHhZHIwktgqpVDfMSZEhpd0my/N2S
+	08GzWh1SHZRulkN46JmqljJSgGQMW3PoZYDzPj1x5R+LShrrsw6uIqmGkhQZD71OEMoPGP
+	MZUDxAEZ23tVf1FTfbV9/6bkyVOX+6w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764006218; a=rsa-sha256;
+	cv=none;
+	b=Ob3e2RfLiPaYhLRa97sg15V+OKok49TwhFEkeThgU6SacVIK7HUY+rDQ/Ge/MJ6KvpdSCR
+	nOsoo4RC7DqJ+6y0caAEZ3Es6LsdrI+yqG+6PcdntZVJ4xsmYUlR+vIy/Dlw319pMcisEc
+	13Pxu1hEjcGzGHEf1/4YPPtENErUfvY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=PYZq+3N6;
+	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Z/I9K/FvlzwwzFcfXNsTEhQVXUvQTpjTeN/OkRnIVAw=; b=PYZq+3N6tjX6NJWqEaPcfN5Cla
+	j/JkOMprSa5JJaRiwiz8QoEfuB0KROt1C7m8FS/MP+tTkk9Ku2QPVCnPhIcWCAA2fJk85EbV7wFtL
+	t4uXLDQTLYRtKoZa4cx5DOidMqSWu7ad4ohBB3eIyqVH0pHFJ5qnPnAV4rIt79QaevKsuWYilL5nd
+	W6XT5sVzpdM+NcJgvhKgw+1ZbHTubi8DBBmBQO6vleE/GoaY8d2OOT/4E6vLPE+CoIF/LB1CuGIxF
+	zxwPxoEFA3E9eX66HEgP8Rvv4MADC+XXy3e0D0JDzcaj+7IICesW5SZrpS1P2ElBvbszcgw6Dm/jl
+	ZWrMJXwQ==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1vNaaH-000000003Bs-2utf;
+	Mon, 24 Nov 2025 12:42:42 -0500
+Message-ID: <86fa3bc129bbd0e0da9d118ca6441e34a389fd2b.camel@surriel.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton
+	 <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+	 <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+	 <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Yosry Ahmed
+	 <yosry.ahmed@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, pratmal@google.com, 
+	sweettea@google.com, gthelen@google.com, weixugc@google.com
+Date: Mon, 24 Nov 2025 12:42:42 -0500
+In-Reply-To: <CACePvbUMAi-v0Xmw8-GCiYuP=smmtxeVQ3VS5S4mWcVirDGPSw@mail.gmail.com>
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
+	 <20251121114011.GA71307@cmpxchg.org>
+	 <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+	 <340fd55d9d7d9436f18205bb458e9bd469b36c6c.camel@surriel.com>
+	 <CACePvbUMAi-v0Xmw8-GCiYuP=smmtxeVQ3VS5S4mWcVirDGPSw@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
 MIME-Version: 1.0
-X-ZohoMailClient: External
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AED55C0015
+X-Stat-Signature: ury4oei9terr9zjzk9jtjtsaua3sbagy
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BE467A0016
-X-Stat-Signature: fajzquog6osfu5zj4h7d1ooyyrkk5tfn
-X-HE-Tag: 1764005886-393247
-X-HE-Meta: U2FsdGVkX1/1xCXbxKuiV6ctKZfEGoBHNsPxP1mg8ZhL3I1AXNTSJpaY/5TGu756SFEQ2WP5/WAaTpNn378MvI4W5rYF7Ctz0dhjMkL9CzZv6tS7tnSq3ii/G1prneiEEZUwwWyu3lsWvNgV9z6+2hr8mfcESMdrIFo1BnvoVg2+UtQXqVYQ95yCPxRnRsBX5pc30kwX3uyRr9/7CQs+56I/qKuIyxcqXnoAFDwJRn+JrNKVQasMH2ej9viRfyy0SVJNvHnL1E20a6eZZV7VkOZFvNRY5bPz5zluisOy25DuNGQ7fxsAf00hwLmzxenk/veZZ8CkYnGOsagfgsMCofaplfad7R2w3wTSzQRelEJFpaNvhp2NgUP1PCbPjepzlCcnp5fn0He11n6JUb0EA4p0rdOieMpw1XZug/q92U9KpHqCChhkljOzEOsnBmk+NQW3p8p0CvZFBERN+bN+tvhsj3SB7qWKpt9gVVBVhW6o3gZaMzJ1HDcg/nnHHTtN3+IrlFOHzHUQ0IfG8zAal1DBzmfKH+DuEaQKG7TOT4rQJxAYOdKm04Brfy8+D4qOpJGNhAignnfPxPyQRevcjoiCiOUduX9QX7bmdI0+ICrI6BQumGttEh0cxVaSto0H13D6s+KX5nJ2Ahd/51TelobI/AF08tNRg1aJMpZumJ7fEvNBoBGY8ewhXBc9kWelvJwNEEXZp7gsViOpjF8CjyZ4bdaMfZz2SjAz0cFf/CmSN/P41C9MBC9850CmYMsKwP0jW5xI8dWQP0g0yOQpuPBoVq1TK0WrvArGXJJc/F5p9uWDKYp8JDamIAV9hndld3sxxGX5pvmTXw3Kcu3ZlYvdaaInhQB5C1Gi5DvQKCVkvfRNMNwhRlKwFQRuYdbZEPyo5WTYU8TPDxqOdUweSw/RFVjNWAzjMtsnkAxk3aBgN1qbqUGgfXlQqjs7BEHh4YiVcYl6Gpv4m6yq8O4
- RG8oh0Bs
- zFnM4nqCXgVgjcJegcqMRWz8VDUO3xJHDM6CCycPhnmsM6t/jRlpTA7ux+xANlX4GXHatgnsiLAlKyxPwWrBrCwZH1EOoEE4M2HZ4hSys7gmLRQPt5PCKFXYHo160s75YUyotNFoq4w7XegTvfd+nLoDVbFgTyX/Z5RFHEYGnNGu1sIMn2s4bIlwj/nj7Qk+vi8K3IxSsSZeBWYLCRd46SnQvY4Dj2OoU67Fuh8tZK2XwEkwElDRcdfYt3PQP7gJTUdR7MXy1vbp7nqPyoGwT5i8Dg6/AdfH1ONRcYN2jIVNiRNLtYOb/6kSvyx1R7hBHVj2365uDekxJszit4FdR3F64r7SVek/gLdvBvXVEKjJE/Cre/H+2nqMy+C7UdydAc6teQOm8tSFbZgUD2+v4wjiW4590VyUdgRczC2NDOE1wPHQFrXm+zix3S7H574NmMUTpbhlluphbZPIuUMcUFF8QJtZDpsCJlvbknV1K3NlUuKhmQd7/YT0jnMsHrETpWdFJ
+X-HE-Tag: 1764006218-199336
+X-HE-Meta: U2FsdGVkX184ph5jDV/SnabH3BS2mAXDdDjN4YdGWd1Wl/MSzyrHPPSa0YrWE16kYlHB/aorUvXv/ccpGY4McUC/86daorgy+C8eFDJOrnIQc6impH+/AmzY6PAtq3Tds1zZm0Gf+Jt93U2xi+qTqOANUzJ6nc7IvSlb+ENlPJ0QbPjNGt8tuZa9amBDJFYOSsIx0Lg25p7kOtG+E+FHrveeTpOfXOg0jTjVvgH3inRWE24MDbyPiG1tiR3C7luJrgiZb425JrEobtToix1Ohl680AzLJVwUaHkW7dx0+XE2LCrF7bMmoWDsn8JGuohvRg8tdttpEjSqGlxnhdTZMe6kh3gworu2NwP7zwLMjW5f3mOpkE7hgISR0MEpm3A81x0qEzNItOKxni0SZljTiwgfjPLj51yiVTQa/T1GOR9eL1fZO9gHQS0YEXK8iUywNKB2oXdB2ZpuXeslNT+WauqVaaecVgxGiM76oLfYOlvo1+tYlKNVDIyyHivz/NA2clWVLA81CJU/R1cBskYEj6z7TA0oemZPmgJJdBctuh8TAi08cK/YCSCDpHs/E/O/bM4bDobiN512FdTnCVNp2vlLqLjARy34akdM50Sgp8IQ9NBXtpn5uytpLyTtbX+6FAfDX+hQx6SIgfBzqU3nFUgveL3A9FPF/3dM5OGBrjSvidrUgHNgGuDCXG5knvGMLUBeszriUkSwuIGC+957as4ZkjDz8pOxqQZnaSA6eJyNS1dUsd3V1x3+ssXqrlBUm28MPIAx/f+uhNBU7ncpSAVm++AcsNuR0ZwaGQTAHiaA8RQ2/CReCAubYANmdM2Y1ZmqwqYd/E2GUSKFmMz39FATyzDbdu3sw3dt/nn1vhv/CMCpRIDa0IgjtIj8VnbC5qHeGjsA2eCXEkdS+fDzIDmYf7Mv+SQjbmghiNyxhynm29sCfvp4jqgm6YDSWj3pzvMy61mER3JlToNJPwM
+ zVFJcC27
+ vw5zr3FrFp/x/gEjJWZBZxH8ZSaV04ibECcUuN659ctrB8fk9/M8ns8AAC/KQm3Eu5DXTx/BPr+AAmrhHiJRONuZlEFYNBTWy/xVCa2sv+b4hp1LdSgm005xyNmsGQLl6E1N0qpHz4IstM8WAGAOtdMJNWLHnzrl5TbCIIocfHZG3hJUFa+PquvHfMDsTH87DfZtyvIxOScsGf01As/04xil7mdmBnA8aLJfvsFGiVcVKpF03NcvnG0v4VyuQ+MvFVbInDIaQCnTxBDFNBMN9irEPaOs6BJXVSur5JvENQJ3sHWMLDv+APqAealSjIaI/30E0NNdJ7TXWIZaVW5iZAL8Lbg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,35 +129,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2025-11-24 at 16:21 +0000, Matthew Wilcox wrote:
+On Mon, 2025-11-24 at 20:26 +0300, Chris Li wrote:
+> On Mon, Nov 24, 2025 at 7:15=E2=80=AFPM Rik van Riel <riel@surriel.com>
+> wrote:
+> >=20
+> > On Fri, 2025-11-21 at 17:52 -0800, Chris Li wrote:
+> > > On Fri, Nov 21, 2025 at 3:40=E2=80=AFAM Johannes Weiner
+> > > <hannes@cmpxchg.org>
+> > > wrote:
+> > > >=20
+> > > >=20
+> > > > Zswap is primarily a compressed cache for real swap on
+> > > > secondary
+> > > > storage. It's indeed quite important that entries currently in
+> > > > zswap
+> > > > don't occupy disk slots; but for a solution to this to be
+> > > > acceptable,
+> > > > it has to work with the primary usecase and support disk
+> > > > writeback.
+> > >=20
+> > > Well, my plan is to support the writeback via swap.tiers.
+> > >=20
+> > How would you do writeback from a zswap entry in
+> > a ghost swapfile, to a real disk swap backend?
 >=20
-> Then wouldn't freeing the excess node in xas_create_range() be the
-> correct fix, instead of requiring the caller to think about this?
+> Basically, each swap file has its own version swap
+> ops->{read,write}_folio(). The mem swap tier is similar to the
+> current
+> zswap but it is memory only, there is no file backing and don't share
+> swap entries with the real swapfile.
 >=20
->=20
-Hi Matthew,
+> When writing back from one swap entry to another swapfile, for the
+> simple case of uncompressing the data, data will store to swap cache
+> and write to another swapfile with allocated another swap entry. The
+> front end of the swap cache will have the option map the front end
+> swap entry offset to the back end block locations. At the memory
+> price
+> of 4 byte per swap entry.
 
-Thanks for the feedback. Agreed, this is better fixed inside xarray
-instead of in collapse_file(), so callers don=E2=80=99t need to think about
-xas_destroy() at all.
+Wait, so you use the swap cache radix tree to
+indicate the physical location of data between
+multiple swap devices?
 
-Looking at the internals, xas_nomem() only allocates a spare node into
-xas->xa_alloc and xas_alloc() consumes it only if it is required. The
-only point where we know that the retry loop is truly finished is after
-xas_create_range() (or xas_create()) succeeds =E2=80=94 at that point, any
-remaining xa_alloc must be unused.
+Isn't that exactly what the vswap approach
+does, too?
 
-So to align API expectations, I=E2=80=99m trying to understand where you wo=
-uld
-prefer to enforce the invariant:
+How is this different?
 
-  - In xas_create_range() after success, ensuring no spare remains?
-  - Or in xas_create(), so that non-range callers benefit as well?
-
-Once that API boundary is clear, I can prepare a v3 that moves the fix
-into lib/xarray.c.
-
-Thanks,
-Shardul
-
+--=20
+All Rights Reversed.
 
