@@ -4,125 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC49FCFD313
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 19:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15535CFD313
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 19:36:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3121E6B00B8; Mon, 24 Nov 2025 14:33:07 -0500 (EST)
+	id 475D06B009E; Mon, 24 Nov 2025 14:36:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C2C56B00BA; Mon, 24 Nov 2025 14:33:07 -0500 (EST)
+	id 4268F6B00A1; Mon, 24 Nov 2025 14:36:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B2066B00BB; Mon, 24 Nov 2025 14:33:07 -0500 (EST)
+	id 33C926B00A4; Mon, 24 Nov 2025 14:36:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0101A6B00B8
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:33:06 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A43881A052F
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:33:06 +0000 (UTC)
-X-FDA: 84146498772.17.C29DAE2
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5565A18001B
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:33:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fPf9svgl;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2210F6B009E
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 14:36:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D90689923
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:35:59 +0000 (UTC)
+X-FDA: 84146506038.28.C01547D
+Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A6FF3A000A
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:35:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=e5E0xdJG;
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=41621b596=ilstam@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=41621b596=ilstam@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764012784;
+	s=arc-20220608; t=1764012956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gsMhFDvKNXWpM7LYd4pBI2Bvu1L+GYJfurU1oXkgcDc=;
-	b=DeyFSCy5wBRnMloFBMzbbiKlQQ2DByl8TxAEPCn09x5LnQXVlAfyX1fzW7blmziwCnD0W4
-	SAo3evhcBxcSODE5Jun69l1OCQHOvk7UmbfUOAx4auy1XqldQ1T3aXAKrCIbleDbAE8kFE
-	2nZ9D/cga9ymM90BwuaeowD+BrMHsF0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fPf9svgl;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764012784; a=rsa-sha256;
+	bh=jTUAL27vHZ3NBwiswOv5Gu7UmLHaKfmfIJ3jAQMndC4=;
+	b=O3IhI5anZHnw2hbHekMQ3E789nPP8l/XU0vB3xKmf+aGniN3xGmivb2+FY1NcnL6euDfkb
+	hiK1RS5M+vrL09M3Wb1zr3TmiHM16e8s1pGFSnyaX1pcaBO1rpRaucmNKHiXPRpcHKLULG
+	VvpMGEBlyqbWZy+xGafjkywdImbDOkw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764012956; a=rsa-sha256;
 	cv=none;
-	b=FgxMbeLgw611l2W87TM5MHgWX2SybtSzCcZ+aCI7gzlaQz253+ilp6UyJunJAh7D4uiWx8
-	PY2OSOVIG4ekaiQzsF3gqSgAmYc7vqALQM43z0z+peQKaSjWblblweOzxBpfZbmqNMtXfR
-	6QF8OyO2QpJBgrx4MnM4QuPK0hRGnF0=
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-880570bdef8so56036356d6.3
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 11:33:03 -0800 (PST)
+	b=umIDdOfQDZ2Od79QNSyB/fqXPS5vy3kaIrGUUN/GGciLCvjlPyNYkdSOnn3lO7ai8ZcwbP
+	axm616teN9VbJDTaspoqOmIS+ejkAj0yWSApKv5xbuQV9VAdLyW3N0D7rnqh1nwfXbnbkx
+	W0qYsO48LIFx2nrQO2lngOG+kdHr5AY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=e5E0xdJG;
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=41621b596=ilstam@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=41621b596=ilstam@amazon.co.uk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1764012783; x=1764617583; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gsMhFDvKNXWpM7LYd4pBI2Bvu1L+GYJfurU1oXkgcDc=;
-        b=fPf9svglGiN47+wiYBTIXbXqcpr6DBHcojNoDuPfbyq+dour74KgvntwrVy/Y+nZWS
-         NXeD8dvhzVYuP3LnzkZVR7coL+I+oz8Po+YF7zA/4laXY9tkhsb8Y54BJ07fVkPsBB7/
-         xSgg8PCMueHiiJXLkFW9ZXhyuvgiPvoMRdV80Bnq6UPFh0mhIEyEfQa1DwfFLLngkU4G
-         b0kvaaimhhhUZhpOlq9zwlj9hkFifh859M7zGITFbr/+Iplmb2/xQb+5HrcByHqM9BFu
-         TjPWd2BqIjZ9UzaDvvpUyP+8mV0KUEtSNp9n+PbsBv5USG+VqG5L3Hqxd6YuGfxd1qQr
-         8v+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764012783; x=1764617583;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gsMhFDvKNXWpM7LYd4pBI2Bvu1L+GYJfurU1oXkgcDc=;
-        b=RITQ6Vi9zTS5bbcRFqpWgg7Or/7BKh2FKukDRS2REQ/hUrr7frjyrCT7cp9J05EQLj
-         lt91BIb/8dl5EImTNzjsjpTJBn3KYl0hACcjBlKv8IG/5Ve1Up5PGrmBgizWrvU3zgHG
-         xIHXk6aesnKOs3sXN4V8UIpvoWBf9sQpkVoaH16rspYQMfPMn7eQDLHz6Q7DcruMYk5W
-         O/i6AfH7pP2jctq4Yi9xVFMPe0im4HLaX4WQfW+opx2DBASyUWMlET1j/mts59TQdGci
-         7H1hMAZbQuwuMog25kD55IPd5UDjffaiqZytDHKgp2bq9xDJEgirHZ3czJINPqum2kub
-         YC+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWzI4WmL/cTb/mu/mqisHz/whQsuqIVbR3FpGPLlmPGLML3qQqthUDtp8VraVyVAe5QCbtuRRfe3w==@kvack.org
-X-Gm-Message-State: AOJu0Yz0M5gOAWTtBr3HURqFIq7Ly+Eo5amjemIip5we4x2KGSxRgOk3
-	E0qnmiHbqU2O7064Cy6Kw46+En/nmo09o+ger0gAvzoYtwhmKGrQljQrbax2Nu871z0=
-X-Gm-Gg: ASbGnctyh62GvqxBv5SaFpQ+F1k45c/GkQfiY+wLpUQAYfPXHUN3Z1qvigfsA9/17Tn
-	WCaZ+UZEKPpOlfwSYiOTkNuJcVeGzmdp3BiymdjRaEWRBhA4yjTbvmSCzuMQDkOAr/CgjlUchjC
-	LnrlfjpBekt7ETtFoBM1UMEb888a8mEM/gHORQ4rtsmgaao+8sg4/2RAcfkhmdgewZfZaRxkdSN
-	sJ2afJfCdsxKizXCecd/FmWOq/GMp2MHFIBLvJoM/YicVQoutA3+/O5oIMIFjaP9N6n9p9Oc1Y7
-	d7PqLxyH8iBUTSnp/N7iKDddVHJlLv7n0Ohz/SxITUfOqH7OxjElbJIkxT2ZojVU1RrRGPePmX7
-	KlYStKz/aRvZLRc1Md0Op5K//672/twR2LdTMQ/vWS/MB/dP/Ylm21Lc3FGLmJr4QppZqBinoqH
-	/imYdGpLfb7JHuoTtU0w8w
-X-Google-Smtp-Source: AGHT+IGDlV7TeJ3rSOfQeqMqm+uAJsOndBpeBaxnYTwlv3dFlHP9QgivOyk0xR0KJb1NqyhU3n/p9g==
-X-Received: by 2002:a05:6214:3118:b0:70f:a4b0:1eb8 with SMTP id 6a1803df08f44-8863ae58273mr2050396d6.13.1764012783160;
-        Mon, 24 Nov 2025 11:33:03 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:e601:6a28:ae2e:9b22])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e47161esm107276746d6.20.2025.11.24.11.33.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 11:33:02 -0800 (PST)
-Date: Mon, 24 Nov 2025 14:32:58 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, pratmal@google.com,
-	sweettea@google.com, gthelen@google.com, weixugc@google.com
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-Message-ID: <20251124193258.GB476776@cmpxchg.org>
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
- <20251121114011.GA71307@cmpxchg.org>
- <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
- <20251124172717.GA476776@cmpxchg.org>
- <CACePvbXLdf9bC3Juj=wA4_TKeH6XUgHbbvwV5HhNQtgoT3CiBg@mail.gmail.com>
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1764012956; x=1795548956;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=jTUAL27vHZ3NBwiswOv5Gu7UmLHaKfmfIJ3jAQMndC4=;
+  b=e5E0xdJGaco0WJdRvguZD9A7VHAT11a1+MqL3+CdhGzDt7oI7BnrLw6N
+   Vba+A5DhX0RvUyXz8s/mlmtUOXYb90PV9hGmPRgHfjb+5FO0SKHZdAfFf
+   MoaZORY8BkOoQVqNIr5O1Gb9cHrkP/ws3WqC+AG480uNh3kC3XCIULX0N
+   QNNh6WkLIsmO7Y08AWPr2Cqa2hUt/nblpI8rbz/Mn33IBx7Dzli30AItY
+   S77BzijvaIHzQPJAccNbAcwH0cbOiQZiWjfT5bmt7Ia9o0YMioIUgkNsT
+   qx7U5qIMGkGdOW38gHVG+vLyKncA+OAFbwIsBugW6ecCK3VeshRki8Py6
+   Q==;
+X-CSE-ConnectionGUID: g6T3dh5mRDOkX5xJYuVHXw==
+X-CSE-MsgGUID: pWmLRHj3ScGmWcVqt4j5Ng==
+X-IronPort-AV: E=Sophos;i="6.20,223,1758585600"; 
+   d="scan'208";a="5730864"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 19:35:39 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:13041]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.10.60:2525] with esmtp (Farcaster)
+ id 487a4344-89fa-4b77-b5e3-19d273764aff; Mon, 24 Nov 2025 19:35:39 +0000 (UTC)
+X-Farcaster-Flow-ID: 487a4344-89fa-4b77-b5e3-19d273764aff
+Received: from EX19D018EUA001.ant.amazon.com (10.252.50.145) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Mon, 24 Nov 2025 19:35:31 +0000
+Received: from EX19D018EUA002.ant.amazon.com (10.252.50.146) by
+ EX19D018EUA001.ant.amazon.com (10.252.50.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Mon, 24 Nov 2025 19:35:31 +0000
+Received: from EX19D018EUA002.ant.amazon.com ([fe80::7a11:7dbb:2190:e2c1]) by
+ EX19D018EUA002.ant.amazon.com ([fe80::7a11:7dbb:2190:e2c1%3]) with mapi id
+ 15.02.2562.029; Mon, 24 Nov 2025 19:35:31 +0000
+From: "Stamatis, Ilias" <ilstam@amazon.co.uk>
+To: "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>
+CC: "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "david@kernel.org"
+	<david@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"bhe@redhat.com" <bhe@redhat.com>, "huang.ying.caritas@gmail.com"
+	<huang.ying.caritas@gmail.com>, "nh-open-source@amazon.com"
+	<nh-open-source@amazon.com>
+Subject: Re: [PATCH] Reinstate "resource: avoid unnecessary lookups in
+ find_next_iomem_res()"
+Thread-Topic: [PATCH] Reinstate "resource: avoid unnecessary lookups in
+ find_next_iomem_res()"
+Thread-Index: AQHcXXPvH1LA4deF/EiE1v+Bldr5grUCN+QA
+Date: Mon, 24 Nov 2025 19:35:31 +0000
+Message-ID: <f3fe7efd74c6011ddb35e1f1e90eba43af864aa4.camel@amazon.co.uk>
+References: <20251124165349.3377826-1-ilstam@amazon.com>
+	 <20251124085816.07dbf5a4ec6235b2943840a0@linux-foundation.org>
+	 <c7411175b332f3befb5bebb6a75c7b91f2c1dbbc.camel@amazon.co.uk>
+	 <aSSqIzJWKTe9hs2f@smile.fi.intel.com>
+In-Reply-To: <aSSqIzJWKTe9hs2f@smile.fi.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.106.83.8]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <52654673D5BA1F40B99E5779349563A4@amazon.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbXLdf9bC3Juj=wA4_TKeH6XUgHbbvwV5HhNQtgoT3CiBg@mail.gmail.com>
-X-Rspamd-Queue-Id: 5565A18001B
-X-Stat-Signature: 8r7b57ytw496zxrakr499meqbpqh5pum
-X-Rspamd-Server: rspam02
+X-Stat-Signature: rbyjz9t4km6f8787foa7jf4tr3h1ar9j
 X-Rspam-User: 
-X-HE-Tag: 1764012784-448448
-X-HE-Meta: U2FsdGVkX19O9n+Y8/k7/pXhLjNWrrDLJkc3pATz7MWk8+8hcoAAgJWbVChwSY6JnsIGEQ5Qeecd6HTLdkFQ8yJHMPBSk6kOIONl3u6Q4etu7s6+8VULvZCTp3n9a1QltkGibOHraiZ20OM7vtFefxQZf1oIaEB5In4Uc2GcYcYhkjO00t8NrmvBED9k0T9JuHTO8H6P6lcE6xu/qoDHxI3XweXwTNQ1qcRczfnsqK5CVv9wSUjDF5Tpuzn/U+p4hnqlFJw1DmOatmVHO5crEzJTD0rK3siXaa9q2iA4PJ9acY/GEp/a+GeZq0UlePxM0kshGu7qdxlJIaBRRvchX2ubULXHJJ+HW2hKeL0Rsr246KjfgkG0QLuUSK8Z++4z9TXL5UVW3h0dzoZSArgoMFgPddjlRVj1sUntBn2J/UIfvGROZQ2ChzhiEJOd5bRmY+oLiH9Cc0QITjBaPIEwmh9NzzZ3lWz2tDMhe3bg5QdQl88f3wZ3yDLCLs63QCWnSo5PmGhoD3l+PNCen5DON+Fiq8GQGCkZBExMr0o7Bfu7Z1z6syeRCOPNRSBbZqp8IsjYJSk7HG7InVHVzXsSsI/neyULmk0W21xzL84a8G3olsRFswPZ2LCo0+iV/8vORTeXsYTwoiysBy8L91s+YTievmSF8ze/tKgwtipukAl5rsZ56+O9ahvLQhLlLfLIC+vtEhOHqoZQlNeBNhq0dQ/DqoLu+rPiGJ8Wkrw730p4axzpIqna0FYkRpxLo/8xLSGQAeR4xUuzIlKymsokEh2YILO5LLsrXyV+BOTc+WkbSu9YCVM8Y3kmFW6W+WGvW2F0aaQKTXpMxHHdyJZSGhEkWtekph56DCGBIKFj2s0KGZ2HfeoCyi/Hap4Uhx5/ra8b5NrgylF8FSU0/mCGe+B67TP1dToHCsvlIRyOiRCBuhBimR8CM1f/Md1De8NNWdJKEbUTi0JdIIPJkjs
- jbhzVDaC
- 9XiLZcSVdr4gYx9x5cRUQ0yxfXeKys1W4Pe2dE0TmCq3SXoMBSfxHIESpUi/Y37cMobUvH6cVnRmzXqXgodQwLGnsSLitSUPqRRYwGpwUSVxPsLCgv9I4WddOsREVRUwRqky1Z4Jl8UHghYL054F96cSTEA5Jn00EN1eUtDJc4J51ADR9CdRJ8qsGssH4WnPKFaLe7ZMfpu0Rx6WsysrSwXq2BudZ4zeuwSq3yLExQnmz5x9MsJ+IulrwyBad+VGM3thPNUD5VL93fINLj5QRJ/S2ZcIaKVdbm8ALz3H7ivct6Trr/LnD/sIGUG+eAEnjMzwWEQ5V831FInEb2jGzY6g7SGBh+FcNeZzHOsDzYRpgJmM0etvLESbStDeScNKm5vP0tRmdcAyhRo/9pvlKk01n8AILZrasAFvkRZ3/6Ul6OVhJugobQqDzvIW7GUotk6VuMBwIA4RZthle4f2R9hUOmhyxzGRBXYObixEkuERAEXwyJoe14s8zeA==
+X-Rspamd-Queue-Id: A6FF3A000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1764012956-709753
+X-HE-Meta: U2FsdGVkX19UWNXMg6gimYi6miQvpcA+re+HQP10PAmCpY51VzBOfcc3iWFYe1ZzIuHs0zm9e/wa66DeaeVbvZE5Q/KNCv1637p1APk/Z2YpXMTts/RZtvKGPS1+3G7ZFiKbflUj4ocF+Epw0lKouRChyfBTvPeyfHdwsveQStybpc/d9+d6VnQdzzmH2nr9I8CQr9ixWchd9+3/3Gz5Wl+Aky8MUuX1gRVvqoTu8AnGjkpsfP4zzYbM+vK5DCs1ExpOl8sXiKbR2sKgoAn7ZDyi+OBZViNEgDhbnWSbPfc4gFhNl4JpqRH9FP3gNa/iGpBQgNFaOhmBzb34ovPWPKDku7/b15gjUTN+SdlA6PnEzVQjnX0Xaou4VQyv58p8zkPYpCznNfsIu14nf1rukCR+yRtRMswcKAmFZPAHMd7FXYz6D10aVcuOQHVHeq5PuNhQMI5f7yzTWiX6KXHzsJuu3lRuNLIdPHb9wmgrcUPykfFrxj+lwwGTQ7bh2+0pAmIxFAZF+8iONdx9e79LfxWJqPjNkov9oAENByCJ7h2fXHKxiAxC7PNA6iejeq7P37/Tq+nwNUdEQRMyRUgo3QFJeVDMiXmDpsh4GET0iECw3nal+8Tc62U9Crpr4WCzSJuHNNRvOEfaCKBkM903jLnmrHGqccGyr75z8UVhuFACnbeHRSqa5dApebQfNY7Nly4XviG5GLQ9sH5OhLdwGnA+an6ntuCQLvj/g5YdhkWf+xGMcy3eYvASi/NHi8eRbvnDmr8aFKEAVLzfv4Wmh19lh319/Yanp/7Z3JiYZz0LvtC3JFrrBIvyfNVXnRVq7ckY5849MmedHl3QluMA9OWw2W+KgKBWcziLggqEEtk3O1cukQvNAaudaIM8WY6BLSndskViN+MCEtacubSFnyyJCecE7dDH8U9XINjQOwRps2RgE3NpWDqIz4Uu7UU5dk/YXBiMPY+dHvTMBbK
+ /k6mlXa7
+ 6BxqNq4BwLVq9Twoog7mWmzdltxx+W7fjg5GlebVJNRFyGWqBwAwQalSFwo+XfbSGLLt2lOAa4cyWgWijdNnWhNvVBmSjwXbv8a6UbVO98gbqMDapw3lAjvXK03j0xzpJ9LoaF2JaWAnggzJQz6Pg4aJB5GU8Lqpu220b+l27gr+IEhQFmIiEuD26/sAg3So2xFozP6Io4aVjXjucGPDnkA3o0/LaVQ/LOti+aa0hDTyi7UUsreHiDZNcyGzXAWjQX/Jfn3N1VtEgpHhtgNjfCpLtvmgCeroGl46HywlyNqbLlsOG1CKyupI0Ht4GHQrlXsbWuQgBGXdSE95I8CpTyea5SXNLitK0zPGcf2DV5gyj4tGHjvhNHfik5vEbFXBwiMg6+WEGV4At8NNTN7mnIg1hsSHrVb8YdjqMfdkng45V/oW2jq87LHsuBaIvVZRglCmxqbQG6pQ0tINv0TUeOaCd18MqSoXM2fClaFnmIRFWNHvnmm1JGalUZZo9PjSTP3A5vnQcsVtCEACbJ68dkRJsR4XsMXjPHkg+4jOryUDzdmj3nK1H3wKIkXv+kkI6Rpo2wFCAOGUz1yP0tBKr39x5Xx3575Y0Soyk88/kX2d5m3oy5/M1nRzif273y2NH4UZSa+0YEoUyLqFk+JaVWN3pxloYTKrDLglUXvYZCSDRPPHVrC056uAB1OnxcF3VROUGOdlXES3Bc7lzFf4V68+JYv5WKkDwGALG2tbfoIt8vZUf8vofkCsEZj9Lg/S17VJmGeziLeTEWO694tzee4SI5dUQUHwVbaZ6e+8YsuM553WNZQ3ZX3n6E8sJ+Ozx4I/TvpS6RWQbNhzdl/IWO6mbMNmHnSFfwU3k
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,93 +130,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 09:24:18PM +0300, Chris Li wrote:
-> On Mon, Nov 24, 2025 at 8:27 PM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> >
-> > On Fri, Nov 21, 2025 at 05:52:09PM -0800, Chris Li wrote:
-> > > On Fri, Nov 21, 2025 at 3:40 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> > > >
-> > > > On Fri, Nov 21, 2025 at 01:31:43AM -0800, Chris Li wrote:
-> > > > > The current zswap requires a backing swapfile. The swap slot used
-> > > > > by zswap is not able to be used by the swapfile. That waste swapfile
-> > > > > space.
-> > > > >
-> > > > > The ghost swapfile is a swapfile that only contains the swapfile header
-> > > > > for zswap. The swapfile header indicate the size of the swapfile. There
-> > > > > is no swap data section in the ghost swapfile, therefore, no waste of
-> > > > > swapfile space.  As such, any write to a ghost swapfile will fail. To
-> > > > > prevents accidental read or write of ghost swapfile, bdev of
-> > > > > swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
-> > > > > flag because there is no rotation disk access when using zswap.
-> > > >
-> > > > Zswap is primarily a compressed cache for real swap on secondary
-> > > > storage. It's indeed quite important that entries currently in zswap
-> > > > don't occupy disk slots; but for a solution to this to be acceptable,
-> > > > it has to work with the primary usecase and support disk writeback.
-> > >
-> > > Well, my plan is to support the writeback via swap.tiers.
-> >
-> > Do you have a link to that proposal?
-> 
-> My 2024 LSF swap pony talk already has a mechanism to redirect page
-> cache swap entries to different physical locations.
-> That can also work for redirecting swap entries in different swapfiles.
-> 
-> https://lore.kernel.org/linux-mm/CANeU7QnPsTouKxdK2QO8Opho6dh1qMGTox2e5kFOV8jKoEJwig@mail.gmail.com/
-
-I looked through your slides and the LWN article, but it's very hard
-for me to find answers to my questions in there.
-
-In your proposal, let's say you have a swp_entry_t in the page
-table. What does it describe, and what are the data structures to get
-from this key to user data in the following scenarios:
-
-- Data is in a swapfile
-- Data is in zswap
-- Data is in being written from zswap to a swapfile
-- Data is back in memory due to a fault from another page table
-
-> > My understanding of swap tiers was about grouping different swapfiles
-> > and assigning them to cgroups. The issue with writeback is relocating
-> > the data that a swp_entry_t page table refers to - without having to
-> > find and update all the possible page tables. I'm not sure how
-> > swap.tiers solve this problem.
-> 
-> swap.tiers is part of the picture. You are right the LPC topic mostly
-> covers the per cgroup portion. The VFS swap ops are my two slides of
-> the LPC 2023. You read from one swap file and write to another swap
-> file with a new swap entry allocated.
-
-Ok, and from what you wrote below, presumably at this point you would
-put a redirection pointer in the old location to point to the new one.
-
-This way you only have the indirection IF such a relocation actually
-happened, correct?
-
-But how do you store new data in the freed up old slot?
-
-> > As to your specific points - we use xarray lookups in the page cache
-> > fast path. It's a bold claim to say this would be too much overhead
-> > during swapins.
-> 
-> Yes, we just get rid of xarray in swap cache lookup and get some
-> performance gain from it.
-> You are saying one extra xarray is no problem, can your team demo some
-> performance number of impact of the extra xarray lookup in VS? Just
-> run some swap benchmarks and share the result.
-
-Average and worst-case for all common usecases matter. There is no
-code on your side for the writeback case. (And it's exceedingly
-difficult to even get a mental model of how it would work from your
-responses and the slides you have linked).
-
-> > Two, it's not clear to me how you want to make writeback efficient
-> > *without* any sort of swap entry redirection. Walking all relevant
-> > page tables is expensive; and you have to be able to find them first.
-> 
-> Swap cache can have a physical location redirection, see my 2024 LPC
-> slides. I have considered that way before the VS discussion.
-> https://lore.kernel.org/linux-mm/CANeU7QnPsTouKxdK2QO8Opho6dh1qMGTox2e5kFOV8jKoEJwig@mail.gmail.com/
-
-There are no matches for "redir" in either the email or the slides.
+T24gTW9uLCAyMDI1LTExLTI0IGF0IDIwOjU1ICswMjAwLCBhbmRyaXkuc2hldmNoZW5rb0BsaW51
+eC5pbnRlbC5jb20gd3JvdGU6DQo+IE9uIE1vbiwgTm92IDI0LCAyMDI1IGF0IDA2OjAxOjM1UE0g
+KzAwMDAsIFN0YW1hdGlzLCBJbGlhcyB3cm90ZToNCj4gPiBPbiBNb24sIDIwMjUtMTEtMjQgYXQg
+MDg6NTggLTA4MDAsIEFuZHJldyBNb3J0b24gd3JvdGU6DQo+ID4gPiBPbiBNb24sIDI0IE5vdiAy
+MDI1IDE2OjUzOjQ5ICswMDAwIElsaWFzIFN0YW1hdGlzIDxpbHN0YW1AYW1hem9uLmNvbT4gd3Jv
+dGU6DQo+ID4gPiANCj4gPiA+ID4gQ29tbWl0IDk3NTIzYTRlZGI3YiAoImtlcm5lbC9yZXNvdXJj
+ZTogcmVtb3ZlIGZpcnN0X2x2bCAvIHNpYmxpbmdzX29ubHkNCj4gPiA+ID4gbG9naWMiKSByZW1v
+dmVkIGFuIG9wdGltaXphdGlvbiBpbnRyb2R1Y2VkIGJ5IGNvbW1pdCA3NTYzOTg3NTBlMTENCj4g
+PiA+ID4gKCJyZXNvdXJjZTogYXZvaWQgdW5uZWNlc3NhcnkgbG9va3VwcyBpbiBmaW5kX25leHRf
+aW9tZW1fcmVzKCkiKS4gVGhhdA0KPiA+ID4gPiB3YXMgbm90IGNhbGxlZCBvdXQgaW4gdGhlIG1l
+c3NhZ2Ugb2YgdGhlIGZpcnN0IGNvbW1pdCBleHBsaWNpdGx5IHNvIGl0J3MNCj4gPiA+ID4gbm90
+IGVudGlyZWx5IGNsZWFyIHdoZXRoZXIgcmVtb3ZpbmcgdGhlIG9wdGltaXphdGlvbiBoYXBwZW5l
+ZA0KPiA+ID4gPiBpbmFkdmVydGVudGx5IG9yIG5vdC4NCj4gPiA+ID4gDQo+ID4gPiA+IEFzIHRo
+ZSBvcmlnaW5hbCBjb21taXQgbWVzc2FnZSBvZiB0aGUgb3B0aW1pemF0aW9uIGV4cGxhaW5zIHRo
+ZXJlIGlzIG5vDQo+ID4gPiA+IHBvaW50IGNvbnNpZGVyaW5nIHRoZSBjaGlsZHJlbiBvZiBhIHN1
+YnRyZWUgaW4gZmluZF9uZXh0X2lvbWVtX3JlcygpIGlmDQo+ID4gPiA+IHRoZSB0b3AgbGV2ZWwg
+cmFuZ2UgZG9lcyBub3QgbWF0Y2guIFJlaW5zdGF0aW5nIHRoZSBvcHRpbWl6YXRpb24gcmVzdWx0
+cw0KPiA+ID4gPiBpbiBzaWduaWZpY2FudCBwZXJmb3JtYW5jZSBpbXByb3ZlbWVudHMgaW4gc3lz
+dGVtcyB3aXRoIHZlcnkgbGFyZ2UgaW9tZW0NCj4gPiA+ID4gbWFwcyB3aGVuIG1tYXBpbmcgL2Rl
+di9tZW0uDQo+ID4gPiANCj4gPiA+IEl0IHdvdWxkIGJlIGdyZWF0IGlmIHdlIGNvdWxkIHF1YW50
+aWZ5ICJzaWduaWZpY2FudCBwZXJmb3JtYW5jZQ0KPiA+ID4gaW1wcm92ZW1lbnRzIj8NCj4gPiAN
+Cj4gPiBIaSBBbmRyZXcgYW5kIEFuZHksDQo+ID4gDQo+ID4gWW91IGFyZSByaWdodCB0byBjYWxs
+IHRoYXQgb3V0IGFuZCBhcG9sb2dpZXMgZm9yIGxlYXZpbmcgaXQgdmFndWUuDQo+ID4gDQo+ID4g
+SSd2ZSBkb25lIG15IHRlc3Rpbmcgd2l0aCBvbGRlciBrZXJuZWwgdmVyc2lvbnMgaW4gc3lzdGVt
+cyB3aGVyZSBgd2MgLWwNCj4gPiAvcHJvYy9pb21lbWAgY2FuIHJldHVybiB+NWsuIEluIHRoYXQg
+ZW52aXJvbm1lbnQgSSBzZWUgbW1hcGluZyBwYXJ0cyBvZg0KPiA+IC9kZXYvbWVtIHRha2luZyA3
+MDAtMTUwMM68cyB3aXRob3V0IHRoZSBvcHRpbWlzYXRpb24gYW5kIDEwLTUwzrxzIHdpdGggdGhl
+DQo+ID4gb3B0aW1pc2F0aW9uLg0KPiA+IA0KPiA+IFRoZSByZWFsLXdvcmxkIHVzZSBjYXNlIHdl
+IGNhcmUgYWJvdXQgaXMgaHlwZXJ2aXNvciBsaXZlIHVwZGF0ZSB3aGVyZSBoYXZpbmcgdG8NCj4g
+PiBkbyBsb3RzIG9mIHRoZXNlIG1tYXBzKCkgc2VyaWFsbHkgY2FuIHNpZ25pZmljYW50bHkgYWZm
+ZWN0IHRoZSBndWVzdCBkb3dudGltZQ0KPiA+IGlmIHRoZSBjb3N0IGlzIDIwLTMweC4NCj4gDQo+
+IFRoYW5rcyBmb3IgcHJvdmlkaW5nIHRoaXMgaW5mb3JtYXRpb24uDQo+IA0KPiA+ID4gSXQgYWxz
+byB3b3VsZCBiZSBnb29kIHRvIGtub3cgd2hpY2ggZXhhY3QgZnVuY3Rpb24ocykgaXMgYSBib3R0
+bGVuZWNrLg0KPiA+IA0KPiA+IFBlcmYgdHJhY2luZyBzaG93cyB0aGF0IH45NSUgb2YgQ1BVIHRp
+bWUgaXMgc3BlbnQgaW4gZmluZF9uZXh0X2lvbWVtX3JlcygpLA0KPiANCj4gSGF2ZSB5b3UgaW52
+ZXN0aWdhdGVkIHBvc3NpYmlsaXR5IHRvIHJldHVybiB0aGF0IGNoZWNrIGRpcmVjdGx5IGludG8N
+Cj4gdGhlIGN1bHByaXQ/DQo+IA0KPiANCg0KSSdtIHNvcnJ5LCBJIGRvbid0IHVuZGVyc3RhbmQg
+dGhpcy4gQ291bGQgeW91IHBsZWFzZSBjbGFyaWZ5IHdoYXQgeW91IG1lYW4/DQpXaGF0IGRvIHlv
+dSBjb25zaWRlciB0byBiZSB0aGUgY3VscHJpdCBhbmQgd2hpY2ggY2hlY2sgZG8geW91IHJlZmVy
+IHRvPw0K
 
