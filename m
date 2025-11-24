@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95CE4CFD317
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 10:45:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52594CFA466
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 10:47:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0399C6B002E; Mon, 24 Nov 2025 05:45:30 -0500 (EST)
+	id AC58E6B0030; Mon, 24 Nov 2025 05:47:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 011126B002F; Mon, 24 Nov 2025 05:45:29 -0500 (EST)
+	id A9D1F6B0031; Mon, 24 Nov 2025 05:47:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E90236B0030; Mon, 24 Nov 2025 05:45:29 -0500 (EST)
+	id 9D9BE6B0032; Mon, 24 Nov 2025 05:47:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D59796B002E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:45:29 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BDFC8873B
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:45:27 +0000 (UTC)
-X-FDA: 84145169094.21.48EC70D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DA160120003
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:45:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 86C0E6B0030
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 05:47:29 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27B5913A6E6
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:47:27 +0000 (UTC)
+X-FDA: 84145174134.19.3202546
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3AE1C120004
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 10:47:25 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3C5EoZG;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B2ko+iEi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763981245; a=rsa-sha256;
+	cv=none;
+	b=EdbQVE9nZ8qNdgSIgbFwlWouDEGAeEFxkewwCVOB7/G8GihAkHBx7ebHMMI0eXU9IuNRFv
+	cQ8h99j2HVUuscV7bm3XHRYGPFtBSCAeXIsKMimEgNgr9ixNYlTotWZQ1vbnM8/Vszyxif
+	+2sI3AD5KxkDHarbc+z/cJmgp2Dhzcg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B2ko+iEi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763981125;
+	s=arc-20220608; t=1763981245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lMcpFgpONOChoFupj/3wD9JOhkPwknvwBoqPAxWBJvA=;
-	b=PbKwbOrk0fvNfAr7a2r1yJOXtbZ0gY1UW93aJ8QNnTsEUOXMrQTI5RlHobyy7rG4F/cB1Z
-	Zq8syKalsIZbBloTeokORG7+iJS60tJyx0lVXsm6KDwGMWHKTgn7i5iKgyWYNFxGMMeloQ
-	Enaq2Vbpz1bixWMEZrD/JjSdeim+Mwo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3C5EoZG;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763981125; a=rsa-sha256;
-	cv=none;
-	b=vqRHo3YURvk4hrg+s8oznQoMggM1kXBqF9iDVswPCWoszUdPIhfCV2iZo2D1a/5OfadajE
-	VIAG4oahK8+ZqWH/aalFMDj756rjpGnKMNA/Kx4qxGWrVViUtDVFsl6EyMNNdxkWaA8nzt
-	yg705iAzwcFDLQVN/UGA+4YcmjB3d0U=
+	bh=erCP42Ues7IwAtZI9frYnWc1XizqKFSYqil2kbK62iI=;
+	b=eXdN9ciP4/51ROXugZTVC350EAhycpRPAZseGx+MWmAQY0lybTASKU2lCZIhdwV21ENLni
+	PHenwyC3f7vrsR9S2mDoHNCBTaslL6ynXIv2u3O3O9A4Dj84HLmNZQpqUv4oSHOoT6SUvA
+	sNZ4vXda8/KkpA/5b50XOO13gMROHJU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB9EB40AFE;
-	Mon, 24 Nov 2025 10:45:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681E8C4CEF1;
-	Mon, 24 Nov 2025 10:45:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 97A9D601B6;
+	Mon, 24 Nov 2025 10:47:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C77C4CEF1;
+	Mon, 24 Nov 2025 10:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763981124;
-	bh=DhjBPsIsvi+3hdOiUeGVXZGrJN55FvoQUeL4YX0ligw=;
+	s=k20201202; t=1763981244;
+	bh=6nxKEIZkVhailrIiW3XSVoQ+gWVPu3eKDnFphZtX1us=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=E3C5EoZG0jUHNt9lAaE/wc7g783VYAB7WbbNygGrLvS7BDAsv0A1GpIiVGv8QcvOF
-	 vqAK1plyG6xwxTZMEPvZFomI+EenIFkNOScr8o50mTlCHSDlZ1QTLDyk07dFa9Wrgo
-	 +aplFYXFXSdPf17wlX6VKcHWX3n/m1nqkHjzNb1RLTaWkprzOROFVJcsvvfSdIT8my
-	 m2t0XGl2O62I3Zje92HQfDzggNothUzPYppyW8BYLqd3zin0XJc7CoLgkZOjedVe5K
-	 BysexX0b/3zbM8CCF+VG2Ig41TjDxkiqmtQ6aXkV7xmMldWXK3HO1rjSBQU669T4LE
-	 hbstHYA0WJ5cg==
-Message-ID: <a4bdd286-ebbf-49a2-9b98-fa5197e1a6f3@kernel.org>
-Date: Mon, 24 Nov 2025 11:45:18 +0100
+	b=B2ko+iEidiYGhvL3YmKCCuGt/1FAZGeXdFxjG6LTjNuCRFsjNc6VR40iFUsFsFuf7
+	 vtXLMwfFBgw8gTF2AgGo/NlhU9LF8iHWcC5axSVGFSapMdg+VC/Lg7kjnRF6zOhyua
+	 s3Se6r+3s4koBGppGnlbPoGOENiYWAykiE6wrK7Sw4v5RgWG3mZysysonlHbvnq3tU
+	 B10Cn5j99q6ZRrVpMhK6d+le2etUfRyWojoe33smrqjQQD9IbwBDexOfGr1xudZvcX
+	 lxa0fdPSP6KQQeMcDRYWzwL2ioy1UWsVhwtM2JPMipUCQQEdHYoqzJ/17iw6I7NZ8g
+	 y+ptXYfDRaCSg==
+Message-ID: <1a2329ef-50ff-4e48-87b4-3adc70ee8833@kernel.org>
+Date: Mon, 24 Nov 2025 11:47:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm/huge_memory: fix folio split stats counting
-To: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
- Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251122025529.1562592-1-ziy@nvidia.com>
- <20251122025529.1562592-5-ziy@nvidia.com>
+Subject: Re: [PATCH] pagemap: Update BUDDY flag documentation
+To: Richard Weinberger <richard@nod.at>, linux-mm@kvack.org
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net,
+ mhocko@suse.com, surenb@google.com, rppt@kernel.org, vbabka@suse.cz,
+ Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ akpm@linux-foundation.org, Vladimir Davydov <vdavydov@virtuozzo.com>,
+ Konstantin Khlebnikov <koct9i@gmail.com>,
+ Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20251122211920.3410371-1-richard@nod.at>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251122025529.1562592-5-ziy@nvidia.com>
+In-Reply-To: <20251122211920.3410371-1-richard@nod.at>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DA160120003
-X-Stat-Signature: 9d8so6j7hcn4owwnq4wnnw8z5uospf4y
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3AE1C120004
+X-Stat-Signature: ctstrs1qr5mkxjcqsfhcctmfbbujx9x8
 X-Rspam-User: 
-X-HE-Tag: 1763981125-777721
-X-HE-Meta: U2FsdGVkX18Cg/5m0pfn+3iKi2O+R75cPYvSbfg7rGr26wUKUkLV43gk40ieMdpyjliDEam6JP0+JEJ4avjm2kLuQjEBgogmoK7CmAFd2Oks+2j3GhsEKvFQuv41rprR9EreyPBSk1sjN+V8OScrHXh3+gUerm6BNNuOiF91wcym6Ghw1Q94RwQP+FtrTRBkL9KsKPO8wqC/o02K5dTEH6VI1B3yaUjXFgw5pKaw1egn5/skakniY6jjYvUJK7r7L0mX+Slf7bPo5XL14gkLGMlNbHyllBNmx5VU73hVkRA0lZz1pmXTU1kMDXO26ZamN1szW9PKbF735sN6nWNsFZ2Rq3mvxn0h5K8Ziai5q8Jqd9n25ZQBLnR8g/tmttJnlLx1rh61MxpAtk+7jAm0DIt8INbW4H2vdid47LSPpjv7kAaAqfLn0Hbnkb+j45lwbURDKx9PmVLq4lOSYK75LV1ouZyG+fj5zJG24ExQ0sEEy4KTgccPGQfRz87HVh16h4JZb2Wh0/P0ow6RO5Sd1pv9P+VUZmWTXfNtRPSKM0aqPXRwHF2dDrLp1zrtuE0dGvBj88sZvfko8BGd7o9z8gZTvI/9jtuOuATRbujFEhuheFMq2pPI+5+VjTf4Ds09AXvUzEqbvAlINr87Orc4zHpDsxAFFqGjYd+G2NG3/xOZeIV8EhXjCabeFTZS1J2HOA9MXCEc+WLZO/N2N25GqpMwRlst9f+0piNQrlCb/PaeLgkE/6mSrP6m8hubuiAOy5X136E+42jxqjcgxcuNo4o88VWkNH0IgKWkvMFVvyomod2WN1jpn3Jpo6dmrCY2BimW8ve4I+QlGkeNP0WLBZg3XOfu3BHdWKeizedU1NBZvw6atxXq9+2vWaPmZXGPnthKOLijp+w6EdWfVL1sWDe2FgyUPUWDlChQnmdie493tocNTRsTuHOQy0ISDIwnBUDXYqLUDQFFIVB93Sz
- pJaampfF
- JOGmOMrBmrGyR89azWtSkzLCeu++fmxHt6NowQJWNbb+T284z63Cbmu5qW17eI4NgHIRl5eMveXcj3kcZEwzMJ2gxOT0YCUiG/SFGu1a4qChK1g9MTiMwu5Lq8+vN9i0uE/w9stiUFW9euPYQB8JFOh1y1bKcPxYo72tCUlddpmSKHmBp+55yKv0BxWJ7oMV0693mnJflQFOk0KeWJ5+aju8YBTHUK3hemwaxZNu4+UrVRr6DdhgrLhMcrZPrM8Ij0kZTqRK/1Nr+tU3643CCdazDM+sfMw2okAPiNRDDOWscHNgNE0fuY+eNO7hEFQmsfUC/vf1uezpECxkpoIjxS73zEuFrOt6kOPDFa0LIJSFYXix96hUhKBo3vxh8mcg5DXqi+RURuMcXwSI6R1iXstVaV2yCRe2Mc7aMT6PtQq1vdu0=
+X-HE-Tag: 1763981245-243608
+X-HE-Meta: U2FsdGVkX1/ciOhTAl2O+3Sjhj+n9cHUuqzs6+5TTfzawCgCkyKZQQ9RG0vEhTyUpCfR/8Kduj7Xexj8GhuPd6eJ1iYj71y3IbymQ2M1lplhZeIMY/VJFwMXXBxKoFxQEXcKDyctwF5MK5XVR0bP+yXU+3sU4NQQOG4L0dcgJ4CJlmOpC0TYT1hkLumQ8flAuuzbloNhdCIVf97rf01ZBEKGOCzu8M2q7x2txDEw3EEfrqmfUQ8qoEBiQdllj34H6w3HADxTrz/JQ90oLkJDbovxACuSuSDGdA/fJTsdzwzdLAGi3FyzC8MX6xt6sYzdXhB+p2NrQvNXhBvFjZ/blkD2N7kvXgR6lE1ApwX1roNOvnWKGQ2l9GxoxKhgHpx7kcDulUsFNvzqv2AwyyXIGDpPW979n96cVKgt4pQTCtMFTST+8LvKDFFXZ+uo3+OsCoNE/GOG0O6mEvrf0ZEAY9N9Zprl4azpNb7y7S5PGUdvmgHgFaIXxkvAyLgF0KqPIvmrOxYJrf3f26BeRyDhKf1NLIIjLV8+Ie6tVcyeoTHURWpptMNO/PiIJRW6tCN1tjoMha6PSC8uhp3TOuJ48+ZwDt0P4fdGC/SO/ET+ptyjlGtw8CsHaco0POA6TuFR+XsXoG0YzdIx6IAi689NyPBpRaaRqBBcJxLCOICNqlrjXsB7t5x0NAklZp0PtEoDxLd2in2bbMtAeDiJeBRQLPwSMevBv+rMRFtmuR6jF259SqABPpbAK4m1RfLXPqRh/cFyjQHnI44N9Uu5n2WiyKs9arFe2syIp2XtbitvNvJbEvmUhIrsKrh0VD89j/D8O5X7TwyZLxK3ZoLYrg+xrhYYX113nsMuE8DOYi28abwlVSpj6pLS/r8eRS6rcaC2PmxYoHWcYPubm1qeJanGNhLAgy3mDleCYSoXTX8K4b/JAQnSx/wJkwuuJxcjkaSFEGLu01JkZ/YN67+TwjT
+ ZtJLzGaa
+ eehq/vVXuHunV667W24U4H2FZy0RGIG9M9oP32XOMJR38dL0paIvIYzYe8RjoN+SrpHbiPgdguzGF6Mf0rQY/zrNx/y63N5BVgkl6anXIebfxvsSCqZjWBzUiYocnwwkQoGNT6DVHhQihbTu4yGWPbahIbnm7d8K8M0/Tp2CBJpJKkf+7HSFdThNcE5ciuIO7zHk7jRiRWhJaYnynhB5dxCTqbO8s+RkJpoAATIaSQ3rzC1zMfIEyyEDq0Ah4G5cqKba+DSnh4jzsA3eTbN0v+2vXUZkNQ9L1fneCvnPsKVjl2C+GT2znSNH1Lt79KE4UeTC8Qpm5rtTmhCl8R8ZpV9pt7QZJfhIY3iX+LndNoFHprhDoprIZRQxRI5NKiCs3OBZd2/Z7acz6wLofKMGPq4IMgww3pZNpvIXASepfXl02b0u2L0asvoy3Qo1Kmw02vCsq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,52 +99,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/22/25 03:55, Zi Yan wrote:
-> The "return <error code>" statements for error checks at the beginning of
-> __folio_split() skip necessary count_vm_event() and count_mthp_stat() at
-> the end of the function. Fix these by replacing them with
-> "ret = <error code>; goto out;".
+On 11/22/25 22:19, Richard Weinberger wrote:
+> Since v4.6 the BUDDY flag is set for _all_ pages in the block
+> and no longer just for the first one.
+> This change was introduced by:
+> commit 832fc1de01ae ("/proc/kpageflags: return KPF_BUDDY for "tail" buddy pages")
 > 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Strictly speaking, this was an ABI change, but as nobody has noticed
+> since 2016, let's just update the documentation.
+> 
+> Cc: Vladimir Davydov <vdavydov@virtuozzo.com>>
+> Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+> Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Richard Weinberger <richard@nod.at>
 > ---
->   mm/huge_memory.c | 14 +++++++++-----
->   1 file changed, 9 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index ebc3ba0907fd..a42c4f29ce4f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3954,16 +3954,20 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->   	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
->   	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
->   
-> -	if (folio != page_folio(split_at) || folio != page_folio(lock_at))
-> -		return -EINVAL;
-> +	if (folio != page_folio(split_at) || folio != page_folio(lock_at)) {
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
->   
-> -	if (new_order >= old_order)
-> -		return -EINVAL;
-> +	if (new_order >= old_order) {
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
->   
->   	ret = folio_check_splittable(folio, new_order, split_type,
->   				     /* warn = */ true);
->   	if (ret)
-> -		return ret;
-> +		goto out;
->   
->   	if (is_anon) {
->   		/*
-
-I guess this is not Fixes:/stable material. Wonder if such early (mostly 
--EINVAL etc) checks were at some point not intended to be counted.
-
-In any case
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
