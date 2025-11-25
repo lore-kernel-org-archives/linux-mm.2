@@ -4,96 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FF9CFD36C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 02:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 519FACFD373
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 02:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 168D46B002E; Mon, 24 Nov 2025 21:47:35 -0500 (EST)
+	id 65EDD6B0008; Mon, 24 Nov 2025 21:59:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 119B46B002F; Mon, 24 Nov 2025 21:47:35 -0500 (EST)
+	id 5E8A96B002A; Mon, 24 Nov 2025 21:59:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056F26B0031; Mon, 24 Nov 2025 21:47:35 -0500 (EST)
+	id 525A46B002C; Mon, 24 Nov 2025 21:59:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EACE36B002E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:47:34 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B190213B683
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:47:34 +0000 (UTC)
-X-FDA: 84147593628.11.3AE54BB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 29E801A0004
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:47:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HplQ5l70;
-	spf=pass (imf19.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E79C6B0008
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:59:16 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DFA464F5BC
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:59:15 +0000 (UTC)
+X-FDA: 84147623070.19.67D90B8
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0530440008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:59:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernelci-org.20230601.gappssmtp.com header.s=20230601 header.b=gv02E5yq
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764038853;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764039554;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xnSTdSp1Gs/2mPj6MUBO+b5EW/Ccr8hmJDH6A2dLkSs=;
-	b=Mq1vkLU5k+VlhQqhA8VtPBw3RrYPxuE0Wyw14CoWqfLKpMFciTYKO5WTSeC7dZH5KOgKSW
-	GWBGzOQ/021G9aZpevx+DJGQGVlqBrCiCJavNEzPP9o1vgsHcpTOwM1Gdtw57KUQv+Roly
-	SrVkwuOZsGis0Sye1OYCDuLm4HHD1e8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HplQ5l70;
-	spf=pass (imf19.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764038853; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Gz181Bmy9MckFO/w7k+mHRg5nxf6kaKRSNnlopoqZnk=;
+	b=owmA0bvsl3o1Oa1oRh+YmK+cOw65RLA8WuNcoDLGa9FY4w/lUA2GdfRudCSXESHV4dgCVq
+	/UDdnwagoZJIUkbSK1jHaXTY4lxUkR+L5aBkjn2WM9G/laKjE6+gUTpxLzHfjYmSHnby82
+	IJlmkguZLoWjW1aDb2WB2ArOPlMdwkU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764039554; a=rsa-sha256;
 	cv=none;
-	b=ih9y+cF29uvJcido/asUEDz7ZIujjNZQFdYN3FwCvz1AodB7s8GR4/WeKBVfS3kB+KR+Pq
-	Q7s5QpPoqnNeA0673AGvkawEPb8Ro93HHTuco9pvoOuhLXIwNkM4WfVz/7eQBFFv6Pk1ZE
-	fsTjT9SLsWm9uY3jBnnMZb5qFd8prGc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2D24E60010;
-	Tue, 25 Nov 2025 02:47:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2F4C4CEF1;
-	Tue, 25 Nov 2025 02:47:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764038851;
-	bh=7Ws/PbUNVl0lL6lS4g6QyFe+ZcfmM3/1TNjllqxL5NU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HplQ5l70hjnVJ1gxxUIdSHwiqclcKmNTSunj+ZcPl2/2vICsQPKb7N/1chWROdcDf
-	 tABFBPI4Lt3J0UQ+6/+1pC4M5k8FLyxjfafychqIDnttVlyNnzZi3Otyu4sPckGR+E
-	 KkLEZGv4Qmj4ke4OyyHv+SgM6mK9OzUJoDAPqt+597B+9ZEvIr9S84SAvfKHEukQLI
-	 n1y+mkkPwz/GdHKomZsEY3pUfhzlYy6ctIWJ1ITxbKiUue2z+C/fr75VajdtRwc+63
-	 rc07z8XxIVwme/Zhfmyhulo054XUBQC4cXcvOtREMewGHafokF78sfwpmUqfF8qEDw
-	 1si6Q74vahNpQ==
-Date: Mon, 24 Nov 2025 18:47:29 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
- hawk@kernel.org, andrew+netdev@lunn.ch, david@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- ziy@nvidia.com, willy@infradead.org, toke@redhat.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- asml.silence@gmail.com, axboe@kernel.dk, ncardwell@google.com,
- kuniyu@google.com, dsahern@kernel.org, almasrymina@google.com,
- sdf@fomichev.me, dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com,
- shivajikant@google.com, io-uring@vger.kernel.org
-Subject: Re: [PATCH net-next 2/3] netmem, devmem, tcp: access pp fields
- through @desc in net_iov
-Message-ID: <20251124184729.7e365941@kernel.org>
-In-Reply-To: <20251121040047.71921-2-byungchul@sk.com>
-References: <20251121040047.71921-1-byungchul@sk.com>
-	<20251121040047.71921-2-byungchul@sk.com>
+	b=cbVfNUKyWXP7iw11IdeLDdT+hL1atZUbrA7VIUqFQmTw4tbPsSTXNlaxiN4Vqg+omJFvrt
+	6+lBHixFXztzE35JVz/gGR/F98H712hWqZ+SymcvKb54aNLFPSCZUKzraJcizojYaQLOit
+	G7EgBklQoPhc0Fra+5K4GzLjbEuZHiw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernelci-org.20230601.gappssmtp.com header.s=20230601 header.b=gv02E5yq;
+	spf=none (imf17.hostedemail.com: domain of bot@kernelci.org has no SPF policy when checking 209.85.215.174) smtp.mailfrom=bot@kernelci.org;
+	dmarc=none
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-bdcae553883so1217308a12.0
+        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 18:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1764039553; x=1764644353; darn=kvack.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gz181Bmy9MckFO/w7k+mHRg5nxf6kaKRSNnlopoqZnk=;
+        b=gv02E5yqWHHiK+G1QMGIfSsUud0YkUAi/cTIzfyUE3InfLcJbxyLUjV3GOo7lAEiAQ
+         /dUQjzTeW+EqXJ+cBoufohxk83QZBIr4EW2cFetzWCf9+IOPIXiPMLu6Wk9xlPMOA/Ih
+         Oo5G0IafCoG+Licd6yZ313CYQs+vfws6wgScJCJdeFXGpiyBKWcIt8QyAJmTxC93OFpC
+         EoCiXzOiDWTOwaap3cRv0p1UU3ZhSR4yiQsg4vVrrk9/6SAXfOUeAfdCDmadxHYsf1wS
+         qv5q33bs2A3dkSom4n89nOCMiOPOttZZEkGbywYXYN5tNW24ai6K7X2SiERAdZqyk+by
+         UKkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764039553; x=1764644353;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Gz181Bmy9MckFO/w7k+mHRg5nxf6kaKRSNnlopoqZnk=;
+        b=YVr2sWTVB0AbWtCVLV+iuUZl6iq2ftwlBTuHOs1bUyGOXU9P456vDTV8MUYvlJlSX7
+         p9pAqmp8P1skEoXO02VASJ7DQVNo+UEJDC9lD/Nvgamcdl2Vj4HkbNnsC3eAhGMjBDWC
+         RR0gFTgwmrbzgTSVYflcJ6nQeabDA5wc/ZxlQJ90hmTU+3zEdaNMCSRBOFr+HJOaatXk
+         puAmxd8fm9r5l5xArwBgiXvlPzzZ8LMpHTLcCIliLTUvbzi+lFCCTHyFdD4O/8JYogkH
+         3aEZZUgq1/3/kY3gmTmZEJ+IH0U1mk3UWzW86yerdFvyRXl/XK1SMwqzYnapTWvN+g1y
+         Vhrw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGJsje+J9bsqTbWwxmQykk5pRqpw/wioD47UxILZL67SrO0TNwytpcoJCcKNU4FO9mAR3O32Wg4A==@kvack.org
+X-Gm-Message-State: AOJu0YwuyasXg8OpS17wog8wx8hKm73mQ4NlkKlQGNsybUWPiVXtGdcU
+	hhljLDS4P9s587gM26Bzh/M74SGBOVr13TbJTC6vRDeNKQWru1aVg2XcP23Px2UEUjQ=
+X-Gm-Gg: ASbGnctLspXTKluebJb+28E/H4+5I0X9hLHWPc5wWxyHgT2K/wPEFGE5c+STu6TFl8P
+	yyN0IXd6LDhFaSzqXtLqTUgyacvJnXzDM1hzFWZKYChRk3zjQ0NByMlMZLVA9GTrYMQdfCleBDk
+	YoBzlxa8tHheauXomlO2xlqwr+KEViubtvoW9IoTd30PJMJub0yoD38dZ+oEZvnftKEGTQwisN3
+	B1bvOczupmiWnlqJWA9ABMcBnG0Ygw7gi71puoPyEEJz4UbS5FZeNgURNi15KmOhGGMHzUWeIB+
+	exr9WTOxHyEy8gFF1RzhXDBsfDtwqY3ko6mZHCOSf9Jyeah/9VUWw8N/5s8e/bHleMO+Q+P52F3
+	+O/R7rTtTaA+AFOfCZdbibv7RVYcVXy23gBBczhNI75BexEuZBeKeUpD/Rk7wDPT5cuMgpdPIeU
+	/FsiNjV/OuKZR7aOU=
+X-Google-Smtp-Source: AGHT+IGMeoQJbZkSn4nziJnQZeiFyC7pWhma4wLVeyMy280h8HyuLZZxQTvPG2hx4TENFjejCegRSg==
+X-Received: by 2002:a05:7301:a08:b0:2a4:3593:646a with SMTP id 5a478bee46e88-2a7192c03bfmr5741573eec.26.1764039552614;
+        Mon, 24 Nov 2025 18:59:12 -0800 (PST)
+Received: from f771fd7c9232 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11c93e5674csm76552932c88.8.2025.11.24.18.59.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 18:59:12 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 29E801A0004
-X-Stat-Signature: bfqg83srth6qzx5pk3yefb95357hdujm
+Subject: [REGRESSION] rppt/for-kernelci: (build) call to
+ '__compiletime_assert_295'
+ declared with 'error' attribute...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, rppt@kernel.org, linux-mm@kvack.org
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 25 Nov 2025 02:59:11 -0000
+Message-ID: <176403955165.358.6256582403213124388@f771fd7c9232>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764038852-838990
-X-HE-Meta: U2FsdGVkX18TflpkSwIDKiPBymIxJjchzyc8gNagcxQ+ERIUbzaNMnKnMU0vGAWuUiTNaduNhsgDltZeA2Eg61j/abbD8A+ZkES3lOnfgtOfnvdeNF8rpKVODii/8pf20s4lI9J9JFznUIJf1gtLZpbqKbAGvYLFedQqj5HD/htGjrKQewn357U0jXjOFx0RLRIEd5hGjAA55Crxfzu5XMPd9vd7sC2kOl/830OnmG+fRLhTvWhpWxDPT4lWORWk9sg8YTZgrNToP2L/Beq4WYzATeOPV6R7DhBOQHwdqtL6ywBvXj7mUqVHnzHdVIHU671WNCfVnTJF2JD8xc8Mn36pIE3NGJxreAREgjMaGzIYM5cgjze53qcsusAfwy2Cn4mBY8Kvl2SbYwSkVexz+gLLwxliz01xUQ0SHS2GqChmlGm2BP1IlYoNsdmeuAg5GoZXvQqGHd/YlNqQGAe6a3oHrDhzhqn5S0Y0AWR5q8WW2PLfeg0f8/QWciq8J5VUzZLaDhDRKVtlKTGHQrD+t5e3uDVzu40o4KRzYCS3/oAyuQm6OjKCZhreRY5J9ouDm8OWglBrZP0axIXPBMnEqBymu00NNKMeWZ5en56aaMOP1tEy5lVAaTFO3xqFDHbf2GjxMWHOg00OMNYM/DZXUFn4AygKan97xFHBQdVhFoEwDfqCrEjY4t3KbldsidIrzfGeUAspsLiwdpeNa11f3KqgEGhWNnQzNTQm1W5xA8SSJ9CyBa6I8RYaGGpBTY/XrH1Xr7Y3ewJlgATF5e7on5uOcE2MvPLMsLUUmlVC37KKI0AsQtjERUf0LimbO7VlOhBjwmfgHTl8m/YL0v/4eCrI33rcqxOpjCZL4MXtLTKJbAkCF/GxLDiDg5owHc1qNsDWgNqnySozhd7fTQRL/mgrq4FZygniE/F1vHe2CbautotNY5ijSJj8loMvwjczRVbpzgiHMXM7C+DpohF
- ++atubc1
- +yjFJdPpWLhafqfOeRfGHYaFTO71AVq8NQJ0ltSd5m7dOwksujOO0ruWFuEq9i4vJ+QTqAn2VS5q9j5EKiYb6EidOq7lk4Oy8To8IVMkm+Bh4Rn56mbCKPqQtWhheNN/AMd8twbmnBZEUtW/JoIviLd+U+LU/xKFKciZTBfF6wa+7mPT4kM2A8z3Ut+WA3JhyeSD9iz6pWp/BPvpXjOySXXkuBrKuof6Nbbs8Dm9qvGju7RN58xLjJXMXYaH++oqEvYRUA9sTqhtWsxrzEEXSDMxKOul+L2aCi3ICCbx4H5saTNV9e7tiry1aD8cQib5Tbc7aFaKAVW46VrSrsCYuDmHIzLt6FnMpOAQ/M3XdVXnCz1RvuzM1XI2ZJsR2Qrau5r7TXR/NPI+SWvNJ8TI922+p2w==
+X-Rspamd-Queue-Id: 0530440008
+X-Stat-Signature: 1hrjgjoqpk1egjfmgqjwqa9c11p4gj8m
+X-HE-Tag: 1764039553-445016
+X-HE-Meta: U2FsdGVkX18Tj7b1VzosHPw2szic7LrbTRc2OWi5m1J2Md/SEuCdDBMcpuJoH0pxMD5okqhMlOfINyRMdDB5yc5FSe0JP1RecC6BJ0dgGl1B1KtdE0WExwNEsUHy7pICys6gHTWMgK0W9u5Vb1QMwSmvEIQF2EG8Ah4OwYj3AdI/0BDAVi0Nvl/zFiy5/Vqf1xULZNr5E6/0aK2V/VVYNnDyjBhhDdFmuTweOTyWBNGyGC3RH0OWY7W3TvpX9S/JXbQEXxai5FJbE29wDYFVhFWeI2Hnc2J+1j1NevLjk5BFNGaqse12769RAbTi08f8PB8hAMR6ITzCJZoIxe5kbo2ox5i5u6FRQG+irBO7eufmKy5E5qhFtDnSKvYCbxzSKusxgchytoTxzhWES69hInSpxUv6HlMokfT8LnPwj/cFg1Vb/PQo+yFpaHcHgSbB3uY2BGblDJSGjGPVNWKRt3QUB78fEBOLLXdq+XEWQDoTQUEzB5g5XoUv5ZJznv2ESizBtHHpcUsGAEHF2T5gGRnKvxPmusughPGVv4xyhmCt7cWOwPDE7cKRcWrDRz2XjVnNrxTZFXswDHw8pZIM0y31Jprs9HwvXWwgQ4Bsw4CW+f2AWTxqGH1yFf8ZnodEEr7IR9cj0f9Kh5HY0K48Ib9M3c6ffzY5N9KTANdRpT/3efpgz7EesSL4GPQzvX/S3KJKZjhkcDX4slk0H4YfWGWQ1uiA98QusMrA5JcVgi2ljn9mkgCrZk94c0eLJ/rLlaoRWY8dFmEBmLMaSAoIu9OAxNSV4mKpHDMGLZs3DZg12E36Hg/UbyG+MXRrbzXDScjcvbjHdCc//YZ9pVj5Pb6gykk3vVa5P99U1jsFlu6Jd5Zx5QiwiuijVK/ISXMvq1cZGQSxNWfDg2qB/0JLEz0SlfSiYBFCJmxjBda7eufnZdUfbuHMzA8EFldQ6sEVd407QQcMBbNw25o26Fx
+ 31+PZX/N
+ eu+akmqKecqkwmTguf/z5qfXe5MsesU/tIMlE1h/kZ8Vxxzi31pV2X6XQfQNpa7NO+JwjH/yIGE0/bLjc8/GW837uTpf6j5jjSx2jMNLtQmhEjM8KwwqIueSmoxPaJk54Kwtlkx/VLWU8nDZx2dcQMdN1x337xHIDv8zZQJMWTlT4iZwuWXKQJ54Unq1hEfMf6rSMg0VNOEiee2oDSqw3LzvESE9Ee9pha3bGWb1lfiSnEMMw5DOHq03jH9Ak31Y3ACj0cCe55cYuYXHtlfIeR60eBFslU5icxJg2syVZlKx8+hfXiQYlwvYL420iObgQvcOMuJN3mt70IyP/uuyn6YIOBi1d0ypH2jARwGv1r9ndBbpGTr4FWPZavEoyJBZ+aPPTitLg1FP2K28NmlOtEMKVdjjvFE1eoUXIFWuQyXb4WrLwWFKRkomiKn7m3W6Od0A6UvXPXm5OesCzeFhkKsFUSce8cyd6HXGyihzj3CxeptlAsLDNfyqco5xW3ijiLjqCsLzfLx0yjJxVxJSQaA4nK5tWQtVqwhMlnWEWSrtfyy3pAltNDP7WjPI2ce/youey9ogZYAFSjCv9pD5coizHoz9wCtNoaud2f4MucpnBNj1lsAEAraizMS2khUiDdzh2OAwTaP9B6YcHu3HhBAY7+8Pn7WiYG2kpPsQQHtXSDQsGIRDoT4dUwj2WX7A5vGG+P+ger6ySvXnvo5S+y8TUJGS73jZ2KWFp6K/hUZwxJOjj1y1pp5TuHANShx5eceuMO0tY6T7JBg/nUP4ppPPzfk5a7dH8UY7K
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,12 +117,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 21 Nov 2025 13:00:46 +0900 Byungchul Park wrote:
-> Convert all the legacy code directly accessing the pp fields in net_iov
-> to access them through @desc in net_iov.
 
-Please repost just this patch. The last one needs to come after the
-merge window, when io-uring and net core changes converge in one tree.
--- 
-pw-bot: cr
+
+
+
+Hello,
+
+New build issue found on rppt/for-kernelci:
+
+---
+ call to '__compiletime_assert_295' declared with 'error' attribute: BUILD_BUG_ON failed: sizeof(_s) > sizeof(long) in drivers/ata/libahci.o (drivers/ata/libahci.c) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:93960d0b3e4b52513b908bcfe11a9e01571331de
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git
+- commit HEAD:  7a1b17aedd2aad3a04a211865f048903bd47fedd
+
+
+
+Log excerpt:
+=====================================================
+drivers/ata/libahci.c:1161:9: error: call to '__compiletime_assert_295' declared with 'error' attribute: BUILD_BUG_ON failed: sizeof(_s) > sizeof(long)
+ 1161 |                 pmp = array_index_nospec(pmp, EM_MAX_SLOTS);
+      |                       ^
+./include/linux/nospec.h:58:2: note: expanded from macro 'array_index_nospec'
+   58 |         BUILD_BUG_ON(sizeof(_s) > sizeof(long));                        \
+      |         ^
+./include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
+   50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+      |         ^
+./include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+      |                                     ^
+note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+././include/linux/compiler_types.h:340:2: note: expanded from macro '_compiletime_assert'
+  340 |         __compiletime_assert(condition, msg, prefix, suffix)
+      |         ^
+././include/linux/compiler_types.h:333:4: note: expanded from macro '__compiletime_assert'
+  333 |                         prefix ## suffix();                             \
+      |                         ^
+<scratch space>:171:1: note: expanded from here
+  171 | __compiletime_assert_295
+      | ^
+1 error generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## multi_v7_defconfig on (arm):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm-6924fce9f5b8743b1f5fa54c/.config
+- dashboard: https://d.kernelci.org/build/maestro:6924fce9f5b8743b1f5fa54c
+
+
+#kernelci issue maestro:93960d0b3e4b52513b908bcfe11a9e01571331de
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
