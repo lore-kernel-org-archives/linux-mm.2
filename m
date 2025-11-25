@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD1F9D0EE14
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:51:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7AB8D0EE14
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:54:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 281F46B0006; Tue, 25 Nov 2025 13:51:53 -0500 (EST)
+	id 14EE86B00AE; Tue, 25 Nov 2025 13:54:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2322B6B000A; Tue, 25 Nov 2025 13:51:53 -0500 (EST)
+	id 0D9996B00B0; Tue, 25 Nov 2025 13:54:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1221B6B0099; Tue, 25 Nov 2025 13:51:53 -0500 (EST)
+	id EBCAF6B00B1; Tue, 25 Nov 2025 13:54:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F27146B0006
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:51:52 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 973F2C03BD
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:51:52 +0000 (UTC)
-X-FDA: 84150023664.24.5C56B5C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D68DA6B00AE
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:54:06 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79DFA58A7C
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:54:06 +0000 (UTC)
+X-FDA: 84150029292.04.6E4FC1B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 111C416000E
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:51:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uWZDwEuk;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id CBB5FC0008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:54:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H8QqTVwO;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764096711;
+	s=arc-20220608; t=1764096844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=loZnNXQjgHsDM1cbYMNPqzT4eKyw5Lbs/TaDHM5/L7k=;
-	b=ejVin3P1W96TKsOsXsvUsovwsqWu3te7nY4TUY6ew09tMSoD3376C4yg1JB1F5QttvJaN0
-	KoInlh7u4Gu4p9ty+UyN3kre/RJKf4NHnHxJiM1plb5mpNW5pQ8qRDN2WJtW9ZcuAGjrMn
-	Gfgm2/ByQQwQRDjBnCZxovpM1TspUq8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764096711; a=rsa-sha256;
-	cv=none;
-	b=dYWOjWauYpVUbvoMQ1J1MBEWtocdM8BnxRT1n2rtvuFMDzvPyErI1V9Va5vmDoBjmkt+8r
-	M4u962ZZaC41JN68XjOgNdVLXz3Qdl+YHX/GnuoGZFXI7JyeWPi+AQbXI1yAzg10EQjgD3
-	eoavF5WVQ6Tp5+wsGXyWOc+kkEnmi7A=
+	bh=zpZNFtsXT08NwdUxuN/PGLvp5rh3lkUf0jQ/YbkovyA=;
+	b=g/3PSKEmdiYBgn+lOxJBoI6c8wzFzo+6tV4zdLQSNRgHMHwTKbt1X7jkYzKQ4AkS55Z+OC
+	vKd+FR3gq+Y/MP4sRa3EDYgI0S/ooBvXm7VSJb9Idkbb8E3BNyT/rAMu5QObdGKhmuy7XZ
+	M2/uBzpNN+RIkZIe9rIsYChtOiEFGUs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uWZDwEuk;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H8QqTVwO;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764096844; a=rsa-sha256;
+	cv=none;
+	b=UWL8qOE4/wnZW+SE9xp+/GLv6XFe6G/fSPm30VboRlskv7GaXDxpBcPJ0Co//t6HkeiCoq
+	dEpi9plUwOukPK4uhodWI3O5vn52O5GmmgrF3ix+18SBZGg+rhNc/cCWCnQhU32qySyCQK
+	dyQqE9H0ACc+LrIx6PLseAbYt1lLPuQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 60EC460131;
-	Tue, 25 Nov 2025 18:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11841C4CEF1;
-	Tue, 25 Nov 2025 18:51:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E0EF66011F;
+	Tue, 25 Nov 2025 18:54:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B3BC4CEF1;
+	Tue, 25 Nov 2025 18:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764096710;
-	bh=emoR9CFUIW/AsJT0wVfK21WulXTNtgDxAUtPTxqwPMM=;
+	s=k20201202; t=1764096843;
+	bh=tj4Hk2zVRIwQCQP87xu4QTgjORr+xv2c2i4X2tAStZ4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uWZDwEuk2g/afzjQbkRlvylw6VEBejP7+MHtzpvgi1f9gQTmWcqukCgLI52/SxzFA
-	 h9uKGWU/GOJeCm/wHg/ouAaLGcMbZn9DyeBJfgqyl1Vl6bYIyA5V3M3fs8o476eiZX
-	 uHAbrDuhIDGUPh0Sc0NVNPVlYw+BIxtAX8V39yO0Gx6DWfMmLZUjrU2lQyvWhW/0Ix
-	 d/U4nQS43RWpQA+6XUnKS6nuGX3v3Rf1mfMGDiX1h9Ksyktmju1PcYuxrRWHMdug9P
-	 HeANy6ZuRfDNUPQF2M0bHPEEtuESSuhbkbkKyv8vMNMaOT9fPGfoTWN7JyaFkCjD4T
-	 AfEYrzGeLwi0g==
-Date: Tue, 25 Nov 2025 20:51:29 +0200
+	b=H8QqTVwO+aRD63VeZ+7GlQZSXgdn0PXGxn5Hccx6EFhuUK4/IY7RA8zubinfNvfhG
+	 ohdpylQnNuvcrKhq3XKX63n7Rkf3tA4+JYyXIypNkm6s/c1bjka/WazLOex514dALB
+	 271Er0PoDjcGo2IGKc+1//GwxeZobK2FyBqBCrM+uX7CWaSPKELthJcEBDRn/L3/fB
+	 9ZyklW1576lnBqIsb5nkaTc0AATx2Qn1zpm/soahOCU7j3fueeVCVLLSYU8815MK/7
+	 BcgVdvhW39fBJc0JzVyOJyl1sm0e66Gx71YE8VunUW/1DLkdz3N8U1Ia+NUUG+Mr7N
+	 4GBt6dlbi3Jww==
+Date: Tue, 25 Nov 2025 20:53:42 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -93,22 +93,22 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v8 01/18] liveupdate: luo_core: Live Update Orchestrato,
-Message-ID: <aSX6sQqwwA6I2mxW@kernel.org>
+Subject: Re: [PATCH v8 02/18] liveupdate: luo_core: integrate with KHO
+Message-ID: <aSX7Nm_yrXHeejQU@kernel.org>
 References: <20251125165850.3389713-1-pasha.tatashin@soleen.com>
- <20251125165850.3389713-2-pasha.tatashin@soleen.com>
+ <20251125165850.3389713-3-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251125165850.3389713-2-pasha.tatashin@soleen.com>
+In-Reply-To: <20251125165850.3389713-3-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CBB5FC0008
+X-Stat-Signature: r6rs6tn8izf6m4keqb16bc889b3p3fmw
 X-Rspam-User: 
-X-Stat-Signature: tgufxxoe1def3nuwax3aqreoj6m8kke9
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 111C416000E
-X-HE-Tag: 1764096710-825538
-X-HE-Meta: U2FsdGVkX1+2ex7LZe/A08aHXY/ySNvgXN/5RFyYg0ugcQCdB7ILpsbur5PnH5xvzV0UDY6J+ra1Z3uQ4HZCbgPbSkkeApSWHPlfivliIY6ZimjQxOiM/X9PPjsuvhaBK7SjnZqItqZhprWGyoUagJElO/70sC7SAJFoKXn5aBof4V7Te11B2A4pNpXwnIwzm+Bnd55JzGWAv9LqEmpHO8wuIVwipBJg/PDnSRJcwHmSIOa/b8Zwhd9pwL/pmLPL6hH0QUr94dth92DNEIxgw9qClxK6vPj/kovHqs9CghPFPOwJmiwQxtzjnV7doCBMWz1G7yjT39XCBpZK06UJUNt3vcBndFS5iGgLSU1gnNtz0DtvdPkLRjYqIIFDuebUc88pYG7CQQ1pvIUacPKxRRCTrVWCjCe3CqHKdd2zuPF8p5FBnD59SNjnYRWcoCRWrbpPiQwbvwtP7VWJ5vdonwcRGlxOQsP8zzP4Sin+DAGm2kbayWPOvwLvXd5Lwa/WHqiNAbSOEm9WmRmiB7J3Zl8ApOLXqwKQ0ISEKbk7AKK/1tI8AbA+lfpzZY5+TDX+NWt+/we/itRleB9F0uFY9yG93uDv3EKXRXawx1rAcfYzoHckYabYAFLQoCY7GupXS5cQA92l/Z1wXQBlN7PQ7xJvBWmBcy5PlafTDc7EN5rFoNorBWi3ePu5MBA3ctYdvQA5DkOQpeq8Uan4ZZfie95nwd5NYAj+42McVd7yw8NcYE69jhQpv+mf4DZfWZvuJ49wjtPyjSD47v5N1/q+jreF8c95t86PEljx+QqXCAnhKCrdKtB7h5oSzbkxojFs5AYrcy1RqB+Mi1orqswh6bj2ydEdWcjvTpewUc1qNgG5RjRLzmCQrqe+HjmKM3sQtiu1Sa4snIvXo3e0ZXVJg6icmiBoGwaJgojc7qkxbH1yt3Y2/yiSsWwTizobMQVqdbasUqPJvKo+VmhGWbC
- i12jeNou
- ozrg1fj7mN8253EXm/VmgQG7Y2NIHD8Qgc0NkmXkHaiXdbiwWK5xHz85U7FnKxy9PJP6ceCKSE8dig8lSwAApyNDM1K7tpcX48q+uoENuYsvpSQVmBp5pLvUwA3x+vbZ+9RgJdwx/a7kRXJVeRSmVsTgsOw2BapgfNktiGHOchZrUhRWtTlWcA9/IV78xRkfTP3UfYDmSjKxaZYtCXs+CxGXe4QCOQpWyhB71qaLNcvMIYw2xmcdDvz5K79LHD2nM5kAkbzTQYkkLWjcUW9PKthhelNVA9UidH0V0cJ6xACQ61JDq6jd/EEgq6PBpnublyApRkDhWrTDUv+lIVKCgRHtmW4Qgjsst5lrC6CrJqur8jYC1zQsime/Eqw==
+X-HE-Tag: 1764096844-377110
+X-HE-Meta: U2FsdGVkX1+BZF3P8EhOQLdmNrW16Uu1XJM99+Vk64o5bFi8cUakc+ZPStt6VNoRUVHG/JeaXnOg0RB37h2lTzpYe6oVB4n9siHvbspVhoCUSfXvi5XHVP/IV4x5YoOykUptVgzU5DQVTJv3O99NLQcAtX/Mr7FfehVtR6E+Ytbhky/hAPCrK0Gq2IhGCcUADs/JixT+vDTq9/1AE/YHG2UEzkQ8ykav0GxSLh8qYHYuwv7AJypR1/bpSskU1qPTeJsyphua0Tg+Mv2kEwuV5vCPImWrxh9DrPOzmW6y2KKE2dvhTbPGXI1Yzb6S9yfah1zjxdp4SlTWvTcI6Y2xIwIdBeGvlQt1GpJTdKJk9QNeYGfhMgDg1M04ccwOeRbYsDAZlGkTF1LJN/qNQQNVCkDzK6r+KeXaikAdCVOdoWiMASK9fWOyeWG7ORDbBa8rgdyH3yg9Zj7P2ss0pRXLdZAn4zgfOfxvk8Krhd773n2GuzS55qj2FtnYUSXy2jcI8CrLly/zM45l1f4WyK0AkPQPn4MDM4Bck9EAiVDoW9g4f9wjROaBtqtigNKyzqouAe7DUW0ahqbBqej0nFwY+V0hg0FIBFUeczXruCVtay0D6oaOxyOclwyUvVANwZH5G8nUM6pVADrDPPqwi91mmiJDcLgXvsAlrYOA6RM+CMua6suacGRqqUCLI2cveTAIlaJEzWMKpV4xvq10t07yfP2uUaghB9FnbBrvkVg0upnAa7gLe8HPmtJAqUgDBKyYMqAVxLuG49EeSdclAkYDtVeGBPIeWMGZhvAw2sV3L34/QlYQei4Uy4b4OZXrOcZAwklOW5ZLXQC53YmApthTHXx0e/FMX3NHGFjKx13BiQwIOSkiUwX9CoRz/6T3f6zjNXNkq3kFN3Ney+26Tf9ekpAuVkyLLqmnfRJXSP2SGZYzJ0q01CikhzHynSrz6ZcgeHcCd30bHhFcCYTpL5p
+ ElAr49Bz
+ 5LtU2RqJhVMCf66CunqazGfRs31g/7/SADfF/Xjhvj1fKLn+cX4fiDYLGlkJjcGZkEFxwC6dgrG9UgHf5DySyaI21RfJv/KyyVo/1d6MKBSQ6D6U5xYVaSapmCLNbeLriexrv6ZjbB1rHNGCy63Q4cltgbaZUCJ3fuPi1zMsCp3v5Me/oDvB4CTqulJhHQMt8ednlUfI5W2UdO2B7U/5pRuVjiJZfGcyPtpr6EUXpssbdbNcnJC6QwK9ZGgRaokao9gunr3D/urK5X5/03jXb2GBxObj/DQPWigpbM1SUxPy8LBNzwr8HBv9rwmQ79j3RpzNiRsS97XZbWoUQtCjLZcS8lIQLE+yA3aXowX6ozfeG1h+enQfnO187EebzjxdwEKWf6FyBww/8Aw5+oeOru8VAkSz0rTT0ppCq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,16 +117,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 11:58:31AM -0500, Pasha Tatashin wrote:
-> Subject: [PATCH v8 01/18] liveupdate: luo_core: Live Update Orchestrato,
+On Tue, Nov 25, 2025 at 11:58:32AM -0500, Pasha Tatashin wrote:
+> Integrate the LUO with the KHO framework to enable passing LUO state
+> across a kexec reboot.
+> 
+> This patch implements the lifecycle integration with KHO:
+> 
+> 1. Incoming State: During early boot (`early_initcall`), LUO checks if
+>    KHO is active. If so, it retrieves the "LUO" subtree, verifies the
+>    "luo-v1" compatibility string, and reads the `liveupdate-number` to
+>    track the update count.
+> 
+> 2. Outgoing State: During late initialization (`late_initcall`), LUO
+>    allocates a new FDT for the next kernel, populates it with the basic
+>    header (compatible string and incremented update number), and
+>    registers it with KHO (`kho_add_subtree`).
+> 
+> 3. Finalization: The `liveupdate_reboot()` notifier is updated to invoke
+>    `kho_finalize()`. This ensures that all memory segments marked for
+>    preservation are properly serialized before the kexec jump.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-                                                              ^ Orchestrator
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> Introduce LUO, a mechanism intended to facilitate kernel updates while
-> keeping designated devices operational across the transition (e.g., via
-> kexec). The primary use case is updating hypervisors with minimal
-> disruption to running virtual machines. For userspace side of hypervisor
-> update we have copyless migration. LUO is for updating the kernel.
+> ---
+>  include/linux/kho/abi/luo.h      |  58 ++++++++++++
+>  kernel/liveupdate/luo_core.c     | 154 ++++++++++++++++++++++++++++++-
+>  kernel/liveupdate/luo_internal.h |  22 +++++
+>  3 files changed, 233 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/kho/abi/luo.h
+>  create mode 100644 kernel/liveupdate/luo_internal.h
 
 -- 
 Sincerely yours,
