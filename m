@@ -4,111 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7AB8D0EE14
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:54:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B99DBD0EE0F
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:55:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14EE86B00AE; Tue, 25 Nov 2025 13:54:07 -0500 (EST)
+	id 23AA36B009E; Tue, 25 Nov 2025 13:55:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D9996B00B0; Tue, 25 Nov 2025 13:54:07 -0500 (EST)
+	id 1EC266B00B0; Tue, 25 Nov 2025 13:55:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBCAF6B00B1; Tue, 25 Nov 2025 13:54:06 -0500 (EST)
+	id 0B45C6B00B1; Tue, 25 Nov 2025 13:55:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D68DA6B00AE
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:54:06 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79DFA58A7C
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:54:06 +0000 (UTC)
-X-FDA: 84150029292.04.6E4FC1B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CBB5FC0008
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:54:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H8QqTVwO;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E922C6B009E
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:55:07 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8A2C116037B
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:55:07 +0000 (UTC)
+X-FDA: 84150031854.21.53A11D1
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 91D0114000A
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:55:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KyFmIxE+;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764096844;
+	s=arc-20220608; t=1764096905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zpZNFtsXT08NwdUxuN/PGLvp5rh3lkUf0jQ/YbkovyA=;
-	b=g/3PSKEmdiYBgn+lOxJBoI6c8wzFzo+6tV4zdLQSNRgHMHwTKbt1X7jkYzKQ4AkS55Z+OC
-	vKd+FR3gq+Y/MP4sRa3EDYgI0S/ooBvXm7VSJb9Idkbb8E3BNyT/rAMu5QObdGKhmuy7XZ
-	M2/uBzpNN+RIkZIe9rIsYChtOiEFGUs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H8QqTVwO;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764096844; a=rsa-sha256;
+	bh=TTCNx8vWQBYhmY++zaqhyqyyYNnaJr9KGGVzzHKQdqA=;
+	b=WE0+/atWSkAXs7IRnF/OC1aIXwB9xxxOwD9QZCLIlBd05+QeRKEB22jBRa2WyC2ht/VL+D
+	DNzlZxbl3lI/bmkXyW4zTCex6YUqg2LaxhCOOdA2Uojap1/3aXJGT8/XFyb5NtpDXyDJsw
+	L8tlAy7Skbsn0aUUHL+0cwf9XEI/iF0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764096905; a=rsa-sha256;
 	cv=none;
-	b=UWL8qOE4/wnZW+SE9xp+/GLv6XFe6G/fSPm30VboRlskv7GaXDxpBcPJ0Co//t6HkeiCoq
-	dEpi9plUwOukPK4uhodWI3O5vn52O5GmmgrF3ix+18SBZGg+rhNc/cCWCnQhU32qySyCQK
-	dyQqE9H0ACc+LrIx6PLseAbYt1lLPuQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E0EF66011F;
-	Tue, 25 Nov 2025 18:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B3BC4CEF1;
-	Tue, 25 Nov 2025 18:53:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764096843;
-	bh=tj4Hk2zVRIwQCQP87xu4QTgjORr+xv2c2i4X2tAStZ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H8QqTVwO+aRD63VeZ+7GlQZSXgdn0PXGxn5Hccx6EFhuUK4/IY7RA8zubinfNvfhG
-	 ohdpylQnNuvcrKhq3XKX63n7Rkf3tA4+JYyXIypNkm6s/c1bjka/WazLOex514dALB
-	 271Er0PoDjcGo2IGKc+1//GwxeZobK2FyBqBCrM+uX7CWaSPKELthJcEBDRn/L3/fB
-	 9ZyklW1576lnBqIsb5nkaTc0AATx2Qn1zpm/soahOCU7j3fueeVCVLLSYU8815MK/7
-	 BcgVdvhW39fBJc0JzVyOJyl1sm0e66Gx71YE8VunUW/1DLkdz3N8U1Ia+NUUG+Mr7N
-	 4GBt6dlbi3Jww==
-Date: Tue, 25 Nov 2025 20:53:42 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v8 02/18] liveupdate: luo_core: integrate with KHO
-Message-ID: <aSX7Nm_yrXHeejQU@kernel.org>
-References: <20251125165850.3389713-1-pasha.tatashin@soleen.com>
- <20251125165850.3389713-3-pasha.tatashin@soleen.com>
+	b=8qfRcugvMZgu1ydqC79YGnCKXqPJKqtrKgvt20noyrWYwC+2NEhqI/hk0Y10Ucz/a6p77b
+	oqkyHLmodlqYCp73klBvcDMgDdhgchDazykbUdR/uNi/1epsgDJEP9Ydv3h6rajqlRsXw5
+	+s12F0WrmCnB0mBAQR9B+ad0mQE6y48=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KyFmIxE+;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63c489f1e6cso173024a12.1
+        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:55:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1764096904; x=1764701704; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TTCNx8vWQBYhmY++zaqhyqyyYNnaJr9KGGVzzHKQdqA=;
+        b=KyFmIxE+9OzuUJUMHMQP7GQkPmHs0HLcclMPtqlaRiVXUI1XaD6lqEEUBTF5Bm/TKO
+         Jr108hYnTFwuoLESJcHcZpllpmsnwHCOdFNM+iyo82ws6wL3yiYmSfn7uw6n0qLxqOQ/
+         2yHi8mTzXFMZX6q4zNAnrL7+LKi/t8iNTjY4V+/wzFwK2q34g5cCFX/6KqQGfPplwviY
+         s6hDMTauV6TOiPClXvdLmQholoeeIIcZImeiY3KeTGLlcX9PoGTDj3f1IzQERo8olajj
+         sEXjn11HKig4FST4YuY/89f7tvqxODMK9NrbNvWf+gKyOHgBFf0a1t5PCrGitgF8SKfq
+         KbXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764096904; x=1764701704;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TTCNx8vWQBYhmY++zaqhyqyyYNnaJr9KGGVzzHKQdqA=;
+        b=ZdTelS3s3+iJeePWqKv98MbZj7eZg31PL3Jj3fLoNvpP2nQQy2pJ1UKVOk8NV6ETff
+         TyiOhXEK93OBfLwNf8o3Nj79dUBF5u7Xg0W67QgIF+9kykPXckQdxdFU9WO2VXfeNh8z
+         fSNfSbDcbA+VBs8gTTJen792rlmGUJJZnmbGAaOg7tdb7RM+daDj+S+v3r5BOXatCtTR
+         IPy2fPtxTP2+h3N4k2hVwbdgz4j4WakupoQRHijlon2jpCJvonmKfCZtv0xEFQXw7vzx
+         KhaHKSF3jrtudj+5jeEZeGq/5rljTaxgUYRVOfzZA4Afz2U4k4YrenvAL7lqR9VOCPsE
+         26Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCXYDX2Krs2Fv/bCLRAKUrPb9rNcbq53ppKP5fcNiW9vFy9qn62Cnr1/IMvXmgBFsupggWbXc9Hhnw==@kvack.org
+X-Gm-Message-State: AOJu0YyCDXy0F2UPkUNu/mVUV13p9PaNGBS8/FWEMgnKQUZmJANdP84W
+	Lne3nfx9Rv/yB0EQyDtpFy5N6QUYVgofa7VZPD37NiUY/bRMc8W6ex+2ZjCywTzvWXkBIAjjMtf
+	koGFzEhlrRdjmavxgJIBKhDc5q45vURjVZay4JPeENQ==
+X-Gm-Gg: ASbGncspTFZiNeHmsiP31vryOxBsbL7GcogfSHZxM+PdtZRl7tJgiig3m3CqMihhoG2
+	J27i0tfkD2hqBlqnAPSjbaQTPy020cLryySMJDkMNAGN8vhP91vXAyId43r8tiI02OVVa6fahXn
+	8ZiYthWM/nzoZZgp1FYkoc4LC1KgJVX23CsrKER2HwcJPjHI/GzLrGRK37CNMrGgKHoljQynlXn
+	yHJR+zRWX3iYVnK7RkJ7mj2H7gkUSXdDFcQLntpuZDivW2tKRak/evYpu1zdl9zqBWu
+X-Google-Smtp-Source: AGHT+IEfzHlIPEiuolnmC+PUY7Qx4g6VZmzqaCh+kJH+E2RdrqezJkmRTURyahiQenFGIYx+F1u+CuUpBK9+z1Di0cU=
+X-Received: by 2002:a05:6402:4499:b0:643:130b:c615 with SMTP id
+ 4fb4d7f45d1cf-64539639594mr16646192a12.6.1764096904062; Tue, 25 Nov 2025
+ 10:55:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125165850.3389713-3-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CBB5FC0008
-X-Stat-Signature: r6rs6tn8izf6m4keqb16bc889b3p3fmw
+References: <20251125165850.3389713-1-pasha.tatashin@soleen.com>
+ <20251125165850.3389713-2-pasha.tatashin@soleen.com> <aSX6sQqwwA6I2mxW@kernel.org>
+In-Reply-To: <aSX6sQqwwA6I2mxW@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 25 Nov 2025 13:54:27 -0500
+X-Gm-Features: AWmQ_bn51TAVMNgVIbPP9PoxfS_5IRPJ8eZ2jrzKpsVEpovGvgRKZept8XkPO9Q
+Message-ID: <CA+CK2bDUgU8iBOL6eUeK96fZ3-XfokCma43cTore20c1L6GE0g@mail.gmail.com>
+Subject: Re: [PATCH v8 01/18] liveupdate: luo_core: Live Update Orchestrato,
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 91D0114000A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1764096844-377110
-X-HE-Meta: U2FsdGVkX1+BZF3P8EhOQLdmNrW16Uu1XJM99+Vk64o5bFi8cUakc+ZPStt6VNoRUVHG/JeaXnOg0RB37h2lTzpYe6oVB4n9siHvbspVhoCUSfXvi5XHVP/IV4x5YoOykUptVgzU5DQVTJv3O99NLQcAtX/Mr7FfehVtR6E+Ytbhky/hAPCrK0Gq2IhGCcUADs/JixT+vDTq9/1AE/YHG2UEzkQ8ykav0GxSLh8qYHYuwv7AJypR1/bpSskU1qPTeJsyphua0Tg+Mv2kEwuV5vCPImWrxh9DrPOzmW6y2KKE2dvhTbPGXI1Yzb6S9yfah1zjxdp4SlTWvTcI6Y2xIwIdBeGvlQt1GpJTdKJk9QNeYGfhMgDg1M04ccwOeRbYsDAZlGkTF1LJN/qNQQNVCkDzK6r+KeXaikAdCVOdoWiMASK9fWOyeWG7ORDbBa8rgdyH3yg9Zj7P2ss0pRXLdZAn4zgfOfxvk8Krhd773n2GuzS55qj2FtnYUSXy2jcI8CrLly/zM45l1f4WyK0AkPQPn4MDM4Bck9EAiVDoW9g4f9wjROaBtqtigNKyzqouAe7DUW0ahqbBqej0nFwY+V0hg0FIBFUeczXruCVtay0D6oaOxyOclwyUvVANwZH5G8nUM6pVADrDPPqwi91mmiJDcLgXvsAlrYOA6RM+CMua6suacGRqqUCLI2cveTAIlaJEzWMKpV4xvq10t07yfP2uUaghB9FnbBrvkVg0upnAa7gLe8HPmtJAqUgDBKyYMqAVxLuG49EeSdclAkYDtVeGBPIeWMGZhvAw2sV3L34/QlYQei4Uy4b4OZXrOcZAwklOW5ZLXQC53YmApthTHXx0e/FMX3NHGFjKx13BiQwIOSkiUwX9CoRz/6T3f6zjNXNkq3kFN3Ney+26Tf9ekpAuVkyLLqmnfRJXSP2SGZYzJ0q01CikhzHynSrz6ZcgeHcCd30bHhFcCYTpL5p
- ElAr49Bz
- 5LtU2RqJhVMCf66CunqazGfRs31g/7/SADfF/Xjhvj1fKLn+cX4fiDYLGlkJjcGZkEFxwC6dgrG9UgHf5DySyaI21RfJv/KyyVo/1d6MKBSQ6D6U5xYVaSapmCLNbeLriexrv6ZjbB1rHNGCy63Q4cltgbaZUCJ3fuPi1zMsCp3v5Me/oDvB4CTqulJhHQMt8ednlUfI5W2UdO2B7U/5pRuVjiJZfGcyPtpr6EUXpssbdbNcnJC6QwK9ZGgRaokao9gunr3D/urK5X5/03jXb2GBxObj/DQPWigpbM1SUxPy8LBNzwr8HBv9rwmQ79j3RpzNiRsS97XZbWoUQtCjLZcS8lIQLE+yA3aXowX6ozfeG1h+enQfnO187EebzjxdwEKWf6FyBww/8Aw5+oeOru8VAkSz0rTT0ppCq
+X-Stat-Signature: tkuz4hudadwd3sb34on44bn6icsw6yqj
+X-HE-Tag: 1764096905-723909
+X-HE-Meta: U2FsdGVkX1+laM/WcCSDSy2GQIYaHpeoNHsp7wEdlpkY54yeurq+/7Ymum9Tz+YpUg0Z9r21aKdPXOvTt5hjRsGW0Zn+CfpaRp7QUW1CmC+gD2M9txlXutpF9B85otNzjl0paGIKzxCflBMcakueYrmDNAqVqxtNVHo4JhDswaNGQvVadobnom+i/48fJcolxca7qVe/TEh6nCkpy+Ipb8orRbeeMtAZ/tFGlSh7gWFn+56jMy0pDOv7qjRgxqe7h5E8n05WS+ILoyjDa5dgljPNx7m2nWCOZLxjzgWfXOEbdlmc8hOXspTjYVI05RalTQUke3HbXK5TKwgqJrNQN5FC5LpvdDGP2M/KG/TSudv13Nf4uG8R9i8ihBzMILRe76no8Vb7uffmh1YxH4U4s0S8eLsBJf1153fevpa0QXy5YZrCViNspuiGpEk0rNRgnAwstp/8HAbnOjNIV9aD4/WEGJCn8Qceyk1Hr0Vtsb1mynsDUhZ2KjhZzYcdgCK5vv3Iqrp3IFLQ4OaVgEeb6VxmWmrlRJ6MOIDvUB1CXJpb52fthh1bCxH7pUFHp+2fI3eOdjVGyN5kg0yYcyGcfb16aXMCwlVE3WTAklN4FH996C9kJlVrqtmhOphxEXsyGyyxaUk1tZqllBlFNPh+yp80lY6Rog0Kzgdf74UmWK2ku19ol58RFDXjpggkkT9mnOGXarftLcPFjuLv7EOXe63ekwy3EwqcQ/VUHq7JJtD9KDnDV8+8z0fpD8Ufna/UjFXR2tlv8jIzEUsCE8XulTZXK23SiZ5i3fAdlcj4qNs0YZ+N56sEM0Xz0OF4ys5aG+oS5hy3zqUno8OChMgGufgCE0IXfeWC4O+ugw19St8zZ7sywiDhkcwC6kvWUZWKrAzH3iKLT9hwNyKoBWkn+FvpBNH8TqZBhotOszt+4glgyW7C8OKAiUhTiyCIx/yj/hjPy9zJb7fpxqoaUTS
+ g5rrwMwC
+ P2C6GC699LpTiYp+pTKKiFSd4A9K/pmMlKbF8HesITE4G95qUawYDSyfSK8ep36UpSwgVKKnkaAfpq/tiaz6F8WWTxlQCK6gDU+hHDru3PbIPmb8zogOdFTVcYoQjh8TDJHsHohLP3OZjMbBJkBYGR+w0OIOOrx+Fk/jUZ18BomNO1qos6iJ3lWWz0FLaEkcFVKy85Cs9giVrNtOH27tSwc9zDjS0e3edXZ9KX7WL5JT3ad6h+wmkKL1e+6ZaNYII1KN7C5hkedjLaGIZxSpQNh3G0kaKqtJIXzLwNQCLCIZAvfb42NlXafFKMn6vdaQxYuxZw5HDz2nA9FQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,40 +139,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 11:58:32AM -0500, Pasha Tatashin wrote:
-> Integrate the LUO with the KHO framework to enable passing LUO state
-> across a kexec reboot.
-> 
-> This patch implements the lifecycle integration with KHO:
-> 
-> 1. Incoming State: During early boot (`early_initcall`), LUO checks if
->    KHO is active. If so, it retrieves the "LUO" subtree, verifies the
->    "luo-v1" compatibility string, and reads the `liveupdate-number` to
->    track the update count.
-> 
-> 2. Outgoing State: During late initialization (`late_initcall`), LUO
->    allocates a new FDT for the next kernel, populates it with the basic
->    header (compatible string and incremented update number), and
->    registers it with KHO (`kho_add_subtree`).
-> 
-> 3. Finalization: The `liveupdate_reboot()` notifier is updated to invoke
->    `kho_finalize()`. This ensures that all memory segments marked for
->    preservation are properly serialized before the kexec jump.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+On Tue, Nov 25, 2025 at 1:51=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Tue, Nov 25, 2025 at 11:58:31AM -0500, Pasha Tatashin wrote:
+> > Subject: [PATCH v8 01/18] liveupdate: luo_core: Live Update Orchestrato=
+,
+>
+>                                                               ^ Orchestra=
+tor
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+I like the sound of 'Orchestrato' :-)))))
 
-> ---
->  include/linux/kho/abi/luo.h      |  58 ++++++++++++
->  kernel/liveupdate/luo_core.c     | 154 ++++++++++++++++++++++++++++++-
->  kernel/liveupdate/luo_internal.h |  22 +++++
->  3 files changed, 233 insertions(+), 1 deletion(-)
->  create mode 100644 include/linux/kho/abi/luo.h
->  create mode 100644 kernel/liveupdate/luo_internal.h
+Thanks,
+Pasha
 
--- 
-Sincerely yours,
-Mike.
+>
+> > Introduce LUO, a mechanism intended to facilitate kernel updates while
+> > keeping designated devices operational across the transition (e.g., via
+> > kexec). The primary use case is updating hypervisors with minimal
+> > disruption to running virtual machines. For userspace side of hyperviso=
+r
+> > update we have copyless migration. LUO is for updating the kernel.
+>
+> --
+> Sincerely yours,
+> Mike.
 
