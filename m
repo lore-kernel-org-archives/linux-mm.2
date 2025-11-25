@@ -4,133 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 017A8D0EE0D
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 17:11:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CBB9D0EE00
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 17:15:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DE6D6B0093; Tue, 25 Nov 2025 12:11:36 -0500 (EST)
+	id B9DA66B00A5; Tue, 25 Nov 2025 12:15:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48EB46B00A6; Tue, 25 Nov 2025 12:11:36 -0500 (EST)
+	id B75876B00A8; Tue, 25 Nov 2025 12:15:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37DAD6B00A7; Tue, 25 Nov 2025 12:11:36 -0500 (EST)
+	id A65806B00A9; Tue, 25 Nov 2025 12:15:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D58D6B00A6
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:11:36 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C498313A75B
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:11:35 +0000 (UTC)
-X-FDA: 84149770950.16.2508FDA
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C4AC380014
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:11:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fLOsuFov;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764090693;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F6EE6B00A5
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:15:01 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47460140317
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:15:01 +0000 (UTC)
+X-FDA: 84149779602.14.F847F38
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013049.outbound.protection.outlook.com [40.107.201.49])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4CC9340012
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:14:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YZViXMWy;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf07.hostedemail.com: domain of skolothumtho@nvidia.com designates 40.107.201.49 as permitted sender) smtp.mailfrom=skolothumtho@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764090898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ly5LBt6mDypO/G6NdTT5RZY/q0zV3qr4fzhYNtYlqik=;
-	b=Ltpo5ondFV79Z5CAmEbLmWsZOXE+7w7nZ5gm1YcOrtIBux/vYYWp4H2kJ1m+YdHHec9rCm
-	qTr0DFNpdW3jNiZkmfxQHyvqnwovMRlhvya8Y4XzjSgGHnXkNlm25DD7P7TLUm8DuQBv1i
-	gjn9hJf6hEP71S3KzxOaAY+dZYCA4C8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fLOsuFov;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764090693; a=rsa-sha256;
-	cv=none;
-	b=U54powc0wkZpl1aupp5RobVa1WvuzkKviQBikGe0AE1WEsNieQDHIRfsOUI4TZIusLhv5y
-	AO8LumUnAXVEBL2OKMEWjIoXXdCvIGHGleb0ZpFSOO8eQT7i1ZpoFk0A5WQRe2t5HeFII2
-	MSMZPGePkDZk322IAuSW9W9cwdXZHWo=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6417313bddaso8955000a12.3
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:11:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1764090692; x=1764695492; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ly5LBt6mDypO/G6NdTT5RZY/q0zV3qr4fzhYNtYlqik=;
-        b=fLOsuFovisE5dqRQirOG4hzKivOL9RG9AgQqGeN8JZtfBOxAYZ6h+xaLtW1k/VNvvt
-         z+HMSgnF2bDvCgoSCgajupImL5hiUcDhQc6KAijCM2JduF90imvEKMwpHO3myp6rZvSP
-         6Ue9OuWSc6w4+Fa1efD3ovqX7jdx92RwjQqZjQWaAOp4xu1MhcGN1z0N+oxXURwHeJ0T
-         nCoxkSYqvPXMs+BHSPC9kFMUFgUuLk08lDurxstaTCucKT1Q+Xko/p+0n/DZosklSfpf
-         grQPDl50ekfiJq/a392btoJrfLU8/c08/313zdivDr0Yxfr6UQDDiB9ZKjyle+HczvIJ
-         bWKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764090692; x=1764695492;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ly5LBt6mDypO/G6NdTT5RZY/q0zV3qr4fzhYNtYlqik=;
-        b=WCsLV31g5srrT1BXDzOvusdSRSc5PUA7rD8URZyxv45FcUHTj4dGixh5y209A/ru1L
-         r2RFaMU3IERVXHU1XnV9nckYF4Km7vnHY+TXVwLhOvxPSWedzwv/tBCR7gy+sZl3XmgV
-         qfI8jtXKxPgeKF6hrC1AwU3TsrjP9YMgysxHDsN5tYFyPfrDHBfYhKEdC2r4IGxPqe0W
-         ML17E9sW/U6+/Xb+r6Z5iTyKOpkkot4CKd5AqXGoV6w3Itm7s0AQAdB5aqEKf6lianJw
-         iTx9nCny0wgV89HDrQlakypeodhiQfEzSwImmtH8zqLq2H0ESM5I0gJ98ADF5q/hz3Yq
-         DHPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqffPdIGdV7hN/CQCsz8fzPs+Y0QYZYCF1phrWLJ8/xaR21g1FR2VsjguG07gIprl6iUbyDlA3Gg==@kvack.org
-X-Gm-Message-State: AOJu0YzD6FVSCSXeBXTtcn9bVOUeEfA1Q3yDPlUKqVUi6CD02Vqu6mHC
-	ULjXE4kjq6dKFBDD6l/JIZJly43cgReGInrYTvoZEC96nUa6uzJUAbu6tzYnwZPrtnIElWNUrJP
-	93MQuVUyDcDCXeuiysmXa96FpL8JWRRF7JUHun+AGnQ==
-X-Gm-Gg: ASbGncs60947vJdcjaU8X8tdP/2Zt9JhZJiRDzSrGYen/tXvxUg6eSWOwNmx6BapFvZ
-	uIeNo6o0f2FkTs8ItKKXwxzDOzdf1+3aF2ElYOFyn5P6seplVoekRnonFXo4cHRlfwSDQ4S4A2y
-	x8X/9ghxwjJhIfSHhDbJcngFf+8xSAh1KdQncwDtT4a8OxG4rIhnyvRxnT8HbQy+stjtWxb/G7W
-	n1Z8aGNuHf886bYdWm1xwUZweSTxjRUSpOZB3xLOrBs+KMmngJlt1wBBaboN13ByAT2
-X-Google-Smtp-Source: AGHT+IGrfsmrfzIW+aWRuJRmdKZisN9HOWvhufzxvxHfKz1E+SFLlkqO50B6RT0T1wYIyaZoNdq4RbNgdU/zWatA1zQ=
-X-Received: by 2002:a05:6402:1469:b0:637:e2b8:605b with SMTP id
- 4fb4d7f45d1cf-645eb23f94cmr3816071a12.5.1764090691966; Tue, 25 Nov 2025
- 09:11:31 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=asBFX+VQbEmmjaMePYdyDRP388R9FuoW25aAx/Aw+Hw=;
+	b=v5Us9M/qEPsDayWnUCUizcSv6NXZ7mDAbjXP709Yw9KRgT3FiwCog3O5aawEkTqCu1dSv4
+	zpk4BQIUwMZQ73go12Ng6OBCAZ8wKoVGlQcZnYKRTXXq0vYHDRDC16GZbtLkl1FLoAnTP6
+	Nd0mK8hJgv2dbq1lTVr5LXm+P/vE7iI=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YZViXMWy;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf07.hostedemail.com: domain of skolothumtho@nvidia.com designates 40.107.201.49 as permitted sender) smtp.mailfrom=skolothumtho@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764090898; a=rsa-sha256;
+	cv=pass;
+	b=IYvVb8eLUdJFKvPlaslh1BBcbWDpooeHsiXShHpgK+2CYDTau8C3Il6tqBCGillknxLufz
+	zhDvXuPWP2ugnQOD9P7xWEmJSgpp3x0gKfUIpXHogZHV6VBF/yHs+Chjf/9UPZ1rQ/vT34
+	+YAm8Qk6pjZk8emzv/Ol1nUPNO+qSdk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MnbTNjbi19ekkjJekr9eT3UG5tkwSgXT2hKPIxshuwUhlK8fUTEHsACUvEHFQct0b7O492buJVe5EIDeAcPMx63CjW9hsPCoZu4GqwGmKV1tksRIKUf+D7JpUOjT7nETyrAv4AN06BzJT2UPkxabPoPlq0gCvouSxdDp2KmYXkyJjwFPzNP5TgyZtS+w+VKQ++N4AcEuEW7VSSBugLNSF4Co203oRbF4dwROkwP++w+lX5T5fDxhWCY9q3dTfg9xHiWj1o+AmAhajdeT6QeagiUOoR3TX+Z0oo0INNIYi8TfYYzHdUYM/kCu6SGXIFc/DNUmsVxzq9ecUhvWSgXp/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=asBFX+VQbEmmjaMePYdyDRP388R9FuoW25aAx/Aw+Hw=;
+ b=h1dKHfDBKaQjtCwfF4s+JnRfnH36pCwWfsnYAbCIiJHtes3rYVnp2OVDxbHp5y+9kUGYolDvEG/xBzEcz1280kEo1Hi7JHZ7ZxkE3DtafeuP9RGj7cy5Kg4bHsAvVvE1+mwEkVybcyIfn5ijnBlnhfvqjOOCDU8ANLu7ndd2GePSbNbV1pdy0k6nlr5DbxBeFd6it9Bycd6EZpzm9KwkkcJ603CpdFqwQA4X/WtEFFZ2iAjIN37qB45P8582XqVR+1SfHIaozd9oijpyQPz7Dlhs2PfXGiJITE+0jNeCiTHOu4iPHJrboMr1vayiY3Nu6+0BHZQuKlWNSO1DE2ts4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kvack.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=asBFX+VQbEmmjaMePYdyDRP388R9FuoW25aAx/Aw+Hw=;
+ b=YZViXMWyjVtBnNRFBQLbC60uUQ6ZSpRERk7RAFU4edtaA4YT5U8jiy0/TjkbLPJY8XFvGsW6f47L72YHm3W+QdMHcr36hcQpXeDhZ/Ywkp4W8qIPc1RW2IFz5h+AXZsUUxpvl+LWUHkO9tl+SnqOB7WYJkRPOEXbKup5+mlarF59YR4kmQ9doRMniJ9VbMvmUa6KbQ3tXX4/KQFo2IV4CUyjOVO6RrVi7dQrX+491jOcAS0xDRHGBdfb06llwtMfeMb6DkB/0WTWzZi4fAlrMv8SrvGnG+qTOgTHDRB+Dft1JpM5dQws60ErUMb/ikN+3TsAEfOgzLRkqe+kHLpG8Q==
+Received: from PH7P221CA0074.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:328::16)
+ by BY5PR12MB4082.namprd12.prod.outlook.com (2603:10b6:a03:212::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Tue, 25 Nov
+ 2025 17:14:50 +0000
+Received: from CY4PEPF0000EE3B.namprd03.prod.outlook.com
+ (2603:10b6:510:328:cafe::17) by PH7P221CA0074.outlook.office365.com
+ (2603:10b6:510:328::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.18 via Frontend Transport; Tue,
+ 25 Nov 2025 17:14:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000EE3B.mail.protection.outlook.com (10.167.242.14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.7 via Frontend Transport; Tue, 25 Nov 2025 17:14:50 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 25 Nov
+ 2025 09:14:25 -0800
+Received: from NV-2Y5XW94.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 25 Nov
+ 2025 09:14:22 -0800
+From: Shameer Kolothum <skolothumtho@nvidia.com>
+To: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+CC: <muchun.song@linux.dev>, <osalvador@suse.de>, <vivek.kasireddy@intel.com>,
+	<joshua.hahnjy@gmail.com>, <jgg@nvidia.com>, <nicolinc@nvidia.com>,
+	<nathanc@nvidia.com>, <mochs@nvidia.com>
+Subject: [PATCH v3] mm/hugetlb: Fix incorrect error return from hugetlb_reserve_pages()
+Date: Tue, 25 Nov 2025 17:13:50 +0000
+Message-ID: <20251125171350.86441-1-skolothumtho@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251122222351.1059049-1-pasha.tatashin@soleen.com>
- <20251122222351.1059049-22-pasha.tatashin@soleen.com> <CALzav=f+=c5XH7Uw9EGVb2P6VxsnpF76e0DXAAXhM0gsWPxw2w@mail.gmail.com>
-In-Reply-To: <CALzav=f+=c5XH7Uw9EGVb2P6VxsnpF76e0DXAAXhM0gsWPxw2w@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 25 Nov 2025 12:10:54 -0500
-X-Gm-Features: AWmQ_blUNJXGJsZNTyk-wstisxWf95tP1YO8_RTqL2T5TqXUElAOHsjvRUxN7S8
-Message-ID: <CA+CK2bBXNkpkYFa8xX4L1redUAdyx40ggJhntysH4W=a2nh99A@mail.gmail.com>
-Subject: Re: [PATCH v7 21/22] liveupdate: luo_flb: Introduce
- File-Lifecycle-Bound global state
-To: David Matlack <dmatlack@google.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
-	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C4AC380014
-X-Stat-Signature: 5q757qtsur4ykumqtq5y4ttzy5ra7r6y
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.126.231.35]
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3B:EE_|BY5PR12MB4082:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7556eaa-137b-4351-64d7-08de2c46245e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?gE95zG2ihnOSEgikR/lX5znp3OqTiGx3RLa9ssr7ytZ12aJcH060dfdDv3L5?=
+ =?us-ascii?Q?h3bn87ysFw5a45/13GNBTB/a1myYPN+NoLVJBEIb4jaTLXQUUx936h7xWmqR?=
+ =?us-ascii?Q?dUqvqDt5DhBMuj6Ah08HhLcl9jkJI6w0QXvwKnXshc9i7OA7Igi4FUmnOxsO?=
+ =?us-ascii?Q?zhheqFGyPMsEKYpxmZibeQBz9nKzQOSkNK3h/yCN0UjDJpIS/elXT16bMXqT?=
+ =?us-ascii?Q?onZk3PIQ0w5Ipa05AshiKIUZ034pSkyFmIRg8KzEzu0UN4yfkvWNiUGr/aYs?=
+ =?us-ascii?Q?8nbAzrPPE9tAEEWjB5yB6rzeXI7CwZ2eShZa9P+OSZ83nalqwcLqZAKm1IPG?=
+ =?us-ascii?Q?vhsyrMtaJHZ0Fz1ZdVEUaRS4HoBd2jj3avlCC9pXhw8KvPQFpRNCtKpGECc9?=
+ =?us-ascii?Q?2rWbDpvSaaOhECswscImqyER+Ph4JTKsQqqJbC+n6T4bcqo54fq3Hhd+6hxX?=
+ =?us-ascii?Q?qg+CnGb325ptS1SyZwzijpFYb1fsKv+HKwfr5oO3yvUjhid+qM6lR/WaSLpw?=
+ =?us-ascii?Q?jgUGY6gIpYGAuLaOxmzuWfRYS/zbpeJzixhRzp0pvTig30v17eN3WTfKeW2i?=
+ =?us-ascii?Q?qIFHQQxFmUxhiZ9SA+MdfBnVXkBXQ/sjiRtJ2hy7DA47x+J5OLQHFBvn1zgi?=
+ =?us-ascii?Q?JqDxVDVBagXhBMECIuAXQF7ywzARbuiUWp3/MT0PLd9l3bxhEjvMVr4H0Q/Q?=
+ =?us-ascii?Q?ynOrOem90N7B/8HN9d36kX91SskGIA6KDLIKbwIEL6I6SOH0xIK/CBZSyk+5?=
+ =?us-ascii?Q?J1wBvfCxialkhPE+bSWMJC0w9Bmo0mjAiaHmO6kyviwuzXcOMtcplMQH3f3h?=
+ =?us-ascii?Q?yFl5GqxTlqmRAPSg8zy8n+8L3Gq+W/dDzeO9LggAwFCfyj99sdfLTt8pSqH8?=
+ =?us-ascii?Q?xYlPO0M2XktXRv+lkq9gE0LqGMhh0xjZy/9rE2wcPl1+ekL7XAV4Nx19kahW?=
+ =?us-ascii?Q?xmz7pwjw+Xd6c7LHl4IMpM1kVP/5NjTac530FkOB8gqwe3CmW/f5DDL5FU46?=
+ =?us-ascii?Q?NmxYISD3sG/VR33Uy0ME+VWwARJsfTttHbbCXh1TM68V502hxXj33M5QP1Sf?=
+ =?us-ascii?Q?ObDJXhL+8e19FZioA8hdBQpcjgZNiBiEcn//SzhreTCgWUg9vLwTR4Ax4Q8r?=
+ =?us-ascii?Q?g6OSnw1C1yGzH5uwkzh938434Rjk/C7LbOebLMlz8NjE69V0tIrZbt2IWM/+?=
+ =?us-ascii?Q?hFqIw88Fj527k5n/iR86lgfbsdD6D+VwJkjOxuSgpxmddXWpW64Ai7oXrmiv?=
+ =?us-ascii?Q?uehvPINQpK+fq4VkA43IWfosWLrb2Da3+Fl369PdYF/ZCQUA1P3XAecpeF20?=
+ =?us-ascii?Q?pcniwi3jW4Rcir/r6MNQ1HkXG/lD7VtgzDVmlHXNI3XVYWzUJiJrrGF6LBcm?=
+ =?us-ascii?Q?U72hP8+q1KSfWCTxtgha/naGkFuxSPr0CeveXH6EhjGQSKkQUAQVpSyOXZFd?=
+ =?us-ascii?Q?aOn2zYvlDaEMPW9x7ZUWsYR2YqNRX6WovZxdns37UCZD12/p7YMmDVkgqhRS?=
+ =?us-ascii?Q?UsSP4CVCBdzvZhXp7iC596Z8u7rtQZ71lE+RGgS8OARfORlFjlV2PGIp4vhQ?=
+ =?us-ascii?Q?FwAg18b7cT/2TXdjp4r+IJrREZwpIyWSd61jk/RH?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 17:14:50.1764
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7556eaa-137b-4351-64d7-08de2c46245e
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE3B.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4082
 X-Rspam-User: 
-X-HE-Tag: 1764090693-898389
-X-HE-Meta: U2FsdGVkX1+ttYMDywgrgAJdCNw/SigfHiMQrxbrLPhODVxz0hKxfb8KPKkEgJYnlMrzYMu/kAwxa0N3MGCklX75EvTJ40nOxkPaSSx0KRn5kK95Q+3v5mR+Wl3/ruJdARZAdx1MS5WJtukH9/qJkY9HyIs1Ik69uUJBKkzQ0Sof+dcbXaxqO5R2WPiMHQ/poK+SE8gtmBFwDy7KxPFmRjddZxG9g7qW8ZFR+oxUB/W76Yzcb6WsZlaY01Y2r/N1PYuO5hd/acWb4nnU54bylhEP/FxefwPKowXe+cyhGikhl+CSObVyEDpvovFf93f+hRx+SEP8n2lRnQUnB0IWYseuHDU5I7+UpFZENvxAz4hQptKOKwiHKt+PrELv8QDdBphBWyrL3SGAiAAlbGtiWyKCTFBnNbuaIia2hm6snRCXau18pcbwQ7I3nxFAoWoqWKCG68xHHlWC3POhrLC+pdFL3NrgMH3mC5Q/0c+mCP11jWCY+0h0tss/KWJpT2AxFGx+TrpE7DzCfATZMAhmYCUP9ydbVlo1Gh9FrxAel/qzuNi4+BojUXVTjyOPdVvpv3eUQx1eK6ZoeJlYz9wvSghinGsIzLOf0dj1LDTbrL+DJ7PiaGB/8UlatxfftBh7q3Fu8StHR4Xxh5rLxjng6YXVuzAXKV5K96pVncSiINSzy1nfShM4enEoqeiAVtQWMblRsYTjck5HF3g3fRtU545Lm54G3L7jLbcCFBi7Kt8tBJyPTh3LOEz+WJaAQPoQPNn2Vpi1xlObdYB+qY0i1XqU+PsSGnNgOtHnzW5HZZx1SL9GAsRhqWVjMhJk1LD2UvKHa3YE+FNU+JHbM45thvKF3V8kQ+a2eOoGnYCbktYQPm/n+zgQhUsc+1xXKB+35NrC3jxZVzskfw506B2xhb4mrjh92OrgAnX7sT9+wcbn4wMZp2Sr5Mfsmfh2swOZ97XI0WiY8OM8QkjE64N
- GZL3UwV+
- ciO0mCwxOOQUQjCX98nZsVCv+jUeOUrlLhfPSql8YvuS07EPINBrDxzEkHzGGNfsonF5npoFGi93MKMQ/hNLWDbBCEhrdV4j6gwLhELLcrYQusQnDdecBbi1oqK7ouWnoDsOfZYS6M1p2s4w7TxP/pLpnhkcoS8gxhJODCKw+Ijp/jrzxrJaj7mx46HjFFJJYPlH/cwZd7GY72iLGwHuOK+K5ZMvHfQYyuJ++7KeyZoQ7gU9+OcBDJycU42PytY0Dota+OXiw3C2OhXD8U/WJcyn4TCF86k72gBh/kYUZJrC4qJrMUipQbId0ed5AIFIDgUjOBDUmW1xYmP3bZCQ4dOLLrfuc5wffDAtaQn76gaC9FYGFRLsPLfcZT3VsCtrcAyVJHV5gINH8eMc=
+X-Rspamd-Queue-Id: 4CC9340012
+X-Rspamd-Server: rspam11
+X-Stat-Signature: qbs489fhajaphweaj3kpzi6tbzjtmrpz
+X-HE-Tag: 1764090898-74610
+X-HE-Meta: U2FsdGVkX19dMoHUpu1WO06T8nZxE/x5NzcYTrJTWxComXzL1dq1FG3wLpvcPRBh9IRmxQ0+fD6bfSITWcHoFI7H3tFNFvsr4gjOMjBnFLRgDBI0Xj3nunSTIvmiNpox+eUSrp0SJuO3kaVMZIcpYj5UAyuiVjOGFBFWcOPCyI7QYA/6i6GgE8iZKblNUw0h7RON3v2fjQ072hqYZunAaGz8ggWsvcKKB77ynvKLLsPMZIVDOiBN41dHULWSAk6xDnOR+4H4n//szaOxkUixqlliXQLDNzwzS+0SGQ+dccVH83UzjuhjuH9AHjW5jwxTxOamJ+9kDGl8W89caWuOw7kWBT6WxunHNTTquYsqnTl49djKZMWQNruvjtfJdrc0IPfDEHqF4Dopq+c4E/q+ClzqKfv37KisYCyoimeKl34jB9KRVC1MiX/MrKHHi9lti9ffCIHBCWh+LtqaUq8lomGorxSHJDKYdf46erPIcZQDcJN6VcKpCUbridFyq71Wf+KQYUoBGPT0cRVH8gE43pHo+K/O1WWy1ywJHcGvSWq/5clMBm6GA/UEhRAXGi+iJtegqH12YIwFYdGE8BuYehHNvMrDNj+OnPByRqjFacvgfOtxxEqXieW7B0y5jvtVUjkH4QIprXZ++te5kFWA7VtaT/4jrrFua45rHMvfkUAhclKSG+87kCRNWHsfzsIE0JQgA29rn96K6PXN1hqUluNvQ79yCWAgsVNhhaNKTzRBXvjOP74vG1YDzdUMBPI+sKv8Jk2m5MSkKlWpPMYrE/VwsW+i28R1K3BKUqo9Wbl8OPI+Z2IRohWQ/TyUPlfzibfs0H7Eu1B57dyTUCVOzHA4Vpfl1GZKQpJbpUoEa/7UdZORMqIhR9t/Z1jMCJbRGjOlZGxA/gjgCyF4WScSE0enMe6BGP6ZVWm6GNXd9dfWDy+3DRtc0jzK78vcg2cM6GeM+ncKzkf/lsVzsBd
+ Cg6xK4Xd
+ TZCOxyJlxgT3bATvJ5OpUHc/ldfQdO+m1TWA1kC+SBS5c7z6Sxbt0mFMkJa0ZT5CAdPt9TTL/KjCGBuG0fpgHXei8OvQUUoHGLXvghqWGGQlHZJir6FR9uZM6osKJ+9m46mqxRnVY/kjWe3Vbj8DNjeL77DS3gZO675Nd91lVK93pnSj1nfTUvDaUK/FowUu8kmwpbsOALxFKehsSeUvdJjJkde91HAHKR98Vt3+zqH4vZk3//4K7M8N5vHsz+r7jONARCgesCBCFn/JDj8Ui2wJAx7iBgLaCJwiXRT+ZnypgwQzB5MpMuXGE8mqYKvoyff86+xEHoCcdSRXKogji7dPX5Ci16NnKg0V045ufga5G7Sfq4vrGjHLWp2KKBvfAVk78p+lW/obUt6qH2V4vXxTPJkKP9KxSZK8SikUQgdtGZHJUjHQCzCNKtKaBJoXuu/QCWuYtr5SGY/mmQZzgpv19S7Zw54MOaDK3550eEc1dKKxY0mzOg8HOVnozpi6icP2vFLeIMpxTpnDml7VWyQLeUPkpUxRPQUwW7+ZgNcyQtBwNr9DREHE/aU9R+0k2PX7sdr0HnGJN52CkqchIobi+OA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,82 +174,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 6:45=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
->
-> On Sat, Nov 22, 2025 at 2:24=E2=80=AFPM Pasha Tatashin
-> <pasha.tatashin@soleen.com> wrote:
->
-> > +int liveupdate_flb_incoming_locked(struct liveupdate_flb *flb, void **=
-objp);
-> > +void liveupdate_flb_incoming_unlock(struct liveupdate_flb *flb, void *=
-obj);
-> > +int liveupdate_flb_outgoing_locked(struct liveupdate_flb *flb, void **=
-objp);
-> > +void liveupdate_flb_outgoing_unlock(struct liveupdate_flb *flb, void *=
-obj);
->
-> nit: "locked" should be "lock". "locked" is used for situations where
-> the lock must already be held by the caller.
+The function hugetlb_reserve_pages() returns the number of pages added
+to the reservation map on success and a negative error code on failure
+(e.g. -EINVAL, -ENOMEM). However, in some error paths, it may return -1
+directly.
 
-I am going to clean-up this API, and remove locked/unlocked; just
-return the object directly.
+For example, a failure at:
 
->
-> > @@ -633,6 +639,7 @@ static void luo_file_finish_one(struct luo_file_set=
- *file_set,
-> >         args.file =3D luo_file->file;
-> >         args.serialized_data =3D luo_file->serialized_data;
-> >         args.retrieved =3D luo_file->retrieved;
-> > +       luo_flb_file_finish(luo_file->fh);
-> >
-> >         luo_file->fh->ops->finish(&args);
->
-> I think luo_flb_file_finish() should be called after the file's
-> finish() callback. Otherwise the FLB data will be cleaned just before
-> the last file's finish() callback.
->
-> i.e. The order should be
->
->   file1->finish()
->   file2->finish()
->   file3->finish() // last file
->   flb->finish()
->
-> rather than
->
->   file1->finish()
->   file2->finish()
->   flb->finish()
->   file3->finish() // last file
+    if (hugetlb_acct_memory(h, gbl_reserve) < 0)
+        goto out_put_pages;
 
-Yes, I will make this change in the next version of FLB patch
-(currently FLB has been dropped from LUO and will be sent separately
-since there currently no in-kernel users beside the self-test)
+results in returning -1 (since add = -1), which may be misinterpreted
+in userspace as -EPERM.
 
->
-> > +static void luo_flb_unlock(struct liveupdate_flb *flb, bool incoming,
-> > +                          void *obj)
-> > +{
-> > +       struct luo_flb_private *private =3D luo_flb_get_private(flb);
-> > +       struct luo_flb_private_state *state;
-> > +
-> > +       state =3D incoming ? &private->incoming : &private->outgoing;
-> > +
-> > +       lockdep_assert_held(&state->lock);
-> > +       state->obj =3D obj;
->
-> I tripped over this when developing the PCI FLB state. The following
-> compiles fine and looks innocent enough:
->
->   liveupdate_flb_incoming_locked(&pci_liveupdate_flb, &ser);
->   ...
->   liveupdate_flb_incoming_unlock(&pci_liveupdate_flb, &ser);
->
-> But this ends up corrupting state->obj.
->
-> Do we have a use-case for replacing obj on unlock? If not I'd suggest
-> dropping it.
+Fix this by explicitly capturing and propagating the return values from
+helper functions, and using -EINVAL for all other failure cases.
 
-I can remove internal obj updates.
+Fixes: 986f5f2b4be3 ("mm/hugetlb: make hugetlb_reserve_pages() return nr of entries updated")
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+---
+From v2:
+ https://lore.kernel.org/linux-mm/20251024094240.337630-1-skolothumtho@nvidia.com/
+  -Changed err return for resv_map_alloc() and region_add() failure cases.
+  -Added R-by tags
+Thanks! 
+---
+ mm/hugetlb.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 0455119716ec..868caa6476f5 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7269,6 +7269,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	struct resv_map *resv_map;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+ 	long gbl_reserve, regions_needed = 0;
++	int err;
+ 
+ 	/* This should never happen */
+ 	if (from > to) {
+@@ -7308,8 +7309,10 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	} else {
+ 		/* Private mapping. */
+ 		resv_map = resv_map_alloc();
+-		if (!resv_map)
++		if (!resv_map) {
++			err = -ENOMEM;
+ 			goto out_err;
++		}
+ 
+ 		chg = to - from;
+ 
+@@ -7317,11 +7320,15 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		set_vma_resv_flags(vma, HPAGE_RESV_OWNER);
+ 	}
+ 
+-	if (chg < 0)
++	if (chg < 0) {
++		/* region_chg() above can return -ENOMEM */
++		err = (chg == -ENOMEM) ? -ENOMEM : -EINVAL;
+ 		goto out_err;
++	}
+ 
+-	if (hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
+-				chg * pages_per_huge_page(h), &h_cg) < 0)
++	err = hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
++				chg * pages_per_huge_page(h), &h_cg);
++	if (err < 0)
+ 		goto out_err;
+ 
+ 	if (vma && !(vma->vm_flags & VM_MAYSHARE) && h_cg) {
+@@ -7337,14 +7344,17 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * reservations already in place (gbl_reserve).
+ 	 */
+ 	gbl_reserve = hugepage_subpool_get_pages(spool, chg);
+-	if (gbl_reserve < 0)
++	if (gbl_reserve < 0) {
++		err = gbl_reserve;
+ 		goto out_uncharge_cgroup;
++	}
+ 
+ 	/*
+ 	 * Check enough hugepages are available for the reservation.
+ 	 * Hand the pages back to the subpool if there are not
+ 	 */
+-	if (hugetlb_acct_memory(h, gbl_reserve) < 0)
++	err = hugetlb_acct_memory(h, gbl_reserve);
++	if (err < 0)
+ 		goto out_put_pages;
+ 
+ 	/*
+@@ -7363,6 +7373,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 
+ 		if (unlikely(add < 0)) {
+ 			hugetlb_acct_memory(h, -gbl_reserve);
++			err = add;
+ 			goto out_put_pages;
+ 		} else if (unlikely(chg > add)) {
+ 			/*
+@@ -7423,7 +7434,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		kref_put(&resv_map->refs, resv_map_release);
+ 		set_vma_resv_map(vma, NULL);
+ 	}
+-	return chg < 0 ? chg : add < 0 ? add : -EINVAL;
++	return err;
+ }
+ 
+ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
+-- 
+2.43.0
+
 
