@@ -4,114 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB59CCFD315
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:30:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E3A5CFD315
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A7986B002B; Tue, 25 Nov 2025 04:30:11 -0500 (EST)
+	id 67D116B002E; Tue, 25 Nov 2025 04:33:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07F8E6B002C; Tue, 25 Nov 2025 04:30:11 -0500 (EST)
+	id 654756B002F; Tue, 25 Nov 2025 04:33:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED7066B002E; Tue, 25 Nov 2025 04:30:10 -0500 (EST)
+	id 5915B6B0030; Tue, 25 Nov 2025 04:33:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6396B002B
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:30:10 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C25928A2E1
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:30:07 +0000 (UTC)
-X-FDA: 84148608054.28.FBBD2EE
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E70FD1C000E
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:30:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KLJqVV+k;
-	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 488736B002E
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:33:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0BBE13AFC3
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:33:42 +0000 (UTC)
+X-FDA: 84148617084.29.7962DF2
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 86831100012
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:33:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=N6sYr7+S;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KoLINEIS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lWYCjnHI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MHc3FMVj;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764063005;
+	s=arc-20220608; t=1764063221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZGxoQ7uPBKyg8xEtvM7C9Hd7crWd02epgAD4b/L7dQ=;
-	b=XwhgVazBUAgLr5mhEx3WxZpY5w4L7ZM+FIlx59uFn8eGI6L4R3qbdGUoBCP7puumLmxKNu
-	OGHHZaDCzIVJyQ9LguKfvoOz10MLBTW/nf7vxKFtAgHZvmVzJlcDWQtKOkgq2Zw28lHIXD
-	kCoYHIzGwYL67X7SZubyekpHXCMV7NQ=
+	bh=voGsWdT/TADa/XNKkRB7q0zQKzAVaHz4j72C+7TpNOk=;
+	b=V65e/cEE7i7/w1jxMR/ZMVhbOiMf2lIYr9CTpkdtmnbrULoomlpdWvqky/ya3MRlmH8KfG
+	gVk2RAVbgSPffDOd3Glm49sHBE1hieptoM5jJS1XhjfFyZZPuUaKh4Qxc68hPH6HywOqix
+	fNCg3BoblzMl2X33HlJGMZG3r6Co7T4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KLJqVV+k;
-	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764063005; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=N6sYr7+S;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KoLINEIS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lWYCjnHI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MHc3FMVj;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764063221; a=rsa-sha256;
 	cv=none;
-	b=LaMNqSuGjaQXxK1NYhl488Y4WMF5Ll0iO57YjSrRJxbivdFieayHVg85P0x0cY5q5s7PNu
-	S0er6MNzt/Ocx286MU2ZTwoP1AKCCepJGQnW+StBe7tOJRPLnH0k3RltIOelEntvxclecD
-	klYSbvU+TfIaqRRuceejO/Uur7VAm0s=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8a479c772cfso329399885a.0
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 01:30:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764063005; x=1764667805; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LZGxoQ7uPBKyg8xEtvM7C9Hd7crWd02epgAD4b/L7dQ=;
-        b=KLJqVV+kKD3tF2HXGCsYUXzKLNOZbhwWBfhvd+11+Khu7IP7pfA08XvkK377Mpoa52
-         UcbrjcZFIxBQey1DpkGSWf9fb9yZ66Hkshusn/btdHb1ZdW13vvXYWtooeHrKj0vg22j
-         PR2xc5ErVlj/jtvS4OqEs+QT31+pnmi5JaF2HlhdqwAsfzhsKPbaVzTaVBeoRcZpUYos
-         4Yf+hjz54lLWJAjqAyVY5i18jqavFtcc8X4TxGoseepqkrUqrjq935HaeswdAwhliR5X
-         /kWo5o6r0rWiJTPZ1FFi1OOmyaKOmkgbgpOYbtyYyZK/3YRR/PVEDSpNYrSBPgC1t595
-         7x2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764063005; x=1764667805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LZGxoQ7uPBKyg8xEtvM7C9Hd7crWd02epgAD4b/L7dQ=;
-        b=HQ1pHWKOSHn7CAlPZh6td3Eux2PiOu1NeAgxHjtB89KHouMphT5+7qule44hjZGylh
-         OZsUpSbQ2DUCx091+jx0YBnoAF9Xrskpq9ht85OlzUdeXJyqUAHlj7nDSGEKOEDHDlda
-         02vEEFvSRqrbwj71hUT0IYh0LZQmD2kxgKAoqQIIsNLwAtbhaJqaS6hL5vZN4Tv2Y1X3
-         yGqdZ07jIuljts3dNFQ406pnMylfeCmdwsbkBxgL2j6nHRSuYorHqYpautnBlZuF/GZB
-         nTvvAV2LedBO4x8KL+R3gjs9XdCVylZ/CgMEtkbmJFqI+2SEHTZ82tK0Sur2oJ5QrSye
-         m3Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCWAAwl+Sn+hPNQ06PENZ/SxQ1fIPetWRPnYNUw89SXW55gNhZvvIqqR9md9WZ1E04Sk7Bv+oEI9bA==@kvack.org
-X-Gm-Message-State: AOJu0Yxkietdb8cnpEnJq/ibf6oCd77PiWpDuKnD8Fq6LZtsiVlpx3Gm
-	K85l5F+KBiS4FueEeummstcMiusQSpzuC8iP4SWM+XzpAgX79T8md4CNXSuPLkqDcz1esm0eRNy
-	yZbrWa6Xh0NLxwUyZApCgGn0SQH5RcIc=
-X-Gm-Gg: ASbGncu7Bcw0Jac8W1qu0fGkKbk7sC1YaOd11ejmmySL9aKoDM1/09oPPn3fyR/1u7M
-	6g/yU7nVURouphPETJTMpW4KlFe8nuOR5Iw/c0FPaF95W8n+H/I+wWgrDTqzCWZbmp1/ZAIrW39
-	skpYpoQ4EQ2/+uR4Pi2j8zjRHyLfSbmJlQNl3uaP3px6EdkkhhxsmadmRFv34Yw5S+s+qRrBVqi
-	HwC8H8OkOs23OIPe7nxq1jhW25som8sk/Crx1/rUwlQBr/aAj5LcGHdczJrGvj5LhGQww==
-X-Google-Smtp-Source: AGHT+IFYfHtH8C5s1uvT6lQpi1zP9t+juS/waF1C0j2mYu7Lm8WN3kSueTRB3zxYadfI7XdeUjdoWuVsO5GiEEl5F4Q=
-X-Received: by 2002:a05:620a:40c9:b0:8a9:ef98:6b34 with SMTP id
- af79cd13be357-8b4ebd9ec44mr276689885a.56.1764063004764; Tue, 25 Nov 2025
- 01:30:04 -0800 (PST)
+	b=mWs2W/RwcVkADl4KIFUfTg9s/m3Pr+yuReSwFxsVJlmMcn25LpFpFM1VslDLNMg4U4YvYk
+	qS++OIoolu/Ke9cwfuAgu6w9oFbcU8SDMZ90nr4hlsvVNOwq3Qs/6CEjPDFViWL+KvtIgA
+	06WVqc+3Z5eW+XkEE6GU6PN+e7et3DM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5FDE822550;
+	Tue, 25 Nov 2025 09:33:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764063218; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=voGsWdT/TADa/XNKkRB7q0zQKzAVaHz4j72C+7TpNOk=;
+	b=N6sYr7+S35XIvWbY9Dw3p2lG08suPP6KvOvmsNdce3b4Mqu/AbUJcLNeu62Xk4bu5a9tAg
+	SEJoFMAO9Y+veerePRpfEVd8udxIbTGaz54lmw6DFeZoFhEcGkN2IBRWPhdXrTFF1M1UJM
+	RLYt0QqPvzq9P/ZXwY6peaEnRz9xkio=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764063218;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=voGsWdT/TADa/XNKkRB7q0zQKzAVaHz4j72C+7TpNOk=;
+	b=KoLINEISLY9Jec+kwZYoCDJGkwwP5YAe+3K9l4ZDa8KuuK9Y/zdbFUnbfHbUvEh99eRxQ2
+	BPHVOdjs7MeEbtBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764063217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=voGsWdT/TADa/XNKkRB7q0zQKzAVaHz4j72C+7TpNOk=;
+	b=lWYCjnHIWZBMsS6UKx6RETYfnvd0jCOI3K2OEl6yJjnNfHtKU3U1kDPcV4Y9VBICs4aKit
+	T1cihKATN7Pl+DzNu7Mzoa/wAChodfi8kt6gxKUsLYwlOrThjec0Hqno88OjGcN9nzZ9/j
+	NU2HEinGB+H9+xkTBviEJ2D9Z5aJSjY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764063217;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=voGsWdT/TADa/XNKkRB7q0zQKzAVaHz4j72C+7TpNOk=;
+	b=MHc3FMVjNF2+NlJv5Q8a3wNlzaJTV+3SCFptkiTEfDvOR4sPJgSjwkeIkqskkNeHDjQ4hC
+	fdAlK83ISqSK8bBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BEA5F3EA63;
+	Tue, 25 Nov 2025 09:33:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id U63GK/B3JWlMRQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 25 Nov 2025 09:33:36 +0000
+Date: Tue, 25 Nov 2025 10:33:35 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+	vivek.kasireddy@intel.com, jgg@nvidia.com, nicolinc@nvidia.com,
+	nathanc@nvidia.com, mochs@nvidia.com
+Subject: Re: [PATCH] mm/hugetlb: Fix incorrect error return from
+ hugetlb_reserve_pages()
+Message-ID: <aSV371RAc5mrR84c@localhost.localdomain>
+References: <20251022102956.245736-1-skolothumtho@nvidia.com>
 MIME-Version: 1.0
-References: <cover.1763976541.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <cover.1763976541.git.baolin.wang@linux.alibaba.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 25 Nov 2025 17:29:53 +0800
-X-Gm-Features: AWmQ_bkYeHV6K5FqyKN_VGpZo_yET2QKTSBXEJ5BUvlynaIRq7f_ViUimOwdWNw
-Message-ID: <CAGsJ_4wNiKfKpTPKUNim6-X=KiMxhp_9sPh+hkh8gB8AR2ue7g@mail.gmail.com>
-Subject: Re: [PATCH 0/2] support batched checks of the references for large folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com, 
-	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
-	willy@infradead.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251022102956.245736-1-skolothumtho@nvidia.com>
+X-Rspamd-Action: no action
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E70FD1C000E
-X-Stat-Signature: tku7wqn95ygj9z4g9b9bxiifywhh4rr6
+X-Rspamd-Queue-Id: 86831100012
+X-Stat-Signature: yybag1b4pa5meqpg56699dpr1wmujkbz
 X-Rspam-User: 
-X-HE-Tag: 1764063005-738613
-X-HE-Meta: U2FsdGVkX18dR92DNCKGTj1kdnWYngieWKXTf7UrEvBvsqRiDCZn9VPiL2GLdkSQaZTpEdKB4swX+3N70G/exQnCEpUR4FP0BB/++C1Kyd04AvY1nZSi2uZPjOj3pQHm+kegfRfu2FIJslXm9SZIr9SGR44TnTdNd+ticnVmp+/TfwZ86142BW7Xsb+zo38uvAaIh0c0VJGsd93bZi48yXsgdTnc862dKpItX946dYOjKYqztG1KbW8SqlOQWxTxzIfv5Vh6A5ZqsbRMwyX2+RosH8jogjNsL1WGnatmM472U9iMs7uDxWWIwDY+YpVAOughuRFkYoybwgt+GShqtterd1A9pzFQlaZSWKL+kLooy2El3jhKX14MudjdSAanhcq1QILnsVkSVbl8nYSnKk0Zcmcw816m+UQyVpIfZvZZnMwc0xiJzWvyCi29fepzpDRMP8F26DT4EAgn+lREkvfZip9fbtyzYW7LCaH989/m9hvHeRZ8CgxnFZTmehmovnq8MxjySf58KzFWbNU+OBWitSGl708zatplFKsSx9gA8B2ITKF/zn3JbEGHI29U2N9dw+rBRdLPz3N569yARBV76ARMpiD6F/LaHm5js2pJf6NvQm6Dxl5bObNLZgnn9jNn7di1aqwKDQsyGkt2l5SB6G0mooo3iKgZj6whjFembF8M9aE33R7K88GRiwRRxu6BzzZLakDs0dXcinw9iaCNZGozNzZhwddOtlElrNxD3bLGVw4KMK03WzggQJ7G+bGFqG98vAzGrnVvTDmAwW/TtaTJrc9Mxx6CT+RhWLX2BndxbWHsLJbPL2UlM8sS+pEM0Arn/6x71fN01GTcduoxP0wa8MVuUWzf5GwvrMjKh4jJ20OkOwcHaUiC3CH5EbpZ1bjaKH7Jo+eDzJGB0mDIQN8IRAzeOJk7TYYHlHyWRB0L92JS+nkDoRPdulmwGsUCh7lwO7qmVQw+Bd1
- UBrwlYSk
- 5hZNDLDDIAjepFBztpX7ymKdjyna/IjmkUR0/qdeYIEHqZ0GzioRF2QBCIGu4PfsAPXBk70++ICk3Z2Anupv8ptGfPfltIn5H0nVsHgMgZ8Sr7cTHN1+OHuVqwvFpRbaD3Gf40DqwJLq4A+//5CaBWCquNwO2WUKnJehM7fY541YVgJ/pi3XxX5veXC68tpkOj74ourV11Z2r8ydsxSGiVh647sFLqpYEzrvh4t2/qcdW4bXLMjMHZ05SiBMlLUd2bCVJqvXKs8MLjeT+xTjmQM9rXcZRCytKDTQ3aY3H5sEVYBIqhnGTzVkB6vVzkYl63GEVtLz1modbbCnxVHt+LMyasYTWEeK/rrhRxBA7JE2SXhUZYedSXuN1I/4hRw/hVRHgCxwGBekL1uGvnOqORUBbLDxdvg8QKSfmBngasDtXhG0=
+X-HE-Tag: 1764063220-994
+X-HE-Meta: U2FsdGVkX19R5Z5LqkKTQcmYSeEeyhQM0JfGTgz/V0/BU9HSATMuE9DJ0FbPxRcz3QxizGuqyahW1/xrLTUyDOdRxiJ/iVJlqgoDjVAnLW6nIFC+T80sZ8asCsl/Wpa/qBz27nTPJkzKAxVGjpFnzAlHo3mo2LhfsmFH133Gq1HypIvX+5zhGYpaeaQrajWJ/bgUw3u6zTWVqjfPirbhKNxPL91XyYFS/pjSwSDDILLZ3k/YQ/dwEoZAtuKFgckaIA1Qe78f6IoHTEnMWoWI9bQ7ZGdpADrUPFUNUCLr37o/NXtcOhKU9j+FTTgyyIoohDLmBscp+Q3wlA1b2z+yYbw+IFBcr1sMZs3OPBQI6HdqMgvmRswMfjZJkGtRJ/QcoSP+RaJD6ZbLoK7Il2PvG6mOEbQXrh9JEBTkoh0gvxOwKWOLk8WcH8Ofsrlq5fn0A7EJVMixU0k4Toc1NwnWjHRKSgy6xm43OuRJPoDd6K05vy3UruHbHWJ0JLMIcCvpoXlM0xVfrZB1U+JRS0J2M1hPo452oPmMKmpyjFTs7H3hmYSj16UR4Z25ARTxZ92sIMA1OnwO5rUoyEIrNjAZOXrYU/ErLdoBWEXf2dMISZ5KSDwBi5ie0l9Tx5WhaysGdqi6WQjjOeGfBT5oD0e2pFqdzFTAgsD9pRwP3b0DAUnhb4gFY+0YHsNgj69YCIU9O3fDaMrLB+W/eJiQAqazasY6mfSo/JJ7En0TmzxYH0Ix0MlfoL1f2IE+htIDZrDjpLOxW5QJ/7am/s56cI4gofo2RxXCMf2gi5Q8prpoFTQy2FrgghN+6t7CHXFAw62RBif2iY4gt9xrAb9plQpEba+PuIn1ab4SmSyvnVXYKR5YfqLhHcy5gn6FTFFxtaGwLTXL1v3Y7TyPjum/5vr1NGAAXCXpIbPb1555p4DswOth6zXtpWRUqWDRUHsSc1lyLbElRAxgGuBjbmaEkvm
+ ydUk/DAD
+ Cp/ndGJPc6w5unQM17TP8PLs67LKsN7ZkKpaOKF5MGv5/FstQ6i0UKJ/ASTh9CaWJSfKSUGpYNCwB7XhFIUa8wVBzaTIFNooWIT4ZfASX7FdZZbQCSQoO9RzaU3jaRICyNiJ/CP3nBIIKfDxRfFA9Iyi7jJ4I1EO9mctdLToqm7aRb062CY21FBF+22MJ99dJYx0qhHugjobJ/Cr549+jXaSPpV0mI5o3hjR14h3Rokkfn/pLLtuysrQkZWkq3xL71ptWjaUnL4cVeVWLSyQnSgWas17WDIoZvnxQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,61 +133,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Baolin,
+On Wed, Oct 22, 2025 at 11:29:56AM +0100, Shameer Kolothum wrote:
+> The function hugetlb_reserve_pages() returns the number of pages added
+> to the reservation map on success and a negative error code on failure
+> (e.g. -EINVAL, -ENOMEM). However, in some error paths, it may return -1
+> directly.
+> 
+> For example, a failure at:
+> 
+>     if (hugetlb_acct_memory(h, gbl_reserve) < 0)
+>         goto out_put_pages;
+> 
+> results in returning -1 (since add = -1), which may be misinterpreted
+> in userspace as -EPERM.
+> 
+> Fix this by explicitly capturing and propagating the return values from
+> helper functions, and using -EINVAL for all other failure cases.
+> 
+> Fixes: 986f5f2b4be3 ("mm/hugetlb: make hugetlb_reserve_pages() return nr of entries updated")
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+> ---
+>  mm/hugetlb.c | 25 ++++++++++++++++++-------
+>  1 file changed, 18 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 795ee393eac0..1767f7599f91 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -7269,6 +7269,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+>  	struct resv_map *resv_map;
+>  	struct hugetlb_cgroup *h_cg = NULL;
+>  	long gbl_reserve, regions_needed = 0;
+> +	int ret;
+>  
+>  	/* This should never happen */
+>  	if (from > to) {
+> @@ -7308,8 +7309,10 @@ long hugetlb_reserve_pages(struct inode *inode,
+>  	} else {
+>  		/* Private mapping. */
+>  		resv_map = resv_map_alloc();
+> -		if (!resv_map)
+> +		if (!resv_map) {
+> +			ret = -EINVAL;
 
-On Tue, Nov 25, 2025 at 8:57=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
-> Currently, folio_referenced_one() always checks the young flag for each P=
-TE
-> sequentially, which is inefficient for large folios. This inefficiency is
-> especially noticeable when reclaiming clean file-backed large folios, whe=
-re
-> folio_referenced() is observed as a significant performance hotspot.
->
-> Moreover, on Arm architecture, which supports contiguous PTEs, there is a=
-lready
-> an optimization to clear the young flags for PTEs within a contiguous ran=
-ge.
-> However, this is not sufficient. We can extend this to perform batched op=
-erations
-> for the entire large folio (which might exceed the contiguous range: CONT=
-_PTE_SIZE).
->
-> By supporting batched checking of the young flags and flushing TLB entrie=
-s,
-> I observed a 33% performance improvement in my file-backed folios reclaim=
- tests.
+Why is this one EINVAL? Should not this be ENOMEM?
 
-nice!
 
->
-> BTW, I still noticed a hotspot in try_to_unmap() in my test. Hope Barry c=
-an
-> resend the optimization patch for try_to_unmap() [1].
-
-Thanks for waking me up. Yes, it's still on my list=E2=80=94I've just had a=
- lot of
-non-technical issues come up that seriously slowed my progress. Sorry for
-the delay.
-
-And I suppose we also need that for try_to_migrate().
-
->
-> [1] https://lore.kernel.org/all/20250513084620.58231-1-21cnbao@gmail.com/
->
-> Baolin Wang (2):
->   arm64: mm: support batch clearing of the young flag for large folios
->   mm: rmap: support batched checks of the references for large folios
->
->  arch/arm64/include/asm/pgtable.h | 23 ++++++++++++-----
->  arch/arm64/mm/contpte.c          | 44 ++++++++++++++++++++++----------
->  include/linux/mmu_notifier.h     |  9 ++++---
->  include/linux/pgtable.h          | 19 ++++++++++++++
->  mm/rmap.c                        | 22 ++++++++++++++--
->  5 files changed, 92 insertions(+), 25 deletions(-)
->
-
-Thanks
-Barry
+-- 
+Oscar Salvador
+SUSE Labs
 
