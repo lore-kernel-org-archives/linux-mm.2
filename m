@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9565D0E6C2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 10:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C858BD0E6C2
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 10:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16F0E6B002B; Tue, 25 Nov 2025 05:42:49 -0500 (EST)
+	id 0FF076B0023; Tue, 25 Nov 2025 05:44:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11FB76B007B; Tue, 25 Nov 2025 05:42:49 -0500 (EST)
+	id 0D6E66B0024; Tue, 25 Nov 2025 05:44:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F296F6B0088; Tue, 25 Nov 2025 05:42:48 -0500 (EST)
+	id F2E616B008C; Tue, 25 Nov 2025 05:44:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6AA6B002B
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 05:42:48 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 934FE89984
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:42:48 +0000 (UTC)
-X-FDA: 84148791216.19.FA4999F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E1C9D6B0023
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 05:44:53 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 984F7BB8CC
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:44:53 +0000 (UTC)
+X-FDA: 84148796466.30.E1EB9FB
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6A09F40006
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:42:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wMFOmfV0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WY7EhNEv;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=K2FYgCgP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="J54rdR/m";
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7D14F12000F
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:44:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764067366;
+	s=arc-20220608; t=1764067491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsYspdjC0lpi9JmCQilKQweJ66sk4zl5eE8yE81CCRs=;
-	b=ayz569gsYuL+usS10vrXC3PqnEsBXYES+VcJZxn//9Da8PTNYeMvj8Vhb62Fmpa5tahIC+
-	+NkAvGqvalhFvNA0sCEMasLo1bAu+Hj/TVArkF0DxswzxlISa6PjWWdSXc3mPQapki/zDF
-	llsNb8R8zKEyb31pspViMAsjNAIDoxc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wMFOmfV0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WY7EhNEv;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=K2FYgCgP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="J54rdR/m";
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764067366; a=rsa-sha256;
+	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
+	b=rzIyW04EjqYqU6x3R3Eim+7zfSmW7ngDR4xlckbSlPR4UzB2k3KZ83E6vV2e1VMpOs2W4L
+	7YkQbUbD1Xo64bS/kXc5BPTj60zE1JHc7kCkDuj2NlmmoN3BIalRz80W18M8+turUKm0mZ
+	/396gtThUhCpUKE1+Ip36303SgI3QCM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764067491; a=rsa-sha256;
 	cv=none;
-	b=cLUTxlLflp6O8CZUc3mhVXGrpqXVkpEhBbB4xSRARNp0cPLNLKUmi6xqm5og/ssAHRqKN5
-	bkSXmOhBQ9otVG9VKn6o4ZbyogDXHTJWpPgZWBjKMv7PKRsxG4qtZ5sO02bMCEkrLBJZWB
-	RLhL1jkmOJrMHVtn2mcKEg3yYcXUoQw=
+	b=znefQX+xA4LHiYRdfAgtthhaStGNTM+fqC8js5Iwh4Jj+IlUfvRC0s02whBW6nLG6EtlFM
+	qglFH94FBgfDP7lxI6h7RLYuu0dBEU6+MuLK7cYrm3l+0bkyUafOnDVhpcPb0QLq3r63Nt
+	twmIEjg8MkQlAWutBHbOnCc1F99M694=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9F53922773;
-	Tue, 25 Nov 2025 10:42:43 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C6CFE22039;
+	Tue, 25 Nov 2025 10:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764067364; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764067489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SsYspdjC0lpi9JmCQilKQweJ66sk4zl5eE8yE81CCRs=;
-	b=wMFOmfV0+x/Yh7CMm56VlBlnQn/SjulBKf5Drv1UP5Br1KP+afi+VZLWXQNwZ/5GWjVvlV
-	W7dVeKSaoC0KFbN8OKsJ+EtWQ7E02q7VMdMgz22hebAmIstXrQ7Nn0JU0Ti4/uVqJ4LEhg
-	LHes/c62gT5AUJgvtMONKF5Uidj8YXg=
+	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
+	b=pni0UpLef8iQNq0HR9r64Wkp8Cq9nhFJJ4zY4si3AjLLD1EewTEDdsotaHHqgza0PC1Eht
+	c59UdGvOVIXEJ8ICP353eEg4mnVtQ9pnq/vq6ZiLmUrHbl7ZJNJcG7B6YzsC/jYKncHYd8
+	5Dyye8QA3b7fcKbB4uHDMS1daJOv7B0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764067364;
+	s=susede2_ed25519; t=1764067489;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SsYspdjC0lpi9JmCQilKQweJ66sk4zl5eE8yE81CCRs=;
-	b=WY7EhNEvDwQkbNYSwBQmlI/iaBNtANR/gBR2OZQSTnZzxO2x3buhhuR/QBWLP9egatayXB
-	yl1LcGujoc+KyZBw==
+	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
+	b=rSwNxQHWMHZtAmf8vLv79+41k+m9B2qwlXUZvvTZ+h6jAUFZ5Eecdp6lt2uuaPZ0g6t1Ty
+	GWHnUDb+Cli97oCw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764067363; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764067489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SsYspdjC0lpi9JmCQilKQweJ66sk4zl5eE8yE81CCRs=;
-	b=K2FYgCgPxSBYbK++lrRIDXKEC48MYnC2nSGgvwNpJgbuWEuFlH5kPY8z+amA/XrFIp7p7L
-	WjA4NNTce1KibnEdhSifNyHcDZ/ckDBvTY/MlB8M7qB+Qv2f/f5YjPYOefaSQu7nCe13Vg
-	VPuLPH6mxSnH211BBjqhxZncKmrDA60=
+	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
+	b=pni0UpLef8iQNq0HR9r64Wkp8Cq9nhFJJ4zY4si3AjLLD1EewTEDdsotaHHqgza0PC1Eht
+	c59UdGvOVIXEJ8ICP353eEg4mnVtQ9pnq/vq6ZiLmUrHbl7ZJNJcG7B6YzsC/jYKncHYd8
+	5Dyye8QA3b7fcKbB4uHDMS1daJOv7B0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764067363;
+	s=susede2_ed25519; t=1764067489;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SsYspdjC0lpi9JmCQilKQweJ66sk4zl5eE8yE81CCRs=;
-	b=J54rdR/mXqBTtJR/9i1hqqfUiUBOEZQvN2+kshns9Vlo3mnxux34iF9W5RzxDAv33orMgM
-	SxvGtELkbp3/wNDg==
+	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
+	b=rSwNxQHWMHZtAmf8vLv79+41k+m9B2qwlXUZvvTZ+h6jAUFZ5Eecdp6lt2uuaPZ0g6t1Ty
+	GWHnUDb+Cli97oCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DED93EA63;
-	Tue, 25 Nov 2025 10:42:39 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE7BA3EA63;
+	Tue, 25 Nov 2025 10:44:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OAlUIx+IJWlpCQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 25 Nov 2025 10:42:39 +0000
-Date: Tue, 25 Nov 2025 10:42:37 +0000
+	id lbk1L52IJWmECwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 25 Nov 2025 10:44:45 +0000
+Date: Tue, 25 Nov 2025 10:44:36 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -137,22 +137,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] mm: declare VMA flags by bit
-Message-ID: <fs6mvtx5tla556t4bo4cex6i2pf4huvdzbfwymtckqh6ughd3h@yjjpeyko3kng>
+Subject: Re: [PATCH v3 2/4] mm: simplify and rename mm flags function for
+ clarity
+Message-ID: <wpvjnzaffij4thc7djcl6uhyoo6kegjsgplplv5cyagcgw2szj@vlbnxzs4xbrl>
 References: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
- <3a35e5a0bcfa00e84af24cbafc0653e74deda64a.1764064556.git.lorenzo.stoakes@oracle.com>
+ <8f0bc556e1b90eca8ea5eba41f8d5d3f9cd7c98a.1764064557.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3a35e5a0bcfa00e84af24cbafc0653e74deda64a.1764064556.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6A09F40006
-X-Stat-Signature: 6x5hwd1uxdongq8358wwa7gwjijs644u
+In-Reply-To: <8f0bc556e1b90eca8ea5eba41f8d5d3f9cd7c98a.1764064557.git.lorenzo.stoakes@oracle.com>
+X-Stat-Signature: ezukst3jsa8dt9fkije6gesxd1dccymi
 X-Rspam-User: 
-X-HE-Tag: 1764067366-668365
-X-HE-Meta: U2FsdGVkX1/XAMlk2EaaenR4Xt08wdz2x8MLtOhOa3VbjvurKj3rbo1cLdntwSDWl6ve3Ob2SFzp22zWEciG/bkz1GxhEywa8t94nwSHV6EnfV9HfJub/4eHZq3j1aEnDj7TG7PcdrCNpXeMVvN93WxfMVEclxNZYVYwvzXIoOP/YHbEMpj6ZXHVHBPXmN+rUvp4gJTXrP+6hPyVKvKAgKPXGkfpRBG5sjyK4ynjDIc1+OlLehjFjZqr/Xa56PLVOZ0kh8V/bjyJxgvY+AuWqRIZm8UpqyShTdqsaUI3AU09Qw5V9Y2uHw8UcVzeYEGT7VxEZ/he3xbBEAzWZcXiX/eDVtJXu+7Q8L/Y0MpHTeZcOa2EZQDADEVmq/hfNI7Ft5GBXRb1mkPrD0SdzyOlkqidcIoLGC32/ANnVgQY8mFDyw3kn/DOK8EiAYrxxMG40hrCjqUc+7Gxs7bPK2TrsMnIV8zuoUu01rVpypJAOA9hJn5KQs5D7WbzMRAcaqezm+gwXMfgnlHarOvgsLCIJxfqC+NtyLntKyIhyCJrc2yOXOG3URyOEdlgIltOLSZdiU01kMKaE2i5+tNouTV4RrmFbFcU0zdRqSKZu3es3HRkQacBrwv99MCi1vX+w+TGJ8LCqOwTe6curEmP5njQtlml5sI3K/5MClFDPz0iDqpSpj7q9zT9sceQeWEUbYWXkhbE2VKaWSuIxhm/mUI4nC7Aw9mIfPAeto17yp4kM3Ks8rOdJf18nQGGw7HHoqmS+HiGqoeyD+UBONXs9atRtO59rLNlVTBxmWJg2ge49BhYjhzdrPTfDnqT9Ah1asUDh9I/+nHcrdb4Rhrci7X2+TW+JnPhIeBafugj/mRubX+Smt92IZVcI6aojSu40JqiPiYIF1WK01MNzsmy9w0WjJDOSVG8lubkU/DoMQ9KjWLv/0igdXjCJaY+QMYBo/NiqxOt1Z31RrrNhn/OKwJ
- K1mRRV/L
- zSY16p+l3Rhlh54AJv9zPzu57fo/ppP/J59w2oi5GD4y7eJXz0Oc7LYtVG6btrrq78E1s9x2+i9/7ja8ctTHfX9MDyLZKR1g6J46YzuuNSIBPro71vhVpKav7nKMFPaBgHIpQ1YRD0p5PirCWU54s9BKDlaLl8Skr53alefClwfk68qcDzygOFBy7HVYJWtcPyROBwuR/xxMBLSClRyb7U3nV3j0g+58lQLF12Lt/Iley8xyaqnL9HLZIvKvpFbyfD0IYRqyXbY3/b0xknsHW/x6jvcsSmI3O4FIjl1tT6b8RbPGRU6SLjrGjVVCkaSZ/+W8jUYQgGouVCaIb84paz97tkafO3UaruFUJTg/K5vguskQTtk6IZSWIfdLW4qTYT5akMUpwCedy2uM=
+X-Rspamd-Queue-Id: 7D14F12000F
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1764067491-779591
+X-HE-Meta: U2FsdGVkX19QuwHzTk0M+NM6SGYRiGEsP+r+EW1cyOHe9fW61YX7huigr9kPSUTaSJRHZrGl0KwcdTLr7qPbzekfz+d2TIx7FpB12/52933xw+fvMYCruhWfRQLHxfxPj2n054pms67JA3GmgaGGzNfRue2T+RezUX45i3ZTlv1MU4jdL4wAwH5pv+/fcpxh8Tiy8mX7p7Wog+FIobTxm8UXkTdUAbP7cuU86uYowvMWq8X2rW4YaU4Zmk8JHYJ7aaS9TnJyyHFa25wm0dfYGRgNS3CSjsgY0qDY+l5/x8B2W3WioCg8RC80g6m/qwRlrWonlfZEQVKnUCISHR1qYdDcuZliSJZelQ/KVkNnVDghfFZPqCdoTIKzK3n+y9oziQEzKxIsT57O581mlbGOhaq0iEnc6QaaBdbiabW0rF27kDIRkCHuw+t08ykhMdfUu3FfpHU1K9MswLdCe9WE6Fb428DT0SHPBp/SP7W/i8RTS3bD7FMZNvEeE+FpEKVWogFlyp84clmIlCVNt4Hcskjv0HTFSLm12GzX3W9pZDyGnbMhyCYX88gY0dA7cUa2NSe1pxmRhA+l/vrZN1gzVLbXqS3bvsJOdCZmdHcssxAqmzTPuEFq49cRQkVl9SzFgO6MtTdvmo/m4QixBSOjeoaI8ICHts/zYZBho0cky8J5y+mNZYk3dvciaMtxG8dg0/bdJykC5QZjyT9YIAK3frRrWA2kVOnmOYBcNwzELEi84a3Udv0W+xefztxbKOQ78OHV7sQGeLKATy/ppj+lYQ5vNWtQ9wx1pCkl4MO+zZQLeKagQsnhk6O3MaThmIBYkn8nrJ52oL61wrWlJUIzrIqq/8Ihq68iwji5PxwiPphpox1veU4ARlPyumHb4QruVB+rs/8zmbDUndb9gUs8xdfHxQ5YJ4f72K5l9H2UZaZBY59CHoisHKYg9C1rDWbijGVP1sHVnKVkJpAzWXH
+ qKs/ZxvV
+ SVPvBb8JIadSM50S0GY7RwoQTg2dsHeiuZz7gFYELt6B3jjK8MAfpdPJOvRk4AoXUyGmyHAJz9tv3KPayaviimEfQf8oV27oPSrjG6HQjJ71wiCQCZy+2rkw5r2wK5rzr6+EY8evDA6kJeCeUkTmC3qsvV9t+8XZ6b8/Z5ua1NWTWDV+iZDn5Vd7y/VHaTT8oYe6qo3XUk2iDf4JiS2MAJTf2Ud1Xt7b5J+feMGIpJDBb9qJLzzNDaG/QnZW0GGufpbunnQoOCMVQXnHDqsi0jB13HzFMogOochoqtEWHc3O43XUz9Bf7HMJFUH3Q0/kEmRU/bPpUq8CpW+edyuc54qH667+Os9j3MDgKQT/HmilVtrLDhyO1ZSDde9sHk1OSz5ewRRSaPGlCPm8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,60 +162,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 10:00:59AM +0000, Lorenzo Stoakes wrote:
-> In order to lay the groundwork for VMA flags being a bitmap rather than a
-> system word in size, we need to be able to consistently refer to VMA flags
-> by bit number rather than value.
+On Tue, Nov 25, 2025 at 10:01:00AM +0000, Lorenzo Stoakes wrote:
+> The __mm_flags_set_word() function is slightly ambiguous - we use 'set' to
+> refer to setting individual bits (such as in mm_flags_set()) but here we
+> use it to refer to overwriting the value altogether.
 > 
-> Take this opportunity to do so in an enum which we which is additionally
-> useful for tooling to extract metadata from.
-> 
-> This additionally makes it very clear which bits are being used for what at
-> a glance.
-> 
-> We use the VMA_ prefix for the bit values as it is logical to do so since
-> these reference VMAs. We consistently suffix with _BIT to make it clear
-> what the values refer to.
-> 
-> We declare bit values even when the flags that use them would not be
-> enabled by config options as this is simply clearer and clearly defines
-> what bit numbers are used for what, at no additional cost.
-> 
-> We declare a sparse-bitwise type vma_flag_t which ensures that users can't
-> pass around invalid VMA flags by accident and prepares for future work
-> towards VMA flags being a bitmap where we want to ensure bit values are
-> type safe.
-> 
-> To make life easier, we declare some macro helpers - DECLARE_VMA_BIT()
-> allows us to avoid duplication in the enum bit number declarations (and
-> maintaining the sparse __bitwise attribute), and INIT_VM_FLAG() is used to
-> assist with declaration of flags.
-> 
-> Unfortunately we can't declare both in the enum, as we run into issue with
-> logic in the kernel requiring that flags are preprocessor definitions, and
-> additionally we cannot have a macro which declares another macro so we must
-> define each flag macro directly.
-> 
-> Additionally, update the VMA userland testing vma_internal.h header to
-> include these changes.
-> 
-> We also have to fix the parameters to the vma_flag_*_atomic() functions
-> since VMA_MAYBE_GUARD_BIT is now of type vma_flag_t and sparse will
-> complain otherwise.
-> 
-> We have to update some rather silly if-deffery found in mm/task_mmu.c which
-> would otherwise break.
-> 
-> Finally, we update the rust binding helper as now it cannot auto-detect the
-> flags at all.
+> Rename it to __mm_flags_overwrite_word() to eliminate this ambiguity.
+>
+                          write_word()?
+> We additionally simplify the functions, eliminating unnecessary
+> bitmap_xxx() operations (the compiler would have optimised these out but
+> it's worth being as clear as we can be here).
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
+Anyway:
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Scary but cromulent-looking. Thanks :)
-
---
+-- 
 Pedro
 
