@@ -4,127 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99C30CFD37A
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFD3CFD37A
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 10:01:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0234A6B0089; Tue, 25 Nov 2025 04:57:02 -0500 (EST)
+	id 6925C6B0006; Tue, 25 Nov 2025 05:01:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F15B26B008A; Tue, 25 Nov 2025 04:57:01 -0500 (EST)
+	id 669F96B008C; Tue, 25 Nov 2025 05:01:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E53036B008C; Tue, 25 Nov 2025 04:57:01 -0500 (EST)
+	id 5A6D66B0092; Tue, 25 Nov 2025 05:01:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D4D6D6B0089
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:57:01 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 935B21406FA
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:57:01 +0000 (UTC)
-X-FDA: 84148675842.11.02EB3A3
-Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 07F10160009
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:56:58 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CFB46B0006
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 05:01:11 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F101E1A0705
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:01:10 +0000 (UTC)
+X-FDA: 84148686300.25.3D6442E
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 02CB0160009
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:01:08 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="jzUme/e1";
-	spf=pass (imf08.hostedemail.com: domain of "prvs=417c28214=ilstam@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=417c28214=ilstam@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764064619;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lvfFnaHJc50PXFyNkhTbbl06/AiVLemOeyMXEWeBus0=;
-	b=cghRPL+jC9yAUHV/kEoWU0QbnKRpFPUww2asv7cqtGPnR1aoIhPUtQoBZWcs4cfjZwOZOQ
-	2JgAq7JFukvis9UovczcNyCIZoTaqD2fTM9Psz2HWC6P0xAP68YpjrrouwMjPAf8f4pUar
-	A/gS35OzvNEnSOd23f1gX8YIKcQ1mLg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764064619; a=rsa-sha256;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hKUXqUXP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of smostafa@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=smostafa@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764064869; a=rsa-sha256;
 	cv=none;
-	b=OKsbF/1fODSnbv5oRmip8FgL3zIRBrgT6MYmYyS+WKS9h9425u1soLJD4bkjFdOXzDTD1L
-	qAyl40FbpZ3NWTSh3emeIhC/Y2LYzytbsJ6+SUVezUgswuDm+WUjSGTXXJX8WzA8YTQOMZ
-	IyN72L4/J49hpVW+3o0oGNqr6xmO9Ko=
+	b=bc8pDzC6yrSQJXPEcpEuW2lnbnK9HpEzDszBmsmzIJ7cuN0n5UMlPldR4FSJVQjbskk9Ed
+	n1T12N5Bpucze1wQnCEfAOgARTVgojh5U6QbmfVLimQt9rh1Il2O01uQ2RdVZok6jxSaf/
+	3nzszvXnRlmshqZq84c1abb3de08hno=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="jzUme/e1";
-	spf=pass (imf08.hostedemail.com: domain of "prvs=417c28214=ilstam@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=417c28214=ilstam@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+	dkim=pass header.d=google.com header.s=20230601 header.b=hKUXqUXP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of smostafa@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=smostafa@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764064869;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B1XHwcWfbvKNkFkLxt3DIv5QKK97k3U/xNeeijWZm2Y=;
+	b=IKA6b0etELG9jVSdLpoIUcqffUSaBY7/X4mVDIjZhrCydKyhWg/RW1K7WiT5h8KAV+6O4W
+	i86mpddexAHZF07MY7kEtczkb4MCxp1hperYAJXD4O9tLq5w00yPu68/HheW3KWDPAMQtw
+	D4O5yfE3K5aANxK1r0EGqnstaCzG9X8=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4779e2ac121so42525e9.1
+        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:01:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1764064619; x=1795600619;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version:subject;
-  bh=lvfFnaHJc50PXFyNkhTbbl06/AiVLemOeyMXEWeBus0=;
-  b=jzUme/e138fM/SiUb5J+8hvTtSWEFi7qL/D4AE4K5jLZHhN+I2kXiyXz
-   7neapBF9n+inPRMCVHZ3xn0X5Gz2BO2GhkGfznps4mZfWL0ZUGsQKI+tA
-   Zh+YMylObSY18PjzC/uNnS+sm4KxQb7mIJ74AAHgDmJ2Jfhq250FRx8jP
-   3VB+oOrdATMSNmEHyqYBh9ylQ4PWCFh1h/vCDbV6dGFmw23nIyWL/SKsi
-   fPemRKSmp2Dsf8xbyaj+sGHruBJSPYuwP9jjG1eY4xLhMaNQCV+ismr+9
-   e0ltc4yDdfRPay4vscLQmwkLz1lFaObykvmePmir2SzA3b/qkVugowULl
-   A==;
-X-CSE-ConnectionGUID: rmVkJ54mQoeAgU23db22Kw==
-X-CSE-MsgGUID: PhQFXvu6SLeANkKzvIJS+g==
-X-IronPort-AV: E=Sophos;i="6.20,225,1758585600"; 
-   d="scan'208";a="5646938"
-Subject: Re: [PATCH] Reinstate "resource: avoid unnecessary lookups in
- find_next_iomem_res()"
-Thread-Topic: [PATCH] Reinstate "resource: avoid unnecessary lookups in
- find_next_iomem_res()"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 09:56:41 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:21774]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.44.247:2525] with esmtp (Farcaster)
- id 0067e011-8743-4a86-818e-4601528d31ff; Tue, 25 Nov 2025 09:56:40 +0000 (UTC)
-X-Farcaster-Flow-ID: 0067e011-8743-4a86-818e-4601528d31ff
-Received: from EX19D018EUA001.ant.amazon.com (10.252.50.145) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Tue, 25 Nov 2025 09:56:37 +0000
-Received: from EX19D018EUA002.ant.amazon.com (10.252.50.146) by
- EX19D018EUA001.ant.amazon.com (10.252.50.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Tue, 25 Nov 2025 09:56:36 +0000
-Received: from EX19D018EUA002.ant.amazon.com ([fe80::7a11:7dbb:2190:e2c1]) by
- EX19D018EUA002.ant.amazon.com ([fe80::7a11:7dbb:2190:e2c1%3]) with mapi id
- 15.02.2562.029; Tue, 25 Nov 2025 09:56:36 +0000
-From: "Stamatis, Ilias" <ilstam@amazon.co.uk>
-To: "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>
-CC: "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "david@kernel.org"
-	<david@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"bhe@redhat.com" <bhe@redhat.com>, "huang.ying.caritas@gmail.com"
-	<huang.ying.caritas@gmail.com>, "nh-open-source@amazon.com"
-	<nh-open-source@amazon.com>
-Thread-Index: AQHcXXPvH1LA4deF/EiE1v+Bldr5grUCN+QAgAAFBoCAADzNAIAAeugAgAAzyAA=
-Date: Tue, 25 Nov 2025 09:56:36 +0000
-Message-ID: <b9f8623fb383ef21bb47e6c9716c2c389581d12d.camel@amazon.co.uk>
-References: <20251124165349.3377826-1-ilstam@amazon.com>
-	 <20251124085816.07dbf5a4ec6235b2943840a0@linux-foundation.org>
-	 <c7411175b332f3befb5bebb6a75c7b91f2c1dbbc.camel@amazon.co.uk>
-	 <aSSqIzJWKTe9hs2f@smile.fi.intel.com>
-	 <f3fe7efd74c6011ddb35e1f1e90eba43af864aa4.camel@amazon.co.uk>
-	 <aSS3kXfoBppO1a-Q@smile.fi.intel.com>
-	 <de5d9d0658a8966ad8e523a84185398c216726fc.camel@amazon.co.uk>
-	 <aSVRrEDV1hWKhRmp@smile.fi.intel.com>
-In-Reply-To: <aSVRrEDV1hWKhRmp@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.106.83.29]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <269742B11AF0E94AAB26CD3B38F12FA8@amazon.com>
-Content-Transfer-Encoding: base64
+        d=google.com; s=20230601; t=1764064867; x=1764669667; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=B1XHwcWfbvKNkFkLxt3DIv5QKK97k3U/xNeeijWZm2Y=;
+        b=hKUXqUXPfMKfzih+Etih30gZ9J2vScPBSnbAKTfyabyof93WU7S9qY3X3Bl+ybUypH
+         p20j8RGbU8zq13jp6cWVl/fljI9BN33QCt7TOkQPiY2/d5Fjl+mfD4qIPIXDaNQppYhF
+         Qmd+g5gcLYFr9uZe4XmtngmSgdkvOvn+3oeS5G1fAcxlL3kcpIVt/6bkm3ZUfx8Mz/UV
+         pBF6KHemwrj/V4haoHmMPvAQ1ltSAOpyuNnoQeZUIUNTmSPjK8xskwlZF1aMjBuvhTC+
+         nEtzoGxV5m2QjhmMxJgmDp/jikvcGeyE1AsO2dJJFmlwXvayyuGrKT9OF4MZuBZsWKJS
+         71IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764064867; x=1764669667;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B1XHwcWfbvKNkFkLxt3DIv5QKK97k3U/xNeeijWZm2Y=;
+        b=m1eSZeC5cMfENfajeuKGOjpZgiy2JrQA0DgVdl+I/AKRrn2uZScrs2pNfhON2qQVxl
+         gsEGv81qg5G0WDZMF/UDgAesLuF/M0ZQzOiLbniHuhT6wZ7eAguwJuHQakuHpxXI2iWP
+         7UKdnOs6LZF2WbIzujB/3DgZlv+3t8sGa+iIvy59YaQ7I3pSoPj1gstq2/CAG8JqSsO3
+         qhV0BnrOH7nDUtQyyAkBXBxsZzRd8sGF47rB1DepwdHEyUBPpJgGiIl2jfFBkgz5T+df
+         02agJRskhLA6SjyJu677Pq8ZyQeD8Gjt5EL+4cWR1eZovdwBpBqeCjtsCwpV5vxV7Pv7
+         NDkg==
+X-Gm-Message-State: AOJu0YxfXP41bfvZy9VP7xyAp73v8wXTk7jeUH9rA/LvcOUdznDLD9c7
+	5bqcIX4VaXZqUJDGwt0d4S/hdLuOaJsqGN0tRiECMtiCvcvg78FAF7zwK/LPe9WydQ==
+X-Gm-Gg: ASbGncu4tFMDz/4g84shmoHiCg8Nyp5AlQetREUzIu9WQLjXg9gp3vaXwG4dnxqX64R
+	1PPWTtoyjF4Ajtw82FeQlo0tIVo1eJV577tm8LilhsLMjz+lEH5PQzs/7t428SQg/XtUqex+zy2
+	q7V4xFsQp69azmaQLBVnV+lcGcvsqq1t9x2H2TvQXV14TqeAHzjBQ2e52IzAQpUgtNLHzDvBM8F
+	adIEFyE2nX9q5i0QVoqXROFY3Dk88OkzsTacOYhJP46JfTR3A5dZwM9GZ4WdUZ0FTxyh497QEDr
+	PPyT9wod1/oovcmi9j0ad84gWdmVndOIgohhbFY75oHtF3jV86cM3UjlDvb9AMEBdBEnWTc7fes
+	w5z3oyA/AQ1NEibwhN8YoS8kUHdd4Zo8zW+dwBXVNWNxCm0ezbKfko2vycUnkf4Pj4LzRUlrwVO
+	ZUWm9/fnUf/o9/0ge9nACrD5lXxqAhG9WSbdI6KOxLE/lfDfIVFrY/BP8En7IK
+X-Google-Smtp-Source: AGHT+IG+KnTaq24FjuTie0tLAx5tjS9go61y7PiJSmroIbPi5FQrw77ok8WdDc8ABTUNJc0zJlZa4g==
+X-Received: by 2002:a05:600c:1f90:b0:477:95a8:2565 with SMTP id 5b1f17b1804b1-47905265293mr341685e9.16.1764064867219;
+        Tue, 25 Nov 2025 02:01:07 -0800 (PST)
+Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cc231dc6esm24521687f8f.7.2025.11.25.02.01.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 02:01:06 -0800 (PST)
+Date: Tue, 25 Nov 2025 10:01:02 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com
+Subject: Re: [PATCH v3 2/4] drivers/iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
+Message-ID: <aSV-Xi5uMJcMtk1b@google.com>
+References: <20251124200811.2942432-1-smostafa@google.com>
+ <20251124200811.2942432-3-smostafa@google.com>
+ <07434771-3233-4c88-b505-ee02da72c905@linux.intel.com>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 07F10160009
-X-Stat-Signature: g73kchc54cwiiic4jzg7fz5bqy4cbwtj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <07434771-3233-4c88-b505-ee02da72c905@linux.intel.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 02CB0160009
+X-Stat-Signature: 7pja7ni9gsgwnw5d81ixswaxbyne1xbd
 X-Rspam-User: 
-X-HE-Tag: 1764064618-823871
-X-HE-Meta: U2FsdGVkX1+lJ1Nb1r9A58KewU1bhj0cNUSnIyA6iGhSWHztt2zrchR9n6gbN7xqxORwgxsLv39n+Z50zo4ntcqH4xCLKh6sxCNiAafN80fH1PrutipnXqoALk/LLlLGNS1T1TQIR5O7cdMYdvu6LZ+H2855rbWvIGtyaw8jXdy4dx4OK3z06l1jF+yLB7wWWzdVlUoh4q8hcMxsqhCSz1IZRocG08P4KlmbynKe1xbmQOVT8myDycgTT5qKaF4+LSjdqtTUCWswZ8GW+hom37YuUgaaiinloslsToSFYWPVoJCS56DOiEwmyctxtP93Jk41+7YcnYhY2xmhsoQXT/GhRV6Y/zh8dl3qQVZT6XCTuj1ku4posd1RNHBoWEJz2T8LkGCuu8iu8N7SwUb9dZEwS5iRuuXbPU+WO/80PcPIxNxuOLxZJu9Ak6LAEVqeggiBkZWDdO9VoK/XDpCagR/J9OjQNJciEIwhpuwWRnKC6ZEBmB6e8sWmrquN9xEdoL5GifSlwJA8UQ1MWvNHdIdJoSRYxC7lvjkGdK/E23Rj2TtARIBCh4ZRQjVKHfcghcS4rpIpFweTX7XpRshEjjaSSBtZ1SiFeoZpgdS2styUs66WAX20/xDQsQspLm0V0k31D1+9OpFybVtp/0eAceNVqUWJY5elmSDFc4hGikZA7YR2lVbNvzcsSWUpaYd+6T3EdIPWaOzgOAj+FEFzG+bNaTuGYS+R0l790LzfxgZzMwovuxzAJOdVLfo8IEbegIV6djVDnY6xiYaZq84A/jQWqt9xvvGyOf5pP0jV+Q05zbqBfF4TV3c1P39BQLBRfh9M3xZGRwOQr9EGzcq53NQNtybDdWPSrrcFmoLvwEWdZDL1Wa1mxslrDiUgctjpRWqPtZi6d/E/745ZgBEqdm0t55qDxJIyDyyuK9AuCoWT451kUTitG3C5DIP3oH2IBevDM16zhgziKYcCpqQ
- U0QXoa9z
- 76tpyVdBaMok7kv+cubGBA/5Xj5r/GUM7q7e41QR6qPem0/ZHchiBxCm8MToIZX2LTp+r9Rd6HE5st92aE8OP4VJwIIbF61zZngcLI8NxL5y+ln3oMhNCv5OwbtQxdZ+lIikmDw80v/7FvjZaV+mx3aHkEjU+dBldFfd58f9xTj3b5d5EvrW16DC0PIZBXZ5ZkoEDuTiDUv3zuI8LBsntuppUhLwxf95TtBbYhQ9G1KqcUlNtiQ83VPrH4P1FpQeUIo1Oiy+366y3gjQCkDLlNq7puqR3Gk94TsQ7RDbBBJE4pG8guVXlzGT6/tgIQ0sbYZtam9A1WD7I1nc8bJnF26AXbBMWY6dU7gcqWiCza8VaecWagqAXLUMpcCYuy05ZaUeJVIV3ZQ9VGrNkALu9yGAUrj1T0AYLyD75XGwYucrGD2XChSGmwX6vNNS8p7bzSwiUQlk9K6Z/QSB4K3F7EhUSiHTfSOAKsqzbDmvwJ/IMYiN9uBIweqLhTw17MI0Kw5aDHfaz0HFOrtIphnUuA1rFFZu7Ywr5FG6LXniU37hf65gUhXNynUIStlyBDhmiAbaLJsYSpeVFqi/i0Uv2nkMKxrq4qR+ZnNn0/dI5rOxky3PrVwWFGP+PbPGvuc7z9+OP7I4+sq31Mv7FwhZ/6YN5Ot5iHIuuIgJsWXNLzUKZBGs6HckixtRi2p0ivERZuyTPhDYV8SQMl+rBU5qUcVnwmOP8GNWTALCS+Pbqj682hu6p78wc868k8a7iiK0CW9wtoR7HMBNex1G1QzRg1tlTpMNeWp5jvjtVZRdtfdIyjdjtI1vLzkH+8kh2pfGVDEFC7awb/t1vZwnKiIWBB75BHMIrglG8vr1javXlkWcN4N4=
+X-HE-Tag: 1764064868-347596
+X-HE-Meta: U2FsdGVkX18rjIcxtoG+VTjLlSwbZQ3CAKvYsGacKR5vBjsVfDONUG4mVFn9FGybibvZDx+lbTzRm6hvISA7Z0agQabCn+iiDC7AsXTS9NggJxn6gVKypVRcfmDV19dPteyaQO/tS11I2sBTuAY8ZDX9viV9MtsWjgvyqXfXTGLZXJkLeTl847UwTaV79S2RYVvsN8aF0SH3T/dvfq1KB0CieatXgaIMdTZzTk69T686BIHPKPDL1qcs5tszccuqDN3Ix3eKRV3v9Be9jWAD/X7zHSxoa56p0mBrG/Actz9sllLiW6Fh/xSTiVqIjaOgTcsUZ3ty3/pi/wLamRnI9pCtUW9YFsG6wpEfFxzg14zqD3ZObSdyLoloviO0Ra0y/VVG7QU7ICBTtgbkSOhRwYHFYKGgxIQNV0iYX9xAENftx1pEaIKtXS2mXaTLMhiucDaVtZ3a3lLjcdwYw9Eb2sPcApp1DaoJj8ALY4i8bVIECFLLu2+TrDcX3wx544JgFKw5S06By2psruE2T811g+fUHhEuJV3nGpBQgNHesj7oucD82tm5Dg8f51yWb9i/G7XyUveCFmSoh16T0HfL2JJz4/mywUloCBfPCcfjx/djhNdV6gB1OTfIP29MSFLCCYcj3Im8vtxU97qwQj5uZft7nShobcsthPOY8TKZJD/5LY/DF0kncLPp3ocUHqWSloHmvOd8K+L2j4JIUwCqrDl53UVMGODMgrpipUDxwLo9Ttcdeas1xLF9UYYI1rXCVIKATCIsMxMDNCMpjEqpU/jCSuLSqFkM5mcMp197Vov9WjNaZVvS9s4X9cut932EJQSZ8Z0tFnQA1vw3xmb9+IRqCicIT0CXj6aYYcL8GTzIrCfjh7tDS/3+mYx4nBPyMSyZoLQLM/9W0gMNL19b2nGwHrX5wUu9NLbTMxj7WF05SHbrc9S+6dwi/AxtYq9OVcDbbu18FoDjBCVuC5L
+ CQJyAVh1
+ xgL91R8ioHBcviRYYkN2Q2kA+HD1S7Uq5yWRo5lxuoGPXs7Gds/y6cBvUrTfGdbfcqOp4dFjQvCGQG6vceFn0Y/uETpJHx+DTfGgDJHYAepzlswVaxAdJHu4PWsuV1eUn+6/Wm+ijGQBM8GlD0UZt+iUo2vc05k3rrdaR2Z0MH9OdNi2KZ6PJN0Hwl4s5R1G49CzAzRwjStnXLKaGJ35rT7ZtDIf49niJrxYWBvhwljsRbE2kfIgRlrptJdFNyfnO1tyrU+QXW+xK7voU3hI0Y8Vfa2e4M8tYoUoirjjCxexk7aNkPbrlX1mBdY8y0xEpuWERZPdpBZ+TdrdLTTQdF4ocVHOiE00hQR3ZOZYpb8gEiBiphMlZLtdhzM2Q43tFl1h76FokYoY4Qiq4SIglv4G+OD26K9eu767e7gQKDRCYfKNjbOfBF9brRVqXMfnlu2l9Hwo14XUmiKJ+/dMxkikNwA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,82 +124,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-T24gVHVlLCAyMDI1LTExLTI1IGF0IDA4OjUwICswMjAwLCBhbmRyaXkuc2hldmNoZW5rb0BsaW51
-eC5pbnRlbC5jb20gd3JvdGU6DQo+IE9uIE1vbiwgTm92IDI0LCAyMDI1IGF0IDExOjMwOjQ2UE0g
-KzAwMDAsIFN0YW1hdGlzLCBJbGlhcyB3cm90ZToNCj4gPiBPbiBNb24sIDIwMjUtMTEtMjQgYXQg
-MjE6NTIgKzAyMDAsIGFuZHJpeS5zaGV2Y2hlbmtvQGxpbnV4LmludGVsLmNvbSB3cm90ZToNCj4g
-PiA+IE9uIE1vbiwgTm92IDI0LCAyMDI1IGF0IDA3OjM1OjMxUE0gKzAwMDAsIFN0YW1hdGlzLCBJ
-bGlhcyB3cm90ZToNCj4gPiA+ID4gT24gTW9uLCAyMDI1LTExLTI0IGF0IDIwOjU1ICswMjAwLCBh
-bmRyaXkuc2hldmNoZW5rb0BsaW51eC5pbnRlbC5jb20gd3JvdGU6DQo+ID4gPiA+ID4gT24gTW9u
-LCBOb3YgMjQsIDIwMjUgYXQgMDY6MDE6MzVQTSArMDAwMCwgU3RhbWF0aXMsIElsaWFzIHdyb3Rl
-Og0KPiA+ID4gPiA+ID4gT24gTW9uLCAyMDI1LTExLTI0IGF0IDA4OjU4IC0wODAwLCBBbmRyZXcg
-TW9ydG9uIHdyb3RlOg0KPiA+ID4gPiA+ID4gPiBPbiBNb24sIDI0IE5vdiAyMDI1IDE2OjUzOjQ5
-ICswMDAwIElsaWFzIFN0YW1hdGlzIDxpbHN0YW1AYW1hem9uLmNvbT4gd3JvdGU6DQo+ID4gPiA+
-ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiA+IENvbW1pdCA5NzUyM2E0ZWRiN2IgKCJrZXJuZWwvcmVz
-b3VyY2U6IHJlbW92ZSBmaXJzdF9sdmwgLyBzaWJsaW5nc19vbmx5DQo+ID4gPiA+ID4gPiA+ID4g
-bG9naWMiKSByZW1vdmVkIGFuIG9wdGltaXphdGlvbiBpbnRyb2R1Y2VkIGJ5IGNvbW1pdCA3NTYz
-OTg3NTBlMTENCj4gPiA+ID4gPiA+ID4gPiAoInJlc291cmNlOiBhdm9pZCB1bm5lY2Vzc2FyeSBs
-b29rdXBzIGluIGZpbmRfbmV4dF9pb21lbV9yZXMoKSIpLiBUaGF0DQo+ID4gPiA+ID4gPiA+ID4g
-d2FzIG5vdCBjYWxsZWQgb3V0IGluIHRoZSBtZXNzYWdlIG9mIHRoZSBmaXJzdCBjb21taXQgZXhw
-bGljaXRseSBzbyBpdCdzDQo+ID4gPiA+ID4gPiA+ID4gbm90IGVudGlyZWx5IGNsZWFyIHdoZXRo
-ZXIgcmVtb3ZpbmcgdGhlIG9wdGltaXphdGlvbiBoYXBwZW5lZA0KPiA+ID4gPiA+ID4gPiA+IGlu
-YWR2ZXJ0ZW50bHkgb3Igbm90Lg0KPiA+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiA+IEFz
-IHRoZSBvcmlnaW5hbCBjb21taXQgbWVzc2FnZSBvZiB0aGUgb3B0aW1pemF0aW9uIGV4cGxhaW5z
-IHRoZXJlIGlzIG5vDQo+ID4gPiA+ID4gPiA+ID4gcG9pbnQgY29uc2lkZXJpbmcgdGhlIGNoaWxk
-cmVuIG9mIGEgc3VidHJlZSBpbiBmaW5kX25leHRfaW9tZW1fcmVzKCkgaWYNCj4gPiA+ID4gPiA+
-ID4gPiB0aGUgdG9wIGxldmVsIHJhbmdlIGRvZXMgbm90IG1hdGNoLiBSZWluc3RhdGluZyB0aGUg
-b3B0aW1pemF0aW9uIHJlc3VsdHMNCj4gPiA+ID4gPiA+ID4gPiBpbiBzaWduaWZpY2FudCBwZXJm
-b3JtYW5jZSBpbXByb3ZlbWVudHMgaW4gc3lzdGVtcyB3aXRoIHZlcnkgbGFyZ2UgaW9tZW0NCj4g
-PiA+ID4gPiA+ID4gPiBtYXBzIHdoZW4gbW1hcGluZyAvZGV2L21lbS4NCj4gPiA+ID4gPiA+ID4g
-DQo+ID4gPiA+ID4gPiA+IEl0IHdvdWxkIGJlIGdyZWF0IGlmIHdlIGNvdWxkIHF1YW50aWZ5ICJz
-aWduaWZpY2FudCBwZXJmb3JtYW5jZQ0KPiA+ID4gPiA+ID4gPiBpbXByb3ZlbWVudHMiPw0KPiA+
-ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBIaSBBbmRyZXcgYW5kIEFuZHksDQo+ID4gPiA+ID4gPiAN
-Cj4gPiA+ID4gPiA+IFlvdSBhcmUgcmlnaHQgdG8gY2FsbCB0aGF0IG91dCBhbmQgYXBvbG9naWVz
-IGZvciBsZWF2aW5nIGl0IHZhZ3VlLg0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBJJ3ZlIGRv
-bmUgbXkgdGVzdGluZyB3aXRoIG9sZGVyIGtlcm5lbCB2ZXJzaW9ucyBpbiBzeXN0ZW1zIHdoZXJl
-IGB3YyAtbA0KPiA+ID4gPiA+ID4gL3Byb2MvaW9tZW1gIGNhbiByZXR1cm4gfjVrLiBJbiB0aGF0
-IGVudmlyb25tZW50IEkgc2VlIG1tYXBpbmcgcGFydHMgb2YNCj4gPiA+ID4gPiA+IC9kZXYvbWVt
-IHRha2luZyA3MDAtMTUwMM68cyB3aXRob3V0IHRoZSBvcHRpbWlzYXRpb24gYW5kIDEwLTUwzrxz
-IHdpdGggdGhlDQo+ID4gPiA+ID4gPiBvcHRpbWlzYXRpb24uDQo+ID4gPiA+ID4gPiANCj4gPiA+
-ID4gPiA+IFRoZSByZWFsLXdvcmxkIHVzZSBjYXNlIHdlIGNhcmUgYWJvdXQgaXMgaHlwZXJ2aXNv
-ciBsaXZlIHVwZGF0ZSB3aGVyZSBoYXZpbmcgdG8NCj4gPiA+ID4gPiA+IGRvIGxvdHMgb2YgdGhl
-c2UgbW1hcHMoKSBzZXJpYWxseSBjYW4gc2lnbmlmaWNhbnRseSBhZmZlY3QgdGhlIGd1ZXN0IGRv
-d250aW1lDQo+ID4gPiA+ID4gPiBpZiB0aGUgY29zdCBpcyAyMC0zMHguDQo+ID4gPiA+ID4gDQo+
-ID4gPiA+ID4gVGhhbmtzIGZvciBwcm92aWRpbmcgdGhpcyBpbmZvcm1hdGlvbi4NCj4gPiA+ID4g
-PiANCj4gPiA+ID4gPiA+ID4gSXQgYWxzbyB3b3VsZCBiZSBnb29kIHRvIGtub3cgd2hpY2ggZXhh
-Y3QgZnVuY3Rpb24ocykgaXMgYSBib3R0bGVuZWNrLg0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4g
-PiBQZXJmIHRyYWNpbmcgc2hvd3MgdGhhdCB+OTUlIG9mIENQVSB0aW1lIGlzIHNwZW50IGluIGZp
-bmRfbmV4dF9pb21lbV9yZXMoKSwNCj4gPiA+ID4gPiANCj4gPiA+ID4gPiBIYXZlIHlvdSBpbnZl
-c3RpZ2F0ZWQgcG9zc2liaWxpdHkgdG8gcmV0dXJuIHRoYXQgY2hlY2sgZGlyZWN0bHkgaW50bw0K
-PiA+ID4gPiA+IHRoZSBjdWxwcml0Pw0KPiA+ID4gPiANCj4gPiA+ID4gSSdtIHNvcnJ5LCBJIGRv
-bid0IHVuZGVyc3RhbmQgdGhpcy4gQ291bGQgeW91IHBsZWFzZSBjbGFyaWZ5IHdoYXQgeW91IG1l
-YW4/DQo+ID4gPiA+IFdoYXQgZG8geW91IGNvbnNpZGVyIHRvIGJlIHRoZSBjdWxwcml0IGFuZCB3
-aGljaCBjaGVjayBkbyB5b3UgcmVmZXIgdG8/DQo+ID4gPiANCj4gPiA+IFRoZSBtZW50aW9uZWQg
-cGF0Y2ggcmVtb3ZlZCB0aGUgY2hlY2sgZm9yIHNpYmxpbmdzIGZyb20gbmV4dF9yZXNvdXJjZSgp
-Lg0KPiA+ID4gVGhlIGZ1bmN0aW9uIHRoYXQgeW91ciB0ZXN0IGNhc2UgY29tcGxhaW5zIGFib3V0
-IGlzIGZpbmRfbmV4dF9pb21lbV9yZXMoKS4NCj4gPiA+IEhlbmNlLCBoYXZlIHlvdSB0cmllZCB0
-byByZWluc3RhbnRpYXRlIHRoZSAocmVtb3ZlZCkgY2hlY2sgZnJvbSBuZXh0X3Jlc291cmNlKCkN
-Cj4gPiA+IGluIGZpbmRfbmV4dF9pb21lbV9yZXMoKSBhbmQgc2VlIGlmIGl0IGhlbHBzPw0KPiA+
-IA0KPiA+IG5leHRfcmVzb3VyY2UoKSBkb2VzIGFjY2VwdCBhICdza2lwX2NoaWxkcmVuJyBwYXJh
-bWV0ZXIgaW4gdGhlIGxhdGVzdCBrZXJuZWwNCj4gPiB0b2RheSB3aGljaCBpcyBlcXVpdmFsZW50
-IHRvIHRoZSAnc2libGluZ19vbmx5JyBwYXJhbWV0ZXIgaW4gdGhlIG9sZGVyDQo+ID4ga2VybmVs
-cy4NCj4gDQo+IEl0IHVzZWQgdG8gYmUNCj4gDQo+ICAgICAgICBpZiAoc2libGluZ19vbmx5KQ0K
-PiAgICAgICAgICAgICAgICByZXR1cm4gcC0+c2libGluZzsNCj4gDQo+ICAgICAgICBpZiAocC0+
-Y2hpbGQpDQo+ICAgICAgICAgICAgICAgIHJldHVybiBwLT5jaGlsZDsNCj4gICAgICAgIC4uLg0K
-PiANCg0KVGhpcyByZXR1cm5zIHAtPnNpYmxpbmcgaWYgc2libGluZ19vbmx5ID09IHRydWUuIA0K
-VGhlIHJldHVybiB2YWx1ZSBtaWdodCBhbHNvIGJlIE5VTEwuDQoNCj4gDQo+IGFuZCBiZWNvbWUg
-KGluIHRoZSBsYXRlc3Qga2VybmVscykNCj4gDQo+ICAgICAgICBpZiAoIXNraXBfY2hpbGRyZW4g
-JiYgcC0+Y2hpbGQpDQo+ICAgICAgICAgICAgICAgIHJldHVybiBwLT5jaGlsZDsNCj4gICAgICAg
-IC4uLg0KPiANCj4gDQoNCglpZiAoIXNraXBfY2hpbGRyZW4gJiYgcC0+Y2hpbGQpDQoJCXJldHVy
-biBwLT5jaGlsZDsNCgl3aGlsZSAoIXAtPnNpYmxpbmcgJiYgcC0+cGFyZW50KSB7DQoJCXAgPSBw
-LT5wYXJlbnQ7DQoJCWlmIChwID09IHN1YnRyZWVfcm9vdCkNCgkJCXJldHVybiBOVUxMOw0KCX0N
-CglyZXR1cm4gcC0+c2libGluZzsNCg0KVGhpcyBpcyB0aGUgZnVsbCBmdW5jdGlvbiBvbiB0aGUg
-bGF0ZXN0IGtlcm5lbC4gSWYgc2tpcF9jaGlsZHJlbiA9PSB0cnVlIGFuZA0KdGhlcmUgaXMgYSBz
-aWJsaW5nLCBpdCBhbHNvIHJldHVybnMgcC0+c2libGluZy4NCg0KSWYgcC0+c2libGluZyBpcyBO
-VUxMLCBpdCdsbCB0cnkgdG8gZ2V0IHRoZSBwYXJlbnQuIEluIHRoZSBjYXNlIG9mDQpmaW5kX25l
-eHRfaW9tZW1fcmVzKCkgdGhlIHBhcmVudCB3aWxsIGJlIGlvbWVtX3Jlc291cmNlLCBpbiB3aGlj
-aCBjYXNlIHRoZSBpZg0KKHAgPT0gc3VidHJlZV9yb290KSBwYXRoIGlzIHRha2VuIGFuZCB3ZSBy
-ZXR1cm4gTlVMTCAoc2FtZSBhcyB0aGUgY2FzZSBvZiANCnAtPnNpYmxpbmcgYmVpbmcgTlVMTCBh
-Ym92ZSkuIA0KDQoNCj4gQ2FuIHlvdSBlbGFib3JhdGUgaG93IGFyZSB0aGV5IGludGVyb3BlcmFi
-bGU/DQo+IA0KPiBUTDtEUjogSSBkb24ndCB0aGluayBpdCdzIGFuIGVxdWl2YWxlbnQuDQoNCg==
+On Tue, Nov 25, 2025 at 03:35:08PM +0800, Baolu Lu wrote:
+> On 11/25/25 04:08, Mostafa Saleh wrote:
+> > Add calls for the new iommu debug config IOMMU_DEBUG_PAGEALLOC:
+> > - iommu_debug_init: Enable the debug mode if configured by the user.
+> > - iommu_debug_map: Track iommu pages mapped, using physical address.
+> > - iommu_debug_unmap_begin: Track start of iommu unmap operation, with
+> >    IOVA and size.
+> > - iommu_debug_unmap_end: Track the end of unmap operation, passing the
+> >    actual unmapped size versus the tracked one at unmap_begin.
+> > 
+> > We have to do the unmap_begin/end as once pages are unmapped we lose
+> > the information of the physical address.
+> > This is racy, but the API is racy by construction as it uses refcounts
+> > and doesn't attempt to lock/synchronize with the IOMMU API as that will
+> > be costly, meaning that possibility of false negative exists.
+> > 
+> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> > ---
+> >   drivers/iommu/iommu-debug-pagealloc.c | 26 +++++++++++++
+> >   drivers/iommu/iommu.c                 | 12 +++++-
+> >   include/linux/iommu-debug-pagealloc.h | 56 +++++++++++++++++++++++++++
+> >   3 files changed, 92 insertions(+), 2 deletions(-)
+> > 
+> 
+> Remove "drivers/" from the commit title.
+> 
+> $ git log --oneline drivers/iommu/iommu.c
+
+My bad, I will fix it.
+
+> 
+> [...]
+> > diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
+> > index 83e64d70bf6c..454303ec09c2 100644
+> > --- a/include/linux/iommu-debug-pagealloc.h
+> > +++ b/include/linux/iommu-debug-pagealloc.h
+> > @@ -8,10 +8,66 @@
+> >   #ifndef __LINUX_IOMMU_DEBUG_PAGEALLOC_H
+> >   #define __LINUX_IOMMU_DEBUG_PAGEALLOC_H
+> > +struct iommu_domain;
+> > +
+> >   #ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+> > +DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
+> > +
+> >   extern struct page_ext_operations page_iommu_debug_ops;
+> > +void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys,
+> > +		       size_t size);
+> > +void __iommu_debug_unmap_begin(struct iommu_domain *domain,
+> > +			       unsigned long iova, size_t size);
+> > +void __iommu_debug_unmap_end(struct iommu_domain *domain,
+> > +			     unsigned long iova, size_t size, size_t unmapped);
+> > +
+> > +static inline void iommu_debug_map(struct iommu_domain *domain,
+> > +				   phys_addr_t phys, size_t size)
+> > +{
+> > +	if (static_branch_unlikely(&iommu_debug_initialized))
+> > +		__iommu_debug_map(domain, phys, size);
+> > +}
+> > +
+> > +static inline void iommu_debug_unmap_begin(struct iommu_domain *domain,
+> > +					   unsigned long iova, size_t size)
+> > +{
+> > +	if (static_branch_unlikely(&iommu_debug_initialized))
+> > +		__iommu_debug_unmap_begin(domain, iova, size);
+> > +}
+> > +
+> > +static inline void iommu_debug_unmap_end(struct iommu_domain *domain,
+> > +					 unsigned long iova, size_t size,
+> > +					 size_t unmapped)
+> > +{
+> > +	if (static_branch_unlikely(&iommu_debug_initialized))
+> > +		__iommu_debug_unmap_end(domain, iova, size, unmapped);
+> > +}
+> > +
+> > +void iommu_debug_init(void);
+> > +
+> > +#else
+> > +static inline void iommu_debug_map(struct iommu_domain *domain,
+> > +				   phys_addr_t phys, size_t size)
+> > +{
+> > +}
+> > +
+> > +static inline void iommu_debug_unmap_begin(struct iommu_domain *domain,
+> > +					   unsigned long iova, size_t size)
+> > +{
+> > +}
+> > +
+> > +static inline void iommu_debug_unmap_end(struct iommu_domain *domain,
+> > +					 unsigned long iova, size_t size,
+> > +					 size_t unmapped)
+> > +{
+> > +}
+> > +
+> > +static inline void iommu_debug_init(void)
+> > +{
+> > +}
+> 
+> I suppose that all these should go to drivers/iommu/iommu-priv.h, as
+> they are for use in other files inside the IOMMU subsystem.
+
+It seemed better to have all the feature functions/declarations in one
+isolated file, as it is included outside of the iommu susbsystem also.
+I have no strong opinion, I can keep them in drivers/iommu/iommu-priv.h
+if you think it's better. But then we will have to include also
+"iommu-debug-pagealloc.h" for the static key to avoid including extra
+files to linux/mm.h.
+
+Thanks,
+Mostafa
+
+> 
+> > +
+> >   #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
+> >   #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
+> 
+> Thanks,
+> baolu
 
