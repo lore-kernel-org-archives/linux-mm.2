@@ -4,119 +4,230 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F10DACFD37A
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:54:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECA76CFD364
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:56:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4656C6B0005; Tue, 25 Nov 2025 04:54:55 -0500 (EST)
+	id 245886B007B; Tue, 25 Nov 2025 04:56:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43D446B0031; Tue, 25 Nov 2025 04:54:55 -0500 (EST)
+	id 21CC36B0088; Tue, 25 Nov 2025 04:56:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37A036B0062; Tue, 25 Nov 2025 04:54:55 -0500 (EST)
+	id 0E5866B0089; Tue, 25 Nov 2025 04:56:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 269896B0005
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:54:55 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79CD05B63E
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:54:52 +0000 (UTC)
-X-FDA: 84148670424.12.F1F33AE
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 96B5C100002
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:54:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XPOqUt1e;
-	spf=pass (imf05.hostedemail.com: domain of smostafa@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764064490;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EE1446B007B
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:56:03 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BE5D5B63E
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:56:03 +0000 (UTC)
+X-FDA: 84148673406.09.1985D4B
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6D57B4000F
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:56:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Q+F+Gamx;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ssCJ/Mq0";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf07.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764064560; a=rsa-sha256;
+	cv=pass;
+	b=MNBD+jXC24ZqDMkPrkO+8et4f1JsO7zw4IVl5fEq+TrXsmG01Hkf7szRZjs+Y5nSLM8bdr
+	qa6awdl6SXzAJ1s+/DUS9vnJBmT8X0WD1+e6bLAIN4gJMrwtHS32+WNnYUtxq+1WtHEHhQ
+	P60I/PQQfjkAY2T0iTBKF27+TFm3dpk=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Q+F+Gamx;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ssCJ/Mq0";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf07.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764064560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vL2SF6DadjEfReQqy+MahpgoTUep+XQ3TbZINCjIIpU=;
-	b=VDU40rbKT71OPpdff5zNAPaz9V+o6J4SIm6urs5jbo7ouJpZ3YGa3S/kNQAsH2RYtOjxHG
-	/60Ri7oLloADZNcbbBEuQZWytA0oEYR7e3Y48JeMOU7cXJyvCFPRadmiW4uizu9efHrG2x
-	l5ncvPGxG8tcjOtAXhYvblXT/9On8sw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764064490; a=rsa-sha256;
-	cv=none;
-	b=svVzTnR2oVzqwNUCnqzMf344oBUUZPJpPLNOZC0pWQpaUTZB0JMeb51GQbAkJmA+VxpB3x
-	jE5HlVPA2a4OcQFftkeItbYRteLGV6KP1QjPK4L9mB99P9AXfeGKlRZvGbXKvS+mnYawn9
-	W8DK6F4f7ik09F6u1dcarVrZ8Qc9Lzg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XPOqUt1e;
-	spf=pass (imf05.hostedemail.com: domain of smostafa@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4779a4fc916so42755e9.1
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 01:54:50 -0800 (PST)
+	bh=waI/9Se7A6tGbJT4+/fNIjhJlNL6Y5E/aNl/eKdsey0=;
+	b=Q3eyCfCKZ8lsEUtd7o6RzYFNg9bx2iZ2fgPKdb5m4d5JVUf9eSu1WGGYVa4VK2D0J1ISWh
+	U+ZthTEmS/KBsdr8Jb4HJ9V/hlFOSMLqDwIfmdTmUjDodWYZmRbaYA4JQTASIfhIU4Nc5K
+	t9wNbwxyDQnwDbTWDdkcXUr+5C6t3Ds=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AP9SNNW2394974;
+	Tue, 25 Nov 2025 09:55:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=waI/9Se7A6tGbJT4+/
+	fNIjhJlNL6Y5E/aNl/eKdsey0=; b=Q+F+GamxBGU6DcM3uO9Sqb5qZ3xVppVDjk
+	iIp7R4VIWw3cBzGk8+VbLf1+w8d44fWxEuRM38RINgokAXPl5qtPIefAJAKH+EXC
+	oSJKm8HSdOD1ANANLfkPNLcJ8s0c9gvNr/8zmkU0BCsi+InBYbSwq3ygOJNvdCWy
+	Z8a7Kn1FYOQtJ6wIwTkLnkon/WWygDQVDKEgdEUrwyHxMWJWUoJD8Hw5yW63pIbM
+	MnkX8jfMcPe5GjECZvrAC7kwocY5BRW37PJsFmrjhQuXl4PGE8j4vaBCo2APHizI
+	E3BYOA1PVbqWjBlEjNsJXEAN258FVKN6N07uDbBTO+YlYSNa1DLw==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak811m9ej-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Nov 2025 09:55:32 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP8SSVM032705;
+	Tue, 25 Nov 2025 09:55:31 GMT
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010002.outbound.protection.outlook.com [52.101.85.2])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3m98hx9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Nov 2025 09:55:31 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JPmcvG3h4Mprb2Jtm9IBHLW528q5VHFGt0ISRaonBpj6X5rbzlLsLjkhBTJ0GGd+th42SCUlU1cL5LpGBM3u/4SyQDF0e6iX6wgvFKJ9dXEYuu0Jl+1cnHVZsZFpMqlm+YoBglGOoiprXsRUDIT8ngJYo6XK1qVCwT22VnpEaFl/Ky4SlC4c0SGPgkapDUuImGewkpxelB3U0cZ5V824lN4wKCl2Tn5Vu241cBuvqbXQUCP75s5YRqVQJ523+qGWD60C9SJM8DGDZOQUx5kNNAm/sJdhVl32ed0p19Yu20j7XTp50/1kSKINBrutTh5jf7uS/0dGcjoKVd8EHCic+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=waI/9Se7A6tGbJT4+/fNIjhJlNL6Y5E/aNl/eKdsey0=;
+ b=PAJL7MOD5cIotcEJRfWEN2vdct0B7HTL0QGhO9rcrPE9ntEcIjT1eVCV1Lqfj8twVFjLBMXChG/3gJqMqu+UAVNK9lutQYxpsXtcAblV4lw5WLFatIDNkKrbtomwuOH4i0R+fX8K28HNlug91wnMoauPyJy3itSKY4OrhdKaaGrDe8GL2jI50cjVG1Wo4lQuCoxo98ALyTbWOC0vnaahQ6Ylot3Y1lq22qpyXMR1ZgDKiWcKHRROnYa8V5jk0QH/AjYF/XjBBssM9NPPhXGDBCZH6SndGfykqAMeUuE/n0TeKnw5BkBwlLegDMLm5/X8XHGljTiRAQk2uimspf2LTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764064489; x=1764669289; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vL2SF6DadjEfReQqy+MahpgoTUep+XQ3TbZINCjIIpU=;
-        b=XPOqUt1eJOpKzbELaYUvnxihrDsF1AgsEHIXsAaOXSrIzuOYZNdfZ99QxCCONbgqOW
-         JZ7DU31VXE5hXOGy+lpq031KAa6It+GXjHiaX/65RU7/33plyXQFJ662XQGJA0Oaa4P7
-         KSK5IPd7foJSCHYx2t1FsQRXHULR8798QLPAOELeZJ5XFHHedzhCcMVrbUU/Z7mvaHYJ
-         JgmyDLZbeH+Ifb8GjZ+uER4a2NXY/cSkg9Py2yV/y9O8KRW9+K0Lz0CcALOQmbk/hk+C
-         jfkf3brvFnzd6lr4rmHil5GvDdGW1lDC1iLRwz/Bx1vGvnNoeyBUXX9hpa2+Db0CI7NY
-         YBxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764064489; x=1764669289;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vL2SF6DadjEfReQqy+MahpgoTUep+XQ3TbZINCjIIpU=;
-        b=O/7XRZgnyyw2YO10AtPa3I1cWP6j3jHFjaalcx1Rb9AZH6XC50n6RLfEszU2hBZmTl
-         xdmRCG5Hgj9cBxo4dWquGiEiqtPmX8/NNOrZVWSbe4s5TbIO7XsIidmNf2ytrTHH6C/I
-         7vqW00GEKSVWU1JHhYIX05j42izsbhH5wcQAHGUVRP6xOUsOeSd1Pmtp+zPprvrKoAHH
-         YEhALTq2DXfOlhvwUOuRlY48e8h5++W6OiW/Ct4H3Oc8GiD/rvWeELxUNFOVMAywppaq
-         blcNQkajBzuvSgFg6JMqTvUvcAd/vQo4Bqf0ENhiCBiCGI3P8rXPYQRTwB6yLCv6TzAs
-         GbCA==
-X-Gm-Message-State: AOJu0Yx+R63bjU3PU1hgg8yVkBdA9UBDZtL5TxbNJUFrT+oHgZZTLAgC
-	3pFi9w0It27vNxkyOf33o21WXnN5O1SPuXJqnQV/6kVajtooV8UYnM27t+5KtM7ndA==
-X-Gm-Gg: ASbGncvppNSFdyTMEKhiYgLiJd76Ej99JsJw3Iud+nj/YR5Bv8u0UPagEgPaFnHZ3r1
-	bn15EXgyQCB/GMXhrN+MV0zHlqWlm/YWTSs0smM/1uJ0ksRlN7RvvlKWvbuxkRQuyYNNUZiibKM
-	OzRWmI8bePL89SAU+UaC3TzFLLoe8fF+IgLUws+p9osLcyulzwy8315HB6+S1cfcV+BERUlnSPJ
-	LnpAVj7UH/2cxUXyUB4OY7aExJrO1yF23yPIudGBiBg/l2iQGAw/lwhSK/ADrOIExlxH4eLqMv2
-	0eQHYj34cxh/WjVSU2mDlYItXBSDirH5enAaeqJEC6C7ugf+b/zs7kY2HwHhYUxsw0NYEu2kbOA
-	sU1t7z5EMy2NatDQ3Ln1Ba+MG7JAaE9qcxBRb7PQh2kBnkBh7SLWsdFt/B3nQFau8BQmeNwiaLD
-	nJAW3bl1b9Iope+p3KJcPCt+4djhUwG85pSLhJe20X4DdZ15t3hA==
-X-Google-Smtp-Source: AGHT+IHEabe/7pXhdzmn7h02Or0O3qxqSNjpbYe1IcSPnLYCWEVv/evZDk1iZk2r+Q06y19BisRFJg==
-X-Received: by 2002:a05:600d:1c:b0:477:86fd:fb48 with SMTP id 5b1f17b1804b1-479068edd0emr316815e9.9.1764064488818;
-        Tue, 25 Nov 2025 01:54:48 -0800 (PST)
-Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fa3a6bsm33143282f8f.28.2025.11.25.01.54.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 01:54:47 -0800 (PST)
-Date: Tue, 25 Nov 2025 09:54:44 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com
-Subject: Re: [PATCH v3 1/4] drivers/iommu: Add page_ext for
- IOMMU_DEBUG_PAGEALLOC
-Message-ID: <aSV85G0F4bQNYwHE@google.com>
-References: <20251124200811.2942432-1-smostafa@google.com>
- <20251124200811.2942432-2-smostafa@google.com>
- <5f85e519-5a05-4359-9904-06f16737e28b@linux.intel.com>
-MIME-Version: 1.0
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=waI/9Se7A6tGbJT4+/fNIjhJlNL6Y5E/aNl/eKdsey0=;
+ b=ssCJ/Mq0tNuGunHXDSZ0lIN4RiVKIBozLStUMIK8JrS0apVyU0ABgfe4F+eb5s4TI4y22mzG06XK6BxRH1lmRWqrc+SUYC7kZ6C6AXj+baQLGXRITkl+BNF1HYjg0MOTT3+N2GK9BMoxquJObRyhzSWWjkQ40700wFA5EigsNOo=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by PH0PR10MB4518.namprd10.prod.outlook.com (2603:10b6:510:38::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Tue, 25 Nov
+ 2025 09:55:29 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%6]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 09:55:28 +0000
+Date: Tue, 25 Nov 2025 18:55:12 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+        roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+        muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
+        ziy@nvidia.com, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+        axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+        akpm@linux-foundation.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+        Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v1 23/26] mm: vmscan: prepare for reparenting MGLRU folios
+Message-ID: <aSV9ANXym0UDhE2j@hyeyoo>
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+ <cdcedd284f5706c557bb6f53858b8c2ac2815ecb.1761658311.git.zhengqi.arch@bytedance.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5f85e519-5a05-4359-9904-06f16737e28b@linux.intel.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 96B5C100002
-X-Stat-Signature: r38qup79ech3jyuws9xika5ju63sokcq
+In-Reply-To: <cdcedd284f5706c557bb6f53858b8c2ac2815ecb.1761658311.git.zhengqi.arch@bytedance.com>
+X-ClientProxiedBy: SL2P216CA0201.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:19::23) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH0PR10MB4518:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5cc7a48b-ae28-4193-a3da-08de2c08c38b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?VUjamwHl3ptxS6SAY+FpucWqjQJ8EVaLPGt4YP2QZL676tdK8PWMgBjoJemV?=
+ =?us-ascii?Q?m+GW6NjEUwpXm2HWQLYND5pHZJDczQOmqhU0X3dcg7pNxL/BKdF5q+brHZCZ?=
+ =?us-ascii?Q?jKkiGMtTZwnUpUMHcYyXn0m6TPkkutI20FZ869HU/fIS2FGSDC3dVweo6F+k?=
+ =?us-ascii?Q?qULrmptED7SjwU+X+Q2tzNJ/NnDcmy1bP0/Q9/ET9ukj/pEEL+cSTEDeNpdX?=
+ =?us-ascii?Q?2EpvjsFAQBXEYk/XcbHILThx45DK49A0eDHx3RzRPs4M12ptJiovrBYeSWnO?=
+ =?us-ascii?Q?ZGz/ooIyJkau6KoqHx6x8TUYKMgpOBII2nlw2YIGYcA9qTN5F5JflJirtTN+?=
+ =?us-ascii?Q?WOv2pAVwUZJdfKntJbbAQPPgN1avT+caW4Pl9VYr8vwqEpFjezI/OSUtyaW6?=
+ =?us-ascii?Q?PplfaYEuIOw7CLTY58txdA+lSQ7S6+thnIH1OZoAWWGADUBdBi/YmKcLYqRc?=
+ =?us-ascii?Q?ewofrfbifhA9Ckq51/gldK6PE01GpxdGJaE6d9gdrUoGOLqBe2gaAuXMyrRb?=
+ =?us-ascii?Q?sPyuAoaMyGjEEWuI6GUnSZAXkdJpEpdx9NW5M0TA9jW/k0+118CxZVz2Tliw?=
+ =?us-ascii?Q?C9Gsbbf/9SxgCZkrHjy6WEP4vgA7A+8q70TRAEddandVQZaBEa2luhb0FZXk?=
+ =?us-ascii?Q?Z9XYqkT/AH11FpPXgfrcTIcxIwqqNzfD/r+CrlaAV8M/WRtsmSlOFPZW2Nu9?=
+ =?us-ascii?Q?Qs8tfgCZ7n8GQ3R8O0WuDfckfjTSgMaqR2kxJMvJrramZNEDpAt42LF8jIi8?=
+ =?us-ascii?Q?pEgv6UFg/LGC1NFCINZXAmrARX9xBQPBtSAx9H+FDOwaTNxBBM9/VVUCgGxs?=
+ =?us-ascii?Q?A/9QviypJtYwfPKFpR6wf6JhAsuVXHpesBJ3zPLp+LiWBTOqoocedFUOodaB?=
+ =?us-ascii?Q?2RaSDmp10n2QiYyrQ0fjuWYX6lXZsfE0GCrvC5uZPMO5Xdbtv0wN4o43e1xS?=
+ =?us-ascii?Q?Y7TCtOO7UOWbSG/LXxROkVzorry0UjE7Xwbbq13c0x6aajQrM4DhjHSkambJ?=
+ =?us-ascii?Q?Ct9XhSO24QNJtirrk/iWnd6TsYCgFZ2K4dt9uKJW3ejBdVh2po47LnuPs46K?=
+ =?us-ascii?Q?lO5f/hONCiQBTJUf5XiDjW6fjIXITjI2DQQ2D75FZ8hAAQSR/FSh91To0ERJ?=
+ =?us-ascii?Q?oi1bamIOlsIfS0+lypERQiXZChZSmEuziQjDVuD9x9a0HATMaYiRD+arHNzU?=
+ =?us-ascii?Q?IyBfY68sGEZJv2P4YkrMxEQKXmc2LCAWci8XtJIU9LIRHX10KFblzQXiT4oY?=
+ =?us-ascii?Q?arGnYNwcVmDinOKshLAAv0bGqLQW1SJpYTDRXhB2Q8cD+n5C8UpxLpRnYHT+?=
+ =?us-ascii?Q?9lOqyjo9KhHzr4Ns4/3V1vc0ABOujQ5g2TQx/mi7bhWPEi52P3CgAULrojmI?=
+ =?us-ascii?Q?fS9b9QhFT5D3hltvpByuWYEcByMmqK0Ch1m2Y2nev9+Hr8KcwGVt+7Sg1URM?=
+ =?us-ascii?Q?wd3O2y+Y24KYDT2kjtjQvguwRuF9NeKY?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?90nHyYJfzloTLcSI24I7W6svGkCTyboIpvo3GOBMK3pKrILQJvy0xJzUuZFn?=
+ =?us-ascii?Q?h85pTvRNsjGlwXH5d+KPAYNSk2Qs5BF9cdNIMIM2ouzL+9ZuQAc6adhzRPFM?=
+ =?us-ascii?Q?yWa9reHFqQ/5b8FXj1AIFfAuvmyKtmPqJ4Yeh2+HG7x+q4C8Zlqbvwmy8Ent?=
+ =?us-ascii?Q?77bsszFyxH6Tfb3zCoMmrFxlmDQWzng3j8khEgqb+owmBt1LbDX82XTKKevd?=
+ =?us-ascii?Q?YvoPVPZRxdUPJu2oq6hYxEksfqMM7t2xx+6SOcwqFWsy4TJIdELHcBrq9ma2?=
+ =?us-ascii?Q?n4TVmHbjNqRMq5m6Laa/i7Sf+cVK+ve2fvwKiQLp/w7qlhcX2N0Q4uLcM2Mw?=
+ =?us-ascii?Q?NZ/OMhxUvPs4w00rz1XsjJBbuYHyS4tBTDoLIs20l7HMF6z1xx4tXL9IAg6Z?=
+ =?us-ascii?Q?yBrG0/o/sGhgFzZhLXcQ7RPsXT6RSUa6B9vvVc7Zp01O4kKREdEqGCItaMr8?=
+ =?us-ascii?Q?xkRLEklVanssjWDV4bOU5xGATaLwC2sw/zCMK+c5xokeobd0em4kkjM7Nxsj?=
+ =?us-ascii?Q?ERo+TgDb4Hxip1rtan6gRVfUy8x0QGG9SCrj/rYQVWpOrIr9kobrIC5ppFvh?=
+ =?us-ascii?Q?AIGg1JLP+Txdtc607wTszgacXhPCgAZwLNLY3uQr2VF374kISaah0X/4sMPR?=
+ =?us-ascii?Q?xl8SVWW/63dxwyXDekrD5TGP7F5Agr0XfyvXgaSyDMkx+j7lKxuqLK8LlERs?=
+ =?us-ascii?Q?7epDEuuOQ/WMbEt97YjDI31wIJFKEQ/jt0s4zK1VwEKI0FqQueD/avQzlixm?=
+ =?us-ascii?Q?gZ2f80rb+qxQXqEBqSeDJk9NiQHUcCNuNSYP1TCFRc3WfGMMo/zcgL4RK7pL?=
+ =?us-ascii?Q?9K5sG7yApdphfq7TEL58Fydl3eizy4neQwCL3TnnxcbhC8GEZSo+E5yKHaJ6?=
+ =?us-ascii?Q?pP0SEcyyzb58zqDZWH0yTYCJs2p8YeJ6TYs1AF9wwNQkiBNNgzSjph+XnILj?=
+ =?us-ascii?Q?r6E3Fqv10RKjmYoMesoUnQdn6EAsGePc5xFQFmGzvjI8DuAxyDP1GoMl9h8t?=
+ =?us-ascii?Q?pZmtmuVbk3TE7pjjZuNrm46LIg/Mzz9BXoljA8B4K3r3+fweGXT26USnGnYc?=
+ =?us-ascii?Q?gTtZ7mgKH1gp3cHAcODUksQJkGZyPwt2/EVFflLF7szElPHCq9uqvRDu6Tcm?=
+ =?us-ascii?Q?hUD/IjhgNQvO+vvqn4J0i6eKBLcEf4D1OPUaTJ9gclkEC7Tbl65jYaG0CC8b?=
+ =?us-ascii?Q?cPTXLIJ8fF3luovf5OpU1HMT+sXvBj2EZBVsuNIfV8iJPlEqCPkji9LcGSYY?=
+ =?us-ascii?Q?NZlWNzgZXNLij+s2dhHWn/d8OriEGeTjNtN/1zKl8D8I7sLODzakbrq8YlGd?=
+ =?us-ascii?Q?n7cGIwPeSqxXwlxyOP0L7PLXbp4dD3QrYiPvmhZu4cMnh2PQck1diSjkU1uD?=
+ =?us-ascii?Q?bfxGfpGj63B8Ood3nXLLNXVPuesWAtFnQHE/fW5Uqtw9c5R6OLa/QWKik9Bt?=
+ =?us-ascii?Q?64yvUrLywckKmZ61eYkOIlVI0KxUQogHY+HrGHDdySZ3TDuBRXvsCuRdPKa2?=
+ =?us-ascii?Q?ZKpEmVnJpyZ44xivxTG9i75evCZaYhkAtmeCDJgDkgowOZk6+G3yK44anf2a?=
+ =?us-ascii?Q?RMthph7Zg2aLCPCg7XD34qrdwjd3COR084Xqc3h2?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	SVx3HmSIHBEX/PMDdU9QSBQ25+Cs8Px/DMQhYqBxqkzjkRBxnJsyhfhHUrgsFoam5fS31VoVtq/sHMrhZ3VJBLr0iafbAACu3swVGseAgBLkFVhyO+SM/0TJQe9YJXZ8wL1kBB3B5qh/PIKGZMKfPaK+2c/trGpCTAjf5gIZPxvsmANzv4DAtMfPOFjCoxQqE2UnxhQAW9AygnWMJYYzU4uwAkHOPLVYWgNbWsGOScAneDuglHfON6XkqdJrlZG9ZlplDuZ3Y9YXbrrcxyKWZotGjSmUmE44rAsbfO5A7CZX3aNidUgJbJmrcvpODaz1ArhwAVWgT1fQhh8fWnG26nBfFSIXYS+av8khL494Y6KePy9KRtJG2qLgzAtB0Ixj93aoPc3phxRk/CFBnI/+/SuscYJDdCpIwJSUTUhAHjVoLQrasbA/G5k0/dCzmTSNocnnP1kbHjU2REUwISX6ZnGwcOFj8TRRDmwWDTDIjp5htuvcDqb4aE+319i+AjOnnHIHgrtILP3s4zrLaC+uPLRkMNewlJU/6BsTEi5DGiCn/1JOT9+Get8u4RTkzHDaperYZAoWkOVi1hbyt2b9N4+1+6FwqdPpifbrTTDhkNM=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cc7a48b-ae28-4193-a3da-08de2c08c38b
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 09:55:28.7397
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: s7lD4mKL8e2uyOpsqHWKqhzcC0WM/DA6SDdi+l/Z4Gr31lCzcIgFPK2D8KnckSXb+X5ZAPaBg7sA1vz3iDwSeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4518
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ mlxscore=0 adultscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511250080
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDA4MSBTYWx0ZWRfX1kXZ69nZphPv
+ W9hYyf90IRHml6t+y8OLEq0CGMlwTf8ZdjPeAlZYBwfJyGtGfjY26KUCMxKBtJz3OanQYkjVqEq
+ Mqyh+rwNj8gildIqqg/C/cQwaEMYaCSMdU56BM+OKPfuJkVuTddOJ4IyTQ79hWq7+bl68IYAf+a
+ 0LrWpuPlZDEknYsMecqts9BDJLBWD4765bGLsgtk3ZQvOVJdai/p/uv7iTTlyC2DyW5kfbS8eqW
+ HnmD8ur/FHfSe0xRdFNURb2XfupukhTNSi36eC+h50Kon4QRDyfVb3hLywlhCqsgFtw9CrTvHAJ
+ a87nDbGdOR+Ki9DWJd3ZnPTAQNJJm5dwNJFHv/95UY+/AAXyRdQXz3J2cCCXYohWtb3LyMfJE1Y
+ WPWmME47YnWRYTazg7XIlfbsj3w0+g==
+X-Proofpoint-GUID: zkvmNf03hKQuLPXo1MJzfQ5zjesqwXtJ
+X-Proofpoint-ORIG-GUID: zkvmNf03hKQuLPXo1MJzfQ5zjesqwXtJ
+X-Authority-Analysis: v=2.4 cv=KKpXzVFo c=1 sm=1 tr=0 ts=69257d15 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=968KyxNXAAAA:8 a=yPCof4ZbAAAA:8 a=5rndkMEsPp_5EL-MIF8A:9 a=CjuIK1q_8ugA:10
 X-Rspam-User: 
-X-HE-Tag: 1764064490-991195
-X-HE-Meta: U2FsdGVkX19obnPPYLzG1zpGFtgM9qSQYLJ0DGjqguKYSWFg0NQ/Y5PxEpz+l5fWfYK3t4KvWt0cSHg+S7HtzdNpJJ6VxYDHOz3dM5awzwD/X1FAMlKSXAh7Y+y4PmTY6/7vaH2Xk+RY1ZNlAELsq4PkY7QhxGfsA689I4tiWc+Ip5udqsGtG1kX5gWaGHUfnAN53ustM7fvMA9bLcx0u11gh+TyXgngB1db+jutDP4ACyZmC3nHXrYfbVrAKEtLJIQfTB6VM1DYXRKCl0gBj9xK9TChss3b6tBviNIJvKaxPBrBn9mgccBBDdx6x/gX3jAdLp+jKj2hSPhDAziLl3Enxs5g0pZPCDj7fBnaObN1CZH/kKP6BySGDcfjtAGXhiXtQIvqacb75at3/XElkUT6qLxwtCIuACIhgnUQ/cVc2MsLag9lYlHJSV9IYPwUvzV04/9Vqnyi8PPyHPlnE/vAQXsjS9TVzRZORTymWL/Xw2n0Cj1Yx5E1l0DSi2xTHYWpbAfSQSt8/JKOtS5xqhIrhdW/jyzvb7zY9AV/AUo8s03JncuMv/7o3bU6FYgo1vlCX/maiRtwnY40XKbrqzwcX51PtiN4kjSFEI/uIg4wGPOHZ5yYC+Jni+03Js6iYCuWHNkujOl3wyKVnwSmT8uY3+bTAhplTMLoKVgrj76FtKv49enF3dj3Wf9BaOn8iCv+DXyLTRPFx+vrwIdm3aaKnEyJM/y7Cdr3CixKvE9JBqT9wCMv0Pv0/hrWIPE4JoIyBS+og3nHt0iCRqHrobgF3pfEGp4T7SVnlx+1gxyB+WElQsGo4nEHUBrjiv4T8AjtZNrOltRPHHQ+dymqTonCjtcpAWu9F0HKQWgzMrkFwFvOl4Hpf/R+owfwHdmljO/RQ93yRLv9DdTgDJZcsR5iZp8BIWnXflhz2+ZdSGIwrAJI/da1GMM/tzJ5/VtraghI03qGzp2o0ybhVlV
- M19kfN1N
- lm7omJqoOHorD1Fzqh0lqCIgoetZPvmuPHd7q7KUG3mgAVuQZFkHVvJlr8d2DdZugXQMxQYlzJB2ZuNn6bVZZSr5wDq9rV+lQ4HGdPBmtGlzfgxXPIxTWabQFUM8O0vy1CURVjKxn+sW7SV8NF2e6+jtSUQ2W3lE60DBAh/e6ZdycfZEGxZggv5MY9GVTJb4LZh92lg+lZcRY/j+qBurp5DD4RquFxRzQmPPeuoMKK90RgVRxim7T37BD/at4KskxWlRkyS2E2Ck8JfmOT6xy/w6xvNzvgXT5PBjyrhY1JShnhC6C3JX5wn8i+8fZOt3u103Hx7leX162xPtk/CXIzkPFLSnhxYNWhpaG06w+Wv24csOdssz2bxwFM5Pxp6EZZZM2DIoXdf7Y4CoejSRxBaTN8+NimBGIYNNVsZhmOEgZHY5VV5+nRA7+Ykj+BIHkW0NKzZBGK+o//GMcxKoXbFyvCU44ZMU/aEVe5Tv/Xch7+AQu6KyR5BbNs5HjKSpNnC2Z6DFqtLE3gH4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6D57B4000F
+X-Stat-Signature: xifukibyqhcy5rmdwo4whiqz9zq9ygxu
+X-HE-Tag: 1764064560-410603
+X-HE-Meta: U2FsdGVkX1+w99IsLEruCvsSGP+JX9XP1jICTbdUXxtPeTsBB5kzQ5FwieN3eZYlddmku87plWUmJrwR/BF8bIEAREgMODnkI8L/0SCjKX91Km0biDJUH/6RWQo7F1ZigkMPBnuvv4wI11gqhEg0xYBDyuJlK+EryoN3ItFyg6624bMaIo6KWfgaZFNDdXMpFtztQnO57X3sfST9KNGMeaXKMhOJb5p28e5+RdE8z+fgDotLjZWOs49VodTm5NL95Y5V17IvFOWe7VUlTwVkahoZO2jnQpbfGHsqCtXMjWxoQ1sZIpXip7cEM//VAlKNrz71/yaLwschFfVLNinH9+TlPJu7UpC2u/rWo3kb5mImiQaSo6jANu0ZCmR12p73hNTjIRTU9UxzMkW44/8n11W9UVoHwY9xuJXg0WqbyKpr6TBxNQl7fHr8j7JMKiXsFNUI9WOUkz68+pNxYAyaStuYmgY9trS8Nj9364/WePyvVILEbHigrB52X6A3vWHZ9dqMJUbNDYLRlH8Q+ldWF4cd+sTd5cw4oy0o0zJCYTSgHA+5r0oyPEDVRIM3jTmubihWYlu5QpLngGSVtmHyCnF+VlghT5Dkb8Fc3GlJb9AS3NeLkzywk71g2ox6P/UEmgto55tAFepVDXH60uJa0OLGdfdVbirlKQ6zjXI1WX8kZK5VfKbsSFWI+SbEtvXAcrvCgHyIbvjWvYguy/r26XbfhKdqfmoyA30OTi6PhoHuTIsUsMD03Oj59WUarfTUC4+91+43iqevOtKBJhwXUNWjUNBliyW7+6oD/uS/3zfekwcW6xjAWySbILhZjEoGaCXEfwJ8CxwcdY9+KAGnRQ87XDxuWgzXahYErqPsOxpycVp/G81Pk1E3Ug6abK4BPKxKXDDkde1sAVH7yTv8Bino0gQykR1lmm/qSpy6Q5hpdOO95WPX/7EwwSAia6JSyj+pZQVHGZjZ3HDGqfz
+ rOFMfEHv
+ YYpc7Eb8KtlVLf8YTYe5COiD0v8942yp7wQzaq5IhZHvmC0zzjhP5dM82CUZ1Y896XyJRESw7uBqKfec=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,149 +236,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 03:17:47PM +0800, Baolu Lu wrote:
-> On 11/25/25 04:08, Mostafa Saleh wrote:
-> > Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
-> > page_ext.
-> > 
-> > This config will be used by the IOMMU API to track pages mapped in
-> > the IOMMU to catch drivers trying to free kernel memory that they
-> > still map in their domains, causing all types of memory corruption.
-> > 
-> > This behaviour is disabled by default and can be enabled using
-> > kernel cmdline iommu.debug_pagealloc.
-> > 
-> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> > ---
-> >   .../admin-guide/kernel-parameters.txt         |  6 ++++
-> >   drivers/iommu/Kconfig                         | 19 +++++++++++
-> >   drivers/iommu/Makefile                        |  1 +
-> >   drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++++
-> >   include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
-> >   mm/page_ext.c                                 |  4 +++
-> >   6 files changed, 79 insertions(+)
-> >   create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
-> >   create mode 100644 include/linux/iommu-debug-pagealloc.h
-> > 
+On Tue, Oct 28, 2025 at 09:58:36PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> [..]
+> Similar to traditional LRU folios, in order to solve the dying memcg
+> problem, we also need to reparenting MGLRU folios to the parent memcg when
+> memcg offline.
 > 
-> > diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
-> > new file mode 100644
-> > index 000000000000..83e64d70bf6c
-> > --- /dev/null
-> > +++ b/include/linux/iommu-debug-pagealloc.h
-> > @@ -0,0 +1,17 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Copyright (C) 2025 - Google Inc
-> > + * Author: Mostafa Saleh <smostafa@google.com>
-> > + * IOMMU API debug page alloc sanitizer
-> > + */
-> > +
-> > +#ifndef __LINUX_IOMMU_DEBUG_PAGEALLOC_H
-> > +#define __LINUX_IOMMU_DEBUG_PAGEALLOC_H
-> > +
-> > +#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-> > +
-> > +extern struct page_ext_operations page_iommu_debug_ops;
+> However, there are the following challenges:
 > 
-> How about moving above to below mm/page_ext.c and remove iommu-debug-
-> pagealloc.h header file? ...
+> 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
+>    number of generations of the parent and child memcg may be different,
+>    so we cannot simply transfer MGLRU folios in the child memcg to the
+>    parent memcg as we did for traditional LRU folios.
+> 2. The generation information is stored in folio->flags, but we cannot
+>    traverse these folios while holding the lru lock, otherwise it may
+>    cause softlockup.
+> 3. In walk_update_folio(), the gen of folio and corresponding lru size
+>    may be updated, but the folio is not immediately moved to the
+>    corresponding lru list. Therefore, there may be folios of different
+>    generations on an LRU list.
+> 4. In lru_gen_del_folio(), the generation to which the folio belongs is
+>    found based on the generation information in folio->flags, and the
+>    corresponding LRU size will be updated. Therefore, we need to update
+>    the lru size correctly during reparenting, otherwise the lru size may
+>    be updated incorrectly in lru_gen_del_folio().
 > 
-> > +
-> > +#endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
-> > +
-> > +#endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-> > diff --git a/mm/page_ext.c b/mm/page_ext.c
-> > index d7396a8970e5..297e4cd8ce90 100644
-> > --- a/mm/page_ext.c
-> > +++ b/mm/page_ext.c
-> > @@ -11,6 +11,7 @@
-> >   #include <linux/page_table_check.h>
-> >   #include <linux/rcupdate.h>
-> >   #include <linux/pgalloc_tag.h>
-> > +#include <linux/iommu-debug-pagealloc.h>
+> Finally, this patch chose a compromise method, which is to splice the lru
+> list in the child memcg to the lru list of the same generation in the
+> parent memcg during reparenting. And in order to ensure that the parent
+> memcg has the same generation, we need to increase the generations in the
+> parent memcg to the MAX_NR_GENS before reparenting.
 > 
-> ... remove this include line and put the "extern" line here,
+> Of course, the same generation has different meanings in the parent and
+> child memcg, this will cause confusion in the hot and cold information of
+> folios. But other than that, this method is simple enough, the lru size
+> is correct, and there is no need to consider some concurrency issues (such
+> as lru_gen_del_folio()).
 > 
-> extern struct page_ext_operations page_iommu_debug_ops;
-
-This file is needed for other functions added later, which is then
-included by iommu.c mm.h
-
-Also, the pattern in page_ext looks that users have their own headers:
-include/linux/page_owner.h:extern struct page_ext_operations page_owner_ops;
-include/linux/page_table_check.h:extern struct page_ext_operations page_table_check_ops;
-include/linux/pgalloc_tag.h:extern struct page_ext_operations page_alloc_tagging_ops;
-
+> To prepare for the above work, this commit implements the specific
+> functions, which will be used during reparenting.
 > 
-> >   /*
-> >    * struct page extension
-> > @@ -89,6 +90,9 @@ static struct page_ext_operations *page_ext_ops[] __initdata = {
-> >   #ifdef CONFIG_PAGE_TABLE_CHECK
-> >   	&page_table_check_ops,
-> >   #endif
-> > +#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-> > +	&page_iommu_debug_ops,
-> > +#endif
-> >   };
-> >   unsigned long page_ext_size;
+> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+> Suggested-by: Imran Khan <imran.f.khan@oracle.com>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+>  include/linux/mmzone.h | 16 ++++++++
+>  mm/vmscan.c            | 86 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 102 insertions(+)
 > 
-> Or, put it directly in linux/iommu.h?
-> 
-
-I tried that, but in the last patch we need to include that in linux/mm.h
-which didn't compile and required including other files which seemed
-unnecessary and that it would be better to isolate this feature.
-
-Thanks,
-Mostafa
-
-> diff --git a/include/linux/iommu-debug-pagealloc.h
-> b/include/linux/iommu-debug-pagealloc.h
-> index 87f593305465..b2b82cf032e6 100644
-> --- a/include/linux/iommu-debug-pagealloc.h
-> +++ b/include/linux/iommu-debug-pagealloc.h
-> @@ -14,8 +14,6 @@ struct iommu_domain;
-> 
->  DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
-> 
-> -extern struct page_ext_operations page_iommu_debug_ops;
-> -
->  void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys,
->                        size_t size);
->  void __iommu_debug_unmap_begin(struct iommu_domain *domain,
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index 801b2bd9e8d4..40133031985a 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -1185,6 +1185,10 @@ void iommu_detach_device_pasid(struct iommu_domain
-> *domain,
->                                struct device *dev, ioasid_t pasid);
->  ioasid_t iommu_alloc_global_pasid(struct device *dev);
->  void iommu_free_global_pasid(ioasid_t pasid);
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 7aa8e1472d10d..3ee7fb96b8aeb 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4468,6 +4468,92 @@ void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
+>  		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
+>  }
+>  
+> +bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg)
+> +{
+> +	int nid;
 > +
-> +#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-> +extern struct page_ext_operations page_iommu_debug_ops;
-> +#endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
->  #else /* CONFIG_IOMMU_API */
+> +	for_each_node(nid) {
+> +		struct lruvec *lruvec = get_lruvec(memcg, nid);
+> +		int type;
+> +
+> +		for (type = 0; type < ANON_AND_FILE; type++) {
+> +			if (get_nr_gens(lruvec, type) != MAX_NR_GENS)
+> +				return false;
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/*
+> + * We need to ensure that the folios of child memcg can be reparented to the
+> + * same gen of the parent memcg, so the gens of the parent memcg needed be
+> + * incremented to the MAX_NR_GENS before reparenting.
+> + */
+> +void max_lru_gen_memcg(struct mem_cgroup *memcg)
+> +{
+> +	int nid;
+> +
+> +	for_each_node(nid) {
+> +		struct lruvec *lruvec = get_lruvec(memcg, nid);
+> +		int type;
+> +
+> +		for (type = 0; type < ANON_AND_FILE; type++) {
+> +			while (get_nr_gens(lruvec, type) < MAX_NR_GENS) {
+> +				DEFINE_MAX_SEQ(lruvec);
+> +
+> +				inc_max_seq(lruvec, max_seq, mem_cgroup_swappiness(memcg));
+> +				cond_resched();
+> +			}
+
+To best of my knowledge this looks functionally correct.
+
+> +		}
+> +	}
+> +}
+> +
+> +static void __lru_gen_reparent_memcg(struct lruvec *src_lruvec, struct lruvec *dst_lruvec,
+> +				     int zone, int type)
+> +{
+> +	struct lru_gen_folio *src_lrugen, *dst_lrugen;
+> +	enum lru_list lru = type * LRU_INACTIVE_FILE;
+> +	int i;
+> +
+> +	src_lrugen = &src_lruvec->lrugen;
+> +	dst_lrugen = &dst_lruvec->lrugen;
+> +
+> +	for (i = 0; i < get_nr_gens(src_lruvec, type); i++) {
+> +		int gen = lru_gen_from_seq(src_lrugen->max_seq - i);
+> +		int nr_pages = src_lrugen->nr_pages[gen][type][zone];
+
+nr_pages should be long type since nothing prevents us from reparenting
+more than 2 billions of pages :)
+
+Otherwise looks correct to me.
+
+-- 
+Cheers,
+Harry / Hyeonggon
+
+> +		int src_lru_active = lru_gen_is_active(src_lruvec, gen) ? LRU_ACTIVE : 0;
+> +		int dst_lru_active = lru_gen_is_active(dst_lruvec, gen) ? LRU_ACTIVE : 0;
+> +
+> +		list_splice_tail_init(&src_lrugen->folios[gen][type][zone],
+> +				      &dst_lrugen->folios[gen][type][zone]);
+> +
+> +		WRITE_ONCE(src_lrugen->nr_pages[gen][type][zone], 0);
+> +		WRITE_ONCE(dst_lrugen->nr_pages[gen][type][zone],
+> +			   dst_lrugen->nr_pages[gen][type][zone] + nr_pages);
+> +
+> +		__update_lru_size(src_lruvec, lru + src_lru_active, zone, -nr_pages);
+> +		__update_lru_size(dst_lruvec, lru + dst_lru_active, zone, nr_pages);
+> +	}
+> +}
+> +
+> +void lru_gen_reparent_memcg(struct mem_cgroup *src, struct mem_cgroup *dst)
+> +{
+> +	int nid;
+> +
+> +	for_each_node(nid) {
+> +		struct lruvec *src_lruvec, *dst_lruvec;
+> +		int type, zone;
+> +
+> +		src_lruvec = get_lruvec(src, nid);
+> +		dst_lruvec = get_lruvec(dst, nid);
+> +
+> +		for (zone = 0; zone < MAX_NR_ZONES; zone++)
+> +			for (type = 0; type < ANON_AND_FILE; type++)
+> +				__lru_gen_reparent_memcg(src_lruvec, dst_lruvec, zone, type);
+> +	}
+> +}
+> +
+>  #endif /* CONFIG_MEMCG */
+>  
+>  /******************************************************************************
+> -- 
+> 2.20.1
 > 
->  struct iommu_ops {};
-> diff --git a/mm/page_ext.c b/mm/page_ext.c
-> index 297e4cd8ce90..345af8c9fcce 100644
-> --- a/mm/page_ext.c
-> +++ b/mm/page_ext.c
-> @@ -11,7 +11,7 @@
->  #include <linux/page_table_check.h>
->  #include <linux/rcupdate.h>
->  #include <linux/pgalloc_tag.h>
-> -#include <linux/iommu-debug-pagealloc.h>
-> +#include <linux/iommu.h>
-> 
->  /*
->   * struct page extension
-> 
-> Thanks,
-> baolu
 
