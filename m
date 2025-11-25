@@ -4,139 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69408D0E6C4
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 11:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32B47D0E6CD
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 12:09:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C24DA6B0030; Tue, 25 Nov 2025 06:55:45 -0500 (EST)
+	id 517D16B000C; Tue, 25 Nov 2025 07:09:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD3CC6B0031; Tue, 25 Nov 2025 06:55:45 -0500 (EST)
+	id 4C8C26B0028; Tue, 25 Nov 2025 07:09:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9BCD6B0032; Tue, 25 Nov 2025 06:55:45 -0500 (EST)
+	id 3DECD6B002A; Tue, 25 Nov 2025 07:09:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EDEC6B0030
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 06:55:45 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0CC7CBB9B8
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 11:55:43 +0000 (UTC)
-X-FDA: 84148974966.30.02301F0
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 81B8840012
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 11:55:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of roberto.sassu@huaweicloud.com designates 14.137.139.23 as permitted sender) smtp.mailfrom=roberto.sassu@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DF086B000C
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:09:03 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3BF4E160830
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:09:01 +0000 (UTC)
+X-FDA: 84149008482.17.3731F25
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9BEA38001B
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:08:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D170vsed;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764071741;
+	s=arc-20220608; t=1764072539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=clvUhxn43a+LvxN/oj4o63xwyx/LU+6ltnCbnx295aM=;
-	b=JyEG5qTO/azosbu+XOSGe5GvIrIrp46eA9nC90yU6mvWjcZ0FN1p/TA79nUsBszfOD46ps
-	GVFxqv9O5H1ZzxX8AJEVbCrYG9pUUiImebZeiPCjoLb5YprQ9KDDrwIpgYTTkwD6uZ2gDz
-	YQs0oDuJ6eiHy1dnezuIZTTqjO18z4I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764071741; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ELdoLOb/tIBx6c6xl5kUSgwbjhOhW5k7zrLZGG6tA4M=;
+	b=pFxrgeLTPZJclghMrClLa7N2oPxEp9ZaS74P+RjKPuWWpakul1WxljOY65eA34H/kgVa1S
+	4wv1o/fAWEivAXzn6jdK4XKT+MI4aT1oKgu5SqbEM+foYFXTiKTTZ3vduCwL1Bza5vKwck
+	R02nCrrb9cLZ2FUCLdWyU17uiggSIUc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764072539; a=rsa-sha256;
 	cv=none;
-	b=0+jbGeCkjUC7/mWgSg8FsHma8hZ6J7he1nYKSyuU6hPGox/p8Zd2iROwzkgbVhnKgQ4+KT
-	AKAZpYbzxUWCwQL4Z8Brr6eNWIMrYQZlMeY42ZA1grKlrfjrqXSRjU/1TvA+Ol7sWvMT52
-	9e7dQUglip+88nkVbT6XTcsNKKQjVQI=
+	b=xd5W8Hb/IScFflNlU5m/CjbkRx4nxA+29NdWKo+sIVhLkZdAVLaZLjKqq598W0oaxkJE08
+	k3OvE1I/b/15OqqDOzqn9oQ/lwx/3WaGPPwvhvFhPqLYQ/3vW2RRCv6bweaW3LTaXHybcV
+	fcVpxbpD2cQG1lZjpkuIKTwr3ncnZCg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of roberto.sassu@huaweicloud.com designates 14.137.139.23 as permitted sender) smtp.mailfrom=roberto.sassu@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dG1Lv5H7Bz1HC5W
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 19:54:15 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id 80982140948
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 19:55:33 +0800 (CST)
-Received: from [10.204.63.22] (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwAnsokYmSVpKucMAQ--.9S2;
-	Tue, 25 Nov 2025 12:55:32 +0100 (CET)
-Message-ID: <6dc556a0a93c18fffec71322bf97441c74b3134e.camel@huaweicloud.com>
-Subject: Re: [RFC][PATCH] exec: Move cred computation under exec_update_lock
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: "Eric W. Biederman" <ebiederm@xmission.com>, Bernd Edlinger
-	 <bernd.edlinger@hotmail.de>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Alexey Dobriyan
- <adobriyan@gmail.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook
- <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>, Will Drewry
- <wad@chromium.org>, Christian Brauner <brauner@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Serge Hallyn
- <serge@hallyn.com>, James Morris <jamorris@linux.microsoft.com>, Randy
- Dunlap <rdunlap@infradead.org>, Suren Baghdasaryan <surenb@google.com>,
- Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>, Adrian
- Reber <areber@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Jens Axboe
- <axboe@kernel.dk>, Alexei Starovoitov <ast@kernel.org>, 
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
- Luis Chamberlain <mcgrof@kernel.org>, "Paulo Alcantara (SUSE)"
- <pc@manguebit.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Frederic
- Weisbecker <frederic@kernel.org>, YueHaibing <yuehaibing@huawei.com>, Paul
- Moore <paul@paul-moore.com>,  Aleksa Sarai <cyphar@cyphar.com>, Stefan
- Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>, xu xin
- <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>, Jan Kara
- <jack@suse.cz>,  David Hildenbrand <david@redhat.com>, Dave Chinner
- <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>, Elena Reshetova
- <elena.reshetova@intel.com>, David Windsor <dwindsor@gmail.com>, Mateusz
- Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, "Joel
- Fernandes (Google)" <joel@joelfernandes.org>,  "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Hans Liljestrand <ishkamiel@gmail.com>, Penglei
- Jiang <superman.xpt@gmail.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>,  Adrian Ratiu <adrian.ratiu@collabora.com>,
- Ingo Molnar <mingo@kernel.org>, "Peter Zijlstra (Intel)"
- <peterz@infradead.org>, Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet
- <edumazet@google.com>, zohar@linux.ibm.com, linux-integrity@vger.kernel.org
-Date: Tue, 25 Nov 2025 12:55:00 +0100
-In-Reply-To: <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>
-References: 
-	<AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
-	 <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
-	 <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	 <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	 <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	 <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	 <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-	 <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-	 <GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-	 <87tsyozqdu.fsf@email.froward.int.ebiederm.org>
-	 <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
-	 <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D170vsed;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B69AE6019D;
+	Tue, 25 Nov 2025 12:08:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF23C4CEF1;
+	Tue, 25 Nov 2025 12:08:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764072538;
+	bh=EZEFgzwKtEIgXMiMD00SocZBXA5FusLtrAHuJeoOxAE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D170vsediSym302YA7i6jtCyqbam0J3ZnMX8COM/dyuLyoVSXcxbpIvO3/iP+yJ4y
+	 8acujUW2vueKrIEa69G3CxyE6JDC4awoJmKO2DITgEQ4qmDwJmXn2ExK0C8oLJEh0G
+	 tq/amk7sIpOWlCGolOD39TL1bVSEe9AX5+qEFpt+LKHsql7MP03Sk6Toqs29czU0bc
+	 MVMGidXne71SKxMuScY3M26FWK/4fO+l4CWjREe8Xu53vaP+rHHnRNWVt2Kg3WLJad
+	 8bVcGMOCRLiW21+6zCxQN8hB7XJViOJL6wKMmI6QLqlcUDDAsl7m2q0P7bwU6BtGt6
+	 u5KfUJS7i0Emw==
+Date: Tue, 25 Nov 2025 14:08:46 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Bill Wendling <morbo@google.com>
+Cc: linux-kernel@vger.kernel.org, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Marc Herbert <Marc.Herbert@linux.intel.com>,
+	Uros Bizjak <ubizjak@gmail.com>, Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	John Stultz <jstultz@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH 2/2] memblock: annotate struct memblock_type with
+ __counted_by_ptr
+Message-ID: <aSWcTjgiUKjKINw8@kernel.org>
+References: <20251121193957.1655580-1-morbo@google.com>
+ <20251121193957.1655580-3-morbo@google.com>
 MIME-Version: 1.0
-X-CM-TRANSID:LxC2BwAnsokYmSVpKucMAQ--.9S2
-X-Coremail-Antispam: 1UD129KBjvAXoW3Cw45WFWrCrWUArWxAF1xuFg_yoW8AryrXo
-	Wagw4rCw18Jw18Ga4UArn7AFWUZFWDG3y8Jr4YqrnruFs5Zws0934UX3y3WFyIqFWUKasr
-	C348J34j9Fs5tF1fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUY47kC6x804xWl14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK
-	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
-	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
-	7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aVCY1x
-	0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVWrXVW3AwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
-	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_
-	Gr1UMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
-	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
-	7IU0EksDUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQADBGklETIErQAFsF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251121193957.1655580-3-morbo@google.com>
 X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 81B8840012
-X-Stat-Signature: 6fxqwpij6ukogwkk7pk71hhidf54aqr4
-X-HE-Tag: 1764071737-858553
-X-HE-Meta: U2FsdGVkX19MKhOB7qXEGSSr0ALg4DdX3y+v6XkQT4VZfCuzqTwYTQEqVB5l37qFgd6EcK+QAUg3NDby55srr6/vuc7qOOJGBneLggXzznpLn/K2ae6ZYvT9a4PMOdX0jFv/ilUU8qSh5gz8d+3+DvmaRmBCGHXUCUAmfh5EMDfX0dTdha/nnRTiVLVkIUufECR+54+31gwKwWkqwoUH1GZhPrLnMwo9s/LtMHY5/I71BL+4YNgbBH3VyqqPmeQ2gga/D7IFkOS7eMYRz/vsWs6e7vlWGOCjFWUAahQGX21yQZH+T8XUxcFAdJ333+ST3eZnhGfyQwgiyBpqr7wCvKga4ElA+JUWRLD5XvBqOZEi5QWRngBrbghOBD0E9TrAXVbYeBUR+QGRsSqyIVMAM4NOE9hoAyV6QP+xud1V9B6Jopwjdhnx0orx9Df1KHDxHgzR2hvybauAVpF7JZvtEawTlb3DahYqbVrwv0ER2rZGAfwMzkX2XLv3Qvv8piw3kdcdKKW0zp6EVShpJkfjyu4tYA55us36sq1HpnJUU6R4NapTLP6tJK/kijYDbOb1lfVYX6MnVcSYtROJ4Yyf23s4CCtl5YdKMRxNBQOSLqQF8TubEp2bY1eST3OvT0Hs7pLOzUUa8dd4pTKpOzA2NWDtt5WGbaZE2usFgrtdBP2CjwYaBKgpKZ86pwwugL2dbma+LkHMCYDJoN2SrAhSPegqY8riJ4HcZ+tDn4WUrMue6Q6A5nb8sh2yIJ8B1frqUowz9T7idrcW0/9QexJYaQ3LBwBkPtxVKI7Q4GoqqN1f0vCTfYg3h4WZ2dtu/wAbWcKqavtJj8s976vjmdMz5dB7A12a8exCvwnk8ue/2mBkzlGmsmku7pwmnQ+hrXjjzbuZzsFWwKOP4UpvItywWVbxCUnqFluS0sPsD3ypSkyYLzFXEXrdE/Vucjdh48V5phwdnTsLLrkOkkRy3no
- mHinG90e
- BGdOyNiI6RlCYHuQHj1qi0NcPsGdlYZBAWxLWg0wXE6bPOHBW2ZPCSCK6SuzZyRIPU0LdZdlKMfQqD7/6VqXwAU5Nhc+1zL2VAkDSM/YstXcDDKg5/qaWWNz7TEQbEP9G/N4PB1eyxSCjJ2e7kHwdKev1z6+ApCpQiRXmLlWZ1xguFB3uYMVy0dPJc8Q6TgSyNZYuYJyhKmQUR5P2KlcegaqdbfnB+ue2OtzkOS/Ey5u9/u4GwMM00r98Oo0hosgM1eQawarMVxZ3efDZoMFtWGpWIr8u0Iu+EDgN7PG2nB2lz4jL/qEQWTiLEYQL1vQl6PxC
+X-Rspamd-Queue-Id: 9BEA38001B
+X-Stat-Signature: fsjrry4ff9kzbwp69uh8jydeqzasm3u3
+X-HE-Tag: 1764072539-428041
+X-HE-Meta: U2FsdGVkX180Ertom28vaA6TjzJtyIRpQdRsIC3abivF+YJYtCE+CVveCms53HKSNunQpLI33Y9TE5APTOl2y75TS1t17YnUH8XfoEDBla4BWlkPET51RWXbkJKQ59YaGvfd3LpscVUjsuFLv7gJSt4Octvevh5Sgq8eNSkVIvnl5RlcdBqfB6BbSh9ZFG07YcwWitSAV/v1xBV9+js8ZLQ/jUASsD7SlsB6O9VgF7tEnf2DbB9KwoSjsczRPP05rQQxmLaaFNwsdF/TpBoqX6RLXuKoiatWYZyVHaYV4JnDkohg/8Viq04N0PfPn1UkY1iAA7+BlMwTVDDgMd/2UKxq4WVSMrfKswd/mXgXdlc97eb9H0SSG6Ls0Tg0yR2bjYuIDJRQWboO0PsmlGqjT4qhTKNLNeVaM3zC5gMXoFjMp9nSbyB3Q2vjc3DGEu1Y2JyXr4EJjbEM8LZMgtyHmI8DejHOtUTvsTPILNkxVcjLrkf9awKaFvIUdFkBwqYaRT3IfO9RguLCUrAzZTv/p9lATQvCeqM2o4EHMe0DH0f6AdMXEdx8rQ6d1r90FkqQDLxIqGZQAeo85Ol0Yldv0kpt0p4fwaoDglrCVYZWwD1oRrbi9pvWJp+Lp9eqiS/imKMQgK2PdkYRO1e8nRY2UtaSikSz65DB3T/XMn+k5h3TM0XcxqnpxlBpI3NmIT9fTcJgxiFPg4vf25xQuGpmfew+4oqYNw6DFrosUDao5vr5zDxb56oqR4wJBw9POk6jg/zA1Rrk8SQlrMMLNIxmC3ryjg9fNUCJZ7Uwwv/F69039+nwHFLP0JbJLhjnaq946qwFeEThfc+X9PYM2gf9Nen4uJPuTSAxCYjS8YmZKDTuCLB/7PQlsnwR13h8ID34UTrNtKFr28Mv17eR1zzl5/4pakep9IyjQmvDgttTfm4KWOks1ngTjO4ftv/giP0ck8psm6/jAyxinoFBrWR
+ PofTeK5T
+ ex1hWfn2VK6Z1hNJjkHB4iI2vtyRydjXgrirS2dpywAKV8SXb7fX5viti1P6ia2wIWH5gWV82PeVK62CDGC5374UU7dYBOWRvCrQNvaVYKVngx68D8+FzWPoGL35W8b/weOUbraoLsCBYKhLHU5POKdbayA0UmlWWKiBG/gu6Kon8dkbiSrYC/IyEaLcXqReg8PgBetEHwMQSupZwfCyMibSAFX0T+F8ssG0mcgMU3cdEKkypRBp8/uXG9H9vDyu80x32hMn3cRyLWkAiRTXKNwapan0+rrZOm8bB41e378tiqpaNljv20bidR2YnHfZWN+/1L7yYXuIgPetMPlQj5rn2t6Za6zjeEvQxI1OVSdrZdYRcQNppEzY2MfRrGY8/AM+QkANCqRsvrsISPg8T334gEg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,502 +112,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2025-11-20 at 14:57 -0600, Eric W. Biederman wrote:
-> Instead of computing the new cred before we pass the point of no
-> return compute the new cred just before we use it.
->=20
-> This allows the removal of fs_struct->in_exec and cred_guard_mutex.
->=20
-> I am not certain why we wanted to compute the cred for the new
-> executable so early.  Perhaps I missed something but I did not see any
-> common errors being signaled.   So I don't think we loose anything by
-> computing the new cred later.
->=20
-> We gain a lot.
->=20
-> We stop holding the cred_guard_mutex over places where the code sleeps
-> and waits for userspace.  These places include the waiting for the
-> tracer in PTRACE_EVENT_EXIT, "put_user(0, tsk->clear_child_tid)" in
-> mm_release, and "get_user(futex_offset, ...") in exit_robust_mutex.
->=20
-> We can remove fs_struct->in_exec.  The case where it was used simply
-> never comes up, when we compute the cred after de_thread completes.
->=20
-> We remove the possibility of a hang between a tracer calling
-> PTRACE_ATTACH/PTRACE_SIEZE and the kernel waiting for the tracer
-> in PTRACE_EVENT_EXIT.
->=20
+On Fri, Nov 21, 2025 at 07:39:44PM +0000, Bill Wendling wrote:
+> Add the '__counted_by_ptr' attribute to the 'regions' field of 'struct
+> memblock_type'. The 'regions' field is an array of 'struct
+> memblock_region' and its size is tracked by the 'max' field, which
+> represents the total number of allocated regions.
+> 
+> This annotation allows the Kernel Address Sanitizer (KASAN) to detect
+> out-of-bounds accesses to the 'regions' array.
+> 
+> Signed-off-by: Bill Wendling <morbo@google.com>
 > ---
-> Oleg, Kees, Bernd, Can you see anything I am missing?
+>  include/linux/memblock.h | 2 +-
 
-+ Mimi, linux-integrity (would be nice if we are in CC when linux-
-security-module is in CC).
+Please also update tools/testing/memblock
 
-Apologies for not answering earlier, it seems I don't receive the
-emails from the linux-security-module mailing list (thanks Serge for
-letting me know!).
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 221118b5a16e..ba7f7c999a45 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -91,7 +91,7 @@ struct memblock_type {
+>  	unsigned long cnt;
+>  	unsigned long max;
+>  	phys_addr_t total_size;
+> -	struct memblock_region *regions;
+> +	struct memblock_region *regions __counted_by_ptr(max);
+>  	char *name;
+>  };
+>  
+> -- 
+> 2.52.0.rc2.455.g230fcf2819-goog
+> 
 
-I tested your patch but there are a few warnings like this:
-
-[    2.702374] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[    2.702854] WARNING: bad unlock balance detected!
-[    2.703350] 6.18.0-rc6+ #409 Not tainted
-[    2.703755] -------------------------------------
-[    2.704241] init/1 is trying to release lock (init_fs.seq) at:
-[    2.704829] [<ffffffff81836100>] begin_new_exec+0xfe0/0x1710
-[    2.705421] but there are no more locks to release!
-[    2.705931]=20
-[    2.705931] other info that might help us debug this:
-[    2.706610] 1 lock held by init/1:
-[    2.706958]  #0: ffff88810083e538 (&sig->exec_update_lock){+.+.}-{4:4}, =
-at: begin_new_exec+0x769/0x1710
-
-and then the system hangs.
-
-I see two main effects of this patch. First, the bprm_check_security
-hook implementations will not see bprm->cred populated. That was a
-problem before we made this patch:
-
-https://patchew.org/linux/20251008113503.2433343-1-roberto.sassu@huaweiclou=
-d.com/
-
-to work around the problem of not calculating the final DAC credentials
-early enough (well, we actually had to change our CREDS_CHECK hook
-behavior).
-
-The second, I could not check. If I remember well, unlike the
-capability LSM, SELinux/Apparmor/SMACK calculate the final credentials
-based on the first file being executed (thus the script, not the
-interpreter). Is this patch keeping the same behavior despite preparing
-the credentials when the final binary is found?
-
-Thanks
-
-Roberto
-
-> The code compiles but I haven't test it yet.
->=20
-> I thought I was going to move commit_creds before de_thread, but that
-> would have taken commit_cred out of exec_update_lock (which introduces
-> races).
->=20
-> However I can't see any drawbacks of going the other direction.
->=20
->=20
->  fs/exec.c                    | 88 ++++++++++++++----------------------
->  fs/fs_struct.c               |  1 -
->  fs/proc/base.c               |  4 +-
->  include/linux/fs_struct.h    |  1 -
->  include/linux/sched/signal.h |  6 ---
->  init/init_task.c             |  1 -
->  kernel/cred.c                |  2 +-
->  kernel/fork.c                |  8 +---
->  kernel/ptrace.c              |  4 +-
->  kernel/seccomp.c             | 12 ++---
->  10 files changed, 45 insertions(+), 82 deletions(-)
->=20
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 4298e7e08d5d..5ae96584dab0 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1090,6 +1090,9 @@ void __set_task_comm(struct task_struct *tsk, const=
- char *buf, bool exec)
->  	perf_event_comm(tsk, exec);
->  }
-> =20
-> +static int prepare_bprm_creds(struct linux_binprm *bprm);
-> +static void check_unsafe_exec(struct linux_binprm *bprm);
-> +
->  /*
->   * Calling this is the point of no return. None of the failures will be
->   * seen by userspace since either the process is already taking a fatal
-> @@ -1101,10 +1104,6 @@ int begin_new_exec(struct linux_binprm * bprm)
->  	struct task_struct *me =3D current;
->  	int retval;
-> =20
-> -	/* Once we are committed compute the creds */
-> -	retval =3D bprm_creds_from_file(bprm);
-> -	if (retval)
-> -		return retval;
-> =20
->  	/*
->  	 * This tracepoint marks the point before flushing the old exec where
-> @@ -1123,8 +1122,6 @@ int begin_new_exec(struct linux_binprm * bprm)
->  	retval =3D de_thread(me);
->  	if (retval)
->  		goto out;
-> -	/* see the comment in check_unsafe_exec() */
-> -	current->fs->in_exec =3D 0;
->  	/*
->  	 * Cancel any io_uring activity across execve
->  	 */
-> @@ -1251,6 +1248,25 @@ int begin_new_exec(struct linux_binprm * bprm)
->  	WRITE_ONCE(me->self_exec_id, me->self_exec_id + 1);
->  	flush_signal_handlers(me, 0);
-> =20
-> +	retval =3D prepare_bprm_creds(bprm);
-> +	if (retval)
-> +		goto out_unlock;
-> +
-> +	/*
-> +	 * Check for unsafe execution states before exec_binprm(), which
-> +	 * will call back into begin_new_exec(), into bprm_creds_from_file(),
-> +	 * where setuid-ness is evaluated.
-> +	 */
-> +	check_unsafe_exec(bprm);
-> +
-> +	/* Set the unchanging part of bprm->cred */
-> +	retval =3D security_bprm_creds_for_exec(bprm);
-> +
-> +	/* Once we are committed compute the creds */
-> +	retval =3D bprm_creds_from_file(bprm);
-> +	if (retval)
-> +		goto out_unlock;
-> +
->  	retval =3D set_cred_ucounts(bprm->cred);
->  	if (retval < 0)
->  		goto out_unlock;
-> @@ -1272,9 +1288,9 @@ int begin_new_exec(struct linux_binprm * bprm)
->  	if (get_dumpable(me->mm) !=3D SUID_DUMP_USER)
->  		perf_event_exit_task(me);
->  	/*
-> -	 * cred_guard_mutex must be held at least to this point to prevent
-> +	 * exec_update_lock must be held at least to this point to prevent
->  	 * ptrace_attach() from altering our determination of the task's
-> -	 * credentials; any time after this it may be unlocked.
-> +	 * credentials.
->  	 */
->  	security_bprm_committed_creds(bprm);
-> =20
-> @@ -1291,8 +1307,6 @@ int begin_new_exec(struct linux_binprm * bprm)
-> =20
->  out_unlock:
->  	up_write(&me->signal->exec_update_lock);
-> -	if (!bprm->cred)
-> -		mutex_unlock(&me->signal->cred_guard_mutex);
-> =20
->  out:
->  	return retval;
-> @@ -1336,7 +1350,6 @@ void setup_new_exec(struct linux_binprm * bprm)
->  	 */
->  	me->mm->task_size =3D TASK_SIZE;
->  	up_write(&me->signal->exec_update_lock);
-> -	mutex_unlock(&me->signal->cred_guard_mutex);
->  }
->  EXPORT_SYMBOL(setup_new_exec);
-> =20
-> @@ -1351,21 +1364,15 @@ void finalize_exec(struct linux_binprm *bprm)
->  EXPORT_SYMBOL(finalize_exec);
-> =20
->  /*
-> - * Prepare credentials and lock ->cred_guard_mutex.
-> - * setup_new_exec() commits the new creds and drops the lock.
-> - * Or, if exec fails before, free_bprm() should release ->cred
-> - * and unlock.
-> + * Prepare credentials.  begin_new_exec() commits the new creds.
-> + * Or, if exec fails before, free_bprm() should release ->cred.
->   */
->  static int prepare_bprm_creds(struct linux_binprm *bprm)
->  {
-> -	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
-> -		return -ERESTARTNOINTR;
-> -
->  	bprm->cred =3D prepare_exec_creds();
->  	if (likely(bprm->cred))
->  		return 0;
-> =20
-> -	mutex_unlock(&current->signal->cred_guard_mutex);
->  	return -ENOMEM;
->  }
-> =20
-> @@ -1386,9 +1393,7 @@ static void free_bprm(struct linux_binprm *bprm)
->  	}
->  	free_arg_pages(bprm);
->  	if (bprm->cred) {
-> -		/* in case exec fails before de_thread() succeeds */
-> -		current->fs->in_exec =3D 0;
-> -		mutex_unlock(&current->signal->cred_guard_mutex);
-> +		/* in case exec fails before commit_creds succeeds */
->  		abort_creds(bprm->cred);
->  	}
->  	do_close_execat(bprm->file);
-> @@ -1486,13 +1491,12 @@ EXPORT_SYMBOL(bprm_change_interp);
-> =20
->  /*
->   * determine how safe it is to execute the proposed program
-> - * - the caller must hold ->cred_guard_mutex to protect against
-> + * - the caller must hold ->exec_update_lock to protect against
->   *   PTRACE_ATTACH or seccomp thread-sync
->   */
->  static void check_unsafe_exec(struct linux_binprm *bprm)
->  {
-> -	struct task_struct *p =3D current, *t;
-> -	unsigned n_fs;
-> +	struct task_struct *p =3D current;
-> =20
->  	if (p->ptrace)
->  		bprm->unsafe |=3D LSM_UNSAFE_PTRACE;
-> @@ -1509,25 +1513,9 @@ static void check_unsafe_exec(struct linux_binprm =
-*bprm)
->  	 * suid exec because the differently privileged task
->  	 * will be able to manipulate the current directory, etc.
->  	 * It would be nice to force an unshare instead...
-> -	 *
-> -	 * Otherwise we set fs->in_exec =3D 1 to deny clone(CLONE_FS)
-> -	 * from another sub-thread until de_thread() succeeds, this
-> -	 * state is protected by cred_guard_mutex we hold.
->  	 */
-> -	n_fs =3D 1;
-> -	read_seqlock_excl(&p->fs->seq);
-> -	rcu_read_lock();
-> -	for_other_threads(p, t) {
-> -		if (t->fs =3D=3D p->fs)
-> -			n_fs++;
-> -	}
-> -	rcu_read_unlock();
-> -
-> -	/* "users" and "in_exec" locked for copy_fs() */
-> -	if (p->fs->users > n_fs)
-> +	if (p->fs->users > 1)
->  		bprm->unsafe |=3D LSM_UNSAFE_SHARE;
-> -	else
-> -		p->fs->in_exec =3D 1;
->  	read_sequnlock_excl(&p->fs->seq);
->  }
-> =20
-> @@ -1731,25 +1719,15 @@ static int bprm_execve(struct linux_binprm *bprm)
->  {
->  	int retval;
-> =20
-> -	retval =3D prepare_bprm_creds(bprm);
-> -	if (retval)
-> -		return retval;
-> +	if (bprm->is_check)
-> +		return 0;
-> =20
-> -	/*
-> -	 * Check for unsafe execution states before exec_binprm(), which
-> -	 * will call back into begin_new_exec(), into bprm_creds_from_file(),
-> -	 * where setuid-ness is evaluated.
-> -	 */
-> -	check_unsafe_exec(bprm);
->  	current->in_execve =3D 1;
->  	sched_mm_cid_before_execve(current);
-> =20
->  	sched_exec();
-> =20
-> -	/* Set the unchanging part of bprm->cred */
-> -	retval =3D security_bprm_creds_for_exec(bprm);
-> -	if (retval || bprm->is_check)
-> -		goto out;
-> +
-> =20
->  	retval =3D exec_binprm(bprm);
->  	if (retval < 0)
-> diff --git a/fs/fs_struct.c b/fs/fs_struct.c
-> index 28be762ac1c6..945bc0916f65 100644
-> --- a/fs/fs_struct.c
-> +++ b/fs/fs_struct.c
-> @@ -109,7 +109,6 @@ struct fs_struct *copy_fs_struct(struct fs_struct *ol=
-d)
->  	/* We don't need to lock fs - think why ;-) */
->  	if (fs) {
->  		fs->users =3D 1;
-> -		fs->in_exec =3D 0;
->  		seqlock_init(&fs->seq);
->  		fs->umask =3D old->umask;
-> =20
-> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> index 6299878e3d97..7041fb4d1689 100644
-> --- a/fs/proc/base.c
-> +++ b/fs/proc/base.c
-> @@ -2834,14 +2834,14 @@ static ssize_t proc_pid_attr_write(struct file * =
-file, const char __user * buf,
->  	}
-> =20
->  	/* Guard against adverse ptrace interaction */
-> -	rv =3D mutex_lock_interruptible(&current->signal->cred_guard_mutex);
-> +	rv =3D down_write_killable(&current->signal->exec_update_lock);
->  	if (rv < 0)
->  		goto out_free;
-> =20
->  	rv =3D security_setprocattr(PROC_I(inode)->op.lsmid,
->  				  file->f_path.dentry->d_name.name, page,
->  				  count);
-> -	mutex_unlock(&current->signal->cred_guard_mutex);
-> +	up_write(&current->signal->exec_update_lock);
->  out_free:
->  	kfree(page);
->  out:
-> diff --git a/include/linux/fs_struct.h b/include/linux/fs_struct.h
-> index baf200ab5c77..29d0f7d57743 100644
-> --- a/include/linux/fs_struct.h
-> +++ b/include/linux/fs_struct.h
-> @@ -10,7 +10,6 @@ struct fs_struct {
->  	int users;
->  	seqlock_t seq;
->  	int umask;
-> -	int in_exec;
->  	struct path root, pwd;
->  } __randomize_layout;
-> =20
-> diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-> index 7d6449982822..7e9259c8fb2b 100644
-> --- a/include/linux/sched/signal.h
-> +++ b/include/linux/sched/signal.h
-> @@ -241,12 +241,6 @@ struct signal_struct {
->  	struct mm_struct *oom_mm;	/* recorded mm when the thread group got
->  					 * killed by the oom killer */
-> =20
-> -	struct mutex cred_guard_mutex;	/* guard against foreign influences on
-> -					 * credential calculations
-> -					 * (notably. ptrace)
-> -					 * Deprecated do not use in new code.
-> -					 * Use exec_update_lock instead.
-> -					 */
->  	struct rw_semaphore exec_update_lock;	/* Held while task_struct is
->  						 * being updated during exec,
->  						 * and may have inconsistent
-> diff --git a/init/init_task.c b/init/init_task.c
-> index a55e2189206f..4813bffe217e 100644
-> --- a/init/init_task.c
-> +++ b/init/init_task.c
-> @@ -30,7 +30,6 @@ static struct signal_struct init_signals =3D {
->  #ifdef CONFIG_CGROUPS
->  	.cgroup_threadgroup_rwsem	=3D __RWSEM_INITIALIZER(init_signals.cgroup_t=
-hreadgroup_rwsem),
->  #endif
-> -	.cred_guard_mutex =3D __MUTEX_INITIALIZER(init_signals.cred_guard_mutex=
-),
->  	.exec_update_lock =3D __RWSEM_INITIALIZER(init_signals.exec_update_lock=
-),
->  #ifdef CONFIG_POSIX_TIMERS
->  	.posix_timers		=3D HLIST_HEAD_INIT,
-> diff --git a/kernel/cred.c b/kernel/cred.c
-> index dbf6b687dc5c..80e376ce005f 100644
-> --- a/kernel/cred.c
-> +++ b/kernel/cred.c
-> @@ -252,7 +252,7 @@ EXPORT_SYMBOL(prepare_creds);
-> =20
->  /*
->   * Prepare credentials for current to perform an execve()
-> - * - The caller must hold ->cred_guard_mutex
-> + * - The caller must hold ->exec_update_lock
->   */
->  struct cred *prepare_exec_creds(void)
->  {
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 3da0f08615a9..996c649b9a4c 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1555,11 +1555,6 @@ static int copy_fs(u64 clone_flags, struct task_st=
-ruct *tsk)
->  	if (clone_flags & CLONE_FS) {
->  		/* tsk->fs is already what we want */
->  		read_seqlock_excl(&fs->seq);
-> -		/* "users" and "in_exec" locked for check_unsafe_exec() */
-> -		if (fs->in_exec) {
-> -			read_sequnlock_excl(&fs->seq);
-> -			return -EAGAIN;
-> -		}
->  		fs->users++;
->  		read_sequnlock_excl(&fs->seq);
->  		return 0;
-> @@ -1699,7 +1694,6 @@ static int copy_signal(u64 clone_flags, struct task=
-_struct *tsk)
->  	sig->oom_score_adj =3D current->signal->oom_score_adj;
->  	sig->oom_score_adj_min =3D current->signal->oom_score_adj_min;
-> =20
-> -	mutex_init(&sig->cred_guard_mutex);
->  	init_rwsem(&sig->exec_update_lock);
-> =20
->  	return 0;
-> @@ -1710,7 +1704,7 @@ static void copy_seccomp(struct task_struct *p)
->  #ifdef CONFIG_SECCOMP
->  	/*
->  	 * Must be called with sighand->lock held, which is common to
-> -	 * all threads in the group. Holding cred_guard_mutex is not
-> +	 * all threads in the group. Holding exec_update_lock is not
->  	 * needed because this new task is not yet running and cannot
->  	 * be racing exec.
->  	 */
-> diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-> index 75a84efad40f..8140d4bfc279 100644
-> --- a/kernel/ptrace.c
-> +++ b/kernel/ptrace.c
-> @@ -444,8 +444,8 @@ static int ptrace_attach(struct task_struct *task, lo=
-ng request,
->  	 * SUID, SGID and LSM creds get determined differently
->  	 * under ptrace.
->  	 */
-> -	scoped_cond_guard (mutex_intr, return -ERESTARTNOINTR,
-> -			   &task->signal->cred_guard_mutex) {
-> +	scoped_cond_guard (rwsem_read_intr, return -ERESTARTNOINTR,
-> +			   &task->signal->exec_update_lock) {
-> =20
->  		scoped_guard (task_lock, task) {
->  			retval =3D __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
-> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-> index 25f62867a16d..87de8d47d876 100644
-> --- a/kernel/seccomp.c
-> +++ b/kernel/seccomp.c
-> @@ -479,7 +479,7 @@ static int is_ancestor(struct seccomp_filter *parent,
->  /**
->   * seccomp_can_sync_threads: checks if all threads can be synchronized
->   *
-> - * Expects sighand and cred_guard_mutex locks to be held.
-> + * Expects sighand and exec_update_lock locks to be held.
->   *
->   * Returns 0 on success, -ve on error, or the pid of a thread which was
->   * either not in the correct seccomp mode or did not have an ancestral
-> @@ -489,7 +489,7 @@ static inline pid_t seccomp_can_sync_threads(void)
->  {
->  	struct task_struct *thread, *caller;
-> =20
-> -	BUG_ON(!mutex_is_locked(&current->signal->cred_guard_mutex));
-> +	BUG_ON(!rwsem_is_locked(&current->signal->exec_update_lock));
->  	assert_spin_locked(&current->sighand->siglock);
-> =20
->  	/* Validate all threads being eligible for synchronization. */
-> @@ -590,7 +590,7 @@ void seccomp_filter_release(struct task_struct *tsk)
->   *
->   * @flags: SECCOMP_FILTER_FLAG_* flags to set during sync.
->   *
-> - * Expects sighand and cred_guard_mutex locks to be held, and for
-> + * Expects sighand and exec_update_lock locks to be held, and for
->   * seccomp_can_sync_threads() to have returned success already
->   * without dropping the locks.
->   *
-> @@ -599,7 +599,7 @@ static inline void seccomp_sync_threads(unsigned long=
- flags)
->  {
->  	struct task_struct *thread, *caller;
-> =20
-> -	BUG_ON(!mutex_is_locked(&current->signal->cred_guard_mutex));
-> +	BUG_ON(!rwsem_is_locked(&current->signal->exec_update_lock));
->  	assert_spin_locked(&current->sighand->siglock);
-> =20
->  	/*
-> @@ -2011,7 +2011,7 @@ static long seccomp_set_mode_filter(unsigned int fl=
-ags,
->  	 * while another thread is in the middle of calling exec.
->  	 */
->  	if (flags & SECCOMP_FILTER_FLAG_TSYNC &&
-> -	    mutex_lock_killable(&current->signal->cred_guard_mutex))
-> +	    down_read_killable(&current->signal->exec_update_lock))
->  		goto out_put_fd;
-> =20
->  	spin_lock_irq(&current->sighand->siglock);
-> @@ -2034,7 +2034,7 @@ static long seccomp_set_mode_filter(unsigned int fl=
-ags,
->  out:
->  	spin_unlock_irq(&current->sighand->siglock);
->  	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
-> -		mutex_unlock(&current->signal->cred_guard_mutex);
-> +		up_read(&current->signal->exec_update_lock);
->  out_put_fd:
->  	if (flags & SECCOMP_FILTER_FLAG_NEW_LISTENER) {
->  		if (ret) {
-
+-- 
+Sincerely yours,
+Mike.
 
