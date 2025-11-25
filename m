@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F12DD0EE04
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 16:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66765D0EE04
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 16:30:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A3C76B0010; Tue, 25 Nov 2025 11:30:37 -0500 (EST)
+	id 87F466B0011; Tue, 25 Nov 2025 11:30:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5184B6B0011; Tue, 25 Nov 2025 11:30:37 -0500 (EST)
+	id 825206B0024; Tue, 25 Nov 2025 11:30:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3911C6B0012; Tue, 25 Nov 2025 11:30:37 -0500 (EST)
+	id 64FAE6B0022; Tue, 25 Nov 2025 11:30:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E33B6B0010
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 39F9F6B0010
 	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 11:30:37 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF98812BB1
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0094F58336
 	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 16:30:36 +0000 (UTC)
-X-FDA: 84149667672.26.37CBA66
+X-FDA: 84149667714.09.FA20AEC
 Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9FA5A4001B
+	by imf16.hostedemail.com (Postfix) with ESMTP id 679B318001D
 	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 16:30:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
+Authentication-Results: imf16.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1764088235;
@@ -34,22 +34,22 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=M/SDpXrlmB1blQxURg26m9LeZqZCb4wULSE82lCuGBc=;
-	b=TQ0E38JiqK92ecV+prjRmWSiQMqgH7gY/BOYgEeGPTEnJh5XeGPVb9THlpXpUQ5ErPj7U2
-	7IsvpNiSKzanevQCVOZzzaX++JIm6ujcnWLpc90FvgQ896kz6Jv2HQCElXRGVRmwsyJCFa
-	ibcjDyE6jLNFx2S90yW+QgtwFpV8Z7c=
+	bh=trPPUo5dkw2o2mDAjlgHrOmAWNfV5VnNC41QBJADk4Y=;
+	b=QjfKn9GmngiWgEoZBRNdwddJ2ABsxSTjH3nyrUogQrmkvsazDOQIcOC+lE1H8L3iWP+PHK
+	0R3kfePT4yo9zRgVGIbEaX8I7NUeaYhe3MNR9BLLaqX3l/cjAnk6r16Nyg1kQsGH9tapHk
+	Fi9xWXxRabrOrMsZGvTCVA4OSEXBUV0=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764088235; a=rsa-sha256;
 	cv=none;
-	b=m0LesppScFf3Nzhx2AhGnMxXIWtkxPa9lRrVeYAAeanih8Z1E7UCzPufDuaojZeS9Qvftq
-	8ec0/IfIdjCdvrRjVethSipqmfgxzhIeE73nbYv9D9NjHqsbOTGQqwudPy8ruuWFT39cNk
-	pv21399l5Y4XLrUACPvv0PWSAJkW9jo=
+	b=wmaT4cjt2AQeZBOJOeqFrzPEESjiLCQa01/kp1vOGpgw6mpI9wx+rdR793V/Rl7oCT5mz7
+	83eH9h9epNPj2mASXLp4Y1tUWUZRRq9vZHmWHaHWU4iUNikxJXu03PNT30yQkQyIGFxplo
+	3bZKbGM91g9paS7kDuLqaCKbflHrrk4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
+	imf16.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 26 Nov 2025 01:30:31 +0900
+	by 156.147.51.103 with ESMTP; 26 Nov 2025 01:30:30 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -62,22 +62,22 @@ Cc: shikemeng@huaweicloud.com,
 	baohua@kernel.org,
 	youngjun.park@lge.com,
 	linux-mm@kvack.org
-Subject: [PATCH 2/2] mm/swapfile: use plist_for_each_entry in __folio_throttle_swaprate
-Date: Wed, 26 Nov 2025 01:30:27 +0900
-Message-Id: <20251125163027.4165450-3-youngjun.park@lge.com>
+Subject: [PATCH 1/2] mm/swapfile: fix list iteration in swap_sync_discard
+Date: Wed, 26 Nov 2025 01:30:26 +0900
+Message-Id: <20251125163027.4165450-2-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251125163027.4165450-1-youngjun.park@lge.com>
 References: <20251125163027.4165450-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: jss7grc1suduo98jeaxszcy5j365up9f
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9FA5A4001B
-X-HE-Tag: 1764088233-910150
-X-HE-Meta: U2FsdGVkX1+au7M80NprUTkt7WC7HhahqKi2/t08uVjwQOjC8PkuYeFkpTU8NoO0PM/2eIYVoB0u7mPLPVw6gzzb6l/wU4gq1mDYDOezr2BVQa9KtICaTdmpF28t9e2UvjlruvMPumlhA2Fz/GVvy1ek4zsfRMjQ9BrJiM/tTFn5TwkQBbamXyXC/HLsNmxoUndz+RTBMEsPce0ZukCrBFnw6D6LrMWmZo0kVI1FAzmwYS19uFnb8U4BBq1db9ZpSlgq43DJsIPqsBRfmpYjqqKPiZfr7Iun/ZugY0VbhUULPw2r/n/yqrx3pXNctPKpzq95xrpv/D/UMki0aMvfcl8bZl/HgwyNxQNixN4066NcIFMFA6zsk98PkTaAjRLMWRmhQXRsw1kToujJ40DdmCcV4uJkZdbVX6BmfZNNRVQueFWdpY9EAZrsx+CtJytZDxXFFACLF+C4U4xACZ/edrMlTnh+QTNpvkwbP85rLX0dQ49Jee2GqTZVVsmE+0gZp1/a3mL+cGplQrHrNPwL035Lmz9d3ubrxedsHXgfxtt6bve61B2xZLCuLdxi7m7k+dXPesFYZDaa9sCDAz6/KonK01uD7onU4F9FruGgPHeeisOLg8gAjjqRly8NhpmG8u6JuNFdelQnj36JRI1pxkv4C2ZBYHfs6Gcf+u6eqlu60tzR0ziT+PRiYRWRbxA1spLc8keF897/Hc9Ne0tttK64pQPo9OVUWtBSb1i57sq4Qr26XYfOspZwGA+d9mLccxcL6I25Oq/m01uLfeqVUzKf9O3Cxn1ZTsFPZs/SsnEWleNL2iUcLUSHrY2ZFkITtVKvQ2CCF3ddqHgRMrwLGctSuRh5wztHuYhMON/9gHAe/VyfJfMiOBDx+KT5+5TDlLIDXayjIfQcMTkcNYuVzF5+/qAjV8FOQ3vSN9q+vGa5Fr/APaoU39IeqUz7jlORYt6pf0TPYYICovFKT59
- IiTG8On2
- 3Q4CdNRjDhrlRAIDeKKv5E5/m1RqDmjeHTyEeNNF6suVpSnBMjK7OoBu/SWWo7Kgvuq1FSurHWf+HnAjBkm3D7BNPU9PGS2y3Gl52XbAeKMtuNJS4CL5XjWmf7TByK3i3KjttgNnIVb5FP5v/wR+milCiY4wI1zrpU2/DL3vn0+coCJKlDNLY/gnzxFGWBthv9kBO9mbmvaBKiRc=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 679B318001D
+X-Stat-Signature: 6khega1sdtky7cdy19gemjgsfhc4y846
+X-HE-Tag: 1764088233-785948
+X-HE-Meta: U2FsdGVkX1/RgxrBegXBZvfYqjT4gbHs1gfwM1yzOxUFeu4ZD3Tsox6z9FKo/gfHRaDWb8mhmsHbX4XjxjOBVTCG+RjTylcaT4Pe66MV9HAII92/k4JYab4mqHZOA6Zcnb+WHk4Tlam1fM8GfXkFvSd2aDcSNRQGLb9u2/+nKQBr6XoOzeeA1QoXmz7lInHz4zauFiqDa/hL1TUwFSuySxQHWF9QqYOPhgBfM38EsDovcputx33LdYcRfeHCd+pe/182rCjjNCSZEh7E4CvCUZ6yRkmpVHpOvhSwBB1+peuMfaD39RHN1YGJT9NC/XME14ZZfjAPkqBYTUnJNP8FIMHYl+vi+xikUXWaW8hEWnN+qSlGNxeId+hWo6Ep6LgAotj0WAeexUt0raJFbFqGcrGGvG91ODr1YdiH9oW7x6tNKPJgTaAWLfkWsB7+nzO4u7ubxUraCY3jL6HP58mFHSxaiWsTEhvlU3Oo6W8ClbLCTNdYVB04WRSk5MfgsCLtCXSxpR7WHGC0g4YdLkQuqtJSgGVAHAp7RHuo7OFdwyZK+Wx35NCrVTkPmByfBMphwy29HRUMEbTupR3NbEcPvNpVLajIrdXe5teosrSqN3DN9pP7hY+mI+hu66W7CLZ+Loym81Auu12vaiWCcZTm6DIGzRhrmw0XtcLRW44N3dd3sTgncuk0VH4iRoonrVz40PvEfpKMlUR8gxUBLFQmCk/koRhZlykAtHdfHV162lDYm/xM57Q17NIcTQYa3qNcilpmwwEVCkZZt6ADfmLQkRVcXLUAJWocjH89MZD1YS3PknKKsmINL5dnDMUYKZ+XiJCfRI6zEnb3Aq9BviEqqX5Ln1Wx4s5+2lD5mLTGrMJI6+Q0soglIZd3Ppo9Qp/SImu7Fd2n78+3jMLhBeFGKo8EBrCY02e0Zu93jpm7turUIli6R2svRXWpl3U1i6pf8yNQfGE9H1os5u9naw6
+ LaM/ZJS5
+ YMfbrtKFKriGU7fmgjo1F71AKH6zCE/0d+QPrnYOgG1Ffcb+Yxy6kU8hVdpM/99fdqUrjMhIs1T+2KyAgpj3jY4DNi7fuwUrjFpLA8YMa9JrULimHyAD9qxWcPOfTcXQP1sWhvxysNLNmj44NnkyfYFDCDMWM+1duYul2/EKxhmoBS2Zic80+uCfuI/OR32bBfv0iN2524dPrVj7PijWJ9IkHLNO+cz6BAQzb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,38 +86,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The loop breaks immediately after finding the first swap device and
-never modifies the list. Replace plist_for_each_entry_safe() with
-plist_for_each_entry() and remove the unused next variable.
+swap_sync_discard() has an issue where if the next device becomes full
+and is removed from the plist during iteration, the operation fails
+even when other swap devices with pending discard entries remain
+available.
 
+Fix by checking plist_node_empty(&next->list) and restarting iteration
+when the next node is removed during discard operations.
+
+Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
+swap_active_head. This means the iteration is only affected by swapoff
+operations rather than frequent availability changes, reducing
+exceptional condition checks and lock contention.
+
+Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during allocation")
+Suggested-by: Kairui Song <kasong@tencent.com>
 Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 ---
- mm/swapfile.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/swapfile.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 998271aa09c3..cc0990141171 100644
+index d12332423a06..998271aa09c3 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -4023,7 +4023,7 @@ static bool __has_usable_swap(void)
+@@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
+ 	bool ret = false;
+ 	struct swap_info_struct *si, *next;
  
- void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
- {
--	struct swap_info_struct *si, *next;
-+	struct swap_info_struct *si;
+-	spin_lock(&swap_avail_lock);
+-	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+-		spin_unlock(&swap_avail_lock);
++	spin_lock(&swap_lock);
++start_over:
++	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
++		spin_unlock(&swap_lock);
+ 		if (get_swap_device_info(si)) {
+ 			if (si->flags & SWP_PAGE_DISCARD)
+ 				ret = swap_do_scheduled_discard(si);
+ 			put_swap_device(si);
+ 		}
+ 		if (ret)
+-			return true;
+-		spin_lock(&swap_avail_lock);
++			return ret;
++
++		spin_lock(&swap_lock);
++		if (plist_node_empty(&next->list))
++			goto start_over;
+ 	}
+-	spin_unlock(&swap_avail_lock);
++	spin_unlock(&swap_lock);
  
- 	if (!(gfp & __GFP_IO))
- 		return;
-@@ -4042,8 +4042,7 @@ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
- 		return;
+-	return false;
++	return ret;
+ }
  
- 	spin_lock(&swap_avail_lock);
--	plist_for_each_entry_safe(si, next, &swap_avail_head,
--				  avail_list) {
-+	plist_for_each_entry(si, &swap_avail_head, avail_list) {
- 		if (si->bdev) {
- 			blkcg_schedule_throttle(si->bdev->bd_disk, true);
- 			break;
+ /**
 -- 
 2.34.1
 
