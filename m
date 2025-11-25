@@ -4,110 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B63CFD36B
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 01:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBA53CFD372
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 02:20:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C70636B0012; Mon, 24 Nov 2025 20:59:11 -0500 (EST)
+	id D8AB16B0032; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C45126B0022; Mon, 24 Nov 2025 20:59:11 -0500 (EST)
+	id D3B486B008A; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B83086B0031; Mon, 24 Nov 2025 20:59:11 -0500 (EST)
+	id C2A386B0032; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A72C56B0012
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:59:11 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D7C6F13B5C1
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 01:59:08 +0000 (UTC)
-X-FDA: 84147471576.29.2C04879
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F2ABF40002
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 01:59:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernelci-org.20230601.gappssmtp.com header.s=20230601 header.b=HysHLsd1
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AAC306B007B
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BE6DBA901
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:20:53 +0000 (UTC)
+X-FDA: 84147526386.05.BA33C25
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 734B818000C
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:20:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hLuuwsW1;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764035947;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764037251;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ySJz8oUi43Qr/jFFNH3WP1+LICJ9QSiDNQYJzoAfkmY=;
-	b=T3oDa7NFD8acOwuAMjje7Jj+dR9Iqs3z+2FlWTXH/cCQQWb4Me5PTIehB4uwxPFiQA5zVA
-	76bIMcyEgHifYdXqXqxly9VpOf6D8KuqQWf/5Uo5xzG4XEL/3DWc+gwBWFaDR8BxeNIaRc
-	Zd/k+dhX+iwmCLqs2wZ0fKiHaX0P490=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764035947; a=rsa-sha256;
-	cv=none;
-	b=hfZ0AsvIWjQ1FLc0qTNo8EqM43l6EYpuTx0WE7g2bjieJniYyszw1rP2XnkgKbWLzEdBJ4
-	yWvtHydMX7hHfdO/o9B2fynu2PreLxyRum5mj9y11twyRbUL8XvbqRNuFuAN4a9X0/xTnT
-	IWzPBBy10UbibvCuDoELmQcsS6Q0hvg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=shOPXkiAy+c6gaLyf7tLpirEDVlJR4ursOWE364FB9s=;
+	b=arpgwI+mJGNY+ecrx8+IaUheYFNY+gSAwWZTR647FOt9KcVezixzH6RJiNJ6ieAyAMZJ4a
+	FqiFp8dB8Tj7y0VtcK/p+vAO5QxHUEEPVuGCTVcYq0hd7FVtRh7JeUgR4TTyzSALb0DJEw
+	zhZTV2DFrd0RKCLFenPW1q5gmSRqlcg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernelci-org.20230601.gappssmtp.com header.s=20230601 header.b=HysHLsd1;
-	spf=none (imf12.hostedemail.com: domain of bot@kernelci.org has no SPF policy when checking 209.85.215.172) smtp.mailfrom=bot@kernelci.org;
-	dmarc=none
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso3375759a12.3
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 17:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1764035946; x=1764640746; darn=kvack.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ySJz8oUi43Qr/jFFNH3WP1+LICJ9QSiDNQYJzoAfkmY=;
-        b=HysHLsd1GtQntxjkxakbIQ6gmc98JG3u4pbgNu4r5Mf4Wb0vnDpQEpeSwEuCO7CF6c
-         hD3zvtFXwphL8X16NjM/Z7izCOyCMqD0cPeJS/d0e/R6FB62OZXuojKeL8PBFZKIHUIX
-         aepktBnX27VRZMUUw2np8EY8RBMRWdSMxTnF85txZCJBmxalvj/vP2ECiE+b7wSg4jLy
-         wYt5rtYnZnay0j1VrthjZ0tBBBpZdySj2YI2VONlM0WwaVoaWCqmUaJKchxq5s2sAZwk
-         f19+8SXGW+A5eD3KxCMOX+fvGcnImNE/AKWK82nNFt0IzNI+ktrMVI/OR5G6+A6Q0wZO
-         ouxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764035946; x=1764640746;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ySJz8oUi43Qr/jFFNH3WP1+LICJ9QSiDNQYJzoAfkmY=;
-        b=aS7L8QufA0V/b7+sOWNappknQN13Lf+nNcXne0HUcZmMCcvq+xWKbAZClSBtNGT6Cb
-         zb+S+/WKPXT5UeFDFGLRugqw2c1NUGi24GD6a5LfYS8auA6mqMYhsbX7lx0eDx2p+1EW
-         WuembF0oyXG76Ul18mgfLxWQa0AubZWsblNp6dcRLxemhLq+77Y+q4vEaTBdsaouKBbJ
-         lnHMYEyf7Ipfx/A3IkZ9gg9s3YDWq8NcyrzkYSQCRCbZ+gZSP9+fhZ4toHN2mhMs8doT
-         HD5jOFYft8ZHuRE0A7pSZJyHKbeMzMYNAFWJgLIUNpByC0ss+ruagHPM1FRa2EuEnNRW
-         ABlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUx4CXouxEimU9q4RByLfDr0QjQCvA/8mvRbPfhuk6X3Tac17NhqVku17wx956UZnaey0vNzXmgbA==@kvack.org
-X-Gm-Message-State: AOJu0Yy1x6yc7pI0iue6nmZMFVKZaDdfP9jGrj1Z0len6YioLT3GyPgB
-	dAojrQ1IqjcG6jQW41IogFtO07WY2YpFqL9NZC+FUuGSXIdagSZjS3nxt1fCRmVWQAA=
-X-Gm-Gg: ASbGncshpS7El4W3thJWdft9XEAMUvEueCHvnCAqxnWc1sSSm1UryH8fJkRxmOw+NOi
-	x9jnrx1S+B3k12aH4/k/2fkJHtht3IhfbWfFVYBGgD3HLkRJWMC6+eJe7iX65MYoe5P47XY2PuM
-	iL37CDXfYlYd25C255KTTNHtt8K3rnR08oW1MLhZVI94TnZSfioI49/qQ6e0Tu4Sa252dt5tne4
-	sN+jm12yDpPfVzY2nYAqDxpwmdE0tvpIXnqVsyW2sZI6mZYWcK7OhBtzn8J/78eQqV6e0qeInWO
-	h8Q3JOzPRewciXPkVW6kBk8PH00z16B9FbkTB0A1ZoAm3zxhPdICSOh/2vxXcdeOWjOITr5g5N7
-	3boHHkxCF3ta4WXFnRpzqxXBNmKO+JGeiMkU3ZqAvyD8BI+atpvkPInJj1P2iqSciYh78+WgpLb
-	8WZFUM
-X-Google-Smtp-Source: AGHT+IH6cKbVFrFyt/VNGnaiFrUZRL8WYuujZzlpyrCTDjSTpn5VWNnpXXmWuf/c3Z2mxxd4cSlN7Q==
-X-Received: by 2002:a05:7301:4d17:b0:2a4:3593:c7ca with SMTP id 5a478bee46e88-2a7194d1b0dmr6382836eec.10.1764035945552;
-        Mon, 24 Nov 2025 17:59:05 -0800 (PST)
-Received: from f771fd7c9232 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a93c5562b2sm7186085eec.3.2025.11.24.17.59.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 17:59:04 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hLuuwsW1;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764037251; a=rsa-sha256;
+	cv=none;
+	b=nKquV/sZLNtJ5DzOFh1pliWpPP9Qo5z6/Fxwds8efTY2SxgU9f0MU0H24Mpp+oUl/vgHDS
+	zx4k/2LwsWNfxCco5IXOvdEBb2IARiY7+Sh2MKUjNP6dvgF5RmVplIVbNabXjSjqLE+hfH
+	N3DUfaq0cdw6SgDRs751NI9FegbxVgM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1764037247; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=shOPXkiAy+c6gaLyf7tLpirEDVlJR4ursOWE364FB9s=;
+	b=hLuuwsW1lUqIhnDJmCHYScW2+XT6OUoAqmlzu/UeNE38gl3cYL6aXu5+hNprQ7gNJHJgGWrfbqHWOy1o25INjVjfHaxsnc7hPngJUhq9GRR/IuApzFaS1V1KacZEIrx9luqaEK1gkzWAw9ZLAdYhYdwzOc+pYt1MTcr1HyIJd6o=
+Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WtLRoYE_1764037246 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 25 Nov 2025 10:20:46 +0800
+Message-ID: <8f1c8ac4-208b-4a7d-8a57-721201c29f02@linux.alibaba.com>
+Date: Tue, 25 Nov 2025 10:20:44 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] tmpfs: zero post-eof ranges on file extension
+To: Brian Foster <bfoster@redhat.com>, linux-mm@kvack.org
+Cc: Hugh Dickins <hughd@google.com>
+References: <20251121152246.1023918-1-bfoster@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251121152246.1023918-1-bfoster@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] rppt/for-kernelci: (build) cast from 'void (*)(struct
- callback_head *)' to 'void (*)(struct r...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, rppt@kernel.org, linux-mm@kvack.org
-Reply-To: kernelci@lists.linux.dev
-Date: Tue, 25 Nov 2025 01:59:04 -0000
-Message-ID: <176403594454.337.4411088799070097174@f771fd7c9232>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F2ABF40002
-X-Stat-Signature: w4r8or5u5gd5rh9negaedjtq8cwe7uyz
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 734B818000C
+X-Stat-Signature: 8gidr84t8dycrr4px9izdpq4s93ftb9g
 X-Rspam-User: 
-X-HE-Tag: 1764035946-281811
-X-HE-Meta: U2FsdGVkX18a7usZEKUBt7vVDo5ysV0+mce3GhDuwMaKvaojdGoQ6lGTvsuicnHzlfj7z/rEzSSXfS28yTi6Z+iGHT0c+En6uflP2fvG80aUi09CnGGOCqg5/yPsz5fDGV+FFx2uOAksJPL0Pg3e/mqtWHngQPz2ouTnQmwDrBkcw98PlDVNax0OFBxZcPpwC9qgikl6fx+mmIlZB3ZR8vhOOW2qnp+sHYrQrWvK4k4jhslbtSoxOyK5I4eImxzksBMJ3ale1V+VNP3DNDe05sGZFbBQ4WMjpuuSHMrfcJL4ICFvCiHeqqA32k+B+nUbMoE0GsYkFx/sit3yX3w9JKcoHXxNOOte8pYM0ghnN89F91j0D7yWoft4lGzNYb/Sfnn+RQ1GMdSa8dfvfiLdgk4/O2ltxZK/RHDb7FqnePnelmNAu1OmHfwCMxiAOSvdnUj9T7tp0ZkyjOIImB0ACP0frN8Xzn8ILxxoTIPmkbDn5ra7eEnfSgDqY3jkJmubbIps/jN11GCWNAJjBJpPkBnEANMvoCEXUrNv36j9Hv9BeATk42gEc7JPdDiKFoS6vyJCQUXS4Gr6dNxxRZzwJWSdRNXJu+k7qLsj3aLJjrr9+fwvoPA56feX9ar4JrKHKKJjuAYCN8MrHOLsijwE7nJe8iXOU6J6v4lg7DzfpBeUKohPRFqnjt5kUNabA10/lcN73OW+HPbq3wUdHCAurOrdAc1fx7RTlNhR8cWlODX5ISStc2tfY9Tvm4DeI6TxSqaVtbmZvkBITobpGtv9VgH+2u3o+/Wjn22fx/lWUphut3v1vK9epZyqy8rfU8R5ejURMk2HLEp3cJ0OlirLRP/toYGzCiVrhUqDiwcO3wDfd2Bjuyp+CANzB+6gqEIvjkWSQpN3zaBcGSJZIg/eUCQXo9vPauLuiqN0nTNSxsxbMFikJe20ZFQJR9fns85sf8qm2dZANzTUKGhVZgn
- Hsi/+xjG
- JooVi4WH+Xd9NsV7eBXlSQzeKREKWY0N2j3uEs55GWjdcjvrIl2wXveM+xdTefdRcpwpPmeR0SfzQSX0xzOvbFEUr9/3TAd2/naqWlb5oG8T/Dpo601y0wcSuUh41nWRcqZmVylFNlQ+yY6BWT7ZS7loB9jWw06zFv9ozoIIDt7vOQ+0KvPluLP7gW9KZEBjVkHop/j0KYnNHYWyVNWyK3ZF+ChU5DVN8A0iBo6bjgNzj4eAQDZ5v1Clyw05hsbL02AApuud4XvctJbb30GOKKPU0WkQvrjld2GGuY88Y4HpNos9GYi3xsaWeH3HAHRKSK1f1lTbPzoE4P64WskkoS6nnT9C7BBKsDFYjvobH1bADCuxAnJ4MWY7EaIVy5OfaxMIubt6QEccOkQYWmG9yyl2vjEudUIl/HjZYtju9bmS+Moc6paGIuymrxhxwHqqM5mxv6julMfPMlEDpO5C91+6j42Wcks5/MnsjaqbQLe5OxSPyumDTwTsAfNfjL8NgwIl8oAUFO3Hx7L8zlkajie7yTSf6cSUbleJyUBMNQ8jHEK5LbXhwIpFHQAjJhA8hWyQnS1T4FJrgRV5rRncGNQODj4kZbVOVU/IIZ5xYn9UUk16p/aFyAIFSzD882vbKYaIsqxFMzMG9hkE1uqfxq6rD1TWpv8rqhGiwrbGpkX3RIKRhbl7P6lai0mwfRfDhjnaYKpnUm2y/+oHA0YRC4S51nOmSOMMQhToHwJhCz3pP3T5KxVXrXOceqw==
+X-HE-Tag: 1764037250-318324
+X-HE-Meta: U2FsdGVkX19IhS3NXXfGZVCU1mmSzGosGP8uNTHLUqOFMMeVQ3mOeR9d1Wo5mEmjOAn07TVY1pGT7ao+oWAqOyc+OzaFY+6ZnXRU7aILRKZ1bI02jdv5Fxtg5rr4FCdoYkV+HsBKDNgGaJiqZIR9sd4oE+Ge5yHJI/Sc8J7aWPzLBlqbCOxf2MuVRmDHX4ebNAnOvDP+di/ud5WCwU+XOVJvbuITI0ehQxHY8NrNAq6VInPj357vXRm882c3wZ6Cy05hWlxfdYpCFSSUGQ32cTTgPX1JOcUKlxn9fmHWdj39qOg0MnJcMJQz2lKlsl5/OEWcBUT3VQsUMxC/XnjSdyv/AOd1mLzAkbKD8B745XQUdpe5mydmYq3o2LH6ZnAPARdcP5GtDHmYpXJ8sZACki6hpaYSZTUFao2Znl+kxQM+hVRSHz9UifYm4h3x1dxHY4kjJ+9uLv6TsZ9rORzy04O6F7j8uuhwlYWQUFjocbFMBmzXN6K5pZ4uAL5sU2ZOyMpOqtHfbw8cF9xgv496umXq7rHmSZ2Ul2rYYxUTlNKkWMcP52eae3uSZnV75KU/z6HrdmKcGgevOUzk1got1giM0oqR9vEd8QWusyPsd1xufdZfUbrd2AG4tnmRiEmKaPQh95Hjli6AWq27Q6rE3MpC57rfCOGGpQB+V0Z987ArF2w1cxISDkEGSslNnir3vh1ktwDzHZ5ZgTWI0lpV2iAIpSzwpk8+pYhfrhRPIbEHTIcjnA/l9jkd3ETFOh05xFhkq36Kq4MbUJxYR73GOfK6OIL+GB2p7EY88MiZDyfIzvAaDgaW1VNlyg17LXLLJTzd6c83i136HOY++DzRqmZ7thjSLOi/nIYkc4cvljzzvQk78gKyAmuHget80vMfB0RkTPg8QCLxCe8jkHp0+2ed92mBJB3zaWJrOzSoqfL4aZT+JpapurOTuStP/OkZ+eVMrl+ph17ZUeJnofE
+ 0KvVdkik
+ ot2wcm6GgitmXLF2H6rWXkakRy4yutC5hn1WywbdqoTM0lC0HjnJ4tOARiVdaoOq2ZhxqsGlGqgylox/YOQnI35y95Ch7bHhD3LQ9De6AJLFI0rbf8fsP7ZAJZiFmzNxeM3UypkAXo5DJlQEqvrS/aCReEmCHf3jhyWeizm8O5E/hMi1dutzzNQyGBJQMLp/RpAGP3G5yrfr3GOurFoY8Mh4qMcdjMTaFPBsVD2VlnoNr5UGSA8PbveLB3aHSpHJt2mHRBkD7xnjLESwOR8KIl7LfP11gsYTMOvi9VHYzSVBgM6AtncrDUP/1BQQTclb/bfiyGEBgEUChy6YNMTCrMQYv30mL6iAxLo/wZeKtf7BhBuA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,51 +87,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
+On 2025/11/21 23:22, Brian Foster wrote:
+> Hi all,
+> 
+> Apologies for the quicker than expected respin here, but during
+> discussion with Baolin on v2 it became apparent that I factored the
+> first two patches in an unnecessarily confusing way, and I wanted to get
+> that resolved more quickly. Otherwise there are a few smaller changes
+> here that I think are incremental improvements.
+> 
+> Baolin, I left off the R-b tag from v2 just out of caution and how I
+> reworked the first two patches. The end result is mostly similar, but
+> I'd appreciate a quick look before adding that back. Otherwise most of
+> the functionality here should be the same as v2.
+> 
+> Thoughts, reviews, flames appreciated.
 
+Overall LGTM. And I tried to do some tmpfs read/write tests, and I 
+didn't notice any obvious regressions. Anyway, let's wait and see if 
+Hugh has any input. Thanks for your work.
 
-Hello,
+> v3:
+> - Reorder changes in patches 1-2 to factor out existing logic first.
+> - Use local scope variable in shmem_writeout() fallocend block.
+> - Tweak combined zeroing logic in shmem_writeout().
+> - Clean up commit logs.
+> v2: https://lore.kernel.org/linux-mm/20251112162522.412295-1-bfoster@redhat.com/
+> - Rework to zero uptodate post-eof folios on writeout and full range
+>    from EOF on size extension.
+> - Misc. cleanups: variable renames (pos -> end), code relocation,
+>    comment cleanups/removal.
+> - Update commit log to call out POSIX requirement.
+> v1: https://lore.kernel.org/linux-mm/20250625184930.269727-1-bfoster@redhat.com/
+> 
+> Brian Foster (3):
+>    tmpfs: factor out folio zeroing logic at writeout time
+>    tmpfs: zero post-eof folio ranges on swapout
+>    tmpfs: zero post-eof ranges on file extension
+> 
+>   mm/shmem.c | 135 ++++++++++++++++++++++++++++++++++++++++++++---------
+>   1 file changed, 114 insertions(+), 21 deletions(-)
+> 
 
-New build issue found on rppt/for-kernelci:
-
----
- cast from 'void (*)(struct callback_head *)' to 'void (*)(struct rq *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict] in kernel/sched/core.o (kernel/sched/core.c) [logspec:kbuild,kbuild.compiler.error]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:3da16ecb10e01489573fa267fa05ce5c8f573ac7
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git
-- commit HEAD:  7a1b17aedd2aad3a04a211865f048903bd47fedd
-
-
-
-Log excerpt:
-=====================================================
-kernel/sched/core.c:4790:10: error: cast from 'void (*)(struct callback_head *)' to 'void (*)(struct rq *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
- 4790 |                 func = (void (*)(struct rq *))head->func;
-      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-kernel/sched/core.c:4814:10: error: cast from 'void (*)(struct rq *)' to 'void (*)(struct callback_head *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
- 4814 |         .func = (void (*)(struct callback_head *))balance_push,
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  CC      arch/x86/entry/vdso/vdso32-setup.o
-3 errors generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## x86_64_defconfig on (x86_64):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-x86-6924fcedf5b8743b1f5fa54f/.config
-- dashboard: https://d.kernelci.org/build/maestro:6924fcedf5b8743b1f5fa54f
-
-
-#kernelci issue maestro:3da16ecb10e01489573fa267fa05ce5c8f573ac7
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
