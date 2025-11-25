@@ -4,107 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E0FCCFD368
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 07:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2673CCFD364
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 07:37:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48036B0022; Tue, 25 Nov 2025 02:23:10 -0500 (EST)
+	id 56EA06B0011; Tue, 25 Nov 2025 02:37:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1F8D6B0023; Tue, 25 Nov 2025 02:23:10 -0500 (EST)
+	id 546596B0012; Tue, 25 Nov 2025 02:37:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A61266B0024; Tue, 25 Nov 2025 02:23:10 -0500 (EST)
+	id 45C2E6B0022; Tue, 25 Nov 2025 02:37:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 977226B0022
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:23:10 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C9EDC07A0
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:23:10 +0000 (UTC)
-X-FDA: 84148288140.10.BEA23CA
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 606B6C0005
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:23:06 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=n9rCMuw4;
-	spf=pass (imf10.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FCD96B0011
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:37:26 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD2704FD00
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:37:25 +0000 (UTC)
+X-FDA: 84148324050.04.B3AA55A
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2937A1C000C
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:37:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=cqS43dkb;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764056244; a=rsa-sha256;
+	cv=none;
+	b=8OcTHepbs4ZiFWWVkLn2b16jGFDs8Pyu7NWvUZhM5+tn1YFSPm04jHrF0La/yk9bWyT67F
+	CbihRzeLlAr0EziUtI50fAze5ZZZjn54TgDg8YOhPfIdgwxzRHQQWVFLZGWgEiPhP7KU1l
+	pZdauf6iWlsVLk+S3SjznBwixo1uq2k=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=cqS43dkb;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764055386;
+	s=arc-20220608; t=1764056244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W/+KCV6X+e09gMMjlOVWq/1H4VsZgPrayf7rOuagqoM=;
-	b=Dd92//esUeYKdz0PKAonSDszXAYx0r4IwSbtAI54HAP7SGLpY5uxkVRh2ZXVb2XtjUbI5q
-	HPhbznqeBE3iN7ZtouDk5bThBd5Q3JiWMBwuOAQwx7PuuiKa3BRRiLHqYCQE1THVtPmmSq
-	/dZOKBbsTzOWIoZcpKG+GK47FDtUJZA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764055386; a=rsa-sha256;
-	cv=none;
-	b=y8zl8M1NewEFSI3AVaTcimZMCV26cHZpEOi7xcJQjitgCV6Y+wLC8zDLp8BDihuDvDEVGT
-	f+cM2NaEe5PyQvzB91sY/ePq5W7Vvs6OXHX8BCqWvXLBamVNN7rSH339CkfWlNFDd+y9Xt
-	RPkDvHGv2zL6gPcwzA1mCbDWTu7bHFQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=n9rCMuw4;
-	spf=pass (imf10.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764055387; x=1795591387;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nkiQcmVMDAWDvgWH8TwLxZ5+OG/fvCcRuE7BgYF1oWk=;
-  b=n9rCMuw45Xop7C4zUl7lviGM4VSiIENm2ITOUfbzxOJUlYy8L8diFEWQ
-   +TAMPCj97gia8ztx1rp66VTEjdCFgK2pCgTP1epMTcumrdcJb3VXkKEzE
-   cMMXfp/Mc7y6H8eHizML/HDF+x002l0zsiFwGewH+QpJZtWAJtyHmTqul
-   IOl3AoD0Jejwz1dnXlikBoT3IMM3iuZyUdDcDz5YCucplnWA6nZCc0PEA
-   KlXeMwwB/LcKU/UPYO3dN/2HgSWeml5wONEuwE0Ap95Qii33X6ttYFmkY
-   kR1zYgrrdPVrfwbFNjQNo2ndYlDhCkN1fZI2cSVBbg1jxLv54WwwyU/SQ
-   w==;
-X-CSE-ConnectionGUID: 8wwqkhkgQPC17TYe2Rhrpg==
-X-CSE-MsgGUID: SYUiHqf3SzqmFM+KhZtiRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="69923073"
-X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="69923073"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 23:23:05 -0800
-X-CSE-ConnectionGUID: vWVS/dgcRaeC6PW3k1QUiA==
-X-CSE-MsgGUID: DSDRsP0gQ9STzZ9EvJfV8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="215906221"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 23:23:00 -0800
-Message-ID: <5f85e519-5a05-4359-9904-06f16737e28b@linux.intel.com>
-Date: Tue, 25 Nov 2025 15:17:47 +0800
+	bh=U22VP4aqLatUWICSOnWOpVGgcJsVU0MJP+wCufIXQRE=;
+	b=Dsm4eqF8n+ugthyTlZGlbLGABDDuJiKDDUWFVuDtWXFDrg+1FDKy0Ri14uMjSsYBTQUKLe
+	CmfybKViBRVrz+mevbHq2+eAzI9nrhXaAYR/7P5D+u1+bgR57PKjug/EmCbergK5yk5Jsg
+	sBPTIp2ohkteRj9/51oRaufHT6Q4rac=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8D24340E0250;
+	Tue, 25 Nov 2025 07:37:18 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id yiwnpniwkHOp; Tue, 25 Nov 2025 07:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1764056231; bh=U22VP4aqLatUWICSOnWOpVGgcJsVU0MJP+wCufIXQRE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cqS43dkbN6f6s0VuhYKRlN9bzEfiDsdIHHkJGzy2t4Ui95DVS1FS6I7k3qtqdde07
+	 00L/X0FllewF3qptWpwdjjdhmyladN72ma9SPjw9ztuck15+xsyMCEd5nx6DhURn3H
+	 kwY+AFtUZYNd/lhPkrd3BvcOC1t9ruo2bFr7TyKl2dRya5Z8/h8/WtQOV+/GSNQ5TL
+	 fnwNFR31CJED2eKe1TW3/PkNRIKrK3u8RKCA2v12sg3+HcXXRbC6q/wuwaYi//5IuV
+	 kVf/MKcJMOqu4rVYcDA+hIl27vjPkbOVEecgiqrAsTX4WG5hpCP0HXOqtIYAnef7Na
+	 Z1oIXAtIVSJmmC8/JhfrBp9y979DBLmkRToXUH4MBhmzaOxKgPSxSITRsee2ufUvU4
+	 G3+Bah+mjZ0GkVsbt/HJeGB/i/F0MqBa9NA3lFg8k35+kmoHTr9ESdvX94P3qgWwNc
+	 gcoZqWlRlLjrfkUXzoO3kxSC0/sfsj0v73vFF7w+opcqCUBciCxOlMTAoxwDwKmqcz
+	 tbNxbwUBgxOzQeCiCTLFtk/m/qBYD4EEFOF+U5h68acP+oDOFb8O3YU24oD3h2AP8C
+	 bxKSlvdcfcfI2mzlazc7HCiPOM1XAfuRsfluj4ushL8UoDbla39Dp4HyvPFbo27b2s
+	 j8eWc+r+IzEOvUDmrSiNfhY0=
+Received: from zn.tnic (p57969402.dip0.t-ipconnect.de [87.150.148.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B9F0840E015B;
+	Tue, 25 Nov 2025 07:36:34 +0000 (UTC)
+Date: Tue, 25 Nov 2025 08:36:27 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
+	jonathan.cameron@huawei.com, linuxarm@huawei.com,
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	gthelen@google.com, wschwartz@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com
+Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
+References: <20251121182825.237-1-shiju.jose@huawei.com>
+ <20251121182825.237-2-shiju.jose@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] drivers/iommu: Add page_ext for
- IOMMU_DEBUG_PAGEALLOC
-To: Mostafa Saleh <smostafa@google.com>, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, xiaqinxin@huawei.com
-References: <20251124200811.2942432-1-smostafa@google.com>
- <20251124200811.2942432-2-smostafa@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20251124200811.2942432-2-smostafa@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 606B6C0005
-X-Stat-Signature: jhq798errp4wpa6k4z3enf64kqnnkzfp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251121182825.237-2-shiju.jose@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1764055386-73064
-X-HE-Meta: U2FsdGVkX1+w2emv1F+EWadpTHo4RHUt6tU1bG02jsbFcvrl8Y2pzyhu3Z84l6H5GsocGlU3T/mZe7mqLiLSfyMFoJC6h0nHEkEuPQZPEDuG+aeW2VGixNMKY12mP6ZvUhmG9UCPhvK5OvUIKM58059hqwf9JXLGnctf6vdQw1HVgq/7c11wZ7YYIh571QSW3JnnWbnivt6cbugW5NzEEiJV87mH4lK2UVxK7AJFNCBc7GSDsUAHaViUpyA96eQ+A1T8Xt+7LCp0Pgd+lxJCvngHYks5eYgmqnXVIpEQKQGyWu/VL4p5nSiFUKbBkJsnOdXHp7TrMTlUjCrbdDDt4ui+IbS1KecU3Mq5FSoSW0ZP5LZc0kVXIgzKJgLKz5utRr2mrlp7HH5p94JCIssmIB8WBW1kJLAufaEReb+7prZya2nBB4jn4MiXBbJetivkgsKgngj09Y6eSxpWZvm/E9HqYQrYNzGdjgDYROVjGfs3NPQkj+ilEiLFSSB9NiFIQzOmmmHUEWFbuIdtpoPSI5FIXuNhyKfNk4JGgnbaI6Fheei972G+BgDELpxp3vv8Ah99K5TxykrE7PEF8AgRvpBCNw2lSzTygB3qDAJBZfVtH8dlOuLVqf+xa1lMmshXWHJ5B+FEu5ZJd9ti+hPANohjuzv8aXaHpbpcEFHHPjM3oZJys4WI6lLDklbUmbj7O6hpsmY1KLrEqNojSAP1dj00/Z0ndH9fA+Pzk2062EcLnsuwZEhXxSNwwREVjTtpxtai2xDAMrwtdmtXSFaGRqC2VxgLD458rDFuhx6xrj4BpXtp8IWAtjyXutfgKgdTdVvDge/3tAdhi0K4UYtVxWKT7vvzBbT7d3yOp9BrA4dvdxZAX+Ui1GlrRlV5dmOCA/5gqWrrTaDSjTaT6k7cJGIvqBdNtatoSk6sR3FknqS1RR6z780UPq4VMwpHsDlpc9viDoDl5NqxpEGwKXa
- KVIxUshk
- 813MoyMuvA0Hm0VnXQCuLGqkGqpih3FBb93TZpkhvN5Gx589m7KNV9CGKDiLjNnM4Jz/yUxVu5AJVD9O4YXvFxovexYvWpmnscs2mmwzja6xrLTo3wSFfWwc3kaf06hvgy7QVMQ9T1Ii5ata+qiLU5d0p9Iw/de5cQ4jE0skMuugJUNZjYUqwlUfAiZ7bj44tXJCugwaxvEg2kJe98426KUUBxMYe0ODEmQgIyf5fArpUXFOIyvmN/DajPWiw/gAHOgFuUjSZTZjAcffpum3e7oEp1DT0B9cRE+M5V8Hsf4qpG3FLXvWt+6vxIQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2937A1C000C
+X-Stat-Signature: je9b3wfq5k33a6558bbrhoo51ibj9d6n
+X-HE-Tag: 1764056242-14085
+X-HE-Meta: U2FsdGVkX18Ivmie7+TIpOcIWH7TFvbpgzbOnk8zsokjrcDYVxLLoUMYsj8uMZ3bhFqnVj85MM8QGndAq/Y97nLfgiNY1uZjWvtBfGDWBg2WGiduQiGkFPW2WLGkNqXrF/s7spiqvTiXtJH1G3pvWaF7YZVEZKm3ObvmZBtTM7YvCU+NtH+eyS8NHIJyN+eaz113XC0VVzFzVgWgScjl2NGbL6OBd+m0oYv1l93rr226mg0DU0dNP81JqxtlDg+cg2hVgCDU39gOZWtUDYbL0w2qY72KfglePEBZniyHdmEGDMPpAOFpF3pT4O+/jy/gwTo/wIff6HszPJtXvEJe2CoRnje7NQ61/o0oBt3AzvmCFEYJXwJz8sRvDCIqDFtzUU9W8iFFeoWpNzJu6T6PzHnmbn7K/te0LJ8YFsxFPZXkfEcVsQvX0bj6s+qyB5wcG0KHEQmSkfhRENcYhYoF1jcWpvXAFvWWfdNUZqJt+mpFzMh/Ox7+ZzpA5evfOPfQAxF4bO6lQSccD/CyyTRBA7ZaleL/TnFmuG/lw1l07bEgXAwvzczvo3GApcQK6HJ1f8udB04Oj3dMVxWVuVgyf0Ptv1+6vsuYTp/5bbdwdnrGFrPLQdUeZ1PeYC/T/0nJq7mQTsEzUzbGBIW187il3zNBQgfL8y/deZyn+w+Kuagpcg5p/9gdMOnpcAprLD7X1LFjKMjZ/LpANKCOUpB/7fqw26bdrH10M/KUSaWeg5fjnzixg391QTxQSCPoiISgewlvAp5G/RyFnVcwa4i1Eajc/QCQzjSwKuNtJgjXp/zhXh6sNGUqWQ+Hpen/c0S3LL8CFpsXl+j9LXt4G9CL5pxy+t/4htbrx0CIlFncGn3vPuibrVbx4vyWr4pj5HvXzaX+QWpnP1xoV4xz2yYfWuX8eMKsT5vITTadBHJz9heQ3wmdCtNcy6w4CTYS6pyEsQwGKXXjez286FAD1RX
+ cGUdQBPf
+ tnIed2R/E91NkSF48amRLwJLVh3ihXHUiGXDRq7aQj+Vx9U+/U8+veiYhcmKZkS5AtXY4qVpbHho504JxLypmrk+hVmEXqTqzDY5YPPXNKdnFuIGw6fKiqxM6OOBVtIJNyBe+fS3m3i0nI9mqbiTbjnG1Ivj6WveGTYknj8RI6wPyrR4f012rTMgmW9sZldWkbACz7ulubo/21SuFCVX4DeMrnx52q7mO43KM4PSpYARcqCvCs6QXbEU6OXPZyLr+Eo1mSW3yhnhfr2upoyqPWznYNfLkm2HlMB5Dd57SjrM3R0Qbdkd+03yqPIG3gPycCaZ/7MFMNYZYKZ4vFveg8GOW3RvayOU9FTSHSf8CqzEyS1c9V4/tD6ljQTOLzcipPJl8IPGAZ0MSYbP93Bw4l9BHpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,133 +118,479 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/25/25 04:08, Mostafa Saleh wrote:
-> Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
-> page_ext.
+On Fri, Nov 21, 2025 at 06:28:20PM +0000, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
-> This config will be used by the IOMMU API to track pages mapped in
-> the IOMMU to catch drivers trying to free kernel memory that they
-> still map in their domains, causing all types of memory corruption.
+> ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
+> Driver adds support for RAS2 feature table, which provides interfaces for
+> platform RAS features, for eg. HW-based memory scrubbing, and logical to
+> PA translation service. RAS2 uses PCC channel subspace for communicating
+> with the ACPI compliant HW platform.
 > 
-> This behaviour is disabled by default and can be enabled using
-> kernel cmdline iommu.debug_pagealloc.
-> 
-> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
+> Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 > ---
->   .../admin-guide/kernel-parameters.txt         |  6 ++++
->   drivers/iommu/Kconfig                         | 19 +++++++++++
->   drivers/iommu/Makefile                        |  1 +
->   drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++++
->   include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
->   mm/page_ext.c                                 |  4 +++
->   6 files changed, 79 insertions(+)
->   create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
->   create mode 100644 include/linux/iommu-debug-pagealloc.h
+>  drivers/acpi/Kconfig  |  12 ++
+>  drivers/acpi/Makefile |   1 +
+>  drivers/acpi/bus.c    |   3 +
+>  drivers/acpi/ras2.c   | 398 ++++++++++++++++++++++++++++++++++++++++++
+>  include/acpi/ras2.h   |  57 ++++++
+>  5 files changed, 471 insertions(+)
+>  create mode 100644 drivers/acpi/ras2.c
+>  create mode 100644 include/acpi/ras2.h
 > 
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index ca00a5dbcf75..bfa9f3f4def5 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -293,6 +293,18 @@ config ACPI_CPPC_LIB
+>  	  If your platform does not support CPPC in firmware,
+>  	  leave this option disabled.
+>  
+> +config ACPI_RAS2
+> +	bool "ACPI RAS2 driver"
+> +	select AUXILIARY_BUS
+> +	select MAILBOX
+> +	select PCC
 
-[..]
+Why are those select instead of depend?
 
-> diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-debug-pagealloc.h
-> new file mode 100644
-> index 000000000000..83e64d70bf6c
-> --- /dev/null
-> +++ b/include/linux/iommu-debug-pagealloc.h
-> @@ -0,0 +1,17 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2025 - Google Inc
-> + * Author: Mostafa Saleh <smostafa@google.com>
-> + * IOMMU API debug page alloc sanitizer
+> +	depends on NUMA_KEEP_MEMINFO
+> +	help
+> +	  This driver adds support for RAS2 feature table provides interfaces
+> +	  for platform RAS features, for eg. HW-based memory scrubbing.
+> +	  If your platform does not support RAS2 in firmware, leave this
+> +	  option disabled.
+
+So this driver is so niche that the majority of users want to leave it
+disabled. Pls explain that in the help.
+
+>  config ACPI_PROCESSOR
+>  	tristate "Processor"
+>  	depends on X86 || ARM64 || LOONGARCH || RISCV
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index d1b0affb844f..abfec6745724 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -105,6 +105,7 @@ obj-$(CONFIG_ACPI_EC_DEBUGFS)	+= ec_sys.o
+>  obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
+>  obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
+>  obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
+> +obj-$(CONFIG_ACPI_RAS2)		+= ras2.o
+>  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
+>  obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
+>  obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
+
+...
+
+> +static int check_pcc_chan(struct ras2_sspcc *sspcc)
+> +{
+> +	struct acpi_ras2_shmem __iomem *gen_comm_base = sspcc->comm_addr;
+> +	u32 cap_status;
+> +	u16 status;
+> +	int rc;
+> +
+> +	/*
+> +	 * As per ACPI spec, the PCC space will be initialized by
+								  ^
+								 the
+
+> +	 * platform and should have set the command completion bit when
+> +	 * PCC can be used by OSPM.
+> +	 *
+> +	 * Poll PCC status register every 3us for maximum of 600ULL * PCC
+> +	 * channel latency until PCC command complete bit is set.
+> +	 */
+> +	rc = readw_relaxed_poll_timeout(&gen_comm_base->status, status,
+> +					status & PCC_STATUS_CMD_COMPLETE, 3,
+> +					sspcc->deadline_us);
+> +	if (rc) {
+> +		pr_warn("PCC check channel timeout for pcc_id=%d rc=%d\n",
+> +			sspcc->pcc_id, rc);
+> +		return rc;
+> +	}
+> +
+> +	if (status & PCC_STATUS_ERROR) {
+> +		pr_warn("Error in executing last command=%d for pcc_id=%d\n",
+
+Commands are better printed in hex, no?
+
+IOW, "... command: 0x%x for ..."
+
+> +			sspcc->last_cmd, sspcc->pcc_id);
+> +		status &= ~PCC_STATUS_ERROR;
+> +		writew_relaxed(status, &gen_comm_base->status);
+> +		return -EIO;
+> +	}
+> +
+> +	cap_status = readw_relaxed(&gen_comm_base->set_caps_status);
+
+Is that register read always successful or you need to handle errors here too?
+
+> +	writew_relaxed(0x0, &gen_comm_base->set_caps_status);
+> +	return decode_cap_error(cap_status);
+> +}
+> +
+> +/**
+> + * ras2_send_pcc_cmd() - Send RAS2 command via PCC channel
+> + * @ras2_ctx:	pointer to the RAS2 context structure
+> + * @cmd:	command to send
+> + *
+> + * Returns: 0 on success, an error otherwise
 > + */
+> +int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd)
+> +{
+> +	struct ras2_sspcc *sspcc = ras2_ctx->sspcc;
+
+No check for ras2_ctx before dereffing it? Especially if this is an exported
+function.
+
+> +	struct acpi_ras2_shmem __iomem *gen_comm_base = sspcc->comm_addr;
+> +	struct mbox_chan *pcc_channel;
+> +	unsigned int time_delta;
+> +	int rc;
 > +
-> +#ifndef __LINUX_IOMMU_DEBUG_PAGEALLOC_H
-> +#define __LINUX_IOMMU_DEBUG_PAGEALLOC_H
+> +	rc = check_pcc_chan(sspcc);
+> +	if (rc < 0)
+> +		return rc;
 > +
-> +#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+> +	pcc_channel = sspcc->pcc_chan->mchan;
 > +
-> +extern struct page_ext_operations page_iommu_debug_ops;
+> +	/*
+> +	 * Handle the Minimum Request Turnaround Time (MRTT).
+> +	 * "The minimum amount of time that OSPM must wait after the completion
+> +	 * of a command before issuing the next command, in microseconds."
+> +	 */
+> +	if (sspcc->pcc_mrtt) {
+> +		time_delta = ktime_us_delta(ktime_get(),
 
-How about moving above to below mm/page_ext.c and remove iommu-debug-
-pagealloc.h header file? ...
+Remove that linebreak pls. Audit your whole code for those pls.
+
+> +					    sspcc->last_cmd_cmpl_time);
+> +		if (sspcc->pcc_mrtt > time_delta)
+> +			udelay(sspcc->pcc_mrtt - time_delta);
+> +	}
+> +
+> +	/*
+> +	 * Handle the non-zero Maximum Periodic Access Rate (MPAR).
+> +	 * "The maximum number of periodic requests that the subspace channel can
+> +	 * support, reported in commands per minute. 0 indicates no limitation."
+> +	 *
+> +	 * This parameter should be ideally zero or large enough so that it can
+> +	 * handle maximum number of requests that all the cores in the system can
+> +	 * collectively generate. If it is not, follow the spec and just not
+> +	 * send the request to the platform after hitting the MPAR limit in
+> +	 * any 60s window.
+> +	 */
+> +	if (sspcc->pcc_mpar) {
+> +		if (sspcc->mpar_count == 0) {
+
+		if (!sspcc->mpar_count) {
+
+
+> +			time_delta = ktime_ms_delta(ktime_get(),
+> +						    sspcc->last_mpar_reset);
+> +			if (time_delta < 60 * MSEC_PER_SEC) {
+> +				dev_dbg(ras2_ctx->dev,
+> +					"PCC cmd(%u) not sent due to MPAR limit",
+> +					cmd);
+> +				return -EIO;
+> +			}
+> +			sspcc->last_mpar_reset = ktime_get();
+> +			sspcc->mpar_count = sspcc->pcc_mpar;
+> +		}
+> +		sspcc->mpar_count--;
+> +	}
+> +
+> +	/* Write to the shared comm region */
+> +	writew_relaxed(cmd, &gen_comm_base->command);
+> +
+> +	/* Flip CMD COMPLETE bit */
+> +	writew_relaxed(0, &gen_comm_base->status);
+> +
+> +	/* Ring doorbell */
+> +	rc = mbox_send_message(pcc_channel, &cmd);
+> +	if (rc < 0) {
+> +		dev_warn(ras2_ctx->dev,
+> +			 "Err sending PCC mbox message. cmd:%d, rc:%d\n",
+
+Yeah, you can say "Error". It is easier for all those dmesg greppers :)
+
+> +			 cmd, rc);
+> +		return rc;
+> +	}
+> +
+> +	sspcc->last_cmd = cmd;
+> +
+> +	/*
+> +	 * If Minimum Request Turnaround Time is non-zero, need
+> +	 * to record the completion time of both READ and WRITE
+> +	 * command for proper handling of MRTT, so need to check
+> +	 * for pcc_mrtt in addition to PCC_CMD_EXEC_RAS2.
+
+	 * If Minimum Request Turnaround Time is non-zero, need to record the
+	 * completion time of both READ and WRITE command for proper handling
+	 * of MRTT, so need to check for pcc_mrtt in addition to
+	 * PCC_CMD_EXEC_RAS2.
+
+Looks properly formatted to me.
+
+> +	 */
+> +	if (cmd == PCC_CMD_EXEC_RAS2 || sspcc->pcc_mrtt) {
+> +		rc = check_pcc_chan(sspcc);
+> +		if (sspcc->pcc_mrtt)
+> +			sspcc->last_cmd_cmpl_time = ktime_get();
+> +	}
+> +
+> +	if (pcc_channel->mbox->txdone_irq)
+> +		mbox_chan_txdone(pcc_channel, rc);
+> +	else
+> +		mbox_client_txdone(pcc_channel, rc);
+> +
+> +	return rc < 0 ? rc : 0;
+
+So you mean simply
+	
+	return rc;
+
+no? rc can be 0 too so what's the point of the ternary expression?
+
+And what's the logic here? You'd capture rc above from check_pcc_chan() and
+even if it is != 0, you'd pass it into the mbox* functions? I guess that
+weirdness deserves a comment...
+
+> +}
+> +EXPORT_SYMBOL_GPL(ras2_send_pcc_cmd);
+> +
+> +static int register_pcc_channel(struct ras2_mem_ctx *ras2_ctx, int pcc_id)
+> +{
+> +	struct ras2_sspcc *sspcc;
+> +	struct pcc_mbox_chan *pcc_chan;
+> +	struct mbox_client *mbox_cl;
+> +
+> +	if (pcc_id < 0)
+> +		return -EINVAL;
+> +
+> +	sspcc = kzalloc(sizeof(*sspcc), GFP_KERNEL);
+> +	if (!sspcc)
+> +		return -ENOMEM;
+> +
+> +	mbox_cl			= &sspcc->mbox_client;
+> +	mbox_cl->knows_txdone	= true;
+> +
+> +	pcc_chan = pcc_mbox_request_channel(mbox_cl, pcc_id);
+> +	if (IS_ERR(pcc_chan)) {
+> +		kfree(sspcc);
+> +		return PTR_ERR(pcc_chan);
+> +	}
+> +
+> +	sspcc->pcc_id		= pcc_id;
+> +	sspcc->pcc_chan		= pcc_chan;
+> +	sspcc->comm_addr	= pcc_chan->shmem;
+> +	sspcc->deadline_us	= PCC_NUM_RETRIES * pcc_chan->latency;
+> +	sspcc->pcc_mrtt		= pcc_chan->min_turnaround_time;
+> +	sspcc->pcc_mpar		= pcc_chan->max_access_rate;
+> +	sspcc->mbox_client.knows_txdone	= true;
+> +	sspcc->pcc_chnl_acq	= true;
+> +
+> +	ras2_ctx->sspcc		= sspcc;
+> +	ras2_ctx->comm_addr	= sspcc->comm_addr;
+> +	ras2_ctx->dev		= pcc_chan->mchan->mbox->dev;
+> +
+> +	mutex_init(&sspcc->pcc_lock);
+> +	ras2_ctx->pcc_lock	= &sspcc->pcc_lock;
+> +
+> +	return 0;
+> +}
+> +
+> +static DEFINE_IDA(ras2_ida);
+> +static void ras2_release(struct device *device)
+> +{
+> +	struct auxiliary_device *auxdev = to_auxiliary_dev(device);
+> +	struct ras2_sspcc *sspcc;
+> +	struct ras2_mem_ctx *ras2_ctx =
+
+No ugly linebreaks like that pls.
+
+> +		container_of(auxdev, struct ras2_mem_ctx, adev);
+> +
+> +	ida_free(&ras2_ida, auxdev->id);
+> +	sspcc = ras2_ctx->sspcc;
+> +	pcc_mbox_free_channel(sspcc->pcc_chan);
+> +	kfree(sspcc);
+> +	kfree(ras2_ctx);
+> +}
+> +
+> +static struct ras2_mem_ctx *
+
+No ugly linebreaks like that pls.
+
+> +add_aux_device(char *name, int channel, u32 pxm_inst)
+> +{
+> +	struct ras2_mem_ctx *ras2_ctx;
+> +	struct ras2_sspcc *sspcc;
+> +	int id, rc;
+> +
+> +	ras2_ctx = kzalloc(sizeof(*ras2_ctx), GFP_KERNEL);
+> +	if (!ras2_ctx)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	ras2_ctx->sys_comp_nid = pxm_to_node(pxm_inst);
+
+This needs to handle NUMA_NO_NODE retval.
+
+> +	rc = register_pcc_channel(ras2_ctx, channel);
+> +	if (rc < 0) {
+> +		pr_debug("Failed to register pcc channel rc=%d\n", rc);
+
+Make that error message more informative by dumping pxm_inst, channel and
+whatever else would be helpful in error debugging.
+
+> +		goto ctx_free;
+> +	}
+> +
+> +	id = ida_alloc(&ras2_ida, GFP_KERNEL);
+> +	if (id < 0) {
+> +		rc = id;
+> +		goto pcc_free;
+> +	}
+> +
+> +	ras2_ctx->adev.id		= id;
+> +	ras2_ctx->adev.name		= RAS2_MEM_DEV_ID_NAME;
+
+Wouldn't it make sense to have id be part of the name? I.e.,
+"acpi_ras2_mem%d" with id at the %d?
+
+
+> +	ras2_ctx->adev.dev.release	= ras2_release;
+> +	ras2_ctx->adev.dev.parent	= ras2_ctx->dev;
+> +
+> +	rc = auxiliary_device_init(&ras2_ctx->adev);
+> +	if (rc)
+> +		goto ida_free;
+> +
+> +	rc = auxiliary_device_add(&ras2_ctx->adev);
+> +	if (rc) {
+> +		auxiliary_device_uninit(&ras2_ctx->adev);
+> +		return ERR_PTR(rc);
+> +	}
+> +
+> +	return ras2_ctx;
+> +
+> +ida_free:
+> +	ida_free(&ras2_ida, id);
+> +pcc_free:
+> +	sspcc = ras2_ctx->sspcc;
+> +	pcc_mbox_free_channel(sspcc->pcc_chan);
+> +	kfree(sspcc);
+> +ctx_free:
+> +	kfree(ras2_ctx);
+> +
+> +	return ERR_PTR(rc);
+> +}
+> +
+> +static void acpi_ras2_parse(struct acpi_table_ras2 *ras2_tab)
+
+"parse_ras2_table"
+
+> +{
+> +	struct acpi_ras2_pcc_desc *pcc_desc_list;
+> +	struct ras2_mem_ctx *ras2_ctx;
+> +	u16 i, count;
+> +
+> +	if (ras2_tab->header.length < sizeof(*ras2_tab)) {
+> +		pr_warn(FW_WARN "ACPI RAS2 table present but broken (too short, size=%u)\n",
+> +			ras2_tab->header.length);
+> +		return;
+> +	}
+> +
+> +	if (!ras2_tab->num_pcc_descs) {
+> +		pr_warn(FW_WARN "No PCC descs in ACPI RAS2 table\n");
+> +		return;
+> +	}
+
+You need to sanity-check the number of descs so that the below allocation
+doesn't go nuts.
 
 > +
-> +#endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
+> +	struct ras2_mem_ctx **pctx_list __free(kfree) = kzalloc(ras2_tab->num_pcc_descs * sizeof(*pctx_list), GFP_KERNEL);
+
+Function member declarations at the beginning of the function, pls, and then
+you can remove this ugly linebreak too.
+
+> +	if (!pctx_list)
+> +		return;
 > +
-> +#endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-> diff --git a/mm/page_ext.c b/mm/page_ext.c
-> index d7396a8970e5..297e4cd8ce90 100644
-> --- a/mm/page_ext.c
-> +++ b/mm/page_ext.c
-> @@ -11,6 +11,7 @@
->   #include <linux/page_table_check.h>
->   #include <linux/rcupdate.h>
->   #include <linux/pgalloc_tag.h>
-> +#include <linux/iommu-debug-pagealloc.h>
+> +	count = 0;
+> +	pcc_desc_list = (struct acpi_ras2_pcc_desc *)(ras2_tab + 1);
+> +	for (i = 0; i < ras2_tab->num_pcc_descs; i++, pcc_desc_list++) {
+> +		if (pcc_desc_list->feature_type != RAS2_FEAT_TYPE_MEMORY)
+> +			continue;
+> +
+> +		ras2_ctx = add_aux_device(RAS2_MEM_DEV_ID_NAME,
+> +					  pcc_desc_list->channel_id,
+> +					  pcc_desc_list->instance);
+> +		if (IS_ERR(ras2_ctx)) {
+> +			pr_warn("Failed to add RAS2 auxiliary device rc=%ld\n",
+> +				PTR_ERR(ras2_ctx));
+> +			for (i = count; i > 0; i--)
 
-... remove this include line and put the "extern" line here,
+You don't need that count var - can use i directly.
 
-extern struct page_ext_operations page_iommu_debug_ops;
+> +				auxiliary_device_uninit(&pctx_list[i - 1]->adev);
+> +			return;
 
->   
->   /*
->    * struct page extension
-> @@ -89,6 +90,9 @@ static struct page_ext_operations *page_ext_ops[] __initdata = {
->   #ifdef CONFIG_PAGE_TABLE_CHECK
->   	&page_table_check_ops,
->   #endif
-> +#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-> +	&page_iommu_debug_ops,
-> +#endif
->   };
->   
->   unsigned long page_ext_size;
+When you return here you have dangling pointers in that pctx_list array.
 
-Or, put it directly in linux/iommu.h?
+> +		}
+> +		pctx_list[count++] = ras2_ctx;
 
-diff --git a/include/linux/iommu-debug-pagealloc.h 
-b/include/linux/iommu-debug-pagealloc.h
-index 87f593305465..b2b82cf032e6 100644
---- a/include/linux/iommu-debug-pagealloc.h
-+++ b/include/linux/iommu-debug-pagealloc.h
-@@ -14,8 +14,6 @@ struct iommu_domain;
 
-  DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
+Also, what's the point of that pctx_list array at all? So that you can do
+uninit on the ->adev in case you encounter a failure?
 
--extern struct page_ext_operations page_iommu_debug_ops;
--
-  void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys,
-                        size_t size);
-  void __iommu_debug_unmap_begin(struct iommu_domain *domain,
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 801b2bd9e8d4..40133031985a 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -1185,6 +1185,10 @@ void iommu_detach_device_pasid(struct 
-iommu_domain *domain,
-                                struct device *dev, ioasid_t pasid);
-  ioasid_t iommu_alloc_global_pasid(struct device *dev);
-  void iommu_free_global_pasid(ioasid_t pasid);
-+
-+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
-+extern struct page_ext_operations page_iommu_debug_ops;
-+#endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
-  #else /* CONFIG_IOMMU_API */
+> +	}
+> +}
+> +
+> +/**
+> + * acpi_ras2_init - RAS2 driver initialization function.
+> + *
+> + * Extracts the ACPI RAS2 table and retrieves ID for the PCC channel subspace
+> + * for communicating with the ACPI compliant HW platform. Driver adds an
+> + * auxiliary device, which binds to the memory ACPI RAS2 driver, for each RAS2
+> + * memory feature.
+> + *
+> + * Returns: none.
+> + */
+> +void __init acpi_ras2_init(void)
+> +{
+> +	struct acpi_table_ras2 *ras2_tab;
+> +	acpi_status status;
+> +
+> +	status = acpi_get_table(ACPI_SIG_RAS2, 0,
+> +				(struct acpi_table_header **)&ras2_tab);
+> +	if (ACPI_FAILURE(status)) {
+> +		pr_err("Failed to get table, %s\n", acpi_format_exception(status));
 
-  struct iommu_ops {};
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index 297e4cd8ce90..345af8c9fcce 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -11,7 +11,7 @@
-  #include <linux/page_table_check.h>
-  #include <linux/rcupdate.h>
-  #include <linux/pgalloc_tag.h>
--#include <linux/iommu-debug-pagealloc.h>
-+#include <linux/iommu.h>
+Looks like pr_debug to me.
 
-  /*
-   * struct page extension
+> +		return;
+> +	}
+> +
+> +	acpi_ras2_parse(ras2_tab);
 
-Thanks,
-baolu
+This function does some table sanity checking and warns. What it should do is
+fail the driver load if the table is broken.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
