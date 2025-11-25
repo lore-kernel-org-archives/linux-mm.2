@@ -4,113 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9B9CFD36E
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 00:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBBFECFD36B
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 01:10:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9A1D6B0088; Mon, 24 Nov 2025 19:59:15 -0500 (EST)
+	id 16EFD6B0031; Mon, 24 Nov 2025 20:10:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4AC96B008A; Mon, 24 Nov 2025 19:59:15 -0500 (EST)
+	id 11E9A6B007B; Mon, 24 Nov 2025 20:10:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D60E86B008C; Mon, 24 Nov 2025 19:59:15 -0500 (EST)
+	id 00CE36B0089; Mon, 24 Nov 2025 20:09:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C569F6B0088
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:59:15 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0EE65B8DC3
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:59:13 +0000 (UTC)
-X-FDA: 84147320586.15.18ACEC0
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 43451180008
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:59:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernelci-org.20230601.gappssmtp.com header.s=20230601 header.b=ij4DBA8m
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764032351;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=we018xvjM9doGI0IyR5pf9MGTmer6+vGWKse30i/Aq4=;
-	b=nSYTeXxrylpB8LK5/Ubj4KalhlBEKPncNk11zzeDYOEpoI128hASGO8riOyydYxUPN9Qe+
-	dGTJ0aI1gGxMbOFE+aSI2dsuTJ4ksSWfbSNdn1vRlhLSDwgcR+g+xSe6DVHVpKFPc1hz5f
-	MVTLAFraEu0j+BBWqndOxmpG3LRoqz8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernelci-org.20230601.gappssmtp.com header.s=20230601 header.b=ij4DBA8m;
-	spf=none (imf16.hostedemail.com: domain of bot@kernelci.org has no SPF policy when checking 209.85.215.170) smtp.mailfrom=bot@kernelci.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764032351; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DF2EC6B0031
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 20:09:59 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 712D9160654
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 01:09:59 +0000 (UTC)
+X-FDA: 84147347718.07.067A734
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 811B914000A
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 01:09:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DVdKEk5K;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764032998; a=rsa-sha256;
 	cv=none;
-	b=uBrfr8iY96iddYbsvvpfb8jxmjVV4XMz4cJ4oedeJaPWd23IMCM9ghWrCKuepruyZBFuYl
-	Je9O+JCEL+ZON4c+RT3HVo8eJtoUNvA1FTSHqDRu9nuTK3A02g69bgk26Q8HS4ghJsp3sG
-	T5pV2pkvDx1fH/XLKfJCdFfNBDhODYM=
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-bde0f62464cso80961a12.2
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 16:59:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1764032350; x=1764637150; darn=kvack.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=we018xvjM9doGI0IyR5pf9MGTmer6+vGWKse30i/Aq4=;
-        b=ij4DBA8mERLIDI4KHa+aovInSGwxmn0885ciFzk7wGGJIoqIjrAJItqAkat5vIXk8N
-         XQWy/z/mgHBbBI8MXHQRDeyYJPRlpdS37JQJkpfImsYZ72qGDQdRaspNUFGfOy6yLwJ5
-         sxAj6Zq0SXP8C4VTjfOQo2WJn5cUmZxsJVDfhzAFQ0V7lTuxndL5ViZnEy6ypCpJ78lM
-         RAJ7PAXWzxRRdwzOcwdGskmE4nGDlHt++ON3qjwjqvZH14CyybDTZKHo30dsxUP4GpMn
-         ODBoCV9eNOf8UaSfNE6mcd4inPYxF3gzO7y9DBgANgDeL9VQsuJV+9k4rcQh/XEavAUx
-         xkmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764032350; x=1764637150;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=we018xvjM9doGI0IyR5pf9MGTmer6+vGWKse30i/Aq4=;
-        b=D727hRxNfe+kjotYdl28etHRy62jVOh5KP5nz1fjJ28jZvxRIK4zlAieWosDdrjnHN
-         UKGI4VIrHZoyAzWqAzoW3g8dvGhgLsZ0WrFIczJWAxYCmNFPW+8W/AeKEfhjFFUHdDkr
-         R5kHTTPPOPql3Xq8dxjxOYTJQgTQ04AfCVf/l2Rn4KBvP5fSrh5eVuq3Uokk2kd983OF
-         tE0bJO1NhdMWMlxQiVkYQ8HoLru+8xVrTzMXCXKzlGpSaAWy/rTWECR4ciUgTceee/a5
-         RPgLr4f8GatzUVN5Jgh58pDwAldZD1ZLwcmsQ1YuldvBiHRPS7HruB+YBjmRdVi4KEv+
-         HkjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGGyw3CN2zUt7HgiLRGiAmJ2wIEfsFvaSDSzLJvrWsukEc6731RPWgAWjRuTskagy9WrEXxu3MGA==@kvack.org
-X-Gm-Message-State: AOJu0YwT5ZT7IIcWTxWv/3ugxM1Szp0qq7puj1NXBq0r1yBkPnOG9JuJ
-	bt0saB+HuMcDudzXAMJNq48uNoKgjRFyRZt2k/EmYUtdyi/T1kxfEr162e0pIKtwOq4jJ3eONfr
-	ycZhA5yE=
-X-Gm-Gg: ASbGncvIjIUN4cXb3Rv6awZD++GNV3FbP6c5HUJ0mHjGB1jEBGzrg3Apr9ve1hu39G8
-	YfzOTepPWJhdivjISc6vIkiM/xiMrIEl2h78OSl45tXJc+MKg+0kaENVCJQXK2qmyyVH8z5gXwa
-	A/wq8ettNUh3HSe0S7UfbLz227gAEbkNjcXXWyhG9TCYNPBn99Y8iYepSDu261Nj/tkVTqv1LwE
-	jk6Et+brqEwrUynos6Odf5is+fHiGyJyM719443YgxXHr6mQHr6vxA2POXuNLxcswIzhVH38tvc
-	ISJ0ZpQZ4fFZUilTvgVo1+7UcJXw5eS5jjqRVXCqqJUDVIqh+nAG0vYm3e0uHaF8KruK/Vqjbry
-	roZAIYXqMMsIHjLILDCAo2RmxENxZPqBgfrBvX9MRDTFRI0Nq80uybZ7UEeFpgB+yItX52MVLFy
-	AFCyHB
-X-Google-Smtp-Source: AGHT+IHVGjN/L8J5cJscFfjYBlyZg4G/S3JiJkfCOzhjQk8PPHFobWgn0AW8Vo0BX7zVG8N0nJYnBw==
-X-Received: by 2002:a05:7300:6115:b0:2a4:3594:d54e with SMTP id 5a478bee46e88-2a719d86ae3mr7784862eec.27.1764032349954;
-        Mon, 24 Nov 2025 16:59:09 -0800 (PST)
-Received: from f771fd7c9232 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11c93e3e945sm73301277c88.6.2025.11.24.16.59.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 16:59:08 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	b=DCukgKoDWm5FhBF13c5ew+Ii7JlanM78cuNMXhxKHrShP4Q9xjfBs4+nfVpFtxUi/ZkZXm
+	LTXENHXq4YFLc8E9AX3TqY/vfn3XmueP7wj+8JqC5GVUY/aF5G/8Fshj9tvp8n4HJztOkA
+	YK8pJxOSu6HjBgDIjEs8J7meAbJvJ54=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DVdKEk5K;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764032998;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kODB23LtSbraMlqmSxfIt3k86wJC3FJBaXEatSPUpUQ=;
+	b=jW8M8QYloJCw1/DKNbnytjKZ4MUWpG/9BLsPp0K8deDYJzY3TjNB6Ftzot3tlhM2wpXiBQ
+	lNmEfrteAcd3OmT60P2eXAyRTPdWqkvqCyr28iXJwSOfbrkx4tSxZRiwBf8cSFNUZyGMgp
+	UDk0Kf3xbUAzwRZTH6u65hFCExuWrI0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kODB23LtSbraMlqmSxfIt3k86wJC3FJBaXEatSPUpUQ=; b=DVdKEk5KJpBpl4fxfo17HNT9Sn
+	FguEXYplzXPLC2lfaSPPb+sZHMy3AZtx01hgFGTzP7cs0ll7knzhR/LjNNFeTrTIQQDXpuiTx8NHZ
+	ZCBoo299KS4ajjUc7Pt51EG6RLjcAF1A9pRwozBoUWqKBt35C8isgETMOimHohxhxxH6N4eEmC44Z
+	nBzm3cIO3FCf0xxvcucbFzT6TfLpIdLjiF00ngCX5H9O0jmqSmtB0V6/fR2vaUmlcVkprQrsiMNAO
+	AQXJBEyIo+o12XDvE7T8NXiHzdF0Zed+SI0pTTTLXqrUnNQsx/f3RttycuGMJOe05pnge9Vljdy6T
+	vZKmeWKw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vNhYs-00000007nVS-1SdO;
+	Tue, 25 Nov 2025 01:09:42 +0000
+Date: Tue, 25 Nov 2025 01:09:42 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marco Elver <elver@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
+Message-ID: <aSUB1qrfhXp3suGn@casper.infradead.org>
+References: <20251122014258.do.018-kees@kernel.org>
+ <20251122014304.3417954-2-kees@kernel.org>
+ <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+ <202511241119.C547DEF80@keescook>
+ <aSTKLsRNiEKtDqPI@casper.infradead.org>
+ <202511241317.516BDE7B@keescook>
+ <aSTRsIUPeT5EC5An@casper.infradead.org>
+ <CAHk-=wgn-2ieKtaHAXLLge1UFckLKa88vo3XOdLz+fP+DLpHGA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: 
- =?utf-8?q?=5BREGRESSION=5D_rppt/for-kernelci=3A_=28build=29_in_expansion_of_?=
- =?utf-8?q?macro_=E2=80=98cpu=5Frq=E2=80=99_in_kernel/sched/fair=2Eo_=28kern?=
- =?utf-8?q?el/sche=2E=2E=2E?=
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, rppt@kernel.org, linux-mm@kvack.org
-Reply-To: kernelci@lists.linux.dev
-Date: Tue, 25 Nov 2025 00:59:08 -0000
-Message-ID: <176403234818.318.468450848595411858@f771fd7c9232>
-X-Rspamd-Queue-Id: 43451180008
-X-Stat-Signature: rqs5gcqudxq6wu88od7q7sbrcpi83on4
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgn-2ieKtaHAXLLge1UFckLKa88vo3XOdLz+fP+DLpHGA@mail.gmail.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 811B914000A
+X-Stat-Signature: 5h3hhp1n1pe4kqf6rphe5ssxtkkbhw6o
 X-Rspam-User: 
-X-HE-Tag: 1764032351-812472
-X-HE-Meta: U2FsdGVkX1+ZgCnyJ9lUaljhF5/GN8oSFWYFaAFd3cJIuPF0veu5EOsBBKkxqHAnmTn6v5aeJ9itxm3jd+xgU0qdh5QxlMEiMI9pSeQZOg+BzeFBmuM1TXtsh68yrKpGNzbrFuR0np9NydW+oYifE0yTGm05FgtbEQVVun8Kd44ve6J7m42qtwp9oaaYPKWx2oyCc7ELflUSqyTducH6Pxndp7Rf19FBJl+SsKp8Pao81EUJLmaaG5QQQPqKNAT6OdLNKvlSVTc8C6gv7ZL612qdyP9XS4s5Xa3TKh7DvxHTrMj4oCIJldC2F+rdwwfgL3mNdgmwbezCZ4O7EJxyFhVK6FVpobI9lfadsP6gzF1PKF6f4fx+PZyu90jYuN+hhwBf4pcV65CCSfzZaAL/C+26evLTpFu5O7+crAYrjNp1Cfopi56pGo4CnNX+MSbKTw3EtQqtD2KaL1x2o2/2vLi9VJbp7yC8Z/U5dhq8X289Q2OyT8V+skUNY0sS8WJ+O/EJ40Ef9GTnoCzO1zlMBhBdOlZwopRsEfwMGhPJkQA9qetTTKCRTpbV7BZTfUYU6OXXaVSRFUAWmu2u+JJlPWNZKc/WTA2aXr3OD1SIPLy0CZjoJKBMI5RGfzhuwLjO52dSRUY7Ux84F9y+0dV4EDtQt9+JHBFZEXP59Rol4N0v2L94SrpiWhrqx7th8IKC2xvUYG7Lgfx84qicSinuyvXjclGvPQJSpsyKZjEwxDTnYagUroaQSLyGz9W9OQp2Glz7Zbew+KqK9D3hUqKB6xOS/sVR3BUJ0tMEomdu+57fDjWbp9/rXjVnbKa78tV++VUqKIcxKHxrOICX46SETBGy63sMEx7nbbYYc5k7OmtPy2+zADbYxgWyvKkesAyZPDKkha6VYEYI1vAeKGzfytGm32y3mApDATbgm+NF/G8Zard2osoIdAWuWhLtOmRkkb/sv6WtSmgzkROlvh2
- Yn2XHPjU
- UcLDKegFR+GmAIM23QEd8MQme22djybvQ+2dnIH1dAF4UHAnJdRBC7F+/59E9sawXiOZHMZsu37H/UOHmfD+Nfl0wIj20xLw2Wrgb2L3J+GSgs+JMiMV7GcRxgmsU28box1UAWLT335d+F+qUj3exSyT2vzido/df2oW9sAVeBd/YUY3yu6dTjsbelK8E+fylCEunW2Ge6HUMQZPS7hj69oGjzXg1L5cr6yOWTi9FmGZtKO28ZmrLnkinnSsqizqF1n69zc62r2B/MvrgFT6AbvlUwDJhMM2pqX6kVa8xaAG6hOtdFkgLgPFN4QqE0TR5HeYtjc7sqJBUbBHE/ps8la9syL2QQEGJDmZvxwQ68hqISpJ5njAJrn67XoQL9uuo8qhYVK/V3rCKHGty3aLheimbXappO3qnmUO7D+1gXPQWM53B4qIPgA208Kg3rGliEF1hHK3fq+lOz/Fb/I2Eut7YOBMv2Phvg/iGdzuaeLDPE6BR9cuqE0lxCV2uf5QNXMdllZQSqUuU/us9cZQ44PC6Sd5upFrNZBKfuhDuihFP47XEfXCGCTLyI9AUQjGdX3cfPm/vfzrxBP+TRQ0YdXyysyz+ywEfWf7NkNv43AK3BX6QRJ67YtsabT/aA4oPSbcwjjZCSP+9B1KFkMJNAQrtBTB4IiB9RXGjww0LsSaZ/hUxtQ7aFWxBGX/uES5IaOJU2Wq8ROC2e9v+MRnkrC5BNnlSHLnx1BQIZuR6SSvDaQh7FqLh7a/nECDVH7y7HV3PMq/etwZNJlNzgRl+14NiuaO5maaoD/cxwq/bsIgqeoSKt9LQwUGsBw==
+X-HE-Tag: 1764032996-964159
+X-HE-Meta: U2FsdGVkX1/9sztZZ414MSHYD8KvnkOoeGrRf4YdArJudIEuLTz+QIsB1CLMf/grABtYwUHcsg05+cqwV2ym7qRL096vm3KsAax2w4n2kUzgyE4htXSxCvxm/mCDJ8EAeJB1bVE0ENlu8ziyBAlqzquToT3JtMIVYo/WLD1wPmVYUs6+gGFHBBKc6iTCWTadx50x2sUj0CnUhuduGHfEkl4KqLjXrIr1JJKtOG1QsTfGIpj0pxwoUi1G1atbUadnT68M4XeywgQ4/MDNrDyzliwIwQho+Q/zOP6P1+TC1OG1Oh5fz3V8HEyi3nxDYLda1n/4Yr684S+ilBbmdS/d/nt9yklCXazLZ9yGRxlsatdBYVS5ah7qmIS1kQj02T3wdz36kEuQTy+93y3qAabgNCFbGqQXyk3RjoRnF7RCwb0x7hpmnM/XB+Y7SCE5rZbKPJynAIzdFQmwqjjlES1M6T1WswGpdgrPQlv63sNelyj7/oz6nXCEcDUoHoJ1V3dnSQ4AGzL1SegXlGUxdSjR55C/cI0pN4dg0E+sgHYGYj0YkfmDOlvpDAVzLQLtYdwc/Yb3cOu6IPJAMcg6LDigXrqwC0Sx6lrb5vPQcENLR5fAR3gzlyWULOH5bs7vPlvsO70NUV0z3VMTNOG2uG7gZUAOfmKxf4B8ME5IharbvzsCkhq0FYKWOzEKPkBo3Q0P6QvaHmnTnE0uJunVGfaYnEPkN2wwnz1hdkVtPmSIq6RIgtZN9ZcbYSRlI82w6NStyDWGaXyHT5/dZhCUMrrohTkl1k5uI/gyje6D/rNQNLmhf5vujVDM3/CAKMknpiCVVqbUo2eMUAdUZGpf7xSi+erujI2sW8nLOqQMOML5A4FGcG8ncRnA9CVvZlNTaD3KN7+Lol4LLvRpw/us2Paxhehj/xGGel8p6/OwuR3LWaDwSEBWXb7lKNu57/P4dO2HH8OCbnaOC02NFNtw9Hq
+ PVSKf+y4
+ DUqoaKsRnC5b1QpPTrOrHbh0VWNc4CNPgoQZ3k+dVOm3dWguokgoa51/r3mZxvnDd4B+EovY3hK1AvfbhZVj0948gO7Zit5uTljrzcTH71Vt1aGuJaEgVtsLHlG/5bNE251LRZwf0KxWvvan4bZJ/PNKlHx9oqKIVh9oLcNDpikxAhkth1MfAobL+4HNZT5RGHbKfNyTr/VkcvITL3ulT/uxoz2nmoJtVKGoW6ORLOsC0q+EYBWhh/flIlfwR8NHnz2o6Zs39UqmC362yYeFgaYtbTQgCyczNvMI69OMAokw5JQpkbzT6f5w9GK28TAvz2lE2Js6Ejz48KfBDy3y1CkXSLfGBd7/4eq41QPHA8kYPlyyA1WckDTMHQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,65 +123,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Nov 24, 2025 at 03:30:19PM -0800, Linus Torvalds wrote:
+> That all a very standard thing in assembly programming, which this is
+> all about. 'entry' is a signed offset from its own address.
 
+I used to be an assembly programmer ... 28 years ago.  I've mostly put
+that world out of my mind (and being able to write a 20,000 instruction
+ARM32 program entirely in assembly is just not that useful an
+accomplishment to put on my CV).  Anyway, this isn't the point ...
 
+> > The warning is ... not the best phrased, but in terms of divining the
+> > programmer's intent, I genuinely don't know if this code is supposed
+> > to zero-extend or sign-extend the s32 to unsigned long.
+> 
+> What?
+> 
+> A signed value gets sign-extended when cast to a larger type. That's
+> how all of this always works. Casting a signed value to 'unsigned
+> long' will set the high bits in the result.
+> 
+> That's pretty much the *definition* of a signed value. It gets
+> sign-extended when used, and then obviously it becomes a large
+> unsigned value, but this is how two's complement addition
+> fundamentally works.
 
+Yes, agreed.
 
-Hello,
+> So honestly, what's the problem with this code?
+> 
+> The warning makes no sense, and is garbage. Are we not allowed to add
+> signed integers to unsigned 64-bit values now, because that addition
+> involves that cast of a signed 32-bit entry to an unsigned 64-bit one?
+> 
+> There is NO WAY that warning is valid, it's; not *ever* something we
+> should enable, and the fact that you people are discussing it as such
+> is just crazy.
+> 
+> That code would not be improved at all by adding another cast (to
+> first cast that s32 to 'long', in order to then add it to 'unsigned
+> long').
+> 
+> Imagine how many other places you add integers to 'unsigned long'.
+> EVERY SINGLE ONE of those places involves sign-extending the integer
+> and then doing arithmetic in unsigned.
 
-New build issue found on rppt/for-kernelci:
+I have bad news.  Rust requires it.
 
----
- in expansion of macro ‘cpu_rq’ in kernel/sched/fair.o (kernel/sched/fair.c) [logspec:kbuild,kbuild.compiler.note]
----
+fn add(base: u64, off: i32) -> u64 {
+    base + off
+}
 
-- dashboard: https://d.kernelci.org/i/maestro:611780ef04e41ebe53568a14b8674b1106ac211e
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git
-- commit HEAD:  7a1b17aedd2aad3a04a211865f048903bd47fedd
+error[E0308]: mismatched types
+ --> add.rs:2:12
+  |
+2 |     base + off
+  |            ^^^ expected `u64`, found `i32`
 
+error[E0277]: cannot add `i32` to `u64`
+ --> add.rs:2:10
+  |
+2 |     base + off
+  |          ^ no implementation for `u64 + i32`
+  |
+  = help: the trait `Add<i32>` is not implemented for `u64`
+  = help: the following other types implement trait `Add<Rhs>`:
+            <u64 as Add>
+            <u64 as Add<&u64>>
+            <&'a u64 as Add<u64>>
+            <&u64 as Add<&u64>>
 
-
-Log excerpt:
-=====================================================
-kernel/sched/fair.c:6019:34: note: in expansion of macro ‘cpu_rq’
- 6019 |         this_eff_load = cpu_load(cpu_rq(this_cpu));
-      |                                  ^~~~~~
-In file included from ./arch/x86/include/asm/percpu.h:390,
-                 from ./arch/x86/include/asm/current.h:6,
-                 from ./include/linux/sched.h:12,
-                 from ./include/linux/ratelimit.h:6,
-                 from ./include/linux/dev_printk.h:16,
-                 from ./include/linux/device.h:15,
-                 from ./include/linux/energy_model.h:5,
-                 from kernel/sched/fair.c:23:
-./include/asm-generic/percpu.h: In function ‘select_task_rq_fair’:
-./include/asm-generic/percpu.h:19:22: note: while referencing ‘__per_cpu_offset’
-   19 | extern unsigned long __per_cpu_offset[NR_CPUS];
-      |                      ^~~~~~~~~~~~~~~~
-  CC      arch/x86/events/intel/lbr.o
-  CC      kernel/dma/direct.o
-  CC      arch/x86/events/intel/p4.o
-  CC      arch/x86/events/amd/uncore.o
-cc1: all warnings being treated as errors
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## x86_64_defconfig+kselftest on (x86_64):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-x86-build-only-6924fd13f5b8743b1f5fa56a/.config
-- dashboard: https://d.kernelci.org/build/maestro:6924fd13f5b8743b1f5fa56a
-
-
-#kernelci issue maestro:611780ef04e41ebe53568a14b8674b1106ac211e
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+so the Rust language people have clearly decided that this is too
+complicated for your average programmer to figure out, and you need
+explicit casts to make it work.
 
