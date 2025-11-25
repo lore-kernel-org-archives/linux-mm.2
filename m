@@ -4,102 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72699CFD315
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E9B3CFD315
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:42:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE71C6B0026; Tue, 25 Nov 2025 04:34:16 -0500 (EST)
+	id D98866B0032; Tue, 25 Nov 2025 04:42:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBE6E6B0030; Tue, 25 Nov 2025 04:34:16 -0500 (EST)
+	id D70666B0062; Tue, 25 Nov 2025 04:42:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFB876B0031; Tue, 25 Nov 2025 04:34:16 -0500 (EST)
+	id C86B06B007B; Tue, 25 Nov 2025 04:42:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B0BE16B0026
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:34:16 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC2D6C0800
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:34:14 +0000 (UTC)
-X-FDA: 84148618428.28.A935755
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1E84A40002
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:34:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h6BId81C;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B492A6B0032
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:42:53 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72CF51A050D
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:42:51 +0000 (UTC)
+X-FDA: 84148640142.01.13013E0
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 91761A0008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:42:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NLeUf8R8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of smostafa@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=smostafa@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764063769; a=rsa-sha256;
+	cv=none;
+	b=B9WdVWxPHBJxZaodr5VdRtpRu/niHMPIZ7nTL2G9mr09lJu0a/pQAkQ9CsR9X2rnm24L7T
+	N4Yn8+qAJPWXFP3dmGUN4lOPuRUTbcB5GWdrcuQDyMtMgbdn8c+iwnBjoEtBeIreaI13ak
+	t75HAmYYTcz3Lb5S0RWEZqqWd9Z6fuM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NLeUf8R8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of smostafa@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=smostafa@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764063253;
+	s=arc-20220608; t=1764063769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NIXBIcuE/ufZqs4idaNhHNCrHT/WUm9D8lp09grNibQ=;
-	b=72Co8QMX4wm7h95TS1hOezAg9TET7LDp+QU11U+Rm6sAZFkgVtxqYgudEUSHhOitYk9an9
-	3P42OsAVW5Xo+APpb3qX45Yo55btsqEHhSpiT7UOcPCZT8LwirM+M9kLG4T/sApbnbgNnN
-	aSbSWl+l0DCKJYaUTySijq6T8SeM8I0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h6BId81C;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764063253; a=rsa-sha256;
-	cv=none;
-	b=u4Ex1PwTfpDo+nPLkyDrgxBoTI8nQlXPE9DxfJ7SLKcoZYe8sF47zIENK8xqJGsIIOW1LF
-	T2YaMIb2B2PFRLwde0V3T1Sc+PfpiYXJIc55rCkSOuPuztM8fep8th7bBdikDXrGoMN4tT
-	I2t0XATL/tj5nupaII1PYvgtiLhfONY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D819141951;
-	Tue, 25 Nov 2025 09:34:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568C7C4CEF1;
-	Tue, 25 Nov 2025 09:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764063251;
-	bh=FcKv+b6xt+QE9/qtKYSh+S6sFbr6sQYUjRnCsWnW6nI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=h6BId81CJTZvaXBjQ71EfemBl/x+RWWBbYt5yUML3h8Nj8EhTvE+cK5wyo6EArIig
-	 bRr5awJuXrgv8fIa4YdV60RHM+II9dHvnIFtJAEYKNOkLAQV0mOgWgVBGHafsRyTbv
-	 PbLJzXkQ111BE/caVlSBwi3WsGu+nrMWBe6MTllN8mwLu3gJgFymkyRVQPyV1vF0yT
-	 bnncJbTFKvaNeeiCIfU6hIuEHEwvUt+N//H+o1dySEhWecK4pN7b0LCtpAP8ALnXlO
-	 sShy4lfOK29cWRDWJtbNnQHaqTvEFj2dpf3RA++sC0UeaYu8wPmBYNx+oDKPu3VmjU
-	 m6ca0XEYQoTJg==
-Message-ID: <6833a9b4-5c9a-41cc-b44f-3e3f2592d119@kernel.org>
-Date: Tue, 25 Nov 2025 10:34:05 +0100
+	bh=gCXHGSoCQLbBnbJkgfyqXAP9QKSn53WdyAoVSewwZH8=;
+	b=yaPfULz1yrZc2FVOnmFkendZY1qinbdW/OyJtQg+3aYpCoCiXazZWKqRk8IiCNwppkxNpu
+	JceCcukeXI+MZaJvclFNNC7BBUVjJEntjzmP+HCDfaw3z8C7nWHkO3GkwutXbWmMPqGfWh
+	xqBWkm/bEaIDs3tJZ6N9FeiIeLnu6Bg=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779a4fb9bfso47715e9.0
+        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 01:42:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764063768; x=1764668568; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gCXHGSoCQLbBnbJkgfyqXAP9QKSn53WdyAoVSewwZH8=;
+        b=NLeUf8R8VOQWh3rL/HqDQBIykHyb8SbUqv+Nd012VlxQxOy4QnlWGykXh/1vK8pjbm
+         eoAeLHSMlDdq65sDC8pHhwzjdhJAOkgYvhcuGwLhN+mbKpqv7YyyNkMjppB+nJ3bePQX
+         Uon1aQfbGMkbcMnFI52tvCQhrxwuzDU5Z0vyOZlReXHGevq1QI4yKGLMdNzkF++cQhLn
+         JElUxlHJdnAduYjQ5NGhPpR35NHr4iQy3aDgl85GWm8EoncPa+gfevhVG6xoM8oVFQQE
+         UALVLdDHrcLAsg/B5dCl6UVlqnCTs8osmDg+eeOuF6R6sAPL0n/JmtBwWMd1tgeIo8G4
+         Ikfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764063768; x=1764668568;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gCXHGSoCQLbBnbJkgfyqXAP9QKSn53WdyAoVSewwZH8=;
+        b=jrw4YkBH28/udwseG35yaRHPVRaSipmBLohVQReQbUBQJUaY4iUOxNDoH/RY6A9DFo
+         zXN9M0waQvHvQwZkS3p2z4f1u1IX1AGG25L76RE865kAUda4t7sZQl9Uv9ibSIjKmBDB
+         0NwUFfloQ7Hd3cuJPfcVDlK46KFLenqESdrQeZ5MIrf8kF5odOBy7SE3Qi34tTd4gDGg
+         GowCNQvYoZHadjPLDSrVlXC5BUiVIZwmM99fm4/ntOvzVe2DKvp+WzipPqn1XSwiDguT
+         tvQnJKwKBC8G99GJuHBslMPLQnewdf5j65sQFS3NahQ64bKKrNFc9pY1il5QFeAGJAPz
+         fx4g==
+X-Gm-Message-State: AOJu0YxBOTX4yh0LfkHSPHo+S4yZzY0CKDg+d2S7SIG5v7vh/AZPbQ4Z
+	555TtJw5CoNgMxAEXavbMbmYbr3mvLeDsap11mnt/fTboirqGWYVMkUoftvD3EfZPQ==
+X-Gm-Gg: ASbGncvWIbJj3JMlaxe/2ZldtuC1ZA58OYCD5SeUZayZ9Fd+XAxWwDuhTe9bQoQqTql
+	yx8o4fB3696ZWDc16ZtBsqpINmOmLs/DTG87qDI1QCj/GlkBkxxLq3MZDxDrI0xyiUu8OBfLOp+
+	BO1CQ2BRAhxqMajyrGOyFqQERw5+XmBXJ7FQ5VtTdGu80cRIGUWT28fLIQxybkMWNY7bXV4nT7h
+	sFZn+sG5Kjyr/R5fvYqZoQ65BQ6vmwPqsJ9ReK/Po/snWSgNPvlWEVwAgascRGHjUkhzDT/endn
+	T7+18+bG+TdWDedmaCF3tPdhYUcylOYVCf/GrUD7GcYu19qM/drZlQtyUtYtxR+DgHmbO650gz7
+	4UJnoGL4aI9Z4xXrHoo9k7QXEcCkJcp0iS9hh1v+llNg1lKGEZh5EQmQD4sfbvalfGu9BeYxV85
+	eJhcvu7vhiprIKYrfz7ewOlk5IFQVji8a2XpOiIcS7/houL+QgD40qfhqsUma9
+X-Google-Smtp-Source: AGHT+IEnhOrLJGeXT6QUokA3QYFoyH54rP3priqnpDd397EAHhk3ibEBNXSKphd8QyA5DX/xXbjC9w==
+X-Received: by 2002:a05:600c:3582:b0:477:95a8:2562 with SMTP id 5b1f17b1804b1-479068fa210mr331535e9.13.1764063767841;
+        Tue, 25 Nov 2025 01:42:47 -0800 (PST)
+Received: from google.com (54.140.140.34.bc.googleusercontent.com. [34.140.140.54])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479052d95absm11951115e9.5.2025.11.25.01.42.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 01:42:46 -0800 (PST)
+Date: Tue, 25 Nov 2025 09:42:43 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
+	will@kernel.org, robin.murphy@arm.com, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com
+Subject: Re: [PATCH v3 1/4] drivers/iommu: Add page_ext for
+ IOMMU_DEBUG_PAGEALLOC
+Message-ID: <aSV6E1a4tL_Vt8cz@google.com>
+References: <20251124200811.2942432-1-smostafa@google.com>
+ <20251124200811.2942432-2-smostafa@google.com>
+ <7854489b-bc9e-4bb9-a19d-cff96badc180@infradead.org>
+ <5d7a305e-d6b6-49dc-ab1d-bddd1339d4a7@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm/huge_memory: replace can_split_folio() with
- direct refcount calculation
-To: Miaohe Lin <linmiaohe@huawei.com>, Zi Yan <ziy@nvidia.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Wei Yang <richard.weiyang@gmail.com>, Balbir Singh <balbirs@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251122025529.1562592-1-ziy@nvidia.com>
- <20251122025529.1562592-3-ziy@nvidia.com>
- <df92a886-069a-450d-a551-dbfc3f629ead@kernel.org>
- <33A929D1-7438-43C1-AA4A-398183976F8F@nvidia.com>
- <34bafd06-250a-4019-8b34-5ddeedea1cb3@kernel.org>
- <66C159D8-D267-4B3B-9384-1CE94533990E@nvidia.com>
- <6cce0756-cfe1-7b39-d81a-ba1b2cb32fb5@huawei.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <6cce0756-cfe1-7b39-d81a-ba1b2cb32fb5@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1E84A40002
-X-Stat-Signature: skpmoub158nowczm6tno59drjx1kmnd4
+In-Reply-To: <5d7a305e-d6b6-49dc-ab1d-bddd1339d4a7@infradead.org>
+X-Rspamd-Queue-Id: 91761A0008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 373hjhm591m6rramagjuezocb11ddrqb
 X-Rspam-User: 
-X-HE-Tag: 1764063252-440089
-X-HE-Meta: U2FsdGVkX1+P04xRQrDL+oQRcAZn1lZfZnKRcY9MAm9/IojXjCQQfApiXXpyFXRlTXzrz+bEYHISBmULskBqMKIDC1aVIQXnQiUkdxmCODRofBn8NiP69Gk267b485TWi6KoKCzL8I5dSeRPTzJwYzawi3uHDzufLsmNcAZRvYkPi2WviV5JMbFKRwcFOA3N3PutDQ5Uxqyw9SpQgJp/bJXRlQtHxVffVj6ovQe7DXY1tfUXgQmHWXkmJxkL4mTCsdfY7MvRSAGX3RgxvSQXUycNfAWJTtL7dF8lNO/u2HBwyBfoRZbINKPU6EhOQ0RntoCLYaEudupFsTd/2BHzJOH+8rbMmXGFC82NNaTBhYCnQPSub17Drl1wZ+yNhg2TZ0g+x0HHshZrgP/I1XeEt7DXcAcqMucZMN3+Ln6nyphQV1J3jPRND+C9mycZEywXq19i0mZxrkqtzdfs6mo9MiAJwqgFawbUELugkmWa6qxJlA5G5zLA6067jtb8SRI4kN9ScskyDZKrEe3SSMsaMq4Bg2P/OelPLoK9E5XEG/Z05ewS7yoxYJ/UtlTFhIhKgy+zIchsFcILPNO8MEBnVtTRLAAjr+pARP0aP8TCWq3UoiEMvTknR10syELm/sEwRAsm+y5gnZWM1tnhAQhYpBfsKFpBpcAZ6QDPyKgoAVGdJzeE51j4fx1o/SPJG/asKCH7FtGS4jN5ffE1vLkVVO647OovYhmvdTK1XJtcs13qfsl9BG9y4z0xdAT4NVc3NF4MTHKcyW4i+AHCORgG8O1Oq1wOB0w8gaB+C92KJy9+OzF6Rxihg4Xv/9R/IagKRb54TkAz9bpjzB+5z5YVy0ZTvXwCpkNgbNBE8Awt6HLrIZbRWmccY9uwFVB52i+VVbwTAWSNKZuu5VGXDdrsGeBXrgNow6ETDcF/Pw+769gPrCFMJkfUdeLkwOoIsmXx3h6mXVJ7UzeeKkvckzd
- 9Ce6iTA6
- W3F1ofAZVjdUI4Rv7SUEmelbikmfOdKeGJCbV59rEDmKaSLbI/DiOD/LhpmJGCiAgjG5vJwj2YHB+vjk=
+X-HE-Tag: 1764063769-807321
+X-HE-Meta: U2FsdGVkX18MAoQop0dI7k63A4dm6pNQS5Mx56xB+USrMROeQ7aPNI94N9dQEoJKNGFjFeZ9ZCinHjiqP6juOAN/vLf6b0+JOVos93HyoCMwDbClGf685zlNUtYWPZ3morcPSDfnk5UqyrNz1lDWNVf9nD0GjbzqRJ23q80DM9VYuyjzwZdb+6X6LZWn5PufLOSBcXTAHgAmvqHwzYOgCbGt4fyVnFu+hhE7SK2hxaf1Hr+skF1xeZ1h8ouKpcc0hRDKSbVBSBIZqJ/Z0S0R6YiS7P1Gka3xh1FG3S3I9clbvCcp5xt3b6SS27PhUh/DmAcnaeWZHKmqQz3Ntz7NupqXBZ0ptgju+kSr9wEyx90bCxCCVjeY9yHFx5I3yEoXstXzwce8/DiNKj+iKC3qd85/AolkMVNCQ6vz/A/qYmEyFNX2aAPxkOfNSK3Zf/Y99sOXK0DWyon7xrNBD9Bj1nukyYyxKbeMXDDVR8BXs0I7+qOERE+cqS6hRsv66vr/1KXTXtnliFc8lXcXIiVudSxcFIGFmTlhITDqEiWM/EwQPVAKt6OL/+1vGY95GOP4VhHRkGEDqArNhaHF4IMMvbpMpLvKon+i4lHiJc2iDT/fAR8akG2w1f5OlHStXpY4cK+ov6eVe19vVI7/dqWSdt4vxZtmW3M1julqQ4otzX1v/ui8j132eYRW40ruADKUMZbORp1Zkvg0qe9A/dTE2IUcWV/ZEO9dgfHeLs0jgF/xY/3xOB/64HV+tl1eIabpMViE1pGNkk8t44yeogMCvc6OVUAJJY6CQz6hBDmHRcXYJp3ivvQRFPkS6R03u4vzR9UC45qJMzxEu1c/vm9E5EP6U7okNpIV6Il9kzmUQ/MWEQM5PndWH6gZ1QI3edLpsaQktJuvE5UcpRJsLvezHGM9LibnqV0KkLBDVtoulVfW5bkjwOKdoVhMIq8kbV/Ymryc8Nb9uKcO/41SXcQ
+ UCNNBqt6
+ yfzMMk+VSf+EDvQqU8Hfl7rRt0wHPPgd+MpjoFvNX0FzTl4YiNLqmVAHYX1zQyL4XKxxVS89I/NuVFRSE4l2F1ZpyVk5JA3WTB6dAgnY8gH9Av4SGV++nyPAyysAViHp8XUqG2vUxGQdJ7FxIH0EUUZx4off6PJeFTbVgAqBoqpoTQkAW8KyicWYcVCBMOUPGw9NaKWNGP+rypy9DIp1zQwMsDBjQRn4yTiBtZZGaV/cmb3RXO3KqPwq87fFaAAO3RBp+UUd7kwy0+CpMt4HMCpQ7oX2eBSiFEaLqzL7mpOibdAojG1UuJR0JVe4vUaYLulIk5CUJi6kJ7uZPqGprXyw3DipRYwdVV+Zhw+aJdsZHB4y4B6YH0W/esC6+D4/61Yi9nCBy7u5jaAn06vKVhfPU3R6jJrLehRHoRTXR//Yi0Nw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,38 +129,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/25/25 10:10, Miaohe Lin wrote:
-> On 2025/11/25 5:08, Zi Yan wrote:
->> On 24 Nov 2025, at 14:22, David Hildenbrand (Red Hat) wrote:
->>
+On Mon, Nov 24, 2025 at 05:31:12PM -0800, Randy Dunlap wrote:
+> I missed one other thing:
 > 
-> <snip>
+> On 11/24/25 3:13 PM, Randy Dunlap wrote:
+> > 
+> > 
+> > On 11/24/25 12:08 PM, Mostafa Saleh wrote:
+> >> Add a new config IOMMU_DEBUG_PAGEALLOC, which registers new data to
+> >> page_ext.
+> >>
+> >> This config will be used by the IOMMU API to track pages mapped in
+> >> the IOMMU to catch drivers trying to free kernel memory that they
+> >> still map in their domains, causing all types of memory corruption.
+> >>
+> >> This behaviour is disabled by default and can be enabled using
+> >> kernel cmdline iommu.debug_pagealloc.
+> >>
+> >> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> >> ---
+> >>  .../admin-guide/kernel-parameters.txt         |  6 ++++
+> >>  drivers/iommu/Kconfig                         | 19 +++++++++++
+> >>  drivers/iommu/Makefile                        |  1 +
+> >>  drivers/iommu/iommu-debug-pagealloc.c         | 32 +++++++++++++++++++
+> >>  include/linux/iommu-debug-pagealloc.h         | 17 ++++++++++
+> >>  mm/page_ext.c                                 |  4 +++
+> >>  6 files changed, 79 insertions(+)
+> >>  create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
+> >>  create mode 100644 include/linux/iommu-debug-pagealloc.h
+> >>
+> >> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> >> index 6c42061ca20e..dddf435a1c11 100644
+> >> --- a/Documentation/admin-guide/kernel-parameters.txt
+> >> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> >> @@ -2557,6 +2557,12 @@
+> >>  			1 - Bypass the IOMMU for DMA.
+> >>  			unset - Use value of CONFIG_IOMMU_DEFAULT_PASSTHROUGH.
+> >>  
+> >> +	iommu.debug_pagealloc=
 > 
->>
->> BTW, this page flag reuse is really confusing. I see PG_checked is
->> PG_owner_priv_1 too and __folio_migrate_mapping() uses folio_test_swapcache()
->> to decide the number of i_pages entries. Wouldn’t that cause any issue?
->> ext4 does not release_folio() for migration when PG_checked is set,
->> ubifs clears PG_checked in release_folio(). I have not checked all other FS
->> yet. Maybe later.
-> 
-> folio_test_swapbacked() is also checked in folio_test_swapcache:
-> 
-> static __always_inline bool folio_test_swapcache(struct folio *folio)
-> {
-> 	return folio_test_swapbacked(folio) &&
-> 			test_bit(PG_swapcache, folio_flags(folio, 0));
-> }
-> 
-> So IMHO the reuse of this page flag should work fine.
+> Please note what format the option parameter value takes and possible values,
+> like iommu.passthrough above here in the kernel-parameters.txt file.
 
-Ahh, thanks for pointing that out. Confusing, as usually the 
-folio_test_*() helper are straight bit tests,
+I see, I was following the kernel's “debug_pagealloc”. Although, the
+implementation understands “={0,1}”, I can add something as:
+	Format: { "0" | "1" }
+	0 - Sanitizer disabled.
+	1 - Sanitizer enabled, expect run-time overhead.
 
-All good then :)
+To make it more clear.
 
--- 
-Cheers
+Thanks,
+Mostafa
 
-David
+> 
+> >> +			[KNL,EARLY] When CONFIG_IOMMU_DEBUG_PAGEALLOC is set, this
+> >> +			parameter enables the feature at boot time. By default, it
+> >> +			is disabled and the system behave the same way as a kernel
+> > 
+> > 			                           behaves
+> > 
+> >> +			built without CONFIG_IOMMU_DEBUG_PAGEALLOC.
+> >> +
+> >>  	io7=		[HW] IO7 for Marvel-based Alpha systems
+> >>  			See comment before marvel_specify_io7 in
+> >>  			arch/alpha/kernel/core_marvel.c.
+> > 
+> > 
+> 
+> -- 
+> ~Randy
+> 
 
