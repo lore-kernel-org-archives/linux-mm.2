@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C858BD0E6C2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 10:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BBA2D0E6C3
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 10:47:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FF076B0023; Tue, 25 Nov 2025 05:44:54 -0500 (EST)
+	id 809B06B000A; Tue, 25 Nov 2025 05:47:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D6E66B0024; Tue, 25 Nov 2025 05:44:54 -0500 (EST)
+	id 7E1416B000C; Tue, 25 Nov 2025 05:47:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2E616B008C; Tue, 25 Nov 2025 05:44:53 -0500 (EST)
+	id 6F6C06B002D; Tue, 25 Nov 2025 05:47:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E1C9D6B0023
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 05:44:53 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 984F7BB8CC
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:44:53 +0000 (UTC)
-X-FDA: 84148796466.30.E1EB9FB
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7D14F12000F
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:44:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 56B136B000A
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 05:47:07 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0AD8013B93A
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:47:07 +0000 (UTC)
+X-FDA: 84148802094.08.6031FCB
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D016720007
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:47:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CBdCtGYy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="KNWnxEp/";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FxVJVgHB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FHG4+5eO;
+	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764067491;
+	s=arc-20220608; t=1764067625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
-	b=rzIyW04EjqYqU6x3R3Eim+7zfSmW7ngDR4xlckbSlPR4UzB2k3KZ83E6vV2e1VMpOs2W4L
-	7YkQbUbD1Xo64bS/kXc5BPTj60zE1JHc7kCkDuj2NlmmoN3BIalRz80W18M8+turUKm0mZ
-	/396gtThUhCpUKE1+Ip36303SgI3QCM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764067491; a=rsa-sha256;
+	bh=hHbeARP9IlGU7xmiwXNumdGZc6+N0unX3MD+1RRnabQ=;
+	b=OtuklEsGwUZx98xLv177EG1e6pLi+m71VOhDgR3R1Wl6fsS0MQWvICxenYatmeu6r2uDgw
+	FVOPbwodwJsgWhgeD7Vc3SsosF/OtAMSjbbyz1UusgKgdKwnrElLSdcslqGii1JR+VmUT1
+	+3McuKPqqdGcRIQkdo9pmeXvAWDcnlo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764067625; a=rsa-sha256;
 	cv=none;
-	b=znefQX+xA4LHiYRdfAgtthhaStGNTM+fqC8js5Iwh4Jj+IlUfvRC0s02whBW6nLG6EtlFM
-	qglFH94FBgfDP7lxI6h7RLYuu0dBEU6+MuLK7cYrm3l+0bkyUafOnDVhpcPb0QLq3r63Nt
-	twmIEjg8MkQlAWutBHbOnCc1F99M694=
+	b=MsWFuDvcGEiSY14q7+00X/4n1vBPua6w4jBW1jzqd564Q5WX8XeI6dtWToS3vCoexKULAR
+	MmUuS6uOhpVdDeTIEfs4ISuqfEfhCYv6/ViXCwNVKbPjedmV76QpAhl8pLMPg8oMC/IMGo
+	oe7ieiiUx4DNaCqJfFrugaJp47YF29I=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pni0UpLe;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rSwNxQHW;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CBdCtGYy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="KNWnxEp/";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FxVJVgHB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FHG4+5eO;
+	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C6CFE22039;
-	Tue, 25 Nov 2025 10:44:49 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5DE7B5BD1C;
+	Tue, 25 Nov 2025 10:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764067489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764067623; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
-	b=pni0UpLef8iQNq0HR9r64Wkp8Cq9nhFJJ4zY4si3AjLLD1EewTEDdsotaHHqgza0PC1Eht
-	c59UdGvOVIXEJ8ICP353eEg4mnVtQ9pnq/vq6ZiLmUrHbl7ZJNJcG7B6YzsC/jYKncHYd8
-	5Dyye8QA3b7fcKbB4uHDMS1daJOv7B0=
+	bh=hHbeARP9IlGU7xmiwXNumdGZc6+N0unX3MD+1RRnabQ=;
+	b=CBdCtGYyK1EjvwPQaXx387jy3Bu9UYAWqWQMrLUeTiR6l8NpTekjrr2BDkVnzGbOT43fOP
+	XUDwZlq/gTR94O2rHkAtAfQ7i+hEhtQiHba5tpOYQLZ+7mbXWRyhqizHL5NvebWvqtRIRJ
+	fxdwn28dbH/tVl9CO/0rrqnOv8/oSas=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764067489;
+	s=susede2_ed25519; t=1764067623;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
-	b=rSwNxQHWMHZtAmf8vLv79+41k+m9B2qwlXUZvvTZ+h6jAUFZ5Eecdp6lt2uuaPZ0g6t1Ty
-	GWHnUDb+Cli97oCw==
+	bh=hHbeARP9IlGU7xmiwXNumdGZc6+N0unX3MD+1RRnabQ=;
+	b=KNWnxEp/pVdW67N+ThmG5Xy54oNG0gQck+0DW9C/ylBt1jNPNHadybwS+zggZhWG70skwn
+	Hp+F6Ms+ayw+TQCw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764067489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764067622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
-	b=pni0UpLef8iQNq0HR9r64Wkp8Cq9nhFJJ4zY4si3AjLLD1EewTEDdsotaHHqgza0PC1Eht
-	c59UdGvOVIXEJ8ICP353eEg4mnVtQ9pnq/vq6ZiLmUrHbl7ZJNJcG7B6YzsC/jYKncHYd8
-	5Dyye8QA3b7fcKbB4uHDMS1daJOv7B0=
+	bh=hHbeARP9IlGU7xmiwXNumdGZc6+N0unX3MD+1RRnabQ=;
+	b=FxVJVgHBDOYu/ok02uSe7CP9n4FIUjpLSRKDpkcRpKnLoIwV4lBgKu8E0im+yMHzSS4BJ4
+	pxvQsffVT84yxjWvxYvkk1krupa92isXUX/jrOQu5UxrJjAjAdqNfIoc+WWdefHztE613p
+	DaBHggEn+JBmmInmlCbuB0ir24je2GI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764067489;
+	s=susede2_ed25519; t=1764067622;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L9l+WKaVmYFmKkau1igqnO66HrPcwewgu+mf1wm0Emc=;
-	b=rSwNxQHWMHZtAmf8vLv79+41k+m9B2qwlXUZvvTZ+h6jAUFZ5Eecdp6lt2uuaPZ0g6t1Ty
-	GWHnUDb+Cli97oCw==
+	bh=hHbeARP9IlGU7xmiwXNumdGZc6+N0unX3MD+1RRnabQ=;
+	b=FHG4+5eOqapfmYZZUZdCK/WNbl66FmbJZZPI638ZnaXFe7mRD6ZSfLOi8c7WOAQU/B053D
+	fOFwEJzcoJqm3NBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE7BA3EA63;
-	Tue, 25 Nov 2025 10:44:45 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 57A033EA63;
+	Tue, 25 Nov 2025 10:46:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id lbk1L52IJWmECwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 25 Nov 2025 10:44:45 +0000
-Date: Tue, 25 Nov 2025 10:44:36 +0000
+	id uo44EiKJJWm4DQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 25 Nov 2025 10:46:58 +0000
+Date: Tue, 25 Nov 2025 10:46:56 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -137,23 +137,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] mm: simplify and rename mm flags function for
- clarity
-Message-ID: <wpvjnzaffij4thc7djcl6uhyoo6kegjsgplplv5cyagcgw2szj@vlbnxzs4xbrl>
+Subject: Re: [PATCH v3 3/4] tools/testing/vma: eliminate dependency on
+ vma->__vm_flags
+Message-ID: <xdks7jbuu573yb6c76t3vcbzsgwyynypl3ldfrzzzcgfsji3ga@sq6jtr4owprg>
 References: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
- <8f0bc556e1b90eca8ea5eba41f8d5d3f9cd7c98a.1764064557.git.lorenzo.stoakes@oracle.com>
+ <6275c53a6bb20743edcbe92d3e130183b47d18d0.1764064557.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8f0bc556e1b90eca8ea5eba41f8d5d3f9cd7c98a.1764064557.git.lorenzo.stoakes@oracle.com>
-X-Stat-Signature: ezukst3jsa8dt9fkije6gesxd1dccymi
+In-Reply-To: <6275c53a6bb20743edcbe92d3e130183b47d18d0.1764064557.git.lorenzo.stoakes@oracle.com>
+X-Stat-Signature: xxrepd5a5do6hke9cbz69ea4s3yq8ryg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7D14F12000F
+X-Rspamd-Queue-Id: D016720007
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1764067491-779591
-X-HE-Meta: U2FsdGVkX19QuwHzTk0M+NM6SGYRiGEsP+r+EW1cyOHe9fW61YX7huigr9kPSUTaSJRHZrGl0KwcdTLr7qPbzekfz+d2TIx7FpB12/52933xw+fvMYCruhWfRQLHxfxPj2n054pms67JA3GmgaGGzNfRue2T+RezUX45i3ZTlv1MU4jdL4wAwH5pv+/fcpxh8Tiy8mX7p7Wog+FIobTxm8UXkTdUAbP7cuU86uYowvMWq8X2rW4YaU4Zmk8JHYJ7aaS9TnJyyHFa25wm0dfYGRgNS3CSjsgY0qDY+l5/x8B2W3WioCg8RC80g6m/qwRlrWonlfZEQVKnUCISHR1qYdDcuZliSJZelQ/KVkNnVDghfFZPqCdoTIKzK3n+y9oziQEzKxIsT57O581mlbGOhaq0iEnc6QaaBdbiabW0rF27kDIRkCHuw+t08ykhMdfUu3FfpHU1K9MswLdCe9WE6Fb428DT0SHPBp/SP7W/i8RTS3bD7FMZNvEeE+FpEKVWogFlyp84clmIlCVNt4Hcskjv0HTFSLm12GzX3W9pZDyGnbMhyCYX88gY0dA7cUa2NSe1pxmRhA+l/vrZN1gzVLbXqS3bvsJOdCZmdHcssxAqmzTPuEFq49cRQkVl9SzFgO6MtTdvmo/m4QixBSOjeoaI8ICHts/zYZBho0cky8J5y+mNZYk3dvciaMtxG8dg0/bdJykC5QZjyT9YIAK3frRrWA2kVOnmOYBcNwzELEi84a3Udv0W+xefztxbKOQ78OHV7sQGeLKATy/ppj+lYQ5vNWtQ9wx1pCkl4MO+zZQLeKagQsnhk6O3MaThmIBYkn8nrJ52oL61wrWlJUIzrIqq/8Ihq68iwji5PxwiPphpox1veU4ARlPyumHb4QruVB+rs/8zmbDUndb9gUs8xdfHxQ5YJ4f72K5l9H2UZaZBY59CHoisHKYg9C1rDWbijGVP1sHVnKVkJpAzWXH
- qKs/ZxvV
- SVPvBb8JIadSM50S0GY7RwoQTg2dsHeiuZz7gFYELt6B3jjK8MAfpdPJOvRk4AoXUyGmyHAJz9tv3KPayaviimEfQf8oV27oPSrjG6HQjJ71wiCQCZy+2rkw5r2wK5rzr6+EY8evDA6kJeCeUkTmC3qsvV9t+8XZ6b8/Z5ua1NWTWDV+iZDn5Vd7y/VHaTT8oYe6qo3XUk2iDf4JiS2MAJTf2Ud1Xt7b5J+feMGIpJDBb9qJLzzNDaG/QnZW0GGufpbunnQoOCMVQXnHDqsi0jB13HzFMogOochoqtEWHc3O43XUz9Bf7HMJFUH3Q0/kEmRU/bPpUq8CpW+edyuc54qH667+Os9j3MDgKQT/HmilVtrLDhyO1ZSDde9sHk1OSz5ewRRSaPGlCPm8=
+X-HE-Tag: 1764067624-979101
+X-HE-Meta: U2FsdGVkX19Z1kBdxygitZCkKXca/B5YMFVUsbF76yIhcfHR966KGk0cUKxwOa6UWlbtrAvX+j/vV2BsZeRoaMQJIzd7p68pAVZp+ZJz+CL6rKUlF5EyfcHUkSnXY7cjGLAe+T2SugdnGbLwyq05Comr0UzCWBGWkuY4oyvJ/wALiB7bQu4VcCvs0nD2+HBZAA3jTRwa9HDBEPyq2qhTnPMjmNUcwV/44dRq30/cgqhVNCoEQ2SuJiee7v2Ug5/p6yaB8G522vxmi/qlvp+6C06zaSVqvs47XC4YB1RIowZ1rZDnZQAKss8tXbxdxQv/SAhSAqyzEuMym6KrU8IRygxYPBD3dfczvNQrDeF614Wo+vjjMywdiC7Be5vf7BI21Mnvubvk9om7+EYssJSPG9gMCxeqKuGORByc4VPXVQ8giyq0mj0OuW/66tjF6NhRjBdtR9rzcV7sakIVK7SO+XhP4OGcODA60pAEZE1m3GpurChJQfwISEtaEXahnaFINJunDOmQ0njRpjp2fYSSpVv/ME7lEsv8qxgyYAagxjKA1PMs8ra8Qj1oXI5AQDYsWXi8ENsD5Rw3ZTeuauc1yEcexqt8kNuu+gyA0vduXNrQiZmqVxEG+I67JVLoUU4KvhRUO6T/L4lgy9fAadLQmqhvCNE0cVNm8t98tAqpmmj6GvHKFOeKh0a6/2wRqXT883V4/TeeGJG0ClNZzHTBCIqXzp1dEp3C0TF+wP0pmLnYFHqzUJYOaq9pgZ6miZkAm/m+vdpuPqfA9FatRwNydFTWOzeppQRf7AGK1RFYX6LwcupYmVSb0/40PyCBkRW6NCRXoMHukXyoL8/ALod/xrzrZHSJ0CvQMZBmMqlF3iiU2ilR+zpxiSS++AZeD7TSISblpsIWG+VR+eg++QA8awtrNXWLuQhCAVJ5ksiUmGshQKAW/REuEBhkB1P0hvh09bwyjfTR9btXjws7T67
+ u9LQSXHY
+ qidP0RKWq4T4290fi0+5el7teEGFc/ybCqXAtoORXzXL9B0nPqPH/hur/hSJsv9Thf8dnqruxvRY0qAbW1XaTCSKD+f0b/M0DNssZR91P1KG02+e9FnEwl/cm3CW6BVmaq2AWl/iHbgI8B/0thJskg5Q0Az6BD7X1xsrcXJ4Pz+bzmYKIcIf4/Jhr6dg3DvgDL3UeRDEgtMMLQTk5q+UX0JP0nhCUIwjMSH7PGJaEBtNC9nrpyRNlgvnzwCkb0/EnScqht8alkxoq4lA7MTikRpCzOsRFQeg6LpZco9UgvD3ihibMrW6W14psGdYLK5wPxrexiTgcu3C7ZjC9PspfOc1stYWSnyBGwcnwvZQCwBdfXmBjsfUbXizTKNtiIKO+gNLg6iUI+Q0C3JUb8H/2b2e7R1v+8lC3AZmEef0ZycKbRrkskVe7BrwUIJ3+froPP+h/di2Es1chXjH2G1YqV3kmlQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,23 +162,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 10:01:00AM +0000, Lorenzo Stoakes wrote:
-> The __mm_flags_set_word() function is slightly ambiguous - we use 'set' to
-> refer to setting individual bits (such as in mm_flags_set()) but here we
-> use it to refer to overwriting the value altogether.
+On Tue, Nov 25, 2025 at 10:01:01AM +0000, Lorenzo Stoakes wrote:
+> The userland VMA test code relied on an internal implementation detail -
+> the existence of vma->__vm_flags to directly access VMA flags. There is no
+> need to do so when we have the vm_flags_*() helper functions available.
 > 
-> Rename it to __mm_flags_overwrite_word() to eliminate this ambiguity.
->
-                          write_word()?
-> We additionally simplify the functions, eliminating unnecessary
-> bitmap_xxx() operations (the compiler would have optimised these out but
-> it's worth being as clear as we can be here).
+> This is ugly, but also a subsequent commit will eliminate this field
+> altogether so this will shortly become broken.
+> 
+> This patch has us utilise the helper functions instead.
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Anyway:
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
 Pedro
