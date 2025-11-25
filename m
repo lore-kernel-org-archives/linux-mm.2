@@ -4,88 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630F5CFD315
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:06:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EFF0CFD364
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 09:10:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A33276B002D; Tue, 25 Nov 2025 04:06:57 -0500 (EST)
+	id CFB1A6B002E; Tue, 25 Nov 2025 04:10:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0AC86B002E; Tue, 25 Nov 2025 04:06:57 -0500 (EST)
+	id C84196B002F; Tue, 25 Nov 2025 04:10:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 920A56B002F; Tue, 25 Nov 2025 04:06:57 -0500 (EST)
+	id B72DF6B0030; Tue, 25 Nov 2025 04:10:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 803AD6B002D
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:06:57 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 32C7013B821
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:06:57 +0000 (UTC)
-X-FDA: 84148549674.01.678BDF9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 97E5A180002
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:06:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t53nA9yL;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ED236B002E
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:10:33 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 32EBA1310C7
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:10:29 +0000 (UTC)
+X-FDA: 84148558578.18.1EAB50C
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0196AA0012
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:10:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=r7dexYiF;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764061827; a=rsa-sha256;
+	cv=none;
+	b=dP9B8SkyQce20ZArZtSrAhF3m/vXFpknErg855Xsoh0UpMil7TryiLh53MrxUKa6v1C+Nv
+	Tj9Meupy0jpzZZbKFW5XATJ1b88MSETZiQDPCIH650InLvEt0mnzVN4ZqITiPwMF2LL27N
+	Z8s0nnGuUA+Xt74hUe58c5BuNfA6KXk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=r7dexYiF;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764061615;
+	s=arc-20220608; t=1764061827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WLG6vstrvUib5OR21afVnR+TFUGOVRkjhw/WKS6GUBQ=;
-	b=egG6d30VpDpTcWErxN0uBLmYFPhBKw0sLNpi4rsgmaDGTcFiGah8c8511PqD1XKZFbFuh2
-	M0IXhQhDa5sE9gVBR3NATyy1oQaiikHgUutYQuM+fyawXcc2v35pDvr1JQK+yWtlEKW5KI
-	UFLEcF+oihIYexgNVuG94a8K9n2N2Yw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764061615; a=rsa-sha256;
-	cv=none;
-	b=A22v74tNKgtkSZX53NheAQ2zkdDIXJ3AnIU5BtFoIdQKM/Z3JTI9Yb8oGsLpDX/N06llwf
-	AKr/xCAxKcHQgfLXdkxaC8Pn7GUmADf79KK8srZZaamlsRhmOCPcw5QXs3HxZP8yBvg2GY
-	850jUpGVu+UCSlbsj0JAP/B8xG3CZcc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t53nA9yL;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12E01601A4;
-	Tue, 25 Nov 2025 09:06:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50166C4CEF1;
-	Tue, 25 Nov 2025 09:06:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764061614;
-	bh=/6xgY+QUZe7yhtQ4EZKa7hVo/oNwHMs+v97FRI/VAu8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t53nA9yLGeE+Sus973lZYZJlbwvfm23dE1MFnthrUMhnDg5r1ErvAiHIdBrgJHpOM
-	 ElS5utqTTseVcfy6r/R5pRCtFQGsOLF8JYc2zQo2OH0qfZDJBfX2alR8Mz2NflGuta
-	 FFsC+oYZ3Q6VQa6QcGm8+Ouj2E3vbAnH/TAGQDugfEPBSWPYPxXWqSFNUxUiu6UzbP
-	 PtrJPnRrb10j0j89cXAWvhWJ4DO5MT/BjF6sKUmTpokDhL5GQtLswFdWXTgU1cMj+p
-	 i406FhXS39Go2928v7A3mO77JqeU8lIsp9f7RecvxOJUCKbpwh/9SALqHm0D40m6DF
-	 Dtj3Hp29U+Vpg==
-Date: Tue, 25 Nov 2025 10:06:49 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: david.laight.linux@gmail.com
-Cc: linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Kees Cook <kees@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH 30/44] fs: use min() or umin() instead of min_t()
-Message-ID: <20251125-erlenholz-pausieren-0a4b80f2be6c@brauner>
-References: <20251119224140.8616-1-david.laight.linux@gmail.com>
- <20251119224140.8616-31-david.laight.linux@gmail.com>
+	bh=fkPO+JMkDG1D42iF1klXuu9GSgaYKiSAv7mDALfM48U=;
+	b=oFnAN5wZSrYNuo1UkOUTwj7BcGiC7m9tkdsDuulo9E0EwTZBTFVfrlz4rEkxeWZt+tsYeD
+	k/T4xs8lSqUAOmRllucTAimuS/Wqpy5X/zvNL//0pIixFAFuoKuk83foTeAgeBCiCJAfrp
+	WlAZt5e09bhVkA7RZY24jWnij9SXUAw=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=fkPO+JMkDG1D42iF1klXuu9GSgaYKiSAv7mDALfM48U=;
+	b=r7dexYiFIm2hCk7dul94a1FjT4HB7yfQvfavfRvzS8+KcaZ/CZdxOqCGrQx/m1leD0JKmpN68
+	l0h/1XbGYPCbUYTqNPijWgfObmPF85SKSVv765bINaHz+4ZTQReSV1mL3/FUhsiVwnUsitXkBIs
+	QfrseM6JUXhcJhyIVmQFp+4=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4dFxgk0CHFz1K97x;
+	Tue, 25 Nov 2025 17:08:34 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id BAB161401E0;
+	Tue, 25 Nov 2025 17:10:19 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 25 Nov 2025 17:10:19 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 25 Nov 2025 17:10:18 +0800
+Subject: Re: [PATCH v2 2/4] mm/huge_memory: replace can_split_folio() with
+ direct refcount calculation
+To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>
+CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Wei Yang <richard.weiyang@gmail.com>, Balbir Singh
+	<balbirs@nvidia.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+References: <20251122025529.1562592-1-ziy@nvidia.com>
+ <20251122025529.1562592-3-ziy@nvidia.com>
+ <df92a886-069a-450d-a551-dbfc3f629ead@kernel.org>
+ <33A929D1-7438-43C1-AA4A-398183976F8F@nvidia.com>
+ <34bafd06-250a-4019-8b34-5ddeedea1cb3@kernel.org>
+ <66C159D8-D267-4B3B-9384-1CE94533990E@nvidia.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <6cce0756-cfe1-7b39-d81a-ba1b2cb32fb5@huawei.com>
+Date: Tue, 25 Nov 2025 17:10:18 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251119224140.8616-31-david.laight.linux@gmail.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <66C159D8-D267-4B3B-9384-1CE94533990E@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: 0196AA0012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9t9qpwd5dtsynpi5a5icrtrt8rrtjwn5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97E5A180002
-X-Stat-Signature: xi64qf73n7i9wu71mp9si16xu464tdjk
-X-HE-Tag: 1764061615-183075
-X-HE-Meta: U2FsdGVkX19ks/MmpcZhWQ/kEv9v12bc89xd88/5srSQqm0n2VnPRzaV/yrKyuaF/ZNN0nsPPO3oqj0Tm+ngmNBTrEeyuwWLJryTIn41wbDurSn6hKUlqUZz+rMgO22G08b1xEsA8VszT5BKEiElrSEjl4GuiUuavgvI0BZaXX4Lux8Fgh4wrv9da9WohV7eVFk6MdanfNnh8xh99C2ICEvlKLk9mBUiUNt562bwSqvBNUMx5AwOntqGxwDkER5IPT1mzXzS6kINJoJUhlI58C8kCzf0g+6+pgJJFx8E6i18oU5zwIhBDHUGZbMbCGpdzhuxJSujFcrAu3T5gJZ5frZVhDq/0JCQVN9ZYj5A6fvS4qPHZ9F0vOUg+meYYqi/Yfn1NTGv67yDoj9i/9rT/6USxzV+/FHe3A7mZRpV8ewqQU9Il+cJ2mxDfBtTNiBul4XplsYTX+RWN2BQ/QLbiYuP/HtZvvVZt0kqfcLtLyU38FP1rawcKZNRw9Tcd5d4noWGwUCj1asCDPwEvl2OafNRZm9MkxPAWkXccD6bvnfdoWQMT6eyQnjvCd3cdzijxzkEdXAeWDgClgn/xLzRbXq2vrA7ShHL5H3+06CUA1P1Gc/Rszjw9TjaNOs+divy5O+Cyiul2wz9C3Ik4W9AO8HmWwgu8ZQVUpNC0Qbx1316yPxrRK7OeMxyYy9U18jAy9jt/zjpHHpATpMdxDOJORgD8+bRoQNJYPvgOL4ULn2FnMfyH0gQifp+EBV8enjWUhB2bdTkyJBKEm3/aScqmt3Pk5ij09QR6FwjoyxcL4iPHrml/YN19qNJB/JKOPGN8Tg3Ilz1GP+AObCh4W3vJjKUAeiYHO1Pxi4lzTC3ZS0r63MtBfDkNdZmPN319vNSoAl8Dj1gd0y0aue1fWljwiIt9n8MzVzY6AA17NCKKXf4sQo84zAF2qPplMJlDMvJDeoFzWW2NY3HFYlgKh0
- pBl2CcU0
- ZxSjpJSXJ1kDWNLh7ABElUvxvFdm/KsypnmqojQo5Nl6alnRrzTCkYrWbvu0f5i9wS+zU7w8tziw/1w8FbQprTfbCUwDj9gGVN7vcY4UVlzivA7lr/kNqWZDwFxUqkQCALXU+B/debfqDoIvUHw16vDlTC78kBbDOSb8Wfe8xpqRraeyD93oHYOIFTk0/k1NpxBByEQv01mV0NSpmvER/aB1jiuvZT5N86MHMf6go7ywQdbx0jNbsft+s2iUcep/OjfBGV6LJ7nFZ4nfr3SqHyWsU5V/30mtcx0AA4JPm8wiQwttPKyxBxOy+xdn1tmsJ+3cCjGWbc76SBAqqtmdBlILSGC4EVxCzfvl0MzN4WAEqhEvTjoAlJ2shg9MBLO4wlUq0/pOkKI2/Uju1vA/Pw+HqZao2uP2ztPowYleElJCPsbd2hy28UQr6VMVLgckq4f/GyeUq0oTcELCFcxyant3HkEd8iZmSicXA
+X-HE-Tag: 1764061825-57365
+X-HE-Meta: U2FsdGVkX19Zvvj3aML+6XC/66Yt2l5bnNdKkaEXDNgzIvj5dPDSnToDmCm0a10oW2hDEFayj0+2yDYjq8VkXnXRgg2MlBgLAye1sSaQ05aw4bzfgy7jo2ij9Ssl6jy4rhThtJCD+tZvWizVtCF3jRysvzf5CRS/mBNzVv7JtdNXPbEul+QcFDUv5NTKpqGojhBfLGawG2y4FYn/5OoSgCm+UAtNYiEof5EX2nJNWD3zg4RNTv/AmGFGexFpIV+IGkEg9Po/ch4iZ0gPGbL5uuawhDzVdpRlRQI5DFZbiMW2TaBB2d59O00nu/1TYjkiKZzOCcH5pTJZoPHpjM7wixHTS0CG2Pp5GUURvVuUy/Lc7ZKV//QnwU+QPqXTbW1r8MgG/ctC6uwxWyY47irRw79c83zfjtoJRVTkEBvEy1QoKsYHW3gGumv5DSdC8E76xQZ/PkXJ/uoYGH9EEld0zqkYAxq82b8sBjFYbaODQpBpD+JVQSyXSNVGcRUaUEhOFVk+I/CXMNBGmFLNMIt7NjP/yYhCKVstToBlL/Vdzc0S2ETAUY13nj37VtwYyG/zb6C7brvBrxu29qPImTXMTvtJqQLYuZQIibxPXEBFK5vvaConAx8JW23Ir1xVNmhIrG2HF+m02ZkBY+Zh9ggVjQdW0Qom6xJQRqhjeqNzOmzXvJOPIzFv/9mGIrqrKCIdkqwW4A03ujMJyd/QzaxExHTiByTivH7gAhczkz67g71q5X9WOMMA/q/h2njl07ZKU/kbNby4Y4O0F6dYs2kEkchsxo0VAUy/L4S/K6rStGednC8etd+ebVfnLyMYyq1Y+uGHqfvpxEokT8PaUVHN5HOy7s1vuwe86PGXglr9DsK0jKQsrPOBPJ0ejX5ICb1lz8HeVEQit+ZBPdvT6iuRI1jnuF/s0xrArF/+gye2KsoBIyg1RwiN1k9bldtrVqO/zCe3qccvPfbpQYPBD+I
+ t4h2uE39
+ ww6GIkbsqQXO1nZr8Qe9pZsNkzFCrKAbTq5Xq1e7z2PAyDnhhTkmFqB5SIduTEjq7DPkGPPajh9vNeiCTMrlfKdFBiAd4rgiDo/xV2QKKarVP0VdMCxkYMHsk/TroUmem4Eq7EXy/NSI/TB48DaqCMi1eMcS4RmM8Fypxu/JpA799/M319zEiOQUDtamQqC4IHyc/dMpJs9IdpROlJYqniSFI1HrqCcQKGTCVJobPwAxVsrJowi/GTZbkKWzPwdxJAmXS8l81DujjHRX6Uyk9/PfJ47RB4jKtt9BlxHD7CugFrZ+jkeSLKPUzpULkvjhBkvI77cKV9V6OvF0HU4L6ZrLu5C81R1T8zXlQehWDIcG5N0NjbXfQDh+uJRSjmBsYW/SPlktqENTOckjdwjKud/CdqPOJU5I1AGPvSRWrqPFMt8c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,214 +115,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 10:41:26PM +0000, david.laight.linux@gmail.com wrote:
-> From: David Laight <david.laight.linux@gmail.com>
+On 2025/11/25 5:08, Zi Yan wrote:
+> On 24 Nov 2025, at 14:22, David Hildenbrand (Red Hat) wrote:
 > 
-> min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
-> Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned long'
-> and so cannot discard significant bits.
-> 
-> A couple of places need umin() because of loops like:
-> 	nfolios = DIV_ROUND_UP(ret + start, PAGE_SIZE);
-> 
-> 	for (i = 0; i < nfolios; i++) {
-> 		struct folio *folio = page_folio(pages[i]);
-> 		...
-> 		unsigned int len = umin(ret, PAGE_SIZE - start);
-> 		...
-> 		ret -= len;
-> 		...
-> 	}
-> where the compiler doesn't track things well enough to know that
-> 'ret' is never negative.
-> 
-> The alternate loop:
->         for (i = 0; ret > 0; i++) {
->                 struct folio *folio = page_folio(pages[i]);
->                 ...
->                 unsigned int len = min(ret, PAGE_SIZE - start);
->                 ...
->                 ret -= len;
->                 ...
->         }
-> would be equivalent and doesn't need 'nfolios'.
-> 
-> Most of the 'unsigned long' actually come from PAGE_SIZE.
-> 
-> Detected by an extra check added to min_t().
-> 
-> Signed-off-by: David Laight <david.laight.linux@gmail.com>
-> ---
 
-Too late for this cycle but we will pick this up next cycle!
+<snip>
 
->  fs/buffer.c       | 2 +-
->  fs/exec.c         | 2 +-
->  fs/ext4/mballoc.c | 3 +--
->  fs/ext4/resize.c  | 2 +-
->  fs/ext4/super.c   | 2 +-
->  fs/fat/dir.c      | 4 ++--
->  fs/fat/file.c     | 3 +--
->  fs/fuse/dev.c     | 2 +-
->  fs/fuse/file.c    | 8 +++-----
->  fs/splice.c       | 2 +-
->  10 files changed, 13 insertions(+), 17 deletions(-)
 > 
-> diff --git a/fs/buffer.c b/fs/buffer.c
-> index 6a8752f7bbed..26c4c760b6c6 100644
-> --- a/fs/buffer.c
-> +++ b/fs/buffer.c
-> @@ -2354,7 +2354,7 @@ bool block_is_partially_uptodate(struct folio *folio, size_t from, size_t count)
->  	if (!head)
->  		return false;
->  	blocksize = head->b_size;
-> -	to = min_t(unsigned, folio_size(folio) - from, count);
-> +	to = min(folio_size(folio) - from, count);
->  	to = from + to;
->  	if (from < blocksize && to > folio_size(folio) - blocksize)
->  		return false;
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 4298e7e08d5d..6d699e48df82 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -555,7 +555,7 @@ int copy_string_kernel(const char *arg, struct linux_binprm *bprm)
->  		return -E2BIG;
->  
->  	while (len > 0) {
-> -		unsigned int bytes_to_copy = min_t(unsigned int, len,
-> +		unsigned int bytes_to_copy = min(len,
->  				min_not_zero(offset_in_page(pos), PAGE_SIZE));
->  		struct page *page;
->  
-> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> index 9087183602e4..cb68ea974de6 100644
-> --- a/fs/ext4/mballoc.c
-> +++ b/fs/ext4/mballoc.c
-> @@ -4254,8 +4254,7 @@ void ext4_mb_mark_bb(struct super_block *sb, ext4_fsblk_t block,
->  		 * get the corresponding group metadata to work with.
->  		 * For this we have goto again loop.
->  		 */
-> -		thisgrp_len = min_t(unsigned int, (unsigned int)len,
-> -			EXT4_BLOCKS_PER_GROUP(sb) - EXT4_C2B(sbi, blkoff));
-> +		thisgrp_len = min(len, EXT4_BLOCKS_PER_GROUP(sb) - EXT4_C2B(sbi, blkoff));
->  		clen = EXT4_NUM_B2C(sbi, thisgrp_len);
->  
->  		if (!ext4_sb_block_valid(sb, NULL, block, thisgrp_len)) {
-> diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-> index 050f26168d97..76842f0957b5 100644
-> --- a/fs/ext4/resize.c
-> +++ b/fs/ext4/resize.c
-> @@ -1479,7 +1479,7 @@ static void ext4_update_super(struct super_block *sb,
->  
->  	/* Update the global fs size fields */
->  	sbi->s_groups_count += flex_gd->count;
-> -	sbi->s_blockfile_groups = min_t(ext4_group_t, sbi->s_groups_count,
-> +	sbi->s_blockfile_groups = min(sbi->s_groups_count,
->  			(EXT4_MAX_BLOCK_FILE_PHYS / EXT4_BLOCKS_PER_GROUP(sb)));
->  
->  	/* Update the reserved block counts only once the new group is
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 33e7c08c9529..e116fe48ff43 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -4830,7 +4830,7 @@ static int ext4_check_geometry(struct super_block *sb,
->  		return -EINVAL;
->  	}
->  	sbi->s_groups_count = blocks_count;
-> -	sbi->s_blockfile_groups = min_t(ext4_group_t, sbi->s_groups_count,
-> +	sbi->s_blockfile_groups = min(sbi->s_groups_count,
->  			(EXT4_MAX_BLOCK_FILE_PHYS / EXT4_BLOCKS_PER_GROUP(sb)));
->  	if (((u64)sbi->s_groups_count * sbi->s_inodes_per_group) !=
->  	    le32_to_cpu(es->s_inodes_count)) {
-> diff --git a/fs/fat/dir.c b/fs/fat/dir.c
-> index 92b091783966..8375e7fbc1a5 100644
-> --- a/fs/fat/dir.c
-> +++ b/fs/fat/dir.c
-> @@ -1353,7 +1353,7 @@ int fat_add_entries(struct inode *dir, void *slots, int nr_slots,
->  
->  		/* Fill the long name slots. */
->  		for (i = 0; i < long_bhs; i++) {
-> -			int copy = min_t(int, sb->s_blocksize - offset, size);
-> +			int copy = umin(sb->s_blocksize - offset, size);
->  			memcpy(bhs[i]->b_data + offset, slots, copy);
->  			mark_buffer_dirty_inode(bhs[i], dir);
->  			offset = 0;
-> @@ -1364,7 +1364,7 @@ int fat_add_entries(struct inode *dir, void *slots, int nr_slots,
->  			err = fat_sync_bhs(bhs, long_bhs);
->  		if (!err && i < nr_bhs) {
->  			/* Fill the short name slot. */
-> -			int copy = min_t(int, sb->s_blocksize - offset, size);
-> +			int copy = umin(sb->s_blocksize - offset, size);
->  			memcpy(bhs[i]->b_data + offset, slots, copy);
->  			mark_buffer_dirty_inode(bhs[i], dir);
->  			if (IS_DIRSYNC(dir))
-> diff --git a/fs/fat/file.c b/fs/fat/file.c
-> index 4fc49a614fb8..f48435e586c7 100644
-> --- a/fs/fat/file.c
-> +++ b/fs/fat/file.c
-> @@ -140,8 +140,7 @@ static int fat_ioctl_fitrim(struct inode *inode, unsigned long arg)
->  	if (copy_from_user(&range, user_range, sizeof(range)))
->  		return -EFAULT;
->  
-> -	range.minlen = max_t(unsigned int, range.minlen,
-> -			     bdev_discard_granularity(sb->s_bdev));
-> +	range.minlen = max(range.minlen, bdev_discard_granularity(sb->s_bdev));
->  
->  	err = fat_trim_fs(inode, &range);
->  	if (err < 0)
-> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-> index 132f38619d70..0c9fb0db1de1 100644
-> --- a/fs/fuse/dev.c
-> +++ b/fs/fuse/dev.c
-> @@ -1813,7 +1813,7 @@ static int fuse_notify_store(struct fuse_conn *fc, unsigned int size,
->  			goto out_iput;
->  
->  		folio_offset = ((index - folio->index) << PAGE_SHIFT) + offset;
-> -		nr_bytes = min_t(unsigned, num, folio_size(folio) - folio_offset);
-> +		nr_bytes = min(num, folio_size(folio) - folio_offset);
->  		nr_pages = (offset + nr_bytes + PAGE_SIZE - 1) >> PAGE_SHIFT;
->  
->  		err = fuse_copy_folio(cs, &folio, folio_offset, nr_bytes, 0);
-> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> index f1ef77a0be05..f4ffa559ad26 100644
-> --- a/fs/fuse/file.c
-> +++ b/fs/fuse/file.c
-> @@ -1252,10 +1252,8 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
->  static inline unsigned int fuse_wr_pages(loff_t pos, size_t len,
->  				     unsigned int max_pages)
->  {
-> -	return min_t(unsigned int,
-> -		     ((pos + len - 1) >> PAGE_SHIFT) -
-> -		     (pos >> PAGE_SHIFT) + 1,
-> -		     max_pages);
-> +	return min(((pos + len - 1) >> PAGE_SHIFT) - (pos >> PAGE_SHIFT) + 1,
-> +		   max_pages);
->  }
->  
->  static ssize_t fuse_perform_write(struct kiocb *iocb, struct iov_iter *ii)
-> @@ -1550,7 +1548,7 @@ static int fuse_get_user_pages(struct fuse_args_pages *ap, struct iov_iter *ii,
->  			struct folio *folio = page_folio(pages[i]);
->  			unsigned int offset = start +
->  				(folio_page_idx(folio, pages[i]) << PAGE_SHIFT);
-> -			unsigned int len = min_t(unsigned int, ret, PAGE_SIZE - start);
-> +			unsigned int len = umin(ret, PAGE_SIZE - start);
->  
->  			ap->descs[ap->num_folios].offset = offset;
->  			ap->descs[ap->num_folios].length = len;
-> diff --git a/fs/splice.c b/fs/splice.c
-> index f5094b6d00a0..41ce3a4ef74f 100644
-> --- a/fs/splice.c
-> +++ b/fs/splice.c
-> @@ -1467,7 +1467,7 @@ static ssize_t iter_to_pipe(struct iov_iter *from,
->  
->  		n = DIV_ROUND_UP(left + start, PAGE_SIZE);
->  		for (i = 0; i < n; i++) {
-> -			int size = min_t(int, left, PAGE_SIZE - start);
-> +			int size = umin(left, PAGE_SIZE - start);
->  
->  			buf.page = pages[i];
->  			buf.offset = start;
-> -- 
-> 2.39.5
-> 
+> BTW, this page flag reuse is really confusing. I see PG_checked is
+> PG_owner_priv_1 too and __folio_migrate_mapping() uses folio_test_swapcache()
+> to decide the number of i_pages entries. Wouldn’t that cause any issue?
+> ext4 does not release_folio() for migration when PG_checked is set,
+> ubifs clears PG_checked in release_folio(). I have not checked all other FS
+> yet. Maybe later.
+
+folio_test_swapbacked() is also checked in folio_test_swapcache:
+
+static __always_inline bool folio_test_swapcache(struct folio *folio)
+{
+	return folio_test_swapbacked(folio) &&
+			test_bit(PG_swapcache, folio_flags(folio, 0));
+}
+
+So IMHO the reuse of this page flag should work fine.
+
+Thanks.
+.
+
 
