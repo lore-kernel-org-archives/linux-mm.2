@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D02ECFD36C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 00:57:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42B58CFD36C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 00:58:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82E356B002D; Mon, 24 Nov 2025 19:57:11 -0500 (EST)
+	id 98ECE6B0032; Mon, 24 Nov 2025 19:58:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DC546B0030; Mon, 24 Nov 2025 19:57:11 -0500 (EST)
+	id 967486B0062; Mon, 24 Nov 2025 19:58:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B94F6B002E; Mon, 24 Nov 2025 19:57:11 -0500 (EST)
+	id 855CF6B007B; Mon, 24 Nov 2025 19:58:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6116B002D
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:57:11 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B9720897BF
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:57:08 +0000 (UTC)
-X-FDA: 84147315336.17.F22C3C1
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B094A1A0007
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:57:05 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="W/gr+dld";
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72AC76B0032
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:58:31 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A32A61A0598
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:58:28 +0000 (UTC)
+X-FDA: 84147318696.02.2C3532E
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4425F160009
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:58:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=pxJB5zld;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf08.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764032226;
+	s=arc-20220608; t=1764032307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OXtn3K8Eq0WVSir81qSgpoCSJ7ob/sT7KbPkVXVRj10=;
-	b=djhYNYVZzOqWSXsP7OWX9sBThG2SeUEtCDmUsztsoBQG81E4xS3/RPsgZ6MvidkKNrVyzw
-	k8eOKgyyZkSYV/FzhwsxpejB2T/X95JZhaEv+zvMSfzAN8ifLzQZnYpf0/NXtIQ8MqUuvp
-	3+MEaDzpIhAGiFUlgkCAt/iP88jF36Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764032226; a=rsa-sha256;
+	bh=/30Sv7hB0LicpiampkA1ftcU0prNdSbcPBoiTLyH+p8=;
+	b=d62yBeYNmEl3EAZFfyfNNV6cCG5LsMWyPiQd9R1x5rVMfDI6QSQ2dyqzs+bAbuCyieg/Hm
+	HQR76JesAk0XN2XLeJrlXdp0og+VyhnxiTHket6PPyNpkcwMoaBqNxEWrf+bszH3jyoVOB
+	4exdhlJMpJ8XzEw6zgYsV0+OMNCy7uo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764032307; a=rsa-sha256;
 	cv=none;
-	b=CMhTHhuzT74KBXolCxKcO1dxt6fa23Ma2+QOrk9FuI3HDxTVwe7OZO1RlQifZ1to+j1Qgg
-	Z9blAKC3fPSP9GG3n74yXnKAnMn/aNprHUCDMtKXqpS3E8hLRVHhzDOfkn/huVy7lcxsT4
-	TZaOxmJhvyvMdc7FGNf44F8JmRrkmdY=
+	b=ibALBSZsbL2hhZT/25IFrQjutXxSrs9EbUMXg8ZyK+biPx2JOdIbyEhwqmzOeYnX4R0G2I
+	ijkLCF66+aNHRSroIhbB4SGt/AMMcD9aKAG2NByqZcr0KK7YV6mRkp0DwOgZ9ETlxVB1Lg
+	T76GMWWdZ4rVjLaORchR/GqpcrILicg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="W/gr+dld";
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1764032222; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=OXtn3K8Eq0WVSir81qSgpoCSJ7ob/sT7KbPkVXVRj10=;
-	b=W/gr+dldUaOPMMYCmgKdfMICk6Hymdi/2eRiSi9Xwb4k2fS5Y4JdVfwPu65gsj+klUXUFgs6VOXgnhAZdtcyDpGI47lZyMb/wgMkPtF9G5ktAwyftqdaKwkQ/LMAzYt1ecxwtjAd4wfdEZXF0chL06sNwrI9fZTtDjjdhXlUwjM=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WtL74.V_1764032220 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 25 Nov 2025 08:57:01 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	ryan.roberts@arm.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	riel@surriel.com,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	willy@infradead.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] mm: rmap: support batched checks of the references for large folios
-Date: Tue, 25 Nov 2025 08:56:51 +0800
-Message-ID: <dde5a9135710d8d883e30e0acadcbf1ae754bf7a.1763976541.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <cover.1763976541.git.baolin.wang@linux.alibaba.com>
-References: <cover.1763976541.git.baolin.wang@linux.alibaba.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025112201 header.b=pxJB5zld;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf08.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5AP0uYXF996032
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 24 Nov 2025 16:56:34 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5AP0uYXF996032
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025112201; t=1764032198;
+	bh=/30Sv7hB0LicpiampkA1ftcU0prNdSbcPBoiTLyH+p8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=pxJB5zldasPJ8sdmLh0wioBOAStcMVJqKxpCl7tUXUSINXMmUBeS7dNsEx2DQ1rHr
+	 XyZoVi3mLQNx0QdMP5qZ3kL5TU3TP9vj29/8Aunuv4u/KcysuGO0CgZT2YdLZbZOHg
+	 CGkFHMN332sDzfQymgzLnQJH25bHVdEOD96lQLb3Ds9FuqZ57hJcOWCV1d9Rj/Xt51
+	 to9x6WpheBLmGoLubWu2PfFRTKOhF12Nal4pfE0FarSmtWMnjRKSG/RqDpu2kHeTRq
+	 cqQlhDvFh98P0/3SjxHLqyRLuG/zgpzntAvyphOgr6ZDN768schUUrBkcSXZdA7Qnn
+	 r3ol4NJ3NCiFg==
+Date: Mon, 24 Nov 2025 16:56:34 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Usama Arif <usamaarif642@gmail.com>, Changyuan Lyu <changyuanl@google.com>,
+        akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@kernel.org>
+CC: anthony.yznaga@oracle.com, arnd@arndb.de, ashish.kalra@amd.com,
+        benh@kernel.crashing.org, bp@alien8.de, catalin.marinas@arm.com,
+        corbet@lwn.net, dave.hansen@linux.intel.com,
+        devicetree@vger.kernel.org, dwmw2@infradead.org, ebiederm@xmission.com,
+        graf@amazon.com, jgowans@amazon.com, kexec@lists.infradead.org,
+        krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-doc@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org,
+        mark.rutland@arm.com, mingo@redhat.com, pasha.tatashin@soleen.com,
+        pbonzini@redhat.com, peterz@infradead.org, ptyadav@amazon.de,
+        robh@kernel.org, rostedt@goodmis.org, rppt@kernel.org,
+        saravanak@google.com, skinsburskii@linux.microsoft.com,
+        tglx@linutronix.de, thomas.lendacky@amd.com, will@kernel.org,
+        x86@kernel.org, Breno Leitao <leitao@debian.org>, thevlad@meta.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v8_12/17=5D_x86/e820=3A_temporari?=
+ =?US-ASCII?Q?ly_enable_KHO_scratch_for_memory_below_1M?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <a0f875f1-45ad-4dfc-b5c8-ecb51b242523@gmail.com>
+References: <20250509074635.3187114-1-changyuanl@google.com> <20250509074635.3187114-13-changyuanl@google.com> <a0f875f1-45ad-4dfc-b5c8-ecb51b242523@gmail.com>
+Message-ID: <22BDBF5C-C831-4BBC-A854-20CA77234084@zytor.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: oxydir3k65cjo4rdm9hcxe8m9xkbshwq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B094A1A0007
-X-Stat-Signature: busrymer1yum89f3zqne1kkycrn9pd8n
-X-HE-Tag: 1764032225-392308
-X-HE-Meta: U2FsdGVkX1+00nYBVygqs+EYZyZVn3T1u30xFtrgoTozjJVim752hWeZ6AUvaCOoknG6mMeNtNPnbtpxCmDHi8KJb5O2p7oN9KEQ6jI7aGpQjgSwwyEINL8bW1+5ov+OIqdnVD4j2N2o+tVwPNYC6DcXgvuqhQ92A0af2AeigLp8wtAIujwJv1xSE9cGpG1tQkmJKibTW8vKMqmy/R3qdVBU1HMuhqklzwL1yEss2POmb+VDcm63zbS3L2Zd02qYQOmt65aNwnDeBQvQMvy2QYl1AJnq91YMWDSjoHw1ZifAZVrR5jA9eZxMTgEVeqAjlY9uwfrRjBoaCeUPIqiMWAGgRfRZJrIxfrnlCIaIZhQjV9FrbWbT4W3STNQqrt9gjwzvvMYPWsyGgCPKu4oqL6q/1vFRU/kqmc1os3GOjJRME8D3TtBCl/5taRVUK/D7l5AlzsyjZ9E7ACB8yFcaDNRAiTkwlkONLKz/Bc974BP4subpqeUZs+zSpSPFO331gZdsgSipAiIZKjUwnBhNx2Rd1HywUxEb2Hx64Gt34ukJFX4GGNXcPzBO/ohl/KelnxyTdNuHsgvB1TSuiWgsR5BQd+jTQuQ5LZ8W0H5zrgxNgG9F3oMJrN6myOPcVhxZvipr3EE5AfoZEkweQleH9m+0dItJj7OKLhThCLOyzZfhNZcjdNSzmJ/IopqCkf53+kBJqvVJS2yDHjI4AyWvix/Nf/LraqtN4JAz7/ItV605Yoq9HHLXOzhwKy+uwWAIVXu7zF1KZ54GeAjLCCz8sOKvszveO4lg1XH3SDYPni1ek9AIMhZvmzEQtGdI3nsHXVxVcCCbj/Wso/G5LMkAHWF6GNArO+vA2t0nFyWYvw8LaD7unl10/xaqSHTA5+3ORkBtLt6BcdnAeOZHfc7S9gXD71GyPo2qk8lrQvmH1FIWzqSQqkkb5CLYAJLICIMbu0p/YD++3ftND1Pw3UB
- 3uWR/kin
- 4o9Mqq2u9ZUoLQT49e2rbplZOfnMnF6BfqWxRaALzX6Hq02GVhVZoplFAKksAmZS1TLJ7vq0Ta+sRB9RcJNlNcautUErGfo9P/SoX6LMTqrhTlTVETc1hhVUCXvRMap5ao5v8eS0H3Xx4RxmlyuTDcE3HNyeZTCA+KidSUSiyn1MkISk8l9HFsvnSBSMs53/m7KluK19/SEkU1+D9U6CrY4+E8eTQTnUGFVrBt3qmBoFQdCvQ9+CldYVXy4Dl5O8qpB0fhBAPQClLkRedTVUiKsc61RIar8XGgRVy
+X-Rspamd-Queue-Id: 4425F160009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1764032306-439890
+X-HE-Meta: U2FsdGVkX18YveAoqRqfzNyon5UwYDXWToaHv1RDlPIpDXWLUSZZY5P+lKmeV/XNmJ8cz5KTd+PGcelvULp0Tf+pntmaJnCp/1FqFNSvfbE8AXX5ai5OELUZg21Yg1kFmn+Z7IqJIVvVo70oKcLgwHBmMoWBTtj5vj2jn6dE0eNNEKA8HWphI+1qRJZCNeSj4M3gE/0g3tJBpBstAj3HGHNlVbOK0K4AH50GoR6vAr00Zz19Sdk/dCmy/O3I89+4iye6ahkmibiovmMcf1lhlK9Ju27RgjESkYLxXlLA0qRHttRGuSLH7i4DpWLhtCaHeAshR785+1F9xbkCMF3NU3++PLoDjScJSXsT+7L8XyaunahPtR3Nx4iZNA6ft20ZwdejVADSUNozC5e6QWIXuoggZn8M1i4xrrVjeZ3akwQuLXMPsO3/yffZkXuWt2NR1XMJgVsWtmQFBVHubCqqm323oQBTkPYGtmNF7evwKUrRFiVGxrl1IbdUasy853n+cZiXCq3HiLyE2R/Zxn9vRJJ2FVt8HoCR1IKd0bmwO76D7j/f4tOdnArb8lGFuJLnit32Mhlaeu/J9JtB9/3lvk8L/coisQ15NM3b/vwBMd+4pd6k5/t48P6Sc7XzoRFOJN/M9rheDJlKTBjocO9SozQ/kA4lgIJtKdE398PCODa4sj7aPQIDYcqqgXo6z6yCIe5XSm96tpW52Bv6596bU6LAZ41TgvGQTfIdihwmhZ3IVHOkzBJgma4SBABUtNgB9lBIXfBXwGeuwLr1lHkNCQ6OPLalK1UbOEG3rtE09SnPoV2UNzZi6qjBNi/2s6/UjIfr1Gdrq8bog67/fWOd8WN00GIXKPp+BKgPttO7uE492ZW7XVBc+LaPWQRVSZ/pt0J4pMD08USeBkmbqIsG60fMK2gjjmS4zF3brywVVc+RLR7pJ7MRyW6AF0Hg6tSCHZ5t6YwS2n4Vv42qRAB
+ ShkFhG77
+ B8S7NGHftLn6PRfydpNLOCi3T0Vyneat8hDdKt3C7oYFLGiOaK8EFP6t/w7Jd7V29+MHbiH4dfRYcp2bM9bUZOgYhoiT0GcWxdCclr0e/5/ao1plTTMCrC4X8mg+n3z3dBwF4zB9whKEHhBDmHq9xlT9UvTce2C2AD6aur+U6BBcXHIdhzaJC/gJPgNFdwQi9NxuWOek66dwa+QykKUE0eC6hwTiO2KZjCSrMIaUUylldCvywrUyfcS/QQF4j3JscqMb+Ocx/2cH/WgolbDKwicAusbP+kbv/QbUWUDL/u4eqe6bBM/ZtrVkKHIIKL7nE55TBT5P2fpowBV1LZ7p1BTw+FtNMDAqWCsfSYwGNLpaOeY0+P4T5RMY4ESV/I6WbLVbthn3CxaoONWvnYXUHSNOIPp7InLDiXDcwurrVXSR9hJ8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,184 +109,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, folio_referenced_one() always checks the young flag for each PTE
-sequentially, which is inefficient for large folios. This inefficiency is
-especially noticeable when reclaiming clean file-backed large folios, where
-folio_referenced() is observed as a significant performance hotspot.
+On November 24, 2025 11:24:58 AM PST, Usama Arif <usamaarif642@gmail=2Ecom>=
+ wrote:
+>
+>
+>On 09/05/2025 08:46, Changyuan Lyu wrote:
+>> From: Alexander Graf <graf@amazon=2Ecom>
+>>=20
+>> KHO kernels are special and use only scratch memory for memblock
+>> allocations, but memory below 1M is ignored by kernel after early boot
+>> and cannot be naturally marked as scratch=2E
+>>=20
+>> To allow allocation of the real-mode trampoline and a few (if any) othe=
+r
+>> very early allocations from below 1M forcibly mark the memory below 1M
+>> as scratch=2E
+>>=20
+>> After real mode trampoline is allocated, clear that scratch marking=2E
+>>=20
+>> Signed-off-by: Alexander Graf <graf@amazon=2Ecom>
+>> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel=2Eorg>
+>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel=2Eorg>
+>> Co-developed-by: Changyuan Lyu <changyuanl@google=2Ecom>
+>> Signed-off-by: Changyuan Lyu <changyuanl@google=2Ecom>
+>> Acked-by: Dave Hansen <dave=2Ehansen@linux=2Eintel=2Ecom>
+>> ---
+>>  arch/x86/kernel/e820=2Ec   | 18 ++++++++++++++++++
+>>  arch/x86/realmode/init=2Ec |  2 ++
+>>  2 files changed, 20 insertions(+)
+>>=20
+>> diff --git a/arch/x86/kernel/e820=2Ec b/arch/x86/kernel/e820=2Ec
+>> index 9920122018a0b=2E=2Ec3acbd26408ba 100644
+>> --- a/arch/x86/kernel/e820=2Ec
+>> +++ b/arch/x86/kernel/e820=2Ec
+>> @@ -1299,6 +1299,24 @@ void __init e820__memblock_setup(void)
+>>  		memblock_add(entry->addr, entry->size);
+>>  	}
+>> =20
+>> +	/*
+>> +	 * At this point memblock is only allowed to allocate from memory
+>> +	 * below 1M (aka ISA_END_ADDRESS) up until direct map is completely s=
+et
+>> +	 * up in init_mem_mapping()=2E
+>> +	 *
+>> +	 * KHO kernels are special and use only scratch memory for memblock
+>> +	 * allocations, but memory below 1M is ignored by kernel after early
+>> +	 * boot and cannot be naturally marked as scratch=2E
+>> +	 *
+>> +	 * To allow allocation of the real-mode trampoline and a few (if any)
+>> +	 * other very early allocations from below 1M forcibly mark the memor=
+y
+>> +	 * below 1M as scratch=2E
+>> +	 *
+>> +	 * After real mode trampoline is allocated, we clear that scratch
+>> +	 * marking=2E
+>> +	 */
+>> +	memblock_mark_kho_scratch(0, SZ_1M);
+>> +
+>>  	/*
+>>  	 * 32-bit systems are limited to 4BG of memory even with HIGHMEM and
+>>  	 * to even less without it=2E
+>> diff --git a/arch/x86/realmode/init=2Ec b/arch/x86/realmode/init=2Ec
+>> index f9bc444a3064d=2E=2E9b9f4534086d2 100644
+>> --- a/arch/x86/realmode/init=2Ec
+>> +++ b/arch/x86/realmode/init=2Ec
+>> @@ -65,6 +65,8 @@ void __init reserve_real_mode(void)
+>>  	 * setup_arch()=2E
+>>  	 */
+>>  	memblock_reserve(0, SZ_1M);
+>> +
+>> +	memblock_clear_kho_scratch(0, SZ_1M);
+>>  }
+>> =20
+>>  static void __init sme_sev_setup_real_mode(struct trampoline_header *t=
+h)
+>
+>Hello!
+>
+>I am working with Breno who reported that we are seeing the below warning=
+ at boot
+>when rolling out 6=2E16 in Meta fleet=2E It is difficult to reproduce on =
+a single host
+>manually but we are seeing this several times a day inside the fleet=2E
+>
+> 20:16:33  ------------[ cut here ]------------
+> 20:16:33  WARNING: CPU: 0 PID: 0 at mm/memblock=2Ec:668 memblock_add_ran=
+ge+0x316/0x330
+> 20:16:33  Modules linked in:
+> 20:16:33  CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G S               =
+   6=2E16=2E1-0_fbk0_0_gc0739ee5037a #1 NONE=20
+> 20:16:33  Tainted: [S]=3DCPU_OUT_OF_SPEC
+> 20:16:33  RIP: 0010:memblock_add_range+0x316/0x330
+> 20:16:33  Code: ff ff ff 89 5c 24 08 41 ff c5 44 89 6c 24 10 48 63 74 24=
+ 08 48 63 54 24 10 e8 26 0c 00 00 e9 41 ff ff ff 0f 0b e9 af fd ff ff <0f> =
+0b e9 b7 fd ff ff 0f 0b 0f 0b cc cc cc cc cc cc cc cc cc cc cc
+> 20:16:33  RSP: 0000:ffffffff83403dd8 EFLAGS: 00010083 ORIG_RAX: 00000000=
+00000000
+> 20:16:33  RAX: ffffffff8476ff90 RBX: 0000000000001c00 RCX: 0000000000000=
+002
+> 20:16:33  RDX: 00000000ffffffff RSI: 0000000000000000 RDI: ffffffff83bad=
+4d8
+> 20:16:33  RBP: 000000000009f000 R08: 0000000000000020 R09: 8000000000097=
+101
+> 20:16:33  R10: ffffffffff2004b0 R11: 203a6d6f646e6172 R12: 000000000009e=
+c00
+> 20:16:33  R13: 0000000000000002 R14: 0000000000100000 R15: 000000000009d=
+000
+> 20:16:33  FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:00=
+00000000000000
+> 20:16:33  CR2: ffff888065413ff8 CR3: 00000000663b7000 CR4: 0000000000000=
+0b0
+> 20:16:33  Call Trace:
+> 20:16:33   <TASK>
+> 20:16:33   ? __memblock_reserve+0x75/0x80
+> 20:16:33   ? setup_arch+0x30f/0xb10
+> 20:16:33   ? start_kernel+0x58/0x960
+> 20:16:33   ? x86_64_start_reservations+0x20/0x20
+> 20:16:33   ? x86_64_start_kernel+0x13d/0x140
+> 20:16:33   ? common_startup_64+0x13e/0x140
+> 20:16:33   </TASK>
+> 20:16:33  ---[ end trace 0000000000000000 ]---=20
+>
+>
+>Rolling out with memblock=3Ddebug is not really an option in a large scal=
+e fleet due to the
+>time added to boot=2E But I did try on one of the hosts (without reproduc=
+ing the issue) and I see:
+>
+>[    0=2E000616]  memory=2Ecnt  =3D 0x6
+>[    0=2E000617]  memory[0x0]	[0x0000000000001000-0x000000000009bfff], 0x=
+000000000009b000 bytes flags: 0x40
+>[    0=2E000620]  memory[0x1]	[0x000000000009f000-0x000000000009ffff], 0x=
+0000000000001000 bytes flags: 0x40
+>[    0=2E000621]  memory[0x2]	[0x0000000000100000-0x000000005ed09fff], 0x=
+000000005ec0a000 bytes flags: 0x0
+>=2E=2E=2E
+>
+>The 0x40 (MEMBLOCK_KHO_SCRATCH) is coming from memblock_mark_kho_scratch =
+in e820__memblock_setup=2E I believe this
+>should be under ifdef like the diff at the end? (Happy to send this as a =
+patch for review if it makes sense)=2E
+>We have KEXEC_HANDOVER disabled in our defconfig, therefore MEMBLOCK_KHO_=
+SCRATCH shouldnt be selected and
+>we shouldnt have any MEMBLOCK_KHO_SCRATCH type regions in our memblock re=
+servations=2E
+>
+>The other thing I did was insert a while(1) just before the warning and i=
+nspected the registers in qemu=2E
+>R14 held the base register, and R15 held the size at that point=2E
+>In the warning R14 is 0x100000 meaning that someone is reserving a region=
+ with a different flag to MEMBLOCK_NONE
+>at the boundary of MEMBLOCK_KHO_SCRATCH=2E
+>
+>diff --git a/arch/x86/kernel/e820=2Ec b/arch/x86/kernel/e820=2Ec
+>index c3acbd26408ba=2E=2E26e4062a0bd09 100644
+>--- a/arch/x86/kernel/e820=2Ec
+>+++ b/arch/x86/kernel/e820=2Ec
+>@@ -1299,6 +1299,7 @@ void __init e820__memblock_setup(void)
+>                memblock_add(entry->addr, entry->size);
+>        }
+>=20
+>+#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+>        /*
+>         * At this point memblock is only allowed to allocate from memory
+>         * below 1M (aka ISA_END_ADDRESS) up until direct map is complete=
+ly set
+>@@ -1316,7 +1317,7 @@ void __init e820__memblock_setup(void)
+>         * marking=2E
+>         */
+>        memblock_mark_kho_scratch(0, SZ_1M);
+>-
+>+#endif
+>        /*
+>         * 32-bit systems are limited to 4BG of memory even with HIGHMEM =
+and
+>         * to even less without it=2E
+>diff --git a/arch/x86/realmode/init=2Ec b/arch/x86/realmode/init=2Ec
+>index 88be32026768c=2E=2E1cd80293a3e23 100644
+>--- a/arch/x86/realmode/init=2Ec
+>+++ b/arch/x86/realmode/init=2Ec
+>@@ -66,8 +66,9 @@ void __init reserve_real_mode(void)
+>         * setup_arch()=2E
+>         */
+>        memblock_reserve(0, SZ_1M);
+>-
+>+#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+>        memblock_clear_kho_scratch(0, SZ_1M);
+>+#endif
+> }
+>=20
+> static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
 
-Moreover, on Arm architecture, which supports contiguous PTEs, there is already
-an optimization to clear the young flags for PTEs within a contiguous range.
-However, this is not sufficient. We can extend this to perform batched operations
-for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
-
-Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
-of the young flags and flushing TLB entries, thereby improving performance
-during large folio reclamation.
-
-Performance testing:
-Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
-reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
-33% performance improvement on my Arm64 32-core server (and 10%+ improvement
-on my X86 machine). Meanwhile, the hotspot folio_check_references() dropped
-from approximately 35% to around 5%.
-
-W/o patchset:
-real	0m1.518s
-user	0m0.000s
-sys	0m1.518s
-
-W/ patchset:
-real	0m1.018s
-user	0m0.000s
-sys	0m1.018s
-
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- arch/arm64/include/asm/pgtable.h | 11 +++++++++++
- include/linux/mmu_notifier.h     |  9 +++++----
- include/linux/pgtable.h          | 19 +++++++++++++++++++
- mm/rmap.c                        | 22 ++++++++++++++++++++--
- 4 files changed, 55 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index e03034683156..a865bd8c46a3 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1869,6 +1869,17 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
- 	return contpte_clear_flush_young_ptes(vma, addr, ptep, CONT_PTES);
- }
- 
-+#define clear_flush_young_ptes clear_flush_young_ptes
-+static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-+					unsigned long addr, pte_t *ptep,
-+					unsigned int nr)
-+{
-+	if (likely(nr == 1))
-+		return __ptep_clear_flush_young(vma, addr, ptep);
-+
-+	return contpte_clear_flush_young_ptes(vma, addr, ptep, nr);
-+}
-+
- #define wrprotect_ptes wrprotect_ptes
- static __always_inline void wrprotect_ptes(struct mm_struct *mm,
- 				unsigned long addr, pte_t *ptep, unsigned int nr)
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index d1094c2d5fb6..be594b274729 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
- 	range->owner = owner;
- }
- 
--#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
-+#define ptep_clear_flush_young_notify(__vma, __address, __ptep, __nr)	\
- ({									\
- 	int __young;							\
- 	struct vm_area_struct *___vma = __vma;				\
- 	unsigned long ___address = __address;				\
--	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
-+	unsigned int ___nr = __nr;					\
-+	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
- 	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
- 						  ___address,		\
- 						  ___address +		\
--							PAGE_SIZE);	\
-+						nr * PAGE_SIZE);	\
- 	__young;							\
- })
- 
-@@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
- 
- #define mmu_notifier_range_update_to_read_only(r) false
- 
--#define ptep_clear_flush_young_notify ptep_clear_flush_young
-+#define ptep_clear_flush_young_notify clear_flush_young_ptes
- #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
- #define ptep_clear_young_notify ptep_test_and_clear_young
- #define pmdp_clear_young_notify pmdp_test_and_clear_young
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index b13b6f42be3c..c7d0fd228cb7 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -947,6 +947,25 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
- }
- #endif
- 
-+#ifndef clear_flush_young_ptes
-+static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-+					 unsigned long addr, pte_t *ptep,
-+					 unsigned int nr)
-+{
-+	int young = 0;
-+
-+	for (;;) {
-+		young |= ptep_clear_flush_young(vma, addr, ptep);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+
-+	return young;
-+}
-+#endif
-+
- /*
-  * On some architectures hardware does not set page access bit when accessing
-  * memory page, it is responsibility of software setting this bit. It brings
-diff --git a/mm/rmap.c b/mm/rmap.c
-index f955f02d570e..3833b8557a6f 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -827,9 +827,11 @@ static bool folio_referenced_one(struct folio *folio,
- 	struct folio_referenced_arg *pra = arg;
- 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
- 	int ptes = 0, referenced = 0;
-+	unsigned int nr;
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		address = pvmw.address;
-+		nr = 1;
- 
- 		if (vma->vm_flags & VM_LOCKED) {
- 			ptes++;
-@@ -874,9 +876,21 @@ static bool folio_referenced_one(struct folio *folio,
- 			if (lru_gen_look_around(&pvmw))
- 				referenced++;
- 		} else if (pvmw.pte) {
-+			if (folio_test_large(folio)) {
-+				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
-+				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
-+				pte_t pteval = ptep_get(pvmw.pte);
-+
-+				nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
-+			}
-+
-+			ptes += nr;
- 			if (ptep_clear_flush_young_notify(vma, address,
--						pvmw.pte))
-+						pvmw.pte, nr))
- 				referenced++;
-+			/* Skip the batched PTEs */
-+			pvmw.pte += nr - 1;
-+			pvmw.address += (nr - 1) * PAGE_SIZE;
- 		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 			if (pmdp_clear_flush_young_notify(vma, address,
- 						pvmw.pmd))
-@@ -886,7 +900,11 @@ static bool folio_referenced_one(struct folio *folio,
- 			WARN_ON_ONCE(1);
- 		}
- 
--		pra->mapcount--;
-+		pra->mapcount -= nr;
-+		if (ptes == pvmw.nr_pages) {
-+			page_vma_mapped_walk_done(&pvmw);
-+			break;
-+		}
- 	}
- 
- 	if (referenced)
--- 
-2.47.3
-
+What does "scratch" mean in this exact context? (Sorry, don't have the cod=
+e in front of me=2E)
 
