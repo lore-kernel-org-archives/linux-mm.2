@@ -4,105 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D04A7D0E6D1
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 12:39:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9358D0E6DB
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 12:55:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2C026B0006; Tue, 25 Nov 2025 07:39:27 -0500 (EST)
+	id 07AF36B0027; Tue, 25 Nov 2025 07:55:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D02236B0024; Tue, 25 Nov 2025 07:39:27 -0500 (EST)
+	id 0510B6B0028; Tue, 25 Nov 2025 07:55:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3F0A6B002A; Tue, 25 Nov 2025 07:39:27 -0500 (EST)
+	id EA7936B002A; Tue, 25 Nov 2025 07:55:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B6D306B0006
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:39:27 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 641444FD42
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:39:27 +0000 (UTC)
-X-FDA: 84149085174.25.027A8FB
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EFA5F180011
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:39:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nTiHvz6e;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764074365; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DAB786B0027
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:55:30 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 95A1C8A235
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:55:30 +0000 (UTC)
+X-FDA: 84149125620.30.0AE4602
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 945C710000C
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:55:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=IVXbuc+O;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764075328; a=rsa-sha256;
 	cv=none;
-	b=3C6r2g98R2cKSptIxaHX8phlnWaB/hT2vacgtyxgSfxvOQ9E8HMETWsFFMeluyBvDFnYbz
-	AXTL9yPcum/TsCIULVAMtZmG1a75ETC344MgarKeA3QXmYorF7m6rdT5TPenFSEIAqWYnQ
-	BW1iZbY8H5sy7WVui8SDV4obIoIk4Kw=
+	b=w68JRTfxzOzNqeGSsJbu0Y87WAut8CI232V2Y1Xa6UHJM3otXZ060xqUDwscmN4K8C+s8J
+	4NsWCQT9K82xvOXlZG+oSJn/hcB9Slh8GUI9KtiP4aaiIb+XjzVCRmuqEpJXyMPA3ZvRwu
+	4ouYIyaqwNTsbXgDsH/36UZzM6m3xpM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nTiHvz6e;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=IVXbuc+O;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764074365;
+	s=arc-20220608; t=1764075328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r47ko9tqrh1CHMcuZiyYgpMsClYo0ThKH5iXQ+5qeO0=;
-	b=Bpmw0WDvr5IEIbvNpvzPWeALuGBh+0pGPnyK/9jM0BwmS39kwA0oj/i0jUI4HfnPSETeCb
-	Jit3zXL9Jcdue2vJIyMJZ/YzUfdnzDTQnN1DG3ki2kA78pXZL27AOkssxaX9lrz5jJE3Iv
-	EUsf+gBjaq1szu3lQZMnQoSvTLnn/cs=
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764074360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r47ko9tqrh1CHMcuZiyYgpMsClYo0ThKH5iXQ+5qeO0=;
-	b=nTiHvz6ekOScWYJK5xH6BI23HoTKy5GzZ1p6Ze5lpm3ikHo/Uzgewi28+QtbBJaQ19sLBn
-	eOMzmS6HnfdlrY9HODH2VrNQHrPSe3KuM8FQPGbgPDirBlnGXf/YSX8JWBIAhrb74YF071
-	6wEDfDenPhmPUrZZEXT/MJkHcZh4Iqg=
-Date: Tue, 25 Nov 2025 12:39:11 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: hui.zhu@linux.dev
-Message-ID: <6ff7dad904bcb27323ea21977e1160ebfa5e283d@linux.dev>
-TLS-Required: No
+	bh=usCzcCtVI6XgCiCu4NS8NEIAX55CiKwZAm0iUXb+TsA=;
+	b=Zx+ap+1BfJcLFsCf1047ZlfLHr/hzKAsxp1xIkOnV6Bou8PT/GWXIBc7D6u91KF0xZ2C78
+	8rbwJBYkIZF/hkNkTXUH0W/f8BRRdcETmQUCLLklWFOi2BnIGZy+Tuuhpq3N+zfz+iCz3f
+	QMzpOgLX6MF73sFIlBP2/OX6QocxdRc=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477b1cc8fb4so31283915e9.1
+        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:55:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1764075327; x=1764680127; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=usCzcCtVI6XgCiCu4NS8NEIAX55CiKwZAm0iUXb+TsA=;
+        b=IVXbuc+OS7r7v65iQZ1gEl6iRdBxXUDgleBjip780GLmev/GXxn34gLNpPTvtSIEkD
+         HlWhNgGNA/p3jEaDht97JqM+KKGsJXRofztPLM/XUMYkolLXN+6x0mA+LHB/zc2LYHRQ
+         heHJt+44f0lEAoLLceiSkeXD7bepmDQ7W598MD5GQaLYGa38S2EpFYAibJmIs/OKO9fD
+         34t69V5UDJnjVeGgDFmNc6ntuFZlr/65JO+spIsbCpE6ppekwTwu9F7uBPMotmslPgD/
+         MtdoOhiWbk0OsJRY2cr+hMC2r0oUgHnzBQ382AbJ6B+DcqpiLjxH/D8z9qVE3ug8ySwr
+         CZFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764075327; x=1764680127;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=usCzcCtVI6XgCiCu4NS8NEIAX55CiKwZAm0iUXb+TsA=;
+        b=FGP8Cv9cmqKJIzZ0P1u95uV7KVeH5cWEoRzY/LSadrvkJVOy4jb7s2YXE4/SIEjA6H
+         o8/0tOc1Br+kaE/IdQQbbcmqqYvH2RcRYyG/psWF6JsN4+M4wnRz3f/nluLzKt1wZXju
+         E9US+ZWrumtJKKlSelw5ekXp5LJ6/Qrsu3b9WLyCjNNCAICFV5UWbYQserW1WCDmUCvQ
+         bVV07MOMaiUsTOpzq38Q/IohBwdlXnDkeFgYjCz8NUwk/3TR67/t7P+iD+BeZxBNl3N+
+         xv9Whyzk1+JW4ez0mOviFqnHSkd6k5HM0ZLLO2plHPw5utZykvgkifoCKoyss+yMNbdZ
+         CifA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoYqO2O2hE+YF0O0GgjgraeqJaZXphdm1qA37jxcvJVyEpWuifjzsxbtOR2twUfgGyShiYg2+DpQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz5b3UO2sA09yhxMhujsTya8t8Y13uehz/IhiOANrOWF6TWpewH
+	wQi9XS7+belNd0Mw4ufY+EKyJBd0bdLNYcXKeDuRE5H6yIzoCLuEl90OpPzp+aee8Xk=
+X-Gm-Gg: ASbGncvmu1JqaVlZ7RDq04fT6xi2rATqqKL4niK4Pf6T7xUPP92KddWpm7WQqD2zD/b
+	FiGtAuQfuwpTbkKA6TV5BPqXmRTxl++z2jKlvDfx0QZq/EZJB87OCgGwDdOwCEm5aRoMj1XYf2d
+	uNMiSjPgUCbthBF2JU40B3jM0VlmhhEqAmbQMmK9SFX1L17ZwCbzH5lajH4Ijefvs6Eqot1/1NE
+	4FHuMkydb1t/sxrFNe1bF1e7MvIcT+4azN8T9xR5MpOoDS7pum1rORTJrO10CI/+JQGqH+2VQBA
+	+e76TW41TKw+SWghkDIWLW8j9NRz+tFm3nopyVMTSI3niOQOH2i4qXBrcyQFn2XEB7qrejeAZr2
+	vA+cfC9yeq3mc0kH2eyIvprhdUR005uJLuZ1dPcfA2a6DelXfv6dvSEh8/V6wGTUoYo+0ed3iQG
+	hZEXJY5wSm4bl81LdSM483PB/A
+X-Google-Smtp-Source: AGHT+IHeNFHz77PnS9U9y/LXSC6SdqMAwMHknNtAmvznPS8Yog8Q67/4L/1KHix1NRlDrhL8Rpv3qQ==
+X-Received: by 2002:a05:600c:3112:b0:477:b48d:ba7a with SMTP id 5b1f17b1804b1-47904b2b2e0mr24822815e9.32.1764075327005;
+        Tue, 25 Nov 2025 04:55:27 -0800 (PST)
+Received: from localhost (109-81-29-251.rct.o2.cz. [109.81.29.251])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479040bd209sm18794505e9.3.2025.11.25.04.55.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 04:55:26 -0800 (PST)
+Date: Tue, 25 Nov 2025 13:55:25 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: hui.zhu@linux.dev
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
 Subject: Re: [RFC PATCH 0/3] Memory Controller eBPF support
-To: "Michal Hocko" <mhocko@suse.com>
-Cc: "Roman Gushchin" <roman.gushchin@linux.dev>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Shakeel Butt" <shakeel.butt@linux.dev>, "Muchun Song"
- <muchun.song@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>, "Daniel
- Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>,
- "Martin KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "John Fastabend" <john.fastabend@gmail.com>,
- "KP Singh" <kpsingh@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>,
- "Hao Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>, "Shuah
- Khan" <shuah@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>, "Kees Cook" <kees@kernel.org>, "Tejun Heo"
- <tj@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>, mkoutny@suse.com, "Jan
- Hendrik Farr" <kernel@jfarr.cc>, "Christian Brauner"
- <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Brian
- Gerst" <brgerst@gmail.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- cgroups@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
-In-Reply-To: <aSWdSlhU3acQ9Rq1@tiehlicka>
+Message-ID: <aSWnPfYXRYxCDXG3@tiehlicka>
 References: <cover.1763457705.git.zhuhui@kylinos.cn>
  <87ldk1mmk3.fsf@linux.dev>
  <895f996653b3385e72763d5b35ccd993b07c6125@linux.dev>
  <aR9p8n3VzpNHdPFw@tiehlicka>
  <f5c4c443f8ba855d329a180a6816fc259eb8dfca@linux.dev>
  <aSWdSlhU3acQ9Rq1@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: EFA5F180011
+ <6ff7dad904bcb27323ea21977e1160ebfa5e283d@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ff7dad904bcb27323ea21977e1160ebfa5e283d@linux.dev>
+X-Rspamd-Queue-Id: 945C710000C
 X-Rspamd-Server: rspam07
-X-Stat-Signature: xs14pmwf13padk99gwcuhqrmab5sn6fb
+X-Stat-Signature: xxsiu1jdwb8axy947o7m9o9keze7zzy8
 X-Rspam-User: 
-X-HE-Tag: 1764074363-792129
-X-HE-Meta: U2FsdGVkX1/7tzxH3a1f4y5hj47geqzwn4xiY+FpcY1a5LM6Ha2fIsuLUEkYoiGcdcD772qAF8a9uH+ATSJLxhmozZQqg1T3PAPfa9vgJdGi6MDWjE5xOKJAMoWusAbjJsqCNo6GEswrhKAq0mj1YrJ27WGlsvJui7skj8Dg4aCA4NisCw/Wo2ZkGMbrmaTgtfEbD7L5pB3cCZ4ncskRt4zZ/t6C72ET2QFy4WqE4sfneT2vwotOWpEblkqmakC/xKyPwmqW5Yz8EO4xF6TP5SUKF4BF8VIuA08Ub8iDN8/4/cPsH/Gebj9G6iYrsyUDgV1AqZtT+2AsOWVBU8D+OXJob9jmlrLfvTlDzmdWTaI4KVDt7TwH+nHRv7RotMbprP38GXfzGDY1s9c3FEEVhhfYWd4ij0b81wInWV3Llbux2mLBGhO59UMHsrV8S/fvcTAN0HjI78hjDUvzieMoG1w1PQlYzVnYJO+keigX8gZZVrFLIKSta2KVFo9zU5kNt039c0TRAKk7PXnJIFoQRY63u67Sh5zIPqNfShPAcI1NS8WDybDNp0FvTa9LhmEmQRjJc8PMVBx8OF7uDRDF5lCCmvjKdNG+LgyUyBCkxrT4nskEsrWgLwU5fJ0JpUwlawzBwhpuSTRdTVP1FZllxe6A/yX0shc0+2VIhb0lvspmyiYPHXyOXxORr4TV137j7NXpAd+T3nI27H6BzhXc1lFGcFPJodrdivMkWlHJhgx6DZvPSbgulpt5xzySeYTU4zwLfIWlClu6tx91i4AsOOw3WAqHmdDix60j218AItso7/l4OZsHjWE7ne2+JfRkzDp6CP5Xnj6zFe2FX4dU6PIm5Zk1VGVq21ULYl9qaoZ5Mcl9Wz6cylazn+vupwvlB/yFB//tWTRYphq2Wr5fhwKLCcmzRaZYEeRpTSnG24F5qAcBCSEBww==
+X-HE-Tag: 1764075328-441425
+X-HE-Meta: U2FsdGVkX18p1zfYb5bVBZkQGmVrrLYa2Un3vYd+mx2DVr8P49h60zAPzYHI+4/H98G1+SgYSYyl0gz3W5/xDhe7x/X0p0Ybg02MgDleRuZD/zZpewXjiMhiNPDbWMTwVWCY7kN0ZvpEU2Qt2BaziiwDXrZInh1JbPlW6VieiQfm9QlgYINLH7CbFpDOIP0smqmulwdltN32VMBksiZetlD2C4Mqklu+Lx1vUb3+RWgciFwkLROPvaciTWlFVbEHGtksJYR4uS/Y8afHZui8ZMr52sz5GH+S5oLrVxk0AfgEambl7PZMqeI5qBcxJftkmHZMvIrzizYBGiCZrH/8OTJDPhrcQNwcaUhROoj9HnYL3qLizeZmgclf8CFE8zEcw2+bsG33kogCuc+rUTX+T2eO7ld8TcvxohVKSXgVBGxgeAKIFr52IEVTFXyZMaETd9ChjUF1uM/nfwN/A9QBT0LCIyZoCk7phY1zTJc3txIJe4kC28MeIeHfCuPl9qaNkte8yDh9ekpi8ieEB9KGjRINtZzCx/Y3TttWjbFetl2kbQ+i/XaoAXXyLrM0d2SCS39I0fu7fXfMHZJ+EwpefCwtObatpp9eiSck44oD+i/KlqHDrTQx8Up0KOxOgozaONRWWEYL+FRqA8fMjKigB0AORowaUCvpgo21CP92i4LqRidT3xr5LVq9eeLpd6vxMlNKcy9OzonLvehUSdV2vqO4Y0VFjmO5pWnqpmH/RFKXFcD4QhdpW3AP0aM9Vz4Y7RA3l+ptAT7LT2aHCKkgi6xuNKGc+dYPA87T2CiOG1nwE3LizyFiNrEfOEfVym/oYbb9fhY+qXLc2FAvda4bsXHcFJLJg8xmW6Tu+VQ1aSDjoMwnPkc2mX9PdZC89uBk2XVsQ1ALKjbf3FTlBP3ltPk+k7K6B0upZqvFs1IPp8xbzwj2gMQ/jIgf2VBnT8py3rA61Y/fMCItUizLMqy
+ H1hj3zoM
+ eyMv7sdC1AIJNzBMWeVxDbis46K6MvMzphV9HoC7L4kBOnkCHXdge+q3fDSRqkm4d4rpxoCqTI4oGBxN2eOgdTXtju6MRo6pS4CY0qHFimgjyhpYeKQZv6P6kPVDR7rnFc/chnnDW0H5UEY9Q3dSKWGqcyYN0torrQd39jqduln8zRmwcfBmzhpuW9TUSWtdlOz6ZRRip+mtPcy1J3CE9tvGl7FEkdrM4ZoUJR9MFhFZZSg3gXZ8LPM10Zm9A5dFumPLjbAGpc7/+YS1c/YNDD4o9W/Q0YqKIC7ssHgGQiEz9m5gsAbnmkuc/35X6Yp+MNjqlK0bThTMV+9b5KD8ET44mtOg8L/p1xgvaZmlrJqlEk+kgXS8AW9hnrGsB0zMnSnmaVzopzXqF5WHvfGnkAGN4Bv47p1u35yhr9Q+NeYKnohM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,129 +149,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2025=E5=B9=B411=E6=9C=8825=E6=97=A5 20:12, "Michal Hocko" <mhocko@suse.co=
-m mailto:mhocko@suse.com?to=3D%22Michal%20Hocko%22%20%3Cmhocko%40suse.com=
-%3E > =E5=86=99=E5=88=B0:
+On Tue 25-11-25 12:39:11, hui.zhu@linux.dev wrote:
+> My goal is implement dynamic memory reclamation for memcgs without limits,
+> triggered by specific conditions.
+> 
+> For instance, with memcg A and memcg B both unlimited, when memcg A faces
+> high PSI pressure, ebpf control memcg B do some memory reclaim work when
+> it try charge.
 
+Understood. Please also think whether this is already possible with
+existing interfaces and if not what are roadblocks in that direction.
 
->=20
->=20On Fri 21-11-25 02:46:31, hui.zhu@linux.dev wrote:
->=20
->=20>=20
->=20> 2025=E5=B9=B411=E6=9C=8821=E6=97=A5 03:20, "Michal Hocko" <mhocko@s=
-use.com mailto:mhocko@suse.com?to=3D%22Michal%20Hocko%22%20%3Cmhocko%40su=
-se.com%3E > =E5=86=99=E5=88=B0:
-> >=20=20
->=20>=20=20
->=20>=20=20
->=20>  On Thu 20-11-25 09:29:52, hui.zhu@linux.dev wrote:
-> >  [...]
-> >=20=20
->=20>  >=20
->=20>  > I generally agree with an idea to use BPF for various memcg-rela=
-ted
-> >  > policies, but I'm not sure how specific callbacks can be used in
-> >  > practice.
-> >  >=20
->=20>  > Hi Roman,
-> >  >=20
->=20>  > Following are some ideas that can use ebpf memcg:
-> >  >=20
->=20>  > Priority=E2=80=91Based Reclaim and Limits in Multi=E2=80=91Tenan=
-t Environments:
-> >  > On a single machine with multiple tenants / namespaces / container=
-s,
-> >  > under memory pressure it=E2=80=99s hard to decide =E2=80=9Cwho sho=
-uld be squeezed first=E2=80=9D
-> >  > with static policies baked into the kernel.
-> >  > Assign a BPF profile to each tenant=E2=80=99s memcg:
-> >  > Under high global pressure, BPF can decide:
-> >  > Which memcgs=E2=80=99 memory.high should be raised (delaying recla=
-im),
-> >  > Which memcgs should be scanned and reclaimed more aggressively.
-> >  >=20
->=20>  > Online Profiling / Diagnosing Memory Hotspots:
-> >  > A cgroup=E2=80=99s memory keeps growing, but without patching the =
-kernel it=E2=80=99s
-> >  > difficult to obtain fine=E2=80=91grained information.
-> >  > Attach BPF to the memcg charge/uncharge path:
-> >  > Record large allocations (greater than N KB) with call stacks and
-> >  > owning file/module, and send them to user space via a BPF ring buf=
-fer.
-> >  > Based on sampled data, generate:
-> >  > =E2=80=9CTop N memory allocation stacks in this container over the=
- last 10 minutes,=E2=80=9D
-> >  > Reports of which objects / call paths are growing fastest.
-> >  > This makes it possible to pinpoint the root cause of host memory
-> >  > anomalies without changing application code, which is very useful
-> >  > in operations/ops scenarios.
-> >  >=20
->=20>  > SLO=E2=80=91Driven Auto Throttling / Scale=E2=80=91In/Out Signal=
-s:
-> >  > Use eBPF to observe memory usage slope, frequent reclaim,
-> >  > or near=E2=80=91OOM behavior within a memcg.
-> >  > When it decides =E2=80=9COOM is imminent,=E2=80=9D instead of just=
- killing/raising
-> >  > limits, it can emit a signal to a control=E2=80=91plane component.
-> >  > For example, send an event to a user=E2=80=91space agent to trigge=
-r
-> >  > automatic scaling, QPS adjustment, or throttling.
-> >  >=20
->=20>  > Prevent a cgroup from launching a large=E2=80=91scale fork+mallo=
-c attack:
-> >  > BPF checks per=E2=80=91uid or per=E2=80=91cgroup allocation behavi=
-or over the
-> >  > last few seconds during memcg charge.
-> >  >=20
->=20>  AFAIU, these are just very high level ideas rather than anything y=
-ou are
-> >  trying to target with this patch series, right?
-> >=20=20
->=20>  All I can see is that you add a reclaim hook but it is not really =
-clear
-> >  to me how feasible it is to actually implement a real memory reclaim
-> >  strategy this way.
-> >=20=20
->=20>  In prinicipal I am not really opposed but the memory reclaim proce=
-ss is
-> >  rather involved process and I would really like to see there is
-> >  something real to be done without exporting all the MM code to BPF f=
-or
-> >  any practical use. Is there any POC out there?
-> >=20=20
->=20>  Hi Michal,
-> >=20=20
->=20>  I apologize for not delivering a more substantial POC.
-> >=20=20
->=20>  I was hesitant to add extensive eBPF support to memcg
-> >  because I wasn't certain it aligned with the community's
-> >  vision=E2=80=94and such support would require introducing many
-> >  eBPF hooks into memcg.
-> >=20=20
->=20>  I will add more eBPF hook to memcg and provide a more
-> >  meaningful POC in the next version.
-> >=20
->=20Just to make sure we are on the same page. I am not suggesting we nee=
-d
-> more of those hooks. I just want to see how many do we really need in
-> order to have a sensible eBPF driven reclaim policy which seems to be
-> the main usecase you want to puruse, right?
-
-I got your point.
-
-My goal is implement dynamic memory reclamation for memcgs without limits=
-,
-triggered by specific conditions.
-
-For instance, with memcg A and memcg B both unlimited, when memcg A faces
-high PSI pressure, ebpf control memcg B do some memory reclaim work when
-it try charge.
-
-Best,
-Hui
-
-> --=20
->=20Michal Hocko
-> SUSE Labs
->
+Thanks!
+-- 
+Michal Hocko
+SUSE Labs
 
