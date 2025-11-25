@@ -4,156 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6659CFD368
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 11:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99BA2D0E6C7
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 11:54:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CEB96B0088; Tue, 25 Nov 2025 06:35:35 -0500 (EST)
+	id A25D86B002C; Tue, 25 Nov 2025 06:54:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27EC16B008A; Tue, 25 Nov 2025 06:35:35 -0500 (EST)
+	id 9FD106B002D; Tue, 25 Nov 2025 06:54:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146EE6B008C; Tue, 25 Nov 2025 06:35:35 -0500 (EST)
+	id 912D26B0030; Tue, 25 Nov 2025 06:54:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F28166B0088
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 06:35:34 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7347140804
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 11:35:32 +0000 (UTC)
-X-FDA: 84148924104.03.AEE0AF4
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AFA2D10000B
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 11:35:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LfO26gNv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="F/i8315q";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KZLlVqOD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7k2SPKNs;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B8CF6B002C
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 06:54:51 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2A8995B798
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 11:54:51 +0000 (UTC)
+X-FDA: 84148972782.29.7D2350A
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5141F40008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 11:54:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=runbox.com header.s=selector1 header.b="EsKve/ru";
+	dmarc=pass (policy=quarantine) header.from=runbox.com;
+	spf=pass (imf01.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.38 as permitted sender) smtp.mailfrom=david.laight@runbox.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764071689; a=rsa-sha256;
+	cv=none;
+	b=lTgW9M6QjMep0r2KvI81wwHXnJL1UfzH8IAH/MyZm3z5gdHc4FtDvTFVc0ljK72dcsKFTz
+	VZmtMmsUDrJib70Utvv8YNo0VMkupBflcAhpTMVeKH8QA1LDpdFIR27mHlFoiIB0Ek8Pk0
+	sqh3up11VCpcylqODXt21pTX84Vn9Ns=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=runbox.com header.s=selector1 header.b="EsKve/ru";
+	dmarc=pass (policy=quarantine) header.from=runbox.com;
+	spf=pass (imf01.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.38 as permitted sender) smtp.mailfrom=david.laight@runbox.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764070531;
+	s=arc-20220608; t=1764071689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
-	b=i6I488hwe5IrPcFpbQLJ5w5NsoIBuJCbvzo1nD58v0ZXucxVPveC/mfTmVaqwKR9r/x6H8
-	KE+Q3JQ9ZqYYnZPj3t8amIIIjUm7m7h5aWo27GwQr5zJkmOHMYSUohX4Dd0WqeKvxoFaCB
-	1BmEHWYwrA3VEygTtORp6yEYpO10RS4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LfO26gNv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="F/i8315q";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KZLlVqOD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7k2SPKNs;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764070531; a=rsa-sha256;
-	cv=none;
-	b=QOpk4qNyyzSkHNz3lOewhEhAsJDCCTBHIXmoCDMNJ9LkZIaRlXQH0kkf/ZG2gN7rYLnTzy
-	9FZRhWxxsquU0vYzCRAbVdgt/zNnFJPfEDBluhEEgv0PXu86ZVkz7j9CoVtxpDtcaLbgYA
-	JrmnB/DGat173fWGkB9w5khVKgMaRlY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DD5D522809;
-	Tue, 25 Nov 2025 11:35:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764070529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
-	b=LfO26gNvL6i3mOBxxltDOa7Mm8VYGeVURJ/3KZq8KDwKBrG2ZfN+rQH/RaI2Xq6LVHf7AB
-	W+lultHVLM9DVlNhWfH57ujd9eGjL9RA1vK8QnAqLaWNi1eN1pCXLobZHm7wc9uRiRBzYf
-	gHviVPB3Xl4NSeomC/8dAFiG13X59wg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764070529;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
-	b=F/i8315q3n2XsXBKkr5MMX6YasmzsZ3i5KG+4+YC9UpV4zAoZar/3IFE8WIvIb791nmF6k
-	JYqZc95yasQHUGDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764070528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
-	b=KZLlVqODwAsFVuNlLAzLgXP+M5fclnuwVfNHpzlK2jerDk0ZIINfp/sEZRsrFAYJ+if39h
-	Uu3QS1WmbFQ8EYNLs+Vk9ZdEvujDOib/WdPuIoZNAf+zCjAmigdofRkFltvGqW25Rp/8mS
-	lIm39GnDc7lDOQm7F/DtoqxKcdTRqbQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764070528;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
-	b=7k2SPKNseROSvP+kBu7RQTgUWctv/U+y1dfvjtbO+X9wX4AcP8UFci2JYR7NWpAo0zviP0
-	y3vgbbznHHpwxgDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D70063EA63;
-	Tue, 25 Nov 2025 11:35:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yWcWMXyUJWldOwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 25 Nov 2025 11:35:24 +0000
-Date: Tue, 25 Nov 2025 11:35:23 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] mm: introduce VMA flags bitmap type
-Message-ID: <brej2b4dxfyuxojzgu2ge7ybk65t234bjstfzfo63izf2woagm@dd5vwcr3d3dg>
-References: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
- <bab179d7b153ac12f221b7d65caac2759282cfe9.1764064557.git.lorenzo.stoakes@oracle.com>
+	bh=nh1yNsaA292fV48gsHMIHyahU+adY0Wr/dx1SDRWz+0=;
+	b=M4lZwrUZJAKTNVhTtNTXiR2XM/RAkeB/iYZQ+Qa0+fJOQdBZvwzWVXzmIVKG6+QuoJi2s5
+	lHEPCJrT5Y4buLqNDwwGw2+vlsU5zRmOXjcDVHj0NZekR9tsQK4U9AsYu02JAr/HwP6YJ1
+	dK7TfYY5Y2NXmeHNDMgBS+mtic3sgKk=
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vNrd0-006412-Sv; Tue, 25 Nov 2025 12:54:38 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
+	 s=selector1; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
+	bh=nh1yNsaA292fV48gsHMIHyahU+adY0Wr/dx1SDRWz+0=; b=EsKve/ruDXUky0Bwr9Xi1Sg5vp
+	7NtQbfQbv8jtsD9obrDBg+F/qyUUADAC+gcoummm2LjVYk07NWvAosJ0qNxceq/6T+r9w7/IwbD1R
+	0ntJ/uvks7vKhNaWoxjV/HGAiC3R+uQFHH0Uhd+KSlgYGy33sleRXhSgpUMuP4ZeWI44IA/0s0QKk
+	/NuPzCOz9OoQ8/RWcaZSdoJKqlqO+bP10xlt0FX9+WTE4OwahixrhZyy7XIamoaaAbLiyklRLZBo6
+	3FpwZghadJ9jkY1cdf8PTNqTLV0flKUCWz6KsHaMucyoIhuJ1A/h4Y1F4toewDR0c+nmvu+UbUBtQ
+	e3mKoqAg==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vNrcy-0006lj-Dg; Tue, 25 Nov 2025 12:54:36 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vNrcl-00C0XM-Jr; Tue, 25 Nov 2025 12:54:23 +0100
+Date: Tue, 25 Nov 2025 11:54:19 +0000
+From: david laight <david.laight@runbox.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook
+ <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter
+ <cl@linux.com>, Pekka Enberg <penberg@kernel.org>, David Rientjes
+ <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>, "Gustavo A . R . Silva"
+ <gustavoars@kernel.org>, Bill Wendling <morbo@google.com>, Justin Stitt
+ <justinstitt@google.com>, Jann Horn <jannh@google.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Marco Elver <elver@google.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
+ <sashal@kernel.org>, linux-mm@kvack.org, Randy Dunlap
+ <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Vegard Nossum
+ <vegard.nossum@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, Nathan
+ Chancellor <nathan@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>, Jonathan Corbet
+ <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>, Yafang Shao
+ <laoar.shao@gmail.com>, Tony Ambardar <tony.ambardar@gmail.com>, Alexander
+ Lobakin <aleksander.lobakin@intel.com>, Jan Hendrik Farr <kernel@jfarr.cc>,
+ Alexander Potapenko <glider@google.com>, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+ llvm@lists.linux.dev
+Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
+Message-ID: <20251125115419.304dd2a9@pumpkin>
+In-Reply-To: <aSUB1qrfhXp3suGn@casper.infradead.org>
+References: <20251122014258.do.018-kees@kernel.org>
+	<20251122014304.3417954-2-kees@kernel.org>
+	<CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+	<202511241119.C547DEF80@keescook>
+	<aSTKLsRNiEKtDqPI@casper.infradead.org>
+	<202511241317.516BDE7B@keescook>
+	<aSTRsIUPeT5EC5An@casper.infradead.org>
+	<CAHk-=wgn-2ieKtaHAXLLge1UFckLKa88vo3XOdLz+fP+DLpHGA@mail.gmail.com>
+	<aSUB1qrfhXp3suGn@casper.infradead.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bab179d7b153ac12f221b7d65caac2759282cfe9.1764064557.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AFA2D10000B
-X-Stat-Signature: u1bmxfn3q5sckuy14a738gmhpdu5r4dn
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1764070530-125201
-X-HE-Meta: U2FsdGVkX19GHmmo2u1SPmAkdHJC2gaKFngCAj/26MVGeeW9L/FDlgG6RKTGx+a8lL6zmcOd/fhZCyLi/ZzsobITIT+AXcFzjD+2ZTCT0CLEUODkeSPNYsTfa84Goy7YFwrjTyGyAXfrLKFxiPrrp5tWotKmcKK6cU4IbeK9wWEPS1f+u/lJ3S072liWw9IKa0xSZyd/ssDTEkh/qTlgCsBTvNpF+/Wtp5bArXjwRqrNAJ2ZfwEa+4+eqdFWR6LXn4YKaaMgYOmdw+tjtCk8D3xkEw6g9WUTTNl1TX4Ezjgx454ItsasmVCwSlaSWu9JVBFwI1ph4q01PxH4TNNZV0Bw283ordnOfWDHOw47XHVLKcAhj3idocelvoAchFYDB27ULzx02qnWOVLn7gQPdUbWoTJn/jN4PjmfKxFUq596ouDm2IoNsIEyMAGtFPSrQjWDn85uL//X+bC5hw1rztq5p3zFJ/qOpgz49XABgOJmrpl8huRmyUM3FTBKb23d2Czx5zZLGpht7kKADxalrWQ9/C0+ysmNRJf6hAEvnvPlYzy0xpvRM1eKLjZTxv6G2ZZYKjEpWHwnmnKqzovf8tMj14pksguKahqFCvBTmrmsCS+8QJXV1Tg41rqPFYeYnmM9atuBxKcQW+kn9meKKYunf9pF9r4s9b2Vm3DovjEk1GhxWGKlRbdQk6HhVts+9uc4uJLxOe38NUyHIDMFD2ihXBqKZz+NgvjFiVuJF+43kKYDbDCk9PzEL+hj/9nw0KvyXMbdN3hZWM1wX216CWqBObVwAr/Ye5y/yONwJokn/RHIh/Z5N15GRrQTiKqGlCHeqhjO3aLk1BGUSs8T6iypUm2puvs0K6jSxWHFWnbiFWlwk0EYdG0AOl5W/oNRDUy+w2ki8C2lpQXVwfXLkPDMrHpbbjW5UpWjOiZoM7LwNZQnCkua7v7HoyPPTpOVPPHZ1bX9OOkln3PJpbh
- ykFXbw/X
- H3sQaFF0LBwvo47XikC8bIDSprSX323XtvOhUqtnnuv5K5zRZ7bLrHo+jFt9B23SyZ0f/YXQQgmWk4YwHkZgIQvJZwyiRFCRpxYx2pl5nKRN5qWlIr2WyEBgsPF5DYgcGJSO5zDfniAnCB6ZtwNxJIjF+RWzgySKSyc2wY4fyZ0c1imtmRc2d7oskow9NOAJcSeqynvrByB8GvTjyrioPD2LrMniBN8DolXmkMk3Z11mf7/BD6mDoARaIJCGG5R2HoMnP0L8WiQpgHQWY+krh0xN1hUnOAxRWfBnoTQrNB8h9kkFEtFqICttY+llItn6p/aZ3LuyM/600kwGzPg0xax8LaXlcCq/D5PKcTEDPJDcuyQQcBpCzY/9yfLbP/GOV36PYZh/A4rUIHmM=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5141F40008
+X-Stat-Signature: aqqys37udhjs4h3ibfe3zxkwo636nnkr
+X-HE-Tag: 1764071689-113137
+X-HE-Meta: U2FsdGVkX18GqROKopT7RkymJ0EAMq6jWlaEysWfnyRNDx2I+S8Z9afI3mrRTQIROlkgtts77J+IOHwrpovFKa2CM+ypvebQgFyFPkA3BCDt2P91CWdaknTY2ogoGYnXjNvpYOUGuJ0N+iqOtBVjxBBcZjKSD3smVN5RkWqg9+G6AR6eCH2KRPiEf+zv0jjTvYMNlv26uTfo6EathHTKpE/HYnIpg0NnzUBN7ewMJUverVIQqwQ3Nv8m56ysnMSmg+RK2BMr2XA54fMOs+QN9Myv2mmU3YXp1knAlGw3OI1EiPy23XUyn9In9N63kEhjRF+5ZQuSNfAMWtFwU2DUgEhpEF+lxTXWa8keaMl+ajAHM74e8NbkwLr1MS2myF5A67UgriiaED1ww9kmqgZTlnWAvUuLIBG8NsTvLU0BDTDI2QhFxV7rwmjJ9c+PcSE/wqy4rzodMInZdLoq9Xrxm3dgdIfhLbg/KsRmJWo6FBOfMFu0Q/7QnElXpqRPS4bUdALRDbRpxLLMpxkxuicGfwxcW8rWG1t/KtygQXlzsBnW3yeRY38qW1b1usKkWe+MujsNm4XjYgq6rpoK/zD+ScSKGnvnfLNsp2l1GMRNAziTcYIOhIG1zcz98GFnsBaYiuGOh8f33Hfo1rZn99eTh1giMwipHLg/j2m+nw7qOr8tkxT/YXFAyzTot3CuhyQZhSqwSQHEwldjlojBZ66FNUhhYPtshJRp0OlKnbgqsqpigzqMe/uDcVVr8Y2FIPCozG6U/h5MIi/YtflsX0j3HLIYUQ48lYpKxtXLMAymEGgM8R298vQScbQEYf+6ufhh5B++f7j+jjZnZxvjM6ksJi+uFLv0DCuNYNkl2hEnlCAsr351j4bQdDRXgSa6sr4z83oRswJPwtev5ikl24S7flO5PnXeM3KtO/P952fimwSmFQheeFLHcRP120wMs0c2gUfpalmjAFMPhIEoD5i
+ bZd1/Ntx
+ ZCj9N9x94yh3uWGvQTLVqbXljJZD7fNZDSutwl96CFD5zLFD12YX7DimBkAxh//QcdOxWGjrMUb4I6yTMh6vHrwpjVdaa8zHWLRyQkc14pvRKSTgkcinUOHiEqQ78q02Ippf16GDtck4J0xQ4Vo/lHheBvqiiszs/CDacAJ297ofUKG+rC0+KgHPKXIvGAzneXhtRYe6nwSfHgJhmA6VDYvt8A/QW12A28Sr9bIgKJ4yh/uGj+if/gkhFITCG2RjS+AmFSBo1k8ZjgIpFmx+HX/f1DT5w3yLoVI0HjLCGsnaJTHN10NT6VaIxM1eUUMrwr2N+9PmsF0679lz2XvnZ7PLbRLMi9TM/LPecShCEH6Qq43SCvgNoTkdNNOIbQxgCy5SL6PO5TOul9R+K7aBHJ+NwVKuDEfzeRQDSunDTx98WOa5hfUuquHjRHhbfmTOs8iGbQq87UO/jk4afegOQuQapZV1lfXCkL3gNDJrhWGznNwc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,73 +126,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 10:01:02AM +0000, Lorenzo Stoakes wrote:
-> It is useful to transition to using a bitmap for VMA flags so we can avoid
-> running out of flags, especially for 32-bit kernels which are constrained
-> to 32 flags, necessitating some features to be limited to 64-bit kernels
-> only.
-> 
-> By doing so, we remove any constraint on the number of VMA flags moving
-> forwards no matter the platform and can decide in future to extend beyond
-> 64 if required.
-> 
-> We start by declaring an opaque types, vma_flags_t (which resembles
-> mm_struct flags of type mm_flags_t), setting it to precisely the same size
-> as vm_flags_t, and place it in union with vm_flags in the VMA declaration.
-> 
-> We additionally update struct vm_area_desc equivalently placing the new
-> opaque type in union with vm_flags.
-> 
-> This change therefore does not impact the size of struct vm_area_struct or
-> struct vm_area_desc.
-> 
-> In order for the change to be iterative and to avoid impacting performance,
-> we designate VM_xxx declared bitmap flag values as those which must exist
-> in the first system word of the VMA flags bitmap.
-> 
-> We therefore declare vma_flags_clear_all(), vma_flags_overwrite_word(),
-> vma_flags_overwrite_word(), vma_flags_overwrite_word_once(),
-> vma_flags_set_word() and vma_flags_clear_word() in order to allow us to
-> update the existing vm_flags_*() functions to utilise these helpers.
-> 
-> This is a stepping stone towards converting users to the VMA flags bitmap
-> and behaves precisely as before.
-> 
-> By doing this, we can eliminate the existing private vma->__vm_flags field
-> in the vma->vm_flags union and replace it with the newly introduced opaque
-> type vma_flags, which we call flags so we refer to the new bitmap field as
-> vma->flags.
-> 
-> We update vma_flag_[test, set]_atomic() to account for the change also.
-> 
-> We adapt vm_flags_reset_once() to only clear those bits above the first
-> system word providing write-once semantics to the first system word (which
-> it is presumed the caller requires - and in all current use cases this is
-> so).
-> 
-> As we currently only specify that the VMA flags bitmap size is equal to
-> BITS_PER_LONG number of bits, this is a noop, but is defensive in
-> preparation for a future change that increases this.
-> 
-> We additionally update the VMA userland test declarations to implement the
-> same changes there.
-> 
-> Finally, we update the rust code to reference vma->vm_flags on update
-> rather than vma->__vm_flags which has been removed. This is safe for now,
-> albeit it is implicitly performing a const cast.
-> 
-> Once we introduce flag helpers we can improve this more.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+On Tue, 25 Nov 2025 01:09:42 +0000
+Matthew Wilcox <willy@infradead.org> wrote:
 
-FWIW, I'm not a huge fan of this vma_flags vs vm_flags and hope we can
-get rid of this ASAP. But it's a necessary evil for now, anyway.
+> On Mon, Nov 24, 2025 at 03:30:19PM -0800, Linus Torvalds wrote:
+> > That all a very standard thing in assembly programming, which this is
+> > all about. 'entry' is a signed offset from its own address.  
+> 
+> I used to be an assembly programmer ... 28 years ago.  I've mostly put
+> that world out of my mind (and being able to write a 20,000 instruction
+> ARM32 program entirely in assembly is just not that useful an
+> accomplishment to put on my CV).  Anyway, this isn't the point ...
+> 
+> > > The warning is ... not the best phrased, but in terms of divining the
+> > > programmer's intent, I genuinely don't know if this code is supposed
+> > > to zero-extend or sign-extend the s32 to unsigned long.  
+> > 
+> > What?
+> > 
+> > A signed value gets sign-extended when cast to a larger type. That's
+> > how all of this always works. Casting a signed value to 'unsigned
+> > long' will set the high bits in the result.
+> > 
+> > That's pretty much the *definition* of a signed value. It gets
+> > sign-extended when used, and then obviously it becomes a large
+> > unsigned value, but this is how two's complement addition
+> > fundamentally works.  
+> 
+> Yes, agreed.
+> 
+> > So honestly, what's the problem with this code?
+> > 
+> > The warning makes no sense, and is garbage. Are we not allowed to add
+> > signed integers to unsigned 64-bit values now, because that addition
+> > involves that cast of a signed 32-bit entry to an unsigned 64-bit one?
+> > 
+> > There is NO WAY that warning is valid, it's; not *ever* something we
+> > should enable, and the fact that you people are discussing it as such
+> > is just crazy.
+> > 
+> > That code would not be improved at all by adding another cast (to
+> > first cast that s32 to 'long', in order to then add it to 'unsigned
+> > long').
+> > 
+> > Imagine how many other places you add integers to 'unsigned long'.
+> > EVERY SINGLE ONE of those places involves sign-extending the integer
+> > and then doing arithmetic in unsigned.  
+> 
+> I have bad news.  Rust requires it.
+> 
+> fn add(base: u64, off: i32) -> u64 {
+>     base + off
+> }
+> 
+> error[E0308]: mismatched types
+>  --> add.rs:2:12  
+>   |
+> 2 |     base + off
+>   |            ^^^ expected `u64`, found `i32`
+> 
+> error[E0277]: cannot add `i32` to `u64`
+>  --> add.rs:2:10  
+>   |
+> 2 |     base + off
+>   |          ^ no implementation for `u64 + i32`
+>   |
+>   = help: the trait `Add<i32>` is not implemented for `u64`
+>   = help: the following other types implement trait `Add<Rhs>`:
+>             <u64 as Add>
+>             <u64 as Add<&u64>>
+>             <&'a u64 as Add<u64>>
+>             <&u64 as Add<&u64>>
+> 
+> so the Rust language people have clearly decided that this is too
+> complicated for your average programmer to figure out, and you need
+> explicit casts to make it work.
+> 
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Jeepers...
+As I've found looking at min_t() you can't trust kernel programmers
+(never mind 'average' ones) to use the correct cast.
+It wouldn't surprise be if the casts cause more bugs that the automatic
+conversions that C does.
 
--- 
-Pedro
+It wouldn't be as bad if there were separate 'casts' for widening and narrowing.
+You also need the compiler to be doing 'value tracking' rather than just
+looking at the types.
+If I do:
+	int len = read(.....);
+	if (len < 0)
+		return -1;
+	if (len > sizeof (...))
+		...
+then -Wsign-compare complains, but a statically_true(len >= 0) is fine.
+
+	David
+
 
