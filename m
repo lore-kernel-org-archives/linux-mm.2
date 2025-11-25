@@ -4,120 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF5ED0EE0F
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:58:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D235ED0EE14
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:59:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDFEB6B008A; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
+	id 3A5C76B00A9; Tue, 25 Nov 2025 13:59:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB7A06B0092; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
+	id 3560D6B00B0; Tue, 25 Nov 2025 13:59:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA6C86B009B; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
+	id 26C226B00B1; Tue, 25 Nov 2025 13:59:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 960F06B008A
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 669E288F04
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:58:36 +0000 (UTC)
-X-FDA: 84150040632.11.88528C4
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 826F340014
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:58:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NHiEiRYq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 14D236B00A9
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:59:52 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACA13C03B0
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:59:51 +0000 (UTC)
+X-FDA: 84150043782.03.8126666
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DA0A320007
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:59:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="fEuvQ9/8";
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764097114;
+	s=arc-20220608; t=1764097189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1+zeOdZZaF4BJyqy5kMaeSWqNQvCyQPG+omQ/g0Gj7k=;
-	b=PuG6uYc037cubZrujtMNxT4NCUQElv8q8jhxKayvfUvMZDXCL+QAqf2ni3sFTo9nonE19Q
-	CE+YQMSyagYZaUter6hBzEq+DBEoH6OfiXAUJD1soj0E75YBWfjTHrjY+yltSw3hBqci/K
-	sT20oV4IO0Ioci062DjaoaMRGVDpGto=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NHiEiRYq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764097114; a=rsa-sha256;
+	bh=/oI7QpqsgaAXNs5fSsmWrP7RbB0gr/S8a3fF7phT8EA=;
+	b=bQCgP3lP+FnITnMyXRv6w8l4n3zN2jnLF+ds1bAXXOX7JOH7Ua0hVzxUeevy7EdJ46p59g
+	2UimqXB8i7QEqgvCn+PU6V57K10W7nqip1sWBMYTAiaPUfWkp6ZfvBLLXqARGRejRUYnj6
+	6iLERfbLLOtQsGv2Vlfx1JszB9Gio1w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764097189; a=rsa-sha256;
 	cv=none;
-	b=ZIUyxo7aF4Wnt0fb8phuw358n+u4nrjPwvfuEEjtwdvsrH/EIO6uFItUjqfm0rsMsNV80Z
-	VeuitWfIoygsOoBHPg6csxP8VhPPlyyqckZ4D9WPkiUmYNcrgbpO+uoJz82qQ2SMi9KAcq
-	W8orD6gEuGLtjgETYuOGPjYCnfypnec=
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-787df0d729dso58687047b3.3
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:58:34 -0800 (PST)
+	b=ta75tQ11uRtaDVbdxhE3jE/HsSgBEhbfErGL+fHUbMmLp5dyhpAwvpXk2PhdabRhClV/VP
+	DE3VwWkWFFwuZJ63m6S8490oodGlcIQaVx+yoIxkqp6f4IOtbrF1sHFOPNn0cVqlfYj4Ll
+	+O5pzVwWSxMw56Q+hFwNvHh9IbgizA0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="fEuvQ9/8";
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-787e35ab178so56515117b3.2
+        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:59:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764097113; x=1764701913; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764097189; x=1764701989; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1+zeOdZZaF4BJyqy5kMaeSWqNQvCyQPG+omQ/g0Gj7k=;
-        b=NHiEiRYqTrFt3lDztOhHteg5tIkrTmDKSNzAkIvHbA0YWWYXC+ezZXPAefA1agBGyj
-         qZ+xLjIr7xYXH12VgjzqJs7IawfDssT2aEM7vTMGMox50nftOcSGBPMvo3qaF5dYHTGw
-         9qWrLlLSkk/XmNPsA5X8Zx86hy40MY+5ktEKW4VvHb2YLbmVwdyMzgkWcY4XOho+ZLM9
-         mVM5tPJMRmZlFgooYQIupLd4VanntEPEQiiNipjpQm1dppfqNZyDrqUQer8cjttA09DD
-         vuCPVvW08a2MLTktspOrXEmF5GnzBRe9KiwJp7pGBpHTlzMHh+NnbQ9okOa/7xLpeKFl
-         mdRA==
+        bh=/oI7QpqsgaAXNs5fSsmWrP7RbB0gr/S8a3fF7phT8EA=;
+        b=fEuvQ9/8ZU9QCjZW2BhYH5nDaYYET7uaqkmY0jVJn0ygyu5VpRHbNKLqPFdDT6acrF
+         VjaN5Osd/BXL1AQBdNzCPZMPCyMFddUXSdPFS7rkNhOE3qDoQL3Ip1glf/NRNMfSIg2/
+         3OeDQR8d2LAQrV/BkXVADtLHsAEvm7dKXpRMXa157sAxgNz65wDQj548zMwEuWtb5oix
+         Z/CXHSU3BSZ6n3ys3SWc4tPRUYM1UOXFIgd6qGml/Y9y3+qAb228tLTaD5Rc0frdEJE4
+         fOsP/ch9IGr0Fp2Znx5cUtFcaP/13GCYiJbwPJuCpxqsym7LCwcDL/L5PyRbR62GwyXS
+         WGCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764097113; x=1764701913;
+        d=1e100.net; s=20230601; t=1764097189; x=1764701989;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1+zeOdZZaF4BJyqy5kMaeSWqNQvCyQPG+omQ/g0Gj7k=;
-        b=V3T0Fp7ZOqjqdTXt8C6MEBowf0DLRQLudse/3GeutKQazzn4FbuidMelnEONIYeOih
-         sT9PnMA5FzTrMT+cMY/P1TmQ4v4VK/EiP/MHWROjjmdurs2e+WdvpGyB1wtfnUSlf2SC
-         HtA82m9vVHe+zE18NA4O/K7HeZUtpC+BkWvRPsEJF00Rauq4KrAwwXd0GxDupq4x0h8c
-         ClHVYVOeqxvVUpeS4QDvRQUViGPMKZK8X5E+RrhEscvPcsp1T+mJHFXNdxLWkHrBgxP5
-         VPehuhcSUYI+43uFXQRU3Z6YP23lgVZuE12JXRJNVtC4HrSva7say2lAPwkLAEQYEH6D
-         oh7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXceKkHXMZFzHY/3Ww+HnVRgADVfRSqQUBAoAmhM1/tBGPrEe9dWIVFHkpga5buUFpY8JDW3wG9aQ==@kvack.org
-X-Gm-Message-State: AOJu0YwElAe/VgrDX8TR0UPYHHSVILvzdMF5Punhg89OAiiGpDVg5T8X
-	DvP3XkQBTagrGYMY6scDj8vG/cPOcgaDgq0OPWr9X+QgFdjALY4m9rzo
-X-Gm-Gg: ASbGncs9KaChdUjU/w3egFxwwEdq7PSxnu+U3erEGrFn2vFvb+DX5dIk6EvT7KYKVwd
-	Lbq57dtj8IxTVlWkCXBWmqpefP97GJX7tpXRJhb4/MNFjGQJ7hDqm5zLe6PzkBVgAARReCArSB3
-	pJua/BjYpzI2ogKxWw/sNstbILyZV2DSquc2k5gum6pAhHlOUEwa16f+zwegFn44dEthHL6iI86
-	fXW5FizTHQjTvILZFRuLnK2S+iNxdUjvlvkRrm+/3x08LmMGatWrXaBdUeqZfteQdjWH7P9hu+i
-	JmlLh7D1IbGqY3UwdAGrU8VjJKph4/MvljgfuyO8y7E9QDcm5mbnwCV62kHXp7G1PRKvNKIaCV/
-	+ETjG7cqWQfrHdw5QYSZwWgO4aTfrhdV1eYUmZ2pg6mf/oS42/PhZ9LyMXN4FngH0/3HNb2X0Pq
-	9+fQE3z4Q=
-X-Google-Smtp-Source: AGHT+IEd3fC2WDscBWmJaJ6t/VrtBvr4q279/8luMzo4kTWQtijZrJPqNt4WkAAB0deXmKVtpnwI3g==
-X-Received: by 2002:a05:690c:45c4:b0:788:17d2:be64 with SMTP id 00721157ae682-78a8b491d25mr140972287b3.26.1764097113523;
-        Tue, 25 Nov 2025 10:58:33 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:72::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a9a39101fsm35977827b3.43.2025.11.25.10.58.32
+        bh=/oI7QpqsgaAXNs5fSsmWrP7RbB0gr/S8a3fF7phT8EA=;
+        b=kEE2pbCHdGNruz2PUaBOiDSXvAZT+/1Nz2aQi5agfwotZ7BNfc/OrH9pkRZ8+whWy/
+         6VW5qXoikvHxnGyvMfxFw3DNrUmUcEFdjawdzxPg28Z9e77HJ5Hh9RJ0rLRLCvxHLfNe
+         O7YnULtZLvCAPfbxWjb9+B9jQd/lih5n2HZFE5Gv292rAXKTteO50g4Ll1Egz9SYDIZo
+         7KEU40p2OvAALeZzjmHANfUcow/07Mlr7Z8JzbMMVNVILkPog62WWdTte4U9hOGcgZq/
+         cspEBky644QIeDFoLTk9XGQM3zQQl59eDBI2CG4KsFtl9v+X8qyqbkxSZ/ifRhwc5/76
+         CotQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVh5BaonuNem+AtbaCjABY0MRSMzlOn7qWkVJax+J5rqM1X71lcRyLYdW/CErmJpR0B9ww/WWHMPQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw9LYHRmqLyuofukX/rrm64J3G7zXbxHojD/tQmVpbRpPq882kX
+	DthVEm4bFb+RxbXDuqAsoLdRmCKgyO52GgXzxCu3p62dUNTIIg244+P0
+X-Gm-Gg: ASbGnctrk8D/gF4Z0UTZpMrC2XF3F8IbLmUYT79m4yBhmZaRFfIlNgycdoHZyj6Jvzz
+	pEaoJmCFXOcKwaCLVRHXxZxkqLwD07gEd9uXB286QqaNh3jJ2twV0skbRyxNR/jzYgG05amd/e2
+	lMmKsBwmTk8uL8A3FNvPA3+NG07aRA0dRSvsZ5jb7Wag3vTvRnSOdYiQyETHLfInmjAvTgFXcz8
+	8kUpxv6zzpt2+Sjg4MxaETnuZrDdKtRnn4nScX87UpSf2Fs3kW/cRGO02P0RUYoBvY8nzr1SPh1
+	wJd08bBu20rFYGTXExpOPwxIwLjEcX3G91OhbOYE51Hf5jTvJiscZpVE/qMAimi4bTnLmW/ajuf
+	T4NbFruz+UlvxO+6kODxFH2fqcQaWJxn6zHJ9+f42UH/iEdmeH5+HjlOyrN8BmBR16XvMWNW80W
+	pp69UH8dZ75GiNNHDLA42D
+X-Google-Smtp-Source: AGHT+IHGLpobFCCVSZKqPY04RjJR07WAsM7OXs7pd/4CTGsptjrFAqFqJFCLIqBED/AluToEt9wC6w==
+X-Received: by 2002:a05:690c:9c08:b0:787:ab13:eedd with SMTP id 00721157ae682-78a8b528950mr139917977b3.40.1764097188861;
+        Tue, 25 Nov 2025 10:59:48 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:7::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a79925c85sm58762887b3.37.2025.11.25.10.59.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 10:58:33 -0800 (PST)
+        Tue, 25 Nov 2025 10:59:48 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Mike Rapoport <rppt@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
 Subject: Re: [PATCH v2 2/2] mm/mm_init: decouple page checking and init_on_{alloc, free}
-Date: Tue, 25 Nov 2025 10:58:18 -0800
-Message-ID: <20251125185818.1586946-1-joshua.hahnjy@gmail.com>
+Date: Tue, 25 Nov 2025 10:59:46 -0800
+Message-ID: <20251125185947.1593647-1-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <5d0c582f-7e1a-4623-90d9-1dd6db443473@suse.cz>
+In-Reply-To: <20251125011808.74845-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 826F340014
-X-Rspamd-Server: rspam11
-X-Stat-Signature: po3qi9hatwgznrsdeo8tskwunzbbbtbx
-X-HE-Tag: 1764097114-813108
-X-HE-Meta: U2FsdGVkX1/Rp01lb+hodmJ98AJih21wI/T70F+IEwMcGC2Gr8wB/xJG4LbQz1tGTkn4ioMabl7uj2GtW+Dnlf+rthISvuOjHCLLB/YXL/TpZhFwbbWBBXQyCxb2vAXPol3RBhtm6nSfJ1hDpEtGoFeU4UxEXstXxOohPyLx7DbWVNPwxyG6DAzs7ZXxtLGeup4uFiR01uSxCE6rwcTX2jLbZ3yNHMUPXGquOOWQMgL2c+6ef97l+Qz1Q7NbzsBmrC3KRjjQdY1/oROy19m+rji900fy20/n7S1WfcU0yz1l0EYOsMT/XL5VYOhnJaReIofto83F6etjCqDg1xqqotVj6fOpDZuFtN7U4pWj0XjZKeJNRMYOZuSxIEmWx0QdQzNr7olUaqrbGNjAMIiFOfxEmRJ+lWv8nUG+q8WBCIoFqcKI473ntMhGiTo8GaOhFYsC9AJVVn8xQbANQZIcsJ2R/R+AyQMkyJdaNbfN38DmwngZCbh4TJ6qgVFDAb/h3UuxSf/pbmOnPjhRmrSl8KZEbE8zF1JXL9dSatQzpGl6yS4TYt7NDwcy2bOn0WiO9hwHpWlGCxpyB02zRaW5N0hYCXs+hujhFmy1+Yw2g4DY/6+hK48yLChDk51mEBYs/E5OXKtesITbbgj+VY9Fu3y93eECuCQxDtf6UUDTPbxF9wOdYOpy1KjdtRj+6bF4uY8zb/O7PshgemEc9r4125oCcMt4cMYuizjc57LHZhmVs5z5sEbuBinJzsmPcUzMzoL7Ci/ObjIjn3quvtBUj6rEFcrpu0ErJXtEflS1gv5WTZ9QkPPO2M2VZWLhmqg1mt+XUuWv9/87VHnaJil9hSA7aedpzGvn5Ethdt+095Whr/As26VTwFFGiU8DV9gh4SCVJjDLacwzP2I8LJHo+3kpiy8GZXE1FMCiDII2HULT9DuLfk1BBnOEclW6cKPGec5YkDpYNOqF3+v3R4j
- QE/rzLj9
- sSE6AAfHTlsJ+v4tFexxpvtV1eIDdpp2GTVWUz6gqMUa3VxlHBRZu9bkVTUsqITK9j1Kf9dQhW6JFjCd/tJXAZom2r1QQ9I5XQkhjYUMvg2nJoJ/akxFLMb9p2f6SzV8QvMmlmzZ9SOF4aM2P9BX/FF1ACddeGR80J5kKJR8rEMN9d4hKTKRMnSzwfmUDtN7cr0zRWSeG9K4oFibJSqBfN0G4ErHUvhiiKN3FdwuuHomMlsrJRhjo7UefOnCJuJ2R0yCl8IPf7Yp8cGKZYylJtsXdIgERnP5uK8wK9gjxxWo/Jt7//anTINPYB/CjoOshbWwgbSE2yDM2Ow3/w2DCuSCiivHIWwSQg9f218OEHtzj1FXVCNkgfL6vP//j2K4wJcMX3rlcXhHqJUoWENcbtFf5BACc6MnhT0qJdlKdHtrPQWnhQx/aDY/TVTCqMwOwFPSVwcez3NcHDyD4r+vuF+wHHGbO5/1709JJs3uQoWxvV5e5wtST5wcAijkXnxqQTPdbrseqF2OLe/9sOMh5YDK+De3rk8mMSuql5M3UeL45WYahx2VX9gSriWib21+5SnE1p491h6MUQrNbBk9w2+80aGCr+m7ZCdYl
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DA0A320007
+X-Stat-Signature: inzd8kpq185mrjredt5qtpxoabq8f6bq
+X-HE-Tag: 1764097189-862410
+X-HE-Meta: U2FsdGVkX18XOBJo3+9mex2L4S7kZLZoBp4Dkd+mbPt9matTqGVTX/Q4s9S+AW0Kal3sMTgxhF8LMU0u6iW0g8paK7aF+ueo2lUDZfAneX4WVMRUSHU4oHuRfiOHb3xY2Pt5pVE8Uyqgtrp+UA+gAiapCDpoDwZQFk14q8MU4kV38lpiKFZv/qL7jMcpkyMStztxiY74ViwN96Tb5vMdeMe4AquXcokl3U3Kd6qogiZujKLA1mhGlwBoqBU8Xxv3Yu3dKbx1V2/WMb8INyiGM3BS4R+9sairc44ls8+52X7ZA025EoT4ESH6UtgedpOPmED5IkBqltklaVrwrHU22kslW9KV9bAjMH+ae6f2hKVHpfLmReoozt02b6OU82Lii0dgyrKC3uNx8DRRL5KJmp2yG0g24E2dLzXRyutF3jcssAuKl0iHdSvUWSs59XvS6C40DZdmFrSRHa2Stik0QvJVeHwzL60GC8xzdOMpo0xgVOAiFf0kKp2A/AkDvtIKRcNdIhkZofckuzbt48Xt4Bd5CoYtDOraW8Xce1K1QkKUDjX3nYlIMBgFUhNYw/fQmKFx9QfMfJdP4xiPFi5QtufLfXPpjcbLR7GP9Qc9QMAYrCmUpSyAPJPr7JZGA25G61JUxy3eZSPd+mtnrCqA2Rc1JoH2jSUgvr5c0kfk/XG+OcgbljoYUS+BZ8trjMrs60f/TB4HYeWYopuYHkaDlBswfSDUCRwnysOfkM+rp3welXv0vBuaoXpzg/gRQJAoLaQEolHiszq06UsQv9ml6b/2LvJPhUmqp7vveTAbKLMNz/LAb3B4RKdfPbuPlJRwH4o76ABqqucaCXYAnposogxNiAD3v0YDPcMYVAzudrv4fuUipZuBeEvFulnWo9eYg19d0N1/TISw7q/TA45Z9hjJWl8K/btwfF1RG0nQlGmShKOrsYNQxdFegYzhwtQFOJj6utA5G9njvcbVyap
+ WtlsCY1v
+ Tp5ak3cKId4rTzatpOX9ny+2Sbeii5g9hoA7Ff5ImlabQx+0G1KXl1uLgpo6sof4ETpPffvisInqxfntVSWOCo/y183Dg52k2MzM1sMtbqPMYnLBODLyWs0G4xWiZYVDikPM9GbVSQFKNjO4PImP/1LrOE//7iITi3N2hATPAtidtUsA/JRP9+NEyyJbdPoXb198V7lM5RCJt9KEG3whq0dLUsRUGv9Aztye4bmDddSNGduBvJ3gly3aQDCOJ2RMtOwVO9PRQxh+2PkTTBpEZna0eJ8ybJrNEMcZlue6o/b3sxzAGrPHEXQDo0Pxq+GXZkEwlAGBMFvBBG2c57lVPDA5irUjledVzFU9mIqaWIZDghZFM2heVQLHMS7F8Tj0Z6HkRDPE0OmLv+2xZocf17rzm+YnbC/jo2zxDdCl3W479iFy11L5G7Xy3K14iCop8Hc4RsunC0lY07by0utuCk2Pj9TCsYt1KQTnV2Pl3MEegNa2zoblFxoQ1fIVyAGYefPoryDIaCZQyElFYynDfEJ4SNj1/Dw2maXk0ynygb7y/yTuSC3ZhjY+ablVA7ltol7Ue
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,56 +123,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Nov 2025 19:06:53 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
+On Mon, 24 Nov 2025 17:18:07 -0800 SeongJae Park <sj@kernel.org> wrote:
 
-> On 11/25/25 09:45, Michal Hocko wrote:
-> > On Mon 24-11-25 14:54:07, Joshua Hahn wrote:
-> >> init_on_alloc and init_on_free protect the kernel by initializing
-> >> allocated and freed pages to 0 on allocation time / deletion.
-> >> Commit 700d2e9a36b93601270c1e15550acde2521386c5 ("mm, page_alloc: reduce
-> >> page alloc/free sanity checks") removed page checking from hot pcp
-> >> drain and refill paths, and instead coupled it with CONFIG_DEBUG_VM,
-> >> debug_pagealloc, page poisoning, and init_on_{alloc, free}.
-> >> 
-> >> As the commit suggests, the first three turn the kernel into a debug
-> >> kernel, while the last hardens the kernel against leaking sensitive memory.
-> >> While enabling page checking is relatively low-cost and tying it
-> >> together with page initialization is not unreasonable, it does feel like
-> >> a bit of a side-effect, rather than an obvious consequence.
-> >> 
-> >> With page checking now pulled out as a boot time parameter that can be
-> >> set independently, let's decouple page checking and init_on_alloc and
-> >> init_on_free.
-> >> 
-> >> As a direct side effect, systems that have init_on_alloc or init_on_free
-> >> will no longer have page checking enabled by default; they will either
-> >> have to pass the check_pages boot parameter, build the kernel with
-> >> CONFIG_DEBUG_VM, or enable debug_pagealloc / page poisoning.
-> > 
-> > How come this will not break existing users? What is an actual upside to
-> > get for the risk involved?
+> On Mon, 24 Nov 2025 14:54:07 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> 
+> > init_on_alloc and init_on_free protect the kernel by initializing
+> > allocated and freed pages to 0 on allocation time / deletion.
+> > Commit 700d2e9a36b93601270c1e15550acde2521386c5 ("mm, page_alloc: reduce
+ 
+Hello SJ, thank you for your review on both of these patches!!
 
-Hello Michal, Vlastimil
+> I think 12 digits for commit hash id is enough.
 
-> +Cc hardening people for input if they are fine with the decoupling and if
-> docs for hardening recommendations or something similar needs updating
+Sounds good, I'll shrink the hash id in the next version ; -)
 
-Thank you!
+[...snip...]
 
-> The upside is mainly reducing the side effects i.e. being more explicit than
-> implicit. In practice I'd however assume people running init_on_alloc/free
-> and paying the cost also want to do page flags checking anyway. The more
-> important patch here is 1/2.
+> Acked-by: SeongJae Park <sj@kernel.org>
 
-I agree with all of this. Maybe an alternate approach is not to decouple
-the flags, but to make their relationship more explicit in Documentation.
-Currently, userspace doesn't have much visibility into this relationship, so
-an additional line in Documentation/admin-guide/kernel-parameters could
-achieve the same desired outcome.
-
-I'll also let the hardning folks comment on this before sending out v3 in case
-they have additional requests or ideas for this.
-
-Thank you all for your review!
+Thanks again, I hope you have a great day!
 Joshua
+
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
