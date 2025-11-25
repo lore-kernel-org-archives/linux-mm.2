@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 136F3CFD364
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 04:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B2A4CFD36C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 04:27:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B54B6B0026; Mon, 24 Nov 2025 23:26:30 -0500 (EST)
+	id 48AE86B0028; Mon, 24 Nov 2025 23:27:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 264EB6B0027; Mon, 24 Nov 2025 23:26:30 -0500 (EST)
+	id 440B56B002A; Mon, 24 Nov 2025 23:27:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17B816B0028; Mon, 24 Nov 2025 23:26:30 -0500 (EST)
+	id 32A386B002B; Mon, 24 Nov 2025 23:27:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0381B6B0026
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 23:26:30 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 688F2B8E1A
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:26:27 +0000 (UTC)
-X-FDA: 84147842814.06.0936ABE
-Received: from out28-2.mail.aliyun.com (out28-2.mail.aliyun.com [115.124.28.2])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 888B218000C
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:26:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=antgroup.com header.s=default header.b=sdiCiImf;
-	spf=pass (imf24.hostedemail.com: domain of junchuan.tzh@antgroup.com designates 115.124.28.2 as permitted sender) smtp.mailfrom=junchuan.tzh@antgroup.com;
-	dmarc=pass (policy=quarantine) header.from=antgroup.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F0BA6B0028
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 23:27:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C1BA01A04BD
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:27:26 +0000 (UTC)
+X-FDA: 84147845292.16.FC58EA7
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8D4C640002
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:27:24 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pDROx3U+;
+	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764044785;
+	s=arc-20220608; t=1764044845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6HHebMJqUXHsz+vWYUyAkO0gwd19IOceRKxNgMJRA9E=;
-	b=L++vAk3vw6A9I7F1fij/2c3MwHM4o3/56z6KQwocZQFgWREIJ3LSI4j4DFJh+19Wx3JrMP
-	xUwyMi0kCEkymbaGU0PlgVtriu44O64oS25VUAuQWAh8ocZockYFEc1iZUtZIbfmnDwLtv
-	quclZU3ENTusg4/lwjUpYDWYGpxyNJQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=antgroup.com header.s=default header.b=sdiCiImf;
-	spf=pass (imf24.hostedemail.com: domain of junchuan.tzh@antgroup.com designates 115.124.28.2 as permitted sender) smtp.mailfrom=junchuan.tzh@antgroup.com;
-	dmarc=pass (policy=quarantine) header.from=antgroup.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764044785; a=rsa-sha256;
+	bh=nETtmOazMk8q5bK36CAyeBJ2Wh5i5mbm/naGgQItvz4=;
+	b=zVc9FOtKGlrmXKqfYl4Utxi5dXMA1+BzNYcwRa8grn+DsHoRGo5nTtXneizXDzC4/llboK
+	D+bLJH0iRFXJzuqwTx3pyT4wlJxQSYdWAOTXzWzk9b3RUTBB7wWBjy2J+VQKNuQjA5l3aY
+	O6oibVodUVSf027GeQUAqRJCs3GVZWA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764044845; a=rsa-sha256;
 	cv=none;
-	b=X89LIXjU9qpZOeEFH9VKyQt2CBBGgJwAbE/ylXOiitQadd5UXcpDMR0D3ZVOeRh66R2vwk
-	2hndrx2Vvb1YZmMxxWXfKguLlvp9BgVwjT8oTecpQbzNjDJNByZWv2vyWHs8fw5mqP08T6
-	wsLJdJtQmZ9ymONhCouOVTbKvTs9W9k=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1764044781; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=6HHebMJqUXHsz+vWYUyAkO0gwd19IOceRKxNgMJRA9E=;
-	b=sdiCiImfGh9iGdr9qb9VGs6mVTBBIvLOv06UVdIyrkh9Ta3n03DvXQlgRMX25YvGi/EWt5rCXIeGoL0VJwk7Wr+39Ug6CksqwiM6TPYZje3qIkymZVRSD0wql+68NvUAH3NR9Wcs6PhQZT6JWvuIYlg7r8aeNw7D243TkoC+USo=
-Received: from i85a15111.eu95sqa(mailfrom:junchuan.tzh@antgroup.com fp:SMTPD_---.fVFjKd6_1764044779 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 25 Nov 2025 12:26:21 +0800
-Date: Tue, 25 Nov 2025 12:26:19 +0800
-From: Zhiheng Tao <junchuan.tzh@antgroup.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, shy828301@gmail.com, zokeefe@google.com,
-	peterx@redhat.com, akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: Re: [PATCH] mm/khugepaged: Fix skipping of alloc sleep after second
- failure
-Message-ID: <20251125042619.GA119062@i85a15111.eu95sqa>
-References: <1763965157-58413-1-git-send-email-junchuan.tzh@antgroup.com>
- <dfe192a8-4a88-407a-83c2-976d953a2227@kernel.org>
- <0f292735-4b13-417f-bc65-82cebd2040a3@linux.dev>
+	b=iD8lsoYUVJ2XwwJUaqrAYg0uLiPCksfUejVfN9HAtoJgIkvIveVGGJDFLUAAr0un3bDlBU
+	/0ujRoYH4XvTRuNgJVCPT2hJoCR6OIMX8sXH8lABLbYqIvLe5rae7tEToZQDXt7RKLDr03
+	WEis4RPlKuVbBLJ/GYmWKFsqAXfSem8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pDROx3U+;
+	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=nETtmOazMk8q5bK36CAyeBJ2Wh5i5mbm/naGgQItvz4=; b=pDROx3U+76x7CWF1RqpD+nR/db
+	jDnWA/BImv3oPDRAfy4FBEaMhBOPZVNcdyGc7EQZmH1Dau8kKwWoH07vCbcAcuTx2xi13Gxux97T1
+	xa6RYHt8qxjZE4JG+erltQa5Yy7GR+ocLM7Qe6a0pxi+C2kV/bvC31kB8A7xQ8ZKRj5RcQvLtQb9j
+	ku5RLGYhm/Gq9GDY9YnqFOz2OoHFNz1jXw0/A4CBVj2YqVgdQSHKNR2nqnkV5IMS/9nI1Rs+pdrOs
+	Wm/jFmQbLPtd+VECwIOKxGm2Jx1aBIMZJjrPatP870489XnkAo3we/+D7RbB1Q+SQwGXI/EO4fb8J
+	5MXzK6BA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vNke8-000000080je-34Bu;
+	Tue, 25 Nov 2025 04:27:20 +0000
+Date: Tue, 25 Nov 2025 04:27:20 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: syzbot <syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com, shakeel.butt@linux.dev,
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+Subject: Re: [syzbot] [mm?] WARNING: refcount bug in __vma_enter_locked
+Message-ID: <aSUwKBP97nd4kpjP@casper.infradead.org>
+References: <69252076.a70a0220.d98e3.009b.GAE@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0f292735-4b13-417f-bc65-82cebd2040a3@linux.dev>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 888B218000C
-X-Stat-Signature: tex7q5zrgs3n6386xwh958aqophzypza
+In-Reply-To: <69252076.a70a0220.d98e3.009b.GAE@google.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764044784-457885
-X-HE-Meta: U2FsdGVkX1/XRZjoH+csZzOLPAPPhvdTvwQvSNMVfygAVaTPOJb5j2+qSu/orKRtZaFIe0qLzsWYa1lGq727CFAzkqj2qvUP+UcfkRfgCX+DLk1Pp+xUd1+TLKC//1s8f1B/See3pbiK4lhVi5STPlGwWBVEfYL7K6rheNZypngD3FzzTwE531hl4/FGFnzzQRS0HR8mqoYV/uhZP2JilF+iVn4qqF8BebvOSOYQ6r7RCE2BgVkwTqCNbFmnseP+FeUCDfgBbal17440reFoBhNBZMYkn1+DZJ+F22drMzgiu3uSbNV7Iwzb1JNrFglK3dnedYlHTcfEEypi2Sv0djxxRea/74Bn7H+6xEK0254EWwJQfBAqaokO71GHDujZRvHZyW599LqvzyKtmfYiIAHjGOHwFIPI48gXOSePi16ie0kYf38lVtVfHyqSq4u0PlQPhv6VytK6A0+1UCd2Tuw37jlJrHtdt2kRrt3vxlKBm76LpEZSsjw7wd1r/PBk6SrJIUZS7OFV31WGhxN1PQJAY/6cOmKat0SIE9JtElTk8KltCU6XueKqJmVLA8wNbAExd1t75M4rGoQWxd/J/Yx5m1PaMmal80GqAN8qQbEcMcZb1eGwPRjkFl41WFFIQG0a9Qkn2OKYS9TJfITx/WW5/GLDrwtt5KNwTtQK6o5h6KtWLn8Nsj0543aCNInx+wa9ojhRC1jEDKi2rgMNuzSDf/l7A72z1y94tgDPTxAfo9uxMpbbfoy/gsupE0xhTb/6H0cMrvzOhC2BCiLkZNVlaJLlVxH7sLmFTSRDKFfhVxOneYeIO84Lg49DBcdGzmzjkX5gdeZnYBbmeQgt81o5hySNQP+4ra6+zlSw7LdWeCY0NqFvMZG5r0R/cz4AhUT/12c1TGHu85wluzV4v8oZ9s8Ihsg6+sSKcn4BfTH1Pig70/5oLYEOEnCDABxj3YRhnlNneksv4GELTaO
- Q0OGdfYb
- l3sichfTh9Y8Dmc9a0DQOKdmgFrtfIIVo9SqjKllWsMy5uF4667X6CSW9fOiDr1NpuioRql1tLWVFc1j+xlPrQQP5sc82Od/PqTn78O8KS+SnQ4HnfdYVbZFZ0/pTGai8WkFiBEFvtP3bX+dsJR08pVYM4yDMR/wTy7cmAq5ReJIi3FI1oV85yjqon4h7M9S+fxM3f4bW0+E9hsoKvcYVQD36wMfjCkkPbEHcjz1FJTotFBQnXea5dTxmZrc7YfR7RBcv
+X-Rspamd-Queue-Id: 8D4C640002
+X-Stat-Signature: dwnsaah8bo5yko9nhkekpwsrt3s71oyp
+X-HE-Tag: 1764044844-337320
+X-HE-Meta: U2FsdGVkX19RYsPtWWVZ2cV6154R2iv0JLZ1aS82nLoxb9+b7A+9AEb3NkvPSGcMu9lmYOI1OUujbDkYSi/0gMqyVoTdGC2exsO6DoGWX/iCJMwlE6vm8DFa4rPZYGck7vYKr9QeocN3pxk+FsV7qr20QBszEFyM4vlO97Vn9vGHBYmcXxr6rs3uSbfKQMM6gnPyxiZrauzBrNDYPnHNTg6Xzq3b7m99xdg8XeSPzXs3hQKGC4sWVnJ2x11oxVZusOcCcqkgGR7yrT6UrUnIw29lEMIBzikKj4IzOzFoXZSAODYc1vZYWPuV6arRSzkpu39c09Dw4usRMl5IQNnRKZ4MHV8oq7USG2O1p9sUHRhxBFZKP8TYrOqq7WU2JCmAEz11FBy7vGCE760ZcUtwaOf+nuMEMEGQerDqXWn9Mbi6weq9ssRF9WjTxed/ZSvDuTxxv1/W1gtzgpIEVczDMEG9WWZndw8QMC3mm5aMNezZ4478fqksn3zShL4cqDvlHIGYO8kLckmeQeBFKDRwhF6yaqF3+LfrhjJPC3TwRC5b5puGMbtopCVQaA5Vk5p9a2X6N8/9am8KLr2BR5TbQQF+4IO4iklP18sVvqP8bXzcm+kakT0cEdDcQgkqpxwWTbBaR6EBEfs2d75hW0sSG7blyZv/qzke1TKuDYmiZZDQe4S9O4cr7PNJsl1M99dPWSCrbUY9JhDrV12vrNrnqLeuS+csKDQXqCVtrlkbIPGDDUppLmYwWsXcW88qMaCp7GnbMt8JDHkTk2gVY/qhS/ec1QVUo0SMjfIufoCZudWVlAx/rWPVP8xHI3V+p8V0YbceDZflwywJfafZo8DoRnL+O3RoV/kIvTHVQ78dS5mpMzHjSqDAfTCufYyGEZ18oyplPHlllT9SIgC1vtNnCaIxfm2ZiPMkJ51/INE1l/3566UnPlT4HeBhjKrLgAQEyKjie2APN+JlfGU9Xkh
+ 4wVp/clQ
+ qAoMuzwjAt/5FKcLkaSMud2UBcrOE/Na1wsu7VdSryGhJbZTPMtSM07PeVpAjlSOIJken3LtsKbadeUSKLo0o9pMxKgfF1cwQbKxXgS2JKknenyJc1KqcI7/0yN464q0VYEoBsguLWh9ReALIl3H9NmKuuyV9WZP6BXG9qjHGhr8zRQr2Bg4nPLR1kgaWf9stLkrmVaCq4mX6Ho7ZRRnv+KnHlT0GkraAhWN41TErBgBkfujLwSJvRbvTDUrUmPTTyiZ8O0clTYY8wf91OcrPboDRoLymLAQAiPWvZ1r00ptVbXYNTaGHctwQ95sXsR9uca5snX2I5w2Dpd6k7rK0YnUCiVLh/+IHb3saEYaoTu8Zu2l5+e96HATeQfOy4Degry0hDtLG/KOQWzuypgctZsfLENE0OMP+CfHIUgRCugXUYs7WKklyZITkBw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,43 +91,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 05:27:23PM +0800, Lance Yang wrote:
-> 
-> 
-> On 2025/11/24 17:14, David Hildenbrand (Red Hat) wrote:
-> >On 11/24/25 07:19, Zhiheng Tao wrote:
-> >>In khugepaged_do_scan(), two consecutive allocation failures cause
-> >>the logic to skip the dedicated 60s throttling sleep
-> >>(khugepaged_alloc_sleep_millisecs), forcing a fallback to the
-> >>shorter 10s scanning interval via the outer loop
-> >>
-> >>Since fragmentation is unlikely to resolve in 10s, this results in
-> >>wasted CPU cycles on immediate retries.
-> >
-> >Why shouldn't memory comapction be able to compact a single THP in 10s?
-> >
-> >Why should it resolve in 60s?
-> >
-> >>
-> >>Reorder the failure logic to ensure khugepaged_alloc_sleep() is
-> >>always called on each allocation failure.
-> >>
-> >>Fixes: c6a7f445a272 ("mm: khugepaged: don't carry huge page to
-> >>the next loop for !CONFIG_NUMA")
-> >
-> >What are we fixing here? This sounds like a change that might be
-> >better on some systems, but worse on others?
-> 
-> Seems like we're not honoring khugepaged_alloc_sleep_millisecs on the
-> second allocation failure... but is that actually a problem?
-> 
-Is it more appropriate to honor the second allocation failure?
-It was a problem before commit c6a7f445a272 when
-khugepaged_pages_to_scan=512.
-> >
-> >We really need more information on when/how an issue was hit, and
-> >how this patch here really moves the needle in any way.
-> 
-> +1
-> 
+On Mon, Nov 24, 2025 at 07:20:22PM -0800, syzbot wrote:
+> refcount_t: saturated; leaking memory.
+
+Umm.  Something like this?
+
+#syz test
+
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index e6e5570d1ec7..71af7f0a5fe1 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -74,9 +74,18 @@ static inline int __vma_enter_locked(struct vm_area_struct *vma,
+ 		   refcount_read(&vma->vm_refcnt) == tgt_refcnt,
+ 		   state);
+ 	if (err) {
++		if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
++			/* Oh cobblers.  While we got a fatal signal, we
++			 * raced with the last user.  Pretend we didn't notice
++			 * the signal
++			 */
++			refcount_set(&vma->vm_refcnt, VMA_LOCK_OFFSET);
++			goto acquired;
++		}
+ 		rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
+ 		return err;
+ 	}
++acquired:
+ 	lock_acquired(&vma->vmlock_dep_map, _RET_IP_);
+ 
+ 	return 1;
 
