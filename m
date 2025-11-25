@@ -4,125 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2542ED0EE0F
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:55:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6975AD0EE0F
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:56:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E0596B00B1; Tue, 25 Nov 2025 13:55:16 -0500 (EST)
+	id C51376B0028; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 792246B00B3; Tue, 25 Nov 2025 13:55:16 -0500 (EST)
+	id C01756B0029; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65A4D6B00B5; Tue, 25 Nov 2025 13:55:16 -0500 (EST)
+	id AC8C16B00BA; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EB956B00B1
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:55:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EDD0058A53
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:55:15 +0000 (UTC)
-X-FDA: 84150032190.14.3ECB074
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B07F51A0013
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:55:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=bxhPK0pB;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9696E6B0028
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36819130ED9
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:56:21 +0000 (UTC)
+X-FDA: 84150034962.26.7098B8A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 94F924000B
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:56:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764096914;
+	s=arc-20220608; t=1764096979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mJ+bbVVxrKVD5C0WKXzvpmMcj/N1KvFhB6EMxCv7yw8=;
-	b=6hMrJhRg8+jvOgFYRruH4sceef+TR+wnD6nmCdFJAw0ygxWyCbcPWEx7ZgViUOzk4i06XW
-	xnbxxxqJa1Z10nJnkr6l2k3r5AGO4uMXrHdfqvYvoTFet0/cHSIMD0UGUyMj8B25NE+3ss
-	SvAHV1nvxTXK0QoE24Yi22LfjUTWXzo=
+	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
+	b=a6QNC9PBxuJej40znKVdQZ77SKSyk/8ZVDeZSTFzF0/ddPPUs8SYE2WsY3oRMiC+EDLuSY
+	cIBio4rldQt95XJN6hh0RytCI70slZFI8objKIhTKawvGlwH8S794zr7LsogB2pjUcJa/K
+	0HqI89FhO6mv6HJe/MorrZji0p5fanM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=bxhPK0pB;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764096914; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764096979; a=rsa-sha256;
 	cv=none;
-	b=1sn8vzAT6feb2mQiXSDpfYZBVvTHsBZTaxyaS2Wb+f2q8f650ikq8pAutmdP6LrAX5r0R5
-	pV353e37IH5nCLFO/NsKmc/nnYRuKJne73jNZYhlP8XxcvNtS/kY3i6vmzwMJorTn3zvoS
-	2dWm1NVeiviwcR9zyttcgR/fiWglJ00=
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8804650ca32so54276996d6.0
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:55:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1764096913; x=1764701713; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mJ+bbVVxrKVD5C0WKXzvpmMcj/N1KvFhB6EMxCv7yw8=;
-        b=bxhPK0pBFlzWMRG6uP2pg/n5Dxod4fQ94QzanaKoA5bDOk5Xs1NuDUKMvPyVFKEbOD
-         EwU6Ug35Kx4jMrKmtV2ucHlZByZ5zEzDOp+S8pAqXykmZrd4KHGZy3sIa2oQUXTZ+V6J
-         tbdSb/NS3bVavdwKz/22uj2ZRqZzEMG4lvkInfLiqvI/ilkm1Ne0orJhj19yGcfJ3e10
-         ReDko381aMDJ7Cx+ZADxW2U1kJLzllJF5JRyzQ7QiWym8B8cgbMvv9DinUrACXL5hgX+
-         zMSLvyIh0OEX9jwTiuOfPyA4q1g9660gzTTwz6xljTvYJE3487/kINdwwhhbwFi2dEOE
-         N5gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764096913; x=1764701713;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mJ+bbVVxrKVD5C0WKXzvpmMcj/N1KvFhB6EMxCv7yw8=;
-        b=G+mb9cZFXnL+4tYkZZw/GI0zLj0iiP69DmVG278MDKTPlNBzlcl05xQxTN9Z333EH3
-         4i9ny+XT3MNIzy1ZmZeQphIyut/E0Y6MoytS/SM/TlCZe8WaSsyVi6wGNabOTHuRsKuB
-         rmt4F0nsj56HfGhiz7K88Sdg3MzOyUhUN2lY+OcIAeTHueeOvG1YTdpwUiP/fzvJbP4C
-         FiAgl8hfiCFaznt3B50M77T2TVstoK3FwAF9P1VkuV4p7AfbR1WqzTIWxc5WcqF7SMEY
-         V2ArikIQkT4n45DxenFQjE2LVYndiTtkd6GEj+sd7aAM7D1LO3oGDjFAtQh6jmCrSfx7
-         yDkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVL9LKx+D4ow2d8LgXt8UwMnZ7/HZ6+3QfqOIhe9vkWT3oGcztiaXDW/EG9WNbCkV1cnfSP7mhC9w==@kvack.org
-X-Gm-Message-State: AOJu0YypBwtAEIvTHS8H392xoHjYd+UFwiaOmhImWB85q57xpVq++YAF
-	EcuIRnWmbx5UVfGbPUiUDkO0xET67jP8D2F1i5OqLpzQRnY+Fg9QUAquhjfUuEYYeoU=
-X-Gm-Gg: ASbGncu8lK06QwItdarPHyVC91Z+vQPHRU854gqu3J/QXNFdt/1GsNwphMbA0AlrQzN
-	jrQkMPYZje3z+5fI9gMBNzq/PMnSfmpD4llUfPD4NIRqn+4E1IO/2BInIMS0oAnNZbB1Jn0+cfj
-	oBgOK+U2FLoaM7hylebGBHGj6sDgvKmkduI3tI5cd760ng7XGCLOLFdUGo8DGdy1Afo4tCceEnX
-	7vtexeujfjW+dseboWTyRW2/ZKTjgSniwYJYvlzvLgZCEgFJBS4BfQ4g78ka+4vCvlIswmTZy9D
-	lCivOA+VPzSO8xlV3mPCYmWYDUokI/6wim2K1p4eNA1WBRybU4NEEmbi7b3ZWLQPSK7YG5LjjKR
-	WOevr1XyUYOrgacvGoYZZ5z1EL9/NliHIvGt2/JjgbXn5a4Z8dxj+J8X5CxmH/vHjdBPc5EKy49
-	+OnrfxnPUn/g==
-X-Google-Smtp-Source: AGHT+IEDvuOBPqwKmRQc56aYDRMDLHc01rINDPPcJSg/6v8oq66YL/0zUMistG8IG4ckBpIrHtKqkA==
-X-Received: by 2002:ad4:4ead:0:b0:882:44cc:f587 with SMTP id 6a1803df08f44-8847c4883b2mr229163866d6.1.1764096912678;
-        Tue, 25 Nov 2025 10:55:12 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e446a06sm130735276d6.2.2025.11.25.10.55.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 10:55:11 -0800 (PST)
-Date: Tue, 25 Nov 2025 13:55:11 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, pratmal@google.com,
-	sweettea@google.com, gthelen@google.com, weixugc@google.com,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-Message-ID: <20251125185511.GA135004@cmpxchg.org>
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
- <20251121114011.GA71307@cmpxchg.org>
- <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
- <CACePvbVNV_JRRY8p=dXj8YntR-0nRq3dbrBPz1G2bEmGH0jxpA@mail.gmail.com>
+	b=RMeQblMR4TIr1BMglVsWoGMepY+CQr6maBfu+bhBaDo9Omfr1c3EHOBO4w4k6MUXBrFe8j
+	YW60Y69qpNylEeZYHYr4PrF/PXMjvJYHECjWilqzg+HZgYoNVjmpeKjMrbJbJwzs2iUcky
+	xtY1MDGbKahYw4lHjhGC/flPxhxmhM8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9672F5BD0D;
+	Tue, 25 Nov 2025 18:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764096976; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
+	b=VnkDbdowD8JfpomKJ+CQ55m5GyxNxjcZmaz1gbpHjxl6yn1XZCSMsjhdxQAeG/d6hm8cy+
+	QImqb7ZLaUcA0sD9xTMfxeY9PpunHAv9MxIrYNDWxAZAO3BqmeC+M9z3+JC7xe7hMr+91S
+	H474vubuLEJuJlLQvsdn3QRtJCXctiQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764096976;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
+	b=WI9x+HjppKEWPgDdr58Zx3sHlpDWL0Ua0SFxNCYnrE2Aw1mbWBoE+xpwH/yYn+v5CrZjM0
+	tz/Y+JvHVGzsSqBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764096976; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
+	b=VnkDbdowD8JfpomKJ+CQ55m5GyxNxjcZmaz1gbpHjxl6yn1XZCSMsjhdxQAeG/d6hm8cy+
+	QImqb7ZLaUcA0sD9xTMfxeY9PpunHAv9MxIrYNDWxAZAO3BqmeC+M9z3+JC7xe7hMr+91S
+	H474vubuLEJuJlLQvsdn3QRtJCXctiQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764096976;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
+	b=WI9x+HjppKEWPgDdr58Zx3sHlpDWL0Ua0SFxNCYnrE2Aw1mbWBoE+xpwH/yYn+v5CrZjM0
+	tz/Y+JvHVGzsSqBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46C4F3EA63;
+	Tue, 25 Nov 2025 18:56:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KvzCD9D7JWnGawAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 25 Nov 2025 18:56:16 +0000
+Message-ID: <b7804333-6030-4bfd-8e0b-4479f87060ce@suse.cz>
+Date: Tue, 25 Nov 2025 19:56:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbVNV_JRRY8p=dXj8YntR-0nRq3dbrBPz1G2bEmGH0jxpA@mail.gmail.com>
-X-Stat-Signature: 6pm8b7xoszeact74of46thcbfkb5n96c
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
+Content-Language: en-US
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Kees Cook <kees@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+ David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Jann Horn <jannh@google.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Marco Elver <elver@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+ Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Vegard Nossum <vegard.nossum@oracle.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+ Yafang Shao <laoar.shao@gmail.com>, Tony Ambardar <tony.ambardar@gmail.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-doc@vger.kernel.org, llvm@lists.linux.dev
+References: <20251122014258.do.018-kees@kernel.org>
+ <20251122014304.3417954-2-kees@kernel.org>
+ <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+ <CAHk-=wjxj---dy5haOvNXjg_Xz-mDQciGL7OnJnpJpjYD9Moog@mail.gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <CAHk-=wjxj---dy5haOvNXjg_Xz-mDQciGL7OnJnpJpjYD9Moog@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 94F924000B
+X-Stat-Signature: wupu7ai8ugxu5nmjny3f8yku9ns1coxp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B07F51A0013
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764096913-553529
-X-HE-Meta: U2FsdGVkX1+RgMPI/LSvZpNVW+zxj92gF8ePQmw0ZLXRx86JZc3csni7gzA4zcr8rooPZ9GNl0mm5LXsSXH7JtqSAkmC5LWFO5kFSS/bgr/eEWD+T2p7DRc6pkGV1YL2QiwLbk72Srd0MbkXIs31Zl641/ouLCz+7kxMAs87haf0wf1vKmdmWJbIY8f7ICzAwpaqlDn1EmFSXPJvDLTcVZz/LfNT2g5O8dNkEn8J+XJYLWRnaXrZcigFoFOLAal6sNwkncScAbmXS9Uz7mm80tjm25YHL1Sasm3HxQKWF+vNNADm7hw7f11zKnsy+sKBmI+/f/cyK2Qy59CpF8lQDwS01c13jiFp74eBotS5VglS1z6hst6CyiHcdYqsv1w/+dlIpJResYGVUWOdF8cFbKAJQqD63NtxUkU+OgPjJ5/7sVUv8xwh0svRtR5Vw1xGMfysZs7DpVqeZSvBEGEc1Cfz5fEHEjAptcoaL7eHsV+EPA3NERlCMahZsmKEOzx+THKGNC28X3QUFgLAGs2YFAaacp39kNO9ZA8dKbOQA1egqejhfn4g1myURcYx9WbbOgOmk5D5MciItC8xf8TpgkSkM5TSZ5YgTeER61a5d4viwIkfscSJ+I2PXtiYLRIGddtMmCsh+45oHLxjKOnydUd3kxFZjf4K/rhegEf3Vs7UKs4a9b82FO9ElIBzRx76WBG/pAdRCGv/2pPQf9h0sTmF2JE2X27H6SCJyg2qearpkHWL6JPOVGF6YJHtWVD92c+RreZQ049grrZRfWBchXEdJFKlnljuUTE1xajqILKQsAcKUiJKtdx6yN7eeV/U/jhKp2NBhI8zQy/Vp2Amrnk0tVXxILPzjCbY5tRSKS2pkJSAwwWIMGVr+ZR7+bfvnGlcXS5G5Bjmc+GWicv/8YM7uNdmxoPoUpCPIbyAmIhGh+tTJNXuYu3midTzmit3MYZ8Aag7FjTd2MDglGu
- 43HaxyA+
- mV7Dg6vHWuOIHt2PyNYFfZlH/bzLAooqt92Dm7yh7AtByx/JkfDHOrnWLsyAGp0jkS7zaGrFpsyvjZge1CvqGb17BLF8bvrSwxRcGR6Yyyj66Fw1GPaGmp2nmYeIKDaeMaNkUdKI25FVSUdN1U3eqpm9lKqmp/H1qLUs9EzGnnSG9vKmSMoKYhB0le4K/agUqOZ9qBodBbCbQyZUAni/9AM3aueosGawWuBynLmqxv90yplfvfhYJlXxslp+If2jSV7MMMorS5L7vzWaACKOScKaD4CmZtFrZrKsk3RrjR+ouuO+5DjXilf0Edg3za3o7v/WLFx4BfTIenqkejzDQTDWQHAmKmxhiT5q3owf0A+kFaDB6jqCoBGx0upzkvuKdXvNXRzB8gzbNkr3RjxTYaHeFUErfqMDdx80nHk0t0CK+l/kM3YQROl8jjobHdX6/kJk8MuZ3xnkAFjYRcNz6KjJ2+0TULL2F3dW9
+X-HE-Tag: 1764096978-817576
+X-HE-Meta: U2FsdGVkX1+91TyWHUW0lhF077EjErivwQ2TdZVgXii4G/MMvkVwn8X3v6DebupNl6f/mOy2VFdgfNtQHtO0TEyeP2JsT/hEj4EPMnRC5R9TFWCd873zgiU8SLRXEThUJU4Tr5fS5EDt4DiU/dkiInRzjicy0TU0zIKVfuVTqYTebFnFWbChbMyW//tbyLmUaQHwykWY/ue0Yz4rA7MM/axrIg/Mkh9oz1A9q0DzyAQVqEY7mGp4J5SQzP2frKiN32jzHxLvQDRVo0WbPU1WbauJ9/DYSXhSFsV2O6zrKwkioWtfngrYbSjPU42NKvk2mxBj1RqpNNJW1Dr14hfaq4ti5PkfvN/4XFaQXAFXwuchjDZz+OpxNa+ujmkVXM/oEqMbtqoOpMzBlbLqSvnUT6CaS7+3g+ZpBd+BLrsThviVvRusacQtZKQ4YMkQIzANCPGratbyerXogbGc4bof4w2EALpSUpazkpMO7/x6USN3RO3j3m/q5QyCN9Sw3bSyRZsVeiiluNz0eMj1Z2FNLcEU9aDD5OVJ1T/ImCbR+Vc5u273F3ZmvrgoDXPLYyYsvPJ//qRce7UnR1mv9t4HOwOYkna/dMskDzJa+Ei/qD2xzm2bYAulzk+qXSVKTC3a3agaPljT2Lrj77GHZkkonxSUIXDws/WdLhSI1SNZzelW2Alds4cy/V8zMU3ZZWDC4frjSb45KdDXPMkkQk11tQadbBLproKQakQTF0AtXMDVS08rs0vf0BT0R7LKL+lRucwsihS2aL8rvO6leo88c6SxM7tvh8kFZmNNwnF9QrwoYOYUHhusjbJG5sPPOByT1KnWvNyN6FOhPjwP3kZ6ZG0B614Oh7OPUfik4BPeY5+dLefKnhlZ31uuaI1deevfmNcBgWB3f8x0MVQ6Bvacw/WXdSo1Djp9GT2xu3+vsX8tm6qImAD23SQfEfEigdudf9qvpNBpzn54p3iYTeD
+ Hxsq2bvY
+ FyAUrsM9b0ZiQbt5UO69T3SkhCh1YnhvQI5QQ1zj1aLsl86X3EhbkuaagHw1HW3z6LS9w6HDKbkDUc4gmnGFsmE+r9/GAeDNEFolLViSuRv79qySPBKBTRpGOTmgBZOKVwVZsheo7EWHPi/qXZjZEYgbMv8Gzs3d7WUNf2f1dYYYuXn93mW5eFPtqRfYHufIcqBiMjfGQbJO2BPDERSlA1cMpSOBhoOInFNFYOq+vlgDUYP9WAWB6AMFOe2iMLIzbh20ZwANdj0tvoChWY1jZC9iKAfQlHS8FMDJf3R0wyUCujggHitLJtJw25VQjrXufyeg3XyyCPK13ZidzGfIcreJ8lZIdYDN1Nnx6OCec0uAA4saovUW5SkCHG+NVUyR83PZRWG34mZcL+6cV2FhA7kJ/IiRmIIkim6lC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,29 +201,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 10:14:40PM +0400, Chris Li wrote:
-> Hi Johannes,
+On 11/22/25 21:54, Linus Torvalds wrote:
+> Btw, I realize that we don't have a good way to do the alignment with
+> the current kmalloc() interface (we do for some of the vmalloc
+> interfaces).
 > 
-> On Sat, Nov 22, 2025 at 5:52 AM Chris Li <chrisl@kernel.org> wrote:
-> >
-> > > Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
-> >
-> > I take that the only relevant part is you are zswap maintainer and I
-> > am the swap maintainer. Fine. I got the message. I will leave the
-> > zswap alone. I will find other ways to address the memory base swap
-> > tiers in swap.tiers.
-> 
-> I am sorry that I have said that. Let me take back what I said above.
-> I was upset when I considered you and others blocking the more optimal
-> solution and in favor of the less optimal solution. That is my short
-> temper, as usual.
-> 
-> Now I can see that you might not see one as more optimal than the
-> other as convincing as I do, or I haven't done a good job explaining
-> it.
-> 
-> Let me offer my sincere apology. I will reply to the technical aspect
-> of the question in other email.
+> So for now, it should just have some static build-time warning if the
+> type of the object we allocate has a bigger alignment than the
+> guaranteed slab allocation alignment (ARCH_KMALLOC_MINALIGN or
+> whatever).
 
-Thanks Chris. No hard feelings.
+Note that these days we guarantee more than that, and it depends on size.
+From Documentation/core-api/memory-allocation.rst:
+
+The address of a chunk allocated with `kmalloc` is aligned to at least
+ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of two, the
+alignment is also guaranteed to be at least the respective size. For other
+sizes, the alignment is guaranteed to be at least the largest power-of-two
+divisor of the size.
+
+> And I really think the first version should do the minimal thing that
+> actually matters, and strive to deal with the simple cases. The main
+> things that matter are
+> 
+>  - the return type should be a proper pointer type (so that you get
+> warnings for mis-uses, but also so that you can use automatic typing)
+> 
+>  - making the 'sizeof()' match the type
+> 
+> so honestly, I think 99% of the gain would come from something fairly
+> simple like
+> 
+>     #define kmalloc_verify(type) \
+>         BUILD_BUG_ON_ZERO(__alignof__(type) > ARCH_KMALLOC_MINALIGN)
+> 
+>     #define kmalloc_size(type) \
+>         (sizeof(type) + kmalloc_verify(type))
+> 
+>     #define allocator(name, type, size, ...) \
+>         (typeof(type) *)name(size, __VA_ARGS__)
+
+So AFAIU this would be too pessimistic. I'm not sure if the alignment rules
+can be sensibly encoded in build time checks. Perhaps yes, in a similar way
+that we have compile-time size bucket selection via __kmalloc_index().
+
+>     #define kmalloc_obj(type, gfp) \
+>         allocator(kmalloc, type, kmalloc_size(type), gfp)
+>     #define kzalloc_obj(type, gfp) \
+>         allocator(kzalloc, type, kmalloc_size(type), gfp)
+>     #define kzalloc_struct(type, member, count, gfp) \
+>         allocator(kzalloc, type, struct_size_t(typeof(type), member,
+> count), gfp)
+> 
+> The above macros are entirely untested. But they are simple enough
+> that even if they are buggy and I miscounted the parentheses or used
+> the wrong name somewhere, I think the idea is clear. No?
+> 
+> (And I made that "allocator()" macro use __VA_ARGS__ because
+> kzalloc_node() and friends would want that, but I think it's starting
+> to hit diminishing returns at that point)
+> 
+> Hmm?
+> 
+>                Linus
+
 
