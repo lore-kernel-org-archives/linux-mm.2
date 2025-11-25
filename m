@@ -4,134 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67BBACFD31F
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Nov 2025 23:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01082CFD35F
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 00:04:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFC816B000E; Mon, 24 Nov 2025 18:45:32 -0500 (EST)
+	id D3CE26B0024; Mon, 24 Nov 2025 19:04:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD42D6B0024; Mon, 24 Nov 2025 18:45:32 -0500 (EST)
+	id CED866B0028; Mon, 24 Nov 2025 19:04:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE95D6B0028; Mon, 24 Nov 2025 18:45:32 -0500 (EST)
+	id BDCB86B0029; Mon, 24 Nov 2025 19:04:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C5DA6B000E
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 18:45:32 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C22359ABF
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 23:45:32 +0000 (UTC)
-X-FDA: 84147134904.06.2A8DA73
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 482D040010
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 23:45:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q9VOTyhV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764027930; a=rsa-sha256;
-	cv=none;
-	b=rccC+teIoR+o9RBc2vyiiNYFDY4X14TIhYKMbsFqXm7J5ZAizpXJwqBWpT9kfILHdS73AL
-	yzAyiPoB+dO5EAMae261f9zB/DQ5rnyvz6hxgF/aMEO5jS94XZrTFmnV+PSmK1q8wUTrkv
-	1eER3BasPJzLz3TIsbDP53WBPvSP0vg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q9VOTyhV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=dmatlack@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id AD0936B0024
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 19:04:23 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50B811A05E7
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:04:23 +0000 (UTC)
+X-FDA: 84147182406.25.29B30D0
+Received: from cvsmtppost36.nm.naver.com (cvsmtppost36.nm.naver.com [114.111.35.243])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0243580005
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 00:04:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=naver.com header.s=s20171208 header.b=UlwJzoDE;
+	spf=pass (imf02.hostedemail.com: domain of s9430939@naver.com designates 114.111.35.243 as permitted sender) smtp.mailfrom=s9430939@naver.com;
+	dmarc=pass (policy=none) header.from=naver.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764027930;
+	s=arc-20220608; t=1764029061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=05wP4M5m8hN24FSCktfwvvhdg9eAu0qN4WDwWhg5IsU=;
-	b=AqlG2NZ4xzH603SZpfkT7lNQZv+sewIyV5Pd+I8P7PfIkJOEjjfAIGbz342QUyDWf7RSrJ
-	AgDogl7IPuj4I0qpCMNj5xzFDEp1mFexpDLvBaVmS0ncQPcyOSUowvq5khiXK33dMw60G5
-	PksPqAVhQc2tXkV8pjphXBTULueNsg4=
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5957753e0efso5086033e87.1
-        for <linux-mm@kvack.org>; Mon, 24 Nov 2025 15:45:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764027928; x=1764632728; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=05wP4M5m8hN24FSCktfwvvhdg9eAu0qN4WDwWhg5IsU=;
-        b=Q9VOTyhVfXm5iZE0kM/NdXZAMSBjRIOIg/2xKJPv/3pmSGFE5O+kkFdEMjo5YwBA4k
-         Js617G4Sry6KsGYUAjel5hlKP6hyw5a0Q9sip2lDrVxAsuS076TZ7XGY+ogUXY6ft082
-         jDio7pDtP32PUWZcuk75kDB3t6kGjjua0DbqlpNMZTQPkvlaCP0lQckpf98qkxWrWNS/
-         C1GYEujeAnByM0rXXDY2TLQA38ioENFVNUtRdYLnH6yLICxSifZF+XXhKDXGNEFhUio4
-         asREaT8q/aeHSIFZxMKX9AFi+708CJgKpj8rjD08mcqghwfCtnndxi7WkQfQPjUx1CP5
-         S3Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764027928; x=1764632728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=05wP4M5m8hN24FSCktfwvvhdg9eAu0qN4WDwWhg5IsU=;
-        b=OLghKqlW36MYOY18dnd6HjFjz3Fd6JU8WN3ivbZYqo/U97LAQRg9zCErySDDvaGtiP
-         QX9IR6+9yHGN8VVZHtsQUKgHIabX05adTTxAanrbxZWa/oJIzSJG2HvznuLqQ5W7wlyQ
-         JslriBjCXsrS3kZXTiQzAvu1laWA1iqgnOmmzXIkxqCajAYJqglVZuzu1pYHOkuy1Ddt
-         j2AGFkzQbLRiDOXtOAGRpeRpuLsRVN17JpGenrl4QkiCO/Wusww1GSBGZ5+GLf9bz8an
-         2QDYl5QYarFXLoVSj8MXQVNR41K0ObU3+TOHBuWx2mqGgTu/VSSif2YHAEQQfwIPRw8/
-         Y5sw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbl3ebxVpS0wiyOZRNO6WpQ2bV0rNi8+G8ubwVS7W9B5fiIhUPePVrLLcZa458ncLh9awSgNJtBg==@kvack.org
-X-Gm-Message-State: AOJu0Yx4Q3EuqFSs1pPY0YeZ/JQYeptQ0BfhsIUwUnhkeYTJunDgeAZ+
-	6Uqj5/pt7Q5ExQdU9SY88ohOf2HLvmCgQ+oGLyWoyqgaFAResojRDqzDLjiZ438nGNqBwmrF+hS
-	sfeSxHLoiH+3ZiaTwk4Li9m95quSLotSm2P3pectK
-X-Gm-Gg: ASbGncvmMXGQmsRWjgaFUpG9CLeeSs18BaIDZOnHXXudeDjThGJpVBNBrJwEhxJMyYa
-	jQFjlM241+pVStAN52DCYFd5dbX86msAB0DnAUY8XLoivMn9Ry116R6LyhTTkj6j4TMt+5u1EDq
-	DWN7gbl+7/d7rtUaI248K2YAmCVEoPX1x0zUvATyH76qhc9qLY+ZT9yvuSIzORdwLPi9ANoH7Ij
-	fdTcdqTU+YomumMaWTKeSu7PPmu1xqTzpNMB4nCOTbzXUE89iyP5p3gMpfIVM2Hu/EVrBcQStNE
-	Add1QA==
-X-Google-Smtp-Source: AGHT+IFG3B3wjJ5hUmdHvUSiONpPpEjo/smMGL+Sq7VqjhpIWo7YbanBRf0jnx+HWEMfNF7y44/hOJQ08ua0/lRI7nY=
-X-Received: by 2002:a05:6512:3c89:b0:595:e35d:6b80 with SMTP id
- 2adb3069b0e04-596a3ea6658mr4439445e87.5.1764027927918; Mon, 24 Nov 2025
- 15:45:27 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PDv46Swksv6p/TP3lR+V7WaJG7Mrrun76v7Vj0Abryw=;
+	b=roXX7RhyLio2l+zLBuK4vAB3AVX7t/UzW3Upep6qwTVXRQcApkWYxxnDIQQXWqTDqqjEEU
+	pwYHVRv9eiHR6N0zZySP2dLrLNhi3jNdyI88sPo6VL1kJ+hMLsOHUesULIa2feK8Gpg3d4
+	lc/E4Dn090Mi/xQK4DtPjeBM2a3QJZE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764029061; a=rsa-sha256;
+	cv=none;
+	b=awqBnlH3B6RVb0NyWlWpha9m1BHsuz80Olu+ZYGEKlf8NambYUI6bjevub+SuqAsglst2H
+	6FgR5B9cHMHcEeA35qWaUGu90+0R63Cik+VQy1WwV15r+RPkZIK32SkfUIzTzH3qNYTawK
+	CRrJWlyjyNbZdNyajwImphfAOzuT3dI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=naver.com header.s=s20171208 header.b=UlwJzoDE;
+	spf=pass (imf02.hostedemail.com: domain of s9430939@naver.com designates 114.111.35.243 as permitted sender) smtp.mailfrom=s9430939@naver.com;
+	dmarc=pass (policy=none) header.from=naver.com
+X-Originating-IP: 14.38.141.199
+Received: from cvsendbo008.nm ([10.112.24.37])
+  by cvsmtppost36.nm.naver.com with ESMTP id pdSkEoFCRq2OGbHPq1YcMQ
+  for <linux-mm@kvack.org>;
+  Tue, 25 Nov 2025 00:04:18 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1764029058; bh=dIa2E1CMe2k67XSNWKEosIXOHQ5uREF+wrK39QTrNys=;
+	h=From:To:Subject:Date:Message-ID:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=UlwJzoDEyE7MTbymyr0jnUcPXlcxF65KglCKFzKaxNaB2AOJd7xZyNEeJdIjVN0ir
+	 5G3Qn2+RVCcBTqOFJ4qZgJSKN73g7qtO+sjR70ctIvqsp0dYCADxGQ0xq2mZlsqVy4
+	 gYbURdXFjporvMlYUJ8KG7FEg0M8g77n5N32iNG9Fk4N2Ox5DrPkErUr9fF9DjdxLH
+	 wexmEPHq+4AilG1CqSZP7gtrfNZ6gT0Mlg7cwvmGYzRNu1TQ32kT69La1tdoQ7k0PA
+	 30LJtbrF4okL8blpfLjjxcBVMy1/te8jjtw/Cc1ae6c+d59FxfKlpNmHHE4uz//fjq
+	 cPaHlwjpU9mAA==
+X-Session-ID: vY6KEOIMSDC-MMbcaVcGFQ
+X-Originating-IP: 14.38.141.199
+X-Works-Send-Opt: xdYZjAJYjHmZaAKqKBmmKxbwKqpYkEljxBmwjAg=
+X-Works-Smtp-Source: A9KlaxKrFqJZ+HmXFxMr+6E=
+Received: from localhost.localdomain ([14.38.141.199])
+  by cvnsmtp005.nm.naver.com with ESMTP id vY6KEOIMSDC-MMbcaVcGFQ
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Tue, 25 Nov 2025 00:04:17 -0000
+From: Minu Jin <s9430939@naver.com>
+To: mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	kees@kernel.org
+Cc: dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Minu Jin <s9430939@naver.com>
+Subject: [PATCH] fork-comment-fix: remove ambiguous question mark in CLONE_CHILD_CLEARTID comment
+Date: Tue, 25 Nov 2025 09:04:07 +0900
+Message-ID: <20251125000407.24470-1-s9430939@naver.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251122222351.1059049-1-pasha.tatashin@soleen.com> <20251122222351.1059049-22-pasha.tatashin@soleen.com>
-In-Reply-To: <20251122222351.1059049-22-pasha.tatashin@soleen.com>
-From: David Matlack <dmatlack@google.com>
-Date: Mon, 24 Nov 2025 15:45:00 -0800
-X-Gm-Features: AWmQ_bnJaOF-T9FnnUyFXJgRaTp9b-dM-s_K88NADK1Pd4LiL71E0T19a9fmhbE
-Message-ID: <CALzav=f+=c5XH7Uw9EGVb2P6VxsnpF76e0DXAAXhM0gsWPxw2w@mail.gmail.com>
-Subject: Re: [PATCH v7 21/22] liveupdate: luo_flb: Introduce
- File-Lifecycle-Bound global state
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
-	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 482D040010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: y1ziqyxzjyhes4u7sh4urgkwnnt7zqkd
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764027930-32467
-X-HE-Meta: U2FsdGVkX18twyqRqPEWcwGj2tVUMezi2yZEE1m8H+XVyrwZgotf+qRwh9UDKcj+Ls+9BzYAP07zKJdoBeLeqBYBuacPaRfB1i3OMdjogdUl9And+L/MnQk0SaQ19ceavedMwH+0H5ZSbG/mbJ0FEaQMzuQqb+CTOqsg/t1J7j1RfUzcpUagAKQvCTVJ+frkpH6/xfOjApEBIzH47b+LhGttYemY2+IduHX0K5dTr6hq/FNsDNqihu2qIcOM8ss5QbMGWUsfGOWIUs7m/325U2ZAUsWkh3vovJmsNsIOdgq7rn5REM+d3JR1cppO3k1DfQ2lBCGJHa5r8qBMI+E74tYPqJPWKWV1ussOyg+IcJMSfzvwRN6oVT+pd/9x4dvHPfIGmWXw9G8eBWvvItTA8p4UA1JGjgwemiuyGz7zeAmxQd/8+oziWipFQA/Gz7DtLbiMz1O6MrH0d9AUbCf0D0mXPY6yNtFbw78tvEm7fO2uRvLHYvWEAxVclmPqE47FgyfFa+f9WNg2mO387GQB2XL7Mo3tOPd2GB8ZP9dmVAOsY1ZbPemsy8CqDpIfa3D5eb3HokQWaaMJj/nZX7PBPyD5roZtVWoZwzdBJNXgEBuSGTbBw1M717KIQHTMWH9690bITMj+lthezI3kA3pZ8b538Saabnq9WpyFtS/UoT7HlQ+dyZelvPd5XgJQJGz7XaFfWEjIngp1CjrKlA0TxhWRugHC+8aOUEo3h1cPMeZmGefCb1wXVBcMTiOUdu0gWuEHcGGznAYSfwOlgocH0oOHQ7SVyutI5QA54vP8iZa8dMAm+2y3hW5pkM4TD+4vARrPWcz/i8ElUFlVRvhLZ1ILo66RY1D96PuwptA4IbmptQZYOdc/XdMUNstoAsCQsKnkOS9g9FRJXocw9Zbmjj0jRtfKCEdAFmZQARjUYSD7EMgY3xPU5zAHNXMPgZ0N3X/rAm6PM4vsLQ6/2ho
- WhFYOJTo
- y6cHCWdlurI67b7wocILKkzi0eF3basS7M0nklPCIwquuqnw2k+W4hg1lU1KMs96b9WqY/9S1TVDwfrr5RIDAX6Os181mSPjbMH0c42iJaX/vBS4pjOoXv0M9XH1RIX0xmYVwdxfA2f61w8AACUqkfSVLeA09TgxvQOZLdGbZBJdpKeztKCwYQ86W4qH4cQrcIYcPVCe8TmNC2Ky7BOQo85yTSzUvH97CyvQU1zZU3pmneP9g0c8Fzvdi6kt/TigNnlxR+WB0K1ePySmLYrw5sZ/fw77XFaELbWkKafeV4vSlXBPs4/xoO7SvEkCJomSD/WRviRVimutNqTeRXA6uKvcafHefeDqZnowHr/41WfiAS7r9SV3cWQX2Gw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: 0243580005
+X-Stat-Signature: jwepb374ij9wst15ageq5pkcrxeh6bx1
+X-HE-Tag: 1764029060-322965
+X-HE-Meta: U2FsdGVkX18gsf89r/cmXYJ/Q7nV34yZgz/Te25TCpM7oA7pFNnWtuU1I7D4Oiszm4COLXhZXS5KIYSzRRjpakwDvg12Ho6qRgF86J72FRMpcKLz70RS1/9c+ELl9Njv5NV3Hz8dMVWI/CKTxjOzCcKvKdOYTKZOUNHXzlR5uaZ55akpnM83M7t9i+LDNZKsRDo1p5+R0eZqeuYfY3j0NvVlEcmLnvBdNUjqoK5iA5gc9DUIGA7bTGdbbg607f1rBs9KjwUvF6e3kky8Gr6bZHNoH+AvixwjtKDqGlTC292Zzk6tyYD5a0jsfaTryRpYzmG1za6Eh2WqaGHN97r1VWgKHunEEWfG1JYR+RO1CNDc8oxHXPu7CtGK8U9I6ZEsXN0VpocJjwTYipq8Z0MbI2EPCmwxphrXiSL8trbfUpgSLW6dR6sv1cOO5XZ8JW6ICLx5iwzuF+OucF7UoIjYX3GjCHkVvoP//tlYApS356Tp0lzaWb5Ww96xf+axr3RZXrJ5pIFOeDKTZOydPDZ87pZj6U5j8j118aCM9EJfVaHp9kQAiPkmUMqhOHIpClQ83hUSfy5NkMh1IKf5u+ZXN4ANq4YOqZjdhZ3lM+56qCsc9gLi7z8hRT/Ov18mqM8oCMLnGbPUldowI/ggtVmI8diiaxhV3Ov6NzKcAt74FJHwQCDSX8ZV/36HWBOuDOuapcnajlfPPcOHaBt70dJzOjUvBwH/+RaoXGl7kR4CGPpSQGFAfQfSW3vt0jmWE2P9PPn2t7hsntOlDBWvOFyO+7CFd/5GlFom4Ss1PSpRKQkMel8s7ofDk2ag6G0ALapgn+RdL6l0oy4gE0IriXbSlJ8+F3loTYpQjlIwRITq41mT+WpeJVke0/hcNgbt+EAoLiOQEhPj7/B22n/qwBOwcdlWRNVfdVMJHIHE66H+akD2HU80BG35ql3LDFSstsFkJrXQ/nIoIGrCi43S0g5
+ 0Sin7d4x
+ jZhkjdRIwtG1zrxO+bJ5/PLfKmfT2U2a15BpdinJ4LoxiIvq35zbc3js11RbudtITEMEbeWFaZc1qDIT2G6TfqWlN2THE2xmw3ZMw0qFtpzcGfyTTuwqwM4gNUgU4YO37Vvp0KV2SY2xDxG7vzYYx8VhEzbRUTKiaFBzcm7gBjd+EGgnAnjnUiSa1hnlxPJ8W7g3aolwuVtCXMhDeQnj2d60E07o9g0hRpa+krfuQZW27IxOuW4SDDxKPMi6h8l510oaIBKxx9PeIWTrfYX/Prk+WrB0aLVgMMFGB1mwF4BVRpb+Uz56zZsfvtu8PPQ1N0PuboBFRIqos72A4yo8LJ7aSDsfG+YxVcWNVtTs1YPk7xZpza6kCdEQHrf9kEVP9mAAa9vvgiRD4hkNSptl1IoYFApujZEb4doJNy9b8oVbSxbvUNBvbU2egH9PsngnU/SecasmsKg8J1lD9ktVo5ipdbbHg48F7Z/zM0cIazNEXkRRB0d2EZMrhW45OaL6s4X9Gio12JB7v/E0=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.273540, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,68 +116,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 22, 2025 at 2:24=E2=80=AFPM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
+The current comment "Clear TID on mm_release()?" ends with a question mark,
+implying uncertainty about whether the TID is actually cleared in mm_release().
 
-> +int liveupdate_flb_incoming_locked(struct liveupdate_flb *flb, void **ob=
-jp);
-> +void liveupdate_flb_incoming_unlock(struct liveupdate_flb *flb, void *ob=
-j);
-> +int liveupdate_flb_outgoing_locked(struct liveupdate_flb *flb, void **ob=
-jp);
-> +void liveupdate_flb_outgoing_unlock(struct liveupdate_flb *flb, void *ob=
-j);
+However, the code flow is deterministic.
+When a task exits, mm_release() explicitly checks 'tsk->clear_child_tid' and clears.
 
-nit: "locked" should be "lock". "locked" is used for situations where
-the lock must already be held by the caller.
+Since this behavior is unambiguous,
+remove the confusing question mark and rephrase the comment to clearly state that TID is cleared in mm_release().
 
-> @@ -633,6 +639,7 @@ static void luo_file_finish_one(struct luo_file_set *=
-file_set,
->         args.file =3D luo_file->file;
->         args.serialized_data =3D luo_file->serialized_data;
->         args.retrieved =3D luo_file->retrieved;
-> +       luo_flb_file_finish(luo_file->fh);
->
->         luo_file->fh->ops->finish(&args);
+Signed-off-by: Minu Jin <s9430939@naver.com>
+---
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think luo_flb_file_finish() should be called after the file's
-finish() callback. Otherwise the FLB data will be cleaned just before
-the last file's finish() callback.
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 3da0f08615a9..ed46e12c8060 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2031,7 +2031,7 @@ __latent_entropy struct task_struct *copy_process(
+ 
+ 	p->set_child_tid = (clone_flags & CLONE_CHILD_SETTID) ? args->child_tid : NULL;
+ 	/*
+-	 * Clear TID on mm_release()?
++	 * TID is cleared in mm_release() when the task exits
+ 	 */
+ 	p->clear_child_tid = (clone_flags & CLONE_CHILD_CLEARTID) ? args->child_tid : NULL;
+ 
+-- 
+2.43.0
 
-i.e. The order should be
-
-  file1->finish()
-  file2->finish()
-  file3->finish() // last file
-  flb->finish()
-
-rather than
-
-  file1->finish()
-  file2->finish()
-  flb->finish()
-  file3->finish() // last file
-
-> +static void luo_flb_unlock(struct liveupdate_flb *flb, bool incoming,
-> +                          void *obj)
-> +{
-> +       struct luo_flb_private *private =3D luo_flb_get_private(flb);
-> +       struct luo_flb_private_state *state;
-> +
-> +       state =3D incoming ? &private->incoming : &private->outgoing;
-> +
-> +       lockdep_assert_held(&state->lock);
-> +       state->obj =3D obj;
-
-I tripped over this when developing the PCI FLB state. The following
-compiles fine and looks innocent enough:
-
-  liveupdate_flb_incoming_locked(&pci_liveupdate_flb, &ser);
-  ...
-  liveupdate_flb_incoming_unlock(&pci_liveupdate_flb, &ser);
-
-But this ends up corrupting state->obj.
-
-Do we have a use-case for replacing obj on unlock? If not I'd suggest
-dropping it.
 
