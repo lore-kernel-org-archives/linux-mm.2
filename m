@@ -4,144 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36C1DCFD370
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 12:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A4BAD0E6C4
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 12:23:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BB2C6B000D; Tue, 25 Nov 2025 07:13:06 -0500 (EST)
+	id E3BB66B0008; Tue, 25 Nov 2025 07:23:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7923C6B0011; Tue, 25 Nov 2025 07:13:06 -0500 (EST)
+	id E135B6B002A; Tue, 25 Nov 2025 07:23:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A75D6B002B; Tue, 25 Nov 2025 07:13:06 -0500 (EST)
+	id D295A6B002B; Tue, 25 Nov 2025 07:23:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 593446B000D
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:13:06 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A4B91A06E6
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:13:04 +0000 (UTC)
-X-FDA: 84149018688.21.899A159
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EA54B1C000D
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:13:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=e+curw0D;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BE1E16B0008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:23:15 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A3DA131270
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:23:15 +0000 (UTC)
+X-FDA: 84149044350.04.76D926A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9E282180008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:23:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrkIGiiH;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764072782;
+	s=arc-20220608; t=1764073393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dxJGiJOjFGbJrN6TdFxredys8Cq/gwxxT5DnbpdfeGc=;
-	b=yv++DMEwDo2J+sVC9hp5s+oTNKcMXPv3GHmZLx3yKhosgJ6Ur1HTPrXEJwP15WOIrodd0d
-	IBH3uxOVTi19lQwJ1g5RXMG97MIxYvtt+M7V317bVoSuHqH9SAZm+gU2lucxcWfCPLpBMy
-	BCRfjeJzd9ICU6CbulVAQS98sekZrZ8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764072782; a=rsa-sha256;
-	cv=none;
-	b=39fodw/0IMFBq8Xv22TetsdCC0WeUhyNkTwwrrZGtB8koD4V+22mbYwJ75ZOq4x32sNBfP
-	Wxuxiuuo9ulKG+gBomSu+zqhQZ1HeXZ45zbKZIMDPW23gw5J5zwpwlLyL2NZcfYA8/yHQe
-	M33/vqajvQp6PEeTAKN4pFjFjNmq33U=
+	bh=Q6u/e9Bl+58OV6dGb303lDWzf7gS76A7HV+spLpj29o=;
+	b=NYRHOTKmphJLtZEes5TnQtLUIYoKOya2UBQ3cMUpWLV4ppCeXOGyJoApynibnb1aAPvgPN
+	DNNKwH7FRtxm4nQd4wGPCf/eolBjUqWJKFtavA5MUR//ZVgoo5ut+IYutyLmgBIQXcNKsn
+	te3dZa67HJCrfAC4SiJeVegLDAGhiSM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=e+curw0D;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-477a219dbcaso49157995e9.3
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 04:13:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1764072780; x=1764677580; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dxJGiJOjFGbJrN6TdFxredys8Cq/gwxxT5DnbpdfeGc=;
-        b=e+curw0D1ndv8cD8XdW/+8nSHLF/TqbBmih6eFnn0vw/EZnYmUGbJ9c8liJupVPXJz
-         JvRacfUY51eJPK7cJ70qh1dZ1aGlcoERz9E/ERaT8DUwIyssTjEbycI6YqIAZyoXst0y
-         zLYXcZ/A6Fha7lA4NCt2DhNDt01Ex7N51sq01W4dKoazlLhPwzZeIyIg4uFsubB5dDnu
-         8IXT2VWYjZM8KfKZcsYjrlK21Xcx2JdiNK+KXdCZTt31RAmwW4+NRXefjq+GAIMISMO8
-         GTH/+mwmL+drk8wOL0tjjaQyymxGx5OHIpngCVz65CIEHMLeCsPhuKOKC5f8b5aTYqbU
-         EKdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764072780; x=1764677580;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dxJGiJOjFGbJrN6TdFxredys8Cq/gwxxT5DnbpdfeGc=;
-        b=lwONSEozdXHyOvnBQbWXX0TItVFTEDXFrSvDIFYvKL92vOx6RV+s3uhZaPzhCphK3E
-         kb/A8+YGk27alS4GqAbIGuxazYq7rmSPFmE1RqGIctVyjLsdVpfbqxIDLrmNwZfar3sQ
-         Kj/IpXVsUqnyVtW358NPe0YCxhp8ykwpLxWaCua+PHUPpLKZOFTEvIlO8cKHGD4mWvCZ
-         Fmq1Zi0V1oml7hzgEkbFoWi6UFFTap2ZFPwsdYmDgMugrZ/nyW7GuGefybqTLbVnYBBO
-         WRJtAFAqTjgTy6Slpiw1aY6fyTjeTNPgPK+y5VG3lV6AsaF1W178fu8ojyy5LU1eXPYX
-         qn+A==
-X-Forwarded-Encrypted: i=1; AJvYcCV+QcX1+xjGz+5Sy9Zn6p8LEUiQ8f4xidI2SBKE73MAjKrA8rudXiWglzNymcLCDQz/BaqL3nksrA==@kvack.org
-X-Gm-Message-State: AOJu0YxLLA2lrSfoQwz+VL2aBAdcGQBsYW8TnT7uM5FHeBRDrXBmA04C
-	2t5iMTy4Bnl2mjAb/OpjRohER2CXlk2rT8qJCFqJ/7WN96Csk243yPdsNlGVH2Gv/eI=
-X-Gm-Gg: ASbGncuEqAKUjITb+f/eqsjxm8Jc7gvQDdJ92xeJjGzQYOPuryipb9TSpTz0gsbFx4k
-	6HwKqh9aJhMwgFm27/v6W/K3X8bVj21gh5NLy1LPxZp5sYXHedghZYX62zpjiuA4VxJTzaZGn3r
-	GNG0GnFsCSkgJ6kheNtDElVPpL7iqFPWuCvW3HU/xiOuNSmyS6VZCgbZHkXfovuFPQZX5qXejEg
-	j+Ey0ZnAeZ0cS2wyVlq7MuyQltx3+gsCpFcv8iwXmktSV242tVuC+epTTQiIWhcPEBLye+6S5Wk
-	OQ7+Zcz5DErfLfe6W2b4gpu1gD+CHHPvmcsA5z7r6vRzd8YbNjJghg13Mpb2M1PL3p7/9RZePp3
-	AOC+OwVJlKXi32j7nLySPFf6KCU4t/OKk4ZC6eA8k8mWT4uB9A8xbwAJaxoVGChxdkF/D9BqSz3
-	PASTO6EwUZBS6T48mU8pN7ukAF
-X-Google-Smtp-Source: AGHT+IEV2rB8yUe2NCUZIw4moQNsZpTQgAmZgRSSfaXojAIWU3YqaEOZQPUbkzKEE+rrVogbayao5A==
-X-Received: by 2002:a05:6000:22ca:b0:42b:30a6:9c10 with SMTP id ffacd0b85a97d-42cc1d22e12mr16592650f8f.56.1764072780019;
-        Tue, 25 Nov 2025 04:13:00 -0800 (PST)
-Received: from localhost (109-81-29-251.rct.o2.cz. [109.81.29.251])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fa3a81sm34815638f8f.26.2025.11.25.04.12.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 04:12:59 -0800 (PST)
-Date: Tue, 25 Nov 2025 13:12:58 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: hui.zhu@linux.dev
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
-	mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH 0/3] Memory Controller eBPF support
-Message-ID: <aSWdSlhU3acQ9Rq1@tiehlicka>
-References: <cover.1763457705.git.zhuhui@kylinos.cn>
- <87ldk1mmk3.fsf@linux.dev>
- <895f996653b3385e72763d5b35ccd993b07c6125@linux.dev>
- <aR9p8n3VzpNHdPFw@tiehlicka>
- <f5c4c443f8ba855d329a180a6816fc259eb8dfca@linux.dev>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrkIGiiH;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764073393; a=rsa-sha256;
+	cv=none;
+	b=Ww1TGhG3Hoi3RyHycA1zIER5lF+DwLHQ8TFnHd8WZRO6oOmEqrLOakX3wofOwx2WpjDLTf
+	yVMnoHzHql1EcylgMEW5cydmzxDjnv+uUIv4daHSBifDVUAIHqRxKkWfgD1AfCgi4qhJGK
+	zzX/sF4v2i7Q+QtWABq72kuUkAsg5RM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 587AB43CD0;
+	Tue, 25 Nov 2025 12:23:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA125C4CEF1;
+	Tue, 25 Nov 2025 12:23:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764073392;
+	bh=dgBsZgJWsujT1G5ZZyKp5poEm84jGPGY7WbAbiL0MR0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=PrkIGiiHSiipdIgzxPoyKCJ4Fy3jRwcIwcp5kblp2SuzY9IJRC9td8hSxj7WBX+OK
+	 tHsOa1jxjoE8ceReNCftcWRT98GvaRM0Ia8paupqWSuu06gNtntWVK2V4LQWr0WsV7
+	 VGIT5x3vE1vHyOipQTu/CVZ/WVCeMe+WT6R2hFP8Jj95v9ajS+QegQGNA9Diro6RHD
+	 FIV26stHU8SOFSWUTETfYamJZmJqnmIg2kx494WXDxRs+HUC0o5o9j6B2MVoEucVx2
+	 vyKGLTcBVIH5jsgc2lFyq6s8Xt3D454mrw3aOT/8J72JonvIU8bLUsk2B2hRd/b7TU
+	 THa3yTkV/FFbA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Usama Arif <usamaarif642@gmail.com>,  Changyuan Lyu
+ <changyuanl@google.com>,  akpm@linux-foundation.org,
+  linux-kernel@vger.kernel.org,  Mike Rapoport <rppt@kernel.org>,
+  anthony.yznaga@oracle.com,  arnd@arndb.de,  ashish.kalra@amd.com,
+  benh@kernel.crashing.org,  bp@alien8.de,  catalin.marinas@arm.com,
+  corbet@lwn.net,  dave.hansen@linux.intel.com,
+  devicetree@vger.kernel.org,  dwmw2@infradead.org,  ebiederm@xmission.com,
+  graf@amazon.com,  jgowans@amazon.com,  kexec@lists.infradead.org,
+  krzk@kernel.org,  linux-arm-kernel@lists.infradead.org,
+  linux-doc@vger.kernel.org,  linux-mm@kvack.org,  luto@kernel.org,
+  mark.rutland@arm.com,  mingo@redhat.com,  pasha.tatashin@soleen.com,
+  pbonzini@redhat.com,  peterz@infradead.org,  robh@kernel.org,
+  rostedt@goodmis.org,  saravanak@google.com,
+  skinsburskii@linux.microsoft.com,  tglx@linutronix.de,
+  thomas.lendacky@amd.com,  will@kernel.org,  x86@kernel.org,  Breno Leitao
+ <leitao@debian.org>,  thevlad@meta.com
+Subject: Re: [PATCH v8 12/17] x86/e820: temporarily enable KHO scratch for
+ memory below 1M
+In-Reply-To: <22BDBF5C-C831-4BBC-A854-20CA77234084@zytor.com> (H. Peter
+	Anvin's message of "Mon, 24 Nov 2025 16:56:34 -0800")
+References: <20250509074635.3187114-1-changyuanl@google.com>
+	<20250509074635.3187114-13-changyuanl@google.com>
+	<a0f875f1-45ad-4dfc-b5c8-ecb51b242523@gmail.com>
+	<22BDBF5C-C831-4BBC-A854-20CA77234084@zytor.com>
+Date: Tue, 25 Nov 2025 13:23:05 +0100
+Message-ID: <mafs08qfuxpw6.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f5c4c443f8ba855d329a180a6816fc259eb8dfca@linux.dev>
-X-Stat-Signature: tozwm9oz7dqpj7a9a4jora8756rxgyci
+Content-Type: text/plain
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9E282180008
+X-Stat-Signature: qirspajmg3ght9ygdumgfon5u5rpmmup
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA54B1C000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1764072781-916698
-X-HE-Meta: U2FsdGVkX1+ppbR6kY6EJ4BpzA50N699ErZM7vrby1W4bb4Cq04tu5GFaDiciv/zFiiHy5WkhQNSEInPpy+to0HWoEhroa1BxkCxa60Pk0/AQKFMuSy9tJbRJzYP57HfPZ7hXZ1n75zdDM7o8DXUrK0mrzHTmbGjicl1r2rK7P0uc618HAjdKfMZ7srKIyVPzjmDAt5RNKeNrg+NmsGKs2xtM3XmLzpnVKFpac9bcAiSsoaYm7Ar/iH1UtIRfiHhgM1YhlIdSJd+9VM38BMNcXzeEmyVOmiNIujdZ6mR8VL4eFGW8Z7CZ3Ym6SNnT258LKe36LNm+DbJBQ2btj7Xe6MTwO1+cBl24Y4CtVMpScc7GkGHQKwviXZnjsiIyrMt3i/PaqFqOfP5h8YRjc2GkOTM2PUdQe5zFC+4QAPOGvBkdGvQmSO2u6FIOOqlNU8vXN3gj6c95c+edj69M1S4uioIcuJE0766ZoZ9IxudpIlbkkN32FSzld7+97n2rOekFxLhENu4z8QipIwSiFCBcFQ6j0XY1OpcCCUDqA36R5wGfQE+tRRl2xa0Hlq7bKIi1HmVOJr1SfKnNo2xA/5aI/mqFYpGtZ/ffYWIGNuloFysR9vncH/5odCoHML/KuuL2gJ95xpLBJbsL5NUxO02je8TUhxu8cxNmuI3Fjl3B1LpyReosk4G4UhAv89m4HFc0s9oZNjnkzvC69erKRUDy8g4xFEP4JmT6A/kcuS3pRvwnyFdfUuvjLdS7HNpCFwO0Cezj1V0HcOsyN7w+RtDKRNFiwgImkHdFnseN+6ueGYpFW0wgLynt0g9S28lQEbc+CU28A+fQWGw8ab8rZzZ/6O4eE8Agmd8Ol59Bsrncqb6eKZhMBtJ0cFuiGelLF2T4UjxV+kTNGLamHZ+WexUH/N2AAyuGpeUuRwnJA/AcYqr2bO+1NtttbRkoUwCoHvVH9mAbdtIzDs4xnDv93/
- HXgI0/Mu
- Sblq45MBVb6Kjc9C7YieJfLoVD41frPzKmyqTu2TPDVA2Z67Gxj8GyykepAKaPgqjPD0Hfy5hw+emSgE2GW+d5u3l4LlSF0BE3APHirNDC9160O6IQiTRIg1nKDBifoBmYHGZD4fcgx/jdPvPLtQHR6j6LIVQnaTw0CcfiLE/Nn+wOtmHH/PSc7CPXlT97xlS0sSN0aWET1kNUWBwBQxE531zyI3c3dO7KC2mvKwniy/05eLtUKk28wyiVXeALXjYHp0Q2UcUec1mwysXHBWK8jjN4PHNVewPMZl0Uo8P2wR4EpsXQk9Dpcwo1swzzc/4wSgNySPCLJbalqwHtJ8eN99Vt+iCawlDzl9hlugX6LzJCDmigxsjTqcPtZnQXZLWn9XCD2KkkYZ8nvIzY+mujQEDQxigy3L0kBd46uRwcNWDx/Semv+bc3dgFUg5gYYrB46xUZ5HsDoK94ERCUnW7ec6nRMcVSHHWcq9T8jHQuzblYDxcaNlStU2Zcr1dtDQ2ci1
+X-HE-Tag: 1764073393-293692
+X-HE-Meta: U2FsdGVkX1828+RLLkv7HP4ZUk13YmmohvCg0slcZgJFKa+JTO05cmX+exlWTC9mt+HZcJ+/ISG5biFA+ncGhiChPQdP/1OA786OYgYhsgzZ6qtM75JCQZlCn1PlMtzpWCiGr6lxuQ4foSiGzPxbBMe4DtOUTBH50a4A2OUlNULqCfQXFp0Spt46Wghm3uz3TnwoPhdqfikhHrWTJ9+H6V0A6G0sERBnex0KdYK0js2dIsaqqDOPP+F/B/c7s/m3zinyHKzlbak5nlT3k+3T2TiGX/cinf2hWI1w8PknXw2yi5gcaXhf6nBia8HP9ZTvmrgouRTSTWN8mjpjQ2u5XZyaoveG3z2GuwWJYiUgK9wxAAjXzTW9GIRfJjr3DBbOC92C3i9lbq4+yyGI2K9KwjqMCqAcY8ncksQb+AHJAU/2X0IZ87p4dB/EkEGoW+lQpMsLpK6r+2jJn+4LT+h2BN3ZPWqHTq6T+OS3TNfdpSlMFvF26LHrrwST4CGpLSNFsNiWskJ12OPS7QW0GjB58j+KBHQTZ5mjEUcYER9Wo+YmUIjGke8ynw1wZ9ndAbCiIZYfkThX22JOrflSteMiclMXGcAs7CDOx9ox2KQVujBKm3e5ZXQShMatIbne4sZNwYLfxoUnH5gHl85DuyNDC7qHgmLhqae4r+QiU/TxDRZg/ZOo75r3NmezkL7vj5+qsE6g5fc9cUqDrCpeKblx9PLcnXXnlR4KTVgLRQq3L3+s/BQpqI33ZK6XYiHOUGky9UD2BGpi+1sXF9RzZTZi0/VEXz5MwTji6cqZOVohW35XOcp2V57bggb2dl7oPOz4HSFXMA1JtXB/KX6I0lO5yAHBRvepNPMs41fY02zQMFVcJEc9n+GhW8djjM58ngyieU2hxUbVdsZyG3y25MapQdxYXFtWiV7RdQth1Ej1rtxBFeXw+vZ/KO76mmyk9bywaEPwu23O8Mn4Z5KpYgO
+ iIi1t8MO
+ CwDbkxk8sEbFfCnW4NYLYkvPyb/UsOhbyK7hyZWVFG1dWmZYMpjTLgzsMzq0lSkEjF/jH394v+llLafEUxua8Kme2qHluMTBXgDuVZ0D2HWzTtdUYmroezmPA6DjinS2V/dWiGtUxWoIkvFUTRQ467iU5QDmBtI7WE9xCBc1MN/PqirdgXIDZfBhl9LjFEFIbcw2Hk/FhtQT1+jPO7KVPKyMbUNjFUQCu3aprEjytFJMj7aL0VhnPcd3PwE/ESstBLQI3y3GvGE+TARbHbnZopFF4Aa0jiH46ASTrYN4u3gQ/4dwSfwJp840GK+qC2xDizW9S
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,86 +110,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 21-11-25 02:46:31, hui.zhu@linux.dev wrote:
-> 2025年11月21日 03:20, "Michal Hocko" <mhocko@suse.com mailto:mhocko@suse.com?to=%22Michal%20Hocko%22%20%3Cmhocko%40suse.com%3E > 写到:
-> 
-> 
-> > 
-> > On Thu 20-11-25 09:29:52, hui.zhu@linux.dev wrote:
-> > [...]
-> > 
-> > > 
-> > > I generally agree with an idea to use BPF for various memcg-related
-> > >  policies, but I'm not sure how specific callbacks can be used in
-> > >  practice.
-> > >  
-> > >  Hi Roman,
-> > >  
-> > >  Following are some ideas that can use ebpf memcg:
-> > >  
-> > >  Priority‑Based Reclaim and Limits in Multi‑Tenant Environments:
-> > >  On a single machine with multiple tenants / namespaces / containers,
-> > >  under memory pressure it’s hard to decide “who should be squeezed first”
-> > >  with static policies baked into the kernel.
-> > >  Assign a BPF profile to each tenant’s memcg:
-> > >  Under high global pressure, BPF can decide:
-> > >  Which memcgs’ memory.high should be raised (delaying reclaim),
-> > >  Which memcgs should be scanned and reclaimed more aggressively.
-> > >  
-> > >  Online Profiling / Diagnosing Memory Hotspots:
-> > >  A cgroup’s memory keeps growing, but without patching the kernel it’s
-> > >  difficult to obtain fine‑grained information.
-> > >  Attach BPF to the memcg charge/uncharge path:
-> > >  Record large allocations (greater than N KB) with call stacks and
-> > >  owning file/module, and send them to user space via a BPF ring buffer.
-> > >  Based on sampled data, generate:
-> > >  “Top N memory allocation stacks in this container over the last 10 minutes,”
-> > >  Reports of which objects / call paths are growing fastest.
-> > >  This makes it possible to pinpoint the root cause of host memory
-> > >  anomalies without changing application code, which is very useful
-> > >  in operations/ops scenarios.
-> > >  
-> > >  SLO‑Driven Auto Throttling / Scale‑In/Out Signals:
-> > >  Use eBPF to observe memory usage slope, frequent reclaim,
-> > >  or near‑OOM behavior within a memcg.
-> > >  When it decides “OOM is imminent,” instead of just killing/raising
-> > >  limits, it can emit a signal to a control‑plane component.
-> > >  For example, send an event to a user‑space agent to trigger
-> > >  automatic scaling, QPS adjustment, or throttling.
-> > >  
-> > >  Prevent a cgroup from launching a large‑scale fork+malloc attack:
-> > >  BPF checks per‑uid or per‑cgroup allocation behavior over the
-> > >  last few seconds during memcg charge.
-> > > 
-> > AFAIU, these are just very high level ideas rather than anything you are
-> > trying to target with this patch series, right?
-> > 
-> > All I can see is that you add a reclaim hook but it is not really clear
-> > to me how feasible it is to actually implement a real memory reclaim
-> > strategy this way.
-> > 
-> > In prinicipal I am not really opposed but the memory reclaim process is
-> > rather involved process and I would really like to see there is
-> > something real to be done without exporting all the MM code to BPF for
-> > any practical use. Is there any POC out there?
-> 
-> Hi Michal,
-> 
-> I apologize for not delivering a more substantial POC.
-> 
-> I was hesitant to add extensive eBPF support to memcg
-> because I wasn't certain it aligned with the community's
-> vision—and such support would require introducing many
-> eBPF hooks into memcg.
-> 
-> I will add more eBPF hook to memcg and provide a more
-> meaningful POC in the next version.
+On Mon, Nov 24 2025, H. Peter Anvin wrote:
 
-Just to make sure we are on the same page. I am not suggesting we need
-more of those hooks. I just want to see how many do we really need in
-order to have a sensible eBPF driven reclaim policy which seems to be
-the main usecase you want to puruse, right?
+> On November 24, 2025 11:24:58 AM PST, Usama Arif <usamaarif642@gmail.com> wrote:
+>>
+>>
+>>On 09/05/2025 08:46, Changyuan Lyu wrote:
+>>> From: Alexander Graf <graf@amazon.com>
+>>> 
+>>> KHO kernels are special and use only scratch memory for memblock
+>>> allocations, but memory below 1M is ignored by kernel after early boot
+>>> and cannot be naturally marked as scratch.
+>>> 
+>>> To allow allocation of the real-mode trampoline and a few (if any) other
+>>> very early allocations from below 1M forcibly mark the memory below 1M
+>>> as scratch.
+>>> 
+>>> After real mode trampoline is allocated, clear that scratch marking.
+>>> 
+>>> Signed-off-by: Alexander Graf <graf@amazon.com>
+>>> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> Co-developed-by: Changyuan Lyu <changyuanl@google.com>
+>>> Signed-off-by: Changyuan Lyu <changyuanl@google.com>
+>>> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+>>> ---
+>>>  arch/x86/kernel/e820.c   | 18 ++++++++++++++++++
+>>>  arch/x86/realmode/init.c |  2 ++
+>>>  2 files changed, 20 insertions(+)
+>>> 
+>>> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+>>> index 9920122018a0b..c3acbd26408ba 100644
+>>> --- a/arch/x86/kernel/e820.c
+>>> +++ b/arch/x86/kernel/e820.c
+>>> @@ -1299,6 +1299,24 @@ void __init e820__memblock_setup(void)
+>>>  		memblock_add(entry->addr, entry->size);
+>>>  	}
+>>>  
+>>> +	/*
+>>> +	 * At this point memblock is only allowed to allocate from memory
+>>> +	 * below 1M (aka ISA_END_ADDRESS) up until direct map is completely set
+>>> +	 * up in init_mem_mapping().
+>>> +	 *
+>>> +	 * KHO kernels are special and use only scratch memory for memblock
+>>> +	 * allocations, but memory below 1M is ignored by kernel after early
+>>> +	 * boot and cannot be naturally marked as scratch.
+>>> +	 *
+>>> +	 * To allow allocation of the real-mode trampoline and a few (if any)
+>>> +	 * other very early allocations from below 1M forcibly mark the memory
+>>> +	 * below 1M as scratch.
+>>> +	 *
+>>> +	 * After real mode trampoline is allocated, we clear that scratch
+>>> +	 * marking.
+>>> +	 */
+>>> +	memblock_mark_kho_scratch(0, SZ_1M);
+>>> +
+>>>  	/*
+>>>  	 * 32-bit systems are limited to 4BG of memory even with HIGHMEM and
+>>>  	 * to even less without it.
+>>> diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+>>> index f9bc444a3064d..9b9f4534086d2 100644
+>>> --- a/arch/x86/realmode/init.c
+>>> +++ b/arch/x86/realmode/init.c
+>>> @@ -65,6 +65,8 @@ void __init reserve_real_mode(void)
+>>>  	 * setup_arch().
+>>>  	 */
+>>>  	memblock_reserve(0, SZ_1M);
+>>> +
+>>> +	memblock_clear_kho_scratch(0, SZ_1M);
+>>>  }
+>>>  
+>>>  static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
+>>
+>>Hello!
+>>
+>>I am working with Breno who reported that we are seeing the below warning at boot
+>>when rolling out 6.16 in Meta fleet. It is difficult to reproduce on a single host
+>>manually but we are seeing this several times a day inside the fleet.
+>>
+>> 20:16:33  ------------[ cut here ]------------
+>> 20:16:33  WARNING: CPU: 0 PID: 0 at mm/memblock.c:668 memblock_add_range+0x316/0x330
+>> 20:16:33  Modules linked in:
+>> 20:16:33  CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G S                  6.16.1-0_fbk0_0_gc0739ee5037a #1 NONE 
+>> 20:16:33  Tainted: [S]=CPU_OUT_OF_SPEC
+>> 20:16:33  RIP: 0010:memblock_add_range+0x316/0x330
+>> 20:16:33  Code: ff ff ff 89 5c 24 08 41 ff c5 44 89 6c 24 10 48 63 74 24 08 48 63 54 24 10 e8 26 0c 00 00 e9 41 ff ff ff 0f 0b e9 af fd ff ff <0f> 0b e9 b7 fd ff ff 0f 0b 0f 0b cc cc cc cc cc cc cc cc cc cc cc
+>> 20:16:33  RSP: 0000:ffffffff83403dd8 EFLAGS: 00010083 ORIG_RAX: 0000000000000000
+>> 20:16:33  RAX: ffffffff8476ff90 RBX: 0000000000001c00 RCX: 0000000000000002
+>> 20:16:33  RDX: 00000000ffffffff RSI: 0000000000000000 RDI: ffffffff83bad4d8
+>> 20:16:33  RBP: 000000000009f000 R08: 0000000000000020 R09: 8000000000097101
+>> 20:16:33  R10: ffffffffff2004b0 R11: 203a6d6f646e6172 R12: 000000000009ec00
+>> 20:16:33  R13: 0000000000000002 R14: 0000000000100000 R15: 000000000009d000
+>> 20:16:33  FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
+>> 20:16:33  CR2: ffff888065413ff8 CR3: 00000000663b7000 CR4: 00000000000000b0
+>> 20:16:33  Call Trace:
+>> 20:16:33   <TASK>
+>> 20:16:33   ? __memblock_reserve+0x75/0x80
+>> 20:16:33   ? setup_arch+0x30f/0xb10
+>> 20:16:33   ? start_kernel+0x58/0x960
+>> 20:16:33   ? x86_64_start_reservations+0x20/0x20
+>> 20:16:33   ? x86_64_start_kernel+0x13d/0x140
+>> 20:16:33   ? common_startup_64+0x13e/0x140
+>> 20:16:33   </TASK>
+>> 20:16:33  ---[ end trace 0000000000000000 ]--- 
+>>
+>>
+>>Rolling out with memblock=debug is not really an option in a large scale fleet due to the
+>>time added to boot. But I did try on one of the hosts (without reproducing the issue) and I see:
+>>
+>>[    0.000616]  memory.cnt  = 0x6
+>>[    0.000617]  memory[0x0]	[0x0000000000001000-0x000000000009bfff], 0x000000000009b000 bytes flags: 0x40
+>>[    0.000620]  memory[0x1]	[0x000000000009f000-0x000000000009ffff], 0x0000000000001000 bytes flags: 0x40
+>>[    0.000621]  memory[0x2]	[0x0000000000100000-0x000000005ed09fff], 0x000000005ec0a000 bytes flags: 0x0
+>>...
+>>
+>>The 0x40 (MEMBLOCK_KHO_SCRATCH) is coming from memblock_mark_kho_scratch in e820__memblock_setup. I believe this
+>>should be under ifdef like the diff at the end? (Happy to send this as a patch for review if it makes sense).
+>>We have KEXEC_HANDOVER disabled in our defconfig, therefore MEMBLOCK_KHO_SCRATCH shouldnt be selected and
+>>we shouldnt have any MEMBLOCK_KHO_SCRATCH type regions in our memblock reservations.
+>>
+>>The other thing I did was insert a while(1) just before the warning and inspected the registers in qemu.
+>>R14 held the base register, and R15 held the size at that point.
+>>In the warning R14 is 0x100000 meaning that someone is reserving a region with a different flag to MEMBLOCK_NONE
+>>at the boundary of MEMBLOCK_KHO_SCRATCH.
+>>
+>>diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+>>index c3acbd26408ba..26e4062a0bd09 100644
+>>--- a/arch/x86/kernel/e820.c
+>>+++ b/arch/x86/kernel/e820.c
+>>@@ -1299,6 +1299,7 @@ void __init e820__memblock_setup(void)
+>>                memblock_add(entry->addr, entry->size);
+>>        }
+>> 
+>>+#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+>>        /*
+>>         * At this point memblock is only allowed to allocate from memory
+>>         * below 1M (aka ISA_END_ADDRESS) up until direct map is completely set
+>>@@ -1316,7 +1317,7 @@ void __init e820__memblock_setup(void)
+>>         * marking.
+>>         */
+>>        memblock_mark_kho_scratch(0, SZ_1M);
+>>-
+>>+#endif
+>>        /*
+>>         * 32-bit systems are limited to 4BG of memory even with HIGHMEM and
+>>         * to even less without it.
+>>diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+>>index 88be32026768c..1cd80293a3e23 100644
+>>--- a/arch/x86/realmode/init.c
+>>+++ b/arch/x86/realmode/init.c
+>>@@ -66,8 +66,9 @@ void __init reserve_real_mode(void)
+>>         * setup_arch().
+>>         */
+>>        memblock_reserve(0, SZ_1M);
+>>-
+>>+#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+>>        memblock_clear_kho_scratch(0, SZ_1M);
+>>+#endif
+>> }
+>> 
+>> static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
+>
+> What does "scratch" mean in this exact context? (Sorry, don't have the code in front of me.)
+
+See https://docs.kernel.org/core-api/kho/concepts.html#scratch-regions
+
 -- 
-Michal Hocko
-SUSE Labs
+Regards,
+Pratyush Yadav
 
