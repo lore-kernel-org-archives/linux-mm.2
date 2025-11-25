@@ -4,195 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6975AD0EE0F
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF5ED0EE0F
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:58:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C51376B0028; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
+	id BDFEB6B008A; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C01756B0029; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
+	id BB7A06B0092; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC8C16B00BA; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
+	id AA6C86B009B; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9696E6B0028
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:56:21 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36819130ED9
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:56:21 +0000 (UTC)
-X-FDA: 84150034962.26.7098B8A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 94F924000B
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:56:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 960F06B008A
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:58:36 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 669E288F04
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:58:36 +0000 (UTC)
+X-FDA: 84150040632.11.88528C4
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 826F340014
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:58:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NHiEiRYq;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764096979;
+	s=arc-20220608; t=1764097114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
-	b=a6QNC9PBxuJej40znKVdQZ77SKSyk/8ZVDeZSTFzF0/ddPPUs8SYE2WsY3oRMiC+EDLuSY
-	cIBio4rldQt95XJN6hh0RytCI70slZFI8objKIhTKawvGlwH8S794zr7LsogB2pjUcJa/K
-	0HqI89FhO6mv6HJe/MorrZji0p5fanM=
+	bh=1+zeOdZZaF4BJyqy5kMaeSWqNQvCyQPG+omQ/g0Gj7k=;
+	b=PuG6uYc037cubZrujtMNxT4NCUQElv8q8jhxKayvfUvMZDXCL+QAqf2ni3sFTo9nonE19Q
+	CE+YQMSyagYZaUter6hBzEq+DBEoH6OfiXAUJD1soj0E75YBWfjTHrjY+yltSw3hBqci/K
+	sT20oV4IO0Ioci062DjaoaMRGVDpGto=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VnkDbdow;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WI9x+Hjp;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764096979; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NHiEiRYq;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764097114; a=rsa-sha256;
 	cv=none;
-	b=RMeQblMR4TIr1BMglVsWoGMepY+CQr6maBfu+bhBaDo9Omfr1c3EHOBO4w4k6MUXBrFe8j
-	YW60Y69qpNylEeZYHYr4PrF/PXMjvJYHECjWilqzg+HZgYoNVjmpeKjMrbJbJwzs2iUcky
-	xtY1MDGbKahYw4lHjhGC/flPxhxmhM8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9672F5BD0D;
-	Tue, 25 Nov 2025 18:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764096976; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
-	b=VnkDbdowD8JfpomKJ+CQ55m5GyxNxjcZmaz1gbpHjxl6yn1XZCSMsjhdxQAeG/d6hm8cy+
-	QImqb7ZLaUcA0sD9xTMfxeY9PpunHAv9MxIrYNDWxAZAO3BqmeC+M9z3+JC7xe7hMr+91S
-	H474vubuLEJuJlLQvsdn3QRtJCXctiQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764096976;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
-	b=WI9x+HjppKEWPgDdr58Zx3sHlpDWL0Ua0SFxNCYnrE2Aw1mbWBoE+xpwH/yYn+v5CrZjM0
-	tz/Y+JvHVGzsSqBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764096976; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
-	b=VnkDbdowD8JfpomKJ+CQ55m5GyxNxjcZmaz1gbpHjxl6yn1XZCSMsjhdxQAeG/d6hm8cy+
-	QImqb7ZLaUcA0sD9xTMfxeY9PpunHAv9MxIrYNDWxAZAO3BqmeC+M9z3+JC7xe7hMr+91S
-	H474vubuLEJuJlLQvsdn3QRtJCXctiQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764096976;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MZhxcSq9jz3i+YAFu/iNlBsFEWcEIog5kMoH5BURTNQ=;
-	b=WI9x+HjppKEWPgDdr58Zx3sHlpDWL0Ua0SFxNCYnrE2Aw1mbWBoE+xpwH/yYn+v5CrZjM0
-	tz/Y+JvHVGzsSqBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46C4F3EA63;
-	Tue, 25 Nov 2025 18:56:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KvzCD9D7JWnGawAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 25 Nov 2025 18:56:16 +0000
-Message-ID: <b7804333-6030-4bfd-8e0b-4479f87060ce@suse.cz>
-Date: Tue, 25 Nov 2025 19:56:15 +0100
+	b=ZIUyxo7aF4Wnt0fb8phuw358n+u4nrjPwvfuEEjtwdvsrH/EIO6uFItUjqfm0rsMsNV80Z
+	VeuitWfIoygsOoBHPg6csxP8VhPPlyyqckZ4D9WPkiUmYNcrgbpO+uoJz82qQ2SMi9KAcq
+	W8orD6gEuGLtjgETYuOGPjYCnfypnec=
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-787df0d729dso58687047b3.3
+        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:58:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764097113; x=1764701913; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1+zeOdZZaF4BJyqy5kMaeSWqNQvCyQPG+omQ/g0Gj7k=;
+        b=NHiEiRYqTrFt3lDztOhHteg5tIkrTmDKSNzAkIvHbA0YWWYXC+ezZXPAefA1agBGyj
+         qZ+xLjIr7xYXH12VgjzqJs7IawfDssT2aEM7vTMGMox50nftOcSGBPMvo3qaF5dYHTGw
+         9qWrLlLSkk/XmNPsA5X8Zx86hy40MY+5ktEKW4VvHb2YLbmVwdyMzgkWcY4XOho+ZLM9
+         mVM5tPJMRmZlFgooYQIupLd4VanntEPEQiiNipjpQm1dppfqNZyDrqUQer8cjttA09DD
+         vuCPVvW08a2MLTktspOrXEmF5GnzBRe9KiwJp7pGBpHTlzMHh+NnbQ9okOa/7xLpeKFl
+         mdRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764097113; x=1764701913;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1+zeOdZZaF4BJyqy5kMaeSWqNQvCyQPG+omQ/g0Gj7k=;
+        b=V3T0Fp7ZOqjqdTXt8C6MEBowf0DLRQLudse/3GeutKQazzn4FbuidMelnEONIYeOih
+         sT9PnMA5FzTrMT+cMY/P1TmQ4v4VK/EiP/MHWROjjmdurs2e+WdvpGyB1wtfnUSlf2SC
+         HtA82m9vVHe+zE18NA4O/K7HeZUtpC+BkWvRPsEJF00Rauq4KrAwwXd0GxDupq4x0h8c
+         ClHVYVOeqxvVUpeS4QDvRQUViGPMKZK8X5E+RrhEscvPcsp1T+mJHFXNdxLWkHrBgxP5
+         VPehuhcSUYI+43uFXQRU3Z6YP23lgVZuE12JXRJNVtC4HrSva7say2lAPwkLAEQYEH6D
+         oh7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXceKkHXMZFzHY/3Ww+HnVRgADVfRSqQUBAoAmhM1/tBGPrEe9dWIVFHkpga5buUFpY8JDW3wG9aQ==@kvack.org
+X-Gm-Message-State: AOJu0YwElAe/VgrDX8TR0UPYHHSVILvzdMF5Punhg89OAiiGpDVg5T8X
+	DvP3XkQBTagrGYMY6scDj8vG/cPOcgaDgq0OPWr9X+QgFdjALY4m9rzo
+X-Gm-Gg: ASbGncs9KaChdUjU/w3egFxwwEdq7PSxnu+U3erEGrFn2vFvb+DX5dIk6EvT7KYKVwd
+	Lbq57dtj8IxTVlWkCXBWmqpefP97GJX7tpXRJhb4/MNFjGQJ7hDqm5zLe6PzkBVgAARReCArSB3
+	pJua/BjYpzI2ogKxWw/sNstbILyZV2DSquc2k5gum6pAhHlOUEwa16f+zwegFn44dEthHL6iI86
+	fXW5FizTHQjTvILZFRuLnK2S+iNxdUjvlvkRrm+/3x08LmMGatWrXaBdUeqZfteQdjWH7P9hu+i
+	JmlLh7D1IbGqY3UwdAGrU8VjJKph4/MvljgfuyO8y7E9QDcm5mbnwCV62kHXp7G1PRKvNKIaCV/
+	+ETjG7cqWQfrHdw5QYSZwWgO4aTfrhdV1eYUmZ2pg6mf/oS42/PhZ9LyMXN4FngH0/3HNb2X0Pq
+	9+fQE3z4Q=
+X-Google-Smtp-Source: AGHT+IEd3fC2WDscBWmJaJ6t/VrtBvr4q279/8luMzo4kTWQtijZrJPqNt4WkAAB0deXmKVtpnwI3g==
+X-Received: by 2002:a05:690c:45c4:b0:788:17d2:be64 with SMTP id 00721157ae682-78a8b491d25mr140972287b3.26.1764097113523;
+        Tue, 25 Nov 2025 10:58:33 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:72::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a9a39101fsm35977827b3.43.2025.11.25.10.58.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 10:58:33 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@suse.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/2] mm/mm_init: decouple page checking and init_on_{alloc, free}
+Date: Tue, 25 Nov 2025 10:58:18 -0800
+Message-ID: <20251125185818.1586946-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <5d0c582f-7e1a-4623-90d9-1dd6db443473@suse.cz>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
-Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Kees Cook <kees@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
- David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- "Gustavo A . R . Silva" <gustavoars@kernel.org>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Jann Horn <jannh@google.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Marco Elver <elver@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
- Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Matthew Wilcox <willy@infradead.org>,
- Vegard Nossum <vegard.nossum@oracle.com>, Harry Yoo <harry.yoo@oracle.com>,
- Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
- Yafang Shao <laoar.shao@gmail.com>, Tony Ambardar <tony.ambardar@gmail.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-doc@vger.kernel.org, llvm@lists.linux.dev
-References: <20251122014258.do.018-kees@kernel.org>
- <20251122014304.3417954-2-kees@kernel.org>
- <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
- <CAHk-=wjxj---dy5haOvNXjg_Xz-mDQciGL7OnJnpJpjYD9Moog@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAHk-=wjxj---dy5haOvNXjg_Xz-mDQciGL7OnJnpJpjYD9Moog@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 94F924000B
-X-Stat-Signature: wupu7ai8ugxu5nmjny3f8yku9ns1coxp
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1764096978-817576
-X-HE-Meta: U2FsdGVkX1+91TyWHUW0lhF077EjErivwQ2TdZVgXii4G/MMvkVwn8X3v6DebupNl6f/mOy2VFdgfNtQHtO0TEyeP2JsT/hEj4EPMnRC5R9TFWCd873zgiU8SLRXEThUJU4Tr5fS5EDt4DiU/dkiInRzjicy0TU0zIKVfuVTqYTebFnFWbChbMyW//tbyLmUaQHwykWY/ue0Yz4rA7MM/axrIg/Mkh9oz1A9q0DzyAQVqEY7mGp4J5SQzP2frKiN32jzHxLvQDRVo0WbPU1WbauJ9/DYSXhSFsV2O6zrKwkioWtfngrYbSjPU42NKvk2mxBj1RqpNNJW1Dr14hfaq4ti5PkfvN/4XFaQXAFXwuchjDZz+OpxNa+ujmkVXM/oEqMbtqoOpMzBlbLqSvnUT6CaS7+3g+ZpBd+BLrsThviVvRusacQtZKQ4YMkQIzANCPGratbyerXogbGc4bof4w2EALpSUpazkpMO7/x6USN3RO3j3m/q5QyCN9Sw3bSyRZsVeiiluNz0eMj1Z2FNLcEU9aDD5OVJ1T/ImCbR+Vc5u273F3ZmvrgoDXPLYyYsvPJ//qRce7UnR1mv9t4HOwOYkna/dMskDzJa+Ei/qD2xzm2bYAulzk+qXSVKTC3a3agaPljT2Lrj77GHZkkonxSUIXDws/WdLhSI1SNZzelW2Alds4cy/V8zMU3ZZWDC4frjSb45KdDXPMkkQk11tQadbBLproKQakQTF0AtXMDVS08rs0vf0BT0R7LKL+lRucwsihS2aL8rvO6leo88c6SxM7tvh8kFZmNNwnF9QrwoYOYUHhusjbJG5sPPOByT1KnWvNyN6FOhPjwP3kZ6ZG0B614Oh7OPUfik4BPeY5+dLefKnhlZ31uuaI1deevfmNcBgWB3f8x0MVQ6Bvacw/WXdSo1Djp9GT2xu3+vsX8tm6qImAD23SQfEfEigdudf9qvpNBpzn54p3iYTeD
- Hxsq2bvY
- FyAUrsM9b0ZiQbt5UO69T3SkhCh1YnhvQI5QQ1zj1aLsl86X3EhbkuaagHw1HW3z6LS9w6HDKbkDUc4gmnGFsmE+r9/GAeDNEFolLViSuRv79qySPBKBTRpGOTmgBZOKVwVZsheo7EWHPi/qXZjZEYgbMv8Gzs3d7WUNf2f1dYYYuXn93mW5eFPtqRfYHufIcqBiMjfGQbJO2BPDERSlA1cMpSOBhoOInFNFYOq+vlgDUYP9WAWB6AMFOe2iMLIzbh20ZwANdj0tvoChWY1jZC9iKAfQlHS8FMDJf3R0wyUCujggHitLJtJw25VQjrXufyeg3XyyCPK13ZidzGfIcreJ8lZIdYDN1Nnx6OCec0uAA4saovUW5SkCHG+NVUyR83PZRWG34mZcL+6cV2FhA7kJ/IiRmIIkim6lC
+X-Rspamd-Queue-Id: 826F340014
+X-Rspamd-Server: rspam11
+X-Stat-Signature: po3qi9hatwgznrsdeo8tskwunzbbbtbx
+X-HE-Tag: 1764097114-813108
+X-HE-Meta: U2FsdGVkX1/Rp01lb+hodmJ98AJih21wI/T70F+IEwMcGC2Gr8wB/xJG4LbQz1tGTkn4ioMabl7uj2GtW+Dnlf+rthISvuOjHCLLB/YXL/TpZhFwbbWBBXQyCxb2vAXPol3RBhtm6nSfJ1hDpEtGoFeU4UxEXstXxOohPyLx7DbWVNPwxyG6DAzs7ZXxtLGeup4uFiR01uSxCE6rwcTX2jLbZ3yNHMUPXGquOOWQMgL2c+6ef97l+Qz1Q7NbzsBmrC3KRjjQdY1/oROy19m+rji900fy20/n7S1WfcU0yz1l0EYOsMT/XL5VYOhnJaReIofto83F6etjCqDg1xqqotVj6fOpDZuFtN7U4pWj0XjZKeJNRMYOZuSxIEmWx0QdQzNr7olUaqrbGNjAMIiFOfxEmRJ+lWv8nUG+q8WBCIoFqcKI473ntMhGiTo8GaOhFYsC9AJVVn8xQbANQZIcsJ2R/R+AyQMkyJdaNbfN38DmwngZCbh4TJ6qgVFDAb/h3UuxSf/pbmOnPjhRmrSl8KZEbE8zF1JXL9dSatQzpGl6yS4TYt7NDwcy2bOn0WiO9hwHpWlGCxpyB02zRaW5N0hYCXs+hujhFmy1+Yw2g4DY/6+hK48yLChDk51mEBYs/E5OXKtesITbbgj+VY9Fu3y93eECuCQxDtf6UUDTPbxF9wOdYOpy1KjdtRj+6bF4uY8zb/O7PshgemEc9r4125oCcMt4cMYuizjc57LHZhmVs5z5sEbuBinJzsmPcUzMzoL7Ci/ObjIjn3quvtBUj6rEFcrpu0ErJXtEflS1gv5WTZ9QkPPO2M2VZWLhmqg1mt+XUuWv9/87VHnaJil9hSA7aedpzGvn5Ethdt+095Whr/As26VTwFFGiU8DV9gh4SCVJjDLacwzP2I8LJHo+3kpiy8GZXE1FMCiDII2HULT9DuLfk1BBnOEclW6cKPGec5YkDpYNOqF3+v3R4j
+ QE/rzLj9
+ sSE6AAfHTlsJ+v4tFexxpvtV1eIDdpp2GTVWUz6gqMUa3VxlHBRZu9bkVTUsqITK9j1Kf9dQhW6JFjCd/tJXAZom2r1QQ9I5XQkhjYUMvg2nJoJ/akxFLMb9p2f6SzV8QvMmlmzZ9SOF4aM2P9BX/FF1ACddeGR80J5kKJR8rEMN9d4hKTKRMnSzwfmUDtN7cr0zRWSeG9K4oFibJSqBfN0G4ErHUvhiiKN3FdwuuHomMlsrJRhjo7UefOnCJuJ2R0yCl8IPf7Yp8cGKZYylJtsXdIgERnP5uK8wK9gjxxWo/Jt7//anTINPYB/CjoOshbWwgbSE2yDM2Ow3/w2DCuSCiivHIWwSQg9f218OEHtzj1FXVCNkgfL6vP//j2K4wJcMX3rlcXhHqJUoWENcbtFf5BACc6MnhT0qJdlKdHtrPQWnhQx/aDY/TVTCqMwOwFPSVwcez3NcHDyD4r+vuF+wHHGbO5/1709JJs3uQoWxvV5e5wtST5wcAijkXnxqQTPdbrseqF2OLe/9sOMh5YDK+De3rk8mMSuql5M3UeL45WYahx2VX9gSriWib21+5SnE1p491h6MUQrNbBk9w2+80aGCr+m7ZCdYl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,68 +126,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/22/25 21:54, Linus Torvalds wrote:
-> Btw, I realize that we don't have a good way to do the alignment with
-> the current kmalloc() interface (we do for some of the vmalloc
-> interfaces).
-> 
-> So for now, it should just have some static build-time warning if the
-> type of the object we allocate has a bigger alignment than the
-> guaranteed slab allocation alignment (ARCH_KMALLOC_MINALIGN or
-> whatever).
+On Tue, 25 Nov 2025 19:06:53 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-Note that these days we guarantee more than that, and it depends on size.
-From Documentation/core-api/memory-allocation.rst:
+> On 11/25/25 09:45, Michal Hocko wrote:
+> > On Mon 24-11-25 14:54:07, Joshua Hahn wrote:
+> >> init_on_alloc and init_on_free protect the kernel by initializing
+> >> allocated and freed pages to 0 on allocation time / deletion.
+> >> Commit 700d2e9a36b93601270c1e15550acde2521386c5 ("mm, page_alloc: reduce
+> >> page alloc/free sanity checks") removed page checking from hot pcp
+> >> drain and refill paths, and instead coupled it with CONFIG_DEBUG_VM,
+> >> debug_pagealloc, page poisoning, and init_on_{alloc, free}.
+> >> 
+> >> As the commit suggests, the first three turn the kernel into a debug
+> >> kernel, while the last hardens the kernel against leaking sensitive memory.
+> >> While enabling page checking is relatively low-cost and tying it
+> >> together with page initialization is not unreasonable, it does feel like
+> >> a bit of a side-effect, rather than an obvious consequence.
+> >> 
+> >> With page checking now pulled out as a boot time parameter that can be
+> >> set independently, let's decouple page checking and init_on_alloc and
+> >> init_on_free.
+> >> 
+> >> As a direct side effect, systems that have init_on_alloc or init_on_free
+> >> will no longer have page checking enabled by default; they will either
+> >> have to pass the check_pages boot parameter, build the kernel with
+> >> CONFIG_DEBUG_VM, or enable debug_pagealloc / page poisoning.
+> > 
+> > How come this will not break existing users? What is an actual upside to
+> > get for the risk involved?
 
-The address of a chunk allocated with `kmalloc` is aligned to at least
-ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of two, the
-alignment is also guaranteed to be at least the respective size. For other
-sizes, the alignment is guaranteed to be at least the largest power-of-two
-divisor of the size.
+Hello Michal, Vlastimil
 
-> And I really think the first version should do the minimal thing that
-> actually matters, and strive to deal with the simple cases. The main
-> things that matter are
-> 
->  - the return type should be a proper pointer type (so that you get
-> warnings for mis-uses, but also so that you can use automatic typing)
-> 
->  - making the 'sizeof()' match the type
-> 
-> so honestly, I think 99% of the gain would come from something fairly
-> simple like
-> 
->     #define kmalloc_verify(type) \
->         BUILD_BUG_ON_ZERO(__alignof__(type) > ARCH_KMALLOC_MINALIGN)
-> 
->     #define kmalloc_size(type) \
->         (sizeof(type) + kmalloc_verify(type))
-> 
->     #define allocator(name, type, size, ...) \
->         (typeof(type) *)name(size, __VA_ARGS__)
+> +Cc hardening people for input if they are fine with the decoupling and if
+> docs for hardening recommendations or something similar needs updating
 
-So AFAIU this would be too pessimistic. I'm not sure if the alignment rules
-can be sensibly encoded in build time checks. Perhaps yes, in a similar way
-that we have compile-time size bucket selection via __kmalloc_index().
+Thank you!
 
->     #define kmalloc_obj(type, gfp) \
->         allocator(kmalloc, type, kmalloc_size(type), gfp)
->     #define kzalloc_obj(type, gfp) \
->         allocator(kzalloc, type, kmalloc_size(type), gfp)
->     #define kzalloc_struct(type, member, count, gfp) \
->         allocator(kzalloc, type, struct_size_t(typeof(type), member,
-> count), gfp)
-> 
-> The above macros are entirely untested. But they are simple enough
-> that even if they are buggy and I miscounted the parentheses or used
-> the wrong name somewhere, I think the idea is clear. No?
-> 
-> (And I made that "allocator()" macro use __VA_ARGS__ because
-> kzalloc_node() and friends would want that, but I think it's starting
-> to hit diminishing returns at that point)
-> 
-> Hmm?
-> 
->                Linus
+> The upside is mainly reducing the side effects i.e. being more explicit than
+> implicit. In practice I'd however assume people running init_on_alloc/free
+> and paying the cost also want to do page flags checking anyway. The more
+> important patch here is 1/2.
 
+I agree with all of this. Maybe an alternate approach is not to decouple
+the flags, but to make their relationship more explicit in Documentation.
+Currently, userspace doesn't have much visibility into this relationship, so
+an additional line in Documentation/admin-guide/kernel-parameters could
+achieve the same desired outcome.
+
+I'll also let the hardning folks comment on this before sending out v3 in case
+they have additional requests or ideas for this.
+
+Thank you all for your review!
+Joshua
 
