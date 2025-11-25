@@ -4,117 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A72DD0EE00
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 17:21:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FDD6D0EE0D
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 17:32:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBED56B0096; Tue, 25 Nov 2025 12:21:31 -0500 (EST)
+	id 92ECE6B002C; Tue, 25 Nov 2025 12:32:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C96BA6B00A2; Tue, 25 Nov 2025 12:21:31 -0500 (EST)
+	id 8DFA66B0096; Tue, 25 Nov 2025 12:32:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD3A36B00A4; Tue, 25 Nov 2025 12:21:31 -0500 (EST)
+	id 7A72A6B0098; Tue, 25 Nov 2025 12:32:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AD19C6B0096
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:21:31 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 707E61308A8
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:21:31 +0000 (UTC)
-X-FDA: 84149795982.02.8B356D1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6C998160014
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:21:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f0+AP+ps;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 637426B002C
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 12:32:09 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 019FC1305BF
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:32:08 +0000 (UTC)
+X-FDA: 84149822778.20.2930935
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6FC79C0014
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 17:32:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWQdZwpv;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764091289;
+	s=arc-20220608; t=1764091927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nFsKSOAAt+BJ2HW3Q+CmoZoy3mVn+ELlSFmfSNw3rCk=;
-	b=DZ0pdPk1EqaxuKA+hzic2f3aCOciDQLuxfx6ziGRBY0F+M6YhzF0pAauKzVx7oVuKgE93A
-	dlZAqZX9QCpjORinx7omRcbUhnVN/EMl5aZWudk15fwNemMY9WQnWTWd3feckluOxstxah
-	uerxOI2xPP3h9YCJK06CXJV77gpj//M=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kn3jPA/ciMnYR3bmUtnq7yBB6O7ppU3j7RGZEkUzueg=;
+	b=cn28cy8NbpKflm4panVnt4wXpt3WzZlOBw2lqPM6ClFbRhWfoQOtLX7MppzX6GaQd5qFV0
+	hhu9cDGajgtex3YFXp5yMVPJZRCYafiqmY6f2Ths+Vx9Vb9w9EzBU0zjHHTcq6eouN1Oi5
+	/iHZQhwXmNe/cLSp9XMDz3GZ9HxK52s=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f0+AP+ps;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764091289; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWQdZwpv;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764091927; a=rsa-sha256;
 	cv=none;
-	b=ciiEPkdz7oH8o0f2M7609EsN9QweDLKiDGJ2RgtJc+Jgp3OOOSHROVHDHayCz67gbM1WHO
-	odfIwRB/XDPYuBueSGRY1BFEUvOvafujCvwA+bW69PMDTA8/N/yLduGQhVU01upiTVO5gd
-	kog3mGYEGTyKR4Qj0Gd/OJEFZnDI3VU=
+	b=7KGhOCMH3OXz45PZU4EKT+4KaxPLivVd/wrM9PN0YjyRpIvXWtCaXiSVlgeifnxn7+4grb
+	EL5L6XytdVADYpp+8UDBGMm632cA5gWqsoN4OD6iIjfQ28Mi7B5ppz99YcAc31fCk0YwEZ
+	q4g4wxD5sKArvAKXInrtAVFNcZG79m8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 226CD43FF4;
-	Tue, 25 Nov 2025 17:21:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F6FC4CEF1;
-	Tue, 25 Nov 2025 17:21:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764091288;
-	bh=5V9QV7SiBzMU5nx3Mn2uqFLHCyID9A3N1YOoa6yxqY4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f0+AP+psoLoGzXaq00ep6BDykJP5aOdtZfoQZ4KAyuamvgXUZO/UGmEJZu88bAQIq
-	 Ph+B0PjesF0Ac7gLWJ9KCv+Omr0a+hSLWs0rbzhWkIUTz4dhCv1QM8hBT4VZXdt0Tw
-	 qAckYaIks0SEUeBlWRsbMccDVtm+g6LfRTNVGc0U=
-Date: Tue, 25 Nov 2025 09:21:25 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@redhat.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Peter Xu
- <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
- <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
- Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Kees
- Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason
- Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Xu Xin
- <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn
- <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
- <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
- <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Pedro
- Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, David
- Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry.yoo@oracle.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song
- <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Johannes Weiner
- <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] initial work on making VMA flags a bitmap
-Message-Id: <20251125092125.3e425e05382642ddff2db496@linux-foundation.org>
-In-Reply-To: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
-References: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 49p5xf9ch6m7su7ah5p1dk54t6y9rxcz
+	by tor.source.kernel.org (Postfix) with ESMTP id 98B8860148;
+	Tue, 25 Nov 2025 17:32:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C63C4CEF1;
+	Tue, 25 Nov 2025 17:32:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764091926;
+	bh=kP5/fJWMNMSXZ8ed7AiowQq4T3kL7YPPysXPzM8izAc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tWQdZwpv2T9LybEYr137pGMQYAxNBeR7X6/GaTeoduZ+wp3MjEui2c0YRn/v/cw1s
+	 WCE7etHIqF7xzVkrxDO186udB2bYNOHf+DOI8BwSwYlm1+5D8PfuNMS2bp4PH/akVm
+	 vWNQ8wzIZMxky1DlLTwiwlmLcCfhHOPcmt71RV9ILaMGy3mjKHfwwlV3MAlmyvnoo3
+	 BpALf/X37sv/3hWrBAtSMtKQbkkF9ofLOG1yVQl7oAx639f91/I10u5qlK8L/TUfrR
+	 +6ErejF14+svTg/LugLE6izbpxRjkrzSrKqw8kdXoLUAz1wluQZ++wk9Jf8v44LCzw
+	 fpAogXg2hNrig==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,
+	linux-mtd@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mailmap: update Pratyush Yadav's email address
+Date: Tue, 25 Nov 2025 18:31:49 +0100
+Message-ID: <20251125173151.29430-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6FC79C0014
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C998160014
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764091289-111180
-X-HE-Meta: U2FsdGVkX1/HRpX36NnTJ3x1jERCj6uUA5FyAuYl/27f7EXATkuP3HW+hX+KDLqOUhfWewb1oswbH1T/GoXdMRQAeIMBxpVOJ4rQ9Y4ie84ThExn2Rc/IXeUx93QjjfSa4hxYWLKC8kt9FK+hF6krLMQ+ah53fdlZ9K0ReQy6TEXZ8CeHnKhpoYsotULX4QetLe26P81BSgwCZRCJiACTP5tsv962vfCQX1rRyJh6R5r3JlaalYqTTA83xDJJKnEWZdieqTJ1CHLDT8FG0pWRn2sO84p/iIfXBPTd0Om1/N6qbQOv675EW/lvQztEUGXfJUtLh2XPFP4f9DBXWpJmsyW45LtZuxEEJYH7jP+Jzxdn4IDjxj8bgGJW3qqPuzZBrlffXtCy0HFxaL5hncFnnbn7sqSPLGOeT5VwaS5AG+vorWdEjguQcamUveqsuOiUeTzO1WOlLXgPJ+pY2rTf+jekqzFIq1Lcfwpt5pFxf780Q/m+Pe4Z+XizTc0H9h6UmhKSlWBLydU0zEFfhA/1aFfaqAK9QpweiRKXq8H20P5g5kpnDWeeY3qwN52Ze/DWplUovi0jwCkn+gSdL0VfzL83R/O6Tccvg95kQXyKlVWYo04yeWoX4TUFBZz2rRv9Ia1dHd+BX9m+4JWWR2Qe7zjTOHIZYIAsti6OQsGdD9TEAJX7vwDQhHvi9MlYNFFRzzHmhSMuHNBNa8KPGk3IUF0/roxEyqX1BPw8KjQACzRqWiBVWKxN3IR5yuO2vsRokId3vfVjFd3VPW4CGjV+RGkEVTeL3+mAKVkHFPZqCdhvQkCsHblYyDXykLK+2RUUsinvWdXXAjLJcnuU9Qm+PnhND+pseUjeo1ceUsiWr1oG3qGoqAYIjgHu8WYN8mfM8AlV1lTOUdVUprGpmy/qOopRx8W4IvwllB4hRpmBOLBQF0OWGByN2UhS6iX7Hr9mTxlwJfXMl6T1hkadbb
- ld4ZLtVW
- fTPXZywK0WH0v454VCxVm9RYHhHBeOITnrasWO5e+qxfOBRH7m3YucbHv+FACTvSLVKTDvTkwBYqL7I06J1NbsMLdWtcSQo/Py4cxj1bssl3xlSGvg9u7T3wYw5jDvFXRhOXmEXSkHS3bDJ1KbLC9Cm9YSyHLPRGwn5LK8BFVWvGx1cAdjONoW6RrA9Kuhhxw+am7mwL7deQaUHAFgrP4al4RJ1o2td6fSQt7+Y5bNRHC+HjVflHMsOn56jc2Ne0R8GtMdCnY4AYkFvbmmm9bs94aj5uxa403izcbDHlXnzp6nqmJlNEb6s+4nJUlyG9oayPCIILfFGPnKhTUz4iW/uPHXw==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: q7xz319ukkpcbj4jx19e5htbkssfnxqx
+X-HE-Tag: 1764091927-281185
+X-HE-Meta: U2FsdGVkX18yvxyqhvN8FYHgwkolLNs7jJLY2nP3bZiKyNAeWqk3vbyC1f2bijAlB+sO1a828KvZMhnN86EoiF3kZNMsDv2+jxyMBMVpQOp7ZpCZlykXf31uEdO1Ew8V8mYEE7WBwUgMveO0OIfanzQn2skznaAo7Z7+YGQRpISj4VVDe7roSbSmYgJBMqG4/qRCw0zwPId0Mj5WN/WpPm5ANSyxAkr+9l2vAkzPOgFoNi1fFY8zg+RPu/nrK5NXw3BPFYNvwfXCEFdEdDhB6Owq+csGCpVEAGTouKkdbL4llz4h00Bku9bAFtLkVmH3o6D2GFKPYO5wDrtQIW6BQ1B5mZmfx8Zo0ZzuXluHGi0/HzcH9fHHF0OeF3YTop7W/mnBwhy2T87cw+kwyUpBH1pchScMI5BHgbUuw94DvdxHCA+oekvAtL0Yl7Km6uU4Cuir5vsQ48iAyU08psJQ6lkcrtBGvNdM/wn0iv4K9va2KowSPLyxMiwYCBBgMPaMboC9x3p+oKdOWzFUHlatWDmdt1ia19RwfV91tJEuRra4o9eGqzIHZK+a9Air3F98bVQSffogQuxYOI2w80RMqckCSaJEfCqyv/BoVKSjhgP4HEoa0OK5edgSI14uOVXYSAyN+3oymHRO1oWZ0DHxqOQ90teUR8xIhX6SSL4uxWDkbVxBdkG0XsQDaUubrvUR8uoZR/MKqP3Be6taVttxecdQdTXLTB5Z+XlaT2dB1V2HiWm9RSSNwNJDyduFwiHIKtPCWr6GvMbq7+E5z/Qt6PgoCWWg4Q4IfCQ08/ct78pVZ8MXd5RIevFqI5fe2CgaC/x9MXvdUv6HsZYWJosztpcFFq1ee/ZVpCFmkpkus49sDAq+3/owpaX47fMCC2A8Jf0xz3DmiBZ7EYdG8cIKG4PC5dtcovlTQrrvbPe+5FgAnZmGDv52Nt8NTbCOADmjQqMw9LJtu3JJjzAUvdk
+ vu9Z6wHI
+ YDkGOWiZ1jQ+e0rD1S3ndP56N9ozrT9XtrT7XCdDO6x47XVlNZ1uZQmczG6FBhh6qTEdnFz90jtfziJLHTQNuxU4qp/5Rr+jPKkoophfXS7BN5U/eowVLgKDWvvWHnxR0m7FbugdV4Ueb30u7sXjZLfAwRuvkhvo86sN/9T66Wcruh8s60ynsDEekwo1JJ89n2TdftgHwxYC5kvosgd7cmIPBN9w2h13yjEzGXEezae3QVIktt9l7iEZgeKvjytCgDPGy8AfFcsbsLh8mxtRYQWKGDQYebPS1D1ispt4Lg43EN01mg+3QkIHPUtWX6iHA3Pe+Huh7ARMXnKgujOouL21KBnpmZ8EwtM0os/wkUTeuPFoDFAIgODr+xlt2IwuMnW5CD5sHnkA9rdSzoOr6kGHGV3qoWWeTjG2c3fZ5HIh2gx+EM80saIuG3oEghwpf/YJ2Dt9C27HXa/9ZcT3cMe6LMV6G9XDQ6ei/MuyvU7Q89qHa/EEySmdBWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,24 +91,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Nov 2025 10:00:58 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+I will stop having access to my Amazon email soon. Map it to my kernel
+email.
 
-> We are in the rather silly situation that we are running out of VMA flags
-> as they are currently limited to a system word in size.
-> 
-> This leads to absurd situations where we limit features to 64-bit
-> architectures only because we simply do not have the ability to add a flag
-> for 32-bit ones.
-> 
-> This is very constraining and leads to hacks or, in the worst case, simply
-> an inability to implement features we want for entirely arbitrary reasons.
-> 
-> This also of course gives us something of a Y2K type situation in mm where
-> we might eventually exhaust all of the VMA flags even on 64-bit systems.
-> 
-> This series lays the groundwork for getting away from this limitation by
-> establishing VMA flags as a bitmap whose size we can increase in future
-> beyond 64 bits if required.
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+---
 
-All added to mm-unstable, thanks.
+Notes:
+    Sending this patch to linux-mtd@ and linux-mm@ since those two are the
+    lists I am most active on.
+    
+    I plan to take this patch through my SPI NOR tree [0]. Miquel, let me
+    know if you have any concerns with that.
+    
+    [0] https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git/log/?h=spi-nor/next
+
+ .mailmap | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.mailmap b/.mailmap
+index d2edd256b19d6..cf42344098ffe 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -632,6 +632,7 @@ Peter Oruba <peter.oruba@amd.com>
+ Peter Oruba <peter@oruba.de>
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev> <pierre-louis.bossart@linux.intel.com>
+ Pratyush Anand <pratyush.anand@gmail.com> <pratyush.anand@st.com>
++Pratyush Yadav <pratyush@kernel.org> <ptyadav@amazon.de>
+ Praveen BP <praveenbp@ti.com>
+ Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com> <pradeepc@codeaurora.org>
+ Prasad Sodagudi <quic_psodagud@quicinc.com> <psodagud@codeaurora.org>
+-- 
+2.47.3
+
 
