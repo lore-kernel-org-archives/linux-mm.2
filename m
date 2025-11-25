@@ -4,90 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D04FDD0E6E3
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 13:46:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91037D0E6E6
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 13:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C5546B0026; Tue, 25 Nov 2025 08:46:05 -0500 (EST)
+	id E86A66B0007; Tue, 25 Nov 2025 08:48:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04E8C6B002B; Tue, 25 Nov 2025 08:46:04 -0500 (EST)
+	id E5E086B000C; Tue, 25 Nov 2025 08:48:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7F956B0088; Tue, 25 Nov 2025 08:46:04 -0500 (EST)
+	id D9B076B008C; Tue, 25 Nov 2025 08:48:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D3ACA6B0026
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 08:46:04 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73848852AD
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:46:04 +0000 (UTC)
-X-FDA: 84149253048.27.663FC85
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A6D9440008
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:46:02 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lcdV7eih;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764078362; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C5E656B0007
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 08:48:25 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7C48085E28
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:48:25 +0000 (UTC)
+X-FDA: 84149258970.15.33B6402
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E4E9B40013
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:48:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=KA6X2gA3;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf04.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764078503; a=rsa-sha256;
 	cv=none;
-	b=icaE9ItV61Dm+SrrOaBLEgiTmcxG1UDmIU7oeGDlDrqPCizRxiDIH/SQr3pRwmx85sffrM
-	jZG+fAreZ+nCTBrZeBr4UMZqEutk0nlQAds/xojXJ1ZsH/yp3nN9kb6ZQhGTQjtNHS1Rv/
-	9NOILXpH/nfnGyVnyL3hp8JrPxCjhBQ=
+	b=y/oqIWO/ZkxbTBzG9oO1DEnsqoIrR/sa2dtdMvF5BWdBimY0mdelXDSWBGGogqmQRzZ7e1
+	6sZ+4r1FkRHRyQhDprPzLAh2Db8y0Bp8GzGb5XDAKhOI6HwI4XG3SJpzcMEiYr8Iv5w+Qp
+	ufX6ATQSXIpBexez0x62iqqLA0U+wts=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lcdV7eih;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=KA6X2gA3;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf04.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764078362;
+	s=arc-20220608; t=1764078503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NUoeADxT0VkKE4h/ybzz40S3j/EuiATzB88i1IlDQLY=;
-	b=E8PmlQj0w08eaHtQTqNUfkWl4kOXlLuNr0xZb1/H7d3MdNg7uR+PNrcK8MXvd0KIFEv07S
-	pskYP4qoBek2PCRKCWn/yfNmPtO1y6BvXZDe8hpQqkgFVt2EmMXRgwAijO9uW1vAvAv5V5
-	zEQcNvG+5tjTgFXAQxDaiE8vy7w4NPs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76E8E43912;
-	Tue, 25 Nov 2025 13:46:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AF1C4CEF1;
-	Tue, 25 Nov 2025 13:46:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764078361;
-	bh=dl+oPp/GipwLpjlWzXAhu4z0Q+oNDkuAziTjJDqxIrM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lcdV7eihvC0Jk/3ytxRRdD1z9X+DUj1r2zKdiNuXwXfrjInezOai08J/l1JHj6y6q
-	 D+oZEsGd2nN6o3kXIQ6Hy088r0O9Dlb/9MC9Au1CiJkAMgMVRjSydFAXbT2eCotU8F
-	 II2V4q2c8Z+rvPfCFLeV28/11PtXgJSt2sNd8h1uS8EtuQ2DgwocXLVKC9H6jiB2ru
-	 2zx5oQvc2/ZQhDpylsX1dMA1abJhOct5KJzQ8lbCY63KpVKCMDBZuqht6RmEZox3cI
-	 jrTnIwweJX49Woo4OG0ceQ14IrUTVX2FD6S8CO/jCW7l3Tt16OnyPd2T56NNwyDCQa
-	 3XwYpK9VfYeSQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
- <graf@amazon.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] kho: fix restoring of contiguous ranges of order-0
- pages
-In-Reply-To: <20251125110917.843744-3-rppt@kernel.org> (Mike Rapoport's
-	message of "Tue, 25 Nov 2025 13:09:17 +0200")
-References: <20251125110917.843744-1-rppt@kernel.org>
-	<20251125110917.843744-3-rppt@kernel.org>
-Date: Tue, 25 Nov 2025 14:45:59 +0100
-Message-ID: <mafs0pl96w7hk.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=KHz/4vbgS6sTT3o3BvksbAxXi7O2n+1XRJhlBaRAqSI=;
+	b=kTojOnb3gLXK3RnlnlCY8QTqjAEW3OjXu4rn+nfuFW5YayCQMgKMGVGcZvM90MI35we71x
+	iaU8lnlSbMAhN359Tvo11dkuxoQFLOhc43J7jOvRyG79YPgNALCVz1LgB8D20PEubXIfne
+	6PHaq8JapoTKPSWnquaYZvhYxpQieg4=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 04C1640E016E;
+	Tue, 25 Nov 2025 13:48:19 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id kh811-bYK1OA; Tue, 25 Nov 2025 13:48:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1764078493; bh=KHz/4vbgS6sTT3o3BvksbAxXi7O2n+1XRJhlBaRAqSI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KA6X2gA3VhjJRhvRHvwBHXP/jtHRH7U2BPitygYsS0EWwts1kzF84jsAgZGzYlKff
+	 S3e64yn40czjGuTnHbutythMrFYbXsq1cM/bhMiTZpCiNRZS5XXUklnyN8uU8w8CAT
+	 tV9tB9BHNcNkVskOD1SrAD5T50bTvZpS8Ke932FLzQb7PmjgEHvavujKEvJAkYbsMq
+	 tdFVCuO/paFvPo77JaQcbAQ3I68njbqAiZTAOjRxg7ykuY3f3thrI1QgKMyU+UzOYf
+	 bzO85ajCOaAP6hMxPovIz9izPK2Oks5TpMM1DPnKLvs1eljAloIO7CHV2zrTT6H+a1
+	 pH2DnoynIS8T4UJwArTcaqw1UGy3Sl9qZptloMWZqMmbXOrpPC7IvmG6eGLTAQDAKB
+	 +e4pCFypfJFHPhyaVaWPKQSEYbU3OOZIhub7uHabqTPHgLCkya6FuXvUew2oTi4ob/
+	 Tc1gJ/EgZ13SgpXbbJXPBSXBDtxrWjsuzv0VcvSPxPi1PwbDtNM6Owe5yKKCgedh83
+	 AsFLvSVR5nzOqH0uDU4gCYqpkNzftJ2aNxFMSo4dz1jGXJrmGKFH2Fv/0eOhYSCRAL
+	 DafO/QK3DhY/v15yExEy0usZ/koz20Iut3v1vHLifCxrJhypVJToV5//v/UqRE779g
+	 nNdKP4+uzSiI6qG/Mfb/1IeM=
+Received: from zn.tnic (p57969402.dip0.t-ipconnect.de [87.150.148.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4C30040E015B;
+	Tue, 25 Nov 2025 13:47:56 +0000 (UTC)
+Date: Tue, 25 Nov 2025 14:47:55 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	akpm@linux-foundation.org, david@kernel.org,
+	dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
+	mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
+	tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+Subject: Re: [PATCH v9 4/7] x86/mm: Simplify clear_page_*
+Message-ID: <20251125134755.GMaSWzi-_vZwdkFcdp@fat_crate.local>
+References: <20251121202352.494700-1-ankur.a.arora@oracle.com>
+ <20251121202352.494700-5-ankur.a.arora@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251121202352.494700-5-ankur.a.arora@oracle.com>
+X-Rspamd-Queue-Id: E4E9B40013
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jqq9mso6yp1occcezz4s4mqdh3i1ni8y
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A6D9440008
-X-Stat-Signature: 1mqsqzgdib5kfnk134xsffzkux1fzpft
-X-HE-Tag: 1764078362-154167
-X-HE-Meta: U2FsdGVkX1/9+FnWfbhRnqkJedjWQCWYK5+ug8hZkn48T19lIZ7YwKBLC/VV7kS0GRjqZQCDXhrXT8GpSa04ozKMdE0YZQQ+VEbAgnABqI1Hn57c9U5skIY4DK/MX0DjICEKwJBXVUSz3tzcTHqyTrKRDVZGD5R+klx+Bg53WunZvZCbeOj+ey07+J+IRWM91m93Nl+JzSK2K2McEC8BpE+87pmYae8P2wAoEF6cUibiqHsV+AquEmd+6ezQHbxufZJ2eFS0sTufPEkNiOniTtyHFSRANd/dqaeVS2iCWNR7e0yWcShBJDWoa3GnvPodV3XnpDCkU0FTBE4mhEeGUrwwPBGJ3c+P3UGWjOKI8rtdfURXs5XTUwA32eVK3zC7aOmQIoelDU03Gmx06hGZjHHyVUAXFCtr3TVNkKHtUNNdQtwfAiNlVpSeUvXAzOcdvucH/YF9x5Wld+j4/wttOQEfttvmQIkPYPZ7qg7JO0i8o3gq4vyFTkqMworRuBXlMOKbQbGpG1InR7yCJrV59M0Ero67A2ks6RMGijjPUGVRxfYUp5M/eZ1txPetTVirYZkaAycEmgoQCqEfWiiAKYidg7pAQAqfUJUO/S9tCryxmC8ARZAIluQufp97aa2Rr11cNSvfi+0UsTUQOeJi9okJvDSfmH0JSYZyNoKKisoaGEAflMd3cXVty4oFX8gGWXF0SEGtqbmGE3/6XxCvPRjemnb9wSj1rcvt9Y2QxDjsYFnx71nVPhSk6FSwRU7eNHtCJ/h5K9Oj06PviSbuV5CRyIThZxnuEV8tZfTAkJTvNidssmaEVGyt/n05LUg2bCu3ryW95z/6NQCJ3d9yzvxX28ayk7blXFO8/Rkfo+sgy/Pm+SbzBJEYRSjMX1GqmDfsc3ft5vh4zzWSqvV/4YbKw/PgrgzSjf2rk1yiRz76Sv6jrBV5Yfx4ZAE4EnJm+MKBE0z++ZfjyWVURI+
- rRtANG9N
- TvoTubkbMGATvim5gLkp6/wx1+hlaIEgqa61vvS8grpLEMJeWtzkmmcwXezdj+Yn8ixK8BWBbEn4e8bxinHy8Wa1ljEQ2lSJtl9mThWIfEjxGK0O3wHCZt4CPRfoT1ptn8A/N5DPbkdC5HLKd3JDhIajPOJfeqguUx8ml3Xl1DX7gCE3dyvrJGkx5sscZxep5fLIG
+X-HE-Tag: 1764078502-774717
+X-HE-Meta: U2FsdGVkX1/+I4qgTW12GvOC5ywhXXl+R3LDpo2VNDKE+V8sfUOyWkzQCR5muAqpbAjfA7hkzWwK1HokDG4DZiFm6liFXn32OJ7f/D9Ez+F5eEAVfQ1CFROBd2le5cyLvoV4E/6Pr5zc9fGZVOa9XbF1iFv8VeZW8Otj5aoohp/mkDFy4jpumJGYGIwGEmpynRqYSXTw5mYdrz46ViAK3rD02frDxjDMbjC22MzFDho9k9pvWL+aHmYYQdxDGXKsq+5RBV2n0jrUOh/JXT/cdj/jWvu8xZsMAXwfchBvMREmZnfbYvkWRJ6qXJZhqJjSymD7gfrel6oOfpjKYJgSYopul+/g1FjexQhRf5rzcwfzbq8H4ba8RHwKVyaNlwh3v3VJ/0VHBbtCnz5mi8Zzzz+xTaEh2NmwT1AY7mL08bbaEC4jcn4j2gl80NWx+8UkGg16AM395saDda+1Xhp4Qjf54TgBUFt5wTEpwosAXEChQMdUpaSZ4rW7wEiEda/UszmjmBbAGjTVQYAVZMAJ6bEAhNhHhFvbR1oZHqAop0NnwrY7j06TPwyvqXnEZNBYu1m1V/f6dDmrnJ5HJon+xu44zT1WU6agYgzXZ+poAD8OsaK0a80q5XI0b5b5fxmnp3d7lNcbC4ZqG09nKDf0Rf0oZ6ASx3T6/nJE/hpQctgrKSdJfbm415YmP8BB7mQEWdinrgiLaqbR6RyzM5LoAGkTJDel9E/xrgA7YAq/SRZLlgIuXT9frbZ9ikx3uYdi9Q20M205MD3lcofi4uef1ovdgap32veGYPLgrbQuD8G3KBK8w8OGHBz5ge2zXs13rXZ/YOweHloRE2Y8Unbmy52euZpzqfg5ncO/pAYM4gBoksvUHc/J9IUK9ihL1/MhWQAYnFRnhUQphmVAs6NK0Y6vapmqU0w/tLisrNOrfrU9DvWU7UiT0odTFoRhQY5/aCWLzOwPVnOph0LutEk
+ Ize4Dw5u
+ HvRbIDi5lWcNqS1b9+/Dc+usgdEwmZ/R27vlFCnUTSbj0RgfTVbUB+hc2elhCmnzLq+g40+a9JPydyTM5gNqpS/rKqHzvj8H30bievhFatAZczKYKjcOsEKLv2i12O2VkqNQeNh7RHjvt1s4DiD+KLaJHvT52jK3yQ3/VZGRSz4TDqBzKdfloQfUVRsmLmMsAoAc3HMXXviylYHHjXVt+YFLP7yiFhmjW3kBRwWpu//Rm+dHyfcbsDZidhYdPhCumYsjlXhfNYQQLoz5Lfwp8PVAsJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,117 +108,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25 2025, Mike Rapoport wrote:
+On Fri, Nov 21, 2025 at 12:23:49PM -0800, Ankur Arora wrote:
+> +/**
+> + * clear_page() - clear a page using a kernel virtual address.
+> + * @addr: address of kernel page
+> + *
+> + * Switch between three implementations of page clearing based on CPU
+> + * capabilities:
+> + *
+> + *  - __clear_pages_unrolled(): the oldest, slowest and universally
+> + *    supported method. Zeroes via 8-byte MOV instructions unrolled 8x
+> + *    to write a 64-byte cacheline in each loop iteration.
+> + *
+> + *  - "REP; STOSQ": really old CPUs had crummy REP implementations.
+> + *    Vendor CPU setup code sets 'REP_GOOD' on CPUs where REP can be
+> + *    trusted. The instruction writes 8-byte per REP iteration but
+> + *    CPUs can internally batch these together and do larger writes.
+> + *
+> + *  - "REP; STOSB": CPUs that enumerate 'ERMS' have an improved STOS
+> + *    implementation that is less picky about alignment and where
+> + *    STOSB (1-byte at a time) is actually faster than STOSQ (8-bytes
+> + *    at a time.)
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> When contiguous ranges of order-0 pages are restored, kho_restore_page()
-> calls prep_compound_page() with the first page in the range and order as
-> parameters and then kho_restore_pages() calls split_page() to make sure all
-> pages in the range are order-0.
->
-> However, since split_page() is not intended to split compound pages and
-> with VM_DEBUG enabled it will trigger a VM_BUG_ON_PAGE().
->
-> Update kho_restore_page() so that it will use prep_compound_page() when it
-> restores a folio and make sure it properly sets page count for both large
-> folios and ranges of order-0 pages.
->
-> Reported-by: Pratyush Yadav <pratyush@kernel.org>
-> Fixes: a667300bd53f ("kho: add support for preserving vmalloc allocations")
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  kernel/liveupdate/kexec_handover.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index e64ee87fa62a..61d17ed1f423 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -219,11 +219,11 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
->  	return 0;
->  }
->  
-> -static struct page *kho_restore_page(phys_addr_t phys)
-> +static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+Please put here in BIG RED LETTERS something along the lines of:
+
+"The inline asm has a CALL instruction and usually that is a no-no due to the
+compiler not knowing that there's a CALL inside the asm and thus won't track
+callee-clobbered registers but in this case, all the callee clobbereds by
+__clear_pages_unrolled() are part of the inline asm register specification so
+that is fine.
+
+Just don't assume that you can call *any* function from inside asm due to the
+above."
+
+> + *
+> + * Does absolutely no exception handling.
+> + */
+> +static inline void clear_page(void *addr)
 >  {
->  	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
-> +	unsigned int nr_pages, ref_cnt;
->  	union kho_page_info info;
-> -	unsigned int nr_pages;
->  
->  	if (!page)
->  		return NULL;
-> @@ -243,11 +243,16 @@ static struct page *kho_restore_page(phys_addr_t phys)
->  	/* Head page gets refcount of 1. */
->  	set_page_count(page, 1);
->  
-> -	/* For higher order folios, tail pages get a page count of zero. */
-> +	/*
-> +	 * For higher order folios, tail pages get a page count of zero.
-> +	 * For physically contiguous order-0 pages every pages gets a page
-> +	 * count of 1
-> +	 */
-> +	ref_cnt = is_folio ? 0 : 1;
->  	for (unsigned int i = 1; i < nr_pages; i++)
-> -		set_page_count(page + i, 0);
-> +		set_page_count(page + i, ref_cnt);
->  
-> -	if (info.order > 0)
-> +	if (is_folio && info.order)
+> +	u64 len = PAGE_SIZE;
+>  	/*
+>  	 * Clean up KMSAN metadata for the page being cleared. The assembly call
+> -	 * below clobbers @page, so we perform unpoisoning before it.
+> +	 * below clobbers @addr, so we perform unpoisoning before it.
 
-This is getting a bit difficult to parse. Let's separate out folio and
-page initialization to separate helpers:
+s/we //
 
-	/* Initalize 0-order KHO pages */
-	static void kho_init_page(struct page *page, unsigned int nr_pages)
-	{
-		for (unsigned int i = 0; i < nr_pages; i++)
-			set_page_count(page + i, 1);
-	}
-	
-	static void kho_init_folio(struct page *page, unsigned int order)
-	{
-		unsigned int nr_pages = (1 << order);
-	
-		/* Head page gets refcount of 1. */
-		set_page_count(page, 1);
-	
-		/* For higher order folios, tail pages get a page count of zero. */
-		for (unsigned int i = 1; i < nr_pages; i++)
-			set_page_count(page + i, 0);
-	
-		if (order > 0)
-			prep_compound_page(page, order);
-	}
-
-
->  		prep_compound_page(page, info.order);
->  
->  	adjust_managed_page_count(page, nr_pages);
-> @@ -262,7 +267,7 @@ static struct page *kho_restore_page(phys_addr_t phys)
->   */
->  struct folio *kho_restore_folio(phys_addr_t phys)
->  {
-> -	struct page *page = kho_restore_page(phys);
-> +	struct page *page = kho_restore_page(phys, true);
->  
->  	return page ? page_folio(page) : NULL;
+>  	 */
+> -	kmsan_unpoison_memory(page, PAGE_SIZE);
+> -	alternative_call_2(clear_page_orig,
+> -			   clear_page_rep, X86_FEATURE_REP_GOOD,
+> -			   clear_page_erms, X86_FEATURE_ERMS,
+> -			   "=D" (page),
+> -			   "D" (page),
+> -			   "cc", "memory", "rax", "rcx");
+> +	kmsan_unpoison_memory(addr, len);
+> +	asm volatile(ALTERNATIVE_2("call __clear_pages_unrolled",
+> +				   "shrq $3, %%rcx; rep stosq", X86_FEATURE_REP_GOOD,
+> +				   "rep stosb", X86_FEATURE_ERMS)
+> +			: "+c" (len), "+D" (addr), ASM_CALL_CONSTRAINT
+> +			: "a" (0)
+> +			: "cc", "memory");
 >  }
-> @@ -287,11 +292,10 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages)
->  	while (pfn < end_pfn) {
->  		const unsigned int order =
->  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
-> -		struct page *page = kho_restore_page(PFN_PHYS(pfn));
-> +		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
->  
->  		if (!page)
->  			return NULL;
-> -		split_page(page, order);
->  		pfn += 1 << order;
->  	}
+
+With that:
+
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+
+Thx.
 
 -- 
-Regards,
-Pratyush Yadav
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
