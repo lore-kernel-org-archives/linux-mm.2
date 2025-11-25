@@ -4,88 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73D66CFD37F
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 10:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C094CFD37F
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 10:24:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAF946B0011; Tue, 25 Nov 2025 05:23:24 -0500 (EST)
+	id CB0D36B000D; Tue, 25 Nov 2025 05:24:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C872E6B002F; Tue, 25 Nov 2025 05:23:24 -0500 (EST)
+	id C61196B0031; Tue, 25 Nov 2025 05:24:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC4046B0030; Tue, 25 Nov 2025 05:23:24 -0500 (EST)
+	id B9E2B6B0062; Tue, 25 Nov 2025 05:24:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AA20F6B0011
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 05:23:24 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 658F513B8BB
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:23:24 +0000 (UTC)
-X-FDA: 84148742328.19.3E133C5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B111740012
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:23:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d0cYjFcB;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A915D6B000D
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 05:24:05 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DE79BB7CD
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:24:05 +0000 (UTC)
+X-FDA: 84148744050.18.A30BA55
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B645840014
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:24:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JnWfmxlY;
+	spf=pass (imf12.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764066202;
+	s=arc-20220608; t=1764066243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fRNQMM0bXpIaWPLa/w3KH8tGaU7dPE2ryZviRFbGgDE=;
-	b=BPqakxNBhzJAoJLsoXgaSr6f17m4qwX3dl2RAVOxyoHNVR4zSBvejlZCQZEI/Z54Fy+AAY
-	9SWse5wAwFLNFZ284mGyOd9+hwvu4NLJAIcR/zUI84oxlgTvVQjbELE9FN9spJA7MDS6As
-	rPQ770bQcsb5wmMZc6PLtFYrbYtY5zI=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d0cYjFcB;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764066202; a=rsa-sha256;
+	bh=edAiJSTSGa5QPohWJcC6urhFX19eDaaNWnRGWXoJVzA=;
+	b=DQdlWswmwhJIH1vum+G+TzfD0xpatMq3UR4uwqEeePf0iyuQGDfT9K3H7wfKqRxyNPWYvY
+	sH+gMPKyibIFdGJ0y0PfB3tv7ix5AvmZS9eLCXxR70Ud428y5xllTjHOax2agG9/a59WzM
+	QYpkt4lLyx1P4uHgZpMeujBgugK1Kug=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764066243; a=rsa-sha256;
 	cv=none;
-	b=ZZC2CqpBTLnVJxaQCts8PDSpimsK4jh+5D8T5PSm6T9vhisKLQK1K71y/OMPJzQRWVoX7Y
-	lu/6nHuxafW+ZL3o1Obss9RU74mzLFeDYNL1KY8AJgwwioFBFc9yKDIyh57yEmzSEyqpHI
-	qeTjqlGNq0WOgb+vc/Rarb6e2EaO5wU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A2FFC42A9A;
-	Tue, 25 Nov 2025 10:23:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B05C4CEF1;
-	Tue, 25 Nov 2025 10:23:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764066201;
-	bh=53ruduyJmEZa17lWjXksTMAjCjoY41BSgCSmU8ZSx5M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d0cYjFcBVVSiEcYkxlP4OnCM79l3Mi5+cW2wkzbx6q98XMT9KbC3rUzbv/Oqg0q5u
-	 +bk4Kr5fydN2ueaCMuuqHPXeqwH87MYhx15UgaTblj0KxXREGC+2Ft+poMatPP1mb5
-	 7z7fuK9gC4XAsj4yEiqGZnPMlDEPSRnKpeTj77nV2MroItLH+slAmzeWrpN/k7uU2v
-	 XH9/5UrYWMdCdhev8/Z1DR8cra2S3naAG4scq4BvRjppysiF0MQhbmoOdi9xZ57up+
-	 Zp97Ono/2uKQEmsGmGW5ZZCeOuIsGMJOm8sM3gDEBkTQKWz/5Mpsmt1R5g6cReRSOd
-	 avgaBBcHAneOw==
-Date: Tue, 25 Nov 2025 12:23:14 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/2] mm/mm_init: Introduce a boot parameter for
- check_pages
-Message-ID: <aSWDkuJEdk9cdVCK@kernel.org>
-References: <20251124225408.2243564-1-joshua.hahnjy@gmail.com>
+	b=YnF3r8LMqpmQyorHGAP0c59e8f0p+4r478rQobp204CgXWsNN46maEqDARupCM8ad1k3n2
+	A6hG3NXtSIfwtmAnxpD2f2U+nsX8vdLC/YoBm2cQN3PwXnmYn24jc5uCMGbVndvxu1RdyQ
+	Kw0bIkpSvSLirsSmPG6B2AStzgXyPg8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JnWfmxlY;
+	spf=pass (imf12.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764066242; x=1795602242;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=VyZt21DwQ3vPn9KNWUNLNyJdvbaxb1/cxFvzwpMVjiE=;
+  b=JnWfmxlYFT2BybLNNo0hsvwmytK8lzaGua9KbyFGETKBlNbwVUquVpKC
+   z99CD8ry17rRfmixmJVi51BVOawQUuu4UPpSKHX1NnfTBttGuwlllJKzi
+   WecgnRquafvwHgnIDRLrlCVXhmLc0PUvERqwx4h245Uyd5r13tK2Wvihn
+   9FJYMuUCDqz9ip8l7nDARgKUr3fcXFaZr4HTSCLCrrl5088PDNH9dB9Ux
+   vgPQoWOJyWz5lJkXOuvAsRix+ahFcGWlKB1IYcDFqKL7zXrom/nL5vEFx
+   ZlehN/vECfLEba+taRmeHUX7zJ/Ctd19wB2NwKQuzwctibRvVwWnZIuRo
+   w==;
+X-CSE-ConnectionGUID: 1BcW1CnQSUiyZkqzujJpZQ==
+X-CSE-MsgGUID: w+5RpeKiRdiUpnFcEB20KA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66115278"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="66115278"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 02:24:01 -0800
+X-CSE-ConnectionGUID: RuvfkC8PSQOdWg++dunKbw==
+X-CSE-MsgGUID: iaJn4sb2RBOUOVBJp1O2MQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="215953712"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.152])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 02:23:59 -0800
+Date: Tue, 25 Nov 2025 12:23:56 +0200
+From: "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>
+To: "Stamatis, Ilias" <ilstam@amazon.co.uk>
+Cc: "nadav.amit@gmail.com" <nadav.amit@gmail.com>,
+	"david@kernel.org" <david@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"bhe@redhat.com" <bhe@redhat.com>,
+	"huang.ying.caritas@gmail.com" <huang.ying.caritas@gmail.com>,
+	"nh-open-source@amazon.com" <nh-open-source@amazon.com>
+Subject: Re: [PATCH] Reinstate "resource: avoid unnecessary lookups in
+ find_next_iomem_res()"
+Message-ID: <aSWDvPVZRTCCfRpV@smile.fi.intel.com>
+References: <20251124165349.3377826-1-ilstam@amazon.com>
+ <20251124085816.07dbf5a4ec6235b2943840a0@linux-foundation.org>
+ <c7411175b332f3befb5bebb6a75c7b91f2c1dbbc.camel@amazon.co.uk>
+ <aSSqIzJWKTe9hs2f@smile.fi.intel.com>
+ <f3fe7efd74c6011ddb35e1f1e90eba43af864aa4.camel@amazon.co.uk>
+ <aSS3kXfoBppO1a-Q@smile.fi.intel.com>
+ <de5d9d0658a8966ad8e523a84185398c216726fc.camel@amazon.co.uk>
+ <aSVRrEDV1hWKhRmp@smile.fi.intel.com>
+ <b9f8623fb383ef21bb47e6c9716c2c389581d12d.camel@amazon.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251124225408.2243564-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B111740012
-X-Stat-Signature: cy7fkq6n37iabk3khhf1wps1g9p74bi3
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b9f8623fb383ef21bb47e6c9716c2c389581d12d.camel@amazon.co.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Stat-Signature: u9yidryrntcxxtrxk76f4fxgcdakxash
 X-Rspam-User: 
-X-HE-Tag: 1764066202-115831
-X-HE-Meta: U2FsdGVkX1/5eTkDLcol03rFFop2LmHYQAqDIbh72hy8VjL3igu2oBg+CQ+JxQlAU1gFh4PffyhP/GpGqkuqz7SwD0kVR+r5pQB+rGaqCaTsN+VKc6W9ekCglsYhkcY2sD9BazPOwfs3KSWVBprzwFiR6MVnJLsTDjl1UlU0STaxlr81E/8spcKjgulMts28coqqFr9Xyft//kBhzHciB/fkZ/uC35clYZLIh7f2aI6Ep2ajFBHJ2Sf1qID4kraySQsU8vADYj38pJZFyEpYEtUhTtVUNFQIto+og4nsKyZXeGVFz9+koJAsQkklFUaS/LphdeuKUZDUoOLqR6orvs6YjEKuALVGLh3MM8VfhcLuM9R2s5zvPdZvDvEmZZibD2wLkSPx3LMjy1bLeZOhqfN8RUyfv+K64xZ7YLz0Q8DtEycGyyxX2spQ+ZEX1PBy9S2hkh2ZfKSs4YVzc5ksi5O1VXT/Ma5c37225ripgH/W0hc7JnHmlmAA81ftWYFgCws3im4xERDlbQQrFYxL24Kah7/ne98J0AMqXZU5Ag2EIhPWMoL82KByknsa7b50CTkCnW4SqBPwtPNmTAn+z7f9a4BTo5yGIu28uf6LoEMS4tLnbdrWmeVwKvSLxBa4+IV03b1F47EfLKoyxUHlbVS+OKCelFZq2ZAOsjvpgNNR8GPaHF/q6P9X/H2i03qCe+zUHCQSMstHJQLZ6CSWinvut3gYPLe6qSpV6qglyBL7I2YmDCNuAM5FdLPSPiZW7+0NP4wvi3apWKVZpcN5sG0DYsreteICcOw5YSQ/9hIW653YHJx1WZD6XlNMZii7OzB4H59981dZCGcvy6rFV3Z5d8NFBbXT/koBEQlnTgdw6/XoiGhp/nEPky4LgMa0REonT9re42z8+p9Yg7yQhuMz93WPBINXfzVlCiaa0NA9Fo3RhA4uId4dXnk68WTo9vbhqmL98g09zXRdBB6
- Hcnj7cf0
- JrezB70BGsJDlwnj3qUrvJnBx2eZz+h1bScpg+WcZszwZkTcikf4+pmCj4xC8nZ19X0G4R+0CCuJlm6eUT6SZRR8mnoYL9gNE/wL1cBops04JVWFZx9BTz7pManwiUdjZCml+PJH9w73XVRlYFddRxyN2HlUWNTrXfP2c8LHZJJa66l3Jee8kcV7f2hydheW9Z6upxISMJiuoqTg7hcqaVRrcruBCwrNetYwjVc4sgi7JIx/glOFhiDti4mqe9+uGTsAr95UiN5iU9Lckryo+j0mTm0WQ/Z7gU4Bb4xNKlrsp04aBrsmX98Z/yf2OpQ9BoAyT6w1RmFY1CpAYtbInkrEVoQmzobSepk4ntgTULBH6JYMO/IiMNmjuYymOmA5dht6E0QlBhZZZLvA=
+X-Rspamd-Queue-Id: B645840014
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1764066242-218831
+X-HE-Meta: U2FsdGVkX18IvlajG+CxsMOXGdP1IgfJUr6pe5VuZBk0YOlOWnqBoZXBvkro6Mcnk8ipdmjXEXvddqJY8SXFwg9LQzdwGfoyG1ZUPI2I3eyTnHY2tnNk3PxiidZqbq8NBjVqS9vr3D2PbxeU42vTfOG84cYTsDZm9eylN4XHo8A0mVHO9SFXx0wRyl3n15mGr9McVddXMHthN5hejrvSLJQJ0XcQSNIXcjAJXPX72YJ9XhdyETNzOY1ElgiVfdxLK9icBK/vdowngHiDhooBdqmz2X/Sq0S13xRP+FMgqBzNsVpJs+dpMpMIs3/oBVntaJhuKbu+sG5Se4D7BQpJuRjHlaMhRuHYGTXGWCuqpT3g3ueaBxlGmzspK9h8+DiAn6v8yWddxewcjnuGsl4Ngkah8Mgso5wkZKiENj6M5bqRjAsVT/S9RflRaeRxYRE1JQI8ACk9clFkNrnBKfrHwKe7xUYYLPLSw6Tm5tIUrsBNL8ljiN0pm6c5q9CKXYbsTXmMwN5OF+Tg7X3AZ9DWIGMbXekvtBW7xksem7ExUHEiuVFkOfqjzVIDvqe3wyx1hUOD+gtJkBKiP2tg8cScCdLEPYtAHhChrIZgC2Q9Pv0oPxNzKop03duYRkhxcAd5zILI1XlQMLr5Y4pr9gT6cJrjDUtQRE8dpeyuuX1BTa/CxP/X6CoZO22NiLEk+4la0SUP5wII981JOftbmi89jhi6L+e+kvhfj3zPGVobuxED2p+OxoMv5eecTSz5uK0SWFxwlxrhDSYtk2BKoaDm2PYd/IlJrX6uJ6J2k2tCWBZxFDeZgYMSylBmVZQqWA4TDoP8Zuxocf0WzWWzzhcG56w3PQ+zvkt9vO+FcRyxDZgJKmWVzkjUux06A439gd7DC/wM7L1xMwRoiOOqQSPORWXHxskfHkGlPq3lfgGknOcy3Wh3g0bNLyVKgM/bMSjMtAHnquAlNtUgxrz4zRJ
+ Nccu+8xg
+ nF5xvUs/Gj9N1jRmzQ98sK5PARL2zpt/r566qAOhdsP7P0y9OKJvcoyw9B4+YwtwfHcVLZvzk+5QuB89/ZoHOxcQj+B1o8HcqZFG9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,95 +122,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 02:54:06PM -0800, Joshua Hahn wrote:
-> Use-after-free and double-free bugs can be very difficult to track down.
-> The kernel is good at tracking these and preventing bad pages from being
-> used/created through simple checks gated behind "check_pages_enabled".
-> 
-> Currently, the only ways to enable this flag is by building with
-> CONFIG_DEBUG_VM, or as a side effect of other checks such as
-> init_on_{alloc, free}, page_poisoning, or debug_pagealloc among others.
-> These solutions are powerful, but may often be too coarse in balancing
-> the performance vs. safety that a user may want, particularly in
-> latency-sensitive production environments.
-> 
-> Introduce a new boot parameter "check_pages", which enables page checking
-> with no other side effects. It takes kstrbool-able inputs as an argument
-> (i.e. 0/1, true/false, on/off, ...). This patch is backwards-compatible;
-> setting CONFIG_DEBUG_VM still enables page checking.
-> 
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
-> v1 --> v2:
-> - Changed check_pages from a build config into a boot config, as suggested
->   by Vlastimil.
-> - Introduced the second patch, which decouples page checking from 
->   init_on_page_alloc and init_on_page_free.
-> ---
-> 
->  Documentation/admin-guide/kernel-parameters.txt |  8 ++++++++
->  mm/mm_init.c                                    | 11 ++++++++++-
->  2 files changed, 18 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 6c42061ca20e..0ba9561440a7 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -669,6 +669,14 @@
->  			nokmem -- Disable kernel memory accounting.
->  			nobpf -- Disable BPF memory accounting.
->  
-> +	check_pages=	[MM,EARLY] Enable sanity checking of pages after
-> +			allocations / before freeing. This adds checks to catch
-> +			double-frees, use-after-frees, and other sources of
-> +			page corruption by inspecting page internals (flags,
-> +			mapcount/refcount, memcg_data, etc.).
-> +			Format: { "0" | "1" }
-> +			Default: 0 (1 if CONFIG_DEBUG_VM is set)
-> +
->  	checkreqprot=	[SELINUX] Set initial checkreqprot flag value.
->  			Format: { "0" | "1" }
->  			See security/selinux/Kconfig help text.
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index c6812b4dbb2e..01d46efc42b4 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2525,6 +2525,14 @@ early_param("init_on_free", early_init_on_free);
->  
->  DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
->  
-> +static bool _check_pages_enabled_early __initdata;
+On Tue, Nov 25, 2025 at 09:56:36AM +0000, Stamatis, Ilias wrote:
+> On Tue, 2025-11-25 at 08:50 +0200, andriy.shevchenko@linux.intel.com wrote:
+> > On Mon, Nov 24, 2025 at 11:30:46PM +0000, Stamatis, Ilias wrote:
+> > > On Mon, 2025-11-24 at 21:52 +0200, andriy.shevchenko@linux.intel.com wrote:
+> > > > On Mon, Nov 24, 2025 at 07:35:31PM +0000, Stamatis, Ilias wrote:
+> > > > > On Mon, 2025-11-24 at 20:55 +0200, andriy.shevchenko@linux.intel.com wrote:
+> > > > > > On Mon, Nov 24, 2025 at 06:01:35PM +0000, Stamatis, Ilias wrote:
+> > > > > > > On Mon, 2025-11-24 at 08:58 -0800, Andrew Morton wrote:
+> > > > > > > > On Mon, 24 Nov 2025 16:53:49 +0000 Ilias Stamatis <ilstam@amazon.com> wrote:
 
-No need in the leading underscore.
+...
 
-> +
-> +static int __init early_check_pages(char *buf)
-> +{
-> +	return kstrtobool(buf, &_check_pages_enabled_early);
-> +}
-> +early_param("check_pages", early_check_pages);
-> +
->  /*
->   * Enable static keys related to various memory debugging and hardening options.
->   * Some override others, and depend on early params that are evaluated in the
-> @@ -2591,7 +2599,8 @@ static void __init mem_debugging_and_hardening_init(void)
->  	 * of struct pages being allocated or freed. With CONFIG_DEBUG_VM it's
->  	 * enabled already.
->  	 */
-> -	if (!IS_ENABLED(CONFIG_DEBUG_VM) && want_check_pages)
-> +	if (!IS_ENABLED(CONFIG_DEBUG_VM) && (_check_pages_enabled_early ||
-> +					     want_check_pages))
+> > > > > > > > > Commit 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only
+> > > > > > > > > logic") removed an optimization introduced by commit 756398750e11
+> > > > > > > > > ("resource: avoid unnecessary lookups in find_next_iomem_res()"). That
+> > > > > > > > > was not called out in the message of the first commit explicitly so it's
+> > > > > > > > > not entirely clear whether removing the optimization happened
+> > > > > > > > > inadvertently or not.
+> > > > > > > > > 
+> > > > > > > > > As the original commit message of the optimization explains there is no
+> > > > > > > > > point considering the children of a subtree in find_next_iomem_res() if
+> > > > > > > > > the top level range does not match. Reinstating the optimization results
+> > > > > > > > > in significant performance improvements in systems with very large iomem
+> > > > > > > > > maps when mmaping /dev/mem.
+> > > > > > > > 
+> > > > > > > > It would be great if we could quantify "significant performance
+> > > > > > > > improvements"?
+> > > > > > > 
+> > > > > > > I've done my testing with older kernel versions in systems where `wc -l
+> > > > > > > /proc/iomem` can return ~5k. In that environment I see mmaping parts of
+> > > > > > > /dev/mem taking 700-1500μs without the optimisation and 10-50μs with the
+> > > > > > > optimisation.
+> > > > > > > 
+> > > > > > > The real-world use case we care about is hypervisor live update where having to
+> > > > > > > do lots of these mmaps() serially can significantly affect the guest downtime
+> > > > > > > if the cost is 20-30x.
+> > > > > > 
+> > > > > > Thanks for providing this information.
+> > > > > > 
+> > > > > > > > It also would be good to know which exact function(s) is a bottleneck.
+> > > > > > > 
+> > > > > > > Perf tracing shows that ~95% of CPU time is spent in find_next_iomem_res(),
+> > > > > > 
+> > > > > > Have you investigated possibility to return that check directly into
+> > > > > > the culprit?
+> > > > > 
+> > > > > I'm sorry, I don't understand this. Could you please clarify what you mean?
+> > > > > What do you consider to be the culprit and which check do you refer to?
+> > > > 
+> > > > The mentioned patch removed the check for siblings from next_resource().
+> > > > The function that your test case complains about is find_next_iomem_res().
+> > > > Hence, have you tried to reinstantiate the (removed) check from next_resource()
+> > > > in find_next_iomem_res() and see if it helps?
+> > > 
+> > > next_resource() does accept a 'skip_children' parameter in the latest kernel
+> > > today which is equivalent to the 'sibling_only' parameter in the older
+> > > kernels.
+> > 
+> > It used to be
+> > 
+> >        if (sibling_only)
+> >                return p->sibling;
+> > 
+> >        if (p->child)
+> >                return p->child;
+> >        ...
+> 
+> This returns p->sibling if sibling_only == true. 
+> The return value might also be NULL.
+> 
+> > and become (in the latest kernels)
+> > 
+> >        if (!skip_children && p->child)
+> >                return p->child;
+> >        ...
+> 
+> 	if (!skip_children && p->child)
+> 		return p->child;
+> 	while (!p->sibling && p->parent) {
+> 		p = p->parent;
+> 		if (p == subtree_root)
+> 			return NULL;
+> 	}
+> 	return p->sibling;
+> 
+> This is the full function on the latest kernel. If skip_children == true and
+> there is a sibling, it also returns p->sibling.
+> 
+> If p->sibling is NULL, it'll try to get the parent. In the case of
+> find_next_iomem_res() the parent will be iomem_resource, in which case the if
+> (p == subtree_root) path is taken and we return NULL (same as the case of 
+> p->sibling being NULL above). 
 
-You can initialize want_check_pages to check_pages_enabled_early, would be
-clearer IMO.
+Thanks for elaboration.
 
->  		static_branch_enable(&check_pages_enabled);
->  }
->  
-> -- 
-> 2.47.3
+Please summarise this, add the performance test results and send a v2.
+Seems okay to me.
+
+> > Can you elaborate how are they interoperable?
+> > 
+> > TL;DR: I don't think it's an equivalent.
+
+So, it's not a literal equivalent, but it behaves in a very similar way.
 
 -- 
-Sincerely yours,
-Mike.
+With Best Regards,
+Andy Shevchenko
+
+
 
