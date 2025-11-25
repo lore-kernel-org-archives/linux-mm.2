@@ -4,129 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77C08D0E6EE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 14:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2850CD0E6F0
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 14:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFE2D6B0008; Tue, 25 Nov 2025 09:24:07 -0500 (EST)
+	id 848846B0026; Tue, 25 Nov 2025 09:29:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD6256B000A; Tue, 25 Nov 2025 09:24:07 -0500 (EST)
+	id 7F8826B0028; Tue, 25 Nov 2025 09:29:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12BF6B0026; Tue, 25 Nov 2025 09:24:07 -0500 (EST)
+	id 6E79F6B002A; Tue, 25 Nov 2025 09:29:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 930CB6B0008
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:24:07 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08708138C02
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 14:24:07 +0000 (UTC)
-X-FDA: 84149348934.08.ABA8B0A
-Received: from fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.132.221])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7863214000F
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 14:24:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=VjiMAbFS;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=417c28214=ilstam@amazon.co.uk" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=417c28214=ilstam@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 551936B0026
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 09:29:16 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EBB6E56241
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 14:29:15 +0000 (UTC)
+X-FDA: 84149361870.13.B01272D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2D4431C0011
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 14:29:13 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QBKPnuqg;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764080644;
+	s=arc-20220608; t=1764080954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWweU0CVEIjFMYrFnn46GWAADSVAe9a+oYcnDo3cVKg=;
-	b=KjMaIe+tT28ofrQ2sCYMvPJ2j2KA2VlDI0evl27D0RYSFVYUi0ALmLWfyD4EYDOC7JnmZP
-	SEDKdiuUyl75xdy0hZ822RQdlKs4A6AG3IFvUepaoiDNJSCDJnAM2IVFm3WK5/JSAXt71/
-	rNggkaj/PrqIy7XuA1G1EPEwNQdgUBI=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=VjiMAbFS;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=417c28214=ilstam@amazon.co.uk" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=417c28214=ilstam@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764080644; a=rsa-sha256;
+	bh=He0ThQf3M5MUM3It+fOM+oDwC0Yl+y0WTQSL3i3Mack=;
+	b=58ajfMhhR9KTOlIYZEw8H7Lx7qi5JyDWkesawu1HoSn//Nr487Odb9ec3faJSxTYZpjSUD
+	NinVvqMrU08G975AAHfh5deYGX6KTrCwA1NEouvOyRAS81RoohQO2EkhiRMdbGuKFdS5cy
+	8pFewWArkzYXzhrClEcYK9tzlbdYIv4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764080954; a=rsa-sha256;
 	cv=none;
-	b=TbGVmd2vAV1Xso3TIaVz8jaRj5PuzXqfOVRxsuAOvckeGazJ/fOkavzB5sDuH/QTMMxbSo
-	d2jduqd543cBlXYfQGNF6QaJGNtpbJFQrcYVKlc4GlwOnlheN/vEE8klegIjTncJFtf8kc
-	1ax5WNgJvkBlkM7JQy1v8A8IpWDLF18=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1764080644; x=1795616644;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version:subject;
-  bh=LWweU0CVEIjFMYrFnn46GWAADSVAe9a+oYcnDo3cVKg=;
-  b=VjiMAbFSVpc4PEhjuDEI9XzLp4QoDWZHDxSo2CcOIfEWhsZ3LdQ3wYWY
-   g8ospN97K2p33AJDFO30vpdsdojcHUCqCw87Qh21r/bZiAPCrw8g/4qXJ
-   Q2iJe6oZ1WhyMK2abS+KFJg5OUoZN6uHysX/uKQUEYKdvqcmFcxE2y2xS
-   LZYERY/h2u+bmQwCvTjTLIpvPcE8TAF4VnK2AEqElj3fA578xPMRwGvep
-   vj4g65gFsixCscLCoQtM6jhJxCI7qnyZcff1vMva1SbPvVKQh6adtDM/Q
-   ebAqk/GhrczkZzW4ewKf2W1K+HpQSp/JH96CHYXrol/6cOjD5VFpf7E6N
-   Q==;
-X-CSE-ConnectionGUID: 7V608C6CQDKB4s6ZWbIGqg==
-X-CSE-MsgGUID: bToIC8U7RiKSj3K28pvU+Q==
-X-IronPort-AV: E=Sophos;i="6.20,225,1758585600"; 
-   d="scan'208";a="5667712"
-Subject: Re: [PATCH] Reinstate "resource: avoid unnecessary lookups in
- find_next_iomem_res()"
-Thread-Topic: [PATCH] Reinstate "resource: avoid unnecessary lookups in
- find_next_iomem_res()"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 14:23:46 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:6211]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.46.211:2525] with esmtp (Farcaster)
- id 5b879075-fbb8-40da-be9b-5206b43e0059; Tue, 25 Nov 2025 14:23:46 +0000 (UTC)
-X-Farcaster-Flow-ID: 5b879075-fbb8-40da-be9b-5206b43e0059
-Received: from EX19D018EUA003.ant.amazon.com (10.252.50.163) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Tue, 25 Nov 2025 14:23:39 +0000
-Received: from EX19D018EUA002.ant.amazon.com (10.252.50.146) by
- EX19D018EUA003.ant.amazon.com (10.252.50.163) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Tue, 25 Nov 2025 14:23:38 +0000
-Received: from EX19D018EUA002.ant.amazon.com ([fe80::7a11:7dbb:2190:e2c1]) by
- EX19D018EUA002.ant.amazon.com ([fe80::7a11:7dbb:2190:e2c1%3]) with mapi id
- 15.02.2562.029; Tue, 25 Nov 2025 14:23:38 +0000
-From: "Stamatis, Ilias" <ilstam@amazon.co.uk>
-To: "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>
-CC: "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "david@kernel.org"
-	<david@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"huang.ying.caritas@gmail.com" <huang.ying.caritas@gmail.com>,
-	"bhe@redhat.com" <bhe@redhat.com>, "nh-open-source@amazon.com"
-	<nh-open-source@amazon.com>
-Thread-Index: AQHcXXPvH1LA4deF/EiE1v+Bldr5grUCN+QAgAAFBoCAADzNAIAAeugAgAAzyACAAAfmAIAAQqoA
-Date: Tue, 25 Nov 2025 14:23:38 +0000
-Message-ID: <265028eb24f60ce45725d7887e93f76a3e86f897.camel@amazon.co.uk>
-References: <20251124165349.3377826-1-ilstam@amazon.com>
-	 <20251124085816.07dbf5a4ec6235b2943840a0@linux-foundation.org>
-	 <c7411175b332f3befb5bebb6a75c7b91f2c1dbbc.camel@amazon.co.uk>
-	 <aSSqIzJWKTe9hs2f@smile.fi.intel.com>
-	 <f3fe7efd74c6011ddb35e1f1e90eba43af864aa4.camel@amazon.co.uk>
-	 <aSS3kXfoBppO1a-Q@smile.fi.intel.com>
-	 <de5d9d0658a8966ad8e523a84185398c216726fc.camel@amazon.co.uk>
-	 <aSVRrEDV1hWKhRmp@smile.fi.intel.com>
-	 <b9f8623fb383ef21bb47e6c9716c2c389581d12d.camel@amazon.co.uk>
-	 <aSWDvPVZRTCCfRpV@smile.fi.intel.com>
-In-Reply-To: <aSWDvPVZRTCCfRpV@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.106.83.27]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <53B8AABC12F9B9488973B75DC5976B8F@amazon.com>
-Content-Transfer-Encoding: base64
+	b=tarDwTSocqiDDG/OexSQ+ryxEsZQ61JDtNZzjPb6H9n2QCZzeuebwrOeye0stoUxUDT6/e
+	FMP0GMYxXHapFfhQIj+6MPEm96Fviox+DysR3yRlq6/GIb27no95MqZUzpkEbFGMGeoAYb
+	tafKk0g8f4qDBP45BfasTRMthLJ7ydg=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QBKPnuqg;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 21C0C40A46;
+	Tue, 25 Nov 2025 14:29:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DC5C4CEF1;
+	Tue, 25 Nov 2025 14:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764080953;
+	bh=QtIX7m37UB3jSsMIWRrcRctC3VHFDnbfN3XBMYjY5iU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QBKPnuqgEw3szxGkQOnxr0TMpZ/I3SfNa3fREd5sHp8tNCegHRljayZIIKjHWeZRx
+	 LNFSWCHEtnVAzQ44+gTiYwuHP45oAoqYfcOcO1Jmf+ESzW4HMVxtPO2WqxraAGjxcK
+	 NU190+XBXxcDq4qG70hy+0R8LyBy1sc0+HIXaOZihCDRvwK4VkvZBktyTpdch+MFW1
+	 WJALRPtOUP6N7aTvT7sxAb9UId41zDLJ8llvhlk5UhGAaOcPlvFAaT4hhJ6qAcp6Zw
+	 26pmyKLrpNOouIEegNgpIiIt1vncfTwTgqEFdr0049Fkv/BR3j/2aaosGBPrb5nEyL
+	 qfD/kciwyAYJQ==
+Date: Tue, 25 Nov 2025 16:29:04 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 2/5] userfaultfd, shmem: use a VMA callback to handle
+ UFFDIO_CONTINUE
+Message-ID: <aSW9MJJ1CF65m5w9@kernel.org>
+References: <20251123102707.559422-1-rppt@kernel.org>
+ <20251123102707.559422-3-rppt@kernel.org>
+ <a06e57ff-b77b-44fd-9b69-929d7647644b@kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7863214000F
-X-Stat-Signature: 15q7izht8mgdy3nkeh833tddn9iaipb5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a06e57ff-b77b-44fd-9b69-929d7647644b@kernel.org>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764080644-983975
-X-HE-Meta: U2FsdGVkX1+DsAqJLHspSVRgUS0Z7AMuKoZEbFeg+31wextTaP67BGRRb52lDtb7DTdtrUtgWInpKm7FalD3PLAdxIivxQCvARLROAjBg8VPvhjljy0xUsZtRieLLg677TRN65OVOGirkMQeLnYSCR69RAttfUCXzOOjBdG4fBq6DyrMqwuEqA2k1e2ofervkgfqB+xY/lzrDyw14sqsaJj7GPVH/hy+4QmNj9k9R7FTRNjYTqRV2jw7C2zIRrabBBeahD4sGjEWwdHd5m/BKmSTz5Px+g+3eHFZKV87KDy3mlQI0c5VDg6XVaK+/1JaHVyCE66sA+RnrBlJuchIIZAhFRhLfgO0VUeC5j3ZpSbYq4YVFt/zPPmC2YqEKuQxK2E6K0Y2B9vvdmRhWZ58NuJzuG1SwXMz1tyhv12WsgYBrXxvKlqGrK68d+u6q1XPvzwJlRNvv3aDiUymjCfZBo99PTMHale/fjB8EkDIevrG4qA9m2vdLo2YgZjdDQ4U6uB9NaUw4YS4/SicdMwv5wWqI9hERYwWaCTY3gE1DCTvI7/rdGbRZbNEGXwRmulcNfwO23trRgpmVPh3GAsBUtFQyQQpdXlRKs1wD21vgXSuT8Gy3kCkstlFJhL2rS2vmcvZv8hUZOi4yZ0l8XPl2UJUzzcwBW7nbcoBjeUMi/Ug408mJG2WPNtWmUzbZFeLn0jBUdC/CoPYPXUEuDsY32QdyzzQUgiBa3J0moer1R3jDbnlXtF+t72b+QOIeFko94GqksGxnKwSHsyPzoGGews1SdeCOIWumJjOrSR7X18obok1WXluNSti0wjw6qDVzXBWrTU3XbndAdVf22lSKD3NS723wA1LSAvKdKG47Q48HHAFitSA6HElsuG/rRlIQm7cNI5iqbEBNCTzy2GzJWANcT/ffbuYZaFSGqgp13QyW3Uz7YhBY6FNgW3Pw4F8gRNJg1RspXE5aXTRR7b
- 8tOd0bW2
- +acn3tNdp0ohRAjCK4EOsg2HNeotBoUTceNISaWeCsI5wTMLFtBVIBcVjeGaadxp0Pry8u8Y+ZxJOPDkoQLe7utllot1lDe870mjwKxjw6jhi+Y18zam9RGRh56jwqo+KcZBOgGPyJ1HEds8nNnf7bcJ5HfYnak+Jjz7UB1dE3QhMZBbd6ZqniPih5rMccgLSs3luGuxFKvVWcVN1mweDZKW3U1qBg1nU36p+izSgQoaXX1KoFdxW/w5hAXkvPgI5+8pw4LH2oKcckPXB/w20wTtUqhhuoHLHBpyvRE8vMQmYyH1DWQWWahwdhrq62E+oU54cx09nMI0dgQCUPfHvX/7C9nsayGZ27QK0a2KLGshojuYdC87pPXMx7kOurT3VBue/qohIovXFG2Sh/b9JStTuEYYftrC1lQ62tJjwNBlB0UVsCC83Cppauqgj7SwAvVVGE9rlY0NNlEttmhum/CCc9NF62/CVUIJLn1qHiC2a0dPSAwar7qDcXDjFwpnvoGfzTz6WiBPHBZPT7dQBCPxebxRTy3mk+N5qD/UfEJW/9goZknypnWmgdbaQZBrGUuJ07OCoEbFaRnB8UC+DDjQbukqem6EHR3I1FVGy0eGXJyz5wAALVKPDKUKgLF7084zbEE0sVAoW4s0cuQBuYc0dpfmb05r0nWcRpc3CzFjot8eUVuJiq3QyJaJoR+FtK6/+vCAi0PPtd//OyHZJoAQMlTXJLjOf/QvKBFusLOpFqUx89th/9lBZdyj+GwFMb5Firbp15qq8KWXgp14x/Gwgzhxv74lqzGLxFyPRAOjsEhr4hPfvOIojss9Bt42OB9tjmgNsSeGPwoh/fR49HczMuSEsgYjCIbhkYxRaLLKfFBSomEXjhiPIcqlVVw4UCgjy
+X-Rspamd-Queue-Id: 2D4431C0011
+X-Stat-Signature: fj9fqzmwqeyqmqm7zn8nec77czqht5it
+X-HE-Tag: 1764080953-756720
+X-HE-Meta: U2FsdGVkX1/AVvHZNnu3D3+2Q5pePh260H4vGxM6lmvTVoHHXt1t3f4bpaFu25lYmlLvO/AwbfSRB/OTfhkAZ1qqof0fIqgBmqwZM8b1Bu0ejniFAT91zJSpD+0MmAlmynakLdKwZN2WWPMnjs6DoAFwDHcXAlrYDoDGfYYIPGJntwclQ4FZnVyvz1ETxmWvPfw50UsdZLg5FKe9Ce8CwQGVISvRyTOCf21Z+yjrSWntbpY1AbO9lvjMaUEw7354RfPA7aXwQoo3Wf1+38CquMJU7RI0naXGgLHODsPqFthi31HhRl4doOR6eDjgYqvfx01r+8eqTU4tzQoRjV7b71pajL0t67sgAD2EG7lxe4Y0zgVPElEy9lQhL7q2WReD1OD9oLuVJac0Q6te92PnAd+9Z0BSJz+KV8q0WWiFwQTOIS0959jeHNDJ0CqzuwnVEfPw8a4q0wdTtC3Z5cNhZd2Z5//B6DIPPsrsdMTSCHh4NlQBN+qz+4FmOYkhyKTS2+vIUaM7hudzpsNBqhAZ4RKE+3CupCM07L/Fto5B1mULw9sDQ9ZImN95KapnJHdvpkjm+subRw1j/8uIDHs6Y6laj1iuMXYXu3EcMWdi/42dXCoisWEOnxbxr8YYoJ2/PxOryzsNTNbCp16BHP9T/ySBzJkEEtLhyOoztF4onPDeK2uVIdrZsnU46UQ9vBMuWGbtFo0/jw+h6D//FJKPMIDaEeFgaliXxZx6DBa6mOEL7Kptn+dRRddzmAQK6jLiG72tHts56rcnpOQL/L4naV2dILV2Jad/AD7zSefcVkPgC/x7I9x5/jwgmbqH68dvE6m2vHTvqrQ5VYXFLbjOoqqkusxNhtvyfJMEgbHM66UJHHt0PZFGK/8UVzR8YGJ8JX7r92L2j1Gx+tI4cpKlYkdLMsj0g4eI4rMUBJ61+MITprAHxnjY5EY+gXbfXsT/QZas44ZDxt4YXeGSYiS
+ 3hjKtsYB
+ 8uY+GadSLRBqnoddJjyFx5LVUJmcKwD88ezyuqQLJczO1AZMhmVMhuKY5FR+oZR6287KJe+LpLgoDibVwPpGaPFZCfH4tz8eLV5xJXq2102UfSAB8CQDLFgnfHaNUBFcQQQWOILV0CawbiR5Na0IW0ccrVtLZuNeKsUz8iIFaKYqprdwmM0N73wwRyKcWbkdDWkkKrBtXVgG7fPbF6OgrtcSJ9Z/yaoI4farmnm7mzRErTrPIUNJG9roE+C0T1jd7MNEvYaS0qs6U/KazPaIXXtgyrqbi5E5oLpT/kI0eMfB26p7LZQbPVXec8xec3b7VWGEnlps/B2WLJcI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,33 +108,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-T24gVHVlLCAyMDI1LTExLTI1IGF0IDEyOjIzICswMjAwLCBhbmRyaXkuc2hldmNoZW5rb0BsaW51
-eC5pbnRlbC5jb20gd3JvdGU6DQo+IFRoYW5rcyBmb3IgZWxhYm9yYXRpb24uDQo+IA0KPiBQbGVh
-c2Ugc3VtbWFyaXNlIHRoaXMsIGFkZCB0aGUgcGVyZm9ybWFuY2UgdGVzdCByZXN1bHRzIGFuZCBz
-ZW5kIGEgdjIuDQo+IFNlZW1zIG9rYXkgdG8gbWUuDQoNCkhvdyBkb2VzIHRoaXMgbG9vaz8NCg0K
-Tm8gY29kZSBjaGFuZ2UsIGJ1dCBoYXBweSB0byBzZW5kIGEgdjIgaWYgdGhhdCBtYWtlcyB0aGlu
-Z3MgZWFzaWVyIGZvciBtZXJnaW5nLg0KDQpSZWluc3RhdGUgInJlc291cmNlOiBhdm9pZCB1bm5l
-Y2Vzc2FyeSBsb29rdXBzIGluIGZpbmRfbmV4dF9pb21lbV9yZXMoKSINCg0KQ29tbWl0IDk3NTIz
-YTRlZGI3YiAoImtlcm5lbC9yZXNvdXJjZTogcmVtb3ZlIGZpcnN0X2x2bCAvIHNpYmxpbmdzX29u
-bHkNCmxvZ2ljIikgcmVtb3ZlZCBhbiBvcHRpbWl6YXRpb24gaW50cm9kdWNlZCBieSBjb21taXQg
-NzU2Mzk4NzUwZTExDQooInJlc291cmNlOiBhdm9pZCB1bm5lY2Vzc2FyeSBsb29rdXBzIGluIGZp
-bmRfbmV4dF9pb21lbV9yZXMoKSIpLiBUaGF0DQp3YXMgbm90IGNhbGxlZCBvdXQgaW4gdGhlIG1l
-c3NhZ2Ugb2YgdGhlIGZpcnN0IGNvbW1pdCBleHBsaWNpdGx5IHNvIGl0J3MNCm5vdCBlbnRpcmVs
-eSBjbGVhciB3aGV0aGVyIHJlbW92aW5nIHRoZSBvcHRpbWl6YXRpb24gaGFwcGVuZWQNCmluYWR2
-ZXJ0ZW50bHkgb3Igbm90Lg0KDQpBcyB0aGUgb3JpZ2luYWwgY29tbWl0IG1lc3NhZ2Ugb2YgdGhl
-IG9wdGltaXphdGlvbiBleHBsYWlucyB0aGVyZSBpcyBubw0KcG9pbnQgY29uc2lkZXJpbmcgdGhl
-IGNoaWxkcmVuIG9mIGEgc3VidHJlZSBpbiBmaW5kX25leHRfaW9tZW1fcmVzKCkgaWYNCnRoZSB0
-b3AgbGV2ZWwgcmFuZ2UgZG9lcyBub3QgbWF0Y2guDQoNClJlaW5zdGF0aW5nIHRoZSBvcHRpbWl6
-YXRpb24gcmVzdWx0cyBpbiBwZXJmb3JtYW5jZSBpbXByb3ZlbWVudHMgaW4NCnN5c3RlbXMgd2hl
-cmUgL3Byb2MvaW9tZW0gaXMgfjVrIGxpbmVzIGxvbmcuIENhbGxpbmcgbW1hcCgpIG9uIC9kZXYv
-bWVtDQppbiBzdWNoIHBsYXRmb3JtcyB0YWtlcyA3MDAtMTUwMM68cyB3aXRob3V0IHRoZSBvcHRp
-bWlzYXRpb24gYW5kIDEwLTUwzrxzDQp3aXRoIHRoZSBvcHRpbWlzYXRpb24uDQoNCk5vdGUgdGhh
-dCBldmVuIHRob3VnaCBjb21taXQgOTc1MjNhNGVkYjdiIHJlbW92ZWQgdGhlICdzaWJsaW5nX29u
-bHknDQpwYXJhbWV0ZXIgZnJvbSBuZXh0X3Jlc291cmNlKCksIG5ld2VyIGtlcm5lbHMgaGF2ZSBi
-YXNpY2FsbHkgcmVpbnN0YXRlZA0KaXQgdW5kZXIgdGhlIG5hbWUgJ3NraXBfY2hpbGRyZW4nLg0K
-DQpMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNTExMjQxNjUzNDkuMzM3Nzgy
-Ni0xLWlsc3RhbUBhbWF6b24uY29tL1QvI3UNCkZpeGVzOiA5NzUyM2E0ZWRiN2IgKCJrZXJuZWwv
-cmVzb3VyY2U6IHJlbW92ZSBmaXJzdF9sdmwgLyBzaWJsaW5nc19vbmx5IGxvZ2ljIikNClNpZ25l
-ZC1vZmYtYnk6IElsaWFzIFN0YW1hdGlzIDxpbHN0YW1AYW1hem9uLmNvbT4NCkFja2VkLWJ5OiBE
-YXZpZCBIaWxkZW5icmFuZCAoUmVkIEhhdCkgPGRhdmlkQGtlcm5lbC5vcmc+DQoNCg0KDQoNCg0K
+On Mon, Nov 24, 2025 at 12:03:17PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 11/23/25 11:27, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > When userspace resolves a page fault in a shmem VMA with UFFDIO_CONTINUE
+> > it needs to get a folio that already exists in the pagecache backing
+> > that VMA.
+> > 
+> > Instead of using shmem_get_folio() for that, add a get_pagecache_folio()
+> 
+> get_shared_folio()
+> 
+> Given that the helper now no longer receives a VMA, I assume we can just
+> really call it get_folio() and the "shared" part would be implicit. (from
+> the inode)
+
+It makes naming shmem_vm_ops.get_folio harder, because we already have
+shmem_get_folio :)
+I'll think of something.
+
+> -- 
+> Cheers
+> David
+
+-- 
+Sincerely yours,
+Mike.
 
