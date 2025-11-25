@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F5B7CFD315
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 07:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47602CFD364
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 07:59:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 488226B0024; Tue, 25 Nov 2025 02:53:32 -0500 (EST)
+	id 9C6896B0010; Tue, 25 Nov 2025 02:59:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 439626B0026; Tue, 25 Nov 2025 02:53:32 -0500 (EST)
+	id 9768F6B0024; Tue, 25 Nov 2025 02:59:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3280E6B0027; Tue, 25 Nov 2025 02:53:32 -0500 (EST)
+	id 865E36B0026; Tue, 25 Nov 2025 02:59:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B4F36B0024
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:53:32 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A246313BAE0
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:53:31 +0000 (UTC)
-X-FDA: 84148364622.20.D39D62A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C5683160009
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:53:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nmixa3sI;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73B496B0010
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:59:21 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 81BB65B267
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:59:18 +0000 (UTC)
+X-FDA: 84148379196.23.ACC238F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C9287A0004
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 07:59:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IIMom7tu;
+	spf=pass (imf15.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764057209;
+	s=arc-20220608; t=1764057556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BYVBU09N8VzET4G7hgFelokUfvOBGj824TAqxt5oNXM=;
-	b=nDYBeaDJDtC0PhC02fl5b5xYiBtEIQOpz5/5rt3QFPGGX/Tdwm8iyZkqXbo8Im6AvlFmTz
-	8RjCAqOhpP/SZ6F2aqCxGFcF7umB+5H0SN/pK8huwF2MR2T3gPIlqZ5M8HWOh1HUfSV2hy
-	fTMGOsd2ET6JbqYCbKoyRN51D2tciU0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nmixa3sI;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764057209; a=rsa-sha256;
+	bh=hKqZiJDOWFEUb0Jp+1ShtqT7/k/ZLsdTXzSUzv5zXso=;
+	b=lStSoAOebiOaAnhfQtCITEZ6DNhKC+EX2ZGDF12kXRIW5b3LQ84xFlB1dXBBqllsCgTP1L
+	7GNKTrkfJCeSJLRvWGOt9L24mjulOAogSOpQ4gX1CiyynhIbs7QwvrwtVQBX4U3YZxq+fh
+	qJHI2j8zv26rQEAj/Y7mk1m5f2u1Z8Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764057556; a=rsa-sha256;
 	cv=none;
-	b=hA2YK6uW3jhjtjGhJfpOl/1/B42WzuZOACtJmyxN6kCkHayyKVFp7OBvo5w0v5nHkR8dI2
-	bh/DfeMKH2FpkYY3UMbV3hxPBrozAD1shBHUJlR1bpp5nVtKiCjVuOzYSoup8IbceiZU0m
-	/kErHYi6Hwpee9A5dosnNQ4IWieyDfg=
+	b=tkt5X3c8TcdvHHWq07zhUghCheHzjbmXGrWF319BPt5rTCwVaLDDvT6g0ABG1LdjhwNoSt
+	/9Z+5RERTV9HKorlewNkxkALoRho0iRnTNQmfix/JODUIHEP5cxT6E9O2smLvzgmhU3x9p
+	KaEzLbbHNryh8WlX4upxZrbmQlDgjJA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IIMom7tu;
+	spf=pass (imf15.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764057209; x=1795593209;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vrVOl7EVuhETDdmJkVuWCXbygP3HAoSjVC9NVD6yA+8=;
-  b=nmixa3sIzYOqkqKDS94tnQ9MZ36sWs0HRGo1tITx2cBIpeooyuevoV0Q
-   NtV3JrdaoCmz4behw29WwNd1baP3rEdByAHcohECT2sQK0PhfU/Cpn7Is
-   Qid6nbuJvAl4aV/trIMO4OOskbzceMaZ78IAR/T0p21Wgzs8URJP9dXLL
-   V0rx4W855NTKA9GtoC5/QzOxes3DbDThmnCLGDbsWBFHNVnwFd1E2li9t
-   Ri4+QCSp5iVThHw5f89BDweYYItGv9AxRMcw1Knbmr9yk1l90ANdEVq4F
-   pYgdmRsCw22oKVaT6Hs5uGOK+qWcFF4HgkiURJePkmgF4iHL655Zfrn/9
-   Q==;
-X-CSE-ConnectionGUID: BhHc20f9QImDX32yjNnsqA==
-X-CSE-MsgGUID: yc8wpI71R/mYM7KAmZMLsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="77542613"
+  t=1764057556; x=1795593556;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RGjxKJ2ZxAiE5osguDNbbjhtWqjDFmM8MSebv4rSgVQ=;
+  b=IIMom7tuaYvt+mHuqJH1lwFdIeH81Iu0mpQ/hcaiObzaTyOxw1hoyIVg
+   Xn0sQysYOMswe6OVAqQjiSYG/vT17ckAFW59SgU4mrOMSYnw84neywklU
+   /rU1I5UHSr1i6UPhcvqTw9SaJB7RGxwvvKI/slo5qQFYJSGdGR2UGJWrE
+   kHs9Rkk3jfddCwKOmy50pYCkjUemRr1Et0KSiMvGyUqBAcJJbDC6NsF0F
+   mozcYrbLYrS03WMsVFhiA2LZimLzBubPUzVSBwq2ZxMKSpc0WmQFKXDcg
+   W4QP9jdVye/ugeLxZEGxzE1dDeJ5MjfbIXA3mVrFnKpmvUjP1rm00zU6P
+   g==;
+X-CSE-ConnectionGUID: 7Rhg9cITQbSqnp0h4lTDgQ==
+X-CSE-MsgGUID: MXvxavEKQpKr3ZZdV2FVgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="69925593"
 X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="77542613"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 23:53:23 -0800
-X-CSE-ConnectionGUID: HuLq3zmzQfyc5+eHB9dUgA==
-X-CSE-MsgGUID: TPLWqce7Svan9mkEomQuIg==
+   d="scan'208";a="69925593"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 23:59:14 -0800
+X-CSE-ConnectionGUID: ZspEYjjeS9izC1yNOLqMnQ==
+X-CSE-MsgGUID: aM4gg/PKSemlzoUv5gQjjQ==
 X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 24 Nov 2025 23:53:14 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vNnrL-000000001Tp-27Y0;
-	Tue, 25 Nov 2025 07:53:11 +0000
-Date: Tue, 25 Nov 2025 15:52:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tim Bird <tim@bird.org>, pmladek@suse.com,
-	Steve Rostedt <rostedt@goodmis.org>, john.ogness@linutronix.de,
-	senozhatsky@chromium.org
-Cc: oe-kbuild-all@lists.linux.dev, Tim Bird <Tim.Bird@sony.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Francesco Valla <francesco@valla.it>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Linux Embedded <linux-embedded@vger.kernel.org>
-Subject: Re: [PATCH] printk: add early_counter_ns routine for printk blind
- spot
-Message-ID: <202511251534.9kMSsAH6-lkp@intel.com>
-References: <39b09edb-8998-4ebd-a564-7d594434a981@bird.org>
+X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
+   d="scan'208";a="192647450"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 23:59:09 -0800
+Message-ID: <ae535698-33fc-42a1-8a5a-ed8dd192f697@linux.intel.com>
+Date: Tue, 25 Nov 2025 15:54:56 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <39b09edb-8998-4ebd-a564-7d594434a981@bird.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C5683160009
-X-Stat-Signature: kawu63dwx8x3i9k3xewn1aj8xewbihau
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] drivers/iommu-debug-pagealloc: Track IOMMU pages
+To: Mostafa Saleh <smostafa@google.com>, linux-mm@kvack.org,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, xiaqinxin@huawei.com
+References: <20251124200811.2942432-1-smostafa@google.com>
+ <20251124200811.2942432-4-smostafa@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20251124200811.2942432-4-smostafa@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: kb8n3eezsp161679utcotf47d3ubnjze
 X-Rspam-User: 
-X-HE-Tag: 1764057208-317855
-X-HE-Meta: U2FsdGVkX18DykhBFKh2LV2zw8gepuUgKL7ZxJ/hD0CTQRVxXbq8Hdbqz5vsv5dzlxciAWGkfprxj0SgX4yGeEwfGyhzuH9nNfLI8yfsTzCgexk4XfKQYn1i+2rTJrD41VRMfHp/NkPpOkpa54CB5ZP4FWwOsgxxuSsOS0ODqcRlGo+JNei1H2ZYFQ2Xkpgci3MRFQTvE8NZsgzwix+x+CVlDX8abdyk1+lOwVDRgRcqbL3og2pnS53Iahq6VuR2TheURNPlVTvx1/WAyE3zKK2/wrpiYVPYoOVYnzHbLFALMXeSNtL7oaBeLiXW4vlCpzCxkptnvQToSTHpZVeP6FJf8we+qHruGaGpFB5St+D7oYiydwkkzPrfFdg9yjyMlD4hBNQbl2C6xOglwTH3cRVYPkk7EZrvevS1Wb2lpGiv4/DViDCN5eysbHLeauTjPZZvwNBTN+W3ZRkpVs5uVuR+AoTPH5Y38k0q4FidsgvuexHuG1EpVMMpEDRqrh05w7BUeXlufRyK3ybkncNEHB9S2NjpsvyJw2RUAiTkiJv3CUigx0kXXaXyUDrF2FHoUpMlr2OMUzeBwRpxsnsbihd19o8Y6nj0jQeqYwTV0sraHz0JWy3a6JKp5jrjWcjOZfmI1cY2dP5/i4/xhwlLHqFZN4TECn8pazi/X34syn75qG2jITv+Hkc/o0KHhOVYnuhbofabaB3cEjMUole5FRwDRh9IwYhpZC8i1dA3nhhxF63LSXfO5EpaHFQrsjA6AzCeSnOl0+SEzjQSwZ23WXs1Wz9ulRm926LZarmM5VijRfA1vUV6HtplkikQ6DrK21zkpvJGcyUw3rXaw2uSghGR4XiVXAGJnmojJPkxJMt433WMwh981KFzn/x+Zd8oq5TuQWD5Ds0thMnzueMt2VUeCmJB3Eja+FTjMFc11EDs1IG3Zjab4acLDtD8i9P+IDNmh4+D9b40fRowwfX
- kbOdodal
- fuGNkcgTKVJieJo6VDRJSslVNm8RbhRNMQpJJlDSvIEjw7+MyThu+znYW2mX+brm8eh4tbGkvVtYYdfTqCmh/yBJJO/5hSQSkT1tCPg2+e/3q8mAHxKBTDATFBPaiN4M3f3OhDR5Peu21fYfb+zQta9dGXeAkbuoIw/MuQO0RC/YpXKJcc937cjacnxNkgZq0Iz9TPHrjXEa/W1cTVU/PQ3AMTTrDKlVKkSFMq5mSzfbEfhKbRqmA59myzdm+UBJtWE68OAFmway4vC9ajCYq/05mVX7pApoxYWp5bQsz3ReHCroSOOfuHJA4hFgKdLSQO6tB6zO+Oo14dm1sBbJQ2kBuGwVyF6Yp3GRxIK0+AtPhQJbTMvogRQOXiKReomTxd85PmMa9lHO2DszAE09Vltn52cO60LQf23QB8Trym2oOaMAuv1+90IEU+TbAe/xbJwjIWhtSTP5mKtQ=
+X-Rspamd-Queue-Id: C9287A0004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1764057555-136328
+X-HE-Meta: U2FsdGVkX1/qvgT/Rosuw29qRWcwb54WFi2FcDQXGnT4PbBOobVq1kyIMXWTzbaUi6f9GFxLqlb+zYhnDc9XjTXFXaQDkxDqvesrNjxeV0Sug8Htr6kWETuCO0H1knI+rjEKLIFopCx0TWWrH5B39hBj1gNdKdiBbEibQDbBha9hKcyzBHyMkCHa9OVRy0M4sFKYTn2XQ3QyqYdVnfUcR7wqTRbn3NsHC1tm0sCojpA9lJh64swiMmMOJfPXQ2E4EvOq5jZZ2gYmZt/X6EThEmUv6n1nQh7dCeOFodgPv257i50leFwFjrEDPKP1GptH5vovoStR79RfwRWAYNpjKaSrg0TyfXXFiTCTNdx4mIEMuagKIdOx68lpx5+vufXmQwb2cU7r2AvKFi47pi0aGALm4BSgT0rUhNa25bq8MVePPxIWghFlw51kb2UA+r6HnmZvwM9yJS3+jvyXnLOiX9tYlezowprO85NWK6VQ6AfKb8Tw0ObeKBTVR2YbcKSsCCp6JUSgCfC6LTExea8jQWNUE0P5ZVMKn2ZcCLa5WpH5lk1CM6JVUMc/Atxk4WErddm9PSgvnkMTrEUfpf9ZD1SVd4b6laNP9mkF5oRfGNcJwWeqAQDPjPFOTmQ4nlQ5RHqFnPm5tZXcM6lV5yUET/ikywyOOeeLmQCGUMUUgkVZuCGJ8mAj4XuiW6pEglNG8ACDHhiO2pB6Uk7CqQmS2WlHnFr/XsM2/me26nMRbaRESuUlduvKjAcyPl5w8Jb0XsERMPnkVGKZhICGq5ZuawbZdd5He+dLAUccN5EMIkdro0UFT2MZItr6hFNg3+Lgg3+HaFDoq3piM2cyJMOjBWvbVlZyJTo1DhM72/82+4c8O+SWcPZgYREh/Lo8KIbUmuaqG87LgPS7jh31v9YvajAbtE2Zv74TSKcaflrbuJ4Wv7w/IVY4hyTewdYtXRTJlRAoCoL6YZ12plHumWe
+ LJpRJ7NV
+ ruMyNx6g70u+zaSv0aB0hz5VyMB/1O2axRnHS9qHVHlv/Fg3SzWhVaZDsrIi2AEPv6TE6MGOLvFTIJf05qYLJDmueFkAG0/0JyHXWHUNAcBEAe1hf5p+uIxp/Nh5HFhNJVT1pyiQB/AQk80KDhkAqaP3N6WdNYMkJ7nCjAlkGApWKHCmTfyI9iLtTIOWRtMKMj5OXydB6kBb4piQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,36 +112,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Tim,
+On 11/25/25 04:08, Mostafa Saleh wrote:
+>   void __iommu_debug_unmap_end(struct iommu_domain *domain,
+>   			     unsigned long iova, size_t size,
+>   			     size_t unmapped)
+>   {
+> +	if (unmapped == size)
+> +		return;
+> +
+> +	/*
+> +	 * If unmap failed, re-increment the refcount, but if it unmapped
+> +	 * larger size, decrement the extra part.
+> +	 */
+> +	if (unmapped < size)
+> +		__iommu_debug_update_iova(domain, iova + unmapped,
+> +					  size - unmapped, true);
+> +	else
+> +		__iommu_debug_update_iova(domain, iova + size,
+> +					  unmapped - size, false);
 
-kernel test robot noticed the following build errors:
+In any case, could the 'else' branch become a real operation?
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.18-rc7]
-[cannot apply to akpm-mm/mm-everything next-20251124]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+In the __iommu_unmap():
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tim-Bird/printk-add-early_counter_ns-routine-for-printk-blind-spot/20251125-133242
-base:   linus/master
-patch link:    https://lore.kernel.org/r/39b09edb-8998-4ebd-a564-7d594434a981%40bird.org
-patch subject: [PATCH] printk: add early_counter_ns routine for printk blind spot
-config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20251125/202511251534.9kMSsAH6-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251125/202511251534.9kMSsAH6-lkp@intel.com/reproduce)
+         /*
+          * Keep iterating until we either unmap 'size' bytes (or more)
+          * or we hit an area that isn't mapped.
+          */
+         while (unmapped < size) {
+                 size_t pgsize, count;
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511251534.9kMSsAH6-lkp@intel.com/
+                 pgsize = iommu_pgsize(domain, iova, iova, size - 
+unmapped, &count);
+                 unmapped_page = ops->unmap_pages(domain, iova, pgsize, 
+count, iotlb_gather);
+                 if (!unmapped_page)
+                         break;
 
-All errors (new ones prefixed by >>):
+                 pr_debug("unmapped: iova 0x%lx size 0x%zx\n",
+                          iova, unmapped_page);
 
-   powerpc-linux-ld: init/main.o: in function `kernel_init':
->> main.c:(.ref.text+0x144): undefined reference to `__udivdi3'
+                 iova += unmapped_page;
+                 unmapped += unmapped_page;
+         }
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The comments say that it is possible to unmap more bytes than 'size',
+but isn't it a bug if this helper unmaps more than the caller desired?
+
+Thanks,
+baolu
 
