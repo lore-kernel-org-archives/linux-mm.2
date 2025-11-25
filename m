@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 155EBCFD364
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 08:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5925FCFD315
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 08:19:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 599AC6B0027; Tue, 25 Nov 2025 03:09:14 -0500 (EST)
+	id 95BD16B0023; Tue, 25 Nov 2025 03:19:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5711D6B0028; Tue, 25 Nov 2025 03:09:14 -0500 (EST)
+	id 90AB36B0028; Tue, 25 Nov 2025 03:19:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AE626B002A; Tue, 25 Nov 2025 03:09:14 -0500 (EST)
+	id 7FA6F6B002A; Tue, 25 Nov 2025 03:19:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 399666B0027
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 03:09:14 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41AED13B99A
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 08:09:12 +0000 (UTC)
-X-FDA: 84148404144.07.67F41F5
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AE456B0023
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 03:19:02 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3FDA583BE
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 08:18:59 +0000 (UTC)
+X-FDA: 84148428798.20.FB9DCDA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7A3E8C000D
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 08:09:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mLshyslP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764058150; a=rsa-sha256;
-	cv=none;
-	b=PVzvtpBaUDP78J6YCmRQafFAz5ZZGxjpMv7MwyPppsOIGBPKure0n+Pahb8sp4IWvCkcUV
-	GNmz48aNINiXX1g058/riCPAWq/u1dg1awXFZ1AqYmzZHDqXPR9G+ZMWyXABc1afXhbvW0
-	ECqOkDqPqUd8HO4Vqze9pfdDNeIxvpM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mLshyslP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3E76740003
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 08:18:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mvA/Z70K";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764058150;
+	s=arc-20220608; t=1764058738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=plBbncABTDSfRimys2SDN43XzwViZDJwj5FPdTvuvm8=;
-	b=HtOhW5auPhx1qarKxlVs0HZQp2fnOKQFhqcWP8GPWG3X/50nYD9OT3O/uBliBpXdZob8Mf
-	kkA3rd4rUMc1wm9ziUpfzcfw+htZUjcOgBnpfX42W3xu5BLM305FuNX8hS4PEFD/ZcfRUz
-	j6BPhOhCfdd4JaPb2rLbyP2Bz+Eo/Fo=
+	bh=7PKn4ijSlEHXa5IeyWTO95RwBoiooXbzkWeUii8sJJs=;
+	b=FevldB+ORRkWhRR9jK/2OAYl2AME65yGjmdXN2UVV+U8IULfRwu2MYr61pZGCp31PlY+Cm
+	wDMT85/WUyYUb9GkusnQQRtK28SXQOOWIUKMtZTCcS2qzWEl2ColVNmTbeN58FeYqqt39a
+	98e1HjO8vGDaA+QidFHLDx0hH889x2Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764058738; a=rsa-sha256;
+	cv=none;
+	b=njal14a/4PjYA8q5XKFEOI8HTL9YKPxqJvVdkoZQEcsEIAFd1fj6gyoxgkOIdgHpdPP8Ay
+	KW7ZHM9b0/DeeYPHQvM6xfH5TKowe4Ft+19PZgShlTkr7noXz0/dmlbXUktuffjXCtsVuL
+	sn/nXSQ8l95f/EQEPQqSXyQmU8V63cI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mvA/Z70K";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 474C34391B;
-	Tue, 25 Nov 2025 08:09:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675FFC4CEF1;
-	Tue, 25 Nov 2025 08:09:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 407EF40475;
+	Tue, 25 Nov 2025 08:18:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5846C4CEF1;
+	Tue, 25 Nov 2025 08:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764058149;
-	bh=XqRq7kplVxhYGNzr105/v144FYOHWjKj2LupjtZhQuk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mLshyslPa3UjOa8eCf4PBZlVgAJ4YIqYI/eMgpfd4Ohv8/Y83HKae4OmSnPeYp6wo
-	 cR0lDouYxSW08C1z262NdTq01IkB+c+IEsJ+4YM4gVDy1SNmUxu4VkVHG6G67a97pn
-	 2xc0nCP13CcSIWSCMd1u6r/CpbTIJ124t307FuwcaAg5D2VACYWiguJWtbEKgnry2m
-	 VCDUq/QVII7t/BkjlK8UNxZ7MWX/Dgqi/7mXvN6VSiL5ch64RtOu5CbQkkIdxR7lTJ
-	 dpCVyGthO8GJMt1n10pKg0PCbgQtRbLDrQCbRTyqU91egIXnBC+F3MfwSOQ873PT4W
-	 EgMtD7hWasMWg==
-Message-ID: <9fdc1d1f-ce00-47ff-bdf5-66e8a511be25@kernel.org>
-Date: Tue, 25 Nov 2025 09:09:02 +0100
+	s=k20201202; t=1764058737;
+	bh=XYNAwhlrNrGWRmaAZUQEDrj1+kspEfhdgIAxGaDsVFY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=mvA/Z70Kt1JdWg9tYbtVJQb8zJvJarqaSsObCaxf4m0JRIspPMUDfKYu7NCdPEpx9
+	 iyOfDRzvbJEKAgL7xxM4zsj0y14lm13bsZ59kI+BcdREuhoFluLhWIp6DPc2D31kJR
+	 fBfm/uQBujTHBGNLkw1UIXLeXwdHCGujOEh1ZulPdwx+33yRZb9lCeQ59WieLDSxhG
+	 g60YDYWSZ+LfxhNwAmHEwCe/P1m8n1ztq+pabXVRhpCNUOJlNo35VxGy3uHefeDKdF
+	 ryWFY9TcwTmki9tWV2JHCo2CaNVUZ9t9YfsENzKAepQ82VC8W7WD/F+c7E8/Zo2qkW
+	 B9mIHw6aWoQ8A==
+Message-ID: <a33e119f-09b9-4cd9-a895-e3f95d659a35@kernel.org>
+Date: Tue, 25 Nov 2025 09:18:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] Reinstate "resource: avoid unnecessary lookups in
  find_next_iomem_res()"
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: Ilias Stamatis <ilstam@amazon.com>, akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org, nadav.amit@gmail.com, huang.ying.caritas@gmail.com,
  andriy.shevchenko@linux.intel.com, bhe@redhat.com, nh-open-source@amazon.com
 References: <20251124165349.3377826-1-ilstam@amazon.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+ <9fdc1d1f-ce00-47ff-bdf5-66e8a511be25@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251124165349.3377826-1-ilstam@amazon.com>
+In-Reply-To: <9fdc1d1f-ce00-47ff-bdf5-66e8a511be25@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7A3E8C000D
-X-Stat-Signature: 3z8sesssbxkniyxh9et3u5yafdoffhop
-X-HE-Tag: 1764058150-222898
-X-HE-Meta: U2FsdGVkX1+Ttb3tOFNbJxddFYGSRB0Y+B3GyG/5ZPj2s6dTf8YdeQRRnsOl7NHGEwso24riigbYI9q7rbyA1DwUqRQ807J1sWppLk1dslJ8wetEFDMRUzO6BoUiUspTTR/A9zE8+wtMgq/xwpgoKtOeqKpyTVGqlKPFaQ1YrXARFtHDIrUWCWQngnqMnLMMZlWzN7j3tohhAS3x77AUKAtEjPfQbVcm2K0ABvNQ+XkZPRCb5Kuo282s8kem6tRoTSaFB8+XROWuczTYf/gmqOzc6oGuTE1eJiLzocyiw7ZBua/2AILpEMropo+Fm9f1/+mwKR0BJ7Qkr2glg78vVFilDutnj0Njc7Lt1KqtFUDsPYVFdHMy1swQGjtwcGMtXzZZjfvZjo9HXfLiepFqPg8WaekMERN4e5MaBTWcZRveiCpDnqX9TESGFWIUtF8JoW2Syr2OtMEP15LCGDkAuxDJpNeZ/5slmw9pl1ldSyyLNyLI6DAxZCw8PTXQDNmc5brpbPwoJSAxVfWiX0yQGe2jy06SUL4ScErXk/Huz9EeLQqKBh+fxnIit6pt84yKGHgbOexhOArWgoCmz23sNWTzl1QJDrLQhgQZw1u0hxo0my4aVtMxEXw81Cx2TFsehMF5F3qyI5798ba34D6Up2DfDAgPr4BprJ4CzO6UevOmNnRYXcaHdz19ZFGpz2+q7f/iMjLVi1EPotZxihdlYas+jEjGQUNbORhvcnMUmkVMRopsHUB+gW6JHU2QxzaHxbBFoLiJpdpeLzHC2m2JDeZrqtKPTngLD9tIx6ljZf+YK063CJM0bqZ+CrKHzUZAqQjaF+6+OyNIdh2lbgUXXIdS2GWqrsFOu3C9owO6giuNj9Rw2f5TT/Nycd1w56wYOzpVp6s6FvXFBxyFcFiH/khj3qZOBqs9Bj306yP1VCsvIVbuIS59iQC8CAXWkuKxPNkPCur7nUL6383bV3n
- CPEiePt6
- yJyTLcjgI6XMTKrWPqJcIlk4qn7SHOo2Ydil1om/oyeVG72rTXHBfWcKGCjvPdlaX18DnpdCrsZXDKGuO7rV+odotMJFX4etaFKP7gPmKdscKRdP3cy4vcG3R0FXjCs3ZnkMwd/ExeERQMvtONz8wFIVFl7zEfRLbi3eUlwWKaCtj68E7YPCzN0A7GGht3UPgtA/nZkWdbFEjZ0UeW/nhAzh0CUo26yqXQUneQQNKm15FhIRGEF4KTyjRl0oa4VD/1DdWXnh/9MnrluLrP3/uccmMeFFYLobjD62wX+jhDSiciSB3osJOsvYAWjZkZdft7fVYXuHR+bb0i8SU3STXEjiS1nzcLPiFWnZPdP7trw4oYlwWJGJD89S62qdsQ+7LZ4WWYjrOkwBaYQk=
+X-Rspamd-Queue-Id: 3E76740003
+X-Stat-Signature: p19njunisudbsh1eee9qcwpw3j684t4e
+X-HE-Tag: 1764058738-364897
+X-HE-Meta: U2FsdGVkX1/2r0K1u5HnfM777dZbwS22CokqWPqVydMcpqIPCdvRIBX13dQqpMRi0RuVCBKO2joX5jOjI/BOXkWd9RFPibU3xnGHi7oifTliYs21vtQlrVtQf9E55jLDxPhNzAmDxLAqFEQlGuBO0PmStJ1QV0v6oYImpLtvt71GRBpQqTztCf+sJHBcQ+QfRb32GSfXAyDB20i+lCyYg+pEAi0vtRzxbl7QLPGzwHWpnuLtdvdNunYDVRwmufBQ1ZUBbRUbMJhIan7ODl5S2oiWKpTXjEJXdHOvz/fKC9gkwLFLNydAZfFs3GBg7CVVUII4GKwI0SYpQbQRrEQmRhqEcrRa6duG2uT7z53o/A8htwM7q2xcX3iabqU2d6VsWsJ/bkwxWz0Vvx/nTnDvp2jx2v76FXNKIqO4iQ2oQ2taPLqDgM7rS+NPXVZtn1V4fV/LHZCajd2r6cBD+4xF7NfK1p/3yyFLmP/ozCtWalxzJzoPZ75G5+vj6xA4tZLstcFgd3CFp1GseyYm3avaSbQYJ778Na1ZyFZ5k8OX3BJaQ4hNUD/7bUVGeS4VGaC9w4rEVDi5ufWxye/UuxIyVyw+SgQRRVJniofEMGrQPdlYSaTscZbAFxD23VHcCdXeC1dhPy/TVV8tUi6/d+AionoF+k6MRQXrO8Em9xmpWE9JDAWKmgigWbx+XfnNK7CuJrGVZcMqaP7cGHJYGB9HKQWQianNZhEPXUsSaFQlk20UGQq/90pqQVZ3a5Tn8bXWwJCjkSYwv/MsktBaeEoJ8hlNZjdlBSZ8lYrKMl6A6B39oUt9aR0w8eDKDGnRhMzkXbpBiCnXd76l8+wFQRzzaVkfRN39S8sep4EFJZRi9MADrdf4C94PTwjDL6im2uy2wEEUUQx46WsivH1dJlI3yuT7QLx8eXxUG9kesTkg+j95X90f2F0++sT1B/NWhh2k4EJFS811iHKCuyolhSI
+ EZsOpW/h
+ CMhihSI81xRJb6cH3KYe8mTw94wvbR609FSjwLSs8VVZnLEoKtU74apm9qM9ereycAPgCqeRIxnN/ihRCeC+7m6uoJFisuHqZKMjNSppqBU4NvAd2z+uQuCn3scIvMazoHbQp7Bc0g/Mnnc4EHux54O6zZbQLu1VY5koeakM3Ftl5jwJo4pmCU3ta+iChubveJdeYgv81++f8ze6c7kBur18lN2XYjt2+/2gJRL2KTzL93e+o1mEUFaIV/zbwWwc7IEK9AiL3GulHiqOJ/yJA8Iujda2DsDS+k0ptnPxDbwPANkAvRUXXWRXCSu66orbHvanaoYySaD+z46r7HTyDBv4JVDR22ItPkIizqi9ucD5TjTOiyyqjqMI7Wt4yX8lSnMdrBKdDuuK4JGDjxJx++e/ZFxUtxnRwWxGXfW3Sj4SDsBw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,37 +97,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/24/25 17:53, Ilias Stamatis wrote:
-> Commit 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only
-> logic") removed an optimization introduced by commit 756398750e11
-> ("resource: avoid unnecessary lookups in find_next_iomem_res()"). That
-> was not called out in the message of the first commit explicitly so it's
-> not entirely clear whether removing the optimization happened
-> inadvertently or not.
+On 11/25/25 09:09, David Hildenbrand (Red Hat) wrote:
+> On 11/24/25 17:53, Ilias Stamatis wrote:
+>> Commit 97523a4edb7b ("kernel/resource: remove first_lvl / siblings_only
+>> logic") removed an optimization introduced by commit 756398750e11
+>> ("resource: avoid unnecessary lookups in find_next_iomem_res()"). That
+>> was not called out in the message of the first commit explicitly so it's
+>> not entirely clear whether removing the optimization happened
+>> inadvertently or not.
+> 
+> Remembering the history, we have some things where the top might not
+> fully describe what the lower levels do.
+> 
+> An example is for example found here:
+> 
+> Author: Dan Williams <dan.j.williams@intel.com>
+> Date:   Thu Feb 16 00:36:02 2023 -0800
+> 
+>       dax/kmem: Fix leak of memory-hotplug resources
+>       
+>       While experimenting with CXL region removal the following corruption of
+>       /proc/iomem appeared.
+>       
+>       Before:
+>       f010000000-f04fffffff : CXL Window 0
+>         f010000000-f02fffffff : region4
+>           f010000000-f02fffffff : dax4.0
+>             f010000000-f02fffffff : System RAM (kmem)
+> 
+> The CXL Windows will certainly not match System RAM, as one example.
+> 
+> How would your change affect such cases?
 
-Remembering the history, we have some things where the top might not
-fully describe what the lower levels do.
+Looking into the details, I assume, as we only check that the actual 
+range matches, not the type, that this is fine.
 
-An example is for example found here:
+So yeah, that makes sense to me. I guess I removed it as part of 
+97523a4edb7b by accident, when I primarily wanted to remove the 
+first_lvl parameter.
 
-Author: Dan Williams <dan.j.williams@intel.com>
-Date:   Thu Feb 16 00:36:02 2023 -0800
+Given that the above still works as expected:
 
-     dax/kmem: Fix leak of memory-hotplug resources
-     
-     While experimenting with CXL region removal the following corruption of
-     /proc/iomem appeared.
-     
-     Before:
-     f010000000-f04fffffff : CXL Window 0
-       f010000000-f02fffffff : region4
-         f010000000-f02fffffff : dax4.0
-           f010000000-f02fffffff : System RAM (kmem)
-
-The CXL Windows will certainly not match System RAM, as one example.
-
-How would your change affect such cases?
-
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
