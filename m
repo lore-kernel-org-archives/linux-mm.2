@@ -4,79 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBA53CFD372
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 02:20:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FF9CFD36C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 02:47:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8AB16B0032; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
+	id 168D46B002E; Mon, 24 Nov 2025 21:47:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3B486B008A; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
+	id 119B46B002F; Mon, 24 Nov 2025 21:47:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2A386B0032; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
+	id 056F26B0031; Mon, 24 Nov 2025 21:47:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AAC306B007B
-	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:20:53 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BE6DBA901
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:20:53 +0000 (UTC)
-X-FDA: 84147526386.05.BA33C25
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 734B818000C
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:20:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hLuuwsW1;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EACE36B002E
+	for <linux-mm@kvack.org>; Mon, 24 Nov 2025 21:47:34 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B190213B683
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:47:34 +0000 (UTC)
+X-FDA: 84147593628.11.3AE54BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 29E801A0004
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 02:47:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HplQ5l70;
+	spf=pass (imf19.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764037251;
+	s=arc-20220608; t=1764038853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=shOPXkiAy+c6gaLyf7tLpirEDVlJR4ursOWE364FB9s=;
-	b=arpgwI+mJGNY+ecrx8+IaUheYFNY+gSAwWZTR647FOt9KcVezixzH6RJiNJ6ieAyAMZJ4a
-	FqiFp8dB8Tj7y0VtcK/p+vAO5QxHUEEPVuGCTVcYq0hd7FVtRh7JeUgR4TTyzSALb0DJEw
-	zhZTV2DFrd0RKCLFenPW1q5gmSRqlcg=
+	bh=xnSTdSp1Gs/2mPj6MUBO+b5EW/Ccr8hmJDH6A2dLkSs=;
+	b=Mq1vkLU5k+VlhQqhA8VtPBw3RrYPxuE0Wyw14CoWqfLKpMFciTYKO5WTSeC7dZH5KOgKSW
+	GWBGzOQ/021G9aZpevx+DJGQGVlqBrCiCJavNEzPP9o1vgsHcpTOwM1Gdtw57KUQv+Roly
+	SrVkwuOZsGis0Sye1OYCDuLm4HHD1e8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hLuuwsW1;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764037251; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HplQ5l70;
+	spf=pass (imf19.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764038853; a=rsa-sha256;
 	cv=none;
-	b=nKquV/sZLNtJ5DzOFh1pliWpPP9Qo5z6/Fxwds8efTY2SxgU9f0MU0H24Mpp+oUl/vgHDS
-	zx4k/2LwsWNfxCco5IXOvdEBb2IARiY7+Sh2MKUjNP6dvgF5RmVplIVbNabXjSjqLE+hfH
-	N3DUfaq0cdw6SgDRs751NI9FegbxVgM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1764037247; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=shOPXkiAy+c6gaLyf7tLpirEDVlJR4ursOWE364FB9s=;
-	b=hLuuwsW1lUqIhnDJmCHYScW2+XT6OUoAqmlzu/UeNE38gl3cYL6aXu5+hNprQ7gNJHJgGWrfbqHWOy1o25INjVjfHaxsnc7hPngJUhq9GRR/IuApzFaS1V1KacZEIrx9luqaEK1gkzWAw9ZLAdYhYdwzOc+pYt1MTcr1HyIJd6o=
-Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WtLRoYE_1764037246 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 25 Nov 2025 10:20:46 +0800
-Message-ID: <8f1c8ac4-208b-4a7d-8a57-721201c29f02@linux.alibaba.com>
-Date: Tue, 25 Nov 2025 10:20:44 +0800
+	b=ih9y+cF29uvJcido/asUEDz7ZIujjNZQFdYN3FwCvz1AodB7s8GR4/WeKBVfS3kB+KR+Pq
+	Q7s5QpPoqnNeA0673AGvkawEPb8Ro93HHTuco9pvoOuhLXIwNkM4WfVz/7eQBFFv6Pk1ZE
+	fsTjT9SLsWm9uY3jBnnMZb5qFd8prGc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D24E60010;
+	Tue, 25 Nov 2025 02:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2F4C4CEF1;
+	Tue, 25 Nov 2025 02:47:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764038851;
+	bh=7Ws/PbUNVl0lL6lS4g6QyFe+ZcfmM3/1TNjllqxL5NU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HplQ5l70hjnVJ1gxxUIdSHwiqclcKmNTSunj+ZcPl2/2vICsQPKb7N/1chWROdcDf
+	 tABFBPI4Lt3J0UQ+6/+1pC4M5k8FLyxjfafychqIDnttVlyNnzZi3Otyu4sPckGR+E
+	 KkLEZGv4Qmj4ke4OyyHv+SgM6mK9OzUJoDAPqt+597B+9ZEvIr9S84SAvfKHEukQLI
+	 n1y+mkkPwz/GdHKomZsEY3pUfhzlYy6ctIWJ1ITxbKiUue2z+C/fr75VajdtRwc+63
+	 rc07z8XxIVwme/Zhfmyhulo054XUBQC4cXcvOtREMewGHafokF78sfwpmUqfF8qEDw
+	 1si6Q74vahNpQ==
+Date: Mon, 24 Nov 2025 18:47:29 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Byungchul Park <byungchul@sk.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+ hawk@kernel.org, andrew+netdev@lunn.ch, david@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ ziy@nvidia.com, willy@infradead.org, toke@redhat.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ asml.silence@gmail.com, axboe@kernel.dk, ncardwell@google.com,
+ kuniyu@google.com, dsahern@kernel.org, almasrymina@google.com,
+ sdf@fomichev.me, dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com,
+ shivajikant@google.com, io-uring@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] netmem, devmem, tcp: access pp fields
+ through @desc in net_iov
+Message-ID: <20251124184729.7e365941@kernel.org>
+In-Reply-To: <20251121040047.71921-2-byungchul@sk.com>
+References: <20251121040047.71921-1-byungchul@sk.com>
+	<20251121040047.71921-2-byungchul@sk.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] tmpfs: zero post-eof ranges on file extension
-To: Brian Foster <bfoster@redhat.com>, linux-mm@kvack.org
-Cc: Hugh Dickins <hughd@google.com>
-References: <20251121152246.1023918-1-bfoster@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251121152246.1023918-1-bfoster@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 734B818000C
-X-Stat-Signature: 8gidr84t8dycrr4px9izdpq4s93ftb9g
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 29E801A0004
+X-Stat-Signature: bfqg83srth6qzx5pk3yefb95357hdujm
 X-Rspam-User: 
-X-HE-Tag: 1764037250-318324
-X-HE-Meta: U2FsdGVkX19IhS3NXXfGZVCU1mmSzGosGP8uNTHLUqOFMMeVQ3mOeR9d1Wo5mEmjOAn07TVY1pGT7ao+oWAqOyc+OzaFY+6ZnXRU7aILRKZ1bI02jdv5Fxtg5rr4FCdoYkV+HsBKDNgGaJiqZIR9sd4oE+Ge5yHJI/Sc8J7aWPzLBlqbCOxf2MuVRmDHX4ebNAnOvDP+di/ud5WCwU+XOVJvbuITI0ehQxHY8NrNAq6VInPj357vXRm882c3wZ6Cy05hWlxfdYpCFSSUGQ32cTTgPX1JOcUKlxn9fmHWdj39qOg0MnJcMJQz2lKlsl5/OEWcBUT3VQsUMxC/XnjSdyv/AOd1mLzAkbKD8B745XQUdpe5mydmYq3o2LH6ZnAPARdcP5GtDHmYpXJ8sZACki6hpaYSZTUFao2Znl+kxQM+hVRSHz9UifYm4h3x1dxHY4kjJ+9uLv6TsZ9rORzy04O6F7j8uuhwlYWQUFjocbFMBmzXN6K5pZ4uAL5sU2ZOyMpOqtHfbw8cF9xgv496umXq7rHmSZ2Ul2rYYxUTlNKkWMcP52eae3uSZnV75KU/z6HrdmKcGgevOUzk1got1giM0oqR9vEd8QWusyPsd1xufdZfUbrd2AG4tnmRiEmKaPQh95Hjli6AWq27Q6rE3MpC57rfCOGGpQB+V0Z987ArF2w1cxISDkEGSslNnir3vh1ktwDzHZ5ZgTWI0lpV2iAIpSzwpk8+pYhfrhRPIbEHTIcjnA/l9jkd3ETFOh05xFhkq36Kq4MbUJxYR73GOfK6OIL+GB2p7EY88MiZDyfIzvAaDgaW1VNlyg17LXLLJTzd6c83i136HOY++DzRqmZ7thjSLOi/nIYkc4cvljzzvQk78gKyAmuHget80vMfB0RkTPg8QCLxCe8jkHp0+2ed92mBJB3zaWJrOzSoqfL4aZT+JpapurOTuStP/OkZ+eVMrl+ph17ZUeJnofE
- 0KvVdkik
- ot2wcm6GgitmXLF2H6rWXkakRy4yutC5hn1WywbdqoTM0lC0HjnJ4tOARiVdaoOq2ZhxqsGlGqgylox/YOQnI35y95Ch7bHhD3LQ9De6AJLFI0rbf8fsP7ZAJZiFmzNxeM3UypkAXo5DJlQEqvrS/aCReEmCHf3jhyWeizm8O5E/hMi1dutzzNQyGBJQMLp/RpAGP3G5yrfr3GOurFoY8Mh4qMcdjMTaFPBsVD2VlnoNr5UGSA8PbveLB3aHSpHJt2mHRBkD7xnjLESwOR8KIl7LfP11gsYTMOvi9VHYzSVBgM6AtncrDUP/1BQQTclb/bfiyGEBgEUChy6YNMTCrMQYv30mL6iAxLo/wZeKtf7BhBuA=
+X-HE-Tag: 1764038852-838990
+X-HE-Meta: U2FsdGVkX18TflpkSwIDKiPBymIxJjchzyc8gNagcxQ+ERIUbzaNMnKnMU0vGAWuUiTNaduNhsgDltZeA2Eg61j/abbD8A+ZkES3lOnfgtOfnvdeNF8rpKVODii/8pf20s4lI9J9JFznUIJf1gtLZpbqKbAGvYLFedQqj5HD/htGjrKQewn357U0jXjOFx0RLRIEd5hGjAA55Crxfzu5XMPd9vd7sC2kOl/830OnmG+fRLhTvWhpWxDPT4lWORWk9sg8YTZgrNToP2L/Beq4WYzATeOPV6R7DhBOQHwdqtL6ywBvXj7mUqVHnzHdVIHU671WNCfVnTJF2JD8xc8Mn36pIE3NGJxreAREgjMaGzIYM5cgjze53qcsusAfwy2Cn4mBY8Kvl2SbYwSkVexz+gLLwxliz01xUQ0SHS2GqChmlGm2BP1IlYoNsdmeuAg5GoZXvQqGHd/YlNqQGAe6a3oHrDhzhqn5S0Y0AWR5q8WW2PLfeg0f8/QWciq8J5VUzZLaDhDRKVtlKTGHQrD+t5e3uDVzu40o4KRzYCS3/oAyuQm6OjKCZhreRY5J9ouDm8OWglBrZP0axIXPBMnEqBymu00NNKMeWZ5en56aaMOP1tEy5lVAaTFO3xqFDHbf2GjxMWHOg00OMNYM/DZXUFn4AygKan97xFHBQdVhFoEwDfqCrEjY4t3KbldsidIrzfGeUAspsLiwdpeNa11f3KqgEGhWNnQzNTQm1W5xA8SSJ9CyBa6I8RYaGGpBTY/XrH1Xr7Y3ewJlgATF5e7on5uOcE2MvPLMsLUUmlVC37KKI0AsQtjERUf0LimbO7VlOhBjwmfgHTl8m/YL0v/4eCrI33rcqxOpjCZL4MXtLTKJbAkCF/GxLDiDg5owHc1qNsDWgNqnySozhd7fTQRL/mgrq4FZygniE/F1vHe2CbautotNY5ijSJj8loMvwjczRVbpzgiHMXM7C+DpohF
+ ++atubc1
+ +yjFJdPpWLhafqfOeRfGHYaFTO71AVq8NQJ0ltSd5m7dOwksujOO0ruWFuEq9i4vJ+QTqAn2VS5q9j5EKiYb6EidOq7lk4Oy8To8IVMkm+Bh4Rn56mbCKPqQtWhheNN/AMd8twbmnBZEUtW/JoIviLd+U+LU/xKFKciZTBfF6wa+7mPT4kM2A8z3Ut+WA3JhyeSD9iz6pWp/BPvpXjOySXXkuBrKuof6Nbbs8Dm9qvGju7RN58xLjJXMXYaH++oqEvYRUA9sTqhtWsxrzEEXSDMxKOul+L2aCi3ICCbx4H5saTNV9e7tiry1aD8cQib5Tbc7aFaKAVW46VrSrsCYuDmHIzLt6FnMpOAQ/M3XdVXnCz1RvuzM1XI2ZJsR2Qrau5r7TXR/NPI+SWvNJ8TI922+p2w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,48 +102,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 21 Nov 2025 13:00:46 +0900 Byungchul Park wrote:
+> Convert all the legacy code directly accessing the pp fields in net_iov
+> to access them through @desc in net_iov.
 
-
-On 2025/11/21 23:22, Brian Foster wrote:
-> Hi all,
-> 
-> Apologies for the quicker than expected respin here, but during
-> discussion with Baolin on v2 it became apparent that I factored the
-> first two patches in an unnecessarily confusing way, and I wanted to get
-> that resolved more quickly. Otherwise there are a few smaller changes
-> here that I think are incremental improvements.
-> 
-> Baolin, I left off the R-b tag from v2 just out of caution and how I
-> reworked the first two patches. The end result is mostly similar, but
-> I'd appreciate a quick look before adding that back. Otherwise most of
-> the functionality here should be the same as v2.
-> 
-> Thoughts, reviews, flames appreciated.
-
-Overall LGTM. And I tried to do some tmpfs read/write tests, and I 
-didn't notice any obvious regressions. Anyway, let's wait and see if 
-Hugh has any input. Thanks for your work.
-
-> v3:
-> - Reorder changes in patches 1-2 to factor out existing logic first.
-> - Use local scope variable in shmem_writeout() fallocend block.
-> - Tweak combined zeroing logic in shmem_writeout().
-> - Clean up commit logs.
-> v2: https://lore.kernel.org/linux-mm/20251112162522.412295-1-bfoster@redhat.com/
-> - Rework to zero uptodate post-eof folios on writeout and full range
->    from EOF on size extension.
-> - Misc. cleanups: variable renames (pos -> end), code relocation,
->    comment cleanups/removal.
-> - Update commit log to call out POSIX requirement.
-> v1: https://lore.kernel.org/linux-mm/20250625184930.269727-1-bfoster@redhat.com/
-> 
-> Brian Foster (3):
->    tmpfs: factor out folio zeroing logic at writeout time
->    tmpfs: zero post-eof folio ranges on swapout
->    tmpfs: zero post-eof ranges on file extension
-> 
->   mm/shmem.c | 135 ++++++++++++++++++++++++++++++++++++++++++++---------
->   1 file changed, 114 insertions(+), 21 deletions(-)
-> 
-
+Please repost just this patch. The last one needs to come after the
+merge window, when io-uring and net core changes converge in one tree.
+-- 
+pw-bot: cr
 
