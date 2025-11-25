@@ -4,137 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2385D0EE13
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:31:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28CAFD0EE0F
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Nov 2025 18:38:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BDCB6B00B2; Tue, 25 Nov 2025 13:31:27 -0500 (EST)
+	id 614426B00B1; Tue, 25 Nov 2025 13:38:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36E9C6B00B4; Tue, 25 Nov 2025 13:31:27 -0500 (EST)
+	id 5EB986B00B3; Tue, 25 Nov 2025 13:38:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 210416B00B6; Tue, 25 Nov 2025 13:31:27 -0500 (EST)
+	id 528486B00B4; Tue, 25 Nov 2025 13:38:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C6316B00B2
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:31:27 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E6FD4FA60
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:31:26 +0000 (UTC)
-X-FDA: 84149972172.29.6B5545F
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7B62B18000C
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:31:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mRMyU9oR;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764095484; a=rsa-sha256;
-	cv=none;
-	b=JxHgYVxoy/rN7bgZ+wSnXrlt7hEZgAk07ppchqW1whgdyQMMt2cN1v5mQ2PnOgzA3ySBbg
-	lo5JjuNsIcU8aXN7JWcHVr1jhceYxoQjIAQTq35sa69KvR8qbIh631A2Gh32j8hobX2ac8
-	F6cJkym0nN3pYQEEQ49FHsvztCxnlV0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mRMyU9oR;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 406CF6B00B1
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 13:38:53 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91AC28880E
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:38:52 +0000 (UTC)
+X-FDA: 84149990904.24.DF3833D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CFC5118000B
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 18:38:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eFbfUd4W;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764095484;
+	s=arc-20220608; t=1764095931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7O4GSlYSAloya2gWAKt06Wd2oP8bRALkgcDobg98SWs=;
-	b=jT3NWVUxo0+/K4xXZ61iRm9bRhL/m5nuDqmE/+OR1ugazCEEL5+Gm2xQRyt29w96kHgd59
-	3n1z8i9JG3NeZR87uCzkV4u/7nxPRp4TJAabd/iJwXkD5rBmJIn7yTvLMwUtDDcl8ax7wz
-	odgrUlankgfPhIVRxWcbYQx/6FBQnrg=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29555b384acso73208345ad.1
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 10:31:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764095483; x=1764700283; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7O4GSlYSAloya2gWAKt06Wd2oP8bRALkgcDobg98SWs=;
-        b=mRMyU9oRKymSfGt6neU7lpuztDYf8Bk9RubLe4FSo1C0H0vYGTC037pRaAOMYM+yvt
-         8Aitb0Rg8wTdNljybZM8HUYvSl8BdJC0dByNXqjOAhhmihxawVAzBgqNymg9z8GxsL7Z
-         j8tupwFOp1EDcLqQtE0224F2XPJc18A0r1JTmhOgZrOQ5ZNl4tqj01LRa+TNr0AL78LE
-         4ebuWUVt2+ZvU32otxbh8C6kUErr1toK8gy0KYZQPGiWkOQesiG51GG3tLCjtCwq9XwN
-         awUotRjf71ZzW5B+CdUSPqeav91cffzjIJ4Zc7W2lf+1h8FtJDc7NAVQwUVgXBrOaHwG
-         b/Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764095483; x=1764700283;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7O4GSlYSAloya2gWAKt06Wd2oP8bRALkgcDobg98SWs=;
-        b=NSSVkqUUqjwDkvXHPOOzVl8ejhOF/lAr0vQQSNoay0zk9zw6jPRPcNpDIOsfG4ahDD
-         B1WOzVAsdEtg17NeYuGB6IcPe8WZ3MC67xGKWjk9gQwMBU+ZeKgLCWqxzNtaKFDyZaN4
-         eCpEYsvBAuFPxW5zahuB4dm2lgO/MmFZFI+FtMP+FZcvK0RDVebSYfZw3d64Z8rLcFnh
-         N4VxwaHWnZNkXyWh7s3XcSBwwsqii2BATNpuzIpVFfRhRY2Nu/v0SC4HKEV1j6xzVw9r
-         5LXtzbVzrgGtSuizbz7QGWhtvf311594msPnGG+PgN8bRHQc8ersRZmnGHrsrbGK5ZIo
-         waXw==
-X-Forwarded-Encrypted: i=1; AJvYcCUs0B2x/kZnA+wt6TiSiQ/I/XgEtypqv0dCTKg90aO2cXI/popC1ssGOrKLSj0DKfzmwt96jfY7zg==@kvack.org
-X-Gm-Message-State: AOJu0Yw3xzSjx8QArQ1GXUtDoM16Fr+qSDapeqdvv0EofYmQfpXvsfbA
-	OVBdCXv9oqsUhhuysJ7ZdUQcZMDCjk2Ym6DYkgUfTK4GifywHhgfZYUW1h7SWQBjRA==
-X-Gm-Gg: ASbGncvvmmIPRla2tpvBHSuZ4ZhvWW7nOmiFLmxxF4a4PArvf2OWL1JJNDfZuJNuNRh
-	Nc+S/DTVfMyRBBvfELEqU8Y3txR6wTTOhtSTcqGXUSupSQW442JaL8Jg8+A13KVWgM3BdsFdHnK
-	hwwij8d2IccTFndT0zdONZFd2wZrU64UUIN/apE7XUDRk9JeIEBvqXw6qULclEvkhgUxqSj7NDZ
-	zG6sTdqHxfHLUL5/fFF8A319opDZ9VprJz3k6kLUgKPnQK02cDqqzsI1BFaHrgmF0RrD/6KHU4l
-	X/ZBhXgE86/3fN/RB6dQbVhrj3FE0Q72ws12PNRmaCm37u6zBSFnYtKJPq/c8q9gG4rtCLCF1Em
-	O/1qKh6r7mUQXfjZiSHEeUsSjAQHUoxqxmVlpQheLJwYxeQsmQIHahXBVo0XBLQJvmsu8G789Ye
-	JduJkbTryONQrbRjBkBGuKXoKXUQPDYaDipF9+GBQ30Ux7lMw=
-X-Google-Smtp-Source: AGHT+IH53ckBol+4yeTGTxnoskxcelqMTn+43AKcIW+arxac7wzKqrO4rD1ChIviUV6IKHO85b4pJw==
-X-Received: by 2002:a17:902:f691:b0:295:68dd:4ebf with SMTP id d9443c01a7336-29b6c3e3c48mr197452115ad.16.1764095482759;
-        Tue, 25 Nov 2025 10:31:22 -0800 (PST)
-Received: from google.com (28.29.230.35.bc.googleusercontent.com. [35.230.29.28])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b26fff4sm176035005ad.68.2025.11.25.10.31.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 10:31:21 -0800 (PST)
-Date: Tue, 25 Nov 2025 18:31:17 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	rppt@kernel.org, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v8 00/18] Live Update Orchestrator
-Message-ID: <aSX19cWypvh1mKWM@google.com>
-References: <20251125165850.3389713-1-pasha.tatashin@soleen.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=B/99vZF+GMdvy0ZqFYt81dpEeF+6FiIdzo5WIXI0QFk=;
+	b=TLV6fwQiYcZXRZLd9hMjcJXeBYIun8TE5IwFQOHc/l4ZQmnU2rEloMzVdrDiomMSdyjDrY
+	4CUcdVHX80Wma6OY4Ji/kqWAuq8jbRtKSTjZbD+A/mYUMD6Kxl3sJZhVn0icxSouUB/1N7
+	KVOy/lOf7zRfl+5BZy/l42nh9NLwOUE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764095931; a=rsa-sha256;
+	cv=none;
+	b=T0t3ene2EEm496DNl79noLb3W0QqvC1icbtUDIxY6+GzYfz5nJHRrAQ3Adrr4jlYMgJmn1
+	5oWbu9+xzUXlj7btFfej9wXKiR0QVn6FCUQP2X/unOAPwQtHf90Snjt6ldSs9bLKAGW/Ez
+	8bm6w+f3CHcXowJ1fAQ4dg94Mowwsh8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eFbfUd4W;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D0EBD43DF0;
+	Tue, 25 Nov 2025 18:38:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75691C4CEF1;
+	Tue, 25 Nov 2025 18:38:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764095929;
+	bh=rWudt7B1tB5QYi97/yII2g+5R+2VjlqdXJtZwSgAGQc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eFbfUd4W8t5SYla89AonVE6qfu9YF5+7CRm35LEhJB4Ikan/rfMCWcR7mhNLJeBDN
+	 0C/ul7ZztYy+gyI2m2WGHvgGtWSUlxyGEXnR11maVQjbyVWPK63NuqZ/qCel8GTR3L
+	 lQsCIRYMVVDYF37ETz7+Znh4pQq/oNO4n8xcHeF4h17fvJk+DWbeO4x2cr/YeFzjIz
+	 JJn/f+MbzgDHOPJ+4PLtMm/c0sCSfW8dCXiKT83+1T3jX7FF0RHN2aoOxz3/LSAmCY
+	 eAd82I2/jODtfeYzxfIqf6qd8rINpJuRO9UZPXKjG7MQomeUyiZMZIWMxvNRp27/fX
+	 nEIbnvbJ7TE6w==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-mm@kvack.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v2 0/5] mm, kvm: add guest_memfd support for uffd minor faults
+Date: Tue, 25 Nov 2025 20:38:35 +0200
+Message-ID: <20251125183840.2368510-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125165850.3389713-1-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7B62B18000C
-X-Stat-Signature: 6rneieawumn5etd4dc5xauyebgn91s74
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1764095484-469582
-X-HE-Meta: U2FsdGVkX19kBV90OZI9meZc8OLUtiqICHe/NYNqNgj9XeKUuq1SK0IxxvYdKWSnitwqSN1JeHXJkIIlj3cxSHAUTBlaLdPp2HMfPW5/aYhG4oLBjTMPbWqBeQhx5+PLTUakagNlHMskom5nBshQ7xZTORKY4GCsWgOaxvu4BiK9GpPi0kgxwdYdNvqYi37IpRD2TYE0CK61uHzlEMsmu87DxBq/3HiNAFNo5fb1OCgnLGsqHIyW/gEyjRW+LLphstnkCU5KF2tr2gsXxALzAb4238kRVPNldQS8FJ2KlI7Ly8kzJ+cutdDzazwF4pN9gJ0srzZdfYhNq7RGCS+D2k/l7mukkJghJ9UrhksHkyhOz5oSJngBhyMYyE59y9ZeeSZihEDEKj5Jngt6GfFosinzyn74ykfBE+GYo2s9eFNE5/qpeiNR4SvR4aLsKoIFDzP7q65tpEWKlfN6FucLhzsUpIUJqHzT1NrNOinQKeNxZMn1N/Aa47eGF0QT0gw096nHc73nzz4UWLMpaO4OzOGSLwxtkIrLwozZ6fNreLQtA7bqQyyUN7BIZs9QQEjt2X9g62RucYKEgMvtkRQMJfBcjFs/n++L+vOvIgtrS9uKSsl53hloZk2fNV7Wgx/XCrfD/6uo1UbCZyCdB7/WcTZFhHoeqalyKtPU+QZOglPavld53IZiM3ytm9y5hBefsxFYkIkLg8BjgXHwc8ROoIAtr4uIQR5KcnWD4gKbYVApZXMmLQ9zVn0AS4vPsC0lse8yBc0czZpnwwt7vLiEK8GabPMYx3sGr+YcE1nD1WLyYCfihTwP3rDor/dNX+9TLBAxrzal/Mf5KdrKExIxf/A+e5hT8kuYQVrm4d16LEgRQVMrWy0wwf5nG7s6CF0qgQNnASh2mPqt+oopFUCG9svRdQKd+ymcEy7fEwv9HPmiK4N8fi+wYpvohd5R8a27lvZ+qv0Y4FQAG85z6KQ
- guBn+pMa
- OT0hFZopxCEeaNxhfR1hr1vVpbfSyjEreN0MAJ6ZZQUwe2UUjsxIFIlwDZIkBVzrJihsWqkngDQmujWKAMvE8XtmjNg49BDo9Z78B6l2e5tw1ZMRaTsIyCIc6rJ9X1+Ww+Gy7/0JGbXDdhRThAa4yFTB3HP9zHIii4Yc+dWXNsbsvgbLXIBjGoFijAu9f5i12B5SVFumbVCujustML51+qn9LJWOJXpe3gO7L4/g0tVfguXQ9lQcKB+ARYWw+ZLVMA2f8OZMAehdet0BDOAjFR4QBRjizGjeLCmixvHjl7vTwzyoZisfx6ITe0bPaoHgVM65y7BehthDFUSQ6k5f/c2bxmZGgAMuuTJu5ouC/ZAfv8+mRpYjuPA2jcZMl9LvkECR8S7fc3foqg9Z+73sp/akLguWzt4tCfZwp
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CFC5118000B
+X-Stat-Signature: upr8r9hi533dk1cc5wwmkxta8yb3o39a
+X-HE-Tag: 1764095930-286094
+X-HE-Meta: U2FsdGVkX1+f5z//NUoMYSkoPZqkp6cTYNnKXX6GmubQ5cSq759Z4EG4S2caTnyn/AUYmm1qIFKLa2hO4BpsvVTkZ9tXItq93dBc6yL9IUBHqfFACMsaAg1XnHJj1MniaHxVGQtk8eDivtRpzKPzN5XqQJZsmdonW8r4affwW85VrHm2jCcvJ+blwHGVAr4zAV4ltRpzMLiLJqRQUirDUiJ22P+8VzSzUzwrAoK3+MAEm5skHD2I/QA0WvDDiksjL9eBVoVOK/FOCww7MZwrpzdpLvW90e+ymRNbPriZ9yXZeZPB1KRuw7QN+SWqQclpVtmF6mRGWORIqdzKNNAMgUtqiRKck0qIwYxm+o19wwi7DDrYde/zAnkWAhEDfeSgQ7kent4GoZxyZN5Ns4UzVpFnL7eN5wsQSjBAZdFThjGlPOQN3Sb58k2MkIA2srtND+FNy21D4t6QRN0xYqXodq/x2dEuDHic81xdPesNa5LAuWAXotT18voe891x/KZeQrjSCnWcbYlYRSAwoiHEDtesK+t4EJTztWoqtSJZb4V+Z9LJ8/QSLoMhuF+NDE3regTWU97i9pQtT06HQzZEL4PMqTSyH+KXRAjF5E+PprxXb0X3uTzBZHJ4oifXOkPMqLaNszedqAXym4x5Q38rx1fHBSP9yOHDTrt5It44P0LqSwc6mDBGBBcpHB6Yp3Q5flQI5u3Kc0tNn44A1ImdZ7m2okKyFLfI+yelIvWlbNZ3sG35Lxlu44ACTSqQEdF4IRR73QSYkMZu+gwmzMXb7eLZjJSlgc0+uB7A7FNJYUxOsg2xclcj84jqdYAPevG3a90q3/dxelBoXWCPLldTzTKzhCmM9Na+xQIOQDRDPgnTHWqr+QPm7ldqcFbTkUuzUzUy3ny9wObP6eRu/UK0cYnTmHUmtadAsU8x+DZnFtC/NlaUkwKUHOnLBNBnLR2YjmCt5VOKuyZeUnQhYjV
+ TUI4wbBj
+ uv69DtMLZ1b/Q1Y4v1NMglaQnAIAs4vdU0nqK1U9WIn+mIJQpgOgKjcuXOg7JNhKX969mDUPcNKn8Nn5vK02nYZTpyX3aXUb/dIbKoo7naVpBhhmijeSgvNxxY74Lgm8QCckVzMfGH4aJ55Kk9BO25MqLNzh1XHyYyrX0+DIp7a7iz8IoIn8LCONSXm4gecxcal51djOq5196vf385ITVa3THT6ZbkIOB5FPaihRdJWFk5Llt70iOrT3EZI9BcjDzE+tqhk/oPG10vWh2E/k7m3qigtVh9KlWDPLOcPuiQ/L7fa7uyAC/Li88ropijMXLSkDf0rfvM35W9crtzeKWN0FiDnJPUPACTexvuWUCa79ymz8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,32 +108,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-25 11:58 AM, Pasha Tatashin wrote:
-> 
-> Pasha Tatashin (12):
->   liveupdate: luo_core: Live Update Orchestrato,
->   liveupdate: luo_core: integrate with KHO
->   kexec: call liveupdate_reboot() before kexec
->   liveupdate: luo_session: add sessions support
->   liveupdate: luo_core: add user interface
->   liveupdate: luo_file: implement file systems callbacks
->   liveupdate: luo_session: Add ioctls for file preservation
->   docs: add luo documentation
->   MAINTAINERS: add liveupdate entry
->   selftests/liveupdate: Add userspace API selftests
->   selftests/liveupdate: Add simple kexec-based selftest for LUO
->   selftests/liveupdate: Add kexec test for multiple and empty sessions
-> 
-> Pratyush Yadav (6):
->   mm: shmem: use SHMEM_F_* flags instead of VM_* flags
->   mm: shmem: allow freezing inode mapping
->   mm: shmem: export some functions to internal.h
->   liveupdate: luo_file: add private argument to store runtime state
->   mm: memfd_luo: allow preserving memfd
->   docs: add documentation for memfd preservation via LUO
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-I ran all the new selftests, including those that require kexec on an
-Intel EMR server, and all tests passed.
+Hi,
 
-Tested-by: David Matlack <dmatlack@google.com>
+These patches allow guest_memfd to notify userspace about minor page
+faults using userfaultfd and let userspace to resolve these page faults
+using UFFDIO_CONTINUE.
+
+To allow UFFDIO_CONTINUE outside of the core mm I added a get_shmem_folio()
+callback to vm_ops that allows an address space backing a VMA to return a
+folio that exists in it's page cache (patch 2)
+
+In order for guest_memfd to notify userspace about page faults, there is a
+new VM_FAULT_UFFD_MINOR that a ->fault() handler can return to inform the
+page fault handler that it needs to call handle_userfault() to complete the
+fault (patch 3).
+ 
+Patch 4 plumbs these new goodies into guest_memfd.
+
+This series is the minimal change I've been able to come up with to allow
+integration of guest_memfd with uffd and while refactoring uffd and making
+mfill_atomic() flow more linear would have been a nice improvement, it's
+way out of the scope of enabling uffd with guest_memfd.
+
+v2 changes:
+* rename ->get_shared_folio() to ->get_folio()
+* hardwire VM_FAULF_UFFD_MINOR to 0 when CONFIG_USERFAULTFD=n
+
+v1: https://patch.msgid.link/20251123102707.559422-1-rppt@kernel.org
+* Introduce VM_FAULF_UFFD_MINOR to avoid exporting handle_userfault()
+* Simplify vma_can_mfill_atomic()
+* Rename get_pagecache_folio() to get_shared_folio() and use inode
+  instead of vma as its argument
+
+rfc: https://patch.msgid.link/20251117114631.2029447-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (4):
+  userfaultfd: move vma_can_userfault out of line
+  userfaultfd, shmem: use a VMA callback to handle UFFDIO_CONTINUE
+  mm: introduce VM_FAULT_UFFD_MINOR fault reason
+  guest_memfd: add support for userfaultfd minor mode
+
+Nikita Kalyazin (1):
+  KVM: selftests: test userfaultfd minor for guest_memfd
+
+ include/linux/mm.h                            |   9 ++
+ include/linux/mm_types.h                      |  10 +-
+ include/linux/userfaultfd_k.h                 |  36 +-----
+ mm/memory.c                                   |   2 +
+ mm/shmem.c                                    |  20 +++-
+ mm/userfaultfd.c                              |  80 +++++++++++---
+ .../testing/selftests/kvm/guest_memfd_test.c  | 103 ++++++++++++++++++
+ virt/kvm/guest_memfd.c                        |  28 +++++
+ 8 files changed, 236 insertions(+), 52 deletions(-)
+
+
+base-commit: 6a23ae0a96a600d1d12557add110e0bb6e32730c
+-- 
+2.50.1
+
 
