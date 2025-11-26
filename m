@@ -4,238 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE020D11195
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 20:05:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F829D11195
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 20:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C1536B0005; Wed, 26 Nov 2025 15:05:51 -0500 (EST)
+	id 8C6E96B0010; Wed, 26 Nov 2025 15:32:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 072426B000C; Wed, 26 Nov 2025 15:05:51 -0500 (EST)
+	id 877306B0011; Wed, 26 Nov 2025 15:32:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7B536B0029; Wed, 26 Nov 2025 15:05:50 -0500 (EST)
+	id 766916B0012; Wed, 26 Nov 2025 15:32:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFCFF6B0005
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 15:05:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 82D05BB20E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 20:05:50 +0000 (UTC)
-X-FDA: 84153838860.08.914D07A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 02F32100018
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 20:05:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Te78isLi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764187546;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EDC46B0011
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 15:32:13 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA866140741
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 20:32:12 +0000 (UTC)
+X-FDA: 84153905304.09.F6E292D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 38ADD140014
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 20:32:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Jx/Kgk+5";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764189131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wo+rlc0JwB2D2BEysHHzVl7tLoYSlsFdR2YHJdEltfQ=;
-	b=CyBBEHvsegZgU/iEw6CRYMmJOI/aP1YCkpVW+tEZzY+o+/dCzTxwafTRYV/5TJ0xwDPUhl
-	/KT0TCtKKMRXZjUidXlQDwGQrP6RYar8xztFMNAIg24z3BfQ0E82YLDlV1p6dnDo6BF21a
-	WXabMf+Z8Fyl3qO9mo60lMo8DMvCaBk=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Te78isLi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764187546; a=rsa-sha256;
-	cv=pass;
-	b=8etlu6jygVfGAS3a7bZ9Nebyf14qV3GyMQ1grVA1ClGgG9LWy+m+84PVqKF2ItL2FxXQOG
-	LNyiJ3IsT3SGpOxTtqB51YUvVSDG0uNhgvKPU4DM42ExBgmZcGKSbWatt4gJth4yQnHKjH
-	jF9U+zlLmSAWSo+tnQWLethEyfpmbRY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764187546; x=1795723546;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=oNRNsU5J8wnsAngIJvswOlEVp4DB3bztbF3SSDVkoIk=;
-  b=Te78isLij6FbvQQ9+2VL5R8ujx1SSwYEyhZvgJ44H9qMKsXdsot+tBwl
-   1LsnKrEws+l3W7I+uAdHmdmaMjMtiSzg7SRykkxvtVMau5BYts5JcAVaa
-   09OcqSixo6E1KMr95VKt1j5P2C563J7bcQ0QbP2Fh7r7GncjCndnHyDIA
-   1hUTry9ZD1330qXaLcLbsN/MEzGU06RMkYZvR8fGyyWAJw3YaEv2/iQNy
-   LQZ/AyTrzMRvs30YEdvyI0GA8EXGtV3yajtuCp/Xxd6qtnt29rNT+xZi/
-   GCqZ3BH/CnbvCUGYckjKGhIXrc/V0YIh+mdf/FWT/hRkd5qitPyVhY8aa
-   w==;
-X-CSE-ConnectionGUID: m+c/0xLnQ8GQFmbk+wCr0g==
-X-CSE-MsgGUID: vtnaDg7nT2aFv7p0O+EqTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="70095531"
-X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
-   d="scan'208";a="70095531"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 12:05:44 -0800
-X-CSE-ConnectionGUID: 4oKXDtexTsCGf1SumLnWMQ==
-X-CSE-MsgGUID: 6IkvMB6gQ5+iG0PVvSjZaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
-   d="scan'208";a="198148668"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 12:05:44 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 26 Nov 2025 12:05:43 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 26 Nov 2025 12:05:43 -0800
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.60)
- by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 26 Nov 2025 12:05:43 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b5tIPn+F8woL6yB0zZNoRyWo6BZegRwL10GaIXXEV4+L8F3XseIkgCrRAkbrZuUJBtAdwgwugzQUQF2TrAurjEWtmFkNdNI6U0XFSaE9S1UJVO3eg28PMc5mEwmY/+ny6CHtP9iSOpyuW6Tjnji1Z7Pypq9whL36YcDNjM+Fuf8xvb4JvZcAYDajSN8PdOPpOzbpwg5kXI5gBCP0Rnls4ImNj3Wgjug6cb4QbvsqJtR2joGIQqECn6RfnWq8d3DpIjWfq8Vm6gkUW6ta24wx90uIPMDeWPdxP9C9SmKLNBp6pTVJDD1i6JPZgG2zA77d+qgBuom0Hxq473n2fdduGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wo+rlc0JwB2D2BEysHHzVl7tLoYSlsFdR2YHJdEltfQ=;
- b=xja8suTrbSunsBLBfowfV3L9Tcx23PZPfNVFwKQDjs/7fiJvK/GnDfQ+YHZDq3warpQBTCA+fIXoeMTiWuqDneJZRYmN0JzyjQbBu5ylARg8pXpbnrqeLZdS1jABA65lrFsdqoHpg19OwHLexLS8XuTh1Z7Iuz6uZ37fYwK56NZHlQMvm+8f8Zc/Kdiiq79dRlAvbzAj5ap8vW6BugvJJGyVPUJ6UQfVzLwzs274SNd3P9+kH+uoYBNPUP6TtfdrakgbBE0R6cc8TYThAW7Rw27SXuIuU7+a0bgzrfOruKNhNrNnaPtfnDd66Tuo5pPR/yAsyUnNa/dfOh6EE9+Utg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SA1PR11MB8476.namprd11.prod.outlook.com (2603:10b6:806:3af::20)
- by LV8PR11MB8560.namprd11.prod.outlook.com (2603:10b6:408:1e7::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 26 Nov
- 2025 20:05:40 +0000
-Received: from SA1PR11MB8476.namprd11.prod.outlook.com
- ([fe80::4255:20e7:3c8d:300e]) by SA1PR11MB8476.namprd11.prod.outlook.com
- ([fe80::4255:20e7:3c8d:300e%4]) with mapi id 15.20.9366.012; Wed, 26 Nov 2025
- 20:05:40 +0000
-From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>, Herbert Xu
-	<herbert@gondor.apana.org.au>
-CC: SeongJae Park <sj@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "nphamcs@gmail.com"
-	<nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "kasong@tencent.com"
-	<kasong@tencent.com>, "linux-crypto@vger.kernel.org"
-	<linux-crypto@vger.kernel.org>, "davem@davemloft.net" <davem@davemloft.net>,
-	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org"
-	<ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>,
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C"
-	<kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>,
-	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh"
-	<vinodh.gopal@intel.com>, "Sridhar, Kanchana P"
-	<kanchana.p.sridhar@intel.com>
-Subject: RE: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Thread-Topic: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Thread-Index: AQHcTWs0Qo3eNl0w/UamTXF2PMbCz7TxL9wAgAAcuzCAAG5HAIAABzqAgACcWYCAEjbfgIAADVuAgADeg0A=
-Date: Wed, 26 Nov 2025 20:05:40 +0000
-Message-ID: <SA1PR11MB8476756D7255F1EA1EBE322AC9DEA@SA1PR11MB8476.namprd11.prod.outlook.com>
-References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
- <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
- <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
- <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
- <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
- <aSaUUez5J1w5WyE-@gondor.apana.org.au>
- <j7vaexpi3lmheowozkymesvekasccdgnxijjip66ryngj66llf@kolcsjasxxdy>
-In-Reply-To: <j7vaexpi3lmheowozkymesvekasccdgnxijjip66ryngj66llf@kolcsjasxxdy>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR11MB8476:EE_|LV8PR11MB8560:EE_
-x-ms-office365-filtering-correlation-id: cc204d31-161c-4a78-e007-08de2d272c52
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?IRKf+ZRhRNfl0yjI7gU2SBkWf2XzJLo9U/kg3JpKd1ypjCrX1Ot6jEt/S0sW?=
- =?us-ascii?Q?WiUqLw/ilU0/wFtexbxlhHrUPup69zmWdPc0wtsFe1qM3+SliW0NrKu3d8CF?=
- =?us-ascii?Q?HNF5l4F4HBAxTxSwreglJITAJnjQfNQVOY6fXSm//TJAWc/zO4lfCP08dHbo?=
- =?us-ascii?Q?j0M+lGf4g0lThTeZyBcL4K+wCUtX/Y2xFgoqk8xX32/bE37+RLA7sj3X0ZfW?=
- =?us-ascii?Q?hAeIB4hSEr5nvxOhwax9yWs6pCKbYjIbeYSo2KaVIrgSLAC757WMEmB1VoKL?=
- =?us-ascii?Q?wEDz12DR2Qn/aUyP52Y2QzFNG4eQZMi4Y3HQy57k06LGKd8R3+RCk1/jYHYQ?=
- =?us-ascii?Q?rIi9rj0xWblX7XgeHiPjwCI/sV0ZwkClIj9DWZmWmwNIu/PBDBwW4EhYmSLT?=
- =?us-ascii?Q?+E6DlFSozP2Wr+yfn8RmPJj3QnKtR1Ew6bqH8j0Sq6fzXBVxGhzK0jnrktPh?=
- =?us-ascii?Q?mP21VoItR4tE7Mfh5lOrNJY0igTq6n2XIOe1ckb3OZKgM4NDNb1SHW96O4AE?=
- =?us-ascii?Q?josbI4epWvVpoFalybBnMcsWK3QPv6fhkp7sSx4lSR+GSaTf3vux6hNoL+Jz?=
- =?us-ascii?Q?ZIeIKXPJyMmSp7WsV+/XSiK+0SphNc+pDxuzwBZb+Ez6FWcMCwZ5jmJxTWZf?=
- =?us-ascii?Q?EdKx+yDk0pXej5901OWYX5oWySuwGRqN6xoNBuPtgE6Vn6DCxjdgZaii9lBr?=
- =?us-ascii?Q?11ZVcU8RuZLWwFNUnGDmgfYZkrJ46xVZkykpUbvFGEvV0kLM+JPQkTdiKVg+?=
- =?us-ascii?Q?3ca9ftl5a+UVEIFpNygY19Eey5D7wCuF2D6hOy9Gd2Qc7NRA/5Hu+5jdqzXb?=
- =?us-ascii?Q?7aZiOYlhUOlbT5R+4JeSvsR+B5389Zsf2NaebZxaIz08Are98wk3A4fWRMTT?=
- =?us-ascii?Q?5pWd9nJd8zArwIcWdObycc8Gigt1jM2J5U2ydzUE1RdgbcXRF+gXo+rrEf44?=
- =?us-ascii?Q?+o6+D071cHwQcNuWqQfmwEqmzq28EOpAf29cm5neyHaULH/LPDb+OYdgLQAa?=
- =?us-ascii?Q?TaXpKfmmA2h18dxg6gf24RLqK4T3QG58Wy+G6Ng+KRE5/gmpAiwDV+Vppbhe?=
- =?us-ascii?Q?y/NxJ9EhUfXlY2RdM5e1BgCKFVsfBCuCUsLtZDYZsAP3Hlv5jQ5ExVi6Qejr?=
- =?us-ascii?Q?DglBJVNnw3HKXkaoz0SnyPEbirqXcDtPy3gnkE3KkEJEYLcQq9chyIrTjpMh?=
- =?us-ascii?Q?EfO58jsthYLns59RcU63mZBpX0iekv148p1QPgngH6aH5ridFiEPP6HeyzO5?=
- =?us-ascii?Q?PblRMl4P1rjO13ak70VkGDYs1D5OWlKeEgSydRzvpWit1hP6/sUsxtsgExWf?=
- =?us-ascii?Q?klMMRA3q45epi9Z1tEXY+SnEBryoIWsqIMionNRboc26aPW097UFMv334KRr?=
- =?us-ascii?Q?j637gQWpXnJdoIcrqT7fhq9VDqFde26KUcNLE8JMvOqb4PTensONmyqF664e?=
- =?us-ascii?Q?iVMUaRz8Is1AKrp77xdq8UScOOSc0VqW5wRsSOwxZjMUN+vGeoLGng=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB8476.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?iWhP9B9pThlGre3hkVRBfIEsHQESZUzKmYkqMjewI1/hGloeY5v5qeZ3KJ28?=
- =?us-ascii?Q?aJ07l3bEW7cYD9xewEqZa1SUayDG0ZJiC1WOx0ntJb/D7ZoGuoZJ5Ef+ZIQb?=
- =?us-ascii?Q?+pbGkLjZUUxeBf5iGBbICUyYiGWPaJYnY/5cUNui0FxAW58SurTB3Scq+BsL?=
- =?us-ascii?Q?AXciieuTc5y5QxfgC3vmi5KQpr0vvOhuzKfy1QSA1p3kcAlr4s5T3hL6VgRA?=
- =?us-ascii?Q?LsnnDwklJ85oSGwJiFWfPxTM2ejKan2wE8NJiVk5PUNmLCMo8VGfCE3T5wQ5?=
- =?us-ascii?Q?NunOgkYwWITtMmgx89vBiKqBgKN1BYESLe/04CxemavoX1oQSUMN5tRetQFX?=
- =?us-ascii?Q?LgjgVQtLXDYCvMglBMIivw4dqaNW1e2PfazX+rlyYJX4bvZfRLjub02AD6T0?=
- =?us-ascii?Q?BPY/eyOtzUQzN8kGi9e25EwPtYm3Xa4dEKhiSAH8m/4NfidKl8iP3UXF2K8l?=
- =?us-ascii?Q?WK2OTKjEyMgUS8q/qxLoh3p43BLHcYRMbMZ6RqJYWjE63erXf5fxKvsGa+y2?=
- =?us-ascii?Q?pTLTZNCKrOsaKwaLfBGeXpPrg6NlqCraN4X8ZIPlVzRDjYMwYhRC3KfpiVFk?=
- =?us-ascii?Q?z7EkWRW3Kuhqo3Y8FuGY34AaxCxgjE5I0l+uko8YCcCbc1YOWEeKOekgJdXV?=
- =?us-ascii?Q?F18/xW4V/lp7KDBKz8Hyq2Posc9FN8Egcad730i5auSATEMU4LCAFNp3xi9p?=
- =?us-ascii?Q?0pPI/xlNiGBEN9JCCb53mVBU3XeOj9rTkMlDXGZJMJQZifDfXlcmIfWnKpA3?=
- =?us-ascii?Q?FfeXHdpKJ9oK4CA6ggwXia/jXxSdHegzYpEY/LzMV7C5de4ONSIgr8xwfM5i?=
- =?us-ascii?Q?oN8K6UG0J6VGSAo6o0xdMK9gu1rI//DN4k2y99w50gUp5+4TYYoHR58qlGt/?=
- =?us-ascii?Q?OAuHmYeRAFZc56h3F6w+E8l1rEQ2K90+V38ebN/GVKy0/i5CJIe7ScHGNK02?=
- =?us-ascii?Q?L45HZltqiNejY2VlBxX8uLkpFNolsZBA6UjUcJmqD0mO+16lf4Irh+IcSxAY?=
- =?us-ascii?Q?8NHPabbV6h84M7SheH3nvNaehDk/lRkiyVVtZa80y9ewdF4ISGYGKEUyqin6?=
- =?us-ascii?Q?j/xb3puz4kxK7xzzaMed/noNZLoMG6470dIn3g0ce5vXJhR16Tzat8ptDlFq?=
- =?us-ascii?Q?h2nMNNma1mJegogAy3P914Qc+m84e52JTSpZ4627x8EyypbKcgby2ndm1+y5?=
- =?us-ascii?Q?3BWNrMHEDXV7fN69Ab/uVUSpxPp525R9H1pZC3fFEsTUzOH4IgYN1vsLvqq/?=
- =?us-ascii?Q?+xrec1Qjn+bJmCk3slP78VZYYPwoO94qJpxTUtOXc+zpWoCY+MUMXdUlqxEk?=
- =?us-ascii?Q?Nfi0sY4iyZTvbfStkE4iKsS3u80Hsxrg4B9LcRCcaBh+/8b8qclA5H1xwOP0?=
- =?us-ascii?Q?/VkPAOemQORtJXbCeTFCVvLJG5ibkTgPNDgVquOO1IuiJpC8Rbm5xHHbVM8E?=
- =?us-ascii?Q?0Z3wUUNssBoQZe5owwR6ZLUamJdelYV21A4bQRT4Zm/ui7U5zajWFB3g8qJ1?=
- =?us-ascii?Q?rPZXoVLgUTv7nocMKBn2Ses37L7QfC/GaIdddDvjtD2GZHbfJDA6jLPl0+sh?=
- =?us-ascii?Q?KPPH9q4UWQ1YHE/6kMRApViRBnTdqHFcUWBoXvE7RTWnLqZ+IrV8U7i0jXPw?=
- =?us-ascii?Q?fg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	bh=T7aY121qgdlo7tVaxg7djllP6yLRJB74p6ieQk7JtJU=;
+	b=pzHJHkxhglNH4/p6Lz7X1BaJ4SmuwxAZRCuRb9Zu4xgfHSk36x+KdJtnrBydoLBP68Btn/
+	Oer1zeFM+mnLi54/vC94perutKmC28aTxtBhumRCU3Ym/7tCLNtgdBdW20tcVIcHdw5n1e
+	T8AygIhIoKuv4QPVvieojWnticZ06Ac=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Jx/Kgk+5";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764189131; a=rsa-sha256;
+	cv=none;
+	b=ac/jQQpYc1iwC6KpjIk1MxqxAZ5m8t/fU8Qipljak9J2BBByhifydcpFeyzLfrywGQTJJq
+	2XP8i2k/qVSgUoTsZA0grgrWlnSeMx0kX/vgiEA6C1q6E9B1sq3L9JH1/stVdg/1Scuuzh
+	m/b2CMbhpntxpFcS6Y5NnJzpC43bwnA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C98D60240;
+	Wed, 26 Nov 2025 20:32:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3847CC4CEF7;
+	Wed, 26 Nov 2025 20:32:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764189129;
+	bh=khfCF391HTb9ZHzqQ+60+gHc4LAP9io5EVEWBl7iijM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Jx/Kgk+52Vj2FhMiZ6roXAU107DOPSpYbR54l0SQDWU1t4R7bMm8s+HInc6989b/V
+	 2cDeU+ZWwLLmnlIHfOpksf+IBP4hNK1ffXi/vUjPpjPeMUHWhngzJAH08bkmRCtygB
+	 JQYHqUKbcZT0vUQ9yMZl+kC9/gmskU6bpNYXfnQDKqkyCGA0RSgB7OzgPbQ8c3/498
+	 Hj59w7VENc7+o6gJI8CLIr1pUNoVV+wBzyXoI68l0omVxKWgWCP/hDOMsqKxthd0sc
+	 wzgbPhsCM4izLtPHPs9w/dlr+8C1vK0GSmWsZcSnhl5za7yLVxWM4Vlo72RSYvYAyJ
+	 DvL8Jn/H8RkGQ==
+Message-ID: <b2fbe58e-f47b-4a76-879b-fd38a915c2ce@kernel.org>
+Date: Wed, 26 Nov 2025 21:31:59 +0100
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8476.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc204d31-161c-4a78-e007-08de2d272c52
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2025 20:05:40.3422
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: TRniULh2hwHdkUGnUIfhZDIi24ZK70IR994JOaptU3RbqFeoYVrpeCkx0irWmmMncsvLsn0zN/PM5nItETKOxDV9nnGxE04wIDSzebIQwoM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8560
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, devicetree@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
+ Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+References: <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
+ <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
+ <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
+ <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
+ <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
+ <20251126134726.yrya5xxayfcde3kl@master>
+ <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
+ <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
+ <ab39d448-aa1c-4c93-8e2b-5d97a9c76af5@lucifer.local>
+ <1ca9f99f-6266-47ca-8c94-1a9b9aaa717f@kernel.org>
+ <37973e21-e8f4-4603-b93d-4e0b1b2499fa@lucifer.local>
+ <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
+ <4505a93b-2bac-4ce1-8971-4c31f1ce1362@arm.com>
+ <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 38ADD140014
+X-Rspamd-Server: rspam02
+X-Stat-Signature: qisfro8wewpg57amufpggna4dq6akgne
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 02F32100018
-X-Rspamd-Server: rspam11
-X-Stat-Signature: n938sda8t7117tpxt3go6jwyucax96zt
-X-HE-Tag: 1764187545-583337
-X-HE-Meta: U2FsdGVkX1/zAVBD3Wrq66/nuRftPmipWerUvyAG8kaLEFjfCLpS0mLHlW5utkDexKrcgds/frRrlnDAeYC6ktdVHgkR8x+vRvomBUbJDBxmHGtAVzRtzT4icctpiCsoM3S3WWgtI59x/LnYge4p8DqU7VsvzG2/xesDocy07Vmhgs+cmgZc+b++8FdXVy2Bxy2F63peNZsC9CdE52o5L9B1LNH0gh4djf4zQbnwBag5UEZzDffWNdq1y6IZflh2i50/AEizpF6f0y4VcpRc69gSdAyrNyTVtH1HIVqV5oWICSjsNYtuXHrkgu/kk1sflB2rs1N6FBUDsyCTTrnDEdW/jkZrzAs9o+g6eQubeSc49OlHvFadQ5NzdUVX8c8I/X567AqXt1tRCscCNzvIcCF9LgluZuV7ipa4S70XW4kBwsB1zMWJ7CF6MeEPtVEByuS1HmAmPWmemnbTNafug99UsOb4kfJAgec8/j0ohjsSovRHCoj0bF/DEu2vDalensRpdhsLuluoBF7bt2ZxA9DWzNwlWtCD1+WOnfIc8xG4wYqI8/wAIqO12SFTIaqcAu5iBXf/KG/BSD971EivOAu9Mq9tDBbH8BUhGlvsey4k4EPW8VIGAl7nK2xsgw1JSX1weHvZeZKhfXsZduKQeBHssUw1Yeyz1w91DIHvdeQI6i1EqopIZwJJMzBt/qtLehA1gM2z5pFzjd7U/CP1OmgIgbLsQY2zYvsSE5jUNOQauqp6MEliRRbagx6XpnspXdSt10ixZrl5AdLpu8wmdksj2UayrbHUPmfSEPZJwlJ9DSea8nk0kp8ZbWsQ69W3Uih84G60ZmGgg1hT5BcDtypUeGbExPkts8CVxLDZOVqohPeHgrf1AddmHoavBMFtWPrupvEeJ/ITAnTGHywgM+X0oTS564MeuBsyL6idM8SOGFSU0fVwTDfyUbgHH5NG/oZBl5KVqlcPVdESlMX
- pdENJomg
- cdBxh8TRkcCRUS+xUEIaJckklTdkwPisKNaQjzVE+bUMc5gGITUxKIQTvwYVoa8zaIBrqHoZn53o5k0iQSA+ckCHOPZY9hwo0rr7M6lLXaDQ76dgKkx0v3rv/+tKERLJakj0rr96caMzgu6LMaRlQabs+t8VdvGNNe/sMJj2qNcHpnc6zEfS1LkW7WCI57CrJcpC59Z143zbVl+NSQ7sgni90axBQByn57x+KJWSzcCjpgNP5Y7T4A//iSAqjNMqZUmMRcPetEcE33z8MWm8DlnglvylKr/UD9W8Dw5iJVW+aeUWey7BfeSQnNFIqwUXiEJUNVrGPqovMM2z7X3C1MOsVRR/2OTf1YznvKRU8t5kFMjt8EvrDvxcUlU4lOJ0VdPkw7bUNkoKJ48FwRzWHUaRwcNK4IjFh7yKCKyIKJYtC47C2mrextCayE+NBBVpxvfYWvZR3MDI0+UrRw7g2JfgCl084lzXstPbfoMV8Ed4QAkm6ZUzs2+CxDD0Cp5aAxxS8F7CLb3qMVPeEWMk8Vo7pfL1tuUWUhuTrWeRlHdQHcS44I0lEvfr8fHUjufBHvLizvjlJcBla6e2YDjgJ9FF/prKjyO2iUqRskTH4drb5iTLDRXeH1EYXlI40nvR7MvUgEv16wnKtyq9fNhva+ugqvrivLfAGVGlnX2DAF3kGqrBc9KSgVyOu5SQeyX+edR/1pYznat8O9Kt8dTNZxFJbKwB7tqfl/TlUGO5XqYSOfqvV4kGx6DphAlCAFONVmnzrsjyuSVJ5cEATijlK1uyhd4ta93lH5JqviA8D+paC/NPtgkmVOWVWjCa2TF99lIr0LedE1M2gANT9YwpcMv8ndbumPWTfzPY4odKpwA8TbZ35QhIpHMbSt7GCJS3H75B2cBkHpWKZJ1xh65n9QN6xvXfu7da1857n1dgJsX5fYrwY54p3QIFqAdoVuTLKEdaajZ984sgLrjjjeXWCJv5uNg0l
- 9SHLs01W
- yB+wKPDL9ZtrKHLsb86vCVwOiH02xA87UgeOupV+bBkYrAkjkamfbzTVXwKL834jSjcyUxsvkj6OK/DPhWyPZRaFel4ojF2qmieAShabfK1Z9FFsSGsBEFvzlLEl4orgWQmIoICpRAA=
+X-HE-Tag: 1764189131-349632
+X-HE-Meta: U2FsdGVkX18yzl9tlFfDxmO+oxnJpZqMkkOzm5KPRm00RDhSvDQbWvsnui7JB33Nhgf+MxQGCwB57LR5CVgGHMvsypWFUfE9wd3l+m/31dk8z3bztVnzuHgIviSY4dbQC22Gomg/HR1xh2Ji7GtuxEMqzxZ6QV+QtWABczFdJDjB8uP1wYzrh7j1a3foTap2tFHayuaWLUa8pwFoPxAQA2p3ICBsZpw9SeF/c8Us0BwsbwNLu32H5Rfh5QmEyJl0KWuj1lQL+QwY0gT1FMKVMzkM8AqcidMfi1ZyFCJot2Bqowe5aBpqAIoyy+/fplTqJ3LAoQghVSJ1fV9vSSEOj9q2ZLY23BeSrivmSoC7UOHBlFM0iTnoT6kepevLcRVUT79kocSiTbh/ZohETe8lgtk5erijgy+8aslYnQYAgeBMnOiJxj1QdrmnxzcIlLA/HbUjPFfh82amFF9eskbLQJCsqJBwqNpBsvKPGRCN1wJRRvO3AjhCp9dC8f3wcZWLejKKsBR+1Wpu7m58Z2UXO3enGXI3gD26/MQeRJcQBHSVB6FpfoiEDXcfhtx87CDmfskY5zBkc/lzK0FV/73t78w54KBprQwPbKDvm7JwnAlRHzV4xU0X0hrs5llRxDIMzSST+gVdXqiOMa89sJgVPXJjdDoeMZzYmYzWY21BS21pAG8VmtLM9Jy+258HLfweDUjDfZiP5gJwBrCD2mSu2/U8sKnmkkSf0WM8yWWP2AGDde5nscSCJJak6smVGLwdFRfAsAZJCI72mPKr56N2JJ2c5/T7w2DPWzBaCbaZBNt/HORgyGw5ZQaOsnNGqmYA5gQU+/4te3jWfHN7L560SDf5yuEKxw+Ue1nj5udWqkQGz8SuDoRD1TGvhaw2E2uDxMp/oPUf7M1ZeFS1qugvWClbBHCyp5nRWCWRAPUb/zDP0Kr6BIQaGqLEI78czZ5w7ZbmORPIlwUrySi1Kbk
+ X/OL7zad
+ ksAW7/eFCOCQGHDkJDXbbTqLgUiWbxIosA/0wj2/HRq2ggfRMX5afpMkX/1J6ZI7Xyqjhnl3GkmKlUp0abs4isZjWFDpNnvn/BuupqasK6TZvyBCJa2mLIv8/0mkMmxKbcdTxQTwgYtIqR0mDWwQUJ/+14qBNM5zV7kYCvxIeDhne1NnRtRU7TJD6jqoQxD585GXFcyVgJ6XYnSzrpef7GAVO0y0Ea8EXC+Nuyoo44YN0C1dE87lFZsYUeF3EdDO9OpOZN+6k0B4gzQAHuOpv05IUhehKuuLQfLU3aAK/Ybqbyzc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -244,90 +119,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 11/26/25 17:34, Ryan Roberts wrote:
+> On 26/11/2025 16:07, Ryan Roberts wrote:
+>> On 26/11/2025 15:12, David Hildenbrand (Red Hat) wrote:
+>>> On 11/26/25 16:08, Lorenzo Stoakes wrote:
+>>>> On Wed, Nov 26, 2025 at 03:56:13PM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>> On 11/26/25 15:52, Lorenzo Stoakes wrote:
+>>>>>>
+>>>>>> Would the pmdp_get() never get invoked then? Or otherwise wouldn't that end up
+>>>>>> requiring a READ_ONCE() further up the stack?
+>>>>>
+>>>>> See my other reply, I think the pmdp_get() is required because all pud_*
+>>>>> functions are just simple stubs.
+>>>>
+>>>> OK, thought you were saying we should push further down the stack? Or up
+>>>> depending on how you view these things :P as in READ_ONCE at leaf?
+>>>
+>>> I think at leaf because I think the previous ones should essentially be only
+>>> used by stubs.
+>>>
+>>> But I haven't fully digested how this is all working. Or supposed to work.
+>>>
+>>> I'm trying to chew through the arch/arm/include/asm/pgtable-2level.h example to
+>>> see if I can make sense of it,
+>>
+>> I wonder if we can think about this slightly differently;
+>>
+>> READ_ONCE() has two important properties:
+>>
+>>   - It guarrantees that a load will be issued, *even if output is unused*
+>>   - It guarrantees that the read will be single-copy-atomic (no tearing)
+>>
+>> I think for the existing places where READ_ONCE() is used for pagetable reads we
+>> only care about:
+>>
+>>   - It guarrantees that a load will be issued, *if output is used*
+>>   - It guarrantees that the read will be single-copy-atomic (no tearing)
+>>
+>> I think if we can weaken to the "if output is used" property, then the compiler
+>> will optimize out all the unneccessary reads.
+>>
+>> AIUI, a C dereference provides neither of the guarrantees so that's no good.
+>>
+>> What about non-volatile asm? I'm told (thought need to verify) that for
+>> non-volatile asm, the compiler will emit it if the output is used and remove it
+>> otherwise. So if the asm contains the required single-copy-atomic, perhaps we
+>> are in business?
+>>
+>> So we would need a new READ_SCA() macro that could default to READ_ONCE() (which
+>> is stronger) and arches could opt in to providing a weaker asm version. Then the
+>> default pXdp_get() could be READ_SCA(). And this should work for all cases.
+>>
+>> I think.
+> 
+> I'm not sure this works. It looks like the compiler is free to move non-volatile
+> asm sections which might be problematic for places where we are currently using
+> READ_ONCE() in lockless algorithms, (e.g. GUP?). We wouldn't want to end up with
+> a stale value.
+> 
+> Another idea:
+> 
+> Given the main pattern where we are aiming to optimize out the read is something
+> like:
+> 
+> if (!pud_present(*pud))
+> 
+> where for a folded pmd:
+> 
+> static inline int pud_present(pud_t pud)	{ return 1; }
+> 
+> And we will change it to this:
+> 
+> if (!pud_present(pudp_get(pud)))
+> 
+> ...
+> 
+> perhaps we can just define the folded pXd_present(), pXd_none(), pXd_bad(),
+> pXd_user() and pXd_leaf() as macros:
+> 
+> #define pud_present(pud)	1
+> 
 
-> -----Original Message-----
-> From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Sent: Tuesday, November 25, 2025 10:35 PM
-> To: Herbert Xu <herbert@gondor.apana.org.au>
-> Cc: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>; SeongJae Park
-> <sj@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
-> usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> senozhatsky@chromium.org; kasong@tencent.com; linux-
-> crypto@vger.kernel.org; davem@davemloft.net; clabbe@baylibre.com;
-> ardb@kernel.org; ebiggers@google.com; surenb@google.com; Accardi,
-> Kristen C <kristen.c.accardi@intel.com>; Gomes, Vinicius
-> <vinicius.gomes@intel.com>; Feghali, Wajdi K <wajdi.k.feghali@intel.com>;
-> Gopal, Vinodh <vinodh.gopal@intel.com>
-> Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
-> compress batching of large folios.
->=20
-> On Wed, Nov 26, 2025 at 01:46:57PM +0800, Herbert Xu wrote:
-> > On Fri, Nov 14, 2025 at 03:37:53PM +0000, Yosry Ahmed wrote:
-> > >
-> > > Thanks for the clarification. I understand that the error code has
-> > > different sources for SW and HW compressors, but I do not like using
-> > > errp as an indirection. It makes the code unclear. I would rather we
-> > > explicitly check err for SW compressors and dlen for HW compressors.
-> > >
-> > > That being said, I thought what Herbert suggested was that the same A=
-PI
-> > > is used for both SW and HW compressors. IOW, either way we submit a
-> > > batch of pages (8 pages for SW compressors), and then the crypto API
-> > > would either give the entire batch to the compressor if it supports
-> > > batching, or loop over them internally and hand them page-by-page to
-> > > the compressor.
-> > >
-> > > This would simplify usage as we do not have to handle the differences=
- in
-> > > zswap.
-> > >
-> > > If that is not doable, at the very least the API should be consistent=
-.
-> > > Right now the error code and length are propagated differently to the
-> > > caller based on whether or not the compressor support batching.
-> >
-> > Yes we should only have one code path in zswap, regardless of whether
-> > batching is used or not.
-> >
-> > The degenerate case of a batch with a single page should be handled
-> > by the Crypto API.
-> >
-> > So I will change crypto_acomp to take care of this case.
->=20
-> Nice :)
+Let's take a step back and realize that with __PAGETABLE_PMD_FOLDED
 
-Thanks Herbert and Yosry!
+(a) *pudp does not make any sense
 
-Herbert, to make sure I understand, will you be implementing all of these
-features in crypto_acomp for software compressors? I would appreciate it
-if you can clarify:
+For a folded PMD, *pudp == *pmdp and consequently we would actually
+get a PMD, not a PUD.
 
-1) Error & compressed length propagation to the dst sg->length only for
-    non-batching compressors.
-    a) For batching compressors, this wouldn't apply since errors could occ=
-ur
-        for any page in the batch, and the first page (dst sg->length) coul=
-d have
-        successfully compressed.
+For this reason all these pud_* helpers ignore the passed value
+completely. It would be wrong.
 
-2) Will you also be handling the case where zswap can send an SG list batch
-     with multiple pages to a non-batching compressor, and the crypto_acomp
-     API will internally compress each page sequentially, propagate
-     errors/compress lengths before returning?
-       =20
-If so, this would really standardize the code in zswap for batching and
-non-batching compressors.
+(b) pmd_offset() does *not* consume a pud but instead a pudp.
 
-Thanks,
-Kanchana
+That makes sense, just imagine what would happen if someone would pass
+*pudp to that helper (we'd dereference twice ...).
 
->=20
-> >
-> > Cheers,
-> > --
-> > Email: Herbert Xu <herbert@gondor.apana.org.au>
-> > Home Page: http://gondor.apana.org.au/~herbert/
-> > PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+
+So I wonder if we can just teach get_pudp() and friends to ... return
+true garbage instead of dereferencing something that does not make sense?
+
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 32e8457ad5352..c95d0d89ab3f1 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -351,7 +351,13 @@ static inline pmd_t pmdp_get(pmd_t *pmdp)
+  #ifndef pudp_get
+  static inline pud_t pudp_get(pud_t *pudp)
+  {
++#ifdef __PAGETABLE_PMD_FOLDED
++       pud_t dummy = { 0 };
++
++       return dummy;
++#else
+         return READ_ONCE(*pudp);
++#endif
+  }
+  #endif
+  
+set_pud/pud_page/pud_pgtable helper are confusing, I would
+assume they are essentially unused (like documented for set_put)
+and only required to keep compilers happy.
+
+-- 
+Cheers
+
+David
 
