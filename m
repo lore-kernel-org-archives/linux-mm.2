@@ -4,124 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB52DD1037B
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 11:08:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C423D10F22
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 11:08:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264306B002B; Wed, 26 Nov 2025 06:08:12 -0500 (EST)
+	id 746716B0008; Wed, 26 Nov 2025 06:08:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23C076B002C; Wed, 26 Nov 2025 06:08:12 -0500 (EST)
+	id 71DD96B002E; Wed, 26 Nov 2025 06:08:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 178A56B002E; Wed, 26 Nov 2025 06:08:12 -0500 (EST)
+	id 65B3F6B0030; Wed, 26 Nov 2025 06:08:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0710D6B002B
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:08:12 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D6AC89B51
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:11 +0000 (UTC)
-X-FDA: 84152483982.18.083ADD9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 527996B0008
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:08:30 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 050F489AB9
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:29 +0000 (UTC)
+X-FDA: 84152484780.06.0ABCF5E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 749FF4001B
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:09 +0000 (UTC)
+	by imf12.hostedemail.com (Postfix) with ESMTP id 34E1F40003
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:28 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GGRTa2n1;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hQ29ELhi;
+	spf=pass (imf12.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764155289;
+	s=arc-20220608; t=1764155308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mCfR0Va41qZ0XULGyzodpXqjESM/wXZEJPNv1cWD+Kk=;
-	b=RVYefkLl41aSqSsm+LBLkqkyve3Ab6BfrrLO25sIF/5vfuXDiSgwbWQJId77Tl5ktus45Z
-	VZtB94K56Y25Bs+b6ymWbnD51MYqH2uELydVf/M5apk9x7RBeEmX3j+18rlxaxIMA0UzPu
-	kSsyLiJ88o92e1xi2q6uPchufSODaWs=
+	bh=U9DsEQJFMiNmINf2JGNBKh81XEvwQ5gISNQ0DN6QpHo=;
+	b=b9LmB5Cosr1Xvgs39OiDysrM12SRkPSbjR2RRfgjeoAZScnYC+QVYnQIMe1x0wTDvw0UUz
+	M1cb+ERQEVt+7l7bOs4xyTStRnmwoGsmwUs/DgE7Xun7kcal6cw3nawtZwEkMPe9OYlivb
+	oOkO0+9HG/HW2usyWr3Bcyf1woLyA7Y=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GGRTa2n1;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hQ29ELhi;
+	spf=pass (imf12.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764155289; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764155308; a=rsa-sha256;
 	cv=none;
-	b=xkYTs+qEZskq5cVOKwCWCMV9plKeyrHHOT+66vx40O4H8aN2fwBGmlRNtqVr03BrVDSh90
-	C4aG6d0ciOrVJsRLK3AiVeEw28sHjEu5rZOiG6iXK2kl078IDShUohtVbTGjVdDlz7LhKP
-	3HLP+6ThXCH72NfP+gBb1H3bVPXwaJI=
+	b=fGmnfan/4ftSCqfxud7iMfuDxxbcDpd4FHnF55ljiEQ09qLripHBVTU1vWJ5nRYYEuZKZz
+	oSd0KMSRWblHnwYHMGb3q4FKeFV3Z26fNAA2oMzSVCsQgN9+4sdteHagOR43k3aEbwYqdk
+	IbfGkd2OxOjSGKQZcqeMXmrHCn4vr+A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8C1C243CF2;
-	Wed, 26 Nov 2025 11:08:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC85DC116C6;
-	Wed, 26 Nov 2025 11:08:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6367A44065;
+	Wed, 26 Nov 2025 11:08:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EC6C113D0;
+	Wed, 26 Nov 2025 11:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764155288;
-	bh=z0HVZNX9ipGoX+NtBCrTvCMPi4qEm2pGno5N+3U1Uqk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GGRTa2n15T67J6SBtu/zIF82k2tIrva5M96eaYBYmX99P1xifS9kYtg6NNAF8uzmG
-	 LcUgE3MprhitmOZOpWTXUMdPKhYi1q3agrG5clqvSC8zU4QVW/qto6plJP78WD/Z0I
-	 9TEsVhVTic6NC4CcoVr0s156uAzG8PRJb6f7eh5IYm2jSQD8jEnGzdciI/a9xVSuXR
-	 pufUiTSULdVPMaKrHWEKRKPbDyR/w7cGozbNdSA5Qq2Ms/VDf1Q7MCwZcLUA80HDiQ
-	 B8Xar37YLoLzyPm4IL8zY/apG+rMCQinb4zzQrurjY2aYAaU3Q+b5sZolzLBjtN6cA
-	 EEVh3M8O2M3EA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0C4D6F4006A;
-	Wed, 26 Nov 2025 06:08:07 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 26 Nov 2025 06:08:07 -0500
-X-ME-Sender: <xms:lt8maXAXrrkTnd5BrfEbde_jz-s_LGbj6x2MXZibPkNMeXdq9zSE2g>
-    <xme:lt8mabBKPmMVQn0TQIgw-Irs0KMYEH0R6GKzQhhBxkBfa5NgdvUfSIB0AYiVU5Vd4
-    HovznX3G4mZhaMtE5O-UFFPC0aL0vRdypPI-aooZghqrmtxdDIG0g>
-X-ME-Received: <xmr:lt8maeoCVb13vICXsQjz6Llq19NWgyj588DtvUYIgqL-koU9OAHqwsJp9-eYMg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeegudelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehprhhsrghmphgrthesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmh
-    eskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdr
-    lhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgvfhhisehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohes
-    rhgvughhrghtrdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggv
-X-ME-Proxy: <xmx:lt8maXBh-TdVnxahrIRppeVe1AAnlUyrmgTHmGY0Zv8ZjJdUU_IizQ>
-    <xmx:lt8maeyd0nHHhIT06tMzmiSMV3ySOBRu4rVfgTsw8kyZI-HV7BzW-A>
-    <xmx:lt8maX4Avzs5fFa7ZD6otWJZ-yCyPlNYOLT3uFBRcw02isjxRMh5Rw>
-    <xmx:lt8maXv7JJI8EZafBSRks7Crji1eSN83RvMaX7lrk53d9wz4TJYkhw>
-    <xmx:l98macthO8VOHM4IrzlSPdWQGPrqHQJ5tz5OHTh46gScmq7m9xmQDSHU>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Nov 2025 06:08:06 -0500 (EST)
-Date: Wed, 26 Nov 2025 11:08:05 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	linux-efi@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org, 
-	akpm@linux-foundation.org, david@redhat.com, osalvador@suse.de, thomas.lendacky@amd.com, 
-	michael.roth@amd.com
-Subject: Re: [RFC PATCH 1/4] efi/libstub: Decouple memory bitmap from the
- unaccepted table
-Message-ID: <phywn74ghpsqncoqsgdqjoxeqdxskibzt3yltn6bmtc25sm46g@emad5n6wp5l2>
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-2-prsampat@amd.com>
+	s=k20201202; t=1764155307;
+	bh=CVdLyC6tIhbwP1dKRBost2ptghGpeg2cmZtZEA7xGm4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hQ29ELhin85lmtvEwxBL5KVjagO/88PonpwLzCU/2cvS4LT7AwcX9kgLwKmrPTrXx
+	 GbO0IREIBGaoFUzm0IEhgiVy8pr8NL9vFTrxgsJgiNbjEP5BjdHMXljA0on33JsIgg
+	 XMx2thnXWaGpKPCRCxotTZj7lPQiNP/Y0xWBT3jwEU7dGUsT2H0UFjkH9U051ciIOm
+	 /CIKtWvjcs7CwMqWvV10Fn137Dwhjq0TORYIPvr8DInchqk05RqXijp8hodqJpXBwm
+	 /lgMxLV86WSjPxgA69A2wa3aPUCLE2mSw/0Ghi4d8PJ+lN1uWDBeOHUdGgBUlq2p6W
+	 tMjBR24MVFG+A==
+Message-ID: <0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org>
+Date: Wed, 26 Nov 2025 12:08:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125175753.1428857-2-prsampat@amd.com>
-X-Rspamd-Queue-Id: 749FF4001B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
+To: Samuel Holland <samuel.holland@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Julia Lawall <Julia.Lawall@inria.fr>,
+ Nicolas Palix <nicolas.palix@imag.fr>
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+ <20251113014656.2605447-7-samuel.holland@sifive.com>
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <20251113014656.2605447-7-samuel.holland@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 34E1F40003
 X-Rspamd-Server: rspam02
-X-Stat-Signature: mmk9kxuwg8pashgcdp4c1xciyxg5capi
+X-Stat-Signature: kbq5z578mxqqctjwcfhijxs9xkcncz5p
 X-Rspam-User: 
-X-HE-Tag: 1764155289-865996
-X-HE-Meta: U2FsdGVkX19GXJBt3kTK70lQYcbzLGs9rEQ+vC8BwTLGuhTKgu9sAzEaULTgS/RIEhGz7kCMyS4lrKX7HR9pexGyqSFj7dLDjkta4Z0lhojrCSsgbkewzVSYZc5U24RCndXs0F0v08T8a2axINqBO6rBttEOIXPmZcetrfPkj0ZqyJIRrHPkktxwmHlMcQ2kg5DiyjcTVO6Vq69l9jEEu0GklvqOKrXH62oZ1+RY4eHYPwrJAt8qlQyQv80X7wiU9dGMdj9ANTMkp9SAAFv6MDqOLfK1og2iDtJeqJ/m1LDKxDMetjUPHnP8m1iGrIkezYg9KPy3TU51Dwun2R1r50fkf76s4AQPvCob3oM4mZcjG56QU/bC8GNkDSjjkWmwLf32xS5d463xvd8XseoU0n9XuQ/4DjU/ICR6QTneyWzwpG07X0Rgit7zJpEZvuPI8rNn0MWGtl9vFkq/hB0wGDj5m1iCrQVT0nJOowI0DTW/4D/2lkQKdDIoaWlEJsY0JxsUK/4R31vlSuDgceAjc00XGvYWIv7/EZ5i6+Yh/0M6npOh6/IsQwBCI2wEB52F/Cu90C6mz4+eE6eHHUlCYrT4cYZ53GY86rjKOkpV13Ex1xMNj6K+ZM2Et9PfuVSLtqWz0p5y4nc0FEyG3UWC7MjKk7U5BMKQKqFWO9ipd8gXqxhVcrwmZJyjepuC7gztQLaC+s6kNWOfCxCXnrTkBS99YEdQy+fNRDEJxMlXpo6x5e8ERSAIVXX+gU5989NircHePwjhnMPEpNalCZoAse+zLIC9PHqzLsHik1VJ8K4bH1lRiJ/vQIBk7I7XsW1IMK5tQDwKJZ8FaLXNce9QyHkWwR6sE9KvPyoQw421lHWlm56c1m9uscUgShO8Oa/ZoJNvVEB4cGEIjG3tVvTkp9+wr/I7nXW0AZ9Y6k31rKYwiILDDb8dUP4IFB7XkTA/VqEukakbtLDDaNlgw1v
- 15682nrA
- AB3RKnGOPAK4u2byhLBhuWHGlHpcd+jSV4X9vpMvJqN4uEKXVbJC2tPQdw3ey5zYB2GBOSOb6DG5NYtpHSQXrPCimnk97qujiw9urPcerLdsN3xJKkcSCTAu4C6y8AcvIdl6A10IHgb5DB7CuPU56K7OhOkngxhFh9eXRQe1dOT5woHiE2uD+Jzc0sCYIsPYWasW6f3EYrwgiRLCwn4u6up6pLm3Mbk3BHIcI3hV4Utx5n1+VJZujsJKP2TSB7b2h38pBJx3l8+uITWXJlxaNlNQ0bA==
+X-HE-Tag: 1764155308-395200
+X-HE-Meta: U2FsdGVkX1/MWbn9KPr+ixjLz/G0ueHrvrrU7wN6kOEO6ZgsHBCMqIcWzRue0zuOYi6OOfsQVLFxjTpTIPj0TEQu6bishyzxlQQNTRp0d/fG5x5C2wxZW5GzGUz3OrQ5IDoBaEzSwyiANfFA8TqmaUZPaRtEYTuTZDhEnAtumDp9i0jCuhcvNc/ZMg++HOOCRVNA4P61RYC7Uv3OaMUuhj87JmSKxie12VsngaH7wjeG/ku9UB/Xk4i+x1nuoH7908PCLb1EGctszhJ1x0f0G1yEcn/tVLjvmSX+fyuGuXwe74kU4oBgsv9gLizInaqzjoZA/jYfLcOwVj/MXU99B1AeosJms6PPE0ueRdB8lbmZYweGp/3wdgguBBM0BFl0IOue/ACF/yodysjq0gmC9zIKA6zCw9OvrqSpBbyP2PY+k2TzhPUQk4qtVidruwk7RfwMCQ7n8nrDpMDunqD4AHg4htap2SOt2xhqi3HYWV/kb8jsN9g+NSzkOtZ5EOU7DJjlq4GYsdnterjmAyeVvCjH+qETAbeLYWoaRbseun9TB3hl2o7aE54ldmWD8Ft8BYRewQgvoDte9C8rkim1ytles+4qAojs40x7BwoNpDyREJCNP1fWHwwdgM3sBwQZk8XHNdxecCP15UqSzfWHjHpqLp5XltUibz35Xb2ypmAm/Z4PGG9MthbpJ9d+axutf3Hj60q1AaxnUi8rVZAbb+7t2+x64TnIfga9uCyVF8+e4AWcjInCOswIagjyjCXbg4/UzcAR4JcSI1fEH+vMDkE9o97Q+Fj+pGVx2icdJN0+7hO9XbQVIxki2+CVliQ8Axc+e1uvAR37YSFGE9fyvm0g1AF+PGJH9z5+V59vcnv327FSnOxFSEmlv+R7FEnizqT4vNA5JBlJto3k1uH8YpGWJwQZvydaU90pK1OkpChBH+GbF4PNXMZy4doBfthrdiKu30slwqmKlWqj/Z8
+ N73m3yoT
+ Skp677WSzcENa6j9CYJoX7qLvbnbi8jj56iy71oWiK0NnDwF2dwIiSUUWoLGHTKQxSpE1iGA5FC6osjjNbY9IxDeW1ZfWrkjxWhbSYFvoPgw14mXUxCWDwBjtd1bO+FflkJZWpfd9PNP2b2AgPY3LvAVTSD2CsjonxZBUuHk6/1ywz75UdaWQbi6f1x8ZH5l0/kxfIJnMnHljriuNLfNp4FLunuvKVOPlQZsrPyQWkLR4jmLrEUTKrc2gthWpdwTosBRLwM2bJExi1EMk2KaQXNLsK2yRrTXJxJF6PRoFVxidBZKA0jJczt3AmUMVyzjMBdj72OGgX6oF3afeSeANLa9CNi2U9amYOrkGQjgN2ow8fn5SiqR/YmBcpzK7Eh9xSgrVj8ka9zfaOqLyMDfOTtAGbzItPcJVSKWs+dZgA6MhLg8XHPHfz7nnKCPJGMuQVexGSQz17HZZYgXHpD/DtzbwAU6EbVFFz1fBxl3dVjGlMlwfgXaMFAWCbrO+UjjwCNaffcbPxEfbRbo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,21 +105,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 11:57:50AM -0600, Pratik R. Sampat wrote:
-> Memory hotplug in secure environments requires the unaccepted memory
-> bitmap to grow as new memory is added. Currently, the bitmap is
-> implemented as a flexible array member at the end of struct
-> efi_unaccepted_memory, which is reserved by memblock at boot and cannot
-> be resized without reallocating the entire structure.
+
+
+Le 13/11/2025 à 02:45, Samuel Holland a écrit :
+> Some platforms need to fix up the values when reading or writing page
+> tables. Because of this, the accessors must always be used; it is not
+> valid to simply dereference a pXX_t pointer.
 > 
-> Replace the flexible array member with a pointer.
+> Fix all of the instances of this pattern in generic code, mostly by
+> applying the below coccinelle semantic patch, repeated for each page
+> table level. Some additional fixes were applied manually, mostly to
+> macros where type information is unavailable.
+> 
+> In a few places, a `pte_t *` or `pmd_t *` is actually a pointer to a PTE
+> or PMDE value stored on the stack, not a pointer to a page table. In
+> those cases, it is not appropriate to use the accessors, because the
+> value is not globally visible, and any transformation from pXXp_get()
+> has already been applied. Those places are marked by naming the pointer
+> `ptentp` or `pmdvalp`, as opposed to `ptep` or `pmdp`.
+> 
+...
 
-Well, it break interoperability between kernel before and after the
-patch. Consider kexec from kernel without the patch to the kernel with
-the patch and then back to older kernel. It is ABI break.
+> 
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> ---
+> This commit covers some of the same changes as an existing series from
+> Anshuman Khandual[1]. Unlike that series, this commit is a purely
+> mechanical conversion to demonstrate the RISC-V changes, so it does not
+> insert local variables to avoid redundant calls to the accessors. A
+> manual conversion like in that series could improve performance.
 
-Is re-allocating the entire structure such a big pain?
+And this commit has the same problem as the series from Anshuman, see [2]:
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Before the patch, as an exemple on powerpc/32 mm_find_pmd() was:
+
+00001860 <mm_find_pmd>:
+     1860:       80 63 00 18     lwz     r3,24(r3)
+     1864:       54 84 65 3a     rlwinm  r4,r4,12,20,29
+     1868:       7c 63 22 14     add     r3,r3,r4
+     186c:       4e 80 00 20     blr
+
+Now it is:
+
+00001860 <mm_find_pmd>:
+     1860:       81 23 00 18     lwz     r9,24(r3)
+     1864:       54 84 65 3a     rlwinm  r4,r4,12,20,29
+     1868:       7d 49 20 2e     lwzx    r10,r9,r4  <== Pointless read
+     186c:       7c 69 22 14     add     r3,r9,r4
+     1870:       7d 49 20 2e     lwzx    r10,r9,r4  <== Pointless read
+     1874:       7d 29 20 2e     lwzx    r9,r9,r4   <== Pointless read
+     1878:       4e 80 00 20     blr
+
+To avoid it you need something like:
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index aafefc1d7955..0c61153f4ea9 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -819,15 +819,15 @@ pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned 
+long address)
+  	pmd_t *pmd = NULL;
+
+  	pgd = pgd_offset(mm, address);
+-	if (!pgd_present(pgdp_get(pgd)))
++	if (!mm_p4d_folded(mm) && !pgd_present(pgdp_get(pgd)))
+  		goto out;
+
+  	p4d = p4d_offset(pgd, address);
+-	if (!p4d_present(p4dp_get(p4d)))
++	if (!mm_pud_folded(mm) && !p4d_present(p4dp_get(p4d)))
+  		goto out;
+
+  	pud = pud_offset(p4d, address);
+-	if (!pud_present(pudp_get(pud)))
++	if (!mm_pmd_folded(mm) && !pud_present(pudp_get(pud)))
+  		goto out;
+
+  	pmd = pmd_offset(pud, address);
+
+
+[2] 
+https://lore.kernel.org/linux-mm/f40ea8bf-0862-41a7-af19-70bfbd838568@csgroup.eu/
+
+> 
+> [1]: https://lore.kernel.org/linux-mm/20240917073117.1531207-1-anshuman.khandual@arm.com/
+> 
+
+Christophe
 
