@@ -4,137 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB84BD11193
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC5D3D1118E
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:55:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD7A76B00A3; Wed, 26 Nov 2025 13:52:57 -0500 (EST)
+	id 1CE0A6B00AD; Wed, 26 Nov 2025 13:55:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAF666B00A5; Wed, 26 Nov 2025 13:52:57 -0500 (EST)
+	id 1A5946B00AE; Wed, 26 Nov 2025 13:55:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC5396B00A6; Wed, 26 Nov 2025 13:52:57 -0500 (EST)
+	id 0E2FB6B00AF; Wed, 26 Nov 2025 13:55:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9AC36B00A3
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:52:57 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F1ECB6B00AD
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:55:46 -0500 (EST)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6252A5AC23
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:52:57 +0000 (UTC)
-X-FDA: 84153655194.11.3706E81
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E6B024001A
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:52:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m619sdMl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YBkGZoxI;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VpoTnIC9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=d2RW2DOX;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A3345A0F6
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:55:46 +0000 (UTC)
+X-FDA: 84153662292.11.BDC7673
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0B1B1A0003
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:55:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=g3nS6R4b;
+	spf=none (imf15.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764183175;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764183345;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qaMKF9SZ8YYtHucN7qGyJfJdGLO71CcUofmoWL8NL8c=;
-	b=aGwhJoBOzl+wGYsXSUCt/UR+wiFVeB1Gl/5ZnllwuWJ/aAdtiWICCXHFobKbhoNC73NCCW
-	q6vF78kr7c1Vk8ApFDhmAVil/taTGBMFOi0ThX2Q/jWSWjjLz2inUy9L1iIxwY6LzGTSrD
-	1teOw82MoTLDi70vwDtomboch+ZmrSg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m619sdMl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YBkGZoxI;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VpoTnIC9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=d2RW2DOX;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764183175; a=rsa-sha256;
+	bh=MLgia25EvIAIBo0VY2I6S9Dk4/MSQiPdMJldJvpcdsU=;
+	b=cxd3KdfND6eF+nEQABKokpdZ6cdQk2bxcW1zwiYSuzVyzqm5lRhEn5XzlYWOlIb4wMLaUm
+	NnqLYeWBL0gA8Bitg/BlHA+ERilFFfM9RZsQlukUNLQKVR5xN1dfH2/Wx6LoWKGXNod22Q
+	QQYMnflqYXL2MHE2fcIcJZpn+YC5oks=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764183345; a=rsa-sha256;
 	cv=none;
-	b=581SWTPlfX2se2UQkkXuAkexqXyM6mNLIbPb3dVUYw9sCjzrgORXEQrfDZjAmQqjMTro2Q
-	G7zz8C1rVHkNQZvLzUjEg+9+HstXxssxGiokKenZjVUBNqcjqE7Dl8ZbLzc66qdwHBObMa
-	XqJyTs+Ca99OZgZxMwPq1BNHyPKZsQ4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E04C85BCC6;
-	Wed, 26 Nov 2025 18:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764183173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qaMKF9SZ8YYtHucN7qGyJfJdGLO71CcUofmoWL8NL8c=;
-	b=m619sdMlyko/A1pxaJTfS2tV5JwmT8ekbkF7BThkjBFWOCNxCk20fNCSbdlkVh9VT040fF
-	tJvhmWv3ypKup1BOwEdlk/Mnx0vMNvWRY3G333eZxKdeRXcSrOhcBUb4bupGSFBjR1brkx
-	d5pRq2I4Au3LzxLvlZyg2CjdsI6dfO8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764183173;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qaMKF9SZ8YYtHucN7qGyJfJdGLO71CcUofmoWL8NL8c=;
-	b=YBkGZoxImOXIQpiSD+29G8WHW356DlJoxZdin5uLBCAE5DdXwkBdu+899BuihPvbtbZEga
-	Q8X08bQr11wPmEDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764183172; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qaMKF9SZ8YYtHucN7qGyJfJdGLO71CcUofmoWL8NL8c=;
-	b=VpoTnIC9HjtlPbrEknh8Qcr//ICAdkKH+IS/gGziyCpDcuRnpvLkAQyhQOIWkshMM3d56U
-	ByjrmLWI//jabvZo3Xl8EpVkmymrFKKEY/W/XTXQFbqjORDpwrxgMaD4h/MYEetXR8O21p
-	qe5Rm9na5HcsWaCP2qrZQBeqFELTkPg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764183172;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qaMKF9SZ8YYtHucN7qGyJfJdGLO71CcUofmoWL8NL8c=;
-	b=d2RW2DOXHuQ0eRe1EzkWh5yWOBT3rUFENyUmxTumilPCHgu5CVXnItrWXGMv+VQVn3la7i
-	/1MWkjR2g/49U3Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D16D63EA63;
-	Wed, 26 Nov 2025 18:52:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id L76pMoRMJ2kpQQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 26 Nov 2025 18:52:52 +0000
-Message-ID: <ae18d781-86a3-4539-9441-079b7f45e726@suse.cz>
-Date: Wed, 26 Nov 2025 19:53:13 +0100
+	b=n99YRLdit9Ez3RmeOOmP+iWmOsW/dbAVlNTbD0AiyAfVndPHrVTY61fSqNTdbe0B1DCj5l
+	7F7dwKUmpuUU4Tq346EsWLyKALccS8Rs/dfViXu3addbtlrsboz6ad3sh//GhL9ls6iiHD
+	9TjPjj5zl8p1Yqy/GFfQMP7FqOE9R7E=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=g3nS6R4b;
+	spf=none (imf15.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=MLgia25EvIAIBo0VY2I6S9Dk4/MSQiPdMJldJvpcdsU=; b=g3nS6R4bW6uQlx6Je24W9afEMH
+	Em5LKt9oz497k9Gfvq/XJ6/fvEKedQW3YCWBUH4PKFDdicr4JXoufcWgeWK7ZSKU746ud4sumvmfV
+	YFNnq6xLzJPiACvsBcuyfVcSUnV3OpxMuva5TL3RuNuU+TffZJW9CUynU/dVu/G8lWvJ3b7YIKkhz
+	9yZ6mCKUXqeuIpWgtJErxKkaN0GEn3IPqwa/y96rIxsDaXZooIrwB2XiggY7muOwYj/KzbZGUgbxZ
+	SF/CXLaEIOq6KfcuVZfyq7VCgkA0OMCSds/ICAlTsKJdpjSM1Wvsnw4PrjBCCA8I8x400e1Wrl1WS
+	zsOaQ43Q==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vOKg5-000000007j8-2ErT;
+	Wed, 26 Nov 2025 18:55:45 +0000
+Date: Wed, 26 Nov 2025 18:55:45 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Zizhi Wo <wozizhi@huaweicloud.com>
+Cc: jack@suse.com, brauner@kernel.org, hch@lst.de,
+	akpm@linux-foundation.org, linux@armlinux.org.uk,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	wozizhi@huawei.com, yangerkun@huawei.com,
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com,
+	xieyuanbin1@huawei.com
+Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
+ sleep in RCU context
+Message-ID: <20251126185545.GC3538@ZenIV>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: fix vma_start_write_killable() signal handling
-To: Suren Baghdasaryan <surenb@google.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>
-References: <20251126174500.2498895-1-willy@infradead.org>
- <c35ab0c0-97c3-4565-ba2d-5c418ecac593@lucifer.local>
- <aSdGvY2UzrXdR2e3@casper.infradead.org>
- <CAJuCfpHheus2oiv94r14afjVV00XZnfqHY0p+H8fxjxCSYjg9g@mail.gmail.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <CAJuCfpHheus2oiv94r14afjVV00XZnfqHY0p+H8fxjxCSYjg9g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rahcoh8kkj6mt41fpwyxzug1bqr1m5z8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+X-Rspamd-Queue-Id: 0B1B1A0003
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E6B024001A
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764183174-133799
-X-HE-Meta: U2FsdGVkX1/U8rXJVPtM6fwRnghMG3B/3Lc9GvIYwGEd1LnXfGyTWKMeRL5ukTiEKY0lrjrLKdUlFOPAL6p+0xcvyM94JFkqvcAP6qMxTNWMbo3qzRp1BrLZfTle5ashEJa6zt0dS8XEw3ubyoX0LAnOhp2UlBkXvDun2TeSVVuGPnQYfkJ0NRC28fYCw8HX0gDQqPFvnt8GW4FU21BaNF/o4zqjAMu6w87ZBgI4GHIT41kDP66ON4FLm+VqFV3bE45swc9rT1xE1l3y782eGAKJ+KG3BnbiHtb2tWfHpZ7xMfq6mZDIfu5hDPhq30OS/pEFGgQssj7ljzKMFbrjGWaApz/99rTzvAXJ61dQj7jOYYHJJ2lBJb0Dfvg93CXdmVQMK/pJESotNAGfjIZobA28G1SFi3lsTicCym7zzkZoeb9BNG4SmIdyID64ZrG8aPrLC4zFPfC5RDDTxhUsbt/ExT/hm/sEs4ZYxs2i9BZaBOkhHOzlK58MOhuwpAAKmVRI9O9ofye6K6O5Tgf77vAYLi5Qj7zMCmL2pRHQz4UdjfXjkplc10YxbueWHOFrlr0LW/qlJ9KexBXlR72cnOpwXi8HBjIC6EOrOEyy0LMLzlPfmiN5xItyEHJnX6o+LBhQV5l62WpQpj0zud+p0zONUltW7WrYg/owoc1fomgtg93wbLNFa23q9ftX8poV6yvWEvC+oVfGMKGqAiRC4Vt46YAUvYiR1/RemZXxbmEYcOm5a1qXQDgxs7BD4FfgG6pIrHoyvHKXYB86GgA/AGaXlE0OBTw7x8kNOP0QmJNKaNCtYLdsmdw88EQJJB8EXnBnxQw2CsnJUs/yiR/HgHwXHW1+EHuiiUX7rKmBUifp6gh2kVkUP42UPLSwPqNYxNgnGr3UT6GS37kOF/xrjjRvqMneFbYcM/CsJjDN0PBZwpLV41Ce+84WG5Hcf1/ec3s3BKSsCXUIIemqfC7
- fcAWcdLe
- UZtEjNne1m3NruYm1JYfEDifItKR25xtYZEIYEhFeYJHce5Ftf7uYJOasOAbcfxsG5dWDy/hZMtrvPKzvhMx8ZyNbCpQkaNKI8d8DemvTQfsLjJsWVV64xzM+186lRAzNf2D+PTe2IY8Y42pbpbEIlqXNwOhxZM8C4M+azAj48+Zo06ayq97EF+UeOOVyoNU2Bn81Nptc+MvvZMgRuVQe29dAct2M78BlxtdK52Q1g0MheFe+hCTVPM5mzGkJFVpn6kSkSt3Zf2cIm6MjOJXlM1A1htFPyACMYggogECT5OnCVNqUEQLsUmJiJ1Urypxf8OUrmhsE91B9LFNRFUhD6rHUzckCLy9ri0b4ycgWttX9LuaoOlYuiBNrdFA2zpuMBeYX0HFNmciHKrRLj0KvQIRcMKITGTIF2zIKsjblYmrikjBW96V/EPuRojnW7RJHMNLEvY7u4dTZH+9Lfp/zTJ1B69byb4HXl7G7DwjrxlfIfCLIxMWzPRpM8ql/EfuOv02ay03XlJ5Z86qKYhhe7YcEs7aolY1aUFEGF4RG7qii8TSfuw2M+sv76u6xBinpsEhJO2VoRMRNEO8r/4c8uqoqje4arlfUHVSkJOmXb81E6GyrpokAs0xCF4z27GtJhZ+c67IfR5D7bh0=
+X-Stat-Signature: uijninxca35tpm4hoga59o4py8zmo79p
+X-HE-Tag: 1764183344-508812
+X-HE-Meta: U2FsdGVkX191gig0Iw/9xf0qi8SBmXRKc3ZxgMva4PNgIbLZPFerzaYGNi3LskRMzYzB3zeJXq9at6U8JZxYg8WgOJfNd8WLACPIHqlJg5ICLt0WFb7mYIy61F4qpIYpGFxnYb8vrDGWkgALb3FHo2PyuFDpKrrrcleBMFbOChRST8nwcw5oN8jkfMAryl2fN3dQdxkZLVPZForfe888ezNEpRWDFG3OD03PhXxtDgoOxUDgG5v0s1uvMfXIUvtHU8qhjxGTLuU1af4KWSRSAaovzbW/PrZPlrZ0jy2eQuBMzGw/WYIkDZzksMgk3pM2HC7VJciikhhL1LLoP03OoEpY52SEIZRyccO/DTq2WjQ0Or/W5AQvhil7eZ2PA7tFj7InCkkNoWRnDSDqZYFFVeX1q2aeq/6SAwi5mFYL2c+dvmlV9UfZuufvG2ITNJK524BcvjAn7dI9uS1p8MRu66a7c4syzxY7YnmDAGn+JeY97hRgp1saBlXOtkVySgQCgLaIrUXwF6VdM4aegzwroCMQd0aVpV0OEcUuPFxznUnKNbYdB6k7jkB18dXsn2NAPaQ4hNqX77JVTReMAIIHdoq9Arcz1cFcWx8l8xe5gNq5tCAzuFzAONTUJGOpSuVRaYBjZzRLLYCatw3OGTSG2L01/463VAlBnVJvNc3RlTZV3tInLNOqiDXFfIgwuIr9rqqd6Djjhm2oLoq8jhcTx7kqyC3TIwSE5KykKM8VFm6RRF/0BPcw48bemdUElRB54cCJq0TmnCjPISo2ZVg8q4GCAMXr4ZUEd4WnqO86B9RgZdzvzGtNuyuVu0Ix9dKN4rQJ2878Qpahv7e5gxsweeCnVD+2A6/tVUKYeQMxcfkcjpNpXnNp4EjaItqKgLJBGGQWEieJ95VAgBHQMbdkccxUe2iyYsuIGVG8+o1jKUiE2sh3JpyRVeGfcO5Zu8GYHt04I/W7QGO9uYb2eDl
+ CiIfmM30
+ fsdsYE4GUXKo7nU9Yln2zuMNvI2DuEWAT+gwKeYR3d4x61XfMz0xg1l4lP2Crh7r+hKhfEP5bGidZhR3ZAv110v9xo2jYdtazfE9+MvyDqhqtct2K4bd0ZIvgtMfnO6VRJNKPCVhME316/lIO8TG6Iu95H1avfDw6ek/BV2P5+U5ks8MjhFOOAcaeb7PbNN/qHUJx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,94 +95,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/26/25 7:43 PM, Suren Baghdasaryan wrote:
-> On Wed, Nov 26, 2025 at 6:28 PM Matthew Wilcox <willy@infradead.org> wrote:
->>
->> On Wed, Nov 26, 2025 at 06:06:53PM +0000, Lorenzo Stoakes wrote:
->>> On Wed, Nov 26, 2025 at 05:44:58PM +0000, Matthew Wilcox (Oracle) wrote:
->>>> If we get a signal, we need to restore the vm_refcnt.  We don't think
->>>> that the refcount can actually be decremented to zero here as it
->>>> requires the VMA to be detached, and the vma_mark_detached() uses
->>>> TASK_UNINTERRUPTIBLE.  However, that's a bit subtle, so handle it
->>>> as if the refcount was zero at the start of this function.
->>>>
->>>> Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
+On Wed, Nov 26, 2025 at 05:05:05PM +0800, Zizhi Wo wrote:
 
-Closes: https://lore.kernel.org/all/69252076.a70a0220.d98e3.009b.GAE@google.com/
-
-Unfortunately the reported-by code doesn't work as message id
-
->>>> Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
->>>> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->>>> Cc: Suren Baghdasaryan <surenb@google.com>
->>>> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
->>>> Cc: Vlastimil Babka <vbabka@suse.cz>
->>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> under an RCU read-side critical section. In linux-mainline, arm/arm64
+> do_page_fault() still has this problem:
 > 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> 
->>>> ---
->>>>  mm/mmap_lock.c | 8 ++++++++
->>>>  1 file changed, 8 insertions(+)
->>>>
->>>> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
->>>> index e6e5570d1ec7..3c9bf2f96280 100644
->>>> --- a/mm/mmap_lock.c
->>>> +++ b/mm/mmap_lock.c
->>>> @@ -74,6 +74,14 @@ static inline int __vma_enter_locked(struct vm_area_struct *vma,
->>>>                refcount_read(&vma->vm_refcnt) == tgt_refcnt,
->>>>                state);
->>>>     if (err) {
->>>> +           if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
->>>
->>> Really think we should WARN_ON_ONCE() as Vlasta suggested.
+> lock_mm_and_find_vma->get_mmap_lock_carefully->mmap_read_lock_killable.
 
-Thanks Lorenzo!
+	arm64 shouldn't hit do_page_fault() in the first place, and
+do_translation_fault() there will see that address is beyond TASK_SIZE
+and go straight to do_bad_area() -> __do_kernel_fault() -> fixup_exception(),
+with no messing with mmap_lock.
 
-Can we at least add a "WARN_ON_ONCE(!detaching);" before "err = 0;".
-
->>> It's an 'impossible' situation so we should make that clear. And we should
->>> find out about it if the impossible happens... :)
->>
->> It's only "impossible" currently due to some fairly esoteric reasoning.
->> As far as _this_ function is concerned, it's entirely possible.
->> I don't want to leave this trap for the next person who calls
->> __vma_enter_locked(TASK_KILLABLE).
->>
->>>> +                   /*
->>>> +                    * We got a fatal signal, but the last reader went
->>>> +                    * away as well.  Resolve the race in favour of
->>>
->>> This is very subtle, I don't think this really explains this clearly
->>> enough.
->>>
->>> Maybe put something like:
->>>
->>>       /* Couldn't wait on readers probably due to a fatal signal, so unlock. */
->>>
->>> Before the refcount_sub_and_test()
->>
->> I think this falls into the "saying what you're doing, not why
->> you're doing it" trap.  Whereas my comment is at a higher level --
->> there's a race where both exit conditions are true at the same time.
->> The rcuwait_wait_event() picked one option, but we would rather resolve
->> the race in the opposite direction.
->>
->>> And:
->>>
->>>       /* Shouldn't be possible - VMA entirely detached, so treat it as such. */
->>>
->>> Before err = 0?
->>
->> Again though, saying it's "not possible" relies on knowing all the
->> callers of this function behave a particular way, and there's no
->> guarantee they'll continue to do so.
-> 
-> I agree with Matthew. Returning 0 here would work correctly even if
-> vma_mark_detached() starts using TASK_INTERRUPTIBLE and 0 becomes
-> possible. The comment also seems appropriate to me.
-> Thanks!
-> 
->>
-
+	Can anybody confirm that problem exists on arm64 (ideally - with
+reproducer)?
 
