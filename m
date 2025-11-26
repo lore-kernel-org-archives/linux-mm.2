@@ -4,190 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 277E7D1119B
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 21:09:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11485D111A5
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 21:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 854BB6B000D; Wed, 26 Nov 2025 16:09:25 -0500 (EST)
+	id 6AB896B0008; Wed, 26 Nov 2025 16:13:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82C296B0022; Wed, 26 Nov 2025 16:09:25 -0500 (EST)
+	id 65BEE6B000E; Wed, 26 Nov 2025 16:13:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B0C6B0029; Wed, 26 Nov 2025 16:09:25 -0500 (EST)
+	id 572176B0022; Wed, 26 Nov 2025 16:13:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 60CDB6B000D
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:09:25 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E7311607B5
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:09:25 +0000 (UTC)
-X-FDA: 84153999090.22.7AC7676
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012070.outbound.protection.outlook.com [52.101.53.70])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4F47A40014
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:09:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Il2jdW2b;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764191362; a=rsa-sha256;
-	cv=pass;
-	b=0WUSL7xbwHd/F4v/H+yLJLa7t0Vn/yTDi6mVyZk8L2nzd5/ReI+TlrvopCE3Ft06XCEZE/
-	M2vq3ql/wntIGtC7tju8e0iSI+hvXOF0cz+ijEJJQsjwTo+HRW6bXaOC81Vxx5Zt4Zvg7K
-	5c90Shjitq3jfr+yQHGseX2dqLJY7jw=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Il2jdW2b;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764191362;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4413D6B0008
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:13:03 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DB806BABB1
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:13:02 +0000 (UTC)
+X-FDA: 84154008204.20.C1B3C65
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B511940015
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:13:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=PgtQG0pu;
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.50 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764191580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YTKg1+bQk3tYAjdwC7wGNU1XeyS3eOeggIK46gauGys=;
-	b=TT2r7jGgCbv68KW7EhC73HrIc5kcT9f1c2PAeof33yv7Ww7emqbd8Gu0/J+7ERoU81vmTF
-	XmzixCk07z03dJZWW0pWZV/kFaI4VKL8VCyRGzGv+ZLIULIDu1+GAbTqLL3SGFxBxliv/5
-	IWgu0laPy81sOxeBtPBPFMFjWysJMrw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=prjFzoTcCjtpLguDbQDujjjrdJdmNDpZO4YFNzrt3mIwwCeyIbzJjaCl3WxO4a6g+S4Ld6PKNac5aOAWAhVfRjNu0AKP3s0KROVMP8eVY4FQ3ZW7iddYbePro43uhSIHYwWvIqWJ0XBOQ7nRqv84rJDbN3i+PMzlD1SBrU3Epy9EFQ/PnofwrklCR44AfQBb3gUvdTA+DeZWqBmifrsXr+q3VnTLgcfiuy0cVXNxy9G4BZIX1ZABx1ljXS+RPLhAZDkXVqGAEWOabz1rTbpnxg7+2bajxV2LkfiZgFK1KKxJebgaBJFT9l/oZ2uU+m0iGvlMhGl7ZwHvoRMRwMLiPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YTKg1+bQk3tYAjdwC7wGNU1XeyS3eOeggIK46gauGys=;
- b=grzv9wWxpmwSMKHkVH0vu2zyierVs1JlHj4oIksHJUeG89xd7m4VHltj5/LoG2bnLS1FG1ghqi0JtJ7e24s0ti994BJ7sJQ89wA3npnheVU8XOMImUcyw8oCdeITJMSNZvNv11PQ+2VTCIp8iNAKku01Gk1EV+8rDs6ild08PTuOeWsjfzLKJTh3MTmapV27NmjsfNFv4KIwa7w6zHCkj1REfsoBKmQvxhu3siDKM6AhoR2Wo2oAmmLQ6Hj252YbyHGhYoTpPmpb4rLrF1gVYWcjyLqtsD4LQaC+YQoUrsToTkIHBl3Zj354MG20lUJOcgFhhRDxmzX3RQk65EqleA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YTKg1+bQk3tYAjdwC7wGNU1XeyS3eOeggIK46gauGys=;
- b=Il2jdW2bMCGf1aV+WHp1n+mm335eUrQP25Hh400oXZhmIe9qmffa+rIK7C+XZXSfpqfurFBCffHjh8Rdl+VdpEyN6g8lTw6ogDhtRF64BE8izru4ATqZU3wipkAUWgBCb6htMN9vtXcs0kg9BNsbkL/OCh7e3Tc1xvK/GCyKZVvOvEIYnRWsKx5ayOd3teNuYB7iiMdnLcsJdkBI9Lv7sPRuEP6T8ws7S10sHTVSFyRgiAlcYmjIxEozx6hbMvtNjILg8cjPWJlJT6s7H1Ab1/0o90Xzk6DlYCO+cauKeuVxcFN4lP9nFdlHAQZmHivGHxxM1BWhsECyLsI7gX9uqw==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- PH0PR12MB7010.namprd12.prod.outlook.com (2603:10b6:510:21c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Wed, 26 Nov
- 2025 21:06:27 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9366.012; Wed, 26 Nov 2025
- 21:06:27 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/4] mm/huge_memory: make min_order_for_split() always return an order
-Date: Wed, 26 Nov 2025 16:06:17 -0500
-Message-ID: <20251126210618.1971206-4-ziy@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251126210618.1971206-1-ziy@nvidia.com>
-References: <20251126210618.1971206-1-ziy@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BLAPR03CA0176.namprd03.prod.outlook.com
- (2603:10b6:208:32f::26) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=8hrjCGTokKrR0BnJSuEojRuEu2dsqESmm8qkZ4/vDpA=;
+	b=coDhBYbSzyZHeN2SHYc6htrde80BD2A7CeTSbwZXWWlCgf+hAehQ8UeAkIS7YTOhKagr//
+	GUO1x1uyo6F5Ppk8UDsSM3EZj5N0CtuZTq6DfxTDJmHaF1a+mMGs2b+dsBpoJ6vStgHC3h
+	p6MVRaZWGZzmjJKps+yjh8jiTPvWut4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764191580; a=rsa-sha256;
+	cv=none;
+	b=NxwutuzXb8iPMzqyRAqMj2hjgMVm8Wl0gvIzLfWh8YfpbVeP74Iq6AU4vWB5ijbMo+tpAc
+	YAEnOMvS5vbOuFKuORX6bIo4RA7mbGlTYPRHyvfHBEohWmIKAHPIoedwvIzuCjR4m9Gd7o
+	sUF06XnkuLRV+DcaAcEr8yXCyIY8UiM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=PgtQG0pu;
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.50 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b737c6c13e1so38516366b.3
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:13:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1764191579; x=1764796379; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8hrjCGTokKrR0BnJSuEojRuEu2dsqESmm8qkZ4/vDpA=;
+        b=PgtQG0pucb7LHrMQyJYrlpwqKf70JolG9sWyca1+aBRCgOu3kbvwshyQ6CL5PcIrNS
+         Sf2nkEWyBzaYIzeYGxsOcb1gVEFtdrSHlMyllN4VrPc5sN7m3rU1McrbHtH+B2XPYgQT
+         XvrjirsArvPh3MgXykvphyXpo5m6N4hDoDchI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764191579; x=1764796379;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8hrjCGTokKrR0BnJSuEojRuEu2dsqESmm8qkZ4/vDpA=;
+        b=SdV602cG6eGIUmNWSLaQOaQWVWxQNEAlaflRctRvIx8CrSunCHLnHnQrP13Krs0le0
+         ldCUR1m7FbYT98LtwsqyucbHWSLxRYsoAphTqNjBQcnT7wFW/VzsNaaH/0WxZ3/maYRD
+         vst5hO29lcB2KRnWb0OYK66ZD6EkQ/9cs1F4eePanWTsv+7iKxrqBMHn6/W+0u29mVPK
+         jgM9oCf2wI61DPPm9hpI/+JxysELOaJE2kE8vr1+8DaPG1EFMIstBr8plPYo/X9AvI5K
+         VLF8T8zxJMI3yXIY31MxfDxTVwHnpj/efexKkgSieFAn4+4In9WzMlNheo9BAGIR/jr5
+         zkkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWUxFuM2TC6SwioPqIqWi1kaBkjHiQc1YZbz/X2f/yGjxJb/K24uj4cG1i9IPZZfhDVvyCs1MXzw==@kvack.org
+X-Gm-Message-State: AOJu0YzKBX7y8Og6IGEBPIgT6r4vlwcGSi9EIY/DTS0JhGfcq1kdur56
+	9QnLXnxSr7gjBxLSpTHvWqW470hurhMd8tYOmJ49Y1f5G1i0iXLGsJwgZ3Ey1hcGRePHM25zXtP
+	K1qzEEKPfNg==
+X-Gm-Gg: ASbGnctZexcdTmzlHjn67+WCAypWaRBjipvF9emeQlFio8DdixGHYmy8b/bk1rTjnuw
+	zyJfjFKL314jHX3+/ZHsxcUhu/1YQAmKSqoV8PVWCw0TKhGQVzrEhQgdZkfaxrLv2hmx4lfBRl8
+	ejsgsZQIu0m9tD19pRZEsb4BjMAjXuhrzOIfkA32q3qOg9ewccpKzqZmgncf3aLfHhDpolFrjuI
+	fjNWKD3RU6gRK/qud3+Reyllm9gmYG7Q85KhXdrcdwl6C9o7eJKta/9LvE81J6rKdGnU9qd+u/w
+	VoxrIOpI9/WV5EAIRtiPICvok0FAYrGstn+R52lA1UNnzd6mRCXyQujU37YBnrJoQ7VrkpZIYPf
+	lCJJlkVTwnVZMG6MePOA+eCSjLOlaCok5uEOp/1gC4DNU2a4iNv6WXAM8CAOqMvF8Ec0l1lqTMN
+	SVvVqrm9VNxwJ8cR31T/6GSslbYQ8H0UK4A6BaxWKBaWureY40DR2NGMOhv8B9R7eDZUaGr7g=
+X-Google-Smtp-Source: AGHT+IG6pvUCyJoM67istwf33oI3yVFinBoy3N2gvc2acR604/Xt30I17Z5kLfEj9SVoeu7U6bi+UA==
+X-Received: by 2002:a17:907:daa:b0:b3f:cc6d:e0a8 with SMTP id a640c23a62f3a-b76c54b8a86mr955265166b.17.1764191578744;
+        Wed, 26 Nov 2025 13:12:58 -0800 (PST)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654fd4275sm1903462866b.37.2025.11.26.13.12.55
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Nov 2025 13:12:55 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-645a13e2b17so415794a12.2
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:12:55 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXHOSHpDgeFQPAg1huqkWWieiiCc5X8EFdgVkBLL6lYharw5I4ZsRDdgeuvPHz+OEBzioPzoCUoJg==@kvack.org
+X-Received: by 2002:a05:6402:5192:b0:640:d061:e6b1 with SMTP id
+ 4fb4d7f45d1cf-645eb23b736mr8204227a12.10.1764191575057; Wed, 26 Nov 2025
+ 13:12:55 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH0PR12MB7010:EE_
-X-MS-Office365-Filtering-Correlation-Id: af698b90-f809-48e7-f32b-08de2d2faa45
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OqT1EZJD5r78CiRmM00LDR8TosyAb8zsUJt4pTOUru9tdZ/H9y3utJ1HCq9Y?=
- =?us-ascii?Q?rF961y3dsi79CgEV7Xoh5GbZRPB0tCbKCjxpVf3nD+HQocB41Sd/ICO02FOB?=
- =?us-ascii?Q?WUClXE3rQNnpsFkNj8ZEnn5d+yRT8o5LFlyBKlPnengXI9V7VffkoG4cH2Iy?=
- =?us-ascii?Q?WNb0VwGe12cuXciSdyn6DgzVmGyhBuun6SunMIQE55gwZ4kTjA42Qd8688PC?=
- =?us-ascii?Q?gVZYOFRR9RHaBTbePbakDDm7+ztLuiuAlYCdnJDvKZWbpJ2H7XpeBI7Ctqsy?=
- =?us-ascii?Q?aljYnaLfFAOJY4GEMsl3xmxRNrJD/4tOqceSiwn3YsaCtxgP9n+z91rHkV4y?=
- =?us-ascii?Q?NLxfF6xeboDUokFkXvfmw9qhhy5ZKW3aZt+GKrqtFzJqdAy0F8poJTpCaRgA?=
- =?us-ascii?Q?bdKOhFs2D15mZF9gZ17psSgLflYdOp7QbA8XADbnwLXPZz7qX1euPNUKfy1g?=
- =?us-ascii?Q?fVexeaakM3r2FKXQOt+hii39P1+7/y2B8bBx+33F+mmabS9qcoVd3QSIKYis?=
- =?us-ascii?Q?AsruOb4YuBxiHCdD/x5/LMsq25MCULiC+6euVnagv21UGAahoqVHt4sMnVNX?=
- =?us-ascii?Q?+ylYMU7mJJz2Nb5eYOIuuhOl5G0L9Or8dtT04ykfVF6uPEMbqWYmuH5STS1Z?=
- =?us-ascii?Q?WiEdxnbMmXJI8ge5me8DnPTHL1vGILulBXzW4vCSWVtEul1H8v1kX6w4+/Ii?=
- =?us-ascii?Q?UV6XO+uFZ5dU4sYspEtDbji+1jw21QG5XftWh4NaEZzWYvEXtLFqlm1GLAUN?=
- =?us-ascii?Q?j7f/cvhYhvudiGKDvm7T+rSiPUMh3V0Q5dhZECpsviqt7/guE52vCC31fTVV?=
- =?us-ascii?Q?IGNOQkzrMT39KfPFvpweOPHaHeURbSlk4y0g10HkDolWuRToWlN0CDGr4QnA?=
- =?us-ascii?Q?o3Ie3dbBm+0kLqr+Lq2F6nwg/zJeFKGJN5Ylw5x/VwIfggE+liMm4ZnM/zfY?=
- =?us-ascii?Q?aZJMg3bsuQoROuegOY2BYNilGjHIHsZeLlRQUAS1qH4lh+k89us01UHgikp/?=
- =?us-ascii?Q?kTup4pSiO0s7V7LWUfIHGujX/iRLectneSRdEJMknSkuTgg+HLkh8TAU9sHa?=
- =?us-ascii?Q?9FvnowjsFtoRyK4x111MUJoIkKuewBl+qWz9IbM4q/ODDmzab5poxBcPZkpV?=
- =?us-ascii?Q?F452uIUBk2KqHm4aMpyJQ50igpq8CntivL0MWyNJbsJXrmbATxbLzwbGIgJL?=
- =?us-ascii?Q?Qkc1TKGeqJLINk4r3GlfYWI1PZXgIGqTFQIJX5bm/mEYz9kCQTiyUFxTyjUA?=
- =?us-ascii?Q?Tz4h0Npcfmi0NBCWUBcUbf2DFrhmknXKSCXQRjTt2+AfsB6eSLEC1L366FUm?=
- =?us-ascii?Q?l+7j0gPQYtXYHKWm7dxil5CeCogvWDNDk5q30c0jhUPMJelBKA/2NcOuluS/?=
- =?us-ascii?Q?Jr95QCHf0XhlLyatDoWj/+sF+CY6gY7uq2HJec/qKY2ojOfFTF7HwRNTyC3z?=
- =?us-ascii?Q?YuYWLZ3RX69b9JzpsexJqElnXSocvSeG?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GUcGKz5M2MN1iSvUUMXVjBhEMpmG0C8r3S1qW/lBgh6y+TgNrFdCuPg+l4SM?=
- =?us-ascii?Q?MNBiw8dZCZXsAxvGlrDz7/izmvU/DvzV0OluseUoPqmS21mN/zIVC3owHe9b?=
- =?us-ascii?Q?0Yu7T4MBJLwOE4WNkQJxyELIus2q/22hrrO1n1VVKUJpm6ZXpys5yuzzaW71?=
- =?us-ascii?Q?JvyjgFDpSQq45zGh/+VlP4KiNkPicnuka9dyKQYgLrV6i4dyqITaaJ94rRGY?=
- =?us-ascii?Q?2/Uuf5O0+DC7tPcZJdNEycPFgI3CUGF8Pm2IgwiHWKTAy5H9C+BQvxpWRxns?=
- =?us-ascii?Q?Zl2EOmAIJlh2O46///RcmZ/vtmn2AzckAlt1WZD7b95wQDwN29SHBoakTIcn?=
- =?us-ascii?Q?JJfvBDdHDIi9NRa57uwiMv1a4CtVsq6QjUcyNeQS3UAL3hSrj2bC0CGr3wNt?=
- =?us-ascii?Q?bNZRzgrZEMWEskm3X7X3SmIF7/BDNprvtUOXQLGOH5+FSog7JKYud6GYvu56?=
- =?us-ascii?Q?8JbIIHODNjL+p53PXSWA9VX7fC44vuq6mRJ0Rck5nrakCeIUtMBSPMHsfL6q?=
- =?us-ascii?Q?hf5JfzcKOGPm9o4T0Wi9ud8Jh24jvB9t1vK46RowgcmLBiC9awAw0qrXtZ51?=
- =?us-ascii?Q?zw70YAR7+23zrSL6dvwyw8uWy4YA9oWQYDIt9Of2okIp/pcw+iDOebh1NBkQ?=
- =?us-ascii?Q?wJhI8mrVygCUcwuCCcqSsK3mf1wCLJn9v0EI6Yzh3JE+MoxraZB8ExrJ7Bwk?=
- =?us-ascii?Q?0haDvjhly91XX74EaqGuZ9qJhlIilCN0I5YLpXRFYhj87mogk9JQ6hdEpAe1?=
- =?us-ascii?Q?GgMQ4p66KvaQ0H5Q7VgvKlC06FuAr3pH2P8xIO3Aol/bzzDadJfkdDVD76/3?=
- =?us-ascii?Q?jeD9eLfl7wrF5I8GXHBho5UT6k3Bnz0BXxnvY3HJdMk/w7HisZCdxZW/IutO?=
- =?us-ascii?Q?EQGVByBUilzk4XHMCjdRPNbcnQZQ9UCXUa+VxVQ7tkN4bEK28e+74CNnw7/b?=
- =?us-ascii?Q?jwA+CEvck5+UiplK7xil4mkATnUfuPugngavIWQaVBgYdRCrtyC+tPc5trQ8?=
- =?us-ascii?Q?vXeDKo5eI1r4f7jiVBlRIbSThxe1mVnCqnWdIN3683lkS5zCJdzk8cXZ5wJ5?=
- =?us-ascii?Q?Adw0aY55AcCBC1Rsxz/iEXW09smJWqH7IO7sAKq6aYX8c1G1Mf2Zv6j4bVv2?=
- =?us-ascii?Q?9MJbv4Q0s4Ygd5yko+9VR8sL5iRYB0iNR/l+FuPJitOtQ+X9mhxx8Iwk1D7y?=
- =?us-ascii?Q?nKoRDiJ11mFjLSfNViMp7vnuKmWw1EMUB/uKzYovO99tCVRaOniZOUqkH4ED?=
- =?us-ascii?Q?vuOg5tslOCqhMm07EUOPX51bGEkJlHzKAJqAdlXeoTZEjblq9gR1wRl4dmMd?=
- =?us-ascii?Q?UgAJHTCGsYdRLQebD3vFFgTg9xC3NtgJL8pRoKx7nfOH3vXyZwyyPLY/Rt4f?=
- =?us-ascii?Q?mBRKmx48+P7ZtXKdpWoY3ASK6adSqJpaqv13E3PuARdzgQSAMMsUb5msnnEK?=
- =?us-ascii?Q?yCyIg/b+TG07jk+B8o/NRGahZNM6UftMq/Jp5aBNwSyzunQg76I6pJR7/xBj?=
- =?us-ascii?Q?shHP/ZFknuf5pPIrjzi3ICDP4cDUXEESMrPFiQixPGKrH5dVlupdlqgEkXYI?=
- =?us-ascii?Q?AFvaZBoBcJLCIx5uWDRVWzL/Pi20pZr/qkEdlx6E?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af698b90-f809-48e7-f32b-08de2d2faa45
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 21:06:27.7756
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +immZI3PFYakdMY1nEfmArzFG928gCf+63iwVSr9P1DuOYx0w5G29MQ4OJkBzNBf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7010
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F47A40014
-X-Stat-Signature: zaih1w6jrqyfi1uyg3ra54ktcsugmbej
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com> <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com>
+In-Reply-To: <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 26 Nov 2025 13:12:38 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+X-Gm-Features: AWmQ_bmijlsSBxI6qiVA8VQBddyswwSNhEs1F3E3qSXMF5yTCuTDAsS8SQqTKN0
+Message-ID: <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
+ sleep in RCU context
+To: Zizhi Wo <wozizhi@huaweicloud.com>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: jack@suse.com, brauner@kernel.org, hch@lst.de, akpm@linux-foundation.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	yangerkun@huawei.com, wangkefeng.wang@huawei.com, pangliyuan1@huawei.com, 
+	xieyuanbin1@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1764191362-894631
-X-HE-Meta: U2FsdGVkX19r8NNXG7VWgH8Ujln0yhCxlBC9J45zKsA80j660bTPzlVCuDylplnuoDGOxX+8aBDB7JUYCHuq/iwLx7Pkq3Wr4oF9/MclWvINcTBWOE6vCTdEshWlZtbYife+erHrFhmxsi36dAJ5xyqZp6EzfoGy3CUqveJFQI3+NpeCjKlnCfRixIIN66Hne7Ts4NbXbQ8LjfyIeXjlCVPKbTVi/Si3F6Pk1qXXCBp13iryarERQgQb7L39+5jxU87yQDAXVm13RndxoVeKKNjuOlEWeJa9+E93M0TWvH+Vu322WKgJJard8sWWqBAob0I0NEww/qUqTIaS11BqOCHg/7vQqCch0XTKyP0kkuDwGYhGlE7GYwzKgPwONP01GlPJS6r2QiQ2J8sYG7DWLy99WlrIDeJX/ErrAcx5f99+fbz9/WR89RS+9cH166YxATz+Z0csZ+nkuthtKFlrITsSXTdD8h7hUeSLPRKv1ZnwWsH+uAUGjYdz5CmM0NfgEGr1LvIVaugYGEPN5LTgMoJpqle8JHE2idH9lxD6y20aXmO5J+FfQstiucUMq+4tgPGOLmfqBTI3wauh5zjtGk1fWvr4lUsbdFWsCYBPXfn1da7S1DE6Scn7prcCltbKCKkETMq1hEzhOdouQVXbwsJsGA4or40+u8z8WJVFQFzeFmH8t0p7+LAQxmT2OXXbdzB9C9Gl7VoFvBmqdxUIDzGxjZowehgjlqLW7nJtSRVaq4zKnBvtNoDF/p1B4lhJWyoirA2LrezYzaEgfxvRyTQg+tU0d0wu2jjzVEJFCGj3K6o3PJ4Wu9EnpivSoZELKMax31+lcpsq8i0NSsiTM8W9X4sFaMNUImpv8t1PfYdN/TvsWlwHB/cUdTrngdTS2dU0QFhEKxzIh02I6DU3g4ya5LZeARJP0ON0SDFRhCJzLwZb2CuQwIbBFtATZWpcyT92/qoitxH9pe10itf
- e7O8xvjz
- uEA/wKwHxiZiLErOQppVB16FGO4+iZOzvlIiWpzpEWas2KXobVQe47WBSvDZpRgR4zjNqo4TrOKc4DktoPeUSHx93y5JzA3qE+jlLwcCd6L9Aa5j6jbqC1+0qijim6nhCejG3VsA/HRGq2kTWKiwjTvt1CPp0UJbelayd6BxFMFSFmG0wbhLl8RsTH/4C3WDpxf5lS2e5rjeQD0cz7EsVYq4y2lgfAXvSe61J6npA/kbMJZ9JuFaf+XXXa5qQwPSIMWntnoogZXEW6+AtkAKH+RL9p6FuDxMgdxvPSfetLHCtnnDGl/eqZPKr2svnAksWUZ7YDXe/TW2SgEEhQ+FMqwrEB07ftTEp+B/HIkkeCbJZK4djLbF/j7ZBkEI7JxBGGiT9aYl5fz+VMBX+7X/nHSg3hDfM9dQ33SBEixFgksDwgPwnlX+amE8YxMljcHhMJEO/JLoqOxMBIOmH1KqG5D7NSuY9B7E+597io85b9Vd2gz4kBxIUUx/fZvNlwoelq7C+iVu9xRNyvYymAsby+0+4FVMWFj98n8ng
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B511940015
+X-Stat-Signature: d43en81mwmg1ip3wyhw3zpzzj9xupk35
+X-HE-Tag: 1764191580-708015
+X-HE-Meta: U2FsdGVkX1+zc4pp8oNt3I/VTAMlJrbyD5pGBO4yFgRusNVDB+86GG/JkTZbzOxF7dMCgNnkRV73SwgSmDF7Vj3m39vzI9Mny8C2xhBkhpXVbY8LP5UKqtRR/iChjwnESaAWYgJRqaRhYECAmuoRhdzmjsWVHxjMP+shOLS3vxSX6JGrVqQh3LuhWfsVC0wM42fbG58XhSPPBjuiwVm2ByTP21X6G9Si0+7itJOIbl1JCTM+SM2I7WBCp0tu9gvhikUkZY+N1FzAP2nUixWO/ur8kAE3HeWTQhkjlClDi7Vg5X6f1hlkCFMOop4uXNfuo8oeHFo51aGN70Zo+D4BWlxaQpCQm1xQgZgCriL9pwamm2bylP/FgKSZcnYrS5OXjFIHMtweBV559RNi3NhYI64ooLXZNdKtE3/ubIzX4mLeWR/RkZNksD++mbqb1mg9/6sFT14cdWoFca53RGrmVwIwillkAP48sLkcdfXYsWahblOxhg797MOYVB5Zdsnl0M6nLRfW4jup/fLkB3aq13LSAdygfyf807sMz5izRyENoH0AJYpfNg6sG/M7NnMg2iArUFswhaIT3cH9aE+tVtbYEfJMe/l6chJt/nvoccZkTDsH+CfmefLMkKOX68Jxyhe0DkL6OIIng40dfdNvauCq0YhE1A67oH5vu5mzcNLewgy2QhFs5AXtoJOmrd+zjYQSSe/MtZ1+qcE/KtV69r1zDRE6prp9lQvbJrFA4DUesjGsVRCNGNwYAPL49TmWsr2npQTq1TcgCFOvjIjGdNAOb6f7crRlxoQkB/s39ifiejAGg3fr9Mpmt06gFj9zzOBHtt2LT1vLPtz60kU9bt5Sy7Z4sQA1L89cYbVajjctwsCnA5EKNTdpl8nik7hp7WBtIR5RcNF4Rv9qbIf5Eb842ycwsFd/lOXpoNh8bDjxzxM3rm3YuJKOVIEzE2k/74U5YrLqMQB1t5pY9jF
+ pwB39jAv
+ tvPeewffagV88zUDuWszR5uq08VVeEjhYDeknOXP7cVQQLZ3cW919dQPRaTUo3EUl/TfecUaZJklRfbh4Y59EffmvYrv1Ta8bIZeJnyO4bNxKnkeM9nRSzYkR3SR41IG2sEsYU72MT3u2G3h+hX7BzzsQnLuF0GMSaQqYKgku2ucYgmSlJ+s7xk9N35fbi24INVOzg4nnWOTdYMJvoQGRX1ny/YCUHXggVwFsZWmkOZLC2iWBFe/021petbHoQ58kMmRbu4gwKk6vTw3g4Gj2G+g1R8Ab0CxnDRPM4UMNP+kekDJNpHpE5ig6HIse730BIi82i3fgeHbL/+JTdX6z3vsWMAKFCTWi1nRyzcAYFGT+d4L2X/43ljL+xu0rAvgmB8vKUZ47CXCDHEC0ciHxqx5QvAASF4eQfOdk7+HPbtQCLmzTqJXL6Dgd51SVWEhtyobB909xuD0WSvac4zq+q0GQ3gVR0nmJUb6NfThc6ckeKV6eEdVf/fCUgLIdP1pMQdnh4Z9hClSgYpOYFrI1mZwFk4+dEuL/523zBS+MEtLn9ak95Mae3MJ7bAKwOHrMncUIXYKSdL9XVQ3jKKjgR4mr2wzE3EdU9mrvD6ZwEgVawBI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,98 +132,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-min_order_for_split() returns -EBUSY when the folio is truncated and cannot
-be split. In commit 77008e1b2ef7 ("mm/huge_memory: do not change
-split_huge_page*() target order silently"), memory_failure() does not
-handle it and pass -EBUSY to try_to_split_thp_page() directly.
-try_to_split_thp_page() returns -EINVAL since -EBUSY becomes 0xfffffff0 as
-new_order is unsigned int in __folio_split() and this large new_order is
-rejected as an invalid input. The code does not cause a bug.
-soft_offline_in_use_page() also uses min_order_for_split() but it always
-passes 0 as new_order for split.
+On Wed, 26 Nov 2025 at 02:27, Zizhi Wo <wozizhi@huaweicloud.com> wrote:
+>
+> =E5=9C=A8 2025/11/26 17:05, Zizhi Wo =E5=86=99=E9=81=93:
+> > We're running into the following issue on an ARM32 platform with the li=
+nux
+> > 5.10 kernel:
+> >
+> > During the execution of hash_name()->load_unaligned_zeropad(), a potent=
+ial
+> > memory access beyond the PAGE boundary may occur.
 
-Fix it by making min_order_for_split() always return an order. When the
-given folio is truncated, namely folio->mapping == NULL, return 0 and let
-a subsequent split function handle the situation and return -EBUSY.
+That is correct.
 
-Add kernel-doc to min_order_for_split() to clarify its use.
+However:
 
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
----
- include/linux/huge_mm.h |  6 +++---
- mm/huge_memory.c        | 25 +++++++++++++++++++------
- 2 files changed, 22 insertions(+), 9 deletions(-)
+> >                This triggers a page fault,
+> > which leads to a call to do_page_fault()->mmap_read_trylock().
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 8a52e20387b0..21162493a0a0 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -372,7 +372,7 @@ enum split_type {
- int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
- 		unsigned int new_order);
- int folio_split_unmapped(struct folio *folio, unsigned int new_order);
--int min_order_for_split(struct folio *folio);
-+unsigned int min_order_for_split(struct folio *folio);
- int split_folio_to_list(struct folio *folio, struct list_head *list);
- int folio_check_splittable(struct folio *folio, unsigned int new_order,
- 			   enum split_type split_type);
-@@ -630,10 +630,10 @@ static inline int split_huge_page(struct page *page)
- 	return -EINVAL;
- }
- 
--static inline int min_order_for_split(struct folio *folio)
-+static inline unsigned int min_order_for_split(struct folio *folio)
- {
- 	VM_WARN_ON_ONCE_FOLIO(1, folio);
--	return -EINVAL;
-+	return 0;
- }
- 
- static inline int split_folio_to_list(struct folio *folio, struct list_head *list)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 5ce00d53b19e..1a3273491cc5 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4219,16 +4219,29 @@ int folio_split(struct folio *folio, unsigned int new_order,
- 			     SPLIT_TYPE_NON_UNIFORM);
- }
- 
--int min_order_for_split(struct folio *folio)
-+/**
-+ * min_order_for_split() - get the minimum order @folio can be split to
-+ * @folio: folio to split
-+ *
-+ * min_order_for_split() tells the minimum order @folio can be split to.
-+ * If a file-backed folio is truncated, 0 will be returned. Any subsequent
-+ * split attempt should get -EBUSY from split checking code.
-+ *
-+ * Return: @folio's minimum order for split
-+ */
-+unsigned int min_order_for_split(struct folio *folio)
- {
- 	if (folio_test_anon(folio))
- 		return 0;
- 
--	if (!folio->mapping) {
--		if (folio_test_pmd_mappable(folio))
--			count_vm_event(THP_SPLIT_PAGE_FAILED);
--		return -EBUSY;
--	}
-+	/*
-+	 * If the folio got truncated, we don't know the previous mapping and
-+	 * consequently the old min order. But it doesn't matter, as any split
-+	 * attempt will immediately fail with -EBUSY as the folio cannot get
-+	 * split until freed.
-+	 */
-+	if (!folio->mapping)
-+		return 0;
- 
- 	return mapping_min_folio_order(folio->mapping);
- }
--- 
-2.51.0
+That should *not* happen.  For kernel addresses, mmap_read_trylock()
+should never trigger, much less the full mmap_read_lock().
 
+See for example the x86 fault handling in  handle_page_fault():
+
+        if (unlikely(fault_in_kernel_space(address))) {
+                do_kern_addr_fault(regs, error_code, address);
+
+and the kernel address case never triggers the mmap lock, because
+while faults on kernel addresses can happen for various reasons, they
+are never memory mappings.
+
+I'm seeing similar logic in the arm tree, although the check is
+different. do_translation_fault() checks for TASK_SIZE.
+
+        if (addr < TASK_SIZE)
+                return do_page_fault(addr, fsr, regs);
+
+but it appears that there are paths to do_page_fault() that do not
+have this check, ie that do_DataAbort() function does
+
+        if (!inf->fn(addr, fsr & ~FSR_LNX_PF, regs))
+                return;
+
+
+and It's not immediately obvious, but that can call do_page_fault()
+too though the fsr_info[] and ifsr_info[] arrays in
+arch/arm/mm/fsr-2level.c.
+
+The arm64 case looks like it might have similar issues, but while I'm
+more familiar with arm than I _used_ to be, I do not know the
+low-level exception handling code at all, so I'm just adding Russell,
+Catalin and Will to the participants.
+
+Catalin, Will - the arm64 case uses
+
+        if (is_ttbr0_addr(addr))
+                return do_page_fault(far, esr, regs);
+
+instead, but like the 32-bit code that is only triggered for
+do_translation_fault().  That may all be ok, because the other cases
+seem to be "there is a TLB entry, but we lack privileges", so maybe
+will never trigger for a kernel access to a kernel area because they
+either do not exist, or we have permissions?
+
+Anyway, possibly a few of those 'do_page_fault' entries should be
+'do_translation_fault'? It certainly seems that way at least on 32-bit
+arm.
+
+Over to more competent people. Russell?
+
+              Linus
 
