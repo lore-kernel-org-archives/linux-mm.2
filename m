@@ -4,113 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1BFAD11192
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:43:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACCD3D11193
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F24C26B0062; Wed, 26 Nov 2025 13:43:29 -0500 (EST)
+	id E94796B002F; Wed, 26 Nov 2025 13:48:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED4EF6B00A8; Wed, 26 Nov 2025 13:43:29 -0500 (EST)
+	id E6BF36B00A0; Wed, 26 Nov 2025 13:48:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC4A56B00A9; Wed, 26 Nov 2025 13:43:29 -0500 (EST)
+	id DA8896B00A1; Wed, 26 Nov 2025 13:48:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C508F6B0062
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:43:29 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 936241406B2
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:43:29 +0000 (UTC)
-X-FDA: 84153631338.18.71F33D3
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B976618000F
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:43:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=imDIeiG9;
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C83A66B002F
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:48:29 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 659BC5ABC6
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:48:29 +0000 (UTC)
+X-FDA: 84153643938.24.D394FF1
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7727940010
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:48:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ivStOe1K;
+	spf=none (imf27.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764182607;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764182907;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yLPOtacZ//HsbFCrCmvCJYEqUcOOkshQ1Q+2V1twtrY=;
-	b=u+fSewtuLeh3rcTmNZwbwmHp6dV4O1mPGxtgJJ2IIw3MIwWK5mtzfwajTv5rYEba0sEkdR
-	9bgQ2BBNlO1t35wLo21VonCY6/UjWUYkcsbhxyb2zJzUDYSo2TjQDKlYCnCX7AaPgYTFla
-	g7ys4bAZrlhgX3AJyw1+ZROJsyMsAqk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764182607; a=rsa-sha256;
-	cv=none;
-	b=sTUDD1d2ieOaP0UGoqL7vQebMG+HvoJ2f2HpIcJfZSDAyOo0A5IIeM9qvpc2KAx0qw4Z9y
-	GtIVDmHwHQWWSYzxt9qSR2NoQ8smcs4Ba/GsCBlbwYteuWV/K20CMgiGJAmFrzsB9NlBkE
-	fcc6cdgiDzLU4uG7TPE6cHRdqjgZNz4=
+	bh=mdfgXlkpyLxaObMMHx43Tkpr2ds6LGq9BHgJcGxz0JU=;
+	b=ys1OosQy1hDcXQyE3j78QHeSoChtmPFma9wmZzKV5UL1/s6LfC8OUIors8W8JBvwhQ/9O6
+	FtBHgxFe6rOq0uqE0CMg4sbaX+TI2KT8BIfmwBE3rStnLOXpxsEW/aL4GkFguYfx96966o
+	vILx5TrdEvJhJRcTR3n31kFjFv3ZtDU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=imDIeiG9;
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ed67a143c5so29981cf.0
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 10:43:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764182607; x=1764787407; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yLPOtacZ//HsbFCrCmvCJYEqUcOOkshQ1Q+2V1twtrY=;
-        b=imDIeiG9V64aBPqLKZJ6zrUnBi6A6BsS/VBymWDnLqHXpLpaeQNf6vMu18Dx5tdczM
-         JmXu80P3qg7FClbNQftxwxIUdAConTVRthEBEWqyEqinBbequ47LCKlcuyUtkb+fx61r
-         CPmRkRKV8tMhrlKw3bttNcuDpYIvcPZi6KpX8tMJS2TOxggwfGdWCXndxZQguko6FTXQ
-         eyYtkF22iXidW6TBO+hroF2nBuPSFjUvc+t05D7PQKnFipUW2RrMiL9PXdG/D6RMYECF
-         ODG80ljzkAQwk8AmY2NdJe3upgn/bIo0FhJv0QKkoGa1lzdUOWk6krKBC4hPBadZD+n5
-         FQEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764182607; x=1764787407;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yLPOtacZ//HsbFCrCmvCJYEqUcOOkshQ1Q+2V1twtrY=;
-        b=S6Ouo40+74AE5kpATnR37VTTNgAw4x0Zl2ZOoYdErKpGSuChgbpHJIat3om2IFW8Qp
-         25JauLkDCcIeV4MQXYUXejXq6oWto1JGWkBWebKA/QxzgS2J8AL6T/Jrg0W6SCpFjxGs
-         AK61ZnXhbsHsqCaVtm4DOhJgCR8EXtMF31SLArkG1ftIgdE/C+ct/BrEG1OOHRigwAvB
-         zZiuPe8sZcqixUgU7ifH9aN0q4+9KBVPPJ/vNuQ299+yUMGk7Je0QCA4wRhfb7oCcofY
-         CXQi4MetbQtzBl5G+m78lV1pJta3Bg6o/bLelF8M96ePdfn3+VX2+U12yG2FJXvU6h9/
-         Aynw==
-X-Forwarded-Encrypted: i=1; AJvYcCWe1mV+wf4nVF+NBwaNg3XAT/E1FiU8ARLAO/r4tv5PKa3Luco7yWjq1iGQcMWGS2nQpGtL++QvoA==@kvack.org
-X-Gm-Message-State: AOJu0Yxs8mQ8bgx9pp0Ce3wwwqAa6er2WVzYNpsGBbSbPBMZoC1c6Ey0
-	/3KhXMANaOT7yq0G+I5UOAA9zW0LkGzNXyL01yJRAlKsCFcNVk3QBuqvQMh8ITUT7dfQvYNI376
-	gk6AOL0t7r708OqONq+jjl+BCqaiDn1c5VM52/Tu0
-X-Gm-Gg: ASbGncuibVHif1WP9+qF69MO3xQud+o2nIBWrZNSL9i1oZSEBaZymD1LkNdiYC/wj+y
-	IznajZP5LXiI2dX7wbLkpeSFYht5mVfcCK4MhGZJpOjkzEEfKZDO1tJxYKzkdB6Bf6RysfdEirb
-	rGYFIKyweYT+mAeWT0SRywfSVfKfU14GJVmq7uSVXrZexE0S6zU+VRLqV6kdVKX7VAmgd7WHJs+
-	PWQOQweGTXdcwTlREHNytC6RWzoIzx0fwto9TDZIwrJyObW+JoR+Kmq1wEip7fEVebDTEGa//c9
-	PB9/6s5+3mxXiKO1nCvMm10=
-X-Google-Smtp-Source: AGHT+IGKlbSs7aySmmA5hJcyeB4+paBvQvJXg6lkYaNjCS6GjyCfOE96jze4Ea97BSopPYlF6efFEJYjrVMJgKr5l9g=
-X-Received: by 2002:a05:622a:4d2:b0:4e8:aa24:80ec with SMTP id
- d75a77b69052e-4efd0ca4ccamr252971cf.14.1764182606450; Wed, 26 Nov 2025
- 10:43:26 -0800 (PST)
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ivStOe1K;
+	spf=none (imf27.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764182907; a=rsa-sha256;
+	cv=none;
+	b=k3tExkRZ7amUKQxpCD15FrNtnK9IYAvEpWX9EPibjNImvNsiOxMLSWirGtGiBVuBCu9GNt
+	3sjdfj2Ck97Pn6LYx83qmGhx+1VH64VAt8+YRQKfmsOfi4ARRln4tv5VZmkzFfXPWTKm+b
+	Qs7FEd63bE7Bzb6wu8EJuaTbjHhWaBg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mdfgXlkpyLxaObMMHx43Tkpr2ds6LGq9BHgJcGxz0JU=; b=ivStOe1KLxJxw1t8tb72zR8h5B
+	W24XagOg7rDcPXZgjOv1FG9rwU2wWxKjHritLGxQkB7rwfZ46htLdBTDboPRj4SILvJyeNToEyTH0
+	xeQY2zH9Jt34KfvU2TX7aaPQ873aCah7B6FLdWXnT3cieEefNdrNf0WEnG++C62r58kjy8crDm7u4
+	VEzwxCE2EyyrsKYMOSP3AqVbLC/mQaYK2K+5cxl1C8/K9l4KdbpoFZB9ffzoEDmP/AQmnEhi/ckwf
+	o0rUliXD2IRZhnuuNzU64OPR1fgeLSdXpAp6NE7v/QLeLHI48lVuZknFaIWBHEGVZkKcxbZcjIAtw
+	PyuQ+Jgw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vOKYu-0000000HYvd-2akG;
+	Wed, 26 Nov 2025 18:48:20 +0000
+Date: Wed, 26 Nov 2025 18:48:20 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Xie Yuanbin <xieyuanbin1@huawei.com>
+Cc: brauner@kernel.org, jack@suse.cz, linux@armlinux.org.uk,
+	will@kernel.org, nico@fluxnic.net, akpm@linux-foundation.org,
+	hch@lst.de, jack@suse.com, wozizhi@huaweicloud.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	lilinjie8@huawei.com, liaohua4@huawei.com,
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com
+Subject: Re: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad()
+ with rcu read lock held
+Message-ID: <20251126184820.GB3538@ZenIV>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <20251126101952.174467-1-xieyuanbin1@huawei.com>
+ <20251126181031.GA3538@ZenIV>
 MIME-Version: 1.0
-References: <20251126174500.2498895-1-willy@infradead.org> <c35ab0c0-97c3-4565-ba2d-5c418ecac593@lucifer.local>
- <aSdGvY2UzrXdR2e3@casper.infradead.org>
-In-Reply-To: <aSdGvY2UzrXdR2e3@casper.infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 26 Nov 2025 18:43:15 +0000
-X-Gm-Features: AWmQ_bk0FVGZf8A3HlZ4IUTDbpOSZroDuVgHqHfGNb12W688YBH4eS3c-Gs7B6w
-Message-ID: <CAJuCfpHheus2oiv94r14afjVV00XZnfqHY0p+H8fxjxCSYjg9g@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: fix vma_start_write_killable() signal handling
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-mm@kvack.org, syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126181031.GA3538@ZenIV>
+X-Rspamd-Queue-Id: 7727940010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B976618000F
-X-Stat-Signature: cydpbhbjzqnpjhx9s1rnnu97wpc9f9ry
-X-HE-Tag: 1764182607-652014
-X-HE-Meta: U2FsdGVkX1/P3ROMIO2dcL+hTFYlHzadlODua3LyGJK35yHuzUWddyK5Qyva0Wfdk6RVEfASYZNo6PHYPgubfq9XaY263fP+iLoBQF1MtWjYSR1xQ9n80aLejj0LS+UjJIboxrfOkHHra9GCzWrKwIfVOWr5WnZ6aIMginVLIq5Br9YTSxUDod8jiFgLactHRRAWTJ8RcFQ7oJqL2fbcMneLirfK1vyCtZCYgnmilvEQSautZTdSLOJ1V17STln488uda/sNzEi/apPnIwo4m3bajy8BkWKUMwDzyzwVhUCudsLgP/oy5/xTgL8Td+t+42lgTQgtarc/p2NVtHBtpp7E/JFP0mg6De+gvwrbtOWiiEzVmY8MvdfuNYa+aPp9hZFiza9Ht1SjrGYiXEktEeIC9m04MrfiXek1P8geO2s75y+k6zofEhYXXvbfYiLrA/jx1QXeTBfSSNm0h2RL869gdOHIkXAnjIUXDv0zyjSVH6ngf+bf+xpfjdnUkeCJL3tCSOlV16RvGnIgRJgPkN8KKL5Ctiw2vze5YNmpEzOa9oeeTKi0qlETkeAnNtSd/XR2geghZ+IEPvHXEHIEqXrn3g/D4DDLQMaDyyDbE5nnIwFQKJrTmB9v1v6/n0hM9fAjC1AR0/XQsqlc4yyJXCEpy9IFCzxzXItCkaafsZdTD+BhJgJa62LiMbqAQ8raibeOcAWmSpfsQRUn/Xdh0t5CKkDaTotCbTbAqJZpONY7utp34wV9C+RprvGCen0TprQUfntjdFBOa7w9pVHxuvKlFbuOtBrwFk4R9s5n/vZ3gQGUAb6DR7tPlW9KZCHm3yrMvtJJEoqe1iqeeMSeV+emt4FQs/VEHHC51fSBxezdLNpoWjFHPKH4BhZ4JiCGxE06uduw4dOEl9c27EEg12zNSsrBx84X3zYwktXjtRRtNBqx770LO17k6XB9xvRNwoqTREMLauKf80z/JR9
- IyeLgAWd
- mJva9s4QSDHbdAasfAlUUkB7P3sJRgduckNbBjj953SOEOCVxfEqAJK/qMUbcSwfLkdZkFVbP5JgxugywTmCPJHTvEgfAr171KD5VWzdbwJrABl52wMr0jVqgeILEmOCCCL/7VXtLjYgMa0Wv8QuDoDmJOSrQ5/siH4ZSsQE/tvGZ0OQSdjbKIK1WoJIaZFtv0ttB65XF1+tgMIrY05YH52iyo5NOIePeGU9h0GYFVC/sKqlmR1MzovRCqny7JD8Z/mwPyYWPOy73ws7NQQ/eMD+M+jBeR9gT8U/uk9dKwyEYUK/di+cbOJmg5HIolyeeyQdpIRBzPvaK5qLEhaj3nwCMqeYlgdTR7Tk4Ybggt3KMVTb3BfHmCwJNU/kUpQlc7IiIyrxbLjDEuzYKxNQdtpvBfDdhZ8jQfZhi2k97BG+B3tAoGF3Yx3lO9lO1cRyZv3XOqUeC2YjcSacDKPuS/QfPhKa7zr8B6jBGd53DaAcqnkIQUB5qvINMoA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 5b6mhb91yeuhg6d4om8yiongcssu8qyc
+X-HE-Tag: 1764182907-210756
+X-HE-Meta: U2FsdGVkX1/c/htPhiS1bdpb8Rv9tPjr0MH22L6T/iEbpFWAb/nfx+ff7H2WLaKQlECfxYP1tm2h1ZQp3BIFJUxh402wbFZAVrfAHL/xlVNiTIkxxzyvdprzBPapo7HxTuvMJ7YaMhhYgCd6yIy9t6VSOWYLL8BR11Pjx7388q9uMPsLXz+bKQWj7k/PJvcRibnZgyPZdGOH8r/TzCSNid7AefsY9WKKLQ9wpXnKrWAiMxzWKVMuIXpKE0+Bm9JBNvuPw+VqpCgRL00JiIO6USwF9RJFB0VRp9Ls3Snn+7o/EKjIPpaXu7tuCvxKmAZJDp07b8/07skmrbUl7mq2zUBIdJqD7ZEcZrQU+VOxHWV7QA5rAzhfTEEK+sSn6lJqCd/8f4umqR/3mD1eQQlaQHyjAFAH4seNHemVu70OQLCk+JgZgeQ5lL5DGGsqR8EYgWSFlyzrLPIRqjmYoqjnMs/KtbdzOJP/OhubPBSj51HvrUYojuoyK55TwVNewc9DRzQ5RGiclx68ewouuETNUXi5Z91IJQ/RFEp1nohRuGSlGj/zX992TvH6iUqV+zdLQvSe5uHb60+UoJ0JUAxoMbuW8MnjjTsOxoQpLfHyXiMnI8Bwqt/sGziMfGRPEGtIIG2ZeJtq+ZD4ZfeqoKYD4Xuq0N8jUtG4ebZVjXKEgHeWIujNoN4lbyJ2p8WpEds/00D0w0RZ30fM2SCh0PJQECivKMTUm7DWAfY8NZFI6FifHbEzfbwlvzUpeDYAZYKEyHhR1E9Nw+DtebMgXO5cA+rZ78msm9DwvZ8Z3/AeqyKQ0aF1Iq4Ru8MkGIYWpj3DzhfD2279ldjaVbrghhcfy5018gv84J8042JmZKaaJCWNzq6AefBWIo/CGMq2yXYASNfqa+vSuqfHoupGUx09oJ4SlxfZrKQnt+fBg+oLvRw3G3eDRhVAkwklnynBNRh2mqbEHuxhjwzYS8Rg8UC
+ 8SfMeL93
+ 9YTnUOgjfXgrPSrtlh666vCV8sDVwWnaw2v5QYUvKUcCBeZ/+BciQFJgGOqWYnq/b/0L6Gux2I06ba3s2dRc8h/J3JZKEx2BBtZtXbuwYbCGDDN1fMzOke0/IR0glTwrb6IhMFuDXypHNLHL6ODBzP16q4C8iKUTKCGx/+/uXiFmzajRVcW/3fRjcQDQ/IFBHrOuzqOGzjUVszAJYmXQ3K7joIRfwksKeR5UbGFXxk7Ir6P+xTeTJqc/1OT9rMsCK3y+1XHOdhd74gMRllAge0CtLoSCybF77Ybg4JJ72jZ/NSwokod7deU1gz6WG3E0b3hBtAK+8cv/eCekHS0OaARh8sjzCcLm30elOYcS6rjo5/YtB3VrFwuSUtiC3FSX3sM/JzWZJiSbmx/q/bseGNVBEw5e0r5n2fqcqLdamjCCfImH8in6h3sMXZ0QJn5i35vEHNKSEdxybVx3eT7VIn4U0tmcFBmi899N8cxKwQCMybAcyRkVaxT4051yrN60frWyrCZePCzNoS5W8Ii3eHIh99Jk+JHauLVCsY6EoAbQB9kI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,91 +97,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 6:28=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Wed, Nov 26, 2025 at 06:06:53PM +0000, Lorenzo Stoakes wrote:
-> > On Wed, Nov 26, 2025 at 05:44:58PM +0000, Matthew Wilcox (Oracle) wrote=
-:
-> > > If we get a signal, we need to restore the vm_refcnt.  We don't think
-> > > that the refcount can actually be decremented to zero here as it
-> > > requires the VMA to be detached, and the vma_mark_detached() uses
-> > > TASK_UNINTERRUPTIBLE.  However, that's a bit subtle, so handle it
-> > > as if the refcount was zero at the start of this function.
-> > >
-> > > Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
-> > > Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
-> > > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > > Cc: Vlastimil Babka <vbabka@suse.cz>
-> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+On Wed, Nov 26, 2025 at 06:10:31PM +0000, Al Viro wrote:
+> On Wed, Nov 26, 2025 at 06:19:52PM +0800, Xie Yuanbin wrote:
+> > When the path is initialized with LOOKUP_RCU flag in path_init(), the
+> > rcu read lock will be acquired. Inside the rcu critical section,
+> > load_unaligned_zeropad() may be called. According to the comments of
+> > load_unaligned_zeropad(), when loading the memory, a page fault may be
+> > triggered in the very unlikely case.
+> 
+> > Add pagefault_disable() to handle this situation.
+> 
+> Way too costly, IMO.  That needs to be dealt with in page fault handler
+> and IIRC arm used to do that; did that get broken at some point?
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+FWIW, on arm64 it's dealt with hitting do_translation_fault(), which
+sees that address is kernel-space one, goes into do_bad_area(), sees
+that it's from kernel mode and proceeds into __do_kernel_fault() and
+from there - to fixup_exception().  No messing with VMA lookups, etc.
+anywhere in process.
 
-> > > ---
-> > >  mm/mmap_lock.c | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > >
-> > > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> > > index e6e5570d1ec7..3c9bf2f96280 100644
-> > > --- a/mm/mmap_lock.c
-> > > +++ b/mm/mmap_lock.c
-> > > @@ -74,6 +74,14 @@ static inline int __vma_enter_locked(struct vm_are=
-a_struct *vma,
-> > >                refcount_read(&vma->vm_refcnt) =3D=3D tgt_refcnt,
-> > >                state);
-> > >     if (err) {
-> > > +           if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcn=
-t)) {
-> >
-> > Really think we should WARN_ON_ONCE() as Vlasta suggested.
-> >
-> > It's an 'impossible' situation so we should make that clear. And we sho=
-uld
-> > find out about it if the impossible happens... :)
->
-> It's only "impossible" currently due to some fairly esoteric reasoning.
-> As far as _this_ function is concerned, it's entirely possible.
-> I don't want to leave this trap for the next person who calls
-> __vma_enter_locked(TASK_KILLABLE).
->
-> > > +                   /*
-> > > +                    * We got a fatal signal, but the last reader wen=
-t
-> > > +                    * away as well.  Resolve the race in favour of
-> >
-> > This is very subtle, I don't think this really explains this clearly
-> > enough.
-> >
-> > Maybe put something like:
-> >
-> >       /* Couldn't wait on readers probably due to a fatal signal, so un=
-lock. */
-> >
-> > Before the refcount_sub_and_test()
->
-> I think this falls into the "saying what you're doing, not why
-> you're doing it" trap.  Whereas my comment is at a higher level --
-> there's a race where both exit conditions are true at the same time.
-> The rcuwait_wait_event() picked one option, but we would rather resolve
-> the race in the opposite direction.
->
-> > And:
-> >
-> >       /* Shouldn't be possible - VMA entirely detached, so treat it as =
-such. */
-> >
-> > Before err =3D 0?
->
-> Again though, saying it's "not possible" relies on knowing all the
-> callers of this function behave a particular way, and there's no
-> guarantee they'll continue to do so.
+Had been that way since 760bfb47c36a "arm64: fault: Route pte translation
+faults via do_translation_fault"...
 
-I agree with Matthew. Returning 0 here would work correctly even if
-vma_mark_detached() starts using TASK_INTERRUPTIBLE and 0 becomes
-possible. The comment also seems appropriate to me.
-Thanks!
+Did that get broken?  Or is it actually arm32-specific?
 
->
+In any case, making every architecture pay for that is insane - taking
+a fault there is extremely rare to start with and callers sit on very
+hot paths.  Deal with that in the fault handler.  Really.
+
+We have no business even looking at VMAs when the fault is on kernel-mode
+read access to kernel-space address.  And callers of load_unaligned_zeropad()
+are not the place for dealing with that.
+
+It's been years since I looked at 32bit arm exception handling, so I'd need
+quite a bit of (re)RTF{S,M} before I'm comfortable with poking in
+arch/arm/mm/fault.c; better let ARM folks deal with that.  But arch/* is
+where it should be dealt with; as for papering over that in fs/*:
+NAKed-by: Al Viro <viro@zeniv.linux.org.uk>
 
