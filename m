@@ -4,86 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60B28D1118E
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:14:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B54D1118E
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:23:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAA926B009F; Wed, 26 Nov 2025 13:14:57 -0500 (EST)
+	id 92AFA6B002E; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5B1B6B00A0; Wed, 26 Nov 2025 13:14:57 -0500 (EST)
+	id 902AD6B002F; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A70FF6B00A1; Wed, 26 Nov 2025 13:14:57 -0500 (EST)
+	id 818606B00A6; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 90D7B6B009F
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:14:57 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6CB08BAE7B
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:14:57 +0000 (UTC)
-X-FDA: 84153559434.20.F861FD6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9B68A20006
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:14:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=p7X5qj2O;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F0006B002E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FC5412C8A
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:23:46 +0000 (UTC)
+X-FDA: 84153581652.12.3BF97CC
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1D98FC0017
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:23:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ac+mC9Yk;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764180895;
+	s=arc-20220608; t=1764181424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hpmpWmbnz8Thf8qOhc0rH9R++NsLdv8emSQl3kXPtik=;
-	b=k8YeFeoVPd7BeMquN6U9xSbIz/zzXk1U9OEY/W/n/ZbpPj0jfaOntd4LnMWzpWdwMI3OVa
-	FireO9aZzQcJmeYF+wCEHhYQ22QmM/Y1UHdq7DfUDyoDSZenHS/vodoCwC68Jb28JuL1Sz
-	aoJMlJdMctIkkd3CIy6W3AZK+wDY8LU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764180895; a=rsa-sha256;
+	bh=dRuIsnJjgKoS1qB9z1CzLqIUDAakowpq0VO9vQCJiLo=;
+	b=8Rhl1roGKBp5sRIim2g5T01n7tzid/sZUBGI0p9wj1oe9snHoWrVb7xvYHx2/VwovvtRLH
+	MK2dUTN10YmQYaLtWpcNJPdAbpQmoTJ6pdnaSpOnv5eZswvkmW1NVgd5Uk1TEMb9+KIC9G
+	7MPWw5ODWY45yIlH72Z3p3f3KZCzN54=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764181424; a=rsa-sha256;
 	cv=none;
-	b=dCiGdBReLyTKg50d+fLScpJTpujQcW2Hhf6kKpSw9elosMhtgUPYe7WHAOe5tqnaaTd6/+
-	3NgRBMzvm0xtrGcsDbem2ubCkRYXwvzwjNE0e3oG2Qqn9mWqhDCPMDsWHUYA0S90UwMGDk
-	amverIOtUBPR9mlHb+JemmVccNp1b+c=
+	b=2bw16Xk3B2DgHScZk+J5Fy7VtgBOHPLv3nuzTDwyB9u9KgMyJJjyLhk/n04/Ps+CMXyahf
+	cKsarppAD09+o4k0Slujy9wBAEW5phBUb+4ndTKsY/oaQq1d1h17sqn1Ebuitkdgb7L9pd
+	eYIceawoJEivwN/+0zQjGyaTpLrLcLg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=p7X5qj2O;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 544A6435B9;
-	Wed, 26 Nov 2025 18:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBC3C4CEF8;
-	Wed, 26 Nov 2025 18:14:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764180894;
-	bh=kjHx5hFM99/6/f9ENV62ybrwwGC7N83jK71FIRHO86k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p7X5qj2Ogw6DhSG+Db57ZmeCGAeKCNEcijtsjxrFozJXgGhSqVSUuMUw7Hny7oktD
-	 DGvCr7OzgAxHGT0C494t7VZdZ3M5DlMEOAongOWa/1BsSg+h9+f/6eJ0omjCtdMfJv
-	 lB77JHtJjrQ3Cv2HxJUD6A+l7gizCooLwhU2WEFM=
-Date: Wed, 26 Nov 2025 10:14:53 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/kfence: add reboot notifier to disable KFENCE on
- shutdown
-Message-Id: <20251126101453.3ba9b3184aa6dd3c718287e6@linux-foundation.org>
-In-Reply-To: <20251126-kfence-v1-1-5a6e1d7c681c@debian.org>
-References: <20251126-kfence-v1-1-5a6e1d7c681c@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ac+mC9Yk;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6418b55f86dso254206a12.1
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 10:23:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764181422; x=1764786222; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dRuIsnJjgKoS1qB9z1CzLqIUDAakowpq0VO9vQCJiLo=;
+        b=Ac+mC9YkEezPwJXcO1Czagq2ZmbSu3xSazQMguFviQMXxNYlN6qD0f5/W7QcUreYX+
+         Yg3f7iLi/3sRmNjFb2XkclXGDOqV6TzRYu7QNBVw8PP7z7j2/6PeixsXBEgabyEkjjv1
+         v3MOf6YfkjuO+Q/SghOgfqIRZUieN2X5wf00EzLJCXqwPiep01qjjauvcwRxe7B12sHG
+         AVu16y2o+7f8s58aNJt2wb0tuRaHt30wD3mJXn08RuHZfT5N1p179zG3i2CyBRowKYkT
+         gQj8Vr0hmR3pMpPILl/Dm/H44owDFGmCJnHCFkYAHPijMEnVzExTDlkyzjF+igDeZO/H
+         +LVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764181422; x=1764786222;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dRuIsnJjgKoS1qB9z1CzLqIUDAakowpq0VO9vQCJiLo=;
+        b=KWBrPewNCa2giqloYJTPNuWYXbASlbTF3wntf2uLX5fbEnBI0VLelx57kDNLRnqany
+         jF3SzZmU+wDCsdqMU89EPqYnSYxCIpOt5ehXYR2/ruu/5BH1RkSvgBNqFmKBDL2qASkt
+         RrZ+CCeLTxEjjp7IqMg54KPJ0tirgpe+vF8dU1ItqWmjPcz6vhba/Tv7B6odeNSLKYug
+         lBuryc93C3TopSVWcpROCkvLpCz64Dp6rplKYws3cCH2P/X7dfI6Xk05dj8svDx2e3Y2
+         avMc6PiRClgK88P1spEaGEw+aThgHQjqVCk4bDRkwaDTFH+e46UB/tU+Vz4J0gaKtc/c
+         lTog==
+X-Forwarded-Encrypted: i=1; AJvYcCU9bBy8GlvSr1M/qkXAXxNlKk3uFx/XlvhSxXrMvY489lPkUsCzZGRt7ZgCsZKB8vTsObRoKURLmA==@kvack.org
+X-Gm-Message-State: AOJu0YxTYDFGzu/981js0pimaQuy23qdM5shMxoXFbr9Nh5R/g5opd5z
+	oJKAtJ9hj/4T66ikp3jc/CKTj2gFisS0JhrvNC6HSPE6fgwAh+EgnPJHgUWOO5CHrOiEDDuO9ln
+	GMgK7X95UvRNuBML3WItjWbwKDzmF9jM=
+X-Gm-Gg: ASbGncuFXDSfzu7/bTJeZM+SmSbWR0AqDoiWp9gzoFNY+7iye3FHAAh/ck5pRG5Qszm
+	VLb8et9QhIuaF0BIf9N+Yp2/5iaEsgy3AvIazmaEEgq/i5x4NAP4sj6VxcNed8eNdTolpmRwDnq
+	I4wz3Od0fHIxw9nrMy1tb8ZDxxWzrcOLqKgMH2sVUoWvpFGv49+BA315e4u+cufugK+06yeUHzC
+	i/qRQvtoVrJhWGUnILZt30cbtqinhgG34m3krdtgcrpwasVeftnxTKVSgRi3pcG8fxiqmv1Vxqh
+	w4vRF6SqJGmWPX5rSj9/gX6mHL14oASLfFQ5Yg==
+X-Google-Smtp-Source: AGHT+IHfWId64Bl+r0YOyvlkmE+V3LHeRbvPTT9hn04ORygcq1+Vl/SOPgIbbyCm/q1AOwPJakPkTTkcBXvioHfUPyg=
+X-Received: by 2002:a05:6402:51c7:b0:643:c8b:8d30 with SMTP id
+ 4fb4d7f45d1cf-645546a3a94mr19642124a12.30.1764181422210; Wed, 26 Nov 2025
+ 10:23:42 -0800 (PST)
+MIME-Version: 1.0
+References: <20251125163027.4165450-1-youngjun.park@lge.com> <20251125163027.4165450-2-youngjun.park@lge.com>
+In-Reply-To: <20251125163027.4165450-2-youngjun.park@lge.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 27 Nov 2025 02:23:05 +0800
+X-Gm-Features: AWmQ_bk5_D9gT8Ce1YgLQS9O3714SdAy6SVNypJn_b9Dshar6lWuqwbdvjARYe4
+Message-ID: <CAMgjq7C0BVx8OVhEgJu3sVTAgTMrh_-vs9OrmwQhyFX6xC_LKw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/swapfile: fix list iteration in swap_sync_discard
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9B68A20006
-X-Stat-Signature: i6qrodaent64uom8haekyipsneizct5d
-X-HE-Tag: 1764180895-841732
-X-HE-Meta: U2FsdGVkX19oIJoWAT/7hChqALUW1PunIYKbOPwBAw30OZLTd05bupNtTjzeNM4Sho4cJ0v+hP31j+roCzRGBNZ5vqESzjYItyIaKW3kHcMTGsn36idAHsW0HEorrLBxAh6LJzZMGqX6/+GtpOd+mRHL3QoT83njinK9Ttv7f6I+mNAzDvqFOgWVak39eMvFTWk/CDzWF86pltwU4kMnkn9z5XULctC720/2t5LQIGKNqOMgmMGfqJoUrbDGcEq5emWup8sR9Y0Rl2HIxpdpCEf+Lmf0MBCz3WowB7PIEYWjx4Xow6FvFOkTdZoh3CS9CAe2Aa4gJD2+0x2jjmDsA9XHdS4ktMfoCA6IUwgmfM2bS1H7+5fgMwhtMPfGgg3xEi77sFj/HXuwaFySsD7qMaBrDHzEKKitcojoDAhMa8Qxim19JGDyfrl8e2aNLgkDwGe5JiFgGMR6QDGckX1966vtOXcles7sCKD2vX4LKAcrFMdMhlM3utL70vcV7NcO5asR363hGEiKV+vWOFgKU8Ecwny+6ib32e8E97nawufudolT4stjrd3R54PVOeyFtT3WarT/K0xqrTS094Y5Zbxm1Ap0TApe2A2OPHQq1Xz6Rq5p62SCqMJcjbpOd4ljnlak+AxM9LDFsAJwI2hhmdNablFmLZPHAK08BNcKy/nrriBt9UExeyTcimgc6l0wXwkr+BQPHFejEEzkE+atW3MqcU5ifhNIrh/83vrd2wv7jVxggpWHo9btfP7Wx7CiDUJk38C8jNDbB6whY59/RjcdZ26LKKfhRN2RZ4CdPy2SPwY02K9ftDSZgxdosr7v/5boeY+hsD06udSzZEK+dWWdhd3XL43/19WzMUN26sYtR1WrlMRyOqWWB22gl7mNLCdP6UbtUFSbWuxayH33ZvLVAbqwK6pUH5ofTZpddPtYcaxfr+4IFWjDousUF4koLCn6sK1ze/brAH11NK2
- zvNHm7iR
- eTB7zxpMtA4hNpkf0RQiLrBoir2xp5WN8nbscJfMRSXZ3njnZz10lyDmYznb8e6sjqV2SMqrJ6kH8i1e+7h+p0zJOzIhBjz5Tfce/X4vUrGiE9xn0RR0O/CJE/aQTyeLR2aTlBDONgymSD+ZgGzlZ6cLQtCgo17J9beoPBqLALiaF3zcIiBE18NSggwN29AfrCGUYw1SLl4d2KfxPhcYbDTW5MVv72RlLjr2tcEcy7SoLfsFLP9Sb+vCHOYyGsDw1AKevtccPpEQKcVwIb3ZoLYzbTPVnNraYeBGf0weRpfmTTzs=
+X-Stat-Signature: mez3zkobq9hu6m78izndyd1p96xqu9ni
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1D98FC0017
+X-HE-Tag: 1764181423-165339
+X-HE-Meta: U2FsdGVkX1/yq6mwPpDn2ciAWMNX572g7LvSefh2BS5ZYpeRXnq3V5gm+pjkf1MCCMBQ0AB6HUmXTFYsAq87Lss8DSsFiiHMqrcDjysf0KwYVqDN0hvCgre9kdm0NJjDe+I5rZmRQaFv3MQIzGdL7h66qj5q+VJlb/qneupXp1jlGoVS9U8AKS6QM/T2IC+zQMA9JYNa+1lrZwv4dJQXPodqVICOi3++BMdWb7pDs2uWRXxFUkcPmHz6POo6qotQnq1xpECmFxMdCR0otpgH9qfpANIspwYwXffI4U4PFidO/co04L1gAHdeurwx65orkXOsCzHWypGErXtzOkhlNm70zbBnJWe2RSmPqan4Sg9JpQdFgus9vCYkNN5vucsDJCINB+JMVi4q/0zjJGqVOvHw2lurFnsFEkbGAttB0p6GbBn6wUphbe3UGFe5F6C2l0jgSoBgntXs8h/arq2mxU9YaBmhJBb7Q67G73OdZ3CfrcZfzPJ5YHQLq5X8NJIjDAXJpVY862dvSZJ+pdIvJ9gr4tRF9zBM0WNwhEaeszBZ1Ulj3C/qltd37FSWUh+4kwaPRIMdmvHI5OMNZT+4fuxnM8YFPPiH+VK7jX7p8bR/Ii83bJ4MFQGHx9unL7ehUnxuPfjs0TYkD2z//RjBytznkvBegRVBi/40MSe5yhoPJUSXXOWE8xD+fjL2Aqgi87tVQB2SCfds4b9U8ZoCFqQ88219owG8kletZXUBu6kNmQiur0/rZ2/LYIoFeD3QLT5pN92SDDX/x1Yob7l+OfX0dtOBx/jVjveRqK5PwhI3kcYZWpr0a38zYuo9Wla5+vcjufX1rjlFQvu7BmUF6YRh4x1xIunfBoqMYJt0etjCFxfRDvSXuF8heH/vaSIZ80Mn5BxhPekpYutN9AR0LItQRNuXubVaejB9OLxUSi/3jWF3QUnrWe/Kvt5hZv0ZO95+9LToF6IpN1oKzGI
+ K6Xlm/o6
+ 4zzEARxf5S3Yz6UhtauLJPvx2te4cH/nKEa93zA5VBGu77zAla4gbJgjE9DgcbI1R9pD066QUuP6dQMv1DTs5Rk71Yg3aXcS+JIFoSZLqH5ssu+4Ed0VwoSYfV8/7JqihcUtCZCqsg6i4n3CsMcC9oWMS4ya3Qb5A766zsP2pBsrPm6pofS4TwssgM1mNgdcsV6XTV091CNqm7yDpk+CK4VaIzzUj6FWZoD+hCUyTFEcvNxa/fIMoPjUuWm14NRYuuQZT/S2gj+Sk/1fQaPo7iMfHS+U0LIMnKFDshfMBUedklHIrwID8Jj4PEnHenBCVvfnNBErexo+69HUHnp5ROQ/kWPq73IYCXDy9wT06yTnHoIPcMUXBXmPxLcYL+Buy0KI/nQVqO0OhOFA5e+ZXXqC5XrmZ0eJp6PTrgKwjIjhGhWmOLn4zw9WaVlHdOJkiufK5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,28 +117,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 26 Nov 2025 09:46:18 -0800 Breno Leitao <leitao@debian.org> wrote:
+On Wed, Nov 26, 2025 at 12:31=E2=80=AFAM Youngjun Park <youngjun.park@lge.c=
+om> wrote:
+>
+> swap_sync_discard() has an issue where if the next device becomes full
+> and is removed from the plist during iteration, the operation fails
+> even when other swap devices with pending discard entries remain
+> available.
+>
+> Fix by checking plist_node_empty(&next->list) and restarting iteration
+> when the next node is removed during discard operations.
+>
+> Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
+> swap_active_head. This means the iteration is only affected by swapoff
+> operations rather than frequent availability changes, reducing
+> exceptional condition checks and lock contention.
+>
+> Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during=
+ allocation")
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> ---
+>  mm/swapfile.c | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index d12332423a06..998271aa09c3 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
+>         bool ret =3D false;
+>         struct swap_info_struct *si, *next;
+>
+> -       spin_lock(&swap_avail_lock);
+> -       plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list)=
+ {
+> -               spin_unlock(&swap_avail_lock);
+> +       spin_lock(&swap_lock);
+> +start_over:
+> +       plist_for_each_entry_safe(si, next, &swap_active_head, list) {
+> +               spin_unlock(&swap_lock);
+>                 if (get_swap_device_info(si)) {
+>                         if (si->flags & SWP_PAGE_DISCARD)
+>                                 ret =3D swap_do_scheduled_discard(si);
+>                         put_swap_device(si);
+>                 }
+>                 if (ret)
+> -                       return true;
+> -               spin_lock(&swap_avail_lock);
+> +                       return ret;
 
-> During system shutdown, KFENCE can cause IPI synchronization issues if
-> it remains active through the reboot process. To prevent this, register
-> a reboot notifier that disables KFENCE and cancels any pending timer
-> work early in the shutdown sequence.
-> 
-> This is only necessary when CONFIG_KFENCE_STATIC_KEYS is enabled, as
-> this configuration sends IPIs that can interfere with shutdown. Without
-> static keys, no IPIs are generated and KFENCE can safely remain active.
-> 
-> The notifier uses maximum priority (INT_MAX) to ensure KFENCE shuts
-> down before other subsystems that might still depend on stable memory
-> allocation behavior.
-> 
-> This fixes a late kexec CSD lockup[1] when kfence is trying to IPI a CPU
-> that is busy in a IRQ-disabled context printing characters to the
-> console.
-> 
-> Link: https://lore.kernel.org/all/sqwajvt7utnt463tzxgwu2yctyn5m6bjwrslsnupfexeml6hkd@v6sqmpbu3vvu/ [1]
+Nit: I'd prefer to avoid unnecessary changes like this, `return true`
+is the same thing. No need to send an update for this though, a really
+trivial issue.
 
-6.13 kernels and earlier, so I assume we'll want a cc:stable on this. 
-And I assume there's really no identifiable Fixes: target.
+> +
+> +               spin_lock(&swap_lock);
+> +               if (plist_node_empty(&next->list))
+> +                       goto start_over;
+>         }
+> -       spin_unlock(&swap_avail_lock);
+> +       spin_unlock(&swap_lock);
+>
+> -       return false;
+> +       return ret;
+>  }
+>
+>  /**
+> --
+> 2.34.1
 
+Thanks!
+
+Acked-by: Kairui Song <kasong@tencent.com>
 
