@@ -4,146 +4,219 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5442BD1036D
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 00:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3764D1036F
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 00:50:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 237D16B000C; Tue, 25 Nov 2025 19:18:43 -0500 (EST)
+	id 20D826B0008; Tue, 25 Nov 2025 19:50:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20FB16B000E; Tue, 25 Nov 2025 19:18:43 -0500 (EST)
+	id 1BDFF6B000E; Tue, 25 Nov 2025 19:50:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 125816B0010; Tue, 25 Nov 2025 19:18:43 -0500 (EST)
+	id 0852A6B0010; Tue, 25 Nov 2025 19:50:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 00CAC6B000C
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 19:18:42 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A41848B4D3
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 00:18:42 +0000 (UTC)
-X-FDA: 84150847284.13.71C50F5
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6957EC0007
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 00:18:40 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id EC3616B0008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 19:50:06 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98F01C0F3F
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 00:50:06 +0000 (UTC)
+X-FDA: 84150926412.09.5C2F9C1
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013006.outbound.protection.outlook.com [40.107.201.6])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E4EC3C0015
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 00:50:03 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=W+AKvPIc;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=74256e3cee=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=74256e3cee=amastro@meta.com";
-	dmarc=pass (policy=reject) header.from=fb.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764116320;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dCvvq2tB;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.201.6 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764118204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qGBFfom64ubwAcHLmi0kGY4idgptPgMMsGDiFpmxSnI=;
-	b=ieURu5Z+ZQ7vqe+AbjYNya0SOyNgJGXszD4yn+gMlSajNeyDsjN215DVUCLYF7Ph+UYx7v
-	Cjy7Oj7jG+cHDwYEsrd0/KP/zvScPSnrFItDLAnr8+ft577kkt+mbevsgzoxEaTfukotSZ
-	i5vMDA8cbQLWw0CWuf4NBDour8WnVGs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764116320; a=rsa-sha256;
-	cv=none;
-	b=qGZ6BM+CGm1dzMvtccVsYV6ivBINZ8qEGdDOfkg0XmwAAvkCoSlx8wdR/c92X8tV8Pzt8v
-	OfVvRkow1G0ds8UTT2iUqwRzhSUnim+dFVpQOD+cUrk7Eg391L780F3cOsXEViV8WTcbG2
-	EtWPjXe9bxFGaMOV6y8ncnYF+hxU82A=
-ARC-Authentication-Results: i=1;
+	bh=LIuCm8ryFyfbZUY6bVsEX8wN1WxZp9wbzzdhK7/hrPM=;
+	b=l26wzq1iklx3NjHCoSmLrUuyrp1wLBvAuPUe0fFD7IxXM+f07nv8WMI6QTm5eKkCuh9DKi
+	s+zvcYv+yUTRQZcwWrcjsftxPWwSgcZsvhHURPzHVh9E0who2xpnYLhPCW49csi2QZt1yN
+	+mxSZOtF5L9FCnMAyMXZSDrfVq0NgWA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764118204; a=rsa-sha256;
+	cv=pass;
+	b=YAweA67Aa1QcbYtvPiXqIYkRSac9DUOXPHAwXhhtBBrshBHHOXCUO1RLeXQXZyZ+Rwpoz8
+	6DwPBsxxFX/P0hVO28Jzu140W1f5keiHv/q/5aflFr6SJXc050llA5cmYCTxiVfZWzgp+A
+	sbx9LF2oEZx+rBQRv9KA+/1JqWtJed0=
+ARC-Authentication-Results: i=2;
 	imf22.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=W+AKvPIc;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=74256e3cee=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=74256e3cee=amastro@meta.com";
-	dmarc=pass (policy=reject) header.from=fb.com
-Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5APKA97n1087396;
-	Tue, 25 Nov 2025 16:18:10 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=qGBFfom64ubwAcHLmi0kGY4idgptPgMMsGDiFpmxSnI=; b=W+AKvPIcq+Gs
-	i3tYYc6MNSXntK0NmrX6mDMiJh2f1He+waI1tJUFw9eep8toqFOiXcXgv1d9N8HG
-	PGdbn6/fGl6qS46R20vtpCyrMHLj0wH4JK9pXWvIXkrNgijhiczlYtlomrwOthSj
-	zml1ieuFYLYIUzuWZ91PR3D7DWCyaUSc0LCurvPCQxAzzat402xRMP4oyeWdz0ty
-	1EYyma4UMfnDB7SWN7UNyv49rng7qo94JM/vlLrbdULgh6NjCeHD1lakMZtk49rg
-	EGdIyMsuzoL8EN2ERVeIEmaZ0+aXHHcjPKQINfA5NEORkyA0TfReyUgtpSsOkjBL
-	M3cSvkYsxQ==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ank8qsk46-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 25 Nov 2025 16:18:10 -0800 (PST)
-Received: from devgpu015.cco6.facebook.com (2620:10d:c085:108::4) by
- mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Wed, 26 Nov 2025 00:18:08 +0000
-Date: Tue, 25 Nov 2025 16:18:03 -0800
-From: Alex Mastro <amastro@fb.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>,
-        Logan Gunthorpe
-	<logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-        Robin Murphy
-	<robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon
-	<will@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Jason
- Gunthorpe <jgg@ziepe.ca>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan
- Corbet <corbet@lwn.net>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian
- =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Kees Cook
-	<kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Ankit
- Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
-        Shameer
- Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>, Alex
- Williamson <alex@shazbot.org>,
-        Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs
-	<mochs@nvidia.com>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-block@vger.kernel.org>, <iommu@lists.linux.dev>,
-        <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linaro-mm-sig@lists.linaro.org>, <kvm@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>, Nicolin Chen <nicolinc@nvidia.com>,
-        Jason
- Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v9 06/11] dma-buf: provide phys_vec to scatter-gather
- mapping routine
-Message-ID: <aSZHO6otK0Heh+Qj@devgpu015.cco6.facebook.com>
-References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
- <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dCvvq2tB;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.201.6 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v30qzTz65dPbVkdEVMezU8AuFpOwU/yoxbI6vCaoYadpLguP5Jza25udzGlGMBvVH2MroWCYeweIkrx2xdMRoGfEdd/faSj0+xSaBIWH+ukY6qrTOpApswqdu9Pxqhu4z9PMs4kchznMDfvcDibZvV2w8SqefRDN6VSQmAeEAaCBi6KIdQFPQwzdy9SaREM7dz1rP08gkx9KSz0omYVYRLVchPH2ISeh3m+F+ZQARSgpLDADATa+igNgEo2XRCc9JeTm50nMwo4QvQvfvxzlF/EgeOz15wltEm+FORofPcxYkWTtIafjml0QXURZPGL0AmuxIL/+G06+pzO0mwGYeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LIuCm8ryFyfbZUY6bVsEX8wN1WxZp9wbzzdhK7/hrPM=;
+ b=Q2I0Vx8hubS67mQSvTqQJN3eDApxNucnWW0MBUAS3Oeojz+WzUEKXA3ZayKbMSQAtRNDHyAZJcSbJM3wm8TKvHnvY7mIih298z+MFWj4C9OV8fBIQbQ6Z562TaN7kvA7nJfGIiALkxkywj2lO2i2m1QgE5iuzncu7SgHMwvluRlTHkMlFkANEjLitzAfOYH3wOYzXsiVd9LYqCmkDA9Yn6uPgA+gF6R8ckkxmNRXj1usLVoN+Ko8X/owH+b2e+w44fQ2F+N1Hur7QwvxeMg9aGpj+UOQ8jX03zCFzmfluvcJMlKlAXG7pk+1lb+OuUDy80rlIBAiGgy+eyClbFXwjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LIuCm8ryFyfbZUY6bVsEX8wN1WxZp9wbzzdhK7/hrPM=;
+ b=dCvvq2tBBJZ9f2/m7oD44N+jn3pyUb2Q7iOpqq2UuUjIcZX4eStH+QVjrfr62wf+wyxpa50kvO5f0ROp0x/zVVwjXZe5GK2OANnWAssm3yYIu4AbzBkIrugfFEzFwlb8x6k9fyvOqnYY1VDYHvRF2YSr7uwQP5OnSOEWAVXOF3x9MhdWOXnp6AXAk18iBKIt3nOmztkHmCmoKT/N9h7YwKQ0Krmm+BffC5l1ETdkXF7IZbrLYGkLEunMUXqe3IQu3jMjkAwLBriEYiLJhnPGVYSG0D52FJ5wuKNQbl+K00q2FrtWVReIdMEhbgTIgZdEr/fwE4KCKyiGugixUYKm/g==
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ CYYPR12MB9015.namprd12.prod.outlook.com (2603:10b6:930:c8::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.17; Wed, 26 Nov 2025 00:50:00 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9343.016; Wed, 26 Nov 2025
+ 00:50:00 +0000
+Message-ID: <861bca05-1964-4539-ac69-f3afc82bfe99@nvidia.com>
+Date: Tue, 25 Nov 2025 16:49:15 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/4] slab: Introduce kmalloc_obj() and family
+To: Matthew Wilcox <willy@infradead.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+ David Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Jann Horn <jannh@google.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Marco Elver <elver@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+ Randy Dunlap <rdunlap@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Vegard Nossum <vegard.nossum@oracle.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+ Yafang Shao <laoar.shao@gmail.com>, Tony Ambardar <tony.ambardar@gmail.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Jan Hendrik Farr <kernel@jfarr.cc>, Alexander Potapenko <glider@google.com>,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-doc@vger.kernel.org, llvm@lists.linux.dev
+References: <20251122014258.do.018-kees@kernel.org>
+ <20251122014304.3417954-2-kees@kernel.org>
+ <CAHk-=wiNnECns4B3qxRsCykkHwzovT+3wG738fUhq5E+3Lxxbg@mail.gmail.com>
+ <202511241119.C547DEF80@keescook> <aSTKLsRNiEKtDqPI@casper.infradead.org>
+ <202511241317.516BDE7B@keescook> <aSTRsIUPeT5EC5An@casper.infradead.org>
+ <CAHk-=wgn-2ieKtaHAXLLge1UFckLKa88vo3XOdLz+fP+DLpHGA@mail.gmail.com>
+ <aSUB1qrfhXp3suGn@casper.infradead.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <aSUB1qrfhXp3suGn@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0055.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::30) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
-X-Originating-IP: [2620:10d:c085:108::4]
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDAwMCBTYWx0ZWRfX4aU+4yoxvGRI
- fn5uIgo4phoyJLcsXRpkIiEbPHjmDvXjee+0hL5hZTnMf7KiIbVFpuPgNNxmzJnPoXlqYrYFVCb
- EPyFD9HoNuq9bFWOWGD9jm+tH6jYX1bWvVVFfP7wmtxUCfM6nyWp9RhEW4F3WyT2gvOl06d0Lit
- II5EZrklZ4kZ6ZccZ6uI5fnA2fhf1sXF7BU/xkJ1DrQkkrbuth2BkU2ET85sZ92FJE5mmeSgTwT
- 8QOBncjhE4/DUMlusLJDyljY4I1YOkD69BDnY6LZhPAqbK1Ws3OXJ/OhGSqPOvK63g6mktQG9A/
- 4TjZvhvYG6pYNypXlNsc0JrFDrM/97nZlDYVEtn7wlUXLxFDOXnHdS+vQBslO6M76Dlb+/Whxi6
- 97TQYdVHP7oL0xprhG3cL4XfcOc0nA==
-X-Proofpoint-ORIG-GUID: 5DCeEKEPh0Lq0c0QeLIVINEpDK6-Nmfl
-X-Proofpoint-GUID: 5DCeEKEPh0Lq0c0QeLIVINEpDK6-Nmfl
-X-Authority-Analysis: v=2.4 cv=VfT6/Vp9 c=1 sm=1 tr=0 ts=69264742 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=3j4BkbkPAAAA:8 a=qThf3vN7FU90BnacfoAA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-25_01,2025-10-01_01
-X-Rspamd-Queue-Id: 6957EC0007
-X-Rspamd-Server: rspam06
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|CYYPR12MB9015:EE_
+X-MS-Office365-Filtering-Correlation-Id: bef19c01-0293-42cc-8b96-08de2c85ba28
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cTM5RVg3SUc1SGpJZHBHYWJkVmJSNUhJSElqTTN0QUZLUmtiMXdiRWlndklq?=
+ =?utf-8?B?Zno0UzV4NmJvUWdBdU9vU3RxaGk0bzZPTzRlUTU3UlltenBMZ0Q0dC9oTmg1?=
+ =?utf-8?B?d1dsSXVWbTVIK0UxQ3kzcFZSK1V4RlVQeURMT3kwYUVlQ1ZiVm04b29ZeVp1?=
+ =?utf-8?B?RGkvbWJIRWxJUVg5cWtPM25VbkJSWmxuR3ZWRVlTVDN4NnNLNEx2WVQvY2Y3?=
+ =?utf-8?B?WG90cWNuZVBOQTVtS1dBdFl3VHpjSVd3WjRVV3h5NXJiUktObnM1ZEFJMDNY?=
+ =?utf-8?B?M25pZ0x3anNwaG5CdDBZQzRRSkJLYWRqbnJtSFZOcTFhM0F2c2U3RFJlaytY?=
+ =?utf-8?B?RDlPdU4zaUJ2RlJTUktkVHNyL20ya3IxeUgzOVdwRkE5dGlTNmV1Qy9sU0or?=
+ =?utf-8?B?SnBRUGhmYkNUZnU0RzkrZU84aXhaSUwzaTBOMExYeDN2RzBzc0NvUzBpd1pQ?=
+ =?utf-8?B?eE1vT2w3Y1FtOVdqNVA4eUhBUDdzV054aFd6YjRzWVRmSUMxazA1N2lCcEFN?=
+ =?utf-8?B?UExHSno1bVNjdEtDQjRiY1lhdjJWZW1VQ1VnUHkyZEdjZENtZDUyanFiZ3Vu?=
+ =?utf-8?B?TmlHWjhhLzFna2xFZ200YXpteG1hdG9wWk9SYmEwSXU2ZTYxaEJsMWFtN3oz?=
+ =?utf-8?B?bWJNUkhndWtMdVN3LzZ1MFd5MG9xcE9nZ3lnODFOTWR2NUJIOTgxVEpqLzF5?=
+ =?utf-8?B?SDFqcFFyUUVPY2t6d0tMYW9ReXk1NlU2NE9rUVZIQ3pOQjlHOEMxdUZpLzhR?=
+ =?utf-8?B?eUlpMEo2b0tWZkE4aktaOHp4dklkSWJLcHBnRjErcFYxMElZQ3g4d2wvWXg4?=
+ =?utf-8?B?MCtzc3lzVHVpUWhReGtPTWZyUjluTVlQZVYwWGpEcVlMSEZ2TGZIdHRseERx?=
+ =?utf-8?B?dFpiSGt4K2VuZXlHOUtaWXJ2dGxUeGo5Snp0T2JZRG50MFRmbzFDZTFXNEp1?=
+ =?utf-8?B?RFN5TkpXMFpSSFVTZENDbTUxSG5tLzNkbmRMaHZRdHRiL29NTzBiR3U4UzBM?=
+ =?utf-8?B?ZmRmaXJGQzBHQklYQjhHZ2pvQlZPYThPcVNBaUlLRW01eGdBaGJ5TXowZm1z?=
+ =?utf-8?B?Qnp4QXlPY0N0dEF1eWVFTlV3ZWhucmVlN1h2dk11dFJFZys1YXZqb3pIeXpL?=
+ =?utf-8?B?RzRpRFBxTkcxYkVUSEVoVit5T1pBS213bi83ME9ZNzBac1BGUDJWU2FwZWNz?=
+ =?utf-8?B?cUJIczdyN000ZmFQK1ZiSG5qRHRaeEpjTkVwQ0RIVFhQcCtMUm9UdUY3OXVI?=
+ =?utf-8?B?bnVEYUFmMkxVOHBnbnpoOEgwR1ZvNU8zRHdlV1cyMmg2UTJoQlhsUVZzUERT?=
+ =?utf-8?B?Y0dFUjVOMW40eklNQk9vOGJaZUdSSkhNV2hRZEt5MnNkODYvLzhhNXdwWldC?=
+ =?utf-8?B?S2NIWXQxWW5MbUo5MzNnZFNmTk9xSUtMYlV6cW9GMUMxT0tQVkhVZ1pYSVNR?=
+ =?utf-8?B?MUswT1ZXaVFSdWFRWEVlOS80dXpIR3ljeHhnWUs0Q1cwa3hQMmQ0YVBhQ281?=
+ =?utf-8?B?S0hnWUZNa3lmOEFmWUFiUWZuaW9PUW9hZWFBdzd2d0pQcUdYbnB4RTJVU2VZ?=
+ =?utf-8?B?bnk3aXQ0MEE3R21tTElEWEhURHlYUjFRcXU2cjFNbHB6ZUYvcUYxNkpFWFZq?=
+ =?utf-8?B?MTRtR2l2M2VXWGNZZVQyMElSZVVqMVBsUDNFRmF5SjJoL0lFd2RJZnBlbWMx?=
+ =?utf-8?B?bFBmOHFQQWg5OEdNUTQzdDJJSzE3aFRjNW1hclhXZkQ1cGwvNHRyV1h5UUJZ?=
+ =?utf-8?B?MWg1dDhnN0ludkVJTHhEajJoTWQyUjNjQ2JFdDZVcnRiZmx5UzByYS8rZ05Y?=
+ =?utf-8?B?RnFLdWU3SEVQTm9HOVZSV0dNTG5CTFhmRE96VXZrak1CbE9WT01wUVIzWFpV?=
+ =?utf-8?B?Z1VsMXE2WHNtMkdQUTdGMFhrZ3BxaHlqQUVMNzBNWmVVUXNrZVhLTVFTakRj?=
+ =?utf-8?Q?gaqjEibINRFQVpppdPR0VgWnLYsnwRt+?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZVhJaGJ3UUZBTHFJWGkxRmt3b1NTalBjNkhVcWJBZ2Z6Q0puY3h4enlCT2FP?=
+ =?utf-8?B?ZmJYK3RPcTVhQ29RSFdVSUVhQzBtMzFyNzlQMG5Nb2pVK1VSY2tJYmZMV0ln?=
+ =?utf-8?B?ekgxK2VuamEwbUladzZEQzNSYmRRWVhjbkFrTFo0K09ta3lYWmFyUFVYdWox?=
+ =?utf-8?B?QVBxQ3ZoU0tIaTlJdXllSGlRbHRnWnJCZWkzamxRdWo3N21lUXdHbm45bUFR?=
+ =?utf-8?B?L1FlNzlJVEx2S2VRK3pET2pwSzVIYldRS1cvbHZmMS9EZlJqYWlBZmRGbkp3?=
+ =?utf-8?B?TU4zRDdyckE2a25Gd2tLb2ZIRHJKZ09KUFlSWUVOdy9wOUhHUjNicTg0WXgy?=
+ =?utf-8?B?aXpUa2NXQk5vVUYrTHFaeHdRampoeEoxTVJqQ25DWktYd08vTk5XWHh4WDN5?=
+ =?utf-8?B?aTNEdGZZUTM0NEdremt1R0RUcmNjQndQWGtUSE9FQ05MYW9KbHVLVXZIZUZi?=
+ =?utf-8?B?c0dZbFF3ZmM5bzdRUTVkNUpPcEVRSndwZFBhYUtQV2Q0bVZyRmVUSXZ5aGhD?=
+ =?utf-8?B?UFd2N0RORWNzV1VrbzB3WHBGbGh0N3c3VTlBL0RpNFpMRklKZ1NuNXBtbkQw?=
+ =?utf-8?B?bGVvY1lWMXVuVmpRdVZKVGtxM1NDdEtFRFdsb21VNjJpNDNaRHllLzh2SVNJ?=
+ =?utf-8?B?QkJUVE1TTDhhZzI2QjBFdzFvTFNDSHhGQnhOeGdNa0lQdGMvSy83bk15UXV4?=
+ =?utf-8?B?MS95Q1ltUkpKZFprZXhXb2xINlN0QllpUFZHRnU1bTNsbUdkNzUyK2dWeXM4?=
+ =?utf-8?B?UEdWcEpQa2luSzhQbEt3OExKbXdrdE9xRkphK2FnaXAyQlJRc1ZjeFFZTGg5?=
+ =?utf-8?B?U0ZsRXdXZ3BaTHpiRUQ2QmlDWW91TEt5aFlHYzY0SjNJZDU0SUMrM21yTGxQ?=
+ =?utf-8?B?VVJ5cEN3OUgyY2M4T3NSZ3ZwK2RWUTZHWHFxbE9UZ0FFYmlzbEo0R1Z0UVNy?=
+ =?utf-8?B?SUJLdGUxekpDeVNDaVZrSldsT2ZhdWdhTmEwci8weXA0ZnRESU5Ba2dicUUz?=
+ =?utf-8?B?a2FLamMxNmZYbmxHRXc5SXFRRVhXQndEaXMwYUxIVy8zYldqbDJKZXdCRmJP?=
+ =?utf-8?B?aDJOK3YwSG1GRFI0Nk8yQ3FON3RiOFRWTUkzS3E3N0VDa3I3bWtnVHA2MVU2?=
+ =?utf-8?B?SytKa3ByV2tUS3oxcDBaT1U5Q2hPM0pFUkV4N1Q4UEQrdjNMalNmejdNQ1Uz?=
+ =?utf-8?B?K1NhaDNQTzVxaDJhSnVwVHB2algyZFFhZXZycVBJR2dUN0xEcDhaaktJQVZi?=
+ =?utf-8?B?bng1ZWZKeGVnNFgzYWJmdDM4SjQ0SSs4cmxVNUFMY2E0cHBlVG9FajhoNDcv?=
+ =?utf-8?B?N0FweTZQY0c5VkgyVWt4MEdTa0Q5Uk1FYzVzTTNtWVo3bis1WUFFc3p0b2hu?=
+ =?utf-8?B?MjJ1bEs0RTVQN2MyaVROR2JhcFVFbUdUdWdpSCtVekF2cUZPOEtvbk5udUVs?=
+ =?utf-8?B?NGJ3WkhxdXFLbHdvbDdlZ1EvOCtJMUlOSEQwUWhMcHNNSHBIdVFqbDBWcDNU?=
+ =?utf-8?B?Z2xldFUrLzFCdkY1M3UyZ0Y1amgvQ3lsZlVTb3pjNFhOWExIRVRHWGVjNVpE?=
+ =?utf-8?B?RW9zS0dhWnBzeWZNZVlJSWJrU3NGb21ieHpCd1FuUGpYNDUyVnVzSnNQQ2JJ?=
+ =?utf-8?B?M1lDaEVaUjdGUTB2ZU91Nkw5N25GSnYxUVNzdHFSaGlEU0JoZUVYamJrZmZC?=
+ =?utf-8?B?a2hONDJjYjJNUko0OGVrbmphTnMya3FScnYrcU15UldqdWwwQkVpZGpyQzJ3?=
+ =?utf-8?B?K0FRUEVWbVFzTVM1eHVGTmZwbG15Z3h4cW9RTUxLeTZkdm5paW1vbUVEOGhw?=
+ =?utf-8?B?bDY0eEhYU0ExalJ4dVZlOGdTcThha3c4eFp1d0gyREVtN2poSG5hWDJqM0Vk?=
+ =?utf-8?B?WndNeTdmTGt4bU14MHVzTkg0OCt0clpEUjdzMG5WcGt3cDRJYno1RzBCdnNT?=
+ =?utf-8?B?U0t5RkMwV0NkMnUyY2hMNEdTMTBxbG1LcEJzSVAxZHFaRE1YK3ZPdVRJb1d1?=
+ =?utf-8?B?TnNWTHZLWkFpSytldlpkaXh3a1J3ZlRyeG16MHJsK1pyUDFsOFRmRHBUTWJE?=
+ =?utf-8?B?ekxEQnlRS0dQditpM3g0YnVKZWJHVUY1bXdFVmJvTnVUMzNMQkdaWFFyeUlh?=
+ =?utf-8?Q?Kur/aS/n8MEPoiRbkUbZbJx2/?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bef19c01-0293-42cc-8b96-08de2c85ba28
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 00:50:00.1233
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VMLkwZQ+/hVcgOev5Pwawbscmn+TUK111Mp6kH3e+j3xsh2Y4DTdJ4PqMCRxoKqGj32rgETGmpsL6xSwIqHcUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB9015
 X-Rspam-User: 
-X-Stat-Signature: ihjyp47fxqjhgpdd4umsc84md47fhm5h
-X-HE-Tag: 1764116320-519433
-X-HE-Meta: U2FsdGVkX18zdDE3siyfdM6en6O6wLVRgawIZ6b3T0GkGaAtbLEUl9oTokOjNGsRjwbAnrRMEX+upvGAekj+yZhdMss/5fs2KOIIgtGl1wJCDgEykeCNaYkMFAFfCpjVYC8cByTqbHaH2dJZjifugvWaJzBfGW+8Iq/yVZS67G9NkziLdAsv1zZw+o2TE4IKzcZ2mqp0MJyPKu0e8JWJDzTuqV60IT6ocvyhzG7FZDqIZTxldsAb+5ebKFSKaCtoGysfOaYRA1hu0L3aHikzYFYfUkqI2C6jtguZzhPCWoi+ASWuSilh640bdJ3/qUFPTFtv7M8YVz3CEzuq1oVP+EtmxDASXD1BK7YEKOq1UiCyPLtceWpF9EGOBzP84z6LoQhZQWaD87NWVsvr6NjJd47PJ1YtH/peTzNGcKamMVqANhPei0W0ycRRAmw8CeJsJemZtPkb57+CAmIR2HUCyL+Lt+kj4O5htr2voZc486g/p7wvVShAHzbVO98vPEZrcNWmVMtaUocuc4JZsSF7xejjPEkb2eKxwZDmnlnxWEltUCdyEUYQHgCvundfjpZK9lDixY+O3Fk5TxpQGJ8ZmUxpWqJQqM2bPDXWO9t/43u/rlXLsQ6/AfYcVlkrix1HXZHZvs3XhuzDxVO0dea4QI54QvUx8MprKHBewMm+hX24jsE4wPV2a1KxXMRgRYKIsO8U7ofq8Z87mRscysCf4xipqGAW4rZqX2h9EgjC5sSeib/IcHN2t7Gg6SO0w+FN3IGf2SPAX6PMd49Mp9+gzQhgC1Yo3A0jQYV56dY1/B/HMOeoQ8GQC+VbRcxIfkw/R+ZAphrFOO3XhDCS1dZ9sdINCjq6rx3nV8DRjSAWVhBx8obEgf99BJ5QBrmqUtDjTlvRct6DPWJ6GspIfovPSdqyKx+mf8sOQwAoqk6TdD8QM2tU3+/IobDFn1hpoLgn3fwxkU34DzhMdH7RuAG
- PDmSRiK6
- mEmMOTJcuPYKg64YQvQXA0AN/GG6HlpJpdVnH47eb/PEAscIqUwXpuAujup9VY/KYUnW6cdD+be/I7vrTkRXFR6bCEFRIF0uiVtJHp48P2uh2RFeuL+6yL53mLjdo9T5CSMfk1o3ceLj9lZwg9Pk8NsftTRPKLxIn22mNbAqljQsp4hDDQAy58yWvLA1TMQ+/n3cIJc+drYQ4RbG5LyPKAf/r8yLBSx0WtLNHyVAsauNTSMylCuNDG3wZuStfQ0Ru2cZvDWWWKOtxGyiZ1+K/ByeMRf+lsMHay58GAcRIV4741mKzvrb2sG+qB6+xM7U9XiY86wetQMVWQkPEjbo29Bk9Yw3VDeEtDOFHu0K7fwWbZHOlnjHRJsSxh93HT2UmfOuL0rtNu9z8p6czLmaABhumjxb7jk+lSmSWMrcqu4ojpsrjhogW/OD4sYhcxK+UdGWPtlDt3ZEFu+WjON2tFZ7CPl5Ex89gb7wi40WWhSRGC9DDc8IVF56G/u2u9nPZahKHQM4bv8EJRAA2vzAXOTg2ZSxp+a0+cO1fyNdaV/bNZlY=
+X-Stat-Signature: fs3g5butet8rdbhq68c4qoh4ifffgxw5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E4EC3C0015
+X-HE-Tag: 1764118203-680505
+X-HE-Meta: U2FsdGVkX19nHpAuubjRBBA2wyAlEYF/mjvEcxA8HYHIpuD3KMagHR9d3hlsRynWYb0AQ41lgvotJ13IbhLO3vQTfVwbdyTdxVQTviYm3KaiAxEoPD2WDIAiUwlc3iKbmYIeO2ChMz7XbGXjD36Hs9pCTRUuq77nJIslKaaXINxxvdGJ4GciT1JvE3/TLTbQotpZIHXK1OGTrJHQn5YbLCptsKjJuurDZ+aZVp4fNhjPxkm/yprSdZyXXV/dPtj90MjUrPIhnpvOSNrWxhUJjkHi1UwK01T3L767kPApJWuKfijBEWpgbFguxCxlFJ45WoRymzlLrKDJmKMq+oEToquzmi1kTLQWEMPa8e+b9aPmp449lmIGOAhp4R/F6gOjvtdcyd94CmAeR3xYphq48dDSps5rZCeuFKzHS42Ywla88IpiFCCqfHtK8v79Xu+JGQjHwyZNME+vgXz0dlmwIpm3Siy6nqyNQKMyu6iNi8RSpAf41Kh4gt7caMK2Zr6SmomP7I6CfX9lrZi1UiAFcIYcUsOOlA+k75enBNjSIt2RwO8Y3GpOk7t446QBTniRq3JeWfR+PvfUGsOYmtVg5wAHeBmNfo6HpJ1aMpqfSMim3ECrGvMp3q+LBuI2U4sSfJpQYivwGuxR+vzwK/+dyDrWqPQ+gxeNT/PRjyV97XdNAC0k6WrRedrIY3RFgSIWckmA1XVpkxEI45B7vv7oBhtlvmN5Xv8zva0EAqjAc0l+1LxP/pc5Uwx/Wy6r/GR4K90dbEEaUlhMUB1zTWD+NEZ6W92IoPHFMJm6PKDtKilG8CShoDf/VWFgNbEWisIRu5f375yW7osGUrFCHCbvvxGLrTG0bOlyHH8AVo8numb0Reath7big4dqoFjnXFoOAprDtVuS6GHrvOmrhPgO3vchz/knWngTjxcQnMxD5qHtWYjjz9NhTvKUVq0SMzfaXIGPwPsNnCRmTm1odGf
+ kHuhHcZM
+ iWrBoTqSZRBG5kZZy2DPuD5AH9wSwzE2bJfQog9/vH5oRk17DXOK2DL6VRAksve8R/vMI52gVhVp/g0a7CekaAiu0VQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,96 +225,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 11:28:25AM +0200, Leon Romanovsky wrote:
-> +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
-> +					 dma_addr_t addr)
-> +{
-> +	unsigned int len, nents;
-> +	int i;
-> +
-> +	nents = DIV_ROUND_UP(length, UINT_MAX);
-> +	for (i = 0; i < nents; i++) {
-> +		len = min_t(size_t, length, UINT_MAX);
-> +		length -= len;
-> +		/*
-> +		 * DMABUF abuses scatterlist to create a scatterlist
-> +		 * that does not have any CPU list, only the DMA list.
-> +		 * Always set the page related values to NULL to ensure
-> +		 * importers can't use it. The phys_addr based DMA API
-> +		 * does not require the CPU list for mapping or unmapping.
-> +		 */
-> +		sg_set_page(sgl, NULL, 0, 0);
-> +		sg_dma_address(sgl) = addr + i * UINT_MAX;
+On 11/24/25 5:09 PM, Matthew Wilcox wrote:
+> On Mon, Nov 24, 2025 at 03:30:19PM -0800, Linus Torvalds wrote:
+...
+>> Imagine how many other places you add integers to 'unsigned long'.
+>> EVERY SINGLE ONE of those places involves sign-extending the integer
+>> and then doing arithmetic in unsigned.
+> 
+> I have bad news.  Rust requires it.
 
-(i * UINT_MAX) happens in 32-bit before being promoted to dma_addr_t for
-addition with addr. Overflows for i >=2 when length >= 8 GiB. Needs a cast:
+Well, yes.
 
-		sg_dma_address(sgl) = addr + (dma_addr_t)i * UINT_MAX;
+But the pain is front-loaded, so it's not like we have to go back and
+retrofit anything.
 
-Discovered this while debugging why dma-buf import was failing for
-an 8 GiB dma-buf using my earlier toy program [1]. It was surfaced by
-ib_umem_find_best_pgsz() returning 0 due to malformed scatterlist, which bubbles
-up as an EINVAL.
+And I also want to tweak the characterization of that, below, because
+I suspect this is unevenly understood, so far:
 
-$ ./test_dmabuf 0000:05:00.0 3 4 0 0x200000000
-opening 0000:05:00.0 via /dev/vfio/56
-allocating dma_buf bar_idx=4, bar_offset=0x0, size=0x200000000
-allocated dma_buf fd=6
-discovered 4 ibv devices: mlx5_0 mlx5_1 mlx5_2 mlx5_3
-opened ibv device 3: mlx5_3
-test_dmabuf.c:154 Condition failed: 'mr' (errno=22: Invalid argument)
+> 
+> fn add(base: u64, off: i32) -> u64 {
+>     base + off
+> }
+> 
+> error[E0308]: mismatched types
+>  --> add.rs:2:12
+>   |
+> 2 |     base + off
+>   |            ^^^ expected `u64`, found `i32`
+> 
+> error[E0277]: cannot add `i32` to `u64`
+>  --> add.rs:2:10
+>   |
+> 2 |     base + off
+>   |          ^ no implementation for `u64 + i32`
+>   |
+>   = help: the trait `Add<i32>` is not implemented for `u64`
+>   = help: the following other types implement trait `Add<Rhs>`:
+>             <u64 as Add>
+>             <u64 as Add<&u64>>
+>             <&'a u64 as Add<u64>>
+>             <&u64 as Add<&u64>>
+> 
+> so the Rust language people have clearly decided that this is too
+> complicated for your average programmer to figure out, and you need
+> explicit casts to make it work.
 
-$ sudo retsnoop -e mlx5_ib_reg_user_mr_dmabuf -a 'mlx5*' -a 'ib_umem*' -a '*umr*' -a 'vfio_pci*' -a 'dma_buf_*' -x EINVAL -T
-Receiving data...
-13:56:22.257907 -> 13:56:22.258275 TID/PID 948895/948895 (test_dmabuf/test_dmabuf):
-FUNCTION CALLS                                 RESULT                 DURATION
---------------------------------------------   --------------------  ---------
-→ mlx5_ib_reg_user_mr_dmabuf
-    ↔ mlx5r_umr_resource_init                  [0]                     2.224us
-    → ib_umem_dmabuf_get
-        → ib_umem_dmabuf_get_with_dma_device
-            ↔ dma_buf_get                      [0xff11012a6a098c00]    0.972us
-            → dma_buf_dynamic_attach
-                ↔ vfio_pci_dma_buf_attach      [0]                     2.003us
-            ← dma_buf_dynamic_attach           [0xff1100012793e400]   10.566us
-        ← ib_umem_dmabuf_get_with_dma_device   [0xff110127a6c74480]   15.794us
-    ← ib_umem_dmabuf_get                       [0xff110127a6c74480]   25.258us
-    → mlx5_ib_init_dmabuf_mr
-        → ib_umem_dmabuf_map_pages
-            → dma_buf_map_attachment
-                → vfio_pci_dma_buf_map
-                    ↔ dma_buf_map              [0xff1100012977f700]    4.918us
-                ← vfio_pci_dma_buf_map         [0xff1100012977f700]    8.362us
-            ← dma_buf_map_attachment           [0xff1100012977f700]   10.956us
-        ← ib_umem_dmabuf_map_pages             [0]                    17.336us
-        ↔ ib_umem_find_best_pgsz               [0]                     6.280us
-        → ib_umem_dmabuf_unmap_pages
-            → dma_buf_unmap_attachment
-                → vfio_pci_dma_buf_unmap
-                    ↔ dma_buf_unmap            [void]                  2.023us
-                ← vfio_pci_dma_buf_unmap       [void]                  6.700us
-            ← dma_buf_unmap_attachment         [void]                  8.142us
-        ← ib_umem_dmabuf_unmap_pages           [void]                 14.953us
-    ← mlx5_ib_init_dmabuf_mr                   [-EINVAL]              67.272us
-    → mlx5r_umr_revoke_mr
-        → mlx5r_umr_post_send_wait
-            → mlx5r_umr_post_send
-                ↔ mlx5r_begin_wqe              [0]                     1.703us
-                ↔ mlx5r_finish_wqe             [void]                  1.633us
-                ↔ mlx5r_ring_db                [void]                  1.312us
-            ← mlx5r_umr_post_send              [0]                    27.451us
-        ← mlx5r_umr_post_send_wait             [0]                   126.541us
-    ← mlx5r_umr_revoke_mr                      [0]                   141.925us
-    → ib_umem_release
-        → ib_umem_dmabuf_release
-            ↔ ib_umem_dmabuf_revoke            [void]                  1.582us
-            ↔ dma_buf_detach                   [void]                  3.765us
-            ↔ dma_buf_put                      [void]                  0.531us
-        ← ib_umem_dmabuf_release               [void]                 23.315us
-    ← ib_umem_release                          [void]                 40.301us
-← mlx5_ib_reg_user_mr_dmabuf                   [-EINVAL]             363.280us
 
-[1] https://lore.kernel.org/all/aQkLcAxEn4qmF3c4@devgpu015.cco6.facebook.com/
+A couple of key points, though:
 
-Alex
+a) There are many other, better options than casts (Rust's "as"
+keyword).
+
+In fact, Rust doesn't actually require casts here, but it does require
+something to explicitly declare the programmer's intentions.
+
+b) Rust doesn't do this because programmers are too dumb to figure it
+out. On the contrary, programmers are required to specify exactly what
+they want, in the first place.
+
+Some examples, using Matthew's example as a starting point:
+
+// u64 add operations:
+//   +                          - panics on overflow (debug), wraps (release)
+//   wrapping_add(u64)          - always wraps
+//   wrapping_add_signed(i64)   - always wraps, accepts signed offset
+//   checked_add(u64)           - returns Option, None on overflow
+//   checked_add_signed(i64)    - returns Option, None on overflow
+//   saturating_add(u64)        - clamps to u64::MAX
+//   saturating_add_signed(i64) - clamps to 0 or u64::MAX
+//   overflowing_add(u64)       - returns (result, bool)
+//   overflowing_add_signed(i64)- returns (result, bool)
+//   strict_add(u64)            - always panics on overflow (even release)
+//   unchecked_add(u64)         - UB on overflow (unsafe, for optimization)
+//   carrying_add(u64, bool)    - multi-word arithmetic, returns (result, carry)
+
+// 1. Wrapping: overflow/underflow wraps around (address arithmetic)
+fn add_wrapping(base: u64, off: i32) -> u64 {
+    base.wrapping_add_signed(i64::from(off))
+}
+
+// 2. Checked: returns None on overflow/underflow
+fn add_checked(base: u64, off: i32) -> Option<u64> {
+    base.checked_add_signed(i64::from(off))
+}
+
+// 3. Saturating: clamps to 0 or u64::MAX
+fn add_saturating(base: u64, off: i32) -> u64 {
+    base.saturating_add_signed(i64::from(off))
+}
+
+// 4. Overflowing: returns (result, did_overflow)
+fn add_overflowing(base: u64, off: i32) -> (u64, bool) {
+    base.overflowing_add_signed(i64::from(off))
+}
+
+fn main() {
+    let base: u64 = 0x100;
+    let off: i32 = -0x200;
+
+    println!("base=0x{:x}, off={} (underflow case)", base, off);
+    println!("wrapping:    0x{:x}", add_wrapping(base, off));
+    println!("checked:     {:?}", add_checked(base, off));
+    println!("saturating:  0x{:x}", add_saturating(base, off));
+    println!("overflowing: {:?}", add_overflowing(base, off));
+}
+
+// Output:
+base=0x100, off=-512 (underflow case)
+wrapping:    0xffffffffffffff00
+checked:     None
+saturating:  0x0
+overflowing: (18446744073709551360, true)
+
+
+thanks,
+-- 
+John Hubbard
+
 
