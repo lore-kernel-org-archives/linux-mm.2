@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 623E8D10F28
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:49:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E710D10F28
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:50:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A249F6B0089; Wed, 26 Nov 2025 11:49:34 -0500 (EST)
+	id D31D86B0028; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FBF56B008C; Wed, 26 Nov 2025 11:49:34 -0500 (EST)
+	id D095F6B0088; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9111D6B0092; Wed, 26 Nov 2025 11:49:34 -0500 (EST)
+	id C46E66B008C; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FB736B0089
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:49:34 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3115013029C
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:49:34 +0000 (UTC)
-X-FDA: 84153344268.06.8A114F3
-Received: from fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.72.182.33])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ABF01C0014
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:49:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=bcN+P2KM;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B4A0F6B0028
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BD9613B91E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:49:59 +0000 (UTC)
+X-FDA: 84153345318.22.61F5136
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D5C9740010
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:49:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="NfGl/JfQ";
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764175797; a=rsa-sha256;
+	cv=none;
+	b=dJPKUXVUxr+vGrR6ZGjm2Tv107lclB0w9NQjek7Wz4BQml/KMVbtclfu2O1bGAj8GivgQh
+	gjhBAGCQPLtCaJjFL4QjYXyE6CckV2lgYCTH/SzeBJdDd3qVbYz4+Z+XZ4D4h/eOs5b7Wv
+	YrEIvUvJKW8tZ0DPEvoviWqFKz9MpXs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="NfGl/JfQ";
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764175772;
+	s=arc-20220608; t=1764175797;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x7VXVCGx/0PdLhk+nsghb8qTMaImKePvh7JEix7jeY4=;
-	b=adC02eGNnKcJ/vsNQS7PyIeX0dZyh98SDa+RNsVNaKbdDPbfkk+2tF4KKoXS4mPjULlQqX
-	Nwm5Jx5b9UDmKb0u37FsevHICKNXf4RJD6e8nywAkaIdM5cV1MiPfcyVHHJSiHNPtGHU7r
-	B8H2s1DGPkzWpKntoSenoTvBQFAZcOg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=bcN+P2KM;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764175772; a=rsa-sha256;
-	cv=none;
-	b=PTrs0R8gSqpHjlas8qcdO0tmHFIKLJXvt1FlKr6p12N1/9ylPR3rm0uUjVHU/Xcw6d2hd9
-	VQEBOeSeVSGZ7iWCC5B6azYBLCpLPdJiJ+8MrhpG5qXFzJubXgxwxaa2xfh/NlNhbM/vI0
-	7TK+KVKzpQpC8+bFGJhQM2VA/TYVo/A=
+	bh=ODZ1VeNiyr/lGvz6HoLA70V3LBo9h0c48wtwRnKdqzI=;
+	b=Tk4I+Q6/WZzyYL22IrTUW1kAXUfTtGJLdlS9daagQ9cURWs7hjcZth4S7d2bMZ4kAaWO5e
+	e2QQ8w8HKUs/h2UGuxLmRoi+Eqqdl6/lJ4ScgVcfPBiDYWoF3M+Fr/4+inXr1Ka8SrLShK
+	AT2x18KKPy/vdXI+AypLhzyYfoWbKq4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1764175771; x=1795711771;
+  t=1764175796; x=1795711796;
   h=message-id:date:mime-version:reply-to:subject:to:cc:
    references:from:in-reply-to:content-transfer-encoding;
-  bh=x7VXVCGx/0PdLhk+nsghb8qTMaImKePvh7JEix7jeY4=;
-  b=bcN+P2KMarvjlC8CksSPkJ6I4Z21FP1HH67NdvyMH/F1Y/8m8lN2lSYc
-   p21Wwnm5ojJ9yoQtLSFz7NYKXPEmU21+hTGIBAwG5qq7SKrR4Rggk60v7
-   iUDDfeuNDYisXhQjN1pqTdzC6zNbiEbcOvI/Q4vEQWnEB3EWwJ71KUuWg
-   914cD/jfC1YpSc/s5Crr3XBeeC1BQmF02URO2IRmYA9KpPRr9XWzKruuv
-   JK93fT11/Vr/8MWzhtQuUcHKvd4XcTjvm5kLmRprLhJSD/tDXES+tB2w3
-   287NkZZ/+TJ8cf6+KKZE45cvxlGwCewbQIF9Er7OxpO28yds6wVqvQR9g
-   Q==;
-X-CSE-ConnectionGUID: PSbtWkjGQpyyl29xoV29RQ==
-X-CSE-MsgGUID: m+DW7VpVTBeEayJbqQJGbg==
+  bh=ODZ1VeNiyr/lGvz6HoLA70V3LBo9h0c48wtwRnKdqzI=;
+  b=NfGl/JfQ9L+0oSEnCpOJst5f1AAtjdH9TrvI/sEluebD3L5A9R0n0Jqr
+   44a1trsGO4G/Qcg5XF8R1ZSEsXBbKVwdsc6hsOBKvLZRxR7rOGFnTxG/V
+   nTQ3dXIykAL8/oFV+RZtCT5wsajYYTAX7ZXJXGhywFXufOe9VIUzFjodz
+   GcsfagW5Wl84z3FsCpXYx8cHLrCqj4sEwOWVsx+VGPEqfu43+5sVKEaKG
+   vOV4bvT6J6XKmtEi/vSPt//Jyssht4RrMhHUGJPsUWi/IY/e62sERPro8
+   aET/IPjp0WYLtuy4VMjl1Yg1MP9e3losVDACT9X1m3AA4GDNVJSAnIl1j
+   w==;
+X-CSE-ConnectionGUID: cGVRR6noRwWrARLD/aWlaA==
+X-CSE-MsgGUID: 8cTU9VN8SHafCqwLnVItPg==
 X-IronPort-AV: E=Sophos;i="6.20,228,1758585600"; 
-   d="scan'208";a="5850247"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 16:49:13 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:14001]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.44.247:2525] with esmtp (Farcaster)
- id 7187bdac-8cef-490c-8568-2d44c5bc3585; Wed, 26 Nov 2025 16:49:13 +0000 (UTC)
-X-Farcaster-Flow-ID: 7187bdac-8cef-490c-8568-2d44c5bc3585
+   d="scan'208";a="5848663"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 16:49:39 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:15053]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.27.255:2525] with esmtp (Farcaster)
+ id ac3d6538-a606-4006-a0e4-7164b8793913; Wed, 26 Nov 2025 16:49:39 +0000 (UTC)
+X-Farcaster-Flow-ID: ac3d6538-a606-4006-a0e4-7164b8793913
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Wed, 26 Nov 2025 16:49:12 +0000
+ Wed, 26 Nov 2025 16:49:33 +0000
 Received: from [192.168.8.204] (10.106.83.30) by EX19D005EUB003.ant.amazon.com
  (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Wed, 26 Nov 2025
- 16:49:11 +0000
-Message-ID: <6e93a9b7-f731-4609-a034-2b78423e22e5@amazon.com>
-Date: Wed, 26 Nov 2025 16:49:06 +0000
+ 16:49:32 +0000
+Message-ID: <bafb0c9e-9ce6-4294-b1d6-e32c41635add@amazon.com>
+Date: Wed, 26 Nov 2025 16:49:31 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v2 3/5] mm: introduce VM_FAULT_UFFD_MINOR fault reason
+Subject: Re: [PATCH v2 4/5] guest_memfd: add support for userfaultfd minor
+ mode
 To: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>
 CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
 	<akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>,
@@ -97,10 +98,9 @@ CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
 	<peterx@redhat.com>, "Sean Christopherson" <seanjc@google.com>, Shuah Khan
 	<shuah@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, Vlastimil Babka
 	<vbabka@suse.cz>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, "David Hildenbrand (Red Hat)"
-	<david@kernel.org>
+	<linux-kselftest@vger.kernel.org>
 References: <20251125183840.2368510-1-rppt@kernel.org>
- <20251125183840.2368510-4-rppt@kernel.org>
+ <20251125183840.2368510-5-rppt@kernel.org>
 Content-Language: en-US
 From: Nikita Kalyazin <kalyazin@amazon.com>
 Autocrypt: addr=kalyazin@amazon.com; keydata=
@@ -112,20 +112,20 @@ Autocrypt: addr=kalyazin@amazon.com; keydata=
  ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
  ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
  i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <20251125183840.2368510-4-rppt@kernel.org>
+In-Reply-To: <20251125183840.2368510-5-rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.106.83.30]
-X-ClientProxiedBy: EX19D003EUA004.ant.amazon.com (10.252.50.128) To
+X-ClientProxiedBy: EX19D014EUA001.ant.amazon.com (10.252.50.20) To
  EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: ABF01C0014
-X-Stat-Signature: ay4t86zjrb3ihrymg5srn7637q3kmddy
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D5C9740010
+X-Stat-Signature: kk8a61q9w8k8rwmbcngo4acrdwpr6pcd
 X-Rspam-User: 
-X-HE-Tag: 1764175771-393388
-X-HE-Meta: U2FsdGVkX19IqtXn6S0K5hMyXs6JgMPlvcu+oQ+zaE4WZ95Q8ZFwV1+7mAKYAL8K987fDT6gEAZoP2+bzbybBXVIOM96yleePN9BZALMWkoqdqj7ozAyvelLMAiofBBAvt+tNRvD/ZXIblC30AT/YinAeY95tcGFV8bRlzQ/I0/PIZBYI1yNqZW/PR7+PO9KNrZw6E/OyQOdYhoqSjZ3nz6ua40JqdyWim0NbMkbIFXBMeuY0/c04zpMcg08pPRBmgYHcCnMfbYm0Xum+In7omyIH2Fs3fJ3k0y7Zx78sCoUOeg58SkmHP9bkHo6MtZnoK36WrmIA0+Qgm6CtaNSHObgRzQAeZrPpepbQtgd13ay4SXWCVB95Hy1FLtP/iEdrWQdKdrOVnd1CmuN+6wWxJ2CULlPggk2AG3MJstChKKfScY1rAqRInVJLseSpNSSNGKjPGIq5INwDOYtVZjq/VzpLVGoUsO9WfGUZCr9tu9kzjjI6nLQZo6S7LYxnpO2TA8P8jDxgqvs332H1TQSqartcvUDwcnDYqmekkaSzB16gMJM+jtS43onAnXDsyqbCABjrkwVgTT7okk2W7SgjhwkTPyf/09HqC1ti4KS1IYxy+A3rKn7mscip8uPJqJ8pABq/GabxfLtc2wR6+JC7K2jdTCUwDxRwrjrwOIzhYspwCGA0r50cyNi68P0PD36dl3FGCdQD2C7ed6LXcUDNnujyxWQLuAdtLykQyCsoH08MJWyc/Gfys0Otel+OdP3ODybaQjVjFMXIusfDtZG3qumM6Mrj1gTXEkx+6ZCuj+Ua4fpLYy+MXKDYb6EMM93f+mW5A5+FdVQCRd2xpqTxDFyryPTkSjrr/tMr2vf28sNsIRdQy1TSkMK14BEgflUx/DuuUge+XraFfBRYA9hoYQTcYpkCz+bvCkGR0k5BEuKA3WEOFsqtHMPavRl0cpEvtWS5KQd1rlGSO+T7dY
- RJVWGMHR
- O2pt4TDiheQPXbyZvlHvxtawcCD0PvarortxkRL/lw5wuUvYgqk8eUBL+yAPB0mXzPK1vXuIzgckkVRlnV2Dc2ewgsKHS+sZ0D0JbcDuguDVXFbAu1I1NCqIRN3/fqt/XPnJaPZhf6ePS2r8gJ8BLaeKASp03TbyEj19Qcqx9rnEQZUS5KF5Q3w2iRMsa5ftLT3Xl0ia/BGmRAJ7dqPhJRza+hF0wJinMS2pbjG4zRdx0KIUoqWOMuRdYmWU31PekytIMw21WNI8+TYPKdPKAfc2ygzbfoGtAfyHlHPzHMkU/gFFBu05jY5YVN8fznaoWKU/SJ6Pmx4RlRrtiqCZKPnmt2XoMiz5i+ilBsU7VkesDHP0mhPyPrQimJlbZfux7pG+jAl/3pS4JCRcQbAB8SBUpil80Hme1j6dgCbTdkVHVz/3hvraUbWw51e11W4uKD4U5qF7qcZtwYs5/1RqiIxg12rtOxisNtn2OboGRiGk6LtfyL1/PlR6+o/fLh5KuHTieo11fkiWjtnvFspXiyNRq7NMOappMjrRY5xF0qRLZm8WvT8jW2xlJeVgk3JV5f3k9L9Od+TB2aNsFB+O0247qdCIhUaCayGISP0YU8QAPs94Zjl6j0SgSflsVywFCsECtpb7SBd9RexE+8VHDijIK2WKvtaosznhPRxSa7yv+eNo46v77TYdGvslA35P3uf2voxX149H7DXTQnZUi1Ow8/gl+DaWcWcxFNJOdk0Whp0Ezk0UeIhzAinpWqmkLG7Qn9HoTKQhxFVECx+JE+YysOlkESMt5AiRvQgniMZ7uZ8N2L3LrRUB3UMh08eXIWaAWp55yyWLTzvtQfzgiCySlbAsSVYTUYelKQ3p/0U0tCVgXp+BVn7Mft9ls1utVfujWZ8QjVODeQYk+30S/9aMo0RteJJiLIq0FwnxJBe0iAfw=
+X-HE-Tag: 1764175796-241262
+X-HE-Meta: U2FsdGVkX19J6wXcH3YBnS2/ocKKLsALs1PmjcTuE47rjqlUNtim486cK0BxLftu3l+iWg+7zJNyjlMSAi6CY616e98kQ/JDYy9HP23sk0wDmRQSJNlv4ShADm4voZqqUj6nx0T2zwBfp+42kOaiki6l6++DcOtQhcl6RL4xrKSXMgCpmV14yft1BNfRp05myg+rc08XULgx/fJOm7K61AlbVLDK6W8SdEmyRdn5HEhef24Q9Ou9iHQqCdrvZW8siWTFQd3rMnZMgQvAqa021OJoHUrZf0eKvLhNZrA/l8DEGbPLQk4KMc6NDrASw5XUPE+7AC5KX6eO/h2jGtYVE+DmglVC2q99+cMxnpB46EcokqN+G2WfMcLa3Ij7sYRfLl/1BKGQ18SIwl3YD92SnqD5klNtSnGDiU2f1bMwIH1ZBkI0Popww1pwid9GDnxhGnY6C9M1Fg44bBtYstTzdMVc4Zg4zfio7zKvCuiihZG/OcgnOQSSgZ/6Jti2SJfOv2lh1CLQcQKORc7yZ8f/pVRUlIDswWlg43yjuRepEOHxBbC9XoJoBMVZNy+QLsZLoDFRVV/5x+FkKu/8R3cUJr7Gk8FFPLRjBMwXOAycjn/c6bR7gOmaRqeHw05bHYq2i5fva82DsPWxHbLQf1G2d/rftag+9Zl0zj0U482xe2hdzN2sDLrcH8eTqdwMWeP3gA9uE8KnerJBl84RrhzdPn5+R/m7AsoilSmGCX1pT/DM+11pz/DZxp8DOOrZaouuIIIOC65AdoJgomPeAfUHy+S+oHR2PS24k/G9vmG25j6cDKS9H43d7s+LntdlQnrC0gvGbIuzw8lx9FnsDHP9t+eWuCU9XTi0LUC0+YthaQO2fTO7FLWuKal8CX1PqivF8sOnwR88NNL51m7g2jXUXdHS3ZqZ6EBNbrCRGdYU4PzC0yK2jmIZep2mTchhZe4x3uAAnoqw+OEsZDFa9UQ
+ wBD1wENh
+ 59dp8iN747xgxRRVnesotS4eRAAx1coqjB9q2OWh4FMSCgW0VYJ/B5ZInSBDZ7trzB29qYEV1O3npVtEsZCorZHeGz9QhJjZqq8h2hHU6i+i8b9nnJeUkjG9qmuQ46C4vpsr4Xrh94re6Z9eI8cjs22Az4WlGLYNsS1xMlLnqdVSPEs4+ch2WTpbQrPd0NKUhbBYHYSch4/btlqqDUQH6dRvQJu4w7tR1HKBgicxc3WNqI049qO+u9y9HPd+x2e4CInOU+onn9F8+h1j3DXUUBDOD6tcTzY0Rwi0ZjhMLzBKIWPDE+ZccjP9Yu+kyN4Fzbdr0RecPnA6bt2pfmJrQMmXNiByQDGwguAKomxGTUWaOD7Vb0ofU5Hn0BD1kfbQziEZCCre0+ygOQX3+BmsGdC74UV/1VnXK7yha7ReYMVESlLr5yDL1lQB2hDIwxyyiZYMOXI8W0QVdsf7Y+Fhkmdly9SE5cnepDooPU+DpQW2OPrU/vSioMaCdT7bYXXMGOoPO/eU6BoRp+OHb4n36+KpIZe272xnMaM5LzTmGKps97EcJ0I7fA93sb4ye+kA6wr3CefIVgUEjL7x52uRh0s8aTRi2JPJioh2Ksm0fxb3I9qLGDPpDV62CJTIFNmlmVpBApCQSIFxP8px2eS6ZXmUglAtJk/EMRUBb0H01fY7XA47woEcUZpwp+wS5dDtMUbK3+zt5K+/7TXDzlC8DUeACLYBF4OE391zQhFOQ4vHLJGkYVCpZr9c15DnnjnEGwCHWvtRX6Ca/W9nDaSlbzCOWjav5GyhT+HFvIyINO6Qxzl/+IDN9pTLHHYNJnI7Yls629+Kk+brdFy87mXWNu7g10mgQBiRGZ5AWyfE43luRZwFCHh6MzORaEBRwynS/ZEi+vtxBzNXf20VZ4vBtdeUr53Ij/AP044PUFTnBKvv90zKfcVaRqwA5jvXiowSw8OhRk2lgk4E/4kkRkQC8+55/AQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,94 +139,86 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 25/11/2025 18:38, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> When a VMA is registered with userfaulfd in minor mode, its ->fault()
-> method should check if a folio exists in the page cache and if yes
-> ->fault() should call handle_userfault(VM_UFFD_MISSING).
+> userfaultfd notifications about minor page faults used for live migration
+> and snapshotting of VMs with memory backed by shared hugetlbfs or tmpfs
+> mappings as described in detail in commit 7677f7fd8be7 ("userfaultfd: add
+> minor fault registration mode").
 > 
-> Instead of calling handle_userfault() directly from a specific ->fault()
-> implementation introduce new fault reason VM_FAULT_UFFD_MINOR that will
-> notify the core page fault handler that it should call
-> handle_userfaultfd(VM_UFFD_MISSING) to complete a page fault.
+> To use the same mechanism for VMs that use guest_memfd to map their memory,
+> guest_memfd should support userfaultfd minor mode.
 > 
-> Replace a call to handle_userfault(VM_UFFD_MISSING) in shmem and use the
-> new VM_FAULT_UFFD_MINOR there instead.
+> Extend ->fault() method of guest_memfd with ability to notify core page
+> fault handler that a page fault requires handle_userfault(VM_UFFD_MINOR) to
+> complete and add implementation of ->get_shared_folio() to guest_memfd
+> vm_ops.
 > 
-> For configurations that don't enable CONFIG_USERFAULTFD,
-> VM_FAULT_UFFD_MINOR is set to 0.
-> 
-> Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->   include/linux/mm_types.h | 10 +++++++++-
->   mm/memory.c              |  2 ++
->   mm/shmem.c               |  2 +-
->   3 files changed, 12 insertions(+), 2 deletions(-)
+>   virt/kvm/guest_memfd.c | 28 ++++++++++++++++++++++++++++
+>   1 file changed, 28 insertions(+)
 > 
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 90e5790c318f..df71b057111b 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1523,6 +1523,8 @@ typedef __bitwise unsigned int vm_fault_t;
->    *                             fsync() to complete (for synchronous page faults
->    *                             in DAX)
->    * @VM_FAULT_COMPLETED:                ->fault completed, meanwhile mmap lock released
-> + * @VM_FAULT_UFFD_MINOR:       ->fault did not modify page tables and needs
-> + *                             handle_userfault(VM_UFFD_MINOR) to complete
->    * @VM_FAULT_HINDEX_MASK:      mask HINDEX value
->    *
->    */
-> @@ -1540,6 +1542,11 @@ enum vm_fault_reason {
->          VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
->          VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
->          VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index ffadc5ee8e04..2a2b076293f9 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -4,6 +4,7 @@
+>   #include <linux/kvm_host.h>
+>   #include <linux/pagemap.h>
+>   #include <linux/anon_inodes.h>
+> +#include <linux/userfaultfd_k.h>
+> 
+>   #include "kvm_mm.h"
+> 
+> @@ -369,6 +370,12 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>                  return vmf_error(err);
+>          }
+> 
+> +       if (userfaultfd_minor(vmf->vma)) {
+> +               folio_unlock(folio);
+> +               folio_put(folio);
+> +               return VM_FAULT_UFFD_MINOR;
+> +       }
+> +
+>          if (WARN_ON_ONCE(folio_test_large(folio))) {
+>                  ret = VM_FAULT_SIGBUS;
+>                  goto out_folio;
+> @@ -390,8 +397,29 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>          return ret;
+>   }
+> 
 > +#ifdef CONFIG_USERFAULTFD
-> +       VM_FAULT_UFFD_MINOR     = (__force vm_fault_t)0x008000,
-> +#else
-> +       VM_FAULT_UFFD_MINOR     = (__force vm_fault_t)0x000000,
+> +static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t pgoff)
+
+We have to name it differently, otherwise it clashes with the existing 
+one in this file.
+
+> +{
+> +       struct folio *folio;
+> +
+> +       folio = kvm_gmem_get_folio(inode, pgoff);
+
+                   ^^
+
+> +       if (IS_ERR_OR_NULL(folio))
+> +               return folio;
+> +
+> +       if (!folio_test_uptodate(folio)) {
+> +               clear_highpage(folio_page(folio, 0));
+> +               kvm_gmem_mark_prepared(folio);
+> +       }
+> +
+> +       return folio;
+> +}
 > +#endif
->          VM_FAULT_HINDEX_MASK    = (__force vm_fault_t)0x0f0000,
+> +
+>   static const struct vm_operations_struct kvm_gmem_vm_ops = {
+>          .fault = kvm_gmem_fault_user_mapping,
+> +#ifdef CONFIG_USERFAULTFD
+> +       .get_folio      = kvm_gmem_get_folio,
+> +#endif
 >   };
 > 
-> @@ -1564,7 +1571,8 @@ enum vm_fault_reason {
->          { VM_FAULT_FALLBACK,            "FALLBACK" },   \
->          { VM_FAULT_DONE_COW,            "DONE_COW" },   \
->          { VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },  \
-> -       { VM_FAULT_COMPLETED,           "COMPLETED" }
-> +       { VM_FAULT_COMPLETED,           "COMPLETED" },  \
-> +       { VM_FAULT_UFFD_MINOR,          "UFFD_MINOR" }, \
-
-It looks like we have to keep the last element comma-less, otherwise I'm 
-seeing compile errors somewhere in fs/dax.c.
-
-> 
->   struct vm_special_mapping {
->          const char *name;       /* The name, e.g. "[vdso]". */
-> diff --git a/mm/memory.c b/mm/memory.c
-> index b59ae7ce42eb..94acbac8cefb 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5279,6 +5279,8 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
->          }
-> 
->          ret = vma->vm_ops->fault(vmf);
-> +       if (unlikely(ret & VM_FAULT_UFFD_MINOR))
-> +               return handle_userfault(vmf, VM_UFFD_MINOR);
->          if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
->                              VM_FAULT_DONE_COW)))
->                  return ret;
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index e16c7c8c3e1e..a9a31c0b5979 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2461,7 +2461,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->          if (folio && vma && userfaultfd_minor(vma)) {
->                  if (!xa_is_value(folio))
->                          folio_put(folio);
-> -               *fault_type = handle_userfault(vmf, VM_UFFD_MINOR);
-> +               *fault_type = VM_FAULT_UFFD_MINOR;
->                  return 0;
->          }
-> 
+>   static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
 > --
 > 2.50.1
 > 
