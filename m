@@ -4,126 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD2E1D10F58
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:08:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C317CD10F58
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:11:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EF4E6B0032; Wed, 26 Nov 2025 11:08:54 -0500 (EST)
+	id 0A7F06B002F; Wed, 26 Nov 2025 11:11:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C6C46B008C; Wed, 26 Nov 2025 11:08:54 -0500 (EST)
+	id 07F356B0030; Wed, 26 Nov 2025 11:11:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0BB6B0092; Wed, 26 Nov 2025 11:08:53 -0500 (EST)
+	id ED6B76B007B; Wed, 26 Nov 2025 11:11:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA0876B0032
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:53 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0BF2BA9FF
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:08:53 +0000 (UTC)
-X-FDA: 84153241746.02.0403E38
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 71889A0019
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:08:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFmA98K8;
-	spf=pass (imf25.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DA22E6B002F
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:11:31 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A483DBA7BE
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:11:31 +0000 (UTC)
+X-FDA: 84153248382.03.769BE00
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AEEE140014
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:11:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YebUo7E8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764173489; a=rsa-sha256;
+	cv=none;
+	b=5AWLmaUfzMku6Yw1bTSJP4vNBVUI6JlrDgFBjNEJEYE8eyYUl7fcOBagt93+4xSv8IJ1K+
+	2kqbo4Qe6DcL0YBywI6mChsnz1Xy9SQLfsjbd+vI32VxFPdirWog7FsrI3StXzR1d73HH/
+	U+bwBxbO7oPJaY0+9/oRAheowGT2pwc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YebUo7E8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764173331;
+	s=arc-20220608; t=1764173489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0w85V/n6/PltUzl9FbkvTGvY3LknN/8DxQ32r6IxQUM=;
-	b=F0RZuqYGTBLIkZ64wO7aJM5nGVJ4pvW41PJl2dyoRP3TuHWvRzSxVgqyDeQQaedInxRiuW
-	FBcktge51gChde71LSGaJxPOb0zA86jOWr16xkOzwEf1DzIh/22kpuHjWYP+gYnZpxkE+X
-	BdWEFFZscEqDULolFiEyTYCWnhmP1Ic=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764173331; a=rsa-sha256;
-	cv=none;
-	b=McFtnMFsa+aZa7kSBeMtRM+DOUr8zXkpYlN4DDtSi/HsD+ZFWbK4Wvf+wOrKf+KTORYSAL
-	oUESpxPGUavjOic9BizjdfH/72MKAR+rbl54VF98ikypeowhG5YJuiCBaZirznYt4FNlSN
-	akcoLxaJgzY5faPR7Ta/K1xZO61aCto=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFmA98K8;
-	spf=pass (imf25.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so6582007b3a.1
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 08:08:51 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BufC0JEUpSedrl1NfhyQysvKSaFUXF1uLVq1S8/4yM8=;
+	b=QNt0MbaLhAV0eq7jsydLQxArZuBZxM8YDqlm/lEnND6w+od68Ie7FFFPy1amvBd996TaHR
+	SfnDj/pOfy51gBqs2Hfv4/mnvpZFSGiWbb75vWnvRUsUHGFVZ6Q3cs3vVFQL6gDatDRyTv
+	trW7tCOZVLkuyaNkMb3D6qfQnWTp6PM=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ee147baf7bso300401cf.1
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 08:11:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764173330; x=1764778130; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0w85V/n6/PltUzl9FbkvTGvY3LknN/8DxQ32r6IxQUM=;
-        b=iFmA98K8sDUyg0jbwm+iEJHQNzs+7PoXNzZMRrGz8C9aLxT/RZMSyzf9FYAPKSOsy4
-         ajYBVc5i4+E8WnTfgLfBG/ZveU1P8wgQ536W7jCUjawOj72PngkA/DpASzctEPFjOygG
-         CTwbIj8GN2HOqGgZk+xOcN+cXj/EGVSZHhYbjDIfJV/8TZleCq5SZbdeDwDNR1HsP/RU
-         7NOMifp3ztoMbdQ85oMI4bAS08vaB9OtlrJ3T+x21ccj87sXOwVZ/ceSK9ZpvvfmYB3c
-         ckJ6hhxyUp447NbxNsaTwPUCtlXN8fqWYKhMYm9ULfCnT7I8K85gbqyMzw0bIskWcl1+
-         UD1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764173330; x=1764778130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1764173489; x=1764778289; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0w85V/n6/PltUzl9FbkvTGvY3LknN/8DxQ32r6IxQUM=;
-        b=f7xOcIytkrfNvt+5HJJCGeqQc8wTj1J/jHw0THnOChuEgZyO36OU+8ivGR2RI0Fl1W
-         4jX3tg5Y4NDDsP3u6aYCF4TxGZKmoOFm1etSVE/WoOqjSQ5wXry/cNLOU9sCXnZ/+y79
-         qJ3f2Y0p/u9WcLjx1a4rIw9TKs75HuW3MKf0s2bVQoF9anbUxf7HcVva6J1/2yJVdB6G
-         kKm9sgQmsVQATh2wIr/yfBI6rakYim8tZdu2Qr7/6yd+OnGVkW9sLtHMvwZwCTDqciqE
-         rhD1C5hlh9measZr5T+nYM2FO4d8bBNdFbZ+WU83UI2iL4DDigygt4ItYYRCiUspuI5O
-         /0Cw==
-X-Forwarded-Encrypted: i=1; AJvYcCXm/dhFk1ap5/d01RU+EEAoWpvxflSd6QorWw0WbZNBHf3z08fy0X0ocyDzTn87ooi+JjXxW8tvVA==@kvack.org
-X-Gm-Message-State: AOJu0YyGPXcEFbFeIfWZyFGG3B3vpgZk7wagmQrRu7d/35/ma/bHxLwY
-	7f/91vSPHPl4cRYH0H8m+PRThW/JIqp6tIzJf38cwMw65LUigtB4VwlI
-X-Gm-Gg: ASbGnctd3iXh0dinEl4JCI57XGzyPvs4czZez+nsaX0IRYngWVgOn0d8BX6Ir78vLcZ
-	3HZpQzgwcUR5a2hlaBG3/N1j1Wo8sbXxSB9L3U7OBddTwKqCEts9YzEHRalqatqKpw1T7mNq7Sp
-	EKm3uE09ggl9ydDdgwLuFnFjwdKlcdTi2UjI0bpJUw5J9wPv/sHvEZ3/u6BWA+oJjPz8w1LY7ks
-	peBnQGVRdWcSOF0F7iKbheDYhYup+O8GpM4KgF6wB1AP8WLjNMYOpNI8jfGbGskuQhD+GImyPAr
-	guMaaAJ5qF9FGSn2upGN7VIqOEmp468hM/AvkVQ6rfsJNwFRO3iAMGtAJHSLueEvQreoyV/+ytA
-	7B6JLQo33mksnQw5F/GgBfTlBas7o69dcGcNDp1xFGS3rJ961imo8oB/0iv/uIoOAoz0jhLOlDa
-	RuzdR09QKxQ6K/GeF6YwmxuIfvgltzAQ==
-X-Google-Smtp-Source: AGHT+IEebVkUKBP+U1i9Oqi7Ort6BI2gg0wHmeA+Y9t88Utsg2k3h8rxgk1fLNRybEyKRORRW5br6g==
-X-Received: by 2002:a05:6a00:2d88:b0:7b9:ef46:ec70 with SMTP id d2e1a72fcca58-7c58e50c16emr18224646b3a.23.1764173330206;
-        Wed, 26 Nov 2025 08:08:50 -0800 (PST)
-Received: from fedora ([103.120.31.122])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f0243b3csm21831681b3a.36.2025.11.26.08.08.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 08:08:49 -0800 (PST)
-From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Cc: Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Subject: [PATCH] selftests/mm/uffd: initialize char variable to Null
-Date: Wed, 26 Nov 2025 21:38:30 +0530
-Message-ID: <20251126160830.52124-1-ankitkhushwaha.linux@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        bh=BufC0JEUpSedrl1NfhyQysvKSaFUXF1uLVq1S8/4yM8=;
+        b=YebUo7E8dhxbz1iRTk4w8mC33a65OewzX3peM2Me/BVl58rFaQGCsXdDpvp4Tvh15v
+         Er9DS7OF3KhN0PySomvjDyOrJtrg5+V4vSAdzvkTglNSuj/U08VixULGXnFyYj7SjB1X
+         yNSFBSmrvZ2MC36MbOlZgCQuK35+O/vKl2gKV4dhQKqFWXY1cAJeb8AijsKBnbZqPuYi
+         EdO7AWgrVxaxVUsBzCsDaudAwRnYbTfZkPpABgBfnfiGT8fD0PT64bDHVN7kYuVJneWW
+         tWXDHd1Y4ujkzRXd0we28Xf+t6uJC+4CG3/oYWcwJtpFDtIr/2SbmCHXeMG7oy65sDRU
+         7/CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764173489; x=1764778289;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BufC0JEUpSedrl1NfhyQysvKSaFUXF1uLVq1S8/4yM8=;
+        b=WbAemdEXi+SDNjJVjF+64oOvvWN67wQPo4go3b/8ezeeVPYQfvO6WoZd8lZlssSg+H
+         IDGC96zQBhIaLLCtyg3aFUgGsmHOOUraW2AyIjAVI4haz015PDG7P3KiSstSxkCznW10
+         +zJ4Mf8uiGsYcRYr7KyctcWVgwuaHtVSovLGqLB+unoawuTkNl7VOn00A3LV61r652A/
+         ixn4mYVEO3KGHPpFn8sxSma+21KbxHPJgzGfZWUBY1T1XFia92T+VqevUk0IzDVLpeRm
+         z97gIgJEEGE7Ulvl4EPkJv7J2VH8SBbiaD98FXPrWG439GClD11pWaRi/3IwduU6uxN1
+         rOrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXYAtfay9kWkb6C3wTGIaxwi/SVckL7EqUJMFOHnwBxkBy0bS5hOfc/cYJRU5Stbl8dyctpsAfdwQ==@kvack.org
+X-Gm-Message-State: AOJu0YwHPcSMkbQC2roZ70FY092XvapJ8jzfWexTSFf76WZzS0l6SFAJ
+	0ysud93FcHEUjQ80/xyn1llYmu/WGOUjBsgsNHAWfig6WTOoEhrbTI8td7RCCmOKqL2U4mfgRJs
+	ODYWgQP/2iuxNQ2bbzIRYCr4pOYr9TdONVfUz2bEF
+X-Gm-Gg: ASbGncuTUAyupJ06C89LxVatepFK2/Z03OO0hyImfVnRVH0J+fppRVdmsDbuMSLFQ4K
+	qcWgKtWH5q5vAIRQUwibF0n2+Xv+cGP+lCWARtCGSjTI6rTJjQoQxIx1iN8k26FbrxHywM9/d2a
+	tRABzdq/tnMP1de9Jvlq+dFFqhizlMy4HHutElAntZjdYJyEFg4SicOEikBAaAWF4L7snfq6fGS
+	3CTIp/g7zGYTiPJcoGHUw4XOrONtzOqER5OHVePX5WegCpqjuY6GV0jkCGqG84GV6yBoeRoiNpW
+	xDZWcMCNB/9IrlWsIGRu7Fa0vA==
+X-Google-Smtp-Source: AGHT+IEmUNzDi+nUvk1WdtulUkKKO+WUuH7mcTu8FAK/P1b94QWfxgOZIDVLrQ8u4ieBXR4ho/DH7Igt5nxKj0II1Hc=
+X-Received: by 2002:ac8:7e94:0:b0:4b5:d6bb:f29b with SMTP id
+ d75a77b69052e-4efc6b0dda5mr5698181cf.8.1764173488435; Wed, 26 Nov 2025
+ 08:11:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 71889A0019
-X-Stat-Signature: 3go35sqhzeo96jk1zdjgno53ujstz9ny
+References: <20251126034404.2264317-1-willy@infradead.org> <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
+ <cc823b79-7a2e-4a73-bd9d-b0aa492807b7@suse.cz> <aScXSEY7v7_fcEZF@casper.infradead.org>
+ <44f4d9b7-45e3-4d2e-b1df-cab8e254e54e@lucifer.local> <CAJuCfpExY2wYk=TuWEGGgyh3YOJyi2+4sPVd4XfNb7kZeRr2Rw@mail.gmail.com>
+ <3d069afd-a19e-4ee7-bbb9-7d15b065ab1f@lucifer.local>
+In-Reply-To: <3d069afd-a19e-4ee7-bbb9-7d15b065ab1f@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 26 Nov 2025 08:11:16 -0800
+X-Gm-Features: AWmQ_bmMH-eupCqIRkvK5PDEWly5aeDohpOZHdH9KL7hD5hZ7re3ssm5zGtQEos
+Message-ID: <CAJuCfpEajhjsT0Y5sYiNGALUDMr+t3A=VvqsVzgYUvkHLdTW3g@mail.gmail.com>
+Subject: Re: [PATCH] mm: fix vma_start_write_killable() signal handling
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AEEE140014
+X-Stat-Signature: xbhzpr4rmaf5td58ohr96egfkadydgyq
 X-Rspam-User: 
-X-HE-Tag: 1764173331-56972
-X-HE-Meta: U2FsdGVkX1+f6lHK9CHStRZZysXRvcnir8H9zmy/Ka2edLX70MuLPYpRN0jI3+cjdKCC2JkPeB9QH3nLf5HB97zo9y6PTjceLyEOzNhLlMs+/MyJcuBbtQEJOCpYj0x2s6Zh9sVpgU168xE8pXL0N0c8H64BOWJqgg0kGTvj0mJhhDX02rPAK0dbzIfzLsX/TFi5sekYgAkPTyIeFncFFyHR7y4FKKcY5rhGxgCPV2DzfFwHf3lfNPmgLGxkKUFMkgF4444+edWqRPkNhCTaZGg/hj4GTwFw+7EcRBdMYRbekq42wpRQKTsnK5jwyJgN+MZCFemJN5hnegaLzXl2rcq2Jabn2EAP1AyAm+N5Kgo+d6psV1DTk2d6asagU6QQW25BMsqOoUEkLddBYqVpG+muizTLuEu1dy5qRi1x/CvoxcO4fVV8eeNvnsKUpkD8obQXv6SVoHYGZSqqrT/Eect5FzCTkZQryu1tGy41CCFz6iSqLn4RXw4/uz6P8iqQyphNLUGo4daNVWtZ0vLP4kHAFgdcOWo5vTvNsTKU/3+9s8o3e6WzJGZ9GZOThvNa5Tb2Xh6pBpFxBnztjoBDVlfkBZmmkuyL6B01T3uCh8TtajEhuyvzMaWpmwG4FeAkyhbFG3reHYi5XeajjhTfEzDRG6Cjl6xC5JNXpVj2jnxFgazFBAAo0VVgvJHLMQIfo7/oBBk6r7TTwRowNfWwykbyCqoVDHqlqoYzB7bl0EaXPjfIhnBzmiyDfp5ZH9HNWHGBbfe61mP20o5zCa7RtfFzWzYfvh8LaFkU5M7wymJJ4Y3t1GRL5mqOdOuXkxuSeUQXGeC4/CRzhZVkb4zHZfBffv5rJd208ZMLO9FSp9B1aH9i2s3C9gvAZu0PKcytsc9YB4vuOtTNEReU7lGBH9cKkhhpUO2k2YE71AKCz1IGMeLkJYvNawoPFoRmd5/pIcTVfuB6bbehCBxjgXl
- c3xGKbhz
- 2rHLSF42eJLm6hYqhLtVlBhQHh2odSJEdclZHd7NguNWqTl1/uBF10TsYxOieV0Gv4e81FvK6sW0dQI6a8yX7L8wVWQ6R+C6xdP9alwdSnfq5ttMaFZlwo8nnYowtIYDX3rcc7XSDdv6Iytgp5xlj4zhoX6wCkEdR0KMgkBu13n1iZnDc2JtdGAmcZj269yppLQLTLPoVXygm5dirtJ3BwMOcqZEd7thWHBkNtg4jZ3J9SCfQ98cq//oG4btoR+xV+8vDUiZjRMyaV4Ly8aGqKQtLBLbEmg90LHxjdLceP+bpLhprXcFOGSXH/Wettw0xznApH8WcTlhvM6esSFh36sbXj1w0hqvbCrFxjgIwp/M1pwlWuHje8/XoIBM27uhWtA15d9AKQu9LzGWZZVsws47YEHW8nkcqn2X4oi2PXbdv0XVDGH+g/ETyQBRungXlduxY+wLMopClCBLQr2vzGFNlDPWO4MJy4no3z3Rivt6Deg0i3ELM/J7y3demueKEcfSyh/HR36uPbavfk+eQTHxhydPY9290HM6upUF5/i/V2vFZ0m/KcykPzsynj7NtYwhbAuPNAvO5vB8yc3nMuL/xXORegX83/3uADnm81LAi1w0=
+X-HE-Tag: 1764173489-548643
+X-HE-Meta: U2FsdGVkX19ULK/EPUzgQU6B4wp/iUDwor9w3FQvQyAN3OE3D/2bWBo8xyeBnkd8kvKwLUl+IdAaE9CYgxvQ3GgeHH2BykM/S1TEIZSF478WyN8lC3FVMCK8OAclaegfmGlwb2+U0gkR9+BA/NoFRNK06cQNFWp54sURnwoZVE2NSljlbahYfOzMbgcNDiL5hPV1ArqiiDWX44gYdN+MeWgedYbzTrN7tkv+PRUOznmEBSGr2H2aOV/GENWt6GQC6OgCGAL7lgeSR2sa7sRQI6F8X64fBCAaAbEKvgEGb45dv9sjqn4d7MJMypA62h/NyH76fCOnl3VDG2II25oqO+zQAVoOgH+kEGBaRol6HtLgTLkfUbyZLFx5CO5WVzckzutd5hP2ZxBY3Qnei7IhxjYjt4DMfG4+Om2YGW1eEbxog5zhzltG8/ReRo4MoI5+DNmqHBaC8v7zTkPF9RMVLF8Cupz7hF2XlOZMP7MGawTf+asHMb5scmn1CiWz2qX0QurN6jleDXXAlIxslTM6JzmOrcfmEO6QP9EIL6GaImqiq1pDpMB5K4v7x6Z3rkhKBylLnahGfmF+yNBFfO4P1Zgg4JjH22W7VwXEtELUhmWWKJl6GGfTMjTuFWpFMq0HZ9A8qTRsb2xRgThqk4in6ZdTu7FmgHbZOp7PTbXjPF8ZECPIhR16J2LULynx2M8s28iapAotb+3NLgdslWCxz3zK9rqRmhIpU2o3qWRvkuQvPDIWrr4y6Lxlp2kKciwzunavrh8oOx8Wyuav4wIB0YDN8SHWpKpmE8MFkvWrYm5SdjUV/S0zZ1v0HMGUPN+GKgZV28PChWRc9axqmyzIOko06PG6uG95j0/ehXrNFFUHicCoMMeCDK+pdGHUPOxEajGdb+wdZw02O/yHiOu03GldiVHOcqL5C1SNs2KsKQyVeQ1gg61KpVGdGUqmoSjRVa2GqsOYJ4yvO7Fy7AS
+ v1zRZbcR
+ AIHKe+ENbvEpxim1WCGh6c/fwCMoyESxT7opQUj/0HNsx2wSktNe1FD3l568YKFX4ksNw7hPG3L+OqiLd0cEzkVYOV9NPdcbRWWIcyt4urqmsNE1u2qxZBtqPArqHoODhumTfz1GyS7Ob9CkCiN8CAltM/jwLh64VJ/9xkQpH2dXqPlJ95dWyDnhwtcSZl60VuB4xpFwDiBEzjq1Y9GRj8cmtd0yY7frAfL9w/MxPmwjgmhhIpt4I5n6RbWI3gAhXxeQ047Qrcr+Ze9MUIM5GkQt+h1AnPZnuLP/vgiC1T6xvMEAnPYpThSGF+SUUhK5USUHc7d0id/lJULz+J4z8Jyprtwdna2FWVwr0W/fFtSUko1TPTSmoR4PLZ4oFlgHTh6X1N2yT8z/TXztFsILDH4tehiallUjHRnSp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,83 +122,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In "uffd-stress.c" & "uffd-unit-tests.c". address of char variable having
-garbage value (uninitialized) is passed to 'write' syscall triggers
-warning.
+On Wed, Nov 26, 2025 at 8:01=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Wed, Nov 26, 2025 at 07:49:13AM -0800, Suren Baghdasaryan wrote:
+> > On Wed, Nov 26, 2025 at 7:20=E2=80=AFAM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
+> > >
+> > > On Wed, Nov 26, 2025 at 03:05:44PM +0000, Matthew Wilcox wrote:
+> > > > On Wed, Nov 26, 2025 at 03:36:46PM +0100, Vlastimil Babka wrote:
+> > > > > On 11/26/25 5:28 AM, Suren Baghdasaryan wrote:
+> > > > > >> Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this b=
+ug.
+> > > > > >
+> > > > > > Doh! This is embarassing...
+> > > > >
+> > > > > Hand-rolled synchronization primitives are wonderful, aren't they=
+?
+> > > >
+> > > > That's why I liked the original approach of just using rwsems.  I
+> > > > mst admit to having not paid attention to this recently so I don't
+> > > > know what motivated the change.
+> >
+> > That made it simpler to add SLAB_TYPESAFE_BY_RCU for vm_area_structs
+> > which improved the performance of allocating these structs during
+> > calls like mmap and fork.
+>
+> Hmm, we doubled down :)
+>
+> Hope the wins were worth the complexity, but obviously the horse has bolt=
+ed
+> and I should have asked more about it at the time...
+>
+> >
+> > > >
+> > > > > > Wait, why do we consider this as a successful acquisition? The
+> > > > > > vm_refcnt is 0, so this is similar situation to an earlier:
+> > > > > >
+> > > > > > if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
+> > > > > >         return 0;
+> > > > >
+> > > > > But this means "vma is not attached" not "we failed to lock it".
+> > > > >
+> > > > > > IOW, the vma is not referenced, so we failed to lock it. I thin=
+k the
+> > > > > > fix should be:
+> > > > > >
+> > > > > >         if (err) {
+> > > > > > +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma=
+->vm_refcnt)) {
+> > > > > > +                       /* Oh cobblers.  While we got a fatal s=
+ignal, we
+> > > > > > +                        * raced with the last user.  VMA is no=
+t referenced,
+> > > > > > +                        * fail to lock it.
+> > > > > > +                        */
+> > > > > > +                       err =3D 0;
+> > > > >
+> > > > > Returning 0 in this situation therefore wouldn't be correct.
+> > > > >
+> > > > > AFAIU since we started with attached vma above, it's not possible=
+ that
+> > > > > the refcount_sub_and_test here will drop the refcnt to zero. We c=
+ould
+> > > > > just WARN_ON_ONCE() on the result (in a way to make also the
+> > > > > __must_check happy) and then can return err below.
+> > > >
+> > > > But how do we know that we started with an attached VMA?  Maybe the=
+ VMA
+> > > > was in the process of being detached and still has readers?
+> > >
+> > > So we're talking about:
+> > >
+> > > vma_mark_deteched()
+> > > -> refcount_dec_and_test() [ ref count is zero ]
+> > > -> __vma_enter_locked()
+> > >
+> > > (meanwhile...)
+> > >
+> > > -> reader attempts to read
+> > >   -> optimistic check doesn't successfully find write locked VMA
+> > >   -> __refcount_inc_not_zero_limited_acqure() somehow doesn't notice =
+0 refcount and increments
+> > >     (??? how)
+> > >
+> > > (back to vma_mark_attached() -> __vma_enter_locked())
+> > >
+> > > -> refcount_add_not_zero() returns true
+> > >
+> > > [ process gets fatal signal ]
+> > >
+> > > -> rcuwait_wait_event() errors out
+> > > -> oopsies need to do something, maybe [VM_]WARN_ON() not right?
+> > >
+> > > Correct me if the above is wrong.
+> > >
+> > > I mean is any of this actually possible...?
+> > >
+> > > Seems dubious. But I guess right now we assume it _is_ possible. What=
+ a mess!
+> > >
+> > > (Again I wonder why we made our lives so difficult here)
+> > >
+> > > Anyway even if we are midway through a detach, the detach is ostensib=
+ly waiting
+> > > for the readers to go away, and our reader is about to go away anyway=
+, but the
+> > > process has a fatal signal so do we even care?
+> > >
+> > > I actually wonder if a WARN_ON() is warranted to see if this even eve=
+r
+> > > happens...
+> > >
+> > > OK just going to reattach... my head which just exploded from the abo=
+ve :P
+> >
+> > We are overthinking this. Vlastimil is right. If we entered with an
+>
+> Watch Vlastimil frame this... ;)
+>
+> > attached VMA (which is the case due to this check:
+> > https://elixir.bootlin.com/linux/v6.18-rc7/source/mm/mmap_lock.c#L60)
+> > then the only function that can detach the VMA from under us is
+> > vma_mark_detached() but that function can't race with
+>
+> We hold the mmap/VMA write lock yes, but as per the comment in
+> vma_mark_detached() + above list readers can spuriously increment the
+> refcount (ostensibly) as per:
+>
+>                 /* Wait until vma is detached with no readers. */
+>
+> So doesn't that mean we can hit the issue Matthew raised?
+>
+> Otherwise there would be no need to do this dance in vma_mark_detached()
+> anyway?
+>
+> Maybe I'm missing something.
 
-	uffd-stress.c:246:39: warning: variable 'c' is uninitialized when
-	passed  as a const pointer argument here
-	[-Wuninitialized-const-pointer]
+No, you are right. I realized after sending the reply this temporary
+refcount from the reader can be dropped from under the writer. Was in
+the process of analyzing these paths when Vlastimil's reply came in.
+I'll spend some more time stairing at it to see if we are missing
+anything else.
 
-	uffd-unit-tests.c:581:31: warning: variable 'c' is uninitialized
-	when passed as a const pointer argument here
-	[-Wuninitialized-const-pointer]
-
-so the fix is to assign char variable to '\0' to prevent writing of
-garbage value.
-
-Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
----
-this warning is raised with clang version 21.1.5 (Fedora 21.1.5-1.fc43).
----
- tools/testing/selftests/mm/uffd-stress.c     | 2 +-
- tools/testing/selftests/mm/uffd-unit-tests.c | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-index b51c89e1cd1a..700fbaa18d44 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -241,7 +241,7 @@ static int stress(struct uffd_args *args)
- 			return 1;
-
- 	for (cpu = 0; cpu < gopts->nr_parallel; cpu++) {
--		char c;
-+		char c = '\0';
- 		if (bounces & BOUNCE_POLL) {
- 			if (write(gopts->pipefd[cpu*2+1], &c, 1) != 1)
- 				err("pipefd write error");
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index f917b4c4c943..f4807242c5b2 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -543,7 +543,7 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
- {
- 	unsigned long p;
- 	pthread_t uffd_mon;
--	char c;
-+	char c = '\0';
- 	struct uffd_args args = { 0 };
- 	args.gopts = gopts;
-
-@@ -759,7 +759,7 @@ static void uffd_sigbus_test_common(uffd_global_test_opts_t *gopts, bool wp)
- 	pthread_t uffd_mon;
- 	pid_t pid;
- 	int err;
--	char c;
-+	char c = '\0';
- 	struct uffd_args args = { 0 };
- 	args.gopts = gopts;
-
-@@ -819,7 +819,7 @@ static void uffd_events_test_common(uffd_global_test_opts_t *gopts, bool wp)
- 	pthread_t uffd_mon;
- 	pid_t pid;
- 	int err;
--	char c;
-+	char c = '\0';
- 	struct uffd_args args = { 0 };
- 	args.gopts = gopts;
-
-@@ -1125,7 +1125,7 @@ uffd_move_test_common(uffd_global_test_opts_t *gopts,
- {
- 	unsigned long nr;
- 	pthread_t uffd_mon;
--	char c;
-+	char c = '\0';
- 	unsigned long long count;
- 	struct uffd_args args = { 0 };
- 	char *orig_area_src = NULL, *orig_area_dst = NULL;
---
-2.52.0
-
+>
+> > __vma_enter_locked() because both functions are required to hold
+> > mmap_write_lock. vma_mark_detached() has an explicit
+> > vma_assert_write_locked(vma) check (which implies mmap_write_lock) and
+> > vma_start_write() calls __is_vma_write_locked() which does
+> > mmap_assert_write_locked(vma->vm_mm). We can add a comment here or an
+> > mmap_assert_write_locked(vma->vm_mm); at the beginning of the
+> > __vma_enter_locked() to make that obvious.
+> >
+> > > Cheers, Lorenzo
+> >
+>
+> Thanks, Lorenzo
 
