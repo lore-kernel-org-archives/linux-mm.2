@@ -4,111 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B54D1118E
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:23:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 805F4D10F24
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 18:28:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92AFA6B002E; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
+	id CDE586B002C; Wed, 26 Nov 2025 13:28:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 902AD6B002F; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
+	id C8F276B00A6; Wed, 26 Nov 2025 13:28:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 818606B00A6; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
+	id BCD046B00A7; Wed, 26 Nov 2025 13:28:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F0006B002E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:23:46 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FC5412C8A
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:23:46 +0000 (UTC)
-X-FDA: 84153581652.12.3BF97CC
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1D98FC0017
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:23:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ac+mC9Yk;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ABB046B002C
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:28:18 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6184D8A342
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:28:18 +0000 (UTC)
+X-FDA: 84153593076.24.8DD30FF
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A1F5E14000B
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:28:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EDXwQLG7;
+	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764181424;
+	s=arc-20220608; t=1764181696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dRuIsnJjgKoS1qB9z1CzLqIUDAakowpq0VO9vQCJiLo=;
-	b=8Rhl1roGKBp5sRIim2g5T01n7tzid/sZUBGI0p9wj1oe9snHoWrVb7xvYHx2/VwovvtRLH
-	MK2dUTN10YmQYaLtWpcNJPdAbpQmoTJ6pdnaSpOnv5eZswvkmW1NVgd5Uk1TEMb9+KIC9G
-	7MPWw5ODWY45yIlH72Z3p3f3KZCzN54=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764181424; a=rsa-sha256;
-	cv=none;
-	b=2bw16Xk3B2DgHScZk+J5Fy7VtgBOHPLv3nuzTDwyB9u9KgMyJJjyLhk/n04/Ps+CMXyahf
-	cKsarppAD09+o4k0Slujy9wBAEW5phBUb+4ndTKsY/oaQq1d1h17sqn1Ebuitkdgb7L9pd
-	eYIceawoJEivwN/+0zQjGyaTpLrLcLg=
+	bh=IMtuZdjEjIyWs7AMMNhWKMWFtEfsA3Nf1pH3H7cBisk=;
+	b=O2MDA/FETNJVyKcNLNr9QwgXS1ab3QEszTyYE3ZWTvhgL7gZ7yt2d0kOiQhkhYXur6umTX
+	kT16HUHWXqYG4raSTBE6vUagDblNSt4bmLAlXE4nbLmnGe17SalXfzzzBiYXQDZcecyjkQ
+	Y0ZFRdQk8ozvkHNXL0spMlTsoVqIwEU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ac+mC9Yk;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6418b55f86dso254206a12.1
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 10:23:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764181422; x=1764786222; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dRuIsnJjgKoS1qB9z1CzLqIUDAakowpq0VO9vQCJiLo=;
-        b=Ac+mC9YkEezPwJXcO1Czagq2ZmbSu3xSazQMguFviQMXxNYlN6qD0f5/W7QcUreYX+
-         Yg3f7iLi/3sRmNjFb2XkclXGDOqV6TzRYu7QNBVw8PP7z7j2/6PeixsXBEgabyEkjjv1
-         v3MOf6YfkjuO+Q/SghOgfqIRZUieN2X5wf00EzLJCXqwPiep01qjjauvcwRxe7B12sHG
-         AVu16y2o+7f8s58aNJt2wb0tuRaHt30wD3mJXn08RuHZfT5N1p179zG3i2CyBRowKYkT
-         gQj8Vr0hmR3pMpPILl/Dm/H44owDFGmCJnHCFkYAHPijMEnVzExTDlkyzjF+igDeZO/H
-         +LVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764181422; x=1764786222;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dRuIsnJjgKoS1qB9z1CzLqIUDAakowpq0VO9vQCJiLo=;
-        b=KWBrPewNCa2giqloYJTPNuWYXbASlbTF3wntf2uLX5fbEnBI0VLelx57kDNLRnqany
-         jF3SzZmU+wDCsdqMU89EPqYnSYxCIpOt5ehXYR2/ruu/5BH1RkSvgBNqFmKBDL2qASkt
-         RrZ+CCeLTxEjjp7IqMg54KPJ0tirgpe+vF8dU1ItqWmjPcz6vhba/Tv7B6odeNSLKYug
-         lBuryc93C3TopSVWcpROCkvLpCz64Dp6rplKYws3cCH2P/X7dfI6Xk05dj8svDx2e3Y2
-         avMc6PiRClgK88P1spEaGEw+aThgHQjqVCk4bDRkwaDTFH+e46UB/tU+Vz4J0gaKtc/c
-         lTog==
-X-Forwarded-Encrypted: i=1; AJvYcCU9bBy8GlvSr1M/qkXAXxNlKk3uFx/XlvhSxXrMvY489lPkUsCzZGRt7ZgCsZKB8vTsObRoKURLmA==@kvack.org
-X-Gm-Message-State: AOJu0YxTYDFGzu/981js0pimaQuy23qdM5shMxoXFbr9Nh5R/g5opd5z
-	oJKAtJ9hj/4T66ikp3jc/CKTj2gFisS0JhrvNC6HSPE6fgwAh+EgnPJHgUWOO5CHrOiEDDuO9ln
-	GMgK7X95UvRNuBML3WItjWbwKDzmF9jM=
-X-Gm-Gg: ASbGncuFXDSfzu7/bTJeZM+SmSbWR0AqDoiWp9gzoFNY+7iye3FHAAh/ck5pRG5Qszm
-	VLb8et9QhIuaF0BIf9N+Yp2/5iaEsgy3AvIazmaEEgq/i5x4NAP4sj6VxcNed8eNdTolpmRwDnq
-	I4wz3Od0fHIxw9nrMy1tb8ZDxxWzrcOLqKgMH2sVUoWvpFGv49+BA315e4u+cufugK+06yeUHzC
-	i/qRQvtoVrJhWGUnILZt30cbtqinhgG34m3krdtgcrpwasVeftnxTKVSgRi3pcG8fxiqmv1Vxqh
-	w4vRF6SqJGmWPX5rSj9/gX6mHL14oASLfFQ5Yg==
-X-Google-Smtp-Source: AGHT+IHfWId64Bl+r0YOyvlkmE+V3LHeRbvPTT9hn04ORygcq1+Vl/SOPgIbbyCm/q1AOwPJakPkTTkcBXvioHfUPyg=
-X-Received: by 2002:a05:6402:51c7:b0:643:c8b:8d30 with SMTP id
- 4fb4d7f45d1cf-645546a3a94mr19642124a12.30.1764181422210; Wed, 26 Nov 2025
- 10:23:42 -0800 (PST)
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EDXwQLG7;
+	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764181696; a=rsa-sha256;
+	cv=none;
+	b=17r05O7IzCzXUb0TBLudDzNe3LwfopvsNL+E4VmVXhMEaJJxO08w6IPn9ZMh3q4jWJ9m6k
+	oWFXOWLBU+YEpEOMoBjYmNAqr2Exn+Vr5HJc2CWJZEhT1oiJ7NK+sYl8ZLwOlZbwyNIzL6
+	wiag166NnV19VtDhlpbfuWYCauk0gXw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=IMtuZdjEjIyWs7AMMNhWKMWFtEfsA3Nf1pH3H7cBisk=; b=EDXwQLG7m2/DlEb5zVFsUebFto
+	UnQWxYHYPvMC3prtF4A/VoM+H8WD8K2dMUAAoQeGEMeFI4AdpxeAuV0RqZAJG9+HTT4FMSNPqiy4W
+	/Ss2LcN4coLR/z43sLaE8kb762L7kHRzcn039qAnD5tAcPR5Pya2osfZYEPH7K0vtCRk+QOXkIEuD
+	bdEtMVGWH4WpWm4h2lh3VGK9LetesPEwK/eizmzL8BaRLHLAu0x8zbAMDWR1pXgVn9oDOrd/QcmHv
+	KNMZPOKIv0aUDffoksykP884/RJLrRkRQCMcl6wwM0Cwl+ERBW2LI1EFDmmYDbNNmWdtOqKaAsW/4
+	Eqi+43/g==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vOKFR-0000000AXL2-42jd;
+	Wed, 26 Nov 2025 18:28:13 +0000
+Date: Wed, 26 Nov 2025 18:28:13 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH v2] mm: fix vma_start_write_killable() signal handling
+Message-ID: <aSdGvY2UzrXdR2e3@casper.infradead.org>
+References: <20251126174500.2498895-1-willy@infradead.org>
+ <c35ab0c0-97c3-4565-ba2d-5c418ecac593@lucifer.local>
 MIME-Version: 1.0
-References: <20251125163027.4165450-1-youngjun.park@lge.com> <20251125163027.4165450-2-youngjun.park@lge.com>
-In-Reply-To: <20251125163027.4165450-2-youngjun.park@lge.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 27 Nov 2025 02:23:05 +0800
-X-Gm-Features: AWmQ_bk5_D9gT8Ce1YgLQS9O3714SdAy6SVNypJn_b9Dshar6lWuqwbdvjARYe4
-Message-ID: <CAMgjq7C0BVx8OVhEgJu3sVTAgTMrh_-vs9OrmwQhyFX6xC_LKw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/swapfile: fix list iteration in swap_sync_discard
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c35ab0c0-97c3-4565-ba2d-5c418ecac593@lucifer.local>
+X-Stat-Signature: 948pbo1pafmpau1r9zp6pah8kx97rest
 X-Rspam-User: 
-X-Stat-Signature: mez3zkobq9hu6m78izndyd1p96xqu9ni
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1D98FC0017
-X-HE-Tag: 1764181423-165339
-X-HE-Meta: U2FsdGVkX1/yq6mwPpDn2ciAWMNX572g7LvSefh2BS5ZYpeRXnq3V5gm+pjkf1MCCMBQ0AB6HUmXTFYsAq87Lss8DSsFiiHMqrcDjysf0KwYVqDN0hvCgre9kdm0NJjDe+I5rZmRQaFv3MQIzGdL7h66qj5q+VJlb/qneupXp1jlGoVS9U8AKS6QM/T2IC+zQMA9JYNa+1lrZwv4dJQXPodqVICOi3++BMdWb7pDs2uWRXxFUkcPmHz6POo6qotQnq1xpECmFxMdCR0otpgH9qfpANIspwYwXffI4U4PFidO/co04L1gAHdeurwx65orkXOsCzHWypGErXtzOkhlNm70zbBnJWe2RSmPqan4Sg9JpQdFgus9vCYkNN5vucsDJCINB+JMVi4q/0zjJGqVOvHw2lurFnsFEkbGAttB0p6GbBn6wUphbe3UGFe5F6C2l0jgSoBgntXs8h/arq2mxU9YaBmhJBb7Q67G73OdZ3CfrcZfzPJ5YHQLq5X8NJIjDAXJpVY862dvSZJ+pdIvJ9gr4tRF9zBM0WNwhEaeszBZ1Ulj3C/qltd37FSWUh+4kwaPRIMdmvHI5OMNZT+4fuxnM8YFPPiH+VK7jX7p8bR/Ii83bJ4MFQGHx9unL7ehUnxuPfjs0TYkD2z//RjBytznkvBegRVBi/40MSe5yhoPJUSXXOWE8xD+fjL2Aqgi87tVQB2SCfds4b9U8ZoCFqQ88219owG8kletZXUBu6kNmQiur0/rZ2/LYIoFeD3QLT5pN92SDDX/x1Yob7l+OfX0dtOBx/jVjveRqK5PwhI3kcYZWpr0a38zYuo9Wla5+vcjufX1rjlFQvu7BmUF6YRh4x1xIunfBoqMYJt0etjCFxfRDvSXuF8heH/vaSIZ80Mn5BxhPekpYutN9AR0LItQRNuXubVaejB9OLxUSi/3jWF3QUnrWe/Kvt5hZv0ZO95+9LToF6IpN1oKzGI
- K6Xlm/o6
- 4zzEARxf5S3Yz6UhtauLJPvx2te4cH/nKEa93zA5VBGu77zAla4gbJgjE9DgcbI1R9pD066QUuP6dQMv1DTs5Rk71Yg3aXcS+JIFoSZLqH5ssu+4Ed0VwoSYfV8/7JqihcUtCZCqsg6i4n3CsMcC9oWMS4ya3Qb5A766zsP2pBsrPm6pofS4TwssgM1mNgdcsV6XTV091CNqm7yDpk+CK4VaIzzUj6FWZoD+hCUyTFEcvNxa/fIMoPjUuWm14NRYuuQZT/S2gj+Sk/1fQaPo7iMfHS+U0LIMnKFDshfMBUedklHIrwID8Jj4PEnHenBCVvfnNBErexo+69HUHnp5ROQ/kWPq73IYCXDy9wT06yTnHoIPcMUXBXmPxLcYL+Buy0KI/nQVqO0OhOFA5e+ZXXqC5XrmZ0eJp6PTrgKwjIjhGhWmOLn4zw9WaVlHdOJkiufK5
+X-Rspamd-Queue-Id: A1F5E14000B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764181696-572191
+X-HE-Meta: U2FsdGVkX18cWTeBGNDIPwqBILRjLcosUA+fLLTXjduKbsNJw0LlzTmJk8kXuxnLsuN1hZDQAYr2EbL7K2zcu4s0ZmCBrPAaIe+Tl5FX5V5GLzQt6dlCRhT7WoR7b6QALeY4mYKfrO/Z4y8V0JEYs3UDdIXlglm39A+td/lQnI7iy6W9+if4WsUOSAPf0PuGzYzoSK5/Qadm+YRwwDSMmkiOCkZ1ZbErdcmHS4Qaur/3CKvNjx6s5Sc5RZtkVQg6hkVssulElzOJkkFEpyXoCjYROXPBJy4lFZVRiRQfdxLWsrbSxgOIm5mDmPt2Y7tAYjMXv5/yVEfjlQMWV0jAkQYY6kSSzk+KSM414uTjT74byAx0AK4CsDySBz3w1/bSOxRbAlDI83KLcC74Y3XS1QHM8oGBVi/n6mAjFZ2XL6Wqndindx6XkFTEuzF7PTkAYL4O+pSh21+yS2JQyPUGCmyhsLuiU2UcZuxCrYi3CPusw9S4lh0JprGWKXwaxESodDmrMCO+Bu6vyezbHT8alnTc4T8AS0e+WN1idSpB9MVL+xs3YUFNYB2SGyNUKbhx/RiwSXbUCvDPTgQ7fXlo+Q5L+unHnfi3R6mg22G2yRTrLeWN766IuNrUloosUgR9gl/ITdrvSM2ujeTlW+Rl5+2YM+6pwsQWmCf3pXTIswzYPoNbmIS/FBd6uzLMNxujZJKViiXitvmfbiFm0X2NA1p9DCFyRtQp4xD4VrGGf5yhsko2WX4yP8xTHlCEO4kzPlUJZ5bdst2fVEz1ruu+liZZJbaekByEdM7tc+FinWzqV5iM/cTINvwDX6HrUEOZpEKjZkcBmnRaODFhBEP2UiELcxT+D/3HIdNCuGsvQ57hMIwFzM/vGuc+bQo3u2xj7WedrJCvgN8Q+pNpD0tQG9u7EgEl7NBw/dMzjU6wIWvyzoHG7g63PIL0L4ta1JTd+vi3SsS2L/6RmIT914d
+ 972ZAmUY
+ 9ilhu4c4ZIuAQsCc/lF2bjcM6UJfyqt0m47vRx3/l8N2xFy+SAXoDGCY7AkOr471sALy/7OhPhMnI7/NukwRSfjZcbKf+B1JgSW7c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,77 +93,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 12:31=E2=80=AFAM Youngjun Park <youngjun.park@lge.c=
-om> wrote:
->
-> swap_sync_discard() has an issue where if the next device becomes full
-> and is removed from the plist during iteration, the operation fails
-> even when other swap devices with pending discard entries remain
-> available.
->
-> Fix by checking plist_node_empty(&next->list) and restarting iteration
-> when the next node is removed during discard operations.
->
-> Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
-> swap_active_head. This means the iteration is only affected by swapoff
-> operations rather than frequent availability changes, reducing
-> exceptional condition checks and lock contention.
->
-> Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during=
- allocation")
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
->  mm/swapfile.c | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index d12332423a06..998271aa09c3 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
->         bool ret =3D false;
->         struct swap_info_struct *si, *next;
->
-> -       spin_lock(&swap_avail_lock);
-> -       plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list)=
- {
-> -               spin_unlock(&swap_avail_lock);
-> +       spin_lock(&swap_lock);
-> +start_over:
-> +       plist_for_each_entry_safe(si, next, &swap_active_head, list) {
-> +               spin_unlock(&swap_lock);
->                 if (get_swap_device_info(si)) {
->                         if (si->flags & SWP_PAGE_DISCARD)
->                                 ret =3D swap_do_scheduled_discard(si);
->                         put_swap_device(si);
->                 }
->                 if (ret)
-> -                       return true;
-> -               spin_lock(&swap_avail_lock);
-> +                       return ret;
+On Wed, Nov 26, 2025 at 06:06:53PM +0000, Lorenzo Stoakes wrote:
+> On Wed, Nov 26, 2025 at 05:44:58PM +0000, Matthew Wilcox (Oracle) wrote:
+> > If we get a signal, we need to restore the vm_refcnt.  We don't think
+> > that the refcount can actually be decremented to zero here as it
+> > requires the VMA to be detached, and the vma_mark_detached() uses
+> > TASK_UNINTERRUPTIBLE.  However, that's a bit subtle, so handle it
+> > as if the refcount was zero at the start of this function.
+> >
+> > Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
+> > Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > Cc: Suren Baghdasaryan <surenb@google.com>
+> > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > ---
+> >  mm/mmap_lock.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index e6e5570d1ec7..3c9bf2f96280 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -74,6 +74,14 @@ static inline int __vma_enter_locked(struct vm_area_struct *vma,
+> >  		   refcount_read(&vma->vm_refcnt) == tgt_refcnt,
+> >  		   state);
+> >  	if (err) {
+> > +		if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
+> 
+> Really think we should WARN_ON_ONCE() as Vlasta suggested.
+> 
+> It's an 'impossible' situation so we should make that clear. And we should
+> find out about it if the impossible happens... :)
 
-Nit: I'd prefer to avoid unnecessary changes like this, `return true`
-is the same thing. No need to send an update for this though, a really
-trivial issue.
+It's only "impossible" currently due to some fairly esoteric reasoning.
+As far as _this_ function is concerned, it's entirely possible.
+I don't want to leave this trap for the next person who calls
+__vma_enter_locked(TASK_KILLABLE).
 
-> +
-> +               spin_lock(&swap_lock);
-> +               if (plist_node_empty(&next->list))
-> +                       goto start_over;
->         }
-> -       spin_unlock(&swap_avail_lock);
-> +       spin_unlock(&swap_lock);
->
-> -       return false;
-> +       return ret;
->  }
->
->  /**
-> --
-> 2.34.1
+> > +			/*
+> > +			 * We got a fatal signal, but the last reader went
+> > +			 * away as well.  Resolve the race in favour of
+> 
+> This is very subtle, I don't think this really explains this clearly
+> enough.
+> 
+> Maybe put something like:
+> 
+> 	/* Couldn't wait on readers probably due to a fatal signal, so unlock. */
+> 
+> Before the refcount_sub_and_test()
 
-Thanks!
+I think this falls into the "saying what you're doing, not why
+you're doing it" trap.  Whereas my comment is at a higher level --
+there's a race where both exit conditions are true at the same time.
+The rcuwait_wait_event() picked one option, but we would rather resolve
+the race in the opposite direction.
 
-Acked-by: Kairui Song <kasong@tencent.com>
+> And:
+> 
+> 	/* Shouldn't be possible - VMA entirely detached, so treat it as such. */
+> 
+> Before err = 0?
+
+Again though, saying it's "not possible" relies on knowing all the
+callers of this function behave a particular way, and there's no
+guarantee they'll continue to do so.
+
 
