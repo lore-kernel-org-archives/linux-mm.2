@@ -4,86 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8EA7D1039B
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 17:45:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0655D1118B
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 17:46:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61AE6B000C; Wed, 26 Nov 2025 12:45:08 -0500 (EST)
+	id B41E76B0012; Wed, 26 Nov 2025 12:46:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D38E16B0031; Wed, 26 Nov 2025 12:45:08 -0500 (EST)
+	id B19696B007B; Wed, 26 Nov 2025 12:46:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C75AE6B0062; Wed, 26 Nov 2025 12:45:08 -0500 (EST)
+	id A56BE6B0088; Wed, 26 Nov 2025 12:46:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B82BD6B000C
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 12:45:08 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61F07160703
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 17:45:08 +0000 (UTC)
-X-FDA: 84153484296.08.9FA12C4
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 27D6E18000B
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 17:45:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oHrk9An4;
-	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9622A6B007B
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 12:46:37 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47E3F1406EC
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 17:46:37 +0000 (UTC)
+X-FDA: 84153488034.18.16EAB01
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3F771140012
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 17:46:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764179106;
+	s=arc-20220608; t=1764179195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=v+f0U6dnVkw85AC8BGgvKilEaE3btbEnKSaHNVU2XlI=;
-	b=TVOPDchZXbwYZGYTU0AimqrSIGxSdUFe7TkR1q3XpAMwG4HBNbFZgUEL21JTjVz6OdSVPH
-	oky4QlhRMJdn4lPFZm3+Jgpd3Uw6oNzRwjS4Ih23sU7TcCMrcezaYmxomTee5GXSx7H8kY
-	/B3nEpp4d0rQwKWDOQgJw0OwQhnLtww=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oHrk9An4;
-	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764179106; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=ngh5WCQQNN28DIPnbePNrqfYLwUi0/9012QJtQO9mIo=;
+	b=TFWyqquSeRmUarNotVtZf+uo8MQ0YvFMRHslnfcjjAhj66/b8XBSN0qx4Uob/WjTEhsXeB
+	46tE7vXGSUWfZNoCbkWKI5q1JuVUOzbFrIq4F6rKtoRX+Cb2mK1XRq8yqBxn7QYvrNwuXe
+	2oyG5MNdRu1uW3449K2FaJVmwTdjLOs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764179195; a=rsa-sha256;
 	cv=none;
-	b=fv+P/TF2EIOJC/Gc0EHKWgVMZQFCZludU/fpD8hNCO/jG1b5vwSEdxUoC8+UmxDbDXWyO5
-	8Mm+ASaK6pYV+59hpeoZfyDaWxutYA3lVZfZ6WZTBfvdkoBO8sNUh2fQCoFtKzJH0WSZuk
-	h3xVC0oNBt5lArDWp2Psb8cSHZT1/XU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=v+f0U6dnVkw85AC8BGgvKilEaE3btbEnKSaHNVU2XlI=; b=oHrk9An4XolIg+rFqd/p6qgDpY
-	1ZcO6RWVC03VXRMeUW1+rYmLBCFjz0NcU983ntLVcwYB5Raoh9Xhf1ZCJ+5qiCK11YZVeE6Bkehwg
-	N7bTG1ybhsOWrovMWDh8bw93lhURL0+c9ubvXiIdLFKmVngPJylgDqbXc0U/98fr6RXRnX9RTdtqF
-	lJgSJ5K17jUx8VEXtqEPYWQP2jahzss2lZ95hqBE133geMDm56vjLhvo8OOKJUTluE0XMA13D5nU/
-	9RYBLz/bJk/XW3gX2+KnwAiaJhuPmta85lyexEEc07QORHbo7ks7wRxCrnXDJqqHiFXv4j+1HsKcF
-	rMerdySg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOJZe-0000000AUBr-35yL;
-	Wed, 26 Nov 2025 17:45:02 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-mm@kvack.org,
-	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH v2] mm: fix vma_start_write_killable() signal handling
-Date: Wed, 26 Nov 2025 17:44:58 +0000
-Message-ID: <20251126174500.2498895-1-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
+	b=yYN0qc7oYX15FI7+ZDZUti4itXCOx0Ccr+Uk3a5TVn7qRgrFwNL+/IvQ2zUNot/b8gqJt/
+	H/FDRuKNSYltuiN2tkcxz+iB5tQpt0OnIDoluw4LC1fnZIxRVf+Yr7gfYxQ7a/ZRBAN/ii
+	GTPARCyRZZPBfJ4+Ad1yRENHToHlxWM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	dmarc=none
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7c6cc366884so30561a34.1
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:46:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764179194; x=1764783994;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ngh5WCQQNN28DIPnbePNrqfYLwUi0/9012QJtQO9mIo=;
+        b=CfhEM0cBZcvkxjulMqXNfG1ILcTKu1tVE2wrn2M7PGE25QYxkMKpS7+/KkBZe306yR
+         s+Y32iIeKKmmD5ewopvwWxCLEPzxt24XkAaFjbjywTPPeepxOMtLcmlUmHNXfeHwjsxj
+         TEhpG6uwSTk6pI3Ce2Xgp5Fc2JFiMOnE+iSyFBZaS6AMB9arGEeP02Cn5ejvcvner0RZ
+         hru8wDW3khaAMxCrJXMrbpbsxm3cP2KH1T/x3cJkQGTApndKPG95UDRfh5L+9Wi9hIpV
+         Pxy1AE4GA+qevoZDDLH+oCBP75+0Q0v2j+tSJ89R8ANSPF9ZEfrc9AKu6Wg4LECxeaFe
+         LCSA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVc2FLJsgByVNbP1zEzS4xgh42jewFWvGTC1rjmXKJ+s/dYnoAgaigV3KnVd7LPIdO2NOexDWxXg==@kvack.org
+X-Gm-Message-State: AOJu0YwetyKrP+DgtGWwjjPD1rY5yKX9nCZYSydzLzrFnxGQ1NJRFjwc
+	dZfCcNA86HigAPVpbFJgeDo/KRGQ0k/dCKvJnIfdY8/rkQByEbPvHQAc
+X-Gm-Gg: ASbGncvzHWor8kt9+4cuLY7/+NYUoktcLGkUICbDAv+fhICei9R7v4arNizLsRBKpr8
+	W3G7/oRxQxD9rtrJhRD6ZsYDirZX7cbPiLOeR8xIXHS122a5VKXiN+6wSRwjikonsT8CmukqJOj
+	PYLqlvCYeOnFffk7axNmCxi1Lgx6qP5kwLI6tGMmdSWn2hPB7wn8VOk53TexfNa8zzIXLnTz7hw
+	94oTDZvuiwUI/hl1MQNcQKDNs3eI+RJvJsuMPtQoO4+MNyz8RcYm9s4Uh02eMCy9s5YLltO3/i8
+	x3zTe72d6tsqBbTKF5MR9fuoIZmGIsUUBK0CoHp/sm/PAaGx6fuCH0pXoGOe36Y2GcynDoPl/VS
+	LnXfeYwgTuuEWwHLWw8J2Dwwxx72bJ+EwLUO6hEJ3zVZCuCknQTR0IojgouTlYOgBcJE6XoSptT
+	1l+akr5FT7wzx0bQ==
+X-Google-Smtp-Source: AGHT+IHQtRk3cqHVtBwOM91S3QDUC4t4B343tUf0oWTeq8a9iKRiUd9uXUElLeAEu3SmK2f131kv3w==
+X-Received: by 2002:a05:6830:6751:b0:7c7:6c4e:ad2 with SMTP id 46e09a7af769-7c798f9e05fmr8496172a34.11.1764179194223;
+        Wed, 26 Nov 2025 09:46:34 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:44::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c78d302329sm7761526a34.6.2025.11.26.09.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 09:46:33 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 26 Nov 2025 09:46:18 -0800
+Subject: [PATCH] mm/kfence: add reboot notifier to disable KFENCE on
+ shutdown
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cirhzx3nhc9gzbyzfxj4exk6temxoe7x
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251126-kfence-v1-1-5a6e1d7c681c@debian.org>
+X-B4-Tracking: v=1; b=H4sIAOk8J2kC/x3MWwqAIBAF0K0M9zshtQe6leijbKwhsFCIINp70
+ FnAeVA4Cxd4epD5kiJHgiddEcI2pZWVLPAEU5tWa9OpPXIKrBoTnI1utq53qAhn5ij3Hw3j+34
+ KGHzxWAAAAA==
+X-Change-ID: 20251126-kfence-42c93f9b3979
+To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+ Dmitry Vyukov <dvyukov@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-a6db3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2763; i=leitao@debian.org;
+ h=from:subject:message-id; bh=9U+GnrSlG5sCxW9pY3HRrBJ7UI24sm2FPtmuWSKIX9Y=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpJzz53hh71o0dkkgQFrG2kU74cUuCamS+nyHar
+ AitaN7UfBmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaSc8+QAKCRA1o5Of/Hh3
+ bddLD/0ZiqTCTHMsIVZgo/sRS2o3c2kxOP8WK2lZX7zOxZdIUVFdd7ttiVQk6+oIvRnJ1mC7qYZ
+ r9TZMBjc6E4WZI/P/iyRUxUC70JfDQs5mhERpJz+xWX4x7GcB2R0HymsyOkKa18wLCpuM3emKMX
+ wv7rzT4xwoaiY6KVRkJr+YMLm4XWKRDIHcfg25U9khuh9I21EkHAJSmGEW0Rpp43h/gW0kTEaMv
+ /mtMN0PtQZrKzsKJcNawEiornCfbPvUfoZ+GN0vcgJD7WzFNdz5F2tXtik7SRALjOXju7ABthTY
+ xz8MAhLuGM+62d4gY7bPKrOwjOAaL1HFj5zdGKUXNvlWkXBL1j3KPMlDgUvdnMT07QlUu43i2aX
+ 0oN8rkdKyG8JHEhJwCTeWbANuwCLHEXltDwBWfoRoA97/RtVCQ0s3X1fVt5bgUBINMd10cjVKGM
+ i54kz044jZeCJcIxr/Z8iF2uUXQAuR6QptQsf9yOrtFbC42Sply8HtAALjc7/STmWOjUGKAQJbb
+ KnMU3RYqZZRhNmrv90GeEKhVp8WzcQd51JoQiDS+tVzETKzkrCGhjUgAcUXWbJZTINVVA2wSENr
+ A6wG9LBV4aAkQi48ioTbXCXgTj7cPxlDp8KZOiXy37Z0Q81ZOolT2JEnL8JGqn2kOAptNBm46ng
+ tT/lpt3LrS7mibA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3F771140012
+X-Stat-Signature: oykugiryfj64wo369udb5ocuefkpypzk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 27D6E18000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764179105-930790
-X-HE-Meta: U2FsdGVkX19XorPB/TTLgI7iuGG41jKGcSAoYe5eqI/yGvuoN5HpcvaJ69JwgKZWbsJg/2RXyLzamEUzYtR8aX0RJ1l6i1EdwQ3wZ7SFtmkclqaS/3NiYzFEeoaFXHIEk1rJMQ7yvkqW5Qa8+bPb9zxVL2j1cVtoxCVYoJzQOhtFBwFxs/49e72Q5RziT0TIqT6T+pAI5lADtEcJq4mguWeLvFiEMOB8RrhCh/RuKRI9Woywo8qdplq1gnayBUd2dj1Mn63DzCQhqB4F+6NPZhHUruLE5ZgOCYHVl7rfnaSLLYG5ZTEcALKK0YW0pGE3QhINPveGR4u4Ofh8uOFlrm1DwUdsqddsbAILSUmPDkLmvP9ab44l77UHZ78CybLXCs/o/wsKfRDUcYLPdfUDoimYvIf06co9kWrE5TQKcG9PthwlwTYa4/nLADDGwsK9By9mYfY8b7jsUmPKnzdvoI+7TDOYPzLi+s3JzYnaNuw8JB275/nwTjOue0o2enz5kC7+7vnXFb0fDfO0zHFXhebwQLQUbzHxvnv5tJn8zlirjNvUhogESUxZfFCEnjqXgTCxTtDFXmtRCYvOXezSAn24ejhIbB3h+OFK0TTjFUtjEbwhuKOjPea5YqfWRpbERYHtgH1ZANYQmdguYu7o/YkCvCTK6k4o46yRC3yk8wbCY4XJ+b6HYfnI5mhJpTH/lq4V/XGxYgpLfQag8r2IFR+py3R7J1eNzMGBHmLcyr3bVFUYzpSKV5FGwqsTSavyykDxDsJIfXxLkzBH+3ev4srwijAUEUn1TCLAC3qKXH5hBJz3p3pWeYcnQzeyf7g/NmP8YPe+JPjVGGckSpeMo42tmRtXcBjQxWT+OLD/JCx8ujiJs79n7i0IHjKJWprvayG5aoSuScFqWCnMXDVFOGBlp9weSJp8E5pnROwn19IMFpE4aK2W3PweLZwrv2U4gyUwO1T4ndb6Wp7jpGS
- C/HLPOcf
- G9VEKcfHYoAsPcO+l5nQ4BOaFcTGqhTLAPmZp7BUaSMJrPq2RJdx0oocHfr8MiItOMhh6c2IK2/TdAjPYoxR8ZkAPfmTx6Rv28OtLTpYCzMcuorM1A/LNdszi7HtvBzE+jRDcnpng4iWxP/ViL129Ye8dko9zNBrGVxTVyNesMW7C2bHAG7AR3RRgFbArNQ1JS9YglWC7Pi4zneviiULB/Ede/6iJ7b1w6wdg8tMc6anRWyD5D0RRfXR28YT/9LCAtxLmAcR7GcBeX417gTwBhEbsuNiQYhfG2uyjnsR0QKyc1Xxw4MPxiAVZDYLIIOV6hrmYKoQyMeMp4Tvc5o82vtaaYAC5haCdxUaY96ZyIvyrOhMxjrKypTwDXhwACHuSekj8MnnITjkH8midOJV9mgs9+KA0+wdKYvSys5QNMjkAJrGW9f9HIZ9DCQubIn4LGMoIS5anF/+Kgw38QbQ8U9Nyn5Tu1kdElqFtcT6SuzQApXO00K9E18HKLZu7cPbgIkjy
+X-HE-Tag: 1764179195-169723
+X-HE-Meta: U2FsdGVkX1+1RrGXf8I62Y5G6sdm9duQ3ebwsCOEOa/pgaMw2POmaVNCIMFpdTRuH3hgu+bcmrwqrlHb+hY0g/Mp0vpnr2YSfdO4VmvsrkYeoP+lSjPWwjX67E6gtUCvcrfPsK4b85eb2MggbPgo114u70dj6dwGo8X0pYxQbKsiwZRoE2+FTaru2mev+QMFbRDdx9/2RVGojDT3D37VUYUkEI/ez4tU8UTzHaK+YV87XetospXm4ixc6I5aMBXyDvU2R3bA+P3V1LgPEX5hYhfiXy9k1/L9jqfFA+Qa+vWrV85ABJ/jiU35OxNOvQNhfFkagLLXB8vuyo56vM5h3epMDm5ZGZnL7zBGl6Pb8rGPC8tNbwpaeJ6H54tvBCxiRK1Hqizrsh8MOTyqRThDF3B31PC38SrgsumfstjeMHQ+yPlzFPl58esk4BIfxlOMvlNv6UqXOV1qRt7VDfbCLsrou8nQGzkpBYeVWQBaeqg9h/SnHTGrkku+6qCJMgtSjtt5pDvLxRxLG9v/432C4Zm5aVjQdaC6WQYiN8dF4NO5kPoIdMvhQudWV6GM7Dvz2bImpRQwTT1KDgsEnDEko2gPLcLUXYreIOqP7hVfw3F4TkgR1UDYgOi9BybQb+JULnYOe+cEZPYF4pFEN8AbDhpojtrJScszUWGZpv1iOYj7DJsrk8gRJ1DvD7y4v04065bEFcAUt9SC8vMOv6TKgxDPPVU40YLcXFroBhI/Fm3bLFAG0sAFqQsEdClTTUSeJ+1tJ/dXWvch2M63cuDi9UbmfwLGtAYmKrQQg+9S62oo2Wb0D3AeIxjeffemaWklsgXvIMD2Fzr0e3zaJ/+44DSMzoHlpttGS8UlzZaYm598cfl/SVz5kfIFq+3NQ6Hcrf7rKXm7Pa6NsGuAzVRHCzhdJr0s1XfeRZp4xVzNQTSmGVFHX+ZGdDrGSmwQB33/3QgeNv3r5j/Ed71qAnI
+ Qt+7K7Yd
+ c/jYt2oTeBpVQPvi6yXrbPvwTWIYygiJTD97u8zRq4NFUE4MyFXz+uSeOhHeF0BS1sFTQDJDaAY14e4abpTaJNffa2enFTdKuDcZm+H7IB86B8R+48HmvkdvW9h5pqU7PaRIXMDURXKyiR+Y/efaU1ePLsp218O6cgs8cW91zY7dAUr0SRp1NXDdDz3u7enb1RuLkBs9TQAxaF3c8OBLGeu9ryIbGe3pt40v5zdJLR+k15toD00UasNJwxyDMXewwAjHZR/miqV9A9rop511Ky7xLK/9Ir1gd5GOFfM0RnmzLPqxRdftw2eVJIJigfuy0ARITFtOFa+xPS9vONNipA0MMsFAxNefWdp9acRnygRvwGD2Mz6gDvy2pR4lser2/k9xP7/r/pJARbZRabX10czDvP61w1jFe7f3m067pNcDJB2qjLPeS+KvponSRK2viCJ6wll5xi1D26t2IGg/ZJQ7dfw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,43 +128,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If we get a signal, we need to restore the vm_refcnt.  We don't think
-that the refcount can actually be decremented to zero here as it
-requires the VMA to be detached, and the vma_mark_detached() uses
-TASK_UNINTERRUPTIBLE.  However, that's a bit subtle, so handle it
-as if the refcount was zero at the start of this function.
+During system shutdown, KFENCE can cause IPI synchronization issues if
+it remains active through the reboot process. To prevent this, register
+a reboot notifier that disables KFENCE and cancels any pending timer
+work early in the shutdown sequence.
 
-Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
-Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+This is only necessary when CONFIG_KFENCE_STATIC_KEYS is enabled, as
+this configuration sends IPIs that can interfere with shutdown. Without
+static keys, no IPIs are generated and KFENCE can safely remain active.
+
+The notifier uses maximum priority (INT_MAX) to ensure KFENCE shuts
+down before other subsystems that might still depend on stable memory
+allocation behavior.
+
+This fixes a late kexec CSD lockup[1] when kfence is trying to IPI a CPU
+that is busy in a IRQ-disabled context printing characters to the
+console.
+
+Link: https://lore.kernel.org/all/sqwajvt7utnt463tzxgwu2yctyn5m6bjwrslsnupfexeml6hkd@v6sqmpbu3vvu/ [1]
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- mm/mmap_lock.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/kfence/core.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-index e6e5570d1ec7..3c9bf2f96280 100644
---- a/mm/mmap_lock.c
-+++ b/mm/mmap_lock.c
-@@ -74,6 +74,14 @@ static inline int __vma_enter_locked(struct vm_area_struct *vma,
- 		   refcount_read(&vma->vm_refcnt) == tgt_refcnt,
- 		   state);
- 	if (err) {
-+		if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
-+			/*
-+			 * We got a fatal signal, but the last reader went
-+			 * away as well.  Resolve the race in favour of
-+			 * the vma being detached.
-+			 */
-+			err = 0;
-+		}
- 		rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
- 		return err;
- 	}
--- 
-2.47.2
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 727c20c94ac5..162a026871ab 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -26,6 +26,7 @@
+ #include <linux/panic_notifier.h>
+ #include <linux/random.h>
+ #include <linux/rcupdate.h>
++#include <linux/reboot.h>
+ #include <linux/sched/clock.h>
+ #include <linux/seq_file.h>
+ #include <linux/slab.h>
+@@ -820,6 +821,25 @@ static struct notifier_block kfence_check_canary_notifier = {
+ static struct delayed_work kfence_timer;
+ 
+ #ifdef CONFIG_KFENCE_STATIC_KEYS
++static int kfence_reboot_callback(struct notifier_block *nb,
++				  unsigned long action, void *data)
++{
++	/*
++	 * Disable kfence to avoid static keys IPI synchronization during
++	 * late shutdown/kexec
++	 */
++	WRITE_ONCE(kfence_enabled, false);
++	/* Cancel any pending timer work */
++	cancel_delayed_work_sync(&kfence_timer);
++
++	return NOTIFY_OK;
++}
++
++static struct notifier_block kfence_reboot_notifier = {
++	.notifier_call = kfence_reboot_callback,
++	.priority = INT_MAX, /* Run early to stop timers ASAP */
++};
++
+ /* Wait queue to wake up allocation-gate timer task. */
+ static DECLARE_WAIT_QUEUE_HEAD(allocation_wait);
+ 
+@@ -901,6 +921,10 @@ static void kfence_init_enable(void)
+ 	if (kfence_check_on_panic)
+ 		atomic_notifier_chain_register(&panic_notifier_list, &kfence_check_canary_notifier);
+ 
++#ifdef CONFIG_KFENCE_STATIC_KEYS
++	register_reboot_notifier(&kfence_reboot_notifier);
++#endif
++
+ 	WRITE_ONCE(kfence_enabled, true);
+ 	queue_delayed_work(system_unbound_wq, &kfence_timer, 0);
+ 
+
+---
+base-commit: ab084f0b8d6d2ee4b1c6a28f39a2a7430bdfa7f0
+change-id: 20251126-kfence-42c93f9b3979
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
