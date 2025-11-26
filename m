@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E710D10F28
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751A9D11186
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:50:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D31D86B0028; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
+	id 6C9266B008C; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D095F6B0088; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
+	id 6A10E6B0092; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C46E66B008C; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
+	id 5B6DE6B0093; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4A0F6B0028
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:49:59 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BD9613B91E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:49:59 +0000 (UTC)
-X-FDA: 84153345318.22.61F5136
-Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D5C9740010
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:49:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="NfGl/JfQ";
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf12.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764175797; a=rsa-sha256;
-	cv=none;
-	b=dJPKUXVUxr+vGrR6ZGjm2Tv107lclB0w9NQjek7Wz4BQml/KMVbtclfu2O1bGAj8GivgQh
-	gjhBAGCQPLtCaJjFL4QjYXyE6CckV2lgYCTH/SzeBJdDd3qVbYz4+Z+XZ4D4h/eOs5b7Wv
-	YrEIvUvJKW8tZ0DPEvoviWqFKz9MpXs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="NfGl/JfQ";
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf12.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C2926B008C
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D730E1604D8
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:50:11 +0000 (UTC)
+X-FDA: 84153345822.28.A8354BF
+Received: from fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.64.237.68])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 732C9180004
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:50:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=OO9Qum+W;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 3.64.237.68 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764175797;
+	s=arc-20220608; t=1764175809;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ODZ1VeNiyr/lGvz6HoLA70V3LBo9h0c48wtwRnKdqzI=;
-	b=Tk4I+Q6/WZzyYL22IrTUW1kAXUfTtGJLdlS9daagQ9cURWs7hjcZth4S7d2bMZ4kAaWO5e
-	e2QQ8w8HKUs/h2UGuxLmRoi+Eqqdl6/lJ4ScgVcfPBiDYWoF3M+Fr/4+inXr1Ka8SrLShK
-	AT2x18KKPy/vdXI+AypLhzyYfoWbKq4=
+	bh=hOWpCuTZQXXu+UFDi92tkah8da8iWaYrZywVBBw9cnQ=;
+	b=BNbz/Fhx/JDfV9tP+I0pxQsW//XoMBLMB6AdU41DzDNIhWKWC6Vs39gss4FUlnktUhWmFy
+	wkNCs7YsS9c+a3HJRGl2cVWL/6e2W20c2RntbQUnDDaK4WFKAbFzqP/yy9LTgdRufV09yA
+	wajrtvMF/27A6KUr356YwUqm5BsY9rI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=OO9Qum+W;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 3.64.237.68 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764175809; a=rsa-sha256;
+	cv=none;
+	b=I3dPkhxqtPr/1jWKB/wrGl34gvAW1jdlG0PbsnG14kBmFoLlgMDyO85ManSKI7uTKXJVxx
+	V/xF44JR3VP+J/Zty88+f9drRcNDQfg4FeH6q62rX3mzMryg0eJMt5Wqppo5jx0iSc8I4V
+	BDL5c79KUYtn43CRXMfVDubfn7u1ACU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1764175796; x=1795711796;
+  t=1764175809; x=1795711809;
   h=message-id:date:mime-version:reply-to:subject:to:cc:
    references:from:in-reply-to:content-transfer-encoding;
-  bh=ODZ1VeNiyr/lGvz6HoLA70V3LBo9h0c48wtwRnKdqzI=;
-  b=NfGl/JfQ9L+0oSEnCpOJst5f1AAtjdH9TrvI/sEluebD3L5A9R0n0Jqr
-   44a1trsGO4G/Qcg5XF8R1ZSEsXBbKVwdsc6hsOBKvLZRxR7rOGFnTxG/V
-   nTQ3dXIykAL8/oFV+RZtCT5wsajYYTAX7ZXJXGhywFXufOe9VIUzFjodz
-   GcsfagW5Wl84z3FsCpXYx8cHLrCqj4sEwOWVsx+VGPEqfu43+5sVKEaKG
-   vOV4bvT6J6XKmtEi/vSPt//Jyssht4RrMhHUGJPsUWi/IY/e62sERPro8
-   aET/IPjp0WYLtuy4VMjl1Yg1MP9e3losVDACT9X1m3AA4GDNVJSAnIl1j
+  bh=hOWpCuTZQXXu+UFDi92tkah8da8iWaYrZywVBBw9cnQ=;
+  b=OO9Qum+W80Q35ywAVa8NKTAjDngK1bHGGH0Y8xK0RiE7gGLSyHZaUX0Y
+   4O1YXJw56WqRFGTvhqQs3JJggjpg7bNTTbCBAhh/08D293SsL6QL2nIVE
+   LFEXQhgW9ivFcKjOnaz/OVHfytvVaw23Igj0gbKPjzInFx0JyOsZKioJ5
+   s3SmRn1v6WfPKebA42jc6pH6ofbZ5wj5lEJ89PYfOCG3wygwA/aCpH0wM
+   xffSXg6OgmQsfRfMLSLYMt8EbmRl8dAmQJy2HmChXA/xinW4yiNNAOh3k
+   s8CzdIUHSIGQSEqgKaV/QtjKZrX6Gv1xGkgvwO4k4edoJRFfs5foJXpe6
    w==;
-X-CSE-ConnectionGUID: cGVRR6noRwWrARLD/aWlaA==
-X-CSE-MsgGUID: 8cTU9VN8SHafCqwLnVItPg==
+X-CSE-ConnectionGUID: KZIjcG2CQ6ucnaRhPFfPyw==
+X-CSE-MsgGUID: eHrl8mI8Tee2eBv0E8nJCw==
 X-IronPort-AV: E=Sophos;i="6.20,228,1758585600"; 
-   d="scan'208";a="5848663"
+   d="scan'208";a="5751043"
 Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 16:49:39 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:15053]
+  by internal-fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 16:49:50 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:17770]
  by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.27.255:2525] with esmtp (Farcaster)
- id ac3d6538-a606-4006-a0e4-7164b8793913; Wed, 26 Nov 2025 16:49:39 +0000 (UTC)
-X-Farcaster-Flow-ID: ac3d6538-a606-4006-a0e4-7164b8793913
+ id 2808e225-d96e-4595-94bf-b76a6f3bfa50; Wed, 26 Nov 2025 16:49:50 +0000 (UTC)
+X-Farcaster-Flow-ID: 2808e225-d96e-4595-94bf-b76a6f3bfa50
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Wed, 26 Nov 2025 16:49:33 +0000
+ Wed, 26 Nov 2025 16:49:49 +0000
 Received: from [192.168.8.204] (10.106.83.30) by EX19D005EUB003.ant.amazon.com
  (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Wed, 26 Nov 2025
- 16:49:32 +0000
-Message-ID: <bafb0c9e-9ce6-4294-b1d6-e32c41635add@amazon.com>
-Date: Wed, 26 Nov 2025 16:49:31 +0000
+ 16:49:47 +0000
+Message-ID: <18b4cddb-3e04-4272-9f04-6857cea70ff5@amazon.com>
+Date: Wed, 26 Nov 2025 16:49:46 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v2 4/5] guest_memfd: add support for userfaultfd minor
- mode
+Subject: Re: [PATCH v2 5/5] KVM: selftests: test userfaultfd minor for
+ guest_memfd
 To: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>
 CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
 	<akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>,
@@ -100,7 +100,7 @@ CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
 	<vbabka@suse.cz>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>
 References: <20251125183840.2368510-1-rppt@kernel.org>
- <20251125183840.2368510-5-rppt@kernel.org>
+ <20251125183840.2368510-6-rppt@kernel.org>
 Content-Language: en-US
 From: Nikita Kalyazin <kalyazin@amazon.com>
 Autocrypt: addr=kalyazin@amazon.com; keydata=
@@ -112,20 +112,20 @@ Autocrypt: addr=kalyazin@amazon.com; keydata=
  ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
  ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
  i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <20251125183840.2368510-5-rppt@kernel.org>
+In-Reply-To: <20251125183840.2368510-6-rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.106.83.30]
-X-ClientProxiedBy: EX19D014EUA001.ant.amazon.com (10.252.50.20) To
+X-ClientProxiedBy: EX19D002EUC001.ant.amazon.com (10.252.51.219) To
  EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D5C9740010
-X-Stat-Signature: kk8a61q9w8k8rwmbcngo4acrdwpr6pcd
+X-Rspamd-Queue-Id: 732C9180004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: hcy3w44ixkqd1kpn6ododr8tmno4ikts
 X-Rspam-User: 
-X-HE-Tag: 1764175796-241262
-X-HE-Meta: U2FsdGVkX19J6wXcH3YBnS2/ocKKLsALs1PmjcTuE47rjqlUNtim486cK0BxLftu3l+iWg+7zJNyjlMSAi6CY616e98kQ/JDYy9HP23sk0wDmRQSJNlv4ShADm4voZqqUj6nx0T2zwBfp+42kOaiki6l6++DcOtQhcl6RL4xrKSXMgCpmV14yft1BNfRp05myg+rc08XULgx/fJOm7K61AlbVLDK6W8SdEmyRdn5HEhef24Q9Ou9iHQqCdrvZW8siWTFQd3rMnZMgQvAqa021OJoHUrZf0eKvLhNZrA/l8DEGbPLQk4KMc6NDrASw5XUPE+7AC5KX6eO/h2jGtYVE+DmglVC2q99+cMxnpB46EcokqN+G2WfMcLa3Ij7sYRfLl/1BKGQ18SIwl3YD92SnqD5klNtSnGDiU2f1bMwIH1ZBkI0Popww1pwid9GDnxhGnY6C9M1Fg44bBtYstTzdMVc4Zg4zfio7zKvCuiihZG/OcgnOQSSgZ/6Jti2SJfOv2lh1CLQcQKORc7yZ8f/pVRUlIDswWlg43yjuRepEOHxBbC9XoJoBMVZNy+QLsZLoDFRVV/5x+FkKu/8R3cUJr7Gk8FFPLRjBMwXOAycjn/c6bR7gOmaRqeHw05bHYq2i5fva82DsPWxHbLQf1G2d/rftag+9Zl0zj0U482xe2hdzN2sDLrcH8eTqdwMWeP3gA9uE8KnerJBl84RrhzdPn5+R/m7AsoilSmGCX1pT/DM+11pz/DZxp8DOOrZaouuIIIOC65AdoJgomPeAfUHy+S+oHR2PS24k/G9vmG25j6cDKS9H43d7s+LntdlQnrC0gvGbIuzw8lx9FnsDHP9t+eWuCU9XTi0LUC0+YthaQO2fTO7FLWuKal8CX1PqivF8sOnwR88NNL51m7g2jXUXdHS3ZqZ6EBNbrCRGdYU4PzC0yK2jmIZep2mTchhZe4x3uAAnoqw+OEsZDFa9UQ
- wBD1wENh
- 59dp8iN747xgxRRVnesotS4eRAAx1coqjB9q2OWh4FMSCgW0VYJ/B5ZInSBDZ7trzB29qYEV1O3npVtEsZCorZHeGz9QhJjZqq8h2hHU6i+i8b9nnJeUkjG9qmuQ46C4vpsr4Xrh94re6Z9eI8cjs22Az4WlGLYNsS1xMlLnqdVSPEs4+ch2WTpbQrPd0NKUhbBYHYSch4/btlqqDUQH6dRvQJu4w7tR1HKBgicxc3WNqI049qO+u9y9HPd+x2e4CInOU+onn9F8+h1j3DXUUBDOD6tcTzY0Rwi0ZjhMLzBKIWPDE+ZccjP9Yu+kyN4Fzbdr0RecPnA6bt2pfmJrQMmXNiByQDGwguAKomxGTUWaOD7Vb0ofU5Hn0BD1kfbQziEZCCre0+ygOQX3+BmsGdC74UV/1VnXK7yha7ReYMVESlLr5yDL1lQB2hDIwxyyiZYMOXI8W0QVdsf7Y+Fhkmdly9SE5cnepDooPU+DpQW2OPrU/vSioMaCdT7bYXXMGOoPO/eU6BoRp+OHb4n36+KpIZe272xnMaM5LzTmGKps97EcJ0I7fA93sb4ye+kA6wr3CefIVgUEjL7x52uRh0s8aTRi2JPJioh2Ksm0fxb3I9qLGDPpDV62CJTIFNmlmVpBApCQSIFxP8px2eS6ZXmUglAtJk/EMRUBb0H01fY7XA47woEcUZpwp+wS5dDtMUbK3+zt5K+/7TXDzlC8DUeACLYBF4OE391zQhFOQ4vHLJGkYVCpZr9c15DnnjnEGwCHWvtRX6Ca/W9nDaSlbzCOWjav5GyhT+HFvIyINO6Qxzl/+IDN9pTLHHYNJnI7Yls629+Kk+brdFy87mXWNu7g10mgQBiRGZ5AWyfE43luRZwFCHh6MzORaEBRwynS/ZEi+vtxBzNXf20VZ4vBtdeUr53Ij/AP044PUFTnBKvv90zKfcVaRqwA5jvXiowSw8OhRk2lgk4E/4kkRkQC8+55/AQ==
+X-HE-Tag: 1764175809-794810
+X-HE-Meta: U2FsdGVkX19K6NLoad1Bf1G1WFzQO27DlnD7RrFfAdXkCPMqcw06+odB5nF16wPRK+CPCOmy0auR346cu+5TrUTT3C0o+NLCOPc3kH856vbprq5307u3GjE35rsVcV78CFeEgzgmuBHcgdjipbkOTnTXjTyW3bZmPdHuP85W7C+i9kaQT8syETleIP//XWuaiBCare8PQFRiwB+k67oRLXUmwrHT+ZXA9jh7jvg0lgf86thOWr5x3w5+Beukjpwrl0GeLSeQ5GAgIq81bqjhLOUgoTW6i31H+WpCOm4ZCJREkvqpj/bsKhN8XSQF760r1iM5u0Q3tNr+VG8Rqi9cYu5GIf4P9vJPACpxvUVJ1tzMCi+p2Zoc4lLjwoRQtLmPe0wHXEXBcmAMH05hiDaxfTyIyiuYzYxd0rgh2Y/TpAfxn2DlN3qJpK9un5G6GJN1ZZC25Pv87jt60hmxEntoBS5WdARtGqwU/2DBxWI6Suq2/rvPUGvXm1Gtjp/jXDKzukWeloP8fk+U4BJCRZtSmvVJfOlZuR8p0oXe63Y3u/u0/yWv+VHgUMOPtSpFSERx6aFIZeN7DO2Bz8a5NM+pLFO9F54jsbRg7Y3KQzuwkCnCddG/IqcOmkiK0beGMicecZQMjorLxuVx7HKFiHZ2W19wwQ5nYvLzE1PUKRQ4S0kHND/KNb2OZKa+GrkS7+aS3ameem/BmDC3tt+BYgPFE9tNu4NEZuawb8Q3ueE+6LYbzHHXbUsL1DwBR2Q5fo0OuSxc5LCfBMG6CO6L2u9Cqx9qs0j/0iWBcm+dLJlcrtC7BDif0IXBZsOPCWc6G+rEr/EYsyjAiC4fTM4Ks0bH8+eocboZuvWI8t0wP2jwCoK6AfS46b7jCOJNAa9+alDaS2MzQMyJchXwCQm+vVrtEfbCPdvp/8mzyuzWrOwG4/sdxN9nBQQYFYJQsUJ885ZlERdfotUrU4bZr9/Y9y8
+ bTPZ2bcj
+ xI7JWRKvNcEcUFWH+AXWj892FIgFJYSPAy+4JphHYMyR+lHGedWS1SRhm7xSU9z5DcWVdH4NExhIxo9Lb7EA7AfaYdN4rzIIuqk0FaQO7lh3DaDsd7rcVaLD64ITDnfYXFRCnzj8ybpiPhHdLGlFqDSXmt+RTLNzmdyV4jw+wwz88ciBeckt1FXS7KCiQg3w38vyS5neGhVVA0zd/yZYJu2snq2FZKnGv5VmcUpjHz6LjoUjycxaRRFmCbF7vRxPTz3CN0DCvdJBvVh13+eNR0/xMv3pINGnkx1Kps9CXWVZLdQuJXkgVaTnP3MG1czKPSx2z6nWSnjsZFXQUJ+Pz9ii4z8ZmpqWbw4lTsozDJY+Uip5KiTyqkS7iEl/c0EZIsa+oFFaYmTNvH3Bu6RseLVfh4/MUdT5RaKJbAk0sa1w+zE4gvnPMydjhMiyaEza68ECDA0SJBqwg3S0ULvF92yIcobk5dV0CZQhCeWcf3edyohQhRoqCL3DStdOI4/HPtfAQsa0xImJwjeRufSLdHdGx7M9QjlpNn2RW2djL4l7svpBoT4TVlHyriMgoIHpI6V0hHBbVrypc/DA+lKwhnmf2P44XjkA+rELN7Ooc1e4tYNmtTYuLLP5h4XcbB7aUqbiQS+IDIsZov4/THCNW931Sul2n3qYzRlQPMDDnQ6ujMkBtW76mbLDAa9ye12geUhNdstLCUxfWdXlggCGXATYqPfiOg91k48Voc8bzFCv5yCTd1wnGh7k56zh9EsoGkE34ZbzzE+y3dKiWB4CGN1GQIuRjIyhjYRkjpiQGaTpVLsyDMRzaJEXbCRkcuEtC5zz5ONEzj+tINF7yWB4QOdhxgahlpEj2lFVQwQOMmJPOWK4/U9ySQasWSHn5Yu+bovMfylAHAhbWVgvMEDZOOWuCX/mwTZlnvls6cYfgmW0rFjibEMdGDRuDNj+WcUx6KFIC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,88 +137,157 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 25/11/2025 18:38, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> From: Nikita Kalyazin <kalyazin@amazon.com>
 > 
-> userfaultfd notifications about minor page faults used for live migration
-> and snapshotting of VMs with memory backed by shared hugetlbfs or tmpfs
-> mappings as described in detail in commit 7677f7fd8be7 ("userfaultfd: add
-> minor fault registration mode").
+> The test demonstrates that a minor userfaultfd event in guest_memfd can
+> be resolved via a memcpy followed by a UFFDIO_CONTINUE ioctl.
 > 
-> To use the same mechanism for VMs that use guest_memfd to map their memory,
-> guest_memfd should support userfaultfd minor mode.
-> 
-> Extend ->fault() method of guest_memfd with ability to notify core page
-> fault handler that a page fault requires handle_userfault(VM_UFFD_MINOR) to
-> complete and add implementation of ->get_shared_folio() to guest_memfd
-> vm_ops.
-> 
+> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->   virt/kvm/guest_memfd.c | 28 ++++++++++++++++++++++++++++
->   1 file changed, 28 insertions(+)
+>   .../testing/selftests/kvm/guest_memfd_test.c  | 103 ++++++++++++++++++
+>   1 file changed, 103 insertions(+)
 > 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index ffadc5ee8e04..2a2b076293f9 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -4,6 +4,7 @@
->   #include <linux/kvm_host.h>
->   #include <linux/pagemap.h>
->   #include <linux/anon_inodes.h>
-> +#include <linux/userfaultfd_k.h>
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+> index e7d9aeb418d3..a5d3ed21d7bb 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> @@ -10,13 +10,17 @@
+>   #include <errno.h>
+>   #include <stdio.h>
+>   #include <fcntl.h>
+> +#include <pthread.h>
 > 
->   #include "kvm_mm.h"
+>   #include <linux/bitmap.h>
+>   #include <linux/falloc.h>
+>   #include <linux/sizes.h>
+> +#include <linux/userfaultfd.h>
+>   #include <sys/mman.h>
+>   #include <sys/types.h>
+>   #include <sys/stat.h>
+> +#include <sys/syscall.h>
+> +#include <sys/ioctl.h>
 > 
-> @@ -369,6 +370,12 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->                  return vmf_error(err);
+>   #include "kvm_util.h"
+>   #include "test_util.h"
+> @@ -254,6 +258,104 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
 >          }
-> 
-> +       if (userfaultfd_minor(vmf->vma)) {
-> +               folio_unlock(folio);
-> +               folio_put(folio);
-> +               return VM_FAULT_UFFD_MINOR;
-> +       }
-> +
->          if (WARN_ON_ONCE(folio_test_large(folio))) {
->                  ret = VM_FAULT_SIGBUS;
->                  goto out_folio;
-> @@ -390,8 +397,29 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->          return ret;
 >   }
 > 
-> +#ifdef CONFIG_USERFAULTFD
-> +static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t pgoff)
-
-We have to name it differently, otherwise it clashes with the existing 
-one in this file.
-
+> +struct fault_args {
+> +       char *addr;
+> +       volatile char value;
+> +};
+> +
+> +static void *fault_thread_fn(void *arg)
 > +{
-> +       struct folio *folio;
+> +       struct fault_args *args = arg;
 > +
-> +       folio = kvm_gmem_get_folio(inode, pgoff);
-
-                   ^^
-
-> +       if (IS_ERR_OR_NULL(folio))
-> +               return folio;
-> +
-> +       if (!folio_test_uptodate(folio)) {
-> +               clear_highpage(folio_page(folio, 0));
-> +               kvm_gmem_mark_prepared(folio);
-> +       }
-> +
-> +       return folio;
+> +       /* Trigger page fault */
+> +       args->value = *args->addr;
+> +       return NULL;
 > +}
-> +#endif
 > +
->   static const struct vm_operations_struct kvm_gmem_vm_ops = {
->          .fault = kvm_gmem_fault_user_mapping,
-> +#ifdef CONFIG_USERFAULTFD
-> +       .get_folio      = kvm_gmem_get_folio,
-> +#endif
->   };
-> 
->   static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+> +static void test_uffd_minor(int fd, size_t total_size)
+> +{
+> +       struct uffdio_api uffdio_api = {
+> +               .api = UFFD_API,
+> +               .features = UFFD_FEATURE_MINOR_GENERIC,
+
+Should it be UFFD_FEATURE_MINOR_SHMEM instead? 
+UFFD_FEATURE_MINOR_GENERIC was removed in the v1.
+
+> +       };
+> +       struct uffdio_register uffd_reg;
+> +       struct uffdio_continue uffd_cont;
+> +       struct uffd_msg msg;
+> +       struct fault_args args;
+> +       pthread_t fault_thread;
+> +       void *mem, *mem_nofault, *buf = NULL;
+> +       int uffd, ret;
+> +       off_t offset = page_size;
+> +       void *fault_addr;
+> +
+> +       ret = posix_memalign(&buf, page_size, total_size);
+> +       TEST_ASSERT_EQ(ret, 0);
+> +
+> +       memset(buf, 0xaa, total_size);
+> +
+> +       uffd = syscall(__NR_userfaultfd, O_CLOEXEC);
+> +       TEST_ASSERT(uffd != -1, "userfaultfd creation should succeed");
+> +
+> +       ret = ioctl(uffd, UFFDIO_API, &uffdio_api);
+> +       TEST_ASSERT(ret != -1, "ioctl(UFFDIO_API) should succeed");
+> +
+> +       mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+> +       TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
+> +
+> +       mem_nofault = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+> +       TEST_ASSERT(mem_nofault != MAP_FAILED, "mmap should succeed");
+> +
+> +       uffd_reg.range.start = (unsigned long)mem;
+> +       uffd_reg.range.len = total_size;
+> +       uffd_reg.mode = UFFDIO_REGISTER_MODE_MINOR;
+> +       ret = ioctl(uffd, UFFDIO_REGISTER, &uffd_reg);
+> +       TEST_ASSERT(ret != -1, "ioctl(UFFDIO_REGISTER) should succeed");
+> +
+> +       ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
+> +                       offset, page_size);
+> +       TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
+> +
+> +       fault_addr = mem + offset;
+> +       args.addr = fault_addr;
+> +
+> +       ret = pthread_create(&fault_thread, NULL, fault_thread_fn, &args);
+> +       TEST_ASSERT(ret == 0, "pthread_create should succeed");
+> +
+> +       ret = read(uffd, &msg, sizeof(msg));
+> +       TEST_ASSERT(ret != -1, "read from userfaultfd should succeed");
+> +       TEST_ASSERT(msg.event == UFFD_EVENT_PAGEFAULT, "event type should be pagefault");
+> +       TEST_ASSERT((void *)(msg.arg.pagefault.address & ~(page_size - 1)) == fault_addr,
+> +                   "pagefault should occur at expected address");
+> +
+> +       memcpy(mem_nofault + offset, buf + offset, page_size);
+> +
+> +       uffd_cont.range.start = (unsigned long)fault_addr;
+> +       uffd_cont.range.len = page_size;
+> +       uffd_cont.mode = 0;
+> +       ret = ioctl(uffd, UFFDIO_CONTINUE, &uffd_cont);
+> +       TEST_ASSERT(ret != -1, "ioctl(UFFDIO_CONTINUE) should succeed");
+> +
+> +       /*
+> +        * wait for fault_thread to finish to make sure fault happened and was
+> +        * resolved before we verify the values
+> +        */
+> +       ret = pthread_join(fault_thread, NULL);
+> +       TEST_ASSERT(ret == 0, "pthread_join should succeed");
+> +
+> +       TEST_ASSERT(args.value == *(char *)(mem_nofault + offset),
+> +                   "memory should contain the value that was copied");
+> +       TEST_ASSERT(args.value == *(char *)(mem + offset),
+> +                   "no further fault is expected");
+> +
+> +       ret = munmap(mem_nofault, total_size);
+> +       TEST_ASSERT(!ret, "munmap should succeed");
+> +
+> +       ret = munmap(mem, total_size);
+> +       TEST_ASSERT(!ret, "munmap should succeed");
+> +       free(buf);
+> +       close(uffd);
+> +}
+> +
+>   #define gmem_test(__test, __vm, __flags)                               \
+>   do {                                                                   \
+>          int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);   \
+> @@ -273,6 +375,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+>                  if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
+>                          gmem_test(mmap_supported, vm, flags);
+>                          gmem_test(fault_overflow, vm, flags);
+> +                       gmem_test(uffd_minor, vm, flags);
+>                  } else {
+>                          gmem_test(fault_private, vm, flags);
+>                  }
 > --
 > 2.50.1
 > 
