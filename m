@@ -4,96 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AE0DD10F40
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 13:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35B1DD10F45
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 13:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA8496B0007; Wed, 26 Nov 2025 08:03:50 -0500 (EST)
+	id 490936B0008; Wed, 26 Nov 2025 08:12:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7FB56B0012; Wed, 26 Nov 2025 08:03:50 -0500 (EST)
+	id 468996B000D; Wed, 26 Nov 2025 08:12:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A95956B0022; Wed, 26 Nov 2025 08:03:50 -0500 (EST)
+	id 37E2C6B000E; Wed, 26 Nov 2025 08:12:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 95E8C6B0007
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 08:03:50 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 07985598F7
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:03:50 +0000 (UTC)
-X-FDA: 84152775420.12.8F165CD
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EBA2E180026
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:03:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 23A886B0008
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 08:12:54 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4CB559B50
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:12:53 +0000 (UTC)
+X-FDA: 84152798226.06.A77EB96
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D3EED20005
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:12:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=L5BwZ9k7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764162771; a=rsa-sha256;
+	cv=none;
+	b=iPwhy6okGbgBU8Kfwj/ump2LI6MEEMg9HPlCQmjAkrNX3CpKLRYo3XfVFB/5G0HbRUMAy4
+	VNDsfZhN/DzxIHBoE2BnFmBQB9H3Qn9uC+IKrXCEuM4jgudH+8AvSYSaKXAZeyndv27FcI
+	1eis7wdNpAVROAeiVBzKgK3+80XC4Go=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=L5BwZ9k7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764162228;
+	s=arc-20220608; t=1764162771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=slZU0MWBWHwn9Hj2M7wh8L8yac1q3hwMahFEQjO39IA=;
-	b=DThldArV3ORFBHYJopwIMsjiEjdCDaVMa2usNmDRLEAbeTspTb2aYqc/84E5Io6MjWD53+
-	bBNWayT3nFHahCu5ITMboWHjHPH6cdf3dpHbzl9AXrK5IVMUjPqpSDu1s+zRgKRSLHDtnx
-	ZYugXLu4Fwp7Qk3tE1zrhrm76OiYNeI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764162228; a=rsa-sha256;
-	cv=none;
-	b=DRKvjTw4wzKQNjkYCeL0C0AyhWgaBiNMJxrNsJn0XG5ulTHXIgaWV3MVcL342fChBe008p
-	+GqLXqpaxHG/GRcFWF2F6LA9l6ZcoC/SUAXovKmriMo2nWDVAAVvF/bucJ2x0p3O25DZl3
-	hIYXfkhPN2B16dRkarnMns4rS610Paw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5553A168F;
-	Wed, 26 Nov 2025 05:03:39 -0800 (PST)
-Received: from [10.1.33.153] (unknown [10.1.33.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1FDE83F66E;
-	Wed, 26 Nov 2025 05:03:44 -0800 (PST)
-Message-ID: <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
-Date: Wed, 26 Nov 2025 13:03:42 +0000
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v7j/p6bUr5Xuh7DTD99aQLTt37H/gN4j/r6C1+HVuuw=;
+	b=SV+BLuquK+iLz/tRLcn5YD687uPUMAr6vMPGIqaajrwGvDgcsNyO0sVTYw3zbKBGBupuYX
+	TkhuWSLvp0bT2hHp1QXA8XsY0/tWaDOkBJOcecOz91d3KQehp46SiF+xvLpLwFG/9wmSgQ
+	8K4jUbI/XsgvY1icjh2L8fP+FA0dims=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-295c64cb951so203065ad.0
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 05:12:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764162771; x=1764767571; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=v7j/p6bUr5Xuh7DTD99aQLTt37H/gN4j/r6C1+HVuuw=;
+        b=L5BwZ9k7KNOYdZLBYenghbIW+EGhZZj20+eZRqYbAGTjiAn/Lz35kAQkU/bTZZiqjj
+         um0nEOIatdLt+E5Riai/FyLwDxy3Qcb7OY1gMPhUR06iaVyEg60EQGezoKQhNS49bm+K
+         krY/LvlRelL8yxwjBiDWJqDm0wEaR9Th9+X4As2bkLn6U5QlMhmoGQQyQKiuK0siGpBX
+         l+MC0XuPcTdYz2D4Ny4dJ11DpDIu4y8cIXUxehsFSZFYGckpiMyUeGp+CJ8FY5kh5Ebo
+         Taz23X7tUJj/nEpXpPfDmT5eWPDuAHB9oZMBqilcgXHoAuqo12aIOKD15eWcLonOM+bo
+         sDlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764162771; x=1764767571;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v7j/p6bUr5Xuh7DTD99aQLTt37H/gN4j/r6C1+HVuuw=;
+        b=uprUXV6putRoe+wsVcIC8y1RQWxFTo4/cXyNvcTkPVY15oNeD8Qv3+Btg3TKqCu3d+
+         /LaOPZrHREeawS9NHgsWcFZqZkSTrL0ylks4Tf9Vf1+8RvZ7/ufH3QP5Hetic6uLbh2j
+         OyGaWaZXZ9OLLE6EA0dy/XC8myY9uRb6rxm2ZcmOZYkgdVfZgRzMiJTiVG/XB2e8274v
+         N6gB5V1MJBWmxO2wJjkzPGodpN/53O1LuF5zxSJfQjrveO9G3YN3d7lnYd3KcztPljyJ
+         +SWbEklZB/nEtcEaMIMNLmImcELHVOUrO8lJhDns1IM7oy0nQ+wplBH7aNkc/5naWbQb
+         kwTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXUwIW/RXF4Xh59kplcBYOpDNRR0na8nJApAG+qRQn046UMKY8uj+KJI0aoMGvK9STT2hnzf64UFw==@kvack.org
+X-Gm-Message-State: AOJu0Yyy8NykRnJzRF4liSIss1h0Pp7u97GQBAeVRuql0SUvZy/f3zXD
+	qxTTm+0vKHDu1Wso7ZDxULUhxPnjrmQTg6nX6qsL1if5m1+0+YUjzmAPB2a5cr9/uA==
+X-Gm-Gg: ASbGncuOEcgWcZtPLAZSblzPE/frZq1fXzyX98ms71uV0rqeo6w7ziLChV7QWvmRQyE
+	xor+zfaJZEKQFH0Ty1lFLb5feI/egQWXRaj91FWG3fYLFTPC5hzQz26rRFSl1KtKKOkBjP0PymT
+	TSEhi8ij0uBFpwRiqAzEQ/rStR4v8ERH/jij43otCYtP55ACaP187mKqIMI0X0DJBs9SXbqwrUO
+	cI7Fm3WFRTeeravB72Uu7sjXTFez2N0MHkXEibQZ3FfyPI01M+BxDddH15F4ehix7bl5SsnkGJe
+	j2GpWNPmf7qQWoAwP9pHb7+EMAft12PCSGQ2bA/H5TBIbrSFFg5Clgf6Bm8d19mj3klil15i4uW
+	oYTj1PiQrQwa79twdNBz01XBFc+dfdEHVkgqP6wZ7YFDtmGPpSbN3C+gcoqLAyrTrE2VDlsNYGh
+	XuWuN46W512ElVu4Dz+L8nMtcmRbcTlpcprOJVi+Qjt7wCxQdS
+X-Google-Smtp-Source: AGHT+IHJIOBgKlL+CS0ZpKtYX5Djx07PEo4PrDI8k+TVBWbcqpi0p7MakMMReKQUlItaKRJKERuBaA==
+X-Received: by 2002:a17:902:cf07:b0:26d:72f8:8cfa with SMTP id d9443c01a7336-29bba9e8a00mr1709325ad.13.1764162769984;
+        Wed, 26 Nov 2025 05:12:49 -0800 (PST)
+Received: from google.com (164.210.142.34.bc.googleusercontent.com. [34.142.210.164])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b105e4csm194769895ad.2.2025.11.26.05.12.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 05:12:49 -0800 (PST)
+Date: Wed, 26 Nov 2025 13:12:40 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Alex Mastro <amastro@fb.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org, Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v9 06/11] dma-buf: provide phys_vec to scatter-gather
+ mapping routine
+Message-ID: <aSb8yH6fSlwk1oZZ@google.com>
+References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
+ <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
+ <aSZHO6otK0Heh+Qj@devgpu015.cco6.facebook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-Content-Language: en-GB
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-7-samuel.holland@sifive.com>
- <02e3b3bd-ae6a-4db4-b4a1-8cbc1bc0a1c8@arm.com>
- <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSZHO6otK0Heh+Qj@devgpu015.cco6.facebook.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D3EED20005
+X-Stat-Signature: tsopqymhf5kjqdpbw7qzwx3n8e6aeztg
 X-Rspam-User: 
-X-Stat-Signature: ofny6qkbgg3zgw6m6zh478ezb6w8hecg
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EBA2E180026
-X-HE-Tag: 1764162227-165
-X-HE-Meta: U2FsdGVkX19oskPSctiblkvVb2W4pWxsC/85P7fR7XuMYUnTmYh5gZFz0I+GT1x1m6WTlprOHNBsYah4r4mP3R/MGbSd/0fbwy97O8KISs+C0OAZwzrAgqsqKPQQGUuOeRwCG4+cQMPmZ3zl57mN6vs8kN8KGNJIpPWZL1kAETvk9gSaci6xiFc4s0fBGYxnrmSlmG6I+bDBmdPHC2kPvLmYagV+CinF8RrR3vFIktYPfirknmZjUYbX560gKf3B6fOGOwHwHsYslN3PJay1rG/pObOCwQNlw8Uciaegwx/hdtE8dWdd/fd1Az4aO7hcnlVJGcidOhfVzNN4du0ua6gcerZFYOfX/tuKrX4WvjfO8RW9tdDNNlnqVDNnPuzGZ0G5UqA1YLD0U7dK8hv/ta7ciaW0lvn1myP1I2BounnYqFCqPhTeTp8dbvEY7CznbhPk4E8NmPEesY3Hlb73DV0BRq405eU+NMkkRlCtLZH6iVTqNgz397KuIai8rQXMUDLhH3IrZbOcj20NOrQeBbUtO7a1X/KKFVLneODxhoMYhSA4CiKQilGBUosIPI64ba7B1p8rgzeP6lH+LvFjQJkeyUwWEf3766j7SWS7RUL0YVv+Cag2C3fehoiq3jqhkgKqWB3uy6N0HP9fXrVE15i3nfbPDazGN2j/4SB12WlGD36RjFlLeL2hSqA7pB34OxK5mg9BWmCrRlXDAheejWZAohr3KC4gHQaXLMQf0yPbWwJNYm8gZ4NlS/xob6+/TC5LISq/DIa+IoVoJtdwK0OyZG8CR5D6c9Z4K7lmzfypxZg7p44gR3G8z80zWbXUG+PyKCUK/I3wVFyjl/z0pKBzAvgu02LukbZNxUfHOc8jV4CtVazHNpAX3GVw0+BfxS+P5WKxnUm1lMrUXgXRjUeHfRUTFuOlOsw5uKu8vXCMkdAMocrhE/U/xtdtcNefk7qQTekGZZJGTlI/mtr
- F5sAqwKk
- bbLG7nI8+2Gfr71jNCp2unCboTgXtf4ZN70iMidJ/bQC126Ea5UQcxuCwE7tJGccs4JkemBDAidxVh6kVI5thPJBeOUR+iwOIalIPw89TdAWgz0iLZkobGGJZgepA2x16AkmSGU/gH1RGVquqm4JXN2qd7H/Pqfw14pK3Mo593ZV4LiYTYXB97g1hdecfxsavoEYUj0WAyVYKilEMW6rTeiMqTAJO4Ij855p4SxMKYY1eNN1q8rx/KIjGs/BEP/LqYPrcFgD4+FOwWYXgdM30/UlwVOBByl+96mL4fMRmheaVTBx2p/8yoVHBs8E8frJ+mUxS75ZWQvGNEEzg8WsM7bWCWg==
+X-HE-Tag: 1764162771-344839
+X-HE-Meta: U2FsdGVkX19NpYxd/R5/G6cU6Gi1hEUY9OCLlq/zW/quSbinpc9qAx15N2yO2YPa9E8sleuJHntuaYVVSD8Ex1kOSk7im6pEysuRUjVIrkwkXoBBIZqnRLMPeSBzkbq/CiwsRrCXm6Gl9e9uLnJVJAXZgPlKAiLwKDkrfdYIypFerxAg7Yki00n81SkfztqWIVtSS9ALndR6E+y/5hH5RYK8n71XiBrvrpXw5MytXPJqBtl9r+m3ve+RnEbRzG6Res08w59oNdTRfgFXQI4Lf9nFOyARl3++uI4aHu5VoVpmx+DqPSXR9MsytSpeuDFEuBkhHHLW8/6ZzvXH8N/vu8OQ3pIGrOxg/CDDWnbBlHphf5fIGmrQ+84cukSXzZ0c26Zl3/XAGaGgKnwzVNzL3q9zjWHGuuOacl35wYJ95H9cneN4KzWf1d9wISqHkZJbFyz6F/3VtAgLkkqHZq2400b22+buxM9mTCYC/tSaYk+m5c1qKdYWbvvOIvZOO5HZzhDSW0nRJgsIMF8KwsPjYiidNptIo8EHzBBnmk9ENEU9nB3Cv56zlsoXuF92fLFZVZhPcqeSxIs08b/LYiXwE2BkWmMSb/ebY2LaRdhurw6+8L4WOzJb4dWU9KZI/qvW7v8Ei5+VVQ8I7TzDykPqXEyPP0OOizktxTPkLvE6YcUC5V4XeppoPUbUZqC3I+8FCTFE7SPyDplBvpGKAB6qqv43pwU3hah8wOp81bVCSwViRsf8Ku06/C+YFF8qrl7xcvvyyqWXSy5/iViwJbMA4rz5yYlQRvsiUaZ/aNoVESSW2FL8ph0zuqKvUzUOGhzdUryoOgjyGBZznHxuIN+o3Kn7LCL3San2v+9BSfxZ3FRJbgLNfmGg8iifkBrtctlCQ3WNIcPUSqsd+YMZn4AQ0obXd5og8JNxKG9nThpNZlBGB0ocAjlSiWKPI1CjN9enjSRMiWqF/1y14Lpdemh
+ pRRDZhZT
+ iQR3PWzfj6nH0FJ1RJXXJbRoIshYoWx9MdXHw8lc7+w5PsNlwOCLovT7Bi/LaOdulihdPWu/AQRND+qBvZsB/zPRYQgx8JYaM2jdzH+I15AhpHdDJgJRFCBfGSfP8MWENod9rgufRSXPe7d1aaJ4mqDoA1hbOMg8JaVBZMrbkzIhWMoFc6ntkKuZKLc80FLZBVPHW8jw8GsRyb/UXTvkUbYD8msP82mUhO2YBd4KG2DFzjVmlgthT7h63A7gW9Uqb7BnwEVTEqU+8Tnmhka5iQvYBLHdG258Nb3pTdhwJHKvKJXOAJEqHsaHzC3pKHMMIq1lAPr26zUk7JUg4XCPLjDHO9cvP+OnKiUH5wTKy441G5j3MT3hpWxZ5Gza6RUcgbNmmEA4Ai4trv7XP3eRhRSkc1CymmmM9WT2m
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,189 +144,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/11/2025 12:35, David Hildenbrand (Red Hat) wrote:
-> On 11/26/25 13:27, Lorenzo Stoakes wrote:
->> On Wed, Nov 26, 2025 at 01:19:00PM +0100, David Hildenbrand (Red Hat) wrote:
->>> On 11/26/25 13:16, David Hildenbrand (Red Hat) wrote:
->>>> On 11/26/25 12:09, Ryan Roberts wrote:
->>>>> On 13/11/2025 01:45, Samuel Holland wrote:
->>>>>> Some platforms need to fix up the values when reading or writing page
->>>>>> tables. Because of this, the accessors must always be used; it is not
->>>>>> valid to simply dereference a pXX_t pointer.
->>>>>>
->>>>>> Fix all of the instances of this pattern in generic code, mostly by
->>>>>> applying the below coccinelle semantic patch, repeated for each page
->>>>>> table level. Some additional fixes were applied manually, mostly to
->>>>>> macros where type information is unavailable.
->>>>>>
->>>>>> In a few places, a `pte_t *` or `pmd_t *` is actually a pointer to a PTE
->>>>>> or PMDE value stored on the stack, not a pointer to a page table. In
->>>>>> those cases, it is not appropriate to use the accessors, because the
->>>>>> value is not globally visible, and any transformation from pXXp_get()
->>>>>> has already been applied. Those places are marked by naming the pointer
->>>>>> `ptentp` or `pmdvalp`, as opposed to `ptep` or `pmdp`.
->>>>>>
->>>>>> @@
->>>>>> pte_t *P;
->>>>>> expression E;
->>>>>> expression I;
->>>>>> @@
->>>>>> - P[I] = E
->>>>>> + set_pte(P + I, E)
->>>>>>
->>>>>> @@
->>>>>> pte_t *P;
->>>>>> expression E;
->>>>>> @@
->>>>>> (
->>>>>> - WRITE_ONCE(*P, E)
->>>>>> + set_pte(P, E)
->>>>>> |
->>>>>> - *P = E
->>>>>> + set_pte(P, E)
->>>>>> )
->>>>>
->>>>> There should absolutely never be any instances of core code directly
->>>>> setting an
->>>>> entry at any level. This *must* always go via the arch code helpers. Did you
->>>>> find any instances of this? If so, I would consider these bugs and suggest
->>>>> sending as a separate bugfix patch. Bad things could happen on arm64
->>>>> because we
->>>>> may need to break a contiguous mapping, which would not happen if the value is
->>>>> set directly.
->>>>>
->>>>>>
->>>>>> @@
->>>>>> pte_t *P;
->>>>>> expression I;
->>>>>> @@
->>>>>> (
->>>>>>      &P[I]
->>>>>> |
->>>>>> - READ_ONCE(P[I])
->>>>>> + ptep_get(P + I)
->>>>>> |
->>>>>> - P[I]
->>>>>> + ptep_get(P + I)
->>>>>> )
->>>>>>
->>>>>> @@
->>>>>> pte_t *P;
->>>>>> @@
->>>>>> (
->>>>>> - READ_ONCE(*P)
->>>>>> + ptep_get(P)
->>>>>> |
->>>>>> - *P
->>>>>> + ptep_get(P)
->>>>>> )
->>>>>
->>>>> For reading the *PTE*, conversion over to ptep_get() should have already been
->>>>> done (I did this a few years back when implementing support for arm64
->>>>> contiguous
->>>>> mappings). If you find any cases where direct dereference or READ_ONCE() is
->>>>> being done in generic code for PTE, then that's a bug and should also be
->>>>> sent as
->>>>> a separate patch.
->>>>>
->>>>> FYI, my experience was that Coccinelle didn't find everything when I was
->>>>> converting to ptep_get() - although it could have been that my Cochinelle
->>>>> skills
->>>>> were not up to scratch! I ended up using an additional method where I did a
->>>>> find/replace to convert "pte_t *" to "ptep_handle_t" and declared pte_handle_t
->>>>> as a void* which causes a compiler error on dereference. Then in a few key
->>>>> places I did a manual case from pte_handle_t to (pte_t *) and compiled
->>>>> allyesconfig.
->>>>>
->>>>> I'm assuming the above Cocchinelle template was also used for pmd_t, pud_t,
->>>>> p4d_t and pgd_t?
->>>>>
->>>>>>
->>>>>> Additionally, the following semantic patch was used to convert PMD and
->>>>>> PUD references inside struct vm_fault:
->>>>>>
->>>>>> @@
->>>>>> struct vm_fault vmf;
->>>>>> @@
->>>>>> (
->>>>>> - *vmf.pmd
->>>>>> + pmdp_get(vmf.pmd)
->>>>>> |
->>>>>> - *vmf.pud
->>>>>> + pudp_get(vmf.pud)
->>>>>> )
->>>>>>
->>>>>> @@
->>>>>> struct vm_fault *vmf;
->>>>>> @@
->>>>>> (
->>>>>> - *vmf->pmd
->>>>>> + pmdp_get(vmf->pmd)
->>>>>> |
->>>>>> - *vmf->pud
->>>>>> + pudp_get(vmf->pud)
->>>>>> )
->>>>>>
->>>>>>
->>>>>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
->>>>>> ---
->>>>>> This commit covers some of the same changes as an existing series from
->>>>>> Anshuman Khandual[1]. Unlike that series, this commit is a purely
->>>>>> mechanical conversion to demonstrate the RISC-V changes, so it does not
->>>>>> insert local variables to avoid redundant calls to the accessors. A
->>>>>> manual conversion like in that series could improve performance.
->>>>>>
->>>>>> [1]: https://lore.kernel.org/linux-mm/20240917073117.1531207-1-
->>>>>> anshuman.khandual@arm.com/
->>>>>
->>>>> Hi,
->>>>>
->>>>> I've just come across this patch and wanted to mention that we could also
->>>>> benefit from this improved absraction for some features we are looking at for
->>>>> arm64. As you mention, Anshuman had a go but hit some roadblocks.
->>>>>
->>>>> The main issue is that the compiler was unable to optimize away the
->>>>> READ_ONCE()s
->>>>> for the case where certain levels of the pgtable are folded. But it can
->>>>> optimize
->>>>> the plain C dereferences. There were complaints the the generated code for arm
->>>>> (32) and powerpc was significantly impacted due to having many more
->>>>> (redundant)
->>>>> loads.
->>>>>
->>>>
->>>> We do have mm_pmd_folded()/p4d_folded() etc, could that help to sort
->>>> this out internally?
->>>>
->>>
->>> Just stumbled over the reply from Christope:
->>>
->>> https://lkml.kernel.org/r/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org
->>>
->>> And wonder if we could handle that somehow directly in the pgdp_get() etc.
-
-I certainly don't like the suggestion of doing the is_folded() test outside the
-helper, but if we can push that logic down into pXdp_get() that would be pretty
-neat. Anshuman and I did briefly play with the idea of doing a C dereference if
-the level is folded and a READ_ONCE() otherwise, all inside each pXdp_get()
-helper. Although we never proved it to be correct. I struggle with the model for
-folding. Do you want to optimize out all-but-the-highest level's access or
-all-but-the-lowest level's access? Makes my head hurt...
-
-
->>
->> I find that kind of gross to be honest. Isn't the whole point of folding that we
->> don't have to think about it...
-
-Agreed, but if we can put it inside the default helper implementation, that
-solves it, I think? An arch has to be careful if they are overriding the
-defaults, but it's still well contained.
-
+On Tue, Nov 25, 2025 at 04:18:03PM -0800, Alex Mastro wrote:
+> On Thu, Nov 20, 2025 at 11:28:25AM +0200, Leon Romanovsky wrote:
+> > +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+> > +					 dma_addr_t addr)
+> > +{
+> > +	unsigned int len, nents;
+> > +	int i;
+> > +
+> > +	nents = DIV_ROUND_UP(length, UINT_MAX);
+> > +	for (i = 0; i < nents; i++) {
+> > +		len = min_t(size_t, length, UINT_MAX);
+> > +		length -= len;
+> > +		/*
+> > +		 * DMABUF abuses scatterlist to create a scatterlist
+> > +		 * that does not have any CPU list, only the DMA list.
+> > +		 * Always set the page related values to NULL to ensure
+> > +		 * importers can't use it. The phys_addr based DMA API
+> > +		 * does not require the CPU list for mapping or unmapping.
+> > +		 */
+> > +		sg_set_page(sgl, NULL, 0, 0);
+> > +		sg_dma_address(sgl) = addr + i * UINT_MAX;
 > 
-> If we could adjust generic pgdp_get() and friends to not do a READ_ONCE() once
-> folded we might not have to think about that in the callers.
+> (i * UINT_MAX) happens in 32-bit before being promoted to dma_addr_t for
+> addition with addr. Overflows for i >=2 when length >= 8 GiB. Needs a cast:
 > 
-> Just an idea, though, not sure if that would fly the way I envision it.
+> 		sg_dma_address(sgl) = addr + (dma_addr_t)i * UINT_MAX;
+> 
+> Discovered this while debugging why dma-buf import was failing for
+> an 8 GiB dma-buf using my earlier toy program [1]. It was surfaced by
+> ib_umem_find_best_pgsz() returning 0 due to malformed scatterlist, which bubbles
+> up as an EINVAL.
+>
 
+Thanks a lot for testing & reporting this!
 
+However, I believe the casting approach is a little fragile (and
+potentially prone to issues depending on how dma_addr_t is sized on
+different platforms). Thus, approaching this with accumulation seems
+better as it avoids the multiplication logic entirely, maybe something
+like the following (untested) diff ?
+
+--- a/drivers/dma-buf/dma-buf-mapping.c
++++ b/drivers/dma-buf/dma-buf-mapping.c
+@@ -252,14 +252,14 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+ 	nents = DIV_ROUND_UP(length, UINT_MAX);
+ 	for (i = 0; i < nents; i++) {
+ 		len = min_t(size_t, length, UINT_MAX);
+-		length -= len;
+ 		/*
+ 		 * DMABUF abuses scatterlist to create a scatterlist
+ 		 * that does not have any CPU list, only the DMA list.
+ 		 * Always set the page related values to NULL to ensure
+ 		 * importers can't use it. The phys_addr based DMA API
+ 		 * does not require the CPU list for mapping or unmapping.
+ 		 */
+ 		sg_set_page(sgl, NULL, 0, 0);
+-		sg_dma_address(sgl) = addr + i * UINT_MAX;
++		sg_dma_address(sgl) = addr;
+ 		sg_dma_len(sgl) = len;
++
++		addr += len;
++		length -= len;
+ 		sgl = sg_next(sgl);
+ 	}
+
+Thanks,
+Praan
 
