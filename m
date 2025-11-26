@@ -4,136 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3291D10F5D
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:40:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC7EDD10F5F
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:46:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F8886B0023; Wed, 26 Nov 2025 09:40:34 -0500 (EST)
+	id 05E616B0027; Wed, 26 Nov 2025 09:46:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D0096B0026; Wed, 26 Nov 2025 09:40:34 -0500 (EST)
+	id 010476B0028; Wed, 26 Nov 2025 09:46:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BE276B0027; Wed, 26 Nov 2025 09:40:34 -0500 (EST)
+	id E3FC46B0029; Wed, 26 Nov 2025 09:46:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C57C6B0023
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:40:34 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C52971A0613
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:40:33 +0000 (UTC)
-X-FDA: 84153019146.23.9323F03
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8A49E40018
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:40:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W4Kze78G;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=89e0yHHa;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AkyGfJ65;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6Ks7jppQ;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id CF8DF6B0027
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:46:50 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EFEE13B6A9
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:46:50 +0000 (UTC)
+X-FDA: 84153034980.10.18AC565
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id ACBFF1C000C
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:46:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Knb6dB6K;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764168031;
+	s=arc-20220608; t=1764168408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yHzpYveCHexYyceh16mk4EzoH2BiwwpiWq3vEPFp7iw=;
-	b=5NltlxSGKPQWyWLoyj5aEOxBusNWb0+ABMFGYcY7SRWBgzRuvbASIiVBD/w7G3iK94L0hG
-	XQWLfzL0kjbOVFX3SY/9Umxtq8aeKoUW+ENds16pnxAcEUkNdC+nPt6/gxPHV9cyzgRbon
-	JcqeB/q04VjG4FwSj8Yvg3CkmSC8/PY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764168031; a=rsa-sha256;
-	cv=none;
-	b=zwu3nmNZb0ALJKBsz2fgSGgCrskTWlIfN9AZhTvcc+qYZQPjtoV43kdx+XbQkdxJhBQDSg
-	miwQnp5351sD1ZMhJ3wPwWkLbMTr2+zCoWG30nrPJObBe57V7RCcOUe3N5tK9ymkFWhvR0
-	+1woM10d4ykAkyEHRutpe+J4xzHbEOI=
+	bh=LLkwzHjXHyUMpIuJUHvgZU0gRIFR90IzknnUKd9E6iU=;
+	b=ozVfhO6DL3xRDXhOYLhy9DY962KR36InpIV+0FZKjbtcOtZ0iBq79+OM6DYsAFerl/DTpm
+	4k6wFWEW6a11VcOrjRoPd7xuajAkH82eFLuNcVoBqkRiRGMb9ISTPfqbw3OE6+Kzdkwuyo
+	uNwxXxRIYVLNFmPVyLcsIfXWk28Vor8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W4Kze78G;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=89e0yHHa;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AkyGfJ65;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6Ks7jppQ;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E86D35BE2A;
-	Wed, 26 Nov 2025 14:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764168030; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yHzpYveCHexYyceh16mk4EzoH2BiwwpiWq3vEPFp7iw=;
-	b=W4Kze78Ggk1XZdrjioYv4OSA9OtB/iyAbrQPqgYiDokXfgl7YJHJYuriXsalF8EpHJsN7J
-	9azWUwW3EZHMzf3FIguPczF1FeEfONahyka4vOxZrn2SswUsbmNDvrz5Q3UouqDZgzy98n
-	zww69ZlzJMq3b5DSX3xJ4sBSa9j3vLA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764168030;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yHzpYveCHexYyceh16mk4EzoH2BiwwpiWq3vEPFp7iw=;
-	b=89e0yHHaOAI3TozstsupDdbyNi6aYWmXeSD6c72wawHV0jY/8p3NrcyqWRDRGMIpCa0FrL
-	6Rxe3ohQ/Z2wFEBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764168029; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yHzpYveCHexYyceh16mk4EzoH2BiwwpiWq3vEPFp7iw=;
-	b=AkyGfJ65r46GZ5Z464EGX3XiepPBcghOIkZOG1Tz3AySP4p6SrNMlAJbEXyeoAs9wF+TPJ
-	HfvVSstXmOduGWZFqycsEeD5jTleqd1EMWwYzv3FDMPAuI1J3vGl3c9FDqbEewpjP4GB0A
-	6p+3SNLBfcl2GrAw0zxIBdxxJWu98oM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764168029;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yHzpYveCHexYyceh16mk4EzoH2BiwwpiWq3vEPFp7iw=;
-	b=6Ks7jppQNCulmcbo2ihTT0QCVJz6jhGR/gLGBhADoXPX1AzqjdhfSUT02CurFGieUvOAQh
-	pw5b/O9bDqDCS1CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DC0243EA63;
-	Wed, 26 Nov 2025 14:40:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cIeBNV0RJ2mTSgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 26 Nov 2025 14:40:29 +0000
-Message-ID: <0f2c5c40-9c70-4b36-b1fa-f211f8ce9529@suse.cz>
-Date: Wed, 26 Nov 2025 15:40:50 +0100
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Knb6dB6K;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764168408; a=rsa-sha256;
+	cv=none;
+	b=PddxiRKoeEWuTA8Ger/E7bnbfAjJr993ti5iGwOJVjiPY3RaKcgCzvFmf9F13HfhRt1eUK
+	YesR4BqmGAxM3ES+z7laq84NpxgZgCcDXXYohAuyxZuLhLP96fEb8u/cDm4K7eAnFQVQmJ
+	RGlooCFejXUlkmEKipVsem7ZoC0WRxs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A908F41A3B;
+	Wed, 26 Nov 2025 14:46:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D951FC4CEF7;
+	Wed, 26 Nov 2025 14:46:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764168407;
+	bh=rN8uuyU8RJxsQK9SI2vsik5bVZRYdR4fDfMryS9LdTo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Knb6dB6KKmlnmfJpGMk6rLZZg/Xct6yBU+L1A5tJGCzb90ZgbFIwltq2rnJrqAlb7
+	 1m5cTDHSno9KWGcw9J9xR1Vx6XYBkWdCJzainHhBbiuiOXeYZyf1CNuUDvRsEFpkVV
+	 7IJu0+1HHJuTC+uWYmKLKfGHbKpiReXDB7NMDr5kMlBx9faWmr3mgZ6PD6RzEcGh6y
+	 wtbFL4cEKyAzFnXjBZeg4brZpmGf/C3fwJost64KZLAqrMU0dQsh+XijAoVcsQU8Ij
+	 3VZVb7gospy7DoVSKnuqOIyjQ0D9N3e2LKLO3PtlK7etI21gf96UYXggvB3TqwbADK
+	 adsHLAl4WA45A==
+Message-ID: <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
+Date: Wed, 26 Nov 2025 15:46:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix vma_start_write_killable() signal handling
-To: Suren Baghdasaryan <surenb@google.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-References: <20251126034404.2264317-1-willy@infradead.org>
- <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
- <CAJuCfpEge7MJD1joXz=tKgcD7DQgPggjCKF9PLPr3NZEaw=ouw@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
+To: Ryan Roberts <ryan.roberts@arm.com>, Wei Yang <richard.weiyang@gmail.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, devicetree@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
+ Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+ <20251113014656.2605447-7-samuel.holland@sifive.com>
+ <02e3b3bd-ae6a-4db4-b4a1-8cbc1bc0a1c8@arm.com>
+ <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
+ <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
+ <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
+ <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
+ <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
+ <20251126134726.yrya5xxayfcde3kl@master>
+ <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <CAJuCfpEge7MJD1joXz=tKgcD7DQgPggjCKF9PLPr3NZEaw=ouw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: ACBFF1C000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8A49E40018
-X-Stat-Signature: xci36dksz7165z3f683j8q7ae936haoa
-X-HE-Tag: 1764168031-93501
-X-HE-Meta: U2FsdGVkX18pXP6/cj/AQAd2VeoddvnvlXRaHl0GH5J7yuFfvP/EYiaEslFBstJRz9+UYbmutOqGvZj8+SRH7sCRfAL7bT4r0Zu1E93OBr9Q5ibsjsh89JVns1Wpu8b9jLBWOch/w2dzG52D9yxU7ce9ptU4XI+mcJpZvgjqFFTkU0hWVs7MPFaT9lOOz3qeUNFeAcySZ1TtUO09ZMt4i4o0Ii0TcLD9Hqhp3roV9/t/4ul8vXDa/h6ftHi5jh8Sl+Ez2foHeFJdrEfXPHdX0ADjYczyzIWEB5xhDjev8PHVfgROcqigS4Q0AM4jfNxxkpqcCHUWPg4eCgu6Tx11VOslA5HGA3up2StQwPTI1jCc4qSpsDkNMbI1BNl4X2mb8W5psy0FO12b3U2M6/iAIbQlS++aoKlDN3OySOyspgwtQrn1BnjLOKMPa2LEILbP51eMSCNZmUJs1k8xmqG+pdYqrHkqsp3Yg6ci3KFTisvJDEPwFBnLGC7RrGWCTktud/nc0Cd6Oou01tSbzbSAcervS3Ytvg8ix46GV0GoW2s/0tilYkFj8JPw8z2hSSl/EU3J8UJ79hMaM+o/nYZeY0ol9DSdjlyE5ptQ4xhuQE0D4TpZLHESGHZSeL85w5l+qkNnegDgugn60q51SwKOFsp8Ymh4z6K3ttHqR4q8ycbvYcAC4QjNVqj8RSSl5vdfbfV5lKb5CjSLGYLDsXsKhtgycmLXiAaDRtJwuC40AZDeHs5gnLNltfP/Vzh5m2RLf+ja//F3XBMDlNCCydBlRmd/342dbZyPsgqxis6onSddJXklQCD/vdUsJNKFhqhDk4AmaE4zJLWsVI29acwK125rfJwCWdm4AeGxJ6TpZAbcbfACWoHPerEXfIqBPZgRUILhNGxh7lRseCYSGMnJaZ0Ccpq0ys8zjwZB4E5EkgC3HUH59qQ4erYzsjc8az5U6Xrd2tthWcSASx0775y
- d4F7tvMR
- BEcpMQUIPxw0tQwFkpknm5VPbPQIsAj6bItr5phNvfZfcIumo6gnfzelgXhEZyYkgSPVQjnSi2el9B/Scc44fuIUqo9iDWhKTGNC1ytk8QTYZjtAU5RraPgH+SgiqmA726G7hrmY4WECbDz5cvutFOoRDc6oqnOab3vTRT8T0T+oM5F/treOZGOQH4CmZDXJi/61LxcAa4nYtch1v07FcrUXDsPzD6xj7efEm2ttcvc5fFYuq/9Os2Nanl81mqfo0VzJchrS3HK14fq0D++69IRhvcNGzqvpm44/81W6UQ5nP2ceDvu5PCP1cCILkHJPYjYJdne1T0li6271kQ76pfWUJb30CF+IeIJo8zAeEeIGzBEMXc/++5pJBcJi8yvRgtfc/eHxGXO1SAFal4ItzDtbIfkvrqPbB6Z2Wv8s6Tnug83BPuFK/xMoPQSdL0hxroOA8OvovpwM0fBIw/eW7TWiYImypoNq85Kq9aODZ2BTtND1pjspXlXYt+bOz2SL+5MWXKbdgw+BwI6mTNRz3+1Go3eKwl9jCLrNpDtN4FL28swQzyimFzH3OamwgALpVzHhEGT9IcHefADk2Ivjc9Wjpnkw9UNrcZiprlsnzf/0vV+w=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 9whcwbbszibbiahyx1oiz6yne4fzjs6y
+X-HE-Tag: 1764168408-181922
+X-HE-Meta: U2FsdGVkX18ZZ6bYN9RtYHIsdsufpUffPCFFjkoDwP37/GXntbDvpq7IHyVGb5RPY/w3Di9AEAHgP3Ae0t95dzHNHOu4gYLlZVdR2jkhSAxYJI6SNEWq59aFOfYAvATNqLB2+/EJGEOufvcNBbCEVVfpNc/VEj7BDXy0Re9HmvJCN/TVrCjReGnp5Zipd78gM50wVTgUxhtfC6X59M77CX4gxBHMJYANKv0H3t5BE/pSucTMK14GXe1ExMd0KVt++XkEQJDHoajTWv55XVZapjwnadSme6zMDlgTyBLGpo1AWN9JCC5rtE9sbHDi9K8rC+HXn8W78diG92an5O2/2cnK8itkEHFEY2h3O59NdUbobTAM80zOC5DpMhDcCbmslK2jfALSSPn4L3BO2xk25Avf3jVzkCibTsS3vZGsr1cn3ov0H+5cMGUD9APcVYXtmwZ3Xqgu5WAbYyd5KMKtTR17GTtw2+nMt41fWQpOte9QZEtkldYElrd93SUL3t2Gp9DuItdV7Dbtsmvg1/wKxn8dlPeSxNTGrGEY+6vtQ6DUdHB4x2a8UXZVnVw9YkeQayt7yGyPR4da4YGpDU6FU+HZrrtfzHZYkAnMp3bfzKgP561t8CMWv4yPKCCUq3I1JzxtD/QKfpiFz32B09s6RjMAGcGSj33UCvfuZyK4fCZ6IPp8zoJbqtzkN9Xivu5ddgPufexyeIzfnQNb72zfY2lBpiE3Dw/cMCUo+TxD7U4dKsxWHEv1oIstkVOwRcgnLDfYM8JLaLBEkanxFy7XtxYpIV5l6l09ZMFSTSALls2mUMwhxdmFDMev8KzQzlVH81U1sU0U3yiP8S7xIs8d3Z9viXr3DNAFQG3pS09cWgSgx5teTOmHdH89MqC9ux9m2FcgHslvaoE3NyzKmnobPYas1nj/qCzYX8ZF53JfwPf0KM1l9IJ8Nh3c73/x5supaP5whNPBPGfC4T2ysmK
+ QYD9hCjM
+ RhK7RqA06j8iaf77eVyXMqmgAkkrMvdoxsJP07I4h2MEbWvP2JT9YxhPgxwc9G6F8X5hO1EFj/MiqCSSPdHvwpyk4TxUbK0d4O+/HO1MAPLCB+1Mr2PX8oxElzO2yTmbVij87mjw0i85w6UwXwOpIy7UDOkjfjkNeb4hUSiifSO9y6Ub6K0ZWPjs2iVYdhyRPbnBp85WwZKd9Yx/ur9eJrKKaGPNlF3JZEenYX0pAul4gGjUqB2exLQIgygDeCqBPELLWFldqXG5GpWoc8BoIHjJlK2+6ROm/E7NZZqZxdbBJxxofT8pbAfHv9XCGlN01+SIJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,101 +114,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/26/25 3:26 PM, Suren Baghdasaryan wrote:
-> On Tue, Nov 25, 2025 at 8:28 PM Suren Baghdasaryan <surenb@google.com> wrote:
->>
->> On Tue, Nov 25, 2025 at 7:44 PM Matthew Wilcox (Oracle)
->> <willy@infradead.org> wrote:
+On 11/26/25 15:22, Ryan Roberts wrote:
+> On 26/11/2025 13:47, Wei Yang wrote:
+>> On Wed, Nov 26, 2025 at 01:03:42PM +0000, Ryan Roberts wrote:
+>>> On 26/11/2025 12:35, David Hildenbrand (Red Hat) wrote:
+>> [...]
+>>>>>>>> Hi,
+>>>>>>>>
+>>>>>>>> I've just come across this patch and wanted to mention that we could also
+>>>>>>>> benefit from this improved absraction for some features we are looking at for
+>>>>>>>> arm64. As you mention, Anshuman had a go but hit some roadblocks.
+>>>>>>>>
+>>>>>>>> The main issue is that the compiler was unable to optimize away the
+>>>>>>>> READ_ONCE()s
+>>>>>>>> for the case where certain levels of the pgtable are folded. But it can
+>>>>>>>> optimize
+>>>>>>>> the plain C dereferences. There were complaints the the generated code for arm
+>>>>>>>> (32) and powerpc was significantly impacted due to having many more
+>>>>>>>> (redundant)
+>>>>>>>> loads.
+>>>>>>>>
+>>>>>>>
+>>>>>>> We do have mm_pmd_folded()/p4d_folded() etc, could that help to sort
+>>>>>>> this out internally?
+>>>>>>>
+>>>>>>
+>>>>>> Just stumbled over the reply from Christope:
+>>>>>>
+>>>>>> https://lkml.kernel.org/r/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org
+>>>>>>
+>>>>>> And wonder if we could handle that somehow directly in the pgdp_get() etc.
 >>>
->>> If we get a signal, we need to restore the vm_refcnt.  The wrinkle in
->>> that is that we might be the last reference.  If that happens, fix the
->>> refcount to look like we weren't interrupted by a fatal signal.
+>>> I certainly don't like the suggestion of doing the is_folded() test outside the
+>>> helper, but if we can push that logic down into pXdp_get() that would be pretty
+>>> neat. Anshuman and I did briefly play with the idea of doing a C dereference if
+>>> the level is folded and a READ_ONCE() otherwise, all inside each pXdp_get()
+>>> helper. Although we never proved it to be correct. I struggle with the model for
+>>> folding. Do you want to optimize out all-but-the-highest level's access or
+>>> all-but-the-lowest level's access? Makes my head hurt...
 >>>
->>> Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
->>> Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
->>> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->>> Cc: Suren Baghdasaryan <surenb@google.com>
->>> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
->>> Cc: Vlastimil Babka <vbabka@suse.cz>
->>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>> ---
->>> Andrew, since the vma_start_write_killable() patch is in mm-stable,
->>> I don't think you can put this in as a fixup, right?
 >>>
->>> Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this bug.
 >>
->> Doh! This is embarassing...
+>> You mean sth like:
 >>
->>> Any other stupid thing I've done?  And am I doing the right thing
->>> with refcount_set()?
->>>
->>>  mm/mmap_lock.c | 9 +++++++++
->>>  1 file changed, 9 insertions(+)
->>>
->>> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
->>> index e6e5570d1ec7..71af7f0a5fe1 100644
->>> --- a/mm/mmap_lock.c
->>> +++ b/mm/mmap_lock.c
->>> @@ -74,9 +74,18 @@ static inline int __vma_enter_locked(struct vm_area_struct *vma,
->>>                    refcount_read(&vma->vm_refcnt) == tgt_refcnt,
->>>                    state);
->>>         if (err) {
->>> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
->>> +                       /* Oh cobblers.  While we got a fatal signal, we
->>> +                        * raced with the last user.  Pretend we didn't notice
->>> +                        * the signal
->>> +                        */
->>> +                       refcount_set(&vma->vm_refcnt, VMA_LOCK_OFFSET);
->>> +                       goto acquired;
->>
->> Wait, why do we consider this as a successful acquisition? The
->> vm_refcnt is 0, so this is similar situation to an earlier:
->>
->> if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
->>         return 0;
->>
->> IOW, the vma is not referenced, so we failed to lock it. I think the
->> fix should be:
+>> static inline pmd_t pmdp_get(pmd_t *pmdp)
+>> {
+>> #ifdef __PAGETABLE_PMD_FOLDED
+>> 	return *pmdp;
+>> #else
+>> 	return READ_ONCE(*pmdp);
+>> #endif
+>> }
 > 
-> After sleeping on it, I don't think we should be masking EINTR error.
-> __vma_enter_locked() result might be the only place where an outer
-> loop is checking for fatal signals, so returning "failure to lock"
-> instead of -EINTR might cause the loop to continue. I think this fix
-> would be better:
-> 
->           * If vma is detached then only vma_mark_attached() can raise the
->           * vm_refcnt. mmap_write_lock prevents racing with vma_mark_attached().
->           */
-> -        if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
-> +        if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
-> +                if (fatal_signal_pending(current))
-> +                        return -EINTR;
+> Yes. But I'm not convinced it's correct.
 
-Not necessary IMHO. It could become pending right after we return 0, no
-point in testing it here. We should only care about the signals in the
-part where we sleep, i.e. rcuwait_wait_event().
+Yeah, I'm also still trying to understand how it could work.
 
->                  return 0;
-> +        }
 > 
->          rwsem_acquire(&vma->vmlock_dep_map, 0, 0, _RET_IP_);
->          err = rcuwait_wait_event(&vma->vm_mm->vma_writer_wait,
->                     refcount_read(&vma->vm_refcnt) == tgt_refcnt,
->                     state);
->          if (err) {
-> +                if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
-> +                        /*
-> +                         * No more users but fatal signal is present,
-> +                         * still return the error.
-> +                         */
-> +                }
+> I *think* (but please correct me if I'm wrong) if the PMD is folded, the PUD and
+> P4D must also be folded, and you effectively have a 2 level pgtable consisting
+> of the PGD table and the PTE table. p4dp_get(), pudp_get() and pmdp_get() are
+> all effectively duplicating the load of the pgd entry? So assuming pgdp_get()
+> was already called and used READ_ONCE(), you might hope the compiler will just
+> drop the other loads and just use the value returned by READ_ONCE(). But I doubt
+> there is any guarantee of that and you might be in a situation where pgdp_get()
+> never even got called (perhaps you already have the pmd pointer).
+With __PAGETABLE_PMD_FOLDED we treat the PUD to be fake-present, like
 
-Like I said in the other reply, the "no more users" should not happen,
-so just WARN_ON_ONCE() on the result, but otherwise agreed.
+static inline int pud_present(pud_t pud)	{ return 1; }
 
->                  rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
->                  return err;
->          }
-> 
-> 
+And obtaining the pmd_t* is essentially  cast of the pud_t*
+
+static inline pmd_t * pmd_offset(pud_t * pud, unsigned long address)
+{
+	return (pmd_t *)pud;
+}
+
+So in that case we might want to have the READ_ONCE() remove from the 
+pudp_get(), not the pmdp_get()?
+
+IOW, push the READ_ONCE() down to the lowest level so the previous ones 
+(that will get essentially ignore?) will get folded into the last 
+READ_ONCE()?
+
+But my head still hurts and I am focusing on something else concurrently :)
+
+-- 
+Cheers
+
+David
 
