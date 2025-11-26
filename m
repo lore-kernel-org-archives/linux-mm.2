@@ -4,127 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D77D10F56
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:11:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ADDCD10F4F
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:15:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A90A26B0008; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
+	id A25426B000E; Wed, 26 Nov 2025 09:15:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A41106B000D; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
+	id 9D58A6B0011; Wed, 26 Nov 2025 09:15:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97DBF6B000E; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
+	id 8EB8A6B0012; Wed, 26 Nov 2025 09:15:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8937E6B0008
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 055CF89ABD
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:11:17 +0000 (UTC)
-X-FDA: 84152945394.09.DAF533B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A87A580023
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:11:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
-	spf=pass (imf02.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FA176B000E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:15:11 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D53ABC0604
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:15:09 +0000 (UTC)
+X-FDA: 84152955138.05.E89D181
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 27FF24001B
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:15:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dt6+rkFk;
+	spf=pass (imf17.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764166275;
+	s=arc-20220608; t=1764166508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
-	b=UqENnRsM7t0/MABBFsu1fgPuleiloirGbOLQ+rndxbHx5ek1tAgp4h5n5yYZc+KDDnkcDH
-	fBGENFPr0j9bF25ht3c0gp2ZLjWoajxPyjZTwShB7giOhfwQyMy/8s/ursQv6J8wJ7R2NR
-	pCI8vFjmCa+kUCx+zLD97i5S2OChExw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764166275; a=rsa-sha256;
+	bh=LPbw8nmfdRPx1gStO3WJpiNvVHScxPjMArVC8Gf7Rpg=;
+	b=sz28/jmBGfwsdieUz7WoUhmG5kco/eK4dWnNn1LdVZ7cJTmaDPHrJ5upYTeBwfPNe355DL
+	Ip/QowiG8YZ4LAncScKbIcnNFtkXSr2y3mvu2hs6nzVGY7f3bV0SjVTHRdeZP9dOe0uqBa
+	t7IEpn+52U9azvT5kE7u/JpCGXThxn4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764166508; a=rsa-sha256;
 	cv=none;
-	b=yHeXMvnNQI8HdkUgfScEjz/pKbtXPYwp7pKxSGN4g/97E3xaoGMvXZzitThiA61KKBd/f3
-	hWkgr85gnHeTSDQIgC4zM15Mj8JDCgZ7c0Fzy6frPk5+3qnGMVfGednq9zGhIk2QyYcZLM
-	dvevh4xqUkQJirqZxnnhw5Z0/EKLus0=
+	b=pXc7R5UYgs/Hyc0c8Us7loQYfwdhm0jg76NUK6DkM2+lyHVkhVxhgqu9MUBJkGPmu+YiTO
+	6GEHnnIgeGvjXY/nr0Syq1Lux58FeNxt+nxVpLvQKxvKv4x1lf7VqxUj3Y5q6fmPYYxdU1
+	vNDxue23QSqMx9ysYXyAwOltchYZuRo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
-	spf=pass (imf02.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 920AC5BD21;
-	Wed, 26 Nov 2025 14:11:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764166272; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
-	b=qqFkRoFFsSvcseTsYz6Q/4Xml0ft3+yUvusQxiVhrp1Asg+Ein8vW7gJLQw/+IubILQZoA
-	zspwESEo+gGARpX/6Pmof1rpzaMbDM6VguLTnBG7w3Oh40tWa/JxPMyqGiF0XhoaWmPXAQ
-	vMOuVmJzIpQbdaoYdMxex40tDUWJZfc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764166272;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
-	b=sErewIAZKJQvA6kmx83SXz//3pDc6qpPZeHFZihrGIANR7hS9DCMiP+OrGwRRECsMmwB+k
-	DWFjJsooLhVr8iBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764166272; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
-	b=qqFkRoFFsSvcseTsYz6Q/4Xml0ft3+yUvusQxiVhrp1Asg+Ein8vW7gJLQw/+IubILQZoA
-	zspwESEo+gGARpX/6Pmof1rpzaMbDM6VguLTnBG7w3Oh40tWa/JxPMyqGiF0XhoaWmPXAQ
-	vMOuVmJzIpQbdaoYdMxex40tDUWJZfc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764166272;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
-	b=sErewIAZKJQvA6kmx83SXz//3pDc6qpPZeHFZihrGIANR7hS9DCMiP+OrGwRRECsMmwB+k
-	DWFjJsooLhVr8iBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F1B953EA63;
-	Wed, 26 Nov 2025 14:11:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FulIOH8KJ2m+LQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 26 Nov 2025 14:11:11 +0000
-Date: Wed, 26 Nov 2025 15:11:06 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev,
-	vivek.kasireddy@intel.com, joshua.hahnjy@gmail.com, jgg@nvidia.com,
-	nicolinc@nvidia.com, nathanc@nvidia.com, mochs@nvidia.com
-Subject: Re: [PATCH v3] mm/hugetlb: Fix incorrect error return from
- hugetlb_reserve_pages()
-Message-ID: <aScKenEARH_rOzW2@localhost.localdomain>
-References: <20251125171350.86441-1-skolothumtho@nvidia.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dt6+rkFk;
+	spf=pass (imf17.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EBA7143E43;
+	Wed, 26 Nov 2025 14:15:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01548C4CEF7;
+	Wed, 26 Nov 2025 14:15:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764166506;
+	bh=LPbw8nmfdRPx1gStO3WJpiNvVHScxPjMArVC8Gf7Rpg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dt6+rkFk/OkjQNJu4djTVzI+3i7UKwCheMXZISxY1MfYYkIo4yNEW6pwz67VbLH/N
+	 eyktQYM7DLV0wcZ5pvqKMXSQDMgthOIsJS7XBe3ID8eNc6I/ZUd5FLeHdyE50WjU8B
+	 8M66WtgjIcazejcFEE9rI6XwRoaAxw53+XeZBuKZdKwuOhHPmVqGuW8gYHqz6ISoSl
+	 yzyKrX2hL5b3OA6f38P5dEKa6alNwIWRHsqQpatSix9Uv661JI5n8AnJNMs0B31TER
+	 kXDi6GljJ/WZrf38fl59e4YjPJTU21Y1gP3aSGQNa9m79zCviU214D/iuxmtI4eX92
+	 X080TWI4wBa2Q==
+From: Sasha Levin <sashal@kernel.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: stable@vger.kernel.org,
+	Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	hughd@google.com,
+	jane.chu@oracle.com,
+	jannh@google.com,
+	kas@kernel.org,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	npache@redhat.com,
+	pfalcato@suse.de,
+	ryan.roberts@arm.com,
+	vbabka@suse.cz,
+	ziy@nvidia.com,
+	Peter Xu <peterx@redhat.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	James Houghton <jthoughton@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Nadav Amit <nadav.amit@gmail.com>
+Subject: Re: [PATCH V1 5.15.y 1/2] mm/mprotect: use long for page accountings and retval
+Date: Wed, 26 Nov 2025 09:15:02 -0500
+Message-ID: <20251126141502.1386669-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251125044646.1074524-2-harry.yoo@oracle.com>
+References: <20251125044646.1074524-2-harry.yoo@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125171350.86441-1-skolothumtho@nvidia.com>
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A87A580023
-X-Stat-Signature: xkch7orsmf4hc9iqnq6g9mb67h5t9nkz
-X-HE-Tag: 1764166274-563175
-X-HE-Meta: U2FsdGVkX1+N4E44o6goNyJS+nOULxKkw2xmcESJPz0Jbkk77ewyABgTPuA9Vg1gKcUh5+B8+H6jwLWVlU3TTZiYyRLggS6eaFEJphFWvHHIfWKwGgpwAV4Cgd9vSggW7DXOuM8t7pSZ3LOzrrUzmQ+GI7fN87QJ6iVJLlX8bq0MZkT87OIQXdZJt9j13Pt6tsqCCB4q8rSvhGCmWNPjfqoymIEyQPC90z/3p9T9ePzePWBAzJnJ5IuZgT8gE80etEmSXjpjhteP9TT7w7sxnfZFEF85pH5mRutnlp27IoV22WDClNrgQbb7ARar2NLYaBiEp6RcxJIMO3scey3zI2kWs5QjEJEmiVjHMs/ASaq8+aGAGWD85b5baGF6omihMMTehzzLYQ/1wcD5yhC7GTsAIr/aPSz8sc8RtObvojiK8KEhq/U/8b/ABeDKoC672rjWxMXoVtsyBMpwMfXylHD18OZ+eJB/jU/Bt11Ep3blqbZ5RVwjTyGGAluLEwhB2KJ4psqr8P1TvNIT29JVGjpL2z2W632NYpeI4+tMcZLuIjEl2TXNxTmeLBcaI4HcvSpl4B+COp1vQ/YhNOoXd3OxfJ5uA3uvWdNI00Q2ASsSC5F1Ag4sZrcqnRMTbePLivghdF/WdifVcuzBdlfGULipNGPc0RUmnldC+1wotiKqi+io0t+z8miSv/JXgXIql09mRn7F42uTMIWSg9PF7BmeE43okGatvH3zcEk1Lvxv/nj13pjYM7iZ+uOoCyuikMF+jJznDCx9BsUNSZbkM66RN15jvBaBOh39JqvOPD46tcIBliUUjeg3z/FJhus12HmnNjwEhDeIRHt8KxdcLS1fvv68mnLnOTlz6iK7UtoeU1AEAFssExQNysAnVUqg6I+Wen8JprhpJ5drjZ3vMmYN5Y9TkF/m/ZIpEjje8nmTCGXGO6JBCtgs+dslkEjplYEQ5mzmIb4dSXhe85I
- cUhOOPib
- GCkg6uw76ecnHbYWiJSik9SWe+WPG/6dQ0tBBoyRGjZrmMHyS8O/eAYK7eI81iMK8oPvFPF0BeDfczP3jX6V4wmZxL5f+NtL1yLAzh0LP739covNRYZzvJq//zaVgdgoSsV/ZINPtOddszZM8yA1zWnlal2JoAEwGNVQR6gIeJmM7LYg1rtv7/qm5pWbkT1YtEpVsWZNgUw90RR6ZHQSyJrDkn88dCzQPP5yLP+2k8Whjo7xxFRdNQHTqKIYWbVesD0R4kULm7GMHulNaFZcYjDEVN3VX0dhqJykpvmShfEEFloWVlrbt7ezr9Wa9kQr62jy/vtUCAo8XYkHXxeJYG095I0vX9oeSDpG70IoXTh4uUY6w+azIuwfXK9EM9ThXZMDNV0Cv2GXqjk9oaIOHvh6xGoi+Nvc39c/LXwChLZKaRbU=
+X-Stat-Signature: w9wro4qtxrjb6zcrbdu8ojamzjio5cte
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 27FF24001B
+X-HE-Tag: 1764166507-629166
+X-HE-Meta: U2FsdGVkX18//OQyNu+ZGKzd+xWuISVf6UEed9WEbB6UhXuwK30ulWGULYzvurlBshy5yJ8dz9YGYX+YxS35JJABXBS6LVVQlRSYs69wHNExw1N3KRajROYsARDfHFtHoe7NX+0zqMmaFFuKnTaZXr+16fVVJGvWT/f5erIM6skOWfa65X0tk5o+7MyDsfezL1V9IeZGUdZ3ooEjr9OZBr5GE/+bd+UCzsB0sDDLNwIQ7oPrzPCu+cq1Q6KaCL8cgtJFWSjHTu+Zj7IEdcQuzeiDwxkWM2zsBp2C13MK9Y7jVuAqkAmombX5VEbKvSqckXosMmQFt40kMTRw1NPfwRzA8CInA6M2nAcpFBTol38vPoC7oQtI2ZKd22sA2+xTybMt5mDNcibZ8+6nn5jh/tfZv1Notk0jb2HmAhqo3Wa5yjJCDB3ccWxekFz5/Bdzzf556W1kaJHUGackMmMcltOjTJYk3l47dhu5mUurcBBWg3O4pIFn5Rmd64RoU2zAakE672ONPh1KWGsFs/EAxQVFZzmMLEVfxlJjN6guWV/CPtnWeYeJJRhv+5+NuVE83yzSi9LayEIwAfqeupw0EnS6u4SWrWJV3lwx4HE5kjycJznNzwat+Qin3V+1t+HGp7G5XJ8ciijkAoAtXQgu23iCiZoNIHXs8AVGrJeCdIL7VT4IWNVGf+FCvfIkPgb+zeoJR2eXP/7B8gEYBiiIfqfiacamDyR4t0c6W7fHdI4peqz+cgf9zlPykkEE+SDxAp6MxOvoAxNl90hDjY4ELSojGPBM/dYYbWDEfG+eZ9NdI3d3MkeVWcfduqHG+rknnKUwyLU3vfJUMV03wAvH2hJVevvt1k7jeZkO1WlHSlVf8jqUe1YoBUHyoEL7Uf7mSLnBzRm2jqboUQpXAarYtZcDUZOK2gCuB4tDXCbapts9zeZRvcQ5BZlB5wDM+KrL1eDiEyJfsQZJK0YN98z
+ d49I9XsT
+ fimGrm4RDMTpBqnAmDwK+VJY65ovoL/oMCqOYD0x/dIZpe13yuysQFrsJBtdlxxumMOzMQBu4r32AmlqcJKEPGC5ZV5RRlBSHz98APFRx47bBlhyfkV2sr3UL36qF2m054pNmrZyH8UCcihIO9XUhEcgPXo3PuasyhUJcJ4wqOgfcYMXDgh4q7Mi9RCCLc4Wv691QJJttIwVdFhX960kllaN/6nkYWE+agqISm4t+kRqFQZXjnU9uto/dLmpd+hQUOKNOWtudS3q6HLWxppDiOdwtiw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,32 +116,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 05:13:50PM +0000, Shameer Kolothum wrote:
-> The function hugetlb_reserve_pages() returns the number of pages added
-> to the reservation map on success and a negative error code on failure
-> (e.g. -EINVAL, -ENOMEM). However, in some error paths, it may return -1
-> directly.
-> 
-> For example, a failure at:
-> 
->     if (hugetlb_acct_memory(h, gbl_reserve) < 0)
->         goto out_put_pages;
-> 
-> results in returning -1 (since add = -1), which may be misinterpreted
-> in userspace as -EPERM.
-> 
-> Fix this by explicitly capturing and propagating the return values from
-> helper functions, and using -EINVAL for all other failure cases.
-> 
-> Fixes: 986f5f2b4be3 ("mm/hugetlb: make hugetlb_reserve_pages() return nr of entries updated")
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
+This patch has been queued up for the 5.15 stable tree.
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+Subject: mm/mprotect: use long for page accountings and retval
+Queue: 5.15
 
-
--- 
-Oscar Salvador
-SUSE Labs
+Thanks for the backport!
 
