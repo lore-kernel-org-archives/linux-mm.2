@@ -4,97 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9D5D1037B
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 11:19:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 146DCD10F22
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 11:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 140686B0026; Wed, 26 Nov 2025 06:19:32 -0500 (EST)
+	id 2E97B6B0008; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F1086B002C; Wed, 26 Nov 2025 06:19:32 -0500 (EST)
+	id 29A796B0023; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F21FC6B002D; Wed, 26 Nov 2025 06:19:31 -0500 (EST)
+	id 1AFA66B0026; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBDDB6B0026
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:19:31 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F315140506
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:19:31 +0000 (UTC)
-X-FDA: 84152512542.17.CFC2227
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 091CEA000A
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:19:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PYh8Cm+A;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764155969; a=rsa-sha256;
-	cv=none;
-	b=0VjCIaazDrzyWfLuk92pQX5qaJAR/0b6onj0dHWgyJyGY0H3d3ebk1dO1qEiTdu7Dhskki
-	z8QxHZLH28by+SClS9xDcEPdh554+ElK4A7AlWcUpfFhptgEBG8sjBKziqJu9mKyy0HYc5
-	9hKJtV5ViNPrRWgsm/00jXQndClsz9c=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PYh8Cm+A;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 09BD66B0008
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A064789832
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:32:13 +0000 (UTC)
+X-FDA: 84152544546.12.25432AA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 858241C0006
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:32:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764155969;
+	s=arc-20220608; t=1764156732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2tTKYzeAKmskwEPJDRmck9uGQFR/WVms+j+qZKExltA=;
-	b=oVy2WuMbJ3MH591G72W3Qxlf0KDepdxG67bb0ixPQp0Ccqxz18fHSeZk9CCk/NO4V6KuZD
-	/qBAW/uVUyU21WUp+az0/LpuUmJWB1WRtOKf/HC4Mic6ZDcQI56va7QXhjzWtS/UZKbQgW
-	BgvRERrTs/sJSNYvvrBI3DmPdeuDjOs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=2tTKYzeAKmskwEPJDRmck9uGQFR/WVms+j+qZKExltA=; b=PYh8Cm+AKY2HDhGNqmTBb+P628
-	lyPzPGWODdXXmy6U/BH6q7HVErfsldyWJOSRNKrAh/BqAKBlMdSolR1ypFm08JzNP5i/HH1cpjpTm
-	9YH6RvMwTjWrFdzPhtdU0JIPeLOqE5yEWRGug3zudo8gkdzXNQZc1I8IRJZGq58hagsm24Tm2fSS6
-	WNsONjHKzKX07FKo5WXjmkWa656cPIDjsk9LyDCvn39sXH/SoHxxRyf4j+aADXUjUigzTThIetH6E
-	nfakfO7YAa+CmXi9/U7Obv+UiET4nLpWI4GZDCH6nra3MgM+fcsKs7pwG4Ml5uS5B4ZXSBtP4SA7y
-	rUv8lcww==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vODYR-0000000A0Jm-09VP;
-	Wed, 26 Nov 2025 11:19:23 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id EB17A30036B; Wed, 26 Nov 2025 12:19:21 +0100 (CET)
-Date: Wed, 26 Nov 2025 12:19:21 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Xianying Wang <wangxianying546@gmail.com>, akpm@linux-foundation.org,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	linux-perf-users@vger.kernel.org
-Subject: Re: [BUG] WARNING in __alloc_frozen_pages_noprof
-Message-ID: <20251126111921.GU4067720@noisy.programming.kicks-ass.net>
-References: <CAOU40uAHO9-59HB2VmCBfC5OiNg3BZBd-32jphtRd-nkvhD6Dg@mail.gmail.com>
- <4cb9f727-734b-43fa-92d2-80559df76c84@suse.cz>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TfuoH9Xgl+vTZlIkPCsReAqYYQoglEg4CjiwE8eID+A=;
+	b=6GCTsJyeBMGCBEGRvRIEtjFD/BY9ppOvTyCzYPnh2a72z6gpjOxyCHVCmlhCMAAQb0GRsL
+	yMrNZITU93hTCNhc4TmpRL8PvFb0qgb6+C45FPosHB1dD0BDubn4D4g9QDY8V/bC96Jsj4
+	lrIGf5sGAOs1Z8uAgJ8Xc/JofRV1y8A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764156732; a=rsa-sha256;
+	cv=none;
+	b=Dzb2KJMb6UfALsgoQC6XPr7cpzzoj+No+4Syy4QlBOjo18+PFdEU5hzEghfitU2h36JVOY
+	I8t1iirxSG/RcFrOVBF69kI0cLG4dPCFHOJ5WAJ9YTiVPtl9NNF3SVMxk4voH1rPKc4hP9
+	AQCyblhe/k2bIHrn5kIzhUyglzuQFG0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 065BF168F;
+	Wed, 26 Nov 2025 03:32:03 -0800 (PST)
+Received: from [10.1.33.153] (unknown [10.1.33.153])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E4543F66E;
+	Wed, 26 Nov 2025 03:32:08 -0800 (PST)
+Message-ID: <a52ce72a-f762-402b-b353-7c3f69e4d28c@arm.com>
+Date: Wed, 26 Nov 2025 11:32:07 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4cb9f727-734b-43fa-92d2-80559df76c84@suse.cz>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 091CEA000A
-X-Stat-Signature: y7ofxmdhe44aj6h39k1w19nxpb6at7o6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: use standard page table accessors
+Content-Language: en-GB
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org
+References: <20251126064723.4053-1-richard.weiyang@gmail.com>
+ <506e7a41-a199-461e-91b1-035ebd5d5527@kernel.org>
+ <323987c5-aecc-40c2-9837-9630186367b6@arm.com>
+In-Reply-To: <323987c5-aecc-40c2-9837-9630186367b6@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: qu9yd9rfwoxq1wqfgj7nt895rbtbcn3e
 X-Rspam-User: 
-X-HE-Tag: 1764155968-936372
-X-HE-Meta: U2FsdGVkX1+qfpel6TbIVeTYQuNdSVg4yGu86NfMgsXHRYbHa/ZQ/UI89vXLbTcfVHjMp2t0fMJ1ztJFbGxvEV8svxRFXwzmptGrNxg3kOaCl4URvQ5foAm+SxbKzifgtumlLyD+AdRW8KETrXtRaEvITBxnCcr1BZpHQ/3SzNImLVoo+1d8WKzUnN3fmaLpSD0UdxgplA/xWKzuZAMvC+gidR9Yz58Y+71s5f3kJgr6UzAlD5Nt2KG3mMLO3t6d+SVQJN3zoKo0ZVrKBs58yXrjND2NunfgpwA4D/1yXS3Y8xjjKdWEI/SP3t7hqRGsoSh5G1McQHboKODOkLIzD0DDTXiQ7jsGeC8Ay6IyMegYjnTJEOHFITrk9GXZiSV/CroHeuAgGSowwGnYfw1hAqZnIbUOK6rvBk3JxjTA7DO9bitzY66hiRwGDxRlGtcmrHGkXv7fCwojPsp68uhY82CxVrqwEM6J2oMMDwn2JrLnpdLN/+sQGbztFFuSHrKB9YYEkaRZNVP0OiSaGDLJtBrVvEMXP/9FtY+3ZCW+ax5ptr8LHHoh0P8dPaud3fHqAzFAMWvmdOdIWE3MG6SpvS5oRAC2FGjqTXM2qv6KZ5/b4rx8Iw9h+2QceEVJXTtiiP/9mTch1WSyP04f80cfLN266d+DPTQhdhrZc9aderU6ZJh3JYy8GkrGHSVIwYg96HEWS9dLMKgS7GrehF6Yl4hngx91QEWZayBXRK+tgXIyszrSWGQCPZZp+5WVYDCbzWlRVdd9f1CTCimqqiJRuv/vyA2DzRgutvwsa0bK6v4H84CsZwH8VtugabHfiSHRv0OOm8jYjSucceIoFOHAes3Svys/5d02MN5Ycwk58f/cMoZlf75sSiFYxkCfuaSKNCcK4nqbWm2teZTVl+XZik6p8gyxZLDiayRFsFvkCJv7Nw0JX2nWJqukccfUgbxatOCkFosJ2xqFxWajMmn
- zU8ldIy6
- olLFLeJY5Kv8Obg0/MmoUQnO4GxrWnhEBlt1wNdOBkJ7/ech+nr68Lb6uBdEf8dM6/gqzRhCwnZitZNLi7mEHgBd0w+LXYrf0zLEEWuePA4FrYoSLCRiuGe/aaH64ORS11PYL9lq33MX6b2/PKvLcoj+zlpx9a2c2fBNtrWEd0r1qKS7QHvuPN+vhVlPUeSIoiOWkN9ivjIGRxWSPmJ56pcWhG7KmfMnPi0PWy0yE5t2Bn+xAepgB/n7V/lM3ShiRifis
+X-Rspamd-Queue-Id: 858241C0006
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764156731-676663
+X-HE-Meta: U2FsdGVkX18Mzbu7NXs0I2f9JmEpNAfortc5Z+WAo8Z2ZYGYO0F4H2YMi+tbLPgZQygnhQp1UaAW16IjGLKyts9JVH58sjOpJiF9lmaBd/2yaR2jlrU9LZLMy+IEvvuJLsSF01D1Q1FWMPvkjrar40GaJYMkHYtLuYY5ElhbXvGdCCkqIlHlLLlOhI8ETQt+T/OXFavsC6oPSZGiofqvtNisIdHcLchXCfY1lXE2yb7pXsSE8xYvaS3jjyJduV3WXZ0edl4hNzoxo5rR8svQWMCbss7gqu4ZXjp8hlYcYkB2I/4noMODrHVwpao4RgiK4xbBFqlCQWNWz28vUIVHJgximpPXM8laV5WLxFRgH8bJ6YNiW3M2qjGhB20y3IncL8eOWk3GeoKBmrabEW7Sas+KTLGYbxqayklDOstAeNpU9N6P2XtZ/XeeU8UEjqXbcXOlMgJ8TbxYt7C/DJBawD0fmP/zn8H9pt+Vueivc6rIZN/gA8B0pdTj496v3Eup1+iQQMnfyoikzG0goUPc/SfbSSsrmIJQo6dLxNGPjcCiT9fMKLk+uT+6ii5KBNpbT7RMfKvSpQBA4ILxocSNS8bDGPuzKJITGRR/qNTaja9e95w8huPtDCzCZYY54Li/wgssOtw/im1BOHclrtLgUtvrrsk0Bh3R2qcWmtk1O0W7n6SXPnPRK0hcxASVp8mKG35xXmDT+KCeRrP9n13cL4uzTpdx0HQrA6XPaTFxXcoSibmCRl8P1C66d29x3vJLx9bjbzqDguzNwvGYS7S87jA2fDbf2AMtoYtRk7H+/mbbmn6+UIUFuGaTRCNE/6zMybs7KjSQwzeQly7A59/d56ppNUKyrRERGIFSKKvnq5G4n/YOFqjPgED34WFH+GuoLGwdRxna0bIPlSBmRjuL4Qg/IlZDfREkiZnTIW6CDcpLUvjO9r/j9BvZy14+Dlg+p1yvbkDZ7nZQDx6vu/Q
+ a7mQo7lL
+ UtbkEjv7xZhaqd+xsZ2QnNG7FZQYJxOoygwholhBS31T4aAuQ+KXO5Ox35Bu175d/fqzZsuieebhpeQ4KMXqP4lBU1mJbu73GAgS3a+VuZOe0SrJa3iLfCN3KYgixnHeef+TVDqFhY5mVxfJXzths4wd/FNj5Amj3jK6q81geKWa5EDg7Rktd5xGkAnQpdHEoRWW2vu6MTfkOZf/kqwjOUy4fq+gnO+kLMts1Ge3i9T4RcBxkbHxjbX0iCof4u+bAfGnMvdUY277hrfcUW7V4J6OlSCytWLniRibuozvTtOI5CW4EQDLnXAn/oGxKZqqSTiwp0DefcCuzlbPQVTAVwUhvy7mXtIWy/TTDdpRk+VNpYTYRekeeeyLmZgeQSnpmt9QKhXLZOQa6vYPJ2dbC/nEk0w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,37 +92,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 10:46:38AM +0100, Vlastimil Babka wrote:
-> +CC perf people as AFAIU the problem originates there. Should the limit
-> be lowered, or the allocations e.g. switched to kvmalloc, to avoid
-> requesting impossibly high order allocations?
+On 26/11/2025 10:19, Ryan Roberts wrote:
+> + Anshuman
 > 
->         /*
->          * There are several places where we assume that the order value is sane
->          * so bail out early if the request is out of bound.
->          */
->         if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
->                 return NULL;
+> On 26/11/2025 09:09, David Hildenbrand (Red Hat) wrote:
+>> On 11/26/25 07:47, Wei Yang wrote:
+>>> Use standard page table accessors i.e pxdp_get() to get the value of
+>>> pxdp.
+>>>
+>>
+>> Isn't this covered by
+>>
+>> https://lkml.kernel.org/r/20251113014656.2605447-1-samuel.holland@sifive.com
+>>
+>> In particular
+>>
+>> https://lkml.kernel.org/r/20251113014656.2605447-7-samuel.holland@sifive.com
+>>
+>> ?
 > 
+> Ahh this is very interesting - I wasn't aware of this new attempt! We could
+> benefit from this on arm64 too.
 > 
-> 
-> On 11/19/25 10:07 AM, Xianying Wang wrote:
-> > Hi,
-> > 
-> > I hit the following warning in the page allocator when opening a perf
-> > event with callchain sampling after increasing
-> > kernel.perf_event_max_stack.This warning can be triggered by first
-> > writing a large value into kernel.perf_event_max_stack and then
-> > opening a perf event with callchain sampling enabled.
-> > 
-> > The reproducer does two things:
-> > 
-> > 1) It writes a large (but still accepted) value to the sysctl:
-> > 
-> > echo 0x40132 > /proc/sys/kernel/perf_event_max_stack
-> > 
+> We have some experience and opinions about this; I'll reply to the patch with
+> some details...
 
-Yeah, that is far too large. I suppose the actual max is somewhere near
-8k, which would give 64k data for just the callchain -- given that a
-single perf buffer entry is limited to 64k (IIRC) and all that.
+https://lore.kernel.org/all/02e3b3bd-ae6a-4db4-b4a1-8cbc1bc0a1c8@arm.com/
+
+> 
+> But as for this patch, I don't see the value in changing just a few instances.
+> I'd prefer to see it converted systematically, taking into consideration all the
+> complexities.
+> 
+> Thanks,
+> Ryan
+> 
+
 
