@@ -4,128 +4,201 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751A9D11186
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:50:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86247D11188
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:55:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C9266B008C; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
+	id 944926B0095; Wed, 26 Nov 2025 11:55:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A10E6B0092; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
+	id 8F5406B0096; Wed, 26 Nov 2025 11:55:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B6DE6B0093; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
+	id 795346B0098; Wed, 26 Nov 2025 11:55:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C2926B008C
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:50:12 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D730E1604D8
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:50:11 +0000 (UTC)
-X-FDA: 84153345822.28.A8354BF
-Received: from fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.64.237.68])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 732C9180004
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:50:09 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6233C6B0095
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:55:01 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF87050397
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:55:00 +0000 (UTC)
+X-FDA: 84153357960.17.5F91826
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012025.outbound.protection.outlook.com [52.101.53.25])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3F9F918001E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:54:58 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=OO9Qum+W;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 3.64.237.68 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764175809;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=MZY4AyZv;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of jgg@nvidia.com designates 52.101.53.25 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764176098;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOWpCuTZQXXu+UFDi92tkah8da8iWaYrZywVBBw9cnQ=;
-	b=BNbz/Fhx/JDfV9tP+I0pxQsW//XoMBLMB6AdU41DzDNIhWKWC6Vs39gss4FUlnktUhWmFy
-	wkNCs7YsS9c+a3HJRGl2cVWL/6e2W20c2RntbQUnDDaK4WFKAbFzqP/yy9LTgdRufV09yA
-	wajrtvMF/27A6KUr356YwUqm5BsY9rI=
-ARC-Authentication-Results: i=1;
+	bh=xxZEkH5e2YVADb/xtty+0fsMHBrfT0hSD/MS5Fnx1KY=;
+	b=fc389pB/K994++uX/4TQ1MLACr6XoxujeC2qJYvQN+ZH0rdAH/mSVk41qVboDTFrt6LjEH
+	1o6ytKT8dJdcI2l/dH65EQAvfoYAyraWvYEctYOm0C2bOT2xfzSULeAsp7PGYmvSM+u628
+	aVjnTUaHER81cncuXLu83TNFtzvX1G8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764176098; a=rsa-sha256;
+	cv=pass;
+	b=4h6fwuoNJ4ZZe/pcrLz1YIu5cAAT0zZuUVGTkkEqq2u9vAAFKaIB6Zle62jYIgXmYmICxK
+	vJAhy6lkbFoQBz5693sKTreJOjjdUIl6Cft0ka3lamhf/lEkmaOGH+fOavbe5qMyf7Donz
+	CdjhN1zrUD8o4n3WzMGPWe0kE40KJnI=
+ARC-Authentication-Results: i=2;
 	imf06.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=OO9Qum+W;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=4186e4d8c=kalyazin@amazon.co.uk" designates 3.64.237.68 as permitted sender) smtp.mailfrom="prvs=4186e4d8c=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764175809; a=rsa-sha256;
-	cv=none;
-	b=I3dPkhxqtPr/1jWKB/wrGl34gvAW1jdlG0PbsnG14kBmFoLlgMDyO85ManSKI7uTKXJVxx
-	V/xF44JR3VP+J/Zty88+f9drRcNDQfg4FeH6q62rX3mzMryg0eJMt5Wqppo5jx0iSc8I4V
-	BDL5c79KUYtn43CRXMfVDubfn7u1ACU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1764175809; x=1795711809;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=hOWpCuTZQXXu+UFDi92tkah8da8iWaYrZywVBBw9cnQ=;
-  b=OO9Qum+W80Q35ywAVa8NKTAjDngK1bHGGH0Y8xK0RiE7gGLSyHZaUX0Y
-   4O1YXJw56WqRFGTvhqQs3JJggjpg7bNTTbCBAhh/08D293SsL6QL2nIVE
-   LFEXQhgW9ivFcKjOnaz/OVHfytvVaw23Igj0gbKPjzInFx0JyOsZKioJ5
-   s3SmRn1v6WfPKebA42jc6pH6ofbZ5wj5lEJ89PYfOCG3wygwA/aCpH0wM
-   xffSXg6OgmQsfRfMLSLYMt8EbmRl8dAmQJy2HmChXA/xinW4yiNNAOh3k
-   s8CzdIUHSIGQSEqgKaV/QtjKZrX6Gv1xGkgvwO4k4edoJRFfs5foJXpe6
-   w==;
-X-CSE-ConnectionGUID: KZIjcG2CQ6ucnaRhPFfPyw==
-X-CSE-MsgGUID: eHrl8mI8Tee2eBv0E8nJCw==
-X-IronPort-AV: E=Sophos;i="6.20,228,1758585600"; 
-   d="scan'208";a="5751043"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 16:49:50 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:17770]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.27.255:2525] with esmtp (Farcaster)
- id 2808e225-d96e-4595-94bf-b76a6f3bfa50; Wed, 26 Nov 2025 16:49:50 +0000 (UTC)
-X-Farcaster-Flow-ID: 2808e225-d96e-4595-94bf-b76a6f3bfa50
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Wed, 26 Nov 2025 16:49:49 +0000
-Received: from [192.168.8.204] (10.106.83.30) by EX19D005EUB003.ant.amazon.com
- (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Wed, 26 Nov 2025
- 16:49:47 +0000
-Message-ID: <18b4cddb-3e04-4272-9f04-6857cea70ff5@amazon.com>
-Date: Wed, 26 Nov 2025 16:49:46 +0000
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=MZY4AyZv;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of jgg@nvidia.com designates 52.101.53.25 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ANwyrfTbxgoTDTn6t6ZqtURLtFKqlbkfViH/1iLtXohtHXF9XO+zzvPl0v25juh8kCOITltiFcxTY4UYVPVDjAwbUNPHbESX88wDv5JlFG5Tpb0h7wW3gE05lQNkr+Wpz+zYlbCiFtv73mMHPwgW64dJ/gJbsLx9WVuY1+h/1++r2fI1YdkhBZtXTMiJwDeLdnCY5cMX0DPirYYui28uIukjiXEeL6Vcz3It8Uzn1Ms+xUGVKHgzP5Mjde6YTazwrw6vExy4BpMk9JYJJ9qjjoNd/aRRmgoKCRPKXPPiSZpfqxsboYNnC29bLWwFlP8hOgMyL21i15s2OyA7GTiGlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xxZEkH5e2YVADb/xtty+0fsMHBrfT0hSD/MS5Fnx1KY=;
+ b=RAYzlTNwmf5GUkLl6nd/Sqr4QuOkjHIHtgPftkfuHG6zhYnJG10yAwCSRIFoFYYCV69ttUV3tJOvL6AVWu7XQZqAT+2ErD/Xy3EVhfoNiRB4cV1Tsxrldikzxrsr/mEhW+XqVeXWSp/pDUNKN5EQ/C9xJYPn75VMasv8fgLvv0K5VJ//8aTeONm16dkD9pQovMmSJkR45MW2hG4wa8FY38I0FWbZH/aIvtGoKL2hIHseCK5TCvMcJqiBnyuOHD2AqKTfToG9Tl7QmjevPr5Mi6UN5tk/EBtm/mCLaydBBRC7iJEsNsKjZwopAoSJUZ4p5iz8W3164gJrvqW7nYjJ3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xxZEkH5e2YVADb/xtty+0fsMHBrfT0hSD/MS5Fnx1KY=;
+ b=MZY4AyZvTpHNfT6rXopKbGuGRhcg1qGyb20ANGEJaWHR8ptiY+l9JLjCjLC3zFT7DiEP3nw6zKJDg9NoFPLB7prjGFzkERFb6TW5r+eZjP8Om+EWELMhsdXMIROunPHe57ugrdTFc2UggtJFOyZ6n6sH+Cg4tktkxPp4P4/Y4lo0nNlhsLjuikYxl1e3o5JLMfcGOV3YQBnXmpnteK8mpcXsMq/CUdEJfz8M4ws+VC9IXf256WwoV56D5zVpKmdiAi1LTv8zoStvehOQc07owflPYTFqvER3P4dA0ckd6uqQN4hudis5HZYj/bJ2PzCVHA+R0/nyVujiwSPk1RzpYA==
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
+ by DS7PR12MB6046.namprd12.prod.outlook.com (2603:10b6:8:85::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Wed, 26 Nov
+ 2025 16:54:54 +0000
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9343.009; Wed, 26 Nov 2025
+ 16:54:53 +0000
+Date: Wed, 26 Nov 2025 12:54:53 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Mastro <amastro@fb.com>
+Cc: Pranjal Shrivastava <praan@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org, Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH v9 06/11] dma-buf: provide phys_vec to scatter-gather
+ mapping routine
+Message-ID: <20251126165453.GJ520526@nvidia.com>
+References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
+ <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
+ <aSZHO6otK0Heh+Qj@devgpu015.cco6.facebook.com>
+ <aSb8yH6fSlwk1oZZ@google.com>
+ <aScl+LCPN2TiN7Pd@devgpu015.cco6.facebook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aScl+LCPN2TiN7Pd@devgpu015.cco6.facebook.com>
+X-ClientProxiedBy: BL1PR13CA0399.namprd13.prod.outlook.com
+ (2603:10b6:208:2c2::14) To MN2PR12MB3613.namprd12.prod.outlook.com
+ (2603:10b6:208:c1::17)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v2 5/5] KVM: selftests: test userfaultfd minor for
- guest_memfd
-To: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>
-CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand
-	<david@redhat.com>, Hugh Dickins <hughd@google.com>, James Houghton
-	<jthoughton@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, Michal Hocko
-	<mhocko@suse.com>, "Paolo Bonzini" <pbonzini@redhat.com>, Peter Xu
-	<peterx@redhat.com>, "Sean Christopherson" <seanjc@google.com>, Shuah Khan
-	<shuah@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, Vlastimil Babka
-	<vbabka@suse.cz>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20251125183840.2368510-1-rppt@kernel.org>
- <20251125183840.2368510-6-rppt@kernel.org>
-Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-Autocrypt: addr=kalyazin@amazon.com; keydata=
- xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
- JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
- BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
- IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
- CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
- ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
- ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
- i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <20251125183840.2368510-6-rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.106.83.30]
-X-ClientProxiedBy: EX19D002EUC001.ant.amazon.com (10.252.51.219) To
- EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Queue-Id: 732C9180004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hcy3w44ixkqd1kpn6ododr8tmno4ikts
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|DS7PR12MB6046:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ff12cb8-cfa7-461d-43c2-08de2d0c8584
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?b8rfNG3d6XXMf9rzORqAtbEuW99wCf87baKMReiYdns6w9nI15hAEOqfGutl?=
+ =?us-ascii?Q?GwA+crP2tY78qaUAWmztk33u0E3Tne8RKF6TuK6SjLLdIBy6s5v3ew6/+AsF?=
+ =?us-ascii?Q?OHQaYTGWbsYB/l55aiBdcwetnp0bAi9F+kcDH5944mdc3oa7CP2pPJ81STEy?=
+ =?us-ascii?Q?kNPGDjQP+UsmLaUiHsTj9X9Dfi0q5EXEyoVSOrsiUZ7t8peCLRN22vuH372m?=
+ =?us-ascii?Q?DZner46KuFMLJWhxIbuPfzvUulemNRhiEa5sL49+I2HnjtDHL/7NiMxMma56?=
+ =?us-ascii?Q?a2yItfWhRIB+UAOTfjPlhIqafgigpfvrEkk4AbCY60sZNegOT1iJaU+Lygc7?=
+ =?us-ascii?Q?+3j7+hfMTF9W3ZwR0hBBgyiSkhUfkrbnserFPNe208gREV51NhMm36Yhhx+y?=
+ =?us-ascii?Q?7O8M0gBz8MI8/P3/eTmQ0OYz26O1TLANCXoS5gK7+XFsuaGpITO7hpYmlYuz?=
+ =?us-ascii?Q?9o5FQ2UIgdQeMMECcOM0a/akF4nI659Oasgx7OR+nCe8S+5PIPvONH4tPdD2?=
+ =?us-ascii?Q?KM0IwROM6RPKEHgM/tOtd9ZRY+NHIciljPBJ2k8qzslfQaXUbD0bbY/jcNIi?=
+ =?us-ascii?Q?Hr20zS/3QFmrfbt/HaaVQ3SBGEgsqy/32GNhlv2oissmIdu768gUG9emgSv0?=
+ =?us-ascii?Q?8h8Q9EVLIP5lfxCrgLD0yqNKENxktpGEorW2RNdvOhmb9Xb8S+hiA6HvhMp3?=
+ =?us-ascii?Q?Iy9c2U9bsd3araoi4qwwioUDWi8wJ5dHfS/LEzEh2XS2RYawb0JVt+SZxRN0?=
+ =?us-ascii?Q?un7/57bh/JMNhEbdb+sCpXeGbGZcRBwqCTQL+Dh+trLzL3A8P6lEesvmq16z?=
+ =?us-ascii?Q?zxXWb+fY4DEaLSyC9d0FKC2KL+MvM3DMbY5QJsElv2WQIk76/7x6Elri2ZFf?=
+ =?us-ascii?Q?ZAgLrjD50uTehbF6Klls53N9yrpxjlGyUdOXsrSS4jrkXZRv8NUa5UnB72e8?=
+ =?us-ascii?Q?qfo6IBULw85pJFgO9RiU1mNN8yTsecysRU+qe3tY7XF0RM3fToUQWvC8xEnq?=
+ =?us-ascii?Q?ho97WCD5KH37KHqw6Pn6B6jR71uUjwX+SGNK7hbRrb7E6DVkkFJhsUG9VH2h?=
+ =?us-ascii?Q?DkGWM0boLCIK2jC/Lckjfq2x1Fe9Ea7QVMcizMPg1j8j0c5EvpGRDsGqpUhD?=
+ =?us-ascii?Q?KT01lVv3LhBOsAlqxP72BG0QKGPNCH14acJSU4Nn/Yyx2FNokboSnFvUGfuR?=
+ =?us-ascii?Q?t4Xv65TDj5rcYzi0tjU+bbND8JzqvlNgF9/y7j5NTXjr8dry06JLYBTlLE1s?=
+ =?us-ascii?Q?EeLHZhy+Hv666HjpRwSNyR0l3qtHMM+1hEj0y2ocqTVr2bTZV2FanMMKTJqF?=
+ =?us-ascii?Q?sbNCxJmz2xb2ABaxQD9Zc4HcgbEWv1oOSxGfTV2y/Orijt9msQ4X0RiJ/WJ9?=
+ =?us-ascii?Q?Hb78/tx0Ub7xpBT1cKcet0MafeT8KyAVtPlzHfoB50Ntx9IgVJH5gc82iP3F?=
+ =?us-ascii?Q?nhLIBr+X2JFbxTjHwGqK2B6eLD1hcbOm?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Rr8/UggYXFoFXLH6yEBfemvBdigD6gjrHpj6l0/muxh/bDF9QDLG7Eox1fon?=
+ =?us-ascii?Q?MWI2n5bEKDU3I8owz1yRQLWnNz9CB5yAHUbqU2PKiY7kC+VmsNR3kijP2TVI?=
+ =?us-ascii?Q?/UXumx64nqN1h3VoO1yKLXeqaJKwQGwGWOiPAZL1pNryM8zUbLLiqXMHowT3?=
+ =?us-ascii?Q?Hvb5b3HLKGFBoel7lT1v42zZuxJXIVdKXCPIWEcbinmk51lQ3KbTRTHAZTM0?=
+ =?us-ascii?Q?kQQWbwgsLddcqN53QD+nNTXbil4nxDJEMffgCUQs+zFPO5l8kvAKRXW3Qu8U?=
+ =?us-ascii?Q?dSTV4BPuwv33vqUuzH9vaOgRO9RHTh9T5Y803/gRFWMk/ui1shqBlZ4SEMfZ?=
+ =?us-ascii?Q?bKMSTdtR4UDMDE/am3m+ot/eI9VKQ+k8l6Ww+p5gaIwntFAksAn4yjrfr4Pk?=
+ =?us-ascii?Q?TqqmuGSB5HvvfcbMs0nB5kFnwaqUh46+BJoL6MqBUr5m0LbmYcbhy8/ZLfss?=
+ =?us-ascii?Q?lHPT7Ow//qNK4JgAgKnxFiRtNhujYDSKa2pS7rZz0uCQ87tFQP+zgbfrlaMy?=
+ =?us-ascii?Q?DxhJg9ZLsZHg1dElHg5OKrlU8xlHA6tyUAgOdESngs2dl8qHh7NeHA3H+g6s?=
+ =?us-ascii?Q?qVDDmFUBcyxI/VFKjf65ttKgpJcCigDYLF6rKBA27YELdymqzXIXYgar8sXj?=
+ =?us-ascii?Q?mw8MheK0uxobw2uQwp/OcfhtSha6dB5D4DS/6iLEJBoyP0iGmiCoEuyHztio?=
+ =?us-ascii?Q?VxxN3Aq3AA9Ghyi/VZzTiNPQBCxLj6bXgQz1IC7yc6bTofh1OGXsXeF2anS5?=
+ =?us-ascii?Q?McXKDIsnkvDBabHHfsZ/isS4t6+QI1AGO3th0rHYM1kZ6zQuGfd+j9rgLinU?=
+ =?us-ascii?Q?ETh7J84liJcB21ZbbqNNvC0sVTll6SsX1Xt1oQr2ik+4e6j1Rgz9kx41AWlS?=
+ =?us-ascii?Q?4S6YyrKf87Zc5DsUbZLrSKL5/4AjC65OB+7arzM7L3RUm19awUzIsquK3HUd?=
+ =?us-ascii?Q?NL+qt9k36dusrhKpD42IrWcqWsavSsw6ZaNshrWIgvff4YL0B9Wv/i4VkoRd?=
+ =?us-ascii?Q?a8B4drYr0lG3yXn+puYFc9ZyCoOulFTj0S0wOPMzlhmJoHZGIkmDDxfH0LyK?=
+ =?us-ascii?Q?ic6FLXAtDpb0jMrttMk4GgGDGaACDnj996YAKFx5yWrTmpvShBzGDYjVwYWB?=
+ =?us-ascii?Q?opKDqMLnQbdomSAyuD5ms2Rw3eaifysuyhGjYRV6ScWjS8HSB59U2qm6wO6C?=
+ =?us-ascii?Q?8GhF4cuaE4ouxAnSvgPviMEI4ZJ7gwsHXMGcn6c7Z79FsTv9xnKiQ1/Jm31m?=
+ =?us-ascii?Q?jrBVOld83YVu89xcqMIxap19tLnC97GH1/YHYPIXY78iwC1+nUF/25T3T64N?=
+ =?us-ascii?Q?AZ3b6lCliKQUDXxjaZ96rmKarcMJK/SmQPWlNde8U2vpfsSe81iM8wNJifG5?=
+ =?us-ascii?Q?DBpAjg7MZKGuX6nVm8Ic1+D2P/HdkpMTDHnt/yJVSR56gxykmfyx7ZDfTVKZ?=
+ =?us-ascii?Q?zdZxVBQ1mwMZxL1wEDG5UNwfEig2a80XSFLGkZSkxIxRMKEBjsJSbJoDyfNs?=
+ =?us-ascii?Q?9J7Xaqw11T6Dcwt+zL03AOsZLG/LNJhVNDfzfDG9BXlYJQlJOBXCaFBBBRGE?=
+ =?us-ascii?Q?nTd+61lGY2kln3WycCs=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ff12cb8-cfa7-461d-43c2-08de2d0c8584
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 16:54:53.8261
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e/NLpBmrNNvioecHTBoir7ABAKXX8pH0Xx7Ti8jplfDNwnzvTkUxfFFNlu6zyfIr
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6046
 X-Rspam-User: 
-X-HE-Tag: 1764175809-794810
-X-HE-Meta: U2FsdGVkX19K6NLoad1Bf1G1WFzQO27DlnD7RrFfAdXkCPMqcw06+odB5nF16wPRK+CPCOmy0auR346cu+5TrUTT3C0o+NLCOPc3kH856vbprq5307u3GjE35rsVcV78CFeEgzgmuBHcgdjipbkOTnTXjTyW3bZmPdHuP85W7C+i9kaQT8syETleIP//XWuaiBCare8PQFRiwB+k67oRLXUmwrHT+ZXA9jh7jvg0lgf86thOWr5x3w5+Beukjpwrl0GeLSeQ5GAgIq81bqjhLOUgoTW6i31H+WpCOm4ZCJREkvqpj/bsKhN8XSQF760r1iM5u0Q3tNr+VG8Rqi9cYu5GIf4P9vJPACpxvUVJ1tzMCi+p2Zoc4lLjwoRQtLmPe0wHXEXBcmAMH05hiDaxfTyIyiuYzYxd0rgh2Y/TpAfxn2DlN3qJpK9un5G6GJN1ZZC25Pv87jt60hmxEntoBS5WdARtGqwU/2DBxWI6Suq2/rvPUGvXm1Gtjp/jXDKzukWeloP8fk+U4BJCRZtSmvVJfOlZuR8p0oXe63Y3u/u0/yWv+VHgUMOPtSpFSERx6aFIZeN7DO2Bz8a5NM+pLFO9F54jsbRg7Y3KQzuwkCnCddG/IqcOmkiK0beGMicecZQMjorLxuVx7HKFiHZ2W19wwQ5nYvLzE1PUKRQ4S0kHND/KNb2OZKa+GrkS7+aS3ameem/BmDC3tt+BYgPFE9tNu4NEZuawb8Q3ueE+6LYbzHHXbUsL1DwBR2Q5fo0OuSxc5LCfBMG6CO6L2u9Cqx9qs0j/0iWBcm+dLJlcrtC7BDif0IXBZsOPCWc6G+rEr/EYsyjAiC4fTM4Ks0bH8+eocboZuvWI8t0wP2jwCoK6AfS46b7jCOJNAa9+alDaS2MzQMyJchXwCQm+vVrtEfbCPdvp/8mzyuzWrOwG4/sdxN9nBQQYFYJQsUJ885ZlERdfotUrU4bZr9/Y9y8
- bTPZ2bcj
- xI7JWRKvNcEcUFWH+AXWj892FIgFJYSPAy+4JphHYMyR+lHGedWS1SRhm7xSU9z5DcWVdH4NExhIxo9Lb7EA7AfaYdN4rzIIuqk0FaQO7lh3DaDsd7rcVaLD64ITDnfYXFRCnzj8ybpiPhHdLGlFqDSXmt+RTLNzmdyV4jw+wwz88ciBeckt1FXS7KCiQg3w38vyS5neGhVVA0zd/yZYJu2snq2FZKnGv5VmcUpjHz6LjoUjycxaRRFmCbF7vRxPTz3CN0DCvdJBvVh13+eNR0/xMv3pINGnkx1Kps9CXWVZLdQuJXkgVaTnP3MG1czKPSx2z6nWSnjsZFXQUJ+Pz9ii4z8ZmpqWbw4lTsozDJY+Uip5KiTyqkS7iEl/c0EZIsa+oFFaYmTNvH3Bu6RseLVfh4/MUdT5RaKJbAk0sa1w+zE4gvnPMydjhMiyaEza68ECDA0SJBqwg3S0ULvF92yIcobk5dV0CZQhCeWcf3edyohQhRoqCL3DStdOI4/HPtfAQsa0xImJwjeRufSLdHdGx7M9QjlpNn2RW2djL4l7svpBoT4TVlHyriMgoIHpI6V0hHBbVrypc/DA+lKwhnmf2P44XjkA+rELN7Ooc1e4tYNmtTYuLLP5h4XcbB7aUqbiQS+IDIsZov4/THCNW931Sul2n3qYzRlQPMDDnQ6ujMkBtW76mbLDAa9ye12geUhNdstLCUxfWdXlggCGXATYqPfiOg91k48Voc8bzFCv5yCTd1wnGh7k56zh9EsoGkE34ZbzzE+y3dKiWB4CGN1GQIuRjIyhjYRkjpiQGaTpVLsyDMRzaJEXbCRkcuEtC5zz5ONEzj+tINF7yWB4QOdhxgahlpEj2lFVQwQOMmJPOWK4/U9ySQasWSHn5Yu+bovMfylAHAhbWVgvMEDZOOWuCX/mwTZlnvls6cYfgmW0rFjibEMdGDRuDNj+WcUx6KFIC
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3F9F918001E
+X-Stat-Signature: 3mr14u3px78zdmpna4313w44b8goghmf
+X-HE-Tag: 1764176098-585553
+X-HE-Meta: U2FsdGVkX1/kjHevLret9uHtJyb5kXRjRXQ5+rq2z2+U83AOjqUD9VjllkseBn0nPk9iyD85/6Ax2Mw2oWvR5MJnNIdsVUPn8HjfnhtQ5CemB0KkseKqMrdi2forkArjd9/UiGiDijCdBJsJtzQRexj6/RYtwGO49koL9frXZDlv69U7EHBKuWLuyFnV7Mi7oCY59cawFNqVcXV5qWOgnMZgDMkUaU/6BB/jPAVSfUd/hQXlsTyvEgK/peslgbLgWFrWF1bdi+cijXCOM8Ayfd1OPb2BN9dRzhqnjYQGqWQWz+GLt2xd9erdUrX8T/jQmtTbnLTYqPeq3qGWwcZ1bl7CTX7DBWUAsijcBfj3KhpA8ErrMCwXK2wgcvYRwWTcSk69nl6GqtxbXtQ4pVD8UyNyJ2aTqvATHzEX/aYOhPwhmz7k9OJSo+Aa294iKKM7u2iswt+DxpycNXs+M4pgPfdBtaSFFJzkwlTt6xJl/HI9KyjK9gLm2K3oxkV4HA9pWO63QZcgqwhc9pVdSfBzEH30zQ39tjKD0YzKlptuWUsCDTA5EUFRNHA/JY4D1Sp8AzhcAmwm8i7jiUhAJv4Chm1ncHU1ZEN6Fz2I3TzC2KbgQH5gIj9IVKUCe/nYKYsOkmPYDhRzADGEeg7nAXQhcJtHLqxGaFLRtS5FY8QFF/Whlg/xs9Dd6s5JE5CBV4f1O5/+AD48sa6DIr8NYxb7uSEE/0xPUXZLTsUvCh3J6QaMPWnIeHOliqbA3og94dCdQJ6bD7H2mqj+YvhMYUynRfgFtEKUv5NLSiB0Kpn9wM32QZ2JNH3DAe23vCmpHiXmdpvwp/Zfy+G0/tU4tDhE2+hCwSVIlpX7h6jgXXGOKZgt3LK09AJ8VaM2Pf6znUO2H9cC8XrMI9Te95rFwtnXCYNuax6oAQ8ITBcy+JZeZBh+/mXAyMS6pstLvESn+MSUOkgOPikVhtqCt6QIiZG
+ bYMx/WOA
+ GS94kn54S4VkM0Ns5qPY9+wAl2puz8860c8ytlDVhaMcGKiLwemt24r3joa880kjZmjh61zgcAxUc0Qr5m2QxsPXGUjhtMSDakNoWaq1cFaeCLwniYvZElCn4pwG3SHjNslW3CwbsVjtK2WczPsNPdjFlBypkrKBtX8MN4v7pCLG3EyfRHFJiX1+p0XwxSMEmAMJM4/b1+ZPO/RM/UidIGfNqkm7TYAVh96EAjnic3c1OJSJ3G2q2t5egL57l/uJ7ujEFpXGAHFZl9KQD1QFW3KiBTeSNZrGfwt39OocPTKzGjaXCkZr0v6/QRemglhywwL2S6LhdaD+ArMinfsSmVkQaUYyIifFTNfr33vS99MijfgiZfVDBd9qTcJzl+Ji/kUxJ8V42h16FTV3jW68hPPlm7gHuPZCArLM3Un0LdNsTAib16hjKahANzrzRr8fjQkWXm3O/F0lE2hE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,162 +207,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Nov 26, 2025 at 08:08:24AM -0800, Alex Mastro wrote:
+> On Wed, Nov 26, 2025 at 01:12:40PM +0000, Pranjal Shrivastava wrote:
+> > On Tue, Nov 25, 2025 at 04:18:03PM -0800, Alex Mastro wrote:
+> > > On Thu, Nov 20, 2025 at 11:28:25AM +0200, Leon Romanovsky wrote:
+> > > > +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+> > > > +					 dma_addr_t addr)
+> > > > +{
+> > > > +	unsigned int len, nents;
+> > > > +	int i;
+> > > > +
+> > > > +	nents = DIV_ROUND_UP(length, UINT_MAX);
+> > > > +	for (i = 0; i < nents; i++) {
+> > > > +		len = min_t(size_t, length, UINT_MAX);
+> > > > +		length -= len;
+> > > > +		/*
+> > > > +		 * DMABUF abuses scatterlist to create a scatterlist
+> > > > +		 * that does not have any CPU list, only the DMA list.
+> > > > +		 * Always set the page related values to NULL to ensure
+> > > > +		 * importers can't use it. The phys_addr based DMA API
+> > > > +		 * does not require the CPU list for mapping or unmapping.
+> > > > +		 */
+> > > > +		sg_set_page(sgl, NULL, 0, 0);
+> > > > +		sg_dma_address(sgl) = addr + i * UINT_MAX;
+> > > 
+> > > (i * UINT_MAX) happens in 32-bit before being promoted to dma_addr_t for
+> > > addition with addr. Overflows for i >=2 when length >= 8 GiB. Needs a cast:
+> > > 
+> > > 		sg_dma_address(sgl) = addr + (dma_addr_t)i * UINT_MAX;
 
+Yeah, and i should not be signed.
 
-On 25/11/2025 18:38, Mike Rapoport wrote:
-> From: Nikita Kalyazin <kalyazin@amazon.com>
+> > > Discovered this while debugging why dma-buf import was failing for
+> > > an 8 GiB dma-buf using my earlier toy program [1]. It was surfaced by
+> > > ib_umem_find_best_pgsz() returning 0 due to malformed scatterlist, which bubbles
+> > > up as an EINVAL.
+> > >
+> > 
+> > Thanks a lot for testing & reporting this!
+> > 
+> > However, I believe the casting approach is a little fragile (and
+> > potentially prone to issues depending on how dma_addr_t is sized on
+> > different platforms). Thus, approaching this with accumulation seems
+> > better as it avoids the multiplication logic entirely, maybe something
+> > like the following (untested) diff ?
 > 
-> The test demonstrates that a minor userfaultfd event in guest_memfd can
-> be resolved via a memcpy followed by a UFFDIO_CONTINUE ioctl.
-> 
-> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   .../testing/selftests/kvm/guest_memfd_test.c  | 103 ++++++++++++++++++
->   1 file changed, 103 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-> index e7d9aeb418d3..a5d3ed21d7bb 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -10,13 +10,17 @@
->   #include <errno.h>
->   #include <stdio.h>
->   #include <fcntl.h>
-> +#include <pthread.h>
-> 
->   #include <linux/bitmap.h>
->   #include <linux/falloc.h>
->   #include <linux/sizes.h>
-> +#include <linux/userfaultfd.h>
->   #include <sys/mman.h>
->   #include <sys/types.h>
->   #include <sys/stat.h>
-> +#include <sys/syscall.h>
-> +#include <sys/ioctl.h>
-> 
->   #include "kvm_util.h"
->   #include "test_util.h"
-> @@ -254,6 +258,104 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
->          }
->   }
-> 
-> +struct fault_args {
-> +       char *addr;
-> +       volatile char value;
-> +};
-> +
-> +static void *fault_thread_fn(void *arg)
-> +{
-> +       struct fault_args *args = arg;
-> +
-> +       /* Trigger page fault */
-> +       args->value = *args->addr;
-> +       return NULL;
-> +}
-> +
-> +static void test_uffd_minor(int fd, size_t total_size)
-> +{
-> +       struct uffdio_api uffdio_api = {
-> +               .api = UFFD_API,
-> +               .features = UFFD_FEATURE_MINOR_GENERIC,
+> If the function input range is well-formed, then all values in
+> [addr..addr+length) must be expressible by dma_addr_t, so I don't think overflow
+> after casting is possible as long as nents is valid.
 
-Should it be UFFD_FEATURE_MINOR_SHMEM instead? 
-UFFD_FEATURE_MINOR_GENERIC was removed in the v1.
+It is probably not perfect, but validate_dmabuf_input() limits length
+to a valid size_t
 
-> +       };
-> +       struct uffdio_register uffd_reg;
-> +       struct uffdio_continue uffd_cont;
-> +       struct uffd_msg msg;
-> +       struct fault_args args;
-> +       pthread_t fault_thread;
-> +       void *mem, *mem_nofault, *buf = NULL;
-> +       int uffd, ret;
-> +       off_t offset = page_size;
-> +       void *fault_addr;
-> +
-> +       ret = posix_memalign(&buf, page_size, total_size);
-> +       TEST_ASSERT_EQ(ret, 0);
-> +
-> +       memset(buf, 0xaa, total_size);
-> +
-> +       uffd = syscall(__NR_userfaultfd, O_CLOEXEC);
-> +       TEST_ASSERT(uffd != -1, "userfaultfd creation should succeed");
-> +
-> +       ret = ioctl(uffd, UFFDIO_API, &uffdio_api);
-> +       TEST_ASSERT(ret != -1, "ioctl(UFFDIO_API) should succeed");
-> +
-> +       mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-> +       TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
-> +
-> +       mem_nofault = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-> +       TEST_ASSERT(mem_nofault != MAP_FAILED, "mmap should succeed");
-> +
-> +       uffd_reg.range.start = (unsigned long)mem;
-> +       uffd_reg.range.len = total_size;
-> +       uffd_reg.mode = UFFDIO_REGISTER_MODE_MINOR;
-> +       ret = ioctl(uffd, UFFDIO_REGISTER, &uffd_reg);
-> +       TEST_ASSERT(ret != -1, "ioctl(UFFDIO_REGISTER) should succeed");
-> +
-> +       ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-> +                       offset, page_size);
-> +       TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
-> +
-> +       fault_addr = mem + offset;
-> +       args.addr = fault_addr;
-> +
-> +       ret = pthread_create(&fault_thread, NULL, fault_thread_fn, &args);
-> +       TEST_ASSERT(ret == 0, "pthread_create should succeed");
-> +
-> +       ret = read(uffd, &msg, sizeof(msg));
-> +       TEST_ASSERT(ret != -1, "read from userfaultfd should succeed");
-> +       TEST_ASSERT(msg.event == UFFD_EVENT_PAGEFAULT, "event type should be pagefault");
-> +       TEST_ASSERT((void *)(msg.arg.pagefault.address & ~(page_size - 1)) == fault_addr,
-> +                   "pagefault should occur at expected address");
-> +
-> +       memcpy(mem_nofault + offset, buf + offset, page_size);
-> +
-> +       uffd_cont.range.start = (unsigned long)fault_addr;
-> +       uffd_cont.range.len = page_size;
-> +       uffd_cont.mode = 0;
-> +       ret = ioctl(uffd, UFFDIO_CONTINUE, &uffd_cont);
-> +       TEST_ASSERT(ret != -1, "ioctl(UFFDIO_CONTINUE) should succeed");
-> +
-> +       /*
-> +        * wait for fault_thread to finish to make sure fault happened and was
-> +        * resolved before we verify the values
-> +        */
-> +       ret = pthread_join(fault_thread, NULL);
-> +       TEST_ASSERT(ret == 0, "pthread_join should succeed");
-> +
-> +       TEST_ASSERT(args.value == *(char *)(mem_nofault + offset),
-> +                   "memory should contain the value that was copied");
-> +       TEST_ASSERT(args.value == *(char *)(mem + offset),
-> +                   "no further fault is expected");
-> +
-> +       ret = munmap(mem_nofault, total_size);
-> +       TEST_ASSERT(!ret, "munmap should succeed");
-> +
-> +       ret = munmap(mem, total_size);
-> +       TEST_ASSERT(!ret, "munmap should succeed");
-> +       free(buf);
-> +       close(uffd);
-> +}
-> +
->   #define gmem_test(__test, __vm, __flags)                               \
->   do {                                                                   \
->          int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);   \
-> @@ -273,6 +375,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
->                  if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
->                          gmem_test(mmap_supported, vm, flags);
->                          gmem_test(fault_overflow, vm, flags);
-> +                       gmem_test(uffd_minor, vm, flags);
->                  } else {
->                          gmem_test(fault_private, vm, flags);
->                  }
-> --
-> 2.50.1
-> 
+The signature is:
 
+bool dma_iova_try_alloc(struct device *dev, struct dma_iova_state *state,
+		phys_addr_t phys, size_t size)
+
+And that function should fail if size is too large. I think it mostly
+does, but it looks like there are a few little misses:
+
+			iova_align(iovad, size + iova_off),
+	return ALIGN(size, iovad->granule);
+
+etc are all unchecked math that could overflow.
+
+> That said, `nents = DIV_ROUND_UP(length, UINT_MAX)` is simply broken on any
+> system where size_t is 32b. I don't know if that's a practical consideration for
+> these code paths though.
+
+Yeah, that's a good point.
+
+Casting to u64 will trigger 64 bit device errors on 32 bit too.
+
+// DIV_ROUND_UP that is safe at the type limits
+nents = size / UINT_MAX;
+if (size % UINT_MAX)
+   nents++;
+
+Compiler should turn the % into bit math.
+
+Jason
 
