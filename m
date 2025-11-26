@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F1D3D1118E
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 19:26:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51AD3D11195
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 19:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 630DB6B00A2; Wed, 26 Nov 2025 14:26:49 -0500 (EST)
+	id 6919F6B0031; Wed, 26 Nov 2025 14:34:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6082D6B00A7; Wed, 26 Nov 2025 14:26:49 -0500 (EST)
+	id 61B126B00A0; Wed, 26 Nov 2025 14:34:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54B2F6B00AB; Wed, 26 Nov 2025 14:26:49 -0500 (EST)
+	id 509EF6B00B5; Wed, 26 Nov 2025 14:34:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 434B06B00A2
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:26:49 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 058508A4C1
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:26:48 +0000 (UTC)
-X-FDA: 84153740538.23.5688E79
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3AC291C000E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:26:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=m5IyTggr;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B1446B0031
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:34:37 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D6FFCB9573
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:34:36 +0000 (UTC)
+X-FDA: 84153760152.03.D906C07
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A55EDC0015
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:34:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AeDmO31G;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764185207;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764185675;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nU80GOb9NiCLGKUDlF0jPjWnpLtyN6G9RlF17vc6RcQ=;
-	b=iXuBW5bSNMYPFnSsnUndbIxCnOZDtLWpRj22cYxPdhtVn+lIglJ5S8dYu877qOcPbKFWKz
-	OxMDR5tjS3Ec3WfI8TccQrxKffzLuKG1xSoO8hy7s1sWZKHRfKkgb1XYM1Qtt5ErlJkiOt
-	Sy7AUb1W0zVL9offX+cO3x3GCMiZn+o=
+	bh=+4PsG4KS5viIMpUzolb18sI5e4MHIMIC9VS3ZftSk8s=;
+	b=WzkItXVleCdVC7CbrgBWajCGlfBzDdPunGmxuB1TGyNh0tf7jJlnzemv5eCXpEOqwnh6qc
+	evgrunPUgKIiJ6nBqNRa9Juxhdjui7gAQI23VlzkK4TU47qIj3JIcCYi2aqi92QtvP2HVV
+	8UlH/sZBhOAxRFd34Cmf+zTvYoFNxZ0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=m5IyTggr;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764185207; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AeDmO31G;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764185675; a=rsa-sha256;
 	cv=none;
-	b=SmOd4YXRPvm5HUZKzm3cp8T/eYHmxTpAs9U+b0WPZv8DeuK5CeukJ+l4O6Hv7SJY3FKb0B
-	FQOT+SATaMyoGZuQkLPKB3C2mcUB5vosr2katXWJkrfWLyks3e4CP4aQhkTxZwFDxmeqZ7
-	JW1M7lc1P0lTXSrtDRd8btwpjRt4w6Y=
+	b=X0I/N/hMwqrRwYINmV53XrDbg2RE0244/oLus5tTRLAsF/gQwiiG/KqA1b2jNOA4ke41wr
+	9wEL28RVSefXzVM2ywu2sF7xut0PDOjtRa2YAHZPAkUShdFmLKFd+zQ8IGrJtP2Hr7wHMD
+	WhZk/SkTaDlAVUlWC/mp3lXKNTB+nD0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nU80GOb9NiCLGKUDlF0jPjWnpLtyN6G9RlF17vc6RcQ=; b=m5IyTggrRAAY5MhBN6EpasSDVL
-	YnL4rtLPSW0hBjjOgYMp5fLiiyp/wwm7von1AJhAekg73plC0swbRI6WCfUWNQ+P6t7lyjB2IwWHK
-	dHG3UMGxNUmXcARXsH20a+MKTVvBYdnODh/AQrhfKkPdN/yqqcu2nz9UzxOTCwSxCeDov1UGjAWpd
-	LRU9WIJuinhZqwhWTWmliPFSxagjI+DUY21bqlM1h0ikrfoablwBCOy2u85OE1+TvvgXc8peS4IO3
-	q6s2ELwC4XDldzOHD/QHYDaCIUs7has7C2uaIiYN19w0u1KZqxMxK8bdXYbLyPvUw9OW2F289fVxg
-	elLHBApA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vOLA0-00000000kzD-2DFB;
-	Wed, 26 Nov 2025 19:26:40 +0000
-Date: Wed, 26 Nov 2025 19:26:40 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, brauner@kernel.org, jack@suse.cz,
-	will@kernel.org, nico@fluxnic.net, akpm@linux-foundation.org,
-	hch@lst.de, jack@suse.com, wozizhi@huaweicloud.com,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	lilinjie8@huawei.com, liaohua4@huawei.com,
-	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com
-Subject: Re: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad()
- with rcu read lock held
-Message-ID: <20251126192640.GD3538@ZenIV>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <20251126101952.174467-1-xieyuanbin1@huawei.com>
- <20251126181031.GA3538@ZenIV>
- <20251126184820.GB3538@ZenIV>
- <aSdPYYqPD5V7Yeh6@shell.armlinux.org.uk>
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=+4PsG4KS5viIMpUzolb18sI5e4MHIMIC9VS3ZftSk8s=; b=AeDmO31Gq1mxzxWdjdAkVeBMSp
+	i/yYNFurcre8Mv2s7eckgkk3SizvtimkRxY5b3h5gbYBQtbcZvsBCkxL0CqT4c5VvoYn1e0QuIBAe
+	f2UCj1wz2tTjCDKOOTYFT/IYevcNQenfcbfM3tdzgZI8iAlUPO0bEz9kqDrj/qQ0I2YGsO3pNE8re
+	yIZhpfiBmy0OQOgNky+N7mRTFcP5dtEGMhEkDkRZVxbzby3PIlcueKhGqa6cZyMDSSjEug9+3sRYT
+	pL+zZuRXSNoCSheQt/yvNm4bE+h/shFOwZ8x8NrmOrWjYMkr/rrC3Rmku8/UTPC+B88FyYoiA9iT3
+	2jWpy2BQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vOLHb-0000000Ac34-1Axl;
+	Wed, 26 Nov 2025 19:34:31 +0000
+Date: Wed, 26 Nov 2025 19:34:31 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH v2] mm: fix vma_start_write_killable() signal handling
+Message-ID: <aSdWR9GRe93VfrcC@casper.infradead.org>
+References: <20251126174500.2498895-1-willy@infradead.org>
+ <c35ab0c0-97c3-4565-ba2d-5c418ecac593@lucifer.local>
+ <aSdGvY2UzrXdR2e3@casper.infradead.org>
+ <CAJuCfpHheus2oiv94r14afjVV00XZnfqHY0p+H8fxjxCSYjg9g@mail.gmail.com>
+ <ae18d781-86a3-4539-9441-079b7f45e726@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aSdPYYqPD5V7Yeh6@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ae18d781-86a3-4539-9441-079b7f45e726@suse.cz>
+X-Rspamd-Queue-Id: A55EDC0015
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3AC291C000E
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ys8puredodbdz3u4bhpsrc5hkgw8o9fk
-X-HE-Tag: 1764185207-78788
-X-HE-Meta: U2FsdGVkX1+Ajeame2aue7ry9KlRgXDQGri7j7GX5wfO9C6TmWuKTfu0eqGyDnn1cbDS6+wgUhckXhMOGMW+LDhEM11RDeJP2dD5vDFg3zhvkGaCrJJGOvjxRPgBTIOY6/gDoBOK45lwmJfSz66ZBfN2mLSJa+2efq/2RKyf3Z9Ejlm22+KE3GeGQZ1FkjdHKUv+qowTzuT8h1DaJ1fsBoZiKthCdZGzrRNmblB0iDFtsTdOgZH/f6x1bldk/e+h6d6VozttC2PSPIG5tYTpMuQvQEhPsRCFyRyuIB0ET+/cASFYEI7gJWugHEr5LpS6jtg2t43bwKKPWtlkx+nqJ4wrJHEIcFpQuGBVR6tKMBq+Qm8TVpI/Z5q9Zh4ZPuYcsk5SR1BTyrpVmHtv2KwVUaemOE4UDEf/Z769XR10O/QLAlxX9wXdGN2tkcdnoc6zbn2nWo5XrBmY7E4p3UCbK1++TuL0gKmO8XVOQGdSuzUDfLTv7EuAFeDWGSE5aOpbd7KbS7fl/Um4TEWitMJ0TofBSeac8f+2TJ4yf1Kenvu6iCRiI+z55TUQk2TpflMpJcdhzVQmAPA2L9EHD2M8uaqYwv4pxZDG3sIGZfZhq8XnnPnqPVoWCzg9eI5N5ioAdhnQEJGrkjXHiLRolMyIWz49SpZkrpJTSRzm1gWD275bPIdw6eRYKbbd11+kf+QAAH8XEKvPlv8g7KJM8TueCNFL3Yb6CYsRXXsBe9ByaC2A0PuXtLQIi03v3tPtA7/+/1Ep/H0nmEdSMnjvFZXq2sEBbpN9KXZcdJKr0p+pRng3qf1BbAtkh7YihBCinRHc8V7pxduP7L0hsk/QORh8QV70P67XWpk43s1X5/KdU8ffOLu9ozQp85DmySTgw6bvCQbB/3GK3GE9HKkWnPOG+AC7nGKZrwsb4ll9qC5ZG3S4qHIAFZ80pay4SqEF61h8NagARi4Mg5I2jgt8lcd
- MjVjqoGp
- zKQ9fjwqIjTSbXWQdhjUDmh5uW+19VMJr7gC99f6mDxj50y1LwrHXHP8dkg6naPnHzHawTbRvwHt5uD6eOIJKXVIbZH0W7fSDQPIy6JrZbwuWA44OBDHISB+U2k4WscCksobMQE2cmQXGMVk3ih6YUjYkEiJPbEQvgMDvYEmPZ9qskDTnEv8rfYNnGW+S6TBL/LbApUVgs9FecpHkzgfuvXV8wkcmAD4zF1c9lytTQlmSRhEusT89lVVlKsHBIwH2VgvcTkJITTbCjNVkNgHBeLBUsTO4gQS9U2fy3V/xG/ciCJQQILQurLBr7DqKoU60yoW9Wkun22RymSsmbyWr4Du1sObuEcfeQBXqUUTBeg3UupBcVVIF6iChmnYFa/abRM5JzibTABrxRu6dUk3SrxRAspNoI3tLjAtIzBEyu1nUdUHX7p3L+qyb8k1TR1LImatW5bPZfV6hr5Debl2wNh12rLjJWN3UC/SjD8ltSqO9SPk=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: z3r98wgbyrx5shpwowi41wxixsgemxfd
+X-HE-Tag: 1764185674-334169
+X-HE-Meta: U2FsdGVkX19phdAcvN6EyIGxLCe9urOSs0AIFM7+ML17n3U0VFR3Agrsb/lc0B7WFatBehdy15EwpYCDLvnWoORlMOJ85LbE07wB2wtYx4oyF5EyLwhwhxmB6SWJ7bjl/i/YmJ+SxRT1ZzFr1g03n+LVNdRZweyypY+ioebi2Z1wB1F2MvMY6UxhWhpV8rv+WW/HrmL16ogSX8tTa1jh0OTeH5VtcgHn2+Xl9LEJi9PYo9qk/xYy+7CzFAeXc7n2jWfnFI0Zx6EnjL0ZHZi3gEfGVyuxCN4b5jdAhpeYOjB+5JGvfiQulZBkS9oIAKi0zyjS6Secup+ksyfF+qdnCYpgYwZEa10SvM03LSJo5GVfZos3svJsryBvilfJ4FubLu1MTch2DkUbLP0UcBGRLE50XxUiyfU1P2CWUzlemYQFabCqymInT9kpVtK1gybIqb2/O/IhQqunfHVRmccpcNv00WlTWcqVivjLuVH/ZgPEzpYmCPTrQqRQ0zAae+I4JJD5ljgFXU6J8lvdleoAgbzb4ZqlIUkHp8/uAicZ/33rx+LZd91ZbUKFRN6F5sg96KnksRw8Ucxp7QY0HH7qJi5TEygNkL6UE6afXnK4/RcRPYKYHAgKz9uw7D03LxXPTEYkv/uqZp8/uqqpnU0S4/AYZZQnB5jhF07Yo26NAAfoljUaEZHZQePbogqP8omcmwaCOnpvs7qyM28GLhBjQxD90SbyDja01yElC4uqwXOsix0YzLbKq+9UkBfMsYRtL6aNort6o04slGL2PGxIi89JIJG10Trn7bj8/rc1c32M6M7b/AXOwsJkx9Kk0CjHImWGA9NOzl2ieWqgo8Wn2nrVqxx35oovczwylYmHuY7Qt/4AHtPVMb79j1Y/XqEoTYTPZWJ5SXI7M//tWBE85cz9P25+24al04Gbb4u935ZBJO+sN497Hb4+bZP+qBimEm4muQkZy8xQknKf8px
+ AqG3f2IX
+ wtEbtuvCNkqtfFT3z8uqe+x0LOR3RgLu1H0LgERKK8PmBh9SQwtgZ7OljGjzPSp9NvRstEHkHde+caMhT+xMFsBJu6TGikxPZlsUyk7GW6AgzazKuASugmpNxjpNxy+ei4hUrhTxs1lJ3lnJy9reQ1WbCr8pKWwLsND64dhfEL7elFj8ck+e/Z4GfkyOi8mbF5qSrES8xDTe1edmyIr3lLocuED+sxzaDu5LxQQfdkZT78XKJ9IunnFJJI36TijyzzTyq9kSn49UR250aqHVRoiC1f+4UxTo/4MgwDBzL3bdz0eZDwbrAGbD4sHpRZ90+1F1BKV6ueebGE3qwGspejn0ZuqsX2xhw4MlxOH7i4C8jxLp0sOP9iVI6NkVfC9QxUr2HHsY4n/HFth3z1o8xf3tuQ3ZAr+7Z7kYmEIzSvL6Dxz1ijcnQL8D6XWU4A44HQbGHGq/TzI/nGhGO6zFAz6MM68PBSpsp4Evg+hTUa0na7672zmcdvl7LlwbWgEp2YdceMASbDJ0HUDUjQ8UZGGC/FG8MOxoUML1ZpZAfIzbSzQ/ocE/4LzbgCKlocDNq+KcrM/+W10k4S5s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,30 +98,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 07:05:05PM +0000, Russell King (Oracle) wrote:
-> On Wed, Nov 26, 2025 at 06:48:20PM +0000, Al Viro wrote:
-> > It's been years since I looked at 32bit arm exception handling, so I'd need
-> > quite a bit of (re)RTF{S,M} before I'm comfortable with poking in
-> > arch/arm/mm/fault.c; better let ARM folks deal with that.  But arch/* is
-> > where it should be dealt with; as for papering over that in fs/*:
+On Wed, Nov 26, 2025 at 07:53:13PM +0100, Vlastimil Babka wrote:
+> On 11/26/25 7:43 PM, Suren Baghdasaryan wrote:
+> > On Wed, Nov 26, 2025 at 6:28 PM Matthew Wilcox <willy@infradead.org> wrote:
+> >>
+> >> On Wed, Nov 26, 2025 at 06:06:53PM +0000, Lorenzo Stoakes wrote:
+> >>> On Wed, Nov 26, 2025 at 05:44:58PM +0000, Matthew Wilcox (Oracle) wrote:
+> >>>> If we get a signal, we need to restore the vm_refcnt.  We don't think
+> >>>> that the refcount can actually be decremented to zero here as it
+> >>>> requires the VMA to be detached, and the vma_mark_detached() uses
+> >>>> TASK_UNINTERRUPTIBLE.  However, that's a bit subtle, so handle it
+> >>>> as if the refcount was zero at the start of this function.
+> >>>>
+> >>>> Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
 > 
-> Don't expect that to happen. I've not looked at it for over a decade,
-> I do very little 32-bit ARM stuff anymore. Others have modified the
-> fault handling, the VM has changed, I basically no longer have the
-> knowledge. Effectively, 32-bit ARM is unmaintained now, although it
-> still has many users.
+> Closes: https://lore.kernel.org/all/69252076.a70a0220.d98e3.009b.GAE@google.com/
+> 
+> Unfortunately the reported-by code doesn't work as message id
 
-Joy...  For quick and dirty variant (on current tree), how about
-adding
-	if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
-		goto no_context;
+Hm, that seems like a bug in syzbot.  The mail it sends doesn't use
+the word "Closes:" anywhere; it just asks for Reported-by: and Fixes:
+If that's not enough, then it should also ask for Closes.
 
-right after
+> >>> Really think we should WARN_ON_ONCE() as Vlasta suggested.
+> 
+> Thanks Lorenzo!
+> 
+> Can we at least add a "WARN_ON_ONCE(!detaching);" before "err = 0;".
 
-	if (!ttbr0_usermode_access_allowed(regs))
-		goto no_context;
+That makes sense; it mirrors the similar calls in the callers of
+__vma_exit_locked().
 
-in do_page_fault() there?
-
-NOTE: that might or might not break vdso; I don't think it would, but...
 
