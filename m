@@ -4,89 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43ACCD11193
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 19:44:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3AEED11196
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 19:52:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87D176B00AE; Wed, 26 Nov 2025 14:44:22 -0500 (EST)
+	id E5D8D6B00A4; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82D8A6B00AF; Wed, 26 Nov 2025 14:44:22 -0500 (EST)
+	id E35036B00A5; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76A7E6B00B1; Wed, 26 Nov 2025 14:44:22 -0500 (EST)
+	id D70F26B00A7; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 65AA36B00AE
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:44:22 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D81B213BACE
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:44:21 +0000 (UTC)
-X-FDA: 84153784722.22.81AF812
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 46E1B1C0007
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:44:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Xu3w3RHg;
-	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id C68016B00A4
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D455160770
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:52:15 +0000 (UTC)
+X-FDA: 84153804630.24.FBB61E1
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8765CC0002
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:52:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=BHndPZwG;
+	dmarc=pass (policy=none) header.from=armlinux.org.uk;
+	spf=none (imf10.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764186733; a=rsa-sha256;
+	cv=none;
+	b=F9m5v5lB1UAMcLDI4ob2FQuHVBzM++hoRaYZB3Xy5KFnWzBL+jUgJsWdlCbA5UqM4sjeBS
+	9ybSQIsqYkk4xJJKs3JECqu4meEqIoamiFzh1Bmt/CWPrAhrKHILP5WIb8Rwcn3qJ8Ps8O
+	yvacWpS5w6EHPtSjfr1e7WZX+dzey18=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=BHndPZwG;
+	dmarc=pass (policy=none) header.from=armlinux.org.uk;
+	spf=none (imf10.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764186260;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764186733;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VELtu4C0F1KhilDJiGLLAACsIi66LgICbaVlCLrYVXA=;
-	b=YMIF73cnarg4J3VfOFUvAJ3yMNewoRPZ6z8JzQkrhW5u8LIhg34RN1SFtyhJGcWyOLk7zj
-	RDbRJoQx+lyhI/brwi7QQOyOu0sPJoRqGzMqu93+ax2ydC3MnWPHn1RzkLH/Cs09PvQKjI
-	cJxTFBRMjO324nBlJZPQl1H9FqUcei8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Xu3w3RHg;
-	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764186260; a=rsa-sha256;
-	cv=none;
-	b=Y4qPrkU01DL55mjTq/sb7n3GFiEg35fp0F+7Gc820lgAmWtL2tlkvE6K8WmnRwgUHpzg04
-	5Ew3aMfbWbQarQlGa00sUu3LVFiPPpEfxv8Wm3eXbdk5+EUKl+LdkhzzGoDNmGroPSCyTL
-	bv2c0lLIBGjrYg3aYkYB1TGutlfMa2w=
+	bh=F9CMg7xCCCe7pvWjCkZUtW9tN5r9wm9+9Wqdv/t8aKI=;
+	b=d+kaazdq5u21VYgaD1LuIt0VBhdM0fR0cS7emMV+D5CDtVpAo5ZC12KoIx177i6CdW2Sqi
+	zHOafNWjnvExWg+n6YtfuC08k0Z9JDtGCyl8ke3T2G3ph+xYVKXhzqJ8V1CzN2R91CUS3/
+	cBfITFtVbfVXOHEaSobOKqPzx6+2KQQ=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=VELtu4C0F1KhilDJiGLLAACsIi66LgICbaVlCLrYVXA=; b=Xu3w3RHgsMWbcfVv7rOfxjuZNj
-	n2yIxYyJlHPIxnXFMCD7IoPgvTaitYEKrvltHzI9NogBvdpTQgw3z3LbkWFx0EqhRWnkeNFw8D+J3
-	pOtqqo5znvPTbr2tR6K24x+fSuplEkIrRGlJZM5xoAA3JmmlUHegH8a3HyrXUd95iQBqYoDNUMWA3
-	1m0odEKitVZKTCRBqY1fWb0rjjyblHHNIdVOkToOxy7p3ik51HPm60gZalAVLjRM2/Si3piXfXXoT
-	FKxB1FQ3C84iCDaQ/L9uDKz8FLYda22tOrFeFuvwgLybNHgFVO62Guju4FmMuhpQy/Q4oC0cRSP41
-	aD2+BXJQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOLR3-0000000AcsI-25qe;
-	Wed, 26 Nov 2025 19:44:17 +0000
-Date: Wed, 26 Nov 2025 19:44:17 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH v2] mm: fix vma_start_write_killable() signal handling
-Message-ID: <aSdYkYYAuATwYqbD@casper.infradead.org>
-References: <20251126174500.2498895-1-willy@infradead.org>
- <c35ab0c0-97c3-4565-ba2d-5c418ecac593@lucifer.local>
- <aSdGvY2UzrXdR2e3@casper.infradead.org>
- <d70b3309-348c-4aa9-9b62-33b8191955fe@lucifer.local>
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=F9CMg7xCCCe7pvWjCkZUtW9tN5r9wm9+9Wqdv/t8aKI=; b=BHndPZwGPTrM215ddveW6SCQGS
+	w5XGshZORwCGNkF8wPex0jf0EUyPFK42vLiC8mTGhk+tO6My2wml6VI0EsCSE2x4vzP4RS3RM2FEr
+	lIWTKBpIZsjjNZedOqvW17H9D4sdzF7bEHaBbp3kIO9Fn2PrApcD17fPyx+UpKuLfsy3aPWxinpDV
+	sDejfX89mi//7BMUyjo+iWwITrIg/kt2sM2gf2XYfhdVtASKmx7bkn3q3toxJm7yAJQLqE2K8M8wi
+	7Zz8OhoN0oy5k2OZqqEPYmZInZGg4p53iAQ37QqdvZp1utXGyGhaL8SAv//OBGvF//QTmxqepp7NU
+	1/vp9G6Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39804)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vOLYU-000000004SL-1B7L;
+	Wed, 26 Nov 2025 19:51:58 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vOLYR-000000001yH-0OLR;
+	Wed, 26 Nov 2025 19:51:55 +0000
+Date: Wed, 26 Nov 2025 19:51:54 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, brauner@kernel.org, jack@suse.cz,
+	will@kernel.org, nico@fluxnic.net, akpm@linux-foundation.org,
+	hch@lst.de, jack@suse.com, wozizhi@huaweicloud.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	lilinjie8@huawei.com, liaohua4@huawei.com,
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com
+Subject: Re: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad()
+ with rcu read lock held
+Message-ID: <aSdaWjgqP4IVivlN@shell.armlinux.org.uk>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <20251126101952.174467-1-xieyuanbin1@huawei.com>
+ <20251126181031.GA3538@ZenIV>
+ <20251126184820.GB3538@ZenIV>
+ <aSdPYYqPD5V7Yeh6@shell.armlinux.org.uk>
+ <20251126192640.GD3538@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d70b3309-348c-4aa9-9b62-33b8191955fe@lucifer.local>
-X-Stat-Signature: 8r8x9xoxzhox7kdou3cu86k1smtukiwc
+In-Reply-To: <20251126192640.GD3538@ZenIV>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8765CC0002
+X-Stat-Signature: 5snjwd8mo5eo5ddcfe5rs96jkt8cnyec
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 46E1B1C0007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764186260-342120
-X-HE-Meta: U2FsdGVkX1+3f61a5uY6BuUKx6Kr+Rs2KNCecO20ygq+RjKLR5S/vu4ABre5QolJIKuenxgyxhcmgaSKIX1JUp8zc1t3a+wTy3KQ8TWLfcEzSI4WU9CTBTm0Tw4vqL1OGW1HfHWsJYgS35q3y1Q9n0WN1uthI2b6/MHIBmAC3pCnupDe/Q9QSWGBGHSw0hdjHy5D8NDz1PojqahhgjzpLBV2iM9ZjKxvAbnT93XbcQrvKgEKGIKNsP0tZmQYwWu++ATKimNNkcp2ILPMHscWSVfS9wWeyqpDT983dwMQYJyxNGY1bhE1oks1l2SvsTMAv2hFbvmvYMJ8PhelmS5mlvxAH6PiA6su9sPJvBmxmQsmbjpmj6K683HH16HlMf8L2Kg0ExLeDq2HySPBd3mxyPE/jTIR0VckrAaBi39d3+AswlCTzFf5feLJMpaXK0cbMBcfplv0V2OQaK+It5UBnivZN5SlfnPfgF95IzvPDhBW8G04OjSuavNYEo4MrhdArQfDHqDSgxBEbQZCbQwElJ1mHGv0qbl//435UxNBpTqxRk5rN7fEefYepcE8i2XnamNYp0c/D5AcmShbm4/2u7v/9DpeJhLgT2RoV0rep8gzmgQ7xhLEjPop1W9ipMnq8dSu1vCdMYnrGYdnwMx4EkA6S6Wr3l/PN7LhgQa19yFd2aeabUGkDEH2Su5iI6UqVWPBKK+XX98Q749SJ7+xRuyChnLwiMpCfQfYWNyg8kmb+rHqOIzUNhyYjl5HLnV9D4kwm2AJGc4bw6zbEyKwuvw4I78slVxVw2sd4R8I/YbYsrzMvMf+y0a5d6zzcH6xDpSqRyBniQmli01YZncGrLL0Zz3cbeyIKVlstG1KWiqcpTvGEjKrEdUWcRejgZ54tOpV7ZUdBohnRPEVKnAqOMRMj1Zu9xm8zlAVpGBLrAc6xNuPpRYSSUfB3Nqkt6jSDSK7yHMmZECB5xG1cGT
- 5K9W4+Hd
- 2U1OQCqWVSaHep3vio9Ck7/Wn+E18OwvuYcqwQkbYMva1tiy8sAWwB/+/lGz31iH9w4lPQMzRExEUUN0Rgn82ed6D1OkSIeJjVJG2Gz6Q4tBSeCg2bK5ML6nA+R4uR/HVyAmyVtDgpb6JF55VBeAsnlE+AS7HHb8AV0msubHUnBGK3Vg2kaPDO5aQ6XpmSNisrf6PcY69RzW06sr931nvohwfSP22kDsuhjTEoFHrbKjOnmUJ19r1iOBfdomEO3jcBlh52wZClnBr8qHrhfkhcY3Vb8dJnfL95E99WQm32EL5h24p4rxiQVBQqjAr9clwOCepz/k6joubIZ43gAbaCPD9Tt22U3UkMwW8tc1uQ/ZjOZxr7zkUcdULVZujj4osqO6M/zjAwI4WgbE=
+X-HE-Tag: 1764186733-934328
+X-HE-Meta: U2FsdGVkX184EMZlaxSyRHx2K5QYHzbbYbDcj6/b6R13Qunqx1b6rKILgLZUPuyzXMHytfdx7NGkEAPl216LIdPb3MvCayLXziUxYdkp6bC5Gv0b3NqJU5taJlo8p4tTav4XymccuEVa2bg5qBjGi15ZFlPPATFQF3C9T+rAWs/JnLGDDhbeUSLocy9twag8XzkxD27I3duH9yDZvu/zx5NZWvpFQsgrtAMZbc1QN0cYFvsKCT+ERa/ZXrNjZtrVZab5BfQ9F3Q04V7c0PJ1IY8ZghxkLT/3JHLECWtKYdGNWcOAsed8N7QqKcql55UxpEru03vpZsDE2oxW3Hz0SALFLpjpDNesgqT6if2ZR0Wqwv6/MZH6CRLzhEJvNja7jPsP+zFQXPo0YMGLW/82tmjGHJen1gDzGms7/0H0Aw+SK3HH2dPncWnu1MfDATzPRLN73qwP1mgaizs3I7Vf7+eXi7enuNMiRUZXLozQ7NtKO70FlWzpgOPQokM5I3BYpzkfmk5nfyMwkhP+wx9hqNps7j2WJFgwBtgDqSezu1SVn7HTDbwLPwiNcTWC1rMvF4T/juzJzKUchNrK66yQSFko5wK370HJIqTxrl/nsY/J29d8cWtGiNRkR1y2xdZMSRECgDdGmxaPGEeGK9q+stbm8aVaiEKSe4hkpHV3FW/mQQ6IUTtPVwlupavQYkmmp5WoPSKM9+ckQ3My7A2DFZg+QwZMmqrSPNYdX/s0Q4t7kkHUqFYgp97NntTQ/QitckspqwzNQnR8qS6me3xe4Leqf2V6yRbKO3ulRtd4pW2SVY+PYRbG1J5fAUGADtoiI2I681H2znc+DhSTMh81nzD+EoacHahwkgsSMp37TuCocoxVESWJk6VZTlRGzGbS+NnK8KJtwu2JTCWQEmpNMiZHPmqfSlPGqxtMS5ZcJvfcGcZZf1hMye/1+0lzJMukxN4LsfgGOa0aGnKtB6U
+ uGnHfacW
+ 5XkJ9PPoWeK3cbEm2bMEAB2A3gsoUrAfT0HXuFJyO7SKYgaenrytzSi0Rnsv4ZDc5Q9cfFqxYOglWWkIRZ+BEUgAmAqrUwL7Y852njf9yK5+zigRpR8gyupMg2kZ/jR7WexZ9lyCEK00WIlQEU3RYMqQlDtUat9LZR8QRlDTZsw1NdiSATC7t7fkpWF+AXV9SWkHwBYCgswgT70TG5i5vs6IjnHQRURI2OeETdNpZUw4zpJ80BChhpPImoG2BqSvjbYL9eZAM586ftMQQ/MGuWWMpE+Mtn7KXywOIoZCKR3dKONjrzGtY3T4MS6C8Rdyiz4qqhDATpk+LxZbeDD6QaEhsMiprQBCRRK+H/6wSO0nZUOsOtdjGpTwu6IQ5L1STElrLOQzxeWwgcskIdLdL0adFqwfSMlPLDY3NfbE2KFxIGyjeoYLxFwr5YZr6/W+O32GtBjWxfD3OWGx+hVEhQVtma74iPHEza/onQdjjbLEzitGLT/lxotnC4oy/4mEcBuEs9GV7AfB3dyRGCrXvuGz08w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,86 +109,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 06:55:52PM +0000, Lorenzo Stoakes wrote:
-> > It's only "impossible" currently due to some fairly esoteric reasoning.
-> > As far as _this_ function is concerned, it's entirely possible.
-> > I don't want to leave this trap for the next person who calls
-> > __vma_enter_locked(TASK_KILLABLE).
+On Wed, Nov 26, 2025 at 07:26:40PM +0000, Al Viro wrote:
+> On Wed, Nov 26, 2025 at 07:05:05PM +0000, Russell King (Oracle) wrote:
+> > On Wed, Nov 26, 2025 at 06:48:20PM +0000, Al Viro wrote:
+> > > It's been years since I looked at 32bit arm exception handling, so I'd need
+> > > quite a bit of (re)RTF{S,M} before I'm comfortable with poking in
+> > > arch/arm/mm/fault.c; better let ARM folks deal with that.  But arch/* is
+> > > where it should be dealt with; as for papering over that in fs/*:
+> > 
+> > Don't expect that to happen. I've not looked at it for over a decade,
+> > I do very little 32-bit ARM stuff anymore. Others have modified the
+> > fault handling, the VM has changed, I basically no longer have the
+> > knowledge. Effectively, 32-bit ARM is unmaintained now, although it
+> > still has many users.
 > 
-> Calls __vma_enter_locked(TASK_KILLABLE) _when detaching_, otherwise
-> refcount will always be >0.
+> Joy...  For quick and dirty variant (on current tree), how about
+> adding
+> 	if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
+> 		goto no_context;
 > 
-> So we're only looking at us changing vma_mark_detached() to use
-> TASK_KILLABLE.
+> right after
 > 
-> As this is such a subtle corner case I still think it warrants a
-> warning. Or at least a VM_WARN_ON_ONCE(1).
+> 	if (!ttbr0_usermode_access_allowed(regs))
+> 		goto no_context;
 > 
-> A killable detacher is, as Vlasta points out, kind of an unwise thing to do
-> anyway right?
-
-I missed where that was said?
-
-> >
-> > > > +			/*
-> > > > +			 * We got a fatal signal, but the last reader went
-> > > > +			 * away as well.  Resolve the race in favour of
-> > >
-> > > This is very subtle, I don't think this really explains this clearly
-> > > enough.
-> > >
-> > > Maybe put something like:
-> > >
-> > > 	/* Couldn't wait on readers probably due to a fatal signal, so unlock. */
-> > >
-> > > Before the refcount_sub_and_test()
-> >
-> > I think this falls into the "saying what you're doing, not why
-> > you're doing it" trap.  Whereas my comment is at a higher level --
-> > there's a race where both exit conditions are true at the same time.
-> > The rcuwait_wait_event() picked one option, but we would rather resolve
-> > the race in the opposite direction.
+> in do_page_fault() there?
 > 
-> I find your comment unclear, and I think it's too succinct. I was trying to
-> provide the most succinct-yet-still-clear example, but if you prefer higher
-> level you're going to need more detail here.
-> 
-> It assumes you 'just know' that:
-> 
-> - refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt) means unlock
+> NOTE: that might or might not break vdso; I don't think it would, but...
 
-Actually, I don't know that.  All I know is local to this function --
-that's the value we added earlier before waiting; now we need to
-subtract it since we're no longer waiting.
+I don't understand how that helps. Wasn't the report that the filename
+crosses a page boundary in userspace, but the following page is
+inaccessible which causes a fault to be taken (as it always would do).
+Thus, wouldn't "addr" be a userspace address (that the kernel is
+accessing) and thus be below TASK_SIZE ?
 
-> - err can only be set due to a fatal signal in a non-uninterruptible task
->   mode
+I'm also confused - if we can't take a fault and handle it while
+reading the filename from userspace, how are pages that have been
+swapped out or evicted from the page cache read back in from storage
+which invariably results in sleeping - which we can't do here because
+of the RCU context (not that I've ever understood RCU, which is why
+I've always referred those bugs to Paul.)
 
-The comment says that in the first five words!
-
-> - spurious readers can cause an incremented reference count
-
-I don't know what a "spurious reader" is.  There was a reader when we
-started waiting.  Now there isn't one.
-
-> - that a race can exist between a spuriously raised reference count and the
->   previous reference count check between read above and refcount subtract here
-> 
-> - a reference count of 0 means detached
-> 
-> - err = 0 means we are treating this VMA as detached resolving this race
->   'in favour of' the VMA being detached.
-> 
-> Let's get some of this information in here please.
-
-I don't think that here is the place to document these things!  And
-certainly not in a patch that we're trying to get applied five days
-before the merge window opens.  There's plenty of time to get the
-comments and the variable names sorted out; can we focus on the right
-way to fix this bug?
-
-> Again I think we'd be better off with at least a VM_WARN_ON_ONCE() given
-> this is a rather obscure corner case.
-
-Are you satisfied with the WARN_ON(!detaching)?
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
