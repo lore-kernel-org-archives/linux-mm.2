@@ -4,99 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEAD3D10F58
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:22:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 388BCD10F58
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:26:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCEAF6B0012; Wed, 26 Nov 2025 09:22:21 -0500 (EST)
+	id 585E36B0024; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA5E06B0023; Wed, 26 Nov 2025 09:22:21 -0500 (EST)
+	id 55D206B0026; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB9E6B0024; Wed, 26 Nov 2025 09:22:21 -0500 (EST)
+	id 44BAC6B0027; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB1BE6B0012
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:22:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 603141313CA
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:22:21 +0000 (UTC)
-X-FDA: 84152973282.04.957FE2B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1A5BEA0019
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:22:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 327866B0024
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7801160608
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:26:40 +0000 (UTC)
+X-FDA: 84152984160.24.77C7DC3
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0622A1C000E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:26:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tDI8hikf;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764166939;
+	s=arc-20220608; t=1764167199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YPSgYzLRryeEBBLSc3CiLOyFHla0A07eKXJgeADDYuM=;
-	b=gNNVUayQBLlvI5NDb1E+4r2MnoO/a2jXh/ivmdpDIPMFySSf1k6yV7Gd8d6xMgdeCw0uGO
-	4rC+ykvil0RUgGlVn8NXFX8we588gcJZ1kaqw5RZEwsmyItnDYJp/yiaokAvyqkTxZ7Uza
-	VUSFEAr/x9o2sTX7e3CZ4mmmUcecztE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5VPPLsvVDEd9CTC6yHY+fYpwZTiGy4/39LYX3I9kr9M=;
+	b=Nh7Vt8QzEL/Gdc7BznF41h5y2kF/XaloIhfoaF8ynRj369bISF98aq+j0gS8G9yRHHSM0u
+	fBxKeDHOMGBNmDTpdU8tLEagZ5jh5DeZaCjiHFlBaKZt1Ae+MAchukfAohWRTVQthQXiHN
+	fCGUlDivgCHsp+NbbSpiklVUygApJ94=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764166939; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tDI8hikf;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764167199; a=rsa-sha256;
 	cv=none;
-	b=2KyYkmhMK2OBtvnEwTVzA5n2CRye1h6wanfUE2XnABHyWQtw+AgZ581byCol2vfe9hBC2+
-	boIoubJbg016jPszc+AQSdiy9G94Y+qJVQxKLnqeTx/BM3KiEBR//1FqtZpUW9pPmJQL/r
-	i/lcAvyOtbrcFjAXHZYEi9NYWNGWG9g=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51E64168F;
-	Wed, 26 Nov 2025 06:22:10 -0800 (PST)
-Received: from [10.1.33.153] (unknown [10.1.33.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFFEE3F73B;
-	Wed, 26 Nov 2025 06:22:14 -0800 (PST)
-Message-ID: <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
-Date: Wed, 26 Nov 2025 14:22:13 +0000
+	b=zmK6zPY/1Z88+wQ38ZjQfTezGPfOc9B0X0PjnW5qP4t8ya3tEmzjdyFlbSMcX98xtKGrcu
+	/wtkZpxZskQUO4yl617qAddSPfhK8K/WVp8THXQ1/h9C5CL21qV+M/DIm/UbACrweko429
+	cQYimvQUrQyaVa/1YiIB8kx0rXpnfyc=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ed67a143c5so364381cf.0
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764167198; x=1764771998; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5VPPLsvVDEd9CTC6yHY+fYpwZTiGy4/39LYX3I9kr9M=;
+        b=tDI8hikfJ5k7+fOcveB2MsWcC+wcwLDx3+Dz3IkqtGMWTX4xlHdvf9NsiA+8O6Spcd
+         EGhLDAJDa4wMh6EwhWhzd6cV+aElZMxCwZZk3SCxuQqIrRl8R5M81t+5kJAsO0/y78Tj
+         lLNUb78yW0ZnTAbdveffqCYu35wYve2RwcahU6v/YWrWAQJSIuCYbP05gu5qbbxezsUp
+         6aCnkXw9tyL4Q+r2yz8/OoTUw62Ml8/ZGFd9bC1PRgerKe7RNMFt4AkY8eYZhSMT4pHe
+         7ZqDuyf6R5OU9lKByul3LZHdMowO2XS3wpXPnZCbKwbQDltdo7Bc4SklPPxS3biLcR6v
+         EMzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764167198; x=1764771998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5VPPLsvVDEd9CTC6yHY+fYpwZTiGy4/39LYX3I9kr9M=;
+        b=SRsy2upf8MQ4/ED6XFIb9Vq91dGzH58Ngs9RPHWN1SQkElEUR9parhLZmJSJ059Q3F
+         92cjKDA+GROKK/dCpc8K8h7Kdl4InfVWY9CvpoVcWg7EAlraGEvNiyq4UkBq0KnwcpLJ
+         JwzjAJesqO9lElF0xIWpBpHOjv1MftuLIt0lxslFAuu2akHWgdj9ObpVaLZTeNw17mmj
+         fSIQL9AT238xUndhxCfZVmPA69qug7beI+6QpekeM0lxV3cbkevlrlIfgIQNkKi3BDzk
+         MWYDxWzgAXzvemp6OKG5tbNYmUKRrnDxvu6nUFEDPIusHPfo42oGowps9FzlnRWJFWRt
+         Q/5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUhpj00uKfnLnac0g9BDZ4QNSJld1NHKiyFn/QC2fC8Ae8HIjJlvKF4sU6S6gvDCcLQoRiuHp1+tg==@kvack.org
+X-Gm-Message-State: AOJu0YwbDB2/oAc/RTQkWXuU8s/ADJNI/LX97Qgo5hPwD+fI+pd17GLS
+	zADAJ1guju+6UERPI2Wnl6URK5Jg92W2eIjh9gqGOiRET5DP+5tqwYUWC3qgzuNloKzxe294D/j
+	ixwyZU8WERq18vRHDHyKBBRfiJtzVdGTHBTa3h0lN
+X-Gm-Gg: ASbGncu14fhJkBcM7H1bjMzhOdKbUIoECdmGUkFeA4CUOktL/e5fafq6fleli+0/iuz
+	grP5glJq9DosUeS40E0YWWgTxaRyOwGIFYlzCKHaHWU1sSeePnjGvVRZAR46JMpCifBRpmZDMwm
+	ApS3zlJIAxNnTENfEDwIOOJKuKYhlK/Uzbc+l24ZSrhPfByl1iExpGWC5tcW0M/cAJeAOhyyEtl
+	IgWRlgtNXLFn1n6E6/DgeYb6jqtsR+kCIvTq0B8jEehI6fDZj5Lof01leTY7Qb3Lr8Q0g==
+X-Google-Smtp-Source: AGHT+IEPoAZkKOpilwPAptI3s0B3tzdeW3nrnf6UAjdN4XbCU5wZqigCPTnmNHhnQhINBzyTNTpE3TKtJR4B94kNn4U=
+X-Received: by 2002:a05:622a:1653:b0:4b7:8de4:52d6 with SMTP id
+ d75a77b69052e-4efc6b0dc4amr5433441cf.2.1764167197724; Wed, 26 Nov 2025
+ 06:26:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-Content-Language: en-GB
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-7-samuel.holland@sifive.com>
- <02e3b3bd-ae6a-4db4-b4a1-8cbc1bc0a1c8@arm.com>
- <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
- <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
- <20251126134726.yrya5xxayfcde3kl@master>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20251126134726.yrya5xxayfcde3kl@master>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1A5BEA0019
-X-Stat-Signature: 6bfp3pzjzs1x14hihtfeytjar4cutm46
+References: <20251126034404.2264317-1-willy@infradead.org> <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
+In-Reply-To: <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 26 Nov 2025 06:26:26 -0800
+X-Gm-Features: AWmQ_bmN1Uwu13W4NrHUtDvmW-KG2uAkfNBqSpwb6IphsxLee_ZtBn8LuK-5quc
+Message-ID: <CAJuCfpEge7MJD1joXz=tKgcD7DQgPggjCKF9PLPr3NZEaw=ouw@mail.gmail.com>
+Subject: Re: [PATCH] mm: fix vma_start_write_killable() signal handling
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0622A1C000E
 X-Rspam-User: 
-X-HE-Tag: 1764166938-126160
-X-HE-Meta: U2FsdGVkX190UwYjxry+edmj5Gosq6dJ+K8ruE4JV4IINKBdoraUIiy/+d/GvuYCIFaAAXhKIKeSVmovux46OvYvx0wkojWe+711mXNS160e3cfC5E5qdJF7UIZ6PP695bzv+kvpRTgOVamESat6agEzXJ9De0qZGYAPo05swuUhwZWcAEF9uf/Kz8jwi4Tff1dWuYtWMt0lIgG3ROzcdt8ZL/b16iqZk89jRdpfsoHrYhVErPawV1cH6hPlUOx7yV2rKX4tKYC7xYUykOgXeyTghfmDdKuq2gye6rT7CSVRSmfRBOC/SlEEvNTUZ4Qz5SA7PE+EcssrgWgM+stC7tHNNw3r9WXbQ/2Z4TxH1pKsZcMPYiD2vQqPKvafA9auS/FO+BYsrO9aqgNK8HivdFBM3Q859+AUxyQjGhNd+GLn0woGRQP35qwYyLIR/y8Ipm9GdRMdavYzD7Ye+H3Vjuaew1sBAfe7j0aY/wH71pJ2I8E7RuBr7MqtUQgKBHydVOFOMfPwJnaWhKL3hgyEY87emCHaIl/Q4vzERIIiwhDyVpxPq3c2kr2Vp+/Kx+fA+rXCCrqUil9fjv9BRiZbIIWntghNpHipFfEmOFVM96siabcFag3gk0qyKaNy9amNaUsxs1YKAqrSrS7TfwLztr7YJEk+r2z6EQJ+Dxn9mEwts9ga+LrhZB5cnFlt9ZFuZE0GI5zOBtEWOcEoaaPUzUf6N6Y7i6yzjsdlStT8OFOZpYzKWDM3IklVCDFl01poIhPl/qScYPeBHrgVu93cV4rEwlsiaColpe17aYWT07V1qoX9uQVdG5m3ozvIXMdXsuNcH2QO5LpjGk6tejO9xNWB3uiuzCJ5/VZiuNHqXNMuifOMdbhOLam5Ke+1a4DtL2n2np2iW+VnhFECUvZpAjhFZABQYQUot62EeoUazftceSVkedRg/FHF5ansoGm03etPFNXPuYrqBl9C3Fs
- b2ZIKYgH
- lQJI/ufCDSAfH6r+sX2nfwnd+inzTKVpxUfdVSowI6CoIio1WwHlFK1GOOif/R1PgphpqAdEzwNp3l1RPWGCOh2JdcptG7a1li2E4zAi045j2C3GLAke8CiqGWThPfO2ds1VigrLtBFmDAGNYO5UN1QbRxkcnet7SXFZTX1JpelvbNGa5sSVn8Up8ItjWJlcWBw/9/suX541kTMCgsCdxOZNe8aWK3715i+yOT8Dh/LqBRoYl274r9zVmsg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: jzqdnnm9fjig6ro5sfxbodb5ra8h93kp
+X-HE-Tag: 1764167198-959694
+X-HE-Meta: U2FsdGVkX1+GGhsVIX5JQiko/O2yvg6gYEWsy7/cpiQIZvGyLh23BFSIzzHpGeleqrAO4uvwHMg7oPed1qJfhgIue2Vz1kXdOHzu0J/EcmepBCt/Qep3rrRdwIHVlhjxJiljofiLzyg//aWMZo98dplThMVa0bEzhv8z6GidArynDvKn8ta/9r08cprYeQaq4N5MHyhplkTElbP7wgNQ+K6z1ZZE4+9aiaia9vo3YI5Mf9M8cURd13PZPsOCYaOum2rEXHsIQAl7ky0sB0peFrjPx4duV6FniwqILGJwsa1y6mua83AnCpMIpw6wm4OCO8qiNeytMaa0CTwvaYQSrGIYOH7fHdhqMnzqAgezydLTUge0w/7K4g9pEb2AH/XpYwaWJw0Rv/fsycCFppSO3bo9vAtS9bukn/FLZ6r0tnw3IURDEujQhPuJ/t2ThY763R0BQdIK54DQPEP3vxYAvaXx7HCCb26Y5+rUxqs5xNS5/sViirFfGgNMiqzK3gtRqJOZWYyz4/u7AnyqDajk8YnvTsRcc3+jsYBrc7UUzJHYs4fVr0U4n9uRft70xZhN5aHziJZyqVuy/85XzXLTzHn9vpKMLsO+DCU1Gy/bwkYKGlDa66Ojb3l1KxZUcpEjxlaePnsWzwwUDJ5WZPRkt3kTR7QW6u5mXqjgvfz88YzgPw9Bed3TNPY6/XTmhgTj58Ifc3iN60r/30WJObTSThY+1MoHTLEh6zCAWY6z+AOZs4GOnEBpFZNOqO7yyiUWUJtSUucpbMKx0vSXBZijdGfaRCHEspKXu8uk7ZrpHGsvVlFQrbmpCZv3OJNRyEkPf6jNdIhS20TUjWlF2nR+29kYuoP+6mxNyM7xXIwV2vSNxIgf+C9QZKLVbQW1lXX6rWBwCMBuUvy61qiZ/1gO45TzW8UUfOyfROdx7huzPiIFFWtrkqPSVsj4+J4MNwacqz0b6gigNKqya6vzVWS
+ xKGHAopk
+ z3RaRuJVji+36LeynqIlHppl58ROSDBgoM9plgqUzuOzdJoI2pa1hpCJ2NhfoLaz7dLCmxl6NQKOF6CoahVmNFQT7dBFoT4KQsgzTSwqUXgRAj4bKGTb/ualvoiasrRJBM9wSXpHBSVmJVces6hYn7ZKvqCJqQHfAw9SYUjkyyBqW3P7J0k+ztf/KY48gHuySZTFEFiQBkQdsD/vVQXP/8w+rY3CytlHtaGWPoGTYECSCGpumTsW8KGL7IQfQliD5wbCEWnQSiObSqVUdpImFRA/PJ6RQR5j4XBQtYXTquQudk+mrDOBZTfJ0Jq59OVYwG0ERme/b50H//nbU0vcJe28L76VnNQBFuyg37PQ6LHN32lnJ2HZZXjqDW3XczyTtNgmPqFf1bzgNJsoLa/L33loqRxLiYDOoR/iNkj3qe8geGnarRIjd8R9Mhd//COizb+PSShhuocuDGH1aefmR+wXGIlswi0/9iMcrORDNcFjZ0LR+MbOCqZIPMA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,88 +118,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/11/2025 13:47, Wei Yang wrote:
-> On Wed, Nov 26, 2025 at 01:03:42PM +0000, Ryan Roberts wrote:
->> On 26/11/2025 12:35, David Hildenbrand (Red Hat) wrote:
-> [...]
->>>>>>> Hi,
->>>>>>>
->>>>>>> I've just come across this patch and wanted to mention that we could also
->>>>>>> benefit from this improved absraction for some features we are looking at for
->>>>>>> arm64. As you mention, Anshuman had a go but hit some roadblocks.
->>>>>>>
->>>>>>> The main issue is that the compiler was unable to optimize away the
->>>>>>> READ_ONCE()s
->>>>>>> for the case where certain levels of the pgtable are folded. But it can
->>>>>>> optimize
->>>>>>> the plain C dereferences. There were complaints the the generated code for arm
->>>>>>> (32) and powerpc was significantly impacted due to having many more
->>>>>>> (redundant)
->>>>>>> loads.
->>>>>>>
->>>>>>
->>>>>> We do have mm_pmd_folded()/p4d_folded() etc, could that help to sort
->>>>>> this out internally?
->>>>>>
->>>>>
->>>>> Just stumbled over the reply from Christope:
->>>>>
->>>>> https://lkml.kernel.org/r/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org
->>>>>
->>>>> And wonder if we could handle that somehow directly in the pgdp_get() etc.
->>
->> I certainly don't like the suggestion of doing the is_folded() test outside the
->> helper, but if we can push that logic down into pXdp_get() that would be pretty
->> neat. Anshuman and I did briefly play with the idea of doing a C dereference if
->> the level is folded and a READ_ONCE() otherwise, all inside each pXdp_get()
->> helper. Although we never proved it to be correct. I struggle with the model for
->> folding. Do you want to optimize out all-but-the-highest level's access or
->> all-but-the-lowest level's access? Makes my head hurt...
->>
->>
-> 
-> You mean sth like:
-> 
-> static inline pmd_t pmdp_get(pmd_t *pmdp)
-> {
-> #ifdef __PAGETABLE_PMD_FOLDED
-> 	return *pmdp;
-> #else
-> 	return READ_ONCE(*pmdp);
-> #endif
-> }
+On Tue, Nov 25, 2025 at 8:28=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Tue, Nov 25, 2025 at 7:44=E2=80=AFPM Matthew Wilcox (Oracle)
+> <willy@infradead.org> wrote:
+> >
+> > If we get a signal, we need to restore the vm_refcnt.  The wrinkle in
+> > that is that we might be the last reference.  If that happens, fix the
+> > refcount to look like we weren't interrupted by a fatal signal.
+> >
+> > Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
+> > Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > Cc: Suren Baghdasaryan <surenb@google.com>
+> > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > ---
+> > Andrew, since the vma_start_write_killable() patch is in mm-stable,
+> > I don't think you can put this in as a fixup, right?
+> >
+> > Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this bug.
+>
+> Doh! This is embarassing...
+>
+> > Any other stupid thing I've done?  And am I doing the right thing
+> > with refcount_set()?
+> >
+> >  mm/mmap_lock.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index e6e5570d1ec7..71af7f0a5fe1 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -74,9 +74,18 @@ static inline int __vma_enter_locked(struct vm_area_=
+struct *vma,
+> >                    refcount_read(&vma->vm_refcnt) =3D=3D tgt_refcnt,
+> >                    state);
+> >         if (err) {
+> > +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_ref=
+cnt)) {
+> > +                       /* Oh cobblers.  While we got a fatal signal, w=
+e
+> > +                        * raced with the last user.  Pretend we didn't=
+ notice
+> > +                        * the signal
+> > +                        */
+> > +                       refcount_set(&vma->vm_refcnt, VMA_LOCK_OFFSET);
+> > +                       goto acquired;
+>
+> Wait, why do we consider this as a successful acquisition? The
+> vm_refcnt is 0, so this is similar situation to an earlier:
+>
+> if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
+>         return 0;
+>
+> IOW, the vma is not referenced, so we failed to lock it. I think the
+> fix should be:
 
-Yes. But I'm not convinced it's correct.
+After sleeping on it, I don't think we should be masking EINTR error.
+__vma_enter_locked() result might be the only place where an outer
+loop is checking for fatal signals, so returning "failure to lock"
+instead of -EINTR might cause the loop to continue. I think this fix
+would be better:
 
-I *think* (but please correct me if I'm wrong) if the PMD is folded, the PUD and
-P4D must also be folded, and you effectively have a 2 level pgtable consisting
-of the PGD table and the PTE table. p4dp_get(), pudp_get() and pmdp_get() are
-all effectively duplicating the load of the pgd entry? So assuming pgdp_get()
-was already called and used READ_ONCE(), you might hope the compiler will just
-drop the other loads and just use the value returned by READ_ONCE(). But I doubt
-there is any guarantee of that and you might be in a situation where pgdp_get()
-never even got called (perhaps you already have the pmd pointer).
+          * If vma is detached then only vma_mark_attached() can raise the
+          * vm_refcnt. mmap_write_lock prevents racing with vma_mark_attach=
+ed().
+          */
+-        if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
++        if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
++                if (fatal_signal_pending(current))
++                        return -EINTR;
+                 return 0;
++        }
 
-So I don't think it works.
+         rwsem_acquire(&vma->vmlock_dep_map, 0, 0, _RET_IP_);
+         err =3D rcuwait_wait_event(&vma->vm_mm->vma_writer_wait,
+                    refcount_read(&vma->vm_refcnt) =3D=3D tgt_refcnt,
+                    state);
+         if (err) {
++                if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt=
+)) {
++                        /*
++                         * No more users but fatal signal is present,
++                         * still return the error.
++                         */
++                }
+                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
+                 return err;
+         }
 
-Probably we either have to live with the extra loads or have 2 types of helper.
 
-> 
->>>>
->>>> I find that kind of gross to be honest. Isn't the whole point of folding that we
->>>> don't have to think about it...
->>
->> Agreed, but if we can put it inside the default helper implementation, that
->> solves it, I think? An arch has to be careful if they are overriding the
->> defaults, but it's still well contained.
->>
->>>
->>> If we could adjust generic pgdp_get() and friends to not do a READ_ONCE() once
->>> folded we might not have to think about that in the callers.
->>>
->>> Just an idea, though, not sure if that would fly the way I envision it.
->>
->>
-> 
-
+>
+>         if (err) {
+> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcn=
+t)) {
+> +                       /* Oh cobblers.  While we got a fatal signal, we
+> +                        * raced with the last user.  VMA is not referenc=
+ed,
+> +                        * fail to lock it.
+> +                        */
+> +                       err =3D 0;
+> +               }
+>                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
+>                 return err;
+>         }
+>
+>
+> > +               }
+> >                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
+> >                 return err;
+> >         }
+> > +acquired:
+> >         lock_acquired(&vma->vmlock_dep_map, _RET_IP_);
+> >
+> >         return 1;
+> > --
+> > 2.47.2
+> >
 
