@@ -4,103 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3AEED11196
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 19:52:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3488BD11196
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 19:54:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5D8D6B00A4; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
+	id 671E26B00A6; Wed, 26 Nov 2025 14:54:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35036B00A5; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
+	id 6226E6B00A7; Wed, 26 Nov 2025 14:54:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D70F26B00A7; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
+	id 5385E6B00A9; Wed, 26 Nov 2025 14:54:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C68016B00A4
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:52:15 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D455160770
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:52:15 +0000 (UTC)
-X-FDA: 84153804630.24.FBB61E1
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8765CC0002
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:52:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=BHndPZwG;
-	dmarc=pass (policy=none) header.from=armlinux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764186733; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 400A66B00A6
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:54:01 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19D035AF6D
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:54:00 +0000 (UTC)
+X-FDA: 84153809040.08.689E21B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6461910000B
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 19:53:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=olRQMdm2;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764186838; a=rsa-sha256;
 	cv=none;
-	b=F9m5v5lB1UAMcLDI4ob2FQuHVBzM++hoRaYZB3Xy5KFnWzBL+jUgJsWdlCbA5UqM4sjeBS
-	9ybSQIsqYkk4xJJKs3JECqu4meEqIoamiFzh1Bmt/CWPrAhrKHILP5WIb8Rwcn3qJ8Ps8O
-	yvacWpS5w6EHPtSjfr1e7WZX+dzey18=
+	b=yaMw+Ak7KkHSYe6krga2TaHMvgp8xLQjRWCRI5bx0FfZ0cAHzoo3wmH8gWSQ0ng0rucOhe
+	8HQNfxUUkfu8J5hQmjcRIPdu5g+oU8fTjaWnNXr28bcuwdath379CnndbkeNNsmXFp8WuP
+	L4uBnDI4UYyzIxhAr0cXbBjcrSXTfVQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=BHndPZwG;
-	dmarc=pass (policy=none) header.from=armlinux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk"
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=olRQMdm2;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764186733;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764186838;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F9CMg7xCCCe7pvWjCkZUtW9tN5r9wm9+9Wqdv/t8aKI=;
-	b=d+kaazdq5u21VYgaD1LuIt0VBhdM0fR0cS7emMV+D5CDtVpAo5ZC12KoIx177i6CdW2Sqi
-	zHOafNWjnvExWg+n6YtfuC08k0Z9JDtGCyl8ke3T2G3ph+xYVKXhzqJ8V1CzN2R91CUS3/
-	cBfITFtVbfVXOHEaSobOKqPzx6+2KQQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=F9CMg7xCCCe7pvWjCkZUtW9tN5r9wm9+9Wqdv/t8aKI=; b=BHndPZwGPTrM215ddveW6SCQGS
-	w5XGshZORwCGNkF8wPex0jf0EUyPFK42vLiC8mTGhk+tO6My2wml6VI0EsCSE2x4vzP4RS3RM2FEr
-	lIWTKBpIZsjjNZedOqvW17H9D4sdzF7bEHaBbp3kIO9Fn2PrApcD17fPyx+UpKuLfsy3aPWxinpDV
-	sDejfX89mi//7BMUyjo+iWwITrIg/kt2sM2gf2XYfhdVtASKmx7bkn3q3toxJm7yAJQLqE2K8M8wi
-	7Zz8OhoN0oy5k2OZqqEPYmZInZGg4p53iAQ37QqdvZp1utXGyGhaL8SAv//OBGvF//QTmxqepp7NU
-	1/vp9G6Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39804)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vOLYU-000000004SL-1B7L;
-	Wed, 26 Nov 2025 19:51:58 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vOLYR-000000001yH-0OLR;
-	Wed, 26 Nov 2025 19:51:55 +0000
-Date: Wed, 26 Nov 2025 19:51:54 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, brauner@kernel.org, jack@suse.cz,
-	will@kernel.org, nico@fluxnic.net, akpm@linux-foundation.org,
-	hch@lst.de, jack@suse.com, wozizhi@huaweicloud.com,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	lilinjie8@huawei.com, liaohua4@huawei.com,
-	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com
-Subject: Re: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad()
- with rcu read lock held
-Message-ID: <aSdaWjgqP4IVivlN@shell.armlinux.org.uk>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <20251126101952.174467-1-xieyuanbin1@huawei.com>
- <20251126181031.GA3538@ZenIV>
- <20251126184820.GB3538@ZenIV>
- <aSdPYYqPD5V7Yeh6@shell.armlinux.org.uk>
- <20251126192640.GD3538@ZenIV>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251126192640.GD3538@ZenIV>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=JhMb16M5zlfiQsw9TwsYXk/Eyb2tP+GT7XJg2OWwCfQ=;
+	b=yJFBo1f5zG85/VSY5T9c3jZb21oTgOHusg3JjB2gk0iQP0nKN/1JuH1XmDIKK0+F5y6P5K
+	YHhfTA/O2JEib/mDYiTwh/E2Ylg+cT8jeFAyJLeL4PCxhd1s64eWpvaaxtjCJzOY+MbIBG
+	H+uoQ4mUQ9o0F6JKR9gGFUjI6a1xWrY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3EA2944288;
+	Wed, 26 Nov 2025 19:53:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DD0C4CEF7;
+	Wed, 26 Nov 2025 19:53:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764186837;
+	bh=3LaAVXMxsOTt80DxyOV5M4+5WlNyCCt3WikFqOq5sas=;
+	h=Date:From:To:Cc:Subject:From;
+	b=olRQMdm2y345wispcDvyoctvilgGJJidnxRVpmvFqCAdqo7/+rEKlv0GNwTVxT6DM
+	 NG/lega+nQmIVeG084gmbkXYkP5Vs5lMOgHWdQsPnxDpBJqLtajuMQmbP8uBd6WDD5
+	 B2ysfLI17b2mfMg7Xqz+Jk5qWZJ2wsG6RNoRFn1I=
+Date: Wed, 26 Nov 2025 11:53:56 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes against 6.18-rc7
+Message-Id: <20251126115356.e5fb496a181886475567ed74@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8765CC0002
-X-Stat-Signature: 5snjwd8mo5eo5ddcfe5rs96jkt8cnyec
+X-Rspamd-Queue-Id: 6461910000B
+X-Stat-Signature: w9iug1gcfs3p9d3byghrgdeug8ms1t1k
 X-Rspam-User: 
-X-HE-Tag: 1764186733-934328
-X-HE-Meta: U2FsdGVkX184EMZlaxSyRHx2K5QYHzbbYbDcj6/b6R13Qunqx1b6rKILgLZUPuyzXMHytfdx7NGkEAPl216LIdPb3MvCayLXziUxYdkp6bC5Gv0b3NqJU5taJlo8p4tTav4XymccuEVa2bg5qBjGi15ZFlPPATFQF3C9T+rAWs/JnLGDDhbeUSLocy9twag8XzkxD27I3duH9yDZvu/zx5NZWvpFQsgrtAMZbc1QN0cYFvsKCT+ERa/ZXrNjZtrVZab5BfQ9F3Q04V7c0PJ1IY8ZghxkLT/3JHLECWtKYdGNWcOAsed8N7QqKcql55UxpEru03vpZsDE2oxW3Hz0SALFLpjpDNesgqT6if2ZR0Wqwv6/MZH6CRLzhEJvNja7jPsP+zFQXPo0YMGLW/82tmjGHJen1gDzGms7/0H0Aw+SK3HH2dPncWnu1MfDATzPRLN73qwP1mgaizs3I7Vf7+eXi7enuNMiRUZXLozQ7NtKO70FlWzpgOPQokM5I3BYpzkfmk5nfyMwkhP+wx9hqNps7j2WJFgwBtgDqSezu1SVn7HTDbwLPwiNcTWC1rMvF4T/juzJzKUchNrK66yQSFko5wK370HJIqTxrl/nsY/J29d8cWtGiNRkR1y2xdZMSRECgDdGmxaPGEeGK9q+stbm8aVaiEKSe4hkpHV3FW/mQQ6IUTtPVwlupavQYkmmp5WoPSKM9+ckQ3My7A2DFZg+QwZMmqrSPNYdX/s0Q4t7kkHUqFYgp97NntTQ/QitckspqwzNQnR8qS6me3xe4Leqf2V6yRbKO3ulRtd4pW2SVY+PYRbG1J5fAUGADtoiI2I681H2znc+DhSTMh81nzD+EoacHahwkgsSMp37TuCocoxVESWJk6VZTlRGzGbS+NnK8KJtwu2JTCWQEmpNMiZHPmqfSlPGqxtMS5ZcJvfcGcZZf1hMye/1+0lzJMukxN4LsfgGOa0aGnKtB6U
- uGnHfacW
- 5XkJ9PPoWeK3cbEm2bMEAB2A3gsoUrAfT0HXuFJyO7SKYgaenrytzSi0Rnsv4ZDc5Q9cfFqxYOglWWkIRZ+BEUgAmAqrUwL7Y852njf9yK5+zigRpR8gyupMg2kZ/jR7WexZ9lyCEK00WIlQEU3RYMqQlDtUat9LZR8QRlDTZsw1NdiSATC7t7fkpWF+AXV9SWkHwBYCgswgT70TG5i5vs6IjnHQRURI2OeETdNpZUw4zpJ80BChhpPImoG2BqSvjbYL9eZAM586ftMQQ/MGuWWMpE+Mtn7KXywOIoZCKR3dKONjrzGtY3T4MS6C8Rdyiz4qqhDATpk+LxZbeDD6QaEhsMiprQBCRRK+H/6wSO0nZUOsOtdjGpTwu6IQ5L1STElrLOQzxeWwgcskIdLdL0adFqwfSMlPLDY3NfbE2KFxIGyjeoYLxFwr5YZr6/W+O32GtBjWxfD3OWGx+hVEhQVtma74iPHEza/onQdjjbLEzitGLT/lxotnC4oy/4mEcBuEs9GV7AfB3dyRGCrXvuGz08w==
+X-HE-Tag: 1764186838-111987
+X-HE-Meta: U2FsdGVkX1+aT75Y1pF7BdfLkpE4SR6oHtSUebhKTz5hKTupG1VFE7StwKyXIqgHqkmlcb/dpAPj1Be61fK+x6oGeTaeTH7qlWSSDDFtVVryCyj+YuZBRHfv9COUXmuB3x5gNN/xQ0CfrX/bXvbGuINrJ4kCI0fIvv5gUFQuVXx1Ge9lgkD2loq0CrGb6apoZkJkwc+K2N1k9JiZdLCVleWD+PPoCls8ei1UomCpGFivD/PLY/zAe1VTHmdjVrpcD1MV4gBAQ2qAGO6BIuQ6HNxbYZ0McTIevl7BUnRVTbegOA3tPCmwAtOCtUEvkrfaXjFLRc2S2fjJY9n2pPcBu/MjWh49dKb+b3rzREpqRIpqqg7g4ZMIUkLmfU/VwU8dQobS9RcnuxSiqLM1yvLrMH48dfnCZ0pXxZY8w7YnQmgcF+hvUHFMMvBB/P6kAVz2nkLkLoA2Tt4OxNlVObotbHoRrgzrLVR+jFY5AYPTvnWaRNsD5ciH6cqhVPwmIDsOR6LG9/+zby+07MhRf3x/BjawRmoNjmbboWSBMvxQcz5sbU/Iuom8rgUfpHzfBf0KjpW4BBBuaTNWRKCxRpMdCcdKW2lgQT2G9FnFhEfNfuZF/Kd+flQsyQhJnvVx+cbldFipIItQdUK/M3csfGNAUoYGj9Yzr1hEhLvYZye0+XFExvR+6WsrYSgLfkRz85PE3hfF1XRfVb0TxlLus3OlxdpddMH0EAL+hJy2hwitzo87kQ+fgk8SYPjEF521Mxu4vizz1L1yFpp63uSiTdesFOn41dEsSRpbJ5H9jaHBnZs+ZvikMXxRBEnMXNahmCDttMPSL2A72hgm+3xWAJil2HgdxRzwJptaeNRNo/OVjm4BHHG7NTU2Fodq+VG+iqH1OkiFLWIWQ3YGkE4cRue7/YxBZwo19MSmJeRgfn4u3/0LsMKEzLRirq0rYhTmT8eF/6SrtGDN9amnfZM5uNT
+ mtEdk7z3
+ +N8E2HVlitYC4dZLFCx+SkH2gwoLMQZBcK2zbeO384+aMlUiM9DXjstilsGQK/0wLH6CIfrbs7Q3jTcoZMqgOc+Cz9TMJRXu59xp9XNooInXnt5F46c6Tqw1OvLeke6wkFJxU8pmVjqf2V0UMINjZOj7QgfZL+dWAp8au0fx1cILkWqBH1l4LF0IAxSznshsaI/4QAZu6g/52KFS9mVZXj1jbDqzavABfuV6PCqCwnt/t0jbBabS9uvenTRjP2w4Lg3OByC7GyeDxP7RdVcrQjmPUAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,48 +87,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 07:26:40PM +0000, Al Viro wrote:
-> On Wed, Nov 26, 2025 at 07:05:05PM +0000, Russell King (Oracle) wrote:
-> > On Wed, Nov 26, 2025 at 06:48:20PM +0000, Al Viro wrote:
-> > > It's been years since I looked at 32bit arm exception handling, so I'd need
-> > > quite a bit of (re)RTF{S,M} before I'm comfortable with poking in
-> > > arch/arm/mm/fault.c; better let ARM folks deal with that.  But arch/* is
-> > > where it should be dealt with; as for papering over that in fs/*:
-> > 
-> > Don't expect that to happen. I've not looked at it for over a decade,
-> > I do very little 32-bit ARM stuff anymore. Others have modified the
-> > fault handling, the VM has changed, I basically no longer have the
-> > knowledge. Effectively, 32-bit ARM is unmaintained now, although it
-> > still has many users.
-> 
-> Joy...  For quick and dirty variant (on current tree), how about
-> adding
-> 	if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
-> 		goto no_context;
-> 
-> right after
-> 
-> 	if (!ttbr0_usermode_access_allowed(regs))
-> 		goto no_context;
-> 
-> in do_page_fault() there?
-> 
-> NOTE: that might or might not break vdso; I don't think it would, but...
 
-I don't understand how that helps. Wasn't the report that the filename
-crosses a page boundary in userspace, but the following page is
-inaccessible which causes a fault to be taken (as it always would do).
-Thus, wouldn't "addr" be a userspace address (that the kernel is
-accessing) and thus be below TASK_SIZE ?
+Linus, please merge this batch of hotfixes, thanks.
 
-I'm also confused - if we can't take a fault and handle it while
-reading the filename from userspace, how are pages that have been
-swapped out or evicted from the page cache read back in from storage
-which invariably results in sleeping - which we can't do here because
-of the RCU context (not that I've ever understood RCU, which is why
-I've always referred those bugs to Paul.)
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+The following changes since commit 1c2a936edd71e133f2806e68324ec81a4eb07588:
+
+  mm, swap: fix potential UAF issue for VMA readahead (2025-11-15 10:52:02 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-11-26-11-51
+
+for you to fetch changes up to 7c9580f44f90f7a4c11fc7831efe323ebe446091:
+
+  mm/filemap: fix logic around SIGBUS in filemap_map_pages() (2025-11-24 14:25:18 -0800)
+
+----------------------------------------------------------------
+8 hotfixes.  4 are cc:stable, 7 are against mm/.
+
+All are singletons - please see the respective changelogs for details.
+
+----------------------------------------------------------------
+Carlos Llamas (1):
+      selftests/mm: fix division-by-zero in uffd-unit-tests
+
+Deepanshu Kartikey (1):
+      mm/memfd: fix information leak in hugetlb folios
+
+Kiryl Shutsemau (1):
+      mm/filemap: fix logic around SIGBUS in filemap_map_pages()
+
+Liam R. Howlett (1):
+      mm/mmap_lock: reset maple state on lock_vma_under_rcu() retry
+
+Pratyush Yadav (1):
+      MAINTAINERS: add test_kho to KHO's entry
+
+Sam Protsenko (1):
+      mailmap: add entry for Sam Protsenko
+
+Wei Yang (1):
+      mm/huge_memory: fix NULL pointer deference when splitting folio
+
+Youngjun Park (1):
+      mm: swap: remove duplicate nr_swap_pages decrement in get_swap_page_of_type()
+
+ .mailmap                                     |  2 ++
+ MAINTAINERS                                  |  1 +
+ mm/filemap.c                                 | 27 ++++++++++++++-------------
+ mm/huge_memory.c                             | 22 ++++++++++------------
+ mm/memfd.c                                   | 27 +++++++++++++++++++++++++++
+ mm/mmap_lock.c                               |  1 +
+ mm/swapfile.c                                |  4 +---
+ tools/testing/selftests/mm/uffd-unit-tests.c | 15 +++++++--------
+ 8 files changed, 63 insertions(+), 36 deletions(-)
+
 
