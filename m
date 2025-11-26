@@ -4,136 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7229AD111BE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 23:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41B1CD111BE
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 23:31:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4E4A6B000D; Wed, 26 Nov 2025 18:30:04 -0500 (EST)
+	id 8338A6B0012; Wed, 26 Nov 2025 18:31:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFF4D6B000E; Wed, 26 Nov 2025 18:30:04 -0500 (EST)
+	id 7BC586B0022; Wed, 26 Nov 2025 18:31:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AED236B0012; Wed, 26 Nov 2025 18:30:04 -0500 (EST)
+	id 6AB326B0024; Wed, 26 Nov 2025 18:31:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EC926B000D
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:30:04 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45C2D50521
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 23:30:04 +0000 (UTC)
-X-FDA: 84154353528.26.D2F5328
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D302B40007
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 23:30:01 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 52ACC6B0012
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:31:25 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA0D21A05FC
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 23:31:24 +0000 (UTC)
+X-FDA: 84154356888.14.ADD749E
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C2B4D40006
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 23:31:22 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E51+Mp1M;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=OMQTGPEv;
+	spf=none (imf01.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
+	dmarc=pass (policy=none) header.from=armlinux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764199802;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764199883;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WaAYG5VDFXsv/Iixri0H6uBMNMIoUe5mbi2ivxpfSFc=;
-	b=OxssJHU5a+Ki6vheVKeLDaaVo5X+6bvYM0LyvkqfnARXuwL7Bmc2mWpJS9ZQueFhuvWUZV
-	iHlNgu9/llH57gKBtEiWaPq41qae+dRoM7OReK+2Xv2Xo2pOZBCl9+fYJU5LaSTKSFh69u
-	+1CsAh3WrbzMi62JdQ+3IQJaxywIWHA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764199802; a=rsa-sha256;
+	bh=ICd8G5D0Nxy6iHBtTIxjwZs9PaKgLQ/+fqX/nFiMHTk=;
+	b=dkgip7Ao3V0eGTph8l6/QzUm8BHoLwMXBRwBvKJNJGQieRV+Atr2wwDBxkoHGU37awh9UC
+	16vVH0x1sXao/SWk8iPb8h4gy4iMeoxuPV9FavZ5E2jVpgemid9LuaHig/s6IT/GPTghus
+	J/rh5C8Ydzfeu1D6n5bQ5NTXk1eYYW4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764199883; a=rsa-sha256;
 	cv=none;
-	b=V72PH9VIxLQ3TUkvHJlxJ49X7DdDTQBCPPFLkzUnrSzySF8XRL/WErl9qnYtRr3aAlVTG4
-	Aee5IyraRUFgqe0FYHeVqI9rvj+AkBEbdk3FdHQGN9THqMzfNMg0rZyf0GFF+M7uFBGw9H
-	26IRUTnlNcFLgXJD/EdeQ9dDpcWrU2g=
+	b=V27rur9NY7auUmfytk+6YOMe7fe4X0XBVrYUBkA6tnkaMXhSY+nSAXzQncEm72FnNuhhLK
+	sbwox1MjoxsuczaQz+KWIWTWDWIzYs1+zVurpxsXfktsGO4CNeB/oth0iuGFE6Xz4qS5Lg
+	uGBqmqFpufIXvfizH+Xiyv6opPmoxdo=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E51+Mp1M;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764199801;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WaAYG5VDFXsv/Iixri0H6uBMNMIoUe5mbi2ivxpfSFc=;
-	b=E51+Mp1MvNc1A4a9Hij+SOhMBvkJQ/RBkGCqH+CUhDV9u+J06dGyzedtqpTRgjwTr2TZqk
-	d9AhU94UbLukoPrPWK8UQMA58mv2qVO663XE6CvQrs594rKkynYuQ0DkncgiaWBwSaRSWF
-	IFHl+lgZuJhNdPgqC9mizsBWnWzKi6s=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-TvKGx900M46zrHMGFt-C6g-1; Wed, 26 Nov 2025 18:29:59 -0500
-X-MC-Unique: TvKGx900M46zrHMGFt-C6g-1
-X-Mimecast-MFC-AGG-ID: TvKGx900M46zrHMGFt-C6g_1764199799
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-786a0fe77d9so4591867b3.1
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 15:29:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764199799; x=1764804599;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WaAYG5VDFXsv/Iixri0H6uBMNMIoUe5mbi2ivxpfSFc=;
-        b=VtLqvtjaE6vam8f8nmrwV6CRIMVqNDjMvBZJrlWYZNoJKeHrFXosTWn/+VsTZCItsb
-         hxKZm3iu/oG7QlVBR8QPm9LbDszl5qkPOU2j0bh0vWoyJCBqXbZZtOzshelEZMYJg7k9
-         iiYqWTbA/gKdns7ebAwVSEkM61Ie6FVLfgm2AYWZYYKsm17W8jIIV3df2n1PQ2xvnlIY
-         xSSPkI3TioRBlxeX0NCsuBfe6DmOVN+gYOyGNbMuSYd7sc9RpjRA2vyDR2hWh/u9j7oB
-         +S+IVU3E6wkcsU4xhE3mLAf2UOtSm8kmlHYJ0sOlK/LMaV916hogMmQDgIAOxBaU7MmE
-         VuwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2NnQmGMUlJaVo9gZh95g5ARVz91PEu5wgCy6qH12sjFNkzziT6OT/hgG4J9R5dzjpnIImpCJYXw==@kvack.org
-X-Gm-Message-State: AOJu0YxaAhgUZNqNXObohoUETle3C/Y/jqrgGjNNygp5L8ZFF9MHCWNV
-	MT+UmebiCaGB6XST2XPysbUpg07bOA55xBof21NFbUkTV2D+bwquIjlTiDzp0nJfKsjev0H1k+g
-	nV27qkggyYPfZbdo7F82ilRuvI0LbF6cTZszPVegcDkr6rdsXSKCGcaK++EQBecXFzhDrMg2hw5
-	b16I7RrFFyRnbpV1XvHGih0fT0zOs=
-X-Gm-Gg: ASbGncsNJUFUfJZ4+r6PhSgQ9/LtFxOyf9AiTct9pA+p4C83OI8hGTkjDCal2hxMv/u
-	NHHv4QPCtRniTXyE3tcPawM2c8jmFLdmMf00dwxwtWZWbfLwMQdfKNjMsnpxwcNLtHDfCTkRSyt
-	U08XVyC3oNNVua/WalF/f/5KinK0C4vjg8K1JN3S169fe6JzeUJcp7LHBuAS7sqWGR1rLnTEvGJ
-	kjLK1vQ
-X-Received: by 2002:a05:690c:6d11:b0:786:7017:9506 with SMTP id 00721157ae682-78a8b50d225mr179507907b3.43.1764199799266;
-        Wed, 26 Nov 2025 15:29:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEM04nXlhLyHhOF4P67Ng8vhtTcvmR+j3q1fjlImcKmWBZ7ursgcIGrQVIExNz7VgFRd9eGD2XP0bTyZR5NgLY=
-X-Received: by 2002:a05:690c:6d11:b0:786:7017:9506 with SMTP id
- 00721157ae682-78a8b50d225mr179507437b3.43.1764199798871; Wed, 26 Nov 2025
- 15:29:58 -0800 (PST)
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=OMQTGPEv;
+	spf=none (imf01.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
+	dmarc=pass (policy=none) header.from=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ICd8G5D0Nxy6iHBtTIxjwZs9PaKgLQ/+fqX/nFiMHTk=; b=OMQTGPEv+0m2vczeCsiycqa7Ei
+	Wuo0I3V8eJv5d0zYs5flQN4ysmgsl3TmQvaNIjAK5mAX+icsKntbdAQLW7GcLaWXNhd3Cs7yk3Zz0
+	LVB+3AsbzWJ/versa1R4lmzwjvA2MQsPskSNcbiAyvLXQoEW2yueeaVi7E1gnca2sAi9NasppJXra
+	45y58mWzoBjoFcYosAc1YeAPNKd+F0JIELmxQavxHiBvwlH1USlL6c8XfFXYFkFIud8OHr+DyswYd
+	dPVYh1U0qeE6tFGZ7kYTuGifiPS99/Z05fE3k+aNQiCNiYTvsW2+IUZHFHM3U1IgOoCo6j4ec6asQ
+	9HlCJLWQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59528)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vOOyW-000000004bn-3yEF;
+	Wed, 26 Nov 2025 23:31:05 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vOOyS-00000000274-2rWk;
+	Wed, 26 Nov 2025 23:31:00 +0000
+Date: Wed, 26 Nov 2025 23:31:00 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, brauner@kernel.org, jack@suse.cz,
+	will@kernel.org, nico@fluxnic.net, akpm@linux-foundation.org,
+	hch@lst.de, jack@suse.com, wozizhi@huaweicloud.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	lilinjie8@huawei.com, liaohua4@huawei.com,
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com
+Subject: Re: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad()
+ with rcu read lock held
+Message-ID: <aSeNtFxD1WRjFaiR@shell.armlinux.org.uk>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <20251126101952.174467-1-xieyuanbin1@huawei.com>
+ <20251126181031.GA3538@ZenIV>
+ <20251126184820.GB3538@ZenIV>
+ <aSdPYYqPD5V7Yeh6@shell.armlinux.org.uk>
+ <20251126192640.GD3538@ZenIV>
+ <aSdaWjgqP4IVivlN@shell.armlinux.org.uk>
+ <20251126200221.GE3538@ZenIV>
 MIME-Version: 1.0
-References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-14-npache@redhat.com>
- <541a75fe-3635-49ab-b61f-d86afc96df98@lucifer.local>
-In-Reply-To: <541a75fe-3635-49ab-b61f-d86afc96df98@lucifer.local>
-From: Nico Pache <npache@redhat.com>
-Date: Wed, 26 Nov 2025 16:29:32 -0700
-X-Gm-Features: AWmQ_bmAlUVjee7DwzVRQDWabQ2jDP4iBXrMJ-Yz-HT4KcafaonxgE42edAAM08
-Message-ID: <CAA1CXcBMWc04Z+7mdDAZHkSj5WGDAMc+-4p7JiTme3xCqtNXFg@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 13/15] khugepaged: avoid unnecessary mTHP
- collapse attempts
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
-	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, 
-	peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com, 
-	sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
-	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mpOi_P5TE_QmeaGLwunespxgwWNeg99qDWOaZLF63i4_1764199799
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126200221.GE3538@ZenIV>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C2B4D40006
+X-Stat-Signature: 5ctufk9xb9xhd1bqmn1ienx7ksjtmnw8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D302B40007
-X-Stat-Signature: ppipcr6ymjdipw9zzck46rcb4tye95cf
-X-HE-Tag: 1764199801-746559
-X-HE-Meta: U2FsdGVkX1+qRIxDYTkhBhkbp3DKFVSC6ltGpgKdMgAfFcm65mj/CQMOqG3hlfAyRafdorDH3FNB7givuoMS1hYX0FuhnGYpBnVSkaKrC9eS2fwXLCVbmv1xphrDgezk0sdjSNple0kRj6lrUHxM7KVJmAmHbZ2DMAWb+NMre2L2rJkou/6btFZJJtzT6RJl2CUdelhINbe8s4ACji29F/I8g910VvrnjgjLwhoZAuaRiR/SeP1/RZpqVjVcvBFFwdYtcYWzc8hdr4eGhhjWe2bC+bwvFgvx0igI3GhVqsHG4Q5LZtWPFwwtAL7KqtHxxZo3qkHH8z3KKKL57n/AjsOvdmxGBwJauSdbBX4TMetua1azGioQXjkSIcqEnWzM2bC1jkaTmvspiCMDQBPSFEJaJ4GUrnNGIK9j+auwUV/wYZ5yJxkDWfFvLIu8URGagKWUBGsJSLp+DI7Iq9ulkx58DoVhbmQ8qNY6oF81AtXUzwPW+6qUsyqNtWWRDM5Fex+wFjgXBoFzPjl3nLrk9jNUWgkMtXB61Gcy6xqz8bVECAFScXF+PiR0e58EQCzglaOusqeMh63QdbdE2IRX7rA+jSsAkx/Z2F/dCQhDxjWiPKaubmEYnxA2LaTHbFPHzGCB3ptLGBo1MsIMeMH+VAAaDOkqVZgjawvjbEX79ahfWHV+GzJ8t971Uwie5gCZv/IGymKocEtDVAv5LARduptYyPfKiy7Np+HYmxlYB8u/78RGnrsQlCMy9gWGFdwG/5vWdusiFR+FPhElTv53bRDzvmcHEHZOez1pJLOLnkTKYKrtFbNC8TNYiMmITeiWgZplznWnxpyYziblblsDyXmICVtI/Yw55M5DJEmWrrM3yTPkcnLSQYQPVl6WJzvLIgR6pHC4kDgfN2K9gfcF5SSjVKFtMpEaznTo0TGIy+XtVXuFGmkP6PSMPV+7mR6zmZC/3fAWKqqme9n/6WZ
- CSpaezML
- Q4iu2oU+5eXoCJlY2K88HgMmoh0O/ZxnbQ6RfA00hq3Ufpc83CY7h2KbHMH0sUfoad/71lrRR44QqCeL95ayQqtXYH12ww77E8iTAxGD/4IJw1ifamAVXHb47m0LL65mnbIx5F1z90Z53uuJhmHlnc2tTOf4G+DB/IHNRf/DIDUW2/O7bEwG9sohIv5UyINrymyrslWemahvIh/LrFP6jwutsQgzaCc0tchCA1S9bVt8zH5va6hVi8IiaHJHa7+nwhbBwo5dtKEcz87qSlrF0VeJzlW2gaZfBP1N+TMZ2+gPI8hVK0Q2+9MR/2Kl10aj+2bIgTlqopMd/JgAXXCw2ahTSQscsUSbWLwWk5mZDWEI9uLnH1XtfE8vqJ1tAf0vZ8p8hvz4AHVDHQadEYzHarHijT9EjX/ZvJlX8Wn1wfndL4y4uQCWOSEzfj4uhkeE7pYpSwhmEqqdcXyWyacKJ2uguZQ==
+X-HE-Tag: 1764199882-749366
+X-HE-Meta: U2FsdGVkX1+a97hb5UcarfM88mhlceE3YCJsKzZAlzjC00qPnyOK7ieYKTNl6mM882p2PY8LlZc9hk2uefDPW/hoIbyjLaClcv8am0Sr1EAUs2Oi885UMuKTMzf+Fhu018zIoxpEvxntCitiEg/0QbCC56v0ijKDou08RoiWA7VZSH4DvUsF8uF7fa9PnvEvkN70r80aIiIM90K9BySgkSgMF08ro/mPLBWBvB4eHkmcMOzH1z6evJN0x3H0O6+1pStM04d9UnIHH4jH8KLOoayb7X9vFB7p6jZT2aIfdSMtm7Y/8vxJtzqrrr+StmzTsizxF00/GjgQKFZ/luINGAW13hzHj5bkP6xDEp0+c9nlLrGTOch1o3OAO/dmXXt0j6Jl3YzN/h6jtSVLmPnTfZzIxTrShXMV/Dsd9nLz1Z5PAITRYibZFSYfnB4UVhEcvsSm59+cH6JTOwSLo64ZgamZJaJNa66zutI0s9zVJYinMk383cW00Q5TfmbiXzVUKCPfZYU6TbNrIRALR2NLoQlxO/2W3ee3v1jBvMWHiFM2fv7KdcV2m4264V/cGc/hH8dlHVV79vsbvbMXZQiZkHa6cOcarU+lM7KskZZeqqKT0SZLGFTBW0YCd/985YMG0qvcOCQJkfKsRwNAn5/SI18HAaiAPRhY+bUsdXJCcnUFU/OgfKYSRhk/aFEjLMPNGRn+qsgPgO3hd0dXeozHWw81Z3SDTU9TqWpU1iyFfGGQIA1Kc+XElNIv5CtXJ23pWgiOheJoYJ42u3B8myRkN7liLkZD0QEftkcjir5DjwkW9QjuOF0tTL/dufR+LKZFLUIIp42U1DFmJVjuoriYHkp83lsLrNzi2rKw7MEXet6tgJaQTsAM+22O5aOvz+dW/xH+NzpA9METWjxe8pYqyUsKra23C+1ifMdy5dCn8/GjApZOJMaKrxhdzL+6qeRwWs/BkxEPLJC/3LLnfhD
+ +wFslYdv
+ F5/xOsI25iN304xHThQqJlOacImsaSaLtpo+BS0H59S452Y3fAuCKGEHpBVVhJd0lGeKRYe7se2RNQwtP5t7sH2oAOdCZQgvNWLCtcq56+pK4zN1XmxtRzWAFF4l7bxzDE4CwmH403ngH29+SjmNzPJEkcxqBtoGXZ0J5W1mS1PNozMIYEG6HwqahnmFhYgUrhws1SPYphO2W/v/oaT+uZBLiSg+lVx2oAUiNFUVRgtsSr6+aVpztiX0wUz0lKzlx4yv/9t/m75d82e+hY+O6eussSrJiLLIxVyvJjapKYQs35BOHk8oJQWXq8O4iBFV2MSu7E8o0hAILst94Yt0IeZ8RIh8+4vEbhMbL4+IGBRBRM9eM9dNUe8Tv8Ss+DHst7YDbX+wzrz5fChl1eNmrfcwhRClmfb+6DHkNvgBTItNIcphlGCcHr4gyB1RQxR6jVUBzMyqzOvCs6JDiMeAGNkKlqRX2statwwH9+AVp3a98ZEELRChpdMNpQ23ZHzymGZSvGeRxnxtsdckcvtcwlPjQYQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,117 +111,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 5:06=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Wed, Oct 22, 2025 at 12:37:15PM -0600, Nico Pache wrote:
-> > There are cases where, if an attempted collapse fails, all subsequent
-> > orders are guaranteed to also fail. Avoid these collapse attempts by
-> > bailing out early.
-> >
-> > Signed-off-by: Nico Pache <npache@redhat.com>
-> > ---
-> >  mm/khugepaged.c | 31 ++++++++++++++++++++++++++++++-
-> >  1 file changed, 30 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index e2319bfd0065..54f5c7888e46 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -1431,10 +1431,39 @@ static int collapse_scan_bitmap(struct mm_struc=
-t *mm, unsigned long address,
-> >                       ret =3D collapse_huge_page(mm, address, reference=
-d,
-> >                                                unmapped, cc, mmap_locke=
-d,
-> >                                                order, offset);
-> > -                     if (ret =3D=3D SCAN_SUCCEED) {
-> > +
-> > +                     /*
-> > +                      * Analyze failure reason to determine next actio=
-n:
-> > +                      * - goto next_order: try smaller orders in same =
-region
-> > +                      * - continue: try other regions at same order
->
-> The stack is a DFS, so this isn't correct, you may have pushed a bunch of=
- higher
-> order candidate mTHPs (I don't like plain 'region') which you will also t=
-rue.
->
-> > +                      * - break: stop all attempts (system-wide failur=
-e)
-> > +                      */
->
-> This comment isn't hugely helpful, just put the relevant comments next to=
- each
-> of the goto, continue, break (soon to be return re: review below) stateme=
-nts
-> please.
->
-> > +                     switch (ret) {
-> > +                     /* Cases were we should continue to the next regi=
-on */
-> > +                     case SCAN_SUCCEED:
-> >                               collapsed +=3D 1UL << order;
-> > +                             fallthrough;
-> > +                     case SCAN_PTE_MAPPED_HUGEPAGE:
-> >                               continue;
->
-> Would we not run into trouble potentially in the previous patch's impleme=
-ntation
-> of this examing candidate mTHPs that are part of an already existing huge=
- page,
-> or would a folio check in the collapse just make this wasted work?
+On Wed, Nov 26, 2025 at 08:02:21PM +0000, Al Viro wrote:
+> On Wed, Nov 26, 2025 at 07:51:54PM +0000, Russell King (Oracle) wrote:
+> 
+> > I don't understand how that helps. Wasn't the report that the filename
+> > crosses a page boundary in userspace, but the following page is
+> > inaccessible which causes a fault to be taken (as it always would do).
+> > Thus, wouldn't "addr" be a userspace address (that the kernel is
+> > accessing) and thus be below TASK_SIZE ?
+> > 
+> > I'm also confused - if we can't take a fault and handle it while
+> > reading the filename from userspace, how are pages that have been
+> > swapped out or evicted from the page cache read back in from storage
+> > which invariably results in sleeping - which we can't do here because
+> > of the RCU context (not that I've ever understood RCU, which is why
+> > I've always referred those bugs to Paul.)
+> 
+> No, the filename is already copied in kernel space *and* it's long enough
+> to end right next to the end of page.  There's NUL before the end of page,
+> at that, with '/' a couple of bytes prior.  We attempt to save on memory
+> accesses, doing word-by-word fetches, starting from the beginning of
+> component.  We *will* detect NUL and ignore all subsequent bytes; the
+> problem is that the last 3 bytes of page might be '/', 'x' and '\0'.
+> We call load_unaligned_zeropad() on page + PAGE_SIZE - 2.  And get
+> a fetch that spans the end of page.
+> 
+> We don't care what's in the next page, if there is one mapped there
+> to start with.  If there's nothing mapped, we want zeroes read from
+> it, but all we really care about is having the bytes within *our*
+> page read correctly - and no oops happening, obviously.
+> 
+> That fault is an extremely cold case on a fairly hot path.  We don't
+> want to mess with disabling pagefaults, etc. - not for the sake
+> of that.
 
-whoops almost missed this comment.
+I think, looking at the x86 handling, 32-bit ARM has missed a heck of
+a lot of changes to the fault handling code, going all the way back to
+pre-git history.
 
-There is a folio check in the __collapse_huge_page_isolate function
-that handles this. I think Dev has some plans to try and add
-partially-mapped support as the todo comment suggests (I think he
-already has some patches from earlier mTHP work).
+I seem to remember that I had updated it to match i386's implementation
+at one point in the distant past, which is essentially what we have
+today with a few tweaks. As code ages, it gets more difficult to
+justify wholesale rewrites to bring it back up.
 
-/*
-* TODO: In some cases of partially-mapped folios, we'd actually
-* want to collapse.
-*/
+Relevant to this, looking at i386, that at some point added:
 
->
-> > +                     /* Cases were lower orders might still succeed */
-> > +                     case SCAN_LACK_REFERENCED_PAGE:
-> > +                     case SCAN_EXCEED_NONE_PTE:
->
-> How can we, having checked the max_pte_none, still fail due to this?
->
-> > +                     case SCAN_EXCEED_SWAP_PTE:
-> > +                     case SCAN_EXCEED_SHARED_PTE:
-> > +                     case SCAN_PAGE_LOCK:
-> > +                     case SCAN_PAGE_COUNT:
-> > +                     case SCAN_PAGE_LRU:
-> > +                     case SCAN_PAGE_NULL:
-> > +                     case SCAN_DEL_PAGE_LRU:
-> > +                     case SCAN_PTE_NON_PRESENT:
-> > +                     case SCAN_PTE_UFFD_WP:
-> > +                     case SCAN_ALLOC_HUGE_PAGE_FAIL:
-> > +                             goto next_order;
-> > +                     /* All other cases should stop collapse attempts =
-*/
->
-> I don't love us having a catch-all, plase spell out all cases.
->
-> > +                     default:
-> > +                             break;
-> >                       }
-> > +                     break;
->
-> _Hate_ this double break. Just return collapsed please.
->
-> >               }
-> >
-> >  next_order:
-> > --
-> > 2.51.0
-> >
->
++       /*
++        * We fault-in kernel-space virtual memory on-demand. The
++        * 'reference' page table is init_mm.pgd.
++        *
++        * NOTE! We MUST NOT take any locks for this case. We may
++        * be in an interrupt or a critical region, and should
++        * only copy the information from the master page table,
++        * nothing more.
++        *
++        * This verifies that the fault happens in kernel space
++        * (error_code & 4) == 0, and that the fault was not a
++        * protection error (error_code & 1) == 0.
++        */
++       if (unlikely(address >= TASK_SIZE)) {
++               if (!(error_code & 5))
++                       goto vmalloc_fault;
++               /*
++                * Don't take the mm semaphore here. If we fixup a prefetch
++                * fault we could otherwise deadlock.
++                */
++               goto bad_area_nosemaphore;
++       }
 
+which is after notify_die() and the test to see whether we need a
+local_irq_enable(). This means we go straight to the fixing up etc
+for these addresses.
+
+In today's kernel, this has morphed into:
+
+        /* Was the fault on kernel-controlled part of the address space? */
+        if (unlikely(fault_in_kernel_space(address))) {
+                do_kern_addr_fault(regs, error_code, address);
+        } else {
+                do_user_addr_fault(regs, error_code, address);
+
+meaning any page fault for a kernel space address is handled entirely
+separately from the normal page fault handling, and it looks like
+this is entirely sensible.
+
+Interestingly, however, I notice that x86 appears to no longer call
+notify_die(DIE_PAGE_FAULT) in its page fault handling path, and I
+wonder whether that's a regression on x86.
+
+Now, for 32-bit ARM, I think I am coming to the conclusion that Al's
+suggestion is probably the easiest solution. However, whether it has
+side effects, I couldn't say - the 32-bit ARM fault code has been
+modified by quite a few people in ways I don't yet understand, so I
+can't be certain at the moment whether it would cause problems.
+
+I think the only thing to do is to try the solution and see what
+breaks. I'm not in a position to be able to do that as, having not
+had reason to touch 32-bit ARM for years, I don't have a hackable
+platform nearby. Maybe Xie Yuanbin can test it?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
