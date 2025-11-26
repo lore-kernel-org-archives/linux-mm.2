@@ -4,143 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D85DCD11181
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:08:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD2E1D10F58
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:08:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 275C46B000C; Wed, 26 Nov 2025 11:08:52 -0500 (EST)
+	id 0EF4E6B0032; Wed, 26 Nov 2025 11:08:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24CF06B0032; Wed, 26 Nov 2025 11:08:52 -0500 (EST)
+	id 0C6C46B008C; Wed, 26 Nov 2025 11:08:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 163666B008C; Wed, 26 Nov 2025 11:08:52 -0500 (EST)
+	id ED0BB6B0092; Wed, 26 Nov 2025 11:08:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 01E586B000C
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:51 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B431B4EF78
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA0876B0032
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:53 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0BF2BA9FF
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:08:53 +0000 (UTC)
+X-FDA: 84153241746.02.0403E38
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 71889A0019
 	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:08:51 +0000 (UTC)
-X-FDA: 84153241662.25.BF3AE93
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D65378000B
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:08:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=CATY9ftr;
-	dmarc=pass (policy=reject) header.from=fb.com;
-	spf=pass (imf02.hostedemail.com: domain of "prvs=74256e3cee=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=74256e3cee=amastro@meta.com"
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFmA98K8;
+	spf=pass (imf25.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764173330;
+	s=arc-20220608; t=1764173331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oZmYh6YpHcTCE9H3NEMwSXw1R9ZP1diRqyx6ns/UxKM=;
-	b=a44GI0952K9UVJT5YSeXmPVCHSEHM5eLDY5SJrauQySeOlXVDXtq3t99WKSQszcT+IwBrj
-	x+s0LwMZIRQtQGO4UtR/KymLRtcOKrNNx6NgCs5HFDi/K3QauULSkE/RGN6O2Md57wHxe3
-	VQrb9vR6MWpj3nY+PYBe8oEyztBR3qk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=CATY9ftr;
-	dmarc=pass (policy=reject) header.from=fb.com;
-	spf=pass (imf02.hostedemail.com: domain of "prvs=74256e3cee=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=74256e3cee=amastro@meta.com"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764173330; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0w85V/n6/PltUzl9FbkvTGvY3LknN/8DxQ32r6IxQUM=;
+	b=F0RZuqYGTBLIkZ64wO7aJM5nGVJ4pvW41PJl2dyoRP3TuHWvRzSxVgqyDeQQaedInxRiuW
+	FBcktge51gChde71LSGaJxPOb0zA86jOWr16xkOzwEf1DzIh/22kpuHjWYP+gYnZpxkE+X
+	BdWEFFZscEqDULolFiEyTYCWnhmP1Ic=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764173331; a=rsa-sha256;
 	cv=none;
-	b=rNF8sDFPhsUk9fCoACtK4Qj8MsRx+rty2TQguq7atMq2ekSQtz2yDqdtdyFsBi2QkgLWyI
-	YmSIDGL2vtfjHjpTL4jnuCfoqgindBUJHwl7VuVhtTV0CfLzvk2BVc/QWg+9iB7yAzYgGY
-	PLBc7Nqgk4uUeHvwnfhVrjyrr5ODrcM=
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 5AQEPbd43733913;
-	Wed, 26 Nov 2025 08:08:31 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=s2048-2025-q2; bh=oZmYh6YpHcTCE9H3NEMw
-	SXw1R9ZP1diRqyx6ns/UxKM=; b=CATY9ftrmS7XqrrPh2Kw2+U4yOLTDIOhQo4t
-	fT++bE5QnXUTTDj1SISKs+UQWWlWXESUt4Vk/Uw4ZSdu3sXkySe9GBFHO/GtOEWQ
-	411l/Uycz4QsElZjqmNLTTOC03Bk3xrahRxGe2dTAYG3Xw8/u0qaXvlwf4Qf+gzA
-	RQRz/m6jwIWn7OkNdO9JgYCJ3G1u1eeNgwfmMCUjXO0Y/Z5VrkUOlbGe0Sigp71N
-	fPi2jhyinHmV7dk2u+LQ68tQs+O+aJ2d0sCNzYiAXKyb0pPsIXMYGocj6ADUHnCK
-	VMnCClf+dI7uC/6KbcFfIu8b90bADDeEXqso0Amh6UxzsGo6vA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4ap3a78uqy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 26 Nov 2025 08:08:31 -0800 (PST)
-Received: from devgpu015.cco6.facebook.com (2620:10d:c085:208::7cb7) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Wed, 26 Nov 2025 16:08:29 +0000
-Date: Wed, 26 Nov 2025 08:08:24 -0800
-From: Alex Mastro <amastro@fb.com>
-To: Pranjal Shrivastava <praan@google.com>
-CC: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-        Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-        Robin
- Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon
-	<will@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Jason
- Gunthorpe <jgg@ziepe.ca>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan
- Corbet <corbet@lwn.net>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian
- =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Kees Cook
-	<kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Ankit
- Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
-        Shameer
- Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>, Alex
- Williamson <alex@shazbot.org>,
-        Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs
-	<mochs@nvidia.com>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-block@vger.kernel.org>, <iommu@lists.linux.dev>,
-        <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linaro-mm-sig@lists.linaro.org>, <kvm@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>, Nicolin Chen <nicolinc@nvidia.com>,
-        Jason
- Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v9 06/11] dma-buf: provide phys_vec to scatter-gather
- mapping routine
-Message-ID: <aScl+LCPN2TiN7Pd@devgpu015.cco6.facebook.com>
-References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
- <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
- <aSZHO6otK0Heh+Qj@devgpu015.cco6.facebook.com>
- <aSb8yH6fSlwk1oZZ@google.com>
+	b=McFtnMFsa+aZa7kSBeMtRM+DOUr8zXkpYlN4DDtSi/HsD+ZFWbK4Wvf+wOrKf+KTORYSAL
+	oUESpxPGUavjOic9BizjdfH/72MKAR+rbl54VF98ikypeowhG5YJuiCBaZirznYt4FNlSN
+	akcoLxaJgzY5faPR7Ta/K1xZO61aCto=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFmA98K8;
+	spf=pass (imf25.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so6582007b3a.1
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 08:08:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764173330; x=1764778130; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0w85V/n6/PltUzl9FbkvTGvY3LknN/8DxQ32r6IxQUM=;
+        b=iFmA98K8sDUyg0jbwm+iEJHQNzs+7PoXNzZMRrGz8C9aLxT/RZMSyzf9FYAPKSOsy4
+         ajYBVc5i4+E8WnTfgLfBG/ZveU1P8wgQ536W7jCUjawOj72PngkA/DpASzctEPFjOygG
+         CTwbIj8GN2HOqGgZk+xOcN+cXj/EGVSZHhYbjDIfJV/8TZleCq5SZbdeDwDNR1HsP/RU
+         7NOMifp3ztoMbdQ85oMI4bAS08vaB9OtlrJ3T+x21ccj87sXOwVZ/ceSK9ZpvvfmYB3c
+         ckJ6hhxyUp447NbxNsaTwPUCtlXN8fqWYKhMYm9ULfCnT7I8K85gbqyMzw0bIskWcl1+
+         UD1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764173330; x=1764778130;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0w85V/n6/PltUzl9FbkvTGvY3LknN/8DxQ32r6IxQUM=;
+        b=f7xOcIytkrfNvt+5HJJCGeqQc8wTj1J/jHw0THnOChuEgZyO36OU+8ivGR2RI0Fl1W
+         4jX3tg5Y4NDDsP3u6aYCF4TxGZKmoOFm1etSVE/WoOqjSQ5wXry/cNLOU9sCXnZ/+y79
+         qJ3f2Y0p/u9WcLjx1a4rIw9TKs75HuW3MKf0s2bVQoF9anbUxf7HcVva6J1/2yJVdB6G
+         kKm9sgQmsVQATh2wIr/yfBI6rakYim8tZdu2Qr7/6yd+OnGVkW9sLtHMvwZwCTDqciqE
+         rhD1C5hlh9measZr5T+nYM2FO4d8bBNdFbZ+WU83UI2iL4DDigygt4ItYYRCiUspuI5O
+         /0Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXm/dhFk1ap5/d01RU+EEAoWpvxflSd6QorWw0WbZNBHf3z08fy0X0ocyDzTn87ooi+JjXxW8tvVA==@kvack.org
+X-Gm-Message-State: AOJu0YyGPXcEFbFeIfWZyFGG3B3vpgZk7wagmQrRu7d/35/ma/bHxLwY
+	7f/91vSPHPl4cRYH0H8m+PRThW/JIqp6tIzJf38cwMw65LUigtB4VwlI
+X-Gm-Gg: ASbGnctd3iXh0dinEl4JCI57XGzyPvs4czZez+nsaX0IRYngWVgOn0d8BX6Ir78vLcZ
+	3HZpQzgwcUR5a2hlaBG3/N1j1Wo8sbXxSB9L3U7OBddTwKqCEts9YzEHRalqatqKpw1T7mNq7Sp
+	EKm3uE09ggl9ydDdgwLuFnFjwdKlcdTi2UjI0bpJUw5J9wPv/sHvEZ3/u6BWA+oJjPz8w1LY7ks
+	peBnQGVRdWcSOF0F7iKbheDYhYup+O8GpM4KgF6wB1AP8WLjNMYOpNI8jfGbGskuQhD+GImyPAr
+	guMaaAJ5qF9FGSn2upGN7VIqOEmp468hM/AvkVQ6rfsJNwFRO3iAMGtAJHSLueEvQreoyV/+ytA
+	7B6JLQo33mksnQw5F/GgBfTlBas7o69dcGcNDp1xFGS3rJ961imo8oB/0iv/uIoOAoz0jhLOlDa
+	RuzdR09QKxQ6K/GeF6YwmxuIfvgltzAQ==
+X-Google-Smtp-Source: AGHT+IEebVkUKBP+U1i9Oqi7Ort6BI2gg0wHmeA+Y9t88Utsg2k3h8rxgk1fLNRybEyKRORRW5br6g==
+X-Received: by 2002:a05:6a00:2d88:b0:7b9:ef46:ec70 with SMTP id d2e1a72fcca58-7c58e50c16emr18224646b3a.23.1764173330206;
+        Wed, 26 Nov 2025 08:08:50 -0800 (PST)
+Received: from fedora ([103.120.31.122])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f0243b3csm21831681b3a.36.2025.11.26.08.08.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 08:08:49 -0800 (PST)
+From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Cc: Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Subject: [PATCH] selftests/mm/uffd: initialize char variable to Null
+Date: Wed, 26 Nov 2025 21:38:30 +0530
+Message-ID: <20251126160830.52124-1-ankitkhushwaha.linux@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aSb8yH6fSlwk1oZZ@google.com>
-X-Originating-IP: [2620:10d:c085:208::7cb7]
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDEzMiBTYWx0ZWRfX3bFJkIqQfPcn
- LWbsluc+XiO7FtO07pm/tzene/bBlAJbYXetaCM2lBsQPJ7MYrk9CERNphaL5xKMK0Fnvy9OfVQ
- Y+bU9q7WY0Uh4Ys8J+otFMneIfwxv0xQluXqaIjHKTPEMVRe0iLSwQwQAHlspppJcXBPJ55pvJz
- JZGujlxTRi2Y6L0eYmj2p7cT3nMIZvFmJX5h1nMX2rkgpOumcUuD7Oe2fNXk47TY9k+6i3mWPRm
- +1gsqEAXdsAGhXv5RuZTmDTEo722fCpYhIfmTOQnzXGxfUvfRTUYuIHNc7jrvUJJ3yy8os7MmWa
- fQzyxL3akPGWodtrtHsYmp6smX1T/MBPHuER3U7LA5bJUfQjB0xkE91sw0JPQLAlnjtXtOu0oRF
- 6D5ufStP6OnrcDNfC66Kegl4bp3vwg==
-X-Authority-Analysis: v=2.4 cv=AJKKJ3lP c=1 sm=1 tr=0 ts=692725ff cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=B5NVPXpBE_52QoX4XTUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: jOyqyM0SasvNGLs4etkYDuX4vfn-Z9b2
-X-Proofpoint-GUID: jOyqyM0SasvNGLs4etkYDuX4vfn-Z9b2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 71889A0019
+X-Stat-Signature: 3go35sqhzeo96jk1zdjgno53ujstz9ny
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D65378000B
-X-Rspamd-Server: rspam11
-X-Stat-Signature: dd1gx6mw9sg7uoj8bhbhjg5oihjjd8hp
-X-HE-Tag: 1764173329-720970
-X-HE-Meta: U2FsdGVkX1+L/+R36NPfoJKe/aW+elBAxg2YTDGVIJAq5+okCsvjzIGyl6JDGKA/GU6WLknQH2TLGw/mrnHvRz3NGiJ1RMST4mmjQ5NMl/Sq2HNiVcmDPWoOnddo0RnIrjon15UwMxIiVRyvA8YpJYlOlnWnWzm0r/2KgaxooDoD+CWqdXBERRrZFXOKOhK531ITaSeO5wruFXvoWb/rV0rFVJByU7DTNo5c2wPgTR8oXIu6te7+An840FkmqfsROJNSvhorAVQiOMofhDcHdSD9aTZTNZaB3bAZKDJ7LCBQUs+JZKJZMpT94GYRVfqKxtTjJmqVJC/FTRIT0ovP+6CteB1DHX3dXCefm2uYHTH0iStdb/QbWg8mHx8NiovPe7WpvX2zdp+8OwnH/ZIqnLrt1XsmO77CjnNADJKofN7LSna4/GGnk6ORip5IjKUna0C45sbFyTFOX3pQ3JoIokxuGAPqboKzYGVMqN/tA8sIgtvRBVRdcrH+azpqamG00YtFf3HRdzDUtsFGg2bGU+/dl7wZF1c4C43jl5Fsnq46jM5mGDQ8vaAGiW56H/9SP8mqDSmsltt5yPl/+y1tHJSqr/h7VjGntq7wMXQaALADynKlEMSdA6rcxkIl4KqS/61HqQU9PEAuZxKNtk4jxoxjUlzFbOgr3GhFpd8xmY5zj4XzNFVyuDlVBZDqV+Y5eOJanlkmTAw0Muv3ZIjf9MQocMZHytXuaR73YJxSz1yeCDn6YQwft+Nve9jofvgs+5kkU9M7Z14kLm3iGqax8yHHdcg9VlO7rjbAJ6FtoiRFpEPfoe7eWorkmmcUMVsgaYQnTJRE0Zfr+nM32XTlYIcb8deHSUo16mUjB7VXOvtO60aakeuOmNef65XBA2WPze8pTbNZdqN8oa4F3DBWhNbDAUOLSr+XBLobQXySeD+cDoXmB+xZXXK4ycMFbpWysHZ6CU7fqtFRc09INlo
- 1245YXIj
- 8vHTX+/Wg7O8EKqhMM1b8e1lHm1fFlGZtuqcPGsDGUFaJPy2FJbAEs1QCpwkbuP4PaQqLG/VkAv/lCAaCXMdMEaBn+TEhUb4qXHOFDHDfh+c6irdpga2lYMC2iyklTb07eEgFFlfTKgwQ2ws=
+X-HE-Tag: 1764173331-56972
+X-HE-Meta: U2FsdGVkX1+f6lHK9CHStRZZysXRvcnir8H9zmy/Ka2edLX70MuLPYpRN0jI3+cjdKCC2JkPeB9QH3nLf5HB97zo9y6PTjceLyEOzNhLlMs+/MyJcuBbtQEJOCpYj0x2s6Zh9sVpgU168xE8pXL0N0c8H64BOWJqgg0kGTvj0mJhhDX02rPAK0dbzIfzLsX/TFi5sekYgAkPTyIeFncFFyHR7y4FKKcY5rhGxgCPV2DzfFwHf3lfNPmgLGxkKUFMkgF4444+edWqRPkNhCTaZGg/hj4GTwFw+7EcRBdMYRbekq42wpRQKTsnK5jwyJgN+MZCFemJN5hnegaLzXl2rcq2Jabn2EAP1AyAm+N5Kgo+d6psV1DTk2d6asagU6QQW25BMsqOoUEkLddBYqVpG+muizTLuEu1dy5qRi1x/CvoxcO4fVV8eeNvnsKUpkD8obQXv6SVoHYGZSqqrT/Eect5FzCTkZQryu1tGy41CCFz6iSqLn4RXw4/uz6P8iqQyphNLUGo4daNVWtZ0vLP4kHAFgdcOWo5vTvNsTKU/3+9s8o3e6WzJGZ9GZOThvNa5Tb2Xh6pBpFxBnztjoBDVlfkBZmmkuyL6B01T3uCh8TtajEhuyvzMaWpmwG4FeAkyhbFG3reHYi5XeajjhTfEzDRG6Cjl6xC5JNXpVj2jnxFgazFBAAo0VVgvJHLMQIfo7/oBBk6r7TTwRowNfWwykbyCqoVDHqlqoYzB7bl0EaXPjfIhnBzmiyDfp5ZH9HNWHGBbfe61mP20o5zCa7RtfFzWzYfvh8LaFkU5M7wymJJ4Y3t1GRL5mqOdOuXkxuSeUQXGeC4/CRzhZVkb4zHZfBffv5rJd208ZMLO9FSp9B1aH9i2s3C9gvAZu0PKcytsc9YB4vuOtTNEReU7lGBH9cKkhhpUO2k2YE71AKCz1IGMeLkJYvNawoPFoRmd5/pIcTVfuB6bbehCBxjgXl
+ c3xGKbhz
+ 2rHLSF42eJLm6hYqhLtVlBhQHh2odSJEdclZHd7NguNWqTl1/uBF10TsYxOieV0Gv4e81FvK6sW0dQI6a8yX7L8wVWQ6R+C6xdP9alwdSnfq5ttMaFZlwo8nnYowtIYDX3rcc7XSDdv6Iytgp5xlj4zhoX6wCkEdR0KMgkBu13n1iZnDc2JtdGAmcZj269yppLQLTLPoVXygm5dirtJ3BwMOcqZEd7thWHBkNtg4jZ3J9SCfQ98cq//oG4btoR+xV+8vDUiZjRMyaV4Ly8aGqKQtLBLbEmg90LHxjdLceP+bpLhprXcFOGSXH/Wettw0xznApH8WcTlhvM6esSFh36sbXj1w0hqvbCrFxjgIwp/M1pwlWuHje8/XoIBM27uhWtA15d9AKQu9LzGWZZVsws47YEHW8nkcqn2X4oi2PXbdv0XVDGH+g/ETyQBRungXlduxY+wLMopClCBLQr2vzGFNlDPWO4MJy4no3z3Rivt6Deg0i3ELM/J7y3demueKEcfSyh/HR36uPbavfk+eQTHxhydPY9290HM6upUF5/i/V2vFZ0m/KcykPzsynj7NtYwhbAuPNAvO5vB8yc3nMuL/xXORegX83/3uADnm81LAi1w0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,81 +132,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 01:12:40PM +0000, Pranjal Shrivastava wrote:
-> On Tue, Nov 25, 2025 at 04:18:03PM -0800, Alex Mastro wrote:
-> > On Thu, Nov 20, 2025 at 11:28:25AM +0200, Leon Romanovsky wrote:
-> > > +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
-> > > +					 dma_addr_t addr)
-> > > +{
-> > > +	unsigned int len, nents;
-> > > +	int i;
-> > > +
-> > > +	nents = DIV_ROUND_UP(length, UINT_MAX);
-> > > +	for (i = 0; i < nents; i++) {
-> > > +		len = min_t(size_t, length, UINT_MAX);
-> > > +		length -= len;
-> > > +		/*
-> > > +		 * DMABUF abuses scatterlist to create a scatterlist
-> > > +		 * that does not have any CPU list, only the DMA list.
-> > > +		 * Always set the page related values to NULL to ensure
-> > > +		 * importers can't use it. The phys_addr based DMA API
-> > > +		 * does not require the CPU list for mapping or unmapping.
-> > > +		 */
-> > > +		sg_set_page(sgl, NULL, 0, 0);
-> > > +		sg_dma_address(sgl) = addr + i * UINT_MAX;
-> > 
-> > (i * UINT_MAX) happens in 32-bit before being promoted to dma_addr_t for
-> > addition with addr. Overflows for i >=2 when length >= 8 GiB. Needs a cast:
-> > 
-> > 		sg_dma_address(sgl) = addr + (dma_addr_t)i * UINT_MAX;
-> > 
-> > Discovered this while debugging why dma-buf import was failing for
-> > an 8 GiB dma-buf using my earlier toy program [1]. It was surfaced by
-> > ib_umem_find_best_pgsz() returning 0 due to malformed scatterlist, which bubbles
-> > up as an EINVAL.
-> >
-> 
-> Thanks a lot for testing & reporting this!
-> 
-> However, I believe the casting approach is a little fragile (and
-> potentially prone to issues depending on how dma_addr_t is sized on
-> different platforms). Thus, approaching this with accumulation seems
-> better as it avoids the multiplication logic entirely, maybe something
-> like the following (untested) diff ?
+In "uffd-stress.c" & "uffd-unit-tests.c". address of char variable having
+garbage value (uninitialized) is passed to 'write' syscall triggers
+warning.
 
-If the function input range is well-formed, then all values in
-[addr..addr+length) must be expressible by dma_addr_t, so I don't think overflow
-after casting is possible as long as nents is valid.
+	uffd-stress.c:246:39: warning: variable 'c' is uninitialized when
+	passed  as a const pointer argument here
+	[-Wuninitialized-const-pointer]
 
-That said, `nents = DIV_ROUND_UP(length, UINT_MAX)` is simply broken on any
-system where size_t is 32b. I don't know if that's a practical consideration for
-these code paths though.
+	uffd-unit-tests.c:581:31: warning: variable 'c' is uninitialized
+	when passed as a const pointer argument here
+	[-Wuninitialized-const-pointer]
 
-> 
-> --- a/drivers/dma-buf/dma-buf-mapping.c
-> +++ b/drivers/dma-buf/dma-buf-mapping.c
-> @@ -252,14 +252,14 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
->  	nents = DIV_ROUND_UP(length, UINT_MAX);
->  	for (i = 0; i < nents; i++) {
->  		len = min_t(size_t, length, UINT_MAX);
-> -		length -= len;
->  		/*
->  		 * DMABUF abuses scatterlist to create a scatterlist
->  		 * that does not have any CPU list, only the DMA list.
->  		 * Always set the page related values to NULL to ensure
->  		 * importers can't use it. The phys_addr based DMA API
->  		 * does not require the CPU list for mapping or unmapping.
->  		 */
->  		sg_set_page(sgl, NULL, 0, 0);
-> -		sg_dma_address(sgl) = addr + i * UINT_MAX;
-> +		sg_dma_address(sgl) = addr;
->  		sg_dma_len(sgl) = len;
-> +
-> +		addr += len;
-> +		length -= len;
->  		sgl = sg_next(sgl);
->  	}
-> 
-> Thanks,
-> Praan
+so the fix is to assign char variable to '\0' to prevent writing of
+garbage value.
+
+Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+---
+this warning is raised with clang version 21.1.5 (Fedora 21.1.5-1.fc43).
+---
+ tools/testing/selftests/mm/uffd-stress.c     | 2 +-
+ tools/testing/selftests/mm/uffd-unit-tests.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
+index b51c89e1cd1a..700fbaa18d44 100644
+--- a/tools/testing/selftests/mm/uffd-stress.c
++++ b/tools/testing/selftests/mm/uffd-stress.c
+@@ -241,7 +241,7 @@ static int stress(struct uffd_args *args)
+ 			return 1;
+
+ 	for (cpu = 0; cpu < gopts->nr_parallel; cpu++) {
+-		char c;
++		char c = '\0';
+ 		if (bounces & BOUNCE_POLL) {
+ 			if (write(gopts->pipefd[cpu*2+1], &c, 1) != 1)
+ 				err("pipefd write error");
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index f917b4c4c943..f4807242c5b2 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -543,7 +543,7 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
+ {
+ 	unsigned long p;
+ 	pthread_t uffd_mon;
+-	char c;
++	char c = '\0';
+ 	struct uffd_args args = { 0 };
+ 	args.gopts = gopts;
+
+@@ -759,7 +759,7 @@ static void uffd_sigbus_test_common(uffd_global_test_opts_t *gopts, bool wp)
+ 	pthread_t uffd_mon;
+ 	pid_t pid;
+ 	int err;
+-	char c;
++	char c = '\0';
+ 	struct uffd_args args = { 0 };
+ 	args.gopts = gopts;
+
+@@ -819,7 +819,7 @@ static void uffd_events_test_common(uffd_global_test_opts_t *gopts, bool wp)
+ 	pthread_t uffd_mon;
+ 	pid_t pid;
+ 	int err;
+-	char c;
++	char c = '\0';
+ 	struct uffd_args args = { 0 };
+ 	args.gopts = gopts;
+
+@@ -1125,7 +1125,7 @@ uffd_move_test_common(uffd_global_test_opts_t *gopts,
+ {
+ 	unsigned long nr;
+ 	pthread_t uffd_mon;
+-	char c;
++	char c = '\0';
+ 	unsigned long long count;
+ 	struct uffd_args args = { 0 };
+ 	char *orig_area_src = NULL, *orig_area_dst = NULL;
+--
+2.52.0
+
 
