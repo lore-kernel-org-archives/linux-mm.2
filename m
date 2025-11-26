@@ -4,148 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 302CDD10F58
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EFA6D10F58
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:03:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76D9D6B000A; Wed, 26 Nov 2025 11:01:27 -0500 (EST)
+	id A31696B002D; Wed, 26 Nov 2025 11:03:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F7156B0029; Wed, 26 Nov 2025 11:01:27 -0500 (EST)
+	id 9E21A6B002E; Wed, 26 Nov 2025 11:03:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FB526B002A; Wed, 26 Nov 2025 11:01:27 -0500 (EST)
+	id 8D15A6B002F; Wed, 26 Nov 2025 11:03:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BEC36B000A
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:01:27 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C441AC06C9
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:01:26 +0000 (UTC)
-X-FDA: 84153222972.06.C8722A7
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8F10A40062
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:01:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NWf7Wb7l;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 78FCB6B002D
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:03:53 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 350E414068D
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:03:53 +0000 (UTC)
+X-FDA: 84153229146.15.2E02729
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C9BB3A001A
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:03:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kPKZ3wAG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uqIQ+n9a;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Lk/Nhk9G";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=n5TJLFtk;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764172883;
+	s=arc-20220608; t=1764173031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LSEYaUAThzWufYFQbG5NmjfparTQ345H1vYgCRR94jQ=;
-	b=7F6YFE7Xc12qKvMKutAmmeyEAqCy+xj6MPIMOd7gw7NJ/n+HUB/Su8+rWnwxKwfFiL+Tvq
-	p0mmDj/rg88qoeqM7HHhfrT8ll4gwvIbd2mOI3Fjd/aVEOhiYU/pgWWajReRwU2o/pj6MD
-	caCV359QwMIeQlyiB/0QiyjgU8ve4Nw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764172883; a=rsa-sha256;
+	bh=RPrG5VZ8dbFpMl1gPbnglTWqVMWpkRXRRbryOB85xqw=;
+	b=YXfaytPNhNG4jh/Iw/+5MKS2swkVBFEFCrVoFIttAaoSyTuxvvE87L09OxVjla3HJHZ2Sv
+	PS2rhayXESbEkJM2c8x/nd84UxMpyYITWtvbnJftNzVKYFWK+TdaKAUfSByi48gV2dildZ
+	vSCGq+//ww/10nXt/Vn9wpTFrlbeAr8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764173031; a=rsa-sha256;
 	cv=none;
-	b=2mrJUU8NCRDpKOPQ/t+lCEqnGAJgQMn+sV8bEYMLsxP2no4HrLu4Xrztv9p+n3O/lFqyPX
-	xM8rpMWGs/J19DW/EQUTQtHW/ReaVo7wSDGTteaVpS5JkR//FXH3hCBoCYc6cA+ypDqGEm
-	Rdhdb5G3uSBNFtlrb2dXk1mjfWgRa/I=
+	b=ZefvvpsX1XPikKhOjUV2Iqk7mRWg89UTOwwE1PMez05SKsgAIvcWaLDdeoCAg2TpGdFfnC
+	fmMwAP4+OsStE5ucvciMtjWVs00hAjub82YVW4L9uV/OPi3c2Ev01M9/ZVzEpmZtTXdGAM
+	4/FQbxP5qGcM4C6e54P0VXGU0O39EC0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NWf7Wb7l;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-477a219dbcaso61744625e9.3
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 08:01:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1764172882; x=1764777682; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LSEYaUAThzWufYFQbG5NmjfparTQ345H1vYgCRR94jQ=;
-        b=NWf7Wb7lsyy/WA/Bfvx5t9A4oozJLdFPR+q+Pkty27AtAGA7+yh7z8coztZFQjT9UN
-         fsYrrZ2lLoRUTbPFSVMe31v5AjAIOgzxvZxDXgdXdhE8gSwT0dRh7S7lz4lNKZQ3aPKN
-         MVtQtG+AGv5l/4ooUscDm5vnmCe09PBtDDQRpzt7+yKAUgM0zlMrpia4+Pa7yS/92Zjc
-         Cr/gfg+DGs7QTlow1eOrGIk10cvIaQVyeA7D2Ar4a8v8JijOpkyNinWmO5HdGBi/N9Br
-         dwIyujcYR+XQxeXeWP6O4O4apIrYvFcqD52ITYpR8wSHG+qFlZcuVgDe1LxHIW4jfqBO
-         QB3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764172882; x=1764777682;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LSEYaUAThzWufYFQbG5NmjfparTQ345H1vYgCRR94jQ=;
-        b=c0uTvQCjBBmUCtfnCREr5dgxWN86eC14s/iJShIhIj8bS3x3qEK1mmxG1/kMUxW6Nv
-         dY17NPFjIrIHoorVbsXMpD32mBgEQJAprMJXlegSDDmy/4gQpAPdu1eqxDLg5sNry1fi
-         eXT3o5V5Bwgl9nQSt0VXFcP/tUCiUuM8qkrlkmUf8RKgckZNm8V5UNwPT1D3n/SOFkUe
-         3ZogwWBpPuVSMBQdn9zNfDEZa2B5+6gj2fCv064KxfZ9zWzcphD1flDgL96cyIyqGij5
-         uFjv8PvsLEkRZBp2/QH57KR79xJeRupDYV09Ql0IvR0ZvoqZVuk3hMFx9X/OqxgET5ej
-         ITww==
-X-Forwarded-Encrypted: i=1; AJvYcCWgDccHjj5XDnqOlVwq65sZbNfmMiS2g+WA7vvD6u8rmivymqQc5pZ31igwGL3tUVPzJOH7xdGzyw==@kvack.org
-X-Gm-Message-State: AOJu0YzKfar/uSQQ8sij+76HHF3uUu5CudEjqXk4FNB8v4eep0zvH0mU
-	qGnmAyahzrsasH9bexoQX+OpqZN12IrjpVOACKWpZC2ysJRAl+INxcgvBcO+iVdH18A=
-X-Gm-Gg: ASbGncsrzMCnhFiSRWIgfeZyuSwpEOSMIKPmIdaTHKXv9JDduLHvyVrHBnoPGaasPrf
-	9QUg3TV7TE1/YPspZ6vtdHaAFYDODqdb4kXzM9C7QkXjfG4i7hYyV8RXDo8s+aQOXT2hYZ+szy2
-	6sNDUCuTmOz4aTKLR2YpznSkh0d1HKH8jsKsuq4esRVzDLJL8DDdqcBjCntg4uO8cft1yzqfmIi
-	7xuhnCOBqCzDa6J001bXX/MqWm/pPN+W4KH9ndjSs3hwoG4OmZkLqkZ9K+YAUkYDqQqlYWYW1tH
-	tJWmreZ95OPjkWlNWPAoZFOlBIiNz4CD0wbszVhghS7SIxudSK5/5kyxGBom7SM1Y/w2TosuLZh
-	mDHyQiu5zqf1BaBeDRpNFu5x11y4Fq9oWSAEA0XW2A7tmO/ZkLFuBjJLXfXXxIM8QgtagvcLgn0
-	a9G3XskhCrMilYpoWz27Y=
-X-Google-Smtp-Source: AGHT+IGmW6B0mWDbCOocDZ2euc5+xXD69i8th6QMhNJdys8XoC7Ssf0VJWSdjafP9//scVbg3OATOQ==
-X-Received: by 2002:a05:600c:5494:b0:477:93f7:bbc5 with SMTP id 5b1f17b1804b1-477c0184c3amr197847725e9.10.1764172881604;
-        Wed, 26 Nov 2025 08:01:21 -0800 (PST)
-Received: from localhost (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479040cfe17sm47110715e9.5.2025.11.26.08.01.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 08:01:21 -0800 (PST)
-Date: Wed, 26 Nov 2025 17:01:20 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: hui.zhu@linux.dev
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
-	mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH 0/3] Memory Controller eBPF support
-Message-ID: <aSckUNAfVokeC_2F@tiehlicka>
-References: <cover.1763457705.git.zhuhui@kylinos.cn>
- <87ldk1mmk3.fsf@linux.dev>
- <895f996653b3385e72763d5b35ccd993b07c6125@linux.dev>
- <aR9p8n3VzpNHdPFw@tiehlicka>
- <f5c4c443f8ba855d329a180a6816fc259eb8dfca@linux.dev>
- <aSWdSlhU3acQ9Rq1@tiehlicka>
- <6ff7dad904bcb27323ea21977e1160ebfa5e283d@linux.dev>
- <aSWnPfYXRYxCDXG3@tiehlicka>
- <87af0c7a8fc35cd96519a4e3f09d39918bdb7370@linux.dev>
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kPKZ3wAG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uqIQ+n9a;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Lk/Nhk9G";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=n5TJLFtk;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D429B336D7;
+	Wed, 26 Nov 2025 16:03:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764173029; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RPrG5VZ8dbFpMl1gPbnglTWqVMWpkRXRRbryOB85xqw=;
+	b=kPKZ3wAG4De8dA9ywTCIpWMlGogGUjnt9+umVRpLbbB0aMJtLAsf35QdqJ2bNF6fQA61NB
+	BPYdWPYOPFL/9N7Y3heA+ivgGfyTg3/5eyPPluUqGMFUemKpT2tUd+zn1/uNaeuDAXv++T
+	mWEM2coeohzXwuknOUd1pBPDTwnnO+0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764173029;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RPrG5VZ8dbFpMl1gPbnglTWqVMWpkRXRRbryOB85xqw=;
+	b=uqIQ+n9aoFgiG2ulF7mdBC5ShVr3P31mH6P2r8uI6JAsOhkYSSPhIe0abcp6ddwXwrZsN9
+	E7CU0v3nazHgBFDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764173028; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RPrG5VZ8dbFpMl1gPbnglTWqVMWpkRXRRbryOB85xqw=;
+	b=Lk/Nhk9GRyOztzS3y/+CfjpVWvYFMV5ST8hVRbqPyw6X7HLf5zjdLNlW1RJ3NcFAhSJmfT
+	T5PGPrm1/UjH9VUhjC+l02mLdQR4+vJJiYZWDUOpKzu2qsktMud2BNX9QNQiu57IwXEz8d
+	HlEovPRq+xQmFEUWCiUS72St/G4FOa0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764173028;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RPrG5VZ8dbFpMl1gPbnglTWqVMWpkRXRRbryOB85xqw=;
+	b=n5TJLFtkRGCdOsOeMwe5e3krGhGSVdQz+hqbXPxg2fDsOqwGzZzo5A6jATNiejRPQtr1Zu
+	rTeShEmf0D6YVOBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C77883EA63;
+	Wed, 26 Nov 2025 16:03:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AL1rMOQkJ2nQHQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 26 Nov 2025 16:03:48 +0000
+Message-ID: <058f5858-f508-40f8-adfe-e5de78621d64@suse.cz>
+Date: Wed, 26 Nov 2025 17:04:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87af0c7a8fc35cd96519a4e3f09d39918bdb7370@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: fix vma_start_write_killable() signal handling
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+References: <20251126034404.2264317-1-willy@infradead.org>
+ <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
+ <cc823b79-7a2e-4a73-bd9d-b0aa492807b7@suse.cz>
+ <aScXSEY7v7_fcEZF@casper.infradead.org>
+ <44f4d9b7-45e3-4d2e-b1df-cab8e254e54e@lucifer.local>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+In-Reply-To: <44f4d9b7-45e3-4d2e-b1df-cab8e254e54e@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Stat-Signature: bcfnje6wu1mrf9hyjec5p5cjs5k1hprn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8F10A40062
-X-HE-Tag: 1764172883-545371
-X-HE-Meta: U2FsdGVkX1/R0OIi6BORMfyU0hkVytDMygzBr+kOcxWpsXvo4aSbR3HpijbXGnIE/QQpJFvzGP+cG8KTzGYaxEbwVeGVzDNxdlOp1CiYB1+Bxw9BgVjaBOVxZMZv6JZ6n9rXZ4x3kd2S5g4TYt6xEDsIs64TGoFL+X9gYivIdcmZFiOWRe33MAs8bBm8qg35MBFFA2sSE6gAZGpHbSVCnLCyo2bMphxd1nqUiuIKeUJmm2JenYG7KDMPtCofw2j68rXi5CJEjOe90j7nVsufsuqX4pid9YnbRDCmyPMbbgW6jFl0pdFZHa9yCZ77HyS1FvwxONRvrguCbz4VNamhdm+M86p0HAahrKaj9tdL/nHfXckrAthnmqg49zoGL/2OTYLZECcvoEwj66wxCn9i+ogXrxCUl/0IGZ9OLDv0qeDgM10mSCm7o9UZrqU6TeNuxcSZFj37m8Q+of+5a8Na/UOMr0W8eDsz3MlsHxlR+AaOBxe5p0D73tIDuq+cwBYCIRQ3oefNrtQN/br5Wwpn+7XvUH1nMvbnTDa5xvM6ZfY3UdSPUeIsiMXwnWO9EurArzOoaqM5l8f9eUIOiD9JAevIMaREyZUpPbCIuJVDvEq8GYKTWLpcHsgfHcfhPwGYNaxGKDF8wJmZLBwYv7YT/fXgPmzZYOFURG5JnwOfRSaZEjwcfjQNNGTCcBVBzCTSTYZ7Ck8A/lK0awtXI9Fm4vuILhTWoToPfe53T3v433A50E3hBElmWTdNGJnUYgImpdNCsyeXPp4jM+GMAK1U2FKCXeWDV4CWelFuBOJqHJQPICskxAzXeL33/4gYSsjp0E8mLYD0V/10tsUppUIxyyw8PyFScMFHVHbzcgd8l9lApvdvWyx7XAeipOWOOHAxdw8aFbMR1WTJg1pKj8PrgRQZgpZAi7/P91uZXucznFONsA2/KVaHIl2z5ja5MTH7POeCiJ1HSjnmsves5R0
- 2zYeAPor
- qwPaqZ0/fo5NMwHieVfoqty8XyJ3ZOlXM7c/8QQoAzlDaB8DcqymaYst/99OHzPO900mwIhPFm+iPkVGeI3hbElXX3BJcvw3l8ISAoE04I6CCKCWehnli9FyYzNjWSiL3y7W47h919Xj/7uMgQb6QRHvhYcsLdZfaeIINiAUXnt0DnXtN5MwykQ7igGWxBmlVjHoNUgz4v+JhvP/F/5jG9Y7EkztbnW+2PjFKFGk7T3xvyTnCFNUhcewtmPFvq5ddQ13h4x3XoQKcOAsdfA6i2J0rLOiF/TqdLQlmagkJ3tQW472ddXls0TCzqUbrwaiu4XWw1mmZBRfIDGvQxAZqsd/Ex7Nfn7LWxM2270P1osNsv1IU+D2D2CHLcA4I0Op3NBzajpFaMzW9kB0bqr1+/2sGA5iPCDccOogt1hILxSx+VxDNO0Np69BawFUnLnrHvx5dU7b5wJzHuE40wZUlTFZ+4Uys3ujnM5ewjzNxXQCVLqdNCGQ0SNwYAzmB93pT9WlxoU/sUBtKQv6qiv91I6PopS9AwbBWUGaSIc7gs27rL9nGZbvoSdsUNvsQg+wUqMxujAgL6dNgftRD2bF7IMVR96uTTE8va4V1jJyRxmupiMEVfQchdFZR3A==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C9BB3A001A
+X-Stat-Signature: e58i36zach8sqwgmfhwijaosdjq58gc1
+X-HE-Tag: 1764173030-157665
+X-HE-Meta: U2FsdGVkX18Vz7jSBLNJvwfDunr8vDHIaZ9lIBRBoBP2f3JFoJUmNy2qcb7lOoxvsvOKe1MGf+zqECaLnGW5YtfH6cYdcS4L8uqjlB7n/F5YOcl+Qb4QUG+QPbtky2cS0QNKp6KFiHYKQYIOnaf9ovOH+NXJedfRlwa4P9xggTulAcOkI/E4yxt5ws3KPqaNQbIP3gpdvJ52PXL55c0Qnfg+CIEZysLreJlouRg+FSLXrhSMrvJ/VBvtmQvgNRqA0aH0VSBGrwuLZ9d12vbaKszX3sJxsioaHjHpsYX/d6GPthxpI6OeGUMTNZJmTe1VxiYdjauTEo7PVDyEIqPT6QkP9uaFyvQfqTr618gM9gSJBXkfIjZp3onZXmnTzS/g7e/mGPWgP2GgzLoiiDiBHjnH6OeQDGE+0aJkFBqkKGmz58/r+zVuC3n6NaHckiKO9KHj6IkwlpgsHANPB3gaJnWx4G1YR1dbfQgAxC4KSiAy8oU8Snx2J40Q/KG5cEHdFAXkY6fxYlhUP7Yt5ob0L1MU56IwAkPf147KKJDOozgv8MJnLfg9r29Xa9hd8GwMxetHdMnbtGatGQzN+oanOKk28feKGrNATM48w5Es2unTWShJBsAfyqQF37mmU+WMQgSy+jVw/dzunknTRy7795wNRUJX1mta6kTUX+6gw1ubusGn4ALvRg9jYpKqEurkkah8G1vJKR3ZUtbL8X2ss97sxsuka1scYHRZRzKM7QKLXExs6s1MU8W7Gb+BfYok45GuF1BDAA8crY1PqAzVGQ9JShTMB+3trIyn8VLkXDw4TIUGR85g+WDh19lPVA47I8eCanRK3KrwJQx+QZA/NPNviJ7DqTWmBcMMxekqdc/0W9gLT5SZP5OmO8BOy3dav9LNUfaUHr41jSkM491w6GRBSpG6XLX5hyyOqq5KWHccvjnn7XiZbpJuUt6Ocqd85o7tveQeWr1tWfLZPnc
+ 7lUuSHKp
+ +/bfQijY28sumJM6FcFAJJI6X0APextATntwwE6CLiQvNXnsg0hVoIla0xzer1zZr8ehUcLIjDBVH+Ck2UrxMhtwKjV49w4opcuDEwaNZmnQUyCw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,43 +145,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 26-11-25 03:05:32, hui.zhu@linux.dev wrote:
-> 2025年11月25日 20:55, "Michal Hocko" <mhocko@suse.com mailto:mhocko@suse.com?to=%22Michal%20Hocko%22%20%3Cmhocko%40suse.com%3E > 写到:
-> 
-> 
-> > 
-> > On Tue 25-11-25 12:39:11, hui.zhu@linux.dev wrote:
-> > 
-> > > 
-> > > My goal is implement dynamic memory reclamation for memcgs without limits,
-> > >  triggered by specific conditions.
-> > >  
-> > >  For instance, with memcg A and memcg B both unlimited, when memcg A faces
-> > >  high PSI pressure, ebpf control memcg B do some memory reclaim work when
-> > >  it try charge.
-> > > 
-> > Understood. Please also think whether this is already possible with
-> > existing interfaces and if not what are roadblocks in that direction.
-> 
-> I think it's possible to implement a userspace program using the existing
-> PSI userspace interfaces and the control interfaces provided by memcg to
-> accomplish this task.
-> However, this approach has several limitations:
-> the entire process depends on the continuous execution of the userspace
-> program, response latency is higher, and we cannot perform fine-grained
-> operations on target memcg.
 
-I will need to back these arguments by some actual numbers.
 
-> Now that Roman has provided PSI eBPF functionality at
-> https://lore.kernel.org/lkml/20251027231727.472628-1-roman.gushchin@linux.dev/
-> Maybe we could add eBPF support to memcg as well, allowing us to implement
-> the entire functionality directly in the kernel through eBPF.
+On 11/26/25 4:20 PM, Lorenzo Stoakes wrote:
+> On Wed, Nov 26, 2025 at 03:05:44PM +0000, Matthew Wilcox wrote:
+>> On Wed, Nov 26, 2025 at 03:36:46PM +0100, Vlastimil Babka wrote:
+>>> On 11/26/25 5:28 AM, Suren Baghdasaryan wrote:
+>>>>> Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this bug.
+>>>>
+>>>> Doh! This is embarassing...
+>>>
+>>> Hand-rolled synchronization primitives are wonderful, aren't they?
+>>
+>> That's why I liked the original approach of just using rwsems.  I
+>> mst admit to having not paid attention to this recently so I don't
+>> know what motivated the change.
+>>
+>>>> Wait, why do we consider this as a successful acquisition? The
+>>>> vm_refcnt is 0, so this is similar situation to an earlier:
+>>>>
+>>>> if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
+>>>>         return 0;
+>>>
+>>> But this means "vma is not attached" not "we failed to lock it".
+>>>
+>>>> IOW, the vma is not referenced, so we failed to lock it. I think the
+>>>> fix should be:
+>>>>
+>>>>         if (err) {
+>>>> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
+>>>> +                       /* Oh cobblers.  While we got a fatal signal, we
+>>>> +                        * raced with the last user.  VMA is not referenced,
+>>>> +                        * fail to lock it.
+>>>> +                        */
+>>>> +                       err = 0;
+>>>
+>>> Returning 0 in this situation therefore wouldn't be correct.
+>>>
+>>> AFAIU since we started with attached vma above, it's not possible that
+>>> the refcount_sub_and_test here will drop the refcnt to zero. We could
+>>> just WARN_ON_ONCE() on the result (in a way to make also the
+>>> __must_check happy) and then can return err below.
+>>
+>> But how do we know that we started with an attached VMA?  Maybe the VMA
+>> was in the process of being detached and still has readers?
+> 
+> So we're talking about:
+> 
+> vma_mark_deteched()
+> -> refcount_dec_and_test() [ ref count is zero ]
+> -> __vma_enter_locked()
 
-His usecase is very specific to OOM handling and we have agreed that
-this specific usecase is really tricky to achieve from userspace. I
-haven't see sound arguments for this usecase yet.
--- 
-Michal Hocko
-SUSE Labs
+I think it's refcount is NOT zero to continue with __vma_enter_locked().
+
+> (meanwhile...)
+> 
+> -> reader attempts to read
+>   -> optimistic check doesn't successfully find write locked VMA
+>   -> __refcount_inc_not_zero_limited_acqure() somehow doesn't notice 0 refcount and increments
+>     (??? how)
+
+That shouldn't be possible, yeah. But per above, it's actually not zero.
+
+> (back to vma_mark_attached() -> __vma_enter_locked())
+
+Back to _attached()? but it's _detached() above? You mean _detached()
+right? Just to be sure
+
+> -> refcount_add_not_zero() returns true
+
+Ack.
+
+> [ process gets fatal signal ]
+> 
+> -> rcuwait_wait_event() errors out
+> -> oopsies need to do something, maybe [VM_]WARN_ON() not right?
+
+AFAICS from vma_mark_detached() we use the TASK_UNINTERRUPTIBLE variant
+so this path can't error due to the fatal signal.
+
+> Correct me if the above is wrong.
+> 
+> I mean is any of this actually possible...?
+> 
+> Seems dubious. But I guess right now we assume it _is_ possible. What a mess!
+> 
+> (Again I wonder why we made our lives so difficult here)
+> 
+> Anyway even if we are midway through a detach, the detach is ostensibly waiting
+> for the readers to go away, and our reader is about to go away anyway, but the
+> process has a fatal signal so do we even care?
+
+Yeah I guess it's for the best to keep vma_mark_detached() use the
+TASK_UNINTERRUPTIBLE variant, maybe document why. Aborting the detaching
+would be counter productive.
+
+> I actually wonder if a WARN_ON() is warranted to see if this even ever
+> happens...
+
+Not for this path, but for vma_start_write_killable -> __vma_start_write
+-> __vma_enter_locked(... TASK_KILLABLE). I think it still can't
+trigger, but since we need to check result of the
+refcount_sub_and_test() anyway, we might as well WARN_ON it.
+
+> OK just going to reattach... my head which just exploded from the above :P
+> 
+> Cheers, Lorenzo
+
 
