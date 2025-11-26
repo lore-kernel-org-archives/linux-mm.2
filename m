@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21DAD10376
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 04:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AB7ED10379
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 04:28:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42A976B0011; Tue, 25 Nov 2025 23:21:04 -0500 (EST)
+	id 5E7EB6B0008; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DBE96B0012; Tue, 25 Nov 2025 23:21:04 -0500 (EST)
+	id 5BF686B000A; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F0216B0022; Tue, 25 Nov 2025 23:21:04 -0500 (EST)
+	id 4FD616B000D; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F4186B0011
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 23:21:04 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D199812E0BA
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 04:21:03 +0000 (UTC)
-X-FDA: 84151458006.11.1BE36BD
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 96FAA4000A
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 04:21:00 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 407E66B0008
+	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7C5DB9235
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 04:28:36 +0000 (UTC)
+X-FDA: 84151477032.27.4B78F5C
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E8CCDA0005
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 04:28:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vjldCcHP;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764130861;
+	s=arc-20220608; t=1764131314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zHsr6J1E1lBR0ALPVAGqZvDHByA64kvupgJGyMohLPs=;
-	b=0gjqVl1dO59fzxVmk98r6f/LkHLDGIys6Z/Q7o32ukY7MIzHyTIyLnnB1WQcWZBlNRNaQy
-	yeHoHV/t3xiyhYLKBeYvislRxHXQE80eh4vSgKg+aMfkm66WUwh+/dIAwjj2V69UyNhGHa
-	5QctP/43jMLVrDxMywaO+E8GB1gMhXY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=drm4DoHOqrTYC0sapqoyi+0m9Pnf5m0XGACkKnax0oE=;
+	b=4/z7MjcA0YAYTY4KHeae4eOLsCee4VTD5BqJnLxT4Kd6NJmqp7QkAUkWXlZ9cfq6SVmTap
+	aJ6CG6My6cnsiMVsIEqPc+RJGakTZ3CT1n0dlNR/xtbpKWs8mXYbMt023/1g4/foRreMjp
+	p0hMIcb0MpQhCUfVkQyWUGiUwXQmue8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764130861; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vjldCcHP;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764131315; a=rsa-sha256;
 	cv=none;
-	b=B04MgzQ6qBvl8JkBop4Ig56gtFX81HqV/XMQGh6NRBqaJjphtP3+3qGIdLVMXN/ah8skY4
-	f+7KppuJT6Spxst0+wlQmiF6d6dwyeKwNSgrN3P2OB8rQeVd9so7MjzrY39zj0dMRonQmh
-	I37bADgo6EIpnDvnVV3dVybPixhaBKM=
-X-AuditID: a67dfc5b-c2dff70000001609-fe-692680265a1c
-Date: Wed, 26 Nov 2025 13:20:49 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
-	hawk@kernel.org, andrew+netdev@lunn.ch, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	ziy@nvidia.com, willy@infradead.org, toke@redhat.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, asml.silence@gmail.com, axboe@kernel.dk,
-	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org,
-	almasrymina@google.com, sdf@fomichev.me, dw@davidwei.uk,
-	ap420073@gmail.com, dtatulea@nvidia.com, shivajikant@google.com,
-	io-uring@vger.kernel.org
-Subject: Re: [PATCH net-next 2/3] netmem, devmem, tcp: access pp fields
- through @desc in net_iov
-Message-ID: <20251126042049.GA67399@system.software.com>
-References: <20251121040047.71921-1-byungchul@sk.com>
- <20251121040047.71921-2-byungchul@sk.com>
- <20251124184729.7e365941@kernel.org>
+	b=IUgll3BuEMfIcy5U52Bd33nLy+DLjzM3/vh1yUw875pI1iBvYOCSwPpVV1TyXQSiuwCV+0
+	/6o7ZUgihKavnuyHtQTd9/ioBGTSQTa0jiaVyOzMJrJja6s+K1ZHjyZBIEZUiVt3AJoO1M
+	F/MGitG99EdCjMRfO8FBL2BUJnR4Rv4=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ee147baf7bso116451cf.1
+        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 20:28:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764131314; x=1764736114; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=drm4DoHOqrTYC0sapqoyi+0m9Pnf5m0XGACkKnax0oE=;
+        b=vjldCcHPYVrZChFzscKVwhTcB/NE91wesMgRz0Z5478hAfz2HmXhRLvvLqfotHpoer
+         hnqK39DNObt2/B7VAWrcpfUdN2XehSX70J7YAfJWNC7q3LNd4r3GVJieIbUZC0XrkeX0
+         xrbdIlPYX9OqMAtLijPHSPJRza89fNMMCwK3maSGZN3vcwmwMUm3FBuaeqtTGNmWW0nZ
+         ngR/j7jI2AhB51wdpIkk6uxjC2FemLE2JzwQPEGaGnfgkViwv5Do+/av+lm8WyMF++rE
+         Ubtcov5m0TEqJU/dGj0Y2tjjnhrBdXFz/dpctOSqgUsfmLw4uGHsJp2DwyzQ27vEPK9z
+         BuYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764131314; x=1764736114;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=drm4DoHOqrTYC0sapqoyi+0m9Pnf5m0XGACkKnax0oE=;
+        b=H3i52pfaBejVeSvbeWUgvFqe64yown2aJKAPqpuGHTO4eULYGP1v0rtV6axKn8nDaK
+         R7VVCcair2XmobunaG7ZeNaaPx9xOpHdL9rCLnDWBJet8kTP4NLUCzr85KoAPJCaC3gq
+         bpOhrQ/HDKVpNq4zKlyxCioissq4Pa7dhI/wHMbNj4MBBYozjGqgClwsErmtYxsp+8kC
+         tK/NHI+ngtXFGtBAjSTkD060BGPXU1sW9to0uloEOn+hJNJvujosR9NZ2bCV1hNkJ5Vx
+         0QWxaRL26fOy8FolRPyYAsCxlyTJQZk+NIGB8aP0ow83fphwwj7IfLQh0h4zUMJZT1wM
+         mkDw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQNzs2PAJLMT2RWwgHubXLUhXQzlbWoCZ/qUPZbuO1pLiKQ5gC6k9dTqp4lpciybpYNlyyg3F+vg==@kvack.org
+X-Gm-Message-State: AOJu0Ywo/Lpyu+xlKymXzRL8yRxtzDG6TNiYM9gZJNzdVXVW/wwEg/vj
+	HPywElp8WW+4dhafvaieUiVyuI/gViatDuazJml4mW0FVbVXmgLmcA14+BGkygJyQHM5Vvwd8w4
+	DCrwDuBKz8HwYbMU/OX7FhNjlzBB8eTnwnBMw/dzA
+X-Gm-Gg: ASbGncvSUET1uxgYnS4lj7bE0U3cplSqvfklLlL2FsmGgJ/cy/Qn4BknrykYofYk0//
+	1BZfSWuF2Z85LotM9dgJjuIGRhMhwEz4Zr3VjXvYRZWDsGmSRPUQTsEbGafYtTSS11Sg8dlhuyJ
+	bZqVtOwvTZR+Ow8N4zky2gtrhzxo54QlhYJIs8Sh6T7XdeJNrAozy20yqMV/WYcMLz0/NEPXYC6
+	3cOBDFIVelbH0UOwwuUWzc+MyQHB1UNOD6UJRoZvM+lGKkKPMs3qcOJpoTJEcv0z7J2nw==
+X-Google-Smtp-Source: AGHT+IE9A8yMSmSdhayVhMqlf1mg5/piGDgQ4GJmiPTw7/Ebwna8OTlXSKOf4fq/XHIGlcDZlsavWrR0+nVSPDUPY9c=
+X-Received: by 2002:ac8:5fc1:0:b0:4ed:ff79:e678 with SMTP id
+ d75a77b69052e-4efc6ce40fbmr2589701cf.18.1764131313769; Tue, 25 Nov 2025
+ 20:28:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251124184729.7e365941@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec95d3Ycjk7T6lVBaqmFkJdIeKnoggTnoxkEJWErD+7kNm1T
-	m0Gxymh5zRTRabUiUuesmKJOy3SmNbM5M2OFqYhmZWn3tInmZlHffjz/C/8PD01KvsNAmlel
-	c2qVTCGlRFD00ffGpjBdGB9ln4vBtbNaXDXaLMBz5kkCV5oaAa59XUjhyr5siL/f+UXi2y3n
-	CWxtmQT4fVkdhSe6x4R45NYbiO9daCLxWOFjCk+fd0DsbCwQYEdnDYWbdKNCPNBSSeFh86IA
-	2w01EOuH7kPcbVyNfzz5APBgeQuBrw8l4medYxBXnCkA2D275K/oGhbuCmYbal4S7IuyIsi6
-	2noI1mp4LWSNlgy2vjqcHXiawVpMFynW8uWykLU2fyXY/HPTFPt54hVkZ9oGKbbX+FDIfrUE
-	x604KNqexCn4TE4dueOwSJ7nrBak2Unt24J+gQ6MEzmAphGzBfU74nOAjxd7jSVCD0MmFE3l
-	tZMeppgNyOWa87I/E4Ky68uhh0kmX4AqbFoP+zFHkLnY5M2KGYxq80aW/CJawugB+jZbQywL
-	K5G9fPxPOBy5Ft55N5BMEKpaoD1nHyYa3c/t8dpXMetRe+MjwtODmCIatdZbyeWhAaij2gUv
-	AcbwX63hv1rDv1ojIE1AwqsylTJesSVCnqXitRFHU5UWsPQMt07NJzSDL859NsDQQOorvjsf
-	yksEskxNltIGEE1K/cV1BSG8RJwkyzrJqVMT1RkKTmMDQTSUrhFv/nEiScIky9K5FI5L49R/
-	VYL2CdSBwI6hs59ih1VRm3Y0IL3ixtbF8St9+x1+5tKF+PScwZL+vFb11DXLIWV1ckpcglZf
-	krY3K6jNPnAA7nRfFQesvVmcsW5mPmFq96T7Z2y3RA5Pj+RufJ76y/SA1R0v63p7etuerttU
-	DG/tdvYf63CHxMTlAlp5pCtS27SrLrFUJIUauSw6nFRrZL8B14M6GAgDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLIsWRmVeSWpSXmKPExsXC5WfdrKvWoJZp0HxKwWL1jwqL5Q92sFr8
-	XPOcyWLOqm2MFqvv9rNZzDnfwmLxdf0vZot1u1qZLHbues5o8WrGWjaLp8cesVvcX/aMxWJP
-	+3Zmi0f9J9gs3rWeY7E4PPckq8WFbX2sFucOr2Sz2N7wgN3i8q45bBb31vxntTg5ayWLRced
-	vSwWxxaIWXw7/YbR4urMXUwWC+/EW1w6/IjFYnZjH6PF7x9A9bOP3mN3kPfYsvImk8e1GRNZ
-	PG7sO8XksXPWXXaPBZtKPTav0PK4fLbUY9OqTjaPTZ8msXvs3PGZyaO3+R2bx8ent1g83u+7
-	yuax+MUHJo8zC46we3zeJBcgEMVlk5Kak1mWWqRvl8CV0XNhBWvBSeaKF30XWRsYnzB1MXJy
-	SAiYSJxZMIUdxGYRUJV43XOAGcRmE1CXuHHjJ5gtIqAi0bJ5JguIzSzQyyox+1AFiC0skCSx
-	ZvIqsF5eAQuJ1T33geq5OIQEOhglvvxYyQSREJQ4OfMJVLOWxI1/L4HiHEC2tMTyfxwgYU4B
-	Q4m93afAykUFlCUObDvONIGRdxaS7llIumchdC9gZF7FKJKZV5abmJljqlecnVGZl1mhl5yf
-	u4kRGOnLav9M3MH45bL7IUYBDkYlHt4Nf1QzhVgTy4orcw8xSnAwK4nwru1TyRTiTUmsrEot
-	yo8vKs1JLT7EKM3BoiTO6xWemiAkkJ5YkpqdmlqQWgSTZeLglGpglHmvcp7v7va8Im0jT6fi
-	fzqmWr1G76aqpH19uumk0UeG3W7bj82wleDwTLyu8La3cH6hd4jFjZJDr/xvr5BdHNTam7I/
-	OiytNUrza3CWaWV0drjy4ozptU9jT8T8MyqNzFtaPN1W98R87TL1zw+uRy+x779T/vVSktKG
-	E/sjJF3Mc7dc8ApUYinOSDTUYi4qTgQAqP+FDPACAAA=
-X-CFilter-Loop: Reflected
+References: <20251126034404.2264317-1-willy@infradead.org>
+In-Reply-To: <20251126034404.2264317-1-willy@infradead.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 25 Nov 2025 20:28:22 -0800
+X-Gm-Features: AWmQ_blk9wRDV0VZnYwqgq4TyMcsFhCXzh61Hco1ss7K3iz47Z8usI4x7tlFiFg
+Message-ID: <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
+Subject: Re: [PATCH] mm: fix vma_start_write_killable() signal handling
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E8CCDA0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96FAA4000A
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 7rrixwwdumditgyxud9fnzxtpx9bq9je
-X-HE-Tag: 1764130860-647291
-X-HE-Meta: U2FsdGVkX19fLuHbQC2pRycN2b06z6OrQoLlooEszypIgWY5kud3oCMxJRPEdLZAdLNZp/d+P5cdpemIqnNVZMztETSTzgg0g4GZByKpVLBqtGh2YduU/yn1AA356wvaCdu5xQazF/Ga72ZiH8/PRjMwY5uSBdf8CKQmjspdhv1QKC44zmnwKj3tGu2cTrhbsuIyYMJ8CrdT4XFuOhJ54wuqmwMgA7aq15ym+RC62l0RKrK9zLEsSXVtWBTjeNGdwNqUDgRBOe45e3tyEh+CebkXPUnUCTC5tTk7bnzUjif+dUjBduNU0e56xYvr4A7TSpUyBJp+BlGZemCG2SIMAxir4gnQnpZ5dMxkOP3Cbc5KCL0PI7ZgYifkjS8Uu6g5ydALgPsuaIx7OpV3eUKUo8NnvclW7DgnG566fOzHn8Sf9yQqrKdpE1Ap69dCUKEP9vyTzUQIhSNByDjSZwSWjj4116gI4kq9JPKE0kd3jLCFbANIfDagXI5cbOb3Vq8xAC2iyWw0erNu+BB6t/hUZe1iE2eUhsWmw6FNSEFh//IwN4Qa9uUGn+Lle4TfspLn8gM+3dwR7+KoXeHGknDLZjn2jVgEJ11Uo16BhdpzpoaOJi25QkP3QguKsfgqNv5mi/dpRI7K0vzcsyL1gcDAAgTencNwry0kwTslPR+6w+L1+2uXNBXOoX0rnurlmV5j7XzBIb4xAE29xN0ZuGrEg7JQPV++zRnphtHR8SIiTOrXvcrAdmB9QFv1ix+zruvnSzatIx89/lyVHvcN3orIF8i0T+9y3lSbIyQa0kCM+JxpHO6FsntJwE2iXqE5sfr/T6bYiQMJcR67v7uS8VezZTGe2qRxDileVEUmelZTTuODz4KLCJ1dNA7NDnMa0TzJsT711jiQx9d/2xOzY+fnlU+/qWpopvt98rZ/3RI/lRDNW4SkUNfuxLOh38rc2JOE3TiOo+aHvgwUBLsjutU
- 4KPdBxfd
- b/6yrGB4K8oKWRwdP/30xm/ZpJ0s016jg5wL9HZ5dALYslCdCwuCZqHj6apiB1BNvY5DN
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fzg5yzmrraeh44dj4h1k54u5y7k591sk
+X-HE-Tag: 1764131314-925014
+X-HE-Meta: U2FsdGVkX1/jmUvwDGXbVG/cRkkoeJ6yZ+dZ50ruJjnpIi7y+rOv2y2kdQ0arjRdiLDio9hW8oumYpwh84v1QvSRESlPJP/xJnM+uKxz1Mm+FBZTzfVCoqEO+j3iuxklSCH2H5GhaQZ5s0j1DEEkgnonUHpYixvaJGQkIzaCJcMI+qbCeJDzEJvcTK1B2i2aFxGXIsK7/x6rbXcVXtEfakSi8SYk/oVNT5OlsWtl+694CrhMVdKptx3mkr2sbQO3rba5LKTx0zdCwM/AdbaleUhdpiCg3QRhrNMjapWxGyFRdMSJe5L5XirUaiAb5QUPuJxUhA6Iu43/V6aG90bdKZ8SUb2Y/4YE4JFKbfkjy4sR26/0OGnqfzh9mARhlf0Hm1UcacDFeWWtkTUC5sBHenYZD/cOxn3ucP75XEskpkN+lIxYXSiPyb0xUOuHkFSfPltRtQ/PcshMMmFxGVwW4BA/tgbEMEYSBZoAiTDxvhUGIHOAC39fkoGMtpC81+86w6Bv+3/SDUmYij96Guu9Fi2PbbAYLDOg+RuWIJUbNke3UETSBzUVAplCxJsHPs7elPYHv+X8RxjBTXmawgm45Mu1Q1krwT6K66Gjp+4EIddc2MoyFjaPqe6SEVKdomUPC7MVXU0G8wgB2rB2EnH2UUe9oHGISpQcD1gV0TORdt0u6ztYgCogzPcnUXBuTvpcPnPYfHMPddf6VWwVAkP84NDo1KmQdzRunV3tFtibNWIvhyXmWyFDBEMSh8BL01latZupXREMMkOqvLAZcXL5EpXXzGz5nhPCNopG8phtCcYbXLCIYGCjNTWe0790UN7h4ue9I7afYVPpqW32bhfzIYKKU4XgEvX5iU08a2q/Bk2Xff1akRuKJrSjB39goC3makeCXg4lwh6sjFeDYD7b7h3wSupHzB86AD9uOndyHo6CvCTeCyEvlEUiM2XYIasR+rm+rJa429vDYhHvEBg
+ lkcTo4yN
+ nbZf6wLE42nh2HIGItjcm1SHrxppoRkEAt8+2pCA3V+34+sny+npMYJCqmHnGh6kzf6mdKLSUS7Hy+Uf66Q49I9YSTH5Q8qcGTh/Z7niRdu4DSQnEH0LG4vBDpa1gnkETEbXh55OntypvJmYjDXh0OWdw288F/nBVzc5BDyvx15J8OJdm1cKrN/IHCs1fedb7x4lZunpxxrMOysrE7pfc/KK8AVV+FENhiB4ztVOGGb8DqUyKFb+AazOIt+rwI+zi428T4YcnalDX9lMiGZCGlk9hpDfz1o8+Tjz+F60eMp9udIJBRkaeD6MxGA1qZERSxqTRAHVS9Hk+XmfI89uVXmXbi1Tnvou1vJcQZJjPguGPswAnezRC9BMfOHeHn+te8F0ILIa73PZJnjr0J9am/u42ugfy8VrVsice2n73pG5cJpMpADCe/CEfTRGEiB84Avt2Dl1/p67t0OuqwjleP7B/1+rePlDxdYigImztTpTd+sE9kMIZkXhElg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,17 +118,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 06:47:29PM -0800, Jakub Kicinski wrote:
-> On Fri, 21 Nov 2025 13:00:46 +0900 Byungchul Park wrote:
-> > Convert all the legacy code directly accessing the pp fields in net_iov
-> > to access them through @desc in net_iov.
-> 
-> Please repost just this patch. The last one needs to come after the
-> merge window, when io-uring and net core changes converge in one tree.
+On Tue, Nov 25, 2025 at 7:44=E2=80=AFPM Matthew Wilcox (Oracle)
+<willy@infradead.org> wrote:
+>
+> If we get a signal, we need to restore the vm_refcnt.  The wrinkle in
+> that is that we might be the last reference.  If that happens, fix the
+> refcount to look like we weren't interrupted by a fatal signal.
+>
+> Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
+> Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+> Andrew, since the vma_start_write_killable() patch is in mm-stable,
+> I don't think you can put this in as a fixup, right?
+>
+> Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this bug.
 
-Sure, I will.  Thanks.
+Doh! This is embarassing...
 
-	Byungchul
+> Any other stupid thing I've done?  And am I doing the right thing
+> with refcount_set()?
+>
+>  mm/mmap_lock.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index e6e5570d1ec7..71af7f0a5fe1 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -74,9 +74,18 @@ static inline int __vma_enter_locked(struct vm_area_st=
+ruct *vma,
+>                    refcount_read(&vma->vm_refcnt) =3D=3D tgt_refcnt,
+>                    state);
+>         if (err) {
+> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcn=
+t)) {
+> +                       /* Oh cobblers.  While we got a fatal signal, we
+> +                        * raced with the last user.  Pretend we didn't n=
+otice
+> +                        * the signal
+> +                        */
+> +                       refcount_set(&vma->vm_refcnt, VMA_LOCK_OFFSET);
+> +                       goto acquired;
+
+Wait, why do we consider this as a successful acquisition? The
+vm_refcnt is 0, so this is similar situation to an earlier:
+
+if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
+        return 0;
+
+IOW, the vma is not referenced, so we failed to lock it. I think the
+fix should be:
+
+        if (err) {
++               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)=
+) {
++                       /* Oh cobblers.  While we got a fatal signal, we
++                        * raced with the last user.  VMA is not referenced=
+,
++                        * fail to lock it.
++                        */
++                       err =3D 0;
++               }
+                rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
+                return err;
+        }
+
+
+> +               }
+>                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
+>                 return err;
+>         }
+> +acquired:
+>         lock_acquired(&vma->vmlock_dep_map, _RET_IP_);
+>
+>         return 1;
 > --
-> pw-bot: cr
+> 2.47.2
+>
 
