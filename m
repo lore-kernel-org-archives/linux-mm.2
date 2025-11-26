@@ -4,122 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A3D3D10F22
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 11:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95492D10381
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 12:15:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 945906B0023; Wed, 26 Nov 2025 06:43:27 -0500 (EST)
+	id 4AFFC6B0022; Wed, 26 Nov 2025 07:15:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91D736B0026; Wed, 26 Nov 2025 06:43:27 -0500 (EST)
+	id 487BB6B0023; Wed, 26 Nov 2025 07:15:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8332C6B002F; Wed, 26 Nov 2025 06:43:27 -0500 (EST)
+	id 3A41C6B0026; Wed, 26 Nov 2025 07:15:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DD2E6B0023
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:43:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0441DB9E10
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:43:26 +0000 (UTC)
-X-FDA: 84152572854.15.DA8C060
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F0BD5A000F
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:43:24 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lc7cDo5a;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764157405; a=rsa-sha256;
-	cv=none;
-	b=mXT9f/ILptA749N/NHjBzTYndf7a1Fx0AC9OxTb5ynhvpGqdDkRX/F0SlKrRcJEKqwxncj
-	Zu4lHFXGF9LVQ2Tp5WZYgFSdUV639fnGcjo6eRQI7UYIRpA2LhJVuukMVElqRi4i5X+lx7
-	+7jiat9i4Vlz03Hi7jnFWdb92vNfjtc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lc7cDo5a;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2948F6B0022
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 07:15:38 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B86C2C05A0
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 12:15:37 +0000 (UTC)
+X-FDA: 84152653914.14.EF8524B
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 946A6C0019
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 12:15:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PHcX5BlD;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764157405;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764159335;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HizHoqpNeWcHTKitT8HzR42sbJzX61WpEmC9UcbHLd4=;
-	b=WdIlHiw1giTMptZ2waCT+v+JpgsK/aUYNXYkLZzgDlC6m3eRvp7WsCDAsHgMiW2lldRvpg
-	19zSEjGNQhYNtbCcxS5Ru+4W1kjRiI7ekAI+ygrkm0dIgo2QhD8TnmaTnW/Ksisd5N+ln8
-	+nSFvu/njiQTqdNb8Sbiy3LBFgHENZg=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47796a837c7so43744895e9.0
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 03:43:24 -0800 (PST)
+	bh=8CmYl+SbsPMRI8iRq/pAxBRo1VZNLGn0qzoX7EmgTSA=;
+	b=qqwvQrWjW/wib0Ys0/xmk5IFrRP8XPyLjCj+RjXrczamNb3pB9uW9bAelw87R8ZDd6AZcD
+	6kh6qCbsYCd68e1HELQ4q2D6oT3Zyf4hShdjI37Vpg6YpYxj3kR5WhDPmlQ6jpRAPU9y8m
+	RoTJ4BcRwGIOMRnLsQ3nXBD5N0L1/QQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764159335; a=rsa-sha256;
+	cv=none;
+	b=QcFqDziuCdBqGjniQr2C4mW5sB1aHZJSoXhPVvUjqXwHwCcBXiA1rHGQ+V0WEHSliQ1qKj
+	34n1uNVN6FbTARR0IKrH54cMIvFa2lj/SzREzBZ+gRV6yYVv6cQJcgXP+QYRFeSmOxAVVP
+	bJ7eXJB8T2fscWQ71ssYpZLz4wFu4TQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PHcX5BlD;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b73545723ebso1260721666b.1
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 04:15:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764157403; x=1764762203; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HizHoqpNeWcHTKitT8HzR42sbJzX61WpEmC9UcbHLd4=;
-        b=lc7cDo5avd1nNROC2qjO6Bg2DIjlrLE812eIkPshk/Mj+Jf1aDJopFg+pa/G4oVv6L
-         Wvu/fj0rn9+ltMn0TEmpwploWaFHiX0O3ARniRyjVYBnixboYrJ8Xfh1UFKWTtnYUD+t
-         FIPrHn0yxwlHmxqOerKdVnx7fHUzFZYfwjsT832djKaJLENsYMhbdNvGjDQJUQrtTUfZ
-         QghlvhX32PYM7FVpLxSJN0e9TfdmAnFl4RHK0I1ssYRj9yALnPHbPcm+n89CLVLcR85H
-         tPL6jWgLptIzMnQ/r8SCJ3/DUQl3vGsAryrFDJfU6pd6luJ1qZiWou5fPEELYVbsJu09
-         NIOQ==
+        d=gmail.com; s=20230601; t=1764159334; x=1764764134; darn=kvack.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8CmYl+SbsPMRI8iRq/pAxBRo1VZNLGn0qzoX7EmgTSA=;
+        b=PHcX5BlDI4bQe0cVUlnth2ax2Y814C8SBHHCPsiGD7aRCPECPjNSFmkZPPzgOMWHRi
+         I4gWOIMw5exIV/ZRfi7y3Q6GhAQTt2KaHTy+bgLOJFS+ILQTq9W1TcOG9e2FfppQYGtH
+         Na8Fex+aZCVMKtOP6iLCmsSVXcUMbpnEs7yL5MegwuhllbkDPuewXO7+JdT4bgKoRz3A
+         i1dPLyVFcnT8GW6UTc/Gu77CARkPHd9g3XafZGQ16D28Y8eit1yIyYKlI5/8CAqaz1bP
+         JA0wmo9d1iaG1Gyhi1WrZj+0q1Rm3BHgHPBAtFYX+VeiRh9h4wS3AXGAd0hkrKv2ezhs
+         yzgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764157403; x=1764762203;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HizHoqpNeWcHTKitT8HzR42sbJzX61WpEmC9UcbHLd4=;
-        b=bjW8dYnCKGJ5XeakTzawpypZnN26jSAPXegFa3kjodCk7EIHfY8p79sIfriyRzTuu7
-         sPuzdaBozb3ZIdKoSw9JwJaCtbL9KvMVFsZtesr2J6cRfx0y4J5KFe4E2fT7Hxli4Rz6
-         QiStOcKlwOlFupx2z+J0ielL3vx1RIbZc2bRY5ULo0yCHNQlreyPMfrMZlo8Rwle4afR
-         b5dYzlBTFbBApD2fKXaeN8sEkZ6nh+t67TOSgT5z0bd2ISN1atrAUb3gxD6akaORCSHN
-         PHVpzMpUeyM1EgCRfm4xS1ALqrsF1Nt82pqjXYQgn7d2frN0D86Rt3Km+CyozSCeTzXB
-         +GMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCLMhmlak2u0AehVbPp2yMaSbarqsVWrNWn4QVK4i2qbwZB9qV8tJ/FKIVX3c2rWRf27vkuBaS+Q==@kvack.org
-X-Gm-Message-State: AOJu0YyeJjuhbBfim1B83qv18LfIArlSyne2luj4nOgxONTHk8mAXbXe
-	IasLeWBf0GnA6u7HoLvaga59pFS3cmsA7t82miGUil8Gog+JZHKIDnKm
-X-Gm-Gg: ASbGnctdNmOwMUbe3nlRPPdAk8O9CivyJcEt8S00HjjQ9yVyIIQKSAuAu8m8BLj9hTc
-	z93u1aENyGrRokSt0MIKw9NFZLASjP/Zv1gkGs8/J7PUhB38mvxEczgUEkS22UpnitALjWaP1kr
-	XjYFzhdnXimibGLY85Ww7ygjRHn7tAVqjb32hkWYLUfsfeF/c4d/+h9u2TxKg0PGMFTg/oRMkKF
-	yTVOgH95DPZJ6sErOmPrLYnuGhTLBtiaCuuR5emG0rzilmstLyMESbBvQzjFVvrWpdmdGuucJcJ
-	6pth+MI9M+XKoUgkE1sG/QnHnV32yLhvZdXT93gaF13KqJnKM5HDI5XAV+aN+/LIgt9XamcTkRx
-	RVIT8qYpfDXN1u8AE6Bf6AVAJeOmOxqWqaIsj45Ee1thZvavfw6Y1AsRViL5MDfNeDhVdn97SLG
-	6E3wfsa8QHYvg0QSotq0y40U3Fltyz3HGGuBvYq00/KYApGRhVmiUJ8nEuCoSiLLu5epgk/Qcfo
-	Ak6Ka7j/eI+A2+RsvR0fuM=
-X-Google-Smtp-Source: AGHT+IEHuosbKX5dlS/p+QVNbfewa/DMVBSlhq+jwfkEP+9yI/mOdL1nwp6UE5HbmX/shL7O211Y9w==
-X-Received: by 2002:a05:600c:4746:b0:477:1bb6:17de with SMTP id 5b1f17b1804b1-477c01e2521mr209175245e9.30.1764157403094;
-        Wed, 26 Nov 2025 03:43:23 -0800 (PST)
-Received: from ?IPV6:2a02:6b6f:e750:1800:450:cba3:aec3:a1fd? ([2a02:6b6f:e750:1800:450:cba3:aec3:a1fd])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790ade12cesm51865185e9.9.2025.11.26.03.43.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Nov 2025 03:43:22 -0800 (PST)
-Message-ID: <fcf022e3-1d5e-4f66-9f95-49faefda04a6@gmail.com>
-Date: Wed, 26 Nov 2025 11:43:21 +0000
+        d=1e100.net; s=20230601; t=1764159334; x=1764764134;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8CmYl+SbsPMRI8iRq/pAxBRo1VZNLGn0qzoX7EmgTSA=;
+        b=L1ps2exYSOwXB4coZieWFvzbsvRUJpGWEotbbufZdDisSCdtIaYSRaKNPKnHJGS8FG
+         w3nxAkGzkTpefmOOiVB9iDKQ8cFUQcCW2CgpCaUmyckqTSipxlb8VFKjvvKpa/DhlRHy
+         oOukHPaXYkOF7z1mQ2ABnhCU3EVpDauFROPDbpwSXFhVmbhNdfnuDWNGf4QtzjRu8NNx
+         6V0N6ECHPtde6rL+iK4JZUWnIY4chZER4BRZtfHmwiov0km33wivZaIUo87iFPhx5rUS
+         urrWvI/KyrL8vxn0cissbTZnJCLypsPvP74MM7Zp88ckZAXL3kFVMS+iBy8GVHqDlkQ0
+         ayuw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+f8KHQYjvObX8vjtjmzXp7q562vHT7n5OXzZTouM2EJsKEOdsaenGLvWT/RLxq1KDs4qNsxltnw==@kvack.org
+X-Gm-Message-State: AOJu0YwCjc1Rz3nMSbW8q6FmxsoOnzo14D+tAzJeYM3nTGWJKBN2N+EP
+	KCiuIZ3pu72WVhEOuR1xzB+BB9R3doY2GFyg7sFW421KvrYZVW49Z/SU
+X-Gm-Gg: ASbGncsOZBREe0LGS2uRrh/jmBLftnmrW3fr4+nomJ/2LrHa3x20dDPB/uyR+XCvZwI
+	OQ7clGHty051T84JrDHpablTkrIgwfJsjkQrh9rzcGp6LtvFAevi42vg/9usLv7wkuUxFWgPr27
+	ntW5V5FS84WR7wFMotz2HO3Ba3PGv32nH9QVt4wzBzRFs6dX4dr7yHWeWV+6Ud3e6uclN68SvS3
+	XAp4Ttk1+DHr/Pi7G1xi6HvP/wZgbwCkvhUq7ebOMwODAoUfeDFOiEVUUiZ7mnb3BqfCWRWkgfB
+	O1OcRTy9J2uK9y7gVyZPjCdJDOzoF7/fdj5V/2a8cPXVpcLjAF9Fm0RO3/HMvk0BlRVQt8XvwIW
+	frmnHpxuRtIoyojK3YvQK1HHE/GSzwmoT7l+EjhuDDy/zlwhM50VLZQl9KB/Df/aVtIDqfU2tMP
+	zduAPtDkt7yQ==
+X-Google-Smtp-Source: AGHT+IFl0xNssyCKj5lSL919bRx5nck4/bkzdmCvQ44NH/BqDNyKr8lioAfBzAxQJ2AbX3Tr1D/ZxA==
+X-Received: by 2002:a17:907:7f27:b0:b73:845f:4432 with SMTP id a640c23a62f3a-b7671a4690bmr1926029666b.32.1764159333528;
+        Wed, 26 Nov 2025 04:15:33 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b766d386665sm1561263066b.53.2025.11.26.04.15.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 26 Nov 2025 04:15:33 -0800 (PST)
+Date: Wed, 26 Nov 2025 12:15:32 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: use standard page table accessors
+Message-ID: <20251126121532.tfwnlyaemak6qtb2@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251126064723.4053-1-richard.weiyang@gmail.com>
+ <9c32675d-c48d-405f-a38f-4c90a8edac74@kernel.org>
+ <20251126100330.n66n3uvt3junflao@master>
+ <16ae0a30-c6ee-40ad-98c8-ee6f4713e653@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memblock: only mark/clear KHO scratch memory when
- needed
-Content-Language: en-GB
-To: Kiryl Shutsemau <kirill@shutemov.name>, rppt@kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, changyuanl@google.com,
- graf@amazon.com, leitao@debian.org, thevlad@meta.com, pratyush@kernel.org,
- dave.hansen@linux.intel.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20251126072051.546700-1-usamaarif642@gmail.com>
- <md65ppfkqim2kepsx6igvezpcnr4hx3g2dxfdojsgx4rligwfg@u5dejfzmirfc>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <md65ppfkqim2kepsx6igvezpcnr4hx3g2dxfdojsgx4rligwfg@u5dejfzmirfc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F0BD5A000F
-X-Stat-Signature: da8ny9sa8q4ak8wz8fkb6shi573ti3ii
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <16ae0a30-c6ee-40ad-98c8-ee6f4713e653@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764157404-799475
-X-HE-Meta: U2FsdGVkX18UpXbObPRjT74dpauBNkqo2UVzNjMswSezFTfx/QAMlakD4zvzG13eo29irp20zJu0nReSnSdpTuSizy/pUP4vKGC2lZlsIddh3Dt09Ji9yvZ+XGyLLEkbG2HveJ/g+Tyyl00YKcFatCdCFuRM8Eu7aWlYZZlkJGUvq+sxJ6DajizuFWlkrzyprmsu2k4hqbO5CKnL9YHQb3E70JNw7cnmhR5omBUB2AOoyCVIvr1Dtpnd3dZAdmVm6MxjzM1KSe3qt9rAe7uC3V5jmU1ugmzBpPk/RVMvMSLmi6/+zMZgUhaUhLnM1zbKFuXIvbynkyKFfddCmo5mAcgfsHpicT+YI+LyYiQVAhDBGBdSeo5KTXH21jTgMXp/uZWl7jO0Pn7gr9WEr6IhD6pthk6PC5Rn6KBJA3jtzK08dEp4cfHN9hrJWn6Vzybp3oUO15Koskec+mI94TAXGHFzuqBbvPfq6vlFEqkqhkfjvWEhtrcXeVOQ2bOgD2zsrpAYwfXL1uQhgGtenuYLfDMcDkuvpw9doK4fRrENOwlRkD2fzokHGDl8KBgueedVY3AaDDgmaOpQiq/E3uWLO13PQIev5waB0Cb8SZp0W8jX+xwT8SU5zeLlmSV37O3GL3NxP9K1vwf5WvTy49xu+IOHnIKtrYY6miy0o7wbEr6q70ptp6EIh+n7gxPMDw1pJw9dypAUwiDaSqjIDO9W5ulX42qYR104OjpErls6yXteOkbiHCR1ZwWItvz66IIkj5n3ixAQcs+G49Tsu4lmuknhK4NlAiJDe+V6iVTm/SK+WjwxS8q2/oLaaMeeNPm4kTuZDjf18BUwHmHb2NC3UqZfR2AUg1kqWdZxAaZrRjSB38yaVTT/KkIzFmh4qjzZjEU+RK4ryGkyriSUKdH0IoPliKY2+xmOSTnWsKl2DwgwS4fYprqkxehxkXDUjGp4ChmAEdpKxq/LQp3+0ci
- dNv6nS8I
- fp1fbR8vPTwX2Rq0UhfIQl+msUWLNvh4Sk7rhDBvjKMSAx+S+mmh2nToF8j35ZYHPCOillOvz9ykPoOHpNjfgS+hIJ39DHtDhl+l20Qg7AgjlN8AEAHEgUhzUZfvtvoGpZEqFaHQltvKX/kD4NQYJGR8hjs8iTXKvXyHujNDI6SRY+fDVFLzSKm1srxgOxiSEqXxACZvb6JQN7ehTHKCGwvJCmmZK2BJRwN3x5Tdd/relKccMRJt/VymJam87xnqaaxYo/JfgtfduO2xlQNMuricqk8hsDMZY3C0mhbMh/27KqRff6EjEJMrOKFJwQfOKkN0o98awMBrOVpUkEjLedSOuui0JMrAgQXswjAgwo8LpXr4GCFrYYaM/eHps8Rht2Iiv8SyCW+KcGvGzEpydygA7rrpL2XQQaS1xqhmsrnBLZNqoq+aWWGIwSwYzyka2Ii9auJZBGsJeK+F+R1GgW5hzJCeZJ5R5oN/6G43Q/kcCIu7J1obUWjd8OZZvN1wbuIQr
+X-Rspamd-Queue-Id: 946A6C0019
+X-Stat-Signature: zdaotnqdaixeyq3d4j6uw4sjbqb6p5wh
+X-HE-Tag: 1764159335-874763
+X-HE-Meta: U2FsdGVkX19TbMukyNoXu4p+BWI7vcih7aZW5+R7NDv/zHCW/UpdPl46TryT2R0j9iqEfe1VjzAaCdSKJJteY/msIGa055ox47xVJ3jYeVXHKEVC0+r3yj36A3tOsjtwjHvR+r+idLCVJVf0zVE+jbcasGjmHkbMGnDCv0AG4ksEIzTgcuGbrBGBi834fdnkDuS6u/7/MODpHHw3y4aGKDzKa5K5rmAIj+q11KGaPkf5GjN9ROf97cncFE/3zaw4BkFedk3bKF5gjKcM3zUbkM4w8i9RIC9U541Rg4FHRpa4vcgRXceaT06RvN2RU8gkoLM6jRYUk9C8EOfKjJwNr+VGLTrS2YoprYC55h0QkBQIXlXkfkSPlE56GfpNJUHxn4RMnAuVnwp+zCkdBHhbrSk7MZ4J7U2mOSkIZp+GGajsQD05wMe+iMW8rVMMO59C8W7rDWKA/NTA++GOo9OqsEz+YtEevvXueOuAquhfLksPfz/2yPuG+uZ2Na/CWoX/LlMqWXzVN3y6VfIXO621BgIU8oX6uc1Ih2hM198cd28iiwC59cxueA69cWpwb+dXQsIdVZB+XzgNVXyq3yvNFk4DMQE+7EuE/uDuTDwR7g62Sp/s8YXx7MFjNLFbqPAC40q6zBYaE3tiLwJ2k2lUfGDavjujVoqAvDfcmIZwDRaAwfjfdtwdZ342BQJn5uHOrtu/hdQxJ0PIrmfo/6n72V7a9wQYwvHP78PO+CAtC3nUvIZH0Jn7ALRJ094zTzJ1Rwl262ZYMgv1dTBWuotvLTnmR9fMxWoIR1RNYeU6uejh4pgfAJqzRsFqty9nXdOB++bIlZPxtq2GxNWNGXagFQmSJ16UR1u1HkaoU6lBVf+G/93//EvirYmGWFZ3+8q7j/HHM9ri/rBXDXaUTzWsw1r6+rfzfg2bNUwLs1v+UIJJ+nSgswYH6KFqLoI9uXe/gwhsE9yuoM4W7ntYcIC
+ nIFBXOot
+ 7U57yb3jA4uk81xE6kLbBcFS48RQo7NGTN6jyk49gpNYHR84pp9le7dsHFk7msUF1bTuXbJ+Pen1rToi/78toWpZ2el7YUUwXoUO3nP/f3SyNsnsf6wkH4iYgNyHi9vS9n4i2yAV86uHBN2i4/Pb5zhfZqih74aOnoM2XEwmUEx2mNKr4XFQry02p4tpZyQvOQdM+zXyy4nbtPArIdHCtc/Y0heyIepdsCH/syTEbcjeSWofkUqSStZr+1Xhh0MLsfD5MqG4rkX11uF3nl6sc/HLmnZj1mQShHzQ/kJBLA/cLVXVoab9dFYBOFvbplcd9LVBynU0qXNHGK/zFkHIN3ckMFuInhk+qJeetL52hWEbBdi80XxAsLmU2qOGI14WR2VoxcwgEoHhrYEyQ1Ge/C9zmZgOPqEz+PuCGrwNVLxhohhL4ZXZn+aI4RVwecGnwuPQiYmwCzzselFZ+CqlfjYYIkOI5oJSKPoFjnvzOjHdwtUsRyUBEOpQLk5BtWDplEcRs9wx5NVYizAx5i0vvgHt/okUAjAuK2oJBEgUtScW/zS1qK37z4rC17G4HBA7WOXys1cUvZ2IKX9LF5tCIg0kTYburT+xvfYfwwH5Mvxgq3hSl+gz8P4tlBzl1NyE6GGywXjJ9NBB3dqNyhEUF1f5hKh7+PrjaRFXCEQ1liV1Wx5yU36pNPyDMNHFK6GJZSFovh9KoRWOIEzrb9YNLpFLi1GlKeyE62iX1bAlNS00llFil2NOF+NmBjOVFvXL/DkrsgVfQPlF5eRnB8+WKCQj0c56vS4tiFvfE+wkY4xDu4WRM5Cjbs5taZuWMoujuUJpYzX9IxeZELXQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,34 +132,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Nov 26, 2025 at 11:28:37AM +0100, Christophe Leroy (CS GROUP) wrote:
+>
+>
+>Le 26/11/2025 à 11:03, Wei Yang a écrit :
+>> On Wed, Nov 26, 2025 at 09:15:24AM +0100, Christophe Leroy (CS GROUP) wrote:
+>> > 
+>> > 
+>> > Le 26/11/2025 à 07:47, Wei Yang a écrit :
+>> > > Use standard page table accessors i.e pxdp_get() to get the value of
+>> > > pxdp.
+>> > 
+>> > Please provide more detail of why you want to do that and how you are sure it
+>> > doesn't break existing implementation.
+>> > 
+>> > There was similar tentative in the past already which proved to give
+>> > suboptimal results, see discussion here:
+>> > 
+>> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2Ff40ea8bf-0862-41a7-af19-70bfbd838568%40csgroup.eu%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C63a7608567de4df0a16308de2cd31076%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638997482180349327%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ly4LRRjkKqQNBY6ZpkbHS7%2B0xuu2c1r0op1eysPtbSQ%3D&reserved=0
+>> 
+>> Interesting.
+>> 
+>> The reason is P4D/PUD/PMD on PPC32 actually just has PGD/PMD. So it is not
+>> necessary to retrieve P4D and PUD.
+>
+>More exactly, PPC32 just has PGD and PTE, no PMD either:
+>
+>arch/powerpc/include/asm/book3s/32/pgtable.h:#include
+><asm-generic/pgtable-nopmd.h>
+>arch/powerpc/include/asm/nohash/32/pgtable.h:#include
+><asm-generic/pgtable-nopmd.h>
+>
+>
+>> 
+>> If this is the case, sounds other platform with less pagetable level would be
+>> affected too.
+>
+>Indeed.
+>
+>> 
+>> And this looks only affect when we walk the pagetable from pgd. If we just
+>> iterating pmd/pte, we won't have this issue, right?
+>
+>Maybe. I have not looked at your changes in details, it just lit up a memory
+>in my mind.
+>
 
+Thanks for noticing me this, I learned a lesson from you :-)
 
-On 26/11/2025 10:40, Kiryl Shutsemau wrote:
-> On Wed, Nov 26, 2025 at 07:20:51AM +0000, Usama Arif wrote:
->> @@ -1126,8 +1126,11 @@ int __init_memblock memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t
->>   */
->>  __init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
->>  {
->> -	return memblock_setclr_flag(&memblock.memory, base, size, 1,
->> -				    MEMBLOCK_KHO_SCRATCH);
->> +	if (IS_ENABLED(CONFIG_MEMBLOCK_KHO_SCRATCH) && is_kho_boot())
-> 
-> It makes me wounder why CONFIG_MEMBLOCK_KHO_SCRATCH exists? It seems to
-> be a proxy for CONFIG_KEXEC_HANDOVER which is the only option that
-> selects it and does it always.
-> 
-> Can we make s/CONFIG_MEMBLOCK_KHO_SCRATCH/CONFIG_KEXEC_HANDOVER/ and
-> remove IS_ENABLED() from this check? Just is_kho_boot() is enough.
-> 
-> 
+>Christophe
 
-Thats a very good point! I imagine it might have been for maybe debug purposes?
-
-Looking at the code, CONFIG_MEMBLOCK_KHO_SCRATCH shouldnt be needed. I guess
-this might be a good time to clean it up. If Mike is happy for it to be replaced
-with CONFIG_KEXEC_HANDOVER (and removed where needed), happy to send that
-for review instead of this.
-
-Thanks
-Usama
+-- 
+Wei Yang
+Help you, Help me
 
