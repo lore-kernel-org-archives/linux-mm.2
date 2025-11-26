@@ -4,93 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1792D10F52
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 13:55:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D77D10F56
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:11:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F03DF6B0012; Wed, 26 Nov 2025 08:55:17 -0500 (EST)
+	id A90A26B0008; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDBC86B0023; Wed, 26 Nov 2025 08:55:17 -0500 (EST)
+	id A41106B000D; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF13D6B0024; Wed, 26 Nov 2025 08:55:17 -0500 (EST)
+	id 97DBF6B000E; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CC0736B0012
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 08:55:17 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C8DB13156E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:55:17 +0000 (UTC)
-X-FDA: 84152905074.19.63449BE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C775A180006
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 13:55:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xH23ha1j;
-	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8937E6B0008
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:11:17 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 055CF89ABD
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:11:17 +0000 (UTC)
+X-FDA: 84152945394.09.DAF533B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A87A580023
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:11:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
+	spf=pass (imf02.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764165315;
+	s=arc-20220608; t=1764166275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AtiBOtjkszow1+mwJMzjBhqs0X6D6A6qju+OcXmeltI=;
-	b=HfXOMhARBJdaxeXzl2/6HGZ06wltylMknIJcflllEtuyfKgKepKI0J7Tbe97YZLt/+vL+V
-	CzRl57J8UVA5oo7KYyhaNYz3dkaAzMWEIHKqCCD9YMvjALqRyxa53HOxMCvGKQhQQ0T4/Z
-	PzleIZsUjyATx/02D/C/nFIS1ieY+do=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xH23ha1j;
-	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764165315; a=rsa-sha256;
+	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
+	b=UqENnRsM7t0/MABBFsu1fgPuleiloirGbOLQ+rndxbHx5ek1tAgp4h5n5yYZc+KDDnkcDH
+	fBGENFPr0j9bF25ht3c0gp2ZLjWoajxPyjZTwShB7giOhfwQyMy/8s/ursQv6J8wJ7R2NR
+	pCI8vFjmCa+kUCx+zLD97i5S2OChExw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764166275; a=rsa-sha256;
 	cv=none;
-	b=kdDZc6GO1IYHIrW6Jp5rl4Nr+vdVh0BiMVDbo/QZsoHwVNxONHf+DykYuSxtPSHHZg7DUJ
-	bjG3B6hHNSvLsO+dUx+WDrrBOrIQesYUBtWeqG8FaDvRm94GQfK2Xj4HX3CiW9SS6wUtCR
-	WtP+6UPwYP/9vWfiKdX8BA09jUA1j1w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF31E601B2;
-	Wed, 26 Nov 2025 13:55:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09007C4CEF8;
-	Wed, 26 Nov 2025 13:55:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764165314;
-	bh=I+TScRoNbd7FG0IWAZIoQseK2RrdKsM+sqKB4TIxaG0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xH23ha1jcoyROXLVBmErwbr+/N2i2YI6GVuUy3wBhbAdyhXBCHLcM44Vu6hXi7erD
-	 vPi3ytkvLOx4YZXX3G65ghF9qx9e/Zt/CVoI5m1V2hSFGdHcP3ooibTzWvTpnNTp+t
-	 7iHZZpHoKQ6XoGJP5QA6NT1+BbnRGJBG+RycrZac=
-Date: Wed, 26 Nov 2025 14:55:11 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chuck Wolber <chuckwolber@gmail.com>
-Cc: Gabriele Paoloni <gpaoloni@redhat.com>, shuah@kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	corbet@lwn.net, linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	safety-architecture@lists.elisa.tech, acarmina@redhat.com,
-	kstewart@linuxfoundation.org, chuck@wolber.net
-Subject: Re: [RFC PATCH v2 0/3] Add testable code specifications
-Message-ID: <2025112631-repeated-crafty-207d@gregkh>
-References: <20250910170000.6475-1-gpaoloni@redhat.com>
- <2025102111-facility-dismay-322e@gregkh>
- <CA+wEVJZEho_9kvaGYstc=5f6iHGi69x=_0zT+jrC2EqSFUQMWQ@mail.gmail.com>
- <2025102124-punctuate-kilogram-da50@gregkh>
- <CA+wEVJajSGzb85YTiv98yAY3bcJFS0Qp_xjLc++wnU8t=wDAOg@mail.gmail.com>
- <2025102211-wolverine-cradling-b4ec@gregkh>
- <CAB=6tBSaGfKq4RgV=nbw28Yq59jHMrVOkm_dx2bqD1AjU37oaw@mail.gmail.com>
+	b=yHeXMvnNQI8HdkUgfScEjz/pKbtXPYwp7pKxSGN4g/97E3xaoGMvXZzitThiA61KKBd/f3
+	hWkgr85gnHeTSDQIgC4zM15Mj8JDCgZ7c0Fzy6frPk5+3qnGMVfGednq9zGhIk2QyYcZLM
+	dvevh4xqUkQJirqZxnnhw5Z0/EKLus0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qqFkRoFF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sErewIAZ;
+	spf=pass (imf02.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 920AC5BD21;
+	Wed, 26 Nov 2025 14:11:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764166272; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
+	b=qqFkRoFFsSvcseTsYz6Q/4Xml0ft3+yUvusQxiVhrp1Asg+Ein8vW7gJLQw/+IubILQZoA
+	zspwESEo+gGARpX/6Pmof1rpzaMbDM6VguLTnBG7w3Oh40tWa/JxPMyqGiF0XhoaWmPXAQ
+	vMOuVmJzIpQbdaoYdMxex40tDUWJZfc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764166272;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
+	b=sErewIAZKJQvA6kmx83SXz//3pDc6qpPZeHFZihrGIANR7hS9DCMiP+OrGwRRECsMmwB+k
+	DWFjJsooLhVr8iBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764166272; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
+	b=qqFkRoFFsSvcseTsYz6Q/4Xml0ft3+yUvusQxiVhrp1Asg+Ein8vW7gJLQw/+IubILQZoA
+	zspwESEo+gGARpX/6Pmof1rpzaMbDM6VguLTnBG7w3Oh40tWa/JxPMyqGiF0XhoaWmPXAQ
+	vMOuVmJzIpQbdaoYdMxex40tDUWJZfc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764166272;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ZolWcKpYKNTSI5G4tfaEenm8+nHT8Wl8rOnJEhk1Tw=;
+	b=sErewIAZKJQvA6kmx83SXz//3pDc6qpPZeHFZihrGIANR7hS9DCMiP+OrGwRRECsMmwB+k
+	DWFjJsooLhVr8iBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F1B953EA63;
+	Wed, 26 Nov 2025 14:11:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FulIOH8KJ2m+LQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 26 Nov 2025 14:11:11 +0000
+Date: Wed, 26 Nov 2025 15:11:06 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+	vivek.kasireddy@intel.com, joshua.hahnjy@gmail.com, jgg@nvidia.com,
+	nicolinc@nvidia.com, nathanc@nvidia.com, mochs@nvidia.com
+Subject: Re: [PATCH v3] mm/hugetlb: Fix incorrect error return from
+ hugetlb_reserve_pages()
+Message-ID: <aScKenEARH_rOzW2@localhost.localdomain>
+References: <20251125171350.86441-1-skolothumtho@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAB=6tBSaGfKq4RgV=nbw28Yq59jHMrVOkm_dx2bqD1AjU37oaw@mail.gmail.com>
-X-Stat-Signature: dyzsk5731ku1rdzipe61iidhmbfe8bpe
+In-Reply-To: <20251125171350.86441-1-skolothumtho@nvidia.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C775A180006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764165315-393979
-X-HE-Meta: U2FsdGVkX1/UoTysOp4MfF8r/YtWeO4nYbNz9S60D194pT2ZqLcTMjIt5jRIzMDvSm2C8za/NQdW3YRGgKDxeYJYT6EcTRD3qi4i2j5VKDVTNwb/k6aomgTPW/cTuJjmU6tc49EUHdCJ031MpAF5LalvLt/9rBtmzdPxMYpepTC80kXdcnA9KUDkOplZeA11dbJ62JOaRUXOIb7iQV+NREbdWA4yOtn+DG6QMdvK3Z+jApTVfS9sO5dhmhSjO5mcfQytv7nk1XPz9nYReCVdjxZCd8P750SqSwPMsshW3iBJ7GMN/JnALfbkfIUGMjMZyohV/FTRRkNLZa9FJLJw4zKMWGiL+yxnV4pXzhB0UKZMZun9cqBoLEayUOhIGxov7cqNqPxC6VepwPmVdUBJZI7N/zBPWFEFm02BUfFJmBtONux8d9Dkm7/RF7Qc8uW80dRHdzDF8X3puNcDLWdJsgVrB7SSD/DLsIFxQklopppQC/IPqag5CU06RCp8rJcQ3PHZTIfHnTQeoGcoWh8FMlnFm0sphhLjiGwgpNSVOkReTUrBR3bY06nimNKiybda2qkRs3UcnJxBCACOF5elszuBTEGy6Dgag1tINVrwKOOX7qv9DHLmgmGIVQjM4O15eL20eiH4uS53wRtGyRheLE/8pxH0q4QKkTXVo8CMxSL2hsYfWDeJFoFMIJS7JYJHa1jESBac8qVh65TjbKgZXqMPULYIxzn7MvW1uchro5EwLRqe/fhvRLbZhOSM1yQcZG41wQlvTZ1cs7H0m/wJTUT0qQa7YNrSJ93/K12XPHFYdEGwuMuQV+/laWN0rEK5CYZmi5icRObm0Gq6mj8OuNvoDgmWY8YFPfxTIGeiF7uYi7t7XDPyyj+Iuhg8UAsit9vh1pPxQmaks9JQ1LftQ9B74gZffQrMGFf4kD/I9rbec/SdB0QebYOhhhsd+4lZvgdmmK7VLyQkzk1vGPX
- rtjDm69B
- ZqFFDbG+RSJutM2dQi8n178uDqPZvsCQsv0WSJVdmeDXCCzyZjWAVr9Bpigi4m4+VfSSR6Pb5nYNfmQNs0v2nOuyBMUzAyTFsOkxci1ABf4HalnXsyau6ubo3Ge93hoVQFFIIS6J+JYttr1VgqeCtIvr3hi7fwQU1IYkKStgIux20KMrVBy9bgsmXIB/VwuCLGP0/Ao98l+rR09oXJ//CkX/h9TO6aFYnjpM3oq0VtIMPU5khfbSeYj1zZLUwxXZAuD476H7C8Ih0H6wYSFftOBaUTpVxHXf1mNSQc6/zR6i/fdxNfVNKSckPGWF/mRi3tuls/mEc/ssLU1ubsUZOGqeVWlEbZlIZtOgnRRtRdG8mC+Q99HO5DJAvPnSQMwpQQGIvJrMTkSNbGM00QU/rMZwJlg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A87A580023
+X-Stat-Signature: xkch7orsmf4hc9iqnq6g9mb67h5t9nkz
+X-HE-Tag: 1764166274-563175
+X-HE-Meta: U2FsdGVkX1+N4E44o6goNyJS+nOULxKkw2xmcESJPz0Jbkk77ewyABgTPuA9Vg1gKcUh5+B8+H6jwLWVlU3TTZiYyRLggS6eaFEJphFWvHHIfWKwGgpwAV4Cgd9vSggW7DXOuM8t7pSZ3LOzrrUzmQ+GI7fN87QJ6iVJLlX8bq0MZkT87OIQXdZJt9j13Pt6tsqCCB4q8rSvhGCmWNPjfqoymIEyQPC90z/3p9T9ePzePWBAzJnJ5IuZgT8gE80etEmSXjpjhteP9TT7w7sxnfZFEF85pH5mRutnlp27IoV22WDClNrgQbb7ARar2NLYaBiEp6RcxJIMO3scey3zI2kWs5QjEJEmiVjHMs/ASaq8+aGAGWD85b5baGF6omihMMTehzzLYQ/1wcD5yhC7GTsAIr/aPSz8sc8RtObvojiK8KEhq/U/8b/ABeDKoC672rjWxMXoVtsyBMpwMfXylHD18OZ+eJB/jU/Bt11Ep3blqbZ5RVwjTyGGAluLEwhB2KJ4psqr8P1TvNIT29JVGjpL2z2W632NYpeI4+tMcZLuIjEl2TXNxTmeLBcaI4HcvSpl4B+COp1vQ/YhNOoXd3OxfJ5uA3uvWdNI00Q2ASsSC5F1Ag4sZrcqnRMTbePLivghdF/WdifVcuzBdlfGULipNGPc0RUmnldC+1wotiKqi+io0t+z8miSv/JXgXIql09mRn7F42uTMIWSg9PF7BmeE43okGatvH3zcEk1Lvxv/nj13pjYM7iZ+uOoCyuikMF+jJznDCx9BsUNSZbkM66RN15jvBaBOh39JqvOPD46tcIBliUUjeg3z/FJhus12HmnNjwEhDeIRHt8KxdcLS1fvv68mnLnOTlz6iK7UtoeU1AEAFssExQNysAnVUqg6I+Wen8JprhpJ5drjZ3vMmYN5Y9TkF/m/ZIpEjje8nmTCGXGO6JBCtgs+dslkEjplYEQ5mzmIb4dSXhe85I
+ cUhOOPib
+ GCkg6uw76ecnHbYWiJSik9SWe+WPG/6dQ0tBBoyRGjZrmMHyS8O/eAYK7eI81iMK8oPvFPF0BeDfczP3jX6V4wmZxL5f+NtL1yLAzh0LP739covNRYZzvJq//zaVgdgoSsV/ZINPtOddszZM8yA1zWnlal2JoAEwGNVQR6gIeJmM7LYg1rtv7/qm5pWbkT1YtEpVsWZNgUw90RR6ZHQSyJrDkn88dCzQPP5yLP+2k8Whjo7xxFRdNQHTqKIYWbVesD0R4kULm7GMHulNaFZcYjDEVN3VX0dhqJykpvmShfEEFloWVlrbt7ezr9Wa9kQr62jy/vtUCAo8XYkHXxeJYG095I0vX9oeSDpG70IoXTh4uUY6w+azIuwfXK9EM9ThXZMDNV0Cv2GXqjk9oaIOHvh6xGoi+Nvc39c/LXwChLZKaRbU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,116 +133,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 04:29:13PM +0000, Chuck Wolber wrote:
-> On Wed, Oct 22, 2025 at 5:13 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Oct 22, 2025 at 04:06:10PM +0200, Gabriele Paoloni wrote:
-> > > > Every in-kernel api documented in a "formal" way like this?  Or a subset?
-> > > > If a subset, which ones specifically?  How many?  And who is going to do
-> > > > that?  And who is going to maintain it?  And most importantly, why is it
-> > > > needed at all?
+On Tue, Nov 25, 2025 at 05:13:50PM +0000, Shameer Kolothum wrote:
+> The function hugetlb_reserve_pages() returns the number of pages added
+> to the reservation map on success and a negative error code on failure
+> (e.g. -EINVAL, -ENOMEM). However, in some error paths, it may return -1
+> directly.
 > 
-> I appreciate the questions. I sense there may be some confusion over who this
-> is intended to benefit.
+> For example, a failure at:
 > 
-> The design of the Linux kernel is emergent. This is a fundamental property of
-> the way it is developed, and the source of its greatest strength. But it has
-> some shortcomings that place a burden on kernel maintainers, all kernel
-> testing, and even people who wish to contribute.
-
-What specific burden?  A lack of documentation?  Something else?  How
-are we surviving without this "standardized" interface so far?  Are you
-a maintainer that runs into this issue in the past?
-
-> We intend this as a tool to address those areas.
-
-What tool exactly?  And who is asking for this?
-
-> > > > For some reason Linux has succeeded in pretty much every place an
-> > > > operating system is needed for cpus that it can run on (zephyr for those
-> > > > others that it can not.)  So why are we suddenly now, after many decades,
-> > > > requiring basic user/kernel stuff to be formally documented like this?
+>     if (hugetlb_acct_memory(h, gbl_reserve) < 0)
+>         goto out_put_pages;
 > 
-> You are correct, the kernel has succeeded over many decades, and will continue
-> succeeding for many decades to come.
+> results in returning -1 (since add = -1), which may be misinterpreted
+> in userspace as -EPERM.
 > 
-> With the exception of some very narrow situations, the emergent design (or
-> "nuanced complexity" if you prefer that term) of the Linux kernel is not
-> communicated in a broadly consistent way. This affects the way the kernel is
-> tested, and also the way it is developed. Even veteran kernel maintainers are
-> tripping over nuance and complexity.
-
-We all trip over nuance and complexity, but I do not belive that adding
-more formal comments is going to solve that (hint, the proof is on
-you...)
-
-> > > Let me try to answer starting from the "why".
-> >
-> > Let's ignore the "why" for now, and get to the "how" and "what" which you
-> > skipped from my questions above.
-> >
-> > _Exactly_ how many in-kernel functions are you claiming is needed to be
-> > documented in this type of way before Linux would become "acceptable" to
-> > these regulatory agencies, and which ones _specifically_ are they?
+> Fix this by explicitly capturing and propagating the return values from
+> helper functions, and using -EINVAL for all other failure cases.
 > 
-> Exactly zero. This is not for regulators.
+> Fixes: 986f5f2b4be3 ("mm/hugetlb: make hugetlb_reserve_pages() return nr of entries updated")
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 
-Great!  Then we don't have to do anything and you all can stop it with
-the "we need this to pass certification reviews" nonsense.  :)
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-> > Without knowing that, we could argue about the format all day long, and
-> > yet have nothing to show for it.
-> 
-> As this is not intended for regulators, it is not clear to me that catering to
-> their desires would be a good use of anyone's time.
 
-Agreed!
-
-> > And then, I have to ask, exactly "who" is going to do that work.
-> 
-> The intent is to allow for a separate maintainer path. There is more to it than
-> that, but I do not want to bury the lede here.
-
-But that's the real issue.  We've seen loads of proposals in the past
-that have gone no where as no one actually does the real work.
-
-Heck, look at SPDX, that "simple" work isn't yet done because no one
-actually funded it, they just "demanded" that we implement SPDX tags for
-all files, and when the work got hard, everyone ran away.
-
-What makes you believe that documenting something that is orders of
-magnitude more complex than something as "simple" as SPDX is going to
-actually happen to our codebase?
-
-> > So, try to answer that, with lots and lots of specifics, and then, if we
-> > agree that it is a sane thing to attempt (i.e. you are going to do all the
-> > work and it actually would be possible to complete), then we can argue about
-> > the format of the text :)
-> 
-> I respect what you are saying here, and perhaps the point of confusion came
-> from the safety related source? As is often the case in science and
-> engineering, we are borrowing (and _heavily_ modifying) a technique that is
-> found in a different domain.
-> 
-> The intent is to target technical debt and maintainer burnout by filling in a
-> semantic gap that occurs when a human idea is turned into code. Ironically,
-> this is why the safety regulations were written in the first place, but little
-> consideration was given to development methodology during that process.
-
-So I don't see the real goal here.  You all for some reason want to
-"formalize" a documentation process of all kernel apis internally, for
-the sole reason of making developer's and maintainer's lives easier?
-
-Again, who is actually going to do that work?  And if you are, great,
-just start sending out patches today using the format that we already
-have for kerneldoc and the like.  No need for formal language
-requirements here as obviously no tool is going to be parsing this, nor
-as you said, any regulator is going to be reading this.
-
-So let's just stick with the style that we have already, no need to
-change anything, just start sending documentation patches!
-
-thanks,
-
-greg k-h
+-- 
+Oscar Salvador
+SUSE Labs
 
