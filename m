@@ -4,86 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 146DCD10F22
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 11:32:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 628B2D10F22
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 11:37:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E97B6B0008; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
+	id 937516B0028; Wed, 26 Nov 2025 06:37:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29A796B0023; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
+	id 8E7E56B0029; Wed, 26 Nov 2025 06:37:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AFA66B0026; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
+	id 7D71B6B002B; Wed, 26 Nov 2025 06:37:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09BD66B0008
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:32:14 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A064789832
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:32:13 +0000 (UTC)
-X-FDA: 84152544546.12.25432AA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 858241C0006
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:32:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 65B416B0028
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:37:34 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B84C131339
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:37:34 +0000 (UTC)
+X-FDA: 84152558028.28.06BF97F
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2F2EA10000D
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:37:30 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NiJbqXtn;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of andrzej.hajda@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=andrzej.hajda@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764156732;
+	s=arc-20220608; t=1764157052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TfuoH9Xgl+vTZlIkPCsReAqYYQoglEg4CjiwE8eID+A=;
-	b=6GCTsJyeBMGCBEGRvRIEtjFD/BY9ppOvTyCzYPnh2a72z6gpjOxyCHVCmlhCMAAQb0GRsL
-	yMrNZITU93hTCNhc4TmpRL8PvFb0qgb6+C45FPosHB1dD0BDubn4D4g9QDY8V/bC96Jsj4
-	lrIGf5sGAOs1Z8uAgJ8Xc/JofRV1y8A=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fDQKxE7UEgrie+rUfcSBmD6qKYweusZMsIhS+ySK9Vw=;
+	b=qYTmuzRpmBhKVjD1E6WBTJ7poNe8YeG2lwXkNnZ9bJRLouqJXe1YfmWksRehWp+w7+jlhA
+	O8vHcK7HPvQ5vDSvIxcCyvp9/iGLfBCGAWH11Whjhw0YeGzR5hAAWzF8TgpjWzyphoq88i
+	sOEB2V7Hn2AyhHAiB8DKs6GbJQ5Tup8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764156732; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NiJbqXtn;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of andrzej.hajda@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=andrzej.hajda@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764157052; a=rsa-sha256;
 	cv=none;
-	b=Dzb2KJMb6UfALsgoQC6XPr7cpzzoj+No+4Syy4QlBOjo18+PFdEU5hzEghfitU2h36JVOY
-	I8t1iirxSG/RcFrOVBF69kI0cLG4dPCFHOJ5WAJ9YTiVPtl9NNF3SVMxk4voH1rPKc4hP9
-	AQCyblhe/k2bIHrn5kIzhUyglzuQFG0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 065BF168F;
-	Wed, 26 Nov 2025 03:32:03 -0800 (PST)
-Received: from [10.1.33.153] (unknown [10.1.33.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E4543F66E;
-	Wed, 26 Nov 2025 03:32:08 -0800 (PST)
-Message-ID: <a52ce72a-f762-402b-b353-7c3f69e4d28c@arm.com>
-Date: Wed, 26 Nov 2025 11:32:07 +0000
+	b=yVKNZxoXXDPT19vGMJEpsp/V+mHh9PO89UAs+tUYTYnTTfSHBnvOb97dtxercslJQWBgFT
+	LU+esOjqRjXT2jgWmNw18/uESB3c9SMnaRwBEX5ZziWyFqRkzyau6+emzAGcKG4fun8/Oe
+	NVFZvXewce5GKnaisXcuvYXAb3kMUTM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764157051; x=1795693051;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=qapqRYmQEkgzDGVBOxPMGjJRFppxpGzqyZ22CtAg6Zc=;
+  b=NiJbqXtnD9eG61Qv+TFhaQS1QpUYN6Sc5MrQ8ggl5oY/4ENX/29/qc2M
+   DA3fpKUg/q6FvDwZ7YLKjmBC9J2KTknzpqn2MCSLigdc0CyA+lzz5KPRb
+   VigGkG5wUxGWZFUqZruRsyYvd6T9GmT3+ll1dH7E5TMpQ9kKvKS3ixdEa
+   +C82dxJ9u/nwGRVJZGL+Iac9iU/N7TC1dvKYSXoTJF16fyb8EmC+YcW0D
+   vrkdiZIhnElTQonLsirIi5k+YJyRiJhr0FL+Wg9Qk8iQe9Syi4periatL
+   /Cc8qoknbYkbGHLGCOwYJ+78j9iDWwMbec+ktG0kegekUaBXlrSXthymQ
+   A==;
+X-CSE-ConnectionGUID: HaDBe14CT1GusEnGjImSCw==
+X-CSE-MsgGUID: hokz5ieER1m/qZq743J2AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="66232829"
+X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
+   d="scan'208";a="66232829"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 03:37:29 -0800
+X-CSE-ConnectionGUID: VG5QBuyYSEmBkcvNqBhy1A==
+X-CSE-MsgGUID: blXFTAVFQL+9E2vHPdrn0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
+   d="scan'208";a="192804438"
+Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 03:37:26 -0800
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH 0/3] printk: add macros to simplify handling struct
+ va_format
+Date: Wed, 26 Nov 2025 12:35:48 +0100
+Message-Id: <20251126-va_format_call-v1-0-8a604a331730@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: use standard page table accessors
-Content-Language: en-GB
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev,
- Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org
-References: <20251126064723.4053-1-richard.weiyang@gmail.com>
- <506e7a41-a199-461e-91b1-035ebd5d5527@kernel.org>
- <323987c5-aecc-40c2-9837-9630186367b6@arm.com>
-In-Reply-To: <323987c5-aecc-40c2-9837-9630186367b6@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qu9yd9rfwoxq1wqfgj7nt895rbtbcn3e
+X-B4-Tracking: v=1; b=H4sIABTmJmkC/x3MQQqDMBBA0avIrB1I0qrQqxSRMZnogEaZiBTEu
+ zft8i3+vyCzCmd4VRcon5JlSwW2rsDPlCZGCcXgjGusdS2eNMRNVzoGT8uCT2uaB8fWxNBBiXb
+ lKJ//8N0Xj5QZR6Xk598m6IqH7HDfX9PDLDJ6AAAA
+X-Change-ID: 20251126-va_format_call-41053ef60fd7
+To: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ John Ogness <john.ogness@linutronix.de>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Andrzej Hajda <andrzej.hajda@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1086;
+ i=andrzej.hajda@intel.com; h=from:subject:message-id;
+ bh=qapqRYmQEkgzDGVBOxPMGjJRFppxpGzqyZ22CtAg6Zc=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpJuYx9YqJhNK+5SxA7bP5HtoVetWNsKlHAm9JO
+ uDeFo0zy7iJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSbmMQAKCRAjYrKT3hD9
+ 1whdC/kBeexu1mvqHTge9p1OoNI12CJW19qeJ/qiMj+ur0pZmyi7yoEXrqnyWruSYWrhL30yt1K
+ tfOGRin471PIpt2G19eoIZTFtA7KcgdGeZi9/eo7waOIZNHUaWbGn3lTXTu9AKHpaoWCmJ7vgW7
+ ghQ6nnx/SKU8deC+daRkMW9gjudLdRg/zWuGndJENJlNb5pgKLlevdAfanu0RezNnF3GcLagdMI
+ 7XvQvl1eJ+6373mvQNH8HIat38eeY++hfBqMjAvlghtLroVBpbBVu4fj9hk8cDvmq633HxcUyac
+ RNRUjPYRNBxFluLbtkYNl/8i0JearUdYOd/amXS+ZGlbmem4F2AyAAHSWoDDIYUdZeT0AYhU642
+ xWDXTTdxYTuOzTN/Ym2ljDARXafm9cNTUou7jvcqBJyqhWqf4UaFJGS9fu2cKHx6+Vlt9yJdK9D
+ Pj7YAuYk6bfI2Rn45+2lp5RnHObREqYOwk9ABmgTTIWjc9db2rJyHQHSDqxTd3yKBmaRc=
+X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
+ fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 858241C0006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764156731-676663
-X-HE-Meta: U2FsdGVkX18Mzbu7NXs0I2f9JmEpNAfortc5Z+WAo8Z2ZYGYO0F4H2YMi+tbLPgZQygnhQp1UaAW16IjGLKyts9JVH58sjOpJiF9lmaBd/2yaR2jlrU9LZLMy+IEvvuJLsSF01D1Q1FWMPvkjrar40GaJYMkHYtLuYY5ElhbXvGdCCkqIlHlLLlOhI8ETQt+T/OXFavsC6oPSZGiofqvtNisIdHcLchXCfY1lXE2yb7pXsSE8xYvaS3jjyJduV3WXZ0edl4hNzoxo5rR8svQWMCbss7gqu4ZXjp8hlYcYkB2I/4noMODrHVwpao4RgiK4xbBFqlCQWNWz28vUIVHJgximpPXM8laV5WLxFRgH8bJ6YNiW3M2qjGhB20y3IncL8eOWk3GeoKBmrabEW7Sas+KTLGYbxqayklDOstAeNpU9N6P2XtZ/XeeU8UEjqXbcXOlMgJ8TbxYt7C/DJBawD0fmP/zn8H9pt+Vueivc6rIZN/gA8B0pdTj496v3Eup1+iQQMnfyoikzG0goUPc/SfbSSsrmIJQo6dLxNGPjcCiT9fMKLk+uT+6ii5KBNpbT7RMfKvSpQBA4ILxocSNS8bDGPuzKJITGRR/qNTaja9e95w8huPtDCzCZYY54Li/wgssOtw/im1BOHclrtLgUtvrrsk0Bh3R2qcWmtk1O0W7n6SXPnPRK0hcxASVp8mKG35xXmDT+KCeRrP9n13cL4uzTpdx0HQrA6XPaTFxXcoSibmCRl8P1C66d29x3vJLx9bjbzqDguzNwvGYS7S87jA2fDbf2AMtoYtRk7H+/mbbmn6+UIUFuGaTRCNE/6zMybs7KjSQwzeQly7A59/d56ppNUKyrRERGIFSKKvnq5G4n/YOFqjPgED34WFH+GuoLGwdRxna0bIPlSBmRjuL4Qg/IlZDfREkiZnTIW6CDcpLUvjO9r/j9BvZy14+Dlg+p1yvbkDZ7nZQDx6vu/Q
- a7mQo7lL
- UtbkEjv7xZhaqd+xsZ2QnNG7FZQYJxOoygwholhBS31T4aAuQ+KXO5Ox35Bu175d/fqzZsuieebhpeQ4KMXqP4lBU1mJbu73GAgS3a+VuZOe0SrJa3iLfCN3KYgixnHeef+TVDqFhY5mVxfJXzths4wd/FNj5Amj3jK6q81geKWa5EDg7Rktd5xGkAnQpdHEoRWW2vu6MTfkOZf/kqwjOUy4fq+gnO+kLMts1Ge3i9T4RcBxkbHxjbX0iCof4u+bAfGnMvdUY277hrfcUW7V4J6OlSCytWLniRibuozvTtOI5CW4EQDLnXAn/oGxKZqqSTiwp0DefcCuzlbPQVTAVwUhvy7mXtIWy/TTDdpRk+VNpYTYRekeeeyLmZgeQSnpmt9QKhXLZOQa6vYPJ2dbC/nEk0w==
+X-Rspamd-Queue-Id: 2F2EA10000D
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 3goe1g9p177w5u43urz4iezmcfjofanz
+X-HE-Tag: 1764157050-434359
+X-HE-Meta: U2FsdGVkX1/gvXqk6sVBme6MqzNhLyL6Rdu+boGWF/7M3PGfI+b/abKlBNzvjH2LTnXjX06vlrik+21phhFYzQW5IL3jXQJld9fOGfQ9ivMQstwzLLMLwntzu3JWF9djxpB/PFKejmRf1PaxsvdlUoms+LuR42MNwTinr3sFiUvUXxNvFicE/0J75uIuETJaSiY3hssgmFmn4YnLrZGI8PNAl4CC0iT+zJaUbL2nZqLv2MpL0Ho1mPUBy96/dk7Zm3hrIEiL1Bx/+KGejhYGDLJDaujBXA08bdYENLibn+tNvNs0/YBcwLSbBxkll8Y+5wzyjdADXwQ6rLHpZrAE7ju6zOc0bA6LoHtzMwVgBIU3t4elMFax9U9+92cyQMkZ672P+Pk5lX1nUAgs+D13G7Rjx2g755MR91cQgnJOQmJ5CdMhzFJk6xYcT1zPvO0OHkcHsj6nNzMs6P76Yk7Iocdj1Qw/mI9YEEzlOwM3nTUt0r/1fLRhmRQXc2Snmb+SuxAPUwDINlzsJ8b+rRAYXb9qRIWjQTyWC6S/wIDnij6+t00wiKNlawztsVyIzIqC5kRXlpNSEOJW7swURBsx7CozDCU7tohSoIo07opIqmNIgXveQYkEenzKxthnHTOQsDKSeqyqvAcxOAPDn55nqguwNDeLHAl2UFKNF7usANBICu0AQLs3QywsXGVjXm5Ijs/G/b8drupIwFnpccf+lFEBcKhKffoqe4EtS3qpq0Jv9vjlfJocVgZN10zxmvoRz/TjiqNhdxmZIoRQOp7U77GKCI22t18sVOwFGjMnnaqTfMvr7IvIVvydbhYBBDu24dmF3BWDNpTflNGYfolgfCfi+HrXtcL7glMYZpXghF+ZFHBfu0U6WQrejcSnP5c4Vl5tSPP2v6R+75B3LqaVXPmE934GKmqLGByYMrosthZzJTogEvF5R71NP3F7vdrfy1JLpytk3j8HX0JCGnG
+ XH7tDJdn
+ yhMsnZefna9hdx06qR0L2pTbVYHf+ppPR2ceGT9ff0OcMawmVFyEwZlZGLACgYx5W30CIg7EL/o1LHEhPeYL9X+jDJnTkBG7mZj3awVWX8oUVzOe+Y4B1dEU8ISL1GuU2DkOIAYIkHIcefhatdD5+EXNmk1I2QbwyJJXXT5OzMcLFKib++9IPdM7pPdEzRvFP1GDzbqegx71rUqDU+JGAVZNlffLRHPWZIBFNG5BS6mlrfs0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,40 +131,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/11/2025 10:19, Ryan Roberts wrote:
-> + Anshuman
-> 
-> On 26/11/2025 09:09, David Hildenbrand (Red Hat) wrote:
->> On 11/26/25 07:47, Wei Yang wrote:
->>> Use standard page table accessors i.e pxdp_get() to get the value of
->>> pxdp.
->>>
->>
->> Isn't this covered by
->>
->> https://lkml.kernel.org/r/20251113014656.2605447-1-samuel.holland@sifive.com
->>
->> In particular
->>
->> https://lkml.kernel.org/r/20251113014656.2605447-7-samuel.holland@sifive.com
->>
->> ?
-> 
-> Ahh this is very interesting - I wasn't aware of this new attempt! We could
-> benefit from this on arm64 too.
-> 
-> We have some experience and opinions about this; I'll reply to the patch with
-> some details...
+This patchset contains patch abstracting out most common bits of va_format uses
+into small macro. The macro works as a forwarder of variadic args to va_format
+call.
+Rough estimates based on dirty cocci script suggests about 180-230 users
+could be converted, allowing to remove about 1100-1300 lines of code.
+Of course, I do not plan to do it in mass. I just provide two patches to
+show the usage and potential.
 
-https://lore.kernel.org/all/02e3b3bd-ae6a-4db4-b4a1-8cbc1bc0a1c8@arm.com/
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+Andrzej Hajda (3):
+      printk: add macros to simplify handling struct va_format
+      drivers/core: use va_format_call helper
+      mm: use va_format_call helper
 
-> 
-> But as for this patch, I don't see the value in changing just a few instances.
-> I'd prefer to see it converted systematically, taking into consideration all the
-> complexities.
-> 
-> Thanks,
-> Ryan
-> 
+ drivers/base/core.c    | 32 ++++++--------------------------
+ include/linux/printk.h | 30 ++++++++++++++++++++++++++++++
+ mm/page_alloc.c        | 14 ++++----------
+ mm/slub.c              | 10 +---------
+ 4 files changed, 41 insertions(+), 45 deletions(-)
+---
+base-commit: 37a098cc87aafdf4de147851cbf350bb66c51b45
+change-id: 20251126-va_format_call-41053ef60fd7
+
+Best regards,
+-- 
+Andrzej Hajda <andrzej.hajda@intel.com>
 
 
