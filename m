@@ -4,112 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AB7ED10379
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 04:28:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D75E3D1037E
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 05:47:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E7EB6B0008; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
+	id A1E916B0005; Wed, 26 Nov 2025 00:47:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BF686B000A; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
+	id 9CE9B6B0006; Wed, 26 Nov 2025 00:47:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FD616B000D; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
+	id 8E47F6B0008; Wed, 26 Nov 2025 00:47:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 407E66B0008
-	for <linux-mm@kvack.org>; Tue, 25 Nov 2025 23:28:37 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7C5DB9235
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 04:28:36 +0000 (UTC)
-X-FDA: 84151477032.27.4B78F5C
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E8CCDA0005
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 04:28:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vjldCcHP;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3626B0005
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 00:47:08 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25BA5C05A0
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 05:47:08 +0000 (UTC)
+X-FDA: 84151674936.14.CB3B95C
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 51A32140007
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 05:47:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b="OmplT/o3";
+	spf=pass (imf26.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764131314;
+	s=arc-20220608; t=1764136026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drm4DoHOqrTYC0sapqoyi+0m9Pnf5m0XGACkKnax0oE=;
-	b=4/z7MjcA0YAYTY4KHeae4eOLsCee4VTD5BqJnLxT4Kd6NJmqp7QkAUkWXlZ9cfq6SVmTap
-	aJ6CG6My6cnsiMVsIEqPc+RJGakTZ3CT1n0dlNR/xtbpKWs8mXYbMt023/1g4/foRreMjp
-	p0hMIcb0MpQhCUfVkQyWUGiUwXQmue8=
+	bh=9PiYG7KzQVU+BI4qqMtLKL4MJUBO1mej6VwEgS9g1DM=;
+	b=OIcrSaNeRMaEfGSopvWasi0DlbmHx4Um7pgmDXl8QC4NniMcj/x6AbLuMh9sxIIHv6f4bl
+	zZLFDxVfgg9Jxp97YX2R37kkmvsY4sJJWOEOiDeOJKu1VUN/Yuq1SZAioqcUO5sboCLkEU
+	f8iai4qBYs9dlPJnwCGuMPG5GmA7OEE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vjldCcHP;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764131315; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b="OmplT/o3";
+	spf=pass (imf26.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764136026; a=rsa-sha256;
 	cv=none;
-	b=IUgll3BuEMfIcy5U52Bd33nLy+DLjzM3/vh1yUw875pI1iBvYOCSwPpVV1TyXQSiuwCV+0
-	/6o7ZUgihKavnuyHtQTd9/ioBGTSQTa0jiaVyOzMJrJja6s+K1ZHjyZBIEZUiVt3AJoO1M
-	F/MGitG99EdCjMRfO8FBL2BUJnR4Rv4=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ee147baf7bso116451cf.1
-        for <linux-mm@kvack.org>; Tue, 25 Nov 2025 20:28:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764131314; x=1764736114; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=drm4DoHOqrTYC0sapqoyi+0m9Pnf5m0XGACkKnax0oE=;
-        b=vjldCcHPYVrZChFzscKVwhTcB/NE91wesMgRz0Z5478hAfz2HmXhRLvvLqfotHpoer
-         hnqK39DNObt2/B7VAWrcpfUdN2XehSX70J7YAfJWNC7q3LNd4r3GVJieIbUZC0XrkeX0
-         xrbdIlPYX9OqMAtLijPHSPJRza89fNMMCwK3maSGZN3vcwmwMUm3FBuaeqtTGNmWW0nZ
-         ngR/j7jI2AhB51wdpIkk6uxjC2FemLE2JzwQPEGaGnfgkViwv5Do+/av+lm8WyMF++rE
-         Ubtcov5m0TEqJU/dGj0Y2tjjnhrBdXFz/dpctOSqgUsfmLw4uGHsJp2DwyzQ27vEPK9z
-         BuYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764131314; x=1764736114;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=drm4DoHOqrTYC0sapqoyi+0m9Pnf5m0XGACkKnax0oE=;
-        b=H3i52pfaBejVeSvbeWUgvFqe64yown2aJKAPqpuGHTO4eULYGP1v0rtV6axKn8nDaK
-         R7VVCcair2XmobunaG7ZeNaaPx9xOpHdL9rCLnDWBJet8kTP4NLUCzr85KoAPJCaC3gq
-         bpOhrQ/HDKVpNq4zKlyxCioissq4Pa7dhI/wHMbNj4MBBYozjGqgClwsErmtYxsp+8kC
-         tK/NHI+ngtXFGtBAjSTkD060BGPXU1sW9to0uloEOn+hJNJvujosR9NZ2bCV1hNkJ5Vx
-         0QWxaRL26fOy8FolRPyYAsCxlyTJQZk+NIGB8aP0ow83fphwwj7IfLQh0h4zUMJZT1wM
-         mkDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQNzs2PAJLMT2RWwgHubXLUhXQzlbWoCZ/qUPZbuO1pLiKQ5gC6k9dTqp4lpciybpYNlyyg3F+vg==@kvack.org
-X-Gm-Message-State: AOJu0Ywo/Lpyu+xlKymXzRL8yRxtzDG6TNiYM9gZJNzdVXVW/wwEg/vj
-	HPywElp8WW+4dhafvaieUiVyuI/gViatDuazJml4mW0FVbVXmgLmcA14+BGkygJyQHM5Vvwd8w4
-	DCrwDuBKz8HwYbMU/OX7FhNjlzBB8eTnwnBMw/dzA
-X-Gm-Gg: ASbGncvSUET1uxgYnS4lj7bE0U3cplSqvfklLlL2FsmGgJ/cy/Qn4BknrykYofYk0//
-	1BZfSWuF2Z85LotM9dgJjuIGRhMhwEz4Zr3VjXvYRZWDsGmSRPUQTsEbGafYtTSS11Sg8dlhuyJ
-	bZqVtOwvTZR+Ow8N4zky2gtrhzxo54QlhYJIs8Sh6T7XdeJNrAozy20yqMV/WYcMLz0/NEPXYC6
-	3cOBDFIVelbH0UOwwuUWzc+MyQHB1UNOD6UJRoZvM+lGKkKPMs3qcOJpoTJEcv0z7J2nw==
-X-Google-Smtp-Source: AGHT+IE9A8yMSmSdhayVhMqlf1mg5/piGDgQ4GJmiPTw7/Ebwna8OTlXSKOf4fq/XHIGlcDZlsavWrR0+nVSPDUPY9c=
-X-Received: by 2002:ac8:5fc1:0:b0:4ed:ff79:e678 with SMTP id
- d75a77b69052e-4efc6ce40fbmr2589701cf.18.1764131313769; Tue, 25 Nov 2025
- 20:28:33 -0800 (PST)
+	b=HyDqrgyNLr1Hmy+sXC4zGRAJPh+u2Gev+4Bfow24q2PKxYMG80ytsXX2nhe6e7Y/Ql1PnF
+	/lISeA2yoof2MXB29PP2WnwI55fBEjrVV34wNzs4+/4g7vFqPEN7tQLVSi4Xv34NEOwusx
+	8ERfmdTju2qW3l7PWnc0tFc0w38EEJM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=9PiYG7KzQVU+BI4qqMtLKL4MJUBO1mej6VwEgS9g1DM=; 
+	b=OmplT/o3NoKdujgRPehU7WFnzGjw6UlLogxLX6ZT+wVn1fexz00OjlJfqi0e+sLmKR5JWAMljWL
+	GRmtRDshOqShheEHV0aPQe5YVY45kdzZcB8tWqG9uVscBfDAG/pQ0s9yRoGC5i4HOaUkEN6olnwme
+	zKNjshGsQZ1qg3KHZkfKIEk8VU9jaGP0QynZ1ysHrC3XZib1oKmdKR5BYgYIFZr3jIipJ4gnoeTlv
+	CbMyRJDhpSn2czokfIXV+RLm/DeSbk4eWOpQkbRUHVhZFeDBGl6OTWLfP3noGIixVXGULtNFBDS9i
+	T0F2GRiyzKNtrwoT1Xb1p/iP2AHYuTbQou7Q==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vO8Mj-0061xd-1y;
+	Wed, 26 Nov 2025 13:46:58 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 26 Nov 2025 13:46:57 +0800
+Date: Wed, 26 Nov 2025 13:46:57 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>,
+	SeongJae Park <sj@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>,
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+	"kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"clabbe@baylibre.com" <clabbe@baylibre.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>,
+	"surenb@google.com" <surenb@google.com>,
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>,
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Message-ID: <aSaUUez5J1w5WyE-@gondor.apana.org.au>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
+ <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
+ <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
+ <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
 MIME-Version: 1.0
-References: <20251126034404.2264317-1-willy@infradead.org>
-In-Reply-To: <20251126034404.2264317-1-willy@infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 25 Nov 2025 20:28:22 -0800
-X-Gm-Features: AWmQ_blk9wRDV0VZnYwqgq4TyMcsFhCXzh61Hco1ss7K3iz47Z8usI4x7tlFiFg
-Message-ID: <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
-Subject: Re: [PATCH] mm: fix vma_start_write_killable() signal handling
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E8CCDA0005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
+X-Rspamd-Queue-Id: 51A32140007
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: fzg5yzmrraeh44dj4h1k54u5y7k591sk
-X-HE-Tag: 1764131314-925014
-X-HE-Meta: U2FsdGVkX1/jmUvwDGXbVG/cRkkoeJ6yZ+dZ50ruJjnpIi7y+rOv2y2kdQ0arjRdiLDio9hW8oumYpwh84v1QvSRESlPJP/xJnM+uKxz1Mm+FBZTzfVCoqEO+j3iuxklSCH2H5GhaQZ5s0j1DEEkgnonUHpYixvaJGQkIzaCJcMI+qbCeJDzEJvcTK1B2i2aFxGXIsK7/x6rbXcVXtEfakSi8SYk/oVNT5OlsWtl+694CrhMVdKptx3mkr2sbQO3rba5LKTx0zdCwM/AdbaleUhdpiCg3QRhrNMjapWxGyFRdMSJe5L5XirUaiAb5QUPuJxUhA6Iu43/V6aG90bdKZ8SUb2Y/4YE4JFKbfkjy4sR26/0OGnqfzh9mARhlf0Hm1UcacDFeWWtkTUC5sBHenYZD/cOxn3ucP75XEskpkN+lIxYXSiPyb0xUOuHkFSfPltRtQ/PcshMMmFxGVwW4BA/tgbEMEYSBZoAiTDxvhUGIHOAC39fkoGMtpC81+86w6Bv+3/SDUmYij96Guu9Fi2PbbAYLDOg+RuWIJUbNke3UETSBzUVAplCxJsHPs7elPYHv+X8RxjBTXmawgm45Mu1Q1krwT6K66Gjp+4EIddc2MoyFjaPqe6SEVKdomUPC7MVXU0G8wgB2rB2EnH2UUe9oHGISpQcD1gV0TORdt0u6ztYgCogzPcnUXBuTvpcPnPYfHMPddf6VWwVAkP84NDo1KmQdzRunV3tFtibNWIvhyXmWyFDBEMSh8BL01latZupXREMMkOqvLAZcXL5EpXXzGz5nhPCNopG8phtCcYbXLCIYGCjNTWe0790UN7h4ue9I7afYVPpqW32bhfzIYKKU4XgEvX5iU08a2q/Bk2Xff1akRuKJrSjB39goC3makeCXg4lwh6sjFeDYD7b7h3wSupHzB86AD9uOndyHo6CvCTeCyEvlEUiM2XYIasR+rm+rJa429vDYhHvEBg
- lkcTo4yN
- nbZf6wLE42nh2HIGItjcm1SHrxppoRkEAt8+2pCA3V+34+sny+npMYJCqmHnGh6kzf6mdKLSUS7Hy+Uf66Q49I9YSTH5Q8qcGTh/Z7niRdu4DSQnEH0LG4vBDpa1gnkETEbXh55OntypvJmYjDXh0OWdw288F/nBVzc5BDyvx15J8OJdm1cKrN/IHCs1fedb7x4lZunpxxrMOysrE7pfc/KK8AVV+FENhiB4ztVOGGb8DqUyKFb+AazOIt+rwI+zi428T4YcnalDX9lMiGZCGlk9hpDfz1o8+Tjz+F60eMp9udIJBRkaeD6MxGA1qZERSxqTRAHVS9Hk+XmfI89uVXmXbi1Tnvou1vJcQZJjPguGPswAnezRC9BMfOHeHn+te8F0ILIa73PZJnjr0J9am/u42ugfy8VrVsice2n73pG5cJpMpADCe/CEfTRGEiB84Avt2Dl1/p67t0OuqwjleP7B/1+rePlDxdYigImztTpTd+sE9kMIZkXhElg==
+X-Stat-Signature: t4995i86fywjp6oh6pf48ybg4cbw8esb
+X-HE-Tag: 1764136024-630159
+X-HE-Meta: U2FsdGVkX18mrJJthQTstth3qi39lRtD+A5Ib+h3UkugI9AUri33slsdXQnnnnBm95/Cc2rcCfouF3RapSgRNgtTUDZdKzBjrxideAvjXfl6yno2NRrGVPCv6I+mPIrwHNdePuWOdIoFM0+eoLBuaw7zUSLl5bD2hsot4sEP60jP390FGApbpT+S4rOC7LcILPNkemn9Gc/rTCauNHhJ4V1DNJqfDGxIrKluCyVoDCb7palYz2aQvN49s4FxEgoBWQSSvA1bz1eltc84nuM4uiDwEaYrzC/oSB4go2F8DxwHHsOdDhn7Es74dvS3g6TIvE2cbhm0hUH5M0UusTgf/3IGWRZiyKEMAm+R6x5nPruxMhD4dPeHygbCXBAWxV+hK+ebVaerQHWdyZgf2kikSkWcKsNlFq83g4QRqdKj4+mHyt5CisjTpwNJEx30j3g5jCuCrCTpozKdYp5pqvpcOX/NfjbA8gIXn+UUWEHQY4dUl7/klUSbVZei6PNClbbYbwesQGx0BWo4lRsX9eJR85aNVS1gVqfrJVH16bax3zxSY7c57er92DaTwsGLgcB84n93HPSQxcTII0NwkyWcWiiqTQ1fSCPnxfJVq1uKxdr47ZHdMPUScje0Bzpq5ppb9TUV2zZ957CsNtx3krRDzxaSm1dBcW0ryTM2CXekrCB2R77e4GlNjlq23bR237/HZ64kXdiC1d7I/aTr2ZMhizJWvhYH/josz+EtfXZo/QMjqMXBE9YClqPbiDrWeMBqTCL7+llET+urxeJGbyKDh26WGs1R19I8ABg8Hp7KfZY0D0tJRzdTmiHyDxZxCAs22w2xynE9At35jEJ8Gkz4f0Y60BK935b267c/Wyo273F0CT5OLbK+UhXtscjiOCTlans/Imu3I6HQ3OclOMUWVj6eKkq2KXSPpu01BCJyCuHmNGOtNvHWUbqLKbOk3gVx+NL2F2wDVfhzXeJWXlV
+ e+69xMEQ
+ 5n/jLO9y0Dch/TpAAehLGbEQlzpaWY1dutox7Iq0tOiLHTiWIQjCOYejbz4ttIY5PhUGxILvz4oHP9+lnltTqkV5F60DtpLNi0g1go1DLTdyTGHVv8loJ4os7f/GuacjFDkfP+eUfB/D80azhY/CGj1LYeJzwjyzKN82EPAo0la2GJyvr1HzfRIZOiuMWASESoNzIF/UWmxtQJKn/74OKeLqVpWaRyUDxpt9Xgaf7laPM/SAXw0ylyR3TmEgurB2or6RuNvvOUTMlDlbhEl8yWHQzrniRn8t5LezKX6/G/z1stwl8+Mp/1uZtbZxh4eOCT6rZw+9tNpQeMgyvPr5L3aQkYN23KnXA3DAhO1MrIY3c9Ci/zEPmlBfAAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,86 +119,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 7:44=E2=80=AFPM Matthew Wilcox (Oracle)
-<willy@infradead.org> wrote:
+On Fri, Nov 14, 2025 at 03:37:53PM +0000, Yosry Ahmed wrote:
 >
-> If we get a signal, we need to restore the vm_refcnt.  The wrinkle in
-> that is that we might be the last reference.  If that happens, fix the
-> refcount to look like we weren't interrupted by a fatal signal.
->
-> Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
-> Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
-> Andrew, since the vma_start_write_killable() patch is in mm-stable,
-> I don't think you can put this in as a fixup, right?
->
-> Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this bug.
+> Thanks for the clarification. I understand that the error code has
+> different sources for SW and HW compressors, but I do not like using
+> errp as an indirection. It makes the code unclear. I would rather we
+> explicitly check err for SW compressors and dlen for HW compressors.
+> 
+> That being said, I thought what Herbert suggested was that the same API
+> is used for both SW and HW compressors. IOW, either way we submit a
+> batch of pages (8 pages for SW compressors), and then the crypto API
+> would either give the entire batch to the compressor if it supports
+> batching, or loop over them internally and hand them page-by-page to
+> the compressor.
+> 
+> This would simplify usage as we do not have to handle the differences in
+> zswap.
+> 
+> If that is not doable, at the very least the API should be consistent.
+> Right now the error code and length are propagated differently to the
+> caller based on whether or not the compressor support batching.
 
-Doh! This is embarassing...
+Yes we should only have one code path in zswap, regardless of whether
+batching is used or not.
 
-> Any other stupid thing I've done?  And am I doing the right thing
-> with refcount_set()?
->
->  mm/mmap_lock.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> index e6e5570d1ec7..71af7f0a5fe1 100644
-> --- a/mm/mmap_lock.c
-> +++ b/mm/mmap_lock.c
-> @@ -74,9 +74,18 @@ static inline int __vma_enter_locked(struct vm_area_st=
-ruct *vma,
->                    refcount_read(&vma->vm_refcnt) =3D=3D tgt_refcnt,
->                    state);
->         if (err) {
-> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcn=
-t)) {
-> +                       /* Oh cobblers.  While we got a fatal signal, we
-> +                        * raced with the last user.  Pretend we didn't n=
-otice
-> +                        * the signal
-> +                        */
-> +                       refcount_set(&vma->vm_refcnt, VMA_LOCK_OFFSET);
-> +                       goto acquired;
+The degenerate case of a batch with a single page should be handled
+by the Crypto API.
 
-Wait, why do we consider this as a successful acquisition? The
-vm_refcnt is 0, so this is similar situation to an earlier:
+So I will change crypto_acomp to take care of this case.
 
-if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
-        return 0;
-
-IOW, the vma is not referenced, so we failed to lock it. I think the
-fix should be:
-
-        if (err) {
-+               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)=
-) {
-+                       /* Oh cobblers.  While we got a fatal signal, we
-+                        * raced with the last user.  VMA is not referenced=
-,
-+                        * fail to lock it.
-+                        */
-+                       err =3D 0;
-+               }
-                rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
-                return err;
-        }
-
-
-> +               }
->                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
->                 return err;
->         }
-> +acquired:
->         lock_acquired(&vma->vmlock_dep_map, _RET_IP_);
->
->         return 1;
-> --
-> 2.47.2
->
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
