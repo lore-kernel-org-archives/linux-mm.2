@@ -4,112 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 388BCD10F58
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:26:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39283D10F5A
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 14:36:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 585E36B0024; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
+	id 7BFBF6B000E; Wed, 26 Nov 2025 09:36:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55D206B0026; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
+	id 770586B0010; Wed, 26 Nov 2025 09:36:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44BAC6B0027; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
+	id 65EB56B0011; Wed, 26 Nov 2025 09:36:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 327866B0024
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:26:41 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7801160608
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:26:40 +0000 (UTC)
-X-FDA: 84152984160.24.77C7DC3
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0622A1C000E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:26:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=tDI8hikf;
-	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 559576B000E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 09:36:35 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6B7C16057C
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:36:34 +0000 (UTC)
+X-FDA: 84153009108.03.09CBBB4
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 74D504000F
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 14:36:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLw4ZbUS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qp6oXA3b;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JPzvPdYT;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VTWyHUzB;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764167199;
+	s=arc-20220608; t=1764167792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5VPPLsvVDEd9CTC6yHY+fYpwZTiGy4/39LYX3I9kr9M=;
-	b=Nh7Vt8QzEL/Gdc7BznF41h5y2kF/XaloIhfoaF8ynRj369bISF98aq+j0gS8G9yRHHSM0u
-	fBxKeDHOMGBNmDTpdU8tLEagZ5jh5DeZaCjiHFlBaKZt1Ae+MAchukfAohWRTVQthQXiHN
-	fCGUlDivgCHsp+NbbSpiklVUygApJ94=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=tDI8hikf;
-	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764167199; a=rsa-sha256;
+	bh=7z0672rpdsxvyz3FUPlVrUalvSuihGpQm4We7XgcnJo=;
+	b=FbKShwopXXMyFstNNo94TAiHAINeVOC1khAy1CR3E/aPPIDbTfjAXXcWYKIjPE+ulVTDaB
+	jzNb2XMy3JT+w/uwk0tP10o8pU3sfXwa52PN0DQPzG+/kMl7orzR8psWQp85N/p+Kne7mK
+	mUZ/kNwiKfDc6lo2dQ0L/MBDBeScy4A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764167792; a=rsa-sha256;
 	cv=none;
-	b=zmK6zPY/1Z88+wQ38ZjQfTezGPfOc9B0X0PjnW5qP4t8ya3tEmzjdyFlbSMcX98xtKGrcu
-	/wtkZpxZskQUO4yl617qAddSPfhK8K/WVp8THXQ1/h9C5CL21qV+M/DIm/UbACrweko429
-	cQYimvQUrQyaVa/1YiIB8kx0rXpnfyc=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ed67a143c5so364381cf.0
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 06:26:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764167198; x=1764771998; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5VPPLsvVDEd9CTC6yHY+fYpwZTiGy4/39LYX3I9kr9M=;
-        b=tDI8hikfJ5k7+fOcveB2MsWcC+wcwLDx3+Dz3IkqtGMWTX4xlHdvf9NsiA+8O6Spcd
-         EGhLDAJDa4wMh6EwhWhzd6cV+aElZMxCwZZk3SCxuQqIrRl8R5M81t+5kJAsO0/y78Tj
-         lLNUb78yW0ZnTAbdveffqCYu35wYve2RwcahU6v/YWrWAQJSIuCYbP05gu5qbbxezsUp
-         6aCnkXw9tyL4Q+r2yz8/OoTUw62Ml8/ZGFd9bC1PRgerKe7RNMFt4AkY8eYZhSMT4pHe
-         7ZqDuyf6R5OU9lKByul3LZHdMowO2XS3wpXPnZCbKwbQDltdo7Bc4SklPPxS3biLcR6v
-         EMzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764167198; x=1764771998;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5VPPLsvVDEd9CTC6yHY+fYpwZTiGy4/39LYX3I9kr9M=;
-        b=SRsy2upf8MQ4/ED6XFIb9Vq91dGzH58Ngs9RPHWN1SQkElEUR9parhLZmJSJ059Q3F
-         92cjKDA+GROKK/dCpc8K8h7Kdl4InfVWY9CvpoVcWg7EAlraGEvNiyq4UkBq0KnwcpLJ
-         JwzjAJesqO9lElF0xIWpBpHOjv1MftuLIt0lxslFAuu2akHWgdj9ObpVaLZTeNw17mmj
-         fSIQL9AT238xUndhxCfZVmPA69qug7beI+6QpekeM0lxV3cbkevlrlIfgIQNkKi3BDzk
-         MWYDxWzgAXzvemp6OKG5tbNYmUKRrnDxvu6nUFEDPIusHPfo42oGowps9FzlnRWJFWRt
-         Q/5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUhpj00uKfnLnac0g9BDZ4QNSJld1NHKiyFn/QC2fC8Ae8HIjJlvKF4sU6S6gvDCcLQoRiuHp1+tg==@kvack.org
-X-Gm-Message-State: AOJu0YwbDB2/oAc/RTQkWXuU8s/ADJNI/LX97Qgo5hPwD+fI+pd17GLS
-	zADAJ1guju+6UERPI2Wnl6URK5Jg92W2eIjh9gqGOiRET5DP+5tqwYUWC3qgzuNloKzxe294D/j
-	ixwyZU8WERq18vRHDHyKBBRfiJtzVdGTHBTa3h0lN
-X-Gm-Gg: ASbGncu14fhJkBcM7H1bjMzhOdKbUIoECdmGUkFeA4CUOktL/e5fafq6fleli+0/iuz
-	grP5glJq9DosUeS40E0YWWgTxaRyOwGIFYlzCKHaHWU1sSeePnjGvVRZAR46JMpCifBRpmZDMwm
-	ApS3zlJIAxNnTENfEDwIOOJKuKYhlK/Uzbc+l24ZSrhPfByl1iExpGWC5tcW0M/cAJeAOhyyEtl
-	IgWRlgtNXLFn1n6E6/DgeYb6jqtsR+kCIvTq0B8jEehI6fDZj5Lof01leTY7Qb3Lr8Q0g==
-X-Google-Smtp-Source: AGHT+IEPoAZkKOpilwPAptI3s0B3tzdeW3nrnf6UAjdN4XbCU5wZqigCPTnmNHhnQhINBzyTNTpE3TKtJR4B94kNn4U=
-X-Received: by 2002:a05:622a:1653:b0:4b7:8de4:52d6 with SMTP id
- d75a77b69052e-4efc6b0dc4amr5433441cf.2.1764167197724; Wed, 26 Nov 2025
- 06:26:37 -0800 (PST)
+	b=NfxOSS0091EpuvqmoyRUUYKj7T2fCxfItG+LYXEWMqvS4AIF5tSYaEnw1NrhJSHJGMDGnH
+	yl+7TU2f02Il3BISzIeszV/l1xos/3h+nl2VSeJo7KEZQl4UCWK9NjrBCl/4Siaz/7jMvF
+	Rxe7PqC3D0bLAquJVtxnTqKXfYZEEM4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLw4ZbUS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qp6oXA3b;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JPzvPdYT;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VTWyHUzB;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7C2F733689;
+	Wed, 26 Nov 2025 14:36:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764167790; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7z0672rpdsxvyz3FUPlVrUalvSuihGpQm4We7XgcnJo=;
+	b=zLw4ZbUS5Y/41ZMDAQQOKBR2Ec4d3NZ3ZdjyMpKj/R3vkD4H7EG1nD2ppLZ64R2+b1xKdh
+	9RmfRCpJrUwUbhPeRhhOQBseIsZX2QUZGsuS6bRuzQfzT0vz1ieiDQbtgtPHaS20HRbusc
+	S4GQbn7ftwxd2WJnI1hlAD/Ju2DM8KU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764167790;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7z0672rpdsxvyz3FUPlVrUalvSuihGpQm4We7XgcnJo=;
+	b=qp6oXA3b6xYjCaQWjm57uRCnuLxmF9/A2RvgmLWrwWunFCKYn8+rorJYsjW9RzLe79DeI6
+	5kGo8Ldcw/gTj+BA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764167789; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7z0672rpdsxvyz3FUPlVrUalvSuihGpQm4We7XgcnJo=;
+	b=JPzvPdYT1Gr8HtNb0OKXnTvlF+E4nSCtGT69tKh96Xflj+oJ89C184vLPvSelvzcvWpcHR
+	HvRE8sz+LNaXZnPot58M5kNoH5qlI3f575YbHy12S+6TLDf9sdPCge0WSQVWmQqYhvF+cy
+	yI5DUpWPSY6JMC4m4mJ/JMYnYKCpaUQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764167789;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7z0672rpdsxvyz3FUPlVrUalvSuihGpQm4We7XgcnJo=;
+	b=VTWyHUzB3zYFjL30eEJRM87vY9z2W3NNFbCdRfwVej70pXCpMHjmt7TiMIbd/NkHHfpNvJ
+	8EznE4NUyxicAuDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 705B83EA63;
+	Wed, 26 Nov 2025 14:36:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ICIwG20QJ2lmRgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 26 Nov 2025 14:36:29 +0000
+Message-ID: <cc823b79-7a2e-4a73-bd9d-b0aa492807b7@suse.cz>
+Date: Wed, 26 Nov 2025 15:36:46 +0100
 MIME-Version: 1.0
-References: <20251126034404.2264317-1-willy@infradead.org> <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
-In-Reply-To: <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 26 Nov 2025 06:26:26 -0800
-X-Gm-Features: AWmQ_bmN1Uwu13W4NrHUtDvmW-KG2uAkfNBqSpwb6IphsxLee_ZtBn8LuK-5quc
-Message-ID: <CAJuCfpEge7MJD1joXz=tKgcD7DQgPggjCKF9PLPr3NZEaw=ouw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: fix vma_start_write_killable() signal handling
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0622A1C000E
+To: Suren Baghdasaryan <surenb@google.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <20251126034404.2264317-1-willy@infradead.org>
+ <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <CAJuCfpHmqy3jA-7YUEpLBe+cf4_4TSbimqZd+9Cc4Z30mODdZg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 74D504000F
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: jzqdnnm9fjig6ro5sfxbodb5ra8h93kp
-X-HE-Tag: 1764167198-959694
-X-HE-Meta: U2FsdGVkX1+GGhsVIX5JQiko/O2yvg6gYEWsy7/cpiQIZvGyLh23BFSIzzHpGeleqrAO4uvwHMg7oPed1qJfhgIue2Vz1kXdOHzu0J/EcmepBCt/Qep3rrRdwIHVlhjxJiljofiLzyg//aWMZo98dplThMVa0bEzhv8z6GidArynDvKn8ta/9r08cprYeQaq4N5MHyhplkTElbP7wgNQ+K6z1ZZE4+9aiaia9vo3YI5Mf9M8cURd13PZPsOCYaOum2rEXHsIQAl7ky0sB0peFrjPx4duV6FniwqILGJwsa1y6mua83AnCpMIpw6wm4OCO8qiNeytMaa0CTwvaYQSrGIYOH7fHdhqMnzqAgezydLTUge0w/7K4g9pEb2AH/XpYwaWJw0Rv/fsycCFppSO3bo9vAtS9bukn/FLZ6r0tnw3IURDEujQhPuJ/t2ThY763R0BQdIK54DQPEP3vxYAvaXx7HCCb26Y5+rUxqs5xNS5/sViirFfGgNMiqzK3gtRqJOZWYyz4/u7AnyqDajk8YnvTsRcc3+jsYBrc7UUzJHYs4fVr0U4n9uRft70xZhN5aHziJZyqVuy/85XzXLTzHn9vpKMLsO+DCU1Gy/bwkYKGlDa66Ojb3l1KxZUcpEjxlaePnsWzwwUDJ5WZPRkt3kTR7QW6u5mXqjgvfz88YzgPw9Bed3TNPY6/XTmhgTj58Ifc3iN60r/30WJObTSThY+1MoHTLEh6zCAWY6z+AOZs4GOnEBpFZNOqO7yyiUWUJtSUucpbMKx0vSXBZijdGfaRCHEspKXu8uk7ZrpHGsvVlFQrbmpCZv3OJNRyEkPf6jNdIhS20TUjWlF2nR+29kYuoP+6mxNyM7xXIwV2vSNxIgf+C9QZKLVbQW1lXX6rWBwCMBuUvy61qiZ/1gO45TzW8UUfOyfROdx7huzPiIFFWtrkqPSVsj4+J4MNwacqz0b6gigNKqya6vzVWS
- xKGHAopk
- z3RaRuJVji+36LeynqIlHppl58ROSDBgoM9plgqUzuOzdJoI2pa1hpCJ2NhfoLaz7dLCmxl6NQKOF6CoahVmNFQT7dBFoT4KQsgzTSwqUXgRAj4bKGTb/ualvoiasrRJBM9wSXpHBSVmJVces6hYn7ZKvqCJqQHfAw9SYUjkyyBqW3P7J0k+ztf/KY48gHuySZTFEFiQBkQdsD/vVQXP/8w+rY3CytlHtaGWPoGTYECSCGpumTsW8KGL7IQfQliD5wbCEWnQSiObSqVUdpImFRA/PJ6RQR5j4XBQtYXTquQudk+mrDOBZTfJ0Jq59OVYwG0ERme/b50H//nbU0vcJe28L76VnNQBFuyg37PQ6LHN32lnJ2HZZXjqDW3XczyTtNgmPqFf1bzgNJsoLa/L33loqRxLiYDOoR/iNkj3qe8geGnarRIjd8R9Mhd//COizb+PSShhuocuDGH1aefmR+wXGIlswi0/9iMcrORDNcFjZ0LR+MbOCqZIPMA==
+X-Stat-Signature: c3h85rz3b8k3oszkhpzkq49isfcdamqf
+X-HE-Tag: 1764167792-917755
+X-HE-Meta: U2FsdGVkX185D4Zk1ujb0C75H0WZ/bPlbpi1tqSH8ISLkXzy/MlhuSqtWbg53TKPEH4v9Sa5mpJ5ju8VFlooZ/InRN1oLOk4ckW/S9B7VwX7qe5qVvJq3pvaEePE1tc2vKgsJs4bV5Q/7eeBY+oos94rQvP9zPgW9YL04q1/D41O4HgMdzbowHoh6VMgzsMpBAd2AFef2KqGsLZHavOHmVdYWf+JV6lsjE3CAU2f8fTs8kKUyflW2Xg8WdmHS0jpyo9dPPWk9jCazdkhIDssAHEdFCJn3TCEHwyBn76siQJMjgALEsHzuWssVV29H1iki8FU/BQi5cdkM8/MfrheDd7/v9SU+nFJ7Pehm0d9JZDWoALMZoa2RnEXE/eh7JGawJrqf/T2r8Zr9yPepA0w4PggPe2nGFo0nDuACQOeKHKvV+J3VVBRFnS5zXLFLhJhrAKkoSSex3J/nAgPThPgUquIGIbmT5N8lPq3aCCAVN74jTGfZfa0RxdjB6OaP4FsyA+As4xaa7hLL2jzdeqRlDar8EFiEpP9hIQEkM7wCi3e5lst0VWw8vkf1om9Qqg70Db6VaFLuirFP4oGUDlylhRrbrDXVuQosCQeymVxbvsU2nC/nrkIAoa6I+06nwqIZxbKxscsoXzKNjiByLJVWV/EfnKCtADZ9/AQcoNZfQiJoj65KG/JHJLXe2XmbO7/QJVjU50zOQeJ7wSfnNRQhHBOQVEh6+YlsIWRKUwilmz9434xXVoaebmJDqRnYykNp0E6b+UI3HpJAXWMjiFJYtZ1+aO8tENNHWdMVBfwKo2gmLbv5iVOfQbE8QVoh+BzVCXP60Iu/j8fMHP5xz3F8cwJjMBDObHCbR9+tt6LiGfD/DjEx9uu7qkJ6za/7XqOe2DVNktCRR1VKASu/UjcgryuzXdv7dIYRSkanK6TRC/x9fJctEHrBZIRA+2Ey5W0bUvu1VI26UZiAEv0zKP
+ UuygVo9N
+ FavXUAQ9zHwtmq6Gn679UZUNRpHNRb86zhOGYT8poBsKEGJFZbSkKJXLTNSvwtebPkp7aodRSsauWDp3ZhRMH/ZqLMztldr4NqubJ6ZBSvCLTvh1awDrloksvBiS/MwTgqTQd0tgtnfoSuhrM08LURDphX6XzUdanoLXOzPmFB5Qqp80fgL6dRs+fFHM9h2Z3SnpOkTuKNUgpv9TRMzw0ELfbuW0to1CvIPDOA9rAMuP4M1Mgsv07uaEZQSQ7I8cbIYWA1ffZxVcHhsE3XHCgEQMrD/xH0jkWsYz8TR4FutdaWyzwNdIrUvU0D+/hOogJqcC+D10f5ebRCo43jfseKzVzLB8mJnJx0wdVWEfdhCuzIa+IJHZlY8Sqk7sx2EHXRZlGvGbb9XBNg2kLV3HPhqmRfkwySNIkbIs4o7yhCMii3dungy6YPeY1JkBEbBwcoLe94UijtF/M1XZPGzZ0unc7qppFH8KRSt4AJwg22SUnxAoyV4hvG291+911Ovz9do9YWStwsAwVaimX9i1s58XhYLQE8YO5Tn4+33R2KZ4mYcfNkKgrfSaHPDRz2l+yFmTr2fbWjhDTmJOscMIDPM9COY4z6hwqtjOyYGyYwqrUcc8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,125 +142,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 25, 2025 at 8:28=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Tue, Nov 25, 2025 at 7:44=E2=80=AFPM Matthew Wilcox (Oracle)
+On 11/26/25 5:28 AM, Suren Baghdasaryan wrote:
+> On Tue, Nov 25, 2025 at 7:44 PM Matthew Wilcox (Oracle)
 > <willy@infradead.org> wrote:
-> >
-> > If we get a signal, we need to restore the vm_refcnt.  The wrinkle in
-> > that is that we might be the last reference.  If that happens, fix the
-> > refcount to look like we weren't interrupted by a fatal signal.
-> >
-> > Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
-> > Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
-> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > Cc: Vlastimil Babka <vbabka@suse.cz>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > ---
-> > Andrew, since the vma_start_write_killable() patch is in mm-stable,
-> > I don't think you can put this in as a fixup, right?
-> >
-> > Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this bug.
->
+>>
+>> If we get a signal, we need to restore the vm_refcnt.  The wrinkle in
+>> that is that we might be the last reference.  If that happens, fix the
+>> refcount to look like we weren't interrupted by a fatal signal.
+>>
+>> Reported-by: syzbot+5b19bad23ac7f44bf8b8@syzkaller.appspotmail.com
+>> Fixes: 2197bb60f890 ("mm: add vma_start_write_killable()")
+>> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>> Cc: Suren Baghdasaryan <surenb@google.com>
+>> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> ---
+>> Andrew, since the vma_start_write_killable() patch is in mm-stable,
+>> I don't think you can put this in as a fixup, right?
+>>
+>> Suren, Liam, Vlastimil, Lorenzo ... none of you spotted this bug.
+> 
 > Doh! This is embarassing...
->
-> > Any other stupid thing I've done?  And am I doing the right thing
-> > with refcount_set()?
-> >
-> >  mm/mmap_lock.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> > index e6e5570d1ec7..71af7f0a5fe1 100644
-> > --- a/mm/mmap_lock.c
-> > +++ b/mm/mmap_lock.c
-> > @@ -74,9 +74,18 @@ static inline int __vma_enter_locked(struct vm_area_=
-struct *vma,
-> >                    refcount_read(&vma->vm_refcnt) =3D=3D tgt_refcnt,
-> >                    state);
-> >         if (err) {
-> > +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_ref=
-cnt)) {
-> > +                       /* Oh cobblers.  While we got a fatal signal, w=
-e
-> > +                        * raced with the last user.  Pretend we didn't=
- notice
-> > +                        * the signal
-> > +                        */
-> > +                       refcount_set(&vma->vm_refcnt, VMA_LOCK_OFFSET);
-> > +                       goto acquired;
->
+
+Hand-rolled synchronization primitives are wonderful, aren't they?
+
+>> Any other stupid thing I've done?  And am I doing the right thing
+>> with refcount_set()?
+
+I think it's not wrong, but because it's dead code anyway. So it's
+unnecessary.
+
+>>  mm/mmap_lock.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>>
+>> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+>> index e6e5570d1ec7..71af7f0a5fe1 100644
+>> --- a/mm/mmap_lock.c
+>> +++ b/mm/mmap_lock.c
+>> @@ -74,9 +74,18 @@ static inline int __vma_enter_locked(struct vm_area_struct *vma,
+>>                    refcount_read(&vma->vm_refcnt) == tgt_refcnt,
+>>                    state);
+>>         if (err) {
+>> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
+>> +                       /* Oh cobblers.  While we got a fatal signal, we
+>> +                        * raced with the last user.  Pretend we didn't notice
+>> +                        * the signal
+>> +                        */
+>> +                       refcount_set(&vma->vm_refcnt, VMA_LOCK_OFFSET);
+>> +                       goto acquired;
+> 
 > Wait, why do we consider this as a successful acquisition? The
 > vm_refcnt is 0, so this is similar situation to an earlier:
->
+> 
 > if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
 >         return 0;
->
+
+But this means "vma is not attached" not "we failed to lock it".
+
 > IOW, the vma is not referenced, so we failed to lock it. I think the
 > fix should be:
-
-After sleeping on it, I don't think we should be masking EINTR error.
-__vma_enter_locked() result might be the only place where an outer
-loop is checking for fatal signals, so returning "failure to lock"
-instead of -EINTR might cause the loop to continue. I think this fix
-would be better:
-
-          * If vma is detached then only vma_mark_attached() can raise the
-          * vm_refcnt. mmap_write_lock prevents racing with vma_mark_attach=
-ed().
-          */
--        if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
-+        if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
-+                if (fatal_signal_pending(current))
-+                        return -EINTR;
-                 return 0;
-+        }
-
-         rwsem_acquire(&vma->vmlock_dep_map, 0, 0, _RET_IP_);
-         err =3D rcuwait_wait_event(&vma->vm_mm->vma_writer_wait,
-                    refcount_read(&vma->vm_refcnt) =3D=3D tgt_refcnt,
-                    state);
-         if (err) {
-+                if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt=
-)) {
-+                        /*
-+                         * No more users but fatal signal is present,
-+                         * still return the error.
-+                         */
-+                }
-                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
-                 return err;
-         }
-
-
->
+> 
 >         if (err) {
-> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcn=
-t)) {
+> +               if (refcount_sub_and_test(VMA_LOCK_OFFSET, &vma->vm_refcnt)) {
 > +                       /* Oh cobblers.  While we got a fatal signal, we
-> +                        * raced with the last user.  VMA is not referenc=
-ed,
+> +                        * raced with the last user.  VMA is not referenced,
 > +                        * fail to lock it.
 > +                        */
-> +                       err =3D 0;
+> +                       err = 0;
+
+Returning 0 in this situation therefore wouldn't be correct.
+
+AFAIU since we started with attached vma above, it's not possible that
+the refcount_sub_and_test here will drop the refcnt to zero. We could
+just WARN_ON_ONCE() on the result (in a way to make also the
+__must_check happy) and then can return err below.
+
 > +               }
 >                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
 >                 return err;
 >         }
->
->
-> > +               }
-> >                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
-> >                 return err;
-> >         }
-> > +acquired:
-> >         lock_acquired(&vma->vmlock_dep_map, _RET_IP_);
-> >
-> >         return 1;
-> > --
-> > 2.47.2
-> >
+> 
+> 
+>> +               }
+>>                 rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
+>>                 return err;
+>>         }
+>> +acquired:
+>>         lock_acquired(&vma->vmlock_dep_map, _RET_IP_);
+>>
+>>         return 1;
+>> --
+>> 2.47.2
+>>
+
 
