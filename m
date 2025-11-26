@@ -4,102 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B9DBD10F58
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D85DCD11181
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Nov 2025 16:08:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF9F86B0026; Wed, 26 Nov 2025 11:07:31 -0500 (EST)
+	id 275C46B000C; Wed, 26 Nov 2025 11:08:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD1D66B007B; Wed, 26 Nov 2025 11:07:31 -0500 (EST)
+	id 24CF06B0032; Wed, 26 Nov 2025 11:08:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE73A6B0089; Wed, 26 Nov 2025 11:07:31 -0500 (EST)
+	id 163666B008C; Wed, 26 Nov 2025 11:08:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8EDD6B0026
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:07:31 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 532A21606C4
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:07:31 +0000 (UTC)
-X-FDA: 84153238302.28.1AEDCD6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E22F31A000F
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:07:28 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764173249; a=rsa-sha256;
-	cv=none;
-	b=B6Yh0/FpVc1FfhVrLSk8WWxAJDy0vugZw7cU9nvaXOdhSEz/ok+K9u5OjQLZ8Gm6bl5UWX
-	INkI5lCWTdmF4y6hQldzsq5zG17t4x2AlSBnisUyqBhWRV8wAA2Ru6gqlIFfqJcdt++HTn
-	ohzuswbPaEbHD9oL2MNe7Ae3qLlmMoI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 01E586B000C
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 11:08:51 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B431B4EF78
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:08:51 +0000 (UTC)
+X-FDA: 84153241662.25.BF3AE93
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D65378000B
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 16:08:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=CATY9ftr;
+	dmarc=pass (policy=reject) header.from=fb.com;
+	spf=pass (imf02.hostedemail.com: domain of "prvs=74256e3cee=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=74256e3cee=amastro@meta.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764173249;
+	s=arc-20220608; t=1764173330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+RW7cdtseao8/7aTNgdH2Rhr+bJ6eoSju9CyIpiM7Cw=;
-	b=Ztf50RsVTL05xTFu1BtmbNelkSZwOsY0C4+je62WoLvy7KXBTJFZhRqwnaa19fTXclMReR
-	yI9HalOA76N9xlCEgF+uyGShjC+ILOF1vwSsExMsxiY9LVAiHPBPj7TSSats74BlEj7xX7
-	pPxguRw/+S+xCncF7lOAhLidKNLxpg0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B9C41692;
-	Wed, 26 Nov 2025 08:07:20 -0800 (PST)
-Received: from [10.1.33.153] (unknown [10.1.33.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 051ED3F73B;
-	Wed, 26 Nov 2025 08:07:24 -0800 (PST)
-Message-ID: <4505a93b-2bac-4ce1-8971-4c31f1ce1362@arm.com>
-Date: Wed, 26 Nov 2025 16:07:23 +0000
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oZmYh6YpHcTCE9H3NEMwSXw1R9ZP1diRqyx6ns/UxKM=;
+	b=a44GI0952K9UVJT5YSeXmPVCHSEHM5eLDY5SJrauQySeOlXVDXtq3t99WKSQszcT+IwBrj
+	x+s0LwMZIRQtQGO4UtR/KymLRtcOKrNNx6NgCs5HFDi/K3QauULSkE/RGN6O2Md57wHxe3
+	VQrb9vR6MWpj3nY+PYBe8oEyztBR3qk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=CATY9ftr;
+	dmarc=pass (policy=reject) header.from=fb.com;
+	spf=pass (imf02.hostedemail.com: domain of "prvs=74256e3cee=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=74256e3cee=amastro@meta.com"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764173330; a=rsa-sha256;
+	cv=none;
+	b=rNF8sDFPhsUk9fCoACtK4Qj8MsRx+rty2TQguq7atMq2ekSQtz2yDqdtdyFsBi2QkgLWyI
+	YmSIDGL2vtfjHjpTL4jnuCfoqgindBUJHwl7VuVhtTV0CfLzvk2BVc/QWg+9iB7yAzYgGY
+	PLBc7Nqgk4uUeHvwnfhVrjyrr5ODrcM=
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 5AQEPbd43733913;
+	Wed, 26 Nov 2025 08:08:31 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=s2048-2025-q2; bh=oZmYh6YpHcTCE9H3NEMw
+	SXw1R9ZP1diRqyx6ns/UxKM=; b=CATY9ftrmS7XqrrPh2Kw2+U4yOLTDIOhQo4t
+	fT++bE5QnXUTTDj1SISKs+UQWWlWXESUt4Vk/Uw4ZSdu3sXkySe9GBFHO/GtOEWQ
+	411l/Uycz4QsElZjqmNLTTOC03Bk3xrahRxGe2dTAYG3Xw8/u0qaXvlwf4Qf+gzA
+	RQRz/m6jwIWn7OkNdO9JgYCJ3G1u1eeNgwfmMCUjXO0Y/Z5VrkUOlbGe0Sigp71N
+	fPi2jhyinHmV7dk2u+LQ68tQs+O+aJ2d0sCNzYiAXKyb0pPsIXMYGocj6ADUHnCK
+	VMnCClf+dI7uC/6KbcFfIu8b90bADDeEXqso0Amh6UxzsGo6vA==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by m0089730.ppops.net (PPS) with ESMTPS id 4ap3a78uqy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 26 Nov 2025 08:08:31 -0800 (PST)
+Received: from devgpu015.cco6.facebook.com (2620:10d:c085:208::7cb7) by
+ mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Wed, 26 Nov 2025 16:08:29 +0000
+Date: Wed, 26 Nov 2025 08:08:24 -0800
+From: Alex Mastro <amastro@fb.com>
+To: Pranjal Shrivastava <praan@google.com>
+CC: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+        Robin
+ Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon
+	<will@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Jason
+ Gunthorpe <jgg@ziepe.ca>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan
+ Corbet <corbet@lwn.net>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian
+ =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Kees Cook
+	<kees@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ankit
+ Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+        Shameer
+ Kolothum <skolothumtho@nvidia.com>,
+        Kevin Tian <kevin.tian@intel.com>, Alex
+ Williamson <alex@shazbot.org>,
+        Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs
+	<mochs@nvidia.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-block@vger.kernel.org>, <iommu@lists.linux.dev>,
+        <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linaro-mm-sig@lists.linaro.org>, <kvm@vger.kernel.org>,
+        <linux-hardening@vger.kernel.org>, Nicolin Chen <nicolinc@nvidia.com>,
+        Jason
+ Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v9 06/11] dma-buf: provide phys_vec to scatter-gather
+ mapping routine
+Message-ID: <aScl+LCPN2TiN7Pd@devgpu015.cco6.facebook.com>
+References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
+ <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
+ <aSZHO6otK0Heh+Qj@devgpu015.cco6.facebook.com>
+ <aSb8yH6fSlwk1oZZ@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-Content-Language: en-GB
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
- <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
- <20251126134726.yrya5xxayfcde3kl@master>
- <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
- <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
- <ab39d448-aa1c-4c93-8e2b-5d97a9c76af5@lucifer.local>
- <1ca9f99f-6266-47ca-8c94-1a9b9aaa717f@kernel.org>
- <37973e21-e8f4-4603-b93d-4e0b1b2499fa@lucifer.local>
- <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E22F31A000F
-X-Stat-Signature: 5idqjiryyd7zqeyooxybs5chbkks9s8c
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aSb8yH6fSlwk1oZZ@google.com>
+X-Originating-IP: [2620:10d:c085:208::7cb7]
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDEzMiBTYWx0ZWRfX3bFJkIqQfPcn
+ LWbsluc+XiO7FtO07pm/tzene/bBlAJbYXetaCM2lBsQPJ7MYrk9CERNphaL5xKMK0Fnvy9OfVQ
+ Y+bU9q7WY0Uh4Ys8J+otFMneIfwxv0xQluXqaIjHKTPEMVRe0iLSwQwQAHlspppJcXBPJ55pvJz
+ JZGujlxTRi2Y6L0eYmj2p7cT3nMIZvFmJX5h1nMX2rkgpOumcUuD7Oe2fNXk47TY9k+6i3mWPRm
+ +1gsqEAXdsAGhXv5RuZTmDTEo722fCpYhIfmTOQnzXGxfUvfRTUYuIHNc7jrvUJJ3yy8os7MmWa
+ fQzyxL3akPGWodtrtHsYmp6smX1T/MBPHuER3U7LA5bJUfQjB0xkE91sw0JPQLAlnjtXtOu0oRF
+ 6D5ufStP6OnrcDNfC66Kegl4bp3vwg==
+X-Authority-Analysis: v=2.4 cv=AJKKJ3lP c=1 sm=1 tr=0 ts=692725ff cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=B5NVPXpBE_52QoX4XTUA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: jOyqyM0SasvNGLs4etkYDuX4vfn-Z9b2
+X-Proofpoint-GUID: jOyqyM0SasvNGLs4etkYDuX4vfn-Z9b2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
 X-Rspam-User: 
-X-HE-Tag: 1764173248-541596
-X-HE-Meta: U2FsdGVkX1988frlkC5Z1tfe36B97iMrAnHFlyzaWwB4E2vDWtAC/wJjc2lbnx9/qoqvn/YDHnuNoZZl5LlqIUKOBWqlesRQAcrJspv9h716jl9DBZeA6g6uj+3+vmMLlPnm4Ws4fNJidTzs1VRs2BRbVe2/A6Ooco9ALtARVOlJzBC+77h1owAzoQEyTveYSw16ROIoopYwNZ1wiNwpSHVrdQxMZGlFQYUNNX6g1KjE15Cad+pvXM6YzQFkZNRTPKXj5YKt8/gqS/5WFE0uALjKuR2inhfZSyKYaYkd0ewKnsH/rMzo6+LLug3M/I6UQlrM3VLWbn9owb9gEmYja9q183jpoxxFgIhj+TChnbZXKwZBZD7Pp9qn129q1uyZvnUykw52b6IRRJzui0CPPMQ/KT82s3JjDwsHK/kYbOWEWrzqdh+d0QhVtWgsfqGuhbIsHu3Y0003+YmEWhQsbo/N4a/Wumn1Ucw0UpuKP2WbauNkznGTI6kXz/H+G0v35SCJnHecU9Y/w6oN2pSZ7qwigRjRQBTKz+Ot0q/xsH4jdoGduZaohDvDZWUAgKlbIuuw+/GCyD0+7NUIQBn7jrysox3dtsDhCvrIIGyogpuGCLK8O6JfOPaitLnRVPhh4f5ZQhxMKmxxnMjYBCiBh9tSv9KF3QHNgmQz7pSCRPfj9XYTj0XymUDRwxiVh30iaRFBK3Dv3+GDDvXxtX8gB4+0KwTCA67tkJMoK3rVX1t5gEN4LBzV6ihFz/elvXDp/amVAyGW5JsTEgnBNwrRnmt9vQa9hA84lOuzXp5dnp5iYZwLE7d7DdZ2eAuzYD0YrRP5ZtsnfgBYZclzvBJuSnOzRO7mjc2EhcmB0vHdUvTF6XS4t01+JVo2mDcGeoCxgunwlW+9D4QNrM8ohQpsLq8/eFrZLi38hRTfkGDa6wwh1csZ7yqvUtQDecEQcdDESMts2ZT0DE2o5xLV4ox
- FSRgu9jI
- cq81x8MpM/ezvDj3Jh3/sAxfSLo1Ag5AJD9pCq8jd5IQsTvX0La2wZITg9Wv2Bb8D1ygtOksTAfoZvoLvPQCh6DC8Czv8ax264t+1CEkIUxwIM3imGV5jkRuVJvTb2pSkPAAN0xRSBohcFR0f/ZmB4ELR86n/ui5ZsxwGqTrOhf1mH/Hys0IuBEmW+Q==
+X-Rspamd-Queue-Id: D65378000B
+X-Rspamd-Server: rspam11
+X-Stat-Signature: dd1gx6mw9sg7uoj8bhbhjg5oihjjd8hp
+X-HE-Tag: 1764173329-720970
+X-HE-Meta: U2FsdGVkX1+L/+R36NPfoJKe/aW+elBAxg2YTDGVIJAq5+okCsvjzIGyl6JDGKA/GU6WLknQH2TLGw/mrnHvRz3NGiJ1RMST4mmjQ5NMl/Sq2HNiVcmDPWoOnddo0RnIrjon15UwMxIiVRyvA8YpJYlOlnWnWzm0r/2KgaxooDoD+CWqdXBERRrZFXOKOhK531ITaSeO5wruFXvoWb/rV0rFVJByU7DTNo5c2wPgTR8oXIu6te7+An840FkmqfsROJNSvhorAVQiOMofhDcHdSD9aTZTNZaB3bAZKDJ7LCBQUs+JZKJZMpT94GYRVfqKxtTjJmqVJC/FTRIT0ovP+6CteB1DHX3dXCefm2uYHTH0iStdb/QbWg8mHx8NiovPe7WpvX2zdp+8OwnH/ZIqnLrt1XsmO77CjnNADJKofN7LSna4/GGnk6ORip5IjKUna0C45sbFyTFOX3pQ3JoIokxuGAPqboKzYGVMqN/tA8sIgtvRBVRdcrH+azpqamG00YtFf3HRdzDUtsFGg2bGU+/dl7wZF1c4C43jl5Fsnq46jM5mGDQ8vaAGiW56H/9SP8mqDSmsltt5yPl/+y1tHJSqr/h7VjGntq7wMXQaALADynKlEMSdA6rcxkIl4KqS/61HqQU9PEAuZxKNtk4jxoxjUlzFbOgr3GhFpd8xmY5zj4XzNFVyuDlVBZDqV+Y5eOJanlkmTAw0Muv3ZIjf9MQocMZHytXuaR73YJxSz1yeCDn6YQwft+Nve9jofvgs+5kkU9M7Z14kLm3iGqax8yHHdcg9VlO7rjbAJ6FtoiRFpEPfoe7eWorkmmcUMVsgaYQnTJRE0Zfr+nM32XTlYIcb8deHSUo16mUjB7VXOvtO60aakeuOmNef65XBA2WPze8pTbNZdqN8oa4F3DBWhNbDAUOLSr+XBLobQXySeD+cDoXmB+xZXXK4ycMFbpWysHZ6CU7fqtFRc09INlo
+ 1245YXIj
+ 8vHTX+/Wg7O8EKqhMM1b8e1lHm1fFlGZtuqcPGsDGUFaJPy2FJbAEs1QCpwkbuP4PaQqLG/VkAv/lCAaCXMdMEaBn+TEhUb4qXHOFDHDfh+c6irdpga2lYMC2iyklTb07eEgFFlfTKgwQ2ws=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,88 +149,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/11/2025 15:12, David Hildenbrand (Red Hat) wrote:
-> On 11/26/25 16:08, Lorenzo Stoakes wrote:
->> On Wed, Nov 26, 2025 at 03:56:13PM +0100, David Hildenbrand (Red Hat) wrote:
->>> On 11/26/25 15:52, Lorenzo Stoakes wrote:
->>>>
->>>> Would the pmdp_get() never get invoked then? Or otherwise wouldn't that end up
->>>> requiring a READ_ONCE() further up the stack?
->>>
->>> See my other reply, I think the pmdp_get() is required because all pud_*
->>> functions are just simple stubs.
->>
->> OK, thought you were saying we should push further down the stack? Or up
->> depending on how you view these things :P as in READ_ONCE at leaf?
+On Wed, Nov 26, 2025 at 01:12:40PM +0000, Pranjal Shrivastava wrote:
+> On Tue, Nov 25, 2025 at 04:18:03PM -0800, Alex Mastro wrote:
+> > On Thu, Nov 20, 2025 at 11:28:25AM +0200, Leon Romanovsky wrote:
+> > > +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+> > > +					 dma_addr_t addr)
+> > > +{
+> > > +	unsigned int len, nents;
+> > > +	int i;
+> > > +
+> > > +	nents = DIV_ROUND_UP(length, UINT_MAX);
+> > > +	for (i = 0; i < nents; i++) {
+> > > +		len = min_t(size_t, length, UINT_MAX);
+> > > +		length -= len;
+> > > +		/*
+> > > +		 * DMABUF abuses scatterlist to create a scatterlist
+> > > +		 * that does not have any CPU list, only the DMA list.
+> > > +		 * Always set the page related values to NULL to ensure
+> > > +		 * importers can't use it. The phys_addr based DMA API
+> > > +		 * does not require the CPU list for mapping or unmapping.
+> > > +		 */
+> > > +		sg_set_page(sgl, NULL, 0, 0);
+> > > +		sg_dma_address(sgl) = addr + i * UINT_MAX;
+> > 
+> > (i * UINT_MAX) happens in 32-bit before being promoted to dma_addr_t for
+> > addition with addr. Overflows for i >=2 when length >= 8 GiB. Needs a cast:
+> > 
+> > 		sg_dma_address(sgl) = addr + (dma_addr_t)i * UINT_MAX;
+> > 
+> > Discovered this while debugging why dma-buf import was failing for
+> > an 8 GiB dma-buf using my earlier toy program [1]. It was surfaced by
+> > ib_umem_find_best_pgsz() returning 0 due to malformed scatterlist, which bubbles
+> > up as an EINVAL.
+> >
 > 
-> I think at leaf because I think the previous ones should essentially be only
-> used by stubs.
+> Thanks a lot for testing & reporting this!
 > 
-> But I haven't fully digested how this is all working. Or supposed to work.
-> 
-> I'm trying to chew through the arch/arm/include/asm/pgtable-2level.h example to
-> see if I can make sense of it,
+> However, I believe the casting approach is a little fragile (and
+> potentially prone to issues depending on how dma_addr_t is sized on
+> different platforms). Thus, approaching this with accumulation seems
+> better as it avoids the multiplication logic entirely, maybe something
+> like the following (untested) diff ?
 
-I wonder if we can think about this slightly differently;
+If the function input range is well-formed, then all values in
+[addr..addr+length) must be expressible by dma_addr_t, so I don't think overflow
+after casting is possible as long as nents is valid.
 
-READ_ONCE() has two important properties:
-
- - It guarrantees that a load will be issued, *even if output is unused*
- - It guarrantees that the read will be single-copy-atomic (no tearing)
-
-I think for the existing places where READ_ONCE() is used for pagetable reads we
-only care about:
-
- - It guarrantees that a load will be issued, *if output is used*
- - It guarrantees that the read will be single-copy-atomic (no tearing)
-
-I think if we can weaken to the "if output is used" property, then the compiler
-will optimize out all the unneccessary reads.
-
-AIUI, a C dereference provides neither of the guarrantees so that's no good.
-
-What about non-volatile asm? I'm told (thought need to verify) that for
-non-volatile asm, the compiler will emit it if the output is used and remove it
-otherwise. So if the asm contains the required single-copy-atomic, perhaps we
-are in business?
-
-So we would need a new READ_SCA() macro that could default to READ_ONCE() (which
-is stronger) and arches could opt in to providing a weaker asm version. Then the
-default pXdp_get() could be READ_SCA(). And this should work for all cases.
-
-I think.
+That said, `nents = DIV_ROUND_UP(length, UINT_MAX)` is simply broken on any
+system where size_t is 32b. I don't know if that's a practical consideration for
+these code paths though.
 
 > 
->>
->> Anyway. I am now designating you the expert at this ;)
+> --- a/drivers/dma-buf/dma-buf-mapping.c
+> +++ b/drivers/dma-buf/dma-buf-mapping.c
+> @@ -252,14 +252,14 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+>  	nents = DIV_ROUND_UP(length, UINT_MAX);
+>  	for (i = 0; i < nents; i++) {
+>  		len = min_t(size_t, length, UINT_MAX);
+> -		length -= len;
+>  		/*
+>  		 * DMABUF abuses scatterlist to create a scatterlist
+>  		 * that does not have any CPU list, only the DMA list.
+>  		 * Always set the page related values to NULL to ensure
+>  		 * importers can't use it. The phys_addr based DMA API
+>  		 * does not require the CPU list for mapping or unmapping.
+>  		 */
+>  		sg_set_page(sgl, NULL, 0, 0);
+> -		sg_dma_address(sgl) = addr + i * UINT_MAX;
+> +		sg_dma_address(sgl) = addr;
+>  		sg_dma_len(sgl) = len;
+> +
+> +		addr += len;
+> +		length -= len;
+>  		sgl = sg_next(sgl);
+>  	}
 > 
-> Oh no. :)
-> 
->>
->>>
->>>>
->>>>>
->>>>> IOW, push the READ_ONCE() down to the lowest level so the previous ones
->>>>> (that will get essentially ignore?) will get folded into the last
->>>>> READ_ONCE()?
->>>>>
->>>>> But my head still hurts and I am focusing on something else concurrently :)
->>>>
->>>> Even if we could make this work, I don't love that there's some implicit
->>>> assumption there that could easily break later on.
->>>>
->>>> I'd rather we kept it as stupid/obvious as possible...
->>>
->>> Looking at include/asm-generic/pgtable-nopmd.h I am not sure we are talking
->>> about implicit assumptions here. It's kind-of the design that the pud_t
->>> values are dummies, so why shoul the pudp_get() give you any guarantees.
->>>
->>> At least that's my current understanding, which might be very flawed :)
->>
->> I mean I'm waving my hands around like I'm working on an aircraft carrier here
->> so if you're _sure_ it's _absolutely_ safe then fine :)
-> 
-> Well, not yet ... :)
-> 
-
+> Thanks,
+> Praan
 
