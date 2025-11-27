@@ -4,101 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3554BD111A8
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 19:29:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD48DD111A8
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 19:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94A296B008A; Thu, 27 Nov 2025 14:29:32 -0500 (EST)
+	id 276516B0022; Thu, 27 Nov 2025 14:33:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FA516B0095; Thu, 27 Nov 2025 14:29:32 -0500 (EST)
+	id 24DC06B008C; Thu, 27 Nov 2025 14:33:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E9636B0098; Thu, 27 Nov 2025 14:29:32 -0500 (EST)
+	id 1644A6B0095; Thu, 27 Nov 2025 14:33:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 68D316B008A
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:29:32 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 303F48855B
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:29:32 +0000 (UTC)
-X-FDA: 84157376184.22.E3EC1E2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 72718C0008
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:29:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=oEgXcRsA;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 020FE6B0022
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:33:42 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A1048789B
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:33:42 +0000 (UTC)
+X-FDA: 84157386684.29.C613F31
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E9C5118000C
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:33:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C82VoaDh;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764271770;
+	s=arc-20220608; t=1764272020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=z7w0Y+UWHlazqNd54TS/urgOPxmFfe5ziQltEKPZ1Y8=;
-	b=doC+85BUp7onuGJDEmMU8hHAUGkhYnqAwFp4YiD/osRXMQPfi3DJbTs00mZUvI92RTUauE
-	TCHF7bkmb1vWOg7DYsExlV5juMYa3XTxK38bTBfSS3KRXhDUCL3Uq5Rg2P94mGhcV9Jgql
-	t7L/XRsYyIzgPH6sPWpIYWei0ctNMU4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B9qVfZYLusbs7nTb2ljdkkAnGNja00E4+fsYf3laijc=;
+	b=SUa3stIlrskt51KIHckTimP+An6Ldw6LcYychSU11nZDx3hh4O8eaQPeRPUXoh3WW45/ia
+	jcGmPi8oSnezSbbAjAbENOShalB+5NM/pTejsoAtAFcRcDLOa5tNoNvyrd8OEnafRzgpAE
+	CB7dalFMXouEz1Oc3m4nXOgD8qD5P7U=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=oEgXcRsA;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764271770; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C82VoaDh;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764272020; a=rsa-sha256;
 	cv=none;
-	b=d+bPd1sJqV7LXQikztphw/E3KQzf7wL0vX5AYO9OXLslz1A7iDLMEHEM7+hwoT4WUUaf/P
-	B1X3D6BzW2LoW44uo/9sFYjW9V+Em+59jm3UbeXkgEsgNmohiojPmqTkIRqrrcX4xIV73Q
-	QjcLefHrSHzpkMIRjqzKAj5bRFXCTEY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764271769; x=1795807769;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=IoJDqo3p2KUZ6CfHm4PkzJhsZADgqOzfnts8yppvMng=;
-  b=oEgXcRsAZYH0KmA1gcq5lRZSrOEO6y1/OtVILq6Iq3fZjl2I5WNbmPFQ
-   eSk8VS9Ug548u84KK9g5NmeziHne26RYOqw7yUTGSKM2tNATfE+XyA4Cs
-   tXWO5vGlwtqaO9sTspIHVoiFnrFSvVHZeXC0ao9Bk/AOFea1PYs4+ax1w
-   LINtOeuowHEnCWmQdnYWFVbbohUXD4GqgrFGs4oRQYO2gX3k0W1KNRYtx
-   lCrIuD4mKu12MkxiQC6E2wdbuaLserkV6vb85zFSmEmBMLPlLEN5LBBGA
-   Kc7/LlHNgX1x3e4i+hTkx1kC2WN8O1fhsjNvjJH4ujVhFt5EfOVH4QTo4
-   Q==;
-X-CSE-ConnectionGUID: uoIU910BQfuKo5IFXlz5jA==
-X-CSE-MsgGUID: TvDcXQdQTguSoyFEUE1eWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="53887355"
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="53887355"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:29:28 -0800
-X-CSE-ConnectionGUID: fadmlSSgRNuSAaw7Dnv61A==
-X-CSE-MsgGUID: yU2C/FaKSR+ZZk22kjhrzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="194095708"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 27 Nov 2025 11:29:26 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vOhgC-000000005a4-2EiN;
-	Thu, 27 Nov 2025 19:29:24 +0000
-Date: Fri, 28 Nov 2025 03:29:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: [linux-next:master 12118/12398] kernel/liveupdate/luo_core.c:402
- luo_ioctl() warn: unsigned 'nr' is never less than zero.
-Message-ID: <202511280300.6pvBmXUS-lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 72718C0008
-X-Rspamd-Server: rspam02
-X-Stat-Signature: kyzod9iqw7zhn1jfbj3eijyfnszqd5rc
+	b=DfeE0mbzciZqJn+lhb5VvfBQ7F4A11YeW29v1BjnxQwThHb6bBGAMAYXZwvS35t/o+ApCI
+	KXcQz3SISQ2G8zm4knN7N2UUW+cZTHVs8KL5i+TyHhL09GB61I/FeoGGzgKEdb8VUF4iNm
+	/jaKDwNIN2snsJsqL5Lg5E9t6UJVNfA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C36E6014D;
+	Thu, 27 Nov 2025 19:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F48C4CEF8;
+	Thu, 27 Nov 2025 19:33:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764272019;
+	bh=bKwbRmbrl+X8raFsxUCv3iqsRGv3g/qP8jWuzhz/5xo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=C82VoaDhd0sLSQSLoV+c3099bDHqryfKIwdPCaSkPbMob2hxR6Mo96WsptlVjIgXk
+	 uP97+DGgersxABmCaWxwVwO/9cRncMCk679v0utJXbOe3eUAoBEmHyUK962izBaUuz
+	 ghigxFj1nYps4+6cypgfSmpBaKlAIGYwIYKpVSas=
+Date: Thu, 27 Nov 2025 11:33:37 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, David
+ Hildenbrand <david@redhat.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Vlastimil
+ Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li
+ <chrisl@kernel.org>, SeongJae Park <sj@kernel.org>, Matthew Wilcox
+ <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
+ <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, Miaohe Lin
+ <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro
+ Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, Rik
+ van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins
+ <hughd@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v3 14/16] mm: remove is_hugetlb_entry_[migration,
+ hwpoisoned]()
+Message-Id: <20251127113337.c6a897e0b786d56084d23025@linux-foundation.org>
+In-Reply-To: <66178124-ebdf-4e23-b8ca-ed3eb8030c81@lucifer.local>
+References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+	<0e92d6924d3de88cd014ce1c53e20edc08fc152e.1762812360.git.lorenzo.stoakes@oracle.com>
+	<66178124-ebdf-4e23-b8ca-ed3eb8030c81@lucifer.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E9C5118000C
 X-Rspam-User: 
-X-HE-Tag: 1764271769-292343
-X-HE-Meta: U2FsdGVkX1+pkQWGXPisoxI6YUmBM9G0E1sGNDbe8LGY7KmoQ198LFBGjpnA18wQ/iTC8V8mtK6UubUAnrvqeXOjUsQDXYhfKPsKt4xYykBiDZrSzAulJwxF6R4lw+qK9lEJjUoJIHXnwH7qS6LKIgLOkrZOZOWiuVOeoj2ARmn7sWuVOZB7gHioMfrgnfo+OjQ1goc0MLwxv91XG6SyIeIzHDPmT0twhwYHHPW8jBxJRT8otdZJCOykyPOYgLJYZ63Qu6eTECRr5YPGaznITmObpuXRqIxArpml1hMQp2s80Cg3vt3RvzjFRi2EkaKgg/dq4hpHIlaOvG51/ScHp7rNzp5BlIfTHvPPu5KUKuk9hE93LYuHfe1xoEqLWiROb0HY7kDZlyAYr8QZvck8PpOK8LZyyDRATPwAPSi4ESMmpA89jeJMMCQwbWH/hA4fANR4hFu3wmsMfqMFL8YQEc30rPxaxWCFrwc3WsuHoX3Gr7zvpy+ajKy2ctNrU6ZbtD4GBJwLM1d4DF7Z1I/DO+aYNRDrigG34KaW8i2NtATIWqx4V/c+rJEx/4qzBjO23K4RtEoQq2fh+PdGH+yjTSWKA6NZWCyNppTtKnCcSRVI1cT2BxDdlkF9qIvn31kmXFyIw7cBC401TEbiNDvwE4Fnvje62bqzJj+w6ZO8/5zTf88IDoZ3PqsvlTIjKa50k9qltaJR3KIGIBd4XkhDgv73kns4MjGJPZcGUdeSFa1M0c707uCpRRwDG7Pep5SZafnTezYLJPxh79+aYvmzRBtEN7VXbPJYh/3rDlECrSc16HD7cQl8pmyEOC491MQwTkMoX5qKCadIKq4k/HeXHHxk1B1gA5Gd8XfPfIpDrDxC3ttvGYrjVjlyjiR1Lf2x/2Oltuwc0xbAr2b1STctpEpLi0SfQnRtg1TLypRjsnNRNO9jLkANap4lpb6xYIlvDszMfpfE0BnkNAMQlJk
- 7e8pvKu9
- BOjTJp7OXOTliNqN1DwhNQ9Kph5Cgx66mxdbdtRzZ+mlgFcWVF42Vl47z5hBrxS7IYCXw8z3qsxv8mdYul6z0mO/vuPrTwNniRg9LCN9TMu8O0SgK4qiIYThkDnn1E4fNkc3n9hMzoLcci+yaiEAWB//sINaQNysZ9MCuL+00BEslfgpwNcyXtllHhKRjc+CCGf+inlHTC9bZ8fz/HrPqqFfXJLomGKpIgD5rn6SBdNx9M6BqalWy2Yi/yPXf5cZl6gxDYG6Ub3pqHAAPsOHaL4ccsmKmbXcSddYLELD49iSaGDMRfioKoXHiLOhp/x1TjsnvlMmw/VKFijUeT10qyiC00ec8zUNMkp35OpFYdZv151o3hQdWFCWrOQ==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: yk1sqqa674ooq1c9wy4jrch6kpxk1u17
+X-HE-Tag: 1764272020-561939
+X-HE-Meta: U2FsdGVkX1+gQIW6OM93YFxVThcPC8uqagqdsoYGiqhnrW0WulnfrzB7OkpWLbAyRvX0cFELJn7vQ3crmD91HGg+wwUe3RwaQJ/gWeJEIjGezaUHFAm5y5POwu1Shn2WP0/NtHooAXZ76ROOzZxvY2tbPcIwXHXP0y4SYcoKuFIZ7pmk8oWxqcXCVo+z8NIRMY1d5oYQ4yNL3kDyLCKyDIN1TElogcFLeYtnFmdqX4wlS1ZzpKOLk9gw21f6KZy696qV58+6tFkH+lse/gbUvYsVTMgoroftlGUxJTkYiVjC7YW2R5ObLsbzWWjaeo80tAxhhZVTjJQ+yZKGo81ZS0yWeWti5fU4OKOv+8geBXhPnmjBLYjQf0PQwm4iWRVULC4qCTOSMgBeTkv+Z7pDINfQlpeegL3iz2rk7nrZdC+Azw8TKBZz02kRQW0nZwmgWI0Cl1wL6I9hv5DXgwCWi0LO/nUzzCSasH1xyHugyApd03zvJ3YKPf04WTW5dVoTuxtJdE46/ZuBcb+AI6+h4oRAqhkIwqz4VUFictJppHCfIqVBEfV0eHjPeC2fmpYvjYa2Q5YSIlPnm61c1jHkxwVpBobqf4g27HTi4MsLogzUn4B3TYka2WrI4P/39qterRlIj00M5dk0rSkeaTHsorMzTw0TGX+EZRlHAQXpmBh2RYuyUEM8KEp5VZ/6e/96wnzV0P3RPdWn0Lm+8jwh8z1cSpEfirI1LY+DKbE7tQ7FDanY89nGcqqKLYAKe1t8PVsY3S9FbnNhKNjxzrIZL+IeMKL9x7US1lrJIeoFJF0H4645qJOt/3sBjFf3vrrlYow5DYohK6FFBm5/91o5VkSx0HwSQPJB0XgVVJM+FF6dp4edTfnYh255xOBKQ+7JIx2ozt5JrgHzuewYbeT0iYmG0spXoGlzDeHiKcablFVALVovWl5J8hrCpqZvcwS72NjGoUyUjdA8JRaKv9x
+ PKNSz9sb
+ GY9KoQ2rDYAeKPQz7Y6a14URO18VTDqkMFtxXaHtDrI88YuZNMeuoTe+/55Y2cQ2HSDn+66b6VQPL4/9vppiFO5DL2w3PA9kG9RXxH91QouNv7omIxo+cV94xUXMiuvbzhTnRvdFs1loLIEiQ5YfNPrStK7UCYe7SCRocbKYoicsxZ+u5kNvAUxZsozeqrp7H9H/VkMnxZtyDATZmoRHLoSmd890gkeN9s5bh7YslwxoNDmYnNqofb4X0DzxXzooe5OCBIESFl+W/lOM4UlsQmARFoObzFzA2Prtt0u2T4OaDQc5ycfEvDZ/ViRMD4BxyR+oBMubJ91pbj8AZMtQy/YaPa3oQSWzcl7XDBa26rKG3TnA6ZwJs6n3zVf8NAULmqtO4GME+2v+NO8o6o9pIvXyYsjRGSXNWajHSr+I7pHdDW1kQB7dlrYGRsQ28ftdWrjW/TxD+qwlT2OdBv4rD80MZQkcB2dMDG/tZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,59 +123,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   ef68bf704646690aba5e81c2f7be8d6ef13d7ad8
-commit: b30a1fee674c8446bebd9e399b267ac824093bc8 [12118/12398] liveupdate: luo_core: add user interface
-config: x86_64-randconfig-161-20251127 (https://download.01.org/0day-ci/archive/20251128/202511280300.6pvBmXUS-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+On Thu, 27 Nov 2025 17:45:17 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511280300.6pvBmXUS-lkp@intel.com/
+> Hi Andrew,
+> 
+> Please apply this fix.
+> 
 
-smatch warnings:
-kernel/liveupdate/luo_core.c:402 luo_ioctl() warn: unsigned 'nr' is never less than zero.
+The offending patch is in mm-stable now, so I'll do this as a
+hey-git-made-me-add-a-bisection-hole commit.
 
-vim +/nr +402 kernel/liveupdate/luo_core.c
 
-   392	
-   393	static long luo_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
-   394	{
-   395		const struct luo_ioctl_op *op;
-   396		struct luo_ucmd ucmd = {};
-   397		union ucmd_buffer buf;
-   398		unsigned int nr;
-   399		int err;
-   400	
-   401		nr = _IOC_NR(cmd);
- > 402		if (nr < LIVEUPDATE_CMD_BASE ||
-   403		    (nr - LIVEUPDATE_CMD_BASE) >= ARRAY_SIZE(luo_ioctl_ops)) {
-   404			return -EINVAL;
-   405		}
-   406	
-   407		ucmd.ubuffer = (void __user *)arg;
-   408		err = get_user(ucmd.user_size, (u32 __user *)ucmd.ubuffer);
-   409		if (err)
-   410			return err;
-   411	
-   412		op = &luo_ioctl_ops[nr - LIVEUPDATE_CMD_BASE];
-   413		if (op->ioctl_num != cmd)
-   414			return -ENOIOCTLCMD;
-   415		if (ucmd.user_size < op->min_size)
-   416			return -EINVAL;
-   417	
-   418		ucmd.cmd = &buf;
-   419		err = copy_struct_from_user(ucmd.cmd, op->size, ucmd.ubuffer,
-   420					    ucmd.user_size);
-   421		if (err)
-   422			return err;
-   423	
-   424		return op->execute(&ucmd);
-   425	}
-   426	
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: fs/proc/task_mmu.c: fix make_uffd_wp_huge_pte() huge pte handling
+Date: Thu, 27 Nov 2025 17:45:17 +0000
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+make_uffd_wp_huge_pte() should return after handling a huge_pte_none()
+pte.
+
+Link: https://lkml.kernel.org/r/66178124-ebdf-4e23-b8ca-ed3eb8030c81@lucifer.local
+Fixes: 03bfbc3ad6e4 ("mm: remove is_hugetlb_entry_[migration, hwpoisoned]()")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: Vlastimil Babka <vbabka@suse.cz>
+Closes: https://lkml.kernel.org/r/dc483db3-be4d-45f7-8b40-a28f5d8f5738@suse.cz
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/task_mmu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmuc-fix-make_uffd_wp_huge_pte-huge-pte-handling
++++ a/fs/proc/task_mmu.c
+@@ -2500,9 +2500,11 @@ static void make_uffd_wp_huge_pte(struct
+ 	const unsigned long psize = huge_page_size(hstate_vma(vma));
+ 	softleaf_t entry;
+ 
+-	if (huge_pte_none(ptent))
++	if (huge_pte_none(ptent)) {
+ 		set_huge_pte_at(vma->vm_mm, addr, ptep,
+ 				make_pte_marker(PTE_MARKER_UFFD_WP), psize);
++		return;
++	}
+ 
+ 	entry = softleaf_from_pte(ptent);
+ 	if (softleaf_is_hwpoison(entry) || softleaf_is_marker(entry))
+_
+
 
