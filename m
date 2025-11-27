@@ -4,120 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D0CED11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 08:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06038D116F3
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:05:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6A616B000D; Thu, 27 Nov 2025 03:54:07 -0500 (EST)
+	id CA4656B000A; Thu, 27 Nov 2025 04:05:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A41BB6B0010; Thu, 27 Nov 2025 03:54:07 -0500 (EST)
+	id C56AB6B0026; Thu, 27 Nov 2025 04:05:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 957216B0012; Thu, 27 Nov 2025 03:54:07 -0500 (EST)
+	id B94266B0027; Thu, 27 Nov 2025 04:05:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F7F56B000D
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:54:07 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E330912C52
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:54:06 +0000 (UTC)
-X-FDA: 84155774892.12.03C3831
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E200D20013
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:54:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e2HGyoX3;
-	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A97BB6B000A
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:05:08 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57521C0931
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:05:08 +0000 (UTC)
+X-FDA: 84155802696.30.DE8CCF3
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 07F2CC0011
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:05:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764233645;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764234306;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uAS+KqqG+zBZqw85pJZVsdMz12CbK2R9tQD1fbotlzM=;
-	b=DZ4TNIWlHAXRlbEZp+4r+iupJBwW82KnxvKRYs1109V1G4BPy9SUsgb38/IuJ70x2VULSn
-	HUYIJJLV03EIVLrT9QKt5kiDtmJINFZAr1Z35ch2gsaham4PgAdA2E9FXV1seie5CyE9Ix
-	B2aXXc3r+Qv4pnknsoAC75SG5uaV7ZY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764233645; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+kjiejpdXIFnZImUPZTUYof3ZIm4VzrM7HNG8LaTieg=;
+	b=eaFVd2vMx7+q3GuiagFjcHeHZym+Hq2nULZfnEABsQANIvFhDYAkK9JnYuvmJ5IVfzEOl6
+	JJM/bXfRUy1d/GOfB6fODEAIMKMnV6cE15M0JXNXXU8NDy8FIQCybWHLrD7Xa2VNg162cJ
+	kqKltcoRqoHMoHsJsQ9Aq0DhQ+kwN9U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764234306; a=rsa-sha256;
 	cv=none;
-	b=myr9Kj0kUe26cB0N0wXDezJuF+75GP02hF00CH9NByNUanRpWmyD+QsxmrcYSPlI/ENcWp
-	AaWmpPshUQK/zUJoo7mNdxiHiMdRVXFbxDum06t+xlFKX4Zhxhbz/MPiKNvlx1Tz7SW0tM
-	xrlxz4g7OeICDWsDrRGkGiJgABjuGOs=
+	b=V5lH3QAAoJvkHtlMCn1rYOQerhAemrT2lir5YTqvjufe+PH10064ZW/WKptG65KO5vHzpf
+	uf8HOGhewTAAky6q+Mmvbg57Ufi6xDJyDyt0hQbZIQUBW6yfRd4q5KNrC8xtA/cSkNaB+J
+	4i6Rbnv0hQNfymbHbBWBonNXyoHorWc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e2HGyoX3;
-	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640b0639dabso1128985a12.3
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 00:54:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764233643; x=1764838443; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uAS+KqqG+zBZqw85pJZVsdMz12CbK2R9tQD1fbotlzM=;
-        b=e2HGyoX3NHaD6ZazB3Wpdk8PasCEO8G+K1vl3Po7CbTYqHI3IFyQZAOwHL3qq2YKZE
-         GfSAkL5bvAuGN6HlmnMo0ZaFi0dvAOXudaygsoqPEs/WsnTPUkxgLv3fAMRiVPIiqAub
-         6DgDH1BrFJhc0QBQZPVRWSAcpOJEP3grfmprjbyNcYD1bo6BRBRPivxwOfkD/Wwkw6yH
-         FLjiTQaG+3cJZOiymsiUgwF3OSbgsc0t3QfHjjz1pGwJ4DUrSmcmyLYNVkad2q+xaoJn
-         5KbhXqIg0VFIyvNCCMOmRQsYpWWkAYJKDq5xawp5htDkRlKUVZV5PlsndjigzGif7Kjr
-         mCAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764233643; x=1764838443;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uAS+KqqG+zBZqw85pJZVsdMz12CbK2R9tQD1fbotlzM=;
-        b=LRlKCnFiyDLTDcqV/MPbyGqC6vHfvL/4LNK68xN8k/uREqGF+ePWJwNvZ7jsXS+zni
-         3wn+MsNe1oi81Q9mayfJ8ut+8BYFqXd00IdrumrK4p9a7i8GGe8eNjq0fy+A94u9oE5p
-         Wbpc4zzZQpqa5tHyYtWd2PzZIRgpen66ThONlQo2Khbqa475N+r1EyneMM3c4TfxdmEh
-         segM+UeB94wOlB3eQ2YnLy5ik0v59gqUDEC6vcIe+H7cL0yMvCJy3QzpxhKHx76jXYtM
-         YXdYeAJ+pM9E9/XC7DeAWm1GKXKWjV+qq3uiNqfoTz+2xbH4PwK0kPCOahmkAK2u9dVF
-         uONA==
-X-Forwarded-Encrypted: i=1; AJvYcCUzuMoMg/vPEMaiAA8XIWyN7JRHRLY8Twe6bItQSgKssm90diR0f1V4lxQ/gpvmnZuy5BIB6jt8NA==@kvack.org
-X-Gm-Message-State: AOJu0Yzr6M2a8P3iCO8PVrV//21+S+T49pF4WX8t/rIxUn5rrOqDRw2j
-	8m2EcMh237MWyYO5kvhGLimpz5coLKIuLjU5WQHnu+FlP+2P6ZCq6O7Z
-X-Gm-Gg: ASbGnct4/rBvKcvYq3Fpp/uPBIm+rwB3sS3OxstQ8x2Kts2xjaJ2Wj3xxYHozKuox3H
-	geiAvgBzNwHxKwDb/UugIWrwmQmi5K0wxzs+7lcX2nRYhbjt/rMSlIJdfBQtTkjkL2ZMEDCohdL
-	WQCYYjrblVmHjgrh1yU+h/CLrNbtYFw4el8pYTv6jikh85eAE4lQLkh9JaMaZUhMYWUs1x+fkWx
-	lfNpz0dZXcvK4Gvo4c4Q0X+8jDTgcREUKZw08K0XFZ/vzmylGCOHFr/284+CWT5PuR+bNgiSzHG
-	XATX6Bj6TvaFkfxEOVP4hxJufdEgb156kYbPvqDL7rehWarKZ40fOeYQF92tRp9OKiSX89zYjoG
-	FqnYUT53OltRbmgc/mmGOb5txbFtKIVfbBfF1W9FW/1Fj5PWCjYcqGaShWlLszqljrMUW5vLIqO
-	3upbR/0Y3VUg==
-X-Google-Smtp-Source: AGHT+IEl2e2hl8F/WVPbAlYmr1govia2itm5jJX+NxRFS3EFJqRH7rsNW+SA9cBdxwHyGWwJf+UGKA==
-X-Received: by 2002:a17:907:3e95:b0:b75:7b39:88bc with SMTP id a640c23a62f3a-b76718b286fmr2719657866b.58.1764233643148;
-        Thu, 27 Nov 2025 00:54:03 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f5162093sm111521166b.2.2025.11.27.00.54.02
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 27 Nov 2025 00:54:02 -0800 (PST)
-Date: Thu, 27 Nov 2025 08:54:02 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/huge_memory: use end_folio to terminate anonymous
- folio remapping
-Message-ID: <20251127085402.gtbbechjwogot7uq@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251127022436.20734-1-richard.weiyang@gmail.com>
- <2fffc8d4-6cb9-45bc-99bb-b87f580aec42@kernel.org>
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dH9Tb1WV5zYQv39
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:04:03 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 8457D1A0359
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:04:56 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgDXTFo3FChpFTu7CA--.60042S2;
+	Thu, 27 Nov 2025 17:04:56 +0800 (CST)
+Message-ID: <665be804-6575-44bf-af0e-63736442af0c@huaweicloud.com>
+Date: Thu, 27 Nov 2025 17:04:55 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2fffc8d4-6cb9-45bc-99bb-b87f580aec42@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E200D20013
-X-Stat-Signature: jobb3dhkusapx1mg5kaocdjhgiuziyc8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC -next] memcg: Optimize creation performance when LRU_GEN is
+ enabled
+To: Johannes Weiner <hannes@cmpxchg.org>, Yu Zhao <yuzhao@google.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, lujialin4@huawei.com,
+ chenridong@huawei.com
+References: <20251119083722.1365680-1-chenridong@huaweicloud.com>
+ <20251126171513.GC135004@cmpxchg.org>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251126171513.GC135004@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgDXTFo3FChpFTu7CA--.60042S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CryDXr48tF1xKw1rWF45Wrg_yoW8WF13pF
+	W5Xa4qka10yr9xKrs7t3srWa4Fyr48Cr1Yyr4qkrnrZwnxZw1UCF12yFyUu395KF4kurW3
+	tFW5Xa4Yqa1UCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-HE-Tag: 1764233644-360151
-X-HE-Meta: U2FsdGVkX19/tq1aPD0a+U+r55Gum4K3q1w+n0yVYnf/fQMRJyeOffGXklmdMqaufJ2V5NoCh2E4tjYyS+CtlNJi2/k+yCavKArQ76GGjHwbhIYDHVuyt8hT0pQbP3DSEjzrijhLleoM+5IqtmrLawp2l+kmLCCBeLMPotL8KPbBmh1AjPQB72DfFt6BYhm4Pr8tKiPRn+SNF25QY2EbMUiInlIvrwusSGlpjn+CeqKCcDOYZi8ltwHYESwd2cmuIYsyEP36FeTJmNhrxPDSQAT8GmTT5r88Gk+QSeaC8hCMBYsFEPEobJAojuS1ConzrqqqUz4sdIS7G+XR3/EsUjHTkDJ6+LAZWBz4SyG0OMexmkuusQB/d+afzgFR+k0ZV/JbjAsAr9AjWjefi/DF0YmX8YZtPo1PZifQYWY7b3ddzML1qxrUz5vU8OloA6XVMXM35TqYrH3NoqhXO0IEThgVw2aVY1NHfrsyDNvu9K4RJuAtKrBT1Jm36d1ckXPG1S22tuiGNOh0/iR1x+/XUs2e1Bcy+UqjdKnF/3UKQRjtQFyUvLlO9grI3vxN+ZaxtwbZWqOROyqJAfEWLqgjxv9jRVxfnrg5U6YmZZfJNRxqruGPnPy8Mw9p0naagmdydUiRMbtp+jyZS/xpKgqO53LY83TgRdI91ZAC/s4QevLyk7v4iB/CavR6TJY2XOxIGitDBhxp813b+i2QBvFU4GhqyTByOZwvprpDe2Yf0jAqVi5hFigxONBMOgix5KROIfnZh6LjUwZHFwbJKXwfeyAc6ti7Qf2eHEuI9F4YSBIBFC+trEfPCeu7bo7G0Lxx338emaxwp5VjTKFUXOhiYyfcn+6kFv6w26OtdVQJ0vmNvdmhmtP/VG6H1w7/jo1Yb7STIrMexi21M1QOXazSPqxf+NgpXuN/RYU84bDKp3c0KN4k7ZUBWI5vi+vfYuAcyf1Y3P6ZeFUc5I0TD+V
- HPhcKlcf
- M5lvtntdMH0t7jclISeJyycNeNwzmphKAr/1mHKyLw1PpmTSTAc/eRVz27x4HNB4Hvpu43zZIeCIXpbGMy3V5yi69CC8cd4oKYJQY5gd9CNJ0pOE8d35qfM2oQtO4l2js3km+Upiv0udLMz69WR/RFfQRIM1+YZTlEFC/wCsKaK0VOA0BOK/yd8p1n0+wt//Eu27oxIWS/vMsFDFPlZA6weIQ2WMRMkY9Ehtl61MqTboFzSr31JPc+nAYRbpsOZytJVpEWLJo2pvriFYJmA756bJ0p1qPG3Hqa4RmrGKZcARuNevJ6qV7z84psxC5mt/VUBaCAsMriHlU8/NOnwwsAA+EV3A4HvD2xZgZTyorTibR2YnhEX5AdUtDlFJd3iu+Rj+n3xJEZrDT4BGkVpGBeHTS0y13wZzK0C/RO5GY/jxIwP26pTXtmkd8PxEkKJXfaHUD6TiB3Sk6dM1xoIP7Yzzi5pvwZJOPOCn0qYqv2CAvkIYwa/kqPRUeePILHb87LePhUjxthwF7CFTSbXoUFWeDi1uoWi/Pjz2CfpnAvKJDC+ZxTbh3ZFCAEHhZvVUl+TXUP37VnmYK2Q8/1sq/aGZKkqpybllW0CPj+GsW9EckON3PnKJQDm8r9TIEcDHlVKYI6CRpQwajhZZbyDXsySeVMWuikcIES7O76o5X86f5UfT2yPcOTgtPcLRt4zldZ1AJuQqIJ6PDglsgdJ9BhljmIWMysanfoY64SYEqme7Izx13zzgp+Jf2XadVUMy4BMEWspTRFVRblZxDjQBuKlpocRiR1QBC0IAnMW1Y2nGq3MM=
+X-Stat-Signature: d7z5t7rqtomy77ksmp1dwz7ei4unbqke
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 07F2CC0011
+X-HE-Tag: 1764234301-76100
+X-HE-Meta: U2FsdGVkX1+HUhoWHvU3JWIawGoyBXs1w57mxluz3IEcK4M39hlzs5FmDHHUmCx2jrypi/gJFJxRNiiP50c5SKQOxovWczWPlVolNMyg01CKUkVNeHy2KBFodLGb+qPRJnV3YuRQ5oKCXb2LBoYeLBtqqnmKt/SSBC0widNW26VHMmyvssIv4Q/yqUrJPHAguOdQOsexeWGtwMg0hw8D+59V66axrl7oTg39jva69HkDNkYUtHxVI/6YFeaHTwp+31MJJ79ExYn/sse2jntQyPOadcTWioEfUPLOGldW9addvfPQzWN6s6nzIGBUqjbZg2wbrPQupvap45yLxD1Uig99QzuckA/f/Y/avxWQojf2G/ufLYylOEUOLFEzezlmLwavn2XUGkElJEs0XAb11mtq7SwJcL7xAUNToVoUdNlRSdX3E/R+xuFnRuvJysDP898GtHTZ56cE1iDKkiFLso+5b0c3wjfFlTGjEd2gH6OttSczQUQBQIzVUkiEeLmMgLbQRlLlKWlh0K74MLnjpz4Q/4A/wTm795bCraaLm3iX2UexmO+jg9TrarLrCKHhp2TMXGTrJWDOmSYP4DRuKI+K0LQdiLCPpwf42khrJYZkiU+O8Sw3SeiKDnSEb2cdcWrBabFZcThFzaGS1k9xDWHvZIX/St+RNVnBF0ZKla6klplB9cgtorLEpdOSRtaLf9kzoJjug+/GQ6whFzFpDiXwtUlejnB1jo29RU6EqBzFtPeqzDrb+Z9LnWiNEpIsNZ0tj1pxSVnuk1YAwZrNmlSN6Un/0TYwQ46ErzUg3Jx0JJnc3Qdh1D1SUX7UButCrbOrdQelM0T6qX0dU4ODtDxL7k2TCxuT+ofCBkRUHLazXvz4d5sqSA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,66 +108,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 08:22:26AM +0100, David Hildenbrand (Red Hat) wrote:
->On 11/27/25 03:24, Wei Yang wrote:
->> After splitting a large folio, it is necessary to remap the resulting
->> anonymous folios.
->> 
->> The current implementation determines the end of the remapping process
->> by counting the number of pages that have been processed.
->> 
->> Since the final folio in the sequence, end_folio, is already known and
->> tracked, this commit refactors the remapping loop to leverage end_folio
->> as the termination marker.
->> 
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> ---
->>   mm/huge_memory.c | 14 ++++----------
->>   1 file changed, 4 insertions(+), 10 deletions(-)
->> 
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 553bfa961fce..afc7b2f91e99 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3414,20 +3414,14 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->>   	return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
->>   }
->> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
->> +static void remap_page(struct folio *folio, struct folio *end_folio, int flags)
->>   {
->> -	int i = 0;
->> -
->>   	/* If unmap_folio() uses try_to_migrate() on file, remove this check */
->>   	if (!folio_test_anon(folio))
->>   		return;
->> -	for (;;) {
->> +	do {
->>   		remove_migration_ptes(folio, folio, RMP_LOCKED | flags);
->> -		i += folio_nr_pages(folio);
->> -		if (i >= nr)
->> -			break;
->> -		folio = folio_next(folio);
->> -	}
->> +	} while ((folio = folio_next(folio)) != end_folio);
->
->Rather ugly.
->
->Nothing lost by just keeping "folio = folio_next(folio);" in the loop and
->focusing on what your patch documents.
->
->But as Lorenzo said, the time for such cleanups is after most of the current
->stuff was merged in the upcoming merge window.
 
-Sure.
 
->
->-- 
->Cheers
->
->David
+On 2025/11/27 1:15, Johannes Weiner wrote:
+> On Wed, Nov 19, 2025 at 08:37:22AM +0000, Chen Ridong wrote:
+>> From: Chen Ridong <chenridong@huawei.com>
+>>
+>> With LRU_GEN=y and LRU_GEN_ENABLED=n, a performance regression occurs
+>> when creating a large number of memory cgroups (memcgs):
+>>
+>> 	# time mkdir testcg_{1..10000}
+>>
+>> 	real	0m7.167s
+>> 	user	0m0.037s
+>> 	sys	0m6.773s
+>>
+>> 	# time mkdir testcg_{1..20000}
+>>
+>> 	real	0m27.158s
+>> 	user	0m0.079s
+>> 	sys	0m26.270s
+>>
+>> In contrast, with LRU_GEN=n, creation of the same number of memcgs
+>> performs better:
+>>
+>> 	# time mkdir testcg_{1..10000}
+>>
+>> 	real	0m3.386s
+>> 	user	0m0.044s
+>> 	sys	0m3.009s
+>>
+>> 	# time mkdir testcg_{1..20000}
+>>
+>> 	real	0m6.876s
+>> 	user	0m0.075s
+>> 	sys	0m6.121s
+>>
+>> The root cause is that lru_gen node onlining uses hlist_nulls_add_tail_rcu,
+>> which traverses the entire list to find the tail. This traversal scales
+>> with the number of memcgs, even when LRU_GEN is runtime-disabled.
+> 
+> Can you please look into removing the memcg LRU instead?
+> 
+
+Thanks Johannes, this is indeed a promising approach.
+
+The memcg LRU was originally designed exclusively for global reclaim scenarios. Before we move
+forward with its removal, I'd like to hear Yu's thoughts on this.
+
+Hello Yu,
+
+Do you have any opinions on removing the memcg LRU?
+
+> Use mem_cgroup_iter() with a reclaim cookie in shrink_many(), like we
+> do in shrink_node_memcgs().
+> 
+> The memcg LRU is complicated, and it only works for global reclaim; if
+> you have a subtree with a memory.max at the top, it'll go through
+> shrink_node_memcgs() already anyway.
 
 -- 
-Wei Yang
-Help you, Help me
+Best regards,
+Ridong
+
 
