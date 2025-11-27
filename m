@@ -4,91 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A65D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 12:59:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FDECFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 13:18:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C661C6B0022; Thu, 27 Nov 2025 07:59:31 -0500 (EST)
+	id B5D8F6B0029; Thu, 27 Nov 2025 08:18:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C16C66B0023; Thu, 27 Nov 2025 07:59:31 -0500 (EST)
+	id B34AD6B002A; Thu, 27 Nov 2025 08:18:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B05A16B002B; Thu, 27 Nov 2025 07:59:31 -0500 (EST)
+	id 9FD116B002B; Thu, 27 Nov 2025 08:18:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BCA76B0022
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:59:31 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4281F138529
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:59:31 +0000 (UTC)
-X-FDA: 84156393342.21.381C117
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B6980100012
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:59:29 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fI4FSWoN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A6B66B0029
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:18:08 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3957113850E
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 13:18:08 +0000 (UTC)
+X-FDA: 84156440256.03.B5BF2A7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 90DA240011
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 13:18:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=P0H9HpGh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="G/+h9gm8";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=P0H9HpGh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="G/+h9gm8";
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764249486; a=rsa-sha256;
+	cv=none;
+	b=HJznbd8mulxZIjdiokNXI8ZgR1jU3vKjlpMwzXmDrm4YH+7iUf+AilXq2+ET2MOCnUusmv
+	tFLztHdeGzGdg3ympUyuyCe6qoX565wCgkaGtmP/TiqmP6bRSzE57tdxeHqgH2TUKu1Fbi
+	VWHwFVCG2guAZeQyUlHtxvZhScPgxoQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=P0H9HpGh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="G/+h9gm8";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=P0H9HpGh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="G/+h9gm8";
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764248369;
+	s=arc-20220608; t=1764249486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rXWxOyVDhhNuII6gzr2ZqIIKMYZWzjDs2IKIrhfkpow=;
-	b=ZniP/fwwjnVpOA34/bW0fmaXdu/93tZpN7lOytNnZxoGZd7dBQd9/PWJVT2x722grouwVZ
-	9Uqhik/IRE2aRvzVwOY6FxZ/t06ECBq+R30rHDC5PXT4N8QLffENz4bmjwIaUkU47cm2y8
-	aSBAPxVdVQC1iOGlEfa+L6PJaDUsUxo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fI4FSWoN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764248369; a=rsa-sha256;
-	cv=none;
-	b=I+QyeJ8ew3b9M03dN7+UqMm1rJ0ZAJWaFnRoFfsGGjuXrEc0jlR1QKoZrkMQ4NpWWIS0FI
-	EvO9DJfe7vtuJRPIOtDPlVyTufXSUiSoWwL0fCOJ0zkNZTi3XDhiNg0ON1YWfpYJrWFwO6
-	HB8jBmv51jCnWlwYqAON0+Rif42xaTY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2628F60141;
-	Thu, 27 Nov 2025 12:59:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21B8C4CEF8;
-	Thu, 27 Nov 2025 12:59:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764248368;
-	bh=9FAZ+a3Saa3K2w/qcM5YJymiW3fVjUChcc0PgFLP3kM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fI4FSWoNziNxUPbDB6JkgJO1Yjnf6Bti878Qij6lf/sDn7w/gHEsxCWtwUKbfzIC7
-	 1qXgeeNkfSyJhRfPo/0VWdYXYX4XMehPWqREme+oOWuyDGHPw8cDGW7ToctKEVSehA
-	 ui5RCOiknFcesTzXJ2Ca6+7A1XjGiV6XEAGWE3VL9D8J+DKMcpJ1Z6B9X3diNElvPw
-	 qwN9QiVjiXoWMzyQg5SknYsw+Gd2nxZApTimNOLjRHI5fhnt7oOZWcydR97/QNxkz7
-	 +PgzdNbs94jarrIsGJ+qTzv5SBvS+hsNRz7eC90oioecBC1ZZaQmSWaMBECtd/ovl+
-	 GIp6SjbV/s45w==
-Date: Thu, 27 Nov 2025 12:59:22 +0000
-From: Will Deacon <will@kernel.org>
-To: Zizhi Wo <wozizhi@huaweicloud.com>
-Cc: jack@suse.com, brauner@kernel.org, hch@lst.de,
-	akpm@linux-foundation.org, linux@armlinux.org.uk,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	wozizhi@huawei.com, yangerkun@huawei.com,
-	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com,
-	xieyuanbin1@huawei.com
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
- sleep in RCU context
-Message-ID: <aShLKpTBr9akSuUG@willie-the-truck>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+	bh=Nl3RvlsgL1Doc36smv6M7Hh+DbNIw3VquMXV65wwdek=;
+	b=pE75spvU9Dwp68eL0zvnhFmCoUBic0wjQ7rsuxzB+RDtcux6m+xWrBtwNCGckE8iMALFoS
+	lj15Ca0cGEcBLT8vOVd5jyZHOog4OfMP5NMTEBJqhfP1tIH4QT4bak13k4RaqqQbFjFCcg
+	yWMfrK6NYJLnzsE1FVhayoiEIAYV1Dc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 51D225BD9F;
+	Thu, 27 Nov 2025 13:18:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764249483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Nl3RvlsgL1Doc36smv6M7Hh+DbNIw3VquMXV65wwdek=;
+	b=P0H9HpGhtTYxk4RiA3cxPpmxZ/8Zq+2ZlkS5WMfWYoG0SE5SPPX0MHDN7aGimq3e491n9M
+	Z3RRv5jrOruK9QR99dGC9HpfQ+ihGNyRWyf2t/wIKTY24/Awup7/QiSAe0+Cd5nr583TsU
+	y1hhnIk4RsiCrPuGnSvJaEXinYOT7SQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764249483;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Nl3RvlsgL1Doc36smv6M7Hh+DbNIw3VquMXV65wwdek=;
+	b=G/+h9gm8UFfa8MI+tjoU7cWHzzUYZdfXDtWumvZfP7dOsFPWbm+DAfDca0POzZ9tlVZtY2
+	X+jmAIe6Aoe7wkDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764249483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Nl3RvlsgL1Doc36smv6M7Hh+DbNIw3VquMXV65wwdek=;
+	b=P0H9HpGhtTYxk4RiA3cxPpmxZ/8Zq+2ZlkS5WMfWYoG0SE5SPPX0MHDN7aGimq3e491n9M
+	Z3RRv5jrOruK9QR99dGC9HpfQ+ihGNyRWyf2t/wIKTY24/Awup7/QiSAe0+Cd5nr583TsU
+	y1hhnIk4RsiCrPuGnSvJaEXinYOT7SQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764249483;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Nl3RvlsgL1Doc36smv6M7Hh+DbNIw3VquMXV65wwdek=;
+	b=G/+h9gm8UFfa8MI+tjoU7cWHzzUYZdfXDtWumvZfP7dOsFPWbm+DAfDca0POzZ9tlVZtY2
+	X+jmAIe6Aoe7wkDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 235263EA63;
+	Thu, 27 Nov 2025 13:18:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DeFMCItPKGlyRAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 27 Nov 2025 13:18:03 +0000
+Message-ID: <cec33567-57cd-44fb-be9b-1bc86f9b30bd@suse.cz>
+Date: Thu, 27 Nov 2025 14:18:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 04/23] slab: add sheaf support for batching kfree_rcu()
+ operations
+Content-Language: en-US
+To: Jon Hunter <jonathanh@nvidia.com>, Daniel Gomez <da.gomez@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org, linux-modules@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
+ <20250910-slub-percpu-caches-v8-4-ca3099d8352c@suse.cz>
+ <0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org>
+ <e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 90DA240011
+X-Stat-Signature: ta1gp3z3tdcx5swapt1k3xm75ye8agmb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B6980100012
-X-Rspamd-Server: rspam11
-X-Stat-Signature: zdakmityxrujgf64t7jkcee1esyoi74d
-X-HE-Tag: 1764248369-944861
-X-HE-Meta: U2FsdGVkX18bz1ktRqA0kKKiKFOQ3LbiZi5L114n2ohGajU5LXlwwxqZhSak8dMsU2iV6eeY24yGndgaRnaS5XVesMRo53sdOnZqaG5PixN3iZYsrSTo5wXt7UpmgaEw5Khe2CbXj1tc7ja57b3r99tQrhHEt35i+cbELWTEv8uEOy+iVWli/L9WcriB5EZIvZS13BgYRgu7aYxmqQ4VpTDQv+/CV2NXCfRhjmSQdxjSQOCJUXi/kIiSP0/ZxUu3r5t3p9mznb5Q3isYGr4SEy9V7IFKU2AcYheSCeajH7jBParU27dOfY4GJpEJdpG70Y0OPrKyMTxL/onLwDk4d3Hq+eNrR0NgmAESIG6SgtueBGshTUira0Q9a4jkd0SW8kFslARjmjwZymZqJhI+rkdaojRCClFg9dPQknJd8Zt1JQ0NJFby2XyFN4TpjSquG/R3At94m5ka7VjQ8ZQ+tZzYyqTpjvbiPlJfKH32LPVWpW8+yIlxjWGNSVlqN/byoTMRJioqUDq+IUU379JZzQAZAXN+Zi/z+oQWm2Ef7hmA4xuHru5dLr05Rg2tq2KiacfuZyviH+YKi1WIfE+guVn+WRNVSTmAXKPHPND1/khXbsXjbPFa9Gs7ydCgvJIL6i/Qqu8wMaysPfweVYuI/qcc0BcfBOpbzf2ixHMtMXTMS8kb2NYwrq4NiB1LJdbT2imzPzkjk6eMYtotLpLH1wumL9biYpq7baYtf9zZHELAB+F3HoUmsIiZCvkMxv6tcoSQySDAfzVqefE+ofq9+OyosJY8aGorrSlcUVvpJR3s51zyXQxywcxdgD7Wyolgwr6qae2TbWajBo4OZU69RykNWBBreY1L9gcdzpqrsUbzZzppC5ixVhjJxpeLw3X7yNqWJem7oWv9gmXCBvLiox2rJy9cNLihdQzVqi/Ep+TX0umMKpBzJejZExs/Dw+PSvEeFcrqBU93/dbF4vJ
- x7xXlnss
- Qif3gXifMO9CKFiLp/C9b0f4jXwQp681nWQeN3T1LqupmyKUxFtmsCyHFQTYP7qTHCFuTtNVlM/G/uie1+l1wUr1upmjrlLi663kXZFcBb/+yTZOKRzVg3VPcGgPA4S8vU7/w3wyLBRv7KnkPM6eH2v2qfoGbw8qB6R+q27r+jHocsZLnZXLKMfoNVEOiASLpVIRqD0rmzqS6SzykJGAgS4rTqq90I71iTttBO5nW7AUtMRFDRQd0I4e2Ec1Za8Pjozz12GzB+4f2w7FruYv5HG/xqatEXDKX0+GhO/b12MA9QXc=
+X-HE-Tag: 1764249485-412822
+X-HE-Meta: U2FsdGVkX1/5PrWh+jmrdAwZzitMZaiBcHdSTiHicUisOKoA2vDQIPmR2ZLsXSp8SnBpc8DYRDtnPL/sZB2HzuId8lUw3o+GuPLqf/AWrfALCQPCv5AAtfaxdVWckyBVXS6Zg8s8JT1eW/aTfDoC5qroLUKLJ8cfs46V4pY/b1xrL+gME+eQArv7Vxn/R7cUk6eWObqWdi1IzPKUtx/jIvr01Zog7JCZUxyfLGvNo7Ef4yPB4IlFxap2Aa3eE9GwbrXzjFd4Fjq+1v38hA9h9Cs6RrljkNQq0F8yKSUeWx3Z1wro1S1BBIJDJJU084+W8698BJV9Saicgb6vhutE4hQgKPRNiXswb0sssZ2v1ZYtZNOoNFPjb6TesZwV/CtoYKgbvE1xlDCF/iv6lBPojt8o4KHYyQxODvBvkcDG2xt8Exw9LhaeG5ZfXjvEsZNsvZLLzQKeYKP956iwif0duSy1+wDOvlB8mPgtpDkBOWJg0R4YIpNsoRbhoAsQP9d1ctmLLZIbUz//A7Of+CSChVUTSAkPlSFiBkwXNe0Ek5bRa/XLuTCU7sU/eEzHlHqQ0m+Gq1yLsQzLPy8Jh2ljpMTfYBlMuqgnicaIoCLPVuR85OLdVbBeGe5OTcBPVXu0cjOuzVKLCMqxQwkHwk8XL+BhtsVdg0ijm73Ewj6d1ci7ix7wbCigvnPGRiW/uKCWWx2QJ5PBzi71tqgQutVJMWNw1lCpa9JAdn67nntjga/6YbRv7oplOl90beIqIm2YQ0mLmL2iZXjZ+NiwK6ifeI/ISJ8P8jPk6TuBQz+ZTiX2YL7fajV03BG/UExm48+n7xiLHr9LaI6ZSNOUC2NcswNXHMd4ACdqUpDNshVLAM2vSdxZTE8NL7cwZsHnqD7UD0D43LuLBWhq9d8CbzyLLcW7WpeFkgG8dlU3Lg6Hg+/4uGV++Y2dgji9i961SAUw+9iM+Hhz4ow9Syy/KAm
+ JZb8H8R2
+ Ud0SV5WDfpD6YO0vnW+T4agJbwE945X5DcEEnltMP1I93O0YWLSRr1QC4IGfNEhHkAFoVMH6iz1wLbzpq50CBeLToYHxD7zqn33aMyTfB8nnATyhiMg9lHYP587rO4TVctELp8ap26Ni1NQ40RUIz93rqRI9mt13ivxc6xj04PRefNplfuIQh5TE/npzGoKVtjQkvKsBC9t5epEr4XPic+Q9+70DCSy8XyUy2Lkz39Tv0Ha/ETyItzGXdQOP1/gQNNPl791iQeNGLMGlp7h/LyS7mqu68PHhR1FXTJkd3R46R7pNOzZTJkcFqux13A6N0aYqtYenvBfxmlGJNHkZDRWEWTbx5BQ+oLlAOyDdf8lKWxIsQI9v3rn4/yA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,108 +191,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 05:05:05PM +0800, Zizhi Wo wrote:
-> We're running into the following issue on an ARM32 platform with the linux
-> 5.10 kernel:
+On 11/27/25 12:38, Jon Hunter wrote:
 > 
-> [<c0300b78>] (__dabt_svc) from [<c0529cb8>] (link_path_walk.part.7+0x108/0x45c)
-> [<c0529cb8>] (link_path_walk.part.7) from [<c052a948>] (path_openat+0xc4/0x10ec)
-> [<c052a948>] (path_openat) from [<c052cf90>] (do_filp_open+0x9c/0x114)
-> [<c052cf90>] (do_filp_open) from [<c0511e4c>] (do_sys_openat2+0x418/0x528)
-> [<c0511e4c>] (do_sys_openat2) from [<c0513d98>] (do_sys_open+0x88/0xe4)
-> [<c0513d98>] (do_sys_open) from [<c03000c0>] (ret_fast_syscall+0x0/0x58)
-> ...
-> [<c0315e34>] (unwind_backtrace) from [<c030f2b0>] (show_stack+0x20/0x24)
-> [<c030f2b0>] (show_stack) from [<c14239f4>] (dump_stack+0xd8/0xf8)
-> [<c14239f4>] (dump_stack) from [<c038d188>] (___might_sleep+0x19c/0x1e4)
-> [<c038d188>] (___might_sleep) from [<c031b6fc>] (do_page_fault+0x2f8/0x51c)
-> [<c031b6fc>] (do_page_fault) from [<c031bb44>] (do_DataAbort+0x90/0x118)
-> [<c031bb44>] (do_DataAbort) from [<c0300b78>] (__dabt_svc+0x58/0x80)
-> ...
 > 
-> During the execution of hash_name()->load_unaligned_zeropad(), a potential
-> memory access beyond the PAGE boundary may occur. For example, when the
-> filename length is near the PAGE_SIZE boundary. This triggers a page fault,
-> which leads to a call to do_page_fault()->mmap_read_trylock(). If we can't
-> acquire the lock, we have to fall back to the mmap_read_lock() path, which
-> calls might_sleep(). This breaks RCU semantics because path lookup occurs
-> under an RCU read-side critical section. In linux-mainline, arm/arm64
-> do_page_fault() still has this problem:
+> On 31/10/2025 21:32, Daniel Gomez wrote:
+>> 
+>> 
+>> On 10/09/2025 10.01, Vlastimil Babka wrote:
+>> 
+>> Hi Vlastimil,
+>> 
+>> This patch increases kmod selftest (stress module loader) runtime by about
+>> ~50-60%, from ~200s to ~300s total execution time. My tested kernel has
+>> CONFIG_KVFREE_RCU_BATCHED enabled. Any idea or suggestions on what might be
+>> causing this, or how to address it?
+>> 
 > 
-> lock_mm_and_find_vma->get_mmap_lock_carefully->mmap_read_lock_killable.
-> 
-> And before commit bfcfaa77bdf0 ("vfs: use 'unsigned long' accesses for
-> dcache name comparison and hashing"), hash_name accessed the name byte by
-> byte.
-> 
-> To prevent load_unaligned_zeropad() from accessing beyond the valid memory
-> region, we would need to intercept such cases beforehand? But doing so
-> would require replicating the internal logic of load_unaligned_zeropad(),
-> including handling endianness and constructing the correct value manually.
-> Given that load_unaligned_zeropad() is used in many places across the
-> kernel, we currently haven't found a good solution to address this cleanly.
-> 
-> What would be the recommended way to handle this situation? Would
-> appreciate any feedback and guidance from the community. Thanks!
+> I have been looking into a regression for Linux v6.18-rc where time 
+> taken to run some internal graphics tests on our Tegra234 device has 
+> increased from around 35% causing the tests to timeout. Bisect is 
+> pointing to this commit and I also see we have CONFIG_KVFREE_RCU_BATCHED=y.
 
-Does it help if you bodge the translation fault handler along the lines
-of the untested diff below?
+Do the tegra tests involve (frequent) module unloads too, then? Or calling
+kmem_cache_destroy() somewhere?
 
-Will
+Thanks,
+Vlastimil
 
---->8
-
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index bf1577216ffa..b3c81e448798 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -407,7 +407,7 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
-        if (addr < TASK_SIZE)
-                return do_page_fault(addr, fsr, regs);
- 
--       if (user_mode(regs))
-+       if (user_mode(regs) || fsr_fs(fsr) == FSR_FS_INVALID_PAGE)
-                goto bad_area;
- 
-        index = pgd_index(addr);
-diff --git a/arch/arm/mm/fault.h b/arch/arm/mm/fault.h
-index 9ecc2097a87a..8fb26f85e361 100644
---- a/arch/arm/mm/fault.h
-+++ b/arch/arm/mm/fault.h
-@@ -12,6 +12,8 @@
- #define FSR_FS3_0              (15)
- #define FSR_FS5_0              (0x3f)
- 
-+#define FSR_FS_INVALID_PAGE    7
-+
- #ifdef CONFIG_ARM_LPAE
- #define FSR_FS_AEA             17
- 
-diff --git a/arch/arm/mm/fsr-2level.c b/arch/arm/mm/fsr-2level.c
-index f2be95197265..c7060da345df 100644
---- a/arch/arm/mm/fsr-2level.c
-+++ b/arch/arm/mm/fsr-2level.c
-@@ -11,7 +11,7 @@ static struct fsr_info fsr_info[] = {
-        { do_bad,               SIGBUS,  0,             "external abort on linefetch"      },
-        { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "section translation fault"        },
-        { do_bad,               SIGBUS,  0,             "external abort on linefetch"      },
--       { do_page_fault,        SIGSEGV, SEGV_MAPERR,   "page translation fault"           },
-+       { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "page translation fault"           },
-        { do_bad,               SIGBUS,  0,             "external abort on non-linefetch"  },
-        { do_bad,               SIGSEGV, SEGV_ACCERR,   "section domain fault"             },
-        { do_bad,               SIGBUS,  0,             "external abort on non-linefetch"  },
-diff --git a/arch/arm/mm/fsr-3level.c b/arch/arm/mm/fsr-3level.c
-index d0ae2963656a..19df4af828bd 100644
---- a/arch/arm/mm/fsr-3level.c
-+++ b/arch/arm/mm/fsr-3level.c
-@@ -7,7 +7,7 @@ static struct fsr_info fsr_info[] = {
-        { do_bad,               SIGBUS,  0,             "reserved translation fault"    },
-        { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "level 1 translation fault"     },
-        { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "level 2 translation fault"     },
--       { do_page_fault,        SIGSEGV, SEGV_MAPERR,   "level 3 translation fault"     },
-+       { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "level 3 translation fault"     },
-        { do_bad,               SIGBUS,  0,             "reserved access flag fault"    },
-        { do_bad,               SIGSEGV, SEGV_ACCERR,   "level 1 access flag fault"     },
-        { do_page_fault,        SIGSEGV, SEGV_ACCERR,   "level 2 access flag fault"     },
+> I have not tried disabling CONFIG_KVFREE_RCU_BATCHED=y but I can. I am 
+> not sure if there are any downsides to disabling this?
+> 
+> Thanks
+> Jon
+> 
 
 
