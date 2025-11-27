@@ -4,108 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44568CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:13:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16451D11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:24:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E3656B000E; Thu, 27 Nov 2025 04:13:47 -0500 (EST)
+	id 681106B0012; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86CB36B0010; Thu, 27 Nov 2025 04:13:47 -0500 (EST)
+	id 632366B0022; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7343D6B0012; Thu, 27 Nov 2025 04:13:47 -0500 (EST)
+	id 547706B0024; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C6186B000E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:13:47 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 075AB131B41
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:13:47 +0000 (UTC)
-X-FDA: 84155824494.26.F2DDF4B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3BA554000A
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:13:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CTvLcWPZ;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 416406B0012
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB2D55B9E4
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:16 +0000 (UTC)
+X-FDA: 84155850912.18.AB834A5
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 78D53140015
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Gid/SW5K";
+	spf=pass (imf23.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764234825;
+	s=arc-20220608; t=1764235454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jpviOPO85h2t8kVf2ioXQV/Pq7PZFKmP53VOWZm+PY0=;
-	b=feeaWjO305FeXWLOWcdUEYQL4QNp4139esHZi9Ri3/TfWFvpbiNFT1WpTxpDm5vHDqKMOI
-	Q56oAgHYDtvziak7DRNh1NB2FFZs7sZKVjO49kil0oMtdrdWebI0Q8kpc7o9s1K/U9OdhA
-	HYWSPnOg5v6RIXrr7oyo7GD93T2ydZM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764234825; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SqQX9xTpcwqcS/Y1RsFRMtrNuBOMxy51eUWtAqeV+3k=;
+	b=wkFv21TM96A+0Rpl67MABilrVRDAL0Uf44P+J8LyYZt4QeslRchIHwkuQ+43wnTOX2wDye
+	JKQ72Wk3DiQK0ySLFnkpMxsIZFZlKvni6aTffnTnn3nVmDpk02rUz2xL8nP4e5WULyF0vL
+	6YRO6NoSdvIP/nDOHjUIbFl2rym2VSo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764235454; a=rsa-sha256;
 	cv=none;
-	b=MVyP1GtqgFQpUED+tsIdBaNVmW+WI75WSxJKebZwkMaPofV8ZN1+I8snW6KG/DZFyQ1rS+
-	lu6DfYJlYz4emptvYnurUus32fimvVpmy69Opi5IXRPJKhnxIfqW4usDW1iYguVjEk527v
-	pRhT8Ctyx2rZ10JHiWe63rW4s3GujiI=
+	b=IgmO+Ne+Ym0wQ4ehE5EKp491Mc82NS474f4ZP5WNcfvF7Vil6fB9kk6EBSas4iS2RselLU
+	nPxwN6vd5J2ZwNGcvVmwFuv0ggj65J3NcPUjJdGrQvGX2boU1OL41bq76mE6kJJuXyj209
+	k5ONr7Wp+HK1ane29HCUO4xU7Dweis4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CTvLcWPZ;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Gid/SW5K";
+	spf=pass (imf23.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764234824; x=1795770824;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nMeiv3SIi8QG4moeoqdXt6Rrisu/4W7V71FP8WJhXLY=;
-  b=CTvLcWPZGNjvbz/wSds7XMBMwmVnXa4KPUXdZG0RD0AnghiIJMSdFLbI
-   OvS7+7xbEHqmQP7lznOh64q7HhsldYe5P8ZsdFiKctOAgxg4FyDaG6aap
-   XYpcPTMKT3qTvustDZcqyZRoyVLtJRES7Z5ujPNQlmwrv8484KD1ok6E9
-   x+CPfJOmbuZYh/g2PO1VOj2YrcedRJWU8hKhHVX20SeGs7CHOC6kpas0Y
-   miai+lI6J8Rx/eoqZG/7DTv3VLjMk/QN4zI0a/a4/pLegqzKsqVN097FZ
-   sxObhT4Glb1TLpzZFvTKrgbSfEWcferxslxyPsN2MlKFlRVeZimBUsxfE
-   Q==;
-X-CSE-ConnectionGUID: N8PKQlATRYSrWbcBrEEC+w==
-X-CSE-MsgGUID: Is4/Ck5IRsK5s62JBFR8jw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="91759731"
+  t=1764235455; x=1795771455;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TGD2mBSI2Nm525yY965kECMgewcZU2Vn20LzBqfECL8=;
+  b=Gid/SW5K4Ahe2t3LppZIur1yOgeZOFT2/VGA1EhOrvUe3KzwZzhJErEX
+   WtaTRAbJih7idinGe3ZOMplpSUy02bGjIu85ZXbJB1L7unWveUwXFnKw0
+   b3E1uQLn0a+HpSe/NswpugE4kq2SH1RhUPRFFs9l1qWlp6XgycmNsZ/By
+   Wv8UaVcJiUfELmAM4qeYhIUMLmIMFF8H4nqsU67ujdxa4u8yavu2HE01+
+   xkzKA9PDsoCx+F9uAzr2t9NYApxxIXlY7rbImJN4Sqfvr+TitZ6dN+nVB
+   IECWMkWrN2BWjvrykB8GDPWwFIxVkXlsGsqB1V+RIUIaS/UbRoIKjr8go
+   g==;
+X-CSE-ConnectionGUID: 3lsHu43VTBuV0hhtRNsi1w==
+X-CSE-MsgGUID: VMC76L6xSsWFUEjtUGTzMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66226339"
 X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="91759731"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:13:41 -0800
-X-CSE-ConnectionGUID: galzY4AMRqWW3GAP7HFGLQ==
-X-CSE-MsgGUID: qPStb08kTMKgIAKRQFTcDQ==
+   d="scan'208";a="66226339"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:13 -0800
+X-CSE-ConnectionGUID: FmZim8WuRQWylPHqkM42lg==
+X-CSE-MsgGUID: Pfg9esApRR+Pu2HVOvZauQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="193206736"
-Received: from igk-lkp-server01.igk.intel.com (HELO 1f7de368ad0d) ([10.211.93.152])
-  by orviesa007.jf.intel.com with ESMTP; 27 Nov 2025 01:13:39 -0800
-Received: from kbuild by 1f7de368ad0d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vOY4F-000000001hN-3iCC;
-	Thu, 27 Nov 2025 09:13:35 +0000
-Date: Thu, 27 Nov 2025 10:13:23 +0100
-From: kernel test robot <lkp@intel.com>
-To: Tim Bird <tim@bird.org>, pmladek@suse.com,
-	Steve Rostedt <rostedt@goodmis.org>, john.ogness@linutronix.de,
-	senozhatsky@chromium.org
-Cc: oe-kbuild-all@lists.linux.dev, Tim Bird <Tim.Bird@sony.com>,
+   d="scan'208";a="223888045"
+Received: from jsokolow-alderlakeclientplatform.igk.intel.com ([172.28.176.71])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:11 -0800
+From: Jan Sokolowski <jan.sokolowski@intel.com>
+To: linux-kernel@vger.kernel.org
+Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Matthew Wilcox <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Francesco Valla <francesco@valla.it>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Linux Embedded <linux-embedded@vger.kernel.org>
-Subject: Re: [PATCH] printk: add early_counter_ns routine for printk blind
- spot
-Message-ID: <202511271051.yfp2O98B-lkp@intel.com>
-References: <39b09edb-8998-4ebd-a564-7d594434a981@bird.org>
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 0/1] IDR fix for potential id mismatch
+Date: Thu, 27 Nov 2025 10:27:31 +0100
+Message-ID: <20251127092732.684959-1-jan.sokolowski@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <39b09edb-8998-4ebd-a564-7d594434a981@bird.org>
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 78D53140015
+X-Stat-Signature: tju97xmotf8hzsfb8cb1famr71mao44h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3BA554000A
-X-Stat-Signature: d4rm6zch5r6fjuwfcqgrn1cwph6aexcf
-X-HE-Tag: 1764234824-208882
-X-HE-Meta: U2FsdGVkX18uTQS2rIwFletGzLoLJ1JHOUNjWUuOOVjL2AeX6eAbEQHsDUgfSrpDX5M5V3wJpEbfsRA6RtWUEmIWBXvzPVbUj8NnK7vXfVtnezGtpPjKMhU4BeFqKrMXfXsccNZOZRF6zylHmtDqnAVqepqjbY7SBtpzH87FDlPIgM8o4hCZIKS87aHJsWn1QQmaY87asNXEo+gJWSv8OJnfl5I09LixyzgInTuoBzio5cy/P4pEM420f8s5ySVP46s4OMyj9VxLnaNcFAxOQBhTkdyTddTZHeiwgMsTvA7hMrmEpoAhe/vN0ZUtuXYtKB5dKGGhFcHpq4NC2qqPKmISVh6mFsfnQhVkChnj5X2rEhbsIfm3WAPZ9tpeNw7SRzPO3XgXh40MLJEBPbA3R96CbpVwr/gQ/lSGWfRVEMjn/HOUfBXlfmziy8vQ9BoSblEa7lEHe4gC+GtuRIH0F4Z+WnsOoBYZydfDbHVuFamQuM0gL7XcI6AvdCLkyNNTZCahMdPxQffFGXowtknPLXr9h8p0yXReXdQNKR5zA+bmzH7rs6C4cuu/4iUwkzOt0l4EwaTXskOBfgTBkHY+DHhe5HOnyKvVmgdAYsG912YpbarIIJRqtFxnpgDIlTf19F6Ps2hs86XM1gkpdBIP0OsdOGr9MmZ+jPLAlTghKCfLxyBIzwsJ1r+aTwZrmN1ykJj2B2gnCYECL0Xw7tXB++LucUAOpejReaC3eshcUL6XIWBWPh2W0tNAZyjbHRJN/mX7/YgKQn0AJ3J9VxMJLKsKHawCryLwhqa6aUg0f0n438EVAH2iov8qjkPDOOY6JkloZJNRdyTj1tqakcFW01MWYCe0hQZfcgfwUvb9av4P2BDYtRJ5XiNrDcuW5DrGZdTyYji+1MBWv2OYgLk/UXVDZWd9/oJKoh/ZJrmCr5O6sDcXDX1npp0eUJJ1Es5l4n0/BS6jdNEl8MUWcyM
- i2PaSbWS
- ufzafI+Cp/M+/1LCThepqWsgCD1I6RVNo81NuuR0PmaAnGH+06w/YX1obkgRuAgvg+nFUjyPSUAeL1ZI8Uu4/IzFpP+6odpQzqTRhhk3dBUMKoW6glOwqKL4hU/lx5Lc8fEq5xG6lxMqKf6kvlrG5Wq9SN/FDPXAPOTq63xl+AbxftKuuRREAO1Crp4CNqPN86iOKe8M0OlO8lExZWxdMTT/rMEydA+r/T4gnWCo5kP7mUBMk9xlDOMKl0wbHck7NCStCsU9tlpBhVAqXlA+LE+jiO/CPmhRY6re4lSHGc+IGF12Pa7/1d8PWawH+R/VKt+qsNAAZLREy2B12cDsSI2JMo+/Ll7wIY5f1510Guhf/ydcmtPtnJiN7Tmf/ZFzRuug3LeTUrjRcMYEfcrL9nJ+4b0MJ+uhKDmqWQqOqvn9Fbh8=
+X-HE-Tag: 1764235454-510260
+X-HE-Meta: U2FsdGVkX1+8fCTaqlPKZudQrnfCIPtNOVbTygKNyXblnbSRkNPxsIWgU/dUgViyDFNopeGjiSAzpTZKaGo/aOU1UNILEljoAQFy7OOOh5IViJUCNJl0YS+SbU69kvcuYi1Mtg3lwWMJ0JpMugXYcOH/EkBCt7ZkdAKz2XOYM3gyDsE/RBytee/HixEz5/mRZtqO2WbB801GUDW24phqrDoRJL5gjQr+RQIlHxrrsJmSGbN9Os3M952wpI2cZ7IzGzZXzvPGlCo2vAsXq/jGco61ScWFlptCxvFGE5HdWSMlzouISVZHObBRkjqW51QnrLWLt/FwQh+34ItSKDrQXi/OFbS2PT83grsiLy2V4dyX5QNnyCNCOlr5+Mkh7KbFAl5tURFQUCBuZ96hW8cJC9UFuI40EQ4u5rFzc3xZxYv4VQPwlIm9mO8J4h2JNR/vaw8VTkfRpwm1InBe4rmvAN+oH/nOzwTRuX+I8nWGjzy0sq3oo0H3hj26+RzDrc3tmbk7pSLYP7Vn7sdtCp/ZBjaZ5ROhd+4+F3sWISPERTDy7ZW/ykWfNpfum5pzX1bPA/9ZrfLUJEa+D0P0V6hNiJDy5dEduME4FqZWD+bXBVrVBqfDNsQT434KzX+Jhub7jRQOLIIhVH4hKx1lT4RhFU6FnHu4Gyy8nxhYdYH4ey48E3+ArvAecbzG4arP49IO8OXqq7jKtVT+Ay2WYdRc8rs8ZBzC7Ra/gNokEt28r2Oiwitqtm7bcuVeyyjrwjGLDQ3UnuqjVrMPmNp09vaOBXaChpCzxvfPhLo81RsE/wcmvxwdTb0xP8YXY7+yCMVhkfYqxHqcNgUtHjZI2XYjxV6e2hhrYltjdD2Txwu1V+nnep9u2fdNElwpvsSRMLCEYweVG361ojI76pFImTPGwfNNwYBdbbVASGyo5n0tjGx7dEV3Z8PR3rj56gkYW+21o3jLDEtp8pRGWX8obeW
+ CVc2sNEG
+ CQN3MiGC/KqAC62MT0Kko/v0G8APgN1Ef0is7BHvMPne//1WjAspo//HhM7R6cPsgOM1mssLcpCR713Jnv+pCEuvi54MlY3o5plGSaYQwwAPjMdVH9mqRyNicOpY5mg7sN+S11JZZM5z2TH0WjabfIZyehM4doUr/kz8iU5hWlN3Cy212FSkZPg4bhPv1FUS+cKvLac+ds2a6W0wUbH+E3yLsRyk0lnqhgOOyx061NYos4YkSiD/GUS1ryH9fE/bDi89RUIQbSolDmdo7wcV6LkrGpGmIeUAuqtTRr9Ka6ePAFbdW0q8me/K3JluF+ZgsxKVTrSIgBZc8Eya7sxDbesGLSgzmPVikNyy+0JIa9InMiqiwPP3ACifVEDtqKLGahDm9DqE3AaLiuK1gC8+g5gLaxpkQdNgNaOxHLvE8SIW332Rcvy9Vf9yjMm4n4dqbnZoRJ/F+KTB365BFayMkjXnrPHf6ibiSg0bRcg4GlzPyMepvQItgUYD+2CJfhPbhaLtFoZFtMTQ+X90eDKyJ+K3BZX3M5i9RkTt7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,84 +106,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Tim,
+When debugging an issue found in drm subsystem (link to the
+discussion in Link tag), a bug was found in idr library
+where requesting id in range would return id outside
+requested range. Didn't see in documentation that this is how
+idr should behave.
 
-kernel test robot noticed the following build errors:
+This is an RFC as this library is deprecated but still in use by other
+subsystems. Is this fix proper?
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.18-rc7]
-[cannot apply to akpm-mm/mm-everything next-20251127]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Link: https://lists.freedesktop.org/archives/dri-devel/2025-November/538294.html
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tim-Bird/printk-add-early_counter_ns-routine-for-printk-blind-spot/20251125-133242
-base:   linus/master
-patch link:    https://lore.kernel.org/r/39b09edb-8998-4ebd-a564-7d594434a981%40bird.org
-patch subject: [PATCH] printk: add early_counter_ns routine for printk blind spot
-config: i386-randconfig-2006-20250825 (https://download.01.org/0day-ci/archive/20251127/202511271051.yfp2O98B-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251127/202511271051.yfp2O98B-lkp@intel.com/reproduce)
+---
+Jan Sokolowski (1):
+  idr: do not create idr if new id would be outside given range
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511271051.yfp2O98B-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   ld: init/main.o: in function `kernel_init':
->> init/main.c:1522:(.ref.text+0x201): undefined reference to `__udivdi3'
-
-
-vim +1522 init/main.c
-
-  1481	
-  1482	static int __ref kernel_init(void *unused)
-  1483	{
-  1484		int ret;
-  1485		u64 end_cycles, end_ns;
-  1486		u32 early_mult, early_shift;
-  1487	
-  1488		/*
-  1489		 * Wait until kthreadd is all set-up.
-  1490		 */
-  1491		wait_for_completion(&kthreadd_done);
-  1492	
-  1493		kernel_init_freeable();
-  1494		/* need to finish all async __init code before freeing the memory */
-  1495		async_synchronize_full();
-  1496	
-  1497		system_state = SYSTEM_FREEING_INITMEM;
-  1498		kprobe_free_init_mem();
-  1499		ftrace_free_init_mem();
-  1500		kgdb_free_init_mem();
-  1501		exit_boot_config();
-  1502		free_initmem();
-  1503		mark_readonly();
-  1504	
-  1505		/*
-  1506		 * Kernel mappings are now finalized - update the userspace page-table
-  1507		 * to finalize PTI.
-  1508		 */
-  1509		pti_finalize();
-  1510	
-  1511		system_state = SYSTEM_RUNNING;
-  1512		numa_default_policy();
-  1513	
-  1514		rcu_end_inkernel_boot();
-  1515	
-  1516		do_sysctl_args();
-  1517	
-  1518		/* show calibration data for early_counter_ns */
-  1519		end_cycles = get_cycles();
-  1520		end_ns = local_clock();
-  1521		clocks_calc_mult_shift(&early_mult, &early_shift,
-> 1522			((end_cycles - start_cycles) * NSEC_PER_SEC)/(end_ns - start_ns),
-  1523			NSEC_PER_SEC, 50);
-  1524	
+ lib/idr.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
