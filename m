@@ -4,115 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74401D111A8
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 17:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87243D111A8
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 17:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDF3B6B0093; Thu, 27 Nov 2025 12:12:37 -0500 (EST)
+	id 724B16B007B; Thu, 27 Nov 2025 12:29:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B90266B0095; Thu, 27 Nov 2025 12:12:37 -0500 (EST)
+	id 6D41C6B0093; Thu, 27 Nov 2025 12:29:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A317F6B0098; Thu, 27 Nov 2025 12:12:37 -0500 (EST)
+	id 54DF96B0095; Thu, 27 Nov 2025 12:29:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D88E6B0093
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:12:37 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 35F33160243
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:12:37 +0000 (UTC)
-X-FDA: 84157031154.30.DFAEEDF
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B084F12000B
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:12:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tcF2zkRY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="5PP4P/Da";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tcF2zkRY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="5PP4P/Da";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764263555; a=rsa-sha256;
-	cv=none;
-	b=VHyKvB0euFuYJP9+HGVprBenpbFBa4dTZL++jT/0bkddtWJ4EL9YIVcxhzcqdgGhbxz0Ce
-	q7dpYrXvjzEXKAFPqSDQQviUCUqVV1tb/uJATVUPaAmIIoyDUUrsCGrYJ6J40+0HsdMLK9
-	JbvSP7GE5tRjsLf3L0YSEv4MDz8SRZQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tcF2zkRY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="5PP4P/Da";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tcF2zkRY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="5PP4P/Da";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FC396B007B
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:29:45 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1EBA13A1E7
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:29:44 +0000 (UTC)
+X-FDA: 84157074288.09.78F2213
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 76253180012
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:29:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vmhNmePV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5hBYg18H;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vmhNmePV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5hBYg18H;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764263555;
+	s=arc-20220608; t=1764264582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=muXdCPO0hjEgv1mSmTtKeYXc4kibJAl1WAR2F5e/B8M=;
-	b=wSA/c7xnoAtgRVsPDaT6C+z2P/CLOGrYU7W5TIozudkLQLzhe+UPKD/Px8dTndwoMlBe+s
-	yTlBqdIbmxoUacEjUFqjzYzlrHaP5vVEvn6bGiav/MfCvoGhUNJ2VvvRT05f2x9Wrzp6XW
-	VvdGeFhgW2QBkZeCYJa1/IqIvDikaEU=
+	bh=FuAbPb81cybHXvZzJMFb+FayDQIoYA6mlwqg9utDL+M=;
+	b=Rg4AOm/u5fMiX0UkqDFsWflKnhmVt/U4oXEWTEZZ9OWjW36Hgt4ZOg7Wh3ORV3awbkvEio
+	jV1P4cQF0S9dMYI5eodRATAlHlIfdPQCw+/aGcaqrSnqvW1phWcqZ11Zom40rPaSmKSBEp
+	m/6LevHFmh11BICcrU5KkKWBZB0/EUo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764264582; a=rsa-sha256;
+	cv=none;
+	b=pczywhIk/1/0dKRBfPZ7ysYnLXIyqVQgdks/nqWWnxotfV/abzoD6p5i7C4dhq6GvMWDGM
+	dTzZe1XoJRLJNWKMUyVPDgIY2E3v59ZNcSm1HIGOxqfZrAQHSoKaHNSgpTCDdMOrNC+1O2
+	BOaqd1JcFv9Kw8EcIHVa23HqF0wawxA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vmhNmePV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5hBYg18H;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vmhNmePV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5hBYg18H;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F2B3533682;
-	Thu, 27 Nov 2025 17:12:32 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6DCF85BCC1;
+	Thu, 27 Nov 2025 17:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764263553; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764264580; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=muXdCPO0hjEgv1mSmTtKeYXc4kibJAl1WAR2F5e/B8M=;
-	b=tcF2zkRYl/USlxiTOLnx4ezPZm5abgALyOtNcW+Clv5TsS/mok4YlZSUOMXmxizM0phxBj
-	YRpNlgBIvwq06/RKvr8Vh+miSWk3seJtuUATyv66zM+MiintsU1zHi++wxB9iXXDv/wy21
-	Kng3/P5AnLp9b258ocpi48OfZ/+WWVU=
+	bh=FuAbPb81cybHXvZzJMFb+FayDQIoYA6mlwqg9utDL+M=;
+	b=vmhNmePV9xbNTX9Mp3pNSMixGyL6Rik3T+vb7OOdDNLUyTrMG5dBxP+3Kc9s07o70ZyYkv
+	z6ws1md1U+Z+t6cVLBZNzT2BfTTc12Zkiba8PVLb5YHj82PkWba04hSIWXlujeeYNpp6Zq
+	mmUwXUKtZpbJCTUyscDiNPcsrnmWeEc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764263553;
+	s=susede2_ed25519; t=1764264580;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=muXdCPO0hjEgv1mSmTtKeYXc4kibJAl1WAR2F5e/B8M=;
-	b=5PP4P/DauP7TF2V79v6nom1eiGVrP5sM5vFIkeUcBMF6xWkbRGiGAWGaECl8FLkiTD8qAv
-	nNgcZEszTaiQ0pCA==
+	bh=FuAbPb81cybHXvZzJMFb+FayDQIoYA6mlwqg9utDL+M=;
+	b=5hBYg18HxbOUUs5G9bgxiFUqCIY7Qs9l5yVfc/dQ2fnOGWBxVxep9S1fXUSMC4FIEemtUP
+	m7var8nkza/3UoAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764263553; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764264580; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=muXdCPO0hjEgv1mSmTtKeYXc4kibJAl1WAR2F5e/B8M=;
-	b=tcF2zkRYl/USlxiTOLnx4ezPZm5abgALyOtNcW+Clv5TsS/mok4YlZSUOMXmxizM0phxBj
-	YRpNlgBIvwq06/RKvr8Vh+miSWk3seJtuUATyv66zM+MiintsU1zHi++wxB9iXXDv/wy21
-	Kng3/P5AnLp9b258ocpi48OfZ/+WWVU=
+	bh=FuAbPb81cybHXvZzJMFb+FayDQIoYA6mlwqg9utDL+M=;
+	b=vmhNmePV9xbNTX9Mp3pNSMixGyL6Rik3T+vb7OOdDNLUyTrMG5dBxP+3Kc9s07o70ZyYkv
+	z6ws1md1U+Z+t6cVLBZNzT2BfTTc12Zkiba8PVLb5YHj82PkWba04hSIWXlujeeYNpp6Zq
+	mmUwXUKtZpbJCTUyscDiNPcsrnmWeEc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764263553;
+	s=susede2_ed25519; t=1764264580;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=muXdCPO0hjEgv1mSmTtKeYXc4kibJAl1WAR2F5e/B8M=;
-	b=5PP4P/DauP7TF2V79v6nom1eiGVrP5sM5vFIkeUcBMF6xWkbRGiGAWGaECl8FLkiTD8qAv
-	nNgcZEszTaiQ0pCA==
+	bh=FuAbPb81cybHXvZzJMFb+FayDQIoYA6mlwqg9utDL+M=;
+	b=5hBYg18HxbOUUs5G9bgxiFUqCIY7Qs9l5yVfc/dQ2fnOGWBxVxep9S1fXUSMC4FIEemtUP
+	m7var8nkza/3UoAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 842B63EA63;
-	Thu, 27 Nov 2025 17:12:32 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DDFED3EA63;
+	Thu, 27 Nov 2025 17:29:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9PCSHoCGKGlQLQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 27 Nov 2025 17:12:32 +0000
-Message-ID: <73d414c1-8cdf-4d61-baa0-e4d689b3973b@suse.cz>
-Date: Thu, 27 Nov 2025 18:12:31 +0100
+	id YuV5NIOKKGmaPQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 27 Nov 2025 17:29:39 +0000
+Message-ID: <dc483db3-be4d-45f7-8b40-a28f5d8f5738@suse.cz>
+Date: Thu, 27 Nov 2025 18:29:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/16] mm: remove non_swap_entry() and use softleaf
- helpers instead
+Subject: Re: [PATCH v3 14/16] mm: remove is_hugetlb_entry_[migration,
+ hwpoisoned]()
 Content-Language: en-US
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -154,7 +154,7 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
 References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
- <2562093f37f4a9cffea0447058014485eb50aaaf.1762812360.git.lorenzo.stoakes@oracle.com>
+ <0e92d6924d3de88cd014ce1c53e20edc08fc152e.1762812360.git.lorenzo.stoakes@oracle.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -195,17 +195,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <2562093f37f4a9cffea0447058014485eb50aaaf.1762812360.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <0e92d6924d3de88cd014ce1c53e20edc08fc152e.1762812360.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B084F12000B
-X-Stat-Signature: g84wqn5age4nrrc4oicyx59jfk3wjdib
 X-Rspam-User: 
-X-HE-Tag: 1764263554-575204
-X-HE-Meta: U2FsdGVkX1/ZyNTBeR7UZVkQPo+2Hu9TcllfO/qsjyqtVc0bH4MUexhnKP6fcMU+Xqs997Bc1MSlqWUGArYvvaOV8mZKCnfzwjGC7vcDJWSnCKsdWMt6JgEy0gEhns84ZP1Kto18yLf6zembpHhwWdEodK3XbNN4/k6+4oKrN+iIsBV0tMvL5Ho4n33otgUzIq8Cgf2OId2zbpxNhXQZ6TNqPanaYqdfVCnpMCg8DDLdhwW5lJg7IwszWp2KGLe1A07aNYaf8brRT5sKGpGfBVOX5MRxKAFNmIjCpyG35nDMVaguBPDNnlkadBMTZuKdIPyvxqAxjnqMDf+xkFXbJ/Rl74S0RQt2/5x/Zbk9tsB5HQ/5bvvA4LsKM8Vf7OY91A8euiVB3H5hXIRRj8TJh77/yjizX/yNdMFfHXcEbF3rLxzd9qNKMPdwqeMeDn1p0flawBgAAFalY2ejfBHxYbOvU5Y3IXt3zC69u6/XOnN2AJukHerbwcQFPTyDATqPWdVu1jLZpAA9JepOSGX6Oweji9p+26YJP81WM+oT//VhCOCtaX2iMD9VwQb4FyYSD3YYECadc9joZR/SZBpT/KtRRC/Vdcuuy12ieIq/FgrY1VuR8/sD1DeAIV5sf5ruBjLYe60l04hoQrZRY303/6lPBB08jga7QYCbzpV1XUXWV8Q7Q9uyTKd68b40Ce+ixbIQMnXV8PBJBpJdcT05gwXj3C0TH6HNmRvJ/wKYbW1maRuNI9uORr25lAPL2ul5lsFXVeeIlJzJ4RPegpxC5rNJXRzGQp3wql0fOe1ouT+p3tqypXjpqRaKUWjXiVAxvsZr2Im3JJN6q7fku381NMQS2UgDwbc+XraS/UoGQvEozkZMfYANvPc+SqUrVgtZaifugVI4R9/lwr4lMLQYmQV81nxNRb0JCFqueJ8/SBx7Pzr+R1MBlt0t1WS3FWATgyMEOPm3KtV4xNjbEQr
- jInZwvqb
- qgvmpXMXLaN+Gg6SmhhKUgIc1mv+/mSyyHVmcyrkdyJ3eh42R4W501Ncv9o9dcjj8AvJoCsh8Jx/NJriOjKA/UtssAbVX8DnFduopWGwCfQ1khc1FBDdi4481fcj1JIlCGm5hQdbV9J5oqPi+dc4Re8H4M3IphXyIrddI6XtooMkHfipr+JqNWf0esML4hPlr4mMG9PbpzYpm61mH2iyYrBGff5+lL6kCOXXHi3cXLuw6v9/Bqqgo6cjVMd3CiFMmX1LhJa0JeEY1U8xRKF75/i2oEgA1zOZ3a+t1+S5WWrb9ZmJrV8LFJsXub1vovJWRM+nFM2EgaspO8brur6/XUrAXN8RhHdzSmWLkR8QTgA1p+SFQ6UQ/bDWBthpCb/BaGbeOMcirUBHpT7sUEyvJO78BwGYWtnPbqGNOWiEg6j7XXWo=
+X-Stat-Signature: 4rzp97cdqi8wiote7htsqtrcrw69qmwq
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 76253180012
+X-HE-Tag: 1764264582-119376
+X-HE-Meta: U2FsdGVkX19PWRfcr8ycLEOB8cRTroXynpuDL4NNDk67DYP3RKbjqPZgwGJzcN/VUa7xc7SZoiC9BE2sVTS+dVcP6FNilLqXjfKASvE+Y0SV727vZKbnxlLNxOHc6ScHYNz2xVMFEIiarXMBF/+u+3E6AkL55AyWXp/Hmd6i81rYXd12pTsyAdGNKhCfLkvY5H7vPcfEtBF9YW8N3SEddLm+LSn+ZmFq3cGbTMH/R2jX8Axu3uDsFtCmI85ghlI2IiOl78eaK+g/1khz+Saatu3KzQq0/EmccQnAHz9Rg8hRS6N8i6Gt++dNA4NRi0RIXHaMyHK6e9pBZg9Unl8h56mHZn/Awd1OqHP38NSAG+7/5WKWlytYe1FJNkyhkUZ8TgENpV8iDA0Xy2h3vMuPmuCx9V+N8Jqt0yQBYg/Vz1q/6bd8nNNnu/jOA1XWwo9mTxnVHAVyknQMvAfA9DTDdGnNgfG0OFjEqGvX7Z7R3kqDj5yy3trmoEXxIqYwueLoA5Z3MFudgwNOx7JKhv1YUpuewbdx77/PJhT9cj4ClAtGPfAN605PNJuoS5awLi5G044JyjcuNATUDcva36N+/uOsdhqV4xpqtAspFjhL40abDrqW4G2iK0uhkbfnINMKd69F2GA7OGvcGWhhEvhS3rBOivlFICy6N3oHvvdC5Yg4t4q2xGLmTNz7LyeQldYLd9MPE4DLFzLLSO9YrtozjMDqS6YUUTt3UtmalX7h37r0A+BWhFyJ5QMK2NEbkg313rgjuLe6C4gcp6xu9RWnGpFBgHzsnRCsExmGaqAIyaEKUUJVLp71PJd/zyL02rCPkS41FLqEBDfGr8GC0SGkFKvbxlfHTPcGPg0fX3PPPJNQO8VXwe3u6Tmaijl9xM110Vqs+F+Jgk1Zo2SfPQ5nUh7Ch2jRNpyopCuS6imvCOEDFt5JBD6Na57k4mGqST4kh3Y1rPN0SglNsbpG+vU
+ Oh5Qt4/e
+ EBEu2I3nFST7moLrauX0/AvjxfYLqzCJKzmWO3LpP8wEv0LFcu0UEcMRDV9aD78MR0CkWMy7UXzexovl44deI411zdsG+EyBuU46gUH+p6S8OUtMzcLEGI65FfkLUzkPOmnOceoHhgyCXbC+xcIR4o7ktzKkNLVIxsMuQUwAeY0Osm+OUtUOmx5TMvwVA5XlMIQMmITa3Ln6IOa1IHp6U3Jotpc33KA1nYGAiieXrrlye781TVVWG5I4l6zWAuorgcWY1BflhgXH8RuzSZ+u6jHgKsIhBvVv+bpcRXG9x0+a3575k4baSceWtaovYOJixZ+hm8SUt95LzNh4nVBeprnmZ3K2uUPjvz01BXT8CsKKRrsAZTXTbCn+Wmar3rrEZRkS4nJTD8kgaRv9IPO9ol9m5g/iqvX/58Y22t6/mv2FU5fM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -215,55 +215,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 11/10/25 23:21, Lorenzo Stoakes wrote:
-> There is simply no need for the hugely confusing concept of 'non-swap' swap
-> entries now we have the concept of softleaf entries and relevant
-> softleaf_xxx() helpers.
-> 
-> Adjust all callers to use these instead and remove non_swap_entry()
-> altogether.
+> We do not need to have explicit helper functions for these, it adds a level
+> of confusion and indirection when we can simply use software leaf entry
+> logic here instead and spell out the special huge_pte_none() case we must
+> consider.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Nice!
-
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-> @@ -1430,19 +1429,20 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
->  					orig_dst_pte, orig_src_pte, dst_pmd,
->  					dst_pmdval, dst_ptl, src_ptl, &src_folio,
->  					len);
-> -	} else {
-> +	} else { /* !pte_present() */
->  		struct folio *folio = NULL;
-> +		const softleaf_t entry = softleaf_from_pte(orig_src_pte);
+But seems to me a fixup is needed:
+
+> ---
+>  fs/proc/task_mmu.c      | 19 +++++----
+>  include/linux/hugetlb.h |  2 -
+>  mm/hugetlb.c            | 91 +++++++++++++++++------------------------
+>  mm/mempolicy.c          | 17 +++++---
+>  mm/migrate.c            | 15 +++++--
+>  5 files changed, 69 insertions(+), 75 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 6cb9e1691e18..3cdefa7546db 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2499,22 +2499,23 @@ static void make_uffd_wp_huge_pte(struct vm_area_struct *vma,
+>  				  unsigned long addr, pte_t *ptep,
+>  				  pte_t ptent)
+>  {
+> -	unsigned long psize;
+> +	const unsigned long psize = huge_page_size(hstate_vma(vma));
+> +	softleaf_t entry;
 >  
-> -		entry = pte_to_swp_entry(orig_src_pte);
-> -		if (non_swap_entry(entry)) {
-> -			if (is_migration_entry(entry)) {
-> -				pte_unmap(src_pte);
-> -				pte_unmap(dst_pte);
-> -				src_pte = dst_pte = NULL;
-> -				migration_entry_wait(mm, src_pmd, src_addr);
-> -				ret = -EAGAIN;
-> -			} else
-> -				ret = -EFAULT;
+> -	if (is_hugetlb_entry_hwpoisoned(ptent) || pte_is_marker(ptent))
+> -		return;
+> +	if (huge_pte_none(ptent))
+> +		set_huge_pte_at(vma->vm_mm, addr, ptep,
+> +				make_pte_marker(PTE_MARKER_UFFD_WP), psize);
 
-Eww, good to get rid of this.
+Shouldn't we return here? Otherwise AFAICS we'll also reach the
+huge_ptep_modify_prot_commit() below and that wasn't happening before.
 
-> +		if (softleaf_is_migration(entry)) {
-> +			pte_unmap(src_pte);
-> +			pte_unmap(dst_pte);
-> +			src_pte = dst_pte = NULL;
-> +			migration_entry_wait(mm, src_pmd, src_addr);
-> +
-> +			ret = -EAGAIN;
-> +			goto out;
-> +		} else if (!softleaf_is_swap(entry)) {
-> +			ret = -EFAULT;
->  			goto out;
->  		}
 >  
-
+> -	psize = huge_page_size(hstate_vma(vma));
+> +	entry = softleaf_from_pte(ptent);
+> +	if (softleaf_is_hwpoison(entry) || softleaf_is_marker(entry))
+> +		return;
+>  
+> -	if (is_hugetlb_entry_migration(ptent))
+> +	if (softleaf_is_migration(entry))
+>  		set_huge_pte_at(vma->vm_mm, addr, ptep,
+>  				pte_swp_mkuffd_wp(ptent), psize);
+> -	else if (!huge_pte_none(ptent))
+> +	else
+>  		huge_ptep_modify_prot_commit(vma, addr, ptep, ptent,
+>  					     huge_pte_mkuffd_wp(ptent));
+> -	else
+> -		set_huge_pte_at(vma->vm_mm, addr, ptep,
+> -				make_pte_marker(PTE_MARKER_UFFD_WP), psize);
+>  }
+>  #endif /* CONFIG_HUGETLB_PAGE */
+>  
 
