@@ -4,124 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870A8D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:52:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4A75CFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:55:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E73C16B002B; Thu, 27 Nov 2025 05:52:58 -0500 (EST)
+	id 21DE06B002B; Thu, 27 Nov 2025 05:55:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4B986B002C; Thu, 27 Nov 2025 05:52:58 -0500 (EST)
+	id 1CFEC6B002C; Thu, 27 Nov 2025 05:55:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D61226B002D; Thu, 27 Nov 2025 05:52:58 -0500 (EST)
+	id 10BE06B002D; Thu, 27 Nov 2025 05:55:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C46D36B002B
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:52:58 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 713C58A5AC
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:52:58 +0000 (UTC)
-X-FDA: 84156074436.24.F04EC89
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2805B40007
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:52:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D786B002B
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:55:51 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 662728A8AF
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:55:51 +0000 (UTC)
+X-FDA: 84156081702.08.FAAF78F
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 592CCA000E
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:55:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=s14P8P0P;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764240776;
+	s=arc-20220608; t=1764240949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dSkfS1PH0V2GqQ7JwCU589oUysx1YAYg5wc2qE7DJO8=;
-	b=Kj1AITcbB5NyqoWQrbaj8oLDZUsMsMSLVYQUiZbvw+TfqFM68bt10NWYGsL24lCXqKXwCZ
-	VMxcnd9mU6R6SkWAwbLF04o2pIyEInf0ONY8qZPqyqtcYQlKDN7kRyXURkRG10wXLpw9gg
-	1NWqFR/O52ZMMgtX0eCj36/peSZimVE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iRVmjU/Y9Gn+2pqu0CVyrzRMl+J5d/ZiDNk/GmUSLQY=;
+	b=gyjac/yW/rbtP56BvK7DtomoD6rVMSKXtT4ySee591njfEbEQj9cn4GUkftXTabN1PV0vt
+	Er7Zej1og1mBKVZLbQJGIfyZ2zaoK5YCjfUgOj1Y1w8Q1b3f9Cye79tyx14QDsyj5fZFMg
+	tdX7eawsL4wL9tYGzaal/tEJbbD0sis=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764240776; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=s14P8P0P;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764240949; a=rsa-sha256;
 	cv=none;
-	b=p/5OQKGycXrPg2DSX35Wsqn6+tGJuk/i1xcEKZYfu2FbKTut6jc0jul1uBITvVTCY8dajo
-	opFj1cKAaG6t+ZBWmu/6F74pGzcqu6Qs0eskQlp0vCggcvYU1CpllRbO+1FA3wGslKTELr
-	HmRZpKF30wim+od1NxfuiskoSmArLg4=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7B48433693;
-	Thu, 27 Nov 2025 10:52:54 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B0C7F3EA63;
-	Thu, 27 Nov 2025 10:52:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xrDGJ4ItKGlFNgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 27 Nov 2025 10:52:50 +0000
-Date: Thu, 27 Nov 2025 10:52:49 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	Oven Liyang <liyangouwen1@oppo.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Matthew Wilcox <willy@infradead.org>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Oscar Salvador <osalvador@suse.de>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Ada Couprie Diaz <ada.coupriediaz@arm.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kristina =?utf-8?Q?Mart=C5=A1enko?= <kristina.martsenko@arm.com>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	Wentao Guan <guanwentao@uniontech.com>, Thorsten Blum <thorsten.blum@linux.dev>, 
-	Steven Rostedt <rostedt@goodmis.org>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	Nam Cao <namcao@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <v-songbaohua@oppo.com>
-Subject: Re: [RFC PATCH 1/2] mm/filemap: Retry fault by VMA lock if the lock
- was released for I/O
-Message-ID: <5by7tko4v3kqvvpu4fdsgpw42yl5ed5qisbaz3la4an52hq4j2@v75fagey6gva>
-References: <20251127011438.6918-1-21cnbao@gmail.com>
- <20251127011438.6918-2-21cnbao@gmail.com>
+	b=t09gxPEYyQYVTEAOv1cuIjW3vsCvd3saS9FVkYOO06qB/8hGnBELIt0NGjM+sn7vocNqNx
+	NFXwBNBkUnVbuXn1tZdFUbhzS80Rz5uP+yb4OnFjeuwYjbo/TanQ5AUbblL+ORmERi5tn+
+	EFR3EPz8AERXjBDyOWpzJwCZWmDLr58=
+Message-ID: <8ce13061-b4a7-4474-9e57-bab9b1a62b63@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1764240946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iRVmjU/Y9Gn+2pqu0CVyrzRMl+J5d/ZiDNk/GmUSLQY=;
+	b=s14P8P0PJE11i12hs9kRxZwk7rjf9SBW1ODcAc4YQFqTE6LZUBuEpDAR6JPzETINtrrFQ3
+	S5YbMm0FgUEPkxoGwgSnRAshddGklYK3rA/KTAjm8rjln78PtplcUINUcZkF16B/wBYgDU
+	v6UPh/nTm3GriJ0S3zaMsz3hCNRFJ9E=
+Date: Thu, 27 Nov 2025 18:55:37 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251127011438.6918-2-21cnbao@gmail.com>
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 2805B40007
-X-Rspamd-Server: rspam02
-X-Stat-Signature: cp7rz6hswnuymj91q6akie9c4z39xg47
+Subject: Re: [PATCH v4 2/3] selftests: cgroup: make test_memcg_sock robust
+ against delayed sock stats
+To: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Cc: shuah@kernel.org, muchun.song@linux.dev, mkoutny@suse.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, shakeel.butt@linux.dev,
+ linux-kernel@vger.kernel.org, tj@kernel.org, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20251124123816.486164-1-zhangguopeng@kylinos.cn>
+ <20251124123816.486164-3-zhangguopeng@kylinos.cn>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20251124123816.486164-3-zhangguopeng@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 592CCA000E
+X-Stat-Signature: fpc338hp1khkm8rdwrrbyzrpfryqwgcx
 X-Rspam-User: 
-X-HE-Tag: 1764240775-285846
-X-HE-Meta: U2FsdGVkX18qXVwWqymX71nbnNsoNkKN5r+AXlUTXVQOK22KZklZ1J/520WFq5TFA2YfA+MDZjTkkkp+xy2ynXWnEN/IwLsLdSs5FuTf8Gl3Q+yCYISIlLBXss/SXnUMU6Bpo7gqhkEigSmfteNSJCRCKccM1Y2g4iXjdS9nbCzrLAoxZfW9kjXD20hkF23sHew90brNWpuOQupF4qfA3esbYZ52v/DZUy0rsxS+54AoBRDMSBxq8RYlAK0xLltFQcWs6UFsZH8kCVw9uV2H1pbXyQMPUfmj+2fpz7rjlbUSBqslWH6qc2dkp9JivNdki8kTOdlQB17UKjvxgrvEQa5XwhDLxejJgvlVX3BmD+3BlmESDv9s7MjnL2TPsJ7xPOCMEpXO+p+J113ZDsYfR05JxtY89MHpvkAPgVnTTa/kIj/yy/y78+ziCY6+JfKgrDnbq7dvXNH79FNH71Wz1uzMYq0NSFS35iFXCK7JZ9XGvXkuMNg3wTlIWaW0SCis/cUs5l3kjHNxwRExGRmLw7nlVL/mXcxhldgIfyWprgDydsFDs2xAIeJZ4a8Of2ljB+gYox04njE+pMka8OvroWAHcqOHKJQTOIKYafGjozo8Pi8s9ihtxkmrOXU8C4xS6nJq6o+PwcS66CKHphtIFzPtGpPESu6beFVfUKswiYjyFYnxmUZBgRCDUOBB5Ze3anke3CMAj+1kmLklI5fxoXQv/SqdKT9PsNQxAYCbKCfCq16fiMahQfSUZ8ctUc2acYPUuxYb/2aVm2OZbbg6TvODHMDKTZMk/h6TzCHsX8WbmIBc3LchUYK5Etrq1hEKxoI0gUh9Ne+hIJkO2HxTFhUv/t0vb16X4tT9+kctCBEy+/nll1Xaq/n5LVNFkT5AGdlpfPO2MBDnG9DU3pN0iqwYkwlqphy51iXWjXXSA6K88HIPzI2iU8UquV3Gi3Uht+bUpklCP53CUYdpSZk
- ir77TWyZ
- VRQknQOdHKI9kSUk8/iGee01beBeYShqWYswUtNDbtX2VqLd2fro58OIjflGNssrs4V495y6FvHHVJjB5Am3C8HuAS+efqZ8Rojtcw+3wUX9U3V1mp7rryKxqokXt1yk9PqsbUdVmxZ3OsfvlXYcYxQoKgeC4WM5+/B2RW281udCTeLcqda/eOEOa4uNO1QgTUCG4LMVs+4zPLqHDN0sMZAAGIt9F5SfTQTfk
+X-HE-Tag: 1764240949-967798
+X-HE-Meta: U2FsdGVkX19sXJDIyNvH7gQZxfZD9WjFlHoUogOb7/EMSbBG/PVrhpuPHpHnMapQmuWXEV+5H3KqLK/7QvdICDd2MeyrRCM9zOT1X29qvdU3MZ8SKuGFbqQLmbgcJdr5k9Jmbvb/9dHq5ApQORr2etJ0KWXBIafgLL/FK4uFT1O3QY2TXaFDmMuJJiY9Sff3AxqSUTFRGhlfEaIe5ZavJJqglSsI1C602DWENUY0cGaSMVsqGCfBT7oAsiF9AJHbdXAEAABujKRJmzStOhM5hA6AdCu+JjafM804Z7ilJaQpsyRXqyatTfodTALh5wYnp+RKi57S1XiVdLrvsNZ2UVgXm0O05V+pGK4k8tOT3PMreK0llhxttfeZgt9oxcDbErIiid3diB2MOgjyENeCj5cHv1NlUt0YIrla88tZOcrj89x4kzAIYFEFMxhqn5Mcw+Ofm5Q0cdrL2t8tPFGvMRCDJUEFmsnqm3YJGH6SxwC9oHZSvtpS9hEL2x7KtZ9baTG5Bk0igfpU6Qas8otdiIjUpV984ML96fjTWr/QS6widpQ3gVG1m3C5UxbHd37bOlFOMboTlnK5tdnzYgHedrTB5ENAjupBqTmHt4NY0L2WKJih9YdsDB8hTpgZ2YEOOVE8NqR/lKbBnD0zC4fqS0YbWzE58gKG1joFhJuJOjtSQHAFbicJQTdCzm5IbRXrwQQ56Drm0lAUMEcRn5SRc51S2OP29vtIh5jTkjlbFdz6StFyCHQmro8nngHrxve+StSJdtrE9k+23rnNuT8XS2IM17ku7kmRkheVmi6QD5avPBEjfxpmcQSbKqEdpBZ1DR6e1neturkhpWAd30dm4B2Ri1ukNniMiUiJPLM8R9LCbncLsfaX0JTToi7RE8fuNQt25g+A2UhAXIaRBsDf64JEJ2KAWTT7HaaEKXL1r1UNXdmJWHK/F/Gcv1GGTHSsHR3eRWdgFWuDSlTyPih
+ MkF8UPjj
+ 5/3/XRQ6bj958wT3AQf+mnzWIsRpEJjgmWFkWQIcSMVa6PBiAn0HTRXk4Qsc8nMa3HiWEeTE7kiK0wwn93bKZxLIV2jfMOtAKURfI3gxl1D3C9e6tX1NXmYTWMis41i77bSb7vn0GEytSJKtwGcryzQsSRc9B3gVYARsFs2W03m1jY++MoUZpKs8p3Tpi9aK71lSN7Crk/yyW6G8Oi8LqDn/pJBB5KESB1Ky9HFA2oXKtJv22rIWnCTHv0grKfsLvNfoA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,54 +95,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 09:14:37AM +0800, Barry Song wrote:
-> From: Oven Liyang <liyangouwen1@oppo.com>
+
+
+On 2025/11/24 20:38, Guopeng Zhang wrote:
+> test_memcg_sock() currently requires that memory.stat's "sock " counter
+> is exactly zero immediately after the TCP server exits. On a busy system
+> this assumption is too strict:
 > 
-> If the current page fault is using the per-VMA lock, and we only released
-> the lock to wait for I/O completion (e.g., using folio_lock()), then when
-> the fault is retried after the I/O completes, it should still qualify for
-> the per-VMA-lock path.
+>    - Socket memory may be freed with a small delay (e.g. RCU callbacks).
+>    - memcg statistics are updated asynchronously via the rstat flushing
+>      worker, so the "sock " value in memory.stat can stay non-zero for a
+>      short period of time even after all socket memory has been uncharged.
 > 
-<snip>
-> Signed-off-by: Oven Liyang <liyangouwen1@oppo.com>
-> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> As a result, test_memcg_sock() can intermittently fail even though socket
+> memory accounting is working correctly.
+> 
+> Make the test more robust by polling memory.stat for the "sock "
+> counter and allowing it some time to drop to zero instead of checking
+> it only once. The timeout is set to 3 seconds to cover the periodic
+> rstat flush interval (FLUSH_TIME = 2*HZ by default) plus some
+> scheduling slack. If the counter does not become zero within the
+> timeout, the test still fails as before.
+> 
+> On my test system, running test_memcontrol 50 times produced:
+> 
+>    - Before this patch:  6/50 runs passed.
+>    - After this patch:  50/50 runs passed.
+> 
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> Suggested-by: Lance Yang <lance.yang@linux.dev>
 > ---
->  arch/arm/mm/fault.c       | 5 +++++
->  arch/arm64/mm/fault.c     | 5 +++++
->  arch/loongarch/mm/fault.c | 4 ++++
->  arch/powerpc/mm/fault.c   | 5 ++++-
->  arch/riscv/mm/fault.c     | 4 ++++
->  arch/s390/mm/fault.c      | 4 ++++
->  arch/x86/mm/fault.c       | 4 ++++
-
-If only we could unify all these paths :(
-
->  include/linux/mm_types.h  | 9 +++++----
->  mm/filemap.c              | 5 ++++-
->  9 files changed, 39 insertions(+), 6 deletions(-)
+>   .../selftests/cgroup/test_memcontrol.c        | 20 ++++++++++++++++++-
+>   1 file changed, 19 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index b71625378ce3..12b2d65ef1b9 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1670,10 +1670,11 @@ enum vm_fault_reason {
->  	VM_FAULT_NOPAGE         = (__force vm_fault_t)0x000100,
->  	VM_FAULT_LOCKED         = (__force vm_fault_t)0x000200,
->  	VM_FAULT_RETRY          = (__force vm_fault_t)0x000400,
-> -	VM_FAULT_FALLBACK       = (__force vm_fault_t)0x000800,
-> -	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
-> -	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
-> -	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
-> +	VM_FAULT_RETRY_VMA      = (__force vm_fault_t)0x000800,
+> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+> index 4e1647568c5b..dda12e5c6457 100644
+> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
+> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+> @@ -21,6 +21,8 @@
+>   #include "kselftest.h"
 
-So, what I am wondering here is why we need one more fault flag versus
-just blindly doing this on a plain-old RETRY. Is there any particular
-reason why? I can't think of one. 
+This patch fails to apply to mm-new ...
 
-I would also like to see performance numbers.
+Hmm, it expects #include "kselftest.h" here, but the tree uses
+#include "../kselftest.h".
 
-The rest of the patch looks OK to me.
-
--- 
-Pedro
+Which is odd, as that line hasn't been touched in years ...
 
