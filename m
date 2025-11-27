@@ -4,129 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D028D116E4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 02:29:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2436D116E3
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 02:36:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 996036B0006; Wed, 26 Nov 2025 21:29:07 -0500 (EST)
+	id 5156E6B0008; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96ED06B000E; Wed, 26 Nov 2025 21:29:07 -0500 (EST)
+	id 4C59D6B000A; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 883716B0010; Wed, 26 Nov 2025 21:29:07 -0500 (EST)
+	id 3B5246B000C; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 756116B0006
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:29:07 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19F745AF16
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:29:07 +0000 (UTC)
-X-FDA: 84154804734.07.F175152
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5EE4B10000E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:29:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=hlT8YR8A;
-	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 26D746B0008
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B993FC0970
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:36:34 +0000 (UTC)
+X-FDA: 84154823508.19.E4962D7
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DDBFF1C0006
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:36:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=i1cLveWU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764210992; a=rsa-sha256;
+	cv=none;
+	b=wLikotVSt+YRaeF4bMr5y/C2rfUWPNMgWlm0uXfHzAVyVkpDDJ4R4rzFH7rgvc/6LP4ZRU
+	3G+1+9nFV2L0tWZHP03b2LvZqjTQinarNaJdAd2iEmHK4ipFiafTCBGBpHMTs6nDkEGQdi
+	+zwifrkldEVcH5ORqVo0eIHhXxQ/sFQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=i1cLveWU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764210545;
+	s=arc-20220608; t=1764210992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MyR7n+tUVYq7Gv0a4Vy6iLN5p/x1e6LQPMRtEiCm6sU=;
-	b=7dkBWf+0PZnlYi8LmGSDMjB/Ytgf/n5K4YJZL9F2YYmD00nsTF8qTd/dUabZRAEec9t46n
-	nwFIu4di63d8Oxn8c6cBWcViASF+lJDariRoqerMBfvEPJ6pToKxcClH/RbU6paL0Wu/j5
-	WtKQMwILWjHEzCAiaDbjhXCQmgxMA0w=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=hlT8YR8A;
-	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764210545; a=rsa-sha256;
-	cv=none;
-	b=0NC2Kh76ozxi/b9AbtO0kVpOpb8CfwIHdh++l0sUQQ80rWlx/QPKBC5BmCBDmxyLWf4Kb9
-	rHs/3JJSRtSs4bkwT8adxnbI5QGyhSP2hklQi5NAw5Z1Vy68nU+csQ04AKLH92qlF2gtu0
-	gbtsqIkazBAQwNpDko+XktDAy27ObVg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=MyR7n+tUVYq7Gv0a4Vy6iLN5p/x1e6LQPMRtEiCm6sU=; b=hlT8YR8A1yK+8hWzt9DjgpD7p7
-	QrO8GyZevYtNX/02bVaG4q9TXtK5aZ0+CGEbKNzy4n3gINtOvKQpaSpQFpYK8enEogmRaxS9Wppb0
-	x3iqBpABGs8U5MY2CBXAbJ2AqV9AG2pqx2GNTEKo9tUN0/jtYL/gU0eN7DLJa2Bkh1JBQ2WESZaXK
-	lbhXgujPM7h+nKFhDqIobmOuQkAEF0x5MAXzgLv1xL2sPa9ELBLISJtPdzsdsykmD7k+2ItxCBuhj
-	9O+hXCMbYxkqQxMOkwsb0u8kI4ma3S+qeY5SErFKE2fEr0ihW/5vWU+dWeHDomcw0RmmNGLzZKsIJ
-	GvZn8MPg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1vORhn-000000004oE-2QV6;
-	Wed, 26 Nov 2025 21:26:00 -0500
-Message-ID: <7e44e8654eb0ed5e0f590b3d705b258772dadb57.camel@surriel.com>
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton
-	 <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
-	 <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
-	 <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Yosry Ahmed
-	 <yosry.ahmed@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, pratmal@google.com, 
-	sweettea@google.com, gthelen@google.com, weixugc@google.com
-Date: Wed, 26 Nov 2025 21:26:00 -0500
-In-Reply-To: <CACePvbWcYsm3WpQSkbiSKESpHOb+QybNTxtDL9mCvRd__Xj4Aw@mail.gmail.com>
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
-	 <20251121114011.GA71307@cmpxchg.org>
-	 <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
-	 <20251124172717.GA476776@cmpxchg.org>
-	 <CACePvbXLdf9bC3Juj=wA4_TKeH6XUgHbbvwV5HhNQtgoT3CiBg@mail.gmail.com>
-	 <20251124193258.GB476776@cmpxchg.org>
-	 <CACePvbVJEWd64r-o8ezh+0QByYbWjYVKiLgxNiBJOjfRWP__sw@mail.gmail.com>
-	 <20251125213126.GB135004@cmpxchg.org>
-	 <CACePvbXstKtQXE+0i-KRcq5LwrCr92a_FKy2KBmqaiwZEkFxng@mail.gmail.com>
-	 <7665130c511e3cd00f83e8b14de2b78e08830887.camel@surriel.com>
-	 <CACePvbWcYsm3WpQSkbiSKESpHOb+QybNTxtDL9mCvRd__Xj4Aw@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+	bh=dG4CF2IMP7M0Y+1dFumBVpCBxoZ8uo+lnVXyk35N/v0=;
+	b=yQSmUCaqvcUBKIGbeEIe4m/a8UL6OesM+idMkPbo466rs050DXUuXoxadXWZc1nIBI3fJf
+	mgjFM19wrA3JqEPJCfrFernH4cR6986mVZDBvxAXc8J4cqYi5p+XTs7uSndaae7JoDR+oL
+	2hyfdz3qMimjcLKT7kn2ke7fNWPTpMQ=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78aa49cde3dso4412727b3.1
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:36:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764210992; x=1764815792; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dG4CF2IMP7M0Y+1dFumBVpCBxoZ8uo+lnVXyk35N/v0=;
+        b=i1cLveWUlKwSMRaPVMtkPON7pOy9tUgqV90lLyrBuhDYaIeQyw6PjKjYKSUf+H59+1
+         SympLipzsBMjbQ9SrnLWZPc2dNYIfD1H1Yz/0C6j0imruseolTeHaY86ju60/DVW3MR0
+         huGujOSStXMSaURJaB/F9A8rpB5KG28fDOvAh0AqdsruALvSxfi2TyEqmgot63HbvWnn
+         /QC3uE8+CKsT+PnhK1aMst+apPY7vVV6YESXM+eMS40MFY5qo1z2DyhQZk4Gtek/l8rV
+         y7CWUO99AUs6v4D8dRaMRul2D3qZBCfsIE3HOP5v6D9VKRhOrusKYgFjeM63Z3XFZCoD
+         ihmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764210992; x=1764815792;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dG4CF2IMP7M0Y+1dFumBVpCBxoZ8uo+lnVXyk35N/v0=;
+        b=AuesOVl3VX4lRuGXIjOmgls1+q6UCXZXn2vreX3RHtmSReulLJYawROx+UiTAQj3IG
+         /nKsGcOXtiuP+OfYG5NKgH5DrNrhROJLevhchpMgQ5fmSNkVyI2zKicb4dD5GyRQMaHR
+         ZMcusQRTtHHc9l7obAokdZmuafyEyNG4qNnxcQBksWSTb3R72shj8M48ohDhp17B3p4/
+         xUr1TBOPOxdIQN9Dw/sZC2RVHQ0OTgd5WL7DlMrRy5NrTBiWyPuEygC+xN3VUdbeJzI9
+         3LJe1pEMIN8VGLTLaZ0xYiSYlAwrBEQswiMfkjlSM2PVG8zpt97KWuTdH0FiCyZCWUgo
+         PBHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAePW7kTaxfz6uLDfLHOq9UeN53n2J53F1LKQFIFOu3hMZ3L2GcsUuQqSl7tSDClhZT8x7j5j6cg==@kvack.org
+X-Gm-Message-State: AOJu0YydPm9jSFC+OGa54PPJ0tGISb4lYUkJUO6jTYPY50uqMtbjpdde
+	TYGnhVWB72YSwD7L2vHlIeiyWTQh0XWIPeX2MoDZ6oaQ6PU47SDNNpy9a6WZX8YHjty/sQDmS7m
+	HsHEs+eO4bKp9zqCJF+f0Yk3WWqv0sAE=
+X-Gm-Gg: ASbGncu0ecYOExErv+qSZBa1VGu2N1FeljSA0xlQcnHnUQToqlTHlqzFsyoFC0uly5L
+	ZKyBlQPQFThQheMBoPm/35AshSDXjWpK/52JKNpYdzdGsNz1mKKcJbAUyTJ/56sr+V/nyXen5tV
+	xiYDaQ/l3UhNdBBh5lyKwLjPuGzhVT3CpunvTmuF1MJvf3w65cA4UYqIouDqJ2wyLGB+RD13lP1
+	H8PqKw8q7mN+HBmrQhdC7AJGTBf2nsuH+O1CGHj5a/c94x/TYrbC1Q4iKrmKGb6s///yNdcCDEh
+	427a69w=
+X-Google-Smtp-Source: AGHT+IEfDA/1rHeriKTtWS6bCyAPbkv++vWNjxf3ZtzQfH/D7x8K9kI181xzUZI2IDSfMgR8uq8FIQ6PZ94MkZtBzVQ=
+X-Received: by 2002:a05:690c:6087:b0:786:5926:edab with SMTP id
+ 00721157ae682-78a8b491ceamr194700327b3.17.1764210991823; Wed, 26 Nov 2025
+ 18:36:31 -0800 (PST)
+MIME-Version: 1.0
+References: <20251026100159.6103-1-laoar.shao@gmail.com> <20251026100159.6103-7-laoar.shao@gmail.com>
+ <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com> <177c8e4d0567456baecc962bf5c1038f05358cc0.camel@surriel.com>
+In-Reply-To: <177c8e4d0567456baecc962bf5c1038f05358cc0.camel@surriel.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Thu, 27 Nov 2025 10:35:55 +0800
+X-Gm-Features: AWmQ_blljVhaUoneZ62O-qRbUJWn4XyE-NLR9m4vdRR0mJlvaxy3SlytZXAid4o
+Message-ID: <CALOAHbCeRZO6vy6qmnG9OgttpTDBtymrvrUZk4+kRmiN4xrpRg@mail.gmail.com>
+Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
+To: Rik van Riel <riel@surriel.com>, Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
+	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
+	Randy Dunlap <rdunlap@infradead.org>, Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
-MIME-Version: 1.0
-X-Stat-Signature: b64f3ih76g9kjn7zcz5y3fr8f9xbpw5w
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DDBFF1C0006
+X-Stat-Signature: q98759n46j54qhwj4yuyrz5hkgt1o7r3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5EE4B10000E
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764210545-750400
-X-HE-Meta: U2FsdGVkX1/26VNzRH2TmPzj5lY8x3sLrRrdq6qFWUgnxa2X1zeXb/P6M5e+7W7nm3ZogAdyobpj1cWx6d3mEaZEzPv21iYqjbppVU3ReYTcISeHS+UBmA+DwmYQRooLfDQ0h81/vmzSnJtMzF4dg1I7LSGsqGcR3M0ubxlvMJsjmOEcp5jHUvjQg3l34Q7aVnocLhtH81LX9j2pMB98kDDBOJb0cVC9l6ay3nrQEgfRcZxxUTrB8h3zd6DtnZeD4gUyg/8YMCvkG7kMZwjBz+eXbzADpMwJj5BzQ/VOp6Z5r89csulbfcGsNN3MgzOZ/zBK09GYlfT1+a/gXfAJIQk3SpQjwhA5fL2eDD5EN+o/Nxq/vb7/iXbet+4adj6MClRgvCmQchtiQvS/RvX/N9bHji3xYWH3F7IH9JnQ163H9AB+8fTxrY3lH/EF3wGuPEsuPdhevDOwywf+gsnxInX5/9nZ8h29JlaPxVpDkJ/qjlX64AF7W9q3dIP8UezyXsbmTTD7KKqYKZ17eA8ChBwrP5clPd7ecC6FPaiyw6p8sxjUhH960cQkfCGRKc8cx0JQhLiGWGJUkDKpgX9F9pDhU3fm2DJ1T+zqSq47W3XfDdTABhPWNARTS4KshZsGJ7rHl0vA0krd5p+WOD5Wnrnb9v7NRWRLmnTE4c4ebjlOfHAYrUs++d3GeRNCGUgwmuENI08wACBN1RNehm4nsn2AipiQoIykjfayyrbe0K4VafR5RiSrw5kVJBy13LTcy4KDZI5Hr2uwcN2i8PnnrlMYDzTEgR5D6DtrBL5Jz8vHj1Nm9nJhSkWTZib39qWN68wGRxTYsBTC0kGkAmYN9Uf+KWwDEMZf1qdVXNpm2GtORBe/Y/Hf72bejaPqX2i647XipsfSWFXwlf0K9JTs8I9IAeQCmw0VleByEWRQ6caBNV0qyN7d9k509jrMFt/gt+/gKabo+gpOS7Luu9Q
- yn+olH4O
- ELLW0p6UCZphLhljBqUfIocWoF+ubfdWc+ecPeLFCmXUPzAy7zlNQKMmTEbPHZIdI17vQjsSuFecdMkWPMdhfwbaxiiJ6czM38ixLajzl9nJc0jkiCJF9eFSydXDU3gXpfqoo8Nmw6udGuIkAaKAbdrrJd4L5TkhHERRkSDsCJQ+VQQ4GMFU5p2czjI1TtJojsKx5Fh1lQoxpJ1e36WHbmeONJz+SfzzNAqaRHAbzQWBSuZbBRqSmWJHvQZP6TCnb4Qgyn4HYQskb6L34Jwzvjvw2qg==
+X-HE-Tag: 1764210992-425402
+X-HE-Meta: U2FsdGVkX1/jRdyhXaeYNDkvSnx8I9K0POV7916ghIZDmnc70i4SpYGJnWVS0JY2gpceRZJZ/nJYSE3QQ4DIlZncBK8mgeuLt7YyY24GqTv8zoRCGiGukgs9/NSoK7W35297ziBVT1+hUfVbf9i4en+QGtDInzeUFnJEF0LnJ8mTAf5XeJQl+bDAptdQ2VraAJJgYioRsH75VuS42vflCDn2fOiheMKwG3prgpnzE5p1VxyEZP3kykmmFVa3FZNmoaH/x9qVQ+ycpy+ilPmJrPx9Nm7zphHUEsxbTru+7xY+8TFoq5UOoQTrrOOCXVQclRU0pUFC2zDjtrrg8H8wgWWjJ9vRkgr0vwdppL6Vg3NXAkpBP+nVYyl/LfEbcqZt6NSPBeuWxrlZ4rVvnXHmvZ+OcHVAxuj9Ha71kLUgeUM4O8NLDonmIT/VZ0dIXA4O8D7GqKj5cXRQo8mQ+1rC2T3SD9hCREFlRFy/p/c3haCdgnvWPgJ39YTgfTtiN92WwqCetWNG00iaZtpZqVRYh37SQhbmJwf3iL55hzaWoAP+1yl9TxIiUfJKFZDlzkuYXXsiHBsZ3CANkL9VMv24NDlSLPaJwdZEnnayjZGsuZnWnZm9YW0OmZdTICwgk1Is1vG4m1LODjfgsf09YYK+R8oQtCOLW4eaQJau6CT7dWFvsRZNRQ0G6EWmYQtfysMiJcxcFhPBeuAMmqR67pHVmpKRQQHL2g0Oyp+nfCHTIaVNjatX8zPEtDtvshba87B8FlZALNmtHQnpfJkQ6o3rQ5/5vs/GlTf8RcYxYeru+RK3odnBONdfTZ1YTWJhTFAFZqTahVL1NJtl5JRLRRPM5B595Ylv1rGuyc1H8O2R3gyDVrwzd87gy/en8bm15eQU4HkSrpshUyRQzinfkyk2Ml4cZBSwhMkfWOmtk3kY8y84Y1YYN/XeKuSmZ8AHEf60fFMxuwcSD+XxYrlByBM
+ vJ5uotjp
+ TJU9tGREilr1goi8jOZiwn4ACegB9B4ky7A0sqmhEFcWo1fG8v4zC3dnYGxg9l4ol1fTBM3nE3JfjzCyrxhwStT2QGyfaIm+wug4zRJ+BFMWBIJYbeMkVmrTBeaU8nZw9OXst9SxTKTgyYgDl6fmJs6u3lUL0wkAeG2Dl/yDbkb9/uXPnuGx7LyMhOMot4yw87ij3F5ZD4xDmhnb/HkeKbbJccluG0DHTFWj3e6RWG0JKFNkHkpOTRLS5RLs3N8FsHwxljTOEZFC9OySex7vUgBoJWe2UJIDtaErdxZ8wQtoo2K3Uppch6dz0EN/Y24nlFlWB6RWyGtLwlePjMYlEPvbQJpjWomrAb7+/q4o945l+iOXN8MtEDXfQJCosm+NTJjnsvpYJeWJx/GHSI7Cjy2YjDhZqoXZSUoIgWTC+0cYoGJpa4SXC8neCOWev9n9xJCy8Yu8AJpE09BhbrTIm64DXD7ktnWJK9bI1ty1k6CxCbigBOZd7HxxftkEMWPPIGRZaRXoALaA1JnVL+v1I0vRnI+pLc/p2L7aN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,57 +131,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2025-11-27 at 05:52 +0400, Chris Li wrote:
-> On Thu, Nov 27, 2025 at 1:53=E2=80=AFAM Rik van Riel <riel@surriel.com>
-> wrote:
-> >=20
-> > On Wed, 2025-11-26 at 23:22 +0400, Chris Li wrote:
-> > >=20
-> > > That being said, I think I have answered enough technical
-> > > questions
-> > > of
-> > > my approach, to let you re-consider my proposal. You should be
-> > > able
-> > > to
-> > > realize by now my approach is more optimal compared to VS. Do you
-> > > agree or not? We are just arguing how big the gap that is.
-> > >=20
-> >=20
-> > We would have much more confidence in your
-> > solution if you had told us exactly how
-> > you were planning to solve things in future
-> > stages of the project.
->=20
-> Can you clarify who is "We",=20
+On Wed, Nov 26, 2025 at 11:13=E2=80=AFPM Rik van Riel <riel@surriel.com> wr=
+ote:
+>
+> On Tue, 2025-10-28 at 18:32 -0700, Alexei Starovoitov wrote:
+> > On Sun, Oct 26, 2025 at 3:03=E2=80=AFAM Yafang Shao <laoar.shao@gmail.c=
+om>
+> > wrote:
+> > >
+> > > The per-process BPF-THP mode is unsuitable for managing shared
+> > > resources
+> > > such as shmem THP and file-backed THP. This aligns with known
+> > > cgroup
+> > > limitations for similar scenarios [0].
+> > >
+> > > Introduce a global BPF-THP mode to address this gap. When
+> > > registered:
+> > > - All existing per-process instances are disabled
+> > > - New per-process registrations are blocked
+> > > - Existing per-process instances remain registered (no forced
+> > > unregistration)
+> > >
+> > > The global mode takes precedence over per-process instances.
+> > > Updates are
+> > > type-isolated: global instances can only be updated by new global
+> > > instances, and per-process instances by new per-process instances.
+> >
+> > ...
+> >
+> > >         spin_lock(&thp_ops_lock);
+> > > -       /* Each process is exclusively managed by a single BPF-THP.
+> > > */
+> > > -       if (rcu_access_pointer(mm->bpf_mm.bpf_thp)) {
+> > > +       /* Each process is exclusively managed by a single BPF-THP.
+> > > +        * Global mode disables per-process instances.
+> > > +        */
+> > > +       if (rcu_access_pointer(mm->bpf_mm.bpf_thp) ||
+> > > rcu_access_pointer(bpf_thp_global)) {
+> > >                 err =3D -EBUSY;
+> > >                 goto out;
+> > >         }
+> >
+> > You didn't address the issue and instead doubled down
+> > on this broken global approach.
+> >
+> > This bait-and-switch patchset is frankly disingenuous.
+> > 'lets code up some per-mm hack, since people will hate it anyway,
+> > and I'm not going to use it either, and add this global mode
+> > as a fake "fallback"...'
+>
+> Should things be the other way around, where
+> per-process BPF THP policy overrides global
+> policy?
 
-Sorry, I am talking about upstream.
+Makes sense
 
-When one developer has code, and somebody else emails
-the equivalent of "trust me, bro", the code is usually
-preferred.
+>
+> I can definitely see a use for global policy,
+> but also a reason to override it for some
+> programs or containers.
 
->=20
-> Please keep in mind that I am just one person love kernel hacking and
-> want to do the right things. I am doing this at my spare time, it is
-> not part of my company OKR's to work on upstream swap in the last two
-> years. I don't get pay to do this. I am replying this email from my
-> vacation 5am in the morning.
->=20
-> Again, let's stay technical. If you think I am holding any secret (I
-> am not ), please just ask a clarify question.
+We have deployed BPF-THP across nearly all of our fleets for over six
+months and have enabled THP for dozens of our services.
 
-I really appreciate anybody participating in Linux
-kernel development. Linux is good because different
-people bring different perspectives to the table.
+Based on our practical experience, the global mode has proven highly
+useful as it establishes a default policy for all services. When a
+specific THP policy is required for a particular service, we implement
+it using dedicated BPF maps=E2=80=94such as thp-always, thp-madvise,
+thp-never, or other custom policy maps.
 
-Some real numbers, even if just back of the envelope=C2=A0
-math to estimate the overhead of various ideas being
-proposed, are often a good way to move a discussion=C2=A0
-along in a productive direction.
+That said, I also find value in combining a default global policy with
+the ability to override it for certain processes or containers.
 
-Let me reply to your other email with some more
-technical details.
+The global mode and the per-process/cgroup mode are not mutually
+exclusive; they can coexist.
 
---=20
-All Rights Reversed.
+Through our use of BPF-THP, we have found that the most reliable
+approach is to allocate all THP at the initial stage. If a service
+dynamically allocates a large number of THP during runtime, it can
+easily trigger compaction stalls=E2=80=94even on the latest upstream kernel=
+.
+Therefore, monitoring compaction stalls and memory pressure is
+essential to determine when a service should stop allocating
+additional THP.
+
+
+--
+Regards
+Yafang
 
