@@ -4,90 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20942CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 16:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BC5DD111A8
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 16:26:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E21516B0030; Thu, 27 Nov 2025 11:20:20 -0500 (EST)
+	id D42FA6B0024; Thu, 27 Nov 2025 11:26:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD3846B0032; Thu, 27 Nov 2025 11:20:20 -0500 (EST)
+	id CF3026B002F; Thu, 27 Nov 2025 11:26:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC0D66B0062; Thu, 27 Nov 2025 11:20:20 -0500 (EST)
+	id BBAF16B0030; Thu, 27 Nov 2025 11:26:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B7EEB6B0030
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:20:20 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60190C0212
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 16:20:20 +0000 (UTC)
-X-FDA: 84156899400.23.2E73128
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B90941C0018
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 16:20:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=enT7i+QG;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A5D316B0024
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:26:40 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5741E87B63
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 16:26:40 +0000 (UTC)
+X-FDA: 84156915360.14.ABCC7AA
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 154C8A000E
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 16:26:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZHiiaKMU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yfppcghB;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zEaMcsMO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i378ebTy;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764260418;
+	s=arc-20220608; t=1764260798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yb5O61brOXNx5cnFLPLNFtBKkHZFWE66/2wPBrCgz5c=;
-	b=v+ydpv1/I6MGLSkfAscuydYt+W5ljrorTRe2HoC6aP68tA5RGe9ZfaSlJtzpKJMg6+XQlM
-	nMwELgdr9pl1zR3XxjizY25HJouA6wyS+AbsRUPkar1zUxw9yTtszO70Zm9BIzZJ0H0knJ
-	paEVFI5ZVs1VlL4AQnW6AlG2AMen62k=
+	bh=yuMiS1EJ+aLGYrc/rNjM/OAOkdGlczkOx6GMs+RJ+u0=;
+	b=cIoflxBPEoqlDtS9pCoVqFGeZS6icFeqCN7xOjXzUDqNHNj7WY7Hu4vlIpzQnwYofga7Lm
+	3ClwsGy4Fh4VMnOtHEkQIUTKfrvxV2cXR5ZNzy0RWCOR95/W1zG+72sTZIE+EEH2r/1cCq
+	ZOIiHxk06M1o1qZ6MZ+43rwOC+rQ+yg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=enT7i+QG;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764260418; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZHiiaKMU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yfppcghB;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zEaMcsMO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i378ebTy;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764260798; a=rsa-sha256;
 	cv=none;
-	b=AOYvOUF4rcJpx4J+ACxnwnErOOKCO5xCpNjx12pwhcqHLYItwQznqjRzHSZTu/NONxVjPQ
-	tFuHnXXCz/YZKtU2oK6TSFGhUyo1zhoEA+vc5b+2FUexx0YDIha7cg1ycJC3ETPTCmb+Wc
-	KMEFU3Eh2CR1jiPOYLkvpMdv0NKf0qU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23A3960153;
-	Thu, 27 Nov 2025 16:20:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240AFC4CEF8;
-	Thu, 27 Nov 2025 16:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764260417;
-	bh=avZf9Vu6ylIFB1LxLASnCOKBE9sB2MGp7u47/NpKjkk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=enT7i+QGeF5nMmfGvskWHyOmourYf9rryiYO17BNruJNNuOE3iYx0zIYavhZ3/6o8
-	 0LeogTw+IqzuEAPVdEnA0B0qsUL6U3wSLD6fXyZCATBp73Z8UbUquCNIHwtlu0S8i1
-	 ovyrsz2rMipXJIp3sP1/Ezn9ku7QE6ujpTyCbf5/o1yk/FkgNgEGa2NabB7ypXIMro
-	 /5+hOa5C2wFoefcDYmrW1oFyAPJ2HSCWxMyDLVKhy3S4x5G6I9wHGUcOt4y0KlDs5N
-	 uN3JYWaveYxh0o+R0dceTbU3iVHXvXP6oMVbvOyn4hVqnB37G8EzogSO5I8YFXZhPH
-	 6KsRQiXRcv52g==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: ranxiaokai627@163.com
-Cc: rppt@kernel.org,  akpm@linux-foundation.org,  catalin.marinas@arm.com,
-  changyuanl@google.com,  graf@amazon.com,  pasha.tatashin@soleen.com,
-  pratyush@kernel.org,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v4] KHO: Fix boot failure due to kmemleak access to
- non-PRESENT pages
-In-Reply-To: <20251127122700.103927-1-ranxiaokai627@163.com> (ranxiaokai's
-	message of "Thu, 27 Nov 2025 12:27:00 +0000")
-References: <20251127122700.103927-1-ranxiaokai627@163.com>
-Date: Thu, 27 Nov 2025 17:20:14 +0100
-Message-ID: <mafs07bvbwipt.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=oE9NftccsRrjXZm5z3RqX7Ow00HRSsukrcFNVlNnIRyoIzYI7RllCzSpTLh7cF8WSemuVT
+	cFhoawaFtLC8PRGqjj/8/j5j4cS5R2se5w0AQFYNKw6YHe77i0xxT+xcUIDsws26JaLy/Y
+	ifvHYvAkARvicqhjWHH9Z3hvfNGJVi8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DBDA35BCD0;
+	Thu, 27 Nov 2025 16:26:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764260796; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yuMiS1EJ+aLGYrc/rNjM/OAOkdGlczkOx6GMs+RJ+u0=;
+	b=ZHiiaKMUmjNdWcVAx8mYcgTlMl1TOlhTMWZHQjR+94hOuoktlCF9vmt31KXPM4+AcFl+pM
+	EQgq43Z+eyMXp1+L5gFoiJEpmRbbniA6s9GdZ1rmPu04VKmEjGTUMyqxUcB4zAZ5XtFJgp
+	RojEOrR6fk/DRDLpX/+/5ENN40+0B+U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764260796;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yuMiS1EJ+aLGYrc/rNjM/OAOkdGlczkOx6GMs+RJ+u0=;
+	b=yfppcghBR1WbD5x+jBg3untex+AQq3wnFzjWFxXVpWHFw2mYcqeYp/H38fj1sxNVgS1Tt/
+	LQjfOIwvDgidrnBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764260795; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yuMiS1EJ+aLGYrc/rNjM/OAOkdGlczkOx6GMs+RJ+u0=;
+	b=zEaMcsMO1K/qzdMAPBBEFSsamoUnY7luJn2W4Su9EbhFLsy+LsjJb4eG4bRMTQ+zsek9le
+	+0DPoFYxdw+c3R1+NwqBJZQXT1fWUIabhWrbGMgK5bu7ot2yykBkgkoPQpaDgCf7dNM0g2
+	SM/dRSvFRjf6UO1K0wHfczBMDnnbqmY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764260795;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yuMiS1EJ+aLGYrc/rNjM/OAOkdGlczkOx6GMs+RJ+u0=;
+	b=i378ebTyzO87EOksHlUeGilkDnovXrO3fX9hNSy4tcFTkNCwjal395WIRU7eDS7gb4PIcX
+	CKMGNmDhxrj2L1Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1DDE43EA63;
+	Thu, 27 Nov 2025 16:26:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pdD/A7h7KGnRfwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 27 Nov 2025 16:26:32 +0000
+Date: Thu, 27 Nov 2025 16:26:30 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	Oven Liyang <liyangouwen1@oppo.com>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Matthew Wilcox <willy@infradead.org>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Oscar Salvador <osalvador@suse.de>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Ada Couprie Diaz <ada.coupriediaz@arm.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kristina =?utf-8?Q?Mart=C5=A1enko?= <kristina.martsenko@arm.com>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	Wentao Guan <guanwentao@uniontech.com>, Thorsten Blum <thorsten.blum@linux.dev>, 
+	Steven Rostedt <rostedt@goodmis.org>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	Nam Cao <namcao@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <v-songbaohua@oppo.com>
+Subject: Re: [RFC PATCH 1/2] mm/filemap: Retry fault by VMA lock if the lock
+ was released for I/O
+Message-ID: <kzwpwntmta4bpt27stif2hs5cwlu54kayfi34o562jpr2mjbew@h3ddkbxibxhf>
+References: <20251127011438.6918-1-21cnbao@gmail.com>
+ <20251127011438.6918-2-21cnbao@gmail.com>
+ <5by7tko4v3kqvvpu4fdsgpw42yl5ed5qisbaz3la4an52hq4j2@v75fagey6gva>
+ <CAGsJ_4xQKARuEuhrVuV+WmBC7+NCNd==Zi9nGmze5mfSjF1kdw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: B90941C0018
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4xQKARuEuhrVuV+WmBC7+NCNd==Zi9nGmze5mfSjF1kdw@mail.gmail.com>
+X-Rspamd-Queue-Id: 154C8A000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: 6q6q6xgxknpab1cjrsnxy5m8yq35a9r4
-X-HE-Tag: 1764260418-621799
-X-HE-Meta: U2FsdGVkX18MXu154Qt78I8xr03sn04sH9uCgO4bbRffE16UKITHTJNRn/yoZLDsjxe1lxaWCYdm5deGUETDKuhz8ERm+2iRMVjlKVkXgUvT0OPFd+lnL8AFFCK6rkdBofN8pjsu+/cOvmJN1+p5amKjd961v+w1TwijspwyM2xSm8l7vrkGDHOgO85BNzqtneZYQvnOHv2SZdJrjnAiHUq0O/DvHI3tdW1f245yDx24L+/gPXe0Zk1GV1I53RHHa2i6uAyNCwPpPtqJMDW25lPlduhN6+MKHU4tyKGklAN+4MqYH2GBQE5YYJyRX1t6/l2xzNHNQ8P/u1/iwQX/iYETqleW6z/pL8o75iHv4DgMnfSm6JMk5b5Sc/p6NQpsc0zg3tE0Vuz2/W8lboqIRgALS+s7/ezz+1ixuSITulxKY2Dw3FGIKzshWK4getWL37CWqhYW5fKW6giLtjThmAw3QHBZGOMtojJTJC92v5Se0kDka4NKrGnSRJ21Mtn3Bjl0KKO8lMeb+O8uN/Ycj4RC2ms2AnWfYewjF7IA9O9FAuJKAy7tzVT963Cb7fWD3GjW21xp3xUJLIjbqMlall0hsk5DFICsjixvEgPA+D+c9C2YNNK2Mfgytsfr4IF1PgnsU6uRWjCBj9e1HW+s8vbNDiGinUVrIODwgHXf/8dw8CVFSBRRwJS0pnYMItx4DlsF5qRP9uzxdQCbFAilfom1ckboAbwCNpCrtzT1EYibQ8qqra4Ut1w4MGrDNkq8xJeXhYBVq73ZYznd16bXuRe1o+4aPpiLh9GWczBdvlt9zY/ExBuuO6X0pNu7m0q1wLCrSEtII8bnkMgl8pBjTK9HRSYqzlIf4PQ3CRdeUSAvJXJpqUgCYb5YhSXbaaFn6c0Pbpof2icXulec59yCRWDKZ4/25Wab2L7tKYCHKWislvRnzAsQ1wfIbNZgqRdLoEw4j/pfwuNyR6RCAGm
- kVRQhZJ5
- 8ExizKbDG25L7TIqRmyolrKwCu4D1c7LdZrdxyonYZVP2xCavF4OC7xtA0VZxhXjJep1f8D42elV+JujlcSii0bYZorHTYSqKPzvfxP2HDtdUaEZn29j/AuXSCPl7y+OW8/vk8U/pAwpWwCLW5w4ztolidDcpHJuh8sXfSABH/e7l+e8OhFZZjfIYOaRQRgukQJZ5iW19AlDM47+QzUI/KBCBTCju0z1qhk8bjED7fzGGERYB2YWGrhIPCFN3SNJPom4tfbroTNI2i4omFiwZImWQBQ==
+X-Stat-Signature: 46oomwb3obyzaj6yump6e6rzrhnansj9
+X-HE-Tag: 1764260797-833174
+X-HE-Meta: U2FsdGVkX1/7JjRjrmIB83QXlxqflA+OydiDoV1na+/FjB0dqMlHUX012qNl/Pa430/e2DVkV3BtBOBg2g6y0+/5p9qLf7+jp+yhrdiBElWX1hkI00dOZc9DX1rFpUTfkvjZsOg5EWCQ3LRkoX5al0/dp/Iqv3dwvz20TvvrBOEzNapVnzz1FoNOLXni3KCIRp+c1UXgaHH8nMKTwPGahyVrxXE8zyS66wJ73DwiDwT3XLUKlcE/gPVHudwdAZU06pGV5veAy3Jq8tA/xrG1wmXmMiGwfaWP6nNfugVopdXV3CGgvP2GpFZk5r6qoigGNNEscKnkI6dsFUvUDL9XzFOUh4pEmvNJw06IJVGn2UR35nhxE/+afXwvoLHsmqzjkdrnqjwbsZ3LCYA2oOOzOTWmERbPSvOr+giR1Pf7XUgb7pRIsHUwoARQU9ebgJ5IjguaKXKJ+G0mOIo2IeQFw4EUxWDv9RudQB6KO1b0HcEexnH+YK7OVlRXtGa/ACziBTfoxNTzffRxhZYhot4OMc4oJLUtdnPE8oMy2oL6SrMIXMGL3rUz1idujWa1wu4KZhRDXbp+I17M80q2OU4WtCFPoDhfg3d/tbrO8rTdJ40ql4Pl9MJN9PakBIF1RqqkugJiXhIkarUT8in2VTjpKL90YhG98RUwH1dI/Gvex3wY/6j4b4SmEoR4NscQQ40NRP3kLgeQyO2r0CQi20Zk7gI4bUapELqlyst013ZVAL35HAfNupDAj3kCasuF6PQZWnfOnGq3ouWSMCEDzp9o6X1G/FOLUIwRCAjjE0qDuD+0tmkdqD5/jLwbdB4IGpPHYFhJoG4/qfBDpE0Hrcu8jtRDbpsxZkUxaeorSKnKkiA/9t41S6/Q4aUA6rU97uvb+vBTBo7ZqouUfF3vW8ZQfmen6YaYBDhgYZRvpQ1HDazWeJoXKibNzid5dlmDqfmGEjqAhzyhJB4Ts9eWLZB
+ F25BK1D/
+ XN83ICJ87fR2qQWBsh0BAx7AMO9WujEYajXgmDJlFR6nz2FaVzgMpDcjsWBGDkAIXtKEqOCfiIxBAhVjsW4kTC4Gh5MelImHv5qSJjIXRP8bjp0cLoFxMwyK/mmU05TVPuRL1WqH+rNAFsg+ORoFt8od/jTWjygjdma+utuEtbUoJ0iWPgi6NDXnNcUKEkeP5Oa344jHXwEh98qTqU8ZDtsTc5Vbv1tqekCwc4g+h3h78HiwHz+p8l9+wgyBXdZN2JbV0C9iTfz/hVFWTFzPkuxrfLh+63wA4SdYXWS2IJZHN4ecnBHFWbrgwVwILTX4ds+bsZ7kRQxalNf8mQ1BARpq/CJ+0i1V6/cWKbcczpGveWT2b4AYcHEAL7aXEMyXNv4z6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,39 +169,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27 2025, ranxiaokai627@163.com wrote:
-
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Thu, Nov 27, 2025 at 07:39:11PM +0800, Barry Song wrote:
+> On Thu, Nov 27, 2025 at 6:52 PM Pedro Falcato <pfalcato@suse.de> wrote:
+> >
+> > On Thu, Nov 27, 2025 at 09:14:37AM +0800, Barry Song wrote:
+> > > From: Oven Liyang <liyangouwen1@oppo.com>
+> > >
+> > > If the current page fault is using the per-VMA lock, and we only released
+> > > the lock to wait for I/O completion (e.g., using folio_lock()), then when
+> > > the fault is retried after the I/O completes, it should still qualify for
+> > > the per-VMA-lock path.
+> > >
+> > <snip>
+> > > Signed-off-by: Oven Liyang <liyangouwen1@oppo.com>
+> > > Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> > > ---
+> > >  arch/arm/mm/fault.c       | 5 +++++
+> > >  arch/arm64/mm/fault.c     | 5 +++++
+> > >  arch/loongarch/mm/fault.c | 4 ++++
+> > >  arch/powerpc/mm/fault.c   | 5 ++++-
+> > >  arch/riscv/mm/fault.c     | 4 ++++
+> > >  arch/s390/mm/fault.c      | 4 ++++
+> > >  arch/x86/mm/fault.c       | 4 ++++
+> >
+> > If only we could unify all these paths :(
+> 
+> Right, it’s a pain, but we do have bots for that?
+> And it’s basically just copy-and-paste across different architectures.
+> 
+> >
+> > >  include/linux/mm_types.h  | 9 +++++----
+> > >  mm/filemap.c              | 5 ++++-
+> > >  9 files changed, 39 insertions(+), 6 deletions(-)
+> > >
+> > > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> > > index b71625378ce3..12b2d65ef1b9 100644
+> > > --- a/include/linux/mm_types.h
+> > > +++ b/include/linux/mm_types.h
+> > > @@ -1670,10 +1670,11 @@ enum vm_fault_reason {
+> > >       VM_FAULT_NOPAGE         = (__force vm_fault_t)0x000100,
+> > >       VM_FAULT_LOCKED         = (__force vm_fault_t)0x000200,
+> > >       VM_FAULT_RETRY          = (__force vm_fault_t)0x000400,
+> > > -     VM_FAULT_FALLBACK       = (__force vm_fault_t)0x000800,
+> > > -     VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
+> > > -     VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
+> > > -     VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
+> > > +     VM_FAULT_RETRY_VMA      = (__force vm_fault_t)0x000800,
+> >
+> > So, what I am wondering here is why we need one more fault flag versus
+> > just blindly doing this on a plain-old RETRY. Is there any particular
+> > reason why? I can't think of one.
+> 
+> Because in some cases we retry simply due to needing to take mmap_lock.
+> For example:
+> 
+> /**
+>  * __vmf_anon_prepare - Prepare to handle an anonymous fault.
+>  * @vmf: The vm_fault descriptor passed from the fault handler.
+>  *
+>  * When preparing to insert an anonymous page into a VMA from a
+>  * fault handler, call this function rather than anon_vma_prepare().
+>  * If this vma does not already have an associated anon_vma and we are
+>  * only protected by the per-VMA lock, the caller must retry with the
+>  * mmap_lock held.  __anon_vma_prepare() will look at adjacent VMAs to
+>  * determine if this VMA can share its anon_vma, and that's not safe to
+>  * do with only the per-VMA lock held for this VMA.
+>  *
+>  * Return: 0 if fault handling can proceed.  Any other value should be
+>  * returned to the caller.
+>  */
+> vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+> {
+> ...
+> }
+> 
+> Thus, we have to check each branch one by one, but I/O wait is the most
+> frequent path, so we handle it first.
 >
-> When booting with debug_pagealloc=on while having:
-> CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
-> CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF=n
-> the system fails to boot due to page faults during kmemleak scanning.
->
-> This occurs because:
-> With debug_pagealloc is enabled, __free_pages() invokes
-> debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
-> freed pages in the kernel page table.
-> KHO scratch areas are allocated from memblock and noted by kmemleak. But
-> these areas don't remain reserved but released later to the page allocator
-> using init_cma_reserved_pageblock(). This causes subsequent kmemleak scans
-> access non-PRESENT pages, leading to fatal page faults.
->
-> Mark scratch areas with kmemleak_ignore_phys() after they are allocated
-> from memblock to exclude them from kmemleak scanning before they are
-> released to buddy allocator to fix this.
->
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Hmm, right, good point. I think this is the safest option then.
 
-Thanks!
-
-[...]
+FWIW:
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
-Regards,
-Pratyush Yadav
+Pedro
 
