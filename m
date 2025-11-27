@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C21D7D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:12:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5A07CFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:12:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A69A6B0096; Thu, 27 Nov 2025 09:12:18 -0500 (EST)
+	id 47B466B009D; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255E76B0098; Thu, 27 Nov 2025 09:12:18 -0500 (EST)
+	id 452CA6B009E; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11F286B0099; Thu, 27 Nov 2025 09:12:18 -0500 (EST)
+	id 3691B6B009F; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EFEC26B0096
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:12:17 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B5A613947D
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:17 +0000 (UTC)
-X-FDA: 84156576714.23.8598D26
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B1B8540010
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XC7E7f4v;
-	spf=pass (imf11.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 229816B009D
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE1B286DC6
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:28 +0000 (UTC)
+X-FDA: 84156577176.19.D10A356
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1DE6EC0010
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=TaS601QE;
+	spf=pass (imf28.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764252735;
+	s=arc-20220608; t=1764252747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f0swZ8Ypan+oXrthAo/pUrKpZWoHKJGiiGThfa6sHH8=;
-	b=TdUXq5US6UJYcAS/1aYHZ2h9uy6cvRQbPINxFhYDE3yYJed2+0BtAa63JtzG6SX8XnvKMn
-	cK8fb9NL74usICXYWqkNkZKVKmGyf9wPCZEekl6Tp6JEXPQfTT7KxXfvsPwDP/L60Koc+Z
-	ntMO0U44WBUGKRnYIJQ/admxzAe2Bfk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764252735; a=rsa-sha256;
-	cv=none;
-	b=gmlV2AQGc3MSYTjeAkIFOLHe+w+xtnyyeFUnk4JjKKnZPKxq2OtCTPsL8e3ZgKCCzYcMup
-	HJk4D7mUJ1Fiy8Kgb9CJlw6gGDXgu26h68ZCpieEFTvMC/Ot1j64ZnUZtPhn2kSzWlElw5
-	A8Q1Fln67nWmlm8SShAwhlWOXTWtJaQ=
+	bh=kCE7BFaxTmXT5gX1mJT6mv3jSbzO4IVr04XlUFHKTqA=;
+	b=6ZDwCSsO0Kw9P0QaN9j0hQBHgroNKviRcqK9Y2jlR81+g10KPLk/fB3D8L9YHB25rzt50A
+	n5IuEp+NIIGiwrsAqbo29lcoXkblMsXqleZhojJi7knC8aP5/ISyQIcJlQDGwm+1pi7MfM
+	6li0bxel9tC197e0mvyVcn4cnmFACoY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XC7E7f4v;
-	spf=pass (imf11.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=TaS601QE;
+	spf=pass (imf28.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-34372216275so998618a91.2
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:12:15 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764252747; a=rsa-sha256;
+	cv=none;
+	b=TClae3/yrxoOFjqz7DEL2Bj8Pk33rYsQQ1GelSM7hWBLPJZQ15blYRwAH91hhU7MBJYMx/
+	qLtAWdTAPGq7jogYgJAmZb7W/u45a6SXAMPTbupIiiJQY464xM+VX3VJ9SGTp0+dQSpl1Z
+	K47VVKlqucbeYZW+6DqqUtXhclKAl7Y=
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3438231df5fso1142463a91.2
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:12:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1764252734; x=1764857534; darn=kvack.org;
+        d=bytedance.com; s=google; t=1764252746; x=1764857546; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f0swZ8Ypan+oXrthAo/pUrKpZWoHKJGiiGThfa6sHH8=;
-        b=XC7E7f4vlb2y3Iif+/Lj3UgwEMtBcfj4bgzP0QHLVOftMND8BH8VU41U8kG5gAUJ9T
-         JCROekOTNKbBSmrUW4/K4Qtye0CpQDtoZnSJj5lZjc/oGt6VjHAcK3DDbQ9HI7aIib0c
-         CJlMlWGPlhwBa5n8ub7Y8hN6s3SYM9kpOblD+Jqzx2xJkN/R9uNZyHUD43SpAnVRBVVo
-         0I7kk/iaSAuC+zfDJXqRwp79Fq92Kh7ueYnpUOljnmvBxkzXpUH5foJ9q/KvFTBomsIP
-         tNy5wJnFNmQCSHLws7L2ey0zHoHh939civi4d7uURuQgGGCSuxQ6XWIjoRtXOwTADthg
-         0MsA==
+        bh=kCE7BFaxTmXT5gX1mJT6mv3jSbzO4IVr04XlUFHKTqA=;
+        b=TaS601QEteDiBoln87xz+MW6RA4EJ17C+MNyZCPGSkD26E7xg79C2gwchztAORK2jo
+         oyQ+o7jMJ4tY6yUhW966vlzwSfU0wjzkrZT0p7kGWJ4a94NAK6RUR71Xwjy3VlrAxpwj
+         ZGoGO4oPlZKktGzX4rT5pgdUc8fUFJ2EXXg6lxHu3XYXF48lmOYxF4nFXO5x4113N98d
+         7w9+3kcTvr+uEgorsMSif5bYNlwXsK23aybPak2wusGmd215cTV6eBbkCO9p77pQikSG
+         6q+YCPe51UApz76WD2UFpvShRGXOPUXLWuS3DU2bpk709o/QNsvexNM+bO1tfjsQKYgv
+         WZgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764252734; x=1764857534;
+        d=1e100.net; s=20230601; t=1764252746; x=1764857546;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=f0swZ8Ypan+oXrthAo/pUrKpZWoHKJGiiGThfa6sHH8=;
-        b=it5sqAKtgQMKs39jbnhx1zP5nWkqvFXtDO7CJA1fC6TlKaiC82kVBkt0bCBQA/Yjg6
-         XCFBrSC4sdMVOouKoci7gW0vxVFi5RjYW8CfVemx3LGnqOVYNkD2QtBL7IjpAZL6Pji6
-         5wug+tVWIBMG9IgDKtc7STo7fngeBDb/+qclMs87jnYsonBvrC6d5LfErgYe7SC+RsqI
-         dTTEyqDRtZIxOuRBB+Oh65aFgf7asiC54Vyc/McbG+Zb1ozU6/bW9bfw/WqB97MTZQ7x
-         p03bMQT8Jld3Ny1nHLSDfZOqV5yF1dZa5IBeO1BOs8PmgXbwQzPIBZ/Gd+hN8L3/YO+h
-         V4Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWCx+NoO2Kt1vchYe1btOdtpwx+ALhpSUpxSUOm7EVu9YWokvmab2wNMQZX4MyzccxcFEIoXCkNg==@kvack.org
-X-Gm-Message-State: AOJu0YxEwLBspjI3zyenJZRD7YF72bkgeCNXqcdH2lQmJohXUR5s6mj3
-	xKk3ISjrqO4smWoWpoZ+1Gn1LAkJ3KKXylcLYw/pKaqFf+Zucoc0PPeauPH0N87x/Eor3oNkZ9p
-	G4lRNUHr++w==
-X-Gm-Gg: ASbGncuJs+kAp+uaqv7b4HkJ6mQNTOt7lblF11CeozW8myRXc8L1qGJqISPpDTBv29K
-	MaScP7MlPQ+9itpkIJX4e9KoVyMBlGr1nZUYJNLhBkD7Jc0hvSg96WKoFrE2B33xFL/zsXT/m+U
-	1B87I8M+R5JKk2EilrCVGf4s8awn1oj6+B2gSQNcnQ7a91T0SNRi7GGrPUeXm92HYi11Zd9Un7G
-	UF3OUOE9M4o/ZdLOt6ocaWusE56gGZlDUqvUXlgIaB9UL19bnA1xBsxN48g0t7SRd2NyG9+IYpD
-	9fd5q+5T7C4BhlRF64cokrapxLI75ZPxa4Vjim5Cu7p9+HXIPI98ecrNpjz8Vuqz+Z5JFH6ICl6
-	3EwzHT5gdqfYQiJfOOemAvcTQKDx2k1lKaXvuVXl2ZJEJ/Y5b5STVdzgFnsFE10R6baCvnP7N54
-	RtvGgCSsyZS7r91lbvnoGwSyjlso7vCuNtKNcOreYPMWIbIOBGOR4i277gEBBryCxCWYGdJDJ5U
-	A==
-X-Google-Smtp-Source: AGHT+IHkhvWqjx6FEHq30tTA44a11zGXZ1BYveiPwreNaqri3rljB5haB7+w3kfLn/irkM5FUcsJKg==
-X-Received: by 2002:a17:90b:35cc:b0:33b:cfac:d5c6 with SMTP id 98e67ed59e1d1-34733f487f1mr23197433a91.29.1764252734477;
-        Thu, 27 Nov 2025 06:12:14 -0800 (PST)
+        bh=kCE7BFaxTmXT5gX1mJT6mv3jSbzO4IVr04XlUFHKTqA=;
+        b=qP9TvAm0CYVtOWZP86mnhMGpB97pLEFTV3wlZGlrHejSB9p/t4dkGNO7RzDD/3QI1w
+         IYuskJPjQ4fAsI1toXhZwjdQth7l4XaFDQWnc6N9pntqwxw0pVPraCS3Q9bMAkdU7yOb
+         cHu2x6rfiUrcQ9pZ8D49y7MQARPuqkrr1QKv6+jSWWp6fIGa2Lx5CkIP8a3YLYUWqDqo
+         KDlZ5S4lvat2v1NMzWM6KL06bEvC2QHQYvxH2GW/R55F+vKhn/84uATxAZkFReqjtLX3
+         frU0TXkotuhUQ+F0VRtDFf4CTlvHHpTPXyA22AUkNuNFNTTkTtZYkMvxV1U/ipqKkw91
+         nWVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKv+5r9PcNUOI0OTotSmvqP6W/14QstBKCkXVmKM6arHjpbJqdnQisfmwGVfWwYqnFvb6krTfCGQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy0UbMY9yQbAl7yLbLR6p3B2FPNSkERVYZwtsJO1FBRA14kfDzX
+	JmZBnCzlUrePaY5AvlfqmsZ+AoBwGNw91kWcc2TNjTaYEPCYluE4hQoBuxeToOAEQaw=
+X-Gm-Gg: ASbGncvwcmc2+IhwaUvgJVrS85D1B0FOykv/I05FLAG1dc2daSX0F83UBLbVXPv7bLz
+	MV8K52hSt/EAhaynwavXnL8AH+oRs5BZKfRCX42TmuGPqUTcjh/jMCpeDZ41XwciuP2yjnBgzgg
+	5y3tMINNkasf9zO4cuQzoYnEmmnD421KvhKbJcCPSANSvTJDK9vqBwUAEs4UCBD2FRURhfYo2MN
+	g0Zele05SVcPL3aLR8iv4E9pBrLHE8f6CKkE4V0+YZDb0Ou8aOC2hrGied1o0ImT7YwBe3K1SVC
+	eJ9W3B4V+oc6AaLMwh1RhZZyRhKD1FlzN+kG4g8qEBzuuu/JH4YrthJLBJa9Ur1UoK5vO2ImlAf
+	FFm1dUNOaE42/KbWR7eZ9pmEnaMn7jH7AuRd7PrNvURSiIE270zosAu71bKBP7DPpamn++YxMSm
+	MJQDUNgq1GUtEs14cHYgIMxOF25Zd0V42p4eNe0f2GTOhB6iG0LcBezCV1Pc37vXJW7LBdz4Ab7
+	fjpMMYgZDQJ
+X-Google-Smtp-Source: AGHT+IHaJbhR6uoA8AsgyvN1rZkRokZKcV5EN92G/Fd+krItmdJONN0XD0mHkXfOugo46//aXXPl7A==
+X-Received: by 2002:a17:90b:1a84:b0:32b:65e6:ec48 with SMTP id 98e67ed59e1d1-3475ebd2f41mr10628835a91.8.1764252745954;
+        Thu, 27 Nov 2025 06:12:25 -0800 (PST)
 Received: from J9GPGXL7NT.bytedance.net ([61.213.176.58])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3477b7341d2sm2030249a91.11.2025.11.27.06.11.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3477b7341d2sm2030249a91.11.2025.11.27.06.12.15
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 27 Nov 2025 06:12:14 -0800 (PST)
+        Thu, 27 Nov 2025 06:12:25 -0800 (PST)
 From: Xu Lu <luxu.kernel@bytedance.com>
 To: pjw@kernel.org,
 	palmer@dabbelt.com,
@@ -111,22 +110,22 @@ Cc: linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Xu Lu <luxu.kernel@bytedance.com>
-Subject: [RFC PATCH v2 4/9] fork: Add arch override for do_shoot_lazy_tlb()
-Date: Thu, 27 Nov 2025 22:11:12 +0800
-Message-ID: <20251127141117.87420-5-luxu.kernel@bytedance.com>
+Subject: [RFC PATCH v2 5/9] riscv: mm: Introduce arch_do_shoot_lazy_tlb
+Date: Thu, 27 Nov 2025 22:11:13 +0800
+Message-ID: <20251127141117.87420-6-luxu.kernel@bytedance.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251127141117.87420-1-luxu.kernel@bytedance.com>
 References: <20251127141117.87420-1-luxu.kernel@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1DE6EC0010
+X-Rspamd-Server: rspam02
+X-Stat-Signature: a38bi9oy1rkns5ykjqb4egeciqrwz78u
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B1B8540010
-X-Stat-Signature: wcjk6trtic6uti5nar6jh4yifgtixuof
-X-HE-Tag: 1764252735-275973
-X-HE-Meta: U2FsdGVkX1/sTMtADN2DeJ95M/KRefw5QVBboubc/5Q/0FXjAKYWEalfyte3pH3FVI4imuv5WGoHi0S7d/l7HaoXvFya6fMv1TGnsJnMP2xTd/533FpxpWAf49RL1a64MLblkLuMj5Ia8aduy6eov4mO8CjoQW2V9VRG87D/YbV1Rb5Y1nYuO4KyF3olc6FRrXRr0WwQb7C1T3qZSYTelIEyl+mg7yD/U0soLS2neQ0n7KLru06qjFfR921d8f30rGlN0YUbB6XyvO8NaQq7em91/tl1zeJIAxeMdBn0Hn/SXYVL8K60/ROx9QsMsYDW+Wayr9vaAzYDskGC2YogsJgMkwazRd8ZhBhZYOU+luC+6OHn3reI6ZjeN77/q2ZHTY5tZNkWyX/Z0GPJM1T5yGMOROT9ASvkUwlnBpBbszp9GIkqTKmQzI1np3d+rIb+QospJrlOs2irPScayx4hEm+w2ssacyPITKFfbA6StjDAL52xE7d72mLX05DQUJDH8/UjQ+EcllNQaz30RezUEyj0CWiHVWuzABJ/PngbvydKyxh/C/v0yImayrHEcCbnOa9C7i7vm18LtuqaKA9lqXRF6vNfBqsYTsBiBcQVm+ba5HR2ZsChv/JxeEEeWzu2G742XTevizGKm6o72kwGPMYO0xhSgfMPKPEDYm5sySlTvxmqVuOPBUoGEbLra0XnSULLEynK9cufhtfc/0QI1iY/J3wP2jGBoqD1t0kam8Hrtxg5cuLfNDNubqmI6K8o2haETGQEm8r/a8FLRs1U2ywZxmTM3KIYbZGpZcBU2Dq5rjZkaTi1FfQ+3HU6mBlj24wixtuZlvxRHrzaBXQT4FedYWUaNcmS6elpUH5OsHVsmNGVHUcU7wKOtS1PBPJ5p4B4fi58XMahJSCJF3orjmSehGg3B5OCGEGZobTk8h0Cfh0hWJMeXmBAtKxDt6Cwu1F5QaBkMyX5IyJJ+H2
- SSs1rKT4
- RGvDx0Qlq3tcxMlpeOBZM1Omuo9cf6XnJ+UEztTWRflK3xJ4EHWJh+zL8ZH8s/zjp6zuB46q9HTWd/I3hilz0wsWScvBpqAqxXPMRrCF8E+TQYdt1iUdxA17fDoW5BfhcK+QHaLhcNIXzglw8+CSbrH3XDANjenvWMOQX3kon8s/U4R+YdX+6Vz5oxlh7CI16MoyHYtCsSwr+CirS1neRd1u4hMReUtRFKaVd/PZpn9T2dCM5q83a6UiJsdPbYJnGxMTo/zcnAaf3xcD8PYPsFvGI3Wr4zA+FUf6wGbIJLcCKvYWmAcbwcfC2U6OKBM/brjvrp2uhk/UrvNj5HhvEjbOEbB25XsRDgAZykuGPDL0nUvzD/K0ZQVL1Cs06bYC0+0HaglpTewhSfmM=
+X-HE-Tag: 1764252746-76524
+X-HE-Meta: U2FsdGVkX1+Gnk9kZmGIZs3BebubyPeYyTMHkXW/MIsHRrT+/nMgRZizzzNlsqgZfHf94tamFCPsPg4wfXAZULbXriWD1Fr66wFaRk0ZHScHXygkuNNo2iqwtVi1dOoOtLXpu3r3p3x9REK9G7Qcn+KO6UoyplF7HcM835IsytrAWFhVVaF7+HmetPhVAyWcS9ojcErprw8RA9zpbh6ZY+d6O1BQhrrFQfjQyVE51R0V+I/BzYzz37i8WC4vByTUn9QXg9vvBK3RN6f33uXDKZX52DYDVrDNuDdUHt2a2plVMLC6FBAebU7tvmNS0Fw5BcFtQVtVcO4QRYuu9QRm7YMOIBEdorZoX/fxBVc1uldrco4q7x8+qGbw1zJNDPWJV/wmZg+yirBIhkcU+criw3xhPdkl5hF3vwlC+MeAJlCiU3aYlaJbu8f3nt/q2p/0xReRQLeUStAPFB7IP08ZF2kgk1cxeqoUtUqLHdI9vQ8rjiLLX7RkFkNmygqJa0WTVzkAWuZ8nv8w5Obx/XdVHGhCzr76mWTj0hDpJGVSfIWsL5Ov97MQGu8oWWtxBWnyMtazNHTZDengUFf5/F7p7G+LChJZSIojCSFEs15vs4enSlOl65NLXykIWx5T8c0g61xqD6dsgQ0VW3W8X2wKpKX+lIqYTuMmjqogrQLlzztFVZji9preTLDLmtmGXOPkGir0OEJ3Y/6LVVynjt1RatCLXFAOpmR+umsdsVaxn+VkLWDAmSb517rLG0fBSXxQXBc6QbIrAjtmi2nywV7ytaSENsZoI5zSNsNPH4ElrsACyIkOYmgrMCou441hVFtpcKlOUaYw+wIE/RfVZzWpPruvWab1BWb81vRY6F96GhPsZwUrJp/Ah1N6sf7kiu0DeeAwOonae8C6jVFwaBM6WCsBvwzVs0ET0Oh1+RunZZZDw4NgFE8W+eIF2YOQacjuVVn3/+4fw5Gz4ucyJSM
+ k9QUujsq
+ ZywMyCVRD+WN2wjZGR85E0szwM7fo8PcMVM9v+rt0kDyIs+fLR9jMRyQGUaAYBAeGVwPy+YD/ny4VfQulMv7ZZSgsno0sd7iobKDjhCCWze82myKaBdl+xzp4oLq1KjrAcNbwnWFizdwyyK8IIXOULS+4FVAKy8+f0tVtg8CvW7Ag6JipXfpyaOegrVBvAofSmJ8Ph21kfKChywHaLeHuEX396OoPdoOnMF3V+h922vs0+TSGmrpnEiSiuNStTL/KE1clpqrHn+AjxdPHtotd6TA6HuLFYXPCZy2A2knW8Gkx44eZz47WYAzOt3dN3Xq5824febgPCvR++Q0/HnSN0yxlCZSLxfioAmeXQHXBS7sP/xr90Nvgt3DwpD3GfB3QPiPobFjp8uQ311w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,46 +134,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When both CONFIG_RISCV_LAZY_TLB_FLUSH and CONFIG_MMU_LSYZ_TLB_SHOOTDOWN
-is enabled, riscv needs an arch special method to free the mm that needs
-to be shot down. Thus we add arch override for  do_shoot_lazy_tlb().
+When an active_mm is shot down, we switch it to the init_mm, evict it
+out of percpu active mm array.
 
 Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
 ---
- kernel/fork.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/mmu_context.h |  5 ++++
+ arch/riscv/include/asm/tlbflush.h    | 11 +++++++++
+ arch/riscv/mm/context.c              | 19 ++++++++++++++++
+ arch/riscv/mm/tlbflush.c             | 34 ++++++++++++++++++++++++----
+ 4 files changed, 64 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 3da0f08615a95..b6d11acd6ac10 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -612,7 +612,8 @@ static void do_check_lazy_tlb(void *arg)
- 	WARN_ON_ONCE(current->active_mm == mm);
+diff --git a/arch/riscv/include/asm/mmu_context.h b/arch/riscv/include/asm/mmu_context.h
+index 8c4bc49a3a0f5..bc73cc3262ae6 100644
+--- a/arch/riscv/include/asm/mmu_context.h
++++ b/arch/riscv/include/asm/mmu_context.h
+@@ -16,6 +16,11 @@
+ void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+ 	struct task_struct *task);
+ 
++#ifdef CONFIG_RISCV_LAZY_TLB_FLUSH
++#define arch_do_shoot_lazy_tlb	arch_do_shoot_lazy_tlb
++void arch_do_shoot_lazy_tlb(void *arg);
++#endif
++
+ #define activate_mm activate_mm
+ static inline void activate_mm(struct mm_struct *prev,
+ 			       struct mm_struct *next)
+diff --git a/arch/riscv/include/asm/tlbflush.h b/arch/riscv/include/asm/tlbflush.h
+index 3f83fd5ef36db..e7365a53265a6 100644
+--- a/arch/riscv/include/asm/tlbflush.h
++++ b/arch/riscv/include/asm/tlbflush.h
+@@ -15,6 +15,11 @@
+ #define FLUSH_TLB_NO_ASID       ((unsigned long)-1)
+ 
+ #ifdef CONFIG_MMU
++static inline unsigned long get_mm_asid(struct mm_struct *mm)
++{
++	return mm ? cntx2asid(atomic_long_read(&mm->context.id)) : FLUSH_TLB_NO_ASID;
++}
++
+ static inline void local_flush_tlb_all(void)
+ {
+ 	__asm__ __volatile__ ("sfence.vma" : : : "memory");
+@@ -86,11 +91,17 @@ struct tlb_info {
+ DECLARE_PER_CPU_SHARED_ALIGNED(struct tlb_info, tlbinfo);
+ 
+ void local_load_tlb_mm(struct mm_struct *mm);
++void local_flush_tlb_mm(struct mm_struct *mm);
+ 
+ #else /* CONFIG_RISCV_LAZY_TLB_FLUSH */
+ 
+ static inline void local_load_tlb_mm(struct mm_struct *mm) {}
+ 
++static inline void local_flush_tlb_mm(struct mm_struct *mm)
++{
++	local_flush_tlb_all_asid(get_mm_asid(mm));
++}
++
+ #endif /* CONFIG_RISCV_LAZY_TLB_FLUSH */
+ 
+ #else /* CONFIG_MMU */
+diff --git a/arch/riscv/mm/context.c b/arch/riscv/mm/context.c
+index a7cf36ad34678..3335080e5f720 100644
+--- a/arch/riscv/mm/context.c
++++ b/arch/riscv/mm/context.c
+@@ -274,6 +274,25 @@ static int __init asids_init(void)
+ 	return 0;
+ }
+ early_initcall(asids_init);
++
++#ifdef CONFIG_RISCV_LAZY_TLB_FLUSH
++void arch_do_shoot_lazy_tlb(void *arg)
++{
++	struct mm_struct *mm = arg;
++
++	if (current->active_mm == mm) {
++		WARN_ON_ONCE(current->mm);
++		current->active_mm = &init_mm;
++		switch_mm(mm, &init_mm, current);
++	}
++
++	if (!static_branch_unlikely(&use_asid_allocator) || !mm)
++		return;
++
++	local_flush_tlb_mm(mm);
++}
++#endif /* CONFIG_RISCV_LAZY_TLB_FLUSH */
++
+ #else
+ static inline void set_mm(struct mm_struct *prev,
+ 			  struct mm_struct *next, unsigned int cpu)
+diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
+index 4b2ce06cbe6bd..a47bacf5801ab 100644
+--- a/arch/riscv/mm/tlbflush.c
++++ b/arch/riscv/mm/tlbflush.c
+@@ -164,11 +164,6 @@ static void __ipi_flush_tlb_range_asid(void *info)
+ 	local_flush_tlb_range_asid(d->start, d->size, d->stride, d->asid);
  }
  
--static void do_shoot_lazy_tlb(void *arg)
-+#ifndef arch_do_shoot_lazy_tlb
-+static void arch_do_shoot_lazy_tlb(void *arg)
- {
- 	struct mm_struct *mm = arg;
- 
-@@ -622,6 +623,7 @@ static void do_shoot_lazy_tlb(void *arg)
- 		switch_mm(mm, &init_mm, current);
+-static inline unsigned long get_mm_asid(struct mm_struct *mm)
+-{
+-	return mm ? cntx2asid(atomic_long_read(&mm->context.id)) : FLUSH_TLB_NO_ASID;
+-}
+-
+ static void __flush_tlb_range(struct mm_struct *mm,
+ 			      const struct cpumask *cmask,
+ 			      unsigned long start, unsigned long size,
+@@ -352,4 +347,33 @@ void local_load_tlb_mm(struct mm_struct *mm)
  	}
  }
-+#endif
  
- static void cleanup_lazy_tlbs(struct mm_struct *mm)
- {
-@@ -661,7 +663,7 @@ static void cleanup_lazy_tlbs(struct mm_struct *mm)
- 	 * - A delayed freeing and RCU-like quiescing sequence based on mm
- 	 *   switching to avoid IPIs completely.
- 	 */
--	on_each_cpu_mask(mm_cpumask(mm), do_shoot_lazy_tlb, (void *)mm, 1);
-+	on_each_cpu_mask(mm_cpumask(mm), arch_do_shoot_lazy_tlb, (void *)mm, 1);
- 	if (IS_ENABLED(CONFIG_DEBUG_VM_SHOOT_LAZIES))
- 		on_each_cpu(do_check_lazy_tlb, (void *)mm, 1);
- }
++void local_flush_tlb_mm(struct mm_struct *mm)
++{
++	struct tlb_info *info = this_cpu_ptr(&tlbinfo);
++	struct tlb_context *contexts = info->contexts;
++	unsigned long asid = get_mm_asid(mm);
++	unsigned int i;
++
++	if (!mm || mm == info->active_mm) {
++		local_flush_tlb_all_asid(asid);
++		return;
++	}
++
++	for (i = 0; i < MAX_LOADED_MM; i++) {
++		if (contexts[i].mm != mm)
++			continue;
++
++		write_lock(&info->rwlock);
++		contexts[i].mm = NULL;
++		contexts[i].gen = 0;
++		write_unlock(&info->rwlock);
++
++		cpumask_clear_cpu(raw_smp_processor_id(), mm_cpumask(mm));
++		mmdrop_lazy_mm(mm);
++		break;
++	}
++
++	local_flush_tlb_all_asid(asid);
++}
++
+ #endif /* CONFIG_RISCV_LAZY_TLB_FLUSH */
 -- 
 2.20.1
 
