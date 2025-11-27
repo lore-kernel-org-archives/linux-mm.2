@@ -4,103 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 287BBD116F3
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:24:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D223D11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:25:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 745176B0022; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
+	id A556E6B0006; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71CA56B0026; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
+	id A2CB66B0027; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 638A26B0022; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
+	id 96A056B000C; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F98D6B0022
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 072F31409B6
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:19 +0000 (UTC)
-X-FDA: 84155851038.10.3BA6781
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7F714180007
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=F6UJRyhv;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C01E6B0027
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 322A1BC044
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:25:56 +0000 (UTC)
+X-FDA: 84155855112.05.691FD96
+Received: from sg-1-104.ptr.blmpb.com (sg-1-104.ptr.blmpb.com [118.26.132.104])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A056E100008
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:25:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=e53yThEc;
+	spf=pass (imf14.hostedemail.com: domain of guojinhui.liam@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=guojinhui.liam@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764235457;
+	s=arc-20220608; t=1764235554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=avkSYFBTGKWcb8DXG+GznKaLVN75gMih9B0p/IsxWh4=;
-	b=K6G+hoI46/whuG6b49VO1c3Lo8BYSeaB/TP93zMIDTmJQ+Dhmg43eSx1DpYzcPOCRZHb2U
-	LaZ54TFbjl/sH2taxI1tmLajgFCGJH1PeSvLnaEvmBPrXnQFlvhYv/DPs5yqdaV52V3Qsy
-	TEftn6LLAfTwczE9wC9RNHzDV8T2b6k=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8Nou/MqkuvKxL9ESIFJy8/4e8vQNge3e0G+s7mmZjGY=;
+	b=q+dvlb+g09odAVQ6RlXlekeXWqKZLLjCmaNoW9aMpny2ZXUiKYIbxFuTG6bgOlWTLi/8Oq
+	kIjNYl2N9VAaU1zmNZFADBTPQn2Z8IJi104fKdxiFwBwsC1YUIsawRVAia76L9XtjKc1WD
+	9sr0moHR9QEiFgkk0lze1kwXxHOOe0U=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=F6UJRyhv;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764235457; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=e53yThEc;
+	spf=pass (imf14.hostedemail.com: domain of guojinhui.liam@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=guojinhui.liam@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764235554; a=rsa-sha256;
 	cv=none;
-	b=nsXANjMeAglWLAJxLewa+N7tprlU8Jmc6ORdQKdMuMxW0peVP+fDlG4qjo9g0UeG202zx9
-	b6nKR2KnIX7Tti4tHjL/qsDiVAuNWGU84yyS6a1CU8W7EicipoAOlNDj3QTz1LCwUfda8F
-	I45zIERptH9b6a4k0GT2v9ZyiE5msUk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764235457; x=1795771457;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XlyfUYuWkICDUfkFcCQCj16yl/DMg/jjxI+jKDmBYg0=;
-  b=F6UJRyhvb/cjbA80+cXJUlAYw+SiDRjbwPlSKk2gb1fJVj+mXt8hPPO3
-   iWxO3suUo+6JmK9BifbGdzVoRyONbIFfBzf7Zmty7XL3GUoCfcazqcHID
-   DNWbnuMZV3Y5kO6X3mbUrjyXcsd6Fz93UL2aC3sFt36VTAJ6DqVDrzKKY
-   zqBaH2fLWwbcNgn5wAHx3t/Luuotzdw/Xnsz4R8c1ApuydIoCYck1Tvao
-   /WfIMv9LOw0igHCOlPqqVi1avvurtzLASile8O9g+oiaUjJKMEaxek1lS
-   jC0v38H8bNLIDafukIR0+ac4xa+ntBfZoz8BjmHH/vJvb+q3pP+lh/IsO
-   Q==;
-X-CSE-ConnectionGUID: rOslrHIyRjaQia2e77pbkQ==
-X-CSE-MsgGUID: pGMC00LQTfWB1HAfqV2ozg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66226346"
-X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="66226346"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:16 -0800
-X-CSE-ConnectionGUID: DlvEOMD2R++DjwHq95mBvQ==
-X-CSE-MsgGUID: jGxafr28T76J8iM+e4YXaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="223888066"
-Received: from jsokolow-alderlakeclientplatform.igk.intel.com ([172.28.176.71])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:14 -0800
-From: Jan Sokolowski <jan.sokolowski@intel.com>
-To: linux-kernel@vger.kernel.org
-Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 1/1] idr: do not create idr if new id would be outside given range
-Date: Thu, 27 Nov 2025 10:27:32 +0100
-Message-ID: <20251127092732.684959-2-jan.sokolowski@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251127092732.684959-1-jan.sokolowski@intel.com>
-References: <20251127092732.684959-1-jan.sokolowski@intel.com>
-MIME-Version: 1.0
+	b=1XH0ih+PSzwZzJDOTF2D50OB5SrtES2e7rLsFj3sOD2lCOHBCp+NO3Tc/LqXOz/PQ0RVFx
+	xkyhrzeqSEStaAKkiJQmR3WZvtCD+2IHS7O3osYPF+Az0V87O5zRJhZg1tpqO40va7zau5
+	MpQtJaQ77Em22BOipv+TAxrRTQ5PGJQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1764235546; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=8Nou/MqkuvKxL9ESIFJy8/4e8vQNge3e0G+s7mmZjGY=;
+ b=e53yThEcEwXNnvkfP3SJRFJKgMoyMC21vqL9r/5ZgFAkwPS6whfU8B0+sixzCBgxeRXrSv
+ SL3NgfE5fnPCayUXqlK7gXBtVeobOqyFtvO+hkI2s9F68kBo6edvprZNhZhDFEQ6ybcm4m
+ QZ8w0VPaMsPRyuet8T376/pwibJVWMkNzfeMecP1dym0xvwUWWuQ0vSZ8IbqI+F3MI+Oen
+ vrGGbztzdPnIVszDMa4wydGS7IzKp1NIcWHzdt2yke2K4byU/DpKphXwtU88foCEd/8BrT
+ 0dcrbSbv0tRoT+fkLpt0Q9QIzUPgUknLgBTOIaOxOJwYYzr/9ZECM58v8yscBQ==
+To: <akpm@linux-foundation.org>, <david@kernel.org>, 
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, 
+	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, 
+	<mhocko@suse.com>, <fvdl@google.com>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.17.1
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+269281918+27e7d5+kvack.org+guojinhui.liam@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Cc: <guojinhui.liam@bytedance.com>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH] mm/sparse: Fix sparse_vmemmap_init_nid_early definition without CONFIG_SPARSEMEM
+Date: Thu, 27 Nov 2025 17:25:12 +0800
+Message-Id: <20251127092512.278-1-guojinhui.liam@bytedance.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A056E100008
+X-Stat-Signature: ggmetskx53hp8kesctjdmy1q8p9wtsmi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F714180007
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 4jt8mz7x6gr6ak458ba573uapw93sfzy
-X-HE-Tag: 1764235456-56368
-X-HE-Meta: U2FsdGVkX18MzNGTQWTjOyHO+0DqdGqhe1+qBHyMgJRZ8+j4HhNeO1PmT14CUsl6zKLJO1A8WJN1ZYDMuF2RmU+p++o7RbMGh5EJg4A3Xh6ncMcCOyTCYNPD5qNZSrVxmMk5AQkLlpoQnN5yEMxv37UsoYOjlY59IZHTnOodhKEuNPNBZwjwPO7cwQc5aR1P3ioouwGL9UgS6GlBT40mvNgWRuGZWxR/6cH3NKoCSLFa+b3Z7AQn0ClaikeBbZ7kdSsQ18QRpEdHg4blMPm6YH2zKpeQtjBClEW6enbHk8I0qi7zaLmodzkvnrOPUq8BxJ6hayagZmDjZc137OOoTYBMLBrWoKEB/OxLbVmUT1Lml6ngvFKyvIzmqP1EKn3LEo5U+qF1ReajVlve7tVvEiyZTxFAVnVOdRU/co0tBLycR88WC78iiuqWembJ7M87JPdKQB0dY2XXHvvuUkCutbonjcNV4s5FgztY6IpdePw8q0zXOqEn1oYOKFhSbONY6ylH4RJIfqCx+h4FAWN9Z/e6DKrjJGCjyFkIHY4vMjdREv8LFTOcfQDX6rpfWJIvOGjeAJeoo0I57BCKjiiDt9nlIlL4cAT570BqHzbz7pCVtnmoA+VG3f1p7jBfWVR7yNmE6LyEPw+7vUv5VoXJddLQWwgTeejHst8Txfnjm2SIwsiYmNneD33QSWtNCgNIcwsEsdDzAKpOJK1+zG2ON+fUkOVTCBqLk8kWeqHYuBbp5vMCWfykDoDeognJqLiqxy9y3XVw93NOw6Bsp7vjC3jqLtAQKfcsfhN3GRMlwalQauY7uGfkT0ypp0EtlS3ijgRGHMwLVUYWJGqsUBrwMZSY0GpUsizVoXf6SF3rnLtev6utTv8OK0kPrBSrzK5Emdb8nQwnHJLUvpRQ60Tm6NrvimHYnwEYR8n39C/GwsctorSaRkSnwdrnDU16gVTF8ISq4pKrapFSC4eJMoD
- sUJu50Ct
- EVSPCK/fd/qdAZWMfkd2vq5zmZWglaDl98smPls6UQi5+9PbtfcX/sKGVMuqd/DnCdbMIUr37FlEns/Suy/jH+0jZEVBZ12L679+HpGf+kdW22uLyrR58Q0sJws56VOhqFJLQwxU6W/77cAsJzcdTRYk5DZ6bkqiDCxicYTL3Q8qZOvn7rZ1FANWy1ez9Q00/uyTL0B2KlKixQSjFgAmK+GVuyRzWLzDwJePOYwTRCWs2k9OTPgOUlTyK5HbQauT62vQVmtC5mgGY1Tj8a7OULpgjk9rvNeHZDKQ4go4rVHHUyYBNSENgPQIWVz6ceMNxFQUxtpULFfxNp4cyPeCpWRYkn3QajnNBt0E8YbuPAfUMSUr2meE1MKjCoy1SjLcLUfLQHGN2EFQkSx5JP4QsaX7NCm8Y/VpxoQ7zpFoi9+kFqY2eFallSSc1TQ==
+X-HE-Tag: 1764235553-820671
+X-HE-Meta: U2FsdGVkX1+wPtCbN9CeJfI1yGfOCla+esy6GcfyLP2LIN3x4oX5D++73RSNxMmCAHwzqdTNElqmsWlUmeiWP/cy9+iEkyY0shIu8+FOGkJ34TF/bLblVSB87Q+O09VOg8sWQojyLvB3vKW+5rfFfLCdeIrmR+VJSXjmTELCB6nOZhfYCi8T0AjQFON1SF2wOOGQUcwJLMCaHfymXYmmYCv07BHykrFaHUrZduw9zCjXkfkkWG++4y91JkDKnN94SFKsodxXoArBbk6JbL4XVzn+JUpTV2JuWw61nRoItvrX1NMuqAk5Y7pLTYkwXTpw3f6p4hCG7IEjuEIOUbmibUOPEDb3nLvJWlNf+Obv2sxn4EQKfXSdFvxFYyL012Q9xAp/R7rM3iXd4TlUQNrAoLgqnZ/PIWI66342sW+ClpCRDCjluRTEhfvZO10w/vL30n+1stiapACn7ibAEdrgV0ud+GqJk8bd+/+ZQZ4UO0SyieyccquX+0bdki4+GK3DOfdW4Cia4w9ve5pKa2McjYTeOCXvEQPowQZVvrOJ1/u3FsBCsq0pkpWl3UGI6615QM/eHUvie9lJ+ehvVhBvIVrhRP4bR6ToU3HBdbWxxH4Xr2vHR1PvUXU7eNkgS4crTFzaeUfdb1Yo5UAmoP1ZXYZkQIYQSYFUp9apSMaKM327OK1nibfFPGlT7loiifO5yIiEqQ088pTBJJIgHZNtfH4W8qCfK/nFO9b89uOpQO9DiwJTR4j3l+JS1bJUsTYUWy3YybDLV+/E7LcSRJbImOBzcb2OqvAxSvjmzLwlUZZvy+3mgPVZJg2AYGIAqpkHvRfv4Nfcbp8N3NsBenS/VZQF87K4jFNhKK3dU25vseVkiKEi2NqS35Q/JUIcEpRfgzrzfDsFmKiF0RqroIEIY5hzlDiK8bCY/mhfBy9jTTwK3Jktmom1r+pDFlKx3rV+/BZ4IwPossIAi2hMJa3
+ VM0V6s8+
+ BgIvb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,68 +90,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A scenario was found where trying to add id in range 0,1
-would return an id of 2, which is outside the range and thus
-now what the user would expect.
+When CONFIG_SPARSEMEM is disabled, the macro
+sparse_vmemmap_init_nid_early(_nid, _use) passes
+two arguments, while the actual function accepts
+only nid. Drop the extra argument _use.
 
-Return -EINVAL if new id would fall outside the range.
-
-Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
+Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
 ---
- lib/idr.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/linux/mmzone.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/idr.c b/lib/idr.c
-index e2adc457abb4..8c786e50f2da 100644
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -74,6 +74,7 @@ EXPORT_SYMBOL_GPL(idr_alloc_u32);
-  * exclude simultaneous writers.
-  *
-  * Return: The newly allocated ID, -ENOMEM if memory allocation failed,
-+ * -EINVAL is start value is less than 0 or if new id would be in wrong range,
-  * or -ENOSPC if no free IDs could be found.
-  */
- int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
-@@ -88,6 +89,11 @@ int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
- 	if (ret)
- 		return ret;
- 
-+	if (WARN_ON_ONCE(id < start || (id >= end && end != 0))) {
-+		idr_remove(idr, id);
-+		return -EINVAL;
-+	}
-+
- 	return id;
- }
- EXPORT_SYMBOL_GPL(idr_alloc);
-@@ -112,6 +118,7 @@ EXPORT_SYMBOL_GPL(idr_alloc);
-  * exclude simultaneous writers.
-  *
-  * Return: The newly allocated ID, -ENOMEM if memory allocation failed,
-+ * -EINVAL if new id would be in wrong range,
-  * or -ENOSPC if no free IDs could be found.
-  */
- int idr_alloc_cyclic(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
-@@ -130,6 +137,11 @@ int idr_alloc_cyclic(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
- 	if (err)
- 		return err;
- 
-+	if (WARN_ON_ONCE(id < start || (id >= end && end != 0))) {
-+		idr_remove(idr, id);
-+		return -EINVAL;
-+	}
-+
- 	idr->idr_next = id + 1;
- 	return id;
- }
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7fb7331c5725..f6dd181a4821 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -2293,7 +2293,7 @@ void sparse_init(void);
+ #else
+ #define sparse_init()	do {} while (0)
+ #define sparse_index_init(_sec, _nid)  do {} while (0)
+-#define sparse_vmemmap_init_nid_early(_nid, _use) do {} while (0)
++#define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
+ #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
+ #define pfn_in_present_section pfn_valid
+ #define subsection_map_init(_pfn, _nr_pages) do {} while (0)
 -- 
-2.43.0
-
+2.20.1
 
