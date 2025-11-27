@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41253D111A8
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 19:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44EC3D111A8
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 20:29:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 859786B0010; Thu, 27 Nov 2025 14:44:28 -0500 (EST)
+	id 3AEDB6B0030; Thu, 27 Nov 2025 15:29:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 831186B008C; Thu, 27 Nov 2025 14:44:28 -0500 (EST)
+	id 386796B0031; Thu, 27 Nov 2025 15:29:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76E596B0095; Thu, 27 Nov 2025 14:44:28 -0500 (EST)
+	id 29CA16B0032; Thu, 27 Nov 2025 15:29:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 67FCC6B0010
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:44:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17460139BD0
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:44:28 +0000 (UTC)
-X-FDA: 84157413816.20.2B6BB86
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 74C11A0005
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:44:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DHhD/aQh";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 199746B0030
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:29:31 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5F31B780B
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 20:29:30 +0000 (UTC)
+X-FDA: 84157527300.05.C7F4D99
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BD19718000E
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 20:29:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aAYEukPu;
+	spf=pass (imf16.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764272666;
+	s=arc-20220608; t=1764275368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GdDuTvTnfEpx4mgFT/vHpVsJR1D+SimXyQpYnhx4Jqs=;
-	b=jpa9XtksiUzQTFcCmR6jni0hgZAutOUZmhJCecTFtVLpfxvl3DIJTAIoXgSzL6/Uhq/4wW
-	EDAG0HH+DIbMcq5Brsv1OSv+KwUrEUAdm2X5maM1lbCAWDh12X7/bGUYloM+NKFrJZ1zdG
-	55VW7SFIah1Ifj0WEm8hwSX6htd/9Q8=
+	bh=BMTw1kDL8EKjTOAtowuEddJlwPoqJdeq89qWoiUPpVg=;
+	b=nFhmQe/TeQRe7A7ZnYC459llr6BIjhVVU31tY9Bv8pcmV3epz9Ig4S636FDF66CYorY+5y
+	i1TDmw0QmA2m+DCUnTq+t3vmYwFn/mfcqhAkqvD1KVC1pEynv2R66sSPOhbYDqS8KERQqS
+	wSBTYrmJlhLL18udKcF2mN9kYQPFkgc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DHhD/aQh";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764272666; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aAYEukPu;
+	spf=pass (imf16.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764275368; a=rsa-sha256;
 	cv=none;
-	b=mlBoD3rzHAlbdGfYf5KGoeeiwQTnZ9KxznDnTjf9Uy5USAEDmYlOvDXHyUWx84YcIxmId0
-	NmWsm3OWlN/EyFJoGoETAY33MlrUThhjKezPmC7gkzFrk5GsdchfowbUWJ0udPYKe//iR7
-	WiPe18ojotdaUjpkrTYxJqa9kcb3lP0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E304E60172;
-	Thu, 27 Nov 2025 19:44:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF0FC4CEF8;
-	Thu, 27 Nov 2025 19:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764272665;
-	bh=2FTP2tPXd1GWQFRneLLYDqFrpGOgQxqB103gyOVSA4k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DHhD/aQhOyARXtDI0hb53vOA6x8+UUybsf+r7ell6SNfujszItV4w+dfeFIi0VVvp
-	 SfUh8H3uoek+9MTu+QV4uvODoSpGySXi0o6d5frjsPAj15Of1utMh7nsvJb974rQD6
-	 F4niZwOZzwHFDuJtR/LiKuHlg7eHU7BRGLvv18H42Kw9FviKkVKPvJALmGQ/V+VhNO
-	 Gdb9h5b6Acg/uJQzdygl3tGNU7KMzqs4YfOU3R9/nzYTx1T8Fo7IgVylHkbTf2yBLR
-	 qH2rfGWT4eDqkPvd+NlC1Xr49i1FAUs47DzrgHd5fldJ4zKIhqGNc++3zPYYD4TB9K
-	 fox1xbw6MnYrQ==
-Message-ID: <f27429f3-9dd8-4006-b2d8-702436ade805@kernel.org>
-Date: Thu, 27 Nov 2025 20:44:16 +0100
+	b=G/SpF68MPGRziZMCj+n5ei1C1sWLrRIt9fAzmaq+Xbl6Tiv5ULSD+p1HSPkmHsgB95v3H0
+	Y7y1n9VW1lm44NunyJ4SMROKuNK8/5SRdWoObgpdHGagytu+iQ5KnnHRG4eG8F9BUqs9ST
+	0dQ4urjtcZoTKsb2xvsZO1yZcK7SEN0=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-880570bdef8so12066846d6.3
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:29:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764275368; x=1764880168; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BMTw1kDL8EKjTOAtowuEddJlwPoqJdeq89qWoiUPpVg=;
+        b=aAYEukPuXu7zpCU/6VsJxj8k22i3sJyHFzRpmD6alE0QtCzXe10P/0Ocq6zd5wZUXg
+         5hFvJqynFHk6DdSepLPpGcSjtYoFlL29uccTQQunGOOCzwv75vYZXIubdooLLP68Znlc
+         hS+RvmJhy1NxwPPqN3EVMbcq4IBNqaZ/LvI7W3vfZX18k9+JdUDBqanyJW/MBTsXszdL
+         Ng4KBIrOSzv0Qm7irPe30gXLgEXpPLZYSEo5tyTGMABndIfOCMjOHyX4TVxfkqUlgEdG
+         WAqo4nCoPrz6CF4QgyqBhvv9bSf3X6c1gNmishghK2tD0T51k53gkT5Q9oeOalr1oKn1
+         3m/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764275368; x=1764880168;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BMTw1kDL8EKjTOAtowuEddJlwPoqJdeq89qWoiUPpVg=;
+        b=mqfAH+4WiOcDIS9E0YHoynNfE5m5L6plYjXMiDcgkj1YCTOWB2g8i4hOp1aoyH8GcX
+         SdT9fLExMTUwpBU7zXIDJPP13c4N5HoSMjV4aYyvEHbvf3kVNnHC4x3d+oc9repj60EU
+         UAM35Jap5kHg3j7iEMMRO9XwK+vbpv3a7s1yK6sdyEI/wB9P9Pwi48ceN8lfpzttHYtM
+         DYcJMXBtJiRHrXtvggbF2hriNd4jfwWCod/saKGJzx+3nnrSDj/z237XafwS/8lm3e5z
+         xXLcS3FNjFqcNsOM4I7ipJtXShQ+A+QObWlV31AVXZV2uN8nqYpTrc/k+qv7DtqHDemY
+         pFXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMvUFU3xFOXmS7GZKV3tL5tVPuEnHKBSSCuFSDuCMKh6GfJvt3f1svxeXW4DGb5A2oPfYtIAO22A==@kvack.org
+X-Gm-Message-State: AOJu0YzlR4twjD2X+HpHQdzyii6zjHbqCnC2zhRBwGXhDrUeFuPO5fyJ
+	R3ZBjWowtrYkLSdQRP7x18dF6KTxZtMvH7LB4HPW5H7ScdGxJr9xtTe7fFmCTJYx9SmjKduLqEV
+	q3afuhzfzdh5NCkct+uJDhoU+VCgo2H0=
+X-Gm-Gg: ASbGncuzH+7l6CcYg3QfInYcg5jVy6qe4jDOVBknnv+IQ+mp9nMnOrDgsCurowiKeCS
+	Hvmyi2EhfbZ7trQg4Guy7umZYBQcC7nlLukcozCDot+AaXzIWGT5co+tQ6/IQg/SUiUNtQBtJ7J
+	EFqeXI2GSzG+EU6h1S4MtSt6JzQmzrkxBjJiKHtVLoHAEPtTyIbLqqxgVQ9JqBhTFbO3qKoXn9S
+	QOYd1Q64+rBeqSvLOUF4qltTa6WXekWQs0a7JBsMIDSjyq3IJZIgxjEOLaBrcUJ6EMSXg==
+X-Google-Smtp-Source: AGHT+IG5GcGrOmVVsePre6BxCVhrhKY7NJnCRBVNCLt/HcgbymNTTZVjYmvrDTtjRkuAQ9GKsIJdwvx3BNDYrNQPC88=
+X-Received: by 2002:a05:6214:234f:b0:880:486d:18dc with SMTP id
+ 6a1803df08f44-8863afb4d8fmr176925236d6.58.1764275367501; Thu, 27 Nov 2025
+ 12:29:27 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-To: Ryan Roberts <ryan.roberts@arm.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
- <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
- <20251126134726.yrya5xxayfcde3kl@master>
- <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
- <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
- <ab39d448-aa1c-4c93-8e2b-5d97a9c76af5@lucifer.local>
- <1ca9f99f-6266-47ca-8c94-1a9b9aaa717f@kernel.org>
- <37973e21-e8f4-4603-b93d-4e0b1b2499fa@lucifer.local>
- <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
- <4505a93b-2bac-4ce1-8971-4c31f1ce1362@arm.com>
- <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Content-Language: fr-FR
-In-Reply-To: <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251127011438.6918-1-21cnbao@gmail.com> <aSfO7fA-04SBtTug@casper.infradead.org>
+ <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com> <aSip2mWX13sqPW_l@casper.infradead.org>
+In-Reply-To: <aSip2mWX13sqPW_l@casper.infradead.org>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 28 Nov 2025 04:29:16 +0800
+X-Gm-Features: AWmQ_bn_b-JGqeMVPQ751bNAv2Qsiauy9g_kN3cQ2gR4dkmeqYmOBAyRrjCf_ew
+Message-ID: <CAGsJ_4zWGYiu1wv=D7bV5zd0h8TEHTCARhyu_9_gL36PiNvbHQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
+ page faults after I/O
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 314yeekfdxzznb5iiz3tf3yzygz7tm7u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 74C11A0005
-X-Rspamd-Server: rspam11
-X-Stat-Signature: f9bhdkrmsdnx948u867tczfj538gyk8o
-X-HE-Tag: 1764272666-636715
-X-HE-Meta: U2FsdGVkX19y8K/T+auuAlUkjS2VKZXoM0YAhLMa8NHDngWVpSR+0oD2kes4eynacfFnVBZddR/R4QXg9nP6QOR1YuYjy2T2LDEv8Dpbesf12lwGAXun5QV/2teP5U3PCfqqj7fAfGglS6y/ZkkNHbzKzQnu6GKLcQzcGMpSJxCIstjhlft5rlFFgyaMeJcw4ood/QJDJZRBZYtWy7hTloLPzXLaqeCzl0q3U6RzlUnZdbZ99cBS1/lYQVLHzfu5to5+/1ENNfakcoCKOGBT7861Nm3HboeRazDSykCVDYRy2/fpYaQTu11MhI2b7V1eBuwPP3gGl6rLqvb5uRWm81qoyzuPVlZux8EqdJ27MQaLYqqffIiwaa7ZciNYo12SGJuN6k1mfjAERySKbe8J/QPiqHQHtfxfdaPUYlM23z9vnE7zNYd2yXpa9k2TW5LOe/ZpLXIlZmy7RFaBL4Wnz80RAW1MDLrVHvFsJKhlWHJ+4/Ax1Qn0WRl5sG4pEue3F+W+LEdB+GOW/jQeUCARtSse/zvETqELkEs3Yk+izr2kzmdBiof75aQiLhH6iFiD6NbuPGyMO7W30jsnbIsIN7d1346CM9I9vIrARyP84YA5Atb7grF1EmJzdZ99eyqFzDrYEVfwxBTgyLuti7HR9OEd52Ht/lj5DekoX3WqBKvkCHfo7zvPuoOvlKmrIfXH2p9gRRJuK7GIAkpMb5eQoNRHf7acARNeK4fzCO6E28f3b0EPmW3YC7GoOc42kR1j8dpx9cE31AUIpSilJ6wxowNwL79BwitMCFBd0p7RxuUbj5cRD9MJukpu78yGBd/okB4s2v7/G9cPBklHFSjrnpIzatGYlUSqq9Ffw4FzmVkF9rP21flfZ4/9bv/Hfd9atHAQzX5DTzPV0MTgBFdnMUi8xmDse4Wezul4iRgncYOnyeD/nlojYON663gRXfYWaMy9tG5EfAy3dnAMtZd
- B0lpfV4g
- hHJWUsmsqvb4m8VOX3M9kmKJ5PzAcGuFjRLeVkN6vxhJDWW5uD1roPrM6a4mj+g18dJXfnSbJM8UORAPyS1SEvvXU+SX8Si+v5/1FA6WGWMwyJeFkHOo84Xr+y2QE+TcmNQOteA4U96oBO0nV4BuScCG4ZJidbA+qc3RwNncYlDJ9Cmni/DuzkHWZ12zt5LXtL1QRJcAHLLIJSg0o2u7rbYvxHhYUKC9jBv3jsc5WkRiWGrQQCQ4/IU5DDo/BG6VFANipbp/g6/7AUdja24hHiN2ZS3OEu2ub46epRCcG5tzS3LsMrCFuL60ZX1lwyjPiCRUR
+X-Rspamd-Queue-Id: BD19718000E
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764275368-450363
+X-HE-Meta: U2FsdGVkX18/q0TvltXlXuT1b1RsU5t17D/07ibZ4I6bbytKe49Pt0hX29jzz7zYUgO+c3fnnGoaSIho05HaG0hzkRyLv0+suhnf5zaz0BmRgHUzwJH+TTaRuFd1gQE8QshKJcUU+FfooY7qGPrBaAbXON8+1MwvDxFTuR01NsbFjVAORZZJHZyLdIWHbWo2dPN186LPj+MGm5mdrpeImVUfFaEyk19FmoVb0a8o0rSzCFM2gfz7MzF/LQJ+X6Uw4Q0yePdXZe0tJhnU8f6JjMBbhHITj6+rosQAwvWG4QHysEW0VK6Z9y2JQ6xJuY4CfdKDNwrgS4kT1+5KN7xP3sPI9RGaWBUV7pmveR9lobPji6tWOEIenIdO7QS/eirHy9eSeI/s7f0+5lXTlqT/HkTgF8k8AuRjIhS0IMv0OzV8hqwpUpEeawZbbx0nlHwRgY9WWDQv3jT9x7hssog8OJ09qYVpaqNC72fQuHGmU7NLax7zOy2Ms6nPjPFzzP0sn0ECXbXwJnKOU3IZfO/y2zSkCAK8cTql/oWqgT+11qKnKG5CWVe/Z3j8g0tm3tsqTeDFW0gOFDpe0jQd98K1QsYHP/mg7bkPtjI+77Mo7KWdOWUjQvJgbunnxFesCqlNHQw48dr+1P0obwqDneOPsGduJUFynuIPl5Z+GfnF8Q4ky+e2X4RRXWcBufn1h4S7mCcfdxda1Z8sOjtW1xs274nsxyjb2N/WMu31meeSwTFlXXiEWeGNrN0Xc7RGtyKtzUbpxsaIHQ1UDoM4HHTqmzaSImsIGUyYB1531/U8afxKFWGWta34WhBV39DdI36lc1fU5qYXVrStFNYIG3HxOHoA6YCG+z2NEFutMobZxZ5LOzL0C8y0079es6to+RNE5/75jNwYajio5Nu97YqPtzxrtjWwuyTZm47XeH8KgNTWFwFH5gPEHle7X3lQHyieBgy/+2Oj8bLhhtrmK5B
+ LTF/pAWl
+ HMfllWLEmDeiOdbiRwYvyxw+GhbnL2O3OurMpk+wcxmkXjpfGhsFJvrcR/7m8oZFTlfx5NXruCzFH6mbRcAGPqx56AFw7auDGKA26kJavHDDOeeMAz8SA7rfZzzE2nO1ADNrt/kJ4MxqMopUKBeKfhNS12TGenUnr23jz8oAY701PdaTaTU83lBDryOLwoB+e4qknCdC7qMp574hIfJrPfQNGZKvO9kWcajYMJ/eMhGAdZbuAnjQRYgd4zOZ09LWYQC1CnR6N2fy/dNaFGqG1l51tb29V96m6EGgWBmKT3Vqd1X75Iyx4xX5owx0Ohfz/qZ5GNsLdWI3bHBPJesyQ6Sa2cmvZIW6toezMBjIAstZ6JcAYi6bdnUQnm8x9wmhSfUdraLE6ck82y2EEsczllAmgoTYYXCM93DYI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,69 +121,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Nov 28, 2025 at 3:43=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> [dropping individuals, leaving only mailing lists.  please don't send
+> this kind of thing to so many people in future]
+>
+> On Thu, Nov 27, 2025 at 12:22:16PM +0800, Barry Song wrote:
+> > On Thu, Nov 27, 2025 at 12:09=E2=80=AFPM Matthew Wilcox <willy@infradea=
+d.org> wrote:
+> > >
+> > > On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
+> > > > There is no need to always fall back to mmap_lock if the per-VMA
+> > > > lock was released only to wait for pagecache or swapcache to
+> > > > become ready.
+> > >
+> > > Something I've been wondering about is removing all the "drop the MM
+> > > locks while we wait for I/O" gunk.  It's a nice amount of code remove=
+d:
+> >
+> > I think the point is that page fault handlers should avoid holding the =
+VMA
+> > lock or mmap_lock for too long while waiting for I/O. Otherwise, those
+> > writers and readers will be stuck for a while.
+>
+> There's a usecase some of us have been discussing off-list for a few
+> weeks that our current strategy pessimises.  It's a process with
+> thousands (maybe tens of thousands) of threads.  It has much more mapped
+> files than it has memory that cgroups will allow it to use.  So on a
+> page fault, we drop the vma lock, allocate a page of ram, kick off the
+> read, sleep waiting for the folio to come uptodate, once it is return,
+> expecting the page to still be there when we reenter filemap_fault.
+> But it's under so much memory pressure that it's already been reclaimed
+> by the time we get back to it.  So all the threads just batter the
+> storage re-reading data.
 
+Is this entirely the fault of re-entering the page fault? Under extreme
+memory pressure, even if we map the pages, they can still be reclaimed
+quickly?
 
-Le 26/11/2025 à 17:34, Ryan Roberts a écrit :
-> On 26/11/2025 16:07, Ryan Roberts wrote:
->> On 26/11/2025 15:12, David Hildenbrand (Red Hat) wrote:
->>> On 11/26/25 16:08, Lorenzo Stoakes wrote:
->>>> On Wed, Nov 26, 2025 at 03:56:13PM +0100, David Hildenbrand (Red Hat) wrote:
->>>>> On 11/26/25 15:52, Lorenzo Stoakes wrote:
->>>>>>
->>>>>> Would the pmdp_get() never get invoked then? Or otherwise wouldn't that end up
->>>>>> requiring a READ_ONCE() further up the stack?
->>>>>
->>>>> See my other reply, I think the pmdp_get() is required because all pud_*
->>>>> functions are just simple stubs.
->>>>
->>>> OK, thought you were saying we should push further down the stack? Or up
->>>> depending on how you view these things :P as in READ_ONCE at leaf?
->>>
->>> I think at leaf because I think the previous ones should essentially be only
->>> used by stubs.
->>>
->>> But I haven't fully digested how this is all working. Or supposed to work.
->>>
->>> I'm trying to chew through the arch/arm/include/asm/pgtable-2level.h example to
->>> see if I can make sense of it,
->>
->> I wonder if we can think about this slightly differently;
->>
->> READ_ONCE() has two important properties:
->>
->>   - It guarrantees that a load will be issued, *even if output is unused*
->>   - It guarrantees that the read will be single-copy-atomic (no tearing)
->>
->> I think for the existing places where READ_ONCE() is used for pagetable reads we
->> only care about:
->>
->>   - It guarrantees that a load will be issued, *if output is used*
->>   - It guarrantees that the read will be single-copy-atomic (no tearing)
->>
->> I think if we can weaken to the "if output is used" property, then the compiler
->> will optimize out all the unneccessary reads.
->>
->> AIUI, a C dereference provides neither of the guarrantees so that's no good.
->>
->> What about non-volatile asm? I'm told (thought need to verify) that for
->> non-volatile asm, the compiler will emit it if the output is used and remove it
->> otherwise. So if the asm contains the required single-copy-atomic, perhaps we
->> are in business?
->>
->> So we would need a new READ_SCA() macro that could default to READ_ONCE() (which
->> is stronger) and arches could opt in to providing a weaker asm version. Then the
->> default pXdp_get() could be READ_SCA(). And this should work for all cases.
->>
->> I think.
-> 
-> I'm not sure this works. It looks like the compiler is free to move non-volatile
-> asm sections which might be problematic for places where we are currently using
-> READ_ONCE() in lockless algorithms, (e.g. GUP?). We wouldn't want to end up with
-> a stale value.
+>
+> If we don't drop the vma lock, we can insert the pages in the page table
+> and return, maybe getting some work done before this thread is
+> descheduled.
 
-What about adding a memory clobber to the non-volatile asm ? Compiler 
-shouldn't move the asm section in that case.
+If we need to protect the page from being reclaimed too early, the fix
+should reside within LRU management, not in page fault handling.
 
-Christophe
+Also, I gave an example where we may not drop the VMA lock if the folio is
+already up to date. That likely corresponds to waiting for the PTE mapping =
+to
+complete.
 
+>
+> This use case also manages to get utterly hung-up trying to do reclaim
+> today with the mmap_lock held.  SO it manifests somewhat similarly to
+> your problem (everybody ends up blocked on mmap_lock) but it has a
+> rather different root cause.
+>
+> > I agree there=E2=80=99s room for improvement, but merely removing the "=
+drop the MM
+> > locks while waiting for I/O" code is unlikely to improve performance.
+>
+> I'm not sure it'd hurt performance.  The "drop mmap locks for I/O" code
+> was written before the VMA locking code was written.  I don't know that
+> it's actually helping these days.
+
+I am concerned that other write paths may still need to modify the VMA, for
+example during splitting. Tail latency has long been a significant issue fo=
+r
+Android users, and we have observed it even with folio_lock, which has much
+finer granularity than the VMA lock.
+
+>
+> > The change would be much more complex, so I=E2=80=99d prefer to land th=
+e current
+> > patchset first. At least this way, we avoid falling back to mmap_lock a=
+nd
+> > causing contention or priority inversion, with minimal changes.
+>
+> Uh, this is an RFC patchset.  I'm giving you my comment, which is that I
+> don't think this is the right direction to go in.  Any talk of "landing"
+> these patches is extremely premature.
+
+While I agree that there are other approaches worth exploring, I
+remain entirely unconvinced that this patchset is the wrong
+direction. With the current retry logic, it substantially reduces
+mmap_lock acquisitions and represents a clear low-hanging fruit.
+
+Also, I am not referring to landing the RFC itself, but to a subsequent for=
+mal
+patchset that retries using the per-VMA lock.
+
+Thanks
+Barry
 
