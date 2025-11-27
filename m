@@ -4,199 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C741CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 15:02:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44B3CCFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 15:32:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35F896B002F; Thu, 27 Nov 2025 10:02:32 -0500 (EST)
+	id 506356B0023; Thu, 27 Nov 2025 10:32:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 310CE6B0062; Thu, 27 Nov 2025 10:02:32 -0500 (EST)
+	id 4DE246B002C; Thu, 27 Nov 2025 10:32:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FE716B007B; Thu, 27 Nov 2025 10:02:32 -0500 (EST)
+	id 3F42B6B008C; Thu, 27 Nov 2025 10:32:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C3466B002F
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:02:32 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A3606B0023
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:32:43 -0500 (EST)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9EFDB6DA3
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:02:31 +0000 (UTC)
-X-FDA: 84156703302.30.94817A5
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010018.outbound.protection.outlook.com [52.101.85.18])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CB85720021
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:02:28 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ywiPYgB7;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.85.18 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764255748;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA4B612A49
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:32:42 +0000 (UTC)
+X-FDA: 84156779364.30.579620D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AD1CB140015
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:32:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764257561; a=rsa-sha256;
+	cv=none;
+	b=6Yd3q1U1GYue2SsPQ4jhf+Ql0QuEDyPJUTzBqKJuc/z2rIT68EUcz/Pz/CPwtotsDnQElA
+	l26eVYDsJBuCkbDaSrdHdpMjZFeLmaBKApXyA4b4KikvRPdxWxKDwuY/fk6sbPDeG+4VYI
+	YXtl4qTMGr2tsXbgw3DWdL/pKcO+tiI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764257561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PuHLd4xDZuF7MFqb/07VkIYcVF/lsmY5geGAFu2PqJY=;
-	b=PDV8r1hfJS/fOcxsiiroPrGyjEy8+Yp/ASTJksW8dL5N66D6uWN+guwwfgyC9VptShlEEp
-	cHeqQ1Z329Fu1SJkziL6TjizEz2hpiAJrA+f2tmsUkxxnUbphhe7RlEz6/P/nAeZarFtNm
-	lLFAx/rWHkq5ppSFCARJfFniPNog+Mw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764255748; a=rsa-sha256;
-	cv=pass;
-	b=0MemA9qNb7r2yNdWec4SW54pAtsmcVLrsM50XJup35GsuuTe5JKjZ5W/kHk2VNZJ7QPu9c
-	+rA6KI7T3SgDwJj9HoRKvf0DZFT2QAmr9e6MPfNMsX5VZ+lREMVKjSQewaGwwlUu6Y4FlZ
-	tIEIqdjIroy/K307lOnKo+dPMyMLpho=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ywiPYgB7;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.85.18 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xwhdFodf6iT2XjuVAl0fyHEBQb899VTUsNdJJuxdnzOJoNZXPQpfAAQlZdtwMr7PA0kjux2bmEFkB0NiMFAxfdQNVDV/dmjXXRViqab+dEw/iOso/Ea0EjN/nLmT3NFVI4MKyNbATgYWSuVCpyg2dKja0gy/MwmNCb1JjjcZ6j9C035esI+FX9tZT38uOL/ecPwtXL62aPNhkTBpKBsIFgjG5sOaMRWcwOtc6b5bLXADA9B+ugVWSIy4MeCV7qcjXGa9+h6TEzNJyemjZGGvxUaKHMT5W8tcUQKYUrBg4e5l5RPqScGA9Go5/gO5aoWiIA+wzrgFJy8PXrj0AT6z7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PuHLd4xDZuF7MFqb/07VkIYcVF/lsmY5geGAFu2PqJY=;
- b=CvzMm1mynmnoGsUB2GsaOb4ERjJxP/HDqCiHWPNvT/BZJ+IUNsXBhSThkWVT6EVtjyF+JCxGOoDC8XPvKHVV8xPo7M9tAUsVqnCvRFOJr5X02NYmrIvZrOGj5xjs791HBanTPeE9gtYnsZeXQ3jYYraHd1Y5/1wj49a45ngqooSTat9DgzbzxZz5esgIsILJYjGo7HyIQiOOIP6tdPGf6LizcU2uiE5XlF5LyE1+RO+U+C1BsJfMR0VvYeM1uQfEZZBYMrg+mQsuZiGRjeZphmuqk6EqyBBMm7fZIWSzuQmEvedQ6b1JZP+0u/7DeD13di0FYNRTC2U8mKDinsvc+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PuHLd4xDZuF7MFqb/07VkIYcVF/lsmY5geGAFu2PqJY=;
- b=ywiPYgB7+ImvMYHejknZD/7XTqGd/my4HcGR2jr8Njw0xh3g254gETyIw0PAUZvVo+BbZ4zPnFpsX1+uzypU8FGjhbkigXihmx7Y7ouEyYfSaUYgFs+0DUjLK03JBbgmNlnEvOxOX6lxTVH9YRoUAloOK1x4avspg48U83PYiLM=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS2PR12MB9749.namprd12.prod.outlook.com (2603:10b6:8:2b9::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.14; Thu, 27 Nov
- 2025 15:02:25 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9366.012; Thu, 27 Nov 2025
- 15:02:25 +0000
-Message-ID: <414a5ade-3e2c-495d-bbb7-3e721e6897c9@amd.com>
-Date: Thu, 27 Nov 2025 16:02:21 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8j5Dx4j+5E6vBjj6zHqnvY8z9PqxcdVEE4VX9gNNiQ=;
+	b=GV/jkzLxpGeElTTwp1Oa1rOu6I0/sNLi1J5uaVNxFECNkK6jQnrfSOqmKtR1/MY59QFLxY
+	2jl/FbxHVJ0aJ5fPdRHi2P1UxJ0ZBozt8YCAWBCqikQPjHRMn0eIGt34mnxB1q9JjPyEsU
+	8Gdo4rCxuVvJirQz703uLnQvRkfZd1A=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36AA81063;
+	Thu, 27 Nov 2025 07:32:32 -0800 (PST)
+Received: from [10.57.87.167] (unknown [10.57.87.167])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F26F43F66E;
+	Thu, 27 Nov 2025 07:32:35 -0800 (PST)
+Message-ID: <f1932547-0fc6-4dbd-868c-0b0b34429a33@arm.com>
+Date: Thu, 27 Nov 2025 15:32:34 +0000
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/1] idr: do not create idr if new id would be outside
- given range
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Sokolowski <jan.sokolowski@intel.com>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251127092732.684959-1-jan.sokolowski@intel.com>
- <20251127092732.684959-2-jan.sokolowski@intel.com>
- <aShYJta2EHh1d8az@casper.infradead.org>
- <06dbd4f8-ef5f-458c-a8b4-8a8fb2a7877c@amd.com>
- <aShb9lLyR537WDNq@casper.infradead.org>
- <aShmW2gMTyRwyC6m@casper.infradead.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <aShmW2gMTyRwyC6m@casper.infradead.org>
+Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
+Content-Language: en-GB
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, devicetree@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
+ Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+References: <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
+ <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
+ <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
+ <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
+ <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
+ <20251126134726.yrya5xxayfcde3kl@master>
+ <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
+ <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
+ <ab39d448-aa1c-4c93-8e2b-5d97a9c76af5@lucifer.local>
+ <1ca9f99f-6266-47ca-8c94-1a9b9aaa717f@kernel.org>
+ <37973e21-e8f4-4603-b93d-4e0b1b2499fa@lucifer.local>
+ <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
+ <4505a93b-2bac-4ce1-8971-4c31f1ce1362@arm.com>
+ <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
+ <b2fbe58e-f47b-4a76-879b-fd38a915c2ce@kernel.org>
+ <bcd2a49d-a42f-41e8-9f64-4fd24fc862c7@kernel.org>
+ <bd4d746b-8929-4fd2-bd59-70654e794ee6@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <bd4d746b-8929-4fd2-bd59-70654e794ee6@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN9PR03CA0524.namprd03.prod.outlook.com
- (2603:10b6:408:131::19) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS2PR12MB9749:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a2a53c9-1a2e-4cc6-771a-08de2dc5f9be
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TFVCNmVjNVhwTmpWUmlDZU5FSXF4ZHdHUXpYdmFNS0hGWnMrYVlrcnVITXJu?=
- =?utf-8?B?ZUVJTWFQd3VKRy9VM09uejQvVkRuUW5TMW96TnVCY25kdHVaTW9KT245NGZI?=
- =?utf-8?B?S3JmQlVIdHNtdmdEZTh2cnRkcy9VWEVHUHluTlZOai9aM1ljL3BxNDB6WSs2?=
- =?utf-8?B?aUZmUllISUhkajIyMzgzUk12THBTRFZEOGVSMXNiMEozY1NZTmh0QTFZVWJ0?=
- =?utf-8?B?R3R3U1NYUTd1NXVxa0ZmQjludWpubWtQWERzcTVoYzNDencyMCt3YVFIZ1VQ?=
- =?utf-8?B?RUVwUXlHQ2tjaWVncHVLREFIYWhvN2lGSU1PY0FGeWxJeGVEZmhtRWNOeXhV?=
- =?utf-8?B?bUZpMUgrZlFMczNSbEc0V3R6ZjBBazdNYWZPK0tmYjM5WkxQRjhsQ25wamxm?=
- =?utf-8?B?M1B3MUVyUTA4TWlTZVh4MkF6TXdmcWFYQ3BQbG1BZjd2ajNONHJtOXUrWmR1?=
- =?utf-8?B?c3FjenNLWk1PeWxEdnJvdk9OSU0ycERqZUtTcUtwcE4vVUNGQ3BkNXpPSnVQ?=
- =?utf-8?B?dGQ2T2N2dHUyaG1Zc3NBdUlXVXppMjF0WTROQU5MeTJVWTVtTU5LQzQrZUF3?=
- =?utf-8?B?SkVvZ095NFR3UHlOZUU0QktMa0N4dzhlMnh1MThVUHBmR0xOOWIrdlhybW4v?=
- =?utf-8?B?eWNJVG1LODVBZGljZFBETFJvZWtnNXZ1TTFrbTBJVjQ5RzlnRmU5bkZpYlVz?=
- =?utf-8?B?VlRHelNDNmpZYjBOUmpWR1hMd0lyczdDOVIzaXBHelFHb0FhYlhidWt0dVVE?=
- =?utf-8?B?YmE4NnFqbkdoWWZDa0pZTXpmYXFkL3FkWjRHUHptNGJBOHp1OE9KL3ZjY09m?=
- =?utf-8?B?NG45WmFkeWFPN3JvbFNwUmQ0dlFVQ0tPVnp1WjJXTitVM0hPalhyR05pTmZU?=
- =?utf-8?B?cjFhcXBKeWdUaFZKWS9qZlc0NVY2QnFVN0NEZmFnZlQ1UjdKT3Z0Wk9US2hH?=
- =?utf-8?B?RWlFY1U3bUgzVzQ3aWp4Rm45UmNGZmhLZzdMNzlEeGF0cDUxcmtBYW9xVmcz?=
- =?utf-8?B?Mk9uK3JOOUR1SFF5dUJFdk4xMjQyNnkzbGlNU2l2K0JsbWVMNUNqMG9zQ0Zn?=
- =?utf-8?B?RGpzSy83NzlsUDQwK1VyMDM4dllER3FNQjdnQUs4NHp4NFNiT1h2QlovU0ls?=
- =?utf-8?B?R3had2dYZnk0Tk9lUjQ1N2lrbGtEVk83bTdCZVRIa2U5QjhFQUR0SG1vS1kw?=
- =?utf-8?B?ZU8xWlRzRit5dDF5SXZQbzQ4YXo1ekFmQmwzOVIxQ0t3ZEFsYWJXanNkUjJn?=
- =?utf-8?B?WEhrNUJDRHJ0dHF3NUZ4ZUZjZ29haDR3TTRoMXdNZlluVjY5Q0NOYkk2cUFC?=
- =?utf-8?B?eEZUSFlERFFESmwzcGFqN1VqS1Rzc2ZnbGo5QW5TU0FlWm41alZ0K0tnaGx4?=
- =?utf-8?B?RTF0dWZKeTZJOFpnb2xaZGhNQzBFOEcrVldqa3hrOVdMK0pLNXNFanVUR0NI?=
- =?utf-8?B?b2x2MTM0TEk1VXlzTmdZenFTT2U4K1dHaVowTnJOZmZRTnJoWDdOUVRna3Y0?=
- =?utf-8?B?Rmlyd3Exc2lyN01iWjd3NWRwSVpBK2JEZy9xQytEdnNLYUtQWHpjcVp3dnE3?=
- =?utf-8?B?S0tDOExWMFlKTTlvd0p0SzRYU1B4VWc1RjV5U2l6enNRd0dUZWkzdzNtem4r?=
- =?utf-8?B?QU9xYTBCVHhxS05jZ2FZWXVENUJsTzV5ZEFjKzQxSU9hNmVjRUx0cllNZ1NX?=
- =?utf-8?B?KzlJbXdsVDNrVVlPMFlrRFN1Qkt5RUp6UVU5NEVxcUI0elcxejFNNTVYYVd0?=
- =?utf-8?B?UEpyelhwVndZMnE0VWtJbTdqR1duUVExZEhEYm9KbU05VmhBcWo3VTFIUlJm?=
- =?utf-8?B?TXR2UGVvTmNhUXprUk9PY24yK21aZWdFOThScXlnK1NLbHFPZXc5WnJMeURa?=
- =?utf-8?B?LzY1Vk9KY1h6cTVmZ3BYNGxKWmFOQUdxK3JKaHFIT1RZaXBtQkQyOVBUVEoz?=
- =?utf-8?Q?3ChM1Tzt+UgOyxEt2btDcdGlR75XqvF1?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ay9ZSVlrU2ViUitnd1V0ekRGZVNiZHR6dmU2dnFiNkt2VjdESmNHUlNBaVlW?=
- =?utf-8?B?V0ZtWU9aYzgrRlBrL1QvbGp4dlNTZWNKbnRjYjFpSzV3VzN2MDdVaUFST21C?=
- =?utf-8?B?VXV0S1ptbjVpOXpmZkwva1MycGFIc1VZbHhSTFJiMVEzVWhlVTE0WXd2K1ov?=
- =?utf-8?B?NldRSlpmaEhyQmtSemN0c1VGWHI4OUlaRmFPU2V5UXlsazZUWnBnUDRKeGgz?=
- =?utf-8?B?R3NMYUIvRG9jTUNTQU9PZXB0UGw1c2NubXQxUzljQkg1aXo2SWh3VVYvcVlC?=
- =?utf-8?B?ZTNZbXk1bDhKTmlWVkpFVjJ5bzgrYXpaUGtnUTJTVCt1UThhSVpaRVNkMWdR?=
- =?utf-8?B?THgrR2pxbGhIeXRYaE5OeTBGditTTmk4UVRIbjM1WEVMSHlieER6dU0yNkJh?=
- =?utf-8?B?ZlRzbmlndjE4TDNBcFd4d0J4a2RXVXB4M0JGSy96NG1GZXZRcno2dmFITlRI?=
- =?utf-8?B?ZDFnbTVvMnluWlI5OWFRc2F0SzhZYm9sdGNHQ2Vua2NqaE14V1RQZkg2YnpO?=
- =?utf-8?B?YUdlUEY3TlljY1IvY0g1ZkdFK0xTSE1qaFV5Sml2WWlyVVdrTWptbkdMR204?=
- =?utf-8?B?VDJQd1ZLVkg0Z0dHOHJVdi9wQURHUHAxQ3RxRXF6cks5YWI4dVFtaFNyMTdo?=
- =?utf-8?B?Zm1pc2V5OFgwZ0lUWjd6ZHJVSmhoUjNHcnlHbGJKZHJGQWZxeXhodXNoK0s5?=
- =?utf-8?B?RWVDejVLZEhzK1hjVWcrMFo3ektLNjVWZHhkUU50Qk45TzN4VzZ5R3lsV2tn?=
- =?utf-8?B?NndWRzBucUFDVFNnZlNEbDU3bFBxSjdDaVpBaXBhemJBNjJzY3BUaWtNUWdG?=
- =?utf-8?B?bnVFc0hNV0J4TUlmcUlhNlpDdjlrQ2hnNUxnc3VTWDR0WXQrdnE2d1o0OXdS?=
- =?utf-8?B?UFhxdE9uKzhWQk9abGZ4RlVoS2RVK0Mybnd0VkFybkpFUEtxcy9lK0FBaVpJ?=
- =?utf-8?B?aWU3RkpyOTRCVzdRdHdJSzNvVjRLeGRiRTFieUI3ZFo4S1JDdXFZTERBMlNp?=
- =?utf-8?B?TUVtMGlpMEZSVGZHdXFTYUVuRFV6S2UreTBtSWFvb203OHV5V3RYLzEvL0ZS?=
- =?utf-8?B?QVVZUVhtbHptWTRiS1dnbGlwV2hTWlhiUDRHV3NlYlM1RE5RNEw5d05XejF2?=
- =?utf-8?B?YVU4bzIzYmhUSE5pb0kvemlWNnkrRkxpQnBWNmF3ZkZPVXdGRkpRa3V4RDVR?=
- =?utf-8?B?N3BYSzRWUGh2V2RwZU1DSkM0WWVVcXlweHVJazF3c0FBRlVOaUVYUDN6SUxI?=
- =?utf-8?B?RWRwcmpSZnRjczF0QVhFS2RhYTl2aHhlZjNTRnUxbHMzWkRLdGRrM0JmMktj?=
- =?utf-8?B?WUZQNGNWcW5PYjh0WTE0TmdpVnpWa3d0VjNCQUQ1d2pwRW1hTklEVVJVTW5V?=
- =?utf-8?B?LzJXcCtOQ2RxRk10M2U5RUdIRUZLbzV6QURwOG1LL1cweHlZLzZTT01KZk1U?=
- =?utf-8?B?OUtKcitWNXVMdXpOVHhFTlk0bkRFSWJiLzJ1NklhdXhzUmhyWFgvOUdnQTFX?=
- =?utf-8?B?ZHp1ZVhqUkMxT3BxZ3pDTXllWmdQRDRmS2Z2ekxSLy9xVTdNSUxXSWlxc1Zs?=
- =?utf-8?B?Z29Dek91VE1NSFRCeGFKblBrVXhSYS9uY0VMc0hTVlpIdGljWEdyTU94dFQr?=
- =?utf-8?B?VUlnM3IzNHBqMW1KMTJGVUtsUWk3ZjdOQys4MDVJM25uQWplMnJIZzUxTDJq?=
- =?utf-8?B?QTlzRUhFOWlmUm1xTUNQWTIyeENiV0VqM05WOTNaa2RMdkV5MksyUncySTZv?=
- =?utf-8?B?M0JKUUVLVEhEMFBKQ3VOV1p3QzMxVzFzR2pheVN2WjBnRWtOZThsNGI5eFVV?=
- =?utf-8?B?N2V3aTU0WjNmdUdvenNMeGRLM3hmRkROYWdjWU5rUTZmZ2N3UFJjamVURU16?=
- =?utf-8?B?aEZqRW4zUnJOSklTY090ZERubER6S05vbjhnbU9IZkg0eGlIakVPckdidW9Z?=
- =?utf-8?B?VXBlMHhWSzFRRGFJNTJSUndQbFQ3SlVkS1NKQ00yeWFuVVlBN0U3MmhYZndn?=
- =?utf-8?B?eTN4NlNiT2tWNEdHeXpkbXJ4Yi94aVVHUGthTlVKNU9iQnFYcDFtaDc3Y3VK?=
- =?utf-8?B?MGRlK2F0UCtHVXl5UnROQ3ZBdFUwTGVpODZyaDdRMDFMaXh5N0lDNHFveWll?=
- =?utf-8?Q?gcYrog5vb9+KMotC+u0N98/DH?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a2a53c9-1a2e-4cc6-771a-08de2dc5f9be
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2025 15:02:25.6675
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C7N1MVD7SZpx5WpYq673BmSBa6dYj1J58zPQguhqqna+EtWMfO8efI1N3o7o0Mux
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9749
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AD1CB140015
+X-Stat-Signature: mnd36rn7f7f5ehf9u9scpcmd6huj8npa
 X-Rspam-User: 
-X-Stat-Signature: n4e3hooshcxmewpew3yf39ae8am8zrz9
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CB85720021
-X-HE-Tag: 1764255748-622871
-X-HE-Meta: U2FsdGVkX1+Ji/2pSJ6yCVQpg0pIIxCi6OHfyz1tOJNj2Q5XVgshnJca2v3Jx9kfVquMx8wWYtPz1edkPD+F0iB/CZ4MCb+QHhdvVjx+rrld3VL+fhXYbGtF5bhDVoGBUCcjtW5/qTVxqMl7pPOU2w6DUmNX2WH6EZtbUihrd67/h3b6nM/k+axS+kfzJvFC5uOgFSL3SxLZIamzfotgrVhW4Qu3HBwUazKg0xGkjNO4UPabyOc6vRzxN4ldLY2da+eMLbEluF4oY2eSZ6X+N4Fq8XIT6csBXAti6yUwn2QqBKAUPbB8wtFXD4pIcfBzD33dV0RIJ0LrpjuDTaljECsSMOK+HbYE3dgJCDda1cgL85OpyCWz36RJk7d+aDMhM33EhZn5JvWXD4kiQac6BJezrmcgrpxRM6KKLAPJDcbbfM9VDCk8r5/ts0qXP9JT7eq1F07ooh67tqP27h99rfM0GaqfS7lbYYtyyskJeJ+pN8zN6/mTnNtiMkDIsMfkb4/eLXbi8jgyMKVT6ZYC2hcd45KDLKMNvN9zUy2g4jh+HFd7TrApv6KFKuWRJDcwDN4P3hH4T1R51m5Av6Ypdgz0Yn+fk7kOlCKACREBKiu2uF+4aEv2CXgYICLixajxqbbwBwkF/GP2pGPLkz3BFgaMY0WqCYpMhWB1vKdMGdJmOBd/mFVfBy3J1GmGU4G6NF8fqs01KCCAWbND4nGTalOHA9oHU6yTqaKdjxPBp8jxY8eeVH/Mk1Kcqd5z1dytagrrRzn9bETwwm4l70IPXXmkTml8yXLD9s9D/jQccmMspndNN/qCK9mV6KZEU3knmOptUKbpgEtXMlSeiS2kliPRu0a+PtcvTVQQwV9x7HhlGMS8PhKewRsTKELSIwjqqWSOdaxuw0jjvgS1wg+I1xoo6s3sbUauPHgtkLP9ysXHEf0iTZIrRBcGz6qbHRVc7EjhwlhtvElXyXQ8tlB
- OSBFH9qZ
- cNSKORNZRU16WlV20S0jnaU3AzmddPxV66HlggdKJsKH5TplB4vPIG9RgdnHPML/T8EaCeuoipni3JhDVSsEbjw4O7IgR86wxZodFi1GHWTIUBmOM/D49C45iDDu7BtG/aMq34rW4QD5uIjfXEXjFEWITdxAaCsLlYmWO3x+Bj+DSK4Ie7AQUVD+eQqfbcv7ItX0wLfdZQCYsMk85z9748pRWMIB76PUnKTRoxSDy5Xho7j9kFZeMZRjHxNUZ15HCT6fvaXwlWmjBZJy/iMF4bYa2pliGgKViEiYHESEtKtjdECrohEkeewowO+Iwu9JNboh8l1dYmoibmh/RT1vkCK0DAllgRIG4PRHuaWQf0PT1x7nxJVr5rC5HXsfzQ6ZI+bgA+Eu1SFobm+f4Jmap5PE2lcJ3nTyl8LTt3VDZMTXST1JOY4BklZTd/GN9L1isTIcDNdNZKSPHOmOsWHrFdnUqmIEWCvs1wjpz
+X-HE-Tag: 1764257560-921967
+X-HE-Meta: U2FsdGVkX1/TRSXtGo7wMS77Kla1bbY3Q9N/uguJ/8TWKkwcDLYUJCmw+OVtEcbsAxC6TgL1oeX2VfNt3iXg9WhNYePns2Lurk3TGoi6cixzk9ix2aPJFMMnne5t1leCPYU2A05L8vHc+hC2I0jasqMhIw65s3+kCGujDn/qSdei+XOgifXz8VUvxE++N+ItdVwsmAzQgvHTTNqLV+WSmTkirmd6Jic3ciziXLt4WsR540VWGnbwNKjxSvBIdXGFV7dBa0dqHwsfGdsZyvryhqb63gaCCVD/ss7XuWiUFDbtCIRHaUOBWJ1Z4SdMjgkNrrMH7LnilkbX2A19pWfNITra/bJ9RJdhI97RUFOf6HaWXmJcHyqrbyoCMxPjZ3L5UjQsqe5qK5iiMKUFKuHB+xl0iMHoF90rUn4dhBIYempTSw+/Mw1LU2ozibkCWKyq2w+pq8S/MxiSb30tWklrgDIH2FOnga0CJUPr3QTLMjLrKh57SjGiYocWwkUA0q66Vf8b2E2PFvS8daUNG3JF/SjUmnffVd57u5lSIgiNGsP4PHg/L4MmrnRcxWSRxeL+RVYjDbzfgH1I2dDCaMhFac3JXDAzsBUbRAoxq5eQfsQtZYHUAiWN5zkyMDzqAF7aovCjMxwi7nDVHAC9FyHzHT5DgB+8aV6HIZ/jZJ3OZF46OY8/cSmJl0YmAuZQSrJEVu3AocyVVGwOZVF40aWPPw+Raf8MlHi5wzB70HIP//jPEAEfUPalVQ7h2J86tICBjv0aPTGHcCWwYIItMwDH4szjlKxhrwlclKAMdw4Fte4MgJFia5kU8L9plljatj7R96hM2lqAHRFW1+oA+rBq8kZKT2MHmos/4PJXxdkiaoUAbfzY+GiQOVMlPhBmzn7bdnp/1gXyZl3JPk+KI/IebY1ow/lF15nfd0+s6hSH0HucR+C1zuilFOKEMiU1NV0RH1QfuGdErt4dpYN2o5q
+ 0NbMarh/
+ CQp2FCnseZJ5Mi+4u2Vml7uLbN0MVTLEton0XTdsEWYrk/g8hMP9Ork5zsOgSQQPlVehSNBADBZRVYTqRTTtr6I/XWOnHZHZAT1xVo6bjadgc6x0lJHXqucYd4G7cCzfVbx5VJNSw1aH9R/GOtI+QFRVhoaLxtaZrImNd3CqZ0WKEmmLF3EvcB90freBhkPxHxIGwKet0OofdMLA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -205,65 +113,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/27/25 15:55, Matthew Wilcox wrote:
-> On Thu, Nov 27, 2025 at 02:11:02PM +0000, Matthew Wilcox wrote:
->> Hm.  That's not what it does for me.  It gives me id == 1, which isn't
->> correct!  I'll look into that, but it'd be helpful to know what
->> combination of inputs gives us 2.
-> 
-> Oh, never mind, I see what's happening.
-> 
-> int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
-> 
->         ret = idr_alloc_u32(idr, ptr, &id, end > 0 ? end - 1 : INT_MAX, gfp);
-> so it's passing 0 as 'max' to idr_alloc_u32() which does:
-> 
->         slot = idr_get_free(&idr->idr_rt, &iter, gfp, max - base);
-> 
-> and max - base becomes -1 or rather ULONG_MAX, and so we'll literally
-> allocate any number.  If the first slot is full, we'll get back 1
-> and then add 'base' to it, giving 2.
+On 27/11/2025 07:31, David Hildenbrand (Red Hat) wrote:
+> On 11/27/25 08:14, David Hildenbrand (Red Hat) wrote:
+>> On 11/26/25 21:31, David Hildenbrand (Red Hat) wrote:
+>>> On 11/26/25 17:34, Ryan Roberts wrote:
+>>>> On 26/11/2025 16:07, Ryan Roberts wrote:
+>>>>> On 26/11/2025 15:12, David Hildenbrand (Red Hat) wrote:
+>>>>>> On 11/26/25 16:08, Lorenzo Stoakes wrote:
+>>>>>>> On Wed, Nov 26, 2025 at 03:56:13PM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>>>>> On 11/26/25 15:52, Lorenzo Stoakes wrote:
+>>>>>>>>>
+>>>>>>>>> Would the pmdp_get() never get invoked then? Or otherwise wouldn't that
+>>>>>>>>> end up
+>>>>>>>>> requiring a READ_ONCE() further up the stack?
+>>>>>>>>
+>>>>>>>> See my other reply, I think the pmdp_get() is required because all pud_*
+>>>>>>>> functions are just simple stubs.
+>>>>>>>
+>>>>>>> OK, thought you were saying we should push further down the stack? Or up
+>>>>>>> depending on how you view these things :P as in READ_ONCE at leaf?
+>>>>>>
+>>>>>> I think at leaf because I think the previous ones should essentially be only
+>>>>>> used by stubs.
+>>>>>>
+>>>>>> But I haven't fully digested how this is all working. Or supposed to work.
+>>>>>>
+>>>>>> I'm trying to chew through the arch/arm/include/asm/pgtable-2level.h
+>>>>>> example to
+>>>>>> see if I can make sense of it,
+>>>>>
+>>>>> I wonder if we can think about this slightly differently;
+>>>>>
+>>>>> READ_ONCE() has two important properties:
+>>>>>
+>>>>>     - It guarrantees that a load will be issued, *even if output is unused*
+>>>>>     - It guarrantees that the read will be single-copy-atomic (no tearing)
+>>>>>
+>>>>> I think for the existing places where READ_ONCE() is used for pagetable
+>>>>> reads we
+>>>>> only care about:
+>>>>>
+>>>>>     - It guarrantees that a load will be issued, *if output is used*
+>>>>>     - It guarrantees that the read will be single-copy-atomic (no tearing)
+>>>>>
+>>>>> I think if we can weaken to the "if output is used" property, then the
+>>>>> compiler
+>>>>> will optimize out all the unneccessary reads.
+>>>>>
+>>>>> AIUI, a C dereference provides neither of the guarrantees so that's no good.
+>>>>>
+>>>>> What about non-volatile asm? I'm told (thought need to verify) that for
+>>>>> non-volatile asm, the compiler will emit it if the output is used and
+>>>>> remove it
+>>>>> otherwise. So if the asm contains the required single-copy-atomic, perhaps we
+>>>>> are in business?
+>>>>>
+>>>>> So we would need a new READ_SCA() macro that could default to READ_ONCE()
+>>>>> (which
+>>>>> is stronger) and arches could opt in to providing a weaker asm version.
+>>>>> Then the
+>>>>> default pXdp_get() could be READ_SCA(). And this should work for all cases.
+>>>>>
+>>>>> I think.
+>>>>
+>>>> I'm not sure this works. It looks like the compiler is free to move non-
+>>>> volatile
+>>>> asm sections which might be problematic for places where we are currently using
+>>>> READ_ONCE() in lockless algorithms, (e.g. GUP?). We wouldn't want to end up
+>>>> with
+>>>> a stale value.
+>>>>
+>>>> Another idea:
+>>>>
+>>>> Given the main pattern where we are aiming to optimize out the read is
+>>>> something
+>>>> like:
+>>>>
+>>>> if (!pud_present(*pud))
+>>>>
+>>>> where for a folded pmd:
+>>>>
+>>>> static inline int pud_present(pud_t pud)    { return 1; }
+>>>>
+>>>> And we will change it to this:
+>>>>
+>>>> if (!pud_present(pudp_get(pud)))
+>>>>
+>>>> ...
+>>>>
+>>>> perhaps we can just define the folded pXd_present(), pXd_none(), pXd_bad(),
+>>>> pXd_user() and pXd_leaf() as macros:
+>>>>
+>>>> #define pud_present(pud)    1
+>>>>
+>>>
+>>> Let's take a step back and realize that with __PAGETABLE_PMD_FOLDED
+>>>
+>>> (a) *pudp does not make any sense
 
-Oh wow, not every day that we stumble over a bug in such a core kernel functionality.
+I'm struggling with this statement. The PMD is folded, not the PUD. So the PMD
+table consists of a single entry, which overlays the entry in the PUD, right? So
+the PUD exists and *pudp must be valid?
 
-> Here's the new test-case:
+Now, pgtable-nopmd.h includes pgtable-nopud.h so actually the PUD is also folded
+into the P4D and the P4D is also folded into the PGD. But the PGD exists and is
+not folded.
+
+So what you are saying is true in practice, I guess. But it's not true if you
+replace PMD with P4D and PUD with PGD.
+
+Does what I'm saying matter or have any impact on your assessment below? I have
+no idea. My head hurts.
+
+>>>
+>>> For a folded PMD, *pudp == *pmdp and consequently we would actually
+>>> get a PMD, not a PUD.
+
+Well based on what I said above, the PMD is folded into the PUD, the PUD is
+folded into the P4D and the P4D is folded into the PGD. So all of those things
+are actually pointing to the PGD entry in the PGD table, right? And pmd_t,
+pud_t, p4d_t are all defined as containers holding the next thing up:
+
+typedef struct { pud_t pud; } pmd_t;
+
+So it all works out, and is safe, I think?
+
+>>>
+>>> For this reason all these pud_* helpers ignore the passed value
+>>> completely. It would be wrong.
+>>>
+>>> (b) pmd_offset() does *not* consume a pud but instead a pudp.
+>>>
+>>> That makes sense, just imagine what would happen if someone would pass
+>>> *pudp to that helper (we'd dereference twice ...).
+>>>
+>>>
+>>> So I wonder if we can just teach get_pudp() and friends to ... return
+>>> true garbage instead of dereferencing something that does not make sense?
+
+Sorry, I don't really understand why dereferencing does not make sense. the
+pud_t is a struct containing a single p4d_t and that is a struct containing a
+single pgd_t and it is pointing to the pgd entry. So why isn't it safe?
+
+>>>
+>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>> index 32e8457ad5352..c95d0d89ab3f1 100644
+>>> --- a/include/linux/pgtable.h
+>>> +++ b/include/linux/pgtable.h
+>>> @@ -351,7 +351,13 @@ static inline pmd_t pmdp_get(pmd_t *pmdp)
+>>>     #ifndef pudp_get
+>>>     static inline pud_t pudp_get(pud_t *pudp)
+>>>     {
+>>> +#ifdef __PAGETABLE_PMD_FOLDED
+>>> +       pud_t dummy = { 0 };
+>>> +
+>>> +       return dummy;
+
+If you're confident that this is correct, then I believe you. But I can't follow
+your logic at the moment. But we have a fairly long history of you being right
+and me not understanding... :)
+
+I don't think in general it is invalid for something to call the getter and do
+something with the result just because it's folded. e.g. log it's value. So I
+don't think returning a dummy value is ok.
+
+See __print_bad_page_map_pgtable() for example?
+
+>>> +#else
+>>>            return READ_ONCE(*pudp);
+>>> +#endif
+>>>     }
+>>>     #endif
+>>>     set_pud/pud_page/pud_pgtable helper are confusing, I would
+>>> assume they are essentially unused (like documented for set_put)
+>>> and only required to keep compilers happy.
+>>
+>> Staring at GUP-fast and perf_get_pgtable_size()---which should better be
+>> converted to pudp_get() etc--I guess we might have to rework
+>> p4d_offset_lockless() to do something that doesn't rely on
+>> passing variables of local variables.
+>>
+>> We might have to enlighten these walkers (and only these) about folded
+>> page tables such that they don't depend on the result of pudp_get() and
+>> friends.
 > 
-> +void idr_alloc2_test(void)
+> Talking to myself (I know), handling this might be as simple as having
+> 
+> diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-
+> nopmd.h
+> index 8ffd64e7a24cb..60e5ba02bcf06 100644
+> --- a/include/asm-generic/pgtable-nopmd.h
+> +++ b/include/asm-generic/pgtable-nopmd.h
+> @@ -49,6 +49,13 @@ static inline pmd_t * pmd_offset(pud_t * pud, unsigned long
+> address)
+>  }
+>  #define pmd_offset pmd_offset
+>  
+> +static inline pmd_t * pmd_offset_lockless(pud_t *pud, puf_t pud, unsigned long
+> address)
 > +{
-> +       int id;
-> +       struct idr idr = IDR_INIT_BASE(idr, 1);
-> +
-> +       id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-> +       assert(id == -ENOSPC);
-> +
-> +       id = idr_alloc(&idr, idr_alloc2_test, 1, 2, GFP_KERNEL);
-> +       assert(id == 1);
-> +
-> +       id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-> +       assert(id == -ENOSPC);
-> +
-> +       id = idr_alloc(&idr, idr_alloc2_test, 0, 2, GFP_KERNEL);
-> +       assert(id == -ENOSPC);
-> +
-> +       idr_destroy(&idr);
+> +       return (pmd_t *)pud;
 > +}
+> +#define pmd_offset_lcokless pmd_offset_lockless
+> +
+> +
+>  #define pmd_val(x)                             (pud_val((x).pud))
+>  #define __pmd(x)                               ((pmd_t) { __pud(x) } )
+>  
 > 
-> and with this patch, it passes:
+> IOW, just like for pmd_offset() we cast the pointer and don't ever touch the pud.
 > 
-> +++ b/lib/idr.c
-> @@ -40,6 +40,8 @@ int idr_alloc_u32(struct idr *idr, void *ptr, u32 *nextid,
 > 
->         if (WARN_ON_ONCE(!(idr->idr_rt.xa_flags & ROOT_IS_IDR)))
->                 idr->idr_rt.xa_flags |= IDR_RT_MARKER;
-> +       if (max < base)
-> +               return -ENOSPC;
+> As a reminder, the default is
 > 
->         id = (id < base) ? 0 : id - base;
->         radix_tree_iter_init(&iter, id);
+> #ifndef pmd_offset_lockless
+> #define pmd_offset_lockless(pudp, pud, address) pmd_offset(&(pud), address)
+> #endif
+> 
+> (isn't that nasty? :) )
+
+Just as a general comment; arm64 expects and requires today that any pte_t
+pointer passed to ptep_get(), set_ptes(), and all the other ptep helpers point
+to entries in the pgtable. We cannot tolerate being passed pointers to stack
+variables. We assume we can roam around in the pgtable for contpte purposes.
+
+Extending this to the other levels, we would have the same requirements.
+
+Thanks,
+Ryan
+
 > 
 
-Not sure what it's worth but feel free to add Reviewed-by: Christian König <christian.koenig@amd.com> to both the test case and the solution.
-
-Thanks for the quick help,
-Christian.
 
