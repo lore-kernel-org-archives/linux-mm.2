@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1A4AD11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 13:38:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A7ADD11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 13:54:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27CC06B0012; Thu, 27 Nov 2025 08:38:13 -0500 (EST)
+	id 673596B0012; Thu, 27 Nov 2025 08:54:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 206776B0023; Thu, 27 Nov 2025 08:38:13 -0500 (EST)
+	id 64A186B0023; Thu, 27 Nov 2025 08:54:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11C2A6B0027; Thu, 27 Nov 2025 08:38:13 -0500 (EST)
+	id 587726B0027; Thu, 27 Nov 2025 08:54:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F0BD86B0012
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:38:12 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 478416B0012
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:54:52 -0500 (EST)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 940151A017B
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 13:38:12 +0000 (UTC)
-X-FDA: 84156490824.04.FFAC8B5
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D732F138C80
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 13:54:51 +0000 (UTC)
+X-FDA: 84156532782.04.5E48240
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DBCAFC000D
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 13:38:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CYQmgCUv;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 48927A0004
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 13:54:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aoAKfVc9;
+	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764250690;
+	s=arc-20220608; t=1764251690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hXTayqT+jWC2OgM/D+gkYwRW+R7pRP8DmuGQlMggZQc=;
-	b=YZLZHcykc59stEs3GsADjsaRuIj7wFoUZ4we3jna8kRCtUXomQfwmal7sj33o7uzCGBReV
-	lLPvHfff0PN3fefnOLHgYnFA6Lk5HwLXlQVEKS5HQZlA7lOBxZ9+0vq7RDBbuzOQ2ATyUh
-	o8tqkwIBuLRgEo7CXeHIw1DthASVFc4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764250690; a=rsa-sha256;
-	cv=none;
-	b=EKlSFkjXDNL9moEZlYgSt1mLOKGu5mGnBqWpYdoLiWG9hhd35vNuunV1dPFuPSFiOTDujX
-	Y2D31QmkWrTJlmfRNXgNre3bmMcXV9QNgwO2bTY/q1XydwtXMuQRJp4PecRTzViuEXiKle
-	kOkzBg0DUAkiD2zMJZ4QVAI/sbInf10=
+	bh=FPlh5iDpWzy3oYkKJyEDPKFCbBCTNoWio1NNY+Ejdb4=;
+	b=FlX0GQ6erZp0DzmIbWFYOH87pyh0cmmW6J6cItu8vGw968NAQwrZOQVj5HRUn2FuY51QTA
+	L0SPD8zHOzYx6GFBGIKQpw5b6bBS2Wiex5/GhVfLq/326Uej3/CEbs/6zCz+K8pvUsPCDP
+	Kjhs0HypdQV9IUl2QWXLi5uHSpiV00A=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CYQmgCUv;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aoAKfVc9;
+	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764251690; a=rsa-sha256;
+	cv=none;
+	b=y4QJnc4eBsXl01IUs1u8A+jCMimpZyFoCy+2D3ObnlimSR0MTGMdBhnlodJNP+tkotoREy
+	OFaSP/6zzvlKjtRGjkUBUMclcFeu1li4bOCXna9P7SQqCMSAEtguOf8zOtYzOrOZzdhhBi
+	VTzYlKxXVCVeCnlsbglytyRtKLZx2Tk=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hXTayqT+jWC2OgM/D+gkYwRW+R7pRP8DmuGQlMggZQc=; b=CYQmgCUvV3s7sDVVXn6jnlyHJK
-	tp3nf4E0tS2EK9cGXAh4jWdxwhgMyeUAaCERWDTPY80RC4MgmsR6bDEfa41goO1al4Up8kezWmzmR
-	jBeoqtJURsmRakBPyRWvGdgAMMpAJhNnkQAGGhZ8rLfW3c4rgKaoFjQh5GknE8Z3gzNCuhfqByMHj
-	Mxe5nfXIRW+HuXw5PHKZvfRTJLMaL62mi41dBf1iJj+NmmqmYlXJJJ62IeALQPZLI7V7j7v2cYoFj
-	tTQBnqzQxmEPWXhjES5zcZEl/XO5a186Zo4rWekftkgWlhQgBCwSjmW3VNk3vlJi+E/+QJMmjF+Jk
-	24QY9O5A==;
+	bh=FPlh5iDpWzy3oYkKJyEDPKFCbBCTNoWio1NNY+Ejdb4=; b=aoAKfVc9h/ihKDjXlRTucCPLYk
+	dPqVyKuFyj8kJvQ3mLrgtX4CZihwxSMDt01h6+9uBPRG18p5aRiARpOCDSfJWQ3rkdkN+DJUKY0VD
+	KS+htVRCp0N1UJQ526/2szUW/djXIv950zbjqdegyJLh7my8ggu3/4K/ARcQTeSSVib+Qa12NjTMC
+	K7MIra73jEkBdTlEN3GL7WAyEBwkQYI48XO/UiY/mBp+6hrLFddbARlTQxHgXZzXosTpAQ6fSnOHJ
+	z4zRWGUomSj0gWpdEkWjo7n1MlMIkRX/NJcMPQBuLLhbWHeBckF490yoBXoHlYZZ8uQfsAnrm0rQB
+	De4VC6xg==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOcCD-0000000Bn0y-3rnR;
-	Thu, 27 Nov 2025 13:38:05 +0000
-Date: Thu, 27 Nov 2025 13:38:05 +0000
+	id 1vOcSM-0000000BoEc-19cw;
+	Thu, 27 Nov 2025 13:54:46 +0000
+Date: Thu, 27 Nov 2025 13:54:46 +0000
 From: Matthew Wilcox <willy@infradead.org>
 To: Jan Sokolowski <jan.sokolowski@intel.com>
 Cc: linux-kernel@vger.kernel.org,
@@ -70,21 +70,21 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [RFC PATCH 1/1] idr: do not create idr if new id would be
  outside given range
-Message-ID: <aShUPdV18CIxvV-G@casper.infradead.org>
+Message-ID: <aShYJta2EHh1d8az@casper.infradead.org>
 References: <20251127092732.684959-1-jan.sokolowski@intel.com>
  <20251127092732.684959-2-jan.sokolowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20251127092732.684959-2-jan.sokolowski@intel.com>
+X-Rspamd-Queue-Id: 48927A0004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 14ocah5b7unmdcj3ifq5rfau56p3zre1
 X-Rspam-User: 
-X-Stat-Signature: pify8k9b4yz3yj3uyi6egzyxegs6yfue
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DBCAFC000D
-X-HE-Tag: 1764250689-192344
-X-HE-Meta: U2FsdGVkX18C/+KnUiKqwC9h+j1Go1FvQuxQwe887lJQhFTRmOYUeEu4MlocZYP6ybsmLiQPaFO25guylxxYusAiTf9NFppC8nNFTRI1+SQdKbdQQN+hNIFoZg4lFW0vBRBcgetQ9Up0hDanbfFJGUCDcGddv/rp2JPwwlyMNypzC+cluavdMck3qkczrbfM+pO2IykspKX24QF/8fbGIfEcj1B7TpkUgI/7rdo996P9IkH29swsmS1wG7pPvmRyIjpzqx+gn+EpscDV7+sl/h51dShzPj+nZGellPA2a2jS0Y8NhXmNFKota/hTZtprUEEKJlFSZDy1ynXrq8SaYzcZBh9yf8lGA9t1h2SbvIV+0nyefDgZiGL2+LAPPX604F9KAYcSBHXy2HsROTDJrojaW5jKeBaO3gRnhV/ScwP4mA25XYNoQ/BRRRE8P9Jxbt8bIe7ZSaQ+UwCgYUGzNhi2z/OXWI92YfeGudYXTInOq/Hd81kFyGa1n10TqQ/eAVElhiinx21A9akjYIfNTg2xgz1wv/f+Q6IAjh+aeTpPbWYGw7wT7kd7cQoOSrpKuX/wow5t6GMqkmdJpzE8PaFWUq68CEh3xcyIC36cpvG+dPg/YuUmJ7YIbCiq8CgrrXOOwKbgEcEScb9SodWrFTbzmPJoUMz/+L8n3l036f8YvIPbIuwDlWo57BGXmlvuj/jcm/gj7JAAywNYW2RiswYH4yTo6teIIIPMMeviQQ4HR5qFtMs18YI8+BaLwuS+R84vLFXOBMbt84QgpG8BYZVmTTf7cxNy0ALHgsXyCatmunuvr5Pu3BkzOv4XeWi/GHILnjXYRPIqXEIxPQXDzqaY7hOfbiaLEypjaS41tCDvRAcz4Q3S306jx+xVlkDFFb9P+vHOoama8yP2dsSye7QMsfk/GN/1Lepb3WnyggADoiMrBGs5mWn5AfK+9WZ7Hxtv64Y8tzRob1KgPgm
- dbTb5Ly9
- uoZclsELr6BUGOZjCPbB7pvimuBuRKBv51I1mswmiTpFYHIAB08i1EcPPiyznNdljeXrDKzlzWSqSqzMq93CGIhwefRWUAA52Fnpsv81s4FejlZHY555KHFRHzk7gxyqKANQqRCZT90t0+dhZKjqT3CWkw83bi4EW3sFen22f4eti0zWm/nmIf6XhSRV202huMwsgpmHSSls9LPI3zdknx8lpNWk6lV0PLA5uGBSco9wHDF1enA3DH5QeDg==
+X-HE-Tag: 1764251690-224761
+X-HE-Meta: U2FsdGVkX19Fdx2br6/Z2QqAdzB6FMfYifq8Jc7pPB0xBTL1JlttvFS6EEnvMh8NNNlc9hMLiVMl7FMOv+GAosQObIEUY/cYbnsmqJ2l4ib5SemzPgzNrB9gHrlFCdfJ4hYKaCXW57USXL2RCMeyQIWY3PSb5Kjx9gO6A/GD5KGhzgbOI4h36TLXkQ+0R0vFlQgdkmppwWi+9OiB2bBQ76wiadhg+Cn8ghpJly2mQgCbmLhYeUTWmPsSbupreErYlAMNFAgXLbfVoLVWb/sDMpwVet1Wlw6xjJgfSUF7qB0tRHZldFu2UMCNA5lMKpQmywQn9is8WiD/bkkxR2Hgcog7sHOwxwtpX6/Y1w8DpX8cIQaflJj8eJlFzi24p6TE9j5XY71Me+Wg/p7hVKH9qX2jn29QCC+k8dvKp63UY+yjGQRHQajXMXTZj/To+5kriqprDxVORvuJ+UCKlpprGfOi8rjCu8RQ6V4x4nSC8iTxDBo95RJGIOtLA9Vxgi2YZKqP0fPoktswzRvpwi55FguMIkQG/ipYisoAJBJcyZ3W3Qpu2eKQNKfavThzlrWcR8ow/mhnslJyZPNjMoKSF9bpz8UX2rsknY534qzuKID3Gw7GYX74HZgZ2bEpErc5JOEBhbR9vJE6CaxtttNO9kjUbKquAPhmL24lGqov0p4wwHPihay43gNoLKYdvIMHKGzeir4ZUtpft8PWOY9wBVZ362cU8QNTKDQaSCiuEwvFq3fes0zaAM34o00yk8nmyYgy6r6TMDLG2bag3emRHdqW2Gwgz+kWgjrm8Z7IcqyO0lAxsKo4U4PnO59OfrcgAkVCPtg4Smqd9OwcKK83mmF6revlUPd+vSjrttaEiY2iKUYVk+8QmiEuEQaJ30paH21nYFJCyYVHT6pePNxpOpyO8iUBldwTFn758UQ1zW2fNF+PTbq74L+vMPwUn+p0/q90iJQLh9zeUsatbvb
+ PQ5fWdfa
+ 7j5L+scIR9iStybbKSLXC3nZ85KAxL1r1b7P+bzTRpXeywvoPto91sNA2f+s9y9CfZ1lNRtI3VmlkzILv5E+6VL3CwA0Cub6p1Ojd2NPjbfF9P+Md/oCRUPa3scYX/Aio93KOYJv6zzf1nDqZ/TBCjCiboO9RTgbfmQyxAclbJ/SGPbbvMcXCLi9Dtpj6F2JLGC0zc1J8GCwWSFrp6xCHnu3LxxlF3aiQdunThTXGYBjU+TlUtk03K2P9Pw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,18 +94,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Thu, Nov 27, 2025 at 10:27:32AM +0100, Jan Sokolowski wrote:
-> @@ -88,6 +89,11 @@ int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
->  	if (ret)
->  		return ret;
->  
-> +	if (WARN_ON_ONCE(id < start || (id >= end && end != 0))) {
-> +		idr_remove(idr, id);
-> +		return -EINVAL;
-> +	}
+> A scenario was found where trying to add id in range 0,1
+> would return an id of 2, which is outside the range and thus
+> now what the user would expect.
 
-This is certainly the wrong way to fix any problem that does exist.
-And it should return -ENOSPC, not -EINVAL.  -EINVAL is "the arguments
-are wrong", not "the data structure is full".
+Can you do a bit better with this bug report?  Under what circumstances
+does this happen?  Preferably answer in the form of a test case for the
+IDR test suite.  Here's my attempt to recreate your situation based on
+what I read in that thread.  It doesn't show a problem, so clearly I got
+something wrong.
 
-I'll go read the thread now.
+To run the test suite, apply this patch, then
+
+$ make -C tools/testing/radix-tree
+$ ./tools/testing/radix-tree/idr-test
+
+diff --git a/tools/testing/radix-tree/idr-test.c b/tools/testing/radix-tree/idr-test.c
+index 2f830ff8396c..774c0c9c141f 100644
+--- a/tools/testing/radix-tree/idr-test.c
++++ b/tools/testing/radix-tree/idr-test.c
+@@ -57,6 +57,21 @@ void idr_alloc_test(void)
+ 	idr_destroy(&idr);
+ }
+ 
++void idr_alloc2_test(void)
++{
++	int id;
++	DEFINE_IDR(idr);
++
++	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
++	printf("id = %d\n", id);
++	assert(id == 0);
++	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
++	printf("id = %d\n", id);
++	assert(id == -ENOSPC);
++
++	idr_destroy(&idr);
++}
++
+ void idr_replace_test(void)
+ {
+ 	DEFINE_IDR(idr);
+@@ -409,6 +424,7 @@ void idr_checks(void)
+ 
+ 	idr_replace_test();
+ 	idr_alloc_test();
++	idr_alloc2_test();
+ 	idr_null_test();
+ 	idr_nowait_test();
+ 	idr_get_next_test(0);
 
