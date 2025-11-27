@@ -4,144 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3D30CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 23:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B86DCFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 23:37:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AF0F6B007B; Thu, 27 Nov 2025 18:37:11 -0500 (EST)
+	id 643156B0088; Thu, 27 Nov 2025 18:37:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15FF16B0088; Thu, 27 Nov 2025 18:37:11 -0500 (EST)
+	id 5F3896B0089; Thu, 27 Nov 2025 18:37:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 000616B0089; Thu, 27 Nov 2025 18:37:10 -0500 (EST)
+	id 4E3CC6B008A; Thu, 27 Nov 2025 18:37:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DD5D36B007B
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 18:37:10 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DB26889BC
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:37:10 +0000 (UTC)
-X-FDA: 84158000220.09.5947F38
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 964DE80005
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:37:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=shy6esmj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yAyK82Jg;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=shy6esmj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yAyK82Jg;
-	spf=pass (imf02.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 398F16B0088
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 18:37:14 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC2B988B33
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:37:13 +0000 (UTC)
+X-FDA: 84158000346.19.ECBD8E2
+Received: from mail-il1-f196.google.com (mail-il1-f196.google.com [209.85.166.196])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0ADDB40008
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:37:11 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ng9s/ZKX";
+	spf=pass (imf12.hostedemail.com: domain of arraybolt3@gmail.com designates 209.85.166.196 as permitted sender) smtp.mailfrom=arraybolt3@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764286628;
+	s=arc-20220608; t=1764286632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GXN77uvZaUEzKpDFHr5D8RJvGuDYGsfduCNQSgDBJBM=;
-	b=KBgE+6NcL2OKumiyQhTipIzL3YkZukV8EoEGH0oIKjnkv3aaTy9nfn5lasgCyE6i898fXe
-	oAAZ+cN8XmzZ0kMJcJkSmjPOfHzMiSfzNzZaMPW9ogdUCwwNmIUb4iuY/acd6pbJbg+wIN
-	g+RVmxB78VYZNuyt8cGREDR0ZEI8Ghc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764286628; a=rsa-sha256;
+	bh=Lk8iKAKQiPWWx1WeLeJvPjSrW4ytPNU/VipTWSO/YTo=;
+	b=e+2YWaeL1Yr2Y89/gHl4dOVzW5HwYApIG5P8Eym5ZL012GDLrls3bdI9rCFBtrXF8fHWaw
+	QGZOKWVCTvnHHu1KlTp3Mxjuea5HE4UAjBjXePeOMxmAYrNNKrLZ4C8jaQT9CVaHp6kDPs
+	oRMX+okSBXwaxAnGEtHH0YNciJS7RIE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764286632; a=rsa-sha256;
 	cv=none;
-	b=3n2Lsux+AtqE+jSDYCdbnbuz1KI1GBDsWy8tf5UUnP+LWaab4boeUUF6NSWUsr6uIdtIka
-	qjnJrsJV8TtoIaGLuAiuUOOoatp5gskaofsanhs94W15WiR1pmqgBxBUPKWPTUmyXRB7Ve
-	3fW+GKztR4ETyzSDvZCrYoVaWY4uEl8=
+	b=wR4beVrDQkFulzO05WF6F7gYv666vkUrLxkBwXgxeu+QZ5Mpmg4b7kGao5FLuspaDpBFR9
+	aJ/uBXD32AD0rhR8gocNI3zeQEj8pkX0n+/zDcD9Y2NWvwidf7gS7UEF6OzZIMjeN0PAmi
+	kON+oRtHZq0TrC/qe1Y1w/cv40FDzvs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=shy6esmj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yAyK82Jg;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=shy6esmj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yAyK82Jg;
-	spf=pass (imf02.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 920BD5BD0D;
-	Thu, 27 Nov 2025 23:37:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764286620; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GXN77uvZaUEzKpDFHr5D8RJvGuDYGsfduCNQSgDBJBM=;
-	b=shy6esmjWDwV1Q5h4BPZmal58rRAd/KUi1HdBHgwxwrWaQYhCsclNBw6iS00ZR82wYJTKF
-	9LTXhtLSfIUtWDQKy11UkoSKYLEvyzIjyvmuthZQYLaiCLFoAZAvEmJ93T+Aa+fi6HTIyc
-	RLy58zmqHpdpiBPwI7jaHHPoPVdyw14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764286620;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GXN77uvZaUEzKpDFHr5D8RJvGuDYGsfduCNQSgDBJBM=;
-	b=yAyK82Jgo+FHSngW/yAhnG1uWQvgdDMtxLUPg5fpqwMJgP4CS5gpJLwroubvrhd8cMmp1l
-	qMUTpXoABkTRolAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764286620; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GXN77uvZaUEzKpDFHr5D8RJvGuDYGsfduCNQSgDBJBM=;
-	b=shy6esmjWDwV1Q5h4BPZmal58rRAd/KUi1HdBHgwxwrWaQYhCsclNBw6iS00ZR82wYJTKF
-	9LTXhtLSfIUtWDQKy11UkoSKYLEvyzIjyvmuthZQYLaiCLFoAZAvEmJ93T+Aa+fi6HTIyc
-	RLy58zmqHpdpiBPwI7jaHHPoPVdyw14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764286620;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GXN77uvZaUEzKpDFHr5D8RJvGuDYGsfduCNQSgDBJBM=;
-	b=yAyK82Jgo+FHSngW/yAhnG1uWQvgdDMtxLUPg5fpqwMJgP4CS5gpJLwroubvrhd8cMmp1l
-	qMUTpXoABkTRolAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 54D883EA63;
-	Thu, 27 Nov 2025 23:37:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id N2MbDpzgKGlOGQAAD6G6ig
-	(envelope-from <krisman@suse.de>); Thu, 27 Nov 2025 23:37:00 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: linux-mm@kvack.org
-Cc: Gabriel Krisman Bertazi <krisman@suse.de>,
-	linux-kernel@vger.kernel.org,
-	jack@suse.cz,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: [RFC PATCH 4/4] mm: Split a slow path for updating mm counters
-Date: Thu, 27 Nov 2025 18:36:31 -0500
-Message-ID: <20251127233635.4170047-5-krisman@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251127233635.4170047-1-krisman@suse.de>
-References: <20251127233635.4170047-1-krisman@suse.de>
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ng9s/ZKX";
+	spf=pass (imf12.hostedemail.com: domain of arraybolt3@gmail.com designates 209.85.166.196 as permitted sender) smtp.mailfrom=arraybolt3@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-il1-f196.google.com with SMTP id e9e14a558f8ab-4334eb02acfso367155ab.1
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:37:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764286631; x=1764891431; darn=kvack.org;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lk8iKAKQiPWWx1WeLeJvPjSrW4ytPNU/VipTWSO/YTo=;
+        b=ng9s/ZKXDdmuKbulvMxbOxIOusGJiRX3aStUlzKU1lG/Y6tTMudeJL8io+YHhGEI1K
+         uejkuYtpdaw2uRNi89kmw3Dx8dZocOroSrBhSFp2qpjwA8iYRxFKxgOXJJ7fFn32agsF
+         mTfl1NVbRBwIBn37DkKvUXt7NxRXhGYtRdbxt87Ilac15N9L2GNIQC3UKeLIHfhBS7xv
+         YrNmxl9PRxvwArhusrvOFqz1yEilOgNnuS23DuNtRc3c87tkPvvu4H/YSF+kmXaU2rIP
+         G6GShRgiBOG+hOpPopsieAvLpu9ZQKWYOwd/ePG3oL4fzyH2nsVojyOADKALDQpfmOMn
+         vaCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764286631; x=1764891431;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lk8iKAKQiPWWx1WeLeJvPjSrW4ytPNU/VipTWSO/YTo=;
+        b=QRws8eTLlmGtocOoAT7M1VBAvfWuVpdTve4AKM2vn20iS84xnhGXXenxgPJgLIPWOc
+         Z5KFpxkf9O3wHoRN05fewnZalN1kAvXpUCsCYhmdFuJnBf/foG1Ncm0jiQwnJw2Trvhk
+         bPJr4x/ULyfley2ZA/+nhRLUhVgGhBuyl/9JJ22eMpAHFkNAkWm3HnikxG+YTA6Jw3YJ
+         N12AU9NTIkHo+NDutV01q+ANudctqEVYw7fwSoubYTtZuhY9PwJ59jEwoN6rHJA6VxZg
+         6nNsqOU0N6eBCjXiNJv2ou57To67YfA9n5sI5ZBqjxsErSGmrA9TQySy03WhehOoSpwq
+         gNDQ==
+X-Gm-Message-State: AOJu0YyXbInUO6wfye1RklT7ddYu74Pemuhp2GgTFIBPfzfdv6iipkdW
+	78EUmdSka1yssVkquVU8OdrurFZ7VPYa8LOt104rcWBKKKzg6xQWwJEi
+X-Gm-Gg: ASbGncuGJk6C5/eUL2L2wxBwJeDsJ7MBJDzVYH15uSKaBfPGkoWzqMCHur/KSwN1iC4
+	gHxqxkuIPhvkOJwrYGreldr5bEoNy5Qo0/YGNiABwHpRx2+JIIW1R/F04YZppFLDNSMyxCGcOH6
+	QsmSepk0wFKGsr24NthREXphbdVbRRZzE/vKE7cixzxq0xMZMkqpJ3FtEo3esvXHQ64fK0londW
+	wcKC62IKcLxgFmzvJYniI6L9hDodx5Jze8leJQT0rE5ihHNzYj0NLUC+n/TrPJ+VbzMlb+h4fqr
+	Hczs3G1WICJvZtrHztCi/orduAsFcXRu7/Htf61a0mWZ6eQREgbvTqJPat3YCltrvxzA8wvhhq6
+	AB7voGsq/3aDSbN1ssP3LYAJHrHrbqN6dywmsLV7s24DoKH6ypLY6rYZai5dZlpBUKqe1oyjIYi
+	pB1MZntEQ=
+X-Google-Smtp-Source: AGHT+IGreBlJthqbMD1RAWCcqBxs8A6SNjHp+XNg4XupKhfTAUt2Dl+zj7BYsLX7N0vJY781hdNvXQ==
+X-Received: by 2002:a92:c247:0:b0:433:7818:d1c4 with SMTP id e9e14a558f8ab-435b8e474e6mr87255305ab.3.1764286630861;
+        Thu, 27 Nov 2025 15:37:10 -0800 (PST)
+Received: from kf-m2g5 ([2607:fb90:bf0b:8b65:e4a9:bd5:56d9:5426])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-436b85c5413sm14379825ab.27.2025.11.27.15.37.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Nov 2025 15:37:10 -0800 (PST)
+Date: Thu, 27 Nov 2025 17:37:02 -0600
+From: Aaron Rainbolt <arraybolt3@gmail.com>
+To: Milan Broz <gmazyland@gmail.com>
+Cc: linux-mm@kvack.org, cryptsetup@lists.linux.dev,
+ "dm-devel@lists.linux.dev" <dm-devel@lists.linux.dev>,
+ linux-kernel@vger.kernel.org, adrelanos@whonix.org, Mikulas Patocka
+ <mpatocka@redhat.com>
+Subject: Re: Hard system lock-ups when using encrypted swap and RAM is
+ exhausted
+Message-ID: <20251127173702.6c8a7ba2@kf-m2g5>
+In-Reply-To: <2b8b83fa-5cf5-4f97-b796-0c738ce3a548@gmail.com>
+References: <20251111231835.1232ad8f@kf-m2g5>
+	<2b8b83fa-5cf5-4f97-b796-0c738ce3a548@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 964DE80005
-X-Rspamd-Server: rspam06
+Content-Type: multipart/signed; boundary="Sig_/.XCJlYJqF5QI/5Sz1Tc2Qnf";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0ADDB40008
+X-Stat-Signature: yjn1d8r1kgimukpky6kqcrkxrefr93jz
 X-Rspam-User: 
-X-Stat-Signature: 1dq4tcjhpsoyqdz9h16mi57rmfcysdke
-X-HE-Tag: 1764286628-478142
-X-HE-Meta: U2FsdGVkX18Cjf5vFWJZ4s+hXe4q45rVNX34NDphCw9G/v5dBK7Ykoqr3Vm+wnacybiXUC7D+MJRX5WmZvBjPdey45+6rwGnzoM0L1KwEVJCJBcw2bWRm7runGffWevlrNX9iwOQuKeiYEkRDZ7YN4N3LZ/5T6mnNl5NgnMW+GxgrYz2pUdmTkpl1h4ZSHBc59q7SrqMSyiM5Sen9Y4vsV9F6J8aeoJUqS+xWtdpTewTHXbGzyBXP0mgpdUhDtMzjTfzoSoOOC1U+n2Ur5FcDb2XUD4cJc9IaXNgWTgrEBbuQK6dqHy2ZyTQ4nI5McJScaOSHYTB9A9zIgSDyLzAqSmjGmnCk//Z/96aWdC0DMN7uzb8i43m6EZkYSyWpEaED/ac4Kfd9gaPLbyQShrdaJJZv+zbZnv5+05Jyhxhv9Xpp19y8wlHR0K3jd6khonIFPqngokeSewpMx+ZUJcQ3u2uVTDjh7TA/SYt2We14fiESiHACogFfrVtHw7IvVLk/I92XEJJUaAIQJoDBg2s9uE/yAlEZSXYAhYKyK5XV2MxqV6ev6YYovsd4+fA9h3Xk/83XyW7gxPDNhGQcwe9oCaoPe4Kc5VODXXecg+W6haLcp0JwNsNW5XleCCaCRpMMVkhz/Z97DOf1dBVemU5s4VA9doYiBOxzJ8vYAPkCv1VJpU2gKA2RAOicpf+5Z5jY6BDiTO26Gv4OJ4OJIeu9PUbXWeWTrZilI9P4EZQqob1vpdmuf52Vcc+E1Pb2h8++A2TNQ4qHe/rCpNQ6aBFs1IQJWmVllvP4PlHuYVf/tcD51MsRbFoQCAwe772vF4rLPEgc9xyEWTXtzAihJnwDkOTfnZ5ZwagWceuc4uE0CeUy6XtjiGM3W+Yc9J3pDbra99cjURrYVOvu5jq9Ts/yaWibL5HXWPam+RVrLGuRjrEZKPSG1PKpa5UMqNLjnM8CsigVZMOjMdyLv9rOIi
- dglzEugM
- HXXaxi/FQ1HaynnWBkC7E4RCwPA==
+X-HE-Tag: 1764286631-428764
+X-HE-Meta: U2FsdGVkX1/l0eJyIees5+9LgDTUaWSxFzsNrKMHzHmjYmhNt6r/OEyDAwtRqUJc6jQE9ykEmD6PRJ0tGmBkiU5idJtLIPDCMREL9TO4SsQQg4cyNbiDWdfPSkuTZ0fWhamPwf263aliuLVeSoZx+/ccVjjzZxqtAbB51tF2v1BiCgYVsEfgKSfcSLg+6hRk8noo/bL+zJfYcV9ChAAOA9VGeOIZtKemz3Vdi0oIu7Jr4V/Ljr6EvE/kn+annSvtuki/ehj9Dwm/ECU9VnKb9AKOEo8LEtK/RyfC/upyEI0MXcUILx1iVSqt+oJpTsvzutCNjfYEMHCwA0wsVq3LAJb5b5x6AK/IVZbnczgNyZAx1P3BzeQEg8TMPHa/tVjTTo2wyxQLCFnUZpKgb2kgDDcrjHh9U8XHKyyoY8otGxrA/6dvERwXBFwV0paIMNEr/Cu0jWjfo2dWked/vYlBrPDT8AOxb4yvUg0JCNcqWeZVNBcW3XsORIoPE9pjJgm+CwYDWWWf2gJlEQiJOeoWAGbxajEqg8Yhu4ybfifHIBYE6Zq9DxdiUiUM0vqLl1OyuXxYHx2i3oMOuJSQ8ne9lZn0J2vTvOyUD/xuUcz14CG7aEhfc0LPI19fGp9AkN/QfuslwpVeNafozxu+HrSH4TH5I4Px5qvr6CDxc9jCyVyWgVl/SGm88vP2R1EegV6V5bB2brV7jMRAq1MD8DS+CEvcw1HykBsNgyD0DSj5q4sL6j4/Q74YVt0WA+Vco7mzjoH/MtATTQeMCmJlMdZlhdtbGqGjK9Zj02qkpx05cFRYnZIkUTKF4bf9xwhqou/NyatrUh7elmyYqKwoLwK/QsiVcuK0UvonvMQlwlgS8O2xdpeeAmu7kuKSH+/nU/s968ECscryEbA41VE4O4Luj13azGDt4aGphD9FIiIexQL1cOe3oKKXIJoPjRTFPd4wYuy6b841osLAGCBhhkN
+ HyHDFwdp
+ gFYPNIa7TXpcj/VpOKVGZnBzLTVzJHUGYSK4mTisYoK6dZpBa9GjwyIdI/rTSD9O2Mmah/Cx7zf4zV/CPGnKp/cs6OIc7eAHvelQ8qgJwmaQ6okHyyc7XT89XCvswt2foy1dqOz+d40gC5cbxcCVPvhG7erdjo4+kZ80nzWyFHkgL5hdaxBU2uImCuKSvfIpYklarHms8PM1ISTeRUWYiZom7EapsrwroqJnNDJTwPyaUPbue+TqxoBiHAXPyVaCoJosiWfDbSocKCX8f/PHIyKzxaDAxMcZL61iHEqnto4dI9Xl6s2zli5YKrhQS9Y4t+skF+LXk+a+I1zyfy9URdkps2p/RMFv4HsQvV2QASuCETOnIRgR8LvDNqGWYi+ShUomPd0JhVf7Jrpvs0OB3t+57AyGGZWvAznBAWgEW3X/nVcASqt4TVtAd2ILLllf1OeSIbkUWGQwduy9oU8CuqZGs8Wblx6IkxKNryZNzXnsvrO3UHO0am9v4ZXnSwFWQZEV6sc5qksxeeDWefXyGfBMx2ULMXgoxSNoqMBLSifTwjmxVKu7w+p2pPByfhlAVUycW0L+fGaong5YA0w1uM3Y8jv7Fe6PkFlrb9EKTZo9WS3nlJQsy/y9muYI2m7XNWy3zWlEyufakn3azBdaXynXcqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,501 +122,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For cases where we know we are not coming from local context, there is
-no point in touching current when incrementing/decrementing the
-counters.  Split this path into another helper to avoid this cost.
+--Sig_/.XCJlYJqF5QI/5Sz1Tc2Qnf
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
----
- arch/s390/mm/gmap_helpers.c |  4 ++--
- arch/s390/mm/pgtable.c      |  4 ++--
- fs/exec.c                   |  2 +-
- include/linux/mm.h          | 14 +++++++++++---
- kernel/events/uprobes.c     |  2 +-
- mm/filemap.c                |  2 +-
- mm/huge_memory.c            | 22 +++++++++++-----------
- mm/khugepaged.c             |  6 +++---
- mm/ksm.c                    |  2 +-
- mm/madvise.c                |  2 +-
- mm/memory.c                 | 20 ++++++++++----------
- mm/migrate.c                |  2 +-
- mm/migrate_device.c         |  2 +-
- mm/rmap.c                   | 16 ++++++++--------
- mm/swapfile.c               |  6 +++---
- mm/userfaultfd.c            |  2 +-
- 16 files changed, 58 insertions(+), 50 deletions(-)
+On Thu, 27 Nov 2025 08:59:13 +0100
+Milan Broz <gmazyland@gmail.com> wrote:
 
-diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-index d4c3c36855e2..6d8498c56d08 100644
---- a/arch/s390/mm/gmap_helpers.c
-+++ b/arch/s390/mm/gmap_helpers.c
-@@ -29,9 +29,9 @@
- static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
- {
- 	if (!non_swap_entry(entry))
--		dec_mm_counter(mm, MM_SWAPENTS);
-+		dec_mm_counter_other(mm, MM_SWAPENTS);
- 	else if (is_migration_entry(entry))
--		dec_mm_counter(mm, mm_counter(pfn_swap_entry_folio(entry)));
-+		dec_mm_counter_other(mm, mm_counter(pfn_swap_entry_folio(entry)));
- 	free_swap_and_cache(entry);
- }
- 
-diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
-index 0fde20bbc50b..021a04f958e5 100644
---- a/arch/s390/mm/pgtable.c
-+++ b/arch/s390/mm/pgtable.c
-@@ -686,11 +686,11 @@ void ptep_unshadow_pte(struct mm_struct *mm, unsigned long saddr, pte_t *ptep)
- static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
- {
- 	if (!non_swap_entry(entry))
--		dec_mm_counter(mm, MM_SWAPENTS);
-+		dec_mm_counter_other(mm, MM_SWAPENTS);
- 	else if (is_migration_entry(entry)) {
- 		struct folio *folio = pfn_swap_entry_folio(entry);
- 
--		dec_mm_counter(mm, mm_counter(folio));
-+		dec_mm_counter_other(mm, mm_counter(folio));
- 	}
- 	free_swap_and_cache(entry);
- }
-diff --git a/fs/exec.c b/fs/exec.c
-index 4298e7e08d5d..33d0eb00d315 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -137,7 +137,7 @@ static void acct_arg_size(struct linux_binprm *bprm, unsigned long pages)
- 		return;
- 
- 	bprm->vma_pages = pages;
--	add_mm_counter(mm, MM_ANONPAGES, diff);
-+	add_mm_counter_local(mm, MM_ANONPAGES, diff);
- }
- 
- static struct page *get_arg_page(struct linux_binprm *bprm, unsigned long pos,
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 29de4c60ac6c..2db12280e938 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2689,7 +2689,7 @@ static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
- 
- void mm_trace_rss_stat(struct mm_struct *mm, int member);
- 
--static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
-+static inline void add_mm_counter_local(struct mm_struct *mm, int member, long value)
- {
- 	if (READ_ONCE(current->mm) == mm)
- 		lazy_percpu_counter_add_fast(&mm->rss_stat[member], value);
-@@ -2698,9 +2698,17 @@ static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
- 
- 	mm_trace_rss_stat(mm, member);
- }
-+static inline void add_mm_counter_other(struct mm_struct *mm, int member, long value)
-+{
-+	lazy_percpu_counter_add_atomic(&mm->rss_stat[member], value);
-+
-+	mm_trace_rss_stat(mm, member);
-+}
- 
--#define inc_mm_counter(mm, member) add_mm_counter(mm, member, 1)
--#define dec_mm_counter(mm, member) add_mm_counter(mm, member, -1)
-+#define inc_mm_counter_local(mm, member) add_mm_counter_local(mm, member, 1)
-+#define dec_mm_counter_local(mm, member) add_mm_counter_local(mm, member, -1)
-+#define inc_mm_counter_other(mm, member) add_mm_counter_other(mm, member, 1)
-+#define dec_mm_counter_other(mm, member) add_mm_counter_other(mm, member, -1)
- 
- /* Optimized variant when folio is already known not to be anon */
- static inline int mm_counter_file(struct folio *folio)
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 8709c69118b5..9c0e73dd2948 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -447,7 +447,7 @@ static int __uprobe_write(struct vm_area_struct *vma,
- 	if (!orig_page_is_identical(vma, vaddr, fw->page, &pmd_mappable))
- 		goto remap;
- 
--	dec_mm_counter(vma->vm_mm, MM_ANONPAGES);
-+	dec_mm_counter_other(vma->vm_mm, MM_ANONPAGES);
- 	folio_remove_rmap_pte(folio, fw->page, vma);
- 	if (!folio_mapped(folio) && folio_test_swapcache(folio) &&
- 	     folio_trylock(folio)) {
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 13f0259d993c..5d1656e63602 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3854,7 +3854,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 
- 		folio_unlock(folio);
- 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
--	add_mm_counter(vma->vm_mm, folio_type, rss);
-+	add_mm_counter_other(vma->vm_mm, folio_type, rss);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
- 	trace_mm_filemap_map_pages(mapping, start_pgoff, end_pgoff);
- out:
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1b81680b4225..614b0a8e168b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1228,7 +1228,7 @@ static void map_anon_folio_pmd(struct folio *folio, pmd_t *pmd,
- 	folio_add_lru_vma(folio, vma);
- 	set_pmd_at(vma->vm_mm, haddr, pmd, entry);
- 	update_mmu_cache_pmd(vma, haddr, pmd);
--	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-+	add_mm_counter_local(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 	count_vm_event(THP_FAULT_ALLOC);
- 	count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_ALLOC);
- 	count_memcg_event_mm(vma->vm_mm, THP_FAULT_ALLOC);
-@@ -1444,7 +1444,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
- 		} else {
- 			folio_get(fop.folio);
- 			folio_add_file_rmap_pmd(fop.folio, &fop.folio->page, vma);
--			add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PMD_NR);
-+			add_mm_counter_local(mm, mm_counter_file(fop.folio), HPAGE_PMD_NR);
- 		}
- 	} else {
- 		entry = pmd_mkhuge(pfn_pmd(fop.pfn, prot));
-@@ -1563,7 +1563,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
- 
- 		folio_get(fop.folio);
- 		folio_add_file_rmap_pud(fop.folio, &fop.folio->page, vma);
--		add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PUD_NR);
-+		add_mm_counter_local(mm, mm_counter_file(fop.folio), HPAGE_PUD_NR);
- 	} else {
- 		entry = pud_mkhuge(pfn_pud(fop.pfn, prot));
- 		entry = pud_mkspecial(entry);
-@@ -1714,7 +1714,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 				pmd = pmd_swp_mkuffd_wp(pmd);
- 			set_pmd_at(src_mm, addr, src_pmd, pmd);
- 		}
--		add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-+		add_mm_counter_local(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 		mm_inc_nr_ptes(dst_mm);
- 		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
- 		if (!userfaultfd_wp(dst_vma))
-@@ -1758,7 +1758,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		__split_huge_pmd(src_vma, src_pmd, addr, false);
- 		return -EAGAIN;
- 	}
--	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-+	add_mm_counter_local(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- out_zero_page:
- 	mm_inc_nr_ptes(dst_mm);
- 	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-@@ -2223,11 +2223,11 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 
- 		if (folio_test_anon(folio)) {
- 			zap_deposited_table(tlb->mm, pmd);
--			add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-+			add_mm_counter_other(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_NR);
- 		} else {
- 			if (arch_needs_pgtable_deposit())
- 				zap_deposited_table(tlb->mm, pmd);
--			add_mm_counter(tlb->mm, mm_counter_file(folio),
-+			add_mm_counter_other(tlb->mm, mm_counter_file(folio),
- 				       -HPAGE_PMD_NR);
- 
- 			/*
-@@ -2719,7 +2719,7 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		page = pud_page(orig_pud);
- 		folio = page_folio(page);
- 		folio_remove_rmap_pud(folio, page, vma);
--		add_mm_counter(tlb->mm, mm_counter_file(folio), -HPAGE_PUD_NR);
-+		add_mm_counter_other(tlb->mm, mm_counter_file(folio), -HPAGE_PUD_NR);
- 
- 		spin_unlock(ptl);
- 		tlb_remove_page_size(tlb, page, HPAGE_PUD_SIZE);
-@@ -2755,7 +2755,7 @@ static void __split_huge_pud_locked(struct vm_area_struct *vma, pud_t *pud,
- 		folio_set_referenced(folio);
- 	folio_remove_rmap_pud(folio, page, vma);
- 	folio_put(folio);
--	add_mm_counter(vma->vm_mm, mm_counter_file(folio),
-+	add_mm_counter_local(vma->vm_mm, mm_counter_file(folio),
- 		-HPAGE_PUD_NR);
- }
- 
-@@ -2874,7 +2874,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 			folio_remove_rmap_pmd(folio, page, vma);
- 			folio_put(folio);
- 		}
--		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
-+		add_mm_counter_local(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
- 		return;
- 	}
- 
-@@ -3188,7 +3188,7 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
- 
- 	folio_remove_rmap_pmd(folio, pmd_page(orig_pmd), vma);
- 	zap_deposited_table(mm, pmdp);
--	add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-+	add_mm_counter_local(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
- 	if (vma->vm_flags & VM_LOCKED)
- 		mlock_drain_local();
- 	folio_put(folio);
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index abe54f0043c7..a6634ca0667d 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -691,7 +691,7 @@ static void __collapse_huge_page_copy_succeeded(pte_t *pte,
- 		nr_ptes = 1;
- 		pteval = ptep_get(_pte);
- 		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
--			add_mm_counter(vma->vm_mm, MM_ANONPAGES, 1);
-+			add_mm_counter_other(vma->vm_mm, MM_ANONPAGES, 1);
- 			if (is_zero_pfn(pte_pfn(pteval))) {
- 				/*
- 				 * ptl mostly unnecessary.
-@@ -1664,7 +1664,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 	/* step 3: set proper refcount and mm_counters. */
- 	if (nr_mapped_ptes) {
- 		folio_ref_sub(folio, nr_mapped_ptes);
--		add_mm_counter(mm, mm_counter_file(folio), -nr_mapped_ptes);
-+		add_mm_counter_other(mm, mm_counter_file(folio), -nr_mapped_ptes);
- 	}
- 
- 	/* step 4: remove empty page table */
-@@ -1700,7 +1700,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 	if (nr_mapped_ptes) {
- 		flush_tlb_mm(mm);
- 		folio_ref_sub(folio, nr_mapped_ptes);
--		add_mm_counter(mm, mm_counter_file(folio), -nr_mapped_ptes);
-+		add_mm_counter_other(mm, mm_counter_file(folio), -nr_mapped_ptes);
- 	}
- unlock:
- 	if (start_pte)
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 7bc726b50b2f..7434cf1f4925 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1410,7 +1410,7 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
- 		 * will get wrong values in /proc, and a BUG message in dmesg
- 		 * when tearing down the mm.
- 		 */
--		dec_mm_counter(mm, MM_ANONPAGES);
-+		dec_mm_counter_other(mm, MM_ANONPAGES);
- 	}
- 
- 	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
-diff --git a/mm/madvise.c b/mm/madvise.c
-index fb1c86e630b6..ba7ea134f5ad 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -776,7 +776,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 	}
- 
- 	if (nr_swap)
--		add_mm_counter(mm, MM_SWAPENTS, nr_swap);
-+		add_mm_counter_local(mm, MM_SWAPENTS, nr_swap);
- 	if (start_pte) {
- 		arch_leave_lazy_mmu_mode();
- 		pte_unmap_unlock(start_pte, ptl);
-diff --git a/mm/memory.c b/mm/memory.c
-index 74b45e258323..9a18ac25955c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -488,7 +488,7 @@ static inline void add_mm_rss_vec(struct mm_struct *mm, int *rss)
- 
- 	for (i = 0; i < NR_MM_COUNTERS; i++)
- 		if (rss[i])
--			add_mm_counter(mm, i, rss[i]);
-+			add_mm_counter_other(mm, i, rss[i]);
- }
- 
- static bool is_bad_page_map_ratelimited(void)
-@@ -2306,7 +2306,7 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
- 			pteval = pte_mkyoung(pteval);
- 			pteval = maybe_mkwrite(pte_mkdirty(pteval), vma);
- 		}
--		inc_mm_counter(vma->vm_mm, mm_counter_file(folio));
-+		inc_mm_counter_local(vma->vm_mm, mm_counter_file(folio));
- 		folio_add_file_rmap_pte(folio, page, vma);
- 	}
- 	set_pte_at(vma->vm_mm, addr, pte, pteval);
-@@ -3716,12 +3716,12 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 	if (likely(vmf->pte && pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
- 		if (old_folio) {
- 			if (!folio_test_anon(old_folio)) {
--				dec_mm_counter(mm, mm_counter_file(old_folio));
--				inc_mm_counter(mm, MM_ANONPAGES);
-+				dec_mm_counter_other(mm, mm_counter_file(old_folio));
-+				inc_mm_counter_other(mm, MM_ANONPAGES);
- 			}
- 		} else {
- 			ksm_might_unmap_zero_page(mm, vmf->orig_pte);
--			inc_mm_counter(mm, MM_ANONPAGES);
-+			inc_mm_counter_other(mm, MM_ANONPAGES);
- 		}
- 		flush_cache_page(vma, vmf->address, pte_pfn(vmf->orig_pte));
- 		entry = folio_mk_pte(new_folio, vma->vm_page_prot);
-@@ -4916,8 +4916,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	if (should_try_to_free_swap(folio, vma, vmf->flags))
- 		folio_free_swap(folio);
- 
--	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
--	add_mm_counter(vma->vm_mm, MM_SWAPENTS, -nr_pages);
-+	add_mm_counter_other(vma->vm_mm, MM_ANONPAGES, nr_pages);
-+	add_mm_counter_other(vma->vm_mm, MM_SWAPENTS, -nr_pages);
- 	pte = mk_pte(page, vma->vm_page_prot);
- 	if (pte_swp_soft_dirty(vmf->orig_pte))
- 		pte = pte_mksoft_dirty(pte);
-@@ -5223,7 +5223,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 	}
- 
- 	folio_ref_add(folio, nr_pages - 1);
--	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
-+	add_mm_counter_other(vma->vm_mm, MM_ANONPAGES, nr_pages);
- 	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
- 	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
- 	folio_add_lru_vma(folio, vma);
-@@ -5375,7 +5375,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 	if (write)
- 		entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
- 
--	add_mm_counter(vma->vm_mm, mm_counter_file(folio), HPAGE_PMD_NR);
-+	add_mm_counter_other(vma->vm_mm, mm_counter_file(folio), HPAGE_PMD_NR);
- 	folio_add_file_rmap_pmd(folio, page, vma);
- 
- 	/*
-@@ -5561,7 +5561,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	folio_ref_add(folio, nr_pages - 1);
- 	set_pte_range(vmf, folio, page, nr_pages, addr);
- 	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
--	add_mm_counter(vma->vm_mm, type, nr_pages);
-+	add_mm_counter_other(vma->vm_mm, type, nr_pages);
- 	ret = 0;
- 
- unlock:
-diff --git a/mm/migrate.c b/mm/migrate.c
-index e3065c9edb55..dd8c6e6224f9 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -329,7 +329,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 
- 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
- 
--	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
-+	dec_mm_counter_other(pvmw->vma->vm_mm, mm_counter(folio));
- 	return true;
- }
- 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index abd9f6850db6..7f3e5d7b3109 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -676,7 +676,7 @@ static void migrate_vma_insert_page(struct migrate_vma *migrate,
- 	if (userfaultfd_missing(vma))
- 		goto unlock_abort;
- 
--	inc_mm_counter(mm, MM_ANONPAGES);
-+	inc_mm_counter_other(mm, MM_ANONPAGES);
- 	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
- 	if (!folio_is_zone_device(folio))
- 		folio_add_lru_vma(folio, vma);
-diff --git a/mm/rmap.c b/mm/rmap.c
-index ac4f783d6ec2..0f6023ffb65d 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2085,7 +2085,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 				set_huge_pte_at(mm, address, pvmw.pte, pteval,
- 						hsz);
- 			} else {
--				dec_mm_counter(mm, mm_counter(folio));
-+				dec_mm_counter_other(mm, mm_counter(folio));
- 				set_pte_at(mm, address, pvmw.pte, pteval);
- 			}
- 		} else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
-@@ -2100,7 +2100,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 * migration) will not expect userfaults on already
- 			 * copied pages.
- 			 */
--			dec_mm_counter(mm, mm_counter(folio));
-+			dec_mm_counter_other(mm, mm_counter(folio));
- 		} else if (folio_test_anon(folio)) {
- 			swp_entry_t entry = page_swap_entry(subpage);
- 			pte_t swp_pte;
-@@ -2155,7 +2155,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
- 					goto walk_abort;
- 				}
--				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
-+				add_mm_counter_other(mm, MM_ANONPAGES, -nr_pages);
- 				goto discard;
- 			}
- 
-@@ -2188,8 +2188,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 					list_add(&mm->mmlist, &init_mm.mmlist);
- 				spin_unlock(&mmlist_lock);
- 			}
--			dec_mm_counter(mm, MM_ANONPAGES);
--			inc_mm_counter(mm, MM_SWAPENTS);
-+			dec_mm_counter_other(mm, MM_ANONPAGES);
-+			inc_mm_counter_other(mm, MM_SWAPENTS);
- 			swp_pte = swp_entry_to_pte(entry);
- 			if (anon_exclusive)
- 				swp_pte = pte_swp_mkexclusive(swp_pte);
-@@ -2217,7 +2217,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 *
- 			 * See Documentation/mm/mmu_notifier.rst
- 			 */
--			dec_mm_counter(mm, mm_counter_file(folio));
-+			dec_mm_counter_other(mm, mm_counter_file(folio));
- 		}
- discard:
- 		if (unlikely(folio_test_hugetlb(folio))) {
-@@ -2476,7 +2476,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 				set_huge_pte_at(mm, address, pvmw.pte, pteval,
- 						hsz);
- 			} else {
--				dec_mm_counter(mm, mm_counter(folio));
-+				dec_mm_counter_other(mm, mm_counter(folio));
- 				set_pte_at(mm, address, pvmw.pte, pteval);
- 			}
- 		} else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
-@@ -2491,7 +2491,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			 * migration) will not expect userfaults on already
- 			 * copied pages.
- 			 */
--			dec_mm_counter(mm, mm_counter(folio));
-+			dec_mm_counter_other(mm, mm_counter(folio));
- 		} else {
- 			swp_entry_t entry;
- 			pte_t swp_pte;
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 10760240a3a2..70f7d31c0854 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2163,7 +2163,7 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
- 	if (unlikely(hwpoisoned || !folio_test_uptodate(folio))) {
- 		swp_entry_t swp_entry;
- 
--		dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-+		dec_mm_counter_other(vma->vm_mm, MM_SWAPENTS);
- 		if (hwpoisoned) {
- 			swp_entry = make_hwpoison_entry(page);
- 		} else {
-@@ -2181,8 +2181,8 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
- 	 */
- 	arch_swap_restore(folio_swap(entry, folio), folio);
- 
--	dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
--	inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-+	dec_mm_counter_other(vma->vm_mm, MM_SWAPENTS);
-+	inc_mm_counter_other(vma->vm_mm, MM_ANONPAGES);
- 	folio_get(folio);
- 	if (folio == swapcache) {
- 		rmap_t rmap_flags = RMAP_NONE;
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index af61b95c89e4..34e760c37b7b 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -221,7 +221,7 @@ int mfill_atomic_install_pte(pmd_t *dst_pmd,
- 	 * Must happen after rmap, as mm_counter() checks mapping (via
- 	 * PageAnon()), which is set by __page_set_anon_rmap().
- 	 */
--	inc_mm_counter(dst_mm, mm_counter(folio));
-+	inc_mm_counter_other(dst_mm, mm_counter(folio));
- 
- 	set_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
- 
--- 
-2.51.0
+> Hi,
+>=20
+> On 11/12/25 6:18 AM, Aaron Rainbolt wrote:
+> > Not sure if this is a memory management issue, a LUKS issue, or
+> > both, so I wrote both mailing lists. =20
+>=20
+> It is not a LUKS issue; cryptsetup/LUKS activates the encrypted
+> device, so it is only the kernel/dm-crypt handling IOs.
+>=20
+> Adding cc to dm-devel as this would be another combination
+> device-mapper and encrypted swap that could cause issues...
+>=20
+> However, could you please specify exactly your storage configuration?
+>=20
+>  From the subject, I expected you to have an encrypted swap, but it is
+> not clear if there are other encrypted devices.
+>
+> Please paste at least lsblk, lsblk -f output, and also luksDump
+> (or crypttab if it is not LUKS) for LUKS/dm-crypt configuration.
 
+Mikulas seems to have reproduced the issue already, but just in case
+it's still useful, here's the requested data, along with /etc/fstab.
+(/dev/sda2 is a BIOS boot partition.)
+
+-----
+
+[sysmaint ~]% lsblk   =20
+NAME   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINTS
+loop0    7:0    0    4G  0 loop =20
+=E2=94=94=E2=94=80swap 254:0    0    4G  0 crypt [SWAP]
+sda      8:0    0  100G  0 disk =20
+=E2=94=9C=E2=94=80sda1   8:1    0  100M  0 part  /boot/efi
+=E2=94=9C=E2=94=80sda2   8:2    0    1M  0 part =20
+=E2=94=94=E2=94=80sda3   8:3    0 99.9G  0 part  /
+
+-----
+
+[sysmaint ~]% lsblk -f
+NAME   FSTYPE FSVER LABEL UUID                                 FSAVAIL FSUS=
+E% MOUNTPOINTS
+loop0  swap   1           0a06fb5a-39f5-4a89-b8a8-fdc2470ee0f3   =20
+=E2=94=94=E2=94=80swap swap   1     swap  f9aa44bb-2214-4a32-ac7e-34360b0f3=
+13b                [SWAP]
+sda   =20
+=E2=94=9C=E2=94=80sda1 vfat   FAT32 EFI   6907-5000                        =
+                   /boot/efi
+=E2=94=9C=E2=94=80sda2   =20
+=E2=94=94=E2=94=80sda3 ext4   1.0         26ada0c0-1165-4098-884d-aafd2220c=
+2c6   64.7G    29% /
+
+-----
+
+[sysmaint ~]% cat /etc/crypttab   =20
+# <target name> <source device>         <key file>      <options>
+swap /swapfile /dev/urandom swap,noearly
+
+-----
+
+[sysmaint ~]% cat /etc/fstab   =20
+# /etc/fstab - created by grml-debootstrap on Sun Nov  2 20:23:37 UTC 2025
+# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+# units generated from this file.
+#
+/dev/disk/by-uuid/26ada0c0-1165-4098-884d-aafd2220c2c6 /  auto    defaults,=
+errors=3Dremount-ro,x-systemd.growfs 0   1  =20
+UUID=3D6907-5000  /boot/efi       vfat    umask=3D0077      0       1  =20
+proc           /proc        proc    defaults                      0   0  =20
+/dev/cdrom     /mnt/cdrom0  iso9660 ro,user,noauto                0   0  =20
+# some other examples:
+# /dev/sda2       none         swap    sw,pri=3D0             0   0  =20
+# /dev/hda1       /Grml        ext3    dev,suid,user,noauto 0  2
+# //1.2.3.4/pub   /smb/pub     cifs    user,noauto,uid=3Dgrml,gid=3Dgrml 0 =
+0=20
+# linux:/pub      /beer        nfs     defaults             0  0
+# tmpfs           /tmp         tmpfs   size=3D300M            0  0
+# /dev/sda5       none         swap    sw                   0  0
+/dev/mapper/swap none swap sw 0 0
+
+--
+Aaron
+
+> Thanks,
+> Milan
+>=20
+>=20
+> >=20
+> > I'm seeing an issue with both the latest mainline kernel (6.18-rc5)
+> > and Debian 13's 6.12 kernel package. When physical memory fills up,
+> > the entire system locks up hard, as if it hit rather severe
+> > thrashing, despite the fact that there appears to be disk cache
+> > that can still be evicted, and there is ample amounts of swap space
+> > remaining (gigabytes of it). This issue did not occur with the 6.1
+> > kernel in Debian 12. I'm seeing this occur in very low-memory
+> > Debian VMs, with between 512 and 900 MB RAM, running under
+> > VirtualBox and KVM. (I suspect, but have not verified, that I'm
+> > seeing similar behavior under Xen as well.) These VMs generally use
+> > a swappiness of 1, though I have seen a lockup occur even with a
+> > swappiness of 60. The filesystem in use, in case it matters, is
+> > ext4.
+> >=20
+> > To reproduce on a system running Linux 6.18-rc5, with :
+> >=20
+> > * Follow the steps from
+> >    https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQues=
+tions,
+> >    section "2.3 How do I set up encrypted swap?", but creating a
+> >    swapfile rather than a swap partition. I created an 8 GB swapfile
+> >    with fallocate. Reboot the system when done.
+> > * In a TTY, open a terminal multiplexer (or something you can abuse
+> > as one, Vim works well), and open two terminals. In one terminal,
+> > run `htop` so you can observe memory and swap usage.
+> > * In the `htop` terminal, sort by M_RESIDENT.
+> > * In the other terminal, create a new file `test.py`, that will
+> >    gradually fill memory at a relatively fast pace and print an
+> >    indicator that it's still alive. I used the following code for
+> > this:
+> >=20
+> >      import time
+> >=20
+> >      count =3D 0
+> >      mem_list =3D []
+> >      while True:
+> >          mem_list.append([x for x in range(2048)])
+> >          count +=3D 1
+> >          time.sleep(0.002)
+> >          print(count)
+> >=20
+> > * Run the script with `python3 test.py`.
+> > * While the script runs, observe the growing memory usage in `htop`.
+> >    Swap usage should start at or near 0, RAM usage will gradually
+> >    increase. Once RAM usage starts getting high, some data will
+> > start being swapped out as expected, but after a short while the
+> > whole VM will lock up despite there being gigabytes of swap left.
+> > (On my KVM VM, the last time htop updated its screen, it showed RAM
+> > usage of 712M/846M, and swap usage of 328M/7.40G. The python3
+> > process running the script was consuming 551M memory. The VM is
+> > entirely unresponsive. Incidentally, the python3 process also was in
+> >    uninterruptible sleep when htop last updated its screen, but that
+> >    could mean nothing since it might have come out of sleep between
+> > the last screen update and the VM lockup.)
+> >=20
+> > Under Bookworm with Linux 6.1, the Python script would occasionally
+> > freeze, but the VM would remain responsive, and the script would
+> > eventually resume. Even with kernel 6.12, both unencrypted
+> > swapfiles and swapfiles that are technically unencrypted but live
+> > on a LUKS volume both behave as expected. It's only swapfiles that
+> > are themselves encrypted that seem to trigger these lockups.
+> >=20
+> > I haven't looked at the code at all, but it seems like maybe memory
+> > LUKS needs available in order to operate is being consumed, thus
+> > making it impossible to swap anything in and out of the swapfile?
+> > That seems like it would cause these symptoms or similar, though I
+> > don't know.
+> >=20
+> > Let me know if I can provide any further information on the issue.
+> > I'm happy to bisect the kernel if it will help.
+> >=20
+> > --
+> > Aaron =20
+>=20
+
+
+--Sig_/.XCJlYJqF5QI/5Sz1Tc2Qnf
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEudh48PFXwyPDa0wGpwkWDXPHkQkFAmko4J4ACgkQpwkWDXPH
+kQmMIhAAvF1ssmiCQ+nw1++89u8VMQnbSRCywdjHphhTMKbxhnnwEsNiH55N1w6b
+5ssVxIvA2KrJ5+Ac3KVNr7h4o7t3hb5nEQL/MXWpfMISdyaBZR5n6GlG2Y/AIhJA
+dzv3yEyCSXCYvH+TIhe8l+eBzrEUeVJg7vh88Tmm7XwMawBuhPx4UxA25POEzh07
+rLwCy+o1AagTJJ7Ugvj+Ok9Oj5uZ8dMo68wWWDJuiLX5LXZ1Cvy2YGguco66xB6D
+YaHKTVrsKAo6C57vXVfoiISXepgHD9+2SVd8jJdA5O0SFc907ITPMCqD68QQcdWi
+jr2V1CKktd0HnzjuY2+IlOp1qVALUHmxhqULO6eNKaBDhSejwEamGeuWmBzUfv2f
+STm6PTrWBjI93laXCkWW1cCQWvwRubAte/IorJfvoj2P4j/pk1MrMb+19FFGeRCb
+rE1H12uJYP88PiZOxtdEdtnlBiR06pI4kOWVvjv6lHhlsTg9y3BUxyXPB8ydzNV8
+wDqkPQPnFkQSQ1kHpNYomcmBw8izoTojjglpL3ifcpeuWQFzMKWJ6PFpA/236e/k
+7WOpgp2FcF8ZuWaoGsq8n+QhTmac78P3LjYqBiEaq0KdaKRBppIkOTC6IJkVoe49
+2PK+nPjCpq6HzTzw6hCrNGmPn++2ryJkiJKuIdor38SRRhuV4EA=
+=snQJ
+-----END PGP SIGNATURE-----
+
+--Sig_/.XCJlYJqF5QI/5Sz1Tc2Qnf--
 
