@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985EBCFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86C1ED11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:29:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF8FA6B0022; Thu, 27 Nov 2025 05:27:44 -0500 (EST)
+	id CEAD76B0024; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCFB56B0023; Thu, 27 Nov 2025 05:27:44 -0500 (EST)
+	id CC24E6B0026; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5336B0024; Thu, 27 Nov 2025 05:27:44 -0500 (EST)
+	id BFF306B0027; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BF63D6B0022
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:27:44 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D9D350892
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:27:44 +0000 (UTC)
-X-FDA: 84156010848.14.E4D9D60
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9520F40011
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:27:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aMDXxtUZ;
-	spf=pass (imf07.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B2F4D6B0024
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F1531A0960
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:29:55 +0000 (UTC)
+X-FDA: 84156016350.22.CDA575B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C73F1140007
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:29:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OnWUQ2+V;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764239262;
+	s=arc-20220608; t=1764239393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mrv1YCp2fM14t6zKAfz6O2nTZwDL8cvvdkwi+ppBORc=;
-	b=0BS3cU1Gr0AJdVVpOTE3MxSEQmlLDV9PWe9+eYjG1iU4ZdjRSkdGyXTXjcKXwFaw2388hQ
-	8uu1fbNuIHfr1LC5ywvM8a9dJBB7nVPOX3Ch3CDmA94GodKPNFlkQZ3/o0rL3xQCgo6iYB
-	LceYWdsr1otq8dmK9dAwhr/sJKYDrFM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764239262; a=rsa-sha256;
+	bh=YnU+JQsXw6IFitED8NhEgEEqqeSpTSuYlRm1oYBJlHE=;
+	b=b/ZSb1hPnydLKD6RwbHeHpCi3psV0PSsqyp/3qUF4thoPIeC9YGbQcFaHHXmWsQineQRvG
+	rw3u4LaWGIJyesiIyZmXIBn1K8HGXFbsNjLnFuRrF/W2s7conNiBAsxrQKkigiBZYjeYdi
+	B2++pefBkF/y8UG2Rlnx81Bo/UBIQ0U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764239393; a=rsa-sha256;
 	cv=none;
-	b=LUIRdqNZF2BRmgLHpjCKEXNYb8VwtoXCG/uB6WjXHY0cPrnR4jRo5k2MuWvnWF6iKUlkMN
-	ij2KrcXyaSuJjkg137q7vnr21ynTN3KjRB/5HugY/tGLxfv2aaLIK7GQE6fmWXLt7n3UP2
-	dVAlalkoOvOtpcRvDaOi1oQLwyXbv2c=
+	b=6P+ya2XKZMP0ERH4bOhPO9jQ45yYIIF4eJYBoeru+XbuLkkMj4Wh/MYGv20H5Rvo/goWul
+	TQ1UlWhO3AAYeSuGEgNfpy/cUB4UZsIshtKV9Kcj2WjbCaw8oIIFwA8OQ8go9/S4kU+ed1
+	XyWehTHLFxO+79KpruDhR41uRaZoT1w=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aMDXxtUZ;
-	spf=pass (imf07.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OnWUQ2+V;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9698D434D6;
-	Thu, 27 Nov 2025 10:27:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722A5C4CEF8;
-	Thu, 27 Nov 2025 10:27:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 281DF6013F;
+	Thu, 27 Nov 2025 10:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760C6C4CEF8;
+	Thu, 27 Nov 2025 10:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764239261;
-	bh=l8MEnU38WJNtf21NpEjwBL/C3hT0xHnCDwlp6PtWU+o=;
+	s=k20201202; t=1764239392;
+	bh=6026FUcOZ7792wogGQD52EVUcUY2trkThOXOtUo+GfQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aMDXxtUZ8/H79/ftA1Ipmizsq/K2CMzQSUfqW4dB9GN9S2NleHqRTFJSC8JoWzJNo
-	 XIsGgUZtni1MjlQdl0AiMCIxHLNgV2YwjtfT/j/VxFsJof0lR/DOLFeMoauZCZfFNo
-	 oO3GIOwsQ7iPwUXMEKp8QxCQ0pGIxrQlDxqu6hebAQtuY+rdlOWDJruNmH4+9M+7yk
-	 WQcKvpgWKzUKcTmqlsrcfHlkDFI2cSsTBeNhcsienM+iaNPcZ07oVcK7jJ2AS2Nlsg
-	 9IXHtOt+e1S23JWeIWiAdywkb6peRVNp6O9GoNCTO4iaCPFpBbm/4RcIYjaHesPUMg
-	 9noFk2DVFrT1A==
-Date: Thu, 27 Nov 2025 10:27:34 +0000
-From: Will Deacon <will@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Zizhi Wo <wozizhi@huaweicloud.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>, jack@suse.com,
-	brauner@kernel.org, hch@lst.de, akpm@linux-foundation.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	yangerkun@huawei.com, wangkefeng.wang@huawei.com,
-	pangliyuan1@huawei.com, xieyuanbin1@huawei.com
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
- sleep in RCU context
-Message-ID: <aSgnlmQi_UPsugNU@willie-the-truck>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com>
- <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+	b=OnWUQ2+V127RmQUz5qQzGB0tW/qhEyMXNhJDFGclXUDD3NujYD4hb5z2GL/sukTDh
+	 a39tG+gjDEc1E8tOYGeiOM+lmQpn8PkPDZjIrN+Wm4gdla3sJrM64w0OQdNX5rZzlL
+	 KSl/xPm9+4wC6PTrMCHte1VlGqCQzHRRFSuoDI7F14PMZc0Sy0Lrsl1figTyKIx6lA
+	 MiL55H2r+9ZxkmZDzAqLuOaGBcJEMUX891x12xwUbB5VJhgtowZ1RJ4lqXY5tITFsm
+	 lAwQtudT0D2wOA/mp0HsW+rhNsvk4bx4KRyWaJ0JhddoDePktlNH5N/PbrxaIO94Pr
+	 febYBzhphPZnw==
+Date: Thu, 27 Nov 2025 12:29:45 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Jinhui Guo <guojinhui.liam@bytedance.com>, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, fvdl@google.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/sparse: Fix sparse_vmemmap_init_nid_early definition
+ without CONFIG_SPARSEMEM
+Message-ID: <aSgoGU_WM9f6RWNB@kernel.org>
+References: <20251127092512.278-1-guojinhui.liam@bytedance.com>
+ <3cdc6bd6-f0c4-410f-b2a2-8cc2b5d1c522@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+In-Reply-To: <3cdc6bd6-f0c4-410f-b2a2-8cc2b5d1c522@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9520F40011
-X-Stat-Signature: k3er7zo7qmtzae9iaw4uok4dap7ph3tr
-X-HE-Tag: 1764239262-578483
-X-HE-Meta: U2FsdGVkX18ETc3/nDxSYAr922yj45/jrvVII4GsLlU4hSsQHXJygq9e436Gt5IlcGQw0zLk1As5MP6ePvk/aUhujFnA7regSl5zwTcV+5lQCnhxITG8RMJfpGG1h4SNPu3MjejTeSxub/pgPl2lwVIG5dMtar/vG6oprkVZKs2QDUZ1p6Ejqtr2ElUKUCbSzhLR1+b8u4yicVZLAoeTNTIkztp881ISs9067w/GtsywsiGjLQPkNERIRy7GH/GHyEUhJ2j7CXf5xeCiE2rGc9zwJ0BsbmyomQHMsujxsX+fWscnYmTG0tcAfsE6qu8T9SMIBqQvurqLWP9pUlSd4VJldBCrJ+YTdKDBC2tm/sk9rCCu1ioQysKFzxQ5tb36tH48UDZMluLZDb5QgWTe2a2hk7AKhJcyIszQNXs069ebDnJe5bRkdMcGQ6tMyazk8H5BPEXPK2gVoVP/sVT901iVoPKzxfhg/JcqhrM+eht/IsGzi0+VY3v2BODsJvcY8MpbKMMJiG0yv5Ax1ZAReqIlZQFCTITzuYU8g6rwWG78nFLrsNSl3UY/ooTJImtJBSt6p5hnIE8EnqRW4JCZu9xsHRUUbCzs2IH0R2kQS+8RM20JeO86YEX7xrwdHyhGmiZTzoj0OSpgwTwQr07f9QroftD4w3Q46Z4jpxKdgCc0o7QtgTXCz0nJXBqGESPeBDkCfwOWOHeufUsQTt7hILz3Tv8zoJpfXe71x8zECKlxRREaQ9ofYS65oiTArbkrRi5j6U005o1nZqKf36eYNVGVPpAyDxYrd5PPI0p7xahrkPPdQC8NUDLVUrEHNe/+ksbwp6YrKY9oM23g+mlDKVrG6mIV30tfcRCOFURTjm15Dm7C4/oaYPyZVlBR0tfUrD+d0VG4p3IrqQCcNxUzhIKH7TyDsVoy0/Ux/suoB4KpKkLiWNI9kmEYpBMNrHynJF2dy+Utb+l8tufX8br
- 22fr+bGs
- zVmyG
+X-Rspamd-Queue-Id: C73F1140007
+X-Stat-Signature: zbs8dtjnsbjtqyikuuddrnizafzo6wut
+X-HE-Tag: 1764239393-32349
+X-HE-Meta: U2FsdGVkX18yEah6j2uIHBiv9Mgg7C1HJEOd2mW0Qa5QVfZMfcyI4AmuQ8oLqpmVD57x1m+li9gwzI4zdW3K01uEtgQaGIDrP9x+BtgPtkyEb9HJn+pKQplLCXVI4kElOZ/It+gsRA3+0OZDVpoEOPA/iGLPnYeo9zrYrBvkbMIf7kGwif3Y2zaEThuiZvrtTlIhmtwdsSZ2aVNJfp0MpfKOKPX0IdceHLxNvndnRPdvuJW7rAm6SCWRksbZDeXnQ6K7bgUHxqtZj8Lscr+qUP4n8/OcegCymsynstrSXgMUgYgF2mQcmek0xfBaXMhmm+FbF1lBmhim9bYhQ4ZnIcZ9D1Z8y7isMZSol3RiRcuMu8SqMIihF+QvwUaoGxI0A20O3SZlfPt/kIGyeoCIBS5b2Xn3wWm+FcJp0GL3lC9ID5a4O2aoANCzlvLJeO8lir9IXqkra25+BQnAKAlsGggkrvXDHTjeCiqwmRh01fjqj6pz5962ao3gfvmz3Oau+5kDqdYoVnDfQdNy5A8faWgAOIFI/e9erisJqDFujjQd70jg82nnlZKvmNV3RZvuMzUTvOUL0tPF+AKjk3sa1lG0lni3mq1sutwNt3jlOxmNGX4aLoia5mHdjhVnJ76cnjyc4j2BVefXT+vghu/iUpTX7co6rf32EQZpb4/sTiheXHO8Ursm7IyWnhRc9MfGzPFoqDSLDj/EOL+TrKIX9UeWLa0KXnTtiKDMqh9vx6FsQ9k46rI7xOCuuZa5RytuxbsZefrwA7AC07x2uhVNwtvIAgHgPdKVgiyRgWY78cU+PGaHGwT6dCL7HZBMEDMQ/vvaIM0+Q5HgwPIlx1rbKqhDSL1z5M7FLLMC8PNzq+n5mH3G6CIklLKwhlYvI7rprhVZNRXczI6c3+Bbdd46s5H8J7pU2zn/1P68Ug9uCfcTOdjlPwNV4GQVAQVTBFO2b/0jj4P/0RZVOwj7VLU
+ sLHtFTym
+ RavgCOgjaV25TJOKxHARnkh55+rRuFTIskAId+ZhyvSqwWwtC6sRCoTHSbbEzZSLfkEJKnpP+QjqCWb2AmEAoSPxKl8OtE73Y4sIWaUN85VaNFZRX5u+q1Jf3I3ItD5dK7w5m402Gw090sOvNYaEFSEx96t0inRuajODvRFjoUq/sN4ZUYtuk8KepsElv2E/jhzvrqNBoaFaJYFjD/PG77TA/8hHTj0ErviHttDw9m7FGWP1/EriogsMOmpu3uI9edeSYE7NayyZhqcmGxFdbbM7atkbz8g3t+rZ4zLAeY3rEInZfa6iNDJoeZazP7Edo1PqOLagQBIUntz6QyHakbstap6wrGgB49o0vFJr2HUFDLyt+sZOy0FRe0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,74 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 01:12:38PM -0800, Linus Torvalds wrote:
-> On Wed, 26 Nov 2025 at 02:27, Zizhi Wo <wozizhi@huaweicloud.com> wrote:
-> >
-> > 在 2025/11/26 17:05, Zizhi Wo 写道:
-> > > We're running into the following issue on an ARM32 platform with the linux
-> > > 5.10 kernel:
-> > >
-> > > During the execution of hash_name()->load_unaligned_zeropad(), a potential
-> > > memory access beyond the PAGE boundary may occur.
+On Thu, Nov 27, 2025 at 10:46:54AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 11/27/25 10:25, Jinhui Guo wrote:
+> > When CONFIG_SPARSEMEM is disabled, the macro
+> > sparse_vmemmap_init_nid_early(_nid, _use) passes
+> > two arguments, while the actual function accepts
+> > only nid. Drop the extra argument _use.
+> > 
+> > Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
+> > Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> > ---
+> >   include/linux/mmzone.h | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > index 7fb7331c5725..f6dd181a4821 100644
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -2293,7 +2293,7 @@ void sparse_init(void);
+> >   #else
+> >   #define sparse_init()	do {} while (0)
+> >   #define sparse_index_init(_sec, _nid)  do {} while (0)
+> > -#define sparse_vmemmap_init_nid_early(_nid, _use) do {} while (0)
+> > +#define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
+> >   #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
+> >   #define pfn_in_present_section pfn_valid
+> >   #define subsection_map_init(_pfn, _nr_pages) do {} while (0)
 > 
-> That is correct.
+> That commit is from early 2025.
 > 
-> However:
-> 
-> > >                This triggers a page fault,
-> > > which leads to a call to do_page_fault()->mmap_read_trylock().
-> 
-> That should *not* happen.  For kernel addresses, mmap_read_trylock()
-> should never trigger, much less the full mmap_read_lock().
-> 
-> See for example the x86 fault handling in  handle_page_fault():
-> 
->         if (unlikely(fault_in_kernel_space(address))) {
->                 do_kern_addr_fault(regs, error_code, address);
-> 
-> and the kernel address case never triggers the mmap lock, because
-> while faults on kernel addresses can happen for various reasons, they
-> are never memory mappings.
-> 
-> I'm seeing similar logic in the arm tree, although the check is
-> different. do_translation_fault() checks for TASK_SIZE.
-> 
->         if (addr < TASK_SIZE)
->                 return do_page_fault(addr, fsr, regs);
-> 
-> but it appears that there are paths to do_page_fault() that do not
-> have this check, ie that do_DataAbort() function does
-> 
->         if (!inf->fn(addr, fsr & ~FSR_LNX_PF, regs))
->                 return;
-> 
-> 
-> and It's not immediately obvious, but that can call do_page_fault()
-> too though the fsr_info[] and ifsr_info[] arrays in
-> arch/arm/mm/fsr-2level.c.
-> 
-> The arm64 case looks like it might have similar issues, but while I'm
-> more familiar with arm than I _used_ to be, I do not know the
-> low-level exception handling code at all, so I'm just adding Russell,
-> Catalin and Will to the participants.
-> 
-> Catalin, Will - the arm64 case uses
-> 
->         if (is_ttbr0_addr(addr))
->                 return do_page_fault(far, esr, regs);
-> 
-> instead, but like the 32-bit code that is only triggered for
-> do_translation_fault().  That may all be ok, because the other cases
-> seem to be "there is a TLB entry, but we lack privileges", so maybe
-> will never trigger for a kernel access to a kernel area because they
-> either do not exist, or we have permissions?
+> So what are the symptoms we are fixing? I would have assumed a compile-time
+> problem, but no built bot caught that?
 
-Right, I think the access flag / permission fault case will end up
-trying to resolve the VMA for a kernel address but I can't think why
-we'd ever run into one of those faults for load_unaligned_zeropad().
+Some of these are used only in sparse.c and sparse-vmmemap.c so with
+CONFIG_SPARSE=n they are completely unused.
 
-Valid kernel mappings are always young (AF set) and, although we can
-muck around with permissions, valid mappings are always readable.
+We probably should move them to mm/internal.h or even mm/sparse.h
+ 
+> -- 
+> Cheers
+> David
 
-Will
+-- 
+Sincerely yours,
+Mike.
 
