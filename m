@@ -4,115 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E365D116F3
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 07:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D6BCFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 07:59:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6E216B000C; Thu, 27 Nov 2025 02:32:03 -0500 (EST)
+	id 812446B0005; Thu, 27 Nov 2025 02:59:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1F826B000D; Thu, 27 Nov 2025 02:32:03 -0500 (EST)
+	id 7E9366B000C; Thu, 27 Nov 2025 02:59:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0D426B000E; Thu, 27 Nov 2025 02:32:03 -0500 (EST)
+	id 6B09F6B000D; Thu, 27 Nov 2025 02:59:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BC5C46B000C
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:32:03 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5504013BE2C
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:32:03 +0000 (UTC)
-X-FDA: 84155568126.03.A570745
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A21BC4000A
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:32:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ouf03M9U;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 541D16B0005
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:59:19 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03AFA1A08F3
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:59:18 +0000 (UTC)
+X-FDA: 84155636838.20.FF71883
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D942F80005
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:59:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MYJzZeXL;
+	spf=pass (imf30.hostedemail.com: domain of gmazyland@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=gmazyland@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764228721;
+	s=arc-20220608; t=1764230357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=96PUTPbKyX29XZ59hC1MBICUgATxkKZMiQ3+C7YSdUg=;
-	b=WveHJbF/pnL8xpRj7TNTdVD2Gv/2fW0wkdwV5itpY5k+l2KV9U5L2WOLEfmcgozsIZRo0e
-	qQMTDLHwfS6/T5xAIFXUgBrhEFWxzOvWPWE+uK7BG/s9mU45Ljjefvo1/819NkUnEWwEa9
-	yzXjizSkaEAyC3jZLe2k1W4LujT2AiQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764228721; a=rsa-sha256;
+	bh=z9iBKcpWfLkBP0f8MQKdR3ZLtXd1IIP5cJjZBkNDvwo=;
+	b=8AQXZ5OJG1Oryrqt6vDwwM50H3BjAxVQn8sCwLVP5eJWUDBGJWVKBwaOFx6kvCuLyA3VRc
+	6f85uQquOMhUG1DJSRNfJ/W/RgsLKLX7Ox58o74gk9+i5zywXhBpo26a5G9tx0+NBeHAHn
+	VvZOi41iuSfGzIkr8ZGMQzjF0uZJmZA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764230357; a=rsa-sha256;
 	cv=none;
-	b=1HGiBpClNj4yppIu8DoJxgtO88j7KworIlAKvf1f906pSkZefiHnci715+YfR41u3ztvfm
-	qJF5l0aNMZIUMRe1393Vmfe5Z3MUADxwZu2I0gn0q7DdQJ0WskHInPst+fRYgwSFEC6M1R
-	Y2j2mmfkZStk6Lfvywzxn0ImP13CU9U=
+	b=DB+eUYnecVE8A4w+sHDiUomJfJWi9+BmA9rvty5BS7vIOhhnYkrgl7BJ18XcNcuy8857Wu
+	ZOZa3MN9UAxnvH2jXsz+FvIsu5TWCr90hty+MkhtQv90SH8faRZghowcxFo3gdPRpXF9i5
+	+sgqyg0zWIV3eyAwUbYOGpOGQGf0m0c=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ouf03M9U;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0CE9D60182;
-	Thu, 27 Nov 2025 07:32:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0188FC4CEF8;
-	Thu, 27 Nov 2025 07:31:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764228720;
-	bh=QiLZ0ytg5DNB713odlGgPihhex3UHwBxH/QBLHPI5QM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=ouf03M9UhTmrdYrBI9Rg68Ds2egIB5Eo2fkqNFaJj60mj+MZ1UpDU3dqMC5CDr4GZ
-	 1e1gbHEEAg3GZX9zxrxJ5KqhDXcOhmLhpY7NEziDAEgzhE6YlqPGeBk8RiSPxSlsSa
-	 F2AmTGyncDeM6RFOOttkf+LPPLRiELWkkHwOnudis6yd88kSiYYjwzNFzwrzcMcnE3
-	 2SmtBdNPsXtGJnXzp0X2chXdyd/01FFiIsag/c9gEZZXoXmJrfLd03SpdDW+HPf69H
-	 RoxGo8DTISAtMr5xSaJ2uJoznD6XMpaOBMkLlXyYlE7Obw1135MsaqTVAdJ2n+N2BU
-	 TxSMaHEWH6ASA==
-Message-ID: <bd4d746b-8929-4fd2-bd59-70654e794ee6@kernel.org>
-Date: Thu, 27 Nov 2025 08:31:52 +0100
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MYJzZeXL;
+	spf=pass (imf30.hostedemail.com: domain of gmazyland@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=gmazyland@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso949061a12.3
+        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 23:59:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764230355; x=1764835155; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=z9iBKcpWfLkBP0f8MQKdR3ZLtXd1IIP5cJjZBkNDvwo=;
+        b=MYJzZeXLixTZMrnb3KZ28Eth15lOLwZU7wYJoKBMfmy6Pj/uC2A6kCHiAID87qL0mm
+         4GOyZIQjDmUPiWYn3y4B2rdrY3X0Ukpxt0X0hPJrL7MuUZEe9b/6+g+hmAr+we4oIG9M
+         J20K3bfBUV3gaFXpz5kUP9S+bBcAscff9lQyJ5YfNlmDES4hahk+c/Iq4XhLIPsQGExq
+         oet0ZVWuuBxG7axsajJYEnfWvDCA60nnIvYALzXfgGrodB7SvqStyA6Ez1mi5ErBGz7m
+         uWxBa2MMm1ZCNmeQ2gRYrAZT+bJMmXs4t9OS8yEwlw8xiAGblWS9ep/2PLhtv3Pmwlwx
+         40WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764230355; x=1764835155;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z9iBKcpWfLkBP0f8MQKdR3ZLtXd1IIP5cJjZBkNDvwo=;
+        b=fVuBPTQHIiZ/Xax8YSOu+slUHKvXpiXZdxP19sY6m4F34Ce52wqEdrqy5vJqPHH3oD
+         8d5qDLlobCggtUnkt85wTd4E577R62Io8NaOMSObivsQ4tVWF7yhbzYtRGI1cZOOLisx
+         Flj6JAElJnq5tmcA9gCjkOvTJvYev2NmgIUSSwRKwEi76ZX7enp6X8ey3dRkh+K6Y04W
+         lBNxFfOF5ND+dGVyrED1Um2XGw+7ZwVitZuezFmdNX/qSON3ePg6VSCEjOGyPlV9w/AH
+         eHC3+046sZsonu80ZQiq65xwe7xHUbgN9gqhZRwYdwJeE4LuQiZVyazsJVJ0XNWVQ982
+         HMOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVRg+VMvcIERAUhpwXoq0ycYOcLVYz99Lla5hr9keQuqn690yehKspEd9Q225EFmUYXRO8FY+bS4w==@kvack.org
+X-Gm-Message-State: AOJu0Yw2Oo2cViXXD5eko89pL76Ohx4gtHp3aikpNOxfK50j0ZDPe7Qr
+	RGMQVzontlZoT+e02IU4iC2Lm1fZYBFhq3xcAnW1xNXcQTjL8O2DL0yv
+X-Gm-Gg: ASbGncvlUJSCNYqLvlcjFE1qvRCSdYnhBrxGkmez5alQ03kEQrXvIscri/nno7WbtZg
+	WRjyufKR5vCv0XnAiQ/EkUXZGWGtw+8D1i1K+RpTZHUIqyXu9QT/dEPBcTp9rIdCBmwyt297dpx
+	q6d8cuLG778/3209fdBf9s/meqKnCFXBsuD9xAtkSZKp1engKHHUITo38vJ+Sz1hIK3bX2/LAzC
+	PltimWEPuwrrKBmFjrQa3/E4bF9jLw3dMy4+38lYAOcbGMknUlNbIDydYSisxGuKb8eeu2885BP
+	vsuXYp0+3ZKnj3XUllUOOey1tHmUMPhY3AgI0ffsbdolz2DeA4GV917QhpP/wn4lmJvZj0UJzX6
+	eLqIQ61G4t8xBZZ4ABZ7oCie793MrO8YZ92VbyVNQFzdaZSN/WNmt7r9Mu/z1oRbaSPfOQwhsUd
+	yGF+/ycIeJDtAa1bg=
+X-Google-Smtp-Source: AGHT+IGUOKW6F5FS113p653lsKvlpeK2sBEh6Ngnt2v9kCLGX4w6J8eiuyMeBBixqNwPaFIiEPaPKQ==
+X-Received: by 2002:a17:907:7fa2:b0:b5c:66ce:bfe6 with SMTP id a640c23a62f3a-b76c558f2eamr1050311066b.55.1764230354708;
+        Wed, 26 Nov 2025 23:59:14 -0800 (PST)
+Received: from [192.168.1.27] ([176.74.141.242])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f51a9819sm97759866b.25.2025.11.26.23.59.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Nov 2025 23:59:14 -0800 (PST)
+Message-ID: <2b8b83fa-5cf5-4f97-b796-0c738ce3a548@gmail.com>
+Date: Thu, 27 Nov 2025 08:59:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
- <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
- <20251126134726.yrya5xxayfcde3kl@master>
- <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
- <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
- <ab39d448-aa1c-4c93-8e2b-5d97a9c76af5@lucifer.local>
- <1ca9f99f-6266-47ca-8c94-1a9b9aaa717f@kernel.org>
- <37973e21-e8f4-4603-b93d-4e0b1b2499fa@lucifer.local>
- <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
- <4505a93b-2bac-4ce1-8971-4c31f1ce1362@arm.com>
- <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
- <b2fbe58e-f47b-4a76-879b-fd38a915c2ce@kernel.org>
- <bcd2a49d-a42f-41e8-9f64-4fd24fc862c7@kernel.org>
+Subject: Re: Hard system lock-ups when using encrypted swap and RAM is
+ exhausted
+To: Aaron Rainbolt <arraybolt3@gmail.com>, linux-mm@kvack.org,
+ cryptsetup@lists.linux.dev,
+ "dm-devel@lists.linux.dev" <dm-devel@lists.linux.dev>
+Cc: linux-kernel@vger.kernel.org, adrelanos@whonix.org,
+ Mikulas Patocka <mpatocka@redhat.com>
+References: <20251111231835.1232ad8f@kf-m2g5>
 Content-Language: en-US
-In-Reply-To: <bcd2a49d-a42f-41e8-9f64-4fd24fc862c7@kernel.org>
+From: Milan Broz <gmazyland@gmail.com>
+Autocrypt: addr=gmazyland@gmail.com; keydata=
+ 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
+In-Reply-To: <20251111231835.1232ad8f@kf-m2g5>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Stat-Signature: n1nbdgodckomt4fu4bj8mha118d143fu
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A21BC4000A
-X-HE-Tag: 1764228721-80931
-X-HE-Meta: U2FsdGVkX1/iCAOERDDyUOyNy6Glgp5u06pjVwOm+TFQI00XdxACFbdH/FhcGChguzskOJasUjlpNZ7SD/2kN02ISl+7jPpduUlO+81k4F9dMmF0w89d5gvC0QLwCGbRDoDBMhomWC+CZYzIhz9vNbXL7E/20K7Gm8pI7LsT2l0ikB9JGVOyKbFL+Bt3+9MZ9aXcfBpESit7UGz1xwNcSRmGp/lvOhBrtWO/Kn04jGlBqDY5o/a9Z8+6LIZAaYztG8C4Nyp1qtRx2KoEpV5RXA/ff+4QRimnIFsd1DR+if2NURv0ydhNxU5F0ALipTnfw/xF+jz0BAkc+HP+dGfvkeMzXZyIICmu6rmfJmCMiLmRrqWG/N3H00mVtew48yMjn37iQ5iy4CVGAYFzsWAt4xluacNV1lh486rSmYYDzPzaWS6UJeF1kJHdMwxDAon6oFKQZA5yk7gD+Ho1mclXop2VC49/EF0sKc86Sxs7ngxTiyiAMnrlq15aEMkg+udyWuYWye4o/tgfaMezvVKik6OI1M2579hLjduMAl74lkQaFHLju7NzeOM0PTRW/mg9xvJSP5JjJaY0IK8GwwN1fbwIMtJrsXCeGQy/6BRKCG0Q1mA8H0aoDkcFlf2u4wM1OjwkIqF4LRIKQSfdY9ZR+DI9ImhYds/NVfxKj5OyryZA+g4wa2BBFD6DoGkydq+q212bknUM3VP8XgIdII/L8w6SmljNCDdSIoFfxYcEZAkw1egyhnYQJBK6NGFcz4OQE2Egdt9ogMjnkXJRKxdO7qqodC5B5V/Oo0RM1Uo3Kl4isi421fDldcadBKim3pnLN7saHAWXZgDLaixc8oCskxkpD/xb1SciGiO9Tbqh4wOy+i4rqKXKJOmc2H/37SoB3nDUQJMawQnCAbKBo2zcZtvxpyt5jZgBjHUmzrpdN+KyK5fnAQjbMtViDDMgbRl8Iw+nOaCi6rhUV24Axja
- vk+eyDoB
- CfYACN0Ymu5vErLnwQPcTKYNymXQRqq1Jld/1glbPTkc0eaxbtc+lSDA7iWw0Qa00HONZ5WaCPIUuQNpxOED4sVbwCJ5zJIwNezURJiu2++MLRFPpoD8d32a1RwI4/jobJZwcTHDIXZgcxh2PlKEoBrGnEVytkCy4TJBYepxa5wlOrUDeGiH/n2VtoZ3SG3XNVYgTAKezHSJx9Cty6xUhRFJAKBeoOQJGxsUFPzZNKz2qkynMTMyeCOBdC2RDQ3g+ZQm289p9AlHUYRRHzsa42ZI9xsFqO3ADTRCI78K9vUa8O1s=
+X-Rspamd-Queue-Id: D942F80005
+X-Stat-Signature: z1hxrgfouj6sutkp5rdarruk4esixuxc
+X-HE-Tag: 1764230356-160893
+X-HE-Meta: U2FsdGVkX1/n25GO16CgDlDfUXSlKcLBzGuqP0zMOy7r6We3LMY/m1qq5R12E5pJWPixQXkpmuulRk0a05icKYayavMdFEoGFjnJPp7efuMXpfoHpdWsBrbvXMUQhBfm0lYobzvb0b+DcnGhvS6dBcOgaIc2XzVSVjE4hCCQRB2mFDztUJ0DtkwRQUojKQ3fKynw6ZqHgFFP3D3zjogQohmr3CoNR/faxCJAEpAoTUmgxR4WY2h1mpIfQMFkUcqlS3eZG3V4kZ88bgxZ076GHCLY2EYPFGR7leF4W6XOEwYa8QOXl4vtg4ueTD5zUPfYDFtvjd34xAvOYCI/WNKSgOVTJHohDp+oxYEGAQT5NqKhdvXmZDRyo1Bh3arN6P4bEJcDsD4TTw3eqoraXhPI0ASZep/9oOko/htcJ8QYX0gpQ7+GOVwYbzmGko6DyOS24XuCzNz8wEOMnoIzrhPO36zk0MqkHJRVaUPyi45nljB3MOnBUeHJSyZhYPOIYT821WAaN9zMJqgc3jM2oGgWc3hi0ucjokJQTteUtbf1LIssUnEC4HCXOPw5PyEBX1D7EkobJ5dMgQ3ekWPNVEX8G+oH/bGedyGbW2xdlWAycc74Pgmgj9WGjlW0SXiPLglAN7b6ytBYaMcC7/91bsWDAM537IkJtIPpysizUpCgbbRl1EGSz8Ly0+Kz7vpc4FG0YBE8+KbVg9iCnBWxusjq/u4fXidOgZa7RcfDWWdqFmERJ343GEiaGX8AKPU+Ab4dxw2rtcyXhgPb15RwU+BP5XECzhtuKZz5pBM+vjBwJLFCRHogjPzCn1UdtUaQ/pWtASTVOUkDiHMu//eUfI5Y8ae5sJq5c6n27t8vmq4TKO8yvs65h+kqwi2TOjU/97nz+9y5t6wsoNhLOxHeIl1ufXX0WT/+uNqNwzL+eSd5SHw3InOHi1a34R4lFK3yX2y18suOUv6IHwWacmdGj5e
+ M3PvYYtL
+ 4V78MzMxXgQgL4+8tmu6bqoeLIWnVjYnxVCkFhwqNXqaEs33VooZR2EbmKltE9CrlpgDA3i+HsKWTpOHaczHZNPsBZGgfJY65GuX+AaOCFEtPGuUUQ+Byebe42TZxDXKVXhyckXsoUrm4WWgqWbJmnS7COvzfdE00s3RBIwYvYDvCwmAMB2qzADDw+0MU0CMY6UyWwBHDKt1G9z3cz1S1krfOMD8s+cvwYR6Is+rUEIzW12rKf4zcHzq5abX2KNkFVzUnqAcgATM4oUZLzMWEH3FPk/yAotVzfQgUtx+ewG4De9n66YrHlt6VE8Pqeix2mhBeHQ0YN6lr1hMJWtU0Dq701qCc238bduf8pa679l+/116/WHTdaQePW19HPzAVijA0hIBIKpycSKmqXOfEN2z6p4olDXz78K1GJpwNOoazKHYre3+7vS7cSb6To/lKbkdxYLHFIlSrLSEOf+nyUcgYbSO8ZEb6a1/d6IqQhT6WnDUE1ziDbv+EGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,173 +169,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/27/25 08:14, David Hildenbrand (Red Hat) wrote:
-> On 11/26/25 21:31, David Hildenbrand (Red Hat) wrote:
->> On 11/26/25 17:34, Ryan Roberts wrote:
->>> On 26/11/2025 16:07, Ryan Roberts wrote:
->>>> On 26/11/2025 15:12, David Hildenbrand (Red Hat) wrote:
->>>>> On 11/26/25 16:08, Lorenzo Stoakes wrote:
->>>>>> On Wed, Nov 26, 2025 at 03:56:13PM +0100, David Hildenbrand (Red Hat) wrote:
->>>>>>> On 11/26/25 15:52, Lorenzo Stoakes wrote:
->>>>>>>>
->>>>>>>> Would the pmdp_get() never get invoked then? Or otherwise wouldn't that end up
->>>>>>>> requiring a READ_ONCE() further up the stack?
->>>>>>>
->>>>>>> See my other reply, I think the pmdp_get() is required because all pud_*
->>>>>>> functions are just simple stubs.
->>>>>>
->>>>>> OK, thought you were saying we should push further down the stack? Or up
->>>>>> depending on how you view these things :P as in READ_ONCE at leaf?
->>>>>
->>>>> I think at leaf because I think the previous ones should essentially be only
->>>>> used by stubs.
->>>>>
->>>>> But I haven't fully digested how this is all working. Or supposed to work.
->>>>>
->>>>> I'm trying to chew through the arch/arm/include/asm/pgtable-2level.h example to
->>>>> see if I can make sense of it,
->>>>
->>>> I wonder if we can think about this slightly differently;
->>>>
->>>> READ_ONCE() has two important properties:
->>>>
->>>>     - It guarrantees that a load will be issued, *even if output is unused*
->>>>     - It guarrantees that the read will be single-copy-atomic (no tearing)
->>>>
->>>> I think for the existing places where READ_ONCE() is used for pagetable reads we
->>>> only care about:
->>>>
->>>>     - It guarrantees that a load will be issued, *if output is used*
->>>>     - It guarrantees that the read will be single-copy-atomic (no tearing)
->>>>
->>>> I think if we can weaken to the "if output is used" property, then the compiler
->>>> will optimize out all the unneccessary reads.
->>>>
->>>> AIUI, a C dereference provides neither of the guarrantees so that's no good.
->>>>
->>>> What about non-volatile asm? I'm told (thought need to verify) that for
->>>> non-volatile asm, the compiler will emit it if the output is used and remove it
->>>> otherwise. So if the asm contains the required single-copy-atomic, perhaps we
->>>> are in business?
->>>>
->>>> So we would need a new READ_SCA() macro that could default to READ_ONCE() (which
->>>> is stronger) and arches could opt in to providing a weaker asm version. Then the
->>>> default pXdp_get() could be READ_SCA(). And this should work for all cases.
->>>>
->>>> I think.
->>>
->>> I'm not sure this works. It looks like the compiler is free to move non-volatile
->>> asm sections which might be problematic for places where we are currently using
->>> READ_ONCE() in lockless algorithms, (e.g. GUP?). We wouldn't want to end up with
->>> a stale value.
->>>
->>> Another idea:
->>>
->>> Given the main pattern where we are aiming to optimize out the read is something
->>> like:
->>>
->>> if (!pud_present(*pud))
->>>
->>> where for a folded pmd:
->>>
->>> static inline int pud_present(pud_t pud)	{ return 1; }
->>>
->>> And we will change it to this:
->>>
->>> if (!pud_present(pudp_get(pud)))
->>>
->>> ...
->>>
->>> perhaps we can just define the folded pXd_present(), pXd_none(), pXd_bad(),
->>> pXd_user() and pXd_leaf() as macros:
->>>
->>> #define pud_present(pud)	1
->>>
->>
->> Let's take a step back and realize that with __PAGETABLE_PMD_FOLDED
->>
->> (a) *pudp does not make any sense
->>
->> For a folded PMD, *pudp == *pmdp and consequently we would actually
->> get a PMD, not a PUD.
->>
->> For this reason all these pud_* helpers ignore the passed value
->> completely. It would be wrong.
->>
->> (b) pmd_offset() does *not* consume a pud but instead a pudp.
->>
->> That makes sense, just imagine what would happen if someone would pass
->> *pudp to that helper (we'd dereference twice ...).
->>
->>
->> So I wonder if we can just teach get_pudp() and friends to ... return
->> true garbage instead of dereferencing something that does not make sense?
->>
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index 32e8457ad5352..c95d0d89ab3f1 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -351,7 +351,13 @@ static inline pmd_t pmdp_get(pmd_t *pmdp)
->>     #ifndef pudp_get
->>     static inline pud_t pudp_get(pud_t *pudp)
->>     {
->> +#ifdef __PAGETABLE_PMD_FOLDED
->> +       pud_t dummy = { 0 };
->> +
->> +       return dummy;
->> +#else
->>            return READ_ONCE(*pudp);
->> +#endif
->>     }
->>     #endif
->>     
->> set_pud/pud_page/pud_pgtable helper are confusing, I would
->> assume they are essentially unused (like documented for set_put)
->> and only required to keep compilers happy.
+Hi,
+
+On 11/12/25 6:18 AM, Aaron Rainbolt wrote:
+> Not sure if this is a memory management issue, a LUKS issue, or both,
+> so I wrote both mailing lists.
+
+It is not a LUKS issue; cryptsetup/LUKS activates the encrypted device,
+so it is only the kernel/dm-crypt handling IOs.
+
+Adding cc to dm-devel as this would be another combination device-mapper
+and encrypted swap that could cause issues...
+
+However, could you please specify exactly your storage configuration?
+
+ From the subject, I expected you to have an encrypted swap, but it is
+not clear if there are other encrypted devices.
+
+Please paste at least lsblk, lsblk -f output, and also luksDump
+(or crypttab if it is not LUKS) for LUKS/dm-crypt configuration.
+
+Thanks,
+Milan
+
+
 > 
-> Staring at GUP-fast and perf_get_pgtable_size()---which should better be
-> converted to pudp_get() etc--I guess we might have to rework
-> p4d_offset_lockless() to do something that doesn't rely on
-> passing variables of local variables.
+> I'm seeing an issue with both the latest mainline kernel (6.18-rc5) and
+> Debian 13's 6.12 kernel package. When physical memory fills up, the
+> entire system locks up hard, as if it hit rather severe thrashing,
+> despite the fact that there appears to be disk cache that can still be
+> evicted, and there is ample amounts of swap space remaining (gigabytes
+> of it). This issue did not occur with the 6.1 kernel in Debian 12. I'm
+> seeing this occur in very low-memory Debian VMs, with between 512 and
+> 900 MB RAM, running under VirtualBox and KVM. (I suspect, but have not
+> verified, that I'm seeing similar behavior under Xen as well.) These
+> VMs generally use a swappiness of 1, though I have seen a lockup occur
+> even with a swappiness of 60. The filesystem in use, in case it
+> matters, is ext4.
 > 
-> We might have to enlighten these walkers (and only these) about folded
-> page tables such that they don't depend on the result of pudp_get() and
-> friends.
+> To reproduce on a system running Linux 6.18-rc5, with :
+> 
+> * Follow the steps from
+>    https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQuestions,
+>    section "2.3 How do I set up encrypted swap?", but creating a
+>    swapfile rather than a swap partition. I created an 8 GB swapfile
+>    with fallocate. Reboot the system when done.
+> * In a TTY, open a terminal multiplexer (or something you can abuse as
+>    one, Vim works well), and open two terminals. In one terminal, run
+>    `htop` so you can observe memory and swap usage.
+> * In the `htop` terminal, sort by M_RESIDENT.
+> * In the other terminal, create a new file `test.py`, that will
+>    gradually fill memory at a relatively fast pace and print an
+>    indicator that it's still alive. I used the following code for this:
+> 
+>      import time
+> 
+>      count = 0
+>      mem_list = []
+>      while True:
+>          mem_list.append([x for x in range(2048)])
+>          count += 1
+>          time.sleep(0.002)
+>          print(count)
+> 
+> * Run the script with `python3 test.py`.
+> * While the script runs, observe the growing memory usage in `htop`.
+>    Swap usage should start at or near 0, RAM usage will gradually
+>    increase. Once RAM usage starts getting high, some data will start
+>    being swapped out as expected, but after a short while the whole VM
+>    will lock up despite there being gigabytes of swap left. (On my KVM
+>    VM, the last time htop updated its screen, it showed RAM usage of
+>    712M/846M, and swap usage of 328M/7.40G. The python3 process
+>    running the script was consuming 551M memory. The VM is entirely
+>    unresponsive. Incidentally, the python3 process also was in
+>    uninterruptible sleep when htop last updated its screen, but that
+>    could mean nothing since it might have come out of sleep between the
+>    last screen update and the VM lockup.)
+> 
+> Under Bookworm with Linux 6.1, the Python script would occasionally
+> freeze, but the VM would remain responsive, and the script would
+> eventually resume. Even with kernel 6.12, both unencrypted swapfiles and
+> swapfiles that are technically unencrypted but live on a LUKS volume
+> both behave as expected. It's only swapfiles that are themselves
+> encrypted that seem to trigger these lockups.
+> 
+> I haven't looked at the code at all, but it seems like maybe memory
+> LUKS needs available in order to operate is being consumed, thus
+> making it impossible to swap anything in and out of the swapfile? That
+> seems like it would cause these symptoms or similar, though I don't
+> know.
+> 
+> Let me know if I can provide any further information on the issue. I'm
+> happy to bisect the kernel if it will help.
+> 
+> --
+> Aaron
 
-Talking to myself (I know), handling this might be as simple as having
-
-diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
-index 8ffd64e7a24cb..60e5ba02bcf06 100644
---- a/include/asm-generic/pgtable-nopmd.h
-+++ b/include/asm-generic/pgtable-nopmd.h
-@@ -49,6 +49,13 @@ static inline pmd_t * pmd_offset(pud_t * pud, unsigned long address)
-  }
-  #define pmd_offset pmd_offset
-  
-+static inline pmd_t * pmd_offset_lockless(pud_t *pud, puf_t pud, unsigned long address)
-+{
-+       return (pmd_t *)pud;
-+}
-+#define pmd_offset_lcokless pmd_offset_lockless
-+
-+
-  #define pmd_val(x)                             (pud_val((x).pud))
-  #define __pmd(x)                               ((pmd_t) { __pud(x) } )
-  
-
-IOW, just like for pmd_offset() we cast the pointer and don't ever touch the pud.
-
-
-As a reminder, the default is
-
-#ifndef pmd_offset_lockless
-#define pmd_offset_lockless(pudp, pud, address) pmd_offset(&(pud), address)
-#endif
-
-(isn't that nasty? :) )
-
--- 
-Cheers
-
-David
 
