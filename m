@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E07E7CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AB85CFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41B5D6B000C; Thu, 27 Nov 2025 05:36:32 -0500 (EST)
+	id BC18D6B0011; Thu, 27 Nov 2025 05:39:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CC2E6B0012; Thu, 27 Nov 2025 05:36:32 -0500 (EST)
+	id B99166B0029; Thu, 27 Nov 2025 05:39:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2942A6B0027; Thu, 27 Nov 2025 05:36:32 -0500 (EST)
+	id AD5F56B002A; Thu, 27 Nov 2025 05:39:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 13F6A6B000C
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:36:32 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B3FFD1409ED
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:36:31 +0000 (UTC)
-X-FDA: 84156032982.14.442FC53
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9818F6B0011
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:39:11 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 469C5C0626
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:39:11 +0000 (UTC)
+X-FDA: 84156039702.10.F1A5BED
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3031F18000F
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:36:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hf1NMK2q;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id A6CBC18000F
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:39:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tdrDspf9;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764239790;
+	s=arc-20220608; t=1764239949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gNmzWWsgqJxfeRSl8Ws2LR0mw+9gWICYac2eBvVxBpM=;
-	b=Z+9KxQ5YjxNe4eBqqpIknMbVWa5Fo0LQw65/87UKHdvdJ1i5KsfcHJ3xhAmr2LiYSDVvP/
-	7y9pLHjfCNwlFGIHoRVmt23ZQ+P0GjuPqcywJ5sr+zsbTIYqunvbtBpvcscpOG0YTG+dM6
-	eE3pG9iv1DDmzHygf3TxH3uGV8wRG/E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764239790; a=rsa-sha256;
-	cv=none;
-	b=Ur+vSL+jfp/fDUxUqJIaMgS3zS3T2O3Zf88ffz9vDNf1pCc0yqtirjxrvz45mqRKEsZwPS
-	J1hoWr5nE38QYUCJMQ/R25xKoUgKw5eX9UrNqyweXBtsxhuPMvn2be95dKXxeo0/xdFJSh
-	x8HIalN1IaZBor0zPQqixaJiIVTVmOk=
+	bh=WShzrpUDnaoR55hhCEpYkKVhzaXHunjgWOw5262LPZw=;
+	b=eN0R+7fm0dv7OqtScLjrnlKARbw8yyKwcXNj2GaJAEdyXPBUfaI5MnovrCEF/x4lzd6aKF
+	qIiqRFpAukOyd/OIZrmS5UO9QptXucVcWv5vrYtoYO97NYEXH9Zi+l7KN9Yxd3pZJQ55dF
+	VnIapR+WYTkhM9fInThSX+lNDAsyzJo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hf1NMK2q;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tdrDspf9;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764239949; a=rsa-sha256;
+	cv=none;
+	b=hqi4u8LpbnqNi+45JPXRvurnGeic7MWrTk59h828knQN/HEwipLQcXrydxknRkLc/zNUvM
+	5yRf+LonEoS6UP8z5u3rkNkx8ereqqQ4SY+Cx4hHzyHS7RuZt2LTY5g01JD2GwZVyKntxh
+	eYydXdX6wkiLcTASK38QtHWbLaDH0k4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 872BB6013F;
-	Thu, 27 Nov 2025 10:36:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E3EC113D0;
-	Thu, 27 Nov 2025 10:36:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 15852600B0;
+	Thu, 27 Nov 2025 10:39:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645DAC4CEF8;
+	Thu, 27 Nov 2025 10:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764239789;
-	bh=EW7fa0YR0eAojjarOFkeA2S1shqTF3govz1KNpd+VNk=;
+	s=k20201202; t=1764239948;
+	bh=9o1jZ8Oj1DOfr27ZVVqlDJBNXIj4fytpgJFoLZErDXI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hf1NMK2qId4G69jvB9K1jaDpSSbHc9z7L7hEiWYkXA+owEUB5rhk+3dXMbQSrEm2e
-	 jTbTzwS/D1rlaSUmsddYIY/nEbhUMvcF54rbGLh7n1gRgiU8ILVbSgj1y1ehcf9VGH
-	 qjBQGzgdBbS7Vc2FfR0TFqfMRW24fVG25hOXyZHffhid2u0bPGbZoZljVSsCbOn+Sl
-	 glfuRo11li8xf9HdqBwO/vOolcd8estetolotsVKfGGiP0HQ74MWLEgaQWzyz2gbS5
-	 3HlD+GwWe7UUm7kOJIqKAC2BV0tU/ddVj5mS7ilS1V4HF9VITB5LacR3Ck+7s2TQSH
-	 LNK7x+xRw2xpg==
-Date: Thu, 27 Nov 2025 12:36:19 +0200
+	b=tdrDspf9sqnTmBIOYvod/rDMAzZHXGCJUoTEMVvCLFgKmKUvLHn5KthSzXHbY6DSN
+	 28Z3u+Vwg+5o4ehdfQ103R8cHF9GtKLFVGP3pS75Ki8zXd01n0cFocmT5blduWNEqw
+	 0bR+FC4GR0WFX1oXAPfY8krmw/qKdRuLUL3CUfAD1z6hW1ZUpG775MHQOHRUKm41fR
+	 7CJ0N5WxfPiUUWCb64he8prtusjo1bMXC/oZpGVl8c8xzIiZLmEsQCGXI09cjE3Aws
+	 4VoXilNuLmNFvFDSP9LZXia/IMiIXD+vMwsGwgYo0kXizRa9fcc+HbTNbuM1MHskpK
+	 xZ52bPX4oQM9Q==
+Date: Thu, 27 Nov 2025 12:39:00 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Nikita Kalyazin <kalyazin@amazon.com>
 Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
@@ -82,24 +82,24 @@ Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] guest_memfd: add support for userfaultfd minor
- mode
-Message-ID: <aSgpo1_ZSmxf84-p@kernel.org>
+Subject: Re: [PATCH v2 5/5] KVM: selftests: test userfaultfd minor for
+ guest_memfd
+Message-ID: <aSgqRAF6Ih8u6fdP@kernel.org>
 References: <20251125183840.2368510-1-rppt@kernel.org>
- <20251125183840.2368510-5-rppt@kernel.org>
- <bafb0c9e-9ce6-4294-b1d6-e32c41635add@amazon.com>
+ <20251125183840.2368510-6-rppt@kernel.org>
+ <18b4cddb-3e04-4272-9f04-6857cea70ff5@amazon.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bafb0c9e-9ce6-4294-b1d6-e32c41635add@amazon.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <18b4cddb-3e04-4272-9f04-6857cea70ff5@amazon.com>
+X-Stat-Signature: 6dhb4mbyesafur5fy4rx9y1jujihj9iu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3031F18000F
-X-Stat-Signature: u13ckzrefsdf46syf5zspz1t5twen78m
-X-HE-Tag: 1764239790-135939
-X-HE-Meta: U2FsdGVkX18avJyWeZg0yO5Bn5o883n7Rp5Ze8rACb/gk18nO0IgGBPQS19RXNia1IrWoWVK2oPRR27fdTuopA01S274y2qe6wPDc9z3SzUOPWmgpGUf8Bvoyk9WwzGUJ2/Zr5mNX9BAmfKGJocVLcs7qM85GIrzv8hWOnFDHUygMVA6JBnJQBAYtGppOYe071cBMS7MaAM32pzWvwSHPkJ1WyRtIABTrFPdS2lNvOyYUpyJXjIxrUPsYPQHpXfnXy0vVPpr2fdUyMbgg/Z4ZlvwP2Aj/Hooz/GvOo0FY7usKNEpzaRH39Qko5KC3DNOTmhX0Ng2QkBjHgBDgRs1ZR1kRLkFof4GWJyNLcPMqAKNMEHz1jxRuMIKE7Z5kfajg6YfdJsi3nmfn3+D+ILvB/ypdzcnNSEEZHuJQh7VVm8mU+iK9NZmgEdX3+6h/rjonCCKL5gfaYkXoZl0Prgwy9rRAuIizR5rYS4g9+GF8oN50TVh7owMZae1GxSRUMPyfzr7nilj/tSveI5R+mLYwB/Ieqnlo6edZL2lYv9gP1+Vup23ll9wTp1lOcC7NX2IuSqdUH27ft74McjC6UVepY86/JSk7X1DsidLjuDgJD6uPXjvXuCHF20vAlcHlSWT1DuDh9y2lPkkeDlBGsvYhdZBtYUA06hh26dEcSStGpgzjhcWBwEX8lI2jRhCd0yK2tzXs5OWX9cnoV+L8rLp4ZgYXnnwKFwhUuYf5+8M+QQrNxkV5Tk37SgEdx3ZFP5tdYSg5H2c+Z2+OKi/RYYQhY032vf2eAvA3U7pkXxQ/G5rFuvArfyh+10mQUuOa/HPCAsCXqFSaGmaa0NSjZuQ6tBMd0U4ZGbgs0Jw/kET7hqaV3i0+ic2iiAG+5MsFsnAcobYs3PFD1GXTvB+3Gp8mQWgFBaE/8vvccmrtXia/DHJi+O1gLTEDQ9cBrodItmJ54a0FkPxXv63F+cSUm6
- OMBNxnKt
- xvyFCuZN1zgcpjkpTtMCeYL5VLL3oUUeCTyeRvXIcNDhJdFEcW7vfkHbl8doX/OqRxrXguVC3NYtPJRO2LyR/rmxBv6Bfcbiv8tYjScHbtsTR4o0C6m8egRyP/REeg4odEmqBjKWOJCwcRlhqS7XzuNWwVhLJBsBONiDd/qgDVjLxUziEI60znn67Hv/leL/mofNcmlqRJ33XdTICG3h/W4zAIMuOcHPblXL/Qmrfjdbs0x7agP+LAzMUrQcWOxmwOhSuADxxCkV8YuMt90e2bIRPQIsSl87PiEmvOTXY2fNvdIx4E7Nt4QUSU+zJOpAhjQ0e
+X-Rspamd-Queue-Id: A6CBC18000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764239949-523946
+X-HE-Meta: U2FsdGVkX1/v90kbKu/cMduL9oqF+UBbZBR1CRAGBegOk+K843jGuXl/aNg0rH7DXJE+6EqzUNVnVNsr83snp+NJwds6fLuIpl2lVM/7ffXEF67lbOtSYgYn6biJdYmn/K48NKQZtNHvErOyZYROS9Kl2Zzg1V0VjMN1E91WrkdrFOqimKZ7nxYwdphqu2FcnfFuV5Z7GxCFBihQujp7br2STcSr1S7X9ATd8zOjLbulfPYRwdn9bl+NKqQQPwwHZwrVrdukyYnNNJtjG7drAn1QfTWOoxfP3ldh77G+vHJ4dm2H/JML1B7aV7iPd1rTiZxB+qD8T45Y1OQE9MyVdhKwXPimcI9W25sLxYx5SuEkhT071S/UKUzAL+xis5Q0QhITi3a6sJdlvH41G5dXQdrDZ56dIFpUcPv56DBz2CIUAa4dXboZKLQI6W194xZAPBVCqYmOJw6Kb3hGZWrOm9PlrqDS0CRW7XiBfgRI0Pc/ajoLjHvU03EF3l8v1csqNaWHgwJikIj0iBN+8RcI5jYWF79xXDto2Xl/7/d+QLu6RByLBEA2u1hGDqWkCfyN6SNhCHNv0mGXPmw5bEZkMBV8eNre6VsOeFp+ZjXj2MGzkWssF3dxMcbUNdEijpl9zt9amIh20bnDz5pklx8R+PZzXaiP2Vj6ntn0B214juz4c9NfBk54Jk5uJ9wUuM1KxjBIJDOr23SGY/F4u6FG7O+SKzTOnE0JKRU4RxqUjGrnjHpyL0UY0IyqrQ27omZb9mIgZCnCs31zCr5YSQBDiZrn9T1xQklgUISWf1HGxofg+yBaJwyGw1H1aj1IsbfwpH5qJZIHzCWhpDoLIGqChYXjyOM4UVmsFs/DuUuyquWZUJyPB25iMIgSsrC2nz2Ft4L7plT7vyC2YeBqqFaPwIFTXLkDmPJ/XibRpQsY8CNgYdTsI4yeBNI4yNQDYXsGkZY1jVZDPZtfw7/yMbG
+ oXdAD5wi
+ o4XSGMACIxxiLwPZIc8Neo0l7LmSaNv6HX3d7N420LVGVls/ozuAzgSAE8lkDaLcg89KvQfxQyvjqpz/gzPWvovr0k7ztF5HiB5UQp3bBuezew2wdbMpREoR66sYOr4MmD5bAnGabF84SPTezdWTxVcmRbTq+ASAhjm7uTnjch475/c7jIfdEz5nOR0qKLu0QECMMG6w73jA0QeUBAPm1yudwztiAsNiTiEi8qYQiNsxurpv4PvbYQ6OoP7IqyI+Q1GTP06g5y26HOWjCzN1JEueihHeM3rM8Kc8rQ2bJ0FhKAMoa8t36bo/TbRjX9NnjCeL5/FM4WsWL50w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,18 +108,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 04:49:31PM +0000, Nikita Kalyazin wrote:
+On Wed, Nov 26, 2025 at 04:49:46PM +0000, Nikita Kalyazin wrote:
 > On 25/11/2025 18:38, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > From: Nikita Kalyazin <kalyazin@amazon.com>
 > > 
-> > +#ifdef CONFIG_USERFAULTFD
-> > +static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t pgoff)
+> > +static void test_uffd_minor(int fd, size_t total_size)
+> > +{
+> > +       struct uffdio_api uffdio_api = {
+> > +               .api = UFFD_API,
+> > +               .features = UFFD_FEATURE_MINOR_GENERIC,
 > 
-> We have to name it differently, otherwise it clashes with the existing one
-> in this file.
+> Should it be UFFD_FEATURE_MINOR_SHMEM instead? UFFD_FEATURE_MINOR_GENERIC
+> was removed in the v1.
 
-It's all David's fault! ;-P
-How about kvm_gmem_get_prepared_folio() ?
+I'll drop .features completely, the checks in UFFDIO_REGISTER are
+sufficient.
+ 
 
 -- 
 Sincerely yours,
