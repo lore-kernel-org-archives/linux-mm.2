@@ -4,123 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6450D111A8
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 20:37:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B5A9D111A8
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 20:44:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54A296B0088; Thu, 27 Nov 2025 15:37:44 -0500 (EST)
+	id AB0576B0031; Thu, 27 Nov 2025 15:44:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4366C6B008A; Thu, 27 Nov 2025 15:37:44 -0500 (EST)
+	id A60D76B0032; Thu, 27 Nov 2025 15:44:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 289AB6B008C; Thu, 27 Nov 2025 15:37:44 -0500 (EST)
+	id 94F8D6B0092; Thu, 27 Nov 2025 15:44:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B7306B0088
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:37:44 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B920E58334
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 20:37:43 +0000 (UTC)
-X-FDA: 84157548006.30.AF41388
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 003CB1C0009
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 20:37:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UeRlpJZh;
-	spf=pass (imf21.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 7D7F86B0031
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 15:44:09 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F1465830E
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 20:44:09 +0000 (UTC)
+X-FDA: 84157564218.27.19613EB
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3471B140007
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 20:44:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F2XIMoVp;
+	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764275862;
+	s=arc-20220608; t=1764276247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IaLsUxu38y5G+gFtilovMk2bO7Fvh/YwG02/3lmZCaM=;
-	b=mQGasXjhhDYTqO3/4rIeEMn4/5xPRicXel1mmfHrCDqQsiVCfGxZ1dMrNAlOAjFUjhLPJQ
-	2hzJutQ1+Z6UEUdZWhR+IpCKqkp116lrVtvdTJf5nR4WoYxfqD9dCxYejhGtXlqAFfdMhH
-	rfAVnIVh4NFUH7vJxqXwKBm4u8In1Sc=
+	bh=qwCD3atudzQaR/LDn9XgIygiEi/nCI5QmZX0e0EMwzk=;
+	b=ssgwa697MMKbG1WfWNrNxKeZaQZm95GhlrFjG1IgaVGYpp86bkNulftxW/zKyAryBOMryR
+	NQ3aF2NTwG3LKExE9M8rBpVMLEI0iXsvWw3ULSQ46cj16pKItG/+cxP8NtWWIrEN8ntZh5
+	tW66+mo9L+oFAeSHGylEkEbh/lY9MaE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UeRlpJZh;
-	spf=pass (imf21.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F2XIMoVp;
+	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764275862; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764276247; a=rsa-sha256;
 	cv=none;
-	b=xm+bHUUNyqQVu0LZXVU26hxEhqJsZDFDRYJZl3NftOcbUZMUY5zRgwnMum/vOalXnXg0MN
-	OyawuolznnSVlN0WOqRTTCc6T/bh4FJhF1Xt3bo9Px4PqoNN/5BZ4k5DmVjRLuxJ8HkOD/
-	sIDW+BCL0/rB71gHg6ieoXDjVBCYWY8=
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7c730af8d69so698870a34.1
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:37:41 -0800 (PST)
+	b=x4SM1oPkLjkc8kex42Cr7RrAezlm1xxwZqLUwpKF7pRx9Jn7AWdgMpNhYKky68qv63Hsvc
+	9TbNcaXf8n0vU0JcU9C0gX6ghQnqaI44LM7E1+WWgBhqnOK0s9FHcSzygl8k9sYqCxp/cJ
+	NWNf6BaOMEex3ibFXZk6Zyc3HbdHiKw=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-882475d8851so12568776d6.2
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:44:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764275861; x=1764880661; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IaLsUxu38y5G+gFtilovMk2bO7Fvh/YwG02/3lmZCaM=;
-        b=UeRlpJZhWv3AUzyxENbIkuSdFR8VmdROl0aNc/v3yP8U6TS6wgjwu0QQloPhaJx8az
-         KT10ArhqXNm6FDg4AfdgXN9FrQ39ULljNkiYLcZfL3zLkrOvLgJgz67/OfnZp1kE5dig
-         60cl054uH/mia34lbYB9zxaQHz27u4cleWARnzBsLi09DvZoq3WkMoNpKhf3TX/WR+6m
-         mPwwjs0gr+3sCHBiDaRxGlaF4zHBhXwV4Q6WNZhHUf0zh2B3mNSgXi8lu7hG0o2zPHw0
-         PNPoNGkMHNuRivM0FWqLzPUsfJGg37oCGzmt/PR37qECLSOwP54FQjhqssKKA0FHlrP5
-         wpdw==
+        d=gmail.com; s=20230601; t=1764276246; x=1764881046; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qwCD3atudzQaR/LDn9XgIygiEi/nCI5QmZX0e0EMwzk=;
+        b=F2XIMoVpmHmKHaZbPbQJfOs7s3AwN647UhbSYksLEA9SGi+8r5a7pGGKcuyIgjQ7F/
+         acss+1Nnf0fyj6Xs/XWJyV0qV5b2GE0cuPoB24Eh9f824KDQJK7TObmI96eTLUMWicZm
+         SWIAlhoErr33CvB1HNbQLzFSeJYI7iGc4DSmxnVE2u/70MElmqaL2wWi6Wd0GZE/j6ay
+         +qUxNnsbPmkBzI1aUxGeDY14DYFejHUpqy7bvfJPQcNDGL5zySoWyu0LIw9XaqEDScoL
+         xlpXd5xrLln+fmFukVBem23lkivL5kFC3SwcQLUeaOdQEodbNQPNYWJXaxUTBMJxPtPb
+         BWbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764275861; x=1764880661;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IaLsUxu38y5G+gFtilovMk2bO7Fvh/YwG02/3lmZCaM=;
-        b=TZsK5NvXeXRHcdc6Fbah58VjkQTJPNMpwMM+gNIAZcWoXirNr0rE1vNwSpGZWzznYG
-         A12yTNPWIYIsyJiecvt00JQV4y+Tr2YHGSGvGXTBrA91KwYjoKhHxNTDyiFcW71RgENy
-         Yz/u/te5ssLoOVENbJJQAHPgBzzpe4zkqjUn73OUqEu64BXyNH8ich23fWRc4pG//XL5
-         kJ76Kn5J7/UFBTOCc1rBQML6zp3yuYvj7/0Gzh/+EyUqdeIKh6SFfnTN6vnRh2ZkYRzy
-         25vYQlbRPNjiFpl7j06SQkvKxz9SABvjZ5cBXupRH+EGrDyZYgGOWzClLFlA6XOhWqXa
-         MHdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVoqwkomDmV39onCfAcq/h3+/n93LMNiXgvwHnUMUi8FMBQhhakT9+/Pw5QKlRmSxvmf313GCSxNw==@kvack.org
-X-Gm-Message-State: AOJu0Yw3uwTP3Tndi8lKagR39rTgDCx3M139GOVtLWmBf/5jAvn8wbC5
-	4XXm5iRCl99Mx2xyxn8dkOl39EeRO0wTSADYLii4WSvhEXIvn3CM/Mqu
-X-Gm-Gg: ASbGnctdoaZ2D2iVfy2xu/O1p1Uyv3DFKUWKTMAK9ya67m6MlamHtmq3vmfEuAkD+4Y
-	60quGTZ8gGw9w87xgo3i9G/KHffDhgdAdMaSs0hjLlbpLNjpXh2PZ67iNJrxUID+qstyDa+G7hU
-	oQORkQUVN2qzwUUuWSDVzKadeoGSHqBEb6Rh+sNWxxxN8RV8N1NKhn3n0q7CDMugWliUP3Jwldy
-	ZKIdp7RZ/urtVZOZUUbCp1sEOVbTX9PsERiYNTtmowgdSIKggLOEWZKit7uKxtO7Ft+jN/9uaVu
-	ZFWO2MhgNDmwJGaYhgXZ1LUJ23klslpVzVLwvmFzbjx+xJRO/exAImQNVK2uaQgJYhcmIEGw0Vx
-	flLzr6Cnc/vo368Ds14QIX/barTNeeo/2ek2O89IuxMFmy+EiXNl6/SzGtDOF6k5TopvcLwFu4p
-	lUXHdMm7bsrC2iDzU6H3tuc2UqSw8T27w=
-X-Google-Smtp-Source: AGHT+IGJhhlLeqRc0DJAlF0MmZoecI9eojRTaaX5K8ZxiyKE2JKVMaUIDPe51FRm+vBCj0A9r0XEDQ==
-X-Received: by 2002:a05:6808:13c4:b0:450:ac7e:cb7a with SMTP id 5614622812f47-4514e7eed87mr5135527b6e.34.1764275861043;
-        Thu, 27 Nov 2025 12:37:41 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:74::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-453169f9f54sm731093b6e.7.2025.11.27.12.37.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 12:37:40 -0800 (PST)
-From: Usama Arif <usamaarif642@gmail.com>
-To: rppt@kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: kas@kernel.org,
-	changyuanl@google.com,
-	graf@amazon.com,
-	leitao@debian.org,
-	thevlad@meta.com,
-	pratyush@kernel.org,
-	dave.hansen@linux.intel.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Usama Arif <usamaarif642@gmail.com>
-Subject: [PATCH v2 2/2] mm/memblock: only mark/clear KHO scratch memory when needed
-Date: Thu, 27 Nov 2025 20:33:20 +0000
-Message-ID: <20251127203724.3177621-3-usamaarif642@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251127203724.3177621-1-usamaarif642@gmail.com>
-References: <20251127203724.3177621-1-usamaarif642@gmail.com>
+        d=1e100.net; s=20230601; t=1764276246; x=1764881046;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qwCD3atudzQaR/LDn9XgIygiEi/nCI5QmZX0e0EMwzk=;
+        b=hYYxqHvw9dShZfyL+EOv9pBlqHX17F8088NiWtHXGTJhuyoHws+4dGeTpPrFyBbZXe
+         zzr0wkJULQp6mKdXQ5LU4FigvtTMbIWxX6sR6qUkBqXqi5V8XoD8bM6O0nRuafcjQg72
+         tsyXJVyrIlHnFQgtwnw+3a9R5T3ZNAEFaBsdnNv68QnENjcxWC2Kj1bvqDPZ6WqLJyK4
+         umWqffuFjCGf673nNtFTTzgAoO8Ie3jadtA6dW+ID2M6whm7JhaPaLom7bW9R0L9AMLI
+         ZRs72GzAsaz/TlWO/zW/fAwMck4Bop7IbCABLV3m8FMgJpcyg9LfLM0ht/4dOJwiOZSq
+         I3iA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVkEArYacezg7vaiurlkv+g6lx0LtgHq3zT/Cy4lYSg7XH+Uw84bvnRGQXYrRmq8E2ZKFM975jHg==@kvack.org
+X-Gm-Message-State: AOJu0Yxv5YI/H25fuHTXDpHlfnu/SiXPe5Dtyu6A+GGWeXdbUsavgqT7
+	DoFJQQnoqK3Qm+bQqy2AaN3BTyQm+Gieo5hZtQxdSKw/MoMX5hxQjwDmoeA7pid/S/JfkzkbcPk
+	M6zsqn1wdq5QAUSGk0pgpx/ctmVzIO40=
+X-Gm-Gg: ASbGncuz72Kp5xpra3dgrXrQx0Jnv84Qm7Lh58Zv0MZ0LYGCXHSxzIrvUAusJ6GsDxB
+	84EwNDeaTLeu7h2i5OSQYGq9o0k2961p2pFJQKGC4TmYZR+84Z9NVSIA9Y9pkA4z6+OiS9o+lk1
+	974lQqGZEt1Ki38bvUCv1+sNvmlF7lo7BOGwfipv/Zq53VFVu6PxGeE0nDvaJphLVt6OgWB2nUp
+	6riDcJ9SG5hJ6VqvRzywLs1xOBoZPUrf/Tt0d+Sm27Yd74gkyJOXKqN/JTJMi8TRelWTw==
+X-Google-Smtp-Source: AGHT+IE7voQiHDKLB4NwV8zGSE3REVdUO0e8yn38MIWlpfXSI6ZQdpofqkZUcP8t3D35swjRjPiF80F/keI36AiYhgc=
+X-Received: by 2002:a05:6214:4018:b0:880:4c02:c49 with SMTP id
+ 6a1803df08f44-8847c49a3ffmr351784406d6.23.1764276246078; Thu, 27 Nov 2025
+ 12:44:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 003CB1C0009
+References: <20251122090343.81243-1-21cnbao@gmail.com> <aSiB-UsunuE7u295@milan>
+In-Reply-To: <aSiB-UsunuE7u295@milan>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 28 Nov 2025 04:43:54 +0800
+X-Gm-Features: AWmQ_bn1BA-EHgk099B5JdrbxARNS1wqxvNFJMmU7BmZqAfXIiS6yKlNivY5AG4
+Message-ID: <CAGsJ_4z21fN2KSg6jt_qveYgrKZw1Vsi_kb+uhed=RJAbujMHw@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm/vmap: map contiguous pages in batches whenever possible
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, John Stultz <jstultz@google.com>, 
+	Maxime Ripard <mripard@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3471B140007
+X-Stat-Signature: 35eta9ibws19kp1pqsdapfz6ctno1uxy
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ba1jmmjiossauydn9zkpie7gu4hjw8xm
-X-HE-Tag: 1764275861-822350
-X-HE-Meta: U2FsdGVkX19LCPIePJp2ZG1zwFlFGhY6xm5ycS78jNVaAJSN2B6PxkxHQIxkGQVyOP3TGVzOEKErl3uzqxf8VC8Ah+jcRDEANHU5DYJT8xOIh5oZLkVC5wMc0Uok45oZFsV3qHwy4vAKm2EbaSB3duEiyCM7KKhPOzJtz3n6ERTpC51sg5PUNKEs76/lObM5HILSfhTBqbh8Brww453wMCwag+JjZczmB92NbBPX8IaovNNyomNxmC+Ztl9mr+C0OEFxXKC3Vzgd+8LtxkM5eCpVm6gQZl9MNjtPLR08MTB9ZHsn5ToHSqyYMnqIZbLWMnGeFORtqu4B8rzIBt6V+4sXc8Zl7oEZJxneUFXzknjOrRMOC6L2bNvZXTNNB5E842FpA28spGiL76nFzLEU96eRh4xn0fTF97TMFJvgcRzIErwj2UvBs4vG4QMj23krRniFzd5d1ROUPtRrQNkyIlIk5+forK8095AOISXHnAA/QmX2Hk8oQr8AT5NrTDj9SfN89Dpny2H4sDVmXuwIbGwTf4Igl2TD8pH8jKRJ1MkkyU2uLkc71gBtWlVcsX+KZpVdzixnDDuEiSTWzAAmPadv5D4dkK8cb69XF/cQ30Aw2pkKiTlCu7jkFqGp4KNh9E+P48qvKCMWIPrLMtpvSix9+1CfVJVGJQRfz56hmmMPSD8q6JgG026clRxK+eetnIQmu2sIFuuFQWO3wgDvMJ3v0CJc5G2YfzmOIHssjwS30XszN5rmHt0dE9UvmvD3s4YzPAmLHCGA386J0ZLZdX+nzhHLFL15NJ+6MyRJpZunvqSRW5WFL+YEeWeH6+jsyTM9sbj+ic8KwjbOIe+PKVMAxZB0CTPsJmzJ9UdPZah5oM/nk4E060qxxrvfASsCcBAT+Uph4na863H6uQjZmN21FArG7R5cDOSLyqH77CHaIbG8E+QUz7YEnvxjj3zU0FIEng93Ny0ma+BjQ7J
- YgFkZliX
- aJMERU0NTFDYLqfeCxT61kVyDsoqky7cgANp0Scg194dEX6bXhnmo5jv88CLuFx4VaTlGE+/x9hFl0F3NqGwGq2/UP13jzU82i6EqHhssQ47J/b0=
+X-HE-Tag: 1764276247-154245
+X-HE-Meta: U2FsdGVkX1/pdklQikNCFs0Yn76huxGwBvlln1Arw5nyLCHoAxyKScmmZlk7AFuzVrrRVmHZiD6I26Lzn2sU28dOhPe77kK88E4OPT96/2YbvjkxocL7gkSzjA5V+6oYbgTooKaewGz9HCv/fujGJI79iJDupoduWNawogeYmsHTrn4HsB7Ko7wLED3IaV1gMrnLi33OLf22Z4U5dR+biGByS4qoEaXYXOBi5QnRgv+GtwXMuSPsUpN5qEQlSkevvovb/cThzyXPmCH8RINHVuJjQxIxUKNuK3TNit5RU11HhEvmm+HJlHNph9j7whxJHQxA6CF4oISjXpmcHhsxUHefgZBUuMHd0ne7RdwRtIhI8NjlfltfB2MSLRskL+Gv9oGZjfiDWA0fGPxa+ARuIX0fywxUt0XsNHjpQHf+Bnp0nG6FOb0HRuHKkIIAE+bib82MwnHC29KQiWaYZrZN8kdP7BEr6MIKE+Tisstveyx/wFdfxSwwN1W6sJ/88/BQylsbjsljHpb542KruhBY/vxDh0M10diKNAtGKPd2938REQPpT/BX5juLa47Bn3F6HigHrMLn1mpVLhYSec1PLvB/47ESzdGjUcWNwZlHt3+mQw5TDs3LZpYw1quQZ1KukD93tMFxQItXsOOAakX4sGvAysG56X/01s39gw/SQkEI7VGb2FXiSYAvzL4g+iIoausshLxaD8zuvOkuyDnHKnFUOmsdc+ao5JhhZspcmc5/yGalZckAjxaaJfVwSobBRPvp+Zgt8VOzLNfkQ2pliQDq3sR+/tHC3qP92PZy6vtioQFsz3aJ62lC8qBfS5iTA+BLFDIw1ETxgb++M1WLdkoHbvWKxsGMsr/VaerpNxwEvXDu0huowfJ6NcwivVpd0zHYsSS4FqIfuOwMh4ugLj0g43BjcRO2v8yFFxLJm4h+Ep6zUwNoJugRrqezgz+hKr0N1aQ9S7VjQ3wYgBp
+ cWAxEOBD
+ mtpzDUBdByv8SADF6hfU7xpEQKnz+LbUd9LgWiOQVPX4ikGHopSRSpLPlHqnbh+QFI90NX5CRz7Ut55T/aruhrwxmmjMWJ5nkKkk5gVRi1wkz9ZePDnAbCi1mdeI1/+AVnpwj8oY/4SDDLVW9J6lhYL9Yn1/bm61MzwDYe2085L7XY0fGxMI8b3Ssz9eVHBuIZ27p6GFfBRb1S4DQj5WKemSk58nNXIX34wLY6xuluxnYVar+GJUcleQN8HNMQIvpdHKL+dSdAtACVhIqupP3pKmtc+zyzoz8fi1wXz+R7yusaklKf05U2T95fXlDxCPJuvkolGkk9PzJa2K9RYWdboMWPwKmYQO5dAM6GE3NwUrLRVE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,117 +116,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The scratch memory for kexec handover is used to bootstrap the
-kexec'ed kernel. It is only needed when CONFIG_KEXEC_HANDOVER
-is enabled and only if it is a KHO boot. Add checks to prevent
-marking a KHO scratch region unless needed.
+> >
+> > +     /*
+> > +      * Some users may allocate pages from high-order down to order 0.
+> > +      * We roughly check if the first page is a compound page. If so,
+> > +      * there is a chance to batch multiple pages together.
+> > +      */
+> >       if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+> > -                     page_shift == PAGE_SHIFT)
+> > +                     (page_shift == PAGE_SHIFT && !PageCompound(pages[0])))
+> >
+> Do we support __GFP_COMP as vmalloc/vmap flag? As i see from latest:
 
-Fixes: a2daf83e10378 ("x86/e820: temporarily enable KHO scratch for memory below 1M")
-Reported-by: Vlad Poenaru <thevlad@meta.com>
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
----
- mm/memblock.c | 74 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 44 insertions(+), 30 deletions(-)
+This is not the case for vmalloc, but applies to dma-bufs that are allocated
+using alloc_pages() with GFP_COMP.
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 8b13d5c28922a..8a2cebcfe0a18 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1114,36 +1114,6 @@ int __init_memblock memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t
- 				    MEMBLOCK_RSRV_NOINIT);
- }
- 
--/**
-- * memblock_mark_kho_scratch - Mark a memory region as MEMBLOCK_KHO_SCRATCH.
-- * @base: the base phys addr of the region
-- * @size: the size of the region
-- *
-- * Only memory regions marked with %MEMBLOCK_KHO_SCRATCH will be considered
-- * for allocations during early boot with kexec handover.
-- *
-- * Return: 0 on success, -errno on failure.
-- */
--__init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
--{
--	return memblock_setclr_flag(&memblock.memory, base, size, 1,
--				    MEMBLOCK_KHO_SCRATCH);
--}
--
--/**
-- * memblock_clear_kho_scratch - Clear MEMBLOCK_KHO_SCRATCH flag for a
-- * specified region.
-- * @base: the base phys addr of the region
-- * @size: the size of the region
-- *
-- * Return: 0 on success, -errno on failure.
-- */
--__init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
--{
--	return memblock_setclr_flag(&memblock.memory, base, size, 0,
--				    MEMBLOCK_KHO_SCRATCH);
--}
--
- static bool should_skip_region(struct memblock_type *type,
- 			       struct memblock_region *m,
- 			       int nid, int flags)
-@@ -2617,12 +2587,56 @@ static bool __init reserve_mem_kho_revive(const char *name, phys_addr_t size,
- 
- 	return true;
- }
-+
-+/**
-+ * memblock_mark_kho_scratch - Mark a memory region as MEMBLOCK_KHO_SCRATCH.
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
-+ *
-+ * Only memory regions marked with %MEMBLOCK_KHO_SCRATCH will be considered
-+ * for allocations during early boot with kexec handover.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+__init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
-+{
-+	if (is_kho_boot())
-+		return memblock_setclr_flag(&memblock.memory, base, size, 1,
-+					    MEMBLOCK_KHO_SCRATCH);
-+	return 0;
-+}
-+
-+/**
-+ * memblock_clear_kho_scratch - Clear MEMBLOCK_KHO_SCRATCH flag for a
-+ * specified region.
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+__init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
-+{
-+	if (is_kho_boot())
-+		return memblock_setclr_flag(&memblock.memory, base, size, 0,
-+					    MEMBLOCK_KHO_SCRATCH);
-+	return 0;
-+}
- #else
- static bool __init reserve_mem_kho_revive(const char *name, phys_addr_t size,
- 					  phys_addr_t align)
- {
- 	return false;
- }
-+
-+__init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
-+{
-+	return 0;
-+}
-+
-+__init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_KEXEC_HANDOVER */
- 
- /*
--- 
-2.47.3
+#define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO)
+#define HIGH_ORDER_GFP  (((GFP_HIGHUSER | __GFP_ZERO | __GFP_NOWARN \
+                                | __GFP_NORETRY) & ~__GFP_RECLAIM) \
+                                | __GFP_COMP)
 
+>
+> /*
+>  * See __vmalloc_node_range() for a clear list of supported vmalloc flags.
+>  * This gfp lists all flags currently passed through vmalloc. Currently,
+>  * __GFP_ZERO is used by BPF and __GFP_NORETRY is used by percpu. Both drm
+>  * and BPF also use GFP_USER. Additionally, various users pass
+>  * GFP_KERNEL_ACCOUNT. Xfs uses __GFP_NOLOCKDEP.
+>  */
+> #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+>                                __GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
+>                                GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+>                                GFP_USER | __GFP_NOLOCKDEP)
+>
+> Could you please clarify when PageCompound(pages[0]) returns true?
+>
+
+In this case, dma-buf attempts to allocate as many compound high-order pages
+as possible, falling back to 0-order allocations if necessary.
+
+Then, dma_buf_vmap() is called by the GPU drivers:
+
+ 1    404  drivers/accel/amdxdna/amdxdna_gem.c <<amdxdna_gem_obj_vmap>>
+             dma_buf_vmap(abo->dma_buf, map);
+   2   1568  drivers/dma-buf/dma-buf.c <<dma_buf_vmap_unlocked>>
+             ret = dma_buf_vmap(dmabuf, map);
+   3    354  drivers/gpu/drm/drm_gem_shmem_helper.c
+<<drm_gem_shmem_vmap_locked>>
+             ret = dma_buf_vmap(obj->import_attach->dmabuf, map);
+   4     85  drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c
+<<etnaviv_gem_prime_vmap_impl>>
+             ret = dma_buf_vmap(etnaviv_obj->base.import_attach->dmabuf, &map);
+   5    433  drivers/gpu/drm/vmwgfx/vmwgfx_blit.c <<map_external>>
+             ret = dma_buf_vmap(bo->tbo.base.dma_buf, map);
+   6     88  drivers/gpu/drm/vmwgfx/vmwgfx_gem.c <<vmw_gem_vmap>>
+             ret = dma_buf_vmap(obj->import_attach->dmabuf, map);
+
+Thanks
+Barry
 
