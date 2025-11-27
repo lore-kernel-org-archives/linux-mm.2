@@ -4,115 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBEE8D111A8
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 17:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B5E9CFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 17:03:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 223F96B000A; Thu, 27 Nov 2025 12:00:24 -0500 (EST)
+	id D9E3C6B002D; Thu, 27 Nov 2025 12:03:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FB5A6B0032; Thu, 27 Nov 2025 12:00:24 -0500 (EST)
+	id D752C6B002F; Thu, 27 Nov 2025 12:03:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EA816B0062; Thu, 27 Nov 2025 12:00:24 -0500 (EST)
+	id C63E66B0030; Thu, 27 Nov 2025 12:03:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F29B96B000A
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:00:23 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B413D6B002D
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:03:34 -0500 (EST)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBFA7140184
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:00:23 +0000 (UTC)
-X-FDA: 84157000326.23.F1DA3FB
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1DE7CC000A
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:00:20 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A096130B1A
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:03:34 +0000 (UTC)
+X-FDA: 84157008348.23.5B1F3D3
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DEBBA40003
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:03:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2EUbAYca;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/L6cDWlc";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2ksZ0x8Z;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JDaDWeBe;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764262821;
+	s=arc-20220608; t=1764263012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
-	b=jobYNEfzHgeedhsEhZ5m2u1daZG4uh1Vu2NVvobe1A6Y7LNs+HElWiOCwhj5okHtA6EiU0
-	4NrQRwvFnnm/LUStSpi0K/Cb2DgWu30NunZVSRxaOZ+5ScZGQXAKyqWwcE8BAT737LAC6D
-	Rlak7LUo0Ct73StICC+Wh4mysFo5ZFk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764262821; a=rsa-sha256;
-	cv=none;
-	b=IGS1ETzFqt7qk27rVkT32P4vUKdRgQM4F8n6O0umMpQANM3nUzZLI7KjcAy6MDhlygqMpq
-	Mvb/h3D6Uci+DxzNEVcc+FqU+in5UD9jMu3GjiG1hCOYz5nOilNP0v65u3smXNZrHrt8Dr
-	40x+17G7e9/ZgsBdelpB0kzo87+nmHQ=
+	bh=kOxP+4sJ/rrrnW9GypwNofQ+BkHdHzsAohtqE0E/6Vw=;
+	b=t72uViXo/9eBo51ytxyTMNAFhOUiLZUnWtK1oYfUKPP3sJDMEertDkI7p7xdY71BdU0wMC
+	r2VryPBrr63uVr7AlLQPZ0okK5N3kQvZJkhfDv9wlwTGaBNN7u0pWZGLrz+9tCEmogN2yp
+	gTdMIFShW5nF371UAmZbFc7OGwvyn/c=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2EUbAYca;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/L6cDWlc";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2ksZ0x8Z;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JDaDWeBe;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764263012; a=rsa-sha256;
+	cv=none;
+	b=DlOH0PHc5hYswY/WhFiK88uDIlQbv7S5ZrBu1prSBa3Hf8EF0PxbmfGXMXDcz1+xbycMkz
+	0CnJv3BY+4c87edtuUBSQdNc01ayjhXpabER0jri8dzophS4YO70jOxpp1T/vJPIX2/E8B
+	eKc7rLfVN4N8/svybB4Kzg0WgW+x9HE=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 059C15BCC1;
-	Thu, 27 Nov 2025 17:00:19 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0AD0521B51;
+	Thu, 27 Nov 2025 17:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764262819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764263009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
-	b=ERSHELQlwm+nOrI/ThkX2ZfyikTLfFaEdEBlYZL621PydLzMEqLue3TNr21gxrJa9xFsuT
-	vzvjbbUfU5FiOyhTT19/BR48mkipPX+vKodF9hyy/tMS0ujzic2icA1Mm0q12YMZM+0D92
-	ttl1KAljZYswsKkIiBKic2Nq98Qg38A=
+	bh=kOxP+4sJ/rrrnW9GypwNofQ+BkHdHzsAohtqE0E/6Vw=;
+	b=2EUbAYcas5pDDm06Js+QDftByBaiw5E7dLdPeQ7e5tnwDMtoXfN6AQL1wd9tdUPkAvjWjU
+	oE8ykHlg3aBsyC359ow9RMJmQ0d+iHGA5bFC3kqXLISxNEjEohO/4qEHB1I/iRrguzyu5G
+	UqxK+sS0D5Vq0AG5/MBOSqTrq75GaRE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764262819;
+	s=susede2_ed25519; t=1764263009;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
-	b=mQ3Y28wUbEcgjAao8nV4G4bYlJDbYfrr5KCqwBi0QG2NpYPSoc9TbbJW/FzojbY4sE81RN
-	AwnCSb9k9hWR7UCQ==
+	bh=kOxP+4sJ/rrrnW9GypwNofQ+BkHdHzsAohtqE0E/6Vw=;
+	b=/L6cDWlcRAd5WfPimjpDEKC+/8eru1sjFGmfM6VPUi3ZzqTj+OcjA9VeFWlCpv3n78+cKe
+	j6+zlp7Xs7H9bzDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764262819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764263008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
-	b=ERSHELQlwm+nOrI/ThkX2ZfyikTLfFaEdEBlYZL621PydLzMEqLue3TNr21gxrJa9xFsuT
-	vzvjbbUfU5FiOyhTT19/BR48mkipPX+vKodF9hyy/tMS0ujzic2icA1Mm0q12YMZM+0D92
-	ttl1KAljZYswsKkIiBKic2Nq98Qg38A=
+	bh=kOxP+4sJ/rrrnW9GypwNofQ+BkHdHzsAohtqE0E/6Vw=;
+	b=2ksZ0x8Z0WOxT2OAc6pt62cd69D2oTffZpCF9JA87/gUHDoO4FHpBN1wQW1zmdtA5WlUSD
+	kV8HCfDEzwh4ZpgnHqlio1z9Y7e4dmM0pmTJIBN2KfSGyIg6hAEm0dYee2DRWjyvtobxBU
+	b9ZuC5TR/HLIPp16L2OHrb8joyGGvvk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764262819;
+	s=susede2_ed25519; t=1764263008;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
-	b=mQ3Y28wUbEcgjAao8nV4G4bYlJDbYfrr5KCqwBi0QG2NpYPSoc9TbbJW/FzojbY4sE81RN
-	AwnCSb9k9hWR7UCQ==
+	bh=kOxP+4sJ/rrrnW9GypwNofQ+BkHdHzsAohtqE0E/6Vw=;
+	b=JDaDWeBe0uB/rv4Ta0iYA/LnMcHRSHzkN9pXRDcbVfEgpFmSg8jJgwFH2l+4otCOUM+W8F
+	B2cm7ODG8wwnJQAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 82D643EA63;
-	Thu, 27 Nov 2025 17:00:18 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 844953EA63;
+	Thu, 27 Nov 2025 17:03:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ujPmHqKDKGm3IQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 27 Nov 2025 17:00:18 +0000
-Message-ID: <67da7b44-6975-44c2-b37d-9fadf7dceff8@suse.cz>
-Date: Thu, 27 Nov 2025 18:00:18 +0100
+	id XQj8H1+EKGmTJAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 27 Nov 2025 17:03:27 +0000
+Message-ID: <160170ad-cf3b-4ef1-a77f-91980eaaacc9@suse.cz>
+Date: Thu, 27 Nov 2025 18:03:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/16] mm: introduce pmd_is_huge() and use where
- appropriate
+Subject: Re: [PATCH v3 12/16] mm: remove remaining is_swap_pmd() users and
+ is_swap_pmd()
 Content-Language: en-US
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -154,7 +154,7 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
 References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
- <00f79db3b15293cac8f7040a48d69c52d00117e4.1762812360.git.lorenzo.stoakes@oracle.com>
+ <1628b00b00c8498bbd2c20b82117ee87845fb738.1762812360.git.lorenzo.stoakes@oracle.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -195,18 +195,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <00f79db3b15293cac8f7040a48d69c52d00117e4.1762812360.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <1628b00b00c8498bbd2c20b82117ee87845fb738.1762812360.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DEBBA40003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 49os61387g4hoa5rj85b3pm1pneed4u3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1DE7CC000A
-X-Stat-Signature: egg968zawgaxunkf6d45eysqsqbsq477
-X-HE-Tag: 1764262820-640937
-X-HE-Meta: U2FsdGVkX19/kEHkkgzjQk+iqkJ+iP8ccIQwj5pPM3mSsZSN1G/7k2KQENOlOsN2i43sN/ev52WSjNAl79N1Z8nslxeZCQoaDKRlU0K9YniTZ9KhbBYcQc3/ny4qWNf/x8zoJofnQ3kkdpj1eY6JFnriSoPKcBVZdG7+4tULZtCSQMVeb6Ev57PuY/8kfJLz8fY4KC9boLFBYGJSallnS2/RJ6YNT1n7QdjAmIwE/glJqGU+YZjr8pWlDdMAWN5RqOQkmAOD8Iz5URDY7f7Euc8RkbP7v7SomSgO2i/9B7TkJp5JcdkM35RCCN9+G6cyxmy2T6hSTHfmkhpIWbrafJ62TO/jrUhHbA4mkinuHeMgnQKjtXbcfjaaI9AQRZtl7QXs0NLRyI0N95O0IDDTPWBRGbwiru7O/DnOrN8rhaEeq3741fESlv0dFZj2KaGj058vyliUIMnEVgWc+ep0FoEVf+KcuWS+O8ODL8XI/B+IGbCRfd56Vu3O4LP/lBPjDWVzfKB0yetlBlH95il9dVAsWKlQwGom8hNiHaxXzsiqATR98YefgumzVtLjwBO0sv0AeQ2uCExT85JcwdUctDGrPl6712xZJE4P8vigJ3np/N5nc/g1kjBB8q9o+pFoWPrfTOFTYjTEbqQBSRItx/VWueE3d3BKV5oLF5gmDxGOg09xLv3tOPjIa/F3TK/azFUo/NR/kU1umMovY11q2hB5mxbrTbjNW8xuP0Ly2JcYE+nQfTUHSqMNrQffg7V1f92CIOQ16oC/17VtWdxX/yeDIu3pTbqNoeRY0lcuUdBl7gM0xi5lf7s1E27VUyMi2fJeFg0qMaqXbHmjB/MaTDMz/KfBEqa2zekfG5uv6w9cNXBE4PyTYjEyz3AYpN5oDYQDpnnF34xRQV/uJ8WPf13GXRvmAjnvPXInWmyUV9zSAanlCcdl0hU7TJFhnJtNzW5yXvDQkPZBRivYN/S
- Cqe6593x
- 3IpyPu5B/Ij6dGK6ExnAIySrmgHwhg2yeEuTF7c67Zpvtl3FbpZD6QTM2eXXoh61bni7Ip4jlJB3ySeUYwFgDtWXNlvH5UOn1r4tRSg2RD+44sl5cRTz/q7xvoVIrOba2hijbD02KgReoenv57ot6EZQ/8RXQtyXosHnk7DmML6jUbnZscrBcOrlsI9QC7hYaFI3dagy8fNDw1/tYMOPgK0F0xATm6c3+F+tCN8LO6s0w7oeODAdoeJ1Kn3I+lSQkA5ESe8o+TxlDpjhwNex//eweh9lTJuZjrEuMlYX89W1k/vptHRTEYlOlElLm6e/MSmyjmHE/MXAAIZDfSGvzoL4MQzF41Lf5UE5sFEdxlz3MTGddVVSaDDhZ000YkeKw53gvAlbiVXpDp/GDPoFyheuYvTVspkCs6P0mZRbpJ/j3TRo=
+X-HE-Tag: 1764263011-220343
+X-HE-Meta: U2FsdGVkX1+d0RIH54CAvVzXSuGLwiUgIPQdu6Ylqhd3rX+MrIgu3QLkf+HP9Len0rk8I9iCYhCa8RPiV4JDIfpnRjRnnLNhAIUUJXIG/gRzYVgGOVvWKbMgdRM9WrGirSTmwYRdHG7MlW2QGIddKIWVshW5U/oonMPe0RXO2MEtncSwkv5J1D3PyfBSdWO/uIvum9pyEcwW+KCur9y6aP0oNNo6vIlys5RmuD95HcB84p+pXfPIH6KW3sgTiuzSjEQtB7BKKnW0NT+a+RgO9XgJwE6gyC932m9zhey6+gzVUtnJFs0imB3jxGyr+iGGyjUEGDlRkDueKwbruZ2D2W4wymlx0zVBFXhlS2lJm3ywzFtJ4qCxp8Ot96rzYf7InuBGrW3uhuPiYuLxmCqPHWVbgztHZ/KuF2usIa+2CYePpDhrBc56OJK/qTLq0IrjKe5KpKt1SOPn3NxyPaTkvgo0o0hXvc2mBtnRoRo5UWBNAwBUUjaDCVaU9uz7VoYSCvKCHBBczPd7rGlTKC3SyAILC52xNlWjJVh3X5YtHGaOPG+wOdE8fWrqwSrnChMRRzGWRkmQeCsPex/Xhao+zXqYcaE3dduPd3fvFmnkWFJ0Jw5GCI2LsK7PPI91VhdKZWRwCGJGjBsZvxXqeL+YuizX6NzsI4XRzsBn7VEAoS0hADl2u1dbRTYuv+SG+76MwBaxxLCP+xoM6/pKEAi/85lJPU3PNnZTlNSpyD19tmqbsWDOPlRiuaWfCwS2mxZqAfvjhlUZxi4PSFmR/V/COdLp+dohqE6ZTX+GWYWsctTuKtrTv1WD9JLAcF5tPM2Q/RzvJeDEiJbqUzd7oO3iaFZbx+LBkQ3kx2FvJ6LkudzvbEFx2le4enwdvfRwTva4Ly9y/6e0iLCJWfA8K1HQtNhOvnx7c1NYElOJepjmZAT7BVK4NANZKZllbCzILqtl0WchQWj/UG3zgHXWq5d
+ JaZ5eDHj
+ QiAyxzQgMSi+j0gTKykqeXKp2bbaW1dFGun++1Evjmk2igmwHmo50J9y/elHal3z9VMh7BRgYlVkjqNQPFQNsvk3Ww3V7wS4x39w1AUdQZA2HD5rbt8lsMG3Csb5Ie6dMdkVnRix6IEElvGHmCw5jgOpUH5C8MpzEtY96s1Y11KeCX9PeDdJks9Dx4RfiBzfKW0yidG+SbxWBabNkCii+HepA0dfw0Ak0AaWfSsR6sq/dZ+uK584zl9jtt19PJA3DOgg0qnDEQ9l49tgwSnOnryX40Xe/h/vliXKzZ0n3qAnEtnQs3du1QyKNo9eStDg9X4aNxRlplV3QtjtgU/Ngi8QKQiA2MQAu5W5LkQE32DmJ8hsblNKAfhLxkskHx4JbdK5s7C1hd9tS+FoQnL3fnaK3S5Bpl7aGai0EtGQPxeEVYwo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -216,26 +216,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 11/10/25 23:21, Lorenzo Stoakes wrote:
-> The leaf entry PMD case is confusing as only migration entries and
-> device private entries are valid at PMD level, not true swap entries.
+> Update copy_huge_pmd() and change_huge_pmd() to use pmd_is_valid_softleaf()
+> - as this checks for the only valid non-present huge PMD states.
 > 
-> We repeatedly perform checks of the form is_swap_pmd() || pmd_trans_huge()
-> which is itself confusing - it implies that leaf entries at PMD level exist
-> and are different from huge entries.
+> Also update mm/debug_vm_pgtable.c to explicitly test for a valid leaf PMD
+> entry (which it was not before, which was incorrect), and have it test
+> against pmd_is_huge() and pmd_is_valid_softleaf() rather than
+> is_swap_pmd().
 > 
-> Address this confusion by introduced pmd_is_huge() which checks for either
-> case. Sadly due to header dependency issues (huge_mm.h is included very
-> early on in headers and cannot really rely on much else) we cannot use
-> pmd_is_valid_softleaf() here.
-> 
-> However since these are the only valid, handled cases the function is still
-> achieving what it intends to do.
-> 
-> We then replace all instances of is_swap_pmd() || pmd_trans_huge() with
-> pmd_is_huge() invocations and adjust logic accordingly to accommodate
-> this.
-> 
-> No functional change intended.
+> With these changes done there are no further users of is_swap_pmd(), so
+> remove it.
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
