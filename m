@@ -4,101 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF78D116E6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 02:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B20D116E7
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 02:22:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F5956B000D; Wed, 26 Nov 2025 21:16:06 -0500 (EST)
+	id 78B416B0008; Wed, 26 Nov 2025 21:22:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A6946B000E; Wed, 26 Nov 2025 21:16:06 -0500 (EST)
+	id 762C36B000A; Wed, 26 Nov 2025 21:22:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BC346B0010; Wed, 26 Nov 2025 21:16:06 -0500 (EST)
+	id 678426B000E; Wed, 26 Nov 2025 21:22:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A076B000D
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:16:06 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0F038A4AF
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:16:05 +0000 (UTC)
-X-FDA: 84154771890.22.3D5528D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BF034C000E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:16:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Iudvg3h4;
-	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5571E6B0008
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:22:31 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D524C13BD56
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:22:30 +0000 (UTC)
+X-FDA: 84154788060.25.2AAB649
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5754F1C0015
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:22:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764209764;
+	s=arc-20220608; t=1764210149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3oNh+9ISvhyvMmEFVM8tJ6FqTCjyDpEVR3GmRuPb+X0=;
-	b=xlumA3uemNKF6ZKKJA8Udfjm3Kt911mxGyu8UuGp9Rs/JUcOhm7jOIgyhO2kan7m4gknOS
-	/P2K+8+ZblBlIVqNgRAnbEJKnrkliUpoef1158Ybd1/GHxw6pX41HRmKpHQlTtnDHR0orC
-	BqabSf+J2dSxgFoxz289veXh5FoIFUI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764209764; a=rsa-sha256;
-	cv=none;
-	b=BN4RNpCCmyumYKff/y2SdgLc7ODcz9fH/tcgLHsSiE3GmCHPsWoHqLXx56JK2K3YLCBmNa
-	ztyI5VymvLS6mY9bw3avgNN5FtW8jfVaSNo4xLy2bywvOu9OxO8B1RzvqFa+qmSCDLOLHH
-	HHTFhUeSIoxGwMvjzndv4CIsZYg0+cc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Iudvg3h4;
-	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764209763;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3oNh+9ISvhyvMmEFVM8tJ6FqTCjyDpEVR3GmRuPb+X0=;
-	b=Iudvg3h4kW/R7lFuRZYcOTnjqbHEV8XZ38AKFUKHqAD8qij7r2YoK+O32veQWwlEE9XMEO
-	YHdqh2jDUTrclDcZ/RwnbuNPlAzgPLBc58VyUmiF6CubjU8/yObHEaoljytCWowKOkyrXL
-	cSYLkARvGH+XwHynTatqMMyP6PYDzIw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-KgXBagIDNCO-RrImF1kVjQ-1; Wed,
- 26 Nov 2025 21:15:59 -0500
-X-MC-Unique: KgXBagIDNCO-RrImF1kVjQ-1
-X-Mimecast-MFC-AGG-ID: KgXBagIDNCO-RrImF1kVjQ_1764209758
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C1563180034F;
-	Thu, 27 Nov 2025 02:15:57 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.107])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C470C18002A6;
-	Thu, 27 Nov 2025 02:15:55 +0000 (UTC)
-Date: Thu, 27 Nov 2025 10:15:50 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org,
+	bh=pdjWkcPex6Z4IwI2NZ3a/x2uMX0QM3/L7+8rpG9CWd0=;
+	b=VshZYIIJ+7BwFJ1k9unxVffYYhrR3ccXR5qGVN+N5cKWN9+IW9kW6FS38mW0iPXb7ILLVN
+	rcAVxFTlJj+2ME6cAzq0D4QlKcumeqh8URgB54rm7EHTrC7EZR7QcB264z8JIPywLioiFW
+	sfe1adrTpR3HO7f0BstPNrXVLFE79TE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764210149; a=rsa-sha256;
+	cv=none;
+	b=E0/SK63ixfz+PQDlL8/2ZRu18IyT5AeSo9ri20ZiSGnh0Dr1xLroMdStXjrnF4xfgyQS2r
+	pwegifqg4rEQuQPur0N59WM/I8XToHUOYQeUP4vzpPVRmc1UUlHPeMOVnuwBfXNhezzt1A
+	ZCrFpFnvmxLCfLx8gY5SZs82uhuu9HY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 27 Nov 2025 11:22:23 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 27 Nov 2025 11:22:23 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com,
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org,
 	linux-mm@kvack.org
 Subject: Re: [PATCH 1/2] mm/swapfile: fix list iteration in swap_sync_discard
-Message-ID: <aSe0VrozSSD0xeGl@MiWiFi-R3L-srv>
+Message-ID: <aSe131xi3VChbWzw@yjaykim-PowerEdge-T330>
 References: <20251125163027.4165450-1-youngjun.park@lge.com>
  <20251125163027.4165450-2-youngjun.park@lge.com>
+ <CAMgjq7C0BVx8OVhEgJu3sVTAgTMrh_-vs9OrmwQhyFX6xC_LKw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20251125163027.4165450-2-youngjun.park@lge.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SAyMatVBufs7MwnoXEjB1XQ4z0sx7o70XAwJqYgZQ_g_1764209758
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7C0BVx8OVhEgJu3sVTAgTMrh_-vs9OrmwQhyFX6xC_LKw@mail.gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5754F1C0015
+X-Stat-Signature: gbhi791dn7jhhut4jgrstt7gxmeb4fbm
 X-Rspam-User: 
-X-Stat-Signature: gbybtt38gofnzdct7admqizu893zb9r8
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BF034C000E
-X-HE-Tag: 1764209763-401724
-X-HE-Meta: U2FsdGVkX19SfY9eFK4Vk6gamMehoqFipVLI4IGCXxKQf9D7+D/gz/7G6eG3mbEI6ElPpQjimHxn9/KJxzUsuUTkY0ulfv60Cs0DhOMfNbBCYVnUI0ENQeaVXt/8GZBE/epQXh8R7lSb+NiKV1aBw8aFkTXM777inO45GJEDH6B8GxPFLVteQdcYkeTp+faNB74czJ7LI4mbc9qlnS38G0TjERqY7PL2GPfIkmB1FQF4oQGISsLxzRP3as/Wtjzur640oUNaipQZ/LZSXbh77PD6FN1hcnz9iJ2TJYBusxSpWcWDEuqKK4RpZ7i40flGHuIKnjuY/yl62CYy7LdCS5fKClc9+ZW0VCRBrQuQxFOnk+tbpYhA2PFN54BItpR1BUljYAwHgM5munf+Vd29W28MzpJgScUqIaVamDRcE33es7uS87Od1eSSbFc/Qx30Z+sJOR9ZatgmDROeKDYOcZEc4CgHmfjnd+kJ+o6WCZIDMac3FiPBGBQXeLffc1jic77fk77MeBQLV2EZS/CF//XbDqhAOwTVFMOlivQcEdajtCnbBTx+FdI32+5H9kleHt2KV658YNmuPz9154y+wbon6u3ldaO3su5F6AvdTV94DhBbV2fMBI9CD+YhsBQ+eqR+bqYJzrEbZrWJPZNbqB+PlGIGkXg/m7vLEztNXDJX34af69RXzJYxJ7MdiP3qMRJsf9EMWlFpvnesqPRZZcNWeSYN1b6Htq8/RCrjqKM4vc91cLkqtCNaU6Rl/cDbQ10wJIlQJGaUsDWncs1eZr3g70RieXvRS5y5hk9vXvXM63/TpzKTgQr7EXLpmww2jqRuSP3y0qzXQ40SEpiLu2N8kmoRoxd0ijLMJhwVF4ajrXxLoLqnmPagKAfvhHKYNQWEeimO+EMUIU9YZobYPnEVRqOSAKKPVV40BFCJjAx6T7PycCmeTm0ZVGJHW581RB7IZfIWHieq9xxPKP8
- 6HFB3iuA
- aAreG4lo18xlYHx5YRHH+tLR1A/xcNzLB02akiOAbwpowl88Z5qAosbDLWdjE6m+BhuDCpBe4w9k6Vd9yBuyEs2Psn7T0oSfLqF+rJsbC/OyKMXaBo5nqpIkbGck22W0u0lvWSQFXkoRwT8c4fABl+xOfkQ==
+X-HE-Tag: 1764210147-143735
+X-HE-Meta: U2FsdGVkX18Kx2GPEupV9LR4VE1dLxeedYLIs6TtQ2g/7Wbtlrmg3SPm/d9mucLsI2VWE+SrxegDqujmn6v5/7/9muy6iRd0RSZN7i8S0/inSR3eR7DCXNoY0o0dYcz4l/se49kR/I99qFNKCWKYqC5LzP4Ta5HF4oCxcU8PFcKI+Z3clqTaV5ghjCYRlO57aCzt02Nv+Yfx0aBVJCxli4SXcAH0p/BBo5Ev0Se0+Y46aMNREI6Zyguw0srNaSUssRXC8izlyLCtAqF69aUKfmVAYfocrFamsZbC+1PN+tHobJL1BPuOUK50odmLnBOKol4e05oyuC3JTornRzIMxCps4Ml8E1v4Jwpl9ATJ9Jfj4oxO0sykbG6s2tnn9CJDAbu1L3WfdeG3QS61UjTl79lRpMmS8uuqRqGpKLJaZ5enCJ/mxEIlEvgWtGwnfx0QdjJjEzXGwszmZYSHPYoiexvDvRN9hCiUA2Mm5hnS0pjF1iwBWyTiF4p8juGnjN5iKpGZhOXLXRaOYkUUPGfnXy/MOSCxiFrEGvT6jOYsqazPJ1I1wUtRDmy2nOakBHUdjxB/mlT/S8zm5yd2vGt7qATfeeRPmYl/7ujOfMV/VJ928aU5JdLOD0fC8Zg3BsybHDLoNcrIJc36BKAn45ObtURLcRF7Nki1byR8Q8HcDBV85CMLJkvA0E63MMVnWipFhle2Hd7ot4JF0r8KjEIWKO2CGnmnEOxKCVL7GM5rhgSHu4kW7VYyVGKFCNB41gfNzk/dbfyThci7MkmyPRvVim1FQq0pVpDQWIVGpDBjQlYoFIf8nUq4BOu+lkvZyR1JDpezSR1kcZX4dcVzp0t329njkwos6EG94oXKrVCekVg17TBMRxZKWOyeVrPN2QzeUH4K58ZBaw00+m8iHoSujy4gQT0mYXwQ46/Pdu9h/+v3X3dvQHYq49JqG6nqJn1rTkkRv8a+Oh13KMKuxI0
+ X6iDfXrf
+ XVqESm4Xxx+0OnSjkDBfjx7Y+/ZuSznzMmMkgjDOR2HaDgosnUMyz/zlxUFwTTVHIaJVCH8MdnWJsHQqt0EcoHcMzNBWbEkd+9Hw6pgT0t0rbzIdVogzW6/4JNHF7P+JxFDLXRiWJTXihAAYm6jzWu10jR9ACTpPW0Q84RWd9POWJc8h1tDliBLnCnG+q626ulme10EEn0atvFoMwixookcyLVOaBbncFw8JvoQZQ6y0FC/MGP2SD3WaKBO7kR0hlLdtUVBXs8Polge1GvdpezXS34jecxAiPNoZfE8lELIjBdBqCh/Yxrc/prsLbxjKQN1MjSHoRI84Y+GA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,76 +85,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/26/25 at 01:30am, Youngjun Park wrote:
-> swap_sync_discard() has an issue where if the next device becomes full
-> and is removed from the plist during iteration, the operation fails
-> even when other swap devices with pending discard entries remain
-> available.
+On Thu, Nov 27, 2025 at 02:23:05AM +0800, Kairui Song wrote:
+> On Wed, Nov 26, 2025 at 12:31 AM Youngjun Park <youngjun.park@lge.com> wrote:
+> >
+> > swap_sync_discard() has an issue where if the next device becomes full
+> > and is removed from the plist during iteration, the operation fails
+> > even when other swap devices with pending discard entries remain
+> > available.
+> >
+> > Fix by checking plist_node_empty(&next->list) and restarting iteration
+> > when the next node is removed during discard operations.
+> >
+> > Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
+> > swap_active_head. This means the iteration is only affected by swapoff
+> > operations rather than frequent availability changes, reducing
+> > exceptional condition checks and lock contention.
+> >
+> > Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during allocation")
+> > Suggested-by: Kairui Song <kasong@tencent.com>
+> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> > ---
+> >  mm/swapfile.c | 18 +++++++++++-------
+> >  1 file changed, 11 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index d12332423a06..998271aa09c3 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
+> >         bool ret = false;
+> >         struct swap_info_struct *si, *next;
+> >
+> > -       spin_lock(&swap_avail_lock);
+> > -       plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+> > -               spin_unlock(&swap_avail_lock);
+> > +       spin_lock(&swap_lock);
+> > +start_over:
+> > +       plist_for_each_entry_safe(si, next, &swap_active_head, list) {
+> > +               spin_unlock(&swap_lock);
+> >                 if (get_swap_device_info(si)) {
+> >                         if (si->flags & SWP_PAGE_DISCARD)
+> >                                 ret = swap_do_scheduled_discard(si);
+> >                         put_swap_device(si);
+> >                 }
+> >                 if (ret)
+> > -                       return true;
+> > -               spin_lock(&swap_avail_lock);
+> > +                       return ret;
 > 
-> Fix by checking plist_node_empty(&next->list) and restarting iteration
-> when the next node is removed during discard operations.
-> 
-> Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
-> swap_active_head. This means the iteration is only affected by swapoff
-> operations rather than frequent availability changes, reducing
-> exceptional condition checks and lock contention.
-> 
-> Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during allocation")
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
->  mm/swapfile.c | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index d12332423a06..998271aa09c3 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
->  	bool ret = false;
->  	struct swap_info_struct *si, *next;
->  
-> -	spin_lock(&swap_avail_lock);
-> -	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
-> -		spin_unlock(&swap_avail_lock);
-> +	spin_lock(&swap_lock);
-> +start_over:
-> +	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
-> +		spin_unlock(&swap_lock);
->  		if (get_swap_device_info(si)) {
->  			if (si->flags & SWP_PAGE_DISCARD)
->  				ret = swap_do_scheduled_discard(si);
->  			put_swap_device(si);
->  		}
->  		if (ret)
-> -			return true;
-> -		spin_lock(&swap_avail_lock);
-> +			return ret;
-> +
-> +		spin_lock(&swap_lock);
-> +		if (plist_node_empty(&next->list))
-> +			goto start_over;
+> Nit: I'd prefer to avoid unnecessary changes like this, `return true`
+> is the same thing. No need to send an update for this though, a really
+> trivial issue.
 
-If there are many si with the same priority, or there are several si
-spread in different memcg when swap.tier is available, are we going to
-keep looping here to start over and over again possibly? The old code is
-supposed to go through the plist to do one round of discarding? Not sure
-if I got the code wrong, or the chance it very tiny.
+Okay, I will revert it to the original code.
 
-Thanks
-Baoquan
-
->  	}
-> -	spin_unlock(&swap_avail_lock);
-> +	spin_unlock(&swap_lock);
->  
-> -	return false;
-> +	return ret;
->  }
->  
->  /**
-> -- 
-> 2.34.1
+> > +
+> > +               spin_lock(&swap_lock);
+> > +               if (plist_node_empty(&next->list))
+> > +                       goto start_over;
+> >         }
+> > -       spin_unlock(&swap_avail_lock);
+> > +       spin_unlock(&swap_lock);
+> >
+> > -       return false;
+> > +       return ret;
+> >  }
+> >
+> >  /**
+> > --
+> > 2.34.1
+> 
+> Thanks!
+> 
+> Acked-by: Kairui Song <kasong@tencent.com>
 > 
 
+Thank you
+Youngjun Park
 
