@@ -4,79 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A57D116EC
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 02:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD130D116F1
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 03:03:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93A016B000E; Wed, 26 Nov 2025 21:54:56 -0500 (EST)
+	id 160BE6B000E; Wed, 26 Nov 2025 22:03:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E9D06B0010; Wed, 26 Nov 2025 21:54:56 -0500 (EST)
+	id 0EAFD6B0010; Wed, 26 Nov 2025 22:03:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 827136B0022; Wed, 26 Nov 2025 21:54:56 -0500 (EST)
+	id EF4236B0022; Wed, 26 Nov 2025 22:03:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 716DB6B000E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:54:56 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7FA6507E5
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:54:55 +0000 (UTC)
-X-FDA: 84154869750.03.9E7E93A
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 70F2C14000B
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:54:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764212094; a=rsa-sha256;
-	cv=none;
-	b=IRqm8NGQ1cOyRtyUU+h4gzZNwJ9+8ZzDTRpVhiYJy5a3S8hpyjTRht9kI4EpakS6ufc56K
-	pLgivo+VK+vBMcMDP+iPNqKscHCnoK9s4/BG1A1PSfhqG1lfK4fpp5/lR5WjK9jLkemco5
-	IBfJVhSWoDnI3Wul+6wdWlibgdCvuB8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D88796B000E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 22:03:40 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E2B08A762
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:03:40 +0000 (UTC)
+X-FDA: 84154891800.20.8100572
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 26D54100002
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:03:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=RFgcpNci;
+	spf=pass (imf14.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764212094;
+	s=arc-20220608; t=1764212618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cbw/iYbpemJBG5VI9bE28+uQfyAzlYkiUyD4eiXiB18=;
-	b=p+wZkiR83Jx1KPrtYDqUGy8ocQxDcpUINUu03KN9QqDyEaYUx4TNwoEkTHp0xthdsmLWo6
-	QjqI5Gmh8lj7zZwxu9ns/YQfss0ijVi2Wqk1xk9ydQ57hvFfNL245/dmDJMhHGSUOv0WXG
-	Jf/r04c70fXh8LlEsg4BvLHL+5dAKKo=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 27 Nov 2025 11:54:49 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 27 Nov 2025 11:54:49 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 1/2] mm/swapfile: fix list iteration in swap_sync_discard
-Message-ID: <aSe9eckUCGP9eTS+@yjaykim-PowerEdge-T330>
-References: <20251125163027.4165450-1-youngjun.park@lge.com>
- <20251125163027.4165450-2-youngjun.park@lge.com>
- <aSe0VrozSSD0xeGl@MiWiFi-R3L-srv>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/LZy+TydcqSmvcD0OxLxJaigZpJM+j3ByE+efESnjLA=;
+	b=VcB8OlHk7xsG6tt7VrHUX66AyCERSH26SSLXvnkunne8N835jM/vuLYZAgXjNTgcGGYO9H
+	jQmGxIr3XvxdLoT6zh+fqkII0kmiDMRkJWuCwBomaYHurcR7BkTLXQvvCy/559Lg7ZJBka
+	tkHOyERDp+fJMUTmpIzpoj5Q27F72ec=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=RFgcpNci;
+	spf=pass (imf14.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764212618; a=rsa-sha256;
+	cv=none;
+	b=AoWKDVNrfrqAWjYbj4D36ZkDsOZQiy2oCciP91fZMeHnpCxr/qmdOEUv4TNejO5KGPfhnc
+	6f2MZgaWRnPw3I8WzeU7VlnfbMjT8UPGJS1kqFt/4AQO3DR9xCaufSimzgy1+hf/ZJkrl+
+	9Fsd8/mA4VB+gZ7nmV4qeiKco9nEi/w=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=/LZy+TydcqSmvcD0OxLxJaigZpJM+j3ByE+efESnjLA=;
+	b=RFgcpNciTsUxTzW0FEuArat0oaFMJJ2ugPWHX2RcAh+P3gVPQqGvig+Pft78Z9ZRMCBbBALKf
+	V9yv1Ur4Pry9lkqkiELK28rV3mOVmIfVuZK7uDYZmC/dZYQhNILrGHIyk/KOkMMDi7K9bqeRIhq
+	FZJJ4NJqQB4A9/pEEKeUV6o=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4dH1RV6VBszmV7N;
+	Thu, 27 Nov 2025 11:01:42 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 719521402C4;
+	Thu, 27 Nov 2025 11:03:31 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 27 Nov 2025 11:03:30 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <viro@zeniv.linux.org.uk>, <linux@armlinux.org.uk>, <will@kernel.org>,
+	<david.laight@runbox.com>, <rmk+kernel@armlinux.org.uk>
+CC: <brauner@kernel.org>, <jack@suse.cz>, <nico@fluxnic.net>,
+	<akpm@linux-foundation.org>, <hch@lst.de>, <jack@suse.com>,
+	<wozizhi@huaweicloud.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mm@kvack.org>, <catalin.marinas@arm.com>, <rppt@kernel.org>,
+	<vbabka@suse.cz>, <pfalcato@suse.de>, <lorenzo.stoakes@oracle.com>,
+	<kuninori.morimoto.gx@renesas.com>, <tony@atomide.com>, <arnd@arndb.de>,
+	<bigeasy@linutronix.de>, <punitagrawal@gmail.com>, <rjw@rjwysocki.net>,
+	<marc.zyngier@arm.com>, <lilinjie8@huawei.com>, <liaohua4@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <pangliyuan1@huawei.com>, Xie Yuanbin
+	<xieyuanbin1@huawei.com>
+Subject: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad() with rcu read lock held
+Date: Thu, 27 Nov 2025 11:03:16 +0800
+Message-ID: <20251127030316.8396-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <aSeNtFxD1WRjFaiR@shell.armlinux.org.uk>
+References: <aSeNtFxD1WRjFaiR@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aSe0VrozSSD0xeGl@MiWiFi-R3L-srv>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 70F2C14000B
-X-Stat-Signature: 7ej5m6ng87k48w6wmtrjkqam1s3i7zyr
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 26D54100002
+X-Stat-Signature: 6rhg9g9fawub4qxhjprk3foiwy7nnom8
 X-Rspam-User: 
-X-HE-Tag: 1764212092-677516
-X-HE-Meta: U2FsdGVkX19Y8wBLwGfzTXM47csre1Fli0uayhFeg2IsiwJHDbzQ5So2fyEnjwV6ugCpMgQWhOb1lF5THodEvwsYrsBDuhmOuEKqPenScHU+sPL/LJIGFj0UCibk4TLQCLfeQP6e37OApV9IR54Ipo51LK8kzfmjDTuyHpfODyO6cljnJwMqczx0GyRMGHUAHoSNgcRlsaa33R/uQlXGlVx09VPZr8PETEJwJuIwSus836lzgNwO7bxiygtN1e7D11upi731+u/oLVeUjISIM2KwlitEucHnHX40CWf8ZXYWUNjHVVvGyw3dljS/d9ESL+U2Gp4gs5KcG7auiFbvnwajUUNtu3m8wvXNNXTBKOx2DynPZpAYI7HKS60d/FEgxhIh1rvbs9o/8puj5yAd1+KRPAEa+3UuyGYwbnPW5GhXK3bqgiFzF5XGztdEgktseD8xdh3/ykeFw2pMbbVjohv3U9VJ2KNHQSwQk8ptm24dHKcIayri3i0uDiQV0nlxeuycUZf1SQVVfh97IcgIguPfrhe93t3vMqE4q0ueureRdaT0DZ49vrdr3HrmIGTzAZlueLHiff2kS1VqNrWYLGxZM5v/aOnPxE9d4AsLduoiVqrPLoik24EYGllHlS5Y34z4PR7WKC2xuXRsS9Cq7UfJlUIqTxwqejpCvNuT3dU4T7RzqvNHiusHVE1mYhBjCs2vSIKQa03BVk5GnZWgG45mkWSEkGbo3MzXDwHDNaYlbmgn3wMaePWyZT2WSCEic16/aqaMc2HcSPKbpZnyVTNDL1lWwEsUSCYa4b518HQZhfgbHm/S1tR/SCHrtZWwfET1qdvVTYQHkt2QacldDjm1nL8mXba6hkpbNLGKCg7pfpfsoiVzzVZHtdm2uNldDlkjakZAZuOupuXvuzz/KNHbUZv7xk6pjql55ro5fddO1QU1HrojZMFGd9hQHbmFnNdKHznhvk1elnFz0xo
- j3U8z6H0
- sXidVgk77RzzE+KezveVnydPxZWVIqYy6mfTxEO0B1CTYocoN7Q7zhaGGT4E1ldcRPdwUjXDCcY507vECptpG+dUesw2G4rIiOrJt1RAoVUxBrz3yYcAQ9EZPy0jc/l+9RGjW8yBnVOHyVxvAtcTPwElOXjxCpNWwuRFlMlJC99+sbOSlJRDsIMboRtvZEmP8vvNyCI+/Quh+R6Mmz0NglTxVIeMEM37QQKW1jbNtXJFKeUdqwC6f60jZaXHVfjfD55LIKQsgDNV0BY6BJh1q3W9GZFhBfJedW7RPhdOa3RbiEWig8fuCOmoEZGic7f/KAJB7SSf9K9PdXZk=
+X-HE-Tag: 1764212616-689830
+X-HE-Meta: U2FsdGVkX18InWATmSLZ8uou4GLzvM/WRhyftDbEPRgOl4B2LcQbDm9SKLz1p4bVGxPs0A7GmlL74PmyTyVfvPWaevibMbNyIjJUVWy7IrtKxj04vsSummCr/hECw2bj66n+j04ZjyU5HVMLlZc3kSTI+auBdIf6ZvsD5bFVNSqh+9VDic9dUEjIEXvTziAcn7sN2SaXvQNevlfvMfiAIXlRQrd3V0+QWJ8tWv5I6GxqmKbM/KrPBdJf5U1zIs6Y7dZuN9TdKFXYXfAXZ/Fo+LyDrq05BjBw74cwWMzIFPp5PmjSdb6sMtMM9Xn5OvO8S1Qj+NFyRK6r/VTPZdjbIu9BhAlkOWRIOyz+6Al5Yixb0OQOIxhhoyUxmAzOiAUOEQiQvot5MzQUAlAh+mHz6O/K/2Zu6r22b5pTbc0mQ2cyyw5C7CZJnv07DEhS2cZ6oUJhI9JVgyPjJO1pn7SxGqBX9x7nz0hjFtnzQeFl36BFEBgMy6L+/U1y+YClGqY24UxBxbyo3sPLk+Qr+xNpa9zvjl3FB07jKYttO/ZuZvVI9k7dOY+gRftyOvCy0AJo+zQ0ELipkupWwTnf1sZtaVvXzusgwP/PlpT+GadAWoCBFM0Q2sJZYIo8PRSe56/TFZg5usTJ4kWCB4jA3sejOm+x7yzshnHRR5w7crVxd5BtnT/KK/cT1HyIYS9KBFMIYfEK1pcPNyneijdDxzh3dIOnbjlKY48xVoilD5x31RZctM9/lTJ5yWOf0y0ltfwE37aq7yGGQ20FDyvj1sCcUNPqLRhokDqMLUZEv5ZF20PXLR1KuFiQWtvB8VKgajX/9QYD92M32/fWqlsTulW0iOLb/XNza/+U5v1AxtZqf79yabMGrWBoWspxiED8ryHLuCaSObYEieuAdMcZhPsK1EIAGRKvAjuoaKcMX7RQiTdcNmqxs82QlM2ir2AS25OxFBPw1JE6EkJ8odfKBZ9
+ 7la/hSE+
+ TylJIqrUDYjsqCJTCln2VHvcoSro+BtOYFrVY1vy1bfCs3QbE37nfBXZSPqzwOUu1Qc/8Qq6QCx1dcjky6cWZiMB1fJns5MQ0Rq2gASwLZwMjiFL97o5mELvrOwSn30nEvxeK8HymQzLKfoHl+H9cekeVsC3zTMTm1qY2WlBC+r6jdfdScNM9t7ZTrWAKq0Ay6FZECqUEk9Mwtm6gTcOMdNYI2wYL1A5Vq+donWHnAFzsUceZlz+iwqFnCRnpgtuGPRGIAeeMf21Yx5ivW29rKbNrcNHv5GvsBhBFfIKmI0u3AXG7L+kq5PjE+3MEhJGh1b8w69bvbVa2vioKgjkVLH5ETU1FT/gA91S1f+cdtvQZgqgOclMBrLcZcFyvHxQ4vwToGwHJF7upiIW5Yzgl6QXQlhDf3FnZsvG8iT/OCTMUOBHjwu7m9OoXag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,98 +108,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 10:15:50AM +0800, Baoquan He wrote:
-> On 11/26/25 at 01:30am, Youngjun Park wrote:
-> > swap_sync_discard() has an issue where if the next device becomes full
-> > and is removed from the plist during iteration, the operation fails
-> > even when other swap devices with pending discard entries remain
-> > available.
-> > 
-> > Fix by checking plist_node_empty(&next->list) and restarting iteration
-> > when the next node is removed during discard operations.
-> > 
-> > Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
-> > swap_active_head. This means the iteration is only affected by swapoff
-> > operations rather than frequent availability changes, reducing
-> > exceptional condition checks and lock contention.
-> > 
-> > Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during allocation")
-> > Suggested-by: Kairui Song <kasong@tencent.com>
-> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > ---
-> >  mm/swapfile.c | 18 +++++++++++-------
-> >  1 file changed, 11 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index d12332423a06..998271aa09c3 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
-> >  	bool ret = false;
-> >  	struct swap_info_struct *si, *next;
-> >  
-> > -	spin_lock(&swap_avail_lock);
-> > -	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
-> > -		spin_unlock(&swap_avail_lock);
-> > +	spin_lock(&swap_lock);
-> > +start_over:
-> > +	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
-> > +		spin_unlock(&swap_lock);
-> >  		if (get_swap_device_info(si)) {
-> >  			if (si->flags & SWP_PAGE_DISCARD)
-> >  				ret = swap_do_scheduled_discard(si);
-> >  			put_swap_device(si);
-> >  		}
-> >  		if (ret)
-> > -			return true;
-> > -		spin_lock(&swap_avail_lock);
-> > +			return ret;
-> > +
-> > +		spin_lock(&swap_lock);
-> > +		if (plist_node_empty(&next->list))
-> > +			goto start_over;
-> 
-> If there are many si with the same priority, or there are several si
+On, Wed, 26 Nov 2025 19:26:40 +0000, Al Viro wrote:
+> For quick and dirty variant (on current tree), how about
+> adding
+> 	if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
+> 		goto no_context;
+>
+> right after
+>
+> 	if (!ttbr0_usermode_access_allowed(regs))
+> 		goto no_context;
+>
+> in do_page_fault() there?
 
-Is this because of the requeue that happens while iterating over
-`swap_avail_head`? But, requeue does not make node empty.
-Also,  since we are iterating over `swap_active_head`,
-it seems like it wouldn’t happen. 
+On, Wed, 26 Nov 2025 23:31:00 +0000, Russell King (Oracle) wrote:
+> Now, for 32-bit ARM, I think I am coming to the conclusion that Al's
+> suggestion is probably the easiest solution. However, whether it has
+> side effects, I couldn't say - the 32-bit ARM fault code has been
+> modified by quite a few people in ways I don't yet understand, so I
+> can't be certain at the moment whether it would cause problems.
 
-> spread in different memcg when swap.tier is available, are we going to
-> keep looping here to start over and over again possibly?
+I think I've already submitted a very similar patch, to fix another bug:
+On Thu, 16 Oct 2025 20:16:21 +0800, Xie Yuanbin wrote:
+> +#ifdef CONFIG_HARDEN_BRANCH_PREDICTOR
+> +	if (unlikely(addr > TASK_SIZE) && user_mode(regs)) {
+> +		fault = 0;
+> +		code = SEGV_MAPERR;
+> +		goto bad_area;
+> +	}
+> +#endif
+Link: https://lore.kernel.org/20250925025744.6807-1-xieyuanbin1@huawei.com
 
-I think loop cannot happen on here by that reason.
-But, Loop can possbily happen between swap_alloc_slow and swap_sync_discard.
+However, the patch seems to have received no response for a very long
+time.
 
-If `swap.tier` is applied, I think you’re referring to the situation where
-`si`s not belonging to the current tier are discarded successfully, and then
-the next iteration goes through the available list again for the swap devices
-in the same tier. As you mentioned, a needless looping situation could occur. 
-(if discards accumulate very quickly, could it even lead to an infinite loop.)
-If `swap.tier` is applied, this part may also need to be modified.
+On Wed, 26 Nov 2025 23:31:00 +0000, Russell King wrote:
+> I think the only thing to do is to try the solution and see what
+> breaks. I'm not in a position to be able to do that as, having not
+> had reason to touch 32-bit ARM for years, I don't have a hackable
+> platform nearby. Maybe Xie Yuanbin can test it?
 
-> The old code is supposed to go through the plist to do one round of discarding? 
+With pleasure.
+By the way, for the config and test case shown in this patch:
+vfs: Fix might sleep in load_unaligned_zeropad() with rcu read lock held
+Link: https://lore.kernel.org/20251126101952.174467-1-xieyuanbin1@huawei.com
+the warning can be reproduced directly on QEMU.
 
-After your review, I thought more about it — if continuous swap on/off occurs
-while the `swap_lock` is released, it seems that we could keep hitting
-`plist_node_empty`.
-However, I think this case is very unlikely, so it
-shouldn’t be a problem. 
-Actually, swap_alloc_slow already works that way.
-What do you think?
-
-In the old code, if a swapoff occurs and swap usage becomes zero, causing it
-to be removed from the `avail_list`, it ends up doing a one-round discarding.
-If we don’t like the idea of looping due to continuous swap on/off, we could
-consider adding a retry count or removing the `plist_node_empty` check.
-
-> Not sure if I got the code wrong, or the chance it very tiny.
-> Thanks
-> Baoquan
-
-I answered based on my understanding, but please correct me if I misunderstood your point.
-
-Thanks for the review.
-Youngjun Park
+Xie Yuanbin
 
