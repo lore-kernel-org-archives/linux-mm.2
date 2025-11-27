@@ -4,84 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D223D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:25:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ECA2D11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A556E6B0006; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
+	id CFE9C6B0022; Thu, 27 Nov 2025 04:34:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2CB66B0027; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
+	id CD5EA6B0023; Thu, 27 Nov 2025 04:34:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96A056B000C; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
+	id BC4D66B0024; Thu, 27 Nov 2025 04:34:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C01E6B0027
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:25:56 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 322A1BC044
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:25:56 +0000 (UTC)
-X-FDA: 84155855112.05.691FD96
-Received: from sg-1-104.ptr.blmpb.com (sg-1-104.ptr.blmpb.com [118.26.132.104])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A056E100008
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:25:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=e53yThEc;
-	spf=pass (imf14.hostedemail.com: domain of guojinhui.liam@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=guojinhui.liam@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8C526B0022
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:34:16 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4141CC0942
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:34:16 +0000 (UTC)
+X-FDA: 84155876112.06.AAB2CAD
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D815116000E
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:34:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764236054; a=rsa-sha256;
+	cv=none;
+	b=zH2IbOfdbtFRja1+qHdh6Wb9LyRPt6vyE0HuT+BxOZjXpjZT3h/YRE2Rw9wPCg5bGfvkX5
+	ezAXK9jkxNnL1DRE8AMvXhPhnkbEfpu8dixttW6eFZEfhxApCDA7MBCNuVDBnNLgzo8NFU
+	JTWhfu5jRGzxualpcKhJsLa7lRizv9k=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764235554;
+	s=arc-20220608; t=1764236054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8Nou/MqkuvKxL9ESIFJy8/4e8vQNge3e0G+s7mmZjGY=;
-	b=q+dvlb+g09odAVQ6RlXlekeXWqKZLLjCmaNoW9aMpny2ZXUiKYIbxFuTG6bgOlWTLi/8Oq
-	kIjNYl2N9VAaU1zmNZFADBTPQn2Z8IJi104fKdxiFwBwsC1YUIsawRVAia76L9XtjKc1WD
-	9sr0moHR9QEiFgkk0lze1kwXxHOOe0U=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=e53yThEc;
-	spf=pass (imf14.hostedemail.com: domain of guojinhui.liam@bytedance.com designates 118.26.132.104 as permitted sender) smtp.mailfrom=guojinhui.liam@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764235554; a=rsa-sha256;
-	cv=none;
-	b=1XH0ih+PSzwZzJDOTF2D50OB5SrtES2e7rLsFj3sOD2lCOHBCp+NO3Tc/LqXOz/PQ0RVFx
-	xkyhrzeqSEStaAKkiJQmR3WZvtCD+2IHS7O3osYPF+Az0V87O5zRJhZg1tpqO40va7zau5
-	MpQtJaQ77Em22BOipv+TAxrRTQ5PGJQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1764235546; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=8Nou/MqkuvKxL9ESIFJy8/4e8vQNge3e0G+s7mmZjGY=;
- b=e53yThEcEwXNnvkfP3SJRFJKgMoyMC21vqL9r/5ZgFAkwPS6whfU8B0+sixzCBgxeRXrSv
- SL3NgfE5fnPCayUXqlK7gXBtVeobOqyFtvO+hkI2s9F68kBo6edvprZNhZhDFEQ6ybcm4m
- QZ8w0VPaMsPRyuet8T376/pwibJVWMkNzfeMecP1dym0xvwUWWuQ0vSZ8IbqI+F3MI+Oen
- vrGGbztzdPnIVszDMa4wydGS7IzKp1NIcWHzdt2yke2K4byU/DpKphXwtU88foCEd/8BrT
- 0dcrbSbv0tRoT+fkLpt0Q9QIzUPgUknLgBTOIaOxOJwYYzr/9ZECM58v8yscBQ==
-To: <akpm@linux-foundation.org>, <david@kernel.org>, 
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, 
-	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, 
-	<mhocko@suse.com>, <fvdl@google.com>
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.17.1
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+269281918+27e7d5+kvack.org+guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: <guojinhui.liam@bytedance.com>, <linux-mm@kvack.org>, 
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] mm/sparse: Fix sparse_vmemmap_init_nid_early definition without CONFIG_SPARSEMEM
-Date: Thu, 27 Nov 2025 17:25:12 +0800
-Message-Id: <20251127092512.278-1-guojinhui.liam@bytedance.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A056E100008
-X-Stat-Signature: ggmetskx53hp8kesctjdmy1q8p9wtsmi
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8jmjQVq/TFIzWjnSW6Mwr5wDkIPfK8qAij87eSbdoJw=;
+	b=gDtyqGIM2KoWVW/RT5a3kEURCE8+4aZxjN8LF/kvEYg69V/URNBvycDi8em+xZU4E67Pjf
+	SoSMdPRprqo56cOBkGq+W7lH6vqUME4uQpMCzl2/PTwZoDMZCmLcIGKc9PyuvZt17D6Lh9
+	pjpOGBVP+cwCIF/K1Io/2f7YwfGQG8A=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 27 Nov 2025 18:34:09 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 27 Nov 2025 18:34:09 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] mm/swapfile: fix list iteration in swap_sync_discard
+Message-ID: <aSgbEQCWZaSUvO9S@yjaykim-PowerEdge-T330>
+References: <20251125163027.4165450-1-youngjun.park@lge.com>
+ <20251125163027.4165450-2-youngjun.park@lge.com>
+ <aSe0VrozSSD0xeGl@MiWiFi-R3L-srv>
+ <aSfkrpV7T7g5mhpI@yjaykim-PowerEdge-T330>
+ <aSgGoLLOQgFCrsMu@MiWiFi-R3L-srv>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aSgGoLLOQgFCrsMu@MiWiFi-R3L-srv>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D815116000E
+X-Stat-Signature: p9ww3qmiqgrmujigfpk6p49o7cwqpsyc
 X-Rspam-User: 
-X-HE-Tag: 1764235553-820671
-X-HE-Meta: U2FsdGVkX1+wPtCbN9CeJfI1yGfOCla+esy6GcfyLP2LIN3x4oX5D++73RSNxMmCAHwzqdTNElqmsWlUmeiWP/cy9+iEkyY0shIu8+FOGkJ34TF/bLblVSB87Q+O09VOg8sWQojyLvB3vKW+5rfFfLCdeIrmR+VJSXjmTELCB6nOZhfYCi8T0AjQFON1SF2wOOGQUcwJLMCaHfymXYmmYCv07BHykrFaHUrZduw9zCjXkfkkWG++4y91JkDKnN94SFKsodxXoArBbk6JbL4XVzn+JUpTV2JuWw61nRoItvrX1NMuqAk5Y7pLTYkwXTpw3f6p4hCG7IEjuEIOUbmibUOPEDb3nLvJWlNf+Obv2sxn4EQKfXSdFvxFYyL012Q9xAp/R7rM3iXd4TlUQNrAoLgqnZ/PIWI66342sW+ClpCRDCjluRTEhfvZO10w/vL30n+1stiapACn7ibAEdrgV0ud+GqJk8bd+/+ZQZ4UO0SyieyccquX+0bdki4+GK3DOfdW4Cia4w9ve5pKa2McjYTeOCXvEQPowQZVvrOJ1/u3FsBCsq0pkpWl3UGI6615QM/eHUvie9lJ+ehvVhBvIVrhRP4bR6ToU3HBdbWxxH4Xr2vHR1PvUXU7eNkgS4crTFzaeUfdb1Yo5UAmoP1ZXYZkQIYQSYFUp9apSMaKM327OK1nibfFPGlT7loiifO5yIiEqQ088pTBJJIgHZNtfH4W8qCfK/nFO9b89uOpQO9DiwJTR4j3l+JS1bJUsTYUWy3YybDLV+/E7LcSRJbImOBzcb2OqvAxSvjmzLwlUZZvy+3mgPVZJg2AYGIAqpkHvRfv4Nfcbp8N3NsBenS/VZQF87K4jFNhKK3dU25vseVkiKEi2NqS35Q/JUIcEpRfgzrzfDsFmKiF0RqroIEIY5hzlDiK8bCY/mhfBy9jTTwK3Jktmom1r+pDFlKx3rV+/BZ4IwPossIAi2hMJa3
- VM0V6s8+
- BgIvb
+X-HE-Tag: 1764236052-744033
+X-HE-Meta: U2FsdGVkX1/zeW/5bCYgzT3512eiLequ/bcxbzt9lZYP7VUMf+gB7/o4jXHqMJ8F73EVKSxxLPZfw1vsidNWLWQcF2j92AdSya5crjWl+KwdGNkLQr4cBwpE/8+vRbE1O62zKkefcGEWgURIi0MuWjRjXKTVf3FXKeav726xX8xhdpfceJwqhw2G/er4oKt/TDdM0Cojc12CAOPjDGiDRqJVvotljP0dkeEUuNtt0IKY+JIxORuJrNsa03ihusBUfv7Ebr7gb092oZkLwzWoE2NpxGdncNGN99lmqbTLnGnB1XTD7bLMGgeTp0OFZG5aKDlaJI0bm/+iCd/+k7CpyZky6zj2aOxsxHXm85LQx9WtXZTHmQWQDQKb3RVNcMU+2Hr3wxnZT62A2wjJlN1bQeli50mq27OxkEM/WVGvXBpbEaQ5I8tXfQ20HnhFONRr+uLLsr/30T11sUo7pA1moEfpgfexjvx4zFdhmEIstNJ4cO6ZflX19zKandTz2MUUa/FP2g+njLvj6XRN+K37ritZLXYeAIg1YeAPgo6FGqWfPwl8xQKXkFNlubgkIYGSfahigCUXhGhScWJwtITotsvsmGP+0UK0l+c8IXcN5/nZqLO7I7Owd6eBG8K8FGOYrErVEtNXjFrsbhwx8ywIwNYBYo2Uos3XTGyzWhqtuAmuSutWqBeJ7FXfL8k/EeCYAPpcxwpFANNZrC0Nz3R2YA8XSrhtbOafYhXFAzediY4Svo+O9vbWoU6aa1Oqt3EAQ39KU3LAVL01icYNs0DPuVm7Z04oRDPkAaeg1NXbJq58+eyMWI94q7xXggyziI4npwuP735Z77Gw2xhiizYDy2wqR08EQ8pbb7glUEcYA7m8Ed+edWY4RL52yMqMXegdTEZGfmFkIurSfM13f0yp/OCKcgUZPn8zBBLyzeYYFOTH2s92BwNC3cZAPv6vN6og6ArSlNQ6M1uFDF9JWEk
+ 7IHkDk2d
+ 2n0kOwaj3GX53cx45GzVhFqerbUJ50Ee+tGm6biMonLT/XGtmQDLm0rHWTGc6zxFd2+b8yfvVVV88QQ/Qh524MZa/kLv6xenSyr4zhGoqcvxq1P8q7KFvWghnaAZQtTkQB764uw9g5MjLId9h5Z83/KqqwUnP78kxTqCxZWPKEtFbkIU0c+ikjMngMVnDI7o7DYqSD9tlpU7C8kw5rpp9bUyEkW7VrqsKNCCW+ZbClcw/cJ+DApWzjSX/rfelFXPVhndtYEV49MSJk8ITQkrcNqliAk3tOOL3HPZAqqn5SjS5bbaPtMgfq4FKpljtaqFHEMX6OUh5BB0mX18=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,30 +87,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_SPARSEMEM is disabled, the macro
-sparse_vmemmap_init_nid_early(_nid, _use) passes
-two arguments, while the actual function accepts
-only nid. Drop the extra argument _use.
+On Thu, Nov 27, 2025 at 04:06:56PM +0800, Baoquan He wrote:
+> On 11/27/25 at 02:42pm, YoungJun Park wrote:
+> > On Thu, Nov 27, 2025 at 10:15:50AM +0800, Baoquan He wrote:
+> > > On 11/26/25 at 01:30am, Youngjun Park wrote:
+> > > > swap_sync_discard() has an issue where if the next device becomes full
+> > > > and is removed from the plist during iteration, the operation fails
+> > > > even when other swap devices with pending discard entries remain
+> > > > available.
+> > > > 
+> > > > Fix by checking plist_node_empty(&next->list) and restarting iteration
+> > > > when the next node is removed during discard operations.
+> > > > 
+> > > > Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
+> > > > swap_active_head. This means the iteration is only affected by swapoff
+> > > > operations rather than frequent availability changes, reducing
+> > > > exceptional condition checks and lock contention.
+> > > > 
+> > > > Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during allocation")
+> > > > Suggested-by: Kairui Song <kasong@tencent.com>
+> > > > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> > > > ---
+> > > >  mm/swapfile.c | 18 +++++++++++-------
+> > > >  1 file changed, 11 insertions(+), 7 deletions(-)
+> > > > 
+> > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > > index d12332423a06..998271aa09c3 100644
+> > > > --- a/mm/swapfile.c
+> > > > +++ b/mm/swapfile.c
+> > > > @@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
+> > > >  	bool ret = false;
+> > > >  	struct swap_info_struct *si, *next;
+> > > >  
+> > > > -	spin_lock(&swap_avail_lock);
+> > > > -	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+> > > > -		spin_unlock(&swap_avail_lock);
+> > > > +	spin_lock(&swap_lock);
+> > > > +start_over:
+> > > > +	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
+> > > > +		spin_unlock(&swap_lock);
+> > > >  		if (get_swap_device_info(si)) {
+> > > >  			if (si->flags & SWP_PAGE_DISCARD)
+> > > >  				ret = swap_do_scheduled_discard(si);
+> > > >  			put_swap_device(si);
+> > > >  		}
+> > > >  		if (ret)
+> > > > -			return true;
+> > > > -		spin_lock(&swap_avail_lock);
+> > > > +			return ret;
+> > > > +
+> > > > +		spin_lock(&swap_lock);
+> > > > +		if (plist_node_empty(&next->list))
+> > > > +			goto start_over;
+> > 
+> > By forcing a brief delay right before the swap_lock, I was able to observe at
+> > runtime that when the next node is removed (due to swapoff), and there is no
+> > plist_node_empty check, plist_del makes the node point to itself. As a result,
+> > when the iteration continues to the next entry, it keeps retrying on itself,
+> > since the list traversal termination condition is based on whether the current
+> > node is the head or not.
+> > 
+> > At first glance, I had assumed that plist_node_empty also implicitly served as
+> > a termination condition of plist_for_each_entry_safe.
+> > 
+> > Therefore, the real reason for this patch is not:
+> >     "swap_sync_discard() has an issue where if the next device becomes full
+> >     and is removed from the plist during iteration, the operation fails even
+> >     when other swap devices with pending discard entries remain available."
+> > but rather:
+> >     "When the next node is removed, the next pointer loops back to the current
+> >     entry, possibly causing an loop until it will be reinserted on the list."
+> > 
+> > So, the plist_node_empty check is necessary — either as it is now (not the original
+> > code, the patch I modified) or as a break condition 
+> > (if we want to avoid the swap on/off loop situation I mentioned in my previous email.)
+> 
+> OK, I only thought of swap on/off case, didn't think much. As you
+> analyzed, the plist_node_empty check is necessary. So this patch looks
+> good to me. Or one alternative way is fetching the new next? Not strong
+> opinion though.
+> 
+>                 if (plist_node_empty(&next->list)) {
+>                         if (!plist_node_empty(&si->list)) {
+>                                 next = list_next_entry(si, list.node_list);
+>                                 continue;
+>                         }
+>                         return false;
+>                 }
 
-Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
- include/linux/mmzone.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you for the suggestion :D
+I agree it could be an improvement in some cases.
+Personally, I feel the current code works fine, 
+and from a readability perspective, the current approach might be a bit clearer.
+It also seems that the alternative would only make a difference in very minor cases.
+(order 0, swapfail and swapoff during on this routine)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 7fb7331c5725..f6dd181a4821 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -2293,7 +2293,7 @@ void sparse_init(void);
- #else
- #define sparse_init()	do {} while (0)
- #define sparse_index_init(_sec, _nid)  do {} while (0)
--#define sparse_vmemmap_init_nid_early(_nid, _use) do {} while (0)
-+#define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
- #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
- #define pfn_in_present_section pfn_valid
- #define subsection_map_init(_pfn, _nr_pages) do {} while (0)
--- 
-2.20.1
+Youngjun Park
 
