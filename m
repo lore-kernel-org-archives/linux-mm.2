@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86C1ED11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:29:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AC31CFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 10:33:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEAD76B0024; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
+	id 4649B6B0023; Thu, 27 Nov 2025 05:33:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC24E6B0026; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
+	id 3EDDE6B0026; Thu, 27 Nov 2025 05:33:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFF306B0027; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
+	id 28E5F6B0027; Thu, 27 Nov 2025 05:33:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B2F4D6B0024
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:29:55 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F1531A0960
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:29:55 +0000 (UTC)
-X-FDA: 84156016350.22.CDA575B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C73F1140007
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:29:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OnWUQ2+V;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 136806B0023
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:33:08 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1221160A44
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:33:07 +0000 (UTC)
+X-FDA: 84156024414.15.1CDC37F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8E89940003
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 10:33:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="YDx0BW//";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764239585; a=rsa-sha256;
+	cv=none;
+	b=7c7ylI0Bu8dkyzhD/gvXmErFnvt4gsxI/31BC7+yvM8hef+5fKERIv5FkGTfd2e5+wUt0b
+	tN+aS/4Cg5QmtJ8mvoskBIEgmzYEiPyyQTPtFheE7Q0OsZalyP/HAJyk1a7iKC5C0MKooH
+	Senu3MVpOxEDBeLRMFR47EV8OjtoC7k=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="YDx0BW//";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764239393;
+	s=arc-20220608; t=1764239585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YnU+JQsXw6IFitED8NhEgEEqqeSpTSuYlRm1oYBJlHE=;
-	b=b/ZSb1hPnydLKD6RwbHeHpCi3psV0PSsqyp/3qUF4thoPIeC9YGbQcFaHHXmWsQineQRvG
-	rw3u4LaWGIJyesiIyZmXIBn1K8HGXFbsNjLnFuRrF/W2s7conNiBAsxrQKkigiBZYjeYdi
-	B2++pefBkF/y8UG2Rlnx81Bo/UBIQ0U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764239393; a=rsa-sha256;
-	cv=none;
-	b=6P+ya2XKZMP0ERH4bOhPO9jQ45yYIIF4eJYBoeru+XbuLkkMj4Wh/MYGv20H5Rvo/goWul
-	TQ1UlWhO3AAYeSuGEgNfpy/cUB4UZsIshtKV9Kcj2WjbCaw8oIIFwA8OQ8go9/S4kU+ed1
-	XyWehTHLFxO+79KpruDhR41uRaZoT1w=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OnWUQ2+V;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 281DF6013F;
-	Thu, 27 Nov 2025 10:29:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760C6C4CEF8;
-	Thu, 27 Nov 2025 10:29:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764239392;
-	bh=6026FUcOZ7792wogGQD52EVUcUY2trkThOXOtUo+GfQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OnWUQ2+V127RmQUz5qQzGB0tW/qhEyMXNhJDFGclXUDD3NujYD4hb5z2GL/sukTDh
-	 a39tG+gjDEc1E8tOYGeiOM+lmQpn8PkPDZjIrN+Wm4gdla3sJrM64w0OQdNX5rZzlL
-	 KSl/xPm9+4wC6PTrMCHte1VlGqCQzHRRFSuoDI7F14PMZc0Sy0Lrsl1figTyKIx6lA
-	 MiL55H2r+9ZxkmZDzAqLuOaGBcJEMUX891x12xwUbB5VJhgtowZ1RJ4lqXY5tITFsm
-	 lAwQtudT0D2wOA/mp0HsW+rhNsvk4bx4KRyWaJ0JhddoDePktlNH5N/PbrxaIO94Pr
-	 febYBzhphPZnw==
-Date: Thu, 27 Nov 2025 12:29:45 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Jinhui Guo <guojinhui.liam@bytedance.com>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, fvdl@google.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/sparse: Fix sparse_vmemmap_init_nid_early definition
- without CONFIG_SPARSEMEM
-Message-ID: <aSgoGU_WM9f6RWNB@kernel.org>
-References: <20251127092512.278-1-guojinhui.liam@bytedance.com>
- <3cdc6bd6-f0c4-410f-b2a2-8cc2b5d1c522@kernel.org>
+	bh=MXFfhQs7mxMJIEFBG/HEl1H8TpF5l6jUE4M4FcTLd+I=;
+	b=z2aKWssEFEpf5SrUOrvnFVlg26ajZaPgM/UNwHEyU8Y1mE2HFk/NdqmtP3SJ3WBOwvYaJX
+	9AipvK7pFcZYjy454YKNS7l+j2MmA685VIw/rQaXnLJzurh1FvT6ZP4acY/uDT05dIXGR1
+	Qc1WPOFRf4UlGwCIBvxsRnSdkklyeN0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764239584;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MXFfhQs7mxMJIEFBG/HEl1H8TpF5l6jUE4M4FcTLd+I=;
+	b=YDx0BW//6GGpu2UZ32dKfV3MOvrzrF6NJqvz8MWdLRswa/IgO960ZvWFOamp9KxzYgy7bn
+	XwiIQdxDWXr1sBmTKQ8OT+go9k5eZeyhDKT1Dd+0B+CnJ113/T7HqHx45+z1LovgMK4yc+
+	tL8neTxwXNKpSSWwPNDjwuVyFykyYFk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-IlQ6mVIEP-GKH_3ZCnPi8g-1; Thu,
+ 27 Nov 2025 05:33:01 -0500
+X-MC-Unique: IlQ6mVIEP-GKH_3ZCnPi8g-1
+X-Mimecast-MFC-AGG-ID: IlQ6mVIEP-GKH_3ZCnPi8g_1764239580
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3E31018001D1;
+	Thu, 27 Nov 2025 10:32:59 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.107])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9E37119560B0;
+	Thu, 27 Nov 2025 10:32:57 +0000 (UTC)
+Date: Thu, 27 Nov 2025 18:32:53 +0800
+From: Baoquan He <bhe@redhat.com>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] mm/swapfile: fix list iteration in swap_sync_discard
+Message-ID: <aSgo1Xjc+WWEIQwH@MiWiFi-R3L-srv>
+References: <20251125163027.4165450-1-youngjun.park@lge.com>
+ <20251125163027.4165450-2-youngjun.park@lge.com>
+ <aSe0VrozSSD0xeGl@MiWiFi-R3L-srv>
+ <aSfkrpV7T7g5mhpI@yjaykim-PowerEdge-T330>
+ <aSgGoLLOQgFCrsMu@MiWiFi-R3L-srv>
+ <aSgbEQCWZaSUvO9S@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <aSgbEQCWZaSUvO9S@yjaykim-PowerEdge-T330>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Jf2ibp4SNzDVvZCjdPhxe2Rgrn-5dwOt1wIw6OQmBJU_1764239580
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3cdc6bd6-f0c4-410f-b2a2-8cc2b5d1c522@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8E89940003
+X-Stat-Signature: 6wg7cei9tn8q8oqa6s3gefc9a4f1ohw1
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C73F1140007
-X-Stat-Signature: zbs8dtjnsbjtqyikuuddrnizafzo6wut
-X-HE-Tag: 1764239393-32349
-X-HE-Meta: U2FsdGVkX18yEah6j2uIHBiv9Mgg7C1HJEOd2mW0Qa5QVfZMfcyI4AmuQ8oLqpmVD57x1m+li9gwzI4zdW3K01uEtgQaGIDrP9x+BtgPtkyEb9HJn+pKQplLCXVI4kElOZ/It+gsRA3+0OZDVpoEOPA/iGLPnYeo9zrYrBvkbMIf7kGwif3Y2zaEThuiZvrtTlIhmtwdsSZ2aVNJfp0MpfKOKPX0IdceHLxNvndnRPdvuJW7rAm6SCWRksbZDeXnQ6K7bgUHxqtZj8Lscr+qUP4n8/OcegCymsynstrSXgMUgYgF2mQcmek0xfBaXMhmm+FbF1lBmhim9bYhQ4ZnIcZ9D1Z8y7isMZSol3RiRcuMu8SqMIihF+QvwUaoGxI0A20O3SZlfPt/kIGyeoCIBS5b2Xn3wWm+FcJp0GL3lC9ID5a4O2aoANCzlvLJeO8lir9IXqkra25+BQnAKAlsGggkrvXDHTjeCiqwmRh01fjqj6pz5962ao3gfvmz3Oau+5kDqdYoVnDfQdNy5A8faWgAOIFI/e9erisJqDFujjQd70jg82nnlZKvmNV3RZvuMzUTvOUL0tPF+AKjk3sa1lG0lni3mq1sutwNt3jlOxmNGX4aLoia5mHdjhVnJ76cnjyc4j2BVefXT+vghu/iUpTX7co6rf32EQZpb4/sTiheXHO8Ursm7IyWnhRc9MfGzPFoqDSLDj/EOL+TrKIX9UeWLa0KXnTtiKDMqh9vx6FsQ9k46rI7xOCuuZa5RytuxbsZefrwA7AC07x2uhVNwtvIAgHgPdKVgiyRgWY78cU+PGaHGwT6dCL7HZBMEDMQ/vvaIM0+Q5HgwPIlx1rbKqhDSL1z5M7FLLMC8PNzq+n5mH3G6CIklLKwhlYvI7rprhVZNRXczI6c3+Bbdd46s5H8J7pU2zn/1P68Ug9uCfcTOdjlPwNV4GQVAQVTBFO2b/0jj4P/0RZVOwj7VLU
- sLHtFTym
- RavgCOgjaV25TJOKxHARnkh55+rRuFTIskAId+ZhyvSqwWwtC6sRCoTHSbbEzZSLfkEJKnpP+QjqCWb2AmEAoSPxKl8OtE73Y4sIWaUN85VaNFZRX5u+q1Jf3I3ItD5dK7w5m402Gw090sOvNYaEFSEx96t0inRuajODvRFjoUq/sN4ZUYtuk8KepsElv2E/jhzvrqNBoaFaJYFjD/PG77TA/8hHTj0ErviHttDw9m7FGWP1/EriogsMOmpu3uI9edeSYE7NayyZhqcmGxFdbbM7atkbz8g3t+rZ4zLAeY3rEInZfa6iNDJoeZazP7Edo1PqOLagQBIUntz6QyHakbstap6wrGgB49o0vFJr2HUFDLyt+sZOy0FRe0Q==
+X-HE-Tag: 1764239585-845294
+X-HE-Meta: U2FsdGVkX198tb1UrO3ibuHujoHjs2/jWwvojFuBEwFzqmfvjDOmSQyskBsxs+VhaSfk/2sAqwi+RsWwUVvqyjbxgiqogqDbJlZq/isb7gowBR4DYMrO56ThEQFIO6CBOEnyTeoqflW2VG7qQGD6pzjeVqR8z2bulGV+npZ0Q2b9rmZh9LB7cRdaa1lv/1ee201/O5rqkTtySK1zdSHHbOYWcSSNQp0UVPzMEOiK7OwXDsp2ncLLzvuipwu9Xp9J9+obp6t+yqXOyw9APHSK8y1MYCAiYWEDeCOrKtDI3gKieuusAxynp1U60tkdHaygJtsEq5nEpUZpWT/ISHvwsVobAsPuBvntsgCiXy1fZ8+/Mrw75RRW0kMV+Kj951eg7ncVq3FYI/glyyrXDgMYdRQ3rtDpmawJ+y43TCMOSZXVOlagc6h0TLm6N69uk5GYaKxztFhBBgqIAxF9eqo9RbkPjKFt7E8bp6iyM5auOVjSJ6XG5kGvtus/FGq1AqwqtNHwwA9LqtLpmwuhry4fA6OMx5U1oB5AtluYTbxX3I2EJwfGuodEvP1kYWLq9Ts3fKZjLUJIUQTnBwJziYDaDGNUFgilHpRGFYrZizcxMO/aM1+ivrOBdPo/AVCJUrOtCqkg/VinuQcRBBAXU+kRJlSI8XJAjp7FcQZVuUKQGQMZ3xrgUvi0g+y248wf18KSteRxuO+rULcsVe65mCa3vmIOE+KpuRD5YKblSHx2PGTmCwGUB0nGhG0E8a4DyQDG09IjpteiRP/vIhrmJgIOZ9lcLHEZ2F1237XcjXNEypg9OUQ/XqN5SGBV8zxnfQhmJ25ieo9688M9+r7/qGO8LPMqBMmrTLFjjsGGvRLocufr6VZDlB7b4DzzvsAdtm6yrJpvyKf/637if5hk9RmfWjtrqwqJFbGw7m05GByV63ZrSRsN6yFyzBm0YmJOZDOf40FFpBk6MllSRUxTiM8
+ MtVW6dRi
+ EKLFxG9P8RaIkEvv07e2+BZFdawW0OyoNZJ5U3VEgy8WJGv9uYM6GnHM0+Nd3InkllqYHLuCpQjrPMnR8aQwuAxTUMSolnCeqlVL4SKp5Jsoqn1inQbhDubSFMmiTuNRCe/6oDltKAYELeIVKbehBoKquwgkaOIw+F8UZ/2O47v3PlagbBkbeOhtYt9wKeejjLmXaVyr9tfcqmxoBz8Rx5Sr6mdWijSIwqSqc66f+1pDsJjwRVDpjIibgD1MAa9VunhYwIc+Z4riRfejZBlzqaMSZteW78Ktauv7rEnC3yTMs1kBow7xnHgJFc1rJEW2BzLrid7B4EL+9h2x+egYDHoUsiTWrtD8o4jj0mzCSSySYP7/2qODl8pReSxTEXTMgCRtiR10m4o9N+taQ7CEyYUbba+yMiuAVUNUK3Tm4w6fqtwDsxQSUYIXPDHPKcj2biRkyeSJbiQ3vanHj6h6UpoavOyoo7RY+3c98OYNEfqDfxenzklKT5NkE6a63locelA2vpS6iRop/HMaTnbbun+RMIOzIWgrmDYdC0RxtnYJmsn4erE3886fu51kNEOTo7fiA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,48 +114,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 10:46:54AM +0100, David Hildenbrand (Red Hat) wrote:
-> On 11/27/25 10:25, Jinhui Guo wrote:
-> > When CONFIG_SPARSEMEM is disabled, the macro
-> > sparse_vmemmap_init_nid_early(_nid, _use) passes
-> > two arguments, while the actual function accepts
-> > only nid. Drop the extra argument _use.
+On 11/27/25 at 06:34pm, YoungJun Park wrote:
+> On Thu, Nov 27, 2025 at 04:06:56PM +0800, Baoquan He wrote:
+> > On 11/27/25 at 02:42pm, YoungJun Park wrote:
+> > > On Thu, Nov 27, 2025 at 10:15:50AM +0800, Baoquan He wrote:
+> > > > On 11/26/25 at 01:30am, Youngjun Park wrote:
+> > > > > swap_sync_discard() has an issue where if the next device becomes full
+> > > > > and is removed from the plist during iteration, the operation fails
+> > > > > even when other swap devices with pending discard entries remain
+> > > > > available.
+> > > > > 
+> > > > > Fix by checking plist_node_empty(&next->list) and restarting iteration
+> > > > > when the next node is removed during discard operations.
+> > > > > 
+> > > > > Additionally, switch from swap_avail_lock/swap_avail_head to swap_lock/
+> > > > > swap_active_head. This means the iteration is only affected by swapoff
+> > > > > operations rather than frequent availability changes, reducing
+> > > > > exceptional condition checks and lock contention.
+> > > > > 
+> > > > > Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during allocation")
+> > > > > Suggested-by: Kairui Song <kasong@tencent.com>
+> > > > > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> > > > > ---
+> > > > >  mm/swapfile.c | 18 +++++++++++-------
+> > > > >  1 file changed, 11 insertions(+), 7 deletions(-)
+> > > > > 
+> > > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > > > index d12332423a06..998271aa09c3 100644
+> > > > > --- a/mm/swapfile.c
+> > > > > +++ b/mm/swapfile.c
+> > > > > @@ -1387,21 +1387,25 @@ static bool swap_sync_discard(void)
+> > > > >  	bool ret = false;
+> > > > >  	struct swap_info_struct *si, *next;
+> > > > >  
+> > > > > -	spin_lock(&swap_avail_lock);
+> > > > > -	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+> > > > > -		spin_unlock(&swap_avail_lock);
+> > > > > +	spin_lock(&swap_lock);
+> > > > > +start_over:
+> > > > > +	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
+> > > > > +		spin_unlock(&swap_lock);
+> > > > >  		if (get_swap_device_info(si)) {
+> > > > >  			if (si->flags & SWP_PAGE_DISCARD)
+> > > > >  				ret = swap_do_scheduled_discard(si);
+> > > > >  			put_swap_device(si);
+> > > > >  		}
+> > > > >  		if (ret)
+> > > > > -			return true;
+> > > > > -		spin_lock(&swap_avail_lock);
+> > > > > +			return ret;
+> > > > > +
+> > > > > +		spin_lock(&swap_lock);
+> > > > > +		if (plist_node_empty(&next->list))
+> > > > > +			goto start_over;
+> > > 
+> > > By forcing a brief delay right before the swap_lock, I was able to observe at
+> > > runtime that when the next node is removed (due to swapoff), and there is no
+> > > plist_node_empty check, plist_del makes the node point to itself. As a result,
+> > > when the iteration continues to the next entry, it keeps retrying on itself,
+> > > since the list traversal termination condition is based on whether the current
+> > > node is the head or not.
+> > > 
+> > > At first glance, I had assumed that plist_node_empty also implicitly served as
+> > > a termination condition of plist_for_each_entry_safe.
+> > > 
+> > > Therefore, the real reason for this patch is not:
+> > >     "swap_sync_discard() has an issue where if the next device becomes full
+> > >     and is removed from the plist during iteration, the operation fails even
+> > >     when other swap devices with pending discard entries remain available."
+> > > but rather:
+> > >     "When the next node is removed, the next pointer loops back to the current
+> > >     entry, possibly causing an loop until it will be reinserted on the list."
+> > > 
+> > > So, the plist_node_empty check is necessary — either as it is now (not the original
+> > > code, the patch I modified) or as a break condition 
+> > > (if we want to avoid the swap on/off loop situation I mentioned in my previous email.)
 > > 
-> > Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
-> > Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> > ---
-> >   include/linux/mmzone.h | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > OK, I only thought of swap on/off case, didn't think much. As you
+> > analyzed, the plist_node_empty check is necessary. So this patch looks
+> > good to me. Or one alternative way is fetching the new next? Not strong
+> > opinion though.
 > > 
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 7fb7331c5725..f6dd181a4821 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -2293,7 +2293,7 @@ void sparse_init(void);
-> >   #else
-> >   #define sparse_init()	do {} while (0)
-> >   #define sparse_index_init(_sec, _nid)  do {} while (0)
-> > -#define sparse_vmemmap_init_nid_early(_nid, _use) do {} while (0)
-> > +#define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
-> >   #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
-> >   #define pfn_in_present_section pfn_valid
-> >   #define subsection_map_init(_pfn, _nr_pages) do {} while (0)
+> >                 if (plist_node_empty(&next->list)) {
+> >                         if (!plist_node_empty(&si->list)) {
+> >                                 next = list_next_entry(si, list.node_list);
+> >                                 continue;
+> >                         }
+> >                         return false;
+> >                 }
 > 
-> That commit is from early 2025.
-> 
-> So what are the symptoms we are fixing? I would have assumed a compile-time
-> problem, but no built bot caught that?
+> Thank you for the suggestion :D
+> I agree it could be an improvement in some cases.
+> Personally, I feel the current code works fine, 
+> and from a readability perspective, the current approach might be a bit clearer.
+> It also seems that the alternative would only make a difference in very minor cases.
+> (order 0, swapfail and swapoff during on this routine)
 
-Some of these are used only in sparse.c and sparse-vmmemap.c so with
-CONFIG_SPARSE=n they are completely unused.
+Agree. Will you post v2 to update the patch log? I would like to add my
+reviewing tag if no v2 is planned.
 
-We probably should move them to mm/internal.h or even mm/sparse.h
- 
-> -- 
-> Cheers
-> David
-
--- 
-Sincerely yours,
-Mike.
 
