@@ -4,114 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21474D111A8
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 19:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34729CFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 19:43:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 568936B0032; Thu, 27 Nov 2025 14:39:14 -0500 (EST)
+	id 8F4096B0092; Thu, 27 Nov 2025 14:43:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5402D6B0098; Thu, 27 Nov 2025 14:39:14 -0500 (EST)
+	id 8CBE86B0098; Thu, 27 Nov 2025 14:43:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47DB56B009B; Thu, 27 Nov 2025 14:39:14 -0500 (EST)
+	id 808CA6B009B; Thu, 27 Nov 2025 14:43:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 382B76B0032
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:39:14 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE33116027F
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:39:13 +0000 (UTC)
-X-FDA: 84157400586.09.E98F813
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 19C5EC0014
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:39:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CC1qyyXK;
-	spf=pass (imf28.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 705CC6B0092
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:43:29 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33424B7460
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:43:29 +0000 (UTC)
+X-FDA: 84157411338.12.D51DA63
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F3F14160003
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 19:43:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="bLoT/Fgl";
+	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764272352;
+	s=arc-20220608; t=1764272607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZNvrU52zgbgBHftvOlOoh6DfoEQohFr9AGlTYCcwW8=;
-	b=K0EEMs4wdM0RXppvN1oy/6CnZ/ZepYzEktDCvDg+x8XIvi521dBFu1y2XDB3cpfx95XNGa
-	7zBQd2HDgSMKyVyNjzIg05P0hAcr1qLF2hbPzfZVbmZIwL+yraq+W9zKot8dKzBTgL8TVj
-	tKXGum2St1SIKkSpmWMSORZVYC16Xsw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764272352; a=rsa-sha256;
+	bh=JQe+g5ZvR6KeivPEwk1LBLbeVJ2/39tSJLB6nZ8TM10=;
+	b=jfKV837bJx6shPj1joy1Y0BYRzJWf/tN65UV7jkDW2cPv+YF8MZPx93rFf/oDhBRdqnYzg
+	tANQmtJVdFSICAo5k6M9rItA6m4TylwkOeCAcAxshhGBovw3hRK1oW4fqsvoZn9DDXxdEy
+	ftUf5vMXrDoxQfGdfG+xvQgmHd+QzB4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764272607; a=rsa-sha256;
 	cv=none;
-	b=gFrlH5r5DizF4n3s1z4yJia/eIR7TZqCxJlacMG9P67Wq2EuyNx949JXfL011peXh5SjRG
-	ZPpCRJo5K6raie9WNXI7I09SrJoJ8DTLqdrMtfjPO9toP9QnTDP8nBuRSgor5/6E25Ab9O
-	xE4nc7ASyttUguPG+oXWBGBxzogE+bE=
+	b=JqxokRhQ1h+lBu6cEbLXSItIHP/P6np+mPIeUHgDye2fjysIsdnlBqRnMJg7OPCb2WlxKg
+	Oo5K/Oa0oavdaXd58aKhNfqHEWjp1p3CLBPSX+VRzBVs2GykIi1bWZ4nIiTYJic9e9sWoK
+	ot1xCbhe2LRfYU/Fp6tRxGFUQ13IFv8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CC1qyyXK;
-	spf=pass (imf28.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE4DA43DF8;
-	Thu, 27 Nov 2025 19:39:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671B7C4CEF8;
-	Thu, 27 Nov 2025 19:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764272350;
-	bh=9CmP20l5fh1wI0Qc9aslBQ2/q51oJ57cp2te1agYTJ4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CC1qyyXKyo4HeL/hyEiAmjyrdFYZCtsA9ufEs1ZbODnUMjPMpmfB0ekb5LgdLYCLX
-	 CHpUVRLmWiP618uKzGcw7wbVXFiwRW6iCG11whNx4s8RBhJ8T9/2zgzHzeMA5neH+X
-	 jzNpS88WZd5RjEB1yebsUUYBbWhpHDbiEFxPLMdhwQ4oBHPrIE4ZWkloGCINaM2Td4
-	 NRFHi45iMDD6psQhkBxKT8Hte/o1Jf+XR9XXzKyaG1hLm6nKuFwYsMDrEhw0+17Fso
-	 Ig8qddeXGqDngyGmHRXeegLObMvmeRhAeq0whuZCSxPlUukv5cYyvoYlWUMy+FQ+1D
-	 EZxUxaIVmEl9w==
-Message-ID: <cdfb3e14-f85b-4c85-9042-f9bc7728b375@kernel.org>
-Date: Thu, 27 Nov 2025 20:39:01 +0100
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="bLoT/Fgl";
+	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=JQe+g5ZvR6KeivPEwk1LBLbeVJ2/39tSJLB6nZ8TM10=; b=bLoT/FglVGFQTp6ZQ56Yle6fs8
+	ptqzHTWL95KXuhjuxl7XPt2gLgIOgk1wweluHsPyQ38cpDssH97HG3X9erEgS+i3X/bNy+BrSNtZX
+	0Nx+1/7AoEl05gpR3MVH+L9M0aocNk7ibz8QPD2KslaJzakC7Ok8gfVaNO2YEVazZb2xxnmCHFpPF
+	IGRfMUCoFpNAy2XF/qaFP5T/vm4M4wGNn6/Yp6Tnduny8zxbeHx1WOFYhR2vZjAP7vXkPR/loRBbS
+	yrzAGHclbg4deP4UOsDu2voNxG+3XLZD1UdKAL75EZWsX6Dwl59DS2irr+1duhO8HSc3s96oSDErT
+	Uno8xeEw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vOhti-0000000CBWb-3MlU;
+	Thu, 27 Nov 2025 19:43:22 +0000
+Date: Thu, 27 Nov 2025 19:43:22 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
+ page faults after I/O
+Message-ID: <aSip2mWX13sqPW_l@casper.infradead.org>
+References: <20251127011438.6918-1-21cnbao@gmail.com>
+ <aSfO7fA-04SBtTug@casper.infradead.org>
+ <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-To: Ryan Roberts <ryan.roberts@arm.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
- <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
- <20251126134726.yrya5xxayfcde3kl@master>
- <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
- <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
- <ab39d448-aa1c-4c93-8e2b-5d97a9c76af5@lucifer.local>
- <1ca9f99f-6266-47ca-8c94-1a9b9aaa717f@kernel.org>
- <37973e21-e8f4-4603-b93d-4e0b1b2499fa@lucifer.local>
- <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
- <4505a93b-2bac-4ce1-8971-4c31f1ce1362@arm.com>
- <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Content-Language: fr-FR
-In-Reply-To: <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Stat-Signature: ib81hxawdmj5syfozb7z38y96djz48mn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 19C5EC0014
-X-HE-Tag: 1764272351-805085
-X-HE-Meta: U2FsdGVkX1+A9uYFJAlG1pZ9w+cSBh+/rTU44I2U1KSJo4HjOlRaSdOAyfSz5RT/9FTeWnHPVfAGBG7Jsjis18IWusmxWqYgSCpRdYr+zP90F0NhgK9p4G+rtehxkv1D4q90VsuBkHV46bI+dwQQVdu3g1cQpqIICFiVXa7Tn00bhmZ5zpic4Hec8p3iKhcQ2hWupxlrl4w6TU22L5zVpgjADVxZnriAtWHx/lVAxvb3GAm5YNKIVTvrE9OkhaQYYAu6T68DM2mP02MR1xT9GQ95B0AzIuynJlQqlfe/bxijDUA1HKXnfGREAqPEWh+3/IXViWbZ+odEr4OPi7Qz9DyZ2QQpsMy+3t2STw2fOzbrvWT9o6RR33+WJIPxtCSGHdhQM8Sz7Ate/70EHje1F7gpuH0j+zyQhcKXGHCbUSsFQqo4CxTz8PxLBWMipEEKVhcamyZ8fMxHjhl9TPe1pGQj2UQeI86rDTGpktKbfwI7nGbulPOrc3ribmH0w9ZO3Eyg+cSMeFJ6ZuWE9tzwAl+I4wkPEpCJG6Cif1RdgrtF1KiQGWY4sTJeDYiLw2xg4Q3cuJWfj9OCFxhzkCsAikEq521dnd+iVrmL9EOoIM4cSlMRVCTNjIPJHXFXK9mR5iwExU19WsfyXn00iObEWRm3FklWv2P10HXaDN63iBm9tj73NAWupo4yG7FOTT8eVieKQg5dBqylNbT54RsG2Y9O0NI7ufLckWlpjf0X1dlAf0iFpP0QzIe1uTBH1oKp+FDOiPNDB5SQhJuBd8Ic+U9DU60wJtLQXKP35OG9xGiBgqySu6w72JzgkJf37axm6oGSU2mhk+XWojRRfSov34H0F61mn73AMY8NnTRiiRonfR9pVRuUJmC6depi+JqbTgiEDYtCiuOC9ZiS8RaY4hqY4nGIsC+M7MKt1ecPtCUlvlvTh2iUOj5hfBsWKdjskTQqakVFIZJWrRXQNgu
- J06KEVBO
- dNNlxiaRlHbZdySTloMRxfaqZeVhLY+tNTaTF2BFZxHuADuJj8xe7xpF2ice6ddLsmElbso8nB0eyGYZrod76JeNeePh0PhuaPQ7ZITf09MYndHmuoO/+EV07SCzJOVM1aPfXOIeCVKy/D2IBU6Lnz4RA62uhZZeFvUObvFOuBbUrzHugnREX3UakF/9Wxc/Heb7nwxBSQk+EUYUPsvyOVSNTuK2bUSJ2QPHmThT3L0ceNP8XDHBDHGYxQ3N/ckCKlEG+5pL/1O+17apDXjFPt6Nowm0013Mi6tZbFJEqZCJ489/28F2pwzX9FxP7a+Gh8zpH
+X-Rspamd-Queue-Id: F3F14160003
+X-Stat-Signature: 44yftf9ndygfy8mmbwez9tezhtatzta6
+X-HE-Tag: 1764272605-10890
+X-HE-Meta: U2FsdGVkX1+iwS1iMxB+lWL6cXZrQZwS4/9vakYmf4i0VFc8YVEBWXao0LjTiAa6imDsU9cxMOC2udC97PvMWoUufx1TplA5Wqy2+hFFOAfec0zJlfJ1iba5Or5wEbQuVQ3JWkXdjxJHRheH9xkNwZmgJLxWuD+NxRNwwa40QcdPO0d7ADwxh/EWp3toEErsXr0LCtJaiDTVtQANjR6d+nMipBK7vQnHIdvUfWVGkJbVCq2TC/caYBiL5ZZvYxt+yBdoG26KLLeFiQaPmoOP9fN8LBHEf6VqbShzHgzhwzCJna22TfmTVfcMtcqm12Mr8ir/BF0kW23kIn9oC1I19jjqi/gApIVA4xFESDsW4NNOt78vN96KrPq1q749ByReSNKblemaK1xJPj/3dxhy7JAo0g5noKyPYkOrArh4v6FFXfcvEaoknHfLifSfRuDmszQxzmC3ejZrRkcZX6tQHfvTlTQtlZliWCYLHw5xsx4b9ILE9D92nRi0tq5fPj7w6qAjR124XfPN/b0ZVidT6zrshNezP9hxVcJz4qyy8p9Rqclbp1/LxwlHF3t0TZY+0SJf22tVe8RCNwzZ+Cv1oeomORzAQPiQMWzdXMTiw5opFn3BPTIaSnVzQuAEeKKUtPjJqviKZMSdq6FEThWnothypBBD4V5xHsIoST8zt4A0V9nRY8riFjQhH6ElqTKyXJMmzRoYhVx0gNDLg4xXHwLn/zgNwOTpJJuYNKU1ZcOwSySej3Pwmd3mYV2LDceMS/9r8ECmwWpIvK91ltDQHQAwB/lG78jX83FzuG1ZYX5LJV+HDVJOi+rHlC92FUiRHpJEfnKWtEKMdZo9X0Wah7X2hlxhJs9vKHdOdIPFnVMrF3z74l5fpIS5ZcFz3Ih3QERiIPWKUYCDjgwteBNYu/idQf0PDvJw+hGq/RKtXfeYU5KkmbQTXqiqpYKSIgXRxIno/u29r4FfDoZBvVg
+ tKJfkOIt
+ Yk94Tla5BqsJGkobwHDvPKPG1YeDJjgLUDUvsPtW8OAPRhmgxWWMe1FA2SzRtZr2+IP/KrCFLmUJcsYQqfIgJySFKX1dUyYCDpsIxUkGZkE3XoAMEBqCnaGb/ZiPVNWNacn3D7wpAOR/aCAFnK0ojd6qCmSaCqY0i2QebQuPx23BItogyAb3j1V6zRZUCQJ+L4adC+jVXRka1mlOcdSFR3vi9Ws909X7O48WJzSmUtEwRu8Bs365Y9lGh4taIClffBWN7KrMtVF3SQD6aw+lFH+KCXjw8WU0ZMEfJ8nk2I1OAAeM38XNLtGTAIiFhx3yJvP8rNw2nNSPMX2E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,94 +97,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+[dropping individuals, leaving only mailing lists.  please don't send
+this kind of thing to so many people in future]
 
+On Thu, Nov 27, 2025 at 12:22:16PM +0800, Barry Song wrote:
+> On Thu, Nov 27, 2025 at 12:09 PM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
+> > > There is no need to always fall back to mmap_lock if the per-VMA
+> > > lock was released only to wait for pagecache or swapcache to
+> > > become ready.
+> >
+> > Something I've been wondering about is removing all the "drop the MM
+> > locks while we wait for I/O" gunk.  It's a nice amount of code removed:
+> 
+> I think the point is that page fault handlers should avoid holding the VMA
+> lock or mmap_lock for too long while waiting for I/O. Otherwise, those
+> writers and readers will be stuck for a while.
 
-Le 26/11/2025 à 17:34, Ryan Roberts a écrit :
-> On 26/11/2025 16:07, Ryan Roberts wrote:
->> On 26/11/2025 15:12, David Hildenbrand (Red Hat) wrote:
->>> On 11/26/25 16:08, Lorenzo Stoakes wrote:
->>>> On Wed, Nov 26, 2025 at 03:56:13PM +0100, David Hildenbrand (Red Hat) wrote:
->>>>> On 11/26/25 15:52, Lorenzo Stoakes wrote:
->>>>>>
->>>>>> Would the pmdp_get() never get invoked then? Or otherwise wouldn't that end up
->>>>>> requiring a READ_ONCE() further up the stack?
->>>>>
->>>>> See my other reply, I think the pmdp_get() is required because all pud_*
->>>>> functions are just simple stubs.
->>>>
->>>> OK, thought you were saying we should push further down the stack? Or up
->>>> depending on how you view these things :P as in READ_ONCE at leaf?
->>>
->>> I think at leaf because I think the previous ones should essentially be only
->>> used by stubs.
->>>
->>> But I haven't fully digested how this is all working. Or supposed to work.
->>>
->>> I'm trying to chew through the arch/arm/include/asm/pgtable-2level.h example to
->>> see if I can make sense of it,
->>
->> I wonder if we can think about this slightly differently;
->>
->> READ_ONCE() has two important properties:
->>
->>   - It guarrantees that a load will be issued, *even if output is unused*
->>   - It guarrantees that the read will be single-copy-atomic (no tearing)
->>
->> I think for the existing places where READ_ONCE() is used for pagetable reads we
->> only care about:
->>
->>   - It guarrantees that a load will be issued, *if output is used*
->>   - It guarrantees that the read will be single-copy-atomic (no tearing)
->>
->> I think if we can weaken to the "if output is used" property, then the compiler
->> will optimize out all the unneccessary reads.
->>
->> AIUI, a C dereference provides neither of the guarrantees so that's no good.
->>
->> What about non-volatile asm? I'm told (thought need to verify) that for
->> non-volatile asm, the compiler will emit it if the output is used and remove it
->> otherwise. So if the asm contains the required single-copy-atomic, perhaps we
->> are in business?
->>
->> So we would need a new READ_SCA() macro that could default to READ_ONCE() (which
->> is stronger) and arches could opt in to providing a weaker asm version. Then the
->> default pXdp_get() could be READ_SCA(). And this should work for all cases.
->>
->> I think.
-> 
-> I'm not sure this works. It looks like the compiler is free to move non-volatile
-> asm sections which might be problematic for places where we are currently using
-> READ_ONCE() in lockless algorithms, (e.g. GUP?). We wouldn't want to end up with
-> a stale value.
-> 
-> Another idea:
-> 
-> Given the main pattern where we are aiming to optimize out the read is something
-> like:
-> 
-> if (!pud_present(*pud))
-> 
-> where for a folded pmd:
-> 
-> static inline int pud_present(pud_t pud)	{ return 1; }
-> 
-> And we will change it to this:
-> 
-> if (!pud_present(pudp_get(pud)))
-> 
-> ...
-> 
-> perhaps we can just define the folded pXd_present(), pXd_none(), pXd_bad(),
-> pXd_user() and pXd_leaf() as macros:
-> 
-> #define pud_present(pud)	1
-> 
-> Then the compiler will never even see the pudp_get().
+There's a usecase some of us have been discussing off-list for a few
+weeks that our current strategy pessimises.  It's a process with
+thousands (maybe tens of thousands) of threads.  It has much more mapped
+files than it has memory that cgroups will allow it to use.  So on a
+page fault, we drop the vma lock, allocate a page of ram, kick off the
+read, sleep waiting for the folio to come uptodate, once it is return,
+expecting the page to still be there when we reenter filemap_fault.
+But it's under so much memory pressure that it's already been reclaimed
+by the time we get back to it.  So all the threads just batter the
+storage re-reading data.
 
-Take care about macros with unused parameters, it can be a problem 
-sometimes, see commit 05a4ab823983 ("powerpc/uaccess: fix warning/error 
-with access_ok()")
+If we don't drop the vma lock, we can insert the pages in the page table
+and return, maybe getting some work done before this thread is
+descheduled.
 
-Christophe
+This use case also manages to get utterly hung-up trying to do reclaim
+today with the mmap_lock held.  SO it manifests somewhat similarly to
+your problem (everybody ends up blocked on mmap_lock) but it has a
+rather different root cause.
 
+> I agree there’s room for improvement, but merely removing the "drop the MM
+> locks while waiting for I/O" code is unlikely to improve performance.
+
+I'm not sure it'd hurt performance.  The "drop mmap locks for I/O" code
+was written before the VMA locking code was written.  I don't know that
+it's actually helping these days.
+
+> The change would be much more complex, so I’d prefer to land the current
+> patchset first. At least this way, we avoid falling back to mmap_lock and
+> causing contention or priority inversion, with minimal changes.
+
+Uh, this is an RFC patchset.  I'm giving you my comment, which is that I
+don't think this is the right direction to go in.  Any talk of "landing"
+these patches is extremely premature.
 
