@@ -4,122 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15EB2CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BC76D116E2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:55:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595DB6B0030; Thu, 27 Nov 2025 09:52:04 -0500 (EST)
+	id BB6EE6B0099; Thu, 27 Nov 2025 09:55:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5460A6B009B; Thu, 27 Nov 2025 09:52:04 -0500 (EST)
+	id B8DD96B009E; Thu, 27 Nov 2025 09:55:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40E6A6B009E; Thu, 27 Nov 2025 09:52:04 -0500 (EST)
+	id ACABE6B009F; Thu, 27 Nov 2025 09:55:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D78E6B0030
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:52:04 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD4A512927
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:52:03 +0000 (UTC)
-X-FDA: 84156676926.27.3113650
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B13AB140004
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:52:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764255121;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=cAIzZlwt931JkoUZjg2FOr5ixA966v/JOvVIg0npcNI=;
-	b=MfeU5VP2HGh369rykMhDMZXBobZ3FBaPHkfa5AMUnMoXSkbHuKNf3dOKS3KdbuvN4aiUsW
-	LDx/rdCMn42tTRpE+iqc4kjOE8diDNI/vUF3/JrQqzi2AyQ+X8P8ybFg4X6qOkzgK+8PFj
-	ppn3+lP5ux1yUSo3jX57EQtQImkPA60=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764255121; a=rsa-sha256;
-	cv=none;
-	b=6lGiAM804pSPwxxOb9xYMJXykJTEIe82L9UhyRCgwlIjEjv+p/auIjiOuJTmn9DmgxD4wm
-	rthOQUfG84zOEI1+3V4Bw4D0Foi7A3NaRQDi8uXr46wn7URf0DCyjHNuWIZIrbbyUbFLbQ
-	3psBs21y5y5IYZo/dm7EXbOY+XkHmDs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A9236B0099
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:55:27 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C89656B64
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:55:27 +0000 (UTC)
+X-FDA: 84156685494.07.B77798A
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9C615180011
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:55:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
 	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
-	dmarc=none
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7c7660192b0so664001a34.0
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:52:01 -0800 (PST)
+	spf=pass (imf16.hostedemail.com: domain of 3XGYoaQkbABsJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3XGYoaQkbABsJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764255325;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=hCAVKRSWAFgcmFuKzO2EIexdVb24ue0/wi6M2luph+c=;
+	b=DdlWkBGD/SUyaoZcdet2ZxYEUCCi72vVFqCInehF7kB4Yj6mttAQw5sYDRelZlarsW7WDX
+	juwhAEK0LkO7rcicpMaYc9f6CNjGIZW6cRF2G3imijCPY8PYVDGRrMiwyBA9E5FO+esaLr
+	IXyPCmG0Gjaa+7q8FT5aphcSk5JtLC4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764255325; a=rsa-sha256;
+	cv=none;
+	b=eQMPCAtriJBCB6p0D7Fva0YXOQLwgcKFRnVe+keKYSivGeoqMV8rZsmdX4+vQ0cfXgtXxf
+	a1MAUZnsV+enImmmW9716i0FXUGD4AI3gQf3zgNfi5sGyi4EM0wXyX94EO6XQzQwFTbOBJ
+	7INHNLvtmV76cqKnC4r4XGkFQ/BBrHw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of 3XGYoaQkbABsJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=3XGYoaQkbABsJPQB1CC5I1GG94.7FF7C5LJ5I3FEK5EK.3FD@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-43328dcdac1so9113015ab.2
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:55:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764255120; x=1764859920;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cAIzZlwt931JkoUZjg2FOr5ixA966v/JOvVIg0npcNI=;
-        b=vSKPMrZdaBMKLUAQcpxTV9q6ipZBqiXMhdVHIVVD9mj59TpbfIfROY7NACUtcT8dZI
-         gw4rAJ2fzZQpfAArgIOotrS8a7rthqg/P2VTFDmCh3j90shzUfBhxnOFWWbCt+4/nZ31
-         1A1S+6x4QRP+YDkoCFv//Kvicq3PruywXfHttIO1BHi1BMEAhoc2eQ/vkXnZ4gsUnP/V
-         M6FeDsHpdzKo/s/oNi+62wYINHUwC9jXpzBRc5I6OSkMY3ZsjiSAQ2GdAReUbNwWRz7L
-         zkFsNzLerwYVZeAHHYInU7zchA6NGN6bGZ1wFWGpSYOSP7cFpMfwIH3kGJ5O1GtXVR6E
-         ZugA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhzdmf2+fTv2oiB7Nk/iee4r8JJydBhyQJrvEUO9fJPPXCQfpe9PSPmPQ35Y6OYTSS1cNLPthqCw==@kvack.org
-X-Gm-Message-State: AOJu0YwHk2z2GreyZArIhFK81T3t+XhER6Zs1iO3m/HcgW/8bs+8mlab
-	9v0a6HOqFMa/j4QXnIUztF8h5spParpnikhP4H+Yx1skzO0s4EtMZvE+
-X-Gm-Gg: ASbGncuEvM2ztC+lI+5J/6VJM+NXsjrVYet8+5k+GhW8MQF3ve9VmAIMRVGmJLuIaoF
-	fMCfCLCk/c9lBgOwafTnV82MbgPNmwfd6kb+xL34YTZnTl09RMBFg4mPID5/SCs2UkFxQkujknV
-	JKIgjWONBKH1cpeKWLEXzJtlI28HzAFR19LnoOB+1pOSsdIVjEMFY8SZ53740nq1pUZcluzAc5i
-	J8585KYlYEBRx/0W+Uy5EzKxvr9yPJhC6yXbRpkA6X5kkAAYzXOXP6ndp+pCBxvdwklunleO5Na
-	jZZMCaACRgPx1ZL4I7QyP20zFZtGcQpPSsTSRu9tN0WDoQ4wf2LX82igxVgxtqb8Ge8LW2BAk95
-	HkC5wdYv1KvvcZi0qSLq3OWE+5zB0GW1e2iQ82zu2zM2/xcMpIbRFUeq9iJBEPXkfZcX3r39kBi
-	ttJovmVHhs0AQCJA==
-X-Google-Smtp-Source: AGHT+IGjXOzX1/INjAxLcMiQb6vVvjsDvCY0JqSDikDDbIziJmMNiu2ppTrz8kRjx6Znh9+6s5DyAA==
-X-Received: by 2002:a05:6808:21a4:b0:450:f45e:f4a9 with SMTP id 5614622812f47-45115a2eb3amr8969148b6e.19.1764255120607;
-        Thu, 27 Nov 2025 06:52:00 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:5b::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4531708e744sm431286b6e.11.2025.11.27.06.51.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 06:51:59 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 27 Nov 2025 06:51:54 -0800
-Subject: [PATCH v2] mm/kfence: add reboot notifier to disable KFENCE on
- shutdown
+        d=1e100.net; s=20230601; t=1764255324; x=1764860124;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hCAVKRSWAFgcmFuKzO2EIexdVb24ue0/wi6M2luph+c=;
+        b=GLArxLALEKi2NunZ7jyIceOqslrmVCkfRJdACu0vQ+P6JBNzyhF62yG1ErrvQsNjTS
+         POSyEKYjl7XRX8VuA0ixhMo3NkNjm0FxDOAw4dcKWRzdk8tbkr+gUeKj8E9HHP1uMekE
+         aBeKkzbH8YPI1h4NTjUPZ7XtAnHoodLEIZMu1sxWk+22PQHgGF/AfURh8RuZfyV++Ins
+         7kjqfNdmZs7l0L7auyNeGnIaWU7Ry6mS2mYsF3ofaMChKUvQlh9SL8uJUE4XiwogpR5Y
+         R1gPtQm1sSpr+bkjF8LJJkb7okIgDEqHvUJSrTLrOz8BZV0jBk/owixy+Mej1w8mabME
+         ATCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUnk0Ik8sQ8jDRt0ILcA6+LHkmO8m8sAtqSsm33UcaHq0ZU2O7OHMRzkgY/x0fFf+gx228fRnJYQ==@kvack.org
+X-Gm-Message-State: AOJu0YwuNbjEFm6IeF/kOsxg2yG6+g/8AmqCy/5mO5gnOojocbDNcJWV
+	5l6bcOh2+Edmg9IER+riyCG7H+loIf0jsIDgMVjj1FtNFWpthI/LlwKy2porufLw0bXQe6mVaSW
+	+EE0DFpKEmAc5KGneebiAk/9sA3Rk2vo6+5ba1O2BXzQbNs0uUqFqWwdDWxU=
+X-Google-Smtp-Source: AGHT+IGhIQGX5rt1wjhEHu9BD/rsM//hmN5/8B3l8Epz9R5tqBC367cGCoVCcNYa5DDUZ82w1uKgPSJykbyy/R9ut3AvVifiylgh
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251127-kfence-v2-1-daeccb5ef9aa@debian.org>
-X-B4-Tracking: v=1; b=H4sIAIplKGkC/2XMsQ6CMBAA0F+53EyNVwRsJ//DMJT2gItJMa1pN
- KT/bmR1fcPbMXMSzmhhx8RFsmwRLegG0K8uLqwkoAXUZ90R6V49Zo6e1UV7085mas1gsAF8Jp7
- lfUT3sQFcJb+29DneQj/9KwopUp3rmcLg+yv5W+BJXDxtacGx1voFZj9m850AAAA=
-X-Change-ID: 20251126-kfence-42c93f9b3979
-To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
- Dmitry Vyukov <dvyukov@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3057; i=leitao@debian.org;
- h=from:subject:message-id; bh=La8G30hl9qem1PV0MHxUCDzheJkZdQA86wiUtuO0D5s=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpKGWPOQkKx1HnYBIusPuWFSi1zEKgAagB3QQqt
- OCZwoLBZX6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaShljwAKCRA1o5Of/Hh3
- bb5qD/sFLPYK6ITq6kgbAyxqkbZNfmJ60A+CPwbjNtm8XT727QN5Zu9W3ONIdtd4AasadA+qGOM
- qjDQscvF6Jqm8M5++IbkBuAb/dOGZ9TEiD5WtK8qwFeWFDdItO6H+pvFxUHj/hki3zstK70/9BA
- dB1ILdAJBqtzW0SM8zJ+mNN5uQCAIbh8QNamqioC6twnkJ7WoK9u39f9FfyC+ZCIQ2HL/mFGwtC
- EmKnY6+9hYwruwBF++2d44yCoaHTRjRnMHrFhsrJbhR2sYnhN3yC7M0G5OqwYhjserxdcmYVAxB
- oEm48SGyNmeK2r+9vcJOpSzh7yF3Yv+YMh70dZbY58he1kXuACNklOMwe+apkA1k3BT5nkRIu8l
- 275PckhkwGZhlXVZkwqQ77hNYV6oJrkeh/CHHA8gfRbPysFcnlIn0z2E+cl2S58D6rEttEMJH7A
- QjPJT2prC0+KKql8M3EGoqhZ6l4zJlIbFhZLft1V1MypIsLIbgTzfd0pcdyEEDyTA3VvJO1Y9Ra
- UAjKln6TFsArkYDcZimLTeTVRxOAkvlgvhZDs49MGFtvyYCzBp53BCLXv+mV4+GnMfD3rqcF09+
- ktyKFkRGNqJEb/J+y2SaGlte+it0n37XphkvXKIjM7GYEQey9yI6ZWLGQtzULDou7EIeLx3l85Y
- Cbq0Nap2eYSJfPA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Rspamd-Server: rspam12
+X-Received: by 2002:a92:cd44:0:b0:433:68e3:7679 with SMTP id
+ e9e14a558f8ab-435dd043b29mr76588715ab.8.1764255324606; Thu, 27 Nov 2025
+ 06:55:24 -0800 (PST)
+Date: Thu, 27 Nov 2025 06:55:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6928665c.a70a0220.d98e3.0109.GAE@google.com>
+Subject: [syzbot] [udf?] INFO: rcu detected stall in call_usermodehelper_exec_async
+ (4)
+From: syzbot <syzbot+be81254ae29faa71cdfe@syzkaller.appspotmail.com>
+To: brauner@kernel.org, jack@suse.com, jack@suse.cz, kees@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B13AB140004
-X-Stat-Signature: tkexbfgjyzqjutdho54wdkgsgsp54gp6
-X-HE-Tag: 1764255121-476110
-X-HE-Meta: U2FsdGVkX18lr7oWp3j+dSoOcMXbWU0pJWoodHTevoVa2+HMsT2oT3jHhFAiCU7HVlZ6WLs25iBEguiJBMJKG8Lo2bLxeA+Gh/1Ig2E9ZO34NqrLiM5iMaNnXW1hvCTyooXdQsMsQeCJyhhE1YIJ6nFM2mC7wOHrWAPMyV7yEjGgqk7EKDzLoQ1dkbfOOXFz6w4AVly+VCpVvvYLu4cRZf/IVafXj6QMmDPzunlhYD04Xocm03c+QYR/wkG1TUG6/iErVeYBIbKC6H6TqCPjBnULCLcDjA7Nz+X4w0OpFMxjn6T0Wz6L+D7ORtK+7Rg02dRrUuCWeBOGkJdLRhaq6UyfKGmCn9yQuUlIz5fUbPqPNyGQ9l703OrAoq/N25Zqonh9/NKaG4db1w4g9+j3YL2alQbEa07RozKf4kDQGzjNughqdh1yjdOom1vbb02EY0kHpIrYJheSiTRqMS8m3Lj6E7H/Er4fKboifVaMh9FWyUBlVYj8/kwJtSMmwNHRlqBU7yekvv5cjm+pVUwQctWac7DNp7aUM8tMylD3zsadE4DoCjg+S4gobuom1DU69eLxfeFeDKTFnOrwzF1SqKK+Fl0ZFFfPnuuB/8SAIm1AHsFR6if6Zo1c5CJ9X1GdQO5Ly3hKdQresZ42GSQfW5ylvv8sqSr5G7xuzCm670cwwsOYBKvejCy/+gz3Jzs940eqk0liqjlCWMZXEpqZZZYJgj/FcZcgJFKKFC55NT4roIpj4aKwPwQXa9MKlwnl7/MjumsbGUIgB9A5j7VN72MFpR4lBrfM+kFwABiJDiiuV4awtCpGoJJIDyz0i5dsXV/sB5CQeyS+kvTFDNf7xuqKnh7zuHQHKs+b3vysv0VG5ieJ7C0XQIB2uphGAbVY7Am8Cnu6Nyq1+zEtphK2Ci7Li4DmfE2a+p7y4ns5Qn7KwxfWoAJzun0G18AW9Uv1mmwe87s8qipidkDfSeT
- rza4hzDj
- JJ9wvYDhWcIVDyQFqsoWPB8MBUBkUH/5BnnrGNrFRG/9Nn1rY7QuqtoK9ppQncvdR9zxJ73DIEileEml1fgbA2zR0buNdKPJUa5OgzTO6Hgm0FdkXw/W/5J1FJBo9EKsxJk9tNtT7jNyEBOLLJ6Dp82H5ng4U+Rdcqo3RP2Bgh1TclbrV4HXOxAhQWO9lsla1FzjJOAXNcoNLlrwolv4/TD7r2d3VAumoly6O5dVm6q+kEzrAeWNwS8yjbqtHvGXgdVDoQz2goHoeqhUCieBV6wba/2u6DRle5q+B34SiqRu16LbsqBmrg1ec7oS/Gz8cDp/VDcCP2nqmw0Sta5kmp/Or9TIKZ7KbHEqKkb9d2enmbHiYgTehx4+vCrGtkf7nX8XBfLV4YyIqkUeMvF6N5QT8nxp9p6OVYs/tRqAjWePcrGiPd3BvFc2fQKOI+cOJ6PE9PK9Dgp9p9lUbzWkuXFmFU5dVVOSjksw1Cgg2fVngAg215SWuqpOgGudqgn9dWA55djJQ+rqE4AVRM0gezANOYWf+NqDDOgyvvvNAPlbrvKrQItZE6Rk+0J1yTozQioCI3hxaP47+e/8=
+X-Stat-Signature: ozz71r6w8z6fyeiybdpc5q3nnwbqx7js
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9C615180011
+X-HE-Tag: 1764255325-89850
+X-HE-Meta: U2FsdGVkX1+BPpJ+JBWBs5hgj+3W4bfvjDBeE5MUfHUfHS+E62UY93gKd9m6bzvbZbklzrS900yzFsl8fVUVccQQJ0HdMdQiKTRUEbZ52/CVNNeRSOCij1FkK1YAvWszmCAyHiI2yZLkKX8Kd6Kr+/amh6V7LH2bBEW2bk7CrRrbHPSS0MWMUrYNCrNP+1/Pt0c9+CxP1PKmZCBcu1R72rp0pi/h25NoxXZhFEVlToRYB5xGZSY7lBFTQyNac4i4MoXQImVh4chKRo89O83IsKbALM6Ix35ox67jDfTJVxBCTgrifk+JBk/pyfoJI2sR876CiRQRp8kEdnvMgutF4Ndlf2xkZhnG8ngVJg+ETUyGgC7ylPlucm7W/ZC5TQaJmC6PRLwRjUud3/VFIYr4esIIznJP8qOolalozFL1PtGvy6iobJjbYv88xuyaB3OMMrmgLAtcOc8iAS1GzWYVtgapc8X/AqTm0jk4JuFkHg6tWGYutfAPT28WcVcqthmYBG2xhA0WT2XvAnClDwz6ShT7skMsA4YfBadJHlR8GUZbB++HY3CvSixS1FckNkuGVYe5mdqhgtrh8XG4jgFMF8Q3pHDpZVa9tJoU85FOgkufTUmCIQlvnaJ09y9dodatzaNL5IiXaZv/ypxHfw+JdVxqVCgpmSN3kVmjSgr/eb5hcYfJE1oEV6aMuRlwohav60y9ITomb4VMTPcA1+NCNVNkHWJZ5fKKM+2fFNlIeid+9NGryDacBBm3XddKbiWz9yfTpP9MbvFak6M+BxpHsdsf2n3ipejCFRJv/C+ZvZG5czXzScmyNmrQfT3vwJGAJdaU+kbuct5DNnUA7Y/UWJJ2j/DODZZjVyVVz7jX8qQb61eBiqkcYAYbxrl9s9FLZnu1DkJBgDV6BpGshZgTcVzmA9Ly5+e6Cb0BepG9pv8vv3sWJkkMN6qMO495RaWSElyvaffBhFR/8EOS+mu
+ WtvfL4zw
+ uTcVq8TzerS8FcXiLTJ3R/+Nb/ldoAAV+y8lFSkSQEuVsjuy5TpVDIjrsTl/2dTaMFSzvzA3E+jgsqx+sjrPR/Kk3aipJNLkYh2rocUi5q0ZFacmlQLdzedY5ytkfFjb/GMhg6ofG4TQpi9U9U2Exr4UCuvhILjjt+nLmAV/+P7DSmgxoGScKab3j3ze/KlaIYyg9l0aUAUFHFtJznIfMv/WcGuNju3XlRq8Iwk4G6DZ0F9J/pSvWeScuZsm2bJdAMjoafXP+hpxwgnJ9ltVyOCJqoR/YNfKtHNz7JAzBtmsJpCBEfliwfa7f/TgYibUL8Kd166pqtNPh1nLULdLbwuMTd68ws4LoIf0pmRlheUtvdg5jkY4d4H7OVU2pxD/m3fgLxVFSO26qP7HUrh9cNwy5r35rg02181tTW/0c4mHzik59MML+T/qN/PUeJlcg3ETkpZ9guTpvf90TdwmeGDqrOyXJu8IEsdNbojU6rl4DsvPq1GW+D1pazIUO0g7Bb2qBEt9JaaEl2Pzvu4humg1TzefiwN+F6OjZTbI1Ks9OY7f4+x3DxaIQAjZPKDYjz9PExxwfjA4WH0clD54tJBbdJFQK9Chycna9adFkNfZzAjtqzphHdmTxZsypAPQoffXEnY4LlFGy7a8/QXvAcnSBAQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,93 +96,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During system shutdown, KFENCE can cause IPI synchronization issues if
-it remains active through the reboot process. To prevent this, register
-a reboot notifier that disables KFENCE and cancels any pending timer
-work early in the shutdown sequence.
+Hello,
 
-This is only necessary when CONFIG_KFENCE_STATIC_KEYS is enabled, as
-this configuration sends IPIs that can interfere with shutdown. Without
-static keys, no IPIs are generated and KFENCE can safely remain active.
+syzbot found the following issue on:
 
-The notifier uses maximum priority (INT_MAX) to ensure KFENCE shuts
-down before other subsystems that might still depend on stable memory
-allocation behavior.
+HEAD commit:    d724c6f85e80 Add linux-next specific files for 20251121
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=16f1f742580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=68d11c703cf8e4a0
+dashboard link: https://syzkaller.appspot.com/bug?extid=be81254ae29faa71cdfe
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c3ea12580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1064d8b4580000
 
-This fixes a late kexec CSD lockup[1] when kfence is trying to IPI a CPU
-that is busy in a IRQ-disabled context printing characters to the
-console.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/0ccfc806f65a/disk-d724c6f8.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c2ec31ffb05e/vmlinux-d724c6f8.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c25d9c0c1917/bzImage-d724c6f8.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/9174536af225/mount_0.gz
 
-Link: https://lore.kernel.org/all/sqwajvt7utnt463tzxgwu2yctyn5m6bjwrslsnupfexeml6hkd@v6sqmpbu3vvu/ [1]
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+be81254ae29faa71cdfe@syzkaller.appspotmail.com
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Marco Elver <elver@google.com>
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P6121/1:b..l
+rcu: 	(detected by 1, t=10502 jiffies, g=13961, q=394 ncpus=2)
+task:modprobe        state:R  running task     stack:26056 pid:6121  tgid:6121  ppid:13     task_flags:0x400000 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5257 [inline]
+ __schedule+0x14bc/0x5030 kernel/sched/core.c:6864
+ preempt_schedule_irq+0xb5/0x150 kernel/sched/core.c:7191
+ irqentry_exit+0x5d8/0x660 kernel/entry/common.c:216
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0010:unwind_next_frame+0xaa5/0x2390 arch/x86/kernel/unwind_orc.c:581
+Code: 00 49 89 df 49 c1 ef 03 41 0f b6 04 2f 84 c0 0f 85 88 13 00 00 0f b6 76 01 83 e6 07 83 fe 04 4c 89 64 24 10 0f 84 49 04 00 00 <83> fe 03 0f 84 f3 01 00 00 83 fe 02 0f 85 a1 07 00 00 4c 89 7c 24
+RSP: 0018:ffffc90003287898 EFLAGS: 00000293
+RAX: 0000000000000000 RBX: ffffffff900ba31f RCX: ffffffff8f90e4cc
+RDX: ffffffff900ba31a RSI: 0000000000000002 RDI: ffffffff8bbf8180
+RBP: dffffc0000000000 R08: 0000000000000003 R09: ffffffff81745035
+R10: ffffc900032879b8 R11: ffffffff81adcc20 R12: ffffc90003287f48
+R13: ffffc900032879b8 R14: ffffc90003287968 R15: 1ffffffff2017463
+ arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0x9c/0xe0 kernel/stacktrace.c:122
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2540 [inline]
+ slab_free mm/slub.c:6663 [inline]
+ kfree+0x1c0/0x680 mm/slub.c:6871
+ kernel_execve+0x3c7/0x9f0 fs/exec.c:1922
+ call_usermodehelper_exec_async+0x210/0x360 kernel/umh.c:109
+ ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+rcu: rcu_preempt kthread starved for 10537 jiffies! g13961 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:R  running task     stack:27064 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5257 [inline]
+ __schedule+0x14bc/0x5030 kernel/sched/core.c:6864
+ __schedule_loop kernel/sched/core.c:6946 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:6961
+ schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
+ rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+rcu: Stack dump where RCU GP kthread last ran:
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:pv_native_safe_halt+0x13/0x20 arch/x86/kernel/paravirt.c:82
+Code: cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 33 70 0c 00 f3 0f 1e fa fb f4 <e9> c8 f2 02 00 cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffffff8dc07d80 EFLAGS: 000002c6
+RAX: 9d3ae734e5c61000 RBX: ffffffff8197acb7 RCX: 9d3ae734e5c61000
+RDX: 0000000000000001 RSI: ffffffff8d78f71d RDI: ffffffff8bbf81e0
+RBP: ffffffff8dc07ea8 R08: ffff8880b86336db R09: 1ffff110170c66db
+R10: dffffc0000000000 R11: ffffed10170c66dc R12: ffffffff8f7deb70
+R13: 0000000000000000 R14: 0000000000000000 R15: 1ffffffff1b92a60
+FS:  0000000000000000(0000) GS:ffff888125eba000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fc4b4703020 CR3: 000000002998e000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ arch_safe_halt arch/x86/include/asm/paravirt.h:107 [inline]
+ default_idle+0x13/0x20 arch/x86/kernel/process.c:767
+ default_idle_call+0x73/0xb0 kernel/sched/idle.c:122
+ cpuidle_idle_call kernel/sched/idle.c:190 [inline]
+ do_idle+0x1e7/0x510 kernel/sched/idle.c:330
+ cpu_startup_entry+0x44/0x60 kernel/sched/idle.c:428
+ rest_init+0x2de/0x300 init/main.c:757
+ start_kernel+0x3a7/0x410 init/main.c:1206
+ x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
+ x86_64_start_kernel+0x143/0x1c0 arch/x86/kernel/head64.c:291
+ common_startup_64+0x13e/0x147
+ </TASK>
+
+
 ---
-Changes in v2:
-- Adding Fixes: tag and CCing stable (akpm)
-- Link to v1: https://patch.msgid.link/20251126-kfence-v1-1-5a6e1d7c681c@debian.org
----
- mm/kfence/core.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 727c20c94ac5..162a026871ab 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -26,6 +26,7 @@
- #include <linux/panic_notifier.h>
- #include <linux/random.h>
- #include <linux/rcupdate.h>
-+#include <linux/reboot.h>
- #include <linux/sched/clock.h>
- #include <linux/seq_file.h>
- #include <linux/slab.h>
-@@ -820,6 +821,25 @@ static struct notifier_block kfence_check_canary_notifier = {
- static struct delayed_work kfence_timer;
- 
- #ifdef CONFIG_KFENCE_STATIC_KEYS
-+static int kfence_reboot_callback(struct notifier_block *nb,
-+				  unsigned long action, void *data)
-+{
-+	/*
-+	 * Disable kfence to avoid static keys IPI synchronization during
-+	 * late shutdown/kexec
-+	 */
-+	WRITE_ONCE(kfence_enabled, false);
-+	/* Cancel any pending timer work */
-+	cancel_delayed_work_sync(&kfence_timer);
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block kfence_reboot_notifier = {
-+	.notifier_call = kfence_reboot_callback,
-+	.priority = INT_MAX, /* Run early to stop timers ASAP */
-+};
-+
- /* Wait queue to wake up allocation-gate timer task. */
- static DECLARE_WAIT_QUEUE_HEAD(allocation_wait);
- 
-@@ -901,6 +921,10 @@ static void kfence_init_enable(void)
- 	if (kfence_check_on_panic)
- 		atomic_notifier_chain_register(&panic_notifier_list, &kfence_check_canary_notifier);
- 
-+#ifdef CONFIG_KFENCE_STATIC_KEYS
-+	register_reboot_notifier(&kfence_reboot_notifier);
-+#endif
-+
- 	WRITE_ONCE(kfence_enabled, true);
- 	queue_delayed_work(system_unbound_wq, &kfence_timer, 0);
- 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
----
-base-commit: ab084f0b8d6d2ee4b1c6a28f39a2a7430bdfa7f0
-change-id: 20251126-kfence-42c93f9b3979
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
