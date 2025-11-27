@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5A07CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:12:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36ABECFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:12:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47B466B009D; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
+	id 84C736B00A0; Thu, 27 Nov 2025 09:12:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 452CA6B009E; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
+	id 7FCA16B00A1; Thu, 27 Nov 2025 09:12:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3691B6B009F; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
+	id 6C48D6B00A2; Thu, 27 Nov 2025 09:12:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 229816B009D
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:12:29 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE1B286DC6
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:28 +0000 (UTC)
-X-FDA: 84156577176.19.D10A356
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1DE6EC0010
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=TaS601QE;
-	spf=pass (imf28.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 588DB6B00A0
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:12:40 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 358D11A01A6
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:40 +0000 (UTC)
+X-FDA: 84156577680.18.9942511
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 51B8480022
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:12:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="Os/7bird";
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf02.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764252758; a=rsa-sha256;
+	cv=none;
+	b=ElrJQLXURGw0xzbby3cq1g5G+n6INYDlb+/3kzyv+rN+b/r52u2tKTcXuWtQIpH5mdHpNi
+	NcqtKFF8Xln5LbvFuYIIVuzW8cQ9RmB0zhVPto6dy0ywWAcrZGMebtL3TDwoC76kHoTrbs
+	dKUHzsIir53gQIRDm052e4rTRORA+K8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="Os/7bird";
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf02.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764252747;
+	s=arc-20220608; t=1764252758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kCE7BFaxTmXT5gX1mJT6mv3jSbzO4IVr04XlUFHKTqA=;
-	b=6ZDwCSsO0Kw9P0QaN9j0hQBHgroNKviRcqK9Y2jlR81+g10KPLk/fB3D8L9YHB25rzt50A
-	n5IuEp+NIIGiwrsAqbo29lcoXkblMsXqleZhojJi7knC8aP5/ISyQIcJlQDGwm+1pi7MfM
-	6li0bxel9tC197e0mvyVcn4cnmFACoY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=TaS601QE;
-	spf=pass (imf28.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764252747; a=rsa-sha256;
-	cv=none;
-	b=TClae3/yrxoOFjqz7DEL2Bj8Pk33rYsQQ1GelSM7hWBLPJZQ15blYRwAH91hhU7MBJYMx/
-	qLtAWdTAPGq7jogYgJAmZb7W/u45a6SXAMPTbupIiiJQY464xM+VX3VJ9SGTp0+dQSpl1Z
-	K47VVKlqucbeYZW+6DqqUtXhclKAl7Y=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3438231df5fso1142463a91.2
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:12:26 -0800 (PST)
+	bh=Zl77PqgzhSQnbli+DMk7tCeC4XrJE4OWFtNvT9IO89M=;
+	b=PPvadMbbS1LdgbfIYkxlp3trBbw/WhT8RDSlyi0QOHgJBB9X6xqh//Xdk1+K6kYBWYg4ya
+	J/Qeq8qmcVAxGEoQxFbNJBsJkteb/uZfudep9RuBvdHnPC7FNxbhoTdH60dQVFk2PYqLO7
+	laippo922liNUeZz5yV+vVPpk3nqstM=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7c66822dd6dso1260504b3a.0
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:12:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1764252746; x=1764857546; darn=kvack.org;
+        d=bytedance.com; s=google; t=1764252757; x=1764857557; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kCE7BFaxTmXT5gX1mJT6mv3jSbzO4IVr04XlUFHKTqA=;
-        b=TaS601QEteDiBoln87xz+MW6RA4EJ17C+MNyZCPGSkD26E7xg79C2gwchztAORK2jo
-         oyQ+o7jMJ4tY6yUhW966vlzwSfU0wjzkrZT0p7kGWJ4a94NAK6RUR71Xwjy3VlrAxpwj
-         ZGoGO4oPlZKktGzX4rT5pgdUc8fUFJ2EXXg6lxHu3XYXF48lmOYxF4nFXO5x4113N98d
-         7w9+3kcTvr+uEgorsMSif5bYNlwXsK23aybPak2wusGmd215cTV6eBbkCO9p77pQikSG
-         6q+YCPe51UApz76WD2UFpvShRGXOPUXLWuS3DU2bpk709o/QNsvexNM+bO1tfjsQKYgv
-         WZgQ==
+        bh=Zl77PqgzhSQnbli+DMk7tCeC4XrJE4OWFtNvT9IO89M=;
+        b=Os/7bird2/VTQ+Q8+OFFsdVONSf2rYM8+3kalJoock4nQ8yNnmcUkLlze+bqLGgzyg
+         6d14aO7uvO5X2x3U4XU4zkCvYF2Oo+kTHIugw15YI8BdYAo0iOEGzd/ywErXJb0l97Yd
+         tua9sPJn7/KSlQh14F4YkLASPc356xFp2EBTBq9qSRdF0D3t/sJOzjjwZ2ZaVPq7/rCt
+         hZ3k02EwvgNYP6lMeQXBk1XXljM8Rasgx5NSy2RRRwT2bZr+YYrdrxsi14/xHxj1urp+
+         YD4kKf6KkEPByJJx9lFozC8O1tu2GU7tD8mL9u5F2TFkoKna4wN8aIabK/HIb9USJT8t
+         Y5dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764252746; x=1764857546;
+        d=1e100.net; s=20230601; t=1764252757; x=1764857557;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kCE7BFaxTmXT5gX1mJT6mv3jSbzO4IVr04XlUFHKTqA=;
-        b=qP9TvAm0CYVtOWZP86mnhMGpB97pLEFTV3wlZGlrHejSB9p/t4dkGNO7RzDD/3QI1w
-         IYuskJPjQ4fAsI1toXhZwjdQth7l4XaFDQWnc6N9pntqwxw0pVPraCS3Q9bMAkdU7yOb
-         cHu2x6rfiUrcQ9pZ8D49y7MQARPuqkrr1QKv6+jSWWp6fIGa2Lx5CkIP8a3YLYUWqDqo
-         KDlZ5S4lvat2v1NMzWM6KL06bEvC2QHQYvxH2GW/R55F+vKhn/84uATxAZkFReqjtLX3
-         frU0TXkotuhUQ+F0VRtDFf4CTlvHHpTPXyA22AUkNuNFNTTkTtZYkMvxV1U/ipqKkw91
-         nWVw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKv+5r9PcNUOI0OTotSmvqP6W/14QstBKCkXVmKM6arHjpbJqdnQisfmwGVfWwYqnFvb6krTfCGQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy0UbMY9yQbAl7yLbLR6p3B2FPNSkERVYZwtsJO1FBRA14kfDzX
-	JmZBnCzlUrePaY5AvlfqmsZ+AoBwGNw91kWcc2TNjTaYEPCYluE4hQoBuxeToOAEQaw=
-X-Gm-Gg: ASbGncvwcmc2+IhwaUvgJVrS85D1B0FOykv/I05FLAG1dc2daSX0F83UBLbVXPv7bLz
-	MV8K52hSt/EAhaynwavXnL8AH+oRs5BZKfRCX42TmuGPqUTcjh/jMCpeDZ41XwciuP2yjnBgzgg
-	5y3tMINNkasf9zO4cuQzoYnEmmnD421KvhKbJcCPSANSvTJDK9vqBwUAEs4UCBD2FRURhfYo2MN
-	g0Zele05SVcPL3aLR8iv4E9pBrLHE8f6CKkE4V0+YZDb0Ou8aOC2hrGied1o0ImT7YwBe3K1SVC
-	eJ9W3B4V+oc6AaLMwh1RhZZyRhKD1FlzN+kG4g8qEBzuuu/JH4YrthJLBJa9Ur1UoK5vO2ImlAf
-	FFm1dUNOaE42/KbWR7eZ9pmEnaMn7jH7AuRd7PrNvURSiIE270zosAu71bKBP7DPpamn++YxMSm
-	MJQDUNgq1GUtEs14cHYgIMxOF25Zd0V42p4eNe0f2GTOhB6iG0LcBezCV1Pc37vXJW7LBdz4Ab7
-	fjpMMYgZDQJ
-X-Google-Smtp-Source: AGHT+IHaJbhR6uoA8AsgyvN1rZkRokZKcV5EN92G/Fd+krItmdJONN0XD0mHkXfOugo46//aXXPl7A==
-X-Received: by 2002:a17:90b:1a84:b0:32b:65e6:ec48 with SMTP id 98e67ed59e1d1-3475ebd2f41mr10628835a91.8.1764252745954;
-        Thu, 27 Nov 2025 06:12:25 -0800 (PST)
+        bh=Zl77PqgzhSQnbli+DMk7tCeC4XrJE4OWFtNvT9IO89M=;
+        b=qvbAQTFNPZpd1v1ihzq3mkANJCpIIaK9U2gioIsJII75qTwK9CdtWIQn1YTR5Iss1U
+         9cZ3heoEDGT4dUa44GbT/rrpObe32Vg0h/vgZun8frcbAdx+CiGIF+hfJtK5OQU/JtxW
+         ambzUOPm6GB7gnC7jx1De/PBC0qxPPSfPIplR1OcbfmIYcgRdS28B4eJ1HdIfL/xR8yL
+         xmlxmldsnS9VDuBaPTDZQD01az7CZpMfafevcrRgFrOhXH/xo6ZWkKkwdT21r3iDIfX/
+         3yDhVGJO+apZFyLJCBOR3XqJW7YtFB6aqxzHksQNoXZMASngT8BZRefmIMtx4V97uxgz
+         TzIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlLXnkngRUvZ7x6q/MVnqQKiEmg3sicvE/pBGhOT6H7XBZss92cfJTf1iSYSriyw71/QLGXxsFCQ==@kvack.org
+X-Gm-Message-State: AOJu0YzKz9/m7KjRaf5WOCqFUL7q4jGqkNEFyglvINX1CYbkq3cov8DU
+	9H1WngebnlBDX4a3blJ0uuN9tklzyvPAKw3KItomxoLn7rZ8EF6U9FUT7eosgSlQZ/0=
+X-Gm-Gg: ASbGncsPkJ+pqBboPN+zP0z/qNInP0kDJv7P2kcoj/xR2Az/bsfTerKEJTo0hcYxAqB
+	kV9wQ1aqnqW3I6QdWYhUPVbluOl2HbjfV7SlaAkszmA/cpqE3eWTilYzRztiHfcFMTYDXrjjXYC
+	bhWXNnKzVPDsNa2+i5VOO7IjQy6NgfsulaJmM0dJWEcDjuGiDolujQkf93M2Zae+LQacuNOCPGa
+	EK2oT3uqkvoUySOLBc+gwumHAbiDxv6GrhWQE/B7fFqnlHPGj2hFXGV9onJc4G1Zypw4PXIVlM+
+	uX/2AoTjKu6WlmWE8HJFjeCKlLQxL/wRIrBfvIeVi74SPX2vEcSJjMwEDfdfqCa8GeZxHQCHfF1
+	5H9ybagH8ZnHosnHC9usMVPdQ8ZyAoGSpCsO5rZuPzvJumuKOmL5MFWClgnGuGp73YMbO7ah6jD
+	c8+rIUvJHPEkN/7jv2mk+TUio9IajRvp8O3cZ48TdAO9lE1BUO7Q8qHzquYU8LOmzTPKV0NYvDx
+	A==
+X-Google-Smtp-Source: AGHT+IFs53VTIZhomsFYAowx9J26TGi3f3ksQWsE5AJKE20aCMEW51a+o1FMLwfvpm4UU6skwP1mVg==
+X-Received: by 2002:a17:90b:38ca:b0:32e:23c9:6f41 with SMTP id 98e67ed59e1d1-347331be358mr21956360a91.5.1764252756999;
+        Thu, 27 Nov 2025 06:12:36 -0800 (PST)
 Received: from J9GPGXL7NT.bytedance.net ([61.213.176.58])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3477b7341d2sm2030249a91.11.2025.11.27.06.12.15
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3477b7341d2sm2030249a91.11.2025.11.27.06.12.26
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 27 Nov 2025 06:12:25 -0800 (PST)
+        Thu, 27 Nov 2025 06:12:36 -0800 (PST)
 From: Xu Lu <luxu.kernel@bytedance.com>
 To: pjw@kernel.org,
 	palmer@dabbelt.com,
@@ -110,22 +110,22 @@ Cc: linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Xu Lu <luxu.kernel@bytedance.com>
-Subject: [RFC PATCH v2 5/9] riscv: mm: Introduce arch_do_shoot_lazy_tlb
-Date: Thu, 27 Nov 2025 22:11:13 +0800
-Message-ID: <20251127141117.87420-6-luxu.kernel@bytedance.com>
+Subject: [RFC PATCH v2 6/9] riscv: mm: Introduce percpu TLB Flush queue
+Date: Thu, 27 Nov 2025 22:11:14 +0800
+Message-ID: <20251127141117.87420-7-luxu.kernel@bytedance.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251127141117.87420-1-luxu.kernel@bytedance.com>
 References: <20251127141117.87420-1-luxu.kernel@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1DE6EC0010
-X-Rspamd-Server: rspam02
-X-Stat-Signature: a38bi9oy1rkns5ykjqb4egeciqrwz78u
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 51B8480022
+X-Stat-Signature: jwwurxuprt631kog344ozufk1johxfxb
 X-Rspam-User: 
-X-HE-Tag: 1764252746-76524
-X-HE-Meta: U2FsdGVkX1+Gnk9kZmGIZs3BebubyPeYyTMHkXW/MIsHRrT+/nMgRZizzzNlsqgZfHf94tamFCPsPg4wfXAZULbXriWD1Fr66wFaRk0ZHScHXygkuNNo2iqwtVi1dOoOtLXpu3r3p3x9REK9G7Qcn+KO6UoyplF7HcM835IsytrAWFhVVaF7+HmetPhVAyWcS9ojcErprw8RA9zpbh6ZY+d6O1BQhrrFQfjQyVE51R0V+I/BzYzz37i8WC4vByTUn9QXg9vvBK3RN6f33uXDKZX52DYDVrDNuDdUHt2a2plVMLC6FBAebU7tvmNS0Fw5BcFtQVtVcO4QRYuu9QRm7YMOIBEdorZoX/fxBVc1uldrco4q7x8+qGbw1zJNDPWJV/wmZg+yirBIhkcU+criw3xhPdkl5hF3vwlC+MeAJlCiU3aYlaJbu8f3nt/q2p/0xReRQLeUStAPFB7IP08ZF2kgk1cxeqoUtUqLHdI9vQ8rjiLLX7RkFkNmygqJa0WTVzkAWuZ8nv8w5Obx/XdVHGhCzr76mWTj0hDpJGVSfIWsL5Ov97MQGu8oWWtxBWnyMtazNHTZDengUFf5/F7p7G+LChJZSIojCSFEs15vs4enSlOl65NLXykIWx5T8c0g61xqD6dsgQ0VW3W8X2wKpKX+lIqYTuMmjqogrQLlzztFVZji9preTLDLmtmGXOPkGir0OEJ3Y/6LVVynjt1RatCLXFAOpmR+umsdsVaxn+VkLWDAmSb517rLG0fBSXxQXBc6QbIrAjtmi2nywV7ytaSENsZoI5zSNsNPH4ElrsACyIkOYmgrMCou441hVFtpcKlOUaYw+wIE/RfVZzWpPruvWab1BWb81vRY6F96GhPsZwUrJp/Ah1N6sf7kiu0DeeAwOonae8C6jVFwaBM6WCsBvwzVs0ET0Oh1+RunZZZDw4NgFE8W+eIF2YOQacjuVVn3/+4fw5Gz4ucyJSM
- k9QUujsq
- ZywMyCVRD+WN2wjZGR85E0szwM7fo8PcMVM9v+rt0kDyIs+fLR9jMRyQGUaAYBAeGVwPy+YD/ny4VfQulMv7ZZSgsno0sd7iobKDjhCCWze82myKaBdl+xzp4oLq1KjrAcNbwnWFizdwyyK8IIXOULS+4FVAKy8+f0tVtg8CvW7Ag6JipXfpyaOegrVBvAofSmJ8Ph21kfKChywHaLeHuEX396OoPdoOnMF3V+h922vs0+TSGmrpnEiSiuNStTL/KE1clpqrHn+AjxdPHtotd6TA6HuLFYXPCZy2A2knW8Gkx44eZz47WYAzOt3dN3Xq5824febgPCvR++Q0/HnSN0yxlCZSLxfioAmeXQHXBS7sP/xr90Nvgt3DwpD3GfB3QPiPobFjp8uQ311w=
+X-HE-Tag: 1764252758-868878
+X-HE-Meta: U2FsdGVkX19IfdwePf4meQ/Bfd8W+j/eCK6dHMZ9mWt2sHdZfIVAAX5mHLmaq48MOSFBDGqJXkZSQfulPFY7NBbp6jjNbNvvu4cs7rU7Q74vY8R24nko4srV+CG5ecRPPmrXKi3DNdMLQHjst/G4LrWgD36kdyzIz0tkOuNPo5qyfO2JmSkuDjWq1xSvmjFy1XPHXLTUslA6iI96WvF8uOo5+PTD1mx+7agahOJ2T5Fmevs1CeOUNptnnrJFjHgNUjiVvIoAQwAb+KMJcPmGJeqh6SbXdFeW4l5Prn42ZQ+hDGqLz5tHSdqaDn2e4PkgHB89wJTCIyCCncqhLv6/k82qOmQhk/DwIWd8qENQ+ieWzyOaR5rosReAK66Ka+NeBGRa47Xu8ot23KWiBad3WN1k+dyymZInhkjklEHxzyCFrBxmkh+MER0v8k14LAypiZu/Gaz9jpTEjGV0MCw0AWxE6cgsZ1zzy6V1KuteyTO2iCfHeF3no2gCA6Wx8bzLt66alPuwYCHsw5VV5Grl5+uHBX7+gvn7NqcPlzLHId+QzbL4GCW9E5MRctLrkpPD3W4ZAs+J7mkeBvLA9cI5c1ZSHoVulzBAcgkFN1R1JysBV1+FLLYeUGScIz455HfCA5ZBc+LWS9r8QZtPe06DerX/6kjqh6vmCZS6fZT0f7VImQxI8astPE23xoHj6mkoahTlF1enfTHOv6KoZSd6RJ6Eh3YhTiLZGcX3aEWvXXi+R6fAzk5LxTEzWbCAx3nEK3LI3l0duw1d36FVyevFSLSfbUX2RXh1BfaWU/jvBcAi+9ZlKGZ1/sfFOmhUrqmbkUWREKwYEj2fWWrwdZ4u+KAMIs0+WW5/aQ5Oo0US3CP9yYb1VxFAMbeJz3JTAodv7XDk15nwiEqgyBQG+z9rsFcmdQWLyWupqb0ailotLwmPfkES+B/H+CGtOtd2+dcUceFVAERYqCwNn5KxNrz
+ PK1lmrOV
+ Iy3EXFjlGFzmHLhqvieSF0WKbbvan/NokFu1gcTvYNx4ZGTonO+tDNN0iP1JwB8d6K7aE2XcEmXEmRcD0vagcHXvUWZAS2Yl0IJ4A4q8nkiBVq8MKBvHd9rEdF2ZMg/eT9n0LZ65KZ7fcZ1IBF0dF2+avLfPGEVtOkzwll9Qsvc/I8xTr1dJSESlSCM3iOcf7V8bO66blFIbYeSX7PF5ZZoIpJPzZDmrUMFOdLJAgroEgl9ElHkpC/5gzTelh9oCP3tUVSgqxZQ2UVyobtZGa9V8hlpWqT14kDwWNt6MA52zy2oxyNiTnynkZkxCNqjYwxRgMQfagwqSS6W36r+FUPIRP5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,144 +134,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When an active_mm is shot down, we switch it to the init_mm, evict it
-out of percpu active mm array.
+When memory mapping of a mm is modified, instead of sending IPI to all
+CPUs recorded in its mm_cpumask, we check whether each target CPU is
+using this mm right now. If not, we just store the TLB Flush information
+in target CPU's percpu TLB Flush queue, avoiding the IPI.
 
 Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
 ---
- arch/riscv/include/asm/mmu_context.h |  5 ++++
- arch/riscv/include/asm/tlbflush.h    | 11 +++++++++
- arch/riscv/mm/context.c              | 19 ++++++++++++++++
- arch/riscv/mm/tlbflush.c             | 34 ++++++++++++++++++++++++----
- 4 files changed, 64 insertions(+), 5 deletions(-)
+ arch/riscv/include/asm/tlbflush.h | 19 +++++++++
+ arch/riscv/mm/context.c           |  2 +
+ arch/riscv/mm/tlbflush.c          | 71 ++++++++++++++++++++++++++++++-
+ 3 files changed, 90 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/include/asm/mmu_context.h b/arch/riscv/include/asm/mmu_context.h
-index 8c4bc49a3a0f5..bc73cc3262ae6 100644
---- a/arch/riscv/include/asm/mmu_context.h
-+++ b/arch/riscv/include/asm/mmu_context.h
-@@ -16,6 +16,11 @@
- void switch_mm(struct mm_struct *prev, struct mm_struct *next,
- 	struct task_struct *task);
- 
-+#ifdef CONFIG_RISCV_LAZY_TLB_FLUSH
-+#define arch_do_shoot_lazy_tlb	arch_do_shoot_lazy_tlb
-+void arch_do_shoot_lazy_tlb(void *arg);
-+#endif
-+
- #define activate_mm activate_mm
- static inline void activate_mm(struct mm_struct *prev,
- 			       struct mm_struct *next)
 diff --git a/arch/riscv/include/asm/tlbflush.h b/arch/riscv/include/asm/tlbflush.h
-index 3f83fd5ef36db..e7365a53265a6 100644
+index e7365a53265a6..c9630267c58cd 100644
 --- a/arch/riscv/include/asm/tlbflush.h
 +++ b/arch/riscv/include/asm/tlbflush.h
-@@ -15,6 +15,11 @@
- #define FLUSH_TLB_NO_ASID       ((unsigned long)-1)
+@@ -75,23 +75,40 @@ extern unsigned long tlb_flush_all_threshold;
+ #ifdef CONFIG_RISCV_LAZY_TLB_FLUSH
  
- #ifdef CONFIG_MMU
-+static inline unsigned long get_mm_asid(struct mm_struct *mm)
-+{
-+	return mm ? cntx2asid(atomic_long_read(&mm->context.id)) : FLUSH_TLB_NO_ASID;
-+}
+ #define MAX_LOADED_MM					6
++#define MAX_TLB_FLUSH_TASK				32
++#define FLUSH_TLB_ALL_ASID				0x1
+ 
+ struct tlb_context {
+ 	struct mm_struct *mm;
+ 	unsigned int gen;
++	bool need_flush;
+ };
+ 
++struct tlb_flush_task {
++	unsigned long start;
++	unsigned long size;
++	unsigned long stride;
++};
 +
- static inline void local_flush_tlb_all(void)
- {
- 	__asm__ __volatile__ ("sfence.vma" : : : "memory");
-@@ -86,11 +91,17 @@ struct tlb_info {
++struct tlb_flush_queue {
++	atomic_t len;
++	unsigned int flag;
++	struct tlb_flush_task tasks[MAX_TLB_FLUSH_TASK];
++} ____cacheline_aligned_in_smp;
++
+ struct tlb_info {
+ 	rwlock_t rwlock;
+ 	struct mm_struct *active_mm;
+ 	unsigned int next_gen;
+ 	struct tlb_context contexts[MAX_LOADED_MM];
++	struct tlb_flush_queue *flush_queues;
+ };
+ 
  DECLARE_PER_CPU_SHARED_ALIGNED(struct tlb_info, tlbinfo);
  
  void local_load_tlb_mm(struct mm_struct *mm);
-+void local_flush_tlb_mm(struct mm_struct *mm);
+ void local_flush_tlb_mm(struct mm_struct *mm);
++void __init lazy_tlb_flush_init(void);
  
  #else /* CONFIG_RISCV_LAZY_TLB_FLUSH */
  
- static inline void local_load_tlb_mm(struct mm_struct *mm) {}
+@@ -102,6 +119,8 @@ static inline void local_flush_tlb_mm(struct mm_struct *mm)
+ 	local_flush_tlb_all_asid(get_mm_asid(mm));
+ }
  
-+static inline void local_flush_tlb_mm(struct mm_struct *mm)
-+{
-+	local_flush_tlb_all_asid(get_mm_asid(mm));
-+}
++static inline void lazy_tlb_flush_init(void) {}
 +
  #endif /* CONFIG_RISCV_LAZY_TLB_FLUSH */
  
  #else /* CONFIG_MMU */
 diff --git a/arch/riscv/mm/context.c b/arch/riscv/mm/context.c
-index a7cf36ad34678..3335080e5f720 100644
+index 3335080e5f720..c381c4ed46bfb 100644
 --- a/arch/riscv/mm/context.c
 +++ b/arch/riscv/mm/context.c
-@@ -274,6 +274,25 @@ static int __init asids_init(void)
- 	return 0;
- }
- early_initcall(asids_init);
+@@ -263,6 +263,8 @@ static int __init asids_init(void)
+ 
+ 		__set_bit(0, context_asid_map);
+ 
++		lazy_tlb_flush_init();
 +
-+#ifdef CONFIG_RISCV_LAZY_TLB_FLUSH
-+void arch_do_shoot_lazy_tlb(void *arg)
-+{
-+	struct mm_struct *mm = arg;
-+
-+	if (current->active_mm == mm) {
-+		WARN_ON_ONCE(current->mm);
-+		current->active_mm = &init_mm;
-+		switch_mm(mm, &init_mm, current);
-+	}
-+
-+	if (!static_branch_unlikely(&use_asid_allocator) || !mm)
-+		return;
-+
-+	local_flush_tlb_mm(mm);
-+}
-+#endif /* CONFIG_RISCV_LAZY_TLB_FLUSH */
-+
- #else
- static inline void set_mm(struct mm_struct *prev,
- 			  struct mm_struct *next, unsigned int cpu)
+ 		static_branch_enable(&use_asid_allocator);
+ 
+ 		pr_info("ASID allocator using %lu bits (%lu entries)\n",
 diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
-index 4b2ce06cbe6bd..a47bacf5801ab 100644
+index a47bacf5801ab..b5a2d9874d62b 100644
 --- a/arch/riscv/mm/tlbflush.c
 +++ b/arch/riscv/mm/tlbflush.c
-@@ -164,11 +164,6 @@ static void __ipi_flush_tlb_range_asid(void *info)
- 	local_flush_tlb_range_asid(d->start, d->size, d->stride, d->asid);
+@@ -97,6 +97,7 @@ void flush_tlb_all(void)
  }
  
--static inline unsigned long get_mm_asid(struct mm_struct *mm)
--{
--	return mm ? cntx2asid(atomic_long_read(&mm->context.id)) : FLUSH_TLB_NO_ASID;
--}
--
- static void __flush_tlb_range(struct mm_struct *mm,
- 			      const struct cpumask *cmask,
- 			      unsigned long start, unsigned long size,
-@@ -352,4 +347,33 @@ void local_load_tlb_mm(struct mm_struct *mm)
+ struct flush_tlb_range_data {
++	struct mm_struct *mm;
+ 	unsigned long asid;
+ 	unsigned long start;
+ 	unsigned long size;
+@@ -109,7 +110,8 @@ DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_info, tlbinfo) = {
+ 	.rwlock = __RW_LOCK_UNLOCKED(tlbinfo.rwlock),
+ 	.active_mm = NULL,
+ 	.next_gen = 1,
+-	.contexts = { { NULL, 0, }, },
++	.contexts = { { NULL, 0, false, }, },
++	.next_gen = 0,
+ };
+ 
+ static DEFINE_PER_CPU(mm_context_t *, mmdrop_victims);
+@@ -155,6 +157,47 @@ static inline void mmdrop_lazy_mm(struct mm_struct *mm)
  	}
  }
  
-+void local_flush_tlb_mm(struct mm_struct *mm)
++static bool should_ipi_flush(int cpu, void *data)
 +{
-+	struct tlb_info *info = this_cpu_ptr(&tlbinfo);
++	struct tlb_info *info = per_cpu_ptr(&tlbinfo, cpu);
 +	struct tlb_context *contexts = info->contexts;
-+	unsigned long asid = get_mm_asid(mm);
-+	unsigned int i;
++	struct tlb_flush_queue *queue = NULL;
++	struct flush_tlb_range_data *ftd = data;
++	unsigned int i, index;
++	unsigned long flags;
 +
-+	if (!mm || mm == info->active_mm) {
-+		local_flush_tlb_all_asid(asid);
-+		return;
++	if (info->active_mm == ftd->mm)
++		return true;
++
++	read_lock_irqsave(&info->rwlock, flags);
++
++	if (info->active_mm == ftd->mm) {
++		read_unlock_irqrestore(&info->rwlock, flags);
++		return true;
 +	}
 +
 +	for (i = 0; i < MAX_LOADED_MM; i++) {
-+		if (contexts[i].mm != mm)
++		if (contexts[i].mm != ftd->mm)
 +			continue;
 +
-+		write_lock(&info->rwlock);
-+		contexts[i].mm = NULL;
-+		contexts[i].gen = 0;
-+		write_unlock(&info->rwlock);
-+
-+		cpumask_clear_cpu(raw_smp_processor_id(), mm_cpumask(mm));
-+		mmdrop_lazy_mm(mm);
++		queue = &info->flush_queues[i];
++		index = atomic_fetch_add_unless(&queue->len, 1, MAX_TLB_FLUSH_TASK);
++		if (index < MAX_TLB_FLUSH_TASK) {
++			queue->tasks[index].start = ftd->start;
++			queue->tasks[index].stride = ftd->stride;
++			queue->tasks[index].size = ftd->size;
++		} else {
++			queue->flag |= FLUSH_TLB_ALL_ASID;
++		}
++		contexts[i].need_flush = true;
 +		break;
 +	}
 +
-+	local_flush_tlb_all_asid(asid);
++	read_unlock_irqrestore(&info->rwlock, flags);
++
++	return false;
++}
++
+ #endif /* CONFIG_RISCV_LAZY_TLB_FLUSH */
+ 
+ static void __ipi_flush_tlb_range_asid(void *info)
+@@ -185,11 +228,20 @@ static void __flush_tlb_range(struct mm_struct *mm,
+ 	} else {
+ 		struct flush_tlb_range_data ftd;
+ 
++		ftd.mm = mm;
+ 		ftd.asid = asid;
+ 		ftd.start = start;
+ 		ftd.size = size;
+ 		ftd.stride = stride;
+-		on_each_cpu_mask(cmask, __ipi_flush_tlb_range_asid, &ftd, 1);
++#ifdef CONFIG_RISCV_LAZY_TLB_FLUSH
++		if (static_branch_unlikely(&use_asid_allocator) && mm)
++			on_each_cpu_cond_mask(should_ipi_flush,
++					      __ipi_flush_tlb_range_asid,
++					      &ftd, 1, cmask);
++		else
++#endif
++			on_each_cpu_mask(cmask, __ipi_flush_tlb_range_asid,
++					 &ftd, 1);
+ 	}
+ 
+ 	put_cpu();
+@@ -376,4 +428,19 @@ void local_flush_tlb_mm(struct mm_struct *mm)
+ 	local_flush_tlb_all_asid(asid);
+ }
+ 
++void __init lazy_tlb_flush_init(void)
++{
++	struct tlb_flush_queue *queue;
++	unsigned int cpu, size;
++
++	size = MAX_LOADED_MM * sizeof(struct tlb_flush_queue);
++	for_each_possible_cpu(cpu) {
++		queue = kzalloc_node(size, GFP_KERNEL, cpu_to_node(cpu));
++		if (!queue)
++			panic("Failed to alloc per cpu tlb flush queue\n");
++
++		per_cpu(tlbinfo, cpu).flush_queues = queue;
++	}
 +}
 +
  #endif /* CONFIG_RISCV_LAZY_TLB_FLUSH */
