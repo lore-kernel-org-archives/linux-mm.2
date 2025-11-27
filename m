@@ -4,100 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4FC1D111A8
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 23:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AB5ECFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 23:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBC446B0027; Thu, 27 Nov 2025 18:36:49 -0500 (EST)
+	id 94FE26B002D; Thu, 27 Nov 2025 18:36:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D93BA6B002C; Thu, 27 Nov 2025 18:36:49 -0500 (EST)
+	id 900246B002F; Thu, 27 Nov 2025 18:36:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA9486B002D; Thu, 27 Nov 2025 18:36:49 -0500 (EST)
+	id 7CE3E6B002D; Thu, 27 Nov 2025 18:36:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B86BA6B0027
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 18:36:49 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BFD2C02E9
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:36:49 +0000 (UTC)
-X-FDA: 84157999338.05.06CB15E
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 69CB76B002D
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 18:36:57 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13A9D12C68
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:36:57 +0000 (UTC)
+X-FDA: 84157999674.19.4B64A44
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 280154000A
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:36:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Q3dhaBrY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WMf0YdHG;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J8O60E8/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NMupcRbn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf27.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764286607; a=rsa-sha256;
-	cv=none;
-	b=JUS/UTZGfQZ/AnNXfLarutKuc/71MDmzatJPJXwzM2lLapF9GEFY+Jwzm8mYZkGA/Fzzov
-	RpwjvM3jaWngPYtnwP/rp5I9rnkuHOyTGhKvV3i31rOb94EGPB8r4dB0+5sdIHtMpiMZCz
-	tVXmeNhbe4PKz7K8nVcdh3y2k0GWEgk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Q3dhaBrY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WMf0YdHG;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J8O60E8/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NMupcRbn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf27.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de
+	by imf13.hostedemail.com (Postfix) with ESMTP id E903F20014
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 23:36:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=m77tV44C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WakdwEOx;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=m77tV44C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WakdwEOx;
+	spf=pass (imf13.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764286607;
+	s=arc-20220608; t=1764286615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wSQDXIqh9OVz4pGakQfvy/4iJYn/YQqDAmAqSfiXVOM=;
-	b=RQ1gTD0QrQpv1V4Tje83RKGZw9dWvc2M4GORRFQeIJsWEDVd6OjZl2INerhOjD6TjK/E8W
-	7MTNF31oRGVSrEkt7Ya1oPZoDGQH0pmVi21Yf2q9dNbOpHK2ttXcZgRmu+rFVh0EhYo8ny
-	/qRsCoc2VH0/VbL99QYk//JfyM54FQM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=06B+KtFJcCLWM7OEI7FlFF/W4XFxMu+OBjhz+zAvX5U=;
+	b=3NonWH3xhZGp3lmci96X1ypgknArncL5tuAeU67j+rgXnWa5rk6wSLjSLC/6w6T962WRx4
+	TBj8yK+XTwmDRW5uVzv0OEsGzWfCDfdQInAi/iPOAIVZhw9LDCu6UTGBbyYiE+kmR4v2x+
+	YHIshhH26KdMGIeKXzUzn/0z3H8cLbo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=m77tV44C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WakdwEOx;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=m77tV44C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WakdwEOx;
+	spf=pass (imf13.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764286615; a=rsa-sha256;
+	cv=none;
+	b=lWutVBSR3afZJK1w+Mwk8BxAqJ7LLc2lUj9d+7U9NiPARw2jo/yjRKWPbnJNkPBu/WHMix
+	Q3IH8be/CKaStn8i1N1l6jR3sf7ExQs+9BWZBKa4f1GX24elcZZMsKLaspkepSAbNboBG/
+	ux3O9lY38oR+9lxkaP57oW6bgKj9hD4=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D5BDF5BD07;
-	Thu, 27 Nov 2025 23:36:42 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 686EC5BD08;
+	Thu, 27 Nov 2025 23:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764286604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=wSQDXIqh9OVz4pGakQfvy/4iJYn/YQqDAmAqSfiXVOM=;
-	b=Q3dhaBrY69YQefYdLldfgAKhjkmGZ/6Yl2OUU5UT4OdJ9i4dH71Drz/atF6fG+pJXR7k7b
-	QVcCPHC2nxmBcHgzi8APxFAkeFwDdZbOXuZD836r3enAwso/w9PU3JRWYbLa57yM5C1SF/
-	EW4sdRWem+GI6+WwsgwfWFNx82JSD6g=
+	t=1764286613; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=06B+KtFJcCLWM7OEI7FlFF/W4XFxMu+OBjhz+zAvX5U=;
+	b=m77tV44CYc/2L7cd1qBEUBNYPDDIy0bqrn1B719+3vvEplXfuboWDpFmJbYSBn7QIvsA6W
+	HGNEqySFlzOPY4XWvW2Q74oXT0ap9ZGfyJeoqWRrpODaYMbu9JTJrzz4xXa2SVWA7EyTvE
+	6TBog3CQxs3XF3B3bC8G2YBN7uyDAOk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764286604;
+	s=susede2_ed25519; t=1764286613;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=wSQDXIqh9OVz4pGakQfvy/4iJYn/YQqDAmAqSfiXVOM=;
-	b=WMf0YdHGmcscI59YS1mHkPvtzW6mT/anJnr8YIb5UvRctUJ/3Uze/OeCQi7Ib/358RqRGe
-	so+dhcU2lvnpK0AA==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=06B+KtFJcCLWM7OEI7FlFF/W4XFxMu+OBjhz+zAvX5U=;
+	b=WakdwEOxdOUsDIqxLQRe6FKZZu/JvXqwQ4BSruah9UsBSU7dFru6PKLccknVef63HMBFiY
+	pdpR0Hx3xu91eUAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764286602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=wSQDXIqh9OVz4pGakQfvy/4iJYn/YQqDAmAqSfiXVOM=;
-	b=J8O60E8/jt/AU6ulL8BaoTiEfAgmwWWjpzmWtR99meSLDIZk3C0Txk8J3hfhtpjztKkQ32
-	/ch4Tz63HbVt7UqL/XtQZ8zo0POVKlaSgQQYeW/aUud9EbDTe+g8v7CQDMsNgex0WzgM4r
-	TyhOaFRQ581FKK8bLY/LODaDWExYS7E=
+	t=1764286613; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=06B+KtFJcCLWM7OEI7FlFF/W4XFxMu+OBjhz+zAvX5U=;
+	b=m77tV44CYc/2L7cd1qBEUBNYPDDIy0bqrn1B719+3vvEplXfuboWDpFmJbYSBn7QIvsA6W
+	HGNEqySFlzOPY4XWvW2Q74oXT0ap9ZGfyJeoqWRrpODaYMbu9JTJrzz4xXa2SVWA7EyTvE
+	6TBog3CQxs3XF3B3bC8G2YBN7uyDAOk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764286602;
+	s=susede2_ed25519; t=1764286613;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=wSQDXIqh9OVz4pGakQfvy/4iJYn/YQqDAmAqSfiXVOM=;
-	b=NMupcRbnkA3I49Q3T13JTL68MxJ47UcX7F/Tz6U5LlRcIzQ7I2MUGO1PibULbpABwUYIJm
-	aI/NmV5mWKXNk7CQ==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=06B+KtFJcCLWM7OEI7FlFF/W4XFxMu+OBjhz+zAvX5U=;
+	b=WakdwEOxdOUsDIqxLQRe6FKZZu/JvXqwQ4BSruah9UsBSU7dFru6PKLccknVef63HMBFiY
+	pdpR0Hx3xu91eUAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 838673EA63;
-	Thu, 27 Nov 2025 23:36:42 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2C44B3EA63;
+	Thu, 27 Nov 2025 23:36:52 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qLQ6GYrgKGkIGQAAD6G6ig
-	(envelope-from <krisman@suse.de>); Thu, 27 Nov 2025 23:36:42 +0000
+	id zCs2OpTgKGlAGQAAD6G6ig
+	(envelope-from <krisman@suse.de>); Thu, 27 Nov 2025 23:36:52 +0000
 From: Gabriel Krisman Bertazi <krisman@suse.de>
 To: linux-mm@kvack.org
 Cc: Gabriel Krisman Bertazi <krisman@suse.de>,
@@ -117,21 +125,22 @@ Cc: Gabriel Krisman Bertazi <krisman@suse.de>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>
-Subject: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for single-threaded tasks
-Date: Thu, 27 Nov 2025 18:36:27 -0500
-Message-ID: <20251127233635.4170047-1-krisman@suse.de>
+Subject: [RFC PATCH 1/4] lib/percpu_counter: Split out a helper to insert into hotplug list
+Date: Thu, 27 Nov 2025 18:36:28 -0500
+Message-ID: <20251127233635.4170047-2-krisman@suse.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251127233635.4170047-1-krisman@suse.de>
+References: <20251127233635.4170047-1-krisman@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 280154000A
-X-Stat-Signature: jx4x4pdmy5um13u45xhaidi7dgmxkqxz
+X-Rspamd-Queue-Id: E903F20014
 X-Rspam-User: 
-X-HE-Tag: 1764286606-362738
-X-HE-Meta: U2FsdGVkX1/4rePX78bwmMDeNGRD1OW7/7ZRr0lR5yGXkqtaylSG6cCPMVXSDxeiaOdqN+S0h0FXWwvFUDj4fuEQLrA3lHUKa+7siKk5g6STxejWHe60QLT3fgQJuNBUdOiNENdh6n51rNZE08KFEyblLtRkb9biDRJBuX7xFlEnSmcVUw2tWNkf2S3qdzg6cuCTLhPmYrSahcX/Y1TOhgC+hgu4zqQbY21MTvlIqkU7mOi0rj8A+h8ZJFOOOK4l9KArrRo4J44dNGhP8UNziWujr5UafdtryHPfBwlP8xp4918xDxxs54JJ6PvVCzNgADGTO4xb9XyWg5f2ZroG31woGjkVEjulpJJb0bV2dJaMLW4vhpZt1Gqg3Pg3iOxypALU6o1k9QnSRnZmo29a6/oVMAC9BFS8lTysOzV2uMlnVUvVmxjJfwMD+543Bs1b+g0dznxvHxcFVUMzwo3H8CPW5cCTDlqSCbHtC9TBYhtL25uUlLuTCshXcVSNepmKQpd9eTAZ49WF+LWbMldOXofZcf0/3tgxq7whibPbMFQcy1MlenStdaNM2cgpB2HaPGopJ9dZSvvMVcJWVVMWZ4ko5feaabwnFLX24BfUftjVIlepLLLTeWOyMrDypsYvOatfyuBH7maOR+RTJ/h8qqNqPh7r0KSxJgsfzuVw8cLH+48IPCAEPVzLRCCkgdU5d8A30tu85nt4fNL9qetJmp4Y2rwBafMyj3YS8wzx1FqDNv/K4B0bI2U3uhQmN668cP4o0hxj1qdrx6M+rKrE6/1juEDBDNGvTvzdNLwViClhu2iR9hD1PSvAfhG5t/+3Tmae7+9C0tnerDYK88e/IFY9zXn67OZQY/asBxOdgSyr/wNQhlLc2mlvry9kqXzvKxPctTg7W4X9ZVDLK1rHHisbgVTA9kXBMfssT/SLr0lBOpynVSmey+cZjQuHdenh1UVzCziEAnu4rzqbVG0
- 9F2HXmzs
- B4ndD5kT/78PWGBGIZRz1dxy1aKPBFC6ZHc3YnPp43G0ikXnPyNaEW/juzu4sXnUouGL/wh5N1yPBjPNjwQRUJXBk4zEE3wSI4ZC50bkISAq9AG0k7g4T/x5PFSYTAJjMe9N0mWmaMGTw+VtEBVum49omapM4WmeAAWrdRptGbMk0zMJwGsmOKbNqW6Td7LHd+QXChBrYRvQqPnQ5GT9cIepQx8jUwOzul5nvtMQwo5JeYKiUKTn/4DDHr/AjvyTX8ziPhFKJsNMczeYQE8YSSqeGwaoHZIEODG5BQ2fUuXWDMmWIlnZo/AScqrTukjWB2Uc+bP6g9BdTLpTVxmHNI1d1LlDOBT59bKx8mMhAbiUBO3mMb1+qUYuojQRSAj3LEGgmroh9fzpCqNeEoMGhi81QCYy3cmJWS3FL8uRGcdjYrrExaxtRlmZoO6MaZGKUbBCSyDjT8eAzSfslSDtD1PHQpFP9tN/cKcVHSCyA50odoIbIy3M1UpjjySKIHxSZo8qJ3NrDy1USXVcRQbut1u9y1AZFs9cKRpfZJWK0+sXsBJiirFGGizqv2gNq60pGtDcPk5XhkFNAbB7yHu0lXPhHYOIfKRyE6sPa
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 5m6yy7mgmfi3rxopng47b5ad1ra58xxg
+X-HE-Tag: 1764286614-309807
+X-HE-Meta: U2FsdGVkX19vXjnUHaXN4Qp54dduzq1+MJ14dlapX3DYksUnzCSPrIieUf2LdogiIwUjqU9xvceonULcdPsPVOMHDfHS1N7w3qViM5nJSYn8GHeyyqOVIxvCIywEvxjG6MQCnY15Y4jYpjuaWJizttLElXkVsOhmANrrYB/MymH6ofSqiuWr96Oeus1/Mp6YmiXFPBoGSdYvnYKBhWjmhoGUGe61i3BlxpZo8TTWGYjtHT6cKlyvfSiPBjsppo9VO/gB5n6+C4omRrqwLG8dLjnNCqpUb/ATl9BmAXcNty8wb8N1jE2HwfnjHGSyv7CaUFc+cX77zOMWByRuvElDMCPBGrTt0/XyXkkhL61xIhwmHAqT+v2l8Ute2NeCru3ams9zSxIX+CUS5HmukvYuY3suV//n1XfDGSW155BcLJAvxrX8Z4whJlHLTczVuQ37ItycWHYM6w18QpPpKO8F/ApnbnICjWDQBO8AOeokBgAJanReLdYtM5t6iYZe+M5UkddXBlBy4Ibp6m2LevzOaFYbL446r3FdK7hLcOkQ0nGf/kqeFGXDsfxRjCz++/juhjD3B0tByGmvcvxeltIJc1OP3fYdvmxMAT0cpUbrJTLIwwQtbqBMp4oaWQ5qLZ1cp/2Qjryt9yr1j4Edrq/tuRoFeVzrggIejFX0JrX7hALoht8CNOG94+20yHkABihSjWQ2gu6fJLEDUUED27/0aRmu57FttOc61yrGPAj5odaTnQLwS0Hw8jG+7YgE/DqgSrm1sJ0l1KOws1Wyxt7WNVDISRTg9zuf5DzPs4b4RIpfqquFgNCdyx+Aeby8p9DaHwyneWSJf/7rzglqoO33SM/YrrSXZuyioksHWCwhghCtOYOnNzCh3mvbhs7axc5n8vsYtfkRxxgXJI68I5dZdLquq2VSsxSc/P9D9XmhuIT5IPmcwS/RCYmwkQjibKAlAh5rpsGtgsDZilLCqAw
+ BVOD81mF
+ 1UH3opGmYRVP6dQq11rqM5W469Xiurj8MH6/HnzQTWeMyHWM/oy2+hsPf+Uo7pHdS8fmfTORlfcnnNIIQeXA0G8vWGPk+AD03QBZWk0L27NzNhkuUaWr8YZKBfgPYccwcPC28L/kOXAk5THDZtb5p/eGXFrR7Vq1YnTEUvX2UTFt5xmIATdUsYd8nC+smD/PhCqbSPn5286jxodaJ95e6S0Yj5yjcw9HrjgRdp79Tj66LLeUqK+Fi0jkZFr3GLBOzQFzAl1Ne6lxPXzMQSgUEIYEkIZdRHt5uSpQHNMIwLNjYm+itHKOEgzZ08w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,99 +149,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The cost of the pcpu memory allocation is non-negligible for systems
-with many cpus, and it is quite visible when forking a new task, as
-reported in a few occasions.  In particular, Jan Kara reported the
-commit introducing per-cpu counters for rss_stat caused a 10% regression
-of system time for gitsource in his system [1].  In that same occasion,
-Jan suggested we special-cased the single-threaded case: since we know
-there won't be frequent remote updates of rss_stats for single-threaded
-applications, we could special case it with a local counter for most
-updates, and an atomic counter for the infrequent remote updates.  This
-patchset implements this idea.
+In preparation to using it with the lazy pcpu counter.
 
-It exposes a dual-mode counter that starts as a simple counter, cheap to
-initialize on single-threaded tasks, that can be upgraded inflight to a
-fully-fledged per cpu counter later.  Patch 3 then modifies the rss_stat
-counters to use that structure, forcing the upgrade as soon as a second
-task sharing the mm_struct is spawned.  By delaying the initialization
-cost until the MM is shared, we cover single-threaded applications
-fairly cheaply, while not penalizing applications that spawn multiple
-threads.  On a 256c system, where the pcpu allocation of the rss_stats
-is quite noticeable, this has reduced the wall-clock time between 6%
-15% (depending on the number of cores) of an artificial fork-intensive
-microbenchmark (calling /bin/true in a loop).  In a more realistic
-benchmark, it showed an improvement of 1.5% on kernbench elapsed time.
-
-More performance data, including profilings is available in the patch
-modifying the rss_stat counters.
-
-While this patch exposes a single users of this API, this should be
-useful in more cases.  This is why I made it into a proper API.  In
-addition, considering the recent efforts in this area, such as
-hierarchical per-cpu counters which are orthogonal to this work because
-they improve multi-threaded workloads, abstracting this with a new API
-could help the merging of both works.
-
-Finally, this is a RFC because it is an early work. in particular, I'd
-be interested in more benchmarks suggestions, and I'd like feedback
-whether this new interface should be implemented inside percpu_counters
-as lazy counters or as a completely separated interface.
-
-Thanks,
-
-[1] https://lore.kernel.org/all/20230608111408.s2minsenlcjow7q3@quack3
-
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
 ---
+ lib/percpu_counter.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-Cc: linux-kernel@vger.kernel.org
-Cc: jack@suse.cz
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Christoph Lameter <cl@gentwo.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-
-Gabriel Krisman Bertazi (4):
-  lib/percpu_counter: Split out a helper to insert into hotplug list
-  lib: Support lazy initialization of per-cpu counters
-  mm: Avoid percpu MM counters on single-threaded tasks
-  mm: Split a slow path for updating mm counters
-
- arch/s390/mm/gmap_helpers.c         |   4 +-
- arch/s390/mm/pgtable.c              |   4 +-
- fs/exec.c                           |   2 +-
- include/linux/lazy_percpu_counter.h | 145 ++++++++++++++++++++++++++++
- include/linux/mm.h                  |  26 ++---
- include/linux/mm_types.h            |   4 +-
- include/linux/percpu_counter.h      |   5 +-
- include/trace/events/kmem.h         |   4 +-
- kernel/events/uprobes.c             |   2 +-
- kernel/fork.c                       |  14 ++-
- lib/percpu_counter.c                |  68 ++++++++++---
- mm/filemap.c                        |   2 +-
- mm/huge_memory.c                    |  22 ++---
- mm/khugepaged.c                     |   6 +-
- mm/ksm.c                            |   2 +-
- mm/madvise.c                        |   2 +-
- mm/memory.c                         |  20 ++--
- mm/migrate.c                        |   2 +-
- mm/migrate_device.c                 |   2 +-
- mm/rmap.c                           |  16 +--
- mm/swapfile.c                       |   6 +-
- mm/userfaultfd.c                    |   2 +-
- 22 files changed, 276 insertions(+), 84 deletions(-)
- create mode 100644 include/linux/lazy_percpu_counter.h
-
+diff --git a/lib/percpu_counter.c b/lib/percpu_counter.c
+index 2891f94a11c6..c2322d53f3b1 100644
+--- a/lib/percpu_counter.c
++++ b/lib/percpu_counter.c
+@@ -185,11 +185,26 @@ s64 __percpu_counter_sum(struct percpu_counter *fbc)
+ }
+ EXPORT_SYMBOL(__percpu_counter_sum);
+ 
++static int cpu_hotplug_add_watchlist(struct percpu_counter *fbc, int nr_counters)
++{
++#ifdef CONFIG_HOTPLUG_CPU
++	unsigned long flags;
++	int i;
++
++	spin_lock_irqsave(&percpu_counters_lock, flags);
++	for (i = 0; i < nr_counters; i++) {
++		INIT_LIST_HEAD(&fbc[i].list);
++		list_add(&fbc[i].list, &percpu_counters);
++	}
++	spin_unlock_irqrestore(&percpu_counters_lock, flags);
++#endif
++	return 0;
++}
++
+ int __percpu_counter_init_many(struct percpu_counter *fbc, s64 amount,
+ 			       gfp_t gfp, u32 nr_counters,
+ 			       struct lock_class_key *key)
+ {
+-	unsigned long flags __maybe_unused;
+ 	size_t counter_size;
+ 	s32 __percpu *counters;
+ 	u32 i;
+@@ -205,21 +220,12 @@ int __percpu_counter_init_many(struct percpu_counter *fbc, s64 amount,
+ 	for (i = 0; i < nr_counters; i++) {
+ 		raw_spin_lock_init(&fbc[i].lock);
+ 		lockdep_set_class(&fbc[i].lock, key);
+-#ifdef CONFIG_HOTPLUG_CPU
+-		INIT_LIST_HEAD(&fbc[i].list);
+-#endif
+ 		fbc[i].count = amount;
+ 		fbc[i].counters = (void __percpu *)counters + i * counter_size;
+ 
+ 		debug_percpu_counter_activate(&fbc[i]);
+ 	}
+-
+-#ifdef CONFIG_HOTPLUG_CPU
+-	spin_lock_irqsave(&percpu_counters_lock, flags);
+-	for (i = 0; i < nr_counters; i++)
+-		list_add(&fbc[i].list, &percpu_counters);
+-	spin_unlock_irqrestore(&percpu_counters_lock, flags);
+-#endif
++	cpu_hotplug_add_watchlist(fbc, nr_counters);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(__percpu_counter_init_many);
 -- 
 2.51.0
 
