@@ -4,90 +4,209 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ACD9CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 16:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBEE8D111A8
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 17:00:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 884AC6B000E; Thu, 27 Nov 2025 11:57:14 -0500 (EST)
+	id 223F96B000A; Thu, 27 Nov 2025 12:00:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85D026B0088; Thu, 27 Nov 2025 11:57:14 -0500 (EST)
+	id 1FB5A6B0032; Thu, 27 Nov 2025 12:00:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7994A6B0089; Thu, 27 Nov 2025 11:57:14 -0500 (EST)
+	id 0EA816B0062; Thu, 27 Nov 2025 12:00:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 692276B000E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:57:14 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01F37C0218
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 16:57:13 +0000 (UTC)
-X-FDA: 84156992388.06.570FDC0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 381D34000F
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 16:57:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id F29B96B000A
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:00:23 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBFA7140184
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:00:23 +0000 (UTC)
+X-FDA: 84157000326.23.F1DA3FB
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1DE7CC000A
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:00:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764262632;
+	s=arc-20220608; t=1764262821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TxhYQLxHx8Y/NBwByNSBoA8AyO0F4q6taUvEPDCbEI8=;
-	b=1JdqVLVbMu/SdADwYdFSF3EgJhT3ls4th05G/GMcMqMtaDN3fPBaZk++g1bJC2go/cd9kt
-	k3es2M/icLthFrAolzY4tv4QBSHI0C18B95E/lFnBl7zcOpIPZk17xHufOWPteD+r5YLY/
-	wqnR61EaucMUtGbAvaq4al39swsY5dE=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764262632; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
+	b=jobYNEfzHgeedhsEhZ5m2u1daZG4uh1Vu2NVvobe1A6Y7LNs+HElWiOCwhj5okHtA6EiU0
+	4NrQRwvFnnm/LUStSpi0K/Cb2DgWu30NunZVSRxaOZ+5ScZGQXAKyqWwcE8BAT737LAC6D
+	Rlak7LUo0Ct73StICC+Wh4mysFo5ZFk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764262821; a=rsa-sha256;
 	cv=none;
-	b=f1tBciRSD99r/hJ4LupogZocC9E7D/DXDpFnv0G4srFJ/XaSRDJp6rA9GSbBPecO6mKdmg
-	XUYFxLBYEtStTcW8/m3tnv00m1pLCI6FmYXk1lsHNjdw70bG8r0u5SY81ItbTrXJImpUW8
-	iQVwXpkTObAHRX1jgLRMEZP50bprNfw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA0C2176A;
-	Thu, 27 Nov 2025 08:57:03 -0800 (PST)
-Received: from [10.57.87.167] (unknown [10.57.87.167])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 199DA3F66E;
-	Thu, 27 Nov 2025 08:57:07 -0800 (PST)
-Message-ID: <fbfef7fc-4030-462b-b514-498eea6620aa@arm.com>
-Date: Thu, 27 Nov 2025 16:57:06 +0000
+	b=IGS1ETzFqt7qk27rVkT32P4vUKdRgQM4F8n6O0umMpQANM3nUzZLI7KjcAy6MDhlygqMpq
+	Mvb/h3D6Uci+DxzNEVcc+FqU+in5UD9jMu3GjiG1hCOYz5nOilNP0v65u3smXNZrHrt8Dr
+	40x+17G7e9/ZgsBdelpB0kzo87+nmHQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERSHELQl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQ3Y28wU;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 059C15BCC1;
+	Thu, 27 Nov 2025 17:00:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764262819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
+	b=ERSHELQlwm+nOrI/ThkX2ZfyikTLfFaEdEBlYZL621PydLzMEqLue3TNr21gxrJa9xFsuT
+	vzvjbbUfU5FiOyhTT19/BR48mkipPX+vKodF9hyy/tMS0ujzic2icA1Mm0q12YMZM+0D92
+	ttl1KAljZYswsKkIiBKic2Nq98Qg38A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764262819;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
+	b=mQ3Y28wUbEcgjAao8nV4G4bYlJDbYfrr5KCqwBi0QG2NpYPSoc9TbbJW/FzojbY4sE81RN
+	AwnCSb9k9hWR7UCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764262819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
+	b=ERSHELQlwm+nOrI/ThkX2ZfyikTLfFaEdEBlYZL621PydLzMEqLue3TNr21gxrJa9xFsuT
+	vzvjbbUfU5FiOyhTT19/BR48mkipPX+vKodF9hyy/tMS0ujzic2icA1Mm0q12YMZM+0D92
+	ttl1KAljZYswsKkIiBKic2Nq98Qg38A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764262819;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=c67LjBa5JtjIC6K1nDTL3mxFIcVdzFmTVEnOKZiAqm0=;
+	b=mQ3Y28wUbEcgjAao8nV4G4bYlJDbYfrr5KCqwBi0QG2NpYPSoc9TbbJW/FzojbY4sE81RN
+	AwnCSb9k9hWR7UCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 82D643EA63;
+	Thu, 27 Nov 2025 17:00:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ujPmHqKDKGm3IQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 27 Nov 2025 17:00:18 +0000
+Message-ID: <67da7b44-6975-44c2-b37d-9fadf7dceff8@suse.cz>
+Date: Thu, 27 Nov 2025 18:00:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/22] mm: Allow page table accessors to be
- non-idempotent
-Content-Language: en-GB
-To: Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-9-samuel.holland@sifive.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20251113014656.2605447-9-samuel.holland@sifive.com>
+Subject: Re: [PATCH v3 11/16] mm: introduce pmd_is_huge() and use where
+ appropriate
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+ SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
+References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+ <00f79db3b15293cac8f7040a48d69c52d00117e4.1762812360.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <00f79db3b15293cac8f7040a48d69c52d00117e4.1762812360.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 381D34000F
-X-Rspamd-Server: rspam11
-X-Stat-Signature: zxzqmrdircmqpj6yo96jh3uz56x3frqf
-X-HE-Tag: 1764262632-787399
-X-HE-Meta: U2FsdGVkX19csDFEB0brltReDWQm0rvNRjWtk5+NxHowDPSelA+OBFWGX/1LYAiK3M2sCGqlKm8/YgKuyQ0MdzKqdHvVuI9/ScQwIZ5iXJZ0v0hHC/IvQs+YGUmwGdjiMLzY4kUrFhP3ZI+SMSXBi8i/uvZFVZ5R44V/Z3e5NoLRt8iCf2tPOLgj5WeVe0S2k0BzVqTKe3zWFhxyTEkont9x4/+9pZL4YCQ05LsmicrzDfBTDcgDbIyE95MP9lAmSrgqZ9b6h2PQPn8DSJ4ThKxg/mZuSIXXOfJFjDt4CbSQEb/GlBBsexCnkNXZoPZm0jHV6Bj99Oy1QHZUB4b7a1KZ82r2B3lk31BHkgnqA4h5Yzmb8WnK+YJnii45vRzCiayn/3DngM6T2AqPVQFewgJBJuRq9a4zSWP3C4c/aPdwzzakA76Yfu0s22H0Bl6OOBLNEccs1Gf08tK7MoSL8dhnvIIsDp134Wa6LcMPBbHKrKoVvfPdbgRZw9MoghpeJ4alOTyzbRbEO6GkFJ88QU4lJldNlG/gQj7DkLIz3m8mSz5axEgexcUPOALxfXERD3DeKTaRiv6rsv+dZm1sYbDg31aoXMtHJd7vWox1NCS9477J/fKcseAGQMBR76V/XUiWNTBFUgMzc5zkRrfOH+DoGmgGWTYH3sW2zE4dAzav1uPNYwu9vZwGOt00pg6UoY8Zj4jvxx2/RPtHTce/lzm1gyDm7EffQOR4VHJsW+7FMPvYMMszPx897EeAu4GMbhFGi2lwBNNHff0EZLn1aMoGhDdlldcSn3laN1O4qISIp3H6kTfzpijlSX6yCUSW+riG5ZfIsAKhZLV1gICqTlbISPpc7dS0hsZh7Tgkm5Zoru8kZ3gZdaEzGbyv6aOPLd3YIBBnLP6gYHSN3BnrDK+vv99AINLVmGCO6vN2aObttyf9P9BR182Y31tv9SSo6MvpiKf9BuYDEiZ2Tmm
- NHYQwZM4
- W9OOKQ+rE7gnui6CfW90guTM+/aN6oc/qVxoNkt2F9cIRc4QlUtDN7mnSqIzEibOiI92wYris5yjFsBLvgm4ksXuvQRI7CQp63EMnUKOnW4YbX/0O5MVJlXu9p0E4J7EgfbceAyShdm00vtdg930amGqvfkmZdph6R1sF8UyUakLpnnXBfueoy+uxGzvzcw7XxoRAQ5LaEGwnxQ6tSeFvndsTLsbY8qiT6nL1akcUN0k7jAOqVx1sob0llrvoFaL4kp7/WAoXsBdUQXKmuXFq2OEjzg==
+X-Rspamd-Queue-Id: 1DE7CC000A
+X-Stat-Signature: egg968zawgaxunkf6d45eysqsqbsq477
+X-HE-Tag: 1764262820-640937
+X-HE-Meta: U2FsdGVkX19/kEHkkgzjQk+iqkJ+iP8ccIQwj5pPM3mSsZSN1G/7k2KQENOlOsN2i43sN/ev52WSjNAl79N1Z8nslxeZCQoaDKRlU0K9YniTZ9KhbBYcQc3/ny4qWNf/x8zoJofnQ3kkdpj1eY6JFnriSoPKcBVZdG7+4tULZtCSQMVeb6Ev57PuY/8kfJLz8fY4KC9boLFBYGJSallnS2/RJ6YNT1n7QdjAmIwE/glJqGU+YZjr8pWlDdMAWN5RqOQkmAOD8Iz5URDY7f7Euc8RkbP7v7SomSgO2i/9B7TkJp5JcdkM35RCCN9+G6cyxmy2T6hSTHfmkhpIWbrafJ62TO/jrUhHbA4mkinuHeMgnQKjtXbcfjaaI9AQRZtl7QXs0NLRyI0N95O0IDDTPWBRGbwiru7O/DnOrN8rhaEeq3741fESlv0dFZj2KaGj058vyliUIMnEVgWc+ep0FoEVf+KcuWS+O8ODL8XI/B+IGbCRfd56Vu3O4LP/lBPjDWVzfKB0yetlBlH95il9dVAsWKlQwGom8hNiHaxXzsiqATR98YefgumzVtLjwBO0sv0AeQ2uCExT85JcwdUctDGrPl6712xZJE4P8vigJ3np/N5nc/g1kjBB8q9o+pFoWPrfTOFTYjTEbqQBSRItx/VWueE3d3BKV5oLF5gmDxGOg09xLv3tOPjIa/F3TK/azFUo/NR/kU1umMovY11q2hB5mxbrTbjNW8xuP0Ly2JcYE+nQfTUHSqMNrQffg7V1f92CIOQ16oC/17VtWdxX/yeDIu3pTbqNoeRY0lcuUdBl7gM0xi5lf7s1E27VUyMi2fJeFg0qMaqXbHmjB/MaTDMz/KfBEqa2zekfG5uv6w9cNXBE4PyTYjEyz3AYpN5oDYQDpnnF34xRQV/uJ8WPf13GXRvmAjnvPXInWmyUV9zSAanlCcdl0hU7TJFhnJtNzW5yXvDQkPZBRivYN/S
+ Cqe6593x
+ 3IpyPu5B/Ij6dGK6ExnAIySrmgHwhg2yeEuTF7c67Zpvtl3FbpZD6QTM2eXXoh61bni7Ip4jlJB3ySeUYwFgDtWXNlvH5UOn1r4tRSg2RD+44sl5cRTz/q7xvoVIrOba2hijbD02KgReoenv57ot6EZQ/8RXQtyXosHnk7DmML6jUbnZscrBcOrlsI9QC7hYaFI3dagy8fNDw1/tYMOPgK0F0xATm6c3+F+tCN8LO6s0w7oeODAdoeJ1Kn3I+lSQkA5ESe8o+TxlDpjhwNex//eweh9lTJuZjrEuMlYX89W1k/vptHRTEYlOlElLm6e/MSmyjmHE/MXAAIZDfSGvzoL4MQzF41Lf5UE5sFEdxlz3MTGddVVSaDDhZ000YkeKw53gvAlbiVXpDp/GDPoFyheuYvTVspkCs6P0mZRbpJ/j3TRo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,133 +215,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13/11/2025 01:45, Samuel Holland wrote:
-> Currently, some functions such as pte_offset_map() are passed both
-> pointers to hardware page tables, and pointers to previously-read PMD
-> entries on the stack. To ensure correctness in the first case, these
-> functions must use the page table accessor function (pmdp_get()) to
-> dereference the supplied pointer. However, this means pmdp_get() is
-> called twice in the second case. This double call must be avoided if
-> pmdp_get() applies some non-idempotent transformation to the value.
+On 11/10/25 23:21, Lorenzo Stoakes wrote:
+> The leaf entry PMD case is confusing as only migration entries and
+> device private entries are valid at PMD level, not true swap entries.
 > 
-> Avoid the double transformation by calling set_pmd() on the stack
-> variables where necessary to keep set_pmd()/pmdp_get() calls balanced.
-
-I don't think this is a good solution.
-
-arm64, at least, expects and requires that only pointers to entries in pgtables
-are passed to the arch helpers (e.g. set_pte(), ptep_get(), etc). For PTEs,
-arm64 accesses adjacent entries within the page table to manage contiguous
-mappings. If it is passed a pointer to a stack variable, it may erroneously
-access other stuff on the stack thinking it is an entry in a page table.
-
-I think we should formalize this as a clear requirement for all these functions;
-all pte/pmd/pud/p4d/pgd pointers passed to the arch pgtable helpers must always
-point to entries in pgtables.
-
-arm64 will very likely take advantage of this in future in the pmd/pud/...
-helpers as it does today for the pte level. But even today, arm64's set_pmd()
-will emit barriers which are totally unnecessary when operating on a stack
-variable that the HW PTW will never see.
-
-Thanks,
-Ryan
-
+> We repeatedly perform checks of the form is_swap_pmd() || pmd_trans_huge()
+> which is itself confusing - it implies that leaf entries at PMD level exist
+> and are different from huge entries.
 > 
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-> ---
+> Address this confusion by introduced pmd_is_huge() which checks for either
+> case. Sadly due to header dependency issues (huge_mm.h is included very
+> early on in headers and cannot really rely on much else) we cannot use
+> pmd_is_valid_softleaf() here.
 > 
-> (no changes since v2)
+> However since these are the only valid, handled cases the function is still
+> achieving what it intends to do.
 > 
-> Changes in v2:
->  - New patch for v2
+> We then replace all instances of is_swap_pmd() || pmd_trans_huge() with
+> pmd_is_huge() invocations and adjust logic accordingly to accommodate
+> this.
 > 
->  kernel/events/core.c  | 2 ++
->  mm/gup.c              | 3 +++
->  mm/khugepaged.c       | 6 ++++--
->  mm/page_table_check.c | 3 +++
->  mm/pgtable-generic.c  | 2 ++
->  5 files changed, 14 insertions(+), 2 deletions(-)
+> No functional change intended.
 > 
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index fa4f9165bd94..7969b060bf2d 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -8154,6 +8154,8 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
->  	if (pmd_leaf(pmd))
->  		return pmd_leaf_size(pmd);
->  
-> +	/* transform pmd as if &pmd pointed to a hardware page table */
-> +	set_pmd(&pmd, pmd);
->  	ptep = pte_offset_map(&pmd, addr);
->  	if (!ptep)
->  		goto again;
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 549f9e868311..aba61704049e 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2844,7 +2844,10 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->  	int ret = 0;
->  	pte_t *ptep, *ptem;
->  
-> +	/* transform pmd as if &pmd pointed to a hardware page table */
-> +	set_pmd(&pmd, pmd);
->  	ptem = ptep = pte_offset_map(&pmd, addr);
-> +	pmd = pmdp_get(&pmd);
->  	if (!ptep)
->  		return 0;
->  	do {
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1bff8ade751a..ab1f68a7bc83 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1724,7 +1724,7 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
->  		struct mmu_notifier_range range;
->  		struct mm_struct *mm;
->  		unsigned long addr;
-> -		pmd_t *pmd, pgt_pmd;
-> +		pmd_t *pmd, pgt_pmd, pmdval;
->  		spinlock_t *pml;
->  		spinlock_t *ptl;
->  		bool success = false;
-> @@ -1777,7 +1777,9 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
->  		 */
->  		if (check_pmd_state(pmd) != SCAN_SUCCEED)
->  			goto drop_pml;
-> -		ptl = pte_lockptr(mm, pmd);
-> +		/* pte_lockptr() needs a value, not a pointer to a page table */
-> +		pmdval = pmdp_get(pmd);
-> +		ptl = pte_lockptr(mm, &pmdval);
->  		if (ptl != pml)
->  			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
->  
-> diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-> index 31f4c39d20ef..77d6688db0de 100644
-> --- a/mm/page_table_check.c
-> +++ b/mm/page_table_check.c
-> @@ -260,7 +260,10 @@ void __page_table_check_pte_clear_range(struct mm_struct *mm,
->  		return;
->  
->  	if (!pmd_bad(pmd) && !pmd_leaf(pmd)) {
-> +		/* transform pmd as if &pmd pointed to a hardware page table */
-> +		set_pmd(&pmd, pmd);
->  		pte_t *ptep = pte_offset_map(&pmd, addr);
-> +		pmd = pmdp_get(&pmd);
->  		unsigned long i;
->  
->  		if (WARN_ON(!ptep))
-> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> index 63a573306bfa..6602deb002f1 100644
-> --- a/mm/pgtable-generic.c
-> +++ b/mm/pgtable-generic.c
-> @@ -299,6 +299,8 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
->  		pmd_clear_bad(pmd);
->  		goto nomap;
->  	}
-> +	/* transform pmdval as if &pmdval pointed to a hardware page table */
-> +	set_pmd(&pmdval, pmdval);
->  	return __pte_map(&pmdval, addr);
->  nomap:
->  	rcu_read_unlock();
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
 
