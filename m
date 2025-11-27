@@ -4,83 +4,196 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D1A4CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:02:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BE21D11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:03:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B400E6B002E; Thu, 27 Nov 2025 09:02:57 -0500 (EST)
+	id A7FB16B002D; Thu, 27 Nov 2025 09:03:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B17E76B002F; Thu, 27 Nov 2025 09:02:57 -0500 (EST)
+	id A57066B0032; Thu, 27 Nov 2025 09:03:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A55236B0030; Thu, 27 Nov 2025 09:02:57 -0500 (EST)
+	id 91F876B0062; Thu, 27 Nov 2025 09:03:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 941756B002E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:02:57 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B0C116018F
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:02:57 +0000 (UTC)
-X-FDA: 84156553194.14.A9FEE56
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0295E100012
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:02:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yKSWgTlx;
-	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764252175;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E6CC6B002D
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:03:39 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F71F86E4B
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:03:37 +0000 (UTC)
+X-FDA: 84156554874.27.56EF41D
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012059.outbound.protection.outlook.com [40.107.200.59])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4C98440021
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:03:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=wvcZrZaW;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf07.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.200.59 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764252214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=J/7N4taclzF1isdw3N2AW2TvhAOn6JA9Y42Fq0/ETAQ=;
-	b=dwyW3iU4xdqCl6Hf3jDCQy8QdrM28Ebl9JkK33SVakia4dKhjR2VdcJEtnTPVXkuoUW958
-	ZZn2veBg4f4dGUwANqY5jB/nHtGLNGybL8oKLQ2ge3P0QZTTyZq+y9/H6TGilSmjG/dfNs
-	C0GLxhk9DzvhiuLYQlXqyWneOiu2vjk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yKSWgTlx;
-	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764252175; a=rsa-sha256;
-	cv=none;
-	b=FXYRaoWS8LSRmXXEAfXgNd4P01Wd8OGNi/OIb5I81y6eGZfMnDzrMwDv8n7Frb7ks049g5
-	mVtipIl9bgmRyHrhGHKhdkYgs3BZlYj3zLY/khM1wjAkSrpcE0EL5NCJAyN+GXsom+ukpD
-	Y1k+tThzoZml8LMWhR6lLlPFz26XO/c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 65C6B417B2;
-	Thu, 27 Nov 2025 14:02:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65EDC4CEF8;
-	Thu, 27 Nov 2025 14:02:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764252173;
-	bh=SrPXSMSTgoYJ8SXk6Z1uitF+95AekoJA7+7o4djyIW0=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=yKSWgTlxpx9OimswpWUotfZTwYgr2gvZTPIdJAeeuQTOd9TS8RA5Y9mSASIy1CuTT
-	 GA5prOenGmRkagxg/O/+ES/2QpObgpN4fGLfTkgUnJbersJ8pkSOXgviIOjUPP0sic
-	 7ou3YsrH9CcLzgbTqHQkLG5CQ6B40wEA1F0Fl6RQ=
-Subject: Patch "mm/mprotect: use long for page accountings and retval" has been added to the 5.10-stable tree
-To: Liam.Howlett@oracle.com,aarcange@redhat.com,akpm@linux-foundation.org,axelrasmussen@google.com,baohua@kernel.org,baolin.wang@linux.alibaba.com,david@kernel.org,david@redhat.com,dev.jain@arm.com,gregkh@linuxfoundation.org,harry.yoo@oracle.com,hughd@google.com,jane.chu@oracle.com,jannh@google.com,jthoughton@google.com,kas@kernel.org,lance.yang@linux.dev,linux-mm@kvack.org,lorenzo.stoakes@oracle.com,mike.kravetz@oracle.com,nadav.amit@gmail.com,npache@redhat.com,peterx@redhat.com,pfalcato@suse.de,ryan.roberts@arm.com,songmuchun@bytedance.com,vbabka@suse.cz,ziy@nvidia.com
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 27 Nov 2025 15:02:29 +0100
-In-Reply-To: <20251125045442.1084815-2-harry.yoo@oracle.com>
-Message-ID: <2025112729-qualified-bunkbed-122e@gregkh>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PX4KDy0END5xjWVpycCPgFlsoDMsS8Ie0THXG7f5WeU=;
+	b=W1fLEyKc/jKhSPGxXOSiG7+iZkUhWbIkZ7dPLPxExDZS08s2uthy6/PABMJWLVjNwceV/E
+	gq46zOk+YQv7IlVv+GXwRqToKmai1l7UZlfSrtj3e4eOZEN6VM87aFsclPiZv/lwu3a3Y2
+	d7+klA0W1MCCLKmneHyJJj6oHYSH6T0=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=wvcZrZaW;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf07.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.200.59 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764252214; a=rsa-sha256;
+	cv=pass;
+	b=orUP3wfKeSgFB9lpVw/MstKJGt9SgiBuRQYGIeXPIaoXjywJPlYZoXwHtzoJ+truxlqhQ6
+	gkiaYhmN87L40+MON9GdFxnZpWck8N3P8CJU3ezxEP6mx0qMmq7t2tBVYM2xjkEgg8dy88
+	KX6m1zwQzXa8xclhA/pIZWDu72srfoU=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wvo+IKYEnz0E6gZx9iZtg5Gmg6SVIclflHr4CMUVMmTrzDQ1nSOEBHVNlo0SO+wUtqmN1UEw7jbSptkBJKNtPwP2IJmkGw9EKx7GQGPksANTdkixV2I4bxQ47HHmFOasedOJWXuC5RuhM3s0N8cWb9B/PHQA3XWgRx5LPn1gjvCqMwiKz6v4ob5nbeqo/ucd+x5DTnNnIwDPVBc5egevMTLmlWVFzFw1LDPnYJQj9UbA4k+nFju4b5GU1TqUhUgTOd92Ce6uU+X7HK1W4lzttRP4Y2e7QSB3G9pXldwbayVqx8gQv1yb2sKbNikHgM2W+AJJ8Pz3wncuVpSs6wN87g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PX4KDy0END5xjWVpycCPgFlsoDMsS8Ie0THXG7f5WeU=;
+ b=KDlZMXxGIE8kgszWeB15AAgtXb+WcgZmbBzxlJvE5WSjHjML/aEhdjlu5livV3NG/93DsB4RhaUU1EW//H7+PS9DawWK6Tmsh29jksI5KvKRzsVaTWiRY8KOBFgTsIHNbO/1m3S1uPovBYg9V8SKVCGt+vU+zjdcz8f4OAn0P32NRd8lGsglP2dtUh9pd6JYr+PA8mxbAt6b/CqXN7eeG+Ni5yE8o+bg70PqADCT5pTNlkz97oNMlbEHOM4JnirGzuVGtxbtBgimj1z4HAC/JDIabHFcRfEBDt4FfNGCDhStJ9ygCv2PqvfAOMiAAYllRHZWj3tvpYYSS7h0Nn6yGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PX4KDy0END5xjWVpycCPgFlsoDMsS8Ie0THXG7f5WeU=;
+ b=wvcZrZaWk8HKJ9wsFoPhmLcT0+P1nrUe/aeTdP5A7fES4RiUS7wLJ/U8OjCpxoP/YSpe0vhHEZqpDmAqmWvHv0opU/C/Otzta/jWjtrRsT8obqz6EgPGspeDPXHr0huedkiuj8wexLk4rVYbkt8UIsDwzY6Zki5b0ndM32Pa++s=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by CH3PR12MB8548.namprd12.prod.outlook.com (2603:10b6:610:165::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Thu, 27 Nov
+ 2025 14:03:24 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9366.012; Thu, 27 Nov 2025
+ 14:03:24 +0000
+Message-ID: <06dbd4f8-ef5f-458c-a8b4-8a8fb2a7877c@amd.com>
+Date: Thu, 27 Nov 2025 15:03:20 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/1] idr: do not create idr if new id would be outside
+ given range
+To: Matthew Wilcox <willy@infradead.org>,
+ Jan Sokolowski <jan.sokolowski@intel.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20251127092732.684959-1-jan.sokolowski@intel.com>
+ <20251127092732.684959-2-jan.sokolowski@intel.com>
+ <aShYJta2EHh1d8az@casper.infradead.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <aShYJta2EHh1d8az@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0044.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::18) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0295E100012
-X-Stat-Signature: e4fi7uoy6zzn9unihhuo67pnm7dt37um
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CH3PR12MB8548:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9dcecc02-207c-4776-c432-08de2dbdbacf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NmhUUS9XZWxMa0JsbVhhNHdmYjVyWEs0dUV1QmZ0WTE2WTVleElvWXN0aEg0?=
+ =?utf-8?B?TC9SazNJUzVWRDNJakE3NHBXN2NZVm9LTmlyQ0JIUms4dWFHem9SeUloWFhN?=
+ =?utf-8?B?YlhHbEpxL2FEdWlBQkpHRm1oQTB1eTNVRG5IWjFkeFd4eWpyQklldTN5a2wr?=
+ =?utf-8?B?L29TZGx0dmZSL1llcEo0NHZReDNsQjU4U2RZNU0zU3d1TE1jYmM3Y3loMmVD?=
+ =?utf-8?B?MCtHR1VtVWNRUW04OFQvVzVQZjhIZjVDZTdFRTZLS3NMdTd5VjhnS2N2WGRS?=
+ =?utf-8?B?bzNDL1ZHM0R5endDMk1VWGhtK2E0QmVXc3hjRzBpaFMwcHl0bzNZU3hySTJT?=
+ =?utf-8?B?cm9BOVBHdFpQRkE2OHFMRVM2U3FJbW1JRWVlc25lUlRpL1BoaWtLNTREcWJU?=
+ =?utf-8?B?YzJBbFpSUEFwTVRpTFZCbW1mM3phYW45UlBWV1BtajNMYVhZenVtTmJvUmha?=
+ =?utf-8?B?TkFNbGJ3M005a2hGNk9NWExlWTNoOGhYa2lqK3FZSUZaaWFXbHgvcW1LSU5R?=
+ =?utf-8?B?K3ltdHRrVmNyWlNOYlBkN21ldXJDM0JITytQL0cwVmlBTUpQeEtKZXhWV09u?=
+ =?utf-8?B?YXZyelJTR29lM2Eybm80T2lNdGhvRTVwejNRalNjQVpzSFpGWThlSVd5a0w1?=
+ =?utf-8?B?WGpxMFBhcGs1a0huMm93WXBxdkcrVXF5SEdIbnpxZ1M1bXlTNzZSUTQwUGNq?=
+ =?utf-8?B?RmZmNFJGR1ptb2pETzI0MUc1RUV0U25aMVJ0Rml4SkJYU0kwaTA0MGs2UFVS?=
+ =?utf-8?B?RW8yUkNEd2ZUQnlCcnhjWmRTMmRSK0Iwd1VoNmkvMkFFV1d0bXFsK1ZoZENL?=
+ =?utf-8?B?OFQ0OXBmNGNUOTJhRzYzZUcxYUViMTB5eStjbWl2QTFWRkdHalhYWkc1Smdm?=
+ =?utf-8?B?ZFNKZVNyNnJzc2JKTDVUdXFVRkhIN3d4R2dKUkdBVE5xNTNkVjNTSFdDbHFr?=
+ =?utf-8?B?RlZjTFBtU0hMR2l6NHZGejd4ZDN0Z0hEejdmZ1JrWVlDalo0WGpSNFBEWkNN?=
+ =?utf-8?B?RW9nZ05lUndyL2U3WWV1NjBUTUxhV2FNZElxTFEvVDN4TWhXT2hHZytxYURa?=
+ =?utf-8?B?MFNrR1FIazNPQmtnR2tIbjZ3cHpDdHlVcFNZSENuVGhNTEpSeDFwMGFDVHEw?=
+ =?utf-8?B?Uks5ZHdFZHR0VFFYZUNMTlc5Qk1hdTJWclpRUDVLU3lCeVRqTkQxdis1UEtu?=
+ =?utf-8?B?VWwvOVZ5T3FteVdkandtRVdwMW1rVnQ2a1JWSkxSWTFHdGdaRklrdUowK1E0?=
+ =?utf-8?B?M1oyRHF4MHJHMzBiTlNXUU1KemgrUHYyZmZBbFFsMjZLVEJQbk1saStvLzhQ?=
+ =?utf-8?B?ejh3VEo3UGJUalVkemVCZ3BpeldTendKNDZsMnBpM3pVMmFIQWU2S1BZZkZL?=
+ =?utf-8?B?cHl5Tjc0a2sxcW9zYzNpM3dZeTRDeDFUS0NkRC84WEJvTFJyWlR1MFR4Y3Vx?=
+ =?utf-8?B?Q2JaRVVvRUR4Q0JsWHc1UkxOdlJ0UUtyeURqQTFxYUd0NzcwMGpDVnpKL2Jq?=
+ =?utf-8?B?ZkJhUGE5anNzamF3ZnlhUTdOL0hodUhwazJ2U3VlejFhTyswUkx5Z0E1Qm45?=
+ =?utf-8?B?bFRvRzVReWpHeHFIOGNYemZFbFRzVHBRRWpIN2llazZiQzFPYlRwTmNWcmUz?=
+ =?utf-8?B?MmQ2aDFpRngrMzAydkJHUUlrdFVPSnE1azcwUlZ6TVFYc2RxUXFpZGRlWm9X?=
+ =?utf-8?B?QnN5VEZBbnNXcXdYWlE4SXJteDZ3aHBQV2lST2RnL0NhZkVJaG5YVFZrSDJh?=
+ =?utf-8?B?ZUk2OW4rTlpXR3VaYUN0VmhlQ1JESlFWdDZLR0U5N3dudmwxc09pTHBkOWlz?=
+ =?utf-8?B?Wk5zYlpTQjZpeHcraCtmQ1hGSFRGeDRjNC9XeURKamJkT2xuK080eEx4djVl?=
+ =?utf-8?B?NWNGTjc0T255Y1dZSGNNUmp1UzAwTGVwazZpa3lwN0Vpek5PK1FsQThJYjRF?=
+ =?utf-8?Q?gwRwnRbkd+slgH8neprucUSg18vQaItm?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WTE3TTdyOVRnK1VvdUpGMUtGNGIrUHo5UFFVT1RDeWFUbWh6dFpKTmR3aEZw?=
+ =?utf-8?B?alNkQUx1dDlIT1hPOTEzUWhGQjEwOTJ0cUMrSnZWZ1dMd3gwNmFSMEhFdTBM?=
+ =?utf-8?B?VjdwM1B6bWpIdEo2N0hkR2tuVWpjYnVYVk1GQnRCMEFBazJBOUl5WFV2cHNK?=
+ =?utf-8?B?di9BVWt1bzd2SzlSK3ZXdlFYYzhNQUNxZDRGZzNvWmsxbG1BdmNyazJIaXRX?=
+ =?utf-8?B?SWYzaWk5aHJ2WXRRRHRGNml6Mjl2M0ZCeExhSGIxL0F1dFlzczEzVHIyeUYz?=
+ =?utf-8?B?S2JtdkNnayswRk40YzRrSUgraDJFY292S3B0UnJuOGQ2bXNhakg1aHRkVVJ1?=
+ =?utf-8?B?TmFOTXp6TGFUWTNxVytJejU3amwxRmg5YjVkV0hXNHJXb0N2YlNqVzBjaEMw?=
+ =?utf-8?B?Y0J1cU9NK29aNWM3M2dYSFhMQTZUcDFIcmdDdVBHbm02VWsxM3dkSWxqYUdU?=
+ =?utf-8?B?S3RFMW9lblVHYVZoL2p4aXRnaDlwVUExNzhoVzhmU3NUbkFYaGZYWjYrREUw?=
+ =?utf-8?B?K3RyNUJVZ25BU2NxTkJNL1p6eWtxZFB6eWlVaXhzaEtvakJiUno2MHNVUUY0?=
+ =?utf-8?B?aml4Qjc0THJxRXU1dXd6RVo0cUlpdHFFUS84Qjk3Ri8rTmNCZ2JQbUhoSW9o?=
+ =?utf-8?B?dmhpMWliNkJUR2Q1NHZUNnZTL20rVlZhc0ZiQXZzUTFSZFFWKzNFTlZSL3NV?=
+ =?utf-8?B?NURrRTBPUkkwWDRJVVo3bmRhSnVkRVZkUFpuZno3N1paVFRDL0tFa2E1V1Zi?=
+ =?utf-8?B?WUs4ZFYxRjh5YmRXSFJRMmlBOHVqbjd3YTJnUGVjVHpqWG5USjVkVzR4RFVw?=
+ =?utf-8?B?OXgrcS9MTjJUbUFFSkFiT09TUGhkV2hNQms3eGJBZEZtSUQxOE8zRmlJbTIz?=
+ =?utf-8?B?aW81RERnMjhXNC9ZMCtHY2o4SDV4RFFGSDlKaEgweUdOSjNMUHBJeU00Z3pt?=
+ =?utf-8?B?TTg3eW9wb0l5dlh1cVNIZnRTKzVzNkxDNFdhMUZ4R1lnZi9BdU1PeDNULzYv?=
+ =?utf-8?B?VFV5bGVNR1J6WHJHZ2l3VFRCenFackVQcVRWYWVhY2dVRlRHUWJCWk4wcERv?=
+ =?utf-8?B?RXRtaGtENWxDdDB3M3hlTk1ObzEwWVpJOFFxMEQ4MUtKZHREUVJ0NlpYVG9z?=
+ =?utf-8?B?NURJSzJwZ2VBZzdldG9COW5qMzRxbmkrRS9uSFNQVlVOMTFVdDVqNm94SmF4?=
+ =?utf-8?B?R3poSERPY0phdG40dE05ejdvVE84aXJTYW96dTZTZCtWZXlSZlNoTVpiZmxC?=
+ =?utf-8?B?dWlyMVUyZUc1bHhVdlFhcUNhblhkZzZ4NGU4eFRjdjIyeGRuOWNucjBjbGRI?=
+ =?utf-8?B?akRYWTR0R01hMThkSzB3OE1vamErZTZuS1pjRXFBWTBJdXlQakUwRVdRankw?=
+ =?utf-8?B?SW5HY3N1TzNCMW9UK2dDMGM4OXZzSjNQYUhEaTR1a3ZnaXNuZzFoV3BhRmdF?=
+ =?utf-8?B?Z3ZCTVJUZDRiclEySmgzbFNUMEpoVG9JOGN0OE1mdXdGNDAzL2FqZWtVcC80?=
+ =?utf-8?B?Y2tNQ0pScFB6WWtvVXdpbTFvblhQNWhoYmU0WmwvL2U2aGxGajJzenpXb05o?=
+ =?utf-8?B?Lyt0UTZEeUZocm82MnZCUCtaa1lVejFIako2K0lncWs5VHBSbWFQay9mamtD?=
+ =?utf-8?B?MzZMRThjbWl2SVg4TndJdkpNK3Z0TlMvZ2UzNVVzVktjbjVhMEVJalFUUmpD?=
+ =?utf-8?B?czdQUEE2WHlReXdsYTRCSDZwQmV5aSsyYktoYW9zZlZLMmhVSnp5V3huU0FY?=
+ =?utf-8?B?bGVxQjBuWnZFVllORDFwbGpLMk1RUFpzZGpxaDBxWFp6dU94ZThrWEtUenFV?=
+ =?utf-8?B?NVlweGFVTmNJNEFXYTV5eURYVmZxWnpmYzBiOFlEUUlwQk02Qnh1VUpTYVlF?=
+ =?utf-8?B?ZFl1ZEZQU2lxKzZkQnhnNVNzNnllM2JjcGpybTIxaTJMNHdJa29QQXRDemhY?=
+ =?utf-8?B?SUlWcEZOSEg4TlpXNTBYcml5UW1Yb2E3K0ludW1USE1LNis2bXVSOUdlYmVB?=
+ =?utf-8?B?R014dGZIRUMvY052Vk41Sk1GejdNWlhYdGxpelQrWTZteHhWSnhRQW9UOHRQ?=
+ =?utf-8?B?aGV6a3FaMGdaY0JsaVRGelpLZDE2SW55cTdkZW8zbCtJOFlUcXQxTzFJOWJL?=
+ =?utf-8?Q?8uyQI4+w/E2W/I/q/y1Y8OTZ6?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9dcecc02-207c-4776-c432-08de2dbdbacf
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2025 14:03:24.1020
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lzBX9/K2F6TWvfWnES6u6MsCFdi3iDWDC4JAgFOz5/zyh96aC01BPt9WwiIzvNEp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8548
+X-Rspamd-Queue-Id: 4C98440021
 X-Rspam-User: 
-X-HE-Tag: 1764252174-129519
-X-HE-Meta: U2FsdGVkX1/ZSbWtLckt/Jos8meDEvGu03XvvMkE5sUvkgNE877u0fShXHW6ELojRd1eCVUhOEWDjLDR7e0/9gOlk3k/lS/Fafmb2oFAgaDO2meF02D4+Lu8iiTzdS0buPLIw+RdZSTH9oNdp0Xl3LTcFL7DCyn+qAoNUvRCKI3jI1ifvmYND4XBqftbKP5lK6wGKHOpYmGFiV0CP75dl6fgdxXgm6khvyo1HJBsy9HIABElpOJOPgvjD9Ka72Jsbph8su+XTRpK8k4ElYRhlxGawm6plLcue35cGcVwbhkrdAY4bdMDOpRnpa/kUQPYxkq5kQGCRPK3AeVXaUatgpzZxbZMPiBDprZkiR1EemJWBlEZNOBUyHSYQGzMvxrVdGsi5VWPLURIvGqI6sZF/Z0wrWR/BDv3Uh9ryVlDgu1nE3AXLoV/tCXCelg8G4/ADyk50Z0PSdZ7EpklQmCAP/uLnTS9QivftL6p0aouX7n3NjF2U24hFhQaLjhrG3Hn03wpy8aRj+EK/uSTh7j7+1veDJUvJ1grWaDN1Mal73FYmLlZYs1sg0JQm7VMXp5ITaqRt1+e4N1Bf7r4FmBbNFpKQOByAhGDCgKYTUnPbklDMj9yFd6HX2ZddAMupGjGG+EcaTL75GzlyZs0r/H7TGQojT23Eegk/HXHhjj68DlvoR442+S2pJpqjHKi/jq66/4Hvu/9yabe4oBqXWe2Cmygr8un9BlWu5APcj/Tu4rpMX/vK+tdMPXGXFsY/M/Vo1GtPG2vMri4LJCepPMiQMnNxcJtrD7PW0sd4W7rrY6YjVRft8WQe9/krKjX6VVwcVbKBTt4+uc17o7maxUPnyGb744Q0SkzgAHtf0pso/vMkVmxJhcMPAz46DaVZbrtfx8rW3SluLc3ek+VOBdRChcAO1rN/G/iGvv+bJcpaf0THByxN60uME1BqIPFyIW/XuOJwsPrv0CPgVKjKR2
- P0Q4W0Au
- /Y3qr55Z6OcQBBsK4MPRfXuh12uugG4/oSsVD1aPCOBUGhE8HlGzjTzxEEsl9K+Ke4MN66cnjwFHdi8w3Z/v6RmnCE5r9mXrrC3f7pZ9VguEeoQWuIiLyEaDSDM8D+bXDf37dFLiaxujG/p8QhgMkRPjThwJ2WdM8hIv2xWaKQmHOBvzmDgJVEdQWQEb52ZaB62KeH3gL4NiSbfVWlIY/iIxXIinfteMXuJsZKHh3+n3dEP9CQbSx53yVjfrLrtDjZ/UdXbzt4y04jHQIuhfkcqpI5ZP1Io91ewlEyMNsCUpS0ilDQOV/Jqw9ueX9rEFstusfVBQlGRrds0DSIW4mJKWNytetDlGlFY6kDRfomTIvjAto3UU/yuylOOJMRmjKRyHhbJPUBuWN0hQxUp6UJ4ypkZMCwG0bT0bS1mhhF4aAxAw5Wt63RD+epoJ/MghJEDJmo2OmFGKjrmd8YaBV65Xk3bsnUVyHChrvUs6ow4jL/PMoG6dJ2lZ883lz8V2eJYnfg3ABinI2mx/70lXdI+4nrpQ1IT5Acrsfi1LtHQOr+Y/Lb0d65Na3CEpbw/E4t8rlxWiX2iK6D1naNGMcmPCpStcp5dIekCPoCZm05BnWcPJPKXGiXjgeG0w1uTGWFv7YXBvTWDwLWh5wKQQEBJhVSId6Lm4eRLXWhhutk99dVysH6BlAdo2/BrIMMrD6rwWslm5rJ+2IgTid1PkmNWw1C6IPoCmTN6Oxnlue/nSBnHSFEY1+QxAJ6u5npSp6aYZhcIUvU3OPzhsT+8Z8TjMqHA4nQQgPqSlueJdQQOW/xSe4ez/gS8N7HOXSXdURwPLfS9h+IiouYhgX/eGsBrV6HA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7onfggxp1hw4prww7f58kn6zxoid6qpf
+X-HE-Tag: 1764252214-92728
+X-HE-Meta: U2FsdGVkX1/Ou3/O/FVGPA7fOsiCTcvih2DXn9MkYM9HrY9aVu3jozaDarmgpXZrGbkRM6jrqJpAdXj25V0nj0HelEcoK1dOzU8rPyx5GKPC2sOvnbsVwbU/u3+JKDWjfdBVSjEXzUZDGKnbplRHUAeigl5fyZOVMGhJg1gnwn1NatqFfvjHBUJghdBhFCbISIBd4Anju90P4F9VbqIgrbAkg6au1WuumkryXwfxoye3OeNQFMrX2yG8GiWtRR5QW6OypCBAVeQ1YbZIk2B0DhLwidoXb9V/YbqlNW32u4LctwREFf20BtTBaEO/O6yCNzUP4IIFTr0K9f9ZNzd2mtdlTHMQrrBybb00/t2EPUHpraMmi88uk5jO5+Lt3Huw+MSodokwMbIbI30C0TG8aL64aQ85I8+ui0/ARh0yxm125kOairuzSrR+0fubcRiAa7jgtHcsx5rHwb+CVcrIjCfXNqfRBB2WtgrswLK1RxGK55d+fEL95wX9/8jrIkgzBx8XJwbRtQQJltPQz8bu2mobD+WSSuyb3IxZX7a54iTEbWPtKXglHVpCUukkS5QhXxkjAqXfgowN/ckwLp3jx0V68bKJl49V8hijjpBluHKu7Fz0nY55BsAGDgZB65kBv+aaEOCPG3x+cmnFr+N8T/JcmsxZrvRsw9uNXsIEeqVQVuozMwmxEVVlLsqjReuZQSQJZ0WVOoFy7yUQoEVqUoxkqjJAOw4VnMfj4+BzZFtm59jg+3eCjpD4o/Mqh5YJGhXxeTqIBMv9sHhpXN3maHEEHaAyqx/WT44JeeYBfQoWODhdwDFQFze3QdNRz8XO6At+Ye97bsPmkNkxy1PAkcT9z8AfCnX2agxZt5ksJVD1jRiSR6s7PLhFKFBszfiBbDjFGiHW7x2COKwwK2rHJOkqCk8O/ndemA49u5tswobFpTwaw1saoAG9jgbi8gXJTWSfsiI14dPA9HRs+HZ
+ vYKxZ2BP
+ 5d8l/fKeSiGv9SsTXL2PxDv4rsbTeIXCE/RSySHzDIZ66Ol61X7z0l/LQYcBVMUI/WrgpwTmCAuJ8l6kjAJbVk02TWqT6Mffm1bpodb+eUaBkWGWbJvHxPVYUfDAAb4tkM9Vt0g31nPGfxgBA4pVWOLDaYTdI5Zz5Od09cYNP6KyrFdoRf/jXMgOeL7wloFh1hgEs5D4QS/UrNfn6X6FAvArXDwiziVQQNigkx+I7qRU4pxvSaztMFMzjLiXcYbKPqlbDAkRrqo+0f0Ait0ff83iqm5hCSapl2HzXo/g0OkS/AJ9XFskFsceDiPZ7LnrL22mPUIQw1rYRYSomqIr5xHw4/4ZM3W/eXqOv+ALmjgh3TUPJ+IWj4YPC9GlWLWUcn+Wa4Z8G0xUm21lvQ/2PNUDdPs7jCKeLCdxiNLf9jUI/1Cs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,252 +202,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 11/27/25 14:54, Matthew Wilcox wrote:
+> On Thu, Nov 27, 2025 at 10:27:32AM +0100, Jan Sokolowski wrote:
+>> A scenario was found where trying to add id in range 0,1
+>> would return an id of 2, which is outside the range and thus
+>> now what the user would expect.
+> 
+> Can you do a bit better with this bug report?  Under what circumstances
+> does this happen?  Preferably answer in the form of a test case for the
+> IDR test suite.  Here's my attempt to recreate your situation based on
+> what I read in that thread.  It doesn't show a problem, so clearly I got
+> something wrong.
 
-This is a note to let you know that I've just added the patch titled
+According to Jan the observation he has is that this code:
 
-    mm/mprotect: use long for page accountings and retval
+idr_init_base(&idr, 1);
+id = idr_alloc(&idr, dummy_ptr, 0, 1, GFP_KERNEL);
 
-to the 5.10-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+Gives him id=2 in return.
 
-The filename of the patch is:
-     mm-mprotect-use-long-for-page-accountings-and-retval.patch
-and it can be found in the queue-5.10 subdirectory.
+That clearly seems to be problematic considering that start=0 and end=1 should either give you id=0 or an error because idr->idr_base should be initialized to 1.
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+But I'm still not sure if Jan's observation is actually correct, cause I also don't see how that possible happen.
 
+Regards,
+Christian.
 
-From stable+bounces-196859-greg=kroah.com@vger.kernel.org Tue Nov 25 05:56:33 2025
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Tue, 25 Nov 2025 13:54:41 +0900
-Subject: mm/mprotect: use long for page accountings and retval
-To: stable@vger.kernel.org
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, hughd@google.com, jane.chu@oracle.com, jannh@google.com, kas@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, pfalcato@suse.de, ryan.roberts@arm.com, vbabka@suse.cz, ziy@nvidia.com, Peter Xu <peterx@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>, James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, Axel Rasmussen <axelrasmussen@google.com>, David Hildenbrand <david@redhat.com>, Muchun Song <songmuchun@bytedance.com>, Nadav Amit <nadav.amit@gmail.com>, Harry Yoo <harry.yoo@oracle.com>
-Message-ID: <20251125045442.1084815-2-harry.yoo@oracle.com>
+> To run the test suite, apply this patch, then
+> 
+> $ make -C tools/testing/radix-tree
+> $ ./tools/testing/radix-tree/idr-test
+> 
+> diff --git a/tools/testing/radix-tree/idr-test.c b/tools/testing/radix-tree/idr-test.c
+> index 2f830ff8396c..774c0c9c141f 100644
+> --- a/tools/testing/radix-tree/idr-test.c
+> +++ b/tools/testing/radix-tree/idr-test.c
+> @@ -57,6 +57,21 @@ void idr_alloc_test(void)
+>  	idr_destroy(&idr);
+>  }
+>  
+> +void idr_alloc2_test(void)
+> +{
+> +	int id;
+> +	DEFINE_IDR(idr);
+> +
+> +	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
+> +	printf("id = %d\n", id);
+> +	assert(id == 0);
+> +	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
+> +	printf("id = %d\n", id);
+> +	assert(id == -ENOSPC);
+> +
+> +	idr_destroy(&idr);
+> +}
+> +
+>  void idr_replace_test(void)
+>  {
+>  	DEFINE_IDR(idr);
+> @@ -409,6 +424,7 @@ void idr_checks(void)
+>  
+>  	idr_replace_test();
+>  	idr_alloc_test();
+> +	idr_alloc2_test();
+>  	idr_null_test();
+>  	idr_nowait_test();
+>  	idr_get_next_test(0);
 
-From: Peter Xu <peterx@redhat.com>
-
-commit a79390f5d6a78647fd70856bd42b22d994de0ba2 upstream.
-
-Switch to use type "long" for page accountings and retval across the whole
-procedure of change_protection().
-
-The change should have shrinked the possible maximum page number to be
-half comparing to previous (ULONG_MAX / 2), but it shouldn't overflow on
-any system either because the maximum possible pages touched by change
-protection should be ULONG_MAX / PAGE_SIZE.
-
-Two reasons to switch from "unsigned long" to "long":
-
-  1. It suites better on count_vm_numa_events(), whose 2nd parameter takes
-     a long type.
-
-  2. It paves way for returning negative (error) values in the future.
-
-Currently the only caller that consumes this retval is change_prot_numa(),
-where the unsigned long was converted to an int.  Since at it, touching up
-the numa code to also take a long, so it'll avoid any possible overflow
-too during the int-size convertion.
-
-Link: https://lkml.kernel.org/r/20230104225207.1066932-3-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
-Acked-by: James Houghton <jthoughton@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Nadav Amit <nadav.amit@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/linux/hugetlb.h |    4 ++--
- include/linux/mm.h      |    2 +-
- mm/hugetlb.c            |    4 ++--
- mm/mempolicy.c          |    2 +-
- mm/mprotect.c           |   34 +++++++++++++++++-----------------
- 5 files changed, 23 insertions(+), 23 deletions(-)
-
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -184,7 +184,7 @@ struct page *follow_huge_pgd(struct mm_s
- 
- int pmd_huge(pmd_t pmd);
- int pud_huge(pud_t pud);
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end, pgprot_t newprot);
- 
- bool is_hugetlb_entry_migration(pte_t pte);
-@@ -342,7 +342,7 @@ static inline void move_hugetlb_state(st
- {
- }
- 
--static inline unsigned long hugetlb_change_protection(
-+static inline long hugetlb_change_protection(
- 			struct vm_area_struct *vma, unsigned long address,
- 			unsigned long end, pgprot_t newprot)
- {
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1876,7 +1876,7 @@ extern unsigned long move_page_tables(st
- #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
- 					    MM_CP_UFFD_WP_RESOLVE)
- 
--extern unsigned long change_protection(struct vm_area_struct *vma, unsigned long start,
-+extern long change_protection(struct vm_area_struct *vma, unsigned long start,
- 			      unsigned long end, pgprot_t newprot,
- 			      unsigned long cp_flags);
- extern int mprotect_fixup(struct vm_area_struct *vma,
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5051,7 +5051,7 @@ same_page:
- #define flush_hugetlb_tlb_range(vma, addr, end)	flush_tlb_range(vma, addr, end)
- #endif
- 
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end, pgprot_t newprot)
- {
- 	struct mm_struct *mm = vma->vm_mm;
-@@ -5059,7 +5059,7 @@ unsigned long hugetlb_change_protection(
- 	pte_t *ptep;
- 	pte_t pte;
- 	struct hstate *h = hstate_vma(vma);
--	unsigned long pages = 0;
-+	long pages = 0;
- 	bool shared_pmd = false;
- 	struct mmu_notifier_range range;
- 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -653,7 +653,7 @@ unlock:
- unsigned long change_prot_numa(struct vm_area_struct *vma,
- 			unsigned long addr, unsigned long end)
- {
--	int nr_updated;
-+	long nr_updated;
- 
- 	nr_updated = change_protection(vma, addr, end, PAGE_NONE, MM_CP_PROT_NUMA);
- 	if (nr_updated)
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -35,13 +35,13 @@
- 
- #include "internal.h"
- 
--static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
-+static long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long addr, unsigned long end, pgprot_t newprot,
- 		unsigned long cp_flags)
- {
- 	pte_t *pte, oldpte;
- 	spinlock_t *ptl;
--	unsigned long pages = 0;
-+	long pages = 0;
- 	int target_node = NUMA_NO_NODE;
- 	bool dirty_accountable = cp_flags & MM_CP_DIRTY_ACCT;
- 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
-@@ -209,13 +209,13 @@ static inline int pmd_none_or_clear_bad_
- 	return 0;
- }
- 
--static inline unsigned long change_pmd_range(struct vm_area_struct *vma,
-+static inline long change_pmd_range(struct vm_area_struct *vma,
- 		pud_t *pud, unsigned long addr, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
- 	pmd_t *pmd;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 	unsigned long nr_huge_updates = 0;
- 	struct mmu_notifier_range range;
- 
-@@ -223,7 +223,7 @@ static inline unsigned long change_pmd_r
- 
- 	pmd = pmd_offset(pud, addr);
- 	do {
--		unsigned long this_pages;
-+		long this_pages;
- 
- 		next = pmd_addr_end(addr, end);
- 
-@@ -281,13 +281,13 @@ next:
- 	return pages;
- }
- 
--static inline unsigned long change_pud_range(struct vm_area_struct *vma,
--		p4d_t *p4d, unsigned long addr, unsigned long end,
--		pgprot_t newprot, unsigned long cp_flags)
-+static inline long change_pud_range(struct vm_area_struct *vma, p4d_t *p4d,
-+		unsigned long addr, unsigned long end, pgprot_t newprot,
-+		unsigned long cp_flags)
- {
- 	pud_t *pud;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	pud = pud_offset(p4d, addr);
- 	do {
-@@ -301,13 +301,13 @@ static inline unsigned long change_pud_r
- 	return pages;
- }
- 
--static inline unsigned long change_p4d_range(struct vm_area_struct *vma,
--		pgd_t *pgd, unsigned long addr, unsigned long end,
--		pgprot_t newprot, unsigned long cp_flags)
-+static inline long change_p4d_range(struct vm_area_struct *vma, pgd_t *pgd,
-+		unsigned long addr, unsigned long end, pgprot_t newprot,
-+		unsigned long cp_flags)
- {
- 	p4d_t *p4d;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	p4d = p4d_offset(pgd, addr);
- 	do {
-@@ -321,7 +321,7 @@ static inline unsigned long change_p4d_r
- 	return pages;
- }
- 
--static unsigned long change_protection_range(struct vm_area_struct *vma,
-+static long change_protection_range(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long end, pgprot_t newprot,
- 		unsigned long cp_flags)
- {
-@@ -329,7 +329,7 @@ static unsigned long change_protection_r
- 	pgd_t *pgd;
- 	unsigned long next;
- 	unsigned long start = addr;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	BUG_ON(addr >= end);
- 	pgd = pgd_offset(mm, addr);
-@@ -351,11 +351,11 @@ static unsigned long change_protection_r
- 	return pages;
- }
- 
--unsigned long change_protection(struct vm_area_struct *vma, unsigned long start,
-+long change_protection(struct vm_area_struct *vma, unsigned long start,
- 		       unsigned long end, pgprot_t newprot,
- 		       unsigned long cp_flags)
- {
--	unsigned long pages;
-+	long pages;
- 
- 	BUG_ON((cp_flags & MM_CP_UFFD_WP_ALL) == MM_CP_UFFD_WP_ALL);
- 
-
-
-Patches currently in stable-queue which might be from harry.yoo@oracle.com are
-
-queue-5.10/mm-mprotect-delete-pmd_none_or_clear_bad_unless_trans_huge.patch
-queue-5.10/mm-mprotect-use-long-for-page-accountings-and-retval.patch
 
