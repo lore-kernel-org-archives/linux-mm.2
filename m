@@ -4,101 +4,208 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28A7FCFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 17:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60DE6D111A8
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 17:53:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 806E76B00A4; Thu, 27 Nov 2025 12:47:50 -0500 (EST)
+	id A34FF6B00A6; Thu, 27 Nov 2025 12:53:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DEA76B00A5; Thu, 27 Nov 2025 12:47:50 -0500 (EST)
+	id 9E5B86B00A7; Thu, 27 Nov 2025 12:53:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71C166B00A6; Thu, 27 Nov 2025 12:47:50 -0500 (EST)
+	id 886E36B00A8; Thu, 27 Nov 2025 12:53:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61B3C6B00A4
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:47:50 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 377411A0269
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:47:50 +0000 (UTC)
-X-FDA: 84157119900.10.D324EEE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7EFA2C000B
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:47:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iEQQhc+t;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 75BD26B00A6
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 12:53:27 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F341139D88
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:53:27 +0000 (UTC)
+X-FDA: 84157134054.03.4CD2632
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A235E4000D
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 17:53:24 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AQ5DC0bS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=01W7Ha6Z;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AQ5DC0bS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=01W7Ha6Z;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764265668;
+	s=arc-20220608; t=1764266005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x9G5ZlW0/cGN3971UvKKz/UaFZ3iUO/gAgERGRLzt0w=;
-	b=v7Iy8ojvWokej3cahhX/vSrCu7K8mnqLTmqmVI5vnD1C+bR/0nzrcmz3hhrtzeiWww0EeO
-	Zj4Ix1cY9h+grCXLUbpARUHOUw98IO/0hX6qQQL5kBUj84Z/BG6hIiVOoquf4mnn9g5Nja
-	hL3q+xlSIiIvmDJkX4OymQqNBxVclYw=
+	bh=I2bxBx6skjNN8aQa0tymzrXdTrQlYavUe3kOLFFhVPE=;
+	b=wkkZAu5EmoJ47stVJNwGgLc+F9T3i08QFilkcfSbfBsK/9geHnD/6aPgw80mE938X5C1dL
+	e9p5y+fUNcWTXMn/R3FWukJnsmcHdPSlnCfTNg+uKilFDCbqhWQYxiifaKplPfZk+jh5DK
+	+8O6LrDhKSGa3zWVDMzLnjaYYD8SzB0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iEQQhc+t;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764265668; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AQ5DC0bS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=01W7Ha6Z;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AQ5DC0bS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=01W7Ha6Z;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764266005; a=rsa-sha256;
 	cv=none;
-	b=vdhaDC8SsPFsIYk3nv3aZAJpuMUL5PrSipMXl7z2uTgDedYWcg/5yWc5WUY1We172TElCH
-	kbGDFlgydRYaIcFR/ZgIvgz0K2ayLgBdET33uSEzndh7Uf+YaYifct9UxvQF5zKGvvD4fc
-	h9q1AsKllzegnGq98ozOP6ndAkaevX4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD99F60242;
-	Thu, 27 Nov 2025 17:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BA4C4CEF8;
-	Thu, 27 Nov 2025 17:47:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764265667;
-	bh=Mlj7IZZ9H7pQFN5atJKwwNiI0cnR56p2vYQ4LsbFBWg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iEQQhc+ttHIHJkNB4yomtmyZLO6gdTFX5PHlESo0TWPWQL5MlnAywIoAm1AvBiW/5
-	 nrB+DeAsOtyZPTc/P2z5EmWv6f4s9q9xTRzwyPn5V/xzzWFwxMzlrHThBl8AUy8ICg
-	 9ZrBpeodUN5Q6lvikvYgjXz3KzIHK3eoiv8A6LXSMSl7HWJqvzOkTJQB7M60mpnosl
-	 DYWSlcTeWY/75NXidb/E0FWSvZ/AsC6BhYZBodRJJi9JU+NWOQl5appR4AQ3DePDII
-	 EI4DFC0FWXGhMp6Jhe07jPc/d9LGLcY1XSCmbC9JIngzm2WjeHo45t7mTu4YBHJbcs
-	 MyQiKQ7x3LlsQ==
-Message-ID: <c2597d43-d909-4259-bb5b-9294e4069385@kernel.org>
-Date: Thu, 27 Nov 2025 18:47:38 +0100
+	b=xookPd5GfPjEKmRcWDrq9Pn7VVD1KjU3BB5nzesuGb3MnBCBXlqI8zQNaEtvU+TjrvG2dL
+	tKlRZ2fapqi9ZjtSnAbZ6/zsxsGfAaSGhUMecZVyK2fsaFh3RL440KU7DqagINYIJIiXX4
+	4JQnr0E4cSX7DzLlDDgYkNyzkPwrqt0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B32CA33682;
+	Thu, 27 Nov 2025 17:53:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764266002; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2bxBx6skjNN8aQa0tymzrXdTrQlYavUe3kOLFFhVPE=;
+	b=AQ5DC0bS0XgyDufyx+PVfcG2PLQl+2mkmvEFga6us7YBx3Ye8x6nZoTwiiUy3Df2H0tOvl
+	SQ0kZ1m63BXX4udtthNhhw7uOu7jMJB8wmqNqgGznt2J2EQmknHEFa+ek9grnz5yLnVsOa
+	7np1D08fHTUb8BW6nLMqw/y5PJupkCg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764266002;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2bxBx6skjNN8aQa0tymzrXdTrQlYavUe3kOLFFhVPE=;
+	b=01W7Ha6Z3q7kvqGz8qs050H6fFlJr9ncC8y1BBnU6xECt3uODNUA8MfBts4Ki93CRotYdP
+	U6rJ3Qs2LVp0kEBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764266002; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2bxBx6skjNN8aQa0tymzrXdTrQlYavUe3kOLFFhVPE=;
+	b=AQ5DC0bS0XgyDufyx+PVfcG2PLQl+2mkmvEFga6us7YBx3Ye8x6nZoTwiiUy3Df2H0tOvl
+	SQ0kZ1m63BXX4udtthNhhw7uOu7jMJB8wmqNqgGznt2J2EQmknHEFa+ek9grnz5yLnVsOa
+	7np1D08fHTUb8BW6nLMqw/y5PJupkCg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764266002;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=I2bxBx6skjNN8aQa0tymzrXdTrQlYavUe3kOLFFhVPE=;
+	b=01W7Ha6Z3q7kvqGz8qs050H6fFlJr9ncC8y1BBnU6xECt3uODNUA8MfBts4Ki93CRotYdP
+	U6rJ3Qs2LVp0kEBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 39FE43EA63;
+	Thu, 27 Nov 2025 17:53:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id tmbODRKQKGlcVAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 27 Nov 2025 17:53:22 +0000
+Message-ID: <f2385065-cdd4-4e87-872a-b5e83014e590@suse.cz>
+Date: Thu, 27 Nov 2025 18:53:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/22] mm: Allow page table accessors to be
- non-idempotent
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org
-Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-9-samuel.holland@sifive.com>
- <fbfef7fc-4030-462b-b514-498eea6620aa@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH v3 16/16] mm: replace remaining pte_to_swp_entry() with
+ softleaf_from_pte()
 Content-Language: en-US
-In-Reply-To: <fbfef7fc-4030-462b-b514-498eea6620aa@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+ SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
+References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+ <d8ee5ccefe4c42d7c4fe1a2e46f285ac40421cd3.1762812360.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <d8ee5ccefe4c42d7c4fe1a2e46f285ac40421cd3.1762812360.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7EFA2C000B
-X-Stat-Signature: q7uon7sbaak6cpbuur59tbkywfithwzk
+X-Rspamd-Queue-Id: A235E4000D
+X-Stat-Signature: oa7h64jfirm57xuef9byp7s6ky5dimxa
 X-Rspam-User: 
-X-HE-Tag: 1764265668-938150
-X-HE-Meta: U2FsdGVkX1/0UC0/WkeKRyfzJTF1s/BXAYZp77PS291HH+SVYMLaXscQKRjYZSNVZSPfdBoneNi8XfN0ZOHEPKf673+sEU5uzMBVLFn3ZUImAbJ0/SIhr2o2bSIGELpDPJi2X5X2Q1r1899UvezzUMvaaApTAfkl/fKud+pMbmqDfuI7SCFkH1zyGF9cN4yyIgVtiubceb9yYyGPjiktztdIIUIqgqSIUEEP/WvTg2bQ058+ubWuoPGdBi354wv06/ohJS6RUILvJ9Hq4wmYSlH4I03tZEtWTanuIWcbqaR8vaxIug4VYwUavqIPyRMcNulepq8T0tGCcNewlP4d1SjOOxfTP8slLpty8brF4GOQjC6yD5TsPTmqHLfJQfIi1CcuJ59JHTrOO6mcoMZcInjN+NpERzM69NpEyPxTMMM0AHjeUTc+fTlNhKg3I1U8lPN8pHLdyIly9qX2y/CXXfTmWSmcqJdIbY35IBJzHeZ8ihQOtwxH/wSg42WUNmRdYNz6AU7kRo+gaVzkeO8mZNY3PY0jgyGOtcAyLQKPh85jNo4yIxLkoH+G+DDXJPMbgat9ueyLON+4afSRZ9XhptLmUvwWbNGgTnuhNGHq4vh3r7Y1vTqkQRGOzKB3UNsylQF/vHZEWxv3o9i+5Sktn9DLHMd/0CR5AL8nr3D7Yb82sw1GmPzLu9JzZ8sa98ZEuqajv8RNQ3JMscbx2zjzbltCDB0nvC6lQco3A8lE5E3CWJS3K9Cw2IKbMsW309+ypxlwEziiJXufp63wwfneHph/4re9y9RVDtX8BavqyPfft0R71kVALwJz9mZUyWVDeiW/ANi/pRehkEdj+TkD0c4CYtoyB1rkJtMTJf6mu9m/hSKAsR32SsxK7NwoFmctBWEjr7RIGb8sbOuhJNnIJ1N442dL7SeuAfaOdnLnc8gdcAXD+x0t+vqYmZXpxvwnN1mwPRicj0MU4+PbvUk
- lI2+Ch76
- V0X1HkCmuYwZTSte28KRH2ngEgjXgPg1tYc5Z+pVho5TLpW5RzzJk+eHjY6RXexUPPIoHHqedGO8GMlsEPSvNVvaACJItz8QKqrLbqVeV8oc1IUHd1UJmuq8m7DpRa9Pr2kBD7PiucXblV84fZVCZ4NalB0nnCtFKm3DVEa6MQhXMXdFHNdGXv7OvRqQGushGgykAqWmdeH+qY4ffJKdoSWWtL3PM6sK8sVR4+kLFeeSxci4bz7XLrSV8oFMrIYNRpkRvtTMqSgRrB3yZeThw8mIHVPtm8KcE5UmXp1c2zdL+QW0M5x75Hk1vcyvB+2PLWaWOEozvKS6931q/8cbDPzh6jY13Fc2QPmEs
+X-HE-Tag: 1764266004-848104
+X-HE-Meta: U2FsdGVkX1/gNvhpYVRyuH+lUwx+yebKJI24ZJVHARylvLD/X0NhAkTxlWZ/S7DzxxOem2xf+cwV0wgfchrYTdKgdJmZAFVD2YaP2DRmZ+g9kdSw6EgQ3mKqMkRTPAy+87rNmi+bdeXW7hLbzXmXyoDA+J2vn9zilLdE4udttr6FtxbdvYeV8zckSBwEKLhvceMAbsXHeu0tkQ8JuR7ksgTP11qD9lC3aTLv2lBcb1ISU43W6Wx2jMRkGrvF88Moe6q05OAAbhYZOR82yCp99Ha953c2MdjKTuOQWol1gkB+4Q6rl7HQ6HGOnmGskhQ6EE07OIhoIcce4Caf3efVpebfPj66Tw52RP185ThJbCSFMujY+k+zSdrVu5t7avpHue2XKpJV+qm71Q6sA96O2LnLzcOoxcWzMlJgoOBMOl6oU+YFSYi1hD2ZGH/cvw/v676FNjq1gC0eIiAW8q0qMLR+ALoTSPzmjqaGfcSqcAs9Pl4QmdiNDxD9tHA8tb4O8Mw67GFjrQhj8dafKP+1QV/U+0C4KfduaYbdQ0fPPTmlFotSsgw1awW+onZ/FeItFFcpOJVsBo6O1Sz1Ttnv365SuF++XqywF6Sr/jE9oTMJHi5EtqDdi5+Y8jKMDUQ0O15/VNtpoaADsTFj2jV+tbf8jBRgmB4yGH/NQO0IT5Ay0DTLtSGhHbt913FAac90iPCNE4Puqyg95/g3F4BND5J4b8F872lPY5BHJrBA2Hb1S1K8yR0BBNSSTxy4xDSg3tQzoLekRFJYaEwAULJVfiEJNAEkSvmku/qCn2Dtxrr2RjWfI+qEd1PYn0AK/UjY4t2XSkuZgFMYMp/xO3QqMp+ytTBdDR/yypU6yVdFvtmSY9PaFnooN+NoJ2r4AdlFSfHx29OOZsfw0w9LbDkrE1tb/oaqdOkMxpGnNHXcKYQBu+s3lzT2U3EjV0+9hK7uiwuKOlbcoJR7el3XPSo
+ nzwQNlWT
+ ChRoyY06FsNr0rwAqjqWm/Zsp+XrOhEkpM/h0SPbPDfhTZIWqApYOqdYxIfASFGeTDAEBm0b7wkVxSAiY0obDixDtRiAT983Muti80+fqYEFPV3j0ltiiGY/rwm1ZVysY8pCoUsMa6hgQA0NEJXtG1Fc0o5+neUqh2C0iM309Fm/O2mnNo2yomlJ7e0QkhMVtP71a59rYQAOHxB9LQQddFvKhW/PrMlOMLsVuxmMil8wEhmFyp8HAVsAL+4nT8JHyd34xRtdELX8FN7TyNLZBdY50o3PbgUCeUD/YbQHCPa0ESnr6oTlJTvLuxHZ7YpqWMmr51etAeodkdVyqOdwAeNOSawzu7UqJyYmKWTMqOG52MYyBbZzgs93Opk+fgYqE1/jtFym+/zpnQ6qTdnVvHjmJ2pQIRb4EnjrJlHRI849yWf4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,29 +214,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/27/25 17:57, Ryan Roberts wrote:
-> On 13/11/2025 01:45, Samuel Holland wrote:
->> Currently, some functions such as pte_offset_map() are passed both
->> pointers to hardware page tables, and pointers to previously-read PMD
->> entries on the stack. To ensure correctness in the first case, these
->> functions must use the page table accessor function (pmdp_get()) to
->> dereference the supplied pointer. However, this means pmdp_get() is
->> called twice in the second case. This double call must be avoided if
->> pmdp_get() applies some non-idempotent transformation to the value.
->>
->> Avoid the double transformation by calling set_pmd() on the stack
->> variables where necessary to keep set_pmd()/pmdp_get() calls balanced.
+On 11/10/25 23:21, Lorenzo Stoakes wrote:
+> There are straggler invocations of pte_to_swp_entry() lying around, replace
+> all of these with the software leaf entry equivalent - softleaf_from_pte().
 > 
-> I don't think this is a good solution.
+> With those removed, eliminate pte_to_swp_entry() altogether.
 
-Agreed,
+RIP.
 
-	set_pmd(&pmd, pmd);
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-is rather horrible.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
--- 
-Cheers
+Impressive work, I hope it can be promoted to mm-stable now. It would be a
+pain not to have it merged in the 6.19 merge window. Still plenty of time to
+fix up any hypothetical bugs not found until now during the rc's - overall
+it looks solid.
 
-David
+Thanks!
+Vlastimil
 
