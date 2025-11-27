@@ -4,130 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFBD7D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 11:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C04ED11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 11:21:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5016B0010; Thu, 27 Nov 2025 06:20:05 -0500 (EST)
+	id AC2706B0012; Thu, 27 Nov 2025 06:21:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47CA26B002D; Thu, 27 Nov 2025 06:20:05 -0500 (EST)
+	id A99ED6B0022; Thu, 27 Nov 2025 06:21:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BA0D6B002E; Thu, 27 Nov 2025 06:20:05 -0500 (EST)
+	id 9D6EE6B002F; Thu, 27 Nov 2025 06:21:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 292106B002D
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:20:05 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D22E3131D12
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:20:04 +0000 (UTC)
-X-FDA: 84156142728.23.050DC45
-Received: from fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.132.221])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5EC0D20008
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:20:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hkCri3Jb;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf03.hostedemail.com: domain of "prvs=419c917ea=kalyazin@amazon.co.uk" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=419c917ea=kalyazin@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764242402; a=rsa-sha256;
-	cv=none;
-	b=mZbTo7yUeT8c9V1nskpkGLmrcKdsBlD6HNIgi2mgB3EQcYtNeA79TpWhvb0r0XEmzYNAEw
-	o5C/am3svwpoqKy7YPyP5NzePw1XJ7Fd+jWnvIvgkXKcJxP6k7Q0fA4qpiv6/dpECWKnPE
-	xbXREZ40Bw434L9BILdG02nzNc/4DM0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hkCri3Jb;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf03.hostedemail.com: domain of "prvs=419c917ea=kalyazin@amazon.co.uk" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=419c917ea=kalyazin@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D1856B0012
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:21:18 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 566765BD95
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:21:18 +0000 (UTC)
+X-FDA: 84156145836.05.A426AE9
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2F102A0003
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:21:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kzAHUMF2;
+	spf=pass (imf15.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764242402;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764242476;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+H64Ah6mYGxHQfE73KQcSigtJh1K4kxYLJX7clH3BEI=;
-	b=y5f12Jo2zFHdfZFAWE30Hm7hwnItGX19tmLkvu6i6P8x2tOw3kGxEIagRw5bY1LIFQHzmU
-	L025RDC2MRokuQWrihn9sesyBkXjYBsZb7RTGgK9Hf6LZHSLwr8sXOKgFY9nDzW21n4c4N
-	X3xQO/gyh53PsMT8jMXpcfYGEUvun4A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1764242402; x=1795778402;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=+H64Ah6mYGxHQfE73KQcSigtJh1K4kxYLJX7clH3BEI=;
-  b=hkCri3JbBZERMy19EgzrL3VImDKHTLjdX2UgmT1RRPVjpZqPVpYpYf5W
-   EnvUV8iN04e8olJeDjx6R4qZqo3UIJEvkGuLSMLpVvd6vP6kEzJSGW037
-   s9CHIFyHWbWC2mFzxO8325dyjKFwDKKUFAOh3qWA3D83H6gRdaYOqil+T
-   8wZTYW0MmgOPSThrVYij2cKIKFjc4NTfZSw7fjIbwCN7voBcXxHOScgkX
-   fe8LLNxLrEcIo96CtfT/D4gyv+2cRLrZS0kVDeK2AhsmMKdOiTy+8Pf2w
-   nPaTDqdWO9lHldioPwO2TdtdCiKuuCrEjHDA/0oMoXWv6CPIrx7+VHL/G
-   A==;
-X-CSE-ConnectionGUID: D+oseAjuS/CfvMD+9yRiZQ==
-X-CSE-MsgGUID: 2qf8pyqtR5OsfOhqRXaxyg==
-X-IronPort-AV: E=Sophos;i="6.20,231,1758585600"; 
-   d="scan'208";a="5780819"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 11:19:44 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.224:29782]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.46.211:2525] with esmtp (Farcaster)
- id 162dbd5c-9963-4950-b318-3a7250b738d9; Thu, 27 Nov 2025 11:19:44 +0000 (UTC)
-X-Farcaster-Flow-ID: 162dbd5c-9963-4950-b318-3a7250b738d9
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Thu, 27 Nov 2025 11:19:37 +0000
-Received: from [192.168.18.64] (10.106.82.32) by EX19D005EUB003.ant.amazon.com
- (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Thu, 27 Nov 2025
- 11:19:36 +0000
-Message-ID: <13d3a7a4-5cf8-4fbe-8dba-d565525a71c6@amazon.com>
-Date: Thu, 27 Nov 2025 11:19:35 +0000
+	bh=DodGNQ4J3R60otr7WXzwptpN2trZwaXPd+16aznDXKU=;
+	b=QHOv1UP1HCuJyrLQpcm0/SDKWVqcJ1BpmD4FQExkWVdwkFUAdG2c90UHqqTPRcfRMedxwI
+	dHDWsoPRwKxUx9pBvVAra/XoTpcIL6EzzX6lOKIGFT7gmh2xei9u1YGnXXP4q0h3Kc4SnI
+	MEHPZf8J6m2gxfB0Y9WicHuNiCUIZFo=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kzAHUMF2;
+	spf=pass (imf15.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764242476; a=rsa-sha256;
+	cv=none;
+	b=MQQ/L5YGVg8VsO9eLi84z9FoK9+5ccVQLb07z8md+8MTdaovqPYMbTA60W+1YbBaSU32K1
+	ChlkU5/LWvEqYkymLbcuC6IA7WY31q5/DP9tW5/51TnaU3adq7PePpTrfK3XCOmO8/8faP
+	ovQ/wmCDCoxjz/y8gNqDGFnNEtRDA9s=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=DodGNQ4J3R60otr7WXzwptpN2trZwaXPd+16aznDXKU=;
+	b=kzAHUMF2dUX/75F2x8k4f67X3bwt94v+LeKbd6y1I+Pfnt/W9chF7FpLBH1NgTjP/L/NGfo8n
+	xvIQ0+PuPafeVGbUpzBFi9IJnhCxY1y3YnVnFQlCNNtgM7nYb04k1porCfASxHwGKtjxPIckwVs
+	1urT6Cq6FxhqN1lH2J74Qto=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4dHDTl6J2qz1K96R;
+	Thu, 27 Nov 2025 19:19:23 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id CD7A614011F;
+	Thu, 27 Nov 2025 19:21:10 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 27 Nov 2025 19:21:09 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <bigeasy@linutronix.de>, <viro@zeniv.linux.org.uk>,
+	<linux@armlinux.org.uk>, <will@kernel.org>, <david.laight@runbox.com>,
+	<rmk+kernel@armlinux.org.uk>
+CC: <brauner@kernel.org>, <jack@suse.cz>, <nico@fluxnic.net>,
+	<akpm@linux-foundation.org>, <hch@lst.de>, <jack@suse.com>,
+	<wozizhi@huaweicloud.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mm@kvack.org>, <catalin.marinas@arm.com>, <rppt@kernel.org>,
+	<vbabka@suse.cz>, <pfalcato@suse.de>, <lorenzo.stoakes@oracle.com>,
+	<kuninori.morimoto.gx@renesas.com>, <tony@atomide.com>, <arnd@arndb.de>,
+	<punitagrawal@gmail.com>, <rjw@rjwysocki.net>, <marc.zyngier@arm.com>,
+	<lilinjie8@huawei.com>, <liaohua4@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<pangliyuan1@huawei.com>, Xie Yuanbin <xieyuanbin1@huawei.com>
+Subject: Re: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad() with rcu read lock held
+Date: Thu, 27 Nov 2025 19:20:35 +0800
+Message-ID: <20251127112035.129014-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251127072057.EbvhUyG4@linutronix.de>
+References: <20251127072057.EbvhUyG4@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v2 4/5] guest_memfd: add support for userfaultfd minor
- mode
-To: Mike Rapoport <rppt@kernel.org>
-CC: <linux-mm@kvack.org>, Andrea Arcangeli <aarcange@redhat.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, Axel Rasmussen
-	<axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, "James
- Houghton" <jthoughton@google.com>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu
-	<peterx@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan
-	<shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
-	<vbabka@suse.cz>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20251125183840.2368510-1-rppt@kernel.org>
- <20251125183840.2368510-5-rppt@kernel.org>
- <bafb0c9e-9ce6-4294-b1d6-e32c41635add@amazon.com>
- <aSgpo1_ZSmxf84-p@kernel.org>
-Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-Autocrypt: addr=kalyazin@amazon.com; keydata=
- xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
- JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
- BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
- IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
- CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
- ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
- ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
- i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <aSgpo1_ZSmxf84-p@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.106.82.32]
-X-ClientProxiedBy: EX19D010EUC004.ant.amazon.com (10.252.51.178) To
- EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5EC0D20008
-X-Stat-Signature: xe3qsti4fdi6g4e5t9gqmytdoyqxfhbs
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Queue-Id: 2F102A0003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: k7j16jp1gbfhgqxysj8fpfqbnwwh3x7f
 X-Rspam-User: 
-X-HE-Tag: 1764242402-353972
-X-HE-Meta: U2FsdGVkX1+5tGn2DVHY/u7UDcFfbYn4MyNk7BArQdJb0SMGxDUCAnAgjY3XvwcNtYr3/2ePSljbraVseTiF5310aOut4pSyc2uw25rS4VCWAxTDa6kOeq+3keJm6Yb1zKNZBpl0D1ujYHnBmVwH7/Br108aia3lRgNOAsrulebMjDssKwSP2/Y2ToU0FP4UeYXVeGfUomayE9njZaxVW8odHUqoDYfSVDEPg2Jx5QqSQ9nrb/7d3w3tPUVm1Ef1jepdEuW4s5LySNYedtzSa8XHqf+oA8XNlB1V0rw9zUe9moiVo2kvGerj+mnYqbKhEleTZ7XnT/rnv+iw85/5QEDgAtljDPuEIIJ0EO5tem26Lmp+zlKrYkMRCfQbk9fGk3vuyo0As4cPn/CW/wYeTmCdP2XbEWRPoemL3QTIdEjbOQa2Y9CRTHwDDG04OafbDPd+Q+9MSAn8HJHuHGdVYr5kx7ZjxrmsB3N7nx50cxKs+i4yNDcZICtxyDfQcwUU0s9eY/SdKSAiSIroYHsUs0BwnF2ZR7uboNEnTQKJ0sYGBik9kmJCwv7mbUhfhmmtQDajk/GegsJEKW2kLbKxIt3fIgD0KwnD0owqetZUEu7x6mbwB3Wd20uIyrBeNhtEFWbhpPdxxNsqbhRaWkeEIdzoGT7uv8uJ5zE3lqQkrtfhi0JQMWBYyCfBPavq4ZsEFgcO/VUhThOh4+f1b23R5Cdc9NG3vTpwoYmKh1EaHQ8sUs/vvbjptBLyr+bW1tasXE4m/5Wqzx1cHEgI+Ep7fi8ukJrbidcC44AT1Br/cJ9N2fQY7lIg2eiVNSMvcZDIb2QNQ1335UeZG/DfcEfBqRggtYY6VBphFVrNgPb8roEQ+VxtfP17gzLWBqkC4SGwYOOUCJJQdDpX0dFvhTzz4i9KriH/2sZ3oeUmACwRG+990YuMSR0rGG1Aovuu9ohLV/rysGDpu4GI6I5SicN
- 2hiOQDdy
- jfpo24cYv3svZ4dnO4AqhRh9Xr2El0WjZeeEWkWtE7x5BhBWs47OqGAmez0VE08lo2TUf6n08CL5L6j3D/WeoBicCQDD93i4/cAQrfLNaVUSEc/wHrYTuuDnfy+vWtNCY1rRmQbfTyDvYqux8oI/Wc1ihOBrQ1Pk9TPCsc7izulA5npdOay4kc3uGc3mnHCvc2yKarVyOF7X22aUC0Y/BM75LKI8wnfQxj9Rm0aidjAx70Dg7qlmTEQfwN5+0oIU7no3RoOyWPMs8Vd33bZjOgXoJRjN0V280ucyASM00qmsX3uce4jwB2WRz0iNYa+MirNGavWEI/avujHEFE/27B1hYASvO5eWBETY1fGtdck/st9S3SrYhHdJd2PAaG5Wd15qY14nfS+HYKUcKaZrSO5+2QiQtrQnT5PdxGYPpzsdHxcPluTLMEmnej+D67SAVjulHCwV3pqfrdLy6gUFHOjr5mqXc6tP4bmTyMO7JchEIP4MezadnZ1rPjiOPCu4dL1WakZibtSMnXus4QZ1QD265R0QXuVXkDdEo4NMRZc133+ioviNw2GC6OvYv1/ST7EEreppfMUwLhs3Gf1TRPLRKhOlACGZzPRn2QZp3RWsidiN+UvX5cWdO9ZZ8uuRIoudT5jrDIzpzUnp8qwIh7aaJcYc0eNd3Xd4zvALAG9L5rSpM9/EXcBBS5lGlUKUjHk5wVK4bNpsA6VhT0RY4jtFBVonj0oHtCSDjp3/BBhS+EHwRedDIUzp6fkoA0P6W3WRvlgpuyFDapecjhRjlOc93wpUazEO2xrailooUr9fdinm+ZVlxQY394Bz18262DCOZawY7Zf7D81n6RDp0ZqjJFN4Dr+gYJdHH7CnAO6Zt98ftAfzF1VyvmbFtGKbbbroletnTfki0M+q9iwf+90J0hpV5WSIWPGPyb3EIdKoloPsSEbHJf48MbTsBlBMT2Svl3AYH20xSk4o=
+X-HE-Tag: 1764242474-976487
+X-HE-Meta: U2FsdGVkX1/BrMPtSN5HVBugdiqmDPlVCg9hsM3P2AX+PI0Gqzkyo4oe22Nl0sQ90uNVHjXhS534K6B8H21kHW9XWQCrYznzgEBsn6ssWWIoZzHI8amg0KF+xwwXweXSbaf02G48RLxgTHkCn7EvtLfw7o0AgzzcHNpTc+oNMcjypI1unr/zLmgkHCzFcWgp9JeC6PPuctrHiJY30+1DREMlwWtj07PzeAoQHYEOhnpwxZL4JsHLCcZnAXml65YQiMqmAopTd0gPaIXL56JYfkCRl+N7CGvqnNlaySDtwVvD/Ns90qMo1mO10RztSQ4ZIsGYpjZkNco3/utXe31MzFoKZ8FkcqQgPyvbQ5phpPJis7GRmFgpYMfd8aHF1Ko8fdeD4jXGXwNnMUbkXKjUforRnmqc9Dp9VlNIOmaaffN2s2y7HQmlrQmbjh3/SsIxqvxHcheg1PRXnMXvKh0kxgS+GPlgqVfNdiGo7gzvyJhGDDeedBcSP9TVqRonJsVVmgLt42BGDVZcidHmIXIJpNH7sA4k6Au0WrkVUNEG20mSPPB0paVCSYS3IzGknSVSNsdhhKhqEMc99wGE0WejmYIu88o6ZC8a4jqPPcdT6p2bMixN3VsEmtzE6Ehc+hVgF2rrBLGzsSCgX7hru2N6RgBxnSGphUzA7+whWwva06axaQHA6Z/NcALQ2z1mjHGdj76UrR1H3m5Q9XkWpRBq3/MYHdpLlFRBwtqoUq8yCP/axP9lcisBj7gn7V925hVCuyDA7aL0kOqvOnd1N4h2LrNUbwViiy1bOttMsStxONvUSMGiPfVkGzmaGY4uHeLNPSCIcOzhuxxBR4Id4qMxm9OdDX3r0MdNJfGMWYmTX2GwufUL8PsFgxiSA51/0LTGeMPfLURajjQUYe7nqP2Z6GCqvA56q/GdLNEghAsxMtAmpkZzqlBmKjM2tou7thksXTBajCKSZZ8A6N9xKzs
+ 6hoFoEdM
+ ezOdhWvNpf1MqxBWPbBKC2GBsF0WSqwIIwrSzAxUKmXrteXFN+oYjAojt9tLj0IpJVKSxyqczDE62Sat1W1QMqv5OKqOzA8/9+pJsKUQ9ll/DadJ74Ys5rB5efcFg+ikkc7qZqnxdYHFKlRaLMBQ0jP/MlkQNczNqXh8Ei5ZwdP/m70o9DejZvd0lvIFA4XVVZDRlUf5nr5nNHxJXSqYlqyZ5RmqmpR5MXs8MBc81ojzHF9cC1f0h2Md6EhVvQBDOmNXCXdPLqeHOdWtp47Bl4/BdMMdbMN77MUFAGT+U48TxDTNRSFhTj7NcAOwCtBxpnwTE2TcdxL89k7KpAaKdFjOAIwHHU3VypMWyPz3WCksXcujUsQy6C+5xUW3y/IT4koBCB8w/0Y2NGugeNm+vuPhsBxm2l4C0AWdfOzkzsnzMRbLa4BwwIuJ049YxruwY64Uvk/X4tgr+QzkYL9guq8zx2jdcBmK66hyrrojym3olhu25Io/i+nh2Cm9tEWC47Bc2f74iPMb2cGE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,33 +108,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On, Thu, 27 Nov 2025 08:20:57 +0100, Sebastian Andrzej Siewior wrote:
+> This all should be covered by the series here
+> 	https://lore.kernel.org/all/20251110145555.2555055-1-bigeasy@linutronix.de/
 
+Yes, I know it.
 
-On 27/11/2025 10:36, Mike Rapoport wrote:
-> On Wed, Nov 26, 2025 at 04:49:31PM +0000, Nikita Kalyazin wrote:
->> On 25/11/2025 18:38, Mike Rapoport wrote:
->>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->>>
->>> +#ifdef CONFIG_USERFAULTFD
->>> +static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t pgoff)
->>
->> We have to name it differently, otherwise it clashes with the existing one
->> in this file.
-> 
-> It's all David's fault! ;-P
-> How about kvm_gmem_get_prepared_folio() ?
+> or do I miss something.
 
-I'm afraid it may not be ideal due to preparedness tracking being 
-removed from guest_memfd at some point [1].  Would it be too bad to add 
-an indication to userfaultfd in the name somehow given that it's already 
-guarded by the config?
+We had some discussions about this bug:
+Link: https://lore.kernel.org/lkml/20251126090505.3057219-1-wozizhi@huaweicloud.com/
 
-[1] 
-https://lore.kernel.org/linux-coco/20251113230759.1562024-1-michael.roth@amd.com
+The discussions:
+Link: https://lore.kernel.org/CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com
+Link: https://lore.kernel.org/20251126192640.GD3538@ZenIV
+Link: https://lore.kernel.org/aSeNtFxD1WRjFaiR@shell.armlinux.org.uk
 
-> 
-> --
-> Sincerely yours,
-> Mike.
+According to the discussion, in do_page_fault(), when addr >= TASK_SIZE,
+we should not try to acquire the mm read lock or find vma. Instead, we
+should directly call __do_kernel_fault() or __do_user_fault(). Your
+submission just moved harden_branch_predictor() forward. I think we can
+have more discussions about the patches to fix the missing spectre.
 
+I am trying to write a new patch, I hope it will better handle these two
+bugs and be compatible with PREEMPT_RT scenarios.
+
+> Sebastian
+
+Thanks!
+
+Xie Yuanbin
 
