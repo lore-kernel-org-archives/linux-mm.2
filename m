@@ -4,90 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC11CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B14CCD116E2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:59:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA6686B009E; Thu, 27 Nov 2025 09:55:29 -0500 (EST)
+	id 1AB846B0098; Thu, 27 Nov 2025 09:59:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2E666B009F; Thu, 27 Nov 2025 09:55:29 -0500 (EST)
+	id 1351E6B009E; Thu, 27 Nov 2025 09:59:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96B716B00A2; Thu, 27 Nov 2025 09:55:29 -0500 (EST)
+	id 023EE6B00A4; Thu, 27 Nov 2025 09:58:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B57B6B009E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:55:29 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4665B850F4
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:55:29 +0000 (UTC)
-X-FDA: 84156685578.27.88207C8
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EF1B9100002
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:55:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J7WljQI6;
-	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DF31D6B0098
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:58:59 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A38611401AB
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:58:59 +0000 (UTC)
+X-FDA: 84156694398.12.AD81A1F
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 04E4F18000B
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:58:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CBe+UyHI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of katrinawbaldwin@gmail.com designates 209.85.217.52 as permitted sender) smtp.mailfrom=katrinawbaldwin@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764255327;
+	s=arc-20220608; t=1764255538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=58WYeoWp+L034I9TYiz+ieCppakm+AyyWrLBMP+OM0A=;
-	b=pVmyrjLTEuEptTAaTy0VFPDONx9ugJcAYAYCQVaaTNIkyByNlh2kFBEQZpwIZGnB9kCCeN
-	G3aqY5nAvnAqlXhJaw5mBDAZJbtU+nGcqb7LUznnesF4pU/Y/tMgXs/NHgvO5B4+iEPwO0
-	ktXtJwV7LZC11Mza9UhETvvX0t/tIBI=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4/sGgpelQl3vLxTe9vm8xqb66+ofotlXGB+num+gCBI=;
+	b=yo65jRoWeCs17fBhZuJdPWW7ecEaOhAIqXB9jlQavgkqs29JQ0AnojRdjMIrDvYWyYIjeQ
+	xmv3EU/oCOPmOiQ+xxwL+bwT/3sK3ZK1UE2cwCQto5PMTjFc7sQLt1qfKD89sVfM91QnLN
+	m0Rukdnq05K6NeA2LN0nrm22qEJrikU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J7WljQI6;
-	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764255327; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CBe+UyHI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of katrinawbaldwin@gmail.com designates 209.85.217.52 as permitted sender) smtp.mailfrom=katrinawbaldwin@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764255538; a=rsa-sha256;
 	cv=none;
-	b=VpXekmBdGuERObbuPtLguFBw/+SDXOT/fycGJV02wceeoBnPM/0pPkfB/vDUph8KhiDrsD
-	AOp21z0eh82x/E+9qTmRVD2DqK4OynYMmi5YkIxe1n7+e7M7RYdrA+TWkB7yzK8rpoW+sl
-	AuNnxDDJJHKcDzXTVDRRU7WlH5P5/Js=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=58WYeoWp+L034I9TYiz+ieCppakm+AyyWrLBMP+OM0A=; b=J7WljQI6KUNn+EFR6+1UQpkkcf
-	g945pGaj0nuiFCTt/jREJ1RI0jT3fLpA5GPL9DsFKpQQskDHtAyC5cK+3xWxu60A1i1WTafjj6pUw
-	EuQjqtvIxuPDusDWAaSgq0T3mpqMmCOYM0UuKFcmyykVb+b7J9c5j3ZuEE9e4yF1guMiJQYFq9uQi
-	dR+CsEru2Pt/hvvx9bZxrRzY0ZA3ETAoJ1SFrqjtgv8WWShGIq0WqsCymYRkOjJ9Rx2zE+gNmGCsK
-	wJ/OIBP+CKWBJ3SUk/Px0lrTg/W3lSuWqRKYtVw23FelO65F9b61rO3bFUl+SifJHiF+6SiEUNQMq
-	Cwbdn31Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vOdP1-0000000Bsna-0xik;
-	Thu, 27 Nov 2025 14:55:23 +0000
-Date: Thu, 27 Nov 2025 14:55:23 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Jan Sokolowski <jan.sokolowski@intel.com>, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH 1/1] idr: do not create idr if new id would be
- outside given range
-Message-ID: <aShmW2gMTyRwyC6m@casper.infradead.org>
-References: <20251127092732.684959-1-jan.sokolowski@intel.com>
- <20251127092732.684959-2-jan.sokolowski@intel.com>
- <aShYJta2EHh1d8az@casper.infradead.org>
- <06dbd4f8-ef5f-458c-a8b4-8a8fb2a7877c@amd.com>
- <aShb9lLyR537WDNq@casper.infradead.org>
+	b=Q5ujT/7Pva52xnAYwqXy/Ckc//nK7oznujwmCgjeKvNiNB+j92QGGTHAOkgvqNkGMZedGZ
+	/Jd4wVwRfc9tvaUPJ/A18bfvvIgp1c5UsAW7xhdU5I1s013wxXOxERUP7JX6VVMGsjJDvL
+	+95vaKXP5a3DtTAqT/JDs/ZGnOo6QLA=
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5dfd380cd9eso586479137.2
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:58:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764255537; x=1764860337; darn=kvack.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4/sGgpelQl3vLxTe9vm8xqb66+ofotlXGB+num+gCBI=;
+        b=CBe+UyHIF0KWu8Ht/3ozsl07EvaWcsC4Ky6e6YzVxk0gGm8NLc78No5J273IVY0ksv
+         l4Nm9lt3DszTq6ttC6ukPYnXz45NQ9J6E9cT9ozfel/ZZ4nxXpSWrnQGaVSLrAWjI2Zi
+         fRB95ExsNqxgTOxpOhGZuvoJY0MRJIi+YY9M7LFdHjHTMIZ2YdrydIc8+49Hne3XeQ/O
+         9qTzOAUg/6tK9Arbdi2EXst8Oj5XioNCGfEfmxTt9bxOYLFdyMYAVij26Ads/YyS+eNZ
+         72ooTWWpWSNED7qWzeCuaAcRI8Beft+8QOm3fAT8egtAvh5yuE4QO+hgxyu5pujmY5Ch
+         1ZQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764255537; x=1764860337;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4/sGgpelQl3vLxTe9vm8xqb66+ofotlXGB+num+gCBI=;
+        b=gekObCtWM5fZFaVr9/wX7usVmL/r8e6NvlsYxrrEheD7ItiBx4DFt9S7fa95GTbKTO
+         TFV/YePDGyGMcwa6Ukv8MWSK6yjbMZ54qWVtvjhLgrECKZKT+lb9T+qmYO9+YRe0DfTa
+         1j7bb9mBO1ij0B0K0MBeEJFQtXoh8zcvXVglHIUbueqEVJpvvxcMQMO8rqcikg1M4qLM
+         bUBkACrRdNG7OGwZc8bYLTTgq2pbTTIWag/MCZIZHqZcKujK2ZG/2x2F2QVirv8YlhK0
+         2KqKGFKnZmi/SND7VxbVzS1k8XCLp0+yEJI5IrfGS+ANj1nR0T39FIWLle1NhukCRq0k
+         IVzw==
+X-Gm-Message-State: AOJu0YxcKaytUNQPXykO5ktZem061FpKknQq/9d1rDvuXPgksUuYnMq9
+	wca+Lhytfebw7aPiUSafWQfqHJ17vqt+flqIQ9xcN0IuoN77V9KvSICMFSxWF2Re3T+ibVFG03E
+	n+9zKrxN3rRUnmDInEY8IcX9lpw7Y1UJorw==
+X-Gm-Gg: ASbGncsOZKuzhwBA0JiKZFDtE+sPhdXauxue8l1t0dVG2A+Z8w8LmQBSEvNvJwPlNkH
+	lWU/+2tJp9kJoAaf2mxZO5YtjwWdGjtN+L+FcvYMkRVDF6ajvgK7g9vd+xCC195ud19rGlZtOHy
+	jSrnAO7CkflGaJw322HcckK+h9Il7fVVOAU2p7BCV/nCoJyGE3+yqkJq8bMgv6UUoTkBPAns0fM
+	NYnm2Hcz5Rkdd+HOP/9iHBauonejopYX0Qkqz+c8lfe2dfZ7/otg4WWZpGoNj0VaIB07/T6o03D
+	5h7JXDVJN/+oulsunvqVnBIuxKDfESQu6w==
+X-Google-Smtp-Source: AGHT+IGzQE6iseOwPQZx23MMBOOq6GfaeMhbSjyO4Cs5Qo4di9OBiZ7gY9+pXxubglmBjMJIU5nH4gi4c61y7v+uiFI=
+X-Received: by 2002:a05:6102:2921:b0:5de:31b1:2005 with SMTP id
+ ada2fe7eead31-5e1de35bc29mr7611254137.43.1764255536866; Thu, 27 Nov 2025
+ 06:58:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aShb9lLyR537WDNq@casper.infradead.org>
-X-Rspamd-Queue-Id: EF1B9100002
-X-Rspamd-Server: rspam02
-X-Stat-Signature: pteyb1ssjmoawgstwbrh6bjchxt5jhen
+From: "Katrina W. Baldwin" <katrinawbaldwin@gmail.com>
+Date: Thu, 27 Nov 2025 19:59:58 +0500
+X-Gm-Features: AWmQ_bm_qOTYQqdBzTk98tFvWzJFLVyLV82FBS0YGrW2Bfsdxx3yRYC0BwAlMSg
+Message-ID: <CAF7Wd0uzgyU8mRZ652+6uPsR5=VjAtNrG0uF1svgi1unUJDDEg@mail.gmail.com>
+Subject: Increase Your Website Ranking
+To: linux-mm@kvack.org
+Content-Type: multipart/alternative; boundary="000000000000916a4b064494c099"
 X-Rspam-User: 
-X-HE-Tag: 1764255326-135322
-X-HE-Meta: U2FsdGVkX198F3zhEml7Onq6nevTDlKsYAA66CNgr+krQC9lt+zXRjhL4LbG2l2Iwu/sLzN5P7+NghyGmy33PphRQyY4aEQzqJuAWGwHhhvlWp2LKxcVaCKuNRMtRAPKQ3tFiVmOnUxIcEpWWI3OjyrVjdhjmc6K/5bZARgk5M2OyDoOPkmegk0XbFQefyGH4+viWMqgv67V9HXBRrhYyEKgparGzB1X3kzAY9gIjuKEmqc1PlrMvd+fPE6Q0vYjdnzViW7ze3JwnTtFdPPWyblOhsrFr53pICNW25pLcVjl3EjaLJKIyuGUFVaZ5KbyQEx9bFIr03Fth7I00cU/1csQsb4wN/JKaAQN0i104o+eZh5QlPL3x5CHXb9d2mljz0wqnylgC9j4J04ONw5h9WHNNyF/s+J9MTzRBUurS6cesqwYLIz6sJDBajdVp4Vk2s2QyUvfH/6Q5Bo3Za2/avgofxMyRc9dhy+4/mTFhmSh9JDDin+CQY31TVWGr0YuQLylbCmzUgLc64Hj4c1ov6EPPtwGv6AoAzuRQRMLyXjnpf2IboGEo6GBUQk9crPkIT51hScxNwzNpBe9hczqFbhD6TzjzXKWD3kNAStH9xV0QlB1Q/YS+4CBD008MQioNw+MT4kmNiCkbINO/Hexr/cxdDLFwQJSQSqEr9B6T07kKe2Fm9fi9b5Zpg/XNzZr7rVzalsqhdkra3n3oKzbfyLTqR5+PV1p3vsYAM01nB7tawSQXDLu2OU3Qwel6LzhB/c9QLDVZ0CKnsA2xRxWg2EDTfX1ZzMoOjXRxx4U8Y087SsbUkFs/w6t1b4OHU4DhGX59w+8nuAa8SMsUPdSu9T1ZW86n9HvXin2UbtW2IVCYGanlZQm3NTg8ynJPVyBQ+w1q7oBm43k5Zrwa9Q287LlbenGw50KROzMhmeUtZl7UeTLW3Kup4KW2zdUZ9rNiRGspUMyBw25Q85Lzd8
- XXVL+MLO
- BYGtewRWkNHfggCs2bjl7KQTcirkl8/jLNJu1Fwz9f4orJfz29V95cvq580hwB0nCupOjVN4XF4/o9ZAJPsV9Yvf3u/xUg/PBJFIjLtJoWvNSsTRmnGjwGKM+Rq5K3u0bR/R9rByCFBYuSmXEGNukhu1vsp5Ibge/zyw7Vlmd3C9zbmwjg/NNXrWKZr0kzCxVxd11Vo7fYvpPLYZ4GZlVxHnsmIzRF8jdrDfzz43hbhfd/o8d15T7JIrHvA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: 04E4F18000B
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 6edtwny35aoqe51d6qss6o5j15se3ffs
+X-HE-Tag: 1764255537-118164
+X-HE-Meta: U2FsdGVkX1849FRf6e2un8HLNF1eeqnOTfupXtqRLD4+7gXAPQkCTXlc5n93/8nrU/Tji9uCFXw1uJkRrex1/x8OxmLsc6VBE5xApcJZ0SYs9gO3RMAIX0LZkTSlD78O2VMTkcNCWuIgj7s8oYUZWve5v2DRo2pTG6UPQUqQtGgn1gqTW1zIqUnxL08UXMcCIbZeVBVsRSSJ7EFspV0Nlc8DxZcHMZFrvHTeELFyo6JSz7Ftk41frSdiRCDUnmbj0+EPaQ84lTyYMPkmrjcD/+LPjDA+LyAHj5erJUKO2U36LjYL51G3jAMW4FfK904g+88CDi6zZDgFhzUdrKINTGdCnG5djHv75fNxjc3eqRRVyBqiPNvCvlliGA+ZR5Tw/0m94lX1M7HmhHoRQXnGbthmn1wWlHUtrN06NTvmITv1f/r6ONr97Ywj9wlv3QzdkLpQS7+P8Xwvu6bX+FFFghkZCPz7hh1GPgnRo38ink7dEoSzM9EjcTkFSTERhI97uH46Mn+D3JxDdZ2cc9jkMUICS3ZcpPLR/vm9HWYD6zEak4g6leawGXtmF8AfBb9bT/FlE6ry57lWoDcLmtcfqrJHAot4SSJoqxqw0unCEyoNPXKEVj/lEeK8Z8QsdsK1Kht3PKsIKANXGpSoPgFuBaqEKNiHAVzboNeTKtVMY1AUR5UQUaWrKDG1NEQAwJAepIidpeGJwWHnIyaDuz2lerbEXLowae5+WsK1nNFoH4cTrpthG0tmxv43gjal9Q8u/atQADByWGGJa++mBEl29i9rxJcLDuCm3J/Z6g7l5DiTni0B3PLKbgdSzbYCaAKvqu1DZMCOoRs1L/85qUwjpym80Glk6ue9/SMuT7BeKeM7Rcsjt8DC9XEJ5OvPtKHe9yrfyJ+ZNhaRsjq+8/1IDJDpYa+oxnldk0TABK47h90Ig6jMK0shCfMv1WpjKx6SiOs/bLmcoJPA7awRiWh
+ NU2938XT
+ o3DxSPCYLRDJQVRXCuoXLaPDksEhD1sUfS8CPgpC6Fum43cyOU1xgemek7joLMuodLnLEENhxOuT1E3fo5JFMXW3i/eaFXL2QxJHvF3vx4D8ktH/U1Chq8mCZUZA2TE7LWpwx6QeO2CKD5yWJLbVlqc6FJeuOnAR0h5q2CdZl7fWev0boHfpFJf9LSIKBNnPr5X0qszOS40DDsC5r2/vw97UnWDiBgc5rs9HHsGs1P1Ssud3MWMDriKf/xtjaOFLZnbLSbxm6hCO3Gg7qc90y3eoXmvpOIkFPVj2B8EA9zTeFoDFuCygPFhIrqQNKPrlMZCz6WKq0OgccVdpsP8AMxh2i+HSHKIgP6ZSWlwRFML6+arOA7Iy5Tk5SpaMpCcbn+eLYbvZVKg1FlZkeZkuaI2l5eGn6+1ccrq/SHUaRlABWR+fQnoVNN1B0LJq3/gpfi+vZSpFO4BvvbGmJFjfLZEOL3w==
+X-Bogosity: Unsure, tests=bogofilter, spamicity=0.551254, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,57 +107,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 02:11:02PM +0000, Matthew Wilcox wrote:
-> Hm.  That's not what it does for me.  It gives me id == 1, which isn't
-> correct!  I'll look into that, but it'd be helpful to know what
-> combination of inputs gives us 2.
+--000000000000916a4b064494c099
+Content-Type: text/plain; charset="UTF-8"
 
-Oh, never mind, I see what's happening.
+-- 
+Hi,
+I hope everything is going well for you!
+I have looked over your websites.
 
-int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
+I visited the websites of your rivals. Their websites have a higher DA and
+are more well-known than yours. if you want to raise the ranking of your
+website when Google crawls it.
 
-        ret = idr_alloc_u32(idr, ptr, &id, end > 0 ? end - 1 : INT_MAX, gfp);
-so it's passing 0 as 'max' to idr_alloc_u32() which does:
+Our objective is to make guest posting simple by offering an approachable
+and affordable procedure!
 
-        slot = idr_get_free(&idr->idr_rt, &iter, gfp, max - base);
+We will raise your website's rating and authority through backlinks.
 
-and max - base becomes -1 or rather ULONG_MAX, and so we'll literally
-allocate any number.  If the first slot is full, we'll get back 1
-and then add 'base' to it, giving 2.
+I'm looking forward to your affirmative response.
+Regards,
 
-Here's the new test-case:
+--000000000000916a4b064494c099
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-+void idr_alloc2_test(void)
-+{
-+       int id;
-+       struct idr idr = IDR_INIT_BASE(idr, 1);
-+
-+       id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+       assert(id == -ENOSPC);
-+
-+       id = idr_alloc(&idr, idr_alloc2_test, 1, 2, GFP_KERNEL);
-+       assert(id == 1);
-+
-+       id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+       assert(id == -ENOSPC);
-+
-+       id = idr_alloc(&idr, idr_alloc2_test, 0, 2, GFP_KERNEL);
-+       assert(id == -ENOSPC);
-+
-+       idr_destroy(&idr);
-+}
+<div dir=3D"ltr"><div><br clear=3D"all"></div><div><br></div><span class=3D=
+"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_sign=
+ature" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><span style=3D"c=
+olor:rgb(34,34,34)">Hi,</span><br style=3D"color:rgb(34,34,34)"><span style=
+=3D"color:rgb(34,34,34)">I hope everything is going well for you!</span><br=
+ style=3D"color:rgb(34,34,34)"><span style=3D"color:rgb(34,34,34)">I have l=
+ooked over your websites.</span><br style=3D"color:rgb(34,34,34)"><br style=
+=3D"color:rgb(34,34,34)"><span style=3D"color:rgb(34,34,34)">I visited the =
+websites of your rivals. Their websites have a higher DA and are more well-=
+known than yours. if you want to raise the ranking of your website when Goo=
+gle crawls it.</span><br style=3D"color:rgb(34,34,34)"><br style=3D"color:r=
+gb(34,34,34)"><span style=3D"color:rgb(34,34,34)">Our objective is to make =
+guest posting simple by offering an approachable and affordable procedure!<=
+/span><br style=3D"color:rgb(34,34,34)"><br style=3D"color:rgb(34,34,34)"><=
+span style=3D"color:rgb(34,34,34)">We will raise your website&#39;s rating =
+and authority through backlinks.</span><br style=3D"color:rgb(34,34,34)"><b=
+r style=3D"color:rgb(34,34,34)"><span style=3D"color:rgb(34,34,34)">I&#39;m=
+ looking forward to your affirmative response.</span><br style=3D"color:rgb=
+(34,34,34)"><span style=3D"color:rgb(34,34,34)">Regards,</span></div></div>=
+</div>
 
-and with this patch, it passes:
-
-+++ b/lib/idr.c
-@@ -40,6 +40,8 @@ int idr_alloc_u32(struct idr *idr, void *ptr, u32 *nextid,
-
-        if (WARN_ON_ONCE(!(idr->idr_rt.xa_flags & ROOT_IS_IDR)))
-                idr->idr_rt.xa_flags |= IDR_RT_MARKER;
-+       if (max < base)
-+               return -ENOSPC;
-
-        id = (id < base) ? 0 : id - base;
-        radix_tree_iter_init(&iter, id);
-
+--000000000000916a4b064494c099--
 
