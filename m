@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B101BCFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 05:05:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D9BD10375
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 05:06:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1816C6B0022; Thu, 27 Nov 2025 00:05:51 -0500 (EST)
+	id 504756B0024; Thu, 27 Nov 2025 00:06:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 158C86B0023; Thu, 27 Nov 2025 00:05:51 -0500 (EST)
+	id 4DBF96B0026; Thu, 27 Nov 2025 00:06:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 096016B0024; Thu, 27 Nov 2025 00:05:51 -0500 (EST)
+	id 41A416B0027; Thu, 27 Nov 2025 00:06:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECB5C6B0022
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 00:05:50 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 30F366B0024
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 00:06:34 -0500 (EST)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 34BBF13BDB0
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:05:50 +0000 (UTC)
-X-FDA: 84155199660.11.0BA6653
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBF818A716
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:06:33 +0000 (UTC)
+X-FDA: 84155201466.11.DDBFFC3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A2F6AC0009
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:05:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H4jAdZwu;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0FE35180009
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:06:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bUD3vwtq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764219948; a=rsa-sha256;
-	cv=none;
-	b=Czz51vFSBnEivx8ndQRPXOmU+LDx8+yg2j1MV7iquBduQTXswz0a63YAhlc5ZXThWPC/iZ
-	2tlxva/fpJB1Y9bm0hvNHtthJRkGhaDA+PI3CERWOSJVngA/63vjFhXEyGC7v0U0XRvD0q
-	af8NkKkFjIOWDgJ1e7uOuk16fC/LdIo=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H4jAdZwu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764219948;
+	s=arc-20220608; t=1764219992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ysL48WmHMu6ZVfYX+/EYpRVkz/nBDb/kZFPfAI4Ic1I=;
-	b=tZKycJvqURVmX6scAgdC9e8fu5Tvho3qP30H6l2uUI1aeaQMjCO48vaWFqrTF2V8Iw4xi6
-	ZRYLZBv//A+2fmYhqS5zbtVA3cNklYcBllmYk+3/JwK8T4CLBFFPBMYyH70BBkJkpOSDQ9
-	e8kSoRmhgg+Xp8/6CsZBZgcud/WpYNg=
+	bh=guF7Lj4nWdsNU1YLYFJq5L2Aq8xT0jiis6yG4uY/Ukk=;
+	b=JVhaF3K66MuxkRpHP//sUb5x4AnfctzjS3ymKTVyVgBT1k7cAMWrl4NoC0HLzmvedWEJSa
+	kg+Uh6JS1B9oOImA5/0FSvqJUkbV5nysmx/zSzFqQCXWPl9WK0VMoPlkgjtagr5mrTG8PA
+	MQp2sjmfetGPkSCTGym0SPZ7geQad3E=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bUD3vwtq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764219992; a=rsa-sha256;
+	cv=none;
+	b=ROwDo21W/GQAIhbMDifDAAZpE2ZwkTW+sSuokESsL04iLx/z9OZTG8qKgkVtoV2KouZ2P5
+	MDHs9cJ3uEwdxkTjMJ/zWtXFC+Li1LS3GKLd/3bK9yexPcx5z3vG2qBMkQ2l2o5ZLqgdZ4
+	j68ycbAq2h7FMI2x0oeOftZwRDF2Nm4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 330DE60182;
-	Thu, 27 Nov 2025 05:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0DEC4CEF8;
-	Thu, 27 Nov 2025 05:05:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7ACB160235;
+	Thu, 27 Nov 2025 05:06:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8A2C4CEF8;
+	Thu, 27 Nov 2025 05:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764219947;
-	bh=Nl9RwO91yTa5covY+c2/N9Gq4s0OvI/oEAchPUaaHrI=;
+	s=k20201202; t=1764219991;
+	bh=9KGqhg7bfj1kYxRW5hx3J4260dqKwUVUWWB8jKANxiU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H4jAdZwu3Sd4OjszEkHlJtz4SnzwWGXrgyaOCalfAVVClCU29XQXAC0JKogFFq9sq
-	 zfgHOpWN+oVfBr555kCBzeAzfAliqANmAe++un6WB8Y+mQrKzT4hnA6Qa70HJJfMeK
-	 HRqfMJRPLFbLVti/I2v4I3InHPGzVtf5Nk4mlbdxVdU4vBr+VA+q+U233XhVyKEcvy
-	 4pPBwgFCPs8W3b3DDj1JrtQXgL4RIZDYN2/MohtkNtNmhQSjjqNEdgRWJDAjyaCCxn
-	 3d3gNFgh07WSRkNajVcF4mcWMFN0cgepD2nu7HJzgcVbgkp5heeYUNsq1PtZm+pO7c
-	 VSh9U+RbFsZbA==
-Date: Thu, 27 Nov 2025 07:05:40 +0200
+	b=bUD3vwtq7DBusOVYT88WRzd+l/tl2pENfsZwVOzSdSHlfCnTWpFbXAu6vZ/BfN+Yl
+	 UtYgdlJ9Ie9rQTLqz0tyCxVyi961e4bJxwzyIWuWKTFWdLYGVeLzjbdItUCAg13aiE
+	 BE6dKASgyEYwWa2dpYUCu996Fi3njrLV+lyaTqwk9Y2JnLt4IEKuVrv4h/+yao8S8E
+	 pSb4p+Cvy8kaBP8Lo9ItLc0DL6Tku2JF6nBKYUehJ084XoVltVazaxVUy+FrwYmW/z
+	 4yJBhzu0hHzJ9xaVXrYetVXrNW+ZVt+MW7hIeuetUsMKMpDTc0i/m8oGMFjD6y7S0y
+	 glXNgVD1nCzWA==
+Date: Thu, 27 Nov 2025 07:06:21 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, changyuanl@google.com,
-	graf@amazon.com, leitao@debian.org, thevlad@meta.com,
-	pratyush@kernel.org, dave.hansen@linux.intel.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/memblock: only mark/clear KHO scratch memory when
- needed
-Message-ID: <aSfcJIwxglEc-cjJ@kernel.org>
-References: <20251126072051.546700-1-usamaarif642@gmail.com>
+To: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH] selftests/mm/uffd: initialize char variable to Null
+Message-ID: <aSfcTS3xf64zLdbR@kernel.org>
+References: <20251126160830.52124-1-ankitkhushwaha.linux@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251126072051.546700-1-usamaarif642@gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A2F6AC0009
-X-Stat-Signature: 1tgter3xrirrba3esdd7ekosmesqk7n3
+In-Reply-To: <20251126160830.52124-1-ankitkhushwaha.linux@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1764219948-370856
-X-HE-Meta: U2FsdGVkX18CDkk6+E7YaqBK7dT6rsDoMN44R++GcqgW2LnVdFUTHfYpuq3qMGmYHTPm5ssxBA/Ts1WgwPEkBCyViIW8c5tKMXlCARBCAQ4QBpxH/uBCjbrsPJWT0eZ9KK+5G1dtCe4yH9sZyr1N6U16DxMigoU6j7R2qnTVmRVQ8JCc00Mq3aApfRInRxaFXFmbdE9MUZqkZUQJSr++4vlHOM0R0Ccok00gujnZ6MJ5CJEXgNlDvohT4OQbSG/PA3DnQQQsEeE05EmgVNP8nF8qB4h7qKtBi1m5mgxAZqyjjg56fSKf8VBRvEOaPDAFnLUuCgW19kcSF5sKkPl9YYUvtUBTBM1Eg8Oak880lvEViX5TYt4Nr2i70THhoWvKat0cqxUserdXV/HGxsxE2UplevEfRt663aQz5WlDXEYJ9XvNuXDh5jxrOtpK2PLe+Fzik9yGhGFUnwcNOHDyPDOmPsOr43KfiG8SYmqf5HT5uQP6dyNQ3aUvR1v82geH0jbYEopGKUpzS9JsZUZqvlC7aL85tN0oLyrbfHlrJMVHt4FUVzw0uzN1HxW5hYWQLVINqAkV2OLZ90QB/0+iu3QgOeroCmSfpEUIHyfZ1/lkjJLVM+ffjt1M+LmSoTaiBkTH0/dWKb9xSAOEg7EIemkJRt31QaaVzbM7+QnjSZSmmd+zQwvGqs2d5RWClkVlHFk0s+WDxvYCFfRqKBqIWIpO4r+d6wLJN2dxkJGtz70sI0DVX41i4cGsacOz5FffSUyheAlM4TORS2WuSMY7GrkOsEa6GPP1xL7CJOoDs8Rpvc3Fm1C36ANewDlspMm1rV7YRyrd9co3qpA6jKz2EQ2fBVEpkwKJJ9iaT76wynbtVEryba7Bb7B9xvQiHhN5HHk4sWzlnYDIKZTP5ZYTQ1d+kvHEEDKNxgCLhiktBbKDNORDWxM802a+HwNxzXkCvYjlwPd8dNBDrFPSryK
- ARdtrK/I
- klieagu3hPjqHlRmvpfJ/M2iwtvH6VcesrMeBr56YuZlxfkCRrqwEIqrk0HVuDJsuOOWCQEpoXDX5nQq6YMCvsfbA6jArWUeGke68Iuk9NoL6dbetb8G1wchteGwCeRRAudGoaeTgz5FNfo5QEw2T8Kh1f62gSUl0Y3jtxzJn9OCdAUKxTHzppJ8brQx+fxaFiCn/3HcivqmKD5dGHAcojvZMobbQBuT+i5VjHIX/QJt6nVXE6rjn22gntcanwNaHrlzn+yC5+hVpHIMXBFeISgzBV/a70Nuo/pGakF9MTa5+wfmXB2yRuYBoJ4ny/KVEQzhDDeAMbv67G9DMK2DYjPREbw==
+X-Rspamd-Queue-Id: 0FE35180009
+X-Rspamd-Server: rspam11
+X-Stat-Signature: s8cmphxichc5z5giiwq5ncuza6jr7s9c
+X-HE-Tag: 1764219991-4964
+X-HE-Meta: U2FsdGVkX1/BLKVjjGyoSKxdc17jMORskBrhFDpoqqAJTrT2cu9OqTZNupdc+ayN4m4v7YgN/AnKRHqKNFBf78rwOU/eV9BUElUHa2Fppi1XDIoucClsXhFMnoRMc7BEGU5y2yGgBbHMjZFI70QPVNe2IUMHMMQ9iRS+w0GVqwK/ANH3rV0a07UgZ1XuBq/bjaeua2m3V3+1k3sY6ETkO6OH3XyQUF8AW0druTXTZX4SZjfOOczjUA4R34mnOQD08XtsDFcoH3tRsX8Kwmf2ky7r86hJJIyCIUjC15HEiBdadU2U+9VgGHYp6Cg34IjiKpOY04iQ7tggRPUdNa6D3+iD0LYtmkIK3Eul4tanNHpyzwJijSjGubpBLSxl3qZGaakphFkCkS0IbpT9qzkCk3249wZ/pXSaXljapdOFSBO22vYXK8kXcv9YzzE6erxa/Dnr2Uh+2CGP4EhJfakyS1BK8iOoZ12xmyuujYnI+dfm2VPEzDnQW5CDOpDkS97rGSPPs85Dw6D4c4WIej78ooytmi+Homj6w8SxW7Lc6VMqX7FeTYiwRIfWC2ISsCulO33VJE0ExkcKdW5/v0Yo/m1D7mvFs5FY2T8rLDr3vsEwekyXwL+5f6LUVghYBld4Da8x7RWfquTAJNT8Vp5J4qbTgczPj8UluX+kQ5RhY8DAcRuGa0O6bIE0OCskWQ22fQvIFnyOft/eaUwO412gx5jb7Hu96rWzQieB629g+Jd8eUXiwYE1b0GsF5aSWdoi4kZcx5rgujQuhPs/ItQFeMjK2wdoEy4EUerP+lzDg1LKYTqUHyqzhbfFhZr3JorZN7H/v2a0AWQktQdPLtsr+WjGowo6qNMXSK7JOsaCzDf8najrU3Bvqo8KwimN3VSwGP6guCMhVmWg79PNXg9I2arQCfwN8TId6ucCyzZ+A0ocxAzj7ifv8tiYU3KKrUsMr5b5HlMjfFMPJizDXRF
+ h6qnWhIW
+ ViHjBwdMBkUNyYHJIXy930v4UMRO4yOSHI835lo6gI7aADm4z17OdvVOenE/vHxGx1Mt1oeG1wo4cMS5FePi5X7iBq3aDiSG2caLHVl3whPza2QjpKX824SaLURuARX8JvQ5cHckvVZ4I/Sy38cobt5i2YpfRghYIT+8lx6LLEBrx7keoqsbER5ub7iisq1womyFYPUTM/H5LgMbogqoYpyupheqoNj9yh3951Xudu+ZW3LdSULzA17NDN2Whxq/EnSeerqNgK9WFsDUUeDEpayxOQYTHIqusZlkUZ5U8qYb41i7gogomPT9AZjtQlvFso8yl+Wp/utn/09gLeXgJ1PgdliVLQe3DBdD1CL8ioiLA+a+UXDxYD5JfeQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,71 +103,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 07:20:51AM +0000, Usama Arif wrote:
-> The scratch memory for kexec handover is used to bootstrap the
-> kexec'ed kernel. It is only needed when CONFIG_MEMBLOCK_KHO_SCRATCH
-> is enabled (selected by KHO) and if it is a KHO boot. Add checks
-> to prevent marking a KHO scratch region unless needed.
+On Wed, Nov 26, 2025 at 09:38:30PM +0530, Ankit Khushwaha wrote:
+> In "uffd-stress.c" & "uffd-unit-tests.c". address of char variable having
+> garbage value (uninitialized) is passed to 'write' syscall triggers
+> warning.
 > 
-> kexec_handover.h is now unconditionally included for is_kho_boot.
+> 	uffd-stress.c:246:39: warning: variable 'c' is uninitialized when
+> 	passed  as a const pointer argument here
+> 	[-Wuninitialized-const-pointer]
 > 
-> Fixes: a2daf83e10378 ("x86/e820: temporarily enable KHO scratch for memory below 1M")
-> Reported-by: Vlad Poenaru <thevlad@meta.com>
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> 	uffd-unit-tests.c:581:31: warning: variable 'c' is uninitialized
+> 	when passed as a const pointer argument here
+> 	[-Wuninitialized-const-pointer]
+> 
+> so the fix is to assign char variable to '\0' to prevent writing of
+> garbage value.
+> 
+> Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 > ---
->  mm/memblock.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
+> this warning is raised with clang version 21.1.5 (Fedora 21.1.5-1.fc43).
+> ---
+>  tools/testing/selftests/mm/uffd-stress.c     | 2 +-
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 8 ++++----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index e23e16618e9b3..5c85d575bb61c 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -20,8 +20,8 @@
->  
->  #ifdef CONFIG_KEXEC_HANDOVER
->  #include <linux/libfdt.h>
-> -#include <linux/kexec_handover.h>
->  #endif /* CONFIG_KEXEC_HANDOVER */
-> +#include <linux/kexec_handover.h>
->  
->  #include <asm/sections.h>
->  #include <linux/io.h>
-> @@ -1126,8 +1126,11 @@ int __init_memblock memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t
->   */
->  __init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
+> diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
+> index b51c89e1cd1a..700fbaa18d44 100644
+> --- a/tools/testing/selftests/mm/uffd-stress.c
+> +++ b/tools/testing/selftests/mm/uffd-stress.c
+> @@ -241,7 +241,7 @@ static int stress(struct uffd_args *args)
+>  			return 1;
+> 
+>  	for (cpu = 0; cpu < gopts->nr_parallel; cpu++) {
+> -		char c;
+> +		char c = '\0';
+>  		if (bounces & BOUNCE_POLL) {
+>  			if (write(gopts->pipefd[cpu*2+1], &c, 1) != 1)
+>  				err("pipefd write error");
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> index f917b4c4c943..f4807242c5b2 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> @@ -543,7 +543,7 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
 >  {
-> -	return memblock_setclr_flag(&memblock.memory, base, size, 1,
-> -				    MEMBLOCK_KHO_SCRATCH);
-> +	if (IS_ENABLED(CONFIG_MEMBLOCK_KHO_SCRATCH) && is_kho_boot())
-> +		return memblock_setclr_flag(&memblock.memory, base, size, 1,
-> +					    MEMBLOCK_KHO_SCRATCH);
-> +	else
-
-else is not needed.
-
-> +		return 0;
->  }
->  
->  /**
-> @@ -1140,8 +1143,11 @@ __init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
->   */
->  __init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
+>  	unsigned long p;
+>  	pthread_t uffd_mon;
+> -	char c;
+> +	char c = '\0';
+>  	struct uffd_args args = { 0 };
+>  	args.gopts = gopts;
+> 
+> @@ -759,7 +759,7 @@ static void uffd_sigbus_test_common(uffd_global_test_opts_t *gopts, bool wp)
+>  	pthread_t uffd_mon;
+>  	pid_t pid;
+>  	int err;
+> -	char c;
+> +	char c = '\0';
+>  	struct uffd_args args = { 0 };
+>  	args.gopts = gopts;
+> 
+> @@ -819,7 +819,7 @@ static void uffd_events_test_common(uffd_global_test_opts_t *gopts, bool wp)
+>  	pthread_t uffd_mon;
+>  	pid_t pid;
+>  	int err;
+> -	char c;
+> +	char c = '\0';
+>  	struct uffd_args args = { 0 };
+>  	args.gopts = gopts;
+> 
+> @@ -1125,7 +1125,7 @@ uffd_move_test_common(uffd_global_test_opts_t *gopts,
 >  {
-> -	return memblock_setclr_flag(&memblock.memory, base, size, 0,
-> -				    MEMBLOCK_KHO_SCRATCH);
-> +	if (IS_ENABLED(CONFIG_MEMBLOCK_KHO_SCRATCH) && is_kho_boot())
-> +		return memblock_setclr_flag(&memblock.memory, base, size, 0,
-> +					    MEMBLOCK_KHO_SCRATCH);
-> +	else
-
-Ditto.
-
-> +		return 0;
->  }
->  
->  static bool should_skip_region(struct memblock_type *type,
-> -- 
-> 2.47.3
+>  	unsigned long nr;
+>  	pthread_t uffd_mon;
+> -	char c;
+> +	char c = '\0';
+>  	unsigned long long count;
+>  	struct uffd_args args = { 0 };
+>  	char *orig_area_src = NULL, *orig_area_dst = NULL;
+> --
+> 2.52.0
 > 
 
 -- 
