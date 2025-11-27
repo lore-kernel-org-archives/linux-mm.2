@@ -4,90 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E7D6CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 03:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7144ECFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 04:09:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F76D6B000C; Wed, 26 Nov 2025 22:49:37 -0500 (EST)
+	id 67F0A6B0010; Wed, 26 Nov 2025 23:09:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D0236B000E; Wed, 26 Nov 2025 22:49:37 -0500 (EST)
+	id 62F536B0012; Wed, 26 Nov 2025 23:09:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F27206B0022; Wed, 26 Nov 2025 22:49:36 -0500 (EST)
+	id 5453B6B0022; Wed, 26 Nov 2025 23:09:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1CF86B000E
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 22:49:36 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CF1013BEFB
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:49:36 +0000 (UTC)
-X-FDA: 84155007552.13.2B25323
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 64173C0005
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:49:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MprLPJcp;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 42DFC6B0010
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 23:09:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF9DC1A08F1
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:09:47 +0000 (UTC)
+X-FDA: 84155058414.18.3A21CE4
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 12A90180007
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:09:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AP3I5dIw;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764215374;
+	s=arc-20220608; t=1764216586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQ0ZXYaEsqXDUL5h8p3v+NwU49BKhktpBBnYsZDc89I=;
-	b=fQ3G4AOaLV3a+aVGhriv+U56xJTj1aVcvqqKpN3L/nJQ1CZ0ZWNKTNL+dw/vYkRvOA1x9S
-	JZVZtuT4RI5Su/MTgtgUCrNrN8E/3dLnqXmm9gYnAgLLPx8K2KHXR4fHiToGbT3W5Wuiii
-	prhvJ/ioOLmxTIkzFAAAf6rBWsHDgPU=
+	bh=9UH5HZWU7w1Qz5ka8h7XjqhmojO13fL0L+YMlTFhSDA=;
+	b=BsgQ0fFT6Y24LvaPOpqjEc2hqziSUQKfDprHqtMl/rbN2oGApTSAv2Ev9n1Yye5cCsHzde
+	Topm/a0fUuIvASFwuvW+pyCCnzV76dCcwQdvNpbpk45KLaOrJX16MnOuALoN5Bkw8zQwhP
+	1ayU5r6DRFeqYcclyVWzIsuEkyL8QdI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MprLPJcp;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764215374; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AP3I5dIw;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764216586; a=rsa-sha256;
 	cv=none;
-	b=MNDI9CvNdWee6QRkR9oLZXwnkdyIMKAxia3/yHKf9h+L4bu2eaiYjo6b8G3U9WcNMEV++A
-	ntt68NBzLI4ApTDhSozxwmdKYZ0wtQmtfPzkhgzsDM0UP4/6yDRgrr4RNJ3fL4zLAXmc99
-	Koh7HH2xXEf8I12U/r9PcNSWwt132jg=
-Message-ID: <363eac01-4dd3-44c2-835a-1c843c9ad176@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764215371;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hQ0ZXYaEsqXDUL5h8p3v+NwU49BKhktpBBnYsZDc89I=;
-	b=MprLPJcpPK1AcE4rMa8EQXQpeJ8xaMTQGBfWxH6LezFLbZf+L6bnUsNF/Ns+IavWjiNpuv
-	JbTSaofPAHEMDRMzawPDXRQ1/ZUX4WK2W+QJBN1PXCrUoZOQlS1cCeNa0kSnICyk5aim5W
-	nZ9cof3nDUTQf6/5y1Fjdl4Jhb4qi3Q=
-Date: Thu, 27 Nov 2025 11:48:30 +0800
+	b=Yzkg6H4I6awcfrRmZZrPs2jh+tftr+wZXtblGpOs/PYcZ7z0GVd5thQ2pUkpdV2QvbfXXx
+	xZ2nbSgI2WrkqDwrbDoMSlfsHjlB87/TO/jDLR9Fy3E0XII6kAGYFxz9BLu54mHiTSOkgn
+	RpELcM0USBtweGKdmnM2de/eqyMFcss=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9UH5HZWU7w1Qz5ka8h7XjqhmojO13fL0L+YMlTFhSDA=; b=AP3I5dIw8MUlt7xSzk3qgcc3sN
+	AHu26Cs0wtwdgwSRwY+BmvEPRpHfoPjKAv6EqeaGAtEZ8MvH02yG8ScNHL7P49Rb/gM+u6ij5a6XG
+	jy4hg3/q6KDo+jTVMSPbxO9fXKm9iGjW+uF8fMcq7GPSByWP3cICDpktaeP3bee4XCg1AvMMv/Moj
+	YSEuEpY6zqKoGrYyt7uU+flpdycrYQcResJLx8oQU2IoaQaPpPfiBo/O1co/fExGrf5J1lFda0oK/
+	nNuM2+NAvUP42wEG8HkfVsWnCKASM8uniovBmROKgYy8568Nvncst6z24djS+35maVgZIA3CoAYDO
+	v2Mud80A==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vOTJl-0000000BB6Z-3S6J;
+	Thu, 27 Nov 2025 04:09:17 +0000
+Date: Thu, 27 Nov 2025 04:09:17 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	Barry Song <v-songbaohua@oppo.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Pedro Falcato <pfalcato@suse.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Oven Liyang <liyangouwen1@oppo.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kristina =?utf-8?Q?Mart=C5=A1enko?= <kristina.martsenko@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Nam Cao <namcao@linutronix.de>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
+ page faults after I/O
+Message-ID: <aSfO7fA-04SBtTug@casper.infradead.org>
+References: <20251127011438.6918-1-21cnbao@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 23/26] mm: vmscan: prepare for reparenting MGLRU folios
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <cdcedd284f5706c557bb6f53858b8c2ac2815ecb.1761658311.git.zhengqi.arch@bytedance.com>
- <aScFNZjGficdjnvD@hyeyoo>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aScFNZjGficdjnvD@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 64173C0005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ezx3fzgtxr86iz1p9qi7dsmnbzb4xnn9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251127011438.6918-1-21cnbao@gmail.com>
+X-Stat-Signature: 8y9t88m7wy4u7phii169bb7b3xqbxja3
 X-Rspam-User: 
-X-HE-Tag: 1764215374-946653
-X-HE-Meta: U2FsdGVkX18CXqlmugapq80XTlrjrmwyOOfnmJ01n6Ybj186cSoyNODPCNmmfVTnFrs99mJ4sGSjSsY0d2vxc1PK6WyGVNWJnJ7j3NUdZymAj4dVAptv6Q2LZLeZoINp1UIVF4ptqcM510J2/DNH4DQ2KQZIavTrA7yPtsB9z6m53wdFPt/6dq2A022cbOlBeCQWTeFktiAeDixjsEwx1gFXaX+zcQ017x6IW4SS00YYqp4j+ny8lVt9Q6075anBghJMKC2VZtaSKpm2rVDC8sdwJwf0IKtGqL0KSbajFJAESciOeLHZC3ILjvNF0Q/1+sYojOJehL/PfkWzGT6z2+cNxYzl+vqQK71MGaIyXGSAw2Ph7/gS275gyQCam4+RwfOt9TObQsmeHqcD5nP2ORf76xDRrcmEScK0A90PwgVwyFa3TLW91Fln7/eWyVPT6onba0a7n5nJVjckBXQl+obuG+NqilO707tlqZMGFLCl6Vikvfg5RXSM1SWFvAcH1qub/t93opt9UIq4x4ztvAGaISY/Yaw9NFICgmQnzynYRzAdUeSH256ZrT01dYGp1P8TXKDf/k0kh29zFPxkuKAwBXP49NFkcWLmE5YBw9SOK8JBRkurRAIHDWVNuB7zFiM84ADOHKFy/0+RPAAnUqjBHKhGO+VrAy6SjChJHJmHv5Yt6LkWAgNlLLln4vm9VcePOd6I2c97Xgh1thk2hqlSoDYHH92+Ju5TVy7w+QAUrimmOy2m2qQQI6Su9yCmNDaRFBLjIGoFcM+ExL/abyFrwS2SauHd1ErGffFOEG3/ZmD18LN0nprGKCs1iU5o2wKRaxMZ5NSiRmMJU1BgHQeuS39K6ltxBUjdADGM/zRNNzhoAlCBOVa0tpgmxEVxhgSZCr/GqB9InvPqjHDFuCrI60PUrjWkj/9GtcPdkpEospc2T/14dENAyo6MYnJQC+Ui1mFt8kbo/hRt7sK
- imbkaKuc
- 9oRPeiA/LT8m/906BsYBuUacjUx71Ha5tqUP/fT6xaEfRGjV2B4DATvHuxEc7Fw4rbTZHlm41uN4cRLB1mgFY+kkGQE+/j/Kn6UqlRVxN++6PPv3VR1QwrnMBIsreT6qx85PAsh7t9nVMqjBDi5Ph6FQw7VdlYH5k6+U/8yiFB/SGreiqlSgtk7uqyYYvcPxV36KUirSjrUtTEfDrfp0WgVV39Q==
+X-Rspamd-Queue-Id: 12A90180007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764216584-5294
+X-HE-Meta: U2FsdGVkX1+pe0ammUSB8hdCT/Z/2pmieb7NmfVyui/+Y1OQ7C7DemifKBNslJYKtMpkis6LGjICGeRx0fQT67GBrK9YtGjU85KDxSV6S0PYCxRIUE2FRR0vNHkRQB/xb2TShj2Sk0Kt6rfo+DC4rZV4pQDF0HW5GnWlbzmpRvN1BFRWYfCG8RzGrOQbi5o1Qu1+kaG9rGRbnozdFL84V7/xiXwyyjzv2NHAPk3wwvtCCOuc9cI69c5tREX8DeDWzSMnkbV9wfA/t6NcMZvaDqFCTz9c4Y5B9jEOT9YudKnJlWIKnbqOxptfCgtbjDNf2Tjy+b5wjPe+osRp/AlsOjTiPcjBOirgqI2j+htSHkoZmjbwHNplQOn7D22KdDMaJ4T7uiIA9p6cf5owxrx907bAJUqHKS1dxRN5UE0mO9kJD3WY3ZVwQ/QzS6XGTB2QeSygj/sQZz+Oc7giVDGhZIbDDt39rsKqmfmb4YnIBmTRw9SjCMjhkDr+2CBnC2kKYF5+GiCLXIEtQOmFpZHrbrCj1cNR+dUd+ZKaNAOEUUgdQ4LRk+E409QoBOxdubKKoWKOfIZLyjleyT5Yen8GHO2y/+eKd/MagEbp8UNk5LIhPSqrHyKZIzSV+5S5iVBEkNEehlwyoq9mnFBq+IGuHtU7njuv53dVWC2VwRkxsxYm092cUV3EYJKlJwDs1fzRl90ilibCoBsXgHDqK5ob+S1kepoalWs3txz4cgsWPKhrPI0K4x5i0NZQ8JxmZa1JJzAv5tkJXWrf3n57Ea1PuHujwiOmCMJlqelibABG64Kw7mTu5t0qiDAxj3IdCdiwIDjnyopazQB/hONk3l+8luENkib0MS83IM5YlM35QGT4cwPRFQ1dv7hVsZY08IScOHtrQNv3fO9VV1hvZsiDC9a6h4tJOGvExIffmsVAFcDCjk5VaEXDpxtbzSjxRYYJ7MBJUJVNJ3N+cbKixo7
+ UJJWa7cP
+ O96R8XiO3l1NSFRwXUANF5Kb7ZTD3YCQsTvb7J/Pru8DHWQElAZuI4qIAmcPxks0JTXNK9uxTuWPJuCcL3TK4AHf5RLHoGX1P2VfyLFEbLrv1vc2rVqqnIWANNQRASVNa2lLEXMgzmrkv4SDzd5szgFhp2fDqR3dt/ZtSpOqagno7Xdjey5fxhvwmi5o1/hwiRJijI2j/9fZUNraq4sX+I/MMD0PKzQNSVI1typQ6V/a1+cyFcrXPgGHpBQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,135 +140,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
+> There is no need to always fall back to mmap_lock if the per-VMA
+> lock was released only to wait for pagecache or swapcache to
+> become ready.
 
+Something I've been wondering about is removing all the "drop the MM
+locks while we wait for I/O" gunk.  It's a nice amount of code removed:
 
-On 11/26/25 9:48 PM, Harry Yoo wrote:
-> On Tue, Oct 28, 2025 at 09:58:36PM +0800, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Similar to traditional LRU folios, in order to solve the dying memcg
->> problem, we also need to reparenting MGLRU folios to the parent memcg when
->> memcg offline.
->>
->> However, there are the following challenges:
->>
->> 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
->>     number of generations of the parent and child memcg may be different,
->>     so we cannot simply transfer MGLRU folios in the child memcg to the
->>     parent memcg as we did for traditional LRU folios.
->> 2. The generation information is stored in folio->flags, but we cannot
->>     traverse these folios while holding the lru lock, otherwise it may
->>     cause softlockup.
->> 3. In walk_update_folio(), the gen of folio and corresponding lru size
->>     may be updated, but the folio is not immediately moved to the
->>     corresponding lru list. Therefore, there may be folios of different
->>     generations on an LRU list.
->> 4. In lru_gen_del_folio(), the generation to which the folio belongs is
->>     found based on the generation information in folio->flags, and the
->>     corresponding LRU size will be updated. Therefore, we need to update
->>     the lru size correctly during reparenting, otherwise the lru size may
->>     be updated incorrectly in lru_gen_del_folio().
->>
->> Finally, this patch chose a compromise method, which is to splice the lru
->> list in the child memcg to the lru list of the same generation in the
->> parent memcg during reparenting. And in order to ensure that the parent
->> memcg has the same generation, we need to increase the generations in the
->> parent memcg to the MAX_NR_GENS before reparenting.
->>
->> Of course, the same generation has different meanings in the parent and
->> child memcg, this will cause confusion in the hot and cold information of
->> folios. But other than that, this method is simple enough, the lru size
->> is correct, and there is no need to consider some concurrency issues (such
->> as lru_gen_del_folio()).
->>
->> To prepare for the above work, this commit implements the specific
->> functions, which will be used during reparenting.
->>
->> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
->> Suggested-by: Imran Khan <imran.f.khan@oracle.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   include/linux/mmzone.h | 16 ++++++++
->>   mm/vmscan.c            | 86 ++++++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 102 insertions(+)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 7aa8e1472d10d..3ee7fb96b8aeb 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -4468,6 +4468,92 @@ void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
->>   		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
->>   }
->>   
->> +bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg)
->> +{
->> +	int nid;
->> +
->> +	for_each_node(nid) {
->> +		struct lruvec *lruvec = get_lruvec(memcg, nid);
->> +		int type;
->> +
->> +		for (type = 0; type < ANON_AND_FILE; type++) {
->> +			if (get_nr_gens(lruvec, type) != MAX_NR_GENS)
->> +				return false;
->> +		}
->> +	}
->> +
->> +	return true;
->> +}
->> +
->> +/*
->> + * We need to ensure that the folios of child memcg can be reparented to the
->> + * same gen of the parent memcg, so the gens of the parent memcg needed be
->> + * incremented to the MAX_NR_GENS before reparenting.
->> + */
->> +void max_lru_gen_memcg(struct mem_cgroup *memcg)
->> +{
->> +	int nid;
->> +
->> +	for_each_node(nid) {
->> +		struct lruvec *lruvec = get_lruvec(memcg, nid);
->> +		int type;
->> +
-> 
-> I was testing this series and observed two warnings...
-> 
->> +		for (type = 0; type < ANON_AND_FILE; type++) {
->> +			while (get_nr_gens(lruvec, type) < MAX_NR_GENS) {
->> +				DEFINE_MAX_SEQ(lruvec);
->> +
->> +				inc_max_seq(lruvec, max_seq, mem_cgroup_swappiness(memcg));
->> +				cond_resched();
-> 
-> Warning 1) Here we increment max_seq but we skip updating mm_state->seq.
-> (try_to_inc_max_seq() iterates the mm list and update mm_state->seq after
-> an iteration, but since we directly call inc_max_seq(), we don't update it)
-> 
-> When mm_state->seq is more than one generation behind walk->seq, a warning is
-> triggered in iterate_mm_list():
-> 
->          VM_WARN_ON_ONCE(mm_state->seq + 1 < walk->max_seq);
-> 
-> Warning 2) In try_to_inc_max_seq(), the last walker of mm list
-> is supposed to succeed to increment max_seq by calling inc_max_seq():
-> 
->          if (success) {
->                   success = inc_max_seq(lruvec, seq, swappiness);
->                   WARN_ON_ONCE(!success);
->           }
-> 
-> But with this patch it may observe the max_seq is already advanced due to
-> reparenting and thus inc_max_seq() returns false, triggering the warning.
+ include/linux/pagemap.h |  8 +---
+ mm/filemap.c            | 98 ++++++++++++-------------------------------------
+ mm/internal.h           | 21 -----------
+ mm/memory.c             | 13 +------
+ mm/shmem.c              |  6 ---
+ 5 files changed, 27 insertions(+), 119 deletions(-)
 
-Got it. Thanks for testing and reporting!
-
-> 
-> I'm learning MGLRU internals to see whether we can simply remove the warnings
-> or if we need to do something to advance max_seq without actually iterating
-> over the mm list.
-
-Thanks! I will also check on this.
-
-> 
-
+and I'm not sure we still need to do it with per-VMA locks.  What I
+have here doesn't boot and I ran out of time to debug it.
 
