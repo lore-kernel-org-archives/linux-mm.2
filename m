@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02FE5D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:11:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32419D11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 14:11:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D9BD6B008A; Thu, 27 Nov 2025 09:11:44 -0500 (EST)
+	id 90D926B000D; Thu, 27 Nov 2025 09:11:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B07C6B008C; Thu, 27 Nov 2025 09:11:44 -0500 (EST)
+	id 8BD8F6B008C; Thu, 27 Nov 2025 09:11:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C6CE6B0092; Thu, 27 Nov 2025 09:11:44 -0500 (EST)
+	id 7D3996B0092; Thu, 27 Nov 2025 09:11:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BB416B008A
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:11:44 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EC1B4138FB2
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:11:43 +0000 (UTC)
-X-FDA: 84156575286.06.2DB3FBA
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E7DAD180011
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:11:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="Xr/+YFMy";
-	spf=pass (imf16.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1AE6B000D
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:11:48 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F15513018C
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:11:48 +0000 (UTC)
+X-FDA: 84156575496.07.A7CB7BA
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4A4A540017
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 14:11:46 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Iq2yPUCq;
+	spf=pass (imf11.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764252701;
+	s=arc-20220608; t=1764252706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=u3WXNKq2AX75j2bmfv330sc+Ngjbx9cqOj8cPkF805A=;
-	b=HDLtJyTuck60o2DTMkK8/aJtT/O5cAchr747BfIlycAmLeVuPiaM+AHGZQpQh36GTzwhXb
-	g/1O7+lwKtpG9oozO7Ky8wtk8j0SZbZfiNQzMch7cxCKXtBnKfc3m1VxKU36/PwOgw01fv
-	MKpTycQsN+piEkvOgXPv4Lwn3PsQKSQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FPuxDa0NXAL0s5rvqqEK7cssEYmk0gHTIqKy/7wy1IU=;
+	b=o9EKSs6t5QcxYMJn5mAi4angW6OEX3WrWl1pes0O4WYPsO1Fv/HEkxCCCaq8hm/gAl3tgN
+	ZRsLvH6DhWfs4DC7i6q9lxRE0L9sp78KgI/F6gSix+o7mFg5bhspguHkT1SXcecZ88/fUc
+	/bEZ13dYHWB0fhYNeCzGG6DxsOot+ls=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="Xr/+YFMy";
-	spf=pass (imf16.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Iq2yPUCq;
+	spf=pass (imf11.hostedemail.com: domain of luxu.kernel@bytedance.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=luxu.kernel@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764252701; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764252706; a=rsa-sha256;
 	cv=none;
-	b=VK3ADPjfIpTorv1SueUvJMVCGCqTzuIZxZTEdFXoVNzWETEW6GXgpIT2kr4mMf7XdUh0Gu
-	PC+OqTWLGCgo0iF6+LMIlh9OVDXKcQv23E1JC3cyUovsa/Eg81+Ok/OWcp3LKR+97Ua5Kh
-	zOMZTtYVYDpZSh6rXuYuaifX+13R1u0=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29568d93e87so9033455ad.2
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:11:40 -0800 (PST)
+	b=E1yBfoCVQPVwtHg+cT0GGkP6k4+VFXKVPqxVstw/xfjDEq3yZBDpBN11Q39ZXu4ZDlPYKy
+	/DctOkpClSOqYqt2nfLV/5Nlf9Y94cwK/mgoaC2oT91gE39XjL/5v95ZWT2CGUfMlweQHt
+	7gciKIX0/WEwINyrjVEEC1PF+j03YMY=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-34585428e33so941960a91.3
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:11:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1764252700; x=1764857500; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u3WXNKq2AX75j2bmfv330sc+Ngjbx9cqOj8cPkF805A=;
-        b=Xr/+YFMyrfhzp9U+g5JYdgruJt9cRD3loFYcYu6BljJleXuNyg53+tu3nsELdm19Ob
-         gSommIWz1KtulWQrJj/GyGCYHANOhnMksow1ZrP4GLVzkJ87lm9gufz4CiALWNcAazfn
-         jLYDEZpnoK4JSLgxwjR9svQoUMOVmEO6WrmAAGFNmzOSbGLOopl5LpVvFxtdGlZukV+9
-         J2EMDrwUOKjZWxdqz+hwhQnzr4O8iyjAyaCf4EjVeriNyuPESUpKZyABSyZb37pxvZWV
-         M2lcUoIC0K7sY2h705Gaaqfr5h/zZI3nFEFdBhC4NLfgZKE2MCOrq22BSz6tyHEL238L
-         SKlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764252700; x=1764857500;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1764252705; x=1764857505; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u3WXNKq2AX75j2bmfv330sc+Ngjbx9cqOj8cPkF805A=;
-        b=Do2fsmRKvUj2RQrK9pQks/gdHPwHTdAIS3hCtCgmkf7kEHAJdeN2BfJTyPh46dShSs
-         IjPG9oBALy6La5KkaTLgjjU+3Sd2BqHN/eTJ2YrzeP4SuNk5tQslODPd3MFhiQz+PkkD
-         SEvaSAEVOajsV4HI79ExsGG39o5a/0KA+lJmA+xnBOzaHvqmbFSQqGt7GnXv12GTCcr9
-         lzlZJ/rQXprZj3d9kPOKFL145ShBiRkCJ8IvIcYuhhzZ4ixH4NAJeWWX+Om+pT4GJgGV
-         Gbb3lAIf0n2YgdxOOWcEdu7TehvKb9O7CyopVntyS2EAkj+u7qhVJVHg0fW1kht158+k
-         BltA==
-X-Forwarded-Encrypted: i=1; AJvYcCXabKkGQHD94jTWkwTYL5yuRqmZQx4l2+IqCuWz6AlIxtyOpTuCjfaBxYym+BGn2Z00vgQMc/KavQ==@kvack.org
-X-Gm-Message-State: AOJu0YxcpBvO4/9TmXqj8E09vbS8qxAcChlsjmDDfhsPJ8xbgXsJ98gE
-	E9LISmM9WPH7J+xKgyU6TV+jD6T0N1ctogz/23u/qEHca7cx6Jdmn695KMknLSiZ7ySGy/BNmnU
-	Q879AOCtDqw==
-X-Gm-Gg: ASbGnct5wOgSjMgTsK5RRuBpB/oqUbhf+qsK53dd8wLu14J7hmB57CZNy3Glx1qq8d2
-	QhZisciF/MB9z5+qsn55NB9Zal5zijxgESw0t58pmSDZH1HGyaucjpxxdrEJghA2kfVOdBQEggi
-	lcg4RMLNCsrE/RavhZLMwET0w7PQ5oWWxyZ2WgbTinSHC8H0Hn+08nItvUonJne5J6znYTlf8LV
-	MH6n85NmcS8YoiVgoPcP5w6feLzJjwc7njHYDI0rrIU5uosZSxWCR6Zy+jdo1nYD8mSAf7yBzMr
-	pDgwQTfgYLWABiRvbqzjNEPUABc4+cuI4zHkMq36Zn634D4ea4syOrA+gFEWcFEX0qY+3NyR3PN
-	BxUYmLOO1uX08nCBiGo1d7uG4F2U866Xa6PYH4fLd9/xffWt04SUyXG7j/QQ/tTyvuNmxmbB3J3
-	fB4w0m81AKvDP9wun4Gx0f8QQEwUzRpUZsthRYNeRizGkbEHRgLm+zntbkDXxgYouW9tcov9XXm
-	aPfSae7l+PB
-X-Google-Smtp-Source: AGHT+IGqqZbiAaSC9ZX+pYvJ1IbIc0rETHK1OBZOJFFlIrrfxJbsAOd/0yhH41xHJLHj1PsrjPP9Tw==
-X-Received: by 2002:a17:90b:54cd:b0:32e:3552:8c79 with SMTP id 98e67ed59e1d1-3475ed6a4f9mr10948253a91.29.1764252699207;
-        Thu, 27 Nov 2025 06:11:39 -0800 (PST)
+        bh=FPuxDa0NXAL0s5rvqqEK7cssEYmk0gHTIqKy/7wy1IU=;
+        b=Iq2yPUCqVVoSOVy83H3HOP+uKCezbFa0CLv3xbvVv0/Jreon4LFr5dHog5BK+mYdn9
+         SoNAwt0hGSjz1X8N7CqtxHzEHUY4ylR8N+MFEsUYja1lWa6CNIOggwI+yN1jL7pEnc7q
+         fjh1HonMvuZyi+OIucRyfzuFyBOeuzo1yBC3fZALHfb3wF5uZ3Ior6pwvY8Tdzd784k6
+         PPaTVF5xlJAb+I0Xv3CWBoZXGEl4rs+ORexLUSzyVLsWrE1z8DatOL87dsU3djM9XhUU
+         ZfwXhO/wUPqhUXZNrxPKrtXrl7jGDnq5lTg2diMHfikMKrd6fNyTrypxx4N/Cel+pr1L
+         AkZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764252705; x=1764857505;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FPuxDa0NXAL0s5rvqqEK7cssEYmk0gHTIqKy/7wy1IU=;
+        b=gRw0t1iOWhbEJRpOmcnkMxYY1QKwEaZ+X7ICQzRzUcl5YJ88PY1p0QxHe6/cSm0iEI
+         Yx+HIi6BfJOIZexib5UNbwbYm6mI/PcoffqwK0kUgHIn06um9gpW2itHI+L1pudVyo3F
+         AJR8mWNdg4SKrGRWD7S3NY/CTD7+Of3ZNuX5lG6g9F7Oh5MxVv1jERnKqbAA21st/QfL
+         RuPCUJMaCSIBNio0+XrAmh1KFQChsAJZ79tBByqW363olFCEeX/O1yQz3oVRQQixuK0a
+         Osn0BgDmPF9glKeVLtDyO0ukCffR/eff2NaMW0qvdvNWd1BTNixFGoWgCgh+hSTarc+7
+         ot8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUPv4lcQhF+y9jCQZvltV+cBkocphz3nYew6Wb3CN+6hxpOqPKEHXc4sgR315zTSPIBLj46mQGenw==@kvack.org
+X-Gm-Message-State: AOJu0YzgQEkfvhe4S2ImHuQeYGmY+IQlO4W7/iWlWh1VvrhhPc5divf8
+	ua96BPnTZ4S5+T+3Z2RMlJqnNdivrjTcbxKXj1Sk4QP2Kaqklwm5JwrYoIoWicWsGO8=
+X-Gm-Gg: ASbGncu+x65s0p1fQCd8/S9Q9D+pfknB16ELS07AkXKGgDrKNXQmG0cWZk8K6ppk38I
+	37oyjlGLnRQ2d/pmekJtP/Ob/JpNEeHpdFeOcl6KnECrRcbBTt9IxywHCo3vsPn3XvC4SwPDn0/
+	sqawelSuukFiH/GLR89+lDCPdhmX54XLKsBYShboznrZIiQGX1BlGhvXb3Mj69A4D4mXfzTDlQG
+	XkAgDfiqHoimuqRAQkxyVxMa/38VHq/JVleA+ANKBTYueiMbUKx4mI1pI/SImunATYzR4EYkAPb
+	/1wdJ70Yye9ki+I6DJL9p6zYrpBE15rWQogSy/+naagx21yIwdh7QnldJy0bJPrhR00z2WCADcS
+	a4nh/Y1ANCQGQRuUi8GV4CQQXZ6/lZpWnvItPvS1nLG4jrbcD6I/je2NtZTneUzqz6UjmzAxxj0
+	RJFwv6F+z6QakFHNuLWtcywoL58pS+F88JD6HfMYDbOpakkcrR1ZyQeH23/ZZ8Hc0Mj6YdSt471
+	Ow0MYuIXjdY
+X-Google-Smtp-Source: AGHT+IHJ1zH4LIr+8ggxAx5kKu9ExeGv2qGaiXw+0rzT1l+A7YZxhx40PkhUi9yrE8Oc+3HdrnQIwA==
+X-Received: by 2002:a17:90b:38c5:b0:343:6611:f21 with SMTP id 98e67ed59e1d1-34733e2ccf1mr21792000a91.1.1764252704720;
+        Thu, 27 Nov 2025 06:11:44 -0800 (PST)
 Received: from J9GPGXL7NT.bytedance.net ([61.213.176.58])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3477b7341d2sm2030249a91.11.2025.11.27.06.11.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3477b7341d2sm2030249a91.11.2025.11.27.06.11.39
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 27 Nov 2025 06:11:38 -0800 (PST)
+        Thu, 27 Nov 2025 06:11:44 -0800 (PST)
 From: Xu Lu <luxu.kernel@bytedance.com>
 To: pjw@kernel.org,
 	palmer@dabbelt.com,
@@ -110,20 +110,22 @@ Cc: linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Xu Lu <luxu.kernel@bytedance.com>
-Subject: [RFC PATCH v2 0/9] riscv: mm: Introduce lazy tlb flush
-Date: Thu, 27 Nov 2025 22:11:08 +0800
-Message-ID: <20251127141117.87420-1-luxu.kernel@bytedance.com>
+Subject: [RFC PATCH v2 1/9] riscv: Introduce RISCV_LAZY_TLB_FLUSH config
+Date: Thu, 27 Nov 2025 22:11:09 +0800
+Message-ID: <20251127141117.87420-2-luxu.kernel@bytedance.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251127141117.87420-1-luxu.kernel@bytedance.com>
+References: <20251127141117.87420-1-luxu.kernel@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7DAD180011
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4A4A540017
+X-Stat-Signature: kirgpwbdy4nfafg1j7bea1qu7b97mqxd
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: dgzcyfdejibkibcm1trqczzyuohc5wc4
-X-HE-Tag: 1764252700-534056
-X-HE-Meta: U2FsdGVkX19fy+DgQ36XVLC4cy54xIzWXyH/GRAeuqUErYOLzlrIQ4w4t8pA1BUkiWOSwnL80zpPBNEHRPjsOTrHtk5YL/hjBL7Ihimc95SJzUbF2ow6TJodcznxnGNW8Ec3ts6SakTnKl/WIwqiUeTU8Fw530dy7rFVg4+zFiJ7iGQnwWVakChXG27EyTDUSYcqBsBeoGHV+T/pHnWsOzSxboH/SjoG6+g3iCIZE6JhRpaH1o3u7Nzle+ZS4Z9YCVxefuDCqgZslpRWKvE6eqojgCzZOvT0mZePPqEfRZ/qMzN0mBaSCmWYGhdTBRJp7NzbkZ7Hh56MNjF47PnVtR/P74/3E9e+WPEoE6A1+ZR+ifYWW5q0NaEab9EelM4KYC5iOKFwrINWQY0tQ0LNqp0pRYLitCGEg0brrmkLofqJB1rm9EFmz7SEwPEjk1VsRhPkvoAI4jw4ln3oEdXfiksTrHbuCdtw9FxfvIabUUsRIznW46+y8qOWYsR9CDKTlCWbehXBlO69s2vR/Wg5qLg6BvWgxLLhbUNcQ8225rYUEiZdU/2YqabQDggUmdux2F3qS/fXstI8acIDZOwubUqMpScD88vVtZ4hYeVkGvhbf2eaQ7p9Hw0xL6S623V7Cq4GAdU5U0R7j48Ct7AtD+BY+bhg6DPOApP5363i+oK8vTGZAHbQmgvTl6BWsxlCRwQ3OTBC5prkuUa1gXbemZpEY9+YrHahy6FnqPjvXO70hJbqdd0zuqOZiZ7BJmku4KyYmobiaI8e7QZoTAMoanq36ad8iusgRcfiWFrRVWQBXUCVdKT40iwIxdQC+9/676MJ8TEdSOxJQnrl1Sd30OM3ua4hhZNd4Nlywd1Zc247leJ9/Hrvw0KMkHY/JIKg2OSt0YTPsrl4A+wfB4Uc2NWqWJLilL23J7Is867tnlTyW+iqHTFyoHl757/EoZ5znePfo4MQ2S0Y25zxy6J
- z4a0TfBg
- o89K6yzDbflpgmBLiaKsaByxZN6gA4hfSC/J4SHykYGzdCIlCsEV3RFZbHi0NpoEHG6UgkzcGVkzdcb7+z9tP/Kv4oSzlpWQNa+6q/1P6xCojvhYeXKMP63kkXeOyL8Fb/gda9JRjlIP9GnWNn3V2JHrN1TVDwaaquMhwD+J/GcbIRN260xRoTasqmtE6R+UNbAcroXsFoay2Q1uzjVfGSDAYLA1NFO7bcG2BB4CME5JXqXzB0tBcFKbEUll6youtYFcATxunuWiTkWbGZm8nsmBEKzWzSUV8PZb/
+X-HE-Tag: 1764252706-36114
+X-HE-Meta: U2FsdGVkX19+T7/pwsxQmGQD0wDO+zIsKId+TN+WbfK887Fwc1j1gggJMRLZB03BRplNb9kCJ655KneIkrOEXC1Em+onHR+zs5LIP2oOcnMKfz0ZVXDnNalHw1o4DzCTzcAabqnfFehqxGJJtcBBT8HqBSyfeEXEbN22as82+0yYCCNd/GIbVQbL3/pggTjovRvrC4iWwezBwlJ6PCS2drjShfN8PoVeb5RwEwx0vr4oXv7YMdkjR8K4TeeMOa+WqUmDVcHbVpKDvVooLFumGnD60T/DO4KtWpKg8fziwqe8Cnz34N3OInw8HAzfXTB1DBJ9zB35h/l2hJdTKZYO1/X8E9Di1xgO42vrHY/ksjOP7XxOLk3r1inCa1q1pQY5TYaiJOayU8qLTPKvMMxcg3BXQJy6yiTYgVdVjPeFfbirJFmS1UWJIk9x17J4Z/KonHiyypSC7KoL0Ip76E4RFGcpjIT8Wa6KYuta5Qn3Dk3v7q5S5tSrXxah8uf2L2vaDbua2Uar8hPYNqwU0YUYXPbLEOoFLZlBsxDAyuxTJm0kkUE6cj0tcH6Hof5uwHJ9j2kLX9zXSpw9YAK3uvf5zBkRHUzfEtpxemrf8RVBVJD2K1YXa4CRv5FhmvuvcMLytcoeH1WGVs34nyx9uc+xEWmdRVcyXp2KWrf+shkEjU7APNtghp7VFE8s1x54BhTUMHiRyyil8MmfIke9iQegiF8t6hCtW5l5L3iwbz3AJTd312B2xLNShIe+hvzSBu9R/wug3XkgzbouDTbyS45uX4bCdewJRTEkpMWPzC9PKxMV9mZEnUiwU/+az6ssmr7pHV3lGu1qzxAhAMNokj0Dp4H2KQygH/nqGrEALv5GUZFVYWC4ELqXiotj0huL/+aj6B0bmLfq0eID9Q1rF9GQ4PpO5hkQOZD34HJvSAJNQcGLlmi020dk2HmxbG1/zKAu3JgQo/awGxsgrjiJFP/
+ 1svpHsAC
+ eAFNP0AUu68KAFsDs8n+x6wlE+3ISJH13jon9oJA3Mf11IADGXvJWCHoYmeuqsQL7lLI0Zg7FB1c2HeL3hdRGH50C3DmnB0OHQxR6jeU7q6XTM8bC8oUA9uukfzaPum3QGCVAadCXSWMOjItIG43IBuVsuQeAnlPObZDZaFras8dNdofQO6+/ekUx3u9LUwtLxk95NMLBuoIxCkdufO62+djUcRjMxxi4eX9aA4gsHIxYaJjKj2ycamqPgOkMT7FTTZ3XnQTotWerync6iW1JT1ntXO7ppNcCNLOYiWEYBjC/ZE8L7G0A1xtAkgYsD/9NMYCO+eLdTZ7Z/TbWwYl2UW051hFRdpQbjmIcmVISCFOtBus=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,59 +134,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series introduces a lazy tlb flush mechanism for riscv. This
-mechanism is based on two insights:
+This feature avoids unnecessary TLB Flush IPIs. After memory mapping
+modifications on certain mm_struct, instead of sending IPIs, this feature
+records the TLB Flush information on percpu buffer, defer the TLB Flush
+to the moment when target CPUs really load this mm_struct.
 
-1) Since each CPU has limited TLB entries, there exist limited active
-ASIDs in each CPU's TLB at the same time. When a mm has not been used
-for enough long time (or, after enough switch_mm times), we can assume
-its TLB entries are all evicted out. Then we can clear current CPU in
-its mm_cpumask so that next time when the memory mapping of this mm is
-modified, no IPI will be sent to current CPU.
+Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
+---
+ arch/riscv/Kconfig | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-2) When memory mapping of a mm is modified, instead of sending IPI to
-all CPUs recorded in its mm_cpumask, we check whether each target CPU
-is using this mm right now. If not, we just store the TLB Flush
-information in target CPU's percpu buffer, avoiding the IPI. Next time
-when the target CPU switch_mm to this mm, it can check the percpu buffer
-and perform TLB Flush itself, without IPI involvement either.
-
-Using this mechanism, we significantly reduced the number of IPI due to
-TLB Flush:
-
-* ltp - mmapstress01
-Before: ~108k
-After: ~17k
-
-* ltp - hackbench
-Before: ~385k
-After: ~2k
-
-Thanks Guo Ren for his advice on memory access latency test via lmbench.
-We are unable to test it now due to lack of real machines. We will
-supply this test and adjust our mechanism according to it as soon as
-possible.
-
-Xu Lu (9):
-  riscv: Introduce RISCV_LAZY_TLB_FLUSH config
-  riscv: mm: Apply a threshold to the number of active ASIDs on each CPU
-  riscv: mm: Grab mm_count to avoid mm getting released
-  fork: Add arch override for do_shoot_lazy_tlb()
-  riscv: mm: Introduce arch_do_shoot_lazy_tlb
-  riscv: mm: Introduce percpu TLB Flush queue
-  riscv: mm: Defer the TLB Flush to switch_mm
-  riscv: mm: Clear mm_cpumask during local_flush_tlb_all_asid()
-  riscv: mm: Clear mm_cpumask during local_flush_tlb_all()
-
- arch/riscv/Kconfig                   |  12 ++
- arch/riscv/include/asm/mmu.h         |   4 +
- arch/riscv/include/asm/mmu_context.h |   5 +
- arch/riscv/include/asm/tlbflush.h    |  63 ++++++
- arch/riscv/mm/context.c              |  24 ++-
- arch/riscv/mm/tlbflush.c             | 302 +++++++++++++++++++++++++--
- kernel/fork.c                        |   6 +-
- 7 files changed, 394 insertions(+), 22 deletions(-)
-
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 22cda9c452d2a..d219c7f4b129e 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -925,6 +925,18 @@ config RISCV_VECTOR_MISALIGNED
+ 	help
+ 	  Enable detecting support for vector misaligned loads and stores.
+ 
++config RISCV_LAZY_TLB_FLUSH
++	bool "Defer TLB Flush to context switch to avoid IPIs"
++	depends on MMU && SMP
++	def_bool n
++	help
++	  This feature avoids unnecessary TLB Flush IPIs. After memory mapping
++	  modifications on certain mm_struct, instead of sending IPIs, this feature
++	  records the TLB Flush information on percpu buffer, defer the TLB Flush
++	  to the moment when target CPUs really load this mm_struct.
++
++	  If unsure what to do here, say N.
++
+ choice
+ 	prompt "Unaligned Accesses Support"
+ 	default RISCV_PROBE_UNALIGNED_ACCESS
 -- 
 2.20.1
 
