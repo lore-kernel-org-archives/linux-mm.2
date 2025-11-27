@@ -4,125 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2436D116E3
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 02:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B169D116E3
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 02:40:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5156E6B0008; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
+	id 6F5486B000E; Wed, 26 Nov 2025 21:40:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C59D6B000A; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
+	id 6CC5E6B0010; Wed, 26 Nov 2025 21:40:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B5246B000C; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
+	id 5E2586B0022; Wed, 26 Nov 2025 21:40:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D746B0008
-	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:36:35 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B993FC0970
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:36:34 +0000 (UTC)
-X-FDA: 84154823508.19.E4962D7
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DDBFF1C0006
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:36:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=i1cLveWU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764210992; a=rsa-sha256;
-	cv=none;
-	b=wLikotVSt+YRaeF4bMr5y/C2rfUWPNMgWlm0uXfHzAVyVkpDDJ4R4rzFH7rgvc/6LP4ZRU
-	3G+1+9nFV2L0tWZHP03b2LvZqjTQinarNaJdAd2iEmHK4ipFiafTCBGBpHMTs6nDkEGQdi
-	+zwifrkldEVcH5ORqVo0eIHhXxQ/sFQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=i1cLveWU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 47FF86B000E
+	for <linux-mm@kvack.org>; Wed, 26 Nov 2025 21:40:50 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0D9FDBB9B0
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:40:50 +0000 (UTC)
+X-FDA: 84154834260.02.7D61C07
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5F14612000D
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:40:48 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Htknuk3x;
+	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764210992;
+	s=arc-20220608; t=1764211248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dG4CF2IMP7M0Y+1dFumBVpCBxoZ8uo+lnVXyk35N/v0=;
-	b=yQSmUCaqvcUBKIGbeEIe4m/a8UL6OesM+idMkPbo466rs050DXUuXoxadXWZc1nIBI3fJf
-	mgjFM19wrA3JqEPJCfrFernH4cR6986mVZDBvxAXc8J4cqYi5p+XTs7uSndaae7JoDR+oL
-	2hyfdz3qMimjcLKT7kn2ke7fNWPTpMQ=
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78aa49cde3dso4412727b3.1
-        for <linux-mm@kvack.org>; Wed, 26 Nov 2025 18:36:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764210992; x=1764815792; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dG4CF2IMP7M0Y+1dFumBVpCBxoZ8uo+lnVXyk35N/v0=;
-        b=i1cLveWUlKwSMRaPVMtkPON7pOy9tUgqV90lLyrBuhDYaIeQyw6PjKjYKSUf+H59+1
-         SympLipzsBMjbQ9SrnLWZPc2dNYIfD1H1Yz/0C6j0imruseolTeHaY86ju60/DVW3MR0
-         huGujOSStXMSaURJaB/F9A8rpB5KG28fDOvAh0AqdsruALvSxfi2TyEqmgot63HbvWnn
-         /QC3uE8+CKsT+PnhK1aMst+apPY7vVV6YESXM+eMS40MFY5qo1z2DyhQZk4Gtek/l8rV
-         y7CWUO99AUs6v4D8dRaMRul2D3qZBCfsIE3HOP5v6D9VKRhOrusKYgFjeM63Z3XFZCoD
-         ihmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764210992; x=1764815792;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dG4CF2IMP7M0Y+1dFumBVpCBxoZ8uo+lnVXyk35N/v0=;
-        b=AuesOVl3VX4lRuGXIjOmgls1+q6UCXZXn2vreX3RHtmSReulLJYawROx+UiTAQj3IG
-         /nKsGcOXtiuP+OfYG5NKgH5DrNrhROJLevhchpMgQ5fmSNkVyI2zKicb4dD5GyRQMaHR
-         ZMcusQRTtHHc9l7obAokdZmuafyEyNG4qNnxcQBksWSTb3R72shj8M48ohDhp17B3p4/
-         xUr1TBOPOxdIQN9Dw/sZC2RVHQ0OTgd5WL7DlMrRy5NrTBiWyPuEygC+xN3VUdbeJzI9
-         3LJe1pEMIN8VGLTLaZ0xYiSYlAwrBEQswiMfkjlSM2PVG8zpt97KWuTdH0FiCyZCWUgo
-         PBHA==
-X-Forwarded-Encrypted: i=1; AJvYcCXAePW7kTaxfz6uLDfLHOq9UeN53n2J53F1LKQFIFOu3hMZ3L2GcsUuQqSl7tSDClhZT8x7j5j6cg==@kvack.org
-X-Gm-Message-State: AOJu0YydPm9jSFC+OGa54PPJ0tGISb4lYUkJUO6jTYPY50uqMtbjpdde
-	TYGnhVWB72YSwD7L2vHlIeiyWTQh0XWIPeX2MoDZ6oaQ6PU47SDNNpy9a6WZX8YHjty/sQDmS7m
-	HsHEs+eO4bKp9zqCJF+f0Yk3WWqv0sAE=
-X-Gm-Gg: ASbGncu0ecYOExErv+qSZBa1VGu2N1FeljSA0xlQcnHnUQToqlTHlqzFsyoFC0uly5L
-	ZKyBlQPQFThQheMBoPm/35AshSDXjWpK/52JKNpYdzdGsNz1mKKcJbAUyTJ/56sr+V/nyXen5tV
-	xiYDaQ/l3UhNdBBh5lyKwLjPuGzhVT3CpunvTmuF1MJvf3w65cA4UYqIouDqJ2wyLGB+RD13lP1
-	H8PqKw8q7mN+HBmrQhdC7AJGTBf2nsuH+O1CGHj5a/c94x/TYrbC1Q4iKrmKGb6s///yNdcCDEh
-	427a69w=
-X-Google-Smtp-Source: AGHT+IEfDA/1rHeriKTtWS6bCyAPbkv++vWNjxf3ZtzQfH/D7x8K9kI181xzUZI2IDSfMgR8uq8FIQ6PZ94MkZtBzVQ=
-X-Received: by 2002:a05:690c:6087:b0:786:5926:edab with SMTP id
- 00721157ae682-78a8b491ceamr194700327b3.17.1764210991823; Wed, 26 Nov 2025
- 18:36:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20251026100159.6103-1-laoar.shao@gmail.com> <20251026100159.6103-7-laoar.shao@gmail.com>
- <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com> <177c8e4d0567456baecc962bf5c1038f05358cc0.camel@surriel.com>
-In-Reply-To: <177c8e4d0567456baecc962bf5c1038f05358cc0.camel@surriel.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Thu, 27 Nov 2025 10:35:55 +0800
-X-Gm-Features: AWmQ_blljVhaUoneZ62O-qRbUJWn4XyE-NLR9m4vdRR0mJlvaxy3SlytZXAid4o
-Message-ID: <CALOAHbCeRZO6vy6qmnG9OgttpTDBtymrvrUZk4+kRmiN4xrpRg@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
-To: Rik van Riel <riel@surriel.com>, Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
-	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
-	Randy Dunlap <rdunlap@infradead.org>, Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>
+	bh=zySDNhZhEUrvvU9fuLi2ZDzsJJDwlWwhZlzsoMf9P7E=;
+	b=Kfrv0+R3/Ens0TBTz9FB5NcmVoqIik9aV4nYVSRY/j9Hx2FJvsNRPWEH5aGRl/jsW4W71k
+	W5tKEfr6PdRZ9lYgrVw1zJt5vsj/2YC+gkCqTwhXUcGtuuL88fQa5Y0b9+jTL6EfB0al5M
+	JMVbwEyOFeiVgHzvlNAVgbQKJ+iM2wc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764211248; a=rsa-sha256;
+	cv=none;
+	b=JQTXHRldwWjOvhmB2O/ZwdDdgTRZfMC/8/anfJnteHcpdhOqstwQRxi16y1Qx9OWz+BA7J
+	2Ayer/sCC3Qy3gR4qQ3Uf1ix69Wo10YvpoYGPR+OwTvOquSdQ0o2q3gcbCXQcUeCSGXio8
+	E2v8lF9W56dT6EiGkdSJ9sWVSKUxA6w=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Htknuk3x;
+	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=zySDNhZhEUrvvU9fuLi2ZDzsJJDwlWwhZlzsoMf9P7E=; b=Htknuk3xfI0Xg7jAMB5TKCeWwS
+	jrAVSEnRQTjIvtEDrZC7bSRARc/5zdA1yQXJf9saodz85fGdYxJt6nvVc/VJEY7+SlH7izRyPIp/U
+	GzENtRngYheNQvxV9ocw9qDezjFAQrhuowDgBT+gLJ1/l7tJrHnrIp/WWvUGt8WB018+iDYaMFMF1
+	VMvrtmmNJjuMs1FNOBJYpkigv41T7sScMhMUAxL8hJZ5jkRgz5xrKd6wBUjNZAOGUXWkjpu2VOOHD
+	6xTPHZ6Muccj8ngj/n16BOAwTqXmUWw7YjNV4+OFes7s66B2RUoOTkEuROb6p4Hw1Qyl0ORxBEs77
+	Y+6czb0w==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1vORpo-000000004yE-3Cjm;
+	Wed, 26 Nov 2025 21:34:17 -0500
+Message-ID: <56507d9b9210ef5f67715b81efd96fd809021a44.camel@surriel.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner
+ <hannes@cmpxchg.org>,  Andrew Morton <akpm@linux-foundation.org>, Kairui
+ Song <kasong@tencent.com>, Kemeng Shi	 <shikemeng@huaweicloud.com>, Nhat
+ Pham <nphamcs@gmail.com>, Baoquan He	 <bhe@redhat.com>, Barry Song
+ <baohua@kernel.org>, Chengming Zhou	 <chengming.zhou@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 	pratmal@google.com,
+ sweettea@google.com, gthelen@google.com, weixugc@google.com
+Date: Wed, 26 Nov 2025 21:34:17 -0500
+In-Reply-To: <CACePvbUCeEu3dkq-M5fL-k-bca2c_h8A4HTCmLvRaV1aFW5qnw@mail.gmail.com>
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
+	 <20251121114011.GA71307@cmpxchg.org>
+	 <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+	 <20251124172717.GA476776@cmpxchg.org>
+	 <2a8fd7bd35939b9aa4a7267c93e1fda995137966@linux.dev>
+	 <CACePvbUB8wjEH1rsaRs+LwX4RKGrjLFSGzjhgrdS3e7Lcz6BeQ@mail.gmail.com>
+	 <3e90ccb0a3fd20e9b2d6e2cf19db9590394f7edc.camel@surriel.com>
+	 <CACePvbUCeEu3dkq-M5fL-k-bca2c_h8A4HTCmLvRaV1aFW5qnw@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DDBFF1C0006
-X-Stat-Signature: q98759n46j54qhwj4yuyrz5hkgt1o7r3
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 5F14612000D
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1764210992-425402
-X-HE-Meta: U2FsdGVkX1/jRdyhXaeYNDkvSnx8I9K0POV7916ghIZDmnc70i4SpYGJnWVS0JY2gpceRZJZ/nJYSE3QQ4DIlZncBK8mgeuLt7YyY24GqTv8zoRCGiGukgs9/NSoK7W35297ziBVT1+hUfVbf9i4en+QGtDInzeUFnJEF0LnJ8mTAf5XeJQl+bDAptdQ2VraAJJgYioRsH75VuS42vflCDn2fOiheMKwG3prgpnzE5p1VxyEZP3kykmmFVa3FZNmoaH/x9qVQ+ycpy+ilPmJrPx9Nm7zphHUEsxbTru+7xY+8TFoq5UOoQTrrOOCXVQclRU0pUFC2zDjtrrg8H8wgWWjJ9vRkgr0vwdppL6Vg3NXAkpBP+nVYyl/LfEbcqZt6NSPBeuWxrlZ4rVvnXHmvZ+OcHVAxuj9Ha71kLUgeUM4O8NLDonmIT/VZ0dIXA4O8D7GqKj5cXRQo8mQ+1rC2T3SD9hCREFlRFy/p/c3haCdgnvWPgJ39YTgfTtiN92WwqCetWNG00iaZtpZqVRYh37SQhbmJwf3iL55hzaWoAP+1yl9TxIiUfJKFZDlzkuYXXsiHBsZ3CANkL9VMv24NDlSLPaJwdZEnnayjZGsuZnWnZm9YW0OmZdTICwgk1Is1vG4m1LODjfgsf09YYK+R8oQtCOLW4eaQJau6CT7dWFvsRZNRQ0G6EWmYQtfysMiJcxcFhPBeuAMmqR67pHVmpKRQQHL2g0Oyp+nfCHTIaVNjatX8zPEtDtvshba87B8FlZALNmtHQnpfJkQ6o3rQ5/5vs/GlTf8RcYxYeru+RK3odnBONdfTZ1YTWJhTFAFZqTahVL1NJtl5JRLRRPM5B595Ylv1rGuyc1H8O2R3gyDVrwzd87gy/en8bm15eQU4HkSrpshUyRQzinfkyk2Ml4cZBSwhMkfWOmtk3kY8y84Y1YYN/XeKuSmZ8AHEf60fFMxuwcSD+XxYrlByBM
- vJ5uotjp
- TJU9tGREilr1goi8jOZiwn4ACegB9B4ky7A0sqmhEFcWo1fG8v4zC3dnYGxg9l4ol1fTBM3nE3JfjzCyrxhwStT2QGyfaIm+wug4zRJ+BFMWBIJYbeMkVmrTBeaU8nZw9OXst9SxTKTgyYgDl6fmJs6u3lUL0wkAeG2Dl/yDbkb9/uXPnuGx7LyMhOMot4yw87ij3F5ZD4xDmhnb/HkeKbbJccluG0DHTFWj3e6RWG0JKFNkHkpOTRLS5RLs3N8FsHwxljTOEZFC9OySex7vUgBoJWe2UJIDtaErdxZ8wQtoo2K3Uppch6dz0EN/Y24nlFlWB6RWyGtLwlePjMYlEPvbQJpjWomrAb7+/q4o945l+iOXN8MtEDXfQJCosm+NTJjnsvpYJeWJx/GHSI7Cjy2YjDhZqoXZSUoIgWTC+0cYoGJpa4SXC8neCOWev9n9xJCy8Yu8AJpE09BhbrTIm64DXD7ktnWJK9bI1ty1k6CxCbigBOZd7HxxftkEMWPPIGRZaRXoALaA1JnVL+v1I0vRnI+pLc/p2L7aN
+X-Stat-Signature: zjrdq7w3bahwnhaq6bfg65qcymricnhf
+X-HE-Tag: 1764211248-81171
+X-HE-Meta: U2FsdGVkX19Mr1ipIY2ByXqRMz88uLH1IkBCqcciWrdmswUUtifk/S0Hy4iBl9fyD2ndLHUC6DO8TfJyN7U3ypa+XJjOAGiiaakk0o0POZeu7lyddckhEAU2lVwmBVJL1i7PxZMQZ3y/P5U+5Gw5rU8cmUZ5EThYkeUdjTMYronGvEpZYs47j3q0WBwuC4gBu9z/hG86eTgiyQzZa5NM44b+hNfRmzdKrXBMhQae3PjdmapG4IMo3Jqjco7eIL7UEOmV4pdsB0g3BZi7oNwFtt87XIej5crYoz3VDgZFV8uzhcwO0QiPG6AAj1psqCV/o28qHgpJmjNd5se3T4Io4gnbDVZIVYSExtrQneUJuvfddg+wUlrFhGbIvmOQ0H9E/JQj3EkppATbwb7E1sUI65GYSjbBt5zmY6730gI1CmTH7L12KfvurLq0ICJ0Pr+XOkswf+nCrRSf1n2MJMa0GOCRMzv4lrS7X6oClofOoXQtUSY0OZwu4/7pUrVSBfPHAG47BrFXvGBEUuFarf44c8kibbVGO22+G/q9sPzUZKKmexxnGuXWIAqgOZN+evsaIhokt/Xu2ObTq+aoyXbDUjmL/MrN2+jPQDRs2t1V2iNsw2ZenrbrSUOQb2z/7kVppZZ4h63cJEW8r5R9F3LTXvrouWumFoH2heqLpKFUURt3Tsle5DER2oHcEnW8TDHilXYvwJYblNhByhR8jPu+4lc0503w8MpgKFxQfnvlEdv+Ia8mgfSlbvlCmMwWrGH0j8hlhksw9VKcVhhMIQ6V40VjSwjksXabtKCdLRRbu+a5hjDMx4oJ0fQH/d+ZJkPceDmSbjNJDQINV1c8WWReLTtpAw/QIX/abRIu7MGqiYKHsN6qEVVoGmZGc0HHXgoFz5rOnJcZUvx/Mpt9/jdDVw1DKKg4cRihhzzMUkSf+1IyKG3XoZTRgWDxtJxAgM9YlrakLyB5qwocjt9VVd3
+ Eq+gc2xe
+ ci17sZzBQcU3fCYwhd/ET85k6xAV32I7scSoBFYZVI0bRIgV+KQD3hUgoASgs3DzTPwpXzajxfgbppw3j1lv/SLAxw9N7H0jaX7mkEg3J2i0AIgckClfu6gyr7SyW6JdDFxkRqXCMsQOplvQJr1G6JIjkKoTnou21dYH25FrGIgRwwREyCUNjdXh3zcef6BvZnRQ1LfXmpALwN3pLCprWZcpd+ixhaWGcFgi5hszOftOzAv4P+YpaxgSyY8AS1AEeHDaPKxA5rsZAaBs+DGgBFiKRvQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,92 +132,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 11:13=E2=80=AFPM Rik van Riel <riel@surriel.com> wr=
-ote:
->
-> On Tue, 2025-10-28 at 18:32 -0700, Alexei Starovoitov wrote:
-> > On Sun, Oct 26, 2025 at 3:03=E2=80=AFAM Yafang Shao <laoar.shao@gmail.c=
-om>
-> > wrote:
-> > >
-> > > The per-process BPF-THP mode is unsuitable for managing shared
-> > > resources
-> > > such as shmem THP and file-backed THP. This aligns with known
-> > > cgroup
-> > > limitations for similar scenarios [0].
-> > >
-> > > Introduce a global BPF-THP mode to address this gap. When
-> > > registered:
-> > > - All existing per-process instances are disabled
-> > > - New per-process registrations are blocked
-> > > - Existing per-process instances remain registered (no forced
-> > > unregistration)
-> > >
-> > > The global mode takes precedence over per-process instances.
-> > > Updates are
-> > > type-isolated: global instances can only be updated by new global
-> > > instances, and per-process instances by new per-process instances.
-> >
-> > ...
-> >
-> > >         spin_lock(&thp_ops_lock);
-> > > -       /* Each process is exclusively managed by a single BPF-THP.
-> > > */
-> > > -       if (rcu_access_pointer(mm->bpf_mm.bpf_thp)) {
-> > > +       /* Each process is exclusively managed by a single BPF-THP.
-> > > +        * Global mode disables per-process instances.
-> > > +        */
-> > > +       if (rcu_access_pointer(mm->bpf_mm.bpf_thp) ||
-> > > rcu_access_pointer(bpf_thp_global)) {
-> > >                 err =3D -EBUSY;
-> > >                 goto out;
-> > >         }
-> >
-> > You didn't address the issue and instead doubled down
-> > on this broken global approach.
-> >
-> > This bait-and-switch patchset is frankly disingenuous.
-> > 'lets code up some per-mm hack, since people will hate it anyway,
-> > and I'm not going to use it either, and add this global mode
-> > as a fake "fallback"...'
->
-> Should things be the other way around, where
-> per-process BPF THP policy overrides global
-> policy?
+On Thu, 2025-11-27 at 06:07 +0400, Chris Li wrote:
+> On Thu, Nov 27, 2025 at 1:59=E2=80=AFAM Rik van Riel <riel@surriel.com>
+> wrote:
+> >=20
+> > On Tue, 2025-11-25 at 22:50 +0400, Chris Li wrote:
+> > >=20
+> > > > - We still cannot do swapoff efficiently as we need to walk the
+> > > > page
+> > > > =C2=A0 tables (and some swap tables) to find and swapin all entries
+> > > > in a
+> > > > =C2=A0 swapfile. Not as important as other things, but worth
+> > > > mentioning.
+> > >=20
+> > > That need rmap for swap entries. It It is an independent issue.
+> > >=20
+> >=20
+> > Wouldn't rmap for swap entries be more expensive than
+> > simply always having indirection for swap entries that
+> > are in use?
+>=20
+> It might be, to be frank. I consider this pretty far and late in the
+> stage of the game to evaluate the rmap and its alternatives. Do you
+> agree?
+>=20
+> I might or might not try the rmap for swap entry. Right now I don't
+> have many data points nor insights.
 
-Makes sense
+On the contrary. I think we should at least do some
+back of the envelope calculations to estimate the
+overhead of the different proposed solutions.
 
->
-> I can definitely see a use for global policy,
-> but also a reason to override it for some
-> programs or containers.
+With both Nhat's vswap, and your proposal to always
+have swap indirection with a separate front end, and
+several back ends, there is no need for swap rmap.
 
-We have deployed BPF-THP across nearly all of our fleets for over six
-months and have enabled THP for dozens of our services.
+This is a good thing, because a single swap slot
+could be referenced by dozens, hundreds, or even
+thousands of page table entries, in the case of
+forking servers. This creates complexity which is
+probably best avoided.
 
-Based on our practical experience, the global mode has proven highly
-useful as it establishes a default policy for all services. When a
-specific THP policy is required for a particular service, we implement
-it using dedicated BPF maps=E2=80=94such as thp-always, thp-madvise,
-thp-never, or other custom policy maps.
+Conceptually, Nhat's vswap, and your idea of having
+always-on swap indirection seem to be the same thing.
+>=20
+> > This sounds like an uncommon scenario, but it is
+> > functionally identical to what is done to pages
+> > during zswap writeback, where the page table entries
+> > stay unchanged, and the swap page is simply moved
+> > to another backend location.
+> >=20
+> > Why implement two things, when we can have one
+> > thing that does both, with no extra complexity
+> > over what zswap writeback needs?
+>=20
+> Let me ask you a clarifying question, then.
+>=20
+> 1) What exactly are you trying to propose here in what project? VS or
+> swap the pony?
 
-That said, I also find value in combining a default global policy with
-the ability to override it for certain processes or containers.
+In the past, when faced with competing code bases
+like this, one thing that has worked well is for both
+developers to send their code to the list, and then
+for both developers to send each other suggestions
+(or diffs) to improve each other's code.
 
-The global mode and the per-process/cgroup mode are not mutually
-exclusive; they can coexist.
+Vswap and your always-on indirection seem to do
+exactly the same thing. This seems like a good
+opportunity to work together, and come up with
+code that is better than any one person's code.
 
-Through our use of BPF-THP, we have found that the most reliable
-approach is to allocate all THP at the initial stage. If a service
-dynamically allocates a large number of THP during runtime, it can
-easily trigger compaction stalls=E2=80=94even on the latest upstream kernel=
-.
-Therefore, monitoring compaction stalls and memory pressure is
-essential to determine when a service should stop allocating
-additional THP.
+> 2) What stage of the code change do you have in mind should this
+> change apply to?
+
+I think it makes sense to get the hard design
+problems resolved before committing to one
+particular code design.
+
+Spending months to resolve subtle bugs in a
+code base, only to discover later that it does
+not do exactly what is needed, is not the
+greatest way to make progress.
+
+>=20
+> I can't speak for VS,=C2=A0 I am open to embrace what you suggest in orde=
+r
+> to swap the pony project, that is after I understand it first.
+>=20
+Once both Nhat and you understand each other's code,
+and have suggestions for each other on how to improve
+it, we will likely end up with a code base that looks
+nicer than either of you would have done by yourselves.
+
+The more perspectives, the better.
 
 
---
-Regards
-Yafang
+--=20
+All Rights Reversed.
 
