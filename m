@@ -4,109 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123E5D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 08:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37A34D11183
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 08:31:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4331B6B0005; Thu, 27 Nov 2025 03:26:49 -0500 (EST)
+	id 5760C6B0011; Thu, 27 Nov 2025 03:31:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E4746B000D; Thu, 27 Nov 2025 03:26:49 -0500 (EST)
+	id 54DBD6B0012; Thu, 27 Nov 2025 03:31:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D2D66B0010; Thu, 27 Nov 2025 03:26:49 -0500 (EST)
+	id 48A6A6B0022; Thu, 27 Nov 2025 03:31:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 187E96B0005
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:26:49 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 35E7E6B0011
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:31:04 -0500 (EST)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9377C14097E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:26:48 +0000 (UTC)
-X-FDA: 84155706096.09.B657DD0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BBB274000F
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:26:46 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WcmFwl3B;
-	spf=pass (imf17.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D840A1609E6
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:31:03 +0000 (UTC)
+X-FDA: 84155716806.09.BE6303E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3A49D18000B
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 08:31:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hy3wn4pI;
+	spf=pass (imf16.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764232006;
+	s=arc-20220608; t=1764232262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6a4TlV6aY36ltVUhIhukCUkbYrk9qvlQSVSRFBITCa0=;
-	b=JDpifVj76hLkoZKcxWKKqc/7wJwH8IAYyvTeDCrjhWh0opUCpJQ8t5OFXGl0aOSa1ktBwG
-	b+eH/PZtOJJCwuUSfTyn33qW5WWiGGeyRcSfAluRVYngxzbPvNoyWkZLP7troxwIEYa+Fz
-	VFk+gLxxmlf3U/psfzBFvqq9ohArDXQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764232006; a=rsa-sha256;
-	cv=none;
-	b=oiAc+RmZ84Ja1Rd6nrdeC1bhgQCAnTgjwXTSMhV6vnfAsRmiQr5GbnFOTboxRZAmD5cGmZ
-	6Hkyx9iIn0bETXHnMjmyJ3L9j9B/OH9Jd2l1eGlfn8/6Lpl1tQfpmUnQbOYWmHbs24dw0P
-	qtrPl9AV5NOqAPPtl+AOLwvjIeogm8Y=
+	bh=RTLRZz4KtHST3+qtwY0peYd8mxioXsWdJcqMaUk9YhE=;
+	b=nCjje9enBbO2ZZTr9l1dbHWo+xMzciWWmkPrAEfRUvJ4Ym0shA7IpGP97MBSOCJqNzttQn
+	OXAudNAN260lSpOgQnx1HxeBgMIgseFuKaW0l9zVJatRnoQ4mOQHN5Ki+g+vhlOAcA6Nww
+	kB2oVrPdHk525kxoNz03iI8MCNsTTxs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WcmFwl3B;
-	spf=pass (imf17.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hy3wn4pI;
+	spf=pass (imf16.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764232262; a=rsa-sha256;
+	cv=none;
+	b=Nt0C85K3Qw3nizDp5XkjxS1KMdAzptRVIPt10TvupRLZRQ+ldtU4PSJoGvWDnCjHmLz/97
+	H0fofDE275gboAJZEcpvfPEnVT1L7sPX1J6hKYCYLe8v+VA711f14zsey1rfzT3w8bLHxI
+	56VOWw9o2LNe2j7j/jyOReqH9kG8rG4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86C9E423E4;
-	Thu, 27 Nov 2025 08:26:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336B6C4CEF8;
-	Thu, 27 Nov 2025 08:26:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 567F460178;
+	Thu, 27 Nov 2025 08:31:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21C9C4CEF8;
+	Thu, 27 Nov 2025 08:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764232005;
-	bh=bcPfE1QJFfuPJbcIojv7Nn8Gaq58C6i7WGhcnOmsWd4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WcmFwl3BFSTa59/qQB3P8sjeCiQkh28Bx5X8iBQfaUe9YSkO9nM6cU7737TjnKOAp
-	 JJkTOlBk92QSIZ2v8m6Y6XbVK9HWVET1oCn6iBF1FjQogwNkbb80I07YujudKOOV/w
-	 jrIBVQvi9EmOYcwjbuxYPeKj4FIh8G+4H+CR5PI3EtQcfNOF6BBZM98kJDPYxtAGma
-	 9DJFGkFyQVPcFXE1Z/hTrfVM345+WrNeKTmw1VLoc3DWXOvGUwLitd1sX0X02raP8b
-	 M5NVBmYkjvj75YhwFp8eFNQl9M+E9BJCXFBZubd8BB0leNXs9KcXf5d4SR52xj4DCC
-	 +M1Pg28PbX3VQ==
-Message-ID: <a33b87ab-b24f-45d5-bd4a-646988b54a2b@kernel.org>
-Date: Thu, 27 Nov 2025 09:26:39 +0100
+	s=k20201202; t=1764232261;
+	bh=Hw3rpyjIs5q2m80mOXGPqWY/yNyazFCdz/ULb4y5eE8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=hy3wn4pIoJRjHnOpzYoslQqGho8xq0Z9RYYtBYN7+2U4rmY+LWmfVf7QjhnFLU0Mv
+	 QEDP6WThf6o5Q53L7jnlkEhpeYY48FZgFAt4ZuoKkLd8wdchRSGHF/bEWGOnGHYBBT
+	 FZ8xnt7DwDjwc8HuYv/UEioqMANa99L8z5klJ7kXO7QR9T1fKlc6GLVl08SqYFo5Lg
+	 RaTsa2Z8ARaoDxgBAXOvRTYOfrpd22vE5+10ciSjeYr16NsDt0ap+IHbaB2YhBdfA5
+	 1+WTRwoaMqCQwXUJPSdoVgujZPRxtohgp1aIb2iJZsXu+3yC16Y7s79nq8I1k8N+Fe
+	 fXBu/eflyUvhQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE9D380CFC2;
+	Thu, 27 Nov 2025 08:30:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-To: Ryan Roberts <ryan.roberts@arm.com>, Wei Yang <richard.weiyang@gmail.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-7-samuel.holland@sifive.com>
- <02e3b3bd-ae6a-4db4-b4a1-8cbc1bc0a1c8@arm.com>
- <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
- <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
- <20251126134726.yrya5xxayfcde3kl@master>
- <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Content-Language: fr-FR
-In-Reply-To: <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+Subject: Re: [PATCH v23 00/28] riscv control-flow integrity for usermode
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <176423222224.2476283.17736612090314280039.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Nov 2025 08:30:22 +0000
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+In-Reply-To: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, conor@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ arnd@arndb.de, brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
+ ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net, shuah@kernel.org,
+ jannh@google.com, conor+dt@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, lossin@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+ zong.li@sifive.com, david@redhat.com, cmirabil@redhat.com
+X-Stat-Signature: u5jr8hbqzw3sbh7n61gf9weyi1o94ihj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BBB274000F
-X-Stat-Signature: f64m7w5t9ufrdmjzep1dzcok95ipai34
-X-HE-Tag: 1764232006-281143
-X-HE-Meta: U2FsdGVkX1/qNCgAalY0jmyWISeg/OfFjqvncy0QYoyETzyAWI6cWny1wzRFxJ6jt8sjBfQJ9OqDADcZvjcbqrPwZvjiz83vnUMPFIAft5iP+8HjmdYFkRK4sMyBwpV3KD16dj7LGsQSGFMbLKDrTCGb0z7cTFzjOoEUAMS4ewpOWfB6TLV42dtdrbniVxJ5LLrMoipPCsjaGAEBlCSpcXsSJezi8ApNPuyi8KEgXES/VDQWzl83MXHUt4Vvubvo04mk6z69ws+REjDGML3dmwXNjy9zr6qSjleby3gAATfhXWlV/fWyZaXFq4EpNdMJ3CkSNgtiMS8h9IzqEDly40GwnVFmdW17Pz73j8AAyVaYSbKd/g7zPeRixp5h0hT61CUwRiIrEPeUl/38ZpmP3jdsX75CbunKiBfZSp7IRc+/ljTjj0fmXI/RkwwMHLmaS7fK5a26Qli5vbe1k8Yrj7xsq3yIc699pONYGIm2DZklJ9Xo66s979JIhdmJBPzLQXJm14fVySX55mhqYC48qKSNWkKdbkkMo3PhFZpPqBVQnOTroul+KZMj8eIhDVNt6Gfa+iifFqpz7dW4rrEzFM7rCdHWsRInRwf+U5dr0dAF17Wd6GomHWiSFzR3NYNoO2YxFqJ//dlbRUzDYZC6AgnwGc/+7ZrlW6Xbu0BzlJ0hiJvfLFX4GG7AgkwGW99ecl3tVE8W7qzY2xp/DEPiHCIHrqPw2jxlQq95sqG8khs+W0nOTZq73ConZ0xgYC6wElpRPyKgGZp4x/cz1bhT01nOjEVCBfPMn/VM/6EQR7BvRHe8M1C+LPE3QaLhrock/6SNdqu0qYm9sx/StrkidvPyv81Epft3aLBBkvjlUs0xc0JcMIhK//CEiMlWvtlBROUfI48xWg0ztXcjFFprLf8AJDkHEzKiur/p/BxF/arkS2VgFbeArNSAWC5oIoGStQaRYcpePYKmcFuNyri
- 3gTFteK1
- fc28Hc/12x21upT3bSEPiIhprjEwHbWROzJhuVh7JtiVqkYKZZkOQuFLRYRvMElX8pe/luKC+r77uESDGulKepZyJByiKiMLcFZBqU0xDo2YSVC4W+U9N+/TkI7MuudH3j1K6wyh1/B/Sf7AmM3ix8pcMjRmdx0QiEUa9p1uiGPIRRJgQex9Cv5yvppdPJnhkeroJzKmEQ/C5aQJf7h7MlGMkd6S6ZBTplEWQptR6V899OpcFenTBg/yv+UC6IFXzq/GEvRh7KV4pGFscFdOMi+kqTYz12vYZzfMcHM41clcgLZ40fhauVBfewiYJIHQVFKrU6S2Gj92jiYAypqH6oxkvBMpjov+XpGa14/jgA8oOwx8ZgoBXOSscOWK4syN62fxS3/1c29U4waC6ivIrjsBudbvy9WyZn1en4xmDWUwdcxEUcIcOXkhkrVRf3C9BhV8c+OFTP8AYzgm6G+a7sknY48dt1kuXV1EGrExVXYuf1Iw=
+X-Rspamd-Queue-Id: 3A49D18000B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764232262-267486
+X-HE-Meta: U2FsdGVkX19zJzMcyitgEsIytMV93wwJyLO+/fA7KsUUMW/sOqt2yoJedJL7myx86oGesdo0qlOQFG7qGEgxxV3gI3JahBiqXF3ho8q/uJemmM20vsOxoIk05zCERgAMt6lriLaH5vTqy49RsILZDUBTwQ+W/209udc7f92tkd1/svIXPvWRlyAppjIDFYff9Y5SSJicQjYbrFd3tOKo0jXrhlRGBPR/Qijyej5iAJbtTzCA9tOjcO/kCUyqCYOGsUysRnDoA/a6DjWiC9IAwa1xf0Hy06QaqN59+3lm+rFY8zXGhrdnyxGV3DS98b828tbusB1Bgv7640R8/sGsfXAAgrwSLyIrIyeyF6GZAZkXg3qCOmOnT7UVqg7CNg9h5aJVIalnBYTWNnIRM9a6ivyXPiKrZmT4fwV7HeiXp9/pWlwFXfKTjGyB/T4d7+L40f9xjEvCCP3aazAyMvctQaJggyxeIK584+kLO5Rp5XKuWRWKz2G5QHGIzNxTTPpn2V3njCX+lIDD2a5fKH95o18PoLMsduXdmqsJM5Q+PkR5iPTDiD1cpTrq66hypndWr0Jg8ZsQU/AOOFZrgIq2exMvnb4HcDe66jOtv0Mr6x2UTH095AkjSWl+NCY63XcEQhDnj9UPU7aVEgixhICwKBFXNYd0HAYDXEqUvqVzCVwQDKVKEomkYSsvD3bu+hpMW1FNPzwEIPjvrCtCu29EINMu2ID6ho303nZRDxWYiweXZfM1dS+hNbRj2U/qX1GzROzIGhm5JOsEHMZfyozgbG/8D59ETHLiizK/tW81cGHn9bReL9bQGgJo53Yi0++fbdLgq7N3ZMwcS0jbEwtKCBY2xF6W/Nst4jvALbYpnBFWZ+xgTzCHXoOeXwB5qgfow0FR/Y8i62AuG/9ZZWD83VrLlkBXf94jGWmm1/J86+kCbIDzaI+GSsY8dtl0pSnBNepWn/tZPkqRFlFmYxy
+ eAfFgxLH
+ kJHo4mBuChw3TTjBm6YpLNQD4+AIud9+E5IUM7EnrYGuCl2B4rAXmGiVGKRci+yuo90OPl9qzYyBLblTSbJoky0mhDo7y5WJcqzbhxEDNmgA/9jRFeeeQvYuU9XXTneoee3WfcYvHsdB5crlWHoDrSXmGDi7bSKHN11GT1vyXgYdz0gCdA14GwjnXvmtoWQAFLTZRfN5hIB76nLiJXSXmAORzRA2HPg1MikPgjww7FfjAw+e1ONZJhtuLALQfdYBwUi4HvYK+n1MWjkQaONFkYCOJkeAbXl/CYI36TXPm0pCu9OtZRncFQuqiJTgXDQ1EwAxeySYrOX0OuShrHR5QatYPFSwLBL6bUDAgybwjofZ+sGPxmQJh0RD4FM0XY16JgQIQBy18qzGsgOF2zNO5LQ/Uet/zEviuEmLIpZhrbRXlh587VGNo04LppQpLIvFy1/ci
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,85 +114,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello:
 
+This series was applied to riscv/linux.git (for-next)
+by Paul Walmsley <pjw@kernel.org>:
 
-Le 26/11/2025 à 15:22, Ryan Roberts a écrit :
-> On 26/11/2025 13:47, Wei Yang wrote:
->> On Wed, Nov 26, 2025 at 01:03:42PM +0000, Ryan Roberts wrote:
->>> On 26/11/2025 12:35, David Hildenbrand (Red Hat) wrote:
->> [...]
->>>>>>>> Hi,
->>>>>>>>
->>>>>>>> I've just come across this patch and wanted to mention that we could also
->>>>>>>> benefit from this improved absraction for some features we are looking at for
->>>>>>>> arm64. As you mention, Anshuman had a go but hit some roadblocks.
->>>>>>>>
->>>>>>>> The main issue is that the compiler was unable to optimize away the
->>>>>>>> READ_ONCE()s
->>>>>>>> for the case where certain levels of the pgtable are folded. But it can
->>>>>>>> optimize
->>>>>>>> the plain C dereferences. There were complaints the the generated code for arm
->>>>>>>> (32) and powerpc was significantly impacted due to having many more
->>>>>>>> (redundant)
->>>>>>>> loads.
->>>>>>>>
->>>>>>>
->>>>>>> We do have mm_pmd_folded()/p4d_folded() etc, could that help to sort
->>>>>>> this out internally?
->>>>>>>
->>>>>>
->>>>>> Just stumbled over the reply from Christope:
->>>>>>
->>>>>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flkml.kernel.org%2Fr%2F0019d675-ce3d-4a5c-89ed-f126c45145c9%40kernel.org&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C22d0a028b1ec4a8b678108de2cf73769%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638997637481119954%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ocR6usVgRHfue0MrtbQnDO8whINvy%2FDMAfNE3caiY8c%3D&reserved=0
->>>>>>
->>>>>> And wonder if we could handle that somehow directly in the pgdp_get() etc.
->>>
->>> I certainly don't like the suggestion of doing the is_folded() test outside the
->>> helper, but if we can push that logic down into pXdp_get() that would be pretty
->>> neat. Anshuman and I did briefly play with the idea of doing a C dereference if
->>> the level is folded and a READ_ONCE() otherwise, all inside each pXdp_get()
->>> helper. Although we never proved it to be correct. I struggle with the model for
->>> folding. Do you want to optimize out all-but-the-highest level's access or
->>> all-but-the-lowest level's access? Makes my head hurt...
->>>
->>>
->>
->> You mean sth like:
->>
->> static inline pmd_t pmdp_get(pmd_t *pmdp)
->> {
->> #ifdef __PAGETABLE_PMD_FOLDED
->> 	return *pmdp;
->> #else
->> 	return READ_ONCE(*pmdp);
->> #endif
->> }
+On Wed, 12 Nov 2025 16:42:58 -0800 you wrote:
+> v23:
+> fixed some of the "CHECK:" reported on checkpatch --strict.
+> Accepted Joel's suggestion for kselftest's Makefile.
+> CONFIG_RISCV_USER_CFI is enabled when zicfiss, zicfilp and fcf-protection
+> are all present in toolchain
 > 
-> Yes. But I'm not convinced it's correct.
+> v22: fixing build error due to -march=zicfiss being picked in gcc-13 and above
+> but not actually doing any codegen or recognizing instruction for zicfiss.
+> Change in v22 makes dependence on `-fcf-protection=full` compiler flag to
+> ensure that toolchain has support and then only CONFIG_RISCV_USER_CFI will be
+> visible in menuconfig.
 > 
-> I *think* (but please correct me if I'm wrong) if the PMD is folded, the PUD and
-> P4D must also be folded, and you effectively have a 2 level pgtable consisting
-> of the PGD table and the PTE table. p4dp_get(), pudp_get() and pmdp_get() are
-> all effectively duplicating the load of the pgd entry? So assuming pgdp_get()
-> was already called and used READ_ONCE(), you might hope the compiler will just
-> drop the other loads and just use the value returned by READ_ONCE(). But I doubt
-> there is any guarantee of that and you might be in a situation where pgdp_get()
-> never even got called (perhaps you already have the pmd pointer).
+> [...]
 
-I think you can't assume pgdp_get() was already called, because some 
-parts of code will directly descend to PMD level using pmd_off() or 
-pmd_off_k()
+Here is the summary with links:
+  - [v23,01/28] mm: VM_SHADOW_STACK definition for riscv
+    https://git.kernel.org/riscv/c/ae8460ac9db2
+  - [v23,02/28] dt-bindings: riscv: zicfilp and zicfiss in dt-bindings (extensions.yaml)
+    https://git.kernel.org/riscv/c/b32ccfc268db
+  - [v23,03/28] riscv: zicfiss / zicfilp enumeration
+    https://git.kernel.org/riscv/c/55a811a7f304
+  - [v23,04/28] riscv: zicfiss / zicfilp extension csr and bit definitions
+    https://git.kernel.org/riscv/c/92c96b16548e
+  - [v23,05/28] riscv: usercfi state for task and save/restore of CSR_SSP on trap entry/exit
+    https://git.kernel.org/riscv/c/7720cdd21962
+  - [v23,06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
+    https://git.kernel.org/riscv/c/e60eb198b13d
+  - [v23,07/28] riscv/mm: manufacture shadow stack pte
+    https://git.kernel.org/riscv/c/f8fcb7b5bf30
+  - [v23,08/28] riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs
+    https://git.kernel.org/riscv/c/0276a5ea1105
+  - [v23,09/28] riscv/mm: write protect and shadow stack
+    https://git.kernel.org/riscv/c/ae615676bc37
+  - [v23,10/28] riscv/mm: Implement map_shadow_stack() syscall
+    https://git.kernel.org/riscv/c/d291fd38f841
+  - [v23,11/28] riscv/shstk: If needed allocate a new shadow stack on clone
+    https://git.kernel.org/riscv/c/d209ea2fa4bb
+  - [v23,12/28] riscv: Implements arch agnostic shadow stack prctls
+    https://git.kernel.org/riscv/c/8b49f512abc2
+  - [v23,13/28] prctl: arch-agnostic prctl for indirect branch tracking
+    https://git.kernel.org/riscv/c/3363a8d1044e
+  - [v23,14/28] riscv: Implements arch agnostic indirect branch tracking prctls
+    https://git.kernel.org/riscv/c/0177891ccdb7
+  - [v23,15/28] riscv/traps: Introduce software check exception and uprobe handling
+    https://git.kernel.org/riscv/c/6f71171a7448
+  - [v23,16/28] riscv: signal: abstract header saving for setup_sigcontext
+    (no matching commit)
+  - [v23,17/28] riscv/signal: save and restore of shadow stack for signal
+    https://git.kernel.org/riscv/c/4f9da7ad3478
+  - [v23,18/28] riscv/kernel: update __show_regs to print shadow stack register
+    https://git.kernel.org/riscv/c/320c96a55d73
+  - [v23,19/28] riscv/ptrace: riscv cfi status and state via ptrace and in core files
+    https://git.kernel.org/riscv/c/7a39f89a817e
+  - [v23,20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in hwprobe
+    https://git.kernel.org/riscv/c/c09b490a9267
+  - [v23,21/28] riscv: kernel command line option to opt out of user cfi
+    https://git.kernel.org/riscv/c/6e0dc40ceb45
+  - [v23,22/28] riscv: enable kernel access to shadow stack memory via FWFT sbi call
+    https://git.kernel.org/riscv/c/dfd087078357
+  - [v23,23/28] arch/riscv: compile vdso with landing pad and shadow stack note
+    https://git.kernel.org/riscv/c/2cfe57e3bd9b
+  - [v23,24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
+    https://git.kernel.org/riscv/c/418316aa61e8
+  - [v23,25/28] riscv: create a config for shadow stack and landing pad instr support
+    https://git.kernel.org/riscv/c/c5f5ce714457
+  - [v23,26/28] riscv: Documentation for landing pad / indirect branch tracking
+    https://git.kernel.org/riscv/c/73d0ccec35b8
+  - [v23,27/28] riscv: Documentation for shadow stack on riscv
+    https://git.kernel.org/riscv/c/6b8214c8cbd6
+  - [v23,28/28] kselftest/riscv: kselftest for user mode cfi
+    https://git.kernel.org/riscv/c/0f226cf6026f
 
-static inline pmd_t *pmd_off(struct mm_struct *mm, unsigned long va)
-{
-	return pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, va), va), va), va);
-}
-
-static inline pmd_t *pmd_off_k(unsigned long va)
-{
-	return pmd_offset(pud_offset(p4d_offset(pgd_offset_k(va), va), va), va);
-}
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Christophe
 
