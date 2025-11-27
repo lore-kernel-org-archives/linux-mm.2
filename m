@@ -4,113 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D90FED10375
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 07:14:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B22D8D10375
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 07:21:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C48196B0006; Thu, 27 Nov 2025 02:14:57 -0500 (EST)
+	id 071636B0008; Thu, 27 Nov 2025 02:21:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF8F46B0008; Thu, 27 Nov 2025 02:14:57 -0500 (EST)
+	id 047DB6B000A; Thu, 27 Nov 2025 02:21:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7A16B000A; Thu, 27 Nov 2025 02:14:57 -0500 (EST)
+	id EC6F26B000C; Thu, 27 Nov 2025 02:21:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DCE96B0006
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:14:57 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 349C18A533
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:14:57 +0000 (UTC)
-X-FDA: 84155525034.29.E9DF5CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A5FEA40012
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:14:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ksVrEcCC;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DB9186B0008
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 02:21:03 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DCD35B97A
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:21:03 +0000 (UTC)
+X-FDA: 84155540406.19.9CF4FD5
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AF8FE14000F
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 07:21:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=fLInNBs8;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=dk5SuCbO;
+	spf=pass (imf26.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764227695;
+	s=arc-20220608; t=1764228062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zH+sBJ7b8rTeq60rYqS0uTH/1KBsdypogMlIrpG0N4M=;
-	b=1grh+E0lWQcyLs3WdiBmlEM9eclxAF4yVXs/2wea2tLbX24qLwZUKOcNrtn0OSSGhzzAKh
-	n4b16ToebmEUYHOHyELMlTcUMzLUCWHG5dO3Lx2ccNuykoS6/t5X3EpSXosgYrkgPoyvWU
-	cqi3oP/tT51+hvI3lJRfvPVtbevpcsA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ksVrEcCC;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764227695; a=rsa-sha256;
+	bh=3Ad8ik7IFSyx7voLIMN7w0BRCBgrkaim2ypdKamKnu4=;
+	b=Q66LXItj7szQbX3JX8eD9u11TElYPrxk2B5laTIyupfY/u5Xum7m9h2g3JqljaMLM2A4Jr
+	ENhFrth6hGvgEPPqi2v8+GW0zNyd88Yk2tQm40iCQqp3t7qj+pzfz1Q0gwWxxOLXYzMdGI
+	pbIEKEbN4e3LdNpJ9DSGtG6WrxWnaig=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764228062; a=rsa-sha256;
 	cv=none;
-	b=TCj35TlKT46AafDzYXy4/QEeuJ5vDiLSII4d7n5J/fXJCZPT18cLBT6uQgTOv4u1pH93OR
-	50i0EPGhy7RWXPIS7FHS4jmGJG+Z+dHRZzuYKVLupjxMiILmezQGPGvXWByGskjWH+QS25
-	Ig2Vm2LgioBzzjuPDGcNu+3GdercxhM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED57360186;
-	Thu, 27 Nov 2025 07:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EE2C4CEF8;
-	Thu, 27 Nov 2025 07:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764227694;
-	bh=nG1HIGyDMlgn0rC/3lX9+hsIsnZ635QMJyYQCko+Bio=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=ksVrEcCCQASGC1x7cUjW8qzLgPsEpPh2R7b+sIcTD7eXFEI6M2WxpWQcmIrC/E1iX
-	 EsoMz9AFQVpS3mokC3TqIYlZIok1kDTYNurKw3uyaCTORVJQh630uqj2bO1rvzhGv+
-	 8zfXxfKpIv+xyJcKSv7MmbGj/xgY2oMo+LhDDeV3pj7bwiiR51dBmw+FIhe2nBPPw2
-	 B8FMh2V5FtJDeyHcDjQOwoH8FNRqNoUpO4w6LYgCx7TjPc00Kwhsiq+TtG9gVKpynr
-	 k6RpuSVIoNXfdLS9AB7NaP7zBPA/fXkZhYoW9iML+EGqrIpQcIJztFUuEJKAfEd7Vv
-	 VtPOl+v12EneQ==
-Message-ID: <bcd2a49d-a42f-41e8-9f64-4fd24fc862c7@kernel.org>
-Date: Thu, 27 Nov 2025 08:14:45 +0100
+	b=DXfMk7hxe9hdsisY6Flz/bEhJefemaMTe1zp1XBLRyFrwR39L+XN1Nsi6H7u07CdZVBOwk
+	/1eICMJ8bXwMoUcE1bupd/EeWBiNZ1cxCVf3+nuiIHI2w4QjJRcbgc1Y1rtjFIJN9st662
+	R7E67jTtBgLFVKHhAN9JCflRJGIGTiw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=fLInNBs8;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=dk5SuCbO;
+	spf=pass (imf26.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+Date: Thu, 27 Nov 2025 08:20:57 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764228059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Ad8ik7IFSyx7voLIMN7w0BRCBgrkaim2ypdKamKnu4=;
+	b=fLInNBs8TXqUHGtP3Sh1sI6ytVwTqfBLr12hBnrz+MA8vrF5DTVkSUXNqFbzywP456lNeB
+	ez73iUWVfEsf7FI0j6ikXXxHMfwNimMtiy7rW8tC5ZhcKUxZU29BYos4u2BXpsCC5Ald34
+	Vs0GfoQublaZnEOiSv48K7uNCrPlu07CIS0rI3lgaEBNIk8gpzEjvWrfezSP+0BW7PTEpx
+	J8wjLrzxdRXyxoQKeZi0kBumr+eR2LmUSOrGj8xPUOqnMccqZfx0+qYvS5U941NFYPFFZS
+	PrZb9p0STUdw3Zxv3qYbCkZlJXkHt0KmsNyzGv9MQX3zaLVbHr0vTtdeG4MNJw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764228059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Ad8ik7IFSyx7voLIMN7w0BRCBgrkaim2ypdKamKnu4=;
+	b=dk5SuCbOQvbURXCZeKYw/C9ynGOXmOuzOVf9ofmc8gtUWPcmsiNWWOsyOjHAZ0L3i9i8YU
+	ZNHJRX1mAseyi7CQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Xie Yuanbin <xieyuanbin1@huawei.com>
+Cc: viro@zeniv.linux.org.uk, linux@armlinux.org.uk, will@kernel.org,
+	david.laight@runbox.com, rmk+kernel@armlinux.org.uk,
+	brauner@kernel.org, jack@suse.cz, nico@fluxnic.net,
+	akpm@linux-foundation.org, hch@lst.de, jack@suse.com,
+	wozizhi@huaweicloud.com, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, catalin.marinas@arm.com, rppt@kernel.org,
+	vbabka@suse.cz, pfalcato@suse.de, lorenzo.stoakes@oracle.com,
+	kuninori.morimoto.gx@renesas.com, tony@atomide.com, arnd@arndb.de,
+	punitagrawal@gmail.com, rjw@rjwysocki.net, marc.zyngier@arm.com,
+	lilinjie8@huawei.com, liaohua4@huawei.com,
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com
+Subject: Re: [RFC PATCH] vfs: Fix might sleep in load_unaligned_zeropad()
+ with rcu read lock held
+Message-ID: <20251127072057.EbvhUyG4@linutronix.de>
+References: <aSeNtFxD1WRjFaiR@shell.armlinux.org.uk>
+ <20251127030316.8396-1-xieyuanbin1@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, devicetree@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <bc88d132-452a-42a1-9ee5-5407334d8aac@kernel.org>
- <df7d10ba-bb42-4ea1-8c5b-5db88a18eccb@kernel.org>
- <6bdf2b89-7768-4b90-b5e7-ff174196ea7b@lucifer.local>
- <71123d7a-641b-41df-b959-88e6c2a3a441@kernel.org>
- <c0818f5b-b8a1-4730-aa1d-df0f547a3d47@arm.com>
- <20251126134726.yrya5xxayfcde3kl@master>
- <ee5f5da3-8c6b-4381-aee8-b0fab56cbf83@arm.com>
- <6b966403-91e0-4f06-86a9-a4f7780b9557@kernel.org>
- <ab39d448-aa1c-4c93-8e2b-5d97a9c76af5@lucifer.local>
- <1ca9f99f-6266-47ca-8c94-1a9b9aaa717f@kernel.org>
- <37973e21-e8f4-4603-b93d-4e0b1b2499fa@lucifer.local>
- <a1d25bde-3ab6-46b5-a957-db80da7e737b@kernel.org>
- <4505a93b-2bac-4ce1-8971-4c31f1ce1362@arm.com>
- <150ffcb7-2df2-4f3a-a12e-9807f13c6ab9@arm.com>
- <b2fbe58e-f47b-4a76-879b-fd38a915c2ce@kernel.org>
-Content-Language: en-US
-In-Reply-To: <b2fbe58e-f47b-4a76-879b-fd38a915c2ce@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7xgtwdadmx1d7cz7h9t8tkw9wczx8bep
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251127030316.8396-1-xieyuanbin1@huawei.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A5FEA40012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764227695-693940
-X-HE-Meta: U2FsdGVkX19I5X8MFy1R5e6gs7u9MUTCnM5epouzxxdpYhxXv7dMqolrGGVEz+oyOHHWuQYUywR+rIoCXBfU3sNAHjD0llPO9nkymi0v7ExtJCs4YcpkS/Om8I5xM4vR1CFbAvpu52xOA/SuEyDzwekVtvDIU0l0sqf5NbpDMx+hVIYb0pVeOQLWoRDP7KwaGBoOS8qAOA4kbMQg8xoBWy8j4uGWMDPL9XI68vTUOZNDoTngscRyBCGjF2XD2W/sv2YNILucb7lWElR/LjWna2NI7lHsYjB3We+yHu5bDugOGi5z72CTOxRqpi0vLTdb4XdP6TQn1yK73usbCHJH9bdkMFf2bKd3Rjbn4n69arN4Kr/tG22U11WndQWopEE4Ro18b1SJiWOqNtwjXb9lXoBZypUR/PNTTlE7/WO9KGFFZVMntKUWc95v9iDcAr3wUN5++gZAox5NYebXeKTXQWKSGpEzGYOglJZvF4MWn0BnkbUfnA7HhqBYd7o7AQExjWuZuEZnwvz/2JlS5X5dFcSOi41Sum1p1LRGsEAdoZ7ilCYCfRc114y6Ji/Tl6Bwyxd2hIQ85p5UG4igB58r7IDIAtBZAOmX7ws/t8aEeiPTdJKx6GXeLLhvlQbop85s6M8cgf+j88j3BFTfziGTkpLFqxTMXaXeZ9lBIclGe6enoEdPyUjXOAwXiunvCaWuw60oiHP5gr0NuQigFJlFMV+bGB+rGdR0DhU29E3rdIQdVXDY+qE+DPEnO3Q8RXuq/JAE4TlWQVsnsV2wj2PZe9E3uAlW8cmP4O8vfn0o9rtDWclvKLA8Mau3flZWJ28M82IjUK2nIJxSFG8kTLgZQ7Dn+OMjqoOO0PIBSI+F2cERPdJRDjrrt6Yq5cY7gBAy1wFySJASYwpP3wfR7Q+2ycprmZ3E7KoC+bwSbCcy/E8N6mNcbvFxhvLcqnwSixWtdYEd1a7oudAYx/CWVJK
- pCA==
+X-Rspamd-Queue-Id: AF8FE14000F
+X-Stat-Signature: 4prn5ri7ogxcfkftwgzx1gxbefoujt6i
+X-HE-Tag: 1764228061-350115
+X-HE-Meta: U2FsdGVkX18IhrcIVPCjXn8gNqowq+FmHiCT5KvEVFpKd2RfHkkioEox6j3OtKXZlkWIIf2OJ+hRrovfsqPf+TIndXsMKdl7tZP4GIKGYn4oWjlrkM1FPaqfYmVB0DYRSzs66F95HvT2WUgjpiAWOTpnftY00oWFiSAX0Z9sDQhGJabNvFA8Bm96wZUvvKXUsEz96taEjgfe52qk0hprU+17vyncJRZKEeYAv8PRmDIMoJA6O/QjVVJrSDFMZ1awN7F1zV6QH3AStqsUY/4HhaihszhiRAHlF7RPEZFbxgNpE9KLHsLnONPO8HhhfyBzudxiNq0yUwZPJZDRD4dBELXDZDKYkUJHAiWnS8Ll5ioVgJaUqWItF6Hy06ECEeKjZw39qZP2tOqg8xaW1ndDCZDuFUW/iaqGC9ze7gc8xYog4pALlfNXoIwN7rFxugeneZl2pdYE25Mx2JGThgv38/N/2Z8fP6lZR+qR8vMPluZ3bzhatABcVocvs6MGjAXQMJ9pEg8PNexNKpumrzA1PITaPCiBpHnBpDcv/ZwUytIMCzjE5RNBKPnURdH1w9mzKW+IDKeBHARSeDX38AZD2RVkf5r1EdAy5AZkk/I4184g0CBc4ukbSotS2TAF+5DzDnl5sPO6leH3O+qLrh+L52OljVzsTIhC8G46DSPxGCXvjuG1piA65Bd2apu3EsGugHp3dy8tg5L/3q7BcYr+IdHmKSs3TvY1E/B6FFvD8+QA8xz1zohCTg80/kbVOWcxmGMUOfJYmeVCdRNUyCEKvOGUCAEbh5DL53PTge1FCS14wb9e5+31aGKOwT8+7PBNZ18reJq9DcDexLbhC/XET2sqOwpYgDVelfr8ZQ6hfhoWgHcUms/0HX/dkC/Xt2pUBz7FKKnfZJgh02LK51XsxcI8AtVI9fYjAeEiARW3tcoYmewaRwP90EPNLRYsN6gytR6u4qt2haFXiD6tkW7
+ BaaeTTBP
+ QSYE/wLMd4LHhZWiKNCDZLmhFF+KpCzzwt3OYewf7vvRfjK/4PO0tiiZ2EhKajwGgrxVZWw2ccbwxyU4Tme66hwdFdbt/acmW3Xs/a27urTudkaByaxmq6BHCosd8mf8bDjXYIJTE8fgaLa5EFqvonY4oEhAgsbBRW+uC7WRaTzvXY+s2a9B2GZvUPCNdTxkRjtRYhRsr/9wm7hc/5YRw5neIrq0x50NLY1vXnxzH24CBAIhACjDjnuo2/calSIxuESuwkKo4IQNd87t0MSwstMooo7hZxjn/srRqPDLTwYz3Oj11HuEtkm7rZ4PT7S9SfiC5uoFw6A4CTDn52t4qHlkgXcGHKTKWvG77NfClJaOIeBg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,140 +109,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/26/25 21:31, David Hildenbrand (Red Hat) wrote:
-> On 11/26/25 17:34, Ryan Roberts wrote:
->> On 26/11/2025 16:07, Ryan Roberts wrote:
->>> On 26/11/2025 15:12, David Hildenbrand (Red Hat) wrote:
->>>> On 11/26/25 16:08, Lorenzo Stoakes wrote:
->>>>> On Wed, Nov 26, 2025 at 03:56:13PM +0100, David Hildenbrand (Red Hat) wrote:
->>>>>> On 11/26/25 15:52, Lorenzo Stoakes wrote:
->>>>>>>
->>>>>>> Would the pmdp_get() never get invoked then? Or otherwise wouldn't that end up
->>>>>>> requiring a READ_ONCE() further up the stack?
->>>>>>
->>>>>> See my other reply, I think the pmdp_get() is required because all pud_*
->>>>>> functions are just simple stubs.
->>>>>
->>>>> OK, thought you were saying we should push further down the stack? Or up
->>>>> depending on how you view these things :P as in READ_ONCE at leaf?
->>>>
->>>> I think at leaf because I think the previous ones should essentially be only
->>>> used by stubs.
->>>>
->>>> But I haven't fully digested how this is all working. Or supposed to work.
->>>>
->>>> I'm trying to chew through the arch/arm/include/asm/pgtable-2level.h example to
->>>> see if I can make sense of it,
->>>
->>> I wonder if we can think about this slightly differently;
->>>
->>> READ_ONCE() has two important properties:
->>>
->>>    - It guarrantees that a load will be issued, *even if output is unused*
->>>    - It guarrantees that the read will be single-copy-atomic (no tearing)
->>>
->>> I think for the existing places where READ_ONCE() is used for pagetable reads we
->>> only care about:
->>>
->>>    - It guarrantees that a load will be issued, *if output is used*
->>>    - It guarrantees that the read will be single-copy-atomic (no tearing)
->>>
->>> I think if we can weaken to the "if output is used" property, then the compiler
->>> will optimize out all the unneccessary reads.
->>>
->>> AIUI, a C dereference provides neither of the guarrantees so that's no good.
->>>
->>> What about non-volatile asm? I'm told (thought need to verify) that for
->>> non-volatile asm, the compiler will emit it if the output is used and remove it
->>> otherwise. So if the asm contains the required single-copy-atomic, perhaps we
->>> are in business?
->>>
->>> So we would need a new READ_SCA() macro that could default to READ_ONCE() (which
->>> is stronger) and arches could opt in to providing a weaker asm version. Then the
->>> default pXdp_get() could be READ_SCA(). And this should work for all cases.
->>>
->>> I think.
->>
->> I'm not sure this works. It looks like the compiler is free to move non-volatile
->> asm sections which might be problematic for places where we are currently using
->> READ_ONCE() in lockless algorithms, (e.g. GUP?). We wouldn't want to end up with
->> a stale value.
->>
->> Another idea:
->>
->> Given the main pattern where we are aiming to optimize out the read is something
->> like:
->>
->> if (!pud_present(*pud))
->>
->> where for a folded pmd:
->>
->> static inline int pud_present(pud_t pud)	{ return 1; }
->>
->> And we will change it to this:
->>
->> if (!pud_present(pudp_get(pud)))
->>
->> ...
->>
->> perhaps we can just define the folded pXd_present(), pXd_none(), pXd_bad(),
->> pXd_user() and pXd_leaf() as macros:
->>
->> #define pud_present(pud)	1
->>
+On 2025-11-27 11:03:16 [+0800], Xie Yuanbin wrote:
+> On, Wed, 26 Nov 2025 19:26:40 +0000, Al Viro wrote:
+> > For quick and dirty variant (on current tree), how about
+> > adding
+> > 	if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
+> > 		goto no_context;
+> >
+> > right after
+> >
+> > 	if (!ttbr0_usermode_access_allowed(regs))
+> > 		goto no_context;
+> >
+> > in do_page_fault() there?
 > 
-> Let's take a step back and realize that with __PAGETABLE_PMD_FOLDED
+> On, Wed, 26 Nov 2025 23:31:00 +0000, Russell King (Oracle) wrote:
+> > Now, for 32-bit ARM, I think I am coming to the conclusion that Al's
+> > suggestion is probably the easiest solution. However, whether it has
+> > side effects, I couldn't say - the 32-bit ARM fault code has been
+> > modified by quite a few people in ways I don't yet understand, so I
+> > can't be certain at the moment whether it would cause problems.
 > 
-> (a) *pudp does not make any sense
+> I think I've already submitted a very similar patch, to fix another bug:
+> On Thu, 16 Oct 2025 20:16:21 +0800, Xie Yuanbin wrote:
+> > +#ifdef CONFIG_HARDEN_BRANCH_PREDICTOR
+> > +	if (unlikely(addr > TASK_SIZE) && user_mode(regs)) {
+> > +		fault = 0;
+> > +		code = SEGV_MAPERR;
+> > +		goto bad_area;
+> > +	}
+> > +#endif
+> Link: https://lore.kernel.org/20250925025744.6807-1-xieyuanbin1@huawei.com
 > 
-> For a folded PMD, *pudp == *pmdp and consequently we would actually
-> get a PMD, not a PUD.
-> 
-> For this reason all these pud_* helpers ignore the passed value
-> completely. It would be wrong.
-> 
-> (b) pmd_offset() does *not* consume a pud but instead a pudp.
-> 
-> That makes sense, just imagine what would happen if someone would pass
-> *pudp to that helper (we'd dereference twice ...).
-> 
-> 
-> So I wonder if we can just teach get_pudp() and friends to ... return
-> true garbage instead of dereferencing something that does not make sense?
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 32e8457ad5352..c95d0d89ab3f1 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -351,7 +351,13 @@ static inline pmd_t pmdp_get(pmd_t *pmdp)
->    #ifndef pudp_get
->    static inline pud_t pudp_get(pud_t *pudp)
->    {
-> +#ifdef __PAGETABLE_PMD_FOLDED
-> +       pud_t dummy = { 0 };
-> +
-> +       return dummy;
-> +#else
->           return READ_ONCE(*pudp);
-> +#endif
->    }
->    #endif
->    
-> set_pud/pud_page/pud_pgtable helper are confusing, I would
-> assume they are essentially unused (like documented for set_put)
-> and only required to keep compilers happy.
+> However, the patch seems to have received no response for a very long
+> time.
 
-Staring at GUP-fast and perf_get_pgtable_size()---which should better be 
-converted to pudp_get() etc--I guess we might have to rework 
-p4d_offset_lockless() to do something that doesn't rely on
-passing variables of local variables.
+This all should be covered by the series here
+	https://lore.kernel.org/all/20251110145555.2555055-1-bigeasy@linutronix.de/
 
-We might have to enlighten these walkers (and only these) about folded 
-page tables such that they don't depend on the result of pudp_get() and 
-friends.
+or do I miss something.
 
--- 
-Cheers
-
-David
+Sebastian
 
