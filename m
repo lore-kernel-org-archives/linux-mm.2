@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16451D11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:24:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 287BBD116F3
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 09:24:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 681106B0012; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
+	id 745176B0022; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 632366B0022; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
+	id 71CA56B0026; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 547706B0024; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
+	id 638A26B0022; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 416406B0012
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:24:17 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB2D55B9E4
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:16 +0000 (UTC)
-X-FDA: 84155850912.18.AB834A5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F98D6B0022
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 04:24:19 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 072F31409B6
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:19 +0000 (UTC)
+X-FDA: 84155851038.10.3BA6781
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 78D53140015
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Gid/SW5K";
-	spf=pass (imf23.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7F714180007
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 09:24:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F6UJRyhv;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764235454;
+	s=arc-20220608; t=1764235457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SqQX9xTpcwqcS/Y1RsFRMtrNuBOMxy51eUWtAqeV+3k=;
-	b=wkFv21TM96A+0Rpl67MABilrVRDAL0Uf44P+J8LyYZt4QeslRchIHwkuQ+43wnTOX2wDye
-	JKQ72Wk3DiQK0ySLFnkpMxsIZFZlKvni6aTffnTnn3nVmDpk02rUz2xL8nP4e5WULyF0vL
-	6YRO6NoSdvIP/nDOHjUIbFl2rym2VSo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764235454; a=rsa-sha256;
-	cv=none;
-	b=IgmO+Ne+Ym0wQ4ehE5EKp491Mc82NS474f4ZP5WNcfvF7Vil6fB9kk6EBSas4iS2RselLU
-	nPxwN6vd5J2ZwNGcvVmwFuv0ggj65J3NcPUjJdGrQvGX2boU1OL41bq76mE6kJJuXyj209
-	k5ONr7Wp+HK1ane29HCUO4xU7Dweis4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=avkSYFBTGKWcb8DXG+GznKaLVN75gMih9B0p/IsxWh4=;
+	b=K6G+hoI46/whuG6b49VO1c3Lo8BYSeaB/TP93zMIDTmJQ+Dhmg43eSx1DpYzcPOCRZHb2U
+	LaZ54TFbjl/sH2taxI1tmLajgFCGJH1PeSvLnaEvmBPrXnQFlvhYv/DPs5yqdaV52V3Qsy
+	TEftn6LLAfTwczE9wC9RNHzDV8T2b6k=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Gid/SW5K";
-	spf=pass (imf23.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F6UJRyhv;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of jan.sokolowski@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=jan.sokolowski@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764235457; a=rsa-sha256;
+	cv=none;
+	b=nsXANjMeAglWLAJxLewa+N7tprlU8Jmc6ORdQKdMuMxW0peVP+fDlG4qjo9g0UeG202zx9
+	b6nKR2KnIX7Tti4tHjL/qsDiVAuNWGU84yyS6a1CU8W7EicipoAOlNDj3QTz1LCwUfda8F
+	I45zIERptH9b6a4k0GT2v9ZyiE5msUk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764235455; x=1795771455;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=TGD2mBSI2Nm525yY965kECMgewcZU2Vn20LzBqfECL8=;
-  b=Gid/SW5K4Ahe2t3LppZIur1yOgeZOFT2/VGA1EhOrvUe3KzwZzhJErEX
-   WtaTRAbJih7idinGe3ZOMplpSUy02bGjIu85ZXbJB1L7unWveUwXFnKw0
-   b3E1uQLn0a+HpSe/NswpugE4kq2SH1RhUPRFFs9l1qWlp6XgycmNsZ/By
-   Wv8UaVcJiUfELmAM4qeYhIUMLmIMFF8H4nqsU67ujdxa4u8yavu2HE01+
-   xkzKA9PDsoCx+F9uAzr2t9NYApxxIXlY7rbImJN4Sqfvr+TitZ6dN+nVB
-   IECWMkWrN2BWjvrykB8GDPWwFIxVkXlsGsqB1V+RIUIaS/UbRoIKjr8go
-   g==;
-X-CSE-ConnectionGUID: 3lsHu43VTBuV0hhtRNsi1w==
-X-CSE-MsgGUID: VMC76L6xSsWFUEjtUGTzMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66226339"
+  t=1764235457; x=1795771457;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=XlyfUYuWkICDUfkFcCQCj16yl/DMg/jjxI+jKDmBYg0=;
+  b=F6UJRyhvb/cjbA80+cXJUlAYw+SiDRjbwPlSKk2gb1fJVj+mXt8hPPO3
+   iWxO3suUo+6JmK9BifbGdzVoRyONbIFfBzf7Zmty7XL3GUoCfcazqcHID
+   DNWbnuMZV3Y5kO6X3mbUrjyXcsd6Fz93UL2aC3sFt36VTAJ6DqVDrzKKY
+   zqBaH2fLWwbcNgn5wAHx3t/Luuotzdw/Xnsz4R8c1ApuydIoCYck1Tvao
+   /WfIMv9LOw0igHCOlPqqVi1avvurtzLASile8O9g+oiaUjJKMEaxek1lS
+   jC0v38H8bNLIDafukIR0+ac4xa+ntBfZoz8BjmHH/vJvb+q3pP+lh/IsO
+   Q==;
+X-CSE-ConnectionGUID: rOslrHIyRjaQia2e77pbkQ==
+X-CSE-MsgGUID: pGMC00LQTfWB1HAfqV2ozg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66226346"
 X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="66226339"
+   d="scan'208";a="66226346"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:13 -0800
-X-CSE-ConnectionGUID: FmZim8WuRQWylPHqkM42lg==
-X-CSE-MsgGUID: Pfg9esApRR+Pu2HVOvZauQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:16 -0800
+X-CSE-ConnectionGUID: DlvEOMD2R++DjwHq95mBvQ==
+X-CSE-MsgGUID: jGxafr28T76J8iM+e4YXaQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="223888045"
+   d="scan'208";a="223888066"
 Received: from jsokolow-alderlakeclientplatform.igk.intel.com ([172.28.176.71])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:11 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 01:24:14 -0800
 From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: linux-kernel@vger.kernel.org
 Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
@@ -83,21 +84,23 @@ Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 0/1] IDR fix for potential id mismatch
-Date: Thu, 27 Nov 2025 10:27:31 +0100
-Message-ID: <20251127092732.684959-1-jan.sokolowski@intel.com>
+Subject: [RFC PATCH 1/1] idr: do not create idr if new id would be outside given range
+Date: Thu, 27 Nov 2025 10:27:32 +0100
+Message-ID: <20251127092732.684959-2-jan.sokolowski@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251127092732.684959-1-jan.sokolowski@intel.com>
+References: <20251127092732.684959-1-jan.sokolowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 78D53140015
-X-Stat-Signature: tju97xmotf8hzsfb8cb1famr71mao44h
 X-Rspam-User: 
-X-HE-Tag: 1764235454-510260
-X-HE-Meta: U2FsdGVkX1+8fCTaqlPKZudQrnfCIPtNOVbTygKNyXblnbSRkNPxsIWgU/dUgViyDFNopeGjiSAzpTZKaGo/aOU1UNILEljoAQFy7OOOh5IViJUCNJl0YS+SbU69kvcuYi1Mtg3lwWMJ0JpMugXYcOH/EkBCt7ZkdAKz2XOYM3gyDsE/RBytee/HixEz5/mRZtqO2WbB801GUDW24phqrDoRJL5gjQr+RQIlHxrrsJmSGbN9Os3M952wpI2cZ7IzGzZXzvPGlCo2vAsXq/jGco61ScWFlptCxvFGE5HdWSMlzouISVZHObBRkjqW51QnrLWLt/FwQh+34ItSKDrQXi/OFbS2PT83grsiLy2V4dyX5QNnyCNCOlr5+Mkh7KbFAl5tURFQUCBuZ96hW8cJC9UFuI40EQ4u5rFzc3xZxYv4VQPwlIm9mO8J4h2JNR/vaw8VTkfRpwm1InBe4rmvAN+oH/nOzwTRuX+I8nWGjzy0sq3oo0H3hj26+RzDrc3tmbk7pSLYP7Vn7sdtCp/ZBjaZ5ROhd+4+F3sWISPERTDy7ZW/ykWfNpfum5pzX1bPA/9ZrfLUJEa+D0P0V6hNiJDy5dEduME4FqZWD+bXBVrVBqfDNsQT434KzX+Jhub7jRQOLIIhVH4hKx1lT4RhFU6FnHu4Gyy8nxhYdYH4ey48E3+ArvAecbzG4arP49IO8OXqq7jKtVT+Ay2WYdRc8rs8ZBzC7Ra/gNokEt28r2Oiwitqtm7bcuVeyyjrwjGLDQ3UnuqjVrMPmNp09vaOBXaChpCzxvfPhLo81RsE/wcmvxwdTb0xP8YXY7+yCMVhkfYqxHqcNgUtHjZI2XYjxV6e2hhrYltjdD2Txwu1V+nnep9u2fdNElwpvsSRMLCEYweVG361ojI76pFImTPGwfNNwYBdbbVASGyo5n0tjGx7dEV3Z8PR3rj56gkYW+21o3jLDEtp8pRGWX8obeW
- CVc2sNEG
- CQN3MiGC/KqAC62MT0Kko/v0G8APgN1Ef0is7BHvMPne//1WjAspo//HhM7R6cPsgOM1mssLcpCR713Jnv+pCEuvi54MlY3o5plGSaYQwwAPjMdVH9mqRyNicOpY5mg7sN+S11JZZM5z2TH0WjabfIZyehM4doUr/kz8iU5hWlN3Cy212FSkZPg4bhPv1FUS+cKvLac+ds2a6W0wUbH+E3yLsRyk0lnqhgOOyx061NYos4YkSiD/GUS1ryH9fE/bDi89RUIQbSolDmdo7wcV6LkrGpGmIeUAuqtTRr9Ka6ePAFbdW0q8me/K3JluF+ZgsxKVTrSIgBZc8Eya7sxDbesGLSgzmPVikNyy+0JIa9InMiqiwPP3ACifVEDtqKLGahDm9DqE3AaLiuK1gC8+g5gLaxpkQdNgNaOxHLvE8SIW332Rcvy9Vf9yjMm4n4dqbnZoRJ/F+KTB365BFayMkjXnrPHf6ibiSg0bRcg4GlzPyMepvQItgUYD+2CJfhPbhaLtFoZFtMTQ+X90eDKyJ+K3BZX3M5i9RkTt7
+X-Rspamd-Queue-Id: 7F714180007
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 4jt8mz7x6gr6ak458ba573uapw93sfzy
+X-HE-Tag: 1764235456-56368
+X-HE-Meta: U2FsdGVkX18MzNGTQWTjOyHO+0DqdGqhe1+qBHyMgJRZ8+j4HhNeO1PmT14CUsl6zKLJO1A8WJN1ZYDMuF2RmU+p++o7RbMGh5EJg4A3Xh6ncMcCOyTCYNPD5qNZSrVxmMk5AQkLlpoQnN5yEMxv37UsoYOjlY59IZHTnOodhKEuNPNBZwjwPO7cwQc5aR1P3ioouwGL9UgS6GlBT40mvNgWRuGZWxR/6cH3NKoCSLFa+b3Z7AQn0ClaikeBbZ7kdSsQ18QRpEdHg4blMPm6YH2zKpeQtjBClEW6enbHk8I0qi7zaLmodzkvnrOPUq8BxJ6hayagZmDjZc137OOoTYBMLBrWoKEB/OxLbVmUT1Lml6ngvFKyvIzmqP1EKn3LEo5U+qF1ReajVlve7tVvEiyZTxFAVnVOdRU/co0tBLycR88WC78iiuqWembJ7M87JPdKQB0dY2XXHvvuUkCutbonjcNV4s5FgztY6IpdePw8q0zXOqEn1oYOKFhSbONY6ylH4RJIfqCx+h4FAWN9Z/e6DKrjJGCjyFkIHY4vMjdREv8LFTOcfQDX6rpfWJIvOGjeAJeoo0I57BCKjiiDt9nlIlL4cAT570BqHzbz7pCVtnmoA+VG3f1p7jBfWVR7yNmE6LyEPw+7vUv5VoXJddLQWwgTeejHst8Txfnjm2SIwsiYmNneD33QSWtNCgNIcwsEsdDzAKpOJK1+zG2ON+fUkOVTCBqLk8kWeqHYuBbp5vMCWfykDoDeognJqLiqxy9y3XVw93NOw6Bsp7vjC3jqLtAQKfcsfhN3GRMlwalQauY7uGfkT0ypp0EtlS3ijgRGHMwLVUYWJGqsUBrwMZSY0GpUsizVoXf6SF3rnLtev6utTv8OK0kPrBSrzK5Emdb8nQwnHJLUvpRQ60Tm6NrvimHYnwEYR8n39C/GwsctorSaRkSnwdrnDU16gVTF8ISq4pKrapFSC4eJMoD
+ sUJu50Ct
+ EVSPCK/fd/qdAZWMfkd2vq5zmZWglaDl98smPls6UQi5+9PbtfcX/sKGVMuqd/DnCdbMIUr37FlEns/Suy/jH+0jZEVBZ12L679+HpGf+kdW22uLyrR58Q0sJws56VOhqFJLQwxU6W/77cAsJzcdTRYk5DZ6bkqiDCxicYTL3Q8qZOvn7rZ1FANWy1ez9Q00/uyTL0B2KlKixQSjFgAmK+GVuyRzWLzDwJePOYwTRCWs2k9OTPgOUlTyK5HbQauT62vQVmtC5mgGY1Tj8a7OULpgjk9rvNeHZDKQ4go4rVHHUyYBNSENgPQIWVz6ceMNxFQUxtpULFfxNp4cyPeCpWRYkn3QajnNBt0E8YbuPAfUMSUr2meE1MKjCoy1SjLcLUfLQHGN2EFQkSx5JP4QsaX7NCm8Y/VpxoQ7zpFoi9+kFqY2eFallSSc1TQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,30 +109,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When debugging an issue found in drm subsystem (link to the
-discussion in Link tag), a bug was found in idr library
-where requesting id in range would return id outside
-requested range. Didn't see in documentation that this is how
-idr should behave.
+A scenario was found where trying to add id in range 0,1
+would return an id of 2, which is outside the range and thus
+now what the user would expect.
 
-This is an RFC as this library is deprecated but still in use by other
-subsystems. Is this fix proper?
+Return -EINVAL if new id would fall outside the range.
 
-Link: https://lists.freedesktop.org/archives/dri-devel/2025-November/538294.html
+Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
 Cc: "Christian König" <christian.koenig@amd.com>
 Cc: Matthew Wilcox <willy@infradead.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-fsdevel@vger.kernel.org
 Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
-
 ---
-Jan Sokolowski (1):
-  idr: do not create idr if new id would be outside given range
+ lib/idr.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
- lib/idr.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
+diff --git a/lib/idr.c b/lib/idr.c
+index e2adc457abb4..8c786e50f2da 100644
+--- a/lib/idr.c
++++ b/lib/idr.c
+@@ -74,6 +74,7 @@ EXPORT_SYMBOL_GPL(idr_alloc_u32);
+  * exclude simultaneous writers.
+  *
+  * Return: The newly allocated ID, -ENOMEM if memory allocation failed,
++ * -EINVAL is start value is less than 0 or if new id would be in wrong range,
+  * or -ENOSPC if no free IDs could be found.
+  */
+ int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
+@@ -88,6 +89,11 @@ int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
+ 	if (ret)
+ 		return ret;
+ 
++	if (WARN_ON_ONCE(id < start || (id >= end && end != 0))) {
++		idr_remove(idr, id);
++		return -EINVAL;
++	}
++
+ 	return id;
+ }
+ EXPORT_SYMBOL_GPL(idr_alloc);
+@@ -112,6 +118,7 @@ EXPORT_SYMBOL_GPL(idr_alloc);
+  * exclude simultaneous writers.
+  *
+  * Return: The newly allocated ID, -ENOMEM if memory allocation failed,
++ * -EINVAL if new id would be in wrong range,
+  * or -ENOSPC if no free IDs could be found.
+  */
+ int idr_alloc_cyclic(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
+@@ -130,6 +137,11 @@ int idr_alloc_cyclic(struct idr *idr, void *ptr, int start, int end, gfp_t gfp)
+ 	if (err)
+ 		return err;
+ 
++	if (WARN_ON_ONCE(id < start || (id >= end && end != 0))) {
++		idr_remove(idr, id);
++		return -EINVAL;
++	}
++
+ 	idr->idr_next = id + 1;
+ 	return id;
+ }
 -- 
 2.43.0
 
