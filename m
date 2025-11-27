@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66868CFD2F6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 05:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B101BCFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 05:05:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 948806B0008; Thu, 27 Nov 2025 00:05:15 -0500 (EST)
+	id 1816C6B0022; Thu, 27 Nov 2025 00:05:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F8DE6B0010; Thu, 27 Nov 2025 00:05:15 -0500 (EST)
+	id 158C86B0023; Thu, 27 Nov 2025 00:05:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8366E6B0012; Thu, 27 Nov 2025 00:05:15 -0500 (EST)
+	id 096016B0024; Thu, 27 Nov 2025 00:05:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7149D6B0008
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 00:05:15 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 10E43507EC
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:05:15 +0000 (UTC)
-X-FDA: 84155198190.27.6006879
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ECB5C6B0022
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 00:05:50 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 34BBF13BDB0
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:05:50 +0000 (UTC)
+X-FDA: 84155199660.11.0BA6653
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7D74DC0009
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:05:13 +0000 (UTC)
+	by imf28.hostedemail.com (Postfix) with ESMTP id A2F6AC0009
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 05:05:48 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6gjVPPd;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H4jAdZwu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764219948; a=rsa-sha256;
+	cv=none;
+	b=Czz51vFSBnEivx8ndQRPXOmU+LDx8+yg2j1MV7iquBduQTXswz0a63YAhlc5ZXThWPC/iZ
+	2tlxva/fpJB1Y9bm0hvNHtthJRkGhaDA+PI3CERWOSJVngA/63vjFhXEyGC7v0U0XRvD0q
+	af8NkKkFjIOWDgJ1e7uOuk16fC/LdIo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H4jAdZwu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764219913;
+	s=arc-20220608; t=1764219948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ATAQNKgd02/puUJA2TapCe5ElrKis8cm8GiXMlRXz8w=;
-	b=uC2uc6K71GXq5qguPnnQfwSRre37aaAnOT/q8ezphrsr5F8jsmZ8aa8ANDE0s5UjkuFr3/
-	9o48j0THS9NLAdQoFOD4uXqI4Vp5+VsHMlHD6QF7O6ABRu99Q84RaikZQyGU0PAQlpYFzP
-	zZg6BgJck1CORjgRljGW+h7+u4Iz35Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764219913; a=rsa-sha256;
-	cv=none;
-	b=iIM7Nfpr3QEYFEKEkD33mBIhQgj4ZPXJ1DDL00W624IZudgFvgpaX0W4PCES9jhefNIN4W
-	9RXwUSUPEPSRxHlMuHSJlKX/YtJO5/T0QTALURO1URkLp0BxaRrT4Ubwv+MEk4j/DUY8ay
-	AnP32SyJJNcqkYpH4HLVOS8Y44Q9so4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6gjVPPd;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ysL48WmHMu6ZVfYX+/EYpRVkz/nBDb/kZFPfAI4Ic1I=;
+	b=tZKycJvqURVmX6scAgdC9e8fu5Tvho3qP30H6l2uUI1aeaQMjCO48vaWFqrTF2V8Iw4xi6
+	ZRYLZBv//A+2fmYhqS5zbtVA3cNklYcBllmYk+3/JwK8T4CLBFFPBMYyH70BBkJkpOSDQ9
+	e8kSoRmhgg+Xp8/6CsZBZgcud/WpYNg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4D8760178;
-	Thu, 27 Nov 2025 05:05:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98277C4CEF8;
-	Thu, 27 Nov 2025 05:05:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 330DE60182;
+	Thu, 27 Nov 2025 05:05:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0DEC4CEF8;
+	Thu, 27 Nov 2025 05:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764219912;
-	bh=0JRSyQXSjczKq5XdXn3CWvx8+zdnsFfxK+TfDYlXczY=;
+	s=k20201202; t=1764219947;
+	bh=Nl9RwO91yTa5covY+c2/N9Gq4s0OvI/oEAchPUaaHrI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C6gjVPPdP/VVRhfNC+VDHXi2GkriaQ59zF9dvrRLavOayKedKO5VbJRufDpzaSKcT
-	 18Yctoq4Bqz+A3ymRbCPtfV0a8OX0gaSH+Bm6w4VQzsKXgtFzCgKm5ydaL5PtJQ29h
-	 tAfGWpMBVJbutynfBiW2hC33t3Pjdnc9gI26HN9BHIfQdB+IRyFb8YI4OTAELjHoms
-	 YU3d6pfUEf5aVjmhCea6buNTMXzYuBplHMU86HuFKkimf1lNCq9yQdgXLx+zpo27ue
-	 WRk7CmXmcxExayuBj/MLwXSztWFz37wHyVxg1s6TYpUsgDjvdYx+b1Swxhj+lI21p7
-	 Al/h8msq0yXNQ==
-Date: Thu, 27 Nov 2025 07:05:04 +0200
+	b=H4jAdZwu3Sd4OjszEkHlJtz4SnzwWGXrgyaOCalfAVVClCU29XQXAC0JKogFFq9sq
+	 zfgHOpWN+oVfBr555kCBzeAzfAliqANmAe++un6WB8Y+mQrKzT4hnA6Qa70HJJfMeK
+	 HRqfMJRPLFbLVti/I2v4I3InHPGzVtf5Nk4mlbdxVdU4vBr+VA+q+U233XhVyKEcvy
+	 4pPBwgFCPs8W3b3DDj1JrtQXgL4RIZDYN2/MohtkNtNmhQSjjqNEdgRWJDAjyaCCxn
+	 3d3gNFgh07WSRkNajVcF4mcWMFN0cgepD2nu7HJzgcVbgkp5heeYUNsq1PtZm+pO7c
+	 VSh9U+RbFsZbA==
+Date: Thu, 27 Nov 2025 07:05:40 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Usama Arif <usamaarif642@gmail.com>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>,
-	Andrew Morton <akpm@linux-foundation.org>, changyuanl@google.com,
+Cc: Andrew Morton <akpm@linux-foundation.org>, changyuanl@google.com,
 	graf@amazon.com, leitao@debian.org, thevlad@meta.com,
 	pratyush@kernel.org, dave.hansen@linux.intel.com,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
 Subject: Re: [PATCH] mm/memblock: only mark/clear KHO scratch memory when
  needed
-Message-ID: <aSfcAOiTzCba2LC0@kernel.org>
+Message-ID: <aSfcJIwxglEc-cjJ@kernel.org>
 References: <20251126072051.546700-1-usamaarif642@gmail.com>
- <md65ppfkqim2kepsx6igvezpcnr4hx3g2dxfdojsgx4rligwfg@u5dejfzmirfc>
- <fcf022e3-1d5e-4f66-9f95-49faefda04a6@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fcf022e3-1d5e-4f66-9f95-49faefda04a6@gmail.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <20251126072051.546700-1-usamaarif642@gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A2F6AC0009
+X-Stat-Signature: 1tgter3xrirrba3esdd7ekosmesqk7n3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7D74DC0009
-X-Stat-Signature: ztt1158wnmatnnbuqxeauqc1ytgondf1
-X-HE-Tag: 1764219913-57387
-X-HE-Meta: U2FsdGVkX1/qEBPPMAdZaAmtQXDx5+qmtz1Zo5WhxdhJUtE1dw+Dt8Hn3VaXAqrk4nM8pTf1if6v7m+KWY5erECzuwtgJPYQnJA8CO2X+nObqQ8fB3iZl9GNbPIKaKQi1Z2F2cD2THVsjmIw1llA3d+KBBG5bVIbXJmB/tcgwhyV1lOI2/CsWALlI6DNGyRd59caYfUZak9iODIcyawF0Qy9qwQffU2CsTQvT/4mpxhzbEPOio/x2C1Z37ayfYrIOm7bXa5GeF5R0tOW7kPgfcES2e0m+opidVwm8Ae5176aaGFRXMpbDZ7q/2bxwysDVU4AJxCTUvFfXuhe86LAu+wnjlgdH6xbdpjm0Zusx0FokCAAiLBWP2hmEFekpJ6QFooanxP3uX4sZWnrYFO/9Wiq5g7Lo5Qe998zhVnpWlRV/bQTYZ7WPD64YT1vFoGN8auZL4EMwGH18IczH8p9Pzt8myPbcVoj3yUEDQGKH2N3JE67pXCVSvpO+JnrMWI8JVVEreyo20EyHe2800YkrX/+XT+pXNPkhcZOVGss0q6tuj5o54vxlE6ufsAhG6CxTcpaeg0x72yem/1CwmRz0ayyGBheo8J0F/Hd124U3x0WdxkVOe4f0Uv5Cfh4reXYAo39h3fvj2DSUrZe0cN2gBvNGybpSj1r/oO6NYcE+qtRvJtxcIgDTYDWdRQXIyZeAMmxIARMVHESsH87002gREvlR/TJD5vivUhbvqnBIBZgH4zlEY9+NQnAFqKuRxHcORuDBcX8FI8X7gIrnxEgBDVqaaaeso4U7A6LZ1Xw82eUur+BCYW6Ln7ZXNxLCH+mOsfZEM5YqPfZIWlboq9hH9b1f1gbxDzGxz1s0uDP6D7kygoG+XzSv+jB5dOnPyVMUnGu1GbSuYh38J+PflnNLw1ALtisCOoNencrC7QJvtfPmUw6Kl4sOnC5V1YY9E9lUiHiA1O8sTpu7xpmVGk
- mgxqkSUq
- Ut5sjij+QEybtPX/aLDpYlopqil8Yb5TosMhI2Th55Ud9TyVEXE91qTESRVTI6XMACKvpULA90NkHWaFU9LixOIFJpYOZZ+Xi/n1aXSkXX0exrFMWOIzhcpsaoK/O/tq0tzHXAIqufMAf6X1AsZVV36B5C6Jibc/jG893TsI4W628wZgMKxmsiuv0Se/JSHZ18AF1DPFIzNsk21g3/TR3QSRUdXC9Whk3MWDc4riyP/+en/vV1jVtq6zoguhK7r6POY9x
+X-HE-Tag: 1764219948-370856
+X-HE-Meta: U2FsdGVkX18CDkk6+E7YaqBK7dT6rsDoMN44R++GcqgW2LnVdFUTHfYpuq3qMGmYHTPm5ssxBA/Ts1WgwPEkBCyViIW8c5tKMXlCARBCAQ4QBpxH/uBCjbrsPJWT0eZ9KK+5G1dtCe4yH9sZyr1N6U16DxMigoU6j7R2qnTVmRVQ8JCc00Mq3aApfRInRxaFXFmbdE9MUZqkZUQJSr++4vlHOM0R0Ccok00gujnZ6MJ5CJEXgNlDvohT4OQbSG/PA3DnQQQsEeE05EmgVNP8nF8qB4h7qKtBi1m5mgxAZqyjjg56fSKf8VBRvEOaPDAFnLUuCgW19kcSF5sKkPl9YYUvtUBTBM1Eg8Oak880lvEViX5TYt4Nr2i70THhoWvKat0cqxUserdXV/HGxsxE2UplevEfRt663aQz5WlDXEYJ9XvNuXDh5jxrOtpK2PLe+Fzik9yGhGFUnwcNOHDyPDOmPsOr43KfiG8SYmqf5HT5uQP6dyNQ3aUvR1v82geH0jbYEopGKUpzS9JsZUZqvlC7aL85tN0oLyrbfHlrJMVHt4FUVzw0uzN1HxW5hYWQLVINqAkV2OLZ90QB/0+iu3QgOeroCmSfpEUIHyfZ1/lkjJLVM+ffjt1M+LmSoTaiBkTH0/dWKb9xSAOEg7EIemkJRt31QaaVzbM7+QnjSZSmmd+zQwvGqs2d5RWClkVlHFk0s+WDxvYCFfRqKBqIWIpO4r+d6wLJN2dxkJGtz70sI0DVX41i4cGsacOz5FffSUyheAlM4TORS2WuSMY7GrkOsEa6GPP1xL7CJOoDs8Rpvc3Fm1C36ANewDlspMm1rV7YRyrd9co3qpA6jKz2EQ2fBVEpkwKJJ9iaT76wynbtVEryba7Bb7B9xvQiHhN5HHk4sWzlnYDIKZTP5ZYTQ1d+kvHEEDKNxgCLhiktBbKDNORDWxM802a+HwNxzXkCvYjlwPd8dNBDrFPSryK
+ ARdtrK/I
+ klieagu3hPjqHlRmvpfJ/M2iwtvH6VcesrMeBr56YuZlxfkCRrqwEIqrk0HVuDJsuOOWCQEpoXDX5nQq6YMCvsfbA6jArWUeGke68Iuk9NoL6dbetb8G1wchteGwCeRRAudGoaeTgz5FNfo5QEw2T8Kh1f62gSUl0Y3jtxzJn9OCdAUKxTHzppJ8brQx+fxaFiCn/3HcivqmKD5dGHAcojvZMobbQBuT+i5VjHIX/QJt6nVXE6rjn22gntcanwNaHrlzn+yC5+hVpHIMXBFeISgzBV/a70Nuo/pGakF9MTa5+wfmXB2yRuYBoJ4ny/KVEQzhDDeAMbv67G9DMK2DYjPREbw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,42 +95,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 26, 2025 at 11:43:21AM +0000, Usama Arif wrote:
+On Wed, Nov 26, 2025 at 07:20:51AM +0000, Usama Arif wrote:
+> The scratch memory for kexec handover is used to bootstrap the
+> kexec'ed kernel. It is only needed when CONFIG_MEMBLOCK_KHO_SCRATCH
+> is enabled (selected by KHO) and if it is a KHO boot. Add checks
+> to prevent marking a KHO scratch region unless needed.
 > 
-> On 26/11/2025 10:40, Kiryl Shutsemau wrote:
-> > On Wed, Nov 26, 2025 at 07:20:51AM +0000, Usama Arif wrote:
-> >> @@ -1126,8 +1126,11 @@ int __init_memblock memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t
-> >>   */
-> >>  __init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
-> >>  {
-> >> -	return memblock_setclr_flag(&memblock.memory, base, size, 1,
-> >> -				    MEMBLOCK_KHO_SCRATCH);
-> >> +	if (IS_ENABLED(CONFIG_MEMBLOCK_KHO_SCRATCH) && is_kho_boot())
-> > 
-> > It makes me wounder why CONFIG_MEMBLOCK_KHO_SCRATCH exists? It seems to
-> > be a proxy for CONFIG_KEXEC_HANDOVER which is the only option that
-> > selects it and does it always.
-> > 
-> > Can we make s/CONFIG_MEMBLOCK_KHO_SCRATCH/CONFIG_KEXEC_HANDOVER/ and
-> > remove IS_ENABLED() from this check? Just is_kho_boot() is enough.
-> > 
-> > 
+> kexec_handover.h is now unconditionally included for is_kho_boot.
 > 
-> Thats a very good point! I imagine it might have been for maybe debug purposes?
+> Fixes: a2daf83e10378 ("x86/e820: temporarily enable KHO scratch for memory below 1M")
+> Reported-by: Vlad Poenaru <thevlad@meta.com>
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> ---
+>  mm/memblock.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
 > 
-> Looking at the code, CONFIG_MEMBLOCK_KHO_SCRATCH shouldnt be needed. I guess
-> this might be a good time to clean it up. If Mike is happy for it to be replaced
-> with CONFIG_KEXEC_HANDOVER (and removed where needed), happy to send that
-> for review instead of this.
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index e23e16618e9b3..5c85d575bb61c 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -20,8 +20,8 @@
+>  
+>  #ifdef CONFIG_KEXEC_HANDOVER
+>  #include <linux/libfdt.h>
+> -#include <linux/kexec_handover.h>
+>  #endif /* CONFIG_KEXEC_HANDOVER */
+> +#include <linux/kexec_handover.h>
+>  
+>  #include <asm/sections.h>
+>  #include <linux/io.h>
+> @@ -1126,8 +1126,11 @@ int __init_memblock memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t
+>   */
+>  __init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
+>  {
+> -	return memblock_setclr_flag(&memblock.memory, base, size, 1,
+> -				    MEMBLOCK_KHO_SCRATCH);
+> +	if (IS_ENABLED(CONFIG_MEMBLOCK_KHO_SCRATCH) && is_kho_boot())
+> +		return memblock_setclr_flag(&memblock.memory, base, size, 1,
+> +					    MEMBLOCK_KHO_SCRATCH);
+> +	else
 
-Yeah, let's kill CONFIG_MEMBLOCK_KHO_SCRATCH and use CONFIG_KEXEC_HANDOVER
-where needed.
-IS_ENABLED() is not needed in the check because with
-CONFIG_MEMBLOCK_KHO_SCRATCH=n both mark_kho_scratch() and
-clear_kho_scratch() are empty stubs, so it's enough to check is_kho_boot().
+else is not needed.
 
-> Thanks
-> Usama
+> +		return 0;
+>  }
+>  
+>  /**
+> @@ -1140,8 +1143,11 @@ __init int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size)
+>   */
+>  __init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
+>  {
+> -	return memblock_setclr_flag(&memblock.memory, base, size, 0,
+> -				    MEMBLOCK_KHO_SCRATCH);
+> +	if (IS_ENABLED(CONFIG_MEMBLOCK_KHO_SCRATCH) && is_kho_boot())
+> +		return memblock_setclr_flag(&memblock.memory, base, size, 0,
+> +					    MEMBLOCK_KHO_SCRATCH);
+> +	else
+
+Ditto.
+
+> +		return 0;
+>  }
+>  
+>  static bool should_skip_region(struct memblock_type *type,
+> -- 
+> 2.47.3
+> 
 
 -- 
 Sincerely yours,
