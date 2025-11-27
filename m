@@ -4,141 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A60CD11183
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 11:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1CBFCFD2F6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Nov 2025 11:48:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF0356B0028; Thu, 27 Nov 2025 06:39:25 -0500 (EST)
+	id 11A126B0022; Thu, 27 Nov 2025 06:48:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC7766B002A; Thu, 27 Nov 2025 06:39:25 -0500 (EST)
+	id 0CAC66B0023; Thu, 27 Nov 2025 06:48:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DDE36B002B; Thu, 27 Nov 2025 06:39:25 -0500 (EST)
+	id 007966B0027; Thu, 27 Nov 2025 06:48:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B38D6B0028
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:39:25 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B204131D20
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:39:25 +0000 (UTC)
-X-FDA: 84156191490.16.F2095F6
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 524D6C000E
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:39:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XZwmLwQM;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E3FB36B0022
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 06:48:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8CEBFBBAB8
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:48:48 +0000 (UTC)
+X-FDA: 84156215136.18.0CFEAAE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BCF5F140004
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 11:48:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tIlJwzwL;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764243563;
+	s=arc-20220608; t=1764244126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lTgQXrnGbp8yRV1ffH5aOGb73MnxpAvx9lMPfkiZ/pE=;
-	b=mnvxmxPD2WCpQaRLr1HV0kJU34bSIWczoc31w1NCdsfgm1qehe2J3Dh7ngAVjYKugGqs5K
-	U8fQlS0PUR146BzDLNXspzst7aT4Iupu+mNRdtUetshrZ1qlX26Va4JuCodoCFOaTgxIdO
-	YxGyx64TyEjYXVV6MqQu1bl+7OUEFf8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764243563; a=rsa-sha256;
+	bh=Qiydg3BF/jvzej21GSxsm5apfU//yCIu3Vkj1Qi2sL0=;
+	b=7UdHA8S6bHaJJwzvJx+d5TNbJVD08HZbB86x8Ib/BxVqhsaXH4bjCE7YmG5JOzTv3w6Y4V
+	s0VX20awVZjEkdp/f3yolutoattiN5KQXE3XbAD/I+/8X+xOsQIdJwvAQdd2pwQsGN61GY
+	2Rym+sdbe5ZI7XQO3uQHXFtLAw5nec0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764244126; a=rsa-sha256;
 	cv=none;
-	b=k7xFSklfJUSlMEFCvbhD9UrFXhHaNob/yJDVkC+a/jrMoNePkFUsw3a681kGpssI25EzH5
-	CZVJijxH1zulR00OWjrOC0zQnuEzM0hW5xYPcElh2X0tRHctlYZMazMHYnA3CsLTW8Mwxo
-	Pp2l61Z8XmKtCl5EA8qji9qaMBXXlII=
+	b=whmRVv9Fyh7Y1A+vHe4htlyYSNjaqBx8NhyNT2Ft790W6vJQxUjZZAzhG4K8QbhcnKpmTN
+	9rbpbnz3tG6pHjUUQccvYd0fWbcxozHJmNm1igmaMHLPB6Rn1Qstzdy4IFeeXzuvmf8DY7
+	Xq8o/DDcnXAH3IHtpwe2iuAE5j65bXI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XZwmLwQM;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b2f0f9e4cbso66201285a.0
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 03:39:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764243562; x=1764848362; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lTgQXrnGbp8yRV1ffH5aOGb73MnxpAvx9lMPfkiZ/pE=;
-        b=XZwmLwQMf55UfdXp6A+FP2/+4JxFiifDu9Ahk3pmhtY9dWO3Y6Ece9GALPBZa6pshU
-         x1FBNsPUvIAAuS3zb+sRjvSeb+Ax0DUESGhsCF90Hu1QlBNJSlDID1uGdMjsaSbYtp5X
-         IR2BZM5BYRG/1Jk0mx7HV+1a/tNT4492eVED5qFxkUKa7Lii49/ocJnC7xNEPl33m3ul
-         angQk19R/aOp/LjE7Zm46A5tIcSCsuNbF0m5cV8a1RXReuDFcLE2hB2Nq8NJXSulAUK1
-         pZsY4+NifEkkRfX+OQ5z2bd6zO7PQVHbBuuXkhiFHcvosQVjtjsgc+a8+G8FP03CGO6e
-         Ohkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764243562; x=1764848362;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lTgQXrnGbp8yRV1ffH5aOGb73MnxpAvx9lMPfkiZ/pE=;
-        b=dNr44qZ8YHZ82InAMwmDYxzTEqm5VhawwBX78SYurnnuNNuzmCTqsmxQLuycBWZrnM
-         2mmqQv49k9Nz5muz31naRmFOk7DAQsQ4VnJSVL3yMKdljFZ+8v5BQkHf2F2BENVA/P6H
-         aNAa1dDQCddp/rtQg+iB6kRl/SwdbN4f8t+VZXI0QHU6OHjHEuAhZ6vcyN615WEwGszi
-         sgub11IeNHNpf/jkqIMxuL9qExM5yRtn3JrnhM2qecZ4Z2n21WhGGv1rV5PR+TVYhyRI
-         2sa2XTNH0KXo1gswTdjqvl/18XpkLgDpKfrdj4wzmfoAZBFhz7+s4bCdpV+AWaAmB2Ss
-         1JAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVtCBl/hhsmKUh+tjJ6a9NRIOLbqUzr4XFQxCq+QGveEvQdethWHxy1x53cw8lihpost4IC5nLkHw==@kvack.org
-X-Gm-Message-State: AOJu0Yx6+wpapmDOMHDcJXfHtsnbzLU3iihwrgTbw0AwtQQKZouYCNjO
-	t2IpwQVvFFyGAZ5UmT0C9MVvIjutBZQ7iA9HXkAiRgb00LzlL7QnGOeZPywLptvrfBq5JiP83lc
-	jwlwgCTnjA3OcFQb0S4tSfMO8ob1zruc=
-X-Gm-Gg: ASbGncuJ0GjDncEx79LztyDlazyVG+kIvC26cpfYJAbtUJSDerilfjd7NKvP1Yg7dbr
-	8GWeoscziFazHhZIPHofz4C7dOSiG8G5mxDKuLqCLFMpPaDVcj4mbHFmOUzs9VsLYdif5WGDHVN
-	lgFyqpnqu3DZnK4vCViplCi9MjwCGpUb6qW2dlIipRQ+I4hz5N4bQz/ZFPUFM1SukueNFmNwiO0
-	0Ely7aXkN75ko3yorR0GZ6OdTgnWstu2uz/dZwYIbnFLTyRb2E/mogoPcJWtqY1erMJsg==
-X-Google-Smtp-Source: AGHT+IF8AX3QuwU8PWoyMHubrE0YEf7OwwbSbZImelOgI0KoQ85t34HoENkNaCeescbBRgk60ctOqyrcZAkFR1pI8MI=
-X-Received: by 2002:a05:620a:4094:b0:8b2:3484:8e22 with SMTP id
- af79cd13be357-8b32a8d7accmr3051143885a.0.1764243562227; Thu, 27 Nov 2025
- 03:39:22 -0800 (PST)
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tIlJwzwL;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CF26943EF5;
+	Thu, 27 Nov 2025 11:48:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E511C4CEF8;
+	Thu, 27 Nov 2025 11:48:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764244125;
+	bh=w/afnhuYyNZIpCydtL72AbZ9I5In+EX1JoLUP6VMW2A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tIlJwzwL3cjRTN8mgWo++SdcXe3FjPS+Xlfq613EqGHn+hljGEMsciAyEvGEtxggW
+	 U6hS+CA6VqAl3wDTQT0zY0zuYfoPC2mtD+e63GIsHgyPFYYP14UbAH46cEcp214acs
+	 9g2pl0ho6ilJP/wlcnosybWKcg/b/CkB3rjhDALYYBFYlCEPPYicCoSRLBdaXoZRlk
+	 sEscJ/dCsrWibvkGoY8sLJpFdiH/y6diziI2PGI1ECAtw/CJNC9LMY9b+Y57swmgKH
+	 yrq2DUcTxsXGSC6XhQic1mgvMV5cV5jb7CH+UUatK4u13CX+M3ZW5UstuULer6EIya
+	 fSwxnSiCgEPpg==
+Message-ID: <9f73a5bd-32a0-4d5f-8a3f-7bff8232e408@kernel.org>
+Date: Thu, 27 Nov 2025 12:48:33 +0100
 MIME-Version: 1.0
-References: <20251127011438.6918-1-21cnbao@gmail.com> <20251127011438.6918-2-21cnbao@gmail.com>
- <5by7tko4v3kqvvpu4fdsgpw42yl5ed5qisbaz3la4an52hq4j2@v75fagey6gva>
-In-Reply-To: <5by7tko4v3kqvvpu4fdsgpw42yl5ed5qisbaz3la4an52hq4j2@v75fagey6gva>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 27 Nov 2025 19:39:11 +0800
-X-Gm-Features: AWmQ_bmMHpk-p6E2I_jCY1Xqg4XmWm0x9ikXHEjIDdMSrcjAo4PIsH4k_44adgY
-Message-ID: <CAGsJ_4xQKARuEuhrVuV+WmBC7+NCNd==Zi9nGmze5mfSjF1kdw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] mm/filemap: Retry fault by VMA lock if the lock
- was released for I/O
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	Oven Liyang <liyangouwen1@oppo.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Matthew Wilcox <willy@infradead.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>, Robin Murphy <robin.murphy@arm.com>, 
-	=?UTF-8?Q?Kristina_Mart=C5=A1enko?= <kristina.martsenko@arm.com>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	Wentao Guan <guanwentao@uniontech.com>, Thorsten Blum <thorsten.blum@linux.dev>, 
-	Steven Rostedt <rostedt@goodmis.org>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	Nam Cao <namcao@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <v-songbaohua@oppo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, Johannes Weiner
+ <hannes@cmpxchg.org>, usamaarif642@gmail.com,
+ gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>,
+ Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>,
+ Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>,
+ lance.yang@linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+ Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>
+References: <20251026100159.6103-1-laoar.shao@gmail.com>
+ <20251026100159.6103-7-laoar.shao@gmail.com>
+ <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com>
+ <CALOAHbD+9gxukoZ3OQvH2fNH2Ff+an+Dx-fzx_+mhb=8fZZ+sw@mail.gmail.com>
+ <CAADnVQK9kp_5zh0gYvXdJ=3MSuXTbmZT+cah5uhZiGk5qYfckw@mail.gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <CAADnVQK9kp_5zh0gYvXdJ=3MSuXTbmZT+cah5uhZiGk5qYfckw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 524D6C000E
-X-Stat-Signature: u8uqp6qzbeeb3mpxmf4cqqzyht57qhew
-X-HE-Tag: 1764243563-228816
-X-HE-Meta: U2FsdGVkX1+9qqw9T1GYc18VP67G0ZhHYyEKM+WpR0wp0qDrZZtLN85xhFDAjI7iKl5ilDGVUnFhm6ux/vDOXU/KwXs6nBmeTLvvmPj2CN50hQpOXw7O0V8jrQyJHzth3yJp7HwtwXyYvVBFhcZyvktxAh5Nr4EXbIWIqSrIqmMcGVhhvtdxPIs0g233oFE83LRWTWlZkjPsfzDwYgWBM1g9Y+uw3MxjYRSVje0tNpaIzlmeEE4nplC2XErgEy5QqRMolBXTX7vVW0XzzKMC/Q66Yorg6rumO63IQsgYEw+Z/2Z+0YZvYCL0/2ZTCxIqDKLZ3P18FwO+HnPWrkhbzuYpOwhgHQBmmIrJn4sv2sbWA0Yv5B4uu5ZsW49dToOKdw4AetkT+GgiotwlQGeB6lAwSfoDze3nQD7lq6ZZfv+UkuY28SpOMSI9IxZVEPuwLHMjwSTwsq1mKOq+KSuzxKCYIZWp6lARqO1/q1nYozZ4a72HoxIAkusAnAF8sz+wF5YeoBLtS0tTa3zp/QSJSeMenuVEI38O0nuPscZWzpQeUKdUybWe9V5h77Zia7ZxCWcqnYlQ7lJY0BtgYNA86J0zV33IbdceO1IDxCZk5OxLVYZdtdlGOVWi1lSbQMD/SpUy4y6TCFUM/UZFp1RV8Q7Dg01x7E8RpaqcuX0RHopG2AIZiEcgKeZaUqVpMdyojzUPkbYlefWoeyHt3UVyhxS9ci0v8uGIPp6VJm0U/QUa9Om0XoPLkxjxZEZm8sf4gBNzK04JWnaw35eIs7tuHSU+BBhrEzysyQ4EHgxhicF7UqMNF2a8LLOnNhTxyloqisWBsMubA9Gbp2E57w5FdEynrMq01DEigDht52G17rqejWGzBA6whDAhjQJeC/JLjcxUifZNlpVuj7kuv/Tg7DXq8DnTmZ1vTYU09XG7QW8LpMMrIqC3/Nlkl9ssoBbYXZeNrIGH3501inU1PwU
- WCEVa5Tf
- PEGjLhgvtZkW/MuusZgYZMWIVZ+LEAgju+uVDnaMqrmAAG9hvNLfob0RKKNK3mjc2rKN6HOvtdMPEa4WBU3K7MDJ9l3B+KBeZupMl7BDVqn5X1SUCy83UVceHenhbt5PxlciP++rdGoertPcdUvlCC+H7cnx16yFMsV3netfVHzmzECsISXrEuraixByUN70EXVnzk6FF2mpo84UhyKv8oVl9Y0rOzeEcK38E+Z/DDhHnUJlH9dQl+SGxu9KnqDyggwFKwTJtBAQUx++UMaOkwOnW+MbicH0WD+TculSUb++JgeiF0fPjVO6H/jyC5xRF6G6Y92iLzOD1Xcoz3T0yridc26YkUGKzXOoEwrFV/n+qqWlMG7NKY7sus26OHKxKGrb656yLjF7uaDDvevSain1ChOY9NWCdxZoc
+X-Rspamd-Queue-Id: BCF5F140004
+X-Stat-Signature: 79yi4hduauts9ec79phnh8po5bjpa6bu
+X-HE-Tag: 1764244126-573237
+X-HE-Meta: U2FsdGVkX1/AByfYIXcLmWqi5MVgkK5yIcONrLMW4EfkinG9OmpIHKi6ue35SeQ1cVnsgv2LR1bAiL+ElA4lldAohYeH4WBchTFv/WQ/8XkvrbaNMGaLO3t2dKPBx2urS967VBOvM0y6m5CGeFyBiP8KYxoNeEzEo4OG/akJ7GaJg5LcrDytQtQ/zKml7UXyrN8EFWUhnMvCALUCsfULkRRktKzyfOHHJqZttI5fAyBagBGtyDV5VDowWbmC8kMVinnPQJHWC1D4Wjltkr4xcfHqjQNoulKvi+cTsayND0nisYgj4CfS1VE0c/ofivHbLPzMDHqLJan+H35Io0XsigSqknVmZ/hoyNp6G9IPAt5Ii14+YWr4D6KkHJZ/V45+5BCeLFOfP7X+ccfzsblwtigqFl8u+xs0ZsyWbM36QOKtM27kPekFybyXa07fj5HkCDVGqWg9AopUHXAqm0pzATPANF/nS+SsZy0Wb+vEC0xpXRQLXHPJsApyANcyjdQm2frHo9MhhB/U2XOMPJHWN/wJZ9g+FeoUG/WyY2bf/Sbs9SjpcvLZJ/0FFXAGufKryxkEt+P/EuWG5yNP6wRyupWxk0q0IeeT8gjGnDexi31472Dh1X+rZ5Xy7JhuxsZpV81qinSCVG3OmV/WPfCDM8lzggBf7rjxKQpqYs1Idk9FFyDE7AgEUbLnQd4Kdwp+0qpsUhqGuVLvfDy3h7veybXu4RjqN2DaqB6QQkToAiF5kCgqosMjAy+MjLWQJa9P7DcVpgNycOcg9SGDWwp49GrahpXHrCSpMsWNSTKUgQp6hCAZL0n5cj7mVbUMN+yEuSaP3PuyFnApTKp3rOwW+0agYxiOs5cKzWuT34c2gWqZ9bilb83vjJ7PGeVc1Bfgh5StPNhc6jB7JBwDfg1vrjcLUm4NvYu5a6PYpuYMmZjv2bDrTsBvsNLGtYleioMqXAE6B2ziRJXPGGlMXn1
+ Bw3BisU/
+ msR7S59KvEydbWNSefjFYmHWduOY7AlxTB5lvEkCX9BqVj3x35l1PbLb4rrJXF1taxmJC+7za5Wbk8CwWAVx0D5m2ACzCeAseG5a/7F892lUUT+4TLBqXTYf3STCGwCNXS7LwCg7alGahdt1/DGp1ln8iNwgHeHtLEF/CueXpqvdV8F5eszyiYYe22rYnz3/SHsvR9QPGxSGG+RmLnTGXZGUSogoUcytqyPXamiKM+iobmG66AjCBPHv+O9AkftLm4O0QiVU0EykArPgJCd+AaFQ4SCugJ+MkbcCewKB8a4KqULkrVvUxvAh2reUkZtko4MdA1wcEXDomDwIS+p2dcuwAuHA/DHBDCmECUpQ6nS/jcB8lyz5MzA09ruej/yMTmkgL0pal5vMU2kzL5QxJamS4B6r7mO3Mix1R
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,97 +116,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 6:52=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> wr=
-ote:
->
-> On Thu, Nov 27, 2025 at 09:14:37AM +0800, Barry Song wrote:
-> > From: Oven Liyang <liyangouwen1@oppo.com>
-> >
-> > If the current page fault is using the per-VMA lock, and we only releas=
-ed
-> > the lock to wait for I/O completion (e.g., using folio_lock()), then wh=
-en
-> > the fault is retried after the I/O completes, it should still qualify f=
-or
-> > the per-VMA-lock path.
-> >
-> <snip>
-> > Signed-off-by: Oven Liyang <liyangouwen1@oppo.com>
-> > Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-> > ---
-> >  arch/arm/mm/fault.c       | 5 +++++
-> >  arch/arm64/mm/fault.c     | 5 +++++
-> >  arch/loongarch/mm/fault.c | 4 ++++
-> >  arch/powerpc/mm/fault.c   | 5 ++++-
-> >  arch/riscv/mm/fault.c     | 4 ++++
-> >  arch/s390/mm/fault.c      | 4 ++++
-> >  arch/x86/mm/fault.c       | 4 ++++
->
-> If only we could unify all these paths :(
+>> To move forward, I'm happy to set the global mode aside for now and
+>> potentially drop it in the next version. I'd really like to hear your
+>> perspective on the per-process mode. Does this implementation meet
+>> your needs?
 
-Right, it=E2=80=99s a pain, but we do have bots for that?
-And it=E2=80=99s basically just copy-and-paste across different architectur=
-es.
+I haven't had the capacity to follow the evolution of this patch set 
+unfortunately, just to comment on some points from my perspective.
 
->
-> >  include/linux/mm_types.h  | 9 +++++----
-> >  mm/filemap.c              | 5 ++++-
-> >  9 files changed, 39 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index b71625378ce3..12b2d65ef1b9 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -1670,10 +1670,11 @@ enum vm_fault_reason {
-> >       VM_FAULT_NOPAGE         =3D (__force vm_fault_t)0x000100,
-> >       VM_FAULT_LOCKED         =3D (__force vm_fault_t)0x000200,
-> >       VM_FAULT_RETRY          =3D (__force vm_fault_t)0x000400,
-> > -     VM_FAULT_FALLBACK       =3D (__force vm_fault_t)0x000800,
-> > -     VM_FAULT_DONE_COW       =3D (__force vm_fault_t)0x001000,
-> > -     VM_FAULT_NEEDDSYNC      =3D (__force vm_fault_t)0x002000,
-> > -     VM_FAULT_COMPLETED      =3D (__force vm_fault_t)0x004000,
-> > +     VM_FAULT_RETRY_VMA      =3D (__force vm_fault_t)0x000800,
->
-> So, what I am wondering here is why we need one more fault flag versus
-> just blindly doing this on a plain-old RETRY. Is there any particular
-> reason why? I can't think of one.
+First, I agree that the global mode is not what we want, not even as a 
+fallback.
 
-Because in some cases we retry simply due to needing to take mmap_lock.
-For example:
+> 
+> Attaching st_ops to task_struct or to mm_struct is a can of worms.
+> With cgroup-bpf we went through painful bugs with lifetime
+> of cgroup vs bpf, dying cgroups, wq deadlock, etc. All these
+> problems are behind us. With st_ops in mm_struct it will be more
+> painful. I'd rather not go that route.
 
-/**
- * __vmf_anon_prepare - Prepare to handle an anonymous fault.
- * @vmf: The vm_fault descriptor passed from the fault handler.
- *
- * When preparing to insert an anonymous page into a VMA from a
- * fault handler, call this function rather than anon_vma_prepare().
- * If this vma does not already have an associated anon_vma and we are
- * only protected by the per-VMA lock, the caller must retry with the
- * mmap_lock held.  __anon_vma_prepare() will look at adjacent VMAs to
- * determine if this VMA can share its anon_vma, and that's not safe to
- * do with only the per-VMA lock held for this VMA.
- *
- * Return: 0 if fault handling can proceed.  Any other value should be
- * returned to the caller.
- */
-vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
-{
-...
-}
+That's valuable information, thanks. I would have hoped that per-MM 
+policies would be easier.
 
-Thus, we have to check each branch one by one, but I/O wait is the most
-frequent path, so we handle it first.
+Are there some pointers to explore regarding the "can of worms" you 
+mention when it comes to per-MM policies?
 
->
-> I would also like to see performance numbers.
+> 
+> And revist cgroup instead, since you were way too quick
+> to accept the pushback because all you wanted is global mode.
+> 
+> The main reason for pushback was:
+> "
+> Cgroup was designed for resource management not for grouping processes and
+> tune those processes
+> "
+> 
+> which was true when cgroup-v2 was designed, but that ship sailed
+> years ago when we introduced cgroup-bpf.
 
-Yes. From what I understand, this patchset should improve performance in a
-fairly straightforward way.
-But yes, I can certainly include some data in v2.
+Also valuable information.
 
->
-> The rest of the patch looks OK to me.
+Personally I don't have a preference regarding per-mm or per-cgroup. 
+Whatever we can get working reliably. Sounds like cgroup-bpf has sorted 
+out most of the mess.
 
-Thanks
-Barry
+memcg/cgroup maintainers might disagree, but it's probably worth having 
+that discussion once again.
+
+> None of the progs are doing resource management and lots of infrastructure,
+> container management, and open source projects use cgroup-bpf
+> as a grouping of processes. bpf progs attached to cgroup/hook tuple
+> only care about processes within that cgroup. No resource management.
+> See __cgroup_bpf_check_dev_permission or __cgroup_bpf_run_filter_sysctl
+> and others.
+> The path is current->cgroup->bpf_progs and progs do exactly
+> what cgroup wasn't designed to do. They tune a set of processes.
+> 
+> You should do the same.
+> 
+> Also I really don't see a compelling use case for bpf in THP.
+
+There is a lot more potential there to write fine-tuned policies that 
+thack VMA information into account.
+
+The tests likely reflect what Yafang seems to focus on: IIUC primarily 
+enabling+disabling traditional THPs (e.g., 2M) on a per-process basis.
+
+Some of what Yafang might want to achieve could maybe at this point be 
+maybe achieved through the prctl(PR_SET_THP_DISABLE) support, including 
+extensions we recently added [1].
+
+Systemd support still seems to be in the works [2] for some of that.
+
+
+[1] https://lwn.net/Articles/1032014/
+[2] https://github.com/systemd/systemd/pull/39085
+
+-- 
+Cheers
+
+David
 
