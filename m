@@ -4,112 +4,229 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEE1CD116F1
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 18:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED68D116EA
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 18:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F34886B0092; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
+	id 716C46B0088; Fri, 28 Nov 2025 13:36:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4A06B0093; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
+	id 6EE1C6B008A; Fri, 28 Nov 2025 13:36:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD42F6B0095; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
+	id 5DCC96B0093; Fri, 28 Nov 2025 13:36:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C5AA96B0092
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9290CBAD55
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:19:09 +0000 (UTC)
-X-FDA: 84160827618.21.F26491F
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf30.hostedemail.com (Postfix) with ESMTP id ABBA780009
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:19:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="WSWsz7T/";
-	spf=pass (imf30.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764353948;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CE076B0088
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 13:36:32 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1698F1320A3
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:36:32 +0000 (UTC)
+X-FDA: 84160871424.11.09E4A40
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EB7231A000D
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:36:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bKV4f76R;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf19.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764354988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LqByGLx+ZnzuDp4iiuF3nGgGVwltdDx/D1ftF3au4pY=;
-	b=tKIRDu5eQrf1YnPRR8zK0q1A4jcoiQKKgJeE2tY57N7SRvCqQlgj1DhUX1+jScuzEOoEvU
-	pTVlk+6HUofehzvdPB9EO++hkqWe4WIx+PxynkmsTQVhrcJGPbZWnihOi7eUaryTBHwjs3
-	4sTGJpW4Qa+zETbnWvh6JKV+gRE610U=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="WSWsz7T/";
-	spf=pass (imf30.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764353948; a=rsa-sha256;
-	cv=none;
-	b=A1ehjezjz+iFuBXkeKujEZkYI/gYQS+cp6rDjUF3y4UpOl2byL2rC9fvAKgmMydvHKbNGK
-	FHAlcDKwY/mRNdjOryM5ZXe5cQtbDMmwkZOZyvgnKhdoFLzGygFbIm80uojzfiuo3e3Dku
-	yYHXxU0Jfu5okCU1u2rk2ARLnvHBJ4E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764353945;
-	bh=D5R1R40lbideVzmASkbHJ+gHLI9Htdhg6MTSqRr2Qzk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WSWsz7T/sjVOoTY/5nfXwZRHu4rhkNDL6DITqGjsmhgwx2hz6hSZAE6ctMOlnxnJF
-	 sNXxWZpdtwjuSyYyXpJjJsWQHzlBP9gr2NMAFsuLkz4nkUo7ZkNxbotLciH7qjoMiu
-	 a5Jg3BwHxG8zejOGDy7gle6vZvDHWSf2TGd1JXgr/XVXpcjI7tWU1A2KzG+ZG8Kt8P
-	 P5OLAuPoFNWq6/2+Rr3Nw5+0eEIz/j/Qt0KADYHVQ9M8EyeAAJEfvwxI3EjivQA6uF
-	 pLqciabzg+8vJB6ZKhUg8xveL+owX+GAjrQfdk+M21Hxo19z318Glzqmp/Ihy4+65w
-	 dt66CVMfQ7AYg==
-Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0701417E06C3;
-	Fri, 28 Nov 2025 19:19:03 +0100 (CET)
-Message-ID: <411f7b0f-858c-4486-8819-c01b29cc123a@collabora.com>
-Date: Fri, 28 Nov 2025 19:19:03 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 06/11] drm/v3d: Use huge tmpfs mountpoint helpers
-To: Tvrtko Ursulin <tursulin@ursulin.net>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Matthew Wilcox
- <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kernel@collabora.com
-References: <20251114170303.2800-1-loic.molinari@collabora.com>
- <20251114170303.2800-7-loic.molinari@collabora.com>
- <75cf65a0-8967-4e39-8bfe-aa284f8242b3@ursulin.net>
-Content-Language: fr
-From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
-Organization: Collabora Ltd
-In-Reply-To: <75cf65a0-8967-4e39-8bfe-aa284f8242b3@ursulin.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	bh=NEuJXQEw+YnogF6AWHGSoWCwk/eZNRPXgfP3Mkoc1qw=;
+	b=y0OPioyIQtGbSLvBoQRSP5nFmhnqoU2gq0EzjCUyVrJrye+N4dUbOw8QF5tnxk8deMsqBT
+	iPhxl3U0+E/cO1e+oK1MR8NVa6PLozL/pf7Yo2dCO7W08tjT2mSO6km1WnGp3r7F2aHd6w
+	RXxvB0aYAeRk3BsNgcMK4j0ZSijb1LI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764354988; a=rsa-sha256;
+	cv=fail;
+	b=akKKBFaWgk5ebLpzKqRqhN57JoMFaG+wsoq0sb65lCnADogoYnan6EbS8yTBEtXLoJm43X
+	0gmPeVZ//qgyWZZXO+vfMYAHD5CAfoKwsdDCKvXnee3PJ/u/oBAR4tJODzcklhQZqAmuKc
+	ce9wvlttjzla/W0FCWSuFD74y+QUZfQ=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bKV4f76R;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf19.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764354988; x=1795890988;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=eizeez6EQ5J2KqjJLEDlsOKUdkIS0A/+ji51gS+cqOE=;
+  b=bKV4f76RsWee7fInQWkxEg+r1Z05Mxj4ZYn1vdxLbVAUzqC9f0DwXX+S
+   9KaFI60fiFzFwgiBVUKzTLsPhkSWoG7ArwfV+gPx6zjkEt6MzPYL8Bvxr
+   fCrIn4VlFjoWH1x+UbcmzYsl9AcPC2HMFtxAUCpKQM0gJgA4qQcJ2q3bE
+   Wxjg7hPXti6kQ24tIAPyE+iLe2TyeNUS7D+FLY90dBe2SdwSGmgaM7Rii
+   msqozJUZkvxIOKucWwOGeRL4mkaFS0NiMm4ZeBN5yKjErV+pkRX1Kru30
+   y6audRPaUvzONU+Xak6QtruIcu7vqdepHM4wHSC2S+8oHGrlflJRXgM6v
+   Q==;
+X-CSE-ConnectionGUID: alfZKpv2Q+afgyajGGOYDA==
+X-CSE-MsgGUID: jrPMctAnTKKci1bfW9ODhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="89035570"
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
+   d="scan'208";a="89035570"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 10:36:26 -0800
+X-CSE-ConnectionGUID: Srn6CcmWSnCV2M0Xt7aMJg==
+X-CSE-MsgGUID: TPoD9LrUS3aDuu4Ay3KKLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
+   d="scan'208";a="192638796"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 10:36:26 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 28 Nov 2025 10:36:25 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Fri, 28 Nov 2025 10:36:25 -0800
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.47) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 28 Nov 2025 10:36:25 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xzvw064t2X834OogHTcBPFkTTZrYDaQCJzYibR1e4KbAGGGt0PU9C4KDNuOYRG+oI+T6N1o9wLpqxlg38ugLeGVnAAcyMH5laJvULi41bxxnGfqZ20weKNfg5lPGh+3eViJlBJisGcjVdS7iPLiiivhzYVWk9a6CQIk6BBel5mOLHELFVVGBlFMPsKEVRrllPC0yAhdDBjoZobo9CppqdRkeHU9bTqwQ3H7qtVcicF4pxT9/Khv5RY4yutwBLYkqJVvKlQixtomZN4UeJN7+yrOu391Fu8Cqn6AmePxhNMz/8a5RGpuAb2F9qCjFpUbXKUs76mlhLZpaczGQHUHTPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NEuJXQEw+YnogF6AWHGSoWCwk/eZNRPXgfP3Mkoc1qw=;
+ b=bsa3MAiEIoUNx9sW7v+IYE15Q2OFvhytNrPZ3zxDnhtyIVs+rUiwgas5nGy5zs02vL5eN5TxJrKSRKczaEGVKqAddeRhp7WAMPq/RzCADv5TYsQR1AipEWRvjlz5oVo6b6gXpoSYu4F9Nmok2gBs042egEtjpc0pNL1nKd9cb9HT28rDu4ASC6bxkig5zoAc7VJZ5vjmSiKdeej4lupj4CMWrdaJx2xo1lh0v8CV/OwFxK/TYzjs84K9e90nj7F83txcyR8vV4cwHF+jfS5KR9wisR3Uw0iGIWXjkKsBVBwjq/0WIGl5QsDtTk2/LQGZFRrRA2JZMl+CsW00SUFS5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by LV3PR11MB8578.namprd11.prod.outlook.com (2603:10b6:408:1b3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Fri, 28 Nov
+ 2025 18:36:19 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
+ 18:36:18 +0000
+Date: Fri, 28 Nov 2025 10:36:15 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Jordan Niethe <jniethe@nvidia.com>
+CC: <linux-mm@kvack.org>, <balbirs@nvidia.com>, <akpm@linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<david@redhat.com>, <ziy@nvidia.com>, <apopple@nvidia.com>,
+	<lorenzo.stoakes@oracle.com>, <lyude@redhat.com>, <dakr@kernel.org>,
+	<airlied@gmail.com>, <simona@ffwll.ch>, <rcampbell@nvidia.com>,
+	<mpenttil@redhat.com>, <jgg@nvidia.com>, <willy@infradead.org>
+Subject: Re: [RFC PATCH 1/6] mm/hmm: Add flag to track device private PFNs
+Message-ID: <aSnrnyfr9fvst6eO@lstrano-desk.jf.intel.com>
+References: <20251128044146.80050-1-jniethe@nvidia.com>
+ <20251128044146.80050-2-jniethe@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u4uph55k38qfrfr5k9uxzd4dkfzakpzy
+In-Reply-To: <20251128044146.80050-2-jniethe@nvidia.com>
+X-ClientProxiedBy: MW4PR04CA0277.namprd04.prod.outlook.com
+ (2603:10b6:303:89::12) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|LV3PR11MB8578:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90689be4-54ae-4292-6d14-08de2ead055b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YlJvZU5rNm1JeDFpZ01iaTZTUmtFU01pTFBQZTB4SlhTTDMwV1hkK3pJS0Fz?=
+ =?utf-8?B?NHFzWjZWeXI3WU1rRUZENi9peTBQNGhIL25vNzBkR2Q5bkFnTUF1ZmsxYjRs?=
+ =?utf-8?B?SGRkcm9Gc3lwNnFuQ0hvMjEyNHFGdGlCVkJIcCtxcWYxZldqb2V6RE5zSm1t?=
+ =?utf-8?B?ai9UclVpY2pJU2tnYTJEdW9JR0VqR05RZHpMVHlTbDJKNzlRNUQxd2pvcHp1?=
+ =?utf-8?B?Q2dCNEVVRHZ6WjdBWVdPWUJKZy9hdGpaSUNnWURrNEtjQTh1TG9ZSGJOMTIx?=
+ =?utf-8?B?VE1jSnVwL1VLN3lXcS8rcnB6ODVHVzlUY3NCUHJUcnpUa1o1UnpIaVhDVmIz?=
+ =?utf-8?B?WlBReHhZU0FNY0laZUhwT09IakRESUZ2Q2ErWTk0TG1uYkFXWjR3TERIMUpy?=
+ =?utf-8?B?Zk9ZaG9uTkd1MlMxdzI5MUFPbWpGZ25ObTJSbjdZNXdITnQ2K2hJN25TSWts?=
+ =?utf-8?B?OWdjNkgyTlBCTFV6TVBZQmJVaVJMZUcvTUY4NjNVbWZ5b1Q3M1djbm1YL2V1?=
+ =?utf-8?B?Ujl3V2txRWNxNHFUSnF6R1FhUFVBNHR0TUtKKzUwamhnWjlhWTZVd0NDRTAx?=
+ =?utf-8?B?RldDSU5wOUhXdllYVE9pSlZFMElBYkJ0ckZFSjNsc3p6alBFd2NqYmlONVpi?=
+ =?utf-8?B?cy9LNFZxc25INTVFSzNoUzhtalY3UitzNXNJdmxnZ3dmUGwxQUNLZFZ6cU02?=
+ =?utf-8?B?dllyVXREYnBoeGhEYkJUeENQaW5LQjZCSVlEM05YcTdmUjFuWkt6R1RUL1Ew?=
+ =?utf-8?B?UEx5TWg1dStaWXlKTWw4YjR3RHJXT3VNMkt1Q0IzU1BJVDRyUlI5L0JuaytL?=
+ =?utf-8?B?eW4yWUx4M21RTENibXcxQ0Z6eFZCcitUUVNTa2lMT3I5dzY2ZmxaL3E3dUFS?=
+ =?utf-8?B?cTFxWTlMZXcybHZkZm9nYmlNdTRML0JYVGdVbzB1RGd3cGdJNzlDWlJKQ2dw?=
+ =?utf-8?B?UGREV2V6ME1FV01TdXY5MmFVOGdNU1hUWkNCVHRGdUR0YnRGN0lvRzd1d1ow?=
+ =?utf-8?B?OTRvbHNpM1hzcUZ5TjFPUmZmY3lmQS8xWmNPQmFYdVhlcHZLaTdUanVjNjh4?=
+ =?utf-8?B?R0lEV2dmSkZTZDZwVDJ4QldVRE9yaHFPZ0x3d2tucyt6SGNySWtsNnNHR3cy?=
+ =?utf-8?B?N1N2M2Q3WGtuWnYvdXEyRVc3b1FKMmFwWnNOV2lPakc4TWtMaTl1NUxIUkJz?=
+ =?utf-8?B?WUdKYU5KcFZvUW5YRlFGQzFjd255dW9rem55bjFyUGVGYS8rNk9Fajd6cVFs?=
+ =?utf-8?B?b254Qnphb0pRWVZJRzRNQmhZZlVUTTFzTkxFK0wvdW1JS0RWdVl1VENvZnB1?=
+ =?utf-8?B?TDQyblhhaVVoU3VadUYvNFN6aGZkZ09QVlFxREs0QngzUEpQOGZoc05tZzRa?=
+ =?utf-8?B?ZUdkOEhybFFmL2Jnd3oyOWJxdm5VMzFpY3dRcVdoOEhKUFNhVlRha3NkemVW?=
+ =?utf-8?B?Y0xTR3UvdjhKZUxvb0JQVWZRSDZRRkhnY01seVB5Zy9kQkJUdlVsY1NiZytw?=
+ =?utf-8?B?Y1BPcXFHc09RaForZ3ZYbXl5cFFKd3dKNkxGOWhxUHpna0t4SXc2MXhHM1pa?=
+ =?utf-8?B?aEd2cHc4aUcwUFM5OW1tQUFveHpYT080d0ZaV1h6YkZQL1FxR3FzbkFqQk5n?=
+ =?utf-8?B?akIrMHI2MmszOWVNdGdiYjhYalNLdENzaElINU5kUzh1dGhPTzNhQUhrbWRn?=
+ =?utf-8?B?QlZvZm9rWjlYdE5xODFOVkZQbHhJOXllZFZNZzBraWx6TFVrTzZsZDFmTnlP?=
+ =?utf-8?B?dnVtdlVGSUdtdzREZU1xZFdyZmpyMHhwL1J6ZEFtNEZadmRnejMwYWhJWkFa?=
+ =?utf-8?B?Nnh3ZlAvcmFqTFNoeXNkYU9TRGFQZzlqcHYzOHZxQzZaUjBRcEk5S1MwZGFz?=
+ =?utf-8?B?VS8yb3d0cS9ic0hVZGRqNVRQUXEzV2gxSzBVQTFOcUdwYzBGeTE3Y3hGcWRL?=
+ =?utf-8?Q?D2shpP4XPscR6ZI2PaYJIUSHTMfd+G9h?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlAvL09oazBidGVPa0Q5ODJ1blpGbjFHeC84TW9hd2prQlV2d2MwYUQxaTFn?=
+ =?utf-8?B?ckI1RzVVMnRwWklGajcyREpybGRyOWZzNm00L2drdGF5dW9uN0hSU0Zrcmxp?=
+ =?utf-8?B?N2tKMUI1bmE4VXd5WkcxQzFmbjNlN0pNR2FTc08yZUI4eTVnb1UwbkNtRGcx?=
+ =?utf-8?B?TjZ0eEFWdHpPc1BDQWNNLzQ2eVlKNVFZYy9WTmFEejlGN0x0UzNoZ0d4VGpr?=
+ =?utf-8?B?SXR2MTlHSElPMW1iQVZOd21JZXp0VHhVQmJnQ1c1SVFmQVdJa211dnQzTDA3?=
+ =?utf-8?B?YkpUa3gvWWg3Tk85WE5ySCt2eFhHQkljVnZ5MzVZcU04TnVIbjhkUW9wbE9r?=
+ =?utf-8?B?cnNXSmxlTFRyU2dGK05YTVdNbnM4aUxFWG82NjVZS005enlsamZtbGx5RmV5?=
+ =?utf-8?B?d0pKZXpQdHlZZUsydEhOcVNFUkROUGxiODd5KzREZ05JTkpDbFd4RFdEQTFW?=
+ =?utf-8?B?cm5NNHhGdTY0WEFlVUZXU3VKUHlmcVRFS0tpUWZxeFdwNVlJYnh5c21VNmxp?=
+ =?utf-8?B?ajlaYTkyRlRabDI4cTVBZ3hoRVFLZWNNT3lTdTJjOVVOaWRKN05wUExFTCtv?=
+ =?utf-8?B?eG1EajA5dnY5NHZEamVwSVJTN3lwTE82UUVnZ2JKQW1kUGxiVlFMcHZUUlhB?=
+ =?utf-8?B?WE9lL3hEUzVLY2xTbmNuQTYvWTlTc0tGd0l5alRaSWlNNFphSnFHTTNpMWd0?=
+ =?utf-8?B?QWplaHpOc0cxcHdNZ0JTV1ZENDJpZ1ZJNUdnM1RkK2FHbU56R2p2S2Q1b09O?=
+ =?utf-8?B?YkpmVzB6N3kvMWdla24zdlM1UlBCQmIwbWIzYXU1QUZ0bU9nV2c1WVVqTGF3?=
+ =?utf-8?B?SFUyYzE3cXRqZXFqZlU2VGlSR2RCQUx3S28zWWNoVk1rMzA1M1VZQmhpNC9N?=
+ =?utf-8?B?ZG9sK2tLYTMvOFhTdzZRS3hWRVV1NDJNa094cjJYeTN0RWd3d01PUWVRZFdN?=
+ =?utf-8?B?QUdsL2hiQzZPSndEd1BKS3JlSnFZM1NtWUFHNFFZOEc1U2JDTGR3QUF3ZGZn?=
+ =?utf-8?B?SnhZbzh1cEFlcjh5Sm5QYVVvMFFlM0NJSHN6c3R5aStQdGRybm9WcU9JYmxn?=
+ =?utf-8?B?ZWRGcDNpSERjaFgzemQyYnJSS3NFdCtwT0kwdDBvb2ZCV2Npckl6TEQyQ0w3?=
+ =?utf-8?B?WG9NZFIrbjFCVnJSMDd4QlJockI3bHdzNDVVNnBkUDRyN0tvbEVkdVc4Y3pK?=
+ =?utf-8?B?S0xvVjYwQ0N5ZitUZkV2bVRKRkZYbWhMbmNpMFJqL2NkY3lkL0dkaGVYR0NJ?=
+ =?utf-8?B?MmNWWVQ0TThxTDQ3clFXMXZkVTEyR00vSDNqcHlWRTZ1UDJpNHozanEwS0Jv?=
+ =?utf-8?B?NnZ2K2RqT1dObFpvcTZiUzlCMFJaL1J2WG9lemJmMG9EV096Nk81QlBoeGk5?=
+ =?utf-8?B?WFJ2Vjl3OTF0bG5laXRxUnE2UVZVKzh6bTZnQ09XRkllWFlNS2Rjamw5MWtR?=
+ =?utf-8?B?ODRoQTlaUmMrd09HZ1BpL3FVZkZNbFhLdi9lR0dBWVlxb2FUdEhEMlhxcWpu?=
+ =?utf-8?B?NURsMHpPaEh2cXRXZXpRd3ZCOFpGQkJIK2xpcGs5R1lHZmZndmM4WEF3NzZn?=
+ =?utf-8?B?eGNCR2RDcUwyNDhvV1NHS2FJMkkvR25pNVBWVTdVdjRVTC9qWjVGanMzbVVK?=
+ =?utf-8?B?SXBidjJhZkRLVDlQbHFNQkRSaWMxclZHb0N4eDZaK1hyQkFyQnJkR0YyV3RT?=
+ =?utf-8?B?Q0dqNFRZVE45YzYvNVFXQlZudGd5RnlqYmt3RlRLdjlVZmpOcTREZVBMeWFw?=
+ =?utf-8?B?SlgwTWdFOWFpT0dxVDJpTFZGdlBTbVU1cUZ2SXZ5ZGw5eTdrR2JvSyt6cE5q?=
+ =?utf-8?B?akwvcGRCUkIvYXpkeXArY2Zkcm9VdCtVL3A4cGoyMXhDL1Y4b0h6ZFhTMitN?=
+ =?utf-8?B?Z1NFRGNKcm96Nkx2QVNjcFZDTVR0RFlTams2d2xqNUpFODJsYUh0NXU5aWVM?=
+ =?utf-8?B?L1MzS0tLM1crVm96YjZCT3AyY2ZRNzZYNWMvRUdFOTRiTVpVM1VBbnlJM0JG?=
+ =?utf-8?B?WEp6T1BSRTFWbXBGRXRnVUhCODhKdjV6Q0Z4YlRtOUFzcFR4Wk5wdkxYd0xv?=
+ =?utf-8?B?QkxqYWEzaWhXUkFLdVBtYUt2bXR2VFZ1N0p6RWNCQVRVSG14dmJLc1dXTFRT?=
+ =?utf-8?B?OEZwVzM0OWg5ODBhcEp6ZFQ1ZGtHNjkyRVd3NFpCbHZuaHFRS0dlamxubW10?=
+ =?utf-8?B?aHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90689be4-54ae-4292-6d14-08de2ead055b
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 18:36:18.8316
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gjMH7uYS7mPt85bvP+ra9Jsqj0a418I75vyRGxzJu/ThTcHxGRU5i2GidRsZKE79sA3GtiVEN3sI7URAAqHDIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8578
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: EB7231A000D
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ABBA780009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764353947-680324
-X-HE-Meta: U2FsdGVkX1/MwnlnrkBkCWbT+0slCh2eU/JSebQ1ewdOr2ZFxyLyDbWDqj1pCzXz3wzkK8uCxmmiasgmf2u7XyX131YZMGEX3/6Jxz2fymwSGvoEY8yEd71yQHg+5aYQKHOiR0vQhyEHyv57Ef9lLn+I0iYFAywoFnYjfhD2cSkpmo/dNPokgFzBLBlGQclhZypm/+ymNQrcoW7U/mOzW6qz6NwgLeLYs8nTRCWRBsbheokVO/fgP55tI6m5bMqkgj7P9H9l/kw14+ShzTsrYA5Xa/ms54QRe9qC95riKYK8TfNvUcp3+Mhf8Y1fAwmSkbz0Dtb07566rNhjrNsFkK5aG69r8zU5sfjrg/mcNYO1bWmets/P/NrLnVXQQpSn+4lhLG0l3/D0PBAxnt3jFPRNsN78XvuJzXNVlkeV8+UhwdbSDK2cTRXtIwa7q55y3nqagLnCs8FAZLyEGeN03KQTsRP7s2vilGooeU5xtP/xlWx4YzEZp8VmQB7daMRtut2j+pMSuaG3SiLv/Mc65NeebEnRmFP06N7uHmw4L1bRBnttI8GJVXnxSwujIcqysf+EBRWhk6EMr1JUkuJ6LigyCqMAjm/eTuOKO6P//5FOz8XfXwbNk2qSoddrjjbJl/nwCl7gLm0SBXYNdxm/bv2OaIcWCQ9VempND7lnrQtQqc3OEC1I15bEL9C0161UYC72JTn4B9dYmNQbXb0L93tiEJbyq0Hm9DhZhsQsFAhjUHuW92/9QjS59H96yQyjsc2mrpCrrIdE19sAJmPqEqfuya+b4rA13pPvkyCSoyIdnJ6BLHdWaPQyMxxxMo/C1BNzanhueyBd1nkJ8FLRJPvuYNFA9A7SLa8R3SWi+G3h98wnvcpExGCCPsnEAxJeZrKVvX7gl1zNJqUsitFuiw2Db4z/ErxwaDOq0/qWTE+RO86so157v1Uqsu0RCBwm2Z4VICDGpO+n3cKiM3+
- 5T2emKkO
- HgFTFOV4Ms28vQJvcinKCohSH4F0ozKpzDxKK
+X-Stat-Signature: mudtwwca4i9d3qc8pte4kwf6ftoamgwj
+X-HE-Tag: 1764354987-571229
+X-HE-Meta: U2FsdGVkX199UzwVxycAsm4M3y7u0zRHw3NX6G5PrXX+G24f2oVDZOGwWRUsIqjyuA0OOgOyZe42IxJWgSbBrIvv687Ojvl059AwgMCgP7kTstWUfeGdA71wfTTNArRfW2Xzg0oF73UrajCcRwR44zbInyW7OyLiRmhcfO5qCJo6caRvw6Mcb6deSsU6M8Cdg/qefrHav1FkU7XHqBN+KM6O3HFGyG9VGuXyPwxouSL/XdirKFbwEgiYiGt/5KM6BBK6iA4mpwwcg+BF8s+sGjUgFcZVrpI0yqDoFRS/nda4BDf6X+ESDjLRKkAqNq0QgcNwbhH/k2KM6sER0AA/zwRgdgOFKEIJV8Axzjj0aARHeNOhKcJy5VbHzVTc+rVZNseHCz6IaMslERC8IhRz65gArmnbsegjGWp5wc3Ima6rm1KQwY2Cm3BCVSLBRO4YYegBo4Ghk9BvJFPXvjixPgOZ8azVKRedC0JKAxUwSs+jjb7H+G8ScFK3G6jTX4uD+UGcZGyGC8nVucDR8M4fwG3GCtqODFMj36jnwjUj5n6l9cXoF4D6JNi8QBKgGagHQ3rkd0UfvWH70ZLWF5li0Cyb+FLDhxXRrYE16U19NR3hHdCUhnkFVS70in5wVCgeOlEGCkz1SljDedojgyyeY7EGvFScaUwbMhPHwYoXLfi2OveOJYLpIh4ivypO6E3YGa2KQ6dQtxDhTscX4KtIeAMdHluDMCp5eJl7by06lYyUXS4+D2Kd4tAtPJEEiRP22c3cJG6R3ZM1+LWWuW4m0QsI7KGpknnOTidHmsOPDbPAy3kxv2RE53uKdLO0ioGZGARU3m9QNc3l1I/S22auCy5qeIOcUF09Xpme0KPS3y8iMqbl71mPXibx8Kv8gtkLIOYG59AvFBJxrP9nu5axdGrdGuGANNuEfLcnEWhF9MQd2FrS3VH6nRsXo8pl9Ta/o5WriT5+rsDvSPw7oqK
+ V2kIuR7x
+ 3izLWTFbFNwmcndxlQIfhXzsUJrNa48eQMMYEK2egWzjQToiZJt9P/cOo1f7G+/SRSVHtbkEpnAJkxbgp8mRhKyRz77kxVa8kQ4s2rquBT3nGbLJkxzwgODD8QoRQTKhGCyJXGzBgZdhA1A6ZdI32V84xTQ2OqzmIi4DZJ0GaC7eFab2WYXXdJULj5fLKgVp/6S6IWAcVRyjEdIq35WlV+H6kd42CRbkRZAqTEVSccP93ZH/lOMeSx9W0QDe3kzxIrzXkmJwfcCcAu0M7HGlYcOtWfSU2DPQNVVmVB05jQ+NEEoYJROZ/zMXnCx8duKmnlstrARs3rW4UPcc7NqZ2YV5gZzzeGNKl9GkpGO1sk/0MfoBDKXwr+sJ+Z8M6mrgPBaMFEdbyd/vU3dPsw+KZp0TxL/nFmiG6fMTojgX/+nflcmH4koh7bmM+2JoyyximOuMss/2GNr1qE3Q0OFElolqkCJaHdd3i9p+/Dq7ZnpBGI/A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,276 +235,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20/11/2025 10:39, Tvrtko Ursulin wrote:
+On Fri, Nov 28, 2025 at 03:41:41PM +1100, Jordan Niethe wrote:
+> A future change will remove device private pages from the physical
+> address space. This will mean that device private pages no longer have
+> normal PFN and must be handled separately.
 > 
-> On 14/11/2025 17:02, Loïc Molinari wrote:
->> Make use of the new drm_gem_huge_mnt_create() and
->> drm_gem_get_huge_mnt() helpers to avoid code duplication. Now that
->> it's just a few lines long, the single function in v3d_gemfs.c is
->> moved into v3d_gem.c.
->>
->> v3:
->> - use huge tmpfs mountpoint in drm_device
->> - move v3d_gemfs.c into v3d_gem.c
->>
->> v4:
->> - clean up mountpoint creation error handling
->>
->> v5:
->> - fix CONFIG_TRANSPARENT_HUGEPAGE check
->> - use drm_gem_has_huge_mnt() helper
->>
->> v8:
->> - don't access huge_mnt field with CONFIG_TRANSPARENT_HUGEPAGE=n
->>
->> v9:
->> - replace drm_gem_has_huge_mnt() by drm_gem_get_huge_mnt()
->>
->> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
->> ---
->>   drivers/gpu/drm/v3d/Makefile    |  3 +-
->>   drivers/gpu/drm/v3d/v3d_bo.c    |  9 +++--
->>   drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
->>   drivers/gpu/drm/v3d/v3d_drv.h   | 11 +-----
->>   drivers/gpu/drm/v3d/v3d_gem.c   | 27 ++++++++++++--
->>   drivers/gpu/drm/v3d/v3d_gemfs.c | 62 ---------------------------------
->>   6 files changed, 34 insertions(+), 80 deletions(-)
->>   delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
->>
->> diff --git a/drivers/gpu/drm/v3d/Makefile b/drivers/gpu/drm/v3d/Makefile
->> index fcf710926057..b7d673f1153b 100644
->> --- a/drivers/gpu/drm/v3d/Makefile
->> +++ b/drivers/gpu/drm/v3d/Makefile
->> @@ -13,8 +13,7 @@ v3d-y := \
->>       v3d_trace_points.o \
->>       v3d_sched.o \
->>       v3d_sysfs.o \
->> -    v3d_submit.o \
->> -    v3d_gemfs.o
->> +    v3d_submit.o
->>   v3d-$(CONFIG_DEBUG_FS) += v3d_debugfs.o
->> diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
->> index d9547f5117b9..211578abf9b6 100644
->> --- a/drivers/gpu/drm/v3d/v3d_bo.c
->> +++ b/drivers/gpu/drm/v3d/v3d_bo.c
->> @@ -114,7 +114,7 @@ v3d_bo_create_finish(struct drm_gem_object *obj)
->>       if (IS_ERR(sgt))
->>           return PTR_ERR(sgt);
->> -    if (!v3d->gemfs)
->> +    if (!drm_gem_get_huge_mnt(obj->dev))
->>           align = SZ_4K;
->>       else if (obj->size >= SZ_1M)
->>           align = SZ_1M;
->> @@ -150,12 +150,15 @@ struct v3d_bo *v3d_bo_create(struct drm_device 
->> *dev, struct drm_file *file_priv,
->>                    size_t unaligned_size)
->>   {
->>       struct drm_gem_shmem_object *shmem_obj;
->> -    struct v3d_dev *v3d = to_v3d_dev(dev);
->>       struct v3d_bo *bo;
->>       int ret;
->> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>       shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
->> -                          v3d->gemfs);
->> +                          dev->huge_mnt);
->> +#else
->> +    shmem_obj = drm_gem_shmem_create(dev, unaligned_size);
->> +#endif
+> Prepare for this by adding a HMM_PFN_DEVICE_PRIVATE flag to indicate
+> that a hmm_pfn contains a PFN for a device private page.
 > 
-> Don't you want to use the same pattern not requiring #ifdef as you did 
-> in i915?
-
-Yes, I'm going to propose a v10 doing so.
-
-> The rest looks good to me on a glance. Only functional change appears to 
-> be that you are adding a new error message, scrolling down..
+> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> ---
+>  include/linux/hmm.h | 2 ++
+>  mm/hmm.c            | 2 +-
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 > 
->>       if (IS_ERR(shmem_obj))
->>           return ERR_CAST(shmem_obj);
->>       bo = to_v3d_bo(&shmem_obj->base);
->> diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/ 
->> v3d_drv.c
->> index e8a46c8bad8a..8faa9382846f 100644
->> --- a/drivers/gpu/drm/v3d/v3d_drv.c
->> +++ b/drivers/gpu/drm/v3d/v3d_drv.c
->> @@ -107,7 +107,7 @@ static int v3d_get_param_ioctl(struct drm_device 
->> *dev, void *data,
->>           args->value = v3d->perfmon_info.max_counters;
->>           return 0;
->>       case DRM_V3D_PARAM_SUPPORTS_SUPER_PAGES:
->> -        args->value = !!v3d->gemfs;
->> +        args->value = !!drm_gem_get_huge_mnt(dev);
->>           return 0;
->>       case DRM_V3D_PARAM_GLOBAL_RESET_COUNTER:
->>           mutex_lock(&v3d->reset_lock);
->> diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/ 
->> v3d_drv.h
->> index 1884686985b8..99a39329bb85 100644
->> --- a/drivers/gpu/drm/v3d/v3d_drv.h
->> +++ b/drivers/gpu/drm/v3d/v3d_drv.h
->> @@ -158,11 +158,6 @@ struct v3d_dev {
->>       struct drm_mm mm;
->>       spinlock_t mm_lock;
->> -    /*
->> -     * tmpfs instance used for shmem backed objects
->> -     */
->> -    struct vfsmount *gemfs;
->> -
->>       struct work_struct overflow_mem_work;
->>       struct v3d_queue_state queue[V3D_MAX_QUEUES];
->> @@ -569,6 +564,7 @@ extern const struct dma_fence_ops v3d_fence_ops;
->>   struct dma_fence *v3d_fence_create(struct v3d_dev *v3d, enum 
->> v3d_queue q);
->>   /* v3d_gem.c */
->> +extern bool super_pages;
->>   int v3d_gem_init(struct drm_device *dev);
->>   void v3d_gem_destroy(struct drm_device *dev);
->>   void v3d_reset_sms(struct v3d_dev *v3d);
->> @@ -576,11 +572,6 @@ void v3d_reset(struct v3d_dev *v3d);
->>   void v3d_invalidate_caches(struct v3d_dev *v3d);
->>   void v3d_clean_caches(struct v3d_dev *v3d);
->> -/* v3d_gemfs.c */
->> -extern bool super_pages;
->> -void v3d_gemfs_init(struct v3d_dev *v3d);
->> -void v3d_gemfs_fini(struct v3d_dev *v3d);
->> -
->>   /* v3d_submit.c */
->>   void v3d_job_cleanup(struct v3d_job *job);
->>   void v3d_job_put(struct v3d_job *job);
->> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/ 
->> v3d_gem.c
->> index 5a180dc6c452..62532a89dd14 100644
->> --- a/drivers/gpu/drm/v3d/v3d_gem.c
->> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
->> @@ -259,6 +259,30 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
->>       v3d_invalidate_slices(v3d, 0);
->>   }
->> +static void
->> +v3d_huge_mnt_init(struct v3d_dev *v3d)
->> +{
->> +    int err = 0;
->> +
->> +    /*
->> +     * By using a huge shmemfs mountpoint when the user wants to
->> +     * enable Super Pages, we can pass in mount flags that better
->> +     * match our usecase.
->> +     */
->> +
->> +    if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && super_pages)
->> +        err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
->> +
->> +    if (drm_gem_get_huge_mnt(&v3d->drm))
->> +        drm_info(&v3d->drm, "Using Transparent Hugepages\n");
->> +    else if (err)
->> +        drm_warn(&v3d->drm, "Can't use Transparent Hugepages (%d)\n",
->> +             err);
+> diff --git a/include/linux/hmm.h b/include/linux/hmm.h
+> index db75ffc949a7..df571fa75a44 100644
+> --- a/include/linux/hmm.h
+> +++ b/include/linux/hmm.h
+> @@ -23,6 +23,7 @@ struct mmu_interval_notifier;
+>   * HMM_PFN_WRITE - if the page memory can be written to (requires HMM_PFN_VALID)
+>   * HMM_PFN_ERROR - accessing the pfn is impossible and the device should
+>   *                 fail. ie poisoned memory, special pages, no vma, etc
+> + * HMM_PFN_DEVICE_PRIVATE - the pfn field contains a DEVICE_PRIVATE pfn.
+>   * HMM_PFN_P2PDMA - P2P page
+>   * HMM_PFN_P2PDMA_BUS - Bus mapped P2P transfer
+>   * HMM_PFN_DMA_MAPPED - Flag preserved on input-to-output transformation
+> @@ -40,6 +41,7 @@ enum hmm_pfn_flags {
+>  	HMM_PFN_VALID = 1UL << (BITS_PER_LONG - 1),
+>  	HMM_PFN_WRITE = 1UL << (BITS_PER_LONG - 2),
+>  	HMM_PFN_ERROR = 1UL << (BITS_PER_LONG - 3),
+> +	HMM_PFN_DEVICE_PRIVATE = 1UL << (BITS_PER_LONG - 7),
+>  	/*
+>  	 * Sticky flags, carried from input to output,
+>  	 * don't forget to update HMM_PFN_INOUT_FLAGS
+> diff --git a/mm/hmm.c b/mm/hmm.c
+> index 87562914670a..1cff68ade1d4 100644
+> --- a/mm/hmm.c
+> +++ b/mm/hmm.c
+> @@ -262,7 +262,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
+>  		if (is_device_private_entry(entry) &&
+>  		    page_pgmap(pfn_swap_entry_to_page(entry))->owner ==
+>  		    range->dev_private_owner) {
+> -			cpu_flags = HMM_PFN_VALID;
+> +			cpu_flags = HMM_PFN_VALID | HMM_PFN_DEVICE_PRIVATE;
+
+I think you’ll need to set this flag in hmm_vma_handle_absent_pmd as
+well. That function handles 2M device pages. Support for 2M device
+pages, I believe, will be included in the 6.19 PR, but
+hmm_vma_handle_absent_pmd is already upstream.
+
+Matt
+
+>  			if (is_writable_device_private_entry(entry))
+>  				cpu_flags |= HMM_PFN_WRITE;
+>  			new_pfn_flags = swp_offset_pfn(entry) | cpu_flags;
+> -- 
+> 2.34.1
 > 
-> .. here, but that looks acceptable to me.
-
-It logs a warning instead of the notice below in case of error at huge 
-mounpoint creation. Looks acceptable to me too. I'd be happy to get the 
-point of view of a V3D maintainer as well here.
-
-Regards,
-
-Loïc
-
-> Regards,
-> 
-> Tvrtko
-> 
->> +    else
->> +        drm_notice(&v3d->drm,
->> +               "Transparent Hugepage support is recommended for 
->> optimal performance on this platform!\n");
->> +}
->> +
->>   int
->>   v3d_gem_init(struct drm_device *dev)
->>   {
->> @@ -310,7 +334,7 @@ v3d_gem_init(struct drm_device *dev)
->>       v3d_init_hw_state(v3d);
->>       v3d_mmu_set_page_table(v3d);
->> -    v3d_gemfs_init(v3d);
->> +    v3d_huge_mnt_init(v3d);
->>       ret = v3d_sched_init(v3d);
->>       if (ret) {
->> @@ -330,7 +354,6 @@ v3d_gem_destroy(struct drm_device *dev)
->>       enum v3d_queue q;
->>       v3d_sched_fini(v3d);
->> -    v3d_gemfs_fini(v3d);
->>       /* Waiting for jobs to finish would need to be done before
->>        * unregistering V3D.
->> diff --git a/drivers/gpu/drm/v3d/v3d_gemfs.c b/drivers/gpu/drm/v3d/ 
->> v3d_gemfs.c
->> deleted file mode 100644
->> index bf351fc0d488..000000000000
->> --- a/drivers/gpu/drm/v3d/v3d_gemfs.c
->> +++ /dev/null
->> @@ -1,62 +0,0 @@
->> -// SPDX-License-Identifier: GPL-2.0+
->> -/* Copyright (C) 2024 Raspberry Pi */
->> -
->> -#include <linux/fs.h>
->> -#include <linux/mount.h>
->> -#include <linux/fs_context.h>
->> -
->> -#include <drm/drm_print.h>
->> -
->> -#include "v3d_drv.h"
->> -
->> -void v3d_gemfs_init(struct v3d_dev *v3d)
->> -{
->> -    struct file_system_type *type;
->> -    struct fs_context *fc;
->> -    struct vfsmount *gemfs;
->> -    int ret;
->> -
->> -    /*
->> -     * By creating our own shmemfs mountpoint, we can pass in
->> -     * mount flags that better match our usecase. However, we
->> -     * only do so on platforms which benefit from it.
->> -     */
->> -    if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
->> -        goto err;
->> -
->> -    /* The user doesn't want to enable Super Pages */
->> -    if (!super_pages)
->> -        goto err;
->> -
->> -    type = get_fs_type("tmpfs");
->> -    if (!type)
->> -        goto err;
->> -
->> -    fc = fs_context_for_mount(type, SB_KERNMOUNT);
->> -    if (IS_ERR(fc))
->> -        goto err;
->> -    ret = vfs_parse_fs_string(fc, "source", "tmpfs");
->> -    if (!ret)
->> -        ret = vfs_parse_fs_string(fc, "huge", "within_size");
->> -    if (!ret)
->> -        gemfs = fc_mount_longterm(fc);
->> -    put_fs_context(fc);
->> -    if (ret)
->> -        goto err;
->> -
->> -    v3d->gemfs = gemfs;
->> -    drm_info(&v3d->drm, "Using Transparent Hugepages\n");
->> -
->> -    return;
->> -
->> -err:
->> -    v3d->gemfs = NULL;
->> -    drm_notice(&v3d->drm,
->> -           "Transparent Hugepage support is recommended for optimal 
->> performance on this platform!\n");
->> -}
->> -
->> -void v3d_gemfs_fini(struct v3d_dev *v3d)
->> -{
->> -    if (v3d->gemfs)
->> -        kern_unmount(v3d->gemfs);
->> -}
-> 
-
 
