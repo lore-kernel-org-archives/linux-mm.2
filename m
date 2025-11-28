@@ -4,89 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F464D116F3
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 11:26:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA3BCCFD376
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 11:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B65146B000D; Fri, 28 Nov 2025 06:26:49 -0500 (EST)
+	id 2C5036B0027; Fri, 28 Nov 2025 06:34:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B15A76B0027; Fri, 28 Nov 2025 06:26:49 -0500 (EST)
+	id 29C5B6B0029; Fri, 28 Nov 2025 06:34:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A530E6B0029; Fri, 28 Nov 2025 06:26:49 -0500 (EST)
+	id 1B4336B002A; Fri, 28 Nov 2025 06:34:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 924A86B000D
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 06:26:49 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2148C5951E
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:26:49 +0000 (UTC)
-X-FDA: 84159788538.10.3FF3D4D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 64BC5180008
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:26:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ce+yZbIh;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0950B6B0027
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 06:34:45 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AADD389C98
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:34:44 +0000 (UTC)
+X-FDA: 84159808488.12.E5AC2F9
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6252B180013
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:34:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=jqPsd8CW;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764329207;
+	s=arc-20220608; t=1764329683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Karb8MQ/UDxOFWn3DQ5kxVv44zf842FhiMkOKk3B/ok=;
-	b=CDqEsyofGDLEkya23muwaUo8LbODtJghCouBdPUJUPA6ywQYEezjz6X9m/N8BAkyOqY3YN
-	c+kRj5fiEIgX4slXSLoHPeNKh9mcYcOLrt/u1DhU+UJC8OC+hvcZaUJdPRLYnI3O3rYV+5
-	7y3xtcY+9Xtl9AgLc4tad3UiB/lfTyg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764329207; a=rsa-sha256;
-	cv=none;
-	b=V6lkwNi8jCM8zpLJq1dCnDfmjEKcxxRqVImJEtJVdOZ2Il/e32MPH3+QsSesRb+R3Z3Rsk
-	MsQSJj8d6eoXqrzdLU/+9omGkGItzk+D3EXWzA1i5y3r92IJLKwgUcH446yRhy+jhX8Dpy
-	TrcMFB4TlPgRf6vguvglP4ieH51G4Tk=
+	bh=n03pb56uV/bng4zeqw0XDs9CYZXB2sMRKA0NowRt37o=;
+	b=XGRslcqKq1WWaQ/0UDGSAqpDqqBE0jHapSOcgmoUphtj/SiCcmPqrU0w8eFHuAx9KRY5T7
+	3fiErZ+xqOIFx4kmCPIkIWb1RcBWbBXiqkHq6Wr5l/wtGfQ4viZsONRRgTzpqb9JZUGeAt
+	Ewfha1TYLDVthQcGMy+mCy2twhSeBO4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ce+yZbIh;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 40EBE434B0;
-	Fri, 28 Nov 2025 11:26:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F14AC4CEF1;
-	Fri, 28 Nov 2025 11:26:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764329206;
-	bh=pixOixLW18MiI7w2OhyFVjtVTI0QWrgN96lX5JcVnGI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ce+yZbIhiq2cMKfLdkoXgLsyrCnReqnjN4Z0QFeNfmGjycBuAVXpzBoTCbIyEvUN7
-	 TullcC/YkKK0Q/YQoAEK5obFvYdwQERmJD+Uwx4F7NtpNKWGjEUCKUc79VEYJi2Kav
-	 4SfQO/lg0uo9LhA7grPmaT5JqsNum01LVNi/KScFCXMCb0bZSVtDeHFoyxvAlrZWrr
-	 uWVxT9XgVqOIzess0ZkuSknSIOzhN/H88f7JW9ZOKNoMOkDY2m9UdO6GCBVEPpKbxF
-	 q2XjQcTIewbHDYYuokViM7UbOIKPSwzan4OchotebltAV0O7qzCsodeuqUDPLhzWv4
-	 uLFQ6rezfj3ng==
-Message-ID: <f562c165-f652-4f40-9620-8f5f610b433f@kernel.org>
-Date: Fri, 28 Nov 2025 12:26:42 +0100
+	imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=jqPsd8CW;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764329683; a=rsa-sha256;
+	cv=none;
+	b=DCfrT9uwyqgLriM+74W5FPi0YTBbQjtoyyFlqrc4L1u068CTBJNqqZNXYgFpJRUcfaF+3r
+	FcQfBwy/h1YalH/x2ZTaFcgcVltyLkyxUcks3OVXbyADL/PyTILYUoRmYSNsQNu6tEQshX
+	2m5nzasZYBOx/3sPaEBftJEWLIJXyQk=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 97AD440E00DE;
+	Fri, 28 Nov 2025 11:34:38 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id RUR8aTs9spya; Fri, 28 Nov 2025 11:34:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1764329674; bh=n03pb56uV/bng4zeqw0XDs9CYZXB2sMRKA0NowRt37o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jqPsd8CWkdP1sYlUop+5YOGjpjpKztitu/YqeuhptdC192Kr6sCl9pIdqWtUTTQ4d
+	 RlzFfkaEAwP2Jgux2YS/9xQK4tpEHyFmzGUD+QrBOWQxg+1XDNupu2hatR408pAgX6
+	 sYalciOLua+VUGjn9+zrJpYz73MCkaqISeJw6eBEYVZcVkAPpXeZY/F7HcoYvSInGp
+	 Zb5d6b04IdxdrBeoFmY7H6VWcL/y/vJZ9F1xjMf3ubISmokhwuSQ4Z/bHPxEweId+w
+	 xIrn4wDPIXpHxUgVw4U8MJNIf/ahF/3/V7LLjGQ2LAPE50hskEZnIJfAh1ylJwHuz/
+	 098vVCxSaP5i0oitGnzamsx88hO+M5sYkYOaS2W4nr5n9NAAUldloZGZc32ljKNCfA
+	 K6LgfpK0oLEpWWDVSBg/+VHbUlncNcO01dRD+ZZAEY2zuojrhGw94wqqAWQdyH0Jjm
+	 SFFZPPZVDzyFIZjXPezuOfYJN+9FbGr/j5tFVprbuOTmffG44hYCmlrgtFFjw8VPP3
+	 sNoHRlZsgOklHheNX5P27tvAb0fQBrFm2ViGYPGBw4o5wyTY7yplAJ9BZYyxjd4NMb
+	 ZlgRTFo4Ffw2ZlplE66i5QqEvPvxpu0JWa/Hzf19uoi8efmaZOOStL/8yiJGshFyIG
+	 e0rb7cPSvVzh/NQcSv0U0hGQ=
+Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B1B2540E0217;
+	Fri, 28 Nov 2025 11:34:17 +0000 (UTC)
+Date: Fri, 28 Nov 2025 12:34:11 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, ardb@kernel.org,
+	akpm@linux-foundation.org, osalvador@suse.de,
+	thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
+Message-ID: <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
+References: <20251125175753.1428857-1-prsampat@amd.com>
+ <20251125175753.1428857-3-prsampat@amd.com>
+ <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
+ <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
+ <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
+ <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
+ <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlb: Add guard support
-To: Fushuai Wang <fushuai.wang@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev,
- osalvador@suse.de, wangfushuai@baidu.com
-References: <9cb0a602-69ca-400f-890c-e9dd5b44f53b@kernel.org>
- <20251128112307.80237-1-fushuai.wang@linux.dev>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251128112307.80237-1-fushuai.wang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+X-Stat-Signature: dw47jax83em5f1qdr4pbuotfebq5meby
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 64BC5180008
-X-Stat-Signature: xbx14877dyhag4t6h3fbnkec44fp9duh
-X-HE-Tag: 1764329207-833953
-X-HE-Meta: U2FsdGVkX1/wSOY6+r7Frr/5XPSwavkgNcueFSKnURO3E42X9aGqcev8CoQ6IttYsDKyYVu9LZ2tpmucBwDCIFOKDo9WQKTX17tGvQLIbVFlpaZtx2Ne0YVLNelSuWQlpSWSR7lTL9umd5THqvKw2eMIZS6P4jcwDd6EdmiC8xBEO7TiIAAdDAMD9WG+GBQlnvRYH5KGJY/OzGfIzB6qoYa+4yvbNalHOBUd+ZA/gMxMoE8q565G4EOlep+/r6Q/ubg6+3OzMMcpM3xWONuKQzZHJfO5Fj+zhJ+nqwShJ5uVgGxzWNEmwIVkVSZ3vn858/zgQNRR7jjoZ6celVMW3ZQUE4iD1oTouYSRO6IpucXpZzWhyvwvVu2uE6UMPBDRxazDFHXp8KJg92zMetUjH/UCKR27wdByKhUMZG6bHNdq+qP8oYXnIEQfg5o34osJ1zppwP0V87hX8FdxjgxWK0t1ZgLTzy3ox+ZEhhPwIoFDNdamrMK3bIyt9VMXtqQT1L7OS/QvP/S+eU+c5cfU6F1enDwSSSa2lWHBQFMzx9gNqSU4l71mb93wJr6LxhvRD6xupTrVTS8E81D2WexImHGounNFx6DWAQFzWfJ5h7E8YHBm2CKiGapMZgV+9yTj5brAZx2mEVkXdoWETsoZqSi0HXNJ25f+kl+NA+N+vKh57VOsT2KLn//v7DfJySA06NMC+dNOwa9VeHJqvTMKzozNEXVnSxxg3Rkuc86vBMm6Y3aOK3xzMDxKg3c3/mJirvbY7GBHK9YBcChsFsUOrN1fdZeWaO6v9FAXZlteTVz29jR4f7E8aljuz5mHTDknvOzyRtti9ILrnjuNBXEW3FI/u3LmY8LptPZtHH6xnS16drpJIcrlpDSIPKUHs92gOw0pqe8afoYnnf2H/M5yeCXCkMRUa/rbUG4IVNZlwg0dZPxrFmsJMFwCMGeo1UQIU9C9QBhkFGWs0QbUhf2
- p4OkJzo9
- lV6LoYOtYzmAkxHc+dWEhu4Q3s6qtD7/MHkF/p/uU8WejY7+Z758w2LJhydHgfeEpwAJH5YneMONtFL6rf5jVH06smMDwfNuzw3FS/0ZDTwZXR78PPX8A8tDYsqY/Q0g35CxR4Y49jV40iFDiVPKXuKMV2xxBErxLMPAe4xJfLCkbmohOqwKrcRbWGTZ7isvLEGmTUFdzh7mAQI3AIkBoS5vjFIC1wo++TvTZmowA46Hd1pGR+cVmbmRYk+/mFtFc+xMT/0Eg1AET7xqfI2sx8RL+Mn5dSREV3CtG
+X-Rspamd-Queue-Id: 6252B180013
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764329682-872467
+X-HE-Meta: U2FsdGVkX1/QcsYphpb5mZWbeX9HBUMPzjLkYT7sLxuByoISXW2C/EPi8XMMvPXVyVY14V/iHomsX/Py8HJc6qmajbb+vHyU/ssa1iqhLQD58SdLQR700UgT7nvv/XDMXx/k06XkwYggnTlwSgJ2j/DDARLSjJeArMOzD3AiQsGVK+XNjC4ipjJsbji89r+KY0Ry6wYzKTQB0OjICMw/Vi82+sT1DCfr4HzrfI/MWMwjsSshwbBiWa9NbDWX4Qpp6vMqZhMJWsbgWXKLPwSfJCX+iIYSyF/11GDa9l6l7HJO+zJilIct1s+H6dcBvhpuPUpGRRfeCa9Hd0qExBYrQu7ASzO9U51bXyt/R5/dMBfq7XGiBPuogae4se259VkUbGZI0GeS1fBCa7eNh6lf7QJtnJZ3dOp36XhqzDZqUJrE3fy9FqyRVsyNmViJE75DCYCf40sqIBRqlwF6L8LT7ktZS+sr7tE0HdMxF8ePHX/Ap6NyZhzn/oF6uo6INFxPNI11iBXj3/jNbkztHnWd4JcZqkRZcIBGnk6fee3LG4v4c8xT0N0raibamYDAfHioajthvtOCotUR0FyHtrhwLKgzuTPsRVw5X0GNvQjU4gzYY0DUmsdUdLjmyoc0IlC5X5w1M87fObjdGjeV1ZHqnWxnhIvywuuzpYP29bJpYGH9OXft38vMH1SxwN2PVOz8T8mjvAjVAPGGJj5VvmTAvhZaPfg6r311LnvpFFjmckTQE1dTwh74Q1qSEmRpXsrCkUCuSgWJ2Y5kazOkihSMJgmrVFVJvleyTDvrD+f9HuqYXdOs6sH7ROZcCrBr7XyvbP3jRTQBrzZG5OdjJrybGYwS8J+JjCE6dzTwD/QxatEPa/rTwYVQktWIOal+EHI+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,44 +112,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/28/25 12:23, Fushuai Wang wrote:
->>>    include/linux/hugetlb.h | 8 ++++++++
->>>    1 file changed, 8 insertions(+)
->>>
->>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->>> index 8e63e46b8e1f..f97cb2f123a3 100644
->>> --- a/include/linux/hugetlb.h
->>> +++ b/include/linux/hugetlb.h
->>> @@ -15,6 +15,7 @@
->>>    #include <linux/gfp.h>
->>>    #include <linux/userfaultfd_k.h>
->>>    #include <linux/nodemask.h>
->>> +#include <linux/cleanup.h>
->>>    
->>>    struct ctl_table;
->>>    struct user_struct;
->>> @@ -468,6 +469,13 @@ static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
->>>    
->>>    #endif /* !CONFIG_HUGETLB_PAGE */
->>>    
->>> +DEFINE_GUARD(hugetlb_vma_read, struct vm_area_struct *,
->>> +	     hugetlb_vma_lock_read(_T), hugetlb_vma_unlock_read(_T))
->>> +
->>> +DEFINE_GUARD(hugetlb_vma_write, struct vm_area_struct *,
->>> +	     hugetlb_vma_lock_write(_T), hugetlb_vma_unlock_write(_T))
->>> +DEFINE_GUARD_COND(hugetlb_vma_write, _try, hugetlb_vma_trylock_write(_T))
->>
->> Do I understand correctly that the code you are introducing does not
->> have any users?
+On Fri, Nov 28, 2025 at 10:30:15AM +0100, David Hildenbrand (Red Hat) wrote:
+> kexecing the same kernel is typically used for kdump purposes.
 > 
-> Yes, it is not used now, but it can be used in future development to simplify
-> the code. If there are complex hugetlb_vma locks in the current code, this can
-> also be used later to optimize them.
+> kexecing different kernels is used for all sorts of things (live-upgrade,
+> grub-emu come to mind). It's quite common to kexec different kernels, or
+> maybe I misunderstood the question here?
 
-Right, but we usually don't add dead code. So it should ideally be 
-introduced with actual users.
+And my question is: since when do we enforce no-ABI-changes between kernels so
+that we can kexec any kernel into any kernel?
+
+By that logic I should be able to kexec 5.x into 6.x. I'll bet some money that
+it won't work.
+
+So unless it is written down somewhere, I think we should probably talk first
+what we want to support and why...
+
+Makes sense?
+
 -- 
-Cheers
+Regards/Gruss,
+    Boris.
 
-David
+https://people.kernel.org/tglx/notes-about-netiquette
 
