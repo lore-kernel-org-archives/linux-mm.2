@@ -4,111 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 281FFCFD2F6
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 02:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FA90CFD2F6
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 02:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57D0F6B000D; Thu, 27 Nov 2025 21:46:16 -0500 (EST)
+	id DA10F6B0022; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52BF46B000E; Thu, 27 Nov 2025 21:46:16 -0500 (EST)
+	id D29696B0011; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4683E6B0010; Thu, 27 Nov 2025 21:46:16 -0500 (EST)
+	id BCB2E6B0022; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 373656B000D
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 21:46:16 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8D74B835D
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:46:15 +0000 (UTC)
-X-FDA: 84158476710.29.14C2060
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1269614000A
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:46:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="hzr/CRvt";
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A2D4E6B0011
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49C3C1602FB
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:26 +0000 (UTC)
+X-FDA: 84158497332.20.CE17E0E
+Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E9B5FA001B
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764298464; a=rsa-sha256;
+	cv=none;
+	b=wi8RS1x5zhOMzaoBZbyZt2I2Ven1Wl10/4XBoq/sMi7Qgk4UyFaecOjPNkt99VVA3CDv8f
+	i2cw7bDV6TMV3CuF0WC9pMA9FgtZWNSTH+aoyQ8kmfNJutkEK+cVn72HnqEwAB5cpiA22n
+	v3eVFf16d8lsPfV8MCNFVLYsGMGG+iA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764297974;
+	s=arc-20220608; t=1764298464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=74wrel5HDJJNYTyOOQpdyeev3rHJnQP6jyPpPcoKvVs=;
-	b=l4xL5LyE8jrbA80/afqKaINES+u5pZzsIkyIOcBTln8uZ4CvZzmVhx+Fl4KkwB176XsYrz
-	5rVK/MkACg+V/OBk3j4DQt0oadI17ZWd/dcloZ7hGOBafitkZUe6w1hgFXTOKlpqgNYCU4
-	IdHXWMWdY+jwF2R/TT02qQvmvWjRC5I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764297974; a=rsa-sha256;
-	cv=none;
-	b=vcmgQ39m28w/o6aEorIzcFUqHI97afXAQS4xLYVzJZjV/ksXLqUnBt4JqCdEQlSZAQuIhL
-	F5jvbbpQx+KFMY72HQEk7wl3irpdOrya6uJ9+uLyW6ZVB3I8QKAzeslB4+C9Qhqwt75ygH
-	Js7MUu912j6B40FfAwBE8n94XdsijEA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="hzr/CRvt";
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-645a13e2b17so2219251a12.2
-        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 18:46:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764297972; x=1764902772; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=74wrel5HDJJNYTyOOQpdyeev3rHJnQP6jyPpPcoKvVs=;
-        b=hzr/CRvtczE7qpYDj3+JyKr17ftLKtwAYngEVpq4Cw11bfRz7rFQ52bW7mO66DKcqw
-         oqoqSRlNKT6dTfEHEGw8be/9AsI2bAy8YOwr0vduBqP48A+s+z/OPsaIedVAx9qPhnmB
-         GtnPYG4c7Os6OJ4JaRpr9J8h/BgzSXdClvvr4NOwOuLhF1pDnR8C2hEQqv116pk4jTrU
-         kXBCOEYfG82aRVoA7NmHNBYYSAYJcceRcieAGbiks8SnvYhAzE4kwqjYHuqu9iMJfS3C
-         xWMPTCH5bwWmvfz5W3wER0OUMHw7mE727x3N6YtJFCrSyoC/gWjIDabZ0hvXLHsvxcjJ
-         B1og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764297972; x=1764902772;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=74wrel5HDJJNYTyOOQpdyeev3rHJnQP6jyPpPcoKvVs=;
-        b=EZwDk7bWLr8lGs2pmXj0o4jbBkzVHgeaamxtzTJp8z89ctsI8Kiq5ep6MoybvzYmqO
-         +o3EuFkzmVyuvwLjbACVzbD16/9cwHSCShwkTjhAlawZEy9r+hmaQzkXJiZebM3m6paW
-         gmpato8+XZrxIPbyXUJfbHkn4ouixMRsAZaMaFI4SbTuej1O7mkdy2qa6b+f833Bp6l/
-         dRzjJV5gXZUnP4RVUnzORLLUBtigWD/M0hLTlds4vbbbrnoGK9Ez7iV7w9z4dBm0vVGC
-         wPqTpPlFFPRpbwyW6rxuR4CH/bA8L7CcJ43ydWSut6qbv8lsgBH44UTOKybfzA4J/in/
-         uPxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWA7zlEO8Npv5MzcY7PXI94sEAEfIddBMTUfCk+Mrg6s9ASmPLpbugavPoyWZ87MPCEeVGS9pVFg==@kvack.org
-X-Gm-Message-State: AOJu0Yxg/t97/8ocoXB0gsRvvl1w4ppKvo0g2ycJl1M9DtEEMoFalYlX
-	7ettNXTgOuT47IyQhV8MROokbZfvuU9C1gSq0rvCxQnY8NhLaKQRUm9NZTiYGaCEf94LVho0u0i
-	cUIfg4eTVknr6NzpKnWpY/plU83dsSCw=
-X-Gm-Gg: ASbGncvtsYZ96wzsMImLSqVSPJaSG8he5vZ+nGT782WpqtYro8oeMwXie+ORESbsfs+
-	X4vNMu6060p10U0r/c7sTJakmfipdgl7DQme6ICC1U8JSmIItziKXVCFKXOa/Svi1rJPcHZGA2r
-	QfjOTe2PUpFzOekOnSXD8I/u+TSPcM/6hnjRRvnLovhNTEJ0ABCwJ0u/JBqkNcXohV1QprHi/I7
-	mMewVNbTrBnU/Uj2tpGKUzblKBfa2sIBxnyEjoNYG5hvhHT3KS13tdZAlKXaIUFMHFtIi1e8LB6
-	F2qiA+spL0jftf8HYn6cBnmn+Frj4E9CQlklcw==
-X-Google-Smtp-Source: AGHT+IFYSGWxrSPzULuS6rOmkhGtTQEDBKzX7JbEXZGuf7Ce8nO2dKgUj5EB6aQ91STbKKlkc9wK4fDyNcup93hZOJM=
-X-Received: by 2002:a05:6402:524c:b0:640:edb3:90b5 with SMTP id
- 4fb4d7f45d1cf-645eb2241a7mr11501762a12.7.1764297972256; Thu, 27 Nov 2025
- 18:46:12 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=wsjNgFug/UIKFycNB6GOgIpj6egr0KvUxqRnl6lQhQ0=;
+	b=ZeSV7eibSQ3BQLTP7zo2NggJx/0/fl/dpX0YfRoCBY0U1iqPAIpaxLxnOhjOULJET0wqwe
+	21lzfq9fsHB2bt5CBfpyS+dac1EFF96CqO2yWlg6hhsGMNzFkXa0ZbjyyqCX9ViTRsLjN1
+	f9BUXvTM4JfUAbKFJ+XrgjeDyBpcoDg=
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dHdBx6bHdzYmZ9v;
+	Fri, 28 Nov 2025 10:52:57 +0800 (CST)
+Received: from localhost.localdomain (10.144.5.36) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 28 Nov
+ 2025 10:54:19 +0800
+From: Zicheng Wang <wangzicheng@honor.com>
+To: <akpm@linux-foundation.org>, <hannes@cmpxchg.org>, <david@redhat.com>,
+	<axelrasmussen@google.com>, <yuanchu@google.com>
+CC: <mhocko@kernel.org>, <zhengqi.arch@bytedance.com>,
+	<shakeel.butt@linux.dev>, <lorenzo.stoakes@oracle.com>, <weixugc@google.com>,
+	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Zicheng Wang <wangzicheng@honor.com>
+Subject: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from debugfs to procfs
+Date: Fri, 28 Nov 2025 10:53:12 +0800
+Message-ID: <20251128025315.3520689-1-wangzicheng@honor.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20251127100303.783198-1-youngjun.park@lge.com> <20251127100303.783198-3-youngjun.park@lge.com>
-In-Reply-To: <20251127100303.783198-3-youngjun.park@lge.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 28 Nov 2025 10:45:35 +0800
-X-Gm-Features: AWmQ_bkf_EVeHK8-36m-EcvORbKOGrseyh-kQO9H1z-dOPTeMjfF-tRoavRbA9k
-Message-ID: <CAMgjq7D+K69Yvb2RW6bh+hq8RBuvNRd=7HAFXxqkeB5NSSnB=Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm/swapfile: use plist_for_each_entry in __folio_throttle_swaprate
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.144.5.36]
+X-ClientProxiedBy: w012.hihonor.com (10.68.27.189) To w002.hihonor.com
+ (10.68.28.120)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E9B5FA001B
+X-Stat-Signature: jq35emu3znxpgtxdis5wi34bqh3g6g4k
 X-Rspam-User: 
-X-Stat-Signature: g163qt1pdhoajcz5zr8ck8p7grrnj1d3
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1269614000A
-X-HE-Tag: 1764297973-876067
-X-HE-Meta: U2FsdGVkX192Bmcfb5N/ljrlBMeoCLIvm6RMy0jualLhAjmYdgMs0pWJOQo516epf2rVOgv4ui0MR2OpJ7UgeoB+Ol1n0Ry8Og9QwHTlisRTse/OJcXBJhWxH9/EpubBpp+7k7A8UI1tCgMbk3OELACWOVZ5hxJkb9AG0mMhPy/iktuw2p/2z7bdkKKIBVXXnvLJjpEzQWd1slptCoc9lHgB7ADLuqEy8udzVnMFXZ2NHnSg1WuCiIKEEld4Ev/sRFGoF6Apcb9oBwocu1dI3SwCAM+0ycJlIGYZ+Yn9++sLrIRkaqpv+6tTnhilZyyGwtgeGJMjiZeAYBuOdRhOjOw97m+lcNwbKUxeqBuKi1OUzpBdRNBjV8fUzV0Ws9xz18Gx5E6LIIg++Zs+0X4QWW+wbdZj2gQ8MMjN5ebjNHcnTlKwUTs1KYNhZtcbEYCmNCRqSESat5cRphWatGVCKnfmft35FIRIH6KWMQXjB694bkl1we2PJNzoVXoySw1OcJM93mp/Vq6Vi/hubVERv74/zDoAmuF+BMRoUpDNR8laE96axoNQzUSJRZ2WKKPQoeGhmo5BkoCQXhV3Fv+pxf7pKhsjLtOOu/cvd940MvrWMcg/DAlOnhm52AprT82i/zqn7S0elZA4AxWrRkFAsZTvX93kRk2sAZ2GdSR286a6h+WUqEKClQvS+Xgl/hBImVtsdU8WekLzcvg3Ue2HNUTktXpvgYnSxzDgRkF+tPBYDgXx9h7qPZ0clvH68ugLEuy70RsHXBN9B7eqKoNOEyDeLGCrof/EULSwBfIgSWwavi+d2xFYQbxX2lJ3rIiYhgWaZv4NgksulVOJDPtvw09Gi60Lag4iMF+7deLhWK5J4pMwc9YnLLXiH0oMpSEtGO/XhDkQUH2iTEeIB+yYquWYLUBcCadB9wBlYZ7O/M8z7dcnaOaR/8I/GZBecFON+bhBeAf+nJIdFLtQegP
- Hby2/vV4
- UVfi1/zyk3h4iG4bA6L2abFMpcHTzTutqlI+50N5JJi945/vZCehPwXFpeUB7VFXoyP5u
+X-HE-Tag: 1764298463-911341
+X-HE-Meta: U2FsdGVkX1+tTOcwNYP/i6io+DnA1Nc3Lng2m+0OanesUYv0T9dgrVKv696OgyFwKLzqhAmKoCuAGiYA9yh14XOv3yLpQt+49FBSJ/Di/ZoIbVM+k1Fe8K2sBphhLDMR/F8xraZEFxLd1G73/ca6UDPPLG+DBxskeKmS7waBJgpqREYR9L3ihUB49+x5d8wdnlpQGq+Tx9PoeFl+fBz2mQNd+/jvWTyEJbYNOP9NtTkAalcdbuLfj+y2Fze/FkVp/YTK8+YtP9H9JRxgYcet6tvOIjEPZ+SryI7PYt8sLUfFxs7sKCcGYOVb/0NTiU5angMbM3Cvj7YmiRwZAQDR6hasfoTvv2YcSN3Rzk4eouKIO/BZKlVVZq2S7SK2Rw9wGx10JyR8QETjLYV+zECjr5QolsQZyb8lXtsBAoXiaIhykkiv6AKD1/2z2zf8X+3AtLRqlFa77YvuyLJfJTr4Vm5NsswwY4XxIwlDq1i9sk1M171dTBaYCcCgfu2J4McFlkByD3rktkTkEzqOVW9+o+bhpEsjd/p6xprw2H/qKl2yqIJqxUDaEp0xN7WVe51YoVBy0/GZA2slDz5Wz3xD/1BsgcajScyhA/FAYlq4XtN+9o2IgD1LsJEcIdXukNyW5T/veRIUfOmAZavafZzKgLa3FgAjmFeFdh/9pHoTzh4PxByQktpCH4SLMMgWVsjj4FrxzG6ONIQ238u4DCh0jtDdDEGWVSLuWWjqdj8ltbiWKYI2BAAGz2cgGVWiQs63Im3zd7u4VHYx79FlHmfY1x+iwCttJokVzO8tfVy+GfW27E/6nvApJMi5xSNbr+zlXbUGUruUUEAm0lJ80N5rcUipBPhYXqGtgtkDwd5ATu2l8PKJEnzkCchkt+HZWKEvlkCnYUxog0R2uQHtu7OMiFeXEtyJnhYoCgGm+o9R0s5Vx8PM4T0EuFl76ZckUD+Ogg47Ir9ioJDA8mrApcQ
+ es6Va5cX
+ uOOA3lR6I+4gVwmO2KcRqE2FvcwbjZcNjMsuP2VW39DvdXFPi0HSZsMX8dYGGkkIBOrLeKHntl/Q0MNOnSuDXzMz4VeZ1goa/uzpNOVRvQOvhw3XLuDYylqmrT4YFAEJlX8azY8/89pygjCT3HUkWKC24Jh7tXK84k0a8ge28oRLA+dMg1xXveE/d0pTrfzCA7w2/8cJ5SZJIQRIBZaVlT4MGr1zj2gZ6Gi9F5JcNYfXEKhKUuYne7+1qIqAJlfrfidDQdMaTnl+g0MFi9C6rInQYc+xAIdKc63YGHQitEKPkxiU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,47 +90,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 6:06=E2=80=AFPM Youngjun Park <youngjun.park@lge.co=
-m> wrote:
->
-> The loop breaks immediately after finding the first swap device and
-> never modifies the list. Replace plist_for_each_entry_safe() with
-> plist_for_each_entry() and remove the unused next variable.
->
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
->  mm/swapfile.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 8116f36e440b..46d2008e4b99 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -4023,7 +4023,7 @@ static bool __has_usable_swap(void)
->
->  void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
->  {
-> -       struct swap_info_struct *si, *next;
-> +       struct swap_info_struct *si;
->
->         if (!(gfp & __GFP_IO))
->                 return;
-> @@ -4042,8 +4042,7 @@ void __folio_throttle_swaprate(struct folio *folio,=
- gfp_t gfp)
->                 return;
->
->         spin_lock(&swap_avail_lock);
-> -       plist_for_each_entry_safe(si, next, &swap_avail_head,
-> -                                 avail_list) {
-> +       plist_for_each_entry(si, &swap_avail_head, avail_list) {
->                 if (si->bdev) {
->                         blkcg_schedule_throttle(si->bdev->bd_disk, true);
->                         break;
-> --
-> 2.34.1
->
+This patchset moves the lru_gen control interface from debugfs to procfs.
+Exposing the interface enables the capabilities for *commercial products*
+such as Android to proactive aging and reclaim.
 
-Thanks!
+Two main reasons:
+1. The MGLRU reaches the stage where its control interface can be
+consideres product-ready, not just for experiments or debugging.
+In specific scenarios, proactive aging with reclaim can improve
+overall system performance.
+2. Commercial products like Android prohibit mounting debugfs for
+security reasons (selinux neverallow). Without moving the interface
+to procfs, Android cannot utilize lru_gen.
 
-Acked-by: Kairui Song <kasong@tencent.com>
+Case study:
+A widely observed issue on Android is that after application launch,
+the oldest anon generation often becomes empty, and file pages
+are over-reclaimed.
+
+In Android, each application owns its own memcg. When an app is swiped
+away seconds or minutes after (cold) launch, it will be frozen and
+part of its memory is proactively reclaimed.
+At this time, both file pages and anonymous pages are temporarily unused,
+while the system load is also typically low, making it an ideal time to
+prefer reclaiming anon pages while retaining file cache.
+
+Keeping more file cache benefits the system in multiple ways:
+1. The device can retain a larger page cache, reducing IO.
+2. When memory is tight, evicting clean cache pages is fast.
+2. Super-apps such as camera benefit from reducing the chance of
+slow direct reclaim on the critical startup path.
+
+Experiments:
+
+- after cold launch
+```
+Kernel version v6.6
+memcg    54 /apps/some_app
+node     0
+1     119804          0       85461
+2     119804          0           5
+3     119804     181719       18667
+4       1752        392         244
+
+Kernel version v6.12
+memcg    84 /apps/some_app
+node     0
+1      38428          0       16424
+2      38428      24307       14997
+3      38428     126529       56452
+4      37980         27           1
+```
+
+- proactive aging 2/3 times
+```
+Kernel version v6.6
+memcg    54 /apps/some_app
+ node     0
+          3     172432     102532      103441
+          4      54380      74803         854
+          5      28892       6496         229
+          6       1588         26           0  
+
+Kernel version v6.12
+memcg    84 /apps/some_app
+ node     0
+          3     819624      98726      166045
+          4     819176      14849        1543
+          5      40000      41328        7633
+          6        960          0           0     
+```
+
+In continuous app-launch scenarios (e.g., After boot, retail demo
+loops, tech review testing), our measurements show: v6.6
+1. Available memory improves by 400–800 MB.
+2. Direct reclaim frequency and latency drop by more than 24%.
+3. memavailable/cached levels aligns with traditional LRU.
+
+Summary of average available memory (MB):
+mglru without proactive aging: 6060
+mglru with proactive aging test1~3: 6988/6432/6837
+traditional LRU: 6982
+
+Camera direct reclaim (10-run average):
+mglru without aging: 1050 events / 460 ms
+mglru with aging: 789 events / 316 ms
+(25% fewer events, 31% lower latency)
+
+
+Signed-off-by: Zicheng Wang <wangzicheng@honor.com>
+
+ Documentation/admin-guide/mm/multigen_lru.rst | 19 ++++++++++
+ mm/Kconfig                                    | 10 +++++
+ mm/vmscan.c                                   | 37 ++++++++++++++++++-
+ 3 files changed, 64 insertions(+), 2 deletions(-)
+
+-- 
+2.25.1
+
 
