@@ -4,137 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F040D116EA
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 18:07:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEE1CD116F1
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 18:19:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B27EF6B008C; Fri, 28 Nov 2025 13:07:30 -0500 (EST)
+	id F34886B0092; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B04E26B0092; Fri, 28 Nov 2025 13:07:30 -0500 (EST)
+	id EE4A06B0093; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A15506B0093; Fri, 28 Nov 2025 13:07:30 -0500 (EST)
+	id DD42F6B0095; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 910BB6B008C
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 13:07:30 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37EB55AC41
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:07:30 +0000 (UTC)
-X-FDA: 84160798260.06.D53A666
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 360BBA0015
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:07:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=cQMWT3gX;
-	spf=pass (imf25.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764353248;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C5AA96B0092
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 13:19:09 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9290CBAD55
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:19:09 +0000 (UTC)
+X-FDA: 84160827618.21.F26491F
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf30.hostedemail.com (Postfix) with ESMTP id ABBA780009
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 18:19:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="WSWsz7T/";
+	spf=pass (imf30.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764353948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7hCtVdIpYmvpIaG2Tepwl9t2OZhg+JztbnabjHdsDXw=;
-	b=r28ZbaTmXSTuLZ2/i59EUnLqKMzQaW001cd+4c7iE151jZy5jslWjilBYL82odZgsiEF+X
-	o2atH41rBvBl1yjL6YrQ+l8i3+efAGrqo1pN9zgz6fwhgJ8hqEw79W/nSDrGboEBn4gGP/
-	hr4r03vQckK6uuCi8z+07GDo6umhUlU=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=cQMWT3gX;
-	spf=pass (imf25.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764353248; a=rsa-sha256;
-	cv=pass;
-	b=375aEqIRBYHZprxHogi+1IrLqB1w7WBiP3b1FBN3mVKR2CRrD4Ssi8THG+I9b0HB/4WgdU
-	OtG9CrxwmEfeiGtkDMxAkq6/ws0H0SUlGRG4BAX1b+DQZPl9LO/r9Kq+2qqs7KrYoN42UI
-	1OwxX73ZZ0oSX1VMYVc8idlbKOQYKJ0=
-ARC-Seal: i=1; a=rsa-sha256; t=1764353224; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=RtG3ndtV6UjdVmNEugxfkY/hNqTZyTalZN9NIiBwE13LjiiQGrfVvqMIlCMsp2cR2P2V3BZjxj7axPKgJYr0fDdbSPxN1GTBWASZjGJdnONZS/yezjkw7I+//rihzgbrikAiSqC0HZUafMyQak5Jd2CE5YoCDUpLUmhT/Bwk/ls=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764353224; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=7hCtVdIpYmvpIaG2Tepwl9t2OZhg+JztbnabjHdsDXw=; 
-	b=j1uXW3P5csnn5xBO8uGG/CYg16oq3me8gSQnLQlVJw5JE02U+XwW4CcPu0JMcCgNqtIU2mo2h22ckClb0Jn1u9EElgTUDqT6AtpOVux93CVzTAVQxFiCCkw700f5K+85rR3/6OM9haHQvh01rQ+nxQr11SX9m5R4Brfuh/mGa0Q=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764353224;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=7hCtVdIpYmvpIaG2Tepwl9t2OZhg+JztbnabjHdsDXw=;
-	b=cQMWT3gX69SgMPgVmoZ3O2F61xD0U8uLT41OSthjMpSgkT6ymH/aampfZQsduSSJ
-	Mnh+iUhoZu+90ceDRcdZMCKNINIP8yBhJvbThj8X8Y41Uz621+skz9GV68ZLyGGmayr
-	QO5jhfvm8In7Rn6Yhul0L9K3CuiAYR5Tg8wuvLZg=
-Received: by mx.zohomail.com with SMTPS id 1764353222335519.628984308173;
-	Fri, 28 Nov 2025 10:07:02 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v13 4/4] rust: Add `OwnableRefCounted`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251117-unique-ref-v13-4-b5b243df1250@pm.me>
-Date: Fri, 28 Nov 2025 15:06:42 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Benno Lossin <lossin@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dave Ertman <david.m.ertman@intel.com>,
- Ira Weiny <ira.weiny@intel.com>,
- Leon Romanovsky <leon@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
+	bh=LqByGLx+ZnzuDp4iiuF3nGgGVwltdDx/D1ftF3au4pY=;
+	b=tKIRDu5eQrf1YnPRR8zK0q1A4jcoiQKKgJeE2tY57N7SRvCqQlgj1DhUX1+jScuzEOoEvU
+	pTVlk+6HUofehzvdPB9EO++hkqWe4WIx+PxynkmsTQVhrcJGPbZWnihOi7eUaryTBHwjs3
+	4sTGJpW4Qa+zETbnWvh6JKV+gRE610U=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="WSWsz7T/";
+	spf=pass (imf30.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764353948; a=rsa-sha256;
+	cv=none;
+	b=A1ehjezjz+iFuBXkeKujEZkYI/gYQS+cp6rDjUF3y4UpOl2byL2rC9fvAKgmMydvHKbNGK
+	FHAlcDKwY/mRNdjOryM5ZXe5cQtbDMmwkZOZyvgnKhdoFLzGygFbIm80uojzfiuo3e3Dku
+	yYHXxU0Jfu5okCU1u2rk2ARLnvHBJ4E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1764353945;
+	bh=D5R1R40lbideVzmASkbHJ+gHLI9Htdhg6MTSqRr2Qzk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WSWsz7T/sjVOoTY/5nfXwZRHu4rhkNDL6DITqGjsmhgwx2hz6hSZAE6ctMOlnxnJF
+	 sNXxWZpdtwjuSyYyXpJjJsWQHzlBP9gr2NMAFsuLkz4nkUo7ZkNxbotLciH7qjoMiu
+	 a5Jg3BwHxG8zejOGDy7gle6vZvDHWSf2TGd1JXgr/XVXpcjI7tWU1A2KzG+ZG8Kt8P
+	 P5OLAuPoFNWq6/2+Rr3Nw5+0eEIz/j/Qt0KADYHVQ9M8EyeAAJEfvwxI3EjivQA6uF
+	 pLqciabzg+8vJB6ZKhUg8xveL+owX+GAjrQfdk+M21Hxo19z318Glzqmp/Ihy4+65w
+	 dt66CVMfQ7AYg==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0701417E06C3;
+	Fri, 28 Nov 2025 19:19:03 +0100 (CET)
+Message-ID: <411f7b0f-858c-4486-8819-c01b29cc123a@collabora.com>
+Date: Fri, 28 Nov 2025 19:19:03 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 06/11] drm/v3d: Use huge tmpfs mountpoint helpers
+To: Tvrtko Ursulin <tursulin@ursulin.net>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Viresh Kumar <vireshk@kernel.org>,
- Nishanth Menon <nm@ti.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Paul Moore <paul@paul-moore.com>,
- Serge Hallyn <sergeh@kernel.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org,
- linux-pm@vger.kernel.org,
- linux-pci@vger.kernel.org,
- linux-security-module@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A5A7C4C9-1504-439C-B4FF-C28482AF7444@collabora.com>
-References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
- <20251117-unique-ref-v13-4-b5b243df1250@pm.me>
-To: Oliver Mangold <oliver.mangold@pm.me>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 360BBA0015
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 79grnd41nx93suhg6tqm81mtkd4mbwhi
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christopher Healy <healych@amazon.com>, Matthew Wilcox
+ <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+References: <20251114170303.2800-1-loic.molinari@collabora.com>
+ <20251114170303.2800-7-loic.molinari@collabora.com>
+ <75cf65a0-8967-4e39-8bfe-aa284f8242b3@ursulin.net>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <75cf65a0-8967-4e39-8bfe-aa284f8242b3@ursulin.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: u4uph55k38qfrfr5k9uxzd4dkfzakpzy
 X-Rspam-User: 
-X-HE-Tag: 1764353248-161629
-X-HE-Meta: U2FsdGVkX184gru835AOoDksEbsysh2l9+z1CZ01H8pTxdSwQnSLEWf2GiY2jWVG+w95atNVSk6tvQBIf0tYbTZhUcdOauUKTC3Fz9UAPEQeqDvA+dP81YBEm8GdQ7mu/UrGjqCzRHzARy1648asvp4iGjF1zUlcc37xcmw42lfQkzVdA0ehWTF59a1Hk2caCrQu2Waod6pCL/NX1HNlKmu39RO20VXJV3qQaWMV7UnBpMNBKu3Pdn6IBlyD7ky6Kd9C5CoWkULQ8IznXGfPl7yvgD/RCPWeMEVU3lTXzKejLGV1O9FkJCrT+dT0fgAWrFhoG4ZwCVzFGLd89DVdgYhVqsas1ysaagvbWDTJCl1MaHfP7jWAdLm4t3OoQ8saPhr30uIhsj2QPr1V0BRKYglNEQtOdG45WcD5GQ26OYsE/Toj8Bz0gVRTKKYz+vqqbc0966qDnHj1igU6S4gfVeKLdOqrR09yuEj52V3/rEagfG+9qekqsrKeuBQ8WPnC6RQmEcdLTE4l2KObiINAuEf7bMkaBPKXikYK1YeRsC8KYjqCXfk9Uacl4bsoe06EWH02akTrWmOkHwBGVSnepSQl4vpKHWGvsCjUpxQkKI3eCGWWhL6/ebDJOdywsFG8XZydIetIPFSgxnmm+OiW7pn6fOffa5UntTP2VLumIi0OEfhRrKIjqjHTKwQvslLs+0fEIcTd8Y9V/epJys/Iw3qzO3czReTena/Nr7pIjvitUwnIZEc/WPjY9YVW0bCPC8zbElZHlixlW8+qgn6nyAYeFmiKwE9THzeH3hBQQCSX9Ymj/oD0DwqaCn0io+88e+VYD//09IWMun47jakreKkEwpsoCDjuFmwsnT1/kiW6oz6AJZw2YeQm+7wGP069RdDE1qcziuHjwZxifbyLd54MCScidwIOT891oqrmXNswisimReqsD4cdvzHulOd38Sjj3EbexYprr8JEufJ
- yyIEMndv
- N07R5OmCmmujxJS0DGpwb9ydVSkmM6QlgijmiImd/PguxAwoblJdf5VmJXEl6yrQMvR6iAtKCVwIKvg4d7SV5zh5Dq0brNTjMYczhTcdYgcKKTW2dJLQyupWQ1up5wNFhZNjaCDaXrw2J0WIT0QJh6fW+QXlva4hfIuI3LIFGGV8M/vUBQ1Inkbc4IIYJaXCoCilKlQaQKWPFTKxL2490Cg6PbIdXHLg1BBKBrupq+qRl39lLRHkczxUPz92mdJo1csm9KQoCxeQsgx8QZ+Qw+nM1Uc5vJM3TBUiYjTxWKYRESa69u0c3xL0PomXPFxWYiFKucT5z7ZWFtTIvUfBBrJPeF56f+XH0QfW3zk5DZEa9PHJhyoMO0ZYeEX7RuGQtQBgoEVGvz2/M+xe9QVi8ry6tDt5ZuNKY9eLnPXjWzfJwTsKXzE6NGREkpdLBnbm7YZGsiDswMQB1Y32HGwxQrxUJKe1sKgVemt1d
+X-Rspamd-Queue-Id: ABBA780009
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764353947-680324
+X-HE-Meta: U2FsdGVkX1/MwnlnrkBkCWbT+0slCh2eU/JSebQ1ewdOr2ZFxyLyDbWDqj1pCzXz3wzkK8uCxmmiasgmf2u7XyX131YZMGEX3/6Jxz2fymwSGvoEY8yEd71yQHg+5aYQKHOiR0vQhyEHyv57Ef9lLn+I0iYFAywoFnYjfhD2cSkpmo/dNPokgFzBLBlGQclhZypm/+ymNQrcoW7U/mOzW6qz6NwgLeLYs8nTRCWRBsbheokVO/fgP55tI6m5bMqkgj7P9H9l/kw14+ShzTsrYA5Xa/ms54QRe9qC95riKYK8TfNvUcp3+Mhf8Y1fAwmSkbz0Dtb07566rNhjrNsFkK5aG69r8zU5sfjrg/mcNYO1bWmets/P/NrLnVXQQpSn+4lhLG0l3/D0PBAxnt3jFPRNsN78XvuJzXNVlkeV8+UhwdbSDK2cTRXtIwa7q55y3nqagLnCs8FAZLyEGeN03KQTsRP7s2vilGooeU5xtP/xlWx4YzEZp8VmQB7daMRtut2j+pMSuaG3SiLv/Mc65NeebEnRmFP06N7uHmw4L1bRBnttI8GJVXnxSwujIcqysf+EBRWhk6EMr1JUkuJ6LigyCqMAjm/eTuOKO6P//5FOz8XfXwbNk2qSoddrjjbJl/nwCl7gLm0SBXYNdxm/bv2OaIcWCQ9VempND7lnrQtQqc3OEC1I15bEL9C0161UYC72JTn4B9dYmNQbXb0L93tiEJbyq0Hm9DhZhsQsFAhjUHuW92/9QjS59H96yQyjsc2mrpCrrIdE19sAJmPqEqfuya+b4rA13pPvkyCSoyIdnJ6BLHdWaPQyMxxxMo/C1BNzanhueyBd1nkJ8FLRJPvuYNFA9A7SLa8R3SWi+G3h98wnvcpExGCCPsnEAxJeZrKVvX7gl1zNJqUsitFuiw2Db4z/ErxwaDOq0/qWTE+RO86so157v1Uqsu0RCBwm2Z4VICDGpO+n3cKiM3+
+ 5T2emKkO
+ HgFTFOV4Ms28vQJvcinKCohSH4F0ozKpzDxKK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,317 +118,276 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Oliver,
+On 20/11/2025 10:39, Tvrtko Ursulin wrote:
+> 
+> On 14/11/2025 17:02, Loïc Molinari wrote:
+>> Make use of the new drm_gem_huge_mnt_create() and
+>> drm_gem_get_huge_mnt() helpers to avoid code duplication. Now that
+>> it's just a few lines long, the single function in v3d_gemfs.c is
+>> moved into v3d_gem.c.
+>>
+>> v3:
+>> - use huge tmpfs mountpoint in drm_device
+>> - move v3d_gemfs.c into v3d_gem.c
+>>
+>> v4:
+>> - clean up mountpoint creation error handling
+>>
+>> v5:
+>> - fix CONFIG_TRANSPARENT_HUGEPAGE check
+>> - use drm_gem_has_huge_mnt() helper
+>>
+>> v8:
+>> - don't access huge_mnt field with CONFIG_TRANSPARENT_HUGEPAGE=n
+>>
+>> v9:
+>> - replace drm_gem_has_huge_mnt() by drm_gem_get_huge_mnt()
+>>
+>> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+>> ---
+>>   drivers/gpu/drm/v3d/Makefile    |  3 +-
+>>   drivers/gpu/drm/v3d/v3d_bo.c    |  9 +++--
+>>   drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
+>>   drivers/gpu/drm/v3d/v3d_drv.h   | 11 +-----
+>>   drivers/gpu/drm/v3d/v3d_gem.c   | 27 ++++++++++++--
+>>   drivers/gpu/drm/v3d/v3d_gemfs.c | 62 ---------------------------------
+>>   6 files changed, 34 insertions(+), 80 deletions(-)
+>>   delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
+>>
+>> diff --git a/drivers/gpu/drm/v3d/Makefile b/drivers/gpu/drm/v3d/Makefile
+>> index fcf710926057..b7d673f1153b 100644
+>> --- a/drivers/gpu/drm/v3d/Makefile
+>> +++ b/drivers/gpu/drm/v3d/Makefile
+>> @@ -13,8 +13,7 @@ v3d-y := \
+>>       v3d_trace_points.o \
+>>       v3d_sched.o \
+>>       v3d_sysfs.o \
+>> -    v3d_submit.o \
+>> -    v3d_gemfs.o
+>> +    v3d_submit.o
+>>   v3d-$(CONFIG_DEBUG_FS) += v3d_debugfs.o
+>> diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
+>> index d9547f5117b9..211578abf9b6 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_bo.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_bo.c
+>> @@ -114,7 +114,7 @@ v3d_bo_create_finish(struct drm_gem_object *obj)
+>>       if (IS_ERR(sgt))
+>>           return PTR_ERR(sgt);
+>> -    if (!v3d->gemfs)
+>> +    if (!drm_gem_get_huge_mnt(obj->dev))
+>>           align = SZ_4K;
+>>       else if (obj->size >= SZ_1M)
+>>           align = SZ_1M;
+>> @@ -150,12 +150,15 @@ struct v3d_bo *v3d_bo_create(struct drm_device 
+>> *dev, struct drm_file *file_priv,
+>>                    size_t unaligned_size)
+>>   {
+>>       struct drm_gem_shmem_object *shmem_obj;
+>> -    struct v3d_dev *v3d = to_v3d_dev(dev);
+>>       struct v3d_bo *bo;
+>>       int ret;
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>       shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
+>> -                          v3d->gemfs);
+>> +                          dev->huge_mnt);
+>> +#else
+>> +    shmem_obj = drm_gem_shmem_create(dev, unaligned_size);
+>> +#endif
+> 
+> Don't you want to use the same pattern not requiring #ifdef as you did 
+> in i915?
 
-> On 17 Nov 2025, at 07:08, Oliver Mangold <oliver.mangold@pm.me> wrote:
->=20
-> Types implementing one of these traits can safely convert between an
-> `ARef<T>` and an `Owned<T>`.
->=20
-> This is useful for types which generally are accessed through an =
-`ARef`
-> but have methods which can only safely be called when the reference is
-> unique, like e.g. `block::mq::Request::end_ok()`.
->=20
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> rust/kernel/owned.rs     | 138 =
-++++++++++++++++++++++++++++++++++++++++++++---
-> rust/kernel/sync/aref.rs |  11 +++-
-> rust/kernel/types.rs     |   2 +-
-> 3 files changed, 141 insertions(+), 10 deletions(-)
->=20
-> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
-> index a26747cbc13b..26ab2b00ada0 100644
-> --- a/rust/kernel/owned.rs
-> +++ b/rust/kernel/owned.rs
-> @@ -5,6 +5,7 @@
-> //! These pointer types are useful for C-allocated objects which by =
-API-contract
-> //! are owned by Rust, but need to be freed through the C API.
->=20
-> +use crate::sync::aref::{ARef, RefCounted};
-> use core::{
->     mem::ManuallyDrop,
->     ops::{Deref, DerefMut},
-> @@ -14,14 +15,16 @@
->=20
-> /// Type allocated and destroyed on the C side, but owned by Rust.
-> ///
-> -/// Implementing this trait allows types to be referenced via the =
-[`Owned<Self>`] pointer type. This
-> -/// is useful when it is desirable to tie the lifetime of the =
-reference to an owned object, rather
-> -/// than pass around a bare reference. [`Ownable`] types can define =
-custom drop logic that is
-> -/// executed when the owned reference [`Owned<Self>`] pointing to the =
-object is dropped.
-> +/// Implementing this trait allows types to be referenced via the =
-[`Owned<Self>`] pointer type.
-> +///  - This is useful when it is desirable to tie the lifetime of an =
-object reference to an owned
-> +///    object, rather than pass around a bare reference.
-> +///  - [`Ownable`] types can define custom drop logic that is =
-executed when the owned reference
-> +///    of type [`Owned<_>`] pointing to the object is dropped.
-> ///
-> /// Note: The underlying object is not required to provide internal =
-reference counting, because it
-> /// represents a unique, owned reference. If reference counting (on =
-the Rust side) is required,
-> -/// [`RefCounted`](crate::types::RefCounted) should be implemented.
-> +/// [`RefCounted`] should be implemented. [`OwnableRefCounted`] =
-should be implemented if conversion
-> +/// between unique and shared (reference counted) ownership is =
-needed.
-> ///
-> /// # Safety
-> ///
-> @@ -143,9 +146,7 @@ impl<T: Ownable> Owned<T> {
->     ///   mutable reference requirements. That is, the kernel will not =
-mutate or free the underlying
->     ///   object and is okay with it being modified by Rust code.
->     pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> -        Self {
-> -            ptr,
-> -        }
-> +        Self { ptr }
->     }
+Yes, I'm going to propose a v10 doing so.
 
-Unrelated change?
+> The rest looks good to me on a glance. Only functional change appears to 
+> be that you are adding a new error message, scrolling down..
+> 
+>>       if (IS_ERR(shmem_obj))
+>>           return ERR_CAST(shmem_obj);
+>>       bo = to_v3d_bo(&shmem_obj->base);
+>> diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/ 
+>> v3d_drv.c
+>> index e8a46c8bad8a..8faa9382846f 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_drv.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_drv.c
+>> @@ -107,7 +107,7 @@ static int v3d_get_param_ioctl(struct drm_device 
+>> *dev, void *data,
+>>           args->value = v3d->perfmon_info.max_counters;
+>>           return 0;
+>>       case DRM_V3D_PARAM_SUPPORTS_SUPER_PAGES:
+>> -        args->value = !!v3d->gemfs;
+>> +        args->value = !!drm_gem_get_huge_mnt(dev);
+>>           return 0;
+>>       case DRM_V3D_PARAM_GLOBAL_RESET_COUNTER:
+>>           mutex_lock(&v3d->reset_lock);
+>> diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/ 
+>> v3d_drv.h
+>> index 1884686985b8..99a39329bb85 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_drv.h
+>> +++ b/drivers/gpu/drm/v3d/v3d_drv.h
+>> @@ -158,11 +158,6 @@ struct v3d_dev {
+>>       struct drm_mm mm;
+>>       spinlock_t mm_lock;
+>> -    /*
+>> -     * tmpfs instance used for shmem backed objects
+>> -     */
+>> -    struct vfsmount *gemfs;
+>> -
+>>       struct work_struct overflow_mem_work;
+>>       struct v3d_queue_state queue[V3D_MAX_QUEUES];
+>> @@ -569,6 +564,7 @@ extern const struct dma_fence_ops v3d_fence_ops;
+>>   struct dma_fence *v3d_fence_create(struct v3d_dev *v3d, enum 
+>> v3d_queue q);
+>>   /* v3d_gem.c */
+>> +extern bool super_pages;
+>>   int v3d_gem_init(struct drm_device *dev);
+>>   void v3d_gem_destroy(struct drm_device *dev);
+>>   void v3d_reset_sms(struct v3d_dev *v3d);
+>> @@ -576,11 +572,6 @@ void v3d_reset(struct v3d_dev *v3d);
+>>   void v3d_invalidate_caches(struct v3d_dev *v3d);
+>>   void v3d_clean_caches(struct v3d_dev *v3d);
+>> -/* v3d_gemfs.c */
+>> -extern bool super_pages;
+>> -void v3d_gemfs_init(struct v3d_dev *v3d);
+>> -void v3d_gemfs_fini(struct v3d_dev *v3d);
+>> -
+>>   /* v3d_submit.c */
+>>   void v3d_job_cleanup(struct v3d_job *job);
+>>   void v3d_job_put(struct v3d_job *job);
+>> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/ 
+>> v3d_gem.c
+>> index 5a180dc6c452..62532a89dd14 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_gem.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
+>> @@ -259,6 +259,30 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
+>>       v3d_invalidate_slices(v3d, 0);
+>>   }
+>> +static void
+>> +v3d_huge_mnt_init(struct v3d_dev *v3d)
+>> +{
+>> +    int err = 0;
+>> +
+>> +    /*
+>> +     * By using a huge shmemfs mountpoint when the user wants to
+>> +     * enable Super Pages, we can pass in mount flags that better
+>> +     * match our usecase.
+>> +     */
+>> +
+>> +    if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && super_pages)
+>> +        err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+>> +
+>> +    if (drm_gem_get_huge_mnt(&v3d->drm))
+>> +        drm_info(&v3d->drm, "Using Transparent Hugepages\n");
+>> +    else if (err)
+>> +        drm_warn(&v3d->drm, "Can't use Transparent Hugepages (%d)\n",
+>> +             err);
+> 
+> .. here, but that looks acceptable to me.
 
->=20
->     /// Consumes the [`Owned`], returning a raw pointer.
-> @@ -193,3 +194,124 @@ fn drop(&mut self) {
->         unsafe { T::release(self.ptr) };
->     }
-> }
-> +
-> +/// A trait for objects that can be wrapped in either one of the =
-reference types [`Owned`] and
-> +/// [`ARef`].
-> +///
-> +/// # Examples
-> +///
-> +/// A minimal example implementation of [`OwnableRefCounted`], =
-[`Ownable`] and its usage with
-> +/// [`ARef`] and [`Owned`] looks like this:
-> +///
-> +/// ```
-> +/// # #![expect(clippy::disallowed_names)]
-> +/// # use core::cell::Cell;
-> +/// # use core::ptr::NonNull;
-> +/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
-> +/// # use kernel::sync::aref::{ARef, RefCounted};
-> +/// # use kernel::types::{Owned, Ownable, OwnableRefCounted};
-> +///
-> +/// // Example internally refcounted struct.
+It logs a warning instead of the notice below in case of error at huge 
+mounpoint creation. Looks acceptable to me too. I'd be happy to get the 
+point of view of a V3D maintainer as well here.
 
-nit: IMHO the wording could improve ^
+Regards,
 
-> +/// //
-> +/// // # Invariants
-> +/// //
-> +/// // - `refcount` is always non-zero for a valid object.
-> +/// // - `refcount` is >1 if there are more than 1 Rust reference to =
-it.
-> +/// //
-> +/// struct Foo {
-> +///     refcount: Cell<usize>,
-> +/// }
-> +///
-> +/// impl Foo {
-> +///     fn new() -> Result<Owned<Self>, AllocError> {
-> +///         // We are just using a `KBox` here to handle the actual =
-allocation, as our `Foo` is
-> +///         // not actually a C-allocated object.
-> +///         let result =3D KBox::new(
-> +///             Foo {
-> +///                 refcount: Cell::new(1),
-> +///             },
-> +///             flags::GFP_KERNEL,
-> +///         )?;
-> +///         let result =3D NonNull::new(KBox::into_raw(result))
-> +///             .expect("Raw pointer to newly allocation KBox is =
-null, this should never happen.");
-> +///         // SAFETY: We just allocated the `Self`, thus it is valid =
-and there cannot be any other
-> +///         // Rust references. Calling `into_raw()` makes us =
-responsible for ownership and
-> +///         // we won't use the raw pointer anymore, thus we can =
-transfer ownership to the `Owned`.
-> +///         Ok(unsafe { Owned::from_raw(result) })
-> +///     }
-> +/// }
-> +///
-> +/// // SAFETY: We increment and decrement each time the respective =
-function is called and only free
-> +/// // the `Foo` when the refcount reaches zero.
-> +/// unsafe impl RefCounted for Foo {
-> +///     fn inc_ref(&self) {
-> +///         self.refcount.replace(self.refcount.get() + 1);
-> +///     }
-> +///
-> +///     unsafe fn dec_ref(this: NonNull<Self>) {
-> +///         // SAFETY: By requirement on calling this function, the =
-refcount is non-zero,
-> +///         // implying the underlying object is valid.
-> +///         let refcount =3D unsafe { &this.as_ref().refcount };
-> +///         let new_refcount =3D refcount.get() - 1;
-> +///         if new_refcount =3D=3D 0 {
-> +///             // The `Foo` will be dropped when `KBox` goes out of =
-scope.
-> +///             // SAFETY: The [`KBox<Foo>`] is still alive as the =
-old refcount is 1. We can pass
-> +///             // ownership to the [`KBox`] as by requirement on =
-calling this function,
-> +///             // the `Self` will no longer be used by the caller.
-> +///             unsafe { KBox::from_raw(this.as_ptr()) };
-> +///         } else {
-> +///             refcount.replace(new_refcount);
-> +///         }
-> +///     }
-> +/// }
-> +///
-> +/// impl OwnableRefCounted for Foo {
-> +///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, =
-ARef<Self>> {
-> +///         if this.refcount.get() =3D=3D 1 {
-> +///             // SAFETY: The `Foo` is still alive and has no other =
-Rust references as the refcount
-> +///             // is 1.
-> +///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-> +///         } else {
-> +///             Err(this)
-> +///         }
-> +///     }
-> +/// }
-> +///
+Loïc
 
-We wouldn=E2=80=99t need this implementation if we added a =
-=E2=80=9Crefcount()=E2=80=9D
-member to this trait. This lets you abstract away this logic for all
-implementors, which has the massive upside of making sure we hardcode =
-(and thus
-enforce) the refcount =3D=3D 1 check.
+> Regards,
+> 
+> Tvrtko
+> 
+>> +    else
+>> +        drm_notice(&v3d->drm,
+>> +               "Transparent Hugepage support is recommended for 
+>> optimal performance on this platform!\n");
+>> +}
+>> +
+>>   int
+>>   v3d_gem_init(struct drm_device *dev)
+>>   {
+>> @@ -310,7 +334,7 @@ v3d_gem_init(struct drm_device *dev)
+>>       v3d_init_hw_state(v3d);
+>>       v3d_mmu_set_page_table(v3d);
+>> -    v3d_gemfs_init(v3d);
+>> +    v3d_huge_mnt_init(v3d);
+>>       ret = v3d_sched_init(v3d);
+>>       if (ret) {
+>> @@ -330,7 +354,6 @@ v3d_gem_destroy(struct drm_device *dev)
+>>       enum v3d_queue q;
+>>       v3d_sched_fini(v3d);
+>> -    v3d_gemfs_fini(v3d);
+>>       /* Waiting for jobs to finish would need to be done before
+>>        * unregistering V3D.
+>> diff --git a/drivers/gpu/drm/v3d/v3d_gemfs.c b/drivers/gpu/drm/v3d/ 
+>> v3d_gemfs.c
+>> deleted file mode 100644
+>> index bf351fc0d488..000000000000
+>> --- a/drivers/gpu/drm/v3d/v3d_gemfs.c
+>> +++ /dev/null
+>> @@ -1,62 +0,0 @@
+>> -// SPDX-License-Identifier: GPL-2.0+
+>> -/* Copyright (C) 2024 Raspberry Pi */
+>> -
+>> -#include <linux/fs.h>
+>> -#include <linux/mount.h>
+>> -#include <linux/fs_context.h>
+>> -
+>> -#include <drm/drm_print.h>
+>> -
+>> -#include "v3d_drv.h"
+>> -
+>> -void v3d_gemfs_init(struct v3d_dev *v3d)
+>> -{
+>> -    struct file_system_type *type;
+>> -    struct fs_context *fc;
+>> -    struct vfsmount *gemfs;
+>> -    int ret;
+>> -
+>> -    /*
+>> -     * By creating our own shmemfs mountpoint, we can pass in
+>> -     * mount flags that better match our usecase. However, we
+>> -     * only do so on platforms which benefit from it.
+>> -     */
+>> -    if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>> -        goto err;
+>> -
+>> -    /* The user doesn't want to enable Super Pages */
+>> -    if (!super_pages)
+>> -        goto err;
+>> -
+>> -    type = get_fs_type("tmpfs");
+>> -    if (!type)
+>> -        goto err;
+>> -
+>> -    fc = fs_context_for_mount(type, SB_KERNMOUNT);
+>> -    if (IS_ERR(fc))
+>> -        goto err;
+>> -    ret = vfs_parse_fs_string(fc, "source", "tmpfs");
+>> -    if (!ret)
+>> -        ret = vfs_parse_fs_string(fc, "huge", "within_size");
+>> -    if (!ret)
+>> -        gemfs = fc_mount_longterm(fc);
+>> -    put_fs_context(fc);
+>> -    if (ret)
+>> -        goto err;
+>> -
+>> -    v3d->gemfs = gemfs;
+>> -    drm_info(&v3d->drm, "Using Transparent Hugepages\n");
+>> -
+>> -    return;
+>> -
+>> -err:
+>> -    v3d->gemfs = NULL;
+>> -    drm_notice(&v3d->drm,
+>> -           "Transparent Hugepage support is recommended for optimal 
+>> performance on this platform!\n");
+>> -}
+>> -
+>> -void v3d_gemfs_fini(struct v3d_dev *v3d)
+>> -{
+>> -    if (v3d->gemfs)
+>> -        kern_unmount(v3d->gemfs);
+>> -}
+> 
 
-
-> +/// // SAFETY: This implementation of `release()` is safe for any =
-valid `Self`.
-> +/// unsafe impl Ownable for Foo {
-> +///     unsafe fn release(this: NonNull<Self>) {
-> +///         // SAFETY: Using `dec_ref()` from [`RefCounted`] to =
-release is okay, as the refcount is
-> +///         // always 1 for an [`Owned<Foo>`].
-> +///         unsafe{ Foo::dec_ref(this) };
-> +///     }
-> +/// }
-> +///
-> +/// let foo =3D Foo::new().expect("Failed to allocate a Foo. This =
-shouldn't happen");
-
-All these =E2=80=9Cexpects()=E2=80=9D and custom error strings would go =
-away if you
-place this behind a fictional function that returns Result.
-
-> +/// let mut foo =3D ARef::from(foo);
-> +/// {
-> +///     let bar =3D foo.clone();
-> +///     assert!(Owned::try_from(bar).is_err());
-> +/// }
-> +/// assert!(Owned::try_from(foo).is_ok());
-> +/// ```
-> +pub trait OwnableRefCounted: RefCounted + Ownable + Sized {
-> +    /// Checks if the [`ARef`] is unique and convert it to an =
-[`Owned`] it that is that case.
-> +    /// Otherwise it returns again an [`ARef`] to the same underlying =
-object.
-> +    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, =
-ARef<Self>>;
-
-Again, this method can go way if we add a method to expose the refcount.
-
-> +
-> +    /// Converts the [`Owned`] into an [`ARef`].
-> +    fn into_shared(this: Owned<Self>) -> ARef<Self> {
-> +        // SAFETY: Safe by the requirements on implementing the =
-trait.
-> +        unsafe { ARef::from_raw(Owned::into_raw(this)) }
-> +    }
-> +}
-> +
-> +impl<T: OwnableRefCounted> TryFrom<ARef<T>> for Owned<T> {
-> +    type Error =3D ARef<T>;
-> +    /// Tries to convert the [`ARef`] to an [`Owned`] by calling
-> +    /// [`try_from_shared()`](OwnableRefCounted::try_from_shared). In =
-case the [`ARef`] is not
-> +    /// unique, it returns again an [`ARef`] to the same underlying =
-object.
-> +    fn try_from(b: ARef<T>) -> Result<Owned<T>, Self::Error> {
-> +        T::try_from_shared(b)
-> +    }
-> +}
-> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-> index 937dcf6ed5de..2dbffe2ed1b8 100644
-> --- a/rust/kernel/sync/aref.rs
-> +++ b/rust/kernel/sync/aref.rs
-> @@ -30,7 +30,10 @@
-> /// Note: Implementing this trait allows types to be wrapped in an =
-[`ARef<Self>`]. It requires an
-> /// internal reference count and provides only shared references. If =
-unique references are required
-> /// [`Ownable`](crate::types::Ownable) should be implemented which =
-allows types to be wrapped in an
-> -/// [`Owned<Self>`](crate::types::Owned).
-> +/// [`Owned<Self>`](crate::types::Owned). Implementing the trait
-> +/// [`OwnableRefCounted`](crate::types::OwnableRefCounted) allows to =
-convert between unique and
-> +/// shared references (i.e. [`Owned<Self>`](crate::types::Owned) and
-> +/// [`ARef<Self>`](crate::types::Owned)).
-> ///
-> /// # Safety
-> ///
-> @@ -180,6 +183,12 @@ fn from(b: &T) -> Self {
->     }
-> }
->=20
-> +impl<T: crate::types::OwnableRefCounted> From<crate::types::Owned<T>> =
-for ARef<T> {
-> +    fn from(b: crate::types::Owned<T>) -> Self {
-> +        T::into_shared(b)
-> +    }
-> +}
-> +
-
-Not sure why we=E2=80=99re using fully-qualified names here if we can =
-import them, but your call.
-
-> impl<T: RefCounted> Drop for ARef<T> {
->     fn drop(&mut self) {
->         // SAFETY: The type invariants guarantee that the `ARef` owns =
-the reference we're about to
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 8ef01393352b..a9b72709d0d3 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -11,7 +11,7 @@
-> };
-> use pin_init::{PinInit, Wrapper, Zeroable};
->=20
-> -pub use crate::owned::{Ownable, Owned};
-> +pub use crate::owned::{Ownable, OwnableRefCounted, Owned};
->=20
-> pub use crate::sync::aref::{ARef, AlwaysRefCounted, RefCounted};
->=20
->=20
-> --=20
-> 2.51.2
->=20
->=20
->=20
-
-=E2=80=94 Daniel=
 
