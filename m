@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FA90CFD2F6
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 02:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60D6D116F3
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 02:54:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA10F6B0022; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
+	id 060C16B0010; Thu, 27 Nov 2025 21:54:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D29696B0011; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
+	id F25946B0026; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCB2E6B0022; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
+	id C66446B0012; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A2D4E6B0011
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A26886B0010
 	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 21:54:26 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49C3C1602FB
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C1B31A02F9
 	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:26 +0000 (UTC)
-X-FDA: 84158497332.20.CE17E0E
+X-FDA: 84158497332.19.10C276C
 Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E9B5FA001B
+	by imf06.hostedemail.com (Postfix) with ESMTP id F259A18000B
 	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
+Authentication-Results: imf06.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764298464; a=rsa-sha256;
-	cv=none;
-	b=wi8RS1x5zhOMzaoBZbyZt2I2Ven1Wl10/4XBoq/sMi7Qgk4UyFaecOjPNkt99VVA3CDv8f
-	i2cw7bDV6TMV3CuF0WC9pMA9FgtZWNSTH+aoyQ8kmfNJutkEK+cVn72HnqEwAB5cpiA22n
-	v3eVFf16d8lsPfV8MCNFVLYsGMGG+iA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
+	spf=pass (imf06.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1764298464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=wsjNgFug/UIKFycNB6GOgIpj6egr0KvUxqRnl6lQhQ0=;
-	b=ZeSV7eibSQ3BQLTP7zo2NggJx/0/fl/dpX0YfRoCBY0U1iqPAIpaxLxnOhjOULJET0wqwe
-	21lzfq9fsHB2bt5CBfpyS+dac1EFF96CqO2yWlg6hhsGMNzFkXa0ZbjyyqCX9ViTRsLjN1
-	f9BUXvTM4JfUAbKFJ+XrgjeDyBpcoDg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lhVnYJtU+w8oYeHRjg3nxZTL93WhJPWogIwM03jzqTA=;
+	b=SPHRoYanill5iLUkKdwaXotZ8BkWNdYSZOHvx3e2+5wOt9SfxCKCoTCiTQkAMpCOFZGBot
+	zXgdLMvhFR1a+oHA072rNzriehd4mbQa3cVzGk4DLY5AnnO/PdYomCnx65k0HvsPIxNYX9
+	2wigobaZx9+Z7z8fsRAlcq3XEXPfHfc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764298464; a=rsa-sha256;
+	cv=none;
+	b=TyjwBcRtcHquxYXld1h567VuT02xJ6Egj8Gb5vEvU+ZVNmKp/rtJFZeq8HqlKZJXolYhaA
+	DcRLahH26ntvWqTTh5b7VhqiUGum00+vvEHrfQc9Vs93x1PqCzbHYgkM8av1UCuF5qVdAE
+	cUz4UFjXV3OJbHz5L/BNmX9WyWEvzZ8=
 Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dHdBx6bHdzYmZ9v;
-	Fri, 28 Nov 2025 10:52:57 +0800 (CST)
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dHdBy1DhFzYmZ9w;
+	Fri, 28 Nov 2025 10:52:58 +0800 (CST)
 Received: from localhost.localdomain (10.144.5.36) by w002.hihonor.com
  (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 28 Nov
@@ -64,24 +65,26 @@ CC: <mhocko@kernel.org>, <zhengqi.arch@bytedance.com>,
 	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
 	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, Zicheng Wang <wangzicheng@honor.com>
-Subject: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from debugfs to procfs
-Date: Fri, 28 Nov 2025 10:53:12 +0800
-Message-ID: <20251128025315.3520689-1-wangzicheng@honor.com>
+Subject: [PATCH 1/3] mm/lru_gen: add procfs support for lru_gen interfaces
+Date: Fri, 28 Nov 2025 10:53:13 +0800
+Message-ID: <20251128025315.3520689-2-wangzicheng@honor.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251128025315.3520689-1-wangzicheng@honor.com>
+References: <20251128025315.3520689-1-wangzicheng@honor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.144.5.36]
 X-ClientProxiedBy: w012.hihonor.com (10.68.27.189) To w002.hihonor.com
  (10.68.28.120)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E9B5FA001B
-X-Stat-Signature: jq35emu3znxpgtxdis5wi34bqh3g6g4k
+X-Rspamd-Queue-Id: F259A18000B
+X-Rspamd-Server: rspam02
+X-Stat-Signature: fyc6pzfzahitar3t35rujgipmbfhbtha
 X-Rspam-User: 
-X-HE-Tag: 1764298463-911341
-X-HE-Meta: U2FsdGVkX1+tTOcwNYP/i6io+DnA1Nc3Lng2m+0OanesUYv0T9dgrVKv696OgyFwKLzqhAmKoCuAGiYA9yh14XOv3yLpQt+49FBSJ/Di/ZoIbVM+k1Fe8K2sBphhLDMR/F8xraZEFxLd1G73/ca6UDPPLG+DBxskeKmS7waBJgpqREYR9L3ihUB49+x5d8wdnlpQGq+Tx9PoeFl+fBz2mQNd+/jvWTyEJbYNOP9NtTkAalcdbuLfj+y2Fze/FkVp/YTK8+YtP9H9JRxgYcet6tvOIjEPZ+SryI7PYt8sLUfFxs7sKCcGYOVb/0NTiU5angMbM3Cvj7YmiRwZAQDR6hasfoTvv2YcSN3Rzk4eouKIO/BZKlVVZq2S7SK2Rw9wGx10JyR8QETjLYV+zECjr5QolsQZyb8lXtsBAoXiaIhykkiv6AKD1/2z2zf8X+3AtLRqlFa77YvuyLJfJTr4Vm5NsswwY4XxIwlDq1i9sk1M171dTBaYCcCgfu2J4McFlkByD3rktkTkEzqOVW9+o+bhpEsjd/p6xprw2H/qKl2yqIJqxUDaEp0xN7WVe51YoVBy0/GZA2slDz5Wz3xD/1BsgcajScyhA/FAYlq4XtN+9o2IgD1LsJEcIdXukNyW5T/veRIUfOmAZavafZzKgLa3FgAjmFeFdh/9pHoTzh4PxByQktpCH4SLMMgWVsjj4FrxzG6ONIQ238u4DCh0jtDdDEGWVSLuWWjqdj8ltbiWKYI2BAAGz2cgGVWiQs63Im3zd7u4VHYx79FlHmfY1x+iwCttJokVzO8tfVy+GfW27E/6nvApJMi5xSNbr+zlXbUGUruUUEAm0lJ80N5rcUipBPhYXqGtgtkDwd5ATu2l8PKJEnzkCchkt+HZWKEvlkCnYUxog0R2uQHtu7OMiFeXEtyJnhYoCgGm+o9R0s5Vx8PM4T0EuFl76ZckUD+Ogg47Ir9ioJDA8mrApcQ
- es6Va5cX
- uOOA3lR6I+4gVwmO2KcRqE2FvcwbjZcNjMsuP2VW39DvdXFPi0HSZsMX8dYGGkkIBOrLeKHntl/Q0MNOnSuDXzMz4VeZ1goa/uzpNOVRvQOvhw3XLuDYylqmrT4YFAEJlX8azY8/89pygjCT3HUkWKC24Jh7tXK84k0a8ge28oRLA+dMg1xXveE/d0pTrfzCA7w2/8cJ5SZJIQRIBZaVlT4MGr1zj2gZ6Gi9F5JcNYfXEKhKUuYne7+1qIqAJlfrfidDQdMaTnl+g0MFi9C6rInQYc+xAIdKc63YGHQitEKPkxiU=
+X-HE-Tag: 1764298463-527351
+X-HE-Meta: U2FsdGVkX183Nc0HxJ48m44gjpXyIiY/sztQOO4fy+pLDdcDlNx0efmEV07/VVMURy3xkMqfMIqkY1dQ0D5DpPrYbTJ1Nz7tMGd4ZBPcvkuouppy0C0NG6xSD6BHqKdlCJYGJ8ejiE00oGZGYkJbRIuftd/lvKx1y54vKs5qylQbWhufTwLVxZyNLfADz7WAjANm42MZqug/NwKxtDyUVrRh21JMFGb8BNjoL8HrpBS4s+1nSC5YPUR6Q4vFq+5drm0BFcKRZCu3yF/EIBGWlzCCeUi35dEadETlMqXjGChECMzLHfCztnsBQefS2j59huQAn3FtySt1growsJ+xOmwh6HSc0X43jUaxBFpXhABmXMMD18tqAYE5Z/1sjzErxAfjbbEAG1vdBd/6v76xEpfS6OAHYj4o0V/O9JoGdjp83vHg3I6duC+nme6kQgHLl6Pr+8MMMaIvtxjOcrhwC3HWOzRc7xwTIH171KIBVecbau6SolibDl4Q4OzqKTIRvR6ckr9uc+fSuxc0rU+8XVmNqGfDdkHObUkZSRHr63OCxBykShnOTlFYRJP901Aprm1EJtCnV4NPMBWalIkuLU/mNk1CV61LAymMdTjLDGshWYZC+Q9YU355TxHaTZMrAElS9bfaByMz89FJ9qejT3PcHYDpeM7rt2TwAdB8uP1KfxJcn6/1xEsXMpyOcoH9mTkIH7hHFOjqRPaoZKzGi8XTunQr9KvrBLjXnhiL/uqo+2slryVKl014yM5nvaRG+0/8CO13+CEMmHBYXb2380W9DqdIG8xWkRTT58gUlNlNuAG6prYOorGW5ptS8ElOS0k13Rz6d+wLERFjV9oRj4KB/za1UZaPu73HOrbweRkxoEz0T2j0w5dqNqxiBGVXXcl7O2BEvNcrFGJNkZ38wGZp8kgnMGsGjYq6vZcP9Ez3Vxb06BVThTfhZfGIC+4YGWukLrNk0laLaOfsdwX
+ GeSwK/F1
+ 1/Cwn32OUuy9PDUxLNpVwjQpMBXvWPaVoCkXmDopdVyIYMZ7i418p2UTl8T1AgRuRVNNhgveCcMdB7FUZpjLMOtsnxdtaJsf29tTRdYHMp9dZc2U4mANgbkaafqtt8zaQQRATh9DSEiW7FTqlKX21KZpOsGxdL6wA3FFc34DDw8/BtPhxoW21lGLhElSxghzPrI/BxiiGjN3UfxXU/WJA5sPCshtvP1Cf4UFnFLcVaqEUoLGrXYk2sbubmSXzpbrbPdSSK7wK4MupteNF+tv/ebq6zJwObiO0ZBbIulqMgAaooxs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,101 +93,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patchset moves the lru_gen control interface from debugfs to procfs.
-Exposing the interface enables the capabilities for *commercial products*
-such as Android to proactive aging and reclaim.
+This patch refactors the lru_gen and lru_gen_full control files to allow
+their interfaces to be exposed under either debugfs or procfs.
 
-Two main reasons:
-1. The MGLRU reaches the stage where its control interface can be
-consideres product-ready, not just for experiments or debugging.
-In specific scenarios, proactive aging with reclaim can improve
-overall system performance.
-2. Commercial products like Android prohibit mounting debugfs for
-security reasons (selinux neverallow). Without moving the interface
-to procfs, Android cannot utilize lru_gen.
-
-Case study:
-A widely observed issue on Android is that after application launch,
-the oldest anon generation often becomes empty, and file pages
-are over-reclaimed.
-
-In Android, each application owns its own memcg. When an app is swiped
-away seconds or minutes after (cold) launch, it will be frozen and
-part of its memory is proactively reclaimed.
-At this time, both file pages and anonymous pages are temporarily unused,
-while the system load is also typically low, making it an ideal time to
-prefer reclaiming anon pages while retaining file cache.
-
-Keeping more file cache benefits the system in multiple ways:
-1. The device can retain a larger page cache, reducing IO.
-2. When memory is tight, evicting clean cache pages is fast.
-2. Super-apps such as camera benefit from reducing the chance of
-slow direct reclaim on the critical startup path.
-
-Experiments:
-
-- after cold launch
-```
-Kernel version v6.6
-memcg    54 /apps/some_app
-node     0
-1     119804          0       85461
-2     119804          0           5
-3     119804     181719       18667
-4       1752        392         244
-
-Kernel version v6.12
-memcg    84 /apps/some_app
-node     0
-1      38428          0       16424
-2      38428      24307       14997
-3      38428     126529       56452
-4      37980         27           1
-```
-
-- proactive aging 2/3 times
-```
-Kernel version v6.6
-memcg    54 /apps/some_app
- node     0
-          3     172432     102532      103441
-          4      54380      74803         854
-          5      28892       6496         229
-          6       1588         26           0  
-
-Kernel version v6.12
-memcg    84 /apps/some_app
- node     0
-          3     819624      98726      166045
-          4     819176      14849        1543
-          5      40000      41328        7633
-          6        960          0           0     
-```
-
-In continuous app-launch scenarios (e.g., After boot, retail demo
-loops, tech review testing), our measurements show: v6.6
-1. Available memory improves by 400–800 MB.
-2. Direct reclaim frequency and latency drop by more than 24%.
-3. memavailable/cached levels aligns with traditional LRU.
-
-Summary of average available memory (MB):
-mglru without proactive aging: 6060
-mglru with proactive aging test1~3: 6988/6432/6837
-traditional LRU: 6982
-
-Camera direct reclaim (10-run average):
-mglru without aging: 1050 events / 460 ms
-mglru with aging: 789 events / 316 ms
-(25% fewer events, 31% lower latency)
-
+Two main changes:
+1. minimal code modification by reusing the existing seq_operations.
+2. lru_gen file mode update from 0644 to 0664, so that Android's group
+"system" can write to the file when procfs interface is enabled.
 
 Signed-off-by: Zicheng Wang <wangzicheng@honor.com>
+---
+ mm/vmscan.c | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
- Documentation/admin-guide/mm/multigen_lru.rst | 19 ++++++++++
- mm/Kconfig                                    | 10 +++++
- mm/vmscan.c                                   | 37 ++++++++++++++++++-
- 3 files changed, 64 insertions(+), 2 deletions(-)
-
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 674999999..dd30f3949 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -58,6 +58,7 @@
+ #include <linux/random.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/parser.h>
++#include <linux/proc_fs.h>
+ 
+ #include <asm/tlbflush.h>
+ #include <asm/div64.h>
+@@ -5324,9 +5325,17 @@ static const struct attribute_group lru_gen_attr_group = {
+ };
+ 
+ /******************************************************************************
+- *                          debugfs interface
++ *                          lru_gen interface
+  ******************************************************************************/
+ 
++static inline bool lru_gen_show_is_full(const struct file *file)
++{
++    /* procfs: i_private = (void *)1 means full
++     * debugfs: also works because debugfs sets i_private
++     */
++	return file->f_inode->i_private != NULL;
++}
++
+ static void *lru_gen_seq_start(struct seq_file *m, loff_t *pos)
+ {
+ 	struct mem_cgroup *memcg;
+@@ -5435,7 +5444,7 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
+ static int lru_gen_seq_show(struct seq_file *m, void *v)
+ {
+ 	unsigned long seq;
+-	bool full = debugfs_get_aux_num(m->file);
++	bool full = lru_gen_show_is_full(m->file);
+ 	struct lruvec *lruvec = v;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	int nid = lruvec_pgdat(lruvec)->node_id;
+@@ -5671,6 +5680,7 @@ static int lru_gen_seq_open(struct inode *inode, struct file *file)
+ 	return seq_open(file, &lru_gen_seq_ops);
+ }
+ 
++#ifndef CONFIG_LRU_GEN_PROCFS_CTRL
+ static const struct file_operations lru_gen_rw_fops = {
+ 	.open = lru_gen_seq_open,
+ 	.read = seq_read,
+@@ -5685,6 +5695,22 @@ static const struct file_operations lru_gen_ro_fops = {
+ 	.llseek = seq_lseek,
+ 	.release = seq_release,
+ };
++#else
++static const struct proc_ops lru_gen_proc_rw_ops = {
++	.proc_open    = lru_gen_seq_open,
++	.proc_read    = seq_read,
++	.proc_write   = lru_gen_seq_write,
++	.proc_lseek   = seq_lseek,
++	.proc_release = seq_release,
++};
++
++static const struct proc_ops lru_gen_proc_ro_ops = {
++	.proc_open    = lru_gen_seq_open,
++	.proc_read    = seq_read,
++	.proc_lseek   = seq_lseek,
++	.proc_release = seq_release,
++};
++#endif
+ 
+ /******************************************************************************
+  *                          initialization
+@@ -5772,10 +5798,17 @@ static int __init init_lru_gen(void)
+ 	if (sysfs_create_group(mm_kobj, &lru_gen_attr_group))
+ 		pr_err("lru_gen: failed to create sysfs group\n");
+ 
++#ifndef CONFIG_LRU_GEN_PROCFS_CTRL
+ 	debugfs_create_file_aux_num("lru_gen", 0644, NULL, NULL, false,
+ 				    &lru_gen_rw_fops);
+ 	debugfs_create_file_aux_num("lru_gen_full", 0444, NULL, NULL, true,
+ 				    &lru_gen_ro_fops);
++#else
++	proc_create_data("lru_gen", 0664, NULL,
++					&lru_gen_proc_rw_ops, NULL);
++	proc_create_data("lru_gen_full", 0444, NULL,
++					&lru_gen_proc_ro_ops, (void *)1);
++#endif
+ 
+ 	return 0;
+ };
 -- 
 2.25.1
 
