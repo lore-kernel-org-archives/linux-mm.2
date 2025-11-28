@@ -4,101 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D517D116E2
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 20:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05C45D116E2
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 20:46:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 939336B0008; Fri, 28 Nov 2025 15:20:40 -0500 (EST)
+	id BED246B00A2; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9108C6B00A4; Fri, 28 Nov 2025 15:20:40 -0500 (EST)
+	id BC4C56B00A3; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84DEA6B00A6; Fri, 28 Nov 2025 15:20:40 -0500 (EST)
+	id ADA886B00A4; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 753E86B0008
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:20:40 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 15ED514070F
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:20:40 +0000 (UTC)
-X-FDA: 84161133840.14.172DF50
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6546D14000B
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:20:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TUMIuXIZ;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C6046B00A2
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3FEF7160754
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:46:32 +0000 (UTC)
+X-FDA: 84161199024.10.AC93484
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4F8F3100008
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:46:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YryzxvJA;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764361238;
+	s=arc-20220608; t=1764362790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=iPnRNj++vcRWa52YY3DuBiJxF01RJGsbnLdE1dYQytI=;
-	b=58ogAUw/uHTouXZSzmxcOkQz61n87CDUaF1/YGR7V0aLNk/WjZS6ILWPu2PIDWiKEN5+tT
-	qf9xuZskaBY1ZSAffV2PbJbmA+TU61CGiJkxY5Qzk++CbaTp8sjCN5qAOvZkLsdFMFanOF
-	O+PJzcz3BuN2p/YncTi+0qdP23PPJRs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764361238; a=rsa-sha256;
-	cv=none;
-	b=KH2nY+vCDwCADAhyvIv6+f7tc3W/DNq2J0ZPOT+NRAq1sM3MVFyWxiVHzLl1vHtMY5VBn7
-	RC1zgXhdw2ENo86hpWxrCfLwXO9+56PxacJD2pcV9vMOKSx79WuVj84YSZbz5yyEjLCthc
-	lXv+NyWbRremLITWlgVhWp0luVVEY98=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kxYDNOqO7Z/W+8D8Pa6l2bfSCjGUfr2Vdx0OjE8Qu+U=;
+	b=D5rErnhGF/istqD11oL5ATKwkLF2+7r6ddT6quz/6mfCA3jjA06cAMBb21uulkcOCwvyqh
+	n374F1wxq7VEITdvOQCRjtE9xaOP2J2ZwR8gRSt8toVhkJYHvLk21yxjPR2tyfuuMAxVYc
+	F9CXakLy5HyqFbdAXXU+iZSvunUiSPY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TUMIuXIZ;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764361238; x=1795897238;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=vlNkjDYPkjDG2/TX24KjNq54SaEAHnvr5q+zY+jFnSk=;
-  b=TUMIuXIZzsI6h+LP1fClYPKWIGp32Yvy0cxUdnILYoBLVGiZkSn5kYlh
-   WK+wP3RE4vYcL6prZnp2AGQhdbjFPvb5Sc3L6JrPTV9C0JbGFyRzcxTMR
-   /n12TofgBFd0z2g5GH8XhlC1o9uZ73MDwigMwufjWh2ZXEAyddeimm7e0
-   vZQ+8olGUTjhe8mC/WZAt9ApnxFnVCN480v3S416UfR2xZDNPNS/3zksV
-   1X/vNG8PajPEgpS/pfVam11xg+Jw9jZBRF3bhM1FDhuX/v9Khsc6YaCNG
-   TRVVBzXf28edjMeeyx67L9Fzpycs1HeKSglH21W7krOvk/YjDaXjEAhEI
-   w==;
-X-CSE-ConnectionGUID: gIY7odb7QPqbeynojmOF7Q==
-X-CSE-MsgGUID: HdWkIty8S4arvcDS7EL9sQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="77496304"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="77496304"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 12:20:36 -0800
-X-CSE-ConnectionGUID: ikrDBOkOQtaO7PRi6aTyPQ==
-X-CSE-MsgGUID: B93q81DKTa2TG3mdScXODg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="198637136"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 28 Nov 2025 12:20:33 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vP4xD-000000006iz-3NTo;
-	Fri, 28 Nov 2025 20:20:31 +0000
-Date: Sat, 29 Nov 2025 04:20:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: arch/um/include/asm/kasan.h:29:2: error: UML does not work in
- KASAN_INLINE mode with STATIC_LINK enabled!
-Message-ID: <202511290451.x9GZVJ1l-lkp@intel.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YryzxvJA;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764362790; a=rsa-sha256;
+	cv=none;
+	b=od1WhWSHuQ1mAhQythipS9Xrj/YB3qdgaJxyV+4eovbb0K6CEJkYia0f/a9arb7kUXVtVG
+	rnrJsrz6PlcY+65kwF6L69lxjIg/CyYUHe9xBmQz8dXj8wXLa2NUpFfxTtWcypF1XeOt4k
+	upJfXpYq0ViiHE4T34z4dwd2otITjz8=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477b5e0323bso18898125e9.0
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:46:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764362789; x=1764967589; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kxYDNOqO7Z/W+8D8Pa6l2bfSCjGUfr2Vdx0OjE8Qu+U=;
+        b=YryzxvJACHV23lPe6jSGmKXp0bHrm0SaXTHmYaq3F0UfCvQFufRVVHs9aeiUZhtUWs
+         jywdbYv5PTTvglmSrI1n11Zp1fcUaxie1HZjduPUPlaiZq0RlDcHlZRPjwqo9UcNv/04
+         dZtHEmB0ouWJPf602EQ5CY+E74T126wZgA+fxbIorlHGfxuTyBFacVYVXTpIuua7M3aM
+         CDss+bzjtxGii4mIlf1qXJy3IphRj9q6NEeYJZZ6NtuqehQvDFnaX6SnwhJ9AR9bJGPT
+         ibTcZ5J2hnZhPlN4cxTjg1pVkIdKEBNsKI7bGChNOslH7QFuD2eWWxymAkjJQXrDFDf6
+         taHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764362789; x=1764967589;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kxYDNOqO7Z/W+8D8Pa6l2bfSCjGUfr2Vdx0OjE8Qu+U=;
+        b=MBGjVF2XgFSpnCp9q5NlD15Eskm55+8HNGyzLw4TgIRvGU5tY4lf8IoqMXucSCqIHh
+         HWPg/KjIeW/74FZ0eBRdFPhvM/5wkT8hxy4cpxM9TZGb3g8+rmquaUGqzYfk0EeOAdIf
+         n1DjrcUNP4vk5jQVmjJ33Ft79f0IF5JrRktlMHQBcoaaHZSLAebFDjWA4KgsnhE+B1Np
+         baDJuuGQxrEgM6B0DFx9ziQQkW6z+7K86JyGs2Ii7LgFOamktvb+OqJ6b8pfyuW0ia9u
+         HGX1RwGIGesbVOohN9eJQg+MMnbebdd4CzvEGEPMP/mpmYZMG0caMx2BWdvaTBesmzCA
+         9uqA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6+p27EtOWJxgcEddCi/Nc6UgUx1Cg9gmgafa3F7O+paNHrZzv8rPfu+6Gse15XmouXsACg8flrw==@kvack.org
+X-Gm-Message-State: AOJu0YxyJmNFyZ1Wz9DEdhTsipSS7YAZf8AoyCJ36io6d4UOmqc3aoHW
+	izSxxXUAzXhEKReGwVziD9Xe6IFFzwkib8zrec/gTPc0PVqCBBsvz14KC9BNJSL0lWM/3CwjBUB
+	0z6CT2BHjPgzVV7fZH9Cp3FMsW1GVUwo=
+X-Gm-Gg: ASbGncugIw5OuBQ2s1BUXp1NI4pAb478HUCm0zP1PL3TV15dxwYZeOVI60aY4hc4zQA
+	pl8hX8wD0VXxsN8pL0HD+LCvB8/JychBLqtLtfeB3hdfgfuHX8l2Otih3xBJbv9QqQSjkSSAf5a
+	mHPT6z7SLVPtwTsQXSy64WWQSFL1DhV3OV3uW+GabsoeLG2MzorDePdFFJAMXPdAgG9q9NEaxgH
+	TBPY/FKhFlDMGhcMRj3p69ih7Rd9U917RwmewOfeOgKBdA3nth86gV6dWEZEaECqrxgdC8=
+X-Google-Smtp-Source: AGHT+IFFPVSFPQ7/gxfSKiC4Qx1umZtsw+xEWGEdokxhU+erMjaq4YQkXW/ea6IjopVmZcVaExaWdq1bodJQRx1luT0=
+X-Received: by 2002:a05:6000:24c1:b0:42b:2a41:f20 with SMTP id
+ ffacd0b85a97d-42cc135db5amr32602882f8f.18.1764362788463; Fri, 28 Nov 2025
+ 12:46:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 6546D14000B
-X-Rspamd-Server: rspam06
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <20251121114011.GA71307@cmpxchg.org>
+ <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+ <20251124172717.GA476776@cmpxchg.org> <CACePvbXLdf9bC3Juj=wA4_TKeH6XUgHbbvwV5HhNQtgoT3CiBg@mail.gmail.com>
+ <20251124193258.GB476776@cmpxchg.org> <CACePvbVJEWd64r-o8ezh+0QByYbWjYVKiLgxNiBJOjfRWP__sw@mail.gmail.com>
+ <20251125213126.GB135004@cmpxchg.org> <CACePvbXstKtQXE+0i-KRcq5LwrCr92a_FKy2KBmqaiwZEkFxng@mail.gmail.com>
+ <7665130c511e3cd00f83e8b14de2b78e08830887.camel@surriel.com>
+ <CACePvbWcYsm3WpQSkbiSKESpHOb+QybNTxtDL9mCvRd__Xj4Aw@mail.gmail.com>
+ <7e44e8654eb0ed5e0f590b3d705b258772dadb57.camel@surriel.com> <CACePvbUSHYgit93ofjg6cMfb+CR9x6CZnMGh7Utb+zEzkOG75w@mail.gmail.com>
+In-Reply-To: <CACePvbUSHYgit93ofjg6cMfb+CR9x6CZnMGh7Utb+zEzkOG75w@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 28 Nov 2025 12:46:17 -0800
+X-Gm-Features: AWmQ_bkDWT9FJLppp7hKveKxlDm1KhHwGeICnSeuImRq8sV1SMsx22oSZtCGJZM
+Message-ID: <CAKEwX=MMgOb+7tDxPXDCcBxCEztvajDa0YfLBqgGuAr8GQ4s1A@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Chris Li <chrisl@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4F8F3100008
+X-Rspamd-Server: rspam02
+X-Stat-Signature: assfdmue5f5drx8jo7gjrm7n4sk7yort
 X-Rspam-User: 
-X-Stat-Signature: kukqg4tytso9a3nfpuzisbtqih916scg
-X-HE-Tag: 1764361237-69749
-X-HE-Meta: U2FsdGVkX1+sLIY/qkVHEqtFgFka0RiuRIn/h0tp7cpPNot8/sGCmzMd/f+PZBjaXaJ1Of7Rc9GQ0rezmZAXk8dxIzYxuAEJBYrREoea4gj40b7CGpNE9geIR6L//i0BDYFlIzlW29oBbTwnunvufLbqHVM7xDw1ztBWGQfnYHl4FtJHwPI+PWpkPmO1+OfZ/CjsuSaaIK7l1Qw+DpVp7ibX4W9csUXmZiUnD27YLfJvgwqdp7XkW8yxO2vvNO/SAXiXIhQT/GmXpYywv6UoCn/Et1oalaUe3Sc3LEHoEXSobh3iNvUADaTwmlzGrNzSHC/hnxriddpS1QrYCJ0So4dK3wBJrkNxovi7/kkzzzGCR0j5WgEz2s5ppam4YsncP9Yh68VKNbKGIb+4vXXg5d+o/iLgWiR4Ec4Eqm+8BZLxwaX/5wAcKyolzQk27Y6bd+H8xJpy0zhngwjcN3y4qlRWGxdd1h0YBcfN/fQv7Yr4N2LBekzY3aTm+LPfpN4ndJojx+dtKxc22NFUiCfd6Vk9UF5vjqYQrbgqxTXVfanU1ylleu16kK0XwdtdJCb3lVNljFokmckRv31Q45rYtvnz5vOwAqohnz6mIi0+ItrhgXXcyP72ku37gfwSOFqbbkLps+vqF4n3XW4aaiFt9cjErdXSGA3kITD8udfaROEQJxx88IICUk+M678Kw/a4sbIZjyXDr7FTaWBseOLODyt8e7HJ6WK6qreafvIvMA1rYwHamhZEW8P4Kr72TqAGr+xhHQ5n372GMiR6/Rn8w+w8RRIxOUXN9qXa/vJ7V0Fo5CrsGb23EzFfwxGAmOoluZRwx3QLCUJ9TINwHcDy1SipmwAWK+BYk1Xx+ijS1VvJrElfJod5HHEa9C+TiCwmOyo9VYwWEhro7uGTIdqVgXgTV3RfB6YNzZLbOnryoWlDekoDIn0YrZnjr8McvNbpu5MsNJii7hOQRmjFmvP
- gVxUNNky
- YxdTOjHlEwZSP6qxCrPKQKwRPjqzaVefjZyHqBmzdgoL1W53zx23GrIESXklcDYp/5U8C1AlUyC0857u+b8ZGLvqb1/28QjDXKDhHfas+SfHtJX+WHlkDU/uroRA/EvsXFmRC5bFTbyRlNmeJILkUBLVJsMSPxo4O/pNs3jFTHGqzEGfF77BrgxhuX9W8cmH6QE6RYqadDBeM92le9fwtkTo+VtuMMr2Gx4SUaWqCGA54DuzDbTw45H+WYhGQb8ouseIB/v+SeXFYAGiE5ws/zB7ixFhYplBKAamJOl0jgH7CN9hFry4D4bHXKavDK3DMRIvcN0huWK/eKWGYat6MTxOepG5PKpC6HymPvvXzgDPPKUzjyLb7VFFPQ5OgVYimSpONSaMi1I/b4majRWHA9e01rnfhEJ++JCX9MupaIWaRCb0WJ2kCSZDIkRiejLQj+rthCexzBEpmIpnl01oTxXXASNyB5sorevXts8N89OPAyvY0NeExADW1uMa2ouN/X0f4J3KU78dpOjw=
+X-HE-Tag: 1764362790-542109
+X-HE-Meta: U2FsdGVkX18cBqqflIRBsOVoR+Bs7qWrAOY+7e+uKxJQZIAF3wk4VjINw2CrlZ/CdsDjbUKXFgAb13be7N2zVrJ7ExtWgNQmDEKLGdLnFlKuWixbJzbxrd+KBWjUnLRHZT/dXgrZDT9+eJEMJ3z3kXxuRwmp6UBUVDEY5bDCiqZNlC0xFpOp/OPnfizRv+JKWsgyYls1itGm6Yj7GZYrm2BZBTiIEj6t2I9vqQtQNFa5HTs0yOUqVHUdMjuhBrLN83xaw52olRZE/DkmnmLXiO7VZBpH8dqFZOhhkk6RJ62SEQ6jj7TWDrAcT9BjPgOl7WC4OB3TRL/v76D52usQ51BXYCZQqRA0E1O4iZM6QOMx+hh12M+kTpuDTrUNi3G25KT6ntbED54Mc8OUrHvGws0SOd4/513Rao0KWtV+fMo97rCnefB7S7wH/0uuPCVLzMRB15Nca37HYTidAk8Ycbi7nBTKZxegab0Wyjog8RGmQ3F9UrfwG96k7uMALDVVll/m5JifQl/iPaNiq3DdqtJx2h8181TXvndvryeuNHL6dfzNU//0T9aVmCG85VGGF9IK9UI9GBW71/njYWoM8OnsLfh/oSR6Uxf475dIZUO4BFVHd9Q8LDddWpzc1TNB9PmtGWqGpN7RdcV5Fd6925pzsKrtdMThK3IuCwENJ+CVREe0ISml0f9ukvoW1RL5ot/J5NIt/QyZquRe5Ww9gHAFdtkElJDlvNMAMUwAkmhf7X/FXrphFUI/hg9JvV8gNYAl7yhvJklWCffmv2uy+WRBfk9abYIMp5xluSQJ7AU3ukkbsRn27P0xynw8gH9Hvs22zCGPbnoJOYXGMPkfxJgxus+jzvBiUYcR0WI44UmK90jZuYstbzvxzUQEytfl6awWjqHXN0a/S4jY+JOIpjZ4gleEtfO03OFCuoJk+/OyixNKAaPzjsLzV594DQVpAf08ttKvS1smytX8pNx
+ hfgDae3X
+ M3NlUufXQ2+4zJk/SUBL/CeVTaZ9PnuM3MKZnoYVTPZv9er195SBokOmnJr5COZ1maUwreYdUTMP/VXpxungNIjv8bDpLu/ySPlq8YJTVeLxbjV745M3Cq6zyWE78dR4FYwrdkTDmhdCQsH4Gvaj6YKiMW7JHpU7lSGP+FR+fIpgojV7T6t647JNOS9TGVo/qmemBmPkZ7m3EKFAgm0ModIOwv5tCkaZa7wUX1zSFi5nUsyEfvPTrfDiddwCaDLlpYMWKKJDNBDPd3oWAX2SZ+yEnOmWLFnEQsklpQNH3ZF3n45eIj841tq00qEvwzmFqKR8+ueVCYUTIF4+Ur6GUe9ExC+OtFedMioeiETJpc61C8AQcQwU/MLbCcUDJOxoskdMqFVZyMV6lAXXbXEW9nsszicIwrmd4IQDfj53uglF8MuujpRky0l736A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,146 +128,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sabyrzhan,
+On Thu, Nov 27, 2025 at 11:10=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
+:
+>
+> On Thu, Nov 27, 2025 at 6:28=E2=80=AFAM Rik van Riel <riel@surriel.com> w=
+rote:
+> >
+> > Sorry, I am talking about upstream.
+>
+> So far I have not had a pleasant upstream experience when submitting
+> this particular patch to upstream.
+>
+> > I really appreciate anybody participating in Linux
+> > kernel development. Linux is good because different
+> > people bring different perspectives to the table.
+>
+> Of course everybody is welcome. However, NACK without technical
+> justification is very bad for upstream development. I can't imagine
+> what a new hacker would think after going through what I have gone
+> through for this patch. He/she will likely quit contributing upstream.
+> This is not the kind of welcome we want.
+>
+> Nhat needs to be able to technically justify his NACK as a maintainer.
+> Sorry there is no other way to sugar coat it.
 
-FYI, the error/warning still remains.
+I am NOT the only zswap maintainer who expresses concerns. Other
+people also have their misgivings, so I have let them speak and not
+put words in their mouths.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   6cf62f0174de64e4161e301bb0ed52e198ce25dc
-commit: 1e338f4d99e6814ede16bad1db1cc463aad8032c kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
-date:   10 weeks ago
-config: um-randconfig-r063-20251129 (https://download.01.org/0day-ci/archive/20251129/202511290451.x9GZVJ1l-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project b3428bb966f1de8aa48375ffee0eba04ede133b7)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251129/202511290451.x9GZVJ1l-lkp@intel.com/reproduce)
+But since you have repeatedly singled me out, I will repeat my concerns her=
+e:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511290451.x9GZVJ1l-lkp@intel.com/
+1. I don't like the operational overhead (to statically size the zswap
+swapfile size for each <host x workload> combination) of static
+swapfile. Misspecification of swapfile size can lead to unacceptable
+swap metadata overhead on small machines, or underutilization of zswap
+on big machines. And it is *impossible* to know how much zswap will be
+needed ahead of time, even if we fix host - it depends on workloads
+access patterns, memory compressibility, and latency/memory pressure
+tolerance.
 
-All errors (new ones prefixed by >>):
+2. I don't like the maintainer's overhead (to support a special
+infrastructure for a very specific use case, i.e no-writeback),
+especially since I'm not convinced this can be turned into a general
+architecture. See below.
 
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:5:
-   In file included from include/linux/crypto.h:18:
-   In file included from include/linux/slab.h:260:
-   In file included from include/linux/kasan.h:21:
->> arch/um/include/asm/kasan.h:29:2: error: UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-      29 | #error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-         |  ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      99 |                         set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     101 |                 return (set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     116 |                         (set1->sig[1] == set2->sig[1]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
+3. I want to move us towards a more dynamic architecture for zswap.
+This is a step in the WRONG direction.
 
+4. I don't believe this buys us anything we can't already do with
+userspace hacking. Again, zswap-over-zram (or insert whatever RAM-only
+swap option here), with writeback disabled, is 2-3 lines of script.
 
-vim +29 arch/um/include/asm/kasan.h
+I believe I already justified myself well enough :) It is you who have
+not really convinced me that this is, at the very least, a
+temporary/first step towards a long-term generalized architecture for
+zswap. Every time we pointed out an issue, you seem to justify it with
+some more vague ideas that deepen the confusion.
 
-    27	
-    28	#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
-  > 29	#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-    30	#endif
-    31	#else
-    32	static inline void kasan_init(void) { }
-    33	#endif /* CONFIG_KASAN */
-    34	
+Let's recap the discussion so far:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+1. We claimed that this architecture is hard to extend for efficient
+zswap writeback, or backend transfer in general, without incurring
+page table updates. You claim you plan to implement a redirection
+entry to solve this.
+
+2. We then pointed out that inserting redirect entry into the current
+physical swap infrastructure will leave holes in the upper swap tier's
+address space, which is arguably *worse* than the current status quo
+of zswap occupying disk swap space. Again, you pull out some vague
+ideas about "frontend" and "backend" swap, which, frankly, is
+conceptually very similar to swap virtualization.
+
+3. The dynamicization of swap space is treated with the same rigor
+(or, more accurately, lack thereof). Just more handwaving about the
+"frontend" vs "backend" (which, again, is very close to swap
+virtualization). This requirement is a deal breaker for me - see
+requirement 1 above again.
+
+4. We also pointed out your lack of thoughts for swapoff optimization,
+which again, seem to be missing in your design. Again, more vagueness
+about rmap, which is probably more overhead.
+
+Look man, I'm not being hostile to you. Believe me on this - I respect
+your opinion, and I'm working very hard on reducing memory overhead
+for virtual swap, to see if I can meet you where you want it to be.
+The RFC's original design inefficient memory usage was due to:
+
+a) Readability. Space optimization can make it hard to read code, when
+fields are squeezed into the same int/long variable. So I just put one
+different field for each piece of metadata information
+
+b) I was playing with synchronization optimization, i.e using atomics
+instead of locks, and using per-entry locks. But I can go back to
+using per-cluster lock (I haven't implemented cluster allocator at the
+time of the RFC, but in my latest version I have done it), which will
+further reduce the memory overhead by removing a couple of
+fields/packing more fields.
+
+The only non-negotiable per-swap-entry overhead will be a field to
+indicate the backend location (physical swap slot, zswap entry, etc.)
++ 2 bits to indicate the swap type. With some field union-ing magic,
+or pointer tagging magic, we can perhaps squeeze it even harder.
+
+I'm also working on reducing the CPU overhead - re-partitioning swap
+architectures (swap cache, zswap tree), reducing unnecessary xarray
+lookups where possible.
+
+We can then benchmark, and attempt to optimize it together as a community.
 
