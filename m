@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8A69D116F3
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 03:33:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1F3D116F1
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 03:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D7AF6B0011; Thu, 27 Nov 2025 22:33:48 -0500 (EST)
+	id 151676B0022; Thu, 27 Nov 2025 22:33:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AFEE6B0022; Thu, 27 Nov 2025 22:33:48 -0500 (EST)
+	id 129826B0023; Thu, 27 Nov 2025 22:33:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ED1F6B0023; Thu, 27 Nov 2025 22:33:48 -0500 (EST)
+	id 03F426B0024; Thu, 27 Nov 2025 22:33:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B0DD6B0011
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 22:33:48 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BC7C88B15
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 03:33:47 +0000 (UTC)
-X-FDA: 84158596494.07.C102FCA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E90326B0022
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 22:33:52 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6D4ACC0350
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 03:33:52 +0000 (UTC)
+X-FDA: 84158596704.03.62A8723
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9746D80002
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 03:33:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="eDs/6N68";
+	by imf23.hostedemail.com (Postfix) with ESMTP id A40E0140004
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 03:33:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Skgr8bCv;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764300825; a=rsa-sha256;
-	cv=none;
-	b=Js0B8gmGLAsJ+plR8ASAxEQP27a+v+WYTgLDb3iyfEZ3L/rFqQgm540axOzXOdg+asKXmP
-	ZLJnMpN3904uQ+Bb/N9CBcnRBLPNaA+c0VyXSpaNgJ8zerCTq3e3K6mcax3fOwx7ASw55v
-	Z27L/PHj2cB2cO99/lOoXa+pxytd2EY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="eDs/6N68";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	spf=pass (imf23.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764300825;
+	s=arc-20220608; t=1764300830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Qr0zpQpajQCRbG+sF+yGezyQgSmvvZvdStpi3agx6mY=;
-	b=1w+4WEDWdHXcNdrVQZIDxou1Qvnb0RHU1sl1+4xGxRzxjDA4H3yH+sCr2hGq+a9/kiE5SF
-	0YC/l83orsYrEXFV6Gs8J8GIJquKCSNc+N+CHCYozwMqefmSL8Fv17zCLinHHUGtpyahAW
-	+afYorKvgwIEKTn76ZJJWunIhhTa/hw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UdCEhX0QnAccjf1ifoDBiGeeToccBUA00HLj78ygtME=;
+	b=VZqTsliOifZYpM2iJQZ7hCc7nVlmyFIPr7Elrge6oCeuTTEPA/ePmLAxgLSv0jK4CqFQgk
+	NJjE7gUIUjo44wh4nfniBFy8yWpMF9lsBhZsGhINHjUInR/00Ia2G15Li5sBAnOT9AXfW4
+	38qoTxRphQ/l9t3WqE27Tfy3qOp2568=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Skgr8bCv;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764300830; a=rsa-sha256;
+	cv=none;
+	b=CxeoS8SMsGpw4ldIxwzRdzEXDy95H5SfEBhsHo/681HCZoqr/EjGJBfQpDKUWvuDDcjIg5
+	4M7eoOGZlBXg4Ek4XwueOUYkXnz5xsLY191CFqHpYU8nfdRt7+Q6E1qFU3raIc6QcpUVIx
+	Q9CTTgPvZQUrAHkL03vwMU+AssVzCkM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764300824;
+	s=mimecast20190719; t=1764300829;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Qr0zpQpajQCRbG+sF+yGezyQgSmvvZvdStpi3agx6mY=;
-	b=eDs/6N68YxRUNvRIPPeW2oOaSU2KpQd5ei73Nm9cNiWnIkVlfvh5L/yUGl9ZS3rRG+K0J5
-	jzNr3dFN8wwrwxN0JoixPFMe167WDGv2IG1tMHqrpzq2uAcMjsuAhIURW/B2jcPvqhGT5P
-	+av1aVvoHt4RzDN0LWGkUNZvi1lLPpU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UdCEhX0QnAccjf1ifoDBiGeeToccBUA00HLj78ygtME=;
+	b=Skgr8bCvUlk4LrJxBuqj0vaZiRdFadGtwZCRS6qOLtAoKoWBWM1qCxTUE49hmEJm/yIem1
+	m9QjchoLvYNaxBV7loHOj814LxeCkWV+dSGv6KepSF4JGjjRHORFbqzYClMCnCZg+jdrr4
+	zitu7YoK+yguy9R47flO+ilcvL4HNno=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-sE3kvIDuP_qIGMkVoeXVOw-1; Thu,
- 27 Nov 2025 22:33:37 -0500
-X-MC-Unique: sE3kvIDuP_qIGMkVoeXVOw-1
-X-Mimecast-MFC-AGG-ID: sE3kvIDuP_qIGMkVoeXVOw_1764300815
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-UOimTxoJOkekNTmxQjBXig-1; Thu,
+ 27 Nov 2025 22:33:46 -0500
+X-MC-Unique: UOimTxoJOkekNTmxQjBXig-1
+X-Mimecast-MFC-AGG-ID: UOimTxoJOkekNTmxQjBXig_1764300824
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42F9F1956095;
-	Fri, 28 Nov 2025 03:33:34 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE5031956095;
+	Fri, 28 Nov 2025 03:33:43 +0000 (UTC)
 Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.7])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1735A19560B0;
-	Fri, 28 Nov 2025 03:33:23 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 003BC19560B7;
+	Fri, 28 Nov 2025 03:33:34 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
 To: linux-mm@kvack.org
 Cc: ryabinin.a.a@gmail.com,
@@ -90,21 +92,23 @@ Cc: ryabinin.a.a@gmail.com,
 	snovitoll@gmail.com,
 	christophe.leroy@csgroup.eu,
 	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v4 00/12] mm/kasan: make kasan=on|off work for all three modes
-Date: Fri, 28 Nov 2025 11:33:08 +0800
-Message-ID: <20251128033320.1349620-1-bhe@redhat.com>
+Subject: [PATCH v4 01/12] mm/kasan: add conditional checks in functions to return directly if kasan is disabled
+Date: Fri, 28 Nov 2025 11:33:09 +0800
+Message-ID: <20251128033320.1349620-2-bhe@redhat.com>
+In-Reply-To: <20251128033320.1349620-1-bhe@redhat.com>
+References: <20251128033320.1349620-1-bhe@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9746D80002
-X-Stat-Signature: tzqcsnzwyo7fa5q64hdefdis96dykbmc
 X-Rspam-User: 
-X-HE-Tag: 1764300825-276385
-X-HE-Meta: U2FsdGVkX186hpaBCZ9RU//TPbSIkeK63UTsCvU7L0NAT+/GsjBzW83ATFab/3DEeBOn23Fc/MMUP/mtWcRNbYUIxg/9Bx+RVwHBSbjBb5+VLrTUiGe92fRJK/1ohrcBXWKCU1tLc8Amxfkx1ZYKkxsLbEVpNlKl3vtr8QNzcXu/0uhRrU0SFrTmu/82ZZZFJcWuPy0j6NFYud5aFJRTxOE8FToswvkTh8zAHedZ7sj6v7Qw4qBOiept8QPSJdwZkb3FwdSKTaxiPI1tDO5NrJENfUnIzPZkuIrqVRevL/HzFwWB3iBkfTqSywnfbQDnJzpGy23lF7pX89xwHkh/vcZF7BZWXyHQG+btkdC8FY5poz5k4TEzBWemDldseBYm8FIEQP4od8Zb7SdSCfeeyLxQtnqdpreTL8ge13IynELzLZdv5E4gczOSGRcGGvaeTlHtuHLOPpuvXbZU8VNVRRhe2k7n+koWkhzmfVkSlImZFD/5tKFwNTYRoRugyJfUgHpoBcmqOPDo0WmF3ssHEwrlgZXnwJz8pyR8OvpJiaKjvWaMdFCpMugUIdWb242qI7vvOlWotZ39I6+DRibfY/blB4JM5oJnUOYwr7gzruStkJCPz6d+eSowKGvMB+9Ga8bHvME7EEpeLnHZ8UB7PtrVtdlItIvgd53aTbu0wSdAPeHIaNIzJRA+zGfknigsKTtXl9UJL+YB5LpYbCPWn9/FZA1Ew8QJo79yNiqycRsuVp75J2jjb9O6VijytlRm/6DvWaUvIj61pZjiBoh8KUiBvWHch9vI/SLcnmj+/R1q92Gh33uK6v8sYrwGroY5jinunammYw+c9peNsQqvpUy5t5KgGQ07UMiQQHPzaOIuQmz9iSl75UAb7wuJIH2a2ZIkdHJZs5jkx8xxdJmsv5LFuwOzujWalez6OXx8uZGfnFkT9v1RBggIM/wbzg0GBDqep8g+/vdxzql+5aV
- I+JnmfNB
- 8y1I40dwjy9tovzu+9SWk2KWgEoVn9AR5mPRk/ksVf2eq8ZqSODTS5LfzyKnYEJKppTiz0HMzsO48nenKhwVoGjXJhVqL+OF48H+oKZqH2EuOOjvdtx20HFrqfSBmQao7NVrvnEchJ6CadyW8OG4xfQhUEW3KuwJIrUB752vj8fKk2pabZw692DcCdN1sTJrIEN+MfyQEcBlzAef/P2heD0Lu5v2ryzEXIMuvEGEriZfSN74NiTMpJkSBVVSpx8U0nsk7bm8f8prnLKaVm+4SaXYVICukSqPqS/vwspvWAZHOUJyniJKawAF8hjJqrng/GrwgodCjpoBJmnC3fXlQclmuQzp3+1q/iOj8Er+3nBpGNnsg/VnoE3+ZL+NtfIpzmq+xdmUN/FWUCEFQUHItvpefwg==
+X-Rspamd-Queue-Id: A40E0140004
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 5fd8szuhzkrfkkrrqntnifqnkos7da3c
+X-HE-Tag: 1764300830-375542
+X-HE-Meta: U2FsdGVkX18vPnIBzs1DuTOrNh4THKcxMrPMfgA4liQnWqURwSlMByOTxFP4ZHdvwNnvrc4bAaN1Sw3slAj42PZEptPF6IWJtk4AyOVhGmXUFeQKC0Hy0/3YnxRPaSdRgkv4E8ePRsO7OJF0X1VDvb+UAOlQRtEuRdvrM3rUn9Un2lNiKV5danGxkx1r1yH31oMEFLkUG4tfrFFTL8NTdw3JhiRAfsafi1lZTGcjtEW71Yf0wuR+UoL43ThSIpSHzYqkojq9T/BOfBET82zVY0vFbyHTTm5LL2sQMnRXLT+Kh2oQpcYE8vVFqc169F1w0Ff5RARtyC7pFpxK+DAkIHeum0h5DfuzOueU8WcnAwoNzahUz8k88PeeRQwfhhBHsyZLdCNpHWaR+nbZmGqiLTuVVRPQM92WUIV7j14vegSVXHo+zudwUd9FxEe3V7iRaF1NgnWBv2JvvtYp3MUlDYd6ydDwsTWc0b4mP8IvQFfZMIVQVKUwbrQ9btcnZbfPq6XRZUpM+v+msrLxrYqjFisAQhTR6mNzRtYQoI/gwbfjWx0hHjnfMq1q3R7mMLzxnlFKmIfetyGrkIbsw3PrcKmNnwAM1CVB6Lx8rVHpWQM4tTMIDTJ9ly5vBRUnFi0M3ldoZoL3cUY+6olfop30VAwIrgs8wopOBl4+ewSdyA/gNYwO9SOer4iCzo3azMwylApaq/yOIWxiyRsl42lDZzNjjWZMlsZ4GmspvW8SKRSwO4bS2WDS8KmehxqRl8v1swsJoZoHyOPREm9+CrmVuutno5Lz0lLSC6gLgQd13oWkDVn+aRvmWoaAokyp0w3G61oJC3ViCFyLlwsWksbqJOZ3NA7fx5PQd/pU0MkYcsbG/FywMSTxqmZQygVbZaMLn6Gv4/l+invx3fs0O40BNkZlpp8warNxZNHXHMzQyVUECajFUPZ5hnLmIzdIqAjvb/x3e7xO1Lm2AtZAuMY
+ 5rs9ye/p
+ RKS2OQ9Z3kv+CeXHKYXBPW6Z+yBuBxco0S0WSY8t1y8hFnHig1/uBA7vg2pGyNBrH6ws/spw61QFcrIrSiHyXfvPhsJWitfwsNKgCX0rNT/BXU+K5wWu+uirl+MWy52Il2v43Rs3U+yAicDybGXaF8aCJdQSW+lQmbqVt6BPh7sdrhOlbe4Se7PEn6lT0FAIBMqi2eLUfgxQV12+1r3KSlw7zUmfNxnqPChOcV7yZt1C3RDMqIB5XUbrmNmq+ZvXWqZnHE3anmrlFCNmOmKrfduHy7lNxWTHkW2/vJEt/JIo08vY27ojdssWLlEjzaC4hVP5RjWg9EbpjPoZfNiUDfeVR/usjOcKkxlWcjKxcp1Wx1fiR3tWShmhrX81X9m8071HkiX+jb1rhSB+GONBeIxIOLQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,129 +117,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently only hw_tags mode of kasan can be enabled or disabled with
-kernel parameter kasan=on|off for built kernel. For kasan generic and
-sw_tags mode, there's no way to disable them once kernel is built.
+The current codes only check if kasan is disabled for hw_tags
+mode. Here add the conditional checks for functional functions of
+generic mode and sw_tags mode.
 
-This is not convenient sometime, e.g in system kdump is configured.
-When the 1st kernel has KASAN enabled and crash triggered to switch to
-kdump kernel, the generic or sw_tags mode will cost much extra memory
-while in fact it's meaningless to have kasan in kdump kernel
+This is prepared for later adding kernel parameter kasan=on|off for
+all three kasan modes.
 
-There are two parts of big amount of memory requiring for kasan enabed
-kernel. One is the direct memory mapping shadow of kasan, which is 1/8
-of system RAM in generic mode and 1/16 of system RAM in sw_tags mode;
-the other is the shadow meomry for vmalloc which causes big meomry
-usage in kdump kernel because of lazy vmap freeing. By introducing
-"kasan=off|on", if we specify 'kasan=off', the former is avoided by skipping
-the kasan_init(), and the latter is avoided by not building the vmalloc
-shadow for vmalloc.
+Signed-off-by: Baoquan He <bhe@redhat.com>
+---
+ mm/kasan/generic.c    | 17 +++++++++++++++--
+ mm/kasan/init.c       |  6 ++++++
+ mm/kasan/quarantine.c |  3 +++
+ mm/kasan/report.c     |  4 +++-
+ mm/kasan/shadow.c     | 11 ++++++++++-
+ mm/kasan/sw_tags.c    |  3 +++
+ 6 files changed, 40 insertions(+), 4 deletions(-)
 
-So this patchset moves the kasan=on|off out of hw_tags scope and into
-common code to make it visible in generic and sw_tags mode too. Then we
-can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
-kasan.
-
-Testing:
-========
-- Testing on x86_64 and arm64 for generic mode passed when kasan=on or
-  kasan=off.
-
-- Testing on arm64 with sw_tags mode passed when kasan=off is set. But
-  when I tried to test sw_tags on arm64, the system bootup failed. It's
-  not introduced by my patchset, the original code has the bug. I have
-  reported it to upstream.
-  - System is broken in KASAN sw_tags mode during bootup
-    - https://lore.kernel.org/all/aSXKqJTkZPNskFop@MiWiFi-R3L-srv/T/#u
-
-- Haven't found hardware to test hw_tags. If anybody has the system,
-  please help take a test.
-
-Changelog:
-====
-v3->v4:
-- Rebase code to the latest linux-next/master to make the whole patchset
-  set on top of 
-  [PATCH 0/2] kasan: cleanups for kasan_enabled() checks
-  [PATCH v6 0/2] kasan: unify kasan_enabled() and remove arch-specific implementations
-
-v2->v3:
-- Fix a building error on UML ARCH when CONFIG_KASAN is not set. The
-  change of fixing is appended into patch patch 11. This is reported
-  by LKP, thanks to them.
-
-v1->v2:
-- Add __ro_after_init for kasan_arg_disabled, and remove redundant blank
-  lines in mm/kasan/common.c. Thanks to Marco.
-- Fix a code bug in <linux/kasan-enabled.h> when CONFIG_KASAN is unset,
-  this is found out by SeongJae and Lorenzo, and also reported by LKP
-  report, thanks to them.
-- Add a missing kasan_enabled() checking in kasan_report(). This will
-  cause below KASAN report info even though kasan=off is set:
-     ==================================================================
-     BUG: KASAN: stack-out-of-bounds in tick_program_event+0x130/0x150
-     Read of size 4 at addr ffff00005f747778 by task swapper/0/1
-
-     CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.16.0+ #8 PREEMPT(voluntary)
-     Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F31n (SCP: 2.10.20220810) 09/30/2022
-     Call trace:
-      show_stack+0x30/0x90 (C)
-      dump_stack_lvl+0x7c/0xa0
-      print_address_description.constprop.0+0x90/0x310
-      print_report+0x104/0x1f0
-      kasan_report+0xc8/0x110
-      __asan_report_load4_noabort+0x20/0x30
-      tick_program_event+0x130/0x150
-      ......snip...
-     ==================================================================
-
-- Add jump_label_init() calling before kasan_init() in setup_arch() in these
-  architectures: xtensa, arm. Because they currenly rely on
-  jump_label_init() in main() which is a little late. Then the early static
-  key kasan_flag_enabled in kasan_init() won't work.
-
-- In UML architecture, change to enable kasan_flag_enabled in arch_mm_preinit()
-  because kasan_init() is enabled before main(), there's no chance to operate
-  on static key in kasan_init().
-
-Baoquan He (12):
-  mm/kasan: add conditional checks in functions to return directly if
-    kasan is disabled
-  mm/kasan: move kasan= code to common place
-  mm/kasan/sw_tags: don't initialize kasan if it's disabled
-  arch/arm: don't initialize kasan if it's disabled
-  arch/arm64: don't initialize kasan if it's disabled
-  arch/loongarch: don't initialize kasan if it's disabled
-  arch/powerpc: don't initialize kasan if it's disabled
-  arch/riscv: don't initialize kasan if it's disabled
-  arch/x86: don't initialize kasan if it's disabled
-  arch/xtensa: don't initialize kasan if it's disabled
-  arch/um: don't initialize kasan if it's disabled
-  mm/kasan: make kasan=on|off take effect for all three modes
-
- arch/arm/kernel/setup.c                |  6 ++++++
- arch/arm/mm/kasan_init.c               |  2 ++
- arch/arm64/mm/kasan_init.c             |  6 ++++++
- arch/loongarch/mm/kasan_init.c         |  2 ++
- arch/powerpc/mm/kasan/init_32.c        |  5 ++++-
- arch/powerpc/mm/kasan/init_book3e_64.c |  3 +++
- arch/powerpc/mm/kasan/init_book3s_64.c |  3 +++
- arch/riscv/mm/kasan_init.c             |  3 +++
- arch/um/kernel/mem.c                   |  5 ++++-
- arch/x86/mm/kasan_init_64.c            |  3 +++
- arch/xtensa/kernel/setup.c             |  1 +
- arch/xtensa/mm/kasan_init.c            |  3 +++
- include/linux/kasan-enabled.h          |  6 ++++--
- mm/kasan/common.c                      | 20 ++++++++++++++++--
- mm/kasan/generic.c                     | 17 ++++++++++++++--
- mm/kasan/hw_tags.c                     | 28 ++------------------------
- mm/kasan/init.c                        |  6 ++++++
- mm/kasan/quarantine.c                  |  3 +++
- mm/kasan/report.c                      |  4 +++-
- mm/kasan/shadow.c                      | 11 +++++++++-
- mm/kasan/sw_tags.c                     |  6 ++++++
- 21 files changed, 107 insertions(+), 36 deletions(-)
-
+diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+index 2b8e73f5f6a7..aff822aa2bd6 100644
+--- a/mm/kasan/generic.c
++++ b/mm/kasan/generic.c
+@@ -214,12 +214,13 @@ bool kasan_byte_accessible(const void *addr)
+ 
+ void kasan_cache_shrink(struct kmem_cache *cache)
+ {
+-	kasan_quarantine_remove_cache(cache);
++	if (kasan_enabled())
++		kasan_quarantine_remove_cache(cache);
+ }
+ 
+ void kasan_cache_shutdown(struct kmem_cache *cache)
+ {
+-	if (!__kmem_cache_empty(cache))
++	if (kasan_enabled() && !__kmem_cache_empty(cache))
+ 		kasan_quarantine_remove_cache(cache);
+ }
+ 
+@@ -239,6 +240,9 @@ void __asan_register_globals(void *ptr, ssize_t size)
+ 	int i;
+ 	struct kasan_global *globals = ptr;
+ 
++	if (!kasan_enabled())
++		return;
++
+ 	for (i = 0; i < size; i++)
+ 		register_global(&globals[i]);
+ }
+@@ -369,6 +373,9 @@ void kasan_cache_create(struct kmem_cache *cache, unsigned int *size,
+ 	unsigned int rem_free_meta_size;
+ 	unsigned int orig_alloc_meta_offset;
+ 
++	if (!kasan_enabled())
++		return;
++
+ 	if (!kasan_requires_meta())
+ 		return;
+ 
+@@ -518,6 +525,9 @@ size_t kasan_metadata_size(struct kmem_cache *cache, bool in_object)
+ {
+ 	struct kasan_cache *info = &cache->kasan_info;
+ 
++	if (!kasan_enabled())
++		return 0;
++
+ 	if (!kasan_requires_meta())
+ 		return 0;
+ 
+@@ -543,6 +553,9 @@ void kasan_record_aux_stack(void *addr)
+ 	struct kasan_alloc_meta *alloc_meta;
+ 	void *object;
+ 
++	if (!kasan_enabled())
++		return;
++
+ 	if (is_kfence_address(addr) || !slab)
+ 		return;
+ 
+diff --git a/mm/kasan/init.c b/mm/kasan/init.c
+index f084e7a5df1e..c78d77ed47bc 100644
+--- a/mm/kasan/init.c
++++ b/mm/kasan/init.c
+@@ -447,6 +447,9 @@ void kasan_remove_zero_shadow(void *start, unsigned long size)
+ 	unsigned long addr, end, next;
+ 	pgd_t *pgd;
+ 
++	if (!kasan_enabled())
++		return;
++
+ 	addr = (unsigned long)kasan_mem_to_shadow(start);
+ 	end = addr + (size >> KASAN_SHADOW_SCALE_SHIFT);
+ 
+@@ -482,6 +485,9 @@ int kasan_add_zero_shadow(void *start, unsigned long size)
+ 	int ret;
+ 	void *shadow_start, *shadow_end;
+ 
++	if (!kasan_enabled())
++		return 0;
++
+ 	shadow_start = kasan_mem_to_shadow(start);
+ 	shadow_end = shadow_start + (size >> KASAN_SHADOW_SCALE_SHIFT);
+ 
+diff --git a/mm/kasan/quarantine.c b/mm/kasan/quarantine.c
+index 6958aa713c67..a6dc2c3d8a15 100644
+--- a/mm/kasan/quarantine.c
++++ b/mm/kasan/quarantine.c
+@@ -405,6 +405,9 @@ static int __init kasan_cpu_quarantine_init(void)
+ {
+ 	int ret = 0;
+ 
++	if (!kasan_enabled())
++		return 0;
++
+ 	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "mm/kasan:online",
+ 				kasan_cpu_online, kasan_cpu_offline);
+ 	if (ret < 0)
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index 62c01b4527eb..884357fa74ed 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -576,7 +576,9 @@ bool kasan_report(const void *addr, size_t size, bool is_write,
+ 	unsigned long irq_flags;
+ 	struct kasan_report_info info;
+ 
+-	if (unlikely(report_suppressed_sw()) || unlikely(!report_enabled())) {
++	if (unlikely(report_suppressed_sw()) ||
++	    unlikely(!report_enabled()) ||
++	    !kasan_enabled()) {
+ 		ret = false;
+ 		goto out;
+ 	}
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index 29a751a8a08d..f73a691421de 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -164,6 +164,8 @@ void kasan_unpoison(const void *addr, size_t size, bool init)
+ {
+ 	u8 tag = get_tag(addr);
+ 
++	if (!kasan_enabled())
++		return;
+ 	/*
+ 	 * Perform shadow offset calculation based on untagged address, as
+ 	 * some of the callers (e.g. kasan_unpoison_new_object) pass tagged
+@@ -277,7 +279,8 @@ static int __meminit kasan_mem_notifier(struct notifier_block *nb,
+ 
+ static int __init kasan_memhotplug_init(void)
+ {
+-	hotplug_memory_notifier(kasan_mem_notifier, DEFAULT_CALLBACK_PRI);
++	if (kasan_enabled())
++		hotplug_memory_notifier(kasan_mem_notifier, DEFAULT_CALLBACK_PRI);
+ 
+ 	return 0;
+ }
+@@ -658,6 +661,9 @@ int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask)
+ 	size_t shadow_size;
+ 	unsigned long shadow_start;
+ 
++	if (!kasan_enabled())
++		return 0;
++
+ 	shadow_start = (unsigned long)kasan_mem_to_shadow(addr);
+ 	scaled_size = (size + KASAN_GRANULE_SIZE - 1) >>
+ 				KASAN_SHADOW_SCALE_SHIFT;
+@@ -694,6 +700,9 @@ int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask)
+ 
+ void kasan_free_module_shadow(const struct vm_struct *vm)
+ {
++	if (!kasan_enabled())
++		return;
++
+ 	if (IS_ENABLED(CONFIG_UML))
+ 		return;
+ 
+diff --git a/mm/kasan/sw_tags.c b/mm/kasan/sw_tags.c
+index c75741a74602..6c1caec4261a 100644
+--- a/mm/kasan/sw_tags.c
++++ b/mm/kasan/sw_tags.c
+@@ -79,6 +79,9 @@ bool kasan_check_range(const void *addr, size_t size, bool write,
+ 	u8 *shadow_first, *shadow_last, *shadow;
+ 	void *untagged_addr;
+ 
++	if (!kasan_enabled())
++		return true;
++
+ 	if (unlikely(size == 0))
+ 		return true;
+ 
 -- 
 2.41.0
 
