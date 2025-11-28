@@ -4,227 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B8D1D116F5
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 19:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92EEBD116EA
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 19:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F04B46B0005; Fri, 28 Nov 2025 14:23:09 -0500 (EST)
+	id 9E7826B009F; Fri, 28 Nov 2025 14:51:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDBCC6B00A4; Fri, 28 Nov 2025 14:23:09 -0500 (EST)
+	id 9976A6B00A6; Fri, 28 Nov 2025 14:51:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA3DE6B0007; Fri, 28 Nov 2025 14:23:09 -0500 (EST)
+	id 886B26B00A7; Fri, 28 Nov 2025 14:51:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C4DFE6B00A4
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 14:23:09 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7DCF650BE0
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:23:09 +0000 (UTC)
-X-FDA: 84160988898.08.9CE54B3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6B190C0010
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:23:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="WlSgN/Y3";
-	spf=pass (imf28.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764357786;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7415F6B009F
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 14:51:33 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 26AD750BEC
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:51:33 +0000 (UTC)
+X-FDA: 84161060466.02.E37D73E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7522114000F
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:51:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DDUX0aHo;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764359491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AP5eSXdRUdvtyyYe4os+c7o1Nv/gx8+z9RHfB6Zd2gc=;
-	b=bvVfJq2fNEhVHqKSIXCvaJ80no6R7ZSWraFJbFaf418UVpFzPPoSBU6l4JTAyGW9RFYYhB
-	tc0weWuCZWe3q9NTCvF1SFWFzuR33gm0aeaQmgD1CzTZOnEVU3+LiyQ4r5rcL/2iUEyC2U
-	Ef4alE/5U25udGX/S5u8x2grxbBuk4E=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="WlSgN/Y3";
-	spf=pass (imf28.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764357786; a=rsa-sha256;
-	cv=fail;
-	b=4mv1nMnVN9DGyPxB9xiqfcnIE81PbbLVFZ4FDgnJvtZg98A0cxjawB2YtgyRdtqOpQhwGY
-	TgwC2tftnPzaiapE0W84U+vja+mIhXaLp9Sxc7iHLmoa7xuoVWd6Ekp5pWTOoUOqZie2LZ
-	9zW+f1mlzS204FIU+nUK02UBHLPrqEU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764357786; x=1795893786;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=owAGzgyu/zZqQM7pOtIb5UAoP7pAfL+stPxVjAVnsss=;
-  b=WlSgN/Y3ewmfQYX1KUIQ8wDKRzE1qqe3JIwM10mwS1Er+aDRkEpOaxT2
-   34U2WSzOxlDfOJ/PWSzag22ZENj0Lm/NwtqXiKOG1EGTcbkqlxVACTJOz
-   6Of3bbnLOSW8dAogQgTcCJMvphsDjVLLhiNSgeOwc9roD7LVP664xob4B
-   K/I+SR79fOO0r7tm8TTLGMSWNgCoaBNEya+lbzWHypgv5KPaoDK9CWdNw
-   UsOlNmyPtFYd/luTnbJeiV9Y/eqHlhOeMz/f3N/aEfgbCtpTSBFdyWolw
-   eRZlMmXLHj0xk1YpuizamkQm2uZw5BS63B1cxdIKSiExOtnwk6duSoDMb
-   A==;
-X-CSE-ConnectionGUID: v88v3txUSaqS7DDsv+GoNQ==
-X-CSE-MsgGUID: TMdVlt08StGoMBu1994ZVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="66339416"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="66339416"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 11:23:04 -0800
-X-CSE-ConnectionGUID: mQkoYqMbR+WYBE7Ahz0q4g==
-X-CSE-MsgGUID: NN2JPuzsRwKzxBgg/W1cMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="193954854"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 11:23:03 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 28 Nov 2025 11:23:02 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 28 Nov 2025 11:23:02 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.30) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 28 Nov 2025 11:23:02 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QE0PP6MJN3u4mRM6R8bH8RNvz3G5lE2H9ZvmGpbuycpcbm2+uoXkpsXzay4udnkt8u6tiYdxxLGoyUP20uXGFLc8ceG23ECwfDH8NobLE7Is5POEqRh7/s/tYEelsbvR4WtS8Md2nvTaYUVTOIBO37BVqPKxqTaOmTluY7bGs9J1eZf5ugcxOzFAAiCa0lDHA7152bHKoPC9Tc0d8p83Gh55QRitx7FZ+NWHrSbLolVQMBzEvVn5YG8aa2J+mP1ZMhcQAJNtUNQJT1ucdHOMGHc0Dbw/ElcfdYFO+igo9e+37NCoBJffLmSKKiofPj5GxnI4n2oaeIKHoj2H4My/bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AP5eSXdRUdvtyyYe4os+c7o1Nv/gx8+z9RHfB6Zd2gc=;
- b=wBccXtdz0M7yNFXjBp2RPieniAJFC8JzkVoXItuG4xjFdx/VB9NwyKrumkT9dt5S8mcn05zbPRZzdDNHlZI2EefL2W9/QZxc/Rz+zK1qWG0yHksWn2tWV9B6wd0LtmFbwu6lKal4uHh2jq/QjEE5T+Ea3Ke+fE9PK7jEx8Mu3sDZjMXHvPR5LLxCxw1pqKt6zgwMTXceQ+TBw+8ACMchkLb2cfIY9YCpqOHJM+oOEJTsoPXqCx6J8QzHIzxY1cqaVXmx4/9PMZJ4hEoz1Fufi/MSxPdWboWOYVGi10v+PQ/hDhtmcg+depw5is5hgeeA/hclmh8B0IPckGcxivvo+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SJ0PR11MB4896.namprd11.prod.outlook.com (2603:10b6:a03:2dd::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.18; Fri, 28 Nov
- 2025 19:23:00 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
- 19:23:00 +0000
-Date: Fri, 28 Nov 2025 11:22:57 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Jordan Niethe <jniethe@nvidia.com>
-CC: <linux-mm@kvack.org>, <balbirs@nvidia.com>, <akpm@linux-foundation.org>,
-	<linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<david@redhat.com>, <ziy@nvidia.com>, <apopple@nvidia.com>,
-	<lorenzo.stoakes@oracle.com>, <lyude@redhat.com>, <dakr@kernel.org>,
-	<airlied@gmail.com>, <simona@ffwll.ch>, <rcampbell@nvidia.com>,
-	<mpenttil@redhat.com>, <jgg@nvidia.com>, <willy@infradead.org>
-Subject: Re: [RFC PATCH 0/6] Remove device private pages from physical
- address space
-Message-ID: <aSn2kXNG7X0UZJFW@lstrano-desk.jf.intel.com>
-References: <20251128044146.80050-1-jniethe@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251128044146.80050-1-jniethe@nvidia.com>
-X-ClientProxiedBy: MW4PR04CA0385.namprd04.prod.outlook.com
- (2603:10b6:303:81::30) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=B6YeQYtPOVDtLTK9DFwVSfRPJZ6vWdv85d2IOIz3XnQ=;
+	b=l4F8ZiONqwBeN3KWEZcxk6VnKFz85FLtYdOBF3/rMXvLWwqKddGduMVMZNdcuCjy2VnM/8
+	YsOiydIRU5rur3YFriqKmIRvqyA6DXbCo5waclvUyI+JbFlf8NOylbSbu4nVNBBqoNtIC5
+	7zdkLL6YyyULDV0rLmgCozvKlk+XVE0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DDUX0aHo;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764359491; a=rsa-sha256;
+	cv=none;
+	b=VBABZDiIaflsHTIKH6wSifwvNB67hLjWjz3lwBCLBSovjFXMfxuhF0hhWceEPyX7Or9wF7
+	mj2EZxZy6gEoG38erS8/INyArdxfWs5StX9i2NKkmgx/K2T1SIxqstm4npawDS/0/LawKy
+	IJ1o5CIGVzsFLRX02b0LuEe3Pcjt8UM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B4FC160192;
+	Fri, 28 Nov 2025 19:51:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3939AC4CEF1;
+	Fri, 28 Nov 2025 19:51:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764359490;
+	bh=NR06UM6epC0ZB0HG7Po42G/+BGWua8g9q5A5Ak9ER9w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DDUX0aHoVVdYpplIWWEnJQsduHQha8bvV/5+IXyPLpqt2WB7ofVD97rjBLys5COF7
+	 2VwhXh1WV0Z+G0oOuZrMkuBciZAjehGBN+WGIsPPG+cLki79FQnmts2W3cPv++N+7+
+	 AdgWB5sGerJAqJvkVfwUiONi7iXTeHjC/IQXXQEwn2aa/eyEYZG9NJwRhUf8zEBsXl
+	 qiT/ZWdmgCYtBW2xcrCoBMgTxT3xLkuuqoKcxm/61NeVt6lEJNfgoOsUfFbtDFTOKu
+	 0qPFbDYZTnKX1zOzCibC4zViHH5LwJskk4xnWKF5ZN/PHkbJgcEGEUFrMhE7fYi4PC
+	 M0vGLTLdTrYug==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev,
+	Xin Hao <xhao@linux.alibaba.com>,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+	Andrew Paniakin <apanyaki@amazon.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-mm@kvack.org
+Subject: Re: A rough plan for CPUs/write-only monitoring RFC v3 and future
+Date: Fri, 28 Nov 2025 11:51:20 -0800
+Message-ID: <20251128195121.81042-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251128193947.80866-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ0PR11MB4896:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f7cf515-43dc-4a6f-cc68-08de2eb38b01
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UTZucDM2bXFXdzRZQzlRSlQ1OE4zOUVFc1RnU2ppT0VSNlYvczA0TmpRNDdh?=
- =?utf-8?B?TVQvRUxCTDA1dEpuTGFhK0ZZYjc3TkJWZmZldkxUYTE4RWdRamFXWFFOcFRu?=
- =?utf-8?B?QjM5a2Zua3hwdFRCaStNeW9vWmJLVmZrL2ZiRVRPQkdMVDlNUm9MbFJvUHgw?=
- =?utf-8?B?L1AzK1dJWEJPM1J2bGtaS1BGc0VuS3dyektFQ2ZQTjRkVG12ZDU5MFNRNXMr?=
- =?utf-8?B?Q2N6dlFvV3cxQnBsWlJIckw1L2tIOFE1WS9XQm5QVlBUOURHMlNFcStJblg4?=
- =?utf-8?B?T0QyRkhKdlluVzI0bXFQVEhndFRSWDRlenJmZ2NsZHBrRDJ2VmFvUWNrTWgr?=
- =?utf-8?B?VjVTcm1BNFZKa0xqdC9XTDQzd0tEd2crRkFWUHhCN0ZRMHRoVE1kMWJRRHBG?=
- =?utf-8?B?L3Z3aDJUa1MyVjFDWFpZN3FSNG5acGlNQTJzalU1a2xaZmxRL1g1SzUzek1p?=
- =?utf-8?B?Y2lmaEhGa0c2aUtPMDhBOS8xM3hPbGp3SzdBeEFSaHJVaEhlQkkxdDhaM3RY?=
- =?utf-8?B?WWhRSjd4SDNOWFFmNXpLUEVqWjZMdGo4am0vZlFqMGx1VjhQMHl0Z3A5QkpP?=
- =?utf-8?B?cy85dWFDU2lBYlNQQktYcmhBejl0MzVQem16dW9jRlY5NUhUU0ROR0hkTUpP?=
- =?utf-8?B?Wi9pbmUvdVFxV0FEMTM4aXUvZ0ZLcVNiSkw3bHkxMTNFTno2R29XV3V1MnVE?=
- =?utf-8?B?bklURHFTdSs0aSt4TUxJbWdvSjUram44a09NaGlHaDJhWGQ3VjRmVVQ1Z3VB?=
- =?utf-8?B?NE1LV2RiZDI3bXZxcEVRU0RyaGUzU2puK3BFOEwzSUZNUGhDZkxiRDEyR1ll?=
- =?utf-8?B?UFNlUzNCRklhaXlSd1BsaGYrR0laN1hzN3N3dlB1SHIwem84UUtPSWRxZGtI?=
- =?utf-8?B?RmZ5cUVKSmFOWEdhQTJCTnVaOStQMjE5LzlvU2tMdm15bTc4aHVyQXNZaGl0?=
- =?utf-8?B?aEZlSS9zUlVwNnY0ajUvWnl6VTRjZkw2VEhMcjBqZzVISU5vY28xZEJRYVZR?=
- =?utf-8?B?VnlkaW92a3VyZnR2aXJ5c3NRK0xENFNodVBCUUJWeW1Tb04xTmRzdjFTOGYv?=
- =?utf-8?B?cjZTeEV0cjd6TENWRjRZL2NwSzlGM3U5ZitjVFB6Sy9CTTVyckxKZktHdW5Y?=
- =?utf-8?B?R0xmSDF5UHFZSVBkbjMwSXJRUmY1LzZwazJsbjY2R0RrbS9qMDJqNW5TN1px?=
- =?utf-8?B?Z2JCTHNROEZTbHVMTTRJcEFwYkxvc0NmbWs0TEViZGxWb3U1Zmk4VW9reXZz?=
- =?utf-8?B?eElMT1dlQnlVUXJoUWEzQnp0akVRUEpPSldoNk82cFBsZ1M2cFd3UXBmZjV2?=
- =?utf-8?B?ZlZkQThiOWtIaFBpMEludXBVdlR3cEIvUmU3YkFMSjZpNkR6OFJvNTJ5R0gy?=
- =?utf-8?B?WUltRVB2OWhYRndkaDVkNkVmbGtyWm5WWFZUU1hHYnRja2NNaURtVzlReVo4?=
- =?utf-8?B?bjRVaHNwN2dyTUJ6cFhsb3lMVVZUTHZNUE0xVjh1SGV6ZVVzYW9aam9OQkhO?=
- =?utf-8?B?SllUaVcvZGk3cm94L2xiQVdyVlI4WGJvWElzdXA5RisyRFJFcjBPY1lrRHc3?=
- =?utf-8?B?Vyt3RkVKNzJtQVZKR0RBek4wOWlOREs2emxJOThXUmJiOW4vc0U2UXplWnJ6?=
- =?utf-8?B?UTJ2aFdyaC9rOWxuS05HWGJxSEx5V3dBS1BKTTNTK3IzUHRVcHJXVWtaV1hy?=
- =?utf-8?B?d0E0dVJwZUlFV0xhZS9qVm1zZmxTWjZXb0VHaG5IdmZDd0dFdkQ0a2pTVzFt?=
- =?utf-8?B?dUtYL2FaSGg1WjZscExuQmx1UnA4NjVGWFRlYWJtQWpPcFk0WkFRWGQrY3hh?=
- =?utf-8?B?NSs5eDlLV2czQmg3OUJKQTd4ekZlSVIrTkhFRnh2ajlXOGFnNi9IVzRyTGlR?=
- =?utf-8?B?UzFTa3djTmtZSmVqT25wQU1xcldoY2QyS2krR2ZUYnV0aUE9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aldCZFVkdEdzb2FSVHRmeDhCdjZKVWpEbUd3ankxVk1IWlFqMlFCeXpNUW9F?=
- =?utf-8?B?SGZPS0NvWEZBY2s3a2dya25UdmZick5tN1BHd0NQOXhGTGZOOGIvMC8rWkp1?=
- =?utf-8?B?Um9XMXFYNS9RRC9pVUY4ZTdjOU92REFoSklQaTdTSWd4TVFyQWJZMVlMNFJu?=
- =?utf-8?B?VXcxM2lzYmJIaHBqaVdwVjNtcU1KOUF3dW9uS0dBM0Zad3czZ3FkWUxTMVdY?=
- =?utf-8?B?RXJnZDVkblVNVE9sTmVLZ1I5M29ncnlHZUp4c2dqaFY0em54RGt4cXIrVmZ4?=
- =?utf-8?B?bzBjUmlXSjNLcmt0ZHEvaURpeUNhZ3BMRGVlUExERUJXdlBhVTFIVTMyRm56?=
- =?utf-8?B?UStJdHlpREhvcWJPOHZ6Q1RrWGhXZm0xUjc0eUF6bkZDU2FWTzdHN0Z1ODF6?=
- =?utf-8?B?VDBrRnlzSTg1Vmpyc3lvcmI2Z1lGN0hqOWJDdkRJQkVIZnVOMzFYbWxBdGdx?=
- =?utf-8?B?ZmcwTEZVVW10M24rVndqZkVoMTFVdjl1RnVyRmg2Um13QlA5L1pLanRXeHFo?=
- =?utf-8?B?SjFVemI4OXdEbzNvaHpPV0ZVbkIycis1ZHgxWGlzSStOT0pUTzJlTm5KUFBv?=
- =?utf-8?B?MjA1RU9ScnhNT21UcDdUMHR3Y0tyaHQzYnFuN1FIWFBNUndJaEFYWjBmZEtn?=
- =?utf-8?B?N0I1enNCeC9DRUhhVjBPRXFxWXlDbUgvSFZYUW8vZ3R2MXBRMUxFT1plZWV4?=
- =?utf-8?B?SFhVdEw4L25HN1pwdkVmQUdIbTBZRkJXaE56LzBGNTlvbGlsYVpTUEVXUFpZ?=
- =?utf-8?B?VDlhQVlMUGNkWDBpQXk4R3ZPSVpNUFJpRXAzN0lYZHhwNjY0dnArbHJhcXBv?=
- =?utf-8?B?R1ZwWkx4UXNTM09ZWnZhQ2lDR2hPelV2aFl3eUpSQS9PTlZrMEo0a3l0SC9C?=
- =?utf-8?B?SkM5N2M4SFNZcFBUTmtOblhEUVczSHBCdG1iQTZWYnZpYlhpSlh3Z3NYckNa?=
- =?utf-8?B?eWxXWUxERXEvUlc3WFFJUzY4SERVY0JoK0VLS3MzNzA3Tzdvc3ZRQmcweWYy?=
- =?utf-8?B?NHRZZlovMmVIejh0UmRUUDcveVBtdDZvMkhQZHd6STlVU1RxbU1PRFd5SXJy?=
- =?utf-8?B?c0VVdDNsbTFSc2NtelZZRTFtT2NYVFpDTSt6THV1Mis1SlIrTVhjMVMxUkdt?=
- =?utf-8?B?NE1iQVAzbHdrem95Qk5xRVRIcGdjY0Qyb1E2RWVtTVRRZk1saG4zNzBOT2Rv?=
- =?utf-8?B?ZnlxQ3o4N3liV0ZGaWxUVjN5UGJJUEsyY3FDRFFUNVRNSS9TVThoRkIzMlFB?=
- =?utf-8?B?V3BtZHRndTF1NTNIUjF3dENQSUdxWHAwME5ZbDZ0T1NCZXRmM2hQRk81b0E0?=
- =?utf-8?B?NWZWd1Y3b3MrQnYyTnZaTzR5TlJ0TWRqMUhVVnExcS9zZVAxQm9HQ0tCdEk1?=
- =?utf-8?B?N05mYlZhTEFJMjNNVVo2Vm1qdmlGVkJLd0FXMlI2Q2pNbk1OQTQzY0hEdWRh?=
- =?utf-8?B?eHdSTUJRRUN3TkROWmwvbEhUUDRVdTlhQnRUTzVOVzJIMW12TFBvUlpxYTh1?=
- =?utf-8?B?bFNUZnBpVWNhQytWQWpwV3UyVzFSaWhQTG5UUU5aME55cUJiNHoyOEJWdWpx?=
- =?utf-8?B?Skc4UXF1V3lrK2wwa2I5bis2MXY4aksxUTI1TnJWM1VMNno1UFNvLzdmMFZj?=
- =?utf-8?B?WTlsM0tUTkJOVjMyREpROFVUc2NPS2ZKMWNoM0h4Nys4TEc4QXpXVUZXZ09x?=
- =?utf-8?B?ZWo5ZnIxMjBXdnhiUk1SU2REZVFwTXgxaUljZ0w1N0s5M01YNDcvNFQxT0hq?=
- =?utf-8?B?SXZkazhjTmhTSHUrMC96aDZETWx5WWxoSDgrMEhwMTdvVG5rZjZUZVRwbkhw?=
- =?utf-8?B?MmVsM1JNZzMxMUpLbkZ6ZVJjMDl6dVdHUmJjblF0VDRIMnVHKzlULzlyaHZs?=
- =?utf-8?B?bGFQbzBmSTVTTG5IRHdMb0Jsb1Y5YzltQUdtNHRUL241eVlIdEZmSldmVFM5?=
- =?utf-8?B?LzRaQVNjMTBIWHZtbTJVbEdwOU4xSFpKdlZJdlB2QXphQ2V0VzYzcitOdFR4?=
- =?utf-8?B?UGE0NmtrZy9tMGFvMjl5aDBhemZrcXRqd1loM096ejJZb2ZPalhWYU1vZTR4?=
- =?utf-8?B?OUJGeGdXOTJhbW1adnc5bi8vcWlsNGQyaVBFT3JkbWNzMUtkVGxuY01PMWtW?=
- =?utf-8?B?NlhQWFBYR2RIaGJXRnMyMWJIUllWeG5JU0NYVDBXeGkzcUpQZEg5YkNFMEI2?=
- =?utf-8?B?N1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f7cf515-43dc-4a6f-cc68-08de2eb38b01
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 19:23:00.0835
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GOMOKdU9wDdBxhtJ6Yo4pSdWfSSwMdOib+4E3BbLfMt9il93YdUjyCEpWrccu2rI2rC7rwRKQiXr5oKreNV28A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4896
-X-OriginatorOrg: intel.com
-X-Stat-Signature: 71atzw4tjhjhcy1kgh7drnm7cwqpykb5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7522114000F
+X-Stat-Signature: 6qdktrerbbd3oazucsis7dw57m9wzz64
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6B190C0010
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764357785-47493
-X-HE-Meta: U2FsdGVkX19MoY9WxdQd7Wo8w59zewIeAIktDRgzHxBaTlQl8KMI2f/hAlDKwYqXBZfzAthaPavFNPG45QEeeez/mnWetbKZAhGNlSNAHE3xi+GeMIezwrJdNX894n6nOXw+kiw2T9SxR2UcTB4OtEA/QUfXCf33NuMvsm4rGJRCDpoC3Gr52etaaNJoiD18Rhwk2kYzjMo8WOWL9fPldZpwf9WZioO/SuE/acsgmXzyIpHZ3IEn+soth8JflTsAs3J8dBSvV1g33eimiTi+uVQIQuvHp6f8yuixMqdH2FlxGleGHhlfZiabhCy5GPBIfToDqCoqMHYRir+En21Y3fR5rBuFzereyI4CE7ICZtZk3mGEe0CmofA0wcibXLs5ysMGXsPGCGmS7NWkg9qMfpnU0GPVmehxHrz6xcQ8fYq7F6064CkD+kMTmmDwmptXffAqy1VHMU8e+U2kP4keb7YCHssCKhH0Y/VpiL70Fs+ovZYuOyQlMhtCY8Ooiltazk9muMknZd6anr6ivYyMF1Fk+Bx6VPvNZ01IfQhRMvmvnKzQ3dwuHbRITFQNPpkR1DTAKWSfLu88U9ko8eWrt8nxOA2TX4aM82C5XDvC4r2B7OsXbwLnBBMVUAG0HZRly2C17SxoYQTvSAhM/S2N4SwkqmrhsTHSvzY4tTHl5+eAS2G1Ws9UJjAlPqaTLdJ4Y3INcksVaN35w2bMxrIxB3hZaZTlH3aUgRKMP4EABJDzr7i9dtQwswnBVDfoX9IGcNmzWir7Y38YtliXDmAIwiH6GXX5JkuFVx47+V01CRpiKRi00PywPhKZa2dgdELl75qfUSiKaeRBL5t/5HX8gtLDCjDpdMo8zuwKPY7G/ctjs0SunbwTMbeiDyGZD4GXoOYmCgS7C8+pXVoZe5mNpKlaCJOTsnLTiKVthygESiHFIq+KlpxVzArDAfWOU7GsUvOrJ48Po0TiONLLZ+z
- 6wQ==
+X-HE-Tag: 1764359491-608207
+X-HE-Meta: U2FsdGVkX1+VZJmCdGDPxcYcfKTgWyKTjuFncjuSGXmqNv6oDpSQ31GktdVTkoukuU+vE7Wn4nAOfOlPKplskOTf40EHxdTnS18ZYQlmw4w2ka1iZTFeZwSCaDkROYPwSMFe9+wkuYFgZUqYQ7OSqRKhkvVyo7uuNiTeUfHj8C9UPeIXdscmKq1MtiNmXYYkFawptpxcZqduCdGdBNWx2b99FZzGYqG3ppOud8gjECys0WvEbNeMcWEPhCelbhbWm9qEiSDh4gqtTL1CMlCat1oQx9onPl4L4lydu/zW/qXcOtzn3MAPEE2M/ZA0hnlRTM6A07oFtz7IQC5tcYy6aYrRHNuUss0b15wpoLsmri3Q1FqqgBZjvqSYvhDIEN9xAJq4nk8tSjPxH8LVbbyLdFryJN5ZwqVVHikybC/Y66rL5hwL2Ggs+UbrA8TwtIFLBNyOnb3rG5SJY4EwjDXnfRWzbQlVmhnTWlS1u3U1wLS3VTSu0fhcFZoMIryE8d8/gWFNgJyG6+Ud29Eq0PKM/ygf7deMMCtOS+Lfv8RlYGmib4MORLHFcEwQfjznDkiru9SfXQ9CSdnGNzXEIlcbKuUO1B6eqwxEzqGN+QC+BTTAQgsgXP4+pYciw9Im7PKyFdYfgaJN//SF/MNT0aITyj71w5uFKUm+fPShVPCw/DZZ3OmzmhjQEo9HGs+LsX9OgPPVon7KfhDUt/d+v1U0841F7q+rePrseo++aLrE2GBjzuCo+Q85MqdUunECZPz9tvmOipUFXzLxeSvWiXztVtaSdOU7BJXqQ/PH969gBiaz6tNXndAmnlnQb8yEqq+NzyKSPDPXK3NeyvbW5wfYIazYWGED4atkL+lht9rHjiCLJy0gzsl8WDKYLTU3GkNnJrbMdm0KwkkB0Rf4jlljXeO7pkuosv035g+X22WDrtD7rUE7V5C9sfRprnSiBHgE4iXtGIZwvAqnlj0NoJ8
+ Xx7An5e2
+ tiyqMCvfeLEHJF57qcbVSq865W8zgxLZARFB2wbnuot5NeLoX6sVSfCLq/WkPdBTA1Gmse3cMkIqWMSkupkX26GyDGzx3fH+dAEWV7vVa93LF4YM7AJLToW2UEGjVCzG8otEleolWgfXU+ZZf/IU+SRRfDCPvETGiczLpVsYeUF5v9Z66rA4lKH0OhmNUnUXuGISYmkjIAo5LRI2aJ1MRO0i4A29FJGtXDxdqnIpuZRVuKXFRROL0th7rS9XfXnO55cU47zOTYTmha5HIoAQch6brn0s54LcB7kaifhQy0mxmfb65tXHu+rlwHl4L11SZwVovehnafpGmbpxlTvUWznatLbnzMf29kWG6J8gQEA+wIuzlnw4QOt/Jqikqm8c5dFxvi4QjBXBxmOwWPG7XpoC1hqoRDAvq1o6DaoHrjwX76Sd4TEMqyj5WtLUmCcpL9c3KmUBDJTrMP5L97HbKq5xQSYRxxNTmEPaUtpA26xEj9PsK0ELAwysMu4637d3ZrEX6weNEZhabP0PFOdlxUF+gkVgcKFT/94KI7aZh1UtTxhTQFn9jJAv8icI7S2e8yyxY3zrbNZZ6BUJjjXJWcRO1aw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -233,148 +95,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 28, 2025 at 03:41:40PM +1100, Jordan Niethe wrote:
-> Today, when creating these device private struct pages, the first step
-> is to use request_free_mem_region() to get a range of physical address
-> space large enough to represent the devices memory. This allocated
-> physical address range is then remapped as device private memory using
-> memremap_pages.
-> 
-> Needing allocation of physical address space has some problems:
-> 
->   1) There may be insufficient physical address space to represent the
->      device memory. KASLR reducing the physical address space and VM
->      configurations with limited physical address space increase the
->      likelihood of hitting this especially as device memory increases. This
->      has been observed to prevent device private from being initialized.  
-> 
->   2) Attempting to add the device private pages to the linear map at
->      addresses beyond the actual physical memory causes issues on
->      architectures like aarch64  - meaning the feature does not work there [0].
-> 
-> This RFC changes device private memory so that it does not require
-> allocation of physical address space and these problems are avoided.
-> Instead of using the physical address space, we introduce a "device
-> private address space" and allocate from there.
-> 
-> A consequence of placing the device private pages outside of the
-> physical address space is that they no longer have a PFN. However, it is
-> still necessary to be able to look up a corresponding device private
-> page from a device private PTE entry, which means that we still require
-> some way to index into this device private address space. This leads to
-> the idea of a device private PFN. This is like a PFN but instead of
-> associating memory in the physical address space with a struct page, it
-> associates device memory in the device private address space with a
-> device private struct page.
-> 
-> The problem that then needs to be addressed is how to avoid confusing
-> these device private PFNs with the regular PFNs. It is the inherent
-> limited usage of the device private pages themselves which make this
-> possible. A device private page is only used for userspace mappings, we
-> do not need to be concerned with them being used within the mm more
-> broadly. This means that the only way that the core kernel looks up
-> these pages is via the page table, where their PTE already indicates if
-> they refer to a device private page via their swap type, e.g.
-> SWP_DEVICE_WRITE. We can use this information to determine if the PTE
-> contains a normal PFN which should be looked up in the page map, or a
-> device private PFN which should be looked up elsewhere.
-> 
-> This applies when we are creating PTE entries for device private pages -
-> because they have their own type there are already must be handled
-> separately, so it is a small step to convert them to a device private
-> PFN now too.
-> 
-> The first part of the series updates callers where device private PFNs
-> might now be encountered to track this extra state.
-> 
-> The last patch contains the bulk of the work where we change how we
-> convert between device private pages to device private PFNs and then use
-> a new interface for allocating device private pages without the need for
-> reserving physical address space.
-> 
-> For the purposes of the RFC changes have been limited to test_hmm.c
-> updates to the other drivers will be included in the next revision.
-> 
-> This would include updating existing users of memremap_pages() to use
-> memremap_device_private_pagemap() instead to allocate device private
-> pages. This also means they would no longer need to call
-> request_free_mem_region().  An equivalent of devm_memremap_pages() will
-> also be necessary.
-> 
-> Users of the migrate_vma() interface will also need to be updated to be
-> aware these device private PFNs.
-> 
-> By removing the device private pages from the physical address space,
-> this RFC also opens up the possibility to moving away from tracking
-> device private memory using struct pages in the future. This is
-> desirable as on systems with large amounts of memory these device
-> private struct pages use a signifiant amount of memory and take a
-> significant amount of time to initialize.
++ linux-mm@
 
-A couple things.
+On Fri, 28 Nov 2025 11:39:46 -0800 SeongJae Park <sj@kernel.org> wrote:
 
-- I’m fairly certain that, briefly looking at this, it will break all
-  upstream DRM drivers (AMDKFD, Nouveau, Xe / GPUSVM) that use device
-  private pages. I looked into what I think conflicts with Xe / GPUSVM,
-  and I believe the impact is fairly minor. I’m happy to help by pulling
-  this code and fixing up our side.
+> Hello DAMON community,
+> 
+> 
+> I'm working [1] on extending DAMON to monitor accesses that are made by
+> specific CPUs, and/or for writes.  The aimed usages include NUMA hit/miss
+> monitoring [2], Kernel Same page Merging scan target selection [3,4], cache
+> aware CPU scheduling, live migration target VM selection [5], and general
+> NUMA-aware pages migration [6].
+> 
+> I posted its first working version as RFC v2 [7] about four months ago.  After
+> the posting, it got interests and tests publicly [5] and privately.  RFC v2
+> was, however, a never upstreamable hack that was made for only showing if it
+> can be implemented.  For making it upstreamed, a significant amount of efforts
+> are expected [8].  And after the posting, I was unfortunately unable to spend
+> meaningful time on it due to other events and work.  I received more continued
+> interests in the work recently, and hence I'm trying to spend more time on it.
+> 
+> The Rough Plan
+> --------------
+> 
+> The rough plan of it that I shared on DAMON blog [8] was just saying "it needs
+> to be upstreamed and it will require a significant amount of effort".  So I'm
+> sharing yet another rough plan here.
+> 
+> This work require multiple changes including
+> 1. extending DAMON for receiving access report from other subsystems
+>    (damon_report_access() [9]),
+> 2. making other subsystem who can capture origin CPU/writeness of accesses
+>    (e.g., page fault handler [10]) report the information to DAMON,
+> 3. extending DAMON for filtering the reports for origin CPU/writeness of
+>    accesses.
+> 
+> The first part in the current implementation has many rooms to improve in terms
+> of performance.  I don't think that's upstreaming blocker though, unless some
+> early testers find a problem of it.  So I think this is not a blocker for this
+> project, at least at the moment.
+> 
+> For the second part, I'm trying to modify the page fault handler, to use
+> information like NUMA balancing hint faults.  As Lorenzo pointed out on RFC v2,
+> it needs to have clean and non disruptive design.  Also this requires alignment
+> of multiple stakeholders, including MM core and NUMA balancing maintainers.  I
+> think this is the biggest challenge of this project.  Using other subsystems or
+> features such as instruction sampling can be another way to go.  But for
+> general availability of it on any architecture and virtual machine internal
+> cases, people I privately discussed preferred this fault based approach.  I
+> will try to make the alignment with the stakeholders, after the upcoming LPC [11].
+> Unless I make good progress on this part very quickly, I will propose an
+> LSFMMBPF'26 [12] session for this.  So hopefully we will make some alignment
+> among the stakeholders by LSFMM.  Hopefully we will get a more concrete
+> upstreaming plan and timeline, at least after the LSFMM'26.
+> 
+> The third part in current implementation is very ugly.  Especially its kernel
+> API and user ABI need to be redesigned from the beginning.  The interface is
+> better to be stabilized sooner, as changes of the interface will make the early
+> users/testers be confused and frustrated.  I started working on this, and
+> hopefully I will share RFC v3 of this project with the stabilized interface, by
+> upcoming LPC'25.
+> 
+> Summary and Message for User/Tester
+> -----------------------------------
+> 
+> To summarize the major expected timeline here,
+> 
+> 1. By LPC'25 (2025-12-13), another version having stabilized DAMON interface
+>    will be shared.
+> 2. By LSFMMBPF'26 (2026-05-06), an alignment on part 2 stakeholders will be
+>    made.
+> 3. After the alignment, a more clear plan will be made.
+> 
+> If you are already using or testing RFC v2 of this project, please be aware the
+> kernel API and user ABI will significantly be changed on the version that I am willing to
+> share by LPC'25.  It means if you are directly using or testing the features
+> via the kernel API and/or user ABI, your usages or tests might need to be
+> updated.
+> 
+> The support of the features on DAMON user-sapce tool (damo) is also
+> experimental at the moment, and that will also be changed in more stable form
+> in future.  But, the experimental interface will support both before-LPC and
+> after-LPC DAMON for the short term.  Hence, if you are using or testing the
+> features via DAMON user-space tool's experimental interface, you will not need
+> to make any change in the short term.
+> 
+> Please feel free to raise any questions or comments on the plan and the
+> project.
+> 
+> References
+> ----------
+> 
+> [1] https://damonitor.github.io/posts/write_only_cpus_only_monitoring/
+> [2] https://lore.kernel.org/linux-mm/cover.1645024354.git.xhao@linux.alibaba.com/
+> [3] https://lore.kernel.org/lkml/20220203131237.298090-1-pedrodemargomes@gmail.com/
+> [4] https://lore.kernel.org/damon/20250129044041.25884-1-pedrodemargomes@gmail.com/
+> [5] https://lore.kernel.org/all/aJAfTUh-49pYuhbg@3c06303d853a/
+> [6] https://lpc.events/event/19/contributions/2066/
+> [7] https://lore.kernel.org/all/20250727201813.53858-1-sj@kernel.org/
+> [8] https://damonitor.github.io/posts/write_only_cpus_only_monitoring/#cautions-and-plan-to-drop-experimental-tag
+> [9] https://lwn.net/Articles/1016525/
+> [10] https://lore.kernel.org/all/20250727201813.53858-6-sj@kernel.org/
+> [11] https://lpc.events/event/19/
+> [12] https://events.linuxfoundation.org/lsfmmbpf/
+> 
+> 
+> Thanks,
+> SJ
 
-- I’m fully on board with eventually moving to something that uses less
-  memory than struct page, and I’m happy to coordinate on future changes.
-
-- Before we start coordinating on this patch set, should we hold off until
-  the 6.19 cycle, which includes 2M device pages from Balbir [1] (i.e.,
-  rebase this series on top of 6.19 once it includes 2M pages)? I suspect
-  that, given the scope of this series and Balbir’s, there will be some
-  conflicts.
-
-Matt
-
-[1] https://patchwork.freedesktop.org/series/152798/
-
-> 
-> Testing:
-> - selftests/mm/hmm-tests on an amd64 VM
-> 
-> [0] https://lore.kernel.org/lkml/CAMj1kXFZ=4hLL1w6iCV5O5uVoVLHAJbc0rr40j24ObenAjXe9w@mail.gmail.com/
-> 
-> Jordan Niethe (6):
->   mm/hmm: Add flag to track device private PFNs
->   mm/migrate_device: Add migrate PFN flag to track device private PFNs
->   mm/page_vma_mapped: Add flags to page_vma_mapped_walk::pfn to track
->     device private PFNs
->   mm: Add a new swap type for migration entries with device private PFNs
->   mm/util: Add flag to track device private PFNs in page snapshots
->   mm: Remove device private pages from the physical address space
-> 
->  Documentation/mm/hmm.rst |   9 +-
->  fs/proc/page.c           |   6 +-
->  include/linux/hmm.h      |   5 ++
->  include/linux/memremap.h |  25 +++++-
->  include/linux/migrate.h  |   5 ++
->  include/linux/mm.h       |   9 +-
->  include/linux/rmap.h     |  33 +++++++-
->  include/linux/swap.h     |   8 +-
->  include/linux/swapops.h  | 102 +++++++++++++++++++++--
->  lib/test_hmm.c           |  66 ++++++++-------
->  mm/debug.c               |   9 +-
->  mm/hmm.c                 |   2 +-
->  mm/memory.c              |   9 +-
->  mm/memremap.c            | 174 +++++++++++++++++++++++++++++----------
->  mm/migrate.c             |   6 +-
->  mm/migrate_device.c      |  44 ++++++----
->  mm/mm_init.c             |   8 +-
->  mm/mprotect.c            |  21 +++--
->  mm/page_vma_mapped.c     |  18 +++-
->  mm/pagewalk.c            |   2 +-
->  mm/rmap.c                |  68 ++++++++++-----
->  mm/util.c                |   8 +-
->  mm/vmscan.c              |   2 +-
->  23 files changed, 485 insertions(+), 154 deletions(-)
-> 
-> 
-> base-commit: e1afacb68573c3cd0a3785c6b0508876cd3423bc
-> -- 
-> 2.34.1
-> 
+Sent using hkml (https://github.com/sjp38/hackermail)
 
