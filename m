@@ -4,96 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 995A4CFD376
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 16:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 137EDD116E2
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 16:07:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 885BB6B0005; Fri, 28 Nov 2025 11:05:04 -0500 (EST)
+	id 6B6146B0012; Fri, 28 Nov 2025 11:07:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 836426B0010; Fri, 28 Nov 2025 11:05:04 -0500 (EST)
+	id 666EF6B0023; Fri, 28 Nov 2025 11:07:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7248E6B0011; Fri, 28 Nov 2025 11:05:04 -0500 (EST)
+	id 5552A6B0027; Fri, 28 Nov 2025 11:07:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E68B6B0005
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:05:04 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D8BDC0682
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:05:04 +0000 (UTC)
-X-FDA: 84160489728.28.79DE83C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 36E6A1C001C
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:05:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jj3fftO2;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E0516B0012
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:07:12 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E3B121403B3
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:07:11 +0000 (UTC)
+X-FDA: 84160495062.11.B9222F1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5B1402001B
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:07:09 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E1u8bpBH;
+	spf=pass (imf03.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764345902;
+	s=arc-20220608; t=1764346029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mSImvkgjLiiovtaVlBIP7UpbPtHd0rTo/B7dJqHzg3M=;
-	b=v8HFJ5mExwZnh/9buUxHDJwD+S9D2Odb+1Jexgv4T3Y8zSV4aC+tlALZlmGbOzs/Q91P2b
-	CbT9gEFESogL5xY44/6Uu5+ib4wg3+rMvism66qQt7h5EzV32t7F77GzCygIzOQygc0tBz
-	8KCW22bJk+8OzBYxRwKTMEixWuTjQBI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jj3fftO2;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764345902; a=rsa-sha256;
+	bh=bZy7R+pUhNnAxYbDd9Nal/7PKahT9rfxVvsH8RmVk6k=;
+	b=fNrRwpr+sMzuGB8mZcWnZmIZdxKBo+V/ZufFO+Dda+AdJFoRgywH66QOx8dITKC+AUku9K
+	TeQzwBb55TwzvazIX1F5ArdfLoWef4o5WSOX1WWpTr1H0nKOIvFwMTcgfGtfJ1ydBHCk0Z
+	oAq3O2n9qcAVe4R5J318DL0w23IgwSY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764346029; a=rsa-sha256;
 	cv=none;
-	b=5SvKkyYRWOTtCfpjLSg0L/2B7FUSnwWvspX7W6YA2GMb76v41HmR18aAawrTGtXaLBB+AD
-	2WymFf/DAQRj/c6Kplxb1CgnUa7aRA7NY1UlV9g5cTgsaDGS0QRAVk+rjaYbVcfCqYyFVw
-	2M0JQWbHG/bGEGt/8LG7K7bm25/TN8s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E89E643E14;
-	Fri, 28 Nov 2025 16:05:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16639C4CEFB;
-	Fri, 28 Nov 2025 16:04:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764345900;
-	bh=3QLK8JIJvkJT47nt6Y+wOWoVhNKf+gXbNFhrZJ+9LPQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Jj3fftO2wyp2Hiclw9912EhI7L+pKeuEMMKKgqihIgQWf8RZ2eK8gnhis4jlJPmTA
-	 Cmx2sBivmv72A8YPRHEHpyd1GLhiqJ17jAH3cH+jUJiTLec0bioy5/TgLFwscbdNQ0
-	 4MVHc8qD5xGyg4/oGrv1KUrHQi9oIiJMtPjwXTtted++ACEYpuR8uboPZbBexbWUh1
-	 cTnvaAY9yBFr6WlCmfXHOmOCgmORHdt99kHGRcVCjj2Ii023yka2c4niEFEC4lFbUN
-	 FDV6ISXqSUn/KQPasQuCfyyvZxZTsD/RNMFa3Ju6/tZnF+e+doUSKo+t+NXroddk7a
-	 Pvv3sbc2Wj/0Q==
-Message-ID: <123e0d99-ef29-4906-828a-9dfd29dafd29@kernel.org>
-Date: Fri, 28 Nov 2025 17:04:49 +0100
+	b=hM7xkloZ7VSUq3tu6W3+pr7sh8Z0R/CJ6WIDQA3qkIba/A5Di0KZssRmvvmNG/xjpgSlGg
+	Ue+j20vje452ay6b56d9UqSAvTwqgvlpOKDRdHVMtBxoH/F7De9wuYXltsxkVceHdkd4mW
+	AyRF050ci4H8zjY+tag/YeiexCDhFP0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E1u8bpBH;
+	spf=pass (imf03.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764346028;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bZy7R+pUhNnAxYbDd9Nal/7PKahT9rfxVvsH8RmVk6k=;
+	b=E1u8bpBHJthQVD97W/PH5rtWn+/N9A3t83hQD0tky+/yP1LagGrtLMs20yUFJ7pXS+DbgL
+	L1u9l5DMKiV8GbGkx4iCg46bixYz1oqA3n1KhKbkS3o8S6kwgFK4OFJot8d7q/atSa3dMh
+	eAwvSNTBMPo6gfSD8Z/fIKimET9EiiU=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-54-AX1DeC26PCmfCkGut4I3ng-1; Fri, 28 Nov 2025 11:07:07 -0500
+X-MC-Unique: AX1DeC26PCmfCkGut4I3ng-1
+X-Mimecast-MFC-AGG-ID: AX1DeC26PCmfCkGut4I3ng_1764346026
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-37c029db228so8987041fa.2
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 08:07:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764346026; x=1764950826;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bZy7R+pUhNnAxYbDd9Nal/7PKahT9rfxVvsH8RmVk6k=;
+        b=rxRYBvkuneDfZCOhzLjgJ/lUBxaJ5gXJthc5sYcTiBWUhbEX3l+AC3DHVVMM2a9L4n
+         AgI+HMz1BFo3/GdTMDzDdSItgwBEE1GCT63qfqGWr+vjglTJlSwYxMOU6yqbGLrB0Dlk
+         8evjMuRtn9Z9IlsBNfoMP73cyvCIApgXs41YQcef4oriE1tauATigPGKsAaGPjqjcdyG
+         5xlZIqroURdPxQ5Ln2q6rAdXLKlJQWTWOvaGUCniN6VZTRql0Gts7np3VKBNfJ5tPvQb
+         whVnPOawHarRuxeEouZBaYDJZ+wwOXAF/1uEJV/Rhsa8/j0YgtGX/GSKk53AtE2AUaPb
+         Rf1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWxj2ob3saR2+GtU331ktIBwafNK2l2yaKUO8Zu9I1vlyePWiTRlg1imgfjX3ByLSIdIX1ooNHZUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx7bRPlqQiP0ZCls1bHbMMlDFJY1Mvk3XYJ+9joINWR0pdgYn6a
+	bkn49d2KJeoiPKNP4dVjg0pRO9aeeBWsIhc/u4rGAFnikAyJjEpfrTjBCxQALrAbe7DPN/hREJM
+	JXfbMuA3mQ2NjbB6qoJTUocDQVSnTpvdiKBdmAIx8U2QwVVcvDe8=
+X-Gm-Gg: ASbGncu/siDt348rePZjbMYIUTzJ0ncJ09DlWxj/99aS2aWOt+09MoeDzv6xwRvQbjd
+	EpNtFu5MaCZxI9wev4ZvheeL3WgM1Jzu4Mn248+CJ2XMQZqA+NTBt/yb1v1gqk6FRDHxiT7WIE0
+	QH7Dx/HjrqIlWb6mV5kRiiZcTbt+rV/XXPYx767USr/el9U6LkOw7h6BG2/LA2FPUdLH7e2B6nb
+	/Wc5S/7TqXcdQrRHdERfNSdo6l9mbJjpky6CI4ZyZOqErc5VrNicu8NUam04fGr0xQ9x5UMKRRC
+	ZcHAjG8aYT6XvgZ5sto6vzvwLc9bHt5tKMUa2CJYV5d5yuVnydhXxLv/gyoodJi8Bp4zVNZ4bu7
+	wjgMo3aKWMazQoe41B0emC/ekGg10mqmWjZ0=
+X-Received: by 2002:a05:651c:31c5:b0:36d:114b:52e2 with SMTP id 38308e7fff4ca-37d0790d453mr40868261fa.34.1764346025773;
+        Fri, 28 Nov 2025 08:07:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHaeDrW3aE2rJtyHnJXLuP6JMIkjJMIi3csdxl+Xm82rf0LDd0NXyBgcu2qlQnEwf+K3Fttpw==
+X-Received: by 2002:a05:651c:31c5:b0:36d:114b:52e2 with SMTP id 38308e7fff4ca-37d0790d453mr40868151fa.34.1764346025292;
+        Fri, 28 Nov 2025 08:07:05 -0800 (PST)
+Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37d240ec1fasm11118901fa.36.2025.11.28.08.07.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Nov 2025 08:07:04 -0800 (PST)
+Message-ID: <584671b7-f1a5-4e9b-af94-3e284b3edcf3@redhat.com>
+Date: Fri, 28 Nov 2025 18:07:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone->contiguous
- update when move pfn range
-To: "Li, Tianyou" <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
- Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
- Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-References: <20251119114252.oykrczprf3ecd7ak@master>
- <20251119140657.3845818-1-tianyou.li@intel.com>
- <872562fa-5dd7-4cc9-82ab-5b7c09ee8fe3@kernel.org>
- <9b6e39ae-c317-4433-8171-0927bce3acad@intel.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [RFC PATCH 0/6] Remove device private pages from physical address
+ space
+To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
+Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
+ lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
+ airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com, jgg@nvidia.com,
+ willy@infradead.org
+References: <20251128044146.80050-1-jniethe@nvidia.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20251128044146.80050-1-jniethe@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: NCPsKLD-eTcVy1Jh5yPmUWl9cNvtIyAsiB-6U3c-4mM_1764346026
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-In-Reply-To: <9b6e39ae-c317-4433-8171-0927bce3acad@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 36E6A1C001C
-X-Rspamd-Server: rspam02
-X-Stat-Signature: e78enr68okx6pu3gs4nsfhwp4u4h8636
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1764345902-34961
-X-HE-Meta: U2FsdGVkX187FfbZ8svaODlyfAa+nI6UJK2pleCJ7NBrDYSUf0iQkEvizHinBDy4kaNpqtYW/44NuL9JoCUa/gdZVFPtSzig07HkpsLAjhEasSBfEbNk5PHp3e5TrRmq6xzjDY5auz7UDRRVHQzSb1MNb8igg7P+iYeVHiv5QHt0/mdjJrx13919zDX006nX/R5R0j83DVt2JL39LFnFpZ1iJfuOC7M0Ss9WZ4UEEAZciuC+EHRcZUb3W8yyMLkTBcJVsZdYVV1yIgrL2J7QL2x4/DZvRdL69q2fb3kL8wROVAZL/TvSDtrkv4SZ6vb1PZn5oDS9LWmq1hLOHa8bxcEsdmt3jlaH4ZhCaDSNqlCe/5Ok0MYGNm4S9/gMY9jAkiYkh8Zdkj+siEFtWQCX+cgOuw5Zuo+DMyxThujHqn0fzPLUDSaeVHmRKiHRERC5HpDXqdMcFyw8zzNHvVVEaqVqWB//j6x4nHE5R9Z+1rc2iF4czDi+rEE7ILUeW4E3H+llaQnJSkJhtoISBAwxTtcGzshQ3PigMYwsnvLhvU+VoXRjyubZ+r4rxE2X6JFp3TzymOyOdyPkHQU6rdtIXSreeXWjy/l763S/RWU2/XtsA3dmpyJe1piBHHlppsQrZabzJZkiXRmxIvRaDRUDy205ifaSM9ORRPoWVikU6cS+O9GOwkvk3JXxd1qPK3k0IVZyVmc1wQI0/OUokE+n4tdCSPTg6MJ9x5LteWatHor2SwzXv3MzAjYx5myZELuDGbheevTTrM0FrgBFu5uDaKSWhVQXqxVSFL/jL+M6XN3Wsh9aTL9WWneTjd4ATnNsCuTfwSHRPplelNMLGKSQIOXWtaC8QG7JlWSjsuBeqQ8Pld1mhhOU0eBVa7sovV+2oTQR3fXNJ3VNO0hQd1H0kISHAc2XZ8W1pr1G6p1tD6mPkolSs4ylmCnORwTZ8wzNbuhVdPaYH3/qHRtuJNq
- 7bvr/qRs
- wfeJkuL2ada40hxzMxx01uVAOSw5HecmrMzGdV7vBd9l5pjz1Iw2jKoeD3cTAqADXEZQvQpwwAMcNYI4anlTOQLD+rRCG4mJ2LGe9n9E0SYYd35w5rNdDwJZRvH8GC0qnXxQrAeDqrcc1CR40zfkoYvkFF/1JkMPGCZa2BursaMxsW7HdIGClGtgPiOJG/0fPZpwwYoDFUN0XlUpW6XKywz0sGK/b128rcl9fUD4V8dAQmt4sqLJrv4VQX72adAh7UnlwAEzjq3Nq6OmNbPbHAx1uokbY96IL70ZWH4pkI5fVLUWNihatrV1qpNfayx5O4x0GcDnJHY69H5ys7BdD5XITaT/2acMntlUQ
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5B1402001B
+X-Stat-Signature: xm4w7n7djqspm9wwfepr9xhxdo6j9yh4
+X-HE-Tag: 1764346029-880068
+X-HE-Meta: U2FsdGVkX1/g+HsEMP9qoeRQpGlo/LrjUJ3pi/igj5n5BpzOtS9faG266iu45jelkpsy1MZeYSXj5IgGaUWbarPCDYW/WpnQ4FnzIyVEXxLnY1X5oO2uhAAa6p5JvYaRc4jEZ7nXB/n8OdoV8672TXM6+L0aXJQGADEWETbO9Act30N10gAmCpatYancXn3sdNXsgphGsE9kH/RYdAaFLZ8ireObo1XR7gjT3krajxIZ/NgxDSSIai+XLDP80n48z3iXXRawbiGov+NdYdxFcM92tE6OjhDGKc+OWbcjMY1dgLhwyVL8syevHLzCw1wCZGv8nOMx2zQ0rjcA16b9RhcIf6lJedOes1cZjT7tI/+k/QDNGXm9fHkFIwSht6yhAWDK2YD6js6PnWElo++z3893p4TF809uI4AUoySri+dpu3scwdB0R9XJ226ieQ2KulT8d8C4p9OM3eVi6KQ67/sXOMotU3pWOpYrlSjatitnTu+I9jx2kWjYMQZ8JG1j0e3eMjN1DmlbRTLUy296vI0aeORjvhe7K93PO5bsu8NoJMLNUU6WHNT09CqruVxUHZTCJzFvVM2+YuSrGcD3RjFdkZuOI8V1CZv8A3rlybfgeSxK7Vuc+d54SoxGRbUpWaX5x5NC3/nzolp1ywdkMi/npsoENWb22I5gFvZojZK2/0TCujT4Dl1tRpybZRpOIj7GU9+RP5o5K+Tyr7RblLtchwM4biKgn5pVogqrlT8FxJw0bX4lsPyJ6lXD5kA3Q14HnDVlecUUgu4NF8Tf4lfDwMmPoCxWTvJDFH8MCUG4oNyJbvMN/za7SenRgPeZmiqkYf6OjqN20wYFLqSghDE+9wnlGJfLHKsO0mB22Y4qm9E8fa8pHuCz7hvpukNflJVVs+bwmwKEl0aIsykq6nWtOMGikQRjXhxOyLS6dkEfdwKqUmAayrhbH5YXTUnP//6po90u4KjKVG2A0yZ
+ 5FHjwq96
+ MwMqXFaZ4tyOeJiCgSfGTu/ojEJNpqpGn3so/9Ca1wyJ59VHC2gLBoas64adEtJxNomf/HVsb2HoLW7RkN5nQqNzMl+P9Nta6hVsGMITQtFfZ87gK49GM5tX6DDWLmS8fEQ0fZ7PPIgn6spnWNHO79h6izqAETShks8mUZDeNX6IhRlw13qakZeh/e+7O+O2aSfXnnfFC4R7vDrUoLM9++xopewJWsjdkMn3sbnD244K4Ky+5kOvfWCTSuMvsJSTYiaObjOitxroeSVGsulrJwj8+zqEA9xqRZOg/xJc7oWGq3GzpZtni39gczXF2NP+1uVfeohFUyU4ifrcXJceX9cuQxwR5RcmRAt+gJJlBl89jkLlZYz8YpCHbYaNMtlShBMYmmgvamH9hbFXNNxew/JKE2Dx0q7EzAvA/XAXENMcGW9rs3TfSCRRnSi1wPsiBacHEEn7NgzUBi2r2GKaguzTI0VODT1kq+FDvgcrRMHHF6uKtAJGtyOV9Cdh0Mxgt602m
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,22 +137,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 
-> Instead of a bool value, could the clear_zone_contiguous_for_growing
-> and clear_zone_contiguous_for_shrinking return a enum value to indicate
-> one of the three states: 1. DEFINITELY_CONTIGUOUS;
-> 2. DEFINITELY_NOT_CONTIGUOUS; 3. UNDETERMINED_CONTIGUOUS? The
-> set_zone_contiguous took the state and skip the contiguous check if
-> DEFINITELY_CONTIGUOUS or DEFINITELY_NOT_CONTIGUOUS.
+Hi Jordan!
 
-I had the exact same thought while writing my rely, so it's worth 
-investigating.
+On 11/28/25 06:41, Jordan Niethe wrote:
 
-If that helps to come up with even better+descriptive variable/function 
-names, even better :)
+> Today, when creating these device private struct pages, the first step
+> is to use request_free_mem_region() to get a range of physical address
+> space large enough to represent the devices memory. This allocated
+> physical address range is then remapped as device private memory using
+> memremap_pages.
+>
+I just did a quick read thru, and liked how it turned out to be, nice work!
 
--- 
-Cheers
+--Mika
 
-David
+
 
