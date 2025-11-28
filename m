@@ -4,130 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F018FD116F1
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 12:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DCECFD376
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 13:07:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D8536B002E; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
+	id 82B536B0006; Fri, 28 Nov 2025 08:07:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28F0D6B002F; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
+	id 7DC266B0007; Fri, 28 Nov 2025 08:07:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 178F96B0030; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
+	id 6F2336B0029; Fri, 28 Nov 2025 08:07:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 06E176B002E
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C0E511A053C
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:52:24 +0000 (UTC)
-X-FDA: 84160004208.03.12002B8
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EC03B180009
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:52:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jPjKIQmZ;
-	spf=pass (imf16.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A9196B0006
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 08:07:12 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0779450A43
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 13:07:12 +0000 (UTC)
+X-FDA: 84160041504.17.7827AD4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F34684000A
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 13:07:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0SZuUd5;
+	spf=pass (imf11.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764334343;
+	s=arc-20220608; t=1764335230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IaJqHHvEOEOyHC+8The6Gg0uY2rUdA1lvq9vEry25rg=;
-	b=vfg0CR0/7pKy9rTkBxb32oGjsZyadKjflPgmC4yZvKxx3WYjXcDZZhkff2OEL7eRXQMpUR
-	3pQQ1GUaDbapLdjVOczokglwaGzoSViC7vn0dcDDTvSX7uLSJeUWarnjqrfEptRqm+N+aC
-	GOMgAZMcDIw3EsNNsX028rlA+6jcr+k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764334343; a=rsa-sha256;
+	bh=WyCsOey8Tb1Q5O93zaNxc9kNDhLa6VYXzjywxnyvYKg=;
+	b=AOp2ML1mDFsOZw6EKsWF725nwJTjYjcNCjwfBEMXBjib7LDX1/Fjz0wCG0X/mFnSrQ6zrD
+	zk3rfRXWL5k0TzjoJyWRZ9YMDvxIrnuYD8x7qYd6SAS2HHAPe2YOLwEcsRZ79veNGOyt/c
+	YKFNermqZqDBbFyL5vsOpl79iED5lFU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764335230; a=rsa-sha256;
 	cv=none;
-	b=haUfKELlC8i8ShZPU9PUWEuZ4R7UMHOgj+21gupuo5ZqF7k8A5lyxjVImtHvU0IdEXJrWj
-	L/2Jvahi0uvmCEPygytrVOtpTYl7ajtF2w3IIOJ56tQjHbQJsX+qyMqtKGO1yWFMcQUKL5
-	06Rr92IZ82zqdhrt2mEqlXxOfPunTNY=
+	b=B4z+5UDZsPvgXnhCenG6twrqCiP+/hUzgSWE6fONVx998uuK6XBe4L4niJexiVQM+xD8S6
+	zZcLTceIwskJmooyA4i59FHUKLabJHuA2GPuwvBhJCZIHDVcCd2fj7MzKHBhUB6Wa8jSY7
+	BDDqndQFrOIgwmEaZ9/435SDnockOas=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jPjKIQmZ;
-	spf=pass (imf16.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-789314f0920so15388397b3.1
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 04:52:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764334342; x=1764939142; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IaJqHHvEOEOyHC+8The6Gg0uY2rUdA1lvq9vEry25rg=;
-        b=jPjKIQmZpfSrcMVAJMC+3v80D29iZAAZ2y3zo55fLsIQ0Bn7X0AVyV8nQGT01pxnOZ
-         6j01QmmHviGltOL0SXq2DNgyNeTl+RglM3wk/FsQZ32QLKyxSPyxMou/S3cFvFRsJYvX
-         y7n13sv3IswmtG3Z19bnPKAHw1didIx81mQDR1v7g6c5+QQ2n1egtwmN5a7jB3v5N/d7
-         f6BVl+Fwm9PsEQiKrXDy9A9f2Ith5pftrP67ok6iqK45pbXPf7qLwVW9gqau1hbxa3zX
-         HJ173aNbAVxRfNCuFEQiXsNo939qo/iHh3JY0jO5VpgqhppOUYwRukCCJVN36cLP2Yd/
-         GFDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764334342; x=1764939142;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IaJqHHvEOEOyHC+8The6Gg0uY2rUdA1lvq9vEry25rg=;
-        b=bbuEXPZ3kYGybGjaZZyOuBDr7C1pRQV9gwxjgq6cdnX4xRqydjv4MrZ/NLpe8RhEVX
-         QUnHjdoIY/XhOQnPcb7VuxPV4m9xVWhsltSWOaCnvk9ArEUavQOFkZu4j1k7ERa6jvFH
-         CMWURobfqPcCcVnUkADz9UEW16Q+Ml2nGkYk9AEHS5zWE5Ql9FmI7n3h+TVVoPDBW/SF
-         CJC7C5+QXuDlirBa79WfUeHvxDymCBprwokQfInnu0Wp5O7X/WW70ScRey8ozxumkOkz
-         CnLFEwOYom6Tp+jesn/zAPvY6I10aYB7UZ7GE45Wf++r/4fLypwnc48XvY3uuaw+iEOM
-         /xeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgW/BDbRzybDA2BKx0ANo0zLh7Ga17tZ+o/z/iED//1Iin6AQq1tPJFWkqFJvFcI8A8LwW7vWM6Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy6zqwxjnoQ2wpcC4fGeQ68LT1AmtPMBjm9YdwgniN4LSWCCVXt
-	7WG+2QnDqxxyVmc4IxYsmCSQjStzxuG/+iRSmHHCAlbVUCdpvaYCV5FRAgteSS3EYBt1LSWA4gT
-	IF1cpl/pQ17yBWEPhvZ/N9xW/SQ7Vcfc=
-X-Gm-Gg: ASbGncuemS304kty+6hwHktLH/Z+E0/9gce8YmzyRbXR98i8gDprjlOrr2Fcw5TtfES
-	Dey8yEXUKQ3hqwNYLpj8TaMYJcqBLbX/CzhqiSubduK1/nKa2pl2kAKUl6GZcJe3vcN63J7EeqN
-	Ksoi3WhawwpksQJ2X6LB9Oz54ZBLmdU6XLVMlNasPYPpQ4NOHR5sBAYz5QobbPsh7aUKwypB9tT
-	aV56WZKWVuODLOmVyycOjXjUnXhxR5z/raEvAlvNAvMBLaC/3bV/Ycxe+KT+5h4lQ13WhyECyMa
-	ZrJwxvs=
-X-Google-Smtp-Source: AGHT+IHFAwArfULn0f8hVfIIvR+szkl4hyE5JvWr5ut7aQy5zexLaRsPQvxenCpRtcJtHN+Xt1JIW24w2z0pfxej6TA=
-X-Received: by 2002:a05:690c:708c:b0:786:4ed4:24f0 with SMTP id
- 00721157ae682-78ab6db1675mr119567317b3.5.1764334341850; Fri, 28 Nov 2025
- 04:52:21 -0800 (PST)
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0SZuUd5;
+	spf=pass (imf11.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764335229;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WyCsOey8Tb1Q5O93zaNxc9kNDhLa6VYXzjywxnyvYKg=;
+	b=A0SZuUd5vLNhQ6djDajC+5cIByV4pKdDaIgG0XtfiMAPqTAfpoxL/dAgRdcwi/SYm4m0WD
+	RD+bCGadaI4Q5yID8CKOt+ojc7sdsTRddGwtvBD5oXzvQwB3EmC63wUJSmSIFX2BU+PyTm
+	/y8SfJ1iTuzoOSKw7z4hQdslXjICcds=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-fSAN69SkOnqKsAn7fqhwuQ-1; Fri,
+ 28 Nov 2025 08:07:05 -0500
+X-MC-Unique: fSAN69SkOnqKsAn7fqhwuQ-1
+X-Mimecast-MFC-AGG-ID: fSAN69SkOnqKsAn7fqhwuQ_1764335224
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9CD071956071;
+	Fri, 28 Nov 2025 13:07:03 +0000 (UTC)
+Received: from [10.44.33.72] (unknown [10.44.33.72])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1443A195608E;
+	Fri, 28 Nov 2025 13:07:00 +0000 (UTC)
+Date: Fri, 28 Nov 2025 14:06:54 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Kurt Fitzner <kurt_cryptsetup@va1der.ca>
+cc: Aaron Rainbolt <arraybolt3@gmail.com>, Milan Broz <gmazyland@gmail.com>, 
+    linux-mm@kvack.org, cryptsetup@lists.linux.dev, dm-devel@lists.linux.dev, 
+    linux-kernel@vger.kernel.org, adrelanos@whonix.org
+Subject: Re: Hard system lock-ups when using encrypted swap and RAM is
+ exhausted
+In-Reply-To: <804601778974c504d42f4423d335a94d@va1der.ca>
+Message-ID: <32c2c4c6-d8c0-297a-b0eb-f06a939d5e44@redhat.com>
+References: <20251111231835.1232ad8f@kf-m2g5> <2b8b83fa-5cf5-4f97-b796-0c738ce3a548@gmail.com> <3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com> <804601778974c504d42f4423d335a94d@va1der.ca>
 MIME-Version: 1.0
-References: <20251026100159.6103-7-laoar.shao@gmail.com> <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com>
- <CALOAHbD+9gxukoZ3OQvH2fNH2Ff+an+Dx-fzx_+mhb=8fZZ+sw@mail.gmail.com>
- <CAADnVQK9kp_5zh0gYvXdJ=3MSuXTbmZT+cah5uhZiGk5qYfckw@mail.gmail.com>
- <9f73a5bd-32a0-4d5f-8a3f-7bff8232e408@kernel.org> <CALOAHbCR3Y=GCpX8S9CctONO=Emh4RvYAibHU=ZQyLP1s0MOVQ@mail.gmail.com>
- <48878c07-6e8c-47eb-bc8e-13366c06762a@lucifer.local> <CALOAHbBKxHDuGoND5xwxsScKY6aW8eiqE5QuHppd25RpYHf_pQ@mail.gmail.com>
- <f60522c2-e10f-45b1-9501-9b1e4223d8ce@lucifer.local> <CALOAHbCVGX3C6mbbH+e5bB2=Cnz-UVbEVBXZWP3fvhqGe9LSXg@mail.gmail.com>
- <600a793c-4000-444b-bb5c-2023f7198903@lucifer.local>
-In-Reply-To: <600a793c-4000-444b-bb5c-2023f7198903@lucifer.local>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Fri, 28 Nov 2025 20:51:45 +0800
-X-Gm-Features: AWmQ_bmzNdWxaf5edAf5hNm2J7xYf3uPCO4yxzK9O_LWX4sRpZLLAEg74C_5rno
-Message-ID: <CALOAHbDYiiv2HaTayGzCB=D_kwLPeV=xUcr_fHJckopF_pMQuw@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
-	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
-	Randy Dunlap <rdunlap@infradead.org>, Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EC03B180009
-X-Stat-Signature: m5d5jdfsemwzci95kmgiscc5abedeids
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Queue-Id: F34684000A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1764334342-484329
-X-HE-Meta: U2FsdGVkX1+Bl6N/HjqCfD4H3gb5ETeWdaabSYtZGQc44lwd9S18MqeK1lt8eOwb7gmBFVdSwevDZkjkm33I+YjG77QGEjyRbMJVqH1MEwcJdT84l/G23DiKHbv1WMYz7jheel0dDXOEmTDVUkPDmbYIIDVJdT9Ji65iw9Py41tp+s/tiW5zROcnGP6ixiwVc1lZIoXfvpeE+VTdgTMwffGXXhF22U7JDDXSOaCVHTLQawop9l7g1q7XyTqYYNkpXm1PYDxCmU/VfqVai7uOrIya7YL66fXkt9BuPd1/LE7kwZiE2A7NL85PoohNnVm1DY99JM6ZGBInS9zS85gRvvTzQnyPBTtLTNiw+3BVWOkjDHYYl99cGbgBhsgR13Y3kEvNUhUKrCBQgYgmVVK8kZmm6G4geZiZKE2MMcG4c4EQhjbLHRnTlIoA68tE43oQx8yzgQ+9qjYgJVrVxvJs6/TTqPCsbr3u5ct2dT9z44VK0FoGpY0mt3uuHZMdtHYEg3VV7TZzeE/ITOk49keGXWqRqfa1ziRC9QKF6N+SzQY58tBf7legkI4sNo16Lz8ImePOLzWMdyZte0H0KiYIu9f+Vc3dDB1y4Riticz5rf8s9TWWF1I3xzfXGDo9IiwaO7rxzX7Chim+SeYm7+NQFDUiNJJmtEwOHrcEG35p2WZaBl1YRNkbI4zqXU51rFtckhApgmXubJUVyGpS5LrdRwTe9+zYFer9/Ns1VhGCqb07VisQQ1aYXGBFdLwfVJ8uwQhhBir3E3RGZsvrQKf31RVL1cQq4snmM8zfpsW2B+gLFgR+C6xwCJEIz1zc6pjTOWKQv54mxDJN5mYg5s6mwi4yABb9XEUC+W7g6iwkSASIfaIpoEVq22/zQckuoY83FlFu1BjEOgLlSNRsiLCa3Up7TMJ+gVrQ2g/b4hVehqujEvQaFrVQJgNwvNbWRRCEJAUiXobgFAucx2WIMIi
- lrGx4IDb
- 698fr6eKkveg/KptqUlR0ntdGTKqcNM5LePXo+G6uKa+/2wffAYk5qd/x6WyJao/slCGl9sushkGFW8LqgzENV6v9CFDiyFZZ2rxIH63MBsNYTUu5X4p5IOhKb1uoZXDHQVgq2II38HSQmK28n7t9TwndbRK05PPFC5tb9YLZvDsRd0ABL114NuAoEAtDe3hjIxp8GEqawdzd1M3yhScZO/QwaZOF6av/2M9DU55mINnBSqQuar9PtyaDyIhCTyPk8afoc9TaheVHPPdMnzAMnNbx3LcAs+dr7v7HUfpDiD6TLL6GjUkFGyqGJ9EnaKDVmFvXLACX6f1us8cojVoGiCvQFZUpZNRaD/glV8rpIj2p511k6oBICseVm60X6hX4Mzbd3q2P+LAvoRAq7kJTioupeIkDQmfR5SatCQoyQaYMq3uV9HY0ja+2AOg7J5mAtXyC+GYWbeI3mXZlo5P4WJt+v8VKJNpJLPVLoWiu8kFC4mXbuirdQYjcmO2GNd7fwDMao8u+EkveO23Vr4wmcx2KU5LskRFdW4TJUAAUO2wsNt5Lsa0K3iUAB8OYw5aBjvn4vpHIbcatJkEIqXMc4SCbDgbp9c9N6yGqHbbCHtE0Zb0=
+X-Stat-Signature: yhy8ijjaoqtwjbn5rzzdrp8kh7miibna
+X-HE-Tag: 1764335229-897916
+X-HE-Meta: U2FsdGVkX1/IMtWMLjDubvuTz4zNNbAuGiaR4M36uA2f6jchOXx35jD7LKrzfvZ7fkwz0ZNb0B7QgaWTfY2Pfr1L9dTx4mEXPTZnDv9IxFUeVkoyYNo2ZUkIUkBnIWs+2Pm9JVvVeiwxdRmh5UWci3V8byagVuFltvLT9kS9BI4DpWMD0Ru/CA5CueJ+uX9C3erawS08+ZjnnJvUSrlWD6CgxIpMQj+3gS7fi0ccFLMSmzKyTAce09WJqVS4GWe03rxpoXdBUUhJIa5LWmJNmt8+s95MaS5vAJzFlPZldOH5kIaqSHFPeC9eTQtPc1cD/8QTZFxgETjjpEwPlQGhI6+e1I4Cd4vd7GrqSdy4FB5NcqVF15F6xLWvXCaIdaxhvCec00hM2vuO5XqWWP2fLZc6QWiXQiJCQpLHW/ycFB4bLMfYRXh6Xjf46FUhI4aZKmXdwkuGeVApS+DX73dDBBKEdekOxc/rMg9VPA881fcTpbUWEHdsZj4Ypg8qPGjsLlHJffCMJBpHpSazXAcm8h8EQDsL+a4jrAd296xwoeakpDqiRdxwGd8qXhHGJg5virWT/L3GrT6fDw2XbK7kfZ+XnKKyNGepcIcycRt0d9kzqebOqndybbbcO5dgEp4H+okR7NO/kbeBcYa3irMHxsGXxI3ECKV2ETKtC5/OEK3fh7qyxm2k3WRkrIVKkUinpn24Dt1EqDfiGZ7/ttYSvlGFc0NFO2CswGsyz3AzlGf09qA6Vzw05fAuYZuaNuePSwBUTNKnflz78LsVouIsvPHwJGxaMT/EUVg0urWo6ieWfkLUW5TIVTTenhaTP0Yyxqp8DWEt7HYLj7sTGULyrUMbdKBunw7gaMGyXFk2Znwp3ejOjbyaXWFojU8RuhlWRmEC+0WW1J03UksMZEPw3vrfh5gVM+6zfewX/pT1IRE/TDDj34BfKC/xjnySH7VEo4s+U4MbrF2WLM7gjST
+ EGRyOFSl
+ wNGYMUEpXV1b8H2Go93Gs1upmDCgKwZ3P1GBS8aGgBVhRO+mfv2XKQ0g+00EQ3Kb0UlD9uk9U3uCK9kcNJh5GsWszzEI+XehWjYNOuXz75WFNUzbg4F4lMM12TKUI86rtzsyicVDxkSpvqYCMVRcl+e2BppS9SzqzJsj+6pbqqh48v0fmElyYtIvY0JOiFNApXmS/qOgvfPTd2sxWM243BT4SZ01ixrgL2DfzSa/1USXPMgXHJStEsXoMepxMhoKDvzok9lfHXTTD5y456oIgK6TVnl4hW5tD1Dk4/Df6UHm9y06e1ik5D2LZcjfgmD8lCfdg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,35 +103,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 28, 2025 at 8:18=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Fri, Nov 28, 2025 at 07:56:48PM +0800, Yafang Shao wrote:
-> > The CONFIG_EXPERIMENTAL_PLEASE_DO_NOT_RELY_ON_THIS flag was changed in =
-v9:
-> >
-> >   https://lore.kernel.org/linux-mm/20250930055826.9810-1-laoar.shao@gma=
-il.com/
-> >
-> > The change was suggested by Randy and Usama:
-> >
-> >   https://lwn.net/ml/all/a5015724-a799-4151-bcc4-000c2c5c7178@infradead=
-.org/
-> >
-> > At that time, you were on holiday, so you may have missed this update.
-> >
->
-> It's moot because this series isn't upstreamable, but... :)
->
-> To risk sounding grumpy, in future do please make sure to check about cha=
-nges
-> that contradict things maintainers _explicitly_ ask you to do.
->
-> You can always off-list mail if people take time to come back to review.
 
-Thanks for your suggestion :-)
 
---=20
-Regards
-Yafang
+On Thu, 27 Nov 2025, Kurt Fitzner wrote:
+
+> On 2025-11-27 13:54, Mikulas Patocka wrote:
+> 
+> > Encrypted swap file is not supposed to work.
+> 
+> Do you have a reference for this?  The concept of encrypted swap files has
+> been a valid workflow for a very long time.
+> 
+> > So, this is what happened to you - the machine runs out of memory, it
+> > needs to swap out some pages, dm-crypt encrypts the pages and generates
+> > write bios, the write bios are directed to the loop device, the loop
+> > device directs them to the filesystem, the filesystem attempts to allocate
+> > more memory => deadlock.
+> 
+> If it's the filesystem trying to allocate memory on writes to a swap file that
+> is causing a memory allocation/swap race, then any write to a swap file would
+> engender the same result, regardless of encryption. The encryption layer is
+> redundant under the failure mode you propose.
+
+No - when you swap to unencrypted file, the kernel bypasses the 
+filesystem. It creates a block map of the file at swap activation time and 
+when it swaps to the file it uses this block map and it doesn't call any 
+filesystem functions.
+
+This bypass doesn't work when you put other block device drivers over the 
+file.
+
+> I can confirm I have put kernels up to and including 6.14 under heavy memory
+> stress and have never encountered anything that feels like a memory allocation
+> race.  All my systems have encrypted swap files.
+> 
+> I can't speak toward later kernels, or any bugs that may or may not be
+> presesnt, but I know of nothing to suggest that encrypted swap files remain
+> anything other than an intended feature.
+> 
+>     Kurt
+
+So, it works by chance, not by design.
+
+Mikulas
+
 
