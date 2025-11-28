@@ -4,98 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DAD8CFD376
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 15:03:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F21CFD376
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 15:09:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 519376B0010; Fri, 28 Nov 2025 10:03:02 -0500 (EST)
+	id DB4CF6B000C; Fri, 28 Nov 2025 10:09:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C9306B0022; Fri, 28 Nov 2025 10:03:02 -0500 (EST)
+	id D659B6B0011; Fri, 28 Nov 2025 10:09:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B86C6B0023; Fri, 28 Nov 2025 10:03:02 -0500 (EST)
+	id C7B826B0027; Fri, 28 Nov 2025 10:09:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 29FC36B0010
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 10:03:02 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCB73140680
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:03:01 +0000 (UTC)
-X-FDA: 84160333362.21.5B47235
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 847E240020
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:02:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AdEOLtRF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764342179; a=rsa-sha256;
-	cv=none;
-	b=gCYsd9qK/Yhp2v0Q2mxraPwexKwiMbDJVs0Gt1zqdtR8quoVawbC0qxryKyvzFuImDafWy
-	ZQVCIJBlhkyfXSTwbxFOeQVgeNGdPRbPh73dqOPT9Om9Udqt9NMBwjKmcM/u6kdWyPsQ2v
-	e2G3l3jliT5J9OnoNdgoNv/nzk+tFZQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AdEOLtRF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B9B6E6B000C
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 10:09:49 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CE505A115
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:09:49 +0000 (UTC)
+X-FDA: 84160350498.15.C0CAB08
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 85C8614001B
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:09:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nAZtPLjV;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764342179;
+	s=arc-20220608; t=1764342587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+s8rEgZrFlGGz0+FhSxQyk5Lk4wD6mKu/D3vYhC5A38=;
-	b=HywRbMH6fyNpbB3+M85rTNd76BZBo1hLG4prOTAKUFdEVdpkiXfOQPSVSFIGpmk9g4aC6J
-	b79EOwmsC8UI8Lyae4gmd3hGBlbBu65gl6+UcVCnjMi6SXFcpkT+9VtarjPavbTBnR8k58
-	LZ3G0anCeFhiYWvafOMtwj7VA8e/iBA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95FBE60136
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:02:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DF0C16AAE
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:02:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764342172;
-	bh=GGNlbLQI4n5NWRzFgxbfw4qd2Y5htJABGaHsEqaxPFg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AdEOLtRFfl4W0QsUDOJIWGM1yJDwS0PgorU8NTONSXn68/k5Z/qm2VaoIxpjX74Lq
-	 x6cyIccEPrPX93rhLW2Sz+oU5dU70MnpvTjMV+23Iou44cTooXCs9TI55Sa2HHfPET
-	 9m4D2mlp6db35ysYKvDE03SkyOVAZh+RHQGt/AlSjVJExWnGX7KBJicfEiaxlBab9L
-	 RiZ0oiRSwoF3mkUzDXlxGrCSElg+FrYf6GrS+h8Sk/F98lA+OwC11slZ7p2zwC38MD
-	 bJcePqc8U2MwRaBRDBvUkH8NPEVbI/l41aedFmWPfgYwOJ1mKu3/Uwkvra/Kl6lpuD
-	 mME9H0MAHzvzQ==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-789314f0920so16671267b3.1
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:02:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWk4B5bu0srkLdPNeiTAstnBaEJys7dTzMQh8oeDbQGDwgVhUUIae+A8aB4iWKn4RH4PCPQDUUiXw==@kvack.org
-X-Gm-Message-State: AOJu0Yy6yCfbAhEFv6/M0dmLwZPKnwmN5bBU90DnA/TDQ94t3YFnnBGS
-	nCkXrhQB0pj7GJmfDjaVCRjteULNuUf5Ko+FrPemRP8TGUpMxsXM46dIHwa7yq+kmMhCQeOjJ99
-	VuB4e5tS1CMeQlgiI4LUUnitWZE2MyihqnZlRsGTgkQ==
-X-Google-Smtp-Source: AGHT+IHy1HOrcYZT1XZ45nptlNLZZ9v02zgTE9/KvlzTx37wPy+3/uGCwU7BY4qCXP/Hiu3ubw5GFia5FNjjTRfmX0g=
-X-Received: by 2002:a53:d24d:0:b0:63f:ab4c:9603 with SMTP id
- 956f58d0204a3-64329399fccmr7897142d50.45.1764342171543; Fri, 28 Nov 2025
- 07:02:51 -0800 (PST)
+	bh=deXTwbDIKs9JQLaQPnholrd8uRGRoXWWQE0vJWC870s=;
+	b=t2zi6fZnvTgw5I2dlR3akq2YGzTnib59DlDxtq+ntkgFj3tzQ3vGl6wn/tKKxkwFh39cuF
+	IIFbUv5bJFjY+2Z/5eNtGLfJyJg3IE3sOlWoSfjeo9ZKQJ66ce6KlkE6TmXnBPxS5hlW0b
+	QSSesMM6yoy3xCTIJ5jnZxY1kpoy6Yg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nAZtPLjV;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764342587; a=rsa-sha256;
+	cv=none;
+	b=nFUbSoLVYBhqHvtU+/iMgt/WRI8rXokc58VaIeL1ch7BLdMwlSN5ZoHgIMxZM/3v37FTIt
+	QldNO/eq+xk5eATNm+kH/Dm1UTPaq/eSKw1DzlH8pPe1yhjGGep9OiBZnc3npurtuChYdm
+	DCvq6e4rypn5DZju6b20ELdbMUi6zzo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=deXTwbDIKs9JQLaQPnholrd8uRGRoXWWQE0vJWC870s=; b=nAZtPLjV8PFjQDFEYcBUeJl4cx
+	sUhx+y7Yk8L6G787cH2nx2wVLFyNpxdWD0ERiN3dK4tFZR2wgSyEnW5gitBxk/69XNE2pLbLR9gJZ
+	rhDhKLd3shzKnQZRZ7uu7huJUVTwBVM80/EErs4R38LJ2Q0WSkV1pBxoBsKRZQxCr1cqE680IZ7Dt
+	oEQwqfo3ScvTk5SBwsKUNAr8kHCYIMqmQ4YYYbpruVX9FfzGoJyGFf5YxUeBLjt3qM6xYWhdcBjxb
+	YI/7cNQQfbE7NF9MfemZQ5+EQeZKRYVjkJzsYUvRe4zMoytWH46VhJ9vfUbs1eiJLETqo4U9Co47E
+	6ZbLcNSA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vP06Q-0000000DM7x-0Atr;
+	Fri, 28 Nov 2025 15:09:42 +0000
+Date: Fri, 28 Nov 2025 15:09:41 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Jordan Niethe <jniethe@nvidia.com>
+Cc: linux-mm@kvack.org, balbirs@nvidia.com, matthew.brost@intel.com,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, david@redhat.com, ziy@nvidia.com,
+	apopple@nvidia.com, lorenzo.stoakes@oracle.com, lyude@redhat.com,
+	dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+	rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com
+Subject: Re: [RFC PATCH 0/6] Remove device private pages from physical
+ address space
+Message-ID: <aSm7NTtNfGcXbuwr@casper.infradead.org>
+References: <20251128044146.80050-1-jniethe@nvidia.com>
 MIME-Version: 1.0
-References: <20251127100303.783198-1-youngjun.park@lge.com> <20251127100303.783198-3-youngjun.park@lge.com>
-In-Reply-To: <20251127100303.783198-3-youngjun.park@lge.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 28 Nov 2025 19:02:40 +0400
-X-Gmail-Original-Message-ID: <CACePvbXC-FWKcvE=8GdKoiX7-yeKD1smnF7UbqQRrtdt6D=Z2A@mail.gmail.com>
-X-Gm-Features: AWmQ_bmK3y6MkJWVbNdMhQQ2NSWu6LstgAQvhY5sdCG5YO1iId9GHSXA4j0Ovgs
-Message-ID: <CACePvbXC-FWKcvE=8GdKoiX7-yeKD1smnF7UbqQRrtdt6D=Z2A@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm/swapfile: use plist_for_each_entry in __folio_throttle_swaprate
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 847E240020
-X-Stat-Signature: b3i74wb576g915yrkrmhip78kgc1utba
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251128044146.80050-1-jniethe@nvidia.com>
+X-Stat-Signature: knjrwjy46f9hoaugfmehfj5tft34xzad
 X-Rspam-User: 
-X-HE-Tag: 1764342173-685610
-X-HE-Meta: U2FsdGVkX18kDweXTJYCbkK+L/pd7jnCg7wKp1MX6ywKnWkxwO5Nn1rCxfKkfNiu28crlEg3T3Kj0EVyh3Be4NNaDcB/NllXxacV+4zZbqbroURhWoUwVMQFY0RNssmt/eSfnE9nY2LcN/J0rLFTvXEVFI1NUVmp9RLDlPJ9TsBjZzgpShyhhg9cuchZ8YcxqTOg7qnVQzP8sk1GNKemV/24c7Ps7dKxp0c0fUxQxg5CvVDuTFx1EUfjNDsTRaLhA1eNhX3YuP/zvX6zHN6LRT4I2uDFETIgI/ZFcec/s46fXBy7aawF8ClkoKHolxM61E8bXMtPtqgE7rjXnOfNkO/rys71uEZJDOYJizxq+OX6UD+piGgIaUKPukpjmIKXfHAKmS2ypJ5+riAbQt60INvzSJUFhmQy3z3jqeYf8vJb42COv3b5JwXsYBBXAhx7XCpZTZqgh3XwcCtxBXcjytDZp4gaxtJu6IKnEjre5rrcrPIgmlvUs+wHoiBVduXb9F7ufguuWlBPMPQlYAhfA40f4gK2UB+v4x8huvuvLou9MLNEsadlPUSuUbFEM1QiuHkDwD5ZH0O5yYbiugm7Un000fndsJneBmwVf2KVn9yw+WY32DT7GFZkUSJVvYI5VlDnu5+tLKGHjyQbjiSYbIg4aes49Urr+lwurvR6lv+fhI1bC+rqF5tbSUByRyoNwrJGlaKQ4TNWPFKp4Hvv3kuHuuMsgaPZ3oamyoof7n8StdkBytq978j/KuZHAi3XzTMpxyGyFU6btFFd5QR/frTgwsbCcPpVbUtiS4+GR/GEROojgiCFs5JaUZ611n4VCp9eQCqjf5KjpiLvfSWQMMDY0+s6+M4fkHriZFjGNBvgjoOyPTUb+Pp9X6KW/dPryqm5aRuj31KsJ4GavlCagyfs4QTj2nAv8krpLOQmiiPChipk7CbaiFydoUcjvd2J5esUhYYNJDmKSIqTs0a
- GLgc6Sd/
- Grf7aSN0uVByVioAJv5tkEGa6XA8/B5Y++8K54o+FgQ5+3ow2nj5Hp1kCcZ4Kxsz6nuI0KGJyOSE8V5kB2hspwjjBB2TOYktb0y7+fvXgezKt/hsGS8OL7QZ8AO9RUzK0Tgr32hpZ84JSoxYB1rLn5qEmuDGCrt/OFwsEan1+Ue+Gn8SZTs7Gof66wFQ7O+qIWE/WaxmWN6G8N3YMH82o7lnp0+mLjliPrlW3OIT/Mlec+yZ9Ke+AcbEJRuqn87wucTLusjzda6fUwpl+5l8sEJN27700daB9mpzFU8ckF+QRU5SNkZQuTjCDAUNyro/jvRksZAnVEFBM+zeY/O5TGNhGPyGYLWJ4Mge0taQ9eEL9NVaMZSu7sLWuiQ==
+X-Rspamd-Queue-Id: 85C8614001B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764342586-478003
+X-HE-Meta: U2FsdGVkX1862Allli4b08LZ23PO2cGjINwNNdhFiygfXhXP/CA8kZy8D6/k9UdzEm7W4TjhuLgwvw8pRM8hZ/AV+EGn5NaNTaIjqE6+TU8KasvyLhKrMoUEPfJFg0lmVqzEmhYzkP8QeEJKivHUvf/BtE5fLfyBiBsjIEtoLqAJKroi0nnqyDcFE7OPzNf/j9yAXrntbEOkB/E+coAgaf7yH9n4gCvDYX7xED1/dGbwQGHPp/iHteKQHgtXHJHekdregguLBzFBqWYJ88BcJVFlpJPMxxq0jWdboWFgBN5eL9EsaDLaEkf/WtoZceagjOlf+wwLANatXIU/Py/WsE+ERo48NbByplHT2IqZXHhnUMUaiyATGcAJkvm5BKUanyw7xqrL3GRpDpDBFL+k/Rb85EuZiuuyT47sdbSaKzh857+Dc8zq9DZjQInc+hTicwxNBR8tiyj/vM8JzVK+moZOy4abiVk34ChrNFyg4oS23kkJju9nZ/WF9ncFQag1rvi2JcZvlDk0SDNTC3IsU+IlSOvFJ8my1pxHH8u+Fw9g4MUFu5XPMRSmhQx6FCbs1xD0pAMtpxD75a+/9gr8nvNGNuIXiAiUMfeJTTSnK6ExPD6az14XVot0M4LbMtfWIrAHcasvuCWlDCgkY7D/4zBWIxhMoDMeVUcTT5PQpb525wYcFtJl9dsUbKQ4je04BPtSurykVYjwL5ZMgCTmNywlVm30wXl399sGatEtuHvw+DgPThNTsQv17NX3hXhAjRVY1GL94oaO5iO62knPCRB2PPflfUSjejVo99xaNK6NcvpsjFJ2bS8bX6OFuKpc6Di6Nke04WJTE21pX7cot7eZmAou2pAz+yt2I70PRXEqn7ve7fBOZvSfR0QGWf8XEJ8BdA7kY6MxwQEnXlkYuNh0szkU74DYySy1oMbRuWRZ+YMEmqZlYKykeHd2D47H/HtLTwboQ3xYcFPJZeu
+ sMtxD9qG
+ +yYHEoei32cm/JMFf+2VKVzPJrlfVvuZLK1IbWId5MFDIrGbm4zlU/7UUaTYFvhOOXdAiDw6d3O9TpMUwF6+MwD1YEPXEMCndktHlJN77N2dxavrk2s6au7ztfaygfqIycoj3Bu8mYtQpn2K7ngAGenLlv6bxhGtirvoBwRIQpMJetywzvDUrnTFJ2Iv9v5vi+lyBwu0iBu0X62NOo+WEPyzm87RSNo4SX6y8pAVw+E1/zBVQZTEwrSXzCIcPYOrQEtRt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,51 +94,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youngjun,
+On Fri, Nov 28, 2025 at 03:41:40PM +1100, Jordan Niethe wrote:
+> A consequence of placing the device private pages outside of the
+> physical address space is that they no longer have a PFN. However, it is
+> still necessary to be able to look up a corresponding device private
+> page from a device private PTE entry, which means that we still require
+> some way to index into this device private address space. This leads to
+> the idea of a device private PFN. This is like a PFN but instead of
 
-Thanks for the patch!
+Don't call it a "device private PFN".  That's going to lead to
+confusion.  Device private index?  Device memory index?
 
-Acked-by: Chris Li <chrisl@kernel.org>
+> By removing the device private pages from the physical address space,
+> this RFC also opens up the possibility to moving away from tracking
+> device private memory using struct pages in the future. This is
+> desirable as on systems with large amounts of memory these device
+> private struct pages use a signifiant amount of memory and take a
+> significant amount of time to initialize.
 
-Chris
-
-On Thu, Nov 27, 2025 at 2:03=E2=80=AFPM Youngjun Park <youngjun.park@lge.co=
-m> wrote:
->
-> The loop breaks immediately after finding the first swap device and
-> never modifies the list. Replace plist_for_each_entry_safe() with
-> plist_for_each_entry() and remove the unused next variable.
->
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
->  mm/swapfile.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 8116f36e440b..46d2008e4b99 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -4023,7 +4023,7 @@ static bool __has_usable_swap(void)
->
->  void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
->  {
-> -       struct swap_info_struct *si, *next;
-> +       struct swap_info_struct *si;
->
->         if (!(gfp & __GFP_IO))
->                 return;
-> @@ -4042,8 +4042,7 @@ void __folio_throttle_swaprate(struct folio *folio,=
- gfp_t gfp)
->                 return;
->
->         spin_lock(&swap_avail_lock);
-> -       plist_for_each_entry_safe(si, next, &swap_avail_head,
-> -                                 avail_list) {
-> +       plist_for_each_entry(si, &swap_avail_head, avail_list) {
->                 if (si->bdev) {
->                         blkcg_schedule_throttle(si->bdev->bd_disk, true);
->                         break;
-> --
-> 2.34.1
->
+I did tell Jerome he was making a huge mistake with his design, but
+he forced it in anyway.
 
