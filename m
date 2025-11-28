@@ -4,116 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B48FBD116F1
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 17:05:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE4EDD116E2
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 17:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86CD66B0030; Fri, 28 Nov 2025 12:05:21 -0500 (EST)
+	id 106F36B0010; Fri, 28 Nov 2025 12:13:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844926B0031; Fri, 28 Nov 2025 12:05:21 -0500 (EST)
+	id 0DEF96B0062; Fri, 28 Nov 2025 12:13:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75A6A6B0062; Fri, 28 Nov 2025 12:05:21 -0500 (EST)
+	id F35716B007B; Fri, 28 Nov 2025 12:13:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EABA6B0030
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:05:21 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F39D131FEE
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:05:21 +0000 (UTC)
-X-FDA: 84160641642.02.CE419D3
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4554040018
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:05:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=M0ovdjZ+;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E27826B0010
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:13:55 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88B63BA53F
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:13:55 +0000 (UTC)
+X-FDA: 84160663230.17.D6A9D9F
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 423DC2001E
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:13:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=hBvUqapc;
+	spf=pass (imf13.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.175 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764349519;
+	s=arc-20220608; t=1764350033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v4R9Zx2dBq+xNldpFByBb2oFsVP5vQZDFMwFExGQQ4E=;
-	b=8cwGX3wu92jRKx7uVuqFJXHNgEKqx7ZLr3nVHwmIzCgsxK8Rv1bTHsjuSp7mEvy5pKoQzN
-	UvnfiRSL9K6B24gqWbNu4jFLCnTtiAWahexW/q+s5GiggAtY2DEUtXid9DSPZrT7aEUP/C
-	TF9x9gtmozSmqV+flVRikWXPt4OAIPM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764349519; a=rsa-sha256;
+	bh=dHxMvjmHeLuvFpkAzdRAX3YAUaEt7mxZ79bySuiEqcc=;
+	b=Y8EH3T0tKs/ZNqop9ZNnl8XR3qUb22u2UPPeSa2C2dAvavf5tjuNddD5nKtVl6chiFsRck
+	x3pJQeqBZ1cbP7HYbVJS10IfqDGdkVTO+p56GfhJftrvWI3HQvtSTE0f9EjYu2ye+YQN1U
+	0meGuXO/GRie3Hilk028Cud6vBruWt4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764350033; a=rsa-sha256;
 	cv=none;
-	b=fk6Zd6L9cuvp3XJYjgEDZhRXYrBzXZVhrwTBbarLh5mfeCAi8DYzdoMjOdCQlwGzhyin2u
-	Pu7ttsakiY96lT23KxapiNdYtwkndbzcMcvi0aqG0H3FTQPQ87AFC1JeziRZ1FVJR76G95
-	FVAjtxZZ+8GIRcZxvoBJqm9xG8a4oxw=
+	b=e6FObUl65tu69WmC3p75VrsbjAgJ5IFcqLTNMaozs8EuuyGwDLWWh1iXqwyUbqJ001yLiw
+	Nh4Yv7iU11H93GeS2SzPQQxSb1+cAUwSscVrgiuCN2oExxJFpL86L7lni5FlM6muN03QZB
+	tbUcDR8s0ZdhTjGLkgjASGIxmd5q2lw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=M0ovdjZ+;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7b9c17dd591so1897105b3a.3
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 09:05:19 -0800 (PST)
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=hBvUqapc;
+	spf=pass (imf13.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.175 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37b99da107cso21680451fa.1
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 09:13:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1764349518; x=1764954318; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v4R9Zx2dBq+xNldpFByBb2oFsVP5vQZDFMwFExGQQ4E=;
-        b=M0ovdjZ+SsP1/NjOfyRxLparwyX8pUd1Otb4SnKktozDWPOc+4KWbRvHKzw4AJierF
-         R3P/rEqcxAaJ+h0Yw6mjsxm2cVKltJ1UdaHaZEOC4fLht3RcKAlIRbpo7+yQIWkweiF0
-         EnnpCm0/S2/pYVr5HagPhjq93NujA6OeNHdGc=
+        d=linux-foundation.org; s=google; t=1764350031; x=1764954831; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dHxMvjmHeLuvFpkAzdRAX3YAUaEt7mxZ79bySuiEqcc=;
+        b=hBvUqapc/UfxC0Hqrtr2eCuv6ndycy0NoSq1EamR9xSEMoGavo63PUO30RlmiLvJk7
+         5WRHu9pu4FRWxqn+tA4iGtqr4yHHpR++aOkms5KiEj5Hgu5z2PKY8AVxp+MISFeK17dq
+         6IFeWiESCBYa0niBaJJqXN0V5PRJll0AXnZ7I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764349518; x=1764954318;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=v4R9Zx2dBq+xNldpFByBb2oFsVP5vQZDFMwFExGQQ4E=;
-        b=CY02XuqyY3bU2fuVXCray/+QlWAOeqocMiz/S4eoqBZ8SZQwHTHNGr5ROhIFFzySe7
-         JHxF8pLkrOrBznQ9Xi17Z2TmtRoeymDqlgE/2lvDWSBJPa8rx1PdY33dL9W1fJ+4U8Sl
-         RGypbSzk2L3KRVaHCRZ8002+7O/aS2QqzbdxRjLDjXIKWClWZ5Uhvhtvmh+BJzRQSFgp
-         VUWD1mqJw2MOLsPZzR1ihRtJ3wP9RVCGxtHyktzXq5+axGNj3i5g3qUI0YBuc/9ucUJF
-         q+0MGDSrQWDZdAsJ+rDqjKkDMfdcBHqngLHlossHwoyROc+MqfSFwYcZIAZEkJhPvGYg
-         AtWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVY/+BE5RWISurAj11pTWWSJVHlg5Lmn/KjzrDoqcNYyAHJw8SBgio9VuQz7edN/Kz2TGA7jddCFQ==@kvack.org
-X-Gm-Message-State: AOJu0YyeD3R7v2yWWnBOkjw1byfl+f94eQ3RIi5szUI9D9aPWt0M6t9z
-	wkw+NCDJswEn20FROncHwwgU9Q2zP434LWzfeERMaa7lyzB9HlIzMBcZznoC+/+orw==
-X-Gm-Gg: ASbGnctaD+56QI+/C8fRJE44L4IV69N8FGjjPPukp2x4AsSvp+W8xdBGlJxuumaCmK2
-	/mOg0WYqf96+C4hNhnqCQyYb72BZVsZIk7CCvs/f7E38xzOfbcYiArxq6j62TP0iZDXz3R5/9tf
-	fgxZsNpwVRkcX5eqTreq13ndb+j4aMF42M/IiHm0FWSwIQI1kcErKlkJPFk4bffkMDDkqG3sJov
-	rWdJnQ30nuODHDRUaqgvg9liux/6IivVGuuHNx6TDAPaJw/cMv7yJOx1a7yDy6LEQ7pvGOP4rC5
-	L7xtLz2vwYTWRmZghHivhn3G2V0tR8vimk39aCGR2LJBfjib3EhiD/c8K7RqtEDZ+zDdHMbJl4P
-	Savj4VuaeDw12HTz/Gtxrb4y3sim3qlY/ecfVujLNy6SYPr3b8q1x/n9YUV44hOvNJVK8CPnL4r
-	teZpHl/Gn0Hay0ha4bJiKi9nGcSRZ8ZnEzZPKXJ8bPyhfVps8bpyG1zCwp2vvV1Mv3rqTqmsRsl
-	gqy8XRDJDac
-X-Google-Smtp-Source: AGHT+IGdVsnWm7yn6FnlL/WMYyZNJHjQgbCSuAYTrw9LhC4iG3CiNM48M8ucj2AnGiKhtxjrJAli3g==
-X-Received: by 2002:a05:6a00:2d9b:b0:7a9:e786:bdaf with SMTP id d2e1a72fcca58-7ca879f2d5emr17491122b3a.14.1764349517859;
-        Fri, 28 Nov 2025 09:05:17 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:5b9f:6c7b:4d09:6126])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d150c5e611sm5568242b3a.6.2025.11.28.09.05.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 09:05:17 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Richard Chang <richardycc@google.com>
-Cc: Brian Geffon <bgeffon@google.com>,
-	Minchan Kim <minchan@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 2/2] zram: rename zram_free_page()
-Date: Sat, 29 Nov 2025 02:04:42 +0900
-Message-ID: <20251128170442.2988502-3-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.487.g5c8c507ade-goog
-In-Reply-To: <20251128170442.2988502-1-senozhatsky@chromium.org>
-References: <20251128170442.2988502-1-senozhatsky@chromium.org>
+        d=1e100.net; s=20230601; t=1764350031; x=1764954831;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dHxMvjmHeLuvFpkAzdRAX3YAUaEt7mxZ79bySuiEqcc=;
+        b=TJcWVYk5NtUrucRVRxr7GVLP8wGJC0zlAsOPbM8umBmJi4d/Em+sHuptjH6zFnmsh+
+         cm02ID8NUqk4VWwJDvDT8oBeEToyOLCHLusNU2P89AgBppR4CksRcUsn7XDGk7CqGzrS
+         qyMaoWRbw/2+3/ZsPi/qkGXoy12/9ZMD77CaBiMx2jUHYhBT7oLQd3A8a7pA3K+pS7gG
+         R14uVpzzYl+Qsyu/g7B+0+38Yfx1f2Mxh+SHcaZVgScbsDmIfanyornoSfrgysjd2jzy
+         Se3MfwZAUkoRryvr6LRbd0qfAlHPVvEWCXfnr5JnGqSeHawHFQK48QHr+qXeInZ/WFtz
+         KW9g==
+X-Forwarded-Encrypted: i=1; AJvYcCU9AXa4OOCElgnPDFVNSQTSM6gzQqPkWz4c1/0QzpwH/ciE4GSG2Zg9AN7y7kCcgq5ZUQb/GsJMfw==@kvack.org
+X-Gm-Message-State: AOJu0YzkMQ0EeEtn8Omp0my2vxRe07P9MVvxQ5vVbA+vcwEG0M3LOf3d
+	O3SXgwFnsLPJeyDbANK2fBUhPrvF49modI0BVDuYn4zZwrC1+mXpC1hglfvRi7BmTsFOii29jlx
+	GYDGjeNbfrw==
+X-Gm-Gg: ASbGnctqcjvI3gQtaHfNNxSO+q3QivpjUa8ad00xGWV5iXd/973gyL1BR8LFE+vDhOa
+	fvqK6c7BynSCA7kk96ZFCLgBVadIFEa14i7Q7M3bQUpb5mmxGQMprujJVvkAm087GB317HOefk2
+	jAMLom+i1RrziGEmvyg9KOijQOlrLrAqCKFGptrJt0s6pLG34+tQDU/JuYNGf47VMqII7c682pG
+	vpDa2cpsPs15t0uZKYsueuB+faYP70lb3W+JqyrUphtGAyLMUihJQf+zPhXDoy0dq17NGQQlGvu
+	4W3QBzHZL1bSmWo4mZJ+6dYgewxVixV2keRPFQY7Mh2+dKY44xb2+FzB4/WlZ1Sx8TOBH/vRWJo
+	3lZD4gIgSFyW9HZWIWsJTNIVp3gXRarYDl5Ji6FBlRTeLHPXD21dDherquQX+tJH7ELzaCGOrrE
+	mJmyFCX0eIiVnaphyhmpusfwhrT+lbW+mEkg3GJ2EIXdyntdNt++d40n0yapkxMT65
+X-Google-Smtp-Source: AGHT+IGqkewAnQSj1qB7jF9sHerqFEwF4gZCPT4a9m7QVp0Tr9YxGg7duQhJmGsTvX4C5jJIZH8zZw==
+X-Received: by 2002:a05:651c:215c:b0:37a:2b3d:12cc with SMTP id 38308e7fff4ca-37cd92c9e0emr58503141fa.44.1764350030941;
+        Fri, 28 Nov 2025 09:13:50 -0800 (PST)
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37d2369051csm11073671fa.2.2025.11.28.09.13.50
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Nov 2025 09:13:50 -0800 (PST)
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37b97e59520so13861041fa.2
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 09:13:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW4iVuuW5DeRrYxyX0shsc39NAQyUTGh4wwxH7ZosR+HWn+exkcPwEb2k8G7hH3o00ychT7nwgepw==@kvack.org
+X-Received: by 2002:a05:6402:2708:b0:63b:f0b3:76cf with SMTP id
+ 4fb4d7f45d1cf-64555b85bb5mr26149888a12.2.1764349626340; Fri, 28 Nov 2025
+ 09:07:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4554040018
-X-Rspamd-Server: rspam06
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com> <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+ <aSgut4QcBsbXDEo9@shell.armlinux.org.uk>
+In-Reply-To: <aSgut4QcBsbXDEo9@shell.armlinux.org.uk>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 28 Nov 2025 09:06:50 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
+X-Gm-Features: AWmQ_bmE-6XAFAPa0-eSPLJJDbgRImzhoDMUlnAscfmarz6vBK22IDNiLQ8b6yM
+Message-ID: <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
+Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
+ sleep in RCU context
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Zizhi Wo <wozizhi@huaweicloud.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, jack@suse.com, brauner@kernel.org, hch@lst.de, 
+	akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, yangerkun@huawei.com, 
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com, xieyuanbin1@huawei.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: nk9nz97jrzxqz1estzwatcgbjda9n3b4
-X-HE-Tag: 1764349519-711367
-X-HE-Meta: U2FsdGVkX1/t+SheaQgps6hGLtolCgW8W32Bx4wjVhod5LZyF18ROjAqUXKQesorSZx6x4zPJ7Au9paCZSiokkPj6WqTsGC7ELDPfgc6Jx7YEgAtso/0jXaaI3KfM/J+wYFNlKCU1WqVlAQB2JLlaeJz/Jao+WR9Kqf4btStVPSQ0ZyatmJHsfvPoWqfp/9oYkg0N6m+CYT6PgjVP7Joqx1qZXJGRI0kSie0jLxrgibnO0KVgD5QDqD7nPTe9yCNMKUAKJBIzqVu3EcLPNWsGYFCwbUFWZazEKfRgvJRGXumSH3OJ0bTw7bAYLNUGdX8WM0+ipcJYtmkeLzSXx+PpYKQsTTM+4ESie7VLUddAj3F3QIZILro+o5Oz/CaEXzPm/GubuJomDM6NSVYXxT8SOaLwlVjRV1W8ktmhq8d6uLbuRY5fl36lWYWMgvkTiWTJOVVGU+BwUm6SnD1VOWNinyNeTSQElKYYjmZuURM3F89+CSBmV1VBvyCkqBH9oqqPOb51JHsUe0a0MazDGc7HmsPe9R2s3W2qiPW+NfWb6mHuFfPlCGho4Tesb/y/2OhiGXhOexkCD82UKRNm0gZjfLqxCLp74IOHnrd3PYXJkxkpKt/srBk+LNzUyRneKTCMJV7h/Y6YCOU7wdpGiuY5sGo5sSbkVgTi8u0qaFS9Zw80ngISRuKT6noShjlStRW/WVWM5tO8iZNhwcf2r/+zZVGPqKD2/d15vfWcqLvtlwyiMKIJPoJk+gAxjiz+PkVIrf+XxKNCQdSGunMYsAjpbBzcC9twuAofKqeQpPHMt9IaBvOsfO35JTulLb98V0UGTyded0bsf8RFBcbsqTA9EzusVJL2msz8/1IwrRRKdvX8yASivE8aMw5j0MoUt7a1x6RTfwCYUFBFLAY2i+Pnh3b9mFrZdT7EGO97f2B2Y3m/hWG7h2UWiEWKb/khqLDi7vR4s+w1jUk/6d3Mzu
- 2CDdzoI0
- q4PNMyXGw2ELp/LTm8SM4bgnxRvsIARs2R/s6M9gd9Dc/9sXjbp0cmJXha1muSVJUvGhYA1Twqk+KuPyC4CvPo6E4LsJ2EGfOxsNyMAIuIkjkd5Vio5u2kqXuV12qg/Eq5jwyCtOyHCH5vv2ZA0OnArzlTwNkC3sC9TH7PKfEAkJaR3dUCdLfKPI54LhKwagZrZjK6uqRPMw2jOZbI055wLVojMXKx6k5kj450bJBtU+uL0UWGqflNhis0T3xcn+RbZCd5HjTQlesGqaqAR3bA+sMD65znfxSLDKtlPWPGpVSivKc8y/oSDaep6yCWoKr7L7e5lJRtMwWDF5Ggc+dU07v5CVca7NX36sWKN0x3sYgD7igtqxWfwYub7zfzd2QF5nH
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 423DC2001E
+X-Stat-Signature: g9jzpn84qfyfgyjs14s1w3fuo67oqcpz
+X-HE-Tag: 1764350033-121870
+X-HE-Meta: U2FsdGVkX1/EukxW0JZlQ/dgxR5Gyf2aPoQStH4M6KvxdJwLfswPJPbOgKWszIuVV2QIQlWFPBz3xCkr4jKCqMjhpQ58VvFBoUpeH/+M6teoK7iHPtkcNCPzG3RDFOP4co/mz5kF2/YR4kqXo0PCA3wpqmgRw81KumP0+nAvjrnd+OdBVJ21w0wD6lHOQkKPgoWSxlmm3MbQesSdqLikcBribjo214WHFsrSu74fY8mYWGYiq4jZE1ju7tdy96UVeovYYLNzdxau+h9NHUdFMmnMcEbzKY02HoW2sNyK9mYFR94BLRbJkYdCwNWpR1xMUIJJm10Z4DIj6iYTxBCDDs5x9yCsF7SC6nZ3g2pEMHi1rhVMOfHX+kWCN5iRPQeEHzJXXblOeae1assrfIVt3INNusKIv2H9GjcBr3DOKodAZ9RoynbMR8S5fQo4uVKNRY2SrYMYd21ZNEBqOogn2A0mMftW7JHwOxrZJypKPG/gDgR2Oieb00Dfxnh3HeLX2FLTPd68ImYaNiEl9W/CuzWxWlVF6jXXjZSdQ4coWDID0PCqQCoVr2sXx4EpKlF6Ij4NLzoy7udNiivgrNMsAsFUaJ0n1Qp1oOILElCrTBWSVKLDDe3XTS2jUSuGw7RvNHPcyfU2XdVGTPimK/mQuJ+0pR7tMO0Yb1E2vY43YS+nCaidWL6Zp15s1GJ3pDLvefuPsqG7VYf7MsRJpjKerBRobguhkNAmLIt80PjsRYtME0X4y8WCsClx7pVzrcBE8gkqNXDdyNf//9ELk2IYznbQnMOeYBSykNQFhWE/IE4JRAqPCHlN2Fb4iovROcv6SWB2dUeH4mY30vgPqUCUjliR1fFO/3PF5ycU0oOS4fpgzn0nyhfLfu5jnFMRgsCNf99FdPHUSEpCwwSDG7lkICftRl+3KKacByDIdK8EFk3vIuwn4sGo0yQ2XCTGRztCVWBo6Qc4SCGZ/Xqh6J2
+ lcUxJgil
+ D/Zf1mGhfhFCZRtJu+SCr47eXegcnAiPMApxu4fAO9HeySns5DYvXQ3HR1GeOvRBzl/5VBqc+XLFvB8Te7UEYfUydC9NQ1cJsFFrPGVxISDQv49gMnZ4XJyo6aUhWv6MvZKrK3nHsm8UP3Gh3sn3m+hxxPe8L4ENiLfZBX1vP7G17u5VALjNRuL96L12ckMFg5fgfTNYSxlC1bcKgD7pWBMbhRus0EpRKMukLwBmHD5STz96sxMHd00D4PaC2GsSOsSy7RI8b5nYnWaIVFPgzU2pK2oU9QgB4Vt2AtWvCbQj4zn80bLGbZlYYyR3df+uhQs6lPR3FeuElQM086CI5/tb/k4arNdUCiE2u+FKLummakHmHQHH634R74e49lp4iiaE902Qy87Doc5Bcml6bneOqB9Koo+/HAp7wO94iNfR+MLKv+zqVysFoLFLeW6V8nb/Li0fVA8k5/BC3vcse4ZZQMGNaEFkZ33baBJdA5cZTa7ecsur8zJgHbwA8Lv+xI0oZ+yEyosf7QJc4HNhs4ZduKer425j5KLVORk58QboBulDWjkugBd6z5kQUkTXyQiWAaqqiEhwJ3KljwUkmjt1Y4lPAUZY4eGqtAHsEwMbmufs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,110 +131,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We don't free page in zram_free_page(), not all slots even
-have any memory associated with them (e.g. ZRAM_SAME).  We
-free the slot (or reset it), rename the function accordingly.
+On Thu, 27 Nov 2025 at 02:58, Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> Ha!
+>
+> As said elsewhere, it looks like 32-bit ARM has been missing updates to
+> the fault handler since pre-git history - this was modelled in the dim
+> and distant i386 handling, and it just hasn't kept up.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+I actually have this dim memory of having seen something along these
+lines before, and I just had never realized how it could happen,
+because that call to do_page_fault() in do_translation_fault()
+visually *looks* like the only call-site, and so that
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index eef6c0a675b5..d8054b3cafaa 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -56,7 +56,7 @@ static size_t huge_class_size;
- 
- static const struct block_device_operations zram_devops;
- 
--static void zram_free_page(struct zram *zram, size_t index);
-+static void zram_slot_free(struct zram *zram, u32 index);
- static int zram_read_from_zspool_raw(struct zram *zram, struct page *page,
- 				     u32 index);
- 
-@@ -927,7 +927,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
- 	prio = zram_get_priority(zram, index);
- 	huge = zram_test_flag(zram, index, ZRAM_HUGE);
- 
--	zram_free_page(zram, index);
-+	zram_slot_free(zram, index);
- 	zram_set_flag(zram, index, ZRAM_WB);
- 	if (huge)
- 		zram_set_flag(zram, index, ZRAM_HUGE);
-@@ -1966,7 +1966,7 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
- 
- 	/* Free all pages that are still in this zram device */
- 	for (index = 0; index < num_pages; index++)
--		zram_free_page(zram, index);
-+		zram_slot_free(zram, index);
- 
- 	zs_destroy_pool(zram->mem_pool);
- 	vfree(zram->table);
-@@ -1998,7 +1998,7 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
- 	return true;
- }
- 
--static void zram_free_page(struct zram *zram, size_t index)
-+static void zram_slot_free(struct zram *zram, u32 index)
- {
- 	unsigned long handle;
- 
-@@ -2197,7 +2197,7 @@ static int write_same_filled_page(struct zram *zram, unsigned long fill,
- 				  u32 index)
- {
- 	zram_slot_lock(zram, index);
--	zram_free_page(zram, index);
-+	zram_slot_free(zram, index);
- 	zram_set_flag(zram, index, ZRAM_SAME);
- 	zram_set_handle(zram, index, fill);
- 	zram_slot_unlock(zram, index);
-@@ -2235,7 +2235,7 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
- 	kunmap_local(src);
- 
- 	zram_slot_lock(zram, index);
--	zram_free_page(zram, index);
-+	zram_slot_free(zram, index);
- 	zram_set_flag(zram, index, ZRAM_HUGE);
- 	zram_set_handle(zram, index, handle);
- 	zram_set_obj_size(zram, index, PAGE_SIZE);
-@@ -2300,7 +2300,7 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 	zcomp_stream_put(zstrm);
- 
- 	zram_slot_lock(zram, index);
--	zram_free_page(zram, index);
-+	zram_slot_free(zram, index);
- 	zram_set_handle(zram, index, handle);
- 	zram_set_obj_size(zram, index, comp_len);
- 	zram_slot_unlock(zram, index);
-@@ -2522,7 +2522,7 @@ static int recompress_slot(struct zram *zram, u32 index, struct page *page,
- 	zs_obj_write(zram->mem_pool, handle_new, zstrm->buffer, comp_len_new);
- 	zcomp_stream_put(zstrm);
- 
--	zram_free_page(zram, index);
-+	zram_slot_free(zram, index);
- 	zram_set_handle(zram, index, handle_new);
- 	zram_set_obj_size(zram, index, comp_len_new);
- 	zram_set_priority(zram, index, prio);
-@@ -2725,7 +2725,7 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
- 
- 	while (n >= PAGE_SIZE) {
- 		zram_slot_lock(zram, index);
--		zram_free_page(zram, index);
-+		zram_slot_free(zram, index);
- 		zram_slot_unlock(zram, index);
- 		atomic64_inc(&zram->stats.notify_free);
- 		index++;
-@@ -2833,7 +2833,7 @@ static void zram_slot_free_notify(struct block_device *bdev,
- 		return;
- 	}
- 
--	zram_free_page(zram, index);
-+	zram_slot_free(zram, index);
- 	zram_slot_unlock(zram, index);
- }
- 
--- 
-2.52.0.487.g5c8c507ade-goog
+        if (addr < TASK_SIZE)
+                return do_page_fault(addr, fsr, regs);
 
+looks like it does everything correctly. That "do_page_fault()"
+function is static to the arch/arm/mm/fault.c file, and that's the
+only place that appears to call it.
+
+The operative word being "appears".
+
+Becuse I had never before realized that that fault.c then also does that
+
+  #include "fsr-2level.c"
+
+and then that do_page_fault() function is exposed through those
+fsr_info[] operation arrays.
+
+Anyway, I don't think that the ARM fault handling is all *that* bad.
+Sure, it might be worth double-checking, but it *has* been converted
+to the generic accounting helpers a few years ago and to the stack
+growing fixes.
+
+I think the fix here may be as simple as this trivial patch:
+
+  diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+  index 2bc828a1940c..27024ec2d46d 100644
+  --- a/arch/arm/mm/fault.c
+  +++ b/arch/arm/mm/fault.c
+  @@ -277,6 +277,10 @@ do_page_fault(unsigned long addr, ...
+        if (interrupts_enabled(regs))
+                local_irq_enable();
+
+  +     /* non-user address faults never have context */
+  +     if (addr >= TASK_SIZE)
+  +             goto no_context;
+  +
+        /*
+         * If we're in an interrupt or have no user
+         * context, we must not take the fault..
+
+but I really haven't thought much about it.
+
+> I'm debating whether an entire rewrite would be appropriate
+
+I don't think it's necessarily all that big of a deal. Yeah, this is
+old code, and yeah, it could probably be cleaned up a bit, but at the
+same time, "old and crusty" also means "fairly well tested". This
+whole fault on a kernel address is a fairly unusual case, and as
+mentioned, I *think* the above fix is sufficient.
+
+Zizhi Wo - can you confirm that that patch (whitespace-damaged, but
+simple enough to just do manually) fixes things for your test-case?
+
+           Linus
 
