@@ -4,94 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E34ACFD376
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 07:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC9DDD116EA
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 07:39:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40E376B0023; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
+	id E50556B0027; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BEFF6B0024; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
+	id E28456B0029; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D52C6B0027; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
+	id D64B96B002A; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D1076B0023
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DFF289209
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:36:14 +0000 (UTC)
-X-FDA: 84159207468.29.974102C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C5FFB6B0027
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76B8B13AB57
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:39:54 +0000 (UTC)
+X-FDA: 84159216708.23.D93EAD1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D34434000F
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:36:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrrHHsHU;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9EF431C0009
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:39:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UP0ipruO;
+	spf=pass (imf21.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764315372;
+	s=arc-20220608; t=1764315592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nyOJQbdW3Gq0Bb6MHseviCpECS61Cyxq1QxdXycVmgM=;
-	b=cTTvbWFqmEJ4lWE8JE2kyceRNQBGdZnUlTeoxDFVReTGDusy3Gi/tuW75nqoBWW8fBKSoh
-	Z0t1YyTDEs5PUIKKz9e3XYJHzncyERViF8zist0MRg0NgseSIxBHMDVhKXM9yh8QUi9NIH
-	BQL5HUzm/1xZF7SI+spEfRDe4DOnDUQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764315372; a=rsa-sha256;
+	bh=gMhz0tO6gK8SEa9yVLLNq8ATyxhbO6B/DAim97HTDPs=;
+	b=Sua/DhBdvqmMU4lQXXZXEVyR6ui6B0yjKj2Zms/uPs4YCgWBsrJP4z2PHq0Qet/2KwLEXx
+	vcdC2HjuQQxhwQGAWjHZCfuE1KkKBx1JdXlxsZUyN/BC04wX5/JX4G/2F3z6jGxggEatL7
+	QirOse8PS5BveMMxWbm5GtGoUwid0Gs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764315592; a=rsa-sha256;
 	cv=none;
-	b=TxvS9/AYd6/sqqZTsf0dE3/aH7EGzJSYXJ0Jy1HG74SGSgV4vKB77e7X0QsQVLmyOhMGdl
-	Z0R2OdHE7g+U9vOWk8tJnbIwZgslakMYuE/fJx2cVXbcuX13W27XJxymxJShy27v/kzugg
-	A867iMeT7RcZEoPdrK1bvy6/FC0mdqU=
+	b=xkjYn37YjhUXaEJSrz4XLRreJTpDx+783Fi89vJtXc9qk/KlR6KWv9kkMbiODm/xSxNqkq
+	Pq1muBVK/5YzTzTD9++sOEwkaDzrPQW1Zlg6SV5DAmjIlxKgfYUxDvw/uC+or6UKvwGvw6
+	83rZOP27BeAAYYeicEqQUuALYDsebJE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrrHHsHU;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UP0ipruO;
+	spf=pass (imf21.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B356842E01;
-	Fri, 28 Nov 2025 07:36:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599B7C4CEF1;
-	Fri, 28 Nov 2025 07:36:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B75AF41A30;
+	Fri, 28 Nov 2025 07:39:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08BDC116B1;
+	Fri, 28 Nov 2025 07:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764315371;
-	bh=8dndaidv7PWdI9f8/GeBMTDI2VguxBhw3M/fNnSgSBI=;
+	s=k20201202; t=1764315591;
+	bh=L3fUvx3/4h6sB/neiDyj0+7nKMrKXGD2gImaI/RwOMI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nrrHHsHUrLlLfaq4SklPUnzUaCWikqrMZGyRmcI0edgfE39prJtGrl6Q1rPCOhD/H
-	 eYJP8uOcHPDXDRpXx1l5haNcDfsXMl3Q1KxqV5Vw0W3wsTHxepowC3OJTL1nDr9YoO
-	 gIa/oANTVa8HEG8QKdyr2XiJlAuYnoPjuV74BuKh4gi+0DvA2ShwaJoHiogCsc0mZf
-	 /tNQfRuopsB36bwi/HSSSYfCxUZ8BCG7XmbktEkX5RvvMA4Er2jhiNAYSC0p3L1XpY
-	 Au2Hphs0H8ru0T50gjxuzWMiEQPy9qeC5UAzvPiaOo2UGfwssaZZYHgDolcl+bELtF
-	 My28HZWFK3vTA==
-Message-ID: <3cc7d401-c77c-4ac8-abb8-c264fbd9aaf0@kernel.org>
-Date: Fri, 28 Nov 2025 08:36:06 +0100
+	b=UP0ipruOgOTR/Dg6FIwQ4nodKu+6zNOYwMdVq0WDRzVsRbhBXGIf5AkCZrqZIfM2N
+	 KaqzYIk1Zgbhqro9VPRn4M6Ez94pATD4lidhtfX0sFDJxf/Av5Jttb4cN1ZKqmYUoX
+	 zlBJsdX+X1PPFL77TctY5FK0/4irX6c/Zs/I/2h4IJuu896+DqRsa6mfWGHDvFN/SR
+	 w1PKXsHOMsaASBG0ub9ldcJ3JnoWrSCMtQ6I1bQauSsY3nt9pJFGovMUacwMfFjPJN
+	 8EtPjFRO+WgeujcFWzvUasot96xbLtqzu6lDV0hMlBFY2jLCBsNkU98PPLMmBvFSoK
+	 Lcai1/OO4Gbpg==
+Message-ID: <6d2605e8-409d-4b4a-9729-599dd2526b74@kernel.org>
+Date: Fri, 28 Nov 2025 08:39:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] powerpc/pseries/cmm: two smaller fixes
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20251021100606.148294-1-david@redhat.com>
- <557b5500-412a-4d26-8c4b-147c9a00d5fd@kernel.org>
- <87zf86n3vq.ritesh.list@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <87zf86n3vq.ritesh.list@gmail.com>
+Subject: Re: [PATCH v9 1/7] treewide: provide a generic clear_user_page()
+ variant
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+ akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
+ hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
+ peterz@infradead.org, tglx@linutronix.de, willy@infradead.org,
+ raghavendra.kt@amd.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+References: <20251121202352.494700-1-ankur.a.arora@oracle.com>
+ <20251121202352.494700-2-ankur.a.arora@oracle.com>
+ <189bc218-8f19-4686-b2ee-5ddc6a0b4684@kernel.org>
+ <d3d68f78-bd76-4cf2-b20f-a0f7c838124a@kernel.org> <87bjkq8s7a.fsf@oracle.com>
+ <87tsyf58ro.fsf@oracle.com>
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <87tsyf58ro.fsf@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D34434000F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9EF431C0009
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: b5fqrz6ou6yguke8ntcpxmsyx3bgiph5
-X-HE-Tag: 1764315372-699552
-X-HE-Meta: U2FsdGVkX1+cWsMWLSekjWdRnnfRyrq2obccofpV/xmxDgTMi1Yzj5JEJd4N8QmOVrkLtz7fcHlr4cS7Z2cDMrYZZU3FG2IFb+znMg/co+sW49grFFvc/Pe+7/5gZ09uCTt2pW/+XNDQqfyC4p9OpH50cxKpu7Q2d7Cb9RFHWQanGKx9Xn7t0I7API9I4J0Bgz3q56LEHJmY5B5kBdeXtxCPyjPOOxZ51wNP0CPQ/61HQr/+QHix2jLgyRiMj3CWWd9aBLtdztkDRHo8EZRVN0tiqzDC777+fx77NHMlB3TMYDkE58+QT5qHWQ/6GCpuPWooa0Yok+WLNb06cCROcqXup76OvRHjJhweCv5SL2KtCAIMdi01OYNG86EJU8V8+7+I19ZWqKs99QR/QLO3SDusg5nBDJM2/nrnps76dasDtlqy1ZOEmS/Z3nHdjbZj+DOtkvZ9iiSFVHpZGEO7YApVV62814Na9CKCtLWk0VbR4C5Pw6i6requNRpLcI0Uxmnh1YH4+AuZMqeLGf5NNhV03o8CvUcQcd1Ngvfn+Dyxq5rMQJKCxCdhBESLUg+woKp88ee9qXId3GXcCMfWwtb+cCivxVP6xYVXGawgC50zCM5/IVjhs4ej+pTCic2aEXM50Vbasmpr4xG6tfzSru1XnXBGbDn+yEw8L7uxzpIxXhp0SGqiS1v6kEGvJ9FaDY9HTknum3j4hHUztdS/oP+kIgXC7LhM6XNQ4RFPBumR6DvHgwActRtqVKNS4NC8DAkFvZdtLvsb5O9e7KZuVMChw0LxCulbbO6fEIgL2ptAhOVOtZ7ui1+zU44m0hQJzi0LuyxfgttBJrG2EOdWVSTkkWLmG5XklZtAu2UFgnGzd+dpjzmfCWjtTxp5OcoUtmpaAoMZ+rsAj4ZInQ77Kuv+MMNZQcojU7h4Pds2Qi15u5/LtlE0rvYT5I4lqNn8bhOq8EjtuXOoIqUUHo/
- 6A0bU5aP
- xbLpF42Q9SuqLjcNWBpWJAngwJjnoNkSnWLaRU5/4wo2fKeor+/MKp8+7ISr9jbrK3F1Rly9XW7vuOceFWB8nt5j8B/6cICqooAfYHolNp+fjKvPP1RNX24aGqSe/rIE0Apa+3Gh4ueOlidPS9Tu6+P8fqVYki+N1X/9zr16s9cBNmWAuygKnLYijf7H7+BYb/xqe4WaBQCn16akf+iIZUfqvAgoYW6RjG6K97RpvCaAofrtcLAoXozwXYgWHPHavEuJKq74AzkB2lWgdrYL/uSgR5tQVKEE/CmVhDjR8Tvobiigl/XuxorgrM1CIq1diXAzp3Bryc52wbEQWTmVC2/STvWgE2lsJa88H/bFsFKLgYXoPhj3i8aDSNGIao4eUwDv6e2bRAN7AvWFPXN8TV7DNJg==
+X-Stat-Signature: xtzrknihdt9zu4hses9c59wuzq4hr8bf
+X-HE-Tag: 1764315592-890752
+X-HE-Meta: U2FsdGVkX18HZRVVXklbMGVIAZ9Ges76u3I3+qKgepHAky75/IzKjOIdYDX39bM1Rj5Yrmy0fZTkbqt/UsyyaZv0dP2+PrRzHy1fiyXgajIyRaxZ0kMUBtbBoBBUkDljIUKyHSQXmmzKyD8S4h6RwyQ5vcaS8MriNdWYY+tNjsA2wcyb1qIx7u+uS5fnK9CH15w/lUnWpwWn0o3hI74vDpq2CDCLkFHxYt5SLZYYEDQDjhOOU/oeg9A+lIPSCMVh5TREAXiJCJc6SbWXYu2vsYzdCw2u81JpRM3BfJj4EcuEVgsL2Z5r0sNpz1QZ8yy74LKKkq6g7KpfUxlyiobVYPqy9zHhZv5QVk0p3JK2YfiiJZ3kkNWeMOwe3hLUFX72DYzH5cETyZGSf0mjdGOEqb33EcI8KmNWGiZQCiuiv1RXWSWntunNTNsAmyeOSNgoG6Epd/c4/9wfq+a1kimgyy2uwRn9Xwol+1RFiZYbmKo9gzFcODjFbsdjgwv1DvCYgs0yv4A7BcBybxz3B7Sm7ZWRUoWYbN2QLmhU73O8HZOaN7DmbOtSe+fIlKYf3mVBeVkaSIgKkbi1mKZI92jSqXmjAenfOTsSYFAPKDpD1P3R1qzSN2BU2/saBbm/VLgf7Hc6Oxtz40Uq6UzmD9KBwb5QInPU5AlyG77K4kZblPhYfi+tkA/IENmZLofPNW6qIVkvDVjqxUjIZfssR0uH0OmY7HeEZWNqXn2bnb9elrlpFhV12Y3AfmjII1D5heXw8BDICwd7Gh0jDbos9AjdXQlDZtzic4pLcpQ/wDL30c3XYmAY/Rnpuc0hev+4SJvqK5J1jZzfcW0sp3Excnoro4GttKtYD68A33AgTjxE9MN6mOS5guUJdST+k3gtsi9aw0sT4Az8WbI8iH4AWB/lcfEclXl5RmigprpW7p5TfIRUpKvT1vnWa3F6S52YbSRgbO3KSXjxsyhe2ZegGay
+ Rd8XFeLw
+ yMTJvCExDkwlfzWouZN0r3V1ATF4G9ekGVe+A2Tr4qUlKFDqXVO/GhMqe+gPwNt6nDcVpYTQ4yV7PTyQjlsQWlB9K3mDao49FmPLRfIvkj4i+Y863XckgmQ+Q3ErrtHRy9XZ9lPiEJrkBRzFWW0L/T8KUVCKtjTwuuHMiVnZFawbD+t8G41HkCkfHDZjuv+4SytcXePdXijNP169Xxm1uZo0g6fT7bkRl9BfFd9cgBtNtstIlB2NIsD+y4zHWfvgBL4dahBzJ8sirUAB59yzP/0Wsd1rfoce9tCqRUu5f3s14YQYLkWBgu88VzjMrgb5OH6QRqcksKMyfAKFyzKu3JvHf5BJe1fmCRIRQzpCIe96bm6vxkvbONwfMGBXzWwVLaE12SyhwIrlFYx4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,67 +103,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/28/25 06:05, Ritesh Harjani (IBM) wrote:
-> "David Hildenbrand (Red Hat)" <david@kernel.org> writes:
+Hi Ankur,
+
+Le 28/11/2025 à 00:57, Ankur Arora a écrit :
 > 
->> On 10/21/25 12:06, David Hildenbrand wrote:
->>> Two smaller fixes identified while doing a bigger rework.
->>>
->>> Compile-tested only as I don't have an easy way to test right now.
->>>
->>> I would prefer for these patches to go through the MM tree as I will
->>> be sending out a bigger version soon that is based on this series --
->>> I split of the fixes from the other stuff.
->>>
->>
->> Ping,
->>
->> I tried to get CMM running again (using the simulation mode I introduced
->> a while back), but so far my attempts to get a reasonable powernv VM
->> booted in QEMU failed :(
->>
->> (e.g., Fedora qcow2 images use xfs, but the open powernv loader is based
->> on a 5.10 kernel without some mystical XFS feature ...)
->>
+> Ankur Arora <ankur.a.arora@oracle.com> writes:
 > 
-
-Hi Ritesh,
-
-> Sorry, I missed seeing this earlier.
 > 
-> Do you have the link to simulation mode which you are referring above
-> please? So far I didn't find the support of this beyond Linux LPAR
-> (pseries), but maybe I missed it.
+> How about something like this for clear_user_page() (though maybe I
+> should be always defining clear_user_page() and not conditioning it on
+> the existence of the generic clear_user_highpage()):
+> 
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index abc20f9810fd..ca9d28aa29b2 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -197,6 +197,22 @@ static inline void invalidate_kernel_vmap_range(void *vaddr, int size)
+>   }
+>   #endif
+> 
+> +#if !defined(clear_user_page) && !defined(clear_user_highpage)
+> +/**
+> + * clear_user_page() - clear a page to be mapped to user space
+> + * @addr: the address of the page
+> + * @vaddr: the address of the user mapping
+> + * @page: the page
+> + *
+> + * The sole user of clear_user_page() is clear_user_highpage().
+> + * Define it if the arch does not and only if needed.
+> + */
+> +static inline void clear_user_page(void *addr, unsigned long vaddr, struct page *page)
+> +{
+> +       clear_page(addr);
+> +}
+> +#endif
 
-When I did a rework of the CMM balloon in 2019, I needed a way to test
-it. So I added
+WOuld be more obvious if you enclose that inside the same #ifdef as 
+clear_user_highpage(), something like:
 
-commit b1713975c31ae20ecc40fd00191ee3fa51445d4a
-Author: David Hildenbrand <david@kernel.org>
-Date:   Thu Oct 31 15:29:31 2019 +0100
+#ifndef clear_user_highpage
 
-     powerpc/pseries/cmm: Simulation mode
-     
-     Let's allow to test the implementation without needing HW support.
-     When "simulate=1" is specified when loading the module, we bypass all
-     HW checks and HW calls. The sysfs file "simulate_loan_target_kb" can
-     be used to simulate HW requests.
-     
-     The simualtion mode can be activated using:
-       modprobe cmm debug=1 simulate=1
-     
-     And the requested loan target can be changed using:
-       echo X > /sys/devices/system/cmm/cmm0/simulate_loan_target_kb
+#ifndef clear_user_page
+static inline void clear_user_page(void *addr, unsigned long vaddr, 
+struct page *page)
+{
+	clear_page(addr);
+}
+#endif
 
+static inline void clear_user_highpage(struct page *page, unsigned long 
+vaddr)
+{
+	void *addr = kmap_local_page(page);
+	clear_user_page(addr, vaddr, page);
+	kunmap_local(addr);
+}
+#endif
 
-I allows for bypassing the absence of FW_FEATURE_CMO.
+> +
+>   /* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
+>   #ifndef clear_user_highpage
+>   static inline void clear_user_highpage(struct page *page, unsigned long vaddr)
+> 
+> And for clear_user_pages():
+> 
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index ca9d28aa29b2..b9b3cc76a91a 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -223,6 +223,35 @@ static inline void clear_user_highpage(struct page *page, unsigned long vaddr)
+>   }
+>   #endif
+> 
+> +/**
+> + * clear_user_pages() - clear a page range to be mapped to user space
+> + * @addr: start address
+> + * @vaddr: start address of the user mapping
+> + * @page: start page
+> + * @npages: number of pages
+> + *
+> + * Assumes that the region (@addr, +@npages) has been validated
+> + * already so this does no exception handling.
+> + */
+> +static inline void clear_user_pages(void *addr, unsigned long vaddr,
+> +               struct page *page, unsigned int npages)
+> +{
+> +#ifdef clear_user_page
+> +       do {
+> +               clear_user_page(addr, vaddr, page);
+> +               addr += PAGE_SIZE;
+> +               vaddr += PAGE_SIZE;
+> +               page++;
+> +       } while (--npages);
+> +#else
+> +       /*
+> +        * Prefer clear_pages() to allow for architectural optimizations
+> +        * when operations on contiguous page ranges.
+> +        */
+> +       clear_pages(addr, npages);
+> +#endif
+> +}
 
-Back in the days I was able to test it with a pseries (or was it powernv?)
-machine we had here at RH. So far my attempts failed to test it in a
-similar fashion in QEMU.
+Not sure to understand the logic. You say this is not expected to be 
+overriden by architectures in the near future, then why do we need that 
+? Can't we do everything inside clear_user_highpages() for clarity ?
 
--- 
-Cheers
+At the time being clear_user_page() is used exclusively by 
+clear_user_highpage() so I expect clear_user_page() to only exist when 
+CONFIG_HIGHMEM is enabled. And in that case clear_user_highpages() 
+doesn't call clear_user_pages() so at the end only the else part 
+remains, which is a simple call to clear_pages(). Why not just call 
+clear_pages() directly from clear_user_highpages() and drop 
+clear_user_pages() ?
 
-David
+Christophe
+
 
