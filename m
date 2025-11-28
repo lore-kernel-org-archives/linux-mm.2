@@ -4,97 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FDB3CFD376
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 12:39:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F018FD116F1
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 12:52:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E58CC6B0031; Fri, 28 Nov 2025 07:39:19 -0500 (EST)
+	id 2D8536B002E; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E30146B0032; Fri, 28 Nov 2025 07:39:19 -0500 (EST)
+	id 28F0D6B002F; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6D1A6B0062; Fri, 28 Nov 2025 07:39:19 -0500 (EST)
+	id 178F96B0030; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C16986B0031
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:39:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 726E31605AB
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:39:19 +0000 (UTC)
-X-FDA: 84159971238.02.7D176B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9F99740008
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:39:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pZ9LaEnw;
-	spf=pass (imf01.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 06E176B002E
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:52:25 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C0E511A053C
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:52:24 +0000 (UTC)
+X-FDA: 84160004208.03.12002B8
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id EC03B180009
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:52:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jPjKIQmZ;
+	spf=pass (imf16.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764333557;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764334343;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BhS1UHOlZ0zTu/sEX4vpXCuhVMMva0NKWYGwDaSpbS4=;
-	b=TpCWsqxVT2SN9tUzrDTsIVgGHs7TdSScyQVOVdFvw1WTZvzONRq6AHiYojYQdNXKm42Wqm
-	gkgVg5InVc/xRhvB2s8Gma38IAGs5zzavbt9u2AtrhLeySC4XyuJYFJoSUHOwSMvRoQIdL
-	1Ye6W+HML4s5DkdoW2MTTqQw128LxrQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764333557; a=rsa-sha256;
+	bh=IaJqHHvEOEOyHC+8The6Gg0uY2rUdA1lvq9vEry25rg=;
+	b=vfg0CR0/7pKy9rTkBxb32oGjsZyadKjflPgmC4yZvKxx3WYjXcDZZhkff2OEL7eRXQMpUR
+	3pQQ1GUaDbapLdjVOczokglwaGzoSViC7vn0dcDDTvSX7uLSJeUWarnjqrfEptRqm+N+aC
+	GOMgAZMcDIw3EsNNsX028rlA+6jcr+k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764334343; a=rsa-sha256;
 	cv=none;
-	b=06dVQTFDBUeZhSIBfIMhJnJVIqhWg356mcjxbF5WoHDV6MEMxrNGmxSwqR30iBmRjeWAvn
-	zUHmJS9gwA/Ldvd1+u9a3tHP0ixt21NF2X9Hx4A6rwdBwJteObWQ6CDEqpXtvQpdWN3tL6
-	OSFnFKYn74DFPy2ZxG5rhToTGvS/DMA=
+	b=haUfKELlC8i8ShZPU9PUWEuZ4R7UMHOgj+21gupuo5ZqF7k8A5lyxjVImtHvU0IdEXJrWj
+	L/2Jvahi0uvmCEPygytrVOtpTYl7ajtF2w3IIOJ56tQjHbQJsX+qyMqtKGO1yWFMcQUKL5
+	06Rr92IZ82zqdhrt2mEqlXxOfPunTNY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pZ9LaEnw;
-	spf=pass (imf01.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AFD0C60154;
-	Fri, 28 Nov 2025 12:39:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E500C4CEF1;
-	Fri, 28 Nov 2025 12:39:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764333556;
-	bh=g+SkIfajbV0hqvLZ2wup7Z47s5dD85cBMdZ7+aTYs9E=;
-	h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pZ9LaEnwtoMzE2wP2JePzB0UIbDFe/z9WwsqJMrJ6cu8/bpETlbYrY84oneD3Rkik
-	 eQQX0YSVwarX9f71FzDcafq2O+YLCxYZB6Wo1LRQZ9kkbJx25PobIAKjp3XyCr+4EQ
-	 uOyDZo9HbPpk8BUZm2PlqLrPbneIgJr0SFU4xMvNKThQDt9V9IsR2fLb9sqNFP4k8p
-	 Oyxdf3sZUU9P5Hw4UT3x0zX7fvyobkyNDnN+e+tX1I/rTHSs4xaXXu/na9egoDsvhv
-	 E2puVi41ZsqqSRvNPDLTV/OnRNmuoq1+j9Hfdr63UB+JEVNZDlCJU04xKKeF1UZj1O
-	 KbWaa4cLAs83Q==
-Message-ID: <1f19b775-d670-40ef-9147-2dcdce62b56e@kernel.org>
-Date: Fri, 28 Nov 2025 13:38:34 +0100
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jPjKIQmZ;
+	spf=pass (imf16.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-789314f0920so15388397b3.1
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 04:52:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764334342; x=1764939142; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IaJqHHvEOEOyHC+8The6Gg0uY2rUdA1lvq9vEry25rg=;
+        b=jPjKIQmZpfSrcMVAJMC+3v80D29iZAAZ2y3zo55fLsIQ0Bn7X0AVyV8nQGT01pxnOZ
+         6j01QmmHviGltOL0SXq2DNgyNeTl+RglM3wk/FsQZ32QLKyxSPyxMou/S3cFvFRsJYvX
+         y7n13sv3IswmtG3Z19bnPKAHw1didIx81mQDR1v7g6c5+QQ2n1egtwmN5a7jB3v5N/d7
+         f6BVl+Fwm9PsEQiKrXDy9A9f2Ith5pftrP67ok6iqK45pbXPf7qLwVW9gqau1hbxa3zX
+         HJ173aNbAVxRfNCuFEQiXsNo939qo/iHh3JY0jO5VpgqhppOUYwRukCCJVN36cLP2Yd/
+         GFDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764334342; x=1764939142;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IaJqHHvEOEOyHC+8The6Gg0uY2rUdA1lvq9vEry25rg=;
+        b=bbuEXPZ3kYGybGjaZZyOuBDr7C1pRQV9gwxjgq6cdnX4xRqydjv4MrZ/NLpe8RhEVX
+         QUnHjdoIY/XhOQnPcb7VuxPV4m9xVWhsltSWOaCnvk9ArEUavQOFkZu4j1k7ERa6jvFH
+         CMWURobfqPcCcVnUkADz9UEW16Q+Ml2nGkYk9AEHS5zWE5Ql9FmI7n3h+TVVoPDBW/SF
+         CJC7C5+QXuDlirBa79WfUeHvxDymCBprwokQfInnu0Wp5O7X/WW70ScRey8ozxumkOkz
+         CnLFEwOYom6Tp+jesn/zAPvY6I10aYB7UZ7GE45Wf++r/4fLypwnc48XvY3uuaw+iEOM
+         /xeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVgW/BDbRzybDA2BKx0ANo0zLh7Ga17tZ+o/z/iED//1Iin6AQq1tPJFWkqFJvFcI8A8LwW7vWM6Q==@kvack.org
+X-Gm-Message-State: AOJu0Yy6zqwxjnoQ2wpcC4fGeQ68LT1AmtPMBjm9YdwgniN4LSWCCVXt
+	7WG+2QnDqxxyVmc4IxYsmCSQjStzxuG/+iRSmHHCAlbVUCdpvaYCV5FRAgteSS3EYBt1LSWA4gT
+	IF1cpl/pQ17yBWEPhvZ/N9xW/SQ7Vcfc=
+X-Gm-Gg: ASbGncuemS304kty+6hwHktLH/Z+E0/9gce8YmzyRbXR98i8gDprjlOrr2Fcw5TtfES
+	Dey8yEXUKQ3hqwNYLpj8TaMYJcqBLbX/CzhqiSubduK1/nKa2pl2kAKUl6GZcJe3vcN63J7EeqN
+	Ksoi3WhawwpksQJ2X6LB9Oz54ZBLmdU6XLVMlNasPYPpQ4NOHR5sBAYz5QobbPsh7aUKwypB9tT
+	aV56WZKWVuODLOmVyycOjXjUnXhxR5z/raEvAlvNAvMBLaC/3bV/Ycxe+KT+5h4lQ13WhyECyMa
+	ZrJwxvs=
+X-Google-Smtp-Source: AGHT+IHFAwArfULn0f8hVfIIvR+szkl4hyE5JvWr5ut7aQy5zexLaRsPQvxenCpRtcJtHN+Xt1JIW24w2z0pfxej6TA=
+X-Received: by 2002:a05:690c:708c:b0:786:4ed4:24f0 with SMTP id
+ 00721157ae682-78ab6db1675mr119567317b3.5.1764334341850; Fri, 28 Nov 2025
+ 04:52:21 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Daniel Gomez <da.gomez@kernel.org>
-Subject: Re: [PATCH V1] mm/slab: introduce kvfree_rcu_barrier_on_cache() for
- cache destruction
-To: Harry Yoo <harry.yoo@oracle.com>, surenb@google.com
-Cc: Liam.Howlett@oracle.com, atomlin@atomlin.com, bpf@vger.kernel.org,
- cl@gentwo.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, lucas.demarchi@intel.com,
- maple-tree@lists.infradead.org, mcgrof@kernel.org, petr.pavlu@suse.com,
- rcu@vger.kernel.org, rientjes@google.com, roman.gushchin@linux.dev,
- samitolvanen@google.com, sidhartha.kumar@oracle.com, urezki@gmail.com,
- vbabka@suse.cz, jonathanh@nvidia.com
-References: <CAJuCfpFTMQD6oyR_Q1ds7XL4Km7h2mmzSv4z7f5fFnQ14=+g_A@mail.gmail.com>
- <20251128113740.90129-1-harry.yoo@oracle.com>
-Content-Language: en-US
-From: Daniel Gomez <da.gomez@kernel.org>
-Organization: kernel.org
-In-Reply-To: <20251128113740.90129-1-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+References: <20251026100159.6103-7-laoar.shao@gmail.com> <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com>
+ <CALOAHbD+9gxukoZ3OQvH2fNH2Ff+an+Dx-fzx_+mhb=8fZZ+sw@mail.gmail.com>
+ <CAADnVQK9kp_5zh0gYvXdJ=3MSuXTbmZT+cah5uhZiGk5qYfckw@mail.gmail.com>
+ <9f73a5bd-32a0-4d5f-8a3f-7bff8232e408@kernel.org> <CALOAHbCR3Y=GCpX8S9CctONO=Emh4RvYAibHU=ZQyLP1s0MOVQ@mail.gmail.com>
+ <48878c07-6e8c-47eb-bc8e-13366c06762a@lucifer.local> <CALOAHbBKxHDuGoND5xwxsScKY6aW8eiqE5QuHppd25RpYHf_pQ@mail.gmail.com>
+ <f60522c2-e10f-45b1-9501-9b1e4223d8ce@lucifer.local> <CALOAHbCVGX3C6mbbH+e5bB2=Cnz-UVbEVBXZWP3fvhqGe9LSXg@mail.gmail.com>
+ <600a793c-4000-444b-bb5c-2023f7198903@lucifer.local>
+In-Reply-To: <600a793c-4000-444b-bb5c-2023f7198903@lucifer.local>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Fri, 28 Nov 2025 20:51:45 +0800
+X-Gm-Features: AWmQ_bmzNdWxaf5edAf5hNm2J7xYf3uPCO4yxzK9O_LWX4sRpZLLAEg74C_5rno
+Message-ID: <CALOAHbDYiiv2HaTayGzCB=D_kwLPeV=xUcr_fHJckopF_pMQuw@mail.gmail.com>
+Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
+	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
+	Randy Dunlap <rdunlap@infradead.org>, Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EC03B180009
+X-Stat-Signature: m5d5jdfsemwzci95kmgiscc5abedeids
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F99740008
-X-Stat-Signature: a94jzoxyzgistcttzj8wx6g671xsg81j
-X-HE-Tag: 1764333557-907922
-X-HE-Meta: U2FsdGVkX1/PuRG6IWpuqIBFbNAH/If0saBCRV5L/fTUF7mJlOtkOYD6JG8H7RiEa+LCYsrJ8SWKKk0w+LRPmnVhDi0farO/CEielEbaTxxocgKVnCYvMERZAyEjZWIpJ2tlLGdb8LEQIRLif04Z8iLVextibniZRJ9w+sqLoTgiZjuey3JxU6nh+q1xHuZJVyewftPi/PijEW3jgoGZSjqt8NwYaJVegYg/11IcPaJnOcY+5oO1MvYJUXbte/wkfDKjW9YQzfyI3+QGY0yP9josz+jgKz6nPf41KB5cmUlDOQ91hTup5Jw4+dMAjs4YzLXwzBN6U1HTx4lZr2rre1nyGQXqRP0/DR34rlcnGCYlKznDoGt3V7vLRo5hmnySdbHY73a9c+1xxKY37U8IVos26CxQ94lu1w8Nq68MARkMIpene04SYkNNajgDAIR5mlSdv7cx8ahewZ6hFl+oTqTmdnEEZtHz5Z3IS4LgREZaDBpWnaoT2zt/+nAIMDS+q0Omq3otefebbUisZDnrLsRD2C+VWIuxQbChfsQxGlfB08A9IRkF17X7Mrnn4HaN00ztQwPrNVt3w38YnV7snCaIiCkTyiMQ/o4HN8uKQgO2kP0HzvtHYIT/g9CUxTTIK+SJWTPuXytMbYAI4CoZcAzOb4CbM10kXBL4WSxK9vNYlaEbE8wNpsl5lHmppvWeQIxEH2ueC21ZvjfxIqmImEjgWO1Ssqv5jOUQg95feBVxKk0Hb63G5U6MQ1e89j9WHXDa2QiNeBCVh9VySTn4FTdnJQ1b3Cj10pcAFtfI9dDz6N/4HPnJVbM+N+mvJnXAthmIwtZmZ2e8CLJqJaugmO0UpO62OzPN4odnzELWVmkCh8RqwH84OhsblnLnGrKIy0EVkatrbbrD15NEAVPm+dF3rr8H1bLA6IhAaQb4mRBwdVjw0TfgKAKjyrtW1lWmhCxb8f4D5SqX5xSgfIe
- Bhwo3iRw
- h3ndmP1U0deICMUSph15NLZBLbJamlgur76mV4r3pnxf7sSjQsfEc5s/KXG+l4QZIXOZsjF3OOZPHXKlKH4ZTzHasWbxBhJamQwUR/e9lNJ3cCZe7xpOaPPn+TwxMR3yMHjG0rwniT0KiIq0e7oA+4ez1P+OzEogVEw2n1LL4hSG1ckuFnU6Qo4Di8NMPoSPiYUZWxW0y6ny4pQsEvVeBo0hYqDHYl4tb3zcDbWbYv0y8F2nkEy6gRxgCOFEUOEGo/IxyTcLsYI1Ui4vQIGU22FfQjEdcJoxa2xCFGN/Tm7nl+yCTjutyJcLLtsuBLVK1MEGC41O52bBR460QT8d9OzhpNn0SEJMtWJDAppiQ3qdT6fgVG4qRpCLyyM3nKC4R9JBWuu7tP3AWaVpC+my5Jt+zF0Qi63iiPavPs1TVA/BYhypjRISCbdjUCUrScW4OdYKMQ5FGGdmxAy9r8bb0IAsM+rCtu7VKcBSeIV+aHOSV7jZqDy9pcmXHV8C0JXhIwW8hqAovpvm87ujNl2Tr1aMzsQ==
+X-HE-Tag: 1764334342-484329
+X-HE-Meta: U2FsdGVkX1+Bl6N/HjqCfD4H3gb5ETeWdaabSYtZGQc44lwd9S18MqeK1lt8eOwb7gmBFVdSwevDZkjkm33I+YjG77QGEjyRbMJVqH1MEwcJdT84l/G23DiKHbv1WMYz7jheel0dDXOEmTDVUkPDmbYIIDVJdT9Ji65iw9Py41tp+s/tiW5zROcnGP6ixiwVc1lZIoXfvpeE+VTdgTMwffGXXhF22U7JDDXSOaCVHTLQawop9l7g1q7XyTqYYNkpXm1PYDxCmU/VfqVai7uOrIya7YL66fXkt9BuPd1/LE7kwZiE2A7NL85PoohNnVm1DY99JM6ZGBInS9zS85gRvvTzQnyPBTtLTNiw+3BVWOkjDHYYl99cGbgBhsgR13Y3kEvNUhUKrCBQgYgmVVK8kZmm6G4geZiZKE2MMcG4c4EQhjbLHRnTlIoA68tE43oQx8yzgQ+9qjYgJVrVxvJs6/TTqPCsbr3u5ct2dT9z44VK0FoGpY0mt3uuHZMdtHYEg3VV7TZzeE/ITOk49keGXWqRqfa1ziRC9QKF6N+SzQY58tBf7legkI4sNo16Lz8ImePOLzWMdyZte0H0KiYIu9f+Vc3dDB1y4Riticz5rf8s9TWWF1I3xzfXGDo9IiwaO7rxzX7Chim+SeYm7+NQFDUiNJJmtEwOHrcEG35p2WZaBl1YRNkbI4zqXU51rFtckhApgmXubJUVyGpS5LrdRwTe9+zYFer9/Ns1VhGCqb07VisQQ1aYXGBFdLwfVJ8uwQhhBir3E3RGZsvrQKf31RVL1cQq4snmM8zfpsW2B+gLFgR+C6xwCJEIz1zc6pjTOWKQv54mxDJN5mYg5s6mwi4yABb9XEUC+W7g6iwkSASIfaIpoEVq22/zQckuoY83FlFu1BjEOgLlSNRsiLCa3Up7TMJ+gVrQ2g/b4hVehqujEvQaFrVQJgNwvNbWRRCEJAUiXobgFAucx2WIMIi
+ lrGx4IDb
+ 698fr6eKkveg/KptqUlR0ntdGTKqcNM5LePXo+G6uKa+/2wffAYk5qd/x6WyJao/slCGl9sushkGFW8LqgzENV6v9CFDiyFZZ2rxIH63MBsNYTUu5X4p5IOhKb1uoZXDHQVgq2II38HSQmK28n7t9TwndbRK05PPFC5tb9YLZvDsRd0ABL114NuAoEAtDe3hjIxp8GEqawdzd1M3yhScZO/QwaZOF6av/2M9DU55mINnBSqQuar9PtyaDyIhCTyPk8afoc9TaheVHPPdMnzAMnNbx3LcAs+dr7v7HUfpDiD6TLL6GjUkFGyqGJ9EnaKDVmFvXLACX6f1us8cojVoGiCvQFZUpZNRaD/glV8rpIj2p511k6oBICseVm60X6hX4Mzbd3q2P+LAvoRAq7kJTioupeIkDQmfR5SatCQoyQaYMq3uV9HY0ja+2AOg7J5mAtXyC+GYWbeI3mXZlo5P4WJt+v8VKJNpJLPVLoWiu8kFC4mXbuirdQYjcmO2GNd7fwDMao8u+EkveO23Vr4wmcx2KU5LskRFdW4TJUAAUO2wsNt5Lsa0K3iUAB8OYw5aBjvn4vpHIbcatJkEIqXMc4SCbDgbp9c9N6yGqHbbCHtE0Zb0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,62 +136,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Nov 28, 2025 at 8:18=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Fri, Nov 28, 2025 at 07:56:48PM +0800, Yafang Shao wrote:
+> > The CONFIG_EXPERIMENTAL_PLEASE_DO_NOT_RELY_ON_THIS flag was changed in =
+v9:
+> >
+> >   https://lore.kernel.org/linux-mm/20250930055826.9810-1-laoar.shao@gma=
+il.com/
+> >
+> > The change was suggested by Randy and Usama:
+> >
+> >   https://lwn.net/ml/all/a5015724-a799-4151-bcc4-000c2c5c7178@infradead=
+.org/
+> >
+> > At that time, you were on holiday, so you may have missed this update.
+> >
+>
+> It's moot because this series isn't upstreamable, but... :)
+>
+> To risk sounding grumpy, in future do please make sure to check about cha=
+nges
+> that contradict things maintainers _explicitly_ ask you to do.
+>
+> You can always off-list mail if people take time to come back to review.
 
+Thanks for your suggestion :-)
 
-On 28/11/2025 12.37, Harry Yoo wrote:
-> Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
-> caches when a cache is destroyed. This is unnecessary when destroying
-> a slab cache; only the RCU sheaves belonging to the cache being destroyed
-> need to be flushed.
-> 
-> As suggested by Vlastimil Babka, introduce a weaker form of
-> kvfree_rcu_barrier() that operates on a specific slab cache and call it
-> on cache destruction.
-> 
-> The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
-> 5900X machine (1 socket), by loading slub_kunit module.
-> 
-> Before:
->   Total calls: 19
->   Average latency (us): 8529
->   Total time (us): 162069
-> 
-> After:
->   Total calls: 19
->   Average latency (us): 3804
->   Total time (us): 72287
-> 
-> Link: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org
-> Link: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com
-> Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c9301@suse.cz
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
-
-Thanks Harry for the patch,
-
-A quick test on a different machine from the one I originally used to report
-this shows a decrease from 214s to 100s.
-
-LGTM,
-
-Tested-by: Daniel Gomez <da.gomez@samsung.com>
-
-> 
-> Not sure if the regression is worse on the reporters' machines due to
-> higher core count (or because some cores were busy doing other things,
-> dunno).
-
-FWIW, CI modules run on an 8 core VM. Depending on the host CPU, this made the
-absolute number different but equivalent performance degradation.
-
-> 
-> Hopefully this will reduce the time to complete tests,
-> and Suren could add his patch on top of this ;)
-> 
->  include/linux/slab.h |  5 ++++
->  mm/slab.h            |  1 +
->  mm/slab_common.c     | 52 +++++++++++++++++++++++++++++------------
->  mm/slub.c            | 55 ++++++++++++++++++++++++--------------------
->  4 files changed, 73 insertions(+), 40 deletions(-)
+--=20
+Regards
+Yafang
 
