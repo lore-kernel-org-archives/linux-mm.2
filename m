@@ -4,122 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05C45D116E2
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 20:46:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85CECD116E2
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 21:46:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BED246B00A2; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
+	id 5DC4C6B0031; Fri, 28 Nov 2025 16:46:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC4C56B00A3; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
+	id 58D2A6B0032; Fri, 28 Nov 2025 16:46:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADA886B00A4; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
+	id 4A2AE6B0099; Fri, 28 Nov 2025 16:46:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C6046B00A2
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 15:46:32 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3FEF7160754
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:46:32 +0000 (UTC)
-X-FDA: 84161199024.10.AC93484
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4F8F3100008
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:46:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YryzxvJA;
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764362790;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kxYDNOqO7Z/W+8D8Pa6l2bfSCjGUfr2Vdx0OjE8Qu+U=;
-	b=D5rErnhGF/istqD11oL5ATKwkLF2+7r6ddT6quz/6mfCA3jjA06cAMBb21uulkcOCwvyqh
-	n374F1wxq7VEITdvOQCRjtE9xaOP2J2ZwR8gRSt8toVhkJYHvLk21yxjPR2tyfuuMAxVYc
-	F9CXakLy5HyqFbdAXXU+iZSvunUiSPY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YryzxvJA;
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764362790; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 370816B0031
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:46:29 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4BF3C0627
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 21:46:28 +0000 (UTC)
+X-FDA: 84161350056.12.F1F58E3
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1C41840008
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 21:46:26 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf01.hostedemail.com: domain of 3MhgqaQkbAFsLRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3MhgqaQkbAFsLRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764366387; a=rsa-sha256;
 	cv=none;
-	b=od1WhWSHuQ1mAhQythipS9Xrj/YB3qdgaJxyV+4eovbb0K6CEJkYia0f/a9arb7kUXVtVG
-	rnrJsrz6PlcY+65kwF6L69lxjIg/CyYUHe9xBmQz8dXj8wXLa2NUpFfxTtWcypF1XeOt4k
-	upJfXpYq0ViiHE4T34z4dwd2otITjz8=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477b5e0323bso18898125e9.0
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:46:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764362789; x=1764967589; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kxYDNOqO7Z/W+8D8Pa6l2bfSCjGUfr2Vdx0OjE8Qu+U=;
-        b=YryzxvJACHV23lPe6jSGmKXp0bHrm0SaXTHmYaq3F0UfCvQFufRVVHs9aeiUZhtUWs
-         jywdbYv5PTTvglmSrI1n11Zp1fcUaxie1HZjduPUPlaiZq0RlDcHlZRPjwqo9UcNv/04
-         dZtHEmB0ouWJPf602EQ5CY+E74T126wZgA+fxbIorlHGfxuTyBFacVYVXTpIuua7M3aM
-         CDss+bzjtxGii4mIlf1qXJy3IphRj9q6NEeYJZZ6NtuqehQvDFnaX6SnwhJ9AR9bJGPT
-         ibTcZ5J2hnZhPlN4cxTjg1pVkIdKEBNsKI7bGChNOslH7QFuD2eWWxymAkjJQXrDFDf6
-         taHA==
+	b=uzXCpto+jH8FAZwQCj92fhkEqIa9l7bm6HsKVIXQ/s7hlQYX0OdcARrcy/8HR17SLTY47G
+	Zp83x5z7rBM0WFUKicquMGa69aHDSmsO4Jl4OKfY/gBv+wRGaqz8QFj8jDmTo0+HI1PZym
+	Tauu3Bs+XYUqFgrMOmt2+R7Nu3Ma6BM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf01.hostedemail.com: domain of 3MhgqaQkbAFsLRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3MhgqaQkbAFsLRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764366387;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=4zqTUfXNqwz/7tm7pYrG+8QIUcooqUYxlgrT2O9hZa0=;
+	b=Tbg5cCGkpRJ/V7BZ+6gnfJVheVkUooBNQlWpZLBZ3bPxDYRuI/wktKYPwVcxyrID2YgrjB
+	VemIkLwTv37P2rVF8VjmDkZDwBUHG+q3gC0054fO0qlyHPJLUczsXsOwkSNCPGnsgueU1f
+	mg1qRr3cK5oRr0QgnkYv8C148s78IyM=
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-43331ea8ed8so15440715ab.3
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 13:46:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764362789; x=1764967589;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kxYDNOqO7Z/W+8D8Pa6l2bfSCjGUfr2Vdx0OjE8Qu+U=;
-        b=MBGjVF2XgFSpnCp9q5NlD15Eskm55+8HNGyzLw4TgIRvGU5tY4lf8IoqMXucSCqIHh
-         HWPg/KjIeW/74FZ0eBRdFPhvM/5wkT8hxy4cpxM9TZGb3g8+rmquaUGqzYfk0EeOAdIf
-         n1DjrcUNP4vk5jQVmjJ33Ft79f0IF5JrRktlMHQBcoaaHZSLAebFDjWA4KgsnhE+B1Np
-         baDJuuGQxrEgM6B0DFx9ziQQkW6z+7K86JyGs2Ii7LgFOamktvb+OqJ6b8pfyuW0ia9u
-         HGX1RwGIGesbVOohN9eJQg+MMnbebdd4CzvEGEPMP/mpmYZMG0caMx2BWdvaTBesmzCA
-         9uqA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6+p27EtOWJxgcEddCi/Nc6UgUx1Cg9gmgafa3F7O+paNHrZzv8rPfu+6Gse15XmouXsACg8flrw==@kvack.org
-X-Gm-Message-State: AOJu0YxyJmNFyZ1Wz9DEdhTsipSS7YAZf8AoyCJ36io6d4UOmqc3aoHW
-	izSxxXUAzXhEKReGwVziD9Xe6IFFzwkib8zrec/gTPc0PVqCBBsvz14KC9BNJSL0lWM/3CwjBUB
-	0z6CT2BHjPgzVV7fZH9Cp3FMsW1GVUwo=
-X-Gm-Gg: ASbGncugIw5OuBQ2s1BUXp1NI4pAb478HUCm0zP1PL3TV15dxwYZeOVI60aY4hc4zQA
-	pl8hX8wD0VXxsN8pL0HD+LCvB8/JychBLqtLtfeB3hdfgfuHX8l2Otih3xBJbv9QqQSjkSSAf5a
-	mHPT6z7SLVPtwTsQXSy64WWQSFL1DhV3OV3uW+GabsoeLG2MzorDePdFFJAMXPdAgG9q9NEaxgH
-	TBPY/FKhFlDMGhcMRj3p69ih7Rd9U917RwmewOfeOgKBdA3nth86gV6dWEZEaECqrxgdC8=
-X-Google-Smtp-Source: AGHT+IFFPVSFPQ7/gxfSKiC4Qx1umZtsw+xEWGEdokxhU+erMjaq4YQkXW/ea6IjopVmZcVaExaWdq1bodJQRx1luT0=
-X-Received: by 2002:a05:6000:24c1:b0:42b:2a41:f20 with SMTP id
- ffacd0b85a97d-42cc135db5amr32602882f8f.18.1764362788463; Fri, 28 Nov 2025
- 12:46:28 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764366386; x=1764971186;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4zqTUfXNqwz/7tm7pYrG+8QIUcooqUYxlgrT2O9hZa0=;
+        b=cmKEfK8yb5dtbntWLN+FbzPyCNUnaqb+0XuDDc60xn+cPQ18xkCGw30e1NIBEhTV9v
+         gAGSZI7OKRC5kNJwr4XupJPNFVyrEgW929gte6tHeR8VIQaRnjelxca/ceXU8FOMJ6SL
+         wrulgX32TV33lsuCPEoW7u5DjfxchRWe8liqODesRG/YJYJxGGlNWV+KVVs7VCXnYogw
+         hTnF6+VDNNQTBCIh7OSUUPiMeaJ95VQordSTlwQFZbNf7GN/IsxrJWmWixpOPvXTo10C
+         xKiMky8fTNzhYI8m/oyk0PzlupHcD1urThOEWjDES7Zdudr8nE6sa/125aV9SYO3rJf1
+         Spvg==
+X-Forwarded-Encrypted: i=1; AJvYcCVy+NZHvArjjeorQQsWlBWa40nwj7Eti/2F/EFLbEdsoNM4vjMNohfQzPQVgIV9S1a9Ur8KFScn0w==@kvack.org
+X-Gm-Message-State: AOJu0YwaRyh3HhchN7yG8ogzFxXNgi7t1NXDoQTu1y8I6MBdPiC6HqCu
+	jXIN8SGlr1FU8r5dZOe5rSCRgLpytDgkW0E/vj7XkoHLnnGntH/mubL4urHE3pOQwMoaiimyV2z
+	K7FW+o1FraPLLO5VjUccu4k4EIM1vgU0x5KR7umgTS6lo40vuoZz+P5Ckx0E=
+X-Google-Smtp-Source: AGHT+IEcOB/WTsXTe6x1ZunQ3YZskzecgAj5mzsYfP/KlNr1cW7cmgiWW4CLJwfqc7/WTMT5lfQ5aRh5X65Nr5cvaqpAcszYvoEO
 MIME-Version: 1.0
-References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <20251121114011.GA71307@cmpxchg.org>
- <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
- <20251124172717.GA476776@cmpxchg.org> <CACePvbXLdf9bC3Juj=wA4_TKeH6XUgHbbvwV5HhNQtgoT3CiBg@mail.gmail.com>
- <20251124193258.GB476776@cmpxchg.org> <CACePvbVJEWd64r-o8ezh+0QByYbWjYVKiLgxNiBJOjfRWP__sw@mail.gmail.com>
- <20251125213126.GB135004@cmpxchg.org> <CACePvbXstKtQXE+0i-KRcq5LwrCr92a_FKy2KBmqaiwZEkFxng@mail.gmail.com>
- <7665130c511e3cd00f83e8b14de2b78e08830887.camel@surriel.com>
- <CACePvbWcYsm3WpQSkbiSKESpHOb+QybNTxtDL9mCvRd__Xj4Aw@mail.gmail.com>
- <7e44e8654eb0ed5e0f590b3d705b258772dadb57.camel@surriel.com> <CACePvbUSHYgit93ofjg6cMfb+CR9x6CZnMGh7Utb+zEzkOG75w@mail.gmail.com>
-In-Reply-To: <CACePvbUSHYgit93ofjg6cMfb+CR9x6CZnMGh7Utb+zEzkOG75w@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 28 Nov 2025 12:46:17 -0800
-X-Gm-Features: AWmQ_bkDWT9FJLppp7hKveKxlDm1KhHwGeICnSeuImRq8sV1SMsx22oSZtCGJZM
-Message-ID: <CAKEwX=MMgOb+7tDxPXDCcBxCEztvajDa0YfLBqgGuAr8GQ4s1A@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-To: Chris Li <chrisl@kernel.org>
-Cc: Rik van Riel <riel@surriel.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
-	weixugc@google.com
+X-Received: by 2002:a92:c24b:0:b0:435:a467:b2b3 with SMTP id
+ e9e14a558f8ab-435dd0fd25fmr104837015ab.20.1764366386137; Fri, 28 Nov 2025
+ 13:46:26 -0800 (PST)
+Date: Fri, 28 Nov 2025 13:46:26 -0800
+In-Reply-To: <67a4eae3.050a0220.65602.0001.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <692a1832.a70a0220.d98e3.0150.GAE@google.com>
+Subject: Re: [syzbot] [mm?] KASAN: slab-use-after-free Read in list_lru_del
+From: syzbot <syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@fromorbit.com, hughd@google.com, 
+	kent.overstreet@linux.dev, linux-bcachefs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, syzkaller-bugs@googlegroups.com, 
+	zhengqi.arch@bytedance.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4F8F3100008
-X-Rspamd-Server: rspam02
-X-Stat-Signature: assfdmue5f5drx8jo7gjrm7n4sk7yort
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1C41840008
+X-Stat-Signature: aeoohygen8nqfarq46zbexk3rnhzxwur
 X-Rspam-User: 
-X-HE-Tag: 1764362790-542109
-X-HE-Meta: U2FsdGVkX18cBqqflIRBsOVoR+Bs7qWrAOY+7e+uKxJQZIAF3wk4VjINw2CrlZ/CdsDjbUKXFgAb13be7N2zVrJ7ExtWgNQmDEKLGdLnFlKuWixbJzbxrd+KBWjUnLRHZT/dXgrZDT9+eJEMJ3z3kXxuRwmp6UBUVDEY5bDCiqZNlC0xFpOp/OPnfizRv+JKWsgyYls1itGm6Yj7GZYrm2BZBTiIEj6t2I9vqQtQNFa5HTs0yOUqVHUdMjuhBrLN83xaw52olRZE/DkmnmLXiO7VZBpH8dqFZOhhkk6RJ62SEQ6jj7TWDrAcT9BjPgOl7WC4OB3TRL/v76D52usQ51BXYCZQqRA0E1O4iZM6QOMx+hh12M+kTpuDTrUNi3G25KT6ntbED54Mc8OUrHvGws0SOd4/513Rao0KWtV+fMo97rCnefB7S7wH/0uuPCVLzMRB15Nca37HYTidAk8Ycbi7nBTKZxegab0Wyjog8RGmQ3F9UrfwG96k7uMALDVVll/m5JifQl/iPaNiq3DdqtJx2h8181TXvndvryeuNHL6dfzNU//0T9aVmCG85VGGF9IK9UI9GBW71/njYWoM8OnsLfh/oSR6Uxf475dIZUO4BFVHd9Q8LDddWpzc1TNB9PmtGWqGpN7RdcV5Fd6925pzsKrtdMThK3IuCwENJ+CVREe0ISml0f9ukvoW1RL5ot/J5NIt/QyZquRe5Ww9gHAFdtkElJDlvNMAMUwAkmhf7X/FXrphFUI/hg9JvV8gNYAl7yhvJklWCffmv2uy+WRBfk9abYIMp5xluSQJ7AU3ukkbsRn27P0xynw8gH9Hvs22zCGPbnoJOYXGMPkfxJgxus+jzvBiUYcR0WI44UmK90jZuYstbzvxzUQEytfl6awWjqHXN0a/S4jY+JOIpjZ4gleEtfO03OFCuoJk+/OyixNKAaPzjsLzV594DQVpAf08ttKvS1smytX8pNx
- hfgDae3X
- M3NlUufXQ2+4zJk/SUBL/CeVTaZ9PnuM3MKZnoYVTPZv9er195SBokOmnJr5COZ1maUwreYdUTMP/VXpxungNIjv8bDpLu/ySPlq8YJTVeLxbjV745M3Cq6zyWE78dR4FYwrdkTDmhdCQsH4Gvaj6YKiMW7JHpU7lSGP+FR+fIpgojV7T6t647JNOS9TGVo/qmemBmPkZ7m3EKFAgm0ModIOwv5tCkaZa7wUX1zSFi5nUsyEfvPTrfDiddwCaDLlpYMWKKJDNBDPd3oWAX2SZ+yEnOmWLFnEQsklpQNH3ZF3n45eIj841tq00qEvwzmFqKR8+ueVCYUTIF4+Ur6GUe9ExC+OtFedMioeiETJpc61C8AQcQwU/MLbCcUDJOxoskdMqFVZyMV6lAXXbXEW9nsszicIwrmd4IQDfj53uglF8MuujpRky0l736A==
+X-HE-Tag: 1764366386-126605
+X-HE-Meta: U2FsdGVkX18+/lOA29tuwEM9Z3GCzX9p0xoqyBBow/t8CqKUG9jkTfOkOdjh5yu0xDu61wyZu3vWUtW496KcV6ebbiuyNqoiOIkXeEa5ULHMh3+zh3TuCAuV4aRfUymwaSZGVoryO1Qc5nr4P6MNrlnTKckiuM59/fmCim2nd0LIK1SPWFl/M0RovRLq941BozVzdCL11rjY6JfxD5wIIGWfdWjPJze9JPxCX9Jo6Hcx6VXRzTuIwT6LMYAkjjy5ZlJZIA1PLfup+0nTXK1X1+gen9gFeNBhoLmILABLhA+kGDEXMRw5sdqZBQyuX3k0/QNqJN6mSbM3/8uJBXCUVBrSGCRLz2lh30umNVVLpYCwewwmH+g0f0/E5E1Cl2uBy+QGGVpZTTM+kfJMXQM12PE/nqGP2GEnXgR8CboJ0zkuwIzSI3Z6KDbEuqMrnAoTEk0h8rz9fpF3iuPUyPR4390hmcvLwl1SaIybSNOPymRmuFY61aALjglKOahJb9uTEJ8Lq3/b/2Bkjoyo1cbDhjpVbA95tT9bvn1sZFBtRdfLYWoCtS7XE8TOyKvr/U3BUSRiiQpZkEqgOBXqNT8cCZw7iTlTpwmzWTa62d8eQNCKk1vaPKsO6Zc/ttlk9HnNrbdHI60+TqGPIiQbL33Xu0kff6Ebchdb0pKJW8tDRiYq0tKzn236NTOUEzifqWeGsA8ty7RkLnJ2O+YmXCveubO1Her7m5N4wizxVL06cAw0y5Bw8mOIGr0itA4hgE8ML45CHm3mB93qDp4O3NjrkazVaTi5TNqfBH7u8Pgyg6GVIZYTeePnElRYVn76FiUQV6y5UCT8cLgpGLL+hjl0s6JsW5BvB7Edwc5OJPYEpsXCBNYywIFVirj2xN1dYnpjIc8uP1OBiArwe9jY2QugT/go+KFQvrezM8V8ptG4fO6cuFzSt47F1M3YabZ5rhNi+sqgi1uR2eBMAKyEh0O
+ O6cBp56f
+ vadraKNCgmlsKlRkzW0HVqZ1s6Cv6w9ywHIEUeFAtwbjmeprWzIxPtlN8uZ0awEZLZhXvqqfvRbHIFWFdZH96UYzEFiC85qhqVcjYcgHCdgAraKiAJLkmO5HTnhX3y+eFUTk8pqzkIrlw0WrLu0lh6kkwrVleZs5j7Ev7yzIRwZTxdqM/T/l/jZsrEEVQ0q5SRKi7FuIto2rv6B+sGi27/WZbgKJFtJKl+C5NU1xJI3ePjLQLNlYnI5YwDp/xdW0rqKyeHuwhIWZDYFkwpwGcMLUYr4cDkJ7sHtHku1JdL0LGojoiB/+BeWcwAGbobw70UI8B3rRwDeYQDnTKQFrrK6TtxSnPrh6Cl+sMi7s+7Pnn66NNtH01HvPQ3gji3erPl3KTo9XmgrNsB/18l4aFIyM2PlYzIAbNGLYAhGK7hr3TDvrANMQgYorE6oS8Bh7hdqzlUPkSqgRqxB16VoNbuZU+6PtPD5PLmZDQ0GACxPZ+1ZeTixtpyiiRhY0n0/8gQr5ftEdSzRMkTNNF39TJ5VLa3h1W9Z9SLJF6JoXeWbxcxCxZlHxec7TDpukptds3BUmMjIegubSDqxLMev9uQqRYX8kiYULakWXTwhh/cTF+2pqCPgw6cGZXwqoOuNSjEgcfeOQ2tkZ+B7x5ilzxzfbedyNaQmHaSKhqdjlQ/q0kVCDf1A/tT4eCyT/Yw1/+ZQqNSYMet1C3f/VPG0IThNpesr0B/5gXySS1rA2TN5McnrlNqPOxtgHeVCSELY94U/fuop9YAkhyqyn9saLLz69j5NJixx5hxlkz6iC6x6RCJJ3xbQBY4hsDUgywIMOYutkXKdF520sl6bhmBBIsY/qV7oSdrmV+wbVOl7Y2gJrX+EGrk5PuUQB2pVKRPf7DgMAGbHHtw3jDmLBZO/Mlyw/zLQ+F6AYf/iJTzvPnW8legTTaovqx1m4j6NIm7KnfkUS1NvjKsnrXgfOIRi1+mDn8PTf4
+ umyA8Eb4
+ KWWgNVe/1uC0o3IW72Y0iZuTJYIqf0HyD7HNX42BPFWyqvQxB2WolhpXVQdI0pgQUaEpgaygGOBxL75z0afh4SziNw7BIqgI2TpPQ8wGM05VR+afhUwYxqgfOtppvXk0ZbgJUqth0MEtSA4YiQ2Z1sWKb7SKXp9bL87/K/zugGu2u9TF7J1gVstUzDBKqAhshYiBN9U+n+TghsfziuqYJWxHnLlqhpViY17jXZZak0zkV25JWqxvgQ2Pa6+lIIAV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,112 +101,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 11:10=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
-:
->
-> On Thu, Nov 27, 2025 at 6:28=E2=80=AFAM Rik van Riel <riel@surriel.com> w=
-rote:
-> >
-> > Sorry, I am talking about upstream.
->
-> So far I have not had a pleasant upstream experience when submitting
-> this particular patch to upstream.
->
-> > I really appreciate anybody participating in Linux
-> > kernel development. Linux is good because different
-> > people bring different perspectives to the table.
->
-> Of course everybody is welcome. However, NACK without technical
-> justification is very bad for upstream development. I can't imagine
-> what a new hacker would think after going through what I have gone
-> through for this patch. He/she will likely quit contributing upstream.
-> This is not the kind of welcome we want.
->
-> Nhat needs to be able to technically justify his NACK as a maintainer.
-> Sorry there is no other way to sugar coat it.
+syzbot has found a reproducer for the following issue on:
 
-I am NOT the only zswap maintainer who expresses concerns. Other
-people also have their misgivings, so I have let them speak and not
-put words in their mouths.
+HEAD commit:    e538109ac71d Merge tag 'drm-fixes-2025-11-28' of https://g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10fd2112580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a1db0fea040c2a9f
+dashboard link: https://syzkaller.appspot.com/bug?extid=6663075ddb9be85fa6e5
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12fd2112580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15a10112580000
 
-But since you have repeatedly singled me out, I will repeat my concerns her=
-e:
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-e538109a.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/3cf595fe0afc/vmlinux-e538109a.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e6e26f95e409/bzImage-e538109a.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/445f48d13fdb/mount_7.gz
+  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=11a10112580000)
 
-1. I don't like the operational overhead (to statically size the zswap
-swapfile size for each <host x workload> combination) of static
-swapfile. Misspecification of swapfile size can lead to unacceptable
-swap metadata overhead on small machines, or underutilization of zswap
-on big machines. And it is *impossible* to know how much zswap will be
-needed ahead of time, even if we fix host - it depends on workloads
-access patterns, memory compressibility, and latency/memory pressure
-tolerance.
+The issue was bisected to:
 
-2. I don't like the maintainer's overhead (to support a special
-infrastructure for a very specific use case, i.e no-writeback),
-especially since I'm not convinced this can be turned into a general
-architecture. See below.
+commit 14152654805256d760315ec24e414363bfa19a06
+Author: Kent Overstreet <kent.overstreet@linux.dev>
+Date:   Mon Nov 25 05:21:27 2024 +0000
 
-3. I want to move us towards a more dynamic architecture for zswap.
-This is a step in the WRONG direction.
+    bcachefs: Bad btree roots are now autofix
 
-4. I don't believe this buys us anything we can't already do with
-userspace hacking. Again, zswap-over-zram (or insert whatever RAM-only
-swap option here), with writeback disabled, is 2-3 lines of script.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=108d43a8580000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=128d43a8580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=148d43a8580000
 
-I believe I already justified myself well enough :) It is you who have
-not really convinced me that this is, at the very least, a
-temporary/first step towards a long-term generalized architecture for
-zswap. Every time we pointed out an issue, you seem to justify it with
-some more vague ideas that deepen the confusion.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com
+Fixes: 141526548052 ("bcachefs: Bad btree roots are now autofix")
 
-Let's recap the discussion so far:
+==================================================================
+BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0xb5/0x190 lib/list_debug.c:65
+Read of size 8 at addr ffff88800098a080 by task syz.0.17/5483
 
-1. We claimed that this architecture is hard to extend for efficient
-zswap writeback, or backend transfer in general, without incurring
-page table updates. You claim you plan to implement a redirection
-entry to solve this.
+CPU: 0 UID: 0 PID: 5483 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ __list_del_entry_valid_or_report+0xb5/0x190 lib/list_debug.c:65
+ __list_del_entry_valid include/linux/list.h:132 [inline]
+ __list_del_entry include/linux/list.h:223 [inline]
+ list_del_init include/linux/list.h:295 [inline]
+ list_lru_del+0x98/0x210 mm/list_lru.c:210
+ gfs2_quota_cleanup+0x21e/0x6f0 fs/gfs2/quota.c:1532
+ gfs2_make_fs_ro+0x27a/0x300 fs/gfs2/super.c:566
+ gfs2_put_super+0x224/0x950 fs/gfs2/super.c:598
+ generic_shutdown_super+0x135/0x2c0 fs/super.c:642
+ kill_block_super+0x44/0x90 fs/super.c:1729
+ deactivate_locked_super+0xbc/0x130 fs/super.c:473
+ cleanup_mnt+0x425/0x4c0 fs/namespace.c:1318
+ task_work_run+0x1d4/0x260 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x6b5/0x2300 kernel/exit.c:966
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
+ __do_sys_exit_group kernel/exit.c:1118 [inline]
+ __se_sys_exit_group kernel/exit.c:1116 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
+ x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4bb3d8f7c9
+Code: Unable to access opcode bytes at 0x7f4bb3d8f79f.
+RSP: 002b:00007ffd56395328 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f4bb3d8f7c9
+RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000003 R08: 0000001d5639541f R09: 00007f4bb3fb4280
+R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f4bb3fb4280 R14: 0000000000000003 R15: 00007ffd563953e0
+ </TASK>
 
-2. We then pointed out that inserting redirect entry into the current
-physical swap infrastructure will leave holes in the upper swap tier's
-address space, which is arguably *worse* than the current status quo
-of zswap occupying disk swap space. Again, you pull out some vague
-ideas about "frontend" and "backend" swap, which, frankly, is
-conceptually very similar to swap virtualization.
+Allocated by task 5483:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ unpoison_slab_object mm/kasan/common.c:342 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:368
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4978 [inline]
+ slab_alloc_node mm/slub.c:5288 [inline]
+ kmem_cache_alloc_noprof+0x367/0x6e0 mm/slub.c:5295
+ qd_alloc+0x50/0x250 fs/gfs2/quota.c:234
+ gfs2_quota_init+0x762/0x1200 fs/gfs2/quota.c:1448
+ gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
+ gfs2_fill_super+0x1a7b/0x20d0 fs/gfs2/ops_fstype.c:1280
+ get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1698
+ gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1337
+ vfs_get_tree+0x92/0x2b0 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount+0x302/0xa10 fs/namespace.c:3718
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount+0x313/0x410 fs/namespace.c:4206
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-3. The dynamicization of swap space is treated with the same rigor
-(or, more accurately, lack thereof). Just more handwaving about the
-"frontend" vs "backend" (which, again, is very close to swap
-virtualization). This requirement is a deal breaker for me - see
-requirement 1 above again.
+Freed by task 15:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
+ kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2543 [inline]
+ slab_free mm/slub.c:6642 [inline]
+ kmem_cache_free+0x19b/0x690 mm/slub.c:6752
+ gfs2_qd_dealloc+0x70/0xe0 fs/gfs2/quota.c:111
+ rcu_do_batch kernel/rcu/tree.c:2605 [inline]
+ rcu_core+0xcab/0x1770 kernel/rcu/tree.c:2861
+ handle_softirqs+0x286/0x870 kernel/softirq.c:622
+ run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
+ smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
 
-4. We also pointed out your lack of thoughts for swapoff optimization,
-which again, seem to be missing in your design. Again, more vagueness
-about rmap, which is probably more overhead.
+Last potentially related work creation:
+ kasan_save_stack+0x3e/0x60 mm/kasan/common.c:56
+ kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:559
+ __call_rcu_common kernel/rcu/tree.c:3123 [inline]
+ call_rcu+0x157/0x9c0 kernel/rcu/tree.c:3243
+ gfs2_quota_sync+0x3c4/0x460 fs/gfs2/quota.c:1361
+ gfs2_sync_fs+0x4c/0xb0 fs/gfs2/super.c:658
+ sync_filesystem+0xee/0x230 fs/sync.c:56
+ generic_shutdown_super+0x6f/0x2c0 fs/super.c:621
+ kill_block_super+0x44/0x90 fs/super.c:1729
+ deactivate_locked_super+0xbc/0x130 fs/super.c:473
+ cleanup_mnt+0x425/0x4c0 fs/namespace.c:1318
+ task_work_run+0x1d4/0x260 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x6b5/0x2300 kernel/exit.c:966
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
+ __do_sys_exit_group kernel/exit.c:1118 [inline]
+ __se_sys_exit_group kernel/exit.c:1116 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
+ x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Look man, I'm not being hostile to you. Believe me on this - I respect
-your opinion, and I'm working very hard on reducing memory overhead
-for virtual swap, to see if I can meet you where you want it to be.
-The RFC's original design inefficient memory usage was due to:
+The buggy address belongs to the object at ffff88800098a000
+ which belongs to the cache gfs2_quotad of size 272
+The buggy address is located 128 bytes inside of
+ freed 272-byte region [ffff88800098a000, ffff88800098a110)
 
-a) Readability. Space optimization can make it hard to read code, when
-fields are squeezed into the same int/long variable. So I just put one
-different field for each piece of metadata information
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x98a
+flags: 0x7ff00000000000(node=0|zone=0|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 007ff00000000000 ffff888032687dc0 dead000000000122 0000000000000000
+raw: 0000000000000000 00000000800c000c 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Reclaimable, gfp_mask 0x52c50(GFP_NOFS|__GFP_RECLAIMABLE|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 5483, tgid 5483 (syz.0.17), ts 105510017652, free_ts 102275632308
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x234/0x290 mm/page_alloc.c:1845
+ prep_new_page mm/page_alloc.c:1853 [inline]
+ get_page_from_freelist+0x2365/0x2440 mm/page_alloc.c:3879
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5178
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3059 [inline]
+ allocate_slab+0x96/0x350 mm/slub.c:3232
+ new_slab mm/slub.c:3286 [inline]
+ ___slab_alloc+0xf56/0x1990 mm/slub.c:4655
+ __slab_alloc+0x65/0x100 mm/slub.c:4778
+ __slab_alloc_node mm/slub.c:4854 [inline]
+ slab_alloc_node mm/slub.c:5276 [inline]
+ kmem_cache_alloc_noprof+0x3f9/0x6e0 mm/slub.c:5295
+ qd_alloc+0x50/0x250 fs/gfs2/quota.c:234
+ gfs2_quota_init+0x762/0x1200 fs/gfs2/quota.c:1448
+ gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
+ gfs2_fill_super+0x1a7b/0x20d0 fs/gfs2/ops_fstype.c:1280
+ get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1698
+ gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1337
+ vfs_get_tree+0x92/0x2b0 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount+0x302/0xa10 fs/namespace.c:3718
+page last free pid 5433 tgid 5433 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1394 [inline]
+ free_unref_folios+0xdb3/0x14f0 mm/page_alloc.c:2958
+ folios_put_refs+0x584/0x670 mm/swap.c:1002
+ free_pages_and_swap_cache+0x4be/0x520 mm/swap_state.c:358
+ __tlb_batch_free_encoded_pages mm/mmu_gather.c:136 [inline]
+ tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
+ tlb_flush_mmu_free mm/mmu_gather.c:397 [inline]
+ tlb_flush_mmu+0x3a0/0x680 mm/mmu_gather.c:404
+ tlb_finish_mmu+0xc3/0x1d0 mm/mmu_gather.c:497
+ exit_mmap+0x444/0xb40 mm/mmap.c:1293
+ __mmput+0x118/0x430 kernel/fork.c:1133
+ exit_mm+0x1da/0x2c0 kernel/exit.c:582
+ do_exit+0x648/0x2300 kernel/exit.c:954
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
+ __do_sys_exit_group kernel/exit.c:1118 [inline]
+ __se_sys_exit_group kernel/exit.c:1116 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
+ x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-b) I was playing with synchronization optimization, i.e using atomics
-instead of locks, and using per-entry locks. But I can go back to
-using per-cluster lock (I haven't implemented cluster allocator at the
-time of the RFC, but in my latest version I have done it), which will
-further reduce the memory overhead by removing a couple of
-fields/packing more fields.
+Memory state around the buggy address:
+ ffff888000989f80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88800098a000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88800098a080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                   ^
+ ffff88800098a100: fb fb fc fc fc fc fc fc fc fc 00 00 00 00 00 00
+ ffff88800098a180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
 
-The only non-negotiable per-swap-entry overhead will be a field to
-indicate the backend location (physical swap slot, zswap entry, etc.)
-+ 2 bits to indicate the swap type. With some field union-ing magic,
-or pointer tagging magic, we can perhaps squeeze it even harder.
 
-I'm also working on reducing the CPU overhead - re-partitioning swap
-architectures (swap cache, zswap tree), reducing unnecessary xarray
-lookups where possible.
-
-We can then benchmark, and attempt to optimize it together as a community.
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
