@@ -4,114 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32E32D116EA
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 07:19:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E34ACFD376
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 07:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B46E6B0010; Fri, 28 Nov 2025 02:19:10 -0500 (EST)
+	id 40E376B0023; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73E9C6B0022; Fri, 28 Nov 2025 02:19:10 -0500 (EST)
+	id 3BEFF6B0024; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6064E6B0027; Fri, 28 Nov 2025 02:19:10 -0500 (EST)
+	id 2D52C6B0027; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4888E6B0010
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:19:10 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE217160488
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:19:09 +0000 (UTC)
-X-FDA: 84159164418.07.A2D58C1
-Received: from mta22.hihonor.com (mta22.honor.com [81.70.192.198])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7A3E51C000D
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:19:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="IzVfh/gL";
-	spf=pass (imf21.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D1076B0023
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:36:15 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DFF289209
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:36:14 +0000 (UTC)
+X-FDA: 84159207468.29.974102C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D34434000F
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:36:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrrHHsHU;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764314348;
+	s=arc-20220608; t=1764315372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UD8lLk9lQrrraE2MEjqwZ/F6w1tL9dTzmGzaBm9Gjf8=;
-	b=sFUb3pQAf9BSFxU8h4xpVKJPBFVJsDwuek+wKTzLgtqgTmyc2c4OTToRbL+GKWI7DZD26p
-	BnAZO8ju89gcRZFJWhC5QHIeaF31n9NDfxZ67oizftMUbP7GNursK7rV2VhSyf2ozscqDb
-	4EhGfLHW3RbbPC80ET7BTWP6vY5a33I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764314348; a=rsa-sha256;
+	bh=nyOJQbdW3Gq0Bb6MHseviCpECS61Cyxq1QxdXycVmgM=;
+	b=cTTvbWFqmEJ4lWE8JE2kyceRNQBGdZnUlTeoxDFVReTGDusy3Gi/tuW75nqoBWW8fBKSoh
+	Z0t1YyTDEs5PUIKKz9e3XYJHzncyERViF8zist0MRg0NgseSIxBHMDVhKXM9yh8QUi9NIH
+	BQL5HUzm/1xZF7SI+spEfRDe4DOnDUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764315372; a=rsa-sha256;
 	cv=none;
-	b=T9uqgDWqJGuCLRnplWFBLY/1MqSRujNESWQpjQWf8cvBVU08/VoRroylyF4fG0Xtru7/dm
-	+9NfTXVsx8LyKgBduuuZrNyUvbERiYY3j9ee929sOaevZaIfmo0Ann6oxS0Oi1rhN0iV//
-	WDsq3jsadAGTrZR2zkt+hwDSeNkxTc8=
+	b=TxvS9/AYd6/sqqZTsf0dE3/aH7EGzJSYXJ0Jy1HG74SGSgV4vKB77e7X0QsQVLmyOhMGdl
+	Z0R2OdHE7g+U9vOWk8tJnbIwZgslakMYuE/fJx2cVXbcuX13W27XJxymxJShy27v/kzugg
+	A867iMeT7RcZEoPdrK1bvy6/FC0mdqU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="IzVfh/gL";
-	spf=pass (imf21.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=UD8lLk9lQrrraE2MEjqwZ/F6w1tL9dTzmGzaBm9Gjf8=;
-	b=IzVfh/gLVLxheXmRXbkEfFwl7gqGXCuI3oVa78TmLkanzJAd8M5uqW+/oJxEmPP41cSZZWz6I
-	YPZthdU0pXTKr17z6k/nJUXp2DtAchGwYuZWHvR5iTAy3hQWkGLkMmoH86F5jp1JtgUNPDW86zN
-	KrDRRzvdeQqTNdppUot//FY=
-Received: from w012.hihonor.com (unknown [10.68.27.189])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4dHl3n6zfqzYl3Ls;
-	Fri, 28 Nov 2025 15:17:09 +0800 (CST)
-Received: from w009.hihonor.com (10.68.18.215) by w012.hihonor.com
- (10.68.27.189) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 28 Nov
- 2025 15:19:01 +0800
-Received: from w002.hihonor.com (10.68.28.120) by w009.hihonor.com
- (10.68.18.215) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 28 Nov
- 2025 15:19:00 +0800
-Received: from w002.hihonor.com ([fe80::44a1:cc63:da29:b187]) by
- w002.hihonor.com ([fe80::44a1:cc63:da29:b187%14]) with mapi id
- 15.02.1544.011; Fri, 28 Nov 2025 15:19:00 +0800
-From: wangzicheng <wangzicheng@honor.com>
-To: Randy Dunlap <rdunlap@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-	"david@redhat.com" <david@redhat.com>, "axelrasmussen@google.com"
-	<axelrasmussen@google.com>, "yuanchu@google.com" <yuanchu@google.com>
-CC: "mhocko@kernel.org" <mhocko@kernel.org>, "zhengqi.arch@bytedance.com"
-	<zhengqi.arch@bytedance.com>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "lorenzo.stoakes@oracle.com"
-	<lorenzo.stoakes@oracle.com>, "weixugc@google.com" <weixugc@google.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "corbet@lwn.net"
-	<corbet@lwn.net>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 2/3] mm/lru_gen: add configuration option to select
- debugfs/procfs for lru_gen
-Thread-Topic: [PATCH 2/3] mm/lru_gen: add configuration option to select
- debugfs/procfs for lru_gen
-Thread-Index: AQHcYBJL4aaRxfOT9U6Z/I5UwCrlA7UG+f2AgAC0C4A=
-Date: Fri, 28 Nov 2025 07:19:00 +0000
-Message-ID: <7b24d6e38c9e46c4ae98211d5a815eb2@honor.com>
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
- <20251128025315.3520689-3-wangzicheng@honor.com>
- <040e35ca-848c-49cb-bd0c-f91f4a8e2c5d@infradead.org>
-In-Reply-To: <040e35ca-848c-49cb-bd0c-f91f4a8e2c5d@infradead.org>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.229]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrrHHsHU;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B356842E01;
+	Fri, 28 Nov 2025 07:36:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599B7C4CEF1;
+	Fri, 28 Nov 2025 07:36:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764315371;
+	bh=8dndaidv7PWdI9f8/GeBMTDI2VguxBhw3M/fNnSgSBI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nrrHHsHUrLlLfaq4SklPUnzUaCWikqrMZGyRmcI0edgfE39prJtGrl6Q1rPCOhD/H
+	 eYJP8uOcHPDXDRpXx1l5haNcDfsXMl3Q1KxqV5Vw0W3wsTHxepowC3OJTL1nDr9YoO
+	 gIa/oANTVa8HEG8QKdyr2XiJlAuYnoPjuV74BuKh4gi+0DvA2ShwaJoHiogCsc0mZf
+	 /tNQfRuopsB36bwi/HSSSYfCxUZ8BCG7XmbktEkX5RvvMA4Er2jhiNAYSC0p3L1XpY
+	 Au2Hphs0H8ru0T50gjxuzWMiEQPy9qeC5UAzvPiaOo2UGfwssaZZYHgDolcl+bELtF
+	 My28HZWFK3vTA==
+Message-ID: <3cc7d401-c77c-4ac8-abb8-c264fbd9aaf0@kernel.org>
+Date: Fri, 28 Nov 2025 08:36:06 +0100
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 7A3E51C000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/2] powerpc/pseries/cmm: two smaller fixes
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20251021100606.148294-1-david@redhat.com>
+ <557b5500-412a-4d26-8c4b-147c9a00d5fd@kernel.org>
+ <87zf86n3vq.ritesh.list@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <87zf86n3vq.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D34434000F
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: ray5bhik9txew3rx8kjpx4aece1gfb4g
-X-HE-Tag: 1764314346-236532
-X-HE-Meta: U2FsdGVkX19z2WDyxkUJyEU/2jAjfqA+SMksHCDHUktfdNta8FfR9p36EoZ3ZRaQnHwXaP24C1ppWxCkCoy4sC7I/G14kyGdvWisiFt3zS17WJ1FnLEWto7TYEW+52WZVz1ulVRhxGPuO3A5Jdr5nOhMO6pM89Z9s4VZ0JjkFZt+y6l84QBm9goYCczlcxrktGzGuI0rNqumbXoNYLX3zqTddjpc5VvLMFa7qM/zcvBRywwAkiJWrHmFubpShU7efw/mgNtuwd+1TiL0shWu+1TfVUQQBllaDseia4QX2niWSlycgkzZ/gVMLOkeLXwMwCBb+f59qoC6wv82NAgHXV49/yXFwy0EoCU3tmYme2TmIywdQWULM0IRsHyI5GK7C6dGrHWvCnEl2BSU8S1KBsTgMZVGPf6uPm7Zzb147ZsXOk2iQpZ4MXaBW5AwWRk+iTH8u/1BgaGmon5ry/SzY21tRmVkHZf1hxT7bimHtqU9TaEEHGZ/1GASwX9Y9r+3tMfqAvedYaKpvnk/jxzOHXIp3BEtFLIOJnEdyZXytN4o6jCHlEucKu0k4lSrJYDSFXbRzepGU7VGOzq/O2Tbu4AlEHIc1jlxsGotKybYeTKyqM+ncKlAfp0agyL4Oop77JnWOR6GOy/r4ZWpXqvuIY045jmT5Km7rRPpgm/HysG/V0zGI1GxxrP/7/mWpdzLoiCbIYAi5wuWCL4ri6Anxv6jdpIRIMa2Ju1+TGtMxeUrnQ5WFSJWPBXUdf4+6sj1/cimnJ52L3Y4RJr2I6KRIf8dTbx36CeuG10mQqyvDQubKMo0rOWB+bnESsIraYClP6OnW3iL7AeWurZljqJs7A5yE5lbVmeJ53ajn61+vLElBrkuU2MoLReBIqfMzhzxTYt5FZZ6k7ANx72ccHWSDVJSzxEmIofzabTdAog2/xWllFpontHh6GMXnaZkEM9o08C/Lw/HenxY+inMdaa
- 2NERV0NQ
- 9MFCft839EPdc+VNIhmwx9xANYUFOk68aMhjP1hbvwnBK768IPnikbD1MhyNfBT+AaC1v9YBAp8Xm/iY0/DijYA8kZlX7n2NX5amwBbHGavM7vSm6sdZJi4dbiDNIB3eDNDKC1HdTjnjeKrlQ7PPIYPWxFxzrIhASEL6gSDCSFGbQLDBo+y4RzGnRCZUbrBEy1NHBiHkrKiWVB9Q/drtzO/YoZfqqYN8xVa7+kB6eR8Ju1tmoR+xtPUfF+/pDwL2790QmVNa8fLv2Zndox7AmkwOO4Q2DryoAS0BRZyuBZ2KfdzIFd2RenlhMXLImxkbjSHu6hHD/TW+Bj6QIN5vuJZeQciBE6XqYNjN48Sm/04lCxrUQfE13ViIty9Smej5kAz9GILonF1QCZfOunF4NpMPH1XpfPQN+BwYmKVO+mXCk6aGNiHNXJoMB6ghfMn+ORkCRYH6a/WWyx3T8gC24TOk9zn12AD4ESSyvDgiWukncoqvCSIe8XOEagrZFacfITHqNVYWiFwtCGN7ndeUYEw4TS2iTr/BUbwkoUj4W5DzAa5w=
+X-Stat-Signature: b5fqrz6ou6yguke8ntcpxmsyx3bgiph5
+X-HE-Tag: 1764315372-699552
+X-HE-Meta: U2FsdGVkX1+cWsMWLSekjWdRnnfRyrq2obccofpV/xmxDgTMi1Yzj5JEJd4N8QmOVrkLtz7fcHlr4cS7Z2cDMrYZZU3FG2IFb+znMg/co+sW49grFFvc/Pe+7/5gZ09uCTt2pW/+XNDQqfyC4p9OpH50cxKpu7Q2d7Cb9RFHWQanGKx9Xn7t0I7API9I4J0Bgz3q56LEHJmY5B5kBdeXtxCPyjPOOxZ51wNP0CPQ/61HQr/+QHix2jLgyRiMj3CWWd9aBLtdztkDRHo8EZRVN0tiqzDC777+fx77NHMlB3TMYDkE58+QT5qHWQ/6GCpuPWooa0Yok+WLNb06cCROcqXup76OvRHjJhweCv5SL2KtCAIMdi01OYNG86EJU8V8+7+I19ZWqKs99QR/QLO3SDusg5nBDJM2/nrnps76dasDtlqy1ZOEmS/Z3nHdjbZj+DOtkvZ9iiSFVHpZGEO7YApVV62814Na9CKCtLWk0VbR4C5Pw6i6requNRpLcI0Uxmnh1YH4+AuZMqeLGf5NNhV03o8CvUcQcd1Ngvfn+Dyxq5rMQJKCxCdhBESLUg+woKp88ee9qXId3GXcCMfWwtb+cCivxVP6xYVXGawgC50zCM5/IVjhs4ej+pTCic2aEXM50Vbasmpr4xG6tfzSru1XnXBGbDn+yEw8L7uxzpIxXhp0SGqiS1v6kEGvJ9FaDY9HTknum3j4hHUztdS/oP+kIgXC7LhM6XNQ4RFPBumR6DvHgwActRtqVKNS4NC8DAkFvZdtLvsb5O9e7KZuVMChw0LxCulbbO6fEIgL2ptAhOVOtZ7ui1+zU44m0hQJzi0LuyxfgttBJrG2EOdWVSTkkWLmG5XklZtAu2UFgnGzd+dpjzmfCWjtTxp5OcoUtmpaAoMZ+rsAj4ZInQ77Kuv+MMNZQcojU7h4Pds2Qi15u5/LtlE0rvYT5I4lqNn8bhOq8EjtuXOoIqUUHo/
+ 6A0bU5aP
+ xbLpF42Q9SuqLjcNWBpWJAngwJjnoNkSnWLaRU5/4wo2fKeor+/MKp8+7ISr9jbrK3F1Rly9XW7vuOceFWB8nt5j8B/6cICqooAfYHolNp+fjKvPP1RNX24aGqSe/rIE0Apa+3Gh4ueOlidPS9Tu6+P8fqVYki+N1X/9zr16s9cBNmWAuygKnLYijf7H7+BYb/xqe4WaBQCn16akf+iIZUfqvAgoYW6RjG6K97RpvCaAofrtcLAoXozwXYgWHPHavEuJKq74AzkB2lWgdrYL/uSgR5tQVKEE/CmVhDjR8Tvobiigl/XuxorgrM1CIq1diXAzp3Bryc52wbEQWTmVC2/STvWgE2lsJa88H/bFsFKLgYXoPhj3i8aDSNGIao4eUwDv6e2bRAN7AvWFPXN8TV7DNJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,31 +100,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBPbiAxMS8yNy8yNSA2OjUzIFBNLCBaaWNoZW5nIFdhbmcgd3JvdGU6DQo+ID4gU2lnbmVkLW9m
-Zi1ieTogWmljaGVuZyBXYW5nIDx3YW5nemljaGVuZ0Bob25vci5jb20+DQo+ID4gLS0tDQo+ID4g
-IG1tL0tjb25maWcgfCAxMCArKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNl
-cnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbW0vS2NvbmZpZyBiL21tL0tjb25maWcN
-Cj4gPiBpbmRleCBlNDQzZmU4Y2QuLmJlN2VmYTc5NCAxMDA2NDQNCj4gPiAtLS0gYS9tbS9LY29u
-ZmlnDQo+ID4gKysrIGIvbW0vS2NvbmZpZw0KPiA+IEBAIC0xMzI1LDYgKzEzMjUsMTYgQEAgY29u
-ZmlnIExSVV9HRU5fU1RBVFMNCj4gPiAgY29uZmlnIExSVV9HRU5fV0FMS1NfTU1VDQo+ID4gIAlk
-ZWZfYm9vbCB5DQo+ID4gIAlkZXBlbmRzIG9uIExSVV9HRU4gJiYgQVJDSF9IQVNfSFdfUFRFX1lP
-VU5HDQo+ID4gKw0KPiA+ICtjb25maWcgTFJVX0dFTl9QUk9DRlNfQ1RSTA0KPiA+ICsJYm9vbCAi
-TW92ZSBscnVfZ2VuIGZpbGVzIGZyb20gZGVidWdmcyB0byBwcm9jZnMiDQo+ID4gKwlkZXBlbmRz
-IG9uIExSVV9HRU4gJiYgUFJPQ19GUw0KPiA+ICsJaGVscA0KPiA+ICsJICBNb3ZlIGxydV9nZW4g
-bWFuYWdlbWVudCBmcm9tIGRlYnVnZnMgdG8gcHJvY2ZzICgvcHJvYy9scnVfZ2VuKS4NCj4gPiAr
-CSAgVGhpcyBwcm9kdWN0aW9uLXJlYWR5IGZlYXR1cmUgcHJvdmlkZXMgY3JpdGljYWwgbWVtb3J5
-IHJlY2xhaW0NCj4gPiArCSAgcHJlZGljdGlvbiBhbmQgY29udHJvbC4gSXQgaXMgbm8gbG9uZ2Vy
-IGV4cGVyaW1lbnRhbC4NCj4gPiArCSAgVGhlIG1pZ3JhdGlvbiBlbnN1cmVzIGF2YWlsYWJpbGl0
-eSBpbiBjb21tZXJjaWFsIHByb2R1Y3RzIHdoZXJlDQo+ID4gKwkgIGRlYnVnZnMgbWF5IGJlIGRp
-c2FibGVkLg0KPiANCj4gQS4gbWlzc2luZyBwYXRjaCBkZXNjcmlwdGlvbg0KPiBCLiBUaGUgaGVs
-cCBtZXNzYWdlIGFib3ZlIHNvdW5kcyBsaWtlIGEgcGF0Y2ggZGVzY3JpcHRpb24uDQo+IA0KDQpU
-aGFua3MgZm9yIHRoZSBjb21tZW50cywgd2lsbCBiZSBmaXggaW4gdGhlIG5leHQgdmVyc2lvbi4N
-Cg0KPiBJZiBzb21lb25lIGRvZXMgbm90IGVuYWJsZSB0aGlzIGtjb25maWcgb3B0aW9uLCB3aGF0
-IGhhcHBlbnM/DQo+IGEuIGxydV9nZW4gZmlsZXMgc3RheSBpbiBkZWJ1Z2ZzDQo+IGIuIGxydV9n
-ZW4gZmlsZXMgYXJlIG5vdCBwcmVzZW50DQo+IGMuIHNvbWV0aGluZyBlbHNlLiBJZiBzbywgd2hh
-dD8NCj4gDQo+IA0KPiAtLQ0KPiB+UmFuZHkNCg0KUmVnYXJkIHRvIHRoZSBxdWVzdGlvbnMsDQpJ
-ZiB0aGlzIEtjb25maWcgb3B0aW9uIGlzIGVuYWJsZWQsIHRoZSBgbHJ1X2dlbmAgYW5kIGBscnVf
-Z2VuX2Z1bGxgIGZpbGVzIHdpbGwgYXBwZWFyIHVuZGVyIC9wcm9jLy4NCklmIGl0IGlzIG5vdCBl
-bmFibGVkLCB0aGUgZmlsZXMgcmVtYWluIHVuZGVyIGRlYnVnZnMsIHdoaWNoIGlzIHRoZSBjdXJy
-ZW50IGRlZmF1bHQgYmVoYXZpb3IuDQoNClRoYW5rcywNClppY2hlbmcNCg==
+On 11/28/25 06:05, Ritesh Harjani (IBM) wrote:
+> "David Hildenbrand (Red Hat)" <david@kernel.org> writes:
+> 
+>> On 10/21/25 12:06, David Hildenbrand wrote:
+>>> Two smaller fixes identified while doing a bigger rework.
+>>>
+>>> Compile-tested only as I don't have an easy way to test right now.
+>>>
+>>> I would prefer for these patches to go through the MM tree as I will
+>>> be sending out a bigger version soon that is based on this series --
+>>> I split of the fixes from the other stuff.
+>>>
+>>
+>> Ping,
+>>
+>> I tried to get CMM running again (using the simulation mode I introduced
+>> a while back), but so far my attempts to get a reasonable powernv VM
+>> booted in QEMU failed :(
+>>
+>> (e.g., Fedora qcow2 images use xfs, but the open powernv loader is based
+>> on a 5.10 kernel without some mystical XFS feature ...)
+>>
+> 
+
+Hi Ritesh,
+
+> Sorry, I missed seeing this earlier.
+> 
+> Do you have the link to simulation mode which you are referring above
+> please? So far I didn't find the support of this beyond Linux LPAR
+> (pseries), but maybe I missed it.
+
+When I did a rework of the CMM balloon in 2019, I needed a way to test
+it. So I added
+
+commit b1713975c31ae20ecc40fd00191ee3fa51445d4a
+Author: David Hildenbrand <david@kernel.org>
+Date:   Thu Oct 31 15:29:31 2019 +0100
+
+     powerpc/pseries/cmm: Simulation mode
+     
+     Let's allow to test the implementation without needing HW support.
+     When "simulate=1" is specified when loading the module, we bypass all
+     HW checks and HW calls. The sysfs file "simulate_loan_target_kb" can
+     be used to simulate HW requests.
+     
+     The simualtion mode can be activated using:
+       modprobe cmm debug=1 simulate=1
+     
+     And the requested loan target can be changed using:
+       echo X > /sys/devices/system/cmm/cmm0/simulate_loan_target_kb
+
+
+I allows for bypassing the absence of FW_FEATURE_CMO.
+
+Back in the days I was able to test it with a pseries (or was it powernv?)
+machine we had here at RH. So far my attempts failed to test it in a
+similar fashion in QEMU.
+
+-- 
+Cheers
+
+David
 
