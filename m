@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BB86D116E2
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 17:33:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E2AD116EA
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 17:33:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A88B66B0062; Fri, 28 Nov 2025 12:33:17 -0500 (EST)
+	id E577E6B007B; Fri, 28 Nov 2025 12:33:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5EB06B007B; Fri, 28 Nov 2025 12:33:17 -0500 (EST)
+	id E07326B0088; Fri, 28 Nov 2025 12:33:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 975C26B0088; Fri, 28 Nov 2025 12:33:17 -0500 (EST)
+	id C59FC6B0089; Fri, 28 Nov 2025 12:33:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 83B7F6B0062
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:33:17 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2D0681406CC
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:33:17 +0000 (UTC)
-X-FDA: 84160712034.05.B05E92F
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 67BF0100013
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:33:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hfYrAG1O;
-	spf=pass (imf05.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B6D766B007B
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 12:33:18 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87F4CBA972
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:33:18 +0000 (UTC)
+X-FDA: 84160712076.13.EE0785E
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A94261A0009
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:33:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bMdmNE5J;
+	spf=pass (imf19.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764351195;
+	s=arc-20220608; t=1764351196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bnhKRi5vMG4C1RgiMTiJtyV1fNcz/ocV1c2ZiiV551w=;
-	b=ln3ogDxdeH0eXygPU0ZD4+8oYrG1sp4zOMhd66JK3X6WaL0lmzRLjScMG70Hf6r6Yobq4O
-	Ut0JyGn4XvsEO9gXSh715hz3Uwj1oW0FV1RHhm10virMHgM3pQtOwlfodDw7eBZo15w7fo
-	8pFJHhtsAlcH87SHIcVzeenyNXZ3WuM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bzVmZEhrWIC+aQZyznc5Rubu1tLJPaR0ZiI+G8KnN/c=;
+	b=yBdgVD39Rjof8zBj2iG7i3CJy08+WrYWg3Dgcf9kihzBuRK39uxpaOr97PMGMeP9MUT2/M
+	f8FgbonIlvXkR4J9JoXFRWkoFSW6b5jAGa/gJ/1csN4XGbBvsdk04yHR+cvdS92XrM+YBB
+	+kbfcC4L+0fPsRhZoKjHn4wM+8oX3bE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hfYrAG1O;
-	spf=pass (imf05.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bMdmNE5J;
+	spf=pass (imf19.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764351195; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764351196; a=rsa-sha256;
 	cv=none;
-	b=YQN9K6PvT5720V3t+iv/FCP/xEVOAZHmelC7oqzDuWC5zqtztu5GWkcxhTPEaw8EWZ/20D
-	slDWyr5ETqxXo0SlLXUj4+NIQpj95h4aPV6jjmTmw4Y8k5cvqlMIaeEuNdBboI9XCL/LI9
-	KCjoXzOSDUdLYyJfeuGDBKF29XNgekk=
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7c75b829eb6so1367474a34.1
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 09:33:15 -0800 (PST)
+	b=JNcMrnOvtliGZNwv5IV8i1q7SKI09S3MOmLoNCGNbBbnfp04SPzUjkLOSP+BdDKBplFpOQ
+	XaBzqmEc9xyucxtc2AyuvwUfYtbcHhQETxs3iUPQcseTQnqPoTi23LYDl/qBs2/cET+Jy7
+	8Erdn3lyo7U02Nnd9gCM+wrFWUrqM4E=
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7c78d30649aso1542611a34.2
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 09:33:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764351194; x=1764955994; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bnhKRi5vMG4C1RgiMTiJtyV1fNcz/ocV1c2ZiiV551w=;
-        b=hfYrAG1OIhUV7wPYSUAZa+cd1BaeIF3IaaMTBGTSzxpWjXi2U30oeiK1bz4rlE5uRx
-         RGH7Z+eNc3dSDuh9J0JaskUWBKNr5oktrexITFfRXeAMCK4DZM32ad+xsb4zhx4ZZ5yw
-         981OPfanm0BCgaYX1pTwfGKajarUA2DIxyfz+02N5EID8bGF4QrA2aMA/h7E/ks6oCVn
-         cDF1syA2i9GyxVgusLkJXv9iCO72VvScT3hABGlkf7Xiiv7BzYUzJ4tghj0cSABwQAJT
-         +CAel9ZvOZzJ2x1eX7QCdiSJ36kpwwqreME8nntcC0vPZMnk6lrhX8CxSBNH5UeRjjvL
-         JERw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764351194; x=1764955994;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764351196; x=1764955996; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bnhKRi5vMG4C1RgiMTiJtyV1fNcz/ocV1c2ZiiV551w=;
-        b=fvjmut0tgxRrbpgZUJ+IAzZphCok0wRXv0v36pyBh2JMwwv8RAejDz+ydM11QvcOrj
-         0hEhnTIsOeVwsTuY8a9NBvtYZkUwmMUqH+DzSSdRj/rUA8vijndrBYxMYtq1frTbSoEj
-         OeDGbQi9I5i6TVfDFWAwepl3T8MfvqBSqvgj0wEmRysRGhIw3VhjNxTmQGlCOmt1z+ll
-         Sf6mc62E2kpgEpnBwbQXQC3x0HK3QISvZgQHDYuq9GWYrrFbS1atEFfb5z11J8Lv7YJk
-         /KUZRpBBL5Fny5jaFAocBcUlxAfJ7FaS8+cBjiYgVZBi1n8CtoWKMsSjNkE9X+HKNUsL
-         J1lw==
-X-Forwarded-Encrypted: i=1; AJvYcCU7gcOt8jtZzJiRa3VRr+tZkzjnG8kzPzelHqFzsMX7CUum0OKuOlVmRdqiKMThNrgr+cRviOxSEw==@kvack.org
-X-Gm-Message-State: AOJu0YysOeJEsZVZTSnrwa7s3UZ4ziRwsiynT85vGF2WoDmAsCk3KGMB
-	/wCeCcPS41OXAU75zId8fvWWPHUw9+GUs5XJSYlAQInbtSjHBTUKZZob
-X-Gm-Gg: ASbGncs4lhurJUAHj8aDqH+CZaLhbec/l7Nvar8j31lDT4qJSTMWAMxMGyHQy9TNlC5
-	HVs77CrztbThZpHMjcVRUpeB8PW7egQ0Dk0a71v9Zfob3u5P4lviIX4VeGJofggdF6TdizyhYKt
-	NxbQZi12Et+R8uG/n9L6yhu+SxHawp11jgad0BOYz2+w9sXoaF7wLT8N+jDy9lSKp35uX+OuDAH
-	nMeRuKnm8uhtRsGGPYHixISHua349Sn2uCqTA4Sbomt6RIczwNAtvqD/ifUBMnU+D+u7DsnEe+V
-	t/2rebN1u9iLM6/YBVwt8S8xnQtLMw/8yMbW7O7gmTgALzjv8pngjYAmATJR705btCH7dj1EtKe
-	PWSrZoNnipQvF2+EOc5bL5JEQ6qXxYtLRMQ5wWsBjMvKjhlJAAwkq4VSuusjQ8qkVn2ad808Ikd
-	zJFiNsd3XQ2s0Ve4Uy2VKA
-X-Google-Smtp-Source: AGHT+IHgo6JXZuqBgOrPoUlZEOVnNGoSuhxkJ8mlwl9YdfKcqMScPAGktu5T4z48tJi4/rELbGs3yg==
-X-Received: by 2002:a05:6830:8284:b0:7c6:8bfe:f5e with SMTP id 46e09a7af769-7c79909e0ebmr16700750a34.32.1764351194162;
-        Fri, 28 Nov 2025 09:33:14 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:4b::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c90fe0f65bsm1769459a34.24.2025.11.28.09.33.13
+        bh=bzVmZEhrWIC+aQZyznc5Rubu1tLJPaR0ZiI+G8KnN/c=;
+        b=bMdmNE5JKKBtoJLc9wCvvV9wqRSK7dOC/0HYxotTLoTqaoG1fKNV57hRMCjiqmPatq
+         3mPZWo1LSfdpAmWN8JVWBlR+mSqDP8Ww5LesHFc5eUQqyYWNuL74pbK/gk3iyLRWawTH
+         tjqo7FkbWOg0ZKy5/PfL4opn+ToHx3nOTtrkkOZ3pyUDaezfqNAnlUangT5uFIEuhMKD
+         VPtGoQXqs9rKH0gVQXMP0EyhjKwgaM7FFEHJ+FvRn4zYo18ZsH9pKbeCzAMNAi5DO6g4
+         bA/lkEB6099hhNjCSu5LsUi7bANBnedNLorQ97Teu9kIMcBaTi1G4B4+Chg6+bjwHR8D
+         DUsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764351196; x=1764955996;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bzVmZEhrWIC+aQZyznc5Rubu1tLJPaR0ZiI+G8KnN/c=;
+        b=TqWbTKrHt52kFCiGe3wvAVp5XTrahaxaxbi/dPa2cI61PclaIi3WgxLf0R/aRyllsz
+         GN/MVa2ANanKKp5Xwh+ooZTUXlGC5d6Qwdyha9KagseXDs6mBn9gedXfIQuwrx8LCDIK
+         QIBy/bfilTUYpEfhRhDE+1dmHoXDQ7e0Bg7YorC1U5YTaBzF7bw8gKmwSO4Ixlg/Dmt9
+         yMqI3jkbckaRtCbT6McLzIproy56EtdWo/3dpst+upoFLYQ3LrD2nxX28mx+2x2hTuOG
+         yahWD0H9Lfjqv6N51VMAegXpjJThr7DjQGmdaqpITjiK8A/dr/jc1m+sPXd/qTU2nfvG
+         DeCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWLQedXoQxev785oujXIE9kA1N4NG4Rfz5DNW5zzWCh/E96eYQo+ateP6oezZSo5msjNgDHPLWSGA==@kvack.org
+X-Gm-Message-State: AOJu0Yy/npjOgGgmZxKr1ryS1VIEwCNDruYFvI1xJu7jsSw0o3BGTfdb
+	7rHMNcPaN/X5HOwXb30qj3diWh4l4AGtQ6Pw83dJtgooLh05mAIwV3sh
+X-Gm-Gg: ASbGncucCArJftMBTCig1DjknWhc4FkM9ZTx6zZUNcBEsedcWj6vW6y1RidrSeRkeH+
+	WscNfk9w0TJhhL5wxxb7AhiGA8h9/icahSjDNmvrK2WxU7YoXtNiWcQ2W4z2vEJRhdWs3miVc+W
+	uwxfbnGC2zu6/oKgnbFEZzciD0Ptl/xvWaSsIJh1EfqYRBGgVGxrI8YDcPxMjHuSQjQrAP7SAvv
+	kqmxWMXpfX5hygrnmhj/3tRL3iRXSsWNnoUVmk1p+uO41q9yKi14qlbLAN9p8529VblIer7012L
+	4OvwS/3LZH5jXW/hc4AlhmY0X2to+GnHc4nkJl0gkwgSjnUSHZ5sx6E+r0GARmYWMQiSWsnLoIa
+	qCuJwFMJJU5YgRl04MK1S0VDij9OZBZmT7izBmDfWcBj7mGXK2J7zYNmddrPWs+G09FXe3TbT8I
+	07YaxeZaG4VDCQhPm6r69I
+X-Google-Smtp-Source: AGHT+IFtERT/7TfmhkqmMJead8jqcToHnN489Nt4KW+PvO7c4NBncwinwClG8PD/VeK3DQq8gpMMGQ==
+X-Received: by 2002:a05:6830:4186:b0:7c7:8280:edd8 with SMTP id 46e09a7af769-7c7990bb98dmr15434592a34.37.1764351195677;
+        Fri, 28 Nov 2025 09:33:15 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:4d::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c90fde227asm1758310a34.18.2025.11.28.09.33.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 09:33:13 -0800 (PST)
+        Fri, 28 Nov 2025 09:33:15 -0800 (PST)
 From: Usama Arif <usamaarif642@gmail.com>
 To: rppt@kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -104,21 +105,23 @@ Cc: kas@kernel.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usamaarif642@gmail.com>
-Subject: [PATCH v3 0/2] mm: only mark/clear KHO scratch memory when needed
-Date: Fri, 28 Nov 2025 17:29:32 +0000
-Message-ID: <20251128173257.969322-1-usamaarif642@gmail.com>
+Subject: [PATCH v3 1/2] mm/memblock: remove CONFIG_MEMBLOCK_KHO_SCRATCH option
+Date: Fri, 28 Nov 2025 17:29:33 +0000
+Message-ID: <20251128173257.969322-2-usamaarif642@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251128173257.969322-1-usamaarif642@gmail.com>
+References: <20251128173257.969322-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 67BF0100013
-X-Stat-Signature: 71xa7j1xgntyz68qgcsfcmyxuj6kppof
+X-Rspamd-Queue-Id: A94261A0009
+X-Rspamd-Server: rspam02
+X-Stat-Signature: chs69sn7an9iy7gg4zzwmdnzt3t5x1ht
 X-Rspam-User: 
-X-HE-Tag: 1764351195-215380
-X-HE-Meta: U2FsdGVkX1+SQVyHikWikgKSh4SvkXgDaFdv3y99rQIXV58AGoExChLEN1Av/WbFohhmAUMVLItYgMckpK4a22oSBAYV+tZt4KHmE2LXWZSyMdZ5EF3qV8X75twngXaozz5uzOP7XTyAIsYcAOwoRSAgfy9OVjrdmLMONYlZLwL21aFaFMq6Oi3DyogzW8W7Fc1fWtsol0aF9jKkj6h6Yhk8TThWvXB78Cku5km1f0rrPUrEI7I0AmbrZrwERq0dxtlPdHHG/jXfshmks9eKjKyPEpMHhbMSVQxBLuLOn2coo1EHo0MtD3pCMhXYCkctKxof/RZBA+MkF7IGYTaujCsmuik1JhFG5PR71+Beoy3d5E/A6gr3AgyNE3fE5DbgQf24dE2Z9vrnXnY/kFoSEroA8AbKwvUOEhWxym7J92NoAi68S9I48/AL+3MxTRZUHOf+4/kP3xTrZBiqEtrNf2hr8p53pPJLaJvZrd3i1PQh1gDPdN20IOX04g/RGL7vDe+RjOB234GL9Jtq7M7ESj1+EicPiym/tJAZXcxusYQrCjExxzsqKP1JYvyzOim1g6yT7P31Zv7s0hQK1S/3hiZ0tvnjEk5Bh3+ylmkz86+jhCaC5lFq+5TS2jcBcaXDr6VjZCeCewdHMlz7QyxjMyN40d5HlFr2w5PwpzTFCjXH6gnaplNFOHHXfs1CAEue9vuCxgiOEtnWTzWCcUUpKYrCGk9XOEf0RQmx+x1+S8WJBae6yXDN5EAhVKFecodn5stRBxhkBFy1h9Bs28dw517yY2jUyfAdt6lj+X0Fg0hYBedqo5Ttj2A4qB+vnK4EMXWyljf7FHnUu/tnNqES04JPlsj0qQqWDHhgcBzQr76/T+O5YuYImzZFyMWiQf5He0xF6olJNl1w5aPaLGl8v7EF8W/DgW6LcK04vflyi13+0gU22Ef+XSmyOWZ7WvqUXAoYIcgtG3G89YZ2li1
- vkOXAqZL
- sXkkAuuQwjlmrKhQKrpzl5BkgwxdaIZgU+gezThTFIrRvLDX6ZjeOYRJxvu8zt7bMLXsbu/bPt88tzlfkIAvxovATYIscsJ8T+TKMEofDxmpa6yQoZioxDwV8Qx5Y6lM177ORo4Ac0FWRnGkUjOxtGETHK6oOQG20Gq8/lVZhjqSBoG6rpJ4yCloy3FFh2cBYDjWG4KB5YG7d9azlrnISAbxIl7pRQ0lCiVHJT67KtqsxmBYaYMIN4Zt1PKrSXuUDABr7/HHqOmF639rY81vfGLnuULTvffCQ95/4aV9oDVPLBxLmPgkquS7JIr0xBuw3iqJUo9/TsmEWZFXi0tlNs7fvPz/cmyfyTZLPtAoJs3vK1a52FCP84oc+dNKjJJOG/eHV8GPE+NpFli6nw5uQdnYd3RpCy47wxLVGwJr8bllpvYkc/SrfQ9d2kp1DFKC/7bDR+UjNJn7RGIqDuvo3zJ2A7A==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000257, version=1.2.4
+X-HE-Tag: 1764351196-194537
+X-HE-Meta: U2FsdGVkX18zDeerXBKGc3UYSewiH6COGqBVYGrgLMTDdVQJHxSnu6H0v16EpcpXtp2/JbhQVcITcD/lbuJhz9PUBkhejuju2j5vzoCZnc50D7ShCm/7riaY7rQGhr1Nwh4ze+ympJJYmC/WmHZMZZR6/CT1wqzpOp3K2FcQqFA58VcOeHpvQQ3R1fl7LPg3Y9oRScg4o7E6TfnDJ2gfWChngwsiI2Vb4bZ41+B/NI9pXi2dNdC/fpzwOVVDZNvM8wpq3bJcA2YCKJXtdbgQBiXVt0bFTn01Yi1E8zM+Urq2uNlFEna/vdyn8UhiSHVWNtnsWgx09AhJlUHIJ8CyVy/fit3aMnpgD2JiVMFTpF70eSFPE4iSvFcQQFn7VGmEy/vDqxEOKv8BbZqyKXIHj2EoKSOQQZQyw46g25+UE05ONfRkJTwQj4Fu7eKwHH++02HcK1nFdNX1l9AnBw9Jg8pcBVqi9ejWa4kOy2XfmZgRUkXr1N/dcTQ3zI5PISXyI80WIUDAJm+fiGVMjuV7dAJDij4Timcg4CNZZNdpTkmVZKB8GRfByvWBZqgk++f9rc20L0WaATpkiK+/uxzfPjg/CL5rL3ODIlyoxiLyS4GZeKB/nwZYmWhxSd1nCjbQ0Qzm4dVmesgRx2xVftvBQDaHJYR8o2TSyAJpL7ZICPoq0mqOzCZVtsuKadcVTYi6fyC7Bv2Fs4+oB8kGlBpoBT4YpRvZFBd8Fth9MV58mIleAgKBsQ9yNlH0yx41ixaUbFUft27kXdN2B6QmqFjB2mycGGSlGX2ri8oIKuEjnFeoGxEvpQjpYeV6udb0fykIneTnTh1B2KejyMEVU+hZGrQbXhzpQUnKxnffzAiq+w5LW49wHeFMcPJfHNU6QKsLdRTccmrzEGmBhqBOzdMBWFkFxcLVryoLa4lxn4eYcTA0BfOfUVYQFBMuWG8it1ZnHq6V9O41qfKAvrvDA+L
+ U03FSyqW
+ EuMVEcRtx+x3JWx0/y1OQJOdRNbga7X5ankmPYxJ7rNO83+cL4l7mYUX73bvjKhPNBNlU+NGCFW90JqQ2TLgkj2N1npSH4/Q8jDEI3lUYzh61t0T4GBuSDI+NKcTZ9wzYYd+kIzHMyBLw/o8Vr5jtnEjZdhEVOjARfVabOFp7LTuYCywCnfKDiU2gqKBpMXJzkUq0ThaklIYKqjxBJ80INBfrQa1Qlr+ANvE4ZHUlhLjVq5z2OQ/6OW2mj9bZGj8idPdynyKdNd1TrlNzXmeKJzXvZVl8W9XWR3mti4Yd4uUfv5vyYT7Hjj6kj5SHn2KcNskHlT/2zCm0nMGK3AH5Iu6VjIkLnBapkULs10HIuW9fRGyqj/skXnELXiHbXxF5RkSp+Uca7psTXLD9dcxaRGRoe8m5wSdyo0/8zf2zWL3+hVZuvuLUnaHSdX7deER5gOn5wR1F19Gs8KFA1dSXpgKAd1J7dfMZCxsoW4diB6lHO9Q/+NoYlQIdZYNGX3/ZT7iHw7I4FM2N+Nap9uzF6emx16RtS9kVEu/DBxhzwf7r07+HCt8wpO5cR8vGQW6mbks1E4q3uMphtopmiaN6oqSYwUyqQUAM64dk
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,38 +129,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The scratch memory for kexec handover is used to bootstrap the
-kexec'ed kernel. Only the 1st 1MB is used as scratch, and its a
-hack to get around limitations with KHO. It is only needed when
-CONFIG_KEXEC_HANDOVER is enabled and only if it is a KHO boot
-(both checked by is_kho_boot). Add check to prevent marking a KHO
-scratch region unless needed.
+The only cofig option that selects this is CONFIG_KEXEC_HANDOVER.
+Replace CONFIG_MEMBLOCK_KHO_SCRATCH with CONFIG_KEXEC_HANDOVER
+to simplify code.
+No functional change intended.
 
-CONFIG_MEMBLOCK_KHO_SCRATCH is also removed as its only selected
-by KEXEC_HANDOVER.
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+---
+ include/linux/memblock.h | 2 +-
+ kernel/Kconfig.kexec     | 1 -
+ mm/Kconfig               | 4 ----
+ mm/memblock.c            | 4 ++--
+ 4 files changed, 3 insertions(+), 8 deletions(-)
 
-v2 -> v3:
-- is_kho_boot already has stubs when CONFIG_KEXEC_HANDOVER=n,
-  no need to move the functions under CONFIG_KEXEC_HANDOVER (Pratyush
-  Yadav)
-- Commit messsage improvements
-
-v1 -> v2:
-- Remove CONFIG_MEMBLOCK_KHO_SCRATCH (Kiryl Shutsemau)
-- Move memblock_mark/clear_kho_scratch under alread existing
-  CONFIG_KEXEC_HANDOVER in memblock.c.
-
-
-Usama Arif (2):
-  mm/memblock: remove CONFIG_MEMBLOCK_KHO_SCRATCH option
-  mm/memblock: only mark/clear KHO scratch memory when needed
-
- include/linux/memblock.h |  2 +-
- kernel/Kconfig.kexec     |  1 -
- mm/Kconfig               |  4 ----
- mm/memblock.c            | 18 +++++++++++-------
- 4 files changed, 12 insertions(+), 13 deletions(-)
-
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 221118b5a16e1..8bd9bcaccceb8 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -611,7 +611,7 @@ static inline void early_memtest(phys_addr_t start, phys_addr_t end) { }
+ static inline void memtest_report_meminfo(struct seq_file *m) { }
+ #endif
+ 
+-#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
++#ifdef CONFIG_KEXEC_HANDOVER
+ void memblock_set_kho_scratch_only(void);
+ void memblock_clear_kho_scratch_only(void);
+ void memmap_init_kho_scratch_pages(void);
+diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+index 54e5810726176..06a7c43652cfd 100644
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -98,7 +98,6 @@ config KEXEC_HANDOVER
+ 	bool "kexec handover"
+ 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
+ 	depends on !DEFERRED_STRUCT_PAGE_INIT
+-	select MEMBLOCK_KHO_SCRATCH
+ 	select KEXEC_FILE
+ 	select DEBUG_FS
+ 	select LIBFDT
+diff --git a/mm/Kconfig b/mm/Kconfig
+index bd0ea5454af82..6d6002f57c18f 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -442,10 +442,6 @@ config HAVE_GUP_FAST
+ 	depends on MMU
+ 	bool
+ 
+-# Enable memblock support for scratch memory which is needed for kexec handover
+-config MEMBLOCK_KHO_SCRATCH
+-	bool
+-
+ # Don't discard allocated memory used to track "memory" and "reserved" memblocks
+ # after early boot, so it can still be used to test for validity of memory.
+ # Also, memblocks are updated with memory hot(un)plug.
+diff --git a/mm/memblock.c b/mm/memblock.c
+index e23e16618e9b3..8b13d5c28922a 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -112,7 +112,7 @@ unsigned long min_low_pfn;
+ unsigned long max_pfn;
+ unsigned long long max_possible_pfn;
+ 
+-#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
++#ifdef CONFIG_KEXEC_HANDOVER
+ /* When set to true, only allocate from MEMBLOCK_KHO_SCRATCH ranges */
+ static bool kho_scratch_only;
+ #else
+@@ -948,7 +948,7 @@ int __init_memblock memblock_physmem_add(phys_addr_t base, phys_addr_t size)
+ }
+ #endif
+ 
+-#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
++#ifdef CONFIG_KEXEC_HANDOVER
+ __init void memblock_set_kho_scratch_only(void)
+ {
+ 	kho_scratch_only = true;
 -- 
 2.47.3
 
