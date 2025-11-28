@@ -4,94 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8BE9CFD2F6
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 02:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36016D111A8
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 02:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 897DD6B0012; Thu, 27 Nov 2025 21:54:27 -0500 (EST)
+	id 84A3D6B0029; Thu, 27 Nov 2025 21:54:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 831F06B0023; Thu, 27 Nov 2025 21:54:27 -0500 (EST)
+	id 7D40C6B002A; Thu, 27 Nov 2025 21:54:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EC4F6B0027; Thu, 27 Nov 2025 21:54:27 -0500 (EST)
+	id 69BB26B002B; Thu, 27 Nov 2025 21:54:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 260DF6B0023
-	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 21:54:27 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D14D55875A
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:26 +0000 (UTC)
-X-FDA: 84158497332.29.2A9A7CA
-Received: from mta22.hihonor.com (mta22.honor.com [81.70.192.198])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C29F318000B
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="D/ONv38m";
-	spf=pass (imf16.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 49ECE6B0029
+	for <linux-mm@kvack.org>; Thu, 27 Nov 2025 21:54:34 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA336C010F
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:33 +0000 (UTC)
+X-FDA: 84158497626.30.927CF94
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf12.hostedemail.com (Postfix) with ESMTP id F0A444000D
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:54:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDPV94yA;
+	spf=pass (imf12.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764298465;
+	s=arc-20220608; t=1764298472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ayengAhX69VuLBH0udWTRo6vLW+weVNlnBoDZD4F89Y=;
-	b=sg8XoNOmGqEIAcfiTHx2Dpv7ruPmDCTNXF2QTj1Hu7LkkKViL3UKnVpAvn/UC53cWvQuHM
-	PmI+oJtyNEO31SYUg5QEJkKcN1lIOJRTDxM7QWNP1x8r/1FbfDhCd2LSkfkbGKCgQWxhvZ
-	+fBPyzQjSOyuBMBWFNu1qk6UYmydPuE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="D/ONv38m";
-	spf=pass (imf16.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764298465; a=rsa-sha256;
+	bh=Lcq0U/Dc8Pp3M2TfIJmaeonW/ToT1uiOgY5yXQu+oMA=;
+	b=mJ6oaJGiKmKC0hMT3dqwgOxz6iuAGeeoOqK9S8MJv1AY/sFxckNvba86pLjGa2AHQTuwTP
+	sgILI3mNPc9BoCNm+mijgQOeyxvikJlrtLHDwkjehGYKmoQIPQIj6ZiBslIPp+vDBRtrAd
+	SIBj90Bwj3DUDLy6tyHoyOGWDPCEvyY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764298472; a=rsa-sha256;
 	cv=none;
-	b=M12ffKgD9zB7AFCKKHcJ4zsBKulKAFaCUJ8fe86+KRwR0APxg3leNdkzYkVOCv8GR/i8Kg
-	QlHaSPUpsrbeI3bbiz4aQP6B2eM0ew7gYwW1LrfHbZwHGWhNk5Zgl5EJsRytojGzTstw1u
-	rPpb/XNUpogsM0vUdWFVBgYhEjHoRKc=
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=ayengAhX69VuLBH0udWTRo6vLW+weVNlnBoDZD4F89Y=;
-	b=D/ONv38mN1pq1e7180jj6fLd5a8259bJluYa3QO18y6zFy5F/tRiYEJP8sym2N7hA863amxvr
-	UmNMVh51G4h4+er9cvTf/XqUjjc4dCIuQNJ6lR9iPwniiE+8aoFvWlI/2gJhYBYcJyOxXcb7XTV
-	KBo6WDRcjPl4ShX19XnFtbQ=
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4dHdBN5DVfzYmwXH;
-	Fri, 28 Nov 2025 10:52:28 +0800 (CST)
-Received: from localhost.localdomain (10.144.5.36) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 28 Nov
- 2025 10:54:19 +0800
-From: Zicheng Wang <wangzicheng@honor.com>
-To: <akpm@linux-foundation.org>, <hannes@cmpxchg.org>, <david@redhat.com>,
-	<axelrasmussen@google.com>, <yuanchu@google.com>
-CC: <mhocko@kernel.org>, <zhengqi.arch@bytedance.com>,
-	<shakeel.butt@linux.dev>, <lorenzo.stoakes@oracle.com>, <weixugc@google.com>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
-	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Zicheng Wang <wangzicheng@honor.com>
-Subject: [PATCH 3/3] mm/lru_gen: document procfs interface for lru_gen
-Date: Fri, 28 Nov 2025 10:53:15 +0800
-Message-ID: <20251128025315.3520689-4-wangzicheng@honor.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251128025315.3520689-1-wangzicheng@honor.com>
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
+	b=VZvy/hQScdUSSkMHfTq1DP9aJBP+kpN9bXI+rTlAsOZuINicM20emxdS6GwNkuuq0Y9uWs
+	U3lTi9rmxCnW2cN9itOgq8f6QtI/lrpfony7GA0rdVVzEI892//MDfDJlR9UoXv3jnXlMv
+	Ysa4eP1ZYsyFglqj9mo+Lcpb5YXeCZ8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDPV94yA;
+	spf=pass (imf12.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-78a712cfbc0so14066007b3.1
+        for <linux-mm@kvack.org>; Thu, 27 Nov 2025 18:54:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764298471; x=1764903271; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lcq0U/Dc8Pp3M2TfIJmaeonW/ToT1uiOgY5yXQu+oMA=;
+        b=CDPV94yAdDoqwW+QqMacbDABljQZWNM0Myh6p7EXjOO8GinDCdd40EeIEFE97/6ZnG
+         Y0rOtmGs7E2ObjhcqEjQGxJbkDDLLsQd9B/dy8mbDEfRhzn7ROX7qnxOcOkrQ5b/NFAw
+         W4bUJwAY13uy090nknL+/oR2pNliXpuqovnNCl6Yj8dfoqwRiOtWGC8F4uCKwBds67uG
+         71djiim83b3RfDbdiQ6VONzXAenqxFQjE09LYgNjZJ+exiuh2a7jR3UJyuzzw/YCuPqk
+         Gjo6dQGNvnlCFPLtVMDC2XJjaApvkYAVng3NL+gHwMzOt2vQu1RA12+5NkWxzL5yDaWs
+         2biw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764298471; x=1764903271;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Lcq0U/Dc8Pp3M2TfIJmaeonW/ToT1uiOgY5yXQu+oMA=;
+        b=pRkX0vcTRBcLx7qP8Vqzyc2oc813Cxcqw8aCkJV/YteCrKrUYyILHYH4jXHiZTydE/
+         sVho7qQk0zEE9P31o6wdhHTQTLnZVO699x7l767ZZoQFaps1VgKOGabXPtWicSgvNb3d
+         gi3B+tsZXn4le/ZzPbUa2QBzrfm01FW0tMMQJobc4r+hsB7BCxuCHRoJ6WKIgJZCf6DS
+         p0hM4XUC0Hllm21OYfhpFh/dFyFdXAE87cMJfSTM+l4Al3bEBzgZF1xUq0K9IWW7Z8Kc
+         U90GIxyPb19t4eGO5eo5IrjWbNYW3MndYwbEkrvuYegm9ivIXgScA2g2Qq8EW2U+k3Uk
+         gUeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWekntEZalrPXdQiK72G83zwjn9lLV/gwKeYaY0ftYGOS9TCK22PBEzu97Nb+S9QPeEa60heIrI2A==@kvack.org
+X-Gm-Message-State: AOJu0YyGx5gsEqy8c4th43nYT7iwWagk0La16ZWPF4rr/+BiixjOumPD
+	TbZv3kph/yLZn+rn6sRqxstwinw+/Y3RH9ZfjZmk/xynanqR6jYkZ8TSh2Por9VomPiqVUSH/PC
+	GJceS2VBfWZueDYVQnHn4GshyMfbm1mA=
+X-Gm-Gg: ASbGnctXezEjUDxUUggWRzrn7Ozi2l7n7cMPbmO+nJma58kB53Zmi6e7ECW23rky5yk
+	5WQWeqdC5qlbBuZQ5uIWIcuXMlaqPSBxBobzVWixdD2HxXHbI3o/qGGGcOKHpQPu7TVgXYwLC6G
+	Y9MemPKYhYYHDCKfTT0B0vyB4H/0OplY/K8MPxWmWjarwZzuxxQPZ2kNMfKKrHQYBIWeYFBHdfG
+	5RsGVvlEX9L40LmM2EffY5NLuFRkbMUiPU62ppM/Yd2ejuHAPUgiGinq/J0CFyAEge/Jr1h
+X-Google-Smtp-Source: AGHT+IGfsngmc2uR3246bSBu8tPpAzIjuUSq5Fvdcl6iRw+RohQUN0l4Gzidi3At0vL+hNX1ANFgG//pGdvJcmBnMJw=
+X-Received: by 2002:a05:690c:e1f:b0:786:4fd5:e5de with SMTP id
+ 00721157ae682-78a8b56e89cmr228233257b3.67.1764298470734; Thu, 27 Nov 2025
+ 18:54:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.144.5.36]
-X-ClientProxiedBy: w012.hihonor.com (10.68.27.189) To w002.hihonor.com
- (10.68.28.120)
-X-Rspamd-Queue-Id: C29F318000B
+References: <20251026100159.6103-1-laoar.shao@gmail.com> <20251026100159.6103-7-laoar.shao@gmail.com>
+ <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com>
+ <CALOAHbD+9gxukoZ3OQvH2fNH2Ff+an+Dx-fzx_+mhb=8fZZ+sw@mail.gmail.com>
+ <CAADnVQK9kp_5zh0gYvXdJ=3MSuXTbmZT+cah5uhZiGk5qYfckw@mail.gmail.com> <9f73a5bd-32a0-4d5f-8a3f-7bff8232e408@kernel.org>
+In-Reply-To: <9f73a5bd-32a0-4d5f-8a3f-7bff8232e408@kernel.org>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Fri, 28 Nov 2025 10:53:53 +0800
+X-Gm-Features: AWmQ_bmysuEqpvhEOPrApMgR5cGI13LIBRddMelimiNbsk0QVptl6S6SfKPaNSM
+Message-ID: <CALOAHbCR3Y=GCpX8S9CctONO=Emh4RvYAibHU=ZQyLP1s0MOVQ@mail.gmail.com>
+Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
+	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
+	Randy Dunlap <rdunlap@infradead.org>, Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: sirwbao8efi38x5ymtbjkgzj9866ix5f
-X-HE-Tag: 1764298464-251543
-X-HE-Meta: U2FsdGVkX18+DdMPm2kkGnoY+P/E+HyXY+DInzr4sNQ1lfQkLWya7DTOu9iJpFfNoW2USPNFNu8ZWpjFYmeTPabHDVmbiWm6gcUbBt3dQ6+PzJ2SmV6n3Rl1xStJTVrZrF/D0wsfp6EyBnbdKaD6l1i2a3Mpra4DK16Myb3wGU9WUNpC1mCFMyEYwwUvngY7jZpGZT1US8H1t4zq5B3+ql1WQKFY2gKEBAy/qHVfYH1s5ENGAo1YTCavR9x5qHDTaNQpvKTp7O8fQ20vo7NeXHCZAotk+kEvl8jRUiY5SQ8wL8g19wl2RRK/kwiLsvYywRTgsPC70tTVF7ZX46ZD2Kpwf6KzJKUXCHAd3dvJGMLNkbFGLpP4CPWilng9wKfeLXjKSitk91Sfu0raZVFcSmJjcH8B2vOvk2IofgQoV/YV2HXXbDHCQweqcBbFzVsHIYIjadxCc5mdGywguQBxsWcY6hQ90DOv7nKD0bCnpUpd6KtOq8YcVpNwvQ0fEBXR+N/nxSmd87T2ELKpAJdn34NAWWvJszt2o1PfjeYu9FOiAchKja302tLO3mgJOh+Pmt/iMSSRJBl3j665Yillm4p+1HtZm09rO2VMwVoAabj4zAAjgU84gjkDKL1CyZDztXzxp4cOgwC3iae88IZ/DAQJSgGvO9HR/nJg0wBSNael+2j50bvAHT3UvfRmJr6d+5L33eh7CxtVZ29VDt5MZUioMtpKbZy/fWv6T8KR2FVHTiHFyqkiGoEf6jfz6ytuotCeK4ExGYVBLFhlTTnTMDL4bkc0qmjRailCfeQqxZkVGFC+whpUs70TQrhWhlvh4+qKtzwjE12Ni2HTKsYkP3+oSgH+XBf9/PMnIs3lplXx86e4sjGqKzGk3wzgSaSZs15J55amc/EuYfkm7Dp8U6nbz61SlnFczGjVEU+466FESSG0PmEQYcb7iBOIAPV85BKsTRwZLEp+Jk6p0hE
- r1qGxv2z
- T7q6IKSj6lg9Y8AczTGk2ulOXuA==
+X-Rspamd-Queue-Id: F0A444000D
+X-Stat-Signature: is9g5nwsw47ioqmzhfhmyoh1uo3c766h
+X-HE-Tag: 1764298471-903821
+X-HE-Meta: U2FsdGVkX198U4lHXkT+UFjcA8MVbP/e4kMl6XV6lrP+/K/PA6FR7lqDY1lCYzT+QeCT46R9m3IGlX9ewRhHCa+S7uPmBXQYiTcWHYk9U5VaarCbZuLPDh6JxkpBOlhBYkKVrdQhlOTkOUVcFLnXlY3uIyNkdNbWA5RtMrbT2jVocfmRKMxbDoT4IbatfXw9L9Qf2k0JAdNbMIEukDCj9XLOoyqyB8bx7ssnwRMbtLnDUALDM3VTPjGVpX81rbQjdkJYX73F1MhOkDGKbhs9fjNuALX18gD7nSptbNwmOWYH+8SrpdSgJSu0D1eTyAGbAfF7DhBDliVzoE88lvZUN8ELulJapfHAx7i7PTSG3WYXx2hTqVWqRCUCVrc65ClkccOQgtHUPRyIagUS0wz7uHSU0NSvK9IyZL1kzyuHQihiTC32kdfD8i/7LartWoNfYipnXVO5qvJ5ewfOm1/Y7F1nBC3dg1rpBQWM3g+fm7q9LtbHp0hNUFFG7KkSDHYD5/fLecRoVJbliIyC3JSsDiOxB60utXIEWalDnb5LZInhT/nqTtBt45EKj35+IXsDFitExvQitKN4QNvaRPQ0jLRJjpg/gBEUgA9GomoOWwh1vRMRYlN+/dgzMTmicv1BWCzj24OHvZOD/35Pv/j0kyZgXxJaaCHa9sr/FSKezmrWW80TE5GJX8irzveBtlflOahDtw0ZokBpc5ZcPlvcS4E4i0XzGxLEP70fOp1Rmf0e+/mUw14Bc2pUcoQxbt3H1igogE0KeMdaBH1QiBidBSG1rLR1dp8tlzJbnWGit3WAaEHbRsPVQkIBU8s32qE1SbjHVfTRXDGr+PaCa4ydB9tyr4aeLnA5j8IIpGgnAAnAGbgVgQStx94tGpc1bK7LRLojbd2maps7IItcEI6gPcmlRY+8RlBsyWePFoE0tRK/nq08AH7NdAlWNC1si1VAM6XdhWK5nogevGiePto
+ Twoj/G2q
+ avp9eN0omuata+iQVHuREHdbuT81n9n/02bllVQVfK46oUE3iPqcTp7Qhr1C9OAmo4ezznqzLFFnwam5dITsji2WaBKovtYUpp7OgYoOVrAx5Lvu7d0ErZuZw6sKi56ZvSwBOkIW6C7fls6Wmg7AqJSK0KgCXqv1NF9XXP2AZOMJlbaVKRtuayzyc8DfZDQZFh5w7vwkBowQZTJnrcAuT/enkBTqpzsxFaMAwDDVf4/IOkOx0TscUrq2kplhltiuIvVilMFF1Zv1Av8WklAyEdCSlcw6SX0gdWw2bWr7muAxli3aKmk5EeCJXMRfTWFaWv4mk2S6EoLH3Sjni7X3fdFbmKVBjutASqrpOBew/T3dV+n65lp2gKlZm/2LBPll4zD5J4oh1UwI38IvFIHd/Cyih3zlU5oypYvCLIowU0HYSanvQkOXuBZ5v1Phfm44Jjwv5eh6bk83JMZNs/o1UI3Gn70O5B7IQTUIAx+GNSdbI4QqId4so4YvDswe2gRhsEh892Lt/cEBD1miBufxYOZg1aQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,39 +132,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: Zicheng Wang <wangzicheng@honor.com>
----
- Documentation/admin-guide/mm/multigen_lru.rst | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+On Thu, Nov 27, 2025 at 7:48=E2=80=AFPM David Hildenbrand (Red Hat)
+<david@kernel.org> wrote:
+>
+> >> To move forward, I'm happy to set the global mode aside for now and
+> >> potentially drop it in the next version. I'd really like to hear your
+> >> perspective on the per-process mode. Does this implementation meet
+> >> your needs?
+>
+> I haven't had the capacity to follow the evolution of this patch set
+> unfortunately, just to comment on some points from my perspective.
+>
+> First, I agree that the global mode is not what we want, not even as a
+> fallback.
+>
+> >
+> > Attaching st_ops to task_struct or to mm_struct is a can of worms.
+> > With cgroup-bpf we went through painful bugs with lifetime
+> > of cgroup vs bpf, dying cgroups, wq deadlock, etc. All these
+> > problems are behind us. With st_ops in mm_struct it will be more
+> > painful. I'd rather not go that route.
+>
+> That's valuable information, thanks. I would have hoped that per-MM
+> policies would be easier.
 
-diff --git a/Documentation/admin-guide/mm/multigen_lru.rst b/Documentation/admin-guide/mm/multigen_lru.rst
-index 9cb54b4ff..d9927b254 100644
---- a/Documentation/admin-guide/mm/multigen_lru.rst
-+++ b/Documentation/admin-guide/mm/multigen_lru.rst
-@@ -161,3 +161,22 @@ cold pages because of the overestimation, it retries on the next
- server according to the ranking result obtained from the working set
- estimation step. This less forceful approach limits the impacts on the
- existing jobs.
-+
-+Procfs Migration
-+================
-+The multi-gen LRU control interface has been moved from debugfs to procfs
-+via ``CONFIG_LRU_GEN_PROCFS_CTRL``:
-+
-+New Path
-+--------
-+- Control interface: ``/proc/lru_gen``
-+- Replaces debugfs path: ``/sys/kernel/debug/lru_gen``
-+
-+Key Advantages
-+--------------
-+1. Production-ready availability (works when debugfs is not allowed)
-+2. Maintains identical ABI to original debugfs interface
-+3. Preserves all core functionality (working set estimation, proactive reclaim)
-+4. Standardized location matching memory management conventions
-+
-+Note: Requires both ``CONFIG_PROC_FS`` and ``CONFIG_LRU_GEN``
--- 
-2.25.1
+The per-MM approach has a performance advantage over per-MEMCG
+policies. This is because it accesses the policy hook directly via
 
+  vma->vm_mm->bpf_mm->policy_hook()
+
+whereas the per-MEMCG method requires a more expensive lookup:
+
+  memcg =3D get_mem_cgroup_from_mm(vma->vm_mm);
+  memcg->bpf_memcg->policy_hook();
+
+This lookup could be a concern in a critical path. However, this
+performance issue in the per-MEMCG mode can be mitigated. For
+instance, when a task is added to a new memcg, we can cache the hook
+pointer:
+
+  task->mm->bpf_mm->policy_hook =3D memcg->bpf_memcg->policy_hook
+
+Ultimately, we might still introduce a mm_struct:bpf_mm field to
+provide an efficient interface.
+
+>
+> Are there some pointers to explore regarding the "can of worms" you
+> mention when it comes to per-MM policies?
+>
+> >
+> > And revist cgroup instead, since you were way too quick
+> > to accept the pushback because all you wanted is global mode.
+> >
+> > The main reason for pushback was:
+> > "
+> > Cgroup was designed for resource management not for grouping processes =
+and
+> > tune those processes
+> > "
+> >
+> > which was true when cgroup-v2 was designed, but that ship sailed
+> > years ago when we introduced cgroup-bpf.
+>
+> Also valuable information.
+>
+> Personally I don't have a preference regarding per-mm or per-cgroup.
+> Whatever we can get working reliably.
+
+I am open to either approach, as long as it's acceptable to the maintainers=
+.
+
+> Sounds like cgroup-bpf has sorted
+> out most of the mess.
+
+No, the attach-based cgroup-bpf has proven to be ... a "can of worms"
+in practice ...
+ (I welcome corrections from the BPF maintainers if my assessment is
+inaccurate.)
+
+While the struct-ops-based cgroup-bpf is still under discussion.
+
+>
+> memcg/cgroup maintainers might disagree, but it's probably worth having
+> that discussion once again.
+>
+> > None of the progs are doing resource management and lots of infrastruct=
+ure,
+> > container management, and open source projects use cgroup-bpf
+> > as a grouping of processes. bpf progs attached to cgroup/hook tuple
+> > only care about processes within that cgroup. No resource management.
+> > See __cgroup_bpf_check_dev_permission or __cgroup_bpf_run_filter_sysctl
+> > and others.
+> > The path is current->cgroup->bpf_progs and progs do exactly
+> > what cgroup wasn't designed to do. They tune a set of processes.
+> >
+> > You should do the same.
+> >
+> > Also I really don't see a compelling use case for bpf in THP.
+>
+> There is a lot more potential there to write fine-tuned policies that
+> thack VMA information into account.
+>
+> The tests likely reflect what Yafang seems to focus on: IIUC primarily
+> enabling+disabling traditional THPs (e.g., 2M) on a per-process basis.
+
+Right.
+
+>
+> Some of what Yafang might want to achieve could maybe at this point be
+> maybe achieved through the prctl(PR_SET_THP_DISABLE) support, including
+> extensions we recently added [1].
+>
+> Systemd support still seems to be in the works [2] for some of that.
+>
+>
+> [1] https://lwn.net/Articles/1032014/
+> [2] https://github.com/systemd/systemd/pull/39085
+
+Thank you for sharing this.
+However, BPF-THP is already deployed across our server fleet and both
+our users and my boss are satisfied with it. As such, we are not
+considering a switch. The current solution also offers us a valuable
+opportunity to experiment with additional policies in production.
+
+In summary, I am fine with either the per-MM or per-MEMCG method.
+Furthermore, I don't believe this is an either-or decision; both can
+be implemented to work together.
+
+
+--
+Regards
+Yafang
 
