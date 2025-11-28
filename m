@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6650D116F3
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 11:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C4EDD116F3
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 11:23:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A03F6B0029; Fri, 28 Nov 2025 06:06:21 -0500 (EST)
+	id D33EF6B0022; Fri, 28 Nov 2025 06:23:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 350B56B002A; Fri, 28 Nov 2025 06:06:21 -0500 (EST)
+	id CE4BD6B0024; Fri, 28 Nov 2025 06:23:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 266D76B002C; Fri, 28 Nov 2025 06:06:21 -0500 (EST)
+	id C214E6B0027; Fri, 28 Nov 2025 06:23:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 152466B0029
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 06:06:21 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A013DC0518
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:06:20 +0000 (UTC)
-X-FDA: 84159736920.13.D84CE2F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DBC41A0012
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:06:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aQ4tY4xS;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B15AB6B0022
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 06:23:32 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45B0089B49
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:23:32 +0000 (UTC)
+X-FDA: 84159780264.26.4857889
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6E2EA80022
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 11:23:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WDPd+YDR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of fushuai.wang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=fushuai.wang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764327978;
+	s=arc-20220608; t=1764329010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/uuVSoz/3gWxogasvQr1mz5qyTmJ7xpuc4isHbYti5M=;
-	b=bhLXeqEVraHLUV8JEZ+oujj6VBYgn0+EWoRKI/j9QpPegrk+flHmeMHm6yWYas5TZrDKvs
-	npgpdt5jzLsncQDkJWrXo4WH4CPdXaXwghze6BTeXM4p04MnA9Q3kSSy7bIonSkZaLQWqk
-	9KwzN8gmdKbL9meLlULInj0nbzb32+Q=
+	bh=t4/H51uaWVpHVj7Na1I0I3Iy+BFCyBmc2I+NPnG0fy4=;
+	b=PhVj9S+t5A2PVqXFBw5B0ML8Yc+soGeU6lqve/gRc25A1wBkNr7xe4ni6aJ+4I5HJTRliC
+	2QqJdKyxxfgGvv71Xp8twEdKdVB71z2dz+BtuaZhGD/X3xyzET1lomzyZkPEANyOqr6EtT
+	1+TQHH/eJBrtyFRHVnKNYIC6Asq6qlc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aQ4tY4xS;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764327978; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WDPd+YDR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of fushuai.wang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=fushuai.wang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764329010; a=rsa-sha256;
 	cv=none;
-	b=K1Tm06dhdWo8/B1iSYk/HlfaSFl0HwHFMd2RkwMoEjsBoFMNV2uotOZGocPqXwFX9cAlti
-	c31TwjpFemg7DPZFcxNMmByd0aSn/byOqjNP3zQIVqdQZdrAWTJJqIws/EHDm954wkhoFo
-	sloTUYdNAz7j0jF67/NYaliqapw0EVE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 29FAC601FD;
-	Fri, 28 Nov 2025 11:06:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB04C4CEF1;
-	Fri, 28 Nov 2025 11:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764327977;
-	bh=bnGH5YqaHzHdBMv1tt+JBBOupxeg96Hc9ZEdYLVi+mg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aQ4tY4xSxQDg408u1gftenqcBUao8Du9Q6/Eb7+LbO1+3Tu6Uak0jrSPGEFkDmhaf
-	 WO0c8tiCkGSuoMIaHTCIS89NwFrxhJmeqtcCUQdJGFQF7DYCP4tV87JQ2oGChfxRbJ
-	 x4JDFrcxDk4nKq714W2DIvi2RK2c0mBnGwTAVklf9H4OIWaDh+a7Lg0nDRNs1qlzWE
-	 Qk+U9lKVZ5aiBWmXhp2A8HfkaEbiOW8lVb4boVHDPnAEbcovuUS7LTYHY/1iTd8Vud
-	 FiB1n0yLEu0FZouLSuiJD0EmdTlqyc55O4jpSoBWw+D72bt1SZmVg1ijPyxNWD6dW8
-	 LLm09t4bVV7+Q==
-Message-ID: <9cb0a602-69ca-400f-890c-e9dd5b44f53b@kernel.org>
-Date: Fri, 28 Nov 2025 12:06:14 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	b=Za/mCkzeJboVE8nKh+I1YUomF7Qt7/gd+fOlQPq3etmB0rKOsLM4nQVkwJCQjX3Ha0o0jv
+	dKoVDzx7ULrPwlHKDTRlp1AZsn5ONoRICLRaSSWkhhUsD8dva9OAQlrnEcabdjzqktssFF
+	KCIgB/e8IYBAdMZS1shrW5QIWVOZVuQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1764329008;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t4/H51uaWVpHVj7Na1I0I3Iy+BFCyBmc2I+NPnG0fy4=;
+	b=WDPd+YDRjTd/U1XuFNbZNN2HyyJ8X1LNUPgMkITtTMEaeu4k5Oa66twKQbzSUmJ49uOtiR
+	/Lpul22+nJotsALHDa9qYYnKIsfbg+b2iEVB0bt4txbm+q+GyOxw/G1x3yHxVuV1KRqe0U
+	UafMHDEADBF0HQIbN3eyT5YMPdVN4mI=
+From: Fushuai Wang <fushuai.wang@linux.dev>
+To: david@kernel.org
+Cc: fushuai.wang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	wangfushuai@baidu.com
 Subject: Re: [PATCH] hugetlb: Add guard support
-To: Fushuai Wang <fushuai.wang@linux.dev>, muchun.song@linux.dev,
- osalvador@suse.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, wangfushuai@baidu.com
-References: <20251128110241.78580-1-fushuai.wang@linux.dev>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251128110241.78580-1-fushuai.wang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DBC41A0012
+Date: Fri, 28 Nov 2025 19:23:07 +0800
+Message-Id: <20251128112307.80237-1-fushuai.wang@linux.dev>
+In-Reply-To: <9cb0a602-69ca-400f-890c-e9dd5b44f53b@kernel.org>
+References: <9cb0a602-69ca-400f-890c-e9dd5b44f53b@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qp149dfp4aaf9rpg19umo6u9gmwzpmex
-X-HE-Tag: 1764327978-665339
-X-HE-Meta: U2FsdGVkX19DbnvKHhLPNOC9P+6MHGmAZ/oO1GVRcpskhEDtUjXbegjU9GOgVIoVzY+mIGlddjYFCvovLyJP7jtPve2+nfcpqnyzJ2B+Vzw05SlohZX15gnsOcFBW3gOMJlzN2SMLSQzc7ui1+iG5T1PYnO9V0cUpFtqXjTVluu6J+55Kv8gMVy7BZmTJjXF++jN31iPFwDWEuDShP8Gucrd6Q0DeF6SAp+/dghEbGI9ksq427VXNqh240ovuRkZ4XFh+PVhhWvmaeR+72hvBA6Do1neaMSDVwjr1cZT59M6yeWs/C/iD23vxBzP0UnlMisua3z2rifboNqGohYq6zz9g7KNMA66ZVbQ80MtK5dKHVg2dDODCXuFDqbTLOMqgnqv5ncSnPHHRRRz0ZEvI2/B4U/5pfuI74bfU3OaAevHbxEKNS+3wNG9bQH9UI8i/kJUghhi9JHLQkv9zYzfFnW/JUNsXiKniCv3qWR7k3zzEa9gG8qEnqIJIL1A6nJ0hu/rvoJhAkbvz26vmP6BrYe27ACJsOyNpLV+tYybuQ9UlsBBUgf5Nh3L7CXqd1gLn6K2ux88MQSRdqs2BLTUv7FewWv3ZECq3b4aqzlUWGwb3UD+FfSjQvDeIRfZ5LPEexvf02nPtPOcLYj+oFDxj1ngAV15Gyj/PO+AERZSmPlCfP5QA8pI2N7/Q6RC0WKxXcjmUKppZfJDpZ/LLnevrt26NWlMn3AZduY9Xd1njhBhwNJfcTz1098H6sjjrYKsOIGy1/vdiVqsig96D+zFIdMYhMGVf+zcIcmiBOQAdEZP5X6H+qovBPBagVi4tZgNRGROBUVtsloHn5urcdW4V1OjjcOg9sSQNovoTpXS6Wqsr/PrWKhsuvcgP6acyCkA+gtpVzkWK04hg2skbzIxBxDEEMNsD6sqp3EBGcwrPuI3NehuEJRMXndEBwCoXN55JflurBLaIPmMuw+Pez8
- eFiZNYJw
- nCKIKTf1dz7rizwmT0vcDYE0kRHdty8h6EeDT/ynVPMvccO96DAiqlKNNOQ5pZD/osKUvLvadx/F/8G6Sv11rNx6uh2Dqo3ce0DngdJUaecu8g7t+CRoCz8lrzMXYePEec+nAd3JpfrXgG0bau7ew1y/TVvjk1ctCSdkBRCZIyNwCUEdZcHEnxYLHr9f3K9ylwiCiqN6lps6eGVsI+utTzfH6UpCm2YValwltkH9fhm1Nm/BVvVlQlCfNLB/rrjYF7rO4wMVZt4VpgwOE5/usG49y+0AMsgaQuANuaz2G/ZuMnfqipfiPL9+JjFoyfsJkWiiEZQw+MMLu+KTHB7CVQAhOIg==
+X-Rspamd-Queue-Id: 6E2EA80022
+X-Rspamd-Server: rspam11
+X-Stat-Signature: h1uq7mu3nqn9o9t8ow8knxipo8qaohap
+X-HE-Tag: 1764329010-972540
+X-HE-Meta: U2FsdGVkX1+3p4IFLAJ7rqWXqSSKtVeQKwO+xEfeMPOQsmMKxNAKrwYLlZbRlamYgxKQqIxhOpkOEwY2IPL2ooaRoM7iQdPKwlFPIvYPcaOY11KFocDOi/43nQa91J+ZKvpxkzOi9awMF0U0e8D8vdxKv+HP8SVS3tUF0seiF2OvzSQwBO2vp5Snp4kQktIZ9QyTTyMR1Cj2FgVz6zNcqbwL5k2vCeg56y7P7Wtk8rDCsrskL13SV9JWPrFCDfXqZA0RIDBgGibtPYuKNQTFZ8ysApwC0wJiFiRWjXZK663PdiShhCKyk0/YjLxpXv7OhqtrXxe0+yJsZu3yLeVGAA+qL1o/AJpvgBWRubK1JdySdda8onrMlztpg/v1BOIsJ22h5Apm/M9HCWU6SXCzxvauhF6PO0zXSObsZ9T/ESuYqgJm6dl6MB8DCLKuySfQ2jIO6AxrY+t5z0wjlHdH8VOECVnfo1qjrhxPep+BlAIfGeC6O0e6OX491F+u4EdddcINOYz7z3n2Xny2Pb32GS7oq/xx09oXxSmkudgmpvLlkeZSiHR2NrCsQkbwQoGYAsctuYunQA0PVVY/hU68ILCwlsvYjud7DvBHsKc/USKNumGzy4GZCye/K7GCiS1US1g+IHlY5+Q2Vj0Wpb78WNXJ1GZBLVCVJ7dxFopYH6vz9OWGGONvchCBvCm7vfL3VnQEp5grwhFRywMXRouG1jTDueJFzOiyAGZdi9LmThAnXnYeBHc7x5Wd0Cp66kC+OvCfAJaN7e8WV8mhtytiERjwqGKco0N28rdvI9Il8dK4XO2fLYZa84CftXT2FCBYkeUt0pNJI1UwEu2HbjO1iaZC+mMVUYI2uX3ith1ZikN3GfZu4me1DUNnowOXdGJ3WAB7yZjSrjrw9XGx8JkpKNSpaCkVBz5Bdu/C31w1jaPMwDkj/S2ZvfkETsVIyQxnsD1JDlQKDROXC3XmfHg
+ 8cspMgyH
+ +mDc3W2tRb8aczWRhf/jdMhG7L0StC8MsenPZU7rg9p9iPDBwZab3Km6X8x3u8S6YaNUa2v7oZCy8io8KmA+4z8yI8N3TGtIXwNBZyVa1YwcN57C4j/9+xYuTNee6BpA8j1DpkH+D1H5V5Ik8NqcUES3YutGePOYwRJYQvn6z7QK804QFQTC+Wu+XOLwTJClavU901iMuexxa3Z1zEY0cI4eanLwWNPCNoBQZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,43 +91,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/28/25 12:02, Fushuai Wang wrote:
-> Introduce guard support to simplify the usage of the
-> hugetlb_vma_{lock,unlock}_{read,write}.
+>>   include/linux/hugetlb.h | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+>> 
+>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>> index 8e63e46b8e1f..f97cb2f123a3 100644
+>> --- a/include/linux/hugetlb.h
+>> +++ b/include/linux/hugetlb.h
+>> @@ -15,6 +15,7 @@
+>>   #include <linux/gfp.h>
+>>   #include <linux/userfaultfd_k.h>
+>>   #include <linux/nodemask.h>
+>> +#include <linux/cleanup.h>
+>>   
+>>   struct ctl_table;
+>>   struct user_struct;
+>> @@ -468,6 +469,13 @@ static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
+>>   
+>>   #endif /* !CONFIG_HUGETLB_PAGE */
+>>   
+>> +DEFINE_GUARD(hugetlb_vma_read, struct vm_area_struct *,
+>> +	     hugetlb_vma_lock_read(_T), hugetlb_vma_unlock_read(_T))
+>> +
+>> +DEFINE_GUARD(hugetlb_vma_write, struct vm_area_struct *,
+>> +	     hugetlb_vma_lock_write(_T), hugetlb_vma_unlock_write(_T))
+>> +DEFINE_GUARD_COND(hugetlb_vma_write, _try, hugetlb_vma_trylock_write(_T))
 > 
-> Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-> ---
->   include/linux/hugetlb.h | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 8e63e46b8e1f..f97cb2f123a3 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -15,6 +15,7 @@
->   #include <linux/gfp.h>
->   #include <linux/userfaultfd_k.h>
->   #include <linux/nodemask.h>
-> +#include <linux/cleanup.h>
->   
->   struct ctl_table;
->   struct user_struct;
-> @@ -468,6 +469,13 @@ static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
->   
->   #endif /* !CONFIG_HUGETLB_PAGE */
->   
-> +DEFINE_GUARD(hugetlb_vma_read, struct vm_area_struct *,
-> +	     hugetlb_vma_lock_read(_T), hugetlb_vma_unlock_read(_T))
-> +
-> +DEFINE_GUARD(hugetlb_vma_write, struct vm_area_struct *,
-> +	     hugetlb_vma_lock_write(_T), hugetlb_vma_unlock_write(_T))
-> +DEFINE_GUARD_COND(hugetlb_vma_write, _try, hugetlb_vma_trylock_write(_T))
+> Do I understand correctly that the code you are introducing does not 
+> have any users?
 
-Do I understand correctly that the code you are introducing does not 
-have any users?
+Yes, it is not used now, but it can be used in future development to simplify
+the code. If there are complex hugetlb_vma locks in the current code, this can
+also be used later to optimize them.
 
--- 
-Cheers
-
-David
+---
+Regards,
+Wang.
 
