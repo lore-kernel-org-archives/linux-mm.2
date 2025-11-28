@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC9DDD116EA
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 07:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34DD2D116F5
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 07:41:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E50556B0027; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
+	id 7EAAD6B002A; Fri, 28 Nov 2025 02:41:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E28456B0029; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
+	id 7C2706B002B; Fri, 28 Nov 2025 02:41:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D64B96B002A; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
+	id 6FF956B002C; Fri, 28 Nov 2025 02:41:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C5FFB6B0027
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:39:54 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76B8B13AB57
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:39:54 +0000 (UTC)
-X-FDA: 84159216708.23.D93EAD1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 62EB56B002A
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:41:03 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31015160481
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:41:03 +0000 (UTC)
+X-FDA: 84159219606.11.D589DDD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9EF431C0009
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:39:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UP0ipruO;
-	spf=pass (imf21.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 763E71A0006
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 07:41:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U1hC56Z8;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764315592;
+	s=arc-20220608; t=1764315661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gMhz0tO6gK8SEa9yVLLNq8ATyxhbO6B/DAim97HTDPs=;
-	b=Sua/DhBdvqmMU4lQXXZXEVyR6ui6B0yjKj2Zms/uPs4YCgWBsrJP4z2PHq0Qet/2KwLEXx
-	vcdC2HjuQQxhwQGAWjHZCfuE1KkKBx1JdXlxsZUyN/BC04wX5/JX4G/2F3z6jGxggEatL7
-	QirOse8PS5BveMMxWbm5GtGoUwid0Gs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764315592; a=rsa-sha256;
+	bh=Kxct075zh0c2XTNfsfY2rUfaOVjaxfmgGgfDA1RMF5o=;
+	b=eVBI9RJ6yf2ufC664cDh1kxQsOf/Xc7BCnoRi7mkcA96QUUYUZvhMpiCxpJeSJ6WbVT2gC
+	ThYP+qw+NwX39+FxfjRK4nSAI1yhVDUbotw9ii+jHIkeAWvtYg6gFNEJGzfAG6eH55AL7d
+	2WibPamHLLRa+QxTToDdGe8TFfiMD08=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764315661; a=rsa-sha256;
 	cv=none;
-	b=xkjYn37YjhUXaEJSrz4XLRreJTpDx+783Fi89vJtXc9qk/KlR6KWv9kkMbiODm/xSxNqkq
-	Pq1muBVK/5YzTzTD9++sOEwkaDzrPQW1Zlg6SV5DAmjIlxKgfYUxDvw/uC+or6UKvwGvw6
-	83rZOP27BeAAYYeicEqQUuALYDsebJE=
+	b=UpPVDF100UKYspNznuBHoJq1ZUv5WPh5viVH7T5GexHTN+WIXIUrl76W2ttySRRcXp4SLa
+	JZfhq8AsGQ8Di8c3DxioW0DRZKXE2yKYTIay34gPzazfy7GA6kTCPdsqKABMptw5TRvRON
+	trGZxtleQwiZRDHj5OyadAEiRWVYKCs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UP0ipruO;
-	spf=pass (imf21.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U1hC56Z8;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B75AF41A30;
-	Fri, 28 Nov 2025 07:39:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08BDC116B1;
-	Fri, 28 Nov 2025 07:39:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7430440BFD;
+	Fri, 28 Nov 2025 07:41:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D189C4CEF1;
+	Fri, 28 Nov 2025 07:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764315591;
-	bh=L3fUvx3/4h6sB/neiDyj0+7nKMrKXGD2gImaI/RwOMI=;
+	s=k20201202; t=1764315660;
+	bh=Cvm8VHYmiklHkHLbjGWk9H4wF4lDIswUe+zfGMLAC5w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UP0ipruOgOTR/Dg6FIwQ4nodKu+6zNOYwMdVq0WDRzVsRbhBXGIf5AkCZrqZIfM2N
-	 KaqzYIk1Zgbhqro9VPRn4M6Ez94pATD4lidhtfX0sFDJxf/Av5Jttb4cN1ZKqmYUoX
-	 zlBJsdX+X1PPFL77TctY5FK0/4irX6c/Zs/I/2h4IJuu896+DqRsa6mfWGHDvFN/SR
-	 w1PKXsHOMsaASBG0ub9ldcJ3JnoWrSCMtQ6I1bQauSsY3nt9pJFGovMUacwMfFjPJN
-	 8EtPjFRO+WgeujcFWzvUasot96xbLtqzu6lDV0hMlBFY2jLCBsNkU98PPLMmBvFSoK
-	 Lcai1/OO4Gbpg==
-Message-ID: <6d2605e8-409d-4b4a-9729-599dd2526b74@kernel.org>
-Date: Fri, 28 Nov 2025 08:39:44 +0100
+	b=U1hC56Z8WBw8QH9tGIQdeGelW13iXtcQtuL4XpwBwmjePCPQhrTCZIVKhN2ciLq3r
+	 f8GZLBRJBtNo9UGCkcA8iqQXFe6o+v18dbZ8bqh0r0TPSpAq8qLjsLbBnDr2KsXr31
+	 YL3TpqC9WksHalFF8G4sFNkk8LDWGWifJtIpBKqi1fmicyoUSxAC71X+F90J9EGvEE
+	 rQoLXnL03j4L93SDlDU414+zNo5p1iNk3ifG32eTPkjKI2FMdsCvaUkxpIsI/tREV6
+	 BIQ1ZnxT8LVOdT9VUVAdbMLjuXGmeaeLNq9vzUZDexsGe4zSSZqKWjzq+iSBLXxkD9
+	 r2Kg1RkU7ZkFA==
+Message-ID: <301376ee-3439-4d3e-a2c9-8604e7bf49fb@kernel.org>
+Date: Fri, 28 Nov 2025 08:40:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/7] treewide: provide a generic clear_user_page()
- variant
-To: Ankur Arora <ankur.a.arora@oracle.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
- peterz@infradead.org, tglx@linutronix.de, willy@infradead.org,
- raghavendra.kt@amd.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20251121202352.494700-1-ankur.a.arora@oracle.com>
- <20251121202352.494700-2-ankur.a.arora@oracle.com>
- <189bc218-8f19-4686-b2ee-5ddc6a0b4684@kernel.org>
- <d3d68f78-bd76-4cf2-b20f-a0f7c838124a@kernel.org> <87bjkq8s7a.fsf@oracle.com>
- <87tsyf58ro.fsf@oracle.com>
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Content-Language: fr-FR
-In-Reply-To: <87tsyf58ro.fsf@oracle.com>
+Subject: Re: [RFC PATCH 0/6] Remove device private pages from physical address
+ space
+To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
+Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ ziy@nvidia.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com,
+ lyude@redhat.com, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
+ willy@infradead.org
+References: <20251128044146.80050-1-jniethe@nvidia.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251128044146.80050-1-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9EF431C0009
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 763E71A0006
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: xtzrknihdt9zu4hses9c59wuzq4hr8bf
-X-HE-Tag: 1764315592-890752
-X-HE-Meta: U2FsdGVkX18HZRVVXklbMGVIAZ9Ges76u3I3+qKgepHAky75/IzKjOIdYDX39bM1Rj5Yrmy0fZTkbqt/UsyyaZv0dP2+PrRzHy1fiyXgajIyRaxZ0kMUBtbBoBBUkDljIUKyHSQXmmzKyD8S4h6RwyQ5vcaS8MriNdWYY+tNjsA2wcyb1qIx7u+uS5fnK9CH15w/lUnWpwWn0o3hI74vDpq2CDCLkFHxYt5SLZYYEDQDjhOOU/oeg9A+lIPSCMVh5TREAXiJCJc6SbWXYu2vsYzdCw2u81JpRM3BfJj4EcuEVgsL2Z5r0sNpz1QZ8yy74LKKkq6g7KpfUxlyiobVYPqy9zHhZv5QVk0p3JK2YfiiJZ3kkNWeMOwe3hLUFX72DYzH5cETyZGSf0mjdGOEqb33EcI8KmNWGiZQCiuiv1RXWSWntunNTNsAmyeOSNgoG6Epd/c4/9wfq+a1kimgyy2uwRn9Xwol+1RFiZYbmKo9gzFcODjFbsdjgwv1DvCYgs0yv4A7BcBybxz3B7Sm7ZWRUoWYbN2QLmhU73O8HZOaN7DmbOtSe+fIlKYf3mVBeVkaSIgKkbi1mKZI92jSqXmjAenfOTsSYFAPKDpD1P3R1qzSN2BU2/saBbm/VLgf7Hc6Oxtz40Uq6UzmD9KBwb5QInPU5AlyG77K4kZblPhYfi+tkA/IENmZLofPNW6qIVkvDVjqxUjIZfssR0uH0OmY7HeEZWNqXn2bnb9elrlpFhV12Y3AfmjII1D5heXw8BDICwd7Gh0jDbos9AjdXQlDZtzic4pLcpQ/wDL30c3XYmAY/Rnpuc0hev+4SJvqK5J1jZzfcW0sp3Excnoro4GttKtYD68A33AgTjxE9MN6mOS5guUJdST+k3gtsi9aw0sT4Az8WbI8iH4AWB/lcfEclXl5RmigprpW7p5TfIRUpKvT1vnWa3F6S52YbSRgbO3KSXjxsyhe2ZegGay
- Rd8XFeLw
- yMTJvCExDkwlfzWouZN0r3V1ATF4G9ekGVe+A2Tr4qUlKFDqXVO/GhMqe+gPwNt6nDcVpYTQ4yV7PTyQjlsQWlB9K3mDao49FmPLRfIvkj4i+Y863XckgmQ+Q3ErrtHRy9XZ9lPiEJrkBRzFWW0L/T8KUVCKtjTwuuHMiVnZFawbD+t8G41HkCkfHDZjuv+4SytcXePdXijNP169Xxm1uZo0g6fT7bkRl9BfFd9cgBtNtstIlB2NIsD+y4zHWfvgBL4dahBzJ8sirUAB59yzP/0Wsd1rfoce9tCqRUu5f3s14YQYLkWBgu88VzjMrgb5OH6QRqcksKMyfAKFyzKu3JvHf5BJe1fmCRIRQzpCIe96bm6vxkvbONwfMGBXzWwVLaE12SyhwIrlFYx4=
+X-Stat-Signature: x5tf1nbfez5c778gcjaj65xg93u1ix4i
+X-HE-Tag: 1764315661-972103
+X-HE-Meta: U2FsdGVkX1+RR63fL5vgsCHaeH+npa3FpDpShc/6axmwIbcmPb2HGCtXi/KXoScfpVSuVZKvYFPlvWe7ldW5a/snJiGe/iNiFBFs8gO99AOcJr4PQ6qrdNTnHgm1CExjuaCf9dcSTvOj9BsBDmF+BgfhIwbusw7/K9Zw3b48L9LxhBRgcAD8/wLuiUQeR2rms9yeXqbNY+Q1ntC/CxhtcMU3epRwx0l4CgqL+4qry2PG/DjBq0Mc16EQkVZU8FcbOr4lp9QP7jOdZomBTRuWL/yUydNe0jXHNBdDhGoWz1chGeVAa4XzX4I9mBflV0y4a5vWtB/Hrwvs+B5JC/FCGDWcAus2MPqRyO2xRd3wLAy3QB4x4DgGqtGnZiqC+gPcQTw4Uxj/kpt0GgLAkFXMvmZ6iPrOR/eYP6irwC8ExETNeLKtSTpWq/W+COeKrzvpT4MmwoEFMOrXjOykuV7b4pjNjlvjWkLZiHPCkokZArtJReTazZp42vgq/HeTXHrOf4438qvaV1ER/IKurInABD9NWAw5Y2BbgCk0ziUNGZB0UJdXbKfe5dHJvRfdOw3JAazyudaOMfUZszqCVyqKlpX8gF9znUU8o8tCxfpFgdFIGURHT5xGYj+OuEbqJktVxAMUUdMi86JV0vOczjd8nnF/bU33P0CMd7tT6beickFRUXvT7FP0GArGG/Ie7K4KY9NcDz8a7UN7/jI/2aO3PhZqRCpIGxkAWnZ8p2/ojmb0GfDzQ5IHKCMQ0INPmGym8qnS+9tO+XpBPhJ3bs3o9ksYcG45bQwFKUhggIfD+ZK1jU9vo9rIw2Z/DHfIwc7gJIh/hLQFZUkwrXmbBjnb3DNrfjLe0Kx8aFI0la5NKT68rcSUrVpVSHuzZl6iWpFSwB9Txn/hV9+U9S31AqAJXXy1j9pnzUf0L1Yp9oNPZPz1ZEvt1IXP91MFICtrwp7hI0jNVHn9wsMM46ehJDn
+ zzEYCscf
+ bW57lSxFptxnYhfUWOjrD5R8C8EXKshBmvqlZxrHnxKBT0/hZz2ox/6BDM8+y7jf+CcAUWKslIy5KWqKlScI1DvafV5cDP+GIrk1ndrWzNuLxRGdzoiLuI7zulr5SD35h3Z2PXJQVFDWadbVqswFqh4fX+kXejl6jVA7PePeR9msTk+vaT1LLBv/sm6kV7oAOPY7lf9vOFHM7I8XISfCFuwzfuOnnXdX6aGlVaATVergYHPiwsbk6c0T/dtpZS0aSg2x8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,119 +99,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ankur,
+On 11/28/25 05:41, Jordan Niethe wrote:
+> Today, when creating these device private struct pages, the first step
+> is to use request_free_mem_region() to get a range of physical address
+> space large enough to represent the devices memory. This allocated
+> physical address range is then remapped as device private memory using
+> memremap_pages.
 
-Le 28/11/2025 à 00:57, Ankur Arora a écrit :
-> 
-> Ankur Arora <ankur.a.arora@oracle.com> writes:
-> 
-> 
-> How about something like this for clear_user_page() (though maybe I
-> should be always defining clear_user_page() and not conditioning it on
-> the existence of the generic clear_user_highpage()):
-> 
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index abc20f9810fd..ca9d28aa29b2 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -197,6 +197,22 @@ static inline void invalidate_kernel_vmap_range(void *vaddr, int size)
->   }
->   #endif
-> 
-> +#if !defined(clear_user_page) && !defined(clear_user_highpage)
-> +/**
-> + * clear_user_page() - clear a page to be mapped to user space
-> + * @addr: the address of the page
-> + * @vaddr: the address of the user mapping
-> + * @page: the page
-> + *
-> + * The sole user of clear_user_page() is clear_user_highpage().
-> + * Define it if the arch does not and only if needed.
-> + */
-> +static inline void clear_user_page(void *addr, unsigned long vaddr, struct page *page)
-> +{
-> +       clear_page(addr);
-> +}
-> +#endif
+Just a note that as we are finishing the old release and are about to 
+start the merge window (+ there is Thanksgiving), expect few replies to 
+non-urgent stuff in the next weeks.
 
-WOuld be more obvious if you enclose that inside the same #ifdef as 
-clear_user_highpage(), something like:
+Having that said, the proposal is interesting. I recall that Alistair 
+and Jason recently discussed removing the need of dealing with PFNs
+completely for device-private.
 
-#ifndef clear_user_highpage
+Is that the result of these discussions?
 
-#ifndef clear_user_page
-static inline void clear_user_page(void *addr, unsigned long vaddr, 
-struct page *page)
-{
-	clear_page(addr);
-}
-#endif
+-- 
+Cheers
 
-static inline void clear_user_highpage(struct page *page, unsigned long 
-vaddr)
-{
-	void *addr = kmap_local_page(page);
-	clear_user_page(addr, vaddr, page);
-	kunmap_local(addr);
-}
-#endif
-
-> +
->   /* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
->   #ifndef clear_user_highpage
->   static inline void clear_user_highpage(struct page *page, unsigned long vaddr)
-> 
-> And for clear_user_pages():
-> 
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index ca9d28aa29b2..b9b3cc76a91a 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -223,6 +223,35 @@ static inline void clear_user_highpage(struct page *page, unsigned long vaddr)
->   }
->   #endif
-> 
-> +/**
-> + * clear_user_pages() - clear a page range to be mapped to user space
-> + * @addr: start address
-> + * @vaddr: start address of the user mapping
-> + * @page: start page
-> + * @npages: number of pages
-> + *
-> + * Assumes that the region (@addr, +@npages) has been validated
-> + * already so this does no exception handling.
-> + */
-> +static inline void clear_user_pages(void *addr, unsigned long vaddr,
-> +               struct page *page, unsigned int npages)
-> +{
-> +#ifdef clear_user_page
-> +       do {
-> +               clear_user_page(addr, vaddr, page);
-> +               addr += PAGE_SIZE;
-> +               vaddr += PAGE_SIZE;
-> +               page++;
-> +       } while (--npages);
-> +#else
-> +       /*
-> +        * Prefer clear_pages() to allow for architectural optimizations
-> +        * when operations on contiguous page ranges.
-> +        */
-> +       clear_pages(addr, npages);
-> +#endif
-> +}
-
-Not sure to understand the logic. You say this is not expected to be 
-overriden by architectures in the near future, then why do we need that 
-? Can't we do everything inside clear_user_highpages() for clarity ?
-
-At the time being clear_user_page() is used exclusively by 
-clear_user_highpage() so I expect clear_user_page() to only exist when 
-CONFIG_HIGHMEM is enabled. And in that case clear_user_highpages() 
-doesn't call clear_user_pages() so at the end only the else part 
-remains, which is a simple call to clear_pages(). Why not just call 
-clear_pages() directly from clear_user_highpages() and drop 
-clear_user_pages() ?
-
-Christophe
-
+David
 
