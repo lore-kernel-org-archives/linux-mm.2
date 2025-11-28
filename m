@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22AEDCFD376
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 10:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2366CD116E2
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Nov 2025 10:44:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37B786B0023; Fri, 28 Nov 2025 05:18:43 -0500 (EST)
+	id 3BD696B0012; Fri, 28 Nov 2025 05:44:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 353726B0029; Fri, 28 Nov 2025 05:18:43 -0500 (EST)
+	id 36E616B0024; Fri, 28 Nov 2025 05:44:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28FAA6B002C; Fri, 28 Nov 2025 05:18:43 -0500 (EST)
+	id 2AB3E6B0027; Fri, 28 Nov 2025 05:44:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 193806B0023
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 05:18:43 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC17F593C7
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 10:18:42 +0000 (UTC)
-X-FDA: 84159616884.03.D0C07E5
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BF8F610000A
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 10:18:40 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D9DA6B0012
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 05:44:43 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73A4613AD34
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 10:44:42 +0000 (UTC)
+X-FDA: 84159682404.02.AB5652D
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 98A0710000C
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 10:44:40 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ntVwtbt+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764325120; a=rsa-sha256;
-	cv=none;
-	b=Lp0VCGzbur10LW7LwKT8Sdf3gBL+mK+yrSpvw5s5MkUugirhfyaWXrAY4b2Ps/WTxKlx83
-	sgFhnmK+iSWsy5L1PjF69zrqMXusHg4lJVNBvaoHfbJ77xcWosKkGEgpoMDS3Fk2kyoVyt
-	inGKV4XMWYGQ2CS4q0R62xlwQRbL+hw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ntVwtbt+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JC0hv+gI;
+	spf=pass (imf05.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764325120;
+	s=arc-20220608; t=1764326680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=xKbiTeUE4R3+lfUE5lplRGltmZWgZb40ftgeIyEu5hY=;
-	b=QX9Zle44uFYWO8rOkKA6kg+gNCyQ7I6gQerodwAOoClx66CRUa+9UfLhz6iBFqq8wnsH/1
-	kBXOYeImmzC0H0961415okyVFu6qeUHNIMW/iUHI1gWRgemqFiiYYePDZstVa0TFGQLIhk
-	8/Wo0PKBIAbYVuVCT+pnziy/5R2c5Tk=
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-34374febdefso1841442a91.0
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:18:40 -0800 (PST)
+	bh=/3UNOdECGML4434dXSC9vT4570MnbL2LpUQEqXY2+FM=;
+	b=bdi96iJEg8XAhQdEnhlJFKeHR8wdN7SuyDYzgoT/k6RP/rEqOcGE9LUhUegCJveF5/d6s2
+	l0WMAob2BL5P2joARbhNivNYMECQ3DeHIGKVQzD77xg4MrOflAEYjBhzwxGAqpdDjSZc5e
+	9xXprrO7mZ3eapt6WzeL+CFUbXBY+Bo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JC0hv+gI;
+	spf=pass (imf05.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764326680; a=rsa-sha256;
+	cv=none;
+	b=XbsMguufEbyGER6DFIPcMF9Z8tQz1dOKnXRRlerc+1sqUN4M7x8N8IWtIC4OIbi59cWVYk
+	Grh7f01uDVy1dbgd3u5bnqU968cD6zsAsYLxGfjz1JFztCANmw1u8wFkZydn4miOOTVpXA
+	B2TOZqK1mvzgD34oPWzmS+ZZyTZcfeQ=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34374febdefso1862231a91.0
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 02:44:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764325119; x=1764929919; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764326679; x=1764931479; darn=kvack.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=xKbiTeUE4R3+lfUE5lplRGltmZWgZb40ftgeIyEu5hY=;
-        b=ntVwtbt+fvWPnTTe1G+jhJ404ADXT1AhtHB/yTjl4tGbshJMHU9Pz/vFVZQ50JPx1D
-         cXtzIsAaH9tc2rVET9081xlq1Io5/yna8y32XiCxtMnomqA+hb1SVxHJGwS/ylnX6O1I
-         OJWkpMvW67W66pQ1Q6qBt67aKFndGEgNH0xgy9e90RfziOJyxS+v8ghIBJ0EL3tBAAE1
-         F/nG2/5WdYdvtn/3BE+ygvNtox7IbETlWFbnG2qb9Z1rcRWCr9pkhxi8DGVPtaZzkpY/
-         xzX1jVopna8SMKNnFNPWQlip2xSWNAIbTKGxCwgXahC/PCfGQIKDA5WyR9M/ojYoqzQe
-         95vg==
+        bh=/3UNOdECGML4434dXSC9vT4570MnbL2LpUQEqXY2+FM=;
+        b=JC0hv+gI2+3cr7VB88znGySehCNe8K7KeQMbHOaxgiJFvDwE3OJKbdNVYB1IsOem7I
+         GdfPqg1fuXWo0SzXT40FNlulr88qu3q5hTOqVFqCstZ5Iw0GtBPCEC9Nbac+d96Y9CLZ
+         x6yrHOD2TbmXZ8NSuUKhaE85vbaCKOOA/djwqGq4daj3lMBxgiRHgmzubAhOAYeCilXp
+         LVk0ZSwDsBw+Vq0hc5d5AKUdbfjg++Lx5MTEiTQdW0urg4F6uw1AsRpxbpZ21dO6GhgE
+         6n7SkF8D1v4zQzbahlp5GWxikr5EB2e/ySCtWExyusiVcTNeC93ysRpfUEuffSCryvt7
+         LOHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764325119; x=1764929919;
+        d=1e100.net; s=20230601; t=1764326679; x=1764931479;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xKbiTeUE4R3+lfUE5lplRGltmZWgZb40ftgeIyEu5hY=;
-        b=NCDNsv62uD904Rvliz0Uj7hsiniSjozl1fjBljBR09Ud209EmlaNHPAqnwJCP+XIkv
-         Emlo3URjaCC/NOF91+glEDq5feDAB2S9sTGe6t1+gzfkcsRd9JC3l/SO5n8YG1TnFNNd
-         oiIZiozocqK+XaJzDv0RuV8zwNLpo3Ws3MVfsmxmptew58dris6uohEvzRu1/yE9L+ce
-         vqddk9qs8lDD1GNo2zPTPEG/3qmalKX7F4+uOvi5glc9lnaLZL9tJlvO/U3LAXUwuOf7
-         daB7WJzrrIuCFUyUWKyWQpOAYxS0PqSCwOCtmV/+XGpW1Zg+VvDmOiaErv6vR+bOrlQ+
-         KUYg==
-X-Gm-Message-State: AOJu0YwTT4M2XwYrGkGQAJUvnS4zsHNBnx0tSj16QZvQSdUj5PznK6WO
-	/88K0is/AHZ8CPiqRizsoPojRcj0wgSWlrzMah8+LnpO0wzKBdYluCfDqyOBoYdQ
-X-Gm-Gg: ASbGncu4fn/WYGlLHFKlzxrAzRWx1eNEvuZ9Jo09RysA/KgO+flKcSd6VWvTMAFa0ak
-	7dKDyWScfUoWqYJUUCr+BEvO9g9P//lZM0A7ewoc+PE/aCh+EY3Tqn8PWkC2P6ETRJ+P7E0aST9
-	mDkgcVnuc3axmw1w0WLXp+g2CUOM1VFm4tJZQUrdBsA0LdDTjTIadb8++cXjnwRjjGWE+E1pSMA
-	LiXf95QGR5wTj7xCujukvXb0ItQbGzqChxbikl5wuoMH81SMfrUw0y0SiFPaO2TbE6NFhzRCuCI
-	eyrbPPXfBVj7lR6bPBoRhHlpKn9jLZDchjzqQSba0owaTCCpoHVYj/az2qtjSu7pQALioRsmBTV
-	DRWlj9rFcFqwL6+HwqzxvY6I5Y6Rh4BHnzDSR81AZ0EXoNJW7zGmshK71jm0LFm2navvcK0QOXU
-	4mHT7ztg==
-X-Google-Smtp-Source: AGHT+IGge2gq0mku+sItZjWCM+QW1VZVA+myW1HYnwoNnxALy8Q8T5+kveNTTgNppIT8jE40jNKyHg==
-X-Received: by 2002:a17:90b:3e87:b0:343:f509:aa4a with SMTP id 98e67ed59e1d1-34733f50568mr23997342a91.36.1764325119491;
-        Fri, 28 Nov 2025 02:18:39 -0800 (PST)
+        bh=/3UNOdECGML4434dXSC9vT4570MnbL2LpUQEqXY2+FM=;
+        b=LUNaMzi6UEydFD04UTFJG/5jNlTikCj9QQQahCYzqYa0szZk4cO+qhJD9jAx9XXwBo
+         wItr9AG3tEwp0Sz4D90d7pl9BmMJADv5t5sys3gv7wNbwDunGawUIwScMLMvCTS+83kb
+         6cAXfaTcliuNM7dgcPnEpgwc3L6YG57tFILzSBE43+fRbBrGz++JULpNWcKPMaZuUPKh
+         e1wS7akz6lsvdFGVR8IP6eZe0RS5HPz0Pn/ldjzo8nI4IVMPNIWkFdqTwlG546wZ+oTd
+         CfxzIhgGRQTJx7Ug+MCxy0SZUftlcqWKSf9pVOmUzvRyd9XTS1bPtVQoCPseE8NVfGkl
+         2KkA==
+X-Gm-Message-State: AOJu0YwFLuyQZ7LuHUpnN0E2yFb59yenLWT/kq3UDuY4Uddr3MT0Ilwl
+	zqrpQwVq6p4qwNri02t/BJxbTEv/mloYK45BN6Svqf4SORVWeHpJecsL
+X-Gm-Gg: ASbGncsM0lda0Glz5MGwdXNW04vvgIW9hadl9vDJ6/qNqhXTW1jJkUJQPgK2X6sMkDT
+	jov90udCBewEIXd6/zd9xANgzwwWoEqjBipasVaGYZoV2qGTL/x19DKeuMN3hJSDGoeRPoizIXK
+	p3lTiHiRdmnLyGFdq5ESrjGbkKW1kOjZAbqFvy0n3xUz68d+tH3UJW5cWOL92dFc4co+2zo1sFV
+	1O8ArVIb0J7gdXXIE6Uc0dZJP/WTFMp0oqpr0TkMf+7aLTO4VgtIlm7nLb+gBhMWom+udhDNPC3
+	ePapsvKcPMxA2JKDHKtpus7UY0w9uUz7Puh+UFr3+LwpsK5M6ZfAm+woIy9GcV5C6FTqxE8G4IS
+	msmNWazeqf5bLIr9SSmruUOBDcjJGShjG04e32yXQ0otQCkE4HvJ6K+zXS8N6lzU5QpJfeuGkeE
+	Zzc3Hu9A==
+X-Google-Smtp-Source: AGHT+IHySGrEhslcddiDsWyGiuUGKUH3oJsCwwn3sNjphn+JRsycDU0fK9T8rv64Q7YwDQvk+pmHog==
+X-Received: by 2002:a17:90b:48c5:b0:345:badf:f1b7 with SMTP id 98e67ed59e1d1-34733f3eb64mr25904802a91.28.1764326679392;
+        Fri, 28 Nov 2025 02:44:39 -0800 (PST)
 Received: from dw-tp ([49.207.234.175])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3476a7c2ce5sm7999198a91.14.2025.11.28.02.18.35
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3476a7a4c12sm8416592a91.9.2025.11.28.02.44.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 02:18:38 -0800 (PST)
+        Fri, 28 Nov 2025 02:44:38 -0800 (PST)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
-In-Reply-To: <20251021100606.148294-3-david@redhat.com>
-Date: Fri, 28 Nov 2025 15:42:00 +0530
-Message-ID: <87v7iumpov.ritesh.list@gmail.com>
-References: <20251021100606.148294-1-david@redhat.com> <20251021100606.148294-3-david@redhat.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BF8F610000A
-X-Stat-Signature: skobwb4uw49di7pazd3gkiet6rwmng6f
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 0/2] powerpc/pseries/cmm: two smaller fixes
+In-Reply-To: <189ac734-b194-4b52-9752-18d8c0b71377@kernel.org>
+Date: Fri, 28 Nov 2025 16:10:47 +0530
+Message-ID: <87tsyemocw.ritesh.list@gmail.com>
+References: <20251021100606.148294-1-david@redhat.com> <557b5500-412a-4d26-8c4b-147c9a00d5fd@kernel.org> <87zf86n3vq.ritesh.list@gmail.com> <3cc7d401-c77c-4ac8-abb8-c264fbd9aaf0@kernel.org> <87y0nqmwaz.ritesh.list@gmail.com> <a3bb0e8e-72c9-4a9c-b347-e899ae29b289@kernel.org> <189ac734-b194-4b52-9752-18d8c0b71377@kernel.org>
+X-Stat-Signature: kei1fuyb6ayrk8yi6k195np3yhgpsi9d
 X-Rspam-User: 
-X-HE-Tag: 1764325120-268545
-X-HE-Meta: U2FsdGVkX1+FgTnbpOMYETtBjOD51NiIFEJo8Zsy091ORqAvYR1FquR1cMvjDJXNw4ZcCycX228iZT5nfsYg8MDiiAfrRe4CnnblMU+bZ6cc5+/eigYP04xIy1g89z5AvB75SzzVsvCmjbRMkg5wwGCSv3n//YsxAEVNmnU9zbFoqBOLEYKnGB2ge24EXKEhqBfYrIOkdUIoCXQ/j8IDkjTGuRnSG53eAHo6h5+9JSDpY06BupQebO9FWZ0dp2v/Dpx4JxsP3RWSMdlOj1teETIVPgbULqqNkekPNT3O9cVTpN++5TJkb6L/VDJft62ewKUcLGuDGNQB7JfnAwRPTAkEEcsEs2wg0MB45h9oXrM8KAnDoX/hKh86C3K3zZRQseptvkMVR7x5e6St7tSGyAjJYnWsD53l2ze9ChTAXR8nzHMY3GnB6JD2eeAJxtxDwrsGqD7jCy45nUXETZP38zTEP7GG2/LD9AwsiUPLxAXbVZhMFKl+szdyyEbuZpkYTTI2+MZ72px+TWoPH5aE2IGtdsZiD+nUUPE8UlgZHzQephZaooQIUNsf6Znwjz0toV5EMtWvoI0fCF4negGm+zEa8hyTknLxXUPBZ72GZLnAXXryuP1Zicavnh10UnC/rpPXIKsJxs4V3b4VZvcIHrkDfJxIDJ+GCnuysCiQk+TAVK1gRZPVFgKqDaUo1XeKTfWKrB4TSPmn9skzMDyArr4GCiXwOH83QXRhXGA0m2T12YJa62jMo/+G3M//L5UHMiPCphpyzTdt5XRuaV7/DO09kMEF4+PuMv6B0xBmK9ZSdberU86b+7t9wvBB/Ch2QGRd4N2ZmJGfvPJ2zfFVwMO62JarHcoJhxpEEemgCSLyJB67dCGpwGXdm6oWw3HV/6IUXPnjf5apRnm1JzyXaOGXKuY0dcdvIlXPE90EFMifxxQtiXeumTdVyIc/NMgy77J86bRbBSrlfZ61Ku1
- FADxHbUx
- AgARKTlDJX/J8zIZoGcEWLesv+LRl6ITGKv1YfLAieUEioDnGwPT8YPTZ9ot2E3GeiTyUx19kQt+ckDN97u8WTy5d/+VDvD82tSEo39tVNKnvwcP6f5GhAUMIFXfTNJlUXjlDM8iqPE55gnS6611AeyEIwG9rIHyjbQUACKaNV7T7EOsp+IXmdeKEq4/V7qKQPHqMUvki6uMQNl8yX5Ap6moYg23XNtcNTyvQQZLFwgoz30ilP9aup+zQvKF11CHdawSbWnxKK2Kh8Am26JVfIiQlgQjyHVoCNhp2lX+stcB/cY48OQA1vug05DZ2UOO1Uj7C3prnh/Nbzx4xspGs5C8oXZW/WmOGWSW+aWTcV+dfYxw0CrG3TIeFAmmugTRVIghQhvCukbtiZxqqNZ5CCc5i2EaPEi0DUpvSlXs/gIOr3ROCKv4vJH7mJOfoB4b5wGWhd4AOBQmYeaofikzp9JXT48cTSLG3WlW7iOkSQbkgPH/T/JHyAyiYDmC3cU9r1FLoYzvKx0e3m+Z3puMIY45kfw==
+X-Rspamd-Queue-Id: 98A0710000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764326680-720620
+X-HE-Meta: U2FsdGVkX1831boLktAW/Rvzzvht50wKspfBKH3vCnAnbGcNPIvAE79ps4uVhjufeIdrYsEKLNvK16+iqSQ9vG0uiP1PosA6tSWb6EnEzAb2ngasTk6pXWOsUOrH0jTxNmcrLpw5L95z8qXPA6MaoUNHm2pHVYEZWoC1Lb9GvBLXKG7H+CU0VogKLDQdLy986uDdv4RMi2IyEAdkt01qUI9I2czjlZqtUOS5aogpvbz4yl+uXwqYRIejkWt+tuurmqNX+n+37ia0odWFKeQEdtbkUSI3FOrzugxK+oPu8F6ICtYb3AvrLRlmDrupWMbdiEqvAaL/HCYUeB+/8CbNrS1m+Vy1r8N1BBhNyWBrePOmbnXMOMe1VsAeVm7doopFpEY/3PxBYA295BqWSUgqiWcviS/vYp1wWqSt5zow3oLTk4DZSynQGmCjQKUb5JnOckULp7F7U/yRYVg0FoZ89ObUDdz/UJTnn031xTBLJV2rafSsd7Vlj4DG9qi7tfn+B2vDpZbIm/7LUhrtSjLGKWQwZGSc3cLYiUOyop4KpvFqhxfzJzLwlulg5vw7Uvgo+wmVAvuLdgGqdkj8Ty4xOBOFcbfzgXWyf9az7Uhg8+DfdPY1/Fs1kNSFpN6qkSHVHVSkMyAppSczBMS5yPNB73knZN8WhPuyEdxFC922SsbUBVPMneMUg18Nn32ZgUVjiqijg0iEWxaEhTYOEzcnWgvRpP9nKwdo6Pp/1PyAo/TJ+8NfS7s4lsygvpjRSN354XVswVd6esyF2AXLVDTehsFjE6iGrK74u40lroFmkvivut3Ewqp/qd1W5QL/SYSMRZ5nZfnEqhroFk4NVgCqsORyM0noa9OmCzWIXCQTFfQaIzfgaSRe3jVWu/JOV20iN2roqVr2/yuavSqNBL1fxvt7fT9sC4w7ZZvp06dGgcd7RKGOkFeFmPXaMq1kaXHoiJpoLkH5KJdROkRnSof
+ gz5obnN8
+ HFJk0f/w+pStzPKWYXg0a+pUPrGqkousBYFl/9DwVanw8PBgjMNPh494kImGDfXjrwrLUKdMbfkLe4Wqyq61WpdaD6bYMC0hkdQ/3afQjzn9LVIM1zRE1m3PBg231Wb+48vo+AFNLOAKDevwrqAaS/13rlfqzvo1PoDRPFAsAfHnviJe3kNchVjQxJ1b5VLPIo/4Mdea3+umU/XYEqGYJQi2YTq0+GbaE/GNPjEgYewTxXYzxokj1+YgEpszhfZrTMTOQRz7BM0BpYUKM5XxTepj8rKROeCUAydnmFOS0VVlZiRc4GoDAME0exyottGz7alf+2GPNNA2g8GIp22ANAv84/OLPSEovzpJoXs3GzMncf9oEYdBUPtJistI6H7TIlg04D6qG49c1toWMmUp00PaVHDL3CgyrzKxfDWFLAJ51VHRaqGV/9HANhSccvi93tparVLbooXMIM8Pgzm1XeOoEMA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,27 +112,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-David Hildenbrand <david@redhat.com> writes:
+"David Hildenbrand (Red Hat)" <david@kernel.org> writes:
 
-> Let's properly adjust BALLOON_MIGRATE like the other drivers.
+>>>
+>>> Right. Let me give it a try first with pseries Qemu. Otherwise I have an
+>>> access to pseries LPAR too. I can verify it there.
+>> 
+>> Ah, now I realize my problem: I tried with Fedora 43 in a powerpc VM but
+>> the modprobe didn't do anything.
+>> 
+>> Looking again:
+>> 
+>> # grep CONFIG_CMM /boot/config-6.17.1-300.fc43.ppc64le
+>> CONFIG_CMM=y
+>> 
+>> So modprob'ing won't do as the module is built in.
 >
-> Note that the INFLATE/DEFLATE events are triggered from the core when
-> enqueueing/dequeueing pages.
+> Right, so doing "cmm.simulate=1" on the cmdline in a Fedora 43 VMs 
+> properly creates the CMM device.
 >
-> Not completely sure whether really is stable material, but the fix is
-> trivial so let's just CC stable.
->
-> This was found by code inspection.
->
-> Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  arch/powerpc/platforms/pseries/cmm.c | 1 +
->  1 file changed, 1 insertion(+)
 
-Make sense to add vmstat counter for BALLOON_MIGRATE as well.
-The changes looks good to me. Please feel free to add:
+Right verifying using simulate mode is very straightforward. Thanks for that!
+So.. using various random echo X > simulate_loan_target_kb on a VM...
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+~# cat /proc/vmstat |grep balloon
+nr_balloon_pages 16
+balloon_inflate 1638
+balloon_deflate 1622
+balloon_migrate 4
+
+-ritesh
 
