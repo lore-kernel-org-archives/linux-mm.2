@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE4C1D116E2
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 00:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BAF8D116EA
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 00:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B66676B0029; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
+	id 471CA6B0022; Fri, 28 Nov 2025 19:34:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B10986B002A; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
+	id 4235F6B0023; Fri, 28 Nov 2025 19:34:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FEA66B002D; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
+	id 311196B0027; Fri, 28 Nov 2025 19:34:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ABE76B0029
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2EF5A1A0768
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:04:54 +0000 (UTC)
-X-FDA: 84161698908.16.7DB7550
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 51F8C180002
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:04:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hScv3mBn;
-	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D84D6B0022
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:34:20 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D99C513B947
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:34:19 +0000 (UTC)
+X-FDA: 84161773038.21.5544F0C
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 371E2C0014
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:34:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SC0ZTCJn;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764374692;
+	s=arc-20220608; t=1764376458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dUsFXaqLcET0q15DSudQAy2n1kSLatuRIQt1XwhFLdg=;
-	b=n7Zi7z1S6YeSyXvkmkLuJUbBbeTez3tTda5JEWCjFiwBx3/kaKS6mk1YKKT5Y1+yegbMhe
-	ZnOFwRpKzCS0l1b7kqSoHtZrqv/5key9VhVZIztYhMkk0gYvttBsHmze441LNa/Lh7GOrq
-	jZUVxYVDqZEu4ppuOqulWnSAHJpYoeI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764374692; a=rsa-sha256;
+	bh=0LIoMkm8VlNObboFBdEcs3weDam3kwF5HK+sgGgvZ4U=;
+	b=X3wZ/QAp2H7ER/Hz/wDcTBFoihMjQhGuLSN2EJG0koN9JrNXUk3ixml5ynLmm/Nh1vVGAc
+	lhg6Ia21Ws1G/o+n6+1JdDTqQpIdeA8S0OBirhrfo9ABCe50e52nT07dR1x7QXQWBcJOSM
+	RlU4UhGJ8CxWc8uoXmRxBtpOmqgnc6U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764376458; a=rsa-sha256;
 	cv=none;
-	b=PIu/nDWhmKNwh1bk+5NrWeRsZXc+nD7QEOdNv3n1ZKgoVHaZ2h7Ysg1alCqD4tcx0qlGJD
-	Qi1HnwPf2Y+h6avyllhmGa58SmniaOdBWygOvtSBR3+q4gtSLq33HnG4KskDIqRprfFKKk
-	nIW0HKPEkgMrBqKKkCqX678iRM1A+58=
+	b=cE8Fjb9wQcbTqenfTuPL0sCRgcWKJBEtSHh2E9iusgBQCzQzUiYm0Zg7LFvXq1Yb23wgV1
+	JawAr5GfG0DFE6gpC9PkpY8KNEWvH2g1Z300XFmYNR6d9+ZGu0WQemizaDK+A291pK7hOG
+	hxbYbT3dmwxC/u79kysrW22FVvQhOJ0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hScv3mBn;
-	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SC0ZTCJn;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8b1e54aefc5so163571585a.1
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:04:52 -0800 (PST)
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8b2dcdde65bso324944085a.0
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:34:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764374691; x=1764979491; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764376457; x=1764981257; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dUsFXaqLcET0q15DSudQAy2n1kSLatuRIQt1XwhFLdg=;
-        b=hScv3mBnRuAUcEyRbWjPtTKG9DfGBabk8jlPXca0zBXu2fcrkKXQf8o6uo6NgV/pEz
-         3JbsSl235CnXPaUEHrCYefd73PPH9Q3pChk54+iAyJi8NpXUD8RsLYiUblF46aN8qKxo
-         ESEH4kjLeLEAGFcqTvUv5qReZ24AyIzebttNFy4JaQqgZrF5LUVVxIGopOIbCoybYE6H
-         zZoTM0COO/HVlEvgg0Y2KqxwjeWk/o1+M1JclhHd1NGTUEuCnvMC1fpAPuYAEE83m2yh
-         VR5dhDPJb3QGFGFMo7j4jEwc8PGxW7A2KLAMuZHm33IoOp1gAfkZ/llpSUkNRm42BTvT
-         Z/2Q==
+        bh=0LIoMkm8VlNObboFBdEcs3weDam3kwF5HK+sgGgvZ4U=;
+        b=SC0ZTCJn3kJRP0a08OdzPFP6A6RXtRxkvTx7UCk/1E1KC67LiRXovj+VaImS1SqTuv
+         BYWo87B3MKmlW2MvP8uWBEJmPXy7Rtr88i6LL9tEFY1lbqzqZM4EzCXOX/HWPYo3a2tw
+         mVsDRce3/SMgoanfWohVBT7iq2i8T5IZbiZYxVBoMUEkHF06xACm2Rr7Iub+ReYckaZF
+         IvAb5t6f+V3eI+LGTiYwZU8lSITCDE+bVER/fqRSp+GlCLZUokNfmmCeaqwTmJFYt64I
+         OTI5SR3vaDvddpDo4n+rAI6pEdyyYcqgiKCmxgeKyUB3d9iFX6xcJQS8BZO62a+665cx
+         Z5nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764374691; x=1764979491;
+        d=1e100.net; s=20230601; t=1764376457; x=1764981257;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dUsFXaqLcET0q15DSudQAy2n1kSLatuRIQt1XwhFLdg=;
-        b=F98Sp8ylEVnGyxvBbghIMOP9dDOjTE9F+qlvHSmV6RbydVUhsSRs9FL4DhiQMQYvf6
-         jWaGSQySLRpDplbV1frN7NuDXqLuAqL3Wvx/GvNsqUIoRRTcxwsBvySj7+FSUylEkUoj
-         gqd1kv6dDZhduv2XZWEu9A0Bnaxnzz24A86hG/CejQZfdhhGgZTsC5OycpzAM2a3qcsT
-         nqh6u8/6bx92nvfCEIrX0KZ3LamDRFKtNJ51/cq78/ZSlaImx+KEZ8XjCmHcmR/cwC02
-         UV4yfljiQNnBKGl0ucfYOX1AobZD/BjD2S117ZqNt8gyHolz9zey/R1ImAwFUTf2YKv+
-         e/Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOs/2jGX8AKxhEeyx0N+4QK58SrE2/vti1AFNwkeB7h2j3lgvsiTMDVKYRz2E6BlfPSCmbrCrHcw==@kvack.org
-X-Gm-Message-State: AOJu0YxiSpkB0KdI9RHlPWN3fGSPXSfMUrmEXCHrMa2NKb6athZMtJXm
-	Ex4hmMCTTK69ITqXwOuJXVjhCIiqM1RhRglCRSmmnC/zJMd0gpjnRRsOOlRnlV9aUQaW52J/Cvs
-	6MehKqNSaa6SIRSWe0pQEpcCqIO/Z0Sw=
-X-Gm-Gg: ASbGncvGDcnLla35JIjfGIAtlcvf5/NTAuKrF7MfcynuRnZn11i0ZCpQTRlB8pj2Sz/
-	cKk66+sbBk0ErAUacKb3TeGkH234aKvFw7vaP1ZxZuk3Cz9mUSNkcMCn7tDvNZ6h7OESyoTNMzp
-	rq7KcctPLTUMvXf804ZRf9XhdO9F6ZS+Ebsv/LMw/0RoZp5deFjD47h9G+eq875p5GV+muPPyiM
-	DIqQe/rYqtT5xfFQE2+llPHdb+JcLWUKYmtFlnheC6CR+Iqrz43RuCBhKjGYVKpnTsj2g==
-X-Google-Smtp-Source: AGHT+IHs0eeaf1N+SUSlKmPKgpsQCMyIfW7urkH8izBlam13LsCkutd0GEbzDaXXrD0lzGezAS048aqr0M48OOVRnUc=
-X-Received: by 2002:a05:620a:4721:b0:8b2:598d:6e78 with SMTP id
- af79cd13be357-8b33d1cfa05mr4200867885a.20.1764374691240; Fri, 28 Nov 2025
- 16:04:51 -0800 (PST)
+        bh=0LIoMkm8VlNObboFBdEcs3weDam3kwF5HK+sgGgvZ4U=;
+        b=oV7Kw3XfIQr5LDtNUbpApSTEq1juI7eikBxWL+5gWC5NrSttyca5F0QAGuQpTmOeVJ
+         dJHGj9svd1TskbL4nsvlMGBbBZ75oUQHVUYtPUZ4eRcLisUMpOk+QheAMgyrDrsU58eP
+         oXPBWSdmnU38ZYoNDeTKDVnIrROJnfbzpsZLQ1DOEnHzD+SZiVUyy7+2xZmLpOlnDX7h
+         l9LHFG8STT80h1+gs/k4EoTJvk1PFAiuq2YK2ex/sVQbJRYqD8Zj/Zb6M2vdO9UlTiOO
+         /DosZJkJjlt5skVNfMw52X0FE+oEUGyr9aOlEUXD8+/z2MD8oGsAGcWm2lhiD2iO8i0Z
+         cNiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTHe/vyhRLF6Klg5CHVBbFvsVpekZ12cT+RWVdKF3zUSW4x2NKoyzSYrLiOHiDhI82JIZhaAAGaQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz8dbjD5HX6enzlf/KLILXaP1mWhZUpKJJW3uIuF8stO0pRuuOa
+	3C0FnNoYmI62H3kssh56DsmKPhd4NlarWtR6qNoAcNmP4B1iE/D4NB+N7pZeBMzcVDQu2WDXoW/
+	taLfTTC348AjarXQxlhFJW1Ukz92vV5EjeJ2kqX4=
+X-Gm-Gg: ASbGncsOuoIzpMScAjgjrvjacwd6tNHLKEt1v+52ptSZTD0LQXDhmUILDkAtQ62qoRH
+	1JebJdjtRwC7sGCploGo+ASQ34hbxiKsrIwZEcPgFMXWj9/NH0KGxYKZB1dD1ofV2c+alajU715
+	PvwnFH/L5NdRAOmhkMm5ray9qHBlh1o3T36lRRT2ZLIiRsd4TkoCUmt4VT5V1bQLAfSamAR3UG4
+	gkTAF4prgF+Ezd4TqmKz//Bhe9dmSAUOdHQGut852ysAgp/KcZ1Umkn9PQvSn03UAtByw==
+X-Google-Smtp-Source: AGHT+IEbUPZDvnyNglI2OWwgsuu+vyYqCq79PWwMFoEQUdoukJlE4Lt8HmKth1H6eHeP0lj+ow5ncWaYCAkBHb4Lsuc=
+X-Received: by 2002:a05:620a:470b:b0:8b2:5649:25ef with SMTP id
+ af79cd13be357-8b4ebd6f9a8mr2259431885a.21.1764376457167; Fri, 28 Nov 2025
+ 16:34:17 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1764297987.git.zhanghongru@xiaomi.com> <cd98e89b8b609bd2781b2d24c721a59feda83ec8.1764297987.git.zhanghongru@xiaomi.com>
-In-Reply-To: <cd98e89b8b609bd2781b2d24c721a59feda83ec8.1764297987.git.zhanghongru@xiaomi.com>
+References: <cover.1764297987.git.zhanghongru@xiaomi.com> <37a6c6c35e029c3429f236d5895c898140d991eb.1764297987.git.zhanghongru@xiaomi.com>
+In-Reply-To: <37a6c6c35e029c3429f236d5895c898140d991eb.1764297987.git.zhanghongru@xiaomi.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 29 Nov 2025 08:04:40 +0800
-X-Gm-Features: AWmQ_bkYwndGqyHrJmcGybkcsT_2GSRhfXf8-NVEqRaoeCkJklpdI9_mY79C5JM
-Message-ID: <CAGsJ_4wCDW=3YdPboinTNUp5qvcSR8LM+6vEhFM5q8FXHVNzHg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mm: optimize free_area_empty() check using
- per-migratetype counts
+Date: Sat, 29 Nov 2025 08:34:05 +0800
+X-Gm-Features: AWmQ_bkfbqokitJitenFR-9cRpY-w671GN7adMcziPGloKczpfaF3VCVdqIWYCo
+Message-ID: <CAGsJ_4wB-H0+gLgzHBU_AB6DYLd3MbByKgjK51SP6ukR4DksMQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mm/page_alloc: add per-migratetype counts to buddy allocator
 To: Hongru Zhang <zhanghongru06@gmail.com>
 Cc: akpm@linux-foundation.org, vbabka@suse.cz, david@kernel.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com, 
@@ -106,13 +105,13 @@ Cc: akpm@linux-foundation.org, vbabka@suse.cz, david@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 4bfrrpo8jqu49s7hscz9ttunzbyyjcf9
+X-Stat-Signature: 6dcc3whmyzjpfsm77hx77zgi788eoyf3
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 51F8C180002
-X-HE-Tag: 1764374692-750490
-X-HE-Meta: U2FsdGVkX1+St+oDDunLjPuNrFH/weiU7tZbQQ0UejeSIjJlwNgX5e68jwhZJ2IQPy4iFFo8AHuYt425ILdA6fg5O0EuIDhYdpvsaBuzzItSnsNuViuLmWqS1XWZTWkISNgLa7e1Rur6HgtmRepgX0wMZx2Krrvy6nguJa50F78JqMa5pv/rVRDtfvENPuMOPIF0I3Jk6TOZ75GDsmvv/6RoAX1+Hd5ocHScfOjE2HVBe3ujov2odCc+mFI10RYn3RwmZ3D/Mw1e3AjRb/iF/XK0TxSEKwyuNz5oLyx3+oPDQI2Tbwq7cNrjhI+Pu6TBcBdJ/cTV2KmUQeozcTW7A93wLqfjupozwHpRfn/woeGj8l6eJ2oPNhysg0mt0c+aJFJozgtJUubMnENuLwRhyZ0ERbe2lodkIOHtByASDKX6aqfIqyItcW89s2lM99NIiA7nkbizQYw2kCZn4/qj3RMuqRbmI5csBhGJT7ZkjbpZT8kXEjGS2pvoNpyW8kk9TJvJzZ3XBWLWPHxO/ceSp+5aVbC8T2RHKNoJvFBuIcuD1nNNL5qMaRhpN9evftAPVwfJw7W8+gT2YXowo/jcr8cl2xyELex1zOZXEJzG7lod2bBU4iXS4xQvRRd6hDlpMsCAfs14zhloTLZkxjLPWN0vOCefpvOoM32U5wvdXHzIjvcRU/ONf6rW6dFEwwEemWajQodgGXfgM5BG8ikom5jWimuZTm/+d0Ax88ZF8ACd5wITe2qeBJsXkmBIAG7xq9+jeJond7flf4yXFxSzPTdewW4HAE1um9UfTZlbfHR7ZmIZNk/ANk9EJIwG9GGhSYQRn2AOduIgL8JpNLvafycTq/uqRCcgD2eS4fABFETf4TckQcPyjir8kKJbISh7Q/0q/fBIPStNJKv0Ple5AtzQKWKP52SiQAZ2+5mYGxAZYY39zt0NKDiofGGNy0Gcq40a6yv5zE4EYImccDT
- K0AUGoks
- xLMDax0cndhdGnzn0yUWskPrJR4sPotEEDOt1xKnei1HqdwE5dKnFH6hh7helNpvzuvKXYbUPdguHH6keiGXnmnO//4hrC3Eajpeq8lXf98ylSSUJCT5KfXw1J5GrEAKtiXiTwps0lQ3owWqBXzs5VwhIlyvuNwPQMywRCvxUoJhr6GI/aVWfpH3kSn1qWPVMNUlIFdA/8d/bvK2KpV6MS991WQa+LxBHVuoG1ndyGu+6rg03JNaa+W97cD2QQ4DKxUQ3ChxiFQkcGXYbBq4S65VQBPYgLb8Z5KO4IW5MT1O/0lt6gv6qeQWplVruX4uZ/jh+uDxiU41UMkZNyqcHkkkSUfAJaSisX6+eEUhBLh2aDu4YfsuGUoTGX7MpF7Mq/8hf/+j7+9XYYwoj9Jhc7cbxhC8hM8tkpZr2QgYdacfLNbcFBWAOw/2dZkPvXJ4SUCl6HCkUJPkoB2k=
+X-Rspamd-Queue-Id: 371E2C0014
+X-HE-Tag: 1764376458-835335
+X-HE-Meta: U2FsdGVkX19PSrUgur/akcYWUARkKyMfBEV7fLVwLpyl3a2I5Kc7Vt/ZYtwKCzswggrAtwFwyLq/J71pcBXMY2P9czE6JEXhOgT3GiAN6gcGZI/O1AbaR4RjCAqJCJCY3bHA0uqLKZZqiqY5nPxqasiut1GGfTKj+jtPUroeusoeRKILOkWlcDNe+etV7D2kVKYwBlI1x0bU6F8a2aWnNk0TdFINcNEovu6NAV51NRjUATY+O3q740aunWXllRoilX9TIu5EdRc71bsu6EFGOl2r6/tkpEFw8fhJ7AfJ/LfAETcl6Vp09OyjHfpGgFFL3LD8zw4Y/YW6vgd8+WUUvG7kdg198huec8kHNpDr5TpXbBrbqVTY3etbMf81xIL0Wl/fAc78wJpjORiUx7GVaIP+gbQcaORIdTjgbe71I39OagzLPhtdx6ZwDIXh0mhaiMa/czHXR9fjvr9GP549SaL3oHf3euEjMrW8bAfkjieJS60JVMObepsGaqA1IsdNTTooZ3Hn+WGiC1/oWkl0Y01nGdtUGIzJaYy5bFpWJMGDOf7l+opbKk7WRo0vg6s4Q72ppSHfSLYnjP5jSl3bXRdiOD2k3JsbjajucoyY202E+XFEuf1/thW+62u2alAh7lIk6vSQSKeNQpx4X1UJ8GRFwJU9ePpvZfIMIIO9O/VEby4x4GXB1gnd4L1TR3263GfSobaych/wU8/O7IAxU9o9mHdQCmAQ1ohkzYviOX0KEhxGWJQuGvEVtBupisQfd8dIg4fzNhqXyh92p/ecPReSUAavElpzK7GtFwvUrao+c5fdoeLbS/PLGWx6vZZMa9vf/J3+xcgVWRDPIvhZQ7NkvERikPJVWGb/tanwQiDCzoS7m3h60ONgx0xZx2sm6s2TudGfRlQpDAOwlTko9c+lUtWx8QlgYOPArEnspdHF0eiX5CxPkpATMyM7SBWH1Ow70ROutb+EXS75o5Y
+ KCOuQrdc
+ xitk/Avc8T4FvE2U1JLUShqk9X91FNH5Xznao9dkX14F2Fw5blHRacm6sLEaKRFosYPdcEr6zuQYiM44Zxmu5Zh23GKHXmkDYMyvg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,39 +120,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 28, 2025 at 11:13=E2=80=AFAM Hongru Zhang <zhanghongru06@gmail.=
+On Fri, Nov 28, 2025 at 11:12=E2=80=AFAM Hongru Zhang <zhanghongru06@gmail.=
 com> wrote:
 >
-> From: Hongru Zhang <zhanghongru@xiaomi.com>
+[...]
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ed82ee55e66a..9431073e7255 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -818,6 +818,7 @@ static inline void __add_to_free_list(struct page *pa=
+ge, struct zone *zone,
+>         else
+>                 list_add(&page->buddy_list, &area->free_list[migratetype]=
+);
+>         area->nr_free++;
+> +       area->mt_nr_free[migratetype]++;
 >
-> Use per-migratetype counts instead of list_empty() helps reduce a
-> few cpu instructions.
+>         if (order >=3D pageblock_order && !is_migrate_isolate(migratetype=
+))
+>                 __mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS, nr_page=
+s);
+> @@ -840,6 +841,8 @@ static inline void move_to_free_list(struct page *pag=
+e, struct zone *zone,
+>                      get_pageblock_migratetype(page), old_mt, nr_pages);
 >
-> Signed-off-by: Hongru Zhang <zhanghongru@xiaomi.com>
-> ---
->  mm/internal.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 1561fc2ff5b8..7759f8fdf445 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -954,7 +954,7 @@ int find_suitable_fallback(struct free_area *area, un=
-signed int order,
->
->  static inline bool free_area_empty(struct free_area *area, int migratety=
-pe)
->  {
-> -       return list_empty(&area->free_list[migratetype]);
-> +       return !READ_ONCE(area->mt_nr_free[migratetype]);
+>         list_move_tail(&page->buddy_list, &area->free_list[new_mt]);
+> +       area->mt_nr_free[old_mt]--;
+> +       area->mt_nr_free[new_mt]++;
 
-I'm not quite sure about this. Since the counter is written and read more
-frequently, cache coherence traffic may actually be higher than for the lis=
-t
-head.
+The overhead comes from effectively counting twice. Have we checked whether
+the readers of area->nr_free are on a hot path? If not, we might just drop
+nr_free and compute the sum each time.
 
-I'd prefer to drop this unless there is real data showing it performs bette=
-r.
+Buddyinfo and compaction do not seem to be on a hot path ?
 
 Thanks
 Barry
