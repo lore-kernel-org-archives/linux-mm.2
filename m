@@ -4,88 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D931AD116EA
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 18:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BD3CFD2F6
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 19:52:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 019EA6B000E; Sat, 29 Nov 2025 13:34:54 -0500 (EST)
+	id 7B5D86B000D; Sat, 29 Nov 2025 14:52:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE5926B0010; Sat, 29 Nov 2025 13:34:53 -0500 (EST)
+	id 73F4F6B0010; Sat, 29 Nov 2025 14:52:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAD966B0012; Sat, 29 Nov 2025 13:34:53 -0500 (EST)
+	id 606AE6B0012; Sat, 29 Nov 2025 14:52:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C6D576B000E
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 13:34:53 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6AFE31A0AA8
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 18:34:53 +0000 (UTC)
-X-FDA: 84164496066.20.AA22939
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A362D40012
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 18:34:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z6a3mZCA;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4CE6B000D
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 14:52:10 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED2F2BCCB8
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:52:09 +0000 (UTC)
+X-FDA: 84164690778.08.FAFEA20
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 109281C0003
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:52:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Ap4MYF7i;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764445928; a=rsa-sha256;
+	cv=none;
+	b=UOScMNHJFbEMogoYjZdCQSJ383jawRLMpOi0+uhiECsE7U9HvQ56umsOdEtI4QEI2nnnsf
+	WelUbiF84hZjjJPGSPiWXrL89cSBKZf8NuRc0qlNes/uQ7Y1U5nov6tiZhcTIixT3eiuLZ
+	xERqlCKpqoiyQfN+o2J2/asLm/3YTZc=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Ap4MYF7i;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764441291;
+	s=arc-20220608; t=1764445928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J061S7Ide1Or9BfTVZK92pHY8tWWZ1h/PHM5IeyKW1c=;
-	b=1xK2hjA593BBv6/aBXkAXy6g5A8VgQBv1gAM+3y7bXgUghmufrqXj8TbVgc/+7sOO+ijef
-	I0OjrgTohVQ9NDWbje5/8m3MhQaxVBTTacP3RS8i+VEz2Pkh+59YitsAmtnx7MLECGYqOA
-	lnyIwMwsjh88GcggBRcHC5oV1/hQJhE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z6a3mZCA;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764441291; a=rsa-sha256;
-	cv=none;
-	b=S4E6v3ut2jAXgMKJLJThEQZfuU4lTmF9Ybu5a0nKMd0ylYNpbHPv0AQ1CD9A9oIkEip2zQ
-	F5qPbKjk50KFQILmVibAdAisKDRR1eE0kygmAlw36zf4dCa+RTo/2XF4ftIU9vHZWQuw9X
-	EWu0/8Hg820IlAFZqb0B4a5RUHwd/k8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8DEAE419A0;
-	Sat, 29 Nov 2025 18:34:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E5DC4CEF7;
-	Sat, 29 Nov 2025 18:34:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764441290;
-	bh=FGDvxDCtVeJ1y2x00DTMYoicEpTGQMG7XTIRtkX99Ag=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=z6a3mZCAKbLCvdFSElXGOh7wwbbxZauwIks6IJKYRHRpRB2W/P/xaU8C7QWTSXXlz
-	 Wgfcwm003I0c3Sz593IjXOqhUtu/0Pgo5nbL5ywsNekEmDHnyTFnVi9JWuUmJBKmFI
-	 OrZIIUXwW7vlYoNBQVaS9KrGtjsX70pO7TL0GWWk=
-Date: Sat, 29 Nov 2025 10:34:49 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com>
-Cc: david@fromorbit.com, hughd@google.com, kent.overstreet@linux.dev,
- linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, muchun.song@linux.dev, roman.gushchin@linux.dev,
- syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com,
- gfs2@lists.linux.dev
-Subject: Re: [syzbot] [mm?] KASAN: slab-use-after-free Read in list_lru_del
-Message-Id: <20251129103449.3617583b94eecc0d90cfa0b5@linux-foundation.org>
-In-Reply-To: <692a1832.a70a0220.d98e3.0150.GAE@google.com>
-References: <67a4eae3.050a0220.65602.0001.GAE@google.com>
-	<692a1832.a70a0220.d98e3.0150.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A362D40012
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hiqymzuez39okkat5pew6zwijhkybwj5
+	bh=YUeLWvyACxGaCf4GzfDj2Zf5qGJH4Y9rmObQPo3NL+0=;
+	b=3uWBsJGto6N4osWBwPEi9nDvAJw6+rlwdtvji2gT2ooxS0RJy5eUPINbGuZFa1qz74dj8M
+	LN2VWpRKtCOzRQVypt4UJdBvHqjxatWfXm8DauTyNDKrVMswiXy4DNeoD5uYLN8Illpot+
+	Rnw+ZL7ZXoAjC2M8MpEu2S88+F7cOxQ=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so4422010a12.0
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 11:52:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1764445926; x=1765050726; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YUeLWvyACxGaCf4GzfDj2Zf5qGJH4Y9rmObQPo3NL+0=;
+        b=Ap4MYF7ii/2ydk30RRCCqIarB823qdBxnPHwAm4bAvDRp2+XRZx5tMrKcTkndRF4Rn
+         o47U0uduH+GfFP5iX9PbvzDfehZG28GsAm/NqP8ocfuJCbD/jTp5uYopR0G4gn/z9gJy
+         8KD3gebHu3r7rUWHHag0ZYklytnfnklDbab8SkJrK1C+6WXBjydFheESv1TzVYp5ro2t
+         G0Sw+eyImeaWkzyhQGSDW/k5GHfJLQSgwyVungJlO3l81T1wzhA2JaH5W3Y00QmgeP2U
+         zJl6VOnb9l4PqTFkyvvHp6seQ9tOSqJwsulypJDgUKd8V9Lr7xK/zKkZeXC57KY5MAyy
+         RTRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764445926; x=1765050726;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YUeLWvyACxGaCf4GzfDj2Zf5qGJH4Y9rmObQPo3NL+0=;
+        b=JnBmFGvDl/7pieC0Mxvcqq2innFkGhU2x/AsVa9kOOCNVlUmXqqhVYkrkL1Q5JOm51
+         jqdmvI41VAElEmRqVGYLxVUhNNt1Xk7u6ByrjiwA814AYfLYBMW2JA5kYbdfqUNthAmm
+         XH2Y7tj248Cv7VPU/7rKm3wgrVqmaVmpLMWK6WCh70nY9KwQVjwGVB8J2DFhn26n7IFj
+         wPgWnz+vj3HmdPh2PSXaf0pSwUp/hVUV0PTYk0CH7W0MWV1cworfrX5V+1v+byL9b5Pw
+         x4jpPKeZJfxw7HzDYnzQwOxYSUnkhxrCug1Gg1/Rxq7g5+qF0AnSctvN+DXBUqkwcP6i
+         Q53Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWLJ+YRDhKHuBtZG3zm4mIVb/VFlUONOlPXioGIggiRaXqkjrGTtsL+bdq+qzWqKUD69M+U1fbgsw==@kvack.org
+X-Gm-Message-State: AOJu0YycQjnhBO4y9IK09TUAjQKELYDpKh96pQ2aHDiwUSqg4+uDmjkx
+	WUj+adOKL6pZZPvB2/tROu65AdLlaW9LlNfJVwRNHRFu/uZlO6GWts1j22IQZI3YDFEp69TEozE
+	KOH2GTRwuxlGAcalHMF9GQFM8+1VZqshlYGkRa/3f4g==
+X-Gm-Gg: ASbGncvIbDshnzxTvyGTfm3fxRpR+ZsqebTso4MVbbYKWaWAyGN9c7qS0kqMMpRHB8z
+	KqUpqkQTOrSJVCLDnE4722Hoshudo0eKoGTmlO1JrbsDW4cHFoxSNafST14jet8HXHYEjHZ/nK9
+	QwelccQ4Gi9qDNVXZLO9KsY8Gi8Vp5PImPrdGI/684dTYF8hN0t/S1p1oWLzpQRJXUVwcTffNS2
+	8k3Z84WdqSUGH1l4M0yqX0cMUv2dHRZXd2qG1IwKv7CVcR5HrRBTt+aXl2uwEReXEN/
+X-Google-Smtp-Source: AGHT+IFrwqbaIeWdJib8FrG2mDeH9cpmV3Xd1JNcESoDRG6rLym64mFEzXP+GMLcdbvXtvEDkr4BWumbOiH/BtJqycw=
+X-Received: by 2002:a05:6402:1ed2:b0:640:8348:6a82 with SMTP id
+ 4fb4d7f45d1cf-645eb7872afmr16547077a12.24.1764445925596; Sat, 29 Nov 2025
+ 11:52:05 -0800 (PST)
+MIME-Version: 1.0
+References: <202511280300.6pvBmXUS-lkp@intel.com>
+In-Reply-To: <202511280300.6pvBmXUS-lkp@intel.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sat, 29 Nov 2025 14:51:28 -0500
+X-Gm-Features: AWmQ_bnFhg4fTSb2cmgYMQtzbTBVTpNXxCQJRN9-QkYD3rk0FAtL0ZYOt9H_zqA
+Message-ID: <CA+CK2bCmp4gjpyND2=Chdz-EfRAF20unYzO2dwQb+ZTEihgk3w@mail.gmail.com>
+Subject: Re: [linux-next:master 12118/12398] kernel/liveupdate/luo_core.c:402
+ luo_ioctl() warn: unsigned 'nr' is never less than zero.
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 109281C0003
+X-Stat-Signature: eu3dfppmxtrqbdzrpmrmzfcun7ucp4mz
 X-Rspam-User: 
-X-HE-Tag: 1764441291-528451
-X-HE-Meta: U2FsdGVkX1/zGL96RCWgkW7v8sQwYoO1vsGh9jO2unP6ErFFCGb8C7DNPGN06b5eB3GBJ+Y7VeVKv4Hr2VD4ELBNgEYoiVODHgTMWsl3pyS/Ux+kGfmMsDGpnb0Ui7SD0dgYzwMI9NRqHjEd97FRjUsIt8Riy2AZBxmLGkI57n337//jgE9glrqGbF6+UoagjOCKpCnIEJwV9SgUuJge3+EPn0QUOQkH60J/Fyi0yd5kF7Y/lJdWJ/3QBHwRLrtYv40xCvxZA7CdbPh+mAMmVAhF4DwnQYk/QXDbz3rl/pwBv1Fe470micCPsIuJAaA5PDhuLqjRE43Ad7UvagFUYkZICsAiX9BcHOdq3exroZjmCdtBO6+T1x0fNSpdGRub2iLh7LGra/tyPU0vzECo+LJT18aNYiOceDnCCfM7AbaqrZXKgWLjcuZwQKR0E8jjTbntbPSV0lXGgtLVS9uZ8snOFUXJBwH/ft66GL55byV7GHt+U2fDUXOUfHJMNacAPKTeg/sdhU01l59a+ZBlKghfM9qhT5G/tOWyD9UlOb5dzj0KeSyQ2TT9SgjkXXJwew8nEiJ91WWYRIhIFDzrz1CMd0u1D77I0x1o4ovpIPqoLE3CR694XD6zOGemoGl483TyGkWNdALKrzesrzrhXOGRtNwwOgMp3IP+pPEimtJznlhbmWgeGGRqPHljLS+z685rFBlemkwuMbb+OsTezYDynSl4OoBvfrROqKKkz3Fw77zYEXHxqlXyg2AdayLtiSm0o070t4dwJl4j5/OQ+wd3AKvFcb2ZxlfCLbfjqqTaL0NTvBk6ONi7GToLqJpzUzg5QBdh47KeETBoBe0vLcbCgshy+ym9h0lwGJuifAFRaRYKSKAhJDapRS14Tqw1+VB4ZF3JAHLF1mXuET7syP6tTYWCiWwyA6CPVvAslEOeo1EMgQCF5VeUK8QISrzCUh9kSo1bWVorkxQHWwh
- 2GsYH2Ue
- qaLxyTb1DByGBm2PrQ8ZlaCr82yW8F24IeUoRq9T6PdvKxDW3ZXdtyHwy4MwUbnt8pMXeuY3EgrZKNhKPKUQHhDn+cmHl7SADoxJ4Vs5hkFtvjTD6dBkgzNFfRHHC9oRvc2ZHF2j+MoDTTiE7NmxzuU10Kuxj+40btfSyw7aMkyjBfO0tj2xm9tkDOByVH7iqFcUeiAYoHCI6ad0Eyfik6ipNzALGjTIJH4erv1cRCAJJJiFQcfW5CufKyngdh6C90yaMfc9WGOoA/eGUkTCfmQkdLf2IzmtrtgkCRsnrJXjJ6F0WT0F8PU9B9Jvkms1tZsECEivYuibp9Gz0jv+E4oWAFyUmaw4qYDUbSn7SrHCClkD6N49VzTWnYZOxUMOcnLhbU9lu09aeUWzrzpO/+6WVW28wV+WtYf/NMN89Qvb6KtIlm/ejToSnXdIFtN5+2+ZSdXsaaHEK0F4sdBBuzbSznKjSA/ZIv1QbzAHmQy6ptL0TelndUNMJbKndGFHmZ+1RmNxW4ygBq/F0apuk8dmGL/JLX2S/au0FdRniYzdhQjvg4XkS8MA119IJpZeAxNSaSoksCjXGfeIuGTdjGZS/G/kF85E/RDb51WiwE2uCJT9uP3pJXGFNKcqSvAOa9aEVmRvhgjvc/PeDSEI1fIdzy0ZqAdDoCUZXQmOxWtvI5RIFmLGdAM8Nck6nnb3vZbZcTQkv4f1AQFkGbFOcgOi4/yL6KOz6omlD30e3Ec0vw1K7Ijc7SLj7b1a47UG9Gk93hc7+YmSWV5L2HyW+RQAoMCxvjZJP37Mp6vmBwun529jTTlJw6MPeSpC1c8oRs5JWbZkX3ISMZaqWjDrQN1dElDEjANUx1nKotDFDiQzX5/GFCES73syTTMlN3o+7y/H1DKTSJWHqSkw4Ek9URG+tp81Fyzu6Kq5Qwu4OIszT9mAXZaKv/6VTyQmYY+XMeukV
+X-HE-Tag: 1764445927-496187
+X-HE-Meta: U2FsdGVkX1/Y7VmJHzVF6RpRs9m+I+g/xfcNOzHBW0I/hJw1q5ptKudvEzzHmP7Y8HSBUSVE6OnWXdRNzWLRz/HexLt3BgjlERjm0VThx0kP+X/h4SJ3Rg0y29gApkYQXRy04vcJ0iMT4rS9Jpzcz1DUwiuju5Of+VY/unxzOyXLa5os/Jl9vAQJHsVWRA8YbpD2KucWH5gQtgmADeU4x9oe7A74LjVzRIm58Ma5XkWJFF6uNnzBd7Nffk5uCxSG1UpY/5Lup/+CmqU6k5CLWaYf0/AkUP/GsDA8QNBon+ZPfb5eE4mGALN9tsILbd0tGEl0djgHwQhh+DIa5QgysBYMGuMWIKmsv4wfmjPJq1I61hutmIR9Sqmp1fbMEjX5h+Xa4s2QKrn7jWWSfbTaW4e0fr0oCqPavOiHL1yEK1To87bZY6JOLnzaVKe4olq8CTws43x7fUJDMDtpD/2TCq7eZ0SqzqE/GP7b5M/GNanoFQwZTpsbQXZReDDfuan3PfgSm8gVFwo3XN3HYBAcZvfcfQC5B5GKUEP5b6DWF+Wp+SE3FdfXyM3mgLoU+Mqpc+E2iZt6Ef6WDGLBD45uNWe77P0JFkhnjcrn6SlJ4iwJMAnRvA81suB1zGHYuwqJYSGGWTFk1NnBNTIZ5jok3juysYDncUqAQ6h035JSqJLFgmPBnRsLVmoFg8RNo/W9+Lr4j7EngeCaZxqVyxgu72T1OFBuGKE4B7iodr0wgY/CZch8ocictXERZdj1VpjGLhGABkSS9+MGuiRmV/9R54W0GQfc6suaV8dx2VMbT1T6JFzEfB3eC4NHqtDxsXao4riYlYc2vXrSuBp01/xs/ElW/AuvhM+c/EzI2lKg3fm7BDhOJdPNJ7j38ZTbgWRhfldzX9wMakhVCKocCdash0QD4RsuciwBwtriwrQAXhWip0sJ0H0Eu84GgXSG3bt+qL1XEgQwt9Qjdc98yxK
+ ww0rfhzh
+ Vt9eb4FbMPPNyf7zMUZ/r0W0sOkevJ8RcQ0/5dKIQHsJ0z0YUlP7BPBIVbFU96Q1liAHJs5vJp2xMsuoNhkoWT+qsc70I9Fe7O9aCtDgm+8vWNgDYZ4biM6p3RqPvBdJpYJsn2xTyVwdNWWeLTwA279KVjym3DhfoXAtAHwM0/rPy2cgnMdgj2gAA3I7m/OZXVDokfRU7PX/4xwz57cSveRxQq3pSiLptqMbW4f6PYfCD7YfzOuGy2qxz9gO6bS+CW9Vb778WnS7S8STwFPA6jn3xpVU4FUoIe+Y/1TRSKFZHLcISDpyzLufoauc+KLqtFHJVCVl+fuEuo7mfel8v0JDWxzXfFbp6GEeciySvjdqh2LU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,238 +118,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Nov 2025 13:46:26 -0800 syzbot <syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com> wrote:
+On Thu, Nov 27, 2025 at 2:29=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+rote:
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.g=
+it master
+> head:   ef68bf704646690aba5e81c2f7be8d6ef13d7ad8
+> commit: b30a1fee674c8446bebd9e399b267ac824093bc8 [12118/12398] liveupdate=
+: luo_core: add user interface
+> config: x86_64-randconfig-161-20251127 (https://download.01.org/0day-ci/a=
+rchive/20251128/202511280300.6pvBmXUS-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0=
+227cb60147a26a1eeb4fb06e3b505e9c7261)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511280300.6pvBmXUS-lkp=
+@intel.com/
+>
+> smatch warnings:
+> kernel/liveupdate/luo_core.c:402 luo_ioctl() warn: unsigned 'nr' is never=
+ less than zero.
+>
+> vim +/nr +402 kernel/liveupdate/luo_core.c
+>
+>    392
+>    393  static long luo_ioctl(struct file *filep, unsigned int cmd, unsig=
+ned long arg)
+>    394  {
+>    395          const struct luo_ioctl_op *op;
+>    396          struct luo_ucmd ucmd =3D {};
+>    397          union ucmd_buffer buf;
+>    398          unsigned int nr;
+>    399          int err;
+>    400
+>    401          nr =3D _IOC_NR(cmd);
+>  > 402          if (nr < LIVEUPDATE_CMD_BASE ||
+>    403              (nr - LIVEUPDATE_CMD_BASE) >=3D ARRAY_SIZE(luo_ioctl_=
+ops)) {
 
-> syzbot has found a reproducer for the following issue on:
-> 
-> HEAD commit:    e538109ac71d Merge tag 'drm-fixes-2025-11-28' of https://g..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=10fd2112580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=a1db0fea040c2a9f
-> dashboard link: https://syzkaller.appspot.com/bug?extid=6663075ddb9be85fa6e5
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12fd2112580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15a10112580000
-> 
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-e538109a.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/3cf595fe0afc/vmlinux-e538109a.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/e6e26f95e409/bzImage-e538109a.xz
-> mounted in repro: https://storage.googleapis.com/syzbot-assets/445f48d13fdb/mount_7.gz
->   fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=11a10112580000)
-> 
-> The issue was bisected to:
-> 
-> commit 14152654805256d760315ec24e414363bfa19a06
-> Author: Kent Overstreet <kent.overstreet@linux.dev>
-> Date:   Mon Nov 25 05:21:27 2024 +0000
-> 
->     bcachefs: Bad btree roots are now autofix
-> 
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=108d43a8580000
-> final oops:     https://syzkaller.appspot.com/x/report.txt?x=128d43a8580000
-> console output: https://syzkaller.appspot.com/x/log.txt?x=148d43a8580000
+This is a false positive. The logic is designed to work generically
+for any base, similar to how it is handled in session ioctl and
+iommufd ictl. The warning only triggers because LIVEUPDATE_CMD_BASE
+happens to be 0 in this specific case.
 
-Thanks.
-
-Bisection obviously went wrong.
-
-I'll cc the gfs2 list.
-
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com
-> Fixes: 141526548052 ("bcachefs: Bad btree roots are now autofix")
-> 
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0xb5/0x190 lib/list_debug.c:65
-> Read of size 8 at addr ffff88800098a080 by task syz.0.17/5483
-> 
-> CPU: 0 UID: 0 PID: 5483 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
->  print_address_description mm/kasan/report.c:378 [inline]
->  print_report+0xca/0x240 mm/kasan/report.c:482
->  kasan_report+0x118/0x150 mm/kasan/report.c:595
->  __list_del_entry_valid_or_report+0xb5/0x190 lib/list_debug.c:65
->  __list_del_entry_valid include/linux/list.h:132 [inline]
->  __list_del_entry include/linux/list.h:223 [inline]
->  list_del_init include/linux/list.h:295 [inline]
->  list_lru_del+0x98/0x210 mm/list_lru.c:210
->  gfs2_quota_cleanup+0x21e/0x6f0 fs/gfs2/quota.c:1532
->  gfs2_make_fs_ro+0x27a/0x300 fs/gfs2/super.c:566
->  gfs2_put_super+0x224/0x950 fs/gfs2/super.c:598
->  generic_shutdown_super+0x135/0x2c0 fs/super.c:642
->  kill_block_super+0x44/0x90 fs/super.c:1729
->  deactivate_locked_super+0xbc/0x130 fs/super.c:473
->  cleanup_mnt+0x425/0x4c0 fs/namespace.c:1318
->  task_work_run+0x1d4/0x260 kernel/task_work.c:227
->  exit_task_work include/linux/task_work.h:40 [inline]
->  do_exit+0x6b5/0x2300 kernel/exit.c:966
->  do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
->  __do_sys_exit_group kernel/exit.c:1118 [inline]
->  __se_sys_exit_group kernel/exit.c:1116 [inline]
->  __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
->  x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f4bb3d8f7c9
-> Code: Unable to access opcode bytes at 0x7f4bb3d8f79f.
-> RSP: 002b:00007ffd56395328 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f4bb3d8f7c9
-> RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
-> RBP: 0000000000000003 R08: 0000001d5639541f R09: 00007f4bb3fb4280
-> R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f4bb3fb4280 R14: 0000000000000003 R15: 00007ffd563953e0
->  </TASK>
-> 
-> Allocated by task 5483:
->  kasan_save_stack mm/kasan/common.c:56 [inline]
->  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
->  unpoison_slab_object mm/kasan/common.c:342 [inline]
->  __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:368
->  kasan_slab_alloc include/linux/kasan.h:252 [inline]
->  slab_post_alloc_hook mm/slub.c:4978 [inline]
->  slab_alloc_node mm/slub.c:5288 [inline]
->  kmem_cache_alloc_noprof+0x367/0x6e0 mm/slub.c:5295
->  qd_alloc+0x50/0x250 fs/gfs2/quota.c:234
->  gfs2_quota_init+0x762/0x1200 fs/gfs2/quota.c:1448
->  gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
->  gfs2_fill_super+0x1a7b/0x20d0 fs/gfs2/ops_fstype.c:1280
->  get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1698
->  gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1337
->  vfs_get_tree+0x92/0x2b0 fs/super.c:1758
->  fc_mount fs/namespace.c:1199 [inline]
->  do_new_mount_fc fs/namespace.c:3642 [inline]
->  do_new_mount+0x302/0xa10 fs/namespace.c:3718
->  do_mount fs/namespace.c:4041 [inline]
->  __do_sys_mount fs/namespace.c:4229 [inline]
->  __se_sys_mount+0x313/0x410 fs/namespace.c:4206
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> Freed by task 15:
->  kasan_save_stack mm/kasan/common.c:56 [inline]
->  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
->  __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
->  kasan_save_free_info mm/kasan/kasan.h:406 [inline]
->  poison_slab_object mm/kasan/common.c:252 [inline]
->  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
->  kasan_slab_free include/linux/kasan.h:234 [inline]
->  slab_free_hook mm/slub.c:2543 [inline]
->  slab_free mm/slub.c:6642 [inline]
->  kmem_cache_free+0x19b/0x690 mm/slub.c:6752
->  gfs2_qd_dealloc+0x70/0xe0 fs/gfs2/quota.c:111
->  rcu_do_batch kernel/rcu/tree.c:2605 [inline]
->  rcu_core+0xcab/0x1770 kernel/rcu/tree.c:2861
->  handle_softirqs+0x286/0x870 kernel/softirq.c:622
->  run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
->  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
->  kthread+0x711/0x8a0 kernel/kthread.c:463
->  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-> 
-> Last potentially related work creation:
->  kasan_save_stack+0x3e/0x60 mm/kasan/common.c:56
->  kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:559
->  __call_rcu_common kernel/rcu/tree.c:3123 [inline]
->  call_rcu+0x157/0x9c0 kernel/rcu/tree.c:3243
->  gfs2_quota_sync+0x3c4/0x460 fs/gfs2/quota.c:1361
->  gfs2_sync_fs+0x4c/0xb0 fs/gfs2/super.c:658
->  sync_filesystem+0xee/0x230 fs/sync.c:56
->  generic_shutdown_super+0x6f/0x2c0 fs/super.c:621
->  kill_block_super+0x44/0x90 fs/super.c:1729
->  deactivate_locked_super+0xbc/0x130 fs/super.c:473
->  cleanup_mnt+0x425/0x4c0 fs/namespace.c:1318
->  task_work_run+0x1d4/0x260 kernel/task_work.c:227
->  exit_task_work include/linux/task_work.h:40 [inline]
->  do_exit+0x6b5/0x2300 kernel/exit.c:966
->  do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
->  __do_sys_exit_group kernel/exit.c:1118 [inline]
->  __se_sys_exit_group kernel/exit.c:1116 [inline]
->  __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
->  x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> The buggy address belongs to the object at ffff88800098a000
->  which belongs to the cache gfs2_quotad of size 272
-> The buggy address is located 128 bytes inside of
->  freed 272-byte region [ffff88800098a000, ffff88800098a110)
-> 
-> The buggy address belongs to the physical page:
-> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x98a
-> flags: 0x7ff00000000000(node=0|zone=0|lastcpupid=0x7ff)
-> page_type: f5(slab)
-> raw: 007ff00000000000 ffff888032687dc0 dead000000000122 0000000000000000
-> raw: 0000000000000000 00000000800c000c 00000000f5000000 0000000000000000
-> page dumped because: kasan: bad access detected
-> page_owner tracks the page as allocated
-> page last allocated via order 0, migratetype Reclaimable, gfp_mask 0x52c50(GFP_NOFS|__GFP_RECLAIMABLE|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 5483, tgid 5483 (syz.0.17), ts 105510017652, free_ts 102275632308
->  set_page_owner include/linux/page_owner.h:32 [inline]
->  post_alloc_hook+0x234/0x290 mm/page_alloc.c:1845
->  prep_new_page mm/page_alloc.c:1853 [inline]
->  get_page_from_freelist+0x2365/0x2440 mm/page_alloc.c:3879
->  __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5178
->  alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
->  alloc_slab_page mm/slub.c:3059 [inline]
->  allocate_slab+0x96/0x350 mm/slub.c:3232
->  new_slab mm/slub.c:3286 [inline]
->  ___slab_alloc+0xf56/0x1990 mm/slub.c:4655
->  __slab_alloc+0x65/0x100 mm/slub.c:4778
->  __slab_alloc_node mm/slub.c:4854 [inline]
->  slab_alloc_node mm/slub.c:5276 [inline]
->  kmem_cache_alloc_noprof+0x3f9/0x6e0 mm/slub.c:5295
->  qd_alloc+0x50/0x250 fs/gfs2/quota.c:234
->  gfs2_quota_init+0x762/0x1200 fs/gfs2/quota.c:1448
->  gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
->  gfs2_fill_super+0x1a7b/0x20d0 fs/gfs2/ops_fstype.c:1280
->  get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1698
->  gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1337
->  vfs_get_tree+0x92/0x2b0 fs/super.c:1758
->  fc_mount fs/namespace.c:1199 [inline]
->  do_new_mount_fc fs/namespace.c:3642 [inline]
->  do_new_mount+0x302/0xa10 fs/namespace.c:3718
-> page last free pid 5433 tgid 5433 stack trace:
->  reset_page_owner include/linux/page_owner.h:25 [inline]
->  free_pages_prepare mm/page_alloc.c:1394 [inline]
->  free_unref_folios+0xdb3/0x14f0 mm/page_alloc.c:2958
->  folios_put_refs+0x584/0x670 mm/swap.c:1002
->  free_pages_and_swap_cache+0x4be/0x520 mm/swap_state.c:358
->  __tlb_batch_free_encoded_pages mm/mmu_gather.c:136 [inline]
->  tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
->  tlb_flush_mmu_free mm/mmu_gather.c:397 [inline]
->  tlb_flush_mmu+0x3a0/0x680 mm/mmu_gather.c:404
->  tlb_finish_mmu+0xc3/0x1d0 mm/mmu_gather.c:497
->  exit_mmap+0x444/0xb40 mm/mmap.c:1293
->  __mmput+0x118/0x430 kernel/fork.c:1133
->  exit_mm+0x1da/0x2c0 kernel/exit.c:582
->  do_exit+0x648/0x2300 kernel/exit.c:954
->  do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
->  __do_sys_exit_group kernel/exit.c:1118 [inline]
->  __se_sys_exit_group kernel/exit.c:1116 [inline]
->  __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
->  x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> Memory state around the buggy address:
->  ffff888000989f80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->  ffff88800098a000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> >ffff88800098a080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                    ^
->  ffff88800098a100: fb fb fc fc fc fc fc fc fc fc 00 00 00 00 00 00
->  ffff88800098a180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> ==================================================================
-> 
-> 
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
+>    404                  return -EINVAL;
+>    405          }
+>    406
+>    407          ucmd.ubuffer =3D (void __user *)arg;
+>    408          err =3D get_user(ucmd.user_size, (u32 __user *)ucmd.ubuff=
+er);
+>    409          if (err)
+>    410                  return err;
+>    411
+>    412          op =3D &luo_ioctl_ops[nr - LIVEUPDATE_CMD_BASE];
+>    413          if (op->ioctl_num !=3D cmd)
+>    414                  return -ENOIOCTLCMD;
+>    415          if (ucmd.user_size < op->min_size)
+>    416                  return -EINVAL;
+>    417
+>    418          ucmd.cmd =3D &buf;
+>    419          err =3D copy_struct_from_user(ucmd.cmd, op->size, ucmd.ub=
+uffer,
+>    420                                      ucmd.user_size);
+>    421          if (err)
+>    422                  return err;
+>    423
+>    424          return op->execute(&ucmd);
+>    425  }
+>    426
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
