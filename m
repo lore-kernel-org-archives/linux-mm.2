@@ -4,97 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73DECD116F3
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 08:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B27DD116F3
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 09:08:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B4BF6B000E; Sat, 29 Nov 2025 03:54:20 -0500 (EST)
+	id CCB386B000D; Sat, 29 Nov 2025 04:08:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4663A6B0011; Sat, 29 Nov 2025 03:54:20 -0500 (EST)
+	id C77936B000E; Sat, 29 Nov 2025 04:08:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37BEF6B0012; Sat, 29 Nov 2025 03:54:20 -0500 (EST)
+	id BB3996B0011; Sat, 29 Nov 2025 04:08:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 232076B000E
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 03:54:20 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86CE95BD46
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 08:54:19 +0000 (UTC)
-X-FDA: 84163033038.23.6FBBA58
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BF2E11A0005
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 08:54:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=PTjftmI8;
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AAEE56B000D
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 04:08:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 51BE81A08B2
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:08:01 +0000 (UTC)
+X-FDA: 84163067562.28.48C3979
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B4CE620002
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:07:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QjR5pZrB;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764406458;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764407279;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N5Hf/oCoaC+bmr5nJVcUOjG4GACNlaY1TCA6/nmAPjE=;
-	b=QMQohK9K2lDI1rElohw5ilfe+xlLD5+J47ZDOhNOuhJENlIw8A6ZKcbH/Pi2zT037edt+p
-	6r4ROYg7AdydeXd5qd0kVVxKaQtYzno9AgyL7dGdr0xLa9kJndJKyooA8OODhyij9Mu3Yg
-	NHLygWkgsii/q6ZQkUmLC6QnmRez8go=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764406458; a=rsa-sha256;
-	cv=none;
-	b=yssAz5Ix3I+08GVxbXRXNFVBvtY4UsIo8tlO4Dh6aouR066agipbagMVuJaFlsu8GWLJB0
-	vmgBc97RdMVOcjTkbXlhsw7JKuSLp760JQJQs4V4cSuc0f29877gKu5cqb+nXJMIB2sDOg
-	eQe2da9MlWAZiqpzKorOPGdZFWiYbUA=
+	bh=Xba1EYyhemTExnicMR3JLsveK87vtfAOSaiZRNOcKLo=;
+	b=JEUGxoXvT1yQfYuwGATeKnpoafbRDkGFoZNAta9xSTDhuPNmhOvbOZdgW6xfzz+l2FPxQd
+	LzH4Div5X+xIq21mOz2mSq2lid7+J3u01Rya5h3RPl4rZk7vzBZs4Zp/Pz2+x3C99ShLzt
+	e9O1zyy7R82RfCvwENxWYvPQkEybgu0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=PTjftmI8;
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=N5Hf/oCoaC+bmr5nJVcUOjG4GACNlaY1TCA6/nmAPjE=; b=PTjftmI8M0fFYykNkkoVgNwvZe
-	sRl0yPdorZlBO7dqb9b2+56JO6cvDqq+27j4S4lAbjt0IfK906dSV0JHKIF6oUAcZh7F+1I9OXyXN
-	6yRPprKZfRAggthT4NsG5xgCJhC8j4GQ9Y0hCbf/btIVPJ7aUN2sWaFQ1aXkZrmx7iSZU4M6KA5i1
-	VpjlZA9tKeXauh5uTQb1RaTc10dAEnvXoJRgc3j3+Qj591X0teehEUGcHrjh3OQWbF6S0017Ao1VM
-	/Vau/quGQchFyHIe6X16LLSWuE5UEd5iDmwgbHYeivqdZVuX9//YAH6hMECm1fPh6ioRSJEV6mVbY
-	teD+rj7Q==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vPGid-00000007Cs0-3WJq;
-	Sat, 29 Nov 2025 08:54:15 +0000
-Date: Sat, 29 Nov 2025 08:54:15 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Zizhi Wo <wozizhi@huaweicloud.com>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, jack@suse.com, brauner@kernel.org,
-	hch@lst.de, akpm@linux-foundation.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	yangerkun@huawei.com, wangkefeng.wang@huawei.com,
-	pangliyuan1@huawei.com, xieyuanbin1@huawei.com
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
- sleep in RCU context
-Message-ID: <20251129085415.GJ3538@ZenIV>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com>
- <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
- <aSgut4QcBsbXDEo9@shell.armlinux.org.uk>
- <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
- <3d590a6d-07d1-433c-add1-8b7d53018854@huaweicloud.com>
- <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QjR5pZrB;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764407279; a=rsa-sha256;
+	cv=none;
+	b=ukSPGJguZjpshezpV+E7oKS2GddIkO12l5XFVkvRMz6gYoGZV/kXkzvcFEq2PGr4ErpPr0
+	HkrISess5pf94rWzB0RGf9CvajI6cNwQ9zi51Bf3spovH6wm5QisldCym3c0Wy15z6cSeF
+	C29pQUGWOMbo5nnovdm8WsSXozNFt+0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764407278; x=1795943278;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LaFWmCSuL4KQQ+UT/MEIhGMRgAIrz8Sy2tDbRWfHTC8=;
+  b=QjR5pZrB9GtKjpMNiViSMLu00pi45ypuOK/qGG9v6+2VNKB80jySinuH
+   2qvF/28EgU0N2/gKUHpOvlPGTvf0TEF7SYsIIBbFAjgjrTQRSXHocMaVd
+   gNuci7fi3nOeSHHL7cdWCPUTm5OmejlezN/7HGhYL6Y8S/X3pdoOzzsxA
+   nC2JBCqm0nHBGWUd6IQy1/jVxUmGszYXYl/UMH2ME4UEQyI2Ja0PDL0KY
+   nPjw2om4v0Qkg0WaPR17CvWTRxafnJ4No1+G8w8+6I94chMYRqsssLZfb
+   i2mmWoIs+CHOX5WWqAOFx/lMmVuisEdYNywCTtVczvCul+ebs6qHablbo
+   w==;
+X-CSE-ConnectionGUID: gjWZGj0KRi6KNOqN0d0uVQ==
+X-CSE-MsgGUID: BaWLw3k7QsOAFAOSXQ7FUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="65419290"
+X-IronPort-AV: E=Sophos;i="6.20,236,1758610800"; 
+   d="scan'208";a="65419290"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2025 01:07:56 -0800
+X-CSE-ConnectionGUID: fmPpZhEQRmiKI3VGGnD6Uw==
+X-CSE-MsgGUID: Iv5FX28QRx6kcI6sEUS0Pw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,236,1758610800"; 
+   d="scan'208";a="193289632"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 29 Nov 2025 01:07:54 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vPGvo-0000000074r-1bCf;
+	Sat, 29 Nov 2025 09:07:52 +0000
+Date: Sat, 29 Nov 2025 17:07:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Richard Chang <richardycc@google.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH 1/2] zram: introduce compressed data writeback
+Message-ID: <202511291628.NZif1jdx-lkp@intel.com>
+References: <20251128170442.2988502-2-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <20251128170442.2988502-2-senozhatsky@chromium.org>
+X-Rspamd-Queue-Id: B4CE620002
+X-Rspamd-Server: rspam02
+X-Stat-Signature: tpkpdwtznj7it3oixssr3xgp6to7k6h8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF2E11A0005
-X-Stat-Signature: uph9x69xnfdkjrrh8nj9ry98ztuusxxp
-X-HE-Tag: 1764406457-687092
-X-HE-Meta: U2FsdGVkX1/KEkV/hlD/BSPQN47xgc7OB/ymecwEhSlhm9cVVsSgYkVkxgzWfHXIQgQzAp1LpH6wRYRChr8QP8YAB/+UL6hpxVlfMTtOSsJdplfdV2AtwDtn0d393p3iYvm0VFa9IarNlyaEcUb4QM8hmXs3oo7VpACJgwPPAuuzUMWhP54ZSUIGDcDsnMk8PrZx/xwfkdUX3gCfpvmD2ObMM6LggqJZgBD02cvSYl8f8I3gf2X0z0Ng/KIHWBMLv2DwzYa5qiOE3SbYEAXRqFJd90Jc5tb4iDn5WsZcy+FkpIpv1RXw7K+nscvpTQ8FPlQuMh+SHHO+g57kkN31apDXyGnHGViSiejI1uv9maAS0qNP9xQ6y1WA46tzDaOzrD1aL/HezBbFYIJpsTSSLfMNiJ0iRzpWoHhmp1Q+0w6MfOT/0Aicj/kIIS0VDWYGR/SPCnokpaEQSEfrkQKEp68NF2lgEGYGMJOmADBmD1ZlwmsTjS12WIPj8JsyfKAR/D0eBl6/dguY/ZHjKzWx7oEEX0/V+wuXpcMjr7dJiMEQ+yqPNX0v5Rklk5ZHjqBy/4wcBN84RYyj9jZABET94IvkiLMtx+USPr4cbJAcAqGeEcM6zEDX7Svxy/+j1UFT56DrbhO3v5Igprnzf1H6c05+pxVW9TWM3YNUNCOhtUBQ3/atnzv+TG9QrZo28X4pNbtFHv0vwWU15/WqsFgiHellWg/DGKpb2uPhE66fjmeHkVc8yCiiNB0d32khL25Ps4F8EPlZMX99Qsj/ei2cXaGARxMUZ9WOlrgwN4O+zBdD21mAVEMxhjDCoKbOaoC0bVRKEWjPdj0Hp9QYwBTU88s3krkzFIpAjkL6AptmCl66tJ7vi59ZEe0CXqjhG2VsuZB06IujyseT+4OyenPA/pJk8KGtj4Glq8Fx7mmHyVwz2hAnedOTNMMnkfu4TAf9ako2TVVgiOMg22iSXYO
- dnRNahMJ
- 1FsEtUyK8ntSimDaQceoKckOHMkdHhfSy9PXPc9kRdrAup/2wc7yNquLI40GxO7gKEadoQzPeWGa5PUd+8/uSPsTKMvta4rlTazb34CRfmbWKRLJvOwLWb7qudg/YjY+brxh5+2H3sO7u7hyrV5aOFJSW+ROGjZZq4DmOzI2yEpgKS5xWzQTEj3ze+pbGwxG8C0ZDzgwKAftOCPWF0OWkRrfDWFNo0xpSe1Tuzp3FnSgYLFRTlMe6AKYnhaSmxHZGHqzwAxynYFZyh6xLLG/blCu1chQfVK5Tg2nIgdTdfr7bcPMRUPZAYSnnrPV4/WFaGm2DLXCRdV2f/EfdVJmNIHgilJncDEAPOl3PMcfAJs3R7jBpgk2vjj04OW/Fw2jvnHSPUjJ+BGboQnRMqrmR0n6wwYOlkzfxaKkT+1ns7aWBqklVWHiN+sUmRWS7vXEr/rQoNc2nRtJQBhyhRWxs2raAI9u7Hmq25pvDPPh5tLvtCWzOsYmdLAUW+QIbezKpBP/C
+X-HE-Tag: 1764407278-574567
+X-HE-Meta: U2FsdGVkX18Uby1yFKHGH24tZGC81NhFM7bkWBE6gHu2HMk1XyrJxqHKu6hMAFONJVTPD0tVpk75UQ+GUMF0ru7X1Xg/7p7MQQU0DanMuVtYzvh3geVY3tRR3A1XZLPB+9W+gPgm4IC+8ICrBtRu8WzyTJ8Jye2ObnFdkIT9ZrvMHN/s2Mx3IQL8WJR1I05R2vLb45+1gRJowZLeOuPrzezMINXND+TD8tD0t3X3WotNTM9rcNdep6PBBEyOf8xWYDr/lxiOA/Olc7cCUs44lNCkqU5nUTHR+6vRdPCeBqkHkA8UQc6qDQb8YlebN+npcN5m8KJP+Gs3+e1f/G0UYuJRTtUPdp5XRYAMUI+DFH9O+qQuOaKjhGjRwGnd7ni2FxK3ojlyvuFx0DLqcRzmyzh0KpjKLLJ0jQufjHtqA+iqi17Jh2qpaCt/CqjsadTcQ67DOBXLsklgWWH5xBDR5TxZhn9cvC/HyeZJuQRnc0lmte7FiqWlLmtMCqORGSo/wh9fkUnlpjGhpqmsKdgP2B8USyMG4Sx2d1R9HUVen4vHiS4oz+jmhhjJiCqk27C5MGtR+2I/173acwZP9DLf7G2laBc1ynDfVMOsQ7WxHMK2eT0vGmScG9i4zOQWQJE6RZiQjWa2/4JGfvXKNUdrD+JtYk0O4AqCH7lhhVKcF/hYFJPB2XYlYiQyGY8Hk/BS+0BFbYsDNyFwuzshZP0S6ETle7PZ9y2uU4QCxZpxFbhk+ZQKj/kL+FlNyeoQyot9oDZIghBOguAW7AVRqYGgVkL4dr9fi+rW/CYPGweOvHYe5WiDj0EsMrtjCPpfBX58op21AFEpseg2lEI8G6lx9ermoEf8nUImJ6t8gh56wUi9xlJ477NpYA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,31 +110,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 28, 2025 at 05:35:37PM -0800, Linus Torvalds wrote:
-> On Fri, 28 Nov 2025 at 17:01, Zizhi Wo <wozizhi@huaweicloud.com> wrote:
-> >
-> > Thank you for your answer. In fact, this solution is similar to the one
-> > provided by Al.
-> 
-> Hmm. I'm not seeing the replies from Al for some reason. Maybe he didn't cc me.
+Hi Sergey,
 
-<checks>
-Sorry, I thought you've been somewhere in that Cc, should've verified that.
+kernel test robot noticed the following build warnings:
 
-> That said, somebody should  definitely double-check me - because I
-> think arm also did the vdso trick at high addresses that i386 used to
-> do, so there is the fake VDSO thing up there.
-> 
-> But if you get a page fault on that, it's not going to be fixed up, so
-> even if user space can access it, there's no point in looking that
-> fake vm area up for page faults.
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on next-20251128]
+[cannot apply to axboe/for-next linus/master v6.18-rc7]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-gate_vma is not inserted anywhere - it's special-cased in coredump_next_vma(),
-proc_get_vma() and get_gate_page(); none of that can lead to insertion.
+url:    https://github.com/intel-lab-lkp/linux/commits/Sergey-Senozhatsky/zram-introduce-compressed-data-writeback/20251129-010716
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251128170442.2988502-2-senozhatsky%40chromium.org
+patch subject: [PATCH 1/2] zram: introduce compressed data writeback
+config: x86_64-randconfig-011-20251129 (https://download.01.org/0day-ci/archive/20251129/202511291628.NZif1jdx-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251129/202511291628.NZif1jdx-lkp@intel.com/reproduce)
 
-AFAICS its uses in mlock_fixup(), __mmap_complete() and should_skip_vam()
-are pure paranoia - "if we somehow ended up running into gate_vma, let's
-make sure we don't screw it over" and had always been that way.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511291628.NZif1jdx-lkp@intel.com/
 
-So VMA lookup would get NULL.
+All warnings (new ones prefixed by >>):
+
+>> drivers/block/zram/zram_drv.c:2099:12: warning: 'zram_read_from_zspool_raw' defined but not used [-Wunused-function]
+    2099 | static int zram_read_from_zspool_raw(struct zram *zram, struct page *page,
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +/zram_read_from_zspool_raw +2099 drivers/block/zram/zram_drv.c
+
+  2098	
+> 2099	static int zram_read_from_zspool_raw(struct zram *zram, struct page *page,
+  2100					     u32 index)
+  2101	{
+  2102		struct zcomp_strm *zstrm;
+  2103		unsigned long handle;
+  2104		unsigned int size;
+  2105		void *src;
+  2106	
+  2107		handle = zram_get_handle(zram, index);
+  2108		size = zram_get_obj_size(zram, index);
+  2109	
+  2110		/*
+  2111		 * We need to get stream just for ->local_copy buffer, in
+  2112		 * case if object spans two physical pages. No decompression
+  2113		 * takes place here, as we read raw compressed data.
+  2114		 */
+  2115		zstrm = zcomp_stream_get(zram->comps[ZRAM_PRIMARY_COMP]);
+  2116		src = zs_obj_read_begin(zram->mem_pool, handle, zstrm->local_copy);
+  2117		memcpy_to_page(page, 0, src, size);
+  2118		zs_obj_read_end(zram->mem_pool, handle, src);
+  2119		zcomp_stream_put(zstrm);
+  2120	
+  2121		return 0;
+  2122	}
+  2123	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
