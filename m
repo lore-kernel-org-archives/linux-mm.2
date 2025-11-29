@@ -4,95 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F0D1D116F3
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 07:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA207D116F3
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 07:50:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 068066B000C; Sat, 29 Nov 2025 02:00:59 -0500 (EST)
+	id 89B566B000D; Sat, 29 Nov 2025 02:50:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 018F36B000D; Sat, 29 Nov 2025 02:00:58 -0500 (EST)
+	id 871DB6B000E; Sat, 29 Nov 2025 02:50:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E70956B000E; Sat, 29 Nov 2025 02:00:58 -0500 (EST)
+	id 7872C6B0010; Sat, 29 Nov 2025 02:50:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D7EC56B000C
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 02:00:58 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 327F9BA6BA
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:00:58 +0000 (UTC)
-X-FDA: 84162747396.19.7A80F48
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 83C3C1C0014
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:00:55 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=byw6nCh+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764399656; a=rsa-sha256;
-	cv=none;
-	b=cvo1TJbyFSx6wp47RkXiy7MxQOS6UmH4Oq9uJZDNhGiujKZT6J8sHIA4jGYcsTrNf/f8Yu
-	3ah/HD3MsPP6KIQgPgVbEY4TsslKK3PHf7qUxWbsfRNImOKRe1wUQAWbGOyH6nDXWUsEBF
-	vkR5pfkPjRNqRdqGBWLI6ThWZ9ehBwM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=byw6nCh+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66A9F6B000D
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 02:50:55 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 096841408EE
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:50:55 +0000 (UTC)
+X-FDA: 84162873270.13.E3B85C0
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1CCBE1A0004
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:50:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="asWVBs/Z";
+	spf=pass (imf19.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764399656;
+	s=arc-20220608; t=1764402653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=M6galFviRWdunR5IYFBmpvGwaXmADHhDwNiAGFdd1r4=;
-	b=5i/fAkdyPbciZibC/R7XciHOHKmiTq+Ky/sodXI+/YKoxF61JYaSOqr0PnzMgCunkTh8gr
-	tti39ZFHv4w0GBvBuXYN5mRy0rQvvNSKN0bjNpLbzAyu+9bvWN1NC5K23qe1NS46ijSgq1
-	y8Me2+mfk51LNsbRx33GNFjFNsK1Sk8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764399656; x=1795935656;
-  h=date:from:to:cc:subject:message-id;
-  bh=eoT27Hqh3tozWvnJxb55nBANpp/pJzSTa3BR0P6dk3E=;
-  b=byw6nCh+zFrKT9z4JVlnD+OE+OiryRthdLZqNHjTVellD4WowVrL5HmK
-   q8u+I5AoEdu5H8ijuk9Mha0JWT49Qqa0V4Lwt0ACVT44iRsDUPKaECflv
-   kbmznuCRVE4sDyRbqWK3bNzkFsXoYrcTYH74w1MDH1yHJsG49TdFI9ZuF
-   BpvVyngHC6gVZWlMcA+iY/L8X076C4bqyXmmIZgs7f3rV1PeJrs3WgypO
-   InthzqEcJRdzDpYqqjNOh2bu+mb6Z4MG2x1u+NVVZKz6K02y6rTH4LFlb
-   DjN7rylOrpWlzJI4DVyad84NPzM/cU84upIenE68uZ/s2HkoLAmv/Kjf1
-   Q==;
-X-CSE-ConnectionGUID: BuW/uX0CTgq2tToADXtj2w==
-X-CSE-MsgGUID: hIR78mDgSt+zsEYZBNDshQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="66445506"
-X-IronPort-AV: E=Sophos;i="6.20,235,1758610800"; 
-   d="scan'208";a="66445506"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 23:00:54 -0800
-X-CSE-ConnectionGUID: 18wobYsESjGi4WDgfRkWWQ==
-X-CSE-MsgGUID: Pxb2COR+QfmXqHPxNTRYiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,235,1758610800"; 
-   d="scan'208";a="198725108"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 28 Nov 2025 23:00:52 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vPEws-0000000071h-0AAK;
-	Sat, 29 Nov 2025 07:00:50 +0000
-Date: Sat, 29 Nov 2025 15:00:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 7d31f578f3230f3b7b33b0930b08f9afd8429817
-Message-ID: <202511291501.P3J6cF8e-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 83C3C1C0014
-X-Stat-Signature: ss6ti3j3c1egfq8hgscoa5k58mizdem3
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+HsHRBtCziZ+LzyVdR/+QBu72ws9YgkNkjzvuF4X//c=;
+	b=JF/2bwYNt2ts2pY3tMtRyauSnYT01P4iEGMMJCIl/5aZFNimmVFxZSZmxWOgLj/b0ek0ZM
+	I5n8y1HcnO65NjbMcAf+s4q/NCxV39krx9r71TKqtGtOzn8wNEg9Lx5LSZt+87+1KiMIym
+	B2iGhmx7X3lFbPeCSd93jFSUYNoGVjw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764402653; a=rsa-sha256;
+	cv=none;
+	b=XrK2AyuBmsv58R7m8OAIRtNSG9Ma9NGLRxWxHY34QRoLxJSsXN49NE+W4fiUYVFTBJ4FSI
+	dkxllct7DDd3a/3hHmhrOzFRpPbpAg87CN/xVgN9ipf7bMCoeCjZSl590DjacZg3VqKuR5
+	aXQVtGA5mbh+0VgrPZW35aMqL1kYUgE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="asWVBs/Z";
+	spf=pass (imf19.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64320b9bb4bso4994150a12.0
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 23:50:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764402651; x=1765007451; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+HsHRBtCziZ+LzyVdR/+QBu72ws9YgkNkjzvuF4X//c=;
+        b=asWVBs/Zzq/RzYPaFnMMXxANOhhbS0aRVgnUSnjs3f8018AcsVCojSqphtjxXTPBE1
+         /TopfpVaklSkTmi/RfpaQlVtEmnFU5llOQEXTXo3GKURwMLJVyiM82GDKY+A7uoYW5yu
+         cik4BYj4q8ih9NR6SEr04z8u5HjVd75KhcV/RfNl2N96LBPnh3j+IPCWxNmpvVqpoUG0
+         9/JfeSMEy/VVq3d+yZ9/dLm57DQyZAvFs+g69OS217smpQUsea5L+Z1MkvKl+uNjJky1
+         NLH5L9oxtxHDHza+VbQTR8KcDb247Pid3g0DvYDTc0UOhCSLWZXFmRH5zSkfcdgqxtOF
+         Sekw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764402651; x=1765007451;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+HsHRBtCziZ+LzyVdR/+QBu72ws9YgkNkjzvuF4X//c=;
+        b=Ai//bAmLv8d41brFgtTdDoQb5JwyQYIEPZQICrFk7AHeo+q+/2L2BKM5Prw5HjVm42
+         lSCVoS0LHdH2yUqzZ3s9Q59OLYoFEk3PHA/VMKAzywK9p9Gstt0xOlI9Uv18ElrO3iY+
+         WMnouYjw6liR5mX5XtQEOrrxWFiy8hblKj7knWCYp9fVnMOCDUZkAmcIb7rZYuvwA6BK
+         TEt5ajUXQ1NOkQwxEJcJ6l5WeeNIJDXcNkh/8IXI4JPgknwwAFcDwjmPxR+mt3VJW+FV
+         GKiNxETK0z0uJtmgNyUEvZ1SBuXfcH9++ZoTwKHz3U7W/wt7Fr3jNOtRqUMgFufDA8Gy
+         wFEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUly02+SzSe4/H64E0VQ4VVEShhnU+1Coef2ui3fxZmrSuElCX8lWh1C+Ew7akd97PqTZlUivZUJg==@kvack.org
+X-Gm-Message-State: AOJu0Yz7CkU/MneQHR1Sg9T0Y8ZhvZK+ViJI9KkI2M7DD8s1DsAoPlRy
+	AFtxRPcQs77KjI3yKcwZFgU/y+5GxCHw0Gs6V9eUFasm1tCe1NE8x82M
+X-Gm-Gg: ASbGncsGL6Xnunl2lnJ+rOoasOyDCx8uH4LVPcYDr2daCHpbT+R9yvE+gTImAVPFeik
+	1bLs6dgw+CeVovKebZG9orpZbMTILbjJhJgQV+JdHTht2q91KfjzQrwz1MCF0f2rk2UlC6FkZ0q
+	ZTwkZoBgPSM6EsYY8VQSNGn5uwwp4WhZNUShucddqp8rb0+OFwOO/p4sqebCVnX+4zrUXLTLv/F
+	M/txwza8wyaDgs1vjLN+Hg5tHB5UGOgl1zHBfwNTCTxfzKvY6DqcnVeA+5v5X6Z09jwXILYgI/B
+	2BF4xmj8GLCNcFY7SlkCYlgZcVQIyaEFcVS1iH76vp8gNYyRBvetou3LVPakkL0TnKSxiRr5Qsb
+	bevrog+CafDSjo0YKrJEjKjuL7VSE5q/EUizX1dVIM2h2ke0eg5rkQRc3oSIjVg2YM0fca5brWK
+	h5/B9DzfYqeYotdyeIThCB+XE7nl89AheMccpk227RGh7d11d7/mPlsKKY
+X-Google-Smtp-Source: AGHT+IGr5+RJU8TJE5XhEbLjl2W6ooWa+nJ37imMnPXoLYQWPTkCsejf4lJHl8vrBnd1A6WocQ5riw==
+X-Received: by 2002:a05:6402:1641:b0:641:5a05:c72f with SMTP id 4fb4d7f45d1cf-645396af1f3mr24762510a12.16.1764402651262;
+        Fri, 28 Nov 2025 23:50:51 -0800 (PST)
+Received: from f (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64750a6e873sm6530678a12.5.2025.11.28.23.50.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Nov 2025 23:50:50 -0800 (PST)
+Date: Sat, 29 Nov 2025 08:50:41 +0100
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Jan Kara <jack@suse.cz>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Gabriel Krisman Bertazi <krisman@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
+ single-threaded tasks
+Message-ID: <qmmncacgzhby5ewkzbu2gc7dovawyzevgyhwmdp6te6ez3svp2@ns3bcq6dvq6p>
+References: <20251127233635.4170047-1-krisman@suse.de>
+ <f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
+ <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
+ <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1764399655-842779
-X-HE-Meta: U2FsdGVkX18NYjY1KCfahY9+xduaEagxkao6WL7V3IdHJoUMnq8L9/w4zFLcfFJDxqaU6xOEZOOE4+Fa4etwlHGl8OyqwWcVzE9/vhaY+qJqDaRFL0zJtofOIZXRv4EXL4w5R/SibWz/09eV9DwxowawyC/XlwGxO7x9aoWWiVt4VD3IW8bL338vlbCy5Y+RIsu1CHmKT9tqmpawFQre5OLVXFl+jqKAECF207h2Pf3dM4STTsuIaWRVSwWdbINXPscKbf/+qq4cgq0N/i/7qFeRy46Zf2KruIWrZvdrrx2N3OLa2xDPxjl8KfHgd0Ix0m4t9UDpmZeRdkTmaNTe39Jil6JHB7O8PATMHpNpSL4Fg/UMTnFS8yIaSI/liQQFNbp4GWzyJS+jH8C24lWqo00EHEjrSbIUpCGrZ56wNjtXmp0GW5Eb+pK2D1YQwBoCq1OBOtGFTNuSh7MXhonUONQil4Uls9SDS3AgNhKrhI6xOAyxagdhyOYFGslQQyT5uoHIjjhQdyt0eJVhoMkP0BW37zmspY2ax90dFIqoJoq+0iAU2p2sqgfeCfE7MfaGjA4YoR3cKOG6Qc+taWn0HdA3Oasq6Zo/3Xa2QAzDZ+V/o7CMzTO3H260kIoW2SOK44823kbGtAoQ9cv6Smpiv7cyDwfnyjFSrMD04CxQyysJerHT4uPZIT2hFrFD5G/EQwSM+LtyhVymbWG/hZEEvmOF+os8TOJ/1qBOHNjAd7IcOFov0k/x8gneem+tS+D/wv0JJ6Yd7X/SZ4uHzCy0+hD8tmYYD91msmsKuLfvfhE9RTT4MNHN37NHF12r6fbawiLmQM4jhMGiSZjATL3gUTELsBxIpYDcLjJRBBJ9uXtgBgyJtIoV0A1sVjzcIRRgGmLuLAlgcptfqWa3N4INX/Pkh9Gdu21z1iZngFSgkio8rxnUybFWx69BgV9etw14Joey5EUWeHwMyKUge3h
- snI5NyYV
- z9Nu35aKc0QtCtqlaAQvmqkc6LygR0Vs0DTtvsq5dk0T16Y0woHXCYO5qJDMzfUC7FOcKCi/O0iJoxchy/jbX3BRQT0214Jiy1VSjiFe/kt8FtorIbXtuBEtyBMfU0nonY5Zk8jmuoN+GDK8ZnLYJpalTfLtX8K9kCBljcfpy6p9S7nlrgBqDlINmww==
+X-Stat-Signature: sfk75z7bo7oim85k19ggzw3cto4ry5gp
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1CCBE1A0004
+X-HE-Tag: 1764402652-387458
+X-HE-Meta: U2FsdGVkX192JUUCjQdZSXGPX/tiL71eLyQap/38cjc+CcdJgCwevHiGQ21tU4WFPxMjH02My+fk2CDh3ew53o7MSr6aAm3l3WiZLUZcj1TfyDNoqroVZR9p+mutQbckNCht3trvc0KLV518paFEkeFLTUr3e89ZrnaCLcpIJPLRGCplcUKBRNgCYq6e0LDq0/lOx4pzL+/jz9m/97w5LOxJtDCa0vK5TZPGCvCVIrDpiSS2tNnlWtoGbxL3CYK2dbtgC1SxEcgcHlbJGJ0QJXHKB2TBXL/H0FBe+NpDthiTRby6YNmj90LZOOoMWd1plxbX6g2+7S1ONwPAcAAWB5J4fq108YPKSmsuSRgJ9lqWtKtEH9rN6IHhwRwiHW3Fxz0cy7EXyOYKGr0C0qcec4QNhf3xNTLsMdYb7e+Udr1vEJHm2oN/4Sw1eSzhramSzt2Z0MsOaYvpEU/ZCaDqC7ib9cc1TAb8vFLzYYhAJjKKxqID5gbxtskJi1/poY6EBmTee/Th7j30+iqOrLAbX03scJoc3s79kFvTSCSDSE8//Dl7K2oFAZh/luWBI8NEUQbB2lvcaC3VtvK5ZnHi6dmkN7PJrmeLBmj4+DInkfdGLLPPnxLgckbINDPzrDp9GblfPEeKQN48LugbmwHoPJ5mdAtmewa/drZ5eg6TsyamnlTzNjPFM7UN9UdtcQ73yweBRPNr9eGOO51lNVmwn2RisEqtufBN3aIXh2O4qi8jygEbO6GoPObvV2cmnXkbpK5osXhmC7wxmgjGIDtLQPPjveK9ZljNkp0xb3QbIp7Wk1o4iUQucTXagivfwT8uHwTM4l0akz/dqUZ9WZLXgfcPtZlINDeDYBmV86LQuc5ymFFs1OMq2FRN2ZMwW8FcZJ+fmgNbIh1VyRbp6zKMMbhaJurZ8zgzPBXOPnk+KhvkLwovFl72COmFiX89513KDaxmgpH/trmVN/ctJbL
+ gwTcX9bC
+ R/v9tkg6Z9b5yElkcsTLA9DvfgUjpypBE18Fgu+brXnOkk/1JhL2ZepTfcbkxSzaS7sbmsZIu2OxWItgDUYsFKwua7F29OyMpouUBeK1Y/6iPhaZKOpTa+asgD/OOvl/qhzERjFXsHABPUYlSuYA7cloUhnwRd/gm/iDKSOeia47Y/pM2jr7FngacCpZKf9/GJK13XknbVuWQwe74hBekfyqNbSU2m3yrigYwEPgTmhHmUfxklSdyt/Hm4RCn4Dd9pk9UCbdQ08sa52QtqwLA0DlNfOwOvDBzWE+P3eQHH1zrb9dKBpp8xkwCWZ64C2o7vIrjwvAlJYgu8C0llbhdmLcvOZfRjjBIOKc4BsHIjnC3hRsvbfQgVstSevrsfQ70q7MAMwG8Gj5F3Eq1yRXPcy20q2VjgqxMiX8BFCN8DdCsHg41s3/2d+bFl/D6NTibuMnNU881aRrbzS5Z0it8btRuhyxyUVlIbska
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,192 +128,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 7d31f578f3230f3b7b33b0930b08f9afd8429817  Add linux-next specific files for 20251128
+On Sat, Nov 29, 2025 at 06:57:21AM +0100, Mateusz Guzik wrote:
+> Now to business:
+> You mentioned the rss loops are a problem. I agree, but they can be
+> largely damage-controlled. More importantly there are 2 loops of the
+> sort already happening even with the patchset at hand.
+> 
+> mm_alloc_cid() results in one loop in the percpu allocator to zero out
+> the area, then mm_init_cid() performs the following:
+>         for_each_possible_cpu(i) {
+>                 struct mm_cid *pcpu_cid = per_cpu_ptr(mm->pcpu_cid, i);
+> 
+>                 pcpu_cid->cid = MM_CID_UNSET;
+>                 pcpu_cid->recent_cid = MM_CID_UNSET;
+>                 pcpu_cid->time = 0;
+>         }
+> 
+> There is no way this is not visible already on 256 threads.
+> 
+> Preferably some magic would be done to init this on first use on given
+> CPU.There is some bitmap tracking CPU presence, maybe this can be
+> tackled on top of it. But for the sake of argument let's say that's
+> too expensive or perhaps not feasible. Even then, the walk can be done
+> *once* by telling the percpu allocator to refrain from zeroing memory.
+> 
+> Which brings me to rss counters. In the current kernel that's
+> *another* loop over everything to zero it out. But it does not have to
+> be that way. Suppose bitmap shenanigans mentioned above are no-go for
+> these as well.
+> 
 
-Error/Warning (recently discovered and may have been fixed):
+So I had another look and I think bitmapping it is perfectly feasible,
+albeit requiring a little bit of refactoring to avoid adding overhead in
+the common case.
 
-    https://lore.kernel.org/oe-kbuild-all/202511281900.DQmp9w3q-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202511282325.uVQFRTkA-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202511281720.i9qJCv8H-lkp@intel.com
+There is a bitmap for tlb tracking, updated like so on context switch in
+switch_mm_irqs_off():
 
-    net/can/raw.c:933: undefined reference to `safe_candev_priv'
-    net/can/raw.c:933:(.text+0x284): relocation truncated to fit: R_NIOS2_CALL26 against `safe_candev_priv'
-    pinctrl-pic64gx-gpio2.c:(.rodata.cst4+0x4): undefined reference to `pinconf_generic_dt_node_to_map'
-    sound/soc/sdca/sdca_class_function.c:349:(.text+0x41bb038): undefined reference to `__devm_regmap_init_sdw_mbq'
+	if (next != &init_mm && !cpumask_test_cpu(cpu, mm_cpumask(next)))
+		cpumask_set_cpu(cpu, mm_cpumask(next));
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+... and of course cleared at times.
 
-    drivers/gpib/common/gpib_os.c:816 ibioctl() warn: inconsistent returns '&board->big_gpib_mutex'.
-    drivers/iommu/generic_pt/fmt/../iommu_pt.h:628 pt_iommu_amdv1_map_pages() warn: impossible condition '(paddr > 18446744073709551615) => (0-u64max > u64max)'
-    mm/page_alloc.c:6159:1: internal compiler error: in arc_ccfsm_record_condition, at config/arc/arc.c:4800
+Easiest way out would add an additional bitmap with bits which are
+*never* cleared. But that's another cache miss, preferably avoided.
 
-Error/Warning ids grouped by kconfigs:
+Instead the entire thing could be reimplemented to have 2 bits per CPU
+in the bitmap -- one for tlb and another for ever running on it.
 
-recent_errors
-|-- arc-randconfig-002-20251129
-|   `-- mm-page_alloc.c:internal-compiler-error:in-arc_ccfsm_record_condition-at-config-arc-arc.c
-|-- i386-randconfig-141-20251125
-|   `-- drivers-gpib-common-gpib_os.c-ibioctl()-warn:inconsistent-returns-board-big_gpib_mutex-.
-|-- i386-randconfig-141-20251127
-|   `-- drivers-iommu-generic_pt-fmt-..-iommu_pt.h-pt_iommu_amdv1_map_pages()-warn:impossible-condition-(paddr-)-(-u64max-u64max)
-|-- nios2-randconfig-002-20251128
-|   |-- net-can-raw.c:(.text):relocation-truncated-to-fit:R_NIOS2_CALL26-against-safe_candev_priv
-|   `-- net-can-raw.c:undefined-reference-to-safe_candev_priv
-|-- parisc-randconfig-002-20251129
-|   `-- pinctrl-pic64gx-gpio2.c:(.rodata.cst4):undefined-reference-to-pinconf_generic_dt_node_to_map
-`-- x86_64-randconfig-006-20251128
-    `-- sound-soc-sdca-sdca_class_function.c:(.text):undefined-reference-to-__devm_regmap_init_sdw_mbq
+Having spotted you are running on the given cpu for the first time, the
+rss area gets zeroed out and *both* bits get set et voila. The common
+case gets away with the same load as always. The less common case gets
+more work of having to zero the counters initialize cid.
 
-elapsed time: 1450m
+In return both cid and rss handling can avoid mandatory linear walks by
+cpu count, instead merely having to visit the cpus known to have used a
+given mm.
 
-configs tested: 141
-configs skipped: 2
+I don't think this is particularly ugly or complicated, just needs some
+care & time to sit through and refactor away all the direct access into
+helpers.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20251128    gcc-8.5.0
-arc                   randconfig-002-20251128    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                                 defconfig    clang-22
-arm                        mvebu_v5_defconfig    gcc-15.1.0
-arm                   randconfig-001-20251128    gcc-14.3.0
-arm                   randconfig-002-20251128    gcc-8.5.0
-arm                   randconfig-003-20251128    clang-22
-arm                   randconfig-004-20251128    clang-17
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20251128    clang-22
-arm64                 randconfig-002-20251128    clang-20
-arm64                 randconfig-003-20251128    clang-22
-arm64                 randconfig-004-20251128    gcc-10.5.0
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20251128    gcc-15.1.0
-csky                  randconfig-002-20251128    gcc-12.5.0
-hexagon                           allnoconfig    clang-22
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20251128    clang-22
-hexagon               randconfig-002-20251128    clang-22
-i386                              allnoconfig    gcc-14
-i386        buildonly-randconfig-001-20251128    gcc-14
-i386        buildonly-randconfig-002-20251128    clang-20
-i386        buildonly-randconfig-003-20251128    clang-20
-i386        buildonly-randconfig-004-20251128    clang-20
-i386        buildonly-randconfig-005-20251128    gcc-13
-i386        buildonly-randconfig-006-20251128    clang-20
-i386                                defconfig    clang-20
-i386                  randconfig-001-20251128    clang-20
-i386                  randconfig-002-20251128    clang-20
-i386                  randconfig-003-20251128    clang-20
-i386                  randconfig-004-20251128    gcc-14
-i386                  randconfig-005-20251128    clang-20
-i386                  randconfig-006-20251128    clang-20
-i386                  randconfig-007-20251128    gcc-14
-i386                  randconfig-011-20251128    gcc-12
-i386                  randconfig-012-20251128    gcc-14
-i386                  randconfig-013-20251128    clang-20
-i386                  randconfig-014-20251128    clang-20
-i386                  randconfig-015-20251128    gcc-14
-i386                  randconfig-016-20251128    gcc-14
-i386                  randconfig-017-20251128    gcc-14
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20251128    gcc-15.1.0
-loongarch             randconfig-002-20251128    clang-22
-m68k                              allnoconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                        bcm47xx_defconfig    clang-18
-mips                        omega2p_defconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20251128    gcc-8.5.0
-nios2                 randconfig-002-20251128    gcc-10.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251128    gcc-14.3.0
-parisc                randconfig-002-20251128    gcc-15.1.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                       ppc64_defconfig    clang-22
-powerpc               randconfig-001-20251128    gcc-11.5.0
-powerpc               randconfig-002-20251128    clang-22
-powerpc                     tqm8540_defconfig    gcc-15.1.0
-powerpc64             randconfig-001-20251128    clang-22
-powerpc64             randconfig-002-20251128    gcc-8.5.0
-riscv                             allnoconfig    gcc-15.1.0
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20251128    gcc-11.5.0
-riscv                 randconfig-002-20251128    gcc-8.5.0
-s390                              allnoconfig    clang-22
-s390                                defconfig    clang-22
-s390                  randconfig-001-20251128    clang-22
-s390                  randconfig-002-20251128    clang-22
-sh                                allnoconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20251128    gcc-13.4.0
-sh                    randconfig-002-20251128    gcc-15.1.0
-sh                          rsk7201_defconfig    gcc-15.1.0
-sh                           se7724_defconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20251128    gcc-8.5.0
-sparc                 randconfig-002-20251128    gcc-15.1.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20251128    gcc-12.5.0
-sparc64               randconfig-002-20251128    gcc-12.5.0
-um                                allnoconfig    clang-22
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251128    clang-22
-um                    randconfig-002-20251128    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64      buildonly-randconfig-001-20251128    clang-20
-x86_64      buildonly-randconfig-002-20251128    gcc-14
-x86_64      buildonly-randconfig-003-20251128    gcc-14
-x86_64      buildonly-randconfig-004-20251128    gcc-14
-x86_64      buildonly-randconfig-005-20251128    clang-20
-x86_64      buildonly-randconfig-006-20251128    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20251128    gcc-14
-x86_64                randconfig-002-20251128    gcc-14
-x86_64                randconfig-003-20251128    gcc-14
-x86_64                randconfig-004-20251128    clang-20
-x86_64                randconfig-005-20251128    gcc-14
-x86_64                randconfig-006-20251128    gcc-14
-x86_64                randconfig-011-20251128    gcc-14
-x86_64                randconfig-012-20251128    gcc-13
-x86_64                randconfig-013-20251128    clang-20
-x86_64                randconfig-014-20251128    clang-20
-x86_64                randconfig-015-20251128    clang-20
-x86_64                randconfig-016-20251128    clang-20
-x86_64                randconfig-071-20251128    clang-20
-x86_64                randconfig-072-20251128    gcc-14
-x86_64                randconfig-073-20251128    clang-20
-x86_64                randconfig-074-20251128    gcc-14
-x86_64                randconfig-075-20251128    gcc-14
-x86_64                randconfig-076-20251128    clang-20
-x86_64                               rhel-9.4    gcc-14
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    gcc-14
-x86_64                    rhel-9.4-kselftests    gcc-14
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20251128    gcc-15.1.0
-xtensa                randconfig-002-20251128    gcc-8.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+So if I was tasked with working on the overall problem, I would
+definitely try to get this done. Fortunately for me this is not the
+case. :-)
 
