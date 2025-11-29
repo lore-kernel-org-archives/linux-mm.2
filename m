@@ -4,99 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8AA0D116EA
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 04:08:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A0BCFD2F6
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 05:57:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8A3E6B000D; Fri, 28 Nov 2025 23:08:34 -0500 (EST)
+	id 85E2F6B000C; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D61B46B000E; Fri, 28 Nov 2025 23:08:34 -0500 (EST)
+	id 8153A6B000D; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9E896B0010; Fri, 28 Nov 2025 23:08:34 -0500 (EST)
+	id 701BA6B000E; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B7DE66B000D
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 23:08:34 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6BFFF50AD1
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 04:08:34 +0000 (UTC)
-X-FDA: 84162312948.21.D4C2A37
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6B853100012
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 04:08:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QnpmFAd6;
-	spf=pass (imf05.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BE7A6B000C
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE9C987C4D
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 05:57:37 +0000 (UTC)
+X-FDA: 84162587754.15.A2A6C1D
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DDE3A40004
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 05:57:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F5MoRF1T;
+	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764389312;
+	s=arc-20220608; t=1764395856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NoGgYCD49mxEcy5U/zXcoMvWiWdPjcqwWl6NwL9nQZM=;
-	b=MN4l5NMi3+jVVto4kztLwZclI6qcWpOFaG8q0Hp7XSHwgZK3pYHkxpzd840E6rM5e6U0JB
-	rVa3AkRMGRzwUhWenqbGyDLjXwsV7lub70cYZsJEV6jodDMspqSvK01rah7StrMuqkHTq6
-	vuBoI2HYYG7tviM9G4ll5klQ0fh9054=
+	bh=7pucvq8UTv64qpwVHdPIZ+2FfvakzVEyw07NIdj5Q+U=;
+	b=MElXCuMvfUtNpzWfEcC/v+dILmLiqI/YhJdXk3T2MuGfuLK3U8+yJq2C5h+kp/zr3koiAS
+	bdUMxm07GgES5LbPOAPKnEuS0eIVhrzUGAw5duoizmbSQmdcMb7+fYL4cMjs0GAqpr14F2
+	YjIu6Zouia53J0N/NxH7A2voAAInM6A=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QnpmFAd6;
-	spf=pass (imf05.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764389312; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F5MoRF1T;
+	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764395856; a=rsa-sha256;
 	cv=none;
-	b=cq4nVhjz8f72x5atJPrfhcLOP5CYyYQfQUE33czp9y/0UkjU/wcY1WaHYkKzC0XNnMUvit
-	xuM3MToSf/2JaoEIHNCYKND5WCC6QEggAuKr31NL6g9MdCtDv+XYx4N8ZNaXJameH2EwB5
-	hc+Ng84i10Un9JnYeAyce4MHzUF/GSQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=NoGgYCD49mxEcy5U/zXcoMvWiWdPjcqwWl6NwL9nQZM=;
-	b=QnpmFAd6TlrubU6aXhvwZbdddGjGP4Ir8Af9ucYd6Zwz37RmBOpmDnZOmZTg4klJYnlqYdyFe
-	fzGUlPqKZa3gf1KhWg22d0n8/OtAkZ4T2XC19qTBcxWe12ivLLL+jYD3wtzkhSVmuprFXGhUvWQ
-	GxP75zEiFjRrAgZT3wq7nc0=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dJGnT2Ln5zLlTZ;
-	Sat, 29 Nov 2025 12:06:37 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 950921A0191;
-	Sat, 29 Nov 2025 12:08:26 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 29 Nov 2025 12:08:25 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <torvalds@linux-foundation.org>, <will@kernel.org>,
-	<linux@armlinux.org.uk>, <viro@zeniv.linux.org.uk>, <bigeasy@linutronix.de>,
-	<rmk+kernel@armlinux.org.uk>
-CC: <akpm@linux-foundation.org>, <brauner@kernel.org>,
-	<catalin.marinas@arm.com>, <hch@lst.de>, <jack@suse.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<pangliyuan1@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<wozizhi@huaweicloud.com>, <xieyuanbin1@huawei.com>, <yangerkun@huawei.com>,
-	<lilinjie8@huawei.com>, <liaohua4@huawei.com>
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
-Date: Sat, 29 Nov 2025 12:08:17 +0800
-Message-ID: <20251129040817.65356-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
-References: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
+	b=ojAGZmrEkZdufboH/xChXCnipmrW7qxQswLuBu2dVBZNy38Xkk4bsm2+3j0jAnw/fBHDn+
+	f/a7Jkc6IHSBgy08CMlrcbUQ7O7jBCebY3C81ZX4JgQGocA8ABXbdETuTXdYaW552oWc7j
+	1wW+B4J2dVjVszQO8iReIES5/EWN1EE=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64198771a9bso4810093a12.2
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 21:57:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764395854; x=1765000654; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7pucvq8UTv64qpwVHdPIZ+2FfvakzVEyw07NIdj5Q+U=;
+        b=F5MoRF1Tkbn0kcYb8XmTqZx7lK0vKyNWdYhn0kUplrnJGi4XIjd+RH+yGTvHtFnna4
+         vgtwgYhzIY4ZeIiuYk3yZnPE9NuqwrIvGfBjtQLAvmoT5+IPvgjJ8E1Aen0J2V/7Y4Tj
+         JMfRSD5Ix6DnLlWI4fV60w7tPz6iTP3dLiLazCPdLUHOBj2uf/uPJD2sonOWhSiKQA9m
+         +bRsaMVzWGI7+Q95yeWg70pgPjJIeRvg9Fl/uTIf8qoc2+brchlhYFYdJr2UzsCHO5+1
+         JpYh7Q5NIwO2Zp7K/DPSN3j0pS2dilTISvBPF2jv//0Of1RtQ6m4h0JobtU5wW218v99
+         Fk/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764395854; x=1765000654;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7pucvq8UTv64qpwVHdPIZ+2FfvakzVEyw07NIdj5Q+U=;
+        b=DCUigYJ/abWTE5NFFlNBATz8AdQXwhF34pwQE9MWQKyC0pzVxbV+4bJYBPzNsauypk
+         X2JUDlMzTEuXXblN5t/nT0JTBh3TE9joKtrZ26WsS/VICMeKrCj78CKlxrZdveH3e4V0
+         CCH6OIw87qsdt50Ugo7HNDKEvMspxBW+FWhrc/YNdEgtgBc0S3HKKd7pqxUEXEpep1t7
+         YntUZqIhdtOGRRnb9winvXSBXXJwbDUHMHM9JuQCs+LusNwGF9AtCpioFQOyP6eQ19Pp
+         SlJu1GE2T6VnU0s5DnVzGWnxlxF8viaDKAxQ9+PBhh72i2CId2tLChJytiyaj3BWa5nT
+         DU9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWf/AY8uT2f774AiJoBpwkMNO9uCCtKyiplPMi2JFGllc2aF/TxF9yyrFgoIoIYSX0zcIkqakuX3Q==@kvack.org
+X-Gm-Message-State: AOJu0YytQkLesarQM36HukEzjZQIXN4MaXq5swPP+tCR6AlwKXrCPOBp
+	mkS+OfWuNLxEAptWzd7gfdsF2xCCrL3kzHyIRME1d2qJDYCiPcceUIAJfnH+xeuKBmaiSGhcsou
+	YDaTat+Z2ByAsaODwN9l3YV0bKy3xcP4=
+X-Gm-Gg: ASbGnct77QGvwLuCZ+kbHclkphwot/QD+xSUHTmmkm1dxIOby1jA2UdL+2vk741+7Xi
+	drhhH4ZQBlkNNlDs5BhVouK+9OwalEsSWXzkclcSukN9BfGxCR20JbhfX6VHfG1x1E63AAVbBmT
+	Mg52RlS9kMKbuBQeFSlnZnlQ7ObmAP4yzVWnDrU6Vuxs3oq25EaGx4MtXwWIbo6D0x54qC2dkkS
+	afBtAqcj5ziR+GTDg3FbrvVGZYbJDyho+5IbvvKUleATHw292ugEpoP08Gg5yCB1hBYcbKmIYUC
+	hkrxDli7N6/Y0MYwxhitAh144g==
+X-Google-Smtp-Source: AGHT+IGgaoRpdfEmgc8Id6eVtbvXCmDKZ6RVqHgdv+n0xRKP3FUTsLvtBF+027sAzwMYNBHB0rtwcqnSPG2haI6VYHA=
+X-Received: by 2002:a05:6402:1475:b0:640:c8b8:d55 with SMTP id
+ 4fb4d7f45d1cf-64554339bd6mr31939720a12.3.1764395853975; Fri, 28 Nov 2025
+ 21:57:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Stat-Signature: krqtefpanam54rrg77aqskdnca7zfbsj
+References: <20251127233635.4170047-1-krisman@suse.de> <f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
+ <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
+In-Reply-To: <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Sat, 29 Nov 2025 06:57:21 +0100
+X-Gm-Features: AWmQ_bn6jVVRbPFZERZlQjSy9G6SnJ7CCksAbVsbn-o8u7rsKoU4Ih49F9s24kM
+Message-ID: <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
+ single-threaded tasks
+To: Jan Kara <jack@suse.cz>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Gabriel Krisman Bertazi <krisman@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: DDE3A40004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: npqkdo3k8acg8iydie5hnzn7p3sqx968
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6B853100012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764389311-865841
-X-HE-Meta: U2FsdGVkX18ZEhAzqRI48XfbtRyKNJkX9lDI1wsWEKs5Z287OTunZXARlptdyEaDRyofi9LpF+dJQyFTFPMwz/jOA3VhQfVl7Gq0Lk9hsW7Y6Dhnc8g3Wd8MlPn4Kbd1FLv3/ZkZheMOf2XfLDwfJ/OKuffV1FR7TUKsJMDitB5sDbxAF6GUG6iI6iVlOAe1iXyBBLzstpcFFOLch0q1z+LRj4Sg24OyXnk4H3lCn5QhqQmjybTL00vP4iCJRidjxiQL25Xl5c++2VVMmGOFIud69NFKYiV5d0tQLrUO9hvAhUNvZbQiB8qiKCslrBYzEXfBHNzUKZnaB7znaKZumkfKXkhFwLs/OO/Ylzo4+t4G17y0Uy9ZWh8MEb6kj8WB3xj8+QIdKcB0Y80uBXmg+B+7Lt82fUcreJiHisAoc89wQs7LiWiSDNKYpTcKVjUc2e6Az2HzZWRigkekSPjADJijLUkqR0ZVIrUurAbVfaWeMY8VDxBvq6ErznR/C7TmJ/vbuy/Hr5sGAsisOCJ2m9WazWXipOSdLEhxYTZrspeIJ0tL/4qr0x6lGtMAYMSBYE6ci/P5PX4EQy8obQATKa9FEgXBLDB9I/X/mY0Y1Oe/2D+GdanzjgDf6i8HJU4i6Eok9rXTZWYRiA299/vIh0KnLaikC9EjvESiKnslgAg9GOWoKHz5nOhKNrCpX/pZ5BN9WLWApZdtw/rGf/JAUR47dHKhLu+A2sA2uiF1uCApyGvslPJKPI1vNDAIoDB7fqQFFhaLEkGwNQFmc7aakOzjel9aT8P8ydx28KjNd9TSB91rCnKWtsz9iKMCG8fLeMvRXac190FoJ6t8rxece6CHP3CJk7yBiD18V2xjzRgXji9qVui7xpvqbAZqbbqNsZ9eJho4IAks+ccwNTkYihEEddLUP01KqANs1cKppE4PBQRKPpi7XvyMOnEV7Mbz4tnmiyaUQO84l+3PNLv
- 7ITQwCU4
- rCVFlq+4DBfGSa0GY1nRNrp0WeZbYwFQrVtasUcokqKH7jBy8KGIqtbGh3/jEOT7ez7P6g9Ghli7/fK7AdJQhKydUqgKaFbgj5odD0ti3Np1nYlZ8vbqJfMqGu8roM6J8rxCNvpfk7IYPGvwviDJ6v1xTAW1qXw3/pXNQU9AxDDxAFB7azbPbO2nE6nZXCKm4gcKziPZTp/yHukvHrqWdZVNSu4FJ2nE+JE97OjBfwyQMUGilQ0HCfj87p80rZ4LK9PyyC6eE09XtAaE0qo+dp5DVcRTYs/wVSV5yAwI425xe7HllJASxGjDlDBWnL6blppWjlWRNZ6sLchAzBCz32j6f9mvwuSEuetE11K9iTJxPRljRFzbSbVh6r0It7VlQ3RLSCCMgrQgdNMJBmsRJP+9s+HRv+up3b7fo
+X-HE-Tag: 1764395855-54506
+X-HE-Meta: U2FsdGVkX1+x0ceOWMxsTvjXn+sQWXeRYqECZTwk2A39oqGQkE+yquu/CQvkf/MUtcy8WBWBpitNMh1THSD++YNO3YM8jG01tdp++hGdudXxqd3sSsJEWEbGAUT+Ae4cVfQPplatPWrl0Y2hsstAdGoMIdq9SEI3M0EghjPrUV4xqC8FBfTxRzw7gbQcEU4F48cr0xU+y+ZzQMVblXoBo8chCgY+C0SHwOlxSqozVY8DT4KIGOc7xgWH4A2Uu9uWnjbPifsoaN9zNIYr/cu1+3IY/6FmTWPechR1+KnJxZWdn0u67SrM8yCEm7F7L9iyZyOyg79P6Cl1jOu0qZFOpZ/PwJw/kysxoi4K5nu7qT1M3pkwsDgB0fpN5pU6X5+34ONz6njAhynBWld1EMLANEh9L24lyALWlbruQIh4IiAhZcNSDcQb+pnwTJDmXl7AGj0ul9Nl8KZ+wAraMLG1+/IFwYZgpN4+s80gQtPz/x8ue4rQU7KQOR2WIXcdy4Df4/0hpK+lDs6a2ySYIuuT5CezJepOdm+APfiImqMrRSMPazpGh4JgSPzYZ2Za1Zmg6GRvGh0eJqPAITLyKznuRrTZZbqzAPyFXcYSV41zWTBbnODCo9Ut+Q1SVvL+wyXQaBYMb7XunhQXGYZ+5YLH36zYdIQ79f14AziE87+f6e1yy69QCpGoloXsaHyvQSH8A0OhzOEkrx+ZGdl/FIs7bx9+8R37Hl+YELgtVzLUUEdroed67pfkfzSCn62NDeKo3u9DQJaYM8CiMxDkQmsXUM+0zR1VzMDh3t/1JxdcFV7guHeH/do1m/hPW5jflffQxR4a6alVzv+1GHr23tx2mpsrZg/h9Wz4ibJmKtFFiGl9/8j35Od6fEsVn5gYt7AuTyJ3FjblGdCm7rg+2Tn5IFDkPqzuwLyAbvdBau8Z9qPkXNG2bUJj272F0gxNtCSDozk5SxUL6T0ZbUjY7lz
+ Jip//JlL
+ 12CEU4VQLoEQtUtBatBoYaOQ8DzJwUUosh6nFyj133r1G9Hgz464O/R50yvEYGZkqbL9ZyoXX83GuCikJ0srOOLasCIhSnpwz797qOhXcUuzrpFkTCP+6DAoaRY4Rc5myMhiWvaCNJyHsQUEJueJUf5626tSvPIDB1ibFOPAMzuTw3DcSTtHjmhUC61cvvS8cSqRfUjTpi/JLv1FZUV0focY2Ph+lhQznVZ5+UnjwSRDcd6ZD1Qbc2En3iHLoRkckRqclZUs+E4P3/NrRhwagT1sJqoU4FolP4ENzRfaxshMlgHSO0oI++i6iaQkOMgiMbOCT5kRXuQwbpLJymwX3m0UA/ZG1BCWkmbPmSVlt9QYwLKSfFI00xHe0spZxpwHT4bWzD7fv4hwpTinOWWYmum4oqoh5o8wWy+N/zDXQcElUzUY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,47 +125,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Nov 2025 17:35:37 -0800, Linus Torvalds wrote:
-> On Fri, 28 Nov 2025 at 17:01, Zizhi Wo <wozizhi@huaweicloud.com> wrote:
->> It has an additional check to determine reg:
->>
->> if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
->>         goto no_context;
->>
->> I'd like to ask if this "regs" examination also needs to be brought
->> along?
+On Fri, Nov 28, 2025 at 9:10=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+> On Fri 28-11-25 08:30:08, Mathieu Desnoyers wrote:
+> > What would really reduce memory allocation overhead on fork
+> > is to move all those fields into a top level
+> > "struct mm_percpu_struct" as a first step. This would
+> > merge 3 per-cpu allocations into one when forking a new
+> > task.
+> >
+> > Then the second step is to create a mm_percpu_struct
+> > cache to bypass the per-cpu allocator.
+> >
+> > I suspect that by doing just that we'd get most of the
+> > performance benefits provided by the single-threaded special-case
+> > proposed here.
 >
-> That seems unnecessary.
+> I don't think so. Because in the profiles I have been doing for these
+> loads the biggest cost wasn't actually the per-cpu allocation itself but
+> the cost of zeroing the allocated counter for many CPUs (and then the
+> counter summarization on exit) and you're not going to get rid of that wi=
+th
+> just reshuffling per-cpu fields and adding slab allocator in front.
 >
-> Yes, in this case the original problem you reported with sleeping in
-> an RCU region was triggered by a kernel access, and a user-space
-> access would never have caused any such issues.
->
-> So checking for !user_mode(regs) isn't exactly *wrong*.
->
-> But while it isn't wrong, I think it's also kind of pointless.
->
-> Because regardless of whether it's a kernel or user space access, an
-> access outside TASK_SIZE shouldn't be associated with a valid user
-> space context, so the code might as well just go to the "no_context"
-> label directly.
->
-> That said, somebody should  definitely double-check me - because I
-> think arm also did the vdso trick at high addresses that i386 used to
-> do, so there is the fake VDSO thing up there.
->
-> But if you get a page fault on that, it's not going to be fixed up, so
-> even if user space can access it, there's no point in looking that
-> fake vm area up for page faults.
 
-I think the `user_mode(regs)` check is necessary because the label
-no_context actually jumps to __do_kernel_fault(), whereas page fault
-from user mode should jump to `__do_user_fault()`.
+The entire ordeal has been discussed several times already. I'm rather
+disappointed there is a new patchset posted which does not address any
+of it and goes straight to special-casing single-threaded operation.
 
-Alternatively, we would need to change `goto no_context` to
-`goto bad_area`. Or perhaps I misunderstood something, please point it out.
+The major claims (by me anyway) are:
+1. single-threaded operation for fork + exec suffers avoidable
+overhead even without the rss counter problem, which are tractable
+with the same kind of thing which would sort out the multi-threaded
+problem
+2. unfortunately there is an increasing number of multi-threaded (and
+often short lived) processes (example: lld, the linker form the llvm
+project; more broadly plenty of things Rust where people think
+threading =3D=3D performance)
 
-Thanks very much!
+Bottom line is, solutions like the one proposed in the patchset are at
+best a stopgap and even they leave performance on the table for the
+case they are optimizing for.
 
-Xie Yuanbin
+The pragmatic way forward (as I see it anyway) is to fix up the
+multi-threaded thing and see if trying to special case for
+single-threaded case is justifiable afterwards.
+
+Given that the current patchset has to resort to atomics in certain
+cases, there is some error-pronnes and runtime overhead associated
+with it going beyond merely checking if the process is
+single-threaded, which puts an additional question mark on it.
+
+Now to business:
+You mentioned the rss loops are a problem. I agree, but they can be
+largely damage-controlled. More importantly there are 2 loops of the
+sort already happening even with the patchset at hand.
+
+mm_alloc_cid() results in one loop in the percpu allocator to zero out
+the area, then mm_init_cid() performs the following:
+        for_each_possible_cpu(i) {
+                struct mm_cid *pcpu_cid =3D per_cpu_ptr(mm->pcpu_cid, i);
+
+                pcpu_cid->cid =3D MM_CID_UNSET;
+                pcpu_cid->recent_cid =3D MM_CID_UNSET;
+                pcpu_cid->time =3D 0;
+        }
+
+There is no way this is not visible already on 256 threads.
+
+Preferably some magic would be done to init this on first use on given
+CPU.There is some bitmap tracking CPU presence, maybe this can be
+tackled on top of it. But for the sake of argument let's say that's
+too expensive or perhaps not feasible. Even then, the walk can be done
+*once* by telling the percpu allocator to refrain from zeroing memory.
+
+Which brings me to rss counters. In the current kernel that's
+*another* loop over everything to zero it out. But it does not have to
+be that way. Suppose bitmap shenanigans mentioned above are no-go for
+these as well.
+
+So instead the code could reach out to the percpu allocator to
+allocate memory for both cid and rss (as mentined by Mathieu), but
+have it returned uninitialized and loop over it once sorting out both
+cid and rss in the same body. This should be drastically faster than
+the current code.
+
+But one may observe it is an invariant the values sum up to 0 on process ex=
+it.
+
+So if one was to make sure the first time this is handed out by the
+percpu allocator the values are all 0s and then cache the area
+somewhere for future allocs/frees of mm, there would be no need to do
+the zeroing on alloc.
+
+On the free side summing up rss counters in check_mm() is only there
+for debugging purposes. Suppose it is useful enough that it needs to
+stay. Even then, as implemented right now, this is just slow for no
+reason:
+
+        for (i =3D 0; i < NR_MM_COUNTERS; i++) {
+                long x =3D percpu_counter_sum(&mm->rss_stat[i]);
+[snip]
+        }
+
+That's *four* loops with extra overhead of irq-trips for every single
+one. This can be patched up to only do one loop, possibly even with
+irqs enabled the entire time.
+
+Doing the loop is still slower than not doing it, but his may be just
+fast enough to obsolete the ideas like in the proposed patchset.
+
+While per-cpu level caching for all possible allocations seems like
+the easiest way out, it in fact does *NOT* fully solve problem -- you
+are still going to globally serialize in lru_gen_add_mm() (and the del
+part), pgd_alloc() and other places.
+
+Or to put it differently, per-cpu caching of mm_struct itself makes no
+sense in the current kernel (with the patchset or not) because on the
+way to finish the alloc or free you are going to globally serialize
+several times and *that* is the issue to fix in the long run. You can
+make the problematic locks fine-grained (and consequently alleviate
+the scalability aspect), but you are still going to suffer the
+overhead of taking them.
+
+As far as I'm concerned the real long term solution(tm) would make the
+cached mm's retain the expensive to sort out state -- list presence,
+percpu memory and whatever else.
+
+To that end I see 2 feasible approaches:
+1. a dedicated allocator with coarse granularity
+
+Instead of per-cpu, you could have an instance for every n threads
+(let's say 8 or whatever). this would pose a tradeoff between total
+memory usage and scalability outside of a microbenchmark setting. you
+are still going to serialize in some cases, but only once on alloc and
+once on free, not several times and you are still cheaper
+single-threaded. This is faster all around.
+
+2. dtor support in the slub allocator
+
+ctor does the hard work and dtor undoes it. There is an unfinished
+patchset by Harry which implements the idea[1].
+
+There is a serious concern about deadlock potential stemming from
+running arbitrary dtor code during memory reclaim. I already described
+elsewhere how with a little bit of discipline supported by lockdep
+this is a non-issue (tl;dr add spinlocks marked as "leaf" (you can't
+take any locks if you hold them and you have to disable interrupts) +
+mark dtors as only allowed to hold a leaf spinlock et voila, code
+guaranteed to not deadlock). But then all code trying to cache its
+state in to be undone with dtor has to be patched to facilitate it.
+Again bugs in the area sorted out by lockdep.
+
+The good news is that folks were apparently open to punting reclaim of
+such memory into a workqueue, which completely alleviates that concern
+anyway.
+
+So happens if fork + exit is involved there are numerous other
+bottlenecks which overshadow the above, but that's a rant for another
+day. Here we can pretend for a minute they are solved.
+
+[1] https://gitlab.com/hyeyoo/linux/-/commits/slab-destructor-rfc-v2-wip?re=
+f_type=3Dheads
 
