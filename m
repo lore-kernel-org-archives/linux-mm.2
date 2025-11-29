@@ -4,91 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEFCBCFD2F6
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 09:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB64FCFD2F6
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 09:24:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B4B66B000E; Sat, 29 Nov 2025 04:08:15 -0500 (EST)
+	id 1A2736B000C; Sat, 29 Nov 2025 04:24:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2647E6B0011; Sat, 29 Nov 2025 04:08:15 -0500 (EST)
+	id 17A8A6B000E; Sat, 29 Nov 2025 04:24:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A2326B0012; Sat, 29 Nov 2025 04:08:15 -0500 (EST)
+	id 0907C6B0011; Sat, 29 Nov 2025 04:24:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 089236B000E
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 04:08:15 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 91F5CBBCD4
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:08:14 +0000 (UTC)
-X-FDA: 84163068108.14.816E0E7
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DADEBA0006
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:08:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ElfgA3pc;
-	spf=none (imf15.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E7C226B000C
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 04:24:16 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8FDF61A08D9
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:24:16 +0000 (UTC)
+X-FDA: 84163108512.23.F463CD1
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B584018000B
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:24:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E88FT3of;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764407292;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764408254;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=puYdCjauAnyp13Z3AbnzcEE9KrU8OtebpK4HHLvOqPI=;
-	b=u9JzBI+XGgyhmaTZRXS5jJWYfOOctfUUPFK+3yqx06tXjtlDOtPckjosp9IjMUw1Z+EsuV
-	bOqyvXVA5rl+xBRg2JQFM36YPkiYeE7oFFyt1W/iIwBRPkyUP21s4fX3uo+JXP48xV8KKj
-	dXRpESW9DrlW3Vs7dVWesDZVC5HDZsY=
+	bh=7Hx6Kk+eh22nPbTBjj80H9fczGNw4hXoOau7nzEF7wA=;
+	b=A9xec9f5WsT84T5WONQfgqxLVCf8lCq7+WltJ68R1hLfvF3KJroXz6aIrqLMUAzActOtte
+	VOl5FRGM39xhjzl+vxB1aiDZctSYT3EzM+GDT3XqmyZWD2tYyk0QcwJIZ+v5cpiW+ZTVP1
+	nBRUfCyapTpaw21WtSV9lq8ODl4T+a8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ElfgA3pc;
-	spf=none (imf15.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764407292; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E88FT3of;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764408254; a=rsa-sha256;
 	cv=none;
-	b=iuUb/rIViV+lEH3CfyGWhqPjRkV/lZqlmpxnHlKMMA4YYfVq67vV/zox5VYIoPPnHaAY4/
-	kS1d7NUZtjANdPrpww3VJTqaq6d3umWmhFWjyDUM46QswMo22giR4VlYlOMtByXDOvEvt9
-	7LqsbVM2d/uw3MiG/LGNgs/EwYEr/9Q=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=puYdCjauAnyp13Z3AbnzcEE9KrU8OtebpK4HHLvOqPI=; b=ElfgA3pcqI4u2V5Qw2qVd/nzGU
-	T/EfzhaKAZVqIsLqTKtnSuVLOEUx4j3TU/2CnNbw+rDxqyHoU6/M8j53gZwej0rhySWnbWuxUWIgx
-	L5h6kNOL4g4WAPTCm7IFDpDy4FndmhAG6sENH+0qdZm7Jc6ZFC6fZJ+Kru2E0eyv122nxlvxPKPSt
-	Crzm0cmJZC9hxgrmlCJgqIs0s/SKhgGb3Em804A/sYtSghutELdkVYwU/7cLq/P/qIL45h56lVOcu
-	HAQrDYvlaOjnfaP3cGbNoAmr/70ouZzTg4CMBy0thr/rfv2PJCOyQrljlKsXX4MnKHtqRQGFXmqEp
-	9LpKA/1Q==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vPGw9-00000007WR1-1Vm6;
-	Sat, 29 Nov 2025 09:08:13 +0000
-Date: Sat, 29 Nov 2025 09:08:13 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: torvalds@linux-foundation.org, will@kernel.org, linux@armlinux.org.uk,
-	bigeasy@linutronix.de, rmk+kernel@armlinux.org.uk,
-	akpm@linux-foundation.org, brauner@kernel.org,
-	catalin.marinas@arm.com, hch@lst.de, jack@suse.com,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	pangliyuan1@huawei.com, wangkefeng.wang@huawei.com,
-	wozizhi@huaweicloud.com, yangerkun@huawei.com, lilinjie8@huawei.com,
-	liaohua4@huawei.com
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
-Message-ID: <20251129090813.GK3538@ZenIV>
-References: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
- <20251129040817.65356-1-xieyuanbin1@huawei.com>
+	b=d59bHbhAHtMni8Qw1iDdBLaEwMb7YDA8jVtQZ5+omQnLYlGsphkXyW40i+KLE47SjPjc0R
+	52Lg47DyuSSiYBKEgb6698zgCjkoC38RQ4iuq3u+o9WRk2zpdGpHAJjn7kkufHEN5W7oSw
+	DbhX0GH4jS87Kza337BLz1CBLzUbph4=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8b2ed01ba15so213217285a.1
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 01:24:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764408254; x=1765013054; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Hx6Kk+eh22nPbTBjj80H9fczGNw4hXoOau7nzEF7wA=;
+        b=E88FT3oftzy0yRZzkNTR0VKi4tVYAHz66Sg3DmPyctpoqNjA5QMYBu0FE5muVAO0If
+         vuI5KMqWKHBp6mcDmEALjOeCLB5nN0ZgxZTOiTe1YDXBTI1wAoh2cEBpeiBUS+CdEQBm
+         2DntVMCXdJOIsbk1ZL1lAKu7MbYh3YG7gf4DFYbgOQ8RFahWz+Z7afSlC6x6QdgRsvjC
+         8YIqWgIWj/pD6xYtD8jQJusCWi+PnosInVOZBnNdqHpN5Z+ok6Ax00Fd3luCKtOFt3hG
+         9MJn+yF4YMm3XNTRQ6X0JlqcMxp51XH5fq1a3q7AO3KbF3SCydN7C2phQ+R/ejlkIjJk
+         4eug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764408254; x=1765013054;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7Hx6Kk+eh22nPbTBjj80H9fczGNw4hXoOau7nzEF7wA=;
+        b=m+VChz6JafYVj3RKlsupY90nY9Qex/s9Pnm6iRPJx12x+4ku6F5HxOtjrbpAweF3CK
+         OZHFPN2hDRv5AjcE60Bx5J9gQW58Ity87ln9X73X9eDGxEU1MYB2bEi5sg4mOY3Ctyvf
+         Y4XIP7chmKQcynQvZMe9sEaQwjIPb/lhVLe0G6pYHNWwaUwmvKmtbp406wbrxd626RG4
+         aRSvH4Gvq8PKA8YLtOeOuGIOxBv6mxq7zF2Lir7pEv2GQYWlh8ADaYBL3VwnrbtZvQov
+         U3CHHV353p0mP1hcvI/2RDfR8eIYrQaeqHtTw/v3MYGPB9cZmSvdX8TIc/M1VCSIW/jH
+         8xNA==
+X-Forwarded-Encrypted: i=1; AJvYcCWLXh7f4qoG0x3JZamvBTUPGTyoXG8iHsQjwkOkzkdLklhJ+GM8aMiw/iYaLvXPPED/fOLUZqD6kg==@kvack.org
+X-Gm-Message-State: AOJu0YzHTnP6XCDmE5KYjrptLFALTIpC27m9WFzWi/oitJVB/eDBQqGT
+	O/y9PyRMAYgHJsAcyo4lkpsyIZ6K3iQ9N3jV3kS1RF2iwbS9ZnYhy4eClGI+h3c3s44LqY0i5Cp
+	VztBDoz4JybRjzjsrBDV6sH277AgCW0Y=
+X-Gm-Gg: ASbGncuQAfWMmqthzAJWFmZtkuzAGZ2ekDhw9Yvg0xz8h3fpoLqWLmMUbiyu194t+AO
+	QBXBqNMtS+Xrr2nU94RXxVoNesC7TDHn78+YDBlZPYS+YmoDoJeECgJsn1NEsNEzv9wukv+a59w
+	22A3rSHly+4igqXOCrZunCtUxFP2+1h2U1vjws/KbdPWIWzGWS79AtSVnmSI9dvzQQRoHu8oSdl
+	rSXjG8G7YHSeGb+QEuQkw4362nNJGSBdBz+uGCdXIb4zIm4CwdRZ5ORSl1kH/ZvB1k1eg==
+X-Google-Smtp-Source: AGHT+IGGPbDld838U2pDms7tJU88e5en3dOrMGddnQra8sj6ecpmDwi6Y+zORwsRL+4qBpDtqjAERD4M+6MUXQtSNPI=
+X-Received: by 2002:a05:620a:444b:b0:893:b99:711a with SMTP id
+ af79cd13be357-8b33d1ee4ffmr4203222885a.19.1764408253547; Sat, 29 Nov 2025
+ 01:24:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251129040817.65356-1-xieyuanbin1@huawei.com>
-X-Rspamd-Queue-Id: DADEBA0006
+References: <cover.1764297987.git.zhanghongru@xiaomi.com> <cd98e89b8b609bd2781b2d24c721a59feda83ec8.1764297987.git.zhanghongru@xiaomi.com>
+ <CAGsJ_4wCDW=3YdPboinTNUp5qvcSR8LM+6vEhFM5q8FXHVNzHg@mail.gmail.com>
+In-Reply-To: <CAGsJ_4wCDW=3YdPboinTNUp5qvcSR8LM+6vEhFM5q8FXHVNzHg@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sat, 29 Nov 2025 17:24:01 +0800
+X-Gm-Features: AWmQ_blmdrt31__-OOWXQLljQ7HLIb-Qw0tzeo_DfLbYqFpVa7OT7qu7j6DxAoI
+Message-ID: <CAGsJ_4wCeLr6KOTU=Pc4ALeq5x-i0C7i6C3cSddexHw2ADSnng@mail.gmail.com>
+Subject: Re: [PATCH 3/3] mm: optimize free_area_empty() check using
+ per-migratetype counts
+To: Hongru Zhang <zhanghongru06@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, david@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com, 
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	Hongru Zhang <zhanghongru@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B584018000B
+X-Stat-Signature: hq84tkfty9fekxr9et9orhgrjq99kbxt
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ey7romac7i3gfn3q5cikgwa43xytq3w4
-X-HE-Tag: 1764407292-259499
-X-HE-Meta: U2FsdGVkX1/eoU6Ko83eopu0X+JcoLSgDiXGLdKUJjARFmE5VmXT1jB3JsudoeIeVyZiNs252pVmMWgJEwkQ54C74qpwP0ywsbwILWDnrp6tEvOdn8My1N9/QWMXOoX7izFdXP7jpfSjexlFZS07P/kVwrE0Q+y7UgOkXnK6JF3hV6AAtHFuTEEZCAFSOMF6jwVUix7UlGTGkwX0+nPUUFSbolBAQRPr5AaAvVBVxs0m9jjAkAmib99p1XFATyuLyxoinEMktfqGV0igKA1jCQZFeaaTHUfpItrUaEMtKw4ZXqrtdIu/q9AHAx8EI+wL/+1Fb1IsLwUDYX/biD/48eINvpVyrkHmg4cu/OrmmhCuJXnxqqLLN9XYU3oYbJBSE984XHy6ufQmW2YGqmDwouHdXaBte1Z/yOUBQiwxMkqwlrDXoYgWKnD8fQm90Oyv6boQJ5q99Sp9ALH+eTWK/0D4xKD9IHKAUmAYn8cUZWx7VJIhSTkk/iU4gp9D1jpN59DsSng609sJl9MF3jvXvnBKmmyVUONKsSlgw54aGjC86KP21QlJ1XVXQfo4An4rxbRc3dPsAJKSbirZ2Dz1llOyVzZMewgDSOXekdgdC9rcIYR8ukC8Jv/DV9dPm/YM/e3AFFWGzyF8XbccvVA+Ve9zi9aD8VMcm4rNey9CDYrwspTErXorOTlowj1zgOKTP8lVcu3fIx0kU5WHO5P0ptKGONMhYe24CogO9USI0SFWydanBsYG0SscxPgyqMOHhWKrGrOV8JvqRDoqzRx+DR4CQuKFSoQfnQRUQVLibz4OVjizn6Za7KVHorZUzqOJwrzDUAR8B35oqexrcToxzZKetpNNVVXIVKRIPB5UGEXLsLhJpZVg6kQ3Gsu6KSVQo1lSKcAv2KRq0ugqiUuusl7JZN2n7bzMKls4lCO7psa2FKdngqCoxP+9ZsQaoAXQdkWOTZ3C90Qn1j6McMp
- ati+DMHZ
- B4jiohgiPXL5jAQrQlpx9DeDs/H27Z9fHVrY/FUCZ3b7pRCGbpmwyS4ZFmBak5LdJgosDgUKpxdsvl461zGKLOBXxznSTtLOnHczFLgR70qZ22d4pB90o0oB9fk7ZKCOq+hLYMcoyV6hrG+h9pQ4xsdE5CsavxeN/4ezuLmLLn1dbxW5NMHwnC+6GsodhO5Fmroo4aLcBkx+G9hS3LSBTr4HhjRmZfdxu7e/OzjLyOLsN0HZFKGAO+TY4xHZCS2gQIdhhbzNMhdhfSWq2YRkKlFknfY2jXWz1cIeoOvrsvuDqC8d/edPRRElQApTWboi9HufqY/Kz70wgSNIXrVpxTPFY9PTxsQ7q7YmCeCefeqPk5knVq3A7zeU887hVwSClPfC4UvDFKe8/Gf+y4pidae3Z0K7S4CDR/19ALQAGhqM+wgim1mcy6BhKt9QDQpvDWD1BrtKmFk/CrwtcWfuV3gg10sA0PRJs3Nn40G6U+AoyANwCEGDMEij2HqOWqgJ98bhr4lk9cbzNnKH2ncZ+PNdefsO6yFWlakvTjBMxZC8V3o2rVWeGLqRjZAlC7XaMmfN7
+X-HE-Tag: 1764408254-917190
+X-HE-Meta: U2FsdGVkX1+uri/QUfWkS9QTcI2ozhinf1Uqi0emmVmzv20nONxiGbqQoquOPqiXxnppll+dr52xulH4jw2J0yvfkvYJt+t3mZvuKuApV3Frz0rNwVIMxnyoKDCl+SMlw0/tGTnMKeNHUpfwdJ0AWPqJjCGICVhYXXssBB7S4MJUxC35jJwDyLX1SwqNdpP+WI2nDV+ISgEwtB3fQFPwEk+Qxhls2JilvutspsoEkHopVJKU46zmq3Sy7MAPisjO5sWMp7D+3BQxKm9BAgKRpEd9F5t+Z1IgAyos3P+4efEnGUcfjqU+Wj3hgdLGY+7XZIk0TnxAaiceqpVeTGQsfvIEPlsAU6lqoqqzf07RPDQPIRzsXIDraBLdcBh2olbk7ItQun3OvKtba0AUx3uMj6hWnEx1Xr7vaOQ+2yq/ZrWujyKwRTNQjpY7pCNG2YZV0eOweIYmrKd9DiELyI1Cx5tYzDxDVSpuIBI8Q9sYfIEAf4MCol9jYkuoK2x6mBU7XdOAlJIa7LBMbha4mKUeDDJhr6Jl/MJ7m2htrfqVKFzZVdIZE3fxFVZc6E4/oL3wk5Xx/rb2kO4INNk1LA1P7QsKAMljsqM/8OFET7DLZc2V7avgt8Yg03kEOUPwUonSMdNlsxTJprbdWNwm7jpGunY38L/umZ3mktVhn9ZpgPfZAPKasLfGSe2PlDlKAIyjHG+wLcyalVw0C3jB8Qo9Nqduot9M7IKTeFOuukG9u+LeUjPRE+MZBNYqQNrYOJ09vdzBJ9iivs8vBdXWL5DX3Zwl+/yvoHyZhgHa+hjefHbP+EkPPu34O1MOba38xVnTNxsJRsnqRucONN1AjcnBYACo+wBG2W3VDHzP+qDs/UNBm5awIj4TxvPNFyfUzzq/aTwi982QlSdepT9N3Be4v/xhwLKJHoE5D1c17lqXt4qhoDyoJheylAAKzwy3LkNu2ZWoTSRJJCyUeWWZK6V
+ MrqaHKZI
+ ar4kn++JqpHNMU+x3MQ7r/4fttUwLIvpfut8L4rlz53T4mXKzeFEQKz7rYScAxg/BpLRt0v6wU5JK7IXqLPwZk/5I8ROTcjsgGeBPg8ipmazKk54u2DoDtyLy9jvxQsQMyc0aAktKZ+Xh1gJzbp7WJ83FkQJddWgIREqa+txo/UjJPoAD2l2a/ZUPkIiPYsg7t0Jt6e8ZMzVDlw1L9XEXeb2gmZvpK7FuYq8/AZA2q9aWgr6fqcoe5oeFfSDoTj7xqNLl+Q1LFyNOFRhNm+SXCBtD2lJ8guk1I4fNoH/b8wtxinll2Axel/xi5Da2ZSDiOfVHcP31nOqFRcgM7ZGSDhTdnf64pNDNl9XrjBuUgHSV/wJ/dOH0CTakmj6N5YFPgNxt5ZV1NZSEy99+CAO1fZ5xd5+59TDlS1cmP2tZCZ8ZWrhzhkrU6cFcYDVz2rfXUOqrI8U00E4iX8fjea3JDgFyZeZ3RymhSfCMJZ1ghQjRDrc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,58 +122,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 29, 2025 at 12:08:17PM +0800, Xie Yuanbin wrote:
+On Sat, Nov 29, 2025 at 8:04=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Fri, Nov 28, 2025 at 11:13=E2=80=AFAM Hongru Zhang <zhanghongru06@gmai=
+l.com> wrote:
+> >
+> > From: Hongru Zhang <zhanghongru@xiaomi.com>
+> >
+> > Use per-migratetype counts instead of list_empty() helps reduce a
+> > few cpu instructions.
+> >
+> > Signed-off-by: Hongru Zhang <zhanghongru@xiaomi.com>
+> > ---
+> >  mm/internal.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index 1561fc2ff5b8..7759f8fdf445 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -954,7 +954,7 @@ int find_suitable_fallback(struct free_area *area, =
+unsigned int order,
+> >
+> >  static inline bool free_area_empty(struct free_area *area, int migrate=
+type)
+> >  {
+> > -       return list_empty(&area->free_list[migratetype]);
+> > +       return !READ_ONCE(area->mt_nr_free[migratetype]);
+>
+> I'm not quite sure about this. Since the counter is written and read more
+> frequently, cache coherence traffic may actually be higher than for the l=
+ist
+> head.
+>
+> I'd prefer to drop this unless there is real data showing it performs bet=
+ter.
 
-> I think the `user_mode(regs)` check is necessary because the label
-> no_context actually jumps to __do_kernel_fault(), whereas page fault
-> from user mode should jump to `__do_user_fault()`.
-> 
-> Alternatively, we would need to change `goto no_context` to
-> `goto bad_area`. Or perhaps I misunderstood something, please point it out.
+If the goal is to optimize free_area list checks and list_add,
+a reasonable approach is to organize the data structure
+to reduce false sharing between different mt and order entries.
 
-FWIW, goto bad_area has an obvious problem: uses of 'fault' value, which
-contains garbage.
+struct mt_free_area {
+        struct list_head        free_list;
+        unsigned long           nr_free;
+} ____cacheline_aligned;
 
-The cause of problem is the heuristics in get_mmap_lock_carefully():
-	if (regs && !user_mode(regs)) {
-		unsigned long ip = exception_ip(regs);
-		if (!search_exception_tables(ip))
-			return false;
-	}
-trylock has failed and we are trying to decide whether it's safe to block.
-The assumption (inherited from old logics in assorted page fault handlers)
-is "by that point we know that fault in kernel mode is either an oops
-or #PF on uaccess; in the latter case we should be OK with locking mm,
-in the former we should just get to oopsing without risking deadlocks".
+struct free_area {
+        struct mt_free_area     mt_free_area[MIGRATE_TYPES];
+};
 
-load_unaligned_zeropad() is where that assumption breaks - there is
-an exception handler and it's not an uaccess attempt; the address is
-not going to match any VMA and we really don't want to do anything
-blocking.
+However, without supporting data, it=E2=80=99s unclear if the space increas=
+e
+is justified :-)
 
-Note that VMA lookup will return NULL there anyway - there won't be a VMA
-for that address.  What we get is exactly the same thing we'd get from
-do_bad_area(), whether we get a kernel or userland insn faulting.
-
-The minimal fix would be something like
-	if (unlikely(addr >= TASK_SIZE) && !(flags & FAULT_FLAG_USER))
-		goto no_context;
-
-right before
-	if (!(flags & FAULT_FLAG_USER))
-		goto lock_mmap;
-
-in do_page_fault().  Alternatively,
-	if (unlikely(addr >= TASK_SIZE)) {
-		do_bad_area(addr, fsr, regs);
-		return 0;
-	}
-or
-	if (unlikely(addr >= TASK_SIZE)) {
-		fault = 0;
-		code = SEGV_MAPERR;
-		goto bad_area;
-	}
-at the same place.  Incidentally, making do_bad_area() return 0 would
-seem to make all callers happier...
+Thanks
+Barry
 
