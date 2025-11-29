@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B439CD116EA
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 03:37:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C508D116EA
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 03:55:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FC746B0011; Fri, 28 Nov 2025 22:37:32 -0500 (EST)
+	id 41C3B6B000D; Fri, 28 Nov 2025 22:55:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AE3D6B0012; Fri, 28 Nov 2025 22:37:32 -0500 (EST)
+	id 3F3606B000E; Fri, 28 Nov 2025 22:55:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C4546B0023; Fri, 28 Nov 2025 22:37:32 -0500 (EST)
+	id 330236B0010; Fri, 28 Nov 2025 22:55:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 47E8F6B0011
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 22:37:32 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA690C075B
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 03:37:31 +0000 (UTC)
-X-FDA: 84162234702.27.8AA6C4F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 24F4E6B000D
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 22:55:09 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A44DFC0819
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 03:55:08 +0000 (UTC)
+X-FDA: 84162279096.12.74582A0
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E692BA0005
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 03:37:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=RM2AAmHb;
-	spf=none (imf25.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 09FBB14000C
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 03:55:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gif53AQX;
+	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764387450;
+	s=arc-20220608; t=1764388507;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DpznAaRjUo2w7LZxf6lAxjAHm9eksDcdz1NUq6/1gPM=;
-	b=2SyuKywfz/3fCEdo4M2QeDrzRAW8P1MRwWv2nBaojPnRYYW67K0vAjM3rntACmOPo0JJhS
-	HKdiyb9Yb3jv5kFomgUFC3BQSB3GN2R10CKhVlYUOgc3hHKvSg89z7LAVMajYjxESkFwbg
-	Zcjl2MvykVtu8ZsqjKlYL3P10/eN/A8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764387450; a=rsa-sha256;
+	bh=1dCa0Yi2abB18gZnNstjxBDy+4BryzpI37joEvmB9nM=;
+	b=M1YS2Nh1OR9svqrId26G9gW9dt1EIL1XS64koXZw3oXddg44i5kJYfww2itH4/UIAnTqMz
+	eFTIuZ8aqkmfmZEXgYyjqMxf2IArZpPH/xuXX37sqmmeePs0uPyP0SpjcDKwMA3fh5NYUT
+	R8H+6NrMlNdlMeMZhbnCO7fRjHhY+J4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764388507; a=rsa-sha256;
 	cv=none;
-	b=MtJCs3Nc0hS6vcJwpfxuj6l6hQ7bvVf6mXPOD0Fgq6wSpXpsdfA7Bvy+Ckmw0h0TNpoOw4
-	Z3pYtKdY6xOCN71N9bel7QCbBe0LqTTK9kCvxIyvfPxuZnXzn1vhh3GaMNqoLTjqAVDjId
-	4FYPgoIFNvTHFngPetfPUSH1NMyS6nM=
+	b=ArO48dfOwu8EompHHF2FMtItzi2SuJxpzRW46cOcmQjhZ8ij5HH0NhhG+/RCN2HpHM6aFn
+	LEQqY/ORkim+fCYjAX0IHef1D+aOBK9mYMOnANKXBJhCdOgOgVP+wsiI+fvty1IShTsW7d
+	CyY3JYK+GlXEgvBIxGWNVfjTL+WGkR8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=RM2AAmHb;
-	spf=none (imf25.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gif53AQX;
+	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-	bh=DpznAaRjUo2w7LZxf6lAxjAHm9eksDcdz1NUq6/1gPM=; b=RM2AAmHbiWWjdBAvIAJPpFqKzC
-	w+Imm2LS97uAx/g//eMP3HpFYUydE6Y+w3JM2a8/zUe++dKTeDANZDiDhhpz9RQhopbF5FS4u59BP
-	PE1d3GCCezRATySQWYeccgXjEG2ISRJhV3jEJRAJQYUiOg1uEdQI1PcGSSQoXR3sE3gEGjYo6X1b0
-	ZZAydgZNX+ONMdWvNoVHkaZNl6k/IZqlWnoW2ttA3YJ+Rq3v6tUpaDiuCU6m1/7ylKfhX+vhWnevn
-	rwQhQ8i4Asi+235RfCe1TE0fqCW9cuyaCfk0NCspPUUaeA0kvHilMf+ySBiCfQyouT10czoJRpVrE
-	xFYsYKig==;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1dCa0Yi2abB18gZnNstjxBDy+4BryzpI37joEvmB9nM=; b=gif53AQXc1RzHnygPbDtIU0X9L
+	pXTFfokzhGNWnuy66xDaEH/e5OK0oyUdCm4pbTUKtbbksPMcXlqSNS0VCZDb2SJIB9J/PGAbtpqbG
+	CO8OW3uSLvzVc3N7Das2tMfFe7RiY/yna+fzkylq+2CW5cGxecl6dTfKxhJgvWdBBeoPwcIyDFC2s
+	8sQLhqsD1hjniYUK2XVRqXshs+TJ0gYBdaxjzN6imMaYMF+GPISY28ftXIfPzc78DeU0qhSE93uU7
+	+1dLgV4XxZb7onQ+ybhE2DK6uXuf5i3CZdI074nrQAY1XXegzlcxto0oJi2wynNGH9zvSxytr5yAR
+	kywVSLoA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vPBm4-000000008wo-3AES;
-	Sat, 29 Nov 2025 03:37:28 +0000
-Date: Sat, 29 Nov 2025 03:37:28 +0000
+	id 1vPC3C-00000000XUf-1HpY;
+	Sat, 29 Nov 2025 03:55:10 +0000
+Date: Sat, 29 Nov 2025 03:55:10 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Zizhi Wo <wozizhi@huaweicloud.com>
-Cc: torvalds@linux-foundation.org, jack@suse.com, brauner@kernel.org,
-	hch@lst.de, akpm@linux-foundation.org, linux@armlinux.org.uk,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	yangerkun@huawei.com, wangkefeng.wang@huawei.com,
-	pangliyuan1@huawei.com, xieyuanbin1@huawei.com
+Cc: Will Deacon <will@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>, jack@suse.com,
+	brauner@kernel.org, hch@lst.de, akpm@linux-foundation.org,
+	linux@armlinux.org.uk, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, yangerkun@huawei.com,
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com,
+	xieyuanbin1@huawei.com
 Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
  sleep in RCU context
-Message-ID: <20251129033728.GH3538@ZenIV>
+Message-ID: <20251129035510.GI3538@ZenIV>
 References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <20251126185545.GC3538@ZenIV>
- <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
+ <aShLKpTBr9akSuUG@willie-the-truck>
+ <9ff0d134-2c64-4204-bbac-9fdf0867ac46@huaweicloud.com>
+ <39d99c56-3c2f-46bd-933f-2aef69d169f3@huaweicloud.com>
+ <61757d05-ffce-476d-9b07-88332e5db1b9@huaweicloud.com>
+ <aSmUnZZATTn3JD7m@willie-the-truck>
+ <b6e23094-f53f-4242-acb5-881bd304d707@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
-X-Rspamd-Queue-Id: E692BA0005
-X-Rspamd-Server: rspam06
+In-Reply-To: <b6e23094-f53f-4242-acb5-881bd304d707@huaweicloud.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Stat-Signature: dnjo3k9pkx81k14fap4xuuc69nn1rdrf
-X-HE-Tag: 1764387449-491693
-X-HE-Meta: U2FsdGVkX1+XGPW8tXKDcW+unzo8uh6KLCEu55G/Gr4KtTJcUrM7ExvH2rVHJsbOPKqwO1E+fxZpdf4BzF3dzRRDfzEMnj0DdnSUPLOLeUkBNjoI0W+qvuryKfPaAuh0XYkHuzg35f9oMzFLJfudRJ8xPleWcxXxBPeldOmRGsCugg7mtuc9YmX9UnSFMvPgeKaUqOSiExNtpFivQfWMoiqmWkoi0vJ+hmFVGFoC6bd73Zp1GvOcOPoMcL/DwKBIakN0sZ64x0UclKI9pfmrbdLBEbyffvWr/4Ksy40oXue/DjaFKO2mdw9OAn/DqoQlvdCBtQwjffDDdAcNZSYkHxMSyUQdAVRxfN2UFKelHKcWLaOsOMVHPkJMSgYqezYwRNgeTK/csdB/oDwkZwWnPZucBGJSaibjE0fONkQm5rtH3RTwREG+xnkTmPW9W2YWeGDBqzF4lDDvvfIxK0JgUqK1SSuEv1fe7wtcG/v+uwv0zaHIVftnTzdDT95xsYxkpt63WTsF6Ri1EwRBPX6iKCvnrzVKoxq2TtNXkfk6ultYGivLgmZQMYfvdabhJmoMgI65LT7Qt0oy2X8EyGh69raqHHnGZF86aboe5PGrdJ3xv0CmrxA3zJfG1ikIekIwaR8qJno+VDNzCllG0hewbC+rlxnV2+7bOr4hFOBIpwsvSvhBP0M7/VGYGxuZGlUfhWcwriVDDbP8eAak+wSCU66qR1w2pXVTppjgBnWINFyQV5TL8bMpJoVW6oVmPgsHIEA7Mz63tqmlZnMipa8AmX8Nse/DvvFzCK41QllMUMUHqSFzNHu2lLvwKFEiBXgiM910L/7VBZ1jdCkEGKMjBe09W8bp3w+bjYR/0SEMOnNinNrRep9UWpMV7QSWDLY/u0ly77j+aemtrogZHPuQu9p3OvADtDKQOWOez0W4cajLwsMlr8AqsyBR0t4lfggfkqlQVb9WjxzH6tD03EH
- dKYFgSjQ
- 2NK4paMwDbI+Aeuv60LHEmmNKoyZN1nOpTi+yGtJMU8NEBEecDzsZUHTLnKVxIafAjzYGmn/fsB/tE53hO9kUE6cuqviRir4/3zUVF76qIAMuljQK6mkN7uyjriMl8+/ragPc2tPuBZkDs3QBSCITpEZydED7G3l/XK4ypCG8Y+8N9Jo/0t6Pa1XmZdbljXNFF59dch9fhEuwpHeXVChtqFKwmXY5oN5aWFnM9zqQB7ZilG5X1Rq7CXBP2f41F2+NaavXXGQt8bYD2+ZwHeAElFwrrQuV2WHRi9y+rgL2Tyh/wptrMM7KGEdD4p0edZzJnG9ygAhemwvsRQLSJnHGJW5IC6Ko8tU00RUhtiC3iZOXM7P8MZYuky19TNZ+x8Q6EjqYgLfSSQAmAxukf1gbJ11gwqdDw7WYg/gbHZaz21+hUewex512JYVn0S09UCy9u3GXr5rSfQD/gYx2z94FAjyC4cqA64Dxt2/l
+X-Rspamd-Queue-Id: 09FBB14000C
+X-Stat-Signature: ga1y5m9omjwpzd9d4p1aizj89bgofwgj
+X-HE-Tag: 1764388506-94197
+X-HE-Meta: U2FsdGVkX189ZPd4cHD/JVIiowMm1osjwKL3kK/6QERemdPcNMAS3jGrEuoeQDX9OcBlel1k5xHQ34senWmgViQollbHJSytEmjtqjV8RHBKZEpFk/169TIg0EewvQXl8xNXdQ/kx3kC3epYhgIMK93avdreRHh5ErwLlGxnypWRThfosNOjafW3XVlf4DiyfbzllySMCPX3WxsMFiXwKmhjrmSrLgDM4azhj+LrJVPkH+0nWfTtCezB1VeqT6U1ogYnJjX/PBIdY7mG1vPTBGvq5qcIrfCngENM7GLXrkfnKhMFRu2f77d44GCfcf1xm/1fZcvYMyuK/dSX/gJySjjowXDxWFQk8EUNgWCD+bzZ4Sqk1RuNrwMGEPufVwxVuPOoSfOXC431B8MrDjSo/mfWKOjncngO0E6h2A2XUqHKzgmbW8kRQ+h76ZnYtqnrlJuLL8cPhMV9ntEnaY1AhBfeP3CB7ANJa4r2EmoUqTmDELitrBi4Gn9DKnpWbNQPiC+1vtbTIJEu3GwXHeflRWSHyjZn6oFdi4KmDiVGfW9guTUHTYHyFPYoqklUBqypN9u7bDMuy3sCtKeHY4NCKNq5pIkQ2m12xyZPPsJd95RMokJOZgPktTkDGrAinY+K87doQGMMmqDjjjrHZhBku0B5B0TSQhbOLXEsBh29X/ZR/P0nRcARsjQ0RtO6Vvjclb33zJpqNkupCbsPfCannUjgWT1zkCaCBVtPlheNHM6yKQY5agsc6WyQlPQ03TnrS4AHdfNJtqyucPya8EivkE3rj/KJho+czyU/e7AfD0lVbtdORHfGJe1sPQX6aGJCeWjyEkhRlR2SEGsAB2Whc958UNx6vy4DFN1llXvrvxPVqXX2AsGI+Krbv3lpT443WRSex3mY0LjsnMfrct8JbUOl8s5/Pnpj2JEWiiPWflOZJt4kLFbm+SWmesKuMFOAEEFLiEcbKBXC38XVLEo
+ 0D26Xbhp
+ BmaR4zKjBAtCH4BR4d+cFVBHyhdU/IsBBZNW5IjrsZ0AVGGPgxIMqMuxQP6k2UTvO4JDaXzhsQNrjN+H/DRbdRwO4hu+d6PezhHXXBwxL1sqo/kNKIqT7tkAhIJX3Ul4tIm7v7xX78GWnITaLfMZJUU+AN3xzVkjU4TUipftXEzFXjnOOJxWwMAsc7X6Iidaw+7mDigF3cwjyAq8fMh2Zd0H3YtASa4sqL6GK5nDnO2wG3h6de7eLA4y5zWxU5kiYrlcrWSF6PEGGSMUlabOefl0nGYdTcx0ywJTx4WAHsJfhdqOBeIhknlQ7++f3xLmAXONlxu2Uf30LQMKBmDE0Ne3cUZvjsEcqj+IzGckoc1CmCJpCu+6FRqWrEZDv1TjNRvEQ6D0gga8h1QFg6UPSjc2WJQF9ZldkS1B6fp1cFRYurKLQIM45wVE4EOvS/LE9Fp/bvOey0kqUfBK41YF/6CAHCho1ONzzRPBKUStUzp9I0fc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,43 +102,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 10:24:19AM +0800, Zizhi Wo wrote:
+On Sat, Nov 29, 2025 at 09:02:27AM +0800, Zizhi Wo wrote:
 
-> Why does x86 have special handling in do_kern_addr_fault(), including
-> logic for vmalloc faults? For example, on CONFIG_X86_32, it still takes
-> the vmalloc_fault path. As noted in the x86 comments, "We can fault-in
-> kernel-space virtual memory on-demand"...
-> 
-> But on arm64, I don’t see similar logic — is there a specific reason
-> for this difference? Maybe x86's vmalloc area is mapped lazily, while
-> ARM maps it fully during early boot?
+> Thank you very much for the answer. For the vmalloc area, I checked the
+> call points on the vfs side, such as dentry_string_cmp() or hash_name().
+> Their "names addr" are all assigned by kmalloc(), so there should be no
+> corresponding issues. But I'm not familiar with the other calling
+> points...
 
-x86 MMU uses the same register for kernel and userland top-level page
-tables; arm64 MMU has separate page tables for those - TTBR0 and TTBR1
-point to the table to be used for translation, depending upon the bit
-55 of virtual address.
-
-vmalloc works with page table of init_mm (see pgd_offset_k() uses in
-there).  On arm64 that's it - TTBR1 is set to that and it stays that way,
-so access to vmalloc'ed area will do the right thing.
-
-On 32bit x86 you need to propagate the change into top-level page tables
-of every thread.  That's what arch_sync_kernel_mappings() is for; look for
-the calls in mm/vmalloc.c and see the discussion of race in the comment in
-front of x86 vmalloc_fault().  Nothing of that sort is needed of arm64,
-since all threads are using the same page table for kernel part of the
-address space.
-
-The reason why 64bit x86 doesn't need to bother is different - there we
-fill all relevant top-level page table slots in preallocate_vmalloc_pages()
-before any additional threads could be created.  The pointers in those
-slots are not going to change and they will be propagated to all subsequent
-threads by pgd_alloc(), so the page tables actually modified by vmalloc()
-are shared by all threads.
-
-AFAICS, 32bit arm is similar to 32bit x86 in that respect; propagation
-is lazier, though - there arch_sync_kernel_mappings() bumps a counter
-in init_mm and context switches use that to check if propagation needs
-to be done.  No idea how well does that work on vfree() side of things -
-hadn't looked into that rabbit hole...
+Pathname might be a symlink body, sitting in page cache or whatever
+->get_link() has returned...
 
