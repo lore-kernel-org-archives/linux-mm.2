@@ -4,108 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B7FD116EA
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 01:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3AFCD116EA
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 01:36:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83A666B0007; Fri, 28 Nov 2025 20:02:35 -0500 (EST)
+	id EEE7F6B0011; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8121A6B0027; Fri, 28 Nov 2025 20:02:35 -0500 (EST)
+	id EC3F76B0012; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 728D66B002A; Fri, 28 Nov 2025 20:02:35 -0500 (EST)
+	id DD95B6B0022; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6167F6B0007
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:02:35 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 079BB50CEF
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 01:02:35 +0000 (UTC)
-X-FDA: 84161844270.26.9C0084A
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A3C204001E
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 01:02:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of wozizhi@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=wozizhi@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764378153; a=rsa-sha256;
-	cv=none;
-	b=IetN8EzzKfkqjY6griHCKtrMRhvUnk6TO0y3ht1yj7GZgWTm1tfmUhXFhZXQzHHYY4UQNB
-	X/Z+d3BGxy4uLSS9XI9ScJz2S4y0cdMiPrftczveR8ITZNKEPZ/0TBE4LiEd3jgN46yw1N
-	P2Q/lX+Zt6ZDxOFuoTumI7u2+6VkO3g=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CBCAF6B0011
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FA57C07BA
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 01:36:02 +0000 (UTC)
+X-FDA: 84161928564.21.3C700CF
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 18D4CC0010
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 01:35:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="ab/mrw47";
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of wozizhi@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=wozizhi@huaweicloud.com
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764380160; a=rsa-sha256;
+	cv=none;
+	b=HWyD6Pqg2LfQ3j5Po+NG1qiARTJjIikUVPZaTCyH6pU2ZTnkpUcI7V1lVI4cuWzcAYjrVf
+	HjI4JC0KJCcBc0XvtTVK5dbhgijAjxtmY8mv3i9CUi+mngbZrddMUKitLPNXEW6cxYFceM
+	mSQrThqW410caF26RdOTKoKEYwTPiHQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="ab/mrw47";
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764378153;
+	s=arc-20220608; t=1764380160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xSiBOLVfqVQgGiP36Mkyly6sFLzSygYYuIYJA3xwBSw=;
-	b=uFMxOb3NsHHCEV3+BWqv95lyVK7n4n5qkffrih0dinJazPvd3fEicCSEzzTUBJ3N/jfUze
-	dKoGU5VkxpiraHJK54glvTvxgTi3LOfqwOMwBsVqizcnmpb/LytPVzY3UBFvAXmQUe+cnm
-	BKtx5V48apxrIsbzYGkbK24AMYwHwlo=
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dJBgw251SzYQtjb
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:01:32 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 6592D1A13C5
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:02:28 +0800 (CST)
-Received: from [10.174.176.88] (unknown [10.174.176.88])
-	by APP2 (Coremail) with SMTP id Syh0CgBnDnUjRipp2zF8CQ--.32723S3;
-	Sat, 29 Nov 2025 09:02:28 +0800 (CST)
-Message-ID: <b6e23094-f53f-4242-acb5-881bd304d707@huaweicloud.com>
-Date: Sat, 29 Nov 2025 09:02:27 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=q/WIom7gz7NUO3fE19+reH06dlDelQ6m/UOlLG0sWa0=;
+	b=N8oxsxzoQIKat+4h/sS2Wejo16/MGnX+gzuim/XASJsLB4i897inTH6i1HV+ZU3xO4LzZ3
+	tzbVJGrq/QCnYoI+V0EibOiwwk9n44x3qOSOSxoDNWzU2oMKXIZL0GhhahXtWo2hZUoH4p
+	ombRm/OzHUUf8LJ3Ych0eZLU1gJYQA0=
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b7380f66a8bso372000966b.2
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:35:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1764380158; x=1764984958; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=q/WIom7gz7NUO3fE19+reH06dlDelQ6m/UOlLG0sWa0=;
+        b=ab/mrw476+QX4pfGbvhHjJlzGXvm2StRKfEc2OZAM6J1XD+xFjBc7FOlFvjMYiOfZb
+         8dOKJFriEJ2+gX05jePUS3RtI25lp5O1CUJhsOXrXgmss5YlPoVdoyscgLZ3I+Bl7eJD
+         /IQ7tzdZODEO4SXC/7EueezzjJPmWHrPeuCKI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764380158; x=1764984958;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q/WIom7gz7NUO3fE19+reH06dlDelQ6m/UOlLG0sWa0=;
+        b=JQwOpoclQjKvTop6C/M/ccNmJ8phz1DUgAsRzzblHR37kiJY3z5tpOlua1EefSRbBs
+         sKh0W3EmqsyKQSg5MynNo7z9SujNzE/01MHt/EZc0gU2bAgQFW+AHEx7MlAiY3lJjw2i
+         mLBzUzxiK9oDect/bKvcdX7HJKTvldtMNWCPbi7IPRqC3HbkYnWONeGeyahwiJX8qi44
+         Pe6fwVoia0j7uk5Juv7t+h3GIHEthlwcsFS4uQwGRSF7JENNeunIPC9CV39s9Y33ymj7
+         mr50e5VL9DKP2CKjBtU0I460IEJ2l4XPim59ogFzvB8oc47UYIWLf0jUtKf1UI+8zvYM
+         5zYw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1SQJl66boMMM+CbEyIFD7wiA8c2Hb+7GwsC7IuxdDCeY8Za6eT3gLO+ZSoTUvfAYz08BHOJ9r7g==@kvack.org
+X-Gm-Message-State: AOJu0YwTBUSkZYSCi0nGjXii6aHK2btNfy3S3jTeC1ai6pIHJJWS6uEf
+	P4e2WeT1xorLh6t9SwgP9okiNDL0Fx6Fuqub9Xxi6hR2X/HPgZ4yGjZlzI/pRqdp5QR8JEnQxT6
+	XZ+oH6crnFw==
+X-Gm-Gg: ASbGncsu7b3IxW0NAogPbpap53dbSNzVreGnzMlNZgtPDPVuhxlhe2MH7h9xpNPp3B/
+	f9wVREVsKFGpXjy4onLr1iribfg47yQGpdsiwTogwW+W1f0nwJMLcLdl2YAuSR9BNpc/cxHNqWZ
+	jFaWIEjxqEROo3conBvSj7Ah0m0F0YFDYU/g+BlxqNQfkLN5gljGTKMUX1ik+KzTY3Qj0fDn/FH
+	UdjKGNlrbzjuf2RwceezPaJJ0Sqe4iuvCOuY9xm4YoDV8MgSJ09CfexIU6OVbqYvSjU5AkQH7jA
+	QGL2TfDoxWXNB3uSPe1LqgyzAz6h2ttQWVCsEu6wpD0ZNlb4rb8HKUf7R841Ph3A50cQFBqo2Vk
+	LJIrSA7tsgfmVRimJbeWcrv0BH/es1NrX0aHtmk34qELV3HLbtiFGeDGknZeGWoctX0BGGX9d8p
+	tYzwqWH32mTtctpOi+LrkVESwswqPO69nMZ5ptQXYxu5qYr7LKTzjdeH0bcBNB
+X-Google-Smtp-Source: AGHT+IElCWP97tN7mx5TBGT8Hu0FhPgT+MRNd1p747VYZ30Kebx8Avr6oP3vtDMUIgSlZ9rh1auF6w==
+X-Received: by 2002:a17:907:3f1b:b0:b73:544d:b963 with SMTP id a640c23a62f3a-b767159e21amr3196249666b.13.1764380157978;
+        Fri, 28 Nov 2025 17:35:57 -0800 (PST)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f519a41asm567832466b.16.2025.11.28.17.35.54
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Nov 2025 17:35:55 -0800 (PST)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640aa1445c3so3752301a12.1
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:35:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW9mtUfSHvx/Fs7JltRT6A0YfLZWmS9a6Wuec/as7bhIY5IwRZIW2ajM/0HvmODE9C3+ck8iE8LyQ==@kvack.org
+X-Received: by 2002:a05:6402:3494:b0:647:5c27:5440 with SMTP id
+ 4fb4d7f45d1cf-6475c2754b6mr4287616a12.24.1764380154354; Fri, 28 Nov 2025
+ 17:35:54 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com> <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+ <aSgut4QcBsbXDEo9@shell.armlinux.org.uk> <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
+ <3d590a6d-07d1-433c-add1-8b7d53018854@huaweicloud.com>
+In-Reply-To: <3d590a6d-07d1-433c-add1-8b7d53018854@huaweicloud.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 28 Nov 2025 17:35:37 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
+X-Gm-Features: AWmQ_bn2YLtZkenhhdk984gAsTyb0rIufR4Br-TkPYHMl26wv1MEf1_t31IUh7g
+Message-ID: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
 Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
  sleep in RCU context
-To: Will Deacon <will@kernel.org>, Zizhi Wo <wozizhi@huaweicloud.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: jack@suse.com, brauner@kernel.org, hch@lst.de, akpm@linux-foundation.org,
- linux@armlinux.org.uk, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, yangerkun@huawei.com,
- wangkefeng.wang@huawei.com, pangliyuan1@huawei.com, xieyuanbin1@huawei.com,
- Al Viro <viro@zeniv.linux.org.uk>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <aShLKpTBr9akSuUG@willie-the-truck>
- <9ff0d134-2c64-4204-bbac-9fdf0867ac46@huaweicloud.com>
- <39d99c56-3c2f-46bd-933f-2aef69d169f3@huaweicloud.com>
- <61757d05-ffce-476d-9b07-88332e5db1b9@huaweicloud.com>
- <aSmUnZZATTn3JD7m@willie-the-truck>
-From: Zizhi Wo <wozizhi@huaweicloud.com>
-In-Reply-To: <aSmUnZZATTn3JD7m@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBnDnUjRipp2zF8CQ--.32723S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxWF13JrWruw43Jr17Xw1UWrg_yoW7JFyDpr
-	W5GFyYkrsxXry3Aw1vgw1YgFyFyw1UJr45Xrnxtr18uw1qgF13XF4UtrWDCryDur1kWw4U
-	WrWYq3srZa4DtFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjTRRBT5DUUUU
-X-CM-SenderInfo: pzr2x6tkl6x35dzhxuhorxvhhfrp/
+To: Zizhi Wo <wozizhi@huaweicloud.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, jack@suse.com, brauner@kernel.org, hch@lst.de, 
+	akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, yangerkun@huawei.com, 
+	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com, xieyuanbin1@huawei.com, 
+	Al Viro <viro@zeniv.linux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A3C204001E
-X-Stat-Signature: z63a9xfi86pgrpwydfep5ftinpag8aij
+X-Rspamd-Queue-Id: 18D4CC0010
+X-Stat-Signature: 1nqwsxee53yhoepie6gojwy41kwwxoec
 X-Rspam-User: 
-X-HE-Tag: 1764378151-877334
-X-HE-Meta: U2FsdGVkX1/MvFnd7pUl7EHKSk4G2jSm71KlRqoc5hqYD4MATQKK6Y0NWYoLL6ARIHkiSZSioRsU34uPcfY4DmG7m0XtB5d1yg26XjKUSUNKltVH1AFxKPhba+RtOEpAYsqSkBPYGsDN9eF4xKhevBikS570yyvDY4Q6xyNfpRswxUhQNAizq/UxPW1mYKgEIfAt+3HOT7nAkRhXQfqCLdZsDNdfJ3SGrsR6Y5WsuMoWu760SmAhug6GgZDjUYgEv9vjHQN29uiazJTCM66QyG/rGOPr7zs5IxiGPhNxV04g5Cnd9/jIHpwypwfs53sCB8uNK95jfs/1KGBEr1DsbhnpfD4Rmr0973ufkXZjpVurRb5FXuMJ09+d/4RnTFGIPxe+Ye0Sk03tl+jRItwjZaeeLZtJPwKweL6hZYghaqhGBRj5s3UUesHOff7kuswT9RBTO22v09rRdGa9qW7/64VS54Ptsu8aIcM6dS9a9ETTi46iFyqXTbcyPM+8IfCYYM7DJ/velcZJyF3Pef2fDU/zciEEgVC3mlxWxyFjUozYKj4CpFFLu9DdYFyjCO/dj1oohm2XzHlRCyQB/qXv7zsfLFI8chzutcOwNLVTlXYYYmXiF0WeJXrUHz/EiuOGdw556nDxP8IsWCdTVS5OfjXXIR31oEyX85Y9hE81HH1adlZMFOi/kyWNTnjviBW9mwKaEw6t+G65y6MsBoPSSUwkj7fgcVrh8kEBnNOyncw+kLJHLNrxmfvORp0l72gMVjIMvs5yZG4+WevXGjCiJT9E30gsgpQH2wGysaC8MYO3T0jfptZsavbHdtuH+H+J/MbF1/gfXSIcrKJEEvqPcamsecsF0HqcUXDbSib4d9JtthRAuBZJ01OJM0PHD3vru+yJMfcelzE+9ojgePzJCMch/yJ8NpNPMdIsngZMK5tu/OjyiMOC1reLTUkZ5Z3Cs4rRmQAwiemREmWxJaO
- XHG2+E0F
- BaoGRuNjsyYGRMWErBa0f5MOIbjoc026nQmnqKwkQNhrvXy+n2Y93H/kODB9dhsgQR8GIbGBmJpmGDolDbQUFYAYkUO7ZSctsWFI97wZgnh5VUd6CmkQW9VefOSeebjWVvL7yYlc6GDvFdQ6iM6CxwwmxpfMxaGHhZ9uy8hZAtKgRepwqchwDplZ8Wx3x+VTmP/TQ
+X-HE-Tag: 1764380159-66956
+X-HE-Meta: U2FsdGVkX198y8GhprzquGjLqzY9Wig8FQBmBwmHXMlbi1I7jP0I6vBolzJw4hvSm/SGWzZxpl9XtB2A3GpbEPuKA2Xo2u7YEofqXbJH8AVHUiKDvV3lXh7RK2g4mY7WH1fE+s9tf0uJymYTSxwbLD178txUy1ZnRrglFIbnR2wYnje1bxWSrLc803pJv6Ryy6AASWjHPrNWB/YO0Wfnrus34K3b3sgzPgHd8zdvpC5xEbmrh6bpNYAFgJeveojRZPuNJzGBp9vTivSUWASDWvHTTLERjC7T2GvzkLkJ+5pK8twHGWYlnOiK4pfk0eaNXeZja8Wb48osJua+7GLMbBwFYrSCqGEtIqQbUBwr7lhPF1H9xUQx1T4QcFQUJB3385eOPrKfrUe8tTeNrrSbW47qppYtr+0orovZbOwwmgtWNwuDmI/pk+DAcPEIjR4I+aqJnFiNbC6dfN89mu1iUqa1v96eKlRwYvVJGxN9gQOiD4NCGh0mS9UwRr+RPcyvv+kwkNFz6WJ/XM+mkNsw4u+uk7sWNCfGH0SS4jNZfVxV3wOS0RdWC08w6H8kPQfFOa1fMDE/FcaS3LtsncKMGi9z+vlLTXnIpWbvhxG/4EPdZ7LkWR1BtgZsjGQJ3Zw0zqY+B+JYhFxHUvdC4/YtlIuQrfhevq1GS3qrtBCchU5kA67NvmNMf4MVH3emWdWtcipfDbiiRi9L+tqq2BB6lZ5bR3trrkShI/M9AXUvAQEt9yxPrBhc9/9/AFy69Rj7tbLvCH+fRShYvCWe98+2hpSvECdDbWUbuGyyphzSYPRhO9QAfpSSDgcPFjSGBvMWDm7HoVEpMHuc2Sm4TB855jYxdNm/5xgHCmNQQaz2a7tlSjMYMQ1VzYlCjq1QNPXvomlqQ+vHiBXG/WO5mQchqHtJeYs1uqy7u48sZH2RCdYKU+OH+0Pk6hL3MMUy9UFAOGWaXkFNv8iH3J4RPvW
+ dY70ANSM
+ TjKogCOygATJG58KaaxM/fHnLGZcgT7nmsmKNpco6E/HmLpA3liwIwlPONYYp5dSFOvB7u14v0PriCXmOEymyKNgCioI4j5GJHeehdVBEquVhzN3DjRqeNflkpwnkAVOebmUxjze80ytQHsQKzg1UZqwSsSHP5ULq16tYHVmgpJAsgFTXC6BZg9kU8Oz8hNIfu8CyvwSF6j/QyeafJshVv9vwfFihldJof1iFO72LIOYGjoLdSIkmFzafUzCV/22gxO8c6NqXXFel8xJhQDQbWfA0kD6c3VMx3HCuertXzjPdfFFlqOoFwLvhLmyTlDD60FI8AES9IK7TolxY1i7kl9gy22UMopcku9iGTc6dQRqGYDImGArSmBFO8GECwR0tuFaURqkmeKP2iq0XKePk8Z9iRlttg6qnmHZwAJrOXlW/X5rhKXl0mbvcqOyxwamK3I6xy+5Z/4I2G1WP1t4Mh/Ey+JSWWw8qawbiS8JF38wJfUKbqIVyDc3BIOPlGyfKgIoi7zrvireGmGwN8/q404oMOsDW816WT7KYUljZJ8CVirIwva0x9tQoqGu4y98BOyXvCYMQ6ISmLuQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,123 +133,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 28 Nov 2025 at 17:01, Zizhi Wo <wozizhi@huaweicloud.com> wrote:
+>
+> Thank you for your answer. In fact, this solution is similar to the one
+> provided by Al.
 
+Hmm. I'm not seeing the replies from Al for some reason. Maybe he didn't cc me.
 
-在 2025/11/28 20:25, Will Deacon 写道:
-> On Fri, Nov 28, 2025 at 09:39:45AM +0800, Zizhi Wo wrote:
->> 在 2025/11/28 9:18, Zizhi Wo 写道:
->>> 在 2025/11/28 9:17, Zizhi Wo 写道:
->>>> 在 2025/11/27 20:59, Will Deacon 写道:
->>>>> On Wed, Nov 26, 2025 at 05:05:05PM +0800, Zizhi Wo wrote:
->>>>>> We're running into the following issue on an ARM32 platform
->>>>>> with the linux
->>>>>> 5.10 kernel:
->>>>>>
->>>>>> [<c0300b78>] (__dabt_svc) from [<c0529cb8>]
->>>>>> (link_path_walk.part.7+0x108/0x45c)
->>>>>> [<c0529cb8>] (link_path_walk.part.7) from [<c052a948>]
->>>>>> (path_openat+0xc4/0x10ec)
->>>>>> [<c052a948>] (path_openat) from [<c052cf90>] (do_filp_open+0x9c/0x114)
->>>>>> [<c052cf90>] (do_filp_open) from [<c0511e4c>]
->>>>>> (do_sys_openat2+0x418/0x528)
->>>>>> [<c0511e4c>] (do_sys_openat2) from [<c0513d98>] (do_sys_open+0x88/0xe4)
->>>>>> [<c0513d98>] (do_sys_open) from [<c03000c0>]
->>>>>> (ret_fast_syscall+0x0/0x58)
->>>>>> ...
->>>>>> [<c0315e34>] (unwind_backtrace) from [<c030f2b0>]
->>>>>> (show_stack+0x20/0x24)
->>>>>> [<c030f2b0>] (show_stack) from [<c14239f4>] (dump_stack+0xd8/0xf8)
->>>>>> [<c14239f4>] (dump_stack) from [<c038d188>]
->>>>>> (___might_sleep+0x19c/0x1e4)
->>>>>> [<c038d188>] (___might_sleep) from [<c031b6fc>]
->>>>>> (do_page_fault+0x2f8/0x51c)
->>>>>> [<c031b6fc>] (do_page_fault) from [<c031bb44>]
->>>>>> (do_DataAbort+0x90/0x118)
->>>>>> [<c031bb44>] (do_DataAbort) from [<c0300b78>] (__dabt_svc+0x58/0x80)
->>>>>> ...
->>>>>>
->>>>>> During the execution of
->>>>>> hash_name()->load_unaligned_zeropad(), a potential
->>>>>> memory access beyond the PAGE boundary may occur. For example, when the
->>>>>> filename length is near the PAGE_SIZE boundary. This
->>>>>> triggers a page fault,
->>>>>> which leads to a call to
->>>>>> do_page_fault()->mmap_read_trylock(). If we can't
->>>>>> acquire the lock, we have to fall back to the
->>>>>> mmap_read_lock() path, which
->>>>>> calls might_sleep(). This breaks RCU semantics because path
->>>>>> lookup occurs
->>>>>> under an RCU read-side critical section. In linux-mainline, arm/arm64
->>>>>> do_page_fault() still has this problem:
->>>>>>
->>>>>> lock_mm_and_find_vma->get_mmap_lock_carefully->mmap_read_lock_killable.
->>>>>>
->>>>>> And before commit bfcfaa77bdf0 ("vfs: use 'unsigned long' accesses for
->>>>>> dcache name comparison and hashing"), hash_name accessed the
->>>>>> name byte by
->>>>>> byte.
->>>>>>
->>>>>> To prevent load_unaligned_zeropad() from accessing beyond
->>>>>> the valid memory
->>>>>> region, we would need to intercept such cases beforehand? But doing so
->>>>>> would require replicating the internal logic of
->>>>>> load_unaligned_zeropad(),
->>>>>> including handling endianness and constructing the correct
->>>>>> value manually.
->>>>>> Given that load_unaligned_zeropad() is used in many places across the
->>>>>> kernel, we currently haven't found a good solution to
->>>>>> address this cleanly.
->>>>>>
->>>>>> What would be the recommended way to handle this situation? Would
->>>>>> appreciate any feedback and guidance from the community. Thanks!
->>>>>
->>>>> Does it help if you bodge the translation fault handler along the lines
->>>>> of the untested diff below?
->>
->> I tried it out and it works — thank you for the solution you provided.
-> 
-> Thanks for giving it a spin.
-> 
->> At the same time, since I’m a beginner in this area, I’d like to ask a
->> question.
->>
->> The comment above do_translation_fault() says:
->> “We enter here because the first level page table doesn't contain a
->> valid entry for the address.”
->>
->> However, after modifying the code, it seems that when encountering
->> FSR_FS_INVALID_PAGE, the kernel no longer creates a page table entry,
->> but instead directly jumps to bad_area.
-> 
-> FSR_FS_INVALID_PAGE indicates a last level translation fault (that's the
-> "page" part) so it's only applicable in the case where the other levels
-> of page-table have been populated already.
-> 
-> I wondered about checking !is_vmalloc_addr() too, but I couldn't
-> convince myself that load_unaligned_zeropad() is only ever used with the
-> linear map.
-> 
+> It has an additional check to determine reg:
+>
+> if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
+>         goto no_context;
+>
+> I'd like to ask if this "regs" examination also needs to be brought
+> along?
 
-Thank you very much for the answer. For the vmalloc area, I checked the
-call points on the vfs side, such as dentry_string_cmp() or hash_name().
-Their "names addr" are all assigned by kmalloc(), so there should be no
-corresponding issues. But I'm not familiar with the other calling
-points...
+That seems unnecessary.
 
+Yes, in this case the original problem you reported with sleeping in
+an RCU region was triggered by a kernel access, and a user-space
+access would never have caused any such issues.
 
->> I'd like to ask — could this change potentially cause any other side
->> effects?
-> 
-> There's always the possibility but I personally think it's more
-> self-contained than the other patches doing the rounds. For example, I
-> don't make any changes to the permission fault handling path.
-> 
-> Will
-> 
+So checking for !user_mode(regs) isn't exactly *wrong*.
 
-Ok. Thank you for your explanation.
+But while it isn't wrong, I think it's also kind of pointless.
 
-Thanks,
-Zizhi Wo
+Because regardless of whether it's a kernel or user space access, an
+access outside TASK_SIZE shouldn't be associated with a valid user
+space context, so the code might as well just go to the "no_context"
+label directly.
 
+That said, somebody should  definitely double-check me - because I
+think arm also did the vdso trick at high addresses that i386 used to
+do, so there is the fake VDSO thing up there.
+
+But if you get a page fault on that, it's not going to be fixed up, so
+even if user space can access it, there's no point in looking that
+fake vm area up for page faults.
+
+I think.
+
+> I'm even thinking if we directly have the corresponding processing
+> replaced by do_translation_fault(), is that also correct?
+>
+> ```
+> -       { do_page_fault,        SIGSEGV, SEGV_MAPERR,   "page
+> translation fault"           },
+> +       { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "page
+> translation fault"           },
+
+I think that might break kprobes.
+
+Looking around, I think my patch might also be a bit broken: I think
+it might be better to move it further down to below the check for
+FSR_LNX_PF.
+
+But somebody who knows the exact arm page fault handling better than
+me should verify both that and my VDSO gate page thinking.
+
+           Linus
 
