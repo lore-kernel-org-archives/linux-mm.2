@@ -4,225 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 234ECCFD2F6
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 15:07:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECA02CFD2F6
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 17:07:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFAA06B0008; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
+	id 965FD6B000A; Sat, 29 Nov 2025 12:07:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84A86B000A; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
+	id 916AE6B000C; Sat, 29 Nov 2025 12:07:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C000D6B000C; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
+	id 853516B000D; Sat, 29 Nov 2025 12:07:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A73096B0008
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F56112D81
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 15:07:00 +0000 (UTC)
-X-FDA: 84163972200.27.D621A97
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazolkn19011075.outbound.protection.outlook.com [52.103.32.75])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ABBE7C001E
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 15:06:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=L9Veg0zn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.75 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
-	dmarc=pass (policy=none) header.from=hotmail.de
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764428817;
+	by kanga.kvack.org (Postfix) with ESMTP id 729B76B000A
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 12:07:56 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18BBFC0A3F
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 17:07:56 +0000 (UTC)
+X-FDA: 84164276952.14.5FFE9B3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 080502000A
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 17:07:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PoUUFewG;
+	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764436074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FD/Akzqzu0nThG7Tk3GM5jB/WuJ8kjgjB5LxtcVF1Ms=;
-	b=0wnwaZ5cgXoX6sbEW/Qbmo6OGHUPhP+W8D8l1mkc17OEyB9AhqDbGv0nallkNhpPPyPvEA
-	aPQsHYO7PBN8N5/Fgv0uhVJniptCaMLZ9xYD9UHrQLmlLuv5Uudx0c4NbH/ESe0mK8J64g
-	6bajZAv/ya56baMu6STm28p1IVUMY/M=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764428817; a=rsa-sha256;
-	cv=pass;
-	b=BwNrodOd9MF4TFKhtmRkYt7N06ijqqb/5InCJvPmZ4O0nmA5tg3GYzwgNnt31Xpc0qEzIW
-	QYp2XL4/ksIywAD8bhNktV4egTw58R2HI9aaDVmTdvq+NZCJ+joNM5YZOv5lCydJ51cOVs
-	2zhKWDi0X/3CKaPBq3mBmytHkM/K5UU=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=L9Veg0zn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.75 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
-	dmarc=pass (policy=none) header.from=hotmail.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lProhl2XBLltTZbxxF8dswgCX5HjdjiBWgcygBojhbzWgtpRZ7HBaFFxPmF5e9bqkBwy7QRtdBUTM44XEVD+FnmUTsmbDQO8SNHjNlS95hC0u1aVXdCYxVKN8a9xnO/s8I/pfnzyFO2l3lFaGFE7i6kfDNdbFwhPaxOV7iY6DXiqFUJPHRah+872hc5mYUVSKw7mbnFcanLZbKBo5WHAWH0wQ6xQtkXEUrDBWGkK944P69xTvWYZDM+MALb26ZoGfj16wkskqxYKVcRG0Ju4OA0bMcEKogjwikFDdi2VcF4TfwYOnyr9+Tbyvb++PEmRrWpXW3I7RTWdBWU6y+/46Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FD/Akzqzu0nThG7Tk3GM5jB/WuJ8kjgjB5LxtcVF1Ms=;
- b=GHYUqMZX9C8GTl2Iu9ygFvXcb/ikJDSKUNwNBLJCX8rdHVefKnc/UGVy6rLoKk8q5TWLZnpeq+jGq4rg8zvt84T1hwMs0E4RK6OkJ3t/NsbMauHWHLrEGQURjn/1FeMw3/xgSRPSq9NAn0Qmfjr8sBBnGzLGUyCmJqC1arZk9ZWvGRYtu5iea/z5jX/wmLtu+vQ6kJN2e/kT0CoF6FfEXxOpNSKmFYQpBCCIKO83nY5M+iQ1ZWPNd1FXZDgHu7QCFIG4GB7JE1XdkXP8U3m1H8TPTbqPnFNkNuCjxzFOLkk4wOVnpiTkuqMhvFGVypr04hN6Fqh2CLkoWOH8FFhnPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FD/Akzqzu0nThG7Tk3GM5jB/WuJ8kjgjB5LxtcVF1Ms=;
- b=L9Veg0znfBf/WerHwl4oj1Ju2uxBnv53RZJIq8FRffcifTso8cccOwhXx7wliBtpdinkpInOBqtWHB/nwWv//Ty3UMtz6t4qxRobxfZAHhqwZBhrTceuFtf0R2m5UqtBEkKYe8K+nWf6sQ/WVN2io9PJs2g34mZ182caS8UENhAdcMTJm06YNBstARpq2zQMe45J2oDHAYdnYusxjcGqJ1NvFg46wXRb4cR6WXcX9XvZkL3UxC94qc8qucB8Eu8h7rSoB18Z+cKxBKT9Y5LxKnvaH1yqB3SLYnuXpqYgUNMcuwL/vq0R+P2kCVrNm8OjVMRsZhaxfOtTnBxoolwzKw==
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4) by DU7PPF6D5AD81E5.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:18:3::bd6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Sat, 29 Nov
- 2025 15:06:54 +0000
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49]) by GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49%8]) with mapi id 15.20.9366.012; Sat, 29 Nov 2025
- 15:06:54 +0000
-Message-ID:
- <GV2PPF74270EBEEDD43083BE45C6E26F674E4DDA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-Date: Sat, 29 Nov 2025 16:06:57 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
- Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Serge Hallyn <serge@hallyn.com>, James Morris
- <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>,
- Helge Deller <deller@gmx.de>, "Eric W. Biederman" <ebiederm@xmission.com>,
- Adrian Reber <areber@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Jens Axboe <axboe@kernel.dk>, Alexei Starovoitov <ast@kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
- Luis Chamberlain <mcgrof@kernel.org>,
- "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Frederic Weisbecker <frederic@kernel.org>, YueHaibing
- <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>,
- Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>,
- Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
- David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- "Joel Fernandes (Google)" <joel@joelfernandes.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Hans Liljestrand <ishkamiel@gmail.com>,
- Penglei Jiang <superman.xpt@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>
-References: <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <20251105143210.GA25535@redhat.com>
- <20251111-ankreiden-augen-eadcf9bbdfaa@brauner>
- <GV2PPF74270EBEE4FE6E639B899D01D8870E4C9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <aRs4zYDhddBQFiXZ@redhat.com>
- <GV2PPF74270EBEE6F59267B0E9F28F536D0E4C9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <aSNTNZxiQ0txISJx@redhat.com>
-Content-Language: en-US
-From: Bernd Edlinger <bernd.edlinger@hotmail.de>
-In-Reply-To: <aSNTNZxiQ0txISJx@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0099.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cb::17) To GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4)
-X-Microsoft-Original-Message-ID:
- <d016b2fe-4640-4c15-8350-9eebfa067d3c@hotmail.de>
+	bh=if3KkBKl7roXFUmhHcG4mQyCUUFtj8p3Txh6gT+312A=;
+	b=pz8EYRfFvqRpndyfr7gk1bgw8ocOMepYWjjsewBDILQYKzhP6lfkh2+X1gIqz22EtbtTv4
+	X5iqLzEGwI4YsG60EvgbobZxUgMOle0qQFzm1e+aB3GLFdaBQpdnJYBn6uLa9sHpTPwYmN
+	vJr5JxkGuJQKVH66oE+D2mct8lCCYIs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764436074; a=rsa-sha256;
+	cv=none;
+	b=wA1bOO+wtbNm0seo855wdmCokgkeYvFaqw7voULBl9D2T9aVptI9RCZ7h1Cn583CQcon9p
+	iLVzlXAlt8My6XdmOMFGoDhRv/km74rj5L0N48tFYqfGVia+4re/2bInIbhoS6bqe2MHpt
+	A2w2aSWtqRHaAns/lIA2xnvb1WuILtc=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PoUUFewG;
+	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D1F90436A9
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 17:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7156C4CEF7
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 17:07:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764436072;
+	bh=aEi3fUeihkx7Xs7jMI1NkgKX1nDZ4HrkE6CG0v5DbFI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PoUUFewGdGpVbfMyV7x/XSqVZCIL7hqh56LUb41NOntsEbxLWIJjBFh1MN5SvMfJN
+	 2b1OJMYeQstPtLtkEhrF7Ijb+9s8qFIxWZ/sMr93A+CEImgcSxQb4+iQmCQ65O30JW
+	 zGsBwsN9X05x+qPGqSxDWKNXdDtb2WfXub3HS4hwv+s2tiiklNApSk/gOQB7moPFR3
+	 PdVGo4YxRds2P89tWZh3PKVHh38DnzTUY7+4Xs8PXO5/V1IeHO44y0SfqIVN/fsVTz
+	 3xa17bq2k6JqLz1wREAVDjZbvKFszNaV4cfkEN3HAR0+2GIniI2POS/Tqa9Hp3HB/w
+	 n3SSktgQKJ52w==
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-789314f0920so22455157b3.1
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 09:07:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV/ilDBB0skSeN7EGu3tNJFwvDqX6DeEtW7YRxiP9Jbntynrc2UsI9bietBA6/BpxcdARUwhI94SA==@kvack.org
+X-Gm-Message-State: AOJu0YybThGEjkt20IeRgjy4Fwu2eNsr4Mjcp79hgJPCnZkmojsa5zXr
+	B+AKXEQsWlk/jGQyVaL7j7Z4mR3PLSCwzGQB9fRpClSMOeGFh0vO7K9yxXxbzgFbnvix6n7Ljje
+	bYr2a4f01SEVVXV0p3JOloLXSFXCILe1NB9gtP32lqg==
+X-Google-Smtp-Source: AGHT+IGoLbSxanxq+rFI3LIH/mqm9+e3tjcYNJ/ehzOR5pFY7jyX7qnhO//KzRpv3gftUKmEKG6CYc+E+Sr/fomqbUo=
+X-Received: by 2002:a05:690c:7249:b0:788:1eae:3d7f with SMTP id
+ 00721157ae682-78ab6fe526dmr171463927b3.70.1764436071502; Sat, 29 Nov 2025
+ 09:07:51 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PPF74270EBEE:EE_|DU7PPF6D5AD81E5:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7aa02119-ea85-4a83-0e8b-08de2f58ee86
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|461199028|15080799012|23021999003|19110799012|8060799015|51005399006|5072599009|6090799003|40105399003|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U1Rhd3NxZFozclkxSkViYWJRZmEzVUR2Z2M2OUEyN3pkclVuRzdLWFhZS0RH?=
- =?utf-8?B?V2dHaFNibGZ0QVpETkdER1lINEswMk1zZWowWmR5YjZxcTVCVEIvTkYyaDJR?=
- =?utf-8?B?WkYyTFdpYjF2dFFpODlJcGp1RjlKckZFekUxU3VhZTUwUHIvM0dKbkRiZnVO?=
- =?utf-8?B?QWloakdQRjJkSkpORGp6N3VEVFltRWkyQ1VhVTlIVDVnYUlnUWV0ZFRSaXBv?=
- =?utf-8?B?bzArZ1dxZjlNWWcvQmhvajFOckhHWitFeHVjRWd4T2lTSnlFQzkyMEdjWDJF?=
- =?utf-8?B?UmdEMUxaV1ZoOVRSZnVPS0xIUWNRbnJHa1A1VGI5ajRzZDlyV205VHh6VFZR?=
- =?utf-8?B?OUlwZTQ0c1h4L1k0U1JMZDNFN1lNanZSUnNsbitFdnFPbnUrUnRIN3dWenUx?=
- =?utf-8?B?UEx0T3ladFBwZWlxRlpxVzQxWWgrRmxMNTlHZm4xOTFBM0JBMG9ySE9kM3gx?=
- =?utf-8?B?SW9yaU5kd3VtWkp6aGFteHFTdUdOdlljRHlmZkk4QTZwMGhVdTdjbFF2SUJk?=
- =?utf-8?B?WllJMGgra1I5WXdxK0MxWUVmM2MzTVFFbkh1MThGRzBLaFluMjZLVjhUVjVY?=
- =?utf-8?B?VWtSWGNGNW0zK3l1cXJKWmNwL2E2aDhYR1UvSVNlVFVVUHphZU9yOGlZOERx?=
- =?utf-8?B?OW9RQzdwTXA5UnRDRjNsazlWWVdHenk4Z2xqZGRobWJWTTBFeHdZcExOTWNN?=
- =?utf-8?B?RzZNaFBSa1dHbWJ6T2hOWVZtd3ZYS3hvV1QwZjU0Z25aNGRMbTV6YnhHeXBF?=
- =?utf-8?B?eU5uMUxsWnhxUFJSWDZpc0E5Y09CZDBOY05MRGRaOG4zS2xnZ1N6bTRCdWxL?=
- =?utf-8?B?Y1pwSER4a0lPYmhTZDErYXNjanJaamFmY2N1Rmc0SzY1UXl4ZGZvejVsZlVV?=
- =?utf-8?B?K2c0czRNempFeFQ0QnNnZWdvM3h6YUhETjc4d2xSYnBEZHZHbXNwMEVVUHFN?=
- =?utf-8?B?NVVUQlZUQW5jTmNNSXFpdGVBTG92K2g1ZHpVc3c0UmdqM25PMC85NGNtd2Fm?=
- =?utf-8?B?VTdKd2hnQllNUlZNa0tqeWpCYVJzdGZwZzJhUHhGajVlWXNxVFgxMXVXVFZV?=
- =?utf-8?B?VGlOb3lvK2hUTU1uSkVRbU1HWTVVa2tLTGl3dk9CV2s0L09Meks4WTZHS2Nl?=
- =?utf-8?B?bUNyYVkwazJRazB3WTJLdk13TExRZDN0UDU0dmtvZEd5VW1mRHFkbk9XdnBG?=
- =?utf-8?B?Q3h5MXhXdExZbURxNi8rVnFseU1IZ25uS25WcEx4bm4wN2xaK1VtZlRjYi95?=
- =?utf-8?B?STgyMHltSStQbCtqdnFja0JyVCtHRHFVWERza0RMalpSWldWWStFYzI0WVRG?=
- =?utf-8?B?TlBtRTdmM2hNQ2FVUHNhUXE5SytLVDYyT3RMSHVLS3ZmMVRCMlMvQ3hUZEpJ?=
- =?utf-8?B?bm9aYm5CS3FnV2dqbDlHWUJxTnAwY295dFkvUXIvS0RmRXdscUxLSFAvV3Ro?=
- =?utf-8?B?TUhVZXhPMUswcUovTVR4UmFEZS80OW55NTVjSG14RTE5dW5CUU4xbDIwTTk5?=
- =?utf-8?B?NitRT1VoVTNteWM5SlFqR3NhSks0UmRUaFBtMWliSXVrSUJBTXhGVno2S1Nu?=
- =?utf-8?B?Sjh2TVpLSEk1a1pSdTRSSGdjb3pqbVdSUnhHTUk0aFFKVWtsZ0RINm5sZ09h?=
- =?utf-8?B?dmlSU29ESi9veHc5V0VkUDlKbi9kWnc9PQ==?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dzY1RVJiMlNHWVkrRy9QOGt3WTBxNkVFcGF6cHFJa2VncWorc0VSL1llQmhW?=
- =?utf-8?B?STVFL1Ruci8yNEU4N25pSTdkTXZtei9mbmg5Y0lteHQ2UEJqOUtBQTRYcTF0?=
- =?utf-8?B?NjhDWHRGZnAzYnRoVTlTaUo0QTE0b1hTZktVQTVJQkp4Mk1nUW16VmlMNThh?=
- =?utf-8?B?dDJ5UkNPcWhkc0FhTVpqQXNrcnEvZGFMRnZPNllwVHBGVTVLRDN1WFZmTTlz?=
- =?utf-8?B?WWpnanBCR3QyZ2l4RnNyQW00UmRqL0pxMmtIa1o0QlRlVUxtYzlmMDI0K3ZX?=
- =?utf-8?B?dnJzT0JRMkZKVkszMGJQOGh3WWJSNzkrVUNjckM4eVoyODhOTDJvdUdHNVYv?=
- =?utf-8?B?K0sxS09OVmFhaGFsM1pqT1JZV0JNQTlVbVVrM0hCT1FmSUMzRm5Nb3FHZVJ2?=
- =?utf-8?B?cUVZY0xreHNjNGpSRWNlQnFlaEZSNWlsNldCaEUybnE0aFc3dHd3K1dUdmdD?=
- =?utf-8?B?dzZpSEpMT1ZzczYvMVhnNHNLRnJKa1UyVERLKzhvZG9Mc24zMlNsc250UnMv?=
- =?utf-8?B?dnpTc1BSVlJXL09sWWkycjNvRzV0d2xyR2FPOHhVL0toT1FhbmR2WnhvSGZt?=
- =?utf-8?B?U0hldnZkS2dEdHFVRnIzYmpRQ2dOVll6RHlaZ2prbmpsREltYjJIOUEzU1Jo?=
- =?utf-8?B?MWI0OGZpZ0syVk0rcXpycmlObWZlbzlkS1FXSnZsaVYyRFo3OFI4Y3R4cWp2?=
- =?utf-8?B?Y3VzK0VEQU9xZmZOeVBFK2x2eXVOaTBIaEt5azhsSFR5b2dNUFVhRlA1VE03?=
- =?utf-8?B?b29KSDJvcnI5NjZqMUhxOTR1NzFpVWg5VWhjOGlLOE5KTTR0azN2V0hOaUNE?=
- =?utf-8?B?djB0YmVBYlRUdmEvQ0NBL0Z2eUd3SmJXUW51L3EzQ0ZwZWMya0dpQ1puQkE0?=
- =?utf-8?B?cXA0YUR6em5sa0JQUHRJMHk0bWFKWjYwNG4yc28zWVd4cmhRK2NORHBJQjdL?=
- =?utf-8?B?RzlWMWgrOC9xUnlvUEVqNjNtcFVFc3BhNXNBdHNqZklRTnhRakJMQkgxTkpB?=
- =?utf-8?B?ZnZNY1M0NTFzS2NST0hyLzlqRURhUkhtZXRDNUIvTVFmNTNwSmhKSmRJblFv?=
- =?utf-8?B?RTdkNnZXMTBMVkJrQXNUYlM4ZzVPVVluVms3elViWm5iampYd2VPMWo3UGQz?=
- =?utf-8?B?K2dBQzFZQkFybTB3UUV5bFRJeWZZdHhKS3BkYUZ3cHZnNWt4NFZPMU1xUm1L?=
- =?utf-8?B?eDJ6ajF5RUtlQWFOeDVJY3ZSSi9sc2JDNXdjZDdBYWJ6a0o5T2MvK0pXSyth?=
- =?utf-8?B?cXVraEl4ODdFZ2hFVmVpV2ZDZ0RnaEtzWWtSSEt6SnBQYUhGTzB2MWM1Q2JE?=
- =?utf-8?B?eE1wZE0vNWhqSm52b2NiTEFCeVRrT3dSTkJ0TTJSTlZVLytmNGlJd29INHk3?=
- =?utf-8?B?V3ppTGxacWZrbjlyaEhDcWFDQVA3WVd0RFN5TS8yZ09yY3B6WGJIM3Z5aldj?=
- =?utf-8?B?eUw4M0dNRDBFNlE2RHp0ZW1LSWp0Wk1YVG5GamowQnBSNFZWc3hZTFl0KzhJ?=
- =?utf-8?B?TFdoU2NFY28vYUJMMlp2SUtjOWJhN01hL0RnSGhoZm9oS1hWaXAwWWk0ZVNW?=
- =?utf-8?B?ZTBLdFVRR2dKSlJHczZFcW9BaGxsUnV2aGpWZC8xSDZnaWJvTE1UR1oyanMz?=
- =?utf-8?B?RWY2UjIwcFFCRFVHVVY0MXVxNlpPNWtQb1laQmRBTFVvbUJVY0I5eHdYUFMz?=
- =?utf-8?B?dm1iRVNnOXA1angrT3UwZDVLM1dWUG1obzBOOCt6d3cxeTJZOGl1bEUrbmFV?=
- =?utf-8?Q?3Ttcpt32ll3nW8eRiOu/+7t2EmW+CRYxU6p6ka3?=
-X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-87dd8.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7aa02119-ea85-4a83-0e8b-08de2f58ee86
-X-MS-Exchange-CrossTenant-AuthSource: GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2025 15:06:54.2302
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PPF6D5AD81E5
+References: <20251125-swap-table-p2-v3-0-33f54f707a5c@tencent.com>
+In-Reply-To: <20251125-swap-table-p2-v3-0-33f54f707a5c@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 29 Nov 2025 21:07:40 +0400
+X-Gmail-Original-Message-ID: <CACePvbUK6uSDtz0QkBq-eqzQ_Hi9+t1gthGGt+ok7xdZtO1V8Q@mail.gmail.com>
+X-Gm-Features: AWmQ_bkRNDXrXhesX6xwbiCQ91_SSNsi6Rzr-o_fwzw9asPFCsw3uZWkKu5-3HE
+Message-ID: <CACePvbUK6uSDtz0QkBq-eqzQ_Hi9+t1gthGGt+ok7xdZtO1V8Q@mail.gmail.com>
+Subject: Re: [PATCH v3 00/19] mm, swap: swap table phase II: unify swapin use
+ swap cache and cleanup flags
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: ABBE7C001E
-X-Stat-Signature: r8ktiifti47rkjpeyhpqxfe8afwmz8s1
-X-HE-Tag: 1764428817-71346
-X-HE-Meta: U2FsdGVkX18QNVlzq8ee/uyW313nE0ugsQ1xRoLHxrRuejoz54h/qWP8Yt28cTLgELsxdlpP9rgZt+hsC6ise1skASRpfCRdWtDELbC6FEIVNwBhrO95Ie+KPbJ6xnFbrphm9gGYfDE4q7Q4sjuqQfTIk9SvrfGkb8ypk94emPBBIVBDCLwfSbAe0wFsKGKFdcB2BFGPg1+YrdZIUpHM1WIAOdwOT+nvygfEL9xOoMhDweQzzPmReeRMnjW7NgpX9pmkvBkUuP4XyX3JtdlnrBaJcqaK9IBJYEkqySnVgdfvYqYDh4/5JzUvLZxoi8JSWono2UbE/owxWdXvqVhoXFtp568uB15RI2viISiAdlMAklDpvJZ8Vo2zgLZZb454n/GW5pYZfJINdN+hNtP7c3CvVCL8VJS0jvjIZRAsuqCGXM+x/O6l+5QzjDVeVeXhP7NKCBJbbfwAFzP2Xmk6BFounRPICJOUTnBqzH+fO0jy3SpdIQvZiroCQnJwVOExsVgoZMC7y+Al9O/1fa1fUPB8w/QerRAMRuL2PnaV2y5q2ED9yQRHNTiA+Tk9WUtw8e/BcBy3/8QQ1quiqb3vnvxgFSIKP+5pnGMqjMFYLGTc3XJK/CZJOp19q77vIf1T5qD8FsSPJ+6r5IlwBHI90HKxJf8LH2QJsDegioYS3ggZl/AQxr8skmi0h72KEbOCEsUogg5GBUCyK3nM3L3MBPN4+4/1DtqnzzoE59RCwfEnTkTRHlRt03/MHvDEppJZ8TAVQ4KC2P2hdfQRpgCzaXsmSjrxzdbB+GYsPf4HP6IQ9tQ1surSMF4In7kuZe6Wnb7j3EOcEP3bGFLMk1iUVN0OufMy9udIHlk09PuwmEoPoxTkyJasnxkz7ds8jb9ax0BeR4T49PJEljX09jvkz6aWo+rxlkc8WH27UxofE+/9ywlAZ6oXFFcQNzJhtfmF1/wSTZd9wx52XTdHG6A
- P0fcWMct
- TsJ81QdjE7nE5ZrwnBvGduwiKbidfqlApWxPpX4+2X0Lc3j3mGLP5V4nZ0qhhqUvI1gCtb7OMNdlX5eGRTizVXRzlJPT4ZO+13YY9NVJSQIrynQ2epuiLoGa1DssAknrvoYQhQMsF4rvb8vLryU/Xv1HBqmV9PbgvyQwPXK8s7bQjxax4saRdqVq7dk+UJ5IYcPBt245OrqT67i3WXDOAzBfcAwi/Wuc0s7il4rgw+DqdOcLgQ1oqLibmVcS8YFoNdHb/eCmldlJ30o1lN0tXIx8YK15JBpPmJpp52Yy1anwnqJB6ZDsm0YBmnjQrx/xgcNdAnkkWllxjoJ50cTnu8ix4BTZ4iEo2LX4OdzIM7iQ2vt1Nqg8pRUsdC9XYucj3misN8n6WsR0TmtsKw2FH6PDm7yq8QB+EEgQUl/hm+XZC2D2aQIrsInansEeIuHUT0LRNrCwqoZ62yqsV8M3FXRkGyrw68G/nMLcDLRQ+Yo58ds8/fybxAXSs39Dlz2dep+nbnyZRh7+eT0fnEjWFvwmKwTCWwKBKo43ByS0wdPUWrTtQKGi3Ue3PbHxBwWMrZod2H57i3A4e1Tprslk/wBr+1+ZEoFa9SMXLpgsusd9Z00R3wlIAtlx0xx4Ry93gNc57
+X-Rspamd-Queue-Id: 080502000A
+X-Stat-Signature: y5wzb9ir4q3zrxgui8nfx5889awybahh
+X-HE-Tag: 1764436073-874926
+X-HE-Meta: U2FsdGVkX1/NMA9/AyyWNYnRgHI7uvKjKAYwGuxW3eTmSM+SIIXdvEfG25Vk5D1KgW8mYiO8tNI2Ysi1TgMhvrJ52C0z+qD4KHCG2lSDuBo+YvqLuIoZu1hHd7yNVVMURazyOJDEA7jD3ll2OwJw3ZETBDcWKBeJSyPGmbK//PKqzd1oeRMbHXY+Tt/a19tLAHHEGw917xurxDuQDYBXA8E6CINbGizu0TPUvnqy0TrJKlgwLktnGRfj4DqPxTGff2C3coaexhLtPSuek5homme3Qwp45dKu5liEod0fY4bjvCfll5g4bOMo+ATrLxZzxdsJKveaM4o96mapGmR/aS4gxF4WJAryCGHMYmGGvHIEUh8oZrL/1B0kAVIqotV+Vm+LnZiQV4knKL8qOamWgrPOHssp2lN7Dm9/xmSQ8tLesLfVwIbxVusbEF3aQGFOwkNd7JJJ+5tqxVIYNoZPpU4y97sAgtn2t0l650d9PRGKRY0tQUUfzRulmwj/jw9/0XpzURsbfqFoNK8VbOqRN8H+UZ5YwPiigWYUyFC3PykHQ7S9uFLODW6XF6xnLLWcbOOIpyHx4P4kF0c9/uYT2MvQGEoWDe2LAKMmLwRycpmlapovua3/+VrIw7/guXBJTXWyOfTfqgNLNx/mZuvNj96bWXcq6MDG8Og4gJ3ngxb9H9zVeuSjOTOOKZGiaLNittmG0rxcOBo/garuMgXwCszHoXiuP0YIXTHj5bFvAHhIPAMaq4GM9P60l/Jkc32M6+Qtdd+6soUQ2PE0W5S6082h1k+kFq009dBkm4buRqh80HOEqXFTdhieAGATV/9RqI36f8hOIuXEqkZ7Sa2spgeWSlpAxbY2vlATYsdR5PH/VsX2YqXwL8HcH9XE9TYQzkDbCAOtVMVF8KYICpHGMQNYdLGOWSmjET66c4sbftiLuHAWz2/6Qj8REsCrpgXli08VyDD2BFqx81MDU4b
+ 7i6gKydL
+ YAF4fMuhyiqee1DAMQrYOD4XWGwggoxQbDvytQcgM7O88m1FNsDY/stpoDN79fFMU9a01mvpOXEisHgA+IQvCiFlotNi6yww58jcSHvKozcL5MHIxkoXfVaZHSvNewRtqt7vll4uN4G2jK0EmufGmvR5PdxbumPiprzKY/fnVesg2jwE3TLfPtAliNW+p/t2p/5+Ic/J5SzTW5K9rwvCYynHmK3so+P2an37yfhkqRvItbq9kRr65VfbdL/SY2Fqe4SXsbS6t3JNuEFHnUPfGDmHYodZqiT26ZYLupzNe6v9a7fhemn0WgLVcvhtJZUAPr1VLMiQscCUFWiMOojjRCZOdThKXMImtUfNpRjODjtw5nwE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -231,104 +112,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/23/25 19:32, Oleg Nesterov wrote:
-> Hi Bernd,
-> 
-> sorry for delay, I am on PTO, didn't read emails this week...
-> 
-> On 11/17, Bernd Edlinger wrote:
->>
->> On 11/17/25 16:01, Oleg Nesterov wrote:
->>> On 11/17, Bernd Edlinger wrote:
->>>>
->>>> On 11/11/25 10:21, Christian Brauner wrote:
->>>>> On Wed, Nov 05, 2025 at 03:32:10PM +0100, Oleg Nesterov wrote:
->>>>
->>>>>> But this is minor. Why do we need "bool unsafe_execve_in_progress" ?
->>>>>> If this patch is correct, de_thread() can drop/reacquire cred_guard_mutex
->>>>>> unconditionally.
->>>>>>
->>>>
->>>> I would not like to drop the mutex when no absolutely necessary for performance reasons.
->>>
->>> OK, I won't insist... But I don't really understand how this can help to
->>> improve the performance. If nothing else, this adds another for_other_threads()
->>> loop.
->>>
->>
->> If no dead-lock is possible it is better to complete the de_thread without
->> releasing the mutex.  For the debugger it is also the better experience,
->> no matter when the ptrace_attack happens it will succeed rather quickly either
->> before the execve or after the execve.
-> 
-> I still disagree, I still don't understand the "performance reasons", but since I can't
-> convince you I won't really argue.
-> 
->>>>>>> +	if (unlikely(unsafe_execve_in_progress)) {
->>>>>>> +		spin_unlock_irq(lock);
->>>>>>> +		sig->exec_bprm = bprm;
->>>>>>> +		mutex_unlock(&sig->cred_guard_mutex);
->>>>>>> +		spin_lock_irq(lock);
->>>>>>
->>>>>> I don't think spin_unlock_irq() + spin_lock_irq() makes any sense...
->>>>>>
->>>>
->>>> Since the spin lock was acquired while holding the mutex, both should be
->>>> unlocked in reverse sequence and the spin lock re-acquired after releasing
->>>> the mutex.
->>>
->>> Why?
->>>
->>
->> It is generally more safe when each thread acquires its mutexes in order and
->> releases them in reverse order.
->> Consider this:
->> Thread A:
->> holds spin_lock_irq(siglock);
->> does mutes_unlock(cred_guard_mutex); with irq disabled.
->> task switch happens to Thread B which has irq enabled.
->> and is waiting for cred_guard_mutex.
->> Thrad B:
->> does mutex_lock(cred_guard_mutex);
->> but is interrupted this point and the interrupt handler I executes
->> now iterrupt handler I wants to take siglock and is blocked,
->> because the system one single CPU core.
-> 
-> I don't follow. Do you mean PREEMPT_RT ?
-> 
-> If yes. In this case spin_lock_irq() is rt_spin_lock() which doesn't disable irqs,
-> it does rt_lock_lock() (takes rt_mutex) + migrate_disable().
-> 
-> I do think that spin/mutex/whatever_unlock() is always safe. In any order, and
-> regardless of RT.
-> 
+Hi Andrew,
 
-Well, based on my experience with other embedded real-time O/S-es, I would
-expect that something named spin_lock_irq locks the task-specific IRQ, and
-prevents task switches due to time-slicing, while something called
-mutes_unlock may cause an explicit task switch, when another task is waiting
-for the mutex.
-
-It is hard to follow how linux implements that spin_lock_irq exactly, but
-to me it looks like it is done this way:
-
-include/linux/spinlock_api_smp.h:static inline void __raw_spin_lock_irq(raw_spinlock_t *lock)
-include/linux/spinlock_api_smp.h-{
-include/linux/spinlock_api_smp.h-       local_irq_disable();
-include/linux/spinlock_api_smp.h-       preempt_disable();
-include/linux/spinlock_api_smp.h-       spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
-include/linux/spinlock_api_smp.h-       LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
-include/linux/spinlock_api_smp.h-}
-
-so an explicit task switch while locka_irq_disable looks
-very dangerous to me.  Do you know other places where such
-a code pattern is used?
-
-I do just ask, because a close look at those might reveal
-some serious bugs, WDYT?
-
+Can you add this swap table phase II series to mm-unstable for more
+exposure? The patch series has gone through V3, overall looks OK, but
+I have not finished reviewing them all yet. I will keep you posted
+when the series is fully reviewed.
 
 Thanks
-Bernd.
 
+Chris
+
+On Mon, Nov 24, 2025 at 11:15=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> This series removes the SWP_SYNCHRONOUS_IO swap cache bypass swapin code =
+and
+> special swap flag bits including SWAP_HAS_CACHE, along with many historic=
+al
+> issues. The performance is about ~20% better for some workloads, like
+> Redis with persistence. This also cleans up the code to prepare for
+> later phases, some patches are from a previously posted series.
+>
+> Swap cache bypassing and swap synchronization in general had many
+> issues. Some are solved as workarounds, and some are still there [1]. To
+> resolve them in a clean way, one good solution is to always use swap
+> cache as the synchronization layer [2]. So we have to remove the swap
+> cache bypass swap-in path first. It wasn't very doable due to
+> performance issues, but now combined with the swap table, removing
+> the swap cache bypass path will instead improve the performance,
+> there is no reason to keep it.
+>
+> Now we can rework the swap entry and cache synchronization following
+> the new design. Swap cache synchronization was heavily relying on
+> SWAP_HAS_CACHE, which is the cause of many issues. By dropping the usage
+> of special swap map bits and related workarounds, we get a cleaner code
+> base and prepare for merging the swap count into the swap table in the
+> next step.
+>
+> And swap_map is now only used for swap count, so in the next phase,
+> swap_map can be merged into the swap table, which will clean up more
+> things and start to reduce the static memory usage. Removal of
+> swap_cgroup_ctrl is also doable, but needs to be done after we also
+> simplify the allocation of swapin folios: always use the new
+> swap_cache_alloc_folio helper so the accounting will also be managed by
+> the swap layer by then.
+>
+> Test results:
+>
+> Redis / Valkey bench:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Testing on a ARM64 VM 1.5G memory:
+> Server: valkey-server --maxmemory 2560M
+> Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+>
+>         no persistence              with BGSAVE
+> Before: 460475.84 RPS               311591.19 RPS
+> After:  451943.34 RPS (-1.9%)       371379.06 RPS (+19.2%)
+>
+> Testing on a x86_64 VM with 4G memory (system components takes about 2G):
+> Server:
+> Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+>
+>         no persistence              with BGSAVE
+> Before: 306044.38 RPS               102745.88 RPS
+> After:  309645.44 RPS (+1.2%)       125313.28 RPS (+22.0%)
+>
+> The performance is a lot better when persistence is applied. This should
+> apply to many other workloads that involve sharing memory and COW. A
+> slight performance drop was observed for the ARM64 Redis test: We are
+> still using swap_map to track the swap count, which is causing redundant
+> cache and CPU overhead and is not very performance-friendly for some
+> arches. This will be improved once we merge the swap map into the swap
+> table (as already demonstrated previously [3]).
+>
+> vm-scabiity
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> usemem --init-time -O -y -x -n 32 1536M (16G memory, global pressure,
+> simulated PMEM as swap), average result of 6 test run:
+>
+>                            Before:         After:
+> System time:               282.22s         283.47s
+> Sum Throughput:            5677.35 MB/s    5688.78 MB/s
+> Single process Throughput: 176.41 MB/s     176.23 MB/s
+> Free latency:              518477.96 us    521488.06 us
+>
+> Which is almost identical.
+>
+> Build kernel test:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Test using ZRAM as SWAP, make -j48, defconfig, on a x86_64 VM
+> with 4G RAM, under global pressure, avg of 32 test run:
+>
+>                 Before            After:
+> System time:    1379.91s          1364.22s (-0.11%)
+>
+> Test using ZSWAP with NVME SWAP, make -j48, defconfig, on a x86_64 VM
+> with 4G RAM, under global pressure, avg of 32 test run:
+>
+>                 Before            After:
+> System time:    1822.52s          1803.33s (-0.11%)
+>
+> Which is almost identical.
+>
+> MySQL:
+> =3D=3D=3D=3D=3D=3D
+> sysbench /usr/share/sysbench/oltp_read_only.lua --tables=3D16
+> --table-size=3D1000000 --threads=3D96 --time=3D600 (using ZRAM as SWAP, i=
+n a
+> 512M memory cgroup, buffer pool set to 3G, 3 test run and 180s warm up).
+>
+> Before: 318162.18 qps
+> After:  318512.01 qps (+0.01%)
+>
+> In conclusion, the result is looking better or identical for most cases,
+> and it's especially better for workloads with swap count > 1 on SYNC_IO
+> devices, about ~20% gain in above test. Next phases will start to merge
+> swap count into swap table and reduce memory usage.
+>
+> One more gain here is that we now have better support for THP swapin.
+> Previously, the THP swapin was bound with swap cache bypassing, which
+> only works for single-mapped folios. Removing the bypassing path also
+> enabled THP swapin for all folios. The THP swapin is still limited to
+> SYNC_IO devices, the limitation can be removed later.
+>
+> This may cause more serious THP thrashing for certain workloads, but that=
+'s
+> not an issue caused by this series, it's a common THP issue we should res=
+olve
+> separately.
+>
+> Link: https://lore.kernel.org/linux-mm/CAMgjq7D5qoFEK9Omvd5_Zqs6M+TEoG03+=
+2i_mhuP5CQPSOPrmQ@mail.gmail.com/ [1]
+> Link: https://lore.kernel.org/linux-mm/20240326185032.72159-1-ryncsn@gmai=
+l.com/ [2]
+> Link: https://lore.kernel.org/linux-mm/20250514201729.48420-1-ryncsn@gmai=
+l.com/ [3]
+>
+> Suggested-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+> Still basically same with V2, mostly comment update and build fix, and
+> rebase to resolve conflicts and for easier review and testing. Stress tes=
+t and
+> performance test is looking good and basically same as before.
+>
+> Changes in v3:
+> - Imporve and update comments [ Barry Song, YoungJun Park, Chris Li ]
+> - Simplify the changes of cluster_reclaim_range a bit, as YoungJun points
+>   out the change looked confusing.
+> - Fix a few typos I found during self review.
+> - Fix a few build error and warns.
+> - Link to v2: https://lore.kernel.org/r/20251117-swap-table-p2-v2-0-37730=
+e6ea6d5@tencent.com
+>
+> Changes in v2:
+> - Rebased on latest mm-new to resolve conflicts, also appliable to
+>   mm-unstable.
+> - Imporve comment, and commit messages in multiple commits, many thanks t=
+o
+>   [Barry Song, YoungJun Park, Yosry Ahmed ]
+> - Fix cluster usable check in allocator [ YoungJun Park]
+> - Improve cover letter [ Chris Li ]
+> - Collect Reviewed-by [ Yosry Ahmed ]
+> - Fix a few build warning and issues from build bot.
+> - Link to v1: https://lore.kernel.org/r/20251029-swap-table-p2-v1-0-3d43f=
+3b6ec32@tencent.com
+>
+> ---
+> Kairui Song (18):
+>       mm, swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+>       mm, swap: split swap cache preparation loop into a standalone helpe=
+r
+>       mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
+>       mm, swap: always try to free swap cache for SWP_SYNCHRONOUS_IO devi=
+ces
+>       mm, swap: simplify the code and reduce indention
+>       mm, swap: free the swap cache after folio is mapped
+>       mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO
+>       mm, swap: swap entry of a bad slot should not be considered as swap=
+ped out
+>       mm, swap: consolidate cluster reclaim and usability check
+>       mm, swap: split locked entry duplicating into a standalone helper
+>       mm, swap: use swap cache as the swap in synchronize layer
+>       mm, swap: remove workaround for unsynchronized swap map cache state
+>       mm, swap: cleanup swap entry management workflow
+>       mm, swap: add folio to swap cache directly on allocation
+>       mm, swap: check swap table directly for checking cache
+>       mm, swap: clean up and improve swap entries freeing
+>       mm, swap: drop the SWAP_HAS_CACHE flag
+>       mm, swap: remove no longer needed _swap_info_get
+>
+> Nhat Pham (1):
+>       mm/shmem, swap: remove SWAP_MAP_SHMEM
+>
+>  arch/s390/mm/gmap_helpers.c |   2 +-
+>  arch/s390/mm/pgtable.c      |   2 +-
+>  include/linux/swap.h        |  77 ++--
+>  kernel/power/swap.c         |  10 +-
+>  mm/madvise.c                |   2 +-
+>  mm/memory.c                 | 276 +++++++-------
+>  mm/rmap.c                   |   7 +-
+>  mm/shmem.c                  |  75 ++--
+>  mm/swap.h                   |  70 +++-
+>  mm/swap_state.c             | 338 +++++++++++------
+>  mm/swapfile.c               | 856 +++++++++++++++++++-------------------=
+------
+>  mm/userfaultfd.c            |  10 +-
+>  mm/vmscan.c                 |   1 -
+>  mm/zswap.c                  |   4 +-
+>  14 files changed, 854 insertions(+), 876 deletions(-)
+> ---
+> base-commit: 1fa8c5771a65fc5a56f6e39825561cdc8fa91e14
+> change-id: 20251007-swap-table-p2-7d3086e5c38a
+>
+> Best regards,
+> --
+> Kairui Song <kasong@tencent.com>
+>
 
