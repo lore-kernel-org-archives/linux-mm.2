@@ -4,127 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3AFCD116EA
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 01:36:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78A0D116E2
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 02:18:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEE7F6B0011; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
+	id 7FB5E6B0010; Fri, 28 Nov 2025 21:18:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3F76B0012; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
+	id 7AB1A6B0011; Fri, 28 Nov 2025 21:18:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD95B6B0022; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
+	id 6C1626B0012; Fri, 28 Nov 2025 21:18:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBCAF6B0011
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 20:36:02 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FA57C07BA
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 01:36:02 +0000 (UTC)
-X-FDA: 84161928564.21.3C700CF
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 18D4CC0010
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 01:35:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="ab/mrw47";
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764380160; a=rsa-sha256;
-	cv=none;
-	b=HWyD6Pqg2LfQ3j5Po+NG1qiARTJjIikUVPZaTCyH6pU2ZTnkpUcI7V1lVI4cuWzcAYjrVf
-	HjI4JC0KJCcBc0XvtTVK5dbhgijAjxtmY8mv3i9CUi+mngbZrddMUKitLPNXEW6cxYFceM
-	mSQrThqW410caF26RdOTKoKEYwTPiHQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="ab/mrw47";
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 584996B0010
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 21:18:28 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06D831407C4
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 02:18:28 +0000 (UTC)
+X-FDA: 84162035496.18.DBB4F9C
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0062240012
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 02:18:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=rDScHZVC;
+	spf=pass (imf07.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764380160;
+	s=arc-20220608; t=1764382706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/WIom7gz7NUO3fE19+reH06dlDelQ6m/UOlLG0sWa0=;
-	b=N8oxsxzoQIKat+4h/sS2Wejo16/MGnX+gzuim/XASJsLB4i897inTH6i1HV+ZU3xO4LzZ3
-	tzbVJGrq/QCnYoI+V0EibOiwwk9n44x3qOSOSxoDNWzU2oMKXIZL0GhhahXtWo2hZUoH4p
-	ombRm/OzHUUf8LJ3Ych0eZLU1gJYQA0=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b7380f66a8bso372000966b.2
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:35:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1764380158; x=1764984958; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/WIom7gz7NUO3fE19+reH06dlDelQ6m/UOlLG0sWa0=;
-        b=ab/mrw476+QX4pfGbvhHjJlzGXvm2StRKfEc2OZAM6J1XD+xFjBc7FOlFvjMYiOfZb
-         8dOKJFriEJ2+gX05jePUS3RtI25lp5O1CUJhsOXrXgmss5YlPoVdoyscgLZ3I+Bl7eJD
-         /IQ7tzdZODEO4SXC/7EueezzjJPmWHrPeuCKI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764380158; x=1764984958;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q/WIom7gz7NUO3fE19+reH06dlDelQ6m/UOlLG0sWa0=;
-        b=JQwOpoclQjKvTop6C/M/ccNmJ8phz1DUgAsRzzblHR37kiJY3z5tpOlua1EefSRbBs
-         sKh0W3EmqsyKQSg5MynNo7z9SujNzE/01MHt/EZc0gU2bAgQFW+AHEx7MlAiY3lJjw2i
-         mLBzUzxiK9oDect/bKvcdX7HJKTvldtMNWCPbi7IPRqC3HbkYnWONeGeyahwiJX8qi44
-         Pe6fwVoia0j7uk5Juv7t+h3GIHEthlwcsFS4uQwGRSF7JENNeunIPC9CV39s9Y33ymj7
-         mr50e5VL9DKP2CKjBtU0I460IEJ2l4XPim59ogFzvB8oc47UYIWLf0jUtKf1UI+8zvYM
-         5zYw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1SQJl66boMMM+CbEyIFD7wiA8c2Hb+7GwsC7IuxdDCeY8Za6eT3gLO+ZSoTUvfAYz08BHOJ9r7g==@kvack.org
-X-Gm-Message-State: AOJu0YwTBUSkZYSCi0nGjXii6aHK2btNfy3S3jTeC1ai6pIHJJWS6uEf
-	P4e2WeT1xorLh6t9SwgP9okiNDL0Fx6Fuqub9Xxi6hR2X/HPgZ4yGjZlzI/pRqdp5QR8JEnQxT6
-	XZ+oH6crnFw==
-X-Gm-Gg: ASbGncsu7b3IxW0NAogPbpap53dbSNzVreGnzMlNZgtPDPVuhxlhe2MH7h9xpNPp3B/
-	f9wVREVsKFGpXjy4onLr1iribfg47yQGpdsiwTogwW+W1f0nwJMLcLdl2YAuSR9BNpc/cxHNqWZ
-	jFaWIEjxqEROo3conBvSj7Ah0m0F0YFDYU/g+BlxqNQfkLN5gljGTKMUX1ik+KzTY3Qj0fDn/FH
-	UdjKGNlrbzjuf2RwceezPaJJ0Sqe4iuvCOuY9xm4YoDV8MgSJ09CfexIU6OVbqYvSjU5AkQH7jA
-	QGL2TfDoxWXNB3uSPe1LqgyzAz6h2ttQWVCsEu6wpD0ZNlb4rb8HKUf7R841Ph3A50cQFBqo2Vk
-	LJIrSA7tsgfmVRimJbeWcrv0BH/es1NrX0aHtmk34qELV3HLbtiFGeDGknZeGWoctX0BGGX9d8p
-	tYzwqWH32mTtctpOi+LrkVESwswqPO69nMZ5ptQXYxu5qYr7LKTzjdeH0bcBNB
-X-Google-Smtp-Source: AGHT+IElCWP97tN7mx5TBGT8Hu0FhPgT+MRNd1p747VYZ30Kebx8Avr6oP3vtDMUIgSlZ9rh1auF6w==
-X-Received: by 2002:a17:907:3f1b:b0:b73:544d:b963 with SMTP id a640c23a62f3a-b767159e21amr3196249666b.13.1764380157978;
-        Fri, 28 Nov 2025 17:35:57 -0800 (PST)
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f519a41asm567832466b.16.2025.11.28.17.35.54
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Nov 2025 17:35:55 -0800 (PST)
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640aa1445c3so3752301a12.1
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 17:35:54 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW9mtUfSHvx/Fs7JltRT6A0YfLZWmS9a6Wuec/as7bhIY5IwRZIW2ajM/0HvmODE9C3+ck8iE8LyQ==@kvack.org
-X-Received: by 2002:a05:6402:3494:b0:647:5c27:5440 with SMTP id
- 4fb4d7f45d1cf-6475c2754b6mr4287616a12.24.1764380154354; Fri, 28 Nov 2025
- 17:35:54 -0800 (PST)
-MIME-Version: 1.0
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com> <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
- <aSgut4QcBsbXDEo9@shell.armlinux.org.uk> <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
- <3d590a6d-07d1-433c-add1-8b7d53018854@huaweicloud.com>
-In-Reply-To: <3d590a6d-07d1-433c-add1-8b7d53018854@huaweicloud.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 28 Nov 2025 17:35:37 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
-X-Gm-Features: AWmQ_bn2YLtZkenhhdk984gAsTyb0rIufR4Br-TkPYHMl26wv1MEf1_t31IUh7g
-Message-ID: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
+	bh=kn01DPqEWVsRKnyDlfL02PwCBxz8cu2USXRLYTQgCgM=;
+	b=SbqT7rwVgW+Q+oqUdodC/suA9NkG2/ZB/7zwg/8xFMSEcj7sxPSib0wZQaG9TDcZ5qbNaF
+	r3mGDFrnMcX8hxmFGc2VHz8PMduWLHFn+MrbOq/cKkZ4s8JVqStgyBfax7z0v6DB87Empa
+	Fh7TYmlyuYn3SHSvXhAtFW/1AbNVAj0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764382706; a=rsa-sha256;
+	cv=none;
+	b=LjrAH1+lAvgnR7hChTDeA5mBfs0pxes5rw9MXRl6DR39rqYIgn1lk0dXUVNalltrAwti1+
+	rEaCr/rRUxhBRnK5OZW3YmYsQ2T9avxXHshVUNbZiFrJDUpqe639mpIgNuoEe0zU3MeTrJ
+	qmElgmgX9NvYVvPcYOXwgu1CjNhu838=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=rDScHZVC;
+	spf=pass (imf07.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=kn01DPqEWVsRKnyDlfL02PwCBxz8cu2USXRLYTQgCgM=;
+	b=rDScHZVCx+yxOePYn8Wcv7pT5EneAyhEXpKgyfyNlZdFO+SZjIfif2JCM3YYpKX2AogeDsnam
+	/17hK+QDSVVTcvAMpeNH1ZD5mzB3UTmEMrJEwauBJgQWVmdxVILASAgXYxRyzaIgfUZb+JMrv57
+	oTVqNBOiz4Z5xvjvvJvwaQw=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dJDLT42p1z1T4Fk;
+	Sat, 29 Nov 2025 10:16:33 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 18451180B58;
+	Sat, 29 Nov 2025 10:18:20 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 29 Nov 2025 10:18:19 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <torvalds@linux-foundation.org>, <will@kernel.org>,
+	<linux@armlinux.org.uk>, <viro@zeniv.linux.org.uk>, <bigeasy@linutronix.de>,
+	<rmk+kernel@armlinux.org.uk>
+CC: <akpm@linux-foundation.org>, <brauner@kernel.org>,
+	<catalin.marinas@arm.com>, <hch@lst.de>, <jack@suse.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<pangliyuan1@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<wozizhi@huaweicloud.com>, <xieyuanbin1@huawei.com>, <yangerkun@huawei.com>,
+	<lilinjie8@huawei.com>, <liaohua4@huawei.com>
 Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
- sleep in RCU context
-To: Zizhi Wo <wozizhi@huaweicloud.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, jack@suse.com, brauner@kernel.org, hch@lst.de, 
-	akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, yangerkun@huawei.com, 
-	wangkefeng.wang@huawei.com, pangliyuan1@huawei.com, xieyuanbin1@huawei.com, 
-	Al Viro <viro@zeniv.linux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 18D4CC0010
-X-Stat-Signature: 1nqwsxee53yhoepie6gojwy41kwwxoec
+Date: Sat, 29 Nov 2025 10:18:15 +0800
+Message-ID: <20251129021815.9679-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
+References: <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
 X-Rspam-User: 
-X-HE-Tag: 1764380159-66956
-X-HE-Meta: U2FsdGVkX198y8GhprzquGjLqzY9Wig8FQBmBwmHXMlbi1I7jP0I6vBolzJw4hvSm/SGWzZxpl9XtB2A3GpbEPuKA2Xo2u7YEofqXbJH8AVHUiKDvV3lXh7RK2g4mY7WH1fE+s9tf0uJymYTSxwbLD178txUy1ZnRrglFIbnR2wYnje1bxWSrLc803pJv6Ryy6AASWjHPrNWB/YO0Wfnrus34K3b3sgzPgHd8zdvpC5xEbmrh6bpNYAFgJeveojRZPuNJzGBp9vTivSUWASDWvHTTLERjC7T2GvzkLkJ+5pK8twHGWYlnOiK4pfk0eaNXeZja8Wb48osJua+7GLMbBwFYrSCqGEtIqQbUBwr7lhPF1H9xUQx1T4QcFQUJB3385eOPrKfrUe8tTeNrrSbW47qppYtr+0orovZbOwwmgtWNwuDmI/pk+DAcPEIjR4I+aqJnFiNbC6dfN89mu1iUqa1v96eKlRwYvVJGxN9gQOiD4NCGh0mS9UwRr+RPcyvv+kwkNFz6WJ/XM+mkNsw4u+uk7sWNCfGH0SS4jNZfVxV3wOS0RdWC08w6H8kPQfFOa1fMDE/FcaS3LtsncKMGi9z+vlLTXnIpWbvhxG/4EPdZ7LkWR1BtgZsjGQJ3Zw0zqY+B+JYhFxHUvdC4/YtlIuQrfhevq1GS3qrtBCchU5kA67NvmNMf4MVH3emWdWtcipfDbiiRi9L+tqq2BB6lZ5bR3trrkShI/M9AXUvAQEt9yxPrBhc9/9/AFy69Rj7tbLvCH+fRShYvCWe98+2hpSvECdDbWUbuGyyphzSYPRhO9QAfpSSDgcPFjSGBvMWDm7HoVEpMHuc2Sm4TB855jYxdNm/5xgHCmNQQaz2a7tlSjMYMQ1VzYlCjq1QNPXvomlqQ+vHiBXG/WO5mQchqHtJeYs1uqy7u48sZH2RCdYKU+OH+0Pk6hL3MMUy9UFAOGWaXkFNv8iH3J4RPvW
- dY70ANSM
- TjKogCOygATJG58KaaxM/fHnLGZcgT7nmsmKNpco6E/HmLpA3liwIwlPONYYp5dSFOvB7u14v0PriCXmOEymyKNgCioI4j5GJHeehdVBEquVhzN3DjRqeNflkpwnkAVOebmUxjze80ytQHsQKzg1UZqwSsSHP5ULq16tYHVmgpJAsgFTXC6BZg9kU8Oz8hNIfu8CyvwSF6j/QyeafJshVv9vwfFihldJof1iFO72LIOYGjoLdSIkmFzafUzCV/22gxO8c6NqXXFel8xJhQDQbWfA0kD6c3VMx3HCuertXzjPdfFFlqOoFwLvhLmyTlDD60FI8AES9IK7TolxY1i7kl9gy22UMopcku9iGTc6dQRqGYDImGArSmBFO8GECwR0tuFaURqkmeKP2iq0XKePk8Z9iRlttg6qnmHZwAJrOXlW/X5rhKXl0mbvcqOyxwamK3I6xy+5Z/4I2G1WP1t4Mh/Ey+JSWWw8qawbiS8JF38wJfUKbqIVyDc3BIOPlGyfKgIoi7zrvireGmGwN8/q404oMOsDW816WT7KYUljZJ8CVirIwva0x9tQoqGu4y98BOyXvCYMQ6ISmLuQ=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0062240012
+X-Stat-Signature: zyx44pimpt1s97347mgzhozi99qebu6x
+X-HE-Tag: 1764382704-527059
+X-HE-Meta: U2FsdGVkX1+QjpsfCSAbWnpEUmKt9qWNvvK59F2KDruVJ5Vgbiuz6iW5nsxaEoM3QHqqQDOwma4d8sfFJhNjlvpg1im+8WECLvT4GatzzhAj3aTz0FuyyamS0MTyIPWYJ7wKD9AmplMikl4wX0cN8k6JAgNd89xd2IudfkP3rVbYLv8jnqDEJGfDT5tNesnvmcIYAzl1Uj/3I4xkKETTZoY2yziRe/2Z9q/RxyeAcyrh355zNCMKkre+FoxAA1ZCkzl/333WwCRgmZrBuoXO7NC6KOEzHsEvvN6cvQ3zdfZg03mtIhkOMZvTc21iVJ2iIphmprtp/naDVz0p4W5SPT1nQlJSY8YvLFVH2rKPWf6UJecF9G8pvKPIy6OU1QfsIRSHGhSfYItvGfGGW0V2ODD0Sj2relG5puZQ1mCSl/bjQy5rw9sRnOdGBCIVIdMEDIAtFQeKdNALIO7gr/bydwm9TC4U3EWAcPXeLtglIrlZIfrmUbWRR3/4iXIWekHxbj2kjNjkKsW5Velz1F91i+rH2epbCImhRBfTqWIesJdf9OkYQMc8wVXFGdidJLIcJfKoHvfJ3lt8KFXXcx2igFDZ7Y5NgurH8NrPh1dNQCICbZDCmAB6UfDGlVfbZ3V4pgjPWIhyXm+QwQuyP6GZLUKVjhuqWFPxSJ6yW5vj2Af/q7jdFk5fkW+W6qbKGYoVgdhbPnbiE4kPELJC/dPVSdEqqgVcjmaLbntKMhPUFpmGxcmAEJntQ9JnOYAz7TEeSUD1vyk4HIVsRzI6G6SNyP14okWY6Dz99RQ5/Qg9OLQzDyzVgWu3ZOiRw7DZA86MspeJFYhMZXuqeVfgIRTNfItleaW7ckm28OkUbRPF6ayf+KzbNrn7OiDSnezbLFQp9nuuUcAScJp35hrvtnl2uH9LQJLpsvi48ch3frIydeJNNaZWCqmz6KHT5m5TIpzlp4+7jYlLvckY2ec0wuh
+ 4GQX9x+o
+ ZfdgXGT2911zc7rlVRoKve9ABW9+fzXBllaGs/gLi5G4X48E2HJUMNVLuAk3fKdTAACvuHBxhbpleg/DMSW11D2LFsX3JVzUiefQWKpLBA8rIze43tg/X7XB4swPwqmnszYL+qcnj+UAQ53PrP5efMYJUJB+32426CTkDWLiRVMkiWfUnjcCb1cHbH7VQLui2/k6WuC48Tj9dh87Oz7vMdMxxr8RL6lMxAHzLVKaJYGWHNA8WAC2sYDGw004/gAlHWzzUaehKykmECt8ETqMdeEvLcE8yzFwN/fpBI0BgDbdmrgzghoNvijA3ej0zhgnuLduuw0hBgTjHtgClELkxa/W3wTTLI240ql/pym97Yf/7WHS4tqpkYpnHwi0oF97gYtxgwRxsqdWdZxBVqig5R0y3mO3onBB6vYUzkMipV12BSuDghvql8EYK5N4iDeTzNUKsj38Cbxh/U7ZmFa0JG/IroA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,63 +105,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Nov 2025 at 17:01, Zizhi Wo <wozizhi@huaweicloud.com> wrote:
->
-> Thank you for your answer. In fact, this solution is similar to the one
-> provided by Al.
+Hi, Linus Torvalds and Will Deacon!
 
-Hmm. I'm not seeing the replies from Al for some reason. Maybe he didn't cc me.
+We have some discussion and solutions on other threads, and it seems
+that there are somthing missing on this discussion thread. Therefore,
+I think it is necessary to synchronize some information here.
 
-> It has an additional check to determine reg:
->
-> if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
->         goto no_context;
->
-> I'd like to ask if this "regs" examination also needs to be brought
-> along?
+1. There is a test case that can consistently reproduce the bug, which
+might be helpful for us to do the test. The test case is located after
+the '---' maker line in the following patch:
+Link: https://lore.kernel.org/20251126101952.174467-1-xieyuanbin1@huawei.com
 
-That seems unnecessary.
+2. Al Viro give a suggest on 2025-11-26 19:26:
+Link: https://lore.kernel.org/20251126192640.GD3538@ZenIV
 
-Yes, in this case the original problem you reported with sleeping in
-an RCU region was triggered by a kernel access, and a user-space
-access would never have caused any such issues.
+This patch is similar to one I submitted long time ago, which was
+intended fix another bug: missing branch predictor mitigation:
+Link: https://lore.kernel.org/20250925025744.6807-1-xieyuanbin1@huawei.com
 
-So checking for !user_mode(regs) isn't exactly *wrong*.
+My patch was not accepted, Sebastian's patch:
+Link: https://lore.kernel.org/20251110145555.2555055-2-bigeasy@linutronix.de
+fixed this bug, but Sebastian's patch has not yet been merged into the
+linux-next branch, so this bug still exists in the current linux-next
+branch.
 
-But while it isn't wrong, I think it's also kind of pointless.
+I hope there is a simple solution to fix both bugs, so I submitted this
+patch on 2025-11-27 14:49:
+Link: https://lore.kernel.org/20251127140109.191657-1-xieyuanbin1@huawei.com
+This patch is based on the linux-next branch, therefore it does not
+contain Sebastian's patch.
 
-Because regardless of whether it's a kernel or user space access, an
-access outside TASK_SIZE shouldn't be associated with a valid user
-space context, so the code might as well just go to the "no_context"
-label directly.
+3. On 2025-11-28 17:06, Linus Torvalds provided a solution similar to
+Al Viro's suggestion and my patch:
+Link: https://lore.kernel.org/CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com
 
-That said, somebody should  definitely double-check me - because I
-think arm also did the vdso trick at high addresses that i386 used to
-do, so there is the fake VDSO thing up there.
+Currently, all solutions have been tested that can fix this one bug.
+I still hold the view that perhaps there is a simpler way to fix another
+bug at the same time, because the solutions of these two bugs are very
+similar.
 
-But if you get a page fault on that, it's not going to be fixed up, so
-even if user space can access it, there's no point in looking that
-fake vm area up for page faults.
+Thanks very much!
 
-I think.
-
-> I'm even thinking if we directly have the corresponding processing
-> replaced by do_translation_fault(), is that also correct?
->
-> ```
-> -       { do_page_fault,        SIGSEGV, SEGV_MAPERR,   "page
-> translation fault"           },
-> +       { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "page
-> translation fault"           },
-
-I think that might break kprobes.
-
-Looking around, I think my patch might also be a bit broken: I think
-it might be better to move it further down to below the check for
-FSR_LNX_PF.
-
-But somebody who knows the exact arm page fault handling better than
-me should verify both that and my VDSO gate page thinking.
-
-           Linus
+Xie Yuanbin
 
