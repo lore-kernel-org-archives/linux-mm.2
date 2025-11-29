@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33C62D116E2
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 00:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE4C1D116E2
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 00:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193BF6B0022; Fri, 28 Nov 2025 19:00:42 -0500 (EST)
+	id B66676B0029; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16BB96B0023; Fri, 28 Nov 2025 19:00:42 -0500 (EST)
+	id B10986B002A; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A8E36B0027; Fri, 28 Nov 2025 19:00:42 -0500 (EST)
+	id 9FEA66B002D; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1E46B0022
-	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:00:41 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84DFD5B473
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:00:41 +0000 (UTC)
-X-FDA: 84161688282.19.0FC709D
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4CB921C0015
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:00:39 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UQczXs72;
-	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ABE76B0029
+	for <linux-mm@kvack.org>; Fri, 28 Nov 2025 19:04:54 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2EF5A1A0768
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:04:54 +0000 (UTC)
+X-FDA: 84161698908.16.7DB7550
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 51F8C180002
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:04:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hScv3mBn;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764374439;
+	s=arc-20220608; t=1764374692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zHmRWDClvlHbKFXIzPmuqyHUybDkDInr6tGn1CVDivA=;
-	b=q0I+CSz/GrvdhC7a3cIkzcFD052gCghPMLeaKdKyXtKETMxbDYVm5pj4Ky+I+yuytIPiK7
-	zUJ6bw1aPH+QidqLc+r6/6rEihZ/+dP8FkU3JzUOOpYvv+6s03m7bb34rROmlYuyidnah2
-	PR4NVor8QRZ3+np3ZoQT9R+wXGcQyTk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764374439; a=rsa-sha256;
+	bh=dUsFXaqLcET0q15DSudQAy2n1kSLatuRIQt1XwhFLdg=;
+	b=n7Zi7z1S6YeSyXvkmkLuJUbBbeTez3tTda5JEWCjFiwBx3/kaKS6mk1YKKT5Y1+yegbMhe
+	ZnOFwRpKzCS0l1b7kqSoHtZrqv/5key9VhVZIztYhMkk0gYvttBsHmze441LNa/Lh7GOrq
+	jZUVxYVDqZEu4ppuOqulWnSAHJpYoeI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764374692; a=rsa-sha256;
 	cv=none;
-	b=1798KrgJo7bFbaNTHw64WIizM4e1Xiq55zap95NyodlKc3kk0QhjEfM/v+uInRvMuSo0zR
-	2sfQEnhpSwsJx94JyQcxlvN5z2cbr/SI+Hckfbx87M5SpcTOSm/aHJpK3sNgcsRLFBRxJc
-	oDePXVrPeruwk35drjlG4pCFYtkhMGo=
+	b=PIu/nDWhmKNwh1bk+5NrWeRsZXc+nD7QEOdNv3n1ZKgoVHaZ2h7Ysg1alCqD4tcx0qlGJD
+	Qi1HnwPf2Y+h6avyllhmGa58SmniaOdBWygOvtSBR3+q4gtSLq33HnG4KskDIqRprfFKKk
+	nIW0HKPEkgMrBqKKkCqX678iRM1A+58=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UQczXs72;
-	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hScv3mBn;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8b2dcdde698so222826785a.3
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:00:39 -0800 (PST)
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8b1e54aefc5so163571585a.1
+        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 16:04:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764374438; x=1764979238; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zHmRWDClvlHbKFXIzPmuqyHUybDkDInr6tGn1CVDivA=;
-        b=UQczXs72866n2lGUnqkiqz1iuG/LSt9cm8fwyPjVhlgDJpSLNUmn/yTMIqI6uaavPU
-         XggoQC3xjDY2ZZVbE6F1EYlJxqwmlYcJ/S6tVMWFycJOUIWTT/mYAPnKQKR+owrea8di
-         2ByWtRwpWoeSrabnT/QHmJJrkAXypWbdZd2zo8lIuqfLP3ocbuTQnxLwq+a3vVeTX5H3
-         oWxWLyFQ9+lzXpyHZTaoLBgq1C8PJBM8/fBPRq2TBPnvALhFtGZQZZqplrkGCZBAO79x
-         mHaYXG6ezhneep79WXH6i80WEoE0KIXqkxBHqG5GffZvkTw+hgR3FeLZ3igOQmxHT/Wc
-         qWhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764374438; x=1764979238;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764374691; x=1764979491; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zHmRWDClvlHbKFXIzPmuqyHUybDkDInr6tGn1CVDivA=;
-        b=g46Xr0eOswB9z8NTWon9KrqEV3t9gsagqBix3KD5nMeH1uYI7MGRrjMVnj/SOPxMAg
-         PXaj2VgTP/JCoRIpdAf0XAIZfSpGmnRaHsnBsbJwLpwLfN3HTEIHM4Pyr/R58EoUJbYs
-         RrmajQLwO8CTgCRPLMEB1lnyXrJVyLsG30Nv4RwxJ1AOoqDy2+WgXh9xkL+eXK0ggBV/
-         7UUp6f3gfF4UtFWqTNeSu3MwXNGtDRVzZz6UrOud8QKKDbUD+qyax+1tsNFzDE21YAVs
-         jRA1pNgjjmIdGaGivAD9UQEwuzcga3XmJyltOBNRe8YPRxFL8K2p/SXQg0xs5UkHdXES
-         I3yA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8jxqp/CPs81/+SA7/fAhJ8wtDcb+UW3P0VV+bOQY0XgpOQ8JHEi6Q82jl7cMTYEUnNDYjt9Sakg==@kvack.org
-X-Gm-Message-State: AOJu0YywTEYfCfhEfQASwqrgyR8K7/cbnlp1HYaDincHSfY+apgW8PsI
-	WVVOIcSs3YDrDYWyjxAls1uGqgbqBFX4vNXNbq8+72/fcusvzlEUMs5Mu1LGXBv9U/hq0tbwZby
-	Anzpj9k/aYGK2Y3DxCs9q9p8qSFf10Ag=
-X-Gm-Gg: ASbGncvXINTjkagEJQ52yRStETvStaWzHFfJ114zPUk1ak3aG3J/tiznE+rOAH5YdMs
-	K6otGq9zJr19w8Gf8ushr7hylXG9///PKdBf9tF1SzuGtH/qmFnQxpfpcAijmPZjk1l+v71Z6xz
-	PAcOVOlFOZqo/wjzW+Hc06i38xgL9N68xGOlHGlEnpLpooxxh9ReOh1q1iAV7eb6boguN1cHGDC
-	CNKnSpgruK4ZeJCO6VNg81O3B35ZBiHXcQmcs0ioRCzu4wsoisXwTfMZ0y2TGdu3p10SqctLIrr
-	oyEg
-X-Google-Smtp-Source: AGHT+IHd5aus7xLL1lbMakx8my9JEdXXvqk12yHdvAK3yVZa/J9RwXfKg3ffaX0U1TVmb0a5FOWBg3uaiGhnsCPLNqU=
-X-Received: by 2002:a05:620a:1708:b0:8b2:f090:b15d with SMTP id
- af79cd13be357-8b33d4aec0dmr3730187485a.80.1764374438149; Fri, 28 Nov 2025
- 16:00:38 -0800 (PST)
+        bh=dUsFXaqLcET0q15DSudQAy2n1kSLatuRIQt1XwhFLdg=;
+        b=hScv3mBnRuAUcEyRbWjPtTKG9DfGBabk8jlPXca0zBXu2fcrkKXQf8o6uo6NgV/pEz
+         3JbsSl235CnXPaUEHrCYefd73PPH9Q3pChk54+iAyJi8NpXUD8RsLYiUblF46aN8qKxo
+         ESEH4kjLeLEAGFcqTvUv5qReZ24AyIzebttNFy4JaQqgZrF5LUVVxIGopOIbCoybYE6H
+         zZoTM0COO/HVlEvgg0Y2KqxwjeWk/o1+M1JclhHd1NGTUEuCnvMC1fpAPuYAEE83m2yh
+         VR5dhDPJb3QGFGFMo7j4jEwc8PGxW7A2KLAMuZHm33IoOp1gAfkZ/llpSUkNRm42BTvT
+         Z/2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764374691; x=1764979491;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dUsFXaqLcET0q15DSudQAy2n1kSLatuRIQt1XwhFLdg=;
+        b=F98Sp8ylEVnGyxvBbghIMOP9dDOjTE9F+qlvHSmV6RbydVUhsSRs9FL4DhiQMQYvf6
+         jWaGSQySLRpDplbV1frN7NuDXqLuAqL3Wvx/GvNsqUIoRRTcxwsBvySj7+FSUylEkUoj
+         gqd1kv6dDZhduv2XZWEu9A0Bnaxnzz24A86hG/CejQZfdhhGgZTsC5OycpzAM2a3qcsT
+         nqh6u8/6bx92nvfCEIrX0KZ3LamDRFKtNJ51/cq78/ZSlaImx+KEZ8XjCmHcmR/cwC02
+         UV4yfljiQNnBKGl0ucfYOX1AobZD/BjD2S117ZqNt8gyHolz9zey/R1ImAwFUTf2YKv+
+         e/Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCWOs/2jGX8AKxhEeyx0N+4QK58SrE2/vti1AFNwkeB7h2j3lgvsiTMDVKYRz2E6BlfPSCmbrCrHcw==@kvack.org
+X-Gm-Message-State: AOJu0YxiSpkB0KdI9RHlPWN3fGSPXSfMUrmEXCHrMa2NKb6athZMtJXm
+	Ex4hmMCTTK69ITqXwOuJXVjhCIiqM1RhRglCRSmmnC/zJMd0gpjnRRsOOlRnlV9aUQaW52J/Cvs
+	6MehKqNSaa6SIRSWe0pQEpcCqIO/Z0Sw=
+X-Gm-Gg: ASbGncvGDcnLla35JIjfGIAtlcvf5/NTAuKrF7MfcynuRnZn11i0ZCpQTRlB8pj2Sz/
+	cKk66+sbBk0ErAUacKb3TeGkH234aKvFw7vaP1ZxZuk3Cz9mUSNkcMCn7tDvNZ6h7OESyoTNMzp
+	rq7KcctPLTUMvXf804ZRf9XhdO9F6ZS+Ebsv/LMw/0RoZp5deFjD47h9G+eq875p5GV+muPPyiM
+	DIqQe/rYqtT5xfFQE2+llPHdb+JcLWUKYmtFlnheC6CR+Iqrz43RuCBhKjGYVKpnTsj2g==
+X-Google-Smtp-Source: AGHT+IHs0eeaf1N+SUSlKmPKgpsQCMyIfW7urkH8izBlam13LsCkutd0GEbzDaXXrD0lzGezAS048aqr0M48OOVRnUc=
+X-Received: by 2002:a05:620a:4721:b0:8b2:598d:6e78 with SMTP id
+ af79cd13be357-8b33d1cfa05mr4200867885a.20.1764374691240; Fri, 28 Nov 2025
+ 16:04:51 -0800 (PST)
 MIME-Version: 1.0
-References: <780ded63aca04eb513d6e7e2c8862e6972b84b45.1764297987.git.zhanghongru@xiaomi.com>
- <20251128120328.8693-1-zhongjinji@honor.com>
-In-Reply-To: <20251128120328.8693-1-zhongjinji@honor.com>
+References: <cover.1764297987.git.zhanghongru@xiaomi.com> <cd98e89b8b609bd2781b2d24c721a59feda83ec8.1764297987.git.zhanghongru@xiaomi.com>
+In-Reply-To: <cd98e89b8b609bd2781b2d24c721a59feda83ec8.1764297987.git.zhanghongru@xiaomi.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 29 Nov 2025 08:00:27 +0800
-X-Gm-Features: AWmQ_bkknGP0gyDHYOh0J5UdJeWbVzc-rPObIQG9XbG2qv10QnYMbETPC2P-VCw
-Message-ID: <CAGsJ_4xtc7ipFKYNQkGa-dSn7C8S7-J8LURqYrehfgenfPT=+w@mail.gmail.com>
-Subject: Re: [PATCH 2/3] mm/vmstat: get fragmentation statistics from
- per-migragetype count
-To: zhongjinji <zhongjinji@honor.com>
-Cc: zhanghongru06@gmail.com, Liam.Howlett@oracle.com, 
-	akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org, 
-	hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com, 
-	rppt@kernel.org, surenb@google.com, vbabka@suse.cz, weixugc@google.com, 
-	yuanchu@google.com, zhanghongru@xiaomi.com, ziy@nvidia.com
+Date: Sat, 29 Nov 2025 08:04:40 +0800
+X-Gm-Features: AWmQ_bkYwndGqyHrJmcGybkcsT_2GSRhfXf8-NVEqRaoeCkJklpdI9_mY79C5JM
+Message-ID: <CAGsJ_4wCDW=3YdPboinTNUp5qvcSR8LM+6vEhFM5q8FXHVNzHg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] mm: optimize free_area_empty() check using
+ per-migratetype counts
+To: Hongru Zhang <zhanghongru06@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, david@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com, 
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	Hongru Zhang <zhanghongru@xiaomi.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 8cecq8zthc15zfx68qq7pwcd11w6e459
+X-Stat-Signature: 4bfrrpo8jqu49s7hscz9ttunzbyyjcf9
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4CB921C0015
-X-HE-Tag: 1764374439-556271
-X-HE-Meta: U2FsdGVkX19AUSmHuupgf3fA2C6VaqVlrUIvPK9fxiV9aPmqDQQwED0I3xWDHd5QKYu3JKgDguHkqnMq3ZWbLzAwyZF5EpkC5XkNQKjjXa9PNZ7xvRLMlTi9K8fBq7obGljsyNQ29touB6HzYWr0S7ItSEVxzQhsQHeZRtzkMwZHe76hdyxL2itoL1kKGgsDc2JedNtU4O+ECaJCYLLPsQPFv8K5jnipeFOUiQvOkQC4Jm0IS5mW24/SEyQYeBbFa5SEBlkmISVYZ71S3YeIqvDAX4bTBv3EZX7dgrjoav+0kWTHFDstuWfORkYQkgmht0hZqxOSiZA8DC5xOsi59s4Zta71nNfhVgxwBPMII0mfWQjtJ3ApcyGtG3Bzeq2BDpXObdwspjjDezo9uSQwtLgXAqqk08LbYcNhhqB3m/gX1QZ8I+E91Y/5vDIZW9EVFjdIdLCoz1oudk3gvyHaqm0RMrkBFixnToTx/OEq5THIrcOQepVFMy8NFmLe+TTGfezpYo+s6CcFP++N4LkyhaHpnhbT6gQo/hAVcm7c2jjk6/RcEL6kfi5urw59wBzaouV1wejL4undlCmOg1iAjdk0V2DktR43OFqva8YFQcgZWhDlXPOjMPW6L+CnGTvr2OgIvxCtEqQryV2KuJLl1jGIO506qeAvWiYGsZ1RHxjM6ohjT9oldxv6ja9Yi9V3d6pi7laEcQghQ1RX9AgvNZGLWP4swMm63yx6Vdv8ltBRwnmPg+yz6LLePH1y8KoHD6+gjPlY+qxKzArQ2RD7K2O6oZXhwHbjX60hH7ePI/0go5dwuHJeUNCFdKiA6XdJq0KE2IaVJa3s3B/bScma5MZLMaSVRcqQlX9mFLVbboA1qvbeCv1HKPnbKphgo+pXNBbcp6pphteYwS13fOLAZL9nDb51z5LS1IxcmlFfR9tLPzy7mLF9LjIIfVz2piq41WhJjYMoAUKT4aTDKQe
- RLHfilPD
- vGplEs773l605os+r/qHmGrZ3xcxspa+sAtX4+qMGDYyr0gh2Ud4AINHCXz4nvVIwh3XhJiU0NlWkCThifrLxMV8JXzzQh4sWE9hQlzt9fdJaTr1MwD3Gi3XkRPnxevUyyX8c+ArEFS57pftNayECeZNLMCS0qlGVpQ0gL+1zEhciZtsJRRKOritHgmDZluKk+ttPzPQs5hfhjGNsmDy42KEpwyMWC4HLVy6zk6ObUu9pvHPrX+2KaYdxxrBJmdt5nhRhpGutjlCBTmSG43d15Qs/DedTGWotqhm62soNnSSDj9XdJ7QVxxyIwcuiZoIi+OrMe+i/1QJ8lsS01oV4cPKLCP3DOQTyvOSbt9T95/UjUjY=
+X-Rspamd-Queue-Id: 51F8C180002
+X-HE-Tag: 1764374692-750490
+X-HE-Meta: U2FsdGVkX1+St+oDDunLjPuNrFH/weiU7tZbQQ0UejeSIjJlwNgX5e68jwhZJ2IQPy4iFFo8AHuYt425ILdA6fg5O0EuIDhYdpvsaBuzzItSnsNuViuLmWqS1XWZTWkISNgLa7e1Rur6HgtmRepgX0wMZx2Krrvy6nguJa50F78JqMa5pv/rVRDtfvENPuMOPIF0I3Jk6TOZ75GDsmvv/6RoAX1+Hd5ocHScfOjE2HVBe3ujov2odCc+mFI10RYn3RwmZ3D/Mw1e3AjRb/iF/XK0TxSEKwyuNz5oLyx3+oPDQI2Tbwq7cNrjhI+Pu6TBcBdJ/cTV2KmUQeozcTW7A93wLqfjupozwHpRfn/woeGj8l6eJ2oPNhysg0mt0c+aJFJozgtJUubMnENuLwRhyZ0ERbe2lodkIOHtByASDKX6aqfIqyItcW89s2lM99NIiA7nkbizQYw2kCZn4/qj3RMuqRbmI5csBhGJT7ZkjbpZT8kXEjGS2pvoNpyW8kk9TJvJzZ3XBWLWPHxO/ceSp+5aVbC8T2RHKNoJvFBuIcuD1nNNL5qMaRhpN9evftAPVwfJw7W8+gT2YXowo/jcr8cl2xyELex1zOZXEJzG7lod2bBU4iXS4xQvRRd6hDlpMsCAfs14zhloTLZkxjLPWN0vOCefpvOoM32U5wvdXHzIjvcRU/ONf6rW6dFEwwEemWajQodgGXfgM5BG8ikom5jWimuZTm/+d0Ax88ZF8ACd5wITe2qeBJsXkmBIAG7xq9+jeJond7flf4yXFxSzPTdewW4HAE1um9UfTZlbfHR7ZmIZNk/ANk9EJIwG9GGhSYQRn2AOduIgL8JpNLvafycTq/uqRCcgD2eS4fABFETf4TckQcPyjir8kKJbISh7Q/0q/fBIPStNJKv0Ple5AtzQKWKP52SiQAZ2+5mYGxAZYY39zt0NKDiofGGNy0Gcq40a6yv5zE4EYImccDT
+ K0AUGoks
+ xLMDax0cndhdGnzn0yUWskPrJR4sPotEEDOt1xKnei1HqdwE5dKnFH6hh7helNpvzuvKXYbUPdguHH6keiGXnmnO//4hrC3Eajpeq8lXf98ylSSUJCT5KfXw1J5GrEAKtiXiTwps0lQ3owWqBXzs5VwhIlyvuNwPQMywRCvxUoJhr6GI/aVWfpH3kSn1qWPVMNUlIFdA/8d/bvK2KpV6MS991WQa+LxBHVuoG1ndyGu+6rg03JNaa+W97cD2QQ4DKxUQ3ChxiFQkcGXYbBq4S65VQBPYgLb8Z5KO4IW5MT1O/0lt6gv6qeQWplVruX4uZ/jh+uDxiU41UMkZNyqcHkkkSUfAJaSisX6+eEUhBLh2aDu4YfsuGUoTGX7MpF7Mq/8hf/+j7+9XYYwoj9Jhc7cbxhC8hM8tkpZr2QgYdacfLNbcFBWAOw/2dZkPvXJ4SUCl6HCkUJPkoB2k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,50 +121,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >       if (order >= pageblock_order && !is_migrate_isolate(migratetype))
-> >               __mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS, -nr_pages);
-> > diff --git a/mm/vmstat.c b/mm/vmstat.c
-> > index bb09c032eecf..9334bbbe1e16 100644
-> > --- a/mm/vmstat.c
-> > +++ b/mm/vmstat.c
-> > @@ -1590,32 +1590,16 @@ static void pagetypeinfo_showfree_print(struct seq_file *m,
-> >                                       zone->name,
-> >                                       migratetype_names[mtype]);
-> >               for (order = 0; order < NR_PAGE_ORDERS; ++order) {
-> > -                     unsigned long freecount = 0;
-> > -                     struct free_area *area;
-> > -                     struct list_head *curr;
-> > +                     unsigned long freecount;
-> >                       bool overflow = false;
-> >
-> > -                     area = &(zone->free_area[order]);
-> > -
-> > -                     list_for_each(curr, &area->free_list[mtype]) {
-> > -                             /*
-> > -                              * Cap the free_list iteration because it might
-> > -                              * be really large and we are under a spinlock
-> > -                              * so a long time spent here could trigger a
-> > -                              * hard lockup detector. Anyway this is a
-> > -                              * debugging tool so knowing there is a handful
-> > -                              * of pages of this order should be more than
-> > -                              * sufficient.
-> > -                              */
-> > -                             if (++freecount >= 100000) {
-> > -                                     overflow = true;
-> > -                                     break;
-> > -                             }
-> > +                     /* Keep the same output format for user-space tools compatibility */
-> > +                     freecount = READ_ONCE(zone->free_area[order].mt_nr_free[mtype]);
+On Fri, Nov 28, 2025 at 11:13=E2=80=AFAM Hongru Zhang <zhanghongru06@gmail.=
+com> wrote:
 >
-> I think it might be better for using an array of size NR_PAGE_ORDERS to store
-> the free count for each order. Like the code below.
+> From: Hongru Zhang <zhanghongru@xiaomi.com>
+>
+> Use per-migratetype counts instead of list_empty() helps reduce a
+> few cpu instructions.
+>
+> Signed-off-by: Hongru Zhang <zhanghongru@xiaomi.com>
+> ---
+>  mm/internal.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 1561fc2ff5b8..7759f8fdf445 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -954,7 +954,7 @@ int find_suitable_fallback(struct free_area *area, un=
+signed int order,
+>
+>  static inline bool free_area_empty(struct free_area *area, int migratety=
+pe)
+>  {
+> -       return list_empty(&area->free_list[migratetype]);
+> +       return !READ_ONCE(area->mt_nr_free[migratetype]);
 
-Right. If we want the freecount to accurately reflect the current system
-state, we still need to take the zone lock.
+I'm not quite sure about this. Since the counter is written and read more
+frequently, cache coherence traffic may actually be higher than for the lis=
+t
+head.
 
-Multiple independent WRITE_ONCE and READ_ONCE operations do not guarantee
-correctness. They may ensure single-copy atomicity per access, but not for the
-overall result.
+I'd prefer to drop this unless there is real data showing it performs bette=
+r.
 
 Thanks
 Barry
