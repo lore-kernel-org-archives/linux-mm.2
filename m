@@ -4,87 +4,225 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1937D116F1
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 12:36:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 234ECCFD2F6
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 15:07:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 927376B0007; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
+	id DFAA06B0008; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FF776B0008; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
+	id D84A86B000A; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 815926B000A; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
+	id C000D6B000C; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2156B0007
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 040AFC09AD
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 12:36:56 +0000 (UTC)
-X-FDA: 84163594074.05.A877F73
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E5D5D1A0005
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 12:36:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764419815;
+	by kanga.kvack.org (Postfix) with ESMTP id A73096B0008
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 10:07:00 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F56112D81
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 15:07:00 +0000 (UTC)
+X-FDA: 84163972200.27.D621A97
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazolkn19011075.outbound.protection.outlook.com [52.103.32.75])
+	by imf10.hostedemail.com (Postfix) with ESMTP id ABBE7C001E
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 15:06:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=L9Veg0zn;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.75 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
+	dmarc=pass (policy=none) header.from=hotmail.de
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764428817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=Ot2Tg1xiAoyo3U7a294MLHTQILR+1RrXETLgGihLK+8=;
-	b=a/Zf04rvOf4LcuWwMgnLZA1xt9WgK/GLtVKcyB/DNvVxTPXm4sj3aM58jZOZ944wH7cwDj
-	Q30ilSmifv70I/78ZEGbaIysVGEX4EWcCVjxwN+KpjbvfKwkS0UCAVHCLOboBeeun1nx1Z
-	d3S2wO0rSJA7uuZqca+Zn9JgY1KdqYY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764419815; a=rsa-sha256;
-	cv=none;
-	b=AAI+DuwTN146+NEVb67m8bFPi8nl6GXWnZxyj5mKxNlSlguceB3b+uSzbqFIbiyA7I5ICL
-	Omx5aDZ8NFPNUxaGObg8S1qfHvz6wuyLBHbDIhs3yELQb7VxcrES8B0mhRrX2gxIozJdLo
-	RhECnjS35tAaCOfq5yNfir8YG8rV9ec=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D1E51063;
-	Sat, 29 Nov 2025 04:36:46 -0800 (PST)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AF5043F66E;
-	Sat, 29 Nov 2025 04:36:51 -0800 (PST)
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: catalin.marinas@arm.com,
-	kevin.brodsky@arm.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org,
-	urezki@gmail.com
-Cc: kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] kasan: hw_tags: fix a false positive case of vrealloc in alloced size
-Date: Sat, 29 Nov 2025 12:36:47 +0000
-Message-Id: <20251129123648.1785982-1-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FD/Akzqzu0nThG7Tk3GM5jB/WuJ8kjgjB5LxtcVF1Ms=;
+	b=0wnwaZ5cgXoX6sbEW/Qbmo6OGHUPhP+W8D8l1mkc17OEyB9AhqDbGv0nallkNhpPPyPvEA
+	aPQsHYO7PBN8N5/Fgv0uhVJniptCaMLZ9xYD9UHrQLmlLuv5Uudx0c4NbH/ESe0mK8J64g
+	6bajZAv/ya56baMu6STm28p1IVUMY/M=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764428817; a=rsa-sha256;
+	cv=pass;
+	b=BwNrodOd9MF4TFKhtmRkYt7N06ijqqb/5InCJvPmZ4O0nmA5tg3GYzwgNnt31Xpc0qEzIW
+	QYp2XL4/ksIywAD8bhNktV4egTw58R2HI9aaDVmTdvq+NZCJ+joNM5YZOv5lCydJ51cOVs
+	2zhKWDi0X/3CKaPBq3mBmytHkM/K5UU=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=L9Veg0zn;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.75 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
+	dmarc=pass (policy=none) header.from=hotmail.de
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lProhl2XBLltTZbxxF8dswgCX5HjdjiBWgcygBojhbzWgtpRZ7HBaFFxPmF5e9bqkBwy7QRtdBUTM44XEVD+FnmUTsmbDQO8SNHjNlS95hC0u1aVXdCYxVKN8a9xnO/s8I/pfnzyFO2l3lFaGFE7i6kfDNdbFwhPaxOV7iY6DXiqFUJPHRah+872hc5mYUVSKw7mbnFcanLZbKBo5WHAWH0wQ6xQtkXEUrDBWGkK944P69xTvWYZDM+MALb26ZoGfj16wkskqxYKVcRG0Ju4OA0bMcEKogjwikFDdi2VcF4TfwYOnyr9+Tbyvb++PEmRrWpXW3I7RTWdBWU6y+/46Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FD/Akzqzu0nThG7Tk3GM5jB/WuJ8kjgjB5LxtcVF1Ms=;
+ b=GHYUqMZX9C8GTl2Iu9ygFvXcb/ikJDSKUNwNBLJCX8rdHVefKnc/UGVy6rLoKk8q5TWLZnpeq+jGq4rg8zvt84T1hwMs0E4RK6OkJ3t/NsbMauHWHLrEGQURjn/1FeMw3/xgSRPSq9NAn0Qmfjr8sBBnGzLGUyCmJqC1arZk9ZWvGRYtu5iea/z5jX/wmLtu+vQ6kJN2e/kT0CoF6FfEXxOpNSKmFYQpBCCIKO83nY5M+iQ1ZWPNd1FXZDgHu7QCFIG4GB7JE1XdkXP8U3m1H8TPTbqPnFNkNuCjxzFOLkk4wOVnpiTkuqMhvFGVypr04hN6Fqh2CLkoWOH8FFhnPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FD/Akzqzu0nThG7Tk3GM5jB/WuJ8kjgjB5LxtcVF1Ms=;
+ b=L9Veg0znfBf/WerHwl4oj1Ju2uxBnv53RZJIq8FRffcifTso8cccOwhXx7wliBtpdinkpInOBqtWHB/nwWv//Ty3UMtz6t4qxRobxfZAHhqwZBhrTceuFtf0R2m5UqtBEkKYe8K+nWf6sQ/WVN2io9PJs2g34mZ182caS8UENhAdcMTJm06YNBstARpq2zQMe45J2oDHAYdnYusxjcGqJ1NvFg46wXRb4cR6WXcX9XvZkL3UxC94qc8qucB8Eu8h7rSoB18Z+cKxBKT9Y5LxKnvaH1yqB3SLYnuXpqYgUNMcuwL/vq0R+P2kCVrNm8OjVMRsZhaxfOtTnBxoolwzKw==
+Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::8d4) by DU7PPF6D5AD81E5.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:18:3::bd6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Sat, 29 Nov
+ 2025 15:06:54 +0000
+Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ ([fe80::dde:411d:b5f2:49]) by GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ ([fe80::dde:411d:b5f2:49%8]) with mapi id 15.20.9366.012; Sat, 29 Nov 2025
+ 15:06:54 +0000
+Message-ID:
+ <GV2PPF74270EBEEDD43083BE45C6E26F674E4DDA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+Date: Sat, 29 Nov 2025 16:06:57 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
+ Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Serge Hallyn <serge@hallyn.com>, James Morris
+ <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>,
+ Helge Deller <deller@gmx.de>, "Eric W. Biederman" <ebiederm@xmission.com>,
+ Adrian Reber <areber@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Jens Axboe <axboe@kernel.dk>, Alexei Starovoitov <ast@kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Frederic Weisbecker <frederic@kernel.org>, YueHaibing
+ <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>,
+ Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>,
+ Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>,
+ Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
+ David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Hans Liljestrand <ishkamiel@gmail.com>,
+ Penglei Jiang <superman.xpt@gmail.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>
+References: <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <20251105143210.GA25535@redhat.com>
+ <20251111-ankreiden-augen-eadcf9bbdfaa@brauner>
+ <GV2PPF74270EBEE4FE6E639B899D01D8870E4C9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <aRs4zYDhddBQFiXZ@redhat.com>
+ <GV2PPF74270EBEE6F59267B0E9F28F536D0E4C9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <aSNTNZxiQ0txISJx@redhat.com>
+Content-Language: en-US
+From: Bernd Edlinger <bernd.edlinger@hotmail.de>
+In-Reply-To: <aSNTNZxiQ0txISJx@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E5D5D1A0005
-X-Rspamd-Server: rspam06
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0099.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::17) To GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::8d4)
+X-Microsoft-Original-Message-ID:
+ <d016b2fe-4640-4c15-8350-9eebfa067d3c@hotmail.de>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PPF74270EBEE:EE_|DU7PPF6D5AD81E5:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7aa02119-ea85-4a83-0e8b-08de2f58ee86
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|15080799012|23021999003|19110799012|8060799015|51005399006|5072599009|6090799003|40105399003|440099028|3412199025;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?U1Rhd3NxZFozclkxSkViYWJRZmEzVUR2Z2M2OUEyN3pkclVuRzdLWFhZS0RH?=
+ =?utf-8?B?V2dHaFNibGZ0QVpETkdER1lINEswMk1zZWowWmR5YjZxcTVCVEIvTkYyaDJR?=
+ =?utf-8?B?WkYyTFdpYjF2dFFpODlJcGp1RjlKckZFekUxU3VhZTUwUHIvM0dKbkRiZnVO?=
+ =?utf-8?B?QWloakdQRjJkSkpORGp6N3VEVFltRWkyQ1VhVTlIVDVnYUlnUWV0ZFRSaXBv?=
+ =?utf-8?B?bzArZ1dxZjlNWWcvQmhvajFOckhHWitFeHVjRWd4T2lTSnlFQzkyMEdjWDJF?=
+ =?utf-8?B?UmdEMUxaV1ZoOVRSZnVPS0xIUWNRbnJHa1A1VGI5ajRzZDlyV205VHh6VFZR?=
+ =?utf-8?B?OUlwZTQ0c1h4L1k0U1JMZDNFN1lNanZSUnNsbitFdnFPbnUrUnRIN3dWenUx?=
+ =?utf-8?B?UEx0T3ladFBwZWlxRlpxVzQxWWgrRmxMNTlHZm4xOTFBM0JBMG9ySE9kM3gx?=
+ =?utf-8?B?SW9yaU5kd3VtWkp6aGFteHFTdUdOdlljRHlmZkk4QTZwMGhVdTdjbFF2SUJk?=
+ =?utf-8?B?WllJMGgra1I5WXdxK0MxWUVmM2MzTVFFbkh1MThGRzBLaFluMjZLVjhUVjVY?=
+ =?utf-8?B?VWtSWGNGNW0zK3l1cXJKWmNwL2E2aDhYR1UvSVNlVFVVUHphZU9yOGlZOERx?=
+ =?utf-8?B?OW9RQzdwTXA5UnRDRjNsazlWWVdHenk4Z2xqZGRobWJWTTBFeHdZcExOTWNN?=
+ =?utf-8?B?RzZNaFBSa1dHbWJ6T2hOWVZtd3ZYS3hvV1QwZjU0Z25aNGRMbTV6YnhHeXBF?=
+ =?utf-8?B?eU5uMUxsWnhxUFJSWDZpc0E5Y09CZDBOY05MRGRaOG4zS2xnZ1N6bTRCdWxL?=
+ =?utf-8?B?Y1pwSER4a0lPYmhTZDErYXNjanJaamFmY2N1Rmc0SzY1UXl4ZGZvejVsZlVV?=
+ =?utf-8?B?K2c0czRNempFeFQ0QnNnZWdvM3h6YUhETjc4d2xSYnBEZHZHbXNwMEVVUHFN?=
+ =?utf-8?B?NVVUQlZUQW5jTmNNSXFpdGVBTG92K2g1ZHpVc3c0UmdqM25PMC85NGNtd2Fm?=
+ =?utf-8?B?VTdKd2hnQllNUlZNa0tqeWpCYVJzdGZwZzJhUHhGajVlWXNxVFgxMXVXVFZV?=
+ =?utf-8?B?VGlOb3lvK2hUTU1uSkVRbU1HWTVVa2tLTGl3dk9CV2s0L09Meks4WTZHS2Nl?=
+ =?utf-8?B?bUNyYVkwazJRazB3WTJLdk13TExRZDN0UDU0dmtvZEd5VW1mRHFkbk9XdnBG?=
+ =?utf-8?B?Q3h5MXhXdExZbURxNi8rVnFseU1IZ25uS25WcEx4bm4wN2xaK1VtZlRjYi95?=
+ =?utf-8?B?STgyMHltSStQbCtqdnFja0JyVCtHRHFVWERza0RMalpSWldWWStFYzI0WVRG?=
+ =?utf-8?B?TlBtRTdmM2hNQ2FVUHNhUXE5SytLVDYyT3RMSHVLS3ZmMVRCMlMvQ3hUZEpJ?=
+ =?utf-8?B?bm9aYm5CS3FnV2dqbDlHWUJxTnAwY295dFkvUXIvS0RmRXdscUxLSFAvV3Ro?=
+ =?utf-8?B?TUhVZXhPMUswcUovTVR4UmFEZS80OW55NTVjSG14RTE5dW5CUU4xbDIwTTk5?=
+ =?utf-8?B?NitRT1VoVTNteWM5SlFqR3NhSks0UmRUaFBtMWliSXVrSUJBTXhGVno2S1Nu?=
+ =?utf-8?B?Sjh2TVpLSEk1a1pSdTRSSGdjb3pqbVdSUnhHTUk0aFFKVWtsZ0RINm5sZ09h?=
+ =?utf-8?B?dmlSU29ESi9veHc5V0VkUDlKbi9kWnc9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dzY1RVJiMlNHWVkrRy9QOGt3WTBxNkVFcGF6cHFJa2VncWorc0VSL1llQmhW?=
+ =?utf-8?B?STVFL1Ruci8yNEU4N25pSTdkTXZtei9mbmg5Y0lteHQ2UEJqOUtBQTRYcTF0?=
+ =?utf-8?B?NjhDWHRGZnAzYnRoVTlTaUo0QTE0b1hTZktVQTVJQkp4Mk1nUW16VmlMNThh?=
+ =?utf-8?B?dDJ5UkNPcWhkc0FhTVpqQXNrcnEvZGFMRnZPNllwVHBGVTVLRDN1WFZmTTlz?=
+ =?utf-8?B?WWpnanBCR3QyZ2l4RnNyQW00UmRqL0pxMmtIa1o0QlRlVUxtYzlmMDI0K3ZX?=
+ =?utf-8?B?dnJzT0JRMkZKVkszMGJQOGh3WWJSNzkrVUNjckM4eVoyODhOTDJvdUdHNVYv?=
+ =?utf-8?B?K0sxS09OVmFhaGFsM1pqT1JZV0JNQTlVbVVrM0hCT1FmSUMzRm5Nb3FHZVJ2?=
+ =?utf-8?B?cUVZY0xreHNjNGpSRWNlQnFlaEZSNWlsNldCaEUybnE0aFc3dHd3K1dUdmdD?=
+ =?utf-8?B?dzZpSEpMT1ZzczYvMVhnNHNLRnJKa1UyVERLKzhvZG9Mc24zMlNsc250UnMv?=
+ =?utf-8?B?dnpTc1BSVlJXL09sWWkycjNvRzV0d2xyR2FPOHhVL0toT1FhbmR2WnhvSGZt?=
+ =?utf-8?B?U0hldnZkS2dEdHFVRnIzYmpRQ2dOVll6RHlaZ2prbmpsREltYjJIOUEzU1Jo?=
+ =?utf-8?B?MWI0OGZpZ0syVk0rcXpycmlObWZlbzlkS1FXSnZsaVYyRFo3OFI4Y3R4cWp2?=
+ =?utf-8?B?Y3VzK0VEQU9xZmZOeVBFK2x2eXVOaTBIaEt5azhsSFR5b2dNUFVhRlA1VE03?=
+ =?utf-8?B?b29KSDJvcnI5NjZqMUhxOTR1NzFpVWg5VWhjOGlLOE5KTTR0azN2V0hOaUNE?=
+ =?utf-8?B?djB0YmVBYlRUdmEvQ0NBL0Z2eUd3SmJXUW51L3EzQ0ZwZWMya0dpQ1puQkE0?=
+ =?utf-8?B?cXA0YUR6em5sa0JQUHRJMHk0bWFKWjYwNG4yc28zWVd4cmhRK2NORHBJQjdL?=
+ =?utf-8?B?RzlWMWgrOC9xUnlvUEVqNjNtcFVFc3BhNXNBdHNqZklRTnhRakJMQkgxTkpB?=
+ =?utf-8?B?ZnZNY1M0NTFzS2NST0hyLzlqRURhUkhtZXRDNUIvTVFmNTNwSmhKSmRJblFv?=
+ =?utf-8?B?RTdkNnZXMTBMVkJrQXNUYlM4ZzVPVVluVms3elViWm5iampYd2VPMWo3UGQz?=
+ =?utf-8?B?K2dBQzFZQkFybTB3UUV5bFRJeWZZdHhKS3BkYUZ3cHZnNWt4NFZPMU1xUm1L?=
+ =?utf-8?B?eDJ6ajF5RUtlQWFOeDVJY3ZSSi9sc2JDNXdjZDdBYWJ6a0o5T2MvK0pXSyth?=
+ =?utf-8?B?cXVraEl4ODdFZ2hFVmVpV2ZDZ0RnaEtzWWtSSEt6SnBQYUhGTzB2MWM1Q2JE?=
+ =?utf-8?B?eE1wZE0vNWhqSm52b2NiTEFCeVRrT3dSTkJ0TTJSTlZVLytmNGlJd29INHk3?=
+ =?utf-8?B?V3ppTGxacWZrbjlyaEhDcWFDQVA3WVd0RFN5TS8yZ09yY3B6WGJIM3Z5aldj?=
+ =?utf-8?B?eUw4M0dNRDBFNlE2RHp0ZW1LSWp0Wk1YVG5GamowQnBSNFZWc3hZTFl0KzhJ?=
+ =?utf-8?B?TFdoU2NFY28vYUJMMlp2SUtjOWJhN01hL0RnSGhoZm9oS1hWaXAwWWk0ZVNW?=
+ =?utf-8?B?ZTBLdFVRR2dKSlJHczZFcW9BaGxsUnV2aGpWZC8xSDZnaWJvTE1UR1oyanMz?=
+ =?utf-8?B?RWY2UjIwcFFCRFVHVVY0MXVxNlpPNWtQb1laQmRBTFVvbUJVY0I5eHdYUFMz?=
+ =?utf-8?B?dm1iRVNnOXA1angrT3UwZDVLM1dWUG1obzBOOCt6d3cxeTJZOGl1bEUrbmFV?=
+ =?utf-8?Q?3Ttcpt32ll3nW8eRiOu/+7t2EmW+CRYxU6p6ka3?=
+X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-87dd8.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7aa02119-ea85-4a83-0e8b-08de2f58ee86
+X-MS-Exchange-CrossTenant-AuthSource: GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2025 15:06:54.2302
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PPF6D5AD81E5
 X-Rspam-User: 
-X-Stat-Signature: xc5n3iwp61zkd7boq6i3srr9yt7bku8d
-X-HE-Tag: 1764419814-630920
-X-HE-Meta: U2FsdGVkX1+UtLiCkLcJP3j+mmL/JdLJtX4gJ56dEw2YQB2PEmqS8XVo7FOmB8zwzSHzoSDWFP4khOUWvOkilrA47PHpdAMw/IxuX9PhxZt3aLxMHuBvDXVnPcoPPqn3c1yUXd3gbjvHtJDNCM/xjw3hK4/WfR+mUTOcAo9s9dJqzF4I8iOwffSOrL8EYnjKjUu8aMKi2R/mVH2++5Vbp6DqZfsuRKkq/G7MGGP45nTFLXsBSzY3sGVhTI4dzfry6bvrcgW/wmvSgTJuwXcO4NasLUCaGWvWIa/bDaflwBbwIJMssnsQU0vkZhdaesyP3BxkFjHnDFmuE28Igp8C4X53eI+J4FBEcu4oAcI+E2HE9VxHzN3dWTSuKPC3qsDI/4r7KPv7GOX0JY1fs5ebPU3UA2i9Sr2i5k/YCSeYZ1ClST1+JI9FZJ/zp/AzwAEX0bhIYRHgl5cMjR7SWuCF5OJ18rc2XqzXVfaIYlTEyP6DZvkRaaO0JiQO7SEJWcJ6KMHFWUNOvJGeJsQdqDAuU7AUBc4j3pQvGoBxbjCD5HzQjvLwZWfuayNFD8ts7AdcMzK1zjc7b5QbkEJuU4guJ7piFwDD28Fwp4BsHwY7pQ62KUMkysT04KWsRycHKOAeUOTWVRHmnkSv6wGlGqC3TJiWDjZjyUhIDf/3Ok1rw4ECXT6v8b/J5yK0cuk47EQ2G13rylFaooc4RUOHQ76ToZ39tN3YJ+Et2PP8RaPVhfLHVNxKf0qSqaTYhUt3K1RKK8Nn2BGLYKxtD5m9aHhv1CgVau46H77I0BjCVEKEL2pDncGej8+QIoEnhONHTtbxhKmAZxOI/9G+BN5WjM3OaD5UhAHBdgVGf8PjQpyL2MKZbzlJzktYJOzA/P6svJ4sUC/8OYXvUqVMMbwX/+Zx3v58Z03PSiU82u+iRebUHltJO27r2nyYo7/2hdiK3IYrQlGzDATp4ptd5FWwke/
- vbvY2g5i
- cP1wNHuK5RuOLPEltK201duqYw7hUigEWyqQBrR+gDP899WgrWCtv6Il3xeUbYE5JxEDelRAAzjSZMa6oW4Zy1NiwpxqsVHncfpCB1vqxRWCQevcJGJQMiH5bEO+oXtxHpH/SNBoS3QG32Jf35Pe2m1qjhoXrQhF1riR+VYP6vzddeUOLioIdMZNVOAC+ewyCytp7c+swOF/WhCeDrOTXMwbJOowV6vrHWNre+Z6/F/+L6aybGstWPT1PrLsl8cV+ihMynXeb2edT9lItarnppKRS82v27VhswdXPrDG3t2fDMQHTWGfmtPIHXoE2rJowKdb6ZgwLHxXlmw4TxbgKKndwemsi+365ZGa+ciKMfJlCNSU=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: ABBE7C001E
+X-Stat-Signature: r8ktiifti47rkjpeyhpqxfe8afwmz8s1
+X-HE-Tag: 1764428817-71346
+X-HE-Meta: U2FsdGVkX18QNVlzq8ee/uyW313nE0ugsQ1xRoLHxrRuejoz54h/qWP8Yt28cTLgELsxdlpP9rgZt+hsC6ise1skASRpfCRdWtDELbC6FEIVNwBhrO95Ie+KPbJ6xnFbrphm9gGYfDE4q7Q4sjuqQfTIk9SvrfGkb8ypk94emPBBIVBDCLwfSbAe0wFsKGKFdcB2BFGPg1+YrdZIUpHM1WIAOdwOT+nvygfEL9xOoMhDweQzzPmReeRMnjW7NgpX9pmkvBkUuP4XyX3JtdlnrBaJcqaK9IBJYEkqySnVgdfvYqYDh4/5JzUvLZxoi8JSWono2UbE/owxWdXvqVhoXFtp568uB15RI2viISiAdlMAklDpvJZ8Vo2zgLZZb454n/GW5pYZfJINdN+hNtP7c3CvVCL8VJS0jvjIZRAsuqCGXM+x/O6l+5QzjDVeVeXhP7NKCBJbbfwAFzP2Xmk6BFounRPICJOUTnBqzH+fO0jy3SpdIQvZiroCQnJwVOExsVgoZMC7y+Al9O/1fa1fUPB8w/QerRAMRuL2PnaV2y5q2ED9yQRHNTiA+Tk9WUtw8e/BcBy3/8QQ1quiqb3vnvxgFSIKP+5pnGMqjMFYLGTc3XJK/CZJOp19q77vIf1T5qD8FsSPJ+6r5IlwBHI90HKxJf8LH2QJsDegioYS3ggZl/AQxr8skmi0h72KEbOCEsUogg5GBUCyK3nM3L3MBPN4+4/1DtqnzzoE59RCwfEnTkTRHlRt03/MHvDEppJZ8TAVQ4KC2P2hdfQRpgCzaXsmSjrxzdbB+GYsPf4HP6IQ9tQ1surSMF4In7kuZe6Wnb7j3EOcEP3bGFLMk1iUVN0OufMy9udIHlk09PuwmEoPoxTkyJasnxkz7ds8jb9ax0BeR4T49PJEljX09jvkz6aWo+rxlkc8WH27UxofE+/9ywlAZ6oXFFcQNzJhtfmF1/wSTZd9wx52XTdHG6A
+ P0fcWMct
+ TsJ81QdjE7nE5ZrwnBvGduwiKbidfqlApWxPpX4+2X0Lc3j3mGLP5V4nZ0qhhqUvI1gCtb7OMNdlX5eGRTizVXRzlJPT4ZO+13YY9NVJSQIrynQ2epuiLoGa1DssAknrvoYQhQMsF4rvb8vLryU/Xv1HBqmV9PbgvyQwPXK8s7bQjxax4saRdqVq7dk+UJ5IYcPBt245OrqT67i3WXDOAzBfcAwi/Wuc0s7il4rgw+DqdOcLgQ1oqLibmVcS8YFoNdHb/eCmldlJ30o1lN0tXIx8YK15JBpPmJpp52Yy1anwnqJB6ZDsm0YBmnjQrx/xgcNdAnkkWllxjoJ50cTnu8ix4BTZ4iEo2LX4OdzIM7iQ2vt1Nqg8pRUsdC9XYucj3misN8n6WsR0TmtsKw2FH6PDm7yq8QB+EEgQUl/hm+XZC2D2aQIrsInansEeIuHUT0LRNrCwqoZ62yqsV8M3FXRkGyrw68G/nMLcDLRQ+Yo58ds8/fybxAXSs39Dlz2dep+nbnyZRh7+eT0fnEjWFvwmKwTCWwKBKo43ByS0wdPUWrTtQKGi3Ue3PbHxBwWMrZod2H57i3A4e1Tprslk/wBr+1+ZEoFa9SMXLpgsusd9Z00R3wlIAtlx0xx4Ry93gNc57
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,124 +231,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a memory region is allocated with vmalloc() and later expanded with
-vrealloc() — while still within the originally allocated size —
-KASAN may report a false positive because
-it does not update the tags for the newly expanded portion of the memory.
+On 11/23/25 19:32, Oleg Nesterov wrote:
+> Hi Bernd,
+> 
+> sorry for delay, I am on PTO, didn't read emails this week...
+> 
+> On 11/17, Bernd Edlinger wrote:
+>>
+>> On 11/17/25 16:01, Oleg Nesterov wrote:
+>>> On 11/17, Bernd Edlinger wrote:
+>>>>
+>>>> On 11/11/25 10:21, Christian Brauner wrote:
+>>>>> On Wed, Nov 05, 2025 at 03:32:10PM +0100, Oleg Nesterov wrote:
+>>>>
+>>>>>> But this is minor. Why do we need "bool unsafe_execve_in_progress" ?
+>>>>>> If this patch is correct, de_thread() can drop/reacquire cred_guard_mutex
+>>>>>> unconditionally.
+>>>>>>
+>>>>
+>>>> I would not like to drop the mutex when no absolutely necessary for performance reasons.
+>>>
+>>> OK, I won't insist... But I don't really understand how this can help to
+>>> improve the performance. If nothing else, this adds another for_other_threads()
+>>> loop.
+>>>
+>>
+>> If no dead-lock is possible it is better to complete the de_thread without
+>> releasing the mutex.  For the debugger it is also the better experience,
+>> no matter when the ptrace_attack happens it will succeed rather quickly either
+>> before the execve or after the execve.
+> 
+> I still disagree, I still don't understand the "performance reasons", but since I can't
+> convince you I won't really argue.
+> 
+>>>>>>> +	if (unlikely(unsafe_execve_in_progress)) {
+>>>>>>> +		spin_unlock_irq(lock);
+>>>>>>> +		sig->exec_bprm = bprm;
+>>>>>>> +		mutex_unlock(&sig->cred_guard_mutex);
+>>>>>>> +		spin_lock_irq(lock);
+>>>>>>
+>>>>>> I don't think spin_unlock_irq() + spin_lock_irq() makes any sense...
+>>>>>>
+>>>>
+>>>> Since the spin lock was acquired while holding the mutex, both should be
+>>>> unlocked in reverse sequence and the spin lock re-acquired after releasing
+>>>> the mutex.
+>>>
+>>> Why?
+>>>
+>>
+>> It is generally more safe when each thread acquires its mutexes in order and
+>> releases them in reverse order.
+>> Consider this:
+>> Thread A:
+>> holds spin_lock_irq(siglock);
+>> does mutes_unlock(cred_guard_mutex); with irq disabled.
+>> task switch happens to Thread B which has irq enabled.
+>> and is waiting for cred_guard_mutex.
+>> Thrad B:
+>> does mutex_lock(cred_guard_mutex);
+>> but is interrupted this point and the interrupt handler I executes
+>> now iterrupt handler I wants to take siglock and is blocked,
+>> because the system one single CPU core.
+> 
+> I don't follow. Do you mean PREEMPT_RT ?
+> 
+> If yes. In this case spin_lock_irq() is rt_spin_lock() which doesn't disable irqs,
+> it does rt_lock_lock() (takes rt_mutex) + migrate_disable().
+> 
+> I do think that spin/mutex/whatever_unlock() is always safe. In any order, and
+> regardless of RT.
+> 
 
-A typical example of this pattern occurs in the BPF verifier,
-and the following is a related false positive report:
+Well, based on my experience with other embedded real-time O/S-es, I would
+expect that something named spin_lock_irq locks the task-specific IRQ, and
+prevents task switches due to time-slicing, while something called
+mutes_unlock may cause an explicit task switch, when another task is waiting
+for the mutex.
 
-[ 2206.486476] ==================================================================
-[ 2206.486509] BUG: KASAN: invalid-access in __memcpy+0xc/0x30
-[ 2206.486607] Write at addr f5ff800083765270 by task test_progs/205
-[ 2206.486664] Pointer tag: [f5], memory tag: [fe]
-[ 2206.486703]
-[ 2206.486745] CPU: 4 UID: 0 PID: 205 Comm: test_progs Tainted: G           OE       6.18.0-rc7+ #145 PREEMPT(full)
-[ 2206.486861] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[ 2206.486897] Hardware name:  , BIOS
-[ 2206.486932] Call trace:
-[ 2206.486961]  show_stack+0x24/0x40 (C)
-[ 2206.487071]  __dump_stack+0x28/0x48
-[ 2206.487182]  dump_stack_lvl+0x7c/0xb0
-[ 2206.487293]  print_address_description+0x80/0x270
-[ 2206.487403]  print_report+0x94/0x100
-[ 2206.487505]  kasan_report+0xd8/0x150
-[ 2206.487606]  __do_kernel_fault+0x64/0x268
-[ 2206.487717]  do_bad_area+0x38/0x110
-[ 2206.487820]  do_tag_check_fault+0x38/0x60
-[ 2206.487936]  do_mem_abort+0x48/0xc8
-[ 2206.488042]  el1_abort+0x40/0x70
-[ 2206.488127]  el1h_64_sync_handler+0x50/0x118
-[ 2206.488217]  el1h_64_sync+0xa4/0xa8
-[ 2206.488303]  __memcpy+0xc/0x30 (P)
-[ 2206.488412]  do_misc_fixups+0x4f8/0x1950
-[ 2206.488528]  bpf_check+0x31c/0x840
-[ 2206.488638]  bpf_prog_load+0x58c/0x658
-[ 2206.488737]  __sys_bpf+0x364/0x488
-[ 2206.488833]  __arm64_sys_bpf+0x30/0x58
-[ 2206.488920]  invoke_syscall+0x68/0xe8
-[ 2206.489033]  el0_svc_common+0xb0/0xf8
-[ 2206.489143]  do_el0_svc+0x28/0x48
-[ 2206.489249]  el0_svc+0x40/0xe8
-[ 2206.489337]  el0t_64_sync_handler+0x84/0x140
-[ 2206.489427]  el0t_64_sync+0x1bc/0x1c0
+It is hard to follow how linux implements that spin_lock_irq exactly, but
+to me it looks like it is done this way:
 
-Here, 0xf5ff800083765000 is vmalloc()ed address for
-env->insn_aux_data with the size of 0x268.
-While this region is expanded size by 0x478 and initialise
-increased region to apply patched instructions,
-a false positive is triggered at the address 0xf5ff800083765270
-because __kasan_unpoison_vmalloc() with KASAN_VMALLOC_PROT_NORMAL flag only
-doesn't update the tag on increaed region.
+include/linux/spinlock_api_smp.h:static inline void __raw_spin_lock_irq(raw_spinlock_t *lock)
+include/linux/spinlock_api_smp.h-{
+include/linux/spinlock_api_smp.h-       local_irq_disable();
+include/linux/spinlock_api_smp.h-       preempt_disable();
+include/linux/spinlock_api_smp.h-       spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+include/linux/spinlock_api_smp.h-       LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
+include/linux/spinlock_api_smp.h-}
 
-To address this, introduces KASAN_VMALLOC_EXPAND flag which
-is used to expand vmalloc()ed memory in range of real allocated size
-to update tag for increased region.
+so an explicit task switch while locka_irq_disable looks
+very dangerous to me.  Do you know other places where such
+a code pattern is used?
 
-Fixes: 23689e91fb22 ("kasan, vmalloc: add vmalloc tagging for HW_TAGS”)
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- include/linux/kasan.h |  1 +
- mm/kasan/hw_tags.c    | 11 +++++++++--
- mm/vmalloc.c          |  1 +
- 3 files changed, 11 insertions(+), 2 deletions(-)
+I do just ask, because a close look at those might reveal
+some serious bugs, WDYT?
 
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index d12e1a5f5a9a..0608c5d4e6cf 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -28,6 +28,7 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
- #define KASAN_VMALLOC_INIT		((__force kasan_vmalloc_flags_t)0x01u)
- #define KASAN_VMALLOC_VM_ALLOC		((__force kasan_vmalloc_flags_t)0x02u)
- #define KASAN_VMALLOC_PROT_NORMAL	((__force kasan_vmalloc_flags_t)0x04u)
-+#define KASAN_VMALLOC_EXPAND		((__force kasan_vmalloc_flags_t)0x08u)
 
- #define KASAN_VMALLOC_PAGE_RANGE 0x1 /* Apply exsiting page range */
- #define KASAN_VMALLOC_TLB_FLUSH  0x2 /* TLB flush */
-diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-index 1c373cc4b3fa..d768c7360093 100644
---- a/mm/kasan/hw_tags.c
-+++ b/mm/kasan/hw_tags.c
-@@ -347,7 +347,7 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
- 	 *
- 	 * For non-VM_ALLOC allocations, page_alloc memory is tagged as usual.
- 	 */
--	if (!(flags & KASAN_VMALLOC_VM_ALLOC)) {
-+	if (!(flags & (KASAN_VMALLOC_VM_ALLOC | KASAN_VMALLOC_EXPAND))) {
- 		WARN_ON(flags & KASAN_VMALLOC_INIT);
- 		return (void *)start;
- 	}
-@@ -361,7 +361,14 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
- 		return (void *)start;
- 	}
-
--	tag = kasan_random_tag();
-+	if (flags & KASAN_VMALLOC_EXPAND) {
-+		size = round_up(size + ((unsigned long)start & KASAN_GRANULE_MASK),
-+				KASAN_GRANULE_SIZE);
-+		start = PTR_ALIGN_DOWN(start, KASAN_GRANULE_SIZE);
-+		tag = get_tag(start);
-+	} else
-+		tag = kasan_random_tag();
-+
- 	start = set_tag(start, tag);
-
- 	/* Unpoison and initialize memory up to size. */
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 798b2ed21e46..6bfbf26fea3b 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4176,6 +4176,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 	 */
- 	if (size <= alloced_size) {
- 		kasan_unpoison_vmalloc(p + old_size, size - old_size,
-+				       KASAN_VMALLOC_EXPAND |
- 				       KASAN_VMALLOC_PROT_NORMAL);
- 		/*
- 		 * No need to zero memory here, as unused memory will have
---
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+Thanks
+Bernd.
 
 
