@@ -4,119 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A0BCFD2F6
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 05:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F0D1D116F3
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 07:01:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85E2F6B000C; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
+	id 068066B000C; Sat, 29 Nov 2025 02:00:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8153A6B000D; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
+	id 018F36B000D; Sat, 29 Nov 2025 02:00:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 701BA6B000E; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
+	id E70956B000E; Sat, 29 Nov 2025 02:00:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BE7A6B000C
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 00:57:38 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE9C987C4D
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 05:57:37 +0000 (UTC)
-X-FDA: 84162587754.15.A2A6C1D
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DDE3A40004
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 05:57:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F5MoRF1T;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764395856;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7pucvq8UTv64qpwVHdPIZ+2FfvakzVEyw07NIdj5Q+U=;
-	b=MElXCuMvfUtNpzWfEcC/v+dILmLiqI/YhJdXk3T2MuGfuLK3U8+yJq2C5h+kp/zr3koiAS
-	bdUMxm07GgES5LbPOAPKnEuS0eIVhrzUGAw5duoizmbSQmdcMb7+fYL4cMjs0GAqpr14F2
-	YjIu6Zouia53J0N/NxH7A2voAAInM6A=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F5MoRF1T;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764395856; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id D7EC56B000C
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 02:00:58 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 327F9BA6BA
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:00:58 +0000 (UTC)
+X-FDA: 84162747396.19.7A80F48
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 83C3C1C0014
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:00:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=byw6nCh+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764399656; a=rsa-sha256;
 	cv=none;
-	b=ojAGZmrEkZdufboH/xChXCnipmrW7qxQswLuBu2dVBZNy38Xkk4bsm2+3j0jAnw/fBHDn+
-	f/a7Jkc6IHSBgy08CMlrcbUQ7O7jBCebY3C81ZX4JgQGocA8ABXbdETuTXdYaW552oWc7j
-	1wW+B4J2dVjVszQO8iReIES5/EWN1EE=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64198771a9bso4810093a12.2
-        for <linux-mm@kvack.org>; Fri, 28 Nov 2025 21:57:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764395854; x=1765000654; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7pucvq8UTv64qpwVHdPIZ+2FfvakzVEyw07NIdj5Q+U=;
-        b=F5MoRF1Tkbn0kcYb8XmTqZx7lK0vKyNWdYhn0kUplrnJGi4XIjd+RH+yGTvHtFnna4
-         vgtwgYhzIY4ZeIiuYk3yZnPE9NuqwrIvGfBjtQLAvmoT5+IPvgjJ8E1Aen0J2V/7Y4Tj
-         JMfRSD5Ix6DnLlWI4fV60w7tPz6iTP3dLiLazCPdLUHOBj2uf/uPJD2sonOWhSiKQA9m
-         +bRsaMVzWGI7+Q95yeWg70pgPjJIeRvg9Fl/uTIf8qoc2+brchlhYFYdJr2UzsCHO5+1
-         JpYh7Q5NIwO2Zp7K/DPSN3j0pS2dilTISvBPF2jv//0Of1RtQ6m4h0JobtU5wW218v99
-         Fk/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764395854; x=1765000654;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7pucvq8UTv64qpwVHdPIZ+2FfvakzVEyw07NIdj5Q+U=;
-        b=DCUigYJ/abWTE5NFFlNBATz8AdQXwhF34pwQE9MWQKyC0pzVxbV+4bJYBPzNsauypk
-         X2JUDlMzTEuXXblN5t/nT0JTBh3TE9joKtrZ26WsS/VICMeKrCj78CKlxrZdveH3e4V0
-         CCH6OIw87qsdt50Ugo7HNDKEvMspxBW+FWhrc/YNdEgtgBc0S3HKKd7pqxUEXEpep1t7
-         YntUZqIhdtOGRRnb9winvXSBXXJwbDUHMHM9JuQCs+LusNwGF9AtCpioFQOyP6eQ19Pp
-         SlJu1GE2T6VnU0s5DnVzGWnxlxF8viaDKAxQ9+PBhh72i2CId2tLChJytiyaj3BWa5nT
-         DU9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWf/AY8uT2f774AiJoBpwkMNO9uCCtKyiplPMi2JFGllc2aF/TxF9yyrFgoIoIYSX0zcIkqakuX3Q==@kvack.org
-X-Gm-Message-State: AOJu0YytQkLesarQM36HukEzjZQIXN4MaXq5swPP+tCR6AlwKXrCPOBp
-	mkS+OfWuNLxEAptWzd7gfdsF2xCCrL3kzHyIRME1d2qJDYCiPcceUIAJfnH+xeuKBmaiSGhcsou
-	YDaTat+Z2ByAsaODwN9l3YV0bKy3xcP4=
-X-Gm-Gg: ASbGnct77QGvwLuCZ+kbHclkphwot/QD+xSUHTmmkm1dxIOby1jA2UdL+2vk741+7Xi
-	drhhH4ZQBlkNNlDs5BhVouK+9OwalEsSWXzkclcSukN9BfGxCR20JbhfX6VHfG1x1E63AAVbBmT
-	Mg52RlS9kMKbuBQeFSlnZnlQ7ObmAP4yzVWnDrU6Vuxs3oq25EaGx4MtXwWIbo6D0x54qC2dkkS
-	afBtAqcj5ziR+GTDg3FbrvVGZYbJDyho+5IbvvKUleATHw292ugEpoP08Gg5yCB1hBYcbKmIYUC
-	hkrxDli7N6/Y0MYwxhitAh144g==
-X-Google-Smtp-Source: AGHT+IGgaoRpdfEmgc8Id6eVtbvXCmDKZ6RVqHgdv+n0xRKP3FUTsLvtBF+027sAzwMYNBHB0rtwcqnSPG2haI6VYHA=
-X-Received: by 2002:a05:6402:1475:b0:640:c8b8:d55 with SMTP id
- 4fb4d7f45d1cf-64554339bd6mr31939720a12.3.1764395853975; Fri, 28 Nov 2025
- 21:57:33 -0800 (PST)
-MIME-Version: 1.0
-References: <20251127233635.4170047-1-krisman@suse.de> <f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
- <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
-In-Reply-To: <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Sat, 29 Nov 2025 06:57:21 +0100
-X-Gm-Features: AWmQ_bn6jVVRbPFZERZlQjSy9G6SnJ7CCksAbVsbn-o8u7rsKoU4Ih49F9s24kM
-Message-ID: <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
- single-threaded tasks
-To: Jan Kara <jack@suse.cz>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Gabriel Krisman Bertazi <krisman@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DDE3A40004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: npqkdo3k8acg8iydie5hnzn7p3sqx968
+	b=cvo1TJbyFSx6wp47RkXiy7MxQOS6UmH4Oq9uJZDNhGiujKZT6J8sHIA4jGYcsTrNf/f8Yu
+	3ah/HD3MsPP6KIQgPgVbEY4TsslKK3PHf7qUxWbsfRNImOKRe1wUQAWbGOyH6nDXWUsEBF
+	vkR5pfkPjRNqRdqGBWLI6ThWZ9ehBwM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=byw6nCh+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764399656;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=M6galFviRWdunR5IYFBmpvGwaXmADHhDwNiAGFdd1r4=;
+	b=5i/fAkdyPbciZibC/R7XciHOHKmiTq+Ky/sodXI+/YKoxF61JYaSOqr0PnzMgCunkTh8gr
+	tti39ZFHv4w0GBvBuXYN5mRy0rQvvNSKN0bjNpLbzAyu+9bvWN1NC5K23qe1NS46ijSgq1
+	y8Me2+mfk51LNsbRx33GNFjFNsK1Sk8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764399656; x=1795935656;
+  h=date:from:to:cc:subject:message-id;
+  bh=eoT27Hqh3tozWvnJxb55nBANpp/pJzSTa3BR0P6dk3E=;
+  b=byw6nCh+zFrKT9z4JVlnD+OE+OiryRthdLZqNHjTVellD4WowVrL5HmK
+   q8u+I5AoEdu5H8ijuk9Mha0JWT49Qqa0V4Lwt0ACVT44iRsDUPKaECflv
+   kbmznuCRVE4sDyRbqWK3bNzkFsXoYrcTYH74w1MDH1yHJsG49TdFI9ZuF
+   BpvVyngHC6gVZWlMcA+iY/L8X076C4bqyXmmIZgs7f3rV1PeJrs3WgypO
+   InthzqEcJRdzDpYqqjNOh2bu+mb6Z4MG2x1u+NVVZKz6K02y6rTH4LFlb
+   DjN7rylOrpWlzJI4DVyad84NPzM/cU84upIenE68uZ/s2HkoLAmv/Kjf1
+   Q==;
+X-CSE-ConnectionGUID: BuW/uX0CTgq2tToADXtj2w==
+X-CSE-MsgGUID: hIR78mDgSt+zsEYZBNDshQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="66445506"
+X-IronPort-AV: E=Sophos;i="6.20,235,1758610800"; 
+   d="scan'208";a="66445506"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 23:00:54 -0800
+X-CSE-ConnectionGUID: 18wobYsESjGi4WDgfRkWWQ==
+X-CSE-MsgGUID: Pxb2COR+QfmXqHPxNTRYiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,235,1758610800"; 
+   d="scan'208";a="198725108"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 28 Nov 2025 23:00:52 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vPEws-0000000071h-0AAK;
+	Sat, 29 Nov 2025 07:00:50 +0000
+Date: Sat, 29 Nov 2025 15:00:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 7d31f578f3230f3b7b33b0930b08f9afd8429817
+Message-ID: <202511291501.P3J6cF8e-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 83C3C1C0014
+X-Stat-Signature: ss6ti3j3c1egfq8hgscoa5k58mizdem3
 X-Rspam-User: 
-X-HE-Tag: 1764395855-54506
-X-HE-Meta: U2FsdGVkX1+x0ceOWMxsTvjXn+sQWXeRYqECZTwk2A39oqGQkE+yquu/CQvkf/MUtcy8WBWBpitNMh1THSD++YNO3YM8jG01tdp++hGdudXxqd3sSsJEWEbGAUT+Ae4cVfQPplatPWrl0Y2hsstAdGoMIdq9SEI3M0EghjPrUV4xqC8FBfTxRzw7gbQcEU4F48cr0xU+y+ZzQMVblXoBo8chCgY+C0SHwOlxSqozVY8DT4KIGOc7xgWH4A2Uu9uWnjbPifsoaN9zNIYr/cu1+3IY/6FmTWPechR1+KnJxZWdn0u67SrM8yCEm7F7L9iyZyOyg79P6Cl1jOu0qZFOpZ/PwJw/kysxoi4K5nu7qT1M3pkwsDgB0fpN5pU6X5+34ONz6njAhynBWld1EMLANEh9L24lyALWlbruQIh4IiAhZcNSDcQb+pnwTJDmXl7AGj0ul9Nl8KZ+wAraMLG1+/IFwYZgpN4+s80gQtPz/x8ue4rQU7KQOR2WIXcdy4Df4/0hpK+lDs6a2ySYIuuT5CezJepOdm+APfiImqMrRSMPazpGh4JgSPzYZ2Za1Zmg6GRvGh0eJqPAITLyKznuRrTZZbqzAPyFXcYSV41zWTBbnODCo9Ut+Q1SVvL+wyXQaBYMb7XunhQXGYZ+5YLH36zYdIQ79f14AziE87+f6e1yy69QCpGoloXsaHyvQSH8A0OhzOEkrx+ZGdl/FIs7bx9+8R37Hl+YELgtVzLUUEdroed67pfkfzSCn62NDeKo3u9DQJaYM8CiMxDkQmsXUM+0zR1VzMDh3t/1JxdcFV7guHeH/do1m/hPW5jflffQxR4a6alVzv+1GHr23tx2mpsrZg/h9Wz4ibJmKtFFiGl9/8j35Od6fEsVn5gYt7AuTyJ3FjblGdCm7rg+2Tn5IFDkPqzuwLyAbvdBau8Z9qPkXNG2bUJj272F0gxNtCSDozk5SxUL6T0ZbUjY7lz
- Jip//JlL
- 12CEU4VQLoEQtUtBatBoYaOQ8DzJwUUosh6nFyj133r1G9Hgz464O/R50yvEYGZkqbL9ZyoXX83GuCikJ0srOOLasCIhSnpwz797qOhXcUuzrpFkTCP+6DAoaRY4Rc5myMhiWvaCNJyHsQUEJueJUf5626tSvPIDB1ibFOPAMzuTw3DcSTtHjmhUC61cvvS8cSqRfUjTpi/JLv1FZUV0focY2Ph+lhQznVZ5+UnjwSRDcd6ZD1Qbc2En3iHLoRkckRqclZUs+E4P3/NrRhwagT1sJqoU4FolP4ENzRfaxshMlgHSO0oI++i6iaQkOMgiMbOCT5kRXuQwbpLJymwX3m0UA/ZG1BCWkmbPmSVlt9QYwLKSfFI00xHe0spZxpwHT4bWzD7fv4hwpTinOWWYmum4oqoh5o8wWy+N/zDXQcElUzUY=
+X-HE-Tag: 1764399655-842779
+X-HE-Meta: U2FsdGVkX18NYjY1KCfahY9+xduaEagxkao6WL7V3IdHJoUMnq8L9/w4zFLcfFJDxqaU6xOEZOOE4+Fa4etwlHGl8OyqwWcVzE9/vhaY+qJqDaRFL0zJtofOIZXRv4EXL4w5R/SibWz/09eV9DwxowawyC/XlwGxO7x9aoWWiVt4VD3IW8bL338vlbCy5Y+RIsu1CHmKT9tqmpawFQre5OLVXFl+jqKAECF207h2Pf3dM4STTsuIaWRVSwWdbINXPscKbf/+qq4cgq0N/i/7qFeRy46Zf2KruIWrZvdrrx2N3OLa2xDPxjl8KfHgd0Ix0m4t9UDpmZeRdkTmaNTe39Jil6JHB7O8PATMHpNpSL4Fg/UMTnFS8yIaSI/liQQFNbp4GWzyJS+jH8C24lWqo00EHEjrSbIUpCGrZ56wNjtXmp0GW5Eb+pK2D1YQwBoCq1OBOtGFTNuSh7MXhonUONQil4Uls9SDS3AgNhKrhI6xOAyxagdhyOYFGslQQyT5uoHIjjhQdyt0eJVhoMkP0BW37zmspY2ax90dFIqoJoq+0iAU2p2sqgfeCfE7MfaGjA4YoR3cKOG6Qc+taWn0HdA3Oasq6Zo/3Xa2QAzDZ+V/o7CMzTO3H260kIoW2SOK44823kbGtAoQ9cv6Smpiv7cyDwfnyjFSrMD04CxQyysJerHT4uPZIT2hFrFD5G/EQwSM+LtyhVymbWG/hZEEvmOF+os8TOJ/1qBOHNjAd7IcOFov0k/x8gneem+tS+D/wv0JJ6Yd7X/SZ4uHzCy0+hD8tmYYD91msmsKuLfvfhE9RTT4MNHN37NHF12r6fbawiLmQM4jhMGiSZjATL3gUTELsBxIpYDcLjJRBBJ9uXtgBgyJtIoV0A1sVjzcIRRgGmLuLAlgcptfqWa3N4INX/Pkh9Gdu21z1iZngFSgkio8rxnUybFWx69BgV9etw14Joey5EUWeHwMyKUge3h
+ snI5NyYV
+ z9Nu35aKc0QtCtqlaAQvmqkc6LygR0Vs0DTtvsq5dk0T16Y0woHXCYO5qJDMzfUC7FOcKCi/O0iJoxchy/jbX3BRQT0214Jiy1VSjiFe/kt8FtorIbXtuBEtyBMfU0nonY5Zk8jmuoN+GDK8ZnLYJpalTfLtX8K9kCBljcfpy6p9S7nlrgBqDlINmww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,165 +101,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 28, 2025 at 9:10=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
-> On Fri 28-11-25 08:30:08, Mathieu Desnoyers wrote:
-> > What would really reduce memory allocation overhead on fork
-> > is to move all those fields into a top level
-> > "struct mm_percpu_struct" as a first step. This would
-> > merge 3 per-cpu allocations into one when forking a new
-> > task.
-> >
-> > Then the second step is to create a mm_percpu_struct
-> > cache to bypass the per-cpu allocator.
-> >
-> > I suspect that by doing just that we'd get most of the
-> > performance benefits provided by the single-threaded special-case
-> > proposed here.
->
-> I don't think so. Because in the profiles I have been doing for these
-> loads the biggest cost wasn't actually the per-cpu allocation itself but
-> the cost of zeroing the allocated counter for many CPUs (and then the
-> counter summarization on exit) and you're not going to get rid of that wi=
-th
-> just reshuffling per-cpu fields and adding slab allocator in front.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 7d31f578f3230f3b7b33b0930b08f9afd8429817  Add linux-next specific files for 20251128
 
-The entire ordeal has been discussed several times already. I'm rather
-disappointed there is a new patchset posted which does not address any
-of it and goes straight to special-casing single-threaded operation.
+Error/Warning (recently discovered and may have been fixed):
 
-The major claims (by me anyway) are:
-1. single-threaded operation for fork + exec suffers avoidable
-overhead even without the rss counter problem, which are tractable
-with the same kind of thing which would sort out the multi-threaded
-problem
-2. unfortunately there is an increasing number of multi-threaded (and
-often short lived) processes (example: lld, the linker form the llvm
-project; more broadly plenty of things Rust where people think
-threading =3D=3D performance)
+    https://lore.kernel.org/oe-kbuild-all/202511281900.DQmp9w3q-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202511282325.uVQFRTkA-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202511281720.i9qJCv8H-lkp@intel.com
 
-Bottom line is, solutions like the one proposed in the patchset are at
-best a stopgap and even they leave performance on the table for the
-case they are optimizing for.
+    net/can/raw.c:933: undefined reference to `safe_candev_priv'
+    net/can/raw.c:933:(.text+0x284): relocation truncated to fit: R_NIOS2_CALL26 against `safe_candev_priv'
+    pinctrl-pic64gx-gpio2.c:(.rodata.cst4+0x4): undefined reference to `pinconf_generic_dt_node_to_map'
+    sound/soc/sdca/sdca_class_function.c:349:(.text+0x41bb038): undefined reference to `__devm_regmap_init_sdw_mbq'
 
-The pragmatic way forward (as I see it anyway) is to fix up the
-multi-threaded thing and see if trying to special case for
-single-threaded case is justifiable afterwards.
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
-Given that the current patchset has to resort to atomics in certain
-cases, there is some error-pronnes and runtime overhead associated
-with it going beyond merely checking if the process is
-single-threaded, which puts an additional question mark on it.
+    drivers/gpib/common/gpib_os.c:816 ibioctl() warn: inconsistent returns '&board->big_gpib_mutex'.
+    drivers/iommu/generic_pt/fmt/../iommu_pt.h:628 pt_iommu_amdv1_map_pages() warn: impossible condition '(paddr > 18446744073709551615) => (0-u64max > u64max)'
+    mm/page_alloc.c:6159:1: internal compiler error: in arc_ccfsm_record_condition, at config/arc/arc.c:4800
 
-Now to business:
-You mentioned the rss loops are a problem. I agree, but they can be
-largely damage-controlled. More importantly there are 2 loops of the
-sort already happening even with the patchset at hand.
+Error/Warning ids grouped by kconfigs:
 
-mm_alloc_cid() results in one loop in the percpu allocator to zero out
-the area, then mm_init_cid() performs the following:
-        for_each_possible_cpu(i) {
-                struct mm_cid *pcpu_cid =3D per_cpu_ptr(mm->pcpu_cid, i);
+recent_errors
+|-- arc-randconfig-002-20251129
+|   `-- mm-page_alloc.c:internal-compiler-error:in-arc_ccfsm_record_condition-at-config-arc-arc.c
+|-- i386-randconfig-141-20251125
+|   `-- drivers-gpib-common-gpib_os.c-ibioctl()-warn:inconsistent-returns-board-big_gpib_mutex-.
+|-- i386-randconfig-141-20251127
+|   `-- drivers-iommu-generic_pt-fmt-..-iommu_pt.h-pt_iommu_amdv1_map_pages()-warn:impossible-condition-(paddr-)-(-u64max-u64max)
+|-- nios2-randconfig-002-20251128
+|   |-- net-can-raw.c:(.text):relocation-truncated-to-fit:R_NIOS2_CALL26-against-safe_candev_priv
+|   `-- net-can-raw.c:undefined-reference-to-safe_candev_priv
+|-- parisc-randconfig-002-20251129
+|   `-- pinctrl-pic64gx-gpio2.c:(.rodata.cst4):undefined-reference-to-pinconf_generic_dt_node_to_map
+`-- x86_64-randconfig-006-20251128
+    `-- sound-soc-sdca-sdca_class_function.c:(.text):undefined-reference-to-__devm_regmap_init_sdw_mbq
 
-                pcpu_cid->cid =3D MM_CID_UNSET;
-                pcpu_cid->recent_cid =3D MM_CID_UNSET;
-                pcpu_cid->time =3D 0;
-        }
+elapsed time: 1450m
 
-There is no way this is not visible already on 256 threads.
+configs tested: 141
+configs skipped: 2
 
-Preferably some magic would be done to init this on first use on given
-CPU.There is some bitmap tracking CPU presence, maybe this can be
-tackled on top of it. But for the sake of argument let's say that's
-too expensive or perhaps not feasible. Even then, the walk can be done
-*once* by telling the percpu allocator to refrain from zeroing memory.
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20251128    gcc-8.5.0
+arc                   randconfig-002-20251128    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                                 defconfig    clang-22
+arm                        mvebu_v5_defconfig    gcc-15.1.0
+arm                   randconfig-001-20251128    gcc-14.3.0
+arm                   randconfig-002-20251128    gcc-8.5.0
+arm                   randconfig-003-20251128    clang-22
+arm                   randconfig-004-20251128    clang-17
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20251128    clang-22
+arm64                 randconfig-002-20251128    clang-20
+arm64                 randconfig-003-20251128    clang-22
+arm64                 randconfig-004-20251128    gcc-10.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20251128    gcc-15.1.0
+csky                  randconfig-002-20251128    gcc-12.5.0
+hexagon                           allnoconfig    clang-22
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20251128    clang-22
+hexagon               randconfig-002-20251128    clang-22
+i386                              allnoconfig    gcc-14
+i386        buildonly-randconfig-001-20251128    gcc-14
+i386        buildonly-randconfig-002-20251128    clang-20
+i386        buildonly-randconfig-003-20251128    clang-20
+i386        buildonly-randconfig-004-20251128    clang-20
+i386        buildonly-randconfig-005-20251128    gcc-13
+i386        buildonly-randconfig-006-20251128    clang-20
+i386                                defconfig    clang-20
+i386                  randconfig-001-20251128    clang-20
+i386                  randconfig-002-20251128    clang-20
+i386                  randconfig-003-20251128    clang-20
+i386                  randconfig-004-20251128    gcc-14
+i386                  randconfig-005-20251128    clang-20
+i386                  randconfig-006-20251128    clang-20
+i386                  randconfig-007-20251128    gcc-14
+i386                  randconfig-011-20251128    gcc-12
+i386                  randconfig-012-20251128    gcc-14
+i386                  randconfig-013-20251128    clang-20
+i386                  randconfig-014-20251128    clang-20
+i386                  randconfig-015-20251128    gcc-14
+i386                  randconfig-016-20251128    gcc-14
+i386                  randconfig-017-20251128    gcc-14
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20251128    gcc-15.1.0
+loongarch             randconfig-002-20251128    clang-22
+m68k                              allnoconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                        bcm47xx_defconfig    clang-18
+mips                        omega2p_defconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20251128    gcc-8.5.0
+nios2                 randconfig-002-20251128    gcc-10.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20251128    gcc-14.3.0
+parisc                randconfig-002-20251128    gcc-15.1.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                       ppc64_defconfig    clang-22
+powerpc               randconfig-001-20251128    gcc-11.5.0
+powerpc               randconfig-002-20251128    clang-22
+powerpc                     tqm8540_defconfig    gcc-15.1.0
+powerpc64             randconfig-001-20251128    clang-22
+powerpc64             randconfig-002-20251128    gcc-8.5.0
+riscv                             allnoconfig    gcc-15.1.0
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20251128    gcc-11.5.0
+riscv                 randconfig-002-20251128    gcc-8.5.0
+s390                              allnoconfig    clang-22
+s390                                defconfig    clang-22
+s390                  randconfig-001-20251128    clang-22
+s390                  randconfig-002-20251128    clang-22
+sh                                allnoconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20251128    gcc-13.4.0
+sh                    randconfig-002-20251128    gcc-15.1.0
+sh                          rsk7201_defconfig    gcc-15.1.0
+sh                           se7724_defconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20251128    gcc-8.5.0
+sparc                 randconfig-002-20251128    gcc-15.1.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20251128    gcc-12.5.0
+sparc64               randconfig-002-20251128    gcc-12.5.0
+um                                allnoconfig    clang-22
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20251128    clang-22
+um                    randconfig-002-20251128    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64      buildonly-randconfig-001-20251128    clang-20
+x86_64      buildonly-randconfig-002-20251128    gcc-14
+x86_64      buildonly-randconfig-003-20251128    gcc-14
+x86_64      buildonly-randconfig-004-20251128    gcc-14
+x86_64      buildonly-randconfig-005-20251128    clang-20
+x86_64      buildonly-randconfig-006-20251128    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20251128    gcc-14
+x86_64                randconfig-002-20251128    gcc-14
+x86_64                randconfig-003-20251128    gcc-14
+x86_64                randconfig-004-20251128    clang-20
+x86_64                randconfig-005-20251128    gcc-14
+x86_64                randconfig-006-20251128    gcc-14
+x86_64                randconfig-011-20251128    gcc-14
+x86_64                randconfig-012-20251128    gcc-13
+x86_64                randconfig-013-20251128    clang-20
+x86_64                randconfig-014-20251128    clang-20
+x86_64                randconfig-015-20251128    clang-20
+x86_64                randconfig-016-20251128    clang-20
+x86_64                randconfig-071-20251128    clang-20
+x86_64                randconfig-072-20251128    gcc-14
+x86_64                randconfig-073-20251128    clang-20
+x86_64                randconfig-074-20251128    gcc-14
+x86_64                randconfig-075-20251128    gcc-14
+x86_64                randconfig-076-20251128    clang-20
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20251128    gcc-15.1.0
+xtensa                randconfig-002-20251128    gcc-8.5.0
 
-Which brings me to rss counters. In the current kernel that's
-*another* loop over everything to zero it out. But it does not have to
-be that way. Suppose bitmap shenanigans mentioned above are no-go for
-these as well.
-
-So instead the code could reach out to the percpu allocator to
-allocate memory for both cid and rss (as mentined by Mathieu), but
-have it returned uninitialized and loop over it once sorting out both
-cid and rss in the same body. This should be drastically faster than
-the current code.
-
-But one may observe it is an invariant the values sum up to 0 on process ex=
-it.
-
-So if one was to make sure the first time this is handed out by the
-percpu allocator the values are all 0s and then cache the area
-somewhere for future allocs/frees of mm, there would be no need to do
-the zeroing on alloc.
-
-On the free side summing up rss counters in check_mm() is only there
-for debugging purposes. Suppose it is useful enough that it needs to
-stay. Even then, as implemented right now, this is just slow for no
-reason:
-
-        for (i =3D 0; i < NR_MM_COUNTERS; i++) {
-                long x =3D percpu_counter_sum(&mm->rss_stat[i]);
-[snip]
-        }
-
-That's *four* loops with extra overhead of irq-trips for every single
-one. This can be patched up to only do one loop, possibly even with
-irqs enabled the entire time.
-
-Doing the loop is still slower than not doing it, but his may be just
-fast enough to obsolete the ideas like in the proposed patchset.
-
-While per-cpu level caching for all possible allocations seems like
-the easiest way out, it in fact does *NOT* fully solve problem -- you
-are still going to globally serialize in lru_gen_add_mm() (and the del
-part), pgd_alloc() and other places.
-
-Or to put it differently, per-cpu caching of mm_struct itself makes no
-sense in the current kernel (with the patchset or not) because on the
-way to finish the alloc or free you are going to globally serialize
-several times and *that* is the issue to fix in the long run. You can
-make the problematic locks fine-grained (and consequently alleviate
-the scalability aspect), but you are still going to suffer the
-overhead of taking them.
-
-As far as I'm concerned the real long term solution(tm) would make the
-cached mm's retain the expensive to sort out state -- list presence,
-percpu memory and whatever else.
-
-To that end I see 2 feasible approaches:
-1. a dedicated allocator with coarse granularity
-
-Instead of per-cpu, you could have an instance for every n threads
-(let's say 8 or whatever). this would pose a tradeoff between total
-memory usage and scalability outside of a microbenchmark setting. you
-are still going to serialize in some cases, but only once on alloc and
-once on free, not several times and you are still cheaper
-single-threaded. This is faster all around.
-
-2. dtor support in the slub allocator
-
-ctor does the hard work and dtor undoes it. There is an unfinished
-patchset by Harry which implements the idea[1].
-
-There is a serious concern about deadlock potential stemming from
-running arbitrary dtor code during memory reclaim. I already described
-elsewhere how with a little bit of discipline supported by lockdep
-this is a non-issue (tl;dr add spinlocks marked as "leaf" (you can't
-take any locks if you hold them and you have to disable interrupts) +
-mark dtors as only allowed to hold a leaf spinlock et voila, code
-guaranteed to not deadlock). But then all code trying to cache its
-state in to be undone with dtor has to be patched to facilitate it.
-Again bugs in the area sorted out by lockdep.
-
-The good news is that folks were apparently open to punting reclaim of
-such memory into a workqueue, which completely alleviates that concern
-anyway.
-
-So happens if fork + exit is involved there are numerous other
-bottlenecks which overshadow the above, but that's a rant for another
-day. Here we can pretend for a minute they are solved.
-
-[1] https://gitlab.com/hyeyoo/linux/-/commits/slab-destructor-rfc-v2-wip?re=
-f_type=3Dheads
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
