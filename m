@@ -4,101 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 495BAD116F3
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 10:46:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1937D116F1
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Nov 2025 12:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 605356B0006; Sat, 29 Nov 2025 05:46:24 -0500 (EST)
+	id 927376B0007; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCBD6B000C; Sat, 29 Nov 2025 05:46:24 -0500 (EST)
+	id 8FF776B0008; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519706B000D; Sat, 29 Nov 2025 05:46:24 -0500 (EST)
+	id 815926B000A; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F0C76B0006
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 05:46:24 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C4DB9BBB32
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 10:46:23 +0000 (UTC)
-X-FDA: 84163315446.01.037E928
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 726EC180002
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 10:46:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=runbox.com header.s=selector2 header.b="m+/uBwie";
-	spf=pass (imf06.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.38 as permitted sender) smtp.mailfrom=david.laight@runbox.com;
-	dmarc=pass (policy=quarantine) header.from=runbox.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D2156B0007
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 07:36:57 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 040AFC09AD
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 12:36:56 +0000 (UTC)
+X-FDA: 84163594074.05.A877F73
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E5D5D1A0005
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 12:36:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764413182;
+	s=arc-20220608; t=1764419815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rz76Dd60dRCLEdbk6g0uD4CbDOYdGaypGdAXa1TRKaQ=;
-	b=NOdDwiKMX4JB199r8KpdqhNukQGhyaSoH9oRuom+qIBsX8k1NfZPOKRXYO2dYeJXrVAREp
-	K+N3vWzQ+JWsU1QFfujXIOeVI2iuNBJn2q6FJoTwdytTFsVc+LtRRL0Tm1vn8kez3OsoUF
-	bowTCrpHuBg52gPOGLiXc8oa1BOdRAc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764413182; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=Ot2Tg1xiAoyo3U7a294MLHTQILR+1RrXETLgGihLK+8=;
+	b=a/Zf04rvOf4LcuWwMgnLZA1xt9WgK/GLtVKcyB/DNvVxTPXm4sj3aM58jZOZ944wH7cwDj
+	Q30ilSmifv70I/78ZEGbaIysVGEX4EWcCVjxwN+KpjbvfKwkS0UCAVHCLOboBeeun1nx1Z
+	d3S2wO0rSJA7uuZqca+Zn9JgY1KdqYY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764419815; a=rsa-sha256;
 	cv=none;
-	b=ayGo3MlhTWmNlvuMC0472nKkKlT2t4UnAVb0g5SD7l+Hw+WH6Fz+RuRpsiWuuLTHDljFwk
-	KxKJqHAkxye8SKEUBmDFya+mKkE9hxcmJCbOsyDwOkvhbDZ/GyDO+7oTqWnjLpcHLtfKEf
-	MhqUMImb2ZcYALpPuz6AdLlCPtisPwc=
+	b=AAI+DuwTN146+NEVb67m8bFPi8nl6GXWnZxyj5mKxNlSlguceB3b+uSzbqFIbiyA7I5ICL
+	Omx5aDZ8NFPNUxaGObg8S1qfHvz6wuyLBHbDIhs3yELQb7VxcrES8B0mhRrX2gxIozJdLo
+	RhECnjS35tAaCOfq5yNfir8YG8rV9ec=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=runbox.com header.s=selector2 header.b="m+/uBwie";
-	spf=pass (imf06.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.38 as permitted sender) smtp.mailfrom=david.laight@runbox.com;
-	dmarc=pass (policy=quarantine) header.from=runbox.com
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vPISa-0019Z2-V7; Sat, 29 Nov 2025 11:45:48 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector2; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
-	bh=rz76Dd60dRCLEdbk6g0uD4CbDOYdGaypGdAXa1TRKaQ=; b=m+/uBwielV5XAgVggL5ooFl1dH
-	itFJp1+BXorKcECoZRk5oXzd1aG7xN+kSUQS1nk1Zwmeor28FFdDu2FbrgCdlsjsX+8aPKAgXXWjf
-	DmpfLdV3Z5l860gBJtwQ9Rd0tHcGMxQ1eoC8DclO84CXSUU/4cj0y4Hw0LCwwSXFxRtVSAvO0TXPy
-	4XodTjHH5cOefWS7PwgczvGxjTa36bKsJy8ZAcm2D1X20HEpS+DZxHaKnt/xTSZ+jPXYecLrJ59K5
-	EK9PJ1G1v76UaTphXy2CENRP02whjL9REH3czcS9Msg1dPWzNfZcDxfJb7/AA2sgIxqMiuoaQtIHF
-	r4CFeJbA==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vPISZ-0005kN-1q; Sat, 29 Nov 2025 11:45:47 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vPISJ-004Clu-SN; Sat, 29 Nov 2025 11:45:32 +0100
-Date: Sat, 29 Nov 2025 10:45:28 +0000
-From: david laight <david.laight@runbox.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, torvalds@linux-foundation.org,
- will@kernel.org, linux@armlinux.org.uk, bigeasy@linutronix.de,
- rmk+kernel@armlinux.org.uk, akpm@linux-foundation.org, brauner@kernel.org,
- catalin.marinas@arm.com, hch@lst.de, jack@suse.com,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, pangliyuan1@huawei.com,
- wangkefeng.wang@huawei.com, wozizhi@huaweicloud.com, yangerkun@huawei.com,
- lilinjie8@huawei.com, liaohua4@huawei.com
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
-Message-ID: <20251129104528.03aca5d3@pumpkin>
-In-Reply-To: <20251129090813.GK3538@ZenIV>
-References: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
-	<20251129040817.65356-1-xieyuanbin1@huawei.com>
-	<20251129090813.GK3538@ZenIV>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D1E51063;
+	Sat, 29 Nov 2025 04:36:46 -0800 (PST)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AF5043F66E;
+	Sat, 29 Nov 2025 04:36:51 -0800 (PST)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: catalin.marinas@arm.com,
+	kevin.brodsky@arm.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	akpm@linux-foundation.org,
+	urezki@gmail.com
+Cc: kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] kasan: hw_tags: fix a false positive case of vrealloc in alloced size
+Date: Sat, 29 Nov 2025 12:36:47 +0000
+Message-Id: <20251129123648.1785982-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 726EC180002
-X-Stat-Signature: ocx86yp6ajijk55btow5irwfebpnhtid
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E5D5D1A0005
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1764413181-221469
-X-HE-Meta: U2FsdGVkX19Gu2036oYB79AIL3sM56z2rSRrWvS3+1R2952r7hozAGK8GQE6mqLob+4CjUb8e4g1HSWb8kuCfbEzAaqvZgOw0oFKwGOiRCqIHFZajE029EFCBqDSZldhaudYGhyTvgHAAIeU2KC3iAwd7GBZNSXMywrPsnd2WdSNxjE+xcEAyzOxcT6Ik8uHlHX6iiwc4GZIyqeQp3jX7mMvP4HTTKI6CAvxiE0rSS/rMDn3A/sOK/azAebjylFUVRxNW10VY+NsYnQ5fgms6rdzbE/1TnSYMDbD9xcrQwwqXc6ABBXgf0md+A+Px5jiYTq3LqNbn4GCEIeUGummpCiMgbvxV4t0cHTb29LQj5S0hhVUcBqVubGr//8lDXkdHRXyAQvq6fWP+e15oUha4KsE3GtABFiAUsj5ZaSxgIyyt/mVOQhz4KnUKbcXOiHxB63ALRpTuYMW6U8VEOU6WbzBeO+aGaz/Nh3pjCRS2N1/FGas0X1qSFaswwTr3YkUVRDGy36rzigb83kjzZk+Vr9KREZRM1bNUoOwJKKc7WVfT0hzqVEuGh0mBCmChGGhh9GwiB2rPny7ho6qwq74tFCXV4U0KLwTE8TuThGABFaKrNkxccJujeOppY3csX4l7HQAZW4jOcfrb4BkFRPQY6Jk291DAM4IWwQQH3ofuqzJlctFzatbLme9+fjA7cDR9sXJlYdFc/1fsD5QUDvfFYbC0PE13Ev7WM2g19xCr/iBH9xBs+vAPwDSuJik5AzjHOBjv6Od2FNxhJl7sZmAvlyNkalCJpT9LmZA2THbaE8x50iIEyO8Xx9HRAz5BliYeqHvbKodTnjmBpVjFO6NtK8lRM1KCi1W6mO2NUtaIRM158UE1IwzoVgT0IsH4TGn+3yqOw5YPMrL1EWSZHq1ala+aLdWYjaEdUMMXxNbl9OuYuBOkzScCivfVqbdRZdjM3+8ukI+vIlbJkszfo6
- Qfa/YpKW
- iQCKYHPgZdrG0MZ2ulgn/ypNm2UAIr/CO1WwvCWBAYonNf05ktOoPVg5S/qNeR7sVzL6vRC4/Rk/EjSqydYSfdOW1ZYIuDh7ycgOsVUj3iOpgr3Ligy1Gpx5XC+Grs+PMqQClLlC8xTmNzmXjMvUZhIatv7H0JQkJbTlLFTtqM/fOIJCDvgTecIAkk0wSc8MuDPo29R6t2Hq3O3kI0Gho2rW8/y+wVP4cpLH89Ke8Go4DHNBEI0J8Q+khSIH+rDrUgjBp4AS8joLUE0se/fuvfieKexj0aPWvOnG4RQJ14luvk4saMpjNedl6EmRAktXsAFtLsiePDEJ+P7AHwMSl8hVzd+TkliRJ81mnDZVwBha8Jk+x9RZjcf9rUyYWDU3hR9E55EDZ+CZBlsiOJMbTnmEh/Z/9jLWM2cfPhK6fYtDW1b5FEZU2+XTLgJDbUQZ8Y6sX/nVgvwb0hTFjw87SzCdtGJEa3lZovtnkYu+SFRi0a7KoXq/+L003dA==
+X-Stat-Signature: xc5n3iwp61zkd7boq6i3srr9yt7bku8d
+X-HE-Tag: 1764419814-630920
+X-HE-Meta: U2FsdGVkX1+UtLiCkLcJP3j+mmL/JdLJtX4gJ56dEw2YQB2PEmqS8XVo7FOmB8zwzSHzoSDWFP4khOUWvOkilrA47PHpdAMw/IxuX9PhxZt3aLxMHuBvDXVnPcoPPqn3c1yUXd3gbjvHtJDNCM/xjw3hK4/WfR+mUTOcAo9s9dJqzF4I8iOwffSOrL8EYnjKjUu8aMKi2R/mVH2++5Vbp6DqZfsuRKkq/G7MGGP45nTFLXsBSzY3sGVhTI4dzfry6bvrcgW/wmvSgTJuwXcO4NasLUCaGWvWIa/bDaflwBbwIJMssnsQU0vkZhdaesyP3BxkFjHnDFmuE28Igp8C4X53eI+J4FBEcu4oAcI+E2HE9VxHzN3dWTSuKPC3qsDI/4r7KPv7GOX0JY1fs5ebPU3UA2i9Sr2i5k/YCSeYZ1ClST1+JI9FZJ/zp/AzwAEX0bhIYRHgl5cMjR7SWuCF5OJ18rc2XqzXVfaIYlTEyP6DZvkRaaO0JiQO7SEJWcJ6KMHFWUNOvJGeJsQdqDAuU7AUBc4j3pQvGoBxbjCD5HzQjvLwZWfuayNFD8ts7AdcMzK1zjc7b5QbkEJuU4guJ7piFwDD28Fwp4BsHwY7pQ62KUMkysT04KWsRycHKOAeUOTWVRHmnkSv6wGlGqC3TJiWDjZjyUhIDf/3Ok1rw4ECXT6v8b/J5yK0cuk47EQ2G13rylFaooc4RUOHQ76ToZ39tN3YJ+Et2PP8RaPVhfLHVNxKf0qSqaTYhUt3K1RKK8Nn2BGLYKxtD5m9aHhv1CgVau46H77I0BjCVEKEL2pDncGej8+QIoEnhONHTtbxhKmAZxOI/9G+BN5WjM3OaD5UhAHBdgVGf8PjQpyL2MKZbzlJzktYJOzA/P6svJ4sUC/8OYXvUqVMMbwX/+Zx3v58Z03PSiU82u+iRebUHltJO27r2nyYo7/2hdiK3IYrQlGzDATp4ptd5FWwke/
+ vbvY2g5i
+ cP1wNHuK5RuOLPEltK201duqYw7hUigEWyqQBrR+gDP899WgrWCtv6Il3xeUbYE5JxEDelRAAzjSZMa6oW4Zy1NiwpxqsVHncfpCB1vqxRWCQevcJGJQMiH5bEO+oXtxHpH/SNBoS3QG32Jf35Pe2m1qjhoXrQhF1riR+VYP6vzddeUOLioIdMZNVOAC+ewyCytp7c+swOF/WhCeDrOTXMwbJOowV6vrHWNre+Z6/F/+L6aybGstWPT1PrLsl8cV+ihMynXeb2edT9lItarnppKRS82v27VhswdXPrDG3t2fDMQHTWGfmtPIHXoE2rJowKdb6ZgwLHxXlmw4TxbgKKndwemsi+365ZGa+ciKMfJlCNSU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,75 +93,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 29 Nov 2025 09:08:13 +0000
-Al Viro <viro@zeniv.linux.org.uk> wrote:
+When a memory region is allocated with vmalloc() and later expanded with
+vrealloc() — while still within the originally allocated size —
+KASAN may report a false positive because
+it does not update the tags for the newly expanded portion of the memory.
 
-> On Sat, Nov 29, 2025 at 12:08:17PM +0800, Xie Yuanbin wrote:
-> 
-> > I think the `user_mode(regs)` check is necessary because the label
-> > no_context actually jumps to __do_kernel_fault(), whereas page fault
-> > from user mode should jump to `__do_user_fault()`.
-> > 
-> > Alternatively, we would need to change `goto no_context` to
-> > `goto bad_area`. Or perhaps I misunderstood something, please point it out.  
-> 
-> FWIW, goto bad_area has an obvious problem: uses of 'fault' value, which
-> contains garbage.
-> 
-> The cause of problem is the heuristics in get_mmap_lock_carefully():
-> 	if (regs && !user_mode(regs)) {
-> 		unsigned long ip = exception_ip(regs);
-> 		if (!search_exception_tables(ip))
-> 			return false;
-> 	}
-> trylock has failed and we are trying to decide whether it's safe to block.
-> The assumption (inherited from old logics in assorted page fault handlers)
-> is "by that point we know that fault in kernel mode is either an oops
-> or #PF on uaccess; in the latter case we should be OK with locking mm,
-> in the former we should just get to oopsing without risking deadlocks".
-> 
-> load_unaligned_zeropad() is where that assumption breaks - there is
-> an exception handler and it's not an uaccess attempt; the address is
-> not going to match any VMA and we really don't want to do anything
-> blocking.
+A typical example of this pattern occurs in the BPF verifier,
+and the following is a related false positive report:
 
-Doesn't that also affect code that (ab)uses get_user() for kernel addresss?
-For x86 even __get_kernel_nofault() does that.
-In that case it hits a normal 'user fault' exception table entry rather
-a 'special' one that could be marked as such.
+[ 2206.486476] ==================================================================
+[ 2206.486509] BUG: KASAN: invalid-access in __memcpy+0xc/0x30
+[ 2206.486607] Write at addr f5ff800083765270 by task test_progs/205
+[ 2206.486664] Pointer tag: [f5], memory tag: [fe]
+[ 2206.486703]
+[ 2206.486745] CPU: 4 UID: 0 PID: 205 Comm: test_progs Tainted: G           OE       6.18.0-rc7+ #145 PREEMPT(full)
+[ 2206.486861] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[ 2206.486897] Hardware name:  , BIOS
+[ 2206.486932] Call trace:
+[ 2206.486961]  show_stack+0x24/0x40 (C)
+[ 2206.487071]  __dump_stack+0x28/0x48
+[ 2206.487182]  dump_stack_lvl+0x7c/0xb0
+[ 2206.487293]  print_address_description+0x80/0x270
+[ 2206.487403]  print_report+0x94/0x100
+[ 2206.487505]  kasan_report+0xd8/0x150
+[ 2206.487606]  __do_kernel_fault+0x64/0x268
+[ 2206.487717]  do_bad_area+0x38/0x110
+[ 2206.487820]  do_tag_check_fault+0x38/0x60
+[ 2206.487936]  do_mem_abort+0x48/0xc8
+[ 2206.488042]  el1_abort+0x40/0x70
+[ 2206.488127]  el1h_64_sync_handler+0x50/0x118
+[ 2206.488217]  el1h_64_sync+0xa4/0xa8
+[ 2206.488303]  __memcpy+0xc/0x30 (P)
+[ 2206.488412]  do_misc_fixups+0x4f8/0x1950
+[ 2206.488528]  bpf_check+0x31c/0x840
+[ 2206.488638]  bpf_prog_load+0x58c/0x658
+[ 2206.488737]  __sys_bpf+0x364/0x488
+[ 2206.488833]  __arm64_sys_bpf+0x30/0x58
+[ 2206.488920]  invoke_syscall+0x68/0xe8
+[ 2206.489033]  el0_svc_common+0xb0/0xf8
+[ 2206.489143]  do_el0_svc+0x28/0x48
+[ 2206.489249]  el0_svc+0x40/0xe8
+[ 2206.489337]  el0t_64_sync_handler+0x84/0x140
+[ 2206.489427]  el0t_64_sync+0x1bc/0x1c0
 
-> 
-> Note that VMA lookup will return NULL there anyway - there won't be a VMA
-> for that address.  What we get is exactly the same thing we'd get from
-> do_bad_area(), whether we get a kernel or userland insn faulting.
-> 
-> The minimal fix would be something like
-> 	if (unlikely(addr >= TASK_SIZE) && !(flags & FAULT_FLAG_USER))
-> 		goto no_context;
+Here, 0xf5ff800083765000 is vmalloc()ed address for
+env->insn_aux_data with the size of 0x268.
+While this region is expanded size by 0x478 and initialise
+increased region to apply patched instructions,
+a false positive is triggered at the address 0xf5ff800083765270
+because __kasan_unpoison_vmalloc() with KASAN_VMALLOC_PROT_NORMAL flag only
+doesn't update the tag on increaed region.
 
-Is there an issue with TASK_SIZE being process dependant?
-Don't you want 'the bottom of kernel addresses' not 'the top of the current process'.
+To address this, introduces KASAN_VMALLOC_EXPAND flag which
+is used to expand vmalloc()ed memory in range of real allocated size
+to update tag for increased region.
 
-	David
+Fixes: 23689e91fb22 ("kasan, vmalloc: add vmalloc tagging for HW_TAGS”)
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ include/linux/kasan.h |  1 +
+ mm/kasan/hw_tags.c    | 11 +++++++++--
+ mm/vmalloc.c          |  1 +
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
-> 
-> right before
-> 	if (!(flags & FAULT_FLAG_USER))
-> 		goto lock_mmap;
-> 
-> in do_page_fault().  Alternatively,
-> 	if (unlikely(addr >= TASK_SIZE)) {
-> 		do_bad_area(addr, fsr, regs);
-> 		return 0;
-> 	}
-> or
-> 	if (unlikely(addr >= TASK_SIZE)) {
-> 		fault = 0;
-> 		code = SEGV_MAPERR;
-> 		goto bad_area;
-> 	}
-> at the same place.  Incidentally, making do_bad_area() return 0 would
-> seem to make all callers happier...
-> 
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index d12e1a5f5a9a..0608c5d4e6cf 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -28,6 +28,7 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
+ #define KASAN_VMALLOC_INIT		((__force kasan_vmalloc_flags_t)0x01u)
+ #define KASAN_VMALLOC_VM_ALLOC		((__force kasan_vmalloc_flags_t)0x02u)
+ #define KASAN_VMALLOC_PROT_NORMAL	((__force kasan_vmalloc_flags_t)0x04u)
++#define KASAN_VMALLOC_EXPAND		((__force kasan_vmalloc_flags_t)0x08u)
+
+ #define KASAN_VMALLOC_PAGE_RANGE 0x1 /* Apply exsiting page range */
+ #define KASAN_VMALLOC_TLB_FLUSH  0x2 /* TLB flush */
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index 1c373cc4b3fa..d768c7360093 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -347,7 +347,7 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+ 	 *
+ 	 * For non-VM_ALLOC allocations, page_alloc memory is tagged as usual.
+ 	 */
+-	if (!(flags & KASAN_VMALLOC_VM_ALLOC)) {
++	if (!(flags & (KASAN_VMALLOC_VM_ALLOC | KASAN_VMALLOC_EXPAND))) {
+ 		WARN_ON(flags & KASAN_VMALLOC_INIT);
+ 		return (void *)start;
+ 	}
+@@ -361,7 +361,14 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+ 		return (void *)start;
+ 	}
+
+-	tag = kasan_random_tag();
++	if (flags & KASAN_VMALLOC_EXPAND) {
++		size = round_up(size + ((unsigned long)start & KASAN_GRANULE_MASK),
++				KASAN_GRANULE_SIZE);
++		start = PTR_ALIGN_DOWN(start, KASAN_GRANULE_SIZE);
++		tag = get_tag(start);
++	} else
++		tag = kasan_random_tag();
++
+ 	start = set_tag(start, tag);
+
+ 	/* Unpoison and initialize memory up to size. */
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 798b2ed21e46..6bfbf26fea3b 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4176,6 +4176,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+ 	 */
+ 	if (size <= alloced_size) {
+ 		kasan_unpoison_vmalloc(p + old_size, size - old_size,
++				       KASAN_VMALLOC_EXPAND |
+ 				       KASAN_VMALLOC_PROT_NORMAL);
+ 		/*
+ 		 * No need to zero memory here, as unused memory will have
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
