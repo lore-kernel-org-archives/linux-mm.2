@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05966D111A8
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 19:03:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F68DD111A8
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 20:31:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035C66B000D; Sun, 30 Nov 2025 14:03:49 -0500 (EST)
+	id 675B76B0007; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00DAE6B0010; Sun, 30 Nov 2025 14:03:48 -0500 (EST)
+	id 627166B0008; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65A76B0011; Sun, 30 Nov 2025 14:03:48 -0500 (EST)
+	id 53CE36B000A; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D64C26B000D
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 14:03:48 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6746B8AB34
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 19:03:48 +0000 (UTC)
-X-FDA: 84168197736.26.03D6B05
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E6A9FC0011
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 19:03:45 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=runbox.com header.s=selector2 header.b=oWx5KVdS;
-	spf=pass (imf10.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.38 as permitted sender) smtp.mailfrom=david.laight@runbox.com;
-	dmarc=pass (policy=quarantine) header.from=runbox.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 441746B0007
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9A4E1A0D2E
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:31:11 +0000 (UTC)
+X-FDA: 84168417942.01.44AE506
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DFA5D4000F
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:31:09 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bCdapMnY;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764529426;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764534670;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CcobmzCVZzKsalDG7iII3Z5e85MNaCA1h/c5e6HyJFE=;
-	b=rFntelK8aIWk0QbM8gcl2B6uSuugAMFNZ00mOicJN0ZhEISsRAqXLvRs1PP87uKyvOPan3
-	GwJFJtJd7m1IP8YXU54ZgOiI5sT5Bv4yuE0moU/QzOaollypvWmPiaXvYRKST0Rclo0k2n
-	RJWpmhA25nOHk5yLVskSxBmXW12x1vc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764529426; a=rsa-sha256;
-	cv=none;
-	b=t/z+1ug1A+6u4+ejzmweAr2iYfpgOu3e683kGqSQpHxRwzvqWJdXDzS4wryOwPrnz7HP5r
-	F6FzfcdHUpigMOT41i3KCh2M+qToIJVlY06fmbokWXIeJCXAGa+wrNSA39uK419pEAr6rc
-	NlQPHkKgtALi+A9iAJ4W8VqR081wii8=
+	bh=PzGIbtyf4uypqKnERTUX+BxAGcXLaiND7k9n/IPFZIk=;
+	b=UU92bmLt1XJlEWHU6aidzCZLUU3Jc7alVujtPXk3q13wWzOVsyLIY0lgobTfmVCstwqa5q
+	abxOMUMQRst8rkgQaPC2ZYocvU1AOKkQwu5WwFHCin5eiZFfxLZS8C8DalI8oCDmPSBmbv
+	vcUofD74ijINQcJG6KORx/ohVK7QxsA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=runbox.com header.s=selector2 header.b=oWx5KVdS;
-	spf=pass (imf10.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.38 as permitted sender) smtp.mailfrom=david.laight@runbox.com;
-	dmarc=pass (policy=quarantine) header.from=runbox.com
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vPmhz-005OE4-Uv; Sun, 30 Nov 2025 20:03:43 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector2; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
-	bh=CcobmzCVZzKsalDG7iII3Z5e85MNaCA1h/c5e6HyJFE=; b=oWx5KVdShvtRvg50cH+3h0Z72F
-	i8zUjkrXdY1GXaP37WvXdsFKPiSuH2ZejGVU3ridQvXDXUbjDoH6PWuFkPviLkPTjGbbzGw2lMr0P
-	54NtxGg0C0dJNmNuLPtbOgIrVcQJIgMV20g8myfNSMCBLlu6VOASgeEfPC9KbD8csTP3OdUWYIZJ8
-	BWKKjaABTm1bifHy0rM8R75vkEr6oQ0XV9k5dINLEO9GrEZbJG/QLPIr6jLN6gwdDAZA30EJWwMyE
-	Vn57MU4NG4wbNWBsDp2PJ9EddQOioF1ExU9dUJjktx1dvZrsV3HZ7l24okhtHLZEuwP3s4pxAUx4N
-	Gdz3RiVw==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vPmhz-0003YS-8t; Sun, 30 Nov 2025 20:03:43 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vPmhs-005yEm-EM; Sun, 30 Nov 2025 20:03:36 +0100
-Date: Sun, 30 Nov 2025 19:03:31 +0000
-From: david laight <david.laight@runbox.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bCdapMnY;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764534670; a=rsa-sha256;
+	cv=none;
+	b=BlLX96ita+gB8N7z8bLr+mrxcQ3SXoZCi73mD9eKH3ukGLcUSK56tuX7FQuMEripyPdhqg
+	+Uzv+VBZXGSUdQWAB4o/JFYbKHatgVCTb1xkqVtZJXXQU4mk4EEt99ggQ3ij+nTrNno/6c
+	J6IZhW/SJutJ+DRxNL34c8trQEwvRvc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=PzGIbtyf4uypqKnERTUX+BxAGcXLaiND7k9n/IPFZIk=; b=bCdapMnYT5uevbv4N0JalnY/Dt
+	6jOLcg+QfJj6cOpH8DdtSQpY3KWu9OyjzGVEf4f0QiOauvmo8dRZOmQ14zLlAjuGoYhY4z7ovKsd3
+	guBykyMIIqW9XVb/5/OxhdpEqc/2WEV3HuvV4/q8tqRX+ilxweQEpFr26czhzABAHHOBL+QL98Sjs
+	H0JpKxUi16TotiVWYyjyHqoIfr8H2fWw4GcsiFx7ZUiMFYa7kQ/muhLXbVeI/J6w3AI/qEu5rj46K
+	+Szxejg03Z+8MYhnTD/jpCzhmjxu5qmwApZhsSze41DmZWWFsZo9xRSnTwUyuGBPHWjITZaXjbSI2
+	FivLok6Q==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vPo4k-0000000F1yA-2jlj;
+	Sun, 30 Nov 2025 20:31:18 +0000
+Date: Sun, 30 Nov 2025 20:31:18 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: david laight <david.laight@runbox.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-alpha@vger.kernel.org
 Subject: Re: [RFC][alpha] saner vmalloc handling (was Re: [Bug report]
  hash_name() may cross page boundary and trigger sleep in RCU context)
-Message-ID: <20251130190331.40385ddc@pumpkin>
-In-Reply-To: <20251130164348.GV3538@ZenIV>
+Message-ID: <20251130203118.GW3538@ZenIV>
 References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
-	<20251126185545.GC3538@ZenIV>
-	<c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
-	<20251129033728.GH3538@ZenIV>
-	<20251130030146.GN3538@ZenIV>
-	<20251130113213.40c8e7a0@pumpkin>
-	<20251130164348.GV3538@ZenIV>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+ <20251126185545.GC3538@ZenIV>
+ <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
+ <20251129033728.GH3538@ZenIV>
+ <20251130030146.GN3538@ZenIV>
+ <20251130113213.40c8e7a0@pumpkin>
+ <20251130164348.GV3538@ZenIV>
+ <20251130190331.40385ddc@pumpkin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251130190331.40385ddc@pumpkin>
+X-Rspamd-Queue-Id: DFA5D4000F
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 7mukcjz9orzzyagai73gx1ewrrw5gfyj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E6A9FC0011
-X-Stat-Signature: k16cm5crgqettj4q8ggfdkub967in38t
-X-HE-Tag: 1764529425-818913
-X-HE-Meta: U2FsdGVkX18ycWJiHhmh5yEeRGWocVvE46+JFGC+ANgETMHQy+pEfJYC49Dir7lieKOVF1OA30Tp9NEIVTnRj01rPV5lFitsf77z4p7vPFGCBf1HMxQ94gBumptir3bfmZ3hHGD33EdBSIs7tqHk8Lyv0XET8zu7zTqbtc1gv+Me+XbqCeK3bvdqxljNGHHM4fZJxWD4kpc72aSjTYDCDbqGNRS/Q/BmUb7I5IJS/Edl0hlU400JUs7Wo/mWIuVD5oR1Rc0z+YaSTv6SXjMv+agApKnWbJKG8+msPSTwJi3nzd5OHlbgf9XZTQZ9NY0MGrZRxaQO2dcHJ8WzZo78bHcfIZBT4RTPjjAF6BNvIbIidJnFiw4o2m5IwYjlYeuu81zt0c6FSeDq7mD8XwkneIWze1i2ysHcUTZ1Cn1kHaEabxwg5lKGAEW25vvJ9oCQeFWfAqS/75HtJunhhakY3WtM+bNa7U+YTBaxPMhjM0wD+cQMLOMQW/UHbG4iNzJG367CMVaYUf7hY/4SHBTJvVMnSGOSSYPk91buA5IrNSN+1Ef2W9/Fw7D6Og69KWzdBEnDE5N5fCLX5LK4qBSK7fEiLJtBo764jtoGxTRKYajoXcClbM0w6m8bJCkdyMrB4bAdxLINVU458C4+pQNJpPVfi2ZVw3KTRqe2hCFcGu4X4cy80vAo7BkIGP7G6n+/O6p9who7MyKjXVuamnWs8tNAGXCJF6hMv3Y0V4JsYC5LbiWNhrzJ9FrSMDRrQiS5PdDTCSSFPUbm+Hk/vDrpJHZMsY1aqx593kGtPrhXgwkAyvKZe8vkcIs3zIO+3xw4XGH/5RwatNpE9M+YfCT/qP5eju3M2Vu9i/7QSSqcLy/nBMz1lB70TZ/jKH6FNhYBRq9NbMVyGfZCv1Ki6Wr/2U+tUkb26+1X4QhjTYkH0avYk4iFf4qbXXSsCfu4BjQvy9gCENhnMAUmrG+d5+N
- 5PyCkcbB
- 3COeEfAK4Ilbvj0XpHx5pfXG/T33ZexIYgE1vQENZKMlvwidO4A9KeaPCvAf/2TeMJP5FtGaxtSy3WawoODK3chV8VyP1G8fl6LcQuA3SwFJdruwJgpBsgRFeILHAFNHKxrkkdkLuTc0lf5nu+4uBFanxfmzx/QatFhYbT5ml/ma1oqYz+mm9mgdsBEznekzbQvNZMojRIVteUvOpHLW3aZ3LADAUQfqDesvul7DD6d3m8cADvGxLvr5xhnmKYBQkAGF5kwBMQYUIPQb6P/Hf7e9+bTsKHVRSg+HV0W7Pkug9xjbvc16dSmXaDhrbhn79JhCX6nmGhYPBVpX0cskGjc2QBUuxuq+JODH53oAobAGv2TeOBUxS53C3ruBCjLVlMkthS1wtrlguyUu0tnz2PQQgJMlYvN6kolVu
+X-HE-Tag: 1764534669-708591
+X-HE-Meta: U2FsdGVkX1/SVIw5+ZimlR96iBz7wb5onnhl1fEOfNb4PZgksrMixsBkS+Bju4ju/Zzsxy34U+jA5YwE03bwTRDGEel+k7xe5ZMAaQCRZOFFqiVe7npssJU5o4o2EXzv/r1tCFegM9wgOcIX1mXpt2jsLk/uZFYn7ZO0f3onlNLRx9ghfpesLis6bDZzK92Vhty6+mfE14vX6R2Ex1ftVukLWe3nIBBFSFHxaPjVk6bSWJSCVghKYYdVWe00oWuAwoiRQrhwkNuT7ePtTAlIfRC2DDLAGfCpfypJU837fMoiNLzxZ5RvdM1XuQbuc5B9zt4bwhTJPNFpRDqQuNwC3ssL/r6aXY+notxObT0xEGEB6oo21xcq1I21dPFqix2om/RqMJ49OUSOtS1XeTWdCfpgc8l+xLaDqdhB9PryttUcZeNnAr98d9rXlJQxz0gDz1TjjAXvxAVXn3u8/H0hb/A7VvtpPk76rxQSuUavaTubRHshe9FkBBmavdwz7lRJ7EPGEeLFMTgbOnPODkhgoXlAQeTGkhySw1jbgRx+SY+icW6TnF37hVdluN0XfWmdcAv7LJu2SHAzPD7HcjAAbEdXl6YkPnboQEjmI75gN8Je+CxvaMCtz4dvm7nwiEkGZfgw97ojpnYOft6BNz+b9DoNOQH0thjkE8d2lJCL7fOtlCAY+PE7GVgKORDsYiDMhMxxiw0cjrDF8vE4FqFlq22xR3Qf0m9UvvIiviwD8Zvqwr43MtdmFpm+16oILvhfckh84bNRHK/OqtTyFxY+uZggc9KRJvoBiEpYhsIa5nsPGcfyCPElZoi8Z84yDdl41q16BI9l9mpUgdbF2D6UqHlzE3Xq3fLh+mrgJKSqin3cZCt786iS1D2XalPk2G+2ahb6bWntkCdBXIclo8Mmb0JzgC4mKdA2Uwofhi1hKi1dyRBDhikDn7smH7LY1muiLvRyyNMtozlrPKv2ZmL
+ P4bgbZba
+ VygnKu6sPHRUFlSSeB/P8kMKOPd895uX3SlyIuXZOODtbubmqzZcpWUsXED2awplj0xnrE26TgecRWGJX8Ha7W5+5J1D3LnEaB4J1It+buLm6gmfkD/y3ZGWIyurG6BZD9NcWDwtAhraglgMvRYQJzZTiGU6a/HMIQRMBWq2Hwl7EhwlqdmJDGJddOOSX6Q0lFv0kCIBDnVikuQqyalRQ8ntMFTmuXxKQ/vwTmK9TR3BGQyNaNq4Yh5nb+lVFFGh2N9oEFCXy99dDAmw/OV2nvvkiogDS7EUBtT4LCIXk6IZ1AtPwMeeMFBVMnHmmSy1DemNnBIbyBxKODMcOW0YKuP8MNU6N/wLZKW224lkgN4vwMGyFsE/aU20tMBevEhKlS0KvGdR5kUuV1bvc4pg7EvmV0q6V9l09+0sLO5gKwV8PtF4ZHg/66cnVUplrkUpi/n2FYCH92nUJmlSH0ad5cXjhI1FA790qiQH99Uno6yYQcZM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,46 +98,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 30 Nov 2025 16:43:48 +0000
-Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Sun, Nov 30, 2025 at 07:03:31PM +0000, david laight wrote:
 
-> On Sun, Nov 30, 2025 at 11:32:13AM +0000, david laight wrote:
-> 
-> > How difficult would it be to allocate the pte for the next 8GB on demand
-> > inside vmalloc(), and then propagate it to the per-task page tables.
-> > That is a path than can sleep, so being slow if it needs to synchronise
-> > with other cpu shouldn't matter - especially since it won't happen often.
-> > 
-> > That should be moderately generic code and would let the vmalloc limit
-> > be 'soft'; perhaps based on physical memory size, and even be raisable
-> > from a sysctl.  
-> 
-> Considerable headache and pretty pointless, at that.  Note that >8G vmalloc
-> space on alpha had been racy all along (and known to be that); it was
-> basically "could we squeeze more out of khttpd" kind of fun.
-> 
-> Do we have realistic vmalloc-crazy loads with high fragmentation of vmalloc
-> space and total footprint worth bothering with that?
-> 
+> (Doing the updates in the page fault handler definitely sounds like a recipe
+> for disaster.)
 
-I doubt it matters for alpha - I suspect you could just nuke ALPHA_LARGE_VMALLOC.
-At a guess it was written way back when the biggest/fastest systems you could
-get were alpha.
+See the comments in arch/x86/mm/fault.c regarding the need to do it in
+#PF on i386.  Basically, you have
 
-I was more thinking about about modern 64 bits systems where you might want
-to run a distro kernel on systems with relatively small amounts of RAM and
-others with 100s of cpu and multi TB of RAM.
-I can well image workloads for the latter that might run out of vmalloc space.
-In some situations even getting a command line parameter in can be hard,
-so you might want it to be a systcl - even if changing that is what does the
-update.
-(Doing the updates in the page fault handler definitely sounds like a recipe
-for disaster.)
+CPU1: does vmalloc(), needs to grab a new slot in top-level table.
+Updates the page table tree for init_mm (rooted at swapper_pg_dir).
+Starts propagating that change to other threads.
 
-Note that I've not looked at where amd64 gets the limit for mem_init().
-Maybe it tries to 'guess' the correct value for the system.
-But it is likely to be workload related - so allocating 8K for every 8G
-of physical memory (one option) may be wasteful.
+CPU2: does vmalloc(), which grabs another address in the range
+covered by the same slot.  It works with the same page table tree,
+so it sees that slot already occupied, inserts a new page reference
+into the page table hanging off it.  No top-level changes to
+propagate, so it returns the address it has grabbed to the caller.
 
-	David
+CPU2: caller of vmalloc() dereferences the returned object.
+If propagation from CPU1 has not reached the top-level page table
+CPU2 is using, the top-level slot is empty and MMU of CPU2 raises
+#PF.
+
+BTW, it might be possible for two parallel allocations to grab two
+areas, each requiring grabbing its own top-level slot ;-/
+It certainly can happen on x86 - two vmalloc(SZ_4M) in parallel
+will do just that, but with NUMA you can get it 64bit boxen
+as well.
+
+So simple generation count on root page table won't solve it either...
 
