@@ -4,93 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835DFD111A8
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 20:32:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C07D111A8
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 20:44:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE2C66B0007; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
+	id 3D8736B0007; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBA286B0008; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
+	id 3B0126B0008; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF7876B000A; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
+	id 2EC2A6B000A; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AB5746B0007
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83A2E51805
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:32:51 +0000 (UTC)
-X-FDA: 84168422142.21.4310F26
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1C6E080010
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:32:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ODsAOL0p;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764534769; a=rsa-sha256;
-	cv=none;
-	b=RQNaDK2UYhvnJq3YztHEsWTdoY3V1mFQFDFGsEgajM4bOxsVzgBzaZLX49GlJjFKVeTXhk
-	BKTajhp5+m5VKbwEbUHp188qWwAfM6WkobkoULy2xjaIys+44Nhpbak+fucwJEXmiGXO3p
-	3G/ri9SzZFAKyQT9KEPzUHzvDaggc1U=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ODsAOL0p;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	by kanga.kvack.org (Postfix) with ESMTP id 1E43C6B0007
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CEDEC5D4E4
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:34 +0000 (UTC)
+X-FDA: 84168451668.11.C3320EC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 70339180013
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWa1ff2m;
+	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764534769;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764535472;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SG4laOmIYfaX0AulgAf4e+Z9d1ZTQsjEZOC+Us8Bu7s=;
-	b=7N1iwL3t4JzWy1bNpDSXvKX3fJ89jqPTEwLiAvuXoSDLuvVXYGAm3qjPiHayl6ObTce0pL
-	fX3s3fB6EZq2y2AH2VbdWgbB7zGFL6n1RlDGsrUvGhVQjBIxwvwyuN1suhGVOObwWaRVdV
-	/exUZmzEZ4nmIbU/HqIe4Rk2uRZInDY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SG4laOmIYfaX0AulgAf4e+Z9d1ZTQsjEZOC+Us8Bu7s=; b=ODsAOL0pgxUcMd5xFDQnqVBGul
-	1txeQZrUZMLqGYQAxnqez8tYY0tANsGNWfSxQi2AgSBLa9ou9N1swildx7fWjPDZrsYrVz5WxNQfX
-	SVza4ZDTyDpyaOos8uQ3e2deSVPjr1TDi+M03qexXYV5LQDo/yQw/exVaMBSADObuuC9ZgFvmQPta
-	J7+1kI7Ntc9525z0MSCIXUbiR9ykmLzrpUIExeRGNNLOgAogK1omJWwxN6wkP79+QVG2R6bkLdqzm
-	Woo8HOByXNeQxTyuqu5CZNg8y9U9kDlDn4D60JLMx7Uslawp+8Cpyr3nKT4bqdoFr379wq2o27LD/
-	ZD+FMdWA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vPo6N-0000000F4H1-0jjX;
-	Sun, 30 Nov 2025 20:32:59 +0000
-Date: Sun, 30 Nov 2025 20:32:59 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: david laight <david.laight@runbox.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-alpha@vger.kernel.org
-Subject: Re: [RFC][alpha] saner vmalloc handling (was Re: [Bug report]
- hash_name() may cross page boundary and trigger sleep in RCU context)
-Message-ID: <20251130203259.GX3538@ZenIV>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <20251126185545.GC3538@ZenIV>
- <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
- <20251129033728.GH3538@ZenIV>
- <20251130030146.GN3538@ZenIV>
- <20251130113213.40c8e7a0@pumpkin>
- <20251130164348.GV3538@ZenIV>
- <20251130190331.40385ddc@pumpkin>
- <20251130203118.GW3538@ZenIV>
+	bh=10Cdt34RCx935w4umu4sSDL1avAInz+1CdF2bZgGu6M=;
+	b=fv+MXT/9trIudEsrH7F/ZsxdLqleddmGjtJS2pJYIgMSf6emW8YGvFB5g7hjTNSqKXV7+d
+	cm3AC92QtuLTp7o9MyqMhKIGm67Z9Y/eer1ii/1XHGZO6mT0v8iMeW1sAQcQ986CqnHfyN
+	PJlJyXqSK8NCf+ljwTQyEDtIOenbRAc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWa1ff2m;
+	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764535472; a=rsa-sha256;
+	cv=none;
+	b=0MDQqUWETrVX39Z+2ZlclqdVoFocUy8MQoilQr9hwrlpM0HR5+Bn7T+yiiMAIz3fcefFob
+	wZGfYGe5fac4Z3x/qZgMXBEW0YOqd7yzUK7Z4UWNUStIDC9zOJhEv7Bq5Bbr0mjizfUM7P
+	vyDrHHyEY3L0gGpErK5iVySnQ0Xk8Mc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 420F1441F1
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FADEC113D0
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764535471;
+	bh=10Cdt34RCx935w4umu4sSDL1avAInz+1CdF2bZgGu6M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BWa1ff2mBVJ4ElH2wgUU2QUq945AWnZV+fGZG5QnlY4YwB6P5+w+phxzeWeo0G1aL
+	 JirWC5Jz/gkgTlnLGcMTpJEWMMoo/wpqtEaCTH9v+IXLxQUhqBGBa14Bzqn8WT60BX
+	 ZitfFqnC9Wp4MTo2KWxirlXNPR9HyJWmAi+F3rDQpxxLH7d2gkNpEpbyBk9ad7zTxr
+	 97fqj05gk/qtPM3/fFDSfN7jdXAWpsABg2VDfFyOYNq1b6qybViR+RxEhFmplGnmyB
+	 b6CMKn5g0A+KXcq7flTuZS+D9zBxpHM915FQUGBYnkuUkYVjK2hUFy3r+yPGqCJXyk
+	 tTXrEivdU/i4Q==
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-786943affbaso23130477b3.0
+        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 12:44:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWqTYV5OH3JZQzHUsx30t2iE8iCX++P2xCDf16+uJgxsykcrLl+WsgDBsiIJ3kycbwsqHV3lr9e7w==@kvack.org
+X-Gm-Message-State: AOJu0YxTnCBa4zeue4AxsdA30YX5XLZAeFiHStL/IRAkq4ZMP7N4qNYM
+	kUY5LYjhHgTLnbKxKDWZMBUIBNtIDZOQ6lE2u+CTYoa0/cffLX1Z2OMBhERdTMgNVnuwZXuIoZn
+	hTjCXZhQXqoslJSPD2zZFNloDsU9VAROOHK8dZMKWXQ==
+X-Google-Smtp-Source: AGHT+IExQ1AJAY7f4dN+Xk02ncFxir6zbdLyjYYpQBva9zYNDSKSUibUyNy4if+53Ez2svcwcs5wB7kEQOEjSzjM/I4=
+X-Received: by 2002:a05:690c:81:b0:788:c21:b05c with SMTP id
+ 00721157ae682-78ab6fc6e40mr180821677b3.63.1764535470463; Sun, 30 Nov 2025
+ 12:44:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251130203118.GW3538@ZenIV>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1C6E080010
-X-Stat-Signature: rro7ee8ydhuqx31k4ugt6nsrxu143xpb
+References: <20251125-swap-table-p2-v3-0-33f54f707a5c@tencent.com>
+ <CACePvbUK6uSDtz0QkBq-eqzQ_Hi9+t1gthGGt+ok7xdZtO1V8Q@mail.gmail.com> <20251129101820.3dd08b93b92fb2fd58159400@linux-foundation.org>
+In-Reply-To: <20251129101820.3dd08b93b92fb2fd58159400@linux-foundation.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 1 Dec 2025 00:44:19 +0400
+X-Gmail-Original-Message-ID: <CACePvbUfCFEqeh_Xa1D2Eh9US69_ENjCGYCKq4yGzZsyUnx00g@mail.gmail.com>
+X-Gm-Features: AWmQ_bllixhFCPl1U1P18L2vmi0WIH3n7TKKxSGRCV4IyaaHJQUy9dLvNW4goLU
+Message-ID: <CACePvbUfCFEqeh_Xa1D2Eh9US69_ENjCGYCKq4yGzZsyUnx00g@mail.gmail.com>
+Subject: Re: [PATCH v3 00/19] mm, swap: swap table phase II: unify swapin use
+ swap cache and cleanup flags
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 70339180013
 X-Rspam-User: 
-X-HE-Tag: 1764534768-983237
-X-HE-Meta: U2FsdGVkX18uBiv6Io8txu+qHVeq2RdRva/naYAEkLcZ4VN/zQbmS51h4QWv3FgkmCWtnCBTBgeD57sfhAWBCBbsBiPAny6S1Fzoc8TMEyVe9Bud4PryvH23j11Spnrd8OEuSBnsasH6JbhSaP6htSLaq3avc625hINm9J7469h7/ylNhtEQt7GiPXXZott/cqHP1mTewUqp+507Ds3eskmml4U23CqXN3Vo8Eb2DQcBcncvSRuspn0WVsE0wqbC+zCy250RRQKKWRX4JMRnDmaIPtEgzlg/lePmAOjiyvrX1af616m+/PmgpePtdOtJHvt1KJ4h2+c0IkUfTEOltiP5El3a8AZhiAG8v+abDNnZJ0sAYHprSkOTwACwNhAouBC4dZg/pVHjQnleaQhjcZTBOUtuyPdon7lJrSBkhlpONzUuZcvCOGG1mLIm2yGPRup1J74vW5eFs7rTfDtzUhDlWzuNHwbdm+uNu4NqYmed1JIDJABS6N0njHBggR3gy5Up7v9kFHqwPhugjjtFHUHvPiPtJlzaVO8nKX3GBf9fMkaITA2vSViZ7eeAfGJxDO1p2CSQKaev87h1OVla9JqEqE/3p4LV7GoNVYfEB2LHvFeAUf3As0pGbFTZfr9mpCsSgYRoXgPDNYZGvEeShoHbLdDSTv1EK9++0MZvJqv7LOoaOF1o95LcER8b6gn8eTFkrtpLGiIXQqGrZZgnR77xOL6U07PPQRVV+f1LeCbI3Q/3fp54agYbfSvxPHiYlppjC+7kPD3aoaeuToIITlRlgjAi9n9jek4cCZFV1jILcoo8w3d7G2V4vUIbZ3NtsdBiiUP2FUvo6SzAED5FxqLyadr4Zr4y1RYJ2hsxQFW2Chl5+SamhUttciDWOk61TvWtNkob+JW7suaHNYAUGeGPOyzEdmxsHjB7WWTR5FcBrPgfgDQ4xWoKDeJ9rXvvP0xtKc3YJjFbKytT8re
- yMk6WaUg
- YgrcqF+NHF6hbikeNoMhM1toBU4JzQmlpbk7ylnBxk32tRjlRTwro7ygwULl5MoxYn9XQD0cRLUqCUvT4KvYqOk6XDTjwCGO7kU/9AFzr8KPk9b2EE+TF8b85vrEXFsMHzkcW1mTSNphdHtMzIG0Drubbk2cIVx+DJR1t5vCwX8QqK+Rp8kC9ByjmDTE4kEy7PxleNSErauEgS3m49g/Vp0479WvmIojZR4gyS7SBmw5vYkTe7W2O/r714KgBBOLR2Iu8Ohjzcud5/GS6k1UShifuUf9YrZTHra0wgwyk1P0swrd935D9p0LfoCpFM3NiBnyGpOiLekpyj6nyp6hVn/Wwn1q2zwBG4cov2eZV6IrUctiM37xmUebKM6o4UmndHIZRU2VkT5XPMXFChTrDWmePZvM0CdUA94nTx/BbZKcp3Gge5ngxVrAealbxPL3FUZdf+ks9cJki81DYo4x7ABd77ywlanx1C+ga0P25EqXfgS0=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 8sgd8y4tdkjfpsz95p7y45zhkunetx46
+X-HE-Tag: 1764535472-63899
+X-HE-Meta: U2FsdGVkX1+4Mv6yiD9eyc28caxrVW+ZP1XsvXkGaxOqtrLk0nZzTpElBBpRJMnVocqcsBZ3uZBI266vbnQ0d1kop4K6TCYRzLfC3+T5TQCE8jXjlPqzU6bgiq/VVn0sB0Rtz4RlaQIm9t1wen5J+cX8TGy6wHDY3a0pOvMaWdBBTd2ciz1xxAyQWYHBAArrhiDcAaU78k+7D5DJVBT4Uk1CnaS89zp82NXRUWPqysXS+CtdH7LWQxB0l+c+D974PR08By5ALdSg8m/oddJ/XV3r58d/4NXTJ7gw1qVx7nPxATEmHJGEsHzFY61qSLwns5cnvGgryB5lGFzDCSc1rCHpCpfA8hzzNKsa3G6MUhWPEfL6HPTQk1QK9C7Q5TZM7LPG9PUPhw3fdNooLjh9LYWzdiLxR3BdeXXj3fIhZ9LGWYTC9i3V4Cu/dqiBQ1p26HOq5Vud6M2o/ci/k6WU7LVr88fbMLK9wQTi2nQbX5E/UuUlRSjfu1AUR0MKPHxWIu9PqTB4a2UOTYW4oynsyzNdl3zRzRzz6wrkBYdUcCym0GqPmeE+b03TmURIoEanpz92YdV3wzT+TM7vc8xKVMw08Ld+4NAVDNEGu8n3Lbzw9s6sLwCJBWVsDbCaPcKKOapgv/UqWfgJFCU+BHm5WJG2Gv/4k056D7VDId72M04GehsEF6aujOE8AXZZJExYkEsHXaGfFD11aA1T3I1fkwnu8l9m1amaAqhtVXbzsqiZX1kjiA5/dmNo7yB4Or9S/HX1HX2LsSyInONoz+2+A5j3y0oOCYGZy2OdQ64tIeVd13AR1RpFmUkfog4zA4tRdOK9LuBxnYneb3f4n0mI9M3eSau7M6IjhJUa1GFsBiMPOF9WPS9SVv6Ee/dg+vLfOJEIn9s28YZ+uu++EueGfYXedJHl4HBlQK03FYUNS8fCgq0wFb0B8KY6FJ2QkYOWQuK9ROhbPepeQg7imNT
+ QzmIWQWt
+ w7VK/ZN+2oofQro+UJOCwOanBHixEvBdC7OiC1cLLcCQ7bWyNRt3qJ7lFPa2C6wutYfr3NLVXPEi9wzQ8uToLyK2hNXEcBZy5GGcK814TsM6fiQKg5Q7qpx1ThVRTKWzimaKjiFbK7unzG2kuEypxApggHdphS7QKrX4x90sjk3U+6ND7jWzhHGpvIGtU+n+Ii8/dsg9ILbVV+GWMsYXqrCvHID9IMpYXAHaaoyRcyaU+5ShVDX0Ox5m31RSNJZG9bw7iEHRfDayRqzndr8wlqfLpyjyB0HAo+c5Tuw4n8DKd0yhaiVjt58JBUCZelzT21Nav3QDMriYgX3AYusL5BmB9lVkw3rAksiYXmARoiKb6+7QVjlj1h8g2+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,11 +113,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 30, 2025 at 08:31:18PM +0000, Al Viro wrote:
-> It certainly can happen on x86 - two vmalloc(SZ_4M) in parallel
+On Sat, Nov 29, 2025 at 10:18=E2=80=AFPM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+>
+> On Sat, 29 Nov 2025 21:07:40 +0400 Chris Li <chrisl@kernel.org> wrote:
+>
+> > Can you add this swap table phase II series to mm-unstable for more
+> > exposure? The patch series has gone through V3, overall looks OK, but
+> > I have not finished reviewing them all yet. I will keep you posted
+> > when the series is fully reviewed.
+>
+> Not on the eve of the merge window!
 
-32bit x86, that is.
+Sorry I didn't realize we are at the eve of the merge window already.
+Time flies.
 
-> will do just that, but with NUMA you can get it 64bit boxen
-> as well.
+> Please refresh, retest and resend shortly before -rc1 is released.
+
+Will do.
+
+Chris
 
