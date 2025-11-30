@@ -4,91 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6438BD116F3
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 16:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD550D116F3
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 18:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53F186B000E; Sun, 30 Nov 2025 11:43:42 -0500 (EST)
+	id B0D376B000A; Sun, 30 Nov 2025 13:14:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EFF76B0010; Sun, 30 Nov 2025 11:43:42 -0500 (EST)
+	id AE52A6B000D; Sun, 30 Nov 2025 13:14:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42D886B0011; Sun, 30 Nov 2025 11:43:42 -0500 (EST)
+	id A21E16B000E; Sun, 30 Nov 2025 13:14:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 341716B000E
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:43:42 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BBA145D614
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 16:43:41 +0000 (UTC)
-X-FDA: 84167844642.29.25E5D8B
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D859A18000E
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 16:43:39 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HpNXuYeZ;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf06.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764521020; a=rsa-sha256;
-	cv=none;
-	b=F0uTSfVF3fdz3iPjpzMgW1e4JaiOduOxYLaIFivONq8nWac4dfzmGrqIvY5gC6gtlIxJm0
-	o7cHuypDEKgXUDcmktoKDs6Fj/ZC0kzV4L92Vf84KsluqySGuWAYYAnreKiWXiQcVVjllr
-	MTtFSGFYOKBXPgbtK333TUaDohFAxoc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HpNXuYeZ;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf06.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 915AB6B000A
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 13:14:25 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2651C160DC8
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 18:14:25 +0000 (UTC)
+X-FDA: 84168073290.16.27AF193
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CDF1B18000C
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 18:14:22 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=htDtYcD5;
+	spf=pass (imf24.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=linmag7@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764521020;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764526462;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6TQMOQpqW8krGAHNp9tR8czsOrAsd6ZBsxnO6QRI/Ns=;
-	b=L1dHFR2c+l6hJxH0oQOA63/Mszkz3WIxO7YsLQ2QSFmrNblmeF7cZNpNTxy0aFHhpFT9qk
-	DkCAsDsh4qB17xtlU7lYDtWZeq4URRm68I3BNS6WNoHquU3ofzuAIqpKY5yD0jRHRyLEyn
-	rSNi8LksAgItdeZtZD0YmxEi5TbWNzc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6TQMOQpqW8krGAHNp9tR8czsOrAsd6ZBsxnO6QRI/Ns=; b=HpNXuYeZo0kYZQOCGgq6FzNrRj
-	JAyLOPcOzLE6pPZPH5OwI0lMoZpoNfRElK9IBD0C8ELiKmjaa8VFl6UQHry+OkV1hh9BD25mPrfs6
-	Mb9B2Lpfwuty8QhaGjWlzAzHMy5YFP3CmRf6oVaR2+ZOVK+P5ssFA1J1sGrnYd1dh1YBPBuU7mRQf
-	AE6ZwC8XWApOmAi+EOWX/jtHT7smdIbxCZYIbJpLji+DD3Ps0p+Us5YAvWQNae1A7w/qO8IJUB5Nd
-	2Io+JAc8nsBDbjVHf4CYH8bbtN70dFeumER2EG8zrmAqTTrIYZWmvx2HjPd3kZEPK1rI65jSmsyqd
-	LXsZDdYQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vPkWa-0000000AnW0-12ga;
-	Sun, 30 Nov 2025 16:43:48 +0000
-Date: Sun, 30 Nov 2025 16:43:48 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: david laight <david.laight@runbox.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-alpha@vger.kernel.org
+	bh=KBLsT1Kt5fCGBYy/tImoC4leU/BBbgTB0sTZXBRw36o=;
+	b=X/KL8hlY+7ZDeib/+cANuX6iUoHyOJJztsQieFJGl6IbZqdWXMSvzIrqtz4Yc+AerD+ajG
+	KkVAmlkoIW4em0ROqTSqRxh1RBv1F2ajxRRxXD3Q9EB+oM4ZBto1kLv2bqkuNTHch3G9R4
+	krPuoh/BrTiosaRHWyNHsZk6rtaHuh0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764526462; a=rsa-sha256;
+	cv=none;
+	b=WYOOZXeg65eEj3R1Lza9eFOVKZYfPltNS3OxTR4GIZgZWExsQXJewbw1swtfICGuPpREjH
+	Bhls01ErCyFBFj0Dmi7OkkfkkSVC+jTZmzBe+Yq40VD+aAjprPT7jVi4iomK8LOeQop/Sr
+	RUo6SyC4ywqXHiexwQ4dnBDf0oX2714=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=htDtYcD5;
+	spf=pass (imf24.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=linmag7@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so6455397a12.1
+        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 10:14:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764526461; x=1765131261; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KBLsT1Kt5fCGBYy/tImoC4leU/BBbgTB0sTZXBRw36o=;
+        b=htDtYcD5wU4RILCN5OccuifSRt0rEp4UZGKxitS9PQiX7N5J4RHW3LqF8RGKXLdTIA
+         sG2HjFOq5oIR4isBryNKwnyO4oy3iUWBqm9wWOByO7JlIB1JVkEajBvrZb3qEKGwP9u2
+         g5dU7ziF3olnEgXRz68k0GamihVawZnW9rOFzhVJvBktuRbK9nUnKYC/dyO5B8ZqJyvA
+         QhghJGL3T7fcXZecLUgFJcfRF7M0iFtRQLl8CS+3h/zac+4Ehc4ll0PVxb4yUMLgPNEn
+         /E+32pdhYGoXnUW00D2NHeWW0pZADUhNyHwJAvgLHvk2HmggdQdjeiiBqfU0l/OQbDIH
+         rjYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764526461; x=1765131261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KBLsT1Kt5fCGBYy/tImoC4leU/BBbgTB0sTZXBRw36o=;
+        b=aguyTZl3dU60FFFcgnsU+E+2QD3RG1aRmPjexFtl0EIrRL9gGmretYAjJSuHdylf0E
+         YwV6mcgkcrE8YM5UrkNVYHT17rXnNG4+uclODLazvQ3w8LR9jT4X88LHTkHefN7rv4Zi
+         k9s+DJBHljyJbAAaiAPV7JjWRRXlOTC1H/T6DvA3CgSvtx7GJuz0debXAwZn09WgQNW4
+         5D5I1FuMTvVba7rlXs1kXxyopx1vklLGdss8E1WLql4Am10il15kEoPsdv0Xa3qCnRGk
+         IWL0FOGpXFDtWMP2rHkza9W7zL+3or440uG423OARi6QuE67PofKtpFIqkpUWrH3HY2t
+         8SyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBPffi6nvzHrmW5DXbA6YA/cg/bGUXod0H0mLQ0CEGaPifWGspmfqVQPoIdy8cHyGZr5hyT7ZavA==@kvack.org
+X-Gm-Message-State: AOJu0YwLqpzGh3csqFIDsIn692qnNsOz//zd/+8rqaCNagirOtCetz+j
+	9k4vlEC4zl4NPhQba2pYyXruL+SBIOmEv2gUUM6+MKyglaB737Nf8lWqPC5F5i7tqvJmsyAT5hA
+	fzD0V0R4i3d3ORlP6KgNLLOxrCFyQ+3Q=
+X-Gm-Gg: ASbGnctID7/lB9xMheVzDGDXjAwWCjM4g5O1EbdN3VUu6nSiIul4ihWKtanyI8E7Io3
+	qZBZaYD5z1CFJQAZJ7ZnSf2IBSy3yqjr+kJzlnvR0cD5oJh1JOG4KYT/4KHJwBMQKjRaGOKtx+V
+	4+nbRzJT96gPkVaY6lHjqyFAOk9i9cnoihPHWWS97tWhFJzbCfAVLniw5EZEQZvHaItB/y559Jz
+	Hk2dmttBnYBUz/3BHci4YtTa+tlVD9NxLiCL3tuPLwI6rIhE+NGhVoclxkGtRYDuH0QA0Ie
+X-Google-Smtp-Source: AGHT+IGupBFdrEOmRl5k7yY5aSkJW5q5+XQv+nRU93u5Qo5WO8nScYPZTMUsiFSkhWy9i9ITX10ojEFa3wagCBqPerA=
+X-Received: by 2002:a05:6402:358c:b0:640:be87:a862 with SMTP id
+ 4fb4d7f45d1cf-645eb2b54b5mr19121191a12.24.1764526460968; Sun, 30 Nov 2025
+ 10:14:20 -0800 (PST)
+MIME-Version: 1.0
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <20251126185545.GC3538@ZenIV> <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
+ <20251129033728.GH3538@ZenIV> <20251130030146.GN3538@ZenIV>
+ <20251130113213.40c8e7a0@pumpkin> <20251130164348.GV3538@ZenIV>
+In-Reply-To: <20251130164348.GV3538@ZenIV>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Sun, 30 Nov 2025 19:14:09 +0100
+X-Gm-Features: AWmQ_bm-wMIuBmzcPhNWr-LzkAv5-980q0q5uk1rnCb2E9BDvqCfeZa_S_apEGA
+Message-ID: <CA+=Fv5QNL6q5vioEd8D9UqN10yM=EP1sMtYKYda5PoRqXngaQQ@mail.gmail.com>
 Subject: Re: [RFC][alpha] saner vmalloc handling (was Re: [Bug report]
  hash_name() may cross page boundary and trigger sleep in RCU context)
-Message-ID: <20251130164348.GV3538@ZenIV>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <20251126185545.GC3538@ZenIV>
- <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
- <20251129033728.GH3538@ZenIV>
- <20251130030146.GN3538@ZenIV>
- <20251130113213.40c8e7a0@pumpkin>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251130113213.40c8e7a0@pumpkin>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D859A18000E
-X-Stat-Signature: szmgbfog8a51ykqi79afw6jh5ohx3ktr
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: david laight <david.laight@runbox.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-alpha@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764521019-273082
-X-HE-Meta: U2FsdGVkX18hEDKmvkrj/X60mX21jD81xDj1F4tl7OQEOq83bqwD0q8WW0iWdI0T9yXU/8B7Oo6PDpP07Lfe/e1g2lTJ9vjueWXg061srRhNSrWzvGxzFxVup8pziwnpfQDTuFhQxgbEdLBfynFSqYQWxoXO/gRoOTVge0hr/r/7yNV5GP5pprztOf7iltCV0bTRF2y8/hFyOEQP3zJv6w7YmJeMDEwkHgPdmCmnKZMRd3vAjHKMOqP0F63be3j1n7tuUJEjyYgzcTKjVEQIjADIjkTVtQO1F3137R7tR0OfZZSDuDIM7OzYlhZP0JQ5QXmegNG5G575IFhSJzMm7hcn3d475dEzX9xLdK2WGelJO++3QHo6QVgdoqhCOJ7b3SgLYfSSfTNIer68z5v2ZLGTe0sfmfIcJ3UAcAREbJySOxzq5oYvxppt4Mj2rMnyMKswMN687+oz3KWhnsg8Tu6xSi04fPVdz2LZYL+NXTOn3PX0OCe9ZK06FGMzKTZzaesUGbxsdGm8uJ0bgDNrVxO06Hx0DpsQzGND7JGWboyHpK4giRYHFLmadL2U9CnWrAV3yVg+gaFl9TzfB+G4aQSsAWd4Fm/GrCCTmLBFKWbmf2kS6+oSVvUw7hrH9+OfL5M82vrYc3JrKOR97HITqCJnLVpl7dnmYKM+a92tPFPpO/rfsRDnGcIy5idW/oqJvCF05te7nF0U0++LWmJ9MyqWCgcVakFv8q7F3HytWiEN5yvq5lnQ48IbkxIbRf3/m+8UYZov6CyogUgmKzB+ujj/PaFe6atIcpnkd5grw8G4cDAXyD3TlrD3cYviuKfg5fYNjpQZvckEuP6Ts5xebnxUb3Q2NMUvjUtez8/JjAQDn8WQPNp/9M3T+z3GzHpduz/5XgSvysZ3j5voqohAOA+ELjUDgwOmrR3/GReemenVFDqzMqprQy1/ugZgJZwZ2HMEjeMBYbNGo2CNh9y
- dDRhEtFQ
- S1cRVDzWHKV3zFTn+n5gQKRlIIx2Vy5fT8VsQax0+QcyxOLk6pQlanh8u1YQNGYtxnn70n3JE0SFXnj3IO76sv903iLLK9nie5MN4+/Kkymi3YP0QR9lRad/VBmF8OQIv9wd+Wg93HOKmnlAR4lLmTY1UgIdgs9r7D/HS0HB+xjVlA+UbH3tufI1BtMFQFScxe9bQ4B9ANaTOVL/QSjIjiGGFDgQEhHnPUtdPnu7806XvgR5+AVB50gwOwCouvCRJL1ootPBIIYNP0cUyUj4M9SpPbosNWrXDrenzZ1URI2UI7vnm4k1Pmu3t/zHZuWNUUJLZsFi/yDgFzNgGdilqm69TJbvMvinXMNVj9cIL36zMkOJWiju5oynaifd0H9OfIdYKkxL0jRKYjgMfZ/PkfxAJQ5y/44aoZ2VJcnTCfqI1kG75WMhgAak+AKNPR8pKL4fiIDpV0AxmHWpcDEaCHYwB+FHWH6x+bnuR+xg31BOTbBw=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: CDF1B18000C
+X-Stat-Signature: yaa9q7htqnqurrstzjg11stnma3oxgak
+X-HE-Tag: 1764526462-33053
+X-HE-Meta: U2FsdGVkX1/wHez+WCAFqJA8P0DKaPUD/NeaEoDhrRlH5SUaOhIEIgfmrLYG7Ejvl6INQMhUsbsHDOQ/0Xskx2jdRQOYQ861FlQRELcK3qiK4CSLuQrxppDUzBxcNrRsOzTw958cePkpKMcUnOdNjgRsCjVv6P1CeuHfSZhdZ+dtc/8ksl3jIHAplZP347PXVr5gFxGzC/6g/msV0eXUo0fPfrUk5Bf9fzRUBDh8mj6rlwebhaopXY+jVhxTBIe+hi087ZSKD4sXdFC31YSbPTDXboKwga3m6DmG1Oqs5kUNzesU9G+hMrnrNrBKgnmWsioNNagRvq5Dh6zNh3wqQ5iXvLxL/pj+/15xEcOVzuBsxC/TnwH+IrdNiHYTMdFZPtpu5SxWEu+YHxRaZw60vUUcnLp11DD5tAGEdJM5L64kvXD6e7uW/jXvJf+YY9RIOcrsEs2/CsrKfMcc7R70Erplo47fx2XvcLdIQahdDAKopxOmn5A6MobiwdnyVCdYU3tswj/vH/X4N42a2TWnIs834uaSdiJEPlYDoqkX6/BLVLPikWMiR0SNFnFBVBNGJ5+wQ+TNNyPp281yP+gyzcxx7P36w41XTWYxQXuELn9pzAy9L1Rtg5RGBjnlyOCC+9rMFcM3yDAdM7rv110h37/BkqZXaQJdTKFS3o3E0eqZz/FRT9qwq0slEdi+CyMTg8jScV+cBKLCwXCjGOE/MafTQa34C7EmOt2TPE9Dt5DY4/Jpy7AIqRkSKusbiL1F0wsbv3ZrdwzZQZASyrItUOAlZbGUlFGFxsBl7WV2AALE2YNWJRCepir2qDnjqmdXDZLghlMZrYXif947QjWVP+6PWDnpJ4AswUCmfhXhfmJaVH0s3QhDYcVsyNR2MKePehNUHMmfxmPHPa++fvxxA7ToSExqkT8Hp6o2301cNVant0FoTfU/QKPu3l7GG52U7VZnWWIt4K8x0whYKxX
+ N/7K4fAS
+ 8XtiUflld7LQoxFRCZyhb1bVuKqMl+HTYWWoabfy+vVD5zj8UtprlV18yF/KChtw4MOAGq49RIqV5lvO/jFAUu0liwocgYTBc2FkxMWrfJjOt3beE4H967V/X9Q9D3kNAsplaa48BqnavHLqbn9V6TcxnauPdYV6OKc0yF6ZSesulzt8ns/OU+Vj8NCi0yuV3kLPvBJiWAaduN0bUuRkHkOtRskB5Be7C3Js0JF7daENm8sm0xJDHEh3JkyJYeVWZ1AP9RetkiJQaqKOYtzoD318nv8JQMU+XN0cMlGhD0WqABxkYiuZM6nEo7wSAbv+S4DyutCAaQwE9KEqS8YsP3fNrCP5aixmAHRPMyidbjd/Y3fmyf8BIsXhcosaW5OdXsvJgEf78e1syE0YyPRZI4llXE+A0XEckB4xSCcMw9bROEgh3+lVfKmESQcDjgxQMBuoUonLKXONsVBI2Q+7Mlw/vPrnu4+elzgbW5X9o54oltD/EYUzf7jVG+EODZkJ7dMGjsTrkbDJJQVOytlDUHpbmjm9f1GTjML0s7qs1xtP0w0xc3C1yC6m/28KmefGssUc59ZGGwpH2ens=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,21 +121,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 30, 2025 at 11:32:13AM +0000, david laight wrote:
+On Sun, Nov 30, 2025 at 5:43=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
+rote:
+>
+> On Sun, Nov 30, 2025 at 11:32:13AM +0000, david laight wrote:
+>
+> > How difficult would it be to allocate the pte for the next 8GB on deman=
+d
+> > inside vmalloc(), and then propagate it to the per-task page tables.
+> > That is a path than can sleep, so being slow if it needs to synchronise
+> > with other cpu shouldn't matter - especially since it won't happen ofte=
+n.
+> >
+> > That should be moderately generic code and would let the vmalloc limit
+> > be 'soft'; perhaps based on physical memory size, and even be raisable
+> > from a sysctl.
+>
+> Considerable headache and pretty pointless, at that.  Note that >8G vmall=
+oc
+> space on alpha had been racy all along (and known to be that); it was
+> basically "could we squeeze more out of khttpd" kind of fun.
+>
+> Do we have realistic vmalloc-crazy loads with high fragmentation of vmall=
+oc
+> space and total footprint worth bothering with that?
 
-> How difficult would it be to allocate the pte for the next 8GB on demand
-> inside vmalloc(), and then propagate it to the per-task page tables.
-> That is a path than can sleep, so being slow if it needs to synchronise
-> with other cpu shouldn't matter - especially since it won't happen often.
-> 
-> That should be moderately generic code and would let the vmalloc limit
-> be 'soft'; perhaps based on physical memory size, and even be raisable
-> from a sysctl.
+Hi everyone,
 
-Considerable headache and pretty pointless, at that.  Note that >8G vmalloc
-space on alpha had been racy all along (and known to be that); it was
-basically "could we squeeze more out of khttpd" kind of fun.
+In my opinion, for Alpha I=E2=80=99d prefer the static preallocation model,=
+ as
+it fixes the LARGE_VMALLOC race cleanly and keeps the fault path
+straightforward. I don=E2=80=99t see many realistic Alpha workloads that wo=
+uld
+benefit from a more complex or dynamic vmalloc setup, and compile-time
+adjustment seems sufficient. Al=E2=80=99s version solves the issues without
+adding new moving parts, which feels like the right tradeoff. Removing
+code that has never worked properly should not cause any harm.
 
-Do we have realistic vmalloc-crazy loads with high fragmentation of vmalloc
-space and total footprint worth bothering with that?
+FWIW, I applied Al's patch and I'm running it now on my XP1000.
+Seems to work as-is.
+
+Regards
+
+Magnus
 
