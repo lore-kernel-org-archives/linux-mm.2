@@ -4,69 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C37BACFD376
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F215ECFD376
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:18:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A4386B0007; Sun, 30 Nov 2025 06:05:18 -0500 (EST)
+	id 11DD56B000A; Sun, 30 Nov 2025 06:18:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8555F6B0008; Sun, 30 Nov 2025 06:05:18 -0500 (EST)
+	id 0A7B46B000C; Sun, 30 Nov 2025 06:18:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76B8E6B000A; Sun, 30 Nov 2025 06:05:18 -0500 (EST)
+	id EB15B6B000D; Sun, 30 Nov 2025 06:18:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6575D6B0007
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:05:18 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F1A4A513D9
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:05:17 +0000 (UTC)
-X-FDA: 84166991874.24.8E1593F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 50A741C0006
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:05:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BTGISrlJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D3E306B000A
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:18:23 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 778A1132541
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:23 +0000 (UTC)
+X-FDA: 84167024886.22.AC06B30
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 219B7140014
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XUtziVFw;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764500716;
+	s=arc-20220608; t=1764501502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JXzDtQHq1QmYkxZjR/2BVH+fGh10lNCKERVT70PZXc8=;
-	b=wUE+btLRhoA1VNN6ziDD2cyHnCb008fB2AOUV6joRZHEs4JWG7s1sqDyiocxarQhfXhJQo
-	fCbWwzn+ARZvyeUDslhy4eNhyj7jSTtA9G9M7iANbCwnrEqKchi+RAfvXAEoJqghfxZpKQ
-	TiTNus5e9SGXLzNXkaBh3ONoJ4L9rfY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BTGISrlJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764500716; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=i7R8+9qMl8wh0X5wU6czbvLNsq7fHz+lMo4qPQRav9A=;
+	b=PGEb4GVyh1oRB2qu9la4X4hp69ReFMsIGttl2NpSsLRldT2XtaeIEx3DxXOKX4vxGP+MaN
+	vvSAQOKz3R0csTW2ZW/W01eF/DnyF0iiNTLxuBkJutt+r3yJtXJ2Ov7jL/m2kVbL2TJ8ns
+	CsdYD6y4G9tcl0jcg/aa/0Ju+ncXZPo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764501502; a=rsa-sha256;
 	cv=none;
-	b=GLnIT9PXsz1Jw+1biXg2xObj4OBgHvd0+hxWy89WYK0G4PByu6IpdFFmWUCmzdfZi3u1d4
-	H9M3+OwewQSQD+tcOU3K/ugcVeezeaqdYROKHoEW+fWDswPqssa5jC5teHQhfAQ00VrP0V
-	e4NAhYg4jgUOnimU6nm8lE1UYQk584A=
+	b=mB5o52sJweGofuaAA94tkHF+h/TyOlU5VK9vTINX58M1LowvDxBZiD3OfeLCEqxBXjUgCW
+	6u6YdzboYf5+O2vlmCi00hzkvhqKNVEMJafOMthwrmZ0kXV99Q8qswDANjSUKbquZaBFye
+	6eCrSttyyrP12SqJE0IRMBF225Er3q0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XUtziVFw;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14954404A2;
-	Sun, 30 Nov 2025 11:05:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2718C4CEF8;
-	Sun, 30 Nov 2025 11:05:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 362C260127;
+	Sun, 30 Nov 2025 11:18:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9E7C4CEF8;
+	Sun, 30 Nov 2025 11:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764500714;
-	bh=WgF209hVGnuhzCWEOErtx6btmHGTsEcP7tri0M2RCX4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BTGISrlJ0lGzN7zs3GC7hlj8AU+zkROh5RBFD2dy9dKebTpAxzlGMxMFOPBSIaPc4
-	 m1iH9EYA5JkkCr+RLJKhgtF0R8Ku+BHjMP8sEulJDHVGYL1IWaZLxmBl4zHvYOE+Rv
-	 1l50sLIlMgdXYqaVooXB3EhlUMY8VgKqKzlXy/kgHjnMhBjSfy1QatN6CaF4c5FlVf
-	 viwMzE7w1Wvyo38nJ3Djrc+BfCyX8sJvB1wmqREVXwUigN0CpHRsby7Am+hiAbJS+A
-	 8SqzUXKncccjYNK7DYX/ZjnZAs+cd/6Q4Nr5P7HSa50WSyTg0RIxQMgX4q01fmIFos
-	 l4Hz5zEDcRLGA==
-Date: Sun, 30 Nov 2025 13:05:04 +0200
+	s=k20201202; t=1764501500;
+	bh=QWyCUWNr5EiAGbEinbC1SqyvrF+pTj5s8nlr0+kSaV4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XUtziVFwxT+NlKvaS6WSYT+hiz0mrSRU2i7WVNjkPJridMQi1gJVaxfwESV5hKMLG
+	 BN3/0ZxZ/2DXLu6KtyIAMR3OGP+BuHSB7mPzKRRbzKyPqJR8YmW7n/weFmExIqYmtd
+	 7S3JsaPSzIUgMK9FlfeSl9MJQo32lLw65KrX4tiLtUyULE/RclDDkSu7WAu6Tv55J3
+	 gf46siqJ5aWDVA7l8SrR6snvp0GwbHKUcRBMPamwN8p8iGNLcKkG/4XQ1p0ZejStcH
+	 jf9uLE+kQcOwTjd9m8m1xzWcw4fqekafIhmzyolIu/YVxYX02l2rPQaNJa9U1vNIoc
+	 pL0mfDDnUxd0A==
 From: Mike Rapoport <rppt@kernel.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
+To: linux-mm@kvack.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -76,33 +75,31 @@ Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
 	Nikita Kalyazin <kalyazin@amazon.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Shuah Khan <shuah@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: Re: [PATCH v2 3/5] mm: introduce VM_FAULT_UFFD_MINOR fault reason
-Message-ID: <aSwk4IGY7zdb0cwd@kernel.org>
-References: <20251125183840.2368510-1-rppt@kernel.org>
- <20251125183840.2368510-4-rppt@kernel.org>
- <aSYBrH_xfMfs6yDW@x1.local>
- <aSgzcpFP1qBda5ef@kernel.org>
- <aShb8J18BaRrsA-u@x1.local>
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v3 0/5] mm, kvm: add guest_memfd support for uffd minor faults
+Date: Sun, 30 Nov 2025 13:18:07 +0200
+Message-ID: <20251130111812.699259-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aShb8J18BaRrsA-u@x1.local>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 219B7140014
+X-Stat-Signature: 6o9pzk7qw9bp4cfiy9cr5xdi5stbxjeh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 50A741C0006
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 97h9m96eaksnbh56rfi3eyi3wjr9wiy7
-X-HE-Tag: 1764500716-258010
-X-HE-Meta: U2FsdGVkX182yUNWzaAyzTKJuNiH/Fs8PHfCWbxSjfzhO3xX6IYMl7k009Me4pKKd3fS5rpUiufY1UUKVqN/WtYiEO3MCjiE4JXZTRuj0yc9eU0NogDwbvFBcCDDPsZ2DgROlESnrK+mfamhShcVH9cr3c1wC4gSgfaYLzbMzvFF2brvGe+3bItZ3HhI34e8mKhnVuoK8YIPga3yZDoUkjE70VwfDwugCFnk171+Mv6rptR6lDUW++gYGak1Qz5QI9AVH9+XyFteYapsmAEHE5tnnEosYPPSIbXPJecD+hRGDpfMGHrBUtFzOnpExiau3DqEmGZZFpvvj3usxrHMXHorBsywJUxjFphOZs6KeSKVUIL07zT6y0RRDxU5F2yxc7cpCKSSgvhOKmkAM7/DJSXdfH5WtCDCKYydBfvPbzMF91NJHUlhZ5NuXw9J9KcppQciTGT+zIlwtb+J48nOTukGgp1ROrfM4KsS0BIJ1cClEB6vuYQzpo3XblOOhv2vUzfxtO3ojWcKvxq/R2Qq0SJhtEK+2mUPX+SGBQtfDUOutTw1UEc/ZWUlO/jOzMbfhpwbJGT1OLmafyKmbzs+bh87mC5XaonxFSu06bDpwxNkSCbl5m/lR5xsdWDJPc4Yq3mjFiBAR0S4qnBqI0ZuMRKiesW7fNEXJEuvLF7tKD04fv65huvBFxBPs3vlSHeGZcIXtUdOjjhS1kSNMLWvAYd4yakMvqvWDizQG4NVu7x++YDQWze0LAp36IZTgSywIkwpRa4+FDvgOw6K24ZivhNdYnEeqAkWVEDjvGWhvn13FMywF9VLdypKkeQYjYbxNlARU2HcyqjnrGtm04NP5i4ewKLAy4bLkKprApVnB0nTSuVUMaKempLFJKUoEosFCOxao9daXM4l5S8MJfqmiy+m2FJm0JH8E69+dEWwXX57WR0nTMQ5bRsrLLnmRfV9OQ3i5PRXLC5oQ6nKlXG
- i8K8t6Cq
- /kS+u
+X-HE-Tag: 1764501501-781517
+X-HE-Meta: U2FsdGVkX1/EZb7sIdKScsN3WaJhCxDdCxoVoOZgDZOHxDK6F5IGTafx9/+o3jybbWx3/txJNYDE6UbPik4XKpD+BRyrXVDXj+YUItTwoodaML7h+0ZFPSW1lS7qtYSz9DaxYQPN0aSk8LVE1m17jzLosXPmub1h2ZLBNKU3ehaG8HiyZrL8+/Of6FgK/H8/aMTb4PEGMQenBowiO65M0sGFYvp325tvq+coIH2BwOi6Ryn8IA3ynvLBVxshE4ET4zQDFAzxd2mO+m3nhjTS1yOVKF+KSS0X30d/JXe3yWvGqIo96XuzZXrs0phGyuJwinW+awXZtpvLeAlH/KozI+uOWy7VYBWtgiR/HEqIrsFq77kG0dIBaGF+emmJlBFiAiUu3Gc7J92Klzyg4P8HDz32V59oE8tUSd+sM/UtdEB8YOU8niJ2QQCdNhD6oM/JRuS+8ecJud3YnrEiznXDWTTgmIPzN2N35pqM7D9X0zDJ7nF2R3P2+xMttVcuCg+D3G84p28MQncPa147X2Bu8dsJqBYi64VP9yrbPU0Jq7TBtRGmq6n+jUvAEl2T9CGE+6sPAKzqhpyB+KlbfDV57G1U8bY1tyqzGj/VzA9eRh+3DSibsWY0KEjGNUK9PBfgUyQ7WKqQWkF2lmHNAMv2HCjecKEiyLPBtm3uHT2QMdnW8/fR2iaBlTPuOAUm1kp+lvj8KEljtHRuldpYu7Rh6AGL47KcCamIxIaS+ecrQdS3d8SmxKHevjDlW5h59mV46OEMDAUvKF2eN+pauAbNUD9yawQ6R6RjejqHRBWk+XU8ZXBPg297pSWLUCpGpP4NWYYS7JsLiTdcaTxclYNDvRU16T4LaKQ7YfkRREIduqbrFbRI3LVpSPuZSFYRkn4641bmKOtjxAtIdDfEHGUjtk3PkwfA01slO8yF79LS0YhQgEN3SJ162bzjfciwPhosU91FLx6tNlmc2Cyk6T2
+ GhU9V7vX
+ 1oXqh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,89 +108,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 09:10:56AM -0500, Peter Xu wrote:
-> On Thu, Nov 27, 2025 at 01:18:10PM +0200, Mike Rapoport wrote:
-> > On Tue, Nov 25, 2025 at 02:21:16PM -0500, Peter Xu wrote:
-> > > Hi, Mike,
-> > > 
-> > > On Tue, Nov 25, 2025 at 08:38:38PM +0200, Mike Rapoport wrote:
-> > > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > > > 
-> > > > When a VMA is registered with userfaulfd in minor mode, its ->fault()
-> > > > method should check if a folio exists in the page cache and if yes
-> > > > ->fault() should call handle_userfault(VM_UFFD_MISSING).
-> > > 
-> > > s/MISSING/MINOR/
-> > 
-> > Thanks, fixed. 
-> > 
-> > > > new VM_FAULT_UFFD_MINOR there instead.
-> > > 
-> > > Personally I'd keep the fault path as simple as possible, because that's
-> > > the more frequently used path (rather than when userfaultfd is armed). I
-> > > also see it slightly a pity that even with flags introduced, it only solves
-> > > the MINOR problem, not MISSING.
-> > 
-> > With David's suggestion the likely path remains unchanged.
-> 
-> It is not about the likely, it's about introducing flags into core path
-> that makes the core path harder to follow, when it's not strictly required.
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+
+Hi,
+
+These patches allow guest_memfd to notify userspace about minor page
+faults using userfaultfd and let userspace to resolve these page faults
+using UFFDIO_CONTINUE.
+
+To allow UFFDIO_CONTINUE outside of the core mm I added a
+get_folio_noalloc() callback to vm_ops that allows an address space
+backing a VMA to return a folio that exists in it's page cache (patch 2)
+
+In order for guest_memfd to notify userspace about page faults, there is a
+new VM_FAULT_UFFD_MINOR that a ->fault() handler can return to inform the
+page fault handler that it needs to call handle_userfault() to complete the
+fault (patch 3).
  
-	ret = vma->vm_ops->fault(vmf);
-	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
-			    VM_FAULT_DONE_COW | VM_FAULT_UFFD_MINOR))) {
-		if (ret & VM_FAULT_UFFD_MINOR)
-			return handle_userfault(vmf, VM_UFFD_MINOR);
-		return ret;
-	}
+Patch 4 plumbs these new goodies into guest_memfd.
 
-isn't hard to follow and it's cleaner than adding EXPORT_SYMBOL that is not
-strictly required.
+This series is the minimal change I've been able to come up with to allow
+integration of guest_memfd with uffd and while refactoring uffd and making
+mfill_atomic() flow more linear would have been a nice improvement, it's
+way out of the scope of enabling uffd with guest_memfd.
 
-> Meanwhile, personally I'm also not sure if we should have "unlikely" here..
-> My gut feeling is in reality we will only have two major use cases:
-> 
->   (a) when userfaultfd minor isn't in the picture
-> 
->   (b) when userfaultfd minor registered and actively being used (e.g. in a
->       postcopy process)
-> 
-> Then without likely, IIUC the hardware should optimize path selected hence
-> both a+b performs almost equally well.
+v3 changes:
+* rename ->get_folio() to ->get_folio_noalloc()
+* fix build errors reported by kbuild
+* pull handling of UFFD_MINOR out of hotpath in __do_fault()
+* update guest_memfs changes so its ->fault() and ->get_folio_noalloc()
+  follow the same semantics as shmem and hugetlb.
+* s/MISSING/MINOR/g in changelogs
+* added review tags
 
-unlikely() adds a branch that hardware will predict correctly if
-UFFD_MINOR is actively used.
+v2: https://lore.kernel.org/all/20251125183840.2368510-1-rppt@kernel.org
+* rename ->get_shared_folio() to ->get_folio()
+* hardwire VM_FAULF_UFFD_MINOR to 0 when CONFIG_USERFAULTFD=n
 
-But even misspredicted branch is nothing compared to putting a task on a
-wait queue and waiting for userspace to react to the fault notification
-before handle_userfault() returns the control to the fault handler.
- 
-> Just to mention, if we want, I think we have at least one more option to do
-> the same thing, but without even introducing a new flag to ->fault()
-> retval.
-> 
-> That is, when we have get_folio() around, we can essentially do two faults
-> in sequence, one lighter then the real one, only for minor vmas, something
-> like (I didn't think deeper, so only a rough idea shown):
-> 
-> __do_fault():
->   if (uffd_minor(vma)) {
->     ...
->     folio = vma->get_folio(...);
->     if (folio)
->        return handle_userfault(vmf, VM_UFFD_MINOR);
->     // fallthrough, which imply a cache miss
->   }
->   ret = vma->vm_ops->fault(vmf);
+v1: https://patch.msgid.link/20251123102707.559422-1-rppt@kernel.org
+* Introduce VM_FAULF_UFFD_MINOR to avoid exporting handle_userfault()
+* Simplify vma_can_mfill_atomic()
+* Rename get_pagecache_folio() to get_shared_folio() and use inode
+  instead of vma as its argument
 
-That's something to consider for the future, especially if we'd be able to
-pull out MISSING handling as well from ->fault() handlers.
+rfc: https://patch.msgid.link/20251117114631.2029447-1-rppt@kernel.org
 
-> Thanks,
-> -- 
-> Peter Xu
+Mike Rapoport (Microsoft) (4):
+  userfaultfd: move vma_can_userfault out of line
+  userfaultfd, shmem: use a VMA callback to handle UFFDIO_CONTINUE
+  mm: introduce VM_FAULT_UFFD_MINOR fault reason
+  guest_memfd: add support for userfaultfd minor mode
 
+Nikita Kalyazin (1):
+  KVM: selftests: test userfaultfd minor for guest_memfd
+
+ include/linux/mm.h                            |  9 ++
+ include/linux/mm_types.h                      | 10 +-
+ include/linux/userfaultfd_k.h                 | 36 +------
+ mm/memory.c                                   |  5 +-
+ mm/shmem.c                                    | 20 +++-
+ mm/userfaultfd.c                              | 80 ++++++++++++---
+ .../testing/selftests/kvm/guest_memfd_test.c  | 97 +++++++++++++++++++
+ virt/kvm/guest_memfd.c                        | 33 ++++++-
+ 8 files changed, 236 insertions(+), 54 deletions(-)
+
+
+base-commit: ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
 -- 
-Sincerely yours,
-Mike.
+2.51.0
+
 
