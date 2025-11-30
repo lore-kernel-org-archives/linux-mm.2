@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26A77D116F6
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835A3D111A8
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 823576B0011; Sun, 30 Nov 2025 06:18:41 -0500 (EST)
+	id D7AAB6B0022; Sun, 30 Nov 2025 06:18:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ACA06B0012; Sun, 30 Nov 2025 06:18:41 -0500 (EST)
+	id D03CD6B0023; Sun, 30 Nov 2025 06:18:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64E1F6B0022; Sun, 30 Nov 2025 06:18:41 -0500 (EST)
+	id BA5226B0024; Sun, 30 Nov 2025 06:18:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FE356B0011
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:18:41 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E58C3132541
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:40 +0000 (UTC)
-X-FDA: 84167025600.29.1B03EEA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A67E76B0022
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:18:46 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E2DD160568
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:46 +0000 (UTC)
+X-FDA: 84167025852.03.BAA7925
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3577614000F
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:39 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GTEOZ3Eu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764501519; a=rsa-sha256;
-	cv=none;
-	b=BBczRQyaIJpBiLQHA0Grg9Y1yb0Xl0T8OYKB1T3SJq8D3K2aKRzAiiAQeM0nOwmbWSrphq
-	bC7CTe5BiOTtpHvqB/rdRi0QRqMO2V+UxzzM7IBQTxAAsPKAyunWUuW2nX3PCB37S54jVo
-	noZANV5E9uaAEhWXe+vmL+IxzEIKYlo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GTEOZ3Eu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id D131616000E
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:44 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ha1VpMPt;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764501519;
+	s=arc-20220608; t=1764501525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=luA8w64UTnP7jsE/Fp6ukORsax4OgFVbVD1J93HbfUs=;
-	b=lUIiBU8m652DIdg+v6aY6bMotCCR4PuE8HDSL/v54Q0YIoAdtyX5mKdD9DcOA5Sj8AH/TB
-	4CoWXm0jUCnQtrbsnZm7Hzyt9y7OtRVT7iUlN32bvmT85ja4133XiDVMa3HZNV8edm3kTu
-	NaY7vAQx1OEOiHAueqU3oBhG45nDelM=
+	bh=HezHt5S4HiSPcqkkgK5MvMd46JoHZhOJ7y7yKHUM0lk=;
+	b=U6SfRQpmOrbCq3PwmvHittNXrYkSy22M3p3sSy6I37dRqEQgbApxp08vs1Fk8xGFuNg6yN
+	EWbD8xLl4XlkV1YrmNBBGIgQWUmjcIr97j4suuKow1okwgSrHqTuAlMkfLQU4xXqJFdnTh
+	WsXHHpOxG3EDXBcYZhOxD/iH3ikhHQQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764501525; a=rsa-sha256;
+	cv=none;
+	b=igDKREF0pKykoZiexmASgslum+pGq7NKAH9zhHNwrVW3EZubSnmlLNd8P69tMCRm4jFCtr
+	REEx18TYZ4ElY4WM7DRN1I1AFz9quXbWLyGhF2siN1HOnMjVrEb+ePMMytsN6WcFyfqeAt
+	a3wrTuV+6d5hJMWMqVHby289+sJZRzs=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ha1VpMPt;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B99442E17;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0EA6E40602;
+	Sun, 30 Nov 2025 11:18:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8BCC116B1;
 	Sun, 30 Nov 2025 11:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FF8C4CEF8;
-	Sun, 30 Nov 2025 11:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764501518;
-	bh=kn1TtLxUvl6eK2HP+wAu3G67BEAmX/GRyBo9yQ844/o=;
+	s=k20201202; t=1764501523;
+	bh=02TV+J21aRh8Y7GHD/quPCqz9iq/kEt5UBYeya9wXbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTEOZ3Eu7EhOOpw0QceVSQ+bNm50XMZUIp8tcd4Zgvs0pWvWMI60KTlM1/2qOsjs8
-	 0QNc7mcCdeh+ZYHJdpxS3KVSQ/SnooeWvfX+xjVwFwOh4Ayxh+9nNH2/z4SVTQ2tru
-	 XyufTc0QVGWP4mrQ1s+rWBm3P5+VvAxusEBYIHg43KX0tY4wWgDncOlh2ocwiBSqYe
-	 Gj8ZzBLL92wwmYW1GSIbx7rQtkZp+Ed1rAhaF7XuAsqylo7q5xqWa9fqzLfpNrRXho
-	 f84MYsqTzz/pbvZL+4dlHYdlYCUFxPVyZXIS9nNk422W47CGVnoXf9AyAZRUfhrIhP
-	 +UKoQejLcsRGg==
+	b=ha1VpMPtHwMP3wcPEvYjsA/TXMScV1CPNuo/cC5Lu3DHFteFKJfHohkZUPQKy0KVH
+	 Jz15kY7NsoNnb2ifdGn0TVWvzfZyhLUyxG/9gwIiLivBDv2L+6NlrOm5HO7uAQ94VQ
+	 W43OZVat768mPtgYQldsGVGP+DmrQ8p0eWovjw7NXQrngRyeR+P0y9W6NokDg6dW8c
+	 WIecaNNGhqHcEWomX9JH4q2tcK5gXHSoUMT8n5MUCD6/p4ACgXX3jGubo4z7Y/nL96
+	 nIZjMnQQSlLbYLMkRCy4SeLc/cuF1vSR8fRe2LRWKD8ko4jltWC0qCn1GUXPbYN46g
+	 CtYKcNVHiSLtg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-mm@kvack.org
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -85,24 +85,23 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: [PATCH v3 3/5] mm: introduce VM_FAULT_UFFD_MINOR fault reason
-Date: Sun, 30 Nov 2025 13:18:10 +0200
-Message-ID: <20251130111812.699259-4-rppt@kernel.org>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor mode
+Date: Sun, 30 Nov 2025 13:18:11 +0200
+Message-ID: <20251130111812.699259-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251130111812.699259-1-rppt@kernel.org>
 References: <20251130111812.699259-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3577614000F
-X-Stat-Signature: z36me7c6tseej8ysswah66o5cjowac6d
+X-Rspamd-Queue-Id: D131616000E
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1764501519-536308
-X-HE-Meta: U2FsdGVkX1+/refFHCzDDakCJM8eQW2PNfBfShfKyzwaK50AB1JtmuHZn5t1rkvrtBne9cChjP2dafOKG8VmFnMAtr+RIw9WrQTW66hnruv7QzW9+LhnDZ+FJcu2uSebPHNM16lRZfG1gGe5Z0LVJ7S6vrbBpVGI5RzOjCfmFvC5UtXgo45U085H4TOYjKGJihFTWrbWWPUf5+Yayl4l76689ZnZ3wXeym13YReenaH1j4CnwS3XFaF9CPERpcGbrCctjFBhnUZEIvme3qqye5cRxETNckgPiulTJBsV3Kq4lM33trWm45URhJNa3wJJzu/Qe4HntDLUbOfrQmq9jarH3up7ZdmVrkofw1tcVABe1K6caFXbbX5Wg5xPr4qShN4MZbo37ODgfh24Lf7VCQULOR5qTKP8n9UyHifLWci4v58QQVCvHdAnqk7ty/bl32NzJ8uKRsfQ8ABM27yD3S1C3dOkTYv+h6dRUS5NwrFvzxU2zcrX/TexhDdUa2Oxa+Wq8U3zRBrYzxRiM0IPfJk8bTYNYy2uPSLrLD6nT2O6BwQ95OvSoO8U8mWNLaSHL1jXzHAIy2rMMqcFkiMz8YglPiOT0QiSp9SoCMSsGAV0wYgDt7ywHCscNvT33ILx6Ms8+IktJ0+QHHmMM5jNwCpkL9BDcD//S9tos1AYeUPSf/HO3Fp2kAA+abLpNxiNLD6AfGIoh4BVc6eXSJD/KQ8B8dh8x9PCTdLvZQmUkzmWUKfUxaMBQEPRsyrKm+pfdK1wohjSfZkvzaQcpFXNTGZyP72ZJUE187ewbszKU40dYCwwtZoCs08gtUFZW8f8jduTnk2tX6fdoYkE7+LUCMHNBb4a2CpuhcCkZfG4byhre/5/UqBWaa8mcqBuATOfHKqRVV2oeYktzH6E0DTSo/+kWrnxH5XOusUfA8zT9e8qRo4wFCHYSmqGclPVRApDf5UOXuE6K2VU++O7Y2F
- nLoWxY+F
- 26L7lLHUDV3nfW7SLYeGNMZNIpeCkZqwmaenCDmvW25Ta5RLQdtcvoMve5ccmTXSroD9TCu7toqdz3t2pudpQoeRm9MB0KnPF7SweNNvA6jYTfx0DaCE1WC0MgGabEq+MjUULXrAuBGsSRWAfrob41eSwfBPIkDC6K6Sbaw35OhE9eGJjnJNA1dXEZtfe42bPvBSMLhJd3DOhY4+V1h+3m98E1C/hj7zkDYowZLcRfHtlYbG883OYWCFRbwT5G3Py9+6X71JB7uEfXvnBMma7/Av45v78IDMHDdf9WAJgNGUoLxUXNLlktqHsXk8DSXoaGxTX
+X-Stat-Signature: gfm7hznhrmyzkwz9fgaw5k19mmpyxbuf
+X-HE-Tag: 1764501524-781345
+X-HE-Meta: U2FsdGVkX1+XFhO9BrWgdMJZS8MI36eTWrmvzCosiDoTh4zrHqbhZzm4mlawIC+knzQnriKSDHw5NLEAujx4olDEiBjntwO69yFSaxXkmFB/3BSfKXYQ3qSrWBxk9qzEvt39cn4Vbxb4MT/ovsblHBcsBZZVzTeLDrp3JCh6mO0F0RPLG9dFmQt1tTY07fjtdeplUzkyHANfLwRqRStAZ9kS0sxo/yHpQkF9OkAewwm7Mw5RoKL6spmyzRrze7aBdtNsuhfYvUDTAuM6STZmD4KOVkQitirYEc3+J5HAgzdQlvK0iQSLF1GY0A4qEtJwlJ5ZM2F7WMEsZtqy62l/VEi9N92tsjcNSyDVROjKOVYK4zfYz6ZLleddTn4l0LbzfC9yS19FXvnp2i8qHXYSj6/Q4ptLDWkJ2Wie8Rvc45xJ2bWrQ308TJJ+qnkTiGdh4Q7OzY9+A7L4lZVJFbKwfNb3Q/TRCCzEXH91E6sEawyeKcGPjwhizmEmBm8I1qVoiW6qf7J6pgBmYUklGnP8d1hnmaaB1AxtGyGtDr1JmXuyUv9fqmFt9zQOecEIsc2AAReOWnrCR5tMG+i++y1Be2tP+QGD29euLtpoDf4tfp9cSMgip46QdfTMBISf1BZkk6Ax0gxJVQzer4J21oyo+TfYHnnEx9/XfnWkokHKpg6Y4ZVhyYN8tjWBt45xDpCPM6E5MXiDfkKTdIzHbbmK/RJnl27G4P67iRCMTtwGCjA1jJKpCMK9ohGluEq+8/76Ku9TzKc0mnVHnoY16qqtRahhHs1mWJHQt5TSVvYjCGeN65XTzIcI1asLxSP8wdYk0nCW3MpkEXXF9r7RXIFcr3LRneY4ZIzSMjO28AmOPdYLcPuzYVbngVaZZQcmd1ICMz/w1sM2Db+zfpeo+y3TOOd5Gh5InlCVEcuiEgQuKX1oGcYp0U5GD4EGQe8hZQ8FXym0VU4mddnsNphnn4/
+ tWp2qAVk
+ i15SZcp4Ib9mapHp2CLhp1LX+S8Glf+p/gy9xex87ldU1Yref90jcJutUbEnbm714R81CxlBT6wz9RDqshp4wBLCLTSbJIA7M8I5WEqRG5y1LHWWnPGFcPWnF9Zsz6MvuE06jBZQN79ahlEKaGBJwXwBJmwLTFSGtPj3b1qWJvvsx4bF8Y4tncb+nE5DpIq4dKazOZKzVV/gS1FdDjrx3eq5MXlVL7puFBadDoajwQ4cWY7u2IzEHuI35oujTlpCLcpTCNzcut0p1RQBMCyQXDTNIgkRFIBTBLu9P3YiHumDx2xqh3IT/0ZHJBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,94 +112,85 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-When a VMA is registered with userfaulfd in minor mode, its ->fault()
-method should check if a folio exists in the page cache and if yes
-->fault() should call handle_userfault(VM_UFFD_MINOR).
+userfaultfd notifications about minor page faults used for live migration
+and snapshotting of VMs with memory backed by shared hugetlbfs or tmpfs
+mappings as described in detail in commit 7677f7fd8be7 ("userfaultfd: add
+minor fault registration mode").
 
-Instead of calling handle_userfault() directly from a specific ->fault()
-implementation introduce new fault reason VM_FAULT_UFFD_MINOR that will
-notify the core page fault handler that it should call
-handle_userfaultfd(VM_UFFD_MINOR) to complete a page fault.
+To use the same mechanism for VMs that use guest_memfd to map their memory,
+guest_memfd should support userfaultfd minor mode.
 
-Replace a call to handle_userfault(VM_UFFD_MINOR) in shmem and use the
-new VM_FAULT_UFFD_MINOR there instead.
+Extend ->fault() method of guest_memfd with ability to notify core page
+fault handler that a page fault requires handle_userfault(VM_UFFD_MINOR) to
+complete and add implementation of ->get_folio_noalloc() to guest_memfd
+vm_ops.
 
-For configurations that don't enable CONFIG_USERFAULTFD,
-VM_FAULT_UFFD_MINOR is set to 0.
-
-Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- include/linux/mm_types.h | 10 +++++++++-
- mm/memory.c              |  5 ++++-
- mm/shmem.c               |  2 +-
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ virt/kvm/guest_memfd.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 90e5790c318f..c92a52c572c3 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1523,6 +1523,8 @@ typedef __bitwise unsigned int vm_fault_t;
-  *				fsync() to complete (for synchronous page faults
-  *				in DAX)
-  * @VM_FAULT_COMPLETED:		->fault completed, meanwhile mmap lock released
-+ * @VM_FAULT_UFFD_MINOR:	->fault did not modify page tables and needs
-+ *				handle_userfault(VM_UFFD_MINOR) to complete
-  * @VM_FAULT_HINDEX_MASK:	mask HINDEX value
-  *
-  */
-@@ -1540,6 +1542,11 @@ enum vm_fault_reason {
- 	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
- 	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
- 	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index ffadc5ee8e04..dca6e373937b 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -4,6 +4,7 @@
+ #include <linux/kvm_host.h>
+ #include <linux/pagemap.h>
+ #include <linux/anon_inodes.h>
++#include <linux/userfaultfd_k.h>
+ 
+ #include "kvm_mm.h"
+ 
+@@ -359,7 +360,15 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ 	if (!((u64)inode->i_private & GUEST_MEMFD_FLAG_INIT_SHARED))
+ 		return VM_FAULT_SIGBUS;
+ 
+-	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
++	folio = filemap_lock_folio(inode->i_mapping, vmf->pgoff);
++	if (!IS_ERR_OR_NULL(folio) && userfaultfd_minor(vmf->vma)) {
++		ret = VM_FAULT_UFFD_MINOR;
++		goto out_folio;
++	}
++
++	if (PTR_ERR(folio) == -ENOENT)
++		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
++
+ 	if (IS_ERR(folio)) {
+ 		int err = PTR_ERR(folio);
+ 
+@@ -390,8 +399,30 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ 	return ret;
+ }
+ 
 +#ifdef CONFIG_USERFAULTFD
-+	VM_FAULT_UFFD_MINOR	= (__force vm_fault_t)0x008000,
-+#else
-+	VM_FAULT_UFFD_MINOR	= (__force vm_fault_t)0x000000,
++static struct folio *kvm_gmem_get_folio_noalloc(struct inode *inode,
++						pgoff_t pgoff)
++{
++	struct folio *folio;
++
++	folio = filemap_lock_folio(inode->i_mapping, pgoff);
++	if (IS_ERR_OR_NULL(folio))
++		return folio;
++
++	if (!folio_test_uptodate(folio)) {
++		clear_highpage(folio_page(folio, 0));
++		kvm_gmem_mark_prepared(folio);
++	}
++
++	return folio;
++}
 +#endif
- 	VM_FAULT_HINDEX_MASK    = (__force vm_fault_t)0x0f0000,
++
+ static const struct vm_operations_struct kvm_gmem_vm_ops = {
+ 	.fault = kvm_gmem_fault_user_mapping,
++#ifdef CONFIG_USERFAULTFD
++	.get_folio_noalloc	= kvm_gmem_get_folio_noalloc,
++#endif
  };
  
-@@ -1564,7 +1571,8 @@ enum vm_fault_reason {
- 	{ VM_FAULT_FALLBACK,            "FALLBACK" },	\
- 	{ VM_FAULT_DONE_COW,            "DONE_COW" },	\
- 	{ VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
--	{ VM_FAULT_COMPLETED,           "COMPLETED" }
-+	{ VM_FAULT_COMPLETED,           "COMPLETED" },	\
-+	{ VM_FAULT_UFFD_MINOR,		"UFFD_MINOR" }	\
- 
- struct vm_special_mapping {
- 	const char *name;	/* The name, e.g. "[vdso]". */
-diff --git a/mm/memory.c b/mm/memory.c
-index b59ae7ce42eb..8d2180ec6933 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5280,8 +5280,11 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
- 
- 	ret = vma->vm_ops->fault(vmf);
- 	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
--			    VM_FAULT_DONE_COW)))
-+			    VM_FAULT_DONE_COW | VM_FAULT_UFFD_MINOR))) {
-+		if (ret & VM_FAULT_UFFD_MINOR)
-+			return handle_userfault(vmf, VM_UFFD_MINOR);
- 		return ret;
-+	}
- 
- 	folio = page_folio(vmf->page);
- 	if (unlikely(PageHWPoison(vmf->page))) {
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 9f8c54ad0e32..2c32e2398e99 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2460,7 +2460,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 	if (folio && vma && userfaultfd_minor(vma)) {
- 		if (!xa_is_value(folio))
- 			folio_put(folio);
--		*fault_type = handle_userfault(vmf, VM_UFFD_MINOR);
-+		*fault_type = VM_FAULT_UFFD_MINOR;
- 		return 0;
- 	}
- 
+ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
 -- 
 2.51.0
 
