@@ -4,104 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3451CFD376
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9EFAD111A8
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:20:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C9586B0023; Sun, 30 Nov 2025 06:18:52 -0500 (EST)
+	id 2352A6B0029; Sun, 30 Nov 2025 06:20:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 451AE6B0024; Sun, 30 Nov 2025 06:18:52 -0500 (EST)
+	id 1BEE66B002A; Sun, 30 Nov 2025 06:20:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F2B16B0026; Sun, 30 Nov 2025 06:18:52 -0500 (EST)
+	id 0AD716B002B; Sun, 30 Nov 2025 06:20:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 18A7D6B0023
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:18:52 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D86655D023
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:51 +0000 (UTC)
-X-FDA: 84167026062.23.4EC5F4A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5801720002
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:18:50 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZgJ9uLCf;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id EA9026B0029
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:20:14 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AEFC8BDA56
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:20:14 +0000 (UTC)
+X-FDA: 84167029548.21.1630130
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B60D8C000A
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:20:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="H/O9ZzYi";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=8RrraBCZ;
+	spf=pass (imf10.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764501530;
+	s=arc-20220608; t=1764501613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B3w1yDuYR8f1ZrmYm5y4DiqY8OTyh2ZdRmFabejW4m4=;
-	b=eqhmTbGlq8UhTdnP/uGffOg+a+qePaF61QuMuUzFi5Dudk3XC5EtTZoSts5JXUZP5/Ck3p
-	fEzSrtFTfVSGdUgYj7GzcqMjPNcn8MIzrBKOZqyDy58cDxx5JB5vSjn/XBbP6l+cS/jTsl
-	0zmjyoJ/8Cq10cSzV5uEfJhmnbvNzmI=
+	bh=gPPSeu511L0k6gL1IYpux6jfrEM3Z2mSgCdofcykt0M=;
+	b=bhdvZhVbY0OGZdLhiEBEIimfNdsvdNLwsGYvLGePY7+vJkqBxAc3zJiESgyJEeenpK+S6d
+	i81IvgL0J248ZSOzcvAmqrUS2jge1jQ8pnx2JGcl0FnxZXM6pce8OzmAuNDiP5nNN3GvWs
+	xhRwFkCYWOaB6M2w+CrZQk0NG3dxxg4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZgJ9uLCf;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764501530; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="H/O9ZzYi";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=8RrraBCZ;
+	spf=pass (imf10.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764501613; a=rsa-sha256;
 	cv=none;
-	b=gzjRsGtgS/s/VHpZ/SE6QqahWREgSsA2ph9+GJhujCRib2WrkkBOJN5m3bQ8Q8A6+yAN91
-	0BvMvrUN1YrZNqEwU5zuJZDIVW/ZBJhMb6PkojsT8Cfy5KSzGZ7NNgXVDZtzpAXe6vuPfm
-	HA3ZoLucXkZlI5G/P/akHzr67BEdbeE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CED2D60156;
-	Sun, 30 Nov 2025 11:18:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C503C4CEF8;
-	Sun, 30 Nov 2025 11:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764501529;
-	bh=Mv2TNIorv+Vl9StJ3rAHbansoPrEBArJPuXjfAYQx5k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgJ9uLCflbDe4V56Zn+EhA12EOoiQEDWrl58/vwTrn/T4zlaUp6u7U3yzJWKNkAxr
-	 IiLbuZjOEiOHf8cf1oxIXvL+mkpo7nuKWwJtUhv6kZ5cCPBvMYAZuwSUksyQEhMRrN
-	 ESz3zJM8btnS19tBA/iOaUxlfzXqxaagg/uoN0X+ievjN5jI7dA9P7iL2kAF7WCwT9
-	 FaGvriFrMqPQvu/eRl34K8I7AQjTDZ560xypBAsdG7aDOo+PzBJMAPOEbH06BfhH7W
-	 F1dhejn+vvbHZdH6tzG3bDJJLAt3vB03eLs3ueip6Ddi1Joqaj0QUxw0NIrBm29sLT
-	 7Jk8HEn/9CCPg==
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-mm@kvack.org
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v3 5/5] KVM: selftests: test userfaultfd minor for guest_memfd
-Date: Sun, 30 Nov 2025 13:18:12 +0200
-Message-ID: <20251130111812.699259-6-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251130111812.699259-1-rppt@kernel.org>
-References: <20251130111812.699259-1-rppt@kernel.org>
+	b=Drpe4nvn3IxzyISwvnUysiY1pGIgXjp2hHChiblo1eXNCmZAkJpqYiZL+kCxUnmxgjG1TF
+	pCY0R2JI1hiGwf9GJaIQYvy5h84ONB+Hx4sIY+yHhbV7yFaPvZOlaF6M9WVwcLF0JiHnFI
+	5oMDtzairgmJ+i3NcLOl0oyhhFxiJiI=
+Date: Sun, 30 Nov 2025 12:20:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764501610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gPPSeu511L0k6gL1IYpux6jfrEM3Z2mSgCdofcykt0M=;
+	b=H/O9ZzYiHw/2G2WBqoGZ3K3FPLNuLrAWvk4v/z+wfncXBs075k6aX+F8Iqp8Vgp+LcjyHC
+	z1G/MHOyvAh7TA4mK+eXChXlqCIy+EZvNiofVHBTXaCED1jIhLqVlWUxXvtoHpu1Ah9S2e
+	F9JX+agQqQ/wqp8/A44N9X3E6LhxoLVaz+GSa+Dj2DBQ++P2UMEGoJSFjvRTB6wNi21E8W
+	3esGxnfRtGW9Xy9r7VrNCc6RRigIODj87/eRuf/oAicuV8uZFco5gHUlYiB3CiXIVKxoYP
+	MZ7+6xcVMAYjC7Z8e8XAfZYx6UOUYsx3qf+zjw3RwTW8FcJLWYP9IkNoABFSNQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764501610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gPPSeu511L0k6gL1IYpux6jfrEM3Z2mSgCdofcykt0M=;
+	b=8RrraBCZU5plsGR6xmde28IoY0RzxSIbtXdVMZm7XVpNQnachUBhpN47q/W3YXgJIb0ERh
+	gNxYivhVx7Dx+TBw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org,
+	arnd@arndb.de, brauner@kernel.org, david.laight@runbox.com,
+	hch@lst.de, jack@suse.com, kuninori.morimoto.gx@renesas.com,
+	liaohua4@huawei.com, lilinjie8@huawei.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com, marc.zyngier@arm.com, nico@fluxnic.net,
+	pangliyuan1@huawei.com, pfalcato@suse.de, punitagrawal@gmail.com,
+	rjw@rjwysocki.net, rppt@kernel.org, tony@atomide.com,
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, wangkefeng.wang@huawei.com,
+	will@kernel.org, wozizhi@huaweicloud.com
+Subject: Re: [RFC PATCH v2 1/2] ARM/mm/fault: always goto bad_area when
+ handling with page faults of kernel address
+Message-ID: <20251130112008.DZYHlSPm@linutronix.de>
+References: <20251127145127.qUXs_UAE@linutronix.de>
+ <20251128022756.9973-1-xieyuanbin1@huawei.com>
+ <20251128120359.Xc09qn1W@linutronix.de>
+ <aSnVXrnuY9QKjTKg@shell.armlinux.org.uk>
+ <20251128172242.cCNBVf7H@linutronix.de>
+ <aSndJ1EYUnMGsUYX@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5801720002
-X-Rspamd-Server: rspam02
-X-Stat-Signature: wubwzw9zt4uk3mh67j6f6qymyzn1qhy6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aSndJ1EYUnMGsUYX@shell.armlinux.org.uk>
+X-Stat-Signature: wxnof3ybbtst16ub1w9fk4zhd3ffroe6
 X-Rspam-User: 
-X-HE-Tag: 1764501530-937986
-X-HE-Meta: U2FsdGVkX1/db45+BMnDM1aAPj88EPKAHklMGVzHxZACNVUt/DisCsQpVOmIZiLj7AGFAbzrpOGMWW6ACKzGr+Z08o80wnufVs378HbzLxiAcPzbSEsK3YE1aWj+iF4h13pV1H6wRXkSGXmguhS8hkanWvy+6IBqq4qF7GWc99/0xikaIERvyZayzw2/XrapNiNdH2Ty6Y2yVH5iqDtn6XUXPAYSvcR8w8kiZXYkptvDvx7SSOeRrVm00R2nzyrap4Emtz5WDuEnAjUrXOMMphFENLunCZcMg3gF9VLY1K9BuubX4HpGKTo2CJJDR89Kt1v7bVr+UnO2osE5MtIYsT5vz7ABlk7vmXrdhJ4zLOxmFn2QkifPoFypuvtYNtnT/B22cXGYc0j3yNeAjaD+usP4kZ9g4Rfm1X9N/82TALLAsXG8WrImPDy5b5X/nt9xoo1lXGuodyFaWdYh9K1xG3hkT7Apamskcgqa2WYUc8umGQmvPCBdUpTcrgsjyzp17NXWul3drFt/LyRAQSrOErH9VFhkvJEGfhLcIziVd6OBBR6mlRtouNoycBhTHT1bISnHPb5NKZHI/CHYbK4xiTe/zla18ZIy9Fw1r22Y/uCS0wOWcfXWe2n9CHkp7QeW/uOuiHs4GqTRlb82eaibxOugqAm0jHeh74nhumfyWUzgkiidZRwEPfwlb4jb4j4Vnm94mKyV8Ps9xKr8s2/hoMaS5lBhUpDJPNK3qade5q+xS280U1Q/FYao5LEymuwFb1PkKFzwVfASaT2fELl1chs/y1RwUHWCz51dHQyACZppRCvzRWENnl47Ga0oJ3STrBMJ9IuNMYfkMfreetM3yxE83axw56efDEuK1ACNWdFi4kYZciQ42o/kjtZ1P2GVd9ie+MpaWr9pxSVAzsAXYxbUuanuvZ2FXI0O28+S8iuZeJqOIwpyA75vc360PSckQapcNOKkyhNXZlNpmuP
- p0fEqo3w
- ktgXP1ZIhHAmuiE+EMna4mmdnjO4OLnqkFXyO2V/FbxeFNpyllEDd3vLvofeSL/l9qgHeVFkpTkLp3NFaY9xXLqihhVojWgMII5XO2VOZJ9/LMcSjH7kGxJfcRvBBFxkN0NNzGnSyz3HLD+iMH3w09vH/2ldrGa1oPT23oRNgMSEy6TplI7crYolLu//izUlwZgTFbnSNeeNdPnC31045HtyVM8ZEItOTE2KzhkT7wL01zdWz3hji2FIBHnUWz9w6KPEHvZ7byoPFiYYzUPIKLOublBSjQfdQnu/k/GMUeijfjvv9uOZo7G2geDSOd07l5fiJsJNH18WJKyU=
+X-Rspamd-Queue-Id: B60D8C000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764501612-585926
+X-HE-Meta: U2FsdGVkX18cPWT8DTQTTA+Jugivcp3JSFE0ux2q9YQTt1+PHk49U92PUD21vRX2iil9E4bD4dcF7Ak3e10h0weu8rGfmvg4mJ4eYGTzu5986G2J7pwboFQRgb6CkcIkJqItlkEiNasS7qdhm5fMWJUz9d1JNK2l9JDRWaFdLLQMJt1nBBJ3bquLgry8LVEtAaJsILqo85pAFx/W9c2PTAN6msPoVs5I00Tz+zd19jO9dAD6Y0GHXxQ8dJqVxvKjCixRxpUKH1/JjKQOtID1cGRicmDPd2jlgWBU+pf4mroFfN3DOkIVtrkcEVt5K4gKWBbpkZsZ5XvagGcinXyTlYYScv9hn5SnSSee6NNTviSKaLV0qPzDA6vDpJzhorjBKdQ7L/N31Qg9h0qywclDgDcEnLMAcw2PzMKK/jdoJA6ePHdEMXOODMHSTQ1pVMX5Ao2lFYfPbJZk6UhcgkacxkvHB1OVNCq939OZVwmxSFto/SyKvxpBpm+c8lPxmvn2JBfwH9afQ8YB9XCvKrCu9SmhWqYu0/n9EBENbiTriG7rdBc3VeZXgL9ftTsfhlvhfw738yX+QyA005oMc10Maj5IEGqn+Yj8mVzl37oP/ruO/JOamO1YS6mavmR7TGX7n3/x8dr79KiMlcpfDLyjj8Bl7g+BW1Wd6l269KSI4Gah4448eSVqMjPI7TbnDQLX0DsYqsf1KAzTu0tD2UJ0LO7dGyAVvPuhlsBl149MeMK88ClVWs0Ai65LjQDw8PSY+dqfI4H1RUXRMCk+5eo0zK6KTrpmcCyOrmtELwtyHkXGxuJqkoCr8V0BBRmux+vZG57nyKygjP0OABDDRS092bc389cdy5OHqtDeR1wQN65g7AEthW9lHrXqgu027ee0wX0x4kSa0uGYwoDiuvhB73DfAUANGH2lzzrKFnAoeFJ9AmKAbueZcLIqmozOwtsZX+WOxs83g/5+QJIRkyf
+ e5j9FmBi
+ /u2RLniaMwLM6/6M8slTBO3wIV5iR7X+pXo4zuf7Vj5VTyyOCvLiyvELz1n5mgyGs0UDm6xoN1dCKQiLofrxIWDD/FQo7IPOQhftSODq3aaDsUnv2uNIaS4pqSs5TzVA/SuwaBQWCpn90hzT0Ma1CfBGDp8i8vO3QWe+nMqupBQoQxjAWevbbd/Aal3FOzdqJt+pHJZMukkzPNsi7Hi6N1+nX3D0kv4WiA7gYRDLzt7gvw4+cXT6tUV6LcgjAi5yxS3EhONFU5owCqP8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,149 +112,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Nikita Kalyazin <kalyazin@amazon.com>
+On 2025-11-28 17:34:31 [+0000], Russell King (Oracle) wrote:
+> On Fri, Nov 28, 2025 at 06:22:42PM +0100, Sebastian Andrzej Siewior wrote:
+> > On 2025-11-28 17:01:18 [+0000], Russell King (Oracle) wrote:
+> > > > I hope Russell will add them once he gets to it. They got reviewed, I
+> > > > added them to the patch system.
+> > > 
+> > > I'm not sure which patches you're talking about, but discussion is
+> > > still ongoing, so it would be greatly premature to merge anything.
+> > 
+> > This thread
+> > 	https://lore.kernel.org/all/20251110145555.2555055-1-bigeasy@linutronix.de/
+> > 
+> > and the patches are 9459/1 to 9463/1 in your patch system. They address
+> > other issues, not this one.
+> 
+> Oh, the branch predictor issue. Yea, I'm not keen on changing that
+> because I'm not sure if it's correct (the knowledge for this has
+> long since evaporated.) There have been multiple attempts at fixing
+> this in the past, and I've previously pointed out problems with
+> them when I _did_ have the knowledge. Have you looked back in the
+> archives to see whether any of that feedback I've given in the past
+> is relevant?
 
-The test demonstrates that a minor userfaultfd event in guest_memfd can
-be resolved via a memcpy followed by a UFFDIO_CONTINUE ioctl.
+I dug up the emails from 2021, 2019 and you complained that I open the
+interrupts too early. Now I moved the invocation of hardening the branch
+predictor to happen before the interrupts are enabled. Based on that it
+should not raise to any complains.
 
-Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- .../testing/selftests/kvm/guest_memfd_test.c  | 97 +++++++++++++++++++
- 1 file changed, 97 insertions(+)
+> > So Will suggested to let change the handler and handle this case. The
+> > other patch is avoiding handling addr > TASK_SIZE.
+> > Any preferences from your side?
+> 
+> ... and now we have a new proposal from Linus. I'm not intending to
+> do anything on this new problem until the discussion calms down and
+> we stop getting new solutions.
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index e7d9aeb418d3..d0cf57d41cc9 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -10,13 +10,17 @@
- #include <errno.h>
- #include <stdio.h>
- #include <fcntl.h>
-+#include <pthread.h>
- 
- #include <linux/bitmap.h>
- #include <linux/falloc.h>
- #include <linux/sizes.h>
-+#include <linux/userfaultfd.h>
- #include <sys/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/ioctl.h>
- 
- #include "kvm_util.h"
- #include "test_util.h"
-@@ -254,6 +258,98 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
- 	}
- }
- 
-+struct fault_args {
-+	char *addr;
-+	volatile char value;
-+};
-+
-+static void *fault_thread_fn(void *arg)
-+{
-+	struct fault_args *args = arg;
-+
-+	/* Trigger page fault */
-+	args->value = *args->addr;
-+	return NULL;
-+}
-+
-+static void test_uffd_minor(int fd, size_t total_size)
-+{
-+	struct uffdio_api uffdio_api = {
-+		.api = UFFD_API,
-+	};
-+	struct uffdio_register uffd_reg;
-+	struct uffdio_continue uffd_cont;
-+	struct uffd_msg msg;
-+	struct fault_args args;
-+	pthread_t fault_thread;
-+	void *mem, *mem_nofault;
-+	int uffd, ret;
-+	off_t offset = page_size;
-+	void *fault_addr;
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC);
-+	TEST_ASSERT(uffd != -1, "userfaultfd creation should succeed");
-+
-+	ret = ioctl(uffd, UFFDIO_API, &uffdio_api);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_API) should succeed");
-+
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
-+
-+	mem_nofault = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem_nofault != MAP_FAILED, "mmap should succeed");
-+
-+	uffd_reg.range.start = (unsigned long)mem;
-+	uffd_reg.range.len = total_size;
-+	uffd_reg.mode = UFFDIO_REGISTER_MODE_MINOR;
-+	ret = ioctl(uffd, UFFDIO_REGISTER, &uffd_reg);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_REGISTER) should succeed");
-+
-+	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-+			offset, page_size);
-+	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
-+
-+	memset(mem_nofault + offset, 0xaa, page_size);
-+
-+	fault_addr = mem + offset;
-+	args.addr = fault_addr;
-+
-+	ret = pthread_create(&fault_thread, NULL, fault_thread_fn, &args);
-+	TEST_ASSERT(ret == 0, "pthread_create should succeed");
-+
-+	ret = read(uffd, &msg, sizeof(msg));
-+	TEST_ASSERT(ret != -1, "read from userfaultfd should succeed");
-+	TEST_ASSERT(msg.event == UFFD_EVENT_PAGEFAULT, "event type should be pagefault");
-+	TEST_ASSERT((void *)(msg.arg.pagefault.address & ~(page_size - 1)) == fault_addr,
-+		    "pagefault should occur at expected address");
-+
-+
-+	uffd_cont.range.start = (unsigned long)fault_addr;
-+	uffd_cont.range.len = page_size;
-+	uffd_cont.mode = 0;
-+	ret = ioctl(uffd, UFFDIO_CONTINUE, &uffd_cont);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_CONTINUE) should succeed");
-+
-+	/*
-+	 * wait for fault_thread to finish to make sure fault happened and was
-+	 * resolved before we verify the values
-+	 */
-+	ret = pthread_join(fault_thread, NULL);
-+	TEST_ASSERT(ret == 0, "pthread_join should succeed");
-+
-+	TEST_ASSERT(args.value == *(char *)(mem_nofault + offset),
-+		    "memory should contain the value that was copied");
-+	TEST_ASSERT(args.value == *(char *)(mem + offset),
-+		    "no further fault is expected");
-+
-+	ret = munmap(mem_nofault, total_size);
-+	TEST_ASSERT(!ret, "munmap should succeed");
-+
-+	ret = munmap(mem, total_size);
-+	TEST_ASSERT(!ret, "munmap should succeed");
-+	close(uffd);
-+}
-+
- #define gmem_test(__test, __vm, __flags)				\
- do {									\
- 	int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);	\
-@@ -273,6 +369,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- 		if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
- 			gmem_test(mmap_supported, vm, flags);
- 			gmem_test(fault_overflow, vm, flags);
-+			gmem_test(uffd_minor, vm, flags);
- 		} else {
- 			gmem_test(fault_private, vm, flags);
- 		}
--- 
-2.51.0
+Okay. If we could please sort out the first part then it might be easier
+to move on here once the dust settled.
 
+Sebastian
 
