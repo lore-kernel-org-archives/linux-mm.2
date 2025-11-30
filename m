@@ -4,87 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4304D116E2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 03:01:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F2A5D116E2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 03:13:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BC576B000D; Sat, 29 Nov 2025 22:01:43 -0500 (EST)
+	id 62DC46B0008; Sat, 29 Nov 2025 22:13:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 094386B000E; Sat, 29 Nov 2025 22:01:43 -0500 (EST)
+	id 605FF6B000C; Sat, 29 Nov 2025 22:13:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEBC86B0010; Sat, 29 Nov 2025 22:01:42 -0500 (EST)
+	id 5443E6B000D; Sat, 29 Nov 2025 22:13:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D72EE6B000D
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 22:01:42 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 88B391A0889
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 03:01:42 +0000 (UTC)
-X-FDA: 84165773244.30.B165809
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8728210000D
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 03:01:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HKqaHAdw;
-	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 40F7E6B0008
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 22:13:18 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D47E78AAA1
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 03:13:17 +0000 (UTC)
+X-FDA: 84165802434.15.810CE95
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2506D40012
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 03:13:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=cz3VEytU;
+	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764471700;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764472396;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0TtaLooEQ/SHSgMC/pUOWGMxpepCm5694nPuPzDHEdg=;
-	b=q9UdGJm1tzMLicnSpMzFowr1HgirQp4yHgNqriVCN3PqnBh7zL1zjWtyEactl0ziHZswov
-	6PmVGj72M64VAESDiYYUpMPQezg77RZ2G7ipMyy+6en2gyikEbSSV7rOPu+jA/z22SSAfJ
-	rbqJ9S1WQ5SCtUcU97Xkn/KPY6L48Bg=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MCBBAxlTF2mP5Z0U0RiB6hYPJch5Onp44ekWPHKT/TM=;
+	b=Vh6BSWK73Vt0N+oZvVIstz80AlUVrTyNqAxMH6sZmlt1Drlhq+hPzmMZdPbQPq62bDLxcB
+	ZR64DuDJUDqaRXa72Ov6HVj/QLP6dQQq4j64hYB1YLQ/YjLqV6UyK0uwlL7sqRxN+Zjdaf
+	4gOd5HJZENKFcwpH0kRBZT3BkhHbKRg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HKqaHAdw;
-	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764471700; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=cz3VEytU;
+	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764472396; a=rsa-sha256;
 	cv=none;
-	b=JB9cJoOjgAV979EfmvTYrnTSvyRMXemiZm1lELbsWpHJ8IK5HIpy0GveozT+fECA+FvwlG
-	clr9ipo6+xFnmVFC7XNEk3lVhGcE05XVyojBX6G0YPt1CbM4OLqmPHRG2z+HHNeTPJ9Klv
-	BijhsKqRJWfkVERjXn6HYI9eTGTRXsI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0TtaLooEQ/SHSgMC/pUOWGMxpepCm5694nPuPzDHEdg=; b=HKqaHAdwMjnBw9TsbmQh894nUI
-	OipQpKHC+/RWe8GpcnFEksC1ndo7hx5Kwu0zRniDNEr5mxnUkJmtHsVY6Z1OAMJ+cMimytbD2yFRk
-	dE5ZBdlVW0FKteHYMIdcUe4xgtM0UJ6WXqwYbgHVh8y4iqTsbDrcO8H4Om7XirN+4wiS1VKJK/QlM
-	rH6BfZb03uT0IQz7pQdM8RZUPTy4SRDRX88s2L3IpOWJTCKwD1YD7SuRZk9PIo2kEkM7i6Mqi5U/E
-	miuzXyWieNj1K2TB0ekO+fAaIxN8Bs1nJ1g4MCj2T0FzDJrVNM5M7G788VbL6RVBL9ceTeQoDftcQ
-	sh81GIiA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vPXh4-0000000CPzD-2Cjx;
-	Sun, 30 Nov 2025 03:01:46 +0000
-Date: Sun, 30 Nov 2025 03:01:46 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-alpha@vger.kernel.org
-Subject: [RFC][alpha] saner vmalloc handling (was Re: [Bug report]
- hash_name() may cross page boundary and trigger sleep in RCU context)
-Message-ID: <20251130030146.GN3538@ZenIV>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <20251126185545.GC3538@ZenIV>
- <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
- <20251129033728.GH3538@ZenIV>
+	b=nst3tBzTQNB/JSpCahkoxO6wVOJUK3hB3aRmgpbjEm5Ixej9vV+kTLURe5tZRAj6IwLPIe
+	N+5Qcy+HuwHLjG4T9lApQ2UO/QYq0GBZ20pMKitcX4QVsNvGVL3VhubIA0oZQRas1qXMQE
+	pH/SAuN/dDR+cIgJyfwIVYPEDn4uOng=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-295c64cb951so551075ad.0
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:13:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764472395; x=1765077195; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MCBBAxlTF2mP5Z0U0RiB6hYPJch5Onp44ekWPHKT/TM=;
+        b=cz3VEytUUe3Ph0b7gue0m1HJCdM8iwbWfku2ySUvMjhlx/m8mD3JGyXa8e5Ygpkj+R
+         5ZWCdB5gl4wC3YjGdWU+ushXCKca59RwEPAOgmevRiKkS0dhXd9olUV+vlJagiA6IDax
+         Qm1XGXoXB+dAodpNHvPnKPEukvU35de5begn0ffdtSYYQMZPpTEtuVJL5y1ZBbGzvtX0
+         goko5MDIYawOknuwLiWaAtnDmVcz//xgjNV4gWrawJmnsF3dMrwhiykQ3lzaDact4ary
+         gqzQRwcTTafS4RuhAw0BIIEJRYyBYNV4r90c0D+noaSmkZdnV/ZYaIGHgsj7zHDHbIS0
+         lJCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764472395; x=1765077195;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MCBBAxlTF2mP5Z0U0RiB6hYPJch5Onp44ekWPHKT/TM=;
+        b=UxX8xOjsmJ/35D/IxIWoNqaSPEz99+xGDRNl653obdRf4+Fq8Nuswi1Cb+ffhFKssA
+         KtCN8pO8k5pP8rN8JXM2raNWyZHakk24x8szAiRjnrljIba+QC40C4dhmkxlnH71Npeb
+         c8DWCxUFZgDz5CZhkBwNJLEDDqE05JurezNoQS0vv7xafSdRBXbAqe9b/6G3pXDvGUqn
+         Ta2vQK4o+wdHq2zOweCuvdkLpA2Zg/LD+S6aCI1d9rvzxhzs2+ijz/vsNdWlQOYFDjFR
+         Mf4bGCY/f35qC8UXOmL8KS7LarU+ZF6JL5/NEB+j3TKw47Q3WU26aoyGIKyLFDuRM8Pf
+         ktZA==
+X-Gm-Message-State: AOJu0YyGbFFjdduK3Iwt/UlmcOf5jbUpKcVGsrNdIJgDOaHhB72zRExl
+	C6OM0CaWvDCpUkuDX2HcF+dIPUMxOGGsHL2foJORSh8uSebEaIjZ+nsyfVQI1+NDug==
+X-Gm-Gg: ASbGncscGu+YfwVBrj43RM4TUaIVo/XZnIVIBig8XH1yKLjF+7wCwBJUYDqkIqnVA1Y
+	BYorbcQdl4byQMIbtQlXETHJeP8e3IMryNFGCgE+Wgzlf5YRlaSJtLK56R9SvC5/yszBLXnshIj
+	G1udKvLQCJ9KzqOR3IXGypPMcOL8wzAVDS5RGiXu7jCqVU3LLXa+FaQzPKZvwfqD1zeqP/9Wtu7
+	LSUyB17myuwLsHeQMRFtVAj/O2xNnIzjYf2/GbrfyHJUD18q8L8nGpfQ6TEdkv+IF41IW3nkQ1c
+	iF/xkkZy2F2VjisRS813fGplLYdg6DhOy0eoR3t6fiE3LjGg4mdxG8yyEAAG7TpvV3/3xlG1OOm
+	vnohdlUmW5qyDsZISXQ+YuiSjt0ZIALHXswLy9E6zJsjn1Rk/y30F/Ty6o8VCqsWqQ6EManFUbF
+	Qzh5UB+702hLsLwi5J12ahBX1kGJrynksPq6B1J9XNDcdgd52/YNSZ0S1ZysT4cNmMQKh/Ru+PV
+	sjH+zSAUYbo1gkowyP/ipb5mAHGctkQ0aD3q7F/4w==
+X-Google-Smtp-Source: AGHT+IFgfpSjKCxaZhf994kFnZ8HtKRLMATnNcuNs/sCEnSeCxzSVsaMlNU2QXY8ZnDwZ6McKV65gA==
+X-Received: by 2002:a17:902:ea0c:b0:298:3544:aa72 with SMTP id d9443c01a7336-29bca38cdc8mr4716285ad.9.1764472394421;
+        Sat, 29 Nov 2025 19:13:14 -0800 (PST)
+Received: from [2a00:79e0:2eb0:8:7b08:e467:32c2:1b3e] ([2a00:79e0:2eb0:8:7b08:e467:32c2:1b3e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d1520a03a3sm9410054b3a.29.2025.11.29.19.13.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Nov 2025 19:13:12 -0800 (PST)
+Date: Sat, 29 Nov 2025 19:13:11 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    David Hildenbrand <david@kernel.org>, David Matlack <dmatlack@google.com>, 
+    James Gowans <jgowans@amazon.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+    Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from November 17, 2025
+Message-ID: <c08e37c1-d007-b518-f59b-f2d0ebf587e2@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251129033728.GH3538@ZenIV>
-X-Stat-Signature: gdr7zpqbush86scoupnt1oxego4xmm6i
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 2506D40012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8728210000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764471700-225058
-X-HE-Meta: U2FsdGVkX18dT0DVF+Vjy85Ge29D2wYp6MdoBMuTEwfCYJLqRaDyAbHAfoY0AV40ohSSyZc6S7VQQlefoI68scVpg40nAuS/fenfx4ym6Jr1GKfWoDZ07T826NoUQsu3CVwE9nUrsMbnldZNTu2pJYQyTISyiKTGeEP1w67zWflZ5lxf16sDLy6WVxcxP2kwA3Mpme2RR6CtyAXn/gKreKj0iGzzVCkAJpaMb3JqgYZWmcXxZ7VGlGbu8T/S3Zd47Gt4PyE+Il7fOZWiwiEPr2QbTI85tMXAZsui2Kpl1lSSi5Rd0hJQ6evzLp9kJbnBDjXEQslgxWi/rxEGGwSPG57DGE6QXfR8j0yO9A/PaOfNx5yj+6Gm7wT22rzCYlAnXiWTnHH+PT2BhgXqIoYRZRRoX9j4x+dXi6yqtMnEf3q9YI8J+gU1uz8PUXzcBr2Ul5Yub5bVEspkMQt2F1YX/RW3K18VtXanZrRFX0FATFoz7bXM1ilvsCzM9sYNlbNeFo+O7DhO9ijVnMoAcjptnEtua244EtD+gjxiItwsPyGu+ePlVBRh7+xY0sptAGF8WujJF94idDGXw5nvpGY5nl4MvP9bEOpI4VcqFr35e9tIi4kgy+P4T53NlFgZwL6ar22WO6QosYzpbo8odMEdUIPE7GTExclDSigZRg3QwQMO9F6x6WKBEqZk2BiubAi1u3y9BkTC6sAUsS5WOldJ3qvtFgoHrQ4HR/jC5fIaO6BOw7eA83VLTKCBUVuBJxxFMdGmG4hEPOwUDEyaCf6GQxoekupPfHXksCuF1ooVw1Deb8dWTLkUQy24bnVbrK+/fRy/79hO5H78DAoKXiV2TqJg0uCS+g5KnQG9e55H6pWbs6OgGOyD819YKa9Ssl6nxKESX9/KwzVBwLX4HPX6XEP6NnOW4yMb+beCvc05sLvMv2qlcNOgDZwUBb4AfMsVF+Oz05PWC1XIzlgUhV+
- piScD5wE
- BBGnuqAWXwiqkzTbqpkBKr41C5/HzZnFXMliLsYYfZ/94oOC1XGUREKx7baGtI+6aUzy18fHino294HcLZCy157zlbBbQSrlrcM6Ob08q4+IBuN1xInQoB5317xngm5yWKKV8R/68By8XzhZpGJor3lir6cRU/77kxP8LUlPf+YDFq6081+HyNxqD7rIiALS0iLa+qdfumVSd568A3slDlMd0JUryPZ1QmKMA1uizw0TvEoyyFBMsEitpRXFP2OdWY1vD7DWiRI8vWUAATqcSmVklaQFfNJtw1adzbCa6PL+QFpICH8xr6ll1aa929leigF4rdIrXHht94CEol77XM+IdwGVGr2hWG4JuLYxtTa9J0G4NBClqwXDG2Hy3d1qjUPF2I/CWjKp6waf8+Wu8lBUdgvvDdaiWHgJwklUj7ToUjlDaY4iaOGwRtW4z4rhshZ0z4tSobmBMz6yshbR8h1p7jKrxxB5eCiNPFg1nlRdUykfnJXHZUtbIM1xmTIAM11blhQd90kURkLXpo8OWBfXrQG9TyQTqsu83
+X-Rspamd-Server: rspam05
+X-Stat-Signature: d6o5f1p3z4bb8x8s4z1bfq6optwzws8q
+X-HE-Tag: 1764472395-818506
+X-HE-Meta: U2FsdGVkX18iiKsoPyoPphO/77eimwoHP8IO2IEfmx3DXJMk4eERd2WfNWpKIPRnmyMdGFEuoIPnRhBiEzJou/OHx7zhyHEEtYnfzos/JZ+VQFEkpXkm/f0Z0/Sa5naR0bGKnlv3F6wDxVag6Dzc3x1hqxOwZ4QVy84qxLaT3Z2qf/nyNEFF7QEZHmyvjcXrpic7TN/3xOIJsYWot2//MTBp3f5zQvAFQqBCMkwUoTJZPdI0PNZTpAiJOzmVmvgHIWRQ1SnrwWZ6OB24StE+nk77btjdqGtyZ2rmomQI8OMpEZ9spv6LMEdIhw97jVHv3QHWwIM7OuCD0oYSi/kHST+UIEtNKzvV686F5+OUq7AfGrU4ilLN1GbuUpXJX4fdlNRk0gmsbJS44Ye2VWKO8AHigB+f0RfioySLp6O4JZn0bFID0xFJgLfBUfbo+J8Wu8Ay5/tOh4gxnMNa9USIQmL8gfNMKFk8AsaFFphjidHYE3PGwKfzPFmOj8futAWAj/LMFVg1qvEI6nm0RC8SotkGzC2+wEW1SXhwHxNMrivjIjAHuDPAaIF3s3opflnbj+L05Jpe1WwePU6OKLpdv8XnhLxowVV2iGicgGSsgUJktjHjBDoKO7JUawK0GDKVDhxZAA4IBHw24ZxJWEQ4aVmGZAWUlTUxRq8MZckj6zKLbWk7ipsBzPYFLT+tKsGwVI3pVPsb+VLgl4A5fxyrQb1PmjQG5UN/y1o/Ygj12M7bUCJHZadbXDqngnO63JCe5kVdcuDaxZJCDsCTiXHBB/UEGcPp4EKBUanyoDd1gafkR1AoxIgJ/vbNVcC8ZC69YJKusAB86wpcSRdT5QzHds8GXr0g7CRoL+H1t3RVUUnE7mli756fauPySmON/kz5+7dheFI/MQcJgQhMPvhrWP8drWb6aLFM2JOhTgKijeYE2JbblNbhom5wxTJ3SXS/pZyRzeE6RPXh/jTGEv/
+ 0bhQ9NVk
+ jYgvVNbJ1UHnapZvzcaGcEQUfLEboR3UpZZ7kgrAKBrv96deJUXCitHBx30oTydlNPcYF0KnY7nvuFo3Eku2HitC3nZ5wqURGnfCi5AV/ckOWKvm7b66cy5NVJoCYxU6FDXG1ZHfBfrTEsMy7Fc6t0hxwllBVKlRN3/ceRbEGVsqOIllcaG4+EnCKbNOXGzipYHItIeOniRGQ3LBcIzK1gO/v3AFVGnM+KzQuL/sJ3AZL5EOjL0S7W2+X422Jp4BMkOZN2k1gawHbeRmhXTHVRInDLel+nUU6RmVDbYUxyvGMNh9oLWHhsQiQAK5UjrK6bZfJvTKiyD9RLU1nsU1WNiB57jNB7j0nae2Nqw/fQYaJOhoptz8cLhJ7YRI+/1jwzMHgaYs/sKXVc1ThjajzyPbvf260/twS7mSNjoLn1BGMpHw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,205 +121,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 29, 2025 at 03:37:28AM +0000, Al Viro wrote:
+Hi everybody,
 
-> AFAICS, 32bit arm is similar to 32bit x86 in that respect; propagation
-> is lazier, though - there arch_sync_kernel_mappings() bumps a counter
-> in init_mm and context switches use that to check if propagation needs
-> to be done.  No idea how well does that work on vfree() side of things -
-> hadn't looked into that rabbit hole...
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, November 17.  Thanks to everybody who was involved!
 
-BTW, speaking of vmalloc space - does anybody object against sorting
-CONFIG_ALPHA_LARGE_VMALLOC out, so that we wouldn't need to mess
-with that in alpha page fault handler?
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-Basically, do what amd64 does - something along the lines of (untested)
-patch below.  Comments?
+----->o-----
+Pasha updated on the status of the stateless KHO RFC: Jason Miu had sent 
+an update of the patches but they need to be rebased on top of the latest 
+KHO series.  There were some simplification patches that had been sent for 
+KHO that changed how the FDT was used.  Thus, the stateless KHO patches 
+need to be updated again as well as some splitting of the patches into 
+finer grained patches.
 
-[PATCH] alpha: take the LARGE_VMALLOC kludge out
+LUO v6 was sent the previous weekend.  There were a number of comments 
+received for LUO v5 in linux-next that were addressed in v6.  Mike 
+Rapoport was going through v6 and provided the most feedback.  Pasha was 
+planning on sending a v7 for the next merge window.
 
-Support of vmalloc space that won't fit into the single L1 slot had
-been a headache for quite a while.
+----->o-----
+David Matlack updated that he was going to be focused this week on the 
+VFIO v2 patch series.  His goal was to have it on the mailing list by the 
+week of November 24.  The goal was to be able to gather feedback prior to 
+LPC and then leverage that conference to discuss the open questions for 
+that series.  Sami and David had discussed a minimal patch series for VFIO 
+preservation as the next feature that could be merged on top of LUO, 
+setting the stage for IOMMU preservation to build on that.
 
-The only things we use seg1 for are virtual mapping of page tables
-(at the last 8G) and vmalloc space (below that).  Normal setup has
-vmalloc space from -16G to -8G, occupying the penultimate L1 slot.
-It is set up (with table sitting just after the kernel image) very
-early, by callback_init().  pgd_alloc() copies that entry when
-setting a new L1 table up, and it's never changed afterwards.
-All page table changes done by vmalloc() are done to tables that
-are shared between all threads, avoiding the need to synchronize
-them.
+----->o-----
+Pratyush updated on his HugeTLB and 1GB page preservation series, he got 
+this working internally for v5.  It is not ready to post as an RFC yet, so 
+the goal was to have this in a state ready to share over the next two 
+weeks.  This will also enable LPC discussions.
 
-It would be trivial to extend that - preallocate L2 tables to
-cover the entire vmalloc space (8Kb for each 8Gb of that) and
-set all the L1 slots involved before anything gets forked,
-then copy these slots on pgd_alloc().  Unfortunately, that
-had been done in a different way - only one L2 table is
-preallocated, the rest gets created on demand, which means
-that we need to propagate changes to threads' L1 tables.
-It's kinda-sorta handled in do_page_fault(), but it's racy and
-fixing that up would be a major headache.
+----->o-----
+Ackerley provided an update on guest memfd support for 1GB HugeTLB pages.  
+He has an internal version working.  There is no preservation support for 
+it, just guest memfd with 1GB HugeTLB support.  Pratyush had previously 
+discussed with Ackerley and felt that the series were really independent 
+from each other.  Ackerley was planning his next posting to the mailing 
+list after LPC.
 
-Bugger that for the game of soldiers - do what e.g. amd64 does
-and preallocate these in mem_init().  And replace the bool
-ALPHA_LARGE_VMALLOC with int ALPHA_VMALLOC_SIZE (in gigabytes),
-dependent upon EXPERT and defaulting to 8.
+----->o-----
+Pratyush discussed an idea about versioning for LUO: there will be 
+different versions for different components like memfd, IOMMU, etc.  He 
+was thinking to have a mechanism to define different versions.  This would 
+be supported as an ELF header in the vmlinux.  When you load the next 
+kernel in preparation for kexec, luod would read this next vmlinux, see 
+what version it supports and determine its compatibility with the 
+currently running kernel.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index 80367f2cf821..36cbba4e21d9 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -410,20 +410,21 @@ config ALPHA_WTINT
- 
- 	  If unsure, say N.
- 
--# LARGE_VMALLOC is racy, if you *really* need it then fix it first
--config ALPHA_LARGE_VMALLOC
--	bool
-+config ALPHA_VMALLOC_SIZE
-+	int "vmalloc space (in gigabytes)" if EXPERT
-+	default "8"
-+	range 8 2040
- 	help
--	  Process creation and other aspects of virtual memory management can
--	  be streamlined if we restrict the kernel to one PGD for all vmalloc
--	  allocations.  This equates to about 8GB.
-+	  We preallocate the second-level page tables to cover the entire
-+	  vmalloc area; one 8Kb page for each 8Gb.
- 
--	  Under normal circumstances, this is so far and above what is needed
--	  as to be laughable.  However, there are certain applications (such
--	  as benchmark-grade in-kernel web serving) that can make use of as
--	  much vmalloc space as is available.
-+	  Default is 8Gb total and under normal circumstances, this is so
-+	  far and above what is needed as to be laughable.  However, there are
-+	  certain applications (such as benchmark-grade in-kernel web serving)
-+	  that can make use of as much vmalloc space as is available.
- 
--	  Say N unless you know you need gobs and gobs of vmalloc space.
-+	  Leave it at 8 unless you know you need gobs and gobs of
-+	  vmalloc space.
- 
- config VERBOSE_MCHECK
- 	bool "Verbose Machine Checks"
-diff --git a/arch/alpha/include/asm/pgtable.h b/arch/alpha/include/asm/pgtable.h
-index 90e7a9539102..0f554d01fe54 100644
---- a/arch/alpha/include/asm/pgtable.h
-+++ b/arch/alpha/include/asm/pgtable.h
-@@ -49,11 +49,8 @@ struct vm_area_struct;
- /* Number of pointers that fit on a page:  this will go away. */
- #define PTRS_PER_PAGE	(1UL << (PAGE_SHIFT-3))
- 
--#ifdef CONFIG_ALPHA_LARGE_VMALLOC
--#define VMALLOC_START		0xfffffe0000000000
--#else
--#define VMALLOC_START		(-2*PGDIR_SIZE)
--#endif
-+#define VMALLOC_SLOTS		DIV_ROUND_UP(CONFIG_ALPHA_VMALLOC_SIZE, 8)
-+#define VMALLOC_START		(-(VMALLOC_SLOTS + 1)*PGDIR_SIZE)
- #define VMALLOC_END		(-PGDIR_SIZE)
- 
- /*
-diff --git a/arch/alpha/mm/fault.c b/arch/alpha/mm/fault.c
-index a9816bbc9f34..0bc5fc4d510e 100644
---- a/arch/alpha/mm/fault.c
-+++ b/arch/alpha/mm/fault.c
-@@ -111,10 +111,6 @@ do_page_fault(unsigned long address, unsigned long mmcsr,
- 	if (!mm || faulthandler_disabled())
- 		goto no_context;
- 
--#ifdef CONFIG_ALPHA_LARGE_VMALLOC
--	if (address >= TASK_SIZE)
--		goto vmalloc_fault;
--#endif
- 	if (user_mode(regs))
- 		flags |= FAULT_FLAG_USER;
- 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
-@@ -225,24 +221,4 @@ do_page_fault(unsigned long address, unsigned long mmcsr,
-  do_sigsegv:
- 	force_sig_fault(SIGSEGV, si_code, (void __user *) address);
- 	return;
--
--#ifdef CONFIG_ALPHA_LARGE_VMALLOC
-- vmalloc_fault:
--	if (user_mode(regs))
--		goto do_sigsegv;
--	else {
--		/* Synchronize this task's top level page-table
--		   with the "reference" page table from init.  */
--		long index = pgd_index(address);
--		pgd_t *pgd, *pgd_k;
--
--		pgd = current->active_mm->pgd + index;
--		pgd_k = swapper_pg_dir + index;
--		if (!pgd_present(*pgd) && pgd_present(*pgd_k)) {
--			pgd_val(*pgd) = pgd_val(*pgd_k);
--			return;
--		}
--		goto no_context;
--	}
--#endif
- }
-diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
-index 4c5ab9cd8a0a..e5eea8b05c7f 100644
---- a/arch/alpha/mm/init.c
-+++ b/arch/alpha/mm/init.c
-@@ -45,13 +45,10 @@ pgd_alloc(struct mm_struct *mm)
- 	ret = __pgd_alloc(mm, 0);
- 	init = pgd_offset(&init_mm, 0UL);
- 	if (ret) {
--#ifdef CONFIG_ALPHA_LARGE_VMALLOC
--		memcpy (ret + USER_PTRS_PER_PGD, init + USER_PTRS_PER_PGD,
--			(PTRS_PER_PGD - USER_PTRS_PER_PGD - 1)*sizeof(pgd_t));
--#else
--		pgd_val(ret[PTRS_PER_PGD-2]) = pgd_val(init[PTRS_PER_PGD-2]);
--#endif
--
-+		for (int i = 0; i < VMALLOC_SLOTS; i++) {
-+			pgd_val(ret[PTRS_PER_PGD - VMALLOC_SLOTS - 1 + i]) =
-+			pgd_val(init[PTRS_PER_PGD - VMALLOC_SLOTS - 1 + i]);
-+		}
- 		/* The last PGD entry is the VPTB self-map.  */
- 		pgd_val(ret[PTRS_PER_PGD-1])
- 		  = pte_val(mk_pte(virt_to_page(ret), PAGE_KERNEL));
-@@ -148,9 +145,10 @@ callback_init(void * kernel_end)
- 	   On systems with larger consoles, additional pages will be
- 	   allocated as needed during the mapping process.
- 
--	   In the case of not SRM, but not CONFIG_ALPHA_LARGE_VMALLOC,
--	   we need to allocate the PGD we use for vmalloc before we start
--	   forking other tasks.  */
-+	   In any case we need to allocate a PGD we use for vmalloc
-+	   before we start forking other tasks.  If vmalloc wants more
-+	   than one PGD slot, allocate the rest later (at mem_init() -
-+	   it's still early enough).  */
- 
- 	two_pages = (void *)
- 	  (((unsigned long)kernel_end + ~PAGE_MASK) & PAGE_MASK);
-@@ -246,6 +244,22 @@ srm_paging_stop (void)
- }
- #endif
- 
-+void __init mem_init(void)
-+{
-+	// first slot already filled by callback_init()
-+	unsigned long addr = VMALLOC_START + PGDIR_SIZE;
-+
-+	while (addr < VMALLOC_END) {
-+		pgd_t *pgd = pgd_offset_k(addr);
-+		p4d_t *p4d = p4d_offset(pgd, addr);
-+		pud_t *pud = pud_offset(p4d, addr);
-+		pmd_t *pmd = pmd_alloc(&init_mm, pud, addr);
-+		if (!pmd)
-+			panic("can't preallocate tables for vmalloc");
-+		addr += PGDIR_SIZE;
-+	}
-+}
-+
- static const pgprot_t protection_map[16] = {
- 	[VM_NONE]					= _PAGE_P(_PAGE_FOE | _PAGE_FOW |
- 								  _PAGE_FOR),
+Jason suggested discussing the roadmap for FDT first, he wanted to ensure 
+that the dependencies were sorted out fully before doing optimization.  He 
+wanted to see more infrastructure to support the versioning and wrote some 
+thoughts on this on the mailing list previously.  The ELF versioning could 
+just auto-generate out of the aligned design.  Pratyush proposed writing 
+an RFC that could be used as the basis for further discussion. 
+
+----->o-----
+Next meeting will be on Monday, December 1 at 8am PST (UTC-8), everybody
+is welcome: https://meet.google.com/rjn-dmzu-hgq
+
+Topics for the next meeting:
+
+ - update on the status of stateless KHO RFC patches that were being
+   rebased on top of the KHO simplification
+ - update on the the status of LUO v7 and its potential for merge in the
+   next merge window
+ - update for the VFIO v2 patch series intended to solicit feedback prior
+   to LPC
+ - next steps for iommu persistence to build upon the VFIO patch series
+   once that is merged
+ - status update for HugeTLB + 1GB page preservation support that should
+   be ready to send out by the next meeting
+ - continued discussion on versioning support for various components for
+   luod to negotiate
+ - determine plan for December 15 instance of the meeting since it's
+   immediately after LPC
+ - later, after LPC: update on status of guest_memfd support for 1GB
+   HugeTLB pages
+ - later: testing methodology to allow downstream consumers to qualify
+   that live update works from one version to another
+ - later: reducing blackout window during live update, including deferred
+   struct page initialization
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
 
