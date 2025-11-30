@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F68DD111A8
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 20:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835DFD111A8
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 20:32:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 675B76B0007; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
+	id CE2C66B0007; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627166B0008; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
+	id CBA286B0008; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53CE36B000A; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
+	id BF7876B000A; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 441746B0007
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:31:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9A4E1A0D2E
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:31:11 +0000 (UTC)
-X-FDA: 84168417942.01.44AE506
+	by kanga.kvack.org (Postfix) with ESMTP id AB5746B0007
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:32:51 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83A2E51805
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:32:51 +0000 (UTC)
+X-FDA: 84168422142.21.4310F26
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DFA5D4000F
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:31:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bCdapMnY;
-	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1C6E080010
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:32:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ODsAOL0p;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764534769; a=rsa-sha256;
+	cv=none;
+	b=RQNaDK2UYhvnJq3YztHEsWTdoY3V1mFQFDFGsEgajM4bOxsVzgBzaZLX49GlJjFKVeTXhk
+	BKTajhp5+m5VKbwEbUHp188qWwAfM6WkobkoULy2xjaIys+44Nhpbak+fucwJEXmiGXO3p
+	3G/ri9SzZFAKyQT9KEPzUHzvDaggc1U=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ODsAOL0p;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764534670;
+	s=arc-20220608; t=1764534769;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PzGIbtyf4uypqKnERTUX+BxAGcXLaiND7k9n/IPFZIk=;
-	b=UU92bmLt1XJlEWHU6aidzCZLUU3Jc7alVujtPXk3q13wWzOVsyLIY0lgobTfmVCstwqa5q
-	abxOMUMQRst8rkgQaPC2ZYocvU1AOKkQwu5WwFHCin5eiZFfxLZS8C8DalI8oCDmPSBmbv
-	vcUofD74ijINQcJG6KORx/ohVK7QxsA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bCdapMnY;
-	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764534670; a=rsa-sha256;
-	cv=none;
-	b=BlLX96ita+gB8N7z8bLr+mrxcQ3SXoZCi73mD9eKH3ukGLcUSK56tuX7FQuMEripyPdhqg
-	+Uzv+VBZXGSUdQWAB4o/JFYbKHatgVCTb1xkqVtZJXXQU4mk4EEt99ggQ3ij+nTrNno/6c
-	J6IZhW/SJutJ+DRxNL34c8trQEwvRvc=
+	bh=SG4laOmIYfaX0AulgAf4e+Z9d1ZTQsjEZOC+Us8Bu7s=;
+	b=7N1iwL3t4JzWy1bNpDSXvKX3fJ89jqPTEwLiAvuXoSDLuvVXYGAm3qjPiHayl6ObTce0pL
+	fX3s3fB6EZq2y2AH2VbdWgbB7zGFL6n1RlDGsrUvGhVQjBIxwvwyuN1suhGVOObwWaRVdV
+	/exUZmzEZ4nmIbU/HqIe4Rk2uRZInDY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=PzGIbtyf4uypqKnERTUX+BxAGcXLaiND7k9n/IPFZIk=; b=bCdapMnYT5uevbv4N0JalnY/Dt
-	6jOLcg+QfJj6cOpH8DdtSQpY3KWu9OyjzGVEf4f0QiOauvmo8dRZOmQ14zLlAjuGoYhY4z7ovKsd3
-	guBykyMIIqW9XVb/5/OxhdpEqc/2WEV3HuvV4/q8tqRX+ilxweQEpFr26czhzABAHHOBL+QL98Sjs
-	H0JpKxUi16TotiVWYyjyHqoIfr8H2fWw4GcsiFx7ZUiMFYa7kQ/muhLXbVeI/J6w3AI/qEu5rj46K
-	+Szxejg03Z+8MYhnTD/jpCzhmjxu5qmwApZhsSze41DmZWWFsZo9xRSnTwUyuGBPHWjITZaXjbSI2
-	FivLok6Q==;
+	bh=SG4laOmIYfaX0AulgAf4e+Z9d1ZTQsjEZOC+Us8Bu7s=; b=ODsAOL0pgxUcMd5xFDQnqVBGul
+	1txeQZrUZMLqGYQAxnqez8tYY0tANsGNWfSxQi2AgSBLa9ou9N1swildx7fWjPDZrsYrVz5WxNQfX
+	SVza4ZDTyDpyaOos8uQ3e2deSVPjr1TDi+M03qexXYV5LQDo/yQw/exVaMBSADObuuC9ZgFvmQPta
+	J7+1kI7Ntc9525z0MSCIXUbiR9ykmLzrpUIExeRGNNLOgAogK1omJWwxN6wkP79+QVG2R6bkLdqzm
+	Woo8HOByXNeQxTyuqu5CZNg8y9U9kDlDn4D60JLMx7Uslawp+8Cpyr3nKT4bqdoFr379wq2o27LD/
+	ZD+FMdWA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vPo4k-0000000F1yA-2jlj;
-	Sun, 30 Nov 2025 20:31:18 +0000
-Date: Sun, 30 Nov 2025 20:31:18 +0000
+	id 1vPo6N-0000000F4H1-0jjX;
+	Sun, 30 Nov 2025 20:32:59 +0000
+Date: Sun, 30 Nov 2025 20:32:59 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: david laight <david.laight@runbox.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -69,7 +69,7 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-mm@kvack.org, linux-alpha@vger.kernel.org
 Subject: Re: [RFC][alpha] saner vmalloc handling (was Re: [Bug report]
  hash_name() may cross page boundary and trigger sleep in RCU context)
-Message-ID: <20251130203118.GW3538@ZenIV>
+Message-ID: <20251130203259.GX3538@ZenIV>
 References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
  <20251126185545.GC3538@ZenIV>
  <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
@@ -78,18 +78,19 @@ References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
  <20251130113213.40c8e7a0@pumpkin>
  <20251130164348.GV3538@ZenIV>
  <20251130190331.40385ddc@pumpkin>
+ <20251130203118.GW3538@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251130190331.40385ddc@pumpkin>
-X-Rspamd-Queue-Id: DFA5D4000F
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 7mukcjz9orzzyagai73gx1ewrrw5gfyj
+In-Reply-To: <20251130203118.GW3538@ZenIV>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1C6E080010
+X-Stat-Signature: rro7ee8ydhuqx31k4ugt6nsrxu143xpb
 X-Rspam-User: 
-X-HE-Tag: 1764534669-708591
-X-HE-Meta: U2FsdGVkX1/SVIw5+ZimlR96iBz7wb5onnhl1fEOfNb4PZgksrMixsBkS+Bju4ju/Zzsxy34U+jA5YwE03bwTRDGEel+k7xe5ZMAaQCRZOFFqiVe7npssJU5o4o2EXzv/r1tCFegM9wgOcIX1mXpt2jsLk/uZFYn7ZO0f3onlNLRx9ghfpesLis6bDZzK92Vhty6+mfE14vX6R2Ex1ftVukLWe3nIBBFSFHxaPjVk6bSWJSCVghKYYdVWe00oWuAwoiRQrhwkNuT7ePtTAlIfRC2DDLAGfCpfypJU837fMoiNLzxZ5RvdM1XuQbuc5B9zt4bwhTJPNFpRDqQuNwC3ssL/r6aXY+notxObT0xEGEB6oo21xcq1I21dPFqix2om/RqMJ49OUSOtS1XeTWdCfpgc8l+xLaDqdhB9PryttUcZeNnAr98d9rXlJQxz0gDz1TjjAXvxAVXn3u8/H0hb/A7VvtpPk76rxQSuUavaTubRHshe9FkBBmavdwz7lRJ7EPGEeLFMTgbOnPODkhgoXlAQeTGkhySw1jbgRx+SY+icW6TnF37hVdluN0XfWmdcAv7LJu2SHAzPD7HcjAAbEdXl6YkPnboQEjmI75gN8Je+CxvaMCtz4dvm7nwiEkGZfgw97ojpnYOft6BNz+b9DoNOQH0thjkE8d2lJCL7fOtlCAY+PE7GVgKORDsYiDMhMxxiw0cjrDF8vE4FqFlq22xR3Qf0m9UvvIiviwD8Zvqwr43MtdmFpm+16oILvhfckh84bNRHK/OqtTyFxY+uZggc9KRJvoBiEpYhsIa5nsPGcfyCPElZoi8Z84yDdl41q16BI9l9mpUgdbF2D6UqHlzE3Xq3fLh+mrgJKSqin3cZCt786iS1D2XalPk2G+2ahb6bWntkCdBXIclo8Mmb0JzgC4mKdA2Uwofhi1hKi1dyRBDhikDn7smH7LY1muiLvRyyNMtozlrPKv2ZmL
- P4bgbZba
- VygnKu6sPHRUFlSSeB/P8kMKOPd895uX3SlyIuXZOODtbubmqzZcpWUsXED2awplj0xnrE26TgecRWGJX8Ha7W5+5J1D3LnEaB4J1It+buLm6gmfkD/y3ZGWIyurG6BZD9NcWDwtAhraglgMvRYQJzZTiGU6a/HMIQRMBWq2Hwl7EhwlqdmJDGJddOOSX6Q0lFv0kCIBDnVikuQqyalRQ8ntMFTmuXxKQ/vwTmK9TR3BGQyNaNq4Yh5nb+lVFFGh2N9oEFCXy99dDAmw/OV2nvvkiogDS7EUBtT4LCIXk6IZ1AtPwMeeMFBVMnHmmSy1DemNnBIbyBxKODMcOW0YKuP8MNU6N/wLZKW224lkgN4vwMGyFsE/aU20tMBevEhKlS0KvGdR5kUuV1bvc4pg7EvmV0q6V9l09+0sLO5gKwV8PtF4ZHg/66cnVUplrkUpi/n2FYCH92nUJmlSH0ad5cXjhI1FA790qiQH99Uno6yYQcZM=
+X-HE-Tag: 1764534768-983237
+X-HE-Meta: U2FsdGVkX18uBiv6Io8txu+qHVeq2RdRva/naYAEkLcZ4VN/zQbmS51h4QWv3FgkmCWtnCBTBgeD57sfhAWBCBbsBiPAny6S1Fzoc8TMEyVe9Bud4PryvH23j11Spnrd8OEuSBnsasH6JbhSaP6htSLaq3avc625hINm9J7469h7/ylNhtEQt7GiPXXZott/cqHP1mTewUqp+507Ds3eskmml4U23CqXN3Vo8Eb2DQcBcncvSRuspn0WVsE0wqbC+zCy250RRQKKWRX4JMRnDmaIPtEgzlg/lePmAOjiyvrX1af616m+/PmgpePtdOtJHvt1KJ4h2+c0IkUfTEOltiP5El3a8AZhiAG8v+abDNnZJ0sAYHprSkOTwACwNhAouBC4dZg/pVHjQnleaQhjcZTBOUtuyPdon7lJrSBkhlpONzUuZcvCOGG1mLIm2yGPRup1J74vW5eFs7rTfDtzUhDlWzuNHwbdm+uNu4NqYmed1JIDJABS6N0njHBggR3gy5Up7v9kFHqwPhugjjtFHUHvPiPtJlzaVO8nKX3GBf9fMkaITA2vSViZ7eeAfGJxDO1p2CSQKaev87h1OVla9JqEqE/3p4LV7GoNVYfEB2LHvFeAUf3As0pGbFTZfr9mpCsSgYRoXgPDNYZGvEeShoHbLdDSTv1EK9++0MZvJqv7LOoaOF1o95LcER8b6gn8eTFkrtpLGiIXQqGrZZgnR77xOL6U07PPQRVV+f1LeCbI3Q/3fp54agYbfSvxPHiYlppjC+7kPD3aoaeuToIITlRlgjAi9n9jek4cCZFV1jILcoo8w3d7G2V4vUIbZ3NtsdBiiUP2FUvo6SzAED5FxqLyadr4Zr4y1RYJ2hsxQFW2Chl5+SamhUttciDWOk61TvWtNkob+JW7suaHNYAUGeGPOyzEdmxsHjB7WWTR5FcBrPgfgDQ4xWoKDeJ9rXvvP0xtKc3YJjFbKytT8re
+ yMk6WaUg
+ YgrcqF+NHF6hbikeNoMhM1toBU4JzQmlpbk7ylnBxk32tRjlRTwro7ygwULl5MoxYn9XQD0cRLUqCUvT4KvYqOk6XDTjwCGO7kU/9AFzr8KPk9b2EE+TF8b85vrEXFsMHzkcW1mTSNphdHtMzIG0Drubbk2cIVx+DJR1t5vCwX8QqK+Rp8kC9ByjmDTE4kEy7PxleNSErauEgS3m49g/Vp0479WvmIojZR4gyS7SBmw5vYkTe7W2O/r714KgBBOLR2Iu8Ohjzcud5/GS6k1UShifuUf9YrZTHra0wgwyk1P0swrd935D9p0LfoCpFM3NiBnyGpOiLekpyj6nyp6hVn/Wwn1q2zwBG4cov2eZV6IrUctiM37xmUebKM6o4UmndHIZRU2VkT5XPMXFChTrDWmePZvM0CdUA94nTx/BbZKcp3Gge5ngxVrAealbxPL3FUZdf+ks9cJki81DYo4x7ABd77ywlanx1C+ga0P25EqXfgS0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,34 +99,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 30, 2025 at 07:03:31PM +0000, david laight wrote:
+On Sun, Nov 30, 2025 at 08:31:18PM +0000, Al Viro wrote:
+> It certainly can happen on x86 - two vmalloc(SZ_4M) in parallel
 
-> (Doing the updates in the page fault handler definitely sounds like a recipe
-> for disaster.)
+32bit x86, that is.
 
-See the comments in arch/x86/mm/fault.c regarding the need to do it in
-#PF on i386.  Basically, you have
-
-CPU1: does vmalloc(), needs to grab a new slot in top-level table.
-Updates the page table tree for init_mm (rooted at swapper_pg_dir).
-Starts propagating that change to other threads.
-
-CPU2: does vmalloc(), which grabs another address in the range
-covered by the same slot.  It works with the same page table tree,
-so it sees that slot already occupied, inserts a new page reference
-into the page table hanging off it.  No top-level changes to
-propagate, so it returns the address it has grabbed to the caller.
-
-CPU2: caller of vmalloc() dereferences the returned object.
-If propagation from CPU1 has not reached the top-level page table
-CPU2 is using, the top-level slot is empty and MMU of CPU2 raises
-#PF.
-
-BTW, it might be possible for two parallel allocations to grab two
-areas, each requiring grabbing its own top-level slot ;-/
-It certainly can happen on x86 - two vmalloc(SZ_4M) in parallel
-will do just that, but with NUMA you can get it 64bit boxen
-as well.
-
-So simple generation count on root page table won't solve it either...
+> will do just that, but with NUMA you can get it 64bit boxen
+> as well.
 
