@@ -4,106 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9EFAD111A8
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:20:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB6CCFD376
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 11:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2352A6B0029; Sun, 30 Nov 2025 06:20:15 -0500 (EST)
+	id 5FC3F6B0027; Sun, 30 Nov 2025 06:32:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BEE66B002A; Sun, 30 Nov 2025 06:20:15 -0500 (EST)
+	id 5D3B16B002A; Sun, 30 Nov 2025 06:32:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AD716B002B; Sun, 30 Nov 2025 06:20:15 -0500 (EST)
+	id 510C76B002B; Sun, 30 Nov 2025 06:32:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA9026B0029
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:20:14 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AEFC8BDA56
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:20:14 +0000 (UTC)
-X-FDA: 84167029548.21.1630130
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B60D8C000A
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:20:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="H/O9ZzYi";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=8RrraBCZ;
-	spf=pass (imf10.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by kanga.kvack.org (Postfix) with ESMTP id 3FEA76B0027
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 06:32:32 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EDBE05132F
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:32:31 +0000 (UTC)
+X-FDA: 84167060502.06.80C6C09
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AC5174000B
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 11:32:29 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=runbox.com header.s=selector2 header.b=Fe+6TaUQ;
+	spf=pass (imf27.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.37 as permitted sender) smtp.mailfrom=david.laight@runbox.com;
+	dmarc=pass (policy=quarantine) header.from=runbox.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764501613;
+	s=arc-20220608; t=1764502350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gPPSeu511L0k6gL1IYpux6jfrEM3Z2mSgCdofcykt0M=;
-	b=bhdvZhVbY0OGZdLhiEBEIimfNdsvdNLwsGYvLGePY7+vJkqBxAc3zJiESgyJEeenpK+S6d
-	i81IvgL0J248ZSOzcvAmqrUS2jge1jQ8pnx2JGcl0FnxZXM6pce8OzmAuNDiP5nNN3GvWs
-	xhRwFkCYWOaB6M2w+CrZQk0NG3dxxg4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="H/O9ZzYi";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=8RrraBCZ;
-	spf=pass (imf10.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764501613; a=rsa-sha256;
+	bh=AOYHCzYNL4IW5t7SZZIqadgltwGQwxY9WRxQSDt5CGo=;
+	b=OUNQ5dQF/NohxL4W1AnDwt4OGIvZBQxky+I8iNZWC2GX/qJz0aBGgfx5mhuKH0H1X7+991
+	cWlWPYJXBpXYpfOhQG9wWoB+zO5ga12AyNNyFCKdv1X1Bdu8cpkqnzb1xCYEmVAKiYWRut
+	GqqaMib7QkZnxO3KD70Gvupr7QVvQSY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764502350; a=rsa-sha256;
 	cv=none;
-	b=Drpe4nvn3IxzyISwvnUysiY1pGIgXjp2hHChiblo1eXNCmZAkJpqYiZL+kCxUnmxgjG1TF
-	pCY0R2JI1hiGwf9GJaIQYvy5h84ONB+Hx4sIY+yHhbV7yFaPvZOlaF6M9WVwcLF0JiHnFI
-	5oMDtzairgmJ+i3NcLOl0oyhhFxiJiI=
-Date: Sun, 30 Nov 2025 12:20:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764501610;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gPPSeu511L0k6gL1IYpux6jfrEM3Z2mSgCdofcykt0M=;
-	b=H/O9ZzYiHw/2G2WBqoGZ3K3FPLNuLrAWvk4v/z+wfncXBs075k6aX+F8Iqp8Vgp+LcjyHC
-	z1G/MHOyvAh7TA4mK+eXChXlqCIy+EZvNiofVHBTXaCED1jIhLqVlWUxXvtoHpu1Ah9S2e
-	F9JX+agQqQ/wqp8/A44N9X3E6LhxoLVaz+GSa+Dj2DBQ++P2UMEGoJSFjvRTB6wNi21E8W
-	3esGxnfRtGW9Xy9r7VrNCc6RRigIODj87/eRuf/oAicuV8uZFco5gHUlYiB3CiXIVKxoYP
-	MZ7+6xcVMAYjC7Z8e8XAfZYx6UOUYsx3qf+zjw3RwTW8FcJLWYP9IkNoABFSNQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764501610;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gPPSeu511L0k6gL1IYpux6jfrEM3Z2mSgCdofcykt0M=;
-	b=8RrraBCZU5plsGR6xmde28IoY0RzxSIbtXdVMZm7XVpNQnachUBhpN47q/W3YXgJIb0ERh
-	gNxYivhVx7Dx+TBw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org,
-	arnd@arndb.de, brauner@kernel.org, david.laight@runbox.com,
-	hch@lst.de, jack@suse.com, kuninori.morimoto.gx@renesas.com,
-	liaohua4@huawei.com, lilinjie8@huawei.com,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com, marc.zyngier@arm.com, nico@fluxnic.net,
-	pangliyuan1@huawei.com, pfalcato@suse.de, punitagrawal@gmail.com,
-	rjw@rjwysocki.net, rppt@kernel.org, tony@atomide.com,
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, wangkefeng.wang@huawei.com,
-	will@kernel.org, wozizhi@huaweicloud.com
-Subject: Re: [RFC PATCH v2 1/2] ARM/mm/fault: always goto bad_area when
- handling with page faults of kernel address
-Message-ID: <20251130112008.DZYHlSPm@linutronix.de>
-References: <20251127145127.qUXs_UAE@linutronix.de>
- <20251128022756.9973-1-xieyuanbin1@huawei.com>
- <20251128120359.Xc09qn1W@linutronix.de>
- <aSnVXrnuY9QKjTKg@shell.armlinux.org.uk>
- <20251128172242.cCNBVf7H@linutronix.de>
- <aSndJ1EYUnMGsUYX@shell.armlinux.org.uk>
+	b=YYrE7EcnIN4pkGb9u/0F2bbM5ELlgTYU/VKgOzejZ4B5WELbf9ATUzv0khv6KdC3i2RT4R
+	hPhMW2ZcAhnNbMhIYwQ/8uYxnFkWSF1kXhAq7WA/khjLKqevfITImMekhZQb1fQ0Z4Cdp3
+	NTRE5vYgxzZdNaIPoSlywATWMzltAS0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=runbox.com header.s=selector2 header.b=Fe+6TaUQ;
+	spf=pass (imf27.hostedemail.com: domain of david.laight@runbox.com designates 185.226.149.37 as permitted sender) smtp.mailfrom=david.laight@runbox.com;
+	dmarc=pass (policy=quarantine) header.from=runbox.com
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vPffG-004aJe-Ks; Sun, 30 Nov 2025 12:32:26 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
+	 s=selector2; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
+	bh=AOYHCzYNL4IW5t7SZZIqadgltwGQwxY9WRxQSDt5CGo=; b=Fe+6TaUQl1tgB7LkFOGd/TPUBb
+	48vqLZdA+0z2SvwylZj6S40Jz9eB4MgI4piGqjaN/PaPOjdbaw+A8r1KJoQgf5w5recbeDL3zljbP
+	rXGiao4q4/U2/zkDKODDKo3KqrnYXdF5aiIX7rOQnWJFM4NthXqLtaKpPBye/pql+cIkF7MaWHmno
+	n0zEmVgdbHTA7zDrfI1Xorl3nIKMzbdZ80bLsbxAElzvMdqtfUpeUf3ppIOW1s++SAO4QFvL8WL66
+	UhAGcNxz4CTA+j8BLsFcgia4ZT4di0iEjGb9csrlyu+k3beNl66A5JlDSUhHumDlBsWUh32+dJ5xf
+	K9WUkOgA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vPffF-0000ec-W2; Sun, 30 Nov 2025 12:32:26 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vPff5-0051X4-CY; Sun, 30 Nov 2025 12:32:15 +0100
+Date: Sun, 30 Nov 2025 11:32:13 +0000
+From: david laight <david.laight@runbox.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org
+Subject: Re: [RFC][alpha] saner vmalloc handling (was Re: [Bug report]
+ hash_name() may cross page boundary and trigger sleep in RCU context)
+Message-ID: <20251130113213.40c8e7a0@pumpkin>
+In-Reply-To: <20251130030146.GN3538@ZenIV>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+	<20251126185545.GC3538@ZenIV>
+	<c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
+	<20251129033728.GH3538@ZenIV>
+	<20251130030146.GN3538@ZenIV>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aSndJ1EYUnMGsUYX@shell.armlinux.org.uk>
-X-Stat-Signature: wxnof3ybbtst16ub1w9fk4zhd3ffroe6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B60D8C000A
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764501612-585926
-X-HE-Meta: U2FsdGVkX18cPWT8DTQTTA+Jugivcp3JSFE0ux2q9YQTt1+PHk49U92PUD21vRX2iil9E4bD4dcF7Ak3e10h0weu8rGfmvg4mJ4eYGTzu5986G2J7pwboFQRgb6CkcIkJqItlkEiNasS7qdhm5fMWJUz9d1JNK2l9JDRWaFdLLQMJt1nBBJ3bquLgry8LVEtAaJsILqo85pAFx/W9c2PTAN6msPoVs5I00Tz+zd19jO9dAD6Y0GHXxQ8dJqVxvKjCixRxpUKH1/JjKQOtID1cGRicmDPd2jlgWBU+pf4mroFfN3DOkIVtrkcEVt5K4gKWBbpkZsZ5XvagGcinXyTlYYScv9hn5SnSSee6NNTviSKaLV0qPzDA6vDpJzhorjBKdQ7L/N31Qg9h0qywclDgDcEnLMAcw2PzMKK/jdoJA6ePHdEMXOODMHSTQ1pVMX5Ao2lFYfPbJZk6UhcgkacxkvHB1OVNCq939OZVwmxSFto/SyKvxpBpm+c8lPxmvn2JBfwH9afQ8YB9XCvKrCu9SmhWqYu0/n9EBENbiTriG7rdBc3VeZXgL9ftTsfhlvhfw738yX+QyA005oMc10Maj5IEGqn+Yj8mVzl37oP/ruO/JOamO1YS6mavmR7TGX7n3/x8dr79KiMlcpfDLyjj8Bl7g+BW1Wd6l269KSI4Gah4448eSVqMjPI7TbnDQLX0DsYqsf1KAzTu0tD2UJ0LO7dGyAVvPuhlsBl149MeMK88ClVWs0Ai65LjQDw8PSY+dqfI4H1RUXRMCk+5eo0zK6KTrpmcCyOrmtELwtyHkXGxuJqkoCr8V0BBRmux+vZG57nyKygjP0OABDDRS092bc389cdy5OHqtDeR1wQN65g7AEthW9lHrXqgu027ee0wX0x4kSa0uGYwoDiuvhB73DfAUANGH2lzzrKFnAoeFJ9AmKAbueZcLIqmozOwtsZX+WOxs83g/5+QJIRkyf
- e5j9FmBi
- /u2RLniaMwLM6/6M8slTBO3wIV5iR7X+pXo4zuf7Vj5VTyyOCvLiyvELz1n5mgyGs0UDm6xoN1dCKQiLofrxIWDD/FQo7IPOQhftSODq3aaDsUnv2uNIaS4pqSs5TzVA/SuwaBQWCpn90hzT0Ma1CfBGDp8i8vO3QWe+nMqupBQoQxjAWevbbd/Aal3FOzdqJt+pHJZMukkzPNsi7Hi6N1+nX3D0kv4WiA7gYRDLzt7gvw4+cXT6tUV6LcgjAi5yxS3EhONFU5owCqP8=
+X-Stat-Signature: h49h3f4okn41eztgb1qd6y1u7d6gmj9y
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AC5174000B
+X-HE-Tag: 1764502349-259922
+X-HE-Meta: U2FsdGVkX1/pmtREieyr1G+Ik66szH72m712ipwE0GA7Q1jPURA61i1TDtEgEVoxCNwYeu0f8xt0Wp6+n99xCJCE+UU8ooiO6a3Q3GruvtE+3Pz+pGxhSIeIowVHn3v84V2gHUNhtnFgewimI7wARaqzZwUnhfMYIAjxMMhQF676NnMZVdvtbr1feGY2duzBRHvImYdHPIu52NUr4prlEZu7X2/IEDn5QZA+O7y+Adpr9Jn5fap4Fiy5NjKkJ7ipRdHdSsifIMEPf95/EZrRADXoH1v/9j+bf8ibclctAoiZRtqR3b/d9V5l+93n994z3OLoZo30LlstlrZtUnArcYZv+/J3y7efR2mfWtUvmW6jsyH3heofbvbFhojV/JTDrUDcSKJzXhnawnSk6IpoO6+L0xKq+NwlfQ2vRu/mp2xO42A6vRbllkvwgmEUojqPkDq3dyMiWIQlLRliEBl3gI8U8u5QH9S3M9JyIT9HNW1gDxAw/aZ6HQEFSYRhUYHwKWRYPbGI72xTTs/SKd/IkU24oHiiR23Y4O2GaPs0KupPB1IgrINq/EM6/gvF6zuMl1SeF5wENqFsn+in5J10XD+aXO7WZyqBy2eeeViil5PiiXWgKJlXyjWxIooPiBP+L57oe5NVAd9EfJV7ROQ5rIYYNBI0iC/zgNP2lTSePpAc1rwci/V+7x9KA4b4CIIb0Q1XqbFCkyBOT+HWPsPh3uBqtaov71qY1pGmIbyo9bV5xVY+8vKwaeLFTtrET4SJm0pgTRyT2ORPp4grbk21clKcnVEUSXlPkLjwQbJr018WjWHM/J/p56hmJndH15WPrrDE/oEt0oCHN+V+vwO//LYMKlqYIzE/0KLqL2obwycYkpFffAB33sJkOB9AAICHCheiqZX3DHBZvzrCgxCSFftyHjAQYsPC/NulwhxDEBJ6wkgrb3zTRLz8XRQJqLKu8RpbQR5wlYYorXppnou
+ PZr3YO9y
+ WB7/DkCC3UR00wy8a/rYjzJ5zT/6R8o10HkC/Za9OouK8E+jZQVrccILioEwoggqNKKsk4IHJHy/5oPLhHlH5M/K6iO/fLnTU7ENZDl5DOCnXEvM1Y4eT8b2ssl31+hqqTQ8uIslT/3Z5Gkdx00ErdBlWRecyx4SvOWR8eD9WYcdzTO9dI1eYF+aKpAh8vc2plfQqyA+G/dXy8eLhzK3+hMYBQSI7tOP3BzMRbo9q01M65BoKMgQC8lhB2lXZ40BgPC86ZxIsAJXKBJZQ1rwlAiMWNDSRYEkFqbc7lw6aQzYJU8sirFco0jKLmWERgpy4l8R5u5i60/tgGaodcolxp6B/4fb6foek2aPpn+TmDrj9LrN7FQC/Mumx60UG3+VHqVwgML6pXI7vc5HHIM6bvbRwCiIrEKS+4bBa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,44 +105,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-28 17:34:31 [+0000], Russell King (Oracle) wrote:
-> On Fri, Nov 28, 2025 at 06:22:42PM +0100, Sebastian Andrzej Siewior wrote:
-> > On 2025-11-28 17:01:18 [+0000], Russell King (Oracle) wrote:
-> > > > I hope Russell will add them once he gets to it. They got reviewed, I
-> > > > added them to the patch system.
-> > > 
-> > > I'm not sure which patches you're talking about, but discussion is
-> > > still ongoing, so it would be greatly premature to merge anything.
-> > 
-> > This thread
-> > 	https://lore.kernel.org/all/20251110145555.2555055-1-bigeasy@linutronix.de/
-> > 
-> > and the patches are 9459/1 to 9463/1 in your patch system. They address
-> > other issues, not this one.
+On Sun, 30 Nov 2025 03:01:46 +0000
+Al Viro <viro@zeniv.linux.org.uk> wrote:
+
+> On Sat, Nov 29, 2025 at 03:37:28AM +0000, Al Viro wrote:
 > 
-> Oh, the branch predictor issue. Yea, I'm not keen on changing that
-> because I'm not sure if it's correct (the knowledge for this has
-> long since evaporated.) There have been multiple attempts at fixing
-> this in the past, and I've previously pointed out problems with
-> them when I _did_ have the knowledge. Have you looked back in the
-> archives to see whether any of that feedback I've given in the past
-> is relevant?
-
-I dug up the emails from 2021, 2019 and you complained that I open the
-interrupts too early. Now I moved the invocation of hardening the branch
-predictor to happen before the interrupts are enabled. Based on that it
-should not raise to any complains.
-
-> > So Will suggested to let change the handler and handle this case. The
-> > other patch is avoiding handling addr > TASK_SIZE.
-> > Any preferences from your side?
+> > AFAICS, 32bit arm is similar to 32bit x86 in that respect; propagation
+> > is lazier, though - there arch_sync_kernel_mappings() bumps a counter
+> > in init_mm and context switches use that to check if propagation needs
+> > to be done.  No idea how well does that work on vfree() side of things -
+> > hadn't looked into that rabbit hole...  
 > 
-> ... and now we have a new proposal from Linus. I'm not intending to
-> do anything on this new problem until the discussion calms down and
-> we stop getting new solutions.
+> BTW, speaking of vmalloc space - does anybody object against sorting
+> CONFIG_ALPHA_LARGE_VMALLOC out, so that we wouldn't need to mess
+> with that in alpha page fault handler?
+> 
+> Basically, do what amd64 does - something along the lines of (untested)
+> patch below.  Comments?
 
-Okay. If we could please sort out the first part then it might be easier
-to move on here once the dust settled.
+How difficult would it be to allocate the pte for the next 8GB on demand
+inside vmalloc(), and then propagate it to the per-task page tables.
+That is a path than can sleep, so being slow if it needs to synchronise
+with other cpu shouldn't matter - especially since it won't happen often.
 
-Sebastian
+That should be moderately generic code and would let the vmalloc limit
+be 'soft'; perhaps based on physical memory size, and even be raisable
+from a sysctl.
+
+Likely more use for very large x86-64 and arm-64 systems than alpha.
+
+	David
 
