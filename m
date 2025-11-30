@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE90BD116E2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 02:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4304D116E2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 03:01:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 396BD6B0008; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
+	id 0BC576B000D; Sat, 29 Nov 2025 22:01:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3204D6B000C; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
+	id 094386B000E; Sat, 29 Nov 2025 22:01:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E7F36B000D; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
+	id EEBC86B0010; Sat, 29 Nov 2025 22:01:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 079FB6B0008
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93FA38A97D
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 02:56:34 +0000 (UTC)
-X-FDA: 84165760308.21.3D1CD9A
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B2F6A40003
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 02:56:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YxLWiYba;
-	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id D72EE6B000D
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 22:01:42 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 88B391A0889
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 03:01:42 +0000 (UTC)
+X-FDA: 84165773244.30.B165809
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8728210000D
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 03:01:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HKqaHAdw;
+	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764471392;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764471700;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+XJGr14VL/NvhNbPuU96ozt3/FF8toa21mCuIzcZISc=;
-	b=WI5/vdSwdiYs2LqaWAsk/E+ZIrMKivtxYza9Hxn4LGG8iaM9rzktayjW5kwLCyRoABEGDi
-	NzPWh9Fp6WyTHnEX4hE23iZJOfDDbJV+6rO0E3mK5x+KdDtp7Tifsyj06V39yqL5EU5m8C
-	Hf6OWB5pzBFp/ESwJHNA7/FxXQMvTeY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764471392; a=rsa-sha256;
-	cv=none;
-	b=g21ljjCMq7GDx/qtXae++v599hU/1pO7D81yCGeIB8v2av5TF1poEvc4pvNrriQBDjeMxV
-	HPU7fXCN5HjccKxHWZM7XuKVGCFXlGB9NIDrtPqORv5u3StvORNqJpmPWdsviagwUWjiJc
-	6y/ADyhdkiV44IZS6AGq/JlZYRvo+ts=
+	bh=0TtaLooEQ/SHSgMC/pUOWGMxpepCm5694nPuPzDHEdg=;
+	b=q9UdGJm1tzMLicnSpMzFowr1HgirQp4yHgNqriVCN3PqnBh7zL1zjWtyEactl0ziHZswov
+	6PmVGj72M64VAESDiYYUpMPQezg77RZ2G7ipMyy+6en2gyikEbSSV7rOPu+jA/z22SSAfJ
+	rbqJ9S1WQ5SCtUcU97Xkn/KPY6L48Bg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YxLWiYba;
-	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8b22624bcdaso364927685a.3
-        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 18:56:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764471392; x=1765076192; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+XJGr14VL/NvhNbPuU96ozt3/FF8toa21mCuIzcZISc=;
-        b=YxLWiYba2IqUSC1Cg+QF1wyMorzZ43vsFQYAxJPtpJUOySenl54dKj4o/PErYYAsjP
-         dhKu3xyN3eW8jk3ybIQ/K5CnzRRoQhswcYzSN2DuLVc+w3Sryi4MM8W2kCGC5RxWReOc
-         KK3nUbCnrEmrQuYYPknMDqvzk76wR4NVAVipnNWE7w08jgKWSSe+VTCQO/wWQqiSIXu0
-         cYW4msjL8gaLq5sdY1gFvRNd50fuPeJsZSX3RhMl0Daht8iO89PXcBtHQ+tQ95rf0PLK
-         OopG13vq3sdpo/oBCk2cGk0NE+8syzNDwx4aSviZd2lDe7F/Tmt4ixc1/Uzn94+CNPn0
-         XTTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764471392; x=1765076192;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+XJGr14VL/NvhNbPuU96ozt3/FF8toa21mCuIzcZISc=;
-        b=de0pu9x+5D6jj8wIUqJzm4ePbiMC+kPeB2eTIFWZO3p3MHMydAsPtlGBk7wLWR7gf0
-         y3g9vUgVljqTVtD7oqrzz8rTMjMyObb5LpmzV8W8V5C3zUrbYsf7GjbNxv60VK95wV7K
-         Sx8jnGwDzl2xTlzq8zJBJbCLxqi2qpsZOkPWwGhjUI/EGhXq7mlg8ZCVJg10P2HLei87
-         I56QwqJRbRc/FaioAhAbFsUjPuGHo3ARVKy+HdxuwP/gp3nlvppe1r8Orh7YztD6lpTQ
-         Spx7OexjI0hYslElR+bGUJ+mIAwmlYXTW79Kt/Hlo3oilYHpwX2l5auJSCZluCyHO7Gc
-         ki3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUo5RySk/kEsuILhl8ZoxqifOUrC/bjfj8huFj/sWDxxGAjCzIQZo0eoo5xlYTci06bkiRu+nbOSg==@kvack.org
-X-Gm-Message-State: AOJu0YwzCPxp5I6hC1RYMvzypYwFJ6fW0LadxIxIfw7QyiNT8SnVpPIc
-	Cj+pg8PZMna5331B61p9IGXgFEhZm7Y2XCc6MOZ/TCiJnjB4+AveQ+bGFocInHw+tYeh2dV+hB1
-	QPQDhwLCcgGJCxmHOCYK05LXZCxhvbYk=
-X-Gm-Gg: ASbGncvXpTeKukqnjPPRYCDELrSdUPaZJyGNg9MyOcoNfidEHe6ETyvMnZI6d9R2IPN
-	6d1O5Xus6G4JTWrCdD9gh+EAv9OSU0mUgoNiAD9WCPCkoFLUt0aVidi3PKjViz5BYZ1WcmOeL4f
-	BV1UNNZB8TxFSGj9CdaC5plLQ4LwWn04ynrtqZTLnreBsB2Y+wJUsqW607B31CUF1PQ9mKLaBS+
-	BFCfNITwu9LEGeWfPgNI7gBTp/gKihNwfwo0fn/wDQe/kn4aJkQytihO6JBo4xXfzz+6w==
-X-Google-Smtp-Source: AGHT+IF/3KjmDnaoo/ldsvPnDlqyF1g2t85SJ38riWFY6aw2+Rx4sE2XTJgJQYrytReWz53k6ueQn63K+Iy7zP31uHo=
-X-Received: by 2002:a05:620a:4407:b0:8b2:e565:50b5 with SMTP id
- af79cd13be357-8b33d49a212mr4299108585a.60.1764471391497; Sat, 29 Nov 2025
- 18:56:31 -0800 (PST)
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HKqaHAdw;
+	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764471700; a=rsa-sha256;
+	cv=none;
+	b=JB9cJoOjgAV979EfmvTYrnTSvyRMXemiZm1lELbsWpHJ8IK5HIpy0GveozT+fECA+FvwlG
+	clr9ipo6+xFnmVFC7XNEk3lVhGcE05XVyojBX6G0YPt1CbM4OLqmPHRG2z+HHNeTPJ9Klv
+	BijhsKqRJWfkVERjXn6HYI9eTGTRXsI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0TtaLooEQ/SHSgMC/pUOWGMxpepCm5694nPuPzDHEdg=; b=HKqaHAdwMjnBw9TsbmQh894nUI
+	OipQpKHC+/RWe8GpcnFEksC1ndo7hx5Kwu0zRniDNEr5mxnUkJmtHsVY6Z1OAMJ+cMimytbD2yFRk
+	dE5ZBdlVW0FKteHYMIdcUe4xgtM0UJ6WXqwYbgHVh8y4iqTsbDrcO8H4Om7XirN+4wiS1VKJK/QlM
+	rH6BfZb03uT0IQz7pQdM8RZUPTy4SRDRX88s2L3IpOWJTCKwD1YD7SuRZk9PIo2kEkM7i6Mqi5U/E
+	miuzXyWieNj1K2TB0ekO+fAaIxN8Bs1nJ1g4MCj2T0FzDJrVNM5M7G788VbL6RVBL9ceTeQoDftcQ
+	sh81GIiA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vPXh4-0000000CPzD-2Cjx;
+	Sun, 30 Nov 2025 03:01:46 +0000
+Date: Sun, 30 Nov 2025 03:01:46 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-alpha@vger.kernel.org
+Subject: [RFC][alpha] saner vmalloc handling (was Re: [Bug report]
+ hash_name() may cross page boundary and trigger sleep in RCU context)
+Message-ID: <20251130030146.GN3538@ZenIV>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <20251126185545.GC3538@ZenIV>
+ <c375dd22-8b46-404b-b0c2-815dbd4c5ec8@huaweicloud.com>
+ <20251129033728.GH3538@ZenIV>
 MIME-Version: 1.0
-References: <20251127011438.6918-1-21cnbao@gmail.com> <aSfO7fA-04SBtTug@casper.infradead.org>
- <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
- <aSip2mWX13sqPW_l@casper.infradead.org> <CAGsJ_4zWGYiu1wv=D7bV5zd0h8TEHTCARhyu_9_gL36PiNvbHQ@mail.gmail.com>
- <CAJuCfpFVQJtvbj5fV2fmm4APhNZDL1qPg-YExw7gO1pmngC3Rw@mail.gmail.com>
-In-Reply-To: <CAJuCfpFVQJtvbj5fV2fmm4APhNZDL1qPg-YExw7gO1pmngC3Rw@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Sun, 30 Nov 2025 10:56:20 +0800
-X-Gm-Features: AWmQ_bmtzU1YmYdPvDdBUL-_Xs4w9bVsuxx9pZGnImnoxnlMuoZQMERTeIMRpa0
-Message-ID: <CAGsJ_4wnwAet4svDrxT4sTdp24sweAU-2VyYn3iNPOoaKdXxPw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
- page faults after I/O
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251129033728.GH3538@ZenIV>
+X-Stat-Signature: gdr7zpqbush86scoupnt1oxego4xmm6i
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B2F6A40003
-X-Stat-Signature: ay4gijtccgxzdcjuzg5w3iy5968x935h
-X-HE-Tag: 1764471392-551213
-X-HE-Meta: U2FsdGVkX19h6H1bww6wSUC+J/ewwq5tJ0JPwgvRrQzm/AK0qkVTUAJ2JzGPbddtlgpUQdQQsSngjcE3YoLUYdrV2LTHiErIkaN229CCaB7cyhNB0XB976/66f9koHDGZ9L9zxcAAi/PsAKj+AQ9ZbT4xmYrTiLTfogTvlUWswASsJo+pKyWqOBhW2oisv42geRJrbylr9E4yIHPl2PyMbG3thddc9lJ4QeOQCoHARCUpbjQF9Tr9XeMfjtVcLyfHxde1iiyI0G25yRIsyFmsnTsOAn/BFAcXIrQIoNlVrmPd/9d5J7xH/mAiPE6zAxoFlyhMVljYEHxK5BEiv4JbdqwX1PAOtBN3ihp4cm4ncqtNRzV1mv5skvd+z+cAnTALuX96Pj4/ndVdm+m59pbWtVjYK8rBZxkNMZjHjY3BjBCNBQFz0BWJyH4IEDS4URYhxe0KA1I1ArDuunwSrEOAhpysTyfkicqL3AsLlLnU/Hx/CF8GWHaSXsusxZAyaxcwKle/UNYOOKWuEQCa+H/hTb+CA86opdkOgqy7MjfwSFr8NJSKibg3VgpyqMp+svGX5H3bJNak+/Zg2icndHYK/dcjWltOR6WDgD7lvjCo+LY2+PC6tBfEw9cOWgczrbBof3TsgqJ1ht01bOlK2/n3+7RmD05j64Bl+h348UMUgtdylag4v8vJSRL5ZeZEa9iN+JNsNUI/DmsBcomayFvIDkthoCZq6qKm6nw8uDhvDKJbmmdfR1o6+pNIy874Ter9apTKnoUvYegxvx5ho5MfJzv4ucdr2tA4KuBEsodm2fFucnW1KmL/DUrwkrN6vpvHNo02C06UBzejV8lN8aUZMfolRvLVxcPNSAdC69fQ0Iqas4WbGhoGFew+nLmvxBl0P2aCIF0uEDgbu6E1gqck2JgeMRG9e57l9yCt1zCWbfyLdNRp/b8F5EyJJsR5H9Df36zK4zNc8xLp0Q0FcO
- w4LmF9sj
- XU94RdXCpoCk2S/M+eT3H3TcIX7loUoLJpnGhVJdAiPZyA6oanAzZ/UlQPK9ugIvNEwKAjaKQ2Cl19GYmDtDdjfsUk13U/hzNDewrhFo14Lg6Knayp4iKgvNqYZ2J9XkvdEAvR2xs616gxdqkilPSnB9nINyLkU+AdDGYllgQutoXga9SyaxBwS8Mpg6Xwiv5NPyUjrfbxwoS76qEVheQalcaUpb0NwmjL+yRY5I8QBx++IgsP2vwMDmpPxM/li70vqSxycrCUIiaf6Gwn9hHR2n5jfBh+zZc+2v7z+EYbIu7ndK4gF76oyRGatUd8fuUV7+q6GQX8m387bMxns6DHtUwG2bAmdhNpH9qV4AB7EmvLTxh0jeN5z1vh02YOVI7xgTwgNN7B7dLZmdjxHQNGlI+1QWbZ3BenyliJJvpdiem+3yvCtchXboFlj2Fv90kaCXGYRnD+LGqZy/7elWnZtug9pkjSqmLofrmIUdgB952LMI=
+X-Rspamd-Queue-Id: 8728210000D
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764471700-225058
+X-HE-Meta: U2FsdGVkX18dT0DVF+Vjy85Ge29D2wYp6MdoBMuTEwfCYJLqRaDyAbHAfoY0AV40ohSSyZc6S7VQQlefoI68scVpg40nAuS/fenfx4ym6Jr1GKfWoDZ07T826NoUQsu3CVwE9nUrsMbnldZNTu2pJYQyTISyiKTGeEP1w67zWflZ5lxf16sDLy6WVxcxP2kwA3Mpme2RR6CtyAXn/gKreKj0iGzzVCkAJpaMb3JqgYZWmcXxZ7VGlGbu8T/S3Zd47Gt4PyE+Il7fOZWiwiEPr2QbTI85tMXAZsui2Kpl1lSSi5Rd0hJQ6evzLp9kJbnBDjXEQslgxWi/rxEGGwSPG57DGE6QXfR8j0yO9A/PaOfNx5yj+6Gm7wT22rzCYlAnXiWTnHH+PT2BhgXqIoYRZRRoX9j4x+dXi6yqtMnEf3q9YI8J+gU1uz8PUXzcBr2Ul5Yub5bVEspkMQt2F1YX/RW3K18VtXanZrRFX0FATFoz7bXM1ilvsCzM9sYNlbNeFo+O7DhO9ijVnMoAcjptnEtua244EtD+gjxiItwsPyGu+ePlVBRh7+xY0sptAGF8WujJF94idDGXw5nvpGY5nl4MvP9bEOpI4VcqFr35e9tIi4kgy+P4T53NlFgZwL6ar22WO6QosYzpbo8odMEdUIPE7GTExclDSigZRg3QwQMO9F6x6WKBEqZk2BiubAi1u3y9BkTC6sAUsS5WOldJ3qvtFgoHrQ4HR/jC5fIaO6BOw7eA83VLTKCBUVuBJxxFMdGmG4hEPOwUDEyaCf6GQxoekupPfHXksCuF1ooVw1Deb8dWTLkUQy24bnVbrK+/fRy/79hO5H78DAoKXiV2TqJg0uCS+g5KnQG9e55H6pWbs6OgGOyD819YKa9Ssl6nxKESX9/KwzVBwLX4HPX6XEP6NnOW4yMb+beCvc05sLvMv2qlcNOgDZwUBb4AfMsVF+Oz05PWC1XIzlgUhV+
+ piScD5wE
+ BBGnuqAWXwiqkzTbqpkBKr41C5/HzZnFXMliLsYYfZ/94oOC1XGUREKx7baGtI+6aUzy18fHino294HcLZCy157zlbBbQSrlrcM6Ob08q4+IBuN1xInQoB5317xngm5yWKKV8R/68By8XzhZpGJor3lir6cRU/77kxP8LUlPf+YDFq6081+HyNxqD7rIiALS0iLa+qdfumVSd568A3slDlMd0JUryPZ1QmKMA1uizw0TvEoyyFBMsEitpRXFP2OdWY1vD7DWiRI8vWUAATqcSmVklaQFfNJtw1adzbCa6PL+QFpICH8xr6ll1aa929leigF4rdIrXHht94CEol77XM+IdwGVGr2hWG4JuLYxtTa9J0G4NBClqwXDG2Hy3d1qjUPF2I/CWjKp6waf8+Wu8lBUdgvvDdaiWHgJwklUj7ToUjlDaY4iaOGwRtW4z4rhshZ0z4tSobmBMz6yshbR8h1p7jKrxxB5eCiNPFg1nlRdUykfnJXHZUtbIM1xmTIAM11blhQd90kURkLXpo8OWBfXrQG9TyQTqsu83
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,174 +93,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 30, 2025 at 8:28=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Thu, Nov 27, 2025 at 2:29=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
-ote:
-> >
-> > On Fri, Nov 28, 2025 at 3:43=E2=80=AFAM Matthew Wilcox <willy@infradead=
-.org> wrote:
-> > >
-> > > [dropping individuals, leaving only mailing lists.  please don't send
-> > > this kind of thing to so many people in future]
-> > >
-> > > On Thu, Nov 27, 2025 at 12:22:16PM +0800, Barry Song wrote:
-> > > > On Thu, Nov 27, 2025 at 12:09=E2=80=AFPM Matthew Wilcox <willy@infr=
-adead.org> wrote:
-> > > > >
-> > > > > On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
-> > > > > > There is no need to always fall back to mmap_lock if the per-VM=
-A
-> > > > > > lock was released only to wait for pagecache or swapcache to
-> > > > > > become ready.
-> > > > >
-> > > > > Something I've been wondering about is removing all the "drop the=
- MM
-> > > > > locks while we wait for I/O" gunk.  It's a nice amount of code re=
-moved:
-> > > >
-> > > > I think the point is that page fault handlers should avoid holding =
-the VMA
-> > > > lock or mmap_lock for too long while waiting for I/O. Otherwise, th=
-ose
-> > > > writers and readers will be stuck for a while.
-> > >
-> > > There's a usecase some of us have been discussing off-list for a few
-> > > weeks that our current strategy pessimises.  It's a process with
-> > > thousands (maybe tens of thousands) of threads.  It has much more map=
-ped
-> > > files than it has memory that cgroups will allow it to use.  So on a
-> > > page fault, we drop the vma lock, allocate a page of ram, kick off th=
-e
-> > > read, sleep waiting for the folio to come uptodate, once it is return=
-,
-> > > expecting the page to still be there when we reenter filemap_fault.
-> > > But it's under so much memory pressure that it's already been reclaim=
-ed
-> > > by the time we get back to it.  So all the threads just batter the
-> > > storage re-reading data.
-> >
-> > Is this entirely the fault of re-entering the page fault? Under extreme
-> > memory pressure, even if we map the pages, they can still be reclaimed
-> > quickly?
-> >
-> > >
-> > > If we don't drop the vma lock, we can insert the pages in the page ta=
-ble
-> > > and return, maybe getting some work done before this thread is
-> > > descheduled.
-> >
-> > If we need to protect the page from being reclaimed too early, the fix
-> > should reside within LRU management, not in page fault handling.
-> >
-> > Also, I gave an example where we may not drop the VMA lock if the folio=
- is
-> > already up to date. That likely corresponds to waiting for the PTE mapp=
-ing to
-> > complete.
-> >
-> > >
-> > > This use case also manages to get utterly hung-up trying to do reclai=
-m
-> > > today with the mmap_lock held.  SO it manifests somewhat similarly to
-> > > your problem (everybody ends up blocked on mmap_lock) but it has a
-> > > rather different root cause.
-> > >
-> > > > I agree there=E2=80=99s room for improvement, but merely removing t=
-he "drop the MM
-> > > > locks while waiting for I/O" code is unlikely to improve performanc=
-e.
-> > >
-> > > I'm not sure it'd hurt performance.  The "drop mmap locks for I/O" co=
-de
-> > > was written before the VMA locking code was written.  I don't know th=
-at
-> > > it's actually helping these days.
-> >
-> > I am concerned that other write paths may still need to modify the VMA,=
- for
-> > example during splitting. Tail latency has long been a significant issu=
-e for
-> > Android users, and we have observed it even with folio_lock, which has =
-much
-> > finer granularity than the VMA lock.
->
-> Another corner case we need to consider is when there is a large VMA
-> covering most of the address space, so holding a VMA lock during IO
-> would resemble holding an mmap_lock, leading to the same issue that we
-> faced before "drop mmap locks for I/O". We discussed this with Matthew
-> in the context of the problem he mentioned (the page is reclaimed
-> before page fault retry happens) with no conclusion yet.
+On Sat, Nov 29, 2025 at 03:37:28AM +0000, Al Viro wrote:
 
-Suren, thank you very much for your input.
+> AFAICS, 32bit arm is similar to 32bit x86 in that respect; propagation
+> is lazier, though - there arch_sync_kernel_mappings() bumps a counter
+> in init_mm and context switches use that to check if propagation needs
+> to be done.  No idea how well does that work on vfree() side of things -
+> hadn't looked into that rabbit hole...
 
-Right. I think we may discover more corner cases on Android in places
-where we previously saw VMA merging, such as between two native heap
-mmap areas. This can happen fairly often, and we don=E2=80=99t want long BI=
-O
-queues to block those writers.
+BTW, speaking of vmalloc space - does anybody object against sorting
+CONFIG_ALPHA_LARGE_VMALLOC out, so that we wouldn't need to mess
+with that in alpha page fault handler?
 
->
-> >
-> > >
-> > > > The change would be much more complex, so I=E2=80=99d prefer to lan=
-d the current
-> > > > patchset first. At least this way, we avoid falling back to mmap_lo=
-ck and
-> > > > causing contention or priority inversion, with minimal changes.
-> > >
-> > > Uh, this is an RFC patchset.  I'm giving you my comment, which is tha=
-t I
-> > > don't think this is the right direction to go in.  Any talk of "landi=
-ng"
-> > > these patches is extremely premature.
-> >
-> > While I agree that there are other approaches worth exploring, I
-> > remain entirely unconvinced that this patchset is the wrong
-> > direction. With the current retry logic, it substantially reduces
-> > mmap_lock acquisitions and represents a clear low-hanging fruit.
-> >
-> > Also, I am not referring to landing the RFC itself, but to a subsequent=
- formal
-> > patchset that retries using the per-VMA lock.
->
-> I don't know if this direction is the right one but I agree with
-> Matthew that we should consider alternatives before adopting a new
-> direction. Hopefully we can find one fix for both problems rather than
-> fixing each one in isolation.
+Basically, do what amd64 does - something along the lines of (untested)
+patch below.  Comments?
 
-As I mentioned in a follow-up reply to Matthew[1], I think the current
-approach also helps in cases where pages are reclaimed during retries.
-Previously, we required mmap_lock to retry, so any contention made it
-hard to acquire and introduced high latency. During that time, pages
-could be reclaimed before mmap_lock was obtained. Now that we only
-require the per-VMA lock, retries can proceed much more easily than
-before.
-As long as we replace a big lock with a smaller one, there is less
-chance of getting stuck in D state.
+[PATCH] alpha: take the LARGE_VMALLOC kludge out
 
-If either you or Matthew have a reproducer for this issue, I=E2=80=99d be
-happy to try it out.
+Support of vmalloc space that won't fit into the single L1 slot had
+been a headache for quite a while.
 
-BTW, we also observed mmap_lock contention during MGLRU aging. TBH, the
-non-RMAP clearing of the PTE young bit does not seem helpful on arm64,
-which does not support non-leaf young bits at all. After disabling the
-feature below, we found that reclamation used less CPU and ran better.
+The only things we use seg1 for are virtual mapping of page tables
+(at the last 8G) and vmalloc space (below that).  Normal setup has
+vmalloc space from -16G to -8G, occupying the penultimate L1 slot.
+It is set up (with table sitting just after the kernel image) very
+early, by callback_init().  pgd_alloc() copies that entry when
+setting a new L1 table up, and it's never changed afterwards.
+All page table changes done by vmalloc() are done to tables that
+are shared between all threads, avoiding the need to synchronize
+them.
 
-echo 1 >/sys/kernel/mm/lru_gen/enabled
+It would be trivial to extend that - preallocate L2 tables to
+cover the entire vmalloc space (8Kb for each 8Gb of that) and
+set all the L1 slots involved before anything gets forked,
+then copy these slots on pgd_alloc().  Unfortunately, that
+had been done in a different way - only one L2 table is
+preallocated, the rest gets created on demand, which means
+that we need to propagate changes to threads' L1 tables.
+It's kinda-sorta handled in do_page_fault(), but it's racy and
+fixing that up would be a major headache.
 
-0x0002 Clearing the accessed bit in leaf page table entries in large
-       batches, when MMU sets it (e.g., on x86). This behavior can
-       theoretically worsen lock contention (mmap_lock). If it is
-       disabled, the multi-gen LRU will suffer a minor performance
-       degradation for workloads that contiguously map hot pages,
-       whose accessed bits can be otherwise cleared by fewer larger
-       batches.
+Bugger that for the game of soldiers - do what e.g. amd64 does
+and preallocate these in mem_init().  And replace the bool
+ALPHA_LARGE_VMALLOC with int ALPHA_VMALLOC_SIZE (in gigabytes),
+dependent upon EXPERT and defaulting to 8.
 
-[1] https://lore.kernel.org/linux-mm/CAGsJ_4wvaieWtTrK+koM3SFu9rDExkVHX5eUw=
-YiEotVqP-ndEQ@mail.gmail.com/
-
-Thanks
-Barry
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index 80367f2cf821..36cbba4e21d9 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -410,20 +410,21 @@ config ALPHA_WTINT
+ 
+ 	  If unsure, say N.
+ 
+-# LARGE_VMALLOC is racy, if you *really* need it then fix it first
+-config ALPHA_LARGE_VMALLOC
+-	bool
++config ALPHA_VMALLOC_SIZE
++	int "vmalloc space (in gigabytes)" if EXPERT
++	default "8"
++	range 8 2040
+ 	help
+-	  Process creation and other aspects of virtual memory management can
+-	  be streamlined if we restrict the kernel to one PGD for all vmalloc
+-	  allocations.  This equates to about 8GB.
++	  We preallocate the second-level page tables to cover the entire
++	  vmalloc area; one 8Kb page for each 8Gb.
+ 
+-	  Under normal circumstances, this is so far and above what is needed
+-	  as to be laughable.  However, there are certain applications (such
+-	  as benchmark-grade in-kernel web serving) that can make use of as
+-	  much vmalloc space as is available.
++	  Default is 8Gb total and under normal circumstances, this is so
++	  far and above what is needed as to be laughable.  However, there are
++	  certain applications (such as benchmark-grade in-kernel web serving)
++	  that can make use of as much vmalloc space as is available.
+ 
+-	  Say N unless you know you need gobs and gobs of vmalloc space.
++	  Leave it at 8 unless you know you need gobs and gobs of
++	  vmalloc space.
+ 
+ config VERBOSE_MCHECK
+ 	bool "Verbose Machine Checks"
+diff --git a/arch/alpha/include/asm/pgtable.h b/arch/alpha/include/asm/pgtable.h
+index 90e7a9539102..0f554d01fe54 100644
+--- a/arch/alpha/include/asm/pgtable.h
++++ b/arch/alpha/include/asm/pgtable.h
+@@ -49,11 +49,8 @@ struct vm_area_struct;
+ /* Number of pointers that fit on a page:  this will go away. */
+ #define PTRS_PER_PAGE	(1UL << (PAGE_SHIFT-3))
+ 
+-#ifdef CONFIG_ALPHA_LARGE_VMALLOC
+-#define VMALLOC_START		0xfffffe0000000000
+-#else
+-#define VMALLOC_START		(-2*PGDIR_SIZE)
+-#endif
++#define VMALLOC_SLOTS		DIV_ROUND_UP(CONFIG_ALPHA_VMALLOC_SIZE, 8)
++#define VMALLOC_START		(-(VMALLOC_SLOTS + 1)*PGDIR_SIZE)
+ #define VMALLOC_END		(-PGDIR_SIZE)
+ 
+ /*
+diff --git a/arch/alpha/mm/fault.c b/arch/alpha/mm/fault.c
+index a9816bbc9f34..0bc5fc4d510e 100644
+--- a/arch/alpha/mm/fault.c
++++ b/arch/alpha/mm/fault.c
+@@ -111,10 +111,6 @@ do_page_fault(unsigned long address, unsigned long mmcsr,
+ 	if (!mm || faulthandler_disabled())
+ 		goto no_context;
+ 
+-#ifdef CONFIG_ALPHA_LARGE_VMALLOC
+-	if (address >= TASK_SIZE)
+-		goto vmalloc_fault;
+-#endif
+ 	if (user_mode(regs))
+ 		flags |= FAULT_FLAG_USER;
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+@@ -225,24 +221,4 @@ do_page_fault(unsigned long address, unsigned long mmcsr,
+  do_sigsegv:
+ 	force_sig_fault(SIGSEGV, si_code, (void __user *) address);
+ 	return;
+-
+-#ifdef CONFIG_ALPHA_LARGE_VMALLOC
+- vmalloc_fault:
+-	if (user_mode(regs))
+-		goto do_sigsegv;
+-	else {
+-		/* Synchronize this task's top level page-table
+-		   with the "reference" page table from init.  */
+-		long index = pgd_index(address);
+-		pgd_t *pgd, *pgd_k;
+-
+-		pgd = current->active_mm->pgd + index;
+-		pgd_k = swapper_pg_dir + index;
+-		if (!pgd_present(*pgd) && pgd_present(*pgd_k)) {
+-			pgd_val(*pgd) = pgd_val(*pgd_k);
+-			return;
+-		}
+-		goto no_context;
+-	}
+-#endif
+ }
+diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
+index 4c5ab9cd8a0a..e5eea8b05c7f 100644
+--- a/arch/alpha/mm/init.c
++++ b/arch/alpha/mm/init.c
+@@ -45,13 +45,10 @@ pgd_alloc(struct mm_struct *mm)
+ 	ret = __pgd_alloc(mm, 0);
+ 	init = pgd_offset(&init_mm, 0UL);
+ 	if (ret) {
+-#ifdef CONFIG_ALPHA_LARGE_VMALLOC
+-		memcpy (ret + USER_PTRS_PER_PGD, init + USER_PTRS_PER_PGD,
+-			(PTRS_PER_PGD - USER_PTRS_PER_PGD - 1)*sizeof(pgd_t));
+-#else
+-		pgd_val(ret[PTRS_PER_PGD-2]) = pgd_val(init[PTRS_PER_PGD-2]);
+-#endif
+-
++		for (int i = 0; i < VMALLOC_SLOTS; i++) {
++			pgd_val(ret[PTRS_PER_PGD - VMALLOC_SLOTS - 1 + i]) =
++			pgd_val(init[PTRS_PER_PGD - VMALLOC_SLOTS - 1 + i]);
++		}
+ 		/* The last PGD entry is the VPTB self-map.  */
+ 		pgd_val(ret[PTRS_PER_PGD-1])
+ 		  = pte_val(mk_pte(virt_to_page(ret), PAGE_KERNEL));
+@@ -148,9 +145,10 @@ callback_init(void * kernel_end)
+ 	   On systems with larger consoles, additional pages will be
+ 	   allocated as needed during the mapping process.
+ 
+-	   In the case of not SRM, but not CONFIG_ALPHA_LARGE_VMALLOC,
+-	   we need to allocate the PGD we use for vmalloc before we start
+-	   forking other tasks.  */
++	   In any case we need to allocate a PGD we use for vmalloc
++	   before we start forking other tasks.  If vmalloc wants more
++	   than one PGD slot, allocate the rest later (at mem_init() -
++	   it's still early enough).  */
+ 
+ 	two_pages = (void *)
+ 	  (((unsigned long)kernel_end + ~PAGE_MASK) & PAGE_MASK);
+@@ -246,6 +244,22 @@ srm_paging_stop (void)
+ }
+ #endif
+ 
++void __init mem_init(void)
++{
++	// first slot already filled by callback_init()
++	unsigned long addr = VMALLOC_START + PGDIR_SIZE;
++
++	while (addr < VMALLOC_END) {
++		pgd_t *pgd = pgd_offset_k(addr);
++		p4d_t *p4d = p4d_offset(pgd, addr);
++		pud_t *pud = pud_offset(p4d, addr);
++		pmd_t *pmd = pmd_alloc(&init_mm, pud, addr);
++		if (!pmd)
++			panic("can't preallocate tables for vmalloc");
++		addr += PGDIR_SIZE;
++	}
++}
++
+ static const pgprot_t protection_map[16] = {
+ 	[VM_NONE]					= _PAGE_P(_PAGE_FOE | _PAGE_FOW |
+ 								  _PAGE_FOR),
 
