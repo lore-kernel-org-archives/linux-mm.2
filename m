@@ -4,120 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 549F2CFD376
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 15:45:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13989D116F3
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 15:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7220C6B000E; Sun, 30 Nov 2025 10:45:58 -0500 (EST)
+	id 693F86B000D; Sun, 30 Nov 2025 10:51:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2ED6B0010; Sun, 30 Nov 2025 10:45:58 -0500 (EST)
+	id 66B786B0011; Sun, 30 Nov 2025 10:51:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59B1A6B0011; Sun, 30 Nov 2025 10:45:58 -0500 (EST)
+	id 5A87E6B0012; Sun, 30 Nov 2025 10:51:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4547C6B000E
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 10:45:58 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E53838A982
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:45:57 +0000 (UTC)
-X-FDA: 84167699154.18.2F844A1
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2EA3C40005
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:45:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=As3u82Wh;
-	spf=pass (imf01.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4796B6B000D
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 10:51:06 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D560B132D7E
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:51:05 +0000 (UTC)
+X-FDA: 84167712090.02.83085C5
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2A04D1C000A
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:51:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of 352csaQkbALgqwxiYjjcpYnngb.emmejcsqcpamlrclr.amk@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=352csaQkbALgqwxiYjjcpYnngb.emmejcsqcpamlrclr.amk@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764517556;
+	s=arc-20220608; t=1764517864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l3bD5hwDyiZXTOqEegQ5/2gV6Tl1/ARNpKkACTj7uK0=;
-	b=sUvbjiffqnrbyeAXtyj90+QThXDbDKgbSlalqY7mIn8V0cUjTLjwg0if4nymnuTt333was
-	236XZl11wfk6qsCgSkVDU2XOirmL1Q2pAVJC4ASqzGMKA/o9hlAcJ9FiaQPKnPOeeaETNa
-	IpuYfRKKUA+dQqzblUOFYssAnHV19/U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764517556; a=rsa-sha256;
-	cv=none;
-	b=nITxiDE1uqhGFh+nM4/RIdGQzKn+CnKg1L94hfYfCqcDL8qLAAvUWUaYcPN2L3ezqR30r1
-	BGRaYJCmHOX8s/7DCj0Cshc/3Bhjb1Ku1SsxRrumAVEeKelHCY2cKLUbaSu5mT9XCqv81u
-	OXZp6LuLP5DDYwyyHw4zuaxC/QHWeyI=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=pZQZPvsA+b1aEfkr/eSFp6Mc7KtxI3DMkvE2WO3Y+vA=;
+	b=fWbkXSBqXSiyzN9h2UdDdmGwDIkuvBRRRDQJ2tgCsQbZ8SfMWhfWZaJLJ2Rnl8ZgnKuhz9
+	OxEoHjfB97kLSuq4EGmNDjOpUIeJPj+sAyIHVpDic6Q2Svr5X91WSCgCMS1Be14t/UI51t
+	9Z50lRhaaNI4uimdht2+x71/8m9kj20=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=As3u82Wh;
-	spf=pass (imf01.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7ba92341f83so5283382b3a.0
-        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 07:45:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764517555; x=1765122355; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l3bD5hwDyiZXTOqEegQ5/2gV6Tl1/ARNpKkACTj7uK0=;
-        b=As3u82WhGZ+ASr2eIMfQf5uMtkyaFkIpbPW8aEXxusNDaPLMFzCpMGl3+S6mN3SBP6
-         LXlbFcpfuNYUJGCPcaJ4tTUR8rZv7pZnLab4SNfAMHWQjyVbvCXmAM7AS2CigUAB8d2V
-         SU6gnHw+CvzXEPtw8/guew3xbNQ5udV9j44dm+6yA8XY23NN4/BSKbFweXGABfnyXNlt
-         ul50CzWMWk+xtoQy8p7wkDoAyWjHit6OH5wJZbMhW9oawFoRyXn/lh2h4dhcHZ6KTpY7
-         K4IK2qHo3xNbaZuOjmbVx/HiEexLthkW/GTB8wyV7Y3jFRFjir2UZoXftxkFtExRifuY
-         El5Q==
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of 352csaQkbALgqwxiYjjcpYnngb.emmejcsqcpamlrclr.amk@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=352csaQkbALgqwxiYjjcpYnngb.emmejcsqcpamlrclr.amk@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764517864; a=rsa-sha256;
+	cv=none;
+	b=aPk/1ihfiGsjU6ISMLp2XHdvDElsnRIvdcjRrFYRbcNbbqll7yvpFV7rmR4TmVT4GBP2Xh
+	wuli6Uxwd+9+jAkPpM+ZEJwju+K7btUiw8DIUrzb+7QwmiPxUzCT5tVLqsOpNDDmvddOqS
+	/qSl12Jyp95RIWyJNs9VxFycN96tb6A=
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-433199c7fb4so20804015ab.3
+        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 07:51:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764517555; x=1765122355;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l3bD5hwDyiZXTOqEegQ5/2gV6Tl1/ARNpKkACTj7uK0=;
-        b=m2cAsHSTeNFOM7Sxj7eSVMwYNm51gP+rCxWB2I1JgsL+A3R7QAEvW1dwf+OyPu3bwJ
-         6Z9+Jr72hxZu3tNBjQHMf1r74EdcYD/SeWTycdMlAtT1b+I3Eko0gjb421O/szySOZH/
-         faU8bOoH5BX9oElckY8UbQkmt5WiUhZJXohEN0JXVGFK06RE67/JHxka2LO4qTOEoFLT
-         kbgvjmxiNXpLoRayHtYkTeXM71qcTM6oaBlpJ6IKgQYei706gkAGdjovZFMI3oHp+RBz
-         ChRI8OBIg2e7+Gp4C2ensG+3MNiftK2KreeSE73o5EfHTLhQmscLbth8Ti3PGMAIBG5S
-         HwRg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWxVQWLQIxoMBsrX3zKf4WjimHqJB986mNCb9F6OVCikgZ8xQzKyI2q4ggH9agyIbaY9i1HxfQQg==@kvack.org
-X-Gm-Message-State: AOJu0Yyw80RdmTY8RhOdn37p468s4ay0Uh8F1/SU5TZ0iZL8EiheseCo
-	Sl3MabisBusbbHk7TmNiBSOEVMV7aMggH1qsxjYSdQPT1HOuRfd2+6QB
-X-Gm-Gg: ASbGnctG326VQPAgxvgCq5ie+4jKPCDdWOdbixxJ82B8P6KluXjDf+4wC170UBJSgm+
-	cx1STRx4g3dC4A0QzxrO79SSfdb/6O475bXSoTG/BOfZADbK/LuzS83aNmSyDBXIrZpKw9DwTG4
-	TtdJWpk/jqQG4DuODk1HjAHjbyu6hc1EYJbTfSjLXi0LctES88+8vaVminETX9uWmrl6GXIJibt
-	YIP8Tst/h4Fkho/XpLmt5nXjolQMh1LcSVLtq0aVzqOdUQ2tYki3CcatHTFpcvHCs6H4fAkxMze
-	0voBWHe7wce70IqbiMwnzS68TIzDzxWts0dp635OZB3CPWs9aIXZHaf31f6nAa4bmvuQr9jzUyM
-	Slfv5bxuQ57ITw4j1NthhRYKAPgZbmaaSJknyHS7JjzaP/wx8SKInUKrrMFojdUhSbpfYUvKHY+
-	cObWraA8D7a88gLIFcmTw=
-X-Google-Smtp-Source: AGHT+IF+bs5BX30pSD7FzSWNiunaucUSvQT8H7QuBBS86/QjKuHELK+z0pPo8/WZbCTMUy8lORgUKg==
-X-Received: by 2002:a05:7022:41a3:b0:119:e56b:c755 with SMTP id a92af1059eb24-11cb6835c7bmr16124579c88.26.1764517554776;
-        Sun, 30 Nov 2025 07:45:54 -0800 (PST)
-Received: from LilGuy ([2409:40c2:1165:4907:48d2:1e37:4c68:acd9])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-11dcb03cc7dsm49812432c88.5.2025.11.30.07.45.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 07:45:54 -0800 (PST)
-From: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-To: rppt@kernel.org
-Cc: akpm@linux-foundation.org,
-	david.hunter.linux@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	skhan@linuxfoundation.org,
-	swarajgaikwad1925@gmail.com
-Subject: Re: [PATCH RFC] mm/memblock: Fix reserve_mem allocation overlapping KHO scratch regions
-Date: Sun, 30 Nov 2025 21:15:39 +0000
-Message-ID: <20251130211540.582343-1-swarajgaikwad1925@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <aSxcs-jCnkrm8o0M@kernel.org>
-References: <aSxcs-jCnkrm8o0M@kernel.org>
+        d=1e100.net; s=20230601; t=1764517863; x=1765122663;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pZQZPvsA+b1aEfkr/eSFp6Mc7KtxI3DMkvE2WO3Y+vA=;
+        b=TpH/m/xbSZBEk8L/3fRZ2nvKfCZVQGvb78enpClBKT+8+RHzf8jc6imGd4HOYjQNkd
+         n1U/lUxPeWGS/4IOU2szbtaZ+DeoPYS9EL2zBHo+0XPouwK34xXn792ocxkGIZJd9G+7
+         4e+7mZ5fEsz4LYVgNmV6XWMt5rNNzJ6BMMu98OXbpW+8TnhywXtNL91Cj1hz/kZ12gxy
+         IqBkbXeG+BYgtFcRYXOg+mC8R53vKSI63TF5dbWDtoVNFwqavIZUkovPh+PkyjVH2/+9
+         Dl11SOqDZ4Ywo4xQQONTYdsxjOWM6XbZnm7PwsNTRF6TXCv+bhG11crlVzrO6HtBjRQZ
+         JF7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXOHunQTYuBSQ5s9pUK1vlwEjI2bi3gsnmgwy2h7kd/J+wKI2jxOwu5pTZmBiZbnEZ4zkpbb2/Aww==@kvack.org
+X-Gm-Message-State: AOJu0Yw3vBuy2yfGLO19valgsvEGVxwJ19PVfOIrc8ZsrxySzsFZld9z
+	tjFgRMKBLG+Qzm8d+62D4xz/xa9TsYThA79ASBGPmRRn9VKiCO0UXKjnbmoj6IAuJW+Ug6uWW5K
+	Ec8X1LFWkQK582Rvan75dKJOYtKt/IZ4L/ww5aD7CdQX0xLpdKhAlnxBuAHc=
+X-Google-Smtp-Source: AGHT+IEmmk9ubAf028hrGiKPi9++Nhmn7ukhITaHj6Iks3+zKps4MCqnc1j5bumu0sk4b5fswov2N05NTj/viY/CsM1CDyCYT5wU
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2EA3C40005
-X-Rspamd-Server: rspam06
+X-Received: by 2002:a05:6e02:1d9c:b0:433:7abd:96d0 with SMTP id
+ e9e14a558f8ab-435b9851daemr263744155ab.3.1764517863270; Sun, 30 Nov 2025
+ 07:51:03 -0800 (PST)
+Date: Sun, 30 Nov 2025 07:51:03 -0800
+In-Reply-To: <ff6e08e2-a7c7-4ebf-8f93-03e5ece9b335@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <692c67e7.a70a0220.d98e3.0172.GAE@google.com>
+Subject: Re: [syzbot] [fs?] [mm?] kernel BUG in __filemap_add_folio
+From: syzbot <syzbot+4d3cc33ef7a77041efa6@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, brauner@kernel.org, hare@suse.de, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, mcgrof@kernel.org, ssranevjti@gmail.com, 
+	syzkaller-bugs@googlegroups.com, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 2A04D1C000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: bphz5zxngyryp7n6ynepqyjjwu43pky8
 X-Rspam-User: 
-X-Stat-Signature: za3zk1gc46g59qwde1rgi3obj5x5gq47
-X-HE-Tag: 1764517556-853940
-X-HE-Meta: U2FsdGVkX1/cmZ7TMnUzBWc1gOp72kFyn8vewPOCL+QT6KSiFbI+wtDEfGO3CwIAjj4FaqTWLxaJ7805dS34VykEAQ/5D2e8iS0oUlXamZH4A49qHwFyRw6eT9JzwHulfhhE7vc+urU5eeKJ26rPQHFXP+rN0ZyH298GuFPrlQ/76VnGlyyYjFT7IuovBikWu3T2wzoeLNvc9PVVq6IGJsEB6nZehqAK+OaTB2uE8S1lGHmHKoDeayoC3KFgpy6+1qWkmPawJnfrKj7DWwq1VaxYk76ticS83BQPTJ1SeOnjL5dCgklxL9yNx7y1rZVflUezyaBNNnncSx0R6/Ss9BPHVa5NPJ2AUKAS4b07wpB1oKG2aSrEz+kkQElpjN18ZBi/Bmrc932reS8HHfSzetSUz9JLP8/xGOFLZApco6jmkZ5IwM8hAMzupT7liP9wBBYC0bIHKCLqNdrlK/eC5IydfazXQwlhP+0qjotrC4X32CnC7jhIKpsTc5RARWf5Impfv5X32L/UCOGyMP8N+II2e8Jmf1UiliHUmwwdOek6E20iZVToSlsUv8znLAUgT2BCdMCObj1t4LjPp6xhZyKnJ+OBHcvAUIhy2nhew/btnl1ccDC1MxtBgLwxXHI8RdzYrSTP2c2iLSV48cjaCbIobt9zDtapA1PCE7eiwWKcFzHMXuxkO1Ry5nej427EsVVPiS+BGKAJFXDWHPF21LMeyV5+7P2MivUGOasBNOVhacOp8KfZjx9ebeodxomoZ3ktDdeqSlKS939e0x0iwWrCqX1q9He1uzVslUk5D4ebA8ZkQ6D8pH1jpfCjePaqsixnxD5gzcIDMUsmXolZ4kbZC8Kc8g+2pOeJJ00VNcmblMSjH4QNSncv+Ne4Sb3W7jYKrvrncDtf867dZ3TNX+sXNrML/eh2kSSt/dLCdboH1LquJ6B6TmUHa8h6Q05xNu/O16QZmEHv7C8fI+B
- 7J8ERDqa
- jJ+lkl2dJL7j1O1x8fB3emcoNoiorK6PQ6Lr1FJdxHjpfOj8MCQOw+tVIX23RoPa/Kstj0/stU/+b/WiIoB6Ux7A7ikql8xz4BsiafuLVvOBAlU2sJWI+SnygYY+6izdYtgi5JH3LFSmUK03dlwZIuFS8Wa2mEBi4PIgkmzshisL93sE=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000007, version=1.2.4
+X-HE-Tag: 1764517863-802189
+X-HE-Meta: U2FsdGVkX19+Q6RMRIWxlFWVAVYtDXKNJw4DK0rCxHEXMIUKgiQUx7S/YzZhRKRaThL5a4vbGIzGdXXYwKLpCm10nwSjiJJ2Qw2okx4MNCl7nvayzWBGXGnHkHVxiCGhi3D0OLv1flsyd3MStbF/buVKfBgheI5VWAbaZBE8drbhXhIeOJRED+NrOzi70TzeZ85EHFwPf9IritGtbmjC/qLaoW2vAs0Jfe4Aw5JZAaS31ML/A9pTC8HAtWWrY+SHn8Rp47RHLlDRiVm6UyV6CD6Xwif/TDfK1UndmW7Xqi7YFJpp5y9CXITT45mpjDZ0NCKQ+kzSGQjw1ZnvOZ32vZEMX7gHdsF5abNZKOg0kq9D9S1EJIu1m6/7LMJdRBoyj42apP+gFUJq8HOcuQbx2P4gLI8iqgJcH/nVhVZ14cpWF/xGBQWh2d0JpokBX43swWDsUm7l+5Zuc1l4+58CPiHe9eZ41cJlhUZjc6wcSS9nuFKPtdpsHBFLdySKMAIw8ZQlcmYlO2w4/BN9aTqebpgg8+vnU1JzWcS7mEucL4MSsiMPxsQDBANS1UTPAwHogDM4g8xHl/E3iROD1YAq8SsgbZL01gPNKM/67vMvO6ZvSpxZHxUHjMQRDN8dLV38UQl4QIUVs46F/ZuHAGIiibbLW6rbxwBupRHno90+lg2rORD2hjSam9j50cKXlKjYedvFgyvkg5sD3CRWnt6/iqelvGlTm/FT/2NN8LnFjp0GGQ/WqmyFlSFRWyNELgkhZPZSjDsPNfHr1noS3a7b1vM0GLpqp5lpisxQcRUIGossLCG0Q/R5gN1VRgTexsahMMTmy+92EsA+5mEHOz0Vd00fL5Hck6OsYGXXa98eUPJVZOtSno1BGPrjptF2T1IggT5jHgQbF9kmszKxweaOBdLO6H3YpJwL8YalPchILct/j73KG8cyDFZs3nmBVaa1z256QjUjXEAdXWHsTOL
+ bB+hCX6P
+ +YCqbPDmi1ihYSAr4qtb5+2Fmewx2xeSxV7cC2r4pqxcOs2yXQ/RcF8JD46eLELumbOZv9lUC5nlVa4AwgRRFkRiy1wlbSQblBLpEe9s/+4n+TPDLdgb6r5oMHlHe2JbMUEo/2ID9jiqg+NaP67MbQxworl50GTymzHJUlTpW/3vabXaRD7JdKPboyqmPq20DtQL6uEOK9BsGQUV3EFaJvhcdwNIseoWgoDKBZhycoGOcoNabMzA5FxjDnaXL5zHmTidwHxJgM6CGbWUCSjh96Svq/1Esgminf5EC1prENNlrymvw0lWXyAJNlqgxEVwfSnBICM0xG21a+n+dl7dzfnLZKSFvWjIqycSuhxM2M5QE5bcuKwWM2B/UxQf2Hf6erVpy4UcmwEeHUOH4DRwIImb1FnYXqfDjOYdkaI5Lr8glY+9zyB13o4/eIxCmILNAUBeEGE1MfOfb15lBPDlPyCEcPsemwvh19dD90QByTJOjSPwxayryGlSusK7snbiuW+rQ9EvTuak3iBg8tk73IlAtS754KYbzswL4JD6rylZjjK+PGKPXrDWow+SMc8/JawRSkToNs1AJ9HP/rg8gjcUq33KAKXoUxyNt0j4LJ5aArp3/MUf2LHjCcYBeeoOOoun8qjvKleb44pEpg+a4Yi3x586bwNH5V2CMZVX/MmoHuYEm18IzEswv2JCWSNAUKI1b2L0bqT8TVyvHYPRWDmH+M5ntj1ZReso8Qugls4eJv7isu6XRpIRm/7/285r1ZDS0fKIixfpTkKnRjslCBHT1wHDVceHR8FJk6s8A5VrC7WhS692FmyQrHBICIWe1yqEcWf8iI9Y+uK8oP0CY8OdfbmfpD1gbAr/Oo06Kf7E14tI33qU4Sn8OqGDrWTGJA4gC7MYpKTl2jV2qh3JoJVFLw0b06YPK+gWp9bacH6F03dmRbtoX8KaxlA==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,19 +98,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+Hello,
 
-Thanks for the feedback.
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+kernel BUG in mpage_readahead
 
-This patch was sent as an RFC because I wanted to confirm whether the
-overall approach is acceptable before preparing a fully tested version.
-I will send a properly tested patch once I get confirmation that this
-direction makes sense.
+------------[ cut here ]------------
+kernel BUG at ./include/linux/pagemap.h:1408!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 1 UID: 0 PID: 18176 Comm: syz-executor317 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:__readahead_folio include/linux/pagemap.h:1408 [inline]
+RIP: 0010:readahead_folio include/linux/pagemap.h:1434 [inline]
+RIP: 0010:mpage_readahead+0x4ad/0x5a0 fs/mpage.c:367
+Code: 5e 41 5f c3 cc cc cc cc e8 b0 19 70 ff 48 89 ef e8 48 06 ad ff e9 54 fe ff ff 4c 8b 6c 24 18 e9 43 ff ff ff e8 94 19 70 ff 90 <0f> 0b e8 8c 19 70 ff 48 c7 c6 00 b6 80 8b 48 89 ef e8 1d 39 ba ff
+RSP: 0018:ffffc9000d92f620 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffc9000d92fae8 RCX: ffffffff824c7d14
+RDX: ffff88802fe68000 RSI: ffffffff824c809c RDI: 0000000000000004
+RBP: 0000000000000004 R08: 0000000000000004 R09: 0000000000000004
+R10: 0000000000000001 R11: 0000000000000000 R12: dffffc0000000000
+R13: fffff52001b25f61 R14: 0000000000000001 R15: 1ffff92001b25f61
+FS:  0000555564bcd380(0000) GS:ffff888124f53000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f08297b0130 CR3: 0000000030a16000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ read_pages+0x1c4/0xc70 mm/readahead.c:163
+ page_cache_ra_unbounded+0x66a/0xa10 mm/readahead.c:269
+ do_page_cache_ra mm/readahead.c:332 [inline]
+ page_cache_ra_order+0xc0b/0xf20 mm/readahead.c:542
+ do_sync_mmap_readahead mm/filemap.c:3340 [inline]
+ filemap_fault+0x1583/0x29a0 mm/filemap.c:3489
+ __do_fault+0x10d/0x490 mm/memory.c:5281
+ do_shared_fault mm/memory.c:5780 [inline]
+ do_fault mm/memory.c:5854 [inline]
+ do_pte_missing+0x1a6/0x3ba0 mm/memory.c:4362
+ handle_pte_fault mm/memory.c:6195 [inline]
+ __handle_mm_fault+0x1556/0x2aa0 mm/memory.c:6336
+ handle_mm_fault+0x589/0xd10 mm/memory.c:6505
+ do_user_addr_fault+0x60c/0x1370 arch/x86/mm/fault.c:1336
+ handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+ exc_page_fault+0x64/0xc0 arch/x86/mm/fault.c:1532
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+RIP: 0033:0x7f082970586d
+Code: 03 00 b9 03 10 12 00 45 31 c0 48 ba 80 00 00 00 00 20 00 00 48 b8 2f 64 65 76 2f 6e 75 6c 48 c7 c6 9c ff ff ff bf 01 01 00 00 <48> 89 02 48 b8 88 00 00 00 00 20 00 00 c7 00 6c 62 30 00 31 c0 e8
+RSP: 002b:00007ffff735c180 EFLAGS: 00010246
+RAX: 6c756e2f7665642f RBX: 0000000000000000 RCX: 0000000000121003
+RDX: 0000200000000080 RSI: ffffffffffffff9c RDI: 0000000000000101
+RBP: 00000000000f4240 R08: 0000000000000000 R09: 0000000000002000
+R10: 0000000000000013 R11: 0000000000000206 R12: 0000000000079470
+R13: 00007ffff735c19c R14: 00007ffff735c1b0 R15: 00007ffff735c1a0
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__readahead_folio include/linux/pagemap.h:1408 [inline]
+RIP: 0010:readahead_folio include/linux/pagemap.h:1434 [inline]
+RIP: 0010:mpage_readahead+0x4ad/0x5a0 fs/mpage.c:367
+Code: 5e 41 5f c3 cc cc cc cc e8 b0 19 70 ff 48 89 ef e8 48 06 ad ff e9 54 fe ff ff 4c 8b 6c 24 18 e9 43 ff ff ff e8 94 19 70 ff 90 <0f> 0b e8 8c 19 70 ff 48 c7 c6 00 b6 80 8b 48 89 ef e8 1d 39 ba ff
+RSP: 0018:ffffc9000d92f620 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffc9000d92fae8 RCX: ffffffff824c7d14
+RDX: ffff88802fe68000 RSI: ffffffff824c809c RDI: 0000000000000004
+RBP: 0000000000000004 R08: 0000000000000004 R09: 0000000000000004
+R10: 0000000000000001 R11: 0000000000000000 R12: dffffc0000000000
+R13: fffff52001b25f61 R14: 0000000000000001 R15: 1ffff92001b25f61
+FS:  0000555564bcd380(0000) GS:ffff888124f53000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f08297b0130 CR3: 0000000030a16000 CR4: 00000000003526f0
 
-I’m reviewing how reserve_mem= paths are exercised so I can build an
-appropriate test setup. Any guidance on recommended testing for this
-area is appreciated.
 
-Thanks,
-Swaraj
+Tested on:
+
+commit:         6bda50f4 Merge tag 'mips-fixes_6.18_2' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11857514580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f4a1ecf59be91960
+dashboard link: https://syzkaller.appspot.com/bug?extid=4d3cc33ef7a77041efa6
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=10dc7cb4580000
+
 
