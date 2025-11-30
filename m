@@ -4,107 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C07D111A8
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 20:44:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E9D6CFD376
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 21:20:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D8736B0007; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
+	id 8973D6B0007; Sun, 30 Nov 2025 16:20:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B0126B0008; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
+	id 847786B0008; Sun, 30 Nov 2025 16:20:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EC2A6B000A; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
+	id 736D76B000A; Sun, 30 Nov 2025 16:20:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E43C6B0007
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 15:44:35 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CEDEC5D4E4
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:34 +0000 (UTC)
-X-FDA: 84168451668.11.C3320EC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 70339180013
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:32 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWa1ff2m;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 61F0E6B0007
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 16:20:40 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D20C65C704
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:20:39 +0000 (UTC)
+X-FDA: 84168542598.29.327C433
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6C5C2180007
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:20:37 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ORZiaCTO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JC0dncvb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ORZiaCTO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JC0dncvb;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764535472;
+	s=arc-20220608; t=1764537637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=10Cdt34RCx935w4umu4sSDL1avAInz+1CdF2bZgGu6M=;
-	b=fv+MXT/9trIudEsrH7F/ZsxdLqleddmGjtJS2pJYIgMSf6emW8YGvFB5g7hjTNSqKXV7+d
-	cm3AC92QtuLTp7o9MyqMhKIGm67Z9Y/eer1ii/1XHGZO6mT0v8iMeW1sAQcQ986CqnHfyN
-	PJlJyXqSK8NCf+ljwTQyEDtIOenbRAc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+jra0JHaUIrt2J4jLv1VPlTjNYzgozKAbPyEWttXDwE=;
+	b=CUaYL3xDkOK55hUz4n33khWmcY9mgI+gdAUwX50PzDeoXi/QuYdjAuxOfh138z+9gM2c4s
+	pvfaukyEcGJuWde++DStPDW98T3MhoOkcDvsvSnmHzTvwEauxPfTtktMkMK5KMVscfYPBD
+	zN9D+/mfigtFITmX+8H4svc0juqjuv4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWa1ff2m;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764535472; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ORZiaCTO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JC0dncvb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ORZiaCTO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JC0dncvb;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764537637; a=rsa-sha256;
 	cv=none;
-	b=0MDQqUWETrVX39Z+2ZlclqdVoFocUy8MQoilQr9hwrlpM0HR5+Bn7T+yiiMAIz3fcefFob
-	wZGfYGe5fac4Z3x/qZgMXBEW0YOqd7yzUK7Z4UWNUStIDC9zOJhEv7Bq5Bbr0mjizfUM7P
-	vyDrHHyEY3L0gGpErK5iVySnQ0Xk8Mc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 420F1441F1
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FADEC113D0
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:44:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764535471;
-	bh=10Cdt34RCx935w4umu4sSDL1avAInz+1CdF2bZgGu6M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BWa1ff2mBVJ4ElH2wgUU2QUq945AWnZV+fGZG5QnlY4YwB6P5+w+phxzeWeo0G1aL
-	 JirWC5Jz/gkgTlnLGcMTpJEWMMoo/wpqtEaCTH9v+IXLxQUhqBGBa14Bzqn8WT60BX
-	 ZitfFqnC9Wp4MTo2KWxirlXNPR9HyJWmAi+F3rDQpxxLH7d2gkNpEpbyBk9ad7zTxr
-	 97fqj05gk/qtPM3/fFDSfN7jdXAWpsABg2VDfFyOYNq1b6qybViR+RxEhFmplGnmyB
-	 b6CMKn5g0A+KXcq7flTuZS+D9zBxpHM915FQUGBYnkuUkYVjK2hUFy3r+yPGqCJXyk
-	 tTXrEivdU/i4Q==
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-786943affbaso23130477b3.0
-        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 12:44:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWqTYV5OH3JZQzHUsx30t2iE8iCX++P2xCDf16+uJgxsykcrLl+WsgDBsiIJ3kycbwsqHV3lr9e7w==@kvack.org
-X-Gm-Message-State: AOJu0YxTnCBa4zeue4AxsdA30YX5XLZAeFiHStL/IRAkq4ZMP7N4qNYM
-	kUY5LYjhHgTLnbKxKDWZMBUIBNtIDZOQ6lE2u+CTYoa0/cffLX1Z2OMBhERdTMgNVnuwZXuIoZn
-	hTjCXZhQXqoslJSPD2zZFNloDsU9VAROOHK8dZMKWXQ==
-X-Google-Smtp-Source: AGHT+IExQ1AJAY7f4dN+Xk02ncFxir6zbdLyjYYpQBva9zYNDSKSUibUyNy4if+53Ez2svcwcs5wB7kEQOEjSzjM/I4=
-X-Received: by 2002:a05:690c:81:b0:788:c21:b05c with SMTP id
- 00721157ae682-78ab6fc6e40mr180821677b3.63.1764535470463; Sun, 30 Nov 2025
- 12:44:30 -0800 (PST)
+	b=pTVTB1dq9glUFwX7rAH9nbCxE7CX1UdEbn2TGy4zSfPyGnS2bJSP6K533DFtHIaIzE+P3a
+	gEfTkcoSPb/4u2DirpsWZSoPKxEFexjGeVVyGFiuXWeGDIXENRAEX4omKJXGBQJhNgF512
+	aPfJE7IQhWfVihQpZpJkUlQ3/mqU2m8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 64FCD5BD2E;
+	Sun, 30 Nov 2025 21:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764537635; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=+jra0JHaUIrt2J4jLv1VPlTjNYzgozKAbPyEWttXDwE=;
+	b=ORZiaCTO+oQMnUH5e2xuUT0fQmepwkRafvxWm/mVVH2WrtgaZ4gr53S0rPdNEbqKub9oc2
+	KPWXnKFPxhwd8VSFgnjzoTjbjp03twPHHHV3GPlf8sVi8APIKduY+5Dr7YmthhgrXBksah
+	3V5C/u7TvPx2SkKtKxZGqnM6TWsF22Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764537635;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=+jra0JHaUIrt2J4jLv1VPlTjNYzgozKAbPyEWttXDwE=;
+	b=JC0dncvbhAq9qGqQvH0H2UXJqYKQ/6pgntQExARrGfzZ8lgaWrMiEuQOimEAmKpLMFelhL
+	6asWVR9ShcDm2lAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1764537635; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=+jra0JHaUIrt2J4jLv1VPlTjNYzgozKAbPyEWttXDwE=;
+	b=ORZiaCTO+oQMnUH5e2xuUT0fQmepwkRafvxWm/mVVH2WrtgaZ4gr53S0rPdNEbqKub9oc2
+	KPWXnKFPxhwd8VSFgnjzoTjbjp03twPHHHV3GPlf8sVi8APIKduY+5Dr7YmthhgrXBksah
+	3V5C/u7TvPx2SkKtKxZGqnM6TWsF22Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1764537635;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=+jra0JHaUIrt2J4jLv1VPlTjNYzgozKAbPyEWttXDwE=;
+	b=JC0dncvbhAq9qGqQvH0H2UXJqYKQ/6pgntQExARrGfzZ8lgaWrMiEuQOimEAmKpLMFelhL
+	6asWVR9ShcDm2lAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46E773EA63;
+	Sun, 30 Nov 2025 21:20:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id idD1ECO1LGmrUgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Sun, 30 Nov 2025 21:20:35 +0000
+Message-ID: <1444c957-08c6-46f1-bcf7-da5211bfff1a@suse.cz>
+Date: Sun, 30 Nov 2025 22:20:34 +0100
 MIME-Version: 1.0
-References: <20251125-swap-table-p2-v3-0-33f54f707a5c@tencent.com>
- <CACePvbUK6uSDtz0QkBq-eqzQ_Hi9+t1gthGGt+ok7xdZtO1V8Q@mail.gmail.com> <20251129101820.3dd08b93b92fb2fd58159400@linux-foundation.org>
-In-Reply-To: <20251129101820.3dd08b93b92fb2fd58159400@linux-foundation.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 1 Dec 2025 00:44:19 +0400
-X-Gmail-Original-Message-ID: <CACePvbUfCFEqeh_Xa1D2Eh9US69_ENjCGYCKq4yGzZsyUnx00g@mail.gmail.com>
-X-Gm-Features: AWmQ_bllixhFCPl1U1P18L2vmi0WIH3n7TKKxSGRCV4IyaaHJQUy9dLvNW4goLU
-Message-ID: <CACePvbUfCFEqeh_Xa1D2Eh9US69_ENjCGYCKq4yGzZsyUnx00g@mail.gmail.com>
-Subject: Re: [PATCH v3 00/19] mm, swap: swap table phase II: unify swapin use
- swap cache and cleanup flags
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 70339180013
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [GIT PULL] slab updates for 6.19
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
+ Christoph Lameter <cl@gentwo.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Christoph Hellwig <hch@infradead.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6C5C2180007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 5pd9zxxiy6hzuc8swqtq4hozkdqfk7jw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8sgd8y4tdkjfpsz95p7y45zhkunetx46
-X-HE-Tag: 1764535472-63899
-X-HE-Meta: U2FsdGVkX1+4Mv6yiD9eyc28caxrVW+ZP1XsvXkGaxOqtrLk0nZzTpElBBpRJMnVocqcsBZ3uZBI266vbnQ0d1kop4K6TCYRzLfC3+T5TQCE8jXjlPqzU6bgiq/VVn0sB0Rtz4RlaQIm9t1wen5J+cX8TGy6wHDY3a0pOvMaWdBBTd2ciz1xxAyQWYHBAArrhiDcAaU78k+7D5DJVBT4Uk1CnaS89zp82NXRUWPqysXS+CtdH7LWQxB0l+c+D974PR08By5ALdSg8m/oddJ/XV3r58d/4NXTJ7gw1qVx7nPxATEmHJGEsHzFY61qSLwns5cnvGgryB5lGFzDCSc1rCHpCpfA8hzzNKsa3G6MUhWPEfL6HPTQk1QK9C7Q5TZM7LPG9PUPhw3fdNooLjh9LYWzdiLxR3BdeXXj3fIhZ9LGWYTC9i3V4Cu/dqiBQ1p26HOq5Vud6M2o/ci/k6WU7LVr88fbMLK9wQTi2nQbX5E/UuUlRSjfu1AUR0MKPHxWIu9PqTB4a2UOTYW4oynsyzNdl3zRzRzz6wrkBYdUcCym0GqPmeE+b03TmURIoEanpz92YdV3wzT+TM7vc8xKVMw08Ld+4NAVDNEGu8n3Lbzw9s6sLwCJBWVsDbCaPcKKOapgv/UqWfgJFCU+BHm5WJG2Gv/4k056D7VDId72M04GehsEF6aujOE8AXZZJExYkEsHXaGfFD11aA1T3I1fkwnu8l9m1amaAqhtVXbzsqiZX1kjiA5/dmNo7yB4Or9S/HX1HX2LsSyInONoz+2+A5j3y0oOCYGZy2OdQ64tIeVd13AR1RpFmUkfog4zA4tRdOK9LuBxnYneb3f4n0mI9M3eSau7M6IjhJUa1GFsBiMPOF9WPS9SVv6Ee/dg+vLfOJEIn9s28YZ+uu++EueGfYXedJHl4HBlQK03FYUNS8fCgq0wFb0B8KY6FJ2QkYOWQuK9ROhbPepeQg7imNT
- QzmIWQWt
- w7VK/ZN+2oofQro+UJOCwOanBHixEvBdC7OiC1cLLcCQ7bWyNRt3qJ7lFPa2C6wutYfr3NLVXPEi9wzQ8uToLyK2hNXEcBZy5GGcK814TsM6fiQKg5Q7qpx1ThVRTKWzimaKjiFbK7unzG2kuEypxApggHdphS7QKrX4x90sjk3U+6ND7jWzhHGpvIGtU+n+Ii8/dsg9ILbVV+GWMsYXqrCvHID9IMpYXAHaaoyRcyaU+5ShVDX0Ox5m31RSNJZG9bw7iEHRfDayRqzndr8wlqfLpyjyB0HAo+c5Tuw4n8DKd0yhaiVjt58JBUCZelzT21Nav3QDMriYgX3AYusL5BmB9lVkw3rAksiYXmARoiKb6+7QVjlj1h8g2+g==
+X-HE-Tag: 1764537637-678488
+X-HE-Meta: U2FsdGVkX19BP8dwWzGLpuckE0tnbYBuOERmdDQakQzQC2Tl3YMDDiZ527lpS9qJx2eCWPN+md+odkBW9gF0ij3t8LbIokOEL0bvfquvOhPoq3+7JfId0Qf/HVC5Nah0NCdnk2Mm6Pz4n+G5WwhTzT7ppjaH6xksfJmk0bWiMgQG0kVhn3MMCj/R+Es2gEzm2oZJBpkEmnJHX98/r0EscvngFsSpgPNiKm4yqKVJF7L5gQHaR7GJv0rKuW1RcV2EU/C/S/pJCXJZYBLglvj3xnRG0sOgSLgWgBXenPxlfrhrvZ21NFlzSECIueG3naDR5fL3NN1hUofP7OkqQXRXPvBvYrIhLra6ed2dTj69dTMWQVo7zlPwNldBcb6kd0dtoXzbl1R6Y2wZKyb4mhVZJelCXqdzFR9nklax9RGB9D3e66XgYdSUh5EqXWNtvZ99LqpOUbE9SiZ7pIDRbOrTzkTlKNCOIOivAYtFdGHkXSWYbXvB+vzIe9bLIzVhwjMXjkGXyHnvCjJ0BFmTlcNw3wMJoPKwnQ+dU3PMN5deKHIZcF6W7l5Xq9/1sxZ+XiQ9+cm3cY/s3pVjNrm/MMkqLBLOeB6KfNHmF4ZlD1XCAaoB+/mbUJ7wqrnDyVFVNwkTjxvPJQ35GNZF0KumxYEzkgJjBtjGFKuldmVpSGN10l4DNngGJFpRug10xV757fffTpZDdD5HBpCfB2/OeGYaXAyyr7J0kSJBDLHcnn8ZHiKMGiiT36LTKC7pjjadLsvFk5VsjNk4dpOhwdqdkKzw7Q6xq3fNlCfh+4tYuEYSfrZPQ/2Iv4a8bh2wgn/hQuyc/sLIJSzTqJ+uIOf84ysceHzpGmj5tXfKd2IXB0f2WqKu7AH6lexhynEf7RHEW8KaZ7HYv0XKDZ4+5Bpgo7o9ahUqAjLmCHk4ReS8Sj9gOtWevxmX1vAK857hninB5qDRPTIZq6Uy/MC56kJ2jvp
+ XUDKef5v
+ wSNvoieNolrhleH4SBMxCxl4P2QrkGCRqlSVq8mpiZ6zJTS1SKEGW4qJtexHbUxv1jmzC9Zyd2L6zOL3Jf4LnkhATnKUrLGymM2ZMwIsEl7gghd1n18UMciVHmaTUJSc9WTdUWC51wikNKNn6dofM0UVUuOAYbAC2BOXDntLOMn5dBxiPbsaLwaNQuy2HkhHmzCq8VtYjKHysW3Ab9PqNCAsNbUS3r/T/g/qn9cHdg+CNz6taJoigAsZBtJDpjbI7Tq2nC4Iamw0aSXiX749GfXft/AIJ54QRe+//DP6a/OilvDjMqVcl2ZiG8eCGTPFLW93C4Oe2LWTSUiAqvVYbbbWwlqyiwXN8L0d3zAMSKj/4WWue/klkHwZJjTHDWJr/vqGG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,24 +175,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 29, 2025 at 10:18=E2=80=AFPM Andrew Morton
-<akpm@linux-foundation.org> wrote:
->
-> On Sat, 29 Nov 2025 21:07:40 +0400 Chris Li <chrisl@kernel.org> wrote:
->
-> > Can you add this swap table phase II series to mm-unstable for more
-> > exposure? The patch series has gone through V3, overall looks OK, but
-> > I have not finished reviewing them all yet. I will keep you posted
-> > when the series is fully reviewed.
->
-> Not on the eve of the merge window!
+Hi Linus,
 
-Sorry I didn't realize we are at the eve of the merge window already.
-Time flies.
+please pull the latest slab updates from:
 
-> Please refresh, retest and resend shortly before -rc1 is released.
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.19
 
-Will do.
+Similarly to the VFS pull, part of the changes here are based on a merge of
+the kbuild-ms-extensions-6.19 tag from the kbuild tree, so pulling kbuild
+(or VFS) first would avoid pulling those via this PR.
 
-Chris
+Thanks,
+Vlastimil
+
+======================================
+
+- mempool_alloc_bulk() support for upcoming users in the block layer that need
+  to allocate multiple objects at once with the mempool's guaranteed progress
+  semantics, which is not achievable with an allocation single objects in a
+  loop. Along with refactoring and various improvements. (Christoph Hellwig)
+
+- Preparations for the upcoming separation of struct slab from struct page,
+  mostly by removing the struct folio layer, as the purpose of struct folio
+  has shifted since it became used in slab code. (Matthew Wilcox)
+
+- Modernisation of slab's boot param API usage, which removes some unexpected
+  parsing corner cases. (Petr Tesarik)
+
+- Refactoring of freelist_aba_t (now struct freelist_counters) and associated
+  functions for double cmpxchg, enabled by -fms-extensions. (Vlastimil Babka)
+
+- Cleanups and improvements related to sheaves caching layer, that were part
+  of the full conversion to sheaves, which is planned for the next release.
+  (Vlastimil Babka)
+
+----------------------------------------------------------------
+Baolin Liu (1):
+      mm: simplify list initialization in barn_shrink()
+
+Christoph Hellwig (11):
+      fault-inject: make enum fault_flags available unconditionally
+      mm: improve kerneldoc comments for __alloc_pages_bulk
+      mempool: improve kerneldoc comments
+      mempool: add error injection support
+      mempool: factor out a mempool_adjust_gfp helper
+      mempool: factor out a mempool_alloc_from_pool helper
+      mempool: add mempool_{alloc,free}_bulk
+      mempool: legitimize the io_schedule_timeout in mempool_alloc_from_pool
+      mempool: remove mempool_{init,create}_kvmalloc_pool
+      mempool: de-typedef
+      mempool: drop the file name in the top of file comment
+
+Matthew Wilcox (Oracle) (17):
+      slab: Reimplement page_slab()
+      slab: Remove folio references from __ksize()
+      slab: Remove folio references in memcg_slab_post_charge()
+      slab: Remove folio references in slab alloc/free
+      slab: Remove folio references from ___kmalloc_large_node()
+      slab: Remove folio references from free_large_kmalloc()
+      slab: Remove folio references from kvfree_rcu_cb()
+      slab: Remove folio references from kfree()
+      slab: Remove folio references from __do_krealloc()
+      slab: Remove folio references from build_detached_freelist()
+      slab: Remove folio references from kfree_rcu_sheaf()
+      slab: Remove folio references from kfree_nolock()
+      usercopy: Remove folio references from check_heap_object()
+      memcg: Convert mem_cgroup_from_obj_folio() to mem_cgroup_from_obj_slab()
+      kasan: Remove references to folio in __kasan_mempool_poison_object()
+      slab: Remove references to folios from virt_to_slab()
+      slab: Remove unnecessary call to compound_head() in alloc_from_pcs()
+
+Nathan Chancellor (2):
+      jfs: Rename _inline to avoid conflict with clang's '-fms-extensions'
+      kbuild: Add '-fms-extensions' to areas with dedicated CFLAGS
+
+Petr Tesarik (3):
+      slab: constify slab debug strings
+      slab: convert setup_slub_debug() to use __core_param_cb()
+      slab: use new API for remaining command line parameters
+
+Rasmus Villemoes (1):
+      Kbuild: enable -fms-extensions
+
+Thomas Weißschuh (1):
+      mempool: clarify behavior of mempool_alloc_preallocated()
+
+Vlastimil Babka (15):
+      slab: prevent infinite loop in kmalloc_nolock() with debugging
+      slab: move kfence_alloc() out of internal bulk alloc
+      slab: handle pfmemalloc slabs properly with sheaves
+      slub: remove CONFIG_SLUB_TINY specific code paths
+      slab: make __slab_free() more clear
+      slab: prevent recursive kmalloc() in alloc_empty_sheaf()
+      Merge tag 'kbuild-ms-extensions-6.19' of git://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux into slab/for-6.19/freelist_aba_t_cleanups
+      slab: separate struct freelist_tid from kmem_cache_cpu
+      slab: turn freelist_aba_t to a struct and fully define counters there
+      slab: use struct freelist_counters for local variables instead of struct slab
+      slab: use struct freelist_counters as parameters in relevant functions
+      Merge branch 'slab/for-6.19/sheaves_cleanups' into slab/for-next
+      Merge branch 'slab/for-6.19/memdesc_prep' into slab/for-next
+      Merge branch 'slab/for-6.19/freelist_aba_t_cleanups' into slab/for-next
+      Merge branch 'slab/for-6.19/mempool_alloc_bulk' into slab/for-next
+
+ Makefile                              |   3 +
+ arch/arm64/kernel/vdso32/Makefile     |   3 +-
+ arch/loongarch/vdso/Makefile          |   2 +-
+ arch/parisc/boot/compressed/Makefile  |   2 +-
+ arch/powerpc/boot/Makefile            |   3 +-
+ arch/s390/Makefile                    |   3 +-
+ arch/s390/purgatory/Makefile          |   3 +-
+ arch/x86/Makefile                     |   4 +-
+ arch/x86/boot/compressed/Makefile     |   7 +-
+ drivers/firmware/efi/libstub/Makefile |   4 +-
+ fs/jfs/jfs_incore.h                   |   6 +-
+ include/linux/fault-inject.h          |   8 +-
+ include/linux/gfp_types.h             |   6 -
+ include/linux/mempool.h               |  58 ++-
+ include/linux/page-flags.h            |  16 +-
+ mm/kasan/common.c                     |  12 +-
+ mm/kfence/core.c                      |  14 +-
+ mm/memcontrol.c                       |  40 +-
+ mm/mempool.c                          | 409 ++++++++++++--------
+ mm/page_alloc.c                       |  15 +-
+ mm/slab.h                             | 112 +++---
+ mm/slab_common.c                      |  29 +-
+ mm/slub.c                             | 700 +++++++++++++++++-----------------
+ mm/usercopy.c                         |  24 +-
+ scripts/Makefile.extrawarn            |   4 +-
+ 25 files changed, 792 insertions(+), 695 deletions(-)
 
