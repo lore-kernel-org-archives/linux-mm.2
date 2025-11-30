@@ -4,124 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CEDFCFD2F6
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 00:57:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D13ED116E2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 01:09:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C584D6B000C; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
+	id 9D9BB6B0010; Sat, 29 Nov 2025 20:09:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C090F6B0012; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
+	id 98AAD6B0012; Sat, 29 Nov 2025 20:09:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF6E06B0022; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
+	id 82E2C6B0022; Sat, 29 Nov 2025 20:09:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B26D6B000C
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2720F140281
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:57:39 +0000 (UTC)
-X-FDA: 84165460638.28.7D1CE89
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2D2EC1C0007
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:57:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fuOjXVgz;
-	spf=pass (imf21.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 693DD6B0010
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 20:09:26 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D4F413B2A0
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 01:09:26 +0000 (UTC)
+X-FDA: 84165490332.17.5FA0B64
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6586780004
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 01:09:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YyabsjbR;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764464257;
+	s=arc-20220608; t=1764464964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+g49Om8KV5+AE4pKbmfS5SsSZ6jAm9G/Fr+ete77Gs0=;
-	b=F32ZSQ/LKZCUk/7XSpijlmdPU+n3yMvVlMcPtVLNcZc6ox15fjDM2QWRPSayLeZcDQIAWc
-	PAQfEgzPyym33oaGtJA72y+F6rXqfwgT74yZrMtKEJXlBJ9hmuBNNvL3i8tQpoIrfZpDxH
-	mumI2p/mDTJ/qKtq+NR20E28HPRbWWw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764464257; a=rsa-sha256;
-	cv=none;
-	b=Wiy9KQrXODwWfdeeTh4ule8QKSUr5+WwfOzKb+IEbwfI1K5dZWoa+x4vi4zHqtV9X5byPv
-	ZRq2TudHj9S+YC2l2ZWNs3vEcUSw8EcELt89Hd5hr5f7mJ1Ch8ioIbvN+r3qCbozMQGTSD
-	FNrPRtzorbzGsmApH5B0ekBJ8Fhc4PU=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BvMYQXO8j67HXrkaRo9OFr9r+KnzegXxYt4q7UonkDw=;
+	b=aosVhoRWXuMzkuaoPiyUACwe+NGQdEbxC7oO+brEZSsOpTjMTmLzomuaSPNdCQKPRtRMUe
+	h0JYjWKdT4/UdWLXKpF1fh3L5VovZ3Npmc3VuJjSnofIc6h1fBoXUtUgvm7YpQWO47KOdH
+	Y+71ITRAwldO2qufRHTGi2zStY77dvE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fuOjXVgz;
-	spf=pass (imf21.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-37b9d8122fdso27323601fa.3
-        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 16:57:36 -0800 (PST)
+	imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YyabsjbR;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764464964; a=rsa-sha256;
+	cv=none;
+	b=vT/QpZnS0ZNt2tECuWwfQl2QpgB7672zU9p3wVQi5fZ6DzWubFPh7rOWSFjtLaNHfC9f0C
+	uLTX+Tg+3uckhWhbRAstT8+TizfxX7T5j9njjpDBQi21a61yo5zqwEHpud3VRp88EMqz+1
+	4/10qcrX2seLmYeSWmf7h8pvEdeZHq4=
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-63fc72db706so2334687d50.2
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 17:09:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764464255; x=1765069055; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+g49Om8KV5+AE4pKbmfS5SsSZ6jAm9G/Fr+ete77Gs0=;
-        b=fuOjXVgzLtWsL5jqdcsepwzvmfMfgczBz1YyO6WzirEut6bol6xiDESlit6RMG1pTl
-         Nxt1G4FLqxZVmPX1qud4Cd1XhBt8IBYL+bE0Skv/yDXqR9zqjDugN8Mf7xzOYDwH3jNe
-         F8ggxdOURjtJsabwi/FnRYFdTVCOpYoJ+JZaRuHYFbPMt2qm+oL9iSLTUKL5tA25reGH
-         kPZC5KbnXBo4ATZatIVSotrFwM6a7KLV/Yw/mZFn3g2a25aPwVEPoSmI6RTHHR4S0mhX
-         4JGFedEJYNXDKagUzByDEQGD7Hu4L8t3+C6WPAkUN1YuypyEoTzXHNGG5yA3o7p/SzFI
-         60Hg==
+        d=soleen.com; s=google; t=1764464963; x=1765069763; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BvMYQXO8j67HXrkaRo9OFr9r+KnzegXxYt4q7UonkDw=;
+        b=YyabsjbR0fTG/fgCiNcFGC7w9KCMl98fwYJW1ANY3f8bJKtgOpZB9Uy70QfFfMCCNC
+         82l38TJIndfTbB09/ZhwdjswC9UIFXJKAW9RB/byKKO11jBzXVtbueaqE3jJ3SdJFcHc
+         gbPbgpejZE6YqMeBz3U5ul8lmS51wZb2a6IaLeEAhnDSKsbsDE6HIPqWJj5fu9euit9H
+         wCKU8x+JQdjr68CTd8PSxHwlaWrcp+TR73qiufjpi0VJ9jwOWs3tnyfcf8e6kjpa5xyd
+         geqrPqQR38aISspSQcw1S51zssntCeNNRO+eXXWfrbsG6v4Sle51Tz47nQQNEnYsudin
+         T6gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764464255; x=1765069055;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+g49Om8KV5+AE4pKbmfS5SsSZ6jAm9G/Fr+ete77Gs0=;
-        b=J+so6UK92pr0PIfyS/kB9EkkOHQ0HDzqosNW49HcwHnnFH334rzRQF1sSu2E2hsPZp
-         VJLuLrXMOEhqzEOLiYSWDEToF7YJ1m4+raXe2puPGsNjqbQReIvCcAd7oP0vm0zoOzIQ
-         WDlSDP5Ntvr8TYjTQKYv0mrS7ej2Vd8v7Gx+T+yB7tlhxhOqG4cy6mbpx5x2Qs6isOm9
-         foLyd9HTIWFsqv8wA2U4kCc0NJNRE/epNRIy6WJjrNSY7iNyktnkig29fvNOSPj/y55+
-         mVkJ5lmhWl/l0mQtiJGSk0oNDMcqzCFuYV2Yx4G+p0An++6C5GddeCamINjjhAjaAPHQ
-         CzUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQjSCGPakBod0j4ExK8tLHciABwmXPFJS7VMIOqRnoXtQrmEtkJzFWSAunLLEf4KAGXeWuCLRQtg==@kvack.org
-X-Gm-Message-State: AOJu0YyckZDc+3cy9TiIfgZds9YQV2gWpZe8kC8FGCM5VfcUaLIWTKXB
-	LpH2YtnedIw0fezUVxypB+EaHG1inG6WpuAR5ICXKXehCHUDx1LEti+/
-X-Gm-Gg: ASbGncsaVitklxiKCNX+YcnT/cuaz8d3LSVurgD++OhbehneqQ9i8tmMxDZF74fBUnS
-	KfcZlNhd+6VtRBaJAcu9LtMYOM0p0sX5qyttoeTP0wxq9b1C6OIf/mQZvVL2Yu2vZISkELxCoYj
-	WJWmtLJheynjwsuYOCL5glctjtEjvJlDeUIp5lQUJBb5JEuXA8euQgUrB7394kE0s8B7Tva2n2Q
-	Th3k+g0jYE1KgZxzsri3mwDgPg2w1FPRFTeAdtBZnqO5zzpAklS3pgRROMoebKNWNWt0wNOKNmG
-	zdGnU/BA2AHnto0I364EDoBJeuPowDnycj+rzeMgsWVZvcliuq0RvYMq5S3AXXHgcnx0jcP0htB
-	ljiUp47bPkesuHgsYzGSdgtRolEO6ZdrWMWfkXqDA5sp7CoQlUsWJUtHcKjOhbKo4rh/uh1Qaiy
-	GF8KBRecg=
-X-Google-Smtp-Source: AGHT+IHqqLvvP2sfFnTWOisjSIYIhy2i6Epx2GFFCPJmKULbpNgQPdTlRmyFokY5qYTyoqCENRLjrA==
-X-Received: by 2002:a05:6512:ad0:b0:591:c3f1:474d with SMTP id 2adb3069b0e04-596a3eac18bmr9392825e87.15.1764464254932;
-        Sat, 29 Nov 2025 16:57:34 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-596bfa440d8sm2303111e87.46.2025.11.29.16.57.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Nov 2025 16:57:33 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: mpatocka@redhat.com
-Cc: dm-devel@lists.linux.dev,
-	linux-block@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	lvm-devel@lists.linux.dev,
-	rafael@kernel.org,
-	Milan Broz <gmazyland@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [RFC PATCH 2/2] swsusp: make it possible to hibernate to device mapper devices
-Date: Sun, 30 Nov 2025 03:56:56 +0300
-Message-ID: <20251130005656.3644711-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com>
-References: <b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com>
+        d=1e100.net; s=20230601; t=1764464963; x=1765069763;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BvMYQXO8j67HXrkaRo9OFr9r+KnzegXxYt4q7UonkDw=;
+        b=X9k71jimNCxvC7smEpAlv9VwihJCtVG1SkxcMLcn531sEpaQhNlzQZC2oz7Q/p1jSz
+         R327rUBIeRzRpnNmwskRfHAV34SZckvqqFQRdXwJRgtjOklYuvUBzphM0nYbAuJFkyPR
+         m0RrE2Orzz22suxz4p02ZkFVBjxVH51LQOYlkE16UAIEbW0nQq5NACia2CVPEHY+xdFO
+         KnoFnPfMlQr38Nz1oKT5VsjnvxD8dvvKsAzsb8hfRJQaB0vKpulalgy7bDTT9zdBPLuE
+         mbm7piDSS2/Po48hTb0WPkD1TXHqasDf6Dft2Xb/V3oIPl5rhexU4eECucbAuDiG1oiV
+         pyvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+oFovYkTMtqsKtFMYe2ExgjX14pKr5TyPQGRkx7iwF32gkHh053fCApenig9RmqOiMXAIef6AJQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy6fDkCh+oPRqjcRkDHsGib8naBI8KuBrFEgRDbGGv62l51SGMC
+	n1FVmkomIvOjG0Ylx83rt5r6Gzqom0b8BuuZd06OnkyPzf4I9hczrqglAlrDNV8+kJI=
+X-Gm-Gg: ASbGnct5EHCzxc7Xc/SDwpKjY+Y8Zqf5yy6PgQgXOo0TWoGXzjriSB9v1JXmNXFEQjc
+	v+yOr+mhzwVYQycSx9m2w+x40twaL617f/1yn8vO5h1i/SFvil4qAZSValICiS2x+hABGoJd4z6
+	YPyIHAD5dhTuGyy937HGGbuINX/6Q09nRttDZkBU/uO5oScvp7gpXsqkRWSITYfv58/4WCxnB+l
+	m5khwhaHlfqM6XakfyCqrtWLDKiUQ08r5OemGj9YmKGVyKj9biBOhP0MV6KIhrufU/EtXbBaZfx
+	47RKEQm1PdvW8gcrrF+s2xRzM3AhkYHFgm+ZJ1mOgky8N0oFp2GY3EfFvm5p9pQwyOjCKdvnSRH
+	BFUOOz0EDSys4gzVChpDE56vFKFMWkQ6h9432aYcMnUyMPlRdRmx73tJ1kzk+L2u1sLcXsApeR/
+	+c/pC0pD24MchMuSY3smrspAPN8HWrquqvw7dwiXK1Z0HGUJSorGdKyxsip1NY8f3LPru+li33r
+	yzuv/k=
+X-Google-Smtp-Source: AGHT+IHhN5Il8t4t/4h+oWd043jDfj2577ge+lbbM3cGbKuTj6uQ7eWbTy3xjWmJNk7Ya9h0mT4JOQ==
+X-Received: by 2002:a05:690e:10d2:b0:640:caa5:57be with SMTP id 956f58d0204a3-6432924ea93mr12230340d50.28.1764464963388;
+        Sat, 29 Nov 2025 17:09:23 -0800 (PST)
+Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ad0d5fe26sm31189847b3.18.2025.11.29.17.09.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Nov 2025 17:09:23 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: pratyush@kernel.org,
+	pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	dmatlack@google.com,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] liveupdate: luo_core: fix redundant bound check in luo_ioctl()
+Date: Sat, 29 Nov 2025 20:09:19 -0500
+Message-ID: <20251130010919.1488230-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.52.0.487.g5c8c507ade-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2D2EC1C0007
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6586780004
 X-Rspam-User: 
-X-Stat-Signature: aoqxx6nr6wza7z71313hp79cg7ugsnw7
-X-HE-Tag: 1764464256-184373
-X-HE-Meta: U2FsdGVkX1/QI5SZld5c/ib1bJx1yjgHowt0dMMBYWPC5ukth/sLGVOaFvqZSNgsVOoe8nOMcKfnuFyJubhMoV4b+Pviz9z7ERgRZtpej1ASQn+NrXrMWlv9pToQz3q9sFo4bnr/tR9E+fTH9vYgmEBUqEXn412NCVg3qV+VHVVD/f2X9yiGnPvNKO6M62QHzbZmclFfNGW/fKT0c9T5r2uBAx2El3oiTm+D6FSPFJh650zpuEkAY7bU1dvRhoRja8MtuG2Rods+S4HjLOyDWgkPJ1l2mdNGdqKoiCFUpDiYKgbagA/nPzDg+8lj/2fVWWv5Q5TdacQZoSEuoyQ2t/S3CB7hYXegzyLFy+nYLR7MsfOx8rNq369yK0e5Wutkb2QGpKlRgEXLRjx1EL/b/r7S5DjhYbkZ2HHXJnNXs+PDTxPpP7gWZW0JhOA+fE5xEX9hdua82+2u6UCaNy094rE+R2Sj33RlVOXLJ+NAcx5nP2EQ2CD9hv5YUeHck1/nzv8WucZuAi3nRo77S7TQgaiJVYO38iWMKbrjbOsEg6yVpRxRMY42ezgMUu7fzAWtQ2iOgc08eg7+LPyPqh4pqL44kh/pbs8z6gEKw779t4tjsYiJIus2F6KyL2V0LyYRRBdCgHQji/I0Ch38K2XFteOchrEXP0p4QksdQ95MAulcre+FCo7JgNiqiU0mDVxXXm+AgKe+QHYxnETvz9LxG/WrThM8OYKM/nYQ5agxXJf8Tvad8z8ZbtA1FqYHIMhpmYwPgQUGS4LHpkmuZ09pjmtG92tGWQG5RyCN/9ewhY+46eiwciMG/tRwhBIKtm2i3V1ewIVr8gRYwVE0XUEwe51gDTHaFvKqZlhDAlkcWXDVfMxHTrdHGT6ZDrN9evVIHdfYsmm2Swd3UPgUOjk8OsiSW1457epB8kvnMmtTo9lVg6Iq07KArDoiJlJX26sA/QbSsgJsh1h4qck2y3w
- Ey9LM/R/
- cJF+SUBFE/CHhdbTdtaacByq0pDeXz6NSwDMVKcgZwn4CenFdFdTL8G/kiCkC9TyWGSDu4OWl4TdG4fbMKQhsmCx21QhpP/x1UeEdORaCYK7Wsf1EJakPA9SpIWpTVhTC3NAD4Ajmqdc++zZ/eNuc1r4Qwi2NzHMxSNIBi20ZTC+r/XELnNYaxfn3ifZgmjFygCsYVhqgqaUQQcYTPpdDqCXRHb1qOKBN1PUO3V0D3udek9iDxhA6z9pOtHIbAzxtpQrpZFonenl8gKTy5xYL7KgMejmPuHSS0Odsszy4w3pUjA4U+ihdRgAPs9eH35PLRuWUYyMP1+pF+87riZ17i7W1iJN+5zTZcI6AqPh9L8eEvA9dhpY/r/TZCVqlhj3icXcPk8F51H8YwmBPSJzVwpJpUdDzI3dnXUgQjuuF5vpK2eEmsy1/gjO+sOs+yz6+uG4SWl7AFlMGQHDO8Kun3y92TD31iOofProJWoH6dxby7C1oB1qLOUzESr2IvHSoy6iqrfi7mkSUbAkejR7pKSAHTFqba9fxvh8J1z8rG9uWTb3irVl8HhISi5YJ1Ym8hadwrWI/3MYwrAh+adKD/P/FewfvkPDInq3o6I1Yhqq0uCBSbdLzgYWAQdtbYt2dsQoKHzKjSs3Hms3DUHIjf4RWVTwDHH21NpmN16HgHbGKaTov9rtwr+fCktVDoQUIxqSS7PlNcQWj/520PZHfJFFPCyHU/1ViXQW511jlg6os1d4=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: q5bqig33iry6whdf8o3oy6fos3wkgi9n
+X-HE-Tag: 1764464964-676337
+X-HE-Meta: U2FsdGVkX18SxZfg08FvdWN6+lkS3fGRYcdx21mwezZoLx7yGebNyl5bFLT8iB5Z2KKmmXs7azm3fu8NTkqvu8zMFZyCVJEfblcOOeT/XOd0HiqM20uK6PqScW9TkfXZ+1bncxX1nhnJ6h8GDk52x5L2inJb1jGNJNCXgAGnDBAK4Welcj51A/iKIZ2PI4Tppz47Psi9NJmxTJZyYDvVllkeYd7gXhQt1WXtC4a1bHuKqzicF6wjChx1zXtIQ2CSrWa+gHJi5wkhMKMNSHns7V13jMhyYMjYiX1LZXX8RV33MpWiYOZ8zeOT9KbyPza5BaC7LYfkFGyls8yRcTKTZOtcbuQFzg+x9TmrzU+gc71UE4k8OKN1SqUqc0B+EsECGdTU6ytxqntXGkLnwu+oXFS9Su1vlMtRUt1WyqfShRdnlYBGa4k6FCj/eyyx+WnaiPjfnmGjt7EUQlhW27RxY1imjSTgufK0ALOQdr5pAdEKk+wmzR/NGsmKUBiV7A+rPrjFwNWKDkbGj7+dnDuRrLmn5ZDFCzgUK5U3GauuoNJvIUNsRFqi5cfgxTuk8bBpq0TzFswi/CFSckeyv1cgUlPR/Sw6ex8nWbR+yHdoNqzNtS+sq6x2Ykpm5tJDEt+bxCRxtE/HG/gpg5Zmysb+2t3vVWfFffQkjd8ZfmfCh63LfsyYUo33WaY8x1Tsh9raH6hhpvsBUL1sTJD4WatuIRNHcQ9s3eg5V/U0b/oe4tPRAPsKdekwo8hosogaNlGuOJWcV9JosPoklGlf9tdvHbLe8FodGchtQBcO7JBvDwp+aoHsoBLiIoSrrIHqVllMu0ZlSDiXah2z2N7PWImTaftFRu3CaoGaX3/kbj+ZPUlBxQQxgftA6yCWWRnlzqPf6a70esnqeRkBEuf+ZsXDtsYpryrNeBH3opW9C6oHa55QEMTmxQGbdoynVohpro3Ixo3Gv9F1+PQVQ7RdKhX
+ CywrTda8
+ x4Sehq2rHlb9nxP99ETHWEeZ/RD6IPHJi8t4mpSUjkYy4sgL7/LXenS5G6SLebm+bi2tR7wJGma2uANTFGoc7x25znH+poZLVhNWbqshLEkYRYxI5qEyRqlDVuUfAoZdo5mkpitk5a8S43HPuaqdzvbrD0q4TXuc9WJTyHIFLk8Yl9p/oTyWrz/MQmp8Hf7ThNbYaczebGxC8sAMwTAaEDc7O1lzysCGOLdu7a4AZoUb7BJYYpLoN9w//D3RvDB42srxiXlKR8t4stwrM9lsxGS2AKOOkskIubp7OELwNmDAXuKAzjtDe2vGMTD7rjfzq1KK0J/L1Df1F9MsMJRU+OddJ1KLI5qzz+pf21iJAdHCXbCZkZp8IuyQ8nQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,78 +120,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mikulas Patocka <mpatocka@redhat.com>:
-https://lore.kernel.org/linux-pm/b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com/ :
-> Askar Safin requires swap and hibernation on the dm-integrity device mapper
-> target because he needs to protect his data.
-> 
-> This hits two problems:
-> 1. The kernel doesn't send the flush bio to the hibernation device after
->    writing the image and before powering off - this is easy to fix
-> 2. The dm-integrity target keeps parts of the device in-memory - it keeps
->    a journal and a dm-bufio cache in memory. If we hibernate and resume,
->    the content of memory no longer matches the data on the hibernate
->    partition and that may cause spurious errors - this is hard to fix
+The kernel test robot reported a Smatch warning:
+kernel/liveupdate/luo_core.c:402 luo_ioctl() warn: unsigned 'nr' is
+never less than zero.
 
-Let me add some more info on this patchset.
+This occurs because 'nr' is unsigned and LIVEUPDATE_CMD_BASE is
+currently defined as 0, making the check (nr < LIVEUPDATE_CMD_BASE)
+always false.
 
-First of all, I already solved the problem for me personally:
-I wrote hackish patch, which fixes the problem. My patch is tested on
-my real hardware under load. I successfully use it for 2 weeks
-(I hibernated a lot of times during this period.)
-The patch is absolutely rock solid, and I absolutely sure it is correct.
-Unfortunately, it is not generic, it is tied to my particular configuration,
-it hard codes paths (!!!), and hence is non-upstreamable.
+Remove the explicit lower bound check. The logic remains correct because
+'nr' is unsigned; if nr is less than LIVEUPDATE_CMD_BASE, the expression
+(nr - LIVEUPDATE_CMD_BASE) will wrap around to a large positive value.
+This will inevitably be larger than ARRAY_SIZE(luo_ioctl_ops) and be
+caught by the upper bound check.
 
-Here is this patch for your information:
-https://zerobin.net/?ad6142bd67df015a#68Az6yBUxHA3AXB7jY1+clSRnR745olFHAByxwPGM08= .
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202511280300.6pvBmXUS-lkp@intel.com/
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ kernel/liveupdate/luo_core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Feel free to use code from it.
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index 69298d82f404..7a9ef16b37d8 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -404,10 +404,8 @@ static long luo_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 	int err;
+ 
+ 	nr = _IOC_NR(cmd);
+-	if (nr < LIVEUPDATE_CMD_BASE ||
+-	    (nr - LIVEUPDATE_CMD_BASE) >= ARRAY_SIZE(luo_ioctl_ops)) {
++	if (nr - LIVEUPDATE_CMD_BASE >= ARRAY_SIZE(luo_ioctl_ops))
+ 		return -EINVAL;
+-	}
+ 
+ 	ucmd.ubuffer = (void __user *)arg;
+ 	err = get_user(ucmd.user_size, (u32 __user *)ucmd.ubuffer);
 
-So I personally is not in hurry, I already have solution, which works for me.
-(But I am still available for testing.)
-
-
-Your patch has a problem: after "notify_swap_device" call, the pages can
-still be swapped out. "pm_restrict_gfp_mask" call in "hibernation_snapshot"
-prevents further swapping. Thus "notify_swap_device" should be called
-after "pm_restrict_gfp_mask" (but read on).
-
-I attempted to create test case, which would expose this problem. And I was
-unable to do so. Still I believe this is a real problem.
-
-
-Also, our problem is very similar to reason of introducing "filesystems_freeze"
-( https://elixir.bootlin.com/linux/v6.18-rc7/source/kernel/power/hibernate.c#L824 ).
-
-See problem description here:
-https://lore.kernel.org/all/0a76e074ef262ca857c61175dd3d0dc06b67ec42.camel@HansenPartnership.com/ .
-
-See also https://lwn.net/Articles/1018341/ .
-
-(See also this huge thread
-https://lore.kernel.org/all/20250327140613.25178-1-James.Bottomley@HansenPartnership.com/ .)
-
-"filesystems_freeze" logic is already implemented in mainline. It is gated
-behind /sys/power/freeze_filesystems .
-
-As you can see, authors of "filesystems_freeze" attempted to solve similar
-problem. Thus, we should probably flush buffers in "filesystems_freeze" call.
-Ideally, flushing of dm-integrity should be correctly ordered with freezing of filesystems
-to support complex storage hierarchies (i. e. swap on dm-integrity on loop
-device on some filesystem, etc).
-
-But... call to "filesystems_freeze" happens before "pm_restrict_gfp_mask" call.
-
-So... in this point I gave up, and I don't know what to do (i. e. what the upstream
-kernel should do).
-
-
-Feel free to ask any questions.
-
-
-I changed CCs for further exposure.
-
+base-commit: 7d31f578f3230f3b7b33b0930b08f9afd8429817
 -- 
-Askar Safin
+2.52.0.487.g5c8c507ade-goog
+
 
