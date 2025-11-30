@@ -4,114 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EE83CFD2F6
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 00:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CEDFCFD2F6
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 00:57:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C36B6B000D; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
+	id C584D6B000C; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 575176B0010; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
+	id C090F6B0012; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 463CF6B0012; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
+	id AF6E06B0022; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 338C86B000D
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C43535B6F5
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:55:42 +0000 (UTC)
-X-FDA: 84165455724.05.A429ACE
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DCA7A80003
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:55:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BPlo9+Sr;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B26D6B000C
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:57:39 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2720F140281
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:57:39 +0000 (UTC)
+X-FDA: 84165460638.28.7D1CE89
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2D2EC1C0007
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:57:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fuOjXVgz;
+	spf=pass (imf21.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764464141;
+	s=arc-20220608; t=1764464257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ODvKrhGkwSlhPa8Jb1bNoOTwQQH/HZ4Eumvhds6swjA=;
-	b=IKpYfSvEaFAL4TD/gleeTAJH8B3uTeqaxE2RmIsP9HyzDAtmXmwgeQJbt5i8xabxMBW2JS
-	8H8rOkPKaDbv3gsPdAMRSoAjqxlsqRNwONqJolVEzivYL1EBH4Sntmt/6P0gGQUtFsIwfU
-	nYarcNkmwfcmdDC/7P/YB6eAB20cGLc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BPlo9+Sr;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764464141; a=rsa-sha256;
+	bh=+g49Om8KV5+AE4pKbmfS5SsSZ6jAm9G/Fr+ete77Gs0=;
+	b=F32ZSQ/LKZCUk/7XSpijlmdPU+n3yMvVlMcPtVLNcZc6ox15fjDM2QWRPSayLeZcDQIAWc
+	PAQfEgzPyym33oaGtJA72y+F6rXqfwgT74yZrMtKEJXlBJ9hmuBNNvL3i8tQpoIrfZpDxH
+	mumI2p/mDTJ/qKtq+NR20E28HPRbWWw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764464257; a=rsa-sha256;
 	cv=none;
-	b=6etSgJzM6AgNSrvn57SyYEkbGHcTIMiOtfQ+rRMBmJa0hmf7J33t8hrkLqEyQKQ7JIOA7t
-	Q8WpRo8jXQvkQ9uTA2v9WT35I3rIWBnX9HSRYQLWw0ILuCKFAzCvJvzk3RWW0fg2fSJQX0
-	Y59niLFkYSHhIVGF508R28SAaBM9O/g=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b735b7326e5so680370766b.0
-        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 16:55:40 -0800 (PST)
+	b=Wiy9KQrXODwWfdeeTh4ule8QKSUr5+WwfOzKb+IEbwfI1K5dZWoa+x4vi4zHqtV9X5byPv
+	ZRq2TudHj9S+YC2l2ZWNs3vEcUSw8EcELt89Hd5hr5f7mJ1Ch8ioIbvN+r3qCbozMQGTSD
+	FNrPRtzorbzGsmApH5B0ekBJ8Fhc4PU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fuOjXVgz;
+	spf=pass (imf21.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-37b9d8122fdso27323601fa.3
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 16:57:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1764464139; x=1765068939; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764464255; x=1765069055; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ODvKrhGkwSlhPa8Jb1bNoOTwQQH/HZ4Eumvhds6swjA=;
-        b=BPlo9+Srk6mv0a547LtQbuzqzfZPFzpjUQ0xFxXzjC4II2Ye8jYYVpu/sUtHxIqH6a
-         Ff304BaDXQJ56LiqE9DXsYcm9nzd0p53LlIumx1Ne0E1c75yh/Odu5ckL9s0hwE2InPe
-         EIwcmKbcArzG0wSp4FTKQKhD0jWBTGEeQCqmqIms9cq3h326iyGpeEqJsnsGFs521glo
-         xfM1FkrjZFLDtYOZLzWe0cXS5Mm/A6acNpfEn0DgZFSF0zBqNNVu8T44awpHLRLG4gSx
-         q/04jAtE+k9+jeKwxEyR71gYBKDgLB1zAPel4HmcVlrEyXB9mI7AGdV+wwL+8C5FUv2V
-         bi6g==
+        bh=+g49Om8KV5+AE4pKbmfS5SsSZ6jAm9G/Fr+ete77Gs0=;
+        b=fuOjXVgzLtWsL5jqdcsepwzvmfMfgczBz1YyO6WzirEut6bol6xiDESlit6RMG1pTl
+         Nxt1G4FLqxZVmPX1qud4Cd1XhBt8IBYL+bE0Skv/yDXqR9zqjDugN8Mf7xzOYDwH3jNe
+         F8ggxdOURjtJsabwi/FnRYFdTVCOpYoJ+JZaRuHYFbPMt2qm+oL9iSLTUKL5tA25reGH
+         kPZC5KbnXBo4ATZatIVSotrFwM6a7KLV/Yw/mZFn3g2a25aPwVEPoSmI6RTHHR4S0mhX
+         4JGFedEJYNXDKagUzByDEQGD7Hu4L8t3+C6WPAkUN1YuypyEoTzXHNGG5yA3o7p/SzFI
+         60Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764464139; x=1765068939;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1764464255; x=1765069055;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ODvKrhGkwSlhPa8Jb1bNoOTwQQH/HZ4Eumvhds6swjA=;
-        b=B2p6VNSGRQWpQX7C87/S8SwVftliOIDQP8yQbOkfZhFcjMuiuxb7SWaggvwXpiLBuS
-         8REvOvK3hdKBA+n2JXuxxRtV7tNeBkp8fxchO6v36ixuHs73JYSimwTTCfNhZgyiP4qr
-         +IcZuNKI/ssPa3tPB+PLi4ZTElyBVfBdWTeWBRkmxaR8noObZ4lnwWO5eFpHmLKDh00q
-         dfDfT04A/4aDl5vmdL1s8B6+qNLNMLy+HODfhc6CPTYpbw/BqVQ4bajduBu1aHOsUSQM
-         YImMMvn98W2iBttRM/W5h8EXUpU/aDjqM9DkAlo1L8x4dp4nxjgFpqiqrw6Qr4Wq5nEo
-         qvNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVyPZ/t0xJ8iCWXVVJXSqA1rlfXKFc4eWxZIgmc74SlkRBKwjCsyehY+HLVidYF+h4sbuGcSjzsog==@kvack.org
-X-Gm-Message-State: AOJu0YyhSTOlmjEfsFSoSQGOv6H2dFLWxWJDgjV7Kx4Pd8NmKe93t79x
-	IxTkvz+f0G1mb9e2tT9yAmJ9Gjeixzt+96fbsOKs2nY5+21soPqxxThOLw0wqEBn55iLXdmwyQd
-	fe+ix6pWToXz1g5EMUnLVvB2P435QQY0H9+1TFKPDjQ==
-X-Gm-Gg: ASbGnctaZeA8K4PtjEwlSpgG8TEYSXfehDC4bll9eua0TBGDKo7F12uPPUyxDYAuwHP
-	szdmgbFCdQjn+PMlfElCX2hdYfwQs3b+eggjMThnh+j/m72Ld89Kq5rBgEKso8DCsxutstM5quJ
-	wqRlYKes94MXaTS0IBt+qTPePxYGRqLY4h4pA0ASLq+b9wevO5uMC94mfQ2awhclMD7bc/GJkvR
-	YGS0VDUT5OmwMpTOyFDOFfvmkzEhJP5XQKgmIZQFYoIq4MOo23tae31ag8x45orV82Y
-X-Google-Smtp-Source: AGHT+IH6LUCi5rjA0Lr0nzqfx5DbAhNHqzUxGTdNtAaquPcmdopH9wDpInveo3rVf28FnQZ02b/ePqsUDSgGQlxuq+I=
-X-Received: by 2002:a17:907:7e94:b0:b77:1b05:a082 with SMTP id
- a640c23a62f3a-b771b05a47bmr571754566b.2.1764464139115; Sat, 29 Nov 2025
- 16:55:39 -0800 (PST)
+        bh=+g49Om8KV5+AE4pKbmfS5SsSZ6jAm9G/Fr+ete77Gs0=;
+        b=J+so6UK92pr0PIfyS/kB9EkkOHQ0HDzqosNW49HcwHnnFH334rzRQF1sSu2E2hsPZp
+         VJLuLrXMOEhqzEOLiYSWDEToF7YJ1m4+raXe2puPGsNjqbQReIvCcAd7oP0vm0zoOzIQ
+         WDlSDP5Ntvr8TYjTQKYv0mrS7ej2Vd8v7Gx+T+yB7tlhxhOqG4cy6mbpx5x2Qs6isOm9
+         foLyd9HTIWFsqv8wA2U4kCc0NJNRE/epNRIy6WJjrNSY7iNyktnkig29fvNOSPj/y55+
+         mVkJ5lmhWl/l0mQtiJGSk0oNDMcqzCFuYV2Yx4G+p0An++6C5GddeCamINjjhAjaAPHQ
+         CzUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQjSCGPakBod0j4ExK8tLHciABwmXPFJS7VMIOqRnoXtQrmEtkJzFWSAunLLEf4KAGXeWuCLRQtg==@kvack.org
+X-Gm-Message-State: AOJu0YyckZDc+3cy9TiIfgZds9YQV2gWpZe8kC8FGCM5VfcUaLIWTKXB
+	LpH2YtnedIw0fezUVxypB+EaHG1inG6WpuAR5ICXKXehCHUDx1LEti+/
+X-Gm-Gg: ASbGncsaVitklxiKCNX+YcnT/cuaz8d3LSVurgD++OhbehneqQ9i8tmMxDZF74fBUnS
+	KfcZlNhd+6VtRBaJAcu9LtMYOM0p0sX5qyttoeTP0wxq9b1C6OIf/mQZvVL2Yu2vZISkELxCoYj
+	WJWmtLJheynjwsuYOCL5glctjtEjvJlDeUIp5lQUJBb5JEuXA8euQgUrB7394kE0s8B7Tva2n2Q
+	Th3k+g0jYE1KgZxzsri3mwDgPg2w1FPRFTeAdtBZnqO5zzpAklS3pgRROMoebKNWNWt0wNOKNmG
+	zdGnU/BA2AHnto0I364EDoBJeuPowDnycj+rzeMgsWVZvcliuq0RvYMq5S3AXXHgcnx0jcP0htB
+	ljiUp47bPkesuHgsYzGSdgtRolEO6ZdrWMWfkXqDA5sp7CoQlUsWJUtHcKjOhbKo4rh/uh1Qaiy
+	GF8KBRecg=
+X-Google-Smtp-Source: AGHT+IHqqLvvP2sfFnTWOisjSIYIhy2i6Epx2GFFCPJmKULbpNgQPdTlRmyFokY5qYTyoqCENRLjrA==
+X-Received: by 2002:a05:6512:ad0:b0:591:c3f1:474d with SMTP id 2adb3069b0e04-596a3eac18bmr9392825e87.15.1764464254932;
+        Sat, 29 Nov 2025 16:57:34 -0800 (PST)
+Received: from localhost ([194.190.17.114])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-596bfa440d8sm2303111e87.46.2025.11.29.16.57.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 29 Nov 2025 16:57:33 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: mpatocka@redhat.com
+Cc: dm-devel@lists.linux.dev,
+	linux-block@vger.kernel.org,
+	linux-lvm@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-pm@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	lvm-devel@lists.linux.dev,
+	rafael@kernel.org,
+	Milan Broz <gmazyland@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [RFC PATCH 2/2] swsusp: make it possible to hibernate to device mapper devices
+Date: Sun, 30 Nov 2025 03:56:56 +0300
+Message-ID: <20251130005656.3644711-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com>
+References: <b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com>
 MIME-Version: 1.0
-References: <202511280300.6pvBmXUS-lkp@intel.com> <CA+CK2bCmp4gjpyND2=Chdz-EfRAF20unYzO2dwQb+ZTEihgk3w@mail.gmail.com>
- <20251129120040.fb60e8a35d54d66c0bdbdf33@linux-foundation.org>
- <CA+CK2bBJmj3nK4QhAC5pr+5nS0vRv_5cOxAr_mohC+YreiZPcg@mail.gmail.com> <20251129155221.d5f3c519747d8d492aa17462@linux-foundation.org>
-In-Reply-To: <20251129155221.d5f3c519747d8d492aa17462@linux-foundation.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Sat, 29 Nov 2025 19:55:02 -0500
-X-Gm-Features: AWmQ_bnGr4rnCvxKPzqTx69_qNLEustqMkD3XbJsdWt8w5JVvGcgYvW5EMJahow
-Message-ID: <CA+CK2bCS3DtWR5u-z1jwyQLxLjgEJuvd916Mn5wviBLD_M6Fww@mail.gmail.com>
-Subject: Re: [linux-next:master 12118/12398] kernel/liveupdate/luo_core.c:402
- luo_ioctl() warn: unsigned 'nr' is never less than zero.
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mdppgfm7qx5kx8ubume3gs8q6f47fatz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2D2EC1C0007
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DCA7A80003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764464140-425338
-X-HE-Meta: U2FsdGVkX192VLy7OUHIjcE4rAbBGPpSxGCc0SAtiyBsNM8bhrHWQMFw0coKnkddEwuSQN06LVAoXGkyVGR8EXbY6cjXQapTDPKHvhMlGEq6IsRyXT2Ph+6NKK1jRvC1JEmLbUFZwDxn/d1ak2Y+aT7BDpnds0zruzmRDGWyxVCl0sjDP1JSD0lnj1Q/hLylF1OVWxIld7a7n6E0vXb1KIgmK396fLnGJOuvKN7xhxDdJX1qLLWzLDWNYSfhD47LvQVwoXlTTIRHsYjei3syVDsGk8cv/lKMo8RkH+U+vaPMdiDeZDd6GI2qvO+VUCHV/sq94KZLw2aJ75zwZOvdJIK58TBtnpxMDxQjnPc1rOPJJj4twMOejOvP0/FlEsULbrUtVcleA2LxX7y5aeuEo4m59wsMQtPALdzl+68yR/PnClwSR8OCFTPs2CY+I0oYcfyQ6Ue1pE2u6xRUp+80qhbePGJo4vfkcaybTNUFjqFHs635NT7juRtm4i0DfuonnLqwWdm811bUrSkdChua6evHLOSd9vX0KabBzsmkpD71Rg63X+dyH7Tr5uPJec6R5zfu9HJpAk52t7qXCnuTAZqA+imG9oaXDH0+G1s2SQbmtYIvDqrbFrL0ci/PELgoqhbxzzM/heNvTNE9cY9WT+g13lSNG9s17mv+B7QZKqlfwLWGVp+EdYdSL6zQx0IF80H061t7vNAlfXP1orMdEhrfQTXwWeUS7EV05VLX4FXbHKBGuPDNtQCg76yB1ENCZaO0qnWMAq03xti9aJ5TcNTn/NdZ5lSYASFMwj7KsxuNxX55YDhsV2TZBkIhQm5LymYgG7QQKzBKqy1zLH1OF5rPEfyDhe82a+xLWuz1iWR6vh+iemjvQBkeim3oEzjbhwt0QHCU4EbYHdxm55gP4p+CxLC9sIsWEIz0UW43Jz4Jcdak74PnI85D8WM+LratunNdCPwHxg7yTeHA0dR
- SKGfwHNX
- xaWf+UtC8q2yGKISCWX/h5yhOMq1YJWhaQ+Mkn+cm0J4/OdZRweoLmtKJbDcYY+V/X/2kOlofUYvUJLrxrjJAW6iVmhwtI6AMgsaedZ+fHW7zsD4kM4ZfWLS78/YHltsc/DrlVPDWspOhFKcTzh9LlU6UMmOxr8La2X6BFkH6cSLhCemIoYzy+W7dWda3qawmX4Eo8kNt/3AEr7otvz19gvX2Gg7ZczhnjFt3pZQxKhSqIOHEeb5GG8ZnTVY03QOMMBkM7QZ1ZMGT/tVLGtpK7KHSjksZv7dngDyesnXy/2+HpyBZnEyZ7M+Ak1YK7h8j+y/N++IMa7+Rm6jLcRbcsjG8nij396ojB1dn
+X-Stat-Signature: aoqxx6nr6wza7z71313hp79cg7ugsnw7
+X-HE-Tag: 1764464256-184373
+X-HE-Meta: U2FsdGVkX1/QI5SZld5c/ib1bJx1yjgHowt0dMMBYWPC5ukth/sLGVOaFvqZSNgsVOoe8nOMcKfnuFyJubhMoV4b+Pviz9z7ERgRZtpej1ASQn+NrXrMWlv9pToQz3q9sFo4bnr/tR9E+fTH9vYgmEBUqEXn412NCVg3qV+VHVVD/f2X9yiGnPvNKO6M62QHzbZmclFfNGW/fKT0c9T5r2uBAx2El3oiTm+D6FSPFJh650zpuEkAY7bU1dvRhoRja8MtuG2Rods+S4HjLOyDWgkPJ1l2mdNGdqKoiCFUpDiYKgbagA/nPzDg+8lj/2fVWWv5Q5TdacQZoSEuoyQ2t/S3CB7hYXegzyLFy+nYLR7MsfOx8rNq369yK0e5Wutkb2QGpKlRgEXLRjx1EL/b/r7S5DjhYbkZ2HHXJnNXs+PDTxPpP7gWZW0JhOA+fE5xEX9hdua82+2u6UCaNy094rE+R2Sj33RlVOXLJ+NAcx5nP2EQ2CD9hv5YUeHck1/nzv8WucZuAi3nRo77S7TQgaiJVYO38iWMKbrjbOsEg6yVpRxRMY42ezgMUu7fzAWtQ2iOgc08eg7+LPyPqh4pqL44kh/pbs8z6gEKw779t4tjsYiJIus2F6KyL2V0LyYRRBdCgHQji/I0Ch38K2XFteOchrEXP0p4QksdQ95MAulcre+FCo7JgNiqiU0mDVxXXm+AgKe+QHYxnETvz9LxG/WrThM8OYKM/nYQ5agxXJf8Tvad8z8ZbtA1FqYHIMhpmYwPgQUGS4LHpkmuZ09pjmtG92tGWQG5RyCN/9ewhY+46eiwciMG/tRwhBIKtm2i3V1ewIVr8gRYwVE0XUEwe51gDTHaFvKqZlhDAlkcWXDVfMxHTrdHGT6ZDrN9evVIHdfYsmm2Swd3UPgUOjk8OsiSW1457epB8kvnMmtTo9lVg6Iq07KArDoiJlJX26sA/QbSsgJsh1h4qck2y3w
+ Ey9LM/R/
+ cJF+SUBFE/CHhdbTdtaacByq0pDeXz6NSwDMVKcgZwn4CenFdFdTL8G/kiCkC9TyWGSDu4OWl4TdG4fbMKQhsmCx21QhpP/x1UeEdORaCYK7Wsf1EJakPA9SpIWpTVhTC3NAD4Ajmqdc++zZ/eNuc1r4Qwi2NzHMxSNIBi20ZTC+r/XELnNYaxfn3ifZgmjFygCsYVhqgqaUQQcYTPpdDqCXRHb1qOKBN1PUO3V0D3udek9iDxhA6z9pOtHIbAzxtpQrpZFonenl8gKTy5xYL7KgMejmPuHSS0Odsszy4w3pUjA4U+ihdRgAPs9eH35PLRuWUYyMP1+pF+87riZ17i7W1iJN+5zTZcI6AqPh9L8eEvA9dhpY/r/TZCVqlhj3icXcPk8F51H8YwmBPSJzVwpJpUdDzI3dnXUgQjuuF5vpK2eEmsy1/gjO+sOs+yz6+uG4SWl7AFlMGQHDO8Kun3y92TD31iOofProJWoH6dxby7C1oB1qLOUzESr2IvHSoy6iqrfi7mkSUbAkejR7pKSAHTFqba9fxvh8J1z8rG9uWTb3irVl8HhISi5YJ1Ym8hadwrWI/3MYwrAh+adKD/P/FewfvkPDInq3o6I1Yhqq0uCBSbdLzgYWAQdtbYt2dsQoKHzKjSs3Hms3DUHIjf4RWVTwDHH21NpmN16HgHbGKaTov9rtwr+fCktVDoQUIxqSS7PlNcQWj/520PZHfJFFPCyHU/1ViXQW511jlg6os1d4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,60 +130,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 29, 2025 at 6:52=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Sat, 29 Nov 2025 15:20:51 -0500 Pasha Tatashin <pasha.tatashin@soleen.=
-com> wrote:
->
-> > > > >    393  static long luo_ioctl(struct file *filep, unsigned int cm=
-d, unsigned long arg)
-> > > > >    394  {
-> > > > >    395          const struct luo_ioctl_op *op;
-> > > > >    396          struct luo_ucmd ucmd =3D {};
-> > > > >    397          union ucmd_buffer buf;
-> > > > >    398          unsigned int nr;
-> > > > >    399          int err;
-> > > > >    400
-> > > > >    401          nr =3D _IOC_NR(cmd);
-> > > > >  > 402          if (nr < LIVEUPDATE_CMD_BASE ||
-> > > > >    403              (nr - LIVEUPDATE_CMD_BASE) >=3D ARRAY_SIZE(lu=
-o_ioctl_ops)) {
-> > > >
-> > > > This is a false positive. The logic is designed to work generically
-> > > > for any base, similar to how it is handled in session ioctl and
-> > > > iommufd ictl. The warning only triggers because LIVEUPDATE_CMD_BASE
-> > > > happens to be 0 in this specific case.
-> > >
-> > > This is a difficult situation.
-> > >
-> > > In some cases smatch has found a bug, in other cases it's just being
-> > > irritating.
-> > >
-> > > I think there is value in smatch occasionally finding bugs, and to
-> > > support that we should try to rearrange false positives so that smatc=
-h
-> > > doesn't report on those.
-> > >
-> > > Perhaps there's some way we can do that here, without uglifying thing=
-s?
-> >
-> > Yes, we can make "unsigned int nr;" signed: "int nr;", should be OK.
-> > Would you like me to send a fix patch with this change?
->
-> Sure, thanks.  It's a bit lame using an inappropriate type but the
-> world won't end if we do.
+Mikulas Patocka <mpatocka@redhat.com>:
+https://lore.kernel.org/linux-pm/b32d0701-4399-9c5d-ecc8-071162df97a7@redhat.com/ :
+> Askar Safin requires swap and hibernation on the dm-integrity device mapper
+> target because he needs to protect his data.
+> 
+> This hits two problems:
+> 1. The kernel doesn't send the flush bio to the hibernation device after
+>    writing the image and before powering off - this is easy to fix
+> 2. The dm-integrity target keeps parts of the device in-memory - it keeps
+>    a journal and a dm-bufio cache in memory. If we hibernate and resume,
+>    the content of memory no longer matches the data on the hibernate
+>    partition and that may cause spurious errors - this is hard to fix
 
-I will send a patch.
+Let me add some more info on this patchset.
 
-Actually, I realized we can simply drop the nr < LIVEUPDATE_CMD_BASE
-check entirely.
+First of all, I already solved the problem for me personally:
+I wrote hackish patch, which fixes the problem. My patch is tested on
+my real hardware under load. I successfully use it for 2 weeks
+(I hibernated a lot of times during this period.)
+The patch is absolutely rock solid, and I absolutely sure it is correct.
+Unfortunately, it is not generic, it is tied to my particular configuration,
+it hard codes paths (!!!), and hence is non-upstreamable.
 
-Since nr is unsigned, if it is less than LIVEUPDATE_CMD_BASE, the
-subtraction (nr - LIVEUPDATE_CMD_BASE) will wrap around to a large
-positive value. This will trigger the >=3D ARRAY_SIZE check
-automatically. This solves the warning without needing to change nr to
-a signed type.
+Here is this patch for your information:
+https://zerobin.net/?ad6142bd67df015a#68Az6yBUxHA3AXB7jY1+clSRnR745olFHAByxwPGM08= .
 
-Pasha
+Feel free to use code from it.
+
+So I personally is not in hurry, I already have solution, which works for me.
+(But I am still available for testing.)
+
+
+Your patch has a problem: after "notify_swap_device" call, the pages can
+still be swapped out. "pm_restrict_gfp_mask" call in "hibernation_snapshot"
+prevents further swapping. Thus "notify_swap_device" should be called
+after "pm_restrict_gfp_mask" (but read on).
+
+I attempted to create test case, which would expose this problem. And I was
+unable to do so. Still I believe this is a real problem.
+
+
+Also, our problem is very similar to reason of introducing "filesystems_freeze"
+( https://elixir.bootlin.com/linux/v6.18-rc7/source/kernel/power/hibernate.c#L824 ).
+
+See problem description here:
+https://lore.kernel.org/all/0a76e074ef262ca857c61175dd3d0dc06b67ec42.camel@HansenPartnership.com/ .
+
+See also https://lwn.net/Articles/1018341/ .
+
+(See also this huge thread
+https://lore.kernel.org/all/20250327140613.25178-1-James.Bottomley@HansenPartnership.com/ .)
+
+"filesystems_freeze" logic is already implemented in mainline. It is gated
+behind /sys/power/freeze_filesystems .
+
+As you can see, authors of "filesystems_freeze" attempted to solve similar
+problem. Thus, we should probably flush buffers in "filesystems_freeze" call.
+Ideally, flushing of dm-integrity should be correctly ordered with freezing of filesystems
+to support complex storage hierarchies (i. e. swap on dm-integrity on loop
+device on some filesystem, etc).
+
+But... call to "filesystems_freeze" happens before "pm_restrict_gfp_mask" call.
+
+So... in this point I gave up, and I don't know what to do (i. e. what the upstream
+kernel should do).
+
+
+Feel free to ask any questions.
+
+
+I changed CCs for further exposure.
+
+-- 
+Askar Safin
 
