@@ -4,103 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9516FD116E2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 02:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE90BD116E2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 02:56:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5104F6B0005; Sat, 29 Nov 2025 21:49:39 -0500 (EST)
+	id 396BD6B0008; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E7AA6B0008; Sat, 29 Nov 2025 21:49:39 -0500 (EST)
+	id 3204D6B000C; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 424746B000C; Sat, 29 Nov 2025 21:49:39 -0500 (EST)
+	id 1E7F36B000D; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AD086B0008
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 21:49:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9349B5109E
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 02:49:38 +0000 (UTC)
-X-FDA: 84165742836.05.FD082E4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9AA1D180002
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 02:49:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Cmp4BN+X;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764470976; a=rsa-sha256;
-	cv=none;
-	b=6ERQiddTIfmPqS17PHnoZb5V+TfFKjwMXjaOWWOkpqknpThQoW2P2jKk1xEW0EdjP7ouEl
-	1KR7KuoTVv0cil1sCJ4uMW442lpKbexKW7LldlgyeF+7jbLS5O4zAsAjuEj6GD7GOfiwcb
-	oYXWgjGtu99mpv8GCPlrJz4B+fQ0niI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Cmp4BN+X;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 079FB6B0008
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 21:56:35 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93FA38A97D
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 02:56:34 +0000 (UTC)
+X-FDA: 84165760308.21.3D1CD9A
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B2F6A40003
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 02:56:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YxLWiYba;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764470976;
+	s=arc-20220608; t=1764471392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Og04/bt+yhEkeXfMP3slZPqApRz+VQNIptaZnXqjJQA=;
-	b=VF6Mc8xPKOSLu78zTLHSCAHCbZgZfh33o34fO3rSc/Q3Y1WEG3m0Icr3Dn5o7elXJQG5TO
-	gSmH88eHvzoFVNguTSwB6PUi5qEXTamXBZwJOP3jCKHeQ2TKjpT8ro4Yb+FTTZxd3/4e6h
-	h1hXyKWjjoqhlWjMQ2hSzgtqDyhOOzQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764470975;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Og04/bt+yhEkeXfMP3slZPqApRz+VQNIptaZnXqjJQA=;
-	b=Cmp4BN+XiI7zrr6QJMLm1YvuG9o38xgjBBzWQ3hD4tkkmk/HMY1sjrI5HXj0geQtlSuVOj
-	J90rxwZ6KkiGfLPGLKJ4vF+rpGMqTbFXsyZjjub7FQmfrr0gBVHCDFikF1VwwHQBPo0Em3
-	zURwZrbUZUbDGcIlaSKLXVoIXjXiks8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-449--EjyqyECN-2YKkxJ_5cbUA-1; Sat,
- 29 Nov 2025 21:49:29 -0500
-X-MC-Unique: -EjyqyECN-2YKkxJ_5cbUA-1
-X-Mimecast-MFC-AGG-ID: -EjyqyECN-2YKkxJ_5cbUA_1764470967
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BC3C1180048E;
-	Sun, 30 Nov 2025 02:49:25 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.6])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5839F1955F1A;
-	Sun, 30 Nov 2025 02:49:22 +0000 (UTC)
-Date: Sun, 30 Nov 2025 10:49:18 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Alexander Potapenko <glider@google.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, andreyknvl@gmail.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	elver@google.com, sj@kernel.org, lorenzo.stoakes@oracle.com,
-	snovitoll@gmail.com, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH v4 12/12] mm/kasan: make kasan=on|off take effect for all
- three modes
-Message-ID: <aSuwrkCSxvffKAZc@MiWiFi-R3L-srv>
-References: <20251128033320.1349620-1-bhe@redhat.com>
- <20251128033320.1349620-13-bhe@redhat.com>
- <CAG_fn=WpLtVhhOfU3pBKbJ2P3ih+PX4oW+MKAAmHRW0onOgSvg@mail.gmail.com>
+	bh=+XJGr14VL/NvhNbPuU96ozt3/FF8toa21mCuIzcZISc=;
+	b=WI5/vdSwdiYs2LqaWAsk/E+ZIrMKivtxYza9Hxn4LGG8iaM9rzktayjW5kwLCyRoABEGDi
+	NzPWh9Fp6WyTHnEX4hE23iZJOfDDbJV+6rO0E3mK5x+KdDtp7Tifsyj06V39yqL5EU5m8C
+	Hf6OWB5pzBFp/ESwJHNA7/FxXQMvTeY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764471392; a=rsa-sha256;
+	cv=none;
+	b=g21ljjCMq7GDx/qtXae++v599hU/1pO7D81yCGeIB8v2av5TF1poEvc4pvNrriQBDjeMxV
+	HPU7fXCN5HjccKxHWZM7XuKVGCFXlGB9NIDrtPqORv5u3StvORNqJpmPWdsviagwUWjiJc
+	6y/ADyhdkiV44IZS6AGq/JlZYRvo+ts=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YxLWiYba;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8b22624bcdaso364927685a.3
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 18:56:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764471392; x=1765076192; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+XJGr14VL/NvhNbPuU96ozt3/FF8toa21mCuIzcZISc=;
+        b=YxLWiYba2IqUSC1Cg+QF1wyMorzZ43vsFQYAxJPtpJUOySenl54dKj4o/PErYYAsjP
+         dhKu3xyN3eW8jk3ybIQ/K5CnzRRoQhswcYzSN2DuLVc+w3Sryi4MM8W2kCGC5RxWReOc
+         KK3nUbCnrEmrQuYYPknMDqvzk76wR4NVAVipnNWE7w08jgKWSSe+VTCQO/wWQqiSIXu0
+         cYW4msjL8gaLq5sdY1gFvRNd50fuPeJsZSX3RhMl0Daht8iO89PXcBtHQ+tQ95rf0PLK
+         OopG13vq3sdpo/oBCk2cGk0NE+8syzNDwx4aSviZd2lDe7F/Tmt4ixc1/Uzn94+CNPn0
+         XTTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764471392; x=1765076192;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+XJGr14VL/NvhNbPuU96ozt3/FF8toa21mCuIzcZISc=;
+        b=de0pu9x+5D6jj8wIUqJzm4ePbiMC+kPeB2eTIFWZO3p3MHMydAsPtlGBk7wLWR7gf0
+         y3g9vUgVljqTVtD7oqrzz8rTMjMyObb5LpmzV8W8V5C3zUrbYsf7GjbNxv60VK95wV7K
+         Sx8jnGwDzl2xTlzq8zJBJbCLxqi2qpsZOkPWwGhjUI/EGhXq7mlg8ZCVJg10P2HLei87
+         I56QwqJRbRc/FaioAhAbFsUjPuGHo3ARVKy+HdxuwP/gp3nlvppe1r8Orh7YztD6lpTQ
+         Spx7OexjI0hYslElR+bGUJ+mIAwmlYXTW79Kt/Hlo3oilYHpwX2l5auJSCZluCyHO7Gc
+         ki3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUo5RySk/kEsuILhl8ZoxqifOUrC/bjfj8huFj/sWDxxGAjCzIQZo0eoo5xlYTci06bkiRu+nbOSg==@kvack.org
+X-Gm-Message-State: AOJu0YwzCPxp5I6hC1RYMvzypYwFJ6fW0LadxIxIfw7QyiNT8SnVpPIc
+	Cj+pg8PZMna5331B61p9IGXgFEhZm7Y2XCc6MOZ/TCiJnjB4+AveQ+bGFocInHw+tYeh2dV+hB1
+	QPQDhwLCcgGJCxmHOCYK05LXZCxhvbYk=
+X-Gm-Gg: ASbGncvXpTeKukqnjPPRYCDELrSdUPaZJyGNg9MyOcoNfidEHe6ETyvMnZI6d9R2IPN
+	6d1O5Xus6G4JTWrCdD9gh+EAv9OSU0mUgoNiAD9WCPCkoFLUt0aVidi3PKjViz5BYZ1WcmOeL4f
+	BV1UNNZB8TxFSGj9CdaC5plLQ4LwWn04ynrtqZTLnreBsB2Y+wJUsqW607B31CUF1PQ9mKLaBS+
+	BFCfNITwu9LEGeWfPgNI7gBTp/gKihNwfwo0fn/wDQe/kn4aJkQytihO6JBo4xXfzz+6w==
+X-Google-Smtp-Source: AGHT+IF/3KjmDnaoo/ldsvPnDlqyF1g2t85SJ38riWFY6aw2+Rx4sE2XTJgJQYrytReWz53k6ueQn63K+Iy7zP31uHo=
+X-Received: by 2002:a05:620a:4407:b0:8b2:e565:50b5 with SMTP id
+ af79cd13be357-8b33d49a212mr4299108585a.60.1764471391497; Sat, 29 Nov 2025
+ 18:56:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG_fn=WpLtVhhOfU3pBKbJ2P3ih+PX4oW+MKAAmHRW0onOgSvg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9AA1D180002
-X-Stat-Signature: n84xarmrmeprirwmg7uhksyz3g8g8a7m
+References: <20251127011438.6918-1-21cnbao@gmail.com> <aSfO7fA-04SBtTug@casper.infradead.org>
+ <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
+ <aSip2mWX13sqPW_l@casper.infradead.org> <CAGsJ_4zWGYiu1wv=D7bV5zd0h8TEHTCARhyu_9_gL36PiNvbHQ@mail.gmail.com>
+ <CAJuCfpFVQJtvbj5fV2fmm4APhNZDL1qPg-YExw7gO1pmngC3Rw@mail.gmail.com>
+In-Reply-To: <CAJuCfpFVQJtvbj5fV2fmm4APhNZDL1qPg-YExw7gO1pmngC3Rw@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sun, 30 Nov 2025 10:56:20 +0800
+X-Gm-Features: AWmQ_bmtzU1YmYdPvDdBUL-_Xs4w9bVsuxx9pZGnImnoxnlMuoZQMERTeIMRpa0
+Message-ID: <CAGsJ_4wnwAet4svDrxT4sTdp24sweAU-2VyYn3iNPOoaKdXxPw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
+ page faults after I/O
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1764470976-370416
-X-HE-Meta: U2FsdGVkX19DX3QkPnNxnFDY0ytpQc7obzuzs36pJAdMyU2KdVXJbCl0b1ARJxzUjF6FNqdAMAAj6+gubv8vI2AAMyQbfK8sfM0WUMrhJk2nK9asJBm3tOwUnaBGmtRDOYXpKvxStWfGCHaK0R6hWj4WDzz93s/4xIvranTiOvDw9hGJm6YLKk5pXoUQLGsmPiRK6FdRtcoHZMHsMcoaU0COxqtiFY6rZFaJO3AN8dX2iWjMuenYSDAgldKsUzuP4Urm3h88tN8iyhi/HrFyXkcjQqCDjnedC06E+IjcquBgm/cj+TrFal2lbTGUnW+RoRv+PxwQ5uIVmK4pnF97WtD2bXM0ZLhihcdK+ZwLYGVP3LtymEh1VPg3weChOM7gFNFXDBuLaSLpT789n3VpTxg8+1KMaIT4mFJ3KL0g3/d4gNX0hbhzSR6bcL6GStGzp5yjArEOAAC6GOWwg3f3SPuj3ZamJ8HE11R2BIJFu6SqCe88J2qxmw8Z/z79dQYNc7da7S+wpwv0W56b7/zLfpx+xBQC77jGwj5ODV8lJh78HSIsM8mcM/3D0VuSJoW2lBDYF/HU8+zcBJBlR1NOMHR6wVrWAe1ZFc70PgcznpeQS6YslLs7b8JJFPwzd0mXQPvrp0uF8/ndwQcGwy2CU9izHExAQGLozKUxQlRZdxOviUZB/oRkCkIeeIgGxEV8ZfuUNvKAI4/hwnzxd03mtQIMsWr18ssgEDcIPxQraWj2Xl/MGGq9Ghf6M28j1cKqfgOMhvsEfwBsUsyg2NzECBQJ3g/LVExvH6VbXRXpF8xRZ+Q/30fBUSqk5N+Ng1HPirRKU6m1R9RgMjrNvwrgnGnXQyVrVALJtRvkWbplPWpsGdppAb4uKnavdkiyn+bF56DexW/AjqGYBc7fT/nnR4oG96LCaiPuQ1d4a6JFJTM0IwCqxRQBWKhwCrfFNsZo6QuTuc2QEoUZvEWgY8/
- ux1mGLIf
- cd7bCBKcg2iEEHJIxHLzuP/XD1JKFU90eL12VKKwyGusdg5SE4h243DZWNyPJkJuRspiOcmyrr5O3tK+bcIPR79hzGn3TKp9nIEvfs2W3Mz6ET9KI0Z1WVkzQP3W6w8b0Wmt+83VWls83XzHNMVnVsyxK/5UinPvFDsmQ/Q+UkV5fe1JvhKC/botgTuqAtjdNRUB/GAgBk3+798S4slFUSMxsDAh1I4TnwQJ1tNamXi905dtBNoErELnA8ElAh36yzLC4HSUQzxMPU5ryxvuTypzvpov3acXF8IOvHLDgIOPbI1gXkrqMHEdfpIsGDICXyMd6yed9B9CSobgknSVN/KKmqG/4KRlHWoKl27FOgvAHCfQsHIvZnARE1YBTAay+wkkbFhL2utebk+Q1Cnvvq2DYTrcH85Rrj4+jZRUgnqNPo+M/dWtmMqW5iqY5CQvRZzt6tSOfR69MyDCRl0226ffDPQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B2F6A40003
+X-Stat-Signature: ay4gijtccgxzdcjuzg5w3iy5968x935h
+X-HE-Tag: 1764471392-551213
+X-HE-Meta: U2FsdGVkX19h6H1bww6wSUC+J/ewwq5tJ0JPwgvRrQzm/AK0qkVTUAJ2JzGPbddtlgpUQdQQsSngjcE3YoLUYdrV2LTHiErIkaN229CCaB7cyhNB0XB976/66f9koHDGZ9L9zxcAAi/PsAKj+AQ9ZbT4xmYrTiLTfogTvlUWswASsJo+pKyWqOBhW2oisv42geRJrbylr9E4yIHPl2PyMbG3thddc9lJ4QeOQCoHARCUpbjQF9Tr9XeMfjtVcLyfHxde1iiyI0G25yRIsyFmsnTsOAn/BFAcXIrQIoNlVrmPd/9d5J7xH/mAiPE6zAxoFlyhMVljYEHxK5BEiv4JbdqwX1PAOtBN3ihp4cm4ncqtNRzV1mv5skvd+z+cAnTALuX96Pj4/ndVdm+m59pbWtVjYK8rBZxkNMZjHjY3BjBCNBQFz0BWJyH4IEDS4URYhxe0KA1I1ArDuunwSrEOAhpysTyfkicqL3AsLlLnU/Hx/CF8GWHaSXsusxZAyaxcwKle/UNYOOKWuEQCa+H/hTb+CA86opdkOgqy7MjfwSFr8NJSKibg3VgpyqMp+svGX5H3bJNak+/Zg2icndHYK/dcjWltOR6WDgD7lvjCo+LY2+PC6tBfEw9cOWgczrbBof3TsgqJ1ht01bOlK2/n3+7RmD05j64Bl+h348UMUgtdylag4v8vJSRL5ZeZEa9iN+JNsNUI/DmsBcomayFvIDkthoCZq6qKm6nw8uDhvDKJbmmdfR1o6+pNIy874Ter9apTKnoUvYegxvx5ho5MfJzv4ucdr2tA4KuBEsodm2fFucnW1KmL/DUrwkrN6vpvHNo02C06UBzejV8lN8aUZMfolRvLVxcPNSAdC69fQ0Iqas4WbGhoGFew+nLmvxBl0P2aCIF0uEDgbu6E1gqck2JgeMRG9e57l9yCt1zCWbfyLdNRp/b8F5EyJJsR5H9Df36zK4zNc8xLp0Q0FcO
+ w4LmF9sj
+ XU94RdXCpoCk2S/M+eT3H3TcIX7loUoLJpnGhVJdAiPZyA6oanAzZ/UlQPK9ugIvNEwKAjaKQ2Cl19GYmDtDdjfsUk13U/hzNDewrhFo14Lg6Knayp4iKgvNqYZ2J9XkvdEAvR2xs616gxdqkilPSnB9nINyLkU+AdDGYllgQutoXga9SyaxBwS8Mpg6Xwiv5NPyUjrfbxwoS76qEVheQalcaUpb0NwmjL+yRY5I8QBx++IgsP2vwMDmpPxM/li70vqSxycrCUIiaf6Gwn9hHR2n5jfBh+zZc+2v7z+EYbIu7ndK4gF76oyRGatUd8fuUV7+q6GQX8m387bMxns6DHtUwG2bAmdhNpH9qV4AB7EmvLTxh0jeN5z1vh02YOVI7xgTwgNN7B7dLZmdjxHQNGlI+1QWbZ3BenyliJJvpdiem+3yvCtchXboFlj2Fv90kaCXGYRnD+LGqZy/7elWnZtug9pkjSqmLofrmIUdgB952LMI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,18 +123,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/28/25 at 04:50pm, Alexander Potapenko wrote:
-> > @@ -30,7 +30,7 @@ static inline void kasan_enable(void)
-> >  /* For architectures that can enable KASAN early, use compile-time check. */
-> I think the behavior of kasan_enabled() is inconsistent with this comment now.
+On Sun, Nov 30, 2025 at 8:28=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Thu, Nov 27, 2025 at 2:29=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
+ote:
+> >
+> > On Fri, Nov 28, 2025 at 3:43=E2=80=AFAM Matthew Wilcox <willy@infradead=
+.org> wrote:
+> > >
+> > > [dropping individuals, leaving only mailing lists.  please don't send
+> > > this kind of thing to so many people in future]
+> > >
+> > > On Thu, Nov 27, 2025 at 12:22:16PM +0800, Barry Song wrote:
+> > > > On Thu, Nov 27, 2025 at 12:09=E2=80=AFPM Matthew Wilcox <willy@infr=
+adead.org> wrote:
+> > > > >
+> > > > > On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
+> > > > > > There is no need to always fall back to mmap_lock if the per-VM=
+A
+> > > > > > lock was released only to wait for pagecache or swapcache to
+> > > > > > become ready.
+> > > > >
+> > > > > Something I've been wondering about is removing all the "drop the=
+ MM
+> > > > > locks while we wait for I/O" gunk.  It's a nice amount of code re=
+moved:
+> > > >
+> > > > I think the point is that page fault handlers should avoid holding =
+the VMA
+> > > > lock or mmap_lock for too long while waiting for I/O. Otherwise, th=
+ose
+> > > > writers and readers will be stuck for a while.
+> > >
+> > > There's a usecase some of us have been discussing off-list for a few
+> > > weeks that our current strategy pessimises.  It's a process with
+> > > thousands (maybe tens of thousands) of threads.  It has much more map=
+ped
+> > > files than it has memory that cgroups will allow it to use.  So on a
+> > > page fault, we drop the vma lock, allocate a page of ram, kick off th=
+e
+> > > read, sleep waiting for the folio to come uptodate, once it is return=
+,
+> > > expecting the page to still be there when we reenter filemap_fault.
+> > > But it's under so much memory pressure that it's already been reclaim=
+ed
+> > > by the time we get back to it.  So all the threads just batter the
+> > > storage re-reading data.
+> >
+> > Is this entirely the fault of re-entering the page fault? Under extreme
+> > memory pressure, even if we map the pages, they can still be reclaimed
+> > quickly?
+> >
+> > >
+> > > If we don't drop the vma lock, we can insert the pages in the page ta=
+ble
+> > > and return, maybe getting some work done before this thread is
+> > > descheduled.
+> >
+> > If we need to protect the page from being reclaimed too early, the fix
+> > should reside within LRU management, not in page fault handling.
+> >
+> > Also, I gave an example where we may not drop the VMA lock if the folio=
+ is
+> > already up to date. That likely corresponds to waiting for the PTE mapp=
+ing to
+> > complete.
+> >
+> > >
+> > > This use case also manages to get utterly hung-up trying to do reclai=
+m
+> > > today with the mmap_lock held.  SO it manifests somewhat similarly to
+> > > your problem (everybody ends up blocked on mmap_lock) but it has a
+> > > rather different root cause.
+> > >
+> > > > I agree there=E2=80=99s room for improvement, but merely removing t=
+he "drop the MM
+> > > > locks while waiting for I/O" code is unlikely to improve performanc=
+e.
+> > >
+> > > I'm not sure it'd hurt performance.  The "drop mmap locks for I/O" co=
+de
+> > > was written before the VMA locking code was written.  I don't know th=
+at
+> > > it's actually helping these days.
+> >
+> > I am concerned that other write paths may still need to modify the VMA,=
+ for
+> > example during splitting. Tail latency has long been a significant issu=
+e for
+> > Android users, and we have observed it even with folio_lock, which has =
+much
+> > finer granularity than the VMA lock.
+>
+> Another corner case we need to consider is when there is a large VMA
+> covering most of the address space, so holding a VMA lock during IO
+> would resemble holding an mmap_lock, leading to the same issue that we
+> faced before "drop mmap locks for I/O". We discussed this with Matthew
+> in the context of the problem he mentioned (the page is reclaimed
+> before page fault retry happens) with no conclusion yet.
 
-You are right, that line should be removed. Thanks for careful checking.
+Suren, thank you very much for your input.
 
-> >  static __always_inline bool kasan_enabled(void)
-> >  {
-> > -       return IS_ENABLED(CONFIG_KASAN);
-> > +       return false;
-> >  }
-> 
+Right. I think we may discover more corner cases on Android in places
+where we previously saw VMA merging, such as between two native heap
+mmap areas. This can happen fairly often, and we don=E2=80=99t want long BI=
+O
+queues to block those writers.
 
+>
+> >
+> > >
+> > > > The change would be much more complex, so I=E2=80=99d prefer to lan=
+d the current
+> > > > patchset first. At least this way, we avoid falling back to mmap_lo=
+ck and
+> > > > causing contention or priority inversion, with minimal changes.
+> > >
+> > > Uh, this is an RFC patchset.  I'm giving you my comment, which is tha=
+t I
+> > > don't think this is the right direction to go in.  Any talk of "landi=
+ng"
+> > > these patches is extremely premature.
+> >
+> > While I agree that there are other approaches worth exploring, I
+> > remain entirely unconvinced that this patchset is the wrong
+> > direction. With the current retry logic, it substantially reduces
+> > mmap_lock acquisitions and represents a clear low-hanging fruit.
+> >
+> > Also, I am not referring to landing the RFC itself, but to a subsequent=
+ formal
+> > patchset that retries using the per-VMA lock.
+>
+> I don't know if this direction is the right one but I agree with
+> Matthew that we should consider alternatives before adopting a new
+> direction. Hopefully we can find one fix for both problems rather than
+> fixing each one in isolation.
+
+As I mentioned in a follow-up reply to Matthew[1], I think the current
+approach also helps in cases where pages are reclaimed during retries.
+Previously, we required mmap_lock to retry, so any contention made it
+hard to acquire and introduced high latency. During that time, pages
+could be reclaimed before mmap_lock was obtained. Now that we only
+require the per-VMA lock, retries can proceed much more easily than
+before.
+As long as we replace a big lock with a smaller one, there is less
+chance of getting stuck in D state.
+
+If either you or Matthew have a reproducer for this issue, I=E2=80=99d be
+happy to try it out.
+
+BTW, we also observed mmap_lock contention during MGLRU aging. TBH, the
+non-RMAP clearing of the PTE young bit does not seem helpful on arm64,
+which does not support non-leaf young bits at all. After disabling the
+feature below, we found that reclamation used less CPU and ran better.
+
+echo 1 >/sys/kernel/mm/lru_gen/enabled
+
+0x0002 Clearing the accessed bit in leaf page table entries in large
+       batches, when MMU sets it (e.g., on x86). This behavior can
+       theoretically worsen lock contention (mmap_lock). If it is
+       disabled, the multi-gen LRU will suffer a minor performance
+       degradation for workloads that contiguously map hot pages,
+       whose accessed bits can be otherwise cleared by fewer larger
+       batches.
+
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4wvaieWtTrK+koM3SFu9rDExkVHX5eUw=
+YiEotVqP-ndEQ@mail.gmail.com/
+
+Thanks
+Barry
 
