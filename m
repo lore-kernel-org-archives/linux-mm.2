@@ -4,117 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10281CFD2F6
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 00:28:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EE83CFD2F6
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Nov 2025 00:55:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECFCC6B0008; Sat, 29 Nov 2025 19:28:17 -0500 (EST)
+	id 5C36B6B000D; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA7C16B000C; Sat, 29 Nov 2025 19:28:17 -0500 (EST)
+	id 575176B0010; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBD316B000D; Sat, 29 Nov 2025 19:28:17 -0500 (EST)
+	id 463CF6B0012; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CB1516B0008
-	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:28:17 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 547CF140389
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:28:17 +0000 (UTC)
-X-FDA: 84165386634.18.66B63FC
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 73CD8100002
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:28:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kWZCjvuP;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 338C86B000D
+	for <linux-mm@kvack.org>; Sat, 29 Nov 2025 19:55:43 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C43535B6F5
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:55:42 +0000 (UTC)
+X-FDA: 84165455724.05.A429ACE
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DCA7A80003
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 00:55:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BPlo9+Sr;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764462495;
+	s=arc-20220608; t=1764464141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xdkwplQZXP7FjFnU+v366rZ413pi5bTQ7R9T4YIrwjA=;
-	b=uTnFQQQRx8OJQcUx96sV4uxi/R6jNreKeZHMNZNQ5t9gGXZ2pT9COP3FtRWSvzkHyCDX3t
-	jY34zOMLcC16PPWR1zSnpyXv37f1bJS6+9zfbdLH5PV9sJWj78ezGW8v7znjtSQKL/9itX
-	PHhqbu5/d6u1wVAJJZ3TDuRkAKwMsrE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764462495; a=rsa-sha256;
-	cv=none;
-	b=vIivgSeTWEfyvNl6gK0ZJ3Xz6Wirc9mt8vRLLDSD2QlPcNH9gJ2NWQPb+inAFOjoayEMj3
-	AY5onCQTAt70ZsAaOnwu9O/+Xnr+hpxcZS8C+O6hkhklpuEAIfpciSdlRynlF854754Gsq
-	pu1qjWxUyrUPeqfwkKiaYFqK4MoVs1I=
+	bh=ODvKrhGkwSlhPa8Jb1bNoOTwQQH/HZ4Eumvhds6swjA=;
+	b=IKpYfSvEaFAL4TD/gleeTAJH8B3uTeqaxE2RmIsP9HyzDAtmXmwgeQJbt5i8xabxMBW2JS
+	8H8rOkPKaDbv3gsPdAMRSoAjqxlsqRNwONqJolVEzivYL1EBH4Sntmt/6P0gGQUtFsIwfU
+	nYarcNkmwfcmdDC/7P/YB6eAB20cGLc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kWZCjvuP;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ee147baf7bso851931cf.1
-        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 16:28:15 -0800 (PST)
+	imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BPlo9+Sr;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764464141; a=rsa-sha256;
+	cv=none;
+	b=6etSgJzM6AgNSrvn57SyYEkbGHcTIMiOtfQ+rRMBmJa0hmf7J33t8hrkLqEyQKQ7JIOA7t
+	Q8WpRo8jXQvkQ9uTA2v9WT35I3rIWBnX9HSRYQLWw0ILuCKFAzCvJvzk3RWW0fg2fSJQX0
+	Y59niLFkYSHhIVGF508R28SAaBM9O/g=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b735b7326e5so680370766b.0
+        for <linux-mm@kvack.org>; Sat, 29 Nov 2025 16:55:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764462494; x=1765067294; darn=kvack.org;
+        d=soleen.com; s=google; t=1764464139; x=1765068939; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xdkwplQZXP7FjFnU+v366rZ413pi5bTQ7R9T4YIrwjA=;
-        b=kWZCjvuPZy027rJCjbCGN43+jWGUAyRjLnyfWXP0Uo3eN+9/WzZcGTbHNk/y0j4lXx
-         wxhsuL9oA6jHbOHZlChED8fxt8FUY769wrLM1ZwvRnA5xH2OvFEmn7sVszwqLbEoAwJe
-         +a8+edwcMYIhunqaXi8GjMAsduFXDzq/lhz5XlTZLHXjIs75P1+vMV2LmObTnCgo4GOm
-         CBoIhwMqXkLiTyQ6FPsBHWlAu3C0VHP95JNEeXpSX1egstAVYYXJ09urI+SHmnxTwj5Q
-         NHraelu3QrqyJ3TE7piWi4cvDQxlR7peY18DAvejRy3cj0S4jfV+SsdMCAUofQ1nzNfw
-         T2nw==
+        bh=ODvKrhGkwSlhPa8Jb1bNoOTwQQH/HZ4Eumvhds6swjA=;
+        b=BPlo9+Srk6mv0a547LtQbuzqzfZPFzpjUQ0xFxXzjC4II2Ye8jYYVpu/sUtHxIqH6a
+         Ff304BaDXQJ56LiqE9DXsYcm9nzd0p53LlIumx1Ne0E1c75yh/Odu5ckL9s0hwE2InPe
+         EIwcmKbcArzG0wSp4FTKQKhD0jWBTGEeQCqmqIms9cq3h326iyGpeEqJsnsGFs521glo
+         xfM1FkrjZFLDtYOZLzWe0cXS5Mm/A6acNpfEn0DgZFSF0zBqNNVu8T44awpHLRLG4gSx
+         q/04jAtE+k9+jeKwxEyR71gYBKDgLB1zAPel4HmcVlrEyXB9mI7AGdV+wwL+8C5FUv2V
+         bi6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764462494; x=1765067294;
+        d=1e100.net; s=20230601; t=1764464139; x=1765068939;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xdkwplQZXP7FjFnU+v366rZ413pi5bTQ7R9T4YIrwjA=;
-        b=dG+w1STKBuEqguH+YlmYn5bXVJDAFoQ1KirDP7Qeu8qQrfsIa/CZtob8y/ipMMILoY
-         csvmpkFoZJZOd0xlA8zSUPp6EUVZDDAM7lHNfcd7GvyaDaC+k7PwqW2VHRhXTXkBg24Z
-         xoaKcEofc3lMlIXHSbCS4SAxCeKT2aCQ9y3fzdWMA4V3eP0QE3QOI+X0KAiSPpiHZU5N
-         ITg8rqBcztVtjoKZzwCjH4NnTC+gv9BeTQPidWqvi2ajSAtHiU4WgjfYbTMdlhKD/kYS
-         LDrHqZB4wE41LAN5vFKxgwqRWePMMJ4+qRxtqGqDtmJXYexeYnugBL4y5raQr+kIztBZ
-         El4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUekLGhVZF9XEEiZVL5Ze5RUBNPwUGpbKtGzhHH7tEPrtTxB4eVstkcjfAQcljb/mZYRZJkYzjeKg==@kvack.org
-X-Gm-Message-State: AOJu0YywCKvsRS0VQRKIBRCesRtOWud0WxdvPUFI19LvxuDzZp3Gm6or
-	yO63sCG8hKWorKnxwmHWkoADp7nSATnJp8gopksdbIIxHW/VfzjYmOxtL9hz+4CAbt+zbKxOm3M
-	loH4fQKwhEUUvptq3rt1tuPf3hrwOMIp9aIRPuetW
-X-Gm-Gg: ASbGncvC+LJlaYmdq6MK+0tJPnzpwq1dUw2lWlmgwhqxqpKlNts7qlRh22/oHw3RG8P
-	MjErpK1ipzc3ITgYebcbXUMC6FY1YjPY36VSqpHVt2l2aYys8ei7X2GB3f4NJ+9n+2jDIC3f0/F
-	ALzWL1q5MCLHNuAkP8pPKev8qlj9MFTdwwxqqHeZnkEG32Npi/YxzMdDhyp33vS+Gn0UlydZe+y
-	8gTtWdkluFEauFcK9+oGDNauSV28kSLUDHCkWbSigw0/UlwfrSrMAxox+0ZGon9FuMTE0DNwnRM
-	faM=
-X-Google-Smtp-Source: AGHT+IHVf3jUEElcRU5UiElII1poREaWD5vAdlvPdSkAXo0sG8wTVz/TvP7Aj2pleN+SVZmwr5KEBBbORX+cZ2IR4bw=
-X-Received: by 2002:a05:622a:41:b0:4ed:7c45:9908 with SMTP id
- d75a77b69052e-4efd0ca4d05mr10929131cf.10.1764462494131; Sat, 29 Nov 2025
- 16:28:14 -0800 (PST)
+        bh=ODvKrhGkwSlhPa8Jb1bNoOTwQQH/HZ4Eumvhds6swjA=;
+        b=B2p6VNSGRQWpQX7C87/S8SwVftliOIDQP8yQbOkfZhFcjMuiuxb7SWaggvwXpiLBuS
+         8REvOvK3hdKBA+n2JXuxxRtV7tNeBkp8fxchO6v36ixuHs73JYSimwTTCfNhZgyiP4qr
+         +IcZuNKI/ssPa3tPB+PLi4ZTElyBVfBdWTeWBRkmxaR8noObZ4lnwWO5eFpHmLKDh00q
+         dfDfT04A/4aDl5vmdL1s8B6+qNLNMLy+HODfhc6CPTYpbw/BqVQ4bajduBu1aHOsUSQM
+         YImMMvn98W2iBttRM/W5h8EXUpU/aDjqM9DkAlo1L8x4dp4nxjgFpqiqrw6Qr4Wq5nEo
+         qvNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyPZ/t0xJ8iCWXVVJXSqA1rlfXKFc4eWxZIgmc74SlkRBKwjCsyehY+HLVidYF+h4sbuGcSjzsog==@kvack.org
+X-Gm-Message-State: AOJu0YyhSTOlmjEfsFSoSQGOv6H2dFLWxWJDgjV7Kx4Pd8NmKe93t79x
+	IxTkvz+f0G1mb9e2tT9yAmJ9Gjeixzt+96fbsOKs2nY5+21soPqxxThOLw0wqEBn55iLXdmwyQd
+	fe+ix6pWToXz1g5EMUnLVvB2P435QQY0H9+1TFKPDjQ==
+X-Gm-Gg: ASbGnctaZeA8K4PtjEwlSpgG8TEYSXfehDC4bll9eua0TBGDKo7F12uPPUyxDYAuwHP
+	szdmgbFCdQjn+PMlfElCX2hdYfwQs3b+eggjMThnh+j/m72Ld89Kq5rBgEKso8DCsxutstM5quJ
+	wqRlYKes94MXaTS0IBt+qTPePxYGRqLY4h4pA0ASLq+b9wevO5uMC94mfQ2awhclMD7bc/GJkvR
+	YGS0VDUT5OmwMpTOyFDOFfvmkzEhJP5XQKgmIZQFYoIq4MOo23tae31ag8x45orV82Y
+X-Google-Smtp-Source: AGHT+IH6LUCi5rjA0Lr0nzqfx5DbAhNHqzUxGTdNtAaquPcmdopH9wDpInveo3rVf28FnQZ02b/ePqsUDSgGQlxuq+I=
+X-Received: by 2002:a17:907:7e94:b0:b77:1b05:a082 with SMTP id
+ a640c23a62f3a-b771b05a47bmr571754566b.2.1764464139115; Sat, 29 Nov 2025
+ 16:55:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20251127011438.6918-1-21cnbao@gmail.com> <aSfO7fA-04SBtTug@casper.infradead.org>
- <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
- <aSip2mWX13sqPW_l@casper.infradead.org> <CAGsJ_4zWGYiu1wv=D7bV5zd0h8TEHTCARhyu_9_gL36PiNvbHQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zWGYiu1wv=D7bV5zd0h8TEHTCARhyu_9_gL36PiNvbHQ@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 29 Nov 2025 18:28:01 -0600
-X-Gm-Features: AWmQ_blhKzVTz_OrE9p2RQX3OU7BXlogLE0D_GARspeRWjGy1hzzkkEbN5F-bD8
-Message-ID: <CAJuCfpFVQJtvbj5fV2fmm4APhNZDL1qPg-YExw7gO1pmngC3Rw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
- page faults after I/O
-To: Barry Song <21cnbao@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
+References: <202511280300.6pvBmXUS-lkp@intel.com> <CA+CK2bCmp4gjpyND2=Chdz-EfRAF20unYzO2dwQb+ZTEihgk3w@mail.gmail.com>
+ <20251129120040.fb60e8a35d54d66c0bdbdf33@linux-foundation.org>
+ <CA+CK2bBJmj3nK4QhAC5pr+5nS0vRv_5cOxAr_mohC+YreiZPcg@mail.gmail.com> <20251129155221.d5f3c519747d8d492aa17462@linux-foundation.org>
+In-Reply-To: <20251129155221.d5f3c519747d8d492aa17462@linux-foundation.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sat, 29 Nov 2025 19:55:02 -0500
+X-Gm-Features: AWmQ_bnGr4rnCvxKPzqTx69_qNLEustqMkD3XbJsdWt8w5JVvGcgYvW5EMJahow
+Message-ID: <CA+CK2bCS3DtWR5u-z1jwyQLxLjgEJuvd916Mn5wviBLD_M6Fww@mail.gmail.com>
+Subject: Re: [linux-next:master 12118/12398] kernel/liveupdate/luo_core.c:402
+ luo_ioctl() warn: unsigned 'nr' is never less than zero.
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: mdppgfm7qx5kx8ubume3gs8q6f47fatz
 X-Rspam-User: 
-X-Stat-Signature: to78hydpn9cswk3wkinuoc8kmep8ihqb
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 73CD8100002
-X-HE-Tag: 1764462495-635597
-X-HE-Meta: U2FsdGVkX1+Vck+eU9gEN1o+OXavDT4INXFom7lC5Q3yWZJuKiNidYFfKIqMj8zXrurU4pC8vx8cE/sOgIGNV67q26g2AOnmWcUZH7CD4GpOYSyAYjD0iHnn9VcFaffEbKd3giZYT1QYE8SDHH3AI6+1HPkMbdlhB1+WjUFqej8oNOGucn/T9NSXZ2JutKeBr+PTmiOQ5RNvsnfCBmkVlLZuze7s1CnGkMs30ytEs+BFzEDgYxAzb2eiubhnk3/L5HGhr0hY/OHUTw7T3VJqGdh4MIdscXIaQUHXGA0ab5nbP/nbjXTeK8gnnC9qRgbkNQOy/xjJva+xUEZ1oJFUlLmwRyszTD3CkQVBMYfx1e/0P/qNQLVzPZnHz77DMBne2FyOyQJpgFJt+lktTc8dLZnpN3cT5wvt6icn/XVUjAFZ44y7j8gtiVmCxTVnUEDbIwip03VkKFgpnKCLDcj0n5YRTYfSV2SZdX5p9O6tJUcaBcXujTLFjfgC11ZGSLjwlrwWhSQfw9nQ34rdxFZ+BLOILXrxE3oWlO2dyY+VIlkByXe9d8gesMzTvaMUnmnl7pXJNGP1flkZ/upr6F/xsdZjmDPIAJpByCGxoWYFYcjemg8LbHTDE/FLKCDsIwY3AR7xpeSJqiW9OTJLbv61j+fgn7ZN0CIaZdBxXg5Enffv6C64N5C3/gMTBXE3R2rBeXLI3LN1k/bLzaut4H6SKe9AZG1pxMug7bTsuYu1RjcuJLrkyxfNryz1J+ss7C1YbElVitjN064DZ/9ixdJlxpacLsiUMFIheYwuWrODVhqlPhvuRB8GLjIG14X7/JpL6ADUzCLeO4eBQYQNxpt1BWCdCCrgejRsLAUD+oNRXDwqG36cmHKQrPGwqoXxWyArOo9HzTI6NAP9rjWbY29OxqB1/yTEdFXP7/20kpNcdIwt+qDZKVlbOx08qM7dXMHvBXS/sjFZ5/0dIi0vq6Z
- nA3FRkX5
- dNUIQqKXKLOKg+bYBs9PlYAgaMKccgdHJQxO2KmOP+DPK3V+LHqp9eENuuj0kRMsqTS8fbPG2ojL7vdf/Uez2TJXQb+MSaJhPjhlYb5X7IdP38evtAtI5BrVmtD8uaac0q+SmdUG+qREeAUau2KXloWM3tdh6qym0fMQit/RE06ZQuncnGpc7jDwBm4jf67qJ3SMIuVD6kggdgo9mjLMK6budhdjvlZHJxgWHEpawm5F7TcVRGVl0PTdvqqJvYaX4kL0tD1qJDkDw/9dFB3d7W22fUA==
+X-Rspamd-Queue-Id: DCA7A80003
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764464140-425338
+X-HE-Meta: U2FsdGVkX192VLy7OUHIjcE4rAbBGPpSxGCc0SAtiyBsNM8bhrHWQMFw0coKnkddEwuSQN06LVAoXGkyVGR8EXbY6cjXQapTDPKHvhMlGEq6IsRyXT2Ph+6NKK1jRvC1JEmLbUFZwDxn/d1ak2Y+aT7BDpnds0zruzmRDGWyxVCl0sjDP1JSD0lnj1Q/hLylF1OVWxIld7a7n6E0vXb1KIgmK396fLnGJOuvKN7xhxDdJX1qLLWzLDWNYSfhD47LvQVwoXlTTIRHsYjei3syVDsGk8cv/lKMo8RkH+U+vaPMdiDeZDd6GI2qvO+VUCHV/sq94KZLw2aJ75zwZOvdJIK58TBtnpxMDxQjnPc1rOPJJj4twMOejOvP0/FlEsULbrUtVcleA2LxX7y5aeuEo4m59wsMQtPALdzl+68yR/PnClwSR8OCFTPs2CY+I0oYcfyQ6Ue1pE2u6xRUp+80qhbePGJo4vfkcaybTNUFjqFHs635NT7juRtm4i0DfuonnLqwWdm811bUrSkdChua6evHLOSd9vX0KabBzsmkpD71Rg63X+dyH7Tr5uPJec6R5zfu9HJpAk52t7qXCnuTAZqA+imG9oaXDH0+G1s2SQbmtYIvDqrbFrL0ci/PELgoqhbxzzM/heNvTNE9cY9WT+g13lSNG9s17mv+B7QZKqlfwLWGVp+EdYdSL6zQx0IF80H061t7vNAlfXP1orMdEhrfQTXwWeUS7EV05VLX4FXbHKBGuPDNtQCg76yB1ENCZaO0qnWMAq03xti9aJ5TcNTn/NdZ5lSYASFMwj7KsxuNxX55YDhsV2TZBkIhQm5LymYgG7QQKzBKqy1zLH1OF5rPEfyDhe82a+xLWuz1iWR6vh+iemjvQBkeim3oEzjbhwt0QHCU4EbYHdxm55gP4p+CxLC9sIsWEIz0UW43Jz4Jcdak74PnI85D8WM+LratunNdCPwHxg7yTeHA0dR
+ SKGfwHNX
+ xaWf+UtC8q2yGKISCWX/h5yhOMq1YJWhaQ+Mkn+cm0J4/OdZRweoLmtKJbDcYY+V/X/2kOlofUYvUJLrxrjJAW6iVmhwtI6AMgsaedZ+fHW7zsD4kM4ZfWLS78/YHltsc/DrlVPDWspOhFKcTzh9LlU6UMmOxr8La2X6BFkH6cSLhCemIoYzy+W7dWda3qawmX4Eo8kNt/3AEr7otvz19gvX2Gg7ZczhnjFt3pZQxKhSqIOHEeb5GG8ZnTVY03QOMMBkM7QZ1ZMGT/tVLGtpK7KHSjksZv7dngDyesnXy/2+HpyBZnEyZ7M+Ak1YK7h8j+y/N++IMa7+Rm6jLcRbcsjG8nij396ojB1dn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,125 +120,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 27, 2025 at 2:29=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
-e:
+On Sat, Nov 29, 2025 at 6:52=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
 >
-> On Fri, Nov 28, 2025 at 3:43=E2=80=AFAM Matthew Wilcox <willy@infradead.o=
-rg> wrote:
-> >
-> > [dropping individuals, leaving only mailing lists.  please don't send
-> > this kind of thing to so many people in future]
-> >
-> > On Thu, Nov 27, 2025 at 12:22:16PM +0800, Barry Song wrote:
-> > > On Thu, Nov 27, 2025 at 12:09=E2=80=AFPM Matthew Wilcox <willy@infrad=
-ead.org> wrote:
+> On Sat, 29 Nov 2025 15:20:51 -0500 Pasha Tatashin <pasha.tatashin@soleen.=
+com> wrote:
+>
+> > > > >    393  static long luo_ioctl(struct file *filep, unsigned int cm=
+d, unsigned long arg)
+> > > > >    394  {
+> > > > >    395          const struct luo_ioctl_op *op;
+> > > > >    396          struct luo_ucmd ucmd =3D {};
+> > > > >    397          union ucmd_buffer buf;
+> > > > >    398          unsigned int nr;
+> > > > >    399          int err;
+> > > > >    400
+> > > > >    401          nr =3D _IOC_NR(cmd);
+> > > > >  > 402          if (nr < LIVEUPDATE_CMD_BASE ||
+> > > > >    403              (nr - LIVEUPDATE_CMD_BASE) >=3D ARRAY_SIZE(lu=
+o_ioctl_ops)) {
 > > > >
-> > > > On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
-> > > > > There is no need to always fall back to mmap_lock if the per-VMA
-> > > > > lock was released only to wait for pagecache or swapcache to
-> > > > > become ready.
-> > > >
-> > > > Something I've been wondering about is removing all the "drop the M=
-M
-> > > > locks while we wait for I/O" gunk.  It's a nice amount of code remo=
-ved:
+> > > > This is a false positive. The logic is designed to work generically
+> > > > for any base, similar to how it is handled in session ioctl and
+> > > > iommufd ictl. The warning only triggers because LIVEUPDATE_CMD_BASE
+> > > > happens to be 0 in this specific case.
 > > >
-> > > I think the point is that page fault handlers should avoid holding th=
-e VMA
-> > > lock or mmap_lock for too long while waiting for I/O. Otherwise, thos=
-e
-> > > writers and readers will be stuck for a while.
+> > > This is a difficult situation.
+> > >
+> > > In some cases smatch has found a bug, in other cases it's just being
+> > > irritating.
+> > >
+> > > I think there is value in smatch occasionally finding bugs, and to
+> > > support that we should try to rearrange false positives so that smatc=
+h
+> > > doesn't report on those.
+> > >
+> > > Perhaps there's some way we can do that here, without uglifying thing=
+s?
 > >
-> > There's a usecase some of us have been discussing off-list for a few
-> > weeks that our current strategy pessimises.  It's a process with
-> > thousands (maybe tens of thousands) of threads.  It has much more mappe=
-d
-> > files than it has memory that cgroups will allow it to use.  So on a
-> > page fault, we drop the vma lock, allocate a page of ram, kick off the
-> > read, sleep waiting for the folio to come uptodate, once it is return,
-> > expecting the page to still be there when we reenter filemap_fault.
-> > But it's under so much memory pressure that it's already been reclaimed
-> > by the time we get back to it.  So all the threads just batter the
-> > storage re-reading data.
+> > Yes, we can make "unsigned int nr;" signed: "int nr;", should be OK.
+> > Would you like me to send a fix patch with this change?
 >
-> Is this entirely the fault of re-entering the page fault? Under extreme
-> memory pressure, even if we map the pages, they can still be reclaimed
-> quickly?
->
-> >
-> > If we don't drop the vma lock, we can insert the pages in the page tabl=
-e
-> > and return, maybe getting some work done before this thread is
-> > descheduled.
->
-> If we need to protect the page from being reclaimed too early, the fix
-> should reside within LRU management, not in page fault handling.
->
-> Also, I gave an example where we may not drop the VMA lock if the folio i=
-s
-> already up to date. That likely corresponds to waiting for the PTE mappin=
-g to
-> complete.
->
-> >
-> > This use case also manages to get utterly hung-up trying to do reclaim
-> > today with the mmap_lock held.  SO it manifests somewhat similarly to
-> > your problem (everybody ends up blocked on mmap_lock) but it has a
-> > rather different root cause.
-> >
-> > > I agree there=E2=80=99s room for improvement, but merely removing the=
- "drop the MM
-> > > locks while waiting for I/O" code is unlikely to improve performance.
-> >
-> > I'm not sure it'd hurt performance.  The "drop mmap locks for I/O" code
-> > was written before the VMA locking code was written.  I don't know that
-> > it's actually helping these days.
->
-> I am concerned that other write paths may still need to modify the VMA, f=
-or
-> example during splitting. Tail latency has long been a significant issue =
-for
-> Android users, and we have observed it even with folio_lock, which has mu=
-ch
-> finer granularity than the VMA lock.
+> Sure, thanks.  It's a bit lame using an inappropriate type but the
+> world won't end if we do.
 
-Another corner case we need to consider is when there is a large VMA
-covering most of the address space, so holding a VMA lock during IO
-would resemble holding an mmap_lock, leading to the same issue that we
-faced before "drop mmap locks for I/O". We discussed this with Matthew
-in the context of the problem he mentioned (the page is reclaimed
-before page fault retry happens) with no conclusion yet.
+I will send a patch.
 
->
-> >
-> > > The change would be much more complex, so I=E2=80=99d prefer to land =
-the current
-> > > patchset first. At least this way, we avoid falling back to mmap_lock=
- and
-> > > causing contention or priority inversion, with minimal changes.
-> >
-> > Uh, this is an RFC patchset.  I'm giving you my comment, which is that =
-I
-> > don't think this is the right direction to go in.  Any talk of "landing=
-"
-> > these patches is extremely premature.
->
-> While I agree that there are other approaches worth exploring, I
-> remain entirely unconvinced that this patchset is the wrong
-> direction. With the current retry logic, it substantially reduces
-> mmap_lock acquisitions and represents a clear low-hanging fruit.
->
-> Also, I am not referring to landing the RFC itself, but to a subsequent f=
-ormal
-> patchset that retries using the per-VMA lock.
+Actually, I realized we can simply drop the nr < LIVEUPDATE_CMD_BASE
+check entirely.
 
-I don't know if this direction is the right one but I agree with
-Matthew that we should consider alternatives before adopting a new
-direction. Hopefully we can find one fix for both problems rather than
-fixing each one in isolation.
+Since nr is unsigned, if it is less than LIVEUPDATE_CMD_BASE, the
+subtraction (nr - LIVEUPDATE_CMD_BASE) will wrap around to a large
+positive value. This will trigger the >=3D ARRAY_SIZE check
+automatically. This solves the warning without needing to change nr to
+a signed type.
 
->
-> Thanks
-> Barry
->
+Pasha
 
