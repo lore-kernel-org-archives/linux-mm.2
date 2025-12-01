@@ -4,111 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01E2ED111A8
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 07:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D226D116E2
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 07:13:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FFC16B0011; Mon,  1 Dec 2025 02:03:01 -0500 (EST)
+	id DC3E46B0006; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D8266B0022; Mon,  1 Dec 2025 02:03:01 -0500 (EST)
+	id D74F56B0011; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0141A6B0023; Mon,  1 Dec 2025 02:03:00 -0500 (EST)
+	id C8A9C6B0022; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E6BF56B0011
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:03:00 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A09B1160BB6
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:03:00 +0000 (UTC)
-X-FDA: 84170010120.15.FC46F36
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F1B6B0006
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 683ABBBB35
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:13:28 +0000 (UTC)
+X-FDA: 84170036496.29.40E49A6
 Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2C79A180009
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:02:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id AF9E140012
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:13:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf12.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764573206; a=rsa-sha256;
+	cv=none;
+	b=dciyawZ22wpmzdNw7uoEKVnET05vEoTxxluOkl+QAXXcPkPbcFIDociG8t567qV/TQdqz+
+	KfSoex+92OGTG5u+Plggy+C0TvBDXZmsQnLU/TvTrJfVHdEhtlHU0ps2FP36cwhd5sziv4
+	sSg7gmwfeUsOqFiqi5gEdlwT2jA+9AA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf12.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764572578;
+	s=arc-20220608; t=1764573206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=keLVryX8GeIo0Mn0JMDPzQGbake1lsSDO9bIs82o8/A=;
-	b=o4RE68/x+To0331Spdb+hD1P4rdUxB++x4z3z+ZW/ZBWdJOtLSckBlgsYouOOI7WvRVQo8
-	smij+Dk1vcyOH/3Ot+D6zF7j2QTVRt123U3gMyTpZiAQmNF7Kp4Mx/CKfLqTF0itxhhtu+
-	TrjVXrmgWkKhDZHeQ2VwUb1c4Zmv3HA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764572578; a=rsa-sha256;
-	cv=none;
-	b=NH1Nm5Lr0UOo+/Jbpj5/JZSIClsMw76UgANl79To8Jhu9CBqEXr2hByPlZESy3CO40iKmo
-	7wxJjJoSpFnDxOO65N1mOVSYIt63XkgNl6BAmx6Z0JDNhS8prcDnrU1cv5wE8SMB4Qs6zp
-	LVH9dEOztiUconTszOXgj62V7mMe6Zk=
-Received: from w011.hihonor.com (unknown [10.68.20.122])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dKZZL3V3YzYl9BZ;
-	Mon,  1 Dec 2025 15:01:30 +0800 (CST)
-Received: from w007.hihonor.com (10.68.16.91) by w011.hihonor.com
- (10.68.20.122) with Microsoft SMTP Server (version=TLS1_2,
+	bh=WFLM0Bti8oam3KIh06SJIzl+iipcMH8RHY8ma7FnqcY=;
+	b=oAZEfGfH82D5PK33S/feJboPPMMIdZcy7hV+0B5mWFcXfWt7hEwuh64/7v8vkV4kb7kxm/
+	HfM0+jlQfb4TE1kiSZrX/k//zWM9BFP/qP35Xt13CxIfTWYFM3FKp6M1Ev0q0GgL5nKEym
+	11p80XDvAxsEPF0e09jkzE3y8qLOU9I=
+Received: from w013.hihonor.com (unknown [10.68.26.19])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dKZpQ039qzYl9BZ;
+	Mon,  1 Dec 2025 15:11:58 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w013.hihonor.com
+ (10.68.26.19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Mon, 1 Dec
- 2025 15:02:54 +0800
-Received: from w002.hihonor.com (10.68.28.120) by w007.hihonor.com
- (10.68.16.91) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Mon, 1 Dec
- 2025 15:02:53 +0800
-Received: from w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3]) by
- w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3%14]) with mapi id
- 15.02.2562.027; Mon, 1 Dec 2025 15:02:53 +0800
-From: wangzicheng <wangzicheng@honor.com>
-To: Barry Song <21cnbao@gmail.com>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org"
-	<hannes@cmpxchg.org>, "david@redhat.com" <david@redhat.com>,
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "yuanchu@google.com"
-	<yuanchu@google.com>, "mhocko@kernel.org" <mhocko@kernel.org>,
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"weixugc@google.com" <weixugc@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "corbet@lwn.net" <corbet@lwn.net>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, wangtao <tao.wangtao@honor.com>, "wangzhen
- 00021541" <wangzhen5@honor.com>, zhongjinji 00025326 <zhongjinji@honor.com>
-Subject: RE: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
-Thread-Topic: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
-Thread-Index: AQHcYBJK8KKXMResfEqv9fHMnnJz9rUHrbeAgAAP74CAA+3ugIAApiiQgAAOWIA=
-Date: Mon, 1 Dec 2025 07:02:53 +0000
-Message-ID: <e4cc633a77cb46b6bea4667d3886c000@honor.com>
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
- <aSm800KsCAptVZKu@casper.infradead.org>
- <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
- <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
- <86c62472b5874ea2833587f1847958df@honor.com>
-In-Reply-To: <86c62472b5874ea2833587f1847958df@honor.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.229]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 2025 15:13:21 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 1 Dec
+ 2025 15:13:21 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <21cnbao@gmail.com>
+CC: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>,
+	<axelrasmussen@google.com>, <corbet@lwn.net>, <david@redhat.com>,
+	<hannes@cmpxchg.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<lorenzo.stoakes@oracle.com>, <mhocko@kernel.org>, <mhocko@suse.com>,
+	<rppt@kernel.org>, <shakeel.butt@linux.dev>, <surenb@google.com>,
+	<vbabka@suse.cz>, <wangzicheng@honor.com>, <weixugc@google.com>,
+	<willy@infradead.org>, <yuanchu@google.com>, <zhengqi.arch@bytedance.com>
+Subject: RE: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from debugfs to procfs
+Date: Mon, 1 Dec 2025 15:13:16 +0800
+Message-ID: <20251201071316.19607-1-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
+References: <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Stat-Signature: ju8ibwkeauqhjsibmzqk7eshmto5f7wu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w002.hihonor.com (10.68.28.120) To a018.hihonor.com
+ (10.68.17.250)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AF9E140012
+X-Stat-Signature: 3zmea1sz1gasfh589cf6dmnmg4auh6yi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C79A180009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764572577-658289
-X-HE-Meta: U2FsdGVkX19lM7eDeBIuf6IC0whHSVDBl3mmV/zl2D9fTbSZAbO1VGol3xKhbbZY/r7+25pcr/zsTQ0W8L3I3tlFJfaHbp+k5RS2hxk/NI04ZDVf8FvqedDqm3USdu0tLSkgbwSGtE/h88/DmpMeQ+vXqkj8aICIceKef8C8abCkqwReA0ZcbHZDqgMw895CRcgqLGSNiwFKSOE4AWFMN4QaU8X7n6YgUx8OcNJlL28ZC/aXISflME7qivEOuesT8kboRonCtJ04dJBzqJihpzAo2AKa06EdQPJHZR09B5V65wwDn7ulb4XcD5BkIhQ6iCVu+l0Af443Nq7C9v24A5+Gem173r0EATXwQkKRpWRNy8JYvxj56T1C5rjEwxOW8C5vtZg/4NHahKadqrPo7mva1qeLKP5+JecdB5IA4p6JFoBrm9FG7uD85qVLk3z0dwe6wdVMD5j05w3hcqKPKVlOERG+GTJbvrbPxMmhl/I4GD+VzUz5ZAzInYx397ObOv7PEaRS2BcrHNJBGLknm4BgxHdSeO8durVrvItEIz2h8SpFqjfRbN9wG32+c8zFP6RvxqFIq7B/XqdqtWfsLQbX/JhzZaF8w+LDxQfjD4CjVjoud052NXm5g2Uq3GfjTl5LtVDPg+9r/vtW1YFCbHZOOgHCBtZ0YiOo/1naMq2SiK/tsvLva+irgy6mwXUqG5QF2+EOa4XMlL0aRKKUjQ2OIVbSRAK2jaojiW7Ye5bI4B415bN7ARnkK6ARy+NhDIxGqcZbdn5dKjNLld8ZX5un4n5UezgvZuSjrTdVdwP4ekcjyg2tmiyrwEmXBqOwoLXVZsfWA4VDP4zmd3qirDLgcvYbgnVVRJlSHpT07P27zkUTwcqsJwTsFPQlECFXl3MxNRyUa5bU67Qfl/Ctwk//t7MdqrLMyuITCPMwLMAVPHdoySN0Q3CA+jGdlqYBzHxPvot/BQhRCnVJQr0
- CReJ/YnS
- 0NcpswvSn/nQFzlIhlaCM+sBh04gApjkX5/pGkZsRda9R3+WYqkv1x83P0zymiu7r1j5DRWwpDCK4OAKwzSSoR4+6bDbR3Esqhu+BOFbyJ87Uh2iZFEq/hC7YQvY/plnD3Mlr2IBFRdb/ZH9775SWlI0+UxlRzDgBuLdQdYPJBp/+YU+16ProECKxRidlDDoaSdY/jQ24uQPPzy3xiDHbG3ENeJtCuuGbibVWXHcJueXq2MrfnnZpTHdzAsm8sas5g5RuhDiyawH/kMfa5jngfaxu9deG7btn22QkSouJHVGhnA1FDwHFVs0JTZEtSgoBbWmxd5MAJpoJAo3qDWDcJdGqjPVzVKWe4hqt3cd2WAQZhKvGnIpaY1wLbd0qwJ55zKl7O/99E6D93Dhj2fQEWh2JnQ==
+X-HE-Tag: 1764573205-225697
+X-HE-Meta: U2FsdGVkX1/FPv8D1A+kEmLMidHm4MfphL29BUM4Qbns6aCAk2j9UcZkY7WDPE4HDU2k8/26O7IokibOqVlc0tSdGVmKhiN78Ko5yR0viWCuKWwaD4IE3kc38GCDRiaZ4aEM5fEcltEibUqaDrveriljk6hvGEryWUJwVXToUNJ5Z/kdTjX5SUFIUSGehFvtc6Dc8J/UhKsqmL8KX8SqnhNr5U5k7K58w3OXQAoOTwu4c/DrLit8x49WykBYT0av/jUxqXbRIBlSqNIOPY8PcYVfQ5UWN4dXYAj1RDmGtD1ZlYAlHfdk1/Big5hlEKUV8KF6SRrrIMKRJJF8aMfCJjUSBmtQEh5YF8k1+lMXXKuhncFda7nN0puWf/UvAbGwVhIePyR5pvCKFdTMD3nJZ4ErZSBl/ZsatjEYBkrx8YeLsJ+0BXlOXnXTx0sN3LrU6BJsiytkJ7hQU24rcKJxScRptpod65ahOn8Kidt/6Dy70GoA4AA3dspAv+aEmpvyyL2BctbGiqMv8NSuxOfpxXPIoFppBUVgH9CVnmspo5DhM61MUW6K1Ii8w7cFB5ZvenwJBuruhNthoJqOEqwS8iDxAZ12aKcKDjYm6oMsaRgeoOTcWS19EqRY+YSTkpq8ayf69rBF9xECmid5ibtCNj0KfafagKdsNoNkqTZUvpQOmRSfWQGicrnaN1J791e9JfVIq1EZGHD8BBQ0k1e6teMzdxj+jC6hCvj5IVldaW3Rp0BAmkDRhXjAAcPUCzETMuA1yohmeULrapEtal35GhsWHaIg9tunBIQ2+b0soKecYo8HlRmUNs85+OlF+gvpnbuYoPPbczJXtaOiQ/LNzZoS/D0SQa371gMVlb6Bg+UpaU8vmA7ifaDjeVYrI3i2oDe50pNol/uiBFaCooj/tCwGuyjEo3Don+uYHo/63HWP4rtcNVa8MT8ZojcPZNJFl0s7TSrD4Y55JFz/pgj
+ /A6HRuFq
+ KRTtL91mlBurFOY+XCvrBj3nRNKQfCsaa/kafT0U0i2SU9+hnXSjQwKHeol/+9ktQMsPURNslJUZx0skTKu9a8q6XFcv4KvhpfcyI8iqWwdiqI7VjjpEwkujRkHxypPARFRXdaQ1wcMaqJAx7dMwkRE/VkJFJdDpH+KSeUIjCLBH9mgnk/UWzAkQYTCNdab08GbrpyJLGRDHsOfSwg7UvuhXyVp7TCqzYppu3AnYhOJvwKJf8WObkzOBwrHv//ppkhWLzDlkRp1LqH9sbYsyXkuWFxAh+FYrC9MpGTIEMSox35ZIUzX5XbX7L1ggEq5ClHXSd9OFXmULBFkmZcavnz+gmCWDPV8Y75oA6z2r7ox3F4MA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,15 +98,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiA+ID4NCj4gPiA+IFsxXS4NCj4gPiA+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI1
-MDUxNDA3MDgyMC41MTc5My0xLTIxY25iYW9AZ21haWwuY29tDQo+ID4gPiAvDQo+ID4gPg0KPiA+
-DQo+ID4gVGhhbmtzDQo+ID4gQmFycnkNCj4gDQo+IFNpbmNlIHRoZSBzZW1hbnRpYyBnYXAgYmV0
-d2VlbiB1c2VyL2tlcm5lbCBzcGFjZSB3aWxsIGFsd2F5cyBleGlzdC4NCj4gSXQgd291bGQgYmUg
-Z3JlYXQgYmVuZWZpdHMgZm9yIGxlYXZpbmcgc29tZSBBUElzIGZvciB1c2VyIGhpbnRzLCBqdXN0
-IGxpa2UNCj4gbW1hZHZpc2UvdXNlcmZhdWx0L3BhcmEtdmlydHVhbGl6YXRpb24uDQo+IEV4cG9z
-aW5nIHN1Y2ggaGludHMgdG8gdGhlIGtlcm5lbCBjYW4gaGVscCBpbXByb3ZlIG92ZXJhbGwgc3lz
-dGVtDQo+IHBlcmZvcm1hbmNlLg0KPiANCj4gQmVzdCwNCj4gWmljaGVuZw0KDQpNb3JlIHByZWNp
-c2VseSwgaXTigJlzIGEgZm9ybSBvZiAqcHJvYWN0aXZlIHNjYW5uaW5nIGFuZCBhZ2luZyouDQoN
-CkVuc3VyZSBhIG1vcmUgZXZlbiBnZW5lcmF0aW9uYWwgZGlzdHJpYnV0aW9uIGJldHdlZW4gZmls
-ZSBhbmQgYW5vbnltb3VzIHBhZ2VzLg0KDQpCZXN0LA0KWmljaGVuZw0K
+> Hi Liam,
+> 
+> I saw you mentioned me, so I just wanted to join in :-)
+> 
+> On Sat, Nov 29, 2025 at 12:16 AM Liam R. Howlett
+> <Liam.Howlett@oracle.com> wrote:
+> >
+> > * Matthew Wilcox <willy@infradead.org> [251128 10:16]:
+> > > On Fri, Nov 28, 2025 at 10:53:12AM +0800, Zicheng Wang wrote:
+> > > > Case study:
+> > > > A widely observed issue on Android is that after application launch,
+> >
+> > What do you mean by application launch?  What does this mean in the
+> > kernel context?
+> 
+> I think there are two cases. First, a cold start: a new process is
+> forked to launch the app. Second, when the app switches from background
+> to foreground, for example when we bring it back to the screen after it
+> has been running in the background.
+> 
+> In the first case, you reboot your phone and tap the YouTube icon to
+> start the app (cold launch). In the second case, you are watching a
+> video in YouTube, then switch to Facebook, and later tap the YouTube
+> icon again to bring it from background to foreground.
+> 
+> >
+> > > > the oldest anon generation often becomes empty, and file pages
+> > > > are over-reclaimed.
+> > >
+> > > You should fix the bug, not move the debug interface to procfs.  NACK.
+> >
+> > Barry recently sent an RFC [1] to affect LRU in the exit path for
+> > Android.  This was proven incorrect by Johannes, iirc, in another thread
+> > I cannot find (destroys performance of calling the same command).
+> 
+> My understanding is that affecting the LRU in the exit path is not
+> generally correct, but it still highlights a requirement: Linux LRU
+> needs a way to understand app-cycling behavior in an Android-like
+> system.
+> 
+> >
+> > These ideas seem both related as it points to a suboptimal LRU in the
+> > Android ecosystem, at least.  It seems to stem from Androids life
+> > (cycle) choices :)
+> >
+> > I strongly agree with Willy.  We don't want another userspace daemon
+> > and/or interface, but this time to play with the LRU to avoid trying to
+> > define and fix the problem.
+> >
+> > Do you know if this affects others or why it is android specific?
+> 
+> The behavior Zicheng probably wants is a proactive memory reclamation
+> interface. For example, since each app may be in a different memcg, if an
+> app has been in the background for a long time, he wants to reclaim its
+> memory proactively rather than waiting until kswapd hits the watermarks.
+
+Yes, we need a mechanism for proactive memory reclamation that supports
+proactive aging. Zicheng and I were just discussing this issue, and it
+seems that supporting proactive aging during proactive memory reclamation
+(such as reclamation of only anonymous pages) is a better approach, which
+can be enabled by adding the parameter `force`. For example, the following
+code, though it has other details to handle...
+
++static bool proactive_aging(struct lruvec *lruvec, int swappiness)
++{
++       int type;
++       bool should_age = false;
++
++       if (unlikely(sc->proactive && sc->proactive_force))
++               return false;
++
++       for_each_evictable_type(type, swappiness) {
++               if (get_nr_gens(lruvec, type) != MIN_NR_GENS)
++                       continue;
++               should_age = true;
++       }
++       return should_age;
++}
+ /*
+  * For future optimizations:
+  * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memcg
+@@ -4845,6 +4860,8 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
+        if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
+                return -1;
+
++       if (proactive_aging(lruvec, swappiness))
++               goto aging;
+        success = should_run_aging(lruvec, max_seq, swappiness, &nr_to_scan);
+
+        /* try to scrape all its memory if this memcg was deleted */
+@@ -4856,7 +4873,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
+        /* try to get away with not aging at the default priority */
+        if (!success || sc->priority == DEF_PRIORITY)
+                return nr_to_scan >> sc->priority;
+-
++aging:
+        /* stop scanning this lruvec as it's low on cold folios */
+        return try_to_inc_max_seq(lruvec, max_seq, swappiness, false) ? -1 : 0;
+ }
+
+
+> This may help a newly launched app obtain memory more quickly, avoiding
+> delays from reclamation, since a new app typically requires a substantial
+> amount of memory.
+> Zicheng, please let me know if I’m misunderstanding anything.
+> 
+> >
+> > [1].  https://lore.kernel.org/all/20250514070820.51793-1-21cnbao@gmail.com/
+> >
+> 
+> Thanks
+> Barry
+
 
