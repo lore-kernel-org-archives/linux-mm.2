@@ -4,110 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E78ECFD376
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 02:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B932D111A8
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 02:37:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C089F6B0010; Sun, 30 Nov 2025 21:08:12 -0500 (EST)
+	id 50FDF6B000C; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE0C16B0011; Sun, 30 Nov 2025 21:08:12 -0500 (EST)
+	id 4C03D6B000E; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1CEE6B0012; Sun, 30 Nov 2025 21:08:12 -0500 (EST)
+	id 3898B6B0010; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A34326B0010
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:08:12 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2BDBBE4BF
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:08:09 +0000 (UTC)
-X-FDA: 84169267098.20.0ED819F
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 52842A000D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:08:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of wozizhi@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=wozizhi@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 23EBE6B000C
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D703C160F5B
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:37:14 +0000 (UTC)
+X-FDA: 84169340388.24.B63687B
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DB41AC000B
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:37:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jnTBDyHW;
+	spf=pass (imf22.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764554888;
+	s=arc-20220608; t=1764556632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yR2ceubSigLLZxZs0jlDpYQK9wEBR7i5QYwCj2yeB8g=;
-	b=B2kqOuq6rQNG03LV1wTlVMNmtGvdZABB0JgdGRbTygqpw6jCZbCLUfnDRhZsp7SCv5EvCZ
-	XMEZL7X1//sV+5vjsOjLeKHAZWxxeIy+pmhjgkHuHS9lp90/ykEZSZnyFdysORotCmE3LT
-	djY+6jrDHMxTiHobzUrANf5IVLr6nRo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764554888; a=rsa-sha256;
-	cv=none;
-	b=zBsqbYN3zERUZ4Cw8qQ/SXXNihdPFWYgl2Z39VPf7rqKEF83dgsOvUR6aeTe6R4VlLoanL
-	FYucvZIk7PMXfdcTSK/zH8+Ypu6IBG2vaf8RrOOIkW0FuxlHpWDKN/4773FzpzzVTaXkfu
-	l0B4qYNd+0dsYqtFeehwUJ1V0LMJa5g=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jFkZfLhbEuJjG2XjBKILxrbYWoZsM3wmEgCHEVtwm0k=;
+	b=w0XBg9gVipgtjkT4di1CKDnN+KoSpD/v7E75xiFhYOJhCuXd86IFu/HIzyBMmc35IlpXp2
+	7fSBItE1d90/lfItvQSh8wb1q7KZd79cyjg9wUoIMti0ae9Kac+YxsI8bckHD9f6UvE4Kh
+	Hz1voFqCpfK9/S36a8lyskaIeRzBcJ8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of wozizhi@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=wozizhi@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dKS2r1w1GzKHMLp
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:07:16 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id EA95D1A0A3A
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:08:01 +0800 (CST)
-Received: from [10.174.176.88] (unknown [10.174.176.88])
-	by APP2 (Coremail) with SMTP id Syh0CgCnhU+A+Cxp0DS5AA--.50428S3;
-	Mon, 01 Dec 2025 10:08:01 +0800 (CST)
-Message-ID: <32d0a330-5f14-4c1f-8706-1301a1b66864@huaweicloud.com>
-Date: Mon, 1 Dec 2025 10:08:00 +0800
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jnTBDyHW;
+	spf=pass (imf22.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764556632; a=rsa-sha256;
+	cv=none;
+	b=K7QxUsh4HQWs40pFEMJFoynR9KwqtAOPO4QwuT4TX7xapg/60DxWZDP0Gk+r9mHdUQx1Hy
+	keiwcVxION66euAgiCy9FSec7VtHZs3sddkj8GSbMYHgx0Y+WkU/vMO0pPgbXzkYzNJvGy
+	eswVRCooso8z9BM+aNGNlRrUo1GfSZY=
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2984dfae043so30494585ad.0
+        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 18:37:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764556632; x=1765161432; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jFkZfLhbEuJjG2XjBKILxrbYWoZsM3wmEgCHEVtwm0k=;
+        b=jnTBDyHWMsC8cA4VTf2xb6/FLME7rN+hSTleKi2dWYUYPk5PCbJCLn5H7LKNb869iU
+         +Q0+JPwnHgN+1nd7Z9YHiWxnYRZC5K8GKCnyuIiAMCFW/Roswerq94jfKf8KCt9EpEBz
+         4Tka4XKdpsbicKgEtwi54NPaAxeRWSKJ34uPnFNwZOs99VdrgVf65Yg34rnGsObiPdN7
+         t4hi3trNx0FJKgkxbR5lablxI/jefGpfhBGyxXnPYjm/Gsq7yUM6keg2Rs5Q2eUIYOk2
+         TqFuUiK7mxgY+pXjmiteSuuYfqCveG1kl898gdIHicFP1kvfmrYONuFRLsOYoIFjnolv
+         HnWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764556632; x=1765161432;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jFkZfLhbEuJjG2XjBKILxrbYWoZsM3wmEgCHEVtwm0k=;
+        b=mxzTkxKyTf+Lv5j226fOU/0g0KdtHDusTDMbvB9/f5VABwoipfXhY3+3dX6+fx90HB
+         +BYv9YsIWn34cCpgLaiDccySY8IwTgWUSFh+Yjoc7yQ/kgqYzemGNbfFu2bCPrkROmUL
+         t6a0FpuRn0bYPaBdSS0PwT69A/xxoJe4iV8EDbqtIC4Wy4VZ8UWkEr5ZD5U0hEltDSRw
+         0PQco7/ZozDWBZNCHApLDyuWxIocNPX+Yjz/naZuZCnlLJRw7t/VMfIUDVsWVJbyffnj
+         U7OaKdhskuzNCu8JFj5wvC3CdVcBX2K0VEghZrLUD1ivCS7CdDJWquzyXu70BShkzro+
+         PoOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgfNN4/eEAIyxptm3RDItv7ncV+4p7zj+R1kw6MD0QSSQaF6ng9/OQl5TdswHsMfS833iTO3hwOg==@kvack.org
+X-Gm-Message-State: AOJu0YwFZcdbmyORCdXwU9uKkUww0FnOBA/rzNFE5D4tNa+waOe5VCQj
+	Wl40x8/A2eRtdLa4XHlPpYPZyJwlptbSRUJJxq6tEa92QZeHu12bdAR6
+X-Gm-Gg: ASbGnctEZIbV9YEK3sNWh11+zI2d4Ayh4cfSa6iLulIElJhdeIc5ugNvmfOAOf3DIAU
+	3u2i5m2+QfNfIMB8Wk3QzH3aQaBMA3W2JijhyP7/Gpblkg8cJ0wI8UrGRMkkq1QIDWyi+N6VM1E
+	hKvwClTj0CwW04jN1K0fAgMQ71BPd2xhPBKA1IMG4e08ftSyEx3tn2IcGunEPPBlo7AkYqK7R+6
+	XTZswWB45C/454CLUo83CK1I0KRerScUghtIMHUpoVXtIlOLGNhXO2HjgUApBsuIAZzKq0DJcMY
+	sTc/MMUNnYjzXHUV+FEaz7jXlIuT8zXGkcF5qAjXG7PLl72djA+udqqinXeeRGWJLyCiBceYINl
+	LHMXP/YA0gOamagGK6S3S2OMuZks1CeVSZnLzz6lAygRDWyOt/sUOS2PHdiU/e2BqTsuQrczqBk
+	Gg7QRjuCD8IUMy4TXbdLfltm4SDucbkDnUQu2WxA==
+X-Google-Smtp-Source: AGHT+IFXzgy6dEz9kNUZ4MEjK9R+DrmBL8pPlDjf1cIb3KeUVmSfGSrGpe4FpDq6OELyqkWRLqO8pg==
+X-Received: by 2002:a17:903:2f8e:b0:298:46a9:def8 with SMTP id d9443c01a7336-29b6c3c2b70mr412505265ad.12.1764556631546;
+        Sun, 30 Nov 2025 18:37:11 -0800 (PST)
+Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:e08c:4f98:bd50:f87a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bce40acbbsm108013825ad.11.2025.11.30.18.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Nov 2025 18:37:11 -0800 (PST)
+From: Hongru Zhang <zhanghongru06@gmail.com>
+X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
+To: vbabka@suse.cz
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhanghongru06@gmail.com,
+	zhanghongru@xiaomi.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH 0/3] mm: add per-migratetype counts to buddy allocator and optimize pagetypeinfo access
+Date: Mon,  1 Dec 2025 10:36:47 +0800
+Message-ID: <20251201023647.2538502-1-zhanghongru@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <97a9e695-487a-4428-87b7-cb8a505c9966@suse.cz>
+References: <97a9e695-487a-4428-87b7-cb8a505c9966@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
- sleep in RCU context
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Zizhi Wo <wozizhi@huaweicloud.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- jack@suse.com, brauner@kernel.org, hch@lst.de, akpm@linux-foundation.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- yangerkun@huawei.com, wangkefeng.wang@huawei.com, pangliyuan1@huawei.com,
- xieyuanbin1@huawei.com, Al Viro <viro@zeniv.linux.org.uk>
-References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
- <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com>
- <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
- <aSgut4QcBsbXDEo9@shell.armlinux.org.uk>
- <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
- <3d590a6d-07d1-433c-add1-8b7d53018854@huaweicloud.com>
- <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
-From: Zizhi Wo <wozizhi@huaweicloud.com>
-In-Reply-To: <CAHk-=wjA20ear0hDOvUS7g5-A=YAUifphcf-iFJ1pach0=3ubw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgCnhU+A+Cxp0DS5AA--.50428S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ww13AFW7tryftw17Wr4Durg_yoW8trWfpF
-	yj9wsakrW8AryIyF97Ja1kAaySkFn5Zr4UGFy5trykua90vFySvw4SqryYyrWqqrnY9a1I
-	qw4UXr1Uu3WDtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjTRRBT5DUUUU
-X-CM-SenderInfo: pzr2x6tkl6x35dzhxuhorxvhhfrp/
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 52842A000D
-X-Stat-Signature: e8u5n9u3gixr4cxkc7yy3rqa9yw51h9e
+X-Rspamd-Queue-Id: DB41AC000B
+X-Rspamd-Server: rspam02
+X-Stat-Signature: aextn9nfc5awkoh9fmqucu38w86ptrj6
 X-Rspam-User: 
-X-HE-Tag: 1764554885-708078
-X-HE-Meta: U2FsdGVkX18zh1p1yBANsi90gJy+W8XsKjPxUsYZ7BZxXxwmCt/v+sMLvKx9TdKoKQmSahk0Kg3F4xqBCiK6PKTVbSK1lJgxqR/9HYb7mMaDroNbZLQiOHcsqTBCn9RCdlWOsV2eRpsS1/SukdgrXGSsEqTQm7QTpvLoiY7ikQGLH6p39Xe83uX3qrFU8E4qBDQVSCbAo1mtoul288CYjqVOScXAexECE3U+Il+5lkXZGUPyeEMLt7feAmUF19fmn39rbobZfIxaHh658eBuhlunZUtAqI9as3CZTBXHzXJVXNxujNc/eD/QdCyVi0RzOomXgRNzf161SmoohdgkO5Zvwrn32WKCAjXcmz0TsEIPL+/KSvMTUDQtmWphLu4zot5gpZq0fae8rF4Ma/QfmT2juXcmo6s4kC+sGEZIdGa9cGpBFu5rDxb9uYxIBQCXDESujhK5tWpAOiFnZQbc+qSZEQcgwHdAwls0XgHfHU5e+UHRyYrPeF2UV8Z971m5hh0SdhJlsShBdwfjl4RnTIMT5bB3YrJozUpquS/W5LYtMR4VAaMcqqciLZ3OXhI3wLEHY3ND6dizjdbPrVSttj89MBX6ozlnj5fQgN7zx+Rix/9JjhER96m0e6DZtxt3zsRxxIphxfJKS0zLRgU9dPGtXNvO5agb0OTzz/Cv+YaFpC//4jBi+uhdUwn4st8W+DkPmqufYE8UhERcA6ensJEGn6eJOicRJZDqP9+7Irp2SLfpkNF5HGHhBmuzNhPrCSH8aITWLq+6UD7PG9Y6jmRfvZiwMKdLqvqtBCWykueEdz4/yySuDdiq3bNT3AAWeu7hPf9My07qEiZSPvh34FeCmQP2yi2l8xCD2MGRYwioXdrJWPtuctgLqZ404ocYE85Dg3B/2PTwnBsx1jl+O6OQ/ic9N63OYERBucHzKSRgdr+67DNY/af5YHDUAupA69/pa8st+wxLfzn1LME
- cd7S/7/y
- E4hV+cUYUIMLcfHEQGFBXnaZjkT3N6B0r7uTn8c9cej6R3aa5iRIMsJBUt5ZyYeIkTZSBQYq8JyaHPJh1u2iH2IiXdHTUnyIX9wjQvN83KrZYNc7GFXrgbQbKKmRWN4/uhkRG+g4DwhGsqIVjn4aYnc3eXmL0hEFcOAh9fWLCTXgS2h/r+oP+rYkVIi9RoTdvpwqORZK+TvwYDsX7j8b3gg8OvQ==
+X-HE-Tag: 1764556632-758028
+X-HE-Meta: U2FsdGVkX18gwsIs+ExUc0Q7eykH4rgYnxMY1Kz45+Fv1JeBXTQfi+ju4HsCXkOt85P9qzUKtlYp6ovFYQLKyYH3ScA+O2deqigikMUVgTNZsY6GBadOzAzYEmAndQ6haqy1YbwG0pqld/Nu7yjDTMzAEQGwQlcLk87tltPN5beXOJNlqNPS1NnvA99UwNknck/3uTfRZRaF9eMBMAuvIhLgY8/gaXg4ZjDNNSCYROrVTR1Np49cQoqVDZmAUz4lQVjyyHIeUca8uM0ShFqngEE4MKCdq3cAF9pfXNBN+VALGde9gCdyrbTWowEH3vBxP9LVE04thaVwr+RRazLaLeaEYvcMTCQt5Xs1oaGcVS4HXLwZa3/yRtGWRq1N6isdG8nzMxD55NUqZvSZrcAkT8t4xWuLNcFk2Dl0ONuwEIQAoSdq8PPC2gkjyMeBu1xSUXVCw1Vs26EbPPMPiY0237nqMYZZqzA956Dk3uQwT3PT91lY35Ab0Q0c5LuqjhOVGRBoQjDuGxiQYt4+Fgbj4aptJdc3dzjIPUC7duy0JHOmjcDHtV0I3Nwt59zjoUrZScITD2Kdo7MFLaQ/Q6RHwGnREGW3ThpSs09N8ZmIxl3PRikiwiHRiRwxpXGPEeM/XUONaptKkmg4baxlF0dRqDjltcR/At+PAA+OIyRlghPndSJzqkVl+k4C942CJlimgG73KpTHNdNgr3RJcO1nZrnz+kTkXPm5+SBsNeM0hqUd2F2S/pvD3XDuian/GJ1gIgAMj9oCQz8/EKJlRq8jmmNJM4KbG6Ec/qSQUJZ0TjVyfaErUNNG1aPUNvzWhmBJUTX1bktVXmpgbf6B1biVbniAx4ZvjWKjVUO+JIggpjcPGGFQ5KvutGUhqeIFMWSKEE7SvCPM/b5wGs9MKz1ukKOZAoZd75EiGtBe3eVMUSuKMK/3WJtJ5hSzy/9+/f6oE+kwmADcrQO6LeLEruB
+ YrrYzxwD
+ hiSGPHXiYen807gQSFeeraWWR03vAfhySaWBm+lgkGzfp6vasYvtMAUq8sccnPH5ZcqrwMqMfYdxS6D8ati5BoEE6nkb5eA7yJBCApuQPpppRsjasIhLc4aS0Dv7MC2fwWKbc6iJU4cQrzAXD8AIeYk/hsxFQOijZ572zMihhBWBaTlhsyUxjlyCtLuzCBVByWvaaEi0uvWM8d2uYCNNLwO92cRNQItvNH0g6+RLpAkOOwwz+wksMZbOB7QMMGg4nnbxcupV3Pw8N+S2TsZZySLCtb3fSKCHS33TffmKE0OwZlA9xnmCabb5DrFG1a/CE4s+dhDqCgZ87QtkubzAdFXw+WXM1Xnn/z4+Sj/Qo3uEkcjjdOX1L1pZ/8qpHpUlayWtBf4YZXrz13QCh/769l0r+F+IFiWq65vHnRr5T1kgPjzUP/ERKuEjrcaL/7Iy5arOG5zYUXHiD9LvWv6Bj+nhlR3KqVrfDFB8vf+Wy79j7rF/CeOrzEkPUY5Nz5uD1WXmEsXemzfCNpDg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,74 +135,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> > On mobile devices, some user-space memory management components check
+> > memory pressure and fragmentation status periodically or via PSI, and
+> > take actions such as killing processes or performing memory compaction
+> > based on this information.
+>
+> Hm /proc/buddyinfo could be enough to determine fragmentation? Also we have
+> in-kernel proactive compaction these days.
 
+In fact, besides /proc/pagetypeinfo, other system resource information is
+also collected at appropriate times, and resource usage throughout the
+process lifecycle is appropriately tracked as well. User-space management
+components integrate this information together to make decisions and
+perform proper actions.
 
-在 2025/11/29 9:35, Linus Torvalds 写道:
-> On Fri, 28 Nov 2025 at 17:01, Zizhi Wo <wozizhi@huaweicloud.com> wrote:
->>
->> Thank you for your answer. In fact, this solution is similar to the one
->> provided by Al.
-> 
-> Hmm. I'm not seeing the replies from Al for some reason. Maybe he didn't cc me.
-> 
->> It has an additional check to determine reg:
->>
->> if (unlikely(addr > TASK_SIZE) && !user_mode(regs))
->>          goto no_context;
->>
->> I'd like to ask if this "regs" examination also needs to be brought
->> along?
-> 
-> That seems unnecessary.
-> 
-> Yes, in this case the original problem you reported with sleeping in
-> an RCU region was triggered by a kernel access, and a user-space
-> access would never have caused any such issues.
-> 
-> So checking for !user_mode(regs) isn't exactly *wrong*.
-> 
-> But while it isn't wrong, I think it's also kind of pointless.
-> 
-> Because regardless of whether it's a kernel or user space access, an
-> access outside TASK_SIZE shouldn't be associated with a valid user
-> space context, so the code might as well just go to the "no_context"
-> label directly.
-> 
-> That said, somebody should  definitely double-check me - because I
-> think arm also did the vdso trick at high addresses that i386 used to
-> do, so there is the fake VDSO thing up there.
-> 
-> But if you get a page fault on that, it's not going to be fixed up, so
-> even if user space can access it, there's no point in looking that
-> fake vm area up for page faults.
-> 
-> I think.
-> 
->> I'm even thinking if we directly have the corresponding processing
->> replaced by do_translation_fault(), is that also correct?
->>
->> ```
->> -       { do_page_fault,        SIGSEGV, SEGV_MAPERR,   "page
->> translation fault"           },
->> +       { do_translation_fault, SIGSEGV, SEGV_MAPERR,   "page
->> translation fault"           },
-> 
-> I think that might break kprobes.
-> 
-> Looking around, I think my patch might also be a bit broken: I think
-> it might be better to move it further down to below the check for
-> FSR_LNX_PF.
-> 
-> But somebody who knows the exact arm page fault handling better than
-> me should verify both that and my VDSO gate page thinking.
-> 
->             Linus
-> 
+> > Under high load scenarios, reading /proc/pagetypeinfo causes memory
+> > management components or memory allocation/free paths to be blocked
+> > for extended periods waiting for the zone lock, leading to the following
+> > issues:
+> > 1. Long interrupt-disabled spinlocks - occasionally exceeding 10ms on Qcom
+> >    8750 platforms, reducing system real-time performance
+> > 2. Memory management components being blocked for extended periods,
+> >    preventing rapid acquisition of memory fragmentation information for
+> >    critical memory management decisions and actions
+> > 3. Increased latency in memory allocation and free paths due to prolonged
+> >    zone lock contention
+>
+> It could be argued that not capturing /proc/pagetypeinfo (often) would help.
+> I wonder if we can find also other benefits from the counters in the kernel
+> itself.
 
-Thank you for your reply! Regarding the existing discussions in the
-community, I will re-examine the logic in this regard and digest it.
+Collecting system and app resource statistics and making decisions based
+on this information is a common practice among Android device manufacturers.
 
-Thanks,
-Zizhi Wo
+Currently, there should be over a billion Android phones being used daily
+worldwide. The diversity of hardware configurations across Android devices
+makes it difficult for kernel mechanisms alone to maintain good
+performance across all usage scenarios.
 
+First, hardware capabilities vary greatly - flagship phones may have up to
+24GB of memory, while low-end devices may have as little as 4GB. CPU,
+storage, battery, and passive cooling capabilities vary significantly due
+to market positioning and cost factors. Hardware resources seem always
+inadequate.
+
+Second, usage scenarios also differ - some people use devices in hot
+environments while others in cold environments; some enjoy high-definition
+gaming while others simply browse the web.
+
+Third, user habits vary as well. Some people rarely restart their phones
+except when the battery dies or the system crashes; others restart daily,
+like me. Some users never actively close apps, only switching them to
+the background, resulting in dozens of apps running in the background and
+keeping system resources consumed (especially memory). Yet others just use
+a few apps, closing unused apps rather than leaving them in the
+background.
+
+Despite the above challenges, Android device manufacturers hope to ensure
+a good user experience (no UI jank) across all situations.
+
+Even at 60 Hz frame refresh rate (90 Hz, 120 Hz also supported now), all
+work from user input to render and display should be done within 16.7 ms.
+To achieve this goal, the management components perform tasks such as:
+- Track system resource status: what system has
+  (system resource awareness)
+- Learn and predict app resource demands: what app needs
+  (resource demand awareness)
+- Monitor app launch, exit, and foreground-background switches: least
+  important app gives back resource to system to serve most important
+  one, usually the foreground app
+  (user intent awareness)
+
+Tracking system resources seems necessary for Android devices, not
+optional. So the related paths are not that cold on Android devices.
+
+All the above are from workload perspective. From the kernel perspective,
+regardless of when or how frequently user-space tools read statistical
+information, they should not affect the kernel's own efficiency
+significantly. That's why I submit this patch series to make the read side
+of /proc/pagetypeinfo lock-free. But this does introduce overhead in hot
+path, I would greatly appreciate if we can discuss how to improve it here.
+
+> Adding these migratetype counters is something that wouldn't be even
+> possible in the past, until the freelist migratetype hygiene was merged.
+> So now it should be AFAIK possible, but it's still some overhead in
+> relatively hot paths. I wonder if we even considered this before in the
+> context of migratetype hygiene? Couldn't find anything quickly.
+
+Yes, I wrote the code on old kernel initially, at that time, I reused
+set_pcppage_migratetype (also renamed) to cache the exact migratetype
+list that the page block is on. After the freelist migratetype hygiene
+patches were merged, I removed that logic.
 
