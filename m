@@ -4,92 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D226D116E2
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 07:13:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF22ED116E2
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 07:18:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC3E46B0006; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
+	id 14D976B0008; Mon,  1 Dec 2025 02:18:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D74F56B0011; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
+	id 0D7476B0011; Mon,  1 Dec 2025 02:18:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8A9C6B0022; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
+	id EB9646B0022; Mon,  1 Dec 2025 02:18:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B7F1B6B0006
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:13:28 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 683ABBBB35
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:13:28 +0000 (UTC)
-X-FDA: 84170036496.29.40E49A6
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AF9E140012
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:13:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D604C6B0008
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:18:40 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A7EF5C931
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:18:40 +0000 (UTC)
+X-FDA: 84170049600.13.B8EB5BC
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 13E874000D
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:18:36 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf12.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764573206; a=rsa-sha256;
+	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764573518; a=rsa-sha256;
 	cv=none;
-	b=dciyawZ22wpmzdNw7uoEKVnET05vEoTxxluOkl+QAXXcPkPbcFIDociG8t567qV/TQdqz+
-	KfSoex+92OGTG5u+Plggy+C0TvBDXZmsQnLU/TvTrJfVHdEhtlHU0ps2FP36cwhd5sziv4
-	sSg7gmwfeUsOqFiqi5gEdlwT2jA+9AA=
+	b=ulU7/e3x84BT7LIPWlh3/zMPvbwyIejeXphTbR3GpBZgkBBRqAnYbUGK4ZeO3U0vtiV8m3
+	Klmx1gRJu7P6mdbAvYhwaqTDMastH8nn3HVR5qq2tsrzmSrkvV7tkL2axgiCHv2Zld4Jfw
+	szUdYIjspoRwdQG6i5S9QyD42+tS46A=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf12.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764573206;
+	s=arc-20220608; t=1764573518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WFLM0Bti8oam3KIh06SJIzl+iipcMH8RHY8ma7FnqcY=;
-	b=oAZEfGfH82D5PK33S/feJboPPMMIdZcy7hV+0B5mWFcXfWt7hEwuh64/7v8vkV4kb7kxm/
-	HfM0+jlQfb4TE1kiSZrX/k//zWM9BFP/qP35Xt13CxIfTWYFM3FKp6M1Ev0q0GgL5nKEym
-	11p80XDvAxsEPF0e09jkzE3y8qLOU9I=
-Received: from w013.hihonor.com (unknown [10.68.26.19])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4dKZpQ039qzYl9BZ;
-	Mon,  1 Dec 2025 15:11:58 +0800 (CST)
-Received: from a018.hihonor.com (10.68.17.250) by w013.hihonor.com
- (10.68.26.19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Mon, 1 Dec
- 2025 15:13:21 +0800
-Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
- (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 1 Dec
- 2025 15:13:21 +0800
-From: zhongjinji <zhongjinji@honor.com>
-To: <21cnbao@gmail.com>
-CC: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>,
-	<axelrasmussen@google.com>, <corbet@lwn.net>, <david@redhat.com>,
-	<hannes@cmpxchg.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<lorenzo.stoakes@oracle.com>, <mhocko@kernel.org>, <mhocko@suse.com>,
-	<rppt@kernel.org>, <shakeel.butt@linux.dev>, <surenb@google.com>,
-	<vbabka@suse.cz>, <wangzicheng@honor.com>, <weixugc@google.com>,
-	<willy@infradead.org>, <yuanchu@google.com>, <zhengqi.arch@bytedance.com>
-Subject: RE: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from debugfs to procfs
-Date: Mon, 1 Dec 2025 15:13:16 +0800
-Message-ID: <20251201071316.19607-1-zhongjinji@honor.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
-References: <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
+	bh=GphbRdKeOUkvae3LvPv9jTVboMzXZgTH4e9cgVr3L70=;
+	b=ub71WjH2Kzolm7XcsBwaYxYwJjpEiXxZ4h3a8y2EMG3DaWclpdyr0TWV/LpJxXKwO1H8nO
+	X25oLG1JjjN+6cKHklnIhr1rqdPDsUSeWPEQTy36grc1xd81KT3YHTKpyDF8ZyV2Bve/PE
+	ZphjMTQjDVsw5hXhpnqFNM/auFOhmYc=
+X-AuditID: a67dfc5b-c2dff70000001609-83-692d41486292
+Date: Mon, 1 Dec 2025 16:18:27 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
+ subclasses_evt for the usage
+Message-ID: <20251201071827.GA70324@system.software.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-45-byungchul@sk.com>
+ <20251119105312.GA11582@system.software.com>
+ <aR3WHf9QZ_dizNun@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.144.20.219]
-X-ClientProxiedBy: w002.hihonor.com (10.68.28.120) To a018.hihonor.com
- (10.68.17.250)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AF9E140012
-X-Stat-Signature: 3zmea1sz1gasfh589cf6dmnmg4auh6yi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aR3WHf9QZ_dizNun@casper.infradead.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTHfe597tPbjppr5+QO3OLqFjYcbDg+nET34pLF6zcz/KDbktnI
+	jXQrxRRFWGLCpih2jkGXQiwvwTK6hncBCYidlWGxvsSCDDoDxWoHY6WSCK1vtbV3xsxvv5z/
+	P7+ckxyWVtWTFFar3y8a9BqdmiiwIpRkzdi2JUP7/qm5JAgvl2Oo62wj4OloRTATLkdQNhDH
+	8MTkkkHc4UJQPWqiYakrRiD4xz0EZn+AwKLtBIL5i1thMrKAwBaIURBwHkNQY/YgcNh/IHAj
+	sBLGw4sE3OYfCYRG6yi420WgvtaE4HBTJ4HRYJSCqWoTBTO2WQw18wSqTydDbc1hCh7aWmRw
+	tWkKQ9SfBfHGAnC1zslg+mczBrdvgoHgrInAzMhRBpbH/RSUnw1j6L6TCBw3N8DJhikC5xxu
+	DOVPlhG4+m9TcKLrDAO+tjgDpbX3GRhr9WC44rqE4frZdgaaJ0cp8N/yMtBz7SoNkYpU8FT9
+	xIC38m8E7XetidMjNhps4UUZjDkbqU9yhftlFVho6emjhLaGNiQ8fmRCQlllgo70HBSarywQ
+	4VH4TyJUXcsQBizTMqGx+4BwZDjECD32dKHp3Dwl3Ax+KHS3HCfbN3yh2Jwr6rRFouG9j3Yr
+	8qYrl/G+wdeLLWMfl6LZZCOSszyXzdtb/eQ5zw0ZKYkx9yZf7/DJJCZcGu/1PqSNiGVXc2/z
+	C70bjUjB0pw1lW+/fIGROi9zOj4y3PFfX8kBf+P3DloqqbhBxI8fPc08C1bx7pMBLDHNpfPe
+	2DwlSWkulf8txkpjeWKHv6zHaIlf4dbzzr4RSvLw3G05750M0c8WfZW/YPfiSsRZXtBaXtBa
+	/tc2IroFqbT6onyNVpedmVei1xZn7inI70aJp7Udin7Zj+55coYQxyJ1kvISvKtVMZqiwpL8
+	IcSztHq1Ul2cGClzNSXfiYaCrw0HdGLhEEplsTpZuTFyMFfF7dXsF78VxX2i4XlKsfKUUtQ8
+	8XiJ8772zs6R6Bvu2L++rcKEHHfZ085s7t/DpH1a7ZFT/3yQs2bTul2bhCyS6VxheaniutM9
+	8v3ayRWXnb+49Au/horOH+q9deer7OBSThyqjNt2ftbQa36rJnJqQCXboewbXptdxzWtubjl
+	85S8CiZ9av3gg3XWVbs7v3mwMupT48I8TVY6bSjUPAXJGGhesAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0xTZxjOd77vXOhWc8ZYOIFkP+rM0Igbi0ve3S8/1i8zW/ZvixpHM462
+	tlzSYge6LVxkYFlYaVKILUxWY2VQELlFJCUVJ5s6xFIvbLMi2IGMW8IKCpR27ZZl/nnzvM/l
+	zfPjFXByhE0TdHmFsjFPY1BxCqL48LXyTPpOpu7FR20quFXqI7AcriLQcMbDQVXncRaut7ci
+	GF+uQvBw3Ymhoi9GYMM2xEN49XceYt4hBHV+GwZPdykDf3VEOZi9uITAPhHioH6mlMCi+xsE
+	jiknDzOX1DA/3s9CLDjNwO2VOQTuUJSBkK8SwUadHk64ujhYHx7BUG+/juD7iSCGBx1xsXvo
+	LgJvcxkHf1h7MARCm+DG8iIHl+3VHMz7GxhY6OCgqczLQqPThqD85BkO6ho7CfTdO8+DfzbC
+	wJ06GwOtnR/AuHuKwFWri4n3i7vOpoKzvpyJjwcM2Nv6GVh1t/Dwy8k7BNwlW8A5HGBhstnB
+	Q2QiC2JN+TDUOs1D8Fs7gfb5EfZtO6IPK2oIbenqZWjF6AZHPd95EF1fsyEaPlWOaYU1vl6c
+	W8T0aNfn9NTVOY6uLd/kqHelidArLonWDmfSPkeQp0cHfuM/enW34vUc2aAzy8YX3sxWaIPW
+	MCnof7bIMfpWCZpKtaAkQRJ3StODFiaBific1Oi9yycwJz4vjY2tYgsShBQxQ5rrfsmCFAIW
+	XelS25ULbMLztGiQVn5s/8evFEEKDLTjhClZ7EfSja/Psv8KT0mXj4dIAmNxmzQWnWESR7GY
+	Lp2OCgk6Kd7hV1clTuBnxM2Sr/cnxoqUjsfSjsfSjv/TTQi3oBRdnjlXozO8vMOk1xbn6Yp2
+	fJaf24niP+n+MlJ7DoUD6kEkCkj1pNKXtV2XzGrMpuLcQSQJWJWiVBXFKWWOpviwbMz/1HjI
+	IJsGUbpAVKnK9z+Ws5PFA5pCWS/LBbLxP5URktJK0KUv+gw379uqLT0/74vM9h47uLB1tDn7
+	vVfozO0cbYqbS8uoqVnV7iI7B7aqf2iIXdsYOFK2J0N9f+Keb61Mv3tL4ea9ud1Lfx6RGw9W
+	F+yvqZy/9u4bS/vMh4NVZv9X0U88PXseHTpREqhd2zSyt239Qv2Cfpf3Ftq/3R89P3nsiUm1
+	ipi0mqxt2GjS/A2TVMQejwMAAA==
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 13E874000D
+X-Stat-Signature: rezz1fhsqdx8mp5dsua51n941w5mcjw6
 X-Rspam-User: 
-X-HE-Tag: 1764573205-225697
-X-HE-Meta: U2FsdGVkX1/FPv8D1A+kEmLMidHm4MfphL29BUM4Qbns6aCAk2j9UcZkY7WDPE4HDU2k8/26O7IokibOqVlc0tSdGVmKhiN78Ko5yR0viWCuKWwaD4IE3kc38GCDRiaZ4aEM5fEcltEibUqaDrveriljk6hvGEryWUJwVXToUNJ5Z/kdTjX5SUFIUSGehFvtc6Dc8J/UhKsqmL8KX8SqnhNr5U5k7K58w3OXQAoOTwu4c/DrLit8x49WykBYT0av/jUxqXbRIBlSqNIOPY8PcYVfQ5UWN4dXYAj1RDmGtD1ZlYAlHfdk1/Big5hlEKUV8KF6SRrrIMKRJJF8aMfCJjUSBmtQEh5YF8k1+lMXXKuhncFda7nN0puWf/UvAbGwVhIePyR5pvCKFdTMD3nJZ4ErZSBl/ZsatjEYBkrx8YeLsJ+0BXlOXnXTx0sN3LrU6BJsiytkJ7hQU24rcKJxScRptpod65ahOn8Kidt/6Dy70GoA4AA3dspAv+aEmpvyyL2BctbGiqMv8NSuxOfpxXPIoFppBUVgH9CVnmspo5DhM61MUW6K1Ii8w7cFB5ZvenwJBuruhNthoJqOEqwS8iDxAZ12aKcKDjYm6oMsaRgeoOTcWS19EqRY+YSTkpq8ayf69rBF9xECmid5ibtCNj0KfafagKdsNoNkqTZUvpQOmRSfWQGicrnaN1J791e9JfVIq1EZGHD8BBQ0k1e6teMzdxj+jC6hCvj5IVldaW3Rp0BAmkDRhXjAAcPUCzETMuA1yohmeULrapEtal35GhsWHaIg9tunBIQ2+b0soKecYo8HlRmUNs85+OlF+gvpnbuYoPPbczJXtaOiQ/LNzZoS/D0SQa371gMVlb6Bg+UpaU8vmA7ifaDjeVYrI3i2oDe50pNol/uiBFaCooj/tCwGuyjEo3Don+uYHo/63HWP4rtcNVa8MT8ZojcPZNJFl0s7TSrD4Y55JFz/pgj
- /A6HRuFq
- KRTtL91mlBurFOY+XCvrBj3nRNKQfCsaa/kafT0U0i2SU9+hnXSjQwKHeol/+9ktQMsPURNslJUZx0skTKu9a8q6XFcv4KvhpfcyI8iqWwdiqI7VjjpEwkujRkHxypPARFRXdaQ1wcMaqJAx7dMwkRE/VkJFJdDpH+KSeUIjCLBH9mgnk/UWzAkQYTCNdab08GbrpyJLGRDHsOfSwg7UvuhXyVp7TCqzYppu3AnYhOJvwKJf8WObkzOBwrHv//ppkhWLzDlkRp1LqH9sbYsyXkuWFxAh+FYrC9MpGTIEMSox35ZIUzX5XbX7L1ggEq5ClHXSd9OFXmULBFkmZcavnz+gmCWDPV8Y75oA6z2r7ox3F4MA=
+X-HE-Tag: 1764573516-746734
+X-HE-Meta: U2FsdGVkX1/S+i879wZmPdV4Q4fT0vIDbAqHpPgVeQXF6rBpSn3Nj2x6iOhV0uChrBiHgPE/0YxmBJ2oJvD95kQiscff76zJs+l+8XSyDAyWxd5He95gvrnjRns0EIGEga2DE16n4GkAbgraw6tpFk33jBv96zDpe5OmeK4J3DQPR11ukWh10egdwPp/B2iePfl5r3aL+jZ0G4EgAar311JYJSwvAazMsfWWF4NVaGWL916XJ6a5AxH0eAl1rtJPoVZ6czYwxD9aWiJUetRufgdvEskq3SvMmxhbXB+4Ki/feN4fJdSTIM9B/LIm4kYoZj5V7ujXIzGvvW5YAo8Fuvjp2GOpwxfUYGKwXpjlKeoxJlYzwtaHKWa1AfM4xzVOJmfOSAL//sfp6iJEOcqqs4bM/EAH9RA3FCjLDpco8hHrwntZf2QHn+CSkZz0ri0ylx2zdfuoDmaC6Ywby0q8s7sD+PgEG5OL6GmLlvshl81dw9ubAmi5Pqb4nl4WQjqwoHiLuPQNGMeap1YM9E+HkUNC9v7Tf07H99tiS1ZJj67fKnv6HCFhBXp+l+zVlDpKD4M4yUh6qWnURB2ffuF0dEhN+hxCbuLxKxxfsXL+iHvADHcREgFFuARCYDHSVIMxZiaUCZcZRN8BXqkEcyRyhx+n7WNJxqYA0EH2LxU1qyeLdv0NuO667L+k5d0IPBYjs8kZHprzVzT7oEtmKbInbgP7medfrx3jV+JgBYm5Bkf5rRmIi1DmxQfldBnZgieZ/ioQjus4g/klbcbYvn0aKcK/KfRubxFnuVGNXelXR1tLuzZRboD0qsS91gg8McYRsQml1gHiC5lJZGJhs7nkbD8RniSLJq8MgkdfMpCJds5Wu7JrTq887HYpymhhvsDFkIz6q6DFwMkP/p1jgIj5dLV0otYSS38CmqyATqBF1Cx+Om1D65EBuhgDhDlpc5uFqrEWIOC4wS22GOceHbn
+ oZXK7QCC
+ bkIz0/n+DuYtjpA2N/9o0JYqHXyS++WxjwxzezdTMlbh/8cNQ6H/MCVEmGyhtTms92jNVrNpJoQNREY8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,117 +172,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Hi Liam,
-> 
-> I saw you mentioned me, so I just wanted to join in :-)
-> 
-> On Sat, Nov 29, 2025 at 12:16 AM Liam R. Howlett
-> <Liam.Howlett@oracle.com> wrote:
-> >
-> > * Matthew Wilcox <willy@infradead.org> [251128 10:16]:
-> > > On Fri, Nov 28, 2025 at 10:53:12AM +0800, Zicheng Wang wrote:
-> > > > Case study:
-> > > > A widely observed issue on Android is that after application launch,
-> >
-> > What do you mean by application launch?  What does this mean in the
-> > kernel context?
-> 
-> I think there are two cases. First, a cold start: a new process is
-> forked to launch the app. Second, when the app switches from background
-> to foreground, for example when we bring it back to the screen after it
-> has been running in the background.
-> 
-> In the first case, you reboot your phone and tap the YouTube icon to
-> start the app (cold launch). In the second case, you are watching a
-> video in YouTube, then switch to Facebook, and later tap the YouTube
-> icon again to bring it from background to foreground.
-> 
-> >
-> > > > the oldest anon generation often becomes empty, and file pages
-> > > > are over-reclaimed.
+On Wed, Nov 19, 2025 at 02:37:17PM +0000, Matthew Wilcox wrote:
+> On Wed, Nov 19, 2025 at 07:53:12PM +0900, Byungchul Park wrote:
+> > On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
+> > > False positive reports have been observed since dept works with the
+> > > assumption that all the pages have the same dept class, but the class
+> > > should be split since the problematic call paths are different depending
+> > > on what the page is used for.
 > > >
-> > > You should fix the bug, not move the debug interface to procfs.  NACK.
+> > > At least, ones in block device's address_space and ones in regular
+> > > file's address_space have exclusively different usages.
+> > >
+> > > Thus, define usage candidates like:
+> > >
+> > >    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+> > >    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+> > >    DEPT_PAGE_DEFAULT       /* the others */
 > >
-> > Barry recently sent an RFC [1] to affect LRU in the exit path for
-> > Android.  This was proven incorrect by Johannes, iirc, in another thread
-> > I cannot find (destroys performance of calling the same command).
+> > 1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
+> >    starts to be associated with a page cache for fs data.
+> >
+> > 2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
+> >    starts to be associated with meta data of fs e.g. super block.
+> >
+> > 3. Lastly, I'd like to reset the annotated value if any, that has been
+> >    set in the page, when the page ends the assoication with either page
+> >    cache or meta block of fs e.g. freeing the page.
+> >
+> > Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
+> > be totally appreciated. :-)
 > 
-> My understanding is that affecting the LRU in the exit path is not
-> generally correct, but it still highlights a requirement: Linux LRU
-> needs a way to understand app-cycling behavior in an Android-like
-> system.
+> I don't think it makes sense to track lock state in the page (nor
+> folio).  Partly bcause there's just so many of them, but also because
+> the locking rules don't really apply to individual folios so much as
+> they do to the mappings (or anon_vmas) that contain folios.
+
+I've been trying to fully understand what you meant but maybe failed.
+
+FWIW, dept is working based on classification, not instance by instance,
+that is similar to lockdep.  This patch is for resolving issues that
+might come from the fact that there is a **single class** for PG_locked,
+by splitting the class to several ones according to their usages.
+
+> If you're looking to find deadlock scenarios, I think it makes more
+> sense to track all folio locks in a given mapping as the same lock
+> type rather than track each folio's lock status.
 > 
-> >
-> > These ideas seem both related as it points to a suboptimal LRU in the
-> > Android ecosystem, at least.  It seems to stem from Androids life
-> > (cycle) choices :)
-> >
-> > I strongly agree with Willy.  We don't want another userspace daemon
-> > and/or interface, but this time to play with the LRU to avoid trying to
-> > define and fix the problem.
-> >
-> > Do you know if this affects others or why it is android specific?
+> For example, let's suppose we did something like this in the
+> page fault path:
 > 
-> The behavior Zicheng probably wants is a proactive memory reclamation
-> interface. For example, since each app may be in a different memcg, if an
-> app has been in the background for a long time, he wants to reclaim its
-> memory proactively rather than waiting until kswapd hits the watermarks.
+> Look up and lock a folio (we need folios locked to insert them into
+> the page tables to avoid a race with truncate)
+> Try to allocate a page table
+> Go into reclaim, attempt to reclaim a folio from this mapping
 
-Yes, we need a mechanism for proactive memory reclamation that supports
-proactive aging. Zicheng and I were just discussing this issue, and it
-seems that supporting proactive aging during proactive memory reclamation
-(such as reclamation of only anonymous pages) is a better approach, which
-can be enabled by adding the parameter `force`. For example, the following
-code, though it has other details to handle...
+I think you are talking about nested lock patterns involving PG_locked.
 
-+static bool proactive_aging(struct lruvec *lruvec, int swappiness)
-+{
-+       int type;
-+       bool should_age = false;
-+
-+       if (unlikely(sc->proactive && sc->proactive_force))
-+               return false;
-+
-+       for_each_evictable_type(type, swappiness) {
-+               if (get_nr_gens(lruvec, type) != MIN_NR_GENS)
-+                       continue;
-+               should_age = true;
-+       }
-+       return should_age;
-+}
- /*
-  * For future optimizations:
-  * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memcg
-@@ -4845,6 +4860,8 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
-        if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
-                return -1;
+Even though dept can do much more jobs than just tracking nested lock
+patterns within a single context, of course, nested lock patterns
+involving PG_locked should be handled appropriately, maybe with the
+useful information you gave.  When I work on handling nested locks esp.
+involving PG_locked, I will try to get you again.  Thanks.
 
-+       if (proactive_aging(lruvec, swappiness))
-+               goto aging;
-        success = should_run_aging(lruvec, max_seq, swappiness, &nr_to_scan);
+However, I have no choice but to keep this approach for the **single
+class** issue.  Feel free to ask if any.
 
-        /* try to scrape all its memory if this memcg was deleted */
-@@ -4856,7 +4873,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
-        /* try to get away with not aging at the default priority */
-        if (!success || sc->priority == DEF_PRIORITY)
-                return nr_to_scan >> sc->priority;
--
-+aging:
-        /* stop scanning this lruvec as it's low on cold folios */
-        return try_to_inc_max_seq(lruvec, max_seq, swappiness, false) ? -1 : 0;
- }
+	Byungchul
 
-
-> This may help a newly launched app obtain memory more quickly, avoiding
-> delays from reclamation, since a new app typically requires a substantial
-> amount of memory.
-> Zicheng, please let me know if I’m misunderstanding anything.
+> We ought to detect that as a potential deadlock, regardless of which
+> folio in the mapping we attempt to reclaim.  So can we track folio
+> locking at the mapping/anon_vma level instead?
 > 
-> >
-> > [1].  https://lore.kernel.org/all/20250514070820.51793-1-21cnbao@gmail.com/
-> >
+> ---
 > 
-> Thanks
-> Barry
-
+> My current understanding of folio locking rules:
+> 
+> If you hold a lock on folio A, you can take a lock on folio B if:
+> 
+> 1. A->mapping == B->mapping and A->index < B->index
+>    (for example writeback; we take locks on all folios to be written
+>     back in order)
+> 2. !S_ISBLK(A->mapping->host) and S_ISBLK(B->mapping->host)
+> 3. S_ISREG(A->mapping->host) and S_ISREG(B->mapping->host) with
+>    inode_lock() held on both and A->index < B->index
+>    (the remap_range code)
 
