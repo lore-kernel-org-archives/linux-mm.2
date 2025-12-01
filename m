@@ -4,86 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8095DD116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 17:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50B5DD116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 17:47:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9A4B6B0012; Mon,  1 Dec 2025 12:41:16 -0500 (EST)
+	id 91FF96B0030; Mon,  1 Dec 2025 12:47:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A719C6B0030; Mon,  1 Dec 2025 12:41:16 -0500 (EST)
+	id 8D10D6B0032; Mon,  1 Dec 2025 12:47:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE906B0031; Mon,  1 Dec 2025 12:41:16 -0500 (EST)
+	id 7BF566B0062; Mon,  1 Dec 2025 12:47:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BE9F6B0012
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 12:41:16 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 524C712ADD
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:41:16 +0000 (UTC)
-X-FDA: 84171618552.28.AAD6B7A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 84BB1A001A
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:41:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hTXvdYEb;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 668426B0030
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 12:47:32 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1DBF4C035B
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:47:32 +0000 (UTC)
+X-FDA: 84171634344.16.42FE3B6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 66592C0016
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:47:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D+nack9i;
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764610874;
+	s=arc-20220608; t=1764611250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qSVZICUKYoSlRN2gwgE5IR+lG1rVjeAex259ohKx2pw=;
-	b=K94W9AMSxrLYh7CC5wIr1HQma/gdDbvXwnk87dkv1qhPfelw/z694bL+Y1hqla6zEWDxsr
-	d0yiip7kp3ZlcNg7w4ZMtKYJcetL+MKr13vNwuFJ4enmpbaSVc5gc+OsIc6lNsxp4yrYST
-	Ee5lvQe9Laz5mI476Q3PubUTZ4FehA8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=K7EblCrPHmPeGpU4jKxy0TCLMZyCEXvxixVXeFlcSRE=;
+	b=tAnxwh9Hy/ZS/sjfK3ONvT8MGSDrg0+CR6OQ07WzRUIp+qpYffElLuwgamzouUbsoFw+az
+	9btQ9mmiWPvP1IsLcJZN5XqTrvUMNyZHvN95LrK3KxL8sEghMwmKbZL/s+x1+IYBJn937J
+	B5TyE3eC6NUgOqTj5pdxkUiVexTOI8E=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hTXvdYEb;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764610874; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D+nack9i;
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764611250; a=rsa-sha256;
 	cv=none;
-	b=v7cAITYYuUKn1kxMVgZfm8or0Do1fbGNT/WMaim76a7gmvfk4/eM8vJAXizQZgvkYE+wLr
-	d6SHgvOK07HtpD3u38mlA19zRl3s3CivHQGhwMAmTlX8dNXb/fnOyCjDnMku0Nj7mvgDfz
-	FAcuH6ZCPO3WKh+6dL+A6sbLRBz9wmg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F08C41B44;
-	Mon,  1 Dec 2025 17:41:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21F3C4CEF1;
-	Mon,  1 Dec 2025 17:41:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764610873;
-	bh=Sj6mhjQMzdwHKohiqgVdzGZP3an7t4iAYfJ+mIr3XpE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hTXvdYEb6i/unmZrz+Rf7slgVrzPYVDGF0B6e9pL8HGKiYrUK4oLodn7rYTnZUUWO
-	 xfe44vZiPh58gel/gFsPkTUSSF3287dOY2wa5yYEqpGe/1sh4gSUN6VPBECc5IkX5m
-	 A+YXc7eAAHUctuek6mq/uUkvvRk++tbC0XyDNBp0=
-Date: Mon, 1 Dec 2025 09:41:12 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-Message-Id: <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
-In-Reply-To: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 84BB1A001A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: dh64on3izw6thdassbsz995btw3xo3dh
+	b=LeTtYcLI6t4t15iRP+TbUckngYggQrI7p7O+pqmJznxHPO9gzM3OOflZv0tL50vvsaxdsY
+	rmQ1VNWmrqpAJ/oo37LzDf/5y3HWMEP8TY+BAwES6BSY3SBDjb24218vFblqdY8ISwnKVN
+	+PW8S1SJdNGS0lT4Rfg179sRE+5Qj+4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764611249;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=K7EblCrPHmPeGpU4jKxy0TCLMZyCEXvxixVXeFlcSRE=;
+	b=D+nack9i5yk4SEE1lOkGdtX3cp2STMvDLxkG7Ko2LqCuMtUYXjGDxsKF/t+CHhjPMZ28DX
+	YddSNeWShTxFFm5QMNbyRuT8ejm1AxzNBO8M1/x5lXQdBW1Stp4LgiA7zL8hBN4WxQLs6w
+	DH9Tt69ZsjLdYk/BGMFEoI420WbxyQs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-p7dA_RP7MS2HhAqYrjA5-w-1; Mon,
+ 01 Dec 2025 12:47:28 -0500
+X-MC-Unique: p7dA_RP7MS2HhAqYrjA5-w-1
+X-Mimecast-MFC-AGG-ID: p7dA_RP7MS2HhAqYrjA5-w_1764611243
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E843018007F2;
+	Mon,  1 Dec 2025 17:47:21 +0000 (UTC)
+Received: from h1.redhat.com (unknown [10.22.66.60])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D9A251800361;
+	Mon,  1 Dec 2025 17:47:09 +0000 (UTC)
+From: Nico Pache <npache@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org
+Cc: david@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	corbet@lwn.net,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	willy@infradead.org,
+	peterx@redhat.com,
+	wangkefeng.wang@huawei.com,
+	usamaarif642@gmail.com,
+	sunnanyong@huawei.com,
+	vishal.moola@gmail.com,
+	thomas.hellstrom@linux.intel.com,
+	yang@os.amperecomputing.com,
+	kas@kernel.org,
+	aarcange@redhat.com,
+	raquini@redhat.com,
+	anshuman.khandual@arm.com,
+	catalin.marinas@arm.com,
+	tiwai@suse.de,
+	will@kernel.org,
+	dave.hansen@linux.intel.com,
+	jack@suse.cz,
+	cl@gentwo.org,
+	jglisse@google.com,
+	surenb@google.com,
+	zokeefe@google.com,
+	hannes@cmpxchg.org,
+	rientjes@google.com,
+	mhocko@suse.com,
+	rdunlap@infradead.org,
+	hughd@google.com,
+	richard.weiyang@gmail.com,
+	lance.yang@linux.dev,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de
+Subject: [PATCH v13 mm-new 00/16] khugepaged: mTHP support
+Date: Mon,  1 Dec 2025 10:46:11 -0700
+Message-ID: <20251201174627.23295-1-npache@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspam-User: 
-X-HE-Tag: 1764610874-285875
-X-HE-Meta: U2FsdGVkX19SoPWrMXhd/TfMMzOwyAae748Jkx1T5NJZPyIccBiOiUXDnlHO6JyaPUynj5CnpQ8XT4TG0Ug8KJV4cKlK9OfROFxC7Ekj66o9NxMKFwZrGfHzhyMmTEGtceB1eel59xFzd5k3Q5Xr+5UQz7BVrlROLD06xICV9lE7GofaxnuVWD8WHaSsVU3Ce+mQOmu8y5b6a5+HxtjK6BaugaNuZNCjsDygkBNMvZ0UWz7NKcMCgkTLDKWCQv1NmXxdcusBya2Be/PcvPyZIflH4mRhA6ijSCHAL/kGiW3pTQ+iaYwYGhJel4umjsQuRC+7/dZI33GlnH+8dVMl4cMuAEUQ3GM4K8wiR209D13+KEDBAC+nV5cWZ4R1RyVFoSjjxUk95dqg+k+abP2JvF7feLev0Ikos2vNlB7Sx7VsfMiX3Skmu++swYa8SJxcZ1b/p6gz6QXZO2G6mD4fvxOdxkGaKdmGTPac5LXv+kqBWRKQUL9jVz/07rseYTuHikJFtFo+WZJzARr6Kjbn6tu+qJMrlXQM8lvBz9Btvp+yiulgUzU7orrsdVhPuien+fTn5JSndtTH2jNyxhwTdhNe5Q8/+DTNKDsLldsc1mM0R64Gd6qcCT4R/v4SHY2eNVTn/Yoh69HSf2Yywfpj5tZBf0Si78kwv+lHdlrBVjFRFxTDLe3vLDjS2Lb7YiayCMdspLKRPJOesYyRo4w1Ek1HgVwsfYoE3+7xboKp51cgCXgnV5YGivvRMV1FCTxWe32rgdEbuwlFaBEuFaqFt15YpD6BRtHRLMmjz44cT60X1hzh2aynYPnsoafXWtKJcJyycGO4/bIzmsLYX9jyIi1aIGlbDAZ7GftUdPq5Zbo/Modadk2ODLNbxI2609KBtq740tULZ9o8ZXiSdijnsAisBRYqID2Lh6b8O0nS7iOm42YHwWSidHXRtEO4Ap+6cP5Svnce6LyMdFUx/R1
- /AwHht2i
- r94LTYPJKLKqJuTeW+6lYE8Xxx/XraTu5V6SSBWhwFIyxtQmwJQs1gHmf1JqfIoGh7SSaO6NQClO0r/bu5AheIRpAoEYFsmCY98RWE2sDFeFpDQjt7HGf9JNZtixrLnZIXzg/sIR0iSp+ftLoTvxpqs7t1JM+BLXmcJULUgq89++jtUXLVDWLxHW/KLSSoCFFih11imbcn3o44YhOyi163GkLSqtPBZyRgnzMxmmJDz6Ees1cIX+2YXNuiYR47a5ytV6jvMRZrHHPDQYzz8NNjrizU0meoeQRyEiYzwq9jvlC8uFCkSkNbONHJU9nvq1Pbxmu
+X-Stat-Signature: sxwds4i4a8rupbc71oxe8pqdkqu9y3fu
+X-Rspamd-Queue-Id: 66592C0016
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1764611250-86062
+X-HE-Meta: U2FsdGVkX18/FRfGEspBP9AMh0dMOTtdVML+ypbhx2CdzrT73sg5EEkjSAI8HuzQ84tUOmaiyLO54Py2O9gOSDpMazC5NaA1u9XyQKct22a/BrFHlbZx5I+2//8c+ZN82wPv8FqrAs3jBd2R0efUQjZ08bMkdH1bRiTm4hNKxG4ZIY7n35opk5f7tenpCicVZJoyjzzFMIKG4IpI2a3DJ5WVviIaR/3Jk2VMcDVmEQBNrfu6nVgvM5jfWqT43MI4ATbdvh9GEcwtN+DehyqGu0aRwK8HXl2/afOHtnIYd3REMzF/sqC8gn+rlkNW47f0pom3rvthCxNUA8c+bsogZFCwhF6uCdep4ROBH/suQypiCfFvbHBvPxF3HDub4J6EPS+09ahW6MXTO4Lr0EsGMp2Z3k4njnT/lIbP8Qnqxq9MlOmnfJINhhb9+ibxrfX+Obu23AOlqbJuG4kWPJrv1NdNDm1LU5Bl45PBO5RwNrJmhfTf0ttNHtM/l6+MRjNf7hq3n8Dmq1RmIDkmIVvvSRLqHftOaEBYuWlMsisHuQtPcPwe3NxXCyYC55aQK9NEdRv74GlDof8GTYm9CaArpyIL9tenUswh3YZHuvTFwi9CFxqW9cD18lYMDdr4ZfxIyX0ev8yaV+xKSlMlCBITrGSEM5xTEmtCKzjFEKirbD94KPmJThaWHvIxO6UjChZsn4G5ZOmb7DhuybyYg9bPQs+awMo0wvIbcVUV9ddS/sUegiDBDtxUh6eXAd3BIh4XjfT4SwwiKtsxanp2Q/1wKUkafwzjWu6UxJAjeVM8raaS+MzuFmu2YjM2mVFLy13y1Gx5NarJb9fphMkxwe27bkWT1bDoIopPHaG3YrU+s7cOxrdqmHtG1Vjnhuzmh09t4OhmqrjINttPbjGNQFLPUuc86PSXuF4RiEuUFOXnYm+IYjpCGOdZUB+B00LkzkZs97Tna0ZUpKmQ2Um3v7P
+ 9Ki+sE2C
+ FKlSMgH9Kxtt//erkN1XHlxZCL1PIpqLmNlZXIhRfUZBASUAeJCqnh7X/oGzHvNkue0o50R+3qsPmjwiK206VxQelqedJ/x3/DgCcGeBscefQvPPf5Ses+II9EAUVxK+Zi1BO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,47 +145,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  1 Dec 2025 11:30:09 +0530 Aboorva Devarajan <aboorvad@linux.ibm.com> wrote:
+The following series provides khugepaged with the capability to collapse
+anonymous memory regions to mTHPs.
 
-> When page isolation loops indefinitely during memory offline, reading
-> /proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_lock,
-> causing hung task warnings.
+To achieve this we generalize the khugepaged functions to no longer depend
+on PMD_ORDER. Then during the PMD scan, we use a bitmap to track individual
+pages that are occupied (!none/zero). After the PMD scan is done, we use
+the bitmap to find the optimal mTHP sizes for the PMD range. The
+restriction on max_ptes_none is removed during the scan, to make sure we
+account for the whole PMD range in the bitmap. When no mTHP size is
+enabled, the legacy behavior of khugepaged is maintained.
 
-That's pretty bad behavior.
+We currently only support max_ptes_none values of 0 or HPAGE_PMD_NR - 1
+(ie 511). If any other value is specified, the kernel will emit a warning
+and no mTHP collapse will be attempted. If a mTHP collapse is attempted,
+but contains swapped out, or shared pages, we don't perform the collapse.
+It is now also possible to collapse to mTHPs without requiring the PMD THP
+size to be enabled. These limitiations are to prevent collapse "creep"
+behavior. This prevents constantly promoting mTHPs to the next available
+size, which would occur because a collapse introduces more non-zero pages
+that would satisfy the promotion condition on subsequent scans.
 
-I wonder if there are other problems which can be caused by this
-lengthy hold time.
+Patch 1:     Refactor/rename hpage_collapse
+Patch 2:     Refactoring to combine madvise_collapse and khugepaged
+Patch 3-8:   Generalize khugepaged functions for arbitrary orders and
+	     introduce some helper functions
+Patch 9:     skip collapsing mTHP to smaller orders
+Patch 10-11: Add per-order mTHP statistics and tracepoints
+Patch 12:    Introduce collapse_allowable_orders
+Patch 13-15: Introduce bitmap and mTHP collapse support, fully enabled
+Patch 16:    Documentation
 
-It would be better to address the lengthy hold time rather that having
-to work around it in one impacted site.
+---------
+ Testing
+---------
+- Built for x86_64, aarch64, ppc64le, and s390x
+- selftests mm
+- I created a test script that I used to push khugepaged to its limits
+   while monitoring a number of stats and tracepoints. The code is
+   available here[1] (Run in legacy mode for these changes and set mthp
+   sizes to inherit)
+   The summary from my testings was that there was no significant
+   regression noticed through this test. In some cases my changes had
+   better collapse latencies, and was able to scan more pages in the same
+   amount of time/work, but for the most part the results were consistent.
+- redis testing. I tested these changes along with my defer changes
+  (see followup [2] post for more details). We've decided to get the mTHP
+  changes merged first before attempting the defer series.
+- some basic testing on 64k page size.
+- lots of general use.
 
-> Make procfs reads lock-free since percpu_pagelist_high_fraction is a simple
-> integer with naturally atomic reads, writers still serialize via the mutex.
-> 
-> This prevents hung task warnings when reading the procfs file during
-> long-running memory offline operations.
-> 
-> ...
->
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6611,11 +6611,14 @@ static int percpu_pagelist_high_fraction_sysctl_handler(const struct ctl_table *
->  	int old_percpu_pagelist_high_fraction;
->  	int ret;
->  
-> +	if (!write)
-> +		return proc_dointvec_minmax(table, write, buffer, length, ppos);
-> +
->  	mutex_lock(&pcp_batch_high_lock);
->  	old_percpu_pagelist_high_fraction = percpu_pagelist_high_fraction;
->  
->  	ret = proc_dointvec_minmax(table, write, buffer, length, ppos);
-> -	if (!write || ret < 0)
-> +	if (ret < 0)
->  		goto out;
->  
->  	/* Sanity checking to avoid pcp imbalance */
+V13 Changes:
+- Lots of minor nits, cleanups, comments, and renames
+- Bitmap function simplification and more helpers (Wei, Lorenzo)
+- Max_ptes_none (0 or 511) restriction
+- commit description expansion
+- list all reachable enum values in mthp_collapse()
+- Fix ppc64 compile error due to using HPAGE_PMD_ORDER (replace with
+  ilog2(MAX_PTRS_PER_PTE))
 
-That being said, I'll grab the patch and shall put a cc:stable on it,
-see what people think about this hold-time issue.
+V12: https://lore.kernel.org/lkml/20251022183717.70829-1-npache@redhat.com/
+V11: https://lore.kernel.org/lkml/20250912032810.197475-1-npache@redhat.com/
+V10: https://lore.kernel.org/lkml/20250819134205.622806-1-npache@redhat.com/
+V9 : https://lore.kernel.org/lkml/20250714003207.113275-1-npache@redhat.com/
+V8 : https://lore.kernel.org/lkml/20250702055742.102808-1-npache@redhat.com/
+V7 : https://lore.kernel.org/lkml/20250515032226.128900-1-npache@redhat.com/
+V6 : https://lore.kernel.org/lkml/20250515030312.125567-1-npache@redhat.com/
+V5 : https://lore.kernel.org/lkml/20250428181218.85925-1-npache@redhat.com/
+V4 : https://lore.kernel.org/lkml/20250417000238.74567-1-npache@redhat.com/
+V3 : https://lore.kernel.org/lkml/20250414220557.35388-1-npache@redhat.com/
+V2 : https://lore.kernel.org/lkml/20250211003028.213461-1-npache@redhat.com/
+V1 : https://lore.kernel.org/lkml/20250108233128.14484-1-npache@redhat.com/
+
+A big thanks to everyone that has reviewed, tested, and participated in
+the development process. Its been a great experience working with all of
+you on this endeavour.
+
+[1] - https://gitlab.com/npache/khugepaged_mthp_test
+[2] - https://lore.kernel.org/lkml/20250515033857.132535-1-npache@redhat.com/
+
+Baolin Wang (1):
+  khugepaged: run khugepaged for all orders
+
+Dev Jain (1):
+  khugepaged: generalize alloc_charge_folio()
+
+Nico Pache (14):
+  khugepaged: rename hpage_collapse_* to collapse_*
+  introduce collapse_single_pmd to unify khugepaged and madvise_collapse
+  khugepaged: generalize hugepage_vma_revalidate for mTHP support
+  khugepaged: introduce is_mthp_order helper
+  khugepaged: generalize __collapse_huge_page_* for mTHP support
+  khugepaged: introduce collapse_max_ptes_none helper function
+  khugepaged: generalize collapse_huge_page for mTHP collapse
+  khugepaged: skip collapsing mTHP to smaller orders
+  khugepaged: add per-order mTHP collapse failure statistics
+  khugepaged: improve tracepoints for mTHP orders
+  khugepaged: introduce collapse_allowable_orders helper function
+  khugepaged: Introduce mTHP collapse support
+  khugepaged: avoid unnecessary mTHP collapse attempts
+  Documentation: mm: update the admin guide for mTHP collapse
+
+ Documentation/admin-guide/mm/transhuge.rst |  80 ++-
+ include/linux/huge_mm.h                    |   5 +
+ include/trace/events/huge_memory.h         |  34 +-
+ mm/huge_memory.c                           |  11 +
+ mm/khugepaged.c                            | 696 +++++++++++++++------
+ mm/mremap.c                                |   2 +-
+ 6 files changed, 618 insertions(+), 210 deletions(-)
+
+-- 
+2.51.1
+
 
