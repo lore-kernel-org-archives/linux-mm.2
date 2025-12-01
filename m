@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B33A0D116E2
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 03:56:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2597D116E2
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 04:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DE3C6B000A; Sun, 30 Nov 2025 22:56:35 -0500 (EST)
+	id 003F36B000C; Sun, 30 Nov 2025 23:14:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88EA96B000C; Sun, 30 Nov 2025 22:56:35 -0500 (EST)
+	id F1DD56B000E; Sun, 30 Nov 2025 23:14:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CB606B000E; Sun, 30 Nov 2025 22:56:35 -0500 (EST)
+	id E32B96B0010; Sun, 30 Nov 2025 23:14:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BA416B000A
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 22:56:35 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EFA2613C429
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 03:56:34 +0000 (UTC)
-X-FDA: 84169540308.01.17C8D70
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0CEA0A000A
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 03:56:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AbUtKPS+;
-	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CD06F6B000C
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 23:14:17 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11DF313318F
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:14:14 +0000 (UTC)
+X-FDA: 84169584828.18.D22DFBD
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 46B0B1A000D
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:14:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mxnv+GkE;
+	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764561393;
+	s=arc-20220608; t=1764562452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qB+a+p4MqPixn1RqoqUzTdFtWB/99ITR4DTLW8S81nM=;
-	b=LHhJ8ycYviIoUdmNMYHFrZ2B/RwPVKLy/t7wL4ZyeuFP9GDM6ELScWsvDllfICoLgDvsq+
-	qx10loh6S8bNHSLjNQiJ8wS3beknx8ZtnhZv/lq1B1qpGOY3xjpJuM7ry/v7pW35+/xAaT
-	cxmgy6DjhLlv+sSrUJ9UwUFWWN8gQJs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764561393; a=rsa-sha256;
+	bh=NvqfHUMOZNX470bp1dryFycFk+/R03rrhA62xaGfUj0=;
+	b=yVFk7IGFiTTeux2BwheT7EIcI9wrQgOJ5o5tCotLcIhM2Xo4wi9aBcEf3YeNy/Xut/jJsB
+	Mi7+H2DfH+ln/v+aejcpHY10tzaDE0xp+ZsIfT/p5MtngZNxsbuLnKBq3Bm/h9AvZA/+t2
+	aQdgGOLnuy5Wh5cyVYf7z2I/VtAMOGI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764562452; a=rsa-sha256;
 	cv=none;
-	b=ml6lsPuUn47pT7w0KU9AHIouI9TCDLSUiLpoc+0QKt2cEJPFwEcj+1oJJu5LzUzonpA3Yy
-	3ka/PzCUbPIQzZFwkMdNmNh3d0nHQBdCqI+/8BgUzeejue2uXSAQp0M1yug9XM3y3Pv8WZ
-	sO2H+1W3NstyI+38pMEgNLgpr4kxHDI=
+	b=USwzWHtbFXUlnW391wcD7P91lhGUR+Ov9Q1hf56kEUfJxhCcsCwtFPcOpV6kNjLRmx9FJX
+	BVUIZvwdVDIJixBDWf8oZjKkRDzNubwdiNATeg1W9UJsNAiblRymDeG9e7KBvB4TPJyq+H
+	o/z/IEI52dE1Kz+VHGIS+X83mkBEaaI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AbUtKPS+;
-	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29808a9a96aso41596815ad.1
-        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 19:56:32 -0800 (PST)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mxnv+GkE;
+	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-5dfa9e34adbso2952090137.0
+        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:14:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1764561392; x=1765166192; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qB+a+p4MqPixn1RqoqUzTdFtWB/99ITR4DTLW8S81nM=;
-        b=AbUtKPS+Juah6WUSBAN1IwnT51gXhlAv2TThJZnfucIKIcFuNJj/Pw4NGNAeLVG491
-         Ty5rmMyge4PvsVd7ts1/XoZ1K0YUr44klQT29S+EgULOWHe4/NLiJyr6zYS3m+NEzU8p
-         bzWqMWU8q3u3RhY2wpLyNAlrXZWkigrsnn468=
+        d=gmail.com; s=20230601; t=1764562451; x=1765167251; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NvqfHUMOZNX470bp1dryFycFk+/R03rrhA62xaGfUj0=;
+        b=mxnv+GkEsDAe9mjueeiLuesqtwKFJgDF+sOwqwz/9oze8md9Dx4ligSRFs9fy9A9ic
+         /zQnSFdnItaxa/0VsN6grMeSg19VnPfVvKOzqUJxHuGKxizsG0mjSysbBt0rzmCQVugU
+         jEzekpOA9Asy51pw3lsvSeZV0aQyIsKEVMwpDg6Df1sYd3qAwlu/K7LoeWlLZ5WwL3rT
+         eHuWBkDNt/e2bXk2zlcfh/tyNp1QxWyR2HUjjXq9L31BUzCzmlh4Qp675UyaqaYSt3kS
+         ukl7Z21DB3sdoDKtxb88/Ym3ap6ztQ2NsGoo/cNXeHbxlw4CDNpeuGhtOJPbiKK6oHVQ
+         ts1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764561392; x=1765166192;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qB+a+p4MqPixn1RqoqUzTdFtWB/99ITR4DTLW8S81nM=;
-        b=aOXQ9k3mTgf64AaxUHebE1d/DJbfF9uykD8gIZ5NkfR25GjYFbC/swysXHNw8CKLMb
-         VSjzhgjRckGywwXdEyqsU9C0qo8btHoJwQq176CmHDxy/BbTCu32idGzcO/RgiMmVlAg
-         TLOSarNO/muZDWFMl+RfVCdkKPECMyNM4EO1L1F5WSANpEeks+P14Bz1oFKUDRQ5LULS
-         qocRw4cZZTknap/XxtCrD47oIgrZMrtohApdylOwYZxt9F5D7q7QJUpDWRZNY1OzKl7G
-         Y+zxiDu604cHKRuaAe8JtIwYqaJppwrW4ty/su7SwecbEgUPo/mRCNX2WQ4kSbKVcjjM
-         DteA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFt/UvyJKNhKZHAQDc+DeOnieGqgAcqsycBiHrH/ET28HQFm4cQk2QLAgcGxvXY/VSS+/UvMHKBg==@kvack.org
-X-Gm-Message-State: AOJu0YwaIDEOgGHeEja0sfWgN+ZLpx8HszSILixBfWHuN87/OGUvEchV
-	yIhjk6chzgZC8Ex3SG5E+cKmbFtwP7oFWL7x7oMEG8FQCcvATWuoPuwLncfvILNQMQ==
-X-Gm-Gg: ASbGncsSJ97UmHjqHiAvBVFPXGovra09+TE7HvimW62hM4U7XkLJqVcIFnJ+3ArgzEc
-	uhFR1Bk1C+zNBdXcOctJTV3ybvuSPIj8NOfWzJ9FGWKH4hReYjxtMBInjSOD2IS9Gsy/8/A21Vo
-	jIyjwlSQl5fOsc8pRZSrs1LNALQs8pIkySy8o3M4YCcQ2ti2kv2A63PsaC0nrR5Xj/pYcLeZlKp
-	ftIME2aTI7Y/yFilhKwUEMsZuLhYK/G3nb89NFE3OakRGqoi54MIvNy7qYrW5h/gFxhepW4zoix
-	DaRRcALvWdPifyAQpnfFzdlGE2yNjuLEEFvo89IGAG7zEoRo+LvIj743O6sRuiaukg0j/+MnUHN
-	00AZV2pLrMc4m0MbvNRQDlf1rZ7bHjEOamGDzHFIAZMEJtVrd+5HZqyDqioobJXUKml1ax/JxKa
-	/KOrB1vXY5BdpKnwBgQPT4C8zsmGHnFbOEeTkJaN4rlnYln2RttQk=
-X-Google-Smtp-Source: AGHT+IGKqD632RpKl5VzEYBMQpnYan4XzgzGuzvbee48YOC0K/yn1Egh3tF2peeJh4TbkCddTQ/sWA==
-X-Received: by 2002:a17:902:ef07:b0:294:cc1d:e2b6 with SMTP id d9443c01a7336-29b6bf9c727mr383590675ad.59.1764561391784;
-        Sun, 30 Nov 2025 19:56:31 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:943c:f651:f00f:2459])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb450cfsm106014465ad.74.2025.11.30.19.56.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 19:56:31 -0800 (PST)
-Date: Mon, 1 Dec 2025 12:56:25 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Barry Song <21cnbao@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Richard Chang <richardycc@google.com>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-block@vger.kernel.org, Minchan Kim <minchan@google.com>
-Subject: Re: [PATCH 1/2] zram: introduce compressed data writeback
-Message-ID: <hgk3zp5hwlcxo6ufiqasvte3hoksy2wb2kta3fime5rprq4org@xaprrqdabvgh>
-References: <20251128170442.2988502-1-senozhatsky@chromium.org>
- <20251128170442.2988502-2-senozhatsky@chromium.org>
- <CAGsJ_4yUAw_tzX7z8iizToMB8SDJPNOhFRZNXva_ae46q5vRwg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1764562451; x=1765167251;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NvqfHUMOZNX470bp1dryFycFk+/R03rrhA62xaGfUj0=;
+        b=YFfi72A9lofsZVp5Lq8pOOYwhGoBmiesquD68Yw5RDTKjAg6KmCQCt9zwThRej2y3J
+         +RjgvxX+aHqC8cxnvLkq3RRuCkQC2CF/6sKeuce5x2B8n6SluRTC2O7Y2KHtJtAmuHqh
+         iAMwZPCrNm3akQlH1MZTUDUO6kh+Ia+Bv9RJWRRN5cyCslqAYqCIeOOsd7Om1yx9QrBI
+         k7sEKcqKXz9YjrwZn1Y/hYRMfMsmyL1EJrt52XItAwGjuBQMUJ1Awwsp+YgjxM+VkqrQ
+         JMuW8zBKha5iOKl5jv+oHutcOEPX96iBPaGekkODkrxlw1emHgVsSMCaEh/eU/rE+dQz
+         8HRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSkEbzHlr2oyuQrtHpvzMjzhZ+uxnPGtmqMjVmNOPuId6OD9n4yrfBUwOEmURULgxqdnYxPn9eBQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz03gTaSarqxrKDaNLySAcY50kw7v/g2Aiw+ZaV2gFIXAMRqcTv
+	NPdAhYHM7pe9YtrL9uapdRTBgbAXPiYddhtkmVZXje4LpjLsIr77WqAp6gWNHEfWkvB28UCoAAq
+	NQVh+dJk4Y0oZU303sYP0JPUAB56BJ0Q=
+X-Gm-Gg: ASbGncsdIp+aSlPC+ZEKx16OYFMvo8mYAHm5rmKAxOP+QWcjS0Z5soNZBhdwO/agzuo
+	LgHthzJuA5hwFZXmcRBKT005fptyru2FnggGGgnqceZrBfVDZFmN1oYa+RkQ7e2FcPGnQ3OqMIl
+	1ZaF447C1YHc7BaAqkcmmD3NvwCkrfilfbDmGwD6Nv3TneZWnv9HUrJBnD9cKJaCBei6//6BgIW
+	cifmkT2n5E/kA/w/pLC26HQeWDvQd7whakrwCrmww224kG85/A+NVSUq/pApG1t0VKLeg==
+X-Google-Smtp-Source: AGHT+IFQFaTlSgrkPrDF34ZzuXXc6tRWv7IWzSI1FLwFBEaeyfWtvk4amHL87+8261TG5sC/U7niA6iwfCoFudViaSk=
+X-Received: by 2002:a05:6102:919:b0:5db:f15a:539d with SMTP id
+ ada2fe7eead31-5e22423f36emr8227948137.7.1764562451234; Sun, 30 Nov 2025
+ 20:14:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4yUAw_tzX7z8iizToMB8SDJPNOhFRZNXva_ae46q5vRwg@mail.gmail.com>
+References: <20251128025315.3520689-1-wangzicheng@honor.com>
+ <aSm800KsCAptVZKu@casper.infradead.org> <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
+In-Reply-To: <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 1 Dec 2025 12:13:59 +0800
+X-Gm-Features: AWmQ_bnCsLVtTt2xe_A-3mmx3kROTPC9EO7s9FoipJAT7VnWafh4GCqMSpp-xoE
+Message-ID: <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
+ debugfs to procfs
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
+	Zicheng Wang <wangzicheng@honor.com>, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	david@redhat.com, axelrasmussen@google.com, yuanchu@google.com, 
+	mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
+	lorenzo.stoakes@oracle.com, weixugc@google.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 46B0B1A000D
+X-Stat-Signature: o7sr617xxbuksmpnqymix8roxo8399hw
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0CEA0A000A
-X-Stat-Signature: geobhu5mewxxq6nid6g4f3jif9p6xyqk
-X-HE-Tag: 1764561392-572078
-X-HE-Meta: U2FsdGVkX1+u2ilKr66Xv77mW6PzZS3pVMk4OyLDcAf1I1CjKUQ9R/U9pygrbTFWKxJOyFRI7mlscCuiUtvdojzBqi8FfTWFE9EKz6FKp0BtfkQQe13PSzNzej8X8FlTIw7ai0Hur8mTy8iBoVRu+0RREXlHjvO+LecY74bl0Z0ZOjNM7HqvGQWXatHRb0APdADrVm0PrL/hInfXAD4dT+zFtCzPUeXz/n9IkXH18mos31RUMh7wzYNYVf5bMK1nuHsjQVI3VIlbcvd81n2WB21ea2164F/itdJ74y2NgOYN0JJnV0l7bABJeSm/yv+X2k1b47QDEUuQU/LH8mDRTDjt9GX7x98/00YbA/4OHjlfZea9CJyHsdQWXaptNZYM37I37pCGGl+WAWpli2fx2sBDAgE5DkDe7fudG0xvXV6GvMjNoj0oEiqJ05fWZfeWrKvXLkPTG6VnfEvggIPQLvTrFKcQ0voTwSHWZGApYKM3IovvMzoMmErF2JydQKLvex/Sp88BNwOH1x8m58JNpNuL5GOu7V9MyclaPVxrJGTX7LIcrh9sDu1wZjmXUdXM3KqeWBxibdkJ6mUnjvHdAGgCT3rA0wvq5Lyu90A/Ie9Nn2RYfLhpz1STNvJF2z3jDg9Nx52B4ZJirE5UoiIf+mU1IulyKpmlNibTCKGEeSgJ9cx97tZgQOmUAA5C6Ubjqxa3Mg1RAhSZe4wJ8HEttVUI2fv5rhxK7vNXx7+ff30uaKNGwN5KHoZY5UN7l6dueGP143A04g9JFza9sLIrmsjFwqLRQWMJAzcLx/B43KH354FuhWjzfspi2foFHn15NYRwUFjGQU2a6d6qTrK0VsqbnPbpP4oXaNR0hYdQDZO7u4se55QHVyTZPnuWS8hLlFYFeyYmPrpFysHaxEW/DBquDiF1Qw19Zl8KNvNpGvhxN0wLdf3havn6u7Q+VbZ2KftLO0LnelA0mTpZf9t
- cJIUCDS4
- KQAU4pnitxg35q+tx4uIbcs8n0N+M0wuXcjjTjIc4BiQvbDeujchs8pzaX1oUoX/lUossqXZlsTDHG5a1q2MhL1aZMUVcESjvpyIVhyG4lS6hCzsCUDv2rFcOZKQfiWvcCjr1CFRUg2yfyOdFm4yynjpOZU7DkMiCpLMwH5dVF+Si3sMjlyfB9dPemSAF5qJYrsd/LW6I9FDwOQJ3MewkKGNPdjRTb040KKwp4/HFfCdhR2HWQFDM9ybWe3TqAz1ZJzFaq26bAhYUfRCTDlx+RmQRupvvnYv8haVVN26eGvIcG6+/rDZy1uWNIh8fY2WrjV9FApY/wPXsZ41Umzp2X/ogcuRQj/PcFFq9JUx0egSEB23HjVvFdMhBrDpbwiRY79AwjWLYClyftUs=
+X-HE-Tag: 1764562452-56423
+X-HE-Meta: U2FsdGVkX19mMetDh9NLufTB55Jr1wULWBtXYWwTkHFW7zYKoUcfxF7zvnNXnnjCUH+RRKkfNi3bzXbKaAaBJJdvuvJKOC1OjZAib7h1L+TaRWn0J55dTFgmx5RDTak4nUX1HGAuO/MvRv0lswdqKgcG5xuYy51oLo8jzZ04DqC8XJz571her/8cNZRTUcIFcuj4FCPK9Vi5cSRrKDLpCKF6GAVv6x2DWV7Fp3LxYti+jgD7jgP7gAG9zgINORshTGwjhqxqfJ1oLrLKPydW7I47OzdfcW2IJiNUKBMM/bhNftRpI4v1Ore8owRwNE89Wp12yJBnXEhX6qz8aw39o2aXw2iQOaiyGJbfTOiN6XrjdGD0snHci5NxAqS8pa7FWrCtRUw4RMX8JlHGJpMOcOkHEprN/wuoBEMcGssd02S2eMMi6jlcGCnZb3myizvmkZJlcJUwRA/7ZocyaDBMSfNUW7Rm37E46FgW849rIRoocgC+hj090piZepwjFFYCBXb+ctqQcvFdVTxjQDjMRo/J/qk3tbSwiumIWzuyhKwPtjQgsEkk38LOPwNCRk0zEGlYFL/N4rTCa1YF0giHNdnmF1B4o4sivryqTcvC04IdJzyTPg+XrmG1rRf5oe4oMyW9LAw4tLlGKBYxw9bktvHz/CBsn/tgSeL4QK/MM8bKqe6KzvzGsgRtiH2LiSwAzEOPwv2bD8cYSo8PYZWPnoNu096he51kKgyl8OcrjEW45BKWsWUc9ktJ+zv1bzW2yzOkGE6oZJG9cSH5AH1l60sO9Y/8BoLuQ3CZj9Zxi6qaxRA2aMvYA2ZSKbaguZ2WeUbkdmVO8YH4aIbiL3s3SwLbGr31+/ota0+1kaBwbO33sehHe/qC4dCLYG5x60EKRByA5TCQT45B6PEXBgEZxKaahuVzi72skqFPZlQIsI0pRVpu80Pg8rBKeubwuDAa8zanWFXdU1I9OGDdLq/
+ w3wKHo2F
+ qD278bHpKDt4PWru3b84j2Q3MoHIqrU6Rfbm3Hl7jADsOz8RkbXlsBkg4ywmbQ6uXBkmZsiUaJyfJRdJSMzssg7qFC7U+kPF1Hxzt+K5XAfJmhFPkSJV9Ztp5/CBI6pecCX/yCb38/idqc8LryONdrtXGJVgzKw2wY9vgl5tF72VAEfIxIO2qKpx62BLBkbOvO7Cb5sl5o8h/8TmG/WsObGKYJxKISQsEmjh6KErwhR5/YLj83mFOfGEgdVPCNeeGWMdqipV8CHYE6vKR/tzyh85KyR3o+eAy1ld628GzmDnGFIyyrbEMu1G6DFaLQckJjWEIl3Spbdm3q5suiqQsYfjr+D4OjDeZIxfwT18tAhNPz5FKCIA6cEt4NmGMOhfG+5iD6vdGNp8Hu2wlwT25lGPXHDsyd9rXugG2a6fjuY9mUdImrn7OODjVPk1UlMddhUOxAlCmdKt4thNX14Up3TdKPbH1mvbdzaJSbsQzKKZse9VDsC6I2gl/MaTSdQAQu4WKzR3aB3vpMXrUcaG1oO6Lcg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,37 +122,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
+Hi Liam,
 
-On (25/11/29 17:55), Barry Song wrote:
-> On Sat, Nov 29, 2025 at 1:06 AM Sergey Senozhatsky
-> <senozhatsky@chromium.org> wrote:
+I saw you mentioned me, so I just wanted to join in :-)
+
+On Sat, Nov 29, 2025 at 12:16=E2=80=AFAM Liam R. Howlett
+<Liam.Howlett@oracle.com> wrote:
+>
+> * Matthew Wilcox <willy@infradead.org> [251128 10:16]:
+> > On Fri, Nov 28, 2025 at 10:53:12AM +0800, Zicheng Wang wrote:
+> > > Case study:
+> > > A widely observed issue on Android is that after application launch,
+>
+> What do you mean by application launch?  What does this mean in the
+> kernel context?
+
+I think there are two cases. First, a cold start: a new process is
+forked to launch the app. Second, when the app switches from background
+to foreground, for example when we bring it back to the screen after it
+has been running in the background.
+
+In the first case, you reboot your phone and tap the YouTube icon to
+start the app (cold launch). In the second case, you are watching a
+video in YouTube, then switch to Facebook, and later tap the YouTube
+icon again to bring it from background to foreground.
+
+>
+> > > the oldest anon generation often becomes empty, and file pages
+> > > are over-reclaimed.
 > >
-> > From: Richard Chang <richardycc@google.com>
-> >
-> 
-> Hi Richard, Sergey,
-> 
-> Thanks a lot for developing this. For years, people have been looking for
-> compressed data writeback to reduce I/O, such as compacting multiple compressed
-> blocks into a single page on block devices. I guess this patchset hasn’t reached
-> that point yet, right?
+> > You should fix the bug, not move the debug interface to procfs.  NACK.
+>
+> Barry recently sent an RFC [1] to affect LRU in the exit path for
+> Android.  This was proven incorrect by Johannes, iirc, in another thread
+> I cannot find (destroys performance of calling the same command).
 
-Right.
+My understanding is that affecting the LRU in the exit path is not
+generally correct, but it still highlights a requirement: Linux LRU
+needs a way to understand app-cycling behavior in an Android-like
+system.
 
-> > zram stores all written back slots raw, which implies that
-> > during writeback zram first has to decompress slots (except
-> > for ZRAM_HUGE slots, which are raw already).  The problem
-> > with this approach is that not every written back page gets
-> > read back (either via read() or via page-fault), which means
-> > that zram basically wastes CPU cycles and battery decompressing
-> > such slots.  This changes with introduction of decompression
-> 
-> If a page is swapped out and never read again, does that actually indicate
-> a memory leak in userspace?
+>
+> These ideas seem both related as it points to a suboptimal LRU in the
+> Android ecosystem, at least.  It seems to stem from Androids life
+> (cycle) choices :)
+>
+> I strongly agree with Willy.  We don't want another userspace daemon
+> and/or interface, but this time to play with the LRU to avoid trying to
+> define and fix the problem.
+>
+> Do you know if this affects others or why it is android specific?
 
-No, it just means that there is no page-fault on that page.  E.g. we
-swapped out an unused browser tab and never come back to it within the
-session: e.g. user closed the tab/app, or logged out of session, or
-rebooted the device, or simply powered off (desktop/laptop).
+The behavior Zicheng probably wants is a proactive memory reclamation
+interface. For example, since each app may be in a different memcg, if an
+app has been in the background for a long time, he wants to reclaim its
+memory proactively rather than waiting until kswapd hits the watermarks.
+
+This may help a newly launched app obtain memory more quickly, avoiding
+delays from reclamation, since a new app typically requires a substantial
+amount of memory.
+
+Zicheng, please let me know if I=E2=80=99m misunderstanding anything.
+
+>
+> [1].  https://lore.kernel.org/all/20250514070820.51793-1-21cnbao@gmail.co=
+m/
+>
+
+Thanks
+Barry
 
