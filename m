@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 415E4D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 21:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9ACBD116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 21:24:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AC4C6B0011; Mon,  1 Dec 2025 16:20:10 -0500 (EST)
+	id 07A756B002D; Mon,  1 Dec 2025 16:24:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85DB66B0093; Mon,  1 Dec 2025 16:20:10 -0500 (EST)
+	id 02ADF6B002F; Mon,  1 Dec 2025 16:24:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 799F86B00B6; Mon,  1 Dec 2025 16:20:10 -0500 (EST)
+	id E82E06B0089; Mon,  1 Dec 2025 16:24:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 659086B0011
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:20:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 700E41403D1
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:20:06 +0000 (UTC)
-X-FDA: 84172170012.17.E96A287
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C21AE14001C
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:20:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="v/1wqjVQ";
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D7ED26B002D
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:24:48 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F29213202E
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:24:46 +0000 (UTC)
+X-FDA: 84172181772.21.1A31B09
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7050814000A
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:24:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WCmis196;
+	spf=pass (imf09.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764624004;
+	s=arc-20220608; t=1764624284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WiTdOzM04TmD+7whCaojUYm7mGYFeydQ5w051q8EpM8=;
-	b=jYzH4eriyqbeY3cnJC1vJbd0JbCgL9cxlLMfqG3bStG7bVxHwzsrOwjKD4BZ6zD2IVMRdl
-	Rh3RIq3yxrAqSAn+/lFWanjIqMJlb1033WcTmSaR0Kh/tAL//8fcQLLLoOP6CZ2Zuk09IT
-	6EUmbpWF/xoIFYTIJJTdBJFjRqg3Rvg=
+	bh=G/C5feLyQAWHnHqc78p55PKOT9HaqND2VHQRb+DoaN4=;
+	b=XNNQXnvGcNhPShyElVIKS/RqR9UDtPldr86+L5uw6oUU2walDntjuGCLNylZIQ+XDQ5V5e
+	x0nZUJ/KtwgmiOrSJ25K/cZb1M0hAP2LnP0pS1R6Ri3TFpM4xZyWHtRd4ZErH0pjPoCCb4
+	lbZPj3Vj63weJ6D/5dfMHoNLrjW7olc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="v/1wqjVQ";
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764624004; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WCmis196;
+	spf=pass (imf09.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764624284; a=rsa-sha256;
 	cv=none;
-	b=ZG46Wif14wJv9f/APE/zzkf7qWZrzdxtYXfuN07vjw5fLM4tTYys264YvbbSYxwguDsYQ/
-	Cg4UWA2QQuyvSpu+W4kS4rdlGcICzKv29BMro/TFM26Ty1lSTJ2o6F2IbYrCY+9nu7h9Gr
-	uHx+E9nWJpVMwdpqr1yUA7D8QLHvf7k=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=WiTdOzM04TmD+7whCaojUYm7mGYFeydQ5w051q8EpM8=; b=v/1wqjVQuVqUG/+O5g8v+0grIj
-	P1nnzXYsylJ3+vn50/5fcldCEWTjr1aELVUcxaJQtNsdoQBhsvwSpjTJo6XJdZTKhHeTHF2fKwvPL
-	Fj8jVOeuyZt9q3M6YcJ4CVd4CWZHUZtkx65fKuQfkRCAEXo18n7VA/h+o2haxIwvapGJGUtayaSw4
-	N/z3YzyeJBiFIDDR5zHljspUkRY9iOrT5N80nvesmtQA5c08KSEWOITB7oIqsblySL7IRXxyHa7iU
-	yhEqJxI0XnsbO5RLFr2AQW2hqZVoKCrs/3AEe6E47E8e6QIq32Cq/s76VbiSVgeBqhxp+dQupk6FN
-	a2C/6frA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQBJR-00000000FYG-1Pcz;
-	Mon, 01 Dec 2025 21:20:01 +0000
-Date: Mon, 1 Dec 2025 21:20:01 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
+	b=QDfYCANEpeNLUADLEUpastU6oRTLLdC4+MQBw4hBMs2iKuS1lPoBiHgmGQu+W4/htZGgZj
+	zmp3qxjd2voo5FMA7NLfCVVBoyj60A8ARORdpPBnEaLgVQmTV96mFwKRr9ZnTAAfockXRW
+	igT5jokDCPwmMdrah/9yeL0HNThpfHo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C60266014A;
+	Mon,  1 Dec 2025 21:24:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529D1C4CEF1;
+	Mon,  1 Dec 2025 21:24:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764624283;
+	bh=Diz0+bACmjM2TLHSfLwYpuxzqSwiJwi5SM5gyk06rTM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WCmis196wqbZY9mJ/hMHAC4BslWXP9ZhUHtY0YTPcr5qTh+qDb6vUY9v0d1Sb8kAB
+	 e1FhyuslxKKlhO8Viqa1Og+MxmReifTKIDv55qcujT8JG00VqvpT04AdvDixdSpjL5
+	 WuXiHuHcb+vBwZ+ocU5qEjY+aWKOrn4+VVYUFHOHdiNKYnfPC5vCuGfK3Tv178olIt
+	 G3pS7SBEv8ZPYP42vp7mTmS05jfNtc2pqQMPy6+hTdU6MDsR6Aty8eLcWL+xDhd13S
+	 TM3bDnHbU8eYl2JaYFKJTQe+v0eKY6Ckgz+ILR34MbBtaUL7jJZvmmYTObWOhHNKh6
+	 sHan9gM8tPErQ==
+Date: Mon, 1 Dec 2025 21:24:41 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
 Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
 	linux-mm@kvack.org
 Subject: Re: [PATCH 3/4] mm/readahead: add a_ops->ra_folio_order to get a
  desired folio order
-Message-ID: <aS4GgfzfuYRHJdg_@casper.infradead.org>
+Message-ID: <aS4HmeRgsStngE5v@google.com>
 References: <20251201210152.909339-1-jaegeuk@kernel.org>
  <20251201210152.909339-4-jaegeuk@kernel.org>
+ <aS4GgfzfuYRHJdg_@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251201210152.909339-4-jaegeuk@kernel.org>
-X-Stat-Signature: msfo4xkij7n83fud8djz4tr84pw1ewa9
+In-Reply-To: <aS4GgfzfuYRHJdg_@casper.infradead.org>
+X-Stat-Signature: 9okm81yst96de5e6q5m8ef6cim87bp61
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C21AE14001C
+X-Rspamd-Queue-Id: 7050814000A
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1764624003-685103
-X-HE-Meta: U2FsdGVkX1+mec05Joqh+p4pgyItDbHwrQ/qxcpoaIvWiWoW0zU2l7HiwfOyGv7ljpGv4T/iUo5o8F9Lt9lH2aaydP5mRWaInlpIBsUKoJV83tIZUybQvVWk6Dy4j+nZqrUTZnonPD2gnXYLvXBFSBFCxeO23Sw+zuhxCbZ/WYQbqDGapSlUNi0HWVhKne6AsS6MqOT5dHWKLAr+J1+OFuh+LM3gfIqj/lTntVmQA56mFa3vwgUDon+TKqf/+zE7EiVWzemhdwbjAnnWP2GKmfqNLyt7Bijq7yf1PHZvii6UaoHfrLSAtxS+nNsgej6qPip1KB85DIFreET3sCmfQWgVOcA5uPfzwI7xZj5z5JzYsyGOJDBeGpT+bpPK2FoTuUV9+QLv/Sq3j/XjVRE1h4cl/xcgV3bkVCmvCHs2eyn0rOzsAZqbbOEK3YAPjiCuZjXBFAMRkoCS9TPzMgOhz2suz476PzHdjxURKTUx/TE9quA7WbFYNN2mIOnVa2sn52f/G4qXBIhUbSYLyj5kucb9dJGFihBx5XuQq2AT3qIpgvqMw1An1e9gcAiLTm704uAuYtk0HFKozy3MQyClbDeUp4tqGT9VUn7YozqQ1UajcRecb339l2+z2flOCasCWZpLcctH4hRihoofpNBbk98SneDv7zAgzapmqMxOmtyH2qbdVKHrEjtrJzpOu5OedZTEZHyoeswp3NV6A58Gxt4NIXwbs5g387J1BMcLeClqgjwlbXvnJbWhFer9DODqeOTXdKSABklxu2lZQVT2Ppz5XFXR8BuVdfo+zr4x/FHEtHTHTodIPurjW/gNU1HIoU4Rk0yDyV7CHkRC7GmSt+odrTHd+dogkDNvWiz13IdydTHfifAmQZrD8scay01f9ewa9QTi7/wlfwILY5wtPRgIfBbyEL/mDOJOvU/+IqIH1YBqP9Em30GWdcKTKEv+P/0AT4A2BCKqVeemkZe
- GxHvZggs
- NG9CETiJNTB+OwS5e+xO0U4JTbL9qPKn/z7m6KKBxly5IgIUuLeD/AlQgZn1cUhOxKz4OJAlcBMpsL8iKJEfJer9RAEfsfqsvoaAbIzz79jDYXJ32rdBgEkZkVQv9jYmWfp9oyqJHBe17SobwegP+x2OcHEWFtieQi4puF5vCf9oJH+tMLvjK0SRsFIpBGsHY2AR//qIC3pvQlvRNqFcA+LOQQSVkPxrPB9PWawRIPmnUCxUORhs9ttKyGZHKvTtDQtk0V53bGTfalBA0CDkvPcQtENOI+xdEgPJBmuzUqFY+RRY=
+X-HE-Tag: 1764624284-922184
+X-HE-Meta: U2FsdGVkX1984jMfpK2PB7aCLVHJ/zi856rSb4ntVJF28yvSf7Kj21aFDT6DstVmyPCrCasVbE4PWw11v7u2e1tPKv3BJ66jvvhoAkZez0tHvwICNQzOvhUXEQd2eotgSsdLpRQk854jSxl8qHZ5HLCssbkeSPazuRC0rJkhVPXobRrlZbIHtjWppTQlzMXCuvbCGR/oB8rboVBZSmozRg+1javj34IP31oMyWSGZDXhGKTNFDm8PQhRFtLBUcpT/bz6VHQ1KM53HfmOBjtiMn1LRS91tfrQo9qooFp8Ixmglusi6eEZitNTRee2AiWVOJcPHLtYcbKjpWvoo6eepqDYIlZ10DMDdkn5rybimCLmvhB36SFv0sELi/CpdqE7hjfGmWAWIIO0cp4wvzkmmseaKhp2ilA8ZXmC4B3t6EyM/TUpMBm+QIEK0YyAUhhBfDZmrJvyprPwEwnZmo0Bk1iKJLVYsp0wy/qsRV/R6wpwjfWXp1xfKTNxnGXM/6mHUHo5NC+ch3noyKwCi9YVfbCOfiZkHCbpdCtX4ebHh+LMBxrSZHzBdTGfJSQZoGGeH3dhgX9u7+R9Qms3snKspqzm2oXur7G5GQ7/XBvG4xC0dg2X9LDeuAFs9BZsg8ErTMwgc5Y2mfLhNJHsIrgjIqjjDeFJgUclwhUmkUxwCSXD6/KH2ieR8c4MUyYMuQ8n3x7gK9hJA9ZgMYboqIVSuZf6IzdnzsJkDF5dWCxo0NQLR9M75r9ri3ETGqa98nnIAp2YNyIlCFn2deVg7wnwedbUsagQ/WlryNGztoTa9mA03okIbieoU+kQkjl7y8Lf+bVlJxLeZMZvzMFqEheGZdM+KhzA73uPc5dZOoE3OogcN+hQbj/0yX2HOwzBdE04SpPssK+HJH+IZ3zqZ3Tt82mAdA2ZgydjM0I5be725JYHj2ash5xteQ+hXq5lIq2yzQ5IL68/iQOeMeH3xcZ
+ j90GsHd3
+ WNgRwFUdashEiWfEus5ekAhZnwwBPK/A0klVq/bwJ81eUrQy+dVo0CLhH9YC/7AHlL/dusObQxWmsryPqqcB3QFV2wus/3qxyMYDtcBxKm4M8Ou95fdadb17eGHuy4TySDMh79e/3j+80aegzMAnvHzbeow1NCNVHXtmvMNWPmQvlNbgMI0Ath7MzP2qm7NQOgAccmEvv5iGVYwRZdJmbK7Liurk8JPQeKPPjq2/y9gj4TajMVCnT7W2jlAri9G/fpuiMKQfBpb2blKoYjOIEFkq6oZ6+m5YGFQpDiCwZiAw31SVvDzGnIjoJw0IAQiXNBpM9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,13 +94,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 01, 2025 at 09:01:26PM +0000, Jaegeuk Kim wrote:
-> This patch introduces a new address operation, a_ops->ra_folio_order(), which
-> proposes a new folio order based on the adjusted order for page_cache_sync_ra.
+On 12/01, Matthew Wilcox wrote:
+> On Mon, Dec 01, 2025 at 09:01:26PM +0000, Jaegeuk Kim wrote:
+> > This patch introduces a new address operation, a_ops->ra_folio_order(), which
+> > proposes a new folio order based on the adjusted order for page_cache_sync_ra.
+> > 
+> > Hence, each filesystem can set the desired minimum order of folio allocation
+> > when requesting fadvise(POSIX_FADV_WILLNEED).
 > 
-> Hence, each filesystem can set the desired minimum order of folio allocation
-> when requesting fadvise(POSIX_FADV_WILLNEED).
+> Again, you've said what but not why.  Does the mm code not ramp up the
+> folio order sufficiently quickly?  What are you trying to accomplish?
 
-Again, you've said what but not why.  Does the mm code not ramp up the
-folio order sufficiently quickly?  What are you trying to accomplish?
+That's why I posted a series of the patches to provide more details. Could you
+please check the last patch in the series to show fadvise() does not increase
+the folio order?
+
+https://lore.kernel.org/linux-f2fs-devel/20251201210152.909339-5-jaegeuk@kernel.org/T/#u
 
