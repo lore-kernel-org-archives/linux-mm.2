@@ -4,130 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBCF4D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 16:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4360D116F6
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 17:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28E1F6B002D; Mon,  1 Dec 2025 11:58:05 -0500 (EST)
+	id A11C76B0026; Mon,  1 Dec 2025 12:02:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 265A36B002F; Mon,  1 Dec 2025 11:58:05 -0500 (EST)
+	id 9E9A06B002F; Mon,  1 Dec 2025 12:02:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17C386B0030; Mon,  1 Dec 2025 11:58:05 -0500 (EST)
+	id 8D8976B0030; Mon,  1 Dec 2025 12:02:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 05FBD6B002D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 11:58:05 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 765CA12CD2
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:58:01 +0000 (UTC)
-X-FDA: 84171509562.05.366FCE7
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9E3674000F
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:57:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cmlMIkJK;
-	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764608279;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DAF86B0026
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 12:02:05 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3CE19B8525
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:02:05 +0000 (UTC)
+X-FDA: 84171519810.13.F762730
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011064.outbound.protection.outlook.com [52.101.52.64])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 192FA1C0036
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:02:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=R2TPptVm;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.64 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764608522; a=rsa-sha256;
+	cv=pass;
+	b=u2LPPDejPy2WkP6rqMSeQwvqqdpvsDgVmuc0/djCx1S4cBleC67KyubGhDi0niH2EQELBP
+	x83etOZ0K0Yh6ZcmeSNgI7jjMpkdq7j6+YffCijfUfE97fNuIB1CtOLWaydoW+hPTVHXQa
+	6CZK4m1Aa9j3/4YtGdg/afeUSVbpgOE=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=R2TPptVm;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.64 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764608522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qkvWJrwlmiNdHgjUhorEV+q7WgGubFI+mIY+NNvMyLc=;
-	b=0/8LKRcCuWpV4xRum+86PCRbwovIwcW9L04HTcygCEBriwcCBxAze1AzgKZmHkCKR1kCbE
-	Fol0oBLIitUZT0myY+EkVtUHJ555NTs6rMvnhHVt8mHw80fROZK7Te+gwLIjYRJAKks3nv
-	WsBLHMHg8n0GSXavCH5gFFcXkr9isB8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764608279; a=rsa-sha256;
-	cv=none;
-	b=Ivcohh9DVeLUndE2wGMCC9QpDuCtkSaPhss3u709q51/T/0Nub88tyjVahE3GHygV4bYtF
-	jUHZ8OfcSXYSBUN7ql20eJ2exFEZMvxIbYjCEv4FV8VMazb5+IOEsZ5bOIbnbkcbxM7/WC
-	s+fgSn7ij7QKhHNF0GhaUb2xS1F3yyw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cmlMIkJK;
-	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8b21fa7b91bso371033885a.1
-        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 08:57:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764608279; x=1765213079; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qkvWJrwlmiNdHgjUhorEV+q7WgGubFI+mIY+NNvMyLc=;
-        b=cmlMIkJKEE8nkV2mkeDbFn9mRRAKuWnoGMr7tHUwdUm5QQCe4hXMbB1C4JKMuJJH0m
-         pgssSGbW83L7JnnyjZc21hMQmJ8tCRWTjLtJZKBhyLilQLh5mbu6wcyRcTXoVXYSXYSO
-         l2zJf6rUV9qO4J6MeLjp8peQ01gJmdjW2SBM74lSEPB9QxO93pPh+ujGubKWt4Y97Vnm
-         stu8WGKirOrBlC9vFNFVr+mEjmS7jVt8RUe0OrGd6C0Klf/+jsbYLf4d2MmtmFv9M8VL
-         n4Eev15pXphK9na7CfkV8SUYD271bPLmR29EaL9rXRXJ3tx9hwU4WCVfCTvYkJEIUxDs
-         X+IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764608279; x=1765213079;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qkvWJrwlmiNdHgjUhorEV+q7WgGubFI+mIY+NNvMyLc=;
-        b=Xom6fcog4jzS3Jij9VWxPr+Z1q7kbx861KtnOD8owoLpL6VaTbalsqklcs2AGhQgMu
-         UUSdri0woxesHSufHYGU22EWLJwoW9pSuI5D9iqI+35PxKm5P7/hxs8EBQuy5yYvZ2rF
-         ryZP19JTdi6OPqX9Vy0JOg1GpR8PTaGwkFclPDJxiub6BkrpFKrf9iJ7lvql+MJ5G/YM
-         WthECVuq09F1nMGaLqr6JAogmWS/MNtho+lkb60gUpdoXN1cgmCkCbqH1oBl4Hqe1Xti
-         GIWavIvRdZdSXX4Z5cllAW0oA5yFmsI9hU5BDhBO6aJDQGX9Ed0HExdH8e7OJgSzqoC2
-         BMWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwqq9wZFx5zNJ8PXFQxWD3dIYbFZWwaCa5IAg9SvCJvL7r8A68GtGAWBWJymj0aEHSWwH2jdffHg==@kvack.org
-X-Gm-Message-State: AOJu0YywKyI7SCKdg8nbP80DzfrH/amEexDN2tTgZ21eg5AjY9uEFVCR
-	eFZ6IPkb+0RiLNEidvxAm0suQpvDLWxS1d5y1XjOUaO1zspnwBFMzIn4Iu0KXLSwMjKIHbyJwb1
-	qdhRazxE+6ycudsyXIj9vVRdB6a9UfuSyT/+7r1U=
-X-Gm-Gg: ASbGncuOi434bU+7F8RNQxv8M6jLPHtKf52HxoYnK5yvXz+f2+7Sh6yf24rGQcH+JRS
-	05WyCJHUWE5czzo2C/GO6OeB17Kihcmm19ajtSIO9XkCm3k/bV02p2wVjztuTEivy0vx4+bRFoz
-	UYGO8DeiokvMLfwqjwRMs2A3JE7jNtYhclmplJkWR0L8Lt+zkIhfz9d+ekwMKEt4PsEGT5fMt9a
-	dL8HQ6t8f4B/O/jViB9NW0BxOnXN5C/2b19PeLBmnLbOqFozh4O5L8p0m5ksm9wDB2Yj+zt5NQD
-	sR5h
-X-Google-Smtp-Source: AGHT+IHamfJ56do34KTHloOqyg4CL7wLBYonp9p4OPZxpY/sikqm0enpVT+NHGV/Fsmk+dRxzzdE8dB0HZWv6DDmN+U=
-X-Received: by 2002:a05:620a:4049:b0:8b2:ea2b:923c with SMTP id
- af79cd13be357-8b4ebd53b32mr4182690185a.14.1764608278419; Mon, 01 Dec 2025
- 08:57:58 -0800 (PST)
+	bh=lLG95P/PmD/nrZDf8Mktho/pcl6JE3Pt5YcqHK14B4k=;
+	b=xmlvxQ8hoG1KUZHqMwXyCD2XNl/aKhlxR4TQc9dXd7EQC8KO+Jn3N5lzX6DPwLiib+7v2a
+	PBkfKXATWh3S+6b7h2t0vA23hrDWUnc1n79AGBsyEoihftKMIWCePfpCKpbgZRKB7pZRSy
+	PRxzO4hsgA+WNZuJw/3cTd2rmM8PgxM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VibeTGEjXZDeIHohzjaF6hx7D9t9X8AtUkh3e1fyWz0wknKYAvUc8u9GaMxkcUYTHH1ygksaKPI913f7ReiQkVOJZwB6eJTtORuhvSkW0SZDdn/X/2At9HIcgKFv4Hnm0Q/GQydtcq3vPF85QKKFsa5w6b9JsEK9qugQJNfgW8phj+jbV6l+FI9pAZ9Ft5L3fNwv1vib50VkaQoPfRxwSPzHl8PLVuCCVs/3v3u8upkqfOIBlatH4trPt61EiMQORtibRBwxUOc9oc1UYcj/sol/TB5DqnBTr5Uf8XoFw+y7rXqb6CJXkAavJynbEYfdNeG4wvJLrlHGA/JXIwRACw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lLG95P/PmD/nrZDf8Mktho/pcl6JE3Pt5YcqHK14B4k=;
+ b=r3IC5qOnpu1F97+A2e0ZKnu901xKk5k0baWm5xLjZ7mFMkxUMguaJJKEV0pFY/gpPD7iaACL/+n8dXuyI0kUqJ93tNZMhr05vpsvLhX+2qB6po4oU4jSif5l0rE3CIqhuc3MdzoCLXT6SaCHPVv58bdI5wo19QyhO90496L3l4Sz6Rr/jpPlrIN3qxQ+bax6quZpOx1W3ClsZzg/ObJ+aaW7nypUX84YeFgXF/bxH7NDrJkSXM50MEycGlZtc5RdSh2kSdvgrp1Ib4alWZVj0ykSN9UtMXIjbdQZXl0mYx4BLoG3jwJ3dz5rMKzJE1xWMQatvc/qoFZb6pzf6DLSaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lLG95P/PmD/nrZDf8Mktho/pcl6JE3Pt5YcqHK14B4k=;
+ b=R2TPptVmIUfwJ4hwyhfHmLFl9mW4xnyQRcg+nnZaUcx+U69zFjXBYvw4HV5Y9xNDluttnbCdPOWphL8b8iTesNGQQLufFYlIMFeczX5wue297GFQQ4AUIYY3BQMG8w4EbYPzYRo7qAuI6BVAtP7fVZRK3aaRt0M2+7NBA7fr+hzwy+ZlyDjnO7XfTynQJ9Py34jLQZtrHxMW56mPuRzO3HZLByf4lsS9w6RNYRRmLomBS2BepF74nz9DUv33pdVzDmhWPSU3samMw50NsD2uH/xM7W39H9Vcsauy7M61tjuTWICTGIdVFVAzSVL5sWgMhtLdszDIgKsC7YYlrMiN4g==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MN0PR12MB5858.namprd12.prod.outlook.com (2603:10b6:208:379::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.17; Mon, 1 Dec 2025 17:01:57 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9366.012; Mon, 1 Dec 2025
+ 17:01:57 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Hongru Zhang <zhanghongru06@gmail.com>
+Cc: vbabka@suse.cz, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ axelrasmussen@google.com, david@kernel.org, hannes@cmpxchg.org,
+ jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, rppt@kernel.org,
+ surenb@google.com, weixugc@google.com, yuanchu@google.com,
+ zhanghongru@xiaomi.com
+Subject: Re: [PATCH 0/3] mm: add per-migratetype counts to buddy allocator and
+ optimize pagetypeinfo access
+Date: Mon, 01 Dec 2025 12:01:54 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <760FBDE3-2724-44A6-A874-BD87F0191C57@nvidia.com>
+In-Reply-To: <20251201023647.2538502-1-zhanghongru@xiaomi.com>
+References: <97a9e695-487a-4428-87b7-cb8a505c9966@suse.cz>
+ <20251201023647.2538502-1-zhanghongru@xiaomi.com>
+Content-Type: text/plain
+X-ClientProxiedBy: MN0PR02CA0026.namprd02.prod.outlook.com
+ (2603:10b6:208:530::7) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
- <aSm800KsCAptVZKu@casper.infradead.org> <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
- <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
- <86c62472b5874ea2833587f1847958df@honor.com> <CAGsJ_4w1jEej+ROuLta3MSuo4pKuA5yq7=6HS5yzgK39-4SLoA@mail.gmail.com>
- <66c62243a510421db938235a99a242bf@honor.com> <CAGsJ_4x0aVkDf-AhhGbBLU=LCxYFqYoFL0ovij-vFEQeJ46jYQ@mail.gmail.com>
- <dc8ce4f329d74a24bde62c93818df44a@honor.com> <CAGsJ_4w16G+AngPu48SEy1H+ZuE1AQngiY=cSfEs9V6=OUKX_Q@mail.gmail.com>
- <48ba80e93270438994db78f74a7acdb9@honor.com>
-In-Reply-To: <48ba80e93270438994db78f74a7acdb9@honor.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 2 Dec 2025 00:57:46 +0800
-X-Gm-Features: AWmQ_bmAmfQs_Zv2TM5O3X6YMmxuU19fTmG2_9jDINF8_95jDxDouPDEnUbDAVI
-Message-ID: <CAGsJ_4yY5MxOYjkQx07U2UzgL8mCZWCaVXyJ7e6hQ8UyVCcC8g@mail.gmail.com>
-Subject: Re: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
-To: wangzicheng <wangzicheng@honor.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"david@redhat.com" <david@redhat.com>, "axelrasmussen@google.com" <axelrasmussen@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "mhocko@kernel.org" <mhocko@kernel.org>, 
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "weixugc@google.com" <weixugc@google.com>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, wangtao <tao.wangtao@honor.com>, 
-	wangzhen 00021541 <wangzhen5@honor.com>, zhongjinji 00025326 <zhongjinji@honor.com>, 
-	Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9E3674000F
-X-Rspamd-Server: rspam06
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MN0PR12MB5858:EE_
+X-MS-Office365-Filtering-Correlation-Id: 181c38ed-8df1-4be6-3ab8-08de30fb5633
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?g3StGGfpqVqd23wAg1VUH3wy217iJam4+rsuXTtdCzgL8tvEm5o0lKlN2pcT?=
+ =?us-ascii?Q?uSRkRtiIkZC5X4HkeY/oUg6QcrVmdf3qJ5b5xOx/Dgn9L4egqMfSo5M/PyZ6?=
+ =?us-ascii?Q?tES9r66clX8D6SqfqtrU87Q1ZApai6k1wa/y/xN8pASDWfL0cslvML4J8yhQ?=
+ =?us-ascii?Q?NRfEft/dUolXtS0w+Rs6KiLiXLUXu0DKmlpZRjbVO6P2nfPRmveb32fDt+dc?=
+ =?us-ascii?Q?8JjGRgBQ1wLoJzSdMUZ/y+clJZgLW/O4Tp5rtsfnihRi9G/+nz9GHhOznFCw?=
+ =?us-ascii?Q?SLW5ImyAbGhI85nldeJ7ueoCcUkGm2hB3fou1rBZznRqcI6QqqoIDlpBRJ5K?=
+ =?us-ascii?Q?zsP0zM76es98Ey506JeAksJJP6HvjJL7xu5n/xDghwZcMdqBHQCO4n/Paq9v?=
+ =?us-ascii?Q?rhPfTQ9wzidfTXxkgGob8NH5i/dR7BO0Kipd6kbNlG4uTFCfX0wnYblg42rL?=
+ =?us-ascii?Q?jvLaCsNgv1wMXFgo7DiJYI73BGTjuYJJtcQBNiiESUnt3cLvYKzb61XQ1C/+?=
+ =?us-ascii?Q?oaOB+iB08o1FjfsaxR24OaffKVzAlGLhPCX84qSWsH6JwSQETIzM3rzT3VLA?=
+ =?us-ascii?Q?silXnjiz/UyNWtFNM1oK5E2ZN8CYH3XAYs3GshLzBF2ilvJsP27mfdmSz1hJ?=
+ =?us-ascii?Q?ukb+wZbIDHnFLhVRMOSKMQ9g07yLtSXCD0/tR1JKxVQIrmihDAqPlpAfL+q1?=
+ =?us-ascii?Q?NLBg+WACSL+q+KTFKXla2KA8NSROsWAbnQj74LtY5l8rOQ4mBxeMyOsdxvDG?=
+ =?us-ascii?Q?3DCBOZ3k6dP61jGDgMktWrkdMKJCiFhpGNNZ0tq+30tC96MDUpjSb1TSQVTP?=
+ =?us-ascii?Q?JZr5Ray/luImWFUH8QPczixzvQXD5Ehdap2sDT3sekAJOTmL32Q7I0pyLF26?=
+ =?us-ascii?Q?3lDjN03efQ4NWQJ5YvEDZvF0xe5ID/P6H08POfiTmPEkEuQq9B5ARedTn7F9?=
+ =?us-ascii?Q?ZjJpdvdGB1RdxXmZIMWhw3TEzkC0sTTWFw/Hc3+ay8AQoobeFexoTmZjNw24?=
+ =?us-ascii?Q?QxLUpF2yywti2tuFAeRMBn1UkMTKZrskU0fWSLA77whf7nj3R6DT1j2VmLQE?=
+ =?us-ascii?Q?wH/UuswPZAzZ5JRpyB7YsDofCt8c3ZkL5XNyvXTquIqou0DxDSESXfiIh6us?=
+ =?us-ascii?Q?RcYPaUL+IpMPfoblqTCwCFU6OlyQlwfP/1ualh8x3JiS31sITZj7+vQJ1s5J?=
+ =?us-ascii?Q?jFyzP3BUnalFElUpyCJyfFAjMcPkmLwAQz0Qv0meFEGCBdWhKhwRdzp2Ezdq?=
+ =?us-ascii?Q?3/HGK0m5B3g1sTSzeHAxvpW6ctfw+0k3a/GN6HnMC3O1a922ns7nfdeAcPEd?=
+ =?us-ascii?Q?NQRKvgVPdSg8Nz4wnGPOwwzLJqWzuMW43rHAD03BsKmeu1J9X54KCm5Uxwl0?=
+ =?us-ascii?Q?cm/CwwfpF7YKXQ1bJJ4YaYcVxqkwJ66oVR3OXf7qoIhIqjWZO+CoyOe5HKsu?=
+ =?us-ascii?Q?TWJMnFa3onLeAigBUQfXhfeK5icvgAWP?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rTc9Lgy6Z5LRwbT/GXNyeU73wKAwXOKcc7Q2lc935teJ9PwGAGFw0O271780?=
+ =?us-ascii?Q?Mx6PpwXqljKsdpRMkuNjhDo5GYhjM7TLXrExgFuRuhbexqqBbltaBJqbPhqX?=
+ =?us-ascii?Q?+cvDM6Ri+TXEU745L4JfCBO5vjDEOG5wPGaVBTVe7SH5SJRRZHY4KcEHcNOe?=
+ =?us-ascii?Q?dmztuBIhIYfFJ2abj74aTBqOKG663E4dqr0shuQcXor1CpXTH3mMK3Cv2SSv?=
+ =?us-ascii?Q?rUgdDf59/P4bkEAQLNOvhOZ83UzS8wMORBXlzTq93wFOMiNT2BRqkOaGgO1h?=
+ =?us-ascii?Q?TycfivKuFCbxPwxd2G6iJDie220HoXkxCpjzGNoV+jzWF7j9J8kADPe1UY/q?=
+ =?us-ascii?Q?GJc0AbTokw3VYVOtsg6fGHscNCFQZscaZ8vaRnap5IfnbFEQMVyQ0ottYv45?=
+ =?us-ascii?Q?tjBVWBItQj04TY13tnOnFKcIK/KpF+4U/RHNEMSXjGq0YgHGNPfrGOTMd/0l?=
+ =?us-ascii?Q?nw1cnsFENQz9hxmQOo3UlrMKw7tGLeGBikFsd++x6pflUM2z19slMdmSsmc9?=
+ =?us-ascii?Q?fHpLYFZg/m62z6XIKfE40xbHehjX8yYls5lbeSlaJagWOrtoFBye3XR3pf2F?=
+ =?us-ascii?Q?KfsLd0eQsWuG5w3KwV91rBmJ6LGhGjjbMGOFv2b3T0OfUYF/TtjPPqIonAD+?=
+ =?us-ascii?Q?LXItXsax/UOSO1G7FdE6vH2qkAhU0kf5jFac0jI/vNIP3kntvxkVXjGR19PG?=
+ =?us-ascii?Q?d3i5eRNudqaH9+imnB56WU8faaBGz9JaqIRaQ/FhUa0ZYHkLDLasU4UgxUi9?=
+ =?us-ascii?Q?URG/cUzeKzel2wLtT+goCOMMgUsfdQcUtOf23BZKOy2phj7kD45y/PSMH+I5?=
+ =?us-ascii?Q?Y6b6I03LHJvx25CSXAe5SP10xf1HVMHzF9na9H2kNbmvVjA5Epbw+4WRvs7h?=
+ =?us-ascii?Q?qvvI3iE07n4y27ynRZ62A6guD0L3tPKmdmH/FfiztXC8YX8+UeAp910y2QTD?=
+ =?us-ascii?Q?gZ5sam8yq3ClqoVEXz/0ZdRxMQ8Rjn4t7tkcE9339lrXAsdoVjn/rtBaetz+?=
+ =?us-ascii?Q?rV3buf788mMcCtbLh9bVvYzLbQaECbpKLxKELw3VnsNURSM1zqJySz6gtSDJ?=
+ =?us-ascii?Q?9L3d05UbncB6E1xpAIwGHoc4glqzBbnBheJcduayZz9oA60VktEeWSHcv6U9?=
+ =?us-ascii?Q?TseDZCXoE25EIRq/ZhPU8Ht73L8H7bescKEwlvkdQdXFdys4gnqIOyoO1DsT?=
+ =?us-ascii?Q?+61a9+vKg/V0pN+ESBZq4in5OEzXo2cpyQygESXGPYAPXDj+mjos0BBIoPgp?=
+ =?us-ascii?Q?d5Cgq0IyIt3wgeCzY3vF9xQOmc+hSFbyfXY5PqhYnZtmxuQ4y9mYxVqaaRqq?=
+ =?us-ascii?Q?TLMazbr9FO6hP7tbrEdxIF4XjRn/QTo/fY3aNVtmPcJY8ii2NLKHOJaspw8+?=
+ =?us-ascii?Q?p+0HA9RzEnNwUtuU7nz18DEKsRHAaokc1u1I6P9bpGKogzUzbTDibB3Nj7GM?=
+ =?us-ascii?Q?H9KaAm3bal/zm78rLeNIcWVZB9Jb5kwDSoRwNII3Vh6X+z6JAFn5hh1vXwQ0?=
+ =?us-ascii?Q?NgGVHNJ5sa4+RCKIPTYx0XD6WSlaSjCnPmNc00vu16LAqbIn6LPRd53O+HK2?=
+ =?us-ascii?Q?v/+7TdmBNig1AO+CPjcYAzZYX2xcCzYm0WxVETcG?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 181c38ed-8df1-4be6-3ab8-08de30fb5633
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 17:01:57.6371
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JqY5X7IV5SgDn9v3dpr3u0x6+0ejiM8aqZmuP9NPeDIa4GB5cecyz5UwgNgin4Qh
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5858
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 192FA1C0036
+X-Stat-Signature: u1iqzks5ypftt9qmqi9pgqx6kz3iyymo
 X-Rspam-User: 
-X-Stat-Signature: q1kr5ndphah3m4zjm4zw8r7yoqsyofo6
-X-HE-Tag: 1764608279-688176
-X-HE-Meta: U2FsdGVkX1+SimK2Y9aA+mAP8D5URs/Z5MPbZRzf5BkBoBm3plA6IlIH4xI5PFUHjPSK7MAr5lO/tuw0/hy4lq+shd+mDD4eVt1NraZxnIdyDl70rJKks1RycSxIRAsO9zti57Kpk3Kqzws2NKopKbAEmtFzqzDFaA6K97N1qg2YWH+wrkEzIpvsi3DNv4jDjt0ryWkQngkh4ZSsMcaloxPvoCoRz1DM2s/OJ3wUrFNyG5fe64cpcQyFTtd6/wEj0aeX0NkDZbWWKKzjoFsTRLUopdfrkPhnSp23Da5gR+Pfhp9mz03U7xPNpzClJINPhzZ7SSM2R1YgetHG6n4/zsJl7QbQAvTvIeWenTKnDR9Fh3rSN1gI5Wr27ksdH8HioR30sHZ+tbQkadeFUzY1CQmoabpug17dewVgr/DwobuG/iQyUrX/etNM3n4G4cr+lWxn/bVypNZIIVzud/1v7qND0ANYywghPSnzFXvNPa+0aDRLNpR95rCp91JkECY9At0tTsN28DROAG2GGkTBYjjz86Ommr/G32RW0Z6aYdQQBIkJFVntfjb3vJBh5FEhdmeHaK4fx6BFx0Bu5CtNoatOcIeD+fszJmTdjj/EAE2OXxWi00dR6pudFwJmfkW4tvC4ImIXii8lfmt43ShTchuy9/1G2P9KTcX+o3TpbEZJSv38OeEoefY88ZjCwrOr0nTIwiIL4bTvwCcYVJY4xFjOoEYIxGuuregm6HXOBqza1UDyj2PwgFq6LO3tAgby3UCIfww8IdiVF9+bRYf4HB+6YPo4EzXflyv0Wxdx3lgXBLMvilss5lCV/P18PWjOr8/8RVqpGaNAqCFWrOxl2ZlquLxyLExe+R9IL2UBSr3mIUtrEvZ+z0en+RQ75ozksONcLQf9ez87qkQPIE7NhfV3ai2WSJwvijZIoLFQUaE0YwiIdAiV1/a+ItkTQVtBVhwpfxpxVICyZ680smw
- OUxhihhT
- 5FIae++sE97Hjqwn53GrMEnQTzBtZbVuUhDSJrH3TSJhh0jXQgAhO3jo9fhlYIcot0xm5ni+qXlQTOBgBuFC5Hu3CU0a/4mRB7sCgVxNLz+iRyCGwRBhUsK9+mm5G+8+N6LaIxHpaNMBaBuAmfAHcO6jEbbVImg8GxWK0+HzdbfUnFq956EuC28wF2DNOQcc8c7fr7ZcetKTkUmFihYD4uYLAulLfbUC1zMSjnfIs6bAiKg5pUbewCJpg7PZUtQkrzcjcGe5CdmZ4tjMZRMY7SC3IGegvsVRWIFAUHoxXnijKqKFwD9hnKMJ9OPe7LxU1/50zPxURH8gRAAWhCfxhxXVaXic1Hmuzmlz4V0YIHISSX6F96hombdZLnNF+wghk0t7/gQVkMA9bldoUvtl16i2smuVLj2Cap5snbEvkUuRhn6E2MyOdWTx2eeklma3hLcne1SLsuv6EAwcaC2WVZcJ46f/ySYTL+yRwiKZtoftE1N7E3wHXZ4TEdRg7a5/3V6tP
+X-HE-Tag: 1764608521-247798
+X-HE-Meta: U2FsdGVkX1/lNf0GBOy0W/sepnNu7erM6+7XYZz8nyfreU9EmGd52gaSfkai/2ez/POoPEeNk3VjoxwnWyKshSqVwHi4OsjcJ4D3eKgIBDbjvPSbOQX6BCfRWOKXWq9uCfjRzGPNSCzkcSwTf8d375Exaelpod2hiUeuWta/VXhpdnnV2nTY7SdHlpE+9xeb9fM3yP5HvzeSCNParLglTv33uApdd7PivbMaYr6VMju2aiiD6BbW3RksdYwBh7UO+LHrOPAXQOCQr2q+t93FOIlHkHM6TVBx/qSF3SwWwcAruhYA2ZVJirYsSfirjUG+UuTzYsaXnWcmi1zZtxNAHRosmoy2K5wEintmDp5WJ9FCBHETE8Pe9LngHg7k2tgEChvVXXby23kRtbud9+q+vM18o3eqJHJK8HzUwUdsUg4bhvxUja/OvBvAqx39XlkHfH5qW1d2lHFwbO1XWOJlQD6+PUtMqc4hNp4nmubvSTZ+DEOWgmlGFFCmy6WeEfC9jEI8kkmqY8aHbiyP00j32pL+Inu/G5N0pzSegCGXb6W0/39bgB7tDWMt1n+MN9ndKwofhG3bRnkcawqbMuLHk2lsDDcVRy09rd5VU9emyerrcS8t5u4vzVAiXiroC6nu7qAyznHmCt/d8h2oVIrqoAa59hx8QAKaWvt/I1r7AlU7TZP/5BwXxHKEKMNPsuJ9tepcL07krZG5dOra60Xu6IsA5mbTW6ifSclYqE9V3wbzaqwpf5Hr0lKfVaSs8j6DqHmFI6Wek0OZaDUgqdDG1dxp+c8KURLr8ChbRlDw396cCdkp6qhJC2zy6VaUxNFgQd//ohDgFLnyGkWugq/r9Y6dYsQu3jaBVNeBOBdeyXirsLBPmIzso49/d1JK80HVGWvBuJuBEdqynvrrbVb3bfvice6IjUoo3fZSK6WD4r/pehDgmk3NpfebTPeG9p8V6R9s3ChkDhvSHcrtYrB
+ 6DnChvAh
+ 3qL0G+KLhcvMW9lXavFHGWdD2d2RH8TEYZGRK2WWGMohL5TEDPo4wxa96FTUwr+PqpKb00a4Dk+DNgn7seX9ua1xaX5odWFZxl1gJcMphg2hNm9U3nkaZMkJntE0p5pWfiNFlx67Q0O8ITHLEAsozSQDaGSygpbQliXQOHnUObl3dRZXFuRUTzChqqETlVsvhhNzid5tgCjB9vm8WwI5mYjn87yioyRjR4KYyEULCLzC21D+SNerciS2MLFzoh27YkGxKfXlHoCI6kDtTIJgxGsDAdF8vtJ7j8b0AxQsMBgXhlaVK3Lnb3EYhcEAY64HCRg9lW/XS0Au0F0E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,139 +184,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 1, 2025 at 9:32=E2=80=AFPM wangzicheng <wangzicheng@honor.com> =
-wrote:
->
-> Hi Barry,
->
-> Thank you for the follow-up questions.
->
-> It seems that our main testbed (kernel v6.6/v6.12 for latest devices),
-> don't have SWAPPINESS_ANON_ONLY/201 - related patches yet.
+On 30 Nov 2025, at 21:36, Hongru Zhang wrote:
 
-Then please check with Suren whether it is possible to backport this to
-the Android common kernel.
-My understanding is that this should already be present in the Android 6.12
-kernel.
-
+>>> On mobile devices, some user-space memory management components check
+>>> memory pressure and fragmentation status periodically or via PSI, and
+>>> take actions such as killing processes or performing memory compaction
+>>> based on this information.
+>>
+>> Hm /proc/buddyinfo could be enough to determine fragmentation? Also we have
+>> in-kernel proactive compaction these days.
 >
-> Since the max swappiness is 200, there are quite scenarios that file
-> pages are the only option.
+> In fact, besides /proc/pagetypeinfo, other system resource information is
+> also collected at appropriate times, and resource usage throughout the
+> process lifecycle is appropriately tracked as well. User-space management
+> components integrate this information together to make decisions and
+> perform proper actions.
 >
-> Quote from kairui's reply:
-> > Right, we are seeing similar problems on our server too. To workaround
-> > it we force an age iteration before reclaiming when it happens, which
-> > isn't the best choice. When the LRU is long and the opposite type of
-> > the folios we want to reclaim is piling up in the oldest gen, a forced
-> > age will have to move all these folios, which leads to long tailing
-> > issues. Let's work on a reasonable solution for that.
+>>> Under high load scenarios, reading /proc/pagetypeinfo causes memory
+>>> management components or memory allocation/free paths to be blocked
+>>> for extended periods waiting for the zone lock, leading to the following
+>>> issues:
+>>> 1. Long interrupt-disabled spinlocks - occasionally exceeding 10ms on Qcom
+>>>    8750 platforms, reducing system real-time performance
+>>> 2. Memory management components being blocked for extended periods,
+>>>    preventing rapid acquisition of memory fragmentation information for
+>>>    critical memory management decisions and actions
+>>> 3. Increased latency in memory allocation and free paths due to prolonged
+>>>    zone lock contention
+>>
+>> It could be argued that not capturing /proc/pagetypeinfo (often) would help.
+>> I wonder if we can find also other benefits from the counters in the kernel
+>> itself.
 >
-
-We all agree that MGLRU has this generation issue. You mentioned it, I agre=
-ed
-and noted that both Kairui and I had observed it. Then Kairui replied that =
-he
-had indeed seen it as well. Now you are using Kairui=E2=80=99s reply to arg=
-ue against
-me, and I honestly don=E2=80=99t understand the logic behind your responses=
-.
-
-> Again, thank you for your guidance. We will carefully evaluate the
-> Patchset[1] you recommended.
+> Collecting system and app resource statistics and making decisions based
+> on this information is a common practice among Android device manufacturers.
 >
-> > Hi Zicheng,
-> >
-> > On Mon, Dec 1, 2025 at 5:55=E2=80=AFPM wangzicheng <wangzicheng@honor.c=
-om>
-> > wrote:
-> > >
-> > > Hi Barry,
-> > >
-> > > Thank you for the comment, actually we do know the cgroup file.
-> > >
-> > > What we really need is to *proactive aging 2~3 gens* before proactive
-> > reclaim.
-> > > (especially after cold launches when no anon pages in the oldest gens=
-)
-> > >
-> > > The proactive aging also helps distribute the anon and file pages eve=
-nly in
-> > > MGLRU gens. And reclaiming won't fall into file caches.
-> >
-> > I=E2=80=99m not quite sure what you mean by =E2=80=9Creclaiming won=E2=
-=80=99t fall into file caches.=E2=80=9D
-> >
-> > I assume you mean you configured a high swappiness for MGLRU proactive
-> > reclamation, so when both anon and file have four generations,
-> > `get_type_to_scan()` effectively always returns anon?
-> >
-> > >
-> > > > Also note that memcg already has an interface for proactive reclama=
-tion,
-> > > > so I=E2=80=99m not certain whether your patchset can coexist with i=
-t or extend
-> > > > it to meet your requirements=E2=80=94which seems quite impossible t=
-o me
-> > > >
-> > > > memory.reclaim
-> > > >         A write-only nested-keyed file which exists for all cgroups=
-.
-> > > >
-> > > >         This is a simple interface to trigger memory reclaim in the
-> > > >         target cgroup.
-> > > >
-> > > >         Example::
-> > > >
-> > > >           echo "1G" > memory.reclaim
-> > > >
-> > > >         Please note that the kernel can over or under reclaim from
-> > > >         the target cgroup. If less bytes are reclaimed than the
-> > > >         specified amount, -EAGAIN is returned.
-> > > >
-> > > This remind me that adding a `memor.aging` under memcg directories
-> > > rather than adding new procfs files is also a great option.
-> >
-> > I still don=E2=80=99t understand why. Aging is something MGLRU itself s=
-hould
-> > handle; components outside MGLRU, such as cgroup v2, do not need to be
-> > aware of this concept at all. Exposing it will likely lead to another
-> > immediate NAK.
-> >
-> > In short, aging should remain within MGLRU=E2=80=99s internal scope.
+> Currently, there should be over a billion Android phones being used daily
+> worldwide. The diversity of hardware configurations across Android devices
+> makes it difficult for kernel mechanisms alone to maintain good
+> performance across all usage scenarios.
 >
-> I would like to express a different point of view. We are working on some=
-thing
-> Interesting on it, will be shared once ready.
+> First, hardware capabilities vary greatly - flagship phones may have up to
+> 24GB of memory, while low-end devices may have as little as 4GB. CPU,
+> storage, battery, and passive cooling capabilities vary significantly due
+> to market positioning and cost factors. Hardware resources seem always
+> inadequate.
+>
+> Second, usage scenarios also differ - some people use devices in hot
+> environments while others in cold environments; some enjoy high-definition
+> gaming while others simply browse the web.
+>
+> Third, user habits vary as well. Some people rarely restart their phones
+> except when the battery dies or the system crashes; others restart daily,
+> like me. Some users never actively close apps, only switching them to
+> the background, resulting in dozens of apps running in the background and
+> keeping system resources consumed (especially memory). Yet others just use
+> a few apps, closing unused apps rather than leaving them in the
+> background.
+>
+> Despite the above challenges, Android device manufacturers hope to ensure
+> a good user experience (no UI jank) across all situations.
+>
+> Even at 60 Hz frame refresh rate (90 Hz, 120 Hz also supported now), all
+> work from user input to render and display should be done within 16.7 ms.
+> To achieve this goal, the management components perform tasks such as:
+> - Track system resource status: what system has
+>   (system resource awareness)
+> - Learn and predict app resource demands: what app needs
+>   (resource demand awareness)
+> - Monitor app launch, exit, and foreground-background switches: least
+>   important app gives back resource to system to serve most important
+>   one, usually the foreground app
+>   (user intent awareness)
+>
+> Tracking system resources seems necessary for Android devices, not
+> optional. So the related paths are not that cold on Android devices.
 
-You are always welcome to share, but please understand that memory.aging is
-not of interest to any module outside the scope of MGLRU itself. An interfa=
-ce
-is an interface, and internal implementation should remain internal. In oth=
-er
-words, there is no reason for cgroupv2 to be aware of what =E2=80=9Caging=
-=E2=80=9D is.
+These are all good background information. But how does userspace monitor
+utilize pageblock migratetype information? Can you give a concrete example?
 
-You may submit your new code as a "fix" for the generation issue without
-introducing a new interface. That would be a good starting point for
-discussing how to resolve the problem.
+Something like when free_movable is low, background apps is killed to
+provide more free pages? Or is userspace monitor even trying to attribute
+different pageblock usage to each app by monitoring /proc/pagetypeinfo
+before and after an app launch?
+
+Thanks.
 
 >
-> >
-> > But it seems you do want some policy control for your proactive
-> > reclamation, such as always reclaiming anon pages or reclaiming them
-> > more aggressively than file pages. I assume Zhongkun=E2=80=99s patch [1=
-] we
-> > mentioned earlier should provide support for that, correct?
-> >
-> > As a workaround, you can set `swappiness=3Dmax` for `memory.reclaim`
-> > before
-> > we internally improve the handling of the aging issue. In short,
-> > =E2=80=9Cproactive aging=E2=80=9D and similar mechanisms should be hand=
-led automatically
-> > and internally within the scope of the MGLRU code.
+> All the above are from workload perspective. From the kernel perspective,
+> regardless of when or how frequently user-space tools read statistical
+> information, they should not affect the kernel's own efficiency
+> significantly. That's why I submit this patch series to make the read side
+> of /proc/pagetypeinfo lock-free. But this does introduce overhead in hot
+> path, I would greatly appreciate if we can discuss how to improve it here.
 >
-> Sure, we will make a careful evaluation.
+>> Adding these migratetype counters is something that wouldn't be even
+>> possible in the past, until the freelist migratetype hygiene was merged.
+>> So now it should be AFAIK possible, but it's still some overhead in
+>> relatively hot paths. I wonder if we even considered this before in the
+>> context of migratetype hygiene? Couldn't find anything quickly.
+>
+> Yes, I wrote the code on old kernel initially, at that time, I reused
+> set_pcppage_migratetype (also renamed) to cache the exact migratetype
+> list that the page block is on. After the freelist migratetype hygiene
+> patches were merged, I removed that logic.
 
-Thanks
-Barry
+
+Best Regards,
+Yan, Zi
 
