@@ -4,116 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2597D116E2
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 04:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A642D111A8
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 06:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003F36B000C; Sun, 30 Nov 2025 23:14:18 -0500 (EST)
+	id 2A11F6B0008; Mon,  1 Dec 2025 01:00:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1DD56B000E; Sun, 30 Nov 2025 23:14:17 -0500 (EST)
+	id 251B76B000C; Mon,  1 Dec 2025 01:00:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E32B96B0010; Sun, 30 Nov 2025 23:14:17 -0500 (EST)
+	id 140836B000D; Mon,  1 Dec 2025 01:00:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD06F6B000C
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 23:14:17 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11DF313318F
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:14:14 +0000 (UTC)
-X-FDA: 84169584828.18.D22DFBD
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 46B0B1A000D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:14:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mxnv+GkE;
-	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 03B326B0008
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 01:00:25 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6986EC0881
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:00:21 +0000 (UTC)
+X-FDA: 84169852242.21.10ECCF5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 22BE6120015
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:00:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iIXceqSu;
+	spf=pass (imf29.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764562452;
+	s=arc-20220608; t=1764568819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NvqfHUMOZNX470bp1dryFycFk+/R03rrhA62xaGfUj0=;
-	b=yVFk7IGFiTTeux2BwheT7EIcI9wrQgOJ5o5tCotLcIhM2Xo4wi9aBcEf3YeNy/Xut/jJsB
-	Mi7+H2DfH+ln/v+aejcpHY10tzaDE0xp+ZsIfT/p5MtngZNxsbuLnKBq3Bm/h9AvZA/+t2
-	aQdgGOLnuy5Wh5cyVYf7z2I/VtAMOGI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764562452; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CsqBDxcbLfMDp4rivrDSMIGU/MUrsD/8o4nba0o+AE4=;
+	b=8V6I0EkeKjPT6bagIZZmtMXJs6I7ybRDExtwDLrJC474XgOMo+w0QjK82D1AbOOcNNecKZ
+	al7ZdfC4FcQXtkE7A4FDN2ALN5Ru2QVPgLhkVNszQJb0tDFgnJQByTMVwRtODVDRG+YYOn
+	/I+vXYLlk4kBDtrT/m0Padj78S/cLTA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764568819; a=rsa-sha256;
 	cv=none;
-	b=USwzWHtbFXUlnW391wcD7P91lhGUR+Ov9Q1hf56kEUfJxhCcsCwtFPcOpV6kNjLRmx9FJX
-	BVUIZvwdVDIJixBDWf8oZjKkRDzNubwdiNATeg1W9UJsNAiblRymDeG9e7KBvB4TPJyq+H
-	o/z/IEI52dE1Kz+VHGIS+X83mkBEaaI=
+	b=J9Z0AccbiuEqODK6YvJJrfjYmzPbNnyuk/X4R29txViYZhgHNOS7Umxy5SP0QHbY0HdpHv
+	tT0zJGT6f0iQons+8PVdJ1qbGOnyBs+Y4+ToTMwQ4KfJ77oNQjY42OI1Y+iVfvLLBUN75F
+	T3/GXoExaVoQWOHkAF5Z4xX6MUiRYdM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mxnv+GkE;
-	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-5dfa9e34adbso2952090137.0
-        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:14:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764562451; x=1765167251; darn=kvack.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NvqfHUMOZNX470bp1dryFycFk+/R03rrhA62xaGfUj0=;
-        b=mxnv+GkEsDAe9mjueeiLuesqtwKFJgDF+sOwqwz/9oze8md9Dx4ligSRFs9fy9A9ic
-         /zQnSFdnItaxa/0VsN6grMeSg19VnPfVvKOzqUJxHuGKxizsG0mjSysbBt0rzmCQVugU
-         jEzekpOA9Asy51pw3lsvSeZV0aQyIsKEVMwpDg6Df1sYd3qAwlu/K7LoeWlLZ5WwL3rT
-         eHuWBkDNt/e2bXk2zlcfh/tyNp1QxWyR2HUjjXq9L31BUzCzmlh4Qp675UyaqaYSt3kS
-         ukl7Z21DB3sdoDKtxb88/Ym3ap6ztQ2NsGoo/cNXeHbxlw4CDNpeuGhtOJPbiKK6oHVQ
-         ts1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764562451; x=1765167251;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NvqfHUMOZNX470bp1dryFycFk+/R03rrhA62xaGfUj0=;
-        b=YFfi72A9lofsZVp5Lq8pOOYwhGoBmiesquD68Yw5RDTKjAg6KmCQCt9zwThRej2y3J
-         +RjgvxX+aHqC8cxnvLkq3RRuCkQC2CF/6sKeuce5x2B8n6SluRTC2O7Y2KHtJtAmuHqh
-         iAMwZPCrNm3akQlH1MZTUDUO6kh+Ia+Bv9RJWRRN5cyCslqAYqCIeOOsd7Om1yx9QrBI
-         k7sEKcqKXz9YjrwZn1Y/hYRMfMsmyL1EJrt52XItAwGjuBQMUJ1Awwsp+YgjxM+VkqrQ
-         JMuW8zBKha5iOKl5jv+oHutcOEPX96iBPaGekkODkrxlw1emHgVsSMCaEh/eU/rE+dQz
-         8HRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSkEbzHlr2oyuQrtHpvzMjzhZ+uxnPGtmqMjVmNOPuId6OD9n4yrfBUwOEmURULgxqdnYxPn9eBQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz03gTaSarqxrKDaNLySAcY50kw7v/g2Aiw+ZaV2gFIXAMRqcTv
-	NPdAhYHM7pe9YtrL9uapdRTBgbAXPiYddhtkmVZXje4LpjLsIr77WqAp6gWNHEfWkvB28UCoAAq
-	NQVh+dJk4Y0oZU303sYP0JPUAB56BJ0Q=
-X-Gm-Gg: ASbGncsdIp+aSlPC+ZEKx16OYFMvo8mYAHm5rmKAxOP+QWcjS0Z5soNZBhdwO/agzuo
-	LgHthzJuA5hwFZXmcRBKT005fptyru2FnggGGgnqceZrBfVDZFmN1oYa+RkQ7e2FcPGnQ3OqMIl
-	1ZaF447C1YHc7BaAqkcmmD3NvwCkrfilfbDmGwD6Nv3TneZWnv9HUrJBnD9cKJaCBei6//6BgIW
-	cifmkT2n5E/kA/w/pLC26HQeWDvQd7whakrwCrmww224kG85/A+NVSUq/pApG1t0VKLeg==
-X-Google-Smtp-Source: AGHT+IFQFaTlSgrkPrDF34ZzuXXc6tRWv7IWzSI1FLwFBEaeyfWtvk4amHL87+8261TG5sC/U7niA6iwfCoFudViaSk=
-X-Received: by 2002:a05:6102:919:b0:5db:f15a:539d with SMTP id
- ada2fe7eead31-5e22423f36emr8227948137.7.1764562451234; Sun, 30 Nov 2025
- 20:14:11 -0800 (PST)
+	imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iIXceqSu;
+	spf=pass (imf29.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AUKikaa013911;
+	Mon, 1 Dec 2025 06:00:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=CsqBDxcbLfMDp4rivrDSMIGU/MUrsD/8o4nba0o+A
+	E4=; b=iIXceqSu+hKJMZVLLHFExmAuSaIJrJhR/lPUbYZworq0EmT/x3Bv6hdyC
+	QM8n6Fp8wtqK8A1FlMyDRp3z4FaYdCT5RyGBmT/1naMIYXs4HAiRiqhA7w+mFMrr
+	HPU6muewkhrKNTaZCFcp1ERb9toDiBYSnR1BD3itNpZfPowmTAB0NUyIrC+ux3eZ
+	liXp/NS2j01EMzTrqIL5fVtcIDTNSj5mYAFZD4tEF93bpq9uziuMgCiTAc/WN8rp
+	bTpuqmPpGIhgrOwBGiZNmOu1gg7F8M8ygnnYkGCuiZmrTf5sW4bT9pFvMwcPvnRR
+	iVpN7hDw78AmhGRlXUuPUFkLt9eEw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8uddpy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Dec 2025 06:00:17 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B15urMO005109;
+	Mon, 1 Dec 2025 06:00:16 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8uddpv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Dec 2025 06:00:16 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B15ZrHf008660;
+	Mon, 1 Dec 2025 06:00:15 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4arc5mmn1j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Dec 2025 06:00:15 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B160Dl461669776
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Dec 2025 06:00:13 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 796A72005A;
+	Mon,  1 Dec 2025 06:00:13 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C3FA12004E;
+	Mon,  1 Dec 2025 06:00:10 +0000 (GMT)
+Received: from aboo.ibm.com.com (unknown [9.150.25.199])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Dec 2025 06:00:10 +0000 (GMT)
+From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+To: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+        mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+        ziy@nvidia.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, aboorvad@linux.ibm.com
+Subject: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads lock-free
+Date: Mon,  1 Dec 2025 11:30:09 +0530
+Message-ID: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
- <aSm800KsCAptVZKu@casper.infradead.org> <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
-In-Reply-To: <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 1 Dec 2025 12:13:59 +0800
-X-Gm-Features: AWmQ_bnCsLVtTt2xe_A-3mmx3kROTPC9EO7s9FoipJAT7VnWafh4GCqMSpp-xoE
-Message-ID: <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	Zicheng Wang <wangzicheng@honor.com>, akpm@linux-foundation.org, hannes@cmpxchg.org, 
-	david@redhat.com, axelrasmussen@google.com, yuanchu@google.com, 
-	mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
-	lorenzo.stoakes@oracle.com, weixugc@google.com, vbabka@suse.cz, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: I6Zz0Te7LqG6Od38J5XT0JKtOxWb5Fg2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAwOCBTYWx0ZWRfX59T+T29ZLuIP
+ TrEWf7GUTc6uHOc3Jn9zeiYow2oXxuEAlpqPAokgYLn9i9dCOhzAIlqNaxIRAkBKhvqiIBsNaJl
+ iGhczfKsQZBhuOOi/Ue/wWJPBqF5NqxKy9V1ibi/RngTl/s/hyfUlPzLH6wheYs2zu4lod+yVZv
+ qx7qJ2QXRJxShhcrDurb8qR43ZF75U+5y4e0GKdRksKHMxM6Hgx8LXP4Sr44H07rmT2ZJR/Rv99
+ 4fwoz/CmtZvV8/4nb+VU+VMosTionHAufOA7Vwi+bN4RCccpxUuRalAXepbPp0dowNeBqdnPMOR
+ qfYkm6+xVdPt58UEIZ6M9wGdh+8b5ddza+X4LTsw3PGKDC86Whu18G6Jjg5O4ba9lo5ANu2agCa
+ jayqpWSMug9xh5C0wFPfPzedJGDJNQ==
+X-Authority-Analysis: v=2.4 cv=Scz6t/Ru c=1 sm=1 tr=0 ts=692d2ef1 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=JTTQk8T6qDu4cFRdm7cA:9
+X-Proofpoint-GUID: v6pVxS5lSzo1eGk14e7KJgQXVxUQ0rcB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-28_08,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1011 spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511290008
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 46B0B1A000D
-X-Stat-Signature: o7sr617xxbuksmpnqymix8roxo8399hw
+X-Rspamd-Queue-Id: 22BE6120015
+X-Stat-Signature: co4cm7ns5ejndet7xd6nbdf1641jsapt
 X-Rspam-User: 
-X-HE-Tag: 1764562452-56423
-X-HE-Meta: U2FsdGVkX19mMetDh9NLufTB55Jr1wULWBtXYWwTkHFW7zYKoUcfxF7zvnNXnnjCUH+RRKkfNi3bzXbKaAaBJJdvuvJKOC1OjZAib7h1L+TaRWn0J55dTFgmx5RDTak4nUX1HGAuO/MvRv0lswdqKgcG5xuYy51oLo8jzZ04DqC8XJz571her/8cNZRTUcIFcuj4FCPK9Vi5cSRrKDLpCKF6GAVv6x2DWV7Fp3LxYti+jgD7jgP7gAG9zgINORshTGwjhqxqfJ1oLrLKPydW7I47OzdfcW2IJiNUKBMM/bhNftRpI4v1Ore8owRwNE89Wp12yJBnXEhX6qz8aw39o2aXw2iQOaiyGJbfTOiN6XrjdGD0snHci5NxAqS8pa7FWrCtRUw4RMX8JlHGJpMOcOkHEprN/wuoBEMcGssd02S2eMMi6jlcGCnZb3myizvmkZJlcJUwRA/7ZocyaDBMSfNUW7Rm37E46FgW849rIRoocgC+hj090piZepwjFFYCBXb+ctqQcvFdVTxjQDjMRo/J/qk3tbSwiumIWzuyhKwPtjQgsEkk38LOPwNCRk0zEGlYFL/N4rTCa1YF0giHNdnmF1B4o4sivryqTcvC04IdJzyTPg+XrmG1rRf5oe4oMyW9LAw4tLlGKBYxw9bktvHz/CBsn/tgSeL4QK/MM8bKqe6KzvzGsgRtiH2LiSwAzEOPwv2bD8cYSo8PYZWPnoNu096he51kKgyl8OcrjEW45BKWsWUc9ktJ+zv1bzW2yzOkGE6oZJG9cSH5AH1l60sO9Y/8BoLuQ3CZj9Zxi6qaxRA2aMvYA2ZSKbaguZ2WeUbkdmVO8YH4aIbiL3s3SwLbGr31+/ota0+1kaBwbO33sehHe/qC4dCLYG5x60EKRByA5TCQT45B6PEXBgEZxKaahuVzi72skqFPZlQIsI0pRVpu80Pg8rBKeubwuDAa8zanWFXdU1I9OGDdLq/
- w3wKHo2F
- qD278bHpKDt4PWru3b84j2Q3MoHIqrU6Rfbm3Hl7jADsOz8RkbXlsBkg4ywmbQ6uXBkmZsiUaJyfJRdJSMzssg7qFC7U+kPF1Hxzt+K5XAfJmhFPkSJV9Ztp5/CBI6pecCX/yCb38/idqc8LryONdrtXGJVgzKw2wY9vgl5tF72VAEfIxIO2qKpx62BLBkbOvO7Cb5sl5o8h/8TmG/WsObGKYJxKISQsEmjh6KErwhR5/YLj83mFOfGEgdVPCNeeGWMdqipV8CHYE6vKR/tzyh85KyR3o+eAy1ld628GzmDnGFIyyrbEMu1G6DFaLQckJjWEIl3Spbdm3q5suiqQsYfjr+D4OjDeZIxfwT18tAhNPz5FKCIA6cEt4NmGMOhfG+5iD6vdGNp8Hu2wlwT25lGPXHDsyd9rXugG2a6fjuY9mUdImrn7OODjVPk1UlMddhUOxAlCmdKt4thNX14Up3TdKPbH1mvbdzaJSbsQzKKZse9VDsC6I2gl/MaTSdQAQu4WKzR3aB3vpMXrUcaG1oO6Lcg==
+X-HE-Tag: 1764568818-9951
+X-HE-Meta: U2FsdGVkX19JzFHJWyJMc0Hh9laKtwBJ3rxS+iifts6QIwjHyOqIFMjAjT0an+FJYdePt2kJhLxZq6ABUqb5YOPkcg1PbkhuwlZGv9LTepJTgTT7XagLQBcQI+UMv89fwiMkZRrIgXH4lMbF0x5GoqY4XNsZCSBrLiKUH+OvIw0LU/i1N8ylb44mVNjmY8CnoZozOY2s2WYt7Y5nUW0ejUnUrqEyc/yKOxQKYh2L3MJWt4xm7Yk+lxMc4EPOXrhD2iydvXhTUEa0RhFH5DlZEomG76Nbk2wjZ0wS4HAUJXWfBlxm3OB/okc+m+XJAXheCzjX8zO4Ns1hgwjOzteYQD/4LD4f/B+YaOKwGY9mNkpCJHVf/iIJCr/AZM1VlTUM6u/CbKfII/o0+lRnIw0TG6VY0LnuHA9djedqXJ80cVfI5s418Y2ZBA08P5K/i8XHMKnYUhgUXdOy2UBVULzAw7AByNO7JIAiHIVuA/PKj5O6g7sAnNQxvP21T3ioYf11cAqrzuuMjz3fKFtCmhEeDWGZMXAPMbPZwFzNANfQlWuhlXImTSmRpd2y3N9kezs0SJbvt6UBj4X3xteaCOkirzHXn7EdUlR/E5mcvwGjismTQfqNZK27c5/iTRTr3Cn7BN9nWvTR6DlZLhAWJ9TaMHdRfBLrwxOwmjp9f5dalQFhDJCJAIrF4D/tmcFmQBrJz68ni4tcIB1vw01OAIP1WcZTsfQwUMN22jwhitcl5kKYtdKlBCJm16BrJ8Wjzw/Kvj+hK1FcRpwRqmey3ZqBbVbsVQvEqYU7KpbvLcPW88fvI4jn0VWRukPzeIz1nn32QavpCu/wskygsK3B/YAvNuGT4wvIVMwGCTtoJJQOtcNWD3GW5+UWhzlzP84nhsUUT/Jt5wF9f4b8nNnpp+dm1C9+Fj6f8Izr5Jxd3DdEnhgkgD4XcO58kHVsBBwz8caV8RHRoSfy3ZfLXxwigfE
+ Pb1J9hDO
+ 7q040wFgFxa67Fs/rrVFpRZnDI4r2Zb0XWqM6yg8Jt7xZ3na7pLVbXByrLfSWW1mahP3xrxyx2FL7jzxRk8lXJKRftSInfB/zceOlO00i5mFXFO3uladNyZCzARqhrqsmaalwyzj7bWuR5hIoDhcnAEvgtVSRSYw6U8VHY6N2DlmNOhqZTz4xv7fxS3GU7V5X/jrpD1lMThSzZtFJ9t8Cd4x805mtZS0NS5hff4w8JxdJ1C6G5WvTe5c9cA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,73 +140,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Liam,
+When page isolation loops indefinitely during memory offline, reading
+/proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_lock,
+causing hung task warnings.
 
-I saw you mentioned me, so I just wanted to join in :-)
+Make procfs reads lock-free since percpu_pagelist_high_fraction is a simple
+integer with naturally atomic reads, writers still serialize via the mutex.
 
-On Sat, Nov 29, 2025 at 12:16=E2=80=AFAM Liam R. Howlett
-<Liam.Howlett@oracle.com> wrote:
->
-> * Matthew Wilcox <willy@infradead.org> [251128 10:16]:
-> > On Fri, Nov 28, 2025 at 10:53:12AM +0800, Zicheng Wang wrote:
-> > > Case study:
-> > > A widely observed issue on Android is that after application launch,
->
-> What do you mean by application launch?  What does this mean in the
-> kernel context?
+This prevents hung task warnings when reading the procfs file during
+long-running memory offline operations.
 
-I think there are two cases. First, a cold start: a new process is
-forked to launch the app. Second, when the app switches from background
-to foreground, for example when we bring it back to the screen after it
-has been running in the background.
+Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+---
+ mm/page_alloc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-In the first case, you reboot your phone and tap the YouTube icon to
-start the app (cold launch). In the second case, you are watching a
-video in YouTube, then switch to Facebook, and later tap the YouTube
-icon again to bring it from background to foreground.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ed82ee55e66a..7c8d773ed4af 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6611,11 +6611,14 @@ static int percpu_pagelist_high_fraction_sysctl_handler(const struct ctl_table *
+ 	int old_percpu_pagelist_high_fraction;
+ 	int ret;
+ 
++	if (!write)
++		return proc_dointvec_minmax(table, write, buffer, length, ppos);
++
+ 	mutex_lock(&pcp_batch_high_lock);
+ 	old_percpu_pagelist_high_fraction = percpu_pagelist_high_fraction;
+ 
+ 	ret = proc_dointvec_minmax(table, write, buffer, length, ppos);
+-	if (!write || ret < 0)
++	if (ret < 0)
+ 		goto out;
+ 
+ 	/* Sanity checking to avoid pcp imbalance */
+-- 
+2.50.1
 
->
-> > > the oldest anon generation often becomes empty, and file pages
-> > > are over-reclaimed.
-> >
-> > You should fix the bug, not move the debug interface to procfs.  NACK.
->
-> Barry recently sent an RFC [1] to affect LRU in the exit path for
-> Android.  This was proven incorrect by Johannes, iirc, in another thread
-> I cannot find (destroys performance of calling the same command).
-
-My understanding is that affecting the LRU in the exit path is not
-generally correct, but it still highlights a requirement: Linux LRU
-needs a way to understand app-cycling behavior in an Android-like
-system.
-
->
-> These ideas seem both related as it points to a suboptimal LRU in the
-> Android ecosystem, at least.  It seems to stem from Androids life
-> (cycle) choices :)
->
-> I strongly agree with Willy.  We don't want another userspace daemon
-> and/or interface, but this time to play with the LRU to avoid trying to
-> define and fix the problem.
->
-> Do you know if this affects others or why it is android specific?
-
-The behavior Zicheng probably wants is a proactive memory reclamation
-interface. For example, since each app may be in a different memcg, if an
-app has been in the background for a long time, he wants to reclaim its
-memory proactively rather than waiting until kswapd hits the watermarks.
-
-This may help a newly launched app obtain memory more quickly, avoiding
-delays from reclamation, since a new app typically requires a substantial
-amount of memory.
-
-Zicheng, please let me know if I=E2=80=99m misunderstanding anything.
-
->
-> [1].  https://lore.kernel.org/all/20250514070820.51793-1-21cnbao@gmail.co=
-m/
->
-
-Thanks
-Barry
 
