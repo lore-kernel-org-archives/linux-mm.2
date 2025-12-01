@@ -4,142 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0168BD116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 17:48:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2EDED116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 17:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A0376B0026; Mon,  1 Dec 2025 12:48:35 -0500 (EST)
+	id 1CF5E6B0098; Mon,  1 Dec 2025 12:48:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5500A6B0096; Mon,  1 Dec 2025 12:48:35 -0500 (EST)
+	id 17FC86B009E; Mon,  1 Dec 2025 12:48:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 417F36B0098; Mon,  1 Dec 2025 12:48:35 -0500 (EST)
+	id 06EF86B009F; Mon,  1 Dec 2025 12:48:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B73E6B0026
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 12:48:35 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E674214035B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:48:34 +0000 (UTC)
-X-FDA: 84171636948.04.017CC67
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 11FE1C0011
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:48:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SS2gmfAS;
-	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E9EA16B0098
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 12:48:46 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98B22131DB1
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:48:46 +0000 (UTC)
+X-FDA: 84171637452.25.166DEE1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 553531C0009
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 17:48:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JxW+6ONT;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764611313;
+	s=arc-20220608; t=1764611324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0P734FAsuJ3a3pM621I9D2l0RVWlr/vu6rgvvHLdnAc=;
-	b=t6aBEIM43nnd1cPeCw9rsba9UmiV/1a8Ofip0T0tcSFBX6AHnSN7J9vF8OUxpCLOpGfzdV
-	wrXn0tnNEum3dRQ/0Qoj8RuuPxTingMJX9OSI51ubbyCu5K+BzHZR2PvN0AYyHNbc+HSga
-	3ZFchdAvT7bQvB0L1dJrS8n4wQfo920=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764611313; a=rsa-sha256;
-	cv=none;
-	b=mwnVgxRS7ipnPM4cJxEcbGkA/k5vzIWt70SynWVOEzYLlcjPyhNviG9hBNgLiQQC7JOEmf
-	vkXir4KWTzla84W/oe2WGmCsw2umNzmADju10+qVK/mORQp4wUbJomYf+k25ZhjjHgKMqZ
-	YciKYsXOE6aUv/MHbqpCItBEylht9Hk=
+	bh=3/u5V2TuhJF6zMuw/qzx7YinSVb0V+ssXcG9t7IvMvw=;
+	b=qfhhBueZtgOMXqH0g4zLcLr/EjerUYz2O9Wz4X+4sMIm+AgJjnbWU0fX+raKLUMuo0pt4H
+	psd0OGdL+8LCA6tu6yJxMMWTjKJXphRfyJh6UlHSH4XLtU7UrE3qlUD6oppSVGgBcEvdWd
+	BgX0KVbObZz0zbT/TFHdm0szAH/Xhxg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SS2gmfAS;
-	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764611312;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0P734FAsuJ3a3pM621I9D2l0RVWlr/vu6rgvvHLdnAc=;
-	b=SS2gmfASbTiX8zrxuSQcBYebmHnxKnpP+JelRE7WGVCjw6MDbq46RfDj3L5MZQItPZEKat
-	yDUVR+LNDrRB1xz6VXY+UqpfTN+fZGpHQjN6dnD33xl/LhX2X3W+caeI1vKcEjBLSTljQN
-	/zS/RdAerFCh9ODM9vz/K1jeJHjIK6w=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-AdTX8QqbPKOp84G1lR4Sew-1; Mon,
- 01 Dec 2025 12:48:30 -0500
-X-MC-Unique: AdTX8QqbPKOp84G1lR4Sew-1
-X-Mimecast-MFC-AGG-ID: AdTX8QqbPKOp84G1lR4Sew_1764611305
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F3B319560B1;
-	Mon,  1 Dec 2025 17:48:25 +0000 (UTC)
-Received: from h1.redhat.com (unknown [10.22.66.60])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1835B1800451;
-	Mon,  1 Dec 2025 17:48:14 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org
-Cc: david@redhat.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	corbet@lwn.net,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	willy@infradead.org,
-	peterx@redhat.com,
-	wangkefeng.wang@huawei.com,
-	usamaarif642@gmail.com,
-	sunnanyong@huawei.com,
-	vishal.moola@gmail.com,
-	thomas.hellstrom@linux.intel.com,
-	yang@os.amperecomputing.com,
-	kas@kernel.org,
-	aarcange@redhat.com,
-	raquini@redhat.com,
-	anshuman.khandual@arm.com,
-	catalin.marinas@arm.com,
-	tiwai@suse.de,
-	will@kernel.org,
-	dave.hansen@linux.intel.com,
-	jack@suse.cz,
-	cl@gentwo.org,
-	jglisse@google.com,
-	surenb@google.com,
-	zokeefe@google.com,
-	hannes@cmpxchg.org,
-	rientjes@google.com,
-	mhocko@suse.com,
-	rdunlap@infradead.org,
-	hughd@google.com,
-	richard.weiyang@gmail.com,
-	lance.yang@linux.dev,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de
-Subject: [PATCH v13 mm-new 06/16] khugepaged: generalize __collapse_huge_page_* for mTHP support
-Date: Mon,  1 Dec 2025 10:46:17 -0700
-Message-ID: <20251201174627.23295-7-npache@redhat.com>
-In-Reply-To: <20251201174627.23295-1-npache@redhat.com>
-References: <20251201174627.23295-1-npache@redhat.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JxW+6ONT;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764611324; a=rsa-sha256;
+	cv=none;
+	b=59+rKQ08GrNX5hx0rL9JNDvZ+bZ80W3Le/GINsuMEAwDe68TMsJotw2Xz0AK4rWLh+rwBe
+	CIwgp0v4qxFO0VGTaQPyrwZIxNOu5qWh5rJUvSDKipXSNHFq4vOIazCEcBRevdSo7/jLYm
+	cQ78yMhxgCcxxvh6vbBUXdBx291MGXY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5ACA044412;
+	Mon,  1 Dec 2025 17:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DA3C116C6;
+	Mon,  1 Dec 2025 17:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764611323;
+	bh=hWOrPGrXp0FSreB+cLgKfrOmVZjwbI7HL6KWRWP8naI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JxW+6ONTFdkKnH8qRt+V/a6Lqis5xf83eDQ/0gsSHu8BCvTuuW5ml9eAr9YdPcNO/
+	 9HEriRPkCoNBOIWasS33PicthSiEVGxZhmUdEb4VTMSMF+lx5Iw8VbGaVNRpLGckuK
+	 CvXF5irlHnvVUwfil/E/3uzW8Wgxv8l1g8CoNKPhxmoqK2g/FnJgN2a27mDUrQe2dI
+	 fz4vsmGb7MJQ1WMXo4cpnehoCvj/FgOd14h0QR9fkXsQOaAF9uuo7IkTMRBDqtCELH
+	 UAzCLs8HyXNhBAN+JiRhQ9W1cWORT5cpi/VmzpzxdOnXdnIZ3FcSC9afOMsE4WzUVt
+	 nY/nKaioEssng==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BAA69F4007B;
+	Mon,  1 Dec 2025 12:48:41 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 01 Dec 2025 12:48:41 -0500
+X-ME-Sender: <xms:-dQtaU4oaaqORes3Wm3ewfhpLTMHvtSCYqOzgYHmuWJH7gFIV7ig5g>
+    <xme:-dQtaTbtswQ-VCP_VypdQYNj5_QuX8_NEUqTZj3ecGemvwfFwcwSY2JzySE537BEV
+    LoI9D7uS2gaIigltPdpa2ZWHyfdngib9UZtBvzWvLQt6AEQR5V4Wao>
+X-ME-Received: <xmr:-dQtafiZ9zMvQUsY5sugRHb2gKkM_dHTrM5Tj5eU3JHOvhZ7E5AK5FZEL8GJlA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvheekfeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehprhhsrghmphgrthesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmh
+    eskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdr
+    lhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgvfhhisehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohes
+    rhgvughhrghtrdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggv
+X-ME-Proxy: <xmx:-dQtaWZG0jMyLySHMMbquwP107dJMVh7GL-0giiYvJyFgdQO9A0VPQ>
+    <xmx:-dQtaaoeqfFdK-zdshvCMSurc5WwgT-gmr58MMcHfABFpSMfNd3LKA>
+    <xmx:-dQtaWSF5tQKpTbvq9yQF1JRwV2nJC88cOEb76sUIlXqu2_rPmPnNQ>
+    <xmx:-dQtaWk1Z0EjDWP5Qnk1z4D6uf6BceDXkTfsAebjxNg6sw5ixnpxvg>
+    <xmx:-dQtaSHg4a8nzvU5LDRMxwuicq463OnYfEB8iIshMyfNSvJIAMmxOruh>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Dec 2025 12:48:41 -0500 (EST)
+Date: Mon, 1 Dec 2025 17:48:39 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Pratik R. Sampat" <prsampat@amd.com>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, 
+	linux-efi@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org, 
+	akpm@linux-foundation.org, david@redhat.com, osalvador@suse.de, thomas.lendacky@amd.com, 
+	michael.roth@amd.com
+Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
+Message-ID: <maleev6ofzlnhi3rmqjawlllxkda4mrgwmb6msz5gz77klfrxl@adpqtakqrxrj>
+References: <20251125175753.1428857-1-prsampat@amd.com>
+ <20251125175753.1428857-3-prsampat@amd.com>
+ <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
+ <14df1d99-7df0-4982-8029-e66dfb140399@amd.com>
+ <dy65eupwalp5wsljetlto27l6tjjvoygeotjd3n7mk7zjc4dma@jf4hzsy6rtcd>
+ <f60d968e-6be3-4bad-8bf4-8500ad039817@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: 11FE1C0011
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f60d968e-6be3-4bad-8bf4-8500ad039817@amd.com>
+X-Rspamd-Queue-Id: 553531C0009
 X-Rspam-User: 
-X-Stat-Signature: bywp3djemtosog646xjhgtuh6pm1heyn
-X-HE-Tag: 1764611312-834763
-X-HE-Meta: U2FsdGVkX19AkPPc2O2xXc6mebAUr7o9I1dno0tMVfxyZdTNYMEybZv12iWY1jq+QYgCzboffHLcEzj5Yq+5llIyxj3zXr5hI9LmET8VavbKGx7xTIIvuIEfsEMjwnP/FHP5KHf/9Vy2S4Y52327chYLPFmDTflOP00uOZXSEp8EqdVisXvX/imvCbICN32aTItPAj8u+zXQmkuMrQuFetp9XgxlbuFywL5ib6gVMYZoaspsf3EX13HtvNy7tFytLizUNuVt1AP4c1X8u9TwC44OkvmUsVGwnbI2v5aAesj5T27wHF3THDmHqkdL9j2JPHeQQ1tQZb23PVpVSShVPQLuZKFQ16pay6sf+8QEjqwO+ibCRI1acDcJkqD+XrCWfaBsEmtc1u9hqiwNyV7LZ1pX9htzYhoeh0u1xVjHnTEyj+aBdZXAo4clJ0IBiGQXUzSrPB40HGgc2X14/PFyss6vHWDSzE5dpbtSa+WBj9zhG799bLukjK0d4ec3ya+jo2V/3Z1x0CN4/c4pu0eqU/N1duXoT/2pVm8j1OStVvlmMfu/CXueI8W1hjFhoU12sirDCTnIqVMqTOIXNHyeHNIdBdVGAyTYczmtPWdYL83ddqxR9cvPzjSnpfQGRD0PKFMf30wJBHr5kJiKG+UxIjt6YO9SEIDNZtnrxLwsPm2FvBvF87MbEE3vP/D4FMS5q7+xIFgbrDhHTn6nW7oqVMKMUg1joDmQrVqP5Nw6LVZjIE2/lE23ALzjSUHuQB0VchlxeDNPXfI5NvYy/ObfiFCQadrnTlCtz6qyByGdg1v/ncMMzWi3HcedKldvq9hrBXAsoO2aWIGdsjRY/EMmqV0GMIXp81ZGxjic+VnABQ49DS4Kuw1aJnl7rwmFZcSOqkSxGKH0VmYh06peO/zeAFI6ia2uoUYoFIBdxFy+G/RFgIn46rxV62wRaxd5SYgwyenARpP9BNwxJu04fsW
- ChN/rhCh
- OsgFhRMx7CCiqstyqewSKbTZMFoMWd1aYnl5tzvHl04Aj7pNGbaTnl2RHHu2FfJqzfpWD1ft/UmrUC+DMvUPWiC6Y+QE3SC3vVhGkS3fWzUP6T3OMsNWMgB/A+gJ3cOGy+bNQVjxuvmnASspfz38qaIq5/BTHAM/uGOKXuH965iX/9D5vqGRmdd6LZ/pawpLszwZhQXqd3S/QswTAFeGSli0Ubj8g5OAlN64A0+DEIFA/pGaalPjzwMGBG7QVDEui6UOsbYddpPkQxq6IMOt8mYz0D2Lf7DlolAapcWuF7Nx8GXplrXy3QFJZc/xlVMWhRA+QJnwgXwXsUNQZOnEQuEhdz2JCnnsiB3fp20uqB4E/MFiGt/rPRfH+yiovkGkNPnhG2V3jkgmYHYtRd/ruTeym6vLTvf2EMZ2sdRG6+scUm81cLQRyso9jPHvZDbvIoLn6vHe/B820DV2dHvRUI7yitggFABAwr85XmJqO/FiQROXK549EKQoSXI+pmzbtjtfQeTAwvxa2wxIBPLJ7jqXXvmPxdLSdiyWBjOasWpZVUeEFSpXSwL3bys3n9Ww03ITf5lAD2CHg56s=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: rt1doys6o1dpz58onqrhu8xedq44orpf
+X-HE-Tag: 1764611324-7249
+X-HE-Meta: U2FsdGVkX1/PELCGSkX0rC/d+9hxYVux2gzHi9aHOs826PSN5GjlqA3gtewRT1DSM4fy0trcJZeUup+qW5zx1fp4A0IwaBOfG/JLDi4JJ5GVd9siMkQYODUdbxp+qiv6pw33gsbcraz0JuzB9Uf66i+kcftqAM+PPSQFWKRCRweMA/XeF4tL+3elEE11nx+0wBI0OcoG48nI4SswPwekHb9/f+ZoptYd5HCAYe2bIEU4/257fDQ1JhyjH9fljxFoaw5QiS3dFamxZj8kJ8ilykPcIv45SOJZ6+XZfqci2ahXQ7aBp6ESQF5DksGGp2J/U7Ae4UsFD8Z1t5ff7tMT9k7gxv89BbIUJttMFe0+cLiNF9l29ogYpm8tTnSa/c9uJnd2QcL3v+fixnyGo6owf1JNQgw5zJORrGEgY8eiW7y9lMQ/Qz+qz6VEZSTiOrDZH1QpMT9ACs0Ua3BjkQDYg1iOldZnLXnd3dAwHDre0NxhO2Oc4BgejHgpW/4jRTnl5ckNGGLcldAvpRUfyUci8Yfyq8+zvNPtYMuAhD784vy0FYaVp+Yq6KHcaT49HmIioc+Lg0SpPuBndnysjel45Nyh7vJY3Ylqssyp21giekC4+3eWv1ZvZ+KcsvJIcqTWLNfQoSZXYjG5YPKrWBJ/yyWnCQOihmAXS7hqYy5ELJDualS1b7DKGyIzlFEXAoxlw0kcXfLIroaRXORbDeTfbumgoQhp7OmRjAE8HWk1WGm1yOb+482Hl8kKhC2u+QJos8FP5CAKahV41NgU2FMJTtqhe9l8fktM+2K6Lo6V5NBjD8fsIE6XxJk4N4WIy1KbRe8Fo9yqXJ1KLh6GvC4IfLnqoSVj8AiF6cSBB/YsDxcRohFkfyXyYc53sdS02idUbpnCwl0rdiO5d/NThoSeOrsGqY0/esHC0MdOqXnz1RNQmKBOkB35j4rRFi2bUV7YOsrFyqTSSu9DF/7UefR
+ h4NSCY+p
+ 8722QsyOBofb2jwCDIdq79jXEiG1ep0EQnkePvwnJh9UpiyARxnFkvMi4XdJD5ykPBIgBa+l1pS6GvAXrRrUkQzv7Rz50ClxT7VTAbK3cQ7k9WWQ5gMEPyT8nlyUaOfYa/3MNiYJUGQ+uUCftO4gjzgHSBpiPl8j6qIiGus+OSjHsHdjpsyI9wyBWw+jG5O8OxRH32BGba6l6jVAyQfbqZcVvzrtbLL3DdrqAx/Xmq5n2LKciiBHYxzYnrASh0KP5rOVH1pYFw0s/1CEWT0SQmF79xw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,227 +133,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-generalize the order of the __collapse_huge_page_* functions
-to support future mTHP collapse.
+On Mon, Dec 01, 2025 at 11:15:13AM -0600, Pratik R. Sampat wrote:
+> 
+> 
+> On 11/27/25 11:40 AM, Kiryl Shutsemau wrote:
+> > On Wed, Nov 26, 2025 at 04:27:29PM -0600, Pratik R. Sampat wrote:
+> >>
+> >>
+> >> On 11/26/25 5:12 AM, Kiryl Shutsemau wrote:
+> >>> On Tue, Nov 25, 2025 at 11:57:51AM -0600, Pratik R. Sampat wrote:
+> >>>> The unaccepted memory structure currently only supports accepting memory
+> >>>> present at boot time. The unaccepted table uses a fixed-size bitmap
+> >>>> reserved in memblock based on the initial memory layout, preventing
+> >>>> dynamic addition of memory ranges after boot. This causes guest
+> >>>> termination when memory is hot-added in a secure virtual machine due to
+> >>>> accessing pages that have not transitioned to private before use.
+> >>>
+> >>> How does the hot-pluggable memory look in EFI memory map? I thought
+> >>> hot-pluggable ranges suppose to be declared thare. The cleanest solution
+> >>> would be to have hot-pluggable and unaccepted indicated in EFI memory,
+> >>> so we can size bitmap accordingly upfront.
+> >>>
+> >>
+> >> I'm not quite sure if I fully understand. Do you mean to refer to the
+> >> EFI_MEMORY_HOT_PLUGGABLE attribute that is used for cold plugged boot
+> >> memory? If so, wouldn't it still be desirable to increase the size of
+> >> the bitmap to what was marked as hotpluggable initially?
+> > 
+> > I just don't understand how hotpluggable memory presented in EFI memory
+> > map in presence of unaccepted memory. If not-yet-plugged memory marked
+> > as unaccepted we can preallocate bitmap upfront and make unaccepted
+> > memory transparent wrt hotplug.
+> 
+> If memory that hasn't been plugged yet never gets plugged in or is only
+> partially plugged in, wouldn't we be wasting space by preallocating
+> the bitmap upfront? Or would that not be a concern in favor of
+> transparency?
 
-mTHP collapse will not honor the khugepaged_max_ptes_shared or
-khugepaged_max_ptes_swap parameters, and will fail if it encounters a
-shared or swapped entry.
+4k per 64GiB of physical address space should be low enough to ignore, no?
 
-No functional changes in this patch.
+We can look into optimizing it out when it is an actual, not imaginary
+problem.
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Co-developed-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
----
- mm/khugepaged.c | 78 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 48 insertions(+), 30 deletions(-)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 9c041141b2e3..8dab49c53128 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -541,25 +541,25 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
- }
- 
- static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
--					unsigned long start_addr,
--					pte_t *pte,
--					struct collapse_control *cc,
--					struct list_head *compound_pagelist)
-+		unsigned long start_addr, pte_t *pte, struct collapse_control *cc,
-+		unsigned int order, struct list_head *compound_pagelist)
- {
- 	struct page *page = NULL;
- 	struct folio *folio = NULL;
- 	unsigned long addr = start_addr;
- 	pte_t *_pte;
- 	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
-+	const unsigned long nr_pages = 1UL << order;
-+	int max_ptes_none = khugepaged_max_ptes_none >> (HPAGE_PMD_ORDER - order);
- 
--	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
-+	for (_pte = pte; _pte < pte + nr_pages;
- 	     _pte++, addr += PAGE_SIZE) {
- 		pte_t pteval = ptep_get(_pte);
- 		if (pte_none_or_zero(pteval)) {
- 			++none_or_zero;
- 			if (!userfaultfd_armed(vma) &&
- 			    (!cc->is_khugepaged ||
--			     none_or_zero <= khugepaged_max_ptes_none)) {
-+			     none_or_zero <= max_ptes_none)) {
- 				continue;
- 			} else {
- 				result = SCAN_EXCEED_NONE_PTE;
-@@ -587,8 +587,14 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		/* See collapse_scan_pmd(). */
- 		if (folio_maybe_mapped_shared(folio)) {
- 			++shared;
--			if (cc->is_khugepaged &&
--			    shared > khugepaged_max_ptes_shared) {
-+			/*
-+			 * TODO: Support shared pages without leading to further
-+			 * mTHP collapses. Currently bringing in new pages via
-+			 * shared may cause a future higher order collapse on a
-+			 * rescan of the same range.
-+			 */
-+			if (is_mthp_order(order) || (cc->is_khugepaged &&
-+			    shared > khugepaged_max_ptes_shared)) {
- 				result = SCAN_EXCEED_SHARED_PTE;
- 				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
- 				goto out;
-@@ -681,18 +687,18 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- }
- 
- static void __collapse_huge_page_copy_succeeded(pte_t *pte,
--						struct vm_area_struct *vma,
--						unsigned long address,
--						spinlock_t *ptl,
--						struct list_head *compound_pagelist)
-+		struct vm_area_struct *vma, unsigned long address,
-+		spinlock_t *ptl, unsigned int order,
-+		struct list_head *compound_pagelist)
- {
--	unsigned long end = address + HPAGE_PMD_SIZE;
-+	unsigned long end = address + (PAGE_SIZE << order);
- 	struct folio *src, *tmp;
- 	pte_t pteval;
- 	pte_t *_pte;
- 	unsigned int nr_ptes;
-+	const unsigned long nr_pages = 1UL << order;
- 
--	for (_pte = pte; _pte < pte + HPAGE_PMD_NR; _pte += nr_ptes,
-+	for (_pte = pte; _pte < pte + nr_pages; _pte += nr_ptes,
- 	     address += nr_ptes * PAGE_SIZE) {
- 		nr_ptes = 1;
- 		pteval = ptep_get(_pte);
-@@ -745,13 +751,11 @@ static void __collapse_huge_page_copy_succeeded(pte_t *pte,
- }
- 
- static void __collapse_huge_page_copy_failed(pte_t *pte,
--					     pmd_t *pmd,
--					     pmd_t orig_pmd,
--					     struct vm_area_struct *vma,
--					     struct list_head *compound_pagelist)
-+		pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
-+		unsigned int order, struct list_head *compound_pagelist)
- {
- 	spinlock_t *pmd_ptl;
--
-+	const unsigned long nr_pages = 1UL << order;
- 	/*
- 	 * Re-establish the PMD to point to the original page table
- 	 * entry. Restoring PMD needs to be done prior to releasing
-@@ -765,7 +769,7 @@ static void __collapse_huge_page_copy_failed(pte_t *pte,
- 	 * Release both raw and compound pages isolated
- 	 * in __collapse_huge_page_isolate.
- 	 */
--	release_pte_pages(pte, pte + HPAGE_PMD_NR, compound_pagelist);
-+	release_pte_pages(pte, pte + nr_pages, compound_pagelist);
- }
- 
- /*
-@@ -785,16 +789,16 @@ static void __collapse_huge_page_copy_failed(pte_t *pte,
-  */
- static int __collapse_huge_page_copy(pte_t *pte, struct folio *folio,
- 		pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
--		unsigned long address, spinlock_t *ptl,
-+		unsigned long address, spinlock_t *ptl, unsigned int order,
- 		struct list_head *compound_pagelist)
- {
- 	unsigned int i;
- 	int result = SCAN_SUCCEED;
--
-+	const unsigned long nr_pages = 1UL << order;
- 	/*
- 	 * Copying pages' contents is subject to memory poison at any iteration.
- 	 */
--	for (i = 0; i < HPAGE_PMD_NR; i++) {
-+	for (i = 0; i < nr_pages; i++) {
- 		pte_t pteval = ptep_get(pte + i);
- 		struct page *page = folio_page(folio, i);
- 		unsigned long src_addr = address + i * PAGE_SIZE;
-@@ -813,10 +817,10 @@ static int __collapse_huge_page_copy(pte_t *pte, struct folio *folio,
- 
- 	if (likely(result == SCAN_SUCCEED))
- 		__collapse_huge_page_copy_succeeded(pte, vma, address, ptl,
--						    compound_pagelist);
-+						    order, compound_pagelist);
- 	else
- 		__collapse_huge_page_copy_failed(pte, pmd, orig_pmd, vma,
--						 compound_pagelist);
-+						 order, compound_pagelist);
- 
- 	return result;
- }
-@@ -989,13 +993,12 @@ static int check_pmd_still_valid(struct mm_struct *mm,
-  * Returns result: if not SCAN_SUCCEED, mmap_lock has been released.
-  */
- static int __collapse_huge_page_swapin(struct mm_struct *mm,
--				       struct vm_area_struct *vma,
--				       unsigned long start_addr, pmd_t *pmd,
--				       int referenced)
-+		struct vm_area_struct *vma, unsigned long start_addr,
-+		pmd_t *pmd, int referenced, unsigned int order)
- {
- 	int swapped_in = 0;
- 	vm_fault_t ret = 0;
--	unsigned long addr, end = start_addr + (HPAGE_PMD_NR * PAGE_SIZE);
-+	unsigned long addr, end = start_addr + (PAGE_SIZE << order);
- 	int result;
- 	pte_t *pte = NULL;
- 	spinlock_t *ptl;
-@@ -1027,6 +1030,19 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
- 		    pte_present(vmf.orig_pte))
- 			continue;
- 
-+		/*
-+		 * TODO: Support swapin without leading to further mTHP
-+		 * collapses. Currently bringing in new pages via swapin may
-+		 * cause a future higher order collapse on a rescan of the same
-+		 * range.
-+		 */
-+		if (is_mthp_order(order)) {
-+			pte_unmap(pte);
-+			mmap_read_unlock(mm);
-+			result = SCAN_EXCEED_SWAP_PTE;
-+			goto out;
-+		}
-+
- 		vmf.pte = pte;
- 		vmf.ptl = ptl;
- 		ret = do_swap_page(&vmf);
-@@ -1147,7 +1163,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 		 * that case.  Continuing to collapse causes inconsistency.
- 		 */
- 		result = __collapse_huge_page_swapin(mm, vma, address, pmd,
--						     referenced);
-+						     referenced, HPAGE_PMD_ORDER);
- 		if (result != SCAN_SUCCEED)
- 			goto out_nolock;
- 	}
-@@ -1195,6 +1211,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
- 	if (pte) {
- 		result = __collapse_huge_page_isolate(vma, address, pte, cc,
-+						      HPAGE_PMD_ORDER,
- 						      &compound_pagelist);
- 		spin_unlock(pte_ptl);
- 	} else {
-@@ -1225,6 +1242,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 
- 	result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
- 					   vma, address, pte_ptl,
-+					   HPAGE_PMD_ORDER,
- 					   &compound_pagelist);
- 	pte_unmap(pte);
- 	if (unlikely(result != SCAN_SUCCEED))
 -- 
-2.51.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
