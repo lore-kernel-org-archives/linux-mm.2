@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E76BD116E2
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 06:50:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 734D4D111A8
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 06:54:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEDDE6B000E; Mon,  1 Dec 2025 01:50:35 -0500 (EST)
+	id C83F56B0010; Mon,  1 Dec 2025 01:54:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9E5B6B0010; Mon,  1 Dec 2025 01:50:35 -0500 (EST)
+	id C5BA36B0011; Mon,  1 Dec 2025 01:54:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8D646B0011; Mon,  1 Dec 2025 01:50:35 -0500 (EST)
+	id B98526B0012; Mon,  1 Dec 2025 01:54:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A1EDD6B000E
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 01:50:35 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD3EC132CEA
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:50:33 +0000 (UTC)
-X-FDA: 84169978746.01.598DBA8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A81306B0010
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 01:54:48 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54CEC1608FC
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:54:46 +0000 (UTC)
+X-FDA: 84169989372.14.530C461
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D430DA0006
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:50:31 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sVk/USQ6";
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id BDCEE140002
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:54:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WdAKNk1h;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764571832;
+	s=arc-20220608; t=1764572084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2xGPtAEsH5859bvx4L/cdPv92IoQbH8Nmh2Kqw9y91k=;
-	b=DNMgT8LvR7arl0a2J9l+VZgAXD7d5vy6S9pR/WGkIW4mTDkfj4U2fouyX0eK6XffbEzDJn
-	liDex6FgALwU565Ex2TKnnhlpacT3NheXc0P80X8UlczXLBucZ1xBjU+xcWMa4iVFf8D+D
-	Y9/qZ9eQuG8Z4uJajAwQxe3wbWQY5so=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764571832; a=rsa-sha256;
-	cv=none;
-	b=Df16nNH9kCRS8Aho3SgovB3982wyoJYlI6yb8yp2YNbrmdtYeXXn19Tj1dvCeRsHn2Yluy
-	xrQZ76qeVMvKbfjgajOQkZ790yY9JnjV7pSlu1Z1QFgRDYWLDhUw7HFLud8H27n50JGSa7
-	iYbTBnmVGrCjlmJJ5gdD7vIeAWgdZ7Q=
+	bh=kfnxiyig/VfJvWqtVCcPQgBGGzc0M6lW4gRh+8zP8B4=;
+	b=Re6mCLYNivOb+FRDHpZ2938JVYtnwS/FbzW0nrX2RcYAOpxd2H235EL2S66A30Gq+DavA+
+	oK/rCJSWInjkUP3DVEgJvWUCbP4CTAnPqzIUv/AvEV7wmzkq/Im2sIAgZNJXm6QsuzwpTK
+	4nRtgI449dr0xPce1xg8FewLOH4XCHs=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sVk/USQ6";
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WdAKNk1h;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764572084; a=rsa-sha256;
+	cv=none;
+	b=I9AxwZw+66z30Z3DAQDF9bmTBF8N6/Pk+xRw5g/rSYd8JZvAb9HwOMRSG/f7TUGMtg8wd9
+	sHAnx+p/iANauGmC6qiMawaZ8q0y2FWj43BihREpZXG7KWpEXuFQdeFJ1N1L5JmDaR+zHL
+	HJxztFNE31hsHw/f/lP5eJHXwRMZCT4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 13D386014F;
-	Mon,  1 Dec 2025 06:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D065C4CEF1;
-	Mon,  1 Dec 2025 06:50:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A0AA6014B;
+	Mon,  1 Dec 2025 06:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAD2C4CEF1;
+	Mon,  1 Dec 2025 06:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764571830;
-	bh=77kPZg+Fi5iO/CYTWecR13T71hr5HYPvf7lTx+iWO44=;
+	s=k20201202; t=1764572083;
+	bh=GZa2G5potCEIy2zDYWbNMaWHtJEpt1+etp9afgwxZe4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sVk/USQ64Orrpyfz0mu6ZUa1S1fjZPZtMuDdj5fmZEMCViOctL4J3ASH0iOMb2pJG
-	 PkI9LlbNvQz3AuBcYuaVkeh+7rshP+zapdg3gsvXV5S4ViHwAssXWmuYHFshZWRDNJ
-	 Nh7RST06ST8IGkG2M0bgQC4JVFHbVztyjtK2ha0bNdb6xffvqcEf+j/Aa6BgqHvfeX
-	 eSgxvppJpPiEaO19+AQ/DK6oDxXIpSZcPejCzf0KpfFS26wxcIlb1HVmpCuJrSgBHU
-	 LzDa4lk70qAkQ6u1elXClbFjDLIjqGSljol4fZdbDX69nMKSpv3VfvHlpx2R8lump/
-	 FGOeDCGS+G1mg==
-Date: Mon, 1 Dec 2025 08:50:24 +0200
+	b=WdAKNk1hWm3DX8qCSqa7BmET/VUYWlGAiMYdrMjsuaX41rYPyBHVMB+q12pm22Vrv
+	 rBqn9IWfSxYleSP6P4jyohMRicda6JSV2BzlKydRxOh2xWNEVtFbxmPDlSVisR316X
+	 q7x4fgGqRjOPywcvXoPk+yXbBb9pxIPyEPJ2lChanfBYSjqzo55+npSk53iJZOXWuJ
+	 x5NVxFEMeCE6kkUHB1rwzRx88EOl5OJuOth3QofJnhftx81+He3b3ZKev+26Kkj7ll
+	 ewUlqp6vlnDeSar9607LapxHYwgAVguPFqBDrkcfVxONYTkGHcKzzgTUr8Vpn7fblO
+	 Z7gUz3+bu5Q8g==
+Date: Mon, 1 Dec 2025 08:54:37 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Cc: akpm@linux-foundation.org, david.hunter.linux@gmail.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH RFC] mm/memblock: Fix reserve_mem allocation overlapping
- KHO scratch regions
-Message-ID: <aS06sCvwSkcn1XcE@kernel.org>
-References: <aSxcs-jCnkrm8o0M@kernel.org>
- <20251130211540.582343-1-swarajgaikwad1925@gmail.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] kho: fix restoring of contiguous ranges of order-0
+ pages
+Message-ID: <aS07racwRsh4ep_L@kernel.org>
+References: <20251125110917.843744-1-rppt@kernel.org>
+ <20251125110917.843744-3-rppt@kernel.org>
+ <mafs0pl96w7hk.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251130211540.582343-1-swarajgaikwad1925@gmail.com>
-X-Rspamd-Queue-Id: D430DA0006
-X-Rspamd-Server: rspam06
+In-Reply-To: <mafs0pl96w7hk.fsf@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BDCEE140002
+X-Stat-Signature: hsbs9gotgfa9qzxj3xwwdhwaimpack4b
 X-Rspam-User: 
-X-Stat-Signature: d1qe1eyxeoj8jea4ft6z77fsjzdym5ec
-X-HE-Tag: 1764571831-383849
-X-HE-Meta: U2FsdGVkX1/w/a9AY79ri3j6HiGBE5q7LTMDuMERhWqKpotFuXNVnX5EtV+wwmNB+zvwf9U+SercIhrqbeVNnzeqat2u0VSvNZoPrW8dKpDR7HjRVYBBlE+Xq0pBi6XoOyEDMA6xe95jVRwg8kgW6H0dHCeCt2uV1cPR5UzeJcBP5NmztgiDpa4TBHPoXLHnmfLoUSP/yKcfsVstYWsxrK/wh4V9H1LcNQnnX+/FI88hniH7/9F/TbM2QVuFQcsWDrNP0oB4ZK4dTNTwcmqqz5+tplb3yddaw1C8M8ApjmdF7hGX1p8T0Yjd4s4WwDjPDJ+5HXs0wbwNGLD99wSCxV6I7zAbWuFInfLiBxJ5vcUqKwzG77H6Yxgz1gPsMgGWsodbokzBMnaQOhkCukz/Jw+FSWCwy1JlPo5ZutQuhfU7tuIwgGY0jz/uDI8XkT9pnF8NYLu+mOYa/ZRxF/g8YMod3v3ggE0ijtPORlnbRpazhrN2p+Rd21qLN9EFLVkF/nWB6tPj/VUsDTDg5HFJAbHPJAQNLCxTIFsjfS9SMc2lXwS9LP0Q5tgogcofgXfUI2teKJEIrundgzjS/GIYzlp5qw2PCQxys96wgs1giDNNmblaGO/3sHu2Qu7aBGpipkpF2uXGE1mwTfU7LNabcab0yEqSu/OqT56BAmO8gdtRZR5w6DG82YcIByqUQ3bv0gfz5J3J5XVMHWGv0Fj0+yPH0xdNQRYfSm1SZ2IDSjGlXNeXHcj/RiUyIBw/vl5mcCfmFJCNbVUjTT8clan4oQL+rGJHykjWwgc/C66h8bLyJGCvY/V1syLg4Rn5wVN+90bL1e2pVMFfa8+bhhQE8Dh35/MN7yMASjGXqvFlKJ5u3eAIpKBET5hNpgpa1QswcfSwYnyZPtE6320+Zw8Co0CDgw2Sj3tTxbyym6ugbHJ82rcjRUHV+OJzzD79N4FPhDVmb88mYMRhg1WnxpS
- 2X/kLXjX
- bTTDtlqFA4wHZlXHDSVrWc+gwLEA06f2w6NmVB7Uwqq1LmihZ+e5sbAYc82RymDko0pQ9csaloSBJ2rTOkxuuX3JjksR6xZ5dwWPh1mHk/RBc10VrU5baWAd+yIOlBt2RJ4JaXkQKadbdrDtIO95PiEKGkLL6iaQ1sGfbAoOhBZknPkF11inNNt31ogSB7ih5NojSqgzDPN89PvHph9No6XUKRtb/XgMAYlTqlSU3WjWNzdPctoDwBgVf06hc7bvu47X9pBPO3ClK38XVc2WbKhlbcZVOIhEzVl9Q6jbEnqtTxBFjRgbifYSB7nHCQEjkXfrisGFmxK0ar0TJf4JMWswS0MtxfEB7AkE48uITVCueiIQAHhikDvWt/FIJpcC4ONRJ/VibK1m+LqU5rj92hHC2Sv0lVjgEDkJtElBpeNLdAZw=
+X-HE-Tag: 1764572084-710152
+X-HE-Meta: U2FsdGVkX18mkqIus8/Wl0S80It5vbdhyTy9J5HwgQ1kKjuA4jHI8Vm/lDDnPYYoL2oclk186YRzVAh231uaPmQo3af6b+nZbTxyAmPzFz47uFlVJ75foebA14OkmEPqP8iafD7aJVzvn0TCoGtRfF5+lDEy/uqLWnolwMRmn2Yjek2ybEllCReLa7+aWsidQ+B6vf3gxvDapcTaO6TMsQ/hB5UTuaY0gPWaR5DgUJ59OZRbF8Ngwx8mdMBKHG9R+oTNTFPp64YJdSmnd5cPXO4ZK9FZaHL9eR1oMMIWrUlUcTh1HZi/Tj487XPXTcaFogRvrXujxp6CVOenvdia4myRxtU84gEnZvVUq4IVNooBPrKn+29DgG9wAHDCrhoSTKy6mL7gcv3H7RQNfruf3OWyUrbM1AKiXWnl3Zcan/kVqjmIAtj/JpGPNggqD9HgeIAxd4NviRqrO7lJI/H5EskfX0OmTmKcFW/sfd/cOMl8JtJMwvO2mZhL2YNBirkcuh+p8BDH/DK75Cgw5bQp8MAoMdtobvyll4vO4snfBqnaryb3djTHUQ5FuGOf8ZLa/fX8/9hBA1KZoOzV3SCCHZ/GRcNfHVOtjUti270RcRRypdcOsPZz0qLz/egRGdesZpWYxa/Opp9mZrYEIpSYe9qKCoXJIQmkkdx0ycobjNN9SA8KRu7g8D1wBVPIT58vOtNrJATMfz3fqCLNlta1ZKTZaFX/I8sPzHdgccO3xJzUPwEi6Ul2qgDZRYgadTFu3xuOT5BVE6ovlN1l8sgePC5zZjCaVAa7eodlyUZuAC9TJV/DKpDlppYkTUfrYEsFF65xg2pcQHK9hfxIJMZamePsn9OG+je6vCUxkH4cw9YQf+XA6yN8va438MqtPeYzPCFGqlv6W6ctRHReY17PUp0J+gEUUeS5jVTtzQ97k4LoD4kio9cCA5iyklg9vk3C6ONHSOhMdaXjOeqfB8i
+ yQSI/iG8
+ YHKuScGB9xZCCrket1UYj9vVptWM7kO6nVUGM4iP6kO3ehjpQiCIcYXM23xGZEZQQRz13t7CAjLn03hCYfVXJZaaolDj0CoyGSqAn2OmKegzvkp0CPkckDVdhpmAotsQ47hM8T9ZZa03wTzLhXEtI2XmQ5eIK9N5gtkVtb2oC0g1Z/5G9gdxpO6uCSdea8yX/sojQemk8Zdu4rvNFd82miizVXTCi2FWS1yZxW0IM94zq8kygz2SBVTmkqBHII9XMc4Cu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,32 +97,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Swaraj,
+Hi Pratyush,
 
-On Sun, Nov 30, 2025 at 09:15:39PM +0000, Swaraj Gaikwad wrote:
-> Hi Mike,
+On Tue, Nov 25, 2025 at 02:45:59PM +0100, Pratyush Yadav wrote:
+> On Tue, Nov 25 2025, Mike Rapoport wrote:
+
+...
+
+> > @@ -243,11 +243,16 @@ static struct page *kho_restore_page(phys_addr_t phys)
+> >  	/* Head page gets refcount of 1. */
+> >  	set_page_count(page, 1);
+> >  
+> > -	/* For higher order folios, tail pages get a page count of zero. */
+> > +	/*
+> > +	 * For higher order folios, tail pages get a page count of zero.
+> > +	 * For physically contiguous order-0 pages every pages gets a page
+> > +	 * count of 1
+> > +	 */
+> > +	ref_cnt = is_folio ? 0 : 1;
+> >  	for (unsigned int i = 1; i < nr_pages; i++)
+> > -		set_page_count(page + i, 0);
+> > +		set_page_count(page + i, ref_cnt);
+> >  
+> > -	if (info.order > 0)
+> > +	if (is_folio && info.order)
 > 
-> Thanks for the feedback.
-> 
-> This patch was sent as an RFC because I wanted to confirm whether the
-> overall approach is acceptable before preparing a fully tested version.
-> I will send a properly tested patch once I get confirmation that this
-> direction makes sense.
-
-I didn't look into the details, but I think what you propose won't work.
-The first kernel allocates KHO scratch after parsing reserve_mem and the
-second kernel allocates everything from KHO scratch at the time
-early_params are parsed.
+> This is getting a bit difficult to parse. Let's separate out folio and
+> page initialization to separate helpers:
  
-> I’m reviewing how reserve_mem= paths are exercised so I can build an
-> appropriate test setup. Any guidance on recommended testing for this
-> area is appreciated.
+Sorry, I've missed this earlier and now the patches are in akpm's -stable
+branch.
+Let's postpone these changes for the next cycle, maybe along with support
+for deferred initialization of struct page.
 
-In general to test changes to memblock and other early code I use qemu and
-some scripts around it.
- 
-> Thanks,
-> Swaraj
+> 	/* Initalize 0-order KHO pages */
+> 	static void kho_init_page(struct page *page, unsigned int nr_pages)
+> 	{
+> 		for (unsigned int i = 0; i < nr_pages; i++)
+> 			set_page_count(page + i, 1);
+> 	}
+> 	
+> 	static void kho_init_folio(struct page *page, unsigned int order)
+> 	{
+> 		unsigned int nr_pages = (1 << order);
+> 	
+> 		/* Head page gets refcount of 1. */
+> 		set_page_count(page, 1);
+> 	
+> 		/* For higher order folios, tail pages get a page count of zero. */
+> 		for (unsigned int i = 1; i < nr_pages; i++)
+> 			set_page_count(page + i, 0);
+> 	
+> 		if (order > 0)
+> 			prep_compound_page(page, order);
+> 	}
 
 -- 
 Sincerely yours,
