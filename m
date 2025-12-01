@@ -4,91 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9806D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 08:39:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09676D116F9
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 08:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 339B46B002A; Mon,  1 Dec 2025 03:39:47 -0500 (EST)
+	id 2869F6B0005; Mon,  1 Dec 2025 03:46:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 310A36B002B; Mon,  1 Dec 2025 03:39:47 -0500 (EST)
+	id 25E1F6B002B; Mon,  1 Dec 2025 03:46:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24E2A6B002C; Mon,  1 Dec 2025 03:39:47 -0500 (EST)
+	id 19C056B002C; Mon,  1 Dec 2025 03:46:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 140D96B002A
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 03:39:47 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A4986B0005
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 03:46:06 -0500 (EST)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A046F16081E
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:39:46 +0000 (UTC)
-X-FDA: 84170253972.18.93119C4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 270F2C0009
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:39:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uQ/EUarb";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9910C51827
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:46:05 +0000 (UTC)
+X-FDA: 84170269890.18.0819237
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D7A4DA0006
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:46:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=QRQ92yMr;
+	spf=pass (imf15.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764578385;
+	s=arc-20220608; t=1764578764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xzY9VjIqiaGKFMwGbffGkrOJwS22taAdWEFHbUPL4wA=;
-	b=qaq6pQo9fGQv1iJWDtJElA+L+ySOMuewGa++HSnr5GXCmX0YpX3mFozxS6RVo48b7iFbCE
-	3H/pcnugTZbjuZHxhoO0+DuQv1q2o7K2zsPnIIBWRNuWyM/qpYBxcvWK+nc259YWNTZEmV
-	qgT48k1MZU0MRDnWYNpFyyoz5N3X780=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764578385; a=rsa-sha256;
+	bh=/6t8qTPTOomrHbv/DVKE7MMtu5+0Acn3nfd4mMd4iW4=;
+	b=HGVv0E42sbtN421iXtNUYI4iPPdhj7jB00zOQp6yqq0V08+6qOodD1AyOcxjLes6Km1SkB
+	p8QzOv9UIgyrMk8nO9HgSGM7JTKP4od1AgnaFZ3VP9gTbLzX0FM8Wlcdea+3MLZKusT+Xa
+	EF/Oa0+aVRUrNWrHHaIUX32VbsQDES0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764578764; a=rsa-sha256;
 	cv=none;
-	b=aN01cmIzvVn4Y7lJ0aP+RdwGFCQ5vrhjXP+bq8X12wOnAANYcgkkiDHj5Oca3cxihB5HZa
-	hy8dinkHeXdoVDpYpeuQSvIoF7lbaRxbwNhCh/Fa23KbIMhmGmC3e6O8f/Zd8ukvLuF0H3
-	F4eoBoMOLOywzp91+EOy8KhYB8k8RnE=
+	b=hUmfNz3Ip9s9YReXZ9sWXl3uUGIe6sHYqQ/X1iwTf0YpI7qeFUAew2rC2NA9pEMgGAWroN
+	Z9ibscgsuiL3wj2kzrF5/Gxi73ZIeS0EbCgGvnzc0Dx3Ofh9X6CeNthTfEVsZs4Q1cF3t4
+	9Ly1lN9O7XsiNs3ZzAxBitJmUXOTVo8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uQ/EUarb";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 40B1C60163;
-	Mon,  1 Dec 2025 08:39:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C698CC4CEF1;
-	Mon,  1 Dec 2025 08:39:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764578384;
-	bh=XYenxbNtRDcljVH7RQaYzSMIHfmS/eO9eGSsWEIrEb8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uQ/EUarbzUDm53fskUfuzSV7ydeutc4npZNqkjfZ7euWoVS1JbWShBeqv8bgcnexj
-	 cCgULmAPJUzV2hyS4hSB7h4FoLRpkD2wsIKVwSn7SG9EfLCKmomCs4HLJ6l0ydkZ/C
-	 OWJqHlghNne4mQq6cebNQe4TzWRpWJzWshpPcjCTNvCro1SKh4t/XAXVLAjoEhL3OP
-	 5/rROsyMiFoBoNYQmi/OfZVxaiJYQQL8iElP2rlF/+tafkfkZM76SrYY1kh0QxS7yK
-	 tFwgaM+CejsPS+/Z9P/ctPHrO2ww8Jk4bUVS29TPu+IySaIkl++y0tVaNfIjTYzSB+
-	 TAw9YpFgFGt7g==
-Message-ID: <57d5793d-2343-49b3-a30c-cd12dc40460d@kernel.org>
-Date: Mon, 1 Dec 2025 09:39:39 +0100
+	imf15.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=QRQ92yMr;
+	spf=pass (imf15.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1764578761;
+	bh=OAnS/yXE9nV5UZXIRrvCT7YzkHlT6SyTgUSWEbYw4YU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QRQ92yMr4FxswuS7dMmtS0/G7FNb+cGDfYbWV/1BTYAstPkV1ut/wZRMAMI6QmvPy
+	 QeYmqgYEafyKz/1PDHi5w6Rc+hGNF5UfldfSz6m37VlnlAYYxoqA8/a0d3N3xdB4fW
+	 cf8Jy0yFMyab4zkWe6d1PIlbbj3Ss5w6YSobXHPq/Z/6qjpkTzMb1bdPLzYDD3Egwt
+	 wiDI69uCGF9/PLyv4LWZRJJkkEQA9DVzdmxmRVhHrmOimQnE57ZtQ52tXcI7sf2oPA
+	 c2241tHA+vHP/1bv+qagLzq0vZev5wOBExyTLjV3zpPwO7cnd4dn0Cg+Dl/QjjM20b
+	 YlbNdkfLEOtmg==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 41EAA17E013C;
+	Mon,  1 Dec 2025 09:46:00 +0100 (CET)
+Date: Mon, 1 Dec 2025 09:45:55 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?B?TWHDrXJh?= Canal
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?B?TWlrb8WCYWo=?= Wasiak
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>, Nitin
+ Gote <nitin.r.gote@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, Christopher Healy <healych@amazon.com>,
+ Matthew Wilcox <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH v10 08/10] drm/panthor: Introduce huge tmpfs mountpoint
+ option
+Message-ID: <20251201094555.595744ab@fedora>
+In-Reply-To: <20251128185252.3092-9-loic.molinari@collabora.com>
+References: <20251128185252.3092-1-loic.molinari@collabora.com>
+	<20251128185252.3092-9-loic.molinari@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] lib: xarray: free unused spare node in
- xas_create_range()
-To: Shardul Bankar <shardul.b@mpiricsoftware.com>, willy@infradead.org,
- linux-mm@kvack.org, akpm@linux-foundation.org
-Cc: dev.jain@arm.com, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, shardulsb08@gmail.com, janak@mpiricsoftware.com
-References: <7a31f01ac0d63788e5fbac15192c35229e1f980a.camel@mpiricsoftware.com>
- <20251201074540.3576327-1-shardul.b@mpiricsoftware.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251201074540.3576327-1-shardul.b@mpiricsoftware.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: nunni469ce1wckon7rtxjtxqntxo3nbq
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 270F2C0009
-X-HE-Tag: 1764578384-296520
-X-HE-Meta: U2FsdGVkX195yVSCW1xn+aG1q2E2hOJ9IZnGvNL5LbnIldpB0wTZUoxa93Pqd0OlYT48leR9BFknTVYnERw3dS0Z2YNDUxYRQpwYt+cwVHEmdlMweFez1ITQnrJ8R5cCjEUoWTCKBr5oA8jEqu45d+uc66rlybOH7flOsjLH+hRYxeP1s+GQUjmd9H8ilTZLJUEL7614p/GU4/TVJwqmp2dUtZNB9o2miZGbqTwPt77SHIfVMqz0uzhsK8hA/Jz45eQ4BGyRGGQ2YaXZce056QQx/iRqIL4q91cHlERl8x5abkAVDHImFDcjs+Hu4SwyRY1TQtxBOvx/fJjA6b8lQempMle4c5nkYPlCtyAx4vobPLrM6LvfLz8RpsAqRkWhBo/v5soJciu0k2VVwshwGLVXg0PdiTqHU9aSZuXdVJczAz4OB2eieWRvVCg6xOFXgH1T+v3sd0qtVgBmA/l+UZBx5kK8/ZwMNcUoLo7DnaF/Gf4B4ddmXe/3Q46g1+j6hbmkhWvWmlL6I62MO6G8IgCJ9X/fIWSWzYNfcJ0UyB1sjY9bGnONBzkOPMn+SAgoCLd2ETm5pw0YsHBpUBGW12yn+kFNkpb2yfbOg4v5WBfFbfq7VImNfJjmEp+RarXp7aOiVGBkrsYOHeblMcTB1LrtbLksIC+q58ubW0YmPopHPg6HqADfndvbqaXUDrsqtnOQN5gD96cjv+PjQTGaOYTGRhYnTQmR5H7ztnba84nZNbkKTl3kusTA867HSTQ+MqbV+zNz9tEyxqqpD+tepmlt/UmY6qlDzzXTodJtT4Uru030BqSPDp+p690aeqVG5YCOYxZcxuwsf7ZxaKtmsmsX3D/oQx5VyZOjt9ZWF+SYIhAcFQuTH107xhJKbmMk85o2217xsvIowMnM+tXSD2ORLpITXlupQbzefJKVFncG7WhemSxxcxGcd1VILnx+mLpemvF4eNqKqoSqVw2
- fUggjVyJ
- OOW20
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D7A4DA0006
+X-Stat-Signature: hxjwcbenng7dnafdbk44nyrrxgjgwu8c
+X-HE-Tag: 1764578763-858817
+X-HE-Meta: U2FsdGVkX1+ezkKzRFPsUVb3hGBZL3WL2eMrHF9Q9YpmN8VDLnbry4NnzR0CPxrq7lf0NPuTXXagYX96LaC3pokw4mbBSuCz0XL0S5d5O/H9pnjSm2HFYoEzggQCwg5kpw53K4XGjnndUKhe8Gt9OE3yBHxfBnUEJqAN8GmNkhBK2WiupZP/5qgUKez20VGttGySAkH/ioesE1p1vie6748wLaLqPMlnN9VZIQ7fqQG5XB2sq4u/DbhzCTM/cY+bLtOsIcD1PenPqmocdUh1Ndjb7YLZx23mmtgRJeLh734a2ZFHI/WW6Fk8vzaya9MxGZiLftKPz73MEMMsMHzuDrC0ykW6mVL2wZczZFv4Rkc9+ddu+Y/xwYZv/zZpwu6hccRhsxlzgKc2GdyBJ53Cf09bsY+PagELTXTE4mHWLKd6KJoeKt5nD182b6eL4IjNoCeP/n5DHtBHj2NmO8yRoniINbS9D2ABhwREG+zLMZZWKArlsuVgIQ+WnZSZg9oFKDKgde/Q+ZU4VG7UE4EAtwKr+60VTXtm1+iRS/8Nl6Q4U78OlbORtfO8rg1c18Okee8fqs5Lt2iDoGZs8Nqih2bKjaBYCgpf2B9ezbeql930fXxvTGXEt2gi0HzunGX3uiDnaO1GNQNRu/HQ4pVNnjSSnV+cKQh/JVhU1VyClPM9wv3JRVDkZWp0VfA4l5+14yv9QUWR+inMUPTlkV/8vE9AIwitjOpPbpkVha68vUpMxmDut9a6LF27Pk1zM34LrV8V7P8RRk5Yvp41jJ+VZKq0jVWGyBjvQnJ3SldhmpdIUqI0H5gYtTdA6esP07m+6iYjbNr/twlcreDZHCvXTsDvucZbRtPnd/KVEyrZtTZQ96VupWsWiFqhE1T4c2nJa3nLty0L79lGidJuE08ucVtvF36scTj2lgZnPTzSvEHLuWQY0xWReRf7AM1BQR1zVKzXG4oPxnqUCkNa109
+ sgg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,83 +113,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/1/25 08:45, Shardul Bankar wrote:
+On Fri, 28 Nov 2025 19:52:50 +0100
+Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
 
-Please don't post new versions as reply to old versions.
-
-> xas_create_range() is typically called in a retry loop that uses
-> xas_nomem() to handle -ENOMEM errors. xas_nomem() may allocate a spare
-> xa_node and store it in xas->xa_alloc for use in the retry.
-> 
-> If the lock is dropped after xas_nomem(), another thread can expand the
-> xarray tree in the meantime. On the next retry, xas_create_range() can
-> then succeed without consuming the spare node stored in xas->xa_alloc.
-> If the function returns without freeing this spare node, it leaks.
-> 
-> xas_create_range() calls xas_create() multiple times in a loop for
-> different index ranges. A spare node that isn't needed for one range
-> iteration might be needed for the next, so we cannot free it after each
-> xas_create() call. We can only safely free it after xas_create_range()
-> completes.
-> 
-> Fix this by calling xas_destroy() at the end of xas_create_range() to
-> free any unused spare node. This makes the API safer by default and
-> prevents callers from needing to remember cleanup.
-> 
-> This fixes a memory leak in mm/khugepaged.c and potentially other
-> callers that use xas_nomem() with xas_create_range().
-> 
-> Link: https://syzkaller.appspot.com/bug?id=a274d65fc733448ed518ad15481ed575669dd98c
-> Fixes: cae106dd67b9 ("mm/khugepaged: refactor collapse_file control flow")
-> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+> Introduce the 'panthor.transparent_hugepage' boolean module parameter
+> (false by default). When the parameter is set to true, a new tmpfs
+> mountpoint is created and mounted using the 'huge=3Dwithin_size'
+> option. It's then used at GEM object creation instead of the default
+> 'shm_mnt' mountpoint in order to enable Transparent Hugepage (THP) for
+> the object (without having to rely on a system wide parameter).
+>=20
+> v3:
+> - use huge tmpfs mountpoint in drm_device
+>=20
+> v4:
+> - fix builds with CONFIG_TRANSPARENT_HUGEPAGE=3Dn
+> - clean up mountpoint creation error handling
+> - print negative error value
+>=20
+> v5:
+> - use drm_gem_has_huge_tmp() helper
+> - get rid of CONFIG_TRANSPARENT_HUGEPAGE ifdefs
+>=20
+> v9:
+> - replace drm_gem_has_huge_tmp() by drm_gem_get_huge_tmp()
+>=20
+> Signed-off-by: Lo=C3=AFc Molinari <loic.molinari@collabora.com>
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 > ---
->   v3:
->   - Move fix from collapse_file() to xas_create_range() as suggested by Matthew Wilcox
->   - Fix in library function makes API safer by default, preventing callers from needing
->     to remember cleanup
->   - Use shared cleanup label that both restore: and success: paths jump to
->   - Clean up unused spare node on both success and error exit paths
->   v2:
->   - Call xas_destroy() on both success and failure
->   - Explained retry semantics and xa_alloc / concurrency risk
->   - Dropped cleanup_empty_nodes from previous proposal
->   lib/xarray.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/xarray.c b/lib/xarray.c
-> index 9a8b4916540c..a924421c0c4c 100644
-> --- a/lib/xarray.c
-> +++ b/lib/xarray.c
-> @@ -744,11 +744,17 @@ void xas_create_range(struct xa_state *xas)
->   	xas->xa_shift = shift;
->   	xas->xa_sibs = sibs;
->   	xas->xa_index = index;
-> -	return;
-> +	goto cleanup;
+>  drivers/gpu/drm/panthor/panthor_device.c |  3 +++
+>  drivers/gpu/drm/panthor/panthor_drv.c    |  7 +++++++
+>  drivers/gpu/drm/panthor/panthor_drv.h    |  9 +++++++++
+>  drivers/gpu/drm/panthor/panthor_gem.c    | 18 ++++++++++++++++++
+>  drivers/gpu/drm/panthor/panthor_gem.h    |  2 ++
+>  5 files changed, 39 insertions(+)
+>  create mode 100644 drivers/gpu/drm/panthor/panthor_drv.h
+>=20
+> diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/p=
+anthor/panthor_device.c
+> index e133b1e0ad6d..2979ee0e52c2 100644
+> --- a/drivers/gpu/drm/panthor/panthor_device.c
+> +++ b/drivers/gpu/drm/panthor/panthor_device.c
+> @@ -18,6 +18,7 @@
+>  #include "panthor_devfreq.h"
+>  #include "panthor_device.h"
+>  #include "panthor_fw.h"
+> +#include "panthor_gem.h"
+>  #include "panthor_gpu.h"
+>  #include "panthor_hw.h"
+>  #include "panthor_mmu.h"
+> @@ -294,6 +295,8 @@ int panthor_device_init(struct panthor_device *ptdev)
+>  	if (ret)
+>  		goto err_unplug_fw;
+> =20
+> +	panthor_gem_init(ptdev);
 > +
->   success:
->   	xas->xa_index = index;
->   	if (xas->xa_node)
->   		xas_set_offset(xas);
+>  	/* ~3 frames */
+>  	pm_runtime_set_autosuspend_delay(ptdev->base.dev, 50);
+>  	pm_runtime_use_autosuspend(ptdev->base.dev);
+> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/pant=
+hor/panthor_drv.c
+> index d1d4c50da5bf..55dbda6dbf9c 100644
+> --- a/drivers/gpu/drm/panthor/panthor_drv.c
+> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
+> @@ -1559,6 +1559,7 @@ static const struct file_operations panthor_drm_dri=
+ver_fops =3D {
+>  	.read =3D drm_read,
+>  	.llseek =3D noop_llseek,
+>  	.mmap =3D panthor_mmap,
+> +	.get_unmapped_area =3D drm_gem_get_unmapped_area,
+>  	.show_fdinfo =3D drm_show_fdinfo,
+>  	.fop_flags =3D FOP_UNSIGNED_OFFSET,
+>  };
+> @@ -1626,6 +1627,12 @@ static const struct drm_driver panthor_drm_driver =
+=3D {
+>  #endif
+>  };
+> =20
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +bool panthor_transparent_hugepage;
+> +module_param_named(transparent_hugepage, panthor_transparent_hugepage, b=
+ool, 0400);
+> +MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount poin=
+t with Transparent Hugepage enabled (false =3D default)");
+
+On a second thought, I wonder if this shouldn't be an opt-out param
+(which is what V3D does, BTW). What's the downside of enabling THP if we
+have a fallback for cases where memory is too fragmented to get huge
+pages at allocation time?
+
+> +#endif
 > +
-> +cleanup:
-> +	/* Free any unused spare node from xas_nomem() */
-> +	if (xas->xa_alloc)
-> +		xas_destroy(xas);
+>  static int panthor_probe(struct platform_device *pdev)
+>  {
+>  	struct panthor_device *ptdev;
+> diff --git a/drivers/gpu/drm/panthor/panthor_drv.h b/drivers/gpu/drm/pant=
+hor/panthor_drv.h
+> new file mode 100644
+> index 000000000000..79dccd289881
+> --- /dev/null
+> +++ b/drivers/gpu/drm/panthor/panthor_drv.h
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +/* Copyright 2025 Amazon.com, Inc. or its affiliates */
+> +
+> +#ifndef __PANTHOR_DRV_H__
+> +#define __PANTHOR_DRV_H__
+> +
+> +extern bool panthor_transparent_hugepage;
+> +
+> +#endif
+> diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/pant=
+hor/panthor_gem.c
+> index 10d255cccc09..7ae07a9bc996 100644
+> --- a/drivers/gpu/drm/panthor/panthor_gem.c
+> +++ b/drivers/gpu/drm/panthor/panthor_gem.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0 or MIT
+>  /* Copyright 2019 Linaro, Ltd, Rob Herring <robh@kernel.org> */
+>  /* Copyright 2023 Collabora ltd. */
+> +/* Copyright 2025 Amazon.com, Inc. or its affiliates */
+> =20
+>  #include <linux/cleanup.h>
+>  #include <linux/dma-buf.h>
+> @@ -12,10 +13,27 @@
+>  #include <drm/panthor_drm.h>
+> =20
+>  #include "panthor_device.h"
+> +#include "panthor_drv.h"
+>  #include "panthor_fw.h"
+>  #include "panthor_gem.h"
+>  #include "panthor_mmu.h"
+> =20
+> +void panthor_gem_init(struct panthor_device *ptdev)
+> +{
+> +	int err;
+> +
+> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+> +	    !panthor_transparent_hugepage)
+> +		return;
+> +
+> +	err =3D drm_gem_huge_mnt_create(&ptdev->base, "within_size");
+> +	if (drm_gem_get_huge_mnt(&ptdev->base))
+> +		drm_info(&ptdev->base, "Using Transparent Hugepage\n");
+> +	else if (err)
+> +		drm_warn(&ptdev->base, "Can't use Transparent Hugepage (%d)\n",
+> +			 err);
+> +}
+> +
+>  #ifdef CONFIG_DEBUG_FS
+>  static void panthor_gem_debugfs_bo_init(struct panthor_gem_object *bo)
+>  {
+> diff --git a/drivers/gpu/drm/panthor/panthor_gem.h b/drivers/gpu/drm/pant=
+hor/panthor_gem.h
+> index 80c6e24112d0..2eefe9104e5e 100644
+> --- a/drivers/gpu/drm/panthor/panthor_gem.h
+> +++ b/drivers/gpu/drm/panthor/panthor_gem.h
+> @@ -136,6 +136,8 @@ struct panthor_gem_object *to_panthor_bo(struct drm_g=
+em_object *obj)
+>  	return container_of(to_drm_gem_shmem_obj(obj), struct panthor_gem_objec=
+t, base);
+>  }
+> =20
+> +void panthor_gem_init(struct panthor_device *ptdev);
+> +
+>  struct drm_gem_object *panthor_gem_create_object(struct drm_device *ddev=
+, size_t size);
+> =20
+>  int
 
-The first thing xas_destroy() does is check whether xa_alloc is set.
-
-I'd assume that the compiler is smart enough to inline xas_destroy() 
-completely here, so likely the xa_alloc check here can just be dropped.
-
-
-Staring at xas_destroy() callers, we only have a single one outside of 
-lib: mm/huge_memory.c:__folio_split()
-
-Is that one still required?
-
--- 
-Cheers
-
-David
 
