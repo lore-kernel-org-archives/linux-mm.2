@@ -4,132 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27D2CD116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 20:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68886D116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 20:22:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E2246B009D; Mon,  1 Dec 2025 15:13:13 -0500 (EST)
+	id C770C6B00A1; Mon,  1 Dec 2025 15:22:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 691CC6B00A4; Mon,  1 Dec 2025 15:13:13 -0500 (EST)
+	id C274A6B00A3; Mon,  1 Dec 2025 15:22:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 581906B00A5; Mon,  1 Dec 2025 15:13:13 -0500 (EST)
+	id B15BB6B00A4; Mon,  1 Dec 2025 15:22:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4637F6B009D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:13:13 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 529B213AA65
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:13:08 +0000 (UTC)
-X-FDA: 84172001256.12.31FF132
-Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C6F732000A
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:13:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=J1eoWaQR;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf03.hostedemail.com: domain of "prvs=4230525c4=kalyazin@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=4230525c4=kalyazin@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764619986; a=rsa-sha256;
-	cv=none;
-	b=cQ/Hqb2OhRxTk0q1j0+DfneBD05/FzbrOG3sj82bkrpX6ouajU+xGuNnTZApc3m22LVcRm
-	SZfe6FiDCqNZaZw4KEc96SVewpN+g3aiq73bfF+gXMXpwYeHrRoRBUlLoXOZkvCEY5ut5L
-	H/cAJM6Z/BsGseoUZRwQpnIWzZZhwFE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=J1eoWaQR;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf03.hostedemail.com: domain of "prvs=4230525c4=kalyazin@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=4230525c4=kalyazin@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A1EC86B00A1
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:22:12 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62AD41403BB
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:22:12 +0000 (UTC)
+X-FDA: 84172024104.25.34BA157
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 71B0FC0019
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:22:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764619986;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764620530;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jw7sf18yjrGUxi5LoRiNzSqIdVAlpc8gStzOjw+D3GE=;
-	b=t3v283tNDkrayAMwAJXz+7WOlEdtywX+ry+q/+pu05yrfBpzxGEaCfsJ1Stjgba6IO9Yga
-	CUzPxXZmimmn7/F70Yw4Uaw/FDssBERopkOVDdws1/0uAp+Bsy/tlToMhrih2khLDDgrnK
-	UZn+nXDlhJWWpIU/uemxdSvBVNZMxh8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1764619985; x=1796155985;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=jw7sf18yjrGUxi5LoRiNzSqIdVAlpc8gStzOjw+D3GE=;
-  b=J1eoWaQRCLTa8gBDMw46ZyKV8niH4obsWBHzpt7rQMVwghL6Da6Ly1qb
-   8/EEFWU9zYshYMX04tFlq0mAL+NE8owjQtkR/rKBgfarFcS6umRW2sRcD
-   4p+fh62G9Tku86AB/z2h7B5FqoA+CUnnHmE7VKO/ZT6sLAqEDYx+ByfW7
-   sF8mitOs+02u6Qh0tUvAGDMKnvvDUBmS8cR4bVRsVXg43nChIxNSNUnqp
-   2glhjldomQND+c72fQnoAcqv1+p9il2v+cEq8YidqA9Ys2Y7Nw5isjnmV
-   5+G07aleFzYlMYbqOyBgtdurDE2N9bBRWLx0V3VX/tspmIPOLCDXn0uak
-   Q==;
-X-CSE-ConnectionGUID: UBre7cQ1R7asxuwwMHYSog==
-X-CSE-MsgGUID: Awp7RMVESxm3JxgQeF7zFw==
-X-IronPort-AV: E=Sophos;i="6.20,241,1758585600"; 
-   d="scan'208";a="6082826"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 20:12:48 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:2863]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.10.60:2525] with esmtp (Farcaster)
- id 72a6fd31-2cc3-4330-9bca-5a8a723d3114; Mon, 1 Dec 2025 20:12:48 +0000 (UTC)
-X-Farcaster-Flow-ID: 72a6fd31-2cc3-4330-9bca-5a8a723d3114
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Mon, 1 Dec 2025 20:12:40 +0000
-Received: from [192.168.8.132] (10.106.82.12) by EX19D005EUB003.ant.amazon.com
- (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Mon, 1 Dec 2025
- 20:12:39 +0000
-Message-ID: <76e3d5bf-df73-4293-84f6-0d6ddabd0fd7@amazon.com>
-Date: Mon, 1 Dec 2025 20:12:38 +0000
+	 in-reply-to:in-reply-to:references:references;
+	bh=kJpgaUAKXQbdrLIth24lgYsco6HuFX50DZQaJZx684s=;
+	b=3ApjtLHLDjwQNMhDn92p+2I2WKvTAdMV1K+3IDUBWyY+SaWFpUWsiOIQBNwxavPwjQB2n1
+	XTSU6uFsyPet+NCuz32FIfKes13EDTjO/k6FjLwAU2QrDcrreaG3UfDwZ9RRYaRHxMza++
+	DFuBORsnHmycI56s0f0vvmtfMOUfhLU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764620530; a=rsa-sha256;
+	cv=none;
+	b=V1HGx+XE1iwOcHJzAyJL6/XZbrZ73YfbEaKIkoUN2TKQllNh8D9YvF0JhrVXMZO0TU0X/d
+	WnknysrO8gZr/2AcUTolBUd7KKf5wOpfhzk8n6hiya0OXRfjxJVOhowRbq6/ZgOgG9aPHa
+	M7P+Yg62FebLVyFWPLuFyuuYOOW1w8A=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine)
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8b1b8264c86so433630985a.1
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 12:22:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764620529; x=1765225329;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kJpgaUAKXQbdrLIth24lgYsco6HuFX50DZQaJZx684s=;
+        b=o2u66JkLviMeBxBCPh4SvWUGviyNoDh6Ne9BGmRC9Dy1AckRMVMcKh36K0TTE9Wlpc
+         3iuc+k3bJ0lGyd6R3XHbHfYghUHqq5q+2NVFs1vPuo0fTwVsY87q/ICYfj5BG8R6tmO3
+         Xfa0rLb3yDX7ELXEHW9jJ69Ms1VVivHCB700Qr2BhwNcVL8ZSmsNKTyz3DgcC+CRRLqA
+         P8t1hlGv9RyY8gvNbO7nmNYZRIllmdSyJ/Ys12kdlkgmf/JzIVLKJax1Qz5ld9lzJ/XE
+         gNa0mkg1aPaflLDw8rWtiar85pCa7WEYKg4iticZKeFOBK3FybPbe4ZYa1kPQlfgDAFX
+         +zNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUFtFUa/TosDGOBlsbUh7F3o6jsrl3FCpvF2yGGex9yYUCCPkAoeeGAyT85m8UO7jKLV0RIm19Eaw==@kvack.org
+X-Gm-Message-State: AOJu0YzgQ51R/19Pg1F/asAFtO/FhmuKWLxNbCune8W0sBRP1MjFfY9d
+	kdE+Wz6mJWd7FWgaOYfUHl6VqxSqGB8njfbkI2AH0cORMef81fB3awzQKWAFsFBhbb7ODbKPDSj
+	YSnfJpx/LuBE4tlQysO7EOajFYGkJ0kc=
+X-Gm-Gg: ASbGncs0jfdDCYeWUMiCkoW4UJ2a8TSATwRZGDt+wjiz2dkc5aixrfDT0uorVJ57Y8n
+	5+FDEYYCJphJFeKhRSuNIEkdNdq/T7wTU5EZDWK8BZ+cQOa/cRPkyNK6IHPwHGjnxzYEXuy7M7f
+	bGuqCwxr4cZDITvj+uoAKgV7QdVqAICIW5y+Dnyovl9BEaYP8AANi3Zb4Aoo1P8O3FA/9v9gju+
+	8uEhGWFOZqBaUpAtI3VdS7yMkyX9nWCknYQiWR1TIxJ3iaQ7wXF1a8i8cMgDMQ50S3I2TkJLRPA
+	ip8Y
+X-Google-Smtp-Source: AGHT+IGm9AutZ21qFwjaDLumrmoH0pEpI9Lp9JvfH8goxtm253odaXyBjQEMtnVmRsp2anjQVOs0G2L6pCMk8QyknuA=
+X-Received: by 2002:a05:620a:7106:b0:8b2:e5da:d316 with SMTP id
+ af79cd13be357-8b33d48b7d4mr5190214485a.87.1764620529165; Mon, 01 Dec 2025
+ 12:22:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
- mode
-To: Peter Xu <peterx@redhat.com>
-CC: "David Hildenbrand (Red Hat)" <david@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>, <linux-mm@kvack.org>, Andrea Arcangeli
-	<aarcange@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "Axel
- Rasmussen" <axelrasmussen@google.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, "James
- Houghton" <jthoughton@google.com>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>, "Sean
- Christopherson" <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20251130111812.699259-1-rppt@kernel.org>
- <20251130111812.699259-5-rppt@kernel.org>
- <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
- <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
- <553c64e8-d224-4764-9057-84289257cac9@amazon.com> <aS3f_PlxWLb-6NmR@x1.local>
-Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-Autocrypt: addr=kalyazin@amazon.com; keydata=
- xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
- JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
- BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
- IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
- CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
- ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
- ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
- i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <aS3f_PlxWLb-6NmR@x1.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.106.82.12]
-X-ClientProxiedBy: EX19D008EUA003.ant.amazon.com (10.252.50.155) To
- EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C6F732000A
-X-Stat-Signature: dbkhzy9e5pqufkz4d4zgweu3nrqs3zrn
+References: <20251124193258.GB476776@cmpxchg.org> <CACePvbVJEWd64r-o8ezh+0QByYbWjYVKiLgxNiBJOjfRWP__sw@mail.gmail.com>
+ <20251125213126.GB135004@cmpxchg.org> <CACePvbXstKtQXE+0i-KRcq5LwrCr92a_FKy2KBmqaiwZEkFxng@mail.gmail.com>
+ <7665130c511e3cd00f83e8b14de2b78e08830887.camel@surriel.com>
+ <CACePvbWcYsm3WpQSkbiSKESpHOb+QybNTxtDL9mCvRd__Xj4Aw@mail.gmail.com>
+ <7e44e8654eb0ed5e0f590b3d705b258772dadb57.camel@surriel.com>
+ <CACePvbUSHYgit93ofjg6cMfb+CR9x6CZnMGh7Utb+zEzkOG75w@mail.gmail.com>
+ <CAKEwX=MMgOb+7tDxPXDCcBxCEztvajDa0YfLBqgGuAr8GQ4s1A@mail.gmail.com>
+ <CACePvbWV3STyCg0vYDXYg7asnxLTa4Jb5Fa59g7_QeTVxKV=ig@mail.gmail.com> <20251201164338.GA430226@cmpxchg.org>
+In-Reply-To: <20251201164338.GA430226@cmpxchg.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 2 Dec 2025 04:21:56 +0800
+X-Gm-Features: AWmQ_bmDfHWyQfsGvK_qFrw5gpxxJKnNf3RxMfaofT4QIFsdlQ7oQ0iWuca2RK4
+Message-ID: <CAGsJ_4ypBBqSjcHOx5RYp3iXCZ65ZXkTN90Qoktk1VnRCGdszw@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Rik van Riel <riel@surriel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <bhe@redhat.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 71B0FC0019
+X-Stat-Signature: od7549bu6ccir5kfzokomryac5z5mmu6
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
 X-Rspam-User: 
-X-HE-Tag: 1764619985-658861
-X-HE-Meta: U2FsdGVkX18BkmMPocMumJrU9lKuyxHS2NKToZisnzxfHT2Xj6j9+eEusHtcajPJPnrKjZFl5Q3on0hSTHgiZU8X2o0gFVVfRmNVlIqUHPK8/4PO2414gKuvvE2pjlMzXeSrKPJRshGnvD98994vIINiJKmJkRIXysnqP/7gxNHZaOVS9ZiIULeRTd6T/QywSzJX6+MkaUKrWuVAAWb0BOnizUpI/VAeCKSR+zEtjy2zGlgS8pn0DiUq6j5dxfRQDuOBy1DwosqLrS5OMzJDHPxyJeXgtQnpF4z/vNH5GMpntlXZF3lySFsi0ifjSjcVgLRMxdjAysYDluttkukq8fo6RUjTJF4PyAh64cjU0+w72n1XcPkBXkj9bx5Qnlq/3BuJQph2qJFLu/OIioRQ91EALmNcl3wvrMcQwEsTerrc0zavTFtgcWT4kfGYKnN19Lna5Bwc4v5qDsN+Q7yLPO6yrutLKhBWoEkHAMm/fn/6m1YFlVp2Ka60i+0jMzpQ/nENeW6spmJPQNfWRj40sjBAgwfUMsiBOliOk4dvr2WEIC+p/iPVs9APgriJWSBOB4WTQpQIusaNw3OaXYxnSncnvPRozw0T8hljidbUE3TX3dhw/AGZINIJYGUxzIfts/x6GTmcYLKUtNWPzCcMSUH4ylN7yfBXxAzB35QvNr5M7rBOlfFIxTRcDitPNgFlTaRc0vc129ud0dj/TOIdSNLStUdV9bn8U7IaOiTdZaMjG1uix7J776OKILoZvOvU1r7bw2P4I5PM323i5E77nykixgylM96N7QU6H3dUeATUmhmkMmPZqvkEDaXb7hPx3Z+MP0RtYSNlYaCpKdGAwON2qBN+1zCB78TWuQzALUZh3DoXizf5VojNuW4aSPAuQkuXOzTWdaJUyOs8aVobvxnifFZG40L8IPfbSSGbMK8qw0/rA8khhQ7JNT0SRgZ17Gz9bDpi3AVP8zUXqDL
- vlYBCyuW
- yzrluhI6m4hbmrP9f18N+3iC4HAkASrru5cNZtH/fwqGI1t+Yc0OR1asEbrjG5UZQIresZxtqAUnGTHKFIo/hN9WsPyIqAjt+u2zpQGY5JFUwhGJMaupWKiidh+DaCTBILU/D4DO2tyFcZrDcDNIYvsnIxpgkwHsfXY1QmYLonC5mdm28MSGJZNewm3pzZBCId2g3nJTlRVlx3s9Mjer46mE7qpqyAdnTxeO109NvbEOjlow0Vk+PUN39u3sqsk248vUhUEPCAGkVFs3AbWYH/P5UoTizPqLlp2K5THs0dUAWUxL5qZfXRsTbAIF0SHf5f8sTCSX3jBE4ci5ggzz7YaidIA3jiKuHBzUGFNHpbfQVxKT3okS24Sr3w/wFdLNqZ01bGrvQV8GneTSQjYDIhVMuOGQdqc38yek3Ic22VrLCoBLkIlVVhPKYr1rRSs9HmMepVlyOfl/00KV2722ZfgwZB1c0TCIlnVnzhSEv5e2djylgi2l7konDU+OS+y/xudp2BkO+lWHmmOh5qP6PndPzhxk08HJWqNJZ10apEAAUxh/AFfpYA3xAhPgGSoKR7QgsjINNpFt8p0VjDjQXPdeejC9N3zebynmwfaNbxuK2vhKy2BsorSObZHrAB5OLuHmw4aZEQRmHlxoS/30gh7r5trfom4aT+oM/9Y046/AZzUEmm5rIXwtudOd2nIHM6JZb61ixwZHhNoYdNGNY0bnMvyf+w+UY3pNNJBwDMwiB5jxcBVKaHNifUdaT2W/RTEdf4Yag2odw3YdJBepH8NvalOsvyGUdyiowR5xzgvSP0TEht/1HXB2QWKNtyVroi+IUT7nv1grnK3dwAH8loQLBiXi4TmovFBeLaFhgH7t1bCC4RXU17R1v/oWICKHfTN+89UCeEH3Z6ez0Mcw2UZGkqm+ilxF8qIJhWd+b/RNQAEKx8bCrKWbNqw==
+X-Rspam: Yes
+X-HE-Tag: 1764620530-7385
+X-HE-Meta: U2FsdGVkX18SHv3Zq7rJO9k7hrOqNF7SwZ3+L6DbfOScoa90Mv90PGHGOJ5v3EQGJD9A+Wgim9joHMeldH6ttDS87IxK0+X+chdyrDuZ+FMtj7W2A0zdgPm1sXlyb6lAhYcqnJaj9ijEaN1aSvZ4VxHgRMhQkV49Ho8Wq/Ej3xElhG/KQdrZsd61ET5OeS1iRHxDDJnLS+UajisMJPBkLM8DjT0vkLuHYfh7JzVtxG4/P894nX+wGdjx+TZR3kh+dFg7aLNVm9pZKJUqs+RDDeENC+/BMgJkfa2X65Z7/wEUaLxxAdNlBZm41DWZLmqcMVA0zPy2vmubYxi4WypVtvvG8SdmLhF4PyQ/HD0TnwS3ugOKLiLJN+MI1tWCSqdwsz9gXhrweE5Qtlhk7U5czphlki2Vo8Y5c1i+NUyqtCDkdhsRwc4isWkvEeXfyyeatJylzlHvdKkia0a+U+SZSBUbnx9qlnApYyx5YUj5cza9JanrtD0ybP8osMKEv03f5u+wKK1CQH5db1L++9v3RUICO/VN3S9aBqrjWMoDp8vaWaakcpdmtrix55pzabwm17LS2G/DfSe7ksyqt37po94eLDgU7DNwhnayRgG84iQKQMvNhVV1AaHCEQoOzznLs2sNXNWzU0gvKWtSJuwd8h/1G86zAtxFB9DP8jqNz/Qe6dR3wPxMra82aEEcLw6sedpHMRBfZMfkiACPj/JdFtvXqczOjntmm4gohA3p0n6qk94tfkFqpUxs9NVSNTkD++wsI/NOZUaAaqq8Nza/4ReGrx19okNwPrMK9mXUMDtlDo8zuES2p46GdQmUyA6qaHciykU2T2RzCf+tR2KQo5537bvO0vcd0eIt9IU7lMMy+NeR1IiG6yBb7MMmFkfmZmTmrvB/qABIfS/HBAEH+wOkyX6NBQh2VWNHIF4YN6T6PH4LAcGdRrXkEKiEnry+KrU9O9K4QYKayLFTRC+
+ 0f0VdgQm
+ /tK0XxrcZFzA/JuU2fORPuScTc14hANVpf0edVvR1r3WRa6GCmmyNlmfMqvOpGpugnsdd/6QdDv8aklyx4SEUOSLRK+BhlRSwzq5jps/qs6iXl7OJhq8SfI0PCxuBRUwwjH+eCunzJ7naUe+Qh5avbo3dCpabiXb6tP9ezwC8szPC7jy6AFFDQhCB9f0us2lc5JMUoKDEqMZoZgdUXj25F+6PlNhdWZ4IAh37WauukULSlgFPeMf8jvWVMEK83wRvIR8FUkpMSOmGapAGfiJ+5NlpRPI41hFcnbaGijBPB6m4M1yq6b1tyiRDNIMsO3kQxWiIPCJEHK9RuqsNrGX/0CLDGFBX8eRrRAwl3fVQgto/VJxJuO0i/dIUWo95Hy5d97ILYbkyuJfQkBB8FWBhGchB85GUfa/aBM555ba5KnynhjPdAdSUnKQsRlSMSWXhOKbp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,56 +121,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Dec 2, 2025 at 12:43=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+[...]
+>
+> For the benefit of anybody following this from the sidelines, the
+> third zswap maintainer also expressed concerns about Chris's proposal
+> upthread. He works for the same company as Chris.
+>
+> The reality is that Chris is failing to convince others of his design
+> direction, and is now obviously resorting to manipulation and hominem
+> attacks.
+>
+> During the course of this thread, Chris has asked for "a little faith"
+> that his idea will work for all stated requirements, without deeming
+> it necessary to explain how.
+>
+> When probed on technical details, he stated that he doesn't like to
+> plan that far ahead, and prefers having somebody else iron out the
+> implementation details. He also referred to high-level slides from his
+> LSFMM '24 session - which was received thusly[1]:
+>
+>   Matthew Wilcox agreed, warning Li that he was setting himself up for "a=
+ world of pain".
+>
+>   Jan Kara said that existing filesystem designs are not suited to this t=
+ask
+>
+>   Hildenbrand said that this plan was introducing too much complexity
+>
+> His first response to criticism was to invoke his <4 week status of
+> swap maintainer.
+>
+> Meanwhile, the design direction that Chris is construing as a single
+> company conspiracy is anything but. The collaborative origins of these
+> patches are well documented. Chris was CC'd on those RFCs. He notably
+> did not engage in them. He is now lying about the narrative and
+> choosing to attack these patches in bad faith and out of context.
+>
+> This pattern of behavior gives me low confidence that Chris is able to
+> collaborate and compromise on a design that works for all users.
+>
+> And while Chris has been quite vocal and opinionated in mailing list
+> discussions, his actual code contributions to the kernel do not
+> instill confidence that he can solve this problem by himself, either.
 
+Hi Johannes, Nhat, and Chris,
 
-On 01/12/2025 18:35, Peter Xu wrote:
-> On Mon, Dec 01, 2025 at 04:48:22PM +0000, Nikita Kalyazin wrote:
->> I believe I found the precise point where we convinced ourselves that minor
->> support was sufficient: [1].  If at this moment we don't find that reasoning
->> valid anymore, then indeed implementing missing is the only option.
->>
->> [1] https://lore.kernel.org/kvm/Z9GsIDVYWoV8d8-C@x1.local
-> 
-> Now after I re-read the discussion, I may have made a wrong statement
-> there, sorry.  I could have got slightly confused on when the write()
-> syscall can be involved.
-> 
-> I agree if you want to get an event when cache missed with the current uffd
-> definitions and when pre-population is forbidden, then MISSING trap is
-> required.  That is, with/without the need of UFFDIO_COPY being available.
-> 
-> Do I understand it right that UFFDIO_COPY is not allowed in your case, but
-> only write()?
+Thanks for your valuable input and discussion on swap virtualization
+and swap.tier.
 
-No, UFFDIO_COPY would work perfectly fine.  We will still use write() 
-whenever we resolve stage-2 faults as they aren't visible to UFFD.  When 
-a userfault occurs at an offset that already has a page in the cache, we 
-will have to keep using UFFDIO_CONTINUE so it looks like both will be 
-required:
+I=E2=80=99m not an authority on zswap or swap, but I strongly encourage eve=
+ryone to
+stay calm and focus on technical issues. Together, we can make swap work be=
+tter.
 
-  - user mapping major fault -> UFFDIO_COPY (fills the cache and sets up 
-userspace PT)
-  - user mapping minor fault -> UFFDIO_CONTINUE (only sets up userspace PT)
-  - stage-2 fault -> write() (only fills the cache)
+Perhaps we should allow Nhat and Chris additional time to clarify the
+technical details and address more of the code?
 
-> 
-> One way that might work this around, is introducing a new UFFD_FEATURE bit
-> allowing the MINOR registration to trap all pgtable faults, which will
-> change the MINOR fault semantics.
+Personally, I have had a positive collaboration with Chris on resolving the
+mTHP swap allocation contiguous issue, and I have also seen the swap table
+emerge as a solid design. I therefore expect more great contributions from
+Chris.  Meanwhile, I share a common experience with Nhat in addressing abus=
+ive
+language together in a specific thread, and I continue to see Nhat doing
+excellent work. For these reasons, I hold deep shared respect and appreciat=
+ion
+for Nhat, and I am 100% looking forward to collaborating more with him.
 
-This would equally work for us.  I suppose this MINOR+MAJOR semantics 
-would be more intrusive from the API point of view though.
+Looking forward to seeing more code and technical details from both
+Nhat and Chris.
 
-> 
-> That'll need some further thoughts, meanwhile we may also want to make sure
-> the old shmem/hugetlbfs semantics are kept (e.g. they should fail MINOR
-> registers if the new feature bit is enabled in the ctx somehow; or support
-> them properly in the codebase).
-> 
-> Thanks,
-> 
-> --
-> Peter Xu
-> 
+>
+> [1] https://lwn.net/Articles/974587/
 
+Thanks
+Barry
 
