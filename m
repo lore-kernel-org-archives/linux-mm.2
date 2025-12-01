@@ -4,145 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D07D3D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 15:23:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1F7ED116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 15:41:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB0A66B0008; Mon,  1 Dec 2025 10:23:55 -0500 (EST)
+	id E68CE6B000D; Mon,  1 Dec 2025 10:41:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E888D6B000C; Mon,  1 Dec 2025 10:23:55 -0500 (EST)
+	id E40B46B0024; Mon,  1 Dec 2025 10:41:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA0076B000D; Mon,  1 Dec 2025 10:23:55 -0500 (EST)
+	id D7D546B0026; Mon,  1 Dec 2025 10:41:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C881A6B0008
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:23:55 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BA92139CFA
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:23:55 +0000 (UTC)
-X-FDA: 84171272430.11.36AE749
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 22B5D16000E
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:23:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ije2gOoW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="lqk8Anu/";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=p9gFsivR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="rI2VA/3C";
-	spf=pass (imf08.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id C387A6B000D
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:41:44 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FCC61402DF
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:41:44 +0000 (UTC)
+X-FDA: 84171317328.12.7D085B3
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6441480014
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:41:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZzA+zGcb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764603702; a=rsa-sha256;
+	cv=none;
+	b=D3LXEcFMBmp1MhRAqtzINt4zty07c7uHareit9+qVecj5nR2235eFOySTcLqmskTVFaAvM
+	HhlLtAeaOqIR9FrIEeRinRCtGIeg501ChgIw/YW0WajB/j3ZQzUv16Aj7jzVWC8V/Xgpwy
+	4dAAbllfOEoZ9w5F4CEV9MvuYLtW7hc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZzA+zGcb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764602633;
+	s=arc-20220608; t=1764603702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jAQKP7v+Ibe8q7BVB4/nqAajnVlMQ1ph4Phc3yhzw4s=;
-	b=ceF8pq8DPo+LRn/0sNCu3bUZm+tgfwBgL2pxR7WPTilKxN4D7GFobC/D9UA8hg+vNkkuvI
-	N/tQc5iDn1/r5RBB1JIXgHzYoa0j8+LU/89+w2TA5hqGSAMfNJV82wGyt+L0rgx0B4v7eY
-	oj7MnjjZn+2uQwrib91D14P5tv+/PgI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ije2gOoW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="lqk8Anu/";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=p9gFsivR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="rI2VA/3C";
-	spf=pass (imf08.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764602633; a=rsa-sha256;
-	cv=none;
-	b=pGgkmPso3RnXRy0URJNiUqbcqNySPqCKDRKIj/HhkdD0Ij4ADBn9ONELNBUe2A+mVI1CGT
-	8DWQcJbVLBGP2ZvzS6u3UpLDZrFQU7mgR4LbyFfrF4H0J2A5QjXUWHVkRacL/G7YA7dow/
-	UIFt7XEODQyjfhRZSp/Bi1zxwjoyU8s=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 173F55BCCD;
-	Mon,  1 Dec 2025 15:23:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764602631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=uT9+iCk1C9W8oKaATIUH1G8jZwnmHrr4Jk2aweSPxhw=;
+	b=m/NUQ3ApMi604oX+4uOyh4iy8FbDcxANjA/yROA5u/dqYt5nU31he1X+MlvcOsfpj9Oifj
+	Fuo/Nehnmxd9grFekKFdJup+jf/wH9BF5MALa5fz2nD+z8N14CZhSU3hyFEnuFS96pYQhI
+	5n8HsUzRd2ekZC8ltGmg7EKFIvQAzhQ=
+Message-ID: <d94fe146-5cc6-4aa2-bd7f-8ca2a12e5457@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1764603699;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jAQKP7v+Ibe8q7BVB4/nqAajnVlMQ1ph4Phc3yhzw4s=;
-	b=Ije2gOoWwme9kCE9ifCw/vdbvBGpa8gPAtBAWLKp4SmRIZYXSdCiilo6cjXw56f3rf1GBn
-	9WeDjckjwU3qHdvfHVfPzSygRCsfpPxsaq3ZYniP8K4JwA4jAtQ3SuIQxlgelZIup+xyHV
-	J9IDa1b/emJ8X3WQJjyJekumHCYWt6Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764602631;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jAQKP7v+Ibe8q7BVB4/nqAajnVlMQ1ph4Phc3yhzw4s=;
-	b=lqk8Anu/Kr3w0MDLWalVoxaDw2o0hNNi95m8tUANM76eF+z62KpWXJj9CIGhEle3XlhVM5
-	TQP/IsHf8awhCWBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764602630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jAQKP7v+Ibe8q7BVB4/nqAajnVlMQ1ph4Phc3yhzw4s=;
-	b=p9gFsivRbacas/GZNRn4R9HWNDGNJkYSkPD3pvZrmXZ6YpS5yr1xi6kA61DTQjvqYjicIt
-	UFX2hAbM+zH83RvfctFpTHTgFiGexh0+vYoYKP2kuxjEE8yScwmdWdbU3Jt/rdK7wSigHE
-	1Dwt6SlQvi8wkkh1XXybWXK+PcQxc9o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764602630;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jAQKP7v+Ibe8q7BVB4/nqAajnVlMQ1ph4Phc3yhzw4s=;
-	b=rI2VA/3CpKmWvJJiW4NRI8ZMlWzhVXv87vNs9t0H2FLegMt2jXnYvQBJJPxdDDPNVecrO3
-	SLjLRPEOyi9TRgDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B95E63EA63;
-	Mon,  1 Dec 2025 15:23:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xzvQIQWzLWm/HAAAD6G6ig
-	(envelope-from <krisman@suse.de>); Mon, 01 Dec 2025 15:23:49 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Jan Kara <jack@suse.cz>,  Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org,  Shakeel Butt <shakeel.butt@linux.dev>,
-  Michal Hocko <mhocko@kernel.org>,  Dennis Zhou <dennis@kernel.org>,
-  Tejun Heo <tj@kernel.org>,  Christoph Lameter <cl@gentwo.org>,  Andrew
- Morton <akpm@linux-foundation.org>,  David Hildenbrand <david@redhat.com>,
-  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  "Liam R. Howlett"
- <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,  Mike
- Rapoport <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,
-  Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
- single-threaded tasks
-In-Reply-To: <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
-	(Mateusz Guzik's message of "Sat, 29 Nov 2025 06:57:21 +0100")
-Organization: SUSE
-References: <20251127233635.4170047-1-krisman@suse.de>
-	<f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
-	<yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
-	<CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-Date: Mon, 01 Dec 2025 10:23:43 -0500
-Message-ID: <877bv6i5ts.fsf@mailhost.krisman.be>
+	bh=uT9+iCk1C9W8oKaATIUH1G8jZwnmHrr4Jk2aweSPxhw=;
+	b=ZzA+zGcbfVaF0IbxZAcyuNjv0u24QwW+Exx11JVnVgnKJMNQ876Zu3WzrgtNGfGB9g2W3l
+	pZR6eaHFu4H43WJN2dh8RPmTqQqQ/THi68oYhI6t26RqdFVxCh7Zuzpo8Cx2XdFvQCovCb
+	bdvKKrcGaIP6J4hvwcUw4QyzEr+TKNc=
+Date: Mon, 1 Dec 2025 23:40:38 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 22B5D16000E
-X-Stat-Signature: 7cg85sqb1n6kmsae8njra3w69wta9zj6
+Subject: Re: [PATCH v1 23/26] mm: vmscan: prepare for reparenting MGLRU folios
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+ <cdcedd284f5706c557bb6f53858b8c2ac2815ecb.1761658311.git.zhengqi.arch@bytedance.com>
+ <aScFNZjGficdjnvD@hyeyoo>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aScFNZjGficdjnvD@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6441480014
+X-Stat-Signature: rfnfy8fspepcfngt3edyzrkp6wgzwqao
 X-Rspam-User: 
-X-HE-Tag: 1764602632-12913
-X-HE-Meta: U2FsdGVkX1+pXgLas0lGS9fCMuI9YJT6JhQUJ5Egi7G5E6MhxDABFdyxqeigY4do4KRO6os0d8PTHazBI7wOurawREl2eun+NAk8U9yAX4pnL33/gLHRvqpMZkPcyutampHwYPJ3Em2TaEd2iaNrU3tgQBnJpYBx6hxU3vrBQ+02pgYsmQXq0Ya/i2oH/9MyWcINFho2kwKi412hZqnX8dv7yYO0aJwfyW+PUt6W2B+est/jJNSH58rFjsMDqwnDS8fO+u0BwJfjWyvEanNKPAQf82mKTDja1THBFWsmG/yAKQg/dSeXQILXEl4wUiAdeE4/xvdckSBk/pfjfIpfa34aHcGkt7Df7zZWjyCP4DW2bsiaGk1tT9ZOfNcNBMUDuwdxiCSBUMlG6fn9GaFpPCmYtBBxp+G8TULgFE3JYQdMHAqGU1dKBj+4EIzPe/uACAf7lDfpcddnWIpCwuX0aaYFCx17AobCCCMHqX0agoxlYTS7unP5mf1P+9vWD5VLtRQc1kWp2BHizLgZ0v/3vEB5WaldcsU975SIEw/4AUgPoDcvlf3N4CNjSNhfu9RuoukryH3s065mIs/w/fwQyRHCgOVsHWvnqchj19aVGnHnZ25yjTEvfdqeoRBg9NABuz+bVVfekNPiceYerJUCBiRBDEfIiiw9t7NaISjvWOAbm1ZaPJyzK3S681lm+kp3On8dQExsxQGsSf3mg6/EAV1aC8Px3/pXa1WysJSIfydsT+R8J3kesAV1b0VwAXbCqq7RoXTpbT5wNxzGHxAZPwIXh5UaHLndN+6CZZBzEDG0Jur/OYEqr+4HWA3Zc5VUpVPFF5FHjn6JSm/cffaRP6of44XuFsxMAUR8Nz4gKXZ0XnwbfTUKyuEhGr89bbEQlLHfP0zdbXc99p31QCmc88/boo7Xoc7SY5IEkyp1541Ov705X/SX35ikZeetUOHG/oguzT46sGa5JiK7c/e
- omVjgMuA
- 3+IuKOZTsDnA4k52m0i+qPl0h7GBN3vhukGWU6hnUtDBYubUi5IYBqroAEcUFSGjGQrZvdRqFLoRSaShb6Nk2CheS8ukiMUKFprMxI4/T9oPiZ1hDGHdgK+kDVYc5V8WRxIN9yAfQ4GhZ43MfJSv8hYvOqAAjwSAishITxZ4ncr5qrHYVP00H2ADSACjwxnLVYiezDzlXh4BTKJFz0JfeTMn7vG5NRTuAN7RM+Kn74nMKkf3vRhdhhnnPzcY4STBbdjAaogUAXr5UTcVotRRK1QO6gq2TbimthAUqBfz1oSuqU/9vUu4WhD8cESxukLWXr5zXR/wmxRpy9/PjP2iskWjLTNtN9Yap1JjI9aTi12OUTOI=
+X-HE-Tag: 1764603702-479041
+X-HE-Meta: U2FsdGVkX18UUrArl8WMs6G2m4WfwR5vX+ARtuQo7TT81A7Fvg6oAoTjo8w10/hjda9mSF3k6JPztjlwJS9GIXmiuwb27pjn7s91CdI+86Dldo/879JTzOZyjK7EGes9Gq4D6QJJFSGXhzReEBn0CKPTHnfxZj14ZUkrmhAzov91wuW6S10jm/pi5gwKs2P49/+NtHInuObDWqRO9cL+HYIy4OTlDk0+yYnScC7PXtcy2VrO4lx/Xl2fJ1LyYLPrHkX1R3TUQMiTnsgw+Une8rE8dOdvP5C0di5AjZ2/0qt8cF+V5XTyAizIg3QFxPmIxNqz/4i5PcG4KMbEdea+NYakOtNHaaJhyHiRa/XPv7xI1iGUWaBtOOUSm4qBkim5Tg6M91y2IQPIvi4YV2xUCBRv+6dFuDOlNp0+FFdFMY4L0ORyHXb5DrLnSzeriHDqtAQGcDSrB1f4xM3Iy1z4Cflaet40lj3KheKKiVw8KM0HoMrue9K7KFquLAnNT6aVKcZARz+70hCmlEjufInd6bb1RZ4xWkiGhaBMW6VOEUAkiswQhQ/27jZdH1LR5VD+ngaXw/Y2a23J559JrxGY+bhf8ekl23kRgruDkrNaGlUCevDhjQrKQ7ZjYvK7BVawm87t8/qOErH7Dym0fkCi34B4A3pD1BJdpiR8Cct3OtjORg/gfCbNavWDol0SICYrNhppYtjE72sUyPZBMaL+zLatR+jBlo6XwXD+P7yxL7KUSQwv60I4DMG3wNUImwWVZSV8vw45Gx8FBx5dQIVLtsucT2zlN99aQB2CYG6JxFToIoUPbePqQE4nbseMd0CqYyMSrXOwAgzhYR5vE+G/NwiKwYzBs1eBx3ZTpxNIk464lgpNDITiPCuxaEpumFjI6Sg3y08zoxen1bcuw1lUNBV2yCCb9vIqADcIg9dazUsC0EEo3XXLAsFtqmhBcKB8tVe7gZbA06DWnfk/82O
+ etpYtf4Z
+ M+2K6Q9IWF/yAY/kZL/MS5f4cjFxf1vdrRgSed50KoYJryt2PEFdnGh2W4rd/3YKtEpfreapwY6YY1DzoRHYsIrPUbfdMtCgitaMCr4XHiIOPyBXRw8B5+HbLn/I6pzlr7GtkjY6X+qjB4/FbIZ3hnUIlABkxa/HrG+ZDzG4eCXCCtXs2KeZgyei4gTZc/YHx5ekXndOlPzh8Z2tQcdda7SkujQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,91 +96,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mateusz Guzik <mjguzik@gmail.com> writes:
 
-> On Fri, Nov 28, 2025 at 9:10=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->> On Fri 28-11-25 08:30:08, Mathieu Desnoyers wrote:
->> > What would really reduce memory allocation overhead on fork
->> > is to move all those fields into a top level
->> > "struct mm_percpu_struct" as a first step. This would
->> > merge 3 per-cpu allocations into one when forking a new
->> > task.
->> >
->> > Then the second step is to create a mm_percpu_struct
->> > cache to bypass the per-cpu allocator.
->> >
->> > I suspect that by doing just that we'd get most of the
->> > performance benefits provided by the single-threaded special-case
->> > proposed here.
+
+On 11/26/25 9:48 PM, Harry Yoo wrote:
+> On Tue, Oct 28, 2025 at 09:58:36PM +0800, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
 >>
->> I don't think so. Because in the profiles I have been doing for these
->> loads the biggest cost wasn't actually the per-cpu allocation itself but
->> the cost of zeroing the allocated counter for many CPUs (and then the
->> counter summarization on exit) and you're not going to get rid of that w=
-ith
->> just reshuffling per-cpu fields and adding slab allocator in front.
+>> Similar to traditional LRU folios, in order to solve the dying memcg
+>> problem, we also need to reparenting MGLRU folios to the parent memcg when
+>> memcg offline.
 >>
+>> However, there are the following challenges:
+>>
+>> 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
+>>     number of generations of the parent and child memcg may be different,
+>>     so we cannot simply transfer MGLRU folios in the child memcg to the
+>>     parent memcg as we did for traditional LRU folios.
+>> 2. The generation information is stored in folio->flags, but we cannot
+>>     traverse these folios while holding the lru lock, otherwise it may
+>>     cause softlockup.
+>> 3. In walk_update_folio(), the gen of folio and corresponding lru size
+>>     may be updated, but the folio is not immediately moved to the
+>>     corresponding lru list. Therefore, there may be folios of different
+>>     generations on an LRU list.
+>> 4. In lru_gen_del_folio(), the generation to which the folio belongs is
+>>     found based on the generation information in folio->flags, and the
+>>     corresponding LRU size will be updated. Therefore, we need to update
+>>     the lru size correctly during reparenting, otherwise the lru size may
+>>     be updated incorrectly in lru_gen_del_folio().
+>>
+>> Finally, this patch chose a compromise method, which is to splice the lru
+>> list in the child memcg to the lru list of the same generation in the
+>> parent memcg during reparenting. And in order to ensure that the parent
+>> memcg has the same generation, we need to increase the generations in the
+>> parent memcg to the MAX_NR_GENS before reparenting.
+>>
+>> Of course, the same generation has different meanings in the parent and
+>> child memcg, this will cause confusion in the hot and cold information of
+>> folios. But other than that, this method is simple enough, the lru size
+>> is correct, and there is no need to consider some concurrency issues (such
+>> as lru_gen_del_folio()).
+>>
+>> To prepare for the above work, this commit implements the specific
+>> functions, which will be used during reparenting.
+>>
+>> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+>> Suggested-by: Imran Khan <imran.f.khan@oracle.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   include/linux/mmzone.h | 16 ++++++++
+>>   mm/vmscan.c            | 86 ++++++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 102 insertions(+)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 7aa8e1472d10d..3ee7fb96b8aeb 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -4468,6 +4468,92 @@ void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
+>>   		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
+>>   }
+>>   
+>> +bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg)
+>> +{
+>> +	int nid;
+>> +
+>> +	for_each_node(nid) {
+>> +		struct lruvec *lruvec = get_lruvec(memcg, nid);
+>> +		int type;
+>> +
+>> +		for (type = 0; type < ANON_AND_FILE; type++) {
+>> +			if (get_nr_gens(lruvec, type) != MAX_NR_GENS)
+>> +				return false;
+>> +		}
+>> +	}
+>> +
+>> +	return true;
+>> +}
+>> +
+>> +/*
+>> + * We need to ensure that the folios of child memcg can be reparented to the
+>> + * same gen of the parent memcg, so the gens of the parent memcg needed be
+>> + * incremented to the MAX_NR_GENS before reparenting.
+>> + */
+>> +void max_lru_gen_memcg(struct mem_cgroup *memcg)
+>> +{
+>> +	int nid;
+>> +
+>> +	for_each_node(nid) {
+>> +		struct lruvec *lruvec = get_lruvec(memcg, nid);
+>> +		int type;
+>> +
+> 
+> I was testing this series and observed two warnings...
+> 
+>> +		for (type = 0; type < ANON_AND_FILE; type++) {
+>> +			while (get_nr_gens(lruvec, type) < MAX_NR_GENS) {
+>> +				DEFINE_MAX_SEQ(lruvec);
+>> +
+>> +				inc_max_seq(lruvec, max_seq, mem_cgroup_swappiness(memcg));
+>> +				cond_resched();
+> 
+> Warning 1) Here we increment max_seq but we skip updating mm_state->seq.
+> (try_to_inc_max_seq() iterates the mm list and update mm_state->seq after
+> an iteration, but since we directly call inc_max_seq(), we don't update it)
+> 
+> When mm_state->seq is more than one generation behind walk->seq, a warning is
+> triggered in iterate_mm_list():
+> 
+>          VM_WARN_ON_ONCE(mm_state->seq + 1 < walk->max_seq);
 
-Hi Mateusz,
+The mm_state->seq is just to record the completion of a full traversal
+of mm_list. If we simply delete this warning, it may cause this judgment
+in iterate_mm_list to become invalid:
 
-> The major claims (by me anyway) are:
-> 1. single-threaded operation for fork + exec suffers avoidable
-> overhead even without the rss counter problem, which are tractable
-> with the same kind of thing which would sort out the multi-threaded
-> problem
+         if (walk->seq <= mm_state->seq)
+		goto done;
 
-Agreed, there are more issues in the fork/exec path than just the
-rss_stat.  The rss_stat performance is particularly relevant to us,
-though, because it is a clear regression for single-threaded introduced
-in 6.2.
+So it seems we can manually increase mm_state->seq during reparenting to
+avoid this warning.
 
-I took the time to test the slab constructor approach with the
-/sbin/true microbenchmark.  I've seen only 2% gain on that tight loop in
-the 80c machine, which, granted, is an artificial benchmark, but still a
-good stressor of the single-threaded case.  With this patchset, I
-reported 6% improvement, getting it close to the performance before the
-pcpu rss_stats introduction. This is expected, as avoiding the pcpu
-allocation and initialization all together for the single-threaded case,
-where it is not necessary, will always be better than speeding up the
-allocation (even though that a worthwhile effort itself, as Mathieu
-pointed out).
+However, we cannot directly call iterate_mm_list_nowalk() because we do
+not want to reset mm_state->head and mm_state->tail to NULL. Otherwise,
+we wouldn't be able to continue iterating over the mm_list.
 
-> 2. unfortunately there is an increasing number of multi-threaded (and
-> often short lived) processes (example: lld, the linker form the llvm
-> project; more broadly plenty of things Rust where people think
-> threading =3D=3D performance)
+> 
+> Warning 2) In try_to_inc_max_seq(), the last walker of mm list
+> is supposed to succeed to increment max_seq by calling inc_max_seq():
+> 
+>          if (success) {
+>                   success = inc_max_seq(lruvec, seq, swappiness);
+>                   WARN_ON_ONCE(!success);
+>           }
+> 
+> But with this patch it may observe the max_seq is already advanced due to
+> reparenting and thus inc_max_seq() returns false, triggering the warning.
 
-I don't agree with this argument, though.  Sure, there is an increasing
-amount of multi-threaded applications, but this is not relevant.  The
-relevant argument is the amount of single-threaded workloads. One
-example are coreutils, which are spawned to death by scripts.  I did
-take the care of testing the patchset with a full distro on my
-day-to-day laptop and I wasn't surprised to see the vast majority of
-forked tasks never fork a second thread.  The ones that do are most
-often long-lived applications, where the cost of mm initialization is
-way less relevant to the overall system performance.  Another example is
-the fact real-world benchmarks, like kernbench, can be improved with
-special-casing single-threads.
+After we correct the warning above, we will satisfy this condition in
+iterate_mm_list():
 
-> The pragmatic way forward (as I see it anyway) is to fix up the
-> multi-threaded thing and see if trying to special case for
-> single-threaded case is justifiable afterwards.
->
-> Given that the current patchset has to resort to atomics in certain
-> cases, there is some error-pronnes and runtime overhead associated
-> with it going beyond merely checking if the process is
-> single-threaded, which puts an additional question mark on it.
+         if (walk->seq <= mm_state->seq)
+		goto done;
 
-I don't get why atomics would make it error-prone.  But, regarding the
-runtime overhead, please note the main point of this approach is that
-the hot path can be handled with a simple non-atomic variable write in
-the task context, and not the atomic operation. The later is only used
-for infrequent case where the counter is touched by an external task
-such as OOM, khugepaged, etc.
+thus returning false, and avoiding triggering this warning.
 
->
-> Now to business:
+> 
+> I'm learning MGLRU internals to see whether we can simply remove the warnings
+> or if we need to do something to advance max_seq without actually iterating
+> over the mm list.
 
---=20
-Gabriel Krisman Bertazi
+So IIUC, we can simple increase mm_state->seq during reparenting to
+fix these warnings.
+
+> 
+
 
