@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5689BD116F5
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9957D116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:07:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B15536B0089; Mon,  1 Dec 2025 13:06:18 -0500 (EST)
+	id 54B1D6B00B2; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEC4C6B008A; Mon,  1 Dec 2025 13:06:18 -0500 (EST)
+	id 5224E6B00B3; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A28B36B0096; Mon,  1 Dec 2025 13:06:18 -0500 (EST)
+	id 438826B00B4; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9390F6B0089
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:06:18 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 309C7B87F4
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:06:18 +0000 (UTC)
-X-FDA: 84171681636.26.7C46D66
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 053C4120012
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:06:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=f4PUV0hS;
-	spf=pass (imf29.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 324F26B00B2
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D51FA85878
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:07:43 +0000 (UTC)
+X-FDA: 84171685206.29.E5DDE88
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EEE3E80028
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:07:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HObGeKYZ;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764612376;
+	s=arc-20220608; t=1764612462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jZkWTp/EDJ/VeIcerw9yapHoMI8jZHDWqXRh7vFqMLc=;
-	b=RRQUGtugbhfcNgDvKvjJ47DMeFSQsgUe4vlIOATeE4uX0XOvtawo/q7pNX2VxiZYlWnGe6
-	jbfYllgarzHOgFx1PuOjaC5+zK5SGP0rufS+MMBfoWAe9YF7jcm8Nhz2rjxywkkauNcgxx
-	e5YUA/wonmbIjQom30q2/0tmjEMzmsI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0QyuTy6ek64uIdo9s8SZmB6RliPCLO8eDRQ9s+Wqlok=;
+	b=TKpkdQhqKPj8BZdWTESi19r14ObNfiK5MKsQpRbVXKoK9217G2wKZUF8tMBwLYCZHMb7Ae
+	3KRDFcTWMSVUiNq/Aoc6ma1i+aGxpv7YbwR1DS78RopXQr2SoK3sIfNq8Nigvy2ORU0Axo
+	h439bvzV3nOp/FyP5V4YcH8WYo/8TPs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=f4PUV0hS;
-	spf=pass (imf29.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764612376; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HObGeKYZ;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764612462; a=rsa-sha256;
 	cv=none;
-	b=7uqTRAfEmxsc429DhgqrgNIsGcEZUqlSBlMN6hjQu4DeEspuKzuEU9cLzYExbVD4h020PC
-	INACrQgLQ6TLJEQkMZDBu6nGY+EXKmr70TP7qyoOL2vlHuDyj+GuyM+4Efg93Xj6VhZW+R
-	ntxbb8Fq9idVUnIFtu//pD7KYGYz5wY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764612372;
-	bh=orbc3nuJhRBtP9HgFH/P7FPSU37dWjp236YX9cJ7qE8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f4PUV0hSvnZmXOb2ZWccPOP5NEDYIGqGFgBkNrbZyFaHM7AR8XkGmUCu6OnkAodFA
-	 lj5NCIdmHu1VugxhaE8lMbzPaT6HbXdt5WZnd5bt3N42gHcTYxhDWAzN9HVwBIwjOs
-	 wdh52nnjvww3IORZATNTc/QuBF4ZPRL+RPQm7US6QnUUen3lLtN6Dv1IYOTdi4dcWS
-	 AiGsuJvFHisXkpA/o+9Kz0ReKG5F2tmIUDUJW25d4tnP+kt56w/AIqTphtfRva/KiA
-	 u6FWll/izQjWEpNlUNWFGTrJo9QZHfBgL6O4c1OlNQ0vK4YGvQYfqiR60p6q1ijFoC
-	 QluNngkMsJeTA==
-Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DD47317E1157;
-	Mon,  1 Dec 2025 19:06:11 +0100 (CET)
-Message-ID: <e2102c82-6b8f-4f6e-80ea-ee185bb1e52e@collabora.com>
-Date: Mon, 1 Dec 2025 19:06:11 +0100
+	b=bJhHHNL63e/ex1NYW/d7T0+coOPkUlXktjxbkY8Lb2P29I4P6hVSRmS/ERmmAKMzJexF3s
+	Rv8PryYftkdPu/VobbRwALh665HGvbngN4KescWLh5F1LiWvkYr14NI3J+SHPHIjEMlTkP
+	B+YBjaFkVw0uwiBihn6gb/ESVVWbvFM=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-78aa49cde3dso44692637b3.1
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 10:07:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764612461; x=1765217261; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0QyuTy6ek64uIdo9s8SZmB6RliPCLO8eDRQ9s+Wqlok=;
+        b=HObGeKYZ/4CYuFpmSqC39nR4eecKRWu2dYZZ0UeIpPPPB28xw9kzsyWCwxNM9rhEo6
+         tEYr68zvtuiBDDlNBMhimRbl6J3m9TI7FH+ZoJHnQpYqnR6BhneiOsNlMwsRPwyZKr2x
+         3ty/6BfMN7FYlGgxtu2WtCcxNbcZUohEIrRhPQt25Ry/scEkoEjSxtjnqTl1gBjUlyTb
+         oKfaAambwENU3EfLAOR29XXmtr7oi3Fx1S6uLbqVtlwg3//qiNYWQlsldGelQug1TLZu
+         3XKksUdd3qNnDnPDkPVdxZS6AhlsktVl7WoNnLMJT4JkmrcEOeTLieNl9CG8/n1XRyoE
+         GLKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764612461; x=1765217261;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0QyuTy6ek64uIdo9s8SZmB6RliPCLO8eDRQ9s+Wqlok=;
+        b=hvZVbo7QQ9aRXqHgavWpcpt/DAPnJbY9xQP5wzfg0rkn7hruZjZ3z5nbJ14yjaJ+ox
+         MVhtWPLFY2236kLpOYhUJBP/ktVSWxPDcFNqZrTVz0YATdtAfgfIxCvzRqyz39J5fsRY
+         5O79FYdDb+QwjoVZD1huDE2kcqbpwiMpeIW+z91bR8VDCwmWMgV+gdCNfVErDMY++Mby
+         3LA6fNMzjSGos1fsU4KXu9810ZpXRMk+yK5bdwO2srOH9S7KetVctFX/y8s8SsShQLN/
+         uLlZJlFK4fQDmR96ZkKQfvg2CB6QGN0bAqRb0dh5DX632LvJB6Y5Glnk93BcGybf54HF
+         DURQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhDq6xqf0I+5bsWWDDfBkR3YiG6oiAw7wbnHDWyJUAJGQvP9usvgHpwAxkzpP2k2/T2yN2kXPKDQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywyu8HByWkrIZ0VTBP9WcZH6kFz6LmXVvaM90mKKvX5Klzjz872
+	8Qo0p0V2pdqgt6ck6x+kiTqJ6ZHEHeshDTnhNMmNwvEqvHXRhPX/6PodXT/NPA==
+X-Gm-Gg: ASbGnctlTHLytFHZ2xM8OA57sZAfz/i4g1mgBSHCoseglNJHfTUtumzB5vH2u/DwnjB
+	D2bzAD2VSokiDegrNi+DdyYVauiI634WLwUoFImzgfe9o6h2w3JLqY9BTnf8MXUDaLsP0d+HoTA
+	+/lltt50+OjbZ8q9/0sXEItN6Jzh0y07lI/Nmo70y2CmdjLcoggq2DPfr0d6yeAOGYzkTlF8iok
+	R1clt9h6WT2omNA3TZ1sOS4WkwMltjPZnrmaUSIuRvqlusUzvNnm+UGTPGORggkim8AyQPwUTcW
+	zqyOhJXw8ne15t9KbDBB4QZ/bDRdV5UcPDE6BQHlg9qFr7xDdFjfT6OmLr8k/EKFvx/IdnVlfIG
+	n4atl6FSOndvSYV5mHEJxRr+ALzfypr8PhPt4YhpNqYM1tYRenTviXJ3mMjpmN9Nf7xK4Ea+whH
+	avt1HgJsrTPi33IeXw6y7ikQ==
+X-Google-Smtp-Source: AGHT+IGebBLF0eFSQu1V6/IZFq1lSrNOt+fw835UDZgXCTtz/zrjUyYDOacz1JvbW8Om1eqnkY9hqg==
+X-Received: by 2002:a05:690c:6087:b0:786:5926:edab with SMTP id 00721157ae682-78a8b491ceamr335684337b3.17.1764612460818;
+        Mon, 01 Dec 2025 10:07:40 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:5b::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ad0d5fe7fsm52262427b3.17.2025.12.01.10.07.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 10:07:40 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	SeongJae Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: [PATCH v3] mm/mm_init: Introduce a boot parameter for check_pages
+Date: Mon,  1 Dec 2025 10:07:38 -0800
+Message-ID: <20251201180739.2330474-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 01/10] drm/shmem-helper: Simplify page offset
- calculation in fault handler
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Al Viro
- <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Matthew Wilcox
- <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kernel@collabora.com
-References: <20251128185252.3092-1-loic.molinari@collabora.com>
- <20251128185252.3092-2-loic.molinari@collabora.com>
- <20251201090507.1ee10c65@fedora>
-Content-Language: fr
-From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
-Organization: Collabora Ltd
-In-Reply-To: <20251201090507.1ee10c65@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 053C4120012
-X-Stat-Signature: a3ktmykqruk6fm5zaoz7ic5dj18ajbpn
 X-Rspam-User: 
-X-HE-Tag: 1764612375-63375
-X-HE-Meta: U2FsdGVkX1/8mexKiz6nSodeX4d1aSlY/M/r4YK5m8/2IpUcOi4WljPXz+FhUpimHPiU7c9pSTysiiLkzlPob047CvdJ0fZ07MNOF8VsuDDYnat+DkT3FV7+MbhbRZW4EntxttPKrJBmnxhkp59zWEUYfCKbKUGiDMWKpBQbuFmFe3946+voKkglVavKGPJJCskC+/6MERZTWUV8KHNHPJtphlTb0ZgzFo8mYR0BpBvONJc+A1pJLJqLylcghQl7AvTcNkURoId36kBw/ViSTWN7mCDTq2jC7CxKxoHVsxyPnUl7CutPeiQXuYxPRPAxZzcEq1/mujqokyqV/Fu9hrEbK2YgHAkKMLPFIa8Z8jYdarQ9mapqOfQ/oykCWGvcTIgoFtcjyOV+jRk+TRgz22G5WE9K+GRkkY8WtC4vYL+oKpixMh6PPGL/fToQtLejIFO+SloA6dPJy6vINrMP+fOIIxxxSaVhyNNd+ORhKkmbHlNpmnOSFM4VJWL5OXTjNgI1TbMnZ7Qbxbc0KDDZzQTu7zyX0wPFiOf8a1yQUU9jK2etpjGf/F3kAZAW5AMepkW3SakEcX2N2NLGtSnPEKppe2c+9mj0JToTN0rc67bUySvsfRyuym8maDDP7fQRQDa1LZytTwLVTom0ByN568QmwUzsOKb/7xZ6u7lgzxnwzeetsLUxy7w5RC0SyVu5obNVXZCtI/1BMhdGuDWzMfVaH8R3IM1yjVKXKfNivZrnNa9mryWGAwgY3QcXH+ODxwj/v7BSadEbnwj++Kcj8QiDZ0YSBtneWU1pp/SlOIYyIZrsj+bu7vOcRgxamkWOC1J5HPkOMuKK1X+ZRJq3hwZUNQgk/PpiWnGAjTWc6nI6vaw2nIyUoXRYptOgn+TnUb5dQ9uqgJgZtvoAkS4wM3vJ/cQX61ijsNWfHbE3+VewdA63gCIILGxobp5F2TaMep9PirmHvOGjZV9mHmv
- rEyA++9J
- 1wN8Ygfm2p7fLSJ9pS/2p06aL4w3oURbF/jrFUQu92oUnxNRm2yFdgjRR470a+cmKxfP0HkDPGTLWrInPnodefxNyKcJruIAkMaEzghMX9zFd9jPasVnhgPPzOvn4pXl7rBG5QGqtE9zq4EFX8I74dDaJTwvXR+pCFpkLWGvtQ7lcQgrlYDhLB7vFPT6pgjbwjiFgnr+K2kh0lem1pr9Ao3n8L76VF0eD+aZowO3qX/saBr8D/9ID6KIcfLQ9UvdjpW+c5n+dOweuJPt6mHUrqlTFW3XyqRb5ueRZf/Iktig9InZUxJzjcAC9Q2L1BNs7qwPMUOyh7LPf/T0kXVjZmiT29hFqSAArZMtAmb+6XZ6W5ZP3wyEqD+wP6m5QiRgMtTJWfgcT6lCEhwZgJg8+vCrfYRYmuTUoT+x6Cj/rudVNXDYzphW1FCOEbYPjaydth5/rGwO/hVXintyoSV68YgudBaBWET1CDZSH/Lx7Urp4BRlEZlX/dAFYJg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EEE3E80028
+X-Stat-Signature: jqycxcj4ohiwgh9zxdqkwcxi3h3f31h9
+X-HE-Tag: 1764612461-193167
+X-HE-Meta: U2FsdGVkX19qKaH3560ly/nxSJf8pX2fNJece9JCiXS+YPdrf90DfMiMOI3DhXH9V19hdNqT7rzOqFL0WZv1l5yJM+VZg9dqlvrIaeWWYHzh4tJjDbHw8iVeRY03DSl+z6/99epC2ALiY84osNSrwGDCtFD+34XNJG0DFUN4PJ7wr/lc9AUz+RzEzkgoXeGRbpXAlJGfzFAH8UX2jATZwdN3nL3f2Vnj9OVC22TwTQe1hMMkEboqPjMyVHffiiZoelzfmrp9gJijEW/EMiY2Tyd6byhV2X1/OlaRYQSlZ8Kjvb120/11YchWPaoJXt4i7B1/iR+J3V8mjNzeqjwsJQguEOS5/W3+5/S40XXlx4CZQG0aptPACaJXtgYKc8WWhh4nRHbxU3N2my67GKqu0Myu+II49rhbmOdRposjfNuksx1e6ymjHPC54so2jpe9QMUjS7xnwB1vV35lvAUPvp1GiVMJsQOV7yde52SVH1YSlpi+xia1kv1vtI+KCurZ+lzc/+crMd0R/0EUgZalCZdGhrWBJNmhYBNW9Y5XY3VmWnzsvhWZKLi8X41EJ6RAkeSkwQzUcDDJtXoUziJ1/vJgoazMHF1VZWmSrE/TTtADd+kvwJUMdvy6k5v11kP/WbTc/rmnBaWw8CfAuo/JIQxzxRF4OPU4nozn03Z1pUMd1/BAzbrh8l0T1haOKoEnrp8zjObVk2dm0IfA6aWfRTTWneUjBeRWuwxt2QmO/fI2eaI65DeOeze0GaElO1vyYxpc3ruAl70XZqoGOXC6iH6mkO/uPdgwLew8+b66IxvyGYuXYL7XkhcRP32uPCcBv3UwFQ/WvrQrFXdxmvCnVYszNvNLiEJt33qG7DbZgysbtnenCVXi2+GPpB/W/iatbpIcfxKNkmxK5Rb/bFU8CZrBXK4M/GbgcsDuzNXbNM3ahKIl5X8gRdHbuAsT2PoURztCotO7iem9/Zs6mkz
+ ibRF3hvT
+ GXvE5St69F9BQUDjtN5j9xPCJrj/W6jMeX1f6tFZlac8ZTgK/YcsjSkaO72t3KVQvLPe9UPW0xK92jNJ7SRpalJTLymUi0saPPbsgtXl13805lN6utoVrzPwv9GGquw5etrQROyoBPUxq2zY5VHfax8QJX/ROR5KQjEURjtGhfIVBigY1UOwuT8k0in2G/t2TQ9CLA6dewvCjX3K1ulEjhaMH57q2y+KtTis9Pn1ZbabBI0Mf09jSCU0IZLsUGpi+dtwMxkXoPd4a+rBnOV4a2j/R+tUx/UOH6qHIFrNQBzxgFZzfOMcut4rBA/saeIKcxDLpQXrgSnWVObhMp5sywgs0JkdXWaAv5hAgtYVjbl0Dp4NJZB3DWsLL5MzQVfeGfMKpvsOaYEyWTRv4H/Faq+pTLqdhkgjmqArFs2fFGL9qIGLHJSstV7qhY7ckwdAIsfY1KOoiWQDxExDXJb+Iz6Q+4WggPCXGzNrASZJsF3mq5gAvRB7aRrhDWo/D47fFZAbSjebiVA6Xtxrl2QOcbgJS4Y+BbYcav4+wKYPB73PTinNkmatr/xTQAxqEIgv6UXkV2eTs8ZPFF293JK0DffCxT6wnoUGZ8NC0EC63NtJ8IXZ63iATkK76ug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,64 +122,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Boris,
+Use-after-free and double-free bugs can be very difficult to track down.
+The kernel is good at tracking these and preventing bad pages from being
+used/created through simple checks gated behind "check_pages_enabled".
 
-On 01/12/2025 09:05, Boris Brezillon wrote:
-> On Fri, 28 Nov 2025 19:52:43 +0100
-> Loïc Molinari <loic.molinari@collabora.com> wrote:
-> 
->> For a fault at address addr, the page offset is
->>    page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT
->>                = ((addr & PAGE_MASK) - vma->vm_start) >> PAGE_SHIFT
->> 	      = (addr - vma->vm_start) >> PAGE_SHIFT
->>
->> Since the faulty logical page offset based on VMA is
->>    vmf->pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT)
->>
->> We can slightly simplify the calculation using
->>    page_offset = vmf->pgoff - vma->vm_pgoff
->>
->> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
-> 
-> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> 
-> One nit below
-> 
->> ---
->>   drivers/gpu/drm/drm_gem_shmem_helper.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
->> index dc94a27710e5..be89be1c804c 100644
->> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
->> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
->> @@ -577,8 +577,8 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
->>   	struct page *page;
->>   	pgoff_t page_offset;
->>   
->> -	/* We don't use vmf->pgoff since that has the fake offset */
->> -	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
->> +	/* Offset to faulty address in the VMA (without the fake offset). */
-> 
-> It's weird to say "without the fake offset" here, because IIUC, both
-> vmf->pgoff and vma->vm_pgoff contain the fake offset. And that's fine,
-> the problem really is when one of the subtraction operand is not
-> relative to the fake offset.
+Currently, the only ways to enable this flag is by building with
+CONFIG_DEBUG_VM, or as a side effect of other checks such as
+init_on_{alloc, free}, page_poisoning, or debug_pagealloc among others.
+These solutions are powerful, but may often be too coarse in balancing
+the performance vs. safety that a user may want, particularly in
+latency-sensitive production environments.
 
-Yes, both values contain the fake offset. vma->vm_pgoff is the actual 
-fake offset (mmap offset in the GEM context). vmf->pgoff is the fake 
-offset added to the offset we're looking for (offset from start of VMA 
-to faulty address). So the difference just gets rid of it, hence the 
-precision, but now that I read it again after a few weeks, it's a bit 
-misleading so I'll just remove it.
+Introduce a new boot parameter "check_pages", which enables page checking
+with no other side effects. It takes kstrbool-able inputs as an argument
+(i.e. 0/1, true/false, on/off, ...). This patch is backwards-compatible;
+setting CONFIG_DEBUG_VM still enables page checking.
 
-Regards,
-Loïc
+Acked-by: SeongJae Park <sj@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+v2 --> v3:
+- Dropped the second patch. I may pursue it at another time : -)
+- Variable renaming (dropping leading _) and cleaner check in
+  mem_debugging_and_hardening_init, as suggested by Mike Rapoport
+v1 --> v2:
+- Changed check_pages from a build config into a boot config, as suggested
+  by Vlastimil.
+- Introduced the second patch, which decouples page checking from 
+  init_on_page_alloc and init_on_page_free.
+---
+ Documentation/admin-guide/kernel-parameters.txt |  8 ++++++++
+ mm/mm_init.c                                    | 10 +++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
->> +	page_offset = vmf->pgoff - vma->vm_pgoff;
->>   
->>   	dma_resv_lock(shmem->base.resv, NULL);
->>   
-> 
-
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6c42061ca20e..acdc7fbdecac 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -669,6 +669,14 @@
+ 			nokmem -- Disable kernel memory accounting.
+ 			nobpf -- Disable BPF memory accounting.
+ 
++	check_pages=	[MM,EARLY] Enable sanity checking of pages after
++			allocations / before freeing. This adds checks to catch
++			double-frees, use-after-frees, and other sources of
++			page corruption by inspecting page internals (flags,
++			mapcount/refcount, memcg_data, etc.).
++			Format: { "0" | "1" }
++			Default: 0 (1 if CONFIG_DEBUG_VM is set)
++
+ 	checkreqprot=	[SELINUX] Set initial checkreqprot flag value.
+ 			Format: { "0" | "1" }
+ 			See security/selinux/Kconfig help text.
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index c6812b4dbb2e..fc2a6f1e518f 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2525,6 +2525,14 @@ early_param("init_on_free", early_init_on_free);
+ 
+ DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
+ 
++static bool check_pages_enabled_early __initdata;
++
++static int __init early_check_pages(char *buf)
++{
++	return kstrtobool(buf, &check_pages_enabled_early);
++}
++early_param("check_pages", early_check_pages);
++
+ /*
+  * Enable static keys related to various memory debugging and hardening options.
+  * Some override others, and depend on early params that are evaluated in the
+@@ -2534,7 +2542,7 @@ DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
+ static void __init mem_debugging_and_hardening_init(void)
+ {
+ 	bool page_poisoning_requested = false;
+-	bool want_check_pages = false;
++	bool want_check_pages = check_pages_enabled_early;
+ 
+ #ifdef CONFIG_PAGE_POISONING
+ 	/*
+-- 
+2.47.3
 
