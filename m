@@ -4,167 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF22ED116E2
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 07:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B1B7D116E2
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 07:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14D976B0008; Mon,  1 Dec 2025 02:18:41 -0500 (EST)
+	id 63C176B0011; Mon,  1 Dec 2025 02:39:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D7476B0011; Mon,  1 Dec 2025 02:18:41 -0500 (EST)
+	id 5ECC66B0022; Mon,  1 Dec 2025 02:39:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB9646B0022; Mon,  1 Dec 2025 02:18:40 -0500 (EST)
+	id 4DB0B6B0023; Mon,  1 Dec 2025 02:39:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D604C6B0008
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:18:40 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A7EF5C931
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:18:40 +0000 (UTC)
-X-FDA: 84170049600.13.B8EB5BC
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 13E874000D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:18:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764573518; a=rsa-sha256;
-	cv=none;
-	b=ulU7/e3x84BT7LIPWlh3/zMPvbwyIejeXphTbR3GpBZgkBBRqAnYbUGK4ZeO3U0vtiV8m3
-	Klmx1gRJu7P6mdbAvYhwaqTDMastH8nn3HVR5qq2tsrzmSrkvV7tkL2axgiCHv2Zld4Jfw
-	szUdYIjspoRwdQG6i5S9QyD42+tS46A=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 369436B0011
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:39:31 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A6FDA13BBFC
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:39:28 +0000 (UTC)
+X-FDA: 84170102016.22.0AD3269
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9C27620005
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 07:39:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=PyNfFua7;
+	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764573518;
+	s=arc-20220608; t=1764574766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GphbRdKeOUkvae3LvPv9jTVboMzXZgTH4e9cgVr3L70=;
-	b=ub71WjH2Kzolm7XcsBwaYxYwJjpEiXxZ4h3a8y2EMG3DaWclpdyr0TWV/LpJxXKwO1H8nO
-	X25oLG1JjjN+6cKHklnIhr1rqdPDsUSeWPEQTy36grc1xd81KT3YHTKpyDF8ZyV2Bve/PE
-	ZphjMTQjDVsw5hXhpnqFNM/auFOhmYc=
-X-AuditID: a67dfc5b-c2dff70000001609-83-692d41486292
-Date: Mon, 1 Dec 2025 16:18:27 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
- subclasses_evt for the usage
-Message-ID: <20251201071827.GA70324@system.software.com>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-45-byungchul@sk.com>
- <20251119105312.GA11582@system.software.com>
- <aR3WHf9QZ_dizNun@casper.infradead.org>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HHmOAXqm4O99qnKcWZXHRu4eYRJbZDhm5nIu4Y+evcg=;
+	b=asQu9MF7jGXqSMLLox8xuL7Ei7PtwsSOHjlsLBPb2J5pVUMZF7RUKoFNWjWNL6/eeFBrNs
+	K2LdHNQD0JumNXyj2lN7f4iXkVIAyHIfPObWZe2mqwkPPuO9i2lpDxdcz++nWCMlzmkrrF
+	QX9uryf7HWpWE5A+SONrG4CH/MCeJEw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=PyNfFua7;
+	spf=pass (imf03.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764574766; a=rsa-sha256;
+	cv=none;
+	b=wvR/ef90uF8nRnA2j1T2TMCyj8nh3EcSQRnnWesS2OYzrCbJCvabInZiIIgaxlWvkkTbOZ
+	Us/LXZPvggPqqAi7o2FwMLQQMsI6HJ1G/RZbURdTkY4HNRLRiT/TMAoM1O2D4k4seZUMyE
+	oi1q6UsPOnG8hETDNQwSm8mZaQTP7BQ=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso6158364b3a.1
+        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 23:39:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1764574765; x=1765179565; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HHmOAXqm4O99qnKcWZXHRu4eYRJbZDhm5nIu4Y+evcg=;
+        b=PyNfFua7iE6Ve4X30sYdiMnwLODgapEKzZSxkoaMnMK2h9/mhLGM+/NGHCBZMz60gK
+         YTgj/CLctBnR9dBHGmvPoVk7dITl605Q4iM+n/qAu04OqCOgeTqKMrFDaTg0BBuHHp6u
+         7b3dr6+lDdC0Q9XRt3+AT1lA+BVsdlTno6zbs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764574765; x=1765179565;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HHmOAXqm4O99qnKcWZXHRu4eYRJbZDhm5nIu4Y+evcg=;
+        b=ioJtczgNbVf19/lUml92tF93lRBgoN9FXCZNrVMxqSnXCPkGorRk4jVLqBI41A4y3W
+         VeooW2ZpaVkl6GnTquO54tqSJ1Nxbs6ulB01xoHh+LY4dWugof8QlUhIGDGoFCj5VS/r
+         yyUK7wN+ct+IdB2aqyavnndnyiXquZMc0ec8kIMAHyJzK13GTXPO6U7ZjuMZ5u9Sft+t
+         xLfyKwfVyKHebJZv5lztCVSMWpOUFnR/k8eaQV7zl1jcNpdE9ekEXL9jR+yI6z//7YX4
+         /vkWtM6kigDg/6Qb6qYB87ZGk1vN9L+bHnYeEnuoni31Jy3L4rMQSWR+VvkwJFC3jehh
+         qc2g==
+X-Forwarded-Encrypted: i=1; AJvYcCUX9trkJ9Kxqb/DMmDi++acsZlnYgNtpNg+kJuEitPZDi7t1qM3RhYK6IwJBIe5DG+yXDMKYGdp0Q==@kvack.org
+X-Gm-Message-State: AOJu0YxQX1hIXdoPe1q+EMJavQqwVGIsoN/YedJDdrB7CgTlE7n35MN7
+	4jnneJft+a9SygUfxvQ46I22wi+JY2SFLGHdcfO1+J1V9G4/ZNkoPfekl/e1M/uJeA==
+X-Gm-Gg: ASbGncsH+YJPZnfF6ZHEUCaZjH6IdcRRs1TJHBR2Km0pd8J3LY91okrcz0H0ap2LMZO
+	ODi8AF5bKN00G1e9bjbBRVVfc9mj3ATw+tygrIStD8z6CvIUBRirabRW00YmFiefgf/dolv87/8
+	XG1pmKfSso/E+lKFjfwfr79uP6USKH3jZtYhOluxhHZOVV6YVKdSxZUWrYgGVh95+gWlCbti/Y5
+	DGDszaAhj5FZqzKWAiuPbIIy9v9Y/CVhn3T/+YCfVq0z5C4KhH4ZH7BQb9jkXriFDMrZgNShisJ
+	onHAPhF1J9wP9+Qi9oVEjy98IYtgGmtyCb+PRJupnJGTli3wwOcHvGmE5Hr+6OM3G2e5n79jGrt
+	T4FcC+WOGU56AHTuDC7P8Ew7sgEZzwA+Bo/n5MaVYYjN75snrdYIBCB5HrojyC9dozl6JLfsz8o
+	aMeYgqUNTYlfsvVkGBqoZ8yQrSTRs7sy/P+EuauF0AtXkPAfmZbpo=
+X-Google-Smtp-Source: AGHT+IGZMdL5p2+g88p5Lpu0jaNJNlaS/+US8v+KrPcVsuzDzoJIztVYpsEnIj7NaKeJSLPgYGvS7Q==
+X-Received: by 2002:a05:6a20:12c3:b0:350:ee00:3c9f with SMTP id adf61e73a8af0-3637e0b12e5mr28351389637.48.1764574765376;
+        Sun, 30 Nov 2025 23:39:25 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:943c:f651:f00f:2459])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d15e9c3f79sm12345012b3a.42.2025.11.30.23.39.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Nov 2025 23:39:24 -0800 (PST)
+Date: Mon, 1 Dec 2025 16:39:20 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Richard Chang <richardycc@google.com>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org
+Subject: Re: [PATCH 0/2] zram: introduce compressed data writeback
+Message-ID: <24o47a762kurbp33vgmsp5gclyijt47xl6ms3ynxjr3k5o3mbl@t2lsiq6swjj6>
+References: <20251128170442.2988502-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aR3WHf9QZ_dizNun@casper.infradead.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTHfe597tPbjppr5+QO3OLqFjYcbDg+nET34pLF6zcz/KDbktnI
-	jXQrxRRFWGLCpih2jkGXQiwvwTK6hncBCYidlWGxvsSCDDoDxWoHY6WSCK1vtbV3xsxvv5z/
-	P7+ckxyWVtWTFFar3y8a9BqdmiiwIpRkzdi2JUP7/qm5JAgvl2Oo62wj4OloRTATLkdQNhDH
-	8MTkkkHc4UJQPWqiYakrRiD4xz0EZn+AwKLtBIL5i1thMrKAwBaIURBwHkNQY/YgcNh/IHAj
-	sBLGw4sE3OYfCYRG6yi420WgvtaE4HBTJ4HRYJSCqWoTBTO2WQw18wSqTydDbc1hCh7aWmRw
-	tWkKQ9SfBfHGAnC1zslg+mczBrdvgoHgrInAzMhRBpbH/RSUnw1j6L6TCBw3N8DJhikC5xxu
-	DOVPlhG4+m9TcKLrDAO+tjgDpbX3GRhr9WC44rqE4frZdgaaJ0cp8N/yMtBz7SoNkYpU8FT9
-	xIC38m8E7XetidMjNhps4UUZjDkbqU9yhftlFVho6emjhLaGNiQ8fmRCQlllgo70HBSarywQ
-	4VH4TyJUXcsQBizTMqGx+4BwZDjECD32dKHp3Dwl3Ax+KHS3HCfbN3yh2Jwr6rRFouG9j3Yr
-	8qYrl/G+wdeLLWMfl6LZZCOSszyXzdtb/eQ5zw0ZKYkx9yZf7/DJJCZcGu/1PqSNiGVXc2/z
-	C70bjUjB0pw1lW+/fIGROi9zOj4y3PFfX8kBf+P3DloqqbhBxI8fPc08C1bx7pMBLDHNpfPe
-	2DwlSWkulf8txkpjeWKHv6zHaIlf4dbzzr4RSvLw3G05750M0c8WfZW/YPfiSsRZXtBaXtBa
-	/tc2IroFqbT6onyNVpedmVei1xZn7inI70aJp7Udin7Zj+55coYQxyJ1kvISvKtVMZqiwpL8
-	IcSztHq1Ul2cGClzNSXfiYaCrw0HdGLhEEplsTpZuTFyMFfF7dXsF78VxX2i4XlKsfKUUtQ8
-	8XiJ8772zs6R6Bvu2L++rcKEHHfZ085s7t/DpH1a7ZFT/3yQs2bTul2bhCyS6VxheaniutM9
-	8v3ayRWXnb+49Au/horOH+q9deer7OBSThyqjNt2ftbQa36rJnJqQCXboewbXptdxzWtubjl
-	85S8CiZ9av3gg3XWVbs7v3mwMupT48I8TVY6bSjUPAXJGGhesAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0xTZxjOd77vXOhWc8ZYOIFkP+rM0Igbi0ve3S8/1i8zW/ZvixpHM462
-	tlzSYge6LVxkYFlYaVKILUxWY2VQELlFJCUVJ5s6xFIvbLMi2IGMW8IKCpR27ZZl/nnzvM/l
-	zfPjFXByhE0TdHmFsjFPY1BxCqL48LXyTPpOpu7FR20quFXqI7AcriLQcMbDQVXncRaut7ci
-	GF+uQvBw3Ymhoi9GYMM2xEN49XceYt4hBHV+GwZPdykDf3VEOZi9uITAPhHioH6mlMCi+xsE
-	jiknDzOX1DA/3s9CLDjNwO2VOQTuUJSBkK8SwUadHk64ujhYHx7BUG+/juD7iSCGBx1xsXvo
-	LgJvcxkHf1h7MARCm+DG8iIHl+3VHMz7GxhY6OCgqczLQqPThqD85BkO6ho7CfTdO8+DfzbC
-	wJ06GwOtnR/AuHuKwFWri4n3i7vOpoKzvpyJjwcM2Nv6GVh1t/Dwy8k7BNwlW8A5HGBhstnB
-	Q2QiC2JN+TDUOs1D8Fs7gfb5EfZtO6IPK2oIbenqZWjF6AZHPd95EF1fsyEaPlWOaYU1vl6c
-	W8T0aNfn9NTVOY6uLd/kqHelidArLonWDmfSPkeQp0cHfuM/enW34vUc2aAzy8YX3sxWaIPW
-	MCnof7bIMfpWCZpKtaAkQRJ3StODFiaBific1Oi9yycwJz4vjY2tYgsShBQxQ5rrfsmCFAIW
-	XelS25ULbMLztGiQVn5s/8evFEEKDLTjhClZ7EfSja/Psv8KT0mXj4dIAmNxmzQWnWESR7GY
-	Lp2OCgk6Kd7hV1clTuBnxM2Sr/cnxoqUjsfSjsfSjv/TTQi3oBRdnjlXozO8vMOk1xbn6Yp2
-	fJaf24niP+n+MlJ7DoUD6kEkCkj1pNKXtV2XzGrMpuLcQSQJWJWiVBXFKWWOpviwbMz/1HjI
-	IJsGUbpAVKnK9z+Ws5PFA5pCWS/LBbLxP5URktJK0KUv+gw379uqLT0/74vM9h47uLB1tDn7
-	vVfozO0cbYqbS8uoqVnV7iI7B7aqf2iIXdsYOFK2J0N9f+Keb61Mv3tL4ea9ud1Lfx6RGw9W
-	F+yvqZy/9u4bS/vMh4NVZv9X0U88PXseHTpREqhd2zSyt239Qv2Cfpf3Ftq/3R89P3nsiUm1
-	ipi0mqxt2GjS/A2TVMQejwMAAA==
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 13E874000D
-X-Stat-Signature: rezz1fhsqdx8mp5dsua51n941w5mcjw6
+In-Reply-To: <20251128170442.2988502-1-senozhatsky@chromium.org>
+X-Rspamd-Queue-Id: 9C27620005
 X-Rspam-User: 
-X-HE-Tag: 1764573516-746734
-X-HE-Meta: U2FsdGVkX1/S+i879wZmPdV4Q4fT0vIDbAqHpPgVeQXF6rBpSn3Nj2x6iOhV0uChrBiHgPE/0YxmBJ2oJvD95kQiscff76zJs+l+8XSyDAyWxd5He95gvrnjRns0EIGEga2DE16n4GkAbgraw6tpFk33jBv96zDpe5OmeK4J3DQPR11ukWh10egdwPp/B2iePfl5r3aL+jZ0G4EgAar311JYJSwvAazMsfWWF4NVaGWL916XJ6a5AxH0eAl1rtJPoVZ6czYwxD9aWiJUetRufgdvEskq3SvMmxhbXB+4Ki/feN4fJdSTIM9B/LIm4kYoZj5V7ujXIzGvvW5YAo8Fuvjp2GOpwxfUYGKwXpjlKeoxJlYzwtaHKWa1AfM4xzVOJmfOSAL//sfp6iJEOcqqs4bM/EAH9RA3FCjLDpco8hHrwntZf2QHn+CSkZz0ri0ylx2zdfuoDmaC6Ywby0q8s7sD+PgEG5OL6GmLlvshl81dw9ubAmi5Pqb4nl4WQjqwoHiLuPQNGMeap1YM9E+HkUNC9v7Tf07H99tiS1ZJj67fKnv6HCFhBXp+l+zVlDpKD4M4yUh6qWnURB2ffuF0dEhN+hxCbuLxKxxfsXL+iHvADHcREgFFuARCYDHSVIMxZiaUCZcZRN8BXqkEcyRyhx+n7WNJxqYA0EH2LxU1qyeLdv0NuO667L+k5d0IPBYjs8kZHprzVzT7oEtmKbInbgP7medfrx3jV+JgBYm5Bkf5rRmIi1DmxQfldBnZgieZ/ioQjus4g/klbcbYvn0aKcK/KfRubxFnuVGNXelXR1tLuzZRboD0qsS91gg8McYRsQml1gHiC5lJZGJhs7nkbD8RniSLJq8MgkdfMpCJds5Wu7JrTq887HYpymhhvsDFkIz6q6DFwMkP/p1jgIj5dLV0otYSS38CmqyATqBF1Cx+Om1D65EBuhgDhDlpc5uFqrEWIOC4wS22GOceHbn
- oZXK7QCC
- bkIz0/n+DuYtjpA2N/9o0JYqHXyS++WxjwxzezdTMlbh/8cNQ6H/MCVEmGyhtTms92jNVrNpJoQNREY8=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam05
+X-Stat-Signature: dkbn59kiqqjqg18mutzz7d96n1t1y45n
+X-HE-Tag: 1764574766-851760
+X-HE-Meta: U2FsdGVkX1/XM3M9cBrsePW0RVysAOiBmqN7ngANQTSjBnvlfGymtmSnBq9HIPFBr9Y2aIwR9GF7To4IudIRdf75GiD6G6KzxSHUtPgFhuknvEnOc1rSx0bBXwsMq4P+iEFsTtwXeWAqYB4wIr1oNXMQDZD38oTzFQeOIIAlOIsDGAsvj3nGLzI/U9qwMKTexaaPGbIRKNatLl0E1kT0OpsCTVJZ0pGjh4ZUpRMih/HUqlWDFrYN4Bvgv9c475bOBpPS2d1CFhkhD76Z8KsfoQV6+UNkueL1PTsb29UTQbWkz/432MWSY+4fPEsyumt6BH75PABzQvGuL0oNxVzxMx+stHZ16xWi/gES5eo3/Bk7z6BY6I6pO/miCRux9fZb/0/8+8cYuR2JPSgTHRCSaQyGKkyuXXM03mE72czpJh++5/1cNBkFZjJvv8SJFk3n8EGLSvyvi9IP7oIrLfaEv2oPF3nEaE5KUPaaYTUqw+sBEMeSQmZS+GK2tqUMiZz6GD0RddSJqfhC+sDzJpV8KU99udgL45bfAUhoLgXJ3axb0Ow+QKNn+CV9FFW1Hm+Z5cZJfeoVfsvZc9o9Fl3+IGDZjudoAw50QYwQpAi9qvRhwD4kf0Ts9pgKVbXSWFXEYijkYpUq6fQZkNGnADRtgbZ1Qo9EIcIAsZyBu9eWztpNgERh3mspL6NZnbHV0IbjxSm2nCLSZHKZRCmdrwkmlMVvsVyzhZoYV/+sJ7Q0wv2G2MYhsiMbs/51Utd/wmcv2sAQUIgDULelYjXv+PgqrCmyFeQ09UK4l4auiLVPXpU37UFzki1rHJ80b8VpczHWNMQAZclsR5UwBPCpm5pACwymUypubqQSi/EhZ/fZLEXYBierQm6zsZNBsXoQnp0VA/D2kQrQmsm1QcmdTWBBjTRL/Eg01iSEf4SvtuauM5aLn1JQ3P4bEKsWEt3uSXMK7UP7wXjYvMBR0AVX9Wc
+ FLScsy0a
+ 8Nd2ODI02eX0dcbhphi/c5QVSN5mdGIFxZGf/Xcr6fkjxj13FkalZZDV+XfxI9G8rDQq1xfgX+YEJOp6qPpveHMwyAJg3aCAyF9YdMpwocGB2BmGCDbABOJhISejUmCTn5ggx2iMQp11JoDDNSD9HtygkkJIXEigq5mGHXvxqHdcHa5ZhWnjIrOq9eyaOFkkni8WEmvnYom0W3ecCCWs90HqA5ctqLKR1QS91zu+oYG7/vDIWdYMsnenIS8Dm8yJd+N6cffWVt7Cl34GgB2zDkPRIRZr3bZahl9aqVLR0hAoEJMjLgVDu2+DuvMcVOn+b8iLrgDevcKsRIjEkImpwLcHp7tcbc7iBpe4nWCDVWcTrvSQ=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,88 +117,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 02:37:17PM +0000, Matthew Wilcox wrote:
-> On Wed, Nov 19, 2025 at 07:53:12PM +0900, Byungchul Park wrote:
-> > On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
-> > > False positive reports have been observed since dept works with the
-> > > assumption that all the pages have the same dept class, but the class
-> > > should be split since the problematic call paths are different depending
-> > > on what the page is used for.
-> > >
-> > > At least, ones in block device's address_space and ones in regular
-> > > file's address_space have exclusively different usages.
-> > >
-> > > Thus, define usage candidates like:
-> > >
-> > >    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
-> > >    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
-> > >    DEPT_PAGE_DEFAULT       /* the others */
-> >
-> > 1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
-> >    starts to be associated with a page cache for fs data.
-> >
-> > 2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
-> >    starts to be associated with meta data of fs e.g. super block.
-> >
-> > 3. Lastly, I'd like to reset the annotated value if any, that has been
-> >    set in the page, when the page ends the assoication with either page
-> >    cache or meta block of fs e.g. freeing the page.
-> >
-> > Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
-> > be totally appreciated. :-)
-> 
-> I don't think it makes sense to track lock state in the page (nor
-> folio).  Partly bcause there's just so many of them, but also because
-> the locking rules don't really apply to individual folios so much as
-> they do to the mappings (or anon_vmas) that contain folios.
+On (25/11/29 02:04), Sergey Senozhatsky wrote:
+> As writeback becomes more common there is another shortcoming
+> that needs to be addressed - compressed data writeback.  Currently
+> zram does uncompressed data writeback which is not optimal due to
+> potential CPU and battery wastage.  This series changes suboptimal
+> uncompressed writeback to a more optimal compressed data writeback.
 
-I've been trying to fully understand what you meant but maybe failed.
-
-FWIW, dept is working based on classification, not instance by instance,
-that is similar to lockdep.  This patch is for resolving issues that
-might come from the fact that there is a **single class** for PG_locked,
-by splitting the class to several ones according to their usages.
-
-> If you're looking to find deadlock scenarios, I think it makes more
-> sense to track all folio locks in a given mapping as the same lock
-> type rather than track each folio's lock status.
-> 
-> For example, let's suppose we did something like this in the
-> page fault path:
-> 
-> Look up and lock a folio (we need folios locked to insert them into
-> the page tables to avoid a race with truncate)
-> Try to allocate a page table
-> Go into reclaim, attempt to reclaim a folio from this mapping
-
-I think you are talking about nested lock patterns involving PG_locked.
-
-Even though dept can do much more jobs than just tracking nested lock
-patterns within a single context, of course, nested lock patterns
-involving PG_locked should be handled appropriately, maybe with the
-useful information you gave.  When I work on handling nested locks esp.
-involving PG_locked, I will try to get you again.  Thanks.
-
-However, I have no choice but to keep this approach for the **single
-class** issue.  Feel free to ask if any.
-
-	Byungchul
-
-> We ought to detect that as a potential deadlock, regardless of which
-> folio in the mapping we attempt to reclaim.  So can we track folio
-> locking at the mapping/anon_vma level instead?
-> 
-> ---
-> 
-> My current understanding of folio locking rules:
-> 
-> If you hold a lock on folio A, you can take a lock on folio B if:
-> 
-> 1. A->mapping == B->mapping and A->index < B->index
->    (for example writeback; we take locks on all folios to be written
->     back in order)
-> 2. !S_ISBLK(A->mapping->host) and S_ISBLK(B->mapping->host)
-> 3. S_ISREG(A->mapping->host) and S_ISREG(B->mapping->host) with
->    inode_lock() held on both and A->index < B->index
->    (the remap_range code)
+JFI, v2 is coming.
 
