@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C52DD116FF
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 21:02:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4191CD116F1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 21:02:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 654806B0030; Mon,  1 Dec 2025 16:02:03 -0500 (EST)
+	id 8817C6B0062; Mon,  1 Dec 2025 16:02:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4604D6B0062; Mon,  1 Dec 2025 16:02:03 -0500 (EST)
+	id 7E2C06B008C; Mon,  1 Dec 2025 16:02:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 301476B007B; Mon,  1 Dec 2025 16:02:03 -0500 (EST)
+	id 5EAE56B008A; Mon,  1 Dec 2025 16:02:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1435F6B0062
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 334386B0030
 	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:02:03 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 901C313ABBF
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:02:00 +0000 (UTC)
-X-FDA: 84172124400.11.5E93EB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E240010000B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:01:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OJzhg7L0;
-	spf=pass (imf14.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D692C897F0
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:02:02 +0000 (UTC)
+X-FDA: 84172124484.13.C31589F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DA892C001E
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:01:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rH4NodVe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764622920; a=rsa-sha256;
+	cv=none;
+	b=h8IsIdgTqsYgDaV6ZLOJ7iR263LUHNejzoyzIrAYz4o1UopLx1jsNuxJn4TL7H+KtwWFv4
+	1srRkaw9IC6Tlp17+RmuLmYQ+28XnaS2HF5th6+QuKWOLq4pq7as4aM/1rUNxqeG4JLxr3
+	cQlDoSn3eKykOIjqRDoE8/vb8kxytXQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rH4NodVe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764622918;
+	s=arc-20220608; t=1764622920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CBBkS70aNOWzOmLRBcx2jU7eZG4brn/wTwZeRfMvNMM=;
-	b=5ChGut7YKeoZnu/QS5r22TTGV/jfRrb6MJxtPg+nGECcI0p5DNBukV9gFJidPSJrpbfp+1
-	ydf/tZpZN/ZsRGfT1+GTOcad0ZJS1wxkhB0JMldTCXLUIh9OirqWGkyluB9TbowD00RHvv
-	9aj7BN/FiuVa4w3veLhTEm7pn0n+ddk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764622919; a=rsa-sha256;
-	cv=none;
-	b=Z21dTERBhZLDKJ7MXmNYbIUaL7H6O3m92xSmtT32MIABKVH3KjIX9Sb1yd6Quul57rHy6Y
-	qtrllo+Q3Zy0gvibizP2qR0rKyS+X7L7r0svj/xj/55C+5rD2RGTC5BhRMNdJhcGYqnG7j
-	Y4Y4Em4WRWlUapbMMNbw4+3loj3JpxM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OJzhg7L0;
-	spf=pass (imf14.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=QSBqYxxy/T7c0tL0QgHIJ+bqW6B0TnyjGvwsIKHwgpg=;
+	b=gE96wwGlUkJlYc0B3QuRO1FSe31a8vu2jTJ0wDvVFuK0NB7XZRmo1sGPtZO2zYiQ5Dr45D
+	nKm/bM/ztX49c7OLnIqen1I+tcMx1WNdhnMqOjnmiUfam/V4MdMB/SHhkb2KpLO3iCz0PO
+	9LsKDbdckAbH0aHXkahOG8R3lhOS3Ps=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F2F860159;
-	Mon,  1 Dec 2025 21:01:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11722C4CEF1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B2B3443AA;
+	Mon,  1 Dec 2025 21:01:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E148CC4CEF1;
 	Mon,  1 Dec 2025 21:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764622918;
-	bh=ymCaVvYBxLZ105+ok6O11I72/6m8odE5XYgiapzJKeg=;
+	s=k20201202; t=1764622919;
+	bh=TSjhUrQK4osexZsfhBcSoBUl/lcIsaNtwDeF27hGiGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJzhg7L0deFEQE7KVhFIIkZcgXrvIaEEh6AyeUPb6Ol1+OxV6f0hfF+BLEK+i2nld
-	 jp7DZsh7aWmrzp+W3v9ReOgv7nCjzjz9kRREFnqbw0CQQvQ3Tg1Ao8DHMKcm/HTNQY
-	 eKUuTZlxxua436Lk6mP+nowy93oxot6Jo6ihn+04s9E/860ao/1Z0I12B6TCJL5veW
-	 0vLVbgz7Cag+Ew2DqacqmbgXpMY6Znb5gxZsNb60YkByr5z5BWFMwt7mgUGJeg/0lS
-	 8P5JQ86CytVCJEQJltAtbjBFnbM5zj6uK7H5mnBMZk6SjSlD4u4lM57qzUSxtaa58E
-	 elvpFPYXsdnhA==
+	b=rH4NodVe/BbU+oexIBoGMxXa4yul2HcmP/E0rEL1mlQvVrW+YYjbwO98IE75BhVBQ
+	 kU0mbhK+ePjRcwdhQsyEfjun9kEBtd6UJSmZhPtDKENtY9w0/+uxNfyv+ykywTvFpD
+	 gbDUjEFjrWPvP8wIBVVopkd8OFc5mUK+fjRkiVUQ8OtD6mOLLKGZ1hYsB/6DJ+pSqB
+	 /AZahR5VraMQsf/qXL4EZ9SADBYiPF24f/qfdA0u4SmjZBmnlACh0G2ybixs9iuNV2
+	 lOnwWhvkWv0xOZ6WDBM20lGWMs8EO/iig+dVhoLSyoxJdlZv0dcUfoEw+gTxs+ciYH
+	 +cepQRB4NaolQ==
 From: Jaegeuk Kim <jaegeuk@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	linux-f2fs-devel@lists.sourceforge.net,
 	linux-mm@kvack.org,
 	Matthew Wilcox <willy@infradead.org>
 Cc: Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 2/4] mm/readahead: use page_cache_sync_ra for FADVISE_FAV_WILLNEED
-Date: Mon,  1 Dec 2025 21:01:25 +0000
-Message-ID: <20251201210152.909339-3-jaegeuk@kernel.org>
+Subject: [PATCH 3/4] mm/readahead: add a_ops->ra_folio_order to get a desired folio order
+Date: Mon,  1 Dec 2025 21:01:26 +0000
+Message-ID: <20251201210152.909339-4-jaegeuk@kernel.org>
 X-Mailer: git-send-email 2.52.0.107.ga0afd4fd5b-goog
 In-Reply-To: <20251201210152.909339-1-jaegeuk@kernel.org>
 References: <20251201210152.909339-1-jaegeuk@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DA892C001E
+X-Stat-Signature: r6pjfugyz5hjpaiz9oen434h3ainiepf
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E240010000B
-X-Stat-Signature: j7eqj95cx9fmbfbe8p11ngsq8xwqmd5p
-X-HE-Tag: 1764622918-49963
-X-HE-Meta: U2FsdGVkX1+p6A/nvrg8RJP97RPHTJxfHmWB19gTd3nThOY2dM0bVkNUi/noejZ2jrzxBtGWKYtEfoUyzmDBOWN+O4n6cTrB8DVe3IGrc2fFuTb3sUiRcE47NYLO2EcP9vXZVBykuxWslb//S+6C5PQ8npsvewUqAL3PRL8mw53CryeO0uoln3zCVlh+1SLITzk4a7WriLdjqOz9i3WKEMAxMZ/NKPQmsBOA1jKv0egCoQwRdSVwWPZnTSFwVmZ0MF1tN+isjjY8cEITZrK22TuVMezyA5Qz721NTQhzOAhI5sbA+6iCyVcgasPcoN/mmBL0On239YvFdJAhepOJ6JHHd09/8SNQHIrNwxWPuBMRIcMCCdTtcUYFSk0Rr1d6ZH+sdTzN9ZR4dYoWcEJ7WLPEZnKZy0eCF/kt9o6d2WRMoFBuEH75CyH4nAGJ4RKdIiP+FxsNUienZjAgVC0EVVG4SohD5xk/UArxa10R/W/ZVwfzzSElZwx/tEsdZY9pDbjcVvF05F3g/9avvod/6rh77HLolOYxnHD7A3LkxdUGoo0e4lGc+E4Liv3Y9vsmDVfW6u0/Xk+UInvhb7kLzTDvrse9pzXATTyvlLVnuUQqU1u4OnWczfvKKW6EOWlF1Lr+zaNSdrqzh3YhSEohFfc2kDaRM+Wz9OHda9NUbKyAxB0rRRxoaRbE+j72T0IG2duwtxCSH9OMuhhwMDmgUw80NNjC9wqWuwSF0MeN0mkGLd46ccR3CsdOsoNr98xezNBlPSDeQzrk48mumAIYcyEk40d0fsPcIXDFkNlbYcV4b4qP+Ay0VorRCoS284Xri6oKPsumLRT7CK3qKaAhaY7tkPlN+VTczNhE6BPycNQR2GGfhu1Acc4Irc0iWKPeRE2oCsnzxRG4cXv60nxU4Vcg2zd2DfEg6tM1s1FF8+VI5fk4BGhcuyPKW5hpZB/B3mjeJAGI+W72SoX10pp
- WKSJYu9l
- MBkxLymr8yBi8bgUIEODQ6gg6xjlWcNaNDY3MF9+WB6aHpKVbLO/qmuC+A/TpOLJDpn/Gz/WjmYX9267ePcYHjveRFdybb3nDlcsa5hglq/lBHfU+tXec/98BSBKLEyLVvlTuO4rUZYyP2w4v6sNvh7srXl7zY9kqS0+vuK9ugmqw3ttG4T0fJDXB0Xi+zL6yXKRdns1DBMn45fHSY/u3dggLzUYC2RRjfkaMH/XoZA0mDxmEE2oPHDnhX9C07T3/LKDD4rdJPysv1kkeZOjI7/nKkgHcXWzdrdYi4bhUWTMPpXzwv8tYR2s5MrQtcQpz0Gw7MPMyvtcaFbtWdmi9Am5qA1FX5n/YdzANGQDLouboN6okCS05VyzliYvOjezhI++aGtLq73B3BkQ=
+X-HE-Tag: 1764622919-616431
+X-HE-Meta: U2FsdGVkX1+lW6XCma534u3IUzJSPpC5Yn/J362XAjT42ZS+sVAWm6GyZTxOEpv+6DtLB0XmwH7INKRptjMYbqa+fS7c18bi3GDVI0pqXVmTKkL/ZHxU+5bzQo9G1dKO6kAL5QrvLgeM3JGvj+EE9TcV2BEim2S6LA3dW4Q70s7G0EkmTBcmiFnuMw5nRIGBPvd+tY3+pUebREEnyMxTkypeNdSteXv7DIlXA0Ceb+Foc9oPSRiNoCLzmnAczSTk1HTsyRqzXPRtDhrLBwmKtI6TETe2ud2XarGVtI5NitXQsTQcdfdXBOvQHLKqHGappfyhACFW/TrOL5Z8HisRo2znruXvwk3uimbvRSeGeJhr3cKFI24s0qrSh6GDTVBuEVXm/TZBRDSad+Cx0giBHSANmUtU+5PR9cdNfcv0YNJupev/3/XtW41KjFZEyY7K+CJE2WX88U4VLNwoi6hCkB9YuOhOUejn0dfg4SQX9/NEaJbKhE3jYPZ40lru0NrcyybFtuHRCwvKy2ku9lrLzqd4LdYj4HlSWd8lH0BH/aRVQg4dZre+9KPMZFJKUiHF8SqWhr2UtK8JY6MAf2jWoh8Oe721/RqXSFBY1/YuiqMvm85IxvcCb3WKcBsdWdK884u7Hu7skFOLoD/f72Lu62L314Qv5bgU+mb1eZoQVGgAixTAeaGmQdg0zACNduAF3tOpp68BmylrmuRDOPYSNpr4JGP5d2E5OqmL+ykSyGtiFN3lEvkqOiN2P/Mfu5+Nmr6vGylN1hUuNjw/2qjdUmDd4VF4ZzEI0LRFDJzzE0QDNrDmcn/5ysiXLRdXmpWF3q3G4Ep6qGJqpH50WqUHKHXL2uy1fW2BHJAonqtHQQ8/48Tg9/XwnvVczMqkhjj97cDP1KIY5mSyWSiw1Q7QJs7TGk91mkIyf7JsAYAqSezMzkNQMOCtuXNoNTkSI6E8mpZlVm+hn4u0xKuOU+Y
+ aajNCUFu
+ cCk/X2m6HDsXikkd2xfnvXMVd27Rs8fFSQu7jcWx7jmcl0RQReVt4R94bw67yi49bst+TLn4S1g+42uTgBF9tg5XqTq2xlInE3C67WgyQ9ZfT3mAlkdyRHPOnO+bZkM2yaUA0cbKqgZjcDGMIvfZl9sYQo8d9OhIFwTfulo4pjBhVzJFGIhV2se11heOcpsln8FjExyiXx8fUI/zE+4G9o1vGo3y65yCbvi4PFWyTExVt1+n9Prmt2shO16rkpIa4cXppHQRNZGXbQsA7uL5V2MlQ0co538fM8qVralLZV97tCY0/SUUJ/tYPTzedbm3bjff1JFQmb3R+UuA/qDUlWAbkJdTcN4tSsbEHEhycq7h4RlXqINsQzX1XiDiQsSN5VkUySEXaBQ+RlUf1nG43FwW/lYSLDIWKSsqDXRyFXa2G+Q4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,100 +93,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch replaces page_cache_ra_unbounded() with page_cache_sync_ra() in
-fadvise(FADVISE_FAV_WILLNEED) to support the large folio.
+This patch introduces a new address operation, a_ops->ra_folio_order(), which
+proposes a new folio order based on the adjusted order for page_cache_sync_ra.
 
-Before:
- f2fs_fadvise: dev = (252,16), ino = 14, i_size = 4294967296 offset:0, len:4294967296, advise:3
- page_cache_ra_unbounded: dev=252:16 ino=e index=0 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=2048 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=4096 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=6144 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=8192 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=10240 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=12288 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=14336 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=16384 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=18432 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=20480 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=22528 nr_to_read=2048 lookahead_size=0
- page_cache_ra_unbounded: dev=252:16 ino=e index=24576 nr_to_read=2048 lookahead_size=0
- ...
- page_cache_ra_unbounded: dev=252:16 ino=e index=1042432 nr_to_read=2048 lookahead_size=0
-
-This is all zero-order page allocation.
-
-After (order=0 by default):
- f2fs_fadvise: dev = (252,16), ino = 14, i_size = 4294967296 offset:0, len:4294967296, advise:3
- page_cache_sync_ra: dev=252:16 ino=e index=0 req_count=2048 order=0 size=0 async_size=0 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_order: dev=252:16 ino=e index=0 order=0 size=2048 async_size=1024 ra_pages=2048
- page_cache_sync_ra: dev=252:16 ino=e index=2048 req_count=2048 order=0 size=2048 async_size=1024 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_unbounded: dev=252:16 ino=e index=2048 nr_to_read=2048 lookahead_size=0
- page_cache_sync_ra: dev=252:16 ino=e index=4096 req_count=2048 order=0 size=2048 async_size=1024 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_unbounded: dev=252:16 ino=e index=4096 nr_to_read=2048 lookahead_size=0
- page_cache_sync_ra: dev=252:16 ino=e index=6144 req_count=2048 order=0 size=2048 async_size=1024 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_unbounded: dev=252:16 ino=e index=6144 nr_to_read=2048 lookahead_size=0
- page_cache_sync_ra: dev=252:16 ino=e index=8192 req_count=2048 order=0 size=2048 async_size=1024 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_unbounded: dev=252:16 ino=e index=8192 nr_to_read=2048 lookahead_size=0
- page_cache_sync_ra: dev=252:16 ino=e index=10240 req_count=2048 order=0 size=2048 async_size=1024 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_unbounded: dev=252:16 ino=e index=10240 nr_to_read=2048 lookahead_size=0
- ...
- page_cache_ra_unbounded: dev=252:16 ino=e index=1042432 nr_to_read=2048 lookahead_size=0
- page_cache_sync_ra: dev=252:16 ino=e index=1044480 req_count=2048 order=0 size=2048 async_size=1024 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_unbounded: dev=252:16 ino=e index=1044480 nr_to_read=2048 lookahead_size=0
- page_cache_sync_ra: dev=252:16 ino=e index=1046528 req_count=2048 order=0 size=2048 async_size=1024 ra_pages=2048 mmap_miss=0 prev_pos=-1
- page_cache_ra_unbounded: dev=252:16 ino=e index=1046528 nr_to_read=2048 lookahead_size=0
+Hence, each filesystem can set the desired minimum order of folio allocation
+when requesting fadvise(POSIX_FADV_WILLNEED).
 
 Cc: linux-mm@kvack.org
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 ---
- mm/readahead.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ include/linux/fs.h      |  4 ++++
+ include/linux/pagemap.h | 12 ++++++++++++
+ mm/readahead.c          |  6 ++++--
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index c895146c1444..ddab68b7e03b 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -472,6 +472,10 @@ struct address_space_operations {
+ 	void (*is_dirty_writeback) (struct folio *, bool *dirty, bool *wb);
+ 	int (*error_remove_folio)(struct address_space *, struct folio *);
+ 
++	/* Min folio order to allocate pages. */
++	unsigned int (*ra_folio_order)(struct address_space *mapping,
++			unsigned int order);
++
+ 	/* swapfile support */
+ 	int (*swap_activate)(struct swap_info_struct *sis, struct file *file,
+ 				sector_t *span);
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 09b581c1d878..e1fe07477220 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -476,6 +476,18 @@ mapping_min_folio_order(const struct address_space *mapping)
+ 	return (mapping->flags & AS_FOLIO_ORDER_MIN_MASK) >> AS_FOLIO_ORDER_MIN;
+ }
+ 
++static inline unsigned int
++mapping_ra_folio_order(struct address_space *mapping, unsigned int order)
++{
++	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
++		return 0;
++
++	if (!mapping->a_ops->ra_folio_order)
++		return order;
++
++	return mapping->a_ops->ra_folio_order(mapping, order);
++}
++
+ static inline unsigned long
+ mapping_min_folio_nrpages(const struct address_space *mapping)
+ {
 diff --git a/mm/readahead.c b/mm/readahead.c
-index c0db049a5b7b..5beaf7803554 100644
+index 5beaf7803554..8c7d08af6e00 100644
 --- a/mm/readahead.c
 +++ b/mm/readahead.c
-@@ -340,6 +340,7 @@ void force_page_cache_ra(struct readahead_control *ractl,
- 		unsigned long nr_to_read)
- {
- 	struct address_space *mapping = ractl->mapping;
-+	struct inode *inode = mapping->host;
- 	struct backing_dev_info *bdi = inode_to_bdi(mapping->host);
- 	unsigned long this_chunk;
- 
-@@ -352,11 +353,19 @@ void force_page_cache_ra(struct readahead_control *ractl,
- 	this_chunk = max_t(unsigned long, bdi->io_pages, ractl->ra->ra_pages);
- 
- 	while (nr_to_read) {
--		this_chunk = min_t(unsigned long, this_chunk, nr_to_read);
-+		unsigned long index = readahead_index(ractl);
-+		pgoff_t end_index = (i_size_read(inode) - 1) >> PAGE_SHIFT;
- 
--		if (do_page_cache_ra(ractl, this_chunk, 0))
-+		if (index > end_index)
- 			break;
- 
-+		if (nr_to_read > end_index - index)
-+			nr_to_read = end_index - index + 1;
-+
-+		this_chunk = min_t(unsigned long, this_chunk, nr_to_read);
-+
-+		page_cache_sync_ra(ractl, this_chunk);
-+
- 		nr_to_read -= this_chunk;
- 	}
+@@ -592,8 +592,10 @@ void page_cache_sync_ra(struct readahead_control *ractl,
+ 	 * A start of file, oversized read, or sequential cache miss:
+ 	 * trivial case: (index - prev_index) == 1
+ 	 * unaligned reads: (index - prev_index) == 0
++	 * if filesystem sets high-order allocation
+ 	 */
+-	if (!index || req_count > max_pages || index - prev_index <= 1UL) {
++	if (!index || req_count > max_pages || index - prev_index <= 1UL ||
++	    mapping_ra_folio_order(ractl->mapping, 0)) {
+ 		ra->start = index;
+ 		ra->size = get_init_ra_size(req_count, max_pages);
+ 		ra->async_size = ra->size > req_count ? ra->size - req_count :
+@@ -627,7 +629,7 @@ void page_cache_sync_ra(struct readahead_control *ractl,
+ 	ra->size = min(contig_count + req_count, max_pages);
+ 	ra->async_size = 1;
+ readit:
+-	ra->order = 0;
++	ra->order = mapping_ra_folio_order(ractl->mapping, 0);
+ 	ractl->_index = ra->start;
+ 	page_cache_ra_order(ractl, ra);
  }
-@@ -573,7 +582,7 @@ void page_cache_sync_ra(struct readahead_control *ractl,
- 
- 	/* be dumb */
- 	if (do_forced_ra) {
--		force_page_cache_ra(ractl, req_count);
-+		do_page_cache_ra(ractl, req_count, 0);
- 		return;
- 	}
- 
 -- 
 2.52.0.107.ga0afd4fd5b-goog
 
