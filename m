@@ -4,118 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAA9DCFD376
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 02:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF521CFD376
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 02:49:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F334B6B0010; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
+	id 15EF46B0012; Sun, 30 Nov 2025 21:49:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE3A96B0011; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
+	id 136756B0022; Sun, 30 Nov 2025 21:49:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD2B46B0012; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
+	id 04BDC6B0023; Sun, 30 Nov 2025 21:49:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C45B76B0010
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4F8F13C3E1
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:43:48 +0000 (UTC)
-X-FDA: 84169356936.27.76FBE3B
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 182EE4000A
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:43:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gTvtstdX;
-	spf=pass (imf27.hostedemail.com: domain of shiyn.lin@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=shiyn.lin@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E50D06B0012
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:49:40 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 837A51A0B95
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:49:40 +0000 (UTC)
+X-FDA: 84169371720.15.561D651
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 26C2D14000A
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:49:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of wozizhi@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=wozizhi@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764557027;
+	s=arc-20220608; t=1764557378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FgKmQ565+fVLpdIyWDHQSOr7KTCq34T31zq3f1iCjns=;
-	b=pO1iNRxmmiEjyQpl+9WDuTc35NkSbUKV5WFHKQhPIVJKiZ5xX71u+LuR8HJebQ0wdGAqWE
-	HG496DF4nIiPLshHFFWnzKkXEe/5YIAOMCCs//25wFsrqXBLbFqN3VIMbSqYPB8GKsTclH
-	rL4cfmf/57LGwkmC6YIiGg+8op6h3Io=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p9NL5wUh2dS12g99RQyCxsHZ07ddXfYUXqkWRaHw8Jw=;
+	b=VTW6F28AKyAgLWTAqtwRaYrhcMyj+D+6EZ8lr6RZcIZ1q0UW9aZFeHdv3Bw091hGN8bRBH
+	obIJBEwqYtVr9GCvfH3V5+5EljeslAhyl+tR//JHUUDNrAt2JtzDv1zXskjHfTWldmR2au
+	Tn7begClYM/lPg3CJuDafDE4J3GuboM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gTvtstdX;
-	spf=pass (imf27.hostedemail.com: domain of shiyn.lin@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=shiyn.lin@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764557027; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of wozizhi@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=wozizhi@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764557378; a=rsa-sha256;
 	cv=none;
-	b=pQULgppCU7Aq/VvLnPoCAm0+vKwDME8VisklWbenZFcL+l8KNMmJXXgltMsPBaqwgsQM53
-	canbREzGkDDsLEXaqx9a6mPBGWS3LrlBqXAyw3pExgU6xedjUflxTFKy7tBOcJIRtfM0TZ
-	qCqbFke3X+ap41VGc8qm8QNqsB0x4qo=
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-640d790d444so2876285d50.0
-        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 18:43:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764557026; x=1765161826; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FgKmQ565+fVLpdIyWDHQSOr7KTCq34T31zq3f1iCjns=;
-        b=gTvtstdXjrTRNDjYaAPcmuq7WeHOyZD50SOI7+lU4hgeK6mk01TndMaqrejNlveOKZ
-         PqnL332fMRGJ0ZfxhSEeaXgKMnngHiOygHv+BAbyUWI7eiPis5kFhuKSskzUsPRB1o+S
-         Fb8UHBBi4X4nKb2rmoSA6y33hMVOkU/cngAnJLF7dIgU5kpmXwdv4+0xpQ+abzueeIxj
-         wws5HI00j+f8bzKDDncyTwJiYgUFFnnM2L3n0Yg/bRaf3MjYnuFlROfeWXG4GaHsD6eK
-         WskwxxpLH+unaNPYZqMTr4WKoAXRlY/iNTPPldQQLe8TIP3bEVKFyP55PqQJtxfmNcQO
-         DP+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764557026; x=1765161826;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FgKmQ565+fVLpdIyWDHQSOr7KTCq34T31zq3f1iCjns=;
-        b=mCZkAO48nHP+zOQ4nxUZvRuAS//5DWVPbj9+d8qvCfjJaLsaz00lr+NShf8qJREvgB
-         Ms98MdV99Cm9mA0sYegnfJgjUPksa8MCCcMq7HkbBVJelTq654yFhaGSoqh461hLRP3g
-         wUG5ogA8ABBPhMCNHXLasaKk8jccYSEnoVPzq1cuK9E0j2Jv14jt8lKNumzFCKEhbGFa
-         f+9dqncNB6nR0PDOJEotDZVy7iop/DP1HN9sul87AETRav6V/0RSty59xkP2wAcNvk23
-         DNUofWu9yJUhzUcEuzPFq/OthAezNN7tp0JGqddkUGHd3x6i1NDlE7w1lgpKut4vQHBY
-         oxkw==
-X-Gm-Message-State: AOJu0Yxxn8eZzlu8ePUkZsvk9Dcn2YS/btHqRKHld4kFw05jlydksWNo
-	Qr+ZmzdpZJSZdayBJTlkrIqUGcSx9g85/ae0EhyyNNwKGoG9rHePWqmG
-X-Gm-Gg: ASbGncuqeShw8e7JM0qijxwyC6k3HP+fBNX25QTZ3r0KeG2w+bGMUmHvDQ2ImUw1PPz
-	WCu45K4ICpUUMNUCZgINg5RCoYfBKThBxV06iP6dLAh+ncNtUj0EG6O+h0Js9Y9GejC3tZvzJWB
-	EyAD7DRyEPAPvfR8ANkikd3EGvZAysyYy0sDeRSG0vouuw9pz/NKKdJFl23r25ZQcEmimxftW3P
-	DAobDS7JlsWPW38M6Zh1hFiu/OgqyCq7n2rK9aba5keBgxfnnsBVRHknyRuWrf+dKpqrX+t+8lD
-	puWRnVQn6cfgrlVpd2kBeBA5da8k3kvyZAcJyyRoN7Nfc1qo+EVdc6ZNNrGxFkp7w9haWH/igcM
-	Wd3To0Wcqk/zbesZW58YU5aXdmHLnykCNoU2vO4GHu2/tgYvrwKTEJ9VWCbSlOpqXywoWaguTV8
-	8Pz0hDbE8g+nHg/ZZA8/3EdfI5mRm0hod0Ib8EvSwe+iPPu2g9ayYBzXk=
-X-Google-Smtp-Source: AGHT+IEftPLm4wwxMTV5S8HfduywFkxnzNagdp0uZjRVeMizo1texs4FhkEpOIkFK8yvV81AVPnx9A==
-X-Received: by 2002:a05:690e:1519:b0:63f:25cc:112a with SMTP id 956f58d0204a3-64302ab83fbmr26144911d50.54.1764557026026;
-        Sun, 30 Nov 2025 18:43:46 -0800 (PST)
-Received: from laptop01 (2045061-002-static.lfytina2.metronetinc.net. [149.154.21.178])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ad0d3f616sm43906407b3.1.2025.11.30.18.43.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 18:43:45 -0800 (PST)
-Date: Sun, 30 Nov 2025 21:43:43 -0500
-From: Chih-En Lin <shiyn.lin@gmail.com>
-To: Jordan Niethe <jniethe@nvidia.com>
-Cc: linux-mm@kvack.org, balbirs@nvidia.com, matthew.brost@intel.com,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, david@redhat.com, ziy@nvidia.com,
-	apopple@nvidia.com, lorenzo.stoakes@oracle.com, lyude@redhat.com,
-	dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
-	rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
-	willy@infradead.org
-Subject: Re: [RFC PATCH 4/6] mm: Add a new swap type for migration entries
- with device private PFNs
-Message-ID: <20251201024343.GA9270@laptop01>
-References: <20251128044146.80050-1-jniethe@nvidia.com>
- <20251128044146.80050-5-jniethe@nvidia.com>
+	b=Wke0FOh1eZfAsv+hsd2CFWABEHKwjpDRjZyFDTIIwX0C/v9SICVMQCabpnkNk5/fV+90i7
+	pvGecxAMMua4y8ItvpaawDM2T2Aq2jVlLXIRVOJAH0BVxZZC4wu0WLnr1qZOxbAb743UYl
+	QvADDmKTjePlbrsD/FSc5tpqLmxly2g=
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dKSyj3tjMzKHLxp
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:48:45 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 4D6DA1A0847
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:38:51 +0800 (CST)
+Received: from [10.174.176.88] (unknown [10.174.176.88])
+	by APP2 (Coremail) with SMTP id Syh0CgD311G5_yxpf6i7AA--.50711S3;
+	Mon, 01 Dec 2025 10:38:51 +0800 (CST)
+Message-ID: <7970e1c4-88d5-42ef-b8cf-ed50d27fedcc@huaweicloud.com>
+Date: Mon, 1 Dec 2025 10:38:49 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251128044146.80050-5-jniethe@nvidia.com>
-X-Stat-Signature: qfdkwa3j7tk57ydg4ic5qk77gy5n1ewy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
+ sleep in RCU context
+To: Al Viro <viro@zeniv.linux.org.uk>, Zizhi Wo <wozizhi@huaweicloud.com>
+Cc: Will Deacon <will@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, jack@suse.com,
+ brauner@kernel.org, hch@lst.de, akpm@linux-foundation.org,
+ linux@armlinux.org.uk, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, yangerkun@huawei.com,
+ wangkefeng.wang@huawei.com, pangliyuan1@huawei.com, xieyuanbin1@huawei.com
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <aShLKpTBr9akSuUG@willie-the-truck>
+ <9ff0d134-2c64-4204-bbac-9fdf0867ac46@huaweicloud.com>
+ <39d99c56-3c2f-46bd-933f-2aef69d169f3@huaweicloud.com>
+ <61757d05-ffce-476d-9b07-88332e5db1b9@huaweicloud.com>
+ <aSmUnZZATTn3JD7m@willie-the-truck>
+ <b6e23094-f53f-4242-acb5-881bd304d707@huaweicloud.com>
+ <20251129035510.GI3538@ZenIV>
+From: Zizhi Wo <wozizhi@huaweicloud.com>
+In-Reply-To: <20251129035510.GI3538@ZenIV>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgD311G5_yxpf6i7AA--.50711S3
+X-Coremail-Antispam: 1UD129KBjvdXoWrtw4xJF4DCrWUGry5Ww43GFg_yoW3ZrX_W3
+	y8tr4DCa43ta1fAa15GFW7ArZxJw42vr15KFZ5Xws3K3s2yFW8C398Kwn5Zan2qFWYkFsF
+	9Fn3Jr17Cry3CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+	c2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
+	VjvjDU0xZFpf9x0pRHUDLUUUUU=
+X-CM-SenderInfo: pzr2x6tkl6x35dzhxuhorxvhhfrp/
+X-Rspamd-Queue-Id: 26C2D14000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 182EE4000A
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764557026-497017
-X-HE-Meta: U2FsdGVkX1+DgEmr7UKRLWhnzvd9hxFYqCF601H1rWLoHOwpYIcKx0MRSt0TJ8ACo7c9NmSC6JtvAbjm1XyEQDJCMQlflcJc+/Z3t8ChyNbg9j6V0nhJGRy07cj76VocztsnqvVa/CYwNEucbVqwIxvLwOwyNi3hT8tqUWbHXbrzG2nzYUGgxWuGzVmdhJrcXt8DhPp7e/eGmcyO9QFx2wMuk6YZ06LM9wmEUE72lbnGIK2qWtgq3MeWEejwjNFEEFWQhErkwwyRND2oA8z2rbfL1Al7IrXcwq3Bs89/SVsuyYoOuvt3C2VCETtAqYsSow0lO1rYUsxg8fytkbNZ7Jhtb65Oj2weiCLGQO4Es+THGNohpmo5MS/EB0GkjYssM+PdD+m6kpOCClMpDDik0aNkkxCTBgMs1ORzJ64GvJjJRB8KlxBsHwCU8poPrIrydEoQRK6zcaV0zUA81JrFLOK/isvP09X2pTXeUm9l4jFD1MAWebHMlA/Pkur2jzHCNKFMY7FxlGV3toDfNy+Ex4QYQy9EyPhBvvjeswY8V7WOVU6hZdck/u5pIYFVlLi28ywddhn8ZXZklYI0KQu1WYcnqcIx9cgsAhJ7Bdf4ly//Z9pCIsLneLbABV/hYXacQx3pq0R7kWuA+e8IyC1MPPN8+hGjoHTAQHs1H2YeTLHbrJZGutAytQsBWYYSdSma8nHLJdRujvu8C9oixCj7Vw5GWDZoUW5aYIrxOAPeFCDWXqzQaav8rjFf441bE6AqXjRFfdiYQhZ+oi2VNajiku6h/ZkbzjvWHIS58nGL2e9KLVA7ml2vx0uaX9ihHRFUkQ6Now2YAm+cyGeXv0XAu3HDd82WSYoTDRsuHce8VaQkqRjMOCwqfepn/vEnRk7EHM8zqd8PgmDAklM+/h3gW5nZlvaXuEwf8U80DfoHlbpp002udH8prcoQ3UKH4zw4rMZUwpNmFAKqdYBcwmX
- VLFZnWzS
- D7FrjEb26DGD3SiqU2tY8hFgotTpmhJxldpVq2HwtygESqOBKFTMhHoMSbv9FXV1icz+EoVb3PUw9CqLy82MP03qe8/JnFGw9leep75FUuwAUgtI0xi/DQh0gGS68tgs2DsypGiQntQV2Ivcm8dHIT0lUZNq9oB4vJTVsqLSwUF8Jq2bQIzxuodZumT97HAEdsuuA2h5CtmNyxeZoeh8QJGBggnf8kd8lR8EY0VG3+i9+6Iya5cHG7ZfFE/Y/U8X445YA34a/W6F2s2QFFuWUSoIm84EWrhaGEQepP6LdzqxWAGWqcOcBhmRM5elVpxvWKTHPy6saqF5sS01Z7m9bgUQ24Gbct8KUczMPzdpPClBRYivvIQRCe+UY3juCQL+4w5OJuEFXjlXmDYB+g53wDsKpZWu1rmOMI+pxIC4d65raVGpFW9jm5W0Tuf44SghA3iz+v2oMkt1/wJWzMjML2taQ/U5d2djoehBwjoFXIvR30pIA42Ohj8O7al66659UOZfZGMLVnXlR76I=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: zsc161a1preg87s4fbm43zagbgne3rnt
+X-HE-Tag: 1764557375-907327
+X-HE-Meta: U2FsdGVkX1/T1LITGGqXQuaqtgKAYPDa6c7Hf8m94p3VRsTQGo3bHCB82C+2695Mu6fJsXovu/t+z46405p/3KRLKtxTqTKoS1G9oKz6wna8+wxQq3iFjJs3+FzTugM7LHqVlteX/HwmygXoGBAZIe+Kz5iIISXRFRrOda5/+oKiAPpYAC9UjhGhAPEjXpMoEJUokkd6WNBLgmzSRg3Rs2ZhL7TXS3KIwCcXmVTVLiqa2RsTWYBSqrC/4qlqLi7CCJgt8/0ft4MYDSWkjjdHOQ8TImDkkwwmsSFW8lqtgieOLBtn+7yO6bJPn+iCDLX3rf3cUI7g/aAHc+4j35weoJd8W2lfM438cwfJQMPftw+WxizldyLy7S+2XTc7Pt6Xz3MaZ6fpY4U0kif8lg/cPgjwrYu8KDE3l/qRiS3fvfyEzwPwpQgT3yX+vT02gsRXv9z+2Qst7I7QuqMYO3Fb5gQ6XN9UcevUt8CFovEl/sOP8ZcApGCzke0ujbjrU5pcBY8xmITutjWZZxhmiJKNU0i6Wfhyod3W9AJcOXXAeNE+Ypyzks/9J2MjA2G8cfLDoVSZJDSf6urszcAUA6YoVUZuCYIIa54fbl2CG05hgYNwSxASz0Vd47oSmh5Ev2N0+Teb+mFotnmv+/0U8JVbmP0GoYaiaPL11lud6AZ9u8hc8rT/NXXoZbeQdvfHZPbq3sA53BwWqTh5u9FywofuxrjvvgjOrbLgvITek2ZjdKCCbXjvOOmKqE15SINYokaonAXRK4z6BXktfAa+bLqqq+y+U00n5LzfITP3ALA5kCoZxmq8irm5q5wlXIKkxufN69uGYu+Bgli2tOgBaNlMw3LWyqA/weMvb674Ppw/vBbL3doJWtpAVjSaRBeHaHKwnBvr/s2STr9bNQWIkCQTSOa4ovR2ox5JKgpCZm+VMYn6I9NgaGAj95EcNFJeZCb2ebOR1mX4MKo/AZuV8FL
+ 8ofP9dh2
+ 3LJflopHUmKmOvmf+LKkKips3N8veBjaQA71IIZc24aLzl9XrixtnytAyusY1g4/w7Ckr4DE/bWcfUyAlnbb8fEgTL2G8WcBxWVtttmmpgbZTls8sBLbfoeqvOX6BG00sCngIF1VRX6cCSzlsRm3PPrjUa1kg0XCnr0jFeI1rXD/tJij4/B7Cl8ctsuxYT5dSJMqB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,403 +116,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 28, 2025 at 03:41:44PM +1100, Jordan Niethe wrote:
-> A future change will remove device private pages from the physical
-> address space. This will mean that device private pages no longer have
-> normal PFN and must be handled separately.
-> 
-> When migrating a device private page a migration entry is created for
-> that page - this includes the PFN for that page. Once device private
-> PFNs exist in a different address space to regular PFNs we need to be
-> able to determine which kind of PFN is in the entry so we can associate
-> it with the correct page.
-> 
-> Introduce new swap types:
-> 
->   - SWP_MIGRATION_DEVICE_READ
->   - SWP_MIGRATION_DEVICE_WRITE
->   - SWP_MIGRATION_DEVICE_READ_EXCLUSIVE
-> 
-> These correspond to
-> 
->   - SWP_MIGRATION_READ
->   - SWP_MIGRATION_WRITE
->   - SWP_MIGRATION_READ_EXCLUSIVE
-> 
-> except the swap entry contains a device private PFN.
-> 
-> The existing helpers such as is_writable_migration_entry() will still
-> return true for a SWP_MIGRATION_DEVICE_WRITE entry.
-> 
-> Introduce new helpers such as
-> is_writable_device_migration_private_entry() to disambiguate between a
-> SWP_MIGRATION_WRITE and a SWP_MIGRATION_DEVICE_WRITE entry.
-> 
-> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> ---
->  include/linux/swap.h    |  8 +++-
->  include/linux/swapops.h | 87 ++++++++++++++++++++++++++++++++++++++---
->  mm/memory.c             |  9 ++++-
->  mm/migrate.c            |  2 +-
->  mm/migrate_device.c     | 31 ++++++++++-----
->  mm/mprotect.c           | 21 +++++++---
->  mm/page_vma_mapped.c    |  2 +-
->  mm/pagewalk.c           |  3 +-
->  mm/rmap.c               | 32 ++++++++++-----
->  9 files changed, 161 insertions(+), 34 deletions(-)
-> 
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index e818fbade1e2..87f14d673979 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -74,12 +74,18 @@ static inline int current_is_kswapd(void)
->   *
->   * When a page is mapped by the device for exclusive access we set the CPU page
->   * table entries to a special SWP_DEVICE_EXCLUSIVE entry.
-> + *
-> + * Because device private pages do not use regular PFNs, special migration
-> + * entries are also needed.
->   */
->  #ifdef CONFIG_DEVICE_PRIVATE
-> -#define SWP_DEVICE_NUM 3
-> +#define SWP_DEVICE_NUM 6
->  #define SWP_DEVICE_WRITE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM)
->  #define SWP_DEVICE_READ (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+1)
->  #define SWP_DEVICE_EXCLUSIVE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+2)
-> +#define SWP_MIGRATION_DEVICE_READ (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+3)
-> +#define SWP_MIGRATION_DEVICE_READ_EXCLUSIVE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+4)
-> +#define SWP_MIGRATION_DEVICE_WRITE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+5)
->  #else
->  #define SWP_DEVICE_NUM 0
->  #endif
-> diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-> index 64ea151a7ae3..7aa3f00e304a 100644
-> --- a/include/linux/swapops.h
-> +++ b/include/linux/swapops.h
-> @@ -196,6 +196,43 @@ static inline bool is_device_exclusive_entry(swp_entry_t entry)
->  	return swp_type(entry) == SWP_DEVICE_EXCLUSIVE;
->  }
->  
-> +static inline swp_entry_t make_readable_migration_device_private_entry(pgoff_t offset)
-> +{
-> +	return swp_entry(SWP_MIGRATION_DEVICE_READ, offset);
-> +}
-> +
-> +static inline swp_entry_t make_writable_migration_device_private_entry(pgoff_t offset)
-> +{
-> +	return swp_entry(SWP_MIGRATION_DEVICE_WRITE, offset);
-> +}
-> +
-> +static inline bool is_device_private_migration_entry(swp_entry_t entry)
-> +{
-> +	return unlikely(swp_type(entry) == SWP_MIGRATION_DEVICE_READ ||
-> +			swp_type(entry) == SWP_MIGRATION_DEVICE_READ_EXCLUSIVE ||
-> +			swp_type(entry) == SWP_MIGRATION_DEVICE_WRITE);
-> +}
-> +
-> +static inline bool is_readable_device_migration_private_entry(swp_entry_t entry)
-> +{
-> +	return unlikely(swp_type(entry) == SWP_MIGRATION_DEVICE_READ);
-> +}
-> +
-> +static inline bool is_writable_device_migration_private_entry(swp_entry_t entry)
-> +{
-> +	return unlikely(swp_type(entry) == SWP_MIGRATION_DEVICE_WRITE);
-> +}
-> +
-> +static inline swp_entry_t make_device_migration_readable_exclusive_migration_entry(pgoff_t offset)
-> +{
-> +	return swp_entry(SWP_MIGRATION_DEVICE_READ_EXCLUSIVE, offset);
-> +}
-> +
-> +static inline bool is_device_migration_readable_exclusive_entry(swp_entry_t entry)
-> +{
-> +	return swp_type(entry) == SWP_MIGRATION_DEVICE_READ_EXCLUSIVE;
-> +}
-
-The names are inconsistent.
-
-Maybe make_device_migration_readable_exclusive_migration_entry to
-make_readable_exclusive_migration_device_private_entry, and
-is_device_migration_readable_exclusive_entry to
-is_readable_exclusive_device_private_migration_entry?
 
 
->  #else /* CONFIG_DEVICE_PRIVATE */
->  static inline swp_entry_t make_readable_device_private_entry(pgoff_t offset)
->  {
-> @@ -217,6 +254,11 @@ static inline bool is_writable_device_private_entry(swp_entry_t entry)
->  	return false;
->  }
->  
-> +static inline bool is_readable_device_migration_private_entry(swp_entry_t entry)
-> +{
-> +	return false;
-> +}
-> +
->  static inline swp_entry_t make_device_exclusive_entry(pgoff_t offset)
->  {
->  	return swp_entry(0, 0);
-> @@ -227,6 +269,36 @@ static inline bool is_device_exclusive_entry(swp_entry_t entry)
->  	return false;
->  }
->  
-> +static inline swp_entry_t make_readable_migration_device_private_entry(pgoff_t offset)
-> +{
-> +	return swp_entry(0, 0);
-> +}
-> +
-> +static inline swp_entry_t make_writable_migration_device_private_entry(pgoff_t offset)
-> +{
-> +	return swp_entry(0, 0);
-> +}
-> +
-> +static inline bool is_device_private_migration_entry(swp_entry_t entry)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool is_writable_device_migration_private_entry(swp_entry_t entry)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline swp_entry_t make_device_migration_readable_exclusive_migration_entry(pgoff_t offset)
-> +{
-> +	return swp_entry(0, 0);
-> +}
-> +
-> +static inline bool is_device_migration_readable_exclusive_entry(swp_entry_t entry)
-> +{
-> +	return false;
-> +}
-> +
->  #endif /* CONFIG_DEVICE_PRIVATE */
->  
->  #ifdef CONFIG_MIGRATION
-> @@ -234,22 +306,26 @@ static inline int is_migration_entry(swp_entry_t entry)
->  {
->  	return unlikely(swp_type(entry) == SWP_MIGRATION_READ ||
->  			swp_type(entry) == SWP_MIGRATION_READ_EXCLUSIVE ||
-> -			swp_type(entry) == SWP_MIGRATION_WRITE);
-> +			swp_type(entry) == SWP_MIGRATION_WRITE ||
-> +			is_device_private_migration_entry(entry));
->  }
->  
->  static inline int is_writable_migration_entry(swp_entry_t entry)
->  {
-> -	return unlikely(swp_type(entry) == SWP_MIGRATION_WRITE);
-> +	return unlikely(swp_type(entry) == SWP_MIGRATION_WRITE ||
-> +			is_writable_device_migration_private_entry(entry));
->  }
->  
->  static inline int is_readable_migration_entry(swp_entry_t entry)
->  {
-> -	return unlikely(swp_type(entry) == SWP_MIGRATION_READ);
-> +	return unlikely(swp_type(entry) == SWP_MIGRATION_READ ||
-> +			is_readable_device_migration_private_entry(entry));
->  }
->  
->  static inline int is_readable_exclusive_migration_entry(swp_entry_t entry)
->  {
-> -	return unlikely(swp_type(entry) == SWP_MIGRATION_READ_EXCLUSIVE);
-> +	return unlikely(swp_type(entry) == SWP_MIGRATION_READ_EXCLUSIVE ||
-> +			is_device_migration_readable_exclusive_entry(entry));
->  }
->  
->  static inline swp_entry_t make_readable_migration_entry(pgoff_t offset)
-> @@ -525,7 +601,8 @@ static inline bool is_pfn_swap_entry(swp_entry_t entry)
->  	BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
->  
->  	return is_migration_entry(entry) || is_device_private_entry(entry) ||
-> -	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry);
-> +	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry) ||
-> +	       is_device_private_migration_entry(entry);
->  }
->  
->  struct page_vma_mapped_walk;
-> diff --git a/mm/memory.c b/mm/memory.c
-> index b59ae7ce42eb..f1ed361434ff 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -962,8 +962,13 @@ copy_nonpresent_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->  			 * to be set to read. A previously exclusive entry is
->  			 * now shared.
->  			 */
-> -			entry = make_readable_migration_entry(
-> -							swp_offset(entry));
-> +			if (is_device_private_migration_entry(entry))
-> +				entry = make_readable_migration_device_private_entry(
-> +								swp_offset(entry));
-> +			else
-> +				entry = make_readable_migration_entry(
-> +								swp_offset(entry));
-> +
->  			pte = swp_entry_to_pte(entry);
->  			if (pte_swp_soft_dirty(orig_pte))
->  				pte = pte_swp_mksoft_dirty(pte);
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index c0e9f15be2a2..3c561d61afba 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -495,7 +495,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
->  		goto out;
->  
->  	entry = pte_to_swp_entry(pte);
-> -	if (!is_migration_entry(entry))
-> +	if (!(is_migration_entry(entry)))
->  		goto out;
->  
->  	migration_entry_wait_on_locked(entry, ptl);
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 82f09b24d913..458b5114bb2b 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -235,15 +235,28 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  				folio_mark_dirty(folio);
->  
->  			/* Setup special migration page table entry */
-> -			if (mpfn & MIGRATE_PFN_WRITE)
-> -				entry = make_writable_migration_entry(
-> -							page_to_pfn(page));
-> -			else if (anon_exclusive)
-> -				entry = make_readable_exclusive_migration_entry(
-> -							page_to_pfn(page));
-> -			else
-> -				entry = make_readable_migration_entry(
-> -							page_to_pfn(page));
-> +			if (mpfn & MIGRATE_PFN_WRITE) {
-> +				if (is_device_private_page(page))
-> +					entry = make_writable_migration_device_private_entry(
-> +								page_to_pfn(page));
-> +				else
-> +					entry = make_writable_migration_entry(
-> +								page_to_pfn(page));
-> +			} else if (anon_exclusive) {
-> +				if (is_device_private_page(page))
-> +					entry = make_device_migration_readable_exclusive_migration_entry(
-> +								page_to_pfn(page));
-> +				else
-> +					entry = make_readable_exclusive_migration_entry(
-> +								page_to_pfn(page));
-> +			} else {
-> +				if (is_device_private_page(page))
-> +					entry = make_readable_migration_device_private_entry(
-> +								page_to_pfn(page));
-> +				else
-> +					entry = make_readable_migration_entry(
-> +								page_to_pfn(page));
-> +			}
->  			if (pte_present(pte)) {
->  				if (pte_young(pte))
->  					entry = make_migration_entry_young(entry);
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 113b48985834..7d79a0f53bf5 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -365,11 +365,22 @@ static long change_pte_range(struct mmu_gather *tlb,
->  				 * A protection check is difficult so
->  				 * just be safe and disable write
->  				 */
-> -				if (folio_test_anon(folio))
-> -					entry = make_readable_exclusive_migration_entry(
-> -							     swp_offset(entry));
-> -				else
-> -					entry = make_readable_migration_entry(swp_offset(entry));
-> +				if (!is_writable_device_migration_private_entry(entry)) {
-> +					if (folio_test_anon(folio))
-> +						entry = make_readable_exclusive_migration_entry(
-> +								swp_offset(entry));
-> +					else
-> +						entry = make_readable_migration_entry(
-> +								swp_offset(entry));
-> +				} else {
-> +					if (folio_test_anon(folio))
-> +						entry = make_device_migration_readable_exclusive_migration_entry(
-> +								swp_offset(entry));
-> +					else
-> +						entry = make_readable_migration_device_private_entry(
-> +								swp_offset(entry));
-> +				}
-> +
->  				newpte = swp_entry_to_pte(entry);
->  				if (pte_swp_soft_dirty(oldpte))
->  					newpte = pte_swp_mksoft_dirty(newpte);
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index 9146bd084435..e9fe747d3df3 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -112,7 +112,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->  			return false;
->  		entry = pte_to_swp_entry(ptent);
->  
-> -		if (!is_migration_entry(entry))
-> +		if (!(is_migration_entry(entry)))
->  			return false;
->  
->  		pfn = swp_offset_pfn(entry);
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 9f91cf85a5be..f5c77dda3359 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -1003,7 +1003,8 @@ struct folio *folio_walk_start(struct folio_walk *fw,
->  		swp_entry_t entry = pte_to_swp_entry(pte);
->  
->  		if ((flags & FW_MIGRATION) &&
-> -		    is_migration_entry(entry)) {
-> +		    (is_migration_entry(entry) ||
-> +		     is_device_private_migration_entry(entry))) {
->  			page = pfn_swap_entry_to_page(entry);
->  			expose_page = false;
->  			goto found;
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index e94500318f92..9642a79cbdb4 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2535,15 +2535,29 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->  			 * pte. do_swap_page() will wait until the migration
->  			 * pte is removed and then restart fault handling.
->  			 */
-> -			if (writable)
-> -				entry = make_writable_migration_entry(
-> -							page_to_pfn(subpage));
-> -			else if (anon_exclusive)
-> -				entry = make_readable_exclusive_migration_entry(
-> -							page_to_pfn(subpage));
-> -			else
-> -				entry = make_readable_migration_entry(
-> -							page_to_pfn(subpage));
-> +			if (writable) {
-> +				if (is_device_private_page(subpage))
-> +					entry = make_writable_migration_device_private_entry(
-> +								page_to_pfn(subpage));
-> +				else
-> +					entry = make_writable_migration_entry(
-> +								page_to_pfn(subpage));
-> +			} else if (anon_exclusive) {
-> +				if (is_device_private_page(subpage))
-> +					entry = make_device_migration_readable_exclusive_migration_entry(
-> +								page_to_pfn(subpage));
-> +				else
-> +					entry = make_readable_exclusive_migration_entry(
-> +								page_to_pfn(subpage));
-> +			} else {
-> +				if (is_device_private_page(subpage))
-> +					entry = make_readable_migration_device_private_entry(
-> +								page_to_pfn(subpage));
-> +				else
-> +					entry = make_readable_migration_entry(
-> +								page_to_pfn(subpage));
-> +			}
-> +
->  			if (likely(pte_present(pteval))) {
->  				if (pte_young(pteval))
->  					entry = make_migration_entry_young(entry);
-> -- 
-> 2.34.1
+在 2025/11/29 11:55, Al Viro 写道:
+> On Sat, Nov 29, 2025 at 09:02:27AM +0800, Zizhi Wo wrote:
 > 
+>> Thank you very much for the answer. For the vmalloc area, I checked the
+>> call points on the vfs side, such as dentry_string_cmp() or hash_name().
+>> Their "names addr" are all assigned by kmalloc(), so there should be no
+>> corresponding issues. But I'm not familiar with the other calling
+>> points...
+> 
+> Pathname might be a symlink body, sitting in page cache or whatever
+> ->get_link() has returned...
+> 
+
+
+Thanks for the additional explanation — I indeed hadn't considered
+symlinks. But if the data is in the page cache, as I understand it, its
+address wouldn't be in the vmalloc area, right? However, for other
+.get_link implementations, it's true that there's no guarantee.
 
 Thanks,
-Chih-En Lin
+Zizhi Wo
+
 
