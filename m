@@ -4,118 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FBA0D111A8
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 09:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC99D116F1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 09:59:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58A9A6B009F; Mon,  1 Dec 2025 04:55:06 -0500 (EST)
+	id 436866B0096; Mon,  1 Dec 2025 04:59:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 562E26B00A6; Mon,  1 Dec 2025 04:55:06 -0500 (EST)
+	id 3E7706B009E; Mon,  1 Dec 2025 04:59:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 479326B00A7; Mon,  1 Dec 2025 04:55:06 -0500 (EST)
+	id 2D5EB6B009F; Mon,  1 Dec 2025 04:59:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 32B486B009F
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:55:06 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19D905959B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:55:04 +0000 (UTC)
-X-FDA: 84170443728.04.49B0350
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3A20380006
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:55:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=GUiRtJcy;
-	spf=pass (imf02.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 196D66B0096
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:59:03 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AFACF132DC8
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:59:00 +0000 (UTC)
+X-FDA: 84170453640.25.4D762B8
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DF307C0002
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:58:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=TLkbfyJC;
+	spf=pass (imf10.hostedemail.com: domain of 34WYtaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=34WYtaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764582902;
+	s=arc-20220608; t=1764583139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R54PDiPJQHrypJ6nxOZU3QXEOxGBgYwWh5cI2BJ3WT8=;
-	b=ch6HGQL/f5JFBSDzPXQPBDuJh9qvwNuElncNVz0fVeSJPDZsWMgjGCaFvvq53toe1aUxCC
-	OVQGIUFVgfw2aEdAne5LQhrPrjH1q1KxFhKq3MbTtOB3Huimf0NweOPlAhdZCGNX5z9VDA
-	0spFmAg6yDtmGBmWw1gKEZlQgPi+nA8=
+	bh=a8n92NxyNaQcFOv77Y1KGrTuD03BcJ0jos8t6qKohZE=;
+	b=uEJ0/9RqCDTWLsrJoP/wZGHtES1WlCpPy3Ae1G+qlmBU1V5DED4l9jSxjVNLWcYLlzDOWo
+	Avpuv8ZUWpLIh6LSQKic1/vw0O9n4AaJ7uyfheLF3IYAH4pcaPKiiBZrBdFc80Agg//TaO
+	6Ct/UhIVbOaehNsuJvTr7fGvObgMlPA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=GUiRtJcy;
-	spf=pass (imf02.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764582902; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=TLkbfyJC;
+	spf=pass (imf10.hostedemail.com: domain of 34WYtaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=34WYtaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764583139; a=rsa-sha256;
 	cv=none;
-	b=ftH93GHLF8U1UtM0kci2Yq8vGYVDztRXKhM+bOzXHDDQzdmYW4EQ0xdPXntahsCr0PYzj1
-	fP3aStv9i9ACynf/MZnsw2PaU+1B2kSnQE4JTPSlMXJH+5A4LIKW0zqC0kdErzZAWpKWLb
-	YDJEIn4OGQ/+euescRHVO6/+RMhs0L4=
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=R54PDiPJQHrypJ6nxOZU3QXEOxGBgYwWh5cI2BJ3WT8=;
-	b=GUiRtJcyQhrJ3N5tA5Ur5RhzdyuuJ4jnBvLaWcXzLc31HuDNnmmU6E21jin/4Kd28/OxS/2RV
-	fBjcHob/ZsDC6W/278pAVP+wd/h/sCmWFMynDc6ZrA/v7k8V4OSbQRU1CoLAat1WQaqwmgSu3Yi
-	F5y7V9tXYxY3zCXP5bFO4kM=
-Received: from w003.hihonor.com (unknown [10.68.17.88])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4dKfNJ5xwHzYl0TY;
-	Mon,  1 Dec 2025 17:53:04 +0800 (CST)
-Received: from w002.hihonor.com (10.68.28.120) by w003.hihonor.com
- (10.68.17.88) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 1 Dec
- 2025 17:54:57 +0800
-Received: from w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3]) by
- w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3%14]) with mapi id
- 15.02.2562.027; Mon, 1 Dec 2025 17:54:57 +0800
-From: wangzicheng <wangzicheng@honor.com>
-To: Barry Song <21cnbao@gmail.com>
-CC: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox
-	<willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-	"david@redhat.com" <david@redhat.com>, "axelrasmussen@google.com"
-	<axelrasmussen@google.com>, "yuanchu@google.com" <yuanchu@google.com>,
-	"mhocko@kernel.org" <mhocko@kernel.org>, "zhengqi.arch@bytedance.com"
-	<zhengqi.arch@bytedance.com>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "lorenzo.stoakes@oracle.com"
-	<lorenzo.stoakes@oracle.com>, "weixugc@google.com" <weixugc@google.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
-	"corbet@lwn.net" <corbet@lwn.net>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, wangtao
-	<tao.wangtao@honor.com>, wangzhen 00021541 <wangzhen5@honor.com>, "zhongjinji
- 00025326" <zhongjinji@honor.com>, Kairui Song <ryncsn@gmail.com>
-Subject: RE: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
-Thread-Topic: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
-Thread-Index: AQHcYBJK8KKXMResfEqv9fHMnnJz9rUHrbeAgAAP74CAA+3ugIAApiiQ//+VEACAAImM4P//h9UAgACJZRA=
-Date: Mon, 1 Dec 2025 09:54:56 +0000
-Message-ID: <dc8ce4f329d74a24bde62c93818df44a@honor.com>
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
- <aSm800KsCAptVZKu@casper.infradead.org>
- <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
- <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
- <86c62472b5874ea2833587f1847958df@honor.com>
- <CAGsJ_4w1jEej+ROuLta3MSuo4pKuA5yq7=6HS5yzgK39-4SLoA@mail.gmail.com>
- <66c62243a510421db938235a99a242bf@honor.com>
- <CAGsJ_4x0aVkDf-AhhGbBLU=LCxYFqYoFL0ovij-vFEQeJ46jYQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4x0aVkDf-AhhGbBLU=LCxYFqYoFL0ovij-vFEQeJ46jYQ@mail.gmail.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.229]
+	b=qH13ooT4pAtddB0Alto7veIoqKPvVFyei7zSITlHCi5PZ5oVzQqxL8mmmmdUSY0o6qzh/M
+	gCdqHjIR5xdNvxVl9tgCWWpTHNuXIErsJBSYqm0ClCTHb8FfeYfrRTAn+fJLXHB4x/4AJ4
+	CYxIUEjQxKmCKb/3xErk5CzXtg1bmys=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47799717212so29323235e9.3
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 01:58:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764583137; x=1765187937; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=a8n92NxyNaQcFOv77Y1KGrTuD03BcJ0jos8t6qKohZE=;
+        b=TLkbfyJCm8jHdrrIk054foBnkFONMlxqZcgBhrh5HeDboQMCLFddz2lsZrq43legAB
+         qaQQ3KFXOIC6GeN1BigFZOX87W9S/yj52+WdnICuQ+mCXgXT4RAKCSj8EAEbWluAaJQ8
+         k4Ai61rfvNktFjmZdodb6W6X/DpA9kjV2qREq+X4D4phz2F9BFD2rll3HpZTluLp5cB1
+         zbEA4Z+veGTCZ1FZ7OwCFBZkpxTZyDN5ez0cq8nx2cgmfhn46gwLw3E9wqPJbVGd+A3x
+         UOwGGzsjwOvlhSJ1lL9UUW6L0YLPuUxJji4mUQqrXiVwZzq0EG7FA1F+3WZZ26fNbtsq
+         +UAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764583137; x=1765187937;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a8n92NxyNaQcFOv77Y1KGrTuD03BcJ0jos8t6qKohZE=;
+        b=GPeZZSdCahas22bpPdSvrnSUjd9Jbr+ZSglMLiC8A6iOT9hS6Un9I8CuJesDVnxJUl
+         f17/wOTrqBwOhXJP+7Q5G+4V5QhVh7jqDKXEGRRG12peTTLgpwB03Bh38dYQOzEM4mtF
+         IeIXIFhjegHVEehLhR+KQM4C2jBBnm0YWGBjhEZjCxJPmgELuSu0uSkOAS/i8NuOSmae
+         Tt/BsxUktsHmNVJ5U5LxjUFET1QxFJQKJQgeJFTQj+8IYhS4+bWkUEz2bbN0ppzYXfwg
+         +guwy9iDctjzG0bXbgArUvqbH4eFcYOZxSmxivTVKeJqboOVb8O4knsiq2l7fB9l+70S
+         pprw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRpM9lgULK9VwXc4U/dOhagVi36UWjVllRbjKLLn7I1Ej9lfPQACjKxqXp6bZDkkh4CLI8dj6y/Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyd3yHykacDtyB9w/6UJ50Cn6r9yUjqhs0U59FusFwMM+yWszME
+	6nWDVxIGPBmJ67WvYV+5HQ/l0Z7jANqgwjS+dIGxxqxqu7I7gX1YIxGRXSKoh2x72RIFbXcBBvn
+	A2ozjUYRbUaTnq9u6TA==
+X-Google-Smtp-Source: AGHT+IE30ug28B+UD0DWj7O+zjLWxPTqpE2raQjUVcci0EVV14naheaFBpit1w3aaTTXqjlC41pTF7QjzuYwcvg=
+X-Received: from wmcn10.prod.google.com ([2002:a05:600c:c0ca:b0:477:afa:d217])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f14:b0:477:7b16:5f77 with SMTP id 5b1f17b1804b1-477c10c802bmr381654045e9.3.1764583137353;
+ Mon, 01 Dec 2025 01:58:57 -0800 (PST)
+Date: Mon, 1 Dec 2025 09:58:56 +0000
+In-Reply-To: <c8229530-ab87-4b51-8f2b-6199a01095b3@arm.com>
+Mime-Version: 1.0
+References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
+ <12d99a54-e111-4877-b8cd-cb1e58cd6d30@arm.com> <aSmVQDMXqwc8ctDf@google.com> <c8229530-ab87-4b51-8f2b-6199a01095b3@arm.com>
+Message-ID: <aS1m4DawouC1utSj@google.com>
+Subject: Re: [PATCH v3] io: add io_pgtable abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-Stat-Signature: cc5qq4yir915q7hbybawaok7x8pogy9b
+X-Rspamd-Queue-Id: DF307C0002
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wwn5jygxbgsssqn6oa6shwuo84wxezqt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A20380006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764582900-232969
-X-HE-Meta: U2FsdGVkX18yaazMdmzN6F+gRe//lxE9ZVa/GC8V0dKpFAiPaH+LmBqz+7JUh7iDmVdc/wTvyU69d6My9k0fv12KLfrZ9U9BjWTWMYS7ZD1GDsS7Acho1uN/BdYLQTpcvD/irZ1yO2JfnU03F1b9Dv141FUGCLOOIvkwLjW9X52W/Q5Q3UDaJiNunkinU08MgQyMtPHBQOziiv1Ra4/VamgZ2df8f44l9MVQ6hcbak/BqRtlmsuhgJDy2wDkCZ65us+I/5hKfAPEg9v0Dt+tJz+xgAOOjJ6Lmx7Xx4+W8wWqGH83yBB9lGlbrRa5FiF7M/sb+9nuu4hnez8ZNA+CUpRiUIGFmdKZqyYTJm+ECVXi503H01AtJ+pnuk4x21fKhw0zcIEiq2pUQ5kECA8Pv8CnPDAifnBdkWg0h+HAOzkp9qyxI4P59nFT2dfur/ko9/DBhcrogXNzsXA95wmiMgdNUCvtAY/8sf1AOJRKT5qXGR9GSnKCI96fiy+/eFU4N9UDNyDq/kCgNd/Ap4ZgbxTGWAS9jWdtJVG7F1raZwsvgqboCULarBbKjixMlzhnoL8Jm48cGIo8QydOpH2D+J007eGytl4GbZN7l7dxJd6VwKo9XlB+Hu8tz7DjfjGuRd3ELrYs5gYI9OYkh8RHLM7nB4hlpYoWB7TOjYDGHXodJkpjX/z1VSc1pecBqWHfn28QDVrtLmpuQFxR+ZoEEZ6c8gtiCcR1NJykqN7dox+Al32ZdBDIk1LIaf+z/dJ3F8cbX/ZAgu0c7u0PLb+uf+Z15425m6gsvKHMt0IJezyuD5KY7uMmt+JrK3Ing286xy0mtdJnezHB+Ujj7OBEmRckR+E2ElzG7f54ODPN2oh2IsVLIUyrlav56Y0bosEe+Isya/E5RWU8/kcnZDmFJipjBJG58Qy0T3Ijfmy0CQ12EIV0iThuiFcK3aqEmJ8AHrDdi1Id6pOHtl7KPUg
- OYmu4Nxq
- ssJ/rjRo6DYrvmGoyhA8ZGO7LRP9JTSGwe7gFXOXCnu9DIRyJelStcKd/ajDTxt997XXl2esmow7mcB3j+X7Ev25p1DHjxnsUsCarAJaTUZg9ZfiHHpl+lBJacQSRlDMChsrky9iWxlFw4dM1+35VXO5jK1DKPzD8JrdWXmBx1UoxH0IGTmYo8CzFVJ/+23SjZCZX1VjS6pqfWYmJhux4GoABrCVsS0L9la7EPp9skOOVc5ufQikbg7nWW6wdykikPytzmv/Suo+pGFns8duoc+ix71vMOlEHv72ZL1f9XdGHq0McosjhVslYI/jRvQVnpmbPzn2DLDxBbgqUE+6l/zubbjR0AGW8kdDK1mguYJHhhc4MHIZHMhJKBiFpxkoIa7WH9ictSEpRALP3h2UbnEnCHw0dEuXUyGWCIOVupSy3sybo+nYTaYovG3LqE53wJMBx
+X-HE-Tag: 1764583138-459328
+X-HE-Meta: U2FsdGVkX18Kwo5Y4fQicTQZyCHtSiHljdYtRLedEkKUrOyeTgIaaWOtPO98lTNohTk71fWrXmTaFIp2nw1oaaPrUWY4CIxl/5dC/MyUyui5QEgmrumBWPlbMnC/pRaY3y80M+ue7ngMOK00O4Z9rLXydPf4YsEWfJ9Z4b1aa41eUD/zSY2BMTPkTSOyVf3v66O1hEFahH+HmPgBBYFn/EzCyTl2+T/qWeeavqd/IfhxnzlSYJCnBiqiB+8Nc8NrJs1TAVT1EKKcyB3aMaPf8KIwA2Tr6lfGpcjvYJg12VRU9MDzaOHHyP3pjvTOL+W02iZixDI8pgIat6T4j11pIYVTKA1mAk+Lwfcw/jjYpRcYYuD7PRIGPDgmSqW+XMgLGDj/7uX9MA/fqgaQ4QsAJg7iXlzCoD2DhvGxRD8V+xAA2ArmIQtG5oZlZBwVXuNv6p5ccJQjBF31ysnCEfOHWsrl7pxBa9axbyLE+i++6FMvX84m9yh0Ih9hsTxnfr1nIffi2bXk5nFJzh6h+VTgSsgdlv7/Sp0F6ZixWlmDrkp5WXfsLBi9FxLhw35EmAlF5REEFGSc6+MXb9vqc76gXyMPIdorBFc1h/dBJAKSXZTlCB51nBERJrmyUPbQ3+CafM74DDsrtgfhO4t+K/NuxtThhIty1GNqMygNKxBLcgUqNwy9pJMd00oHvUY9jrqxA2bH+hn00SJkjfHuk/E+r4o7XB2cBPtMpRmXhP3FyIZ+fDHPb7IwhDLxGr5J5+feKqkqQhtZ5DWSh3PktJSzWVEmyXh/tV7u3wnMz0UkZpNOLsDmNTV1S2+L+bQmPHmBJkYDXOXUMJc3bnZXkwjD46fk+1iMvSxyDe3JZVw22usk3DyTxTB3m7RcSVeOwkn7j0FP83dDrJZVTXyWG23dbx+Xzz83+Mkc6Kcb76cGy8hrLqbiKZ9kg+g2AjsJ8W5uXaa4RoJYiSVaxjUauJv
+ aB5ssiNm
+ 2boe91dt40jap0mDQRl72G/yljBaD5NNRLxkzwuv/n28BJCYvs8WYI2SQCkJuEJp/88Rik+wb5bbmU8tKBLKQYdCk14lROgAcdC+eDRQNy367UWVdcpvqiRpDpAqLWkkvyYIV0v+TbhT2sLIQXuaGj2Niaij6FT5OamW8ti/n14hT7Lh+UZ5BvtwlgvQP5bZTzOJmCV9WCvSe+VPHhuS8ZhmARd5Gu8sVPxF7oOrNoCeYwUtsZuzV91K0BN0L8wzwTxjxQBq5gZzbBhzQSxNkMDQNugdbdd6B7K3F4cGLu5l95AhM3RvGEb9RLOh7PT+lFc6+haoSeWaO0UGQihV2C04PBVKtxQHV0eQnlR3TFZl884uSXN+XKJqb6xR61CaF7jxHTty8s9WsiF1u/ocLl48FI5g1hhTzTHmnNqYoNk9GABYZE3I2d+3G0zXn6hvOOIY5D93xxTz1votQv7RW2vesBmad/+SHe2Gw3N4nYbCZXsOQdUab4AeOGiEhh3XEREa/dFZscuxDxhibe0BahyYO8c67r6xYIq7AYG0Socr9WV3l57XwjVbCQXic+5WqC/XkbuPVAAQqW+gLFEwjfMMSjup/hE/jWbX4lGCkci/poV9dA1SCdLaU1759PiHR1AOffHfzIDpyl9yoIexCcddcRPg6tZWSnUuz9Nj92R+xvIj88/elS4UwVGPZe1cSTgL/Ko7tGlQxzdmrtEMxzqj7E7onbXM/4RkiZtNUrl9dqUQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,26 +117,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SGkgQmFycnksDQoNClRoYW5rIHlvdSBmb3IgdGhlIGNvbW1lbnQsIGFjdHVhbGx5IHdlIGRvIGtu
-b3cgdGhlIGNncm91cCBmaWxlLg0KDQpXaGF0IHdlIHJlYWxseSBuZWVkIGlzIHRvICpwcm9hY3Rp
-dmUgYWdpbmcgMn4zIGdlbnMqIGJlZm9yZSBwcm9hY3RpdmUgcmVjbGFpbS4NCihlc3BlY2lhbGx5
-IGFmdGVyIGNvbGQgbGF1bmNoZXMgd2hlbiBubyBhbm9uIHBhZ2VzIGluIHRoZSBvbGRlc3QgZ2Vu
-cykNCg0KVGhlIHByb2FjdGl2ZSBhZ2luZyBhbHNvIGhlbHBzIGRpc3RyaWJ1dGUgdGhlIGFub24g
-YW5kIGZpbGUgcGFnZXMgZXZlbmx5IGluIA0KTUdMUlUgZ2Vucy4gQW5kIHJlY2xhaW1pbmcgd29u
-J3QgZmFsbCBpbnRvIGZpbGUgY2FjaGVzLg0KDQo+IEFsc28gbm90ZSB0aGF0IG1lbWNnIGFscmVh
-ZHkgaGFzIGFuIGludGVyZmFjZSBmb3IgcHJvYWN0aXZlIHJlY2xhbWF0aW9uLA0KPiBzbyBJ4oCZ
-bSBub3QgY2VydGFpbiB3aGV0aGVyIHlvdXIgcGF0Y2hzZXQgY2FuIGNvZXhpc3Qgd2l0aCBpdCBv
-ciBleHRlbmQNCj4gaXQgdG8gbWVldCB5b3VyIHJlcXVpcmVtZW50c+KAlHdoaWNoIHNlZW1zIHF1
-aXRlIGltcG9zc2libGUgdG8gbWUNCj4gDQo+IG1lbW9yeS5yZWNsYWltDQo+ICAgICAgICAgQSB3
-cml0ZS1vbmx5IG5lc3RlZC1rZXllZCBmaWxlIHdoaWNoIGV4aXN0cyBmb3IgYWxsIGNncm91cHMu
-DQo+IA0KPiAgICAgICAgIFRoaXMgaXMgYSBzaW1wbGUgaW50ZXJmYWNlIHRvIHRyaWdnZXIgbWVt
-b3J5IHJlY2xhaW0gaW4gdGhlDQo+ICAgICAgICAgdGFyZ2V0IGNncm91cC4NCj4gDQo+ICAgICAg
-ICAgRXhhbXBsZTo6DQo+IA0KPiAgICAgICAgICAgZWNobyAiMUciID4gbWVtb3J5LnJlY2xhaW0N
-Cj4gDQo+ICAgICAgICAgUGxlYXNlIG5vdGUgdGhhdCB0aGUga2VybmVsIGNhbiBvdmVyIG9yIHVu
-ZGVyIHJlY2xhaW0gZnJvbQ0KPiAgICAgICAgIHRoZSB0YXJnZXQgY2dyb3VwLiBJZiBsZXNzIGJ5
-dGVzIGFyZSByZWNsYWltZWQgdGhhbiB0aGUNCj4gICAgICAgICBzcGVjaWZpZWQgYW1vdW50LCAt
-RUFHQUlOIGlzIHJldHVybmVkLg0KPiANClRoaXMgcmVtaW5kIG1lIHRoYXQgYWRkaW5nIGEgYG1l
-bW9yLmFnaW5nYCB1bmRlciBtZW1jZyBkaXJlY3Rvcmllcw0KcmF0aGVyIHRoYW4gYWRkaW5nIG5l
-dyBwcm9jZnMgZmlsZXMgaXMgYWxzbyBhIGdyZWF0IG9wdGlvbi4NCg0KPiBUaGFua3MNCj4gQmFy
-cnkNCg0KVGhhbmtzLA0KWmljaGVuZw0K
+On Fri, Nov 28, 2025 at 04:47:52PM +0000, Robin Murphy wrote:
+> On 2025-11-28 12:27 pm, Alice Ryhl wrote:
+> [...]
+> > > > +    /// Map a physically contiguous range of pages of the same size.
+> > > > +    ///
+> > > > +    /// # Safety
+> > > > +    ///
+> > > > +    /// * This page table must not contain any mapping that overlaps with the mapping created by
+> > > > +    ///   this call.
+> > > 
+> > > As mentioned this isn't necessarily true of io-pgtable itself, but since
+> > > you've not included QUIRK_NO_WARN in the abstraction then it's fair if this
+> > > layer wants to be a little stricter toward Rust users.
+> > 
+> > Assuming that we don't allow QUICK_NO_WARN, would you say that it's
+> > precise as-is?
+> 
+> As an assumption of use for the Rust API, like I say it's fine - it's still
+> not really "unsafe" if a caller did try an overlapping mapping; the call
+> will still fail gracefully and accurately, it's just it will also fire a
+> WARN_ON() since ARM_64_LPAE_S1 without IO_PGTABLE_QUIRK_NO_WARN considers
+> this indicative of a usage error or race in the caller.
+> 
+> If we do end up wanting to support more opportunistic and/or
+> userspace-controlled mappings by Rust drivers in future then we can relax
+> this expectation as appropriate.
+
+Yeah, let's just say that it's an unsupported use-case. These bindings
+can be expanded in the future if anyone needs QUICK_NO_WARN.
+
+> > > > +    /// * If this page table is live, then the caller must ensure that it's okay to access the
+> > > > +    ///   physical address being mapped for the duration in which it is mapped.
+> > > > +    #[inline]
+> > > > +    pub unsafe fn map_pages(
+> > > > +        &self,
+> > > > +        iova: usize,
+> > > > +        paddr: PhysAddr,
+> > > > +        pgsize: usize,
+> > > > +        pgcount: usize,
+> > > > +        prot: u32,
+> > > > +        flags: alloc::Flags,
+> > > > +    ) -> Result<usize> {
+> > > > +        let mut mapped: usize = 0;
+> > > > +
+> > > > +        // SAFETY: The `map_pages` function in `io_pgtable_ops` is never null.
+> > > > +        let map_pages = unsafe { (*self.raw_ops()).map_pages.unwrap_unchecked() };
+> > > > +
+> > > > +        // SAFETY: The safety requirements of this method are sufficient to call `map_pages`.
+> > > > +        to_result(unsafe {
+> > > > +            (map_pages)(
+> > > > +                self.raw_ops(),
+> > > > +                iova,
+> > > > +                paddr,
+> > > > +                pgsize,
+> > > > +                pgcount,
+> > > > +                prot as i32,
+> > > > +                flags.as_raw(),
+> > > > +                &mut mapped,
+> > > > +            )
+> > > > +        })?;
+> > > > +
+> > > > +        Ok(mapped)
+> > > 
+> > > Just to double-check since I'm a bit unclear on the Rust semantics, this can
+> > > correctly reflect all 4 outcomes back to the caller, right? I.e.:
+> > > 
+> > > - no error, mapped == pgcount * pgsize (success)
+> > > - no error, mapped < pgcount * pgsize (call again with the remainder)
+> > > - error, mapped > 0 (probably unmap that bit, unless clever trickery where
+> > > an error was expected)
+> > > - error, mapped == 0 (nothing was done, straightforward failure)
+> > > 
+> > > (the only case not permitted is "no error, mapped == 0" - failure to make
+> > > any progress must always be an error)
+> > > 
+> > > Alternatively you might want to consider encapsulating the partial-mapping
+> > > handling in this layer as well - in the C code that's done at the level of
+> > > the IOMMU API calls that io-pgtable-using IOMMU drivers are merely passing
+> > > through, hence why panfrost/panthor have to open-code their own equivalents,
+> > > but there's no particular reason to follow the *exact* same pattern here.
+> > 
+> > Ah, no this signature does not reflect all of those cases. The return
+> > type is Result<usize>, which corresponds to:
+> > 
+> > struct my_return_type {
+> >      bool success;
+> >      union {
+> >          size_t ok;
+> >          int err; // an errno
+> >      }
+> > };
+> > 
+> > We need a different signature if it's possible to have mapped != 0 when
+> > returning an error.
+> 
+> Aha, thanks for clarifying - indeed this is not the common "value or error"
+> case, it is two (almost) orthogonal return values. However if we're not
+> permitting callers to try to do anything clever with -EEXIST then it might
+> make sense to just embed the inevitable cleanup-on-failure boilerplate here
+> anyway (even if we still leave retry-on-partial-success to the caller).
+
+Is the only possible error -EEXIST? I could encode that in the API if
+that is the case.
+
+> Note that it does appear to be the case that io-pgtable-arm in its current
+> state won't actually do this, since it happens to handle all its error
+> return cases before any leaf PTEs are touched and "mapped" is updated, but
+> the abstraction layer shouldn't assume that in general since other
+> implementations like io-pgtable-arm-v7s definitely *can* fail with a partial
+> mapping.
+
+Agreed, I will update the API accordingly.
+
+> > > > +    }
+> > > > +
+> > > > +    /// Unmap a range of virtually contiguous pages of the same size.
+> > > > +    ///
+> > > > +    /// # Safety
+> > > > +    ///
+> > > > +    /// This page table must contain a mapping at `iova` that consists of exactly `pgcount` pages
+> > > > +    /// of size `pgsize`.
+> > > 
+> > > Again, the underlying requirement here is only that pgsize * pgcount
+> > > represents the IOVA range of one or more consecutive ranges previously
+> > > mapped, i.e.:
+> > > 
+> > > map(0, 4KB * 256);
+> > > map(1MB, 4KB * 256);
+> > > unmap(0, 2MB * 1);
+> > > 
+> > > is legal, since it's generally impractical for callers to know and keep
+> > > track of the *exact* structure of a given pagetable. In this case there
+> > > isn't really any good reason to try to be stricter.
+> > 
+> > How about this wording?
+> > 
+> > This page table must contain one or more consecutive mappings starting
+> > at `iova` whose total size is `pgcount*pgsize`.
+> 
+> Yes, that's a nice way to put it.
+
+Perfect thanks.
+
+Alice
 
