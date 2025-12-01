@@ -4,130 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B7BDD116F3
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 16:43:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89580D116F1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 16:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D413A6B002E; Mon,  1 Dec 2025 11:43:46 -0500 (EST)
+	id E5DB76B0027; Mon,  1 Dec 2025 11:48:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D18966B002F; Mon,  1 Dec 2025 11:43:46 -0500 (EST)
+	id E0E246B002A; Mon,  1 Dec 2025 11:48:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2ED26B0030; Mon,  1 Dec 2025 11:43:46 -0500 (EST)
+	id D23F66B002D; Mon,  1 Dec 2025 11:48:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B1EC86B002E
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 11:43:46 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72DCB160232
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:43:46 +0000 (UTC)
-X-FDA: 84171473652.02.D18240D
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3BD8A180011
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:43:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C0C506B0027
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 11:48:46 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66D10C02BD
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:48:46 +0000 (UTC)
+X-FDA: 84171486252.03.0088A29
+Received: from fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.57.120.243])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E5B8F18001D
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 16:48:43 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Rt+jdFZM;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="EAdUvow/";
+	spf=pass (imf16.hostedemail.com: domain of "prvs=4230525c4=kalyazin@amazon.co.uk" designates 52.57.120.243 as permitted sender) smtp.mailfrom="prvs=4230525c4=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764607424;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764607724;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W6A3fijvZfqRg56x0MUZazWwowf3lKWT9LWRpRCUaoQ=;
-	b=iLJ9D1Zzg1flnOcLfVpRQ1BxVQRf+DvrDtVmPhrI4XzuA919dJZS7OL+NpoumF1U828WT3
-	HhLxe6GkpcO9cR+IINlkYTgdDF3yF2mTnRVhWyXc7InWwA8a0Tr5tGMY3DTj3ADaAgNEoM
-	qBR5Ey6jH8Ww7ypWpO2fKM9WhwSP1A8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764607424; a=rsa-sha256;
-	cv=none;
-	b=XXkLXbRDZIUMAK3SppRypxKLkulEmecA+YVcipCE4f+Y220TDaTL+yl56HL5LDTwLpjvnh
-	nGgpjmhMgU9YjaAjljVeUO605an02ersx7D3YCt2bzPoAiSQk8rqD/0lx/VIAmk5C++mAX
-	WXSY9VUrUjqJa1IT8gA8nBDMnyn7HyI=
+	bh=GUFyYw4pB+c3aOIproKrVQP+K7Byw/zyZ7lr1XDUkCs=;
+	b=NRpXzlX5WY7fhUzB7ddcshEotzvGXopoktno3tE5dbz5cPqydH11cYFurgiKGlDAyS2kf8
+	4134DplCJSHfJFGK03zpBwcLbjkHTciLw0NAHLDqcCqamHNxfSJYePAKPbZFvBdTtsQXTF
+	J36kmzjsw7oI6Uef8gyHRhB5n09za+U=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Rt+jdFZM;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed7024c8c5so34994781cf.3
-        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 08:43:43 -0800 (PST)
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="EAdUvow/";
+	spf=pass (imf16.hostedemail.com: domain of "prvs=4230525c4=kalyazin@amazon.co.uk" designates 52.57.120.243 as permitted sender) smtp.mailfrom="prvs=4230525c4=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764607724; a=rsa-sha256;
+	cv=none;
+	b=lXWGEiTTo1ArJP0bwKwpIv60oE/3ventl5SlIMMcU0giQgu9KTTgeAw60jQ9RiREO44Wcq
+	VtaKZttQw8raJ+Dr7iN6tz5KOSJewcL21Fm5MbIaKgFMBrS5WkCSzjga8CfsHT/M8G8wjr
+	nfLry69UtMPITa9dGaxCIe7U+vFprAI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1764607423; x=1765212223; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=W6A3fijvZfqRg56x0MUZazWwowf3lKWT9LWRpRCUaoQ=;
-        b=Rt+jdFZMMVRZLj5GVUBnyRRWXfQDx7jk0lyjEhvJKFA6tRLafVA31sFqZ7KWZgooI2
-         WRmgmyvBjYw7IuzVsT6kzhhjuSZJ7jd9TKM7Wvola5sfJ2h0kgjWqRODXeL34dv0hT6Z
-         ItWJxl9cIYWaBGERqwkXXDjHZ7tCk0aZKyasgu6JggXz9aN/GXPEIelhZ5d8P3+htgYB
-         DcxHKgEK2SAmsY/lWrFMDl4jPvuMEp2sXWkpLoRabsOeOXhOkY7zZ0dzqbF9/vVxQcQC
-         sHSD7SOPtTsyFKZgOSuKFzbbEqQF6XEExfuX9bNB8cxjOR2am1uCC0vgSoOvnIOebO9L
-         947w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764607423; x=1765212223;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W6A3fijvZfqRg56x0MUZazWwowf3lKWT9LWRpRCUaoQ=;
-        b=wGfV/mT8jdHQcl5wKIvPdpCg2jDItr1wfIDonDHPIhHeBWIYPJ9BVfA/hJ7u5ML4ME
-         feg8aPdHKospPE7Ux24b9Y5e2PUacUH4tEg9Ea28VLLi/b4pAjCbZObY+YS97ncYX42J
-         lFNywMCxS/+MZnvxxWQhJ5eLq7Solw71hOOz7iqA+3cGMjQh3SFuLzFtVHyUzR2Nb5NX
-         xZKMym4OWBCEoAFD3h8Y8WSP+XVUQMpQ9jrg9wydok6NCl4N5pQ1LF5enLyK9IFJtefV
-         0WmJAPoB0mmNg380XhtfP+bhRJelc5u7nFqHYZM9hsMgah0hKhDf94LE9u+ywCgh7j8A
-         9HRg==
-X-Forwarded-Encrypted: i=1; AJvYcCW12+vO72inzCkvA7+lkIFtbFh9A8cSkm9H15C0CVqS32u1p1GtAKVtCWH3lb/D1hnSh2lF0KibRw==@kvack.org
-X-Gm-Message-State: AOJu0YzeXqvfdRij1BhKELQSUzYHmg9gKfl6snwXGi0ZXr/FZE2cU1+O
-	ppTOv+vTf+l4Gj/PkToIKh+w2ROdpoDQr0YZpicZM/1OWefuoSbCYJfZBj3rwtldLMo=
-X-Gm-Gg: ASbGncsGOKBi1LQ4EArT6dTADBvp5d30UtZa+lTjdnOnvhyf2JpCknFVzaIZfLafytc
-	ZcgoxlYy6uxsIR8YjzmyFV++mEAe/CequCAbfeCbUBUPOBPu1RdnItndahmqIHaDAgebn+eNzEA
-	EmCboVXfLnfRDVzGiN0i1wpv2S9AqY9hkXsyu3wWSJH4OLGLJZv4Kzkgqqaa6W1Gp7Vd2DsMOIN
-	f4pu3TbD2gSfZCHkOotbdDDZJeB36stqrwJrx7KMrQHFJlFS2F6qWEJhAhyZproOC7MgXTzVf/A
-	Q8v5durNaVjegaJlj6xWfmy70BFLB37mVHvtWSduw9F2RlavRamabto/baMT2NodUlhYfDLNUUb
-	bgKftGNKIPqdpWPxNG3G3hRGsqVrPsyRhpbaotGu0dFZ94E0019EMgQ7iCpIiQ9+tv2SyE1PU99
-	xEVdKl1tKrBw==
-X-Google-Smtp-Source: AGHT+IFL5Gt3eXeZB/NaqJ6KrE/7BeAcxNBW82wvFuHKT1wVq74KiJ5+vkjNBzMAeSnRSDqxnyXvvw==
-X-Received: by 2002:a05:622a:44a:b0:4ed:b94c:774a with SMTP id d75a77b69052e-4ee58841e9bmr606786671cf.5.1764607422936;
-        Mon, 01 Dec 2025 08:43:42 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd2f9a3b5sm77523881cf.1.2025.12.01.08.43.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 08:43:42 -0800 (PST)
-Date: Mon, 1 Dec 2025 11:43:38 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, pratmal@google.com,
-	sweettea@google.com, gthelen@google.com, weixugc@google.com
-Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
-Message-ID: <20251201164338.GA430226@cmpxchg.org>
-References: <20251124193258.GB476776@cmpxchg.org>
- <CACePvbVJEWd64r-o8ezh+0QByYbWjYVKiLgxNiBJOjfRWP__sw@mail.gmail.com>
- <20251125213126.GB135004@cmpxchg.org>
- <CACePvbXstKtQXE+0i-KRcq5LwrCr92a_FKy2KBmqaiwZEkFxng@mail.gmail.com>
- <7665130c511e3cd00f83e8b14de2b78e08830887.camel@surriel.com>
- <CACePvbWcYsm3WpQSkbiSKESpHOb+QybNTxtDL9mCvRd__Xj4Aw@mail.gmail.com>
- <7e44e8654eb0ed5e0f590b3d705b258772dadb57.camel@surriel.com>
- <CACePvbUSHYgit93ofjg6cMfb+CR9x6CZnMGh7Utb+zEzkOG75w@mail.gmail.com>
- <CAKEwX=MMgOb+7tDxPXDCcBxCEztvajDa0YfLBqgGuAr8GQ4s1A@mail.gmail.com>
- <CACePvbWV3STyCg0vYDXYg7asnxLTa4Jb5Fa59g7_QeTVxKV=ig@mail.gmail.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1764607724; x=1796143724;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=GUFyYw4pB+c3aOIproKrVQP+K7Byw/zyZ7lr1XDUkCs=;
+  b=EAdUvow/4b+JwzRwihlQ/sZ4oKVqPRZNcimnaFERmfgmUI7J6V9Dw8uP
+   MHjg36G6NBdR2SpNPIr/pT4+49AC1u8cb89jSkUOUySTxc/2YxduDAQX9
+   JoIZZBonVPQ0IRDdOeJfF0wBK3iuFedqeYpiH2SwBNccodi+uMbYQPnQC
+   Wiqm3YwcvUOXK2EeR5Xge8AbiVrhc5o4cDQdhIyFMyLAYpkErYFQTirsW
+   1vu6pRfVUCv8exf0UrCM3rJslVVKJXxndzQBFxM6KxhvrelBoArNDDcON
+   Cl2KTgmGtbG6BR7F2vuUaSTYTCbEk+Uvt5xHNBMIbk6kkgelfeZh2JgXZ
+   Q==;
+X-CSE-ConnectionGUID: xidBH/+aRnWMIv82jcbdVQ==
+X-CSE-MsgGUID: aicuxPHXSrSVLyblJP5eHw==
+X-IronPort-AV: E=Sophos;i="6.20,241,1758585600"; 
+   d="scan'208";a="5974415"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 16:48:25 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:18138]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.46.211:2525] with esmtp (Farcaster)
+ id ee641cb8-e319-4dd3-9bca-f35a2cee9a66; Mon, 1 Dec 2025 16:48:25 +0000 (UTC)
+X-Farcaster-Flow-ID: ee641cb8-e319-4dd3-9bca-f35a2cee9a66
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Mon, 1 Dec 2025 16:48:24 +0000
+Received: from [192.168.8.132] (10.106.82.12) by EX19D005EUB003.ant.amazon.com
+ (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Mon, 1 Dec 2025
+ 16:48:23 +0000
+Message-ID: <553c64e8-d224-4764-9057-84289257cac9@amazon.com>
+Date: Mon, 1 Dec 2025 16:48:22 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
+ mode
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, <linux-mm@kvack.org>
+CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu
+	<peterx@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan
+	<shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
+	<vbabka@suse.cz>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20251130111812.699259-1-rppt@kernel.org>
+ <20251130111812.699259-5-rppt@kernel.org>
+ <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
+ <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
+Content-Language: en-US
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
+ CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
+ i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
+In-Reply-To: <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbWV3STyCg0vYDXYg7asnxLTa4Jb5Fa59g7_QeTVxKV=ig@mail.gmail.com>
-X-Rspamd-Server: rspam12
+X-Originating-IP: [10.106.82.12]
+X-ClientProxiedBy: EX19D004EUA001.ant.amazon.com (10.252.50.27) To
+ EX19D005EUB003.ant.amazon.com (10.252.51.31)
+X-Rspamd-Queue-Id: E5B8F18001D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3BD8A180011
-X-Stat-Signature: um96o867jeohykszbed64iywsijpgc1e
-X-HE-Tag: 1764607424-892839
-X-HE-Meta: U2FsdGVkX1/Njurihm2kL0giXFfh8i0iEPGDTZgVPkRFWCiq/ujY5CCccfLtMQ1X1yO40acNGT+4EP3koc1S+YCl0e+fvPWrtZs9ZzPX1Z9Lo3kyyjTJup9yjw1F4+H3TXlix50NVCGtTzC3wtJsnkSwJxuneKWO6steyDF6nTyFWeI4noDDmOpu1lN5Tbfeyt9cfWaQPW7kix38o9mItZNZYyz3LSfhHCQ79JOtVYpKtBULG0yvxayaADmzbCCvVpoFew+iW8bdl3P6Yfgop9/mDdPV6vm+cRdArNMTX/Yl3mhBfpWIQa6vMKbwIJs7nKuw8a8CCX/7Xq2yqi06pm7vSz8kIAcKjrZTdSt3YpUFsuc8bOKD67YqrVd6I92kJGx+ugu6V30VhXU7K/kiSMk5mwBKxm7toz7uorZDcjoA0I6vakbAl0qk/LPtXvXGUdxJt2/UtorIv2ajc+sgpq04sg5ZXnAdfbe7Pid1UxXno+NehUIIqZudDiY6hNYChDHFeKennYRn7eAVcqbTuRhAs1Ldgnn+rrDdD4XARI+OEm+DEK9zVKq7Uou7cFMSk6MPsLe359dYSgSZFOXPVK+3WeJrYh3Oms/s5/HQAnpUmf2OtUbShW8WaxWmbixOkbzDJ9/ORUAwHA3rvt1LMRB66nAh2IKAFLvhu/i/afbTe7wx14SHBJVeZFckk0YWe1d6LZuUaACRHdVxkkTRJfBYEWWBinNR0CJh2nLscfevxQ6TzMNMHvUh7YoJ2Tw9xst3U3XHqnorsocGeMJ1Ta1JV74374HruTaqeizMgKjyoeAfoKRMVtajB3OC7NLlJgVPaqfH6NXRT95Rhw9Iui8EVb7XT77lI4r/9rxLKxexXW/mcye9r58Lc+dCyoK5xsllYteXzLk6XUbB1DlN0oD26ntJ64KzdpNmD5aKQJJRwhspv0LM4TTO2YgpHgdMMqMWcNUh2rls4FgfPWe
- 9bM9vgL4
- LHAdLR7FPjAF9fBY1x5ZVm7QJioH4hproRYWVfG77Z+cwFR+UVwXELkNCQsGAci8OVsYXALDbfrTpDj7IjITpikXqW5OJ3KWEyK0jvEkAJrks5cNVL8nVvkQLKJ4GcP/5bxwICuWydAQdlyEGbyyDtI6Lh1UkHnCyb7LXE/vOi+L/jYNqhDQ5N9jey3gh/p4ruvmaNp0DKfQn2s7YR92aXTBNeyzYsay7hyrnnecAr/l6Hht700pLofQUjiWXDtGlphTG+KXPLgiLVx6jiakNVCgCIRnyjR8YMQH5iLCM3Q1ZKF6mCo9yMj38C5AiHR7NTH0u8SYQcLfkDoi9o9N0LpTFxK0p39zdzpxUsD1u6f2jD3CGxvpWv/UmJW+3JyW7gWaa2tJiHXU9Ydt9ltFp/qUxa6fBWkkHcdBqOAZivZW2Xw0m44CWJNVOyFPAjBA6C+W3iq67jSa2JcPDC5o80w/gMQ0bXRytbeJAsUGt6fjpztptkuLK9gSvSbd+KiH8k1vmUKMB1vC0AQUq/uW+1fIhUHBQKGULfNob9EoJJwlfC/kjQKGY0z54jt8vmwzOA0XfUtaOXq2xLMZYD/3GR+qv3w==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ajig8ny67jxbck9m46nn1713j5orwu54
+X-HE-Tag: 1764607723-357127
+X-HE-Meta: U2FsdGVkX19trq9TB8i3Xr/g1mtBtIM9T2fxS50ouOSHnaWAGQAMgckxjKs3utERaVIY7aT2TqdbU0oCDMHVA9t+EzR5/knEm7528ReTUJqGtu64btKBNJlHxkU3GsHIUfNVJrFbXz48xNwbKRLKvgDLE1BoWk9jBUFnoIJA/oE84jSHwTYokR/Dwl8EkNHkDQFdnWN6x7mxVwKRVgJ6kGRDM6GnfW4yqTFR9fo+sZtyCfdSlfO2nrqZdGnid3+T+fT9S532oV2zK0ivWIf3AMURVBa+3YEUZt7mTIAO0D2+wxwLCAWXEH69fkvGTTWqEuS4qW7kAM7Hip1g9puFWwjgOYR7+HR9UdYErxB547OrrMVQjBcGb/tX+40qedg0ZWAo5B7+Kac7x73q4vPyg1Kufx5Fhd4l12D8Gx3oD8BN1RUZPDON7u2GPPaheenjA0LFEkbpL7z/mN8QEOhbhZAm6oHezGd36liDIwsZMZ9hMh6VCuIfrlfa+4ZLvgzJq2IJ628VMGwohs2ewLhjiWvrbd08swHIf8/UqNytO5IOBaccFg1NkYN7S/w+Wca7s01gCtvyP+Vlt00AcbgihFjgPFpFxhO2zvTmJWIg8KEdbhsVvSGp7HbaUp/dxKbmDt81QHXjy4R3GQPQYjoAvXqAHMzqoObVxV5ai5XfKmcaOFOYY/mH7PsKH2GZ0TMpGo8S9o2SuT1iilqaBiAqk7akBL5e5O8tDNAJrwvp/PlZLJXF/Ax/hdEgz1Iz/bvUHeZLAjIojhDu+DjZctCglB7TXDSysbOhoBdHKp5DjjvSUWZU42TZurZZa33qQdQRuEeLxjMXWgc/AAYgIhVQOcTzhtqGyirEo9yp/5C7PvsUoZOZx3EAaUP+BvrceNYpc/uLSbzbF4UxdROK42Iad1OBDGtz1XVprhiOxcIQs0mBRDjflA7jQt5HTxjDXKSuCcy99VrzaS148nk4IPv
+ 2GXTypWd
+ XkT0XqN14hGoRlKBFGNq3oOD2+21EU/HROM9zFrMlsFLlVf1uXYthbo5eg3BrdhoV0rkXaQDtCmE4JLDBBtn6OpS/Zh72wCuxil3oPbEvWxtqGaF1jjVCbB94l9Ens1YNqL4e1eQKeIk3TtE7HJKATNJktMHV4aYebYjrBrKYx/2H+wKCDfCY5+zRPya85tOFifCFNku7zqTkIvgmOak3nbgJc5uZrTJi4EHRRlZcvHus0EsdQlpqNF7hXkNEL2+kHpsTG31tVmCa9TkNI6AzUyPV+sthiyEd9WhWIv4uQtMRu6bYw1osfJfbJ3gk5cgVYtkIlu8O1ko882T1Wf474ujHVzcnwrYrB5Y81k3vAajIo8JtalKm1w2XwI4kF9oJ7LN+mcnrZKOFeVB9PN2xjJ9msnvGLj9MIJpWp8W6hsMuCByGOt90mtt1yWFCd1gV+lPxy9PXYB6TI32LpXIEXzseu2StNSyry4/qQVI5m+0FXm4MjP98t9Oi8qo+yOj+ujy+Po+FKdkXYnrbiFMCuKMefGYjNlHXAyw0pj9BBGKv5/WCAjDMxy/7t4a08MUdc+F1LldOM+gMi6we6I8qX1GoI5ZTV1iQPC4ulpc+VRkkKUUJdc0jW6B0TXhG9eUzKJdRJ6cDbgM0R4Fqu0cuVrtV1rmflH4NpxmTCgeNwCyDr4yJYRuXCA0EF3aT1fEcbeylq07DzTGxN+uC7j2vcJX5KIeLRnm4x7ktLDeYx83qmBZ1jemn9GQ9ugm2oHQ9V8HcdR3nrvrgHIMje2hxtLFHL+47pjzvYXhjPAmH+rFNmo83p2Nbj8TziS0QURnRkNlY2ZI91xR2ynQK+7N3jDycjnyY55+nMqPtwkam3m1ueQRHLwQeaY1nGk1cd8c/Q6wGfrSEylEh3dh2FGuPL/zkzrIeejDO1M1P1Kg9NuO3TqiMSkC/QzBRVgh091dWH/2OSZfYiiOLGQN4vm8s5S7NjIwy
+ c+Mw4jqX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,77 +137,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 30, 2025 at 12:38:38AM +0400, Chris Li wrote:
-> On Sat, Nov 29, 2025 at 12:46 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> >
-> > On Thu, Nov 27, 2025 at 11:10 AM Chris Li <chrisl@kernel.org> wrote:
-> > >
-> > > On Thu, Nov 27, 2025 at 6:28 AM Rik van Riel <riel@surriel.com> wrote:
-> > > >
-> > > > Sorry, I am talking about upstream.
-> > >
-> > > So far I have not had a pleasant upstream experience when submitting
-> > > this particular patch to upstream.
-> > >
-> > > > I really appreciate anybody participating in Linux
-> > > > kernel development. Linux is good because different
-> > > > people bring different perspectives to the table.
-> > >
-> > > Of course everybody is welcome. However, NACK without technical
-> > > justification is very bad for upstream development. I can't imagine
-> > > what a new hacker would think after going through what I have gone
-> > > through for this patch. He/she will likely quit contributing upstream.
-> > > This is not the kind of welcome we want.
-> > >
-> > > Nhat needs to be able to technically justify his NACK as a maintainer.
-> > > Sorry there is no other way to sugar coat it.
-> >
-> > I am NOT the only zswap maintainer who expresses concerns. Other
-> > people also have their misgivings, so I have let them speak and not
-> > put words in their mouths.
+
+
+On 01/12/2025 15:54, David Hildenbrand (Red Hat) wrote:
+> On 12/1/25 14:39, Nikita Kalyazin wrote:
+>>
+>>
+>> On 30/11/2025 11:18, Mike Rapoport wrote:
+>>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>>>
+>>> userfaultfd notifications about minor page faults used for live 
+>>> migration
+>>> and snapshotting of VMs with memory backed by shared hugetlbfs or tmpfs
+>>> mappings as described in detail in commit 7677f7fd8be7 ("userfaultfd: 
+>>> add
+>>> minor fault registration mode").
+>>>
+>>> To use the same mechanism for VMs that use guest_memfd to map their 
+>>> memory,
+>>> guest_memfd should support userfaultfd minor mode.
+>>>
+>>> Extend ->fault() method of guest_memfd with ability to notify core page
+>>> fault handler that a page fault requires 
+>>> handle_userfault(VM_UFFD_MINOR) to
+>>> complete and add implementation of ->get_folio_noalloc() to guest_memfd
+>>> vm_ops.
+>>>
+>>> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> ---
+>>>    virt/kvm/guest_memfd.c | 33 ++++++++++++++++++++++++++++++++-
+>>>    1 file changed, 32 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>>> index ffadc5ee8e04..dca6e373937b 100644
+>>> --- a/virt/kvm/guest_memfd.c
+>>> +++ b/virt/kvm/guest_memfd.c
+>>> @@ -4,6 +4,7 @@
+>>>    #include <linux/kvm_host.h>
+>>>    #include <linux/pagemap.h>
+>>>    #include <linux/anon_inodes.h>
+>>> +#include <linux/userfaultfd_k.h>
+>>>
+>>>    #include "kvm_mm.h"
+>>>
+>>> @@ -359,7 +360,15 @@ static vm_fault_t 
+>>> kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>>>           if (!((u64)inode->i_private & GUEST_MEMFD_FLAG_INIT_SHARED))
+>>>                   return VM_FAULT_SIGBUS;
+>>>
+>>> -       folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+>>> +       folio = filemap_lock_folio(inode->i_mapping, vmf->pgoff);
+>>> +       if (!IS_ERR_OR_NULL(folio) && userfaultfd_minor(vmf->vma)) {
+>>> +               ret = VM_FAULT_UFFD_MINOR;
+>>> +               goto out_folio;
+>>> +       }
+>>
+>> I realised that I might have been wrong in [1] saying that the noalloc
+>> get folio was ok for our use case.  Unfortunately we rely on a minor
+>> fault to get generated even when the page is being allocated.  Peter and
+>> I discussed it originally in [2].  Since we want to populate guest
+>> memory with the content supplied by userspace on demand, we have to be
+>> able to intercept the very first access, meaning we either need a minor
+>> or major UFFD event for that.  We decided to make use of the minor at
+>> the time.  If we have to preserve the shmem semantics, it forces us to
+>> implement support for major/UFFDIO_COPY.
 > 
-> You did not mention the fact that both two NACK from zswap maintainers
-> are from the same company. I assume you have some kind of team sync.
-> There is a term for that, called "person acting in concert".
+> If we want missing semantics then likely we should be adding ... missing
+> support? :)
 
-For the benefit of anybody following this from the sidelines, the
-third zswap maintainer also expressed concerns about Chris's proposal
-upthread. He works for the same company as Chris.
+I believe I found the precise point where we convinced ourselves that 
+minor support was sufficient: [1].  If at this moment we don't find that 
+reasoning valid anymore, then indeed implementing missing is the only 
+option.
 
-The reality is that Chris is failing to convince others of his design
-direction, and is now obviously resorting to manipulation and hominem
-attacks.
+[1] https://lore.kernel.org/kvm/Z9GsIDVYWoV8d8-C@x1.local
 
-During the course of this thread, Chris has asked for "a little faith"
-that his idea will work for all stated requirements, without deeming
-it necessary to explain how.
+> 
+> -- 
+> Cheers
+> 
+> David
 
-When probed on technical details, he stated that he doesn't like to
-plan that far ahead, and prefers having somebody else iron out the
-implementation details. He also referred to high-level slides from his
-LSFMM '24 session - which was received thusly[1]:
-
-  Matthew Wilcox agreed, warning Li that he was setting himself up for "a world of pain".
-
-  Jan Kara said that existing filesystem designs are not suited to this task
-
-  Hildenbrand said that this plan was introducing too much complexity
-
-His first response to criticism was to invoke his <4 week status of
-swap maintainer.
-
-Meanwhile, the design direction that Chris is construing as a single
-company conspiracy is anything but. The collaborative origins of these
-patches are well documented. Chris was CC'd on those RFCs. He notably
-did not engage in them. He is now lying about the narrative and
-choosing to attack these patches in bad faith and out of context.
-
-This pattern of behavior gives me low confidence that Chris is able to
-collaborate and compromise on a design that works for all users.
-
-And while Chris has been quite vocal and opinionated in mailing list
-discussions, his actual code contributions to the kernel do not
-instill confidence that he can solve this problem by himself, either.
-
-[1] https://lwn.net/Articles/974587/
 
