@@ -4,89 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54CD5D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 20:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E6D4D116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 20:37:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FC516B0098; Mon,  1 Dec 2025 15:25:41 -0500 (EST)
+	id 768A66B00A4; Mon,  1 Dec 2025 15:37:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AC8C6B009B; Mon,  1 Dec 2025 15:25:41 -0500 (EST)
+	id 740496B00A5; Mon,  1 Dec 2025 15:37:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79B876B009F; Mon,  1 Dec 2025 15:25:41 -0500 (EST)
+	id 67D936B00A8; Mon,  1 Dec 2025 15:37:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 654BF6B0098
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:25:41 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 12F9A89758
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:25:41 +0000 (UTC)
-X-FDA: 84172032882.29.DAD6382
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1C886A000D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:25:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=WTvztY8M;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764620739; a=rsa-sha256;
-	cv=none;
-	b=3lftpDRKgbzS55O95yxP1wDHFBJtAqNKelgjGSIP/Wk57qPc/O2DVD8kghLJPVGx3r2lls
-	FcBlYt3LZ7QXv/5nMjtbS4zuRxGhnIzB4FvWEtRfIYW5LGe0onLwJqB42ZbyAC8S3DhbvV
-	4uyHRzkzCwDa/iF+WelGNNRDPbOX7FE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=WTvztY8M;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 57EF46B00A4
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:37:08 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1AE318970C
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:37:08 +0000 (UTC)
+X-FDA: 84172061736.11.CBF1160
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6C0D9C000E
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:37:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qi22TA//";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764620739;
+	s=arc-20220608; t=1764621426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f8RYmMAyCBEl5ERgqHoDL1DaBIqwkQHFzgoqQfZgPew=;
-	b=AQFqG1mkmOas+fKoxiUZwjrfGeELY1ZYEvcxbC+zr7EwIfObXIgoAC3ofoeCAfjBBRxz6L
-	bdpdQjJROCWmoWTNnl6cgVcRmwRXi+f5yeLTTNqTW1eF747nmQOhFZK4EUNHFeVp/xOj3b
-	u/c2N7nO3Lc1qGVV7L/+EVMRjk/K/Es=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8FA9840E022E;
-	Mon,  1 Dec 2025 20:25:35 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id SbUUuFlYM96k; Mon,  1 Dec 2025 20:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764620729; bh=f8RYmMAyCBEl5ERgqHoDL1DaBIqwkQHFzgoqQfZgPew=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WTvztY8Ms6/lrhMjl9vjeD/SJr7//Vy0DAOs09aBOChza0WmFgoy+nkJKSi4XRjdY
-	 qyZh5CKksusOx630nwoHTYRh0lnzBeN6L2Vw9O/cGC+R4LDb5whajhhQyKG3EFOjBE
-	 zwoJ3dZr4Wi8YxCXMa234jv01RqvVJO9EoReVxCRU9WXgxCwKY2uULg1aQ0xqUuFHV
-	 g4SNCQSme0dUvkCa7gtDV4IF8RuBokjTcxpxWExmm6647FccF9axFB6NUhneTjef5U
-	 3Id/VpTWmFU7bCnytCJuPvxvy8gkE0ZJn5EsesmquA4h+l3JY4iGh9qYZYe+FFHw6q
-	 HSrwwqO5MyccIoN/74kP1s4vxCkWItfvipRgoOnmQd58ycsWVBoCHTEi+8jyToyVAC
-	 fH6uPazn5plfzQYxMY31g4otfTbqI/+2aLMqAn67kTPpJhHwr7DRHi+16nIqNAnsDv
-	 jtpAlZIXB2lw/gn8tu5OK5Mab9oECGWsf41Ps1pd3lER9KsBRCqsM3Uo8QSi4noPSE
-	 1KXVDw3R7L7tK5btyiVqaV9czP1QpwDwrJu4ls6mOG42bqYJChOh8gw6tND3VgOP6E
-	 8VCfNp80ZIxIQ0Cr+3NKYmfAuyM+VwELu2SpKvCyju19aBqMdPYUGsFVNhZ75W/OhN
-	 dGKHRZ5X25iW+EjT5D/lp2f4=
-Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 72DAB40E0253;
-	Mon,  1 Dec 2025 20:25:13 +0000 (UTC)
-Date: Mon, 1 Dec 2025 21:25:07 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, ardb@kernel.org,
-	akpm@linux-foundation.org, osalvador@suse.de,
-	thomas.lendacky@amd.com, michael.roth@amd.com
+	bh=PZqWD0i8J8JyGLTANDJsj+iyiks26xZCkBM89+LEetY=;
+	b=D1SBi7DY0bq8R0Y+fO8Z2rCVk6eoMySvMFbzJlB+lLtHRx3l9wV+7kEeGVK8X0EGXM8TBD
+	VajDpOfEDk0Tb+iUIxzHDhELCU91GFCmmz+LXyJEsgiq6dRBq5h437Ja6DlMWigSj73dSm
+	UEyJhs2W2KZgYOj1Lo2AZ9StXbpYBXY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764621426; a=rsa-sha256;
+	cv=none;
+	b=Yf0YaihrZrCU1VJ7Rb9qWjdbmZplbXwOsOC2H1ZSPvyQHEIz31HvU3SDYgpY19Su2/UZSK
+	lr9dH5rE1I4XrI/dT7Bwg5rE1ddAPdr0A5almZAjIOWLHw1hVKdmNEo7GpPhS9WC7oB5ty
+	jjvd9D/y+8ZUmgY0h8ulsmu9errhG8I=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qi22TA//";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6DD5360157;
+	Mon,  1 Dec 2025 20:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78BAC4CEF1;
+	Mon,  1 Dec 2025 20:37:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764621425;
+	bh=PmhAts491XzuroHVSlK8NY9S+n+kVfTtaW7AXN6Kq3o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Qi22TA//4UhyZnUo34ywTeiqH2Ar85pgmIalWuJljf3u48IW9oDXRE2Q08wJa6Y3a
+	 hr5QsG3gO6KOGsUvXYO/Gpfv6whabj2O6vVdCEz2Xjx6pFPNKiG4BWIU27yJ7F6E/x
+	 T5blgTqII3AsketDw1OXlnbit7qd4vhllSlE710rFR3uJqkpYrTFkVMyEfl8y81n4R
+	 yG6Cyw98/yGe1Goo9VdcKeD2H1iKOIJKKLtsftzbCjn1p3RF1NXZVmFIhY6A1Y9N2c
+	 FJVCQHiTYzWtqDZUdoxNk1/vw6S2ed72f3bOOIeYFerIlM/o/nCaoYu/DghBbByxD7
+	 w06MmMmaqwXjg==
+Message-ID: <420865fb-34cc-43a8-820c-b15b5f24a27c@kernel.org>
+Date: Mon, 1 Dec 2025 21:36:58 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <20251201202507.GFaS35o7WtLJOM0_jh@fat_crate.local>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de,
+ mingo@redhat.com, dave.hansen@linux.intel.com, ardb@kernel.org,
+ akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
+ michael.roth@amd.com
 References: <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
  <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
  <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
@@ -97,18 +86,20 @@ References: <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
  <052d7f47-edb6-4978-bc9a-c7eae469720f@kernel.org>
  <20251201191036.GEaS3oLBY8PEuE91Ap@fat_crate.local>
  <dcccdc4b-b7d7-47c4-b1b1-a6c70edb20fa@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <dcccdc4b-b7d7-47c4-b1b1-a6c70edb20fa@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1C886A000D
-X-Stat-Signature: tcnq33w88p7b54oaajyqr67od1x3cwrt
+ <20251201202507.GFaS35o7WtLJOM0_jh@fat_crate.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251201202507.GFaS35o7WtLJOM0_jh@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1764620738-541573
-X-HE-Meta: U2FsdGVkX19ZuWe/wZdzM4SQKvM5OS65y7h9v7R8gBeNSY/l3KKa6K6weXhHlv5etMTaTmCBPlApb35X0Eh2DQvm75drTk6Qcu+6i0GrCrD4qG+3k47AR0v/4IF5Hgo2v37acMi5/Z6uHc54zvXd4GBDHE3QontE5JBElRXJjw2wj8X9DwWI+YpS1U5b00fQTXsh6R6u/mrj30p9CQOZ/Uorb00zz5u7veT4GRkipjlcU69EBmHVTFLnvqnpGerBxqLVv556VcaRBtaHwupFOu8p1YMAkzBZblB3XcMfobfNw7LAcE41wm37NjlCiclrPZ4Dz1z+i1/nFsHzeVUWe2HJQz1Asf3bOplPpTxaNr1F2O8RiPGp/k3wdCNQ5GganlQ19B9oFKdS4feOemfjfsOiE6DROoaGPB26gLJWhMeti+VKvpM1wlIqIYE0WErZ9m+sGCl7BZ3Ewdj0/FpeuZD4/MY8MTHM5Y6ts64fVMaLcStmS82Z4D2B4MvvTvECsxR4LeVwC3lbMHECUSmDg4hEO1TOD6fKCaLNFDIBvWv3AJSIdtpiET6Jg4xMA30ArKvtlsFQrQ9UiF5AvzuxHgm+B4DBPuptVMvIsytcbEwfc/+RDc5LwadoksqhbsmlfvMuETG02SpkQOQowhrn+6BS83/8unity4O8EFlHhCaNbhszg1dT525o6vOjkoFSmwbd4gQE0l5ipVp2rQ9Kf9BmZszFfkEpyzoTBF3o18q8p20aqvKRYuaRk7CtH6zTb7XXQDuPoJrq0mU9hWzMn0JpvJE59JbxQik/XhatTgtkfCfDTIWt6tDKrTT+P7mKkMOYQQbBbrQvZAl/CZJ8qR8c2hPINWzrSus6na/LtwL2F1CEViYwbzo+gw2FTrgNBQLS4X8LzqEPC8zpchCCo/EFIEcV5ZxK3zvPzUgR8XOv+7mgtgJq1Zt/ZZDyG7XznytrrKQHWvIyuMdiLJ8
- IBMkz6wj
- Qa6WOEFPxwen24Ym2O1pGXf+B7oCuCVjFuAc8RI8ho0uPli0k5JUaXYVqNkD73JxStryBXkWoQPRGGOgc3b3CXtRJJFJ4n56ezUyXFan1D4KWpgX1gGnVsOMSGoaLuf3zxIJvzSBq5NTgXsZbqVblg/S0eZqDcs/abQxYnAuq+P3tMb5wZa3rT35sGW+NicpnB8T7auqG/ncHB3SCDZY1nYF1rsdNSybKbEb63sJWm5D2RVI=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6C0D9C000E
+X-Stat-Signature: 9x6wxdq3abkmjitqsgnjqy3qqyykibss
+X-HE-Tag: 1764621426-195529
+X-HE-Meta: U2FsdGVkX19R7K0uw6Tdheo3kv6MZnDjELNLK8evh0rk3uaFdoY30qzliRTIl26Ums2XEvIU4C/DSHhqPGgb4QCELLcHOmDiZnPOAcB+KBoWLAX3onZfw8i3N8Xolyrhq4rvp7yx7aAXNCC/m3JKKId7SNj+2knNJjrM3/8m/zHKiPrs1OWddZRoC5hCtQD/OV4f0IztKjKg7/s7nNygQqytPdBf4RKUxCeO2XlDL2pveyCh2p7uwBZVXGWIE0HIZ9N3P8+6DezcNdvK9JJDGPesetbZYbnTYUHZRjgCo8F5iS6sDgLgVUHzP2/hJRQ6Xx7kCfvSRi0/otowNlyjPCCx/3GQ+CueU6VG04JIYLO/8GvnDYhvHdvUwni4lwCqfDMi0gZdYvRc1t2DJgfRgYJFAKnmWtGNHpEq5hZ+b2FW5+E93u5AvZYGQuueg4pn7iJrLDbc1oO5hC8EaaABPjEbI9NlMK/XiVItYiW9+TuJptMo9J/37VMy8CnsF6Zw2oRcnfmvdroFLZ1WZ1Az/a+bvwxT1B7ymnNaBDIEgRlieIzfmE4y6PrP3gsNoBcpHR/2SVd+pqa/oayr0p7RMedFWBGACVa0xnto2P8Gck2FIBjX29V6os5vKEVazDiR6v7aGl5q8+AlOqZmD/MJ5gX2FtrjXiR4OkUxEVsc9A6o+MmVbTrWc/WPDtjBu1+tAG3QXlyPDX2NeUV+LvIHHYYk182APyXndPTgSZronIGBS+XilO1xqG4FFjUqpfNe+9J8tO44sh6lEZznCtNNc0FnW2dJQWJjq0POgTmFaC4xNqSDjGhAUsZQ/6bUQtdQCTx9nTfDuCOdUE7+IQ9rIhqL5GEa6wHP80v/Zh13LZg2MS0mYMWtMaG1nCuyR/U1+itrmi09mdiKV/aqrMhBnqaBSf5bC18wlfOVr3qFBV5f7RAs6Nj2VEg97IDYCF8xAedKs6JiXakeZkmTt0c
+ v42qvtIK
+ U8brrbWEfQ3jPiHCLaAmAf8CzZvgeGiBm+eIPrDfIoJix5bM24/dLIrpEJ6aBZkuAsWt4ih0rIzjT9xLI3AojrRKNIVz4n6p7s+7AVwQY2FdQb/bVO2EqBP2Tg+KQ8thr/FuNKN2UNgBJwylU7SaB5EE0i+5db1riFcV7yLJ3MhCxtVjiiI4KF9S+JAzGahW4S7EhT1pNJqgBkNIM8lNes0PoHHuBgfJDp+h7ZIFB0wqxDYWseKj4U4TV+yo7qlpBdwyu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,23 +108,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 01, 2025 at 09:10:26PM +0100, David Hildenbrand (Red Hat) wrote:
-> Just to be clear, I don't think it exist and also I don't think that it
-> should exist.
+On 12/1/25 21:25, Borislav Petkov wrote:
+> On Mon, Dec 01, 2025 at 09:10:26PM +0100, David Hildenbrand (Red Hat) wrote:
+>> Just to be clear, I don't think it exist and also I don't think that it
+>> should exist.
+> 
+> By that logic if it doesn't exist and someone sends a patch, I should simply
+> ignore a review comment about that patch breaking some non-existent ABI and
+> simply take it.
 
-By that logic if it doesn't exist and someone sends a patch, I should simply
-ignore a review comment about that patch breaking some non-existent ABI and
-simply take it.
+Well, we can always discuss and see if there is a way to not break a 
+specific use case, independent of any ABI stability guarantees.
 
-Well, it certainly works for me.
+> 
+> Well, it certainly works for me.
+> 
+> Unless you folks come-a-runnin' later screaming it broke some use case of
+> yours. 
 
-Unless you folks come-a-runnin' later screaming it broke some use case of
-yours. And then we're back to what I've been preaching on this thread from the
-very beginning: having a common agreement on what ABI Linux enforces.
+Heh, not me, but likely some of the CoCo folks regarding this specific 
+use case (kexec in a confidential VM).
+
+> And then we're back to what I've been preaching on this thread from the
+> very beginning: having a common agreement on what ABI Linux enforces.
+
+Right. Maybe Kiryl knows more about this specific case as he brought up that
+these structures are versioned.
 
 -- 
-Regards/Gruss,
-    Boris.
+Cheers
 
-https://people.kernel.org/tglx/notes-about-netiquette
+David
 
