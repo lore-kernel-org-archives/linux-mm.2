@@ -4,128 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5588D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 10:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E36D116F1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 10:40:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 229826B009E; Mon,  1 Dec 2025 05:39:43 -0500 (EST)
+	id A694C6B0012; Mon,  1 Dec 2025 05:40:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 201686B009F; Mon,  1 Dec 2025 05:39:43 -0500 (EST)
+	id A19FE6B0089; Mon,  1 Dec 2025 05:40:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13E1D6B00A0; Mon,  1 Dec 2025 05:39:43 -0500 (EST)
+	id 909506B0092; Mon,  1 Dec 2025 05:40:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 041776B009E
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 05:39:43 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A7F4F1DDD30
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:39:42 +0000 (UTC)
-X-FDA: 84170556204.21.B6C060D
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F0791C0007
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:39:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YRFrmL8h;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 79CE96B0012
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 05:40:43 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 564DD16010B
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:40:43 +0000 (UTC)
+X-FDA: 84170558766.25.CC580B9
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6A9E218000C
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:40:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T12cL/wG";
+	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764585581;
+	s=arc-20220608; t=1764585641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eVqlfvbnB6Jt+dwL/fKo+5bkZHEMBBaEcT6SxFkp7bE=;
-	b=laq84slhXbkdeHWG/RN4UBnAxlVC/rAiC4dBCb3QARldHmKTfCeeELQPNf3b9dfHdGlpd6
-	p/+hlpll2FrDJcrph3mGn5P11Mnn4161cN+9FlbN0jEa0WgSPLLHXg0ZpUM6VhGTCP1Hsh
-	CKyt2TWnS4QXgo1NNQkgNRQ9Lswjojc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YRFrmL8h;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764585581; a=rsa-sha256;
+	bh=lw1Wj8imY2xqpphMlisdmGdmHKrrobsZEQcnSuiN6Q0=;
+	b=F7lLAXoK0lYN4OPQdrWNycPO7ul/ofwljNMevo65HswnvvdDX4UqiBaMEGf77cj3/H1sXZ
+	ph7jbkCMLofTD0i3ngzb5U55XBTSCpYkVBXKG+zzhj+nifj5lgXvMcxGEk417mz0gtWCNU
+	ErgY3X259TmIaAyD5T3OU64HRMincr8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764585641; a=rsa-sha256;
 	cv=none;
-	b=o3KpzO6kE0oqF6p+WjPTcpj87GCADrt/MUEXM3c2wxKzyS+ctL0uNcWFHvAjK4R+JoWLCB
-	6pmsCf22vldmr+TqLLtPJoVr7pEdlIriSr7NfHvxay7ANvYHPBGKPTRdzpjSvzf1+kKmHh
-	f9wUDvXbCKmQfBRUJ4daN1+KKUDFDj8=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8b28f983333so378404085a.3
-        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 02:39:40 -0800 (PST)
+	b=qvT2NYVXn0BZWGF/hi0YcYCg/Itxul0xWdqdgR+GqazjmwmDBtpxuHt6ZQQpkZbyhCltDJ
+	xbZdmsWADsNFRwYlSKJdebeIOcS3wZRhz0kSi8M3BvtiQrbM3HMxSHgF9Y/Hv0WxmfBEvZ
+	s7ha9dtwqJ6Mvf8b27zVRfezvGtAqxk=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T12cL/wG";
+	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-640aaa89697so5776239a12.3
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 02:40:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764585580; x=1765190380; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764585640; x=1765190440; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eVqlfvbnB6Jt+dwL/fKo+5bkZHEMBBaEcT6SxFkp7bE=;
-        b=YRFrmL8h/sQDK8lL/2qYTaLG+1tIZLmvySrW075qdGc/hJoQFwmviSR+8CjEg7r8sJ
-         iPZ7gMXXJ8b0pC17bv+DMCmVh+Py8o5eOdvupeDnFjAxsP42xgEf8YbgohgqY4b6XMG0
-         FonxUHsHPL6AkDJdN+XzA6s5hea2Fbhmp26l5qDRibp88V59x7JAYy8Twh5grqXh3YOe
-         5EkEOqrQNkOr8z9bFylTg0bjXYIX+miPT/qdgPxFSH9CkvHFIcBT2LpIzSdLfix/oZpE
-         UqSWUpAN+oyZCPbaEFZYFZEQEsJLzLGWLAA31QgQYW/Ia9mnefGpVK7VhMYNBC2t4Nhq
-         uizA==
+        bh=lw1Wj8imY2xqpphMlisdmGdmHKrrobsZEQcnSuiN6Q0=;
+        b=T12cL/wG52daFoNyO2285eZUlQla4xUU+VCSngtvBFcLQJVoAqkohZT/xeREJ9Y0Xe
+         cUVQb1FOEg8QD7U+0wtF/uJhDQyV0J+VZCHPPskawpfGw0i/stq5yvFF8Mno2+FimDay
+         Cge/aMMRzDKkM2EIzuMiq/j1abj5i+r0a4O1mF1t6c2B7179ysQE5i+xMeBVvhcZTt+X
+         bKsrcWW9xepFMBoeQ45EpwouCdbdAwccRZFEA2xiSDqrWHO/8xoWvoocLPQYxqiSpfFr
+         7fmdRxgloYF0SgbAY9/SFx2qrF0H1xgOduj645HPlPuqDy8f4wLkn4qqVSYBCtHFeyJA
+         jGxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764585580; x=1765190380;
+        d=1e100.net; s=20230601; t=1764585640; x=1765190440;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=eVqlfvbnB6Jt+dwL/fKo+5bkZHEMBBaEcT6SxFkp7bE=;
-        b=Pi20yp1fVGeba+i+xYO6F/z3JtiN/tFy5HhwbSvNCD+ZRlgCSUoGieywyRL3iN7M5l
-         AA+LxKVzz7+mRXsI3MqFoVKNWTAdxQ2dpUEH1fdx0Q62LMuLu9IOeUNVNT7BB5Cxs8aR
-         fXRdeeNH90yVfNlsCVm97WQyCmXHGlYVVnCVNDF4A02W1nW2+y5Tgxkg8OBOGu49chld
-         3tDFDcLIy2hnD4AFiIKJLwH4B8AhfXKkjTIOEtj5dySIrY7by5lYbufsH4+C2lAODY06
-         1phTnvnmdSb4IYNo9809XARDqbzeOb564Y5PjsMh95t/ly7hA2bECfbbXSqnUMwjLOPh
-         iOeg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPu45/SXnB8FyPg3BXojyUqcOMzbcpPSHeqfTTFObpZb7kq2XCwV2gY2uC/A6Miz88kaCoz/0ULA==@kvack.org
-X-Gm-Message-State: AOJu0YzQwJzG4ycrII9TQ9MkN3FgaTE3+bINC31QtaZRNdGnb0n4pKRa
-	1BDqWznuX0DcRzthjFyASz0iwGOD0jeW1VNY1VKS1jyP4Wsm4qQrOUKfHRdoatF3XjKa2WuykUd
-	Xp7pPuAQTw37PgjSqg8SHi1r4zUtnoiQ=
-X-Gm-Gg: ASbGncsTzvSIYA1hoVC9YLaairGw5LtjStgX7D1ugiIY4cZCr4NmfrsfcwsEdXr+fZs
-	VtzECuXZnQQwLT3sIDmqEObTdYg/M7V3rWqtP+jW+OeYzcKbkwR/7oqZNiocQDSEBdHYSTjmxwl
-	GMQx5xnVcL7I1LCXljNtVMxpXsv1F0x4rQfM2Nvh4mps+FP4HO9VUcEBwj+F+UOjEHnPAA2HeJM
-	/ACgfU2ak6+Y5brPT6ZLIUwyWQgNMRoA64KBBO5xjGVW5nUuvC+O3naq1BLLawSKcoHYg==
-X-Google-Smtp-Source: AGHT+IG74z3lES06shc6Abrf2jDP6OsXw1j4gHSocVERkFq+qiAhZ6poKfIcf1RE4S08qMyz8qmfiB3xfZ6p/IR252U=
-X-Received: by 2002:ac8:7c53:0:b0:4e8:a850:e7db with SMTP id
- d75a77b69052e-4efbdad7f96mr396585221cf.71.1764585579826; Mon, 01 Dec 2025
- 02:39:39 -0800 (PST)
+        bh=lw1Wj8imY2xqpphMlisdmGdmHKrrobsZEQcnSuiN6Q0=;
+        b=YiURmhg8bHc5NOEKREg99FIDjLz2CMYQcsER5Et4N4dvpnd0Lghf6AzSZi0IGzgARf
+         IHb/IrtOVizPscSsW2Ain5rFnPk2kGRUyOEfRSrCQQqT1A9sFUt+6rFhmHJJuTjuh25k
+         vqiqkwlIkzKT4DKgziCU6BG+YMLzf4QQ/E8Oazs5nMF45nfXle5+ZuQDpT0b78kHV7xR
+         2Oik7cqJcM97mUyKR1eCml51My89tBJhQoxfu7Ex+rs1lmxrbZmf6OUndr+u6LaDwTsW
+         1Uq2xfX3kqn/fqJEb9PCE8YZFCBcjswW+3wBPBPvmR9Us/o24pk8QsJjicYPH1Jy7byj
+         hh9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVVsLHBKt3cbJ9VUQeOgey+ru3ZXH1MxWUgvLHtivoWX2ft4qJKl/TOFEn2JJYx3bWir+JKbUi3cw==@kvack.org
+X-Gm-Message-State: AOJu0Yw+6kHxL1ihPzV2QkTLX6BB+X4wblqX+ci1kpBjAvjyq7irShrD
+	QAqfO0ejaF4NgeI+r3E5WFPKBPwkyeWamq6eEO3Cl6KWlrVvoeLqMjD1n/rD8dDAqv/dLg0WDK2
+	JpRP99/y9OiL14FMZT8pD6vVRmzj48w4=
+X-Gm-Gg: ASbGncvZof+kww35UTkLa1vWkPM0zmDq2slEfFoMJvIZfRiK/YPq7ELM9JF7LPol1O0
+	fhFvjzoJPJ+jCSyJjLCbMlYF5oU85d9aNNM0IWbPiy72+rwcjS6tktHsCHHxk/xB7aFivi1WSdG
+	Z6uuJ2+tarfUZjQNL0Q/NwL+ke2Z+OTxDAXr4i1GTQRJ2M33pDbMe1Jy32X8SJg0fI+C1PCiVfu
+	Syapo7mLzhG2oYbstOb/gUsEpq7ju7NBkKt4VT1zfjpefMsqyMVytdYt69j98ABT6ESCLcllf92
+	Lr/14Hovt7ACKxgGug1j7lNjLKdjX3EmaVRkHg==
+X-Google-Smtp-Source: AGHT+IGCd2jLZ7RWXEuJBG/8+wQgZ6chSdTTlYuoZS3w361zhPChIuEPqPC62DzuHYO5VRoK2v+SoKWD3b8t3mhijIw=
+X-Received: by 2002:a05:6402:5188:b0:647:72a2:771 with SMTP id
+ 4fb4d7f45d1cf-64772a20a53mr3626804a12.22.1764585639508; Mon, 01 Dec 2025
+ 02:40:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
- <aSm800KsCAptVZKu@casper.infradead.org> <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
- <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
- <86c62472b5874ea2833587f1847958df@honor.com> <CAGsJ_4w1jEej+ROuLta3MSuo4pKuA5yq7=6HS5yzgK39-4SLoA@mail.gmail.com>
- <66c62243a510421db938235a99a242bf@honor.com> <CAGsJ_4x0aVkDf-AhhGbBLU=LCxYFqYoFL0ovij-vFEQeJ46jYQ@mail.gmail.com>
- <dc8ce4f329d74a24bde62c93818df44a@honor.com>
-In-Reply-To: <dc8ce4f329d74a24bde62c93818df44a@honor.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 1 Dec 2025 18:39:28 +0800
-X-Gm-Features: AWmQ_bl8cG_eW-1XhcPjhfAlyIHR_s3L1DahRCe_je2wzBXNhrB7Ynb2hmqyutM
-Message-ID: <CAGsJ_4w16G+AngPu48SEy1H+ZuE1AQngiY=cSfEs9V6=OUKX_Q@mail.gmail.com>
-Subject: Re: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
-To: wangzicheng <wangzicheng@honor.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"david@redhat.com" <david@redhat.com>, "axelrasmussen@google.com" <axelrasmussen@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "mhocko@kernel.org" <mhocko@kernel.org>, 
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "weixugc@google.com" <weixugc@google.com>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, wangtao <tao.wangtao@honor.com>, 
-	wangzhen 00021541 <wangzhen5@honor.com>, zhongjinji 00025326 <zhongjinji@honor.com>, 
-	Kairui Song <ryncsn@gmail.com>
+References: <20251201093741.730884-1-kartikey406@gmail.com>
+In-Reply-To: <20251201093741.730884-1-kartikey406@gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 1 Dec 2025 18:40:03 +0800
+X-Gm-Features: AWmQ_bllUTrdQgKUWU6S4w5l9orZb_OcDiYaz9EiOcuBeib3QuUUufu70N_tPOM
+Message-ID: <CAMgjq7DLkbfXczQvT5on_25PbJOGT1iOqteuXYsXEzFL6CTbTg@mail.gmail.com>
+Subject: Re: [PATCH] mm/swapfile: validate swap offset in unuse_pte_range()
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, YoungJun Park <youngjun.park@lge.com>, 
+	syzbot+d7bc9ec4a100437aa7a2@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F0791C0007
-X-Rspamd-Server: rspam11
-X-Stat-Signature: o61rfjy68jquybmkfas86cdkbyqq8frw
-X-HE-Tag: 1764585580-512096
-X-HE-Meta: U2FsdGVkX1/CF/XPHGbROQY01f79uyKgR1ClVv4EVbvyCUyyh+8u8kFRn/Tf5/SgKVvGbeLUlB1esKqDlilTLv4LCFiK2JbYk4bobedhHorq06LjG8bUbt3KTiGOUT+hjz4dWCAS+lpYp9J7pPJh8dm2g1C6ZEiUiJcOdOWNDYy+BUJQgLqOz5+YslgRp+exqO2nLeSZN6zS9H/QtRIF/HaPYLbe1EsB0Vlx9Wn890DcA0jG4wnVApsm1qpeh+2bm0uiKmkNnZiKhIE8EPoHPVkDVSiyYY3PdkkDH4MSsLZZMo8revEScZt4pcEAqcNRVmhW2G8rA66zJaPvOSO41lTQL6CdR5RVEamtQzWzsYf2UAq04wzSF3BFpgBbXbR4AYvjbD74fVLGhfj3Ung6+C6fSJ9HpKNXewGgTDcoIvjm/onHPyvsJINll79X9AMRFOAevxPxBCsoi/d6C+hNykKnGPod7TdKmbfgxcYJyjHjJAMneDsoe6q+h9WtRkzBk5osz1GLAyyC4J4yvOMBG3Ljp7DOKDDMApczvP7G5IXbgIw3ruKgU/BKS7GrOkWfkPCglhwJyYFDTaUSpCfpVW4c8R88BX6T69a6b2UPYXmIYwMvqcUUyuKIo3BOxNzrz4wtM8ZxXzLljhDZ88YbmgoDKHLebcpxTU8ADZt9YmQHV/GgqVe09FWFNnV7KjUPuAq8p7u45ps6+ROSsQ2HKWC3OFNVBZtbL3kCJFCililPLqcos6MQHhmaCii5bri34mhB+7TrwQHtTbQ9t+MxIRVMk40qnMyRaoT3kX4zFSklIw+S6bF6o8NGY6THLYQV6SpYtWgI9uoopJXuzyObDOGbXVCWyJ73iLao6MBH4SFAyf9cCXU8C532ZEwHZ7rzaXXbCvaMJ3yoTfn3uixLiyfbVdP6eC7nB+C5LTu8JqcK4L//uq9OEirSKh5auYECvzcMa56ES/U1yhvwjyu
- /lLZJ6MM
- UbBUHFz2e52J1pzcEsUT9qsyaQM6yod9M8YrTDKHppZtiMAK3iFr+ADGJ8uwY7zDDB8y1zrzqBGYs758fLVJbK7lTjQ5pwyUIhpEw7jnMgzq+lRw=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6A9E218000C
+X-Stat-Signature: ki9bd9pi15sow6oes57pz83k1nk5zbb1
+X-HE-Tag: 1764585641-412005
+X-HE-Meta: U2FsdGVkX1/4EOr/zSU3xw0m+T52N0gb1tlVUm3U5TmCkplsX8pHx8VwHe1R8cfGj02FeG6Szo0VCTrfSEwhDWskZhCdMqdiGWHSdEn5K1FeN4oNpMhx18wkcJuZ12yFiLNPSuoZitj7A/FCXbxW6kZscLeylNMids1lYPMaqTcfxrV1xrtVgC4ooA83s3FbPVpBLgQHBzQjP7rT34vSZGsfz5qpYqvRvfQHRhdH50ekhX/cagFsleN/v+4rmq9wMZeOYvGff0LdA6BGDx5m0BvfyKd8pACne1crLiC2nrhUwNliBz2wN6nqKFZgi88LX09LA5Lc3FAEBDxW5FO6Ac1DQPJ4HtBAM2eKKa1B3ChgHrT+ZE6uUSaSoRPtyAJ2Y+4Wv0BQdsP2YZaYgh9Uh4/ujHRNyrhRWfd5KrbpwjyvAnx3hdSUeF/Jgrc9o/CdYpO84Gp09k9ZhqyyeBHXneFaS4LTzP7RnTEG/fLY47TCZZTl2qJNNj85nHQ4WhUAhzX6v4Z8o0SNoR78lzBIlzn+gePaEbYuDI0b7Q2RfzKQnJkOuCiRhW6jeUwirOzFpU7raS5ycwYfin3DrRcsbcfarYxRe5pn0b2sYC5JHzpLSf36iscR5GCk9i6cjO/R7SBz32MB4dLFjeLuhnagIwfmVe3sMJ6bpQT9dqKM+oAVuARi+Z6/QPlOE/ssAQ7tQPi0LFG3x9hBXODP23qEpDEVm05ifDjLPKGPaVwnk/hnjx1/24Z1s1O6E6+WyogivP4ZWEix5SymQkL10kcQAvnTgpPvhSLYvPvmcd7tC1sMoQij97Yg5ULLXsc7lBnYAnftInj2XZF28muRKSnm7QvVIlk1l7iRftzsI0N95FewwP1F2vaoYJKPOzalG64/o6fkOSgtDMe6/oIqtoDuJhkZdjOI5SVg4XbnvdsUwcSWd73t9Xfau772FM47a1hBHYiObKuIKJLMvz0Xkxr
+ DL7uogNz
+ OrBx2nxFAMuHI/69ksYJb8ya/3N+ZnEi0aoidOkMv+R8XJwC17xnA+RbVSD836RNDgvQKSZo1m+fmaEP5Yvg8gQytqwJ0AKck4QoARdn0SicEztQUWgPIQih3+H+ZJTsBo8zFaH1k/ccbJ1FaPPXkb3H0wcxgLwIJ/9m7+eFZ+KZyfeBHTIFcy8ibC10P7Q+gneySZXw5Ny1LcqVy6eVMA0ma6BiwR140Gt3wyd5ypByWvJ1AYR4fyKfMd9HyK+ZhGVxRQjrnJFH9kk+Dg+uadnT/fEpKzrUepKJqm+Zx0Qnz53nijlK+GQF/KdMQ6bX0qolaahsIUIusUEDHNO6dzddDwvatvmhxmT+8fShBS3iS62gMEueLS1htCRilrtokRrJI9RKVAi2isfYhtx891/jabpl6o15uiGA+4tEKAwVNpYvPFzPd4Itj4TJSRo9fVLbU+K9FXEGKJaUKA6SVDIgx45svQ8MPD7GH4vzCHw7HUy8yZZ1Ek6zsnG/MbVX0CBR70oyq96SUMZV9qgiqXZH5CkgPp6RSTf7w9M08aWqTJSBBLrZNSMvAwE4uywbXf5jI346LVRvctochlUQ69nbKEfejo30TsJhf4/sobzjeBK4Zkzz1hn7WPT5XoFWyoyy+qn3zQyUxfhLyvRh65rXowddNm3sxmkAb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,76 +119,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zicheng,
-
-On Mon, Dec 1, 2025 at 5:55=E2=80=AFPM wangzicheng <wangzicheng@honor.com> =
-wrote:
+On Mon, Dec 1, 2025 at 5:39=E2=80=AFPM Deepanshu Kartikey <kartikey406@gmai=
+l.com> wrote:
 >
-> Hi Barry,
+> syzbot reported a WARNING in __swap_offset_to_cluster() triggered by
+> an invalid swap offset during swapoff:
 >
-> Thank you for the comment, actually we do know the cgroup file.
+>   WARNING: CPU: 0 PID: 9861 at mm/swap.h:87 swap_cache_get_folio+0x186/0x=
+200
 >
-> What we really need is to *proactive aging 2~3 gens* before proactive rec=
-laim.
-> (especially after cold launches when no anon pages in the oldest gens)
+> The issue occurs because unuse_pte_range() extracts a swap entry from
+> a PTE and uses the offset without validating it is within bounds of
+> the swap area.
 >
-> The proactive aging also helps distribute the anon and file pages evenly =
-in
-> MGLRU gens. And reclaiming won't fall into file caches.
-
-I=E2=80=99m not quite sure what you mean by =E2=80=9Creclaiming won=E2=80=
-=99t fall into file caches.=E2=80=9D
-
-I assume you mean you configured a high swappiness for MGLRU proactive
-reclamation, so when both anon and file have four generations,
-`get_type_to_scan()` effectively always returns anon?
-
+> While the existing swp_type() check filters entries for other swap
+> areas, it cannot catch cases where the type bits are valid but the
+> offset is corrupted or stale - for example, due to a race condition
+> during PTE updates or memory corruption.
 >
-> > Also note that memcg already has an interface for proactive reclamation=
-,
-> > so I=E2=80=99m not certain whether your patchset can coexist with it or=
- extend
-> > it to meet your requirements=E2=80=94which seems quite impossible to me
-> >
-> > memory.reclaim
-> >         A write-only nested-keyed file which exists for all cgroups.
-> >
-> >         This is a simple interface to trigger memory reclaim in the
-> >         target cgroup.
-> >
-> >         Example::
-> >
-> >           echo "1G" > memory.reclaim
-> >
-> >         Please note that the kernel can over or under reclaim from
-> >         the target cgroup. If less bytes are reclaimed than the
-> >         specified amount, -EAGAIN is returned.
-> >
-> This remind me that adding a `memor.aging` under memcg directories
-> rather than adding new procfs files is also a great option.
+> Add validation to ensure offset < si->max before using the swap entry.
+>
+> Reported-by: syzbot+d7bc9ec4a100437aa7a2@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dd7bc9ec4a100437aa7a2
 
-I still don=E2=80=99t understand why. Aging is something MGLRU itself shoul=
-d
-handle; components outside MGLRU, such as cgroup v2, do not need to be
-aware of this concept at all. Exposing it will likely lead to another
-immediate NAK.
+Thanks for posting a fix!
 
-In short, aging should remain within MGLRU=E2=80=99s internal scope.
+But it seems the report is no longer triggering after the softleaf v3
+change right?
 
-But it seems you do want some policy control for your proactive
-reclamation, such as always reclaiming anon pages or reclaiming them
-more aggressively than file pages. I assume Zhongkun=E2=80=99s patch [1] we
-mentioned earlier should provide support for that, correct?
+Checking the syzbot link, last reproduce was 11/11, and my analyze was
+posted here:
+https://lore.kernel.org/all/CAMgjq7B=3DOizLoqKca3RjeV0h3p0GQ4uen+gDo3=3DWdA=
+xQ1gfxnw@mail.gmail.com/
 
-As a workaround, you can set `swappiness=3Dmax` for `memory.reclaim` before
-we internally improve the handling of the aging issue. In short,
-=E2=80=9Cproactive aging=E2=80=9D and similar mechanisms should be handled =
-automatically
-and internally within the scope of the MGLRU code.
+Then we have soft leaf v3 merged, and the warning is gone.
 
-[1] https://lore.kernel.org/linux-mm/cover.1744169302.git.hezhongkun.hzk@by=
-tedance.com/
+Your analyze:
+> for example, due to a race condition
+> during PTE updates or memory corruption.
 
-Thanks
-Barry
+What kind of race will lead to a invalid swap entry in the page table?
+During swapoff no one can allocate any swap entry from this swap
+device, and the swap type can't be used by other swap devices, so any
+swap entry still in the page table must be a valid swap entry that was
+allocated from this swap device before swapoff starts. And we are not
+releasing the swap_map or si->cluster_info until swapoff is done, seem
+no risk of OOB or UAF.
+
+Memory corruption may cause it indeed, but memory corruption can also
+cause failures in too many ways.
+
+I'm not against a sanity check like this though, just want to double
+check before we process.
+
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+>  mm/swapfile.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 46d2008e4b99..fdf358df7116 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2277,6 +2277,8 @@ static int unuse_pte_range(struct vm_area_struct *v=
+ma, pmd_t *pmd,
+>                         continue;
+>
+>                 offset =3D swp_offset(entry);
+> +               if (offset >=3D si->max)
+> +                       continue;
+>                 pte_unmap(pte);
+>                 pte =3D NULL;
+>
+> --
+> 2.43.0
+>
+>
 
