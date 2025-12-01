@@ -4,127 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BB6D111A8
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 09:01:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5D0BD111A8
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 09:09:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D2F36B0088; Mon,  1 Dec 2025 04:01:19 -0500 (EST)
+	id 35CBE6B007B; Mon,  1 Dec 2025 04:09:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AA6F6B0089; Mon,  1 Dec 2025 04:01:19 -0500 (EST)
+	id 3343B6B0089; Mon,  1 Dec 2025 04:09:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C0C16B008A; Mon,  1 Dec 2025 04:01:19 -0500 (EST)
+	id 271136B008A; Mon,  1 Dec 2025 04:09:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A5C66B0088
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:01:19 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 165C16B007B
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 04:09:47 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6CB3140889
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:01:18 +0000 (UTC)
-X-FDA: 84170308236.14.FAC63F8
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A3B2910000B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:01:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jpi3CzPQ;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C21E7BCD4B
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:09:46 +0000 (UTC)
+X-FDA: 84170329572.14.B5C6C98
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CBCA91C000D
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 09:09:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=UeLoA7ZZ;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764579676;
+	s=arc-20220608; t=1764580184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mxmnSSeFCevDFxHXP8UnjPd3wrJiEWtNZQwj48atiFU=;
-	b=nSVSgFKs0IA2xi7TKYuwgNTf3munH9/uwMO1FQR9mnk1tTi4Ixjh0gtQcVgiT81dztAVR0
-	pZ03paiYbGgOW+Eqd/3JhZy1+LCcjWmkROopBKjbpD9f8tX1IAYLZfFx8p3u2RTmYsrpQr
-	jg8nAvGNN1+3p8eiKjgSUv558i/OOqU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764579676; a=rsa-sha256;
-	cv=none;
-	b=BfsdMKVbZNzIBc+ivxXZs5yXIQbnUS6dSqeYv5nZC6h8NJqbSnToMIB6IvtL37JVIPakj1
-	e+AbSZkwbEGsUtYG1i0GyXHbAL9cLYDTAwgPEFvMmaoIUOns1EQlFVo8tgHqRiXgItQ+RX
-	7ajDB6/juYH75YhD0TyUu2IFPDqxlMA=
+	bh=z+fc2m4iUG1wiZG+E93U0Pi2aQIPVm7WNHMpYnRyX3A=;
+	b=fCMqQaGC4C/LfOxXUUA3ij9KsJWHIzfQxrE9FRCh5UMk6PZWrh0/lh3cBuraG42xFvWW1G
+	o0EQrq5K6AKDUL4s/ON6Uufq8oaRScYtnp4ixysXiOtEqcS/ZFP303ZDdoyWkYOmOjnYlw
+	XR884JFXGI56wkPajIESopuq2fXlCY8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jpi3CzPQ;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b73b24f1784so759738266b.0
-        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 01:01:16 -0800 (PST)
+	imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=UeLoA7ZZ;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764580184; a=rsa-sha256;
+	cv=none;
+	b=T4kKBnuwtHPbtbpElm/ZjL2dnEs3VbS2hd4JUgqPqb5fEBO6tgEMEUmJWqcoPe8zwtIqma
+	0X8r/YuUvjizyVU7LAUyu9zuS3lkZSoceZWchf0Jiivu+6OXeAzxAkuP5NjORfBEo7MJdp
+	2FzJyGaX2FR67yAXprVk51q5h0vxU50=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7d26a7e5639so4026616b3a.1
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 01:09:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764579675; x=1765184475; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mxmnSSeFCevDFxHXP8UnjPd3wrJiEWtNZQwj48atiFU=;
-        b=Jpi3CzPQKPSitynJwhrYDQ+ohanAFPB/3OqFBuZ2jyJRjtIhjndYVyxHe05juwDyy+
-         zYRBGfpJ7i7j3XJkHGS/vQ/ralLOyrZoiSYKpyTntKubckLiCLaznhvug+iVFQPuuY0b
-         8CTBC1Tw5jTJUY9DDpXtgZ+8naT9ROs64rRdZapF7vDL/nez+rAmqXt7HtWaUR40Yn9k
-         uTIX3rwOa87Ak5A+EP43vGXZTfu41sn3YdN9AcZH6Emr9DsiaQVq8jCqp7yVxZQqk95a
-         B8hbyixFztMXc+GP0VTPkAfScXPXL3/p20O2JosfjJwEK1l7m8b+c6KjIUwi02jlS8oI
-         VCIw==
+        d=chromium.org; s=google; t=1764580184; x=1765184984; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=z+fc2m4iUG1wiZG+E93U0Pi2aQIPVm7WNHMpYnRyX3A=;
+        b=UeLoA7ZZMyeqBSH/1CfjH1g43rcr61ai0EASjSvfcupBLmQTJnhIhEkaqJGi067zlb
+         GabTL1yg6CU3gRb+9JKBajSa3YZvG5rXK0fF/SxGas/JsssCoKcM+RtUis17/Bhj6S8I
+         ERnhMk2/YyJG/7Hkwmxhf3ZchAhF2a48Gklpc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764579675; x=1765184475;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mxmnSSeFCevDFxHXP8UnjPd3wrJiEWtNZQwj48atiFU=;
-        b=jeLovsv/HfVXQLt/0ltU4w9WENCk4Ux9Sql0hTMt9UcUQiSP97zwSo3QWNEa5VlQUv
-         ySaeFJ1j32i/j9Fp91GMILA+GmUiU/rMtN4ludr0xHxHUkQPAjh2xQxIkbL8aInNkd+E
-         flkgU7Yr0ZhQv9dgeoqV2c/zkYsrQ7zeE/Oi20EXXtpsYJaHLvuzTJJGD1RGnVMmjyaT
-         w3qPgNQwuEvYSuAVmvP7ai0akEruvEUkTKEuKlb1cIkRjgpXG3sS/64LYj5renm+fcik
-         1OMNf9ov49xFjw5UmyRwixtfeZx59yFngn2FXLz+7x1r/R7Fiwnsbz7pkYlWL/MDhG9C
-         twPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBBxXLag1ord3t3MyA7CKZv+/w+mCz0QciGCMTd7RJDRuSO6xXFuvDdPGysYwB3Wp/II6WGkMb8A==@kvack.org
-X-Gm-Message-State: AOJu0YyflkN2qL6PHPvqiuivjLSA/7VhoxrMKcoM6jMKGBDaQt5Sxfsq
-	jtufYB9LBYe0hBMiCE/DUePOY6t1inr1D9PXcM8rD4WvL0dimqvKVt8/WokclDWjFU+EtEaz8Ak
-	uKE68nZSJn20nmkSbDJAQOhjQDLVcgXM=
-X-Gm-Gg: ASbGncvCX/SMREnP7f/BCzBFrqrQPxyRvDHZDSUUnGWyiYX5fd2GzuudNT7JWRJD4Sp
-	CrtuPPD7bdhdcWUTMZcDf5LUKDz+C9fqyMFV4S1e4eEkes9X1y8jpeuYKmXlrnZDsa8Pkx1+cCF
-	fl8+Cf6IGeMmae6a6tanEShKMKvsNdIbGHk0K0tFDhJUupl8ACiesELP55NlRUOioksVq9teEdK
-	lHqSyrJozdHnyXueua7zgCoFXwkvLEql4mTic+g1n/OwQwsz8YAFU8/50sh0LqBLWeiGkSSWgad
-	feKQq49p0Sw7Zi3vjgHTkfIscus=
-X-Google-Smtp-Source: AGHT+IEgR1DdVllyHOeHiRvvKQbP5W/yciHkiXXT8zXV8yo4kCCAug8/rhvvEwNd/SEZmh5QwfddA+G1su9EGVjpcHA=
-X-Received: by 2002:a17:907:1b14:b0:b76:3472:52df with SMTP id
- a640c23a62f3a-b766edb87fcmr4030364266b.10.1764579674291; Mon, 01 Dec 2025
- 01:01:14 -0800 (PST)
-MIME-Version: 1.0
-References: <20251128025315.3520689-1-wangzicheng@honor.com>
- <aSm800KsCAptVZKu@casper.infradead.org> <ti7h5cbrg5s3zf7surof3zmxb6supnl34x7hsbziqutm7r2laf@zuunap5hwsbx>
- <CAGsJ_4xJ5qMght93FQOYrk1OiJTh-wFC4e8Nd4K0A156N3ZEBQ@mail.gmail.com>
- <86c62472b5874ea2833587f1847958df@honor.com> <CAGsJ_4w1jEej+ROuLta3MSuo4pKuA5yq7=6HS5yzgK39-4SLoA@mail.gmail.com>
-In-Reply-To: <CAGsJ_4w1jEej+ROuLta3MSuo4pKuA5yq7=6HS5yzgK39-4SLoA@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 1 Dec 2025 17:00:36 +0800
-X-Gm-Features: AWmQ_bnswMDYfF0lQTLx1DlxQcT6Wt6rEWzfD7LxVrDE92N05MOtOpqZN120qhk
-Message-ID: <CAMgjq7DOPMp3Eq9_SxmxNhY7S5--3uf0PByNAJOAEne9hb+T9Q@mail.gmail.com>
-Subject: Re: [PATCH 0/3] mm/lru_gen: move lru_gen control interface from
- debugfs to procfs
+        d=1e100.net; s=20230601; t=1764580184; x=1765184984;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z+fc2m4iUG1wiZG+E93U0Pi2aQIPVm7WNHMpYnRyX3A=;
+        b=uwNJ/Qo7WPPxWyMgAtM+qLjbEXvNiR09rkxXt+OuYJB4EtFxANnszZhe+10A4x/4rt
+         5IiGhXDrFf7JvuDZyBKTE0T2By3+IO+rgQe8eOTpRD/5Xj93xKaU6o3l5HvxHKFXAME4
+         gg6sHTi+6en4o+MjxJ/uD0GOUWyv1TSrPiqgzX5AhKeHWpCjXwxdbHjZWxcGoopJqzVG
+         HP8cL7ER44sU8vweQ5nlt0fn0DHYuP0aRkq9/O5impCD5jrcBtavGJXgkIReUKgTxL48
+         aa9zSg8PJZLfmYMHOwzYlf/cWBg0GMGFoenB0zmoEh0KdTbSZcUd0CiQKVFbJxBxXaZN
+         +oCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVebDw6vSREDmTnOc6/8zQEj0hMUYxNVmTBgKRE7J9vhetEFKF2svSUAPRX7wD0ZUhdMscQvrLjaQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz8rmyalTPOd42nc/P4t2heBR8H6jnyqW0585PMgySX5k/ffUDn
+	vUGFPDv+5laf0YdTWFPzbXN7K3e5MER/ZQeVIRoDTvhYtm71yy4sFstURImBEMsiow==
+X-Gm-Gg: ASbGncv3abziUfoHeAYK0K1CSLaGLM38d0cBmoUIwR351Ok5kOVQ+SJQuDnF8jo4URk
+	X2oi22DXeCaO/T/3rmndv9HX968LRj1UuoaXjYiXAuEpix5Y/i2S0Wk/+RkLWXyr1mniFU7KIdy
+	3SC0bpdAsJccbXAjZ4rGXIbPmtFTuIGrf9yph+kk90FeXWm1qgoD21RYzy9v0O+M4UE5PJ+vub8
+	nRLlYwkFEib2Kv1Q+WkJTEH3gXXHNtn3cbWuV/yavscARkRf2x/BdJ/dYdl6+2LRWZOMCym38zt
+	i3g5gPentBN1sgzMNszoz28AM/iADXlpHwp+w+I7/koaySIGULb8XraP4yfQijOjfjSjUzFJkfY
+	melJWQJGWkMVov6h5f4zXlq9NU5NPLKNB2fL/+VyyjSlyc1oTYgZcHJdedexzUjJ4Kl/790Gu2K
+	jnkjZ+C8WiaCc6iBzo+J5i0fJeIGxqOUZTe6sSQfs+3Hce7Oxr4MY=
+X-Google-Smtp-Source: AGHT+IGX7ImaHb79oWVYq1C+OQ311g0NlH0NigBQ5PHru076OlZHENu05lVhfiah4JQXAmi8jU1qLw==
+X-Received: by 2002:a05:6a21:898b:b0:363:b976:8f79 with SMTP id adf61e73a8af0-363b9769000mr9534581637.43.1764580183494;
+        Mon, 01 Dec 2025 01:09:43 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:943c:f651:f00f:2459])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-be4fb24872fsm11628836a12.1.2025.12.01.01.09.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 01:09:43 -0800 (PST)
+Date: Mon, 1 Dec 2025 18:09:37 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Barry Song <21cnbao@gmail.com>
-Cc: wangzicheng <wangzicheng@honor.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"david@redhat.com" <david@redhat.com>, "axelrasmussen@google.com" <axelrasmussen@google.com>, 
-	"yuanchu@google.com" <yuanchu@google.com>, "mhocko@kernel.org" <mhocko@kernel.org>, 
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "weixugc@google.com" <weixugc@google.com>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, wangtao <tao.wangtao@honor.com>, 
-	wangzhen 00021541 <wangzhen5@honor.com>, zhongjinji 00025326 <zhongjinji@honor.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Richard Chang <richardycc@google.com>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-block@vger.kernel.org, Minchan Kim <minchan@google.com>
+Subject: Re: [PATCH 1/2] zram: introduce compressed data writeback
+Message-ID: <dt632m4jh2jt5fhnddcbgtdndxh6552hcbwpqeklfx6z7oaihz@lnhskip6whc6>
+References: <20251128170442.2988502-1-senozhatsky@chromium.org>
+ <20251128170442.2988502-2-senozhatsky@chromium.org>
+ <CAGsJ_4yUAw_tzX7z8iizToMB8SDJPNOhFRZNXva_ae46q5vRwg@mail.gmail.com>
+ <hgk3zp5hwlcxo6ufiqasvte3hoksy2wb2kta3fime5rprq4org@xaprrqdabvgh>
+ <CAGsJ_4z6kSvA+Yzqx=JQ4n3jhQRWn4zYMr364-V2Wjyb2wXE0A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4z6kSvA+Yzqx=JQ4n3jhQRWn4zYMr364-V2Wjyb2wXE0A@mail.gmail.com>
+X-Rspamd-Queue-Id: CBCA91C000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A3B2910000B
-X-Stat-Signature: jo6c1wykrjrat36wnpbra5hp8z3pyxw7
-X-HE-Tag: 1764579676-245007
-X-HE-Meta: U2FsdGVkX1/dSNzEKFgxDyhFiogVUJH0M6qiEgHJvLM6IVPjdEjm/93K9r+NVebvvnG1kuXm0TXa7JPg7G2yo9MzuvkCM25VpZgMz13Lwwtzyal5BBl0efOYXQ1Qv3pShq17QifDBJQF7mC6Gy9WUSp8hm95UwNvMSCgUB9dQ7F7YP7FU+sdJOl8mb2BkKp0qNrTIb2vlMn1F5bl7HPfqVjPhRYIXSeRGuHAW3dIJOG813nsQe8cgEumB83r3fAaXW0r3gyUWbEXRSofQd8+mFBv9dRzlJjzs8P3nH+1A/N1ZPXUgngSZKirql1h4iramMpdoINsomH46zomC+vmLkOMoQl6lw6hM+RlhzK4YSmHm2ugCIM/vTeGQyNeu7SAgF/20OyHrRXrRzXkMNvR7W6RrsSw1Si/lLyEgpcvj59eP0LiI86u29mN2DHWyTvtlnJEDw1hMj4ZVMbKgaVGXcGhgI7LDvB91Saa7HnHIcRaeqSzIwfIeY+RmULTrOKEWWTLcpJsHAr7iBXpk6Xs41MvuhGvxrboUdPPAEcK1N4hV7Uw92QVwZjCDCntUWOXlp7atnoIsGteRQp3IEem4KdtYI4+eKaHs+zW1Buu2HghyQzZ3K3+pjVj/WdlB/f48n81v4r/IG9ndmOpglYz5CH7Angt1iN+KhJ/XiCRTMGceEj+DDACgslrXfQyRYi4+P462GdhHG1XLfToD8lGUvPuL9m+Oix/8yM9wSzgb9rLJ/ZAxG+ZDgQw7WMvnxa3ncian3Puq2O+MxHac/4dozjnLtyl3iVrU//R9HR9PVwi3PxxVyo3udVAQVdqLeK7vyxWmex/pVmMq5JftruMUX0w1AiKPCYv1DyL3Qr2/LA8uEpAKY+HdvjaznUqi2Anxy2sFDNLQA6PO50O0IgQS2iU1ay6jB0poZRQ2o7OzVBgRpQWJut76oNzh9ad2IUSx5mjaUz7n0SuoJl8RQN
- u5YYn9l/
- EBcUzfKakadwrR2/DJYv8ROxJAkAovuDNnPwpP+eGxIvXJI+ZCcGmjWq9PvLRuNt6ygmAqZyMXY9TqqqNrAHVIa54WD+bV4P3rtIcb6vRy4Vd/zEmR/kKibymhp9sxVRQTOOSpAMs6Bic/3xIrvZoOlzcOkKh3KUthJudL9v8mgXeKSTED+2y30iQSaRQIKwV5FByzYQCRCPCsZYzCCVzKytF+Upt/foTYGtgvrLqMHQhu+7sZBdEgfSOaLtRMCQCd05Nq+4+C514tUJJ0+4colNBM110uyZLY1AhVYHG5w5iNy1/uwR1esnKtphtr90H8iBnWW54DmbX2Evidjiplw5wnK5V+O3xyEFSlcm3qyI2Sw2nZHRGkhALNaQ6CT2LYbE8302WrA4S2IWNwZKIG4xBNLTO+IVHRzdTiGg0S2Ak0qYB3yQ7crUvH3OJxtkckUXPHz6Jctj6Wj6tc/8j39MBofnhlzbtbNGwvc/1211ZQRQP90IK7RTaV3sSnWeLGxK2fTiZg7x5ELADXwnvDmwdpUNfacMduDi8npF+nG0HkH04T6pCMUtU+3KJ9iws8Z5f74eVXeAyGg6Jk2wXzy6N28rM4ZJZeZwar7J0DcpcI+0=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: r3uq7quyxrha8fwcyxpu57hnb1wqx8wr
+X-HE-Tag: 1764580184-699659
+X-HE-Meta: U2FsdGVkX1+NEmMKHeD3LeQpOebKte+e8+FUAszjzA2WJo2AFC9tlVoTqut9JCIgVN8x2VjwXUICbUZS4f3yi83NHA+P9Md+Nv6pJ5jtQDrzi1eS40Lp6khir1ZPjQE5JRhhSYVQ98hyheDD5zJsM2oK3ME/3hLWTC9gdjO6CTokCi2/mrbJAp6iQsTd0o6K8jaby+NFueAGeCzR0uDsIVsqddwVadcp24bGBWtqWP/TCPXBkXop8N3jb0SYtYXJP5ZW5ji2rn/zd+4opRuCDlIa+6ZP3fSQ/5xNW/93znoYcTXXTBhft7pRBvllNkw9A4nOeOKBd/cVW73d4owAWHovLHdDufQkh8bapul4SnQ+Srat2dzj4xvlVciOb+IuFO0Dop1w0z8YWRTM58blgxzBIzWIGa/HkTu3tO7dg/fFjs4XUXvqe7Q0zRtJdRIjpOfiNc7NJMR7P00an3+96RsWocWebUjVDQqWn+q5rZqq17d/zfH1GDrxTeYJeVVOzh/98DMjfP4vhSFrjVWWb6076vJVj4eSutESxBFe8MThef9JqTjrd4OxcrWjxepKLs9L3tJGrfnWrnjYv6ViCZgPlJhMVJhke6pSL4P/e6wNdhfoWbSr8exkcG9CejXwYPJir3asCacB9/NhdDpbl3kkVByEaTq3gL3iL00HPsaVfaGcczrnQgl34gAZfJ5DqJTE2rKLV13dgGbY59N3isx2hjlxHs/+4yNRAbt/6tYSeyWiATKvndSKi2eI8b2DGzpuwR2lmbZZUdex7wCFO6ApN2n89a8CjZtmGOrsYAa/n95wicWh486OuPM2ZUsjLPkAMWg98aoxOg+3RnKymVAynS0CwKCV4Y+DJAowv/JObfZWypTrmpnjAlz1sfdefqvGBZbCl+2nC4HOZN8bgW9m/k8goyA4fAmI/LS/Jiin5/nFSsw5hfxG3zkUKSep9sGiwYcxDdZTVHU0MM2
+ jx80WSkd
+ GkfjFFkJ6orfr9+CqNBmIsNsHTCkkLQwllqEEzQu/Im3kYkmey6nGHlkMqQirnirQS1Ruef7nU/C9CulA4pTNrJDbOHvlcS8d04LVJfJk8aWCz9XsSVGxrCFeo9WftWqeyD0kWfA7eT/M41Qx5ECxzb8s7tBoUcGT6y4ACdwxfyB11ah53RVPHEm36+tTKc2qvScsi0hHV6Pzc/VSdYRyFU2u95wp0HxWCDR7wAoXbObokUWDHrNjD628XgpyNuQoWkWaCad6giDYGH+0Dfvra9qptTBZ3nwsDJwAWXkv492kyvbSIMkLEGiLJyCV+eg9IWG1xvmMX/ZwY6oSOSX/FG8WyIH1mugWzNABgfaZgKJWYOXOPtGvLgTRjg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,206 +124,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 1, 2025 at 3:46=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
-:
->
-> On Mon, Dec 1, 2025 at 2:50=E2=80=AFPM wangzicheng <wangzicheng@honor.com=
-> wrote:
+On (25/12/01 16:59), Barry Song wrote:
+> On Mon, Dec 1, 2025 at 11:56 AM Sergey Senozhatsky
+> <senozhatsky@chromium.org> wrote:
+> [...]
+> > > > zram stores all written back slots raw, which implies that
+> > > > during writeback zram first has to decompress slots (except
+> > > > for ZRAM_HUGE slots, which are raw already).  The problem
+> > > > with this approach is that not every written back page gets
+> > > > read back (either via read() or via page-fault), which means
+> > > > that zram basically wastes CPU cycles and battery decompressing
+> > > > such slots.  This changes with introduction of decompression
+> > >
+> > > If a page is swapped out and never read again, does that actually indicate
+> > > a memory leak in userspace?
 > >
-> > Hi Barry,
-> >
-> > > Hi Liam,
-> > >
-> > > I saw you mentioned me, so I just wanted to join in :-)
-> > >
-> > > On Sat, Nov 29, 2025 at 12:16=E2=80=AFAM Liam R. Howlett <Liam.Howlet=
-t@oracle.com>
-> > > wrote:
-> > > >
-> > > > * Matthew Wilcox <willy@infradead.org> [251128 10:16]:
-> > > > > On Fri, Nov 28, 2025 at 10:53:12AM +0800, Zicheng Wang wrote:
-> > > > > > Case study:
-> > > > > > A widely observed issue on Android is that after application
-> > > > > > launch,
-> > > >
-> > > > What do you mean by application launch?  What does this mean in the
-> > > > kernel context?
-> > >
-> > > I think there are two cases. First, a cold start: a new process is fo=
-rked to
-> > > launch the app. Second, when the app switches from background to
-> > > foreground, for example when we bring it back to the screen after it =
-has
-> > > been running in the background.
-> > >
-> > > In the first case, you reboot your phone and tap the YouTube icon to =
-start
-> > > the app (cold launch). In the second case, you are watching a video i=
-n
-> > > YouTube, then switch to Facebook, and later tap the YouTube icon agai=
-n to
-> > > bring it from background to foreground.
-> > >
-> > Thanks for the explain, that's exactly what I meant.
-> >
-> > Android lifecycle model isn't obvious outside the Android context. I=E2=
-=80=99ll make that
-> > clearer in the next version.
-> > > >
-> > > > > > the oldest anon generation often becomes empty, and file pages =
-are
-> > > > > > over-reclaimed.
-> > > > >
-> > > > > You should fix the bug, not move the debug interface to procfs.  =
-NACK.
-> > > >
-> > > > Barry recently sent an RFC [1] to affect LRU in the exit path for
-> > > > Android.  This was proven incorrect by Johannes, iirc, in another
-> > > > thread I cannot find (destroys performance of calling the same comm=
-and).
-> > >
-> > > My understanding is that affecting the LRU in the exit path is not ge=
-nerally
-> > > correct, but it still highlights a requirement: Linux LRU needs a way=
- to
-> > > understand app-cycling behavior in an Android-like system.
-> > >
-> > > >
-> > > > These ideas seem both related as it points to a suboptimal LRU in t=
-he
-> > > > Android ecosystem, at least.  It seems to stem from Androids life
-> > > > (cycle) choices :)
-> > > >
-> > > > I strongly agree with Willy.  We don't want another userspace daemo=
-n
-> > > > and/or interface, but this time to play with the LRU to avoid tryin=
-g
-> > > > to define and fix the problem.
-> > > >
-> > > > Do you know if this affects others or why it is android specific?
-> > >
-> > > The behavior Zicheng probably wants is a proactive memory reclamation
-> > > interface. For example, since each app may be in a different memcg, i=
-f an
-> > > app has been in the background for a long time, he wants to reclaim i=
-ts
-> > > memory proactively rather than waiting until kswapd hits the watermar=
-ks.
-> > >
-> > > This may help a newly launched app obtain memory more quickly, avoidi=
-ng
-> > > delays from reclamation, since a new app typically requires a substan=
-tial
-> > > amount of memory.
-> > >
-> > > Zicheng, please let me know if I=E2=80=99m misunderstanding anything.
-> >
-> > Yes, but not least.
-> >
-> > 1. proactive memory reclaim: yes, that's we are after.
-> > When an app is swiped away and kept in the background and not use for a=
- while,
-> > proactively reclaiming its memcg can help new foreground apps get memor=
-y
-> > faster (instead of paying the cost of direct reclaim).
-> >
-> > 2. Anon v.s. File: *bias more towards anonymous* pages for background a=
-pps.
-> > With mglru, however, the oldest generations often contain almost no ano=
-n pages,
-> > so simply tuning swappiness cannot achieve that -- reclaim will still c=
-lear file cache
-> > in the old generations first.
-> > To some extent, file caches are `over-reclaimed` in such senario, leadi=
-ng to a disaster
-> > when user=E2=80=91interaction threads get stuck in direct reclaim of an=
-on pages.
-> I strongly recommend separating this from your patchset. Avoid including
-> unrelated changes in a single patchset.
->
-> MGLRU has a mechanism to ensure that file and anon pages can keep pace
-> with each other. In the newest kernel, the minimum generation is 2. For
-> example, if anon has only 2 generations left and we decide to reclaim
-> anon folios, we will fall back to reclaiming file pages. Sometimes,
-> this means that anon reclamation is insufficient while file pages are
-> over-reclaimed.
->
-> static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->                        struct scan_control *sc, int type, int tier,
->                        struct list_head *list)
-> {
->         ...
->         if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
->                 return 0;
->         ...
-> }
->
-> This is probably not a bug, but this design can sometimes work
-> suboptimally.
->
-> Regarding this issue, both Kairui (from the Linux server side, cc-ed) and=
- I
-> (from the Android side) have observed it. This should be addressed in
-> MGLRU's code, and we already have kernel code for that. It is unrelated
-> to your patchset, so you shouldn=E2=80=99t include so many unrelated chan=
-ges in
-> a single patchset.
+> > No, it just means that there is no page-fault on that page.  E.g. we
+> > swapped out an unused browser tab and never come back to it within the
+> > session: e.g. user closed the tab/app, or logged out of session, or
+> > rebooted the device, or simply powered off (desktop/laptop).
+> 
+> Thanks, Sergey. That makes sense to me. On Android, users don’t have a
+> close button, yet apps can still be OOM-killed; those pages are never
+> swapped in.
 
-Thanks for including me in the discussion.
-
-Right, we are seeing similar problems on our server too. To workaround
-it we force an age iteration before reclaiming when it happens, which
-isn't the best choice. When the LRU is long and the opposite type of
-the folios we want to reclaim is piling up in the oldest gen, a forced
-age will have to move all these folios, which leads to long tailing
-issues. Let's work on a reasonable solution for that.
-
->
-> Please keep your patchset focused solely on whether the MGLRU proactive
-> reclamation interface should be promoted to sysfs (LRU_GEN already has a
-> folder in sysfs) instead of debugfs, if there is a v2.
->
-> The following is quoted from
-> `Documentation/admin-guide/mm/multigen_lru.rst`.
->
-> Proactive reclaim
-> -----------------
-> Proactive reclaim induces page reclaim when there is no memory
-> pressure. It usually targets cold pages only. E.g., when a new job
-> comes in, the job scheduler wants to proactively reclaim cold pages on
-> the server it selected, to improve the chance of successfully landing
-> this new job.
->
-> Users can write the following command to ``lru_gen`` to evict
-> generations less than or equal to ``min_gen_nr``.
->
->     ``- memcg_id node_id min_gen_nr [swappiness [nr_to_reclaim]]``
->
->
-> >
-> > See the case in the cover letter.
-> > ```
-> > memcg    54 /apps/some_app
-> > node     0
-> > 1     119804          0       85461
-> > 2     119804          0           5
-> > 3     119804     181719       18667
-> > 4       1752        392         244
-> > ```
-> >
-> >
-> > Since the semantic gap between user/kernel space will always exist.
-> > It would be great benefits for leaving some APIs for user hints, just l=
-ike
-> > mmadvise/userfault/para-virtualization.
->
-> Nope. This is just an internal detail of MGLRU and shouldn=E2=80=99t be e=
-xposed
-> as an interface.
-> Hopefully, Kairui or I will send a patchset soon to address the balance
-> issue between file and anon pages. For now, you can use `swappiness=3D201=
-`
-> as a temporary workaround. Take a look at bytedance's patchset.[1]
-
-Agree, Thanks!
+I see.  I suppose on android you still can swipe up and terminate
+un-needed apps, wouldn't this be the same?  Well, apart from that,
+zram is not android-specific, some distros use it on desktops/laptops
+as well.
 
