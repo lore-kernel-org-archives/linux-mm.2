@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C84E3D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:25:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 556D4D116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:32:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10B1E6B00A3; Mon,  1 Dec 2025 13:25:25 -0500 (EST)
+	id B04036B009F; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B71B6B00A8; Mon,  1 Dec 2025 13:25:25 -0500 (EST)
+	id AB3D96B00A1; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE7C56B00A5; Mon,  1 Dec 2025 13:25:24 -0500 (EST)
+	id 9A3526B00A4; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DBF436B00A3
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:25:24 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B18988F3B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:25:24 +0000 (UTC)
-X-FDA: 84171729768.28.18D5C86
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B660FC000B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:25:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RabA16VC;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 836BC6B009F
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AAF24130646
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:32:47 +0000 (UTC)
+X-FDA: 84171748374.05.D649310
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 04781140015
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:32:45 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bdEAf+gF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764613522;
+	s=arc-20220608; t=1764613966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YE84AsnF87hBPAT9sOtZ6Vc0Zzgq5gzKkPpAoliDuOU=;
-	b=sFhkf2XfoRgjS7fNiFdeJ25KkCRQj+qZ9hIfYxc4A6TT9JWGsPLpfDDLBqqCcGzu/4aX1x
-	e0tF7MAQbUeIltsxihMn1DefPT0BuJCepFjRqUIy4F/DCSEowHLMCIL1K+KFNRJ95KZcaZ
-	JXxkT2PXwCipgldZ55rSw16wInuL9eQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764613522; a=rsa-sha256;
-	cv=none;
-	b=I58sw37RSMdZ60NOBszm4WXm0SUPJIkHMU+Tt2gJNxC0TsHpDyDD+beMG2PzPnAuC9j+Wk
-	9XYQgGD2u4CMgpayTiFRZ06FhMpDCd5RglCmBqmy6tdOmcDKpg4kJBa0LTfMJ9iboG9M6N
-	AJt77Vtx3qOtzRKZyrsBwVac3mh8C4s=
+	bh=1Lz7LcxHyIqMANvfwO6gmNGEqEyrQp6i16FlSTgY1DA=;
+	b=cEiFWEh03Mm7E5sns1pVSZZ2kEyqJjrWhLUspl43wSQWlqPlltPSJGBRZlHnDZ36MvLkpN
+	UNqUfXSfaBjGZ4GLKaard+bpqFpKqwJCDsICUwemsYfnbpfT0/DSE7gK22YD1X6Me/FS5q
+	zK+HeQnN9hrHX1bd2PAGks0euIESMvU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RabA16VC;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bdEAf+gF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764613966; a=rsa-sha256;
+	cv=none;
+	b=CRObsCaRo+xdUf3cKS1CI5DXoyxZSaP/9hyjetE6wgSGZ1jxJ0jXKODo3FiENj9ADXZv5L
+	KyIMOgPcrtGgNuEXuAF6BneRLG4HEqIT1wSodDR5b3mMuWZAbJFO8IPyTRyeMzS3u+5SOH
+	DXEn8aB3mum2kH1w1S3K/gseZqY0IeA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BDA2C437F0;
-	Mon,  1 Dec 2025 18:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90772C4CEF1;
-	Mon,  1 Dec 2025 18:25:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C3D860159;
+	Mon,  1 Dec 2025 18:32:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95955C4CEF1;
+	Mon,  1 Dec 2025 18:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764613521;
-	bh=khqEBoJRowkwUJTwMe9ReTa1LRGCK/TU2C8qzxrybG4=;
+	s=k20201202; t=1764613964;
+	bh=2IfzNXSfzN92nTYZTzGsXr1fBjpjDfpWrXwW0YZPKmg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RabA16VCKP6L+2WEQBSIDW73cSIljxTxuwmPsge6Zhu7EnptXBylzvB9GrDZN4Jtf
-	 +b47dj7o98fk1f6so++CJ3YgZOBlqpKetJ0MKf5CdhYvzcVCJyMtjK8p9lInKSvomp
-	 0vg8eRa3cR+oQNsL4zFrvCvoHhS4U1ECNf67YkdFoF8yaOPJpX1DGhl9RwsPOwumJs
-	 yyORlI8U0uNXsY03vRWr+XIyd7oSVp+xtd2L6K8YFRyeusIevJZWjQR4Qp8FG84x80
-	 jYw/9xLnU23lx/8f25ic/QUmY7UwwA7FC9fW8rddwKL8Jkk8D60qBaTC8UoPhYCoZw
-	 A8b9UPATUZEPg==
-Message-ID: <2b82fb9f-338e-47e9-bd14-3bdb392dfcbf@kernel.org>
-Date: Mon, 1 Dec 2025 19:25:15 +0100
+	b=bdEAf+gFID+PrIxA1/+WE4DYDfDJBXtzv1cVw+nJIpuZeM4V7UDOI6jNrBiUD+JiU
+	 Do/ziqGJ20sAbyjbWPOYm7gpCJsOOaoO0oOY3Q/c/n2u2g3F3WkpuCK+tGySIpJ7/a
+	 4bHtVR3xPkyARb5tRlMwGubNri7MqXAER1PYHxOrlxfT978nc0ysn8YYAyDp0R2UJa
+	 ylvgL0h8z4rxROQi+p/OmfAf/EI5TUidCbLe8wG4JDv0gCn34+s5WqaQzw9lbi9t+0
+	 YB+7uvR+JnDYAJVwUa/iKVshebyq9AUbnu27D3pI2QqNfHXVsrtP4EF6cRnIBRZw1w
+	 svVlqTs6UAx3g==
+Message-ID: <052d7f47-edb6-4978-bc9a-c7eae469720f@kernel.org>
+Date: Mon, 1 Dec 2025 19:32:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-To: "Pratik R. Sampat" <prsampat@amd.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-efi@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org,
- osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de,
+ mingo@redhat.com, dave.hansen@linux.intel.com, ardb@kernel.org,
+ akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
+ michael.roth@amd.com
 References: <20251125175753.1428857-1-prsampat@amd.com>
  <20251125175753.1428857-3-prsampat@amd.com>
  <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
- <14df1d99-7df0-4982-8029-e66dfb140399@amd.com>
- <dy65eupwalp5wsljetlto27l6tjjvoygeotjd3n7mk7zjc4dma@jf4hzsy6rtcd>
- <27c06cf2-7500-4875-bd22-f55571fb85f9@kernel.org>
- <c8926ced-3ef3-4c11-9d04-00db388887c5@amd.com>
+ <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
+ <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
+ <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
+ <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+ <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
+ <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
+ <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <c8926ced-3ef3-4c11-9d04-00db388887c5@amd.com>
+In-Reply-To: <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B660FC000B
-X-Stat-Signature: azq66jxfpe1ojs9zxxmyhc974hki9ugz
-X-HE-Tag: 1764613522-983159
-X-HE-Meta: U2FsdGVkX18izW+AhwlpzdHVUJKXXQh2kSuPD+Iqx/RSobES4BuqQ4C1tdbz+9LxkI495gI3EWfzbSRfCphykaZ8LKtep/rkatIx7+ffEzJC3GtR822Qlg8OOKaWeCqAKFVSTTxj7YOdW5L4MYzd9ZPxzpFR0n6ZoudYJyzPZi3kVg7JX8INlPnvkdDzqMUHkaWNy1BPesT2rUtC5co/+tZUb4gdrhALZ4Z5ZvCTjJ5IlTIL7xznpJHJ+OFb9aLOBkixhDZU2m4uDxxk47DlSZGDZBMkqBJthzOh+IAZBW/tO4R3L7nVJpIt2vOXoaZpCY+RmMh3OnR1MDNJfKGwu4ZgBRRF5P6u/YGuWuriE6AYOD2GdDZ7htpYgvHFXqVZ1S6BqbVfPTLjag75pNlNR23Ahwd4VWrnOccDOmtchXz7oY1h8alYPN8+auBAIRWrszr0woRZreGWhI4zDahPYj56SyvxyJxQLq2t36Tj3V1v4F1Gtw4zLfMkKfmOZgMKxwxC7TpTtoG6L0SexNsfT/5nYVMlNIo3hFq46wFh6TdxYFjXL+dgT9PLQGuSmkLGoVDbb1aGQsoTU3tHiqtDY6uiokd9d6nU51tUlTrUT/xo1o3mhyxCMiJ8yS1ob1UCtZ0VZJwhml+88gyP+X8fNVM1wsNIeKwhaPdbyX9QbxB6h2jZo/CxHo3B3oMffIfPH7oAZP7YkaWu/d5zRoMEZM9F/pIY1RCAIBxih0/Vsur+rxZ4tsbGBxje1lC3iMnC8UUX1GRlQ0q7cs+C1/I4X5vxYYvr9VVqca9U/d0PEdhRjmzS8KLyaCItu0aKfIieEt2MSUGDZS9HaQruBBFiIG5NKwi2GwEOz5ebTiDmUmbo4GRGV00oeLm+nqUZXvGx9KPphc88jIYIUznFd3MAugKDS5NHwTOqa+rZTHFbbBAL2+iiFW/bBdHxSUBgsL2ncM9/fyvCL6EfzBVQZiH
- iIUTbLVr
- 2mCGSIszrERkU6NAyHGb29G/N2+YYSNTjaZQP4VufOmupfdaytQDRkEQEZkymI+iUxOMdj2nfWsgr1yUgEvnWaObj1tbcz8WMBLXmSxt5ntGHAF4uXQtURMedpJbaQP0ncByGMSN5ZqaY5HwqPtvMcoatAuLmw/H8frKUK4wDLiruPg7GGNPan3lazBtxOuwnQnTjvU1Td9V1CJ/3iwpMf0g5XVySUJJPhImknRlUAEPqZ5CDY3ZexnOFE20Ljd1AXSOB
+X-Rspamd-Queue-Id: 04781140015
+X-Rspamd-Server: rspam11
+X-Stat-Signature: sq51jj5ptd1gkij4kj14naezkj657jyc
+X-HE-Tag: 1764613965-513083
+X-HE-Meta: U2FsdGVkX18b2Pgc1zB9T+pv+8OArTyq7jTf0BGy+VeVcsqRUiE6b6p1hPBs6YmN/BUTASOfCZIk4HnP1tAGuV628pHUogCL89VtR7esKr6RYHEAEwLIRtkXUfH+xQfGA8I6qsW2FbmZLsZzmvtnh0RNqE4O3y4jjQ4525+bPCvBuMZO9rumlcWyy3Fa03KkkqK7qeFnxgpKaUxp4AHYHDAywWepctAS6hwxasWBto4VcDe3UkuFUe4243TYYPOWyjILCd2IY1VQPm1e33GHaJZx2Ngw8V1EndAFs6TjzNb4X4Rbxw2DmmoCVzsu7x7EJTFizmaD+e/ab75Ql8UArPeBEJsyqe99CsG+sh/Xwh3zyEHxBXp6L00CXYIo7Wg36lOb7/qaCw2joXPwI93P3ag1aa6ieCD/Bjt4lAN5x87HkAOPWnbuMbMKLA6u7JLPg4+e4L9js0sj2GPr4qNxcbSM6fm2ThdbkNDlgVNx7lK5q7I93XoJ9eiPzBnFPm2oWplL0aXnOadPEmxU0BU/iiUI1b16znt9OZmeVvV56gWYptwW2YDRqpK1Nrqj8VutS9l7zTB78mKq9ECD6O4XV+lAKhQ7AIpaceA5ccNaZAOt3K6UmNIjfoEWyvm3dvYm6j8Rlfc7SoBI9AT5LPN3HO3bEIwQ2daZP5ctjJp9vYMrJLXlIB66QWnmwESdK2TJETIoTA7aSRZHgyFgjADf6f6Y3lJr7aIYmooqifLQj+haUNJ/8N9nTnBp5fKhiWyJdGCintRABNCVLrWof2RxPavhhCCviPxayH6nXx75oD3oVFfSEcefU6IraS63hR1LElB3MyvHf512kRhsZ/9qPYeqLMz/xs/g+230jUe2Czzrs2CR/PQ63ByNH9YlmwduIj/yhEYsNdTZc5uMbUq7SedodSzvTK7q6jkbYo2SGT+5YMIy33+RBQVET+dEZ0horv9GAa21HlTrI2AW25K
+ dbxCK4q7
+ Qt97v9rmLmANsynRQbgRH8T0BiMMAs0mnogJmhErNeNPy3FL7WRHipvSr0s+wIvhVKv9Qhi9U2GO/Guur9D/3ht3mf/AiHTSfjdprMHnKjTAOG/YFPslAC1Zz2EO7eQH83AOrNG8UfQZYyMu5rzNbZqCmzK6xLJTpuyTIb3zu7kXNgNQ7VtJ/AoEGG+JIFeq56WPGjAohVeLeTqu+fo2M0IrasuUDZ0e9rkDL8lDqeW2UWCeP1KzxIr07PMMvk0mqBtro
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,72 +107,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/1/25 18:15, Pratik R. Sampat wrote:
-> Hi David,
+On 12/1/25 12:12, Borislav Petkov wrote:
+> On Mon, Dec 01, 2025 at 10:18:37AM +0100, David Hildenbrand (Red Hat) wrote:
+>> Makes sense to me, especially for confidential VMs where we pass such
+>> kernel-managed data from the old to the new kernel.
 > 
-> On 11/28/25 3:34 AM, David Hildenbrand (Red Hat) wrote:
->> On 11/27/25 18:40, Kiryl Shutsemau wrote:
->>> On Wed, Nov 26, 2025 at 04:27:29PM -0600, Pratik R. Sampat wrote:
->>>>
->>>>
->>>> On 11/26/25 5:12 AM, Kiryl Shutsemau wrote:
->>>>> On Tue, Nov 25, 2025 at 11:57:51AM -0600, Pratik R. Sampat wrote:
->>>>>> The unaccepted memory structure currently only supports accepting memory
->>>>>> present at boot time. The unaccepted table uses a fixed-size bitmap
->>>>>> reserved in memblock based on the initial memory layout, preventing
->>>>>> dynamic addition of memory ranges after boot. This causes guest
->>>>>> termination when memory is hot-added in a secure virtual machine due to
->>>>>> accessing pages that have not transitioned to private before use.
->>>>>
->>>>> How does the hot-pluggable memory look in EFI memory map? I thought
->>>>> hot-pluggable ranges suppose to be declared thare. The cleanest solution
->>>>> would be to have hot-pluggable and unaccepted indicated in EFI memory,
->>>>> so we can size bitmap accordingly upfront.
->>>>>
->>>>
->>>> I'm not quite sure if I fully understand. Do you mean to refer to the
->>>> EFI_MEMORY_HOT_PLUGGABLE attribute that is used for cold plugged boot
->>>> memory? If so, wouldn't it still be desirable to increase the size of
->>>> the bitmap to what was marked as hotpluggable initially?
->>>
->>> I just don't understand how hotpluggable memory presented in EFI memory
->>> map in presence of unaccepted memory. If not-yet-plugged memory marked
->>> as unaccepted we can preallocate bitmap upfront and make unaccepted
->>> memory transparent wrt hotplug.
->>>
->>> BTW, isn't virtio-mem a more attractive target to support than HW-style
->>> hotplug?
->>
->> I would have thought so as well, such that we can just let virtio-mem take care of any acceptance before actually using hotplugged memory (exposing it to the buddy).
->>
->> Likely there is desire to support other hypervisors?
+> It shouldn't matter, right?
 > 
-> That's true. We are certainly thinking about how the RAM discard manager
-> should look like with multiple states to allow guest_memfd and
-> virtio-mem to work together.
+> I think the question is whether the kernel should agree to the software
+> contract (/eyeroll) to keep the kernel ABI compatible wrt kexec.
 > 
+> And I don't think we have agreed to that AFAIK.
 
-Right, there is the QEMU side of it as well.
+I think we are in agreement: from what I recall, this software contract used to be
+rather simple and stable.
 
-> Since both paths in Linux eventually converge around
-> add_memory_resource(), based on some light hacking in QEMU I could see
-> similar hotplug behavior for virtio-mem as well.
+Looking into the details, I guess it's all about
 
-For virtio-mem it would not be add_memory_resource().
+$ grep "define LINUX_EFI_" include/linux/efi.h
+#define LINUX_EFI_CRASH_GUID                    EFI_GUID(0xcfc8fc79, 0xbe2e, 0x4ddc,  0x97, 0xf0, 0x9f, 0x98, 0xbf, 0xe2, 0x98, 0xa0)
+#define LINUX_EFI_SCREEN_INFO_TABLE_GUID        EFI_GUID(0xe03fc20a, 0x85dc, 0x406e,  0xb9, 0x0e, 0x4a, 0xb5, 0x02, 0x37, 0x1d, 0x95)
+#define LINUX_EFI_ARM_CPU_STATE_TABLE_GUID      EFI_GUID(0xef79e4aa, 0x3c3d, 0x4989,  0xb9, 0x02, 0x07, 0xa9, 0x43, 0xe5, 0x50, 0xd2)
+#define LINUX_EFI_LOADER_ENTRY_GUID             EFI_GUID(0x4a67b082, 0x0a4c, 0x41cf,  0xb6, 0xc7, 0x44, 0x0b, 0x29, 0xbb, 0x8c, 0x4f)
+#define LINUX_EFI_RANDOM_SEED_TABLE_GUID        EFI_GUID(0x1ce1e5bc, 0x7ceb, 0x42f2,  0x81, 0xe5, 0x8a, 0xad, 0xf1, 0x80, 0xf5, 0x7b)
+#define LINUX_EFI_TPM_EVENT_LOG_GUID            EFI_GUID(0xb7799cb0, 0xeca2, 0x4943,  0x96, 0x67, 0x1f, 0xae, 0x07, 0xb7, 0x47, 0xfa)
+#define LINUX_EFI_MEMRESERVE_TABLE_GUID         EFI_GUID(0x888eb0c6, 0x8ede, 0x4ff5,  0xa8, 0xf0, 0x9a, 0xee, 0x5c, 0xb9, 0x77, 0xc2)
+#define LINUX_EFI_INITRD_MEDIA_GUID             EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
+#define LINUX_EFI_MOK_VARIABLE_TABLE_GUID       EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+#define LINUX_EFI_COCO_SECRET_AREA_GUID         EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+#define LINUX_EFI_BOOT_MEMMAP_GUID              EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+#define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID     EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+#define LINUX_EFI_LOADED_IMAGE_FIXED_GUID       EFI_GUID(0xf5a37b6d, 0x3344, 0x42a5,  0xb6, 0xbb, 0x97, 0x86, 0x48, 0xc1, 0x89, 0x0a)
 
-Whenever we would be plugging memory we would be accepting it, and when 
-we would be unplugging memory we would unaccept it.
-
-That is, acceptance does not happen at add_memory_resource() time, but 
-when virtio-mem asks the device to transition a device block from 
-unplugged<->plugged.
-
-That also means that kexec is not a concern, because the device block 
-state will reflect whether memory was accepted or not.
-
-So far the theory :)
-
-So it will be very different to DIMM-based hotplug handling.
+Likely the format of these section stayed unchanged over the years.
 
 -- 
 Cheers
