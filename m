@@ -4,117 +4,231 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D0D9D111A8
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 01:47:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 348ADD111A8
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 01:52:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 746426B000C; Sun, 30 Nov 2025 20:47:54 -0500 (EST)
+	id 776FB6B0010; Sun, 30 Nov 2025 20:52:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71E506B0010; Sun, 30 Nov 2025 20:47:54 -0500 (EST)
+	id 728296B0011; Sun, 30 Nov 2025 20:52:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6345D6B0011; Sun, 30 Nov 2025 20:47:54 -0500 (EST)
+	id 5C88D6B0012; Sun, 30 Nov 2025 20:52:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 580D26B000C
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:47:54 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0CDC5C0F70
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 01:47:54 +0000 (UTC)
-X-FDA: 84169216068.05.3B70247
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 21A1340014
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 01:47:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Iq/Svk83";
-	spf=pass (imf07.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vannapurve@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764553672;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 42EB66B0010
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 20:52:02 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C00E813C3E5
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 01:51:59 +0000 (UTC)
+X-FDA: 84169226358.21.202DF1C
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8A3D740004
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 01:51:55 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nbl86NVe;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf04.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764553916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RubrtJY1nBr7co+TN5Cf36o/x/R4Bh4y+nkU3tUAkHg=;
-	b=7Hx1r/npCvMe0/Mdbgpb9zEx4cTvSuNKz97+JjjbyRpYQ487v7NyMLueG/6G6ve+QrRnq4
-	WSz+nNH+/lDH9ykRMoSu65Mxe0YQM9N/MUAY4N/VjmnnolzNzXz3ipCwcpX2knHILxAnag
-	HZRS0/g2Knh7dipC0zNj3fKTAJM/e/Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764553672; a=rsa-sha256;
-	cv=none;
-	b=ToUIUuNN1mE4942ZYlaSppM+Pm6ST1mkE9w8EZNIm1YPiekcKBzfLhy+cd8oQpy/dO+mB1
-	gxbpzjGoUNurOaQipajSbmEBon6RL0lyffjpKedr0h7qtW6viI8lQOYVs8bmcD2E1PgfFI
-	b3xUp2rJNLqK54niQtz8dD2KvaVdgRU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Iq/Svk83";
-	spf=pass (imf07.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vannapurve@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-297e13bf404so618675ad.0
-        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 17:47:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764553671; x=1765158471; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RubrtJY1nBr7co+TN5Cf36o/x/R4Bh4y+nkU3tUAkHg=;
-        b=Iq/Svk83tD4/KbHj81+KO6v0wiSTBEMKyiga8wR7nyejBf7MvYMuKsbr7z+QEcm8uy
-         ZFoPfcccEKMr84dUnACyY1KtmMhsOop1NtTfkwi86mXMvFkHRInbpxyfvIt6+/UTDr58
-         nHxBZ8fGFBC0EAHziCKc9x5CDQ9u3Wc2/3T9DMVAHlK1wJ83f51+kvZP6sa9VA0h2yjE
-         IuEENeSwbAnvVHmGgeGbnRJSkO8mU8/079ZOCNdKRnwfuC/GmGQ7ECDUY/Lh83aQ4v7g
-         7nfU1XbiMnHxeixq05RPo8Rm+gt0A6ArEjpfRv+ic2wSu1HgwcJ65tDlMv+SlrdMi0v4
-         /Yrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764553671; x=1765158471;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RubrtJY1nBr7co+TN5Cf36o/x/R4Bh4y+nkU3tUAkHg=;
-        b=eAXuraY1Ke/Pq5w1L8MhGi96kPCix6wbUKlJDQBwJO5DLYXN8LvPU+g/qIxzumgYsa
-         gcZuGiIy5znTMNRXwEvtpYoVmnKUNa0YL1L5iD1t3hgxJtXrf0YzXVGsnNWKTuZsYg6O
-         +j0LoL7GkxA8UpdpO0pryqCOLKT5TAY0YP1Jdh7tGHw8InjEI+g5Y6ORKY/Wovq4eH0i
-         mVpu+mnbU47aHnb2OzIo8J/0QOCJZu6zUm0cC54AxwCGleFL2fP3/qVil6JomSrASp5y
-         ua945E5jb4KwrhK87FDeZyOry8fAXecJjn5E2VIntbAAB09KgEEw5abi1ezzCnpP86VY
-         r8fg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5sObJafuNNaaCgzQ6ffVUnx0ZqaN3wQCUlfQU7s/noadcDfZaAxxPCcDXaT8HD696cms90ykrKQ==@kvack.org
-X-Gm-Message-State: AOJu0YzpxGCDhTGk82oJU1qXr7xtd6gf0lmqZmaTc+ZD3c8jxWURxxMy
-	NJ/57SFFtSOkGyN/vz7riPs8WK9IRCamjqqIkNpxlRHd7v6I+Lwsf1rjbJZhJJzpUQnBOIWZF6/
-	9+0FlYkA5NlFB9Ac+Yu0FaWODiJI55YbC4n4fDluT
-X-Gm-Gg: ASbGnctFeFpwbWfQLcb5ZKhHX92FqC3/GbOB/URM3KzcXw+M5IhYsaJWpJtjwesdYO/
-	9uz9Gj5StkI3XQvFSIPj+ZJRNpJiudO9AaYfF34KxnZ8TRN8jKjAhqYEOiz+MPJ3SPc0cRs8bCF
-	79BD1E0REPXwNEvgf/F+NeMKcDmoMeOTW7/GeJlZlsLbu1FV0ztVrTe9U6RJ3tD8AqGoIot/Cqt
-	dOGDXb62mA07NSQpwPpxZDCcz9j9AdPK5M76ZhQBwzheuHPceQRANaG1iUzixYcMypvbi6RMn08
-	Pj2Q4lt+XJ+/p050UtXWXW6mEPD/
-X-Google-Smtp-Source: AGHT+IGVKWbjRmm9tgU6uLDNVHu5xkhvGzmzSejdcqRBFvmWHeadfJ39slfnN2SFI/bj9haEVWPhElX75HTn7j06Rtw=
-X-Received: by 2002:a05:7022:4a:b0:11a:fcc8:c311 with SMTP id
- a92af1059eb24-11dc9c5d1ffmr422435c88.5.1764553670544; Sun, 30 Nov 2025
- 17:47:50 -0800 (PST)
+	bh=BFzV89GXjwc6nS1oDvaKFRjd64D/yQpqQ+35/rv7vfA=;
+	b=il+qBViv5Yvl317dd7h0nF2dipc2HzjFDLCiR2nCuHUoG+l1/84Gyx4ANpraAobUqUMGVP
+	Teqn6Rye8z7JDhmRp36kSeGBDciDKLri7JJ5njR1eSSDCiAlHlYdMwqbvd1dlgrcQbdgvA
+	UbMzHQzkJEcXOnsRd0gNvkrmUO3zAO0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764553916; a=rsa-sha256;
+	cv=fail;
+	b=tWVtjAylUkqltUgGsOpMLMtdJJLq21rvFLsYk/RmVfZCDnC/jgQWtvPbhiIUupEXIQl2Pt
+	cDKFPdmF+wCfx0RT12qM5lUQCA+ZgqEztw7ieThaad8xBNdWCbwwpe6X5NufjJy32yhgrO
+	3E/261sD92vXks2uRB+KRzN/Nz/eoD4=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nbl86NVe;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf04.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764553916; x=1796089916;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=iQ6uLc/dxNOaqzY1wtr0w9YCByX5vBINmf+4Lh8OJcc=;
+  b=nbl86NVe/qWEaqJJhQ2JspkMgldOJKKXMrOqMjkgiZqdCx4HPhKZ+xap
+   yGaoWhjhqnhDwTphWJNL/mAjEBwD/305QPdb7s/DqPILRjvcOCPNgeXrd
+   mtAdQva+sWRN5bJ6WgvbGqg0k3AB7Th/KWlO6FIwR55WZ9n8hTmC7qsKi
+   qXwyvduJIsqJ5VcBTN4MOXJDPdKYcrIwifN4uY9RnwmD5f0PfCxAWJQFK
+   Sae7MMHTpytirR/7gKdWJQMPScg9d++s28Hh93RCCwY2DIM723YnD88qc
+   t3L4WPBfSNU6J6sQCK84y5QWAjhGS31Ytrr+VCxffJGMFI0HReYmwvOPU
+   g==;
+X-CSE-ConnectionGUID: CAntW+C2RGiirpeg7+V04g==
+X-CSE-MsgGUID: CTDOO3SYRUOEfHghx3or+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11629"; a="70337235"
+X-IronPort-AV: E=Sophos;i="6.20,239,1758610800"; 
+   d="scan'208";a="70337235"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2025 17:51:54 -0800
+X-CSE-ConnectionGUID: f7io4DyCRouHeAGKO+W3cw==
+X-CSE-MsgGUID: 7TCTkpU2QOuKh2yVvPvFQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,239,1758610800"; 
+   d="scan'208";a="193735071"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2025 17:51:53 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Sun, 30 Nov 2025 17:51:52 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Sun, 30 Nov 2025 17:51:52 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.39) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Sun, 30 Nov 2025 17:51:52 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qoup/ojdzJaMv/xAMpcxxl4nrxshEg/KVKYUxFgiaHJvDZsGD2HoFoeo63MOrqremDgTSd6bN4cgOTuIMlzIWHX1zYmQXEOyj/S8RSn+EMHKbxfRlDhGeKvTnqmMnB8bvQfHPqonOxJlLax3tJOhfbW45HXRsO/EVRNQrnwtveemGuUuhqnZEfqU+KiYBG0dBjeo424guB6D6VxbNgQkzZzJPTV7p161ZkppPPyjnwv5bKAm5vCy50qk/hpFifUit/aTuILqAZSF36JiTaysoQjM4tXEvbcEUTWYzjOKUCh6658PvE6+UTLag2WS/RR42JNECkPliAlBrq6C1/zePA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BFzV89GXjwc6nS1oDvaKFRjd64D/yQpqQ+35/rv7vfA=;
+ b=IO0xoj1TCt2ETpJAZOFUfKRyqtcFanXJs64mwyo2Ivkds46fOMmyU4WuUGgZvFAEhCi8DrTb5dNinFuO35EPggfK8d9LEHCeJRJgo1K343KvZ2D2ixS5pwduAsgG/XwfJGGFfi+XKjFT2GJWLyK4w5Tope05nqDl6mZUyhrR4t5OuJSOm98E3jK09HSE5xYq7Zcc05knlu/4SqomigMs/5JwyRIon9eKSYO7TMMJOH6Enxw1VY1xD0177HOFS50hzaGjJfCblAf3g60TRsGRpdd2mkCrwIhNExfpt+wPbI9nVzgMWtQq39x6ZtycSUa2HyO3Fq0qc8i8x2E4jANerg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by IA1PR11MB6122.namprd11.prod.outlook.com (2603:10b6:208:3ee::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
+ 2025 01:51:50 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9366.012; Mon, 1 Dec 2025
+ 01:51:50 +0000
+Date: Sun, 30 Nov 2025 17:51:47 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+CC: Jordan Niethe <jniethe@nvidia.com>, <linux-mm@kvack.org>,
+	<balbirs@nvidia.com>, <akpm@linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<david@redhat.com>, <ziy@nvidia.com>, <lorenzo.stoakes@oracle.com>,
+	<lyude@redhat.com>, <dakr@kernel.org>, <airlied@gmail.com>,
+	<simona@ffwll.ch>, <rcampbell@nvidia.com>, <mpenttil@redhat.com>,
+	<jgg@nvidia.com>, <willy@infradead.org>
+Subject: Re: [RFC PATCH 0/6] Remove device private pages from physical
+ address space
+Message-ID: <aSz0s8plXN/6t7fD@lstrano-desk.jf.intel.com>
+References: <20251128044146.80050-1-jniethe@nvidia.com>
+ <aSn2kXNG7X0UZJFW@lstrano-desk.jf.intel.com>
+ <anu425gyhd5w3boribueuyckjlg73r356kkoy6iv6dcsy6b5ar@5qnbvtymgmje>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <anu425gyhd5w3boribueuyckjlg73r356kkoy6iv6dcsy6b5ar@5qnbvtymgmje>
+X-ClientProxiedBy: MW4PR03CA0201.namprd03.prod.outlook.com
+ (2603:10b6:303:b8::26) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-References: <20251113230759.1562024-1-michael.roth@amd.com>
- <20251113230759.1562024-4-michael.roth@amd.com> <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
- <20251121130144.u7eeaafonhcqf2bd@amd.com> <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
-In-Reply-To: <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Sun, 30 Nov 2025 17:47:37 -0800
-X-Gm-Features: AWmQ_bndv783uhaZZ_oV6Xm0iV6cY4XqsD5JvxFNZOjPYdlSyliY7wOlOHpUWNk
-Message-ID: <CAGtprH9_yo4P+oTaGzhHkC3gSdFPTYkvwHkwN66gQhQXX9fhRQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, 
-	pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
-	liam.merwick@oracle.com, david@redhat.com, ackerleytng@google.com, 
-	aik@amd.com, ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA1PR11MB6122:EE_
+X-MS-Office365-Filtering-Correlation-Id: eecc0927-0b69-4f56-cf3e-08de307c31de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?T3NGNDk5NlJheDNjdVNLZ2NKYnVXcVNRSkh0aUsreVpISVJxeGdqeDdjbTFq?=
+ =?utf-8?B?T2lBYkpzMkoxZmg2SERoMmdFVzk0cjVpenBvM0cyT3RNbFlOd1hZb0NpbHp4?=
+ =?utf-8?B?dW9KdU92RzZudjNINDlnZXBVT3gvOUNxS1cvbUVEWUQ5dkR0SGVLRFZqSEJW?=
+ =?utf-8?B?U2FCSWNHNHhQZXJFdzhIZ09EMlE0UEZuQmh5anVnSjdQU0hNb2V0TWlhT2lY?=
+ =?utf-8?B?b2kyaUlZMTBqOXFYdlpQbHdBVnhGamxVSk5GckUrOGhhdXNQalE1elVXOUFD?=
+ =?utf-8?B?T25TdjdvblhNV2t3WVEvV0ZLaW9NYnhwRm1jVkgxaHVyWENXb1Z0ZkZNdS9Q?=
+ =?utf-8?B?Wm1JS2lPUWtoOGhyancrRVE5NlJZOVNoaUVqQVJxMDR2YVdRdXhvem1Gc0VY?=
+ =?utf-8?B?Z3p2UUdEMnBIUjdzeUYzQzl3ZFJheWdxeHJlQjZRUkN0UHJZUmZ3SXIzNlhP?=
+ =?utf-8?B?dDE4SllnbDBuYXZmblBVZ2N3WE54YkN2dVVMQ0hQN2hmaWdJLzl0RHpQN1Zw?=
+ =?utf-8?B?ejRTdVhtWGQxczZSRWtaTTk3YU13dHkrNE5kZDg1aFVUMXVCQ1NvakY2dzFY?=
+ =?utf-8?B?MzZFRDc0QlY0TDlYN2hTbW1Ca20wYkxTbkJYWUYvd1JuTXZtOEdsejN2dHQ1?=
+ =?utf-8?B?VWEwOGlrS0hQUUo4OFA0L1NxUnRIaDN0UFdyOTI1TElkdElwVjlnVVU2d3lV?=
+ =?utf-8?B?YWtkY2dmZzhaWVhXY0owMnRvNmV6YmxzSUMzcktGQ0x1bDE1L1pYQndxaWpr?=
+ =?utf-8?B?TlRqM0pYb29JdjJIOWRYR0ZMenpJYWhlWVp3Y0VORlM2U0lObTBQYTUvUkpN?=
+ =?utf-8?B?dWVRNTBINlVEaTlyL0FUU0VsYWVMYVFpS0VUcjg3dUVEV2xCSlJCYUhodHcz?=
+ =?utf-8?B?Vk5MYW83TFhwMFpteERkSVUyNS8rTGJ0THNTQllnVVRjMDE0bVdmTUc1d3dF?=
+ =?utf-8?B?VVZ4aEsySzd4c1pWOHdEYkpMY3NYN25vZmUybEJoRTlRM2g5ZjBZM2JuRTdN?=
+ =?utf-8?B?dWEyMnRjS1FseTRYT3BKcll3UnBzK2o3ZUNEMzFkVnNUU1o3dytvVkdydS9o?=
+ =?utf-8?B?dlZGMWhXVVVYa2FQYmYwdWRFT1JzRUs2NnFYb0VNUWtYSnFGR2hHQzFLWFBt?=
+ =?utf-8?B?M05vRDhZejNXWU1OZWRtTUhaQkYrcjRyYjcyWDFycU1lR0E5TGE1RWQwNlBx?=
+ =?utf-8?B?WjZkdmY1aHVrdnNXSlR3NmFFc2FjMmJrU0dOSVdobTRRdWtkM09HRG1IT25u?=
+ =?utf-8?B?MzdXOUF5NTRPcEJUcGVISzVuenMvS081cklIcER2aERXUDlzNlJORk5OcWNX?=
+ =?utf-8?B?MGIzOVpWYmU4YkNMV0N1dmV4RHVVSTVCTllzNnV6cUliOGEzeUxFbzM5RGVk?=
+ =?utf-8?B?eGtrdmx5enlBb2lKYnk1RExHTXhqam1lbS9rNFZyUllBc0ZSZm1MKy9ORFhl?=
+ =?utf-8?B?ZjdRQlZPdTVUblJzQWVZRFV0VEdUU01IZ0VkNnFaeUJQRWROQzUyclpta3BU?=
+ =?utf-8?B?emRnVEY4V0R6ZGNuOHZ3QUVFRmVuS0VPU0JRS1FrMlJoalJtUk55WDdHWklI?=
+ =?utf-8?B?aDAwdUlGTjFxVXo5NEE1Y1ZLS2ZoaWEwTUlmN2JvNEcyNmYwTFBQalZsNG02?=
+ =?utf-8?B?RnZvL2ZQNVBDRE5GbTBoV1RIYnowcWxkNzh3Rnd5dVRoclFIMVIxNHRjdnlF?=
+ =?utf-8?B?ejRkK0U0RllQOFQxTTFCSGhVOVpJWlhPQktieUprTEdjM1R1T0E5bWxhb29a?=
+ =?utf-8?B?RzhwVmVtcldOMjhDRWJrZGlQWGZxV1FhQ293UVFMaHNVQmNPYXpBWkFXZW9k?=
+ =?utf-8?B?N09laXYwb2VPVTEzckZzYkI1Y2ZmRkI1U2psM3Izclh0dVVDRFNGNlJ2SHFi?=
+ =?utf-8?B?TnRPUnV6T09jNzNVQ2hLdmpTZjVGMGNyc3A4SlRBbHljOXc9PQ==?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WlFEVHJWaGpGVjRGc1JwWGVGU0hqaXpscEREd3ZmQzBISnNLN0NpNDkzNlE3?=
+ =?utf-8?B?K3pWempZMDh0NG5iaVV4RERMVWlXZGNFbERWb2JtQlRza2V2UXNrcEVsT3FW?=
+ =?utf-8?B?VUJYMW41OXhjZEpOSnd6bEFQZi8xWHowZXRrWVlUOWZ6ZkRQQUxmU3JXbVhn?=
+ =?utf-8?B?T3A3ejBCS1VkazZuamMvTkhhMmwzRzFpSnNzbGhDRU1ycEI1aWQ3enBBUE1i?=
+ =?utf-8?B?dmEyNVQyL1Ira0pvaE16b2R0RTB5eEdCc284U0hhbGpUMjU2alZ3T20xK3ZZ?=
+ =?utf-8?B?d1RBWWxyVCtvc0xSTXZGT3RNc2o5ei9IUkZhczBJY1dycUJGUWc5bCtsTHU5?=
+ =?utf-8?B?aFlTb3hSZEY1Rk9NWUFDWXJLSFg1ZU9nb3hxWFU4cUhnR2JxTVJsRmYzajdn?=
+ =?utf-8?B?OWo5cjc2R00valNKWmw0UCtYOHRIRkp1ejZ5eW14UEtNbUtQS0ZqelF6THN3?=
+ =?utf-8?B?ZzBmK21aRFBNVm9ic0hEdk1ucWYyVzJiTisxYzgxWHdySXhxeWUvTlY1RnEx?=
+ =?utf-8?B?VURLUE5NME1Rc09BdENhTDgzeE1FUm84WWVTZnF0dE13UlN1KzUxMWo0MlYr?=
+ =?utf-8?B?NHFUK0hhMEtxUityZ1dkRlJkdjc1RWlTOXNoajRpejRlZk9lbnl5SHZITGgx?=
+ =?utf-8?B?dVVIcnhGYVlLRzgzOHBqVU5JeUR4K3ovbSsra1N6N2tYTmZ1WE5LSUxXamF3?=
+ =?utf-8?B?N0JHUTBLbDNiNlZaYVArL1V5WjI3RzBoY2JIVFFlcmhZNEI4TTdYYnp5RVVC?=
+ =?utf-8?B?Y2hIMjVlWnUzSzY3cExMQnBOMlVpaUhndUZ4NnB3Y3FyVmsrdVNhazE0bU90?=
+ =?utf-8?B?emdNbCsrR0RnZm1zb3I1WWlhQytlUG5ONG1UdG91STJkeE42clo5dEFDRnds?=
+ =?utf-8?B?a1V2ei9oTWp2azhqMXBvVUcvczFqUjRoYW5POEN2M3VuVWJoUHdHcitJc3ZP?=
+ =?utf-8?B?RnN1bjFRczFIRzJGVVliTFJXSVJZZC9DaSthZ1p0QUJNSTUwZ1VBRnFvYlF2?=
+ =?utf-8?B?UFlraTROSEtkWkVyRkxyR2xySTR6cUh4anpBYXRLc0FkRTFZcDJZc1RIUHoy?=
+ =?utf-8?B?c2I0bFF3ZHZzT3lmOFNrRXBYOWNpQVYxN2hLSjZpNit2MENaZHlrazFmK01q?=
+ =?utf-8?B?VU1DQ3lDWUZ5YkNTcVUxUUk2eWFwQjNwSGVXSjJkd1VCRzJyQSs5ZWQ5VFhh?=
+ =?utf-8?B?eHpDZDZLbHJpQ24va3FVaFdrR2N3U0NjendYUVd6ZGxFL3BCaVhJN3E4UDZY?=
+ =?utf-8?B?dHFodmFwM1haMmd1SW5pa2RzUmUydFdQQW1DcXNzU2RzUE5IditKa0g0M3BO?=
+ =?utf-8?B?QlFGczFjSGtmL2ZzUStkWml1ZWF5K0phZFlrZVZZSlFwcGd4OXlSeXE4U3NH?=
+ =?utf-8?B?dGlQSG1Yek1iOWxBTHpkS1dHNUo1Nm9OL0JpOXdia0FCOG1pcmIwdURmYVgz?=
+ =?utf-8?B?OWpQUnpYcG9PTjBOeXYvUFNXU1N4TERjd2ZleU9zM2xaM3o3TmZCZjFBaTJv?=
+ =?utf-8?B?bXJxYi9yZlhOcG5VYlBQQUhOTGNHZWQrL1hiN1VwYTBvSmUwVkR5aGNJSXZL?=
+ =?utf-8?B?SEZsSFpyd004Z1BZVGtrbjZlVndGdjZxZHhwVnFtZWQrWlJrN2ZPb0NSRVYr?=
+ =?utf-8?B?Q3FXcnc2cXNxbTlmY3doQUZWK2gvNkhZeXluM0hXM2hnV1E5YWtkeWEyN3Jy?=
+ =?utf-8?B?UUpiYWtEdHJMYkhsaFBmbUQwejB5UWtCbmw1TXlwUmlRUFNPakFlZ0xLd3Fk?=
+ =?utf-8?B?YVZOQURYYktXRmZCMDZIbmlteTNvcEY1WXJ1QWVmbCtUZWpyV3BOajgvOVJy?=
+ =?utf-8?B?YWRtNTdibjh3MFQzcTZMRDVXSlZZT3lrTFRURUVpL2dtZVBzVU9mUlRoL2hB?=
+ =?utf-8?B?a081dU9rSWx3R281ckpEUkFDS002dlJCYWMvVEVtQWNrVGhiam0zMTdIc01D?=
+ =?utf-8?B?MDlFQVdFbUQ1dDFvZlgrSWVLYWRHZ20zZ21WNmdFOWtRSXk0dlZrcXRFSkZZ?=
+ =?utf-8?B?YUR2dGdLU3J5RUg2VnR2MzVrQWI2WVRWemlpZkZsWlNrMVdDQ2tja0FQQ2dq?=
+ =?utf-8?B?ZXpFU3NCN0Y5M0x6OXVCczV0elFRZXRDNFQrZ1pqVHdIUXdvNmk5VThmaEZO?=
+ =?utf-8?B?N1FLeTZtYnBIbjQyU2N3RTQ2N3JZb3dWVENldTVXYjduK2VWTnFkNDhwSXVU?=
+ =?utf-8?B?WkE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: eecc0927-0b69-4f56-cf3e-08de307c31de
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 01:51:50.5818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kuf9+w3LNGfN7tTaq3UmjBCqx93VomSTSMovSPWcH2VRMSW22RrcroQUcdv/pc65IVC0Pa1y79mtq1kAjpulOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6122
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8A3D740004
+X-Stat-Signature: b5gihha64784x57agwa8p45twc1dynyj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 21A1340014
-X-Stat-Signature: sind6ptzsuwmqotp81qorpo1xzj4iqzo
-X-HE-Tag: 1764553671-635114
-X-HE-Meta: U2FsdGVkX19QWLkOUCAesB7iDQujwm2MxrHqeBF7UraLdopy5Ol7kza9nVkyFZGtNmtfFRTuQb4BCm5PM23srO2l2p8/+M0DsEhOXLJ5gGRmpx9xXjJzXNlL3LRamxcS1g06/aU19SB2KvL0Q0cus3XiKcf6heI1uTbmRd8NsTV1Fk8hukaR42e+xkh3fjZmRDDq4xhR2mUaf/AOLZaE9Dd1G11lEFn1OmTaHdwl/St6E3D9eZUCjkFYnGFH9v19ZJYEMJJe0E/FDsA1fpYJYKxmwdTiV0TYGFdfY0OcNCBhuiClztvtvBD12TCjaWf6KYmHJkfrwNKafKdtU/ppTJi/hoJ+JK+11L03WQdnEGosrVVaOyWliq0xg4jeQ2INX2iUUDp09UmYXL3k+HY+XZ+KH1PAWJ2UXw0/x29WX6IX5ZzO8EW3uOHJ08e21ff/Rh1Vqp8omV1zJtcx3jFDjM+4KEGa/efdCc4P2E04vFNVzVMYwpOZpkgT+1dd1H98iE4BS1kqs8x7v2qKbKfECVDsphaCXexCgKX80QFl8dSCFsG5meo+qKGYuv/x7+w454DZGbjOdl2I/LimwiPPQUv04wNRnB9CoYID8EtnKWHG3TU7Sr8fslVIV3GfXb6kWh+MpAvfmEEPte6pL1NSoOPwogaEzTadhlZupttQDrkefOc4uz01ayVv1ydRm5+jWAr4l/z2wUlOcRL8K8T8tCW7h2djm83cYvalPb8Gm8zm1zBhIzBIWnytgv6VhPZmcgv7/ftudj1wKUm7l+hCz+/PaBIwJz5EvrtkkeVIkzn+MD5k0wCQre1xfv44LCdJ+E8hI3aEzSAl2RiIL3CunUd5SNbEGx1jvzNI+AUBPaM24PYo4/1nbyDBqF2dWtPQQrgDTaEn1aO1j3oCSd0SdrqDIJ3IqYM4OTfI1XAqvJpuhExHr3dHb0tiRiikrU5ERYYbtYw+I900m3V50Df
- yIwAbfHV
- aVdPIi2zNQwx8DtVKby6OUaOj+OdBHhjfbgicRmIueCgfVDM7g5XYB0bsuAeYw8ZKaAblX0pU5z64fa0EV/it79ygZVlfM8epbkExe/mpnGMEp4BUpKVuuqnF56caw4vfIfKZpd85iG6kWm5bVAYGFaTeDWNkIbfCXpkblvJ9Nj2qDocwnKqdHIaNp1d1+BMqp9iiBADVewOVFKWzTT2ylmsbnIlJWm/3Ug9+
+X-HE-Tag: 1764553915-756423
+X-HE-Meta: U2FsdGVkX1+bBD69BZso9nQRnUqps8rjC1M5SjpmmU+l5Anx/Aulg2QVlyWZaVHTXwoUCjQF/+Qqp5gt8x3pNOXNaOQq0TpzOeyHfrlll//6FozVEQ6cstkIL+P+VQCdsvNWtO16UovXCPIGW3MVClorbNwyaI+x/MAvwciUUCNAkcvy4FpQXZkDng9oAuQnLsnanJzQc7fpeiHQ+gnTw1VkM2pSGilpnEQuZHXuK1tY3CLiTc/TLwiuxnlhKiSgVYiRWdfNSHLyYl9F19xgEqDQsuQaKOCvJMov+EkmohGY5y1S5jP4j738d5i4qJDw00p1lcMTvRav47mzCcJWFIpcMtEFzTqGyscHFdn/cMXUCGITS7lDZx5pUb3wrWlLDQYVFAIP6r2HpiVP2drZZnKqR9zZwrH30Cw3KjoN3EA+bLP4q2eKyrZ1Q0pEQO9PhGXu2zde1kOmArGR9nOH8cg5eVzpEZYasP6ERAfrF8AVtNMHQcZdNY+FqiDAeqC9nxFCZ1tR7tvFHzCoEfCH90yV7qxutss0i4xEdr1VV1lVlDiczQC9z8u54bgIHe2aNfFGYuGzimvnko9wV3CecbrqNC00DQcQrqgCw1QeVT6ZwpP++1ofzuzP6YnsfUIejuA/CSR4Qh9TNDVvVEyOqauGzx66asvCoDZrvZO+VCXSqadWgfJJsqx9znJ2ZhSteI0q2dSOkGPo3ecDg2+Pv9qrAf/wYX0OUvMfJsIUH63rDWE6Fq+tgFNQKly+T7TMS7+udCCRuiWLJ8BYEJZF5n1ETUFMzwBfvVbjPNVh2dFeq01ZiUMBfU4WuSFtrreTuCde85TpUptMcJYzTOPi8whBh4fqo6RneIC2toPdn30nG41pW5SSQpThju8DiAYg10vdf0qNHo3iITdEUMjE1HkCm+Ya5QtsbztbO2WPrKF0Nkbd+EzzSPXrGtj9vfDjyzfuX+EtEN+7fE3Ho4K
+ /owp9jhN
+ irguR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,55 +237,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 1:34=E2=80=AFAM Yan Zhao <yan.y.zhao@intel.com> wro=
-te:
->
-> > > > +                 if (src_offset) {
-> > > > +                         src_vaddr =3D kmap_local_pfn(page_to_pfn(=
-src_pages[i + 1]));
-> > > > +
-> > > > +                         memcpy(dst_vaddr + PAGE_SIZE - src_offset=
-, src_vaddr, src_offset);
-> > > > +                         kunmap_local(src_vaddr);
-> > > IIUC, src_offset is the src's offset from the first page. e.g.,
-> > > src could be 0x7fea82684100, with src_offset=3D0x100, while npages co=
-uld be 512.
-> > >
-> > > Then it looks like the two memcpy() calls here only work when npages =
-=3D=3D 1 ?
-> >
-> > src_offset ends up being the offset into the pair of src pages that we
-> > are using to fully populate a single dest page with each iteration. So
-> > if we start at src_offset, read a page worth of data, then we are now a=
-t
-> > src_offset in the next src page and the loop continues that way even if
-> > npages > 1.
-> >
-> > If src_offset is 0 we never have to bother with straddling 2 src pages =
-so
-> > the 2nd memcpy is skipped on every iteration.
-> >
-> > That's the intent at least. Is there a flaw in the code/reasoning that =
-I
-> > missed?
-> Oh, I got you. SNP expects a single src_offset applies for each src page.
->
-> So if npages =3D 2, there're 4 memcpy() calls.
->
-> src:  |---------|---------|---------|  (VA contiguous)
->           ^         ^         ^
->           |         |         |
-> dst:      |---------|---------|   (PA contiguous)
->
->
-> I previously incorrectly thought kvm_gmem_populate() should pass in src_o=
-ffset
-> as 0 for the 2nd src page.
->
-> Would you consider checking if params.uaddr is PAGE_ALIGNED() in
-> snp_launch_update() to simplify the design?
->
+On Mon, Dec 01, 2025 at 10:23:32AM +1100, Alistair Popple wrote:
+> On 2025-11-29 at 06:22 +1100, Matthew Brost <matthew.brost@intel.com> wrote...
+> > On Fri, Nov 28, 2025 at 03:41:40PM +1100, Jordan Niethe wrote:
+> > > Today, when creating these device private struct pages, the first step
+> > > is to use request_free_mem_region() to get a range of physical address
+> > > space large enough to represent the devices memory. This allocated
+> > > physical address range is then remapped as device private memory using
+> > > memremap_pages.
+> > > 
+> > > Needing allocation of physical address space has some problems:
+> > > 
+> > >   1) There may be insufficient physical address space to represent the
+> > >      device memory. KASLR reducing the physical address space and VM
+> > >      configurations with limited physical address space increase the
+> > >      likelihood of hitting this especially as device memory increases. This
+> > >      has been observed to prevent device private from being initialized.  
+> > > 
+> > >   2) Attempting to add the device private pages to the linear map at
+> > >      addresses beyond the actual physical memory causes issues on
+> > >      architectures like aarch64  - meaning the feature does not work there [0].
+> > > 
+> > > This RFC changes device private memory so that it does not require
+> > > allocation of physical address space and these problems are avoided.
+> > > Instead of using the physical address space, we introduce a "device
+> > > private address space" and allocate from there.
+> > > 
+> > > A consequence of placing the device private pages outside of the
+> > > physical address space is that they no longer have a PFN. However, it is
+> > > still necessary to be able to look up a corresponding device private
+> > > page from a device private PTE entry, which means that we still require
+> > > some way to index into this device private address space. This leads to
+> > > the idea of a device private PFN. This is like a PFN but instead of
+> > > associating memory in the physical address space with a struct page, it
+> > > associates device memory in the device private address space with a
+> > > device private struct page.
+> > > 
+> > > The problem that then needs to be addressed is how to avoid confusing
+> > > these device private PFNs with the regular PFNs. It is the inherent
+> > > limited usage of the device private pages themselves which make this
+> > > possible. A device private page is only used for userspace mappings, we
+> > > do not need to be concerned with them being used within the mm more
+> > > broadly. This means that the only way that the core kernel looks up
+> > > these pages is via the page table, where their PTE already indicates if
+> > > they refer to a device private page via their swap type, e.g.
+> > > SWP_DEVICE_WRITE. We can use this information to determine if the PTE
+> > > contains a normal PFN which should be looked up in the page map, or a
+> > > device private PFN which should be looked up elsewhere.
+> > > 
+> > > This applies when we are creating PTE entries for device private pages -
+> > > because they have their own type there are already must be handled
+> > > separately, so it is a small step to convert them to a device private
+> > > PFN now too.
+> > > 
+> > > The first part of the series updates callers where device private PFNs
+> > > might now be encountered to track this extra state.
+> > > 
+> > > The last patch contains the bulk of the work where we change how we
+> > > convert between device private pages to device private PFNs and then use
+> > > a new interface for allocating device private pages without the need for
+> > > reserving physical address space.
+> > > 
+> > > For the purposes of the RFC changes have been limited to test_hmm.c
+> > > updates to the other drivers will be included in the next revision.
+> > > 
+> > > This would include updating existing users of memremap_pages() to use
+> > > memremap_device_private_pagemap() instead to allocate device private
+> > > pages. This also means they would no longer need to call
+> > > request_free_mem_region().  An equivalent of devm_memremap_pages() will
+> > > also be necessary.
+> > > 
+> > > Users of the migrate_vma() interface will also need to be updated to be
+> > > aware these device private PFNs.
+> > > 
+> > > By removing the device private pages from the physical address space,
+> > > this RFC also opens up the possibility to moving away from tracking
+> > > device private memory using struct pages in the future. This is
+> > > desirable as on systems with large amounts of memory these device
+> > > private struct pages use a signifiant amount of memory and take a
+> > > significant amount of time to initialize.
+> > 
+> > A couple things.
+> > 
+> > - I’m fairly certain that, briefly looking at this, it will break all
+> >   upstream DRM drivers (AMDKFD, Nouveau, Xe / GPUSVM) that use device
+> >   private pages. I looked into what I think conflicts with Xe / GPUSVM,
+> >   and I believe the impact is fairly minor. I’m happy to help by pulling
+> >   this code and fixing up our side.
+> 
+> It most certainly will :-) I think Jordan called that out above but we wanted
 
-IIUC, this ship has sailed, as asserting this would break existing
-userspace which can pass unaligned userspace buffers.
+I don't always read.
+
+> to get the design right before spending too much time updating drivers. That
+> said I don't think the driver changes should be extensive, but let us know if
+> you disagree.
+
+I did a quick look, and I believe it pretty minor (e.g., pfn_to_page is used a
+few places for device pages which would need a refactor, etc...). Maybe
+a bit more, we will find out but not too concerned.
+
+> 
+> > - I’m fully on board with eventually moving to something that uses less
+> >   memory than struct page, and I’m happy to coordinate on future changes.
+> 
+> Thanks!
+> 
+> > - Before we start coordinating on this patch set, should we hold off until
+> >   the 6.19 cycle, which includes 2M device pages from Balbir [1] (i.e.,
+> >   rebase this series on top of 6.19 once it includes 2M pages)? I suspect
+> >   that, given the scope of this series and Balbir’s, there will be some
+> >   conflicts.
+> 
+> Our aim here is to get some review of the design and the patches/implementation
+> for the 6.19 cycle but I agree that this will need to get rebased on top of
+> Balbir's series.
+
++1. Will be on the lookout for the next post and pull into 6.19 DRM tree
+and at least test out the Intel stuffi + send fixes if needed.
+
+I can enable both of you for Intel CI too, just include intel-xe list on
+next post and it will get kicked off and you can find the results on
+patchworks.
+
+Matt
+
+> 
+>  - Alistair
+> 
+> > Matt
+> > 
+> > [1] https://patchwork.freedesktop.org/series/152798/
+> > 
+> > > 
+> > > Testing:
+> > > - selftests/mm/hmm-tests on an amd64 VM
+> > > 
+> > > [0] https://lore.kernel.org/lkml/CAMj1kXFZ=4hLL1w6iCV5O5uVoVLHAJbc0rr40j24ObenAjXe9w@mail.gmail.com/
+> > > 
+> > > Jordan Niethe (6):
+> > >   mm/hmm: Add flag to track device private PFNs
+> > >   mm/migrate_device: Add migrate PFN flag to track device private PFNs
+> > >   mm/page_vma_mapped: Add flags to page_vma_mapped_walk::pfn to track
+> > >     device private PFNs
+> > >   mm: Add a new swap type for migration entries with device private PFNs
+> > >   mm/util: Add flag to track device private PFNs in page snapshots
+> > >   mm: Remove device private pages from the physical address space
+> > > 
+> > >  Documentation/mm/hmm.rst |   9 +-
+> > >  fs/proc/page.c           |   6 +-
+> > >  include/linux/hmm.h      |   5 ++
+> > >  include/linux/memremap.h |  25 +++++-
+> > >  include/linux/migrate.h  |   5 ++
+> > >  include/linux/mm.h       |   9 +-
+> > >  include/linux/rmap.h     |  33 +++++++-
+> > >  include/linux/swap.h     |   8 +-
+> > >  include/linux/swapops.h  | 102 +++++++++++++++++++++--
+> > >  lib/test_hmm.c           |  66 ++++++++-------
+> > >  mm/debug.c               |   9 +-
+> > >  mm/hmm.c                 |   2 +-
+> > >  mm/memory.c              |   9 +-
+> > >  mm/memremap.c            | 174 +++++++++++++++++++++++++++++----------
+> > >  mm/migrate.c             |   6 +-
+> > >  mm/migrate_device.c      |  44 ++++++----
+> > >  mm/mm_init.c             |   8 +-
+> > >  mm/mprotect.c            |  21 +++--
+> > >  mm/page_vma_mapped.c     |  18 +++-
+> > >  mm/pagewalk.c            |   2 +-
+> > >  mm/rmap.c                |  68 ++++++++++-----
+> > >  mm/util.c                |   8 +-
+> > >  mm/vmscan.c              |   2 +-
+> > >  23 files changed, 485 insertions(+), 154 deletions(-)
+> > > 
+> > > 
+> > > base-commit: e1afacb68573c3cd0a3785c6b0508876cd3423bc
+> > > -- 
+> > > 2.34.1
+> > > 
 
