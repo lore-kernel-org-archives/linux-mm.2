@@ -4,198 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47201D116F5
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 15:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54460D116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 15:55:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A54D6B0024; Mon,  1 Dec 2025 10:52:21 -0500 (EST)
+	id 785156B0029; Mon,  1 Dec 2025 10:55:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77CE06B0026; Mon,  1 Dec 2025 10:52:21 -0500 (EST)
+	id 75C756B002A; Mon,  1 Dec 2025 10:55:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66BF76B0027; Mon,  1 Dec 2025 10:52:21 -0500 (EST)
+	id 699AC6B002D; Mon,  1 Dec 2025 10:55:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 551E26B0024
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:52:21 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0230688B29
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:52:20 +0000 (UTC)
-X-FDA: 84171344082.29.B5E95DA
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020093.outbound.protection.outlook.com [52.101.196.93])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DEB2740015
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:52:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=RaJPuljq;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.93 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764604338;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 563EE6B0029
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 10:55:05 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F1D088B3B
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:55:05 +0000 (UTC)
+X-FDA: 84171350970.14.C8791B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5DEAC1C000D
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 15:55:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=smsBE6HJ;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764604503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yD2S1HBeD/bedjfJuhqL+EJUmOtnnWMbqabmR8I80QE=;
-	b=AAo8bYAxS6hmLc/BRr3sCN4pzXMuKwOpRJEZmTumSQRmWV7STU2zUxV3k8W02qABUsl13J
-	2G+P0RhoVvkqkb+HJazn8JJOdMWW/t5N83Uepj9/0rsMA5gjgGFjksoQ9wzoROVLPnRYcL
-	UC6SqRyFcnDLrqxK5KAZNq7QxYad0xw=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=RaJPuljq;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.93 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764604338; a=rsa-sha256;
-	cv=pass;
-	b=jhjrjCKVhWvP8X8uRCJm0ef36zp83iRLsh24+xYk3B1azChv8DskpyuyTMV7JiwARWBs0j
-	/UKNWJGhiDxWY1417LaO2+n5oitTcbfN1eELngktj5tsoe/QRDRv9DRbVf3n3BhrlvQ6wL
-	oKm7pS80smaLdzprKYvrU52RkcHMQtY=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mqFHEVuJWbjvns/K6VaKAsvpFB6uzTKDBH16qySoyrvKy/HBVCcEgjz8YvArJvFIOF+5yk5vF1Ccu6PAsL4dONU7aJmjhCgdrFfRpiCDcWGeR/00W9NOvy0vCGZfe+dW3QtyjVEXx57rKFNzj4cll1FCxcwy50lPYRaNAFSAZGX/4uapqvKsCZiy75Fal8MYW6KtLmcSS68dkgISocMX0rNkvOTZIIQiStUJKHftQzG87WSGvgprnyKvv9+mVE1Ymmh2Zn16nW9xVIj7RLqBjuM1M1QyTBHgVfvDLjPDHKq8fPMx3aZpx0otOr+9c7jZxUsspXQg4kV3e3c/IHIdfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yD2S1HBeD/bedjfJuhqL+EJUmOtnnWMbqabmR8I80QE=;
- b=x605bbFBjwYbBTDzd4PKdGdefgtUaodJrfXqfjDkxFJilxp/WzOqmQxzK5QTZsI/kY6enSwJoNeLC32TNfknQOy5mwNN3i0QAlhaHe0Ty2fnxpnfL/2rZ2eCVlsghJZv7MF/l7sSwFdqcdK1lPzS2Myb/JHL9hGH1+gyI/y0OerCUToWBgin85CBhg0IWbsEaHKCKk0pQSeqJ8IkexgqDy1eg90F7nyu/4Pzj6O1bAFvI6giW5h6fPCp/TKW9XLt2Umd69QBj6w1BnUH94akDZ8x7nsIUFoEWoj6/fM5+2Y2pMxSc85jb7kE+bluO6qVp/ufr5wadkHW14v2ilJm1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yD2S1HBeD/bedjfJuhqL+EJUmOtnnWMbqabmR8I80QE=;
- b=RaJPuljqFoVwajI23uUbP2+O/oaWDfDRqahiz7tiOlABmlYUaJ/ZvdvijJNpu+fYzHo80I+vqv9GWHJVdM/0xX8JP3FhYsZMdrCu9gxX0ERpHNH6rJlfg3lspR+Ktjj4yF9QCTj6/VC5jO7gilsNudDIOCrGMec0d4z5cVr0b9E=
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB5849.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1a2::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
- 2025 15:52:13 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%6]) with mapi id 15.20.9366.012; Mon, 1 Dec 2025
- 15:52:13 +0000
-Date: Mon, 1 Dec 2025 15:51:35 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno Lossin
- <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth
- Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?=
- <kwilczynski@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn
- <sergeh@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v13 1/4] rust: types: Add Ownable/Owned types
-Message-ID: <20251201155135.2b9c4084.gary@garyguo.net>
-In-Reply-To: <20251117-unique-ref-v13-1-b5b243df1250@pm.me>
-References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
-	<20251117-unique-ref-v13-1-b5b243df1250@pm.me>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0073.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:8::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	bh=R1BiCZ/+jA/kupi4t/n5o+t2cF9mUBcXSaSQvzcbjuE=;
+	b=pplTonGBwUZh0PvPi4U/Ddq3G1oQpM4d0VdXMCcEB+qZBgTfjGo/aKzDos33mvCUFTjZie
+	IAMBgWVEbn3j0fOlz8rk+lAiNvfnXNORTYYdrRlgsQV32VOwSCW98KxLe7LRWJhyH9OTQo
+	AQtIvH8MNxqf4vV66TtsRef59/Tf4ZU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=smsBE6HJ;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764604503; a=rsa-sha256;
+	cv=none;
+	b=WKXQmhWY5eH08PnK6uzlBRkByXsLD0mlRGmLCqf6/tU0MOlZPpWfAsAzGclIZjAvX/MOFf
+	X83qlYM//l4xcr6oLUDgwzuJve2csRJ9jECO/HxLRbgAhSpODIraQ7U63DuF6bpiDtGBcp
+	9jeCsI895kzSFm+Rww4shlyd6icVJxI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C76B60097;
+	Mon,  1 Dec 2025 15:55:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C437C16AAE;
+	Mon,  1 Dec 2025 15:54:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764604502;
+	bh=A2bhAHCrw29Gn04uGgzYEmynbjTQgb8sVC7Kb2YAar8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=smsBE6HJo57XGVHY+R3/NXxGlT70EutobA9ZHAG37qQxBteEMSs8iiALqNACEX/lB
+	 XM7cw6uALYdyYimZ8qeDw0ti+SXt6eAnuEjN6SvfvTYp3ESDQgupwedvasAnNiQUl4
+	 +Npr5UTXMcsXdRIUwu3ai2+NT8nzskfHozuTM0ppbeKZ1pFUqJxCYy7Ny1dprih60S
+	 N/62Te0hf+IYLcy0r57iuQ2JF83dZ7VSvxhxhz7sWll4bZQoCfnRn+mAgDtRUM77o7
+	 CvoBXRLv6TUmA2VLchO0nOpDYR6aE0/lzDhe/x8N/SAcWa44PbwXiUQY67ZYhBrZNn
+	 EMxobJQMv5d9w==
+Message-ID: <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
+Date: Mon, 1 Dec 2025 16:54:54 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB5849:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1ddfebd-59cd-4508-5f17-08de30f1983d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016|3122999012|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GA7e2tg/Ytoo+Hfdu50wTUInucqXqNT6ORjR17hsDx1cX5OPh9HdLWRiNSYl?=
- =?us-ascii?Q?w+cuc29LhaEck9P7o7wAuKeo1wFLiZ5bGpOK74iYJ06qZIxsOJFkJ9RWy73G?=
- =?us-ascii?Q?h0DHJH7hfZb0iqCv2S8q98186ABAmFHiZ77CjoOse5bvwKRvj6n0JBsiRzZ9?=
- =?us-ascii?Q?tTC0gEqCxzhaHGYLZ94Jgi9n5kLpnxIjtItOuePcgnmT31iT6mp8gkDul79T?=
- =?us-ascii?Q?XuP8eglImYRM1/90t4Y3vgcUgb1UBAjvbTss+33cR02r24txhiJp/O73n/0Q?=
- =?us-ascii?Q?AcgEtnbkNlCC3wF0zgbsTn5Jxl991APHUY+WXzBF40wilDMiE+hWABB1a75D?=
- =?us-ascii?Q?Adp0tV3QOyfdWQm8E09EjmUiepWdEDxH3OtC0iDy4iAPO5/Dkiph8d3PQf2x?=
- =?us-ascii?Q?LvdGcOpifOVn65Y/HrpfUzDXXg51911WKdPxvhml4+cTqgKFnLADLXel7F5l?=
- =?us-ascii?Q?liUh9Az9O4IdG8HjeHVMmJSAdvtai255V2sHG6L6vP7YDAFovRx7cxdU+XFG?=
- =?us-ascii?Q?fupDNgCmzkUxBgTwdBMcZ4QijpVAUcGPWrgJDz0nbLNml9OPDDUyfKhJ6A/s?=
- =?us-ascii?Q?hwh5vaydZU+9np5Tb0ZTkgUMACkznWMFzKRuoR1xMyDnmSOvu0ctKHdlueKY?=
- =?us-ascii?Q?0SHi3O1YDQ5hjtY4JKfjhVo+rG2zp75nJ3qWdELZ68Qb3JolwALpX59ZMalC?=
- =?us-ascii?Q?kzEQKfxSetPjKmU2QmSvC5MmT2PT8Iw1lnyRURbFHT+VgNeA21bxqmsoWzid?=
- =?us-ascii?Q?azCnYa7by93r9rfpld4w3L4UMswemVfh+rdSRqwJZtHgwDCRABe/DrLNks4N?=
- =?us-ascii?Q?P+opGnZqBqeeCQ5jtXwdEHXYuawjPgfE4E7J/ojA5dvmnxJClj0ciWL6BNVK?=
- =?us-ascii?Q?r/iruwQnHChrKECwshrVAd2sxG6Np7sOLBEvew3WqYEvbtP/P9iRHMZZVSJD?=
- =?us-ascii?Q?9bmMoJy6jjmrXPT10BVf40nOz55swW/BeJlYF5ExZBXliTVMy8vAwTY5Nmci?=
- =?us-ascii?Q?baUXOzYTxuj5m2ZWA14DUpQO5MyakKbT8D7ghlmRVIcig+vgpGQ+efZHuFQM?=
- =?us-ascii?Q?hLfRXZ8JtsBLBI+c9BuvBUd568Z3i3286PBJFmNEIdh9vfGbcQnjSSbRZAqy?=
- =?us-ascii?Q?F2yQzVVuwSU35bCI0+RoM+iuqxnlLdnnI6NmAFDsKxCKL+Tx8r+QvFQ8na5x?=
- =?us-ascii?Q?md+KUpwrfvj5AJGbIppFFU6mQGW80UxNxHV5eC6jIpIgakOwW7mSZ1LOpQIP?=
- =?us-ascii?Q?NiAOdweCx7E0U5LcJ7Vd37g6HPK6V1JKxrcEL19ANHh38SYo/zXMKBxJ63oV?=
- =?us-ascii?Q?6iwoSiwIqr+P2Fe8W0N4ScwZsTvcvCnkXsuKrkvyZoP4+DQRRoeddQan35jI?=
- =?us-ascii?Q?4gOjwlyQyuT68n25pC0B58LxzVK9pufbgl/xVhrBAzDtQB41YGXji1xQh4pe?=
- =?us-ascii?Q?LL2DF9Xz1kTwhmr11JEiyUsGVBI5OI7tLcFdF/UYQcLbOepYBOspuQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016)(3122999012)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?a8xqpq/th68idGw536TGMFrQM+4K9iFxGwnwWisk1WF57vGcGvZNUtLvfVVC?=
- =?us-ascii?Q?hh97C2swgriDsnFDsEpPYxyIYZd3vX4AGE82PTgmj6vegcjBWYXR7BcVYREp?=
- =?us-ascii?Q?53A/yfNUHhJgwI1LmRSGDN5Ei678JC9smcAIeAPJUYCv4BiBNav/2bzWWjub?=
- =?us-ascii?Q?HA5+pWzi7Sw/h1ZImwho8pNgD/w4bPVuG/Cd5DVcNviNQVUMZd9AuQM48Z3z?=
- =?us-ascii?Q?tK/Ew3VpX1tvZs7wZ6TossTxWQgoxlmWwsNMxYS/YQwHQhKIkzSnT+64g5Xc?=
- =?us-ascii?Q?RxGonXGp1fbJ/gOFCn3Ef+ckkRINi/C1SakIDmwtfgUyd3p+o/ydxVi4S6Gt?=
- =?us-ascii?Q?UMRoR0ZmYk7AGD/VZ/5g+/LipPwfr1Ps3nruzj113k3q8qqnkeQNv5VJc+v6?=
- =?us-ascii?Q?4LjZ+s5XBUur6hPfMTsyIsQAUu0+dRHKRqy3vk+LpFyuYSD2LyTh2mgCSy/l?=
- =?us-ascii?Q?hAw9Qd3b45FWsLfc/KML0G/vKagtHI9cC4xoLaKiKmt3RyK62gnGVsSbpMqe?=
- =?us-ascii?Q?LaGREWrCLdY2+n/2hk3jZYGKmJUqcLZN1Ee5LMslG3dKyk935+yalM9zRcfj?=
- =?us-ascii?Q?xviAYIFabrLHrMmAwOqMrDqOeTsVWbROl/5aAD1ciSfkcoZsGnT0YNEMJvSB?=
- =?us-ascii?Q?4c4suaYIGRypt2hXUzqR5nPlPclyFwvdq+SgkfO0jeCwOdL0JweQCDwTp6p6?=
- =?us-ascii?Q?MQ6yk7Hucxz6THEU+WKiXAzN9xs+emlp2TKLygVM34GXBQ+0Rz3dTi9wOFG/?=
- =?us-ascii?Q?+jTV/Z57yZ/o01396iS7m5NCjnsso9r8L2BQL6Iuo5zDdf4/mTkDD3th/EMm?=
- =?us-ascii?Q?VNXkZNiTWwhr0Hv+ACRwPqHl6YPjVQmLkNR8Kz+0gQENBln5WQCZIFeP4CIB?=
- =?us-ascii?Q?/uPbeaHXtbCWgueddCsOM1vsfN5uFKyayA2F+6EdNtjhnk+wGfWBkIpg94SM?=
- =?us-ascii?Q?+TbQenTkRVNaOMs416B6R9doPoXk9i5IkZMlEXeJzL3tOmBwUJGi5bHnJM9D?=
- =?us-ascii?Q?ZN1T9IZ6evSHnx1YXKmzm2xKmhDaBGG1q2rKIqq8cb21KYHQm7P29KFcvyOP?=
- =?us-ascii?Q?TlvRrzkuIymIRbsNEbNsZDhyDXOoP3FgmC1IowRKt8n1ep929kJirsAD58a8?=
- =?us-ascii?Q?3zzaFaiX+9M7ddbYKos83iSWkzTAd+fve57GCVD1+0+sOef/asusk6XPUDBF?=
- =?us-ascii?Q?NMAT54BPLpEHOhqAhjD2vf5IQ3T1+hKRDuN5NjeT3FHd5+3W12vnccTXKN8p?=
- =?us-ascii?Q?Ym8gD6Ls3pNXDMEzDCMD5v3HohCEx2V5/Bf4iCmd3q1+twe5J75bm2x4dfFN?=
- =?us-ascii?Q?vzHTgSHFF9xTSmLnnfmK7kejAcW2JdM46lM4PQtfyEovMuu8BXpQ1OY/s4jF?=
- =?us-ascii?Q?9vKZRf1NjZ6JlFpbWTyeDhcc0VDfro9La7oUrypFNw7Hk+Hzql77JUg17mJS?=
- =?us-ascii?Q?lmQ14aWsJM/L8zQg2H7f8za3uB+MqWDwWqYADrR7ntsFBoxytjF3pm9B2YOW?=
- =?us-ascii?Q?RjzfnmbQWUVP/N3asYkVSRQdun5OerI9zEgaSvTheHFAN1UsCIQ/8A8mMzk8?=
- =?us-ascii?Q?i2UDiOIF9ZZ4OJa6JzQLSyxqJct0zh8i+r949KC2?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1ddfebd-59cd-4508-5f17-08de30f1983d
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 15:52:13.4113
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u4kXx0u3rR3zZpOc/2BkBe44T7o86gBgAmAjb+Sd1KEUa8dhp45dCM6WuHnet5tItAL8ez3d9WYCRvhvAz3LUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5849
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DEB2740015
-X-Stat-Signature: 9eknqib3grs3p9gcj845fp7mcxsfdphu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
+ mode
+To: kalyazin@amazon.com, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20251130111812.699259-1-rppt@kernel.org>
+ <20251130111812.699259-5-rppt@kernel.org>
+ <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5DEAC1C000D
 X-Rspam-User: 
-X-HE-Tag: 1764604337-869244
-X-HE-Meta: U2FsdGVkX1/W7LMq36uGrQz5nIEZMjTskrK+mQU9l3PPtDzaSxYRDKGxw5WJByzeGS/dxPNg1Udk3XgngnsNQoRDtqxP3Oe0UvOj0FR5rMZpw+xxCfld2/Wu1RsdLn1l3Xyv/coolh3/CFNZ1yKVCcOKSGzuD8pBMzlEMV2UAP12lGL28bx8Uy3LASd15qTJTW5rpXJGW+IPBzKkNP6rlu4DqVVWviMGyHUCM9+02nH7JrX4XeMkydl1fEOcSG5TA/Mfa6+VB2ZCiON3RZq8/ALjC1bhX9toPYS9oUaUkcgpy9ES2tgDBx4D1V4qC6Dl1L4oDp6X8Wxh7BfzFzFpbdfvZXQzz9IxWKQRUgz5FkNOKWCXxEm6oiKKdtlDx9aApspVl68AHZyYukJdAjUo67V5q+IuQJJWe0cE5Uw9p1gKCrM4vz1qOe6axIfhPkOq7MkC6yEyQ/lVffpk6tf8Bw+CiVxKPqJH1345yFVpuqWkJiNkMssiERMh2Ui1SGeIPQW7qQoI5+NepXfTekd6ZEIv9tTKelEqAWGPGBHdIzgMItNvIql/cEqtooHq+JBfYuf4gHIwwRQ+FWc1hE+NPzCLeArvnXTOiCyoT7oppLQPmmRckF+P/4UYqgLVR2aAn+KljtjftVo5UDr7Fpv02/szz0C65ELmdZU/MF3e7XGGfsELkAKPfRCi+j29InZfU80WG6qVdfKbkf+It46YRcVwmaXiiMXV6GBrlBoNhcypFxYon0S4iNd1pR5543wDsY9jrgx80/7k4WXvhHiYYt4Nw3532LXLFZZkKa/z2RwT0bxQ/K1IqFxK9RkURyeyEdI4/Wc7PLKhpxf2dikh6YuoChwlWXYC46UvWUhIiyI5OsBFlyRRYsojR/tY/WzNsywRzSiZh/fb/wyshMmdwdLGillENlf2gWRWBwqoRaN0YON5rN7UdUya3aI2GBWiPl6xjgVICwerU6fwIlV
- eSoW9Vq7
- pcjZb/ilssdF/4G7v+bR1TV4T//dhfPTB/P9EJwdA5yfMrJJsYBicT6UwX6bYOmcAmpeY+kMRjYXwBTsFCnWvym0Z7Y3yJNDMVfMPy3yjYRvWJd5nmnq3NCuzAPw93kaFYKng9BdbQZOsLc/T8weg2i98O6M7jM8mp7jdmoHSV+Ym9kI3XS+s52PovAVuYeoWS3zjuJ+Ux8Tyz18WyzBj+wuYrxxaHME5pyS2rTfVSa0xZeviYe7VvbhGQSKwQnkLqhL4g7JHywZbf9EAdMmDTptJgidtjI19QB3YbdRVFy2CfrCXtbhVKQ347HODeaiF/QHc3TMrX6m8D8zhUnqZw4BMi7swMhqmMN42eYeoFTot+XjZvkP8rYnFf+/ZVO347e6q2drzBe42Eg4XwWUKRA2f4ESaZEfTzWbhLhoFflhmcljzXblQV3n6RRbu/KXYEpQ1wxh4p9lebdcDh7G8cOKBU51DPS1fMC+IOv3IJprIGE1oKzgVSGBROw1N9ij1xC+TbOEXBOF4sFIqVi4SI1OdUETtwZcmWncE21xoYAgLMiaf2zlZECFO1A==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: w1x7o9ded3t9ay1gdrpdk8yqrjugw3kq
+X-HE-Tag: 1764604503-423207
+X-HE-Meta: U2FsdGVkX1+xqXx681YsdCCEHd1nZpGYdVcx5oYfVhrEfj05BclGNxdy1pDTo2P3Q/gRTIGWQqwmremsYN1w5+fLO+ujjYjKSPWQT3LAiUK9ngnLP8q3Z7EMi6WUfEqDEEYQIZxRcBx+SRGTTcfwVTIsIY4Bhm0WL5iyKqQUOEOK37xyi7DKTrsz+b5Sqwbwaqt6X/K5Zlc2qheRicVypnKMMPotkY5f7JH6L9eRlQv7OrXgBFnw+X/lj2T9sCq8XNu74tKy4sx3RSDTrJGtTZbXiDr3lLui8aj6T+ZaFLOJWqhI9hZ1JLn4nT3wwl1UMSO8xwokxdE+ucmK0Q0H7mUNg0sfJK7JgDzPpLyT00cNH/NxGFWsjcDdZBHhIu+diMFX5Hwdgo5NTpa8fDwT1QngCTVxnWBtdSxqkNHx0yIHUdkv6R5z8tJg4C43eanzA+UVQPg/04rElHB89dA1QTLvONKHTO2pF6tx9rqGh+I2+ql30BwIdWRF6W5eR+zVqIVZsGomUPa4K9fljc+/KbzTjxssMtTIRxkApK7npF4hF76kwpd6y7wpyUb7XjmcceXUJ1S/BGfptu9UJ6qlNPbgCDVbyaNutMG4pif1ZWNEyepECy7dDIGRkArKbYlGGEJkZjy/7uTV2S0DCo1vCg9G1v0xj7qE7UNSuRO+G0Z8qxLZZn0ZUEQspbbnepOD+Ywx4XIB4GqwRZo2KWgJk0Zf0CVSVvM62Xpf2smErHg3OMJwz+eeB+AOoq6usrQ4iB12GczJS2SU0xMunjusmzoSKsDmee1EdEg3DzwmI7juHWnfxW2qFxxbPWCtGBO6NU+m9ocb4vXUmdajHgy/fRsaXcvL4jBoGGlzaIDZiCb0FMwWwhZhrw5zrFHOvDsJnhzQEO61CJRLNLaFZABDYYbliCLQ5zO8M0e8W+E+DtFtJgm6r6NSQDfFAxqMKTpE15UYHIHRYe0Oe5ziC5x
+ XFjfVSeM
+ SK6WtF4AAsmfoVyu84a3ly3/DrdhUVJQH+qE3hi+Z4hzCgrT8U//6RKgXs3FCxgoIJCt2t5ReaD2EdwTI/8UE72JhWL7yFRtWiKRrm4iGoFAojHAPXnKl51fX6oaKX8ZLU648MYpVnF6HsVbgd9YD2h6V1hV6VeBTdOOjUHxUwYzoxM+bkaq6u1S5FXAotUPxovWoCN8APG574nxTWZtJdmaRXZVxOZOJqzxBqHfTutOGU7YBCy7A3AfvYEKR6fLT97B7lUsl9DIbSBPpsxZgJodAYUH7ZCYvhjj2VrBlQ3zjnHpYC6HVvu3ySek/YC0Dm/cKx8wgHrrtgoQstayJie7CVpgo8cc6DVg9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -204,291 +107,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Nov 2025 10:07:40 +0000
-Oliver Mangold <oliver.mangold@pm.me> wrote:
-
-> From: Asahi Lina <lina+kernel@asahilina.net>
+On 12/1/25 14:39, Nikita Kalyazin wrote:
 > 
-> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
-> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
-> `AlwaysRefCounted`, this mechanism expects the reference to be unique
-> within Rust, and does not allow cloning.
 > 
-> Conceptually, this is similar to a `KBox<T>`, except that it delegates
-> resource management to the `T` instead of using a generic allocator.
+> On 30/11/2025 11:18, Mike Rapoport wrote:
+>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>>
+>> userfaultfd notifications about minor page faults used for live migration
+>> and snapshotting of VMs with memory backed by shared hugetlbfs or tmpfs
+>> mappings as described in detail in commit 7677f7fd8be7 ("userfaultfd: add
+>> minor fault registration mode").
+>>
+>> To use the same mechanism for VMs that use guest_memfd to map their memory,
+>> guest_memfd should support userfaultfd minor mode.
+>>
+>> Extend ->fault() method of guest_memfd with ability to notify core page
+>> fault handler that a page fault requires handle_userfault(VM_UFFD_MINOR) to
+>> complete and add implementation of ->get_folio_noalloc() to guest_memfd
+>> vm_ops.
+>>
+>> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> ---
+>>    virt/kvm/guest_memfd.c | 33 ++++++++++++++++++++++++++++++++-
+>>    1 file changed, 32 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index ffadc5ee8e04..dca6e373937b 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -4,6 +4,7 @@
+>>    #include <linux/kvm_host.h>
+>>    #include <linux/pagemap.h>
+>>    #include <linux/anon_inodes.h>
+>> +#include <linux/userfaultfd_k.h>
+>>
+>>    #include "kvm_mm.h"
+>>
+>> @@ -359,7 +360,15 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>>           if (!((u64)inode->i_private & GUEST_MEMFD_FLAG_INIT_SHARED))
+>>                   return VM_FAULT_SIGBUS;
+>>
+>> -       folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+>> +       folio = filemap_lock_folio(inode->i_mapping, vmf->pgoff);
+>> +       if (!IS_ERR_OR_NULL(folio) && userfaultfd_minor(vmf->vma)) {
+>> +               ret = VM_FAULT_UFFD_MINOR;
+>> +               goto out_folio;
+>> +       }
 > 
-> [ om:
->   - Split code into separate file and `pub use` it from types.rs.
->   - Make from_raw() and into_raw() public.
->   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
->   - Usage example/doctest for Ownable/Owned.
->   - Fixes to documentation and commit message.
-> ]
-> 
-> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/kernel/lib.rs       |   1 +
->  rust/kernel/owned.rs     | 195 +++++++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/sync/aref.rs |   5 ++
->  rust/kernel/types.rs     |   2 +
->  4 files changed, 203 insertions(+)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 3dd7bebe7888..e0ee04330dd0 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -112,6 +112,7 @@
->  pub mod of;
->  #[cfg(CONFIG_PM_OPP)]
->  pub mod opp;
-> +pub mod owned;
->  pub mod page;
->  #[cfg(CONFIG_PCI)]
->  pub mod pci;
-> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
-> new file mode 100644
-> index 000000000000..a2cdd2cb8a10
-> --- /dev/null
-> +++ b/rust/kernel/owned.rs
-> @@ -0,0 +1,195 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Unique owned pointer types for objects with custom drop logic.
-> +//!
-> +//! These pointer types are useful for C-allocated objects which by API-contract
-> +//! are owned by Rust, but need to be freed through the C API.
-> +
-> +use core::{
-> +    mem::ManuallyDrop,
-> +    ops::{Deref, DerefMut},
-> +    pin::Pin,
-> +    ptr::NonNull,
-> +};
-> +
-> +/// Type allocated and destroyed on the C side, but owned by Rust.
+> I realised that I might have been wrong in [1] saying that the noalloc
+> get folio was ok for our use case.  Unfortunately we rely on a minor
+> fault to get generated even when the page is being allocated.  Peter and
+> I discussed it originally in [2].  Since we want to populate guest
+> memory with the content supplied by userspace on demand, we have to be
+> able to intercept the very first access, meaning we either need a minor
+> or major UFFD event for that.  We decided to make use of the minor at
+> the time.  If we have to preserve the shmem semantics, it forces us to
+> implement support for major/UFFDIO_COPY.
 
-The example given in the documentation below shows a valid way of
-defining a type that's handled on the Rust side, so I think this
-message is somewhat inaccurate.
+If we want missing semantics then likely we should be adding ... missing 
+support? :)
 
-Perhaps something like
+-- 
+Cheers
 
-	Types that specify their own way of performing allocation and
-	destruction. Typically, this trait is implemented on types from
-	the C side.
-
-?
-
-> +///
-> +/// Implementing this trait allows types to be referenced via the [`Owned<Self>`] pointer type. This
-> +/// is useful when it is desirable to tie the lifetime of the reference to an owned object, rather
-> +/// than pass around a bare reference. [`Ownable`] types can define custom drop logic that is
-> +/// executed when the owned reference [`Owned<Self>`] pointing to the object is dropped.
-> +///
-> +/// Note: The underlying object is not required to provide internal reference counting, because it
-> +/// represents a unique, owned reference. If reference counting (on the Rust side) is required,
-> +/// [`AlwaysRefCounted`](crate::types::AlwaysRefCounted) should be implemented.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that the [`release()`](Self::release) function frees the underlying
-> +/// object in the correct way for a valid, owned object of this type.
-> +///
-> +/// # Examples
-> +///
-> +/// A minimal example implementation of [`Ownable`] and its usage with [`Owned`] looks like this:
-> +///
-> +/// ```
-> +/// # #![expect(clippy::disallowed_names)]
-> +/// # use core::cell::Cell;
-> +/// # use core::ptr::NonNull;
-> +/// # use kernel::sync::global_lock;
-> +/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
-> +/// # use kernel::types::{Owned, Ownable};
-> +///
-> +/// // Let's count the allocations to see if freeing works.
-> +/// kernel::sync::global_lock! {
-> +///     // SAFETY: we call `init()` right below, before doing anything else.
-> +///     unsafe(uninit) static FOO_ALLOC_COUNT: Mutex<usize> = 0;
-> +/// }
-> +/// // SAFETY: We call `init()` only once, here.
-> +/// unsafe { FOO_ALLOC_COUNT.init() };
-> +///
-> +/// struct Foo {
-> +/// }
-> +///
-> +/// impl Foo {
-> +///     fn new() -> Result<Owned<Self>, AllocError> {
-> +///         // We are just using a `KBox` here to handle the actual allocation, as our `Foo` is
-> +///         // not actually a C-allocated object.
-> +///         let result = KBox::new(
-> +///             Foo {},
-> +///             flags::GFP_KERNEL,
-> +///         )?;
-> +///         let result = NonNull::new(KBox::into_raw(result))
-> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
-> +///         // Count new allocation
-> +///         *FOO_ALLOC_COUNT.lock() += 1;
-> +///         // SAFETY: We just allocated the `Self`, thus it is valid and there cannot be any other
-> +///         // Rust references. Calling `into_raw()` makes us responsible for ownership and we won't
-> +///         // use the raw pointer anymore. Thus we can transfer ownership to the `Owned`.
-> +///         Ok(unsafe { Owned::from_raw(result) })
-> +///     }
-> +/// }
-> +///
-> +/// // SAFETY: What out `release()` function does is safe of any valid `Self`.
-
-I can't parse this sentence. Is "out" supposed to be a different word?
-
-> +/// unsafe impl Ownable for Foo {
-> +///     unsafe fn release(this: NonNull<Self>) {
-> +///         // The `Foo` will be dropped when `KBox` goes out of scope.
-
-I would just write `drop(unsafe { ... })` to make drop explicit instead
-of commenting about the implicit drop.
-
-> +///         // SAFETY: The [`KBox<Self>`] is still alive. We can pass ownership to the [`KBox`], as
-> +///         // by requirement on calling this function, the `Self` will no longer be used by the
-> +///         // caller.
-> +///         unsafe { KBox::from_raw(this.as_ptr()) };
-> +///         // Count released allocation
-> +///         *FOO_ALLOC_COUNT.lock() -= 1;
-> +///     }
-> +/// }
-> +///
-> +/// {
-> +///    let foo = Foo::new().expect("Failed to allocate a Foo. This shouldn't happen");
-> +///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
-> +/// }
-> +/// // `foo` is out of scope now, so we expect no live allocations.
-> +/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
-> +/// ```
-> +pub unsafe trait Ownable {
-> +    /// Releases the object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that:
-> +    /// - `this` points to a valid `Self`.
-> +    /// - `*this` is no longer used after this call.
-> +    unsafe fn release(this: NonNull<Self>);
-> +}
-> +
-> +/// An owned reference to an owned `T`.
-> +///
-> +/// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
-> +/// dropped.
-> +///
-> +/// # Invariants
-> +///
-> +/// - The [`Owned<T>`] has exclusive access to the instance of `T`.
-> +/// - The instance of `T` will stay alive at least as long as the [`Owned<T>`] is alive.
-> +pub struct Owned<T: Ownable> {
-> +    ptr: NonNull<T>,
-> +}
-> +
-> +// SAFETY: It is safe to send an [`Owned<T>`] to another thread when the underlying `T` is [`Send`],
-> +// because of the ownership invariant. Sending an [`Owned<T>`] is equivalent to sending the `T`.
-> +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
-> +
-> +// SAFETY: It is safe to send [`&Owned<T>`] to another thread when the underlying `T` is [`Sync`],
-> +// because of the ownership invariant. Sending an [`&Owned<T>`] is equivalent to sending the `&T`.
-> +unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
-> +
-> +impl<T: Ownable> Owned<T> {
-> +    /// Creates a new instance of [`Owned`].
-> +    ///
-> +    /// It takes over ownership of the underlying object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that:
-> +    /// - `ptr` points to a valid instance of `T`.
-> +    /// - Ownership of the underlying `T` can be transferred to the `Self<T>` (i.e. operations
-> +    ///   which require ownership will be safe).
-> +    /// - No other Rust references to the underlying object exist. This implies that the underlying
-> +    ///   object is not accessed through `ptr` anymore after the function call (at least until the
-> +    ///   the `Self<T>` is dropped.
-
-Is this correct? If `Self<T>` is dropped then `T::release` is called so
-the pointer should also not be accessed further?
-
-> +    /// - The C code follows the usual shared reference requirements. That is, the kernel will never
-> +    ///   mutate or free the underlying object (excluding interior mutability that follows the usual
-> +    ///   rules) while Rust owns it.
-
-The concept "interior mutability" doesn't really exist on the C side.
-Also, use of interior mutability (by UnsafeCell) would be incorrect if
-the type is implemented in the rust side (as this requires a
-UnsafePinned).
-
-Interior mutability means things can be mutated behind a shared
-reference -- however in this case, we have a mutable reference (either
-`Pin<&mut Self>` or `&mut Self`)!
-
-Perhaps together with the next line, they could be just phrased like
-this?
-
-- The underlying object must not be accessed (read or mutated) through
-  any pointer other than the created `Owned<T>`.
-  Opt-out is still possbile similar to a mutable reference (e.g. by
-  using p`Opaque`]). 
-
-I think we should just tell the user "this is just a unique reference
-similar to &mut". They should be able to deduce that all the `!Unpin`
-that opts out from uniqueness of mutable reference applies here too.
-
-
-> +    /// - In case `T` implements [`Unpin`] the previous requirement is extended from shared to
-> +    ///   mutable reference requirements. That is, the kernel will not mutate or free the underlying
-> +    ///   object and is okay with it being modified by Rust code.
-
-- If `T` implements [`Unpin`], the structure must not be mutated for
-  the entire lifetime of `Owned<T>`.
-
-> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-
-This needs a (rather trivial) INVARIANT comment.
-
-> +        Self {
-> +            ptr,
-> +        }
-> +    }
-> +
-> +    /// Consumes the [`Owned`], returning a raw pointer.
-> +    ///
-> +    /// This function does not actually relinquish ownership of the object. After calling this
-
-Perhaps "relinquish" isn't the best word here? In my mental model
-this function is pretty much relinquishing ownership as `Owned<T>` no
-longer exists. It just doesn't release the object.
-
-> +    /// function, the caller is responsible for ownership previously managed
-> +    /// by the [`Owned`].
-> +    pub fn into_raw(me: Self) -> NonNull<T> {
-> +        ManuallyDrop::new(me).ptr
-> +    }
-> +
-> +    /// Get a pinned mutable reference to the data owned by this `Owned<T>`.
-> +    pub fn get_pin_mut(&mut self) -> Pin<&mut T> {
-> +        // SAFETY: The type invariants guarantee that the object is valid, and that we can safely
-> +        // return a mutable reference to it.
-> +        let unpinned = unsafe { self.ptr.as_mut() };
-> +
-> +        // SAFETY: We never hand out unpinned mutable references to the data in
-> +        // `Self`, unless the contained type is `Unpin`.
-> +        unsafe { Pin::new_unchecked(unpinned) }
-> +    }
-> +}
-
-Best,
-Gary
-
-
+David
 
