@@ -4,91 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8B1D116F1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 13:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3029D116F1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 13:26:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45D756B000D; Mon,  1 Dec 2025 08:23:18 -0500 (EST)
+	id 17FEE6B000A; Mon,  1 Dec 2025 08:26:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435046B0088; Mon,  1 Dec 2025 08:23:18 -0500 (EST)
+	id 1301F6B0088; Mon,  1 Dec 2025 08:26:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34AED6B0089; Mon,  1 Dec 2025 08:23:18 -0500 (EST)
+	id 01ECE6B0089; Mon,  1 Dec 2025 08:26:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FAA16B000D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:23:18 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48E16139C6F
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:23:15 +0000 (UTC)
-X-FDA: 84170968350.03.0BF5CFF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 90F9F1C0016
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:23:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cqxUaKnE;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DBFC86B000A
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:26:40 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C5E91A01E9
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:26:40 +0000 (UTC)
+X-FDA: 84170976960.27.806D526
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A9D131C0016
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:26:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ToU/5xyi";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764595598; a=rsa-sha256;
+	cv=none;
+	b=oqtSJMNbc0yDNVfAh9nw1ROEzY1dGwlSdS9nWYfG5Htzcl3GdMrMr3H3qnU7hi1nNClbt/
+	odPpAg9QzoObFGqOz4M1ZssYlRVlLUyr19bOomj4cxQLm7418mi2YaPfuJe9tDMKvXwVlw
+	mggZeyKYSo7KYCQh5uEq1nmK3vh2H1s=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ToU/5xyi";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764595393;
+	s=arc-20220608; t=1764595598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5S7rehuYscd/hErv8J5+olzkbmCgkfxJ3MreqUx/Zmo=;
-	b=mNWBhXBbqIxGvD2AFglDcKEn3eVMR5CO6rr6RkB2tbwQcV0b6PK/U03KrCnbR9RtD6WVha
-	GKi4WrnBtHBlpA1gIFZKW26StSBGPd/jTscpD0AEkrhK7n9KnnxeirsJt62TPmI24GVwQx
-	30epyj4CU8Tywyzaxz2XizALp1yPdYs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764595393; a=rsa-sha256;
-	cv=none;
-	b=SORT/9QL9kneNQkSMQbpe6cBPllJ0Zxv8IjCLsN1RsUK5ZFoJ7zm0FcEdLkguRZMXuqRta
-	ON9i/iKnvtlpCj/Zfpdo/QxkeaT+W7qTSbyjyL58ppru8/GaRFnJjtYx11RjvHaUa02oR9
-	SEfrE95D9PZTYsTx2dLX+DV22u3ll5k=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cqxUaKnE;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E9B296001D;
-	Mon,  1 Dec 2025 13:23:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37675C4CEF1;
-	Mon,  1 Dec 2025 13:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764595392;
-	bh=/5hgmbNcBuxVVJJcYDy7YeTK1UEsFT0pKtlTdyuekFg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cqxUaKnE+6gErEu/ml7xQrLCDayT1lGoVeW+FyRqEBgt4BU85HzSBSkUzkCD/+jEF
-	 ho5xpl3kOJ958YyyK/XrrbdbajYrOBAqLuR7wft337hLePDckCAlatmd6MOQ4r9Am/
-	 XJ7sxb1WcR5HGlxtU7X9u0xuB7gmYo1Ivb+qmndiJgIJws3GobRae5/vxPXLRS0faf
-	 MWVSL0+2tP06OZYoPc9xN2Jk5Ubw5jfd0ACuqDgSxcMyM1BZAOsYziU8FSTr/liGU4
-	 wtdMN+XanBsT4Fg/MwzvHjsE+46k2nOOa4hrgRxW8dcNxi6Iqw1+E0C4odvn6t+ofA
-	 aq3YfXg/D7NbQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Alexander Graf <graf@amazon.com>,  Pasha
- Tatashin <pasha.tatashin@soleen.com>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] kho: fix restoring of contiguous ranges of order-0
- pages
-In-Reply-To: <aS07racwRsh4ep_L@kernel.org> (Mike Rapoport's message of "Mon, 1
-	Dec 2025 08:54:37 +0200")
-References: <20251125110917.843744-1-rppt@kernel.org>
-	<20251125110917.843744-3-rppt@kernel.org> <mafs0pl96w7hk.fsf@kernel.org>
-	<aS07racwRsh4ep_L@kernel.org>
-Date: Mon, 01 Dec 2025 14:23:07 +0100
-Message-ID: <86ms42mj44.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=OT69i5hYEy+xoWsqzEI4NzpRbIWfBlJ47+V/PV4cOqI=;
+	b=oYHNtkiNLq2i9XyRbuLAd0vpL0Dw0gdXA068rb2mD46fBgVZWT9y1qI3VY1OmewEYI7PAF
+	UMJtBfAaIgmdgQw0+o4Wtd83alCUTqoe1rdYb9AhYeVWGqW7/9JrbtTS8oMo1yNSjqX68s
+	RCZUgmbd9Hju+43GrK1Vx2jmq61S13Y=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7672a12eb8so47953866b.3
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 05:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764595597; x=1765200397; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=OT69i5hYEy+xoWsqzEI4NzpRbIWfBlJ47+V/PV4cOqI=;
+        b=ToU/5xyiyk53CWl2dMd3owgbwMOumHNOdpMy168vLNx3y0TqXXscGjB0fL0bo+uJnv
+         bO/rIJG1l7g/Uv41POSCwT8XLtgv2rapwxHlYrUyLL0YXRt4W+E78t9qO/n2bAhQO3ZR
+         xhk7Jpvby9Lb9+lg5HrLI09psUO6OzKA4WhNlajyteZKTbvlaTNNAyXfSiDofm6Ny3oA
+         chA417zMJ1K4DRik9xCsFxGtiHfPDig4RXGRaCOYdBdeop3t2AgMLaxWTjISstv8qjwc
+         ZtZIpjj6v+TW2Lb33THlCBuaKgqGEQnVi1SweTXPfnMPrpYidhWYSNYOkxZotCDgJ7N4
+         PLAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764595597; x=1765200397;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OT69i5hYEy+xoWsqzEI4NzpRbIWfBlJ47+V/PV4cOqI=;
+        b=tgsC04c5XIRY+Fst+Xwd+74IOGqXipvwsNU6uVQx9Zzljv9DvrWjwmn3PtvCdM6ddN
+         T/mugBe25M2R840CS9vu7eTuSvDPakuXxaL7zieKSungmKn1Ih179bjaX1Tf9PUEukkH
+         LzkYQD3lZ/hQ+/wl03WIKy1TH5V/URCtXRhqbH96ToCU3LS1N28v3W7WU+ws/V6paOsF
+         9VuwxztWDbaiTXqLbAEfIV+LCu4+EjF5loFfro2SqvGMratJ9UbIe6izvIcSXHxJLn23
+         oJrw/sTfelmwdBPqkblzydEFCLsWPZr++oG3JUNfpDLgQLhG9J5Is0FWVl47dd8lQR2j
+         pJKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVsZDjxEZjl0lobL/s/VDw1eyU1KlJAa/r2NbVhhAKVh8KL6i7Bf1hb0ZFtTi94GHU2blF0/WzgJA==@kvack.org
+X-Gm-Message-State: AOJu0YzhbfsC2CgdIdVFJ5VBpwVZPxa3g0zG3qp4PfOc5N0MBjfQQgHb
+	SKKPhON6+p2Q0haII09EeQGPusZztk2iFzC3uyGDPl3MVbUfQrfzqjwkU/zXdXiMwlCYO7Zpra+
+	rZBSxuc0Ej+Wlme632DvhAyosZLWMvzI=
+X-Gm-Gg: ASbGncuZwvhYA0rKbNgKT5PQ/inBDQwhGryF6/YbFcTDOTQI1MihReqZWuhkoCd2q9F
+	qyavPXVtSbNDdKCPZOFxH89nlyET8IH1mKC55SOFhwVrD4YZkmdFemTb6nuTR0fDgTYdsvex33/
+	ZkGyR4KoR1oueNe5Rnw2FPYpl96H6BixnTRUjQiBjdxwebyl4bci752C6bTb3XDhE6dhos29Qpi
+	0fBbV/UaFo6rzytRQL+7tAk+w7U+15zL/ZUEi7N693NjIZ/68+ro6zuXuE71SkbuvyM/ig=
+X-Google-Smtp-Source: AGHT+IFyO9+LGGmFyReTGUumTl17UewEI50V/5adbCYeJcarlzJzMBdYHfN5rbGaM751Bk5kYaq5rOTh2eihB1pVoqo=
+X-Received: by 2002:a17:907:2d26:b0:b73:8bdb:9608 with SMTP id
+ a640c23a62f3a-b767700c4a4mr2387387366b.2.1764595596886; Mon, 01 Dec 2025
+ 05:26:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
+References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de> <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de>
+In-Reply-To: <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de>
+From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Date: Mon, 1 Dec 2025 13:25:59 +0000
+X-Gm-Features: AWmQ_blqLxd36fmljwIpQgggDAlKEhmUtfAyB3aAfy7nFPBq21RVnlHBcmLukQM
+Message-ID: <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
+Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A9D131C0016
+X-Stat-Signature: tamuu1qf4drmc58gjgi9xnjuxkmaxu5m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 90F9F1C0016
-X-Stat-Signature: y86c5aeawwsdc5kg5htp3y7dt3hn6nxj
-X-HE-Tag: 1764595393-804122
-X-HE-Meta: U2FsdGVkX19n3rEYm9Qawy1wSj9EiwcL7C9aCzxFN7DKyLT5X3IRBV1InILaIJJcCtlXcrFhUfci1WUHz75aTfo7xUJA4jc1LARtMmsq4fLSZN4gILYsMSbTY94EKt/R5ZXvMKPJLwaNKEP45tLG8BLc4SDWHjwaqJ0m5K8aiOxreDKgrtchDn+bqBIEpEFpLPEkKLhw6+GJZVoJU5dc3FtkpGZi/8nIoCeQBxQfb1sjURlBdyX67vVyGE2YPq97bbCwdmz5IbDJ5kE72xbRbPwTuDHfHl0iVDX8nBkZq75OOEcnS1FsVFNGobnhSwMn1tUkHJEZAkwmA2ggVRrBsqUGccs6K4oa4MfiL/rPMzwU6xZEP636GbJfDPKgc388FZHxJFMHFCwgyky+CBIeqnjomjJiEa2bkwY03WbuklKZloF9FoZdqnK1sHg7YpdHNTxl2PZZEexhn49n0FzY62FmipP55xEIIq6yVZfVZbPfFP4i4RovpTzrX3LYotNZJT89usR5Ymlmf0W/dooHTlLzJjZ0UtCjqk8Di3kHKHnU3tZwEAyFf04fBwVfcckGIkNkdYDevZraOZpeZl7k5ty3BcJlMU7wFoWCDl3v2NRr3zkBFIl7itANjsXHotS9Z5JNj14fzoZohl0+xVpCnlzXvHmo0mAiYpz+Lqi8AJgG+m4N+wCy7T+M8AABKpkq4Ei+YXFPRWy4T3yj2+whfbXrQnR933TyO0Se1YLnTb52tyd0DLcOzJpd9NwBjDjxKJOvLEUwiJaO07hWSFrn79IzbLPK1WUikCzM8zceZka7LgHggGBHNCkm6pNKm6Ef/IaJ22dCfyGsYYn/djtjujDNLjsqXs8As+fw/zA33CCuO2mtpj8ge97YiFSrogIhyv4YETI7/0NmKMGr5LXF8KvpmDP687QWARRFh74si5xOaTG6hx5K0usuBEIo8IO+6oXp4AruMTTZALgZeLm
- s2hOOV2+
- au+iW+rVA8YPhNFb4o0YkBJDVsKWEwAc0SaP3FSLUce+wWt8KEyf16wa15uhF248LKzBK1m7x5Aw12Q9isf6EKl0Otqi/xWLFYnYlHfxczjI0oDstVXzvwl4zKaX4P4gnJ6xmSR6C7Crhcetn6LMQeaORIvmg7JiTqDO4tR0aRc8TQ9k=
+X-HE-Tag: 1764595598-136455
+X-HE-Meta: U2FsdGVkX18INN5obg7lXWS/pPu5A6zMx7/G1HZl1kWbMV2+75FMIBocryHNgyd10aYTYOmeTWiuZw8MdAmMgG5T3dIhShqVZqWBD5jTwwIRf4lLqdcoKyLJ/NLLp5xHPUt+E3uXZeloPEVwjxhyw4DHzhTOC/jhsR3SZoDAMxa367NnvmcmL852UztzdFE62PUkIM6p2+s62DkMZYjRgBGLx35lCNjny5Kr33i0SMmwLVPdlPCIbuMZSGUXdfiJ7FHcAaJvjpkQ6IHPdh0g1uVnmmsEMo7y/h9NdIW4GAJkq0Or7ZiEy3wKfqOMoq1vLpxEm9F+SbgigC/9fJ1+3JmWB3ZSnjr8nhDrIQVHzlAex49M8VFzts17wui7HabtlB3S8Mr/XXXIOp/bse052DJG1Kzn6JR5/KZPw+g2wlSkYs51tE/Seq7ZmWsDn43j+2YTDoWIrn7avSpaX2sZq5gLoH0LvA6p8I2x02B/CFPeSzI0uI8heeSLLd25KoDR0zqNiORTepqr+GyckhduNbqN6H4gg8ubFkW5PckCfjRw+hklXEOJ+IXqUBNOWo2SJ//PhfJA6SpmaN+/NyBdFfGwlWOjrQKtMsZ/PkBb694TR6qH35YLlG1G/zTcgeKBHESSbrlSjRzAS2roPOdQT+rtPfETUvuQG3JdtwLaci2XlsqSacE17pRiRzFG97xtNA5pQ1ya6nnBfAE3+iGDyzxrkEUIHs1yGNSytYqmwxn554fhRjbluQEBiGC/6ne03ndMCCSbdrpJl0dXARTP8Dmfju7mrG8QNhhKvY5feQrhElpSmm4rowyK/BVN5Mz8rZCQKveC1Uxe7mSHoAaIiBarptohBqWcxTYxO/AwRZLmBfFyJW1EuoQD7cskncThTRdY4V4FRcRu7ZiHBpReypfRITIOFd51zyXSLe4QOMfjmT4IqquHzbcvQZrL4HznOlfuuTmLh47Py+voD++
+ F41XXXTe
+ BJrIsP6ggO832sk+Ke/3IvlExbQAfQWW8dz6+yngwezbUbIuPuPR9W2BpjycsiuV51xCTDjJSSDPYASp2yX2mzGvBBA4h27iSB+COwC/mpqEh9F+L0OeLo0rvbkqs58nEAmWtQUAlZGhjnhorme6xc/mURuMoYX72vfszLYVRODXJ+NaqOO1fD6BHLw9DhC+YQVwTV869tkqsfNvb0ZqfeRX5Req6aXKfLzZ4JU/e0H04cezVurqwM2xfumFZnYUWXCN7WjojlJ7t9uDLfTHVe9KH580OvGxqlNGqPs57hH17FPuryhrRIe6IG/uVK1rN4U0NUTA5NFoQT/pgPGiys6UFukx5D92jKESXKdA1FvPBwWJhC+rG92yqQFTomaX2k6Ck
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,46 +113,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 01 2025, Mike Rapoport wrote:
-
-> Hi Pratyush,
+On Thu, 27 Nov 2025 at 22:55, Paul Menzel <pmenzel@molgen.mpg.de> wrote:
 >
-> On Tue, Nov 25, 2025 at 02:45:59PM +0100, Pratyush Yadav wrote:
->> On Tue, Nov 25 2025, Mike Rapoport wrote:
+> Dear Linux folks,
 >
-> ...
 >
->> > @@ -243,11 +243,16 @@ static struct page *kho_restore_page(phys_addr_t phys)
->> >  	/* Head page gets refcount of 1. */
->> >  	set_page_count(page, 1);
->> >  
->> > -	/* For higher order folios, tail pages get a page count of zero. */
->> > +	/*
->> > +	 * For higher order folios, tail pages get a page count of zero.
->> > +	 * For physically contiguous order-0 pages every pages gets a page
->> > +	 * count of 1
->> > +	 */
->> > +	ref_cnt = is_folio ? 0 : 1;
->> >  	for (unsigned int i = 1; i < nr_pages; i++)
->> > -		set_page_count(page + i, 0);
->> > +		set_page_count(page + i, ref_cnt);
->> >  
->> > -	if (info.order > 0)
->> > +	if (is_folio && info.order)
->> 
->> This is getting a bit difficult to parse. Let's separate out folio and
->> page initialization to separate helpers:
->  
-> Sorry, I've missed this earlier and now the patches are in akpm's -stable
-> branch.
-> Let's postpone these changes for the next cycle, maybe along with support
-> for deferred initialization of struct page.
+> Am 27.11.25 um 19:51 schrieb Paul Menzel:
+>
+> > Unfortunately, not reproducible, but starting with Linux 6.18-rc7, I got
+> > the oops below *once*:
+> >
+> > ```
 
-Sure, no problem.
+<snip>
 
-[...]
+>
+> Building and booting Linux 6.18.0-rc7-00041-g765e56e41a5a, I got another
+> oops.
+>
+>      [   15.234799] ppdev lp.0: really_probe: driver_sysfs_add failed
+>      [   15.234852] ------------[ cut here ]------------
+>      [   15.234854] refcount_t: addition on 0; use-after-free.
+>      [   15.234864] WARNING: CPU: 0 PID: 353 at lib/refcount.c:25
+> refcount_warn_saturate+0xcd/0xf0
+>
+> Please find the output of `dmesg` attached.
+>
+> (It might be related to booting with an USB-C mini-dock connected, but I
+> do not know yet.)
+
+In both cases, it seems the underlying hardware was removed  or the
+module was unloaded while it was still registering.
+
+In the first case, 'parport_default_proc_unregister' has been called
+while parport driver is still checking for all the connected devices
+and was executing 'lp_attach'.
+'parport_default_proc_unregister' will only be called when the parport
+module is exiting.
+
+Same in the second case,  'lp_attach' was still executing and
+'ppdev_cleanup' was called.
+
+Are you seeing the crash only from v6.18-rc7 onwards? Was v6.18-rc6 or
+v6.17 ok for you ?
+
 
 -- 
-Regards,
-Pratyush Yadav
+Regards
+Sudip
 
