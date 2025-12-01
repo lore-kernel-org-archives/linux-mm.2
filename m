@@ -4,101 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 556D4D116F3
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:32:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A5ED116F1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:35:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B04036B009F; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
+	id BCEC66B0007; Mon,  1 Dec 2025 13:35:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB3D96B00A1; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
+	id BA6CC6B0008; Mon,  1 Dec 2025 13:35:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A3526B00A4; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
+	id AE3B96B002D; Mon,  1 Dec 2025 13:35:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 836BC6B009F
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:32:50 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AAF24130646
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:32:47 +0000 (UTC)
-X-FDA: 84171748374.05.D649310
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 04781140015
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:32:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bdEAf+gF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9F2646B0007
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:35:49 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A5AFB822A
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:35:49 +0000 (UTC)
+X-FDA: 84171756018.18.96B18FC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 14B3240003
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:35:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eqVRxi1j;
+	spf=pass (imf12.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764613966;
+	s=arc-20220608; t=1764614147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Lz7LcxHyIqMANvfwO6gmNGEqEyrQp6i16FlSTgY1DA=;
-	b=cEiFWEh03Mm7E5sns1pVSZZ2kEyqJjrWhLUspl43wSQWlqPlltPSJGBRZlHnDZ36MvLkpN
-	UNqUfXSfaBjGZ4GLKaard+bpqFpKqwJCDsICUwemsYfnbpfT0/DSE7gK22YD1X6Me/FS5q
-	zK+HeQnN9hrHX1bd2PAGks0euIESMvU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bdEAf+gF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764613966; a=rsa-sha256;
+	bh=+SbwtOZH9ducWOEZb4+vngRgdkRzNyQHiBzNVLWt3d8=;
+	b=tQiqDb57yAOBQrGi1kXiG14kuuJszPpSIQmtryovK+D9UscuFNjb3upc3O9b7fYSoKJb9m
+	GMD0+UA4OHnsRCLZE4Gsb0qCibOxVzzM1KaKiG6s4dR+iwV/Ju3/NCtTMRwq7lyNnxJFTk
+	FIv2k0bx0Ct4h/ke5kRU+Ba1flfQzYE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764614147; a=rsa-sha256;
 	cv=none;
-	b=CRObsCaRo+xdUf3cKS1CI5DXoyxZSaP/9hyjetE6wgSGZ1jxJ0jXKODo3FiENj9ADXZv5L
-	KyIMOgPcrtGgNuEXuAF6BneRLG4HEqIT1wSodDR5b3mMuWZAbJFO8IPyTRyeMzS3u+5SOH
-	DXEn8aB3mum2kH1w1S3K/gseZqY0IeA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C3D860159;
-	Mon,  1 Dec 2025 18:32:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95955C4CEF1;
-	Mon,  1 Dec 2025 18:32:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764613964;
-	bh=2IfzNXSfzN92nTYZTzGsXr1fBjpjDfpWrXwW0YZPKmg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bdEAf+gFID+PrIxA1/+WE4DYDfDJBXtzv1cVw+nJIpuZeM4V7UDOI6jNrBiUD+JiU
-	 Do/ziqGJ20sAbyjbWPOYm7gpCJsOOaoO0oOY3Q/c/n2u2g3F3WkpuCK+tGySIpJ7/a
-	 4bHtVR3xPkyARb5tRlMwGubNri7MqXAER1PYHxOrlxfT978nc0ysn8YYAyDp0R2UJa
-	 ylvgL0h8z4rxROQi+p/OmfAf/EI5TUidCbLe8wG4JDv0gCn34+s5WqaQzw9lbi9t+0
-	 YB+7uvR+JnDYAJVwUa/iKVshebyq9AUbnu27D3pI2QqNfHXVsrtP4EF6cRnIBRZw1w
-	 svVlqTs6UAx3g==
-Message-ID: <052d7f47-edb6-4978-bc9a-c7eae469720f@kernel.org>
-Date: Mon, 1 Dec 2025 19:32:38 +0100
+	b=CtpYTJFTeNAZ7uA31902DAsI8iZsJ+A4kcrGmWgwIbyfO1GepyrABGN6fA7jgufoMjmUBH
+	P3ZmKp8ecjydwvOEpotr/hsHwa85d6Ds0evONo2euH3pM7Chk2VoVXKcTVaZOOCgcyVLEL
+	nx8iSXgfiTu3ZOTScwQmhSBPBVzm0Hw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eqVRxi1j;
+	spf=pass (imf12.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764614146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+SbwtOZH9ducWOEZb4+vngRgdkRzNyQHiBzNVLWt3d8=;
+	b=eqVRxi1j8UrG84k5Yc5jkSU+KBhRANs4xYuxCjpw6j4ZQz9+3ZEzKr91D1AaQ0ZSusqBUG
+	pf37V1YgsvgI8Ao5plgpBk0jqfXLRnrfk7TgVQCAcrMl2xZZentUYqYl4HsQLYC2HJO6ul
+	H5mwxKihVBPi07O7BiJTBrMUXExTeQQ=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-141-KvA5Sb7sNfCkoVGblfPwJA-1; Mon, 01 Dec 2025 13:35:44 -0500
+X-MC-Unique: KvA5Sb7sNfCkoVGblfPwJA-1
+X-Mimecast-MFC-AGG-ID: KvA5Sb7sNfCkoVGblfPwJA_1764614144
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b225760181so504409285a.2
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 10:35:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764614144; x=1765218944;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+SbwtOZH9ducWOEZb4+vngRgdkRzNyQHiBzNVLWt3d8=;
+        b=O8Vv5a8UZFAPwXlVRH+WCqOCsFMqeSm3SFymrW160FDN4g3ylasBbTKRsYEiEyWTzL
+         JSrawb5aGsNa68fred1rsIrBvC/Y8nwT0IKyBdc6lhSJ0+d1zfnT6jttQzxpMAup6WCX
+         x5TkkOXdITypd6v0kPpKYwDkvmZmv3ogf2bWAJkpxQujUDli1OshkQHC1QyMQaGzg4Qg
+         KV3+6P4dDuRhvMPPjKSNb9iWDx28hja3zHBBdOj+nn/bVyoeIgod2FVjoCGN5csiN07r
+         D1K9KMmgl5YC2hUay1sMsOX1MI2N+IsqOtDWrvQSPfR53e7yyRODN3LA1hzQE7o9/7oS
+         cz/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXK4wj3VDGfygSU5J0/z7MaAtTyiuGzkQkjqfUe9aiJ4VvjjvKm3K6OshP4v2RiI4gnWdxuksHhcA==@kvack.org
+X-Gm-Message-State: AOJu0YwI9Lyru7nI2pRpjA55H2DP58opW48uvAscVpioxdjjSDRAzLQv
+	nJneXEf8Gztn1YNS2sDrzwancKfv6h5WIFch7Ic2693VNMJQmcWM04wrBPbnjW6KNjsBB3i1esy
+	ClDX9kt+YXCmY0IncMZ7ztS6r25tq0hiWbJvB5ZbxlHNPq6j41Osx
+X-Gm-Gg: ASbGnctwEN4ZTcCDGiJ99LDMPiruCkyrdptSqBs4u/8kD8PFj8OKXU0n1WLGcArHEWA
+	rgskg5YlQmr5L0FKzUi0deiZbsXqc/tSgGyFEULwRgloy6K7VOWEj5v58xNj7uCAY3YNFJkVxuf
+	KnLn7rC57TkvgPeoEdN5o/VoiAcU6YWrl3t1tuyxwVM+HrYtxHgWKm4atYu/prjE1OIFEKYjIzU
+	hE41UE8RfgMxqTQCEYdsb1VeM/GqC28E9r2cQVqrPT+MQl2r5AwR/CCExnZUUEq+fobhJRJJh5Q
+	jgqM+5v9H+MZysnpBiagCpGIymrWdCGh0gNK7K9hSQSvuXRp0YXzqk58FNXARjKAb8VmufLsqxk
+	QlNY=
+X-Received: by 2002:a05:620a:4047:b0:850:b7ad:c978 with SMTP id af79cd13be357-8b4ebd9eb33mr3684778985a.49.1764614144215;
+        Mon, 01 Dec 2025 10:35:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHc/IAOaSDf8i1YjJ+6md5JjMRZyr0e09X4B+I8m0ASlSLeFoGocESiXm6l1ZZbPYuAyWGexg==
+X-Received: by 2002:a05:620a:4047:b0:850:b7ad:c978 with SMTP id af79cd13be357-8b4ebd9eb33mr3684771285a.49.1764614143671;
+        Mon, 01 Dec 2025 10:35:43 -0800 (PST)
+Received: from x1.local ([142.188.210.156])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b5299a69d1sm898568985a.16.2025.12.01.10.35.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 10:35:42 -0800 (PST)
+Date: Mon, 1 Dec 2025 13:35:40 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Nikita Kalyazin <kalyazin@amazon.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
+ mode
+Message-ID: <aS3f_PlxWLb-6NmR@x1.local>
+References: <20251130111812.699259-1-rppt@kernel.org>
+ <20251130111812.699259-5-rppt@kernel.org>
+ <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
+ <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
+ <553c64e8-d224-4764-9057-84289257cac9@amazon.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
- linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de,
- mingo@redhat.com, dave.hansen@linux.intel.com, ardb@kernel.org,
- akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
- michael.roth@amd.com
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
- <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
- <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
- <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
- <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
- <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
- <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
- <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
- <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <553c64e8-d224-4764-9057-84289257cac9@amazon.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: SfNhT0LpqNT9g8WBvuz7nANM0WG9QqJfFZrGhQK4P28_1764614144
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 14B3240003
+X-Stat-Signature: w5dytnf5f19np99mx3qdtmmk9cexp4y7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 04781140015
-X-Rspamd-Server: rspam11
-X-Stat-Signature: sq51jj5ptd1gkij4kj14naezkj657jyc
-X-HE-Tag: 1764613965-513083
-X-HE-Meta: U2FsdGVkX18b2Pgc1zB9T+pv+8OArTyq7jTf0BGy+VeVcsqRUiE6b6p1hPBs6YmN/BUTASOfCZIk4HnP1tAGuV628pHUogCL89VtR7esKr6RYHEAEwLIRtkXUfH+xQfGA8I6qsW2FbmZLsZzmvtnh0RNqE4O3y4jjQ4525+bPCvBuMZO9rumlcWyy3Fa03KkkqK7qeFnxgpKaUxp4AHYHDAywWepctAS6hwxasWBto4VcDe3UkuFUe4243TYYPOWyjILCd2IY1VQPm1e33GHaJZx2Ngw8V1EndAFs6TjzNb4X4Rbxw2DmmoCVzsu7x7EJTFizmaD+e/ab75Ql8UArPeBEJsyqe99CsG+sh/Xwh3zyEHxBXp6L00CXYIo7Wg36lOb7/qaCw2joXPwI93P3ag1aa6ieCD/Bjt4lAN5x87HkAOPWnbuMbMKLA6u7JLPg4+e4L9js0sj2GPr4qNxcbSM6fm2ThdbkNDlgVNx7lK5q7I93XoJ9eiPzBnFPm2oWplL0aXnOadPEmxU0BU/iiUI1b16znt9OZmeVvV56gWYptwW2YDRqpK1Nrqj8VutS9l7zTB78mKq9ECD6O4XV+lAKhQ7AIpaceA5ccNaZAOt3K6UmNIjfoEWyvm3dvYm6j8Rlfc7SoBI9AT5LPN3HO3bEIwQ2daZP5ctjJp9vYMrJLXlIB66QWnmwESdK2TJETIoTA7aSRZHgyFgjADf6f6Y3lJr7aIYmooqifLQj+haUNJ/8N9nTnBp5fKhiWyJdGCintRABNCVLrWof2RxPavhhCCviPxayH6nXx75oD3oVFfSEcefU6IraS63hR1LElB3MyvHf512kRhsZ/9qPYeqLMz/xs/g+230jUe2Czzrs2CR/PQ63ByNH9YlmwduIj/yhEYsNdTZc5uMbUq7SedodSzvTK7q6jkbYo2SGT+5YMIy33+RBQVET+dEZ0horv9GAa21HlTrI2AW25K
- dbxCK4q7
- Qt97v9rmLmANsynRQbgRH8T0BiMMAs0mnogJmhErNeNPy3FL7WRHipvSr0s+wIvhVKv9Qhi9U2GO/Guur9D/3ht3mf/AiHTSfjdprMHnKjTAOG/YFPslAC1Zz2EO7eQH83AOrNG8UfQZYyMu5rzNbZqCmzK6xLJTpuyTIb3zu7kXNgNQ7VtJ/AoEGG+JIFeq56WPGjAohVeLeTqu+fo2M0IrasuUDZ0e9rkDL8lDqeW2UWCeP1KzxIr07PMMvk0mqBtro
+X-HE-Tag: 1764614146-295566
+X-HE-Meta: U2FsdGVkX1++kvXsqjNhN1DN6zq671MInoZHQX5I0sIEAO3SSP5AzjzLt+UcYRVJCjM0Ym8eeGlFBLQhxFZ9nBFC8mE5NvE3ZQOZllfvBrTl0IU6zWSHWK+bOCrvr/SBw5DxiCyDUK65OFp17PFnTPhXg2ejBFJmlNl9yjJFJFj5t8ZkX8BTchJUOYprebxftC89NmWsSrBEBbTaz3qhBLvxenmpHAM56Qt58O7XwBtVxPq8yEL7yPvSMGs16emVrBx3jM3SSF3t+gOIxEakWCZwg+1aqvJqHAI1yIOH0Y0aMqJMOMrDh3IZ9e5lvXfSYV2IyaNlWD4tzTieu7a7JP0QrUSh4JefOeMXvu53DFgvoW1+zUrJ2UQeoEfFnmc0cCgbZ0uRgnogIOTSEyBVnHzN4q2iqj6E/zPsnNMG5x2GAgXiH3iwvGXRKHOBO4VVmUFogs+/fgOoBP62kB1EKjSgKAbWKxHqV5TNndLBRWZWWyJAo7/kRJVsQYf8xRecrYpf0KGgYGa7JcT8SF+WNjdhL7p1h5u2hg+1rZu/38us2atI9ydWw4gkdKqnD8jZn/jXHCY+3lkYGdMTYN0iS5uUCX4B+SSSKfx5u+8CSF//NihGMknMyDKDh7t9cAF5w7pf4p7FzVwILfZeY5q0yVP3lAoAOalLKfxqIycZJUF4BA+ccAQtS6RYDl9yS9ly67ORwxqcNEN+ncXZ0o46uLY46/GY4+rAnPD9ER2OoJE2Qoq5yUlBxMkRVNmIbwS6L3LQqX2O9Maq1STr3Oz1FO4G93w4f8B/T8Pt9IJ37vcm9cNJc9mkX6uwSIF2MUKBbCbtocS52jZtTr3p+NXLA7e1B30U+i2yupYdH6K60jWhe0T4ZH1w7d3i+3LSaXUITyGPsE2i1bpeTMAKoCogoxhXxxL+l9qW1/jaBGlOrniLp7U0OzHxJPQmi7PMpu78dQxUNViRlb5TWFe4Lr7
+ /l4OWcBJ
+ +C/aTdaDjrrInjInwLJk5lmvVJyfOkExS2PbXtEKGBEO/8UrxguQPNkx8b12Kq/ZJk37LmTUCPLATJ5MfxHnLaI0oJP8B8ThlJy9h5bJngp7DaSifMgW2VRqyKtPDHi+FgYA+PAkS4bFV6MMmoM7K/7f3WFft7zhg0qAz/vTKq7f5QDeqr48eivO1vkxC/BpevYcyoAWj+Hk6znxNIR1nKshqvTJceFiraFJqYx21YJJesO8HDw1MVxjI8O4i+i3JIzdRdkiPVV7trT8tjg/pZuZzWfmUrtedugeAGVsFLiIN6D3SFwJuqxAH+X1sM0+9v2j7p9v82gSYeVtgcND4gZf+2XObLQ3IXbPH5fFwtHkva12Hvnv58i95sZhaBvAbVXH7Rq0E508JAES/FsC6BE2ISM28YCcX8CRafqCPF5/QLU5Rx/xbSf1AebrTb9rBqoc/SH8+ypym0QomcMIZGo0xT0M/fF0RWNHkCInBxA8GjPDz07NlUfTRNOinbnUnOpRIwzbI5Es1pKyRbigVK5wTJ8ML4QMJnZe+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,42 +146,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/1/25 12:12, Borislav Petkov wrote:
-> On Mon, Dec 01, 2025 at 10:18:37AM +0100, David Hildenbrand (Red Hat) wrote:
->> Makes sense to me, especially for confidential VMs where we pass such
->> kernel-managed data from the old to the new kernel.
+On Mon, Dec 01, 2025 at 04:48:22PM +0000, Nikita Kalyazin wrote:
+> I believe I found the precise point where we convinced ourselves that minor
+> support was sufficient: [1].  If at this moment we don't find that reasoning
+> valid anymore, then indeed implementing missing is the only option.
 > 
-> It shouldn't matter, right?
-> 
-> I think the question is whether the kernel should agree to the software
-> contract (/eyeroll) to keep the kernel ABI compatible wrt kexec.
-> 
-> And I don't think we have agreed to that AFAIK.
+> [1] https://lore.kernel.org/kvm/Z9GsIDVYWoV8d8-C@x1.local
 
-I think we are in agreement: from what I recall, this software contract used to be
-rather simple and stable.
+Now after I re-read the discussion, I may have made a wrong statement
+there, sorry.  I could have got slightly confused on when the write()
+syscall can be involved.
 
-Looking into the details, I guess it's all about
+I agree if you want to get an event when cache missed with the current uffd
+definitions and when pre-population is forbidden, then MISSING trap is
+required.  That is, with/without the need of UFFDIO_COPY being available.
 
-$ grep "define LINUX_EFI_" include/linux/efi.h
-#define LINUX_EFI_CRASH_GUID                    EFI_GUID(0xcfc8fc79, 0xbe2e, 0x4ddc,  0x97, 0xf0, 0x9f, 0x98, 0xbf, 0xe2, 0x98, 0xa0)
-#define LINUX_EFI_SCREEN_INFO_TABLE_GUID        EFI_GUID(0xe03fc20a, 0x85dc, 0x406e,  0xb9, 0x0e, 0x4a, 0xb5, 0x02, 0x37, 0x1d, 0x95)
-#define LINUX_EFI_ARM_CPU_STATE_TABLE_GUID      EFI_GUID(0xef79e4aa, 0x3c3d, 0x4989,  0xb9, 0x02, 0x07, 0xa9, 0x43, 0xe5, 0x50, 0xd2)
-#define LINUX_EFI_LOADER_ENTRY_GUID             EFI_GUID(0x4a67b082, 0x0a4c, 0x41cf,  0xb6, 0xc7, 0x44, 0x0b, 0x29, 0xbb, 0x8c, 0x4f)
-#define LINUX_EFI_RANDOM_SEED_TABLE_GUID        EFI_GUID(0x1ce1e5bc, 0x7ceb, 0x42f2,  0x81, 0xe5, 0x8a, 0xad, 0xf1, 0x80, 0xf5, 0x7b)
-#define LINUX_EFI_TPM_EVENT_LOG_GUID            EFI_GUID(0xb7799cb0, 0xeca2, 0x4943,  0x96, 0x67, 0x1f, 0xae, 0x07, 0xb7, 0x47, 0xfa)
-#define LINUX_EFI_MEMRESERVE_TABLE_GUID         EFI_GUID(0x888eb0c6, 0x8ede, 0x4ff5,  0xa8, 0xf0, 0x9a, 0xee, 0x5c, 0xb9, 0x77, 0xc2)
-#define LINUX_EFI_INITRD_MEDIA_GUID             EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
-#define LINUX_EFI_MOK_VARIABLE_TABLE_GUID       EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
-#define LINUX_EFI_COCO_SECRET_AREA_GUID         EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
-#define LINUX_EFI_BOOT_MEMMAP_GUID              EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
-#define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID     EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
-#define LINUX_EFI_LOADED_IMAGE_FIXED_GUID       EFI_GUID(0xf5a37b6d, 0x3344, 0x42a5,  0xb6, 0xbb, 0x97, 0x86, 0x48, 0xc1, 0x89, 0x0a)
+Do I understand it right that UFFDIO_COPY is not allowed in your case, but
+only write()?
 
-Likely the format of these section stayed unchanged over the years.
+One way that might work this around, is introducing a new UFFD_FEATURE bit
+allowing the MINOR registration to trap all pgtable faults, which will
+change the MINOR fault semantics.
+
+That'll need some further thoughts, meanwhile we may also want to make sure
+the old shmem/hugetlbfs semantics are kept (e.g. they should fail MINOR
+registers if the new feature bit is enabled in the ctx somehow; or support
+them properly in the codebase).
+
+Thanks,
 
 -- 
-Cheers
+Peter Xu
 
-David
 
