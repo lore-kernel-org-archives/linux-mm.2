@@ -4,129 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B932D111A8
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 02:37:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAA9DCFD376
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 02:43:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50FDF6B000C; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
+	id F334B6B0010; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C03D6B000E; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
+	id EE3A96B0011; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3898B6B0010; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
+	id DD2B46B0012; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 23EBE6B000C
-	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:37:15 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D703C160F5B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:37:14 +0000 (UTC)
-X-FDA: 84169340388.24.B63687B
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DB41AC000B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:37:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jnTBDyHW;
-	spf=pass (imf22.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C45B76B0010
+	for <linux-mm@kvack.org>; Sun, 30 Nov 2025 21:43:50 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4F8F13C3E1
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:43:48 +0000 (UTC)
+X-FDA: 84169356936.27.76FBE3B
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 182EE4000A
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 02:43:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gTvtstdX;
+	spf=pass (imf27.hostedemail.com: domain of shiyn.lin@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=shiyn.lin@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764556632;
+	s=arc-20220608; t=1764557027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jFkZfLhbEuJjG2XjBKILxrbYWoZsM3wmEgCHEVtwm0k=;
-	b=w0XBg9gVipgtjkT4di1CKDnN+KoSpD/v7E75xiFhYOJhCuXd86IFu/HIzyBMmc35IlpXp2
-	7fSBItE1d90/lfItvQSh8wb1q7KZd79cyjg9wUoIMti0ae9Kac+YxsI8bckHD9f6UvE4Kh
-	Hz1voFqCpfK9/S36a8lyskaIeRzBcJ8=
+	bh=FgKmQ565+fVLpdIyWDHQSOr7KTCq34T31zq3f1iCjns=;
+	b=pO1iNRxmmiEjyQpl+9WDuTc35NkSbUKV5WFHKQhPIVJKiZ5xX71u+LuR8HJebQ0wdGAqWE
+	HG496DF4nIiPLshHFFWnzKkXEe/5YIAOMCCs//25wFsrqXBLbFqN3VIMbSqYPB8GKsTclH
+	rL4cfmf/57LGwkmC6YIiGg+8op6h3Io=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jnTBDyHW;
-	spf=pass (imf22.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gTvtstdX;
+	spf=pass (imf27.hostedemail.com: domain of shiyn.lin@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=shiyn.lin@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764556632; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764557027; a=rsa-sha256;
 	cv=none;
-	b=K7QxUsh4HQWs40pFEMJFoynR9KwqtAOPO4QwuT4TX7xapg/60DxWZDP0Gk+r9mHdUQx1Hy
-	keiwcVxION66euAgiCy9FSec7VtHZs3sddkj8GSbMYHgx0Y+WkU/vMO0pPgbXzkYzNJvGy
-	eswVRCooso8z9BM+aNGNlRrUo1GfSZY=
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2984dfae043so30494585ad.0
-        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 18:37:12 -0800 (PST)
+	b=pQULgppCU7Aq/VvLnPoCAm0+vKwDME8VisklWbenZFcL+l8KNMmJXXgltMsPBaqwgsQM53
+	canbREzGkDDsLEXaqx9a6mPBGWS3LrlBqXAyw3pExgU6xedjUflxTFKy7tBOcJIRtfM0TZ
+	qCqbFke3X+ap41VGc8qm8QNqsB0x4qo=
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-640d790d444so2876285d50.0
+        for <linux-mm@kvack.org>; Sun, 30 Nov 2025 18:43:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764556632; x=1765161432; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jFkZfLhbEuJjG2XjBKILxrbYWoZsM3wmEgCHEVtwm0k=;
-        b=jnTBDyHWMsC8cA4VTf2xb6/FLME7rN+hSTleKi2dWYUYPk5PCbJCLn5H7LKNb869iU
-         +Q0+JPwnHgN+1nd7Z9YHiWxnYRZC5K8GKCnyuIiAMCFW/Roswerq94jfKf8KCt9EpEBz
-         4Tka4XKdpsbicKgEtwi54NPaAxeRWSKJ34uPnFNwZOs99VdrgVf65Yg34rnGsObiPdN7
-         t4hi3trNx0FJKgkxbR5lablxI/jefGpfhBGyxXnPYjm/Gsq7yUM6keg2Rs5Q2eUIYOk2
-         TqFuUiK7mxgY+pXjmiteSuuYfqCveG1kl898gdIHicFP1kvfmrYONuFRLsOYoIFjnolv
-         HnWw==
+        d=gmail.com; s=20230601; t=1764557026; x=1765161826; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FgKmQ565+fVLpdIyWDHQSOr7KTCq34T31zq3f1iCjns=;
+        b=gTvtstdXjrTRNDjYaAPcmuq7WeHOyZD50SOI7+lU4hgeK6mk01TndMaqrejNlveOKZ
+         PqnL332fMRGJ0ZfxhSEeaXgKMnngHiOygHv+BAbyUWI7eiPis5kFhuKSskzUsPRB1o+S
+         Fb8UHBBi4X4nKb2rmoSA6y33hMVOkU/cngAnJLF7dIgU5kpmXwdv4+0xpQ+abzueeIxj
+         wws5HI00j+f8bzKDDncyTwJiYgUFFnnM2L3n0Yg/bRaf3MjYnuFlROfeWXG4GaHsD6eK
+         WskwxxpLH+unaNPYZqMTr4WKoAXRlY/iNTPPldQQLe8TIP3bEVKFyP55PqQJtxfmNcQO
+         DP+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764556632; x=1765161432;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jFkZfLhbEuJjG2XjBKILxrbYWoZsM3wmEgCHEVtwm0k=;
-        b=mxzTkxKyTf+Lv5j226fOU/0g0KdtHDusTDMbvB9/f5VABwoipfXhY3+3dX6+fx90HB
-         +BYv9YsIWn34cCpgLaiDccySY8IwTgWUSFh+Yjoc7yQ/kgqYzemGNbfFu2bCPrkROmUL
-         t6a0FpuRn0bYPaBdSS0PwT69A/xxoJe4iV8EDbqtIC4Wy4VZ8UWkEr5ZD5U0hEltDSRw
-         0PQco7/ZozDWBZNCHApLDyuWxIocNPX+Yjz/naZuZCnlLJRw7t/VMfIUDVsWVJbyffnj
-         U7OaKdhskuzNCu8JFj5wvC3CdVcBX2K0VEghZrLUD1ivCS7CdDJWquzyXu70BShkzro+
-         PoOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgfNN4/eEAIyxptm3RDItv7ncV+4p7zj+R1kw6MD0QSSQaF6ng9/OQl5TdswHsMfS833iTO3hwOg==@kvack.org
-X-Gm-Message-State: AOJu0YwFZcdbmyORCdXwU9uKkUww0FnOBA/rzNFE5D4tNa+waOe5VCQj
-	Wl40x8/A2eRtdLa4XHlPpYPZyJwlptbSRUJJxq6tEa92QZeHu12bdAR6
-X-Gm-Gg: ASbGnctEZIbV9YEK3sNWh11+zI2d4Ayh4cfSa6iLulIElJhdeIc5ugNvmfOAOf3DIAU
-	3u2i5m2+QfNfIMB8Wk3QzH3aQaBMA3W2JijhyP7/Gpblkg8cJ0wI8UrGRMkkq1QIDWyi+N6VM1E
-	hKvwClTj0CwW04jN1K0fAgMQ71BPd2xhPBKA1IMG4e08ftSyEx3tn2IcGunEPPBlo7AkYqK7R+6
-	XTZswWB45C/454CLUo83CK1I0KRerScUghtIMHUpoVXtIlOLGNhXO2HjgUApBsuIAZzKq0DJcMY
-	sTc/MMUNnYjzXHUV+FEaz7jXlIuT8zXGkcF5qAjXG7PLl72djA+udqqinXeeRGWJLyCiBceYINl
-	LHMXP/YA0gOamagGK6S3S2OMuZks1CeVSZnLzz6lAygRDWyOt/sUOS2PHdiU/e2BqTsuQrczqBk
-	Gg7QRjuCD8IUMy4TXbdLfltm4SDucbkDnUQu2WxA==
-X-Google-Smtp-Source: AGHT+IFXzgy6dEz9kNUZ4MEjK9R+DrmBL8pPlDjf1cIb3KeUVmSfGSrGpe4FpDq6OELyqkWRLqO8pg==
-X-Received: by 2002:a17:903:2f8e:b0:298:46a9:def8 with SMTP id d9443c01a7336-29b6c3c2b70mr412505265ad.12.1764556631546;
-        Sun, 30 Nov 2025 18:37:11 -0800 (PST)
-Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:e08c:4f98:bd50:f87a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bce40acbbsm108013825ad.11.2025.11.30.18.37.02
+        d=1e100.net; s=20230601; t=1764557026; x=1765161826;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FgKmQ565+fVLpdIyWDHQSOr7KTCq34T31zq3f1iCjns=;
+        b=mCZkAO48nHP+zOQ4nxUZvRuAS//5DWVPbj9+d8qvCfjJaLsaz00lr+NShf8qJREvgB
+         Ms98MdV99Cm9mA0sYegnfJgjUPksa8MCCcMq7HkbBVJelTq654yFhaGSoqh461hLRP3g
+         wUG5ogA8ABBPhMCNHXLasaKk8jccYSEnoVPzq1cuK9E0j2Jv14jt8lKNumzFCKEhbGFa
+         f+9dqncNB6nR0PDOJEotDZVy7iop/DP1HN9sul87AETRav6V/0RSty59xkP2wAcNvk23
+         DNUofWu9yJUhzUcEuzPFq/OthAezNN7tp0JGqddkUGHd3x6i1NDlE7w1lgpKut4vQHBY
+         oxkw==
+X-Gm-Message-State: AOJu0Yxxn8eZzlu8ePUkZsvk9Dcn2YS/btHqRKHld4kFw05jlydksWNo
+	Qr+ZmzdpZJSZdayBJTlkrIqUGcSx9g85/ae0EhyyNNwKGoG9rHePWqmG
+X-Gm-Gg: ASbGncuqeShw8e7JM0qijxwyC6k3HP+fBNX25QTZ3r0KeG2w+bGMUmHvDQ2ImUw1PPz
+	WCu45K4ICpUUMNUCZgINg5RCoYfBKThBxV06iP6dLAh+ncNtUj0EG6O+h0Js9Y9GejC3tZvzJWB
+	EyAD7DRyEPAPvfR8ANkikd3EGvZAysyYy0sDeRSG0vouuw9pz/NKKdJFl23r25ZQcEmimxftW3P
+	DAobDS7JlsWPW38M6Zh1hFiu/OgqyCq7n2rK9aba5keBgxfnnsBVRHknyRuWrf+dKpqrX+t+8lD
+	puWRnVQn6cfgrlVpd2kBeBA5da8k3kvyZAcJyyRoN7Nfc1qo+EVdc6ZNNrGxFkp7w9haWH/igcM
+	Wd3To0Wcqk/zbesZW58YU5aXdmHLnykCNoU2vO4GHu2/tgYvrwKTEJ9VWCbSlOpqXywoWaguTV8
+	8Pz0hDbE8g+nHg/ZZA8/3EdfI5mRm0hod0Ib8EvSwe+iPPu2g9ayYBzXk=
+X-Google-Smtp-Source: AGHT+IEftPLm4wwxMTV5S8HfduywFkxnzNagdp0uZjRVeMizo1texs4FhkEpOIkFK8yvV81AVPnx9A==
+X-Received: by 2002:a05:690e:1519:b0:63f:25cc:112a with SMTP id 956f58d0204a3-64302ab83fbmr26144911d50.54.1764557026026;
+        Sun, 30 Nov 2025 18:43:46 -0800 (PST)
+Received: from laptop01 (2045061-002-static.lfytina2.metronetinc.net. [149.154.21.178])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ad0d3f616sm43906407b3.1.2025.11.30.18.43.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 18:37:11 -0800 (PST)
-From: Hongru Zhang <zhanghongru06@gmail.com>
-X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
-To: vbabka@suse.cz
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhanghongru06@gmail.com,
-	zhanghongru@xiaomi.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH 0/3] mm: add per-migratetype counts to buddy allocator and optimize pagetypeinfo access
-Date: Mon,  1 Dec 2025 10:36:47 +0800
-Message-ID: <20251201023647.2538502-1-zhanghongru@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <97a9e695-487a-4428-87b7-cb8a505c9966@suse.cz>
-References: <97a9e695-487a-4428-87b7-cb8a505c9966@suse.cz>
+        Sun, 30 Nov 2025 18:43:45 -0800 (PST)
+Date: Sun, 30 Nov 2025 21:43:43 -0500
+From: Chih-En Lin <shiyn.lin@gmail.com>
+To: Jordan Niethe <jniethe@nvidia.com>
+Cc: linux-mm@kvack.org, balbirs@nvidia.com, matthew.brost@intel.com,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, david@redhat.com, ziy@nvidia.com,
+	apopple@nvidia.com, lorenzo.stoakes@oracle.com, lyude@redhat.com,
+	dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+	rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
+	willy@infradead.org
+Subject: Re: [RFC PATCH 4/6] mm: Add a new swap type for migration entries
+ with device private PFNs
+Message-ID: <20251201024343.GA9270@laptop01>
+References: <20251128044146.80050-1-jniethe@nvidia.com>
+ <20251128044146.80050-5-jniethe@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DB41AC000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: aextn9nfc5awkoh9fmqucu38w86ptrj6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251128044146.80050-5-jniethe@nvidia.com>
+X-Stat-Signature: qfdkwa3j7tk57ydg4ic5qk77gy5n1ewy
 X-Rspam-User: 
-X-HE-Tag: 1764556632-758028
-X-HE-Meta: U2FsdGVkX18gwsIs+ExUc0Q7eykH4rgYnxMY1Kz45+Fv1JeBXTQfi+ju4HsCXkOt85P9qzUKtlYp6ovFYQLKyYH3ScA+O2deqigikMUVgTNZsY6GBadOzAzYEmAndQ6haqy1YbwG0pqld/Nu7yjDTMzAEQGwQlcLk87tltPN5beXOJNlqNPS1NnvA99UwNknck/3uTfRZRaF9eMBMAuvIhLgY8/gaXg4ZjDNNSCYROrVTR1Np49cQoqVDZmAUz4lQVjyyHIeUca8uM0ShFqngEE4MKCdq3cAF9pfXNBN+VALGde9gCdyrbTWowEH3vBxP9LVE04thaVwr+RRazLaLeaEYvcMTCQt5Xs1oaGcVS4HXLwZa3/yRtGWRq1N6isdG8nzMxD55NUqZvSZrcAkT8t4xWuLNcFk2Dl0ONuwEIQAoSdq8PPC2gkjyMeBu1xSUXVCw1Vs26EbPPMPiY0237nqMYZZqzA956Dk3uQwT3PT91lY35Ab0Q0c5LuqjhOVGRBoQjDuGxiQYt4+Fgbj4aptJdc3dzjIPUC7duy0JHOmjcDHtV0I3Nwt59zjoUrZScITD2Kdo7MFLaQ/Q6RHwGnREGW3ThpSs09N8ZmIxl3PRikiwiHRiRwxpXGPEeM/XUONaptKkmg4baxlF0dRqDjltcR/At+PAA+OIyRlghPndSJzqkVl+k4C942CJlimgG73KpTHNdNgr3RJcO1nZrnz+kTkXPm5+SBsNeM0hqUd2F2S/pvD3XDuian/GJ1gIgAMj9oCQz8/EKJlRq8jmmNJM4KbG6Ec/qSQUJZ0TjVyfaErUNNG1aPUNvzWhmBJUTX1bktVXmpgbf6B1biVbniAx4ZvjWKjVUO+JIggpjcPGGFQ5KvutGUhqeIFMWSKEE7SvCPM/b5wGs9MKz1ukKOZAoZd75EiGtBe3eVMUSuKMK/3WJtJ5hSzy/9+/f6oE+kwmADcrQO6LeLEruB
- YrrYzxwD
- hiSGPHXiYen807gQSFeeraWWR03vAfhySaWBm+lgkGzfp6vasYvtMAUq8sccnPH5ZcqrwMqMfYdxS6D8ati5BoEE6nkb5eA7yJBCApuQPpppRsjasIhLc4aS0Dv7MC2fwWKbc6iJU4cQrzAXD8AIeYk/hsxFQOijZ572zMihhBWBaTlhsyUxjlyCtLuzCBVByWvaaEi0uvWM8d2uYCNNLwO92cRNQItvNH0g6+RLpAkOOwwz+wksMZbOB7QMMGg4nnbxcupV3Pw8N+S2TsZZySLCtb3fSKCHS33TffmKE0OwZlA9xnmCabb5DrFG1a/CE4s+dhDqCgZ87QtkubzAdFXw+WXM1Xnn/z4+Sj/Qo3uEkcjjdOX1L1pZ/8qpHpUlayWtBf4YZXrz13QCh/769l0r+F+IFiWq65vHnRr5T1kgPjzUP/ERKuEjrcaL/7Iy5arOG5zYUXHiD9LvWv6Bj+nhlR3KqVrfDFB8vf+Wy79j7rF/CeOrzEkPUY5Nz5uD1WXmEsXemzfCNpDg=
+X-Rspamd-Queue-Id: 182EE4000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764557026-497017
+X-HE-Meta: U2FsdGVkX1+DgEmr7UKRLWhnzvd9hxFYqCF601H1rWLoHOwpYIcKx0MRSt0TJ8ACo7c9NmSC6JtvAbjm1XyEQDJCMQlflcJc+/Z3t8ChyNbg9j6V0nhJGRy07cj76VocztsnqvVa/CYwNEucbVqwIxvLwOwyNi3hT8tqUWbHXbrzG2nzYUGgxWuGzVmdhJrcXt8DhPp7e/eGmcyO9QFx2wMuk6YZ06LM9wmEUE72lbnGIK2qWtgq3MeWEejwjNFEEFWQhErkwwyRND2oA8z2rbfL1Al7IrXcwq3Bs89/SVsuyYoOuvt3C2VCETtAqYsSow0lO1rYUsxg8fytkbNZ7Jhtb65Oj2weiCLGQO4Es+THGNohpmo5MS/EB0GkjYssM+PdD+m6kpOCClMpDDik0aNkkxCTBgMs1ORzJ64GvJjJRB8KlxBsHwCU8poPrIrydEoQRK6zcaV0zUA81JrFLOK/isvP09X2pTXeUm9l4jFD1MAWebHMlA/Pkur2jzHCNKFMY7FxlGV3toDfNy+Ex4QYQy9EyPhBvvjeswY8V7WOVU6hZdck/u5pIYFVlLi28ywddhn8ZXZklYI0KQu1WYcnqcIx9cgsAhJ7Bdf4ly//Z9pCIsLneLbABV/hYXacQx3pq0R7kWuA+e8IyC1MPPN8+hGjoHTAQHs1H2YeTLHbrJZGutAytQsBWYYSdSma8nHLJdRujvu8C9oixCj7Vw5GWDZoUW5aYIrxOAPeFCDWXqzQaav8rjFf441bE6AqXjRFfdiYQhZ+oi2VNajiku6h/ZkbzjvWHIS58nGL2e9KLVA7ml2vx0uaX9ihHRFUkQ6Now2YAm+cyGeXv0XAu3HDd82WSYoTDRsuHce8VaQkqRjMOCwqfepn/vEnRk7EHM8zqd8PgmDAklM+/h3gW5nZlvaXuEwf8U80DfoHlbpp002udH8prcoQ3UKH4zw4rMZUwpNmFAKqdYBcwmX
+ VLFZnWzS
+ D7FrjEb26DGD3SiqU2tY8hFgotTpmhJxldpVq2HwtygESqOBKFTMhHoMSbv9FXV1icz+EoVb3PUw9CqLy82MP03qe8/JnFGw9leep75FUuwAUgtI0xi/DQh0gGS68tgs2DsypGiQntQV2Ivcm8dHIT0lUZNq9oB4vJTVsqLSwUF8Jq2bQIzxuodZumT97HAEdsuuA2h5CtmNyxeZoeh8QJGBggnf8kd8lR8EY0VG3+i9+6Iya5cHG7ZfFE/Y/U8X445YA34a/W6F2s2QFFuWUSoIm84EWrhaGEQepP6LdzqxWAGWqcOcBhmRM5elVpxvWKTHPy6saqF5sS01Z7m9bgUQ24Gbct8KUczMPzdpPClBRYivvIQRCe+UY3juCQL+4w5OJuEFXjlXmDYB+g53wDsKpZWu1rmOMI+pxIC4d65raVGpFW9jm5W0Tuf44SghA3iz+v2oMkt1/wJWzMjML2taQ/U5d2djoehBwjoFXIvR30pIA42Ohj8O7al66659UOZfZGMLVnXlR76I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,95 +124,403 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > On mobile devices, some user-space memory management components check
-> > memory pressure and fragmentation status periodically or via PSI, and
-> > take actions such as killing processes or performing memory compaction
-> > based on this information.
->
-> Hm /proc/buddyinfo could be enough to determine fragmentation? Also we have
-> in-kernel proactive compaction these days.
+On Fri, Nov 28, 2025 at 03:41:44PM +1100, Jordan Niethe wrote:
+> A future change will remove device private pages from the physical
+> address space. This will mean that device private pages no longer have
+> normal PFN and must be handled separately.
+> 
+> When migrating a device private page a migration entry is created for
+> that page - this includes the PFN for that page. Once device private
+> PFNs exist in a different address space to regular PFNs we need to be
+> able to determine which kind of PFN is in the entry so we can associate
+> it with the correct page.
+> 
+> Introduce new swap types:
+> 
+>   - SWP_MIGRATION_DEVICE_READ
+>   - SWP_MIGRATION_DEVICE_WRITE
+>   - SWP_MIGRATION_DEVICE_READ_EXCLUSIVE
+> 
+> These correspond to
+> 
+>   - SWP_MIGRATION_READ
+>   - SWP_MIGRATION_WRITE
+>   - SWP_MIGRATION_READ_EXCLUSIVE
+> 
+> except the swap entry contains a device private PFN.
+> 
+> The existing helpers such as is_writable_migration_entry() will still
+> return true for a SWP_MIGRATION_DEVICE_WRITE entry.
+> 
+> Introduce new helpers such as
+> is_writable_device_migration_private_entry() to disambiguate between a
+> SWP_MIGRATION_WRITE and a SWP_MIGRATION_DEVICE_WRITE entry.
+> 
+> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> ---
+>  include/linux/swap.h    |  8 +++-
+>  include/linux/swapops.h | 87 ++++++++++++++++++++++++++++++++++++++---
+>  mm/memory.c             |  9 ++++-
+>  mm/migrate.c            |  2 +-
+>  mm/migrate_device.c     | 31 ++++++++++-----
+>  mm/mprotect.c           | 21 +++++++---
+>  mm/page_vma_mapped.c    |  2 +-
+>  mm/pagewalk.c           |  3 +-
+>  mm/rmap.c               | 32 ++++++++++-----
+>  9 files changed, 161 insertions(+), 34 deletions(-)
+> 
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index e818fbade1e2..87f14d673979 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -74,12 +74,18 @@ static inline int current_is_kswapd(void)
+>   *
+>   * When a page is mapped by the device for exclusive access we set the CPU page
+>   * table entries to a special SWP_DEVICE_EXCLUSIVE entry.
+> + *
+> + * Because device private pages do not use regular PFNs, special migration
+> + * entries are also needed.
+>   */
+>  #ifdef CONFIG_DEVICE_PRIVATE
+> -#define SWP_DEVICE_NUM 3
+> +#define SWP_DEVICE_NUM 6
+>  #define SWP_DEVICE_WRITE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM)
+>  #define SWP_DEVICE_READ (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+1)
+>  #define SWP_DEVICE_EXCLUSIVE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+2)
+> +#define SWP_MIGRATION_DEVICE_READ (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+3)
+> +#define SWP_MIGRATION_DEVICE_READ_EXCLUSIVE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+4)
+> +#define SWP_MIGRATION_DEVICE_WRITE (MAX_SWAPFILES+SWP_HWPOISON_NUM+SWP_MIGRATION_NUM+5)
+>  #else
+>  #define SWP_DEVICE_NUM 0
+>  #endif
+> diff --git a/include/linux/swapops.h b/include/linux/swapops.h
+> index 64ea151a7ae3..7aa3f00e304a 100644
+> --- a/include/linux/swapops.h
+> +++ b/include/linux/swapops.h
+> @@ -196,6 +196,43 @@ static inline bool is_device_exclusive_entry(swp_entry_t entry)
+>  	return swp_type(entry) == SWP_DEVICE_EXCLUSIVE;
+>  }
+>  
+> +static inline swp_entry_t make_readable_migration_device_private_entry(pgoff_t offset)
+> +{
+> +	return swp_entry(SWP_MIGRATION_DEVICE_READ, offset);
+> +}
+> +
+> +static inline swp_entry_t make_writable_migration_device_private_entry(pgoff_t offset)
+> +{
+> +	return swp_entry(SWP_MIGRATION_DEVICE_WRITE, offset);
+> +}
+> +
+> +static inline bool is_device_private_migration_entry(swp_entry_t entry)
+> +{
+> +	return unlikely(swp_type(entry) == SWP_MIGRATION_DEVICE_READ ||
+> +			swp_type(entry) == SWP_MIGRATION_DEVICE_READ_EXCLUSIVE ||
+> +			swp_type(entry) == SWP_MIGRATION_DEVICE_WRITE);
+> +}
+> +
+> +static inline bool is_readable_device_migration_private_entry(swp_entry_t entry)
+> +{
+> +	return unlikely(swp_type(entry) == SWP_MIGRATION_DEVICE_READ);
+> +}
+> +
+> +static inline bool is_writable_device_migration_private_entry(swp_entry_t entry)
+> +{
+> +	return unlikely(swp_type(entry) == SWP_MIGRATION_DEVICE_WRITE);
+> +}
+> +
+> +static inline swp_entry_t make_device_migration_readable_exclusive_migration_entry(pgoff_t offset)
+> +{
+> +	return swp_entry(SWP_MIGRATION_DEVICE_READ_EXCLUSIVE, offset);
+> +}
+> +
+> +static inline bool is_device_migration_readable_exclusive_entry(swp_entry_t entry)
+> +{
+> +	return swp_type(entry) == SWP_MIGRATION_DEVICE_READ_EXCLUSIVE;
+> +}
 
-In fact, besides /proc/pagetypeinfo, other system resource information is
-also collected at appropriate times, and resource usage throughout the
-process lifecycle is appropriately tracked as well. User-space management
-components integrate this information together to make decisions and
-perform proper actions.
+The names are inconsistent.
 
-> > Under high load scenarios, reading /proc/pagetypeinfo causes memory
-> > management components or memory allocation/free paths to be blocked
-> > for extended periods waiting for the zone lock, leading to the following
-> > issues:
-> > 1. Long interrupt-disabled spinlocks - occasionally exceeding 10ms on Qcom
-> >    8750 platforms, reducing system real-time performance
-> > 2. Memory management components being blocked for extended periods,
-> >    preventing rapid acquisition of memory fragmentation information for
-> >    critical memory management decisions and actions
-> > 3. Increased latency in memory allocation and free paths due to prolonged
-> >    zone lock contention
->
-> It could be argued that not capturing /proc/pagetypeinfo (often) would help.
-> I wonder if we can find also other benefits from the counters in the kernel
-> itself.
+Maybe make_device_migration_readable_exclusive_migration_entry to
+make_readable_exclusive_migration_device_private_entry, and
+is_device_migration_readable_exclusive_entry to
+is_readable_exclusive_device_private_migration_entry?
 
-Collecting system and app resource statistics and making decisions based
-on this information is a common practice among Android device manufacturers.
 
-Currently, there should be over a billion Android phones being used daily
-worldwide. The diversity of hardware configurations across Android devices
-makes it difficult for kernel mechanisms alone to maintain good
-performance across all usage scenarios.
+>  #else /* CONFIG_DEVICE_PRIVATE */
+>  static inline swp_entry_t make_readable_device_private_entry(pgoff_t offset)
+>  {
+> @@ -217,6 +254,11 @@ static inline bool is_writable_device_private_entry(swp_entry_t entry)
+>  	return false;
+>  }
+>  
+> +static inline bool is_readable_device_migration_private_entry(swp_entry_t entry)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline swp_entry_t make_device_exclusive_entry(pgoff_t offset)
+>  {
+>  	return swp_entry(0, 0);
+> @@ -227,6 +269,36 @@ static inline bool is_device_exclusive_entry(swp_entry_t entry)
+>  	return false;
+>  }
+>  
+> +static inline swp_entry_t make_readable_migration_device_private_entry(pgoff_t offset)
+> +{
+> +	return swp_entry(0, 0);
+> +}
+> +
+> +static inline swp_entry_t make_writable_migration_device_private_entry(pgoff_t offset)
+> +{
+> +	return swp_entry(0, 0);
+> +}
+> +
+> +static inline bool is_device_private_migration_entry(swp_entry_t entry)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline bool is_writable_device_migration_private_entry(swp_entry_t entry)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline swp_entry_t make_device_migration_readable_exclusive_migration_entry(pgoff_t offset)
+> +{
+> +	return swp_entry(0, 0);
+> +}
+> +
+> +static inline bool is_device_migration_readable_exclusive_entry(swp_entry_t entry)
+> +{
+> +	return false;
+> +}
+> +
+>  #endif /* CONFIG_DEVICE_PRIVATE */
+>  
+>  #ifdef CONFIG_MIGRATION
+> @@ -234,22 +306,26 @@ static inline int is_migration_entry(swp_entry_t entry)
+>  {
+>  	return unlikely(swp_type(entry) == SWP_MIGRATION_READ ||
+>  			swp_type(entry) == SWP_MIGRATION_READ_EXCLUSIVE ||
+> -			swp_type(entry) == SWP_MIGRATION_WRITE);
+> +			swp_type(entry) == SWP_MIGRATION_WRITE ||
+> +			is_device_private_migration_entry(entry));
+>  }
+>  
+>  static inline int is_writable_migration_entry(swp_entry_t entry)
+>  {
+> -	return unlikely(swp_type(entry) == SWP_MIGRATION_WRITE);
+> +	return unlikely(swp_type(entry) == SWP_MIGRATION_WRITE ||
+> +			is_writable_device_migration_private_entry(entry));
+>  }
+>  
+>  static inline int is_readable_migration_entry(swp_entry_t entry)
+>  {
+> -	return unlikely(swp_type(entry) == SWP_MIGRATION_READ);
+> +	return unlikely(swp_type(entry) == SWP_MIGRATION_READ ||
+> +			is_readable_device_migration_private_entry(entry));
+>  }
+>  
+>  static inline int is_readable_exclusive_migration_entry(swp_entry_t entry)
+>  {
+> -	return unlikely(swp_type(entry) == SWP_MIGRATION_READ_EXCLUSIVE);
+> +	return unlikely(swp_type(entry) == SWP_MIGRATION_READ_EXCLUSIVE ||
+> +			is_device_migration_readable_exclusive_entry(entry));
+>  }
+>  
+>  static inline swp_entry_t make_readable_migration_entry(pgoff_t offset)
+> @@ -525,7 +601,8 @@ static inline bool is_pfn_swap_entry(swp_entry_t entry)
+>  	BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
+>  
+>  	return is_migration_entry(entry) || is_device_private_entry(entry) ||
+> -	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry);
+> +	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry) ||
+> +	       is_device_private_migration_entry(entry);
+>  }
+>  
+>  struct page_vma_mapped_walk;
+> diff --git a/mm/memory.c b/mm/memory.c
+> index b59ae7ce42eb..f1ed361434ff 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -962,8 +962,13 @@ copy_nonpresent_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+>  			 * to be set to read. A previously exclusive entry is
+>  			 * now shared.
+>  			 */
+> -			entry = make_readable_migration_entry(
+> -							swp_offset(entry));
+> +			if (is_device_private_migration_entry(entry))
+> +				entry = make_readable_migration_device_private_entry(
+> +								swp_offset(entry));
+> +			else
+> +				entry = make_readable_migration_entry(
+> +								swp_offset(entry));
+> +
+>  			pte = swp_entry_to_pte(entry);
+>  			if (pte_swp_soft_dirty(orig_pte))
+>  				pte = pte_swp_mksoft_dirty(pte);
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index c0e9f15be2a2..3c561d61afba 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -495,7 +495,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
+>  		goto out;
+>  
+>  	entry = pte_to_swp_entry(pte);
+> -	if (!is_migration_entry(entry))
+> +	if (!(is_migration_entry(entry)))
+>  		goto out;
+>  
+>  	migration_entry_wait_on_locked(entry, ptl);
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 82f09b24d913..458b5114bb2b 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -235,15 +235,28 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  				folio_mark_dirty(folio);
+>  
+>  			/* Setup special migration page table entry */
+> -			if (mpfn & MIGRATE_PFN_WRITE)
+> -				entry = make_writable_migration_entry(
+> -							page_to_pfn(page));
+> -			else if (anon_exclusive)
+> -				entry = make_readable_exclusive_migration_entry(
+> -							page_to_pfn(page));
+> -			else
+> -				entry = make_readable_migration_entry(
+> -							page_to_pfn(page));
+> +			if (mpfn & MIGRATE_PFN_WRITE) {
+> +				if (is_device_private_page(page))
+> +					entry = make_writable_migration_device_private_entry(
+> +								page_to_pfn(page));
+> +				else
+> +					entry = make_writable_migration_entry(
+> +								page_to_pfn(page));
+> +			} else if (anon_exclusive) {
+> +				if (is_device_private_page(page))
+> +					entry = make_device_migration_readable_exclusive_migration_entry(
+> +								page_to_pfn(page));
+> +				else
+> +					entry = make_readable_exclusive_migration_entry(
+> +								page_to_pfn(page));
+> +			} else {
+> +				if (is_device_private_page(page))
+> +					entry = make_readable_migration_device_private_entry(
+> +								page_to_pfn(page));
+> +				else
+> +					entry = make_readable_migration_entry(
+> +								page_to_pfn(page));
+> +			}
+>  			if (pte_present(pte)) {
+>  				if (pte_young(pte))
+>  					entry = make_migration_entry_young(entry);
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 113b48985834..7d79a0f53bf5 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -365,11 +365,22 @@ static long change_pte_range(struct mmu_gather *tlb,
+>  				 * A protection check is difficult so
+>  				 * just be safe and disable write
+>  				 */
+> -				if (folio_test_anon(folio))
+> -					entry = make_readable_exclusive_migration_entry(
+> -							     swp_offset(entry));
+> -				else
+> -					entry = make_readable_migration_entry(swp_offset(entry));
+> +				if (!is_writable_device_migration_private_entry(entry)) {
+> +					if (folio_test_anon(folio))
+> +						entry = make_readable_exclusive_migration_entry(
+> +								swp_offset(entry));
+> +					else
+> +						entry = make_readable_migration_entry(
+> +								swp_offset(entry));
+> +				} else {
+> +					if (folio_test_anon(folio))
+> +						entry = make_device_migration_readable_exclusive_migration_entry(
+> +								swp_offset(entry));
+> +					else
+> +						entry = make_readable_migration_device_private_entry(
+> +								swp_offset(entry));
+> +				}
+> +
+>  				newpte = swp_entry_to_pte(entry);
+>  				if (pte_swp_soft_dirty(oldpte))
+>  					newpte = pte_swp_mksoft_dirty(newpte);
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index 9146bd084435..e9fe747d3df3 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -112,7 +112,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+>  			return false;
+>  		entry = pte_to_swp_entry(ptent);
+>  
+> -		if (!is_migration_entry(entry))
+> +		if (!(is_migration_entry(entry)))
+>  			return false;
+>  
+>  		pfn = swp_offset_pfn(entry);
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index 9f91cf85a5be..f5c77dda3359 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -1003,7 +1003,8 @@ struct folio *folio_walk_start(struct folio_walk *fw,
+>  		swp_entry_t entry = pte_to_swp_entry(pte);
+>  
+>  		if ((flags & FW_MIGRATION) &&
+> -		    is_migration_entry(entry)) {
+> +		    (is_migration_entry(entry) ||
+> +		     is_device_private_migration_entry(entry))) {
+>  			page = pfn_swap_entry_to_page(entry);
+>  			expose_page = false;
+>  			goto found;
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index e94500318f92..9642a79cbdb4 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2535,15 +2535,29 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>  			 * pte. do_swap_page() will wait until the migration
+>  			 * pte is removed and then restart fault handling.
+>  			 */
+> -			if (writable)
+> -				entry = make_writable_migration_entry(
+> -							page_to_pfn(subpage));
+> -			else if (anon_exclusive)
+> -				entry = make_readable_exclusive_migration_entry(
+> -							page_to_pfn(subpage));
+> -			else
+> -				entry = make_readable_migration_entry(
+> -							page_to_pfn(subpage));
+> +			if (writable) {
+> +				if (is_device_private_page(subpage))
+> +					entry = make_writable_migration_device_private_entry(
+> +								page_to_pfn(subpage));
+> +				else
+> +					entry = make_writable_migration_entry(
+> +								page_to_pfn(subpage));
+> +			} else if (anon_exclusive) {
+> +				if (is_device_private_page(subpage))
+> +					entry = make_device_migration_readable_exclusive_migration_entry(
+> +								page_to_pfn(subpage));
+> +				else
+> +					entry = make_readable_exclusive_migration_entry(
+> +								page_to_pfn(subpage));
+> +			} else {
+> +				if (is_device_private_page(subpage))
+> +					entry = make_readable_migration_device_private_entry(
+> +								page_to_pfn(subpage));
+> +				else
+> +					entry = make_readable_migration_entry(
+> +								page_to_pfn(subpage));
+> +			}
+> +
+>  			if (likely(pte_present(pteval))) {
+>  				if (pte_young(pteval))
+>  					entry = make_migration_entry_young(entry);
+> -- 
+> 2.34.1
+> 
 
-First, hardware capabilities vary greatly - flagship phones may have up to
-24GB of memory, while low-end devices may have as little as 4GB. CPU,
-storage, battery, and passive cooling capabilities vary significantly due
-to market positioning and cost factors. Hardware resources seem always
-inadequate.
-
-Second, usage scenarios also differ - some people use devices in hot
-environments while others in cold environments; some enjoy high-definition
-gaming while others simply browse the web.
-
-Third, user habits vary as well. Some people rarely restart their phones
-except when the battery dies or the system crashes; others restart daily,
-like me. Some users never actively close apps, only switching them to
-the background, resulting in dozens of apps running in the background and
-keeping system resources consumed (especially memory). Yet others just use
-a few apps, closing unused apps rather than leaving them in the
-background.
-
-Despite the above challenges, Android device manufacturers hope to ensure
-a good user experience (no UI jank) across all situations.
-
-Even at 60 Hz frame refresh rate (90 Hz, 120 Hz also supported now), all
-work from user input to render and display should be done within 16.7 ms.
-To achieve this goal, the management components perform tasks such as:
-- Track system resource status: what system has
-  (system resource awareness)
-- Learn and predict app resource demands: what app needs
-  (resource demand awareness)
-- Monitor app launch, exit, and foreground-background switches: least
-  important app gives back resource to system to serve most important
-  one, usually the foreground app
-  (user intent awareness)
-
-Tracking system resources seems necessary for Android devices, not
-optional. So the related paths are not that cold on Android devices.
-
-All the above are from workload perspective. From the kernel perspective,
-regardless of when or how frequently user-space tools read statistical
-information, they should not affect the kernel's own efficiency
-significantly. That's why I submit this patch series to make the read side
-of /proc/pagetypeinfo lock-free. But this does introduce overhead in hot
-path, I would greatly appreciate if we can discuss how to improve it here.
-
-> Adding these migratetype counters is something that wouldn't be even
-> possible in the past, until the freelist migratetype hygiene was merged.
-> So now it should be AFAIK possible, but it's still some overhead in
-> relatively hot paths. I wonder if we even considered this before in the
-> context of migratetype hygiene? Couldn't find anything quickly.
-
-Yes, I wrote the code on old kernel initially, at that time, I reused
-set_pcppage_migratetype (also renamed) to cache the exact migratetype
-list that the page block is on. After the freelist migratetype hygiene
-patches were merged, I removed that logic.
+Thanks,
+Chih-En Lin
 
