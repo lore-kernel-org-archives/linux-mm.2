@@ -4,109 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8315FD116F5
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 13:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A36D116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 13:28:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E540C6B002A; Mon,  1 Dec 2025 08:28:01 -0500 (EST)
+	id B6E796B0006; Mon,  1 Dec 2025 08:28:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2B6E6B008A; Mon,  1 Dec 2025 08:28:01 -0500 (EST)
+	id B1F2D6B008A; Mon,  1 Dec 2025 08:28:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D419F6B008C; Mon,  1 Dec 2025 08:28:01 -0500 (EST)
+	id A5C636B008C; Mon,  1 Dec 2025 08:28:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C0E006B002A
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:28:01 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 75705140204
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:28:01 +0000 (UTC)
-X-FDA: 84170980362.27.7C05393
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A2CC64001B
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:27:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=T9l4N5HL;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf12.hostedemail.com: domain of mcanal@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mcanal@igalia.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 929FE6B0006
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 08:28:22 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FF4C1401F7
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:28:22 +0000 (UTC)
+X-FDA: 84170981244.30.3B445E9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C82D740016
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:28:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GB4PdAEQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764595679;
+	s=arc-20220608; t=1764595700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0SaEHpLgPQWDg/1suaX25LTMCjnE+f1eGygaTvce+bc=;
-	b=5ZKU156boAUneMmH+NsZiJ8Ne44nOAqHcfNiqKg9J3H3NcRz36rS3mYu7HIi8I9Mbsrg++
-	GNt5zsRZNcDM7+VnfyptLUrtnaFI9CMuMuFVf76JU9++YhbA0v1pePIkvYtCG9Cyl/a9wk
-	GQER5LLn6Cs2yv7j30p14A+IyxaXr+0=
+	bh=sJP1CphtVFSgNIZU1NL+eU+k3JeTHzGDRtTV12rYQ8o=;
+	b=N37zCOqs4tS09Bm54Nf3wrDyysf5gDm3wHdRwYQsCl2CH6VUFS1/uuGGS58qbpYHslPT38
+	NtZVdGizTYPZCkqroyPMPfSeE/HMnw6meN+3Rz+g7sMdELwz9FTylmFWSAr6hX7nfc2tYX
+	b/5BYaT9A3M++hamYB8oCmO/bNmayvs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=T9l4N5HL;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf12.hostedemail.com: domain of mcanal@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mcanal@igalia.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764595679; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GB4PdAEQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764595700; a=rsa-sha256;
 	cv=none;
-	b=TI2rn6xmA0/gFjHvLV5Z0fi0E21CQYlzAs1i1/JWI04e4QYKXOXGo8PIFR7AN1zMeSC/Sj
-	qeXsdkOeQ6bqbn1L4EbiwlhSamso7biVDmVG1yKh/5KtrY+0YcaakO+EeU2lpSnNYOWYUf
-	qjlPd+pihG8pdIw/fBA8rCxcyk2L+/w=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=0SaEHpLgPQWDg/1suaX25LTMCjnE+f1eGygaTvce+bc=; b=T9l4N5HLxjxjguG4+xviCO4s3B
-	FLkJ4toDbnJQsMpkA821HVAMJww1WQ1ckNVYFRgrbrysOjyrftAMbVjZ76ckiwwMFsSWsgB6QX3bH
-	C9KPEPeAmie7IGXskDbwv8+4gyQsv3f1KF5NXVSSa/FQ4dEQYeQnD1OdyxxDL12tz+hLfS2CcAmsO
-	2LzyqIdCz+5Ghd7fGvs0/JpXOriFtzi5TxV+Xdj74HJBvZnVXHa5Wofnldywwwvu08+peC9JpTVqS
-	MaCqXen8cNLjejSVp7p2SVG1YADH6RCExxXYnYcZn3evk3uuMnuO3j0/oM6DouJK6udtzey1XMUbZ
-	MTmwFtrQ==;
-Received: from [189.7.87.198] (helo=[192.168.0.4])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vQ3vu-007OVO-IP; Mon, 01 Dec 2025 14:27:14 +0100
-Message-ID: <f1a5e5a9-2193-4a47-9fce-c51b223985aa@igalia.com>
-Date: Mon, 1 Dec 2025 10:27:02 -0300
+	b=ItNAYi1qte1miaJ+EIa1gUEQP9BA7KTcsYsGTfzZPDIi+460wHWqZudIRjdisvl1fcarZn
+	W9qMnFmmX8ePlD5/gPICAyRLf7sJRQXEgFROMcL0+HJhg+nmhcaxJUvyXwi+6he8vWO/mz
+	uqpxsckq9kN5WN8Lal8G2HH+OgvyWEU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 119E16001D;
+	Mon,  1 Dec 2025 13:28:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A75C4CEF1;
+	Mon,  1 Dec 2025 13:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764595699;
+	bh=FevHi0kLliUV5SQ+/ZO84hut8iMmC7m6mevvQPXJiHM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GB4PdAEQpQKQuhcpxGteKkjdVYH9TyuUXh91JdQuQ/4eOSaS2YGYg8q65zNG0ksj3
+	 4iUEy0Sx1XA6EcrsvEEFUEatwObl/Xb4VOs+L86Ygm1h9jfbIZJCen+EqrXkmpQq5t
+	 vzD4d1lwJZVkBXeR8YPgRBOEnuKEzhMHebtHoUi8rgbvy6z9HzRJWNsxrHMf0OOPoB
+	 QRJMGlCp7nwSLq51InSz1Ynj4rVUI69oirRNzlrghJAXSQ/uBjN8HHZrs29TWgZ9vU
+	 f74tqNqWKXSMr8kOIGEZPP3OtZP0dyeYroa1jhuGK1jujZYk05YvwT+2gsPZXN9D+G
+	 afF+kzb1yTDQw==
+Date: Mon, 1 Dec 2025 13:28:13 +0000
+From: Will Deacon <will@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Zizhi Wo <wozizhi@huaweicloud.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, jack@suse.com,
+	brauner@kernel.org, hch@lst.de, akpm@linux-foundation.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	yangerkun@huawei.com, wangkefeng.wang@huawei.com,
+	pangliyuan1@huawei.com, xieyuanbin1@huawei.com
+Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
+ sleep in RCU context
+Message-ID: <aS2X7cIiRnR26hyg@willie-the-truck>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com>
+ <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+ <aSgut4QcBsbXDEo9@shell.armlinux.org.uk>
+ <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 10/10] Documentation/gpu/drm-mm: Add THP paragraph to
- GEM mapping section
-To: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Boris Brezillon <boris.brezillon@collabora.com>,
- Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Matthew Wilcox
- <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kernel@collabora.com
-References: <20251128185252.3092-1-loic.molinari@collabora.com>
- <20251128185252.3092-11-loic.molinari@collabora.com>
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Content-Language: en-US
-In-Reply-To: <20251128185252.3092-11-loic.molinari@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A2CC64001B
+X-Rspamd-Queue-Id: C82D740016
 X-Rspamd-Server: rspam11
-X-Stat-Signature: gx73m36gp5hwcwk8da11wn4pfb4h9o6j
-X-HE-Tag: 1764595679-251089
-X-HE-Meta: U2FsdGVkX1+HXq8/JW1iLlYOXDUNzzZCyhIP0PEVVCvbEOdjBLI/6EVc8By9KE3Uds1dRs66h59YvZLD14rSbgSa3swRkTXdIVIicraZzLj42/Lz38d2fJs47N3X+FuFvUQ09xaEoe0/Bk8MvRWgk2qYgV4hLkAOsPKIE82+b0bWt4F8pP+JcsZ99ML6vX7ZDJ4Q1hROMBlQI8jK4htQwIR1UbBJoUbYHKS9bZ+kqe8PiCsPcsICs/uFgKuuXJyO2oGdyHTnY7nTEoWa9tVpOJlLaxOWryIGojIEYpopgt1wYiRYPyZah7RVbsFK3b5WX/9qeNy9WstLK5sfkZBrr2VJ17OxqoiWptNhYz2P4s6WlXBMUa2Y/DZ8hVcb9TD7g5pLkwvg4EB5UyKl9+TXLpp9KCNlIwc1g1OFrOCVHsJ2Vbt4ey2/MGawM1IHEG3O+sSprMdwiYgyrBrZvTKRE92NRDYhjc/Y5hwRdG9/R675DpLy/Gbk+3J2fvH1xqiH1FysKSEsJMlZo7v8kgtCxIj3bvOmlOz0nMAZwhXywmdvBCd4IGCrAzVDVhTQfWB9mRgpRln3ou1yhanU6S/+xSd/iqI/6jM6ZwCiM2Nl2BKhoJpPuCTq0ZDLXBVBNvUmyFVZAoBgCQRvFqPedrqTMXQZ5W7PcrwvYQSAyrtCq0ji/DMRbeJiHvDXmdWDHK2Me4w4Ytm0tTOxzPxyJ0gguJZdPgox8JkB1OPiOTmtLZR24PliGdC80eS2Wdh9qKZi6ac075+/HFlCvfYsA/nIlCQ60v8auQjlsqe4m+22+FgOx6uRtTYOQL84zW4sy0cfwnw6EPOB6Y1hkdRgWXhBTr6kn/WjyRlqSQq5IMLaumMwuJT2Y16Ab4YH3QnoS7FIurlw7a2bctqTbyecm33dM18S4LDGEckLKMRLGCaFbiz/QoPTaFz+mM79Gg1VEwvUXVb3ZLiMW4Q+lzp6GhT
- XIJkaVBm
- 6vXha+23VrYhgnlpt4/uaRWWrcPY238tH21pBGyRC2ZzbYbhQhcHaVU5flLH9c422DXtQREWBnGGE8Yrb0Elt2myizt9tLnrepWk4eU1Pi3ZSn2BNqe6mvIQJJVoP111YONN0fyZ8p6IiWsGu/xI/CugvN9WMkbNCUUbCDKifuQtJrmzwOP1IDwidvocnEgY+sC8844iRyM/mMojmeIh1FIiYs5Ow97olgbFH6C0B8THDpO/b+Ycjqgj2VrC7Jg5RhZ6hYURRbcoGg4y2jPPeQXAz4615u9i3zPnwCzMr/5DnBtmD1qjXr4SmePqZYbGl9gS24rpZRT1fFJfzudPUp6/3DfigjKmUXVrcH2TP8uJAC1spFG18qT3AtjupQb1QX2WGGDbrsfjOZbk=
+X-Stat-Signature: cyns1gz66tc6iy9cret9g4q5frsbm7c1
+X-HE-Tag: 1764595700-982342
+X-HE-Meta: U2FsdGVkX19Py4w+dWWftWjmASkxHyy0eJT78wh46Q1NFN0HB5uSRnR5zOl/JNDpTt3MwhP7nWiVNIweWmqhcBrL3iSl+8vrlianNXqikSuZeRKOU/BEf1u9rqkdP241KDb4lrZqLyVO9I83fW//H2O0722P3flv4mQ6fk7a8ftOnvV711oXms6Ai+XmEW8gZH1wSttE/ZGNDFuHZf+016cmdJr3gg7gL648dePwgyNM3V4l8QFOfKWX+w7MkerXLGRqQSs24ZNtpn4XLdG9dHsrbex5th+R5A62WlpRHVp+47dARBA1GKnBzE/JSRdaUT5DurvQvsTSCA0+X8gdBOReZFsqcRC1CgG9QpZ4OIHe2JfPTWSxUoVsvjTF8N+6V0+MTkuaJs7qP+XQLrV7Xc+zarau3YI8f412drsT0dSqfLbw67sNd3rvF0dWYoWP5ozdLAq4HXFdS43WA4whTZ+jY5nkKnH/0JkS9t3P0qZzY/vjSsRUQYeFPr5A4BZ+Clfjw2UmrI5A1E7XHbGpSReCVkXVBqQu2rZfNhFamZbwO8fqZN12Lbu+4JtLvRBG0eE+QeHW6dF731bwn0AG55X+tqtMKmLIH17Q/ks2BcBjqjeOQ1JUfx3/9wIL1a0EyOEeix8bjlMyv0N5gd1lghid06hAvvKjfbiM2ePqBaHnrUMOFJYq/MeCg5Uq8fTWeJSyzNdyxghj9/jaTvIZ4dUhSmMjU5+wJaX7Gwid1Hbkzf+PYG+asFCqup1wABYovjf5S4W+ppTuo/mL2BwDVjMUFSvry76FexnrnM74ptfhNcuxoQCM3sjbqdWejZdmkICzkdaJEfqKgvNxonIeocUb3EKUEn55DWh4atSz+5r9VoFhdIP7ea8lAkEUMTC24BNL2frgPQYSIvcL/BapQuDAcjfsOEt95lUUMjbmNQgN44pqu9QAjZWnUivFsrBTVbrniKtrEL5LejWlZcW
+ 8FuxPWCi
+ mLVkM4eqTzYO56DarDoglEfnzSLChbfVMm5M8Lw0JQ3WXeW4VJ1d9wmEvlNa/jTDvgrTSVbXFvASdGarbgn+5XIcf7VBdZzn4kchRCubzOcMPD5cvYKZzyry9upwtU2jc9eAyJ5Vuf0mT4KegwjJiGIpr2vzur8PjtBb0Bhz0RXmuypHp3pxF6TnwqynT2XlCQEhHQXYedvM7YcZkHDKDjGRlf4hGlW+lBMau26gnusm6MTzoTt3BapqdKyE1MgENSge974lL4DHkIh5oy3ixFhQUYq0Z7yOxZR1574C0wKMynU/hPtP0R4OQkWKpt1WBcN43vjMXJmy7RyXt7DD/CKoFEMLHs3hNBN7h+jXm0gLsv5LGTlKFLH+XNeT6rOrlH8NN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,67 +102,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Loïc,
-
-On 28/11/25 15:52, Loïc Molinari wrote:
-> Add a paragraph to the GEM objects mapping section explaining how
-> transparent huge pages are handled by GEM.
+On Fri, Nov 28, 2025 at 09:06:50AM -0800, Linus Torvalds wrote:
+> On Thu, 27 Nov 2025 at 02:58, Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> >
+> > Ha!
+> >
+> > As said elsewhere, it looks like 32-bit ARM has been missing updates to
+> > the fault handler since pre-git history - this was modelled in the dim
+> > and distant i386 handling, and it just hasn't kept up.
 > 
-> v4:
-> - fix wording after huge_pages handler removal
+> I actually have this dim memory of having seen something along these
+> lines before, and I just had never realized how it could happen,
+> because that call to do_page_fault() in do_translation_fault()
+> visually *looks* like the only call-site, and so that
 > 
-> v6:
-> - fix wording after map_pages handler removal
+>         if (addr < TASK_SIZE)
+>                 return do_page_fault(addr, fsr, regs);
 > 
-> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
-> Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
->   Documentation/gpu/drm-mm.rst | 22 +++++++++++++++++-----
->   1 file changed, 17 insertions(+), 5 deletions(-)
+> looks like it does everything correctly. That "do_page_fault()"
+> function is static to the arch/arm/mm/fault.c file, and that's the
+> only place that appears to call it.
 > 
-> diff --git a/Documentation/gpu/drm-mm.rst b/Documentation/gpu/drm-mm.rst
-> index d55751cad67c..d69eab0b4093 100644
-> --- a/Documentation/gpu/drm-mm.rst
-> +++ b/Documentation/gpu/drm-mm.rst
-> @@ -290,15 +290,27 @@ The open and close operations must update the GEM object reference
->   count. Drivers can use the drm_gem_vm_open() and drm_gem_vm_close() helper
->   functions directly as open and close handlers.
->   
-> -The fault operation handler is responsible for mapping individual pages
-> -to userspace when a page fault occurs. Depending on the memory
-> -allocation scheme, drivers can allocate pages at fault time, or can
-> -decide to allocate memory for the GEM object at the time the object is
-> -created.
-> +The fault operation handler is responsible for mapping pages to
-> +userspace when a page fault occurs. Depending on the memory allocation
-> +scheme, drivers can allocate pages at fault time, or can decide to
-> +allocate memory for the GEM object at the time the object is created.
->   
->   Drivers that want to map the GEM object upfront instead of handling page
->   faults can implement their own mmap file operation handler.
->   
-> +In order to reduce page table overhead, if the internal shmem mountpoint
-> +"shm_mnt" is configured to use transparent huge pages (for builds with
-> +CONFIG_TRANSPARENT_HUGEPAGE enabled) and if the shmem backing store
-> +managed to allocate a huge page for a faulty address, the fault handler
-> +will first attempt to insert that huge page into the VMA before falling
-> +back to individual page insertion. mmap() user address alignment for GEM
-> +objects is handled by providing a custom get_unmapped_area file
-> +operation which forwards to the shmem backing store. For most drivers,
-> +which don't create a huge mountpoint by default or through a module
-> +parameter, transparent huge pages can be enabled by either setting the
-> +"transparent_hugepage_shmem" kernel parameter or the
-> +"/sys/kernel/mm/transparent_hugepage/shmem_enabled" sysfs knob.
+> The operative word being "appears".
+> 
+> Becuse I had never before realized that that fault.c then also does that
+> 
+>   #include "fsr-2level.c"
+> 
+> and then that do_page_fault() function is exposed through those
+> fsr_info[] operation arrays.
+> 
+> Anyway, I don't think that the ARM fault handling is all *that* bad.
+> Sure, it might be worth double-checking, but it *has* been converted
+> to the generic accounting helpers a few years ago and to the stack
+> growing fixes.
+> 
+> I think the fix here may be as simple as this trivial patch:
+> 
+>   diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+>   index 2bc828a1940c..27024ec2d46d 100644
+>   --- a/arch/arm/mm/fault.c
+>   +++ b/arch/arm/mm/fault.c
+>   @@ -277,6 +277,10 @@ do_page_fault(unsigned long addr, ...
+>         if (interrupts_enabled(regs))
+>                 local_irq_enable();
+> 
+>   +     /* non-user address faults never have context */
+>   +     if (addr >= TASK_SIZE)
+>   +             goto no_context;
+>   +
+>         /*
+>          * If we're in an interrupt or have no user
+>          * context, we must not take the fault..
+> 
+> but I really haven't thought much about it.
 
-It would be nice to have a paragraph about the use of the huge tmpfs
-mountpoint helpers (maybe in the "GEM Objects Creation" section?).
+In the hack I posted [1], I deliberately avoided modifying
+do_page_fault() as it's used on the permission fault path. With your
+change above, I'm worried that userspace could simply try to access a
+kernel address and that would lead to a panic.
 
-Best Regards,
-- Maíra
+Will
 
-> +
->   For platforms without MMU the GEM core provides a helper method
->   drm_gem_dma_get_unmapped_area(). The mmap() routines will call this to get a
->   proposed address for the mapping.
-
+[1] https://lore.kernel.org/all/aShLKpTBr9akSuUG@willie-the-truck/
 
