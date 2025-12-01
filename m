@@ -4,110 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB4DD111A8
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 11:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA17D111A8
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 11:31:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8B306B0010; Mon,  1 Dec 2025 06:12:35 -0500 (EST)
+	id 79EBA6B000C; Mon,  1 Dec 2025 06:31:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63116B0032; Mon,  1 Dec 2025 06:12:35 -0500 (EST)
+	id 776896B0089; Mon,  1 Dec 2025 06:31:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C795B6B0088; Mon,  1 Dec 2025 06:12:35 -0500 (EST)
+	id 6B35B6B000D; Mon,  1 Dec 2025 06:31:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AD8116B0010
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:12:35 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 504238578D
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 11:12:35 +0000 (UTC)
-X-FDA: 84170639070.18.DEBC63A
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B9CEE40015
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 11:12:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=gP9VUsXS;
-	spf=pass (imf04.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 564206B0089
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 06:31:27 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A8E1A1378AB
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 11:31:24 +0000 (UTC)
+X-FDA: 84170686488.01.2579BE7
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B372D40013
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 11:31:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IPOQG39T;
+	spf=pass (imf07.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764587553;
+	s=arc-20220608; t=1764588682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0UHKkc3PYHzcTPMCzzBKKTlGyj3Kl2+QZFHne2yPGnY=;
-	b=Gw7wpqV9KJLQlAk3DVAcV6K4wJb5RaQW3mXmBXRrNkilC9sr3OUChyZ84eJyGOZ/iAfjKX
-	DKPMtGf3vLtwtatmhDvTdrIqvQPVpzQIlX27PwMCIKz4t9G44J3KtkETVNcHQJ6jY2bLkL
-	CPezlt4C88taK5qfUU6sR0EyX24nuZE=
+	bh=FCjWn4JyZ0MIQxuYrrv1+l2KU3/wPwCMbrlzyLXQJOQ=;
+	b=UpB64bBnsaOj1zikMvrPSZJv70Twg6mYdzqmejd1npSeNbRuEegkXNebcoJrHzaQ/mx/Sr
+	ElAwv1AN1mm6T56IdK8DqrMuYwvJtAFZgPu+mRAoA+mWiJLAd9Gw11G7Fsspkdpgr6s7is
+	rtMRHGKUnfBQsbEdnau85I+WCRhHXUA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=gP9VUsXS;
-	spf=pass (imf04.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764587553; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IPOQG39T;
+	spf=pass (imf07.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764588682; a=rsa-sha256;
 	cv=none;
-	b=wkO2u9IxwG+jQAD731iVuhhj9FesBk3zqspDGXe13+pIhB/AzDRP8oSCgOF23WKJbmCWpb
-	FGvgDD/f0TyBfyGP52Aj5mrVoTJIU3neshVyLI8QORIdvMvsu+jpt9wf2xhGaAgjDgswBL
-	Xoj+5vdAJQr5wHBwLMWbn1RFe6fKj5U=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 339A340E022E;
-	Mon,  1 Dec 2025 11:12:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id iOkj0-JSgieD; Mon,  1 Dec 2025 11:12:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764587544; bh=0UHKkc3PYHzcTPMCzzBKKTlGyj3Kl2+QZFHne2yPGnY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gP9VUsXSoNCY00dtFmwYA9HsNrANGcswDmKCrRIU9qSspIrUZWELqs7g59To6Gj8E
-	 JRE8Ane9jRS0HU2HRw9mD6B3USUo1Rsrq7TcHmVI5jNXQyJlAWZCp5bpd6k3csnN08
-	 cghKWIeD8umUKPhZVb4Hzl53eafkD6F5RsSEEj5eDadB8+Ol+xu6dGVjo7rSQKpIK/
-	 38GMaxu6wTu4trOwuElHJmaa4AbCiTSjmKqQUpCwm7R5AJe/VFC4oovYZALDTXy4eI
-	 rz3AIfBJtNkrq2P7FETAVMdBSWLJWOdV+6ko2zvw52nCs354uHkr8SGB+Ang0LksTK
-	 pXvwu1u/kUPHMsAP8WMWLaJGKOwrQbi1M423ZfCEgNtEXgtQNhitqlK1TiwsRziQiN
-	 +V3blEKOsmdeqgWlW0g2h1aOnYkmnPxyn94pVGSpu5iclhPRXysalhmDxKawVhfisZ
-	 hywMlP2MqmUhQnIxywj1bbTmPLcBL88YaQmmYmMuaOjViVa7crTeFjcRSg80za9PUf
-	 XD+Wly45URx1w1qksPtSCa8zxLqWQgdiO5mAlRYWMjEONeewSOOGB4a3M0k0r5Y+Rn
-	 hL2as5hcOoxCGgaMfcOqBXZtFHl1tZiV0iFgXNqaDAK+w+Fp0xvEQVYtDgPG8uPmAK
-	 8catoz1wBm6cQyMQOWs7AQzw=
-Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 7C54E40E01A5;
-	Mon,  1 Dec 2025 11:12:08 +0000 (UTC)
-Date: Mon, 1 Dec 2025 12:12:01 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, ardb@kernel.org,
-	akpm@linux-foundation.org, osalvador@suse.de,
-	thomas.lendacky@amd.com, michael.roth@amd.com
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
- <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
- <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
- <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
- <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
- <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
- <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
- <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
+	b=T4e9o8B0Uh8nAEF8lUgorfn8JUe8oN4d+YQ4RM+oXkiT6FVr0es1ZXKKqAqiaL3yldlgGI
+	W+d0XWA/jsPyjYlvlkEce7+BZDyhcuWCmHMz6XOdB/HpH0spEAXVAxh5MXZqks67ebLILE
+	8P5ECTKmmLqMfFeKfrBpa0O8MNlDCuA=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b73a9592fb8so1056345566b.1
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 03:31:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764588681; x=1765193481; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FCjWn4JyZ0MIQxuYrrv1+l2KU3/wPwCMbrlzyLXQJOQ=;
+        b=IPOQG39T+0w2xFaGSd6JVDXQrzQy9+O7NRb8A7XDJrZfJGMRcjQTp7/cY+wya0Nusa
+         SFZ9l7tNoKmEtBFKnfzCWJ6XZ9QIhFY3NUHND+G6wOevZpRZX3P/eiB2b0r+xwCvii53
+         5RbO6oIJC74wu2aIMb3gEgzBKX9AQXUFhICxORlCi+Wq4bPdQb/Atlj1v9EiQ2U+b4jF
+         z6My8z73s1W/8jQXcLWgkhQQaPmF0kYB1eRr+FJ1F7LlynP9IGzQ2NhjKiFeJkHQ6YWW
+         Lcbxy+SPNng1InWSs2N3sd7JwVSF1Lp2zZ49AcLjdjwEtbHn19lhwML6Kx39dEEP1lBl
+         284g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764588681; x=1765193481;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FCjWn4JyZ0MIQxuYrrv1+l2KU3/wPwCMbrlzyLXQJOQ=;
+        b=pXMPrbvvusViduEAER6PDcXG+DyMKHIzlA7OIT+PH7ZLCIvZZAM901OsPJfOgoXxzO
+         d8zOMD/7rpaFHZYkXdUfxiFJps1JlgMGlwKhvxBC7luLdWdpHb1yGgBfwpFoRatKfjW7
+         Idl+zdKAQ2mA+4iNsPAOjBj2W9oCYGluhaH49qXj8zaBwf+pWukb9Vvy4ZEBNMb/Q1mV
+         Xkoj3kOjInK+eTOjh7rhnj8imJbsOvRqN9AaKXOq5wTHdH/Dx02s429MsrUl8uo7UvAl
+         0lyOVveckvaWLg3e95XBVap8qSC7vaCx4N2uP9lSQ2ye4O44b7o+Q+A7gWg+GfiAZY5c
+         TCAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGjzJbKGZqZ6Ne7UiABuJrML60Lb3sc2WvfEyb+ExGhjkmyxwNFdjKyC/KT32QxjRO8xdiSp9kdw==@kvack.org
+X-Gm-Message-State: AOJu0Yxj2Em1Es1ERP/01ucP8nHuuxKbdcKy3xBE1rhDQVz27dcMY5fA
+	SkW8XNHjEQgIE6UZFCpc/Pauom54Q/zGFIxq5BX7CcIxFVB/3okBlqjm9Aokmgc7ThUOFLzwbUB
+	uFcwMz5B5FL4L/UkHcoAPw9MUSpOG6ro=
+X-Gm-Gg: ASbGnctwjdSCyEfHb71YugXqxB8LiY43CElhubIelcsveR7dRKGCUXo+rTkc2UyLd+c
+	1ggZCehY1fMgQRcJsZfmhIyLhqzfudXJ/MR5jQtjW4qPwm66Qo4ghYZNo+v8viAFZBwHWjhZNk5
+	DdfDs99CZmgW/RhovN4cGoong79rnOSUcqegr6GhVL7IRb+UAKl+FkxiNXxNnRcxL+hdBK9SGoO
+	Tk3f7VHyMBcjIeFyt8eeCGyc7/bODKP75gtBzEBL5Z/3vWPfXY0t1CJfFxdtBpPPCd7IUxqy6sR
+	iAIV70+9pCty9JaIDLRiziV5ig==
+X-Google-Smtp-Source: AGHT+IHOdTLkZJaswibA76nq2FRhhydcxFsHanS8FUTomjBpYfSjGae3n+YsOlr5b7VU1wvEW02U1+HtyjJPwL2UzUA=
+X-Received: by 2002:a17:907:9811:b0:b73:1aba:2ebf with SMTP id
+ a640c23a62f3a-b766ed83649mr4703127466b.2.1764588680966; Mon, 01 Dec 2025
+ 03:31:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
-X-Rspamd-Queue-Id: B9CEE40015
+References: <20251127233635.4170047-1-krisman@suse.de> <f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
+ <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
+ <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com> <aS1wPxSdd-WcU__K@hyeyoo>
+In-Reply-To: <aS1wPxSdd-WcU__K@hyeyoo>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Mon, 1 Dec 2025 12:31:09 +0100
+X-Gm-Features: AWmQ_bkxdLFdVJUC3WJDrFMVPGHgCPpiNxbg0GapfU6O7pQ69z8FW89lt3WqPd4
+Message-ID: <CAGudoHHeqvtK83ub1FPuc4JYk4XMxPM+Es=Pp3V0Zq-EKGBs5A@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
+ single-threaded tasks
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Jan Kara <jack@suse.cz>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Gabriel Krisman Bertazi <krisman@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B372D40013
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: cr9nmec1177xub3j37k67tnprkhrps6m
-X-HE-Tag: 1764587552-275646
-X-HE-Meta: U2FsdGVkX1+ZKV/xz7OkPLz8cFk/yOQDsjtZl4Usn1OfRKYN1T90HbpBkuhJKLx/YrECAfOVTvft5AAPhHwivr8D1lrZgWFmx6OgSSREqjONObItr5gGVtBzXVHfbNLlXgAb1v5U46z0ZGt/kpJEXOnU8rkljGsBhK1SSLFpvVk57SsChK4vbbKDQmOkZUKVLuIBwl08HI9lcBGuM45NtrY0Z1PxfW2tC3gDQolluCaS2enuYACxFmb1zyEjJAGzk2iQqOQYGT3YTlmr4f98j3A6G6wUk2voawpEXlWp+8gwvTJUkm6Ivb35TJdDyV45qJtfUmuFHTbI0RZlEa/A0No5fJqL2qRvxTnkE8Kd6w8aAarMvNxPXKsdpBBpS+3aJCzzMXCTYhfDYjEYMYadvivQFGiRBHjdCCrF4gzTDyR1MHjHzsQxpncSVXh5Tb5OF+OULDKtNF7bcBbCjXvXwJPva8KnFk5gfPU1/SAnFv/lBjmsbFU4XusNxLDGyDAsG63yN4Jp8Dj4yJvvray9jFrU5KtNTVJzeR6ywelVjmDrr/FjiBIfsuKW3lJWugwzZLUe/jT2QKoHpdJ4MtLXLmeIt3IXH1bHL2V1xuXgn4pI0+Hp/NRP2G46a3832ZxlcvONmOQSfWpA+vNNjwne152D223fWjMczqJosaxdQGMMxOU+iQIDTH43hQaL84L9vUGfJmokNLPCeJkjete4d6Nv5pTpNcoOB4pOJK5FJxA8AIGJvjyhG9ACIkGUQ+v3Vg1GxvZHVdCRBIJeXs9nYupzm6cVgVnF/DauftrgfTKs1F2NaZbi2f1nK3Ts9WVLd5ftCZAcUXbXXZ91NwoNRdL3K31jWI9hqRCtUYNZIU3FAs421vGgWQd+5xLfkqobqTjgD2AggDeeRkamwWr6Pm/HdGkyIupQjmTi0K0hbdSDybRPhYnpszJ+M5HXsqKVn1fuyfmbki1oHzasDIZ
- CsANL+vS
- 7OBC09zSpb1wyFQr31R/jd5rvHepsNBgyXO8NnxfJLlK9Sr0Rcj8VWRmFgwyVkIFdLr3BZF3J40L2CfIzydzriTPMWkU1vooeo5WuZOrRt/urNlY+PJQ8Ejft59wnRQHeKo1CUCm29vNOpg/7mZNbAdpSAPf9ncJDTlji7hToCRzbUWjjjJm+ZMo14rlZ8an/Dc98kfFXJo3UFGGii2r4Fc+Ks10evlnze5zaXmqZCJRZRhs=
+X-Stat-Signature: qf5ziok4mux6i3dbn58mg19yqzrsm8f4
+X-HE-Tag: 1764588682-796287
+X-HE-Meta: U2FsdGVkX19RaU9jd8WUWyPr8xLFYLfGks3bK8CWJ3GBL7C/r7MO+4qa7FzKfOs008dVIl4KWeBHmuDY4yYCGowr0DI8RaLmhcOoAr0uKNmLLPwU4EgIRRjbAkQwJJor5l113zcNvSCVZPkTkimyulSDx0hR9VUgMudpy/gvjFOz4qkFYqkNdN2qfpc5GV54z/fgF5Eu9R/a2fdt5FOwlaeIzo/B7UT1E4uxPAu6U0nU9ujD23vH555pWvP42EEubGKmZwW6xyAzd9S1/Mdu0ItTbu1lVrQzKDQtRG32iTCQ6X2SibVTvUwn6R9Pwr19w77yad1/v9/MRCbkjzT5GKkAoldIj0BwbuPuJI3ri5aP2ZyGbPjDsHxKgGQddB5KHeriRPQkolvdiGip07RZc1gUMhDv0jcsdeFN1jXNON/xjsFpwQCpb4eJhXnFle57mVAW2MT39Zirb9fsPlXJod9RQi5kub3p6VVlfNyyZX/oxp/MKTgf/HBe5MaUIV4oHOYJOWb7g/SSa/3Mi9+y+AxfzxerxQkfOpbn4p+/vfwncaZy1P9V7C4ju3LIngpxsYnrgGN1EzzS5k9RtQoYHRP4/I+EjypkPdhZF6DgZ0pZvUH9c822xwu/FE0bEPqPmmt1LGjUhmXCL4bdwevm/HFlPHlQGtexTTBNDg9oMr8WL8OmCBiGh8Yt3qVsxGpDTbfIFV+aLHCAgWS2jbuV923qqscHuQFgova6Nq0/U9irhrtIysEa8eGHAAmkuLj0JJo1vigCjxvj3soiKC7WoOuvpzUSt3hIloIPDkvipmaB4sIpu4pOKFKeRNGtDHsjIsuyiPJvtj6dGOwqnNibuEPob9JEi/o7U7c00PQyNvdrADGfgSX3XSlO0cXglzw+FIkhtQPynPixLbE7qlsfV3xbu069TLo1OMjKGXFqewrfv1B6qnvaWK0NS7RTKOZeQ6ziQsdvF/5ltzGBxzf
+ qGuknm95
+ R6Y6YlzACjTBanr+BKQeX5KGt17Z0eyvYKB3BnkTboi+UbvcOXsbxXtXU8n725hulSzre6031Kp6jOjSGgmjbZMnv6c6n7EWgQckI699HOk6dDJ39sUZ1X55MHiggVtj+TYnXdG/zO3BE3BIfvYQ9SMWe4oJ9AYhcAZGSmgIL2FozKWzygeOB8sPobl8MvnzLmEGvXppZvrqMTCTQEvrkFkXJGShNEsMQmvhQMDEG/RUYVsQDpdhRHGKWZBhIcpfTcqmpd2dIP/U09SW+SVUS86ThI0rj6PCJ0IS18BzoPuyqbReD8/Zmc44jLsF2ZAXOztNz/dr8fWE5C3YEB81rMf+vxvTPK7sCAoZ8hzpeIRNo7N/cGMH6zcUVT7Y167a6Tyj13u1KTGziN2EwODj+5lrcMa615XSSKXXCv/WUGKUZ1ymBs4ny0yH7HZdlsJwTFLa+zkvRBxoQxgk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,22 +126,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 01, 2025 at 10:18:37AM +0100, David Hildenbrand (Red Hat) wrote:
-> Makes sense to me, especially for confidential VMs where we pass such
-> kernel-managed data from the old to the new kernel.
+On Mon, Dec 1, 2025 at 11:39=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
+ote:
+> Apologies for not reposting it for a while. I have limited capacity to pu=
+sh
+> this forward right now, but FYI... I just pushed slab-destructor-rfc-v2r2=
+-wip
+> branch after rebasing it onto the latest slab/for-next.
+>
+> https://gitlab.com/hyeyoo/linux/-/commits/slab-destructor-rfc-v2r2-wip?re=
+f_type=3Dheads
+>
 
-It shouldn't matter, right?
+nice, thanks. This takes care of majority of the needful(tm).
 
-I think the question is whether the kernel should agree to the software
-contract (/eyeroll) to keep the kernel ABI compatible wrt kexec.
+To reiterate, should something like this land, it is going to address
+the multicore scalability concern for single-threaded processes better
+than the patchset by Gabriel thanks to also taking care of cid. Bonus
+points for handling creation and teardown of multi-threaded processes.
 
-And I don't think we have agreed to that AFAIK.
+However, this is still going to suffer from doing a full cpu walk on
+process exit. As I described earlier the current handling can be
+massively depessimized by reimplementing this to take care of all 4
+counters in each iteration, instead of walking everything 4 times.
+This is still going to be slower than not doing the walk at all, but
+it may be fast enough that Gabriel's patchset is no longer
+justifiable.
 
-Thx.
+But then the test box is "only" 256 hw threads, what about bigger boxes?
 
--- 
-Regards/Gruss,
-    Boris.
+Given my previous note about increased use of multithreading in
+userspace, the more concerned you happen to be about such a walk, the
+more you want an actual solution which takes care of multithreaded
+processes.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Additionally one has to assume per-cpu memory will be useful for other
+facilities down the line, making such a walk into an even bigger
+problem.
+
+Thus ultimately *some* tracking of whether given mm was ever active on
+a given cpu is needed, preferably cheaply implemented at least for the
+context switch code. Per what I described in another e-mail, one way
+to do it would be to coalesce it with tlb handling by changing how the
+bitmap tracking is handled -- having 2 adjacent bits denote cpu usage
++ tlb separately. For the common case this should be almost the code
+to set the two. Iteration for tlb shootdowns would be less efficient
+but that's probably tolerable. Maybe there is a better way, I did not
+put much thought into it. I just claim sooner or later this will need
+to get solved. At the same time would be a bummer to add stopgaps
+without even trying.
+
+With the cpu tracking problem solved, check_mm would visit few cpus in
+the benchmark (probably just 1) and it would be faster single-threaded
+than the proposed patch *and* would retain that for processes which
+went multithreaded.
+
+I'm not signing up to handle this though and someone else would have
+to sign off on the cpu tracking thing anyway.
+
+That is to say, I laid out the lay of the land as I see it but I'm not
+doing any work. :)
 
