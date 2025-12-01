@@ -4,116 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9957D116F3
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:07:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4EFDD116F3
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Dec 2025 18:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54B1D6B00B2; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
+	id BCC9B6B00B4; Mon,  1 Dec 2025 13:19:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5224E6B00B3; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
+	id BA3C06B00B5; Mon,  1 Dec 2025 13:19:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 438826B00B4; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
+	id ABA0A6B00B6; Mon,  1 Dec 2025 13:19:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 324F26B00B2
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:07:44 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D51FA85878
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:07:43 +0000 (UTC)
-X-FDA: 84171685206.29.E5DDE88
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EEE3E80028
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:07:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HObGeKYZ;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9B37F6B00B4
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 13:19:04 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1B03C01AC
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:19:01 +0000 (UTC)
+X-FDA: 84171713682.20.F6F1D8D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DE5F6C0010
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 18:18:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fjKhYWLF;
+	spf=pass (imf22.hostedemail.com: domain of audra@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764612462;
+	s=arc-20220608; t=1764613140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=0QyuTy6ek64uIdo9s8SZmB6RliPCLO8eDRQ9s+Wqlok=;
-	b=TKpkdQhqKPj8BZdWTESi19r14ObNfiK5MKsQpRbVXKoK9217G2wKZUF8tMBwLYCZHMb7Ae
-	3KRDFcTWMSVUiNq/Aoc6ma1i+aGxpv7YbwR1DS78RopXQr2SoK3sIfNq8Nigvy2ORU0Axo
-	h439bvzV3nOp/FyP5V4YcH8WYo/8TPs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HObGeKYZ;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764612462; a=rsa-sha256;
+	bh=blQqdapcXTSPJCxD7giptBV8MOZKLLZchAntN5zGTII=;
+	b=eClF1isDa17IRwAnSChVyekvR0GSmAsmk8NLN8z+bf3uT8RVt9OMdKlyW9C0a3o83bUL/8
+	3OUZXMxVdATcY9lV/dyIYoBHguycdLejk4f7yxGy4dQwlgU/FIu/XmcJUtg10LsDV/Lamg
+	D2w7CquL5yLZiDLvl6iCcYpKc7wnF2U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764613140; a=rsa-sha256;
 	cv=none;
-	b=bJhHHNL63e/ex1NYW/d7T0+coOPkUlXktjxbkY8Lb2P29I4P6hVSRmS/ERmmAKMzJexF3s
-	Rv8PryYftkdPu/VobbRwALh665HGvbngN4KescWLh5F1LiWvkYr14NI3J+SHPHIjEMlTkP
-	B+YBjaFkVw0uwiBihn6gb/ESVVWbvFM=
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-78aa49cde3dso44692637b3.1
-        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 10:07:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764612461; x=1765217261; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0QyuTy6ek64uIdo9s8SZmB6RliPCLO8eDRQ9s+Wqlok=;
-        b=HObGeKYZ/4CYuFpmSqC39nR4eecKRWu2dYZZ0UeIpPPPB28xw9kzsyWCwxNM9rhEo6
-         tEYr68zvtuiBDDlNBMhimRbl6J3m9TI7FH+ZoJHnQpYqnR6BhneiOsNlMwsRPwyZKr2x
-         3ty/6BfMN7FYlGgxtu2WtCcxNbcZUohEIrRhPQt25Ry/scEkoEjSxtjnqTl1gBjUlyTb
-         oKfaAambwENU3EfLAOR29XXmtr7oi3Fx1S6uLbqVtlwg3//qiNYWQlsldGelQug1TLZu
-         3XKksUdd3qNnDnPDkPVdxZS6AhlsktVl7WoNnLMJT4JkmrcEOeTLieNl9CG8/n1XRyoE
-         GLKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764612461; x=1765217261;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0QyuTy6ek64uIdo9s8SZmB6RliPCLO8eDRQ9s+Wqlok=;
-        b=hvZVbo7QQ9aRXqHgavWpcpt/DAPnJbY9xQP5wzfg0rkn7hruZjZ3z5nbJ14yjaJ+ox
-         MVhtWPLFY2236kLpOYhUJBP/ktVSWxPDcFNqZrTVz0YATdtAfgfIxCvzRqyz39J5fsRY
-         5O79FYdDb+QwjoVZD1huDE2kcqbpwiMpeIW+z91bR8VDCwmWMgV+gdCNfVErDMY++Mby
-         3LA6fNMzjSGos1fsU4KXu9810ZpXRMk+yK5bdwO2srOH9S7KetVctFX/y8s8SsShQLN/
-         uLlZJlFK4fQDmR96ZkKQfvg2CB6QGN0bAqRb0dh5DX632LvJB6Y5Glnk93BcGybf54HF
-         DURQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhDq6xqf0I+5bsWWDDfBkR3YiG6oiAw7wbnHDWyJUAJGQvP9usvgHpwAxkzpP2k2/T2yN2kXPKDQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywyu8HByWkrIZ0VTBP9WcZH6kFz6LmXVvaM90mKKvX5Klzjz872
-	8Qo0p0V2pdqgt6ck6x+kiTqJ6ZHEHeshDTnhNMmNwvEqvHXRhPX/6PodXT/NPA==
-X-Gm-Gg: ASbGnctlTHLytFHZ2xM8OA57sZAfz/i4g1mgBSHCoseglNJHfTUtumzB5vH2u/DwnjB
-	D2bzAD2VSokiDegrNi+DdyYVauiI634WLwUoFImzgfe9o6h2w3JLqY9BTnf8MXUDaLsP0d+HoTA
-	+/lltt50+OjbZ8q9/0sXEItN6Jzh0y07lI/Nmo70y2CmdjLcoggq2DPfr0d6yeAOGYzkTlF8iok
-	R1clt9h6WT2omNA3TZ1sOS4WkwMltjPZnrmaUSIuRvqlusUzvNnm+UGTPGORggkim8AyQPwUTcW
-	zqyOhJXw8ne15t9KbDBB4QZ/bDRdV5UcPDE6BQHlg9qFr7xDdFjfT6OmLr8k/EKFvx/IdnVlfIG
-	n4atl6FSOndvSYV5mHEJxRr+ALzfypr8PhPt4YhpNqYM1tYRenTviXJ3mMjpmN9Nf7xK4Ea+whH
-	avt1HgJsrTPi33IeXw6y7ikQ==
-X-Google-Smtp-Source: AGHT+IGebBLF0eFSQu1V6/IZFq1lSrNOt+fw835UDZgXCTtz/zrjUyYDOacz1JvbW8Om1eqnkY9hqg==
-X-Received: by 2002:a05:690c:6087:b0:786:5926:edab with SMTP id 00721157ae682-78a8b491ceamr335684337b3.17.1764612460818;
-        Mon, 01 Dec 2025 10:07:40 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:5b::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ad0d5fe7fsm52262427b3.17.2025.12.01.10.07.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 10:07:40 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	SeongJae Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Mike Rapoport <rppt@kernel.org>,
-	linux-doc@vger.kernel.org,
+	b=we6+G9M67k5TIpadUQg4ZL2xGUMo+i46gW5PtxETT/lQT/O2u3f3WGxdIBHnvIYh/47/bm
+	9aF/YI6tMoDz2iUG9HeyF6usuT7dSLN+ik9VG5oHniqLHB3upuoPw3fhxDYe7jgY0Pgbp/
+	Yv+jIdGgLIcFy8t55jxsVifXREjzwuQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fjKhYWLF;
+	spf=pass (imf22.hostedemail.com: domain of audra@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764613139;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=blQqdapcXTSPJCxD7giptBV8MOZKLLZchAntN5zGTII=;
+	b=fjKhYWLFpZtQGEaOc2yjYM2mJhMk2QVkYOH30zPYSvF1xmFmf1mLyPMgyNdQt8wnRBbOlU
+	eqfPRGeJmSsJxT/G5tAmOFjWlnuqov5Y52KxS5d+4IMoJw2VD/5ZtB3c5drSg2gKiLmyK/
+	58DNnD0W8dLx2e86Oh5/lr5e5mKdiz8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-488-EE7U_QUePPmhg0hqYqD6fg-1; Mon,
+ 01 Dec 2025 13:18:55 -0500
+X-MC-Unique: EE7U_QUePPmhg0hqYqD6fg-1
+X-Mimecast-MFC-AGG-ID: EE7U_QUePPmhg0hqYqD6fg_1764613133
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 86C70195608D;
+	Mon,  1 Dec 2025 18:18:53 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.65.13])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E8C241800451;
+	Mon,  1 Dec 2025 18:18:50 +0000 (UTC)
+From: Audra Mitchell <audra@redhat.com>
+To: shuah@kernel.org
+Cc: linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [PATCH v3] mm/mm_init: Introduce a boot parameter for check_pages
-Date: Mon,  1 Dec 2025 10:07:38 -0800
-Message-ID: <20251201180739.2330474-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	mhocko@suse.com,
+	surenb@google.com,
+	rppt@kernel.org,
+	vbabka@suse.cz,
+	Liam.Howlett@oracle.com,
+	lorenzo.stoakes@oracle.com,
+	david@kernel.org,
+	urezki@gmail.com,
+	raquini@redhat.com,
+	akpm@linux-foundation.org
+Subject: [PATCH] lib/test_vmalloc.c: Minor fixes to test_vmalloc.c
+Date: Mon,  1 Dec 2025 13:18:48 -0500
+Message-ID: <20251201181848.1216197-1-audra@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DE5F6C0010
+X-Stat-Signature: wj7byz615rye3j1w6ak9utrf1b9r8adq
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EEE3E80028
-X-Stat-Signature: jqycxcj4ohiwgh9zxdqkwcxi3h3f31h9
-X-HE-Tag: 1764612461-193167
-X-HE-Meta: U2FsdGVkX19qKaH3560ly/nxSJf8pX2fNJece9JCiXS+YPdrf90DfMiMOI3DhXH9V19hdNqT7rzOqFL0WZv1l5yJM+VZg9dqlvrIaeWWYHzh4tJjDbHw8iVeRY03DSl+z6/99epC2ALiY84osNSrwGDCtFD+34XNJG0DFUN4PJ7wr/lc9AUz+RzEzkgoXeGRbpXAlJGfzFAH8UX2jATZwdN3nL3f2Vnj9OVC22TwTQe1hMMkEboqPjMyVHffiiZoelzfmrp9gJijEW/EMiY2Tyd6byhV2X1/OlaRYQSlZ8Kjvb120/11YchWPaoJXt4i7B1/iR+J3V8mjNzeqjwsJQguEOS5/W3+5/S40XXlx4CZQG0aptPACaJXtgYKc8WWhh4nRHbxU3N2my67GKqu0Myu+II49rhbmOdRposjfNuksx1e6ymjHPC54so2jpe9QMUjS7xnwB1vV35lvAUPvp1GiVMJsQOV7yde52SVH1YSlpi+xia1kv1vtI+KCurZ+lzc/+crMd0R/0EUgZalCZdGhrWBJNmhYBNW9Y5XY3VmWnzsvhWZKLi8X41EJ6RAkeSkwQzUcDDJtXoUziJ1/vJgoazMHF1VZWmSrE/TTtADd+kvwJUMdvy6k5v11kP/WbTc/rmnBaWw8CfAuo/JIQxzxRF4OPU4nozn03Z1pUMd1/BAzbrh8l0T1haOKoEnrp8zjObVk2dm0IfA6aWfRTTWneUjBeRWuwxt2QmO/fI2eaI65DeOeze0GaElO1vyYxpc3ruAl70XZqoGOXC6iH6mkO/uPdgwLew8+b66IxvyGYuXYL7XkhcRP32uPCcBv3UwFQ/WvrQrFXdxmvCnVYszNvNLiEJt33qG7DbZgysbtnenCVXi2+GPpB/W/iatbpIcfxKNkmxK5Rb/bFU8CZrBXK4M/GbgcsDuzNXbNM3ahKIl5X8gRdHbuAsT2PoURztCotO7iem9/Zs6mkz
- ibRF3hvT
- GXvE5St69F9BQUDjtN5j9xPCJrj/W6jMeX1f6tFZlac8ZTgK/YcsjSkaO72t3KVQvLPe9UPW0xK92jNJ7SRpalJTLymUi0saPPbsgtXl13805lN6utoVrzPwv9GGquw5etrQROyoBPUxq2zY5VHfax8QJX/ROR5KQjEURjtGhfIVBigY1UOwuT8k0in2G/t2TQ9CLA6dewvCjX3K1ulEjhaMH57q2y+KtTis9Pn1ZbabBI0Mf09jSCU0IZLsUGpi+dtwMxkXoPd4a+rBnOV4a2j/R+tUx/UOH6qHIFrNQBzxgFZzfOMcut4rBA/saeIKcxDLpQXrgSnWVObhMp5sywgs0JkdXWaAv5hAgtYVjbl0Dp4NJZB3DWsLL5MzQVfeGfMKpvsOaYEyWTRv4H/Faq+pTLqdhkgjmqArFs2fFGL9qIGLHJSstV7qhY7ckwdAIsfY1KOoiWQDxExDXJb+Iz6Q+4WggPCXGzNrASZJsF3mq5gAvRB7aRrhDWo/D47fFZAbSjebiVA6Xtxrl2QOcbgJS4Y+BbYcav4+wKYPB73PTinNkmatr/xTQAxqEIgv6UXkV2eTs8ZPFF293JK0DffCxT6wnoUGZ8NC0EC63NtJ8IXZ63iATkK76ug==
+X-HE-Tag: 1764613139-953922
+X-HE-Meta: U2FsdGVkX1/9VeekN0QIWHCGxGYmqK+IN8/LIVua7+ZCXAsS502k24WiueDXOINcGAL52jbQs9LtDjMlK4F95dmqM0UL4tNMSqkF8J+b1AT9TcqFnbgQiQ3F0fsHN133Xvjah6jsNCRELwsyitayEZvUXle/sjsMmgieNnbt/BZiqf+Mh9n+x4jW7X4ynEhbRfEaVmxbDOqzWJy+mU6bC4EUBl0F54quEqxt4oNgmhxz+/g6DVUpkrUGB1Yfn+HlzjO3XIMKsGWo2JpmNwAbvdWrItQiTuAor4tCz5uX+1nxk+VTHDHXhZHoHkNIxD5WtOwu8UuvopgvaZVDwoc/Oi4B7yyyJvZ1GQ6vRm1SHicXVzHweYmzGhq0O2CdFCgrTaik4DLZr0aCHgWg7Zd4ly/2Kx1liRQpU1SRdj+xYeOnMLRc8Qt+5oiau9DaFci4tcno/loCuAM24tBd7d2SPy3y7IbMlTO9Dly1KbIgFXgKdOL8PPUjFjczLXdKXeXbKAKLnp9KS/AuM4+eiNqbESYK98rUIPNRYHdN1w1a2cUEN38VRDEdIRk2FOyfDpdxcZcQemWnYQeI8pDXumwikuN1fGuUTajCvCwiF+y5enRgrK3rJZiYMVcl317drFIWuXCAw2g+3i7xuZwusVCzHmfiHqKIKiDIjwqDYcEUrywEA9kTZqF2d/cOHW98oIV2KpzqvduWdBh64BKHitHFPbGTnqLFp4Y5OAUTvKnHbZuk18zsTJUs7vVazdVnEv2s4H5bYiRa1I441SAy3tj4o6EN6Is08jHzoeM2bDWG5H9Z6/YQjUlp1dF/DJP3CR8dGtfA6p76PKv5FsyZhgui6d1w/7j14R49vpj04zlG2cw1wyZalf8bmlYiXHZC2NgUOV4FK74m+VKrfRhMS4qKtf/PWIL4PuSKRCbEeVbM3Wwprius4wabMjtaXqopePXjPvwxQxH9OdBNhK83Jv7
+ c4Otc+nY
+ lJNb3nfNvQXqDwRpNSwW+5OBt7t0z9sjJLtrQ+qI0mVjyjMUoHsjf++UpWpXlrDZA/f7qD/TacfgAeEDgJIEHLdliHJsw/q+MO7jWr0mTm7DbN1lppj9iwhy7j5L2t1EaaEMxIPwAz+bBAAhDzaiAxITYkstTs5fITYWN/VUKFUhrYNlIw2526ePa4muj57Fw10nh6PpvQ3u0IL5i3f5MKQW3e+NTzjWSlVd5aNU99j1qbCzHdRclcqCHRHqzaX05Nd3PxGBdum5uu+56P9mKyvaY+8jCsz7m559MrJ4JdlpG5HmmBvF2/2Kp42i5AIcP6rdAfb0pfSi4IDX9niJcHDW+USLmmQVp5hC1FZVQU8MeGRxNjI8ZF8kHC0XfKg2p2G8O
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,87 +110,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use-after-free and double-free bugs can be very difficult to track down.
-The kernel is good at tracking these and preventing bad pages from being
-used/created through simple checks gated behind "check_pages_enabled".
+If PAGE_SIZE is larger than 4k and if you have a system with a
+large number of CPUs, this test can require a very large amount
+of memory leading to oom-killer firing. Given the type of allocation,
+the kernel won't have anything to kill, causing the system to
+stall. Add a parameter to the test_vmalloc driver to represent the
+number of times a percpu object will be allocated. Calculate this
+in test_vmalloc.sh to be 90% of available memory or the current
+default of 35000, whichever is smaller.
 
-Currently, the only ways to enable this flag is by building with
-CONFIG_DEBUG_VM, or as a side effect of other checks such as
-init_on_{alloc, free}, page_poisoning, or debug_pagealloc among others.
-These solutions are powerful, but may often be too coarse in balancing
-the performance vs. safety that a user may want, particularly in
-latency-sensitive production environments.
-
-Introduce a new boot parameter "check_pages", which enables page checking
-with no other side effects. It takes kstrbool-able inputs as an argument
-(i.e. 0/1, true/false, on/off, ...). This patch is backwards-compatible;
-setting CONFIG_DEBUG_VM still enables page checking.
-
-Acked-by: SeongJae Park <sj@kernel.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Signed-off-by: Audra Mitchell <audra@redhat.com>
 ---
-v2 --> v3:
-- Dropped the second patch. I may pursue it at another time : -)
-- Variable renaming (dropping leading _) and cleaner check in
-  mem_debugging_and_hardening_init, as suggested by Mike Rapoport
-v1 --> v2:
-- Changed check_pages from a build config into a boot config, as suggested
-  by Vlastimil.
-- Introduced the second patch, which decouples page checking from 
-  init_on_page_alloc and init_on_page_free.
----
- Documentation/admin-guide/kernel-parameters.txt |  8 ++++++++
- mm/mm_init.c                                    | 10 +++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ lib/test_vmalloc.c                         | 11 +++++---
+ tools/testing/selftests/mm/test_vmalloc.sh | 31 +++++++++++++++++++---
+ 2 files changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 6c42061ca20e..acdc7fbdecac 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -669,6 +669,14 @@
- 			nokmem -- Disable kernel memory accounting.
- 			nobpf -- Disable BPF memory accounting.
+diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
+index 2815658ccc37..67e53cd6b619 100644
+--- a/lib/test_vmalloc.c
++++ b/lib/test_vmalloc.c
+@@ -57,6 +57,9 @@ __param(int, run_test_mask, 7,
+ 		/* Add a new test case description here. */
+ );
  
-+	check_pages=	[MM,EARLY] Enable sanity checking of pages after
-+			allocations / before freeing. This adds checks to catch
-+			double-frees, use-after-frees, and other sources of
-+			page corruption by inspecting page internals (flags,
-+			mapcount/refcount, memcg_data, etc.).
-+			Format: { "0" | "1" }
-+			Default: 0 (1 if CONFIG_DEBUG_VM is set)
-+
- 	checkreqprot=	[SELINUX] Set initial checkreqprot flag value.
- 			Format: { "0" | "1" }
- 			See security/selinux/Kconfig help text.
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index c6812b4dbb2e..fc2a6f1e518f 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2525,6 +2525,14 @@ early_param("init_on_free", early_init_on_free);
- 
- DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
- 
-+static bool check_pages_enabled_early __initdata;
-+
-+static int __init early_check_pages(char *buf)
-+{
-+	return kstrtobool(buf, &check_pages_enabled_early);
-+}
-+early_param("check_pages", early_check_pages);
++__param(int, nr_pcpu_objects, 35000,
++	"Number of pcpu objects to allocate for pcpu_alloc_test");
 +
  /*
-  * Enable static keys related to various memory debugging and hardening options.
-  * Some override others, and depend on early params that are evaluated in the
-@@ -2534,7 +2542,7 @@ DEFINE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
- static void __init mem_debugging_and_hardening_init(void)
- {
- 	bool page_poisoning_requested = false;
--	bool want_check_pages = false;
-+	bool want_check_pages = check_pages_enabled_early;
+  * This is for synchronization of setup phase.
+  */
+@@ -292,24 +295,24 @@ pcpu_alloc_test(void)
+ 	size_t size, align;
+ 	int i;
  
- #ifdef CONFIG_PAGE_POISONING
- 	/*
+-	pcpu = vmalloc(sizeof(void __percpu *) * 35000);
++	pcpu = vmalloc(sizeof(void __percpu *) * nr_pcpu_objects);
+ 	if (!pcpu)
+ 		return -1;
+ 
+-	for (i = 0; i < 35000; i++) {
++	for (i = 0; i < nr_pcpu_objects; i++) {
+ 		size = get_random_u32_inclusive(1, PAGE_SIZE / 4);
+ 
+ 		/*
+ 		 * Maximum PAGE_SIZE
+ 		 */
+-		align = 1 << get_random_u32_inclusive(1, 11);
++		align = 1 << get_random_u32_inclusive(1, PAGE_SHIFT - 1);
+ 
+ 		pcpu[i] = __alloc_percpu(size, align);
+ 		if (!pcpu[i])
+ 			rv = -1;
+ 	}
+ 
+-	for (i = 0; i < 35000; i++)
++	for (i = 0; i < nr_pcpu_objects; i++)
+ 		free_percpu(pcpu[i]);
+ 
+ 	vfree(pcpu);
+diff --git a/tools/testing/selftests/mm/test_vmalloc.sh b/tools/testing/selftests/mm/test_vmalloc.sh
+index d39096723fca..b23d705bf570 100755
+--- a/tools/testing/selftests/mm/test_vmalloc.sh
++++ b/tools/testing/selftests/mm/test_vmalloc.sh
+@@ -13,6 +13,9 @@ TEST_NAME="vmalloc"
+ DRIVER="test_${TEST_NAME}"
+ NUM_CPUS=`grep -c ^processor /proc/cpuinfo`
+ 
++# Default number of times we allocate percpu objects:
++NR_PCPU_OBJECTS=35000
++
+ # 1 if fails
+ exitcode=1
+ 
+@@ -27,6 +30,8 @@ PERF_PARAM="sequential_test_order=1 test_repeat_count=3"
+ SMOKE_PARAM="test_loop_count=10000 test_repeat_count=10"
+ STRESS_PARAM="nr_threads=$NUM_CPUS test_repeat_count=20"
+ 
++PCPU_OBJ_PARAM="nr_pcpu_objects=$NR_PCPU_OBJECTS"
++
+ check_test_requirements()
+ {
+ 	uid=$(id -u)
+@@ -47,12 +52,30 @@ check_test_requirements()
+ 	fi
+ }
+ 
++check_memory_requirement()
++{
++	# The pcpu_alloc_test allocates nr_pcpu_objects per cpu. If the
++	# PAGE_SIZE is on the larger side it is easier to set a value
++	# that can cause oom events during testing. Since we are
++	# testing the functionality of vmalloc and not the oom-killer,
++	# calculate what is 90% of available memory and divide it by
++	# the number of online CPUs.
++	pages=$(($(getconf _AVPHYS_PAGES) * 90 / 100 / $NUM_CPUS))
++
++	if (($pages < $NR_PCPU_OBJECTS)); then
++		echo "Updated nr_pcpu_objects to 90% of available memory."
++		echo "nr_pcpu_objects is now set to: $pages."
++		PCPU_OBJ_PARAM="nr_pcpu_objects=$pages"
++	fi
++}
++
+ run_performance_check()
+ {
+ 	echo "Run performance tests to evaluate how fast vmalloc allocation is."
+ 	echo "It runs all test cases on one single CPU with sequential order."
+ 
+-	modprobe $DRIVER $PERF_PARAM > /dev/null 2>&1
++	check_memory_requirement
++	modprobe $DRIVER $PERF_PARAM $PCPU_OBJ_PARAM > /dev/null 2>&1
+ 	echo "Done."
+ 	echo "Check the kernel message buffer to see the summary."
+ }
+@@ -63,7 +86,8 @@ run_stability_check()
+ 	echo "available test cases are run by NUM_CPUS workers simultaneously."
+ 	echo "It will take time, so be patient."
+ 
+-	modprobe $DRIVER $STRESS_PARAM > /dev/null 2>&1
++	check_memory_requirement
++	modprobe $DRIVER $STRESS_PARAM $PCPU_OBJ_PARAM > /dev/null 2>&1
+ 	echo "Done."
+ 	echo "Check the kernel ring buffer to see the summary."
+ }
+@@ -74,7 +98,8 @@ run_smoke_check()
+ 	echo "Please check $0 output how it can be used"
+ 	echo "for deep performance analysis as well as stress testing."
+ 
+-	modprobe $DRIVER $SMOKE_PARAM > /dev/null 2>&1
++	check_memory_requirement
++	modprobe $DRIVER $SMOKE_PARAM $PCPU_OBJ_PARAM > /dev/null 2>&1
+ 	echo "Done."
+ 	echo "Check the kernel ring buffer to see the summary."
+ }
 -- 
-2.47.3
+2.51.0
+
 
