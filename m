@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 573ABD116F5
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 07:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FBD7CFD376
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 08:24:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B380D6B0011; Tue,  2 Dec 2025 02:56:51 -0500 (EST)
+	id A3EA86B000A; Tue,  2 Dec 2025 03:24:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0F4B6B0012; Tue,  2 Dec 2025 02:56:51 -0500 (EST)
+	id 9F0656B000E; Tue,  2 Dec 2025 03:24:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4CA06B0022; Tue,  2 Dec 2025 02:56:51 -0500 (EST)
+	id 9052B6B0010; Tue,  2 Dec 2025 03:24:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 93A706B0011
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 02:56:51 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D7925123A
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 07:56:49 +0000 (UTC)
-X-FDA: 84173774538.30.14D02E8
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B4CE440009
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 07:56:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=q3Zjo40W;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C6386B000A
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 03:24:20 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 281891404B2
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 08:24:20 +0000 (UTC)
+X-FDA: 84173843880.09.BC4391F
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1BECB40003
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 08:24:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764663858; a=rsa-sha256;
+	cv=none;
+	b=21WgD6+SgeX/WsSIAljOVRGEoH0YZY4EAbikdDuTtfOQVH61mhwzLH2zptWgdcnyu0lsuN
+	N6BxtHBvZPB0UACwX4ZvJa3sSG3Qv5LxpzeBFixg1YgLHwqGSOMmybynWB0SmTlXCQCFiH
+	++HoJY1FijShveP3yyCYY5RipuoqmMQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764662207;
+	s=arc-20220608; t=1764663858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vCswqFTvPnxysMNNAE72TpXQ4Qg0y3bXmBxEFvbbCKw=;
-	b=TUkqFN8fFCts2akck3KdQH/lDj1DzR9+a48Gaj2gbCTekZR9I5HMYKXioBQDIezuQQEm6a
-	ao9JvSn9ACgfgYhTjP2RGHbC6uru1+xugMlJWl1/lc5l5/jwRxR0edMZfq+luBYeuxseg6
-	yJdzPKgB/jN4sV/sqkuO5ViEOb/cbVg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=q3Zjo40W;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764662207; a=rsa-sha256;
-	cv=none;
-	b=gSpvzQOOC/EDKeZQO7sIhYfS9I4xhkLFFDtfQgaQftkW+qv+Xd1BV5zZlv6uqMf8mrx4pG
-	t8rfVOaA/pj+bVu6xEdEQBh5Vc1sTJZoTDrh3D3PpdbEA2UMtU7HGE2//EM1CuauucbvaJ
-	FwBuDFsWexrM/rxliCq7dKYZ0H+DS7o=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1764662202; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=vCswqFTvPnxysMNNAE72TpXQ4Qg0y3bXmBxEFvbbCKw=;
-	b=q3Zjo40WJKQkozRy+DImomLqrAHYtw/4psX7JfTusceOlazbjsrrKczSE+PRMWQM99KhA77xxiLudDb4ZpgAKdQOAnhgAg2PEa99+CY2yzRVnHt5xVHgOxqACrwXY1wP8Kqj1kADSC4Mz6gwm2LRg8f+0CbvVfmuLfI2vY/4Hss=
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WtveNUi_1764662201 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 02 Dec 2025 15:56:41 +0800
-Message-ID: <c91f8c76-ca5a-4e8c-84a4-1b91b150e202@linux.alibaba.com>
-Date: Tue, 2 Dec 2025 15:56:40 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=LpeacopDBhPPe5TFvooOpcpYobn5V0UKqujTx++vvdQ=;
+	b=HV+obVFjfY6JHhui9W6tjJXBVm+YdfY7GgJz7qhqOPKahvAOmGrWQw6wy78+DavfUxqa/i
+	RjzOgdMJNKPHwC07DVXX6H/DOr2Vqpdrqm9k64All+Xcd0CIoRYrE8oIjPscynntQK42Zm
+	RlvCqBT0b/D5I3Gx+CwFM6m0hLP6fzk=
+X-UUID: 46ca03b8cf5811f0a38c85956e01ac42-20251202
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:5b0a11d2-6636-4121-957c-d19857d13a91,IP:10,U
+	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:30
+X-CID-INFO: VERSION:1.3.6,REQID:5b0a11d2-6636-4121-957c-d19857d13a91,IP:10,URL
+	:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:30
+X-CID-META: VersionHash:a9d874c,CLOUDID:ec9fa82b32e5a8364594f7b54fc66544,BulkI
+	D:251202162224G2J2RGFC,BulkQuantity:1,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,Q
+	S:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,
+	ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 46ca03b8cf5811f0a38c85956e01ac42-20251202
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1168385708; Tue, 02 Dec 2025 16:24:10 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/damon/core: fix memory leak of repeat mode damon_call_control objects
+Date: Tue,  2 Dec 2025 16:23:40 +0800
+Message-ID: <20251202082340.34178-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 1/2] mm/khugepaged: map dirty/writeback pages failures
- to EAGAIN
-To: Shivank Garg <shivankg@amd.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- Branden Moore <Branden.Moore@amd.com>
-References: <20251201185604.210634-6-shivankg@amd.com>
- <20251201185604.210634-8-shivankg@amd.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251201185604.210634-8-shivankg@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B4CE440009
-X-Stat-Signature: 6eouctdhfbhf61b1c4hd8w6cx6gocm5o
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1BECB40003
+X-Stat-Signature: 1m9fidx3cjindhik7me88pyk8iugt4c4
 X-Rspam-User: 
-X-HE-Tag: 1764662206-27843
-X-HE-Meta: U2FsdGVkX18eXK8grh6QZNgyTaTaekFa6pDNot1VvVIaYBmFNPgX0mBV6eB8fRB5l/1yjcCKZYTm2CCJqRtdeS/SI0vmoiBZVx+PjfuRTbsWQcA+NpCI0CFl0cZ1QvxKdW0NIMFA6cpdMNJr/nDkY4QQyo3p4oOHTjAFb19b9QQyApd+7AZ1FJmgtuol+dPC6e6oEm0ayBNq5iTBSU4iDF7F+qDhNUDdL1pHpdxfr5FgguPp625sJ/CBaHiPlDiBIpnHKYfN2IxlwE7WDTVy0orGjc1ArWn1lHRsPQijKKfXIzb+ckmvvtQMpIm7ncaXOZ+iu0XFBAKlhxsYzs38G48n1YWGL2Q4vywscSqNB4xyXVLFoXt/bWgB8I4JyHu4uMzweBP/VXwmSDIH2WSMfHGE1busQXqgIK5H0pXo+AabYI7u/5PClzPtQT5RXuQWiE3eOYRfsuC93g6zpuA3+ZYtjkZMsvt+odu44WBCgBfLoiIqdVNfH9IDRrTVYiFw4CteqoGKl6I4ASi/ZMVWvVKbkxOXEOQSCFffpfdaGQ0DBo0qgVk3c6CzC97CX0jZZZg1Y4+ZTPBa0rXhZFXTryRhkP8kEVpbkZyQ/xeaCx55dqfewy7D8rTx1J0qLsLquMP5vvP+Gtz+z8Ai11jAKeJZtYjkMCbfDFUcrXoBrPW8SfGTeGBL6A7t9Cqm4T2LZJlbogWEPuoHwvVjYowVoR3hTpsbK9Rh0enA7qD8fLIDRVmaZbk1Q0ITb3K2N5gTXBx/4Ab9aiAPLojtAC9wamXPOrKkmlchWkHpDAy2ERtqyvAnz3CYs307fkahe+yuc5AFoX2+7qRm/CB+FgT7/hmfMqXQSJl3PgwplSoi7iHByRHR9zolGkug6UH+m3hwe6Iq8b7L2X3iqjf5ijflGsfyr7p6Rs4W4qORMsnjl/u5twV5VQPivvEQ19vT+3U/0UJNAPN+hV82pXEqIlK
- wF09weEA
- 3IEip81p2pKwV7WBA58lWd9fCGsWhnLNg+2axe/kJqZdS6Oc9z1Qvz/wxJl/f+vNlrw9KQnDlfShUYRRuFBFF1BG7K/be5CRcUKcKl+FCqOth9uRIDvFCSIXnMvYyolfgWGxc7sMCKieILFaRg6lbRhWx1EfxrBhVhjXXwz0MWurPlRIXP8SY4AVyI/7ihAbJeHbglBMAfjHps1OrKtkvc5ROMzni+uw4jj+qrxVS8UeX5pN71QwZfTPpjZycPAEvJCqKVV7eFZ4WY45Z3HmaETttmek3BYfHBX49JPCST04Tu/5S8qEjk1be4dg76xMrQa2iRRo8eib+uYAWVDNqCKZY2ib8A9L3p/kpFKBUheIJCQ0+WPdB7ptdqwt06pi2nJoyMiULXajas75Vt5P/43cXww==
+X-HE-Tag: 1764663856-75968
+X-HE-Meta: U2FsdGVkX19J/gRvVrYYKKhTSYLsAk96HnOVCTSvYJjVc+flkulDwzD5hkcgdTCP/C1eAGVM65TM9CpKYwQk6Tj1y7TDq4CfOIdqabU11+nXDHkE1WRF9Ne8kixpHE7NGeeXVl++axFb09xv1dK9R7lp3gOgImD4ynDxPBOqmykTo5v0R9r/6bM3+//XqIlLVdcutJirDUm564+xnRKM8KTohHOLfEXJGYzKsg4muonTMN/ZimDGsxCsIhbxxM9Vm7V0hxYzHvPSFzSHBLzSGNpyZq0PWnqL42ZXs3wS837jmcL5DPlk/rv07Tryex+keH1Ad6lC7+Ptn5vrTL0Ez9Ao8lQc5lO87yofbpMJoMQaUyJo+uWpYQWn08lyxEgQUwu+Z7CZxqvcCE/0IoGGN4wuO0kTseqitP1R5FTld5aM3ut/Qh+R66v4Xflld+WLvxu8bZgRUXiV6FNnvG17RoPKtK6XbAeStU+rZbwGDROv0rZWMenSJvVGLCbjlQL5pmS9x0e+9dMW0EBzziuRLju+aeWhUJtMVPrbNQmvlR6/UayNMcKXMYg34I4vqUd3grNZnwlz4tYGcpWYR72oF09IVzr/L6OlCQZoP+smuCPt5v1lXBypF8kRxjbEkP2DyXKABpljMkLGZ0TFtAr7vU+JGP0uby2C6AOeq05PXCowL37eFYw5YuHzqB/+Mxerl7uPMit1/Yo2j6/AEkkk9RAXO+UyS8IPOaXySHvoh6Khp/huF4ZhYZCbwRiVbnp1nuFUHyVcZhPGRYCpPhYYI70kD6X1DGW1VGZ0baXaUwJ7PGLN56diDWQ7xpaQa+3n1lJwXxEhm5NY7GXIkhGBtUGHDjAtPYum7GIdQe5wF1n3Akw06ZS3rJE++i5xEg1rZ/XAAB8WL1Blvw9Pbe+O3mVyXtJ7BQ9mBDoCTbcZULBiZyMTcwCMCkV1+cdKqjefnDaDArplcHUvylemRUZ
+ HI/RIHan
+ 96OiFWfKoxh2AF6plfOsFinbOYj8x5LpMPSOImRNs1nIxk+8bbyFFcdfncQGszjbAVVE1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,28 +105,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+A memory leak exists in the handling of repeat mode damon_call_control
+objects by kdamond_call().  While damon_call() correctly allows multiple
+repeat mode objects (with ->repeat set to true) to be added to the
+per-context list, kdamond_call() incorrectly processes them.
 
+The function moves all repeat mode objects from the context's list to a
+temporary list (repeat_controls).  However, it only moves the first
+object back to the context's list for future calls, leaving the
+remaining objects on the temporary list where they are abandoned and
+leaked.
 
-On 2025/12/2 02:56, Shivank Garg wrote:
-> When collapse_file encounters dirty or writeback pages in file-backed
-> mappings, it currently returns SCAN_FAIL which maps to -EINVAL. This is
-> misleading as EINVAL suggests invalid arguments, whereas dirty/writeback
-> pages represent transient conditions that may resolve on retry.
-> 
-> Introduce SCAN_PAGE_DIRTY_OR_WRITEBACK to cover both dirty and writeback
-> states, mapping it to -EAGAIN. For MADV_COLLAPSE, this provides userspace
-> with a clear signal that retry may succeed after writeback completes.
-> For khugepaged, this is harmless as it will naturally revisit the range
-> during periodic scans after async writeback completes.
-> 
-> Reported-by: Branden Moore <Branden.Moore@amd.com>
-> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
-> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
+This patch fixes the leak by ensuring all repeat mode objects are
+properly re-added to the context's list.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Fixes: 43df7676e550 ("mm/damon/core: introduce repeat mode damon_call()")
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+Cc: <stable@vger.kernel.org> # 6.17.x
+---
+ mm/damon/core.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 109b050c795a..66b5bae44f22 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2526,13 +2526,19 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+ 			list_add(&control->list, &repeat_controls);
+ 		}
+ 	}
+-	control = list_first_entry_or_null(&repeat_controls,
+-			struct damon_call_control, list);
+-	if (!control || cancel)
+-		return;
+-	mutex_lock(&ctx->call_controls_lock);
+-	list_add_tail(&control->list, &ctx->call_controls);
+-	mutex_unlock(&ctx->call_controls_lock);
++	while (true) {
++		control = list_first_entry_or_null(&repeat_controls,
++				struct damon_call_control, list);
++		if (!control)
++			break;
++		/* Unlink from the repeate_controls list. */
++		list_del(&control->list);
++		if (cancel)
++			continue;
++		mutex_lock(&ctx->call_controls_lock);
++		list_add(&control->list, &ctx->call_controls);
++		mutex_unlock(&ctx->call_controls_lock);
++	}
+ }
+ 
+ /* Returns negative error code if it's not activated but should return */
+
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+-- 
+2.52.0
+
 
