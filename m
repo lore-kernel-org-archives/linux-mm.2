@@ -4,239 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DFF5D12661
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 18:04:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D81F2D1171E
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 18:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54F206B0006; Tue,  2 Dec 2025 13:04:05 -0500 (EST)
+	id 2F7186B0027; Tue,  2 Dec 2025 13:19:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 526BE6B0027; Tue,  2 Dec 2025 13:04:05 -0500 (EST)
+	id 2CF156B0028; Tue,  2 Dec 2025 13:19:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EE416B0029; Tue,  2 Dec 2025 13:04:05 -0500 (EST)
+	id 20B9A6B0029; Tue,  2 Dec 2025 13:19:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2748B6B0006
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 13:04:05 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A33B51A02DD
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 18:04:02 +0000 (UTC)
-X-FDA: 84175304724.24.D8DC687
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8C8B980005
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 18:03:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="c//lsN60";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf30.hostedemail.com: domain of andrzej.hajda@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=andrzej.hajda@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764698639;
+	by kanga.kvack.org (Postfix) with ESMTP id 117156B0027
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 13:19:14 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C47B41A01BB
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 18:19:13 +0000 (UTC)
+X-FDA: 84175342986.20.D0E2197
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 063EB20012
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 18:19:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OHm4J6ut;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764699552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cOFddPNgq0eK5i+ZXwJKukphBBCTUEexlwKkAmZXUu4=;
-	b=mk9CfIUg6HP63EX6/v3sgSB2AQY7NKnbo5cuLFj21kIroPCYOM3b1VZNpnSlgpj4UNGzGY
-	4dsQqYIIxye/537Uu+SJMk8GJWXDRymfc0LfXVvghuVrZgNryTTC2rbH25G4PnMzafdOVH
-	Msjf+xtJzRyP7jCjcnkTMQtJ3o/VrSk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764698639; a=rsa-sha256;
-	cv=fail;
-	b=hKC/AZu0qHpQVoH2twZ49E1XtwCuS/4C1aJsdQ5SazavGIUuulhPO8PrR204k+W7gk9kiU
-	riecIczeahoHX0UhvVECCBbiiagZTi0MJjDz5XzfBGCoVeLLncU6oOu4TeFF3tHu0UQctn
-	juXT88QZyvJa0UmHXhuGragklAyZy84=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="c//lsN60";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf30.hostedemail.com: domain of andrzej.hajda@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=andrzej.hajda@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764698639; x=1796234639;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=UAqZc2hfo7sBF51knd+4+OTEYXbRxxIAv5ZR+uGZ2fk=;
-  b=c//lsN605FouSTKqgNgXYFFjs6arHf9jnPcm62Z2nJT3Z7D64VYClHMC
-   u3GdACb49sps77+eJVu4oJMGaI5Ty888dqOW8LoggK0CBVQWRPCerVMyl
-   /f+PHC8z/ukQRFgonIOWWT1kLBFfTYHID5vs73AdnAjXjqicZr9RxoEs2
-   Xoejy/WumkWnFX/UZmDAhlM4dbDwgldMGYy1RE8leUPh1rc7+vSeYs5IY
-   Z+I/WTc2NMdjteMmPO2Xg+g7Hrt1mWfi0gfK4gztbY0XOmw88qWqx7NTl
-   r2M4evW71JuHvwHYLuckVIGI1Sk5mHacZharHabYewK8s/OQx8I9b1V+b
-   A==;
-X-CSE-ConnectionGUID: nzwbr28lTMudNsvltXTl2Q==
-X-CSE-MsgGUID: KpubkOSiSWu+yX+T6BgE1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66751617"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="66751617"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 10:03:56 -0800
-X-CSE-ConnectionGUID: uH/asKCPT2eVt+d5I9rXkw==
-X-CSE-MsgGUID: 1HDuDNv1SPWZza4dFXuq6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="198625649"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 10:03:55 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 10:03:54 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 10:03:54 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.48) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 10:03:54 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OGNPL67GOofW/iGmP9585nPgNesWXi9k5CnNsf+1wkclTM8ueek68dA7RfdlaUdklVR1NOxPsXJ5DYU8HFInV/xS62UOeoFfXIxs00rQzGXMfMeY8XvnTrm7j0YAiZlTQATg8zuVfpTeCziBVA769VM+TqCoThsl5/eg7plDnqGYk/grc4bm2ltC1ni1pIKRka+OV/RIe4IFAz82gcBRTReBt1Q6bTC0ZY8yuqOtpFajigCr5eBO2zFcHyTVWrNjbJ2BMPWStdKO8rEg/MtxBmaqmMYfIj8dTPdTCYHFMk/B/tQjyPPrwxbiczgqAX3LbZeGLhU79Yu6z+ZTTQBKHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cOFddPNgq0eK5i+ZXwJKukphBBCTUEexlwKkAmZXUu4=;
- b=tH31pJeaWwmT/8NAMQDYDFE5RrI5DJ/9QVxiIc2QPgLRw9PDzArii2fiBz0Xo9Y/kQFY6fd0L67H1pCfLttEfzR9zrY+uyxkV6e+W3H1vHm8mbhMcaOMHCJGhHksjCthSwCaxZaaB02Kr09936iagWT1w32jm7YD6MK6oHqjTYXcdvvpMRVLZ3iG1QV/au3G9ccNSZQTiGVPyLpttw8dVsq/5V7dJ5s0V1sdqKQ56TcjB0thgMG1Psdsrdrl/PjQr1LRnTc039HZo1376pVJYM8w8qw/H9TJJtdHt6gWtPBABIbFRnoXj5zbZKJfbKgtKXbHAUok2TdrIwXpL+2NLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839) by SN7PR11MB8066.namprd11.prod.outlook.com
- (2603:10b6:806:2df::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 18:03:47 +0000
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::e17c:d0f4:db8b:d7e6]) by SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::e17c:d0f4:db8b:d7e6%3]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 18:03:47 +0000
-Message-ID: <94c02fb2-3407-4efc-a80f-305140e64b94@intel.com>
-Date: Tue, 2 Dec 2025 19:03:37 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] drivers/core: simplify variadic args handling
-To: Petr Mladek <pmladek@suse.com>
-CC: Steven Rostedt <rostedt@goodmis.org>, John Ogness
-	<john.ogness@linutronix.de>, Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Brendan
- Jackman" <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
-	<ziy@nvidia.com>, Christoph Lameter <cl@gentwo.org>, David Rientjes
-	<rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo
-	<harry.yoo@oracle.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Rasmus Villemoes
-	<linux@rasmusvillemoes.dk>
-References: <20251201-va_format_call-v2-0-2906f3093b60@intel.com>
- <20251201-va_format_call-v2-3-2906f3093b60@intel.com>
- <aS8K5DnumUA6XUs9@pathway.suse.cz>
-Content-Language: en-GB
-From: "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <aS8K5DnumUA6XUs9@pathway.suse.cz>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VE1PR03CA0015.eurprd03.prod.outlook.com
- (2603:10a6:802:a0::27) To SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839)
+	bh=wMrddpcTDtwocZJ9fUSQyABVSnOmZLLLX1hidIEy4Ew=;
+	b=Wgt3vAb4NCBy8EEDG/oqdsjkOnENH7EKATf0PV/RCe9aJZ8HiWuCTfitK4C+xWN6YVpNar
+	shW+GTP9VkBOoCiVfyGKCk/i5jxhaqsUTA1huXJfNj2doMZNn3EF3NkHg77daPRbUO8+9U
+	eUfxleF/AWVS+ZeUiLv3PUvty32+x34=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764699552; a=rsa-sha256;
+	cv=none;
+	b=gvlS+4y8cRsKSmvhYHRsTIpcRTLZE63sHPVfKVq27OFxGngpNhWPNorSdkuMwNssW+yZbo
+	1iEDFhVr2CT8hrWjxwbRiNbKhr5kC1yRr4q/G/TIhh36hvsBRP9MF8746R/4sWSpHOm92x
+	Ld+St3LMk/tA5Al6MJY77svZVjfbdJE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OHm4J6ut;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-42e2e628f8aso1297159f8f.1
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 10:19:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764699550; x=1765304350; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wMrddpcTDtwocZJ9fUSQyABVSnOmZLLLX1hidIEy4Ew=;
+        b=OHm4J6utzkp8joMC5BGlBk4qu2Yu5+j6Aoyio5De6ZSZSVu5+bMfmM8jHWNLUIsDjj
+         GwnY63MtepfqO9i2aCoY+eR97XikmtBn9hYXSmJS1TDtYL4hwICKVkmW5XNBCPzcKHc2
+         vrSayP0K5/j9xyNbi9es0szFr/Ia4dSOEca4JubAbRJmv0B41R0cxhQEzM7of8M+yqzR
+         cf/9DzljIUWRhcxo7Uon/n0m3ppejHWc7lmkMPv6qo6dRtzWYpy0mOqKlBEo2CCSw1sf
+         QnU5wY8yqNFHwmmfdPzHuPfCULjx9EkeNOxL6kzI6qP30YxtkuibUwM9ZRkxQ2gUYoFe
+         eA8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764699550; x=1765304350;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wMrddpcTDtwocZJ9fUSQyABVSnOmZLLLX1hidIEy4Ew=;
+        b=PVsg/0+Om81YyUMjlw0Mh6Duw0bcd5VZZM5oSdQCu8v3YkaPpPoBlbN4an3640TEh/
+         1JaP87Ge29KKMV2YNDJJ8drhDDPJUYm5GAxnen3ImGHl/8srNKO6/jUfwH1Y9lHiwKSS
+         3c+q//sWlgyEzGh4R73ByWHMw/5w+BHyiLb2fJOOjX+OHq9NWUS6IbwTsds+4UqeZUsO
+         8QCjuvrtcyy7pqNFsQsDj47RRcYTLOFyC56PSO3jYaPIACHyxSBwnEeEhroCMKWqb6BX
+         wkJ6dRrr43q19JjDByi0AfqHtbnE4jpqIZiFUe/fJmWZm3rq09A7jhhSug7U+gydfPuS
+         lcwg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhMuuRJy6ajmDQCsMlxta5RwENPRka/q1IIqcD5pzxEAZOgHZLaq9vVDnrQfUgQDHSqJ7V/6+I+A==@kvack.org
+X-Gm-Message-State: AOJu0YwAP/3ytPXviYazwtXEWWfDAyCKD5nUC91y5UwxyfpzsnELawKc
+	nIwhDWsWRTfUCJghykyny/ckFMtBEU1XmxvKSXKfrlt7xQTde1cnAUjL510AyWXzN3mgkbWpGUb
+	5C8PJk1OxqRJ8BApspaqnuYesJ+fpKAg=
+X-Gm-Gg: ASbGncsWP9JXABa/DLvR+q5B7F0HCuWKrHgTIbEF0VzDOR900l4I1b3eaXXGi5vlyaP
+	7E+bXyg21fzbzBl23yF1UTT0RBs52YgUf6TMQNKAqnZOXiPkjXPLYiARAtKkU6GhCNIwon49KVW
+	Ajv9FB7vzZZDWez24pabMAMLgculYIuNY+QgRf/6b7jEtMwib7e2edOdfXyOxcqIQs5ItTgyfjc
+	v13sKIP9HMlNmnndGwV0SU1mKbhJXR+ul8L7qE7wjJXnsop0b7OdBj69xskATvDiCdndf4=
+X-Google-Smtp-Source: AGHT+IGB5bKNTzV+KOUNQ109gTZSRx849UVsYDFxuQ5iaQGOrsSfFQqrKQeouttpoHwnm0ITuqT0GGlO+rN6YhzNAqY=
+X-Received: by 2002:a05:6000:1886:b0:42b:2dfd:534f with SMTP id
+ ffacd0b85a97d-42e0f344720mr31125125f8f.34.1764699550287; Tue, 02 Dec 2025
+ 10:19:10 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PPF7DCFBC32A:EE_|SN7PR11MB8066:EE_
-X-MS-Office365-Filtering-Correlation-Id: 77792886-91e0-410e-fd7c-08de31cd23fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?QjJxbkxxenRMak9Ddi82TTY1YTlQRUFBRmRsWUFUK1NxS3JiaGNtS00xU2lq?=
- =?utf-8?B?QkpQR0cxM016UzFuL1lSZzFxNUJEQVZBaVdXZ1BmMHE5Q0ROa1pWVVBPOHlT?=
- =?utf-8?B?NWdhYzlUVXRiV3p6ZWwvRDF5NG9ZWGZIT2F5VWtzbmE0NDQxRTlwa2dzYkZE?=
- =?utf-8?B?S1pXcmFLSkxaaU4yTzZENUlIQUVFaVZ4RHF4R3QycnQyYkNSbTczMFVBbEhq?=
- =?utf-8?B?UDdERmhOL01FbXdKalk2UkNsNHlCNnFrTlBnWWtiek1NQ202Tm9MeW00Q2Ru?=
- =?utf-8?B?SXpMOTVEY2RxdFNLSi9RcXp3OXBaMnhIaVBQQWpuTC9nSGtuZzFXeWdlbXhm?=
- =?utf-8?B?R0RmZzBTd2YxbS9qNzJZaC83d2VsM0o5NVU0dWcxdC8vb3JhQThJMDdLS04x?=
- =?utf-8?B?MTlQQXJxV0M5ZGNrQ1hZdVdPeFNMeW5LMXIwQzRtOFMzMXdGNVJuTVE2NEpo?=
- =?utf-8?B?STJaVUpMeEt0eXY1TzE3dUM3MWlWY0kxalc5Ym4xdGlPSktKZUlaQllPay9i?=
- =?utf-8?B?VXFMWmZhMml3QThFSzhaL0UxNWoxeTl5V01mQ00vcWdaT3M4T2JISG1LRlhI?=
- =?utf-8?B?UC90eTZjWlBTTU9YSEpuSnhVK0lXOCtjU2J5V2pLc3Z6cldSVlZyUEo5RDVl?=
- =?utf-8?B?U1B2ZU54NG5kdVdicENCWkJaSFQzL3hEVnJMSEJjTzF4WFNqWkFzTGFOY1c4?=
- =?utf-8?B?dEgxZWRlcExvajlUeUpjcjlKQ3NqYnRUT0FmbXlIWFJMM296OHN4NDhqU1Vo?=
- =?utf-8?B?cVp2azVQZUpQR0VzVVpkTC9QTGV4TUFsMXQ4Y0toc2F1ekdSR1BDODA3YkxT?=
- =?utf-8?B?anBVSTZjTmt5SjlKdE9OVlpuTDMrQkJmeGI0aUtvWjh3TkwxRXVpMXFUYk9u?=
- =?utf-8?B?aDhpMk90OHJNdHdubzY1T3VMTHhkVnpvTTdrN1dEZzFzbjhjenZzeC9QRFVP?=
- =?utf-8?B?UmlORUVydDNDUHlHK3JZS2d4THYrZ1ZmZ0x4c0dOTVRkSGNjdXJsSnZyNFJw?=
- =?utf-8?B?UkhaZzNrNnhyTDNLOXl0N3pSNVNrendCYU56V0hlWldaT2hsODRjODNtSGFC?=
- =?utf-8?B?Kzk3SVhXRG9XdzhuYXJWT2I5TUxIU3ZDL2xVVzAxZHZhTEJUZDdMSlhZVTZl?=
- =?utf-8?B?dG0wTGp0aHRqQ0hFZHI0YUlURWxCRXV3SVhwdWJ5WkVKaHRUYldqSm5XUUo4?=
- =?utf-8?B?S3ZhYlQrQ2FHUTQ0KzRaNlZxc1RJSWhuOHgwaE5QdllZMkFhbktVV1h6eEhz?=
- =?utf-8?B?cFVZLzl2Qkt2eW9kSkFWOGtPSVJZbVpsaFRackMrdlE2cmc1MjN4TUJJZkE1?=
- =?utf-8?B?UmpYTHpIWXRFMmpIYzJTMWxtNGtvYng0Rm1IM3JRWDhaczBpcm9sZ0FHeHR5?=
- =?utf-8?B?cVNqTEJ6aXBOYndCRWxvQVZiekRuNG5ybWtvTjhHRkNLdXpmRGVkZVpQdUZI?=
- =?utf-8?B?Q3dlWXQzS01PTkFRR1ZLc0RIQlRtNDF5UjQ2enRoWno0bENsMW5uamtaVUNq?=
- =?utf-8?B?OUV2Zi9UT0Z2N3JGRFlZRjdTMTRQclNxck1PMlFLWUY0RVQrdTdnS3MvZ3FN?=
- =?utf-8?B?dFdZdW1hRDdsTTM1TTZHY2RKTnFDWXlWMVBrMXAvc054UEdVa0U3RGxCQS9B?=
- =?utf-8?B?VlF0VDlHOExkU3E5TS9mZUI1L0JXNEsrc2h0VkxnMjYyL1M2dXB2Qk96dmhP?=
- =?utf-8?B?UjN3WVRVQ0VxQnF0WkV4dmZzM0xKblRKejIvOGJHVVY4MzZob1VMS3BGb25o?=
- =?utf-8?B?M2dRbmFwNTFENHd3M2FIOUVwSTdXcTFhZ1B4S0hVRHVJdkJURVFPUTVUVmxD?=
- =?utf-8?B?ZEk0bHZ3UXczWWMrRzhvVDQzWEdldUdRUVJVcVV6eUUvNDJxZzByajVqcitM?=
- =?utf-8?B?Ymp0aTFRSEt4RS9oRmMxcC9WM1F6OExNcjBOQlVpOWJYRXdKZkJDbkZtdVk0?=
- =?utf-8?B?U244WEJsWUFoYUgyNGVtZTlTQWViVlBGR3Fxb291dEZ0bm44M3REdEdZSmV5?=
- =?utf-8?B?eG1iYkNETEl3PT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ5PPF7DCFBC32A.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TEVob3pCZW9pVDFNb0NpL1NuZjZDS0xCUHUwVDFYb1M5MHhkWm9rdmhONUpt?=
- =?utf-8?B?a3RweEVZc1VGeEorMW0yb0xzWUhGdnp1ZHpRNzBKdjE0NC9wMHhLdnlYRFNl?=
- =?utf-8?B?c20wK3ViM21rdnNZa0ZaV0xaYnJNbGI5NkthZ2hYTm5KTEk3dUw5aGVFZmZQ?=
- =?utf-8?B?VUR3bDkxWVpOZGlRbEJ1UjU3V0FHdGFQYzA3YmFWY0hBSnVKTlBYYkQwU2ha?=
- =?utf-8?B?NXE4bEFBU014UFEwb2NKYm5QL1FPZU5xM1FDTDBkQnZXeDROMzVrM3dXdlFy?=
- =?utf-8?B?UVoxSldmOW5VbngwYzlqQXR5cEFJQTMzRzZVWUFzdHJqdVMrcHIxWEsrY3Zz?=
- =?utf-8?B?b3RWblZHN2lRdzAxMDFmRWVWNTQ1TWVlV21jc2lhRVVKSGluQWF3ZnhvRng3?=
- =?utf-8?B?ZXBLRVhQWU1qMjVRZkZCaGdaTlBwK1hIM1Y1ZGd3aVMxS0ZxTDZYZDFSdGdG?=
- =?utf-8?B?M0VEWW5BelRmaXI4aTRnK20wSlZhakp3ajRydCtzbDdEL09CZ3ViS241RHdp?=
- =?utf-8?B?emlUd043WFFXUSsxL3R1MWh1NU43VWZ1NGJuSkpqdnNoakp3bmRBdTFUVzVx?=
- =?utf-8?B?S1RISzZUbU00Rks4TUZDelhLazdxS3RzMTdsanE3Y1l5QXVMQWFEK2VkalpJ?=
- =?utf-8?B?eVQrVEh2akxCaGhTY3pqbVNsZEpSdGRFZ3VZV1BFa2orSURQY0Rva0lGZkl3?=
- =?utf-8?B?LzdrSEFOTTBzbVArSHB3SmkvVGFnZHY5b3RpYXgvZDZyVVpqY01UYURRcVhK?=
- =?utf-8?B?RnpJN1p5c1ROK0NxcTd3dEE4enJjN0pGcVM3OTc1UGh1TXI0dFhRcFN5K3Rk?=
- =?utf-8?B?aFNYamE2OGUrS0JvOHZsYW9Qamx4N3Q2YStIVFVlb1VvZHVUUkhKQjViZ3Bj?=
- =?utf-8?B?UDdKeVJvd3VmaWNBbkUvRENtT0t5KzRqTGFjeE5BU3VNVGFZUW1zQ3dqc1Nj?=
- =?utf-8?B?OHJUNWl3a2hxc3ZYUmJacVRzQStsYzI5cEQ3MlJmaXdNRVhYOWFKdGZlYXJv?=
- =?utf-8?B?Uy9qZjBWUVhWdGYwdVZ5T3ljTEV5ZTYyQXlDTG1XYlpWTFBDVFNKaExhRk5y?=
- =?utf-8?B?aGJwcXlaTG1KZnBTdUd3TXlVdklYL240WjQ5YjUvRnZQRmFCNTRzTS96UTRj?=
- =?utf-8?B?d2RCNzZ4aGlDa0t5NGE2ZHpuNWRldFVRR1RBQm5PZmJpVzVpaU56SWVjLzlG?=
- =?utf-8?B?bVJwWFpvZThqaHd0NmZUNVZTaG15VHJRMFNPbi9BYnd2VkJLZTVMeFBKczRL?=
- =?utf-8?B?bFN1Q055d1NBSFFoUjhNaWVraXVVaVpnckdSVk9TTVZqZXNUcEowVy8vbDZl?=
- =?utf-8?B?aExSRnFteTRnNXhkZTdGQ2VjYitKSXFyV2lzQ1pMQUtWQ2lsdDFlRmJxRmxa?=
- =?utf-8?B?S1hLUm9rZ0dZV0xKeHFYZ1VXK2M1cVl3VGtuSWp4QWZJSDFIRk9CbUdaWTRE?=
- =?utf-8?B?TGdRYTFWNnJVYkpwVmJlUFVEbTFxVVdiUUt4dmsvZ1ZoUTZkWEJoQ0JDMTdT?=
- =?utf-8?B?QlZOc0VtNWdlTjczV2YvYzlhQWhiSW55eStBL2FzRWh1RHdLY2lGOW1lOXBJ?=
- =?utf-8?B?Z3hrMXJaYXVVcExzeDhXNnlYZUc2R2FSWm5oK3JEVUtxOVFvd1I5RDIvcUVo?=
- =?utf-8?B?Z25xQkZRNDE4VW9kUjQwcC94SFNXREVyTy90RkZTL3FTQWFMWVpMV2xmdk9P?=
- =?utf-8?B?MjlWbGZVZTRmRXdLV2xka2JrY1RJWU4wcTA0a0EvMXRFWTBZelRjRE43UnR1?=
- =?utf-8?B?a3U4ZldEOHFkblhNb2svSEFWeDM2TEpjMWJiTnRQcmxVUStJbjhEOGRzeFBo?=
- =?utf-8?B?cGJOVjhvTkEzcjBJSHI2Zm8xUHJTUmZsU2NQbXp2R0JiVC81YnJTakNxVmNp?=
- =?utf-8?B?UXhvcjNPMVRQeUdqVUVnd0RiRUxGNmhIb2EyWVZLMVRzWkM0OG9ENmJhMkdP?=
- =?utf-8?B?emhTT3JNcFdBODdGaU1rOEROS2xtOVQxMHd4WW50VFlBUXpTVG5FWWtPS3lX?=
- =?utf-8?B?NmNKa1RFMS8xb1lXMjMwWXRHcm5qQjRaTkE2VkhjV0NBd3ROWDN5eTgvR0NY?=
- =?utf-8?B?bVNzRitHVW0xa3ZuejZxZjdrSUlRckxuMGoxUEkwbEdUUWNncHdyYXRsTHo2?=
- =?utf-8?Q?vOjYlm3O2WO1bdYZbzW8rAuDT?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77792886-91e0-410e-fd7c-08de31cd23fd
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 18:03:47.8057
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PEveY9EsDXruYjJQ7AJ91CmnRCzpIcAGhLC8mm0u7rw+52sk6nhwoVdfE84bS5Tq/22B0dS+VX9/0qoTA5hyLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8066
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8C8B980005
-X-Stat-Signature: kffy19ob1c3aeto6mp9m4t8ooozk3bcz
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <20251121114011.GA71307@cmpxchg.org>
+ <CACePvbXXDaOY-E-nZ3n44w0StBc=n59+v5V-X2fw-V+roH=Qyw@mail.gmail.com>
+ <20251124172717.GA476776@cmpxchg.org> <CACePvbXLdf9bC3Juj=wA4_TKeH6XUgHbbvwV5HhNQtgoT3CiBg@mail.gmail.com>
+ <20251124193258.GB476776@cmpxchg.org> <CACePvbVJEWd64r-o8ezh+0QByYbWjYVKiLgxNiBJOjfRWP__sw@mail.gmail.com>
+ <20251125213126.GB135004@cmpxchg.org>
+In-Reply-To: <20251125213126.GB135004@cmpxchg.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 2 Dec 2025 10:18:58 -0800
+X-Gm-Features: AWmQ_bnzSSyGA_zq5uTxbLQma8sCnY8_UkBiLcp8Yhjqk3bb8O3gopvPpZcvsss
+Message-ID: <CAKEwX=MgJPFJNFuj7vQ+RjuJQiC+dOeTTEBLv6=Dna=MNFubJw@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 063EB20012
+X-Stat-Signature: zkqrbo9gogt8ozeubtpk18sx6qu7czt8
 X-Rspam-User: 
-X-HE-Tag: 1764698638-737980
-X-HE-Meta: U2FsdGVkX1/nPnv+/KA+DSLgJqyX5Hu+iBTDXCpvEmbci3rmMFBC/88l3Mo8FWmce1hwT7XKLy+ld8qowGts+bSTmUqGFQ7P7ycS3oZJRNqsCHmWEKY/RUpR+lvwycicYMzysyklXC9Dfh6tkEa3re4m8DFY6BM9w4Oh4lQNyF2x/7O/plgCcvs8XKLuV7kzUGG6A47Ni4ObYyopxGLcPfUZdBjJbiHiGwi9bAo1r7HeGgdlweMGvMoyZ5pyx/hXSXmL2DU33tap1a7WrAZeE1v/n9ZhMQrCXWhOxYCb6at6q27QynFLhvXeKuFuSfLNdWTEzJw5xvCMPonUCEntgwAzpiu8fPzIADgFcK4Zb/Rbx0WXjcWcZ6D0GxtUDGagpKtuNRBwCAmpS9lAVVe9tQqGwhiTlCj3A1Hl57gZ/7m6EfdK4xhn/mXYNgadeNMRrFmxJoadcjSiY9fLPBhsDO/mdyUy/1rlzch7bRpNR1ElWb2m5CvKumm5qASnDEiw+24sOByIVQmKDQEUaLaOb3u1MpIjYwRwQ0CPP1W3jl+xlyT0AAA/amKsOj9R3z/iQ+Xae9TR1vS1/5yVVgnhLcpssKKKGp+27pIZOX+4F3HVddUQWZPvAMTCXN9t41Es9/G/DKIfITZGtUsLjj9wCOX/tuen+2wbJP0mefmKiWfkgbCP2Vdj+bEy3US6vbk2cRTzfjHiRZmmRpY1QgWvrv0NrhsFZ7xWp1R0h03faBftCHnADO1L5vGX7+m6sPn/dMxXuhmF8Z45Q0dZiHW6yX9mBNv+nGXKu5Hmlf0a/G7Fw74MVvRmEgsXquNWXU/S7HR+FUqQFuQvD0BgfcznkoKLa+dwFTWMv1AP8zbi4HhWvNcW/c1wDz1b5xbgztb2uSvEZWEtR/5rXJFuqx54WNd5mMAMRH3k1yYE2JlOtqD41NNOZ+07l/n2Tg5Hc3Ke9mLt+tbzMI/VUSXR2Ly
- wrOkDL84
- viMhuLSXZF/QvdwZFrpSy3rJ7dAiIOmVBnnUiV+/Q9YZW57dE1rACWbHV04kgrD7tSrajoEYzqESMXr8sr55TEUvilCBL7zFFJFwg1ScP3GRD1ZD6FRmEIeiKVicXTJLaAn9eZrQcIc7JbRcl6JInV3/9LzFl9blv9V41PpCJR5sFOcvWIzDEFE5MbWbOu0kr9pdoYi5fhmqnKcR2sUWR8pfdg+k83JgdBgBj/xj31t9n+ngRSbAI0NByoqRMZqxynP9IaftaHw+GAfEOrTSO1NiSFhHThMAW3BTaSuEzw8/fnWTV9h+bGwttVcVJXlLHOUCrXuvduZLD9DDVt/NMVSjcMUh83wxXZeaZSdIGDP/Dl6ckm8ij3mhZEqVNpWCcnz21OZKq3TsXYnhWOBXTMiPonARivasrRvaVjPyGj5HxOiwE7UCSMBhybZabcq+5/ogUwCSr/0vs9ZL4bM4442q80ByVkpec76qSbeJ0LLSLSxoD6J+Tkm1i3XOjK3nV5ZRGCIITmtoLl9hhq3iX2xsC0zwBJytTUfol+AITubATchPop5D5K/Mw4hKYJn5AGePp85sT1ae/26FOgmbwAtitsg==
+X-HE-Tag: 1764699551-840551
+X-HE-Meta: U2FsdGVkX1/qkWSKu2brhaMinqaZRMzVSRjvOSJ2yVyk0B99Xu33ysm94txOpa6gvaaISPl0OqEcyywFoRym4K0p39YPydkYm3/6cyAseHfMB9coRX4q8R29Hbh7kNmH0tseJ2ZGsfeuB7UjC90edrYokHpQlaKptmQavw14SRflKVTUY8FFWVYITLtoW1W1NPJNkfTo+bgBcuu2Wb7yW/DOITis7TvEHkxaZMTmn+rmcON5RHuxlo0/MNAwZHVeW/rqItLtsEpqVa8y8dpqZGM51z7XfJZ5Hs4eM9aL1eSh/7j0+LkgA2ltoo8t9/Ym8zVhFyUrs0o10sJWPooo0GAbbtsnnHkJ14YkYiu90EsOIf2PCdaKSLpG9ZrVDLMR59X1ea4+Eudj/A5CzghCfJMBy4+Wh6I50HfAIpIumK+9amX6E2JoYs3WP+iOJJkjaSrx7fUJqK5whvOsAVbMmEnQ5XZ35KDDROc/FbSlVzYMH/T3fDin443+OxTwaNe5hTr7bTqPlWB52/EDkKseN7GEj6zFuuIhoCKDQVh/mG+lNOBhImuAw7bWCfRjvFWUwlYD2vkodKWsPJ8NXmujp0xNLatjorsQ6SwslNNq9tqSgQRtfGflhQ61iQgpzk6Msj/TxbXQHfoIliBOhCB4NdNzK3pOnihkRoRi8yaIvQje9u63s+7xBQsaepGkeZWSJMf2IUV8ReNqs6LFUbs7uq0DtmkIl9DZ2GWdb1+5goQdBnQUjzHlHNygKo7NMmKqW+V7egKPiiyXxBCs7NGByjzM5nzE5eN+oFkQQozwiwW6UGfPo8yP7/XCvM93H0CCO7QKCAd1mLqvRZW7EtIGYOwxRZSf9txMA5CByahvtE1KZjn5coRk5cTm018P9t6IfpmdHnplA+NXspvxBlrxtvQgiLPqspbCTRsU6/kGWv9x+PtZ/VunA4AGeNqqhSV8LmTRrzO8SW9JLQDJ7cQ
+ SjF79anI
+ at1agCCCdcEfp0j4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,158 +124,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-W dniu 02.12.2025 o 16:51, Petr Mladek pisze:
-> I am adding Andy and Rasmus into Cc who are active vsprintf-related
-> code reviewers...
+On Tue, Nov 25, 2025 at 1:31=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
 >
-> You might see the entire patchset at
-> https://lore.kernel.org/all/20251201-va_format_call-v2-0-2906f3093b60@intel.com/
+> On Tue, Nov 25, 2025 at 11:27:04PM +0400, Chris Li wrote:
+> > On Mon, Nov 24, 2025 at 11:33=E2=80=AFPM Johannes Weiner <hannes@cmpxch=
+g.org> wrote:
+> > > > > Do you have a link to that proposal?
+> > > >
+> > > > My 2024 LSF swap pony talk already has a mechanism to redirect page
+> > > > cache swap entries to different physical locations.
+> > > > That can also work for redirecting swap entries in different swapfi=
+les.
+> > > >
+> > > > https://lore.kernel.org/linux-mm/CANeU7QnPsTouKxdK2QO8Opho6dh1qMGTo=
+x2e5kFOV8jKoEJwig@mail.gmail.com/
+> > >
+> > > I looked through your slides and the LWN article, but it's very hard
+> > > for me to find answers to my questions in there.
+> >
+> > Naturally, the slide is only intended to cover what is in the current
+> > swap table may be phase VII.
+> > But it does have the physical location pointer consideration.
+> >
+> > > In your proposal, let's say you have a swp_entry_t in the page
+> > > table. What does it describe, and what are the data structures to get
+> > > from this key to user data in the following scenarios:
+> >
+> > Please keep in mind that I don't have every detail design laid out. I
+> > follow the first principles that redirect a swap entry page should
+> > only take an additional 4 byte per swap entry. VS blow up the swap
+> > entry size by something like 24 bytes?
 >
-> On Mon 2025-12-01 10:31:24, Andrzej Hajda wrote:
->> Changing argument type from va_list to struct va_format * allows
->> to simplify variadic argument handling with va_format_call helper.
->>
->> diff --git a/drivers/base/core.c b/drivers/base/core.c
->> index 513e5ef8a6da..4d76b67a87e3 100644
->> --- a/drivers/base/core.c
->> +++ b/drivers/base/core.c
->> @@ -4965,30 +4965,12 @@ define_dev_printk_level(_dev_info, KERN_INFO);
->>   #endif
->>   
->>   static void __dev_probe_failed(const struct device *dev, int err, bool fatal,
->> -			       const char *fmt, va_list vargsp)
->> +			       const char *fmt, struct va_format *vaf)
->>   {
->> -	struct va_format vaf;
->> -	va_list vargs;
->> -
->> -	/*
->> -	 * On x86_64 and possibly on other architectures, va_list is actually a
->> -	 * size-1 array containing a structure.  As a result, function parameter
->> -	 * vargsp decays from T[1] to T*, and &vargsp has type T** rather than
->> -	 * T(*)[1], which is expected by its assignment to vaf.va below.
->> -	 *
->> -	 * One standard way to solve this mess is by creating a copy in a local
->> -	 * variable of type va_list and then using a pointer to that local copy
->> -	 * instead, which is the approach employed here.
->> -	 */
->> -	va_copy(vargs, vargsp);
->> -
->> -	vaf.fmt = fmt;
->> -	vaf.va = &vargs;
-> I am always a bit lost when using this API.
-> Why is it safe to remove the va_copy() here, please?
-
-Not very familiar with this workaround, just my thoughts about it.
-
-It is just va_list is compiler's private implementation, which can be 
-anything.
-
-And if it happens to be T[1], it's type decays to T* if it is type of 
-argument of the function.
-
-So vargsp is in fact of type T*, and &vargs is of type T** and it does 
-not point to va_list anymore.
-
-So in short passing va_list to a function, which takes a pointer to the 
-arg is problematic.
-
-va_format_call DOES NOT pass va_list to a function, so it seems to be safe.
-
-
-> The va_format_call() uses va_start()/va_end() which is replacing
-> these calls in dev_err_probe() and dev_warn_probe().
+> Nhat can lay this out in more detail, but there isn't much new stuff
+> in the virtual swap descriptor. It's mostly just a consolidation of
+> state we currently track elsewhere - swap count, swapcache pointer,
+> cgroup ownership etc.
 >
-> It is possible that the original code was actually wrong because
-> it uses the same copy (&vaf) everywhere, see below.
+> The actual indirection is just a word for the backend type,offset.
 >
->>   	switch (err) {
->>   	case -EPROBE_DEFER:
->> -		device_set_deferred_probe_reason(dev, &vaf);
-> This function processes the arguments via:
->
->    + device_set_deferred_probe_reason()
->      + kasprintf()
->        + va_start()/va_end()
+> That indirection is the tradeoff for swapped pages. In turn you're
+> getting back all that other stuff for swap slots that *aren't*
+> currently used. This is a win for the vast majority of users.
 
+I will also note though, that we will merge the zswap tree with the
+virtual swap descriptors as well.
 
-This va_start/va_end is for var_args of kasprintf, not for &vaf, I hope 
-parsing %pV uses va_copy.
+So for zswap entries there are actually no extra overhead induced by
+the backend indirection pointer :)
 
-
-Regards
-
-Andrzej
-
-
->
->> -		dev_dbg(dev, "error %pe: %pV", ERR_PTR(err), &vaf);
-> This function uses the already processed copy of the arguments.
-> IMHO, it might print a garbage because of this. IMHO, it should use
-> the original va_list() or might need its own copy.
->
-> Note that this call does not modify the va_list because it uses "%pV"
-> and vsprintf() creates its own copy in this case, see va_format()
-> in lib/vsprintf.c.
->
->> +		device_set_deferred_probe_reason(dev, vaf);
->> +		dev_dbg(dev, "error %pe: %pV", ERR_PTR(err), vaf);
->>   		break;
->>   
->>   	case -ENOMEM:
->> @@ -4998,13 +4980,11 @@ static void __dev_probe_failed(const struct device *dev, int err, bool fatal,
->>   	default:
->>   		/* Log fatal final failures as errors, otherwise produce warnings */
->>   		if (fatal)
->> -			dev_err(dev, "error %pe: %pV", ERR_PTR(err), &vaf);
->> +			dev_err(dev, "error %pe: %pV", ERR_PTR(err), vaf);
->>   		else
->> -			dev_warn(dev, "error %pe: %pV", ERR_PTR(err), &vaf);
->> +			dev_warn(dev, "error %pe: %pV", ERR_PTR(err), vaf);
-> This should be fine because of using "%pV".
->
->>   		break;
->>   	}
->> -
->> -	va_end(vargs);
->>   }
->>   
->>   /**
->> @@ -5042,15 +5022,7 @@ static void __dev_probe_failed(const struct device *dev, int err, bool fatal,
->>    */
->>   int dev_err_probe(const struct device *dev, int err, const char *fmt, ...)
->>   {
->> -	va_list vargs;
->> -
->> -	va_start(vargs, fmt);
->> -
->> -	/* Use dev_err() for logging when err doesn't equal -EPROBE_DEFER */
->> -	__dev_probe_failed(dev, err, true, fmt, vargs);
->> -
->> -	va_end(vargs);
->> -
->> +	va_format_call(fmt, __dev_probe_failed, dev, err, true, fmt, va_format_arg);
->>   	return err;
->>   }
->>   EXPORT_SYMBOL_GPL(dev_err_probe);
->> @@ -5090,15 +5062,7 @@ EXPORT_SYMBOL_GPL(dev_err_probe);
->>    */
->>   int dev_warn_probe(const struct device *dev, int err, const char *fmt, ...)
->>   {
->> -	va_list vargs;
->> -
->> -	va_start(vargs, fmt);
->> -
->> -	/* Use dev_warn() for logging when err doesn't equal -EPROBE_DEFER */
->> -	__dev_probe_failed(dev, err, false, fmt, vargs);
->> -
->> -	va_end(vargs);
->> -
->> +	va_format_call(fmt, __dev_probe_failed, dev, err, false, fmt, va_format_arg);
->>   	return err;
->>   }
->>   EXPORT_SYMBOL_GPL(dev_warn_probe);
-> Best Regards,
-> Petr
+IOW, overhead for zswap-only users (such as Google) will be much
+smaller than what Johannes is describing here - pretty much
+non-existent :) While you will still gain all the other benefits (swap
+space dynamicization, operational overhead reduction) of swap
+virtualization.
 
