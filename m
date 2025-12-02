@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F4DAD11701
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 10:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6584CFD2F6
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 10:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E0346B002A; Tue,  2 Dec 2025 05:17:36 -0500 (EST)
+	id 503C96B0026; Tue,  2 Dec 2025 05:17:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 291F96B002F; Tue,  2 Dec 2025 05:17:36 -0500 (EST)
+	id 418086B002D; Tue,  2 Dec 2025 05:17:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2A2D6B002B; Tue,  2 Dec 2025 05:17:35 -0500 (EST)
+	id 2DE266B0026; Tue,  2 Dec 2025 05:17:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4946B0026
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DBFF46B0026
 	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 05:17:35 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 647EC13B45B
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:34 +0000 (UTC)
-X-FDA: 84174129228.20.76975F4
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8D51151430
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:35 +0000 (UTC)
+X-FDA: 84174129270.19.2D796B0
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8DCF640003
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="m0C/zvjv";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf01.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764670652; a=rsa-sha256;
-	cv=none;
-	b=CeYF3YwtKkktI7IP/s4msAqeB1Z/uyPAvQg1uf1L7329QK9QGpXEDOkDxWwrZBQRnM+n17
-	NU9xCcivQYDqdUu94shnqipKawLBxCKgXlNchjFQoS+ZAXazLzdoD6rHGENVEj3oEnAiLT
-	HO27q73ZVfypO6vgnafLN++2KX5cb0s=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="m0C/zvjv";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf01.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+	by imf10.hostedemail.com (Postfix) with ESMTP id BA4BEC000A
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=fcyCcTYP;
+	spf=pass (imf10.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764670652;
+	s=arc-20220608; t=1764670654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OV/jFWju34GVrqmImUMUd4mjYgk9s6PCcPPR4wpNou4=;
-	b=InjCtQ0W4z5b2/GovjuIpXPL8OvKy3Uk7q4ryF8NoWTPxiJq/b7F5v6KWTslRuRRZmOWJ6
-	LSQidrENO5oMadPV192zjPkRJeZujbvGapAR6MGWUrh5fcGHhGvWu69lBdYO+mLJyYpd//
-	Ju+NsOqebvr9bfmWUGJv3Rkut40qKAc=
+	bh=1dIn5+bV+xuuN5pf2pBN5XY3NHAdsfBqozQcNkp54MM=;
+	b=Q4A39uwlJK3DoXhD1Wg3wZCRsSI2O5lzVvgGEKvwLi+zs5BSwoC6IqOEsxhlKksjmJmYfr
+	rPD4pws7qMjcFFOYKGc1km62XT4qiODYGkdbJO4FyX2aa+Z9aNp8Ktb/AiplFEVXMBL3Q5
+	oqREsorKQ8arT2I6IAOmmBwxXxIjelA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=fcyCcTYP;
+	spf=pass (imf10.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764670654; a=rsa-sha256;
+	cv=none;
+	b=K15cF5M4QcqSJ3V9nesgnU18HZ3NSKATdF5T4vgNQkgqtcspoUcZxjWGs9r5FaROdf+c26
+	X5zIfjjR4KrcbvGNViNqSTHN2OWMnafMqQ0hCOPcFxgOZmPlO8XzPW9CYVcZTcPPVm66ru
+	XwklkTBVt6PG/DOOm/FUaiR4raMs64I=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764670651;
-	bh=ZVHBcgpSZ5GrsfYIumMKkK5Gz3mPEwYno3lSFbtUuuI=;
+	s=mail; t=1764670652;
+	bh=wOROUdGmrTopYn8Lks6qkkQ2zPA2SCtrzeNGfh6cEHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0C/zvjvt1SWVUb3BI2j+Y1hYqAzQU4CXZJK6V4bgSf9nBqoo7tf7kXVsuy9PBD0C
-	 fBhFgRAfrkcBJKjziTV111ztf8eOBpC1He8j4Ii9sxNUKHAF4QY9yOBzKbKu6dPQUf
-	 zqjcBqtRokBS5rVNuvkAw7gHE7y4TJs9XV85cfh+nC3BVajlZgD9Mro5Tqzxtd45fu
-	 qc50b5Xh44DUA+C2zZAi1NqCJqKNfRU8VCQcBUF0xc8sO5mLbLr6VxgCAKq8eqsf3C
-	 fMeyiG+J1KmYXIx26n2sXbW3H5kqoV0vf4dbKGrjC41hr+ZuQYPrzVoe7q6urXkSYw
-	 41XykPO24FBpQ==
+	b=fcyCcTYPrGc/U5aRIgg+zKfuHcyMoTOSJamoNsW3Z8+ZltEx5qx3sQE61MY5esoYE
+	 a3BjSdVx6pTIVihuQt0IiAxmBqil4yhif0bFQrSY4n9qXbmEaDSOlEvkp2+DPvKu5p
+	 XnqRUR8WY941AXCC7WRUXaOa7kSl+HpwaJwy2TaGciAvpr9IreOMflqSbk8zBLMu7i
+	 pfgwuyiwl6TPBggsMr6ouueBb161OmItpBoToUQsSI95cjEUScNiqRDVv84aQXaIOR
+	 t+tgb8jCZHEf6399fRqxKbutw6gqnFo9DjzXNK5bTLHbDKUKD9z08+ZW83ayQ9FXRd
+	 hfaEQw5I5Aysg==
 Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2884217E114C;
-	Tue,  2 Dec 2025 11:17:30 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2A1E317E1428;
+	Tue,  2 Dec 2025 11:17:31 +0100 (CET)
 From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
@@ -101,23 +101,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kernel@collabora.com
-Subject: [PATCH v11 07/10] drm/gem: Get rid of *_with_mnt helpers
-Date: Tue,  2 Dec 2025 11:17:17 +0100
-Message-ID: <20251202101720.3129-8-loic.molinari@collabora.com>
+Subject: [PATCH v11 08/10] drm/panthor: Introduce huge tmpfs mountpoint option
+Date: Tue,  2 Dec 2025 11:17:18 +0100
+Message-ID: <20251202101720.3129-9-loic.molinari@collabora.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251202101720.3129-1-loic.molinari@collabora.com>
 References: <20251202101720.3129-1-loic.molinari@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8DCF640003
-X-Stat-Signature: qubk7bj5gs1mpa8arpa178qwgc6oyx37
+X-Stat-Signature: 4jaqc9oejjx7czft5du5kjmd7es6zc6w
 X-Rspam-User: 
-X-HE-Tag: 1764670652-768187
-X-HE-Meta: U2FsdGVkX18y39sIo5XF034LuuJfrcxZQmWKbkeFKBUobiqNimLwWZMCjgXzP0bVNpeM7gJ/5csu6mk0aJogT71Mlp3GVeAiu/KK/56MnYh5gN1y4Ma8Y1kW0CtrB2ZAi4MkYkw216luaFeXw6eYyQxzjOJVw80hlv2zjZPBqqeRkpPHOPB9KSESUmsGAYrIl4hf4Y1oNQUsAgAsfcnuH77UkR2G693svKHb0mP68TgrJ/a++2wUobvALhtMS1aH6CnQDA5m2avAP8d2owwZgCyTJvYvOud6sxBEHjIs+PDRn8TbL261rsotKnoYld+ZEOZ5SaKFowTrV5jKhtPNqDyOSXqjs4ZF6u+9QmiCVFk++VzP6FbM/YQSKwX5Xi37aIT3oTFtw+IpxbSnuCOPDQcTVLCZ8Hk0wytnyz7zI+gWbtE42gs9xuVgrQb6XLmxFIDnIlmHNM8C0IdI7SmTIwRCFm7Geadkh6EayuzhORj+/GL4Kk/9mzKcwt8VmRhpFNfdgM6nKigLJxfjBWGynicfael13nk/TZMARLlFsZgknURDfA6wfJql0VVpFCdzFqST9q8Z9OrsuL21dqhSOiCXOy8/CfVpPqcYNpc9ImlQJapkrIyXhd7bScxiSDPfzUSNn9XwTvy3gRxh7yCpP9eXe53FuPcuVxSbyVGG5F1UPlZAaO+v73G7ZlvK7D8ZxpeqkeF8Lm3khuEkwJ3lLrEOJovLUwbIcSqE+caRvmmn7th0hNG0wb99YL30iNXDxaB3kZ+d9rSEbtTZl05BkJBa+X4YzPfT9QggZaYOUOXALHtYuk1DRM3VPGDSgsUr23I7i+LS1jM4a9T77rb2IKdE0gHx9ViqAaBOw237SfVYrPHZFbzu2iJ1HRbGZyYEomt017g9aNWUN4e66yugUBH0pb3+7i/81jcqL6ECKAoN8KJxrH4kFpiJTYVmbkYUOK+DzbsVk6Q98NwhyPc
- WEDZeimI
- Hd94xfTG3V7f8lFWpZ1LDqD7wA+s+FVJPrvksZvGQbqdyY+CUZBeet6DgFvLHxWP6aykahPvy2shYFXOzz2BpkmP15Wkbnf6bv5J0Y1AHPRjqXc/7mcL4oXxxVGpoXdv5J4JIaVND3h48XHgOTHoGP1uPbpeoMz/Q9+7DNHsjn9obLqC5QLokJZXOjQZiANPQfC8idedwvWscMAiaKvnpJIvFqdbIR/1xD/CZQg0EVqOaNTmvLC85DS5pxigFC1qk14UXYJ9rOEGM9FF3LmqqaJHFae14lZNpVTM8F9zJncuhzxsBP5rlJ9gyKL76LAyFH6c99dgiX5NQrs+6hmaOwhJofOcoG/8M8sEl3ttVDjszv7QNpXrljxcMbivs63e6XJ6s7R1+bMNmAATzKtBGc2cnVDBMSwFlu6FAXbTBBytjdjXRz3PWBkwhYhpOsQk+MVSRDYenQLGd/WV0CodzVO65+MeHwUGIQbiadwWub+3rwUw51WpT2DgboTO9/ibRnwrb5Jq287ep3ywZlx0S6b0BzfoHRmpb7jewzEmUR3H+FO4=
+X-Rspamd-Queue-Id: BA4BEC000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764670653-989297
+X-HE-Meta: U2FsdGVkX1+NVk54gRB5xNDuNkpNB/7OEBVpMeYbGfw1lnzF4hmhJpysk0nS+zXe+dMlwsbJohnqGvmWa/Xy6U9YaG2IHzKzOBOifS6F7/w3GgMQJFPVG/Rm3d4pagfH9w61Ze/AcmmPC4C0LWvCiejL5wJT55OV8a3zdehUkIiBzS1O08EyQfVfAmgVROjF4kWzLonLOCIR2vEgqQKgnuNRX2Zix5UUnhTdd3tQYKMdYpYzNvsopXzaLVQs9EnfFiHbF3wNlbs3xDBIu2/OepcHGiDJgn19aBAUkqjIcyJ8BqifuNaWXBhkfx3Lr83IUGqZnNret6TvMuuMWaceZP5CDDPv+Wa7ubJM4/Cs9/lYUJrvpW6Sa/m9exHlQyOgN/3k7xG01I6H9upUe3IhczTayoPaoIbIN4lMbCcXvupPoGbARsZgtIiLkHG43wIC/g7qjVIbrCkBAg0P7X6dWRArC0gglzCN1XDCkxwxFjLRNRG7+W4ZAbBbKzIhAOTviUb+giuLkRdmh6oCrWh97hQhpQVTBBSelxTd/FrmasoZwvDSdBmJd1PJNstG8xNd080em+gZn7x8zmuh0tAk+rzAGpCCVw57g6bvx6kNpfwfKmSfdYiAO/aoM6rYvbp3S6MIXEZAv66mmLMo0/gXWj5FjLz2YzVAGdvYd714Aula104sVX8b1aW+Qn2KTS+yGoxhTx//BPYYfWgPGXKBNNpNIKO9eVYPj1ql4npCUndfqu3gv4ZFGXcPaypri4JADbIgxeirh2Ld5mwMu4RByYLtUk2ynNPcWBgXYcOj2a1HXcQaYcX421cqR/OwvmHfvgqXuI8OIWgPwTwCARnuflLBxDW0IO7XpCPIBa8KbqfthziwL+P/4SbCD6tU8Q1viBoO5mshiy6wxsMeVdA4fV5gz8FXlH+isBQv1O7iQatXjI1yzNV91qKdniUNobQ6BTIlO13+7WwUTSLEBPo
+ gpvXF6S6
+ U9ySwtei6F+G/fzhUrnwdouY2TiIPQ31H5pXzyW8Iq60oAR/uZhZgQbtyYUL8nL4rqEbSYmqfcN3nDLGfUXPTNbz++AqmIMonKRpXs6JaGF+2/zqtgEHAtZPaw/yDtvI78fcpdpINWt5ip6KvFqh6JVTAcoQGRXxNH32+m4ojqnjrBC84O1XqZ2wBRspNDgr6F/CwtmdpWLkhxBWjJUezDbmwtlfaDKBVn7RsltOUWzRzwmQV5N3Or4eWg3AGEF/K6A2XkJVD0OrX2jVLrcCcFBu77HXAdA9rnUneW5ODmk4ow70DEMX83sZPOoM315dl8NWrQG9eOF1ZVO5S2LzlJlAbYkKK6Vk0w+nQfTn9hTcZ7BcY7o1rpFV7I3yfgrdeiEfjw/0KZvBmwa8L1kkPDsOPalSIF0gmhFx2+GKbf4VQ/3KsY+XKYjrq1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,235 +126,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-drm_gem_object_init_with_mnt() and drm_gem_shmem_create_with_mnt() can
-be removed now that the drivers use the new drm_gem_huge_mnt_create()
-and drm_gem_get_huge_mnt() helpers.
+Introduce the 'panthor.transparent_hugepage' boolean module parameter
+(false by default). When the parameter is set to true, a new tmpfs
+mountpoint is created and mounted using the 'huge=within_size'
+option. It's then used at GEM object creation instead of the default
+'shm_mnt' mountpoint in order to enable Transparent Hugepage (THP) for
+the object (without having to rely on a system wide parameter).
+
+v3:
+- use huge tmpfs mountpoint in drm_device
+
+v4:
+- fix builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+- clean up mountpoint creation error handling
+- print negative error value
 
 v5:
-- use drm_gem_has_huge_mnt() helper
-- compile out shmem_file_setup_with_mnt() call in builds with
-  CONFIG_TRANSPARENT_HUGEPAGE=n
+- use drm_gem_has_huge_tmp() helper
+- get rid of CONFIG_TRANSPARENT_HUGEPAGE ifdefs
 
 v9:
-- replace drm_gem_has_huge_mnt() with drm_gem_get_huge_mnt()
+- replace drm_gem_has_huge_tmp() by drm_gem_get_huge_tmp()
+
+v11:
+- enable 'panthor.transparent_hugepage' by default
 
 Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
- drivers/gpu/drm/drm_gem.c              | 37 +++++++------------------
- drivers/gpu/drm/drm_gem_shmem_helper.c | 38 ++++++--------------------
- drivers/gpu/drm/v3d/v3d_bo.c           |  3 +-
- include/drm/drm_gem.h                  |  3 --
- include/drm/drm_gem_shmem_helper.h     |  3 --
- 5 files changed, 19 insertions(+), 65 deletions(-)
+ drivers/gpu/drm/panthor/panthor_device.c |  3 +++
+ drivers/gpu/drm/panthor/panthor_drv.c    |  7 +++++++
+ drivers/gpu/drm/panthor/panthor_drv.h    |  9 +++++++++
+ drivers/gpu/drm/panthor/panthor_gem.c    | 18 ++++++++++++++++++
+ drivers/gpu/drm/panthor/panthor_gem.h    |  2 ++
+ 5 files changed, 39 insertions(+)
+ create mode 100644 drivers/gpu/drm/panthor/panthor_drv.h
 
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index 32dddb23e211..6021c4087a08 100644
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -171,29 +171,28 @@ drm_gem_init(struct drm_device *dev)
- }
+diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
+index e133b1e0ad6d..2979ee0e52c2 100644
+--- a/drivers/gpu/drm/panthor/panthor_device.c
++++ b/drivers/gpu/drm/panthor/panthor_device.c
+@@ -18,6 +18,7 @@
+ #include "panthor_devfreq.h"
+ #include "panthor_device.h"
+ #include "panthor_fw.h"
++#include "panthor_gem.h"
+ #include "panthor_gpu.h"
+ #include "panthor_hw.h"
+ #include "panthor_mmu.h"
+@@ -294,6 +295,8 @@ int panthor_device_init(struct panthor_device *ptdev)
+ 	if (ret)
+ 		goto err_unplug_fw;
  
- /**
-- * drm_gem_object_init_with_mnt - initialize an allocated shmem-backed GEM
-- * object in a given shmfs mountpoint
-+ * drm_gem_object_init - initialize an allocated shmem-backed GEM object
-  *
-  * @dev: drm_device the object should be initialized for
-  * @obj: drm_gem_object to initialize
-  * @size: object size
-- * @gemfs: tmpfs mount where the GEM object will be created. If NULL, use
-- * the usual tmpfs mountpoint (`shm_mnt`).
-  *
-  * Initialize an already allocated GEM object of the specified size with
-- * shmfs backing store.
-+ * shmfs backing store. A huge mountpoint can be used by calling
-+ * drm_gem_huge_mnt_create() beforehand.
-  */
--int drm_gem_object_init_with_mnt(struct drm_device *dev,
--				 struct drm_gem_object *obj, size_t size,
--				 struct vfsmount *gemfs)
-+int drm_gem_object_init(struct drm_device *dev, struct drm_gem_object *obj,
-+			size_t size)
- {
-+	struct vfsmount *huge_mnt;
- 	struct file *filp;
- 
- 	drm_gem_private_object_init(dev, obj, size);
- 
--	if (gemfs)
--		filp = shmem_file_setup_with_mnt(gemfs, "drm mm object", size,
--						 VM_NORESERVE);
-+	huge_mnt = drm_gem_get_huge_mnt(dev);
-+	if (huge_mnt)
-+		filp = shmem_file_setup_with_mnt(huge_mnt, "drm mm object",
-+						 size, VM_NORESERVE);
- 	else
- 		filp = shmem_file_setup("drm mm object", size, VM_NORESERVE);
- 
-@@ -204,22 +203,6 @@ int drm_gem_object_init_with_mnt(struct drm_device *dev,
- 
- 	return 0;
- }
--EXPORT_SYMBOL(drm_gem_object_init_with_mnt);
--
--/**
-- * drm_gem_object_init - initialize an allocated shmem-backed GEM object
-- * @dev: drm_device the object should be initialized for
-- * @obj: drm_gem_object to initialize
-- * @size: object size
-- *
-- * Initialize an already allocated GEM object of the specified size with
-- * shmfs backing store.
-- */
--int drm_gem_object_init(struct drm_device *dev, struct drm_gem_object *obj,
--			size_t size)
--{
--	return drm_gem_object_init_with_mnt(dev, obj, size, NULL);
--}
- EXPORT_SYMBOL(drm_gem_object_init);
- 
- /**
-diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-index 4e2e58d92b36..b00182ffdfaf 100644
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -50,7 +50,7 @@ static const struct drm_gem_object_funcs drm_gem_shmem_funcs = {
++	panthor_gem_init(ptdev);
++
+ 	/* ~3 frames */
+ 	pm_runtime_set_autosuspend_delay(ptdev->base.dev, 50);
+ 	pm_runtime_use_autosuspend(ptdev->base.dev);
+diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+index d1d4c50da5bf..0e7ab6f5ba89 100644
+--- a/drivers/gpu/drm/panthor/panthor_drv.c
++++ b/drivers/gpu/drm/panthor/panthor_drv.c
+@@ -1559,6 +1559,7 @@ static const struct file_operations panthor_drm_driver_fops = {
+ 	.read = drm_read,
+ 	.llseek = noop_llseek,
+ 	.mmap = panthor_mmap,
++	.get_unmapped_area = drm_gem_get_unmapped_area,
+ 	.show_fdinfo = drm_show_fdinfo,
+ 	.fop_flags = FOP_UNSIGNED_OFFSET,
+ };
+@@ -1626,6 +1627,12 @@ static const struct drm_driver panthor_drm_driver = {
+ #endif
  };
  
- static int __drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shmem,
--				size_t size, bool private, struct vfsmount *gemfs)
-+				size_t size, bool private)
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++bool panthor_transparent_hugepage = true;
++module_param_named(transparent_hugepage, panthor_transparent_hugepage, bool, 0400);
++MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount point with Transparent Hugepage enabled (true = default)");
++#endif
++
+ static int panthor_probe(struct platform_device *pdev)
  {
- 	struct drm_gem_object *obj = &shmem->base;
- 	int ret = 0;
-@@ -62,7 +62,7 @@ static int __drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_obj
- 		drm_gem_private_object_init(dev, obj, size);
- 		shmem->map_wc = false; /* dma-buf mappings use always writecombine */
- 	} else {
--		ret = drm_gem_object_init_with_mnt(dev, obj, size, gemfs);
-+		ret = drm_gem_object_init(dev, obj, size);
- 	}
- 	if (ret) {
- 		drm_gem_private_object_fini(obj);
-@@ -103,13 +103,12 @@ static int __drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_obj
-  */
- int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shmem, size_t size)
+ 	struct panthor_device *ptdev;
+diff --git a/drivers/gpu/drm/panthor/panthor_drv.h b/drivers/gpu/drm/panthor/panthor_drv.h
+new file mode 100644
+index 000000000000..79dccd289881
+--- /dev/null
++++ b/drivers/gpu/drm/panthor/panthor_drv.h
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright 2025 Amazon.com, Inc. or its affiliates */
++
++#ifndef __PANTHOR_DRV_H__
++#define __PANTHOR_DRV_H__
++
++extern bool panthor_transparent_hugepage;
++
++#endif
+diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
+index 10d255cccc09..7ae07a9bc996 100644
+--- a/drivers/gpu/drm/panthor/panthor_gem.c
++++ b/drivers/gpu/drm/panthor/panthor_gem.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 or MIT
+ /* Copyright 2019 Linaro, Ltd, Rob Herring <robh@kernel.org> */
+ /* Copyright 2023 Collabora ltd. */
++/* Copyright 2025 Amazon.com, Inc. or its affiliates */
+ 
+ #include <linux/cleanup.h>
+ #include <linux/dma-buf.h>
+@@ -12,10 +13,27 @@
+ #include <drm/panthor_drm.h>
+ 
+ #include "panthor_device.h"
++#include "panthor_drv.h"
+ #include "panthor_fw.h"
+ #include "panthor_gem.h"
+ #include "panthor_mmu.h"
+ 
++void panthor_gem_init(struct panthor_device *ptdev)
++{
++	int err;
++
++	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
++	    !panthor_transparent_hugepage)
++		return;
++
++	err = drm_gem_huge_mnt_create(&ptdev->base, "within_size");
++	if (drm_gem_get_huge_mnt(&ptdev->base))
++		drm_info(&ptdev->base, "Using Transparent Hugepage\n");
++	else if (err)
++		drm_warn(&ptdev->base, "Can't use Transparent Hugepage (%d)\n",
++			 err);
++}
++
+ #ifdef CONFIG_DEBUG_FS
+ static void panthor_gem_debugfs_bo_init(struct panthor_gem_object *bo)
  {
--	return __drm_gem_shmem_init(dev, shmem, size, false, NULL);
-+	return __drm_gem_shmem_init(dev, shmem, size, false);
+diff --git a/drivers/gpu/drm/panthor/panthor_gem.h b/drivers/gpu/drm/panthor/panthor_gem.h
+index 80c6e24112d0..2eefe9104e5e 100644
+--- a/drivers/gpu/drm/panthor/panthor_gem.h
++++ b/drivers/gpu/drm/panthor/panthor_gem.h
+@@ -136,6 +136,8 @@ struct panthor_gem_object *to_panthor_bo(struct drm_gem_object *obj)
+ 	return container_of(to_drm_gem_shmem_obj(obj), struct panthor_gem_object, base);
  }
- EXPORT_SYMBOL_GPL(drm_gem_shmem_init);
  
- static struct drm_gem_shmem_object *
--__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private,
--		       struct vfsmount *gemfs)
-+__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private)
- {
- 	struct drm_gem_shmem_object *shmem;
- 	struct drm_gem_object *obj;
-@@ -129,7 +128,7 @@ __drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private,
- 		obj = &shmem->base;
- 	}
++void panthor_gem_init(struct panthor_device *ptdev);
++
+ struct drm_gem_object *panthor_gem_create_object(struct drm_device *ddev, size_t size);
  
--	ret = __drm_gem_shmem_init(dev, shmem, size, private, gemfs);
-+	ret = __drm_gem_shmem_init(dev, shmem, size, private);
- 	if (ret) {
- 		kfree(obj);
- 		return ERR_PTR(ret);
-@@ -150,31 +149,10 @@ __drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private,
-  */
- struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size)
- {
--	return __drm_gem_shmem_create(dev, size, false, NULL);
-+	return __drm_gem_shmem_create(dev, size, false);
- }
- EXPORT_SYMBOL_GPL(drm_gem_shmem_create);
- 
--/**
-- * drm_gem_shmem_create_with_mnt - Allocate an object with the given size in a
-- * given mountpoint
-- * @dev: DRM device
-- * @size: Size of the object to allocate
-- * @gemfs: tmpfs mount where the GEM object will be created
-- *
-- * This function creates a shmem GEM object in a given tmpfs mountpoint.
-- *
-- * Returns:
-- * A struct drm_gem_shmem_object * on success or an ERR_PTR()-encoded negative
-- * error code on failure.
-- */
--struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct drm_device *dev,
--							   size_t size,
--							   struct vfsmount *gemfs)
--{
--	return __drm_gem_shmem_create(dev, size, false, gemfs);
--}
--EXPORT_SYMBOL_GPL(drm_gem_shmem_create_with_mnt);
--
- /**
-  * drm_gem_shmem_release - Release resources associated with a shmem GEM object.
-  * @shmem: shmem GEM object
-@@ -851,7 +829,7 @@ drm_gem_shmem_prime_import_sg_table(struct drm_device *dev,
- 	size_t size = PAGE_ALIGN(attach->dmabuf->size);
- 	struct drm_gem_shmem_object *shmem;
- 
--	shmem = __drm_gem_shmem_create(dev, size, true, NULL);
-+	shmem = __drm_gem_shmem_create(dev, size, true);
- 	if (IS_ERR(shmem))
- 		return ERR_CAST(shmem);
- 
-@@ -899,7 +877,7 @@ struct drm_gem_object *drm_gem_shmem_prime_import_no_map(struct drm_device *dev,
- 
- 	size = PAGE_ALIGN(attach->dmabuf->size);
- 
--	shmem = __drm_gem_shmem_create(dev, size, true, NULL);
-+	shmem = __drm_gem_shmem_create(dev, size, true);
- 	if (IS_ERR(shmem)) {
- 		ret = PTR_ERR(shmem);
- 		goto fail_detach;
-diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
-index 3ee8d9c36d92..c4316b768b3d 100644
---- a/drivers/gpu/drm/v3d/v3d_bo.c
-+++ b/drivers/gpu/drm/v3d/v3d_bo.c
-@@ -153,8 +153,7 @@ struct v3d_bo *v3d_bo_create(struct drm_device *dev, struct drm_file *file_priv,
- 	struct v3d_bo *bo;
- 	int ret;
- 
--	shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
--						  drm_gem_get_huge_mnt(dev));
-+	shmem_obj = drm_gem_shmem_create(dev, unaligned_size);
- 	if (IS_ERR(shmem_obj))
- 		return ERR_CAST(shmem_obj);
- 	bo = to_v3d_bo(&shmem_obj->base);
-diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-index 97b5fca8966d..cca815dc87f3 100644
---- a/include/drm/drm_gem.h
-+++ b/include/drm/drm_gem.h
-@@ -529,9 +529,6 @@ void drm_gem_object_release(struct drm_gem_object *obj);
- void drm_gem_object_free(struct kref *kref);
- int drm_gem_object_init(struct drm_device *dev,
- 			struct drm_gem_object *obj, size_t size);
--int drm_gem_object_init_with_mnt(struct drm_device *dev,
--				 struct drm_gem_object *obj, size_t size,
--				 struct vfsmount *gemfs);
- void drm_gem_private_object_init(struct drm_device *dev,
- 				 struct drm_gem_object *obj, size_t size);
- void drm_gem_private_object_fini(struct drm_gem_object *obj);
-diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
-index 589f7bfe7506..6b6478f5ca24 100644
---- a/include/drm/drm_gem_shmem_helper.h
-+++ b/include/drm/drm_gem_shmem_helper.h
-@@ -109,9 +109,6 @@ struct drm_gem_shmem_object {
- 
- int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shmem, size_t size);
- struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size);
--struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct drm_device *dev,
--							   size_t size,
--							   struct vfsmount *gemfs);
- void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
- void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
- 
+ int
 -- 
 2.47.3
 
