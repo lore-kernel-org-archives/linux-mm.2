@@ -4,102 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E626D116F3
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 02:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C680D116F1
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 02:43:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C02716B0024; Mon,  1 Dec 2025 21:31:39 -0500 (EST)
+	id A70616B0012; Mon,  1 Dec 2025 21:43:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB2116B0026; Mon,  1 Dec 2025 21:31:39 -0500 (EST)
+	id A486B6B0022; Mon,  1 Dec 2025 21:43:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA1046B0027; Mon,  1 Dec 2025 21:31:39 -0500 (EST)
+	id 95E4F6B0024; Mon,  1 Dec 2025 21:43:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 97C6A6B0024
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:31:39 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97CAD50D63
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 02:31:35 +0000 (UTC)
-X-FDA: 84172954950.08.8774FB1
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 713DC20006
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 02:31:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 811656B0012
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 21:43:44 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 825414F65A
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 02:43:41 +0000 (UTC)
+X-FDA: 84172985442.13.6BDF4FD
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8D1E340012
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 02:43:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S57dnSyl;
+	spf=pass (imf04.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.210.193 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764642693;
+	s=arc-20220608; t=1764643419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t58sVggozBc4lIyKGf4MhPbJgMGz91kVA3t8N4ag+vw=;
-	b=IOzSjxA8KkYsUMXWv0AjhiyOZv1K/iiOCUwo1L/sk2gFeA3NMZVFOqIqTR1kAL88DkinTl
-	Irz5fmyREw/N/zyjXIVc+vnpwA0iWUOwwvYnFHvpyeKkN63pPiHAZv8fBZHyx/jH0qB+14
-	BpZPxAZoCkr5FE86Wq4+c5Gr6DrM+/0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764642693; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=y088g1etBw4PmnSJUWOG0AeBEE+rOBC5zfxeDfguw3w=;
+	b=nCbUax6/eTrwx4Sm+5foJi7lEwa7ieunWwil+YGZdwZeTgAe1MBFh57+pWQsptF+8FghJT
+	i8ZlG/hr+Zg7Z13c8U8vexatfFCz7MOqjIwSnGU9CIJsreDz9G/xWgwQ8B94B1Z/JTbmtj
+	NedQ/fIyiQ/ugRUlp61djOwEJvn8WCM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764643419; a=rsa-sha256;
 	cv=none;
-	b=fJMsgkUA5mBvePGIAPPRHifSmt0/4Gcadhi5Y9lghyvYT1iFDDctnu3tIqUG1K8mNZuuH9
-	1ZNQOORI9/dGVO26jjyLl7Xlv5LtQkxRykp8soj/TYc3T6Le0LMa8Iu/85TqgPl9Ys8eDw
-	569DRmquASeJMckIwLOXdtKYH4ouYH4=
-X-UUID: fda16c16cf2611f0a38c85956e01ac42-20251202
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_MISS, HR_CTT_TXT
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
-	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
-	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:0340e088-8886-4e8b-b737-9cd91a7a2b38,IP:10,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:5
-X-CID-INFO: VERSION:1.3.6,REQID:0340e088-8886-4e8b-b737-9cd91a7a2b38,IP:10,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:20bd76f10c9bd4ad895830f7141bf70e,BulkI
-	D:2512021031260E6B9Z8S,BulkQuantity:0,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|841|850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil
-	,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,
-	DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: fda16c16cf2611f0a38c85956e01ac42-20251202
-X-User: lienze@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1310363433; Tue, 02 Dec 2025 10:31:21 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org
-Cc: akpm@linux-foundation.org,  damon@lists.linux.dev,  linux-mm@kvack.org,
-  enze.li@gmx.com,lienze@kylinos.cn
-Subject: Re: [PATCH] mm/damon/core: support multiple damon_call_control
- requests
-In-Reply-To: <20251202021407.11818-1-lienze@kylinos.cn> (Enze Li's message of
-	"Tue, 2 Dec 2025 10:14:07 +0800")
-References: <20251202021407.11818-1-lienze@kylinos.cn>
-Date: Tue, 02 Dec 2025 10:31:14 +0800
-Message-ID: <87zf818vil.fsf@>
+	b=bwlZQ0UhZiuMz+IXqSIJn++3BI6PM9hPXYsA2crisIOglTemd/KxZVd3WTNUiyLMiJhgL4
+	ACK67WrXms3U2A2Rk7mggQSJwD31JkLqwYgbrxHHsJ/lXnXFrXXBpU8NVlma4wAOLB/D/E
+	p4HRUiuHTkCEy1kEKrW/rLOKtK7rMVI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S57dnSyl;
+	spf=pass (imf04.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.210.193 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-7aab061e7cbso5657745b3a.1
+        for <linux-mm@kvack.org>; Mon, 01 Dec 2025 18:43:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764643418; x=1765248218; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y088g1etBw4PmnSJUWOG0AeBEE+rOBC5zfxeDfguw3w=;
+        b=S57dnSyl/9UWO6FGkvwA4UW6cK9EALvPOGR6nRm8ETg30LQbkalIlGIyzTAOKisJqb
+         hO7WBlrwQazj/D2jv0c606bJTFUkGXWSNAJeuZyjhEvbC/RTR0Iwvglxd8rOqjJe275I
+         o8y/mMd8btIlNFmSxKMxKniZEy/YAVnjDCg/HlCAl8mRYMr33JHWmxnzY5FRa4dd11H1
+         FutSbwABmYnlOAjAiZg2xnF/X3BVswOOkKFVmAPNYASCJPJVNiGgM01I8YMjtpvoHR2H
+         iZYAKI8pHU1qOEhBYaMGdNPYDxUPs2ToZiS2WP1jZDtfR9Wdqe3Dy6IAi1G8f1EQGxR5
+         5M1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764643418; x=1765248218;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y088g1etBw4PmnSJUWOG0AeBEE+rOBC5zfxeDfguw3w=;
+        b=CpJ9wyKNISKKja42CyZ8AouGYlHjvq77GqzGsm+NSkhz2NXC6nYvDcqgQRJwBGwVNx
+         ThQb1YmT9vCEjFEVwuyLQnYmUWP17XR7qcO919zNdlPW5Qu47rw5gkLjMpPJJPvbhk8m
+         2puimdrw5S4Ql8etIv5mJXeKESsW0/l01/41TfqzNs2dUoQ3T7PX0mFHCyERuqxvVeGk
+         CWC4R2ZKN0M8kiGriQIQ+E6IqHywifcaTy/v85n9eUYAJo38GOr9uUNYzWw+RoktEq7K
+         dBN9nLY/QtQSDeUXneVzZDsSETOqgqZFD/4inIpGgi4HZOI6L8zfMao8Fe7zGlXqnkuA
+         NUOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUvdpjS+byGN+97jGnoretKBhLieDtn8aBbdKieeWZ8G0DD3SqdOBh+f1GwgK8y6Cg7Ebb3cseWIA==@kvack.org
+X-Gm-Message-State: AOJu0YxLNWkgbFI5BT4+1Upq2QSDdwx+hgtmLu4umZk1XFW01I+Ukpvc
+	Nhw6n1Dx7YiN0blUu1mzf6vPr7cbXc14+M9KPpHMP0rv2MGSPzA9uuiF
+X-Gm-Gg: ASbGncsxhEMZfO9H6SuRXWpJZTmtR0LorC2ypK8c/59isnJsGqTO5p5csZviSmeK21Z
+	s3DKub08dOFqxbHGhkSypEt5zXF2FVfc3OwXfS22ljRpDeks0Vnnr5CIqS1aFDh9mZBDPemI0u6
+	5UOfG3LSclSINEMLBIY4LCF14kC8iiSeRs+zKe5OSil6FcVS6yK9/Mwm/WvDN5FhxDcPNUka358
+	2EKR8vHlS5uApudGl/aeVM2Uc2/Oa1a708r1FmMsUQhVBdCWUrP9LLZse8BNCWjqhk1ylAvjCtI
+	70+gmGYsg4e1AYW7T5H2401oHLoxy5VaA4N6YSAhVNeUGllzkaKWIThKGH9fJo77gEQdou3ICpm
+	NYakOp+srjBLSSHy2opb8kTltWkHTfCW/Nzf4ZE4s+4IgjnBsSfxqGJrPNcrGS3tUIYVKpdD+i3
+	PsPY88BV9GtA7WyrRRO49Rro3JiTI2alJKgHjTBuPxJlYWJ89Qaw==
+X-Google-Smtp-Source: AGHT+IFdi85AO/pmFM/ZPKNJeKlJ9We6XZm6cuiws5XRNphVkV9eO77SGZuJYndfnqv+mi3B4H3jcw==
+X-Received: by 2002:aa7:88d1:0:b0:7a2:84df:23dc with SMTP id d2e1a72fcca58-7c58e604ffbmr41968807b3a.28.1764643418233;
+        Mon, 01 Dec 2025 18:43:38 -0800 (PST)
+Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:b8f3:d910:6512:1367])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d1516f6cdcsm15058883b3a.20.2025.12.01.18.43.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 18:43:37 -0800 (PST)
+From: Hongru Zhang <zhanghongru06@gmail.com>
+X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
+To: ziy@nvidia.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@suse.cz,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhanghongru06@gmail.com,
+	zhanghongru@xiaomi.com
+Subject: Re: [PATCH 0/3] mm: add per-migratetype counts to buddy allocator and optimize pagetypeinfo access
+Date: Tue,  2 Dec 2025 10:42:59 +0800
+Message-ID: <20251202024259.412069-1-zhanghongru@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <760FBDE3-2724-44A6-A874-BD87F0191C57@nvidia.com>
+References: <760FBDE3-2724-44A6-A874-BD87F0191C57@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 713DC20006
-X-Rspamd-Server: rspam11
-X-Stat-Signature: pdbt3gfxrs3tsm5ztjcr9uq97nqhypux
-X-HE-Tag: 1764642692-455807
-X-HE-Meta: U2FsdGVkX19bGfhbTm9VxrHsDnhvUua/4UhzWieVEk45BqLGVaFC+Nv8QXoQ6ClyLZuNfRlkhMXp2HRtcKmAFJ6vusYexIBF6Qcjj+bsqXG850pBtMhjiiVDUJMLdm8eS4lChCkOsD6vXoLT/+FM6+v/y2LCCeFJKEmoX2d+JK4QHWgM9g8gmgO63p1djrgoWU46i3bNPA5LxLN5yzv/hK8kfhqs31Z0qCnk6pIPBEdJ9LrX2YrK56L9athJzk/rm7lXHcRPQcrhQ9j4YOz75pB+TgbNX7SpyRvMbdlabbEeLeianU6TXs/8JV2s/LucO/DKGdmeZvB0Ybe1HxUzN4ypK1QUFlubGAlPWeP5lzS+UTDtCWNUbgz1N7pkRAbqL1LRtzVvr0ATL0ByB/8+2bkfqZxuHzj0gFuFj6oGuoZUH+j4JlICYjT6ilD7y5/8gVdXFDJYavrhM0tKtOjmKc+pW7n9LrR9ma3U3ebpfgwSkwHiq1xuSt9VLM+AZyzgvm6KHQ4PoprFpTr8dwa/zfDsK2SR2Cn+Wom8sPlcc6h4G5rGGGLBByaCmVicRDzVR0NkJzW7rvECi2ynpP7b/QVqwmu58jwvgkF8LCGN77/DnRkW5iMHRzzTmWMbQJisDfobR+EYWIelKFC4Gq4eWMgrp65zMRNJDNjDoYT8a35ZCf04WXDBLCB8U6nHApSAR76wSU8uCrFhIijv/OvN2El9+5YuMYm2xooPEUC76L4UMWXNhAzvrXtWV8gge6I6qhMzyy8zGah2Fxb9fBzPbmG0Jg31HrFIoGOIvlrdrOj7pJBus/xXgNvTVc08KmtpydDzQE0Um8La+3XDSEtQYQlKV0xPX49taUIJVt7589IqoUGnH8g5HWeZllshfJVmHjL3Y7YwG9+rDalE4XfUDl/AquJceA1fY9vypImFd+cI/KkBfbWFI5OsZvLqHK6r1C9s752HmEp/Yl8Hme4
- /wkYOiSj
- FCuo7Ho4qBgyyFp1iUyGyj3JDDMgUhKkewuMUUuW9nJeXyO0pFYmKeAUdWD5LvO0qGThdA4j9ieH4dV0=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8D1E340012
+X-Stat-Signature: e83hgmj8asmduzm1qsfbh3rwxwp9khei
+X-HE-Tag: 1764643419-281129
+X-HE-Meta: U2FsdGVkX1/MI+3DgoeyD58s0wntZasq0jYC52B8pXzScVrycOvcpcj12jdpQYVXw7RyCb2ciXiP6OTRYK2SeJS77zTDjXlHTY2/cc1VSdhJdURUl0uwOjkKbh2Oy/XEsaGolDSzBmtC9l6h1GrqWHE8GMoiuDyaUrtiI1hlsWtGUQKqFp+fU4Aj7ur/Bzg1vL19vZ/ywUt0j0PVRuO+zUb05hV88bxA41utdXkMAMmkt7/eIASstNTuiI6xnOLu7ZUwgWnJs+lCcTqFR9EmR/LWCIKtb0GqKnvJ253EE/SP0nijWTRObq4UzarV5T105Dg9x3RJ5fVq2kX0o+Rxo7KjCJ0MGGKBtgPMBpWe5iBK6xhK7o9cb8ApUtV6Fjppgdm4Vu/L2LozK79Ocnq3KnFUrpRcqO7KFWqQVMWq1zcVoNb+d0oZwstKDesfbhNAAM4jwUGnL9RgtySJRu5sONDJpBXDNSHytbU9G4IbJPPfCfEg7C8Wh605RTNl0etkcjajJrZnF4Kc+sSKi4ymhqKhx1DAjcdcF271/FDyPPCT4+j1ojS+1P2/onKDH3SAl/gVoTyGhMvIlNczut4DjrFFK+BD2g1phsRijFO3l2McAE+Y2Sdiru3QKZufkKkzogLW2hUPPxNlu7wACpBmaMrF7lMFDODrREgq6kpcqrKFHFLTWDmnfLT6FRAHIr0377JP8e3P3+LXfc3AkoWa8dSe8e5I4T3bN4JMgg2M/wHeCzDUcAStb6s6svIqbhhbeVl6QyyIxqKbDMyQYLrhCTl3JMGfi45S0s+XPQOevwzLdmQ0cThxcvgJ348+7iZMK59y6hYTqyZO0zyI1zlo+bFob5+3JaibXAopcQGbas+a0ox28xFjMvIUSpbWSS5cZic2hp3oVD8zu7d70GKwnY5ZO0ftlHIU2bRLPZCB5CTvBVmB/TqOqCjKWqNtH8wdNIU4HLgD2+AzsySYDZY
+ gTayvcyE
+ SgwzCm9G8fsFgU4F+7wkzS9mC+EFbyI+6qr/gdf+YNzWDbGLzEXYIaWI49yevnsYuUaOEHBQGbq0TLt1Ox6cHHytVyFgkYYKI/MmM5Xmaz18a03Q8udaprIX6gUnt5EA5CJ6+3rLpVEAo7+CTOwlyryUGMTo5/FPBSDa6NmM0M0dbltyN3K/4NjZJbp3afnnlAerWp5Dovb6BzXVyLxPQ0gKUpOOybwsK4hV1ommXSd3OMsk83iGE1qcrg5Pn7wHUYp6NHNVpf6EVcYavxIq70VXzdwFPBGYkGgLAm1KF5iGNcs/CN5Tkg5SsG/kJd7LhJ+BjS2ZtYCZIVwyqKUZe55kDY7XKCRaPH3HRSk4B/sIw8ygAufjLklkYOc5Fpq6xxPCX9evhwMhd/58bhvfzC8qWZyr4FNhJD/lf6yWSKM6b7QLuSV6oxwAu9ZktJz6q5hLOwyQEBWibTOebf2L/Ag0U7Zg9xPQVq1vHLUrccCgnzi9xWN+DJsrVcyeYeYJSin/72ekh+L3xr0kkCHKb1mugT4O6jPay+4LK3oLt2DrPsaxsahnWLuDB3Hzs7noA8RxQtxygUHTtlHFth6OD2dvtngw5ngWWpmmpSfkMTSD1TCU=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000053, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,128 +135,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> > Despite the above challenges, Android device manufacturers hope to ensure
+> > a good user experience (no UI jank) across all situations.
+> >
+> > Even at 60 Hz frame refresh rate (90 Hz, 120 Hz also supported now), all
+> > work from user input to render and display should be done within 16.7 ms.
+> > To achieve this goal, the management components perform tasks such as:
+> > - Track system resource status: what system has
+> >   (system resource awareness)
+> > - Learn and predict app resource demands: what app needs
+> >   (resource demand awareness)
+> > - Monitor app launch, exit, and foreground-background switches: least
+> >   important app gives back resource to system to serve most important
+> >   one, usually the foreground app
+> >   (user intent awareness)
+> >
+> > Tracking system resources seems necessary for Android devices, not
+> > optional. So the related paths are not that cold on Android devices.
+>
+> These are all good background information. But how does userspace monitor
+> utilize pageblock migratetype information? Can you give a concrete example?
+>
+> Something like when free_movable is low, background apps is killed to
+> provide more free pages? Or is userspace monitor even trying to attribute
+> different pageblock usage to each app by monitoring /proc/pagetypeinfo
+> before and after an app launch?
+>
+> Thanks.
 
-FTR, this is my testing patch for samples/damon/prcl.c based on tag v6.18.
+AOSP:
+https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/core/java/com/android/internal/app/procstats/ProcessStats.java#:~:text=public%20void%20updateFragmentation()
 
-8<------------------------------------------------------
-diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
-index b7c50f2656ce..94fd6184fb14 100644
---- a/samples/damon/prcl.c
-+++ b/samples/damon/prcl.c
-@@ -39,6 +39,7 @@ static int damon_sample_prcl_repeat_call_fn(void *data)
-        struct damon_ctx *c = data;
-        struct damon_target *t;
- 
-+       pr_info("repeat_call\n");
-        damon_for_each_target(t, c) {
-                struct damon_region *r;
-                unsigned long wss = 0;
-@@ -52,11 +53,22 @@ static int damon_sample_prcl_repeat_call_fn(void *data)
-        return 0;
- }
- 
-+static int damon_sample_prcl_repeat_call_v2_fn(void *data)
-+{
-+       pr_info("repeat_call_v2\n");
-+       return 0;
-+}
-+
- static struct damon_call_control repeat_call_control = {
-        .fn = damon_sample_prcl_repeat_call_fn,
-        .repeat = true,
- };
- 
-+static struct damon_call_control repeat_call_control_v2 = {
-+       .fn = damon_sample_prcl_repeat_call_v2_fn,
-+       .repeat = true,
-+};
-+
- static int damon_sample_prcl_start(void)
- {
-        struct damon_target *target;
-@@ -109,6 +121,9 @@ static int damon_sample_prcl_start(void)
-        if (err)
-                return err;
- 
-+       repeat_call_control_v2.data = ctx;
-+       damon_call(ctx, &repeat_call_control_v2);
-+
-        repeat_call_control.data = ctx;
-        return damon_call(ctx, &repeat_call_control);
- }
->8------------------------------------------------------
-
-Thanks,
-Enze
-
-On Tue, Dec 02 2025 at 10:14:07 AM +0800, Enze Li wrote:
-
-> The current implementation only supports repeated calls to a single
-> damon_call_control request per context.  This limitation introduces
-> inefficiencies for scenarios that require registering multiple deferred
-> operations.
->
-> This patch modifies the implementation of kdamond_call() to support
-> repeated calls to multiple damon_call_control requests.  To demonstrate
-> the effect of this change, I made minor modifications to
-> samples/damon/prcl.c by adding a new request alongside the original
-> damon_call_control request and performed comparative tests.
->
-> Before applying the patch, I observed,
->
-> [  381.661821] damon_sample_prcl: start
-> [  381.668199] damon_sample_prcl: repeat_call_v2
-> [  381.668208] damon_sample_prcl: repeat_call
-> [  381.668211] damon_sample_prcl: wss: 0
-> [  381.675194] damon_sample_prcl: repeat_call
-> [  381.675202] damon_sample_prcl: wss: 0
->
-> after applying the patch, I saw,
->
-> [   61.750723] damon_sample_prcl: start
-> [   61.757104] damon_sample_prcl: repeat_call_v2
-> [   61.757106] damon_sample_prcl: repeat_call
-> [   61.757107] damon_sample_prcl: wss: 0
-> [   61.763067] damon_sample_prcl: repeat_call_v2
-> [   61.763069] damon_sample_prcl: repeat_call
-> [   61.763070] damon_sample_prcl: wss: 0
->
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> ---
->  mm/damon/core.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 109b050c795a..66b5bae44f22 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2526,13 +2526,19 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
->  			list_add(&control->list, &repeat_controls);
->  		}
->  	}
-> -	control = list_first_entry_or_null(&repeat_controls,
-> -			struct damon_call_control, list);
-> -	if (!control || cancel)
-> -		return;
-> -	mutex_lock(&ctx->call_controls_lock);
-> -	list_add_tail(&control->list, &ctx->call_controls);
-> -	mutex_unlock(&ctx->call_controls_lock);
-> +	while (true) {
-> +		control = list_first_entry_or_null(&repeat_controls,
-> +				struct damon_call_control, list);
-> +		if (!control)
-> +			break;
-> +		/* Unlink from the repeate_controls list. */
-> +		list_del(&control->list);
-> +		if (cancel)
-> +			continue;
-> +		mutex_lock(&ctx->call_controls_lock);
-> +		list_add(&control->list, &ctx->call_controls);
-> +		mutex_unlock(&ctx->call_controls_lock);
-> +	}
->  }
->  
->  /* Returns negative error code if it's not activated but should return */
->
-> base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+We have proprietary algorithms, but they are confidential. I cannot
+describe them publicly, sorry about that.
 
