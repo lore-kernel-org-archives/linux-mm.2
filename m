@@ -4,152 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBFBCD1266C
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 19:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EC9AD1266C
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 19:38:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D84A6B0027; Tue,  2 Dec 2025 14:37:59 -0500 (EST)
+	id 8697A6B0022; Tue,  2 Dec 2025 14:38:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B0166B0028; Tue,  2 Dec 2025 14:37:59 -0500 (EST)
+	id 83FE06B0028; Tue,  2 Dec 2025 14:38:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C5BD6B0029; Tue,  2 Dec 2025 14:37:59 -0500 (EST)
+	id 756096B002A; Tue,  2 Dec 2025 14:38:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F049B6B0027
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 14:37:58 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21EA512D80
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:37:53 +0000 (UTC)
-X-FDA: 84175541226.04.83EA571
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 616996B0028
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 14:38:23 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B19012D78
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:38:22 +0000 (UTC)
+X-FDA: 84175542444.20.A75EBF7
 Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2700C1C0009
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:37:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=O0hV3GuU;
-	spf=pass (imf21.hostedemail.com: domain of 3DEAvaQkKCJk3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3DEAvaQkKCJk3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by imf29.hostedemail.com (Postfix) with ESMTP id E8FA112000C
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:38:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=EnJ03rr3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 3KkAvaQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3KkAvaQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764704300; a=rsa-sha256;
+	cv=none;
+	b=Anp+U4Ff7AQX9T7goP2HsH50KH8279xEstnxKqzvmdzcqQDYDT71oiG/3eO7FivHVQrkwt
+	tagzdxdGgaB0jv/oDo4C/jrjcNM0Me/od0svNIxz1jtbIGI9a8dY41kbDf/rwAvXWiiUet
+	jO+xr6IVP1Dne/1d207R9YwtFDcogWA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=EnJ03rr3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 3KkAvaQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3KkAvaQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764704271;
+	s=arc-20220608; t=1764704300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zhJ/66bq3Dhg0Aw+wAsmTfNgUiWxLNmyfbE+xmpzX9c=;
-	b=4ED0vqR3k9IjDOFGAkJ83kKIHFFr5LYTz5ulIKe9zo0I/JycxLEMf7HNjQPNRI/pYO6ubU
-	qmMkgY6qMgc8h8zQJG0ZlW3bFP3Uc9IPephR1G+voTLaW+yfVIY6mxpFX0jQddkI3AMGKu
-	DRtlAhb1uNDLpMOGDI4w/pEuW80Ul/E=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=O0hV3GuU;
-	spf=pass (imf21.hostedemail.com: domain of 3DEAvaQkKCJk3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3DEAvaQkKCJk3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764704271; a=rsa-sha256;
-	cv=none;
-	b=QUAchH62APnh4Ie0194+tnqu7dhIJ9Bxhi0fvGjZeotM2EChHpvSWoEmoC4IOdb+6yzkas
-	t33zyCjQ9tYda+rLTvwTAgZerS3KMG08akuL2xhDmzAQeDNFqXeiwGtpjUZevbkIfegg2e
-	uhmMQOb5wdHTZu26qL9yCCgIj6yiIzE=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42e2e448d01so1972699f8f.1
-        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 11:37:50 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0qMYBEWcYpIOM/tMAd0uS75dTnBdoaoIVwbOFkcZei8=;
+	b=c59BuVkG8oJfxMytY8Temy6PMpC6tMs7X2NcAhQbw4bM6nhPGbeCSYKl9qwi6Wl0MI3OFA
+	99SaXMU9GH5yjedKcAEriajksekeFYkYoIvgwCfbmQ3h4HjWgWA79ssWA4/JY6a4Q1UTa4
+	TCesMWt8CRcKMfViQ/t35m6gMMsQnlQ=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42b2ad29140so2896959f8f.0
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 11:38:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764704269; x=1765309069; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zhJ/66bq3Dhg0Aw+wAsmTfNgUiWxLNmyfbE+xmpzX9c=;
-        b=O0hV3GuU1Qjdv8W7yQ0hmji8GZl5FZOfjM7GuLW4k0+n/V4BfJLUQe1x4Qv4/Auch3
-         KA6GQ3Kc33aKjWIHXHUik6WDAMt4w7tsMKUpy1FftLxyqxaXa7grx/pZpivhKaT/3MTF
-         b3evlD4vFmjA6lj11THk+hNlfrMoDKk03x1hOu1Zi+5wwve0F8bMSga3nghgrCyYNJZ1
-         0XtCQVfDXFCmBtzokY4Lb/0M8K5uYyc0W1I5NsJn2b5+Xkj4Vev9oqWkHNZtfoYnGPgX
-         wBhDsyLDIg0MMgZR1/qDdGxqzjfh/9snHuKlmuSPJgSMc0cmYWQz9ifE1mGU62nwZuv4
-         XUEQ==
+        d=google.com; s=20230601; t=1764704298; x=1765309098; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0qMYBEWcYpIOM/tMAd0uS75dTnBdoaoIVwbOFkcZei8=;
+        b=EnJ03rr3DTL6bRJz78cAI9CL9uid5YmMTVeksw167M8dsApmlfORFPBoEcHOd2dw7C
+         RUgCAKAZL1aUW51VGgsgl+3VnITuTwWTnL4MjWFrbONTrZsXMZR7O9rZAhoAmiK/i6GW
+         CK2cB/dc9YREs/hjP8fCtRohb1iEpNw/YquWbjpgVH3o/VUZRS/pUTwjCTpU7kFRJgs3
+         JSfMviKohXQ7akHs2Ak5sO1V3zHGvReBoviWxu6u5WifpLmGn7nsNmChOHgz1cZi+tRf
+         6n02bCdFMF9zSBHapaDTbnB+2YtFEWK4lriLZWRkoaxNwnyh7ikjz12+yaJkvisc3rGt
+         kvPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764704269; x=1765309069;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zhJ/66bq3Dhg0Aw+wAsmTfNgUiWxLNmyfbE+xmpzX9c=;
-        b=IJExldZfNarhJREA2J347KxaoH+snamHQBf8LNNCrUO4yz9jS1GJnoZxUcBD3OPwl9
-         3/Vs7/mSOGTkLYUfAJLnqDuJ2fbhHyTg/CmL9Giw0CQeJ7F+lso3q+DsleRj4iB72C/O
-         N5jxR+HCvNDKkMwqSQEBO/+avHD6qQAe2la4HIMMifQgZCDdzjYtGleBS00Wqa+dMNe4
-         eIUExV9NFnWaaLNXBPk/WL+LSndvAgDqXeRmPLxj3SCApAFyJzvAZ5tasn61nE3K9NnP
-         Z0/hTXx9r9GN79TEMDI20Ulv/XtGUDqcKFDQwFdI+le35BMFrr7/9snaYpxeZ7WvxCoC
-         QZYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXFBhVR8CP2P+Gbr6mRCFujkwfIzByKnsLMh9l28zqxuCaZ1lHRB/Nc9U/5d39eYvUqOrMhS9nJ0Q==@kvack.org
-X-Gm-Message-State: AOJu0YxHNtMisackqv7nIZNkDBuGP+nvv2hyHevOfwHoD+NOyPJCClSr
-	Ny+EjCtN9MSq3vsAShUeoiFB3kXgpIlAdbx9N/zFkALJYQIlWe1NSq1gVPAgkaxFSGimMC7mJS1
-	H8VznNPcUjdc0JkEC4w==
-X-Google-Smtp-Source: AGHT+IHLoORxJFIMnvNaTR7esNyOMYjh5IgIdqpmM1jiNlaGB5DkF31Koo1mWN1Y6iCnVsE9Qgyw7dzDpU2Msvk=
-X-Received: from wruh15.prod.google.com ([2002:a5d:688f:0:b0:42b:3951:1b])
+        d=1e100.net; s=20230601; t=1764704298; x=1765309098;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0qMYBEWcYpIOM/tMAd0uS75dTnBdoaoIVwbOFkcZei8=;
+        b=Z7Gwjw5ybORZcNlJIHBOmSNhVOKTLvEy3FE/i1bjMrx07qkDSbgXmw6oGbJtlm6qIa
+         Vt0XQRJUeikPbdnLPb60gqq34kXqoJMQccR5c4X4qA9Wa576tIJf1XXYnfcgEwhRs010
+         JeUgW5jt1A9y47j9789YZWVsv9rcryYrkEwfOKYwpLb78duUDi9xB9f8E671ET1zl8+f
+         8U6SQXOl8IjRuoKiRicr+fW8DsCjp1NTNdTpB9pE6RU4N2pASexjIPsyG/QdOvSZkx6y
+         j/AxYpqs4SDm4KM+iKcNoahTjR4RED6Yz/5x2KOZewgi979YTh18ANTa9vrgmw5sCK0/
+         jmgw==
+X-Forwarded-Encrypted: i=1; AJvYcCVfmyzGHt6ZRrb5JA7DpBmmXtEM6TfWbhxTy9DENanMoBfXU7roBEfnvC5/mfEnUnJEeziWJ9S5GA==@kvack.org
+X-Gm-Message-State: AOJu0YzsDvopCrMMHRe+VJ8dg1ge6jmGEPxFxOGkI8jLtW+VOzGpnaUD
+	JmKPaDrjvidAZjKff80DwPP81j7xxplSmo/KoUGDx696s70croKlTm5z0H7cKkErcbRR0dlLSaX
+	SqXvyHJsb9cxWAgFAPg==
+X-Google-Smtp-Source: AGHT+IF3Aj9rjblOcR3xPIzMTJeS1VxCNmkzb1lfjIl8FlvWxFuJ83OIWlXne2ViSMvh24ifU49i6uNyDCJKhgQ=
+X-Received: from wrbdi3.prod.google.com ([2002:a05:6000:ac3:b0:42b:3346:5434])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:288b:b0:425:73c9:7159 with SMTP id ffacd0b85a97d-42e0f344080mr31795438f8f.33.1764704268795;
- Tue, 02 Dec 2025 11:37:48 -0800 (PST)
-Date: Tue, 02 Dec 2025 19:37:24 +0000
+ 2002:a05:6000:310f:b0:429:bce4:20bf with SMTP id ffacd0b85a97d-42cc1d194fdmr45269347f8f.55.1764704298588;
+ Tue, 02 Dec 2025 11:38:18 -0800 (PST)
+Date: Tue, 02 Dec 2025 19:37:48 +0000
+In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPU/L2kC/x2MSwqAMAwFryJZG2iVUvEq4sJPagNSJVURxLsb3
- AwMzHsPZBKmDG3xgNDFmbekYssCpjikhZBndahM5awCZwqcCOXMB0ZadxIMfnS1bWxtjAcd7qL N/Z92/ft+At1vUmQAAAA=
-X-Change-Id: 20251202-define-rust-helper-f7b531813007
+References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7075; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=W8ZblEwgjuL8jZJ36a/bhPpyurnqnpzkgPSqnenEdCA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0AAbiS38ffQuRjq4nMNsCbAsC2Z0/xEFskYI
- a7cs/y+HK6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9AAAAKCRAEWL7uWMY5
- RljtD/0fz1OjaXVHkkiWZGm1MTTTeoRD7MZeZtSJpWwEp10zfQcriF9Tz7TiY8DRVjupa7ieL6W
- K+QIimSfxkf0pF+U85RZt8x5R0zrrPA7a0r4Czw2u898rjuZSvXB9rsMsd8s49K2iNGlMl8no4n
- 8dLlxYWEysWLhXoCLey0TdCeJgWmZWEtLRFaN6a3PtKGsKPj5IDQPwWCgiJcyBf9skYFC8xnLoN
- myrtxskJJ3xSky7n1TIOas7ooGu8EP6L1qP0CCGnHx3PR9GtRbSahp4lABH8jI74mWyxI75KaqA
- e9yf1n+e6sDD4Miar5xu7Waav7mh4Wlvpm+FSeBd0t7yox6QRDaIfb300TNnYzo1UMbkA4TsjSu
- jitafYyHMfHqSaZ8Hw25YynM0XiSR4dLFJXhzu6X6CIEFlbZbNx++pCQngoNk0Iidbvfmj1MwRy
- JBZM2bXi/bb6e6iBnyXdGbM+VMwGo9ik6yIiLbuEi0MdhQ1SQbz9kEaJXP2rfRSiJxCIobwXnwA
- zcbWzlULfAo1IcQ75R/0IuuuYUNlgfzaNl2x/c5ODo5ZVsxdgIMF9rF1905CYwuTY0YH222qCZ0
- fao/NDvnvYrOIhSBHgNknvBcn+HM6CoE2Hycm48/DGMTeSqNxcbw9tlPWj5SJ+DhS/1mHLW0MMy +rvrgaUoICXqdBg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4042; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=s5F849cKunCWhXEDw04RDI6ouvr7CQTpbwq+FWSvJxw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0AJWR/fRnVCj+DsWwJtPSwRwrcDjpzyN8mfq
+ 0sOX8tn6DKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9ACQAKCRAEWL7uWMY5
+ RvZUD/4qk2bOPLDVVH6o1xUcG7fKDtuBkgkvoaYHvWDhZyyaKHD8OGY9owyeYUcmt0x2jXq7bqH
+ EPkgKOcp+3Cw0AfukXcyx0o+uatdJultYdvh+OrKvhTVEBLmA0BJON86RPamY6m8AGpKPlf2NjT
+ UyRL9U+voiZJXo0oBSw0cGHezDPy7vYIWpncqGphzipHTJ30X6ilRQFdkfhXulX+ElmXbUxvZUJ
+ Am24xCt59rrJ9xE/WRBI9qf4jSVJFsbmJl0PRxsuBLTkRQmsHUhWLHCslAoFx9/6QcrwavEyPR8
+ 4h1GQG5bXrYNh2hXa9cX+0vroiDZ/HxAs6VzgVMc6N1idyZWwcAodb6uiyz3PCGUf4NPNE+1P8q
+ WUvfZO24jxODhRZXzfvUHqrZ2rL05qBY5uzj9XPpB/7EOF3ALh2PRTa2ze8+q6lVrQBF8zThKNb
+ D65FwQ7TvitYVjF2b7XPYnKHLOlJazGEx8NRmO+r3TKAD15fFqO78KZqjygtM+br0UeWHD5QyvP
+ FI0vxWYerfITc94IYwV4sG47FHjRtyieKyrKXnj58n51wtj95YVr4IMNO4XTmTu/y7ok18iCzak
+ X1Tn799NmNMmiOBUGzmsnHbx1oAI04dFiSaMXIfSvuvK+sEHy41PG2x+qznP/f4V9XUdqoEbx9s B+77XbIBao49Nvg==
 X-Mailer: b4 0.14.2
-Message-ID: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-Subject: [PATCH 00/46] Allow inlining C helpers into Rust when using LTO
+Message-ID: <20251202-define-rust-helper-v1-24-a2e13cbc17a6@google.com>
+Subject: [PATCH 24/46] rust: mm: add __rust_helper to helpers
 From: Alice Ryhl <aliceryhl@google.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Elle Rhumsaa <elle@weathered-steel.dev>, Carlos Llamas <cmllamas@google.com>, 
-	Yury Norov <yury.norov@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	linux-block@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, 
-	Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	linux-security-module@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Lyude Paul <lyude@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Vitaly Wool <vitaly.wool@konsulko.se>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, 
-	Bjorn Helgaas <bhelgaas@google.com>, 
-	"=?utf-8?q?Krzysztof_Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, linux-pci@vger.kernel.org, 
-	Remo Senekowitsch <remo@buenzli.dev>, "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org, 
-	Will Deacon <will@kernel.org>, Fiona Behrens <me@kloenk.dev>, Gary Guo <gary@garyguo.net>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, 
-	Mitchell Levy <levymitchell0@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, linux-usb@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@gmail.com>
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 2700C1C0009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: w8m44cse5ek559p8fypuuy34m69s8x4e
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E8FA112000C
+X-Stat-Signature: byhya7f97ofzpqfubh5ouxkkhwq19ne5
 X-Rspam-User: 
-X-HE-Tag: 1764704270-401495
-X-HE-Meta: U2FsdGVkX18YmdeCJaFAbZbW2sRNk70qlckq3nxpAHlGI5Dnk5X1U4IEW92Kf1g/khfY1nx/hZmMs35iz/9b+DaFA/dlmfu2tWMGrJvkHIp1yrG8fi/bczPBMG3GY38UTrhSLJClWfJM3Oj18930c0/1u0Y6At4kW0jWYbV8GL8LAjQbZQevZEyYQF5ejQGVDo+GbVmekcU+eeQatDME6TP620NJFtcl7CkgseaWMgbDWWTQs4ir6KzlgxMaa/HwWT/R0GydUmb88efKC5F/L++rwzaUa/wBSfux+i+cZdEpY39KE9NKUp90lVMUgSBeo4XOv48Lavs+jannstesEvkN+cN7FeLIWI2yL8ALZE8Mt+YVm/B6vs9SgdtL4jsAYL+az8vo4k8Vn8CPqRYXZ9KCxFv56K+uC53Mhf+JTUHhwqBuwOjaEde4lxNVlZxpc9z7ndDVlDbeR4w8T+aEa5VzntLgUC/3AjhfdrhjsBl3xgEkDx4K//CcS2PksA0IUv5fF7xzaAqBTyBIFjvj0xVPl5x0NQ4jkTnZ8ax8LiDpEmn63/EPylxUrlVb+jl6g8yP22kC9u6pAsJ6H3mDkQ6ldzaY2f1GO9K0a5UvCacLDl2KH6ErkXYUqJhsrr8NfAdlOSgCM/6sKHupedaZEtkwseJym0l9JpsalXPAafTFBJW0zlCTTj90psfmCGcIVlW4gmC8qZpz5oecg6FDwT//GM/k1jejAqd6GH8N+GXE2w05VVS8Aiui0PlRjd+bhL/7/lbcUNh3DWjw9YiAzTMfpY374xJcEyVAxQppOkCOAgLQKODRLuUhUqRpaBF0sa2OTb+6PPjXE3XGRqpckLbJjkfvkiuEB/UhLRoA9i0AqJAusenkdGNSpsR7qB/rOOqz8ujmfzr3ZwNEbBJo+XMCTAWyV5CxL3N7K80I48hnIaNgCR+h0euEU4UGsy9j+L5G07SCnHf/RZNJtIO
- w/AycKyj
- 9DfuXhylrq0QXhuApH1tz5KPqAnDyvjW6F5O1tWDIObUF1xwzYMVHFdtH1WiEtY5RcFM/9VvwdSpA3gXnCLz3eiCZawhvMZrmstZ6ntBbdoCTjBQCzkA9kh6kp5G4kY1KxCnUaWRfduyw+nUPgB/PQ+HjNhjEZSGrvVcw8qSX6dp5AMsqnmtfQd8g/OUSXsKfm1x0tUxqVgjJkQDf2Er9i575f5Vn5yavBbbAQvNYvM79siMxrrt1cFNZi1cxgkE/hN5Mv/QMBupF6CI9gRO8yuQ7whXJdjD4T4ROJgjlE2PQnSI2+wnfqEwBcD3Nkvg+0q2MSvUyyuQDN9prHUkxvriKouKH65PoTcYvUioPrjgxoV0Vxoy6Olgu+9kV8HcPExGNyy9d904H8HY4IpxgGiemw6HBuxhC7UV4MxVb+q/HdEpBQba/GZ7Fuizv3bk/pXLJjQjj9W2uTIV7x331faolS0R52ygcJ7i/0Jhu7hzHiqd+RZJEw4JredHoYkzSRhD4YFg0STUM3FbW+AITckxJFOv6Nu3g9D2ckarIi9082x9S7XXDgLlaPOOn7uLeqoPG9KTV1auRzkT9UnJaVxm1HoiR8m048jUdXIf3PTAmVkykhmZ5FkmFg1ZIwaSjN0WI
+X-HE-Tag: 1764704299-923114
+X-HE-Meta: U2FsdGVkX18hAo2guZzTiztVZYDskHrKbwUPxrlsstu3VkvfjCPAx7rbRTm0am15X7dndcv72MooQAl8TUW7EhUBYwaf9/iyZ903pu+NPBbcYwdm0uOmMeC8W8jK4PnR7ffs+SY/NNcMLhTWbpQk1412ku7MGo0rmAqmUPecy3ThC+RansKutoOwcG/FEER0UjwOjYkyM961B0yZW2ENIU9vrLpKnj4/UnEePRIIJfEABjVHlrSZH7iIX1aqhuzhwnAHlL6rET3onr/nPU9IDtMce8h27JbwlFHkUKcHwt48HkkpPOP7rEvOWjWLDevphVf3uXNy5r3AT6YQ3Up7JEdgop+h9ohHAVMrGUBIF1/Y+fQRqBZT6P/MCrzKKZjEK077x+0+85M02f1G/+ihKWL1VBA5mwRFKGJPwq+EMvHCZuzDEG/Y1RpGIDCJy2oXzRzrIt6acOOhzZ9A0urjxqPFGbZ9+c4tuj3jv4M5tluX/NBJvn8ngHyXffkvUzSjka5pH7Yp5Z63jZL5h9BmF1cLbTfTm/SsaAuzXUiQt0bU5uJz3G5TdA1F3q1mfVGI9y6Yb6B1LJiVANHo7FOMvJIJyIa5QZUsUIQVF71tnAFFf6c2fftJ4YOrbWjWH5DA2+/ZAbbjC18oq/9YM1s9AY8OWvj3moNaRoD5phnrtPVlXOQWpsQhA2Id3W0P2FPMRNK0SCbiEdUV1NxnsFh1gFnY182hUCiBbeI4XeUoCl/fwr9Q7Bt69cSsz0EnbihGjKYqbv3l3gXXHT27fHmqyZQYwEpS9Xit2+n8zemBL+QLk3mL+L/I/iaDOUxZpY4ajaZ1f+EO0hMghZUdGbwp/N7iI+dfJC2JdPYj+T9hkO9FvnChTJ5pwa+S7+GutZBm8/OtpFjdKOpmiVDzrGQo3HgIgHSkcvgWWvx/i0fmVkkPij+Lfm15iPlEdqYu0b/BKmmgqfSHU1h89gH9quv
+ tuz8IUY9
+ CWISrX8nD6BlFzCMeopi/wHIc8L1sBM1t7WuBesajUywyU4P7+r4Yexr69L06qgmziLs+zKZVLwgTbfelneIL/20oBFbdb/wC22PYTVKJIiTJorI+2q9FirXPtiHgTEvqzy92/P6CPaqyiFovKXhrz75g5x2GFn5R5Qi9wsmiIUoxSQjEucGqsAbx2Vjdq2qBzEnUxntZ5XH6AqjWDjnsZLCjJp9wi60tcMbGhj3gc0y5bCK4cqtljnKqT2wBnbiy7bSuigfUOXhmA6yQ6FrraSnCytsSG8CTMaAbslz2RcKqFOereuvW01i47bmMNoTaYf/6b/CVj09LDgDpDWvE63o5A9Y00Zavh8grOJOeSNmcAUa5v22G8V79Nj2xHYUu3YYGlf8sxvsBhRg5p4tg4Ns+IuphYjaYytjfOCqD4UgdLJydrpw2BcXPeCKaYSkJ9Qdu+wj4vkovnXQauFyfrHKbBDsNe0KR5JThRd8LSB9voJhKM4CFjBFHskXUDYpv8KSuDlkunYZy7y/i7pfn7jVbfNmdbGkhmMH31aaIMZIkdXyXZUPIQ74K90RSm081Mo6B2YYhkXTxrBnjipOIJVx7PcDyhdQdZ8HZMfITStx/qMpOvrFRtY+3tdth3sLHzUqDRKYapCYeBL1wcYqRYy8BRsS5oPs92jzta+zXonANVw/YALR4dWMR6P0mZkzZ+k53/tl/8xKtcXB2SV3gOPP/hlM167f1+7WsO6e+ZRZTOASq09mNv0HHX0W2Cltt4Ujfot+kUkY9iYQ7/473GiLXHlVvrZrXEu2ddHQs1kNYwGTdEFh2Q1+2Rw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,163 +125,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series adds __rust_helper to every single rust helper. The
-patches do not depend on each other, so maintainers please go ahead and
-pick up any patches relevant to your subsystem! Or provide your Acked-by
-so that Miguel can pick them up.
-
-These changes were generated by adding __rust_helper and running
-ClangFormat. Unrelated formatting changes were removed manually.
-
-Why is __rust_helper needed?
-============================
-
-Currently, C helpers cannot be inlined into Rust even when using LTO
-because LLVM detects slightly different options on the codegen units.
-
-* LLVM doesn't want to inline functions compiled with
-  `-fno-delete-null-pointer-checks` with code compiled without. The C
-  CGUs all have this enabled and Rust CGUs don't. Inlining is okay since
-  this is one of the hardening features that does not change the ABI,
-  and we shouldn't have null pointer dereferences in these helpers.
-
-* LLVM doesn't want to inline functions with different list of builtins. C
-  side has `-fno-builtin-wcslen`; `wcslen` is not a Rust builtin, so
-  they should be compatible, but LLVM does not perform inlining due to
-  attributes mismatch.
-
-* clang and Rust doesn't have the exact target string. Clang generates
-  `+cmov,+cx8,+fxsr` but Rust doesn't enable them (in fact, Rust will
-  complain if `-Ctarget-feature=+cmov,+cx8,+fxsr` is used). x86-64
-  always enable these features, so they are in fact the same target
-  string, but LLVM doesn't understand this and so inlining is inhibited.
-  This can be bypassed with `--ignore-tti-inline-compatible`, but this
-  is a hidden option.
-
-(This analysis was written by Gary Guo.)
-
-How is this fixed?
-==================
-
-To fix this we need to add __always_inline to all helpers when compiling
-with LTO. However, it should not be added when running bindgen as
-bindgen will ignore functions marked inline. To achieve this, we are
-using a #define called __rust_helper that is defined differently
-depending on whether bindgen is running or not.
-
-Note that __rust_helper is currently always #defined to nothing.
-Changing it to __always_inline will happen separately in another patch
-series.
+This is needed to inline these helpers into Rust code.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (46):
-      rust: auxiliary: add __rust_helper to helpers
-      rust: barrier: add __rust_helper to helpers
-      rust: binder: add __rust_helper to helpers
-      rust: bitmap: add __rust_helper to helpers
-      rust: bitops: add __rust_helper to helpers
-      rust: blk: add __rust_helper to helpers
-      rust: bug: add __rust_helper to helpers
-      rust: clk: add __rust_helper to helpers
-      rust: completion: add __rust_helper to helpers
-      rust: cpu: add __rust_helper to helpers
-      rust: cpufreq: add __rust_helper to helpers
-      rust: cpumask: add __rust_helper to helpers
-      rust: cred: add __rust_helper to helpers
-      rust: device: add __rust_helper to helpers
-      rust: dma: add __rust_helper to helpers
-      rust: drm: add __rust_helper to helpers
-      rust: err: add __rust_helper to helpers
-      rust: fs: add __rust_helper to helpers
-      rust: io: add __rust_helper to helpers
-      rust: irq: add __rust_helper to helpers
-      rust: jump_label: add __rust_helper to helpers
-      rust: kunit: add __rust_helper to helpers
-      rust: maple_tree: add __rust_helper to helpers
-      rust: mm: add __rust_helper to helpers
-      rust: of: add __rust_helper to helpers
-      rust: pci: add __rust_helper to helpers
-      rust: pid_namespace: add __rust_helper to helpers
-      rust: platform: add __rust_helper to helpers
-      rust: poll: add __rust_helper to helpers
-      rust: processor: add __rust_helper to helpers
-      rust: property: add __rust_helper to helpers
-      rust: rbtree: add __rust_helper to helpers
-      rust: rcu: add __rust_helper to helpers
-      rust: refcount: add __rust_helper to helpers
-      rust: regulator: add __rust_helper to helpers
-      rust: scatterlist: add __rust_helper to helpers
-      rust: security: add __rust_helper to helpers
-      rust: slab: add __rust_helper to helpers
-      rust: sync: add __rust_helper to helpers
-      rust: task: add __rust_helper to helpers
-      rust: time: add __rust_helper to helpers
-      rust: uaccess: add __rust_helper to helpers
-      rust: usb: add __rust_helper to helpers
-      rust: wait: add __rust_helper to helpers
-      rust: workqueue: add __rust_helper to helpers
-      rust: xarray: add __rust_helper to helpers
-
- rust/helpers/auxiliary.c     |  6 +++--
- rust/helpers/barrier.c       |  6 ++---
- rust/helpers/binder.c        | 13 ++++-----
- rust/helpers/bitmap.c        |  6 +++--
- rust/helpers/bitops.c        | 11 +++++---
- rust/helpers/blk.c           |  4 +--
- rust/helpers/bug.c           |  4 +--
- rust/helpers/build_bug.c     |  2 +-
- rust/helpers/clk.c           | 24 +++++++++--------
- rust/helpers/completion.c    |  2 +-
- rust/helpers/cpu.c           |  2 +-
- rust/helpers/cpufreq.c       |  3 ++-
- rust/helpers/cpumask.c       | 32 +++++++++++++---------
- rust/helpers/cred.c          |  4 +--
- rust/helpers/device.c        | 16 +++++------
- rust/helpers/dma.c           | 15 ++++++-----
- rust/helpers/drm.c           |  7 ++---
- rust/helpers/err.c           |  6 ++---
- rust/helpers/fs.c            |  2 +-
- rust/helpers/io.c            | 64 +++++++++++++++++++++++---------------------
- rust/helpers/irq.c           |  6 +++--
- rust/helpers/jump_label.c    |  2 +-
- rust/helpers/kunit.c         |  2 +-
- rust/helpers/maple_tree.c    |  3 ++-
- rust/helpers/mm.c            | 20 +++++++-------
- rust/helpers/mutex.c         | 13 ++++-----
- rust/helpers/of.c            |  2 +-
- rust/helpers/page.c          |  9 ++++---
- rust/helpers/pci.c           | 13 +++++----
- rust/helpers/pid_namespace.c |  8 +++---
- rust/helpers/platform.c      |  2 +-
- rust/helpers/poll.c          |  5 ++--
- rust/helpers/processor.c     |  2 +-
- rust/helpers/property.c      |  2 +-
- rust/helpers/rbtree.c        |  5 ++--
- rust/helpers/rcu.c           |  4 +--
- rust/helpers/refcount.c      | 10 +++----
- rust/helpers/regulator.c     | 24 ++++++++++-------
- rust/helpers/scatterlist.c   | 12 +++++----
- rust/helpers/security.c      | 26 ++++++++++--------
- rust/helpers/signal.c        |  2 +-
- rust/helpers/slab.c          | 14 +++++-----
- rust/helpers/spinlock.c      | 13 ++++-----
- rust/helpers/sync.c          |  4 +--
- rust/helpers/task.c          | 24 ++++++++---------
- rust/helpers/time.c          | 12 ++++-----
- rust/helpers/uaccess.c       |  8 +++---
- rust/helpers/usb.c           |  3 ++-
- rust/helpers/vmalloc.c       |  7 ++---
- rust/helpers/wait.c          |  2 +-
- rust/helpers/workqueue.c     |  8 +++---
- rust/helpers/xarray.c        | 10 +++----
- 52 files changed, 280 insertions(+), 226 deletions(-)
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org
 ---
-base-commit: 54e3eae855629702c566bd2e130d9f40e7f35bde
-change-id: 20251202-define-rust-helper-f7b531813007
+ rust/helpers/mm.c      | 20 ++++++++++----------
+ rust/helpers/page.c    |  9 +++++----
+ rust/helpers/vmalloc.c |  7 ++++---
+ 3 files changed, 19 insertions(+), 17 deletions(-)
 
-Best regards,
+diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+index 81b510c96fd2692dcb7ab4705f790bd3a41a630e..b5540997bd20d4398e2838956ed70b2fb61c5661 100644
+--- a/rust/helpers/mm.c
++++ b/rust/helpers/mm.c
+@@ -3,48 +3,48 @@
+ #include <linux/mm.h>
+ #include <linux/sched/mm.h>
+ 
+-void rust_helper_mmgrab(struct mm_struct *mm)
++__rust_helper void rust_helper_mmgrab(struct mm_struct *mm)
+ {
+ 	mmgrab(mm);
+ }
+ 
+-void rust_helper_mmdrop(struct mm_struct *mm)
++__rust_helper void rust_helper_mmdrop(struct mm_struct *mm)
+ {
+ 	mmdrop(mm);
+ }
+ 
+-void rust_helper_mmget(struct mm_struct *mm)
++__rust_helper void rust_helper_mmget(struct mm_struct *mm)
+ {
+ 	mmget(mm);
+ }
+ 
+-bool rust_helper_mmget_not_zero(struct mm_struct *mm)
++__rust_helper bool rust_helper_mmget_not_zero(struct mm_struct *mm)
+ {
+ 	return mmget_not_zero(mm);
+ }
+ 
+-void rust_helper_mmap_read_lock(struct mm_struct *mm)
++__rust_helper void rust_helper_mmap_read_lock(struct mm_struct *mm)
+ {
+ 	mmap_read_lock(mm);
+ }
+ 
+-bool rust_helper_mmap_read_trylock(struct mm_struct *mm)
++__rust_helper bool rust_helper_mmap_read_trylock(struct mm_struct *mm)
+ {
+ 	return mmap_read_trylock(mm);
+ }
+ 
+-void rust_helper_mmap_read_unlock(struct mm_struct *mm)
++__rust_helper void rust_helper_mmap_read_unlock(struct mm_struct *mm)
+ {
+ 	mmap_read_unlock(mm);
+ }
+ 
+-struct vm_area_struct *rust_helper_vma_lookup(struct mm_struct *mm,
+-					      unsigned long addr)
++__rust_helper struct vm_area_struct *
++rust_helper_vma_lookup(struct mm_struct *mm, unsigned long addr)
+ {
+ 	return vma_lookup(mm, addr);
+ }
+ 
+-void rust_helper_vma_end_read(struct vm_area_struct *vma)
++__rust_helper void rust_helper_vma_end_read(struct vm_area_struct *vma)
+ {
+ 	vma_end_read(vma);
+ }
+diff --git a/rust/helpers/page.c b/rust/helpers/page.c
+index 7144de5a61dbdb3006a668961cd1b09440e74908..f8463fbed2a2670ddfd4c23dc922b46b0913c3a2 100644
+--- a/rust/helpers/page.c
++++ b/rust/helpers/page.c
+@@ -4,23 +4,24 @@
+ #include <linux/highmem.h>
+ #include <linux/mm.h>
+ 
+-struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
++__rust_helper struct page *rust_helper_alloc_pages(gfp_t gfp_mask,
++						   unsigned int order)
+ {
+ 	return alloc_pages(gfp_mask, order);
+ }
+ 
+-void *rust_helper_kmap_local_page(struct page *page)
++__rust_helper void *rust_helper_kmap_local_page(struct page *page)
+ {
+ 	return kmap_local_page(page);
+ }
+ 
+-void rust_helper_kunmap_local(const void *addr)
++__rust_helper void rust_helper_kunmap_local(const void *addr)
+ {
+ 	kunmap_local(addr);
+ }
+ 
+ #ifndef NODE_NOT_IN_PAGE_FLAGS
+-int rust_helper_page_to_nid(const struct page *page)
++__rust_helper int rust_helper_page_to_nid(const struct page *page)
+ {
+ 	return page_to_nid(page);
+ }
+diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
+index 7d7f7336b3d2f5a32e6a2b6cf8407da37775cfd9..469ebf2f41c94744e2a2719d7c0eb7d4d7dc58ff 100644
+--- a/rust/helpers/vmalloc.c
++++ b/rust/helpers/vmalloc.c
+@@ -2,9 +2,10 @@
+ 
+ #include <linux/vmalloc.h>
+ 
+-void * __must_check __realloc_size(2)
+-rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
+-				gfp_t flags, int node)
++__rust_helper void *__must_check __realloc_size(2)
++	rust_helper_vrealloc_node_align(const void *p, size_t size,
++					unsigned long align, gfp_t flags,
++					int node)
+ {
+ 	return vrealloc_node_align(p, size, align, flags, node);
+ }
+
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.52.0.158.g65b55ccf14-goog
 
 
