@@ -4,231 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5224CFD2F6
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 10:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26210D11700
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 10:17:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF0F36B000A; Tue,  2 Dec 2025 05:16:53 -0500 (EST)
+	id 614976B000E; Tue,  2 Dec 2025 05:17:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC86D6B000C; Tue,  2 Dec 2025 05:16:53 -0500 (EST)
+	id 5ECD66B0010; Tue,  2 Dec 2025 05:17:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B90136B000D; Tue,  2 Dec 2025 05:16:53 -0500 (EST)
+	id 501AC6B0022; Tue,  2 Dec 2025 05:17:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5ACD6B000A
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 05:16:53 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED76B59A1B
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:16:52 +0000 (UTC)
-X-FDA: 84174127464.07.AC28B4D
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A2D08100002
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:16:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=pz7gfWYJ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NAKD7xcz;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764670609;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FC786B000E
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 05:17:30 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD39A8A386
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:29 +0000 (UTC)
+X-FDA: 84174129018.25.FD6C8BA
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 33C9440004
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=F8zu7ZoM;
+	spf=pass (imf11.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764670648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JWG9gip7ejsOLFXfjpczsbXDu9ZXfXCY8sPnd69Nbjk=;
-	b=yYeHH3TxHMOI3SIXwFazUKJ+kr/Yr/qJbOXoX83qyN396gUq9dkAXPz77fKoGIgwCxclD+
-	DzZaPoOyG/B3BggZRRlsuNGqgiloh86Oizz0WF65i1dIlJKrqIBth/T7ZtKlTUZY4D0gI4
-	9on4CfVGswfddaVmohgJKb8foE1kaeY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764670609; a=rsa-sha256;
-	cv=pass;
-	b=LiZfQfjSeR8zuQkB7OBX+ApN2PW71XJVggSEdq+OtNg5YkM4ggnF1z/hK9j/NcFgeK/wgD
-	k82vIAlOq6v2hwRMc1gc3uHWW/S8y8WJqsjZjn8cdSy7PnUdkfGHpk7vrfWdjjKOKh1epo
-	knDsq0uis8PlPRhZHGu/jobPE9LfbJw=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=pz7gfWYJ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NAKD7xcz;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B21NFpU3432449;
-	Tue, 2 Dec 2025 10:16:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=JWG9gip7ejsOLFXf
-	jpczsbXDu9ZXfXCY8sPnd69Nbjk=; b=pz7gfWYJS1MobplpIac58vAfJIhuwzYt
-	kyW7lbKjtsNQbsgEGiaLi6VkLzYjj3k2UbFovN2m8o+s0OvBQcFdVB/SyByXUBEo
-	jv49ETZ20VgQK7XXuRfjISH3AU/VDrFdgeg/yTfkYsn8y8Zc8vWG+W7WRPKAn6uH
-	L3s5YVxJ6JecFqSJrnQ3b/mMYPU4URwmM8VBP0FKJlcmUn5Df0VYUNkhNcJjw49H
-	72s1hn9LRXd+mEx+DDwZgaeOeO4+NhZ4JeLSvhiz4oBr1XlbAVCBgWdb2BiqUQ2v
-	5BnHnasdE0PC+Vz+RPGY6WeG1nx4ZE4UkmLtyEGamvTYYoAYFAZY1g==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aqrvc4rfu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 02 Dec 2025 10:16:37 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B28B6ei035370;
-	Tue, 2 Dec 2025 10:16:37 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013049.outbound.protection.outlook.com [40.107.201.49])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4aqq9k6kc4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 02 Dec 2025 10:16:37 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P3CgCZE3YJx1RN3qzmYR9/+lQAeTfC0GU/QQyutxrIDp9vSvPyUowIH6OeOeqAmOrjBBsihG3w5LwbPWW9Qd8B/Y/7D3X4sevU0zI32aOOsIXdwH+6wk1x9+y6C5qNS3DfvROOvjkIFxKHndMPJheWfBWGNkL7hf8M41/Cml1eHPxBO/AKamj712QmvQW7rQfEkMRAx0z6i8BUczcfwsj1Fx2WVG+ezHkT/zVx8Aw6xtOgkUXSvM5r5k+6v64ndXxoiCj9O70JL0qyPTXNCfzY86PaelsjJFT2gDQjV/t+Wh1Ko/vXmD7PAn6cEuNYmKUed/erGUdxC5YlHp3iWPCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JWG9gip7ejsOLFXfjpczsbXDu9ZXfXCY8sPnd69Nbjk=;
- b=tQ32qmxb75aLtbS4YO3fxQ3X1IwN+94Cu403idCG9v/LC8RevAeQzKC7UlfdUKRJ3IxgzhVkPsJhp0HjVPftcVWznPYf5fYS8EodT/4XA4rpBH45CPJ3zZGSZc5jblvl8zs41yfjB+mjetCS9tFXZWFPEMb0l7jgnYIB86EZDytjX02WlDM7iOhLrDXwrGJ1kmG5DBf8D0piq+cdLtN5aHGUJbbTWp9tXqzh0WlM2AXKerX3dJIXe+0PlAJ8Vo8+WakEpIkuHJ62rLuPyuVpEHox/ET2kMBOptJQ6Ikenm/w4I0KC3kcEpmzTUUwUfOZzc+3slqG2gZOJi/xrh4/pg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JWG9gip7ejsOLFXfjpczsbXDu9ZXfXCY8sPnd69Nbjk=;
- b=NAKD7xczDBQioVsGYQX/6YHew5AXbOIVbwFHZrbMies77XDc5tXIEm9tnQ+WbA957ZWtnrsQZYpXD9WYU0A6OO7jy3anrNA0h9n1x18tPRRc4o8X8u0Orxuqo9r2NrZG5Fj9ic5cams7KBNHWX8sjIK/GGfegEggrPU8bewS1ek=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by CY8PR10MB6468.namprd10.prod.outlook.com (2603:10b6:930:60::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Tue, 2 Dec
- 2025 10:16:34 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%6]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 10:16:34 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: vbabka@suse.cz
-Cc: surenb@google.com, Liam.Howlett@oracle.com, cl@gentwo.org,
-        rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
-        urezki@gmail.com, sidhartha.kumar@oracle.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
-        maple-tree@lists.infradead.org, linux-modules@vger.kernel.org,
-        mcgrof@kernel.org, petr.pavlu@suse.com, samitolvanen@google.com,
-        atomlin@atomlin.com, lucas.demarchi@intel.com,
-        akpm@linux-foundation.org, jonathanh@nvidia.com,
-        stable@vger.kernel.org, Daniel Gomez <da.gomez@samsung.com>
-Subject: [PATCH V2] mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction
-Date: Tue,  2 Dec 2025 19:16:26 +0900
-Message-ID: <20251202101626.783736-1-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0063.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2ba::12) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G2xrVxHIUxszLmAhkrp3ZbsiVGismeNbFVIaAkX200M=;
+	b=JNhe6xpV/XmGHB+0q160TZkwSt56XkYG7S/yw8cQzxd6xPHIY3Oqe2KQAEZZYJ8oJluV8Y
+	5GlYV00iPrExeePu8KmhITTAoD+O/oXMoTb3P2lKCPLpaydLGXfRt2oWep4ZUvrelGrbxR
+	aQCEm4QFWIOG0p0IW8EcYzTPmQwed+8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=F8zu7ZoM;
+	spf=pass (imf11.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764670648; a=rsa-sha256;
+	cv=none;
+	b=NQbRD3up+rItu80wTODvuf91Ntmv6w1QX9RVr7uE+l/AGtp3GC5IP/OX430ExaItWQkiJg
+	wWBXxJnsKZwQs8AeHSOmVkE6YrjK78nWI3OaU8qZosp63v6zcIRNIyvPrMjISCEMQDBlrE
+	jq9jpHoiiXx4ESq4emhzq8+xK57HA3E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1764670645;
+	bh=N2AsdBqZNtbYogJcBwRYN1psPAl2r+q308j/n/zu/no=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=F8zu7ZoMUaldXwPoM2FCMg/6Lzwz40NNr88YDofPZKSyv2AZnX4QHrzDcCRCSC+Fp
+	 /YTMe2dI6WqtI4PhJCx/+GCvQrASYQ65bT7Y/z7g/829OWRtLWXcQX87MAcU3nSpQC
+	 75lSWFhiq3cBZotUIrFisMRb+oj34k9jw1FirOKKty/tOa1qM5r9KmMB4UaKS5IZxB
+	 KxrYlsvJ2phGwfsJv1eEaw0wZupnG1LKmSVZVcYOpFeSn4Izce8+wWPS0Vab2+Ht3S
+	 o1wD7UzV6KFEkBtZKvUIDSSQ5ZE9naEfrkqwA7ICbWP5T7PtR+Yi7H4kg0iBPyOMTy
+	 zWSamgvvtNr1A==
+Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1988317E1341;
+	Tue,  2 Dec 2025 11:17:25 +0100 (CET)
+From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Herring <robh@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	=?UTF-8?q?Miko=C5=82aj=20Wasiak?= <mikolaj.wasiak@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christopher Healy <healych@amazon.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	kernel@collabora.com
+Subject: [PATCH v11 02/10] drm/shmem-helper: Map huge pages in fault handler
+Date: Tue,  2 Dec 2025 11:17:12 +0100
+Message-ID: <20251202101720.3129-3-loic.molinari@collabora.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251202101720.3129-1-loic.molinari@collabora.com>
+References: <20251202101720.3129-1-loic.molinari@collabora.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CY8PR10MB6468:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd6b90b6-d555-411f-1498-08de318bdea2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ARdhVwjn0eBySOs670EDDN+XQSWxfTZtotQoVktP4XPErWLy2Ix0JaxQQpyF?=
- =?us-ascii?Q?arnnHGRWWAD3KdWuegobbXB2qjQz4Ye28uqlyRpZjBYy0WLqjf564C1rQrJU?=
- =?us-ascii?Q?Wx6aGmesUtwpZiJFv9OIShIX78q44eI0TddL64FXevSLMacvS1ZcptTjagon?=
- =?us-ascii?Q?bpKzDKmm/DWVtF+Bcvv9pii9kB2Nnwyl0rB6TOu1JbVSDrgKEzpR+ziVxezW?=
- =?us-ascii?Q?oQUbhbh6+OoTt0fQdo8BySFhJjc7ikJBsWWvl25PDJ7gSAYgkID+l6EI5enn?=
- =?us-ascii?Q?s0//Z1+u5Hz6gJD2dbuZAPw2/3uVQS2xP5FdMXivNVa1TuUYtyEpct2vdCnF?=
- =?us-ascii?Q?yHyYvfB4XvkYhtULz2jL+Efyvi3X427RZHcM/+PY0KXgBExeJ45KCvDf5pBM?=
- =?us-ascii?Q?qWMoh3gnFrdhtZcZCso+nj0RUESRG/aLJAw5mGaKv183DSizr9J5TsA9I2p3?=
- =?us-ascii?Q?HY29J1HcAo1dv+fYmBwZ81jKrV14AS2Wzi+/1dy6gJZ0N5OKjs0PQYnWrhpl?=
- =?us-ascii?Q?Rd58bkXZDcyx9ioY68vy3w5KuxKFlzDl62erj0MLS6ijl0qyTgzrYqV8CJqB?=
- =?us-ascii?Q?Z299Db1gcl5071gZHNp4N7hUnBJ/kqVBLwb1kiKhhmek2c57qn02HxqNGY+B?=
- =?us-ascii?Q?ZJPetZL7EYTo1YB4JwpSz/IscPB3hzqmCLE6S9uLjPc8fcafDvjRk4SU+Kp5?=
- =?us-ascii?Q?KGBRw8rp0X7Y+LQ0yrw3DoUTculIsCI/sDISZuaK/ErG8rEkqke0smhVPqsu?=
- =?us-ascii?Q?kzrFiqnmz+4rvtESYyG8uDVBrWZJlvecrcSSfQGjjQa05T3vhOpVPCuInVL0?=
- =?us-ascii?Q?t9CqnBKzffIRBmNmxFJzgMVh6jxcRhM+AqiEPORQMEcsT1THfq0i6k9kMRF4?=
- =?us-ascii?Q?zsd47ngk/syq5zUfTH6f5R+Z8G6UR7rwqxB9wAPdfA1U5Q8Wfq4PJ8lQ1N85?=
- =?us-ascii?Q?rGtIzVLAtdo33XSNt8kbLTXnB6gLXxftrQ5GgmyXbvftcJxhFRk1EKb3csCS?=
- =?us-ascii?Q?ofRvtULBjCgrGbT5rMviH6Ucv2PhbVCcHqILfS6VpY+7Pk/gNGGcdC80a5VA?=
- =?us-ascii?Q?eoi4L4PljAvDVdHJl2FFaJqC6sQyTcRyWAXlcZKs6pQy1vBqitmgQjZm/sj7?=
- =?us-ascii?Q?ND84UZ3RZRRDHmd1IS2cULEL/veHmRMpyne0HDx0iT75BI4tSZZWYTZbF/iE?=
- =?us-ascii?Q?T3ABP+4yeeVSnTDVHKh/Ga6KatqzWBnN74DCTRQrPxFBnqRhjt0JLkrZk0YW?=
- =?us-ascii?Q?v0T/rGv1Ngg8f1W6HOi/4gDFG8jhawFxI/t2SaMZzgON45egtM/fehEOW40N?=
- =?us-ascii?Q?mVZWeiGvl6lf2xrxetFHevNXjQ1424K06KByNZxp+Kzx3vxxBOAxGGjv1APS?=
- =?us-ascii?Q?CatzNLkiumw5qugE8xxn+3mPVNJAmUFk4KMqBq3SPrYyCRVuxidQp1ZaotMe?=
- =?us-ascii?Q?L+YeZRzgygalglA8u/t6cUerBrGIp2wScbAGmV/x+mS65H4DMwTidA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CE84uv5+8iOauaNuYAFUWg+nu0H0U/N40kvv+UqxTOFzmMgoBAJEVGgngflW?=
- =?us-ascii?Q?was5t27d+2GIN6e7zib3I7IehHvH+o0rA9dBhjOMmBqCq0YM5fiWIej3vMWT?=
- =?us-ascii?Q?UIT/YMd50lAtez+dyo12y2GtL4zoECVDGAy4ARvOOhmlPL3npohEtpzlGxaE?=
- =?us-ascii?Q?DD73a+TvwoW347Of6bVbzJFc+GYumFS6jPDeovFGuJklSxHvbRmRFU3LgFgG?=
- =?us-ascii?Q?KSVB5HzL6Tinif3ClXWo10la/HXTF2QF8/XDsxtoHNs/LCBczB7fnxzr7IFV?=
- =?us-ascii?Q?p5ChTVxy/wRQV/3J1zmtTCGZOY/ocrKW8/EiaFoHJAKBcG07IVR2v6ncfWAM?=
- =?us-ascii?Q?GjHX1jCdl+stUEVWf+3B0xpePadesZI6JaIr12bXx+y/WLVCk5g5SZDmtMam?=
- =?us-ascii?Q?HHE98snkWNZPlIWYy1cLxzweYrsiYLxLRc/Me18TlKsREd5HnVY/R4mZZGvT?=
- =?us-ascii?Q?D/utisWsUvioiAEAdBF1QnYX2N8p1ZvGPdGUsIFD9TUJstwhIcsXQYBL5SsW?=
- =?us-ascii?Q?pKo+95bAEIIdY35a40/7x3tn+oJxak2yGCTZ19q9Q8Zy14xjtrNMzADuBNI4?=
- =?us-ascii?Q?/91xjagQ0fRZb+t7vL9bNXmFLKk/156SlEYESiayFZfb5biQtKtCvTy3AcCS?=
- =?us-ascii?Q?/0PUw4+81GnnoexVX2P7vD17SXDI05UzpZyqD+HQxs5vMpBcOXMmMRMozUZI?=
- =?us-ascii?Q?r+ePJ8n7/T0LZlZT0VX8YnDJL5eggDoOqxRuH2YsR3l4JuG7bF2nr3t59ZnN?=
- =?us-ascii?Q?DKAJEmvwckJNcNml5RyEv0esbk+TQOGJCTdUxzZ/PIj1Z7Vfi+0SSaznyukE?=
- =?us-ascii?Q?DHtuT4vi4wX4uko0f19SkXcfJO1SZRM4Hz7WcJ5B1TbT1ms1vICKJwhOHmuJ?=
- =?us-ascii?Q?ayjY1rfB4TLS9T5JLaQnU7QDgoeQ3Gvjf/BIf+mt9mAN8gwAHJCouqr3oHv2?=
- =?us-ascii?Q?n0Iv81wS+Pk8sJbxXmTFPNXwnU1Y5oql1YzBERuAFyLLao8umsaJUMB9zXLf?=
- =?us-ascii?Q?7cSW3HrbBPKMKGk2vWo5p4k3/kQ/OQBGZwDVskp6BkwXjCv9jbVQ8sKAvvtY?=
- =?us-ascii?Q?4GfJkiNi2JoGOVUhHu++M4kbdqUgB0UJ2Rodk5L4APJbithRPB8KK8GWzvHH?=
- =?us-ascii?Q?0khXgPDN+y0JVipTAOM/XXSyeKaGV5ektFf5T8LxmM2KFXTGiV3UhNIzXrJc?=
- =?us-ascii?Q?v58AyDrjSB9SgQvqmXgsjIj0Ho5vpV6VPT0ZXlcWAFX4rxxrc3k40DGqDZID?=
- =?us-ascii?Q?VJiVSK5IQUGLaEcWc5yj+SAUqr/Ch3zPmux3oOYbyVw/+lXBtfThma5eljeN?=
- =?us-ascii?Q?74lmLFwIV5je6ozWMvAGU9r1v0KW8li5sQf4rKBOebHShck6bP+u61FZu/W3?=
- =?us-ascii?Q?iIqmFC07EFe+fD0TS0FOIUCApFntU9LW89T/MoVYfHGG5zeJ3Mqym6LQdNdv?=
- =?us-ascii?Q?XvpgMLj4xng9tM+QrZ6Me+Af82TCDjL0gVUZ5RaynGFDePvVDVsHxDr2hLpx?=
- =?us-ascii?Q?bpJzAyRkTaAsK2WNks6rS4hmV0zI9Q8ekpo/GWl455xdhFK0P99rm+XvRY7E?=
- =?us-ascii?Q?ob46b9pIGCMbLOswVidqObOYNoyUDIUq+GXnyID5?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	lAxo2blHHeAsoHUxYEcaSXTZoiF2TUAU45UJnUaujYxJ+sWnio8vB72qq17b840osqVl3fM7By6/cQhMrIO/omoSR7xkyi/u8p8LYCxwVUBEb14BHejpFqmRWenFieAWF36BA5RRiu7DPLzIMguNSL/6U42wIyeBSY0j5SBJm4ARuppmB2oo74bWL0LkgXQDldHw4MnuGUS+HJ/FUYZ/nQT1yOV7vrIAY06Ln90tyH2CXrFfgowL9kKSbLzomgnV72UFHd/Xbr1sOduxPwTjn133ZkPwcEWgPwSvaw6bPTnr1hLIlFgty0m6HoILrDP45QPkoZQLVFsHU99Yz1p0YAl7OMiglBn3JaPectKxdqY9Ay1YQmJJ/xbqE1kvnWw4f5MsXSNNP+bMt+HVSqumLvoJkwRYxwpuyNSg0uZ3VwtNnRkJo49HHHF2JYVVI1O32v4iXB5f7zyqV/nHVhBk1KikGhakiho8EGJJiR7NvaVEZSVvUs7VjDEHgrgEX586DTDaIfkVVxag5BSXURjGrF9XSeVbaFu72Ii6Qi6TFKpRnWJC3Laz8XFEpLczXVU/cXEI6X4o+IjE4/m3v4fj8aCXTQU6CpbpEbzGK287ZMI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd6b90b6-d555-411f-1498-08de318bdea2
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 10:16:33.9945
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 96AwAhwmuUqz5HEGppRgrSTvt2nHonCSIWX84NovmMzVsQkyEPHORBCkTqChHETbjpT/wMdmF4OdaFkbENNeCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6468
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-01_01,2025-11-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
- adultscore=0 bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512020082
-X-Authority-Analysis: v=2.4 cv=ZeYQ98VA c=1 sm=1 tr=0 ts=692ebc85 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8
- a=hD80L64hAAAA:8 a=yPCof4ZbAAAA:8 a=yO4LRhKTJlilM3sNaQcA:9 cc=ntf
- awl=host:13642
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAyMDA4MiBTYWx0ZWRfX7g3vP1GJx7m1
- o4hI30UF+n78tKT/Pz0T2Xir9lMqUOKPaR+jugqpgW4O47fNcn9U44OPe/TcNW2BA7m3ptA7dHr
- qhzhcx5hZrRLU2LdAGncYDapFtzXptUYD7qW8nBu5PX3sEd7rG9gbXRuAxAPzpqjPrhfE6HAlC/
- PmU418YvO556RK9J42/3Q2HrHivdbxGg7b4AI/ncsNACLZRJQtf45TUSLNlQ5sOaH/8bvBlYtXT
- BB9Yk0NNqCbq7WSIFzyIYENmXENLsAGommosHA9raKogTCbvc2xbzsUh5WEP2RRvXG9tqYrW/T2
- h1y3OcfzZd9fgAKd77hXLhYFPMICoEU1ETfhcOg1ud2251ppeKCOxyfo29JydJ+X9F3htmnsPAv
- Q8v11XKrlwCyuSVrKm9pdtFmo+rf3gjV/vxakpIxCdquV9OpSTk=
-X-Proofpoint-ORIG-GUID: uLaC3CE4JNXYlTrxfwp3Vi8YxrQHOJdH
-X-Proofpoint-GUID: uLaC3CE4JNXYlTrxfwp3Vi8YxrQHOJdH
-X-Rspamd-Queue-Id: A2D08100002
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ujxgrhsru9xpzyohj3tfa8d37oa83onz
 X-Rspam-User: 
-X-Stat-Signature: wx8wajx6jroc969ajuq1bxai6pr9rzip
-X-HE-Tag: 1764670609-196399
-X-HE-Meta: U2FsdGVkX1/zCYC2ZA7G/T5G0oR0IyUsoQTrSiJY02cMmTCKpFn1SihenpEj8gXBiKHxHRm3sSjQokcAAzlQ5sbvpfbGRPe9DRYuySTAelzKvQb7sre2AqOq9xdbEVMJg50WkcLb+CdLziQLzZXC55DT3AHDlmcZPw6L4q1xLKVcWnfAxLO8ggil17nCVkfuiN3htPJvLnvowyZMUhBJQStUh/s19vIOPqWpEZnqncmEmUDZZ2rkpVnIN8UqGDn5e5PRL7Sos5D1gVG8DIlCecv4ZhYR7t7djb/jDKGyunAJCnbc3Wu/J3Zw+tMAFhO1zDWjMTyt1m87k1c32CdyveFei/e/l2wOwnrQhx/gxH3q+zdqzG2ORooZL4RLypLSiOM7NIHL0OE0euTrT9V7LaG4C/xGG31+7Uh6cE7uHWwcVMj+9pjC0SYmCmPqX0DZJ3ALv1NlVcQS6KtGs4WtbBuTduXNAT2Pq3TQ9+EfQgivwzRsIQ0/MKaXHyqfdnOAmWhUqbFVs3VySDchEpOmBl0JNPJhR3G5ZYvCaKXviuCLC1Rwh/r2IZAutB76Fsyubwati+3a7eoqYrAdurVVIwWjvQlm9+/yhT25T5JgnYKtqKnMthlSUYu9zhyVq44kcG+Agd8lNDODRXHA+55W6I864yJBQluPtsjrVCkMLHZra/ARjzo0IULleJ1fElNipJsXLIlv/ZWEHtxrvRWLjFa2AJXmwf34S9vKZodI2QKyrJLuO7dzvV9Obvy+HTG6cUvPBFt/hmOQ8D8rbQFs/NA27ULnCHa09MsWBmBtOvXvIBDCf3y8DPwoMZijH+Xn5+L+rxi1bAIn+vL9WBEH81pippkSE8uC1Mp3GPUjQGfEVAd43liMvUL5N/TsviCjhKKUItSNmy+3WcG+mzq0Ok751DcC9TYAKiaZhMfYiMBVAC+7ON1EHzWOO0BtepS8udoaRir12iBeJXr5k/y
- wQnbHHtm
- 66Bx8SSktMz4X0APDDkF4aw96kFrXTvK1IzP9b2GE02VXUcZviv27LaZEeIejta6sYK5ZrW9VOI4s5MxzBZsnOSXRQ73ZM3SpIsyu9XtVt/XccC1FQw5k/LHbUcAjp4DAlLLS59N9cSAP/xL6SNaXSenQsb5i3ODnK23ZIXb8OIJCLi6akk+7swdZYGjzbCEEAGmvkx0lNP7sOxFkVkjY7ujsQKuA5nCOOdU2Qq5OQhMBDHBiZ8YYgo815X/hJowB4TG+qqiMwCQjc69ZaI59GkHhde0S+ZD8RvUCmY87bd2uz/6YUW0bVPhYj1CRnBtrK4GNMCvjLsFNcw5tiNBsqce11BDGYBxuX0/nnjeSwaAN1ZFLy0rAHFwv6zZdgXsDDz1IAeLznu2u26NYL541qVKWzxmf4Ec9ZS+9yJ+J7xoFE6hct1jIL7ni80yDPMUhnaRAR9kbEWD18XFuYpW4+gtxQC5gPTu5gsmleLtChd2CGL26JU7eKzN9ALTrvtuCxl8Nj5sQB0NMilInBDpvkF/EDa0otk+6KNJXYJc1OD+P7vMNpcpNFqfwBZgEYzn5RO5vOoXOU4sPkhQuOjOrj4RZT79Qc8zQF8bn83UMqgZnQIZ2KxVfzpfvrodP4TZa95Ds5QRHs8KIS2AFagXNQB9WNUjCq4zRmrgInZmN3VcsbhWJXkQs7aUv8z91PAeM0CtJmebD0XN9r/9BrPVcmYuLfeqMSleeJFvcTr8g6ZT2g+0jpOZbLkm+56K4f4zIZsgLa5zaePXJtXdT0zqYBS7jwd2TjrQm0rgg
+X-Rspamd-Queue-Id: 33C9440004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764670647-103716
+X-HE-Meta: U2FsdGVkX188XruSaexbCYzfZUvMT8xQT2xl+XaENZo2Kby7e4g6vztp53Z6EIPHEUpfkqB7x8ju+mY+Ute2S2Dvqjr3OUuqJ/tbeUZbW7f7R09NagKunYLLjnTxtd6W6lKTL0z8pkQcWoYI9Vr7fVAD6ZXzn0qcPTuO9hG1aOeF9SU5Hevwxlrrq3Rsjrn5Q25X2yqSjw0+3b3v561+XGiSRAAw3/ypMulNfsdchIqrZwEoFVuIxp72pAunxVu/0B/J7lsYIrJh3HzjsTrmeGwsz/G6Wtu+4DX6cbv2CRos0j/KImm1quHd8UnmFcJqWh9WbdJGuAxddb+n884GXtx9yiL3yfB+ssXMv9VWBoL/xj9YIDlX2kT11SsmHwxhABB6JY64aVR8WcQ4v3wE+myFTwIeNeS6+gZondqTYqGEIBqzEs1URjndmwfc87hTjM775nN6JPZRV+54e6F6zzf9Z5H9ygC+Gi9lfmXfC/sjpbTj31lyx5ewef5Y9lq5uzrDgv5NgMco4hOjzvKIN1/lsCmYuBoLyU0C6NkKYNDh9w4EY1EkxchgHiu2ycTUoAc39Of23I8SFQ9zys53RVwOHAGr8bH6Nx1U1qsNMYu0orc7NNJ7Z8ZcNf4EIVEgZqBNhUga2dCiPn1KrtHpjvKn67rcatlWWuqO7O6Pjn6MvpreoxhKzAIyByGMzmeA9Nm+cA7KotEDHVDzQ6vXKIjWdP3Y849JzUCoWppG2io1KWcBc2rvD0+QXUJB1ywl6tjEMMACrxpruwmsPRXVTbfosotCyqXF0xUttTt3Kg3vbo4ymETO4ogxsB6wJ8p7eG3Mbih19c18JyxEbnxY5r6IY1AHCnH2S9zlQQfazk4AQqTbqjXwoEkIbkUkoRqFc0W9CToNWblbx/BLGkgkxzMHMJKjumBOBWQow5v7FUdy4A+recPY0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -237,259 +124,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
-caches when a cache is destroyed. This is unnecessary; only the RCU
-sheaves belonging to the cache being destroyed need to be flushed.
+Attempt a PMD sized PFN insertion into the VMA if the faulty address
+of the fault handler is part of a huge page.
 
-As suggested by Vlastimil Babka, introduce a weaker form of
-kvfree_rcu_barrier() that operates on a specific slab cache.
+On builds with CONFIG_TRANSPARENT_HUGEPAGE enabled, if the mmap() user
+address is PMD size aligned, if the GEM object is backed by shmem
+buffers on mountpoints setting the 'huge=' option and if the shmem
+backing store manages to allocate a huge folio, CPU mapping would then
+benefit from significantly increased memcpy() performance. When these
+conditions are met on a system with 2 MiB huge pages, an aligned copy
+of 2 MiB would raise a single page fault instead of 4096.
 
-Factor out flush_rcu_sheaves_on_cache() from flush_all_rcu_sheaves() and
-call it from flush_all_rcu_sheaves() and kvfree_rcu_barrier_on_cache().
+v4:
+- implement map_pages instead of huge_fault
 
-Call kvfree_rcu_barrier_on_cache() instead of kvfree_rcu_barrier() on
-cache destruction.
+v6:
+- get rid of map_pages handler for now (keep it for another series
+  along with arm64 contpte support)
 
-The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
-5900X machine (1 socket), by loading slub_kunit module.
+v11:
+- remove page fault validity check helper
+- rename drm_gem_shmem_map_pmd() to drm_gem_shmem_try_map_pmd()
+- add Boris R-b
 
-Before:
-  Total calls: 19
-  Average latency (us): 18127
-  Total time (us): 344414
-
-After:
-  Total calls: 19
-  Average latency (us): 10066
-  Total time (us): 191264
-
-Two performance regression have been reported:
-  - stress module loader test's runtime increases by 50-60% (Daniel)
-  - internal graphics test's runtime on Tegra23 increases by 35% (Jon)
-
-They are fixed by this change.
-
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c9301@suse.cz
-Reported-and-tested-by: Daniel Gomez <da.gomez@samsung.com>
-Closes: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org
-Reported-and-tested-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 37 ++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 5 deletions(-)
 
-No code change, added proper tags and updated changelog.
-
- include/linux/slab.h |  5 ++++
- mm/slab.h            |  1 +
- mm/slab_common.c     | 52 +++++++++++++++++++++++++++++------------
- mm/slub.c            | 55 ++++++++++++++++++++++++--------------------
- 4 files changed, 73 insertions(+), 40 deletions(-)
-
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index cf443f064a66..937c93d44e8c 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -1149,6 +1149,10 @@ static inline void kvfree_rcu_barrier(void)
- {
- 	rcu_barrier();
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index e47ab3ebb5c2..4e2e58d92b36 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -567,15 +567,36 @@ int drm_gem_shmem_dumb_create(struct drm_file *file, struct drm_device *dev,
  }
-+static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
+ 
++static bool drm_gem_shmem_try_map_pmd(struct vm_fault *vmf, unsigned long addr,
++				      struct page *page)
 +{
-+	rcu_barrier();
-+}
- 
- static inline void kfree_rcu_scheduler_running(void) { }
- #else
-@@ -1156,6 +1160,7 @@ void kvfree_rcu_barrier(void);
- 
- void kfree_rcu_scheduler_running(void);
- #endif
-+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
- 
- /**
-  * kmalloc_size_roundup - Report allocation bucket size for the given size
-diff --git a/mm/slab.h b/mm/slab.h
-index f730e012553c..e767aa7e91b0 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -422,6 +422,7 @@ static inline bool is_kmalloc_normal(struct kmem_cache *s)
- 
- bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
- void flush_all_rcu_sheaves(void);
-+void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
- 
- #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
- 			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 84dfff4f7b1f..dd8a49d6f9cc 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -492,7 +492,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
- 		return;
- 
- 	/* in-flight kfree_rcu()'s may include objects from our cache */
--	kvfree_rcu_barrier();
-+	kvfree_rcu_barrier_on_cache(s);
- 
- 	if (IS_ENABLED(CONFIG_SLUB_RCU_DEBUG) &&
- 	    (s->flags & SLAB_TYPESAFE_BY_RCU)) {
-@@ -2038,25 +2038,13 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
- }
- EXPORT_SYMBOL_GPL(kvfree_call_rcu);
- 
--/**
-- * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-- *
-- * Note that a single argument of kvfree_rcu() call has a slow path that
-- * triggers synchronize_rcu() following by freeing a pointer. It is done
-- * before the return from the function. Therefore for any single-argument
-- * call that will result in a kfree() to a cache that is to be destroyed
-- * during module exit, it is developer's responsibility to ensure that all
-- * such calls have returned before the call to kmem_cache_destroy().
-- */
--void kvfree_rcu_barrier(void)
-+static inline void __kvfree_rcu_barrier(void)
- {
- 	struct kfree_rcu_cpu_work *krwp;
- 	struct kfree_rcu_cpu *krcp;
- 	bool queued;
- 	int i, cpu;
- 
--	flush_all_rcu_sheaves();
--
- 	/*
- 	 * Firstly we detach objects and queue them over an RCU-batch
- 	 * for all CPUs. Finally queued works are flushed for each CPU.
-@@ -2118,8 +2106,43 @@ void kvfree_rcu_barrier(void)
- 		}
- 	}
- }
++#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
++	unsigned long pfn = page_to_pfn(page);
++	unsigned long paddr = pfn << PAGE_SHIFT;
++	bool aligned = (addr & ~PMD_MASK) == (paddr & ~PMD_MASK);
 +
-+/**
-+ * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-+ *
-+ * Note that a single argument of kvfree_rcu() call has a slow path that
-+ * triggers synchronize_rcu() following by freeing a pointer. It is done
-+ * before the return from the function. Therefore for any single-argument
-+ * call that will result in a kfree() to a cache that is to be destroyed
-+ * during module exit, it is developer's responsibility to ensure that all
-+ * such calls have returned before the call to kmem_cache_destroy().
-+ */
-+void kvfree_rcu_barrier(void)
-+{
-+	flush_all_rcu_sheaves();
-+	__kvfree_rcu_barrier();
-+}
- EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
- 
-+/**
-+ * kvfree_rcu_barrier_on_cache - Wait for in-flight kvfree_rcu() calls on a
-+ *                               specific slab cache.
-+ * @s: slab cache to wait for
-+ *
-+ * See the description of kvfree_rcu_barrier() for details.
-+ */
-+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-+{
-+	if (s->cpu_sheaves)
-+		flush_rcu_sheaves_on_cache(s);
-+	/*
-+	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
-+	 * on a specific slab cache.
-+	 */
-+	__kvfree_rcu_barrier();
-+}
-+EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
++	if (aligned &&
++	    pmd_none(*vmf->pmd) &&
++	    folio_test_pmd_mappable(page_folio(page))) {
++		pfn &= PMD_MASK >> PAGE_SHIFT;
++		if (vmf_insert_pfn_pmd(vmf, pfn, false) == VM_FAULT_NOPAGE)
++			return true;
++	}
++#endif
 +
- static unsigned long
- kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
++	return false;
++}
++
+ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
  {
-@@ -2215,4 +2238,3 @@ void __init kvfree_rcu_init(void)
- }
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct drm_gem_object *obj = vma->vm_private_data;
+ 	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+ 	loff_t num_pages = obj->size >> PAGE_SHIFT;
+-	vm_fault_t ret;
+-	struct page *page;
++	struct page **pages = shmem->pages;
+ 	pgoff_t page_offset;
++	unsigned long pfn;
++	vm_fault_t ret;
  
- #endif /* CONFIG_KVFREE_RCU_BATCHED */
--
-diff --git a/mm/slub.c b/mm/slub.c
-index 785e25a14999..7cec2220712b 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4118,42 +4118,47 @@ static void flush_rcu_sheaf(struct work_struct *w)
- 
- 
- /* needed for kvfree_rcu_barrier() */
--void flush_all_rcu_sheaves(void)
-+void flush_rcu_sheaves_on_cache(struct kmem_cache *s)
- {
- 	struct slub_flush_work *sfw;
--	struct kmem_cache *s;
- 	unsigned int cpu;
- 
--	cpus_read_lock();
--	mutex_lock(&slab_mutex);
-+	mutex_lock(&flush_lock);
- 
--	list_for_each_entry(s, &slab_caches, list) {
--		if (!s->cpu_sheaves)
--			continue;
-+	for_each_online_cpu(cpu) {
-+		sfw = &per_cpu(slub_flush, cpu);
- 
--		mutex_lock(&flush_lock);
-+		/*
-+		 * we don't check if rcu_free sheaf exists - racing
-+		 * __kfree_rcu_sheaf() might have just removed it.
-+		 * by executing flush_rcu_sheaf() on the cpu we make
-+		 * sure the __kfree_rcu_sheaf() finished its call_rcu()
-+		 */
- 
--		for_each_online_cpu(cpu) {
--			sfw = &per_cpu(slub_flush, cpu);
-+		INIT_WORK(&sfw->work, flush_rcu_sheaf);
-+		sfw->s = s;
-+		queue_work_on(cpu, flushwq, &sfw->work);
+ 	/* Offset to faulty address in the VMA. */
+ 	page_offset = vmf->pgoff - vma->vm_pgoff;
+@@ -586,12 +607,18 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+ 	    drm_WARN_ON_ONCE(obj->dev, !shmem->pages) ||
+ 	    shmem->madv < 0) {
+ 		ret = VM_FAULT_SIGBUS;
+-	} else {
+-		page = shmem->pages[page_offset];
++		goto out;
 +	}
  
--			/*
--			 * we don't check if rcu_free sheaf exists - racing
--			 * __kfree_rcu_sheaf() might have just removed it.
--			 * by executing flush_rcu_sheaf() on the cpu we make
--			 * sure the __kfree_rcu_sheaf() finished its call_rcu()
--			 */
-+	for_each_online_cpu(cpu) {
-+		sfw = &per_cpu(slub_flush, cpu);
-+		flush_work(&sfw->work);
-+	}
- 
--			INIT_WORK(&sfw->work, flush_rcu_sheaf);
--			sfw->s = s;
--			queue_work_on(cpu, flushwq, &sfw->work);
--		}
-+	mutex_unlock(&flush_lock);
-+}
- 
--		for_each_online_cpu(cpu) {
--			sfw = &per_cpu(slub_flush, cpu);
--			flush_work(&sfw->work);
--		}
-+void flush_all_rcu_sheaves(void)
-+{
-+	struct kmem_cache *s;
-+
-+	cpus_read_lock();
-+	mutex_lock(&slab_mutex);
- 
--		mutex_unlock(&flush_lock);
-+	list_for_each_entry(s, &slab_caches, list) {
-+		if (!s->cpu_sheaves)
-+			continue;
-+		flush_rcu_sheaves_on_cache(s);
+-		ret = vmf_insert_pfn(vma, vmf->address, page_to_pfn(page));
++	if (drm_gem_shmem_try_map_pmd(vmf, vmf->address, pages[page_offset])) {
++		ret = VM_FAULT_NOPAGE;
++		goto out;
  	}
  
- 	mutex_unlock(&slab_mutex);
++	pfn = page_to_pfn(pages[page_offset]);
++	ret = vmf_insert_pfn(vma, vmf->address, pfn);
++
++ out:
+ 	dma_resv_unlock(shmem->base.resv);
+ 
+ 	return ret;
 -- 
-2.43.0
+2.47.3
 
 
