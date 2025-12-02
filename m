@@ -4,199 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A05EED116F3
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 01:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E60F9D116F1
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 01:32:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE14B6B0026; Mon,  1 Dec 2025 20:31:49 -0500 (EST)
+	id 408EA6B0008; Mon,  1 Dec 2025 20:32:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91296B0027; Mon,  1 Dec 2025 20:31:49 -0500 (EST)
+	id 3E0736B002A; Mon,  1 Dec 2025 20:32:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B593A6B002A; Mon,  1 Dec 2025 20:31:49 -0500 (EST)
+	id 31D256B002D; Mon,  1 Dec 2025 20:32:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A5A306B0026
-	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:31:49 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF9AC1603A0
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 01:31:46 +0000 (UTC)
-X-FDA: 84172804212.12.DC8FA41
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011053.outbound.protection.outlook.com [52.101.52.53])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F41ADC0004
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 01:31:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="sQKD/pcE";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of jniethe@nvidia.com designates 52.101.52.53 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764639104;
+	by kanga.kvack.org (Postfix) with ESMTP id 1F8526B0008
+	for <linux-mm@kvack.org>; Mon,  1 Dec 2025 20:32:20 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D8C1C16042E
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 01:32:19 +0000 (UTC)
+X-FDA: 84172805598.18.6680A49
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1DCB820007
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 01:32:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BMdF5Nvq;
+	spf=pass (imf03.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764639138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xaVvbfIm4KTi/bT2nmqW/tzXl4LVilsCKv3vpm/qRDk=;
-	b=FnwPU3J/qf8zR7WW5szjOls4Jrqh07Waqidtm1/lkscGje32vufxawuDSUFisQgw2FlI3W
-	68rQTU836KZF1dcENaFnVLD1is6s6+2aQzGvl0oaasdlsXdUz7skjIGQJldcb9sP/YFHdq
-	GSmEJnJMBxEARWfSJFBPAU6AnPtySo0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764639104; a=rsa-sha256;
-	cv=pass;
-	b=U2k53zR0Bse0sbJ3wa8zCwZ8YX/+igxXNtU06Sk1qMBCy/5NPfe01TBY06ucLZdXNtY866
-	5JGoM3AN34ibV474tAaOlfbiQE5TAJbSkkS7zoJ8xQM91MYF3cg/+HgngZfV7U50KRz6PY
-	J/9MX51H3PMTDI4lxaU6qSnwLY+brhk=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="sQKD/pcE";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of jniethe@nvidia.com designates 52.101.52.53 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D7OCbHiNfC/m7/utyjSCnYH53K4kk+eFCz1VFBBeGNnuGPub7ueBVuVqLtL9vA47zEK+bfLdB14TxYLwlFsi8dluwgc7kM6+3z6YpLyMD6sjsdLYGAsoMpX1OUTx4UdTiARgDmqj/qGIgf2i0zP87WTWsdsN7kj403RRyu5t7/4AffasF25W7OserEucPvuh8PClHFyjD/Jy9HhhCi9QNGentesBcNTD4j+J/Ax84Z+zIY46HNxyF9mQW5Yj0ZpoSi6JP883BlRaodWdE+j8g9HyztO1Sg666mQd0ycC8TCznEsJyfFGGQr1GgQJhZDhK0kvP+Jz7FNhf5hMXcSjWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xaVvbfIm4KTi/bT2nmqW/tzXl4LVilsCKv3vpm/qRDk=;
- b=b3M3jrIkPOsd0glSd15DrpMBECcgmbDJhEXha8js8+LLg7Rtx5Db38JLmpCMouO0750ICKcPBOCRGcO0rDuXWalClfIZV4fsrlR7KqfAtgl2WNgGULQ3SOz171D7x3yNs9joy+e301v34vC60SZdKIIKe6whjriL+BTFoqpTaiasbYQ29G+bKBO1lCGuQpUMwPfNnpWhQSkFsFd7J3dqV/BSIozJ/BeBgCyytLVczcV0MQBpeLH5JDnSPIHuDshlmPusO3LvhU3amB5Z0paQaLMzpA5sDxxtCwDLnIDAIU7p+KMPgIb2Y+lTHep2CKKL6nGhOdZgmxT2FBCdFldsnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xaVvbfIm4KTi/bT2nmqW/tzXl4LVilsCKv3vpm/qRDk=;
- b=sQKD/pcER5ezXB7B2MPEjvmCOuMJLMtOdXnMuH5J0emeN7eZSZHHOs0gEuAikSX9mij5bR6uRFJk/73ZRG4fFf1lafSREe4ha2jAiHJqvJcMAz2SaiEn9NMFbrJyK58EKg81OXr/iIamLhiUu23m7lqr0oWBDvn90ePTEHF7ZWayBqHqdU2rEwhpTOpDepw+JOtvHz879mHmlEdHg+kaS5jHsL5yXjAtC5jHjd+Nl8McDHGUjC3hylct+h+Fh+/ZSjQvsEAUBAi7UOoQoLWrmL6BsUaZeaF/ju4b2fWBB+EUfaCsGeRWCmGsXmjIjBUO9MV3cn2bbH5xMGvJlgtoUg==
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) by
- BN7PPFDE2ACDA69.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6e6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 01:31:41 +0000
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1]) by DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1%3]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 01:31:41 +0000
-Message-ID: <0414eb13-77ae-4c41-b32f-3ae637e5da48@nvidia.com>
-Date: Tue, 2 Dec 2025 12:31:34 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/6] Remove device private pages from physical address
- space
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, balbirs@nvidia.com, matthew.brost@intel.com,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, david@redhat.com, ziy@nvidia.com,
- apopple@nvidia.com, lorenzo.stoakes@oracle.com, lyude@redhat.com,
- dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
- mpenttil@redhat.com, jgg@nvidia.com
-References: <20251128044146.80050-1-jniethe@nvidia.com>
- <aSm7NTtNfGcXbuwr@casper.infradead.org>
-Content-Language: en-US
-From: Jordan Niethe <jniethe@nvidia.com>
-In-Reply-To: <aSm7NTtNfGcXbuwr@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0092.namprd03.prod.outlook.com
- (2603:10b6:a03:333::7) To DM4PR12MB9072.namprd12.prod.outlook.com
- (2603:10b6:8:be::6)
+	bh=AaBQAyD3scJHzdwp7Z7vsEt/q+jdM2FxcSbIvG0ArPg=;
+	b=zCDtY/VevOTpMpS1UeocYtKaX4fVmD5dBoIisiJ1QEiALthHH+RR/IR6bvbVHaIHBIFJ/d
+	/WIoDKs/RfHoHN6nYOVkJRe3ejbPDkroLob31ZvCcaBo8SjkqUAHQDLb0wqSGixzJZB8L3
+	+8Qlb5ast6H5q/d6GHARR4d8wvohhKo=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BMdF5Nvq;
+	spf=pass (imf03.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764639138; a=rsa-sha256;
+	cv=none;
+	b=O67bzHcRrf/6UgYL8Ng6ucNW/zKQe/D5fUEMpC0CM5hbUBac7ALAzhnRsAVlkM5CB+9xTr
+	l7vgjA3Yp9ZWqgWj7gtR9Kq4M9FtJJZdSIzAffMtToJ9qS10Y51by7YOmRV6oOy2oLsc95
+	nAHBT2CW1PxvLNNu/2q70IfkD/EpkxE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EBADD4424C;
+	Tue,  2 Dec 2025 01:32:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BEEC4CEF1;
+	Tue,  2 Dec 2025 01:32:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764639136;
+	bh=z6z126FwDohXSBIi//EiTH/Ua9V8Bx+8xe2h++oSC/M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BMdF5NvqRQkK+ZJ0ZjCy1m6t6TvoYZOVzc4ugrFnriNRhJSKdHn487GhC1afnkTVw
+	 IBcD2j8tohMqJnyCo+2V443u+tIACDE5iGt9sos1gYQBwGnzQQaGEKMz0eowUIacyx
+	 vREAcGpa3Zge8LmKIeQDw9BRV+ORe6IVaHkwzGu/+BAPnXjSB5cD2Qw49LGMcACSJs
+	 SUBV3IfHXWUxQOruHghEareLoVTbBN3Iwg2nrfe/jeeP4lpXFJFla3OkEmGTToqivj
+	 TWwsSeYa/0inI9n1Hp0eVmBx/2el8JNXDmXyC3jgvQjetbnGueVQKyclGbJvp0URzM
+	 KrA99eL5jxlSA==
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-mm@kvack.org,
+	Matthew Wilcox <willy@infradead.org>
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 1/3] mm/readahead: fix the broken readahead for POSIX_FADV_WILLNEED
+Date: Tue,  2 Dec 2025 01:30:11 +0000
+Message-ID: <20251202013212.964298-2-jaegeuk@kernel.org>
+X-Mailer: git-send-email 2.52.0.107.ga0afd4fd5b-goog
+In-Reply-To: <20251202013212.964298-1-jaegeuk@kernel.org>
+References: <20251202013212.964298-1-jaegeuk@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB9072:EE_|BN7PPFDE2ACDA69:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6cf05f16-13e5-417c-b315-08de31428b89
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?enNTbEYwVnY5cmw3OHA2eVB1TnZpeG9FU2dPUStjRCtmbGtXQzEwQUNKYWVV?=
- =?utf-8?B?SkUrN21VeTRxM2xqckg1VEl5a0VpOXlraHZpNjdIZFA3MmlqbEJTUlJKWFpS?=
- =?utf-8?B?VVhhRlhtM1RFMmYxdjZBWGxTU0tBeCtYM2FpWVJYejdqeFk4clVVU3RncHlZ?=
- =?utf-8?B?RkgydkhIa3h5cGZCdmQxdERSSWlSRWVZYVdzYTZvUFQ3dXozNE5jdEVXOHFZ?=
- =?utf-8?B?N1dERHR4eHVGOGZjYXNaQ2hCbFQvbmNWM0hSeVRySVIrcUNHdFZKM2NsY1FE?=
- =?utf-8?B?WG5WWFJDYzV0c0l1RFk0K2lxMjB3YWZac3FqN0x4NnlzdG92Tk42R1hHdTU1?=
- =?utf-8?B?RExlWm9TR1lKYjhCby8rZDJIelRrdmJUYVZNNFhjeVpRNDVqcnU3MUI2dFA5?=
- =?utf-8?B?WENNcElVOHB4Zy92V2gycVIrb2tnQTdWbjZnWFdwL01LZDVpa09YZjJhS0l0?=
- =?utf-8?B?bmU4OGJmK1lGMURPVUp0Unp0YmRoakZPdFhTa0RlTGRrMTlaMG0zd0k1ZWRF?=
- =?utf-8?B?dnJ2Q0FyQldSd3I0dzE2RVlDOEhwUVdSbzF4dmRicDRkRXlwbzd0V1N6RitO?=
- =?utf-8?B?NG9DbENpUmFBUm5NS2IvNHhwOU1mVzNqdFRkUkRra0hFQUIxOW5pQzVmaUFq?=
- =?utf-8?B?QmF5dGpiNnEzdnhqUU1Tb1BwWlkrc0xLcmJKQWcvaVh0NldRWDN1dGN3bjNp?=
- =?utf-8?B?NTFLaXdqL1JEdnE4MTU4RWRRbEdITmNJNElhZGxEVWMwOUNXc21BU3J0blN1?=
- =?utf-8?B?TnJwTEtmdGhDTFdUZWhWS2dIWldYT2x4MmZnejBQbzdJblQ0K3FNVzdGQXJn?=
- =?utf-8?B?b1J3YkFrN2prVWc5OEtjNFdPRlM0bjNNSzBpL3Z3azNLa01GeHpsZVJiSmwy?=
- =?utf-8?B?T3V6eE81N2IxcEtKV1ZmSGZwN3dyWHhaNjNPemRTemhzSStQd1dDamp3TFY3?=
- =?utf-8?B?U1RyQUJVbk0vaUY4cXZOMWlqVmFEcFA2RXBuemFydkh0a09VOFNlaXVxbmJQ?=
- =?utf-8?B?N2ZPUlNnYTFRcW5HbXJYbGcrVmFoSGgzSWhnS05idDE2RzZiYWlwSW12QWhC?=
- =?utf-8?B?K3hJTzRHUnNFVGhhQ2pianpXaUhZLzVEWlVOMmJpOEVZODQreXYwbmhkcFlj?=
- =?utf-8?B?UkxpZWh2L3Zqc3lGa0NrdEZYRHIwcS9LSWlIQjdDU2E3NDRKRHVUd091cXBD?=
- =?utf-8?B?cWJzbGJNcEQ5aVFzQWIrV0hSS1hwUnNTRG1Hb0Y4S0IxRTdRc0JmYk9aUVlS?=
- =?utf-8?B?ekYvd3R5SUQ3cmRTZVBhSTkra0xkRGdjZkRKWklGa3ZLbDB5YkRXVzFGeG5N?=
- =?utf-8?B?YWRLVFQ4KytKNVVjOEN3em9MM29ORmRoajRXOEZsYitxa0hYdUhwQWhoK3Q3?=
- =?utf-8?B?RVJEbUxjZ3pQS05nVzlGVysvTi8yL2YrSGlzeTNiT0xOTzJFR0RieWpvTWlM?=
- =?utf-8?B?Z1I4WDVibXVWeks5eG1XZ2hkWG84Nk5NNlpZekRiTGs1M3NXS3ozdFBqeFpi?=
- =?utf-8?B?c3NKR08vU0g5aHpQOFRzY3FaU3Bibk9qMmx6eWpiWElzSkhrd09jb3ZxUjda?=
- =?utf-8?B?NnlJOHFaU0taby9rUzAycVlsQjR6ZnY0aGFQcHdMV1ZSYmhEOVg5dHY5bWVK?=
- =?utf-8?B?WWduVElUdkhSUy8wZWwxTk9aUG1MRzNRSDNrSVI1UVBGc1gyaklkWC9uam9F?=
- =?utf-8?B?NWRobUROckJWZHpmWXFTWEw3MVRVYWVVNlhETWIwV2NPYXplNjh5NmpLRVEy?=
- =?utf-8?B?UjkwN0VnYTROUzkyd0ZzRDg4VjFINkFPckRKUGNoejJxb05qMXp0Y2VrVzVV?=
- =?utf-8?B?ZWgxc0hVZlFRRDVmOWZBMWRqME5Ec3cweklEMUdUWTZyaGlEMVVKbHNubG5i?=
- =?utf-8?B?RDBqSW44Z2YybXJYTzN6aTZjRk1Qa1VYRWRrd0hvanE5QW1iM0dwTTRCZ0Uw?=
- =?utf-8?Q?gYDrGyKTKrU7Gr3upgUNFwWYw65zbF7q?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9072.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mm5BOEhSREthV2VVd2JMV1J4Z2duK3J1d2VGUjlWY2ZKSVVnMUlkc2dMOXpW?=
- =?utf-8?B?ajRtNmh4djhqMkJ5UnJBbk9LZ3UrV2hLY2FLUWJLeFhJc3dYZ3JRTzlmdHJQ?=
- =?utf-8?B?dlZETDRzM0c0OVZUenNSbEh1bEUrZ2NMSXpoQWsxMEloUXllUzNnN1lzVXBE?=
- =?utf-8?B?dGZ6dkxpRnh1Q1BpN2pLZ0c5bHVSL1h2SlZ2dnpveXJLek9NWWtqWXlyNmI5?=
- =?utf-8?B?eTRjNURISE9BbERaK0ZoUzhPSnRtTVZJVUtyTTVXaWhpRTlKZGxCOUVGSk50?=
- =?utf-8?B?Y3E1aE5yQjVDM3hyOVdDUWNKaDNGellBUFdvVUlHcERTeTZkTkN5dEpETlF5?=
- =?utf-8?B?bmxtOEVzMzlzKzNwMGNKQnY5cmE3NnBFclVLQ3B4TjQ4QWhmOC9Hd3FTMyt6?=
- =?utf-8?B?c3Y3VHM2dUdPZWEwazV6WkhEUjlTQUV2UmFGM3Jwbm00d3pPWlJmT2syMzRt?=
- =?utf-8?B?d0FDbU5TTTJiaitmc3VzRHgrKzQ5YnJZTDBhZzBsWEtPZnlibGxjZSsxUXJS?=
- =?utf-8?B?SGxHZWxsN2tDbFFhSFB5QUtlTE9HTVNxMW5zL1I2VENIWVcwQU1VOVM3T1Iw?=
- =?utf-8?B?S1NrS0prdkFqLzNwNVRuMXZTWFlDT3hQNGE1TlVnVHIxSWRsaGxvRVF1aWdU?=
- =?utf-8?B?c1BkMUgyRnh1VWtkQm9GM0JBVENkZTFpakZBTFk2cGFaTHNsWUgvZUlZazZt?=
- =?utf-8?B?d3NVeGdQTjd2Tk1UKzFlSkNzZFhyVitIRnBKbk13VFZEUzVDdk1Fci9FNUhz?=
- =?utf-8?B?WjUzUW5wUHJORncxODhMYXdjbm0vWmc5d3VaLzNkNC9aN1F2YlJ6QnhZd3RF?=
- =?utf-8?B?dUpOdXhtUFRCUW1LaGZaN0doUVRKQ21YODZRL05UT1gvM3lJMEgrWTUzb2FY?=
- =?utf-8?B?WDd4alJ4RW14OTdrbnZwQ1NBb0xIRzk1TjVtMitlY01sd0FLUDNMZ1U2cUZh?=
- =?utf-8?B?Njg2UmFkRmhWRi9OOEgrNG1qdmxhaFlISTFudHh2a0J4WEg5TlVyMC9VaEVr?=
- =?utf-8?B?dDljMXZhQW5lanhMNUdFZFpNRklNWFI4L3ROdjBpZ0k2WXRveXRNcTNkN05V?=
- =?utf-8?B?Rm02RWlJT3o5OWhDV0pjTWt6djR0d29SU3lBSThKQU56VTR6Q2xGRjgwdTUv?=
- =?utf-8?B?M0FvZWtWcUd1YUpiSE1URDNoL2RDdnBZTjl0MFNLUFhmSGxJNlpzcFVHZ25l?=
- =?utf-8?B?d0FTbjJXenhPRXB5Nm1ZaWdvYlpQMFYvNlZFTVJSc3hLRlR6T25aOHdDNnRm?=
- =?utf-8?B?NVF0bjd0UTdQcldQK0NBTDRRc0xmRFc5Nm5TN2Y1MWk4MnFLM1ZHQ0lEVTV5?=
- =?utf-8?B?MEtlWHVZSW5DMkMvSVNsZXlPWlMwK1NnZEVVaWplbWpOazM0NCt3UkREdjNE?=
- =?utf-8?B?dm1ZbE5HeHZuejdOamZJUTl2WHI4MkZhVGFmQTBaL2FjOVNBWVM2TGlLQzU0?=
- =?utf-8?B?SkR3aTl6aERUbUo4T0dPVWlpZm1CcC80SFFMaTlOK2pkSHlhWW5JcWVPcmhS?=
- =?utf-8?B?ZG5yeW9IWW5YeE1tTURUcnE1V1p5Y0RtYkNVSy9ZQm9WT1k3cHM2TTlwT2dY?=
- =?utf-8?B?YmU0QS9Ta0NxRFd4bmJiaFM0UHpvWjY5R1pmZ3U5OUE4ZWNNVmFDVjRYU2dP?=
- =?utf-8?B?clZnYkx2YXFTKzZKZ1h3UW10bmRXWDFSQzIxSzJ2RGNoQmZGNWVYVE5wMVNo?=
- =?utf-8?B?SVp4UzBnM0s5eUNyYWtMM1ZsczdnRzZpQUl0cEtUK2hlUnZRdjB5UlgrUkFl?=
- =?utf-8?B?dTF0bHVVVlArR0hHQzJhN0R4NkVxR3Q2dUdIUzlrWW5vZkd2VmpONXBDazNC?=
- =?utf-8?B?bGZ6N0NaVThVdU9DVmV6VTBhOWprMXI4by9XbEliMERxQkRaUE03U0RDeFJU?=
- =?utf-8?B?NGhSR3BsSTNqSGd4TlpZWEc4K0Z4czU4bXB1NG9CcStkWFZaVnpjZWllV2Rl?=
- =?utf-8?B?SmlkdmNaNEp1dDFjWllxdnNQREcyTjdjWVpaQnFleTJ6TVRwbDl3Q3BPUlNh?=
- =?utf-8?B?Zk5YZ2lZTFF6Q0xpaUs5NDE5bHkxVm9hMTBqVWxRYkd0M2xmWnJ6b0xBWVk0?=
- =?utf-8?B?aE5DVm1EdCtveUFmUlhHY24yOUtxbVVOYThJZmRUdVVVeitRQ3U1Z1FOVEVR?=
- =?utf-8?Q?s5lfZMKBPouFOBDhQ2dyXHcZq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cf05f16-13e5-417c-b315-08de31428b89
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9072.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 01:31:41.3672
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: II8DsFFDqG9zPjZqLVm19z1hSABAzBRoLR8DZoT5vlwF9dGKDyfgB3YWhZZv9ruauRn3uuwmzOljGbyHulMLUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFDE2ACDA69
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1DCB820007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F41ADC0004
-X-Stat-Signature: uwnte41e3nups3djpx1qif4twskdkr4a
-X-HE-Tag: 1764639103-230798
-X-HE-Meta: U2FsdGVkX1+FSl8dYPw20OPidXFbAJYmYVmW9GnsnATBrIMdbAHg94UAi5Ik/2QBcaatmR1NpZ+d+cFMtRTzLqYInOG8qAW89fWXYGtNNE9syejuCdNM+xH8D5QI+Cftg6JGnlRh4bn2/kVXI7gQ0xKNsIjCNWNGED7mQ7q854dh9HPTTHX2dlfyBrZz1Exinyr4KcyhfkgXOzxGLbU3IYyMzmxYneYWYjih7dT6LyAcevtKiASDFVAgnoAmPcSLojpope/IFT/JlNo0UAPUfQHX+J99ocrPz1mu3OZ0ZhMZEKsyf93tIXi2D0eH8azurn7i63r7+QgWJ69vj2oA0LWETGTTUkQzfK2T1W4Sv2ZinwuZaNGPdkeGveUA63fFc+HlavhSvMU3IFdFwhnUn7h7V8u4NpadMjeDLBZkE0a5pxyd6Qbg8k9Lwfe+Z0MTiRvS+XB+fDQrdb5VtLIkb0yTtOV+MJ5cfbkMU5OXdNqSZzGywmU+m+4FUj37pNlv6hPa8SoLg5VIFRLO8dmJ9dYMI/t+zGCoTlrUnAX34VxxpieVTuHiVRGj7e++m9omKvSgzeEPsLTVHp5sN8lQf/4oc8RCf4KaeClcvfxkEoZ69LzjNQKNifo7spdXdDFW2ipksrztoSjdoEbuphOq64zYs+Ai2FFUfe/uPtNh37kxaJpPz4OBrQvuIZBpvTdEd2bxbf7mdOg8WuE4wt8BEqYOMPBmR36g6g3fDK1XWUqDd7JapteQY/QxqBw2+HslD3PTGiwZx9zP6//TxF5/9L7sX2CzRSrQVaedzjR5SU7eWKId5K+WYGaQqrJsRLdgx4kIQniALq5SGdl1dfDBiykEVXzajkE7hRlrD6d+0Pep7QQTdnnizfoQecYlMtZxy8q22WyD9Si6VavlWUjDyZIY0waSpHSdBvrGXgwEcVIcWmn15LYiJcRXw3F7KgF7SzaIkVVmgzFxhklTHfJ
- 6GvgQ7VV
- wrWXQ1ZGQtzp9bCR8EbzsurdPC9y0BIeDe5o+lJXhuLs4yPLrUY9oz//Wv1z5f03hPiTAz9CVU9XuQLXw3oMFHL+K2lAArCupg+ytY+XW+eiWfOs9/m4FmiMOnb9r1fIRT5OALwhCtL/O9WH9pwSx2daNo4X4PDRa6G4DZrHdKHArbUvm6O3zL1JFk0P1KrmVDc+IQ8h6yGhb/Lk+zkCuWNavN9I7D4zj99WUrxfMFtYTC473QmfYBVVYU8+rd8GFh31aNsu/RCVRejokbZxC0tGlWMEzbSo/Aueid3fM1M4t3YxR8ZT5SQm4zD5yGvtq0NrLLfOL6Wi+hsulpi29DmYx2XhfoPQFrY9MdJbQL89G/U6LyHhJYrSKqmuSCYZUJRDwKrEdcWPGDF7USVM+SUxDuGZTM+eiQ+mC
+X-Rspamd-Server: rspam05
+X-Stat-Signature: grcgj61ex95fy3y4sxgt4w4sgkis5549
+X-HE-Tag: 1764639137-6947
+X-HE-Meta: U2FsdGVkX1+j5/N97MaNAAOmHWJ6sOI7VjWRdbV78iK3/q4WdsIv1kZwfFvk5Bsle7u/ii3LJsuEBFDzbBGWeAvs5Ye5+NMUWRURY2pY/GseQ4O8WEo1539lQlOJXMXjzdLIl+4PvZTQH5dj9eEfbn7XrcTvSipsM8kBF/lN0UrfMj42LBwGoAjwwhRpsUbymWIg7KFF7Nw4ApHUDf+JnxNrAfth/D47V/OZOyjhqYdMstgQr5L8n+4w/HawGnQpr9Kf/ZOYgVLXyJxQIERU3gBsRHqTA/QFkDx22Kjch4/5YXVFCpgEgHWfsp2Nx8ktC6XlnM9rkB4dkWTe0e+rPQXFLzObw5iacaQsU8TPmwjJMFXrKvoNtwRXGOktRB70xlmd/At6etONcR1za/EsUjfnkvnKOPhPwpywh9TbJ50WkGUD3rQvQbg6VJJuQtZu78HIHAAc/NSpoOVmp7grg1StEMbRExu9JJV6VOLfYb+1d4q2idAnNw+5E8H20JoENkKBQgKG4NOGdT/XRvj7CaJdWspyE7x7FVoCvSP/oCH0pFsZGK134rFv+7AVVHXQY4njnWIuxpgcuwdweNJih0gqpBOY5ZaEGt3AgER6fHRQAeJlb5A8MdVFVhs6hg9d9NA5915gDJ7MI0dugJEcIkZq9+p3cxamUgQa1GTFCe+hlgFt0au0eXLWzck1fcwVX4zMgmyL2WwoGWihIMvN1DRdbrCq2pAwwcERGb9mZIB2lEDaU4B3PlpCC3HmCxgO03+lfQSLUIA39CDIDnSHgqb7au3QnqftVSW68jx1COutlj+8eqG9N/QoY52dXsAXdC1fjkCDtl2zguZPjyFc4DyU3RPDYzlCBCpfsmfUt994ypDt10uHKUyLlEKdM6VZPunotP9SQJ8i8uHvavDVT4xMX7+irMZ9KlGur/cduz2ZP9WhIQyiSuDJ4ma2FOuG3uPLqfl45jzG9jIQ1JN
+ cyhxTmhN
+ ox4X1R3Ldo6YekgI5vyN4sdnXBZqqtnZH+dyut5hPdVc1x7VfQ69DWcdHhAQU87HTOAJPhawMEeioP+vBIOpTatteHrx0wsITq/SrID7Kdvj0xAWSOh4yEhkWllWK3JygcpoVTyf5vy9qc/2dfJVAWJnvUA3jw8GI4XkggRvCw8vl/V27Ll9G+ST5cjlkL/fchl02PJ83hYFRzL0I36q1e2bBlTS4w0G8E332zPnJaXG4prZhyOUDexYnaT9xwfu1AQOGf5fGHWzTsYbTu5m8xccHhwvNTcuBhQiaI0vxC6DR8UHeHONy8/LF5EQO48NzqVEMf0KrxYJSl+yqsdoay8/TbW7bMyU4wlGDIvRm3n+ut4q5L35CP5Z5DMcoDu433ZfjL+6l9obshQ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -205,37 +93,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+This patch fixes the broken readahead flow for POSIX_FADV_WILLNEED, where
+the problem is, in force_page_cache_ra(nr_to_read), nr_to_read is cut by
+the below code.
 
-On 29/11/25 02:09, Matthew Wilcox wrote:
-> On Fri, Nov 28, 2025 at 03:41:40PM +1100, Jordan Niethe wrote:
->> A consequence of placing the device private pages outside of the
->> physical address space is that they no longer have a PFN. However, it is
->> still necessary to be able to look up a corresponding device private
->> page from a device private PTE entry, which means that we still require
->> some way to index into this device private address space. This leads to
->> the idea of a device private PFN. This is like a PFN but instead of
-> 
-> Don't call it a "device private PFN".  That's going to lead to
-> confusion.  Device private index?  Device memory index?
+     max_pages = max_t(unsigned long, bdi->io_pages, ra->ra_pages);
+     nr_to_read = min_t(unsigned long, nr_to_read, max_pages);
 
-Sure, I think 'device memory index' is fine. What I was trying to
-express with 'device private PFN' here is that each index into device
-memory still represents a PAGE_SIZE region, but I agree it leads to
-further confusion.
+IOWs, we are not able to read ahead larger than the above max_pages which
+is most likely the range of 2MB and 16MB. Note, it doesn't make sense
+to set ra->ra_pages to the entire file size. Instead, let's fix this logic.
 
-Thanks,
-Jordan.
+Before:
+f2fs_fadvise: dev = (252,16), ino = 14, i_size = 4294967296 offset:0, len:4294967296, advise:3
+page_cache_ra_unbounded: dev=252:16 ino=e index=0 nr_to_read=512 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=512 nr_to_read=512 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=1024 nr_to_read=512 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=1536 nr_to_read=512 lookahead_size=0
 
-> 
->> By removing the device private pages from the physical address space,
->> this RFC also opens up the possibility to moving away from tracking
->> device private memory using struct pages in the future. This is
->> desirable as on systems with large amounts of memory these device
->> private struct pages use a signifiant amount of memory and take a
->> significant amount of time to initialize.
-> 
-> I did tell Jerome he was making a huge mistake with his design, but
-> he forced it in anyway.
+After:
+f2fs_fadvise: dev = (252,16), ino = 14, i_size = 4294967296 offset:0, len:4294967296, advise:3
+page_cache_ra_unbounded: dev=252:16 ino=e index=0 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=2048 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=4096 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=6144 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=8192 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=10240 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=12288 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=14336 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=16384 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=18432 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=20480 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=22528 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=24576 nr_to_read=2048 lookahead_size=0
+...
+page_cache_ra_unbounded: dev=252:16 ino=e index=1042432 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=1044480 nr_to_read=2048 lookahead_size=0
+page_cache_ra_unbounded: dev=252:16 ino=e index=1046528 nr_to_read=2048 lookahead_size=0
+
+Cc: linux-mm@kvack.org
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+---
+ mm/readahead.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
+
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 3a4b5d58eeb6..e88425ce06f7 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -311,7 +311,7 @@ EXPORT_SYMBOL_GPL(page_cache_ra_unbounded);
+  * behaviour which would occur if page allocations are causing VM writeback.
+  * We really don't want to intermingle reads and writes like that.
+  */
+-static void do_page_cache_ra(struct readahead_control *ractl,
++static int do_page_cache_ra(struct readahead_control *ractl,
+ 		unsigned long nr_to_read, unsigned long lookahead_size)
+ {
+ 	struct inode *inode = ractl->mapping->host;
+@@ -320,45 +320,42 @@ static void do_page_cache_ra(struct readahead_control *ractl,
+ 	pgoff_t end_index;	/* The last page we want to read */
+ 
+ 	if (isize == 0)
+-		return;
++		return -EINVAL;
+ 
+ 	end_index = (isize - 1) >> PAGE_SHIFT;
+ 	if (index > end_index)
+-		return;
++		return -EINVAL;
+ 	/* Don't read past the page containing the last byte of the file */
+ 	if (nr_to_read > end_index - index)
+ 		nr_to_read = end_index - index + 1;
+ 
+ 	page_cache_ra_unbounded(ractl, nr_to_read, lookahead_size);
++	return 0;
+ }
+ 
+ /*
+- * Chunk the readahead into 2 megabyte units, so that we don't pin too much
+- * memory at once.
++ * Chunk the readahead per the block device capacity, and read all nr_to_read.
+  */
+ void force_page_cache_ra(struct readahead_control *ractl,
+ 		unsigned long nr_to_read)
+ {
+ 	struct address_space *mapping = ractl->mapping;
+-	struct file_ra_state *ra = ractl->ra;
+ 	struct backing_dev_info *bdi = inode_to_bdi(mapping->host);
+-	unsigned long max_pages;
++	unsigned long this_chunk;
+ 
+ 	if (unlikely(!mapping->a_ops->read_folio && !mapping->a_ops->readahead))
+ 		return;
+ 
+ 	/*
+-	 * If the request exceeds the readahead window, allow the read to
+-	 * be up to the optimal hardware IO size
++	 * Consider the optimal hardware IO size for readahead chunk.
+ 	 */
+-	max_pages = max_t(unsigned long, bdi->io_pages, ra->ra_pages);
+-	nr_to_read = min_t(unsigned long, nr_to_read, max_pages);
++	this_chunk = max_t(unsigned long, bdi->io_pages, ractl->ra->ra_pages);
++
+ 	while (nr_to_read) {
+-		unsigned long this_chunk = (2 * 1024 * 1024) / PAGE_SIZE;
++		this_chunk = min_t(unsigned long, this_chunk, nr_to_read);
+ 
+-		if (this_chunk > nr_to_read)
+-			this_chunk = nr_to_read;
+-		do_page_cache_ra(ractl, this_chunk, 0);
++		if (do_page_cache_ra(ractl, this_chunk, 0))
++			break;
+ 
+ 		nr_to_read -= this_chunk;
+ 	}
+-- 
+2.52.0.107.ga0afd4fd5b-goog
 
 
