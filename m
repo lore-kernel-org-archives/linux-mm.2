@@ -4,119 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F004D1266A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 19:38:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21EE7D1266C
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 19:58:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAB3F6B002C; Tue,  2 Dec 2025 14:38:51 -0500 (EST)
+	id 1967F6B0010; Tue,  2 Dec 2025 14:58:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5C006B002D; Tue,  2 Dec 2025 14:38:51 -0500 (EST)
+	id 16D996B0012; Tue,  2 Dec 2025 14:58:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D99466B002E; Tue,  2 Dec 2025 14:38:51 -0500 (EST)
+	id 0AA796B0024; Tue,  2 Dec 2025 14:58:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBB2E6B002C
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 14:38:51 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 79DA11602E4
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:38:51 +0000 (UTC)
-X-FDA: 84175543662.12.4543E21
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8833C40003
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:38:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Dzo3J7Kl;
-	spf=pass (imf12.hostedemail.com: domain of 3SEAvaQkKCNU1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3SEAvaQkKCNU1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EE7F16B0010
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 14:58:22 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B8B213221F
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:58:22 +0000 (UTC)
+X-FDA: 84175592844.24.ABD8754
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 40551C0007
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:58:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mR5PH5xX;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764704329;
+	s=arc-20220608; t=1764705500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cIQFzvQj0Y4HZI4kBd8TIFPc4eUfRrW65uunjiND9LM=;
-	b=gZvJZ9fAmUUQMX0gUEnNrWZFu1ytkJjnyt7EYPkI1qrKPYpMyN1NB25rP2wM5URJwIeAEh
-	fd5MAGhb8/+r6BGObj7RtDoGVlieGK48UW1APc6/wtBnsP0juLoqnsqcTXBfExLfrUI2mt
-	ZZhCLHPN+tN6t7Ic3Br/0koWQ0i3K6w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764704329; a=rsa-sha256;
+	bh=n5DkEw3bk3dbYkt15yiZ/SNI5M1pdPgDRmo8S45rWYg=;
+	b=JbuSZSf8C5dxQknnMgDenOyUcNwJAq2xu6YuzTfF4ZqMX8T6K81jcfBHPbfqw+QJ2Kr4BI
+	yWOoN1KHJbEEKI7HuvBqJFjQcWOLmbSul90P1Jn1qta6yqgCXIciDtUpOeg3tcYU7EadIk
+	OzT4iojBKoA1Wz9RQbvb6zAnrcksH4M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764705500; a=rsa-sha256;
 	cv=none;
-	b=xa5MSQhrJaV6ZCWZszsKKr3Oc2BLvvfAREJzy5iiWvTabx3SnbR7vcowzgfeTCQtlx4/8Y
-	DWQNsgumVjT+/Rtu03vr0npI8XgjXrAN6mIjWFJa+bimxobvm/ut3Xvo3p5Dnfw0IS45VJ
-	X5juvGhkMwMh2N4sFLYmzfA36ATyagQ=
+	b=SMsipIUVAylQ5z0vKS60PHpbl9LQ58L6VGJsCWcGZfSwotnATSxHo2vT4zBtPze/5K0m1e
+	do3AjswuCbE5dXyk+Hoi0fg13sEGTvGV0ZCsj8GCOcNzBhobGDGfS72P/Ra+Ar0bgX2w6Z
+	vgljUKTtS9alIucUT710ycsCQy8+n9U=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Dzo3J7Kl;
-	spf=pass (imf12.hostedemail.com: domain of 3SEAvaQkKCNU1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3SEAvaQkKCNU1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775d8428e8so48421445e9.0
-        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 11:38:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764704328; x=1765309128; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cIQFzvQj0Y4HZI4kBd8TIFPc4eUfRrW65uunjiND9LM=;
-        b=Dzo3J7KlPIpSFG9zGPbSLGWtRHOTJ6JSc4nVqeW+BYk6fPUJLtxXCLaMU3VhFgEsb2
-         M87/R//XrZXVqwLchl6Jb5An0mTlirLN3DyDk+bqBa32Ys+rCQElS2WeKZFHt4xtUSQ4
-         n3wuM60BBBEEga4C+B3dec3uZLi0wuT3b1G4xx50NXhq0OZCE+LeIdI67Akevh1TGu8j
-         eTqKwRsqebNcKnOx7UsVw7qq8gFS4QPhIDHdgPlN1LO3/hGlrfVk7s1D1fstkzDfAMUZ
-         897Q/ib4hz0x8lEkiGf++WxscrUkwjwUtaD+t+BH9zbT8owLbZB3/2xuWmmT4FcBqMbd
-         07Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764704328; x=1765309128;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cIQFzvQj0Y4HZI4kBd8TIFPc4eUfRrW65uunjiND9LM=;
-        b=ocr9iT3/0vWLRfN2VDEN0AOYJNqcpxjw4o98sHfFclw7KW0t4V1i1qLVxpoFPPhOTE
-         +UUPwYrQpHVq6+fg6PHBlUgey4TdSV7n8VgvxIpfXvGQaE1soyQjOBUj/ekg1kSOc0Bv
-         dw4lAJ3QCXWXIWsorIcpwHppydrlJZk8bqAovtYPpQflzWy+l0ezgmEtn9TIhQZJ34PG
-         wpr1NGWhHalXrVt/8BN4f4bMh/dbetmhdaeImjcghaiA/jESQjiLWmvVEoyFm89Q4BUZ
-         u1C3nQTljgsBLC85WjvIevqg2RTfZjcmDCdjpSAxZAIv9sBtGPFxhdOrW6QqJOkfHuTT
-         qO1w==
-X-Forwarded-Encrypted: i=1; AJvYcCW3VzrzJnAyXXUzQrSM2iwXXZ2uTwk+hZfZN2Vc6UDDX29ASF7cJmfyeJwpwf4mmJTcdl96P1CqRA==@kvack.org
-X-Gm-Message-State: AOJu0YxsbfEuY3eHRNAwTAD+L7j51MTi3yMa3LR/Z5RPaEarFPAc2Dz3
-	rXBKbyU9+eCkbRP2gsOvf2tmnjV0xONMresK5+LJOZztDLRAtGjxpAMMrasDX+u4sKqv7SAfxdd
-	96nxCj8ITjybOYmkrqQ==
-X-Google-Smtp-Source: AGHT+IF2Puntj/eKEoW+BjOOwfdx6Hi6RJWJ9337ShucXrIPEpJfEWDgyCzbKBbEoyZebOZYr1FMhJ/i5/uBM3s=
-X-Received: from wmon10.prod.google.com ([2002:a05:600c:464a:b0:477:9c96:9fb9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:354b:b0:46f:b327:ecfb with SMTP id 5b1f17b1804b1-477c0184c45mr416068545e9.9.1764704328135;
- Tue, 02 Dec 2025 11:38:48 -0800 (PST)
-Date: Tue, 02 Dec 2025 19:38:10 +0000
-In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-Mime-Version: 1.0
-References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1496; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=9J2MLVDNZYm9xM/OMq0zK+0XZtRU22LQEL0JJo068rA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0AL1P6xk5iJWRPBNmQbM7bSHOMHh7jJWICIF
- waE9zMDeLOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9ACwAKCRAEWL7uWMY5
- RvTBD/9Q0mEQj5UCViRNOBAsiVewKwP3L79mXstnuVw4wTobK1OvaptZoaklpIQV8TEkTkdlVpu
- 7Dp7i7P9Ad+6Sa/lsYJkMEYL/V4cIEyU0F1MRY7NNiTc79GmqdkY1AIosR5YL12mz8xqnan4Rf7
- n+5vYnTJiGSTjiW2wy4Kg1REQ3dx2NX87tjzAJAFAhlVE5K0SI9/VTwDp448XfP52mG94nwgbKq
- NH+TrWW1YdlXDKM7dmp1f+RGIe4n/EZA15DnUpXMBkGWUO9c7UbVbh0FThV2icXU9/3b7zdGrkC
- mIk/g8R5nkJKOmbSn+t14+7rPkFCLGRUpsh3WvfU38RZMvSGkr+HmYFxUQxHzIXgIm7DIzWacvR
- /BRNtoMZy7saJBMOxJOFx7IMvbOgQ27hqU7vfw19IXkLq0dDKdmXzVJe1/GTMYr0Zs9UjHeTwI3
- 7ZNKFb31ffcqo3bsi4iC2mutbbNRNSG01bUytOhya+WcDDQE7melml70NqqTD6rAdh8mLEK6ija
- ZmS0lJmqCBSCFvEgwir1HqVMbVRbgS/US8LqsN3JRecoESfA1FUXdMEs5AfxFXgUNd64FUOkXjm
- GD382J03EVUFoS5KLRUzn8kVAy1OW13x3aHiKielhfKXDl/ERrhEXzIE0NJ+plYZR9/S8X2uYoF G7LUOgiGtxQPRlw==
-X-Mailer: b4 0.14.2
-Message-ID: <20251202-define-rust-helper-v1-46-a2e13cbc17a6@google.com>
-Subject: [PATCH 46/46] rust: xarray: add __rust_helper to helpers
-From: Alice Ryhl <aliceryhl@google.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8833C40003
-X-Stat-Signature: qaoook6xkhit9tb5fud4bz6m66bqm346
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mR5PH5xX;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 147D4443FC
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:58:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9E7C2BCB0
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764705499;
+	bh=lchuppkd6M0udzAoLvi4/rKJIcI5yYBbqsX4qQoPzEY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mR5PH5xXrxenC0CvnVlAQfHh+PxufG3CcOXXcmA1otYtmFXGayJ9dESIGuthVfOH2
+	 GD8tl7EP0BgvK+EA/UQFf5wFGTcbc3LG5X7u+ikz6Xs3FSLTsXlkaWBizFaTIqXI7U
+	 ZPI3inzEgp+5dIpmSoJIgQRD2uhZjNm72LJzrZwNVirmEcYjCF6A07Kza17LR0ukmE
+	 FxO+PiL5LyeLZHUdbltDS6VdIhQA4t+9QQJGB0VpX3HxGkzmZklBjoKPBcXGjeMIVC
+	 lkTPwFkgLhy0HpyL5/ZftlcE7gGzpGCP+PVXr+VBZIujzK+XzEIC91E7ft6GEyqsAZ
+	 CqDDa4Vgpi4IQ==
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-642fcb38f35so4585219d50.1
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 11:58:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV6RtHDT/kivCMPyG2lla2K9hb1/ZCvo9TfJUm+gBUNXvY/zjyjnePQCJ0znWMOlhUoUWnD09w0Ug==@kvack.org
+X-Gm-Message-State: AOJu0YwoFCtRSssQdBFmPjcKpZq7PRTSmLNrMfzs7W5sBtwPM8s5nkJJ
+	L1P9Wkfc88g60BfM5yP39o2DGAx+18PbLo9BbiK3eUoMvs1h1zY+tSmDCpX9kwqVIf/1qcndqd9
+	eoj6duBbIqIsLMrFaqy2t3IXOTnxfqIdwajfFFZB/bw==
+X-Google-Smtp-Source: AGHT+IFayZ9XlylMzc4ybsfjZD993cxxdiQlx+xp4z734pH+GQsxY3ZIGv1qiAoVWe23Mc8b3Sy4GB3axiH+slcKARA=
+X-Received: by 2002:a53:acd8:0:20b0:63f:a89c:46f9 with SMTP id
+ 956f58d0204a3-64302ab7bdbmr25049979d50.40.1764705498072; Tue, 02 Dec 2025
+ 11:58:18 -0800 (PST)
+MIME-Version: 1.0
+References: <20251124193258.GB476776@cmpxchg.org> <CACePvbVJEWd64r-o8ezh+0QByYbWjYVKiLgxNiBJOjfRWP__sw@mail.gmail.com>
+ <20251125213126.GB135004@cmpxchg.org> <CACePvbXstKtQXE+0i-KRcq5LwrCr92a_FKy2KBmqaiwZEkFxng@mail.gmail.com>
+ <7665130c511e3cd00f83e8b14de2b78e08830887.camel@surriel.com>
+ <CACePvbWcYsm3WpQSkbiSKESpHOb+QybNTxtDL9mCvRd__Xj4Aw@mail.gmail.com>
+ <7e44e8654eb0ed5e0f590b3d705b258772dadb57.camel@surriel.com>
+ <CACePvbUSHYgit93ofjg6cMfb+CR9x6CZnMGh7Utb+zEzkOG75w@mail.gmail.com>
+ <CAKEwX=MMgOb+7tDxPXDCcBxCEztvajDa0YfLBqgGuAr8GQ4s1A@mail.gmail.com>
+ <CACePvbWV3STyCg0vYDXYg7asnxLTa4Jb5Fa59g7_QeTVxKV=ig@mail.gmail.com> <20251201164338.GA430226@cmpxchg.org>
+In-Reply-To: <20251201164338.GA430226@cmpxchg.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 2 Dec 2025 23:58:06 +0400
+X-Gmail-Original-Message-ID: <CACePvbU1cO0S1jPP7D+62HyittSx9nAzw9wbg3LWGZ4NMCkTjg@mail.gmail.com>
+X-Gm-Features: AWmQ_blugA6E25KymK9865644OS3kBAAQcBpBzPXN-o8pmzDNqkd43uPpP9BMtQ
+Message-ID: <CACePvbU1cO0S1jPP7D+62HyittSx9nAzw9wbg3LWGZ4NMCkTjg@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, Rik van Riel <riel@surriel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 40551C0007
+X-Stat-Signature: 13qyeuesfgsf1r9ryhjy6ow3y88spp85
 X-Rspam-User: 
-X-HE-Tag: 1764704329-184726
-X-HE-Meta: U2FsdGVkX1/VsrEv8GI3nSx+HmfqyO+iPvUSHVuMXM4180hGpDgaPdBiE3HrA+PeKs7agrpCnF3GyCqjZs8MYWmOGLudkyKSSsHhMK+vulQJbeqLM/BL9vttrcOm9a5e3c2EhgKk6Xlcd/YU8mNEhhtDE72ULWxNGV+lmadHw6VzrQWjYEmeYaG8mp/WilH8VYRrMoZIvFPpfYVHl99EDK7V+NdB26yQrc4phsqk9SPapDt7l19Q9I3VhqDGuCr7cx3Bz551KcES36Sn6Hi1CYqyuGteLanfy0Il5FRLy0cc/Fz2QYPwCyOUaP9i+ow2NTDTc2HDl96g41Ip/JKYx+sIzgSmR2oFlzo5f7wHY+s0xX4262RERtU1pNtv9pu/TmvqNUoHHRLhwd6fvhGpRrD1n6fLIgUbTrRrKfgruoYE+spdNRGB2t14j1n31y0H49Ay0FGGyHRwZfkyLEaLj9RIG7SEAJAiLewHKYI/gH50m3PHULMUR23PFc3fVtIX0UPOuDDXxBBPxtGXGsyOGswTvaz6bzMfY93IwcKA0f+KoE9ggDnTbGwow8HGnSfvofU/R1ProTZw3cAnPO3O7c2H1AlYfugh5PEcDJoKxSyan5vxAeofma1jPjqzGCpLQQS9m3KtQbt3I4t6FvFfLdesBJQgUy2bxGSVhqwsMIrHvUY8tfMiFJE24niZb6mCmNnis3qkD/+DL/nm1uRfcDLFxP4Zmcs0vt8sMHOmbixiqTznbHua8Z1l3pyriDfMToqa0VpSipF0ykNG25fbmti7+K10Ag2O33RKQRSv47znvR8a1pEqpj31Niiw20Zj0K9xSOvZFyHGlp9urNIToq7A3xwj9V1wHhoHzal+3goXkBi9aK4iSXYH317mtE9YTKviNcCBzZ5c3rtieegDTyvqNNRbaPAt/l0w3mDyONJ4hXids5CFM8n6Y/bkJIlbY57QTxVnMqGjF3GzMRy
- ahQWJNXY
- 97AvijRtU4qTuN0oFVy1ctAykQVMiWeLdefJLPO+V5Ql/nplo1u0PORCJhzk2YpQoSa2w+vQPOKAtecX6WNyi8Zeh55gjBvdl08HiaSta8aigIb0V38mOtyd+xmbZtWH/ccZ1wLzICstHdIQto0YsNG5yrbHH0RiEKL2hwUFNeNn8FcJfEbyDztGfIPf/xzblqaG67j+7Yw1RXW5j5zBz/NxSsQgY26+dU7ph4z2MbF9trIzgRkF5w6b50cOKTn/N804Qf/rBeWMw7bcDfLFKBFBBUjsVnhVnoCfcXQ0L/xPS9iO/51ZnzVJ3jvxLgC7lI9FQBl1sCvk/7OJb6uSGCaFOB/vSoSXwmo73wsGUbAqmYWdiNxphu2aOtgPoISgft+chbaLgPZ9IVSkFnypLEIlkwVURAbt4UGY0XL4DwMOTnj6HXOrkDVIKax7aMf+BPrsWRMhHRH+tNif4oh1NhD6CAbTVURI/X3aPcYSNDnOndBdLFRLZJBZLX6RsPO1L8tTNXtnepxWn3hOiZqKYTGDj02DWd0e9Bp4r1lhg5saxX0Y6LF1b3eXmK8G45XNz+LtAL+dh3nkuZ+OfwnNVuR5+6BdEIj2P4a985q6UTsbVjT/GRxQZYKR8AQRGoMOy5NoaYJWtcbX9eA7oMNNsJ9pn+MEo+6vTspJqGjSCc+Kek6SwNkiq1z1ET8As7c9ps77fNq6bcDsGgqYf86Ox/arFpTJnVb7PeQFS9nOcdDyUjZAB4qROEmRVlbAFfUpxx8YaEp5rcju7d3YgT7F1MI8k6EKMfMCWQNvZx1jVa37LSvn6AjRUMQn2Q4KO878VOfivmNDiFXZr2K4=
+X-HE-Tag: 1764705500-214154
+X-HE-Meta: U2FsdGVkX1+B5ZWzbKtGzEpeAdTBw+HpHpaHnmaNFapMC7+asm3Jcn3mvvfK4K3a8BhdxiYXKqeeR2eRnDxvxvnUDxNkmHj7SqqoocgfUTHKTz5MtgMpR7TazIF9/fOQlRl9JRRKR0ARBMd1MPL7tdg8Ed+hXICpsq49tDsnPoj+zwdiwROp+arrJRT15/i4Y6TqXH8oy52y6Buv101P9MDf2X2+i2UYJKrqvTdK4yqlqPntSSwPJ/sxkwgsUnFWMPkGTS2LrbTjp67mP2uWXGXrKWl5tFQGD4jenTP7WwAjqpswLJ7M5S3ZGgR1IiROyBrCAGSxxHpMqvWp+wzLVHsjSok12u/rv0p9zCghHmgjYGgybtHJyUMAKVnZPeCQQjYkn/TQIz6GeLgREp1kr0RKh2dbG0V34dfyXPodf+KlZ+SsWsRFRuXfDJ81aAOyDsp5u+SBozgQrumfgQ1ghqUYQwnT9hSKumylPg099pSAz97Bezs4Pc7od0wr/kJZHK+8IS9IakSUtFgWY914t3WTn6sTHh00Juf3O9IhV9aZqUjejNtybwOniMaanY2qHpjLKrhaesvXZWkdMRmBzEg3/1TV8DeBBUUUxfO2lALusibqTrUBmO5ScfGY9zydfYmv9aUij+GCglxca/g0YHRDBIz/mMpJ4d3qi6qdtaGXyowPeuO+CO9EMk8V7PsopzA8fl0dZ1zXdbqD3bmPOGOp6pufFHMCiS6Gs+fyx3fZLu4nwTRXHvz1PQ1wss3/lD+ZMT3mlPFgdJ8V7CbWerA3UCOujEMeOpdASjsKbLsXurrdZQobZteS+NPs1uknJtVaGyedMcgv+1+/hrIwyEviFLiuKBbnZz91Z2HNfiSyFYASnzN92lRNAwFDtKHU0kWhFu+AL/yxzEv1B/oLgjpeSkjuAtXksE3gkLVyFY0pm8qpAMuKzC0nvshNnFyfUuaKjFggWKUsaXs56Ix
+ wzG3K8wv
+ v2Oqbd3pcTwPqyyRTHYpNUvkn+U1/QzmmTIWaxJYeffDthHsb+0StEpYY0otU3lWkS0JFH4PAY9s4XyYSdnRoGjKhQ49EFTAU6ozuoS5RfUxPvPlXet8AGRCYO0vpxkYzKS2eD3OJ/mV97cJsmZW1plF8hVZDlByzxg9zR3RW9t5qgLx/Lx0jkVQiaT4oSTyKJ7N8i2Av3nCoJ+HBabwJ6AwUSQOfU3Iio8TaVFma8k6JHzdRtE/su1dp7+0zO5nQ4H3Cnk7vSX2zicPCH4fCUrt08Knxnkc/8DwVxNycY/TL6nzmjpncvnoWA47M+ptiFk5baQWqVdOfAk4qa7I9+mqt8qPAHw0w40FG7fK3kpCRo9gTWDeJznF6JcfWsPF3HjbdY2kqYBFAB0x5FyhGhxqnUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,59 +116,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is needed to inline these helpers into Rust code.
+On Mon, Dec 1, 2025 at 8:43=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.org>=
+ wrote:
+>
+> For the benefit of anybody following this from the sidelines, the
+> third zswap maintainer also expressed concerns about Chris's proposal
+> upthread. He works for the same company as Chris.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Tamir Duberstein <tamird@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org
----
- rust/helpers/xarray.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Yes, I don't know who's interest Yosry's represent. We have a
+disagreement on the swap abstraction 2023 that is why I have an
+alternative proposal. The community back then strongly favored my
+proposal. I guess Yosry just hasn't graduated from that yet.
 
-diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
-index 60b299f11451d2c4a75e50e25dec4dac13f143f4..08979b3043410ff89d2adc0b2597825115c5100f 100644
---- a/rust/helpers/xarray.c
-+++ b/rust/helpers/xarray.c
-@@ -2,27 +2,27 @@
- 
- #include <linux/xarray.h>
- 
--int rust_helper_xa_err(void *entry)
-+__rust_helper int rust_helper_xa_err(void *entry)
- {
- 	return xa_err(entry);
- }
- 
--void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
-+__rust_helper void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
- {
- 	return xa_init_flags(xa, flags);
- }
- 
--int rust_helper_xa_trylock(struct xarray *xa)
-+__rust_helper int rust_helper_xa_trylock(struct xarray *xa)
- {
- 	return xa_trylock(xa);
- }
- 
--void rust_helper_xa_lock(struct xarray *xa)
-+__rust_helper void rust_helper_xa_lock(struct xarray *xa)
- {
- 	return xa_lock(xa);
- }
- 
--void rust_helper_xa_unlock(struct xarray *xa)
-+__rust_helper void rust_helper_xa_unlock(struct xarray *xa)
- {
- 	return xa_unlock(xa);
- }
+>
+> The reality is that Chris is failing to convince others of his design
+> direction, and is now obviously resorting to manipulation and hominem
+> attacks.
 
--- 
-2.52.0.158.g65b55ccf14-goog
+Now we can't even talk about technical and  move to personal attacks,
+is that all you have left in you?
 
+> During the course of this thread, Chris has asked for "a little faith"
+> that his idea will work for all stated requirements, without deeming
+> it necessary to explain how.
+
+More FUD please.
+
+> When probed on technical details, he stated that he doesn't like to
+> plan that far ahead, and prefers having somebody else iron out the
+> implementation details. He also referred to high-level slides from his
+> LSFMM '24 session - which was received thusly[1]:
+>
+>   Matthew Wilcox agreed, warning Li that he was setting himself up for "a=
+ world of pain".
+
+Yes, we deal with that pain. Swap table is the outcome so we don't
+further impose pain to maintain file cache vs swap cache where a lot
+of swap specific optimization will be painful for the file cache side.
+As far as I am concerned, the most painful part, swap table as the new
+swap cache has already landed. We did not cause Matthew pain in the
+process.
+
+>   Jan Kara said that existing filesystem designs are not suited to this t=
+ask
+>
+>   Hildenbrand said that this plan was introducing too much complexity
+>
+
+More personal attacks please.
+
+> His first response to criticism was to invoke his <4 week status of
+> swap maintainer.
+
+I take that back and apologize for what I say and you accept it as "no
+hard feelings".
+Do you mean you don't mean what you say?
+
+> Meanwhile, the design direction that Chris is construing as a single
+> company conspiracy is anything but. The collaborative origins of these
+> patches are well documented. Chris was CC'd on those RFCs. He notably
+
+I feel the 48 bytes overhead is a joke, I already provide my feedback
+against it in the 2023 LSF swap abstraction. I don't like to keep
+beating the dead horse.
+
+> did not engage in them. He is now lying about the narrative and
+> choosing to attack these patches in bad faith and out of context.
+
+More FUD and personal attack, is that all you can output now?
+
+>
+> This pattern of behavior gives me low confidence that Chris is able to
+> collaborate and compromise on a design that works for all users.
+>
+> And while Chris has been quite vocal and opinionated in mailing list
+> discussions, his actual code contributions to the kernel do not
+> instill confidence that he can solve this problem by himself, either.
+>
+> [1] https://lwn.net/Articles/974587/
+
+You obviously haven't graduated from the fact that most of the swap
+core is my design now, in the current kernel. There will be more.
+More personal attacks please, I am ignoring the attack in the order I
+received. It seems that is what is left of you, personal attacks to
+dominate a technical discussion when the technical is losing.
+
+Sign, this is an example case study of upstream bullying and that is
+why sometimes upstream submission is very unfriendly for the less
+established person. I personally know people who were  bullied by you
+and give up upstream contributions completely. Go ahead and try to add
+me to the list. That will win you more followers. More people will
+enjoy working with you.
+
+I agree I am not a native English speaker. I will lose to you in a
+bullying shout out flight, you win in.
+
+Let's compete in code and benchmarks and see what happens.
+
+Chris
 
