@@ -4,133 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F0ED1171C
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 17:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3966D12662
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 17:53:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFFFD6B0028; Tue,  2 Dec 2025 12:20:04 -0500 (EST)
+	id A40496B0027; Tue,  2 Dec 2025 12:53:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6A16B0029; Tue,  2 Dec 2025 12:20:04 -0500 (EST)
+	id A18E96B0028; Tue,  2 Dec 2025 12:53:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BED376B002A; Tue,  2 Dec 2025 12:20:04 -0500 (EST)
+	id 955B06B0029; Tue,  2 Dec 2025 12:53:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AE09B6B0028
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 12:20:04 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE8C012C62
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 17:20:00 +0000 (UTC)
-X-FDA: 84175193760.21.7A66D40
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EF32E40013
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 17:19:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=oCby9haV;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf17.hostedemail.com: domain of mcanal@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mcanal@igalia.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764695998; a=rsa-sha256;
-	cv=none;
-	b=fyA/37WdrSXHWbTivqFhtcVIv2T6nIEWjpXUxjC0im/1T3ye0ltUAhThRqiJkngtQOsjk0
-	gwf5yRjvmvfOwX5wbzbm3k/4dVF5RYjWsdzYyPG93sZD0gO9MXnGA65tIk7zN+hE6OQlAD
-	LARxPPV0Qg9QCeDWWQqfp0Jr3GwjJCc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=oCby9haV;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf17.hostedemail.com: domain of mcanal@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=mcanal@igalia.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 858DF6B0027
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 12:53:31 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B23A9C0258
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 17:53:28 +0000 (UTC)
+X-FDA: 84175278096.25.BB34417
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B9BA58000D
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 17:53:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BzBRdJCN;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764695998;
+	s=arc-20220608; t=1764698006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UyCbUcL1nm1MZzDeCwaTG3zHrny4GdzBK6n/2gvUbXQ=;
-	b=6K+M8dbpU3ncoP3eFxoeMT3p6Bsb0m3NcL1tfCvvbiCYfWyshKe9sZkbwT2v+OZ5TmI9vB
-	WSF2IO1fgI8+bc7nEXJQAnvfT9DU8sKniRrla3F+aMR0c+TyLsACIRnHNs/VtVLHn+AzJV
-	28g+HcWAUzHd2ozch6gEhG4M8cfgcFI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UyCbUcL1nm1MZzDeCwaTG3zHrny4GdzBK6n/2gvUbXQ=; b=oCby9haVuYdOrAIteZZoLwWkPu
-	sVdsFQ//4adybW7oMm9kFJboF2Ed5gLUvpgNJeyfT6dBuHGoWMHO1Mhf2DFoaJTMSuH/A2LVghfoL
-	HZzgX9yQPT4Weo65SlpJIWdO8XsR3Tfqq/NMlQofpliTvfwCD7kh9HYuaVROCYhk2q1PVXeHE30Vz
-	t96mk3OxHne0/rWxVJ/174Yr/P9JJZOczGShKJYOSgSxAnW9vJKMH0Y+pUH2RvHsWc3Xnosbbcc9P
-	W881kVQnLSY6Exd/GHsd2LeUq6HmZ8iFF6GwfbXBuWhkPT9NGD/+/YZIZfVeSr9uEXrbW0Hlz81w2
-	sp0agC2Q==;
-Received: from gwsc.sc.usp.br ([143.107.225.16] helo=[172.24.21.125])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vQU20-007tsJ-AQ; Tue, 02 Dec 2025 18:19:16 +0100
-Message-ID: <489a6590-7d1a-46f9-a980-5c30b2b44c4c@igalia.com>
-Date: Tue, 2 Dec 2025 14:19:02 -0300
+	bh=/6jsZrBPDcS/UOD+OkMyFY/e+taiTAsFgh+Yy3cAx40=;
+	b=mW8r95hUXxT92vrRqH15L+zME9bMwxUq6f4wu4sQF5ycowsyPOzy/OHGJv1f6wNZESPPMb
+	U7oZ3gVFI1hi3rI6WF7moRZsX5vGiTCNgckKpovjqNVMj7VwqA7do4eOv/QMwrZJZY0RUt
+	hKtuEIIZxEWsA0PMPfmFsRnwwydZ0wc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764698006; a=rsa-sha256;
+	cv=none;
+	b=NriPnf4HZmyAslPcvsmT8UtEq7L4px001WEJME3gY1aDrXYmmmqdO81ZB4GdXJknQRQk1d
+	yIH6Qz9aIEtLxKCulemXSaKVyLjiqiDhdsgMK7wry+OgAWLOHpVA99r/Xr/2LL6J6zl49V
+	JHyH3TdVwanKZmExuprpQNchb2QnBR0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BzBRdJCN;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so3638183f8f.3
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 09:53:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764698005; x=1765302805; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/6jsZrBPDcS/UOD+OkMyFY/e+taiTAsFgh+Yy3cAx40=;
+        b=BzBRdJCNWVQQ22VMeORzFYnxGIrnjcGyOlmOcd+n7CobfAFvnA+Cy4OAzDDuVxlT8K
+         8NFSWWhEGPnLRBXguT3ujS9znPMXsmRVFp41ei3HsiQGz7QZd1Ji8sMpVMAovJbyTaob
+         VpwN5WB9YXPzOsp2XCgs60YrUUrgDnOJxnXNb4MDqe8ZMMtfMhoawSvlAWtHIfnWTOJV
+         wz/aNGVlxr8qlvIP5Zr229/CRr6w7UYxsHCFZhX+r9OdU4vvv72OhnR0U1z9LLMOnS9+
+         4CJK1PtcvsZUKkJeMaxw/AiL/73cENDKWC6yEk6mM6iTm3MubjF69pq8dlaFnBNFg1HM
+         rxFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764698005; x=1765302805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/6jsZrBPDcS/UOD+OkMyFY/e+taiTAsFgh+Yy3cAx40=;
+        b=YHvQsrIACbZUjVdkMagk+soh4iqVm6uvWPpWaIeWZGv5cSBPMFEjATgelz3LsvkY06
+         WVKKhv3HzYbbdtJihG5rqNTf0+JRpMUiH1EFkUyALlItTxXhs4tuXwS1MJXNTldaXXVw
+         wfhPHQ33beW3JjhQFm953dgkDaBEvijzFPNLoTC4g/QK4Zzd8mBmlZSOmiYtzu77k66M
+         p9x5oH0hq775s0gstHfAm+djpb3przdTX1xAEO1hbEkSf4ChlGhjzkw2X28F1dVYZj9O
+         F5dkiVtcP4U6/0ir4KI9q43+Y990i3dtiOoHYkpEaG1MHKYDCDDmCKqkkPvf/40XckI9
+         ZnWA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/UIiMKVPmwZodjG7Ibl++lir05ASK6nMhu4lMEkCTp+6UvxsmbhN71QAZvGWjIRz3mMq0NcRMGA==@kvack.org
+X-Gm-Message-State: AOJu0Yyiq1dTbcQwLEg9eMd0JvyTfolXzgaxTZRL7nTxH0k+4MjRXOSl
+	zpauYkpvVe8MuiWxK4iRH/3OBMeXqRfJcsjn35aivINtHknEC5SYxTiGYNMX27455UGbXsCKa1k
+	qQjM4BEDIuO7/tx97uXoZ/SG9ZA4tKXY=
+X-Gm-Gg: ASbGncuomGNnlmcwPd28j3oYE5nsxYAcToGklOEW21OaABNnTpuypMZAGAdbd87rGCI
+	m3l0Af+uvVva4x0M3erq3n794ITVBS1UEsu3MIjDZg51y2fHeCvUS1XpKvcUUllAyyKDYL4dQjX
+	Yl49ye/OW0Y54CjGbDDnNGHxIgu2wi62K+rzeyFwn0nHee+RWX3cGDFfWb2jCt4BFQirvids8ZI
+	93KRorNUaJN7C8LoqsnHXpAB6qCBVeZtdenX8cuvRHKWeaNCtCRRfABfBnCF+LOTZOcJL8=
+X-Google-Smtp-Source: AGHT+IFrgraba3BCEhhUVQOm0wFpmC6g4rgeZvXRe1qP1GI+ppgAe/IgJJ1pyBRsVvvYFlKkMWbUF996rHyZe/8mb20=
+X-Received: by 2002:a5d:4251:0:b0:42c:b8fd:21b3 with SMTP id
+ ffacd0b85a97d-42e0f362440mr24724906f8f.57.1764698004929; Tue, 02 Dec 2025
+ 09:53:24 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 10/10] Documentation/gpu/drm-mm: Add THP paragraph to
- GEM mapping section
-To: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Boris Brezillon <boris.brezillon@collabora.com>,
- Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Matthew Wilcox
- <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kernel@collabora.com
-References: <20251202101720.3129-1-loic.molinari@collabora.com>
- <20251202101720.3129-11-loic.molinari@collabora.com>
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Content-Language: en-US
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
- /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
- gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
- SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
- G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
- AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
- dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
- P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
- O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
- GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
- 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
- FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
- TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
- Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
- 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
- LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
- T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
- wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
- zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
- it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
- Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
- uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
- raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
-In-Reply-To: <20251202101720.3129-11-loic.molinari@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EF32E40013
-X-Stat-Signature: mc58fj3qorg49d1bssio65gz89keosja
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <CAMgjq7BgCocnkJAYd-BBBvzbu9zxmv4QCj+k62kcA3ThZcNv2A@mail.gmail.com>
+ <CAGsJ_4xZPPE3TaAYU96srZKe6aKZmV743kQ97E48ZWh3BQ5Z6Q@mail.gmail.com> <aS6H1b4MHo9HAPHS@MiWiFi-R3L-srv>
+In-Reply-To: <aS6H1b4MHo9HAPHS@MiWiFi-R3L-srv>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 2 Dec 2025 09:53:13 -0800
+X-Gm-Features: AWmQ_bmHMWSj5VXsGCPrAdDQEP8zUtPFVMFzmBda33lG2DysSjjJwm0gszGE8Uc
+Message-ID: <CAKEwX=PUW_sbN-GQXAh3NHGGuN8LOSFy_8qWRUUqafgwW4JB_A@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <21cnbao@gmail.com>, Kairui Song <ryncsn@gmail.com>, Chris Li <chrisl@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764695997-314685
-X-HE-Meta: U2FsdGVkX1+qP+mFp8l1bfqr51xbMZYIKoEf1u4IReoOqQko9R7RCkFxNHdHCVCSN4FMJFhFYvCBjRKNdHTQawFnP9fFQSupBAHotKuUjtYPlqhDdEhp2h3E5p86IiAi1ohl2yd+TWtAnaa417GxUCCsV/xiyF0LRVoyMQOI5DsPsI0pLHGK8d3aJuYFTUWm2ymAhMXw8DHZfkYRA9UG7PpkkpkviJinpTCCmps+3eHzmfFbDEU6QHx+Rnw2BGbJpBgesiEVhb6yEbvO4Z5t+z+f27gk/2IDxd7QFqLLtzbB/4yW6noUWTmm8XwK0YLvjRhQ7tvBaiKLayYnV/stACizXxBctuhSCiHQTtY64KYThrDNuqFOvlAOWJ25YByIlAJLx6uA0dKxbJjuUT1rJUJLoFlsDNZKvIyJpMMWjaJYSGPhIx+FggGlPBlzkP0li6vjHgisDISwgx14M752r8e6XavgeMyfbauVeUMwjr+8lhZvD+87/P/+6bx0tiiTU7la93cqqOhP1R+ShA4husKm/ROm2b0wz8knPaC03W3cDEDXLQ/xJp6uOJHLUycJLA2/r7+exvfa+VejU3N2hWkIm95EvOFJT5+l+hiUoRf6epWhsY4cPtzF9adHe0D6a8jWjZhRyhhc9/68staPbmdU8xwFCcpZFYZr/0H8ka02458Kvhv5/bP6DDJoKPjicDZeTgrMQvHnyZvDqHQB1Unwxv/p7x43hMmCFOxlvnLsB9qKEl4XV+5U7dCyu1B2ab9USgU6IIv5b4tjxD30belLsQOkGXZq8rQCol00QBlt20fb+KMtyfL0rupBtE6A5mcRpcMRuxvMjwB9OEDZPOAHbDQyzedBJJvD+EbmamC6g9/ffXWyRbWbNk7FBh6lUCLiU6EDzCwEmDvlH9kH2pCjkaivaxJCNs05Qb3RThWUWBx0nG9Zebo2i60u0ZxDD81m7aofkWIan7TATpU
- t3HuVdRy
- xjGHkAPlnIIu8+++6RtDBMwrTffZHIjVOrKqGDyadn9DEQHQCimaRUfe6AVfQZQ7XyGJzsoBM0XoIXSV1jWIj8HOdBL0vro7OKaClKnSnG5XtcgqOHJ6wsQjj6J1EphzJ38c03rCjcIbuZMHBcPVFPbjF9YbRjvYx5XdYAu9ocDNTsmuLD/QIAHu4XeuvfupOg+47ooJO2BD0MJXzsW7YsKxMXDL0T+2EbJa7Csjcw8Sx8Fj8Du1hxWGeZ0Cq2KcAK03HMorC4/zi+DObCsSBWWelh3p7vCX8sAbhPTX0i4/hnzcaAllxI9mD4fqDF8w7muDoef3MxcFKrTzsTOcRnGC5jBvvpNenHlhFmEWnQlrEnq4iMkhOU1Itg9bwit0nYpPgyc9fwEhnXuaY3LTJWosBxJtze1vnfB7UuK/bfH5OY1Hh8yvByK2+U7getOURifB7rr3itFFS3Rs=
+X-Rspamd-Queue-Id: B9BA58000D
+X-Stat-Signature: 3ytc55sragx168tcuja18p4bdwydykup
+X-HE-Tag: 1764698006-356573
+X-HE-Meta: U2FsdGVkX1/POz4Ib1RsNp4EAVpmlsUwaDil8BCLscuPNHwMDPDi0ykE0IVxNcSlOD3019tIH9mu9VIj6Oue7U0PZ30SH4uexhTSdHaEsOS9vLFXU5CgOAqltPGaW2vLYRfwTH9SS9jUxRU38kAkaciUQtvkA9zVf9C5z5F+QvDtbshBESfCotZ8Rg7adXpKvLjz6/gZvKTkiUT5+WV5X/RMWFDRW5uvc6vvAPhEXNex0jWN9OpH/eFKf2Mfw8NBZ7C30RLWngG2ozcaE/CK4TPc5QiwhJ6VHzyN2UnKojEox7wXTenXVJSaX26QDd/TBvaGN9qkPdsdcmVwcFKfPRR+T8+CnpI9NN5dQ5h+P5SHVY9XDabovmPgDjN+f61p6dcpCz5wamTKzZwoun9IOZyih4iMgaXu1BCnNkLy3xFhwNHe5np77cQV7WRfppYLawro6pfnslVqsw2yFYKhONqCExtvZ2+B52YtJt0OOrNzjpGdef40RYKCWXwHpCBxH+p5fHUvbjm1gac7M+d3ahm1a93M+KJSXExf0jbRLAbQIBYKiTfecEZ5lUzI6D9XKUCakwtrvlQ1sMXWz1pBnhLHaBOJsa0Mudpdwaxgquk2jA0TkLj0rSFo0vEsMLvwR7tsqor8ElxIMxnvxh6ogGgXlWqDD60o4M67VLsfkqjnqgB1FiMSF+IsRl4kpP3xvJmUdObS/oTfOYQLDzWbvjXfaqLIz0AcRKfSmg2acJR6Y/+OhABCZbYLnx9c6ruKDqZbM/gdyuO9t/yuDgb+mir5QpqRJUdfMmkQ4X3p6www7z0ifB3z9cZh1f8PSDtyVDS4YF3JSZaOfokm7U6HXjyVzbzkcLeoXEf32QnPwCUeBVSXdyBH0GD9nLWCuhkPmdRpGQ6feTz2GSCc+pTJOl48tDz+zZL1rlYU0aM6gf6WXBFcW0FXwp4nWoyWgYMltyyd7UH0O46/jyzRMGs
+ rdeY3Lbg
+ GyKa3n2+cFZMy605Ca02zfRJpI8zRBLCRIm+yPQNd9SGwNTQ1BPLBaCugA85E81At0WpSGdu+/27RyWfYL3O+nMg0igPCwi8g4Rn//jzTTJjdxQEOB6Zkw+2wxVewqmUM/uJy3aZTu0BXuyss0R7MiAiq3QFhLwQrIpi93eju/87xVd9E9UrkEf8J1uqWIrXS6K/SMYOUGGqXmeT0s5C4or9yyAg0TgewLD9hQYn8jq+CTZWv4gTwDxr58DJmxdKfW33LFbBQ12voWG5Occ1cU3fV7C8j40B1sXVJ6VEgXIHZrh0rNLrdfPvjiFMmnaosbNJISKhJa+z7dg/gxowpQZ4jbEVoyvefTEgqc9+N0C7ARAzfQbAguVPZ8YzDWn2+m2m8+k4gNRmYJmhYiL4xJAk7n3oD6y7tZbD0JFMcM5PX9EE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,89 +121,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Loïc,
+On Mon, Dec 1, 2025 at 10:32=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
+>
+> On 12/02/25 at 10:56am, Barry Song wrote:
+> > On Sat, Nov 22, 2025 at 6:00=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
+wrote:
+> > >
+> > > On Fri, Nov 21, 2025 at 5:52=E2=80=AFPM Chris Li <chrisl@kernel.org> =
+wrote:
+> > > >
+> > > > The current zswap requires a backing swapfile. The swap slot used
+> > > > by zswap is not able to be used by the swapfile. That waste swapfil=
+e
+> > > > space.
+> > > >
+> > > > The ghost swapfile is a swapfile that only contains the swapfile he=
+ader
+> > > > for zswap. The swapfile header indicate the size of the swapfile. T=
+here
+> > > > is no swap data section in the ghost swapfile, therefore, no waste =
+of
+> > > > swapfile space.  As such, any write to a ghost swapfile will fail. =
+To
+> > > > prevents accidental read or write of ghost swapfile, bdev of
+> > > > swap_info_struct is set to NULL. Ghost swapfile will also set the S=
+SD
+> > > > flag because there is no rotation disk access when using zswap.
+> > > >
+> > > > The zswap write back has been disabled if all swapfiles in the syst=
+em
+> > > > are ghost swap files.
+> > >
+> > > Thanks for sharing this, I've been hearing about the ghost swapfile
+> > > design for a long time, glad to see it finally got posted.
+> > >
+> > > >
+> > > > Signed-off-by: Chris Li <chrisl@kernel.org>
+> > > > ---
+> > > >  include/linux/swap.h |  2 ++
+> > > >  mm/page_io.c         | 18 +++++++++++++++---
+> > > >  mm/swap.h            |  2 +-
+> > > >  mm/swap_state.c      |  7 +++++++
+> > > >  mm/swapfile.c        | 42 +++++++++++++++++++++++++++++++++++++---=
+--
+> > > >  mm/zswap.c           | 17 +++++++++++------
+> > > >  6 files changed, 73 insertions(+), 15 deletions(-)
+> > >
+> > > In general I think this aligns quite well with what I had in mind and
+> > > an idea that was mention during LSFMM this year (the 3rd one in the
+> > > "Issues" part, it wasn't clearly described in the cover letter, more
+> > > details in the slides):
+> > > https://lore.kernel.org/all/CAMgjq7BvQ0ZXvyLGp2YP96+i+6COCBBJCYmjXHGB=
+nfisCAb8VA@mail.gmail.com/
+> > >
+> > > The good part is that we will reuse everything we have with the
+> > > current swap stack, and stay optional. Everything is a swap device, n=
+o
+> > > special layers required. All other features will be available in a
+> > > cleaner way.
+> > >
+> > > And /etc/fstab just works the same way for the ghost swapfile.
+> >
+> > Apologies =E2=80=94 let me raise a question that may be annoying.
+> > I understand that people may already be feeling tense and sensitive.
+> >
+> > Despite the benefit of compatibility with /etc/fstab, we still need to =
+provide
+> > a physical file on disk (or elsewhere), even if it contains only a head=
+er.
+> > Personally, this feels a bit odd to me. Is it possible to avoid having =
+a
+> > =E2=80=9Cghost=E2=80=9D swap file altogether and instead implement all =
+"ghost" functionality
+> > entirely within the kernel? Ideally, we wouldn=E2=80=99t need to introd=
+uce a new
+> > =E2=80=9Cghost=E2=80=9D concept to users at all.
+> >
+> > In short, we provide the functionality of a ghost swap file without act=
+ually
+> > having any file or =E2=80=9Cghost=E2=80=9D at all.
+>
+> That's actually what I would like to see. Just to make that we may need
+> change syscall swapon, to specify the flag to mark it and initial size.
+> People may complain about adjustment in syscall swapon.
 
-On 12/2/25 07:17, Loïc Molinari wrote:
-> Add a paragraph to the GEM Objects Creation section about the
-> drm_gem_huge_mnt_create() helper and to the GEM objects mapping
-> section explaining how transparent huge pages are handled by GEM.
-> 
-> v4:
-> - fix wording after huge_pages handler removal
-> 
-> v6:
-> - fix wording after map_pages handler removal
-> 
-> v11:
-> - mention drm_gem_huge_mnt_create() helper
-> - add Boris and Maíra R-bs
-> 
-> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
-> Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Yeah that's another design goal with virtual swap - minimizing the
+operational overhead.
 
-Just confirming my R-b:
+With my design/RFC, all you need to do is:
 
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
+1. Enable zswap at the host level (/sys/module/zswap/parameters/enabled).
 
-Best Regards,
-- Maíra
+2. Enable zswap at the cgroup level, through memory.zswap.max (you can
+also size per-cgroup zswap limit here, if you so choose).
 
-> ---
->   Documentation/gpu/drm-mm.rst | 29 +++++++++++++++++++++++------
->   1 file changed, 23 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/gpu/drm-mm.rst b/Documentation/gpu/drm-mm.rst
-> index d55751cad67c..f22433470c76 100644
-> --- a/Documentation/gpu/drm-mm.rst
-> +++ b/Documentation/gpu/drm-mm.rst
-> @@ -155,7 +155,12 @@ drm_gem_object_init() will create an shmfs file of the
->   requested size and store it into the struct :c:type:`struct
->   drm_gem_object <drm_gem_object>` filp field. The memory is
->   used as either main storage for the object when the graphics hardware
-> -uses system memory directly or as a backing store otherwise.
-> +uses system memory directly or as a backing store otherwise. Drivers
-> +can call drm_gem_huge_mnt_create() to create, mount and use a huge
-> +shmem mountpoint instead of the default one ('shm_mnt'). For builds
-> +with CONFIG_TRANSPARENT_HUGEPAGE enabled, further calls to
-> +drm_gem_object_init() will let shmem allocate huge pages when
-> +possible.
->   
->   Drivers are responsible for the actual physical pages allocation by
->   calling shmem_read_mapping_page_gfp() for each page.
-> @@ -290,15 +295,27 @@ The open and close operations must update the GEM object reference
->   count. Drivers can use the drm_gem_vm_open() and drm_gem_vm_close() helper
->   functions directly as open and close handlers.
->   
-> -The fault operation handler is responsible for mapping individual pages
-> -to userspace when a page fault occurs. Depending on the memory
-> -allocation scheme, drivers can allocate pages at fault time, or can
-> -decide to allocate memory for the GEM object at the time the object is
-> -created.
-> +The fault operation handler is responsible for mapping pages to
-> +userspace when a page fault occurs. Depending on the memory allocation
-> +scheme, drivers can allocate pages at fault time, or can decide to
-> +allocate memory for the GEM object at the time the object is created.
->   
->   Drivers that want to map the GEM object upfront instead of handling page
->   faults can implement their own mmap file operation handler.
->   
-> +In order to reduce page table overhead, if the internal shmem mountpoint
-> +"shm_mnt" is configured to use transparent huge pages (for builds with
-> +CONFIG_TRANSPARENT_HUGEPAGE enabled) and if the shmem backing store
-> +managed to allocate a huge page for a faulty address, the fault handler
-> +will first attempt to insert that huge page into the VMA before falling
-> +back to individual page insertion. mmap() user address alignment for GEM
-> +objects is handled by providing a custom get_unmapped_area file
-> +operation which forwards to the shmem backing store. For most drivers,
-> +which don't create a huge mountpoint by default or through a module
-> +parameter, transparent huge pages can be enabled by either setting the
-> +"transparent_hugepage_shmem" kernel parameter or the
-> +"/sys/kernel/mm/transparent_hugepage/shmem_enabled" sysfs knob.
-> +
->   For platforms without MMU the GEM core provides a helper method
->   drm_gem_dma_get_unmapped_area(). The mmap() routines will call this to get a
->   proposed address for the mapping.
+and it *just works*. Out of the box. No need to create a new swapfile,
+/etc/fstab, etc.
 
+If you're unsure about your workload's actual zswap usage, you can
+keep it unlimited too - it will just grows and shrinks with memory
+usage dynamics.
+
+One design for every host type and workload characteristics
+(workingset, memory access patterns, memory compressibility).
 
