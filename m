@@ -4,119 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA996CFD2F6
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 09:00:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E594CFD376
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 09:14:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CF226B0005; Tue,  2 Dec 2025 04:00:27 -0500 (EST)
+	id A89826B0012; Tue,  2 Dec 2025 04:14:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A6726B0023; Tue,  2 Dec 2025 04:00:27 -0500 (EST)
+	id A39506B0023; Tue,  2 Dec 2025 04:14:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E3136B0024; Tue,  2 Dec 2025 04:00:27 -0500 (EST)
+	id 928A76B0024; Tue,  2 Dec 2025 04:14:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DF1F6B0005
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 04:00:27 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 944D212DB7
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 09:00:24 +0000 (UTC)
-X-FDA: 84173934768.05.021F002
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A516640014
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 09:00:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yf7TmXzn;
-	spf=pass (imf17.hostedemail.com: domain of haoli.tcs@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=haoli.tcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D0CE6B0012
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 04:14:24 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E81F1A05DF
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 09:14:21 +0000 (UTC)
+X-FDA: 84173969922.13.1FA816C
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 733ED10000B
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 09:14:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=DRc+MBhO;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf14.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764666859; a=rsa-sha256;
+	cv=none;
+	b=1hxoW5FETkXlrfYRlkpNB4JKcw9QPsZbntRDTsLaxbR/y7T2iJu2IfVbXLo+Gw8DfZyfuw
+	dWd/lWKChMhb4r6mtJhyeJCIAazyDvevDfoFHC6tYgBJoM3DcEjQ/TkCX1aLoWGJqfYE2k
+	dn/rxtXNvwISwlq7uLQ5zXdEriy6e6s=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=DRc+MBhO;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf14.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764666022;
+	s=arc-20220608; t=1764666859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PDtCgcKoqebXyo+jxENam+HXtRH1ghw4HvSFLZRxozg=;
-	b=hYvwCSDFE3uRqYdtjOygCEPPVErRwuNDOIFdOkZpmiIk8/tFg8F4H8LVSWkfu10+H7qPY+
-	kfnWg+0yk8M593jk8+q/sYSAPbiA5lGTpq8bm8ucCI+QScPx709Lg7hRyG/BktuBB7DOlr
-	IMrY9iAjL39EX/SaWMfkCKlF220TYtA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764666022; a=rsa-sha256;
-	cv=none;
-	b=wLSBH36onzf8+kKPoz59aZYC0scUSDBEsyJC9QlxqwOfuGmM9wcd7VCeAx9pugaa7XdDXj
-	HyLB7a4AJ2tIiIGqsUHadPzcDSRHel98oX0cW1zi53lFTw3QmL9NLcx64BoxmhzsOFERBX
-	jldDTvRt8o5RPJFSbmEVzNHEOXIcpoA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yf7TmXzn;
-	spf=pass (imf17.hostedemail.com: domain of haoli.tcs@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=haoli.tcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso8063372b3a.1
-        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 01:00:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764666021; x=1765270821; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PDtCgcKoqebXyo+jxENam+HXtRH1ghw4HvSFLZRxozg=;
-        b=Yf7TmXznZMl74KqQjNWJR/UgkPd4wz5mG8Ioo13+OmdOWS2+4BhmoaZJIg1Y4vQ1MO
-         Nu8jw/C4OmxgjA1ouLWwJhJ8FWvhjydCgZ4odLTROZyUbbfLApToH+OgqffholGf3Pu2
-         9Aj0xC06djhJzSEf6O6IdGlYzWFXDg89mp5XCIE1szDnxmCY6Yn3GNZxwFLgNCZZcpFb
-         6PlAcTw5VsRMZaY9j3S0bXcryLyT0TUDdImWFW4cEzcCEx59wtB8cA0S336ap5lICn6r
-         nMkT089hjxoF5og8E1XupWcL/WimBpAedzZc14IAsx0dRi8uHdYEVBbBWL4loR347yC3
-         JDgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764666021; x=1765270821;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PDtCgcKoqebXyo+jxENam+HXtRH1ghw4HvSFLZRxozg=;
-        b=MIZdj1kshp19UxrBNGpAXx/YCYBy1niVZpe7jTqtQXzHN3E224WCMTSXkh4YhOcskl
-         CGRLQb1csrKpOs0BRx46rCMNYz4tajXXBd5LncEVPefCXjRXVPoTtj5rnqUdvNAufNi5
-         Glin8nHek0QBtAg7Cc/oMHTkcyVisC65BVcRLJO4TZ9Z5/uQFi4l5tkDvuojwZUqaUqJ
-         LcAerRosWlhuc/UUhpbxEB4C1fPrx3UN9ZDC5IlF4Yybhe39iS4FtemwqGzn4O+NUvrS
-         AqiIV3AemNL3lFlPTOS0o4tJYO3TZGIkFSvnUrs/KAXC882EDz87+DqWYmBiSzjbuk1l
-         WfGg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKiwHvxZM5IVsKV+/AO6x3ZKb2m8EvscGRE2YOZxHNFR89G6UHGHasBXUMXCFIJS6q735pWn9gTw==@kvack.org
-X-Gm-Message-State: AOJu0YzAB9FZedYi+Kiyi/sa26B/a6PID6TAvqOgSDXRm7OK8mfbE1rN
-	mnLycBLgFrFx7rLlkuDXdGGn/5NA4N4qDtUrVho3bBzHQsnh8RGRdd83DT0Jx6vmtXV+TPqT
-X-Gm-Gg: ASbGnctruM45BtZAViQFnFoGC+At2MdDTBArqvJPxMWK4qCXf/oo8Wn100YEnxLjxt7
-	ZHkPdYsC6gbmHrQSFJE92qqm1LLutyuheHInEli9FonBDjrx4sO2ws8ZIAzlOh8hegdBPYOo9Y9
-	NkRkZOUWNi64iC8ZYweqhY+seMN4n6CC5a6oGAszRSkxTWeid4BRYtPa+cQs0Mu0QG9+gw+rPKL
-	nTwv4ZgSYktEQmvNrGVlVKPtLIiLk4jPmo/G1AMS1mdES+PV0GWWwh6kuz4iTsinQJKdTSnhpF2
-	KyxvHWFMw9HnoU4uIzuLavrxX3CWBDsB3FAe8oXdld9F60FjftC+uWQSXLK1EihjCkCpy1ZCfE4
-	ILRuY6D4Fd6vVm8CDcB9O4RW+baWXlCTbkiYlBZvVtKYmbFB9UCE+ee9GTdpGn4JzblfaJWS1+Q
-	XJ7YCQ
-X-Google-Smtp-Source: AGHT+IGBTBGTbAUOxAz4LdYDBbQj7h1lJpYS6bSIIDqI1Q6AFazDjtAmDH/mUQRFh29VnLmHXujLxA==
-X-Received: by 2002:a05:6a20:548d:b0:35d:3523:c90d with SMTP id adf61e73a8af0-3637d8d6789mr32627334637.0.1764666021403;
-        Tue, 02 Dec 2025 01:00:21 -0800 (PST)
-Received: from fedora ([183.241.171.104])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d150b68367sm16385575b3a.12.2025.12.02.01.00.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 01:00:21 -0800 (PST)
-Date: Tue, 2 Dec 2025 17:00:08 +0800
-From: Hao Li <haoli.tcs@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rcu@vger.kernel.org, maple-tree@lists.infradead.org, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: slub: add barn_get_full_sheaf() and refine empty-main sheaf
- replacement
-Message-ID: <lvagftdnxgpyafafl2ish6x6phno6xstd6r3zxffs652lyxzyc@2pbngufu7wro>
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
- <20250910-slub-percpu-caches-v8-3-ca3099d8352c@suse.cz>
+	bh=ZC4JD69YCTl6Rq5Jcss9H2gq8y/1J0Tm3QdI/bpxBwA=;
+	b=dI64P6pKW2TzOpvaJ82KfnIy3ypdm9AG3aPrl2zPJUSZ9SHDFTi/LgydGNRZZxXIfmPh4d
+	rIObBAZb1jgT0wlbjg/TT7NWg3kU7gme0Cj2omahSmKSr+mghNdTB6WCQxIRfTrdlx8rrf
+	C7SKE+wsT+1KoHJh+6QzheK2x4Z3QZY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1764666856;
+	bh=9HeGkb1CV5dVb10i7VYeFGTZqYWWEywQIZiFwfcvnNI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DRc+MBhOIKNro4cltO7qBBLqA4sWlayyyVJdH3ujaUMPaEzQGv+x0i/L5gLhI9IqY
+	 8vpONH64B12nWznZZv9Uh2FIAGbVMtfSjOuwUk0kj/76lZ2TyprxNOH06j4GdnBgn5
+	 cJgr4tr7QLCGHEGVtJ/s4kiTazDUZDvalI1BjhDGEa1qLlo0mRK2Q0LTR431GSwkoJ
+	 fJuO2nhqBejHtKD9jBMKPRE3G76pB+Ajw8RrKpBZCF1J7HGtNaQnOeMIIEBu/xY9QW
+	 II6EFVNfbvROuRZVtB8ojL17ICD1vj8UA6mciLUOzqLvaJS1SA7pNTwldJaExoQK6u
+	 fSAfN+RZNfa3Q==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id B826A17E1149;
+	Tue,  2 Dec 2025 10:14:15 +0100 (CET)
+Message-ID: <e11acf7a-452a-4ef1-91e1-48be1f0571d9@collabora.com>
+Date: Tue, 2 Dec 2025 10:14:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910-slub-percpu-caches-v8-3-ca3099d8352c@suse.cz>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A516640014
-X-Stat-Signature: 6tgt4rxg9ammxrq7wpax8pop435zk66n
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 08/10] drm/panthor: Introduce huge tmpfs mountpoint
+ option
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Al Viro
+ <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christopher Healy <healych@amazon.com>, Matthew Wilcox
+ <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+References: <20251128185252.3092-1-loic.molinari@collabora.com>
+ <20251128185252.3092-9-loic.molinari@collabora.com>
+ <20251201094555.595744ab@fedora>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <20251201094555.595744ab@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 733ED10000B
+X-Stat-Signature: 9emjwiufch6nqws7fiw5tipc78nydkr3
 X-Rspam-User: 
-X-HE-Tag: 1764666022-915254
-X-HE-Meta: U2FsdGVkX19C/+xPSxoO3lC9yke623I1cgmWQCipJ44lmh2cWEzGjEQuEOmWD7XA1QC+UUjNAgZM3PtbU1zeGO6aB7cQygA5F3rxMO9tUc742IdQt4tV2+5PocJ00HiR9SBYy0cIHhH6PBkHjKK+XsR5d9fuSugTWDSkXozuhYE4Ehcf4hHWJYXmcRtVXBFVi0tOrmAxQmEuMaPB5HoRWxnqZF82SrMhViqfVApwjAAhvtrwtBElAVvlJosnESc/u+hEr5PnzJSPF6zm9e309i1OlacRH2XkFlMMkipCaLeAjv8dfa++3ZUpS0g7CN7lI2BbgbdbonVUC5Pad8co/bW+2tULSCUDFdhOg2zxHD2F39HL2zNRt9UDN8aPvlILJYyL0DmMgSbk0aeQerABUyvoKglsU/Yj8R1U13tjOsSIydPoMwNPjZMvWxBIOQjIyhwxfGoWlmPcsgH066B3rb59u7p76daHL9VJm/Ixq0hsOWq2OOLR7IiD8Gm5S58WaHEzQIAgC/ouQPwTFDllgpgknx8PYK9qneMeaePWxrJQ512gDq/cNQTa4K4nIG+hpcGIJj6cJt0XLDNEDIq1pR40ANbZd+q6jUXvPa1IYZ7+1ezV3Hbu7RFUHekYzAWbJYpnNuqvhM7bSrOLP+GJkIb4cO2WEavsDu0+wadxBMw+EIfZt9SpNTrBCjGJz6xa2lI79yZuMQvg0A5tPgS7/hA2KaIIoNzzMHl2upy3skgjpyPLfcwXrejRV33hSrb3YQhNgvyawviUDW+DL7gsXzlNqfZSNpzzC+KxD7dBm0lYFTg99290mpj+YDXGwd/JF9eo5N5lQRA1gZ+UqFWxxo9/+oMv+wDxMvkdahjI681OTVg3AGEfVqMPsa17P2IiUmYi5ra32PfCfZ1nR4LiRH5WKp305EmcmuEDkTOlCcakRFEXAsISXOYyvo2jwA3oLYuWwTuL5Mid9tW7L8b
- 8itC+EbR
- EqKSCIhUIy6/bpXdYZ7Ku8bl+32UXX4jmWB+LqMPT0HWvHWAtVX8Iy6u+5n/3zK0m1cso1s8lepAKxR/qb5C8zF7+cWtrAz/3FIW446K+AoGb1u3G9Q7kYhFgJQ1nNMDcJ2IHPcNDO0gAnEjnGZtMGHIJSkcpcex2sJ2HEO2x9PhRHgb202Bnr8sWYA1BXKba7mzOJxW2Xr5Q/DXPnNpSpvt9D2FINWF1VuwPXK7GTMUFgFG/eXnRcKKpXhY3uTiQ8zGizA6RKEWzRbB/d7zwkxBjPOc0vs2dfz52Px8N+FdGCNQX0lPc/6qOkTLQt335PVaqbZingAG3157lAFtjB8NSVnm8+xpg7Jyu903uub+TajB1/vRzjn/zcy6hXhKFkUe8Gr1udnj/mLRKNfkDTgaamQd9zXmjtbRyjMZt0S4RgbC2RiyNXrTGKf8WUb+EC34/leGcAr15QfGz/uoAc/ofwXdvQ9zNWKWay0fpzwcb59gJOsEFuebKnAnoBlRwDvNiMOEuNmAwtdloyn7AmvL+XSmBqCdvUW6k
+X-HE-Tag: 1764666859-336250
+X-HE-Meta: U2FsdGVkX1+q/gyYkeTLPPRzHB/TeAlR0XGQXdIlY2faeERgwWklRbCqZfaCGnzYqAJMzk5JgshA/WCmTmbHJpQr5qcrpGaEG/aR5bGxwYDNRRIZ3PeZ0KPx+sbwPs0bFA04zkg5K6mfaQ1C4AapHjVQt7z3vxINhoXlXCVUG0xkKGWeunljKS2qJPKx9/53dKjbczoLfEEnH1odP3u9+1R8NGMU4ZfirUe9pByHNaCinw+JiOxeZ9SDl0iyRtD/vOZlmpPKZmy4Ss+S8lXsFacjsM9FLmtHmZJCdKqpJYFn6agA7TNkyTr6sv2iYaZTym4/J9VDqubvvCSOwS2K2qEOCb5SD+Lxc47gwhQG/NSJLV6SMBueBvf+hqkMCwBVsiuN0YTQ/8E0EFANQmBuWnKtfxogG8+2DKWhfn9qjnehDf6aQGBnqQau9Po7dUjtOpin90DNGuNyBla1X8bwAFqL1OZluBnHCsV5Bld2uuw5xYFBp+SS9q1eOVZSfft0SExsicPv8UvBnBlRAfwz6K+LRw+O8mPT4NV2dOhY+MP4BavhVuThnaDdYIxY7wRzGWumRq9UODFco88l8uGA0jT3zx+nmkqu3JGbHh798rMy2+gl0mmsEgM8F0G27uORdpO8B6SzKt/hJoh8WFcgw9jRyTwfn4s7kJm4Z87G5qDZIBA8ACY8IK9tkqT4dFNGd+EzbArPGWWiStfzieng2Jjq6xy96STHkl4Dqlm8n+3skaOLSp5IeJHcOJZo62znNE8pnqAFLd/u3PHCwHvlK2Ixx31uxUFFyOwEzRDtZCMFLDgwivQYYFfTuGGHESHJEDlsX8TsCjSsf+qAFm6KdmlKqn3MlzstGVCP71GHANs1TW7bZn8Ob04v6h/54BTb8NmWVQOE81Kvhzu+g2/lvQHODeJXOrqGINqfTgiVfnkkWQ0hty0fYtmHg5Bu3jhGuvDTpnjrAmvLOrifZf3
+ a/baftrj
+ RwM+oI9WlCi6/dASpP3O69F6y0o5rheFR1rtvvO0K6z/zIV9e6u6Ql2ggTBBcAdTIB0la1wT6x7YbyEN91PoE6xKyGdYHDTDlf2p96OipdSOlAJWiaHrxHeaJY2aDYn4pD0foxrArZWk5mZMndOaq26dXe0hDY4Kqbpd5LZozi2ooMq9s3uelp96uLy6wcnOBHOKfLogGDf5buXP5IDFFRNvFiMDikGRhpYXK1mDyd/cILxUumLQbAxpKXvME6aXzUluEu2IJ+hVIGIHLnS9HCDdBFWK55qnHOJOGh3jNnl8u+MDBwsrhpl5U7bE4atxXQmiE7+PvYvI0WZ2JzikQj66FiFdpUOLY0ggt9IKA3Dd2DbiLeEZi/GX81lKNi/Va/savqJH1PnrAc/K0OiD8X0x5rZlqExdCkQznztrE45/gbMxDVTBBr5l2BE1Bt0f0+d3C0MzP22JRmVKevlSicfJts7bd1U1MXXOjOj8NqLXPwJxv9c3L2o31YV84SWNPJvN5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,122 +119,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce barn_get_full_sheaf(), a helper that detaches a full sheaf from
-the per-node barn without requiring an empty sheaf in exchange.
+Hi Boris,
 
-Use this helper in __pcs_replace_empty_main() to change how an empty main
-per-CPU sheaf is handled:
+On 01/12/2025 09:45, Boris Brezillon wrote:
+> On Fri, 28 Nov 2025 19:52:50 +0100
+> Loïc Molinari <loic.molinari@collabora.com> wrote:
+> 
+>> Introduce the 'panthor.transparent_hugepage' boolean module parameter
+>> (false by default). When the parameter is set to true, a new tmpfs
+>> mountpoint is created and mounted using the 'huge=within_size'
+>> option. It's then used at GEM object creation instead of the default
+>> 'shm_mnt' mountpoint in order to enable Transparent Hugepage (THP) for
+>> the object (without having to rely on a system wide parameter).
+>>
+>> v3:
+>> - use huge tmpfs mountpoint in drm_device
+>>
+>> v4:
+>> - fix builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+>> - clean up mountpoint creation error handling
+>> - print negative error value
+>>
+>> v5:
+>> - use drm_gem_has_huge_tmp() helper
+>> - get rid of CONFIG_TRANSPARENT_HUGEPAGE ifdefs
+>>
+>> v9:
+>> - replace drm_gem_has_huge_tmp() by drm_gem_get_huge_tmp()
+>>
+>> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+>> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+>> ---
+>>   drivers/gpu/drm/panthor/panthor_device.c |  3 +++
+>>   drivers/gpu/drm/panthor/panthor_drv.c    |  7 +++++++
+>>   drivers/gpu/drm/panthor/panthor_drv.h    |  9 +++++++++
+>>   drivers/gpu/drm/panthor/panthor_gem.c    | 18 ++++++++++++++++++
+>>   drivers/gpu/drm/panthor/panthor_gem.h    |  2 ++
+>>   5 files changed, 39 insertions(+)
+>>   create mode 100644 drivers/gpu/drm/panthor/panthor_drv.h
+>>
+>> diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
+>> index e133b1e0ad6d..2979ee0e52c2 100644
+>> --- a/drivers/gpu/drm/panthor/panthor_device.c
+>> +++ b/drivers/gpu/drm/panthor/panthor_device.c
+>> @@ -18,6 +18,7 @@
+>>   #include "panthor_devfreq.h"
+>>   #include "panthor_device.h"
+>>   #include "panthor_fw.h"
+>> +#include "panthor_gem.h"
+>>   #include "panthor_gpu.h"
+>>   #include "panthor_hw.h"
+>>   #include "panthor_mmu.h"
+>> @@ -294,6 +295,8 @@ int panthor_device_init(struct panthor_device *ptdev)
+>>   	if (ret)
+>>   		goto err_unplug_fw;
+>>   
+>> +	panthor_gem_init(ptdev);
+>> +
+>>   	/* ~3 frames */
+>>   	pm_runtime_set_autosuspend_delay(ptdev->base.dev, 50);
+>>   	pm_runtime_use_autosuspend(ptdev->base.dev);
+>> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+>> index d1d4c50da5bf..55dbda6dbf9c 100644
+>> --- a/drivers/gpu/drm/panthor/panthor_drv.c
+>> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
+>> @@ -1559,6 +1559,7 @@ static const struct file_operations panthor_drm_driver_fops = {
+>>   	.read = drm_read,
+>>   	.llseek = noop_llseek,
+>>   	.mmap = panthor_mmap,
+>> +	.get_unmapped_area = drm_gem_get_unmapped_area,
+>>   	.show_fdinfo = drm_show_fdinfo,
+>>   	.fop_flags = FOP_UNSIGNED_OFFSET,
+>>   };
+>> @@ -1626,6 +1627,12 @@ static const struct drm_driver panthor_drm_driver = {
+>>   #endif
+>>   };
+>>   
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> +bool panthor_transparent_hugepage;
+>> +module_param_named(transparent_hugepage, panthor_transparent_hugepage, bool, 0400);
+>> +MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount point with Transparent Hugepage enabled (false = default)");
+> 
+> On a second thought, I wonder if this shouldn't be an opt-out param
+> (which is what V3D does, BTW). What's the downside of enabling THP if we
+> have a fallback for cases where memory is too fragmented to get huge
+> pages at allocation time?
 
-  - If pcs->spare is NULL and pcs->main is empty, first try to obtain a
-    full sheaf from the barn via barn_get_full_sheaf(). On success, park
-    the empty main sheaf in pcs->spare and install the full sheaf as the
-    new pcs->main.
+The only issue I can think of is maybe the fragmentation implied by the 
+alignment requirement. But I don't think it's too much of an issue 
+because, as you said, it will just fallback to allocating small pages in 
+between, and V3D, which has use cases with low memory requirements too, 
+makes it an opt-out too.
 
-  - If pcs->spare already exists and has objects, keep the existing
-    behavior of simply swapping pcs->main and pcs->spare.
+I'll do that for both Panfrost and Panthor.
 
-  - Only when both pcs->main and pcs->spare are empty do we fall back to
-    barn_replace_empty_sheaf() and trade the empty main sheaf into the
-    barn in exchange for a full one.
+Regards,
+Loïc
 
-This makes the empty-main path more symmetric with __pcs_replace_full_main(),
-which for a full main sheaf parks the full sheaf in pcs->spare and pulls an
-empty sheaf from the barn. It also matches the documented design more closely:
-
-  "When both percpu sheaves are found empty during an allocation, an empty
-   sheaf may be replaced with a full one from the per-node barn."
-
-Signed-off-by: Hao Li <haoli.tcs@gmail.com>
----
-
-* This patch is based on b4/sheaves-for-all branch
-
- mm/slub.c | 50 +++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 43 insertions(+), 7 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index a94c64f56504..1fd28aa204e1 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2746,6 +2746,32 @@ static void pcs_destroy(struct kmem_cache *s)
- 	s->cpu_sheaves = NULL;
- }
- 
-+static struct slab_sheaf *barn_get_full_sheaf(struct node_barn *barn,
-+					       bool allow_spin)
-+{
-+	struct slab_sheaf *full = NULL;
-+	unsigned long flags;
-+
-+	if (!data_race(barn->nr_full))
-+		return NULL;
-+
-+	if (likely(allow_spin))
-+		spin_lock_irqsave(&barn->lock, flags);
-+	else if (!spin_trylock_irqsave(&barn->lock, flags))
-+		return NULL;
-+
-+	if (likely(barn->nr_full)) {
-+		full = list_first_entry(&barn->sheaves_full,
-+					 struct slab_sheaf, barn_list);
-+		list_del(&full->barn_list);
-+		barn->nr_full--;
-+	}
-+
-+	spin_unlock_irqrestore(&barn->lock, flags);
-+
-+	return full;
-+}
-+
- static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
- 					       bool allow_spin)
- {
-@@ -4120,7 +4146,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	struct slab_sheaf *empty = NULL;
- 	struct slab_sheaf *full;
- 	struct node_barn *barn;
--	bool can_alloc;
-+	bool can_alloc, allow_spin;
- 
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
- 
-@@ -4130,10 +4156,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 		return NULL;
- 	}
- 
--	if (pcs->spare && pcs->spare->size > 0) {
--		swap(pcs->main, pcs->spare);
--		return pcs;
--	}
-+	allow_spin = gfpflags_allow_spinning(gfp);
- 
- 	barn = get_barn(s);
- 	if (!barn) {
-@@ -4141,8 +4164,21 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 		return NULL;
- 	}
- 
--	full = barn_replace_empty_sheaf(barn, pcs->main,
--					gfpflags_allow_spinning(gfp));
-+	if (!pcs->spare) {
-+		full = barn_get_full_sheaf(barn, allow_spin);
-+		if (full) {
-+			pcs->spare = pcs->main;
-+			pcs->main = full;
-+			return pcs;
-+		}
-+	} else if (pcs->spare->size > 0) {
-+		swap(pcs->main, pcs->spare);
-+		return pcs;
-+	}
-+
-+	/* both main and spare are empty */
-+
-+	full = barn_replace_empty_sheaf(barn, pcs->main, allow_spin);
- 
- 	if (full) {
- 		stat(s, BARN_GET);
--- 
-2.50.1
+>> +#endif
+>> +
+>>   static int panthor_probe(struct platform_device *pdev)
+>>   {
+>>   	struct panthor_device *ptdev;
+>> diff --git a/drivers/gpu/drm/panthor/panthor_drv.h b/drivers/gpu/drm/panthor/panthor_drv.h
+>> new file mode 100644
+>> index 000000000000..79dccd289881
+>> --- /dev/null
+>> +++ b/drivers/gpu/drm/panthor/panthor_drv.h
+>> @@ -0,0 +1,9 @@
+>> +// SPDX-License-Identifier: GPL-2.0 or MIT
+>> +/* Copyright 2025 Amazon.com, Inc. or its affiliates */
+>> +
+>> +#ifndef __PANTHOR_DRV_H__
+>> +#define __PANTHOR_DRV_H__
+>> +
+>> +extern bool panthor_transparent_hugepage;
+>> +
+>> +#endif
+>> diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
+>> index 10d255cccc09..7ae07a9bc996 100644
+>> --- a/drivers/gpu/drm/panthor/panthor_gem.c
+>> +++ b/drivers/gpu/drm/panthor/panthor_gem.c
+>> @@ -1,6 +1,7 @@
+>>   // SPDX-License-Identifier: GPL-2.0 or MIT
+>>   /* Copyright 2019 Linaro, Ltd, Rob Herring <robh@kernel.org> */
+>>   /* Copyright 2023 Collabora ltd. */
+>> +/* Copyright 2025 Amazon.com, Inc. or its affiliates */
+>>   
+>>   #include <linux/cleanup.h>
+>>   #include <linux/dma-buf.h>
+>> @@ -12,10 +13,27 @@
+>>   #include <drm/panthor_drm.h>
+>>   
+>>   #include "panthor_device.h"
+>> +#include "panthor_drv.h"
+>>   #include "panthor_fw.h"
+>>   #include "panthor_gem.h"
+>>   #include "panthor_mmu.h"
+>>   
+>> +void panthor_gem_init(struct panthor_device *ptdev)
+>> +{
+>> +	int err;
+>> +
+>> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>> +	    !panthor_transparent_hugepage)
+>> +		return;
+>> +
+>> +	err = drm_gem_huge_mnt_create(&ptdev->base, "within_size");
+>> +	if (drm_gem_get_huge_mnt(&ptdev->base))
+>> +		drm_info(&ptdev->base, "Using Transparent Hugepage\n");
+>> +	else if (err)
+>> +		drm_warn(&ptdev->base, "Can't use Transparent Hugepage (%d)\n",
+>> +			 err);
+>> +}
+>> +
+>>   #ifdef CONFIG_DEBUG_FS
+>>   static void panthor_gem_debugfs_bo_init(struct panthor_gem_object *bo)
+>>   {
+>> diff --git a/drivers/gpu/drm/panthor/panthor_gem.h b/drivers/gpu/drm/panthor/panthor_gem.h
+>> index 80c6e24112d0..2eefe9104e5e 100644
+>> --- a/drivers/gpu/drm/panthor/panthor_gem.h
+>> +++ b/drivers/gpu/drm/panthor/panthor_gem.h
+>> @@ -136,6 +136,8 @@ struct panthor_gem_object *to_panthor_bo(struct drm_gem_object *obj)
+>>   	return container_of(to_drm_gem_shmem_obj(obj), struct panthor_gem_object, base);
+>>   }
+>>   
+>> +void panthor_gem_init(struct panthor_device *ptdev);
+>> +
+>>   struct drm_gem_object *panthor_gem_create_object(struct drm_device *ddev, size_t size);
+>>   
+>>   int
+> 
 
 
