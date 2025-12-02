@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E2AD11707
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 10:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D499D11708
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 10:17:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBB3A6B0010; Tue,  2 Dec 2025 05:17:31 -0500 (EST)
+	id CF23F6B0029; Tue,  2 Dec 2025 05:17:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1FF56B0029; Tue,  2 Dec 2025 05:17:31 -0500 (EST)
+	id CCADA6B0023; Tue,  2 Dec 2025 05:17:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BEB56B0010; Tue,  2 Dec 2025 05:17:31 -0500 (EST)
+	id B441D6B002A; Tue,  2 Dec 2025 05:17:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 410596B0022
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 05:17:31 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F857C05DC
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:28 +0000 (UTC)
-X-FDA: 84174128976.24.7F6F6CF
+	by kanga.kvack.org (Postfix) with ESMTP id 929916B0023
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 05:17:32 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58924140583
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:32 +0000 (UTC)
+X-FDA: 84174129144.07.7EE9584
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8247F1C000D
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=ZLAO+ZGj;
-	spf=pass (imf20.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5C4B118000F
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 10:17:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=hzLTIZO4;
+	spf=pass (imf06.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764670646;
+	s=arc-20220608; t=1764670650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ul+RjVqTlsty4OS9oph2p81BfaTCZdR30Oh+aCN0TP8=;
-	b=RQBlyOJAESif05K0/+6ObirLDegJIbzxMtmShGFEEbQnZoWfuJpe/VWyCj4xpUYjwTREIG
-	AaAs4xMtqCMGU2WDGlgJV8Eg1ej/7PWPaoubGgs0TARU5gFFiqj26pHY73trlRElXOYlZu
-	ZYP9S/E/twdiLDSIjng2cb7nIjxdQEk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=ZLAO+ZGj;
-	spf=pass (imf20.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764670646; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qlkV1iBzrDLIZuPYBOBgasEgZU4g5pRj2/PrSq9li84=;
+	b=dSCcocca9fy3lasvO+7xsCU18fx+URf/GZWQcaUHeVYqMcZMIoWjDQ8PlJ+g0DmM8+A2LH
+	BrtFtrjc0IYCmDRTTmRgfOnSybtTXbBtkCHYkqrxPhzSLqxbhJHaei8umVoU6FDvslcaV+
+	C8QbTD19c5bTJJBynRHFs0fgcTEQ+s0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764670650; a=rsa-sha256;
 	cv=none;
-	b=wlwpq+jToBWuYP4hEv/evoUi+dJPKIRrEmOwbSTU/GZBckWdHLl3a0DcxQEhdEKvsLo/CE
-	NlGE+iCqLMRlkuhTCChekHXg1Lzs61rRM7JrOr4BkXGoKaAQDcRh1sZDsHXXro0D8fMO4n
-	KWS1Rrd8vi9mt+JBLwKH5r2rHhCYsZk=
+	b=vKaQhIYBqLeE/kHGPYYCH4hY3J2qWPHiFYBjpo3mDQwOVdz02nltSQuSgpti47fxzVdAQi
+	lMPstWzZ8Ey5J4cafTfhOqE9/DFd6At4J9rUipKRx8GwJXREeM6ec/Sk+5rBqjfiNMgnGa
+	Sa6N3grdSetDQjA3fYPaj1Fsn5O0QLQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=hzLTIZO4;
+	spf=pass (imf06.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764670643;
-	bh=kdHLrkRzJLri/Zem9ZEPjcDruJpnM9kiLoeD+kH2zfc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZLAO+ZGjGoDtP84IJfsQblBdkOgnkYu6ns9BAXW+8OyG3W+DMo2O+3OEzkbOk3ja6
-	 /BSkGHarnu4GJXAADRwc2QtGaixAipYtGAt/hwR0xLYkQu97y4Yl1IhDjhSkXZb8L1
-	 NDJOPNagL+GqqlaQD7+trq3jxgp9BEgoCt1fXlR2ZZwmhncN3IbTKIKDz/LBXIX/wJ
-	 CDd6SWRH2zBjKCDerhtPvnGA1OOBXW+Skc3vOHTDWt+Vgc7JJasP2RSm4hkEUSAVt1
-	 /WXz18u6QqioKQgtP1cHQ4HJRD1zOVCZiuMqpOodLQD7ankM0RXEjh40ZhHa7AnxTO
-	 b45y/ps4hNhVA==
+	s=mail; t=1764670648;
+	bh=9th0tLAngJVGd6qH652rQnjACAMqlVf6KbfxdfP115A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hzLTIZO4FKybVytLPB8Q+wJpU5gvTnj6tCpOXfRP0sStlfSW6Qiyz9bqu5Dtm105w
+	 t3RbjK7qOT7oqij4vDG1DT67koICrUXrGdim26gz/c+v8zMMioqe+1sSvO5MhNFxY+
+	 iwJZ+opUrw9DpGNJdGg7nmWZi/noPh/rL3GKidVw5xc9nBtX5R1KVbdnFc0NXvgAtV
+	 srexQGdbfrhhSQmbGx/gAjdwfYwYgm5aQG7s0/8DFuJhL1sDOvKA+2qAEasF/Vvz1g
+	 +PSc2NsvfgY/zQi0YyP7hoMRhU4bRsBMAttp76kE0Rqy12yAb8baiZMsiFiHzrlMA2
+	 23xevis+eKEDA==
 Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0D62A17E114C;
-	Tue,  2 Dec 2025 11:17:23 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2176017E13F1;
+	Tue,  2 Dec 2025 11:17:27 +0100 (CET)
 From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
@@ -100,21 +101,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kernel@collabora.com
-Subject: [PATCH v11 00/10] drm: Reduce page tables overhead with THP
-Date: Tue,  2 Dec 2025 11:17:10 +0100
-Message-ID: <20251202101720.3129-1-loic.molinari@collabora.com>
+Subject: [PATCH v11 04/10] drm/gem: Add huge tmpfs mountpoint helpers
+Date: Tue,  2 Dec 2025 11:17:14 +0100
+Message-ID: <20251202101720.3129-5-loic.molinari@collabora.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251202101720.3129-1-loic.molinari@collabora.com>
+References: <20251202101720.3129-1-loic.molinari@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8247F1C000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ur43msfnxkrio6919mp57ybcsjchy1nd
-X-HE-Tag: 1764670646-79349
-X-HE-Meta: U2FsdGVkX1+XzmemAPQ+g1oqUWL18FVh9dpqMIY4Z5Z3317CBRq8ZGco9+fwvmvPCJrTaxdODlLs8LAd0Jogc5wqy0T01LCSKh7+RzgO84DbD3T5DiADjQe/4d/kbCuISuFbjTnqr8mvjYgjxvTSzm6qWZMQRoKBOYosOkjsA85T87LmbWKaqruFRQ9BxkgfYNv4AYaxu/LM4MgmzjsEif8odzI+C+SiddSxB8eF7AFrYlou4VYg2J2xYC2At8gQ5vAsw56GW0ppNHBmhjI6HZm2ILi5t6o3wjPy4lKK8Fm7Y804zNtgij3SAmfDYWCPZxong4lgK/heSAGNYbjVwlndzgxrtWTL3cDvwqYE+YRFS12VU0eM1dBg3mDFxwp1yMBtD1FF2T8OYkYypDWHpMPz4Ub73LllheYxt6DozsO5MJYI4rnD8UcaoEGTPy9PxSLZZL2aq7bAz5XC5r8vpTy6t+sns7GrO6ULW6zP1BBJ5YqBmxBXF7Aa6PlV07CLdovudW+2vG03Ck5DufqzVu5MOYdrYoV/DsSdcxZuqa622V2zBpCwsqnA1mLJB56Jh5P8m8Vrb+Z/1NmESiyxP9ia5gGY+vi0U0LVy7muORiJ8wIis5J0xNmqhaxGJPY9kjT92U9okY4yQmlEXBpwbg72ZY0GLxVfTJmidbfY+rw1g0fZmUEDB3Ntsm9CIUZD6I0DB4aRZMIQa2z6Q39QvxkKcmLrHU/lEyBcWiB9B0X0TkWaL6XCOgrqc3Xe3Gp+EqPo5yAEXul650cI9QYWJ19IBxPQf4YpWFwoP4Fz4Sd5NX7Mx6slXArNZWzR2nBdFlX8fwFRtDThAsrHe2qjUoc56kNMNOdWeh0k0oGIIYaRZXtLCtu8jPDezQ5OAVftJPF7pPId7NY1kTt1ZPii22QqtWCz9FEEp0xYvvR9DuG3chQSLX21WGuifPFIvgzUfSoVzQkKpIAdF/JQYii
- +PgpR5cJ
- xiPlHbVsL6bb4DhficWg6SDOU31/PmHVqk/aZoed9iq5ojeddJ3LyLy6f9asj30ycCbF9VVLgZirJ5tci6QnQfgUn9npaP1jqIIotGynNWJDqF7bNTD7SenpoKVJOJRw01l8vZ2Ql5SezMJDgHvaMjLff8LACdAa7iMBgP9mNtIh6O9mdPjl1ahOiIMJkCy58nYFPg0m1AQshlSE/YD8ioPkrK7zWNIXMNK1aH9FYN+vDwL/FxwE6k/62g7rtfUbhk+8kJRi0MA6Pc90gAaCJD5Woh7ubf2atVggS/oVsfsfi/W3pzFmATPAEVceKjgUCwTUMwamL4nR0zio=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5C4B118000F
+X-Stat-Signature: 15tfqab6gqga4mrzz96uoanp3p97xoq4
+X-HE-Tag: 1764670650-455586
+X-HE-Meta: U2FsdGVkX18HdqyBFnwZQG+iMNpdZQ78JELZyxUUbNS9JqHbrMu33+H/1z4XyJFTgbNzI/d1VST3uUlBT7jnZ3ad4Bf9ielhkE5APDxUmXR2+pBSq1AyfT8w6VEKWks3pcSjOER1OitjYOYj7ZPIdATynNh0Fgjy2yLff6yulId9LKhP16hfU+VnXY1FGSls3YZNKKPr4OFqwTBuIhwqVmIKoHTQ7iFC6z3UKjHjD0jDhx9Y31fkQE5Whkx5L/ehVg8KrMio5Vd8s5zZiaoQs3N9Wt7zgez3FXo3CwAquP2Ml3xhRCY7Ao8IBHhqDRF4q7JeImgHXKBsUO8hSO2Ne4dKvirod7Uu3HOuGSzUNCpS7Kh+kLdXx1HYxDj2izk8n7A+WCEiQCOYQB4MndhcUi2/XOcm/J2CBewxv19G4ReVpJWq0gUtdEHy5fokibrEfcIPZwe78uFxKP2Z2X26cRe6Zf7J4MnEaBEY9McR8IXkKam2cySuvnCdg0pJGPf8K4+ieLZ4PnuCtEqg1EEgH9Ndvl+/a7WM21ABrkeqoR3463Zq4S3Eu/MUttVJcjbSNbaqUtqi586Lz6CkjR5NYbvvTIoOJh1obzaagePxe3E2rfv4RIDV3Zp2JDSEquB+oRhHjnUyeof2CyU6xoFuTyAx5Ovr1TKXG3eQnadyLfB6+utuH0NiofxfNOXgiV02+ZAC+OT0T8+pB/T/10G9UtRscmMge58FbtK4rT+8R0TACNGwsbwWR5zMN6ozNnhjbe21t5CWT79tT3uEqNDTo8l0drkjO62CyM4Q3w7WLAYiY04oW/jWK8FQkiEpvEj8/KzSxGZ4OdbEmYbML9BME/E5fY68G+T/Wu3cxgSiHnbJ/tFZpq65+6BEDu9eKe33aWchDZsUfDDgRrDTvNJUz6331mwPh5TavS8wPLk9gp7kmuq2b8Ezz0BLLDNbrVT+MbgSLtaJ/MTPzcxD8uM
+ OC08I1M+
+ 78xPeq9yqD/5V9ie8KeqiUfPN4Dcziq6WVRbwqz59JfP06eyH8UFxJOzeVNUIWFbrxAcZgUBQX3Lnv2s+OANg9Yi8sVFmLU+8wlOqarlAEM7V1ifKfpWORDEVqt5GPRTagXTqcZIaZG1V0fg5XByGlPljyqwrF7VcjssiG/sstiftcqosWQT7bwwB5E/05LZf8fPwlk2QlRk/qs38RpHtMHW0xy241FUws8wolUWvo7qaODat4dyBKw/caJdFFtOxudOKW1lyegu50tWKi8I+thCdlMB0kFomzyzDWp8b0ChD1HNjnrxbEfr+kc3YMrbWeSVEEh5KrzjAc9WklHulZ6M+OTv950VbvygLibqY5Sq2k2baNF9CcNhp+de7AIdNue7PF1RAtRSUCzA5DOEvpWh2uKuppxx+aiZwZPmZbyX3CSRLY7M3PUotmtv24l9+tte0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,79 +126,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series aims to reduce the page tables overhead of DRM drivers for
-builds with CONFIG_TRANSPARENT_HUGEPAGE enabled and either the sysfs
-knob '/sys/kernel/mm/transparent_hugepage/shmem_enabled' appropriately
-set or drivers using a dedicated huge tmpfs mount point.
+Add the drm_gem_huge_mnt_create() and drm_gem_get_huge_mnt() helpers
+to avoid code duplication in the i915, V3D, Panfrost and Panthor
+drivers. The former creates and mounts a dedicated huge tmpfs
+mountpoint, for the lifetime of a DRM device, used at GEM object
+initialization. The latter retrieves the dedicated huge tmpfs
+mountpoint used by a DRM device.
 
-It starts by checking whether a faulty address in the page fault
-handler is part of a huge page in order to attempt a PMD sized PFN
-insertion into the VMA. It then introduces a dedicated
-get_unmapped_area file operation on the DRM file descriptor for GEM
-objects to get the best virtual address alignment for the underlying
-shmem buffers.
+The next commits will port drivers to these helpers.
 
-The remaining commits propose shmem helpers to create and release huge
-tmpfs mount points and adapt the i915 and V3D drivers. The helpers are
-then used to optionally enable Transparent Hugepage for Panfrost and
-Panthor.
+v3:
+- store huge tmpfs mountpoint in drm_device
 
-For Panthor on a Rock 5B, this series makes the first memcpy() to an
-entire BO object mapped in userspace about twice as fast with
-Transparent Hugepage enabled.
+v4:
+- return 0 in builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+- return 0 when huge_mnt already exists
+- use new vfs_parse_fs_string() helper
 
-Implementing a fault-around handler using the arm64 contiguous page
-hint (contptes) could also greatly help reduce page tables overhead
-for small pages by mapping several contiguous pages around a faulty
-address at once. This will be proposed in another patch series.
+v5:
+- remove warning on !dev->huge_mnt and reset to NULL on free
+- inline drm_gem_huge_mnt_create() to remove func from text and avoid
+  calls in builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+- compile out drm_device's huge_mnt field in builds with
+  CONFIG_TRANSPARENT_HUGEPAGE=n
+- add drm_gem_has_huge_mnt() helper
 
-Loïc Molinari (10):
-  drm/shmem-helper: Simplify page offset calculation in fault handler
-  drm/shmem-helper: Map huge pages in fault handler
-  drm/gem: Introduce drm_gem_get_unmapped_area() fop
-  drm/gem: Add huge tmpfs mountpoint helpers
-  drm/i915: Use huge tmpfs mountpoint helpers
-  drm/v3d: Use huge tmpfs mountpoint helpers
-  drm/gem: Get rid of *_with_mnt helpers
-  drm/panthor: Introduce huge tmpfs mountpoint option
-  drm/panfrost: Introduce huge tmpfs mountpoint option
-  Documentation/gpu/drm-mm: Add THP paragraph to GEM mapping section
+v6:
+- move huge_mnt doc into ifdef'd section
+- either inline or export drm_gem_huge_mnt_create()
 
- Documentation/gpu/drm-mm.rst                  |  29 ++-
- drivers/gpu/drm/drm_gem.c                     | 202 +++++++++++++-----
- drivers/gpu/drm/drm_gem_shmem_helper.c        |  79 +++----
- drivers/gpu/drm/i915/Makefile                 |   3 +-
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c     |  48 +++--
- drivers/gpu/drm/i915/gem/i915_gemfs.c         |  71 ------
- drivers/gpu/drm/i915/gem/i915_gemfs.h         |  14 --
- .../gpu/drm/i915/gem/selftests/huge_pages.c   |  16 +-
- drivers/gpu/drm/i915/i915_drv.h               |   5 -
- drivers/gpu/drm/panfrost/panfrost_device.c    |   3 +
- drivers/gpu/drm/panfrost/panfrost_drv.c       |   6 +
- drivers/gpu/drm/panfrost/panfrost_drv.h       |   9 +
- drivers/gpu/drm/panfrost/panfrost_gem.c       |  18 ++
- drivers/gpu/drm/panfrost/panfrost_gem.h       |   2 +
- drivers/gpu/drm/panthor/panthor_device.c      |   3 +
- drivers/gpu/drm/panthor/panthor_drv.c         |   7 +
- drivers/gpu/drm/panthor/panthor_drv.h         |   9 +
- drivers/gpu/drm/panthor/panthor_gem.c         |  18 ++
- drivers/gpu/drm/panthor/panthor_gem.h         |   2 +
- drivers/gpu/drm/v3d/Makefile                  |   3 +-
- drivers/gpu/drm/v3d/v3d_bo.c                  |   6 +-
- drivers/gpu/drm/v3d/v3d_drv.c                 |   2 +-
- drivers/gpu/drm/v3d/v3d_drv.h                 |  11 +-
- drivers/gpu/drm/v3d/v3d_gem.c                 |  21 +-
- drivers/gpu/drm/v3d/v3d_gemfs.c               |  62 ------
- include/drm/drm_device.h                      |  15 ++
- include/drm/drm_gem.h                         |  40 +++-
- include/drm/drm_gem_shmem_helper.h            |   3 -
- 28 files changed, 418 insertions(+), 289 deletions(-)
- delete mode 100644 drivers/gpu/drm/i915/gem/i915_gemfs.c
- delete mode 100644 drivers/gpu/drm/i915/gem/i915_gemfs.h
- create mode 100644 drivers/gpu/drm/panfrost/panfrost_drv.h
- create mode 100644 drivers/gpu/drm/panthor/panthor_drv.h
- delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
+v7:
+- include <drm/drm_device.h> in drm_gem.h
 
+v9:
+- replace drm_gem_has_huge_mnt() by drm_gem_get_huge_mnt()
+
+v11:
+- doc fixes
+- add Boris and Maíra R-bs
+
+Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+---
+ drivers/gpu/drm/drm_gem.c | 57 +++++++++++++++++++++++++++++++++++++++
+ include/drm/drm_device.h  | 15 +++++++++++
+ include/drm/drm_gem.h     | 33 +++++++++++++++++++++++
+ 3 files changed, 105 insertions(+)
+
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index 933fc89dd648..32dddb23e211 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -29,6 +29,9 @@
+ #include <linux/export.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#include <linux/fs_context.h>
++#endif
+ #include <linux/iosys-map.h>
+ #include <linux/mem_encrypt.h>
+ #include <linux/mm.h>
+@@ -82,6 +85,60 @@
+  * up at a later date, and as our interface with shmfs for memory allocation.
+  */
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++static void drm_gem_huge_mnt_free(struct drm_device *dev, void *data)
++{
++	kern_unmount(dev->huge_mnt);
++}
++
++/**
++ * drm_gem_huge_mnt_create - Create, mount and use a huge tmpfs mountpoint
++ * @dev: DRM device that will use the huge tmpfs mountpoint
++ * @value: huge tmpfs mount option value
++ *
++ * This function creates and mounts a dedicated huge tmpfs mountpoint for the
++ * lifetime of the DRM device @dev which is used at GEM object initialization
++ * with drm_gem_object_init().
++ *
++ * The most common option for @value is "within_size" which only allocates huge
++ * pages if the page will be fully within the GEM object size. "always",
++ * "advise" and "never" are supported too but the latter would just create a
++ * mountpoint similar to the default one (`shm_mnt`). See shmemfs and
++ * Transparent Hugepage for more information.
++ *
++ * Returns:
++ * 0 on success or a negative error code on failure.
++ */
++int drm_gem_huge_mnt_create(struct drm_device *dev, const char *value)
++{
++	struct file_system_type *type;
++	struct fs_context *fc;
++	int ret;
++
++	if (unlikely(drm_gem_get_huge_mnt(dev)))
++		return 0;
++
++	type = get_fs_type("tmpfs");
++	if (unlikely(!type))
++		return -EOPNOTSUPP;
++	fc = fs_context_for_mount(type, SB_KERNMOUNT);
++	if (IS_ERR(fc))
++		return PTR_ERR(fc);
++	ret = vfs_parse_fs_string(fc, "source", "tmpfs");
++	if (unlikely(ret))
++		return -ENOPARAM;
++	ret = vfs_parse_fs_string(fc, "huge", value);
++	if (unlikely(ret))
++		return -ENOPARAM;
++
++	dev->huge_mnt = fc_mount_longterm(fc);
++	put_fs_context(fc);
++
++	return drmm_add_action_or_reset(dev, drm_gem_huge_mnt_free, NULL);
++}
++EXPORT_SYMBOL_GPL(drm_gem_huge_mnt_create);
++#endif
++
+ static void
+ drm_gem_init_release(struct drm_device *dev, void *ptr)
+ {
+diff --git a/include/drm/drm_device.h b/include/drm/drm_device.h
+index 5af49c5c3778..bc78fb77cc27 100644
+--- a/include/drm/drm_device.h
++++ b/include/drm/drm_device.h
+@@ -3,6 +3,9 @@
+ 
+ #include <linux/list.h>
+ #include <linux/kref.h>
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#include <linux/mount.h>
++#endif
+ #include <linux/mutex.h>
+ #include <linux/idr.h>
+ #include <linux/sched.h>
+@@ -168,6 +171,18 @@ struct drm_device {
+ 	 */
+ 	struct drm_master *master;
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	/**
++	 * @huge_mnt:
++	 *
++	 * Huge tmpfs mountpoint used at GEM object initialization
++	 * drm_gem_object_init(). Drivers can call drm_gem_huge_mnt_create() to
++	 * create, mount and use it. The default tmpfs mountpoint (`shm_mnt`) is
++	 * used if NULL.
++	 */
++	struct vfsmount *huge_mnt;
++#endif
++
+ 	/**
+ 	 * @driver_features: per-device driver features
+ 	 *
+diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+index 7c8bd67d087c..97b5fca8966d 100644
+--- a/include/drm/drm_gem.h
++++ b/include/drm/drm_gem.h
+@@ -40,6 +40,9 @@
+ #include <linux/list.h>
+ #include <linux/mutex.h>
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#include <drm/drm_device.h>
++#endif
+ #include <drm/drm_vma_manager.h>
+ 
+ struct iosys_map;
+@@ -492,6 +495,36 @@ struct drm_gem_object {
+ 		DRM_GEM_FOPS,\
+ 	}
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++int drm_gem_huge_mnt_create(struct drm_device *dev, const char *value);
++#else
++static inline int drm_gem_huge_mnt_create(struct drm_device *dev,
++					  const char *value)
++{
++	return 0;
++}
++#endif
++
++/**
++ * drm_gem_get_huge_mnt - Get the huge tmpfs mountpoint used by a DRM device
++ * @dev: DRM device
++
++ * This function gets the huge tmpfs mountpoint used by DRM device @dev. A huge
++ * tmpfs mountpoint is used instead of `shm_mnt` after a successful call to
++ * drm_gem_huge_mnt_create() when CONFIG_TRANSPARENT_HUGEPAGE is enabled.
++
++ * Returns:
++ * The huge tmpfs mountpoint in use, NULL otherwise.
++ */
++static inline struct vfsmount *drm_gem_get_huge_mnt(struct drm_device *dev)
++{
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	return dev->huge_mnt;
++#else
++	return NULL;
++#endif
++}
++
+ void drm_gem_object_release(struct drm_gem_object *obj);
+ void drm_gem_object_free(struct kref *kref);
+ int drm_gem_object_init(struct drm_device *dev,
 -- 
 2.47.3
 
