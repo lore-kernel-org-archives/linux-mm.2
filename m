@@ -4,85 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45202D1267F
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 23:18:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 909C8D12688
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 23:23:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E1AA6B0022; Tue,  2 Dec 2025 18:18:56 -0500 (EST)
+	id C0E1B6B0027; Tue,  2 Dec 2025 18:23:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 991186B0024; Tue,  2 Dec 2025 18:18:56 -0500 (EST)
+	id BE6326B0028; Tue,  2 Dec 2025 18:23:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A6F46B0027; Tue,  2 Dec 2025 18:18:56 -0500 (EST)
+	id B23106B0029; Tue,  2 Dec 2025 18:23:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 75F2F6B0022
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 18:18:56 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38ACA132A2D
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 23:18:56 +0000 (UTC)
-X-FDA: 84176098272.08.072F197
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 52AA780006
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 23:18:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="D3lbk/j0";
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 9B7736B0027
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 18:23:24 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 561671402C5
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 23:23:24 +0000 (UTC)
+X-FDA: 84176109528.18.B0A4AC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D692A1A000C
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 23:23:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j1+RzGCp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764717534;
+	s=arc-20220608; t=1764717802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tYjD1KC7LKwhQmMybkAlbHo11LR6BNRCoCUD/B/QiUM=;
-	b=248rzb4i8jvCcOnbg02zLEfNAWFT/s0/0v0qEN7ECXkLa5onZu3rcBMTCU4L6jCMNRhSOz
-	C+Ir8xVqkwIdj5KluhddE3kEu4NxDFv/FKNfOu91NLqCx6DW+gxyz5cSLbsrE0BjhIPFl3
-	z1tJziPVWIA4Y3khyZ3AuCVEZ7w3wkg=
+	bh=wvBqm8+lzXFa5X/EA075FJ2SCYaupMK+njsfDl+P8ak=;
+	b=W6ZE+z3tjAqkVioN/maRpeM+kB2bozGCigTtPfYEOEdyFBi6ADX5MaA3ASSnDpso9ci0Bo
+	JjhIVjUfZc+mBjWtYeeYbQ0f4J9nl0dUBHOsCaJQ8auzojNI63msARXhLsBaQdJJ3iKM59
+	oCO6kIsXIa45BHq/gmDmiLMJTBMC6sI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="D3lbk/j0";
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764717534; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j1+RzGCp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764717802; a=rsa-sha256;
 	cv=none;
-	b=ihDtb6Vlo+X5EJFbnuLCHfnFUUxJTzMklTAhp5DZokJMSxe5n77cqaWWNEn2D+ogG0p9JQ
-	mTtpagBKnj68IapRr7tuytMJXyS0H2QcMNvXWmYhylvXXwPogKEgp8svG9XSFGw2bHnDxI
-	GDSRhsjG0i24UXJzjp8nA0FWzvsXAGQ=
-Date: Tue, 2 Dec 2025 15:18:42 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764717532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tYjD1KC7LKwhQmMybkAlbHo11LR6BNRCoCUD/B/QiUM=;
-	b=D3lbk/j0I16VjzHWDqhQT1N6rVhT500zGJut0+GOVA0Vt36HFWVZ7lq7nZ+FwQRARGJ018
-	y9GR/gj+VEXfurF2gGjSRvlQKPZwA2+73Cunh3AhKVSNki2RNqI7Jx6AdqRDprrTG45uiB
-	zDMbAvE0G9DbRxJ0BKQnzPIJ9pQ2NYs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Guopeng Zhang <zhangguopeng@kylinos.cn>
-Cc: tj@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, mkoutny@suse.com, muchun.song@linux.dev, lance.yang@linux.dev, 
-	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	b=lvAErFLef8pdU1fm9POTpXHNEqOV+GwxI3WEyy7KAQtTwDUnMppO64BlANCu8MT21/koLS
+	OMesNOi9c7gkXoXSjfAwOgEuAZ5Tj0Qz0JbKknUBqZ6JXxF8qy9G2PFkQaTKPmWnDbyRBJ
+	vAbrVd79O3bdcF0LbFZxlMYUufjTpfU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E9EC60144;
+	Tue,  2 Dec 2025 23:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C042DC4CEF1;
+	Tue,  2 Dec 2025 23:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764717801;
+	bh=S93eJ0Eu1zfU6fil9PyTt+lgYx0wNxFtPFFERmhsitQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j1+RzGCp8Ds2mGnAkkCXz5a2tsDMzcHoUprQIYTJtUPQWzUHYUJEtvmK0aqckp3kU
+	 11MbIu6e5UEGJQAiH32gkmYShdxPBnFFd/2Zb1+Zp/7MNUN8WkGwKIn7XzN+IkVdyX
+	 a8FNxZey1CymvoGiNkkwMlMSQgRcPQVERuiORDBIHtyj9GlaPb0e498DbRDoGGhdR2
+	 QjXwvHNO/vEQsNqHgf/DQ+a1OiJHQc38m2F7Nh20z7/sLYXghwanbYrBth7521FZc2
+	 bgJz/eCiQzPhtMLGwTCGwwcO8W7PHJ4GitaUYHBgVtm+m2MwJ9VDxYLDyb1S5DR/N6
+	 0U+tuwbRrDO9Q==
+Date: Tue, 2 Dec 2025 15:23:21 -0800
+From: Kees Cook <kees@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org,
+	syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>, kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] selftests: cgroup: Replace sleep with
- cg_read_key_long_poll() for waiting on nr_dying_descendants
-Message-ID: <3p7o2cxir6yz4baonmkrzumklg5zx3oddhi7mqlmxu26j7ze33@u2mrvj6pqad4>
-References: <20251124123816.486164-1-zhangguopeng@kylinos.cn>
- <20251124123816.486164-4-zhangguopeng@kylinos.cn>
+Subject: Re: [PATCH v1] mm/kasan: Fix incorrect unpoisoning in vrealloc for
+ KASAN
+Message-ID: <202512021522.7888E2B6@keescook>
+References: <20251128111516.244497-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251124123816.486164-4-zhangguopeng@kylinos.cn>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 52AA780006
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251128111516.244497-1-jiayuan.chen@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: sgkeszyzmrk97ddyuu4afrnrhxkmgcpj
-X-HE-Tag: 1764717534-149593
-X-HE-Meta: U2FsdGVkX19E2hKy3iOTfTyZ9FFARxMqAB/rz5lH+pduT+ya4O4XB/iuk+G7iSp365ViDnuOD1e7dKAwlYdOI+NbztCENT5zcBG96d4jdnzXdVU0j5Epfm5oFkqIGAa5OexFMCmmkIyqoqr3WR8es/+fADqTXjviga2AG75K+lpt2elMvJTqP5KZbt6uV3SFJ7MQJ+oQKyHSeNmS/6TwYNKKkTd6bYES2D7d/wABo181JkNjb1T+Id88+ct+dIO7+9pTgoxEt4OLWw6LzmClGfJIv6d3Nn+GtlQXdplrqm8G5Tlm5WnSu+ol28HHCHcLGLaA+uzR14LnOtwDokhQ8jDN11d4/vvN+w/pNRg0jt0lApEHa4+2FQCH04dBG7dIMGC8dzhLf7t21SHFyQjLTLiHHk2C93zIVM19tpMsQJLGs97PgxAv0A6UXNvwOeMrmXemlvcSsaEowMKDOFNKlXIyOVeR0h2eX2ilWLzLVuAbFPbu2lcdGXqrCkAagZ7Uf7XuVSiv0PnDqJ8jUzVYCwWrAqJX67Qk1yvH8b2n762PI9JaCShYjzU3ek+gv8yASF9fjVAyVJv8KxgtxDqAncKC8urvw8qBEBwhGtkJZdFunokhUyCpCq9YMobN2af7ezAeUHSryOiEuFPNJIejyuE8eD9RUw+TBSHyvz/4qL4sd0jPSeVAsuMFz+d/zjs9gjfiSWWLqQgrCttxcJkelyDyOa0F6zi6LLC2ghJXOvH6k5kzd9zPvWERadZ4x2RwG9StM+O0Z+CGJVOrq0lSLOSMPHfy7CVDCd2ActBEkELhZQCiy/jnvl67O1WFJbRhDDxOr4jRBlWp9Wxh+ckH6cTEHkgqgW+zJTFwWyo77ObTmSUGNUwW0OBBqGbE2jhtyP4Wu60mdReGFhGNXLvf+cXEdlHByBBzHWFhu3Um1BhvTG9vA7sjyAUoKZCStNg1aDiGBeUnSgwIDOtmE9/
- Rj6KLvFi
- DVeIyI4EJb9yHSbnSm1/zvLsMcxkty5k9qfpF74KL3B2S7Qa79Vf9YlkHREVzhH1tpFcQ9foOrvF0p/BDWvTMszTPK/ZWItLs5sQKrTIAWa+doZN+AHaZuhQOkWOpIdqz8NSbChFpOmoHN169/irKQVYafPOnwGq9+rc2vpflXcBjus+iUwLfCDgvitS0R5IzFZIvItugOING9vbzpGKHFNM9Vr8sZWxZp87wweNOegQcNgxnz/4cYgDzx+QWlEmoZi1O
+X-Rspamd-Queue-Id: D692A1A000C
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 4fh45hxiztun5oh8qx81euw8jerityfg
+X-HE-Tag: 1764717802-342053
+X-HE-Meta: U2FsdGVkX18u1YReNZW2yHz5u9WMp1i07zuUhX0xlA2RrOKuA7rL4VnFAkJWKEH9OFvVvfaFR7xsg9S+LcXhhoHtlPxqCZQMYvru8AfSU4igzT8Z68ryL+35jG08TfAMbXMTsQ8JrXUuC+E/6TZI0xwT7DQYaAJWaSyakiMbWS4BxVKDVrq5fjkTF6uqEIw/BuLCUlfnX9P4opq8DUxeNo+lNqiGmKrJl1Em3oRyIV6mUOCWyYroFOVTku0ysk3bl4OJ+gY1Fr/Sw3qgS5dQJmzDAb9LVhfibkt2s6v5KunV/r71wzsTAMo/Uq7YaFxytKtx2oL+MDHbvRxzT6w7SxwKL4TXaBcLSkwTQKw3kPwBjEuRfGP7STR5it6aYU4jM6qfgn9nguc3e014p5y3+ixnEWFNBs11ngC3jPShcu2FAXhSx1JBTnjnK2Om0su0LaptMuZUWonZNXerXxtdlI9LtEwUGQe1ehhczrZ+wyxl2SbBW3Ryk7ALr4PEcZL+UGHLPk2VqnQOaWKmzMF5zvgCjg+5MVN1QkP1/pFS6wMG3Zw/zQ2vCbTV7vlhUXIGJe5uhuNwQEH/NeWnhkTYpg1/DIJtGZPTWsfgOHeBQXa8PlbCgTwD/gnm9SEWyZkuNOHHUTZanKS/vtiuleBi0ajzFiuqjDgMZHvIX/jqxXRjUeWGVj3hTAIfLalnLNZ3EqkoNSuyls6tQDexQE4Y48uI+LE1E4q7erlcKR6oubSh8pP4uLE4/yI8DtlsNMYsORIpstC2JBCeJLGahqMfPa+e0DDpUjzicU9lJyxiBjgZP2+osry5gVrDlB4AlE1kDv9x4dO2RQJAY9EGII4tu1djfQIJSf/6qXA2wQdlkzSPXjhdavdTXC9GMItoB/B2zkm+egQIEJtnbK9pz8GPkF5k8UnD3OIsIsxbvdFaVMlL5YEn4aQ3h/iKo5dtOQXZ0aV5SAmQwsr85ffSMau
+ CzN5QJiU
+ dXKU8pOR+gbPEmVtuYOjBmdymK+AF9I7zujqQSWnJR5Nx+o/ZcJnlgGTopQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,24 +103,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 24, 2025 at 08:38:16PM +0800, Guopeng Zhang wrote:
-> Replaced the manual sleep and retry logic in test_kmem_dead_cgroups() with the new
-> helper `cg_read_key_long_poll()`.  This change improves the robustness of the test by
-> polling the "nr_dying_descendants" counter in `cgroup.stat` until it reaches 0 or the timeout is exceeded.
+On Fri, Nov 28, 2025 at 07:15:14PM +0800, Jiayuan Chen wrote:
+> Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes two
+> issues:
 > 
-> Additionally, increased the retry timeout to 8 seconds (from 5 seconds) based on testing results:
-
-Why 8 seconds? What does it depend on? For memcg stats I see the 3
-seconds driven from the 2 sec periodic rstat flush. Mainly how can we
-make this more future proof?
-
->   - With 5-second timeout: 4/20 runs passed.
->   - With 8-second timeout: 20/20 runs passed.
+> 1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag when
+>    unpoisoning the extended region. This flag is required to correctly
+>    associate the allocation with KASAN's vmalloc tracking.
 > 
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+>    Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explicitly
+>    sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with it.
+>    vrealloc must behave consistently — especially when reusing existing
+>    vmalloc regions — to ensure KASAN can track allocations correctly.
+> 
+> 2. When vrealloc reuses an existing vmalloc region (without allocating new
+>    pages), KASAN previously generated a new tag, which broke tag-based
+>    memory access tracking. We now add a 'reuse_tag' parameter to
+>    __kasan_unpoison_vmalloc() to preserve the original tag in such cases.
+> 
+> A new helper kasan_unpoison_vralloc() is introduced to handle this reuse
+> scenario, ensuring consistent tag behavior during reallocation.
+> 
+> [1]: https://syzkaller.appspot.com/bug?extid=997752115a851cb0cf36
+> 
+> Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizing")
 
-Anyways, just add a sentence in the commit message on the reasoning
-behind 8 seconds and a comment in code as well. With that, you can add:
+Is this the right Fixes tag? I didn't change the kasan logic meaningfully
+in the above patch, perhaps it should be commit d699440f58ce ("mm:
+fix vrealloc()'s KASAN poisoning logic")
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+-- 
+Kees Cook
 
