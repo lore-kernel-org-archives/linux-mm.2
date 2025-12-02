@@ -4,230 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94A83D12672
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 20:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54D98D12673
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 21:01:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2E3C6B0030; Tue,  2 Dec 2025 15:48:42 -0500 (EST)
+	id 637CA6B0062; Tue,  2 Dec 2025 16:01:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDE826B0031; Tue,  2 Dec 2025 15:48:42 -0500 (EST)
+	id 60F8C6B007B; Tue,  2 Dec 2025 16:01:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C808D6B0032; Tue,  2 Dec 2025 15:48:42 -0500 (EST)
+	id 54BDE6B0088; Tue,  2 Dec 2025 16:01:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B1C9C6B0030
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 15:48:42 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F61716032E
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 20:48:42 +0000 (UTC)
-X-FDA: 84175719684.13.088C05F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 48AD040004
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 20:48:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RdATUhDR;
-	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764708519;
+	by kanga.kvack.org (Postfix) with ESMTP id 46F666B0062
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 16:01:50 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ECDE112DD6
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 21:01:49 +0000 (UTC)
+X-FDA: 84175752738.20.849AC44
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C8286120014
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 21:01:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s5F9XPB5;
+	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764709308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7GS2h4Qo1FwCe6izFZ6zKWn3UqYARAOngylH3jZ6RgI=;
-	b=qOEPiuamjOV++lOOvMNo2aMSspvSU9nSjXDk8G85HXnKTaKSVewDTyMY8CBh+PqxYSl680
-	CKBvCxyqphpAm9jYtMwUK9b/A2fQhGcIi4idRkd0AOYQ2syX+nfmpfkMGLNSnRQzIHBdkI
-	ndv1End1xyPPyYc5ytFTzGjmxd3xxF8=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RdATUhDR;
-	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764708519; a=rsa-sha256;
-	cv=fail;
-	b=O3DvDVgsBklNbiutd24rG4Y5r/hd/BORUZAlNkx2AE0HIX7yyP9WMPm/3A/ViuFt0P/Gcc
-	3xJOaNoZE+xtXghZwl9cEuYo5kNYm6qQmfiYVFeyMpaDPl6erPhhQZrDiTrmJ/AwCTJArQ
-	pzeztMXGeiF/DoS6BqxKGxiqTV2lIiM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764708518; x=1796244518;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=NAwaiwnHtIpiS6s3WI8PuYGyW94qCMNyBHGYrMMm05Y=;
-  b=RdATUhDRlV8IZQU5xjlU22Funh+vG1Vlq4irSnMDqNNi3kHqJJxvUrBr
-   vE5l17/t1BvuMwGqQ971bQn8IMixabYzJHDJDgA1RFCTaYzRWXDbA3Vxw
-   sGTT+WtalSvTVuDGhaqHRnZQMkinaRWpRtk9WabyuBMRzdcYxLURb9y7R
-   MzV11dvzQ3cFHxWnhICxVbsXOqXROH3mrFS3H2qugoCOnUdCnrHltLdmV
-   H0Optgq0OGYgHGu1ka7fES0RhpvwXMKIWlZu7nBfuGmW/3+ONQvobjPMZ
-   Kc5kfDztX5z23WIcAvKlTDqp83DUcuT0au60qK6/jdIpGkCpSdVRJS2KQ
-   A==;
-X-CSE-ConnectionGUID: zDLppQuvRw6MjAydxm4waA==
-X-CSE-MsgGUID: abMF17SPSkW9fdiWuzP1Ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="78038310"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="78038310"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 12:48:36 -0800
-X-CSE-ConnectionGUID: oPhNQFjJSSO/Jc+pJBPhuw==
-X-CSE-MsgGUID: 2gt6s1MKSxW+gqLQQuhxwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="199431116"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 12:48:36 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 12:48:35 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 12:48:35 -0800
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.11)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 12:48:35 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i6uvhP9dd/eLe62d18VdgR58QNYniRost8q+xShAijtseOpJCdP4pHeuvCL6CWdMxdJcwq1EBmUZRMW0roURkDNw9SlxmG3SD/uLsUajOXHj+q56zGYCWU3BPg443V4i3pYJdnSc1XZ9H9mmsVr3FNBpR2vWibdt4aElEriiVy1BqgOEXaTtEacSJUrjGwPacO3arxmhXrzTzRPCCB3uUUTEOWwQIHyBnko6vnl0SNiU24LliHsnUPWCVuaCS7qylfT3t+xrXdgL0MUjmcQOXPDDSVuIHdGajAZClpYUpz6SYnWvcotZFT1DLPFuI7ImNdkFciV8whQGCFG+SMceLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7GS2h4Qo1FwCe6izFZ6zKWn3UqYARAOngylH3jZ6RgI=;
- b=VUkEK8HRcqzOIc+O3teB9qyw7HNekbxznU3kv2jbhroAE6BxKAFB+lk7Aq1VEDNWdFycLnEhwp9w+c1/P3ImuPlZLmfdh6QyUqZOznElc57yJUw0Hfx2od/OuxN4SQWfc2iBbcSv37YLUmq9xFw5sOLemh5YNdytR43J+WUzULWNxMzJu97xDU5MRNGexLkfN4cdbFFOmfM6LjO8FA4L+/+1XlMmFpN99EXcNuftftzX6DdkI0gVy+DfGxfrsqfz5ZesloTF5a6bZKTgn/psF4ZOAtdz3BmegtdivYHe+weIsZs/u8EpLPdk6R4h3pqE8alp7PKyyhWID5jRRW0OEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL0PR11MB3282.namprd11.prod.outlook.com (2603:10b6:208:6a::32)
- by SN7PR11MB7043.namprd11.prod.outlook.com (2603:10b6:806:29a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 20:48:33 +0000
-Received: from BL0PR11MB3282.namprd11.prod.outlook.com
- ([fe80::5050:537c:f8b:6a19]) by BL0PR11MB3282.namprd11.prod.outlook.com
- ([fe80::5050:537c:f8b:6a19%4]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 20:48:27 +0000
-Date: Tue, 2 Dec 2025 21:48:02 +0100
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-CC: <linux-mm@kvack.org>,
-	<syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com>, Andrey Ryabinin
-	<ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, "Andrey
- Konovalov" <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, "Danilo
- Krummrich" <dakr@kernel.org>, Kees Cook <kees@kernel.org>,
-	<kasan-dev@googlegroups.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1] mm/kasan: Fix incorrect unpoisoning in vrealloc for
- KASAN
-Message-ID: <xfqnzil2oiidogd2drvjrzg4dymydywkge4zws2dildgqvcr2v@ns45a6frntpf>
-References: <20251128111516.244497-1-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251128111516.244497-1-jiayuan.chen@linux.dev>
-X-ClientProxiedBy: DUZP191CA0041.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:10:4f8::20) To BL0PR11MB3282.namprd11.prod.outlook.com
- (2603:10b6:208:6a::32)
+	bh=nfIB2dTwVK9TXQOG+9XblKFW0gXqGvS4rA6eHs5TAec=;
+	b=kb0JkgriOlOr4cijH6axaA30n5KXEw8/QkdQVF1k3+XhzlKWMijmay2uX9iaYeoasJER95
+	TenIhNwixclWpsQHJezOdNJZDa8bg0KveCQmtN5WFEKXNyowa/wroRSgxhtoPa5ZJM93Ms
+	0krvos23kio6k8unu0PGshbBQ5a8+5I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764709308; a=rsa-sha256;
+	cv=none;
+	b=hELgho8in8O3cwrS+dHgv93bCtXHiONQupPpT3uqHm3nv0aktnH9XnJr+kCbaQqeFBgiwS
+	E6NJDNW0MS66r7lWE+zsm3xeO8z7O851xalFmFhMATslS85pkjl4Zah/bwzVVqfSSrZXwC
+	KOVmpEK6fOBlccZY3rn2W1jk4L+RQtY=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s5F9XPB5;
+	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 92B4C4438C
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 21:01:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B91C2BC86
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 21:01:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764709306;
+	bh=Prmm/KeVL9uyZcHlLqpGMJwDHpB+k51t8aXoNMxOyvo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=s5F9XPB5LJy0RkX5APnJuB+RXahY8F2DUAOcwq5srYlgQVHsJv/+5Rb2FGJtyx9Yb
+	 b6T8tm/VAXAczEJ65HyxjdHJRTj3vgtrFDc+q2MEMvBAxckTKk1JxdUrM4uB326tqr
+	 7vAGUXZ7om72qYnbjUvkVdf13lJmWFl3Ociv1Xsu8WtCgJAFLFrRXu6kGMM+pPhBej
+	 kILgKxH+uoF2Jsx6W7dqiWh109W32SZNvCmg6mi1jrmcMtQnHL5EZch/gOMCM5bEYq
+	 dGhabPBzYQ0DU0GSMgnoM6ykIfdhEPkXw78HHTJ2Z8REP1x2BpvpgKkWB1PVixu/JQ
+	 F97g8TbkNQCpw==
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-63f96d5038dso5190908d50.1
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 13:01:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV91EByd6wiqHK0S8+2+wr0T5SrUjId9I3CNIa3+/KQtTiDVnURzkqjt/GrZzJmqwZWDNoY/NUn0w==@kvack.org
+X-Gm-Message-State: AOJu0YzcgVPwHDUyz66bZrVNGlyaud+wclsHXu6I5xAkjgzgktxdVHsI
+	S1gjrjg13umhtvRA4eya68Iblq0teSabWYcpYhkHiCqHTVStvkDUoe38vuaVHRReSeRin0py724
+	/9HdJmwMzW5uuRq4CkgYfQk6eOV2qPukNYE8qaoxZ+Q==
+X-Google-Smtp-Source: AGHT+IHB8Zyz7EwMSUL/jLnXqgH7DxdnwC2rgumZt+GP6kWCxJi7ULzqffBVZFn67K3oGK1epCAszgJLWpJCEqFxcNk=
+X-Received: by 2002:a05:690c:630e:b0:786:393c:5f16 with SMTP id
+ 00721157ae682-78a8b556fb3mr349935817b3.49.1764709305579; Tue, 02 Dec 2025
+ 13:01:45 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR11MB3282:EE_|SN7PR11MB7043:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c19f9aa-8d77-48a9-e203-08de31e4245d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?S0M4VGE0eUFMYUxKck5sWFV3cFV4NUNkQ0RVcG5VV3o5RVpFN3dJY0Q5cGp1?=
- =?utf-8?B?Y1FXeG81S2RKanJiQlA2YnBucVEzM1Jnc2dGNUpEcUJacmI0UEZuODBxNHds?=
- =?utf-8?B?eTB6anZSbExiODF3bHNlWG5kVlltZDdVRDIyWmExVit6OEg4NlA1OFNmUUY4?=
- =?utf-8?B?RzJ6R1RsRXhOdWw0aHNWMGFXaFlFazd6c1lZRG9VcVJUeEg2M2pGVjlOUVNy?=
- =?utf-8?B?YkFJTzVyK0Y1aEhyT01GRTFHTFhZS3RIVFE5bnk2RTB4NHJyMEt5R3MzNWJi?=
- =?utf-8?B?ZXRCdGpqWVY2eVMxYnBlbDBxTDVmUWhZeXhkQ01jWXBVM1hiU29wdmZLbk9n?=
- =?utf-8?B?OW9uUFptSmNWLzAveUlwbXFHQmpoQlpidDlSMjU5K2pBRUxzTWkxTWtQNVRM?=
- =?utf-8?B?eGo3SlJhMERUZ0xjemRheVFlRldUdXhheFRYSmpqUUU3K2tmaXA1emh4Z0Jq?=
- =?utf-8?B?bW5HdUo5c0JNVFBHRllPR003bFdmTlFESU9wdCtRUUFERzRDS3UvS0VXSERV?=
- =?utf-8?B?L3RjdUU0aDBxaVpYU1d0L1VmSHE2cUF2Q0l0RkZza3Jiem45YTQxcVVFTVV0?=
- =?utf-8?B?Sy9NWjFFaFF3eEZvTkltK09CVmo3SHZiMFVsNGNmSHJtM3hRSmFORStSNWRE?=
- =?utf-8?B?R20wVmRlbWhoSER0ZXNpYTFOQS9FNDhKQ3BiNmlzVE9RdVUvR0oxVkNMV3Z4?=
- =?utf-8?B?ZitacThnNjNmdVZTVHBrWWNIazNuSVdyY2hOY3pZeDJualRScm1pVGxjbzFN?=
- =?utf-8?B?dEdOSW9valkxRGhtaWlId1FZaVdEeXFRWld0N0IzcWg5L2NTUnVOa3diMEFl?=
- =?utf-8?B?NTNyWWJLaXo0VHZndHpDbFFCUTR1NGxYTHAxMHdPSE1XVEJFYkdqTjN6eU1y?=
- =?utf-8?B?SEdnOHZOM1BHZHVFTVhWUmpLOVpad2lxTldrNDUrMHVud0VDQmZCZlg1R3Zk?=
- =?utf-8?B?Zjdnc0xpcnZnSU10UXdFVTNraG5DNHRTb3FFYkI2c2gzY0ozWjVLZVJaRGc3?=
- =?utf-8?B?NTRkNm53WVpoWGh0UG02Vng4MEZrOEhsVmwwRDZua2RqM0g2TFl6eVY5M0Nx?=
- =?utf-8?B?VEVQN0pIT2lXcnFNekVEWndLTjRhTG1xMHBIemdPRXpNc3BqVG8wNFFZR1Qz?=
- =?utf-8?B?R3k4MnlrYzNGRHN1dDY4b25QU0t1M1E0cTZuQTJVbzFHczFpUG1ySURpVkE2?=
- =?utf-8?B?R29weGd3UkNqRUh5WlpzQkF5dCtybjl4Q04za2JHcDFoRHhPMnBLOGwrd25K?=
- =?utf-8?B?SUhlb2JQSkZ0VE1UZ1UvaWZlajlwdmg0TlRRQ0dRM1Q4RGtDL1ZUMmZIOUNC?=
- =?utf-8?B?QmVWaGpYT0wwRmNJcmFOYk5CL1phbVEzaFIyamN0c3BEYlB2Wm03UnpwVlph?=
- =?utf-8?B?dVJ3aVN2Q0M2b2xIQThDTG9LbjQybG9nSHdLQXc2WUdSTjFGcFI2ak5oMGNl?=
- =?utf-8?B?VmF1Z3ArWlk3QS9IbXVmdzZNZFlmOXQ4VHNKK2lRNkc1Qk1hSElFZkpaTldm?=
- =?utf-8?B?aG1hYitzN0JqUUVLNW9BT2tKM0tVMzNrcHJINXFVdjZMZXdoMkhiekU2dWlC?=
- =?utf-8?B?dmZoR0dzUExmZjhLT0NiaVJYam8yV1JxWVhZUU0zYnFqbG9RQXBTTkhOaEMv?=
- =?utf-8?B?VFlDOGZHbnB5S2pvQXpOREZyZGJKV1E2ZFcydFQzVGcycHVmYVdsN29IQTZU?=
- =?utf-8?B?eldJbUZGem9DTDJxM3hSQ0JPNnV5QnMzQTR2TDRBYXpkeVBCc2xIMVFLSEJ4?=
- =?utf-8?B?VHd3YU1Nc2pMWTZiUTNUNHdSYmdPUE1CSWlVcnA4WEYrdGxpKy9aNm5ISVJi?=
- =?utf-8?B?VE9NTzV3T2hGMThQYWxLcm5IdndMTEJHMUQyN2w2RmRRZUVabmdTOUZFS1dK?=
- =?utf-8?B?V2FyK1U1clRKWVNJaG56dFVVWUVXckl6RnpCK3RzaSt4VlE9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3282.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eXlHbS9NNHp4MlFkUmRHVTdGci9VUzlhbTZISGVNVjlwM2lWbmdNaVRIMUN6?=
- =?utf-8?B?RkcvNjdhTGJmUFhRQ1lQTzk0d3JiT1ppUmhyRC9wVVJ4TmtEWFVkRVZvZmFy?=
- =?utf-8?B?SlhGMGRBbVpWcVNUa090dUd2bkhRQXBLZDI4NXhodmRDS1dmQXFuR2dFaUU5?=
- =?utf-8?B?WmtFTUdGelhra0o0bjFwSHk1UFJrcTlkR2N3YzRBdTVhVkRDanBZdEh6VGhR?=
- =?utf-8?B?dG1tVFVqSXRrKzRCcWJUY21kRXFuZ1B3TzNQOUNwWlA2WE1uSUNYNXQ1Q1NQ?=
- =?utf-8?B?OU1tdWlMZTl3MmJtMlBZQTZIZi9ReG5kRWhEREhJUThuSmVXWVBZRDFBQnps?=
- =?utf-8?B?OFhTUjhGVnF0WUtYZlA1NFFvY1BHd21ncjFiVEZTMUNVazI4RWQyWm5Sdjlr?=
- =?utf-8?B?YzJtMWdmdzQ1Uk50MDNWbFVJRCtDNGM2VGpiM1BESDdkKzVxSFljZ1gzWGxi?=
- =?utf-8?B?bnNBWC82WGpkNXoxRkw4RUQwdGpqSEt1Q1JqRnl3V21kL2tXZks5VFd2Y0RO?=
- =?utf-8?B?SjMraDA1WW1LTU1VdEowU0lNSGlXb294N2hHVGNZOFhzMFp6WXVteFMxN0xK?=
- =?utf-8?B?TU5weHE2NEFKTDJ4MitOT3VGYmhXVE1JNFZHdW8zY3EyT0IyWlQzeGpXcGlO?=
- =?utf-8?B?ZkpxVy83WEUzbFJCTVZlQlVSekNsM0I1RU5XWGFYdkUwN2dOVWdVWWc1c0cx?=
- =?utf-8?B?QjZYUXdHdGpoMkxKZE5saDBOZC9VY254c1ZTU3B1cjNaUFNPd0NERkpaWDlT?=
- =?utf-8?B?VVN1RDhUaWRRMDN1NmFTWHI1L2dFUzYvcHcrWkhrenR3NVNQM2dqMXF2V2Jv?=
- =?utf-8?B?ZUNkWERxWXJpMUtsOHVsQ1FReE5rdjkzdGxRalVmVHdINjJqWGtCYkxHQTFJ?=
- =?utf-8?B?akdDa0xPWks5eWd0Q1pESUkvZS9vZU53TjU2OE51dWxWUnNoZXZoRHR5QzBj?=
- =?utf-8?B?VUh0TXhGeWpmb1A2b0h6KzE5ZmErN1FOdGtKS0Nhd2tPaFdKSS9heVkxQk1U?=
- =?utf-8?B?dllBOWhoNURUODZTdUpxY0lRUi80Wko1d09USUIvTWtxTGxTYWFVTjB6YlFl?=
- =?utf-8?B?eGZwRlpoaHhPTXBvdFdrV0FCNXYwTFJGdDB4RzIwWEVsR1VmV1BPbTNib2N5?=
- =?utf-8?B?WThudElpUzA1SlpIc1pPRUJyTzNVL1cwSkMrcUxxZjFZblg0N1lQTjJhVTlv?=
- =?utf-8?B?MGVKdGdkUG9ORzBKbUN5ajB6eHBjUlF3QlYrQVZRVGxGbzJTdCtUMnBLV0lJ?=
- =?utf-8?B?NVFKbzZUNDJhaFplNFhpbFZZQllLT2FtUTRpMTBuVFphSzRFQks0K3l5OHY0?=
- =?utf-8?B?OEhJYlNsMWRmNnNuc2E3eUtidVN5eEU0S3Q3bUhMWU1STlZjZjRUNzZKMTJZ?=
- =?utf-8?B?OHhoWEpvQjBQSHkrVFg3MzdkTkNjdDMyck5wRUh2SE5oNXJQY0hJUzBxcHRm?=
- =?utf-8?B?QnpmR1d3Ty9UekYrcnlZMVBUaEZ3V1pRWWpnSGt2WGFGVkxXRWI0c0JzdWpD?=
- =?utf-8?B?dE9MRjRvWWZ5OGN2clZCWUpyU0x6TGk1WEwxYWFwR3Q2MjJ6TnVaTVUvL2VI?=
- =?utf-8?B?T1pHK2NoMmlSZVE1NlFYV0RKYXpQTzd6a2k2QnQ0a0h3aUQraU9Nbi9qTnpJ?=
- =?utf-8?B?SXRINWFISGRiLzVTcTZnQkRDdUVlbnpPbTNod2Fza09oajJicXIyMnh3L1pS?=
- =?utf-8?B?OEZlNjR2VzVEVFI4b2dQS0dOVDlDdzBpSUV5TDVKZU82ZzRnMWdnRHlzS3BV?=
- =?utf-8?B?SGxKTW1oYTV3aFFQV05hNDhOUktNUzlkWU5CdGRtd2tJZmxSNFJUM0FJYVRG?=
- =?utf-8?B?SnhxWm4vaWVsU0l0VmlXRktPZDRiZlZ0NEY3c2JOZEJKOFQwQnF6eUpHQXFa?=
- =?utf-8?B?WnJPMUtaTVhuUHZkanZPblRMOVlRa1NOeUNWVXBHanc2Qi9DRFRSN3pFZ2tR?=
- =?utf-8?B?bGhLOGpXeXhFVFZhMEo3OGRuV04wMkpkQzVuWHIrUkVhTHFzTFVHcU5uVm1x?=
- =?utf-8?B?MndWQXU5cmQ0N255SGJPL0t5c2tEOWx2STVOOThmaytCdFl1aFhBd2d2WTE3?=
- =?utf-8?B?Zk56YVdUOGwyVzU1N3Y4a2h6cktkcFFmREFXL1BFWWVPSk56MnI1T0ZWZ2I3?=
- =?utf-8?B?WWtvTDZyVG5Ka29WTGExRGxnRFV0cmJRL0NQcm0zMDBGMS9hR29RQTkybkxy?=
- =?utf-8?Q?kMubvgWgddKhUQ4GD9+WHw8=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c19f9aa-8d77-48a9-e203-08de31e4245d
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB3282.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 20:48:27.0210
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wwiPKGTFAWLRDSeOR5iugTn+ghUySDgr5MF3L49ILiqtp7McbA6EGhdlsXruM2ehyURKzzycg1yoajJ2Rg6EpMbylLy6wPicpVMaW+aWpLk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7043
-X-OriginatorOrg: intel.com
-X-Stat-Signature: dph8oggozfo7raw6wnnxjfmahtqqfsb9
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org> <CAMgjq7BgCocnkJAYd-BBBvzbu9zxmv4QCj+k62kcA3ThZcNv2A@mail.gmail.com>
+ <CAGsJ_4xZPPE3TaAYU96srZKe6aKZmV743kQ97E48ZWh3BQ5Z6Q@mail.gmail.com>
+ <aS6H1b4MHo9HAPHS@MiWiFi-R3L-srv> <CAKEwX=PUW_sbN-GQXAh3NHGGuN8LOSFy_8qWRUUqafgwW4JB_A@mail.gmail.com>
+In-Reply-To: <CAKEwX=PUW_sbN-GQXAh3NHGGuN8LOSFy_8qWRUUqafgwW4JB_A@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 3 Dec 2025 01:01:34 +0400
+X-Gmail-Original-Message-ID: <CACePvbUsTjkwYZ+JbDuYDpjsTp9tTScsb3omzLKvAN1nTibxeg@mail.gmail.com>
+X-Gm-Features: AWmQ_bmzznTZTiROpT8pXWGJWHKQyXkGX50PvkHF43Zf6zMNYcdRBgxwaLfXBMk
+Message-ID: <CACePvbUsTjkwYZ+JbDuYDpjsTp9tTScsb3omzLKvAN1nTibxeg@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Baoquan He <bhe@redhat.com>, Barry Song <21cnbao@gmail.com>, Kairui Song <ryncsn@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C8286120014
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 48AD040004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764708518-791448
-X-HE-Meta: U2FsdGVkX18O0fzXvRJM5eH/QDpSl3M/N3c1DperIC/rGDdkDUF+e0mgBg6iW0ddniXuIAIZwYQGvoY64hFm7+ZuOtAyL9IqZy6xxPVJ3BSvdcIV11pkr47cPZE/VreGweVCZrGaJ7ozBnMvR22NW2nyjoQNjLJn+NDxR/QTy5DD9rpi76VmE2xmKqCgyRXSKNajfx7pISPbOfTov7s5HO00NrgWuccf6VIMOXSP0neFSP182u/zhOb2a2xzIaQzKgfjaL8P9RDMg5eEjgqcgOGXCH3ujQ/rSj+UI8Kc1Di9xP4WhN/PYj85lyQFYt2hhXWSBWSTlfyaRSqpRAJvnO1wU4kHZlOEYrSBUnlumLqAzFAXaPXs92PAUlKv+hXCbWDl52wyZyxWXpQdAByeuPvj5127v3hOKjeBaXh7d2YmwlhEDyzy1a98FBkFl9DsbNSwb4ZFJuD5lQ8UjPFsyipsHWwOdG8AqLRppgvyMP4uNQSxswW/ZDmgt+PBi7b32hfolP7S1VecdHFdYSiEubQIpdRST3dYZugIQ1pwnRiwe0GK5leh3DGZhW9Cj4KQ+wL0cBJT3e33K7LAsYmiaCYmE/Y7pyaz0YvaWq+Wfr1MozhU5iTjIHgv3xmkvV8G7LiduyUGokUj44yCB+ok8Ie3yePUA5P569OxspuqHtnuHk0RDTxDpjFro/dAFE2HQc8ya7bgLBAWmbjvzkRCF1NXbB7myMD3jxICMPhGuN3urLmau+PMCs9TFnHJhlag4kBkX5cdUHYurCuDoBSHqqZ4oAoQUv6cMB0QIs33yrEpT6QCijuZbs3h65bsFzMd5wMDIebN1z9PrZMRl1D+C1dZQxp0gc1irjuPICktsO9jJ+TMYYspmJW1YSeMESWm/nTtcNvEHEL1q1fQjOauH1x6DiH+nd5OtxUWEenM/dMORhPWgGUZA7MBUJqAe6Y4gXjPIjmt3FJ1B/NtkSc
- pMKMaHmI
- 8JGLQutuayyzKyxnnkElx1uGGVUMoZiKk9I78H8MuKI6nhREwMaMYdpOjLTdRlYjI1NJZNRpKi7DtJXOPsihbs4/QjwFVtVkOCpNzDr/VyhigYDh4HiDd0E373D18McCFXMpaOnLEMXukdTKQg3rkvEt+BUNXXyf+yBzmcTZ8DdtvA84k58GMeF9UuwiitezTQCcCZ+eS19hjJ4nnUJF+FFOLKMZbFU8MX4Vav0IP6iX+mTbyzOs8/35pt6CliR6rDSGyYN5DzYs3/JuyNf+Uo3RqcaKjLO+ZBPj+rzsHcQjRooSVH6+PXtlIcJsp0YcfNrrexmsmmZKj3fTEUbjse6fY1Lv8l1JWrsDM9CDmz/rPhrKfCD4WWJrXTC6rFoBZqcGivg2siTMkZg8+wF3ItPVeEtzG8Jmasi8JegbQODHELt3LlYMn1WrGM1xyz0BRDkMp8/mfp5jIz2xj3PZbWbVxSGyi7Ip458HKyKVoKFsh9nEf0CK5Zr7AeLNOib284SBH2x1ub6rvmL+JlXeMXWi1XG4859NDl4hD5P4rmBEdcDV6rXIFADFrMwvLEOBw3IQKQ5OiAb9+bnsHIaODDpZ2qOFQiq+mproZTIXNXDqIXZww4OqOckImx+b5ZWVk9eImKujKJkrSIj6Un+vmDrpDckNNVcUtu/SzHsX823l7TbDKytMQVRLyj5R2R0VKuVsFuO5Wwu1NnEFtlm9IyNSqF8y5W/oAYe8dcK6LVUJ9D6h30ESSpLbiPBsZMclYM3wm
+X-Stat-Signature: 1ckupkr3jrtcdupgaphyc7yqiq78syxu
+X-HE-Tag: 1764709307-382216
+X-HE-Meta: U2FsdGVkX1/aqYz9cEHhTyM8NhgTMwoyeYdJJHTGJ25zYPIvha9s4VVT6g0H/P6B8M9uy8fXKeqCytYqJnXXHU5A8Xvxam9ZEuG6sCawmaHNQGjyMxZan6pQMvBDL6V7rWpLTdr7PJJk5xP4HrMruYd3comRNjK/3W9bFa+kn+M0wdR/Z7WYeW/ix4d9HRbixjcb9NxlxNEq8zONmVUcEPEAWZXtO8robeADNu1bNg3tvUnT8GrZqyN186X3DgdbgWA5U51VeeQqetaFfyYC7mUXloESak7J7zkCtVwZf1uJifkNJ6Pb+d98C/C5Bi4Ehiro0sl52KqoGBvrcVhoWr3zdM1WXoKB4zQokgX8fPsYLs8QAyKM7nT4mO+mMO0uH9r8JKJz4ca9aNEO2q+PgSnJC0dS7uGJyBV5BWXKA+PLycquo3akPCb0j4y17LIxXKAZ3fooYAsXDkPPMsFhEwVSbLc1Ow3o0migxXLLCRabCODKY41syl+RozBm/jRn8v9fnPHMPNTQ/q4iQh+92WozAlf/qzkyo0PRckAkyQo5n0YaESNpguGVOY7FPqdrEBW7cc/3k9ZsUhQCPG5aEmtORgZuDRLp0Yc5iozLX4Xl2meaJKsqnCwup1z/YxEPo+Z+oSNOUFMFrWXR6Fi2yf8fhc4N9JGU+1UPkIDFJxpuGxTY9OgGxtkqCRyxGCZ1kJheh+lfFvJJtRol8trZ+0lcrTBvSUl1CytKN472kHfRsoJUpZA/ZToteLEpKH23wqXxuqgeLBSmakOTsqrpJeRxQgPQ0cAmIaHP/3GX9AWvjaV71hFwz0KOIXCIxzfTcMaf5KeZpv9aiBlNwZXb0r5gKlSnN+vcN861twLtUuF2UQ4hMrB6Tf7XlK/W5KhZOzwKMiOqnKA4MC5rac4F5tRl7jjglP+Toj8vkUbResuwtdFq04kiUoS37dDeLFTSmmWyL+ukbiRSJvbLXai
+ KMhmuSFU
+ ZrA/oK7a+o8FG1TIcSPBQ+ScZdN0g68G7rVzH6UkrB0K9kTUQ+ViKDcV0IaxR9zGGD2afQLubQNojwbxx+ewsvJrcWe7/AhUOYAHjX0/KhSAennoRcqrHOvPwMEyQ8eUrSxqsYsNfyZ1L6ccvkNhhHzw7qmciwTWz3NSvT+qN4cUOGxJVkpeks1YNnqihz3PZw3eKVFf8Bc5a+DNNgB/oWDb2yHr/S0sOD7+ntL4iScidO3Uyfwe7WJWfW5bYcLT7vS8IOLDACgyhuO3EdN7KeS1rIjrNRFAtCYZHwuKuxnh/pasNsGdWgSHWcQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -236,168 +110,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, I'm working on [1]. As Andrew pointed out to me the patches are quite
-similar. I was wondering if you mind if the reuse_tag was an actual tag value?
-Instead of just bool toggling the usage of kasan_random_tag()?
+On Tue, Dec 2, 2025 at 9:53=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
+> > > Apologies =E2=80=94 let me raise a question that may be annoying.
+> > > I understand that people may already be feeling tense and sensitive.
+> > >
+> > > Despite the benefit of compatibility with /etc/fstab, we still need t=
+o provide
+> > > a physical file on disk (or elsewhere), even if it contains only a he=
+ader.
+> > > Personally, this feels a bit odd to me. Is it possible to avoid havin=
+g a
+> > > =E2=80=9Cghost=E2=80=9D swap file altogether and instead implement al=
+l "ghost" functionality
+> > > entirely within the kernel? Ideally, we wouldn=E2=80=99t need to intr=
+oduce a new
+> > > =E2=80=9Cghost=E2=80=9D concept to users at all.
+> > >
+> > > In short, we provide the functionality of a ghost swap file without a=
+ctually
+> > > having any file or =E2=80=9Cghost=E2=80=9D at all.
+> >
+> > That's actually what I would like to see. Just to make that we may need
+> > change syscall swapon, to specify the flag to mark it and initial size.
+> > People may complain about adjustment in syscall swapon.
+>
+> Yeah that's another design goal with virtual swap - minimizing the
+> operational overhead.
+>
+> With my design/RFC, all you need to do is:
+>
+> 1. Enable zswap at the host level (/sys/module/zswap/parameters/enabled).
+>
+> 2. Enable zswap at the cgroup level, through memory.zswap.max (you can
+> also size per-cgroup zswap limit here, if you so choose).
 
-I tested the problem I'm seeing, with your patch and the tags end up being reset.
-That's because the vms[area] pointers that I want to unpoison don't have a tag
-set, but generating a different random tag for each vms[] pointer crashes the
-kernel down the line. So __kasan_unpoison_vmalloc() needs to be called on each
-one but with the same tag.
+From the kernel point of view, managing swap entry without swapfile
+poses some challenges.
+1) how does the swap_full() and swap cache reclaim work in your world?
+Will you create more holes not filling and fragments?
+2) Do you internally have only one si->lock? You will  not able to
+take advantage of the swap device round robin behavior.
 
-Arguably I noticed my series also just resets the tags right now, but I'm
-working to correct it at the moment. I can send a fixed version tomorrow. Just
-wanted to ask if having __kasan_unpoison_vmalloc() set an actual predefined tag
-is a problem from your point of view?
+> and it *just works*. Out of the box. No need to create a new swapfile,
+That is a user space thing, existing user space tools.
+> /etc/fstab, etc.
 
-[1] https://lore.kernel.org/all/cover.1764685296.git.m.wieczorretman@pm.me/
+Able to continue using /etc/fstab is a good thing. Now you are forcing
+distros to insert swap on for zswap which do the above init sequence.
+It puts more burden on the distro.
+That is not the main reason I did not go this route. Mostly I want the
+patch to be simple and easy to review. Keep it simple. I see virtual
+devices have drawbacks on si->locks and other user space changes
+required.
 
-On 2025-11-28 at 19:15:14 +0800, Jiayuan Chen wrote:
->Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes two
->issues:
->
->1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag when
->   unpoisoning the extended region. This flag is required to correctly
->   associate the allocation with KASAN's vmalloc tracking.
->
->   Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explicitly
->   sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with it.
->   vrealloc must behave consistently — especially when reusing existing
->   vmalloc regions — to ensure KASAN can track allocations correctly.
->
->2. When vrealloc reuses an existing vmalloc region (without allocating new
->   pages), KASAN previously generated a new tag, which broke tag-based
->   memory access tracking. We now add a 'reuse_tag' parameter to
->   __kasan_unpoison_vmalloc() to preserve the original tag in such cases.
->
->A new helper kasan_unpoison_vralloc() is introduced to handle this reuse
->scenario, ensuring consistent tag behavior during reallocation.
->
->[1]: https://syzkaller.appspot.com/bug?extid=997752115a851cb0cf36
->
->Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizing")
->Reported-by: syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com
->Closes: https://lore.kernel.org/all/68e243a2.050a0220.1696c6.007d.GAE@google.com/T/
->
->Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->---
-> include/linux/kasan.h | 21 +++++++++++++++++++--
-> mm/kasan/hw_tags.c    |  4 ++--
-> mm/kasan/shadow.c     |  6 ++++--
-> mm/vmalloc.c          |  4 ++--
-> 4 files changed, 27 insertions(+), 8 deletions(-)
->
->diff --git a/include/linux/kasan.h b/include/linux/kasan.h
->index f335c1d7b61d..14e59e898c29 100644
->--- a/include/linux/kasan.h
->+++ b/include/linux/kasan.h
->@@ -612,13 +612,23 @@ static inline void kasan_release_vmalloc(unsigned long start,
-> #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
-> 
-> void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
->-			       kasan_vmalloc_flags_t flags);
->+			       kasan_vmalloc_flags_t flags, bool reuse_tag);
->+
->+static __always_inline void *kasan_unpoison_vrealloc(const void *start,
->+						     unsigned long size,
->+						     kasan_vmalloc_flags_t flags)
->+{
->+	if (kasan_enabled())
->+		return __kasan_unpoison_vmalloc(start, size, flags, true);
->+	return (void *)start;
->+}
->+
-> static __always_inline void *kasan_unpoison_vmalloc(const void *start,
-> 						unsigned long size,
-> 						kasan_vmalloc_flags_t flags)
-> {
-> 	if (kasan_enabled())
->-		return __kasan_unpoison_vmalloc(start, size, flags);
->+		return __kasan_unpoison_vmalloc(start, size, flags, false);
-> 	return (void *)start;
-> }
-> 
->@@ -645,6 +655,13 @@ static inline void kasan_release_vmalloc(unsigned long start,
-> 					 unsigned long free_region_end,
-> 					 unsigned long flags) { }
-> 
->+static inline void *kasan_unpoison_vrealloc(const void *start,
->+					    unsigned long size,
->+					    kasan_vmalloc_flags_t flags)
->+{
->+	return (void *)start;
->+}
->+
-> static inline void *kasan_unpoison_vmalloc(const void *start,
-> 					   unsigned long size,
-> 					   kasan_vmalloc_flags_t flags)
->diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
->index 1c373cc4b3fa..04a62ac27165 100644
->--- a/mm/kasan/hw_tags.c
->+++ b/mm/kasan/hw_tags.c
->@@ -317,7 +317,7 @@ static void init_vmalloc_pages(const void *start, unsigned long size)
-> }
-> 
-> void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
->-				kasan_vmalloc_flags_t flags)
->+				kasan_vmalloc_flags_t flags, bool reuse_tag)
-> {
-> 	u8 tag;
-> 	unsigned long redzone_start, redzone_size;
->@@ -361,7 +361,7 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
-> 		return (void *)start;
-> 	}
-> 
->-	tag = kasan_random_tag();
->+	tag = reuse_tag ? get_tag(start) : kasan_random_tag();
-> 	start = set_tag(start, tag);
-> 
-> 	/* Unpoison and initialize memory up to size. */
->diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
->index 29a751a8a08d..354842c7f927 100644
->--- a/mm/kasan/shadow.c
->+++ b/mm/kasan/shadow.c
->@@ -611,7 +611,7 @@ void __kasan_release_vmalloc(unsigned long start, unsigned long end,
-> }
-> 
-> void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
->-			       kasan_vmalloc_flags_t flags)
->+			       kasan_vmalloc_flags_t flags, bool reuse_tag)
-> {
-> 	/*
-> 	 * Software KASAN modes unpoison both VM_ALLOC and non-VM_ALLOC
->@@ -631,7 +631,9 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
-> 	    !(flags & KASAN_VMALLOC_PROT_NORMAL))
-> 		return (void *)start;
-> 
->-	start = set_tag(start, kasan_random_tag());
->+	if (!reuse_tag)
->+		start = set_tag(start, kasan_random_tag());
->+
-> 	kasan_unpoison(start, size, false);
-> 	return (void *)start;
-> }
->diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->index ecbac900c35f..1ddd6ffc89c1 100644
->--- a/mm/vmalloc.c
->+++ b/mm/vmalloc.c
->@@ -4330,8 +4330,8 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
-> 	 * We already have the bytes available in the allocation; use them.
-> 	 */
-> 	if (size <= alloced_size) {
->-		kasan_unpoison_vmalloc(p + old_size, size - old_size,
->-				       KASAN_VMALLOC_PROT_NORMAL);
->+		kasan_unpoison_vrealloc(p, size,
->+					KASAN_VMALLOC_PROT_NORMAL | KASAN_VMALLOC_VM_ALLOC);
-> 		/*
-> 		 * No need to zero memory here, as unused memory will have
-> 		 * already been zeroed at initial allocation time or during
->-- 
->2.43.0
->
+> If you're unsure about your workload's actual zswap usage, you can
+> keep it unlimited too - it will just grows and shrinks with memory
+> usage dynamics.
 
--- 
-Kind regards
-Maciej Wieczór-Retman
+How do you cap your swap cache in that case? I feel a lot of
+discussion is very hand waving.
+Having a landable patch will get more of my attention.
+
+Chris
+
+>
+> One design for every host type and workload characteristics
+> (workingset, memory access patterns, memory compressibility).
 
