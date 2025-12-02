@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4120FCFD376
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 07:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58DE2CFD376
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 07:56:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5666A6B000A; Tue,  2 Dec 2025 02:53:21 -0500 (EST)
+	id 9D7886B000D; Tue,  2 Dec 2025 02:56:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EF216B000D; Tue,  2 Dec 2025 02:53:21 -0500 (EST)
+	id 9AF2C6B0010; Tue,  2 Dec 2025 02:56:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B6EF6B000E; Tue,  2 Dec 2025 02:53:21 -0500 (EST)
+	id 8C5446B0011; Tue,  2 Dec 2025 02:56:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 259BA6B000A
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 02:53:21 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 033CF8A3DD
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 07:53:18 +0000 (UTC)
-X-FDA: 84173765718.27.668DF28
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0D31D40003
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 07:53:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XjdA8nlv;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78E4D6B000D
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 02:56:26 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 381575127A
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 07:56:24 +0000 (UTC)
+X-FDA: 84173773488.13.8445CD8
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 584318000B
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 07:56:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764661997;
+	s=arc-20220608; t=1764662181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V4loCZFItKzWub1Mw+gmTM0Qo7GDtzfcb9k6DM+79VY=;
-	b=4NhFbMzHWYMJhe7tlAinRRwpgwSM99Qeft4cOSn/T3bvNu92+iGBjdCONbj/x0KgHV8P2F
-	WGjkGVInd2+t3JKVqkD6ExbTqqL3JZVWO8ueNtKi2qeLjHy/TRvEvKHxUHQkDRuc2DOjZK
-	5GHwI9B5mjaFVJaKFMMLOPqVNhmF7no=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764661997; a=rsa-sha256;
-	cv=none;
-	b=PpUMubdGQmlSdxxmlOppn/dO6pIcv5+jOo3k5uXhu9DnDRSVXlfEmuljuU4l2z0o+eERHT
-	+2EvzsPFIxeJyOpKmBcBDcRnRYCUeU5zmnKyMlP/oFPFTT+/gab3SIYJ37N8ysA/9X1oGO
-	P12wQn5TBxZNxZGCZRru9II3qtzmCRs=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I8ihM0SF+tcv92+haohp6cGqhgZoS2q+NgmXg2PGgFM=;
+	b=igM5OyjFtrAHNrM1NL0tBNX52ad14rbaTMOCnWHfiJCTjNhjHTGc6psq3e4wj9KBq6W9D3
+	G6iWN+seZjpTcYqrfy0WNFG7Tns6zRRMSjzpmrZaWBzTzUu5QtYLLNyKpk8eaKvZ2vIbD5
+	Pyuh1mce2OXyReuXBcUcEzE4tyE63H4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XjdA8nlv;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1764661993; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=V4loCZFItKzWub1Mw+gmTM0Qo7GDtzfcb9k6DM+79VY=;
-	b=XjdA8nlvG3m2Nf/tkkK+9qOlMhfVLAQncL2pMC9UIxWNq7ugzhQ2zcvAKBun3xu6blSjtCJtkMpaibkYIW94iPiJXdM5M/iWfVsHIjsotzd32IHf2FWplEdc+5y+l9PbA6WiMx6JqXv/s6uWZTCtO2pfbiVTQq2IGRJ15ymFhgQ=
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WtveLei_1764661989 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 02 Dec 2025 15:53:11 +0800
-Message-ID: <09821512-dbfe-4577-8b42-31df8328a998@linux.alibaba.com>
-Date: Tue, 2 Dec 2025 15:53:09 +0800
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764662181; a=rsa-sha256;
+	cv=none;
+	b=nGfkX3QvdbhAFk5f73BWe5nIliXt1Ua/PinfK0EA1FJEgoIKcwORkkFc3E6z2k1NOyTUN6
+	ykR3OgfrmDYJqWTZ5EjkSk+/l3RKDXIgjp4nCPh+W+HDUxE/LYJfVujA4eNaE4DqIL52r5
+	ugjN2TK5Ec87zu00AlqEgyyeijpuxDk=
+X-UUID: 5eabc5c4cf5411f0a38c85956e01ac42-20251202
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_MISS, HR_CTT_TXT
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
+	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
+	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
+	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:d0dc6c50-65c7-4534-891d-652e90468ade,IP:20,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:10
+X-CID-INFO: VERSION:1.3.6,REQID:d0dc6c50-65c7-4534-891d-652e90468ade,IP:20,URL
+	:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:10
+X-CID-META: VersionHash:a9d874c,CLOUDID:039194030dede998078eec01d89f9611,BulkI
+	D:2512021031260E6B9Z8S,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|841|850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil
+	,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,D
+	KP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 5eabc5c4cf5411f0a38c85956e01ac42-20251202
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 147703907; Tue, 02 Dec 2025 15:56:12 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org,  damon@lists.linux.dev,  linux-mm@kvack.org,
+  enze.li@gmx.com,  stable@vger.kernel.org,lienze@kylinos.cn
+Subject: Re: [PATCH] mm/damon/core: support multiple damon_call_control
+ requests
+In-Reply-To: <20251202052956.987-1-sj@kernel.org> (SeongJae Park's message of
+	"Mon, 1 Dec 2025 21:29:55 -0800")
+References: <20251202052956.987-1-sj@kernel.org>
+Date: Tue, 02 Dec 2025 15:55:56 +0800
+Message-ID: <87bjkh71wz.fsf@>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 mm-new 07/16] khugepaged: introduce
- collapse_max_ptes_none helper function
-To: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org
-Cc: david@redhat.com, ziy@nvidia.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
- corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
- baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
- wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com,
- raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
- tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
- cl@gentwo.org, jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
- lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
- pfalcato@suse.de
-References: <20251201174627.23295-1-npache@redhat.com>
- <20251201174627.23295-8-npache@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251201174627.23295-8-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D31D40003
-X-Stat-Signature: y6mdwycynhm8ogkhyochf3rojpr4q7tq
-X-HE-Tag: 1764661995-203668
-X-HE-Meta: U2FsdGVkX18DT/BuWs3CmLRI7I9fI+zCJcT49f/slJlgjZy/6gu7brvyFijHDOFFUQzlwczhUMhdEWtcPBr/sy6Ose3wRlrrKH8BDqiU5LDzFRQ0dvSP0Ntlqm01zw17hMe9gnzXODeHdGYas5pxJEjV7Dm8xgSgfr0jYBnoi42YkOVDiRdbpiS20fEdCIrfUy3jj5qcVNvtGEUZZBCUZZh6eUVjQyszk0RKQdUOSh94cwoF5FmnKZTofsKV3qXQN1ob/rjHv7gyqXBgH+ynWwBbllMyyfO+FRVork3DnCt+6WzTvA23Y5LC89pZq7WbYIB1SNFle9R87kgHTmpRhuvAUItoJh/Oh/1tYIn6/5cKXPcyhu7VHWGtmarLvZX7m/WIaiCOY6F0VXQGHVQlAQh67J4fFF1Ij5NiFGJBEHztXP/Av11oeDYDlP+SA7A0bMzMD10R1x/oC4/veY45y3OQRHM4BTIjZhS6X++1lS5wTU74XlmiMVnM8WfS8n9mXWXyufK4kjdbz7OImbOpqTZdg17nTK0xT2MZBlXRHIKWjxy1g4FmhZGAbF7rVHfEotFLJm18wncjUx6VJ1g/UO+/Xwkut1zRoL2tesT6jglniyVFJKJTElZj3kYU6JsoWFmT/tctnsv5d2Ukim0lEpJBQgc5+bKqsPYYEfQdFSDG+cIZxMuph8EsBcRsLMQuIfADVP6Ndm5Ts9Koj75u6a5wCWphPzZkBrH4d/6d1MW06gCYkUSDoBHpPHdVFXCNCxg+sD/ohDDIAKZVg95VnLMZ6vFmpmZn9qx8tlw/N1EctKcNKNs0QxNDJx5EEKm1mLrMMFRXjItHr8nMhl6UO589QDar5K6iIUw36j4lu2TKhO7PIHTjFdlOmrHwaV810EHCAU3bMoZLQBz4EGzexv2IytWSVnvUtbqX4pLC88VPfvecO1bKssVgSDtyLjIXINvTlPmzFID0jCrYodb
- H2gyaFTB
- fYZyd56B9OCL5pfAh8AKFYrPBfY2jzMQk8PpzikVXiqyJgdyJUfN2EvaiAlKVMRDO0ua8Rc1yT1IGVDODnopFlWKW3abXtNcRIIzZc+DIRrOSzo+KJEbr3JdILr3JKHH1r/yTDTG0kthwmfZhFNyVa6bn/kJ9/bQz3/gGCUNSyWhCpRuSN7VDzOR+4YWImcvOC04hCrnediaQu5XLXaJV7fr9nIMz3dujvxQsCyh1VRkhomZmbbUIwrFgNd9RzkTWDTxBIdfCOeRFX5VdCQFrhmNuKPZnawu/ry3CuDYLP9Z2F8tRYJ2Rp3zEwzAl72D0af1PkfnqMopneV7v0whg0fF8caRS6lO4cfqirg+LPIPiaZ3LDARygECRLtLyVVn0Psk8D/6FGNUjs6SUN9fllwtH+Pr2dEZ7PuvGoZxPoSMaQmtge7AJEKuczHwfZkYWij4P
+X-Rspamd-Queue-Id: 584318000B
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 85f9z1oe17w1wudem5k9yr3afjzwyxy8
+X-HE-Tag: 1764662179-976018
+X-HE-Meta: U2FsdGVkX19G5yqJ+R3WsBOrhS97XWocOiSHUsBVLSS8cWHwgG0CRQbWvjiqk72QZZvGXnq/nJlylDTH8CjNcDKKyaY9T3vj4C+ZR5dD2SmZM/XOtpN/lY0Dkx+XnIA7VTnBI0e+y+fYF69q7FL4UuTcPuoytBrICVeFdqQIt6nXRfDMlVIyJ7nIKaeqTyrRmDyBkt/F/foQCY0+rFEGxYVCFT7mKW4wudvlZSr/mzYfOW6+etMrrKeMR7Jgm4dWphJNTvvo9McnerYsD/LMrvNCgr6dRwwQuKgvpd+48cyFhvJ6NSAWXAXPRNGXop71Xr+5dPlja+vUqt9z3/Zpgtyj8+5P6PYx9XHPONc5Od0ETl3j+TfSl7VAnfFLKJ/bKb3nvP99uj9PbX9mJDY35crAohjINExa11p2dDsLfGR6z+bV+f72UEFjNnhdNhDAOLD1jKUkVw1KuLzGSSAyFV5hZaeO4R3M5Na/51RfSycl01RI5ZVJmGzD7F29mmnPrumGVw+eoPHaivBDfQUvVI3Gdn8hoVtxjeO4vuA5FCnIz6gIlsUY0N0bvnmFyRvI/koaaBy213SLk3CgWPkTroXuQYggcNhjrOCy2gzxj0cdZTTzLt6rK2QgMhB8ikKOmueLFdXCzFg2Dz4hcUuyA8uJP+hQIr1i99+mL1iEE396S9i/WAOmvhf3IyiMT3hM/kTYkoPqi6r6abd2nuXTHFQ6oWTiGfq2Un4nOdEgkpZXuREBuH0ynA2fTzVEr/hfH7AwmEf66ALkQ2G7znxTt1igadU+Y44+6Qs3WXmsOd7GJVBfWug/8vZ4JQjMemldfWu1JzlHmS9dZtw3QUq0aEXxRRzuKu+whRnR/BlO7M9DLjs5PC5TxioUm700swW4Vr6CsRyHm/tGyA43FsFS3tQs7HFP/chE1oXTIrQyF69UL27H1+uHp1OsGdV/rPKyQ21WFDgyjuLwIwCCFZN
+ IBvns04I
+ j1Lac9wzR306M3gzj5H6cSTwc6DP3gcip9q5ry/gBUDobmgqqJzWpJi0uK4LO90R/t81b/WUjVVN1yNY/j7GZwBG37Zu5AG0seK0N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,86 +107,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi SJ,
 
+Thanks for your review and quick reply!
 
-On 2025/12/2 01:46, Nico Pache wrote:
-> The current mechanism for determining mTHP collapse scales the
-> khugepaged_max_ptes_none value based on the target order. This
-> introduces an undesirable feedback loop, or "creep", when max_ptes_none
-> is set to a value greater than HPAGE_PMD_NR / 2.
-> 
-> With this configuration, a successful collapse to order N will populate
-> enough pages to satisfy the collapse condition on order N+1 on the next
-> scan. This leads to unnecessary work and memory churn.
-> 
-> To fix this issue introduce a helper function that will limit mTHP
-> collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
-> This effectively supports two modes:
-> 
-> - max_ptes_none=0: never introduce new none-pages for mTHP collapse.
-> - max_ptes_none=511 (on 4k pagesz): Always collapse to the highest
->    available mTHP order.
-> 
-> This removes the possiblilty of "creep", while not modifying any uAPI
-> expectations. A warning will be emitted if any non-supported
-> max_ptes_none value is configured with mTHP enabled.
-> 
-> The limits can be ignored by passing full_scan=true, this is useful for
-> madvise_collapse (which ignores limits), or in the case of
-> collapse_scan_pmd(), allows the full PMD to be scanned when mTHP
-> collapse is available.
-> 
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
->   mm/khugepaged.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 42 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 8dab49c53128..f425238d5d4f 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -463,6 +463,44 @@ void __khugepaged_enter(struct mm_struct *mm)
->   		wake_up_interruptible(&khugepaged_wait);
->   }
->   
-> +/**
-> + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for collapse
-> + * @order: The folio order being collapsed to
-> + * @full_scan: Whether this is a full scan (ignore limits)
-> + *
-> + * For madvise-triggered collapses (full_scan=true), all limits are bypassed
-> + * and allow up to HPAGE_PMD_NR - 1 empty PTEs.
-> + *
-> + * For PMD-sized collapses (order == HPAGE_PMD_ORDER), use the configured
-> + * khugepaged_max_ptes_none value.
-> + *
-> + * For mTHP collapses, we currently only support khugepaged_max_pte_none values
-> + * of 0 or (HPAGE_PMD_NR - 1). Any other value will emit a warning and no mTHP
-> + * collapse will be attempted
-> + *
-> + * Return: Maximum number of empty PTEs allowed for the collapse operation
-> + */
-> +static unsigned int collapse_max_ptes_none(unsigned int order, bool full_scan)
-> +{
-> +	/* ignore max_ptes_none limits */
-> +	if (full_scan)
-> +		return HPAGE_PMD_NR - 1;
-> +
-> +	if (!is_mthp_order(order))
-> +		return khugepaged_max_ptes_none;
-> +
-> +	/* Zero/non-present collapse disabled. */
-> +	if (!khugepaged_max_ptes_none)
-> +		return 0;
-> +
-> +	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-> +		return (1 << order) - 1;
-> +
-> +	pr_warn_once("mTHP collapse only supports max_ptes_none values of 0 or %d\n",
-> +		      HPAGE_PMD_NR - 1);
-> +	return -EINVAL;
-> +}
+On Mon, Dec 01 2025 at 09:29:55 PM -0800, SeongJae Park wrote:
 
-Thanks. That aligns with what we talked about previously. So
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+<...>
+
+> On Tue,  2 Dec 2025 10:14:07 +0800 Enze Li <lienze@kylinos.cn> wrote:
+>
+>> The current implementation only supports repeated calls to a single
+>> damon_call_control request per context.
+>
+> I understand "repeated calls to a single damon_call_control" means "single
+> damon_call_control object having ->repeat set as true".  Let me call it "repeat
+> mode damon_call_control object".
+>
+> This is not an intentionally designed limitation but a bug.  damon_call()
+> allows callers adding multiple repeat mode damon_call_control objects per
+> context.  Technically, it adds any requested damon_call_control object to the
+> per-context linked list, regardless of the number of repeat mode objects on the
+> list.  But, the consumer of the damon_call_control objects list,
+> kdamond_call(), moves the repeat mode objects from the per-context list to a
+> temporal list (repeat_controls), and then move only the first repeat mode entry
+> from the temporal list to the per-context list.
+>
+> If there were multiple repeat mode objects in the per-context list, what
+> happens to the remaining repeat mode damon_call_control objects on the temporal
+> list?  Nothing.  As a result, the memory for the objects are leaked.
+> Definitely this is a bug.
+
+Thank you for the detailed explanation -- it really clarified the design
+for me.
+
+>
+> Luckily there is no such multiple repeat mode damon_call() requests, so no
+> upstream kernel user is exposed to the memory leak bug in real.  But the bug is
+> a bug.  We should fix this.
+>
+>> This limitation introduces
+>> inefficiencies for scenarios that require registering multiple deferred
+>> operations.
+>
+> I'm not very convinced with the above reasoning because 1. it is not a matter
+> of inefficiency but a clear memory leak bug.  2. there is no damon_call()
+> callers that want to have multiple deferred operations with high efficiency, at
+> the moment.  In my opinion, the above sentence is better to be just dropped.
+>
+
+Agreed.  I will rework the patch description for the next revision.
+
+>> 
+>> This patch modifies the implementation of kdamond_call() to support
+>> repeated calls to multiple damon_call_control requests.
+>
+> This change is rquired for fixing the bug, though.
+>
+
+<...>
+
+>
+> Assuming we agree on the fact this is a fix of the bug, I think we should add
+> below tags.
+>
+> Fixes: 43df7676e550 ("mm/damon/core: introduce repeat mode damon_call()")
+> Cc: <stable@vger.kernel.org> # 6.17.x
+>
+>> ---
+>>  mm/damon/core.c | 20 +++++++++++++-------
+>>  1 file changed, 13 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/mm/damon/core.c b/mm/damon/core.c
+>> index 109b050c795a..66b5bae44f22 100644
+>> --- a/mm/damon/core.c
+>> +++ b/mm/damon/core.c
+>> @@ -2526,13 +2526,19 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+>>  			list_add(&control->list, &repeat_controls);
+>>  		}
+>>  	}
+>> -	control = list_first_entry_or_null(&repeat_controls,
+>> -			struct damon_call_control, list);
+>> -	if (!control || cancel)
+>> -		return;
+>> -	mutex_lock(&ctx->call_controls_lock);
+>> -	list_add_tail(&control->list, &ctx->call_controls);
+>> -	mutex_unlock(&ctx->call_controls_lock);
+>> +	while (true) {
+>> +		control = list_first_entry_or_null(&repeat_controls,
+>> +				struct damon_call_control, list);
+>> +		if (!control)
+>> +			break;
+>> +		/* Unlink from the repeate_controls list. */
+>> +		list_del(&control->list);
+>> +		if (cancel)
+>> +			continue;
+>> +		mutex_lock(&ctx->call_controls_lock);
+>> +		list_add(&control->list, &ctx->call_controls);
+>> +		mutex_unlock(&ctx->call_controls_lock);
+>> +	}
+>
+> This looks good enough to fix the bug.
+>
+> Could you please resend this patch after rewording the commit message as
+> appripriate for the bug fix, adding points I listed above?
+
+Okay, I'll resend this patch shortly.
+
+Best Regards,
+Enze
+
+<...>
 
