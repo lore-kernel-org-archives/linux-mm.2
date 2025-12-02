@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18AE1D116F6
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 11:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B40AFD116F6
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Dec 2025 12:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C7B76B0062; Tue,  2 Dec 2025 06:54:56 -0500 (EST)
+	id B77A66B0012; Tue,  2 Dec 2025 07:43:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 677DE6B007B; Tue,  2 Dec 2025 06:54:56 -0500 (EST)
+	id B017B6B0024; Tue,  2 Dec 2025 07:43:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567446B0088; Tue,  2 Dec 2025 06:54:56 -0500 (EST)
+	id 9C8F86B0026; Tue,  2 Dec 2025 07:43:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 42FFD6B0062
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 06:54:56 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69B2ABA73D
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 11:54:53 +0000 (UTC)
-X-FDA: 84174374466.27.2424BEC
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D1A104000E
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 11:54:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 878836B0012
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 07:43:53 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 168EA1DB1D1
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 12:43:53 +0000 (UTC)
+X-FDA: 84174497946.05.027923B
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2098920008
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 12:43:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=A0MDWDd+;
+	spf=none (imf13.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
+	dmarc=pass (policy=none) header.from=armlinux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764676491;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764679431;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=El9ppqAoQFbOIGDZ2F1JVix5PUqcPSDY5Rl/XSJ2bDQ=;
-	b=YrQ8RmgLvwH/V8ETn5IhJoo4CuMN7oHrp8ekh80YGju7JTsHQ1h8ntrp030igj9PWUQm1p
-	0aknerKE7WVD8wx+up8QsBABRCjKd1AH8Auuey7I7x5EYlB72VcnTEGxFMIQVfnvcn5Wuv
-	Q7t2e6sg9zHPIXiLOLMcdLv2NMqWqt8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764676491; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pz/V+JN/TaTGWZf//BDpclVF4cfp93h5KOPZd7Eqkp0=;
+	b=1Et4UXncL2yUUSq4lh1sy3ER42kc96eL7s604RHZ2PBVqL/z1Q1LhWZwlMTvibauhMhMKj
+	9mJt/km1AF3Y+EAIntMXrG4EUdQXQtUhf5pn3PigfIV89zqVd20vw8nk1Ek0MHJ8v3dwnc
+	5pCaLbFci2vvdmNYbgJ+mJ2fSjctvHw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764679431; a=rsa-sha256;
 	cv=none;
-	b=oECfSd0IxwUNkWu8yT7EOKnHJW7RSzrcsRMC3EUVCj8c3Q++CC0vtTn2KDqPM/G6StZpSx
-	fKzkQ+Kb5Zqv5OhB+qD4W8bQvzAyzA/LgE4leL3iSpitp6jMrNUiZe2XZhyOqFBQteqvCL
-	Z99qFhAzXsU84nR6318zhFoq2Wbzqck=
+	b=jyv1cdEMwlbkjodIrulahVgY8myhELhW4Wpu3LFcjhA0YCvreVOFW41ampRBjwa0GVqtHV
+	l4LfdDxU8hdYyDS+TQYzV1+VEvzZPFgDL4FGtAHXBn3OBJUNBkOupYqFlabziLhXHwrimz
+	ssg4ATSWCuSEqk3LqHm4MI1Eu+4hvfk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dLK1C4m0XzKHMWx
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:53:51 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 7C3E41A018C
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 19:54:39 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP3 (Coremail) with SMTP id _Ch0CgCXNb9+0y5ppmRYAQ--.16551S2;
-	Tue, 02 Dec 2025 19:54:39 +0800 (CST)
-Message-ID: <919c6fc0-afd5-49ea-ad83-aa643cc1b999@huaweicloud.com>
-Date: Tue, 2 Dec 2025 19:54:37 +0800
+	imf13.hostedemail.com;
+	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=A0MDWDd+;
+	spf=none (imf13.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
+	dmarc=pass (policy=none) header.from=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=pz/V+JN/TaTGWZf//BDpclVF4cfp93h5KOPZd7Eqkp0=; b=A0MDWDd+gqUx3aOH3D6ksP9xwZ
+	0REuMbfigE3bF6yA8RA08z27Bl6rVUAQsoiTH//L777avZYe2w+QUnKfhu5n377I5P7YW/6Pz6ZoU
+	rd9NmrSMObrxcStlE1mr+X0cbbZW2TsAsetc63JhxzKLEoywsWcf8CWB9EYnkG8S8J3yK8P5MSKlm
+	jAfrjf/T0qB4X0Jfyu9ifSydqLyDVmuiiIb3gDtsVPNnAAGMMXOeGcW9s2j2/uE7QK+H9PQ6cILUy
+	TpKxptt1g9WU7kv7H9wc/fE8na7giqk54+0S1Q3rnxPUu53G8r1PHMFfhIxp8LD7EjiT6p7/EXv4D
+	6LH+Gdcw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39162)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vQPjF-000000001hN-1Z9W;
+	Tue, 02 Dec 2025 12:43:37 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vQPjA-000000007Sl-2MI3;
+	Tue, 02 Dec 2025 12:43:32 +0000
+Date: Tue, 2 Dec 2025 12:43:32 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Zizhi Wo <wozizhi@huaweicloud.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, jack@suse.com, brauner@kernel.org,
+	hch@lst.de, akpm@linux-foundation.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	yangerkun@huawei.com, wangkefeng.wang@huawei.com,
+	pangliyuan1@huawei.com, xieyuanbin1@huawei.com
+Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
+ sleep in RCU context
+Message-ID: <aS7e9CbQXS27sGcd@shell.armlinux.org.uk>
+References: <20251126090505.3057219-1-wozizhi@huaweicloud.com>
+ <33ab4aef-020e-49e7-8539-31bf78dac61a@huaweicloud.com>
+ <CAHk-=wh1Wfwt9OFB4AfBbjyeu4JVZuSWQ4A8OoT3W6x9btddfw@mail.gmail.com>
+ <aSgut4QcBsbXDEo9@shell.armlinux.org.uk>
+ <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next] cgroup: switch to css_is_online() helper
-To: Jan Kara <jack@suse.cz>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, hannes@cmpxchg.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- jackmanb@google.com, ziy@nvidia.com, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- lujialin4@huawei.com, chenridong@huawei.com
-References: <20251202025747.1658159-1-chenridong@huaweicloud.com>
- <dzp6jxmf5ggidkhmqabuttaotyrkxzf6ohiuzgcdn6oppkcmfc@vrjeeypoppwe>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <dzp6jxmf5ggidkhmqabuttaotyrkxzf6ohiuzgcdn6oppkcmfc@vrjeeypoppwe>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_Ch0CgCXNb9+0y5ppmRYAQ--.16551S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYV7kC6x804xWl14x267AKxVW5JVWrJwAF
-	c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
-	0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xv
-	wVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4
-	x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
-	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
-	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kI
-	c2xKxwCF04k20xvY0x0EwIxGrwCF54CYxVCY1x0262kKe7AKxVW8ZVWrXwCFx2IqxVCFs4
-	IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
-	MI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
-	WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
-	6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
-	BIdaVFxhVjvjDU0xZFpf9x07UZ18PUUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wh+cFLLi2x6u61pvL07phSyHPVBTo9Lac2uuqK4eRG_=w@mail.gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2098920008
+X-Stat-Signature: berxk54yzy4rx9jszyiuqetd138pgpkn
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D1A104000E
-X-Stat-Signature: s8ox33wqeer4z4kahqynu6qd9qb65p41
-X-HE-Tag: 1764676487-59203
-X-HE-Meta: U2FsdGVkX199jvmimrovvWKdUpbGMLJQQli2sG/8NevdPkFHiu4T0lSkPphX6VYzPdNoERZsxAg5WoOVNUkRbmo991boVXlPdTa1xutKCmDokELNfpo5IugKevU29uzECxnQTbTHFYSs53yU5IzU6Nwr/kPidpUFWzewufqlaTA4mXtvBRRO7mJChu7u642ZcXEYAsIdFQmaczc+DhLdDzPcZisA9RGPQLyk69hjEXPkbaYyRsOPwoXYt3hwHv36Bx8OsLeUmukKzdZkxjkn9CF8BXpTPLxBoqzHchZx07p/LDR0yYjHafzx5t3FUubB+lrgKj3fEO/hq4yQhcH83x67B8PDBRfXXmhJ5RJFDd66sOGRNEPeySx4yHfqgBXUXv7E9henjiJDADwlK+iCiIG6zzKbKaPCOoruY/MbTf9mgCtnOmf9jqnaEjYF/KMd822c6IvQZp6agFJTw/HQp5gCcerEZk+HIPrF0gIs4yjIXUscwH7M80/jr+sqkrAzfOD/G04et1sgyZgtp3EhsM2mdUPYo+L9PilVrwLNvItn/VZjvVJckSfF82xOlXSwRapP0hyTYmdJnSQxX0WzTGct4Htsu1gBHxWo5/jraflRYa9n3avWhjGJsVog0iq/bmPd6xKpqQyK4Az+/5u5iX//o6R4PzIjXUd4cTWETUOMoicgznxCIBUsQ9s9cYxY8YhSkXXKYim9stgQkMbItefwbIIiv7w4TQjdsnsToIv6kOr0pzu6MwOQQ67NE929UMYuxOK8vcMcGO5vOz1nkfwdDR+mpmRB/Xkcea4K8sRES/8eY3Ty6pSZzpO12Pjm4a7G9wQ6ZY3cTkosgGbawEYebDK4W5xowmWT9IXf7iYhzDP8co5B0Xjo+JZqWCS9pliEiMUXc64RWZLOTf39nSXHkskZ+3MKXU5grlG806WN6xJexC2dWanDnPRDNAmZFGSWTZRT9Vy2GzlVtkc
- Rpv2TZEn
- lbcEpq+kqJ84MB5u/oC1E+4cdxGS4og7dtV7HGChOecZ02ceb6WSjSyrklErYTncaPKwOKZe98MJAe96umGzDF5+5yp+MTnqf6TwLpHn78OYVIf8hH9t6JzaIYjxQKIHJpUscqGESYoTbFPe00pKM2x3t7rN399fSedMsdJxzvSi3h+tVtgCp7NweOWF5LsQVcjQ3
+X-HE-Tag: 1764679430-247971
+X-HE-Meta: U2FsdGVkX1+kFn+MA1DLljt/kF43vnKOwzIckMIm/X9qHyEcnsvPslbLTJ2S7SUtXhnYxONlyydVvWIArUT/pAjlIKyscJLW6ooa5hUUqQ2JTGjxgAeU3nfq/pH1jFDFHPy/tWAiiiA0MJk6wgVHgJhAAOrwI8SERMS7GUGpbUg8a6pI50zpBIjeqDVwijhUQBAqCtgU6x450RVUhQtdySHUjmofHr/CrrdeiscTIIaiv1moiOVOHj7m/EW9MqqVfkXsbE8SG9HMYr8WdOdADIvSBbTN8HL4CMQEoZv+c762ZhufKSqpjvjbYb77xQ2aFMXZCzY7YZIS/Ik1qRkJvXKkRy9cKcDhAIFy0on2mBXCPjq9qOo/F9QZkvArHyQLt7tAEFumcSDEIAoFiIFF7Mk3veJFqAZHQVGju+USvUYgaKwtuWdAVn+IDLJTXtyPZ1j5T2tFFiCqq93/0y5oEQy5fdoaz1lqzqaCHnMo5hT7AvHRyAceZ4Xh2itt4sGUzqqUim6JtdhVI2nw4a7sKZ4nuR7gs8uESyhqz6EzaA/4mbCB3lbChO3JT/MoA3cYkcDzFJHFtiGWfR7nZTaFI5SN5AyKpupoB0ET2VY46CTAjWD7Z0KPAQg01/Lb86Pm8vN1140rRmvi+KbGtsG1G2Hkp9ynywMnq/Y9Z3s03+t/xQ002Gso4YJNJsl/en3rKAmjVNpRs+AmldEzCpnDorJzIaj72SqVjg+N5RIsDVr4iI3uGGz9U7YnXPBln9D0ldoRj1Nnnw5WxclLu/uRNAgDhiy3aYpPd1Wz9PBoKkMYe/JRfHUMWPzEYSRA/AizTdPP02X5yUej0ZAOwEvxFOMSNinh1pkjpPYbaFDZJ1eBctzLfIij6vURv5O3UomRCodWFbRBV1JPHi2uz6cETJqvQIi+/gqUw6C7ihFEpu9pTbcP4FA8TGUIBDbSt/gAcCOFwmZObea+uznbi+W
+ e8Pln0za
+ RVSV66zExxo3jVBZ1s95L7Qwyo+83lVch0bcHXj+Pw8RWIDyygTMsAaumdF8qYc06kzGeN533MTAbhdxR3IsyvXknRhFv4LTcO5o5V9rSMYTa3KMZw8xxC+nIjjU06MfRWqnXo1iin6zBdinsf0tSg5Hw/ZmDs2L3fQt+8Tc3FW4D6AnPp6PtR+ULZNjFg1kbmDpxtZ41I5REtzVW4spJpnaWj2DkZb1CtjfNkQ132gCSYwVva6duSwNXlO/Y8xX+j06usw/vF6MWINY2xQAdw7LVz67jIcIETckKOnjynC+NdHdkBjZD7Xr6NbtH97is7jrWFYCNlxu2HHRmjs0xPGK7voOWxKun4RNves3lDe3QV9OnIvunMmSVdq6g51lodEPUuFHvQY7aPNxF3VEgwN1teq556SwV3Ner4jorWv3W9+bWWCV2/OzHLadkLiPTdwlTONHXOGnkaZrQmb60ZCsJlGRqzf5Bo1aM40z42sSPKCnQtf3+4VDlVZZiOXvpwl/xxoymq8FIOiQpjD6xdaliUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,31 +109,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Nov 28, 2025 at 09:06:50AM -0800, Linus Torvalds wrote:
+> I don't think it's necessarily all that big of a deal. Yeah, this is
+> old code, and yeah, it could probably be cleaned up a bit, but at the
+> same time, "old and crusty" also means "fairly well tested". This
+> whole fault on a kernel address is a fairly unusual case, and as
+> mentioned, I *think* the above fix is sufficient.
 
+We have another issue in the code - which has the branch predictor
+hardening for spectre issues, which can be called with interrupts
+enabled, causing a kernel warning - obviously not good.
 
-On 2025/12/2 19:01, Jan Kara wrote:
-> On Tue 02-12-25 02:57:47, Chen Ridong wrote:
->> From: Chen Ridong <chenridong@huawei.com>
->>
->> Use the new css_is_online() helper that has been introduced to check css
->> online state, instead of testing the CSS_ONLINE flag directly. This
->> improves readability and centralizes the state check logic.
->>
->> No functional changes intended.
->>
->> Signed-off-by: Chen Ridong <chenridong@huawei.com>
-> 
-> Looks good. Feel free to add:
-> 
-> Reviewed-by: Jan Kara <jack@suse.cz>
-> 
-> 								Honza
-> 
+There's another issue which PREEMPT_RT has picked up on - which is
+that delivering signals via __do_user_fault() with interrupts disabled
+causes spinlocks (which can sleep on PREEMPT_RT) to warn.
 
-Thank you.
+What I'm thinking is to address both of these by handling kernel space
+page faults (which will be permission or PTE-not-present) separately
+(not even build tested):
+
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index 2bc828a1940c..972bce697c6c 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -175,7 +175,8 @@ __do_kernel_fault(struct mm_struct *mm, unsigned long addr, unsigned int fsr,
+ 
+ /*
+  * Something tried to access memory that isn't in our memory map..
+- * User mode accesses just cause a SIGSEGV
++ * User mode accesses just cause a SIGSEGV. Ensure interrupts are enabled
++ * here, which is safe as the fault being handled is from userspace.
+  */
+ static void
+ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
+@@ -183,8 +184,7 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
+ {
+ 	struct task_struct *tsk = current;
+ 
+-	if (addr > TASK_SIZE)
+-		harden_branch_predictor();
++	local_irq_enable();
+ 
+ #ifdef CONFIG_DEBUG_USER
+ 	if (((user_debug & UDBG_SEGV) && (sig == SIGSEGV)) ||
+@@ -259,6 +259,38 @@ static inline bool ttbr0_usermode_access_allowed(struct pt_regs *regs)
+ }
+ #endif
+ 
++static int __kprobes
++do_kernel_address_page_fault(unsigned long addr, unsigned int fsr,
++			     struct pt_regs *regs)
++{
++	if (user_mode(regs)) {
++		/*
++		 * Fault from user mode for a kernel space address. User mode
++		 * should not be faulting in kernel space, which includes the
++		 * vector/khelper page. Handle the Spectre issues while
++		 * interrupts are still disabled, then send a SIGSEGV. Note
++		 * that __do_user_fault() will enable interrupts.
++		 */
++		harden_branch_predictor();
++		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
++	} else {
++		/*
++		 * Fault from kernel mode. Enable interrupts if they were
++		 * enabled in the parent context. Section (upper page table)
++		 * translation faults are handled via do_translation_fault(),
++		 * so we will only get here for a non-present kernel space
++		 * PTE or kernel space permission fault. Both of these should
++		 * not happen.
++		 */
++		if (interrupts_enabled(regs))
++			local_irq_enable();
++
++		__do_kernel_fault(mm, addr, fsr, regs);
++	}
++
++	return 0;
++}
++
+ static int __kprobes
+ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ {
+@@ -272,6 +304,8 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	if (kprobe_page_fault(regs, fsr))
+ 		return 0;
+ 
++	if (addr >= TASK_SIZE)
++		return do_kernel_address_page_fault(addr, fsr, regs);
+ 
+ 	/* Enable interrupts if they were enabled in the parent context. */
+ 	if (interrupts_enabled(regs))
+
+... and I think there was a bug in the branch predictor handling -
+addr == TASK_SIZE should have been included.
+
+Does this look sensible?
 
 -- 
-Best regards,
-Ridong
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
