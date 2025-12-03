@@ -4,125 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A1D0D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:23:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B3DD116F3
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:24:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C22696B0031; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
+	id 0B2056B0007; Wed,  3 Dec 2025 04:24:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFAC96B0032; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
+	id 08A596B002B; Wed,  3 Dec 2025 04:24:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B37326B008A; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
+	id F08E96B008A; Wed,  3 Dec 2025 04:24:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A26816B0031
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E75558E29
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:25 +0000 (UTC)
-X-FDA: 84177621570.21.E2B06C5
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AEC3618000B
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=k49+nHHp;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E2EE96B0007
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:24:01 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 149691604A1
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:59 +0000 (UTC)
+X-FDA: 84177622998.03.662D717
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 41B5F40003
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cvu5yFI/";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764753803;
+	s=arc-20220608; t=1764753837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EFjX7Gas1ZYIoPQgX1ANr0djeVn/uypCOzwVMV3za7w=;
-	b=dMTEnBq6AlyGo/sh7x+PMC8SFb53zyjRAHYTTyKY55l6TY5QIT0J2gWbHzt4w50dVC38mK
-	kjdb/1gxxdvkoYXDkM1Xf/4kM00KBh+8AwZ2PrdjJ/ehYbVHoh6AFPbp7QoSNegjnmUdfH
-	5ubJqf4DNhNcx5CNiTRhR/pgU+UNMiw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=k49+nHHp;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753803; a=rsa-sha256;
+	bh=noeidY/JxZUlaO2BBPuBf7W+PlJySPwIeLEw72dpWi0=;
+	b=hbPMl8dh4K+LMiyYFMQ7pSN5B5TxY9HrapOKZ0iy+tKvcL5OGeCfN2FNl6bB0DtQTAfomd
+	ndl/2MtyRmI5pUnZC2R+snrURW0PIbfD1kE0UMrXikbEtH+RclD9+5TRdDdODZoItzpYnx
+	EivgacZdpHqSq2fW8towQJLaRw1J67U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753837; a=rsa-sha256;
 	cv=none;
-	b=D9HJfGrv/wwGX95ga/D58WL9pPGBxEewJXM8xpbIyhtqmsok/qY9KOjCUC6Sva5JgZqxJz
-	rr6x1/F6BZSD/LsaTialr/eqpW8VbfPXp66RcAIJ5wer/K4Vs3Ov1RGqtCUijUwuSOUPk6
-	X/vk4EgBb9cDzQ8jK3BEtO0fXg7jyaQ=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4eda6a8cc12so62553971cf.0
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:23:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1764753803; x=1765358603; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EFjX7Gas1ZYIoPQgX1ANr0djeVn/uypCOzwVMV3za7w=;
-        b=k49+nHHptx5Lyehd1zb97BWKVLXFE/xWKIkvnfIYUF+Ajzpp5fYLpzrcpWV4bqBWaZ
-         0WLVQSoHcYXEr2fOTkLglXksMvvrwgd/5mI1PvN2q+t2drTxl6tDDUZ5olNawcsotE22
-         ps640HJPNHHP0cpHOX8ErYmvZCQtQrs9DCL+iJ6rgut2UC/lq/VzFsMBcIzDtzArpjpA
-         pZ4uelLM63QGmDrYpxqO2H3MxgCTvDJHmJA3sBWTk6L1UQFzwuNFBEm2qTVlTcdGg6EZ
-         lU4Z6l1VNJ8971Y6wxjoaE6Nuklo93VX21k/vQ4/fUF9gcWWCbDk+X3rJzavCi8kOpTq
-         8jHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764753803; x=1765358603;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EFjX7Gas1ZYIoPQgX1ANr0djeVn/uypCOzwVMV3za7w=;
-        b=BTEizDzremx8sRgI42fn6MocyHOyT7e0gI2zxJcj1zzTumSIWxDIQ+IPKZhE24UDus
-         OKadx2XJkyuYZ3MDmtmkYRWqX7mCc02ox1e/bnVIDmiId1uNAPe83dcRqQxtdqsrqvrg
-         3CvD2MCp1lRr2syie3MdlIlB1+NYH/eYoeuLsUcCDUpazvclmKumw+hhx828oCX3USnP
-         JPaYtoJIGqTmnOm04+hGI2IaDfJUmk59jPMX9yY0AkH1ti0qHAuDruEGAlk8kj+yHzB0
-         /t5H6VXnh9ZomKV72d2hNvDV8bSjmdvWBJiUHksYM2h4XwyO0jm73IHHLt+FW4H3K4x9
-         grpA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0CU2L2Kn3i1JwBx0OWoDcfJiD8/uX8IWtRfRsHKQ7wiWAczmP0uD43GVbFQ497EN96NHJyQP+kg==@kvack.org
-X-Gm-Message-State: AOJu0Yyz9hs7I9dtVCeGi2BdZF8B7Q4kOHIKsfdBA9FiN8gXlUyoG85i
-	ai/WtAaYTA5lI8jjXP9ZbopQEMuSnXpKRZPcsiOrz+7aNAoxd3KY0JgBcdRjLg/pljY=
-X-Gm-Gg: ASbGnctDZNLVZ0uh4zZSmWBxP6IqiAv32p+EUzlrNAHnPF25oZGR5fpxKF1br+I11wY
-	rspoopAMPo6AHULDzGBbEeWhn9UkX5r8SyHVgs+S5VmcgvtBZVg74eURzHUCBkcI0Y1mC9XGSbw
-	ha5JGsNfsqGJl8c/Vro9x54rKP3ZAq5+50PWewwhFe88lniAE6hmTJuDxFqt99YWV8Wyt4dLRhC
-	jwRHqjz6BRKgArWV87WKP909biSzhjYd5vXznfdaaFmOEUzyV5ZmsWIT48gjGsmHMAsHlrEmW10
-	HlC2a11aLLrxZhQplUIRbR0X2PR7DUGCe0G+HzN0iqrKkeAe3ZLMrRT6MfebehkJZIx4IItiXGt
-	Z/HOwjDVMrFTvmkvCwfaaFc/mgKX/BtklAmOOzatiSie4oNA8GHvXOEyu3Tivq043Wz6doMx2kS
-	xFVbMJCkygVHRw+IXDx7aF5eTzYfg3MTHX3smZlSjgZ9MRT5a3ZtzDtUV6zIFZ3hodCndKeA==
-X-Google-Smtp-Source: AGHT+IHqPQaHW1DZ4s4jpY2crTNj/JQPWH3xZfsJp1SX8T9ifTYZwnPrkGsw5JGaEAmGRsm1E+BRkQ==
-X-Received: by 2002:ac8:5dc7:0:b0:4eb:a192:de99 with SMTP id d75a77b69052e-4f017695341mr21786921cf.76.1764753802764;
-        Wed, 03 Dec 2025 01:23:22 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88652b492b3sm123488176d6.33.2025.12.03.01.23.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 01:23:21 -0800 (PST)
-Date: Wed, 3 Dec 2025 04:23:20 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
-	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Oscar Salvador <OSalvador@suse.com>,
-	Juan Yescas <jyescas@google.com>
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-Message-ID: <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <aS_0bgCs2qE0y1bJ@tiehlicka>
- <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
- <aS_4E2H5aJmSvWF7@tiehlicka>
- <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
- <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
- <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
+	b=iz2oQk+bKh2iDd/6qHnT4ATw7ivWG2iA9VRzQ8XH6u8NbtSEhB59bNDFI2oiLXgCvCKtgE
+	1lBpYE7E5mLfUCPwH6CLNboZFKd4dmVyAQEQToF3DkMM+q8VtwBln5S2MYRrOLsnmBO+Lh
+	mz81kW2cHrCj4tPORCMP7PIMl4xJVJM=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cvu5yFI/";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1343241AD8;
+	Wed,  3 Dec 2025 09:23:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E1CC116B1;
+	Wed,  3 Dec 2025 09:23:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764753835;
+	bh=S4e+WORc08941gqGHI+Qfm/GmNkEJ5ySt5lGOScr0z4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cvu5yFI/MWJfoPp0dnwR0P+NhuCgNI2hiu03Tf6XZELP7zbJQpqm5isUjY9e/Tdfh
+	 T1FAti4re38m+kkle6trKUG6LfyK78Gorj+43AS2e5UAaONj+LDyx6102ue5fHUWS6
+	 OWQCREZ83ki2v2ja4OzL7nuPrPyjIF9xnFm7IcSjDbr+EcpfIRDxFigHPBc+ze8C9T
+	 DsmjFaKLsK5OTbq0yP2MUJdYQq+Mr6/7x5jCf3UlJikpFhCn5E7Tyafj+CHKqJ7j/d
+	 df7sIZoXwXVkQsejcLEMJuSYUCn/VVgUw/1IjYzOtcfs6u+RP8EKhtBYbWSfEdziKj
+	 RoG6FWK4bU01Q==
+Message-ID: <69bfdffd-8aa3-4375-9caf-b3311ff72448@kernel.org>
+Date: Wed, 3 Dec 2025 10:23:47 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
-X-Rspamd-Queue-Id: AEC3618000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: gbj39fz97uqt4niiahgr9oc9xupmhkjs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
+ mode
+To: kalyazin@amazon.com, Peter Xu <peterx@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20251130111812.699259-1-rppt@kernel.org>
+ <20251130111812.699259-5-rppt@kernel.org>
+ <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
+ <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
+ <553c64e8-d224-4764-9057-84289257cac9@amazon.com> <aS3f_PlxWLb-6NmR@x1.local>
+ <76e3d5bf-df73-4293-84f6-0d6ddabd0fd7@amazon.com> <aS4BVC42JiUT51rS@x1.local>
+ <415a5956-1dec-4f10-be36-85f6d4d8f4b4@amazon.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <415a5956-1dec-4f10-be36-85f6d4d8f4b4@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 41B5F40003
+X-Stat-Signature: zsmgoyr9s4yt5cbngkbnfqfeozuues5m
 X-Rspam-User: 
-X-HE-Tag: 1764753803-730230
-X-HE-Meta: U2FsdGVkX1+jR0osMq0WScZ3VvWJ2IhXfDcpW2Q9pxN9LcfGdwyckpUyAAxy+dEGIyB9z0OqfUs0923rJrk646LkXyjth9er/wVeIIMCNJzr8QmAC4B1fxcyBK1IYP3u4gkllP52htsKA1EFcQHG4WkDj2PemfpjjY3J/mX0wRzYhwc602X8aJYCNbNLvoINA9qs3M4Vn2PvvUbmc+2jKeyXpNakZPH76igA+TK0TpPPlGUuP/qURqayjr3uNjzfVXi4CENTPM3cCJIGZtpSB1R4PcuOfP+He1xBmIjzqYlJoUS9C4ZiAQArMmJsZz2yB4PUahPhlI2S9j0pdEVQcFYSuk2XswkPyJW5v0lMhrPBVkpGA37TooqEwzNPs1hV2cvwv5sgqOkugJ19KEoioUtCc+lHhozO/P53nBT5PZ4L2bq8UdjtasPELaQ1Q5OIHnPmEuAOh5QWE7tzMdTtTq9sVvA9dfHvIohuWPhRwoOQ5mI1tYXysP/N+oZKVgGTMFV4rOj5xvxfMZe7+wL9x97Sok4tt8mL1CG9rMnGIkQoJizQ15ujCCiVyPNbCWb7i+MIlcYBharZFSUvLGXYCb6uU1jKNVYjy52jzeAWjN3vi7tgBhsqEqlwlXDKd4vyUTwn2oNBPESeSOVYoXuQUgx+Eskuc0qIJDsOtkxRnUQZq82stXC7hL2zkVLvbuCz5GvsqKs0bRnv4jYee9I/bJ/LmSZw+Gv8sBNnRFjAR4L6TzIVwgo5dTWjlMVmVODYJmHLCYhdX49k0KZTbR+PHRs7/qO6ilXbKocIXxr2PQkQE5Blls47KtygAq9P0R/wA8EdjOZPFd8ma4XiEq5Zdre+RciGqewkzBuQZSfUNO0SZDyC2xDIMQEA5KL1w1WeG8pKxJGsmBxOiybCatMaNWfPGtfpiVRSCKf26eb1dUvDMVQe9p44iNpA4eLu5jC9R7RSpvKrFuErAQCn1eS
- oe6wlTlA
- Z/G8fbEzXa0yEKXKLrb5q0o0hlyAWS+g2efrwfQ43AYLirzGiwchFbK6Mu8wMeFD/G58AzPQoT3UcYR4=
+X-HE-Tag: 1764753837-347701
+X-HE-Meta: U2FsdGVkX19UHeAMpP5iQJECZuqsfxxhOd7IcEE3Q4i1F5sEXMkkv3ph4v81nSrgbsxnTevMwEbL15/hh8xXxP9pZMaW1hupiy92M+R8vd/GHiP2wJMLHEpethXWesQrDlbOZ2E7HBTI3z2wlqR/eSBAHjQRmA0hxfDwlhUOAp5z8jwrWnKOCKes0cDN0hPJllSo7CLBpfQWnut5xlqIiAJjaYe8SLFdMwDqB+2nMD3IfTZa02YjsGIf5U2s2HFG0XZMh02tfNqzu0Ju+U0V3FKz4x91mk4GHdDd68DQ9BSx74vjw6ibXreFsBWRQW7ght154QrortU8NbWtTE4rCkjSBV6AZ3S1X/QH8xw0xS6x0DmG/Y1M6PGFtAT/DF45KmECi8aK4pdP4fqRHyIDF2tRQZq3I7lwHjJBrX5gWAdynZUHvay8w8DsjjE+cnotz7FwmYSiclRhrBOkBmceQXIplB1s2OwsLn0PedLmMlZyOLCtRiV+DwM4RL2f46CzBGg/vKQov98ocFVJyUsFlEnGCRFJOPqpow1FsjDuf9ejXOhm2zJrr4QlVRnE0v6jfJy0ACKAL2DQKCG2LyadAASKguO3DDJKbzY0aAiuIbqE1VScUChFtBCAIQj+hYoRoGi1oWZfTqicCK0a4B3qz1G7vExvecxTwhRy0C6qTP+ZsnO9qQ5vbAC1yiCb5BOzPLdCW/SDfK0Zod8AAtyz4tGgfJ42CsINVcBKQBNuFen9sFkFVtdmoV5CoJu6p5Wqr0jkO2iXIUTPMDwdCs6u0NyfIVFKL5uoY10yixRxlwjsS2dBi2c+ILR0NWBTuMnfriuyJ+Ad5+a6rOIk8+KvntO/k9lxxIjiS+rNZ5YA8AJphmyUSBFDHHHVGkTG9CguugcgRouUWmRYE1JT8Bw9u0Ee5icwwff47gMoo0SpWCudvr/8TniPWnYDwPwduwlrArk8GIiLy8lEl1eGhU0
+ 2PkFPEyx
+ Sn0t6+rSRlnlae9Wk9OeHsLhuOarzYhgibbGM8baaxjVtCS3Ch8B/x5j7Sz4V4vwS3yXBz/+WV6BszNksM+MVmBlW6d31fxjRk6PZXeCC7HU4IkX4zIVok9c7oxw3/nsuAdG7i7Sk85Pl18cvZt0HXMYQwEbIg5/Tk49itjBp/8k5ijwaBpjYNog7RiTZUWPPkkG6DtDDK//9FAQ3ptLQGgDv8Z0kClMxO6lfHkV6tTNF7MIOIkgCRm+FEYfx7x076oxFlTW7k5fl0MZF/IR16BraIjyAmpwPBW5HQpfEcVKXwmh1KsS+mo4qlU0a+Oe9rrv5qufCPZjM2xCtAbx4aP/S0AAhgdgCtdxE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,85 +112,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 10:08:55AM +0100, David Hildenbrand (Red Hat) wrote:
-> On 12/3/25 10:02, Gregory Price wrote:
-> > 
-> > My transient failure (although i'm not sure it was actually transient, i
-> > killed it and retried after a few minutes and it succeeded immediately)
-> > was on a ZONE_MOVABLE block.
+On 12/2/25 12:50, Nikita Kalyazin wrote:
 > 
-> Okay, so that one should not bail out. Longterm pinnins must never end up on
-> such memory, and if it happens, we have to identify why and fix it.
 > 
-> We have this known problem of "stream of short-term pinnings" that can
-> temporarily turn memory effectively unmovable. Juan will talk about that at
-> LPC [1].
-
-Nice, fun, good topic. Looking forward to Japan n_n
-
+> On 01/12/2025 20:57, Peter Xu wrote:
+>> On Mon, Dec 01, 2025 at 08:12:38PM +0000, Nikita Kalyazin wrote:
+>>>
+>>>
+>>> On 01/12/2025 18:35, Peter Xu wrote:
+>>>> On Mon, Dec 01, 2025 at 04:48:22PM +0000, Nikita Kalyazin wrote:
+>>>>> I believe I found the precise point where we convinced ourselves that minor
+>>>>> support was sufficient: [1].  If at this moment we don't find that reasoning
+>>>>> valid anymore, then indeed implementing missing is the only option.
+>>>>>
+>>>>> [1] https://lore.kernel.org/kvm/Z9GsIDVYWoV8d8-C@x1.local
+>>>>
+>>>> Now after I re-read the discussion, I may have made a wrong statement
+>>>> there, sorry.  I could have got slightly confused on when the write()
+>>>> syscall can be involved.
+>>>>
+>>>> I agree if you want to get an event when cache missed with the current uffd
+>>>> definitions and when pre-population is forbidden, then MISSING trap is
+>>>> required.  That is, with/without the need of UFFDIO_COPY being available.
+>>>>
+>>>> Do I understand it right that UFFDIO_COPY is not allowed in your case, but
+>>>> only write()?
+>>>
+>>> No, UFFDIO_COPY would work perfectly fine.  We will still use write()
+>>> whenever we resolve stage-2 faults as they aren't visible to UFFD.  When a
+>>> userfault occurs at an offset that already has a page in the cache, we will
+>>> have to keep using UFFDIO_CONTINUE so it looks like both will be required:
+>>>
+>>>    - user mapping major fault -> UFFDIO_COPY (fills the cache and sets up
+>>> userspace PT)
+>>>    - user mapping minor fault -> UFFDIO_CONTINUE (only sets up userspace PT)
+>>>    - stage-2 fault -> write() (only fills the cache)
+>>
+>> Is stage-2 fault about KVM_MEMORY_EXIT_FLAG_USERFAULT, per James's series?
 > 
-> We have another set of problematic cases (vmsplice(), fuse) but I would
-> assume that these are not the cases you are hitting.
+> Yes, that's the one ([1]).
 > 
-
-We do use fuse, but this system was relatively quiet when i tried this.
-
-We do have some proactive reclaim / demotion going on, but i don't think
-it was that (see below).
-
-> > 
-> > Kind of suggested to me there was some bad condition the resolved once I
-> > took a second to release the lock and try again.
+> [1]
+> https://lore.kernel.org/kvm/20250618042424.330664-1-jthoughton@google.com
 > 
-> Hard to tell I'm afraid. Do you still have the dump_folio() calls we print
-> when migration fails?
+>>
+>> It looks fine indeed, but it looks slightly weird then, as you'll have two
+>> ways to populate the page cache.  Logically here atomicity is indeed not
+>> needed when you trap both MISSING + MINOR.
 > 
+> I reran the test based on the UFFDIO_COPY prototype I had using your
+> series [2], and UFFDIO_COPY is slower than write() to populate 512 MiB:
+> 237 vs 202 ms (+17%).  Even though UFFDIO_COPY alone is functionally
+> sufficient, I would prefer to have an option to use write() where
+> possible and only falling back to UFFDIO_COPY for userspace faults to
+> have better performance.
 
-What luck, I do! :D
-And i just noticed it's the same page over and over
+Just so I understand correctly: we could even do without UFFDIO_COPY for 
+that scenario by using write() + minor faults?
 
-[ 3404.119270] migrating pfn c06f176 failed ret:1
-[ 3404.129152] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
-[ 3404.148284] memcg:ffff88842e855000
-[ 3404.155834] aops:btree_aops ino:1
-[ 3404.163193] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
-[ 3404.185408] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
-[ 3404.202603] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
-[ 3404.219779] page dumped because: migration failure
+But what you are saying is that there might be a performance benefit in 
+using UFFDIO_COPY for userspace faults, to avoid the write()+minor fault 
+overhead?
 
-[ 3404.230610] migrating pfn c06f176 failed ret:1
-[ 3404.240483] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
-[ 3404.259603] memcg:ffff88842e855000
-[ 3404.267152] aops:btree_aops ino:1
-[ 3404.274511] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
-[ 3404.296716] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
-[ 3404.313909] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
-[ 3404.331102] page dumped because: migration failure
+-- 
+Cheers
 
-[ 3404.341778] migrating pfn c06f176 failed ret:1
-[ 3404.351658] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
-[ 3404.370781] memcg:ffff88842e855000
-[ 3404.378331] aops:btree_aops ino:1
-[ 3404.385687] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
-[ 3404.407895] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
-[ 3404.425073] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
-[ 3404.442264] page dumped because: migration failure
-
-[ 3404.452928] migrating pfn c06f176 failed ret:1
-[ 3404.462809] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
-[ 3404.481948] memcg:ffff88842e855000
-[ 3404.489511] aops:btree_aops ino:1
-[ 3404.496899] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
-[ 3404.519128] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
-[ 3404.536332] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
-[ 3404.553534] page dumped because: migration failure
-
-[ 3404.564200] migrating pfn c06f176 failed ret:1
-[ 3404.574077] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
-[ 3404.593208] memcg:ffff88842e855000
-[ 3404.600769] aops:btree_aops ino:1
-[ 3404.608138] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
-[ 3404.630355] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
-[ 3404.647558] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
-[ 3404.664761] page dumped because: migration failure
+David
 
