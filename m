@@ -4,80 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2394D116F3
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 07:30:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8741CD1266D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 07:31:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9754C6B000E; Wed,  3 Dec 2025 02:30:23 -0500 (EST)
+	id BE9186B0005; Wed,  3 Dec 2025 02:31:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926176B0010; Wed,  3 Dec 2025 02:30:23 -0500 (EST)
+	id B99B16B0007; Wed,  3 Dec 2025 02:31:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83BF16B0011; Wed,  3 Dec 2025 02:30:23 -0500 (EST)
+	id AB0496B0011; Wed,  3 Dec 2025 02:31:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 740656B000E
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 02:30:23 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A119B1403F5
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 07:30:20 +0000 (UTC)
-X-FDA: 84177336600.09.E32FD59
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CC6F080002
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 07:30:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=OOAew4S9;
-	spf=pass (imf30.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B89F6B0005
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 02:31:31 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D5351404CA
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 07:31:27 +0000 (UTC)
+X-FDA: 84177339414.15.3C19B10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 12769180009
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 07:31:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NJnFWa4v;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764747019;
+	s=arc-20220608; t=1764747085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CDRU707d2INpmwpTAfBR2VrUuDWM3CQSFKF4zJkZLpc=;
-	b=AUgcbcK23E+SzAiJGtAXzshzaVmZzdGPMS5TonDp75M+/XXCARUClqtL/PvzTlqq7IB7gT
-	rF8TMHS3Vgi4z5nx/QJN164e7C0VYaI0WR25LFGRF41W/FxSdbl3MMaiKB85rXV9ERcbuX
-	pQILZkQmP7DBgIlNPingUcFLBSJhoa0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764747019; a=rsa-sha256;
-	cv=none;
-	b=FZD5Z65Uz3xMhOVM6DdlVfS5ebawvurg4k59MA2UMxTJWANWzCwWTN+p1w1vWs67MfLNtl
-	WWi2GVLifIIFb05zodPjWzgS2aN2MgHtYtWhYJwG4cIET4xM1FnROdtOcOy8SIzyf3rPhX
-	xkNGLNwXoZdZiZoZoZwVju2ojWDIadU=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cLiTXIy1EK09AFrARgD1ELJ1CUAENnUntSSvkMAdFoA=;
+	b=wh0KtNsNXYBzHi2r4fMYGO7ZtnQzp2Om0rUCFRTU6gsZlq3uDHCmN0BQc7No0TNL7VE4eZ
+	xY0uNxwIog7L402rSCX43uL8y5tavJS7sAmRKR+kgD9xplZHYNbV3rbrxjgL426jCfh+do
+	qbC033rj7K6V5SwPqC6e54AsAz62RK8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=OOAew4S9;
-	spf=pass (imf30.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1764747016; x=1765006216;
-	bh=CDRU707d2INpmwpTAfBR2VrUuDWM3CQSFKF4zJkZLpc=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=OOAew4S9QEHV8Cdmz22rEdkYi6SFNVv93POgRaL6Xe8I3qWoNThzBhj2VGF+PzAtj
-	 h383Dv2Zp0lnXpfCoZRGvAArwv+8JCkFemWkbq6yWDlm7KSnhG6h/DFxCARKJmBAuX
-	 qdV1V9sx5Bz+DF5UYeANcnxuM0p10lmqkKNRmj0r4o0a0EGUsShuBne3nR+zwhjv9j
-	 1H/96A27lFI5H/k+KZvF9yfKzB6MLZ6qXaHl7OaDCzp3zHUEJk6/+nrN1FIRXoIqTV
-	 dVdJA1vv1hUs73U69CaY4RRGY7MlpyFGIu4iS6HWAOmDHko9yUzGvaxDKmztJ/wAiT
-	 MpRbBJZP7ld1w==
-Date: Wed, 03 Dec 2025 07:30:10 +0000
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Cc: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, linux-mm@kvack.org, syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/kasan: Fix incorrect unpoisoning in vrealloc for KASAN
-Message-ID: <wkcpaobuckopokvqfyb37ugox24bpcyzl6pztaz42s6byzf4pg@z4ndbjoxbjq7>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 4c6696efba181766eb8a1fc4beeaf0a6b1777034
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NJnFWa4v;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764747085; a=rsa-sha256;
+	cv=none;
+	b=GmYyCQZyxZvoM5bE5Qt7fnwLSCVxFmrYm7kUTwBKDjQ5Jb6y7b+sA2VpSfMXv/tsXUuprw
+	aQIjBwRwx6VF0BGiA5TT3GNfDVrB4pyR0N2Q2pg6555j7+hvX+pxqO9marxm7zKGPoX88K
+	FC6xumQxHB22iyLxemv61zbmzY12wD0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764747085; x=1796283085;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=G1g4kTeDoN/gzH0PTtN/ZSScTjIaNIu2g7J/DD0IXaY=;
+  b=NJnFWa4vVUBPEseGk0UTx6FjUWycEWOEyrEihHei9dSe4kScG4UF8+G0
+   lv2j8YRs1gFYsObx2Z9GAGHWcYed5msWi6TqB9nCTwVgnR9UjdH7EAihg
+   svabqxnDAld0dWzLPVo89+SCo6BRA0vE5foTw2p4GwvIfVCSKQkM2jlcu
+   wu5Fe0UPXJvZBzvZxLai072L/afCjcoA5k0SlfMzIZZPnKxOR45/aYqEw
+   ytqR4Nh8P/6MCgZe9jGm8hwTmFLshuPOfp1q+TTwZROLEECbWhuQMtG1C
+   DkXkAMW9io6fcs+gzy+cFa6kZoHEjO8b+cAaAJb50oaNgsKk7gH6NF+UT
+   A==;
+X-CSE-ConnectionGUID: M0BnhL3jTmOzkq8T9jPuEA==
+X-CSE-MsgGUID: 9tN3G3QFQTyLM4hflgkqAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="77412477"
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="77412477"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 23:31:23 -0800
+X-CSE-ConnectionGUID: Dn76+ZHVQ+GaRIClVt0zcA==
+X-CSE-MsgGUID: ATwKRMtlTvaAWAynPf12WA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="217933721"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 02 Dec 2025 23:31:22 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vQhKZ-00000000Ai1-1LjY;
+	Wed, 03 Dec 2025 07:31:19 +0000
+Date: Wed, 3 Dec 2025 15:30:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Subject: error[E0560]: struct `bindings::file_operations` has no field named
+ `mmap`
+Message-ID: <202512031542.URVb8ITS-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CC6F080002
-X-Stat-Signature: uy86f9rzx54deahrky4xca19hhogo4ya
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-HE-Tag: 1764747018-412296
-X-HE-Meta: U2FsdGVkX19KKn0tDk80c1tFKt7wyVXzGvAvqPM0/LZJHP5/ALyChvC6aLFTtUpQLFgl1gS5wrW6ZvE3VYOSQkfp0vyy8IGNtFIGOjnh4VTYG4dRUnyc2faVLWfRQnMCpbfx9BR04HI4j6xOW5XXiy625BGmAfPbQNaaz6piuwfI1U/qlTfW9h77Qs9B/+23QTTxB+MO6xyRVyeZjy6a8GgU5M6Eju2FhLlOeAh9e4F2PMpp54Ub4T22+koxP6+CpDyaVblrxHnxG1gV7KC6Pl14oFrWzQCjIhAGaiLnsiuJ/DJnUEzn7ekrBmrPdIwnxHWUYVphRJcwwqpgho9gKRLEux6vAabvRELlMXO4gIwEFZv7UKOz8TfDnZQwMWZ/suIvjX43wicxlvt8VZp3Ta1P5JedKhCnCvQYIxyru3g18yMRj/dJkqzKFqHs7S6F6C1ex9B8Aoc2AYoMdronOdVNiBuzNSZ9oQneYiLFOCY1X7UhnOc5rNyHAZ0fPsf4HpduwuE9xbkGuSeOR1wwmV/cnjVc4ZtzdyMvc7MJFNRRy4oejBAKjoSXMli0nlOeH4xliB135eDJYr53PQXSt/NSxCIvppaabJKse2+QjHpbZ1P3TON8NR6SAzmejz1uYWwrwKAlyy0IfYstuSaQ3c4bx0KSb7YO4bimH8c31FYinA4+SL5KTqQOcai7kpALWmvbJi/Ri+8ToJL/xER9gSiujrGt0+UqUZej+K70Us5vKGzX68ZijsFnnCsiSYUTWn6TKl62oY2C+GYx/3Rl6MC1LRrut8dB9TltNjitEK+R5eC9M4jaj5tdya3m+eCvtLU/9nC54Yt6pqMAjSUjgfRl2p7VIEGXF4WtpDZ4RI3TZpI3y52fywWTmfb5eUZnpguSqPd+GKH7EufdOR3+a3EeOVxHde2n8y4kYTdIAKDdarYKK98inLyLdO66NoxhN2qUKXNUwiH4QCRTg2W
- xEYs4v9f
- XPSUYvYnAxn45jAXZiou+iQx9kkpfvRIu9I0q44rfVYTWR22U9M+Fl/8jq/e3yyrR5kcsv2BTujCn/WOTw7BWjfRVSBCdYXzkeEILi07m5VW6TbFYWPv3Hgy9bPKTGc/YxRO2BENvDMtNqpCYJdsIOiDGqCfy6A7OPrC6PFocj3iEueTVDlEs+sp/Oy9+6O4v70+Yq3h7wrrELt4o++3TFKfrVu7gMQWtJGB3fYDrio9w3jX6DKvmzUxqwpXhi0DLJ8Ejjt4fpUPy6sb6RLccR39Cjiee8x9KFT6tdR4Yk0gaar3arv/d/e+aCZnqKhowOiA2JCJMBOIb/FaktKgyHczC9lOhN09aIlTqqfeXE5e9O2BMMU/CWSSaqus8KfUtnU/pfw6GO2SabPBOEha5VAN2xp3phyS1eaVm
+X-Rspamd-Queue-Id: 12769180009
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 7ayi9yzt5orxorrghu7bt8ffxqoe9cak
+X-HE-Tag: 1764747084-809922
+X-HE-Meta: U2FsdGVkX19CGLofeP8touzqy3C0dLPmqr0Gi983gjwgjc5A1eEw8x2MWdYRP7JfaDcq/P299+68MA61Px8rcACVfu6gFfYZvxvyAkP6cJsIJI74w9ojT+9i4mA5KLLlGVEj8kBiBJh+xFDUre56mWQJzS7MOHOpgFdsF8/hPbjKpX/o1d044yWKJTmyzNs6NBBgXSbZ6ijAvq3v2OUGsR8zLww1jR/gFJZhduNz2jqUGhnL9Umsg3tkm4iqSo82ci4SskydlIVp5/1qDogXliGA4Yg8z0GsSKzhB+nnrE5VaEGdSq5m1UneNQ9KUhrcMMPyup3s/EfKrDB0nzmQYaIYW9/p+6K19fJea4clukHhShAtOAUhoLl+Yw5tf061+nFCKEZabXM5aPSayhiz8BYBjUqA2JCgkGUI9YGks3ygwqHs7497NQXrea7VG9VNz9MAjS4hPfRwKgCm+6N81yVZs5DuzZvfp5h+uueObIaDzpiWFPOKXbChzROL4SdEU/TZ0A0RWTUsIdPAqn4gIWPPg22TwgZr/MhZCDx+VMbzfku8aW7S70PDaA/JVtXNbM/AKwkaRrYukG5bIqNjYZIoX3oUwGXZgYkP0O6NlWbB0llJkNLarxoO+MsVGL8v5qPWtAWlhohU55wSrUd7YpBUge4kwSSSCjmeb6KIdqppi154VqFEvlR/Uny5KWddDl9Ds5uj5Pp4EzC4QHVPFJ8cJ1kHQaGbugGsRP6V/kOPBM01XpjXzWeVrY2iG4+Q187TMa/hFIgRC22K7CKQTCR3sqQbBalR1Y3bj/aOEiMrF126B3sEhyCpGZCFFhICCGSZpojskuNZaQAuwxaVikL14qbIoJq0wXoZkiqru6yW+flF/bdL4vlxMFM9BiVOsx68x1Zi5Y+IbtQQ6U7Ko0XH/j9sVbpwxKo4X+RAX+u16qPZDrx6COMbGX+8X8wCBpqPo86MUWec095nq7n
+ u9V3VZVr
+ P24hsCqosQf7AIVaYyKU/6rt2c3w8lJWNadtspAMRff8jJdO6xX/srXW9WwFdm4XWKxEdu1O3gwJ0TnLxg5hzaGow8nHCO7s2jvu4JcqbksDCialJ4AyacsqstKBgLlE9kkvOgodDPlVrvHxCMFRcQ1yYWurGFInKwgPvOXIBsVnOPNkJjFBD08vpxumuXAlW7fyMs+q6UZtmPxy9XpSz73ndcgGhx1zEg2m/1usuaSkdV+yMQJopY+za9Kwe9jSHJmeNCwNPsgT12BB7rm3zcxay9BqDCntRpDWlubywfj6+WcuC9r9t/eCoJ1x0/w+AmLbmx0+pZEwxT+uOqMX/IpYQgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,62 +107,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-12-03 at 02:05:11 +0000, Jiayuan Chen wrote:
->December 3, 2025 at 04:48, "Maciej Wieczor-Retman"
-><maciej.wieczor-retman@intel.com
->mailto:maciej.wieczor-retman@intel.com?to=3D%22Maciej%20Wieczor-Retman%22%=
-20%3Cmaciej.wieczor-retman%40intel.com%3E
->> wrote:
->>=20
->> Hi, I'm working on [1]. As Andrew pointed out to me the patches are quit=
-e
->> similar. I was wondering if you mind if the reuse_tag was an actual tag =
-value?
->> Instead of just bool toggling the usage of kasan_random_tag()?
->>=20
->> I tested the problem I'm seeing, with your patch and the tags end up bei=
-ng reset.
->> That's because the vms[area] pointers that I want to unpoison don't have=
- a tag
->> set, but generating a different random tag for each vms[] pointer crashe=
-s the
->> kernel down the line. So __kasan_unpoison_vmalloc() needs to be called o=
-n each
->> one but with the same tag.
->>=20
->> Arguably I noticed my series also just resets the tags right now, but I'=
-m
->> working to correct it at the moment. I can send a fixed version tomorrow=
-. Just
->> wanted to ask if having __kasan_unpoison_vmalloc() set an actual predefi=
-ned tag
->> is a problem from your point of view?
->>=20
->> [1] https://lore.kernel.org/all/cover.1764685296.git.m.wieczorretman@pm.=
-me/
->>=20
->
->
->Hi Maciej,
->
->It seems we're focusing on different issues, but feel free to reuse or mod=
-ify the 'reuse_tag'.
->It's intended to preserve the tag in one 'vma'.
->
->I'd also be happy to help reproduce and test your changes to ensure the is=
-sue I encountered
->isn't regressed once you send a patch based on mine.=20
->
->Thanks.
+Hi Alice,
 
-Yes, the final issues are different, just we both want to use
-__kasan_unpoison_vmalloc slightly differently.
+FYI, the error/warning still remains.
 
-Okay, then I'll rebase my patches onto your patch, restest on my end and
-resubmit my series. I'll add you to CC and reply in this thread too.
-Thanks :)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   3f9f0252130e7dd60d41be0802bf58f6471c691d
+commit: f8c78198816f04619da6eebfc5b67741bff56325 rust: miscdevice: add mmap support
+date:   7 months ago
+config: arm-randconfig-r121-20251201 (https://download.01.org/0day-ci/archive/20251203/202512031542.URVb8ITS-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project b3428bb966f1de8aa48375ffee0eba04ede133b7)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251203/202512031542.URVb8ITS-lkp@intel.com/reproduce)
 
-kind regards
-Maciej Wiecz=C3=B3r-Retman
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512031542.URVb8ITS-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+>> error[E0560]: struct `bindings::file_operations` has no field named `mmap`
+   --> rust/kernel/miscdevice.rs:338:9
+   |
+   338 |         mmap: if T::HAS_MMAP { Some(Self::mmap) } else { None },
+   |         ^^^^ `bindings::file_operations` does not have this field
+   |
+   = note: available fields are: `_address`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
