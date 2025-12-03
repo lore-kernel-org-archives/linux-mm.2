@@ -4,86 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE5FCD1CDA9
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 22:44:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36125D1CDAB
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 23:12:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E292F6B0022; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
+	id BF94B6B0023; Wed,  3 Dec 2025 18:12:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDA536B0023; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
+	id BD0A86B0024; Wed,  3 Dec 2025 18:12:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEFC06B0024; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
+	id AE64C6B0027; Wed,  3 Dec 2025 18:12:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD996B0022
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70871160779
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 22:44:57 +0000 (UTC)
-X-FDA: 84179641434.27.6380CE2
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 980096B0023
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 18:12:41 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AEEAC13BB12
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 23:12:37 +0000 (UTC)
+X-FDA: 84179711154.22.EE043BC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9A518180008
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 22:44:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=teBeR5Jm;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1BF10180010
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 23:12:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ECzRbUgV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764803556; a=rsa-sha256;
+	cv=none;
+	b=YPrfFLnDXOKpn8KmEH1tWSC2e8L2FikWKOpFsS7BqEz0tEnNIJPnTl6aX2jJsyhuEs9VQU
+	5qpDq/N5XCy4gWQLm0EH/OxnP3gXiIwuuZNGByGlAVS58utSiNvdE3IQILvmOFENEK+7us
+	ulgGTlCFH5Dj2dGY3PUIyyM2VPSLMX8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ECzRbUgV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764801895;
+	s=arc-20220608; t=1764803556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/RmJtxbeGi6mWoIUj60Iza+z4p64cnX0BW2tW7vyjyQ=;
-	b=6pjchG8mPvve0cwl4w7BPGmTzqaLx0371JD624hHVAHtodsCp6wLpOHwm59iwI+J8rsiak
-	/IOjtfCjKB1B80djODCAxaP/PcHDLL0QF/6dWV5NbE8oF4e87cMksYs8VglsqqGhSnJMkX
-	DQcx8+5WGmJ8yZMh5q6eyex9EtaueYc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=teBeR5Jm;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764801895; a=rsa-sha256;
-	cv=none;
-	b=redx+nh5ohwVtHVDDDteSAZi3bur4gEGa3xKvspLf5LNUCb0QtLL3ShU07VymRnxx/Xbrc
-	Ii/qhMFZRKX0dAXrV/giLxlviPSFrr2qzDP5oUjvjW/COvxCZWxMnD34VGtH3jSX5anAY9
-	ElzZhRCI9eGULTc9h5cxVkW+KF1cNec=
+	bh=hr3jB9Go3x/RAch40IxGQsMdKgsJJif2jT6tO/2YTTQ=;
+	b=dAg9Pjg8PzqTo8Mnr7Fc0hAsRkcSdn5anw+zYleT7K9nwix/jzRkUEfUFQByB9c/wUehi9
+	r5RltKG6kkTb+Wb7pVQ+UNKbDdLw3v64kV2I1k8gbHVqXdoy13RnXgYJVwKyYFDk5thYuj
+	4wSWlzpI8cV5le+dmkV5ji2YKNWPMI8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C78543B7E;
-	Wed,  3 Dec 2025 22:44:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415DAC4CEF5;
-	Wed,  3 Dec 2025 22:44:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764801894;
-	bh=4Uj9vmf5W51Hq1VXIv7uGJ3HGRMZgiH69aSNHXLBM/A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=teBeR5JmucF/aVSYNvWbrQMxjrj1aDFVSGSjka5MJN9DX0cUY+g95fXVemCkWQs4J
-	 WZX7YA1tTnhHEeqTo0FPPHuBnn9BsXt1fON1Xmf/qYeRu98AVU3ZazEGFtzaW39WX2
-	 1lw6h+xbEkpLRCsPYdKxugGHQ9rVC3K+9b9NQOW8=
-Date: Wed, 3 Dec 2025 14:44:53 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Feng Tang <feng.tang@linux.alibaba.com>, llvm@lists.linux.dev,
- oe-kbuild-all@lists.linux.dev, Linux Memory Management List
- <linux-mm@kvack.org>, Petr Mladek <pmladek@suse.com>
-Subject: Re: [linux-next:master 9966/13055] kernel/watchdog.c:74:22:
- warning: unused variable 'hardlockup_si_mask'
-Message-Id: <20251203144453.be34d189c5e6668ce2da06b3@linux-foundation.org>
-In-Reply-To: <202512030920.NFKtekA7-lkp@intel.com>
-References: <202512030920.NFKtekA7-lkp@intel.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id C2F8E4197C;
+	Wed,  3 Dec 2025 23:12:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902DBC4CEF5;
+	Wed,  3 Dec 2025 23:12:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764803554;
+	bh=ZPhrI7MQmYmzyNZKm22NDPTdDlwCRn0ToFC4Np+3dp8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ECzRbUgVFXorY0hMDmTNqLr5IhX4IhFOBUqyTHrrZfjh2reDMkbKUjcYvDC2pyaqI
+	 uKSGmkeqyC/a7wDkblFIVtyLEdS27sug4U8ux09jwZTHCYCNmtbxnpE3DVv7q2LDi6
+	 B77fX3Io8g2a3BUlYVzNFTy1S1FHA/d8xXXNJdOqjJn20HByJZ687QFMay7OjyJJgT
+	 xgFyK8C6Ytj/XEG36LYEoWq6QWwSEw1YC+cyXq8CdGkTgcmjNK1r+o3IUwtDb2F7C3
+	 +Gj57ItT49/fVfUd2NST/8ny+9JMNohAlT6MxME8vdNk8sUcvYFsZSr1OuY4Skry/G
+	 7g7EmfZDRiP9g==
+Date: Wed, 3 Dec 2025 15:12:34 -0800
+From: Kees Cook <kees@kernel.org>
+To: Joe Perches <joe@perches.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Lameter <cl@linux.com>, Marco Elver <elver@google.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v5 3/4] checkpatch: Suggest kmalloc_obj family for sizeof
+ allocations
+Message-ID: <202512031511.ACA8A5DB0@keescook>
+References: <20251122014258.do.018-kees@kernel.org>
+ <20251122014304.3417954-3-kees@kernel.org>
+ <f1d2bb84df85237f23ebf6e0f3dfecfd72d615b6.camel@perches.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f1d2bb84df85237f23ebf6e0f3dfecfd72d615b6.camel@perches.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1BF10180010
+X-Stat-Signature: ckkgk3xhm5af8u7oda93ahx67z3exmwc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9A518180008
-X-Rspamd-Server: rspam11
-X-Stat-Signature: bfy5amqxkh8podmbqcb1qc7rd8ghggen
-X-HE-Tag: 1764801895-760492
-X-HE-Meta: U2FsdGVkX1+bUAs3s55B1lTKWSDd1AvtQy+uiy6xV6njMYDDBoB2E9MJtR7uIQRb7Dopv2RyU4/zDgm3cZfaH9f86yr3sBY3j8wnC5w1D+F0amt3ndHqj7VZ8JbAq3qt/1ymMRpGMGZzvNiy1WDPV2wd3/HG4mvdVo+Q0G+yIivstSh1qGTEDeXXzAB61aTfsWDL77QOLC4Xtwk0ad1UQVvniHFHCX7K5A6JRlyiEIBcQBdryH8nuJD1V0luNoEbzaERTL1vY1HCpl8yPFdItu3oSu5cEI+2vBcuHixLuQqYpBq6YE4+kfe3lgSBOs2ak/03ug13vr4qfKCOvra2Uqy84w4bwfhXhVFHNCdHDxsbi1YZAYrOoQIsJbmOuEGO6Xwpn3CPG5NtmZbxbgojYqBUW9iWhqTDoV33iAYcTuMqKGdl5NVh7CMV3SNKginuSKxDBktIT8NRrq1Lu7ajw9GA2FGULiSAbn5sKPgUHCFCOYNS7M46r44Qe3RjIQG/mUCW8mmd+MNhH1q4itdrDursmYwwr/eXV0IUYiK90shFy/xQmVl8n8erhYIhEPWCYPE1uT8tZ97M6oBQ+TEwCajFBcDUDv2l/rxyFGXMs8tCtst0PMZXnUl+4CEy/+TC/P7VmG7zjkCpk7BQlkNl1gY81K0o85qYZX9mv+SNrqkt0m3xJSBMJKNko3AJMMypqjKRPsUWCqBNntJUDMiuq/TsaFNQR1+eghBE2tijviOEANr0iWra0ykFg1aSzfP7T4kE4DyR0lsE9z8hWJJrhMkxGDkUYX0ydhpt+auWABHflleTo+DDGxwc/aOd2uAunOdVvgw29CAtpc2A20M2bjZAzOd4aVWPqOkkZVZuxWiiD4xOL7dDJRZLX4aErXziVAruxiuATwNC1IOs434V6nM7GKnr538w0Z2A+BWSdWXe4N+GOu2+AOHyMKNOeFowl22ZEwCOpoc7U+rA3aj
- nR4RkN5N
- liOPh/h6FKsK5VTcw2dQIWfcR3Y9tFijwVFafJXYbZjdA/62HEbz3Wt872s40uD4wq9SMLkvvqRBCApe1luggXiVmPGfJSlKE9B9kZJPhiy+G30bUs4f6sS0g+h9K6hBkxojikyN0O3N6Swhi2uWn2X3I4h4/k+oP2innAYW/d4IPq4rm34zMyJnU/mUH+DscsFbVau1hgBYJhloMMVLkWBq3FP9D2vDvd7/XlTMJX7uU9IcbnxLeLXaoTbYz04wao+UvSOeI7s8Gk8GQr79KERtXLNB8phOQHu3qDLrkJrubyzkJYUzHSHDmhqVoT6QyJXXLIYMBSmJV+Xcz2fhB0Yg5J/jsKjTRChaaiESk8zOYnFkPYLXV3BYkhrLUjAEV2z0za/O3PHDQqlac1vsd300hBrAjdzfjyuKhBbnumgLxu7oX3EtJdqOFjTKS4Prh5c4egpJSUIkBMJ9eji4OIm4yvt25yinz4u4U13wjZo53f6rirZmEdV40XDMVa2haTcJUzqulzq6u3yvFHLHMD1YChcaJQK+jybaXm67ZGHVH36HgMCkw5/nMElik0PM/1Ovl
+X-HE-Tag: 1764803555-90154
+X-HE-Meta: U2FsdGVkX1/1ZOW7/BEFFMgWMs9ejOC4qlHk0/g+kBijkktP52iEjtoBjH+qjHY7lKtwva80ojvFx0vlrx6y5skR+7YxTaXldzx0txLbcrTeT+7AwTOx84EsFFtg2gfPyDLx7kcSoYes2XkejY45Dcgcowj2TxVH95Pkrcymd+lTmQk/zJNtY9APxCBp7Mq6/i3jWhjRh34pF5SRSM4HmAoNcXfLnsr0auw7x4Ew5R5JZ3Ac8BzsSLiOFwIRs6A/MmLKF3hlAsTFvYauyLDzGck8+KZy0aq6BekFI9CIkxytgpo/IIQU6bEES7tC8L7cammoeCzy7zsdNyn518mMHMQxGzoP9kPIqu9PB3gnaTP9ROc7giBzD4oTuNCba+6HkjTsBfNL4PBtG4hyv9GiADLodd5V/WXRYwwk1txJaGQ/lEKMuhGIiHibFsxJKPY/BhRVL/CE0ixni3MG/TGLNXjXrExfr2dpusTckysc+EYcf2H11zFEldIfExe/XETBfD6CP7ckkhQK3WQ6L6CoI9AseStLeQ5CiqaI6eqh9+ig1NaJG7UD2+mvWhhvE7tOl4sU+LVsV1YKXFUKYYFTsFkZLYYJsVjunlMD/heAVoLYHxheUe+HMecvIKgPbDndTyTXg00cwU2VHRZ8LyuMiAoSowhW+32DpkgXjDynDfTYyi5YZRJy4ZBrqTQgOncEckksc81QOWUUvWFnzhLZMoITj/EjHAT2vZq/wuyGtAHWlvXGTZYmBJPhAMZU8eQJcPP+nqf/ZZ7bRwccl9sXztwF9R9SuDmWrvpmNC6A9Olaxrqd9M+ogb36Vn7AAvbVAi5e7wg5GOAUGHboPj46XOU7YeKfNs0gqqFPM8NvSlY+plWPKMywummHgHfSND1mwlIGrzGhl+DGXXzaUbZmVYo74jXX5VlnxlrKz8+mvuwDqNLYeMNhMmSTilz3TnuRVNd4ZTGVz74h15Ooy51
+ wXi7de1p
+ MqKCnOvQFyX3E26sL5A6j2jB+D2lg/UU7WHZWNQpH0MNSn4pbDkXJx75m6v0pN/rril1nJBcAFy3GslE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,108 +123,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 3 Dec 2025 09:05:30 +0800 kernel test robot <lkp@intel.com> wrote:
-
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> head:   47b7b5e32bb7264b51b89186043e1ada4090b558
-> commit: a9af76a78760717361cccc884dc649e30db61c8b [9966/13055] watchdog: add sys_info sysctls to dump sys info on system lockup
-> config: powerpc64-randconfig-002-20251203 (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/config)
-> compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 734a912d0f025559fcf76bde9aaaeb0383c1625a)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/reproduce)
+On Fri, Nov 21, 2025 at 08:51:19PM -0800, Joe Perches wrote:
+> On Fri, 2025-11-21 at 17:42 -0800, Kees Cook wrote:
+> > To support shifting away from sized allocation towards typed
+> > allocations, suggest the kmalloc_obj family of macros when a sizeof() is
+> > present in the argument lists.
+> []
+> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> []
+> > @@ -7258,17 +7258,42 @@ sub process {
+> >  			    "Prefer $3(sizeof(*$1)...) over $3($4...)\n" . $herecurr);
+> >  		}
+> >  
+> > -# check for (kv|k)[mz]alloc with multiplies that could be kmalloc_array/kvmalloc_array/kvcalloc/kcalloc
+> > +# check for (kv|k)[mz]alloc that could be kmalloc_obj/kvmalloc_obj/kzalloc_obj/kvzalloc_obj
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202512030920.NFKtekA7-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
-> >> kernel/watchdog.c:74:22: warning: unused variable 'hardlockup_si_mask' [-Wunused-variable]
->       74 | static unsigned long hardlockup_si_mask;
->          |                      ^~~~~~~~~~~~~~~~~~
->    1 warning generated.
+> There are _way_ too many of these existing uses to suggest this change
+> in existing files so please add '&& !$file' to these tests
 
-I'm testing the appended patch but it needs checking please.
+The goal would be to also do the proposed treewide change which gets
+the vast majority of them converted.
 
-The comment for hardlockup_si_mask says
-
- * bitmask to control what kinds of system info to be printed when
- * hard lockup is detected, it could be task, memory, lock etc.
- * Refer include/linux/sys_info.h for detailed bit definition.
-
-but the variable depends on "COUNTS_HRTIMER".  The comment doesn't
-mention hrtimers and I don't see why it should.  Not sure what's going
-on here.
-
-
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: kernel/watchdog.c: fix unused var warning
-Date: Wed Dec  3 02:34:40 PM PST 2025
-
->> kernel/watchdog.c:74:22: warning: unused variable 'hardlockup_si_mask' [-Wunused-variable]
-      74 | static unsigned long hardlockup_si_mask;
-         |                      ^~~~~~~~~~~~~~~~~~
-   1 warning generated.
-
-Fixes: a9af76a78760 ("watchdog: add sys_info sysctls to dump sys info on system lockup")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512030920.NFKtekA7-lkp@intel.com/
-Link: https://lkml.kernel.org/r/202512030920.NFKtekA7-lkp@intel.com
-Cc: Feng Tang <feng.tang@linux.alibaba.com>
-Cc: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/watchdog.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
-
---- a/kernel/watchdog.c~kernel-watchdogc-fix-unused-var-warning
-+++ a/kernel/watchdog.c
-@@ -66,13 +66,6 @@ int __read_mostly sysctl_hardlockup_all_
- unsigned int __read_mostly hardlockup_panic =
- 			IS_ENABLED(CONFIG_BOOTPARAM_HARDLOCKUP_PANIC);
- 
--/*
-- * bitmasks to control what kinds of system info to be printed when
-- * hard lockup is detected, it could be task, memory, lock etc.
-- * Refer include/linux/sys_info.h for detailed bit definition.
-- */
--static unsigned long hardlockup_si_mask;
--
- #ifdef CONFIG_SYSFS
- 
- static unsigned int hardlockup_count;
-@@ -135,6 +128,13 @@ __setup("nmi_watchdog=", hardlockup_pani
- 
- #if defined(CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER)
- 
-+/*
-+ * bitmask to control what kinds of system info to be printed when
-+ * hard lockup is detected, it could be task, memory, lock etc.
-+ * Refer include/linux/sys_info.h for detailed bit definition.
-+ */
-+static unsigned long hardlockup_si_mask;
-+
- static DEFINE_PER_CPU(atomic_t, hrtimer_interrupts);
- static DEFINE_PER_CPU(int, hrtimer_interrupts_saved);
- static DEFINE_PER_CPU(bool, watchdog_hardlockup_warned);
-@@ -1250,6 +1250,7 @@ static const struct ctl_table watchdog_s
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE,
- 	},
-+#if defined(CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER)
- 	{
- 		.procname	= "hardlockup_sys_info",
- 		.data		= &hardlockup_si_mask,
-@@ -1257,6 +1258,7 @@ static const struct ctl_table watchdog_s
- 		.mode		= 0644,
- 		.proc_handler	= sysctl_sys_info_handler,
- 	},
-+#endif
- #ifdef CONFIG_SMP
- 	{
- 		.procname	= "hardlockup_all_cpu_backtrace",
-_
-
+-- 
+Kees Cook
 
