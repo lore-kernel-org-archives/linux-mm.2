@@ -4,126 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67DC9D116F3
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEC93D1266D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:26:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C27B76B002E; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
+	id 598246B0005; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD7BE6B0088; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
+	id 522526B0023; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE0646B008A; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
+	id 410FD6B008A; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 974386B002E
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63FEA51870
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:07 +0000 (UTC)
-X-FDA: 84177628374.28.0742BA2
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 83D2CC0005
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=MmqUKW8w;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BCAB6B0005
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5055BA0E5
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:30 +0000 (UTC)
+X-FDA: 84177629340.15.6BB59D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0ECCC1C0009
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eb3S81AB;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764753965;
+	s=arc-20220608; t=1764753989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tah9iA7LYO4yjBk7uiNqYdwsN3RihMO5xorllOIAWP4=;
-	b=03F2D5THFH3GkRINUeGyQxmApwUIeboGgh45vjNLTEVR/84u1xPbTrrP4RuJB9lcHAP8tR
-	lki0xYJRQkcdhp2h2snT9GzoY+RoDZU0l2bkjjq1RCDnQHovz68GTnhbcWwZgn3i4F5S4g
-	5NQJ/NSzSoAPISkvDjaHVOTEtDblqo0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=MmqUKW8w;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753965; a=rsa-sha256;
+	bh=5Szuozijys6KqkvJ/UUzCoz7jStywwek0qEHV6vGMkk=;
+	b=g1WWSybOuAGdMZo5XjsyQblFYzZqNAZ8TpgvMNVVZ32ZrG27RICJUFbKuiqY+8KHbt4L9x
+	LAeJja/Qx6Lo/QsyceRyRSZgdrFmV+ngH4AU7af7ovjBs4O6Uqnpyg9obfnlTu+KKxoiGo
+	8x+308mq8qAawN4ZzNR9ZReNqUckvG8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753989; a=rsa-sha256;
 	cv=none;
-	b=p/UMsmQtrb7NjfqVvasVAm0CGX/L85pg9AVhQsXvGvPPH8nyPnp0Ho5S7nQijvXRpW5AjL
-	dpkgh+8yYQ2grqggWAd6wDs5xZy/OBLPp0MiaV4QpkCMIkDNTZfUQu5Hbkh+c4Hhlw4tos
-	T6rp0XMNa1XrjjY+8wT+5eA4Rgs9vEE=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4eddfb8c7f5so59834581cf.1
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:26:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1764753964; x=1765358764; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tah9iA7LYO4yjBk7uiNqYdwsN3RihMO5xorllOIAWP4=;
-        b=MmqUKW8wouNi8+lMVYXumdxaJ1phhYDzhntGEEVTpJW4fL6MHd/+y+AvwSgQzoA+5D
-         o7itZqOQaJKO99dsryJPqLjKOFK09Pi5xUWooKMHuqSoA2eEay5t9pfWIZrjAGBa6kIg
-         BEKkFDU411sWXAQnsWta6RKkY35ltyQhtTHVB83GOyCIfeFUvFTlAHPBCjO/oTU6/sN/
-         UHBDCswh2f/n9pBtQ5imhUJSmV9bE8JbnOsS9TbyrVSgGrVSWX/lsXJ1uJIGAw9Y7ds3
-         2gGA2Jnsu7EtF/zP67zeKO0hnMeK+wNBzx7cwyX5lYGXjgS3kSsqHYY/nji7BUO4UD65
-         Uedg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764753964; x=1765358764;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tah9iA7LYO4yjBk7uiNqYdwsN3RihMO5xorllOIAWP4=;
-        b=fXzPPgDFzq9vL4LwoGL3Y+j301XAJBJWtUI0QCW91YmGTCSgvIee4268O1UZeQdDLl
-         RuhQNSYjFm84KK2W7ZZpjwVrBsfMQkfEXOwFr/CQhOjLlEm/BUfhjA3wh9SXuAadATFc
-         3sBByzAaqsLoUj0FCPLyaLPYUH6iBosw+66NNlpsYDLdWTDe2T8/QUEBnQpI0cCBQajq
-         2CeNNaxPzULNyK1JNQP5ohNLJri4Dfpff9NdVH0GNZeyjGfRSd4opIZLnacDQoI4HhEA
-         Bq+B3AoQhr22ma9+NT4lD/ThXs+UzqlG6ndvf1dpo+40BodHQYoGQxnWPjIeRfjmmAjI
-         CxpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1mMF2FT1aQsSUSlUWH8ydcdehhJftXodEzyMsucDMvB08WSWsGD5tNzz+gy+VUX9xotXfsKJFlg==@kvack.org
-X-Gm-Message-State: AOJu0YyU4SrvXxafkMEopFBJQPjeJ7qaRMqOfx8murbKJEVfSMQjwGbF
-	eLIT9uQhrg7IJy6YNnlTzqfJ1NGNxfQGBO3bzgR40pnK8JGIt3yS7YRBoilVTnYUYbg=
-X-Gm-Gg: ASbGncu2XJPqEEq5nRtQSbt2I28rK5mj23uYfjkgfDFoXpVRgQBw9Zd0p0jhKiPpmLu
-	L5EKpRT4Vb4weKuPigV81w9jKW4IB0KtVY7WqWfu3iZjEzdsb2OTMJbBmm4tdOYOz2YTAX3adCX
-	Ni0PY8/K6F4dCHK4A27DFoSlh4Hm7u/cmJNFn9EiXBxLHbgaTwqK8ENPIzUYpHqas0RQcGdA2mh
-	JKhzVUsKsgHdgBEjjE2kWQos7RaDuvrk9Q0S1foNBHT5+RPG6CDqOckZHuWcKMFR5RSjCJs6X1U
-	mVJOjd+HtonHVizs2hxCI7cX7AiBOPyu0NQtjPt9FtFNWCH+mPfdgtUht8Ie7a84XJhNfxUu59Z
-	XMsSo6AyKl1Ftq3FYhSWXyP+gkB7CtcT+EAXQqZcsZ+DS34u7SvTYUwyypxa4OrsUH6bRoZoaSF
-	90usvYvYVxYpKz57+1uUTy2hVwmeLC+1i2azhKdht6kOYkhAMVQCHChTdBmXiePJvciBFjvA==
-X-Google-Smtp-Source: AGHT+IGCFbc47aPEF11h47uDLP1j4N+ZFov86gzUBU4eKZNiHrSyBdqxK04QEbh3fwr2eha0kQT3gg==
-X-Received: by 2002:a05:622a:190d:b0:4ed:5f45:42c0 with SMTP id d75a77b69052e-4f0176bff73mr22805341cf.62.1764753964647;
-        Wed, 03 Dec 2025 01:26:04 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd341f2absm109317821cf.17.2025.12.03.01.26.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 01:26:02 -0800 (PST)
-Date: Wed, 3 Dec 2025 04:26:01 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
-	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Oscar Salvador <OSalvador@suse.com>,
-	Juan Yescas <jyescas@google.com>
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-Message-ID: <aTACKT0b1jFM-G20@gourry-fedora-PF4VCD3F>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <aS_0bgCs2qE0y1bJ@tiehlicka>
- <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
- <aS_4E2H5aJmSvWF7@tiehlicka>
- <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
- <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
- <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
- <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
+	b=ISDL78SRMJ9jhuJ3i7XYdJSOEhPrIAcjM1/07tLx0rba4mC8nC1D2R70siWICF47YOqayZ
+	ysYnauFkqZt/et8vdHiGNpbc5Y6ICg+3drsqbs+WT0BS/1hYS9FcDWGVhXuifJi0/S3McY
+	0twYAl4su/7Ti3xR+6tR0ESZfTyBY34=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eb3S81AB;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 25EF743CB8;
+	Wed,  3 Dec 2025 09:26:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ECDC4CEFB;
+	Wed,  3 Dec 2025 09:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764753988;
+	bh=XE+UMl9ZJpLLb7Ssie0tS0fINbbRf85YKziq43ZPqIg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Eb3S81ABWFi7Ey1sqYmwEvl8GJJze+QGMljZR/U1ykkp3vMRbjs5FA62Rjg7j80BJ
+	 P3V/zYn2I17YRTPqhysBE7sf5i0imPIMNbDIVImGcGJN2DoRD2TmbBM/wrdh5X1nvt
+	 b4aZqo0Ta2CBqaCaTOzkPDc1v8THYtnVbiD+rsPVz399Ril5/a+gLDTlsDJsrU1qlf
+	 EIMEhPA4XE5Mv/Pc3C2cMOonLJCZn+83V7bodGZk4jOVACBB4Z1hEJNReUxL3FZI46
+	 WUf9MLQ2iCZI++6dEQhZUlWx6nGuy7I0YbG+BhAsnMla6EBw+ek/6xvlHkZWkt1PgE
+	 tRakWkZqyMWvA==
+Message-ID: <305328e0-3011-409c-a040-76fc478d541a@kernel.org>
+Date: Wed, 3 Dec 2025 10:26:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
-X-Rspamd-Queue-Id: 83D2CC0005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm, hugetlb: implement movable_gigantic_pages sysctl
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: kernel-team@meta.com, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, osalvador@suse.de, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+ muchun.song@linux.dev, Mel Gorman <mgorman@suse.de>,
+ Alexandru Moise <00moses.alexander00@gmail.com>,
+ David Rientjes <rientjes@google.com>
+References: <20251203063836.187016-1-gourry@gourry.net>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251203063836.187016-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0ECCC1C0009
+X-Stat-Signature: nijtf44g77jtexsbykakfc6jewc6f7ny
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: p4ope7y3pezgf1gnfn7hu7ozuoctaa4y
-X-HE-Tag: 1764753965-329913
-X-HE-Meta: U2FsdGVkX19A9j8MDxxy6WR9vEEOnvsi1i1aa1GZNDvzsV3NNYWjd7IyoD6YFaAZKJRIEjPxS1NM+USPWFzfXa38TE05dAMNyX98+WIqJghY4XQJegCwzVw+J0/hxD0b0FwtvuQfQ6sQRg46F9v/q5gGPp/Ju8eDAHnKh4PtvjuS1zejIGjNCWu/8/VsLxrnITHgVHf7oCxHDeL1jcoU6PdoQZwKduZqeg3/xaoSbZB8BEfcb1kmbgheXJbAaUxHnKOSKupAMFFW0MZj18vUrqbGuUwSPcN3uVdx2B1fFmhDVOxwzFi19PPW9qugYQFw8VYJOihUDU85ZvU7TQongrmrOYdvZZTj3lq8b+mrmhgt0I4SJizQP/XURGyuiQdql++2Zb2Be6J/AFg2vie+FpegSql72ungXdRftj3jxhKqFRLsCpmoijLVG6StVr/07/JzLHjh5BdYKsewNOCwbD9Gsk51F6anM0NKV9qd/Coj74pSgN6gdoNLti4Km+iPV0D9ymYEk+QSLA31GnhtnwxuqOwYUidqYr29hR0m/sy2mablsJN++QZFzuE0OACGnY6Y6NapxY07zv8jvAuKnJNJh86Yau23RTo80e/istLb3x7D4OQCDma0jebxzr9KHkPcLarWSgxT9HN8ZjOKXetdBDRGnsCqp0JUipXQQ+S7AwEkxq5wO7TNJyPlSsWrigQIyUMrWQeDaOOjXHfKRBzdvkRZsCpMY31IXg4RgbHQvtP+TzWocIfbwRu8djXIWOTapXC1GyQY8Yd3JnYso8772W6B1ev2T1+bkkxKsYNp3peePxO9DTsKxnZjXOdlNgyBOlbOYBHmP1EdCYN6nHemk4A8v+4+25EQy5khqreRkZtOOGKYjT0tIgQL9h0L2uyb/Xvcyd1mJpE4BNxYdXka3HAr85+qpELcuqFRj8G7O/PjgRiQCKrqmb5y33oE3i7hLgsquIWLFvxFYfk
- kQ70qb2H
- gZchk8p9iBj0oNdOqVejAfMPaAscOBSXRcsJOHeHzu4UFZZ7xxGhGVJJ88AURdMw5PcLbarIrLGycl8tQntzn8AYXjfxJrclOJiU9ZBaBY1P5WoLuxbvN4n8cLt6r0O0vEB3qDpLuOYxs5Oo6i1VDQ9NQFdeqM9sLDFwHl8M17X0f1UcgO4xo5NcS5xh2MItWTsyp/C0e40N6D277dM4Pe2PUk+uZN9YFSq7hMT8zMESOOatAtKvBg2HJ1wGugoK5M3NZYFuKxeHm9okNsyznpRA6YcS4WcqIeGfww+KqBfqmXn8pO1LiBvD2Sv78WUWXhcaazQYOGElFcvX1vclv1CGFbDscOJFjqoctuk/7cvOr83M874treeXJaQ==
+X-HE-Tag: 1764753988-648122
+X-HE-Meta: U2FsdGVkX194A0GUFgVb1YfkgmqiECRh7fdp1lg3+Q5lWRZwA76ZTouvqkjmkpytHJPkmhK+0BYFhhJvvbHLHrinGcq8BBQ3JwsPR/49s9tZkR4y2T7DEyddFGh1GOD9ViFoQ17kxVqQcFe22vFsmCK9ABOcr8lEW3mY41/v1KwLF8qzxCun1e0MzwLFsjjBXGxJqCFZnpj8mRFPrjbD1mddavzOTmuugDtYwFYVDu9c7nHr+3eljlC+Un3V42WJG72sLZPEiUQ7Jzfl8BDmepR6pB+ZNSkIz0VLj454GEZSDu0JJyM2ciIF11Gcaayo6T0UexQRXxj/OE+YSHkuuLMjuX2k44fa+MyBCodS1ralIHWjt6rEVEfLlP7B9EkHef1/J3t4qKIhh6D/KAnrHvIv29WB+pefzJmHBLJ/hAAhNbCOOwSzZcf12XPXFbl+EirHEzrFtdpU719q3XnUtPBVxb8QBQQeUjSXCGz/Vr3koJ4e6eh5sv/ZahCc+8aHIhEXaXWCFmF0gvwZlGJKFEOINW4iXatcD5hQYzuiFIGNq2YimBxal9lugdso9O/EYfh/EbwPwVzsdo/SyN08/Q6cyxYOjHEGGWKfy5H49Za4+3xzGx4L6XsYRQM36cMEi+TRmht4wQBb4z1rPcXUvfagMco4b9nbgNXpajjy4477hIplIgKOcNmxyi9RvmhTyEDEMRyoC0/WHs8Sf5joPV8x2Xigku5rd7ebFHENpFLGvVc6fE2OZAFdLqeX/a2VWwOMGGua1MXq1SjorNY+rwChx94MHeOT1AY/2sRmuH4/b5IjFO5iej3pUhcCKnMjK7hxhDcECJh9dkldRMQw8mooRuXlIsfzwDDh1kTgYDccstL0CRPw/H6EDbm3MFVsy+IFc90TQNlB3rYuliH8NxUs/IrJ9PQkxMxiSKQbk1vIZeAiLVFvBLhIDS85oDCV4y7NeRCgACFlbb1A9kT
+ 52gKhIqT
+ tIv30cEJmhRWPfntiW+pkUGi3ZA0GofFt8Iq3o0C3YswA2aCPr6Q4hof7gSuGeyW9hmCrARkrw/MCeJc/TvRqVJFnLGHhw7LD3EKoKqHM3XqUDve5Blp3ScBk0dcgeMJaA811yDPSHW/m4vxxo1XBaTQU/QOn7WeLLSY8DWUhKHyuIOOA4a6FeMOImuPnoUx/PP8IgtsOAm4kmsZ8SN1RJh2How/UxsyChBqocki018yyLwfuyZiOIncjIKGSJAxABRN8m39qkLbXuqms6gEAJ9fYK20XfQzWI3J2Ud/F96OMu1yVm7W67WGWzOl+NG7LCDrJLIKT11j6O+CNr/+y1amc0ergz+EW/lFupFe8HaJmqd5FQF+8/W4jcDV1oVKwCzp/ftkwfvHcHPpVvKy+4XHdDO2vjztKZvWwQQrVjuxdTzu/yR3HeF68XJS+XmAxaHZlWIMuvE9yKN4vf42poCOQqyWJUNMs/jCDCQMQ0mCyQXnYSXUTiHzvjgd8zOgmOWiVM7jmFqkWazRles/3gylYI0pGXCj1sTHNRnvSF1YEQ8sOgs+MzEakjVg6FmTLnQJ6xW74hBWLap0UdDnGI7mtsl2ObJI3P0W4L8tySO0/oRYSiqlWCVtTziJJfoxokxYiNhLrHskjLlQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,26 +99,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 04:23:20AM -0500, Gregory Price wrote:
-> What luck, I do! :D
-> And i just noticed it's the same page over and over
+On 12/3/25 07:38, Gregory Price wrote:
+> This reintroduces a concept removed by:
+> commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
 > 
-
-Should have noted: 6.13.2
-
-but it's kind of a frankenstein's 6.13.2 with stable backports, so I
-don't know what's been fixed between 6.13 and latest.  If there are
-relevant patches I can search for whether we have them.
-
-> [ 3404.119270] migrating pfn c06f176 failed ret:1
-> [ 3404.129152] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
-> [ 3404.148284] memcg:ffff88842e855000
-> [ 3404.155834] aops:btree_aops ino:1
-> [ 3404.163193] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
-> [ 3404.185408] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
-> [ 3404.202603] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
-> [ 3404.219779] page dumped because: migration failure
+> This sysctl provides flexibility between ZONE_MOVABLE use cases:
+> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
+> 2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
 > 
+> When ZONE_MOVABLE is used to make huge page allocation more reliable,
+> disallowing gigantic pages memory in this region is pointless.  If
+> hotplug is not a requirement, we can loosen the restrictions to allow
+> 1GB gigantic pages in ZONE_MOVABLE.
+> 
+> Since 1GB can be difficult to migrate / has impacts on compaction /
+> defragmentation, we don't enable this by default. Notably, 1GB pages
+> can only be migrated if another 1GB page is available - so hot-unplug
+> will fail if such a page cannot be found.
 
-~Gregory
+In light of the other discussion: will it fail or will it simplt retry 
+forever, until there is a free 1g page?
+
+> 
+> However, since there are scenarios where gigantic pages are migratable,
+> we should allow use of these on movable regions.
+> 
+> Note: Boot-time CMA is not possible for driver-managed hotplug memory,
+> as CMA requires the memory to be registered as SystemRAM at boot time.
+> Additionally, 1GB huge pages are not supported by THP.
+> 
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Alexandru Moise <00moses.alexander00@gmail.com>
+> Suggested-by: David Rientjes <rientjes@google.com>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
+> ---
+>   Documentation/admin-guide/mm/memory-hotplug.rst | 14 ++++++++++++--
+>   Documentation/admin-guide/sysctl/vm.rst         | 17 +++++++++++++++++
+>   include/linux/hugetlb.h                         |  3 ++-
+>   mm/hugetlb.c                                    |  1 -
+>   mm/hugetlb_sysctl.c                             |  9 +++++++++
+>   5 files changed, 40 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
+> index 33c886f3d198..6581558fd0d7 100644
+> --- a/Documentation/admin-guide/mm/memory-hotplug.rst
+> +++ b/Documentation/admin-guide/mm/memory-hotplug.rst
+> @@ -612,8 +612,9 @@ ZONE_MOVABLE, especially when fine-tuning zone ratios:
+>     allocations and silently create a zone imbalance, usually triggered by
+>     inflation requests from the hypervisor.
+>   
+> -- Gigantic pages are unmovable, resulting in user space consuming a
+> -  lot of unmovable memory.
+> +- Gigantic pages are unmovable when an architecture does not support
+> +  huge page migration and/or the ``movable_gigantic_pages`` sysctl is false.
+> +  See Documentation/admin-guide/sysctl/vm.rst for more info on this sysctl.
+>   
+>   - Huge pages are unmovable when an architectures does not support huge
+>     page migration, resulting in a similar issue as with gigantic pages.
+> @@ -672,6 +673,15 @@ block might fail:
+>   - Concurrent activity that operates on the same physical memory area, such as
+>     allocating gigantic pages, can result in temporary offlining failures.
+>   
+> +- When an admin sets the ``movable_gigantic_pages`` sysctl to true, gigantic
+> +  pages are allowed in ZONE_MOVABLE.  This only allows migratable gigantic
+> +  pages to be allocated; however, if there are no eligible destination gigantic
+> +  pages at offline, the offlining operation will fail.
+
+Same question here.
+
+Nothing else jumped at me, in general as discussed, as long as it is 
+opt-in behavior
+
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+
+-- 
+Cheers
+
+David
 
