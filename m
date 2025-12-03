@@ -4,121 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0270CD12D4D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 11:54:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 638FED12D4C
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 11:57:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 366266B0005; Wed,  3 Dec 2025 06:54:51 -0500 (EST)
+	id B82C86B002A; Wed,  3 Dec 2025 06:57:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33DAA6B0030; Wed,  3 Dec 2025 06:54:51 -0500 (EST)
+	id B5A436B0062; Wed,  3 Dec 2025 06:57:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2540D6B0032; Wed,  3 Dec 2025 06:54:51 -0500 (EST)
+	id A97E06B0088; Wed,  3 Dec 2025 06:57:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 11B596B0030
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:54:51 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE4D4BA70B
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:54:50 +0000 (UTC)
-X-FDA: 84178003140.01.371EA84
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 01C6AC0005
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:54:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L0dZstzd;
-	spf=pass (imf28.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 98E336B002A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:57:20 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 44E9351A5C
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:57:20 +0000 (UTC)
+X-FDA: 84178009440.06.99A6140
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 21567A0010
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:57:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764762889;
+	s=arc-20220608; t=1764763038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NVGpdLa116dIeXUvqXQFtHZRxIO330oKfcPhDgI7i4M=;
-	b=uC84WAoU69SUPvnNAzE0mos0oUwz8TyZdrjJSD0o0PWoq6eMbXGCv4KDLhpv+/csVHnuAY
-	jhrEi9slNZHupQFt66od7UYGsvq3ramOX3cDABxzm7q+bnWTQEvLS/FCJmZawgMsV6a0Bz
-	AgEMkFxCS0houUi8aVZBHeDd5DQl1DA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764762889; a=rsa-sha256;
-	cv=none;
-	b=ghOQoy6oIOftFHx2ClOzCwaWNwNclSheWhUZNdeydEFmc4lMfu0DXX8A0xfFJbYpjqYxuD
-	bd10Q9WLlbXCmn3j2gCwoMoHq80zqcpiO5BCgEhgc4KYNm8TgbDfZv2pPzEQ4eygeBEmjx
-	ctlwLIpkfoveR8VDsYxpwSG/tP8DVzQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=ecpNQdXf41snpkLyfzcnnlY/e5tlxah9I5EKanLGJto=;
+	b=kE5wuzdVb91nWkJWS1NRNPpfJSM4N5QD/UOKe8FsRMjJxlD4RjGgUDfCXpmd9vwKnupUts
+	iohNS+ylTsCZBpvjAMJbewfP871+EUZDcATkOBXCRwGtm0k3Vtq3X/VYfsYyWD95Gnzip9
+	iscg1SLrvqHOMvJAJkaakQAIL8ViloI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L0dZstzd;
-	spf=pass (imf28.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7373fba6d1so1044443766b.3
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 03:54:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764762887; x=1765367687; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NVGpdLa116dIeXUvqXQFtHZRxIO330oKfcPhDgI7i4M=;
-        b=L0dZstzd4icqb42CE9pOwmH74Rvub6Idrn6mSni7yTmgvkn+IIpJGT4fjHYOUsESwn
-         hxFW6rZF1e3VT3jSp72Xw7Jx9QohvWeb1ttr/p4NyQqQdPjkStdV7wzQ9Gusaov2fhkK
-         1zblMKLsu3SmevKvsjyNYZ9ARTvM9BNfpSPr0uZKSnovnTkBjXzaLEYgU405QlraOCbq
-         Lht8e0bCeoSIjopz6zI0gkAcyQTI0ZQ7tuuiIo/pHZkUIzWbmaRksilpPPNC/usirqA/
-         6ozPaAsibF7HJvzMbmFsc9WH3CgA9mouEszfCq2O3NA2wl/lyJOunKHY0os8GzhFTUbu
-         9iPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764762887; x=1765367687;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NVGpdLa116dIeXUvqXQFtHZRxIO330oKfcPhDgI7i4M=;
-        b=CRTrw8wDi5jUU2E2b+J/2z78OfpBetoLbrUp4p7F0UcmAvkSiGnetin5psbYvMESk9
-         oz5WtdxihcDX+3mVVcPRGCHbZZ7+R3UCYWALZ9CY5HOOu16hSHUOUnJ2J9FcNnVqJ7AB
-         pH4QTsrbUoZG6J5RMa0wRH9hQICWysq57Ear9iAwWyfJZLU6Cbj730wbYa2nukBa6Cn4
-         9aBxCnuJcMz9Px5yhCnPSL8XkWxoRnbIvmnVQC4UQDXHLavMYBxQK67aiTIdic203S3Q
-         8NJ5LkHOBg5LsDCo9K8SM07xqFQVAQVVvn1Z9zkWkD8iV1vUbGIPqDqNWsloI/CvZCtj
-         sTjg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDb2ckZSQmvgh9zaU6ytq8BJkp36KVvE62nDtGbYE7yWBwQgiafl9K/r09duBFpiCzTum8uDcI0w==@kvack.org
-X-Gm-Message-State: AOJu0Ywcqa4mK4yGw4GdRkFaBXESrz2nBnYYCupF7AnQM2KrsIyEEFUA
-	Q/7si1djg7gatQ5BrURiwV/roTxr2Hf1tU+9/wx08Lb2T68YfdIM4xy1szWYa4LWxY7zgUmf+BF
-	/63wt3u4GS4vCqelYy/asBcqoF4gbQ1V/V64s
-X-Gm-Gg: ASbGnctx74Evd2Kunejb0cL1COq1AePLvdD5P5c903wtmQ+4u0w6C67tXPxGdFZ4bdY
-	jr53oCJdmx62JRYiuiw/iq3SoqO08Fa7etdcvIHjY4axtDIOn1aRbeMysMVoSDwUff3FruHWwts
-	iESRVh00HBk7A3dlFzPSGIl+3pTPrxaeXddCNox+86zfGiAzWymTMq4xCNBK+jTOa7HXydTgAp9
-	Eqh5E8Ll5C1pBeQRr8KjaEdmdzyrTV0Uog1G/E5t7CXGn8VFT8TR+JnDam13LhLQBLd5eKZt0BT
-	ODxOnrtP/Nf8JMs7gM8fmMCX9Q==
-X-Google-Smtp-Source: AGHT+IH2ZIevbSv0QjQ6oVyG39MOtaOZy5YzaXhF18NDvi8PPny1hTtTOHiPWcnHl0Zb1JeuWL/JN3UTDxO8piGzsDU=
-X-Received: by 2002:a17:907:1c84:b0:b76:372f:78ac with SMTP id
- a640c23a62f3a-b79dc520e6emr230516666b.28.1764762887114; Wed, 03 Dec 2025
- 03:54:47 -0800 (PST)
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764763038; a=rsa-sha256;
+	cv=none;
+	b=8iKWeF5X8VDqDcbJ1Gph659idy6+NjmGmheuJMYSuNd4H3Oxf5rUV6WD0QQKGM2Bx1FQNV
+	/2YKPaScGJR8XNhtmoL2joS/30FCtf8FIr4M70rhHdrR1L5+Bvs+Gspu2EXNhCsLpt+yF7
+	o92ryryfvYpWs2DvIToFulkQ4tbLAqk=
+X-UUID: 2e8cd32ed03f11f0a38c85956e01ac42-20251203
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI
+	GTI_FG_IT, GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD
+	AMN_C_TI, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:1f63d534-3ad7-4486-b2a6-722f38e3e2ba,IP:10,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:0
+X-CID-INFO: VERSION:1.3.6,REQID:1f63d534-3ad7-4486-b2a6-722f38e3e2ba,IP:10,URL
+	:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:a9d874c,CLOUDID:0ae958454a45d2f48fefce17dc0a4c5d,BulkI
+	D:2512031957094HW49S03,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,Bulk:
+	nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
+	RE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2e8cd32ed03f11f0a38c85956e01ac42-20251203
+X-User: zhangguopeng@kylinos.cn
+Received: from localhost.localdomain [(223.70.160.239)] by mailgw.kylinos.cn
+	(envelope-from <zhangguopeng@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1478738078; Wed, 03 Dec 2025 19:57:03 +0800
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+To: tj@kernel.org,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	shuah@kernel.org,
+	roman.gushchin@linux.dev,
+	lance.yang@linux.dev,
+	shakeel.butt@linux.dev
+Cc: muchun.song@linux.dev,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>
+Subject: [PATCH v5 0/3] selftests: cgroup: Enhance robustness with polling helpers
+Date: Wed,  3 Dec 2025 19:56:28 +0800
+Message-Id: <20251203115631.947908-1-zhangguopeng@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20251127233635.4170047-1-krisman@suse.de> <f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
- <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
- <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
- <877bv6i5ts.fsf@mailhost.krisman.be> <CAGudoHFZhrNwM8bnkFUkad4x_ibZZqbax_psF7CX_SrFQprJbw@mail.gmail.com>
-In-Reply-To: <CAGudoHFZhrNwM8bnkFUkad4x_ibZZqbax_psF7CX_SrFQprJbw@mail.gmail.com>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 3 Dec 2025 12:54:34 +0100
-X-Gm-Features: AWmQ_blyrBm5pvxbkfY3lz7jMCx46GDf7UXzl5phU-F17thYs_im5ssjyIVwXKk
-Message-ID: <CAGudoHGYC=TdLfzQ0wW5NOrZh1Xy9aSHEYiMLqv_ekX5f52M7g@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
- single-threaded tasks
-To: Gabriel Krisman Bertazi <krisman@suse.de>
-Cc: Jan Kara <jack@suse.cz>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 01C6AC0005
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 21567A0010
 X-Rspam-User: 
-X-Stat-Signature: 6ibckig9ugn48mi1o6opihthjnmn7bmo
-X-HE-Tag: 1764762888-636989
-X-HE-Meta: U2FsdGVkX19mEFfnt+j5lhp4H6JkS5SIx42N1CeluXX82H2gMWWyMdWQxqPkDIJpMPAzvCnBayUaN/jBZgHnXLErdfVRTbktBbgfu+h6QevgZMM9zLIVFoGgetUL9D7Ll7+241HY5EqnVlb/SzMYLMD6daq21Z3p5Wuh2Xw+13R8uVYEMTgMVSOdocpZ5DsjwxBOjh3W8sW/Nf5Mww5VtOD6GmeIcx0LrAhvmbtLOV2Uad5cY8nvKx9EoQQ8eO9gZifZ4vUjG5sL1JEaIDlvXqOzW4YfLTL3ReIGkaQOunfhufH/y06hWhxHqECL5Lq88QeBl9KW596k/5v+5Q7+07lQNobhJxvnLY/YBJrqTKVOm4DXwUUUfu5At4T06cT36mBclhkqPm2FhXR9qJK3C+nvr6T/i9hSW61kTaIiSIdwWdjHhS8rKIjQmsxly0/rNgEMxiLZ3IQOK5TKJ95425fnZlciIqbE8Y5NlVj3vFUWV5r7h6C7wMS5ayAajmkyF2/zwZZKM+JOmcxFvA1S0TsnFOObUWRwNxUsAfrbC2Bn5J3axVMKyIwZ00XQqvHXtSBMNGyTgrktCCCVzX+40HtSDYnkKX2f+bNNRhdGdRxQux9VFmeYL+kFcYSAuLOvPDss9TKibwwhDR68licYMs91mj5LEvCA8iDNV/RXYaq5baMTPe5vkLQGEO/0SpsnJvvv2hwgR+OZc//6788Lew96hOk6ePwfQm9t6aZbrWX3310eeWJhMlRJUFvj1kI7IZQiP5hpJaILa/1JDkjeQzaQAejSx0BT/Enr072qhda5sWwseb7b6GDpqCKpmpTlrlf4L1rVNMx5e1abWV5iXbqukcT8Z3RMSzU2gTRWh8UOgXZ4Q7qFAYuqz7FlvG8MvEawrDrluLUKq3nHkqWaVURN11n+s7ANpcFMyYbmlDa3D6/7oy5UtjBo47/zFMz4kvV7DKMgurR+vuB/gyW
- ajuPJ8Ys
- o4nKHkRrFxRK9C+osmwD1tdIQjNkVZEfGeWRskjh5hoYGnocVpjkR/lIyyfJBedegfvaHd3ARPf+FeA0tBzrDhJ7Db/yJab89WPFAe088VdH3soks4LRFkfYzWd2EcY/g/cCmsawPhOldax97rNSpIrpW5d2wMSXWQgDJN4fcKNm9OR2E3JwVxvnPQMiOrneusTJN3gMpeA/X4D8+vkHfBxuwJeI+X9EajuN/A9GKSiGsw/NHR5I6HKetzVr+aAsz0jJBI2/Kejje1Cn5RAf4b+UsFB9ZdvCYVsUN1cPkb+jXoxFgmZvzSMR8y9daYV1SCONTfhQOyNa/c1d7Flk82fp7O4vgAhSL7ENsTRuPjPjd6LjANQn2Awc/is8J2aaQI62OTXCO4q9c9A2gVNepuJcuFAx/YxOepuF72bFTkOV4Fo8=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: m7r8n65c4otwdgr1qjm8zfpem36h95wi
+X-HE-Tag: 1764763036-828713
+X-HE-Meta: U2FsdGVkX18djeqxPTLrl/5u7VGh7XUgPI6jam0v8JVG9mO4FQyaBmoYBhuM412zaJiWbkY18YUHK1FKPce91ZbIR92dUL2OWQT+8LWnGVK4XhWFi7CLBoJDwlxr/x7rGiUvmmGzvY4NPNh4WXbuG/SW99W4miJTPDTuG02J2AXoJY2xv5dToh5G8r9Uzzh4vxLv8+v5B/OIiFDeZT+RNglwjrGEyAWgQeishPuyLoQqOZ0q+I2s718cEUDqpab5hQELXkySzsWhiizYq7hpE34pRmiNnoH3LMDj5e5YPra7vuFv9Zc42gQ9pkfh9dlqnmvhwwMgFPeYcY+tMvotrCs+tWpNSmkU/zZH65YcgfQZTvTShka1H06HYQaEanQ7u6U7Ylras+yLu//WyluGZscaSOHCUQAxfueAarU0j1uAuMlCc5oN1Jx0tiGSvd8uxAghBN1ysizHwV+t6JAuuTSVZpD7GDKC2zGIHcON9wmoojfsZMEpUXXfI9Uf+uxfVQV2AZn330Um1ckKpzdkZ7uB5ymw3s70ygoBhtnyjN23U7otQHubx+Y9IFu7rgv+NCeYgGLMwqV7uUA5dPlohDz423r88BXXC2UNiiDYZMFLlQkoaaeAu87QDqpFq1RazFW9wTxcfdjMcYV3byZDRU+EsHQSaFHt4PSvsIJ03oaon+kJ2L3nyp+KO7y2MVvs/7tD6yPqWS+bFLUX7TPmzHYIamJL+/YuN34gdsI/jdoakD5INTmyWevuxiluRPV7S7umpig5ogLC+plHORSYX8i6N3LHZ04wG6gRN6pVWTYM1pPJVL2vIDgqBh4xRrjhHExVemDcpN+Mfoo85pQB9p0pyk0TI8YOGJ+0tcnsx2Y0xoJJEcd9t9jBEhbQCJaUbqH2oBLXHL2i8CS5g8vbgO3S/p1XHmSqg7FmxOH4c8/ri6wK59bAl3n1ltUAxcGVUQuAfE62Z9ZvjsLmsFE
+ gMILSVfT
+ F+pyukxTtO0mNHCElnzSdd4l5fT5O/0KI6eRja22SCq766V/O21yXvmtIyCJXIIEC8YxKx4ULN78CkNJwOeYgzwhb/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,158 +115,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 3, 2025 at 12:02=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com> w=
-rote:
->
-> On Mon, Dec 1, 2025 at 4:23=E2=80=AFPM Gabriel Krisman Bertazi <krisman@s=
-use.de> wrote:
-> >
-> > Mateusz Guzik <mjguzik@gmail.com> writes:
-> > > The major claims (by me anyway) are:
-> > > 1. single-threaded operation for fork + exec suffers avoidable
-> > > overhead even without the rss counter problem, which are tractable
-> > > with the same kind of thing which would sort out the multi-threaded
-> > > problem
-> >
-> > Agreed, there are more issues in the fork/exec path than just the
-> > rss_stat.  The rss_stat performance is particularly relevant to us,
-> > though, because it is a clear regression for single-threaded introduced
-> > in 6.2.
-> >
-> > I took the time to test the slab constructor approach with the
-> > /sbin/true microbenchmark.  I've seen only 2% gain on that tight loop i=
-n
-> > the 80c machine, which, granted, is an artificial benchmark, but still =
-a
-> > good stressor of the single-threaded case.  With this patchset, I
-> > reported 6% improvement, getting it close to the performance before the
-> > pcpu rss_stats introduction. This is expected, as avoiding the pcpu
-> > allocation and initialization all together for the single-threaded case=
-,
-> > where it is not necessary, will always be better than speeding up the
-> > allocation (even though that a worthwhile effort itself, as Mathieu
-> > pointed out)
->
-> I'm fine with the benchmark method, but it was used on a kernel which
-> remains gimped by the avoidably slow walk in check_mm which I already
-> talked about.
->
-> Per my prior commentary and can be patched up to only do the walk once
-> instead of 4 times, and without taking locks.
->
-> But that's still more work than nothing and let's say that's still too
-> slow. 2 ideas were proposed how to avoid the walk altogether: I
-> proposed expanding the tlb bitmap and Mathieu went with the cid
-> machinery. Either way the walk over all CPUs is not there.
->
+Hi all,
 
-So I got another idea and it boils down to coalescing cid init with
-rss checks on exit.
+This patch series introduces improvements to the cgroup selftests by adding
+a helper function to better handle asynchronous updates in cgroup statistics.
+These changes are especially useful for managing cgroup stats like
+memory.stat and cgroup.stat, which can be affected by delays (e.g., RCU
+callbacks and asynchronous rstat flushing).
 
-I repeat that with your patchset the single-threaded case is left with
-one walk on alloc (for cid stuff) and that's where issues arise for
-machines with tons of cpus.
+Patch 1/3 adds cg_read_key_long_poll(), a generic helper to poll a numeric
+key in a cgroup file until it reaches an expected value or a retry limit is
+hit. Patches 2/3 and 3/3 convert existing tests to use this helper, making
+them more robust on busy systems.
 
-If the walk gets fixed, the same method can be used to avoid the walk
-for rss, obsoleting the patchset.
+v5:
+ - Drop the "/* 3s total */" comment from MEMCG_SOCKSTAT_WAIT_RETRIES as
+   suggested by Shakeel, so it does not become stale if the wait interval
+   changes.
+ - Elaborate in the commit message of patch 3/3 on the rationale behind the
+   8s timeout in test_kmem_dead_cgroups(), and add a comment next to
+   KMEM_DEAD_WAIT_RETRIES explaining that it is a generous upper bound
+   derived from stress testing and not tied to a specific kernel constant.
+ - Add Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev> to this series.
+ - Link to v4: https://lore.kernel.org/all/20251124123816.486164-1-zhangguopeng@kylinos.cn/
 
-So let's say it is unfixable for the time being.
+v4:
+ - Patch 1/3: Add the cg_read_key_long_poll() helper to poll cgroup keys
+   with retries and configurable intervals.
+ - Patch 2/3: Update test_memcg_sock() to use cg_read_key_long_poll() for
+   handling delayed "sock " counter updates in memory.stat.
+ - Patch 3/3: Replace the sleep-and-retry logic in test_kmem_dead_cgroups()
+   with cg_read_key_long_poll() for waiting on nr_dying_descendants.
+ - Link to v3: https://lore.kernel.org/all/p655qedqjaakrnqpytc6dltejfluxo6jrffcltfz2ivonmk6lb@bxf5xlgo4iw2/
 
-mm_init_cid stores a bunch of -1 per-cpu. I'm assuming this can't be change=
-d.
+v3:
+ - Move MEMCG_SOCKSTAT_WAIT_* defines after the #include block as suggested.
+ - Link to v2: https://lore.kernel.org/all/5ad2b75f-748a-4e93-8d11-63295bda0cbf@linux.dev/
 
-One can still handle allocation in ctor/dtor and make it an invariant
-that the state present is ready to use, so in particular mm_init_cid
-was already issued on it.
+v2:
+ - Clarify the rationale for the 3s timeout and mention the periodic rstat
+   flush interval (FLUSH_TIME = 2 * HZ) in the comment.
+ - Replace hardcoded retry count and wait interval with macros to avoid
+   magic numbers and make the timeout calculation explicit.
+ - Link to v1: https://lore.kernel.org/all/20251119122758.85610-1-ioworker0@gmail.com/
 
-Then it is on the exit side to clean it up and this is where the walk
-checks rss state *and* reinits cid in one loop.
+Thanks to Michal Koutný for the suggestion, and to Lance Yang and Shakeel Butt for their reviews and feedback.
 
-Excluding the repeat lock and irq trips which don't need to be there,
-I take it almost all of the overhead is cache misses. WIth one loop
-that's sorted out.
+Guopeng Zhang (3):
+  selftests: cgroup: Add cg_read_key_long_poll() to poll a cgroup key
+    with retries
+  selftests: cgroup: make test_memcg_sock robust against delayed sock
+    stats
+  selftests: cgroup: Replace sleep with cg_read_key_long_poll() for
+    waiting on nr_dying_descendants
 
-Maybe I'm going to hack it up, but perhaps Mathieu or Harry would be
-happy to do it? (or have a better idea?)
+ .../selftests/cgroup/lib/cgroup_util.c        | 21 ++++++++++++
+ .../cgroup/lib/include/cgroup_util.h          |  5 +++
+ tools/testing/selftests/cgroup/test_kmem.c    | 33 +++++++++----------
+ .../selftests/cgroup/test_memcontrol.c        | 20 ++++++++++-
+ 4 files changed, 60 insertions(+), 19 deletions(-)
 
-> With the walk issue fixed and all allocations cached thanks ctor/dtor,
-> even the single-threaded fork/exec will be faster than it is with your
-> patch thanks to *never* reaching to the per-cpu allocator (with your
-> patch it is still going to happen for the cid stuff).
->
-> Additionally there are other locks which can be elided later with the
-> ctor/dtor pair, further improving perf.
->
-> >
-> > > 2. unfortunately there is an increasing number of multi-threaded (and
-> > > often short lived) processes (example: lld, the linker form the llvm
-> > > project; more broadly plenty of things Rust where people think
-> > > threading =3D=3D performance)
-> >
-> > I don't agree with this argument, though.  Sure, there is an increasing
-> > amount of multi-threaded applications, but this is not relevant.  The
-> > relevant argument is the amount of single-threaded workloads. One
-> > example are coreutils, which are spawned to death by scripts.  I did
-> > take the care of testing the patchset with a full distro on my
-> > day-to-day laptop and I wasn't surprised to see the vast majority of
-> > forked tasks never fork a second thread.  The ones that do are most
-> > often long-lived applications, where the cost of mm initialization is
-> > way less relevant to the overall system performance.  Another example i=
-s
-> > the fact real-world benchmarks, like kernbench, can be improved with
-> > special-casing single-threads.
-> >
->
-> I stress one more time that a full fixup for the situation as I
-> described above not only gets rid of the problem for *both* single-
-> and multi- threaded operation, but ends up with code which is faster
-> than your patchset even for the case you are patching for.
->
-> The multi-threaded stuff *is* very much relevant because it is
-> increasingly more common (see below). I did not claim that
-> single-threaded workloads don't matter.
->
-> I would not be arguing here if there was no feasible way to handle
-> both or if handling the multi-threaded case still resulted in
-> measurable overhead for single-threaded workloads.
->
-> Since you mention configure scripts, I'm intimately familiar with
-> large-scale building as a workload. While it is true that there is
-> rampant usage of shell, sed and whatnot (all of which are
-> single-threaded), things turn multi-threaded (and short-lived) very
-> quickly once you go past the gnu toolchain and/or c/c++ codebases.
->
-> For example the llvm linker is multi-threaded and short-lived. Since
-> most real programs are small, during a large scale build of different
-> programs you end up with tons of lld spawning and quitting all the
-> time.
->
-> Beyond that java, erlang, zig and others like to multi-thread as well.
->
-> Rust is an emerging ecosystem where people think adding threading
-> equals automatically better performance and where crate authors think
-> it's fine to sneak in threads (my favourite offender is the ctrlc
-> crate). And since Rust is growing in popularity you can expect the
-> kind of single-threaded tooling you see right now will turn
-> multi-threaded from under you over time.
->
-> > > The pragmatic way forward (as I see it anyway) is to fix up the
-> > > multi-threaded thing and see if trying to special case for
-> > > single-threaded case is justifiable afterwards.
-> > >
-> > > Given that the current patchset has to resort to atomics in certain
-> > > cases, there is some error-pronnes and runtime overhead associated
-> > > with it going beyond merely checking if the process is
-> > > single-threaded, which puts an additional question mark on it.
-> >
-> > I don't get why atomics would make it error-prone.  But, regarding the
-> > runtime overhead, please note the main point of this approach is that
-> > the hot path can be handled with a simple non-atomic variable write in
-> > the task context, and not the atomic operation. The later is only used
-> > for infrequent case where the counter is touched by an external task
-> > such as OOM, khugepaged, etc.
-> >
->
-> The claim is there may be a bug where something should be using the
-> atomic codepath but is not.
+-- 
+2.25.1
+
 
