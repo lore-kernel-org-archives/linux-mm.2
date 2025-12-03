@@ -4,93 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEC93D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4084AD1266D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:28:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 598246B0005; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
+	id 9E1266B0092; Wed,  3 Dec 2025 04:28:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 522526B0023; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
+	id 9B8C66B0093; Wed,  3 Dec 2025 04:28:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 410FD6B008A; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
+	id 8A73A6B0095; Wed,  3 Dec 2025 04:28:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BCAB6B0005
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:26:31 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5055BA0E5
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:30 +0000 (UTC)
-X-FDA: 84177629340.15.6BB59D7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0ECCC1C0009
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eb3S81AB;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 71EEC6B0092
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:28:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F221518F8
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:28:16 +0000 (UTC)
+X-FDA: 84177633792.17.220F3AF
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 103EB10000A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:28:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=rMc0xjqB;
+	spf=pass (imf14.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.181 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764753989;
+	s=arc-20220608; t=1764754094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Szuozijys6KqkvJ/UUzCoz7jStywwek0qEHV6vGMkk=;
-	b=g1WWSybOuAGdMZo5XjsyQblFYzZqNAZ8TpgvMNVVZ32ZrG27RICJUFbKuiqY+8KHbt4L9x
-	LAeJja/Qx6Lo/QsyceRyRSZgdrFmV+ngH4AU7af7ovjBs4O6Uqnpyg9obfnlTu+KKxoiGo
-	8x+308mq8qAawN4ZzNR9ZReNqUckvG8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753989; a=rsa-sha256;
+	bh=ns2TzdrZVTfQ2mVS+gF3kQw0VyYvREhCt2c0Yr6Y9zg=;
+	b=3586SwY49H5xiqwgjTdy86fUoDCQb0s5BfC9dhs8A/Q3ZpVZ8/jDq1pOx9bBTguql2hW6j
+	9DfU/8YjZNaD0e7/QsEOsWzkSnHs5ZxBrtcJFT9UEF37YdeV1HZcb7GmS+vXXtslk4end/
+	ucUQQUWGe+uR53TydIzMma1CKim8Ves=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764754094; a=rsa-sha256;
 	cv=none;
-	b=ISDL78SRMJ9jhuJ3i7XYdJSOEhPrIAcjM1/07tLx0rba4mC8nC1D2R70siWICF47YOqayZ
-	ysYnauFkqZt/et8vdHiGNpbc5Y6ICg+3drsqbs+WT0BS/1hYS9FcDWGVhXuifJi0/S3McY
-	0twYAl4su/7Ti3xR+6tR0ESZfTyBY34=
+	b=zdl2CqX60JqjFXyYRepRIq+Z8vqJPvETS/C/qIqPI+SCDFFN7DklGK5DhhiVJU8PpcQ+FR
+	vIYuMB2KEmiXRoWWmrjfOYOhguKqqdR2inVYZ7c+wHom4ZL6szlj18m1iaoJPQiiQv+Jq0
+	39R+H/ZdwLQ0E3OueGNWZUIHcO0tj9M=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eb3S81AB;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 25EF743CB8;
-	Wed,  3 Dec 2025 09:26:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ECDC4CEFB;
-	Wed,  3 Dec 2025 09:26:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764753988;
-	bh=XE+UMl9ZJpLLb7Ssie0tS0fINbbRf85YKziq43ZPqIg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Eb3S81ABWFi7Ey1sqYmwEvl8GJJze+QGMljZR/U1ykkp3vMRbjs5FA62Rjg7j80BJ
-	 P3V/zYn2I17YRTPqhysBE7sf5i0imPIMNbDIVImGcGJN2DoRD2TmbBM/wrdh5X1nvt
-	 b4aZqo0Ta2CBqaCaTOzkPDc1v8THYtnVbiD+rsPVz399Ril5/a+gLDTlsDJsrU1qlf
-	 EIMEhPA4XE5Mv/Pc3C2cMOonLJCZn+83V7bodGZk4jOVACBB4Z1hEJNReUxL3FZI46
-	 WUf9MLQ2iCZI++6dEQhZUlWx6nGuy7I0YbG+BhAsnMla6EBw+ek/6xvlHkZWkt1PgE
-	 tRakWkZqyMWvA==
-Message-ID: <305328e0-3011-409c-a040-76fc478d541a@kernel.org>
-Date: Wed, 3 Dec 2025 10:26:20 +0100
+	imf14.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=rMc0xjqB;
+	spf=pass (imf14.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.181 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4edaf8773c4so73522801cf.1
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:28:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1764754093; x=1765358893; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ns2TzdrZVTfQ2mVS+gF3kQw0VyYvREhCt2c0Yr6Y9zg=;
+        b=rMc0xjqBfMZkJ/4CLAqyzM+2khh5ubBqpfzhLeYbD6uCp+dGakV+t4AFLaT87ExN4X
+         qjFtGpoRv3gcos0yzQTCLvc6Gj5Ddm70kZ9KdM0ll4eYGROi52nv78o7K9g+lJzAihdR
+         R4dLmdkJVEGa5p4mvGZKSPVXzFsQklvIoc/Xs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764754093; x=1765358893;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ns2TzdrZVTfQ2mVS+gF3kQw0VyYvREhCt2c0Yr6Y9zg=;
+        b=rCidkI1L5seCc7uvQ0viEyIHh6x0g5ZvoOxLLfSUUxbmP4Cp+Mn/SCaZRhmh8psIiw
+         HOKLIv78SbyjCPsr4TpgVXb53mPbOmSDtX985imU++3v79XqzwrrBnSfG3iiGXMDe7AL
+         wyz0aj9rTk3cHn2uwj+kQyva8mQZcLpOPHELGAJyHMDzdOS4zyq/K6NNWRGAoGU/LXva
+         ZPC9SNe++rS9w/BP9DOUZtEGJraU//YRdKRVPdBJHKeYpVxlAsD+eYtjfhcNhhzCC6go
+         MLjAyV7pDdBdXiSpRln1wffIzyAwT7I1LSoA/TwR7QnVk1X08jp+QgO8CO9vQ/u9WFCX
+         QObg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXlPJrvmdpVr7Rw+aq9AJGZTezo3LiBIsE1jCI5vj/WYfr2jfN+OCJYpvp8JXkNUPe13rPpgy+ZA==@kvack.org
+X-Gm-Message-State: AOJu0YzgHN0LoDqs1cd/SjSqwzE8UcUEYB41lhvQCL5r4ZOhHLEIJDT/
+	xT3XKQ5GuQn2Z/YeKa2nRq6YTf+5BZZO0aYa4+0gGNCumfS6yaJHUK0hSmsW1wf5tLP6YNjgIo6
+	WkvrImiKMb8L7l+bfKi0YIHYpbFJHDe36kHMo4WHZEg==
+X-Gm-Gg: ASbGncsqgUVLYvHFwNSgKJHPXHFwm2vOXy/kNz2M1+g4PdvkqsqD3gzlb4t6+KOy7of
+	ndZt2i0y9EEJ8+o+Yci59onpPoM3C9tpv/u0e8LxOTfiCVSrGnraTuaNSEk6LjUi+FMjcUmzvbW
+	XzI+/fU3z9HV4kzD8MFhh1YaBqY2V9nzMRqjuxOEcMcxvQQafyApD+0FxKk5mBcfqHITgYcmVlu
+	3WqN/+2f30czumzB+4blkUHt7efj6tLktNDUQkyF8t5SZkIOYK8f2C6a7kWW3yHxk6vOhQ=
+X-Google-Smtp-Source: AGHT+IGH4y6G7l0uWAM7MVs0ZUDjiX64KDLpg17aJDNSM/roeQAWJbNS+KY5jVjRbd5lpner64LysoyLNATeT3izA2o=
+X-Received: by 2002:ac8:7e86:0:b0:4ee:1dd0:5a4f with SMTP id
+ d75a77b69052e-4f0176da1c4mr19930841cf.61.1764754092958; Wed, 03 Dec 2025
+ 01:28:12 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm, hugetlb: implement movable_gigantic_pages sysctl
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: kernel-team@meta.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, osalvador@suse.de, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
- muchun.song@linux.dev, Mel Gorman <mgorman@suse.de>,
- Alexandru Moise <00moses.alexander00@gmail.com>,
- David Rientjes <rientjes@google.com>
-References: <20251203063836.187016-1-gourry@gourry.net>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251203063836.187016-1-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251120184211.2379439-1-joannelkoong@gmail.com>
+ <20251120184211.2379439-3-joannelkoong@gmail.com> <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
+ <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
+ <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org> <CAJnrk1aJeNmQLd99PuzWVp8EycBBNBf1NZEE+sM6BY_gS64DCw@mail.gmail.com>
+ <504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org> <CAJnrk1a1XsA9u1W-b4GLcyFXvZP41z7kWbJsdnEh7khcoco==A@mail.gmail.com>
+In-Reply-To: <CAJnrk1a1XsA9u1W-b4GLcyFXvZP41z7kWbJsdnEh7khcoco==A@mail.gmail.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Wed, 3 Dec 2025 10:28:01 +0100
+X-Gm-Features: AWmQ_blcA_e4kaMi5shA7dS-lb9KIG0yD8t2lL60ZmfQjrXgcrRpZu3lHj-XY4c
+Message-ID: <CAJfpegv7_UyTht-W9pimE-G6tZQ0nKU6fYo1K2hcoNSHYC3tpw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
+ hang in wait_sb_inodes()
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	shakeel.butt@linux.dev, athul.krishna.kr@protonmail.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0ECCC1C0009
-X-Stat-Signature: nijtf44g77jtexsbykakfc6jewc6f7ny
+X-Rspamd-Queue-Id: 103EB10000A
+X-Stat-Signature: mjadfhu71467j8x3hk89n5sayngd3o43
 X-Rspam-User: 
-X-HE-Tag: 1764753988-648122
-X-HE-Meta: U2FsdGVkX194A0GUFgVb1YfkgmqiECRh7fdp1lg3+Q5lWRZwA76ZTouvqkjmkpytHJPkmhK+0BYFhhJvvbHLHrinGcq8BBQ3JwsPR/49s9tZkR4y2T7DEyddFGh1GOD9ViFoQ17kxVqQcFe22vFsmCK9ABOcr8lEW3mY41/v1KwLF8qzxCun1e0MzwLFsjjBXGxJqCFZnpj8mRFPrjbD1mddavzOTmuugDtYwFYVDu9c7nHr+3eljlC+Un3V42WJG72sLZPEiUQ7Jzfl8BDmepR6pB+ZNSkIz0VLj454GEZSDu0JJyM2ciIF11Gcaayo6T0UexQRXxj/OE+YSHkuuLMjuX2k44fa+MyBCodS1ralIHWjt6rEVEfLlP7B9EkHef1/J3t4qKIhh6D/KAnrHvIv29WB+pefzJmHBLJ/hAAhNbCOOwSzZcf12XPXFbl+EirHEzrFtdpU719q3XnUtPBVxb8QBQQeUjSXCGz/Vr3koJ4e6eh5sv/ZahCc+8aHIhEXaXWCFmF0gvwZlGJKFEOINW4iXatcD5hQYzuiFIGNq2YimBxal9lugdso9O/EYfh/EbwPwVzsdo/SyN08/Q6cyxYOjHEGGWKfy5H49Za4+3xzGx4L6XsYRQM36cMEi+TRmht4wQBb4z1rPcXUvfagMco4b9nbgNXpajjy4477hIplIgKOcNmxyi9RvmhTyEDEMRyoC0/WHs8Sf5joPV8x2Xigku5rd7ebFHENpFLGvVc6fE2OZAFdLqeX/a2VWwOMGGua1MXq1SjorNY+rwChx94MHeOT1AY/2sRmuH4/b5IjFO5iej3pUhcCKnMjK7hxhDcECJh9dkldRMQw8mooRuXlIsfzwDDh1kTgYDccstL0CRPw/H6EDbm3MFVsy+IFc90TQNlB3rYuliH8NxUs/IrJ9PQkxMxiSKQbk1vIZeAiLVFvBLhIDS85oDCV4y7NeRCgACFlbb1A9kT
- 52gKhIqT
- tIv30cEJmhRWPfntiW+pkUGi3ZA0GofFt8Iq3o0C3YswA2aCPr6Q4hof7gSuGeyW9hmCrARkrw/MCeJc/TvRqVJFnLGHhw7LD3EKoKqHM3XqUDve5Blp3ScBk0dcgeMJaA811yDPSHW/m4vxxo1XBaTQU/QOn7WeLLSY8DWUhKHyuIOOA4a6FeMOImuPnoUx/PP8IgtsOAm4kmsZ8SN1RJh2How/UxsyChBqocki018yyLwfuyZiOIncjIKGSJAxABRN8m39qkLbXuqms6gEAJ9fYK20XfQzWI3J2Ud/F96OMu1yVm7W67WGWzOl+NG7LCDrJLIKT11j6O+CNr/+y1amc0ergz+EW/lFupFe8HaJmqd5FQF+8/W4jcDV1oVKwCzp/ftkwfvHcHPpVvKy+4XHdDO2vjztKZvWwQQrVjuxdTzu/yR3HeF68XJS+XmAxaHZlWIMuvE9yKN4vf42poCOQqyWJUNMs/jCDCQMQ0mCyQXnYSXUTiHzvjgd8zOgmOWiVM7jmFqkWazRles/3gylYI0pGXCj1sTHNRnvSF1YEQ8sOgs+MzEakjVg6FmTLnQJ6xW74hBWLap0UdDnGI7mtsl2ObJI3P0W4L8tySO0/oRYSiqlWCVtTziJJfoxokxYiNhLrHskjLlQ=
+X-HE-Tag: 1764754093-94980
+X-HE-Meta: U2FsdGVkX1+PiJ9zps8SmprfOycfNBsGOpsXoA0McHSCnA6YCksXS+rUbp15b0OkNL4UkAME349tTUMAp6PZeZuCJ3+gXUVUXHtC1yh6knyhjHMjil2CyjCntYHPYiVNzd5p+Hr+cV9ca0PYf7dX1ABYqBKAyxSnRYqiyLYM1/Rh+oB6Tk6US6nQ2EGOG9+/oD4JlQp6b+0312TBFDaxFqT/QAM1Qg8LpDI/qMF+GBK23GNEz2NTk7dfVtB+Z5SwXIcIK01fmDFw/nNUMQ6rx4pAZQZvDGc5hAu4/TCNmg6tpLHtfPBcujEDt0g61ZdlzJJspRPxmLX73+KnXN/0ElKIpjSdY4T9vX9twAOZZfx2jDuY41JcCdGFuT703PHoygjSMP5JYZlqYNVAdPFwT2KGoFS0RwLF9Wv/M2fxaa8cmrOEwpDchiK3fg5m7Az9ITjEAtHIJJwNpLfxtbg8oDOMTbjP7/cJVnQzuHCqOcONhprj7t1tpoNfiXdOJAWh0JPRgR4Fl1bPR+E8bQpo5UC6b3M+egSIILkYAoxa7X9Hkfd+hdgIh+jEkQw0zI4D5AmgnleLawP1MhXbfnI4yWY4sR1NbzQR6xkkr7mDwLkhLyI8Zy+XNHvaKU8klH9MhwFzBMmItwjolsucUuGbpw3KSg4QlJAwTbVjw7ZtUgYsLA5ZN3ZfIMluFnu/4mHFSBBPsM4Iyksc8fYfg4dzN0KcsJKFSf/JxsGSSZ+3K3dojnRLl8Yny+0y6PwZgvnktsKS4w7CLo2N16HMZG0ktwBHGsmtEg4iCsnmsuized4sm5jhlw/syGeAFsJshWRbwSdmZeIUds+DVTSSL4sxlmKs4GLZzisZuObcdeTl8pd3R81eo4u54e/CCIOC37jXTxyVYYQIdlpdUwRVUJxTdmL4ehzXQOqssOvvXrdC+cb1tpO+zZVVy8htKYUvXIfg2FGBZJEgLh8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,84 +117,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/3/25 07:38, Gregory Price wrote:
-> This reintroduces a concept removed by:
-> commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
-> 
-> This sysctl provides flexibility between ZONE_MOVABLE use cases:
-> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
-> 2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
-> 
-> When ZONE_MOVABLE is used to make huge page allocation more reliable,
-> disallowing gigantic pages memory in this region is pointless.  If
-> hotplug is not a requirement, we can loosen the restrictions to allow
-> 1GB gigantic pages in ZONE_MOVABLE.
-> 
-> Since 1GB can be difficult to migrate / has impacts on compaction /
-> defragmentation, we don't enable this by default. Notably, 1GB pages
-> can only be migrated if another 1GB page is available - so hot-unplug
-> will fail if such a page cannot be found.
+On Wed, 26 Nov 2025 at 18:58, Joanne Koong <joannelkoong@gmail.com> wrote:
+>
+> On Wed, Nov 26, 2025 at 2:55=E2=80=AFAM David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
+> > >
+> > >> having a flag that states something like that that
+> > >> "AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC" would probable be what we would =
+want
+> > >> to add to avoid waiting for writeback with clear semantics why it is=
+ ok
+> > >> in that specific scenario.
+> > >
+> > > Having a separate AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC mapping flag
+> > > sounds reasonable to me and I agree is more clearer semantically.
+> >
+> > Good. Then it's clear that we are not waiting because writeback is
+> > shaky, but because even if it would be working, because we don't have t=
+o
+> > because there are no such guarantees.
+> >
+> > Maybe
+> >
+> > AS_NO_DATA_INTEGRITY
+> >
+> > or similar would be cleaner, I'll have to leave that to you and Miklos
+> > to decide what exactly the semantics are that fuse currently doesn't
+> > provide.
+>
+> After reading Miklos's reply, I must have misunderstood this then - my
+> understanding was that the reason we couldn't guarantee data integrity
+> in fuse was because of the temp pages design where checking the
+> writeback flag on the real folio doesn't reflect writeback state, but
+> that removing the temp pages and using the real folio now does
+> guarantee this. But it seems like it's not as simple as that and
+> there's no data integrity guarantees for other reasons.
+>
+> Changing this to AS_NO_DATA_INTEGRITY sounds good to me, if that
+> sounds good to Miklos as well. Or do you have another preference,
+> Miklos?
 
-In light of the other discussion: will it fail or will it simplt retry 
-forever, until there is a free 1g page?
+Sure, sounds good.
 
-> 
-> However, since there are scenarios where gigantic pages are migratable,
-> we should allow use of these on movable regions.
-> 
-> Note: Boot-time CMA is not possible for driver-managed hotplug memory,
-> as CMA requires the memory to be registered as SystemRAM at boot time.
-> Additionally, 1GB huge pages are not supported by THP.
-> 
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Alexandru Moise <00moses.alexander00@gmail.com>
-> Suggested-by: David Rientjes <rientjes@google.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Link: https://lore.kernel.org/all/20180201193132.Hk7vI_xaU%25akpm@linux-foundation.org/
-> ---
->   Documentation/admin-guide/mm/memory-hotplug.rst | 14 ++++++++++++--
->   Documentation/admin-guide/sysctl/vm.rst         | 17 +++++++++++++++++
->   include/linux/hugetlb.h                         |  3 ++-
->   mm/hugetlb.c                                    |  1 -
->   mm/hugetlb_sysctl.c                             |  9 +++++++++
->   5 files changed, 40 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
-> index 33c886f3d198..6581558fd0d7 100644
-> --- a/Documentation/admin-guide/mm/memory-hotplug.rst
-> +++ b/Documentation/admin-guide/mm/memory-hotplug.rst
-> @@ -612,8 +612,9 @@ ZONE_MOVABLE, especially when fine-tuning zone ratios:
->     allocations and silently create a zone imbalance, usually triggered by
->     inflation requests from the hypervisor.
->   
-> -- Gigantic pages are unmovable, resulting in user space consuming a
-> -  lot of unmovable memory.
-> +- Gigantic pages are unmovable when an architecture does not support
-> +  huge page migration and/or the ``movable_gigantic_pages`` sysctl is false.
-> +  See Documentation/admin-guide/sysctl/vm.rst for more info on this sysctl.
->   
->   - Huge pages are unmovable when an architectures does not support huge
->     page migration, resulting in a similar issue as with gigantic pages.
-> @@ -672,6 +673,15 @@ block might fail:
->   - Concurrent activity that operates on the same physical memory area, such as
->     allocating gigantic pages, can result in temporary offlining failures.
->   
-> +- When an admin sets the ``movable_gigantic_pages`` sysctl to true, gigantic
-> +  pages are allowed in ZONE_MOVABLE.  This only allows migratable gigantic
-> +  pages to be allocated; however, if there are no eligible destination gigantic
-> +  pages at offline, the offlining operation will fail.
+(Sorry about the delay, missed this.)
 
-Same question here.
-
-Nothing else jumped at me, in general as discussed, as long as it is 
-opt-in behavior
-
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
--- 
-Cheers
-
-David
+Thanks,
+Miklos
 
