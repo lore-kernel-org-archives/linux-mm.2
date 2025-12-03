@@ -4,108 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB2ECD1BDE0
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 20:59:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3506D1BDDE
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 21:02:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 216846B0024; Wed,  3 Dec 2025 15:59:18 -0500 (EST)
+	id E7AB76B000E; Wed,  3 Dec 2025 16:02:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EE7A6B0026; Wed,  3 Dec 2025 15:59:18 -0500 (EST)
+	id E51A16B0024; Wed,  3 Dec 2025 16:02:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 104BA6B0027; Wed,  3 Dec 2025 15:59:18 -0500 (EST)
+	id D67DC6B0028; Wed,  3 Dec 2025 16:02:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ECF6D6B0024
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 15:59:17 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 42736C02CB
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 20:59:15 +0000 (UTC)
-X-FDA: 84179375070.13.98FB98E
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6204F10000D
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 20:59:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qnAp8GJa;
-	spf=pass (imf14.hostedemail.com: domain of 3oKQwaQoKCPsydqqdsxuyhjrrjoh.frpolqx0-ppnydfn.ruj@flex--vannapurve.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3oKQwaQoKCPsydqqdsxuyhjrrjoh.frpolqx0-ppnydfn.ruj@flex--vannapurve.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C38316B000E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 16:02:29 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E897AC0761
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 21:02:26 +0000 (UTC)
+X-FDA: 84179383092.21.6263FEA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2694DC001E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 21:02:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KEtlbCLW;
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764795553;
+	s=arc-20220608; t=1764795744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8CuKlIZ5iIgOGG+KuOjRyhdKbJzg1JAHIwuvpJYHoyE=;
-	b=qgApfwXM49ygNzo8yzkir4UUxRxXjVve54g5AdCOI/KRclxf4yyRq4YUnZSk0VaoPtmbnV
-	oj45Y8Jgzz3JHd+BZEz0GzTzhEhcmFBf2ln0MQc8+E3WTcinHihbL0KG7OQyY3USytX+MT
-	0DJGBMYg2+34j6haK0OYsmy3fRnfOuk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764795553; a=rsa-sha256;
+	bh=wh68DuFmuCTpixNQpqPfNYRlyM5f+TpOLFbygDNv8C0=;
+	b=IzrC6RI8YcU2DlyCdCBGXotlaj8OmXOs/vjx9UpDMUfBMyPc+ZSkX6ON/CELw49l+3VT3N
+	bxtcNPla+sIq4pF5lWHZ8H6G1RBF5s34V/7cOG8jOTR4ElfitbR7f6Mwz1tbtnrGwUp0KV
+	ddypiMSK1vjdYAVC1YyeQnknvQ90Tqo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764795744; a=rsa-sha256;
 	cv=none;
-	b=Q3EfkUg/6qe3OaWpQXl1R9JklrwsQN/S5cjcXrYf+i8OLUVRmriTZYF1FANGu9nveczzBJ
-	CYiOey1RyhCykiot4mCVdP/szg490ownEkk967qTKKJDsV1vqCeX5Q/VX88BxETtpRWe8I
-	3fHYkhc7U7iCHoS+o4ErIhvNIixx+nI=
+	b=3FwNRk6OfnK5ConzPVdfTtszw+569eeCo9PtgmXEtQMeBr1/XTkFc8XokOHTUwSKypW61G
+	i2vRIY0Ui0CcHeqTSje+gGnvQ2pkByjnAKE6z432pV0bz4qCwMxZlXpZEBeMeRULcKAqoZ
+	e1EBqL9y1pQ8bsCxNvRnYCpC/U7x5nY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qnAp8GJa;
-	spf=pass (imf14.hostedemail.com: domain of 3oKQwaQoKCPsydqqdsxuyhjrrjoh.frpolqx0-ppnydfn.ruj@flex--vannapurve.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3oKQwaQoKCPsydqqdsxuyhjrrjoh.frpolqx0-ppnydfn.ruj@flex--vannapurve.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7be94e1a073so265552b3a.2
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 12:59:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764795552; x=1765400352; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8CuKlIZ5iIgOGG+KuOjRyhdKbJzg1JAHIwuvpJYHoyE=;
-        b=qnAp8GJacssZEV3uyT3N0dElnvAgXIWrpSHAVsPPxLL/0G5ITvw6JyEL6flejCo8Dy
-         08Qw+R6o2tRBnr/UfcsURIplK1hpyG+dJzCxlaeT8Bsx0buCHALr3KRJ8JLvC4QxOmxg
-         mpkkIEQgBQCg4z9x6Y8d4n5Wu+WgS6oHInB1WmCrvRwQ2jHWjdms4xD0rfq6d/ohVn7z
-         VKv8WAuW1V1z/aqqblRWcV3o/2wXnew5HOJMH5rC10KpZDeGTPP/sjhM+m3AEqdbWrey
-         tGxqz4gvOVeKYqlf+CdtzdzJnJQerL8yNRs3MBRAfWt6Wfv76rGvwCnGqZX48uKVO8c+
-         xkHQ==
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KEtlbCLW;
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764795743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wh68DuFmuCTpixNQpqPfNYRlyM5f+TpOLFbygDNv8C0=;
+	b=KEtlbCLWOhw+HzhyxCW63azQ4Z/VuOoyqWumm2iWnmptYElmiFVT7mCFt/WwJs2HowFfuc
+	AWJIAljDd29HoupDxF6WEKlOkRzQEB0u4FpLDD6wdiwk5Wp2I2Vt8zzgmmGVe508XCHdVV
+	xwCZ88mzL2KS9M2V51Y/wj/GjjWr/ZA=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-Vam40dSgPXW66TIUFvKoSw-1; Wed, 03 Dec 2025 16:02:22 -0500
+X-MC-Unique: Vam40dSgPXW66TIUFvKoSw-1
+X-Mimecast-MFC-AGG-ID: Vam40dSgPXW66TIUFvKoSw_1764795740
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ee04f4c632so3410601cf.3
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 13:02:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764795552; x=1765400352;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8CuKlIZ5iIgOGG+KuOjRyhdKbJzg1JAHIwuvpJYHoyE=;
-        b=MOgfH1ypRAmRaRr4QLY+JoR0MuBBlKaJHMOoxRYxixdeD27IWJRgNE7Fw1X7JsXcXN
-         tG9WLr+Ht3DQfQmjxbc0Y5Nwdbty9eLniodx8gvurnrpfl2Jj4zM+Xxrtd9PuZcPY/M7
-         uJxrW5TRzHxKqhtrYM5TY8fCl0iAfn6JlqQNVCr0rkzy9GJGBlXoBLAmC/MoApr07yRA
-         lEaIujdoAUCHpBJkokniCpukz3ISuYGz/NzrDx8m84MSZal4lukvd3p8LGc06H67sYUo
-         lXFy0dkpWql6c4u4ypXuZKE5B9Bl1SNNb8DTrqSte32nM51okHOVznEo5Aqw8MGrYMfR
-         zikg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4F6gVXMvkr7YasMs7jJL2Y/kdIphSvo8LkCFSOBAlaUwJnSPiB7AmNF+jXIG6k9jfjaABqG0aYQ==@kvack.org
-X-Gm-Message-State: AOJu0YzEvjzbwVUv50yZB5cZyTm05xWl87NsDd36j5d362twyYGDpnCo
-	sFQpDdcZXjOSYkxxiSvndG+Ye5+bIy2Klf1rMKH/fMh8rDsYZgEanLzma9ztu7ell06m8oaRWbw
-	evZ16WSfUB16uiSVU7VKUVA==
-X-Google-Smtp-Source: AGHT+IH1iQ2PjW83GYpO/CxiZCWCCZIgWQJ2kgkTIgk+amH2HIHZrxGLOOQcwZH2Zp013X1ysYLDrxgEDjNA/62e
-X-Received: from pgfw6.prod.google.com ([2002:a63:c106:0:b0:bd9:a349:94bd])
- (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:999c:b0:34f:ec81:bc3d with SMTP id adf61e73a8af0-363f5e95a0bmr5155444637.44.1764795552080;
- Wed, 03 Dec 2025 12:59:12 -0800 (PST)
-Date: Wed,  3 Dec 2025 20:59:10 +0000
-In-Reply-To: <20251203142648.trx6sslxvxr26yzd@amd.com>
-Mime-Version: 1.0
-References: <20251203142648.trx6sslxvxr26yzd@amd.com>
-X-Mailer: git-send-email 2.52.0.177.g9f829587af-goog
-Message-ID: <20251203205910.1137445-1-vannapurve@google.com>
-Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
-From: FirstName LastName <vannapurve@google.com>
-To: michael.roth@amd.com
-Cc: ackerleytng@google.com, aik@amd.com, ashish.kalra@amd.com, 
-	david@redhat.com, ira.weiny@intel.com, kvm@vger.kernel.org, 
-	liam.merwick@oracle.com, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com, 
-	seanjc@google.com, thomas.lendacky@amd.com, vannapurve@google.com, 
-	vbabka@suse.cz, yan.y.zhao@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6204F10000D
-X-Stat-Signature: 6dyrg5yqn9o3pqmu1qebbuknqu3kepfe
+        d=1e100.net; s=20230601; t=1764795740; x=1765400540;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wh68DuFmuCTpixNQpqPfNYRlyM5f+TpOLFbygDNv8C0=;
+        b=KhbmsPtsFSUqnsZ6Z/pCtV8IiBa5AJczexTX8sknmcbV/1+ESqWuuhn4dMN5iky24S
+         lxlpBJWE1ZqkDjHbd4Z2x196Bfava/+swApuQaqwH1OdCauz09QwfQPFYzSJgrm2S73M
+         EeE88slkE8/Q9xFPcuFa5qDZy5vEPn1QljydGtzqiXITd2k4pYtvg102Dp7HKaLQ5lil
+         lJ3q4iaC0eMq8w60aMTR0YaVs9alfXd15qU6KSjct9qS6EJI+wdy1pODl8z9EpjwFPis
+         tgdb+RECWeH40Fc2RZ9PjvmfGOu7akCi12F4GgelarNfREVKOb3dqg2WUvCITLtHsy3b
+         4gsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFpSSlF8zrjz46DEGlXgQxWnfpa9Wm7v3fJNXhnVjT3OymFOnlSyYiuTv/1+27sp/YwNvTDIaWMA==@kvack.org
+X-Gm-Message-State: AOJu0YwP9ihyqeO3G557Hx5Xn2QwIjaVRJwVTnOhk4E+bESVHysJdwIr
+	XRpneMt1pBfCSLcfa/tNF7OPuencO/5/u65vnc7K1NXYi41WdVDLiEck1ewRxiH5Hr2qrWa2nl6
+	XAVujt1HCiHGD6vqVl23ZB25zUqd54vnHlUCnEoGhWIiV0+oiCXd/
+X-Gm-Gg: ASbGncuWfKVC4KvwgSAkD8xnvTFPVv3MeLmFN2ftQnsyEOn/cnrScBGpPeBpUWKY9Gg
+	vTc75Koo6ABhvu4UsHY+r4qxrlgcAqitJYNDIYfQRpVsR6N3LsOHO1zCUZdiRanH5UZeNR+HOIw
+	vW97n6vWSn19MAa+zP0EVodO5JbVK8sIdjRGECWtBMTTgg61AiMG68NdUDZ9/vHRaO9clgh4pg0
+	DQRoeWl0G1IHQ792D+eCMkasRU996yeaiLAG9EnZCLvoK4NCwxEmcgGEX6WqAAMhDvSEXox/zHz
+	8yRpTm9UBOJc9ZB+iMPFoiaApdO4xwAWV9negGk8oQ5dRFY5bxIBzGo7OF15udX090+Lufi2IOT
+	JGlJnXAOicCcYxmcYMA==
+X-Received: by 2002:ac8:5916:0:b0:4ee:49b8:fb7f with SMTP id d75a77b69052e-4f01767ea57mr52095211cf.58.1764795740374;
+        Wed, 03 Dec 2025 13:02:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHTpqaTiqS+C1vNo/L4t/xM/bulVqn8SjD+/i4c5bpbIFGDFtHnpdO6/T7V6iwwIIk5Hbfq+Q==
+X-Received: by 2002:ac8:5916:0:b0:4ee:49b8:fb7f with SMTP id d75a77b69052e-4f01767ea57mr52093951cf.58.1764795739759;
+        Wed, 03 Dec 2025 13:02:19 -0800 (PST)
+Received: from ?IPV6:2601:282:1c83:9aa0::72b3? ([2601:282:1c83:9aa0::72b3])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88652b4aed6sm139789696d6.37.2025.12.03.13.02.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Dec 2025 13:02:18 -0800 (PST)
+Message-ID: <b9f49744-932e-45ed-abd3-a9dcf6458b17@redhat.com>
+Date: Wed, 3 Dec 2025 14:02:14 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 mm-new 07/16] khugepaged: introduce
+ collapse_max_ptes_none helper function
+From: Nico Pache <npache@redhat.com>
+To: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org
+Cc: david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
+ pfalcato@suse.de
+References: <20251201174627.23295-1-npache@redhat.com>
+ <20251201174627.23295-8-npache@redhat.com>
+In-Reply-To: <20251201174627.23295-8-npache@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: utWPdt8exxvv9mchk_InGTy1bRiOLxh40nHIhLyKMKo_1764795740
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-ZM
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1764795553-632411
-X-HE-Meta: U2FsdGVkX1+CDNkAuDgnFsqCo7yxsa9TjQCyutWJKKxinGlzlsm0phx8L8aIVktxjZCtEudOWzo+xteVHhy5eUDtzItaxEcn6irI3dzGjJkJz6MxM64dqxbYDjUFbXaywmzrHfH60ntxq8U7TY5Wx3oyP+nZFG86FoLSxxQnxenM3f9Vg0Ohx2jB3/0R213h9ApJ9gTqWx54GDUJZhsws43V2vEcFgJ3bpcbyCyBXBPJfncryWk9fGmqepSJHN6Kc0Jkz/YCMH0AmauJhaFuqHArWMaUYGxRBJHPRaWrJKiTs6GLR7vYwpqvIjv/q7qPJ19WwkcvIp5tlR9t2mbIbVN4fAVQKcbDKd743s6YvUXEOpVjoQK6iujTb32E0C083HFg0P3QVAROsCtDc11ow+AdlHEZ2eHXCdrpZFyPfq4paKFs5/IJCfPigxfAbnD2KmwPQuHOyYTmhsCT/iWPzyy05H5OOV7LWcNreMaC6k7BJc2TUgwMiMpWi8jo1IiuuROxxXDJQrW+d3OI5uqrK+/cEq3kFscCnuSulVfzsACB1U3yo9OT3oDR9UCH5e0xBYmqU1FNfNVQtOhpq0T9kXokzlGy9tV4VhTEvKnJxund9BFt1ebfYikg6sGCY8Sqs+U9LeUousPj9+FWNx7euP2WUc8+KdIdvMQksneH0w8499IEo8R1Hf6/jtalGLoEOkH+wMGLFt+wm66XLq7A786BmMI1X+cOryK80ZTAIjEIhd8HAdvzbkWapONnutAu1jjNKvyQB1/seGAFP281ckdSe31qQ80371gBt9PhetBw+WrrC3F8cv++A31ybN1qw3tHLnYq9t8JT6Dk50yP09K3f3myM3FQ7aaxLjb9mb8B17y6R0yeIG0+XtRRtOWolLcC1skmY4TMAZc0dwkPrC2kq0vW8obYLVLA1eePYtEhfzCTnmpLtVJIqlhjRNSPeQzl5nAf9MlMaG9JG6R
- MeQc5igB
- dwxElKgM4tTpNYZ6UeRmaqnme9yODT8QhvXXFyL6/cR3Ah4fZbTcRBM+bdyRLp/a+/9VN2UYqgV16Y5/+d7smPmwSWXxWSkcGCdB5y3SB9GRApIm7sASogm8aTpjlnrPd93LqJ8HUpc9ad+q4iH8yq8GxtwxWp1K+iFd3Y24/yNVhs5xl7HsShHuq+wdrf+S4/JVBQUY0PoMXCAvrsaQKPL5CbCo0w2/ZbYLy0V0uhH4HcBu+L6MCEAJATmHX3p03RwiBxqrjATuiGjDBgIG0Ad+jJOeDN+vi83T55os7LFamx29IiE3HsXjayl/Y5EW9gpU6wCxb1H3gCSyoW+67LPiB/J7KgSigUyGSH9we0dCwYRfy5wKYYF1n7Vv50nBVAhysyC/Pm4edNfOZnFvaS1bsEbJOCzAm8ySqo9g3iueiiWui8NL1H45lgKrs/qe9tuE58xfmpULYiNlTfFXSG/xeT3LqoGfr4poWu2Zk2AwTBrD+G3Uy0CE3XMVo7W4RuyQwbJGj8pTaXW5qQpUpK65xdifMYNzlTtrJ2lY70Tok6ThKrnsS7sTiVmJ28MMmM7xXotEgAho65Rh1jHN8eNS4Ubf43qwbONm1jRX+UEVeh8lvEIFaPNKjcbqxqOQDkoUC
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2694DC001E
+X-Stat-Signature: rcginhqx7iooak687jdq7mtmpthrg13w
+X-HE-Tag: 1764795743-15271
+X-HE-Meta: U2FsdGVkX1+FIPXKptTZ2KPbd/mh5Ipb93Pr6Q8WD8lQsAYxhDsHJQCV2n0wc4oS997tF0Eui40jy6SBAWAa025SfAXi4KSA1CjNSpvncXpZEj8yuZpYt+WRrVcywjCu4tupAx1h+zSDwJirm/kyKbkWuyKn73ec1j/BS8mcqLFgV5Cz4M7SLnvxN0AMcVI3bhEant+LC38BA+wayuOxNaIAKCcdaQJWyGqLbXDMbRs/KumLyJcc/qXlodUtOn9KDbyeGPMwfMB3VXCOTDUKWElE7NP84ZSJV1MHEXtk6EdfYCsahMj5aKn4tXrIFp2CO/okf8uk1Bzkp80m7xhI4fQMbkfRfOz0jHGYifRxXI+prXwBMfNriR/cLkflARJOeSebtPsOngX57EyWMiXefGqGMcnamJIxnYIFmozety2PIJezMWz8xMOdGninjU6bsIMZO/lqbMCaoVyRyR9YVo9ghY3aXyb5QVakrUEtP9MFZ4vxTSmNU+bsbSWWQsuk61T3lAs3cSMMCyFdzX1mpcu8N16xuS7UADSHpTxoBBih1m0j3uRE02OB7+yMIfhNGD1WJ0597OqDNQrGYD/PRz90SoLL5rLIsNBZkQjDh+SWITUmXxHO/rrivU+Kno0gHdwwqbn9F3VmphNhLiKjuGNqIK9/jKMMPMj1XCJUKCXfITSe0uCxpMNRaZvG4nxhbs5etsV+7t3WyTF+QnQUuqumGRvOvh+5LRKbtNDdOPg5eTgTRTfk9pq736xhBRfGPvZ2hgMqdvfc8PHRSrEVnSzmnn83F2U8wAZtFOoJG8X59YEL9LAlh00CoPGMPv8MRBdgPoFfTxqM2pkTH4zw2y8NdtstgqL/0Cd/qSeol34dAsduUVYp6ndV1uLMp/sGHvIr1DNLvBfJB7srvOo8N/RZLFRecbWcWvXMV7pxNRWknvck3sosa+2M91zIUhmh4ol5xszGBWOM7GUZm7n
+ /MqY0Spb
+ VGWMDhVctSoB1JKedymoLDXa4Xd6UGlU85oz9xK4N19QLF90kC1I4qgMcboeEbV8d0iDYzPieCuGMA5oh+T5QN5U5o4JtBDIfBVdypo092PS+Vpp6Ikb5BISxjzE+noaoKN+w2WHLZ1CnLYDboeg/Udr9tYmRtG+z1p1jOyad6FQ7opo3xk/Jl+x5BfsAFbYAqs97MJU1USxmoaevctX0STfbiig2zTvWBJzB89IxA7FRB96v31ST1LaUt8SHcHuA0pA9t2lr2PXHcC9v0CiauX3hdZjDal96WH4ndtrjMvDgGYXp9bIZhzqRjfHK6Oci/xG8DuMkzd1z9rvyOwyGhdPL8A1UAN+aG1XYhL7h1HoCfEQLVwkWRoUzoHRkghqUDbUEGMc/ftnCp0t04rnXmFe6awQyCCmsXzdSkRa9p6Ny6BLP5unRgOskJjW4vA3HILsxfLh0s690V/GapElCi1gpZ5hoDkKxRu4Cydu3benHul6o5vhMhwHyLnSBSnOk/l1x+8REjWABJXep6JvuQswAcVGujsFfiUTopLr0piZPsiWqqv3KXOWqwbn6xTn+c5y+0OhOn9/q14eQKbNpJvijDq0/9IZxvKcbBVbB51Z2Sv5lbfpZzMt3HAJU6J9KwidNfRNSXP4mFqn6AMuk/VYmI8IDqKHS7m0g
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,461 +148,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >
-> > > but it makes a lot more sense to make those restrictions and changes in
-> > > the context of hugepage support, rather than this series which is trying
-> > > very hard to not do hugepage enablement, but simply keep what's partially
-> > > there intact while reworking other things that have proven to be
-> > > continued impediments to both in-place conversion and hugepage
-> > > enablement.
-> > Not sure how fixing the warning in this series could impede hugepage enabling :)
-> >
-> > But if you prefer, I don't mind keeping it locally for longer.
->
-> It's the whole burden of needing to anticipate hugepage design, while it
-> is in a state of potentially massive flux just before LPC, in order to
-> make tiny incremental progress toward enabling in-place conversion,
-> which is something I think we can get upstream much sooner. Look at your
-> changelog for the change above, for instance: it has no relevance in the
-> context of this series. What do I put in its place? Bug reports about
-> my experimental tree? It's just not the right place to try to justify
-> these changes.
->
-> And most of this weirdness stems from the fact that we prematurely added
-> partial hugepage enablement to begin with. Let's not repeat these mistakes,
-> and address changes in the proper context where we know they make sense.
->
-> I considered stripping out the existing hugepage support as a pre-patch
-> to avoid leaving these uncertainties in place while we are reworking
-> things, but it felt like needless churn. But that's where I'm coming
+Hi Andrew,
 
-I think simplifying this implementation to handle populate at 4K pages is worth
-considering at this stage and we could optimize for huge page granularity
-population in future based on the need.
+The bot has reported a potential uninitialized use of a variable.
 
-e.g. 4K page based population logic will keep things simple and can be
-further simplified if we can add PAGE_ALIGNED(params.uaddr) restriction.
-Extending Sean's suggestion earlier, compile tested only.
+Can you please squash the following fixup to this commit.
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index f59c65abe3cf..224e79ab8f86 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2267,66 +2267,56 @@ struct sev_gmem_populate_args {
- 	int fw_error;
- };
- 
--static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pfn,
--				  void __user *src, int order, void *opaque)
-+static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-+				  struct page *src_page, void *opaque)
- {
- 	struct sev_gmem_populate_args *sev_populate_args = opaque;
- 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
--	int n_private = 0, ret, i;
--	int npages = (1 << order);
--	gfn_t gfn;
-+	int ret;
- 
--	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src))
-+	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
- 		return -EINVAL;
- 
--	for (gfn = gfn_start, i = 0; gfn < gfn_start + npages; gfn++, i++) {
--		struct sev_data_snp_launch_update fw_args = {0};
--		bool assigned = false;
--		int level;
--
--		ret = snp_lookup_rmpentry((u64)pfn + i, &assigned, &level);
--		if (ret || assigned) {
--			pr_debug("%s: Failed to ensure GFN 0x%llx RMP entry is initial shared state, ret: %d assigned: %d\n",
--				 __func__, gfn, ret, assigned);
--			ret = ret ? -EINVAL : -EEXIST;
--			goto err;
--		}
-+	struct sev_data_snp_launch_update fw_args = {0};
-+	bool assigned = false;
-+	int level;
- 
--		if (src) {
--			void *vaddr = kmap_local_pfn(pfn + i);
-+	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
-+	if (ret || assigned) {
-+		pr_debug("%s: Failed to ensure GFN 0x%llx RMP entry is initial shared state, ret: %d assigned: %d\n",
-+			 __func__, gfn, ret, assigned);
-+		ret = ret ? -EINVAL : -EEXIST;
-+		goto err;
-+	}
- 
--			if (copy_from_user(vaddr, src + i * PAGE_SIZE, PAGE_SIZE)) {
--				ret = -EFAULT;
--				goto err;
--			}
--			kunmap_local(vaddr);
--		}
-+	if (src_page) {
-+		void *vaddr = kmap_local_pfn(pfn);
- 
--		ret = rmp_make_private(pfn + i, gfn << PAGE_SHIFT, PG_LEVEL_4K,
--				       sev_get_asid(kvm), true);
--		if (ret)
--			goto err;
-+		memcpy(vaddr, page_address(src_page), PAGE_SIZE);
-+		kunmap_local(vaddr);
-+	}
- 
--		n_private++;
-+	ret = rmp_make_private(pfn, gfn << PAGE_SHIFT, PG_LEVEL_4K,
-+			       sev_get_asid(kvm), true);
-+	if (ret)
-+		goto err;
- 
--		fw_args.gctx_paddr = __psp_pa(sev->snp_context);
--		fw_args.address = __sme_set(pfn_to_hpa(pfn + i));
--		fw_args.page_size = PG_LEVEL_TO_RMP(PG_LEVEL_4K);
--		fw_args.page_type = sev_populate_args->type;
-+	fw_args.gctx_paddr = __psp_pa(sev->snp_context);
-+	fw_args.address = __sme_set(pfn_to_hpa(pfn));
-+	fw_args.page_size = PG_LEVEL_TO_RMP(PG_LEVEL_4K);
-+	fw_args.page_type = sev_populate_args->type;
- 
--		ret = __sev_issue_cmd(sev_populate_args->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE,
--				      &fw_args, &sev_populate_args->fw_error);
--		if (ret)
--			goto fw_err;
--	}
-+	ret = __sev_issue_cmd(sev_populate_args->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE,
-+			      &fw_args, &sev_populate_args->fw_error);
-+	if (ret)
-+		goto fw_err;
- 
- 	return 0;
- 
- fw_err:
- 	/*
- 	 * If the firmware command failed handle the reclaim and cleanup of that
--	 * PFN specially vs. prior pages which can be cleaned up below without
--	 * needing to reclaim in advance.
-+	 * PFN specially.
- 	 *
- 	 * Additionally, when invalid CPUID function entries are detected,
- 	 * firmware writes the expected values into the page and leaves it
-@@ -2336,25 +2326,18 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
- 	 * information to provide information on which CPUID leaves/fields
- 	 * failed CPUID validation.
- 	 */
--	if (!snp_page_reclaim(kvm, pfn + i) &&
-+	if (!snp_page_reclaim(kvm, pfn) &&
- 	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
- 	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
--		void *vaddr = kmap_local_pfn(pfn + i);
--
--		if (copy_to_user(src + i * PAGE_SIZE, vaddr, PAGE_SIZE))
--			pr_debug("Failed to write CPUID page back to userspace\n");
-+		void *vaddr = kmap_local_pfn(pfn);
- 
-+		memcpy(page_address(src_page), vaddr, PAGE_SIZE);
- 		kunmap_local(vaddr);
- 	}
- 
--	/* pfn + i is hypervisor-owned now, so skip below cleanup for it. */
--	n_private--;
--
- err:
--	pr_debug("%s: exiting with error ret %d (fw_error %d), restoring %d gmem PFNs to shared.\n",
--		 __func__, ret, sev_populate_args->fw_error, n_private);
--	for (i = 0; i < n_private; i++)
--		kvm_rmp_make_shared(kvm, pfn + i, PG_LEVEL_4K);
-+	pr_debug("%s: exiting with error ret %d (fw_error %d)\n",
-+		 __func__, ret, sev_populate_args->fw_error);
- 
- 	return ret;
- }
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 2d7a4d52ccfb..acdcb802d9f2 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3118,34 +3118,21 @@ struct tdx_gmem_post_populate_arg {
- };
- 
- static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--				  void __user *src, int order, void *_arg)
-+				  struct page *src_page, void *_arg)
- {
- 	struct tdx_gmem_post_populate_arg *arg = _arg;
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	u64 err, entry, level_state;
- 	gpa_t gpa = gfn_to_gpa(gfn);
--	struct page *src_page;
--	int ret, i;
-+	int ret;
- 
- 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
- 		return -EIO;
- 
--	/*
--	 * Get the source page if it has been faulted in. Return failure if the
--	 * source page has been swapped out or unmapped in primary memory.
--	 */
--	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
--	if (ret < 0)
--		return ret;
--	if (ret != 1)
--		return -ENOMEM;
--
- 	kvm_tdx->page_add_src = src_page;
- 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
- 	kvm_tdx->page_add_src = NULL;
- 
--	put_page(src_page);
--
- 	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
- 		return ret;
- 
-@@ -3156,11 +3143,9 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	 * mmu_notifier events can't reach S-EPT entries, and KVM's internal
- 	 * zapping flows are mutually exclusive with S-EPT mappings.
- 	 */
--	for (i = 0; i < PAGE_SIZE; i += TDX_EXTENDMR_CHUNKSIZE) {
--		err = tdh_mr_extend(&kvm_tdx->td, gpa + i, &entry, &level_state);
--		if (TDX_BUG_ON_2(err, TDH_MR_EXTEND, entry, level_state, kvm))
--			return -EIO;
--	}
-+	err = tdh_mr_extend(&kvm_tdx->td, gpa, &entry, &level_state);
-+	if (TDX_BUG_ON_2(err, TDH_MR_EXTEND, entry, level_state, kvm))
-+		return -EIO;
- 
- 	return 0;
- }
-@@ -3196,38 +3181,26 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
- 		return -EINVAL;
- 
- 	ret = 0;
--	while (region.nr_pages) {
--		if (signal_pending(current)) {
--			ret = -EINTR;
--			break;
--		}
--
--		arg = (struct tdx_gmem_post_populate_arg) {
--			.vcpu = vcpu,
--			.flags = cmd->flags,
--		};
--		gmem_ret = kvm_gmem_populate(kvm, gpa_to_gfn(region.gpa),
--					     u64_to_user_ptr(region.source_addr),
--					     1, tdx_gmem_post_populate, &arg);
--		if (gmem_ret < 0) {
--			ret = gmem_ret;
--			break;
--		}
-+	arg = (struct tdx_gmem_post_populate_arg) {
-+		.vcpu = vcpu,
-+		.flags = cmd->flags,
-+	};
-+	gmem_ret = kvm_gmem_populate(kvm, gpa_to_gfn(region.gpa),
-+				     u64_to_user_ptr(region.source_addr),
-+				     region.nr_pages, tdx_gmem_post_populate, &arg);
-+	if (gmem_ret < 0)
-+		ret = gmem_ret;
- 
--		if (gmem_ret != 1) {
--			ret = -EIO;
--			break;
--		}
-+	if (gmem_ret != region.nr_pages)
-+		ret = -EIO;
- 
--		region.source_addr += PAGE_SIZE;
--		region.gpa += PAGE_SIZE;
--		region.nr_pages--;
-+	if (gmem_ret >= 0) {
-+		region.source_addr += gmem_ret * PAGE_SIZE;
-+		region.gpa += gmem_ret * PAGE_SIZE;
- 
--		cond_resched();
-+		if (copy_to_user(u64_to_user_ptr(cmd->data), &region, sizeof(region)))
-+			ret = -EFAULT;
- 	}
--
--	if (copy_to_user(u64_to_user_ptr(cmd->data), &region, sizeof(region)))
--		ret = -EFAULT;
- 	return ret;
- }
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index d93f75b05ae2..263e75f90e91 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2581,7 +2581,7 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
-  * Returns the number of pages that were populated.
-  */
- typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--				    void __user *src, int order, void *opaque);
-+				    struct page *src_page, void *opaque);
- 
- long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
- 		       kvm_gmem_populate_cb post_populate, void *opaque);
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 2e62bf882aa8..550dc818748b 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -85,7 +85,6 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
- static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
- 				  gfn_t gfn, struct folio *folio)
- {
--	unsigned long nr_pages, i;
- 	pgoff_t index;
- 
- 	/*
-@@ -794,7 +793,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		return PTR_ERR(folio);
- 
- 	if (!folio_test_uptodate(folio)) {
--		clear_huge_page(&folio->page, 0, folio_nr_pages(folio));
-+		clear_highpage(folio_page(folio, 0));
- 		folio_mark_uptodate(folio);
- 	}
- 
-@@ -812,13 +811,54 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-+static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-+				struct file *file, gfn_t gfn, struct page *src_page,
-+				kvm_gmem_populate_cb post_populate, void *opaque)
-+{
-+	pgoff_t index = kvm_gmem_get_index(slot, gfn);
-+	struct gmem_inode *gi;
-+	struct folio *folio;
-+	int ret, max_order;
-+	kvm_pfn_t pfn;
-+
-+	gi = GMEM_I(file_inode(file));
-+
-+	filemap_invalidate_lock(file->f_mapping);
-+
-+	folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &max_order);
-+	if (IS_ERR(folio)) {
-+		ret = PTR_ERR(folio);
-+		goto out_unlock;
-+	}
-+
-+	folio_unlock(folio);
-+
-+	if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
-+				KVM_MEMORY_ATTRIBUTE_PRIVATE,
-+				KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+		ret = -EINVAL;
-+		goto out_put_folio;
-+	}
-+
-+	ret = post_populate(kvm, gfn, pfn, src_page, opaque);
-+	if (!ret)
-+		folio_mark_uptodate(folio);
-+
-+out_put_folio:
-+	folio_put(folio);
-+out_unlock:
-+	filemap_invalidate_unlock(file->f_mapping);
-+	return ret;
-+}
-+
- long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
- 		       kvm_gmem_populate_cb post_populate, void *opaque)
- {
-+	struct page *src_aligned_page = NULL;
- 	struct kvm_memory_slot *slot;
-+	struct page *src_page = NULL;
- 	void __user *p;
--
--	int ret = 0, max_order;
-+	int ret = 0;
- 	long i;
- 
- 	lockdep_assert_held(&kvm->slots_lock);
-@@ -834,52 +874,50 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 	if (!file)
- 		return -EFAULT;
- 
--	filemap_invalidate_lock(file->f_mapping);
-+	if (src && !PAGE_ALIGNED(src)) {
-+		src_page = alloc_page(GFP_KERNEL_ACCOUNT);
-+		if (!src_page)
-+			return -ENOMEM;
-+	}
- 
- 	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
--	for (i = 0; i < npages; i += (1 << max_order)) {
--		struct folio *folio;
--		gfn_t gfn = start_gfn + i;
--		pgoff_t index = kvm_gmem_get_index(slot, gfn);
--		kvm_pfn_t pfn;
--
-+	for (i = 0; i < npages; i++) {
- 		if (signal_pending(current)) {
- 			ret = -EINTR;
- 			break;
- 		}
- 
--		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &max_order);
--		if (IS_ERR(folio)) {
--			ret = PTR_ERR(folio);
--			break;
--		}
--
--		folio_unlock(folio);
--		WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
--			(npages - i) < (1 << max_order));
-+		p = src ? src + i * PAGE_SIZE : NULL;
- 
--		ret = -EINVAL;
--		while (!kvm_range_has_memory_attributes(kvm, gfn, gfn + (1 << max_order),
--							KVM_MEMORY_ATTRIBUTE_PRIVATE,
--							KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
--			if (!max_order)
--				goto put_folio_and_exit;
--			max_order--;
-+		if (p) {
-+			if (src_page) {
-+				if (copy_from_user(page_address(src_page), p, PAGE_SIZE)) {
-+					ret = -EFAULT;
-+					break;
-+				}
-+				src_aligned_page = src_page;
-+			} else {
-+				ret = get_user_pages((unsigned long)p, 1, 0, &src_aligned_page);
-+				if (ret < 0)
-+					break;
-+				if (ret != 1) {
-+					ret = -ENOMEM;
-+					break;
-+				}
-+			}
- 		}
- 
--		p = src ? src + i * PAGE_SIZE : NULL;
--		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
--		if (!ret)
--			folio_mark_uptodate(folio);
-+		ret = __kvm_gmem_populate(kvm, slot, file, start_gfn + i, src_aligned_page,
-+					  post_populate, opaque);
-+		if (p && !src_page)
-+			put_page(src_aligned_page);
- 
--put_folio_and_exit:
--		folio_put(folio);
- 		if (ret)
- 			break;
- 	}
- 
--	filemap_invalidate_unlock(file->f_mapping);
--
-+	if (src_page)
-+		__free_page(src_page);
- 	return ret && !i ? ret : i;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
--- 
-2.52.0.177.g9f829587af-goog
+Thank you,
+Nico
+
+----8<----
+
+From 846f79d91a25ebad76cbab3690ae315cfe3cf278 Mon Sep 17 00:00:00 2001
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 3 Dec 2025 13:42:18 -0700
+Subject: [PATCH] khugepaged: fixup unintialized _pte variable
+
+There is a potential use of an uninitialized variable after
+`khugepaged: introduce collapse_max_ptes_none helper function`
+
+Andrew can you please append this to Patch 7 of my series
+
+as reported by the kernel test robot
+>> mm/khugepaged.c:593:6: warning: variable '_pte' is used uninitialized
+whenever 'if' condition is true [-Wsometimes-uninitialized]
+593 | if (max_ptes_none == -EINVAL)
+| ^~~~~~~~~~~~~~~~~~~~~~~~
+mm/khugepaged.c:724:25: note: uninitialized use occurs here
+724 | release_pte_pages(pte, _pte, compound_pagelist);
+| ^~~~
+mm/khugepaged.c:593:2: note: remove the 'if' if its condition is always false
+593 | if (max_ptes_none == -EINVAL)
+| ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+594 | goto out;
+| ~~~~~~~~
+mm/khugepaged.c:588:13: note: initialize the variable '_pte' to silence this warning
+588 | pte_t *_pte;
+| ^
+| = NULL
+1 warning generated.
+
+Signed-off-by: Nico Pache <npache@redhat.com>
+---
+mm/khugepaged.c | 5 ++---
+1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index f425238d5d4f..7c7d04d6737e 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -585,7 +585,7 @@ static int __collapse_huge_page_isolate(struct
+vm_area_struct *vma,
+struct page *page = NULL;
+struct folio *folio = NULL;
+unsigned long addr = start_addr;
+- pte_t *_pte;
++ pte_t *_pte = pte;
+int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+const unsigned long nr_pages = 1UL << order;
+int max_ptes_none = collapse_max_ptes_none(order, !cc->is_khugepaged);
+@@ -593,8 +593,7 @@ static int __collapse_huge_page_isolate(struct
+vm_area_struct *vma,
+if (max_ptes_none == -EINVAL)
+goto out;
+- for (_pte = pte; _pte < pte + nr_pages;
+- _pte++, addr += PAGE_SIZE) {
++ for (; _pte < pte + nr_pages; _pte++, addr += PAGE_SIZE) {
+pte_t pteval = ptep_get(_pte);
+if (pte_none_or_zero(pteval)) {
+++none_or_zero;
+
+--
+2.52.0
+
+On 12/1/25 10:46 AM, Nico Pache wrote:
+> The current mechanism for determining mTHP collapse scales the
+> khugepaged_max_ptes_none value based on the target order. This
+> introduces an undesirable feedback loop, or "creep", when max_ptes_none
+> is set to a value greater than HPAGE_PMD_NR / 2.
+> 
+> With this configuration, a successful collapse to order N will populate
+> enough pages to satisfy the collapse condition on order N+1 on the next
+> scan. This leads to unnecessary work and memory churn.
+> 
+> To fix this issue introduce a helper function that will limit mTHP
+> collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
+> This effectively supports two modes:
+> 
+> - max_ptes_none=0: never introduce new none-pages for mTHP collapse.
+> - max_ptes_none=511 (on 4k pagesz): Always collapse to the highest
+>   available mTHP order.
+> 
+> This removes the possiblilty of "creep", while not modifying any uAPI
+> expectations. A warning will be emitted if any non-supported
+> max_ptes_none value is configured with mTHP enabled.
+> 
+> The limits can be ignored by passing full_scan=true, this is useful for
+> madvise_collapse (which ignores limits), or in the case of
+> collapse_scan_pmd(), allows the full PMD to be scanned when mTHP
+> collapse is available.
+> 
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> ---
+>  mm/khugepaged.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 42 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 8dab49c53128..f425238d5d4f 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -463,6 +463,44 @@ void __khugepaged_enter(struct mm_struct *mm)
+>  		wake_up_interruptible(&khugepaged_wait);
+>  }
+>  
+> +/**
+> + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for collapse
+> + * @order: The folio order being collapsed to
+> + * @full_scan: Whether this is a full scan (ignore limits)
+> + *
+> + * For madvise-triggered collapses (full_scan=true), all limits are bypassed
+> + * and allow up to HPAGE_PMD_NR - 1 empty PTEs.
+> + *
+> + * For PMD-sized collapses (order == HPAGE_PMD_ORDER), use the configured
+> + * khugepaged_max_ptes_none value.
+> + *
+> + * For mTHP collapses, we currently only support khugepaged_max_pte_none values
+> + * of 0 or (HPAGE_PMD_NR - 1). Any other value will emit a warning and no mTHP
+> + * collapse will be attempted
+> + *
+> + * Return: Maximum number of empty PTEs allowed for the collapse operation
+> + */
+> +static unsigned int collapse_max_ptes_none(unsigned int order, bool full_scan)
+> +{
+> +	/* ignore max_ptes_none limits */
+> +	if (full_scan)
+> +		return HPAGE_PMD_NR - 1;
+> +
+> +	if (!is_mthp_order(order))
+> +		return khugepaged_max_ptes_none;
+> +
+> +	/* Zero/non-present collapse disabled. */
+> +	if (!khugepaged_max_ptes_none)
+> +		return 0;
+> +
+> +	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+> +		return (1 << order) - 1;
+> +
+> +	pr_warn_once("mTHP collapse only supports max_ptes_none values of 0 or %d\n",
+> +		      HPAGE_PMD_NR - 1);
+> +	return -EINVAL;
+> +}
+> +
+>  void khugepaged_enter_vma(struct vm_area_struct *vma,
+>  			  vm_flags_t vm_flags)
+>  {
+> @@ -550,7 +588,10 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>  	pte_t *_pte;
+>  	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+>  	const unsigned long nr_pages = 1UL << order;
+> -	int max_ptes_none = khugepaged_max_ptes_none >> (HPAGE_PMD_ORDER - order);
+> +	int max_ptes_none = collapse_max_ptes_none(order, !cc->is_khugepaged);
+> +
+> +	if (max_ptes_none == -EINVAL)
+> +		goto out;
+>  
+>  	for (_pte = pte; _pte < pte + nr_pages;
+>  	     _pte++, addr += PAGE_SIZE) {
 
 
