@@ -4,101 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78920D116F3
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 05:55:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 776A5D1266D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 06:30:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD1B56B0011; Wed,  3 Dec 2025 00:55:25 -0500 (EST)
+	id 636FA6B0008; Wed,  3 Dec 2025 01:30:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B81636B0012; Wed,  3 Dec 2025 00:55:25 -0500 (EST)
+	id 5E7436B000C; Wed,  3 Dec 2025 01:30:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A71016B0023; Wed,  3 Dec 2025 00:55:25 -0500 (EST)
+	id 4D5B26B000D; Wed,  3 Dec 2025 01:30:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 92A386B0011
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 00:55:25 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B49658EB7
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:55:25 +0000 (UTC)
-X-FDA: 84177097410.03.10F8AC5
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 130401C0004
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:55:21 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SwiZw8Vf;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A0826B0008
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 01:30:23 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 275C4C0517
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:30:20 +0000 (UTC)
+X-FDA: 84177185400.14.FB329DB
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6184640004
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:30:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iW8tXfc1;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764741323;
+	s=arc-20220608; t=1764743418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TgeU89wiO33UrOeH2CuuCcfCtsghV3K4O/7YtJ6+HwU=;
-	b=6/j2e4Apm8W3Ste/mlcI4K6vVuqnP2egIfnPKHMbrMDga0ybCGw1mUl8IGTFe7awsidbTY
-	UUSlvj6KBjprqYAmvdiNdbk+H/rFWPRG37oqf+LDE3tsx6rTzJ4faeXTNplNFRPe7qsyET
-	nc1cSY6PXaxmN8noewppyl+jlhniTDs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764741323; a=rsa-sha256;
-	cv=none;
-	b=K1iya9eZ4t06x7w5v8zAU/h552jyUAfGAdy+9Xbf85VUzl9QXfzIjxoYuBjmdp3A28QGwv
-	wNuOPigHFpqpRDjIc2GVBxOitLsdFjUQQ+Mt+WPj2eLxmHI5XQ21iOcSdgnMmCv6WwFWmJ
-	YpPtsfPKDRAmlnaCRHAeStlR45+Rgzo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zA8y4i15lHs4OWfRLesRXJafbhw/AjPpbVqRC57AGyo=;
+	b=OKzQ793ZDNomh0tjzdeDgkAfnw+6YykguJeT9ShCVw2OzzsF3CHKkHpAhkaccI48jHq6ow
+	nu4v+/IQPXmOv9KB4eEObZMcgIqZJm+GE3XEsoKP/IZeadbYdtP/eHCBNki95MswELY/Yc
+	rrfcfzsokeqatqwJMskjE2wCLegtjE4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SwiZw8Vf;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764741322; x=1796277322;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=U9cruv8p0jaO2ym/HzJO6H0i8CLbx9AQJ+UaaEtZpT4=;
-  b=SwiZw8VfXykjazUfYdJzY99lB7KHz8V9POl37DNCE04Vyds/72bbFcWt
-   YBVq/gcHUaTf5UowSZzOW2ZIzi0BKktTAYVoN84jWJ63tcrr5IG0ZHV7C
-   DrKuuZRZtPzinAjaL9AcwRzLUlPdqGNQkr91K4uBzsopdviq/RTBi92B6
-   dlDESwJZlcx9buDMY7slKvECe+sL0srgdR53U7UGtzlUJXUV0jN086Ktf
-   3S77FfFtOKAe3Q8nNQUSlSwiRU5drZOPGW27lttyNvIouhtN+tRyZhFEQ
-   mwArfjK0mRyk09xSebqemBNNTc1JeUjDpko5zh4Ll1pjk4zaaNcYxTMQw
-   Q==;
-X-CSE-ConnectionGUID: kS3dH3zGQF++LYK5lkR+Ig==
-X-CSE-MsgGUID: llT/HTIdR76MLhnFDlggcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66891580"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="66891580"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 21:55:20 -0800
-X-CSE-ConnectionGUID: eKTMhSavS8ScsZUjGPmRvQ==
-X-CSE-MsgGUID: ITaWRu3CTIW1a9MG70qPWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="194680709"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 02 Dec 2025 21:55:19 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vQfpb-00000000Adi-26Og;
-	Wed, 03 Dec 2025 05:55:15 +0000
-Date: Wed, 3 Dec 2025 13:54:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Jann Horn <jannh@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Subject: error[E0609]: no field `vm_mm` on type `bindings::vm_area_struct`
-Message-ID: <202512031349.FAjXZLVU-lkp@intel.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iW8tXfc1;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764743418; a=rsa-sha256;
+	cv=none;
+	b=HazoC9byWg3QHgkeB5iHALN6ckVoKcnpgQK1E6Gh5K+lN6naXrgbrexfk0vfD3Rt2TqtVd
+	SLYXB5Sa7uzCokBLR8j4mHVGDhsrZjwlBGM+G2TxY9DYJpISdEJXlNWOzG0+0fuXgqfevG
+	AWgvS7cnBVSha87hG/FWdleA6W8kzns=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-880499b2bc7so65612256d6.3
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 22:30:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1764743417; x=1765348217; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zA8y4i15lHs4OWfRLesRXJafbhw/AjPpbVqRC57AGyo=;
+        b=iW8tXfc1s7ZpwofBhZPzVYu/EORF80Zu7RtpFK1jYOfrfglOp4LA/xqiU+eIsTpt+h
+         qKCGMuwOHGjaEhpuF1tZa6AMGzhyQgqE1yUlWiiBcLez47mg9oeUvQLUFVf7fenY2AL7
+         ltRCHZWH0zQsu8jTlGcok8UggUdEFt0D/lvP0FkEdSxt/ztieSKFJs0quTdh1j9M8TAY
+         PEepoP7vZQHR/YpxxNj4VyJQfU9xDCShwxZCLGJEHV7sUOSe+EsIomEtR68XftQOrMmg
+         NTEchsbzrU3heU2ItRDVIZOMe8ly4DPWlDC7xPtS2Qf+WqiI7ZVxRxXe4K7LxZ0+CJ2M
+         vvcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764743417; x=1765348217;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zA8y4i15lHs4OWfRLesRXJafbhw/AjPpbVqRC57AGyo=;
+        b=b9HNUAW1nYi1zTruHyWefduIB+WniByA00TvLqawGxT8hwdBTf/0Dkr4r7fJmZtkHG
+         PnI049uvEF5E/WmHtb8v47ovwuNuB5U4z9TsLv4ZH7Y1MGj6SUbb5C3qG8xubxhFq78m
+         uZuX/HYE2lbMvOEX0iXZtrjCrHrNJp16sCTuWXXkzBaK9ywrL1JQYVSfnCAFfp71ulUM
+         Knw6xwQulE+EFJbHFCa2VbvuUamykIx4T6dX9qGyiu5nT1AYR3UVmj42HI9WcjvPc1sp
+         ysDKavrn5+A1LkNv9oT1PynYpWjpc8lRjA5zEIq6gS6ilttVAgPsQ7+dY/92COjSDugE
+         08tA==
+X-Gm-Message-State: AOJu0Yy/oTFGD47dauLjYffoXnKMrVj5Yf4UR7U5YAAZLebG0Djwkl6Y
+	fMGp1OKvo1QYh3S78b4mwzwJD7yDNRsiI2mLNIb5MrFMlBU5CMr/N4Sdw1Yt3uMvts4Dw06q97/
+	HdoRm
+X-Gm-Gg: ASbGncvDBmEg6GPDM/jQFh636I8FRb4toH5qYUq/CouO+7RAVhpsuWVRiy8mAFRcdYy
+	SxZwmxmTBWbCnuBVme7QJ+xQ4+PlKdW6j9zMxwR9wQxCpMosmz0oLAwct9qN3UnHXj/AZFICPQC
+	HuHcmMHTN7f2ZnuF8ULkeBSYdNrhD1Gy2r0ohhWIfh7105Y5fORm7TMWzValy5O9Yhc2herQ6xA
+	AYUtJXvOgD6CQ2CYXJn7V1S7BYXLT4m3BHKXpScLYpH+3SR6KYyhBEjwVbV3/B/q1sWxa3AFtUd
+	Z0IlGCzNaybQS3d2Xp8BdssZWYoxP7eMh8QyKT8ybtiOsLBeFG1SFLxtVKrUYJKxFxqmYJEJLvH
+	ejudz+36fLsHcvcvePxWhx4OHPaGdkOfnzviOBRGix92gEByDkwQKtZsrnlschEq+2RTuTGnZsn
+	tbExdaWBqL7x79wmQxREJlOq9x5cYoeH7HxrprgIcrydou0mW8/Fnv6gNLQzUTZHwem4oSFI5cj
+	SSNJIFZJJ98WA==
+X-Google-Smtp-Source: AGHT+IF1GdXPSabAZHw0YMxptT9SRN1HvIpeNLe4gzMuYc6tHsW25MPHAsf8Dnnhll6yIyHsxXJH7w==
+X-Received: by 2002:a05:6214:d0c:b0:880:5867:45b4 with SMTP id 6a1803df08f44-8881949a8b6mr16086076d6.13.1764743417043;
+        Tue, 02 Dec 2025 22:30:17 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-886524e4b15sm119791806d6.15.2025.12.02.22.30.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 22:30:16 -0800 (PST)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	kas@kernel.org,
+	dave.hansen@linux.intel.com,
+	rick.p.edgecombe@intel.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Rientjes <rientjes@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: [PATCH v4] page_alloc: allow migration of smaller hugepages during contig_alloc
+Date: Wed,  3 Dec 2025 01:30:04 -0500
+Message-ID: <20251203063004.185182-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 130401C0004
-X-Rspamd-Server: rspam06
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6184640004
 X-Rspam-User: 
-X-Stat-Signature: dueqjpxj6ggmju87pirtiqu551prcst9
-X-HE-Tag: 1764741321-151634
-X-HE-Meta: U2FsdGVkX1/Qm6JL7mpGFLc5bvA1wgzIJj5N7PqbT94+IoujHpyC+2nyAMc0we7cTwLymy/oppbklVPxXaK/KKzJLFNobemiuRpODmGTz7mTxl/IkHOkZnTUmzf7Nor9I38gAKMi+HxQL0ARc3sc6Nbyzh9muHB9NkkaE/yv3nfDnQ+RtRKljdCcvtUn8DMnvXsvAx7MHzvMsBdCKXN6PccIgRXf47OJ2bPfAh4alQKHkoM768Wfg+7gqrJG4kdu+okOYwPy6mtoFq/hMauyDT/aGW9/StdVYv9oZY9qAnNw2Pd+9LEtH/K79EmRm2UQ5znDg0Kq6M42sZexNS+cKApr28BxweVlOR2g5XfGPpjaDiecGAqzTW/ueuWeOGJA2YAY7bV26dUWN80aQLnsEOEXa0P09BOhqm91WqiLCpkW8HgGRTsdkvTT+5GCp/z8bHDwPBArVQB4WpfT9P4wU+17WfVFzs058/KcitvryS+yMTA1osNmVUH8ufB72V7be19FleTvP7meg+7JTwLlIf1Ol4u712qM5HbvjA6j4Kqb8NvNLq6JxbRekU4HdOUKCR4hVrE+qRZviwlm5m0zT8OAkkujIIRXj8YXcUL43z08IpzLs/GB/BGQiLqtkprA0qLEcY0R+fS+xZsEETjWboBkzB4JxsYQ1ZVPM1BKRXFDwDpi67PxZphJGbqTWeGuRuSCPgnuc4bqrGF/r9/5wUcctNSLUHjlJjOSdpQDRzj+XYXHCU0op59CH6B5EnlRYcRcLqrfqmD6p42veUMVPjQ443Sj0PMnyU1EtSIzFhHocuaNNeWlsLz6QecwaVA4MOyDSi8Kn8n3xVP+flK1ABXN7GiwqP6zeQlMHu+ry9Ayf5rFPt/9XGdu9TcNC9NpKlkqLVgrLFbGLXR6jzjJDIk6A2TQbcfcPFSUP2C1JCIyNP2hz/U50JiGYvSEG76z6Yv0v4IYU+JE4EwMX1V
- YzgyNiz+
- iHv/bjw48IxRV0hkBV0vfDA7VIBNt5snwssr92otseKEqOJUzme/NMlICVhBWStGEk8M4cUbqoD+b9JWC9q6tncQ/7srtYrZLQPNfy1RUokmEsQy6BcNK+C2TY3+93CiM22D0HSm5rnrIHCAMvrrRgSeMBl9iRZg1vVR86mQq67atHll/IeQw+HovoWac28PitAXQlW+8roemYZdZJ8KmF3EQzTogvrAXXnEKlSyCcIWLYyDtUXnDs9yU1Lk3Qi6lYUvhsF6YIbRQJavCpOHq9P6sfB1RQ7O7Duo/lL62cnY14XpLcki+iOifaAVgSowGxtrLKJFQJq3QPm4=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ywgrp1x5q3da43b5uz1ywb1cb4udpmi7
+X-HE-Tag: 1764743418-338809
+X-HE-Meta: U2FsdGVkX1+XNKkXcbnNs0SpATh7soKPsqelNcsO/t/wXNiXUvIYzgvMJgDRoF7uqNDggw3O7l1h/kdZgLf5TBO5skZFR3QstE9bzD+Fq0cFELIp3C/ZItchI4XlcnNw4yIwbv1VkdlApJGbvBR+fs0JOPu7FDa+PC+sX4qeYCtGrfKUw7d9MYU/4TCFx8IDKLT+leriR9NcE0BUlO9vlQ4dtvXb2Rz3gqBt14JKfUDZ3CC/IrmjWyWZheD4EumXKSXs0fs01xz2P9KvuWfvCYPINljmHQLrlKf7xLVYC9ZhcKm3fSuGwpSS0bb/TlwByvHKjRUZqMoheXPzhI2mmWvAGuMw8+V+DA9C9N1vIQ+E1Jw7bc4gzsjywZ9ifNju/65W6ZjyXpqE6rc+T7Zqw/qEmhzauhxCJPLte7HDE3PLMr5QvFTThJoziMl4p5L0i2j9hnN7OdOUdLbFLsv2REOISMaS4X59M1NDc9awNMwaHcCM/XRHrzx7I0FjAE1FBlzM3alFlHv47P7WFB84Lyt2m/7+/2cNoSmjsiRqxskiQGWEWGPSCIMfo2Ogz5CNelGIYpVbxQmnfwDkOIIui5QIOJ0He8EtIwXn/1rHxhdjZwCgy97tiu09dDn8T8ANLEwC717y3Pv7Qq0K2pPhKxUOw6YrSjT45HzDm1Fu68PHEnBg6dVMxCCQNm4OSDU4wZkvoL/54tlJPu7CdHJjxOnbeknFrx5lqnn5V1EVAfREDaMwEJpVU3mEqh8iq/5mI/LrEnFCzV6VdjiRIaNxieHudKfBG+S2uoZmB1TBiyoS6p8cCRbp+f1PsvTr8jk+MnQVdQtEFcCF1SAT4Tzp4q5M29SW1Ho93B+DDhqHPfukNkrEJky2W+5N/bMZagH7r3nk38NJV7SJhPK5HT1xP0Ir9Ut50zIC0KNg2vj5ugATiu/+VKyx2CoAU8PkjxAz3SGQpGsxqKzPqzD/C2c
+ /p0oai0z
+ SBs7JagYXxpwkiiuccEwGdkMvOX5c601cNq0TbFhB27bH9TN2VoJyjRYUO4M63LMFYb3oLo8Of9b95OrgNQp1TI/a8FahI3s3325ELh09P6t9IBkK+bkynq0R2qhz0wzh0rovjZkbOz4XTS5DpQSPd5J15h5mYBygEcsG/uWMAwXdr9fDvV+GdHydAkI7Q3d0LvfpUXZ02kz/GZGMRwQ4UWJwdyHzoJOq+dUti0V6doGyLfpZ0T1WxL60Gq8NsZr4viC1ibCwlBFjAhpXdEdHTz0g4fL4ue0CwIqB0A3Cbacp8XoWPHo4vPAdnZ4yJEQKeRcG4gLTA8x5Bj8rREEUQQRgOJPf68v/KJVxN2RA+KswEJlFQmUI0Rsq0y+hEGQvcVfXxx4YGYp/p8vzb0vEuY+DIsek8pg8/CDtELAhvk0w9le4kwlGV1+ZA5dcMdfqow1356dJcpqb/OSPDjonZ3tlw+8MpR19Ha+Wa+zUz8Anm4B9Z/Tc3w1h3UXQ2LpC7CgiQ53SnTHc3g1G4uf4ZNUFoZ/5EgfLGGbo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,59 +136,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alice,
+We presently skip regions with hugepages entirely when trying to do
+contiguous page allocation.  This will cause otherwise-movable
+2MB HugeTLB pages to be considered unmovable, and will make 1GB
+hugepages more difficult to allocate on systems utilizing both.
 
-FYI, the error/warning still remains.
+Instead, if hugepage migration is enabled, consider regions with
+hugepages smaller than the target contiguous allocation request
+as valid targets for allocation.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   3f9f0252130e7dd60d41be0802bf58f6471c691d
-commit: 040f404b731207935ed644b14bcc2bb8b8488d00 mm: rust: add vm_area_struct methods that require read access
-date:   7 months ago
-config: arm-randconfig-r121-20251201 (https://download.01.org/0day-ci/archive/20251203/202512031349.FAjXZLVU-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project b3428bb966f1de8aa48375ffee0eba04ede133b7)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251203/202512031349.FAjXZLVU-lkp@intel.com/reproduce)
+isolate_migrate_pages_block() has similar logic, and the hugetlb code
+does a migratable check in folio_isolate_hugetlb() during isolation.
+So the code servicing the subsequent allocaiton and migration already
+supports this exact use case (it's just unreachable).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512031349.FAjXZLVU-lkp@intel.com/
+To test, allocate a bunch of 2MB HugeTLB pages (in this case 48GB)
+and then attempt to allocate some 1G HugeTLB pages (in this case 4GB)
+(Scale to your machine's memory capacity).
 
-All errors (new ones prefixed by >>):
+echo 24576 > .../hugepages-2048kB/nr_hugepages
+echo 4 > .../hugepages-1048576kB/nr_hugepages
 
->> error[E0609]: no field `vm_mm` on type `bindings::vm_area_struct`
-   --> rust/kernel/mm/virt.rs:58:56
-   |
-   58 |         unsafe { MmWithUser::from_raw((*self.as_ptr()).vm_mm) }
-   |                                                        ^^^^^ unknown field
-   |
-   = note: available field is: `_address`
---
->> error[E0609]: no field `__bindgen_anon_2` on type `bindings::vm_area_struct`
-   --> rust/kernel/mm/virt.rs:68:35
-   |
-   68 |         unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags }
-   |                                   ^^^^^^^^^^^^^^^^ unknown field
-   |
-   = note: available field is: `_address`
---
->> error[E0609]: no field `__bindgen_anon_1` on type `bindings::vm_area_struct`
-   --> rust/kernel/mm/virt.rs:76:35
-   |
-   76 |         unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm_start }
-   |                                   ^^^^^^^^^^^^^^^^ unknown field
-   |
-   = note: available field is: `_address`
---
->> error[E0609]: no field `__bindgen_anon_1` on type `bindings::vm_area_struct`
-   --> rust/kernel/mm/virt.rs:84:35
-   |
-   84 |         unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm_end }
-   |                                   ^^^^^^^^^^^^^^^^ unknown field
-   |
-   = note: available field is: `_address`
+Prior to this patch, the 1GB page allocation can fail if no contiguous
+1GB pages remain.  After this patch, the kernel will try to move 2MB
+pages and successfully allocate the 1GB pages (assuming overall
+sufficient memory is available).
 
+folio_alloc_gigantic() is the primary user of alloc_contig_pages(),
+other users are debug or init-time allocations and largely unaffected.
+- ppc/memtrace is a debugfs interface
+- x86/tdx memory allocation occurs once on module-init
+- kfence/core happens once on module (late) init
+- THP uses it in debug_vm_pgtable_alloc_huge_page at __init time
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/linux-mm/6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com/
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Rientjes <rientjes@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ mm/page_alloc.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 95d8b812efd0..8ca3273f734a 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7069,8 +7069,27 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+ 		if (PageReserved(page))
+ 			return false;
+ 
+-		if (PageHuge(page))
+-			return false;
++		/*
++		 * Only consider ranges containing hugepages if those pages are
++		 * smaller than the requested contiguous region.  e.g.:
++		 *     Move 2MB pages to free up a 1GB range.
++		 *     Don't move 1GB pages to free up a 2MB range.
++		 *
++		 * This makes contiguous allocation more reliable if multiple
++		 * hugepage sizes are used without causing needless movement.
++		 */
++		if (PageHuge(page)) {
++			unsigned int order;
++
++			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
++				return false;
++
++			page = compound_head(page);
++			order = compound_order(page);
++			if ((order >= MAX_FOLIO_ORDER) ||
++			    (nr_pages <= (1 << order)))
++				return false;
++		}
+ 	}
+ 	return true;
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
 
