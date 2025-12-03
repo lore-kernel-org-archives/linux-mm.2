@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B48D15DB7
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 17:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AB39D15DBC
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 17:53:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D9A96B0023; Wed,  3 Dec 2025 12:32:21 -0500 (EST)
+	id 26AC26B0010; Wed,  3 Dec 2025 12:53:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B0986B0026; Wed,  3 Dec 2025 12:32:21 -0500 (EST)
+	id 241CD6B0012; Wed,  3 Dec 2025 12:53:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C6826B0028; Wed,  3 Dec 2025 12:32:21 -0500 (EST)
+	id 159526B0022; Wed,  3 Dec 2025 12:53:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B1596B0023
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 12:32:21 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB078C0677
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:32:18 +0000 (UTC)
-X-FDA: 84178853556.06.9F1CB2C
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D6E0514000D
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:32:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=pBY6Sr50;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 00E5F6B0010
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 12:53:19 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FE25C037A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:53:17 +0000 (UTC)
+X-FDA: 84178906434.11.0D25338
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 61B3B1A000C
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:53:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Ia87VjVX;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764783137;
+	s=arc-20220608; t=1764784395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RXfrLUBUUNxWrlXQZfRVAlemBKM14MYadMSOQJLP4KM=;
-	b=1aK8XMQc2QLQ1FxFsMTimVSFnioGGvnmR/12A0f78j0brI9kpAYpYQ9AsFvOC0WvGO4jOj
-	bCw75a28sRQEoT9Fa17Pl4YnpKrnWVoBH/5CoIpx13O3FUXEIFwzbVSujOUdotq+AltXL9
-	R1UXa899aNEekUtZ+pFdf8C92cH4Z68=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764783137; a=rsa-sha256;
+	bh=lVJlOc8ND/Iyf2S5FSwKg8rOfnG5RDtAsn0WPd8mpfs=;
+	b=1A1DHW/DGD0RxsSUL8Wy5SY4KAEbcjP8lyjNX2+wjEKCF6T9Q353Obe2Cw+pAnp0TvwgIJ
+	jOHz8ijwaXyb6JjJv+4JfKFqqGgZw4nsevwZi5e8O6MFCgb95JgISNAopUetEBKbhZ8suH
+	C/Y59985ZI/9DgNwqZsMTVoCvm0yBGc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764784395; a=rsa-sha256;
 	cv=none;
-	b=SAzY5mzTjLeQSK5CAMimfiYpkfAJq9tuhlXBN4DzwcapcmIQw71OBymK+P2QwslWrl9tip
-	NuqhsWc16DtA2jdwuIImgXJOgizJvtFp5g6zCOHVDsJHRCHHPz4dFBnUtrDvBsKaAImna7
-	avZR9FwMLhp09CoW86iwBS9TJ2lcBYE=
+	b=5uxBeR5gm7t3rCcoOcRSBmZJLHP4wSV3+QTZqiWszrxOyHSKIKS5eL1EfAQDVCveVNbpMF
+	2j+rP1b6hT9pXPYXNbgqki1j3rVfHD2hXC65pCnZEsO22pYpCw4z2WdbQdgMSrCdKDyk/S
+	cq8BQUoDN2pZsTeh/wBfzxzNEKlWAZQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=pBY6Sr50;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4eddfb8c7f5so272111cf.1
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 09:32:16 -0800 (PST)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Ia87VjVX;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4edf1be4434so383271cf.1
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 09:53:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1764783136; x=1765387936; darn=kvack.org;
+        d=gourry.net; s=google; t=1764784394; x=1765389194; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RXfrLUBUUNxWrlXQZfRVAlemBKM14MYadMSOQJLP4KM=;
-        b=pBY6Sr50uepHUCSkosc4pEujTfYXBNN6+so9+OcwNZLaxRaa4DGJ2lSzTsHK37j50w
-         LgyxdWFPjBKyO3QVf0sF6Ko8OZ/ZPz3G0URUpbG2X/+qq5wat+71Mnak6aSukqRUIrJM
-         VgsDFwuHUSccRji8EE4QJkPnhGgtGBwFAZbU5dQq2W181OIDPuv1egi0YuHdKN8qeHnS
-         3uP0JxETvnWpAIa9Bmg/hLcRiPSsehWEZggaNkOVYs7dm9gkRvGqhUjp0ZO/Nny0Lqw9
-         +AwUEZWsq57XcUfYB122A5oTABlEdzraB6qi2O6N+x1WxrOVJCdUEcKC59m2DT54z2vR
-         pTCA==
+        bh=lVJlOc8ND/Iyf2S5FSwKg8rOfnG5RDtAsn0WPd8mpfs=;
+        b=Ia87VjVXKgb2SPKlPDNKMZqZ5ZmXAhQ2phfMcO6IYQYYtRtiChmnmOlZgTNkW+LWDE
+         kFpGAU6TTQp7wjY5U1dGgiPIAT9EHqMpEKHJnfTm/0PnWO4Io5GtfewVP+LVoTYH1yQ1
+         k4zgLQ6su+8scbS10MqaKOyAqlj8oB1YHO/1c1G3Mvy+r/9RmWEMWKwYmmNdCMkgMzvh
+         I4CU4Z+dhlelk9quXtRftkeVH1veVTsOxQqgm8zPLRfX5nVqG0dnySXs+FPWW1gtMbkE
+         pNC0EfACltLvy+CZnrmufiYmM2UdCveCq2wDCMR3wdmXOnq9jCmmxBKAvMc+QKY9IUoI
+         XK/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764783136; x=1765387936;
+        d=1e100.net; s=20230601; t=1764784394; x=1765389194;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RXfrLUBUUNxWrlXQZfRVAlemBKM14MYadMSOQJLP4KM=;
-        b=nqZ1wkUndf0sblG82uRfJJGma0NJ6j4GaFszY+GzJlwTo5QMMVIG8OdkpozHMHFdr8
-         35Y8CCaI6kEqU1ILh4xOGlqZ3dmNCQKDn+8BFltagEgL0EubYJJL6OECztBG8dVss3eg
-         ma24aYq5z4XDQgg8STwGZdhOzE4sK7dmWssqKasrj/9SRK1uFHA6dptyPe+DL8Vci5NE
-         lupgVxNeifUXbq9/zbfpujk9BMV9hpd2UvoKffefiGFWoqZWYBWTmooGghFO2vllmGwx
-         QQBQxEZhA65Hl5wQQTdzjjuBwkZMp8wrpN8JZFajg7dCbOUvlhZGbl3vAqXz+mnxSxQr
-         CeTQ==
-X-Gm-Message-State: AOJu0YysZLldAzH3NN3yMky/y3zc8JyUh8IRU7plLIgbCbUqEonDtqkm
-	+jYbVrwZdD3wffHZKyDRmEdQFLxqAlu5B5xVFEQbZOcMUxveiLbtGqFJ6QBRR+1CXTQ=
-X-Gm-Gg: ASbGncu6ahHrEC9Bpqct2VOmmHhfgwlTgHUWk4b20qWx3q2rolfLo1i1h8QzMKMFY9Y
-	+WlezbJx5XojAt62nrhoV5BCZus8OSmh9l9c5VFdgbhGyeSJUKbggLATRhGzXpLfqnOeW9o5d8I
-	dvf6KAKDzqS7UIPlkxXMQHw01BrdZVrpQ2XzN331E/0gquXPRakSUIWWMrBGtGr+TfmLvNS9eX/
-	bwJRm/DZ+0zFmXUkk1Y81q6iF02QluamxK04namHHtdglgjNhBK32MCeBI+/oRoS5CLPfARAlQL
-	TsrXNkRRNK5G6Nv5RQMqKWQbaSGEAxGpfols/kBqytLRWcnq7hFhnqfOVw84i9u2hpdt9TPVX4x
-	z6G5hEST28q3QlSDnMqZOa1t6F8Su+RniiJW5c8oV2b7ExXsmCf4EItEbFX+wIWQxrp5VFuQLhW
-	HEwWBArAn/IQ==
-X-Google-Smtp-Source: AGHT+IHjhRSsYojqPIH4nCotrtO7/FPORpmU3S+uq1yOdc4D+I4pkxVbp8jOs/i2z+ku8NQQIlusKQ==
-X-Received: by 2002:a05:622a:1489:b0:4ed:a744:adc with SMTP id d75a77b69052e-4f01757f2e8mr38710771cf.10.1764783135284;
-        Wed, 03 Dec 2025 09:32:15 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd341f2f8sm115763391cf.22.2025.12.03.09.32.13
+        bh=lVJlOc8ND/Iyf2S5FSwKg8rOfnG5RDtAsn0WPd8mpfs=;
+        b=uFRoyBjypL9x2agmqyxqGOSVeqWGHJruMISJd9MfZqsVlL/X5G6yZ0oLKU9iU8mRAM
+         IWk2c+w9PLToi9Bb4nikwp88gA9lACGEIgejcPTyfDr7hQL68W5LIMFaR31eiEVdvZ95
+         3gHbhTnG7CCc0ErOOMLry5OASn28BT0IMPrARByUFKvfNPQ0+23LOEEkjI1RTu6ufxkj
+         n/DEv1Qr9M2d17COIKb9EjJLLKJl7afd0lUxGYjIUiU0EMMIMFnTHWruGzQBfck73S1Y
+         H8PXhu4ME9l5BWnN0K4Rr2hPogAs0V9ZRyUUDC2u2XUWAqUUaUtXpaBkuJJzejmmM7dI
+         lHjA==
+X-Gm-Message-State: AOJu0YzkNE+AfxzCBOqkC4dPRzvxuPbgkEHDH5ZH34XA2dThwekWisat
+	jVtS8XBUjmErNITTt1JUq1DTS/rVjXXk8/MCHm66hkOSIaKpgSNNEnDdLeaASZ62Mno=
+X-Gm-Gg: ASbGnctN1yrVuKd65rB3CmsJoHE8xehd7gmBxzXzpEefFAXxet1X5sc05Xm5mK9ussv
+	PMLtrP2Qgt5yf7ffLvAiqwMRu/HAXRw45ve7dFNVPUeUwY8AmWxhoMLJlqyKTEbHMXL9X+TKZ6B
+	Hel07oA+ycYzeq04zqw38oq90sh7ddZNLlw1W9Lz8kxB99ON9VxlpH8hfsG8q4ICQFjWOqSIJOF
+	LOdwEhZ98oPvLaKaCvV74uyn51UkS7vkGtjhch2B1iM5gqj2DoTusewMPAos39A8md5odZm1XqX
+	EP6khye3ViW5jGM6hNhrcgPSzHVkeiHo4vK4T91RexTbRtIrBvhRX9R+miE6B54BMmA/U/5UEXq
+	gx6TFGcqQFM9ve8xOK3aO8Q3Bd9BUhguMDfyBjtj+XDMiUKcKusXdgVzughJMOAl3EFv7jIsdwx
+	lzKC5yJW1o3BndtfFLh3YwrH02gajZkmN/a8aOw9SEMVvbcY9GNd/TLV7CTqUEqQY/zQYRYg==
+X-Google-Smtp-Source: AGHT+IHHD5+Jl7GtUH8NhBzm6kCviK25Go8YNEW6lOEadSIHifkHTfsNCnR07LpsAcRGWeAu1C3aGA==
+X-Received: by 2002:ac8:7f4a:0:b0:4ed:b6aa:ee26 with SMTP id d75a77b69052e-4f023ae1140mr209871cf.55.1764784394367;
+        Wed, 03 Dec 2025 09:53:14 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd3444557sm118131171cf.30.2025.12.03.09.53.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 09:32:14 -0800 (PST)
-Date: Wed, 3 Dec 2025 12:32:09 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Gregory Price <gourry@gourry.net>
+        Wed, 03 Dec 2025 09:53:13 -0800 (PST)
+Date: Wed, 3 Dec 2025 12:53:12 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Johannes Weiner <hannes@cmpxchg.org>
 Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
 	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
@@ -104,20 +104,21 @@ Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org,
 	Joshua Hahn <joshua.hahnjy@gmail.com>
 Subject: Re: [PATCH v4] page_alloc: allow migration of smaller hugepages
  during contig_alloc
-Message-ID: <20251203173209.GA478168@cmpxchg.org>
+Message-ID: <aTB5CJ0oFfPjavGx@gourry-fedora-PF4VCD3F>
 References: <20251203063004.185182-1-gourry@gourry.net>
+ <20251203173209.GA478168@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251203063004.185182-1-gourry@gourry.net>
+In-Reply-To: <20251203173209.GA478168@cmpxchg.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 61B3B1A000C
+X-Stat-Signature: 55og8jpa9biwayhro84ky5qz5cimq9ym
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D6E0514000D
-X-Stat-Signature: 7iuwdytp4mbjzuq368b17qdfz34s6i5o
-X-HE-Tag: 1764783136-664985
-X-HE-Meta: U2FsdGVkX19TtrHI+Kq73GWtFlvt58rGWZU/8qg3/tjNo7T7dI+Fl2/HIzm7Rgh57FFWoJmbPdERiVvPs9zjsFU9J6nv4CNzgFNmmXCgmCA0q7oKEXl1xQtQgm5OhMzrGL+SryH+oLFHK05ogXHfKwBXL/mn+RyeHOOXhL5O9tkJlINUcbTMvx7wXTrcQBVt1vVRqFNZ89fsDhH7UHF6jgzFfRAjhs+c7jugTLA0admoWS7JRuncd3GwhXL+ILT1128RlI75WnY8xbCSdKU9DxBEaWIsifehXfcxlgKDDVgfgyso/S6YXA3bF30y8zBYyXWQn5u7xMwJxlF6d62t4Fnfg23jY1dRoYrYLRKRDccx/VzGkU73rxz3mipPbrsRxPYlXKOCm021gWHx0lOA0NQ8aZgxgOLwqiWnvqyC3hlyyRL93kUCLcqGM4aJJMm9l1LT6WLDLHlDTEM2dQRKV6J6ZXSLORTK+sEnc0/GI8D6aH+Y5BFp0tx+SZwsO7zXQow706Lt2rhzThHPjQA1sSc0W3ItJqadqsQM3OAR67Tsu8DxT7eqovJk6sAH8ZUuRvHG5Y5wl7CMwr+qskVqBdVeuEBfKu2UkoOxwPDeTsZAbcIKWGpBG2ylbqyRFoKOENrETuUW9kfj5nkzN+mSB8ycm/j5ayjw+TJgAvt+j+PpaKCU2Wo2xZtWPk0ZelD8Ci9gvxUTgGtZ3v1zXb1bK6OQo6BislFLcFwqEdKPn9JaGPIjdBx8FmziO8UJYsGx/gjGUjibgUetL9zkHxh4cZs7ndsjmFr8ntrmphuL6PAwbv+HCNgvy7zRQ0vZmITFrzn4ZetT8Cg4lLNrXauEMIFo1ilfeDaI3XJmLb0fVdWuI+6KI9tjvlyjaxokwlT/ICdceN0vNk42DlBmFQS0r5hJQoMImwLMVzOPiuGzipKWJykjZRoE1Yhxs+Jjccegw9yP9GwivdEH44mqxya
- kDHP1UTX
- VrqwmNzUrqd9zQ02TUoN+TWc4g0qqSaklNVgoYb5QrQtRIKDWnx2rGLdfsJosrAvPXoNp6Y6WFr6gm8D00kurjeLOs79nSHRQ3mEhphZYMyukWLOfGXpW97iMpMf2xCgM1f+T3liU80tEAu+3Ax1KYKxN91RQG0K0dvcSyBNXP8xhJe+d5hE2DttGg6nT2xr4m7zDzisj3Sf9hrsDyIiIMzT1AOziR3+x/OW+1M4u4IJYE75Nb5WpdqlTaN5aL1PlJX0gGVde37dZf19jx92ddYjIrLc3zUzem60F6a61qLUIYUevU3ShJb95LXkpYB1VTHX5gRMQK8T130HRTd/IqAxFyfBE1+8DajYKJOtxNJzP3GRRai9q7cpcWlN8HaimDyegsDmmaaIqjQdENmrU5OARe6fbFWjyh7ZosPI2A2y8y1JA3deJ2Iu6bjbTy/En7N/aa3Cud0yjNLCAmHG2pG33qwiEvQaoUQ4ZwDLsgyQL8EV7l1UtJcRgu4T/ZF84ok65xD9EMHXJCISypjQj4eGDVhg6LsJlYIO0RW4NEqzlhYfllpQ2BkU489woKBdYsr4hgcL+lxYdeMlC5xoJZhW+vbVSEQ8O2U5Ff5LPOcCH4TJUS7UvkJk1PgssB09BfpDvA5J79uIKCgpXImGXzZL1Wr25U1Xr+NnX0MDpOxMDay7xU7jY/kWxRvF2Fc4EdPHZ
+X-HE-Tag: 1764784395-390813
+X-HE-Meta: U2FsdGVkX1/7qFyy11O7Lb3WmMmBvxnMZts4fIP10s9CmBJRFRlHqNAMMNZEnTbnxR2ZKfhiy/RUuBk3rS2wsFmhjteJNFr9sIFScf/TrDdI+Ntay//87lH/HdS3ssqzVYg+WJbM5zPHD69HZcWibcz7Tne76+dcvkVtr++vIhUtufjDSQ/L6Y8lz63WlA1mTJVLQAVxVEUle1lkt8LK7DIWhYtbtL8rSbvzAdIJpzc+1l7ltqNtAy+SqmOrUVW35OnFlF2wNIR4NwzOELm1TUphrq+40cxeaGRdYsEkp4ZCyJsmhF1g+uNa9aBBuhhOOLmF67mBnVrPGIzm/rgAd+M5w8OuK3S6Lo2BWZcQSJaqAlbRM/boxtOmA0C6kpgnmmsE0I5qDURYwYkClO90GzaObYZOTv2RmrhFZ5oRmqvpbPvSo+3mVfjfASqGYyxGkBuSEk0PU+9TiWhua9aNu/ddpqOyswg/gESSMZ7sGo/fPUafnhqXabf/zeT5V6eulT5++pK12bH8V/sa4GWSrJX/czagEWbfns1JoMWJbPooP8sDY4Tv8VqpyBN6U/7KNz+iT3iKsQxaPh5IF4/PWjA9dp2lKHVkTC2Y+KbC1JvYR4+AZh1flgMk9A3Agem35PhRp2WBa9BVuAR9EQiwYY7kPj2p/fOhBWnYi35fdgOqHTx5Q7eMqns2zIuglUCmWhAfuMZ6lBUfk6Pa4t6jUqECjCvdiRNEJhfgq8h8GdtW089li5xsAQ4t3ELKJIQwx6cPSihv6qoFhWJKgVjxnPJeX2QIE3SU7PAw08prNFWDq8cH6HoZt25ZjcTnDEvneKbVUBUiY98laH4Q1CUlgVBFNInoIyYwDNglRzMhXRKUTc4CdX0eNR2N3KRyaKPfShYdf0XBUpZzlhdC+LFv9iOLY6KqUUsBVCX7YGTiirkcnzN4N5lg7fFtQBzYTopm4EWs+v+n5bEtuaYLivJ
+ t/iV6RHj
+ zY79+hxqqfvrLmWCbQ3RtakECvpY/w5Uzs7uLozYVitjtRoCMW/XR4KdtY3QqQcHID1JFR6KcHlH09xK7qe8d3RN7tFF7MWxKuT/t3VMkecu/LfEus99CduPfiSNb9dNGuG9zTn1xEIySm+/D62znK0EU+biwlPddJkPM4wSCHMENSusMEmhReF9PcaOqx31aOoPe+KMfA/sbQy2CYIblOQNfK6W1ihdlaX6vtIhfUtkEjvvWPKp0qPicj6kH7peD3x5HLr9LMoI1wjvucPnc7HCJAmgtc5XWFOISabdDulBvsYFKI3LHS+AP3zWyh9dHq4x5DaF54bnlU1yWgn8fbfp/Ff16neWtrNDqZ0LQFo+3oIoiGMxqQ1WJHnm264vCT02+5aD4A1ywYjdFDonk4SotzjWJwm6jj0QPalL+tDYcFj7sdG2i/XYyeQR3z4g1Xggk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,79 +127,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 01:30:04AM -0500, Gregory Price wrote:
-> We presently skip regions with hugepages entirely when trying to do
-> contiguous page allocation.  This will cause otherwise-movable
-> 2MB HugeTLB pages to be considered unmovable, and will make 1GB
-> hugepages more difficult to allocate on systems utilizing both.
+On Wed, Dec 03, 2025 at 12:32:09PM -0500, Johannes Weiner wrote:
+> On Wed, Dec 03, 2025 at 01:30:04AM -0500, Gregory Price wrote:
+> > -		if (PageHuge(page))
+> > -			return false;
+> > +		/*
+> > +		 * Only consider ranges containing hugepages if those pages are
+> > +		 * smaller than the requested contiguous region.  e.g.:
+> > +		 *     Move 2MB pages to free up a 1GB range.
 > 
-> Instead, if hugepage migration is enabled, consider regions with
-> hugepages smaller than the target contiguous allocation request
-> as valid targets for allocation.
+> This one makes sense to me.
 > 
-> isolate_migrate_pages_block() has similar logic, and the hugetlb code
-> does a migratable check in folio_isolate_hugetlb() during isolation.
-> So the code servicing the subsequent allocaiton and migration already
-> supports this exact use case (it's just unreachable).
+> > +		 *     Don't move 1GB pages to free up a 2MB range.
 > 
-> To test, allocate a bunch of 2MB HugeTLB pages (in this case 48GB)
-> and then attempt to allocate some 1G HugeTLB pages (in this case 4GB)
-> (Scale to your machine's memory capacity).
+> This one I might be missing something. We don't use cma for 2M pages,
+> so I don't see how we can end up in this path for 2M allocations.
 > 
-> echo 24576 > .../hugepages-2048kB/nr_hugepages
-> echo 4 > .../hugepages-1048576kB/nr_hugepages
-> 
-> Prior to this patch, the 1GB page allocation can fail if no contiguous
-> 1GB pages remain.  After this patch, the kernel will try to move 2MB
-> pages and successfully allocate the 1GB pages (assuming overall
-> sufficient memory is available).
-> 
-> folio_alloc_gigantic() is the primary user of alloc_contig_pages(),
-> other users are debug or init-time allocations and largely unaffected.
-> - ppc/memtrace is a debugfs interface
-> - x86/tdx memory allocation occurs once on module-init
-> - kfence/core happens once on module (late) init
-> - THP uses it in debug_vm_pgtable_alloc_huge_page at __init time
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Link: https://lore.kernel.org/linux-mm/6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com/
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Acked-by: David Rientjes <rientjes@google.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
->  mm/page_alloc.c | 23 +++++++++++++++++++++--
->  1 file changed, 21 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 95d8b812efd0..8ca3273f734a 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7069,8 +7069,27 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->  		if (PageReserved(page))
->  			return false;
->  
-> -		if (PageHuge(page))
-> -			return false;
-> +		/*
-> +		 * Only consider ranges containing hugepages if those pages are
-> +		 * smaller than the requested contiguous region.  e.g.:
-> +		 *     Move 2MB pages to free up a 1GB range.
 
-This one makes sense to me.
+I used 2MB as an example, but the other users (listed in the changelog)
+would run into these as well.  The contiguous order size seemed
+different between each of the 4 users (memtrace, tx, kfence, thp debug).
 
-> +		 *     Don't move 1GB pages to free up a 2MB range.
+> The reason I'm bringing this up is because this function overall looks
+> kind of unnecessary. Page isolation checks all of these conditions
+> already, and arbitrates huge pages on hugepage_migration_supported() -
+> which seems to be the semantics you also desire here.
+> 
+> Would it make sense to just remove pfn_range_valid_contig()?
 
-This one I might be missing something. We don't use cma for 2M pages,
-so I don't see how we can end up in this path for 2M allocations.
+This seems like a pretty clear optimization that was added at some point
+to prevent incurring the cost of starting to isolate 512MB of pages and
+then having to go undo it because it ran into a single huge page.
 
-The reason I'm bringing this up is because this function overall looks
-kind of unnecessary. Page isolation checks all of these conditions
-already, and arbitrates huge pages on hugepage_migration_supported() -
-which seems to be the semantics you also desire here.
+        for_each_zone_zonelist_nodemask(zone, z, zonelist,
+                                        gfp_zone(gfp_mask), nodemask) {
 
-Would it make sense to just remove pfn_range_valid_contig()?
+                spin_lock_irqsave(&zone->lock, flags);
+                pfn = ALIGN(zone->zone_start_pfn, nr_pages);
+                while (zone_spans_last_pfn(zone, pfn, nr_pages)) {
+                        if (pfn_range_valid_contig(zone, pfn, nr_pages)) {
+
+                                spin_unlock_irqrestore(&zone->lock, flags);
+                                ret = __alloc_contig_pages(pfn, nr_pages,
+                                                        gfp_mask);
+                                spin_lock_irqsave(&zone->lock, flags);
+
+                        }
+                        pfn += nr_pages;
+                }
+                spin_unlock_irqrestore(&zone->lock, flags);
+        }
+
+and then
+
+__alloc_contig_pages
+	ret = start_isolate_page_range(start, end, mode);
+
+This is called without pre-checking the range for unmovable pages.
+
+Seems dangerous to remove without significant data.
+
+~Gregory
 
