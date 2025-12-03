@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D4DED116F3
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 08:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B72EBD1266D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 08:21:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8844E6B0010; Wed,  3 Dec 2025 03:20:48 -0500 (EST)
+	id 1F5986B002F; Wed,  3 Dec 2025 03:21:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85BC36B002D; Wed,  3 Dec 2025 03:20:48 -0500 (EST)
+	id 1CD5F6B0030; Wed,  3 Dec 2025 03:21:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7997E6B002E; Wed,  3 Dec 2025 03:20:48 -0500 (EST)
+	id 10A826B0031; Wed,  3 Dec 2025 03:21:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6817A6B0010
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 03:20:48 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D0AAC0578
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:20:48 +0000 (UTC)
-X-FDA: 84177463776.18.C69979C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F39696B002F
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 03:21:10 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 965548A5CA
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:21:10 +0000 (UTC)
+X-FDA: 84177464700.13.A29D720
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 55ABBC000A
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:20:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id E04D040012
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:21:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764750046;
+	s=arc-20220608; t=1764750069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sJurdQX8qj6ifDDdWMxroqyLo5BS65+WtQIh7u6Nuto=;
-	b=xkGmIRN1XnmJ2gpA6JMG9L/+fZLDVvN45CJo4MPfm3UZFto0IflmKr2j4uZK9GRGo6i8NQ
-	NbwF34IqA7YLF/qpg5XLBIltXkE9yxJdobIP6M/sLsT3/VxQVrCJwX3gtJKWz96L8uREgI
-	M0tZqmg/tfw6MgaHt2YtwHI3xdk2Gv4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764750046; a=rsa-sha256;
-	cv=none;
-	b=IvnvdpUtnEc6EJhaVL71MVTK5VCwThTSCWxpI3ApYfV0ABI7Pw+2pwVHlZFz6WBb4sdVfd
-	gchqKDPUjjluSqbwSXSKaPrv0Xqip7R3mm/C4qLzJ6D64bx2khSXt54ismpMylsppm6yMS
-	T9hfiy7dApy1OM+xNIbNypmhKKQfYcE=
+	bh=e8MuL9dN4W4aZAtBVVyLVjE13/XsnSiE2gy07VCOnSE=;
+	b=WTq7tmhVEYEFKVFVEffEzU3alv6K0kGbwkT6Kiro/+YJnri34R+B+pNAEJAufp6/aVKYe+
+	NYPgLfthKKk7WyB+xS7LLTuPvd8puSqzcVVm6+NjiZ8MOxXGZ9cHkaiUOgeZQSPuCtOp6I
+	TMz81cqtbOhvYDpyFIcEOOQc1YaOl7s=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
+	imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764750069; a=rsa-sha256;
+	cv=none;
+	b=HTpMKpVjsHTsfD3X+nHWbjnl/eqCwYwnGZML9mZCFKIMiaSfFtUtJYupNaU2Y1tvf3i9Iq
+	YahwxcI2HlVHZsgQ0MwQbj+9+mg5rXugtwvM3VmYdVMuBcRhhehZqXJmobqR7h8rgfgHaN
+	Awm5jbytRXbXLC7fxLqSR8II0djwd3U=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B547339;
-	Wed,  3 Dec 2025 00:20:38 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDA3E1477;
+	Wed,  3 Dec 2025 00:21:00 -0800 (PST)
 Received: from [10.57.45.92] (unknown [10.57.45.92])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 49CE33F73B;
-	Wed,  3 Dec 2025 00:20:37 -0800 (PST)
-Message-ID: <51339cdd-3c73-433c-abf7-24553e0fbd6b@arm.com>
-Date: Wed, 3 Dec 2025 09:20:34 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 23FCA3F73B;
+	Wed,  3 Dec 2025 00:20:59 -0800 (PST)
+Message-ID: <703cbee6-a813-4970-9232-34ee91ed8961@arm.com>
+Date: Wed, 3 Dec 2025 09:20:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 06/12] mm: introduce generic lazy_mmu helpers
+Subject: Re: [PATCH v5 08/12] mm: enable lazy_mmu sections to nest
 To: Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Andreas Larsson <andreas@gaisler.com>,
@@ -87,21 +87,21 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251124132228.622678-1-kevin.brodsky@arm.com>
- <20251124132228.622678-7-kevin.brodsky@arm.com>
- <07ffb66d-1e74-4634-bccb-75575b3862af-agordeev@linux.ibm.com>
+ <20251124132228.622678-9-kevin.brodsky@arm.com>
+ <23dcf752-0b75-45a7-84f8-25bddf97af08-agordeev@linux.ibm.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <07ffb66d-1e74-4634-bccb-75575b3862af-agordeev@linux.ibm.com>
+In-Reply-To: <23dcf752-0b75-45a7-84f8-25bddf97af08-agordeev@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 55ABBC000A
-X-Stat-Signature: 8gy3piw9uftqcrmjmkayoxktf6uipyor
 X-Rspam-User: 
-X-HE-Tag: 1764750046-976507
-X-HE-Meta: U2FsdGVkX1/dLjU8JK5QL74PejOFr/6LTfrayirqv8/zRt4YCezdllZQlkfeypW5Yq+HRtNk6bYEmStKrXd/YN1CJL5xvaYGWYDCUPNkVspNMv4xRddXxv6/WJ1OAe5JN+NBSyyDSk5EY+lR5/RgHHpTr+JJc0XK6/dTQjCji+LXEKjC+RdfLgMQrElX2zg12nciFhQMiZIUPGJBQYxfx8nGpLI2zv7T37EaCVKb8ioEuo0KBDH9CzBiL8SAAgctTlehNsJ7ckYhBMwvulPU/MdIDn7A7ytUyK+PS6fzwoHXrY8sJIeaCXArQQ9wQ8tnVLVMcmHFAQ53eUJ/6PszU/k4R7PonaDl/tJMQgTu1yxXIKyGYzuCrf7uqGwaD3WhSeWZTKMoxLawPp64nB5fuQ7Bcw7C7gd/LTL/cF5628T1kZWbHrsW2oM2irKYDCkIJdC8NZwUbNS1nfmxfkdn6ZtwiMThf3Z2AvIvpoixm/9DdZ1GcFa6Bz43u93RYWwPsabhCcVf8plc2unIb4PT7duhgCH9h/K1+GgAj+dt/8+ln7qQaVe2h6Eyhwc7fJFxJ0FMOlZtrbv7tqiyxCCuWfIjqum1q3Sa4UqcO3NFHo5ROEbV6fGNfcHQfqi1f5jujXRQA/hCJNAt/r8qJp2nhPnIAIdLEyIw0ZlT0v3XzbMMPgBxiQtX80qftiCV9yR6IwjlitVZ89+xK9WjTACmeO+9Cb36mQ9hHMqlIKKTIh3ddM9GTSi476zPhRiBNFa5HSxTeXbTuDddD2WctW3SZgNMrz9v5zwxvTyjxAERY1uuNQswjXgkbr7oS4OdAtSgz3EGVti8E+rNc15h5/iWbjBRc/d9sYNtfiWB6VWZhPaqr1yNcRmOSs0evKDQ+AueCuuRr8VNG5wXVsdbQIn73QI5rrcO03YIfSVsFvZTHdE5Cfj8C0wGjJUsX2Brbunftp2gL3tn+HsxHvBQRa9
- 204ZExsz
- wo2Ap1XzErSHn3qrFSo+A5S9C/OdmigYSo2V/4nWELH2PU9MFFcEjyah8xkPFSfDlYHNNdwoyuuYSCMqTZbZobtt7Cc+j85QLFr+Lwk7Jm2j2JzmVMQFtow+9lddEb35jorG9mSodkzqfzQT2TMSzYECAydifAdAoeqgyAjBCqeoNZJ3sayoPO/UdpgKE4u0mCj8rEHYP+/sV07v3eF0T/NeROfGLzgrry5WU0MU2ZvLPsIk98m/3wJRpUWMsfgf2zk7J7z5C5e8C9LY=
+X-Rspamd-Queue-Id: E04D040012
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ippan5unmoe7a4up9o3utbcwrxkhqjbt
+X-HE-Tag: 1764750068-615613
+X-HE-Meta: U2FsdGVkX1+UGD5E/73GL9+qy/yxmJSZrN32zO8Z7bPba3KNqs7dKJRBEk/LsNoaGrqp3skfZg0PfBNW3vqPiH1OFCMDb++ditVnevBex5/lO6mzEtjhlgImKvFWNMxO/5BwBGwbV+NS561oSgA2orSG+R0bo588BXHxRN3U0TXIsAW+3AGbUlBq85xCyTKcoMXMTREAj+fzjEMK/PtwEyLDpSuYxAkIDG8rwRtYl79sbS5ai7Zcnz+cIeQpMFEVo7SepCONImqqOQURvDe97FHUIkU6sZ49KJ75FUQ6jb+4FjnDAnBXK66QiaZwFnBN/lomzuemJl/uqF0P1fcLCzZqNXSVXAdScOEGKutrtDaYNRKYgR+02aS9wMEL+WVBY4Y6cWP66+AiLfOQxME876yUw3EmWvcBW0RDnhcGxtqFcpOjeM0YKI+oZCzORq+mEjU9mSBDXIAqDFJztXSEPJbx7DGfpsxkt4+Otj+KqJcdden625unVldLqXZUj6V+TcQq6JU7dmJoe++ywy5QMe+BCRis+fbktRKX1SJs5TFJ/yQ1j4e5SXOiRGUDOAjYvSL54ABE2xj5iEGcD9YRKtroakVNfkmaZMle6+mXJaU1Aex7MNfAd+eqrOMu/nFbZKcufL/VrSAWWckmukQ+j3KI8xohZkkDDqy/ISwDM3/8TQO7f9yYgZa/00zw9yFahA61B4AUTkFyTqa+3VTP3lxERC6mTYgaq1+tRDtK1qVNm4xlOqexAPI0ZMymGtMSZQkwhrLPsKWQJ+x46oxjivR6y7EkVvdR7N7Wf5cZlrfMgcXOo2q8ZUtyU9PKr6R2kCfGFe7480kw/WGQ1yXFIjHTm2vUYljaWVHkUVZzxGTAbUBq7Ik97de/GzAdvFS8QFHgVV4RzH26Dt6ESiXpU0snhFZ1meTGFKXnk7NAKik73OBbEgVaPjjkcMFTNrd/I7s/uP2tmciUr80JQff
+ /CrSgPa+
+ eTYvBrt3CMb3fCVklJUfdhiGEgLvsO5e8wlTR0A23kxFxdfoVhvq/e61ywt3d5euSgbgCft+9cO9ZgjLLmhisvtjUCbZ+GYBF2pDayXei+Dlg8cG6XrseR37X6JziAoHTLcjauB2VcKzKrP9CUXJfnog1/xKFF1BhqHVy9gMvYr28CvpWW9ed/lZIFU2AUSaqJLZ/Rvk1Rh1MWsyjcXNZM8aZSYuDlzQpyaJYMpFv1S55jsJIgejlsE18gJVQeawfOIAarmSDe98hmA7FVgCfL8CnWFRcyUDiUkg4peG1ku6yKG8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,19 +110,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28/11/2025 14:50, Alexander Gordeev wrote:
-> Would it make sense to explicitly describe the policy wrt sleeping while
-> in lazy MMU mode? If I understand the conclusion of conversation right:
+On 28/11/2025 14:55, Alexander Gordeev wrote:
+>> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
+>> + * currently enabled.
+> The in_lazy_mmu_mode() name looks ambiguous to me. When the lazy MMU mode
+> is paused are we still in lazy MMU mode? The __task_lazy_mmu_mode_active()
+> implementation suggests we are not, while one could still assume we are,
+> just paused.
 >
-> * An arch implementation may disable preemption, but then it is arch
->   responsibility not to call any arch-specific code that might sleep;
-> * As result, while in lazy MMU mode the generic code should never
->   call a code that might sleep;
+> Should in_lazy_mmu_mode() be named e.g. as in_active_lazy_mmu_mode() such
+> a confusion would not occur in the first place.
 
-I think that's a good summary, and I agree that the second point is not
-obvious from the comment in <linux/pgtable.h>. This series it not making
-any change in that respect, but I'll add a clarification in this patch
-(or a separate patch).
+I see your point, how about is_lazy_mmu_mode_active()?
 
 - Kevin
 
