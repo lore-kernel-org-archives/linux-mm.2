@@ -4,136 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C614D12691
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 10:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C18E9D1269A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 10:19:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76E016B0028; Wed,  3 Dec 2025 05:03:39 -0500 (EST)
+	id CC5086B002F; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 745DA6B0029; Wed,  3 Dec 2025 05:03:39 -0500 (EST)
+	id C75236B0030; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65C096B002F; Wed,  3 Dec 2025 05:03:39 -0500 (EST)
+	id B3D1B6B0032; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 548FD6B0028
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:03:39 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 03418132F14
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 10:03:38 +0000 (UTC)
-X-FDA: 84177722958.08.7A963A9
-Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7F33914000F
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 10:03:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=pNkqxamR;
-	spf=pass (imf09.hostedemail.com: domain of "prvs=42586a9f2=kalyazin@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=42586a9f2=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EF766B002F
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4824C59724
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 10:19:14 +0000 (UTC)
+X-FDA: 84177762228.11.17C8EB5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 73DB51A0013
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 10:19:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sia1MYIL;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764756216;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764757152;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s7odRi39//eUzQHPeI9r1ot7neXJJbQK2cDuxp8n8TI=;
-	b=GsbtWlnZCyKJPmDueMnFdRSWBncz9v1cWCteeIi4lUwF/8Xa7TwH2zJFNhSn3jffANGvCl
-	rZQ0+jKDidgRlYe9z0kQR3FpH1pLUzsPUT0lwJ5NJVXYbe1z7j82ENba7HUhom2+GsDoFD
-	TqOLgg3/KHHkt30oF18tBGgdoO2Iyr0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764756216; a=rsa-sha256;
+	bh=i9QD6HVcKhaudvgQUmcrPWxae5Gbkj5XejxdA7YCuNM=;
+	b=fhdYJyiZ5DHUgAjBu6SVWeLhz9+SmXXohbIU8SnxbkjEuf01KjTT/PVKKmBjouZsseiP8d
+	dFsuAU2A2Dh0N2MRd28hjVclKI30nY1vQ0gNBMnH568ozamzousyF45LXyWu1Jo0xBc1pI
+	2fSN/AjD/bKXBXF9AW9qsi15iWSNamo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764757152; a=rsa-sha256;
 	cv=none;
-	b=7TJjU0WCrZsh4nYjAwhlwMUA6oLzLL1vwL34D8xpor0KA1ZzEa0hacYxs9pW8eD2o9zHyj
-	ig2akylpQxK0TsjywU5VE3382jB2KlKsj9LdkrKtWw30QAA870JVMbPGYVVpPgW/XUpBQC
-	bInR01TRGFYOJzMNLlL2g6igiUId5nc=
+	b=E4uaXTXnr7MThd/2LOoPUVWy4SKUSnf2G2TfhhSVufBi81V1sdA1D8kNe9K4GgaSUfPYw5
+	HTvkkLtAFVe5BrmjRoKaqzltwjApwfOMKHut1vLad+cMUBpr97RySg5hOVuLbVAar2UQ6X
+	xHV0BdXjAqCFuRBuX28Kn9azPrWj3/0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=pNkqxamR;
-	spf=pass (imf09.hostedemail.com: domain of "prvs=42586a9f2=kalyazin@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=42586a9f2=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1764756216; x=1796292216;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=s7odRi39//eUzQHPeI9r1ot7neXJJbQK2cDuxp8n8TI=;
-  b=pNkqxamRyMiDFMRwisEs2WYfYCwcrYwa4zBOG+oat/hSsXGLpTtvh6Rh
-   c/r+PTO7x+kNPwtcKTXF0hk8Sk7BQdCHl4+HvXUbCb/2ZyWREPQq3H3XM
-   yDEqyvB/mXzDrNDsGPQ7vOBE8mgdQg7MHlLIhWi0FJwMxmetiDUzI/qNT
-   7oH+U15/NDNWOY3dxiwpLvi5YTZ02S1s3OD7Dluty8rmvRlrgbZzBwa3K
-   A+Zh/Dol/nzvbsLLY+dFCK3iR76E9+JLZNaWbM9Gz6QPDWZigc4X/pkh5
-   A4T6qXYxKXs4qiX7KNGfKoLjIugP4O1sPtuwj7LQ+RXZ4kqiamxmj2hge
-   g==;
-X-CSE-ConnectionGUID: y+zHd3gVTkuBmjeZewQSHw==
-X-CSE-MsgGUID: co2givXqS36NxzqAzRiVyg==
-X-IronPort-AV: E=Sophos;i="6.20,245,1758585600"; 
-   d="scan'208";a="5853166"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 10:03:19 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:6533]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.44.247:2525] with esmtp (Farcaster)
- id 082a07bd-3f7a-43be-a7c1-2fe7936d9f9f; Wed, 3 Dec 2025 10:03:19 +0000 (UTC)
-X-Farcaster-Flow-ID: 082a07bd-3f7a-43be-a7c1-2fe7936d9f9f
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Wed, 3 Dec 2025 10:03:18 +0000
-Received: from [192.168.6.49] (10.106.82.29) by EX19D005EUB003.ant.amazon.com
- (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Wed, 3 Dec 2025
- 10:03:17 +0000
-Message-ID: <6b21d20c-447f-4059-8cbd-76a8eeebe834@amazon.com>
-Date: Wed, 3 Dec 2025 10:03:16 +0000
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sia1MYIL;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BE02C40235;
+	Wed,  3 Dec 2025 10:19:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25361C113D0;
+	Wed,  3 Dec 2025 10:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764757150;
+	bh=1ALGFmGlgOHY6f+bdLdgKebsX+au1yQ5dTRhimTaFoA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Sia1MYILwN3OHyU8vJVbFzEbPmh+E9Rkdc13NmENJiNAQwujMzrx7aLJDYQwnRJH2
+	 icv0Cs7+2DiJlUtJrJ3jFjsxz5e5SC+H4b4cDPm/4/s+aTZepyO4AvrHMcRjPs8po7
+	 P0lAluHlqilBXk1Sh/B/XN0TZMdipTL7EolZ0FehsZ8XGO0/aidHMHK8ayQiiiT5TA
+	 U6OOgYna9Ec2DgYD68Hcv9/StfMLZVIApf1YAZumWdYivMJy+S1b4NF19fKc5R60wD
+	 vv/cJLS0nI7ttPeXB8OyKOFM1iSYjxfn/4avfs6o2Xu7czGUpIFQziUIbMv79dw+WM
+	 YExRE41C2xh0g==
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	NeilBrown <neilb@ownmail.net>,
+	linux-kernel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-btrfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	codalist@coda.cs.cmu.edu,
+	ecryptfs@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	gfs2@lists.linux.dev,
+	linux-um@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-mtd@lists.infradead.org,
+	jfs-discussion@lists.sourceforge.net,
+	linux-nfs@vger.kernel.org,
+	linux-nilfs@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev,
+	linux-karma-devel@lists.sourceforge.net,
+	devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	linux-xfs@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Sterba <dsterba@suse.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	Chris Mason <clm@fb.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>,
+	coda@cs.cmu.edu,
+	Tyler Hicks <code@tyhicks.com>,
+	Jeremy Kerr <jk@ozlabs.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Bob Copeland <me@bobcopeland.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH RESEND v3] vfs: remove the excl argument from the ->create() inode_operation
+Date: Wed,  3 Dec 2025 11:18:32 +0100
+Message-ID: <20251203-sechzehn-lethargisch-cd739d4ff49a@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
+References: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
- mode
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Peter Xu
-	<peterx@redhat.com>
-CC: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>, Andrea Arcangeli
-	<aarcange@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "Axel
- Rasmussen" <axelrasmussen@google.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, "James
- Houghton" <jthoughton@google.com>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>, "Sean
- Christopherson" <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20251130111812.699259-1-rppt@kernel.org>
- <20251130111812.699259-5-rppt@kernel.org>
- <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
- <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
- <553c64e8-d224-4764-9057-84289257cac9@amazon.com> <aS3f_PlxWLb-6NmR@x1.local>
- <76e3d5bf-df73-4293-84f6-0d6ddabd0fd7@amazon.com> <aS4BVC42JiUT51rS@x1.local>
- <415a5956-1dec-4f10-be36-85f6d4d8f4b4@amazon.com>
- <69bfdffd-8aa3-4375-9caf-b3311ff72448@kernel.org>
-Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-Autocrypt: addr=kalyazin@amazon.com; keydata=
- xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
- JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
- BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
- IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
- CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
- ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
- ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
- i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <69bfdffd-8aa3-4375-9caf-b3311ff72448@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1370; i=brauner@kernel.org; h=from:subject:message-id; bh=1ALGFmGlgOHY6f+bdLdgKebsX+au1yQ5dTRhimTaFoA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQa8NXdfyOWEe7C1j7j3H39MtmOfckhfYU3uPbO3GJ5W X9idSdfRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwER6JjEyXElxiNLjXsTcG/zF veHQZtE3X3LuXMnZx/2vIaPja/5RBYb/9Vo7JnHefOS2MX2Dr5zm5id7fnmJz3GXVk7n4Wu5Kpf KBAA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.106.82.29]
-X-ClientProxiedBy: EX19D001EUB003.ant.amazon.com (10.252.51.38) To
- EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Queue-Id: 7F33914000F
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Stat-Signature: f4ph359wjqu9ispqgit7brwuiyfbwzsn
-X-HE-Tag: 1764756216-928801
-X-HE-Meta: U2FsdGVkX19N9izNwM6wm6cAz7NGi0cu6QttuNUKgVd+PRe10+xWcuBASdU/CZ6eVE7yYSprA1Udy4zWdLahBDHs2Qo+yUGx17HG1IjUho7BLoCtTmFGELSsAxPQ5BIWT7+t4UWWynZlrUTh8Ga62F6/GgCE8+T1GjMS5/yNHvubkysBu/F4f4JFNTYWSXkH76zCsLxXxh0qz/2zGZzsjyNkjjUi++KU93PiQa8U7C3He/SN1WH9BJVnoGr1txZ76fKqnaQOXRpBnW3nAluTsI+yQMnhCtia7AVsAk/Zn3iWLW5AyBzd3QG2Lfgx5rXAjb4TcYPpQ4/49XvZLSSosUNnnAtydfGYpBbZvsvcAxtsvojoYu7wWcJevaNy+SDoYy3ZZSphpISehqQjRerSAlB343QCYhHc0LYaChp1a/Vbch3phP7EO0K82xYnf8NLrAy2zQ+mYOsjyDDg+xWv9zUKrLhY5/NdFb3fep8D/aXw6uobCp7TzTztcPuc/yeWvP+lNVO2tRz2JG9o6jOFGuNSiW3izDmAn/y+nc+SDL1xOC2W3v1aX04OMS0TEPFuqKflWIl5T2UVwBX8d68WXbe//G9w+qtpg8nQHKr9JuizQT40NnFTmPAXP5+J1GBK8p0vUW3iq1Xuz8GbPEtshpDZv7iDCf48HF9ELiR2MyuBIlFgKLVeuAP4YlOEC8dN5G9hMWK53T4izdBumXtBN18p+EJPme3lcHM3kzwGTvdr7YcEtwKzzrvLMEmnS6yD5LeuQCfA5VpRAW5f6Q+7KbUZIvHxwyMx717BhM23RQqAy3t3UxlAvDBMlHB1ToKxkBmI/Z1pec77MqNtHx8SY+BMtZ6j9S/oL36e/Hi4zXGdZn4Z8Gb8FIBpomPQrKhZvfScj4vhLEVhJvd3ktru1XpuZy2/ncKnrKMpshEExlXPwVafM/PIuS4ykqX8GK5cN/ej4JQN3p9Q7xggmBt
- 6FoZTx5k
- RbpsnVR2Jr6VIxDkfRaWlDp8WijXE9H3J6+DfnijSZa4Ea7toaBVcunlDsBA0FeB9VNBgwSbxxAVFK/xU8HmVE2PEcendGg5N8WkjIOXo9gQg2lVJ7yJ9bSQFML3befy9mzRfgramjQiweUpt6l1E4+FZCeMwAqDfbUlYtAPnNfJjKl3R9OpdXT+sU6k4oah73vClO55hz/ez2KZQBorwNDnKIXOXeAlcifm2gjXdFK8/UkKMTy07Z/INQUuqGmDSQHZ2gAwxd81p5eu1N6lyvpVAAxpTE7BT3QP09N71a88frmcY5IEdDeh2Iz+szH/122tfq/oJsn7SWxXMEBSEdzBBhiWqSUEWlVfKQ48tf9Ah2C7ins9+Dzaw6H7wy/vmuDDu5rf8c1bvQYI/fBxYPuaCr18pzer7b8udD0F90+/KHti11a5XtiZjPiLAX/G38e9RiHATwMyOFPGVYWN9z/pEVCH82CNpR7Hvgp8BnFYS7GLYQDUuM5d4GaJvUaa9AEtx2QrYu2Ieg9LlDBEvH1JgHtsXCriFCDvTOOx9MtevR+jUv2ZO0lYx6n27VhGVl+QSgOEk1xBvPpwZcV0UEeWjLsltApnuXMPm/tovTE+pcIhS4rSfZAD+UfExQRG68zA2ZsBchz+580Wi7eO+LdqTGhxoaUya82C9yAQkHx4JMzhdBtgUSkMxAqMAxgaXTidVKt9eOIZFbZpQ/y6NC/BXMXJ2lpP51inBbKoron8sl53bXVHs737cdsjNJrDsWmrMcV8GCvU6OptnCvzFMuM+vqnsM2lASLH/DZHHM7bbWxguxC1CBNqTDqfnxudUyLGheUUgk1ToduWuyonZPfvunAvbLWcFHO8zGKX317hKXRWL+yGbQ9FzQ5e9FNBKsUMN00elLM2jjCc1P/lE5mkKwLn91cfgWpoi1f4ShH5XLF9KLA6Q15qVFMmoB5nsnivhepdyBKRzmkhn7ypE4IIiRwhd
- gVV9sp0J
+X-Rspamd-Queue-Id: 73DB51A0013
+X-Stat-Signature: xo5xknrucftkmq5xqdnkj7jpy9tnswjp
+X-HE-Tag: 1764757152-615706
+X-HE-Meta: U2FsdGVkX1/5F+601AyxRdOVy8MBoUEoiK7NbSBLJEnnUXe6UTb1g8lCFt7tyz0QCNTHQbe/Rp4phxBYgQlaoLl6F5pgt81Yi5xDvGou3zDJ/x77rsq47qwzMX7xUogmlxss069gBhzuEMAhlUy2yVK+poBHySkKhHQZz8sZoIIUMbec2x8R3Yn5ngabDIJv5qgK27yjx6eKYOylFhYL6tS61QnzcJB9Rn262OxFRMc0HtpY3kqnO1WqleB+kXbzricjxY4kmmN20Y9EyEP/HNR+fVuPPSNK3efDoTBdh02BPCfSIx2/CRRgoSIBDWXylkEnfZtkcLg3moX92tDPua8IgI058hwRPkV63vmhi440bxgqIdTP0pwUv9SqIoecQRYRuk7EyQjN/PG66FF6DuSc1jIJuzz2qtiR+o5FpHsRdQwypgFvHmkWj0xRruFN/om4wOqdjsufAFjml/ffH0GfmZ8ORx//CIrwjuqjTt7xM36M3zbVR++qtQFNTQujQTsb8VDsY58n0SN5JbyWDmSZuXLC//8+wBCdspmUstnwKeXms4A8o04sja4IL9psvDDHsg152L2SwdiSn98Y7VFy+xvjR2WE5quAzDLLe2XpqDUkajp5llv3PPCzE0faoQx4eX7ItoHgFqrC75+z02D+XZgmhaqrQAoc8nWB/IXBPSINqmf3vI6n98Z8TH2B60k9GL0dTGPLJuiKrOP4LabaDUlXR4EV27llt5jSfTj2CwQgo9kdnXUmSZJ/XKtqevI2vwWs1C6lvMZxaya0yR1+8v8ZqbgQHD6dOBoQIJfJQXRB/ilkWTj8Nz0S36G2pBtCF8KeZhe16IHGCdJ27kltcPT2cUHwafpwAwjYDjdNgb2PLi2oknnEgVDRfCJlfO76F6epJ8g0KRCjwfvyHxkTpS9YUaLqy7JfCaoV/vW+OivyiR3GlIwybVs+bc1aODcw47KCy0oLJkOyC/y
+ hW3f2S8A
+ fKPZUAlXtOCRnJSKRrt9cp1UCppqDxJVnmltKNlfv1R93BysTB2MUpIaTpO95s/ETf7ah+CCX4keaPv2wljg3nrpdu5JOUelzj/9932zN+NTjKQ2FAhKztzEtnfRGYyzg991j02IVSG5NfcT32C2j2QdYPSuYUUNhyAYQCIkt+jvODfmP/KlWCQNIhXmVJwJ84GM/DLVA8q/jK279u/f4WEpu/X2yCaXy7BQ/MUy9boXhG8dqQEjAtArGkBOLLcqgd7gQnjzfq1HGPpiF84VO0wdKSeV/vfQnNRJmlMcAbracWtCkm+gqGV9tfxHgYUbGwjTeLEZj/kvy5M9x7y0yAqlp+Fz4qNi7A/Oo3wnV45b2S919egBUxgOPNJ6i6bufeuxCt/hDDQyWepwLMJHT0knZQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,98 +191,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 03/12/2025 09:23, David Hildenbrand (Red Hat) wrote:
-> On 12/2/25 12:50, Nikita Kalyazin wrote:
->>
->>
->> On 01/12/2025 20:57, Peter Xu wrote:
->>> On Mon, Dec 01, 2025 at 08:12:38PM +0000, Nikita Kalyazin wrote:
->>>>
->>>>
->>>> On 01/12/2025 18:35, Peter Xu wrote:
->>>>> On Mon, Dec 01, 2025 at 04:48:22PM +0000, Nikita Kalyazin wrote:
->>>>>> I believe I found the precise point where we convinced ourselves 
->>>>>> that minor
->>>>>> support was sufficient: [1].  If at this moment we don't find that 
->>>>>> reasoning
->>>>>> valid anymore, then indeed implementing missing is the only option.
->>>>>>
->>>>>> [1] https://lore.kernel.org/kvm/Z9GsIDVYWoV8d8-C@x1.local
->>>>>
->>>>> Now after I re-read the discussion, I may have made a wrong statement
->>>>> there, sorry.  I could have got slightly confused on when the write()
->>>>> syscall can be involved.
->>>>>
->>>>> I agree if you want to get an event when cache missed with the 
->>>>> current uffd
->>>>> definitions and when pre-population is forbidden, then MISSING trap is
->>>>> required.  That is, with/without the need of UFFDIO_COPY being 
->>>>> available.
->>>>>
->>>>> Do I understand it right that UFFDIO_COPY is not allowed in your 
->>>>> case, but
->>>>> only write()?
->>>>
->>>> No, UFFDIO_COPY would work perfectly fine.  We will still use write()
->>>> whenever we resolve stage-2 faults as they aren't visible to UFFD.  
->>>> When a
->>>> userfault occurs at an offset that already has a page in the cache, 
->>>> we will
->>>> have to keep using UFFDIO_CONTINUE so it looks like both will be 
->>>> required:
->>>>
->>>>    - user mapping major fault -> UFFDIO_COPY (fills the cache and 
->>>> sets up
->>>> userspace PT)
->>>>    - user mapping minor fault -> UFFDIO_CONTINUE (only sets up 
->>>> userspace PT)
->>>>    - stage-2 fault -> write() (only fills the cache)
->>>
->>> Is stage-2 fault about KVM_MEMORY_EXIT_FLAG_USERFAULT, per James's 
->>> series?
->>
->> Yes, that's the one ([1]).
->>
->> [1]
->> https://lore.kernel.org/kvm/20250618042424.330664-1-jthoughton@google.com
->>
->>>
->>> It looks fine indeed, but it looks slightly weird then, as you'll 
->>> have two
->>> ways to populate the page cache.  Logically here atomicity is indeed not
->>> needed when you trap both MISSING + MINOR.
->>
->> I reran the test based on the UFFDIO_COPY prototype I had using your
->> series [2], and UFFDIO_COPY is slower than write() to populate 512 MiB:
->> 237 vs 202 ms (+17%).  Even though UFFDIO_COPY alone is functionally
->> sufficient, I would prefer to have an option to use write() where
->> possible and only falling back to UFFDIO_COPY for userspace faults to
->> have better performance.
+On Mon, 01 Dec 2025 08:11:42 -0500, Jeff Layton wrote:
+> With three exceptions, ->create() methods provided by filesystems ignore
+> the "excl" flag.  Those exception are NFS, GFS2 and vboxsf which all also
+> provide ->atomic_open.
 > 
-> Just so I understand correctly: we could even do without UFFDIO_COPY for
-> that scenario by using write() + minor faults?
-
-We still need major fault notifications as well (which we were 
-accidentally generating until this version).  But we can resolve them 
-with write() + UFFDIO_CONTINUE instead of UFFDIO_COPY.
-
+> Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
+> the "excl" argument to the ->create() inode_operation is always set to
+> true in vfs_create(). The ->create() call in lookup_open() sets it
+> according to the O_EXCL open flag, but is never called if the filesystem
+> provides ->atomic_open().
 > 
-> But what you are saying is that there might be a performance benefit in
-> using UFFDIO_COPY for userspace faults, to avoid the write()+minor fault
-> overhead?
+> [...]
 
-UFFDIO_COPY _may_ be faster to resolve userspace faults because it's a 
-single syscall instead of two, but the amount of userspace faults, at 
-least in our scenario, is negligible compared to the amount of stage-2 
-faults, so I wouldn't use it as an argument for supporting UFFDIO_COPY 
-if it can be avoided.
+Applied to the vfs-6.20.mkdir branch of the vfs/vfs.git tree.
+Patches in the vfs-6.20.mkdir branch should appear in linux-next soon.
 
-> 
-> -- 
-> Cheers
-> 
-> David
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.20.mkdir
+
+[1/1] vfs: remove the excl argument from the ->create() inode_operation
+      https://git.kernel.org/vfs/vfs/c/7d91315b4335
 
