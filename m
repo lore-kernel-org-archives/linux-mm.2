@@ -4,112 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BDB3D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:18:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A1D0D1266D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:23:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1EAD6B0029; Wed,  3 Dec 2025 04:18:56 -0500 (EST)
+	id C22696B0031; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F5D26B002E; Wed,  3 Dec 2025 04:18:56 -0500 (EST)
+	id BFAC96B0032; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90C3C6B002F; Wed,  3 Dec 2025 04:18:56 -0500 (EST)
+	id B37326B008A; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 81DCA6B0029
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:18:56 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 339DE8A423
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:18:56 +0000 (UTC)
-X-FDA: 84177610272.27.9C59A8D
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3F3C24000A
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:18:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cPkPmRea;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A26816B0031
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:23:27 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E75558E29
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:25 +0000 (UTC)
+X-FDA: 84177621570.21.E2B06C5
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AEC3618000B
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=k49+nHHp;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764753534;
+	s=arc-20220608; t=1764753803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ql++8oIfq0N8Sw3ugzWzChOj33oCiyU6Iohx69rIu2c=;
-	b=6HZGvJZbvVMRixGO9uSnzlAgSY1APSNrpI9e4m2I2PfGmA6YKeVO6yxl4d/Anan1ElWlzA
-	YXdB76QFBbGiYA5ICaPajLtssX9Iu3Tpbi5KYFRil7Eq4OYpqCNX384g/budmTQYv0eGd2
-	I1MYYkzjpt9TkrR2GUdOBZnIAdBf5qk=
+	bh=EFjX7Gas1ZYIoPQgX1ANr0djeVn/uypCOzwVMV3za7w=;
+	b=dMTEnBq6AlyGo/sh7x+PMC8SFb53zyjRAHYTTyKY55l6TY5QIT0J2gWbHzt4w50dVC38mK
+	kjdb/1gxxdvkoYXDkM1Xf/4kM00KBh+8AwZ2PrdjJ/ehYbVHoh6AFPbp7QoSNegjnmUdfH
+	5ubJqf4DNhNcx5CNiTRhR/pgU+UNMiw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cPkPmRea;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753534; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=k49+nHHp;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753803; a=rsa-sha256;
 	cv=none;
-	b=Kc1E3Y+sqHPsH+448tmJ/9AJi+smh77FWcpIWDLDHPJBW8I+uBFDGkEnANtpodjJ7EHCit
-	f3PKIBAnRoQvHpbn/PTWg1pm7gLKS9OD229lCmJzRvPUGf57oEvUPq8nsIMHyZxdxtrxg4
-	S+9VDZtJueokODVhBsqaQn8//sMAhLA=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64180bd67b7so8254524a12.0
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:18:53 -0800 (PST)
+	b=D9HJfGrv/wwGX95ga/D58WL9pPGBxEewJXM8xpbIyhtqmsok/qY9KOjCUC6Sva5JgZqxJz
+	rr6x1/F6BZSD/LsaTialr/eqpW8VbfPXp66RcAIJ5wer/K4Vs3Ov1RGqtCUijUwuSOUPk6
+	X/vk4EgBb9cDzQ8jK3BEtO0fXg7jyaQ=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4eda6a8cc12so62553971cf.0
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:23:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764753532; x=1765358332; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ql++8oIfq0N8Sw3ugzWzChOj33oCiyU6Iohx69rIu2c=;
-        b=cPkPmRea/kINLfflVVYE6yJBl+laBGHT0S+Zz9OLxelNr423UPXfKzwW1gq5eLHijD
-         RCCqqmPC5sbnSU8oLjdAJRd4PhINWHKlZSIzUCozAejHsPvR80vK7XtUrQkdlMY/oZ+0
-         a4AOytrPeTq479GLA+y7NetBvUz/Rv+/cBeQSXzDSva1qEFyuXOBuiSnTOsngsNlBeDN
-         rD09D/o8BzQadpnqgpx2o3FHtBTZV5MSs/2wa3T5loKgO7keCTzrMfy2qJft/CjVRBZ9
-         JJb1oGgYa6T8b8F6DvEYZrlS9Ja9sD9M+caD0G2fmoCgO6Mm+wtVhY4PSQ/ayysedaXK
-         dirA==
+        d=gourry.net; s=google; t=1764753803; x=1765358603; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EFjX7Gas1ZYIoPQgX1ANr0djeVn/uypCOzwVMV3za7w=;
+        b=k49+nHHptx5Lyehd1zb97BWKVLXFE/xWKIkvnfIYUF+Ajzpp5fYLpzrcpWV4bqBWaZ
+         0WLVQSoHcYXEr2fOTkLglXksMvvrwgd/5mI1PvN2q+t2drTxl6tDDUZ5olNawcsotE22
+         ps640HJPNHHP0cpHOX8ErYmvZCQtQrs9DCL+iJ6rgut2UC/lq/VzFsMBcIzDtzArpjpA
+         pZ4uelLM63QGmDrYpxqO2H3MxgCTvDJHmJA3sBWTk6L1UQFzwuNFBEm2qTVlTcdGg6EZ
+         lU4Z6l1VNJ8971Y6wxjoaE6Nuklo93VX21k/vQ4/fUF9gcWWCbDk+X3rJzavCi8kOpTq
+         8jHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764753532; x=1765358332;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ql++8oIfq0N8Sw3ugzWzChOj33oCiyU6Iohx69rIu2c=;
-        b=EH7hHWnaTuBskEe6uzt8DbUIeEP2I6aDBRAhmdDlt+ZS5wKvZ40B7rW1/ePR5WjdBj
-         3kJUFfuNnA54TYEqodk7AmeSuuklkEcbyyg1P9xLkiLqTF0fpXvFamXtvg3vMRFPFYWh
-         StMIME8ZKMJ86u1PXK+NPp3eb/On895ChOFFQuVNrchPQUnGQTADApoK9VfKt/QRKbmb
-         Et1H0gs49afOYiP8sy1AsaoD/CZkAAsX0Jcwi6/VoDl6oxvMJS8rVTVJ4/NiG02eA6uO
-         aKu+sUZQ/zK0qLnw0IjEsJ53gf1dwURPLdwui1vnbF9Fr/nEBWd2ZW6/UhzzSNk/+MrN
-         u1TQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhvYEAALYXaCoe9gc+rN7573PvXY6HdkclEYpPKnLQvxSwWXd49zAPgQW3ccbOkR4xZBmdrPNDZg==@kvack.org
-X-Gm-Message-State: AOJu0YzK34voSn1Z0N/rzqHgQEJNX09Jyb82FpejCjF1cdQkdACHL1l7
-	pLRCJ4w8R1v90x9ckVnQiygR+/sqQjwvjmRz80fQCd7DtrpGE90DRdjSL6YZ6w+nnQiupHF60Vp
-	3m3zr2Td2YdeEmipo2EJO5QAHf/e1vsA=
-X-Gm-Gg: ASbGncu5w2zxJDOhZoQP9QKGt7fxQwtDZ0SaGjoAwvVvKW967yjglvxs2M5G8Zg0XEL
-	iQPyLMDyvlAkVAFlzaxWFHtE6+mQUB7vBQOkUZnhO96Lx7uSF3k5F+kw241O8J3+WYCBAgKTyVD
-	T6oY+4xYsMmO0nVtqF/DXQVaoUcPtj+lIH8GIBk0wUGFuY+smGbLksZlji0LzkEvSiw6AcZtzB3
-	Fiq1iiiovdXYKrkYi76hPBJhdZ+iYS/OYARwY3VmFhsYlNaLzcIdBV+EPG1zaDUuvnmbFYdde3a
-	wzAUPPEBQ8EFf6MliN9DX4X4/w==
-X-Google-Smtp-Source: AGHT+IHR5GdKaIRSJgBH/EStrCwXPMNUDTdsyK0kTD2yFj6ZgO/y3zCx9KM6IDz4H2sMXGknxSVuoIoicQ4ymAdTGJ4=
-X-Received: by 2002:a17:907:d03:b0:b76:8164:88b5 with SMTP id
- a640c23a62f3a-b79dc76d5eemr163828066b.46.1764753532117; Wed, 03 Dec 2025
- 01:18:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764753803; x=1765358603;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EFjX7Gas1ZYIoPQgX1ANr0djeVn/uypCOzwVMV3za7w=;
+        b=BTEizDzremx8sRgI42fn6MocyHOyT7e0gI2zxJcj1zzTumSIWxDIQ+IPKZhE24UDus
+         OKadx2XJkyuYZ3MDmtmkYRWqX7mCc02ox1e/bnVIDmiId1uNAPe83dcRqQxtdqsrqvrg
+         3CvD2MCp1lRr2syie3MdlIlB1+NYH/eYoeuLsUcCDUpazvclmKumw+hhx828oCX3USnP
+         JPaYtoJIGqTmnOm04+hGI2IaDfJUmk59jPMX9yY0AkH1ti0qHAuDruEGAlk8kj+yHzB0
+         /t5H6VXnh9ZomKV72d2hNvDV8bSjmdvWBJiUHksYM2h4XwyO0jm73IHHLt+FW4H3K4x9
+         grpA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0CU2L2Kn3i1JwBx0OWoDcfJiD8/uX8IWtRfRsHKQ7wiWAczmP0uD43GVbFQ497EN96NHJyQP+kg==@kvack.org
+X-Gm-Message-State: AOJu0Yyz9hs7I9dtVCeGi2BdZF8B7Q4kOHIKsfdBA9FiN8gXlUyoG85i
+	ai/WtAaYTA5lI8jjXP9ZbopQEMuSnXpKRZPcsiOrz+7aNAoxd3KY0JgBcdRjLg/pljY=
+X-Gm-Gg: ASbGnctDZNLVZ0uh4zZSmWBxP6IqiAv32p+EUzlrNAHnPF25oZGR5fpxKF1br+I11wY
+	rspoopAMPo6AHULDzGBbEeWhn9UkX5r8SyHVgs+S5VmcgvtBZVg74eURzHUCBkcI0Y1mC9XGSbw
+	ha5JGsNfsqGJl8c/Vro9x54rKP3ZAq5+50PWewwhFe88lniAE6hmTJuDxFqt99YWV8Wyt4dLRhC
+	jwRHqjz6BRKgArWV87WKP909biSzhjYd5vXznfdaaFmOEUzyV5ZmsWIT48gjGsmHMAsHlrEmW10
+	HlC2a11aLLrxZhQplUIRbR0X2PR7DUGCe0G+HzN0iqrKkeAe3ZLMrRT6MfebehkJZIx4IItiXGt
+	Z/HOwjDVMrFTvmkvCwfaaFc/mgKX/BtklAmOOzatiSie4oNA8GHvXOEyu3Tivq043Wz6doMx2kS
+	xFVbMJCkygVHRw+IXDx7aF5eTzYfg3MTHX3smZlSjgZ9MRT5a3ZtzDtUV6zIFZ3hodCndKeA==
+X-Google-Smtp-Source: AGHT+IHqPQaHW1DZ4s4jpY2crTNj/JQPWH3xZfsJp1SX8T9ifTYZwnPrkGsw5JGaEAmGRsm1E+BRkQ==
+X-Received: by 2002:ac8:5dc7:0:b0:4eb:a192:de99 with SMTP id d75a77b69052e-4f017695341mr21786921cf.76.1764753802764;
+        Wed, 03 Dec 2025 01:23:22 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88652b492b3sm123488176d6.33.2025.12.03.01.23.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 01:23:21 -0800 (PST)
+Date: Wed, 3 Dec 2025 04:23:20 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
+	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Oscar Salvador <OSalvador@suse.com>,
+	Juan Yescas <jyescas@google.com>
+Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
+ lock-free
+Message-ID: <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
+References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
+ <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
+ <aS_0bgCs2qE0y1bJ@tiehlicka>
+ <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
+ <aS_4E2H5aJmSvWF7@tiehlicka>
+ <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
+ <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
+ <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
 MIME-Version: 1.0
-References: <20251123063054.3502938-1-mjguzik@gmail.com> <aSMhj2Q6BTMNSsA4@casper.infradead.org>
- <CAGudoHF1wjY5tF-aKVrjOHoSunSGTrGSrmm3nnmPArVzajTNYA@mail.gmail.com>
-In-Reply-To: <CAGudoHF1wjY5tF-aKVrjOHoSunSGTrGSrmm3nnmPArVzajTNYA@mail.gmail.com>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 3 Dec 2025 10:18:40 +0100
-X-Gm-Features: AWmQ_bmmwG3HJxBumPF9yPwpr6N5IAwXXwVhPXvzZrIQxJaFQEzyiv09DmZXvX4
-Message-ID: <CAGudoHH=imWVHKyQ_GrvQUEQawBfmkqdLkjSwdecmTyxiRv8rQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] further damage-control lack of clone scalability
-To: Matthew Wilcox <willy@infradead.org>
-Cc: oleg@redhat.com, brauner@kernel.org, linux-kernel@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3F3C24000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
+X-Rspamd-Queue-Id: AEC3618000B
+X-Rspamd-Server: rspam02
+X-Stat-Signature: gbj39fz97uqt4niiahgr9oc9xupmhkjs
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: x5qfaiwwg3bjfmtw39u87zhhjnbqzd3z
-X-HE-Tag: 1764753534-905707
-X-HE-Meta: U2FsdGVkX1/WzscPo0Z+5D5LgFY8RaLBmQTQdZTQgtKXU2ee0srPXfCT+t6XF8tU4JVHeiVCrx/jFc81e0XhNnQ02ITJlng5iKQPYBit4sHaeVQJjUqZ85lIU1DrM6N3VtSaGKxn26h41X4cVbOqyYAH5Vxb2bBH7voGHiZ1ah/6RCdlV0fiQh4VKkbXX9bZuuSIFiHd4ft1tKTPKypvFnCq47iQt1bPfvpSHZ26OjMo5uz4m8rZ19EhGG0iNJmfswi6bBEzYIkiYMHH4FNVOKXFQ7aLkJ2YvZAhnPdRnGL9PZkDtb0lzpucOk/fHJGmGSOJp/SYdpmwj99H71dTe/nLLLiyo0ZxVllG014mwqi+5AoVEY0R1kknDWbNhLA13gYJgIuZl5BBGtigTZDO6Qdx6TN5KIZxCj4ZHGkpGtyk5ALsYML/fxQxqUXbwI/74rSRNqshJRgg2tcOkQ6Q2f/bUgmk+amD902azhspzTHcGYe5GhNljnvgrAwic3HB7IrhGrWXCVANpQ6UOlLSjNfqvQT17twCozJoaAkeaPoPMOytLp5kEz7/L1jW75iI2exgnr5fqhrYmSHOHV8GY0fkfx4VHq74rTpZBBiZ9Uy3hK4C3qdWLGGkHz0ektYx7s1NQ8GlIKUj10aIdh1bmHoiaR1zwoXpfSH+CaBMpIJkHYAQNMy3L6eADjmud8VTjpwJhBWnkIeKd8pWEV0NOy/A2xq/syDFaNZcuUtWn3zBSRQYTZwjJcnD7Iw1MFlS92y0JPCdJ4vYUumoj4KeEq+Xj+9J+TlxyZSUlvTMj7a9+wDaJBo5kBVfruJcTvp97h7WBO6p51TQzUi3ixALtLPYV6Li2qH6w/2sLgv8OotIzlIXVekIIl2jsNA61bO/nqQPXqn0yJd2/QqTXveKJATdzGo+/Fh//y4E3lBWUn1Gg5YrHTjZ3drvyF/Yzy/FvIjrvI5YcvSC6rqTPHY
- 1VsiFpoq
- M7lAquMsuTZStgkZwSw02G3KDO11SccPKKD39I/t2XHYpEJLa5BgEgQX0sn04mr+kbXvU58/sSPVO2Cq0F+xL5sPVJyd1nqHDT1Cy4qF1PsyvgdIM10POVm5ae7cBBx0o+cI1IYlLLDNLSTRLcL9pDhHS3iNJyDkNwIHHqoVtaQ3URKmFq3AZxuIOhx605l2KPXQGjvVetSifJVGyG7FuPrnAZEuaByhwC0+Pi/O8ResmQDmZnIOCLC7BbvtBeacFO0ZLvsQK/x7HHJjnu3cNJ63EQh1dLKpWMUJdWp0kKOZCmce+YMqH1hZxWrUfis7D93kVWKGJB9xE5R/8X4syq2z+H0d2eI6LpYl7rxoywq+5nBF+31AY1GpvtJi2dgNWb839PWnXSlVqEQU=
+X-HE-Tag: 1764753803-730230
+X-HE-Meta: U2FsdGVkX1+jR0osMq0WScZ3VvWJ2IhXfDcpW2Q9pxN9LcfGdwyckpUyAAxy+dEGIyB9z0OqfUs0923rJrk646LkXyjth9er/wVeIIMCNJzr8QmAC4B1fxcyBK1IYP3u4gkllP52htsKA1EFcQHG4WkDj2PemfpjjY3J/mX0wRzYhwc602X8aJYCNbNLvoINA9qs3M4Vn2PvvUbmc+2jKeyXpNakZPH76igA+TK0TpPPlGUuP/qURqayjr3uNjzfVXi4CENTPM3cCJIGZtpSB1R4PcuOfP+He1xBmIjzqYlJoUS9C4ZiAQArMmJsZz2yB4PUahPhlI2S9j0pdEVQcFYSuk2XswkPyJW5v0lMhrPBVkpGA37TooqEwzNPs1hV2cvwv5sgqOkugJ19KEoioUtCc+lHhozO/P53nBT5PZ4L2bq8UdjtasPELaQ1Q5OIHnPmEuAOh5QWE7tzMdTtTq9sVvA9dfHvIohuWPhRwoOQ5mI1tYXysP/N+oZKVgGTMFV4rOj5xvxfMZe7+wL9x97Sok4tt8mL1CG9rMnGIkQoJizQ15ujCCiVyPNbCWb7i+MIlcYBharZFSUvLGXYCb6uU1jKNVYjy52jzeAWjN3vi7tgBhsqEqlwlXDKd4vyUTwn2oNBPESeSOVYoXuQUgx+Eskuc0qIJDsOtkxRnUQZq82stXC7hL2zkVLvbuCz5GvsqKs0bRnv4jYee9I/bJ/LmSZw+Gv8sBNnRFjAR4L6TzIVwgo5dTWjlMVmVODYJmHLCYhdX49k0KZTbR+PHRs7/qO6ilXbKocIXxr2PQkQE5Blls47KtygAq9P0R/wA8EdjOZPFd8ma4XiEq5Zdre+RciGqewkzBuQZSfUNO0SZDyC2xDIMQEA5KL1w1WeG8pKxJGsmBxOiybCatMaNWfPGtfpiVRSCKf26eb1dUvDMVQe9p44iNpA4eLu5jC9R7RSpvKrFuErAQCn1eS
+ oe6wlTlA
+ Z/G8fbEzXa0yEKXKLrb5q0o0hlyAWS+g2efrwfQ43AYLirzGiwchFbK6Mu8wMeFD/G58AzPQoT3UcYR4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,74 +131,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 3, 2025 at 9:37=E2=80=AFAM Mateusz Guzik <mjguzik@gmail.com> wr=
-ote:
->
-> On Sun, Nov 23, 2025 at 4:00=E2=80=AFPM Matthew Wilcox <willy@infradead.o=
-rg> wrote:
-> >
-> > On Sun, Nov 23, 2025 at 07:30:51AM +0100, Mateusz Guzik wrote:
-> > > When spawning and killing threads in separate processes in parallel t=
-he
-> > > primary bottleneck on the stock kernel is pidmap_lock, largely becaus=
-e
-> > > of a back-to-back acquire in the common case.
-> > >
-> > > Benchmark code at the end.
-> > >
-> > > With this patchset alloc_pid() only takes the lock once and consequen=
-tly
-> > > alleviates the problem. While scalability improves, the lock remains =
-the
-> > > primary bottleneck by a large margin.
-> > >
-> > > I believe idr is a poor choice for the task at hand to begin with, bu=
-t
-> > > sorting out that out beyond the scope of this patchset. At the same t=
-ime
-> > > any replacement would be best evaluated against a state where the
-> > > above relock problem is fixed.
-> >
-> > Good news!  The IDR is deprecated.  Bad news!  I'm not 100% sure that
-> > the XArray is quite appropriate for this usecase.  I am opposed to
-> > introducing more IDR APIs.  Have you looked at converting to the XArray=
-?
-> > Or do you have a better data structure in mind than the XArray?
-> >
->
-> Hi Willy,
->
-> in other responses I outlined what I suspect would be a viable long
-> term solution, very much not idr-based.
->
-> However, that's not something I'm likely to implement anytime soon and
-> I doubt there is someone willing to pick up the matter.
->
-> Whatever the long term solution and who/when implements it, the
-> current code avoidably loses out on some performance because of at
-> least two lock acquires on each fork instead of one.
->
-> At the moment it is structured in a way which makes it possible to
-> take the lock once with minor effort.
->
-> Leaving this in the current state results in a minor risk that someone
-> will make changes which turn fixing the scalability issue into a
-> massive problem.
->
-> With my patch as-is I can suffer some pain and avoid modifying
-> idr_prealloc, but at the same time I don't think the modification at
-> hand is particularly problematic. Notably it does not change any of
-> the internals.
->
-> So the question is if by "opposed to introducing more IDR APIs" you
-> mean you are just not fond of it, or is it a straight up NAK. Per the
-> explanation above, I think the change is tolerable in its own right
-> and I provided reasoning why I'm adding it in the first place.
->
-> If the latter, I'll see about massaging this to drop locks and retry
-> memory alloc.
+On Wed, Dec 03, 2025 at 10:08:55AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12/3/25 10:02, Gregory Price wrote:
+> > 
+> > My transient failure (although i'm not sure it was actually transient, i
+> > killed it and retried after a few minutes and it succeeded immediately)
+> > was on a ZONE_MOVABLE block.
+> 
+> Okay, so that one should not bail out. Longterm pinnins must never end up on
+> such memory, and if it happens, we have to identify why and fix it.
+> 
+> We have this known problem of "stream of short-term pinnings" that can
+> temporarily turn memory effectively unmovable. Juan will talk about that at
+> LPC [1].
 
-Welp, retrying preload turned out to be significantly less painful
-than I thought, so you can consider the above question moot. I'll be
-posting v2 without idr changes.
+Nice, fun, good topic. Looking forward to Japan n_n
+
+> 
+> We have another set of problematic cases (vmsplice(), fuse) but I would
+> assume that these are not the cases you are hitting.
+> 
+
+We do use fuse, but this system was relatively quiet when i tried this.
+
+We do have some proactive reclaim / demotion going on, but i don't think
+it was that (see below).
+
+> > 
+> > Kind of suggested to me there was some bad condition the resolved once I
+> > took a second to release the lock and try again.
+> 
+> Hard to tell I'm afraid. Do you still have the dump_folio() calls we print
+> when migration fails?
+> 
+
+What luck, I do! :D
+And i just noticed it's the same page over and over
+
+[ 3404.119270] migrating pfn c06f176 failed ret:1
+[ 3404.129152] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
+[ 3404.148284] memcg:ffff88842e855000
+[ 3404.155834] aops:btree_aops ino:1
+[ 3404.163193] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
+[ 3404.185408] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
+[ 3404.202603] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
+[ 3404.219779] page dumped because: migration failure
+
+[ 3404.230610] migrating pfn c06f176 failed ret:1
+[ 3404.240483] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
+[ 3404.259603] memcg:ffff88842e855000
+[ 3404.267152] aops:btree_aops ino:1
+[ 3404.274511] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
+[ 3404.296716] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
+[ 3404.313909] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
+[ 3404.331102] page dumped because: migration failure
+
+[ 3404.341778] migrating pfn c06f176 failed ret:1
+[ 3404.351658] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
+[ 3404.370781] memcg:ffff88842e855000
+[ 3404.378331] aops:btree_aops ino:1
+[ 3404.385687] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
+[ 3404.407895] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
+[ 3404.425073] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
+[ 3404.442264] page dumped because: migration failure
+
+[ 3404.452928] migrating pfn c06f176 failed ret:1
+[ 3404.462809] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
+[ 3404.481948] memcg:ffff88842e855000
+[ 3404.489511] aops:btree_aops ino:1
+[ 3404.496899] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
+[ 3404.519128] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
+[ 3404.536332] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
+[ 3404.553534] page dumped because: migration failure
+
+[ 3404.564200] migrating pfn c06f176 failed ret:1
+[ 3404.574077] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
+[ 3404.593208] memcg:ffff88842e855000
+[ 3404.600769] aops:btree_aops ino:1
+[ 3404.608138] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
+[ 3404.630355] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
+[ 3404.647558] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
+[ 3404.664761] page dumped because: migration failure
 
