@@ -4,141 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC189D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 05:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F80D116F3
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 05:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AABBA6B000A; Wed,  3 Dec 2025 00:25:39 -0500 (EST)
+	id B07266B000E; Wed,  3 Dec 2025 00:33:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A83056B000C; Wed,  3 Dec 2025 00:25:39 -0500 (EST)
+	id ADF186B0010; Wed,  3 Dec 2025 00:33:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C0466B000D; Wed,  3 Dec 2025 00:25:39 -0500 (EST)
+	id 9F60B6B0011; Wed,  3 Dec 2025 00:33:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E01E6B000A
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 00:25:39 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 268B71A0472
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:25:39 +0000 (UTC)
-X-FDA: 84177022398.25.79E88EB
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 67B7520006
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:25:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=NPCnnbp0;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 89A0D6B000E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 00:33:43 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DCC016045A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:33:43 +0000 (UTC)
+X-FDA: 84177042726.07.E64463C
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7D2D61C0009
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:33:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HL3jYX7l;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764739537;
+	s=arc-20220608; t=1764740021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQd4Pt3H9b8tI3sXslpzNlT4s0PF8/OKfUrI48cqcy0=;
-	b=uBmsYAmqYH29srkL+Fx3p6ZRhW0amyxfiusWNAzUNQyE4mGpYlMTwABppecEcShWBQLQIE
-	igAeZkpbYEkrd5RqX/7Tjkk1y3T8WbgZs8BpD4a+CVTLXS+hI8+QvTHy1dPSUZlSS63W0Q
-	se+TNCYIrnFPmZ2G1TymoekVUdkfrfs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=NPCnnbp0;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764739537; a=rsa-sha256;
+	bh=sXYv2g3mMeVHg586+4q0ZQi51VwtQG1+dmYwOUHmoMA=;
+	b=yC2xFpQpTT5r7hXgRbRf9BodpzpOIPfroxjms/JNW6100m0aQPfCKsQtBxlN6ADQMtl+aq
+	gPfQAwm38hYfMj1zeJCt3AV1g93C0/oSDTZaKTqqyF930OsUKUmPYUJgm28UpxdfvPL9K7
+	qQvt/8ekbD2yixyGAITslywRoqQTFSw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764740021; a=rsa-sha256;
 	cv=none;
-	b=yd0IZhNd8Dd/jC+GP8qp5s2HmRVRyLpZJBNPCg+R6GaJQk+AGMUTG2LPwjoremW4/icSUT
-	CPFUt/PnzdFG6QbqTq58U3FOCltRdHV/aF6K0CrQT8PDPXPG7Z2V/XLqHnzukkQ9Bm2Yev
-	16L+Or5Wp6flNE2iB0yRfO5/iapaYiM=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b2ed01b95dso611304785a.0
-        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 21:25:37 -0800 (PST)
+	b=QuxiCI4ih0y4vwCIL7t198CQviAleHrRGh4iui2gMD5q0k9HVsdbJSGOos4ZlqrbO23Efk
+	DqzzRo8jw5LTq4uUshLwxONxSwgpnweRFnl7wiJNQvAowxbAWSQtYnpC1CmUMPhpEf1eig
+	6ehoDr9I22K5Wx50mprvQiZAF/wd7j4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HL3jYX7l;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b735b7326e5so81553666b.0
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 21:33:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1764739536; x=1765344336; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JQd4Pt3H9b8tI3sXslpzNlT4s0PF8/OKfUrI48cqcy0=;
-        b=NPCnnbp0Y4QJRhwsxIPWguhyZxuEedwvjqbaEhk1jbedyzQKoeWiDSZcQoDyGBWQs7
-         qkZ8IQ8k7DvUfquVRPvNrBhKu2P2AaE92xg0FLaCgWVWg8Ke9085VGbfgK9B1z8C39Zb
-         f2HhWYZmYsZdYGWlBaZgl/V0nbR97CpukX2MQBeW1A/TSIJgARMOI0PlTrQq3WKzD8pr
-         fZ0gABYgQEeOiFDcJpSQaGRxaEIDGXzBiWewbuznOb+aylVnHus/Hmqpv/byTki+xHxp
-         nZb+9RmlZ7AaxVXdpjsoIu3l8Bmai8aXmC+pe+4Ef/ddsvmqaSeRD2v/dP77fJ/a/+As
-         P4yQ==
+        d=gmail.com; s=20230601; t=1764740020; x=1765344820; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sXYv2g3mMeVHg586+4q0ZQi51VwtQG1+dmYwOUHmoMA=;
+        b=HL3jYX7lN/07aYRAAnxkSluZO0joAU2pdIvbb7rTUZ+rWp/Mh5J6IjMSWquPfbqINU
+         tAOMt2gnOSDGOsv/MkvoEuvBtJtd+0UbgNGvyNIR41KR6uVhOI16KKp3pQ14qNEZ1770
+         ja3ijASeGcsckI9mY78tFUs/LiwrAy2LVsFGjuGZbBdxoe2ATTIehwVLSGSZ0wNac0QO
+         gbSdF66S529Cc82//IVT2+YquIZ4C7DNb6Gw3gA3wdLw8/HYZJLZcEWhaw6wjp2qc5no
+         L3zJ+WAzEWb/xtbPDM9djwT3ycGY/X9smKkq5Cj4X6wYF8nJDMqNVRmApEhLj2IQxvfS
+         YztQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764739536; x=1765344336;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JQd4Pt3H9b8tI3sXslpzNlT4s0PF8/OKfUrI48cqcy0=;
-        b=enqsNaGi2uN+QAZaqEe3CAIFy7moJH/ryFi/BVhERIVdwCHphQLbyMldiuqjV2Pj2X
-         KeI/52Ty/u34TulfcswU7jbpvCP4TJBuLL6l7zvO5AWgnls/TqIwJXOk2n4eJvPvx7zL
-         pby0JZlKzN7yTqJWKUIXL5a+BxdQBss8VHLkrOkirRM3L+Jfd9p4DRZ8z59HpRwjK3a1
-         e6si2ZrjzNSgWvHTOl6IdT9HNdC1C/2Asd0hkM1UeAxXN/q0GAjIKmZ0yJCvCNZqhOp6
-         tHoW9niSgqA0KT/L1UGCsRsEuGaIerBdPVYmwLDF3IL4tyje/9V9WmpWqO4Cy2sSyufQ
-         rcqQ==
-X-Gm-Message-State: AOJu0YwM7wNudViLjkBUORgo6kUQ5XkVonCVoei0uIZuKebwYkfxZnUK
-	Z0y1cXqGcFz5yJOBq/XRtQ1grWW6E4FeP+XkF6V8yXu8ZC+VrCkWRlMOyThL0YprdUm/k0FDt9s
-	uV7ye
-X-Gm-Gg: ASbGnctclwoEZEJp6iRz2pcQjAjmS2wtmQlGAx6NX3RXbEFKkGB2uY1gki+OaQnRIU7
-	/24MwsSQ3dV034GEueXiELKvWXmjUoEPNR90MRMPJIUI80UElno76PbhrRUiLRzANR5x7Jva14I
-	5/7f9KkW3DMKQdoziJ0stFQxrlPrUvH1VOXChTFEYDnz+K7AT937UZ5sIDMPAri+lX5fxBBqgvk
-	BOVrNqKHbc4ivBBU9JwsZ/BPZi2OgSKN9ZgkIkYXYFcyLJPim7XzaYa9O+jOEvUY8MXz22Amzsw
-	pFHVBAox+SeEXmCGf+2BoZF27SvAyupu/9rNhy++G8YX2aKs4ioaCehtDSGtTyq2M5Jcd4D3C1I
-	ZEy2clV5mhXPBwS4oILJLAmIqym8bxLDkRoOAR8gwYkvl6AL7ESEYJEPdYux3B9DPY8xxq/Ew7T
-	AbqzBm/uYxSOt8ZhqJYKLHW/KrNt9ozGy9WG4V1GGXOcyzJqNgWW0QYFAObNomNi3zU0zbEo4pg
-	Tv982ja
-X-Google-Smtp-Source: AGHT+IEtBXE0acM3lcuYUfkevwa5ntm2r18hgzk7j9m68t378myjOMm9OzJsbsysg70BSpP5Mhf/2A==
-X-Received: by 2002:a05:620a:4629:b0:8b2:dccd:7315 with SMTP id af79cd13be357-8b5e7453f0amr159953685a.88.1764739536329;
-        Tue, 02 Dec 2025 21:25:36 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b52a1b65bbsm1227681985a.33.2025.12.02.21.25.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 21:25:35 -0800 (PST)
-Date: Wed, 3 Dec 2025 00:25:33 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, kees@kernel.org, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	rientjes@google.com, jackmanb@google.com, cl@gentwo.org,
-	harry.yoo@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, zhengqi.arch@bytedance.com,
-	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	fabio.m.de.francesco@linux.intel.com, rrichter@amd.com,
-	ming.li@zohomail.com, usamaarif642@gmail.com, brauner@kernel.org,
-	oleg@redhat.com, namcao@linutronix.de, escape@linux.alibaba.com,
-	dongjoo.seo1@samsung.com
-Subject: Re: [RFC LPC2026 PATCH v2 00/11] Specific Purpose Memory NUMA Nodes
-Message-ID: <aS_JzWHHn8hBHSCe@gourry-fedora-PF4VCD3F>
-References: <20251112192936.2574429-1-gourry@gourry.net>
- <48078454-f441-4699-9c50-db93783f00fd@nvidia.com>
- <aSa6Wik2lZiULBsg@gourry-fedora-PF4VCD3F>
- <36edd166-7e11-4d43-9839-42467d4399d1@nvidia.com>
+        d=1e100.net; s=20230601; t=1764740020; x=1765344820;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sXYv2g3mMeVHg586+4q0ZQi51VwtQG1+dmYwOUHmoMA=;
+        b=Um4HVRIzC+f0apNwtEiRT/WuUllPq8eGt4m4dl7rXcts2EZA9tKBh1VvJ4hyIxWPPE
+         ubUMPEXXcKmxWz4C7dkpWOu7c6COfbPJSQv7CjDSQHS6D98PTUjkjJIjsuHYQNbB6n9S
+         8iiYXRTyyNNIgBCsdZsn5+z1cZM8zxEPMMXYZrUWCRZ2NxsKaa0LkUyVHUiNzJUGswOZ
+         ETG/4kPjYNzR2EILOpEd/vUh0SVHgSLuw8w8EJGnpwBGdj/v+s6UB9dcax7JS38Xe6r4
+         gXQF6QgOrz1Fp5YnsxbsuCXyrOOfbV9uspxemRsvKJVzdHH5nMGwrpZ3MfKbLtkPKZL9
+         BwjQ==
+X-Gm-Message-State: AOJu0YzNraGQwAHETKXsAuGCUzfLM1/I9fdVMj/U/kJ0oYdD0RyZmZ2b
+	+0OxXqlc/QdMotilcBfty2wAzSyf0xDI0xGLsRfuEhjVYZy6X08OIWP3PED6liWuLBtTiJ+V2s/
+	ete1eK3QkHM6NAilO4H8DW8i6qJAOV6w=
+X-Gm-Gg: ASbGncstZVNTdEbdt+JcZkRn1ULnz/mELEEpVLJmPQOv780bFWwYrvNgaQGKVYVXM4U
+	A02Lkos9pbj1W0DEIpZ6BBjX5yv4PzuEtd+oEwpoyBWnrq6gxZnPo5BuxjJGGa7qT/eM7PKC0sP
+	7prgvoP9hAOsw+2VcZGe79MjK1xKQEUJOfm5EPu7E7kXlfniGD7qUO7L32mcBeMXMhPOOvH+ipp
+	A5iW9xQOZ7ReyENpYVb6x5dxvxkN8iIg6yIZ4ufCIS+14/cQIL6cEvCUzU+aVS5XVuQrd3002OB
+	N1xD0oP+BYCi+iR7diMI3+lqTdc=
+X-Google-Smtp-Source: AGHT+IGEXWjjjE9oWinfOWWL4EhfZ09arKCQPggoWb8G3fviHhMOM5SJK+oiYrAqoOTjgHt2DKGqn+mno7SX33zsWVU=
+X-Received: by 2002:a17:907:741:b0:b3f:f6d:1d9e with SMTP id
+ a640c23a62f3a-b79c21c52e5mr618371366b.6.1764740019445; Tue, 02 Dec 2025
+ 21:33:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <36edd166-7e11-4d43-9839-42467d4399d1@nvidia.com>
-X-Rspamd-Queue-Id: 67B7520006
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 7xz88ezwxeyjeoe7pjgm3buq8zctmcrb
+References: <20251125-swap-table-p2-v3-0-33f54f707a5c@tencent.com>
+ <20251125-swap-table-p2-v3-7-33f54f707a5c@tencent.com> <64ae5450-b74d-452e-a9ae-486c57efa092@linux.alibaba.com>
+In-Reply-To: <64ae5450-b74d-452e-a9ae-486c57efa092@linux.alibaba.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 3 Dec 2025 13:33:02 +0800
+X-Gm-Features: AWmQ_bkGfnDwoqOX3QuGY6eAlvIHyiYB5WHBu2QG_RPkq-opn86lNB_tXcETgws
+Message-ID: <CAMgjq7DcpMgLjX1m=+4SM=zMe5+H4qDLqdOUGnYGNBQ_HsKw-w@mail.gmail.com>
+Subject: Re: [PATCH v3 07/19] mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Hugh Dickins <hughd@google.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1764739537-248839
-X-HE-Meta: U2FsdGVkX1+0qUXlqbhyLOjhJqWzDFFBSV0wFD/ofoCfQ3kDRG35nkMWBN5iyH1zv+ogmw+e8zosNrqIr1eJdPOqSYXH8589tBi6TBsSLO9cbxtVk1ZUnRcGBFx51IfUefdqzAmdI+BEzCSoGuazLDCsySGwaYoWUp6VYMGBY+U4IK6oYblNTaca53O3U5i+91EP5UhmoLrQt2Vu2grhuOxUXQpz/iO5yMfohiCmf9v68/eZpBwFwCyiwKIgHz6+aHNyimvHHTUq3nBdrNU9ZHZurF1hM9XHWgBQXOQvO6czvbB4nzLZLgoee3dQ/amPHK4LR6D/vFXcKXT/9rD4FmdhVC6IsoYuCRGv5pXnlS23f+QlAPyOxFfP+w1lVewYBinesYATuur2gtDc+U8JbAvU41WOhfmwbPdshHPvMekf/IYx3vL/GPQ3z+QTwC6hxFMNm5nCiDYOCrslSlGZHYBTyHo3x9QLeoAKvx7EhJmvhfpNbaZ3Xd61UPuBWFHoyxtI4QvmZpT4yDGMfQFCWUbgn1tjUXJLr2D6syLHWo1upRJsKdYuvJZ038BOCsB5g6UgELScVjfCQtiGXGmdjrwr9EhLJ33vX7iUFRlq8lndztoayRfHSwJ4lF7PuRZ/oypqqMs5u22rv2huryugwjsR2kUOjfgJRCgWQEm7BQw4C5FkoZZz5t9iLNBlAFN6RUqQBNY/TCT3qFkpWlY8bv7qGrE10cHnerbh8hrKR7Fg3MHLLzhNhXkSpfADHwOALjYUPznMYKxk5ODMWjTi7q9/2aOpQW97DqLY/Da2u4Ax2B+u3a9UEC9scgeDo0EKl2snhdlag0NBEJjleDWhT7yBQj7mWZyMkT4TnIXBlRDC8xzoEWrqYEPzBeFDZqf9w+xxx4v6MdHnp9z6EWvyPabA2aaCLTL9WOxu3C0PEyNjClt53RBJoEqNU0dI9+rxAOOYGazn8cgslSWWqhe
- is2D1+Ix
- TBFFymFJ5DPy3jPe3gt+pMJzZc/l8WHm4+6yV7q/xcdLzhBRPKdkaR1qDHBxtZul+EE0MWookqjVuIuQObCbXyjZTg1nxEyCoa1OI
+X-Rspamd-Queue-Id: 7D2D61C0009
+X-Stat-Signature: 68nd7wguco5srocb9iit5fwn899wz78k
+X-HE-Tag: 1764740021-570633
+X-HE-Meta: U2FsdGVkX19hUjvQvwV3ewsX8hPo6yoH8RuXZnjE/Cx7rAg/hAI8CptO3GmvvG5yu0zOOOVWXHSuJAipIIGDlQy8d7LFlK4Jv6XTiGeeSjC7XskKzCnE8GtLQwQ62VHKWp/qwaU9+whT2wfKQ5JLTYTbpdSA0mUU+YawEOhcvbdG3neLEgpPvbumvngkv66XAV+BZAoSLY8Pskpo02bZz9g7cPCcr7whkNeDwqOhpM1LMlIkvsSY2dKoEAPLyJujhhxiXhKZmDmS5z6mJhi/W2guOK8XYlPi/tExsbHf9JNI5g2VwqTWHqQAFG0o1vn5YqOotjI2Ls/SZzxWrWlWtD1UAkuHIlOUMQhFIed8bHOONayEnvGSF5bZC3amDpoZw6ulPL7aRRJC2A/dT3Ibt63L/yFFTG7VDpKYsJ5xtt+kO2WsFTYL/efJexZhLkVuRDCKH2Xyv+RW10+MZmnwM7FOSZUTCpgm0Z8wXasOLVv01iXMdkaNfgyFMi3xCbeYLx1rNZpxaMCDVrHLHLA7qYY0M6phJn7ijYwML6GRpO2khjL3FX3eqDBTHrv8fUAEtK4yNFvLJnjZZHtnirxMKJHpEqI2Uzu/DClxnopbtRsY8Kwa1ECrvnuxZ37Pi4W8CmPW3SfCT9g0KoqPpP8yCh5nyg4WHfCrpneVPRNzAz/SQH422ImU48MNKM5hVVgrmot9Hbec9lplJ9kFten7+/E/IBCafBsPmdi5u95WrowEZLUpmMwtfxw2uHeI5trtLrsOTX2qJ1/RWU663CuSvGA71/Tki7UBX4+69PTdENolUrDwqxKGCxdCrFQZb4BHy67H4TAMIKbGDGTmXJq1h75SXlxI3TVG3rmmRuZe2uz4JWw+wn+xBnJ035dy0DVeXXOx3wgLpG3XKuaMW9FFLOy0iwJ0sF9A1V5oNgALFdXL6s4NFjfusn+7F5j6mHo9yze3E2DzszOrnkSl9BC
+ smHkll4+
+ fJ3OFaICYomEVOacRN28e92RVivWtkMfB0h2ZvIX48TX5yBW/s0s4A5QpWnhynW55h9Nc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,66 +123,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 03:36:33PM +1100, Balbir Singh wrote:
-> >    - I discussed in my note to David that this is probably the right
-> >      way to go about doing it. I think N_MEMORY can still be set, if
-> >      a new global-default-node policy is created.
-> > 
-> 
-> I still think N_MEMORY as a flag should mean something different from
-> N_SPM_NODE_MEMORY because their characteristics are different
-> 
-... snip ...  (I agree, see later)
-
-> >    - Instead, I can see either per-component policies (reclaim->nodes)
-> >      or a global policy that covers all of those components (similar to
-> >      my sysram_nodes).  Drivers would then be responsible to register
-> >      their hotplugged memory nodes with those components accordingly.
-> > 
-> 
-> To me node zonelists provide the right abstraction of where to allocate from
-> and how to fallback as needed. I'll read your patches to figure out how your
-> approach is different. I wanted the isolation at allocation time
+On Tue, Dec 2, 2025 at 3:34=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
 >
-... snip ... (I agree, see later)
+> Hi Kairui,
+>
+> On 2025/11/25 03:13, Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > Now the overhead of the swap cache is trivial to none, bypassing the
+> > swap cache is no longer a valid optimization.
+> >
+> > We have removed the cache bypass swapin for anon memory, now do the sam=
+e
+> > for shmem. Many helpers and functions can be dropped now.
+> >
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+>
+> I'm glad to see we can remove the skip swapcache logic. I did a quick
+> test, testing 1G shmem sequential swap-in with 64K mTHP and 2M mTHP, and
+> I observed a slight drop, which could also be fluctuation. Can you also
+> perform some measurements?
+>
+> 64K shmem mTHP:
+> W/ patchset     W/o patchset
+> 154 ms          148 ms
+>
+> 2M shmem mTHP
+> W/ patchset     W/o patchset
+> 117 ms          115 ms
 
-> 
-> Yes, we should look at the pros and cons. To be honest, I'd wouldn't be 
-> opposed to having kswapd and reclaim look different for these nodes, it
-> would also mean that we'd need pagecache hooks if we want page cache on
-> these nodes. Everything else, including move_pages() should just work.
-> 
+Hi Baolin,
 
-Basically my series does (roughly) the same as yours, but adds the
-cpusets controls and a GFP flag.  The MHP extention should ultimately
-be converted to N_SPM_NODE_MEMORY (or whatever we decide to name it).
+Thanks for testing! This patch (7/19) is still an intermediate step,
+so we are still updating both swap_map and swap table with higher
+overhead. And even with that, the performance change looks small
+(~1-4% in the result you posted), close to noise level.
 
-After some more time to think, I think we want all of it.
+And after this whole series, the double update is *partially* dropped,
+so the performance is almost identical to before:
 
-- N_SPM_NODE_MEMORY (or whatever we call it) handles filtering out
-  SPM at allocation time by default and protects all current users
-  of N_MEMORY from exposure to SPM.
+tmpfs with transparent_hugepage_tmpfs=3Dwithin_size, 3 test run on my machi=
+ne:
+Before       [PATCH 7/19]         [PATCH 19/19]
+5.99s          6.29s            6.08s (~1%)
 
-- cpusets controls allow userland isolation control and a default sysram
-  mask (I think cpusets.sysram_nodes doesn't even need to be exposed via
-  sysfs to be honest).  cpusets fix is needed due to task->mems_allowed
-  being used as a default nodemask on systems using cgroups/cpusets.
+Note we are still using swap_map so there are double lookups
+everywhere in this series, and I added more WARN_ON checks. Swap is
+complex so being cautious is better I think. I've also mentioned
+another valkey slight performance drop in the cover letter due to
+this, which is also tiny and will be improved a lot in phase 3 by
+removing swap_map and the double lookup, as demonstrated before:
+https://lore.kernel.org/linux-mm/20250514201729.48420-1-ryncsn@gmail.com/
 
-- GFP_SP_NODE protects against someone doing something like:
-      get_page_from_freelist(..., node_states[N_POSSIBLE])
-      or
-      numactl --interleave --all ./my_program
+Last time I tested that branch it was a clear optimization for shmem,
+some of the optimizations in that series were split or merged
+separately so the performance may look go up / down in some
+intermediate steps, the final result is good.
 
-  While providing a way to punch an explicit hole in the isolation
-  (GFP_SP_NODE means "Use N_SPM_NODE_MEMORY instead of N_MEMORY")
+swap_cgroup_ctrl will be gone too, even later maybe though.
 
-  This could be argued against so long as we restrict mempolicy.c
-  to N_MEMORY nodes (to avoid `--interleave --all` issues), but this
-  limitation may not be preferable.
+>
+> Anyway I still hope we can remove the skip swapcache logic. The changes
+> look good to me with one nit as below. Thanks for your work.
+>
+> >   mm/shmem.c    | 65 +++++++++++++++++---------------------------------=
+---------
+> >   mm/swap.h     |  4 ----
+> >   mm/swapfile.c | 35 +++++++++-----------------------
+> >   3 files changed, 27 insertions(+), 77 deletions(-)
+> >
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index ad18172ff831..d08248fd67ff 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -2001,10 +2001,9 @@ static struct folio *shmem_swap_alloc_folio(stru=
+ct inode *inode,
+> >               swp_entry_t entry, int order, gfp_t gfp)
+> >   {
+> >       struct shmem_inode_info *info =3D SHMEM_I(inode);
+> > +     struct folio *new, *swapcache;
+> >       int nr_pages =3D 1 << order;
+> > -     struct folio *new;
+> >       gfp_t alloc_gfp;
+> > -     void *shadow;
+> >
+> >       /*
+> >        * We have arrived here because our zones are constrained, so don=
+'t
+> > @@ -2044,34 +2043,19 @@ static struct folio *shmem_swap_alloc_folio(str=
+uct inode *inode,
+> >               goto fallback;
+> >       }
+> >
+> > -     /*
+> > -      * Prevent parallel swapin from proceeding with the swap cache fl=
+ag.
+> > -      *
+> > -      * Of course there is another possible concurrent scenario as wel=
+l,
+> > -      * that is to say, the swap cache flag of a large folio has alrea=
+dy
+> > -      * been set by swapcache_prepare(), while another thread may have
+> > -      * already split the large swap entry stored in the shmem mapping=
+.
+> > -      * In this case, shmem_add_to_page_cache() will help identify the
+> > -      * concurrent swapin and return -EEXIST.
+> > -      */
+> > -     if (swapcache_prepare(entry, nr_pages)) {
+> > +     swapcache =3D swapin_folio(entry, new);
+> > +     if (swapcache !=3D new) {
+> >               folio_put(new);
+> > -             new =3D ERR_PTR(-EEXIST);
+> > -             /* Try smaller folio to avoid cache conflict */
+> > -             goto fallback;
+> > +             if (!swapcache) {
+> > +                     /*
+> > +                      * The new folio is charged already, swapin can
+> > +                      * only fail due to another raced swapin.
+> > +                      */
+> > +                     new =3D ERR_PTR(-EEXIST);
+> > +                     goto fallback;
+> > +             }
+> >       }
+> > -
+> > -     __folio_set_locked(new);
+> > -     __folio_set_swapbacked(new);
+> > -     new->swap =3D entry;
+> > -
+> > -     memcg1_swapin(entry, nr_pages);
+> > -     shadow =3D swap_cache_get_shadow(entry);
+> > -     if (shadow)
+> > -             workingset_refault(new, shadow);
+> > -     folio_add_lru(new);
+> > -     swap_read_folio(new, NULL);
+> > -     return new;
+> > +     return swapcache;
+> >   fallback:
+> >       /* Order 0 swapin failed, nothing to fallback to, abort */
+> >       if (!order)
+> > @@ -2161,8 +2145,7 @@ static int shmem_replace_folio(struct folio **fol=
+iop, gfp_t gfp,
+> >   }
+> >
+> >   static void shmem_set_folio_swapin_error(struct inode *inode, pgoff_t=
+ index,
+> > -                                      struct folio *folio, swp_entry_t=
+ swap,
+> > -                                      bool skip_swapcache)
+> > +                                      struct folio *folio, swp_entry_t=
+ swap)
+> >   {
+> >       struct address_space *mapping =3D inode->i_mapping;
+> >       swp_entry_t swapin_error;
+> > @@ -2178,8 +2161,7 @@ static void shmem_set_folio_swapin_error(struct i=
+node *inode, pgoff_t index,
+> >
+> >       nr_pages =3D folio_nr_pages(folio);
+> >       folio_wait_writeback(folio);
+> > -     if (!skip_swapcache)
+> > -             swap_cache_del_folio(folio);
+> > +     swap_cache_del_folio(folio);
+> >       /*
+> >        * Don't treat swapin error folio as alloced. Otherwise inode->i_=
+blocks
+> >        * won't be 0 when inode is released and thus trigger WARN_ON(i_b=
+locks)
+> > @@ -2279,7 +2261,6 @@ static int shmem_swapin_folio(struct inode *inode=
+, pgoff_t index,
+> >       softleaf_t index_entry;
+> >       struct swap_info_struct *si;
+> >       struct folio *folio =3D NULL;
+> > -     bool skip_swapcache =3D false;
+> >       int error, nr_pages, order;
+> >       pgoff_t offset;
+> >
+> > @@ -2322,7 +2303,6 @@ static int shmem_swapin_folio(struct inode *inode=
+, pgoff_t index,
+> >                               folio =3D NULL;
+> >                               goto failed;
+> >                       }
+> > -                     skip_swapcache =3D true;
+> >               } else {
+> >                       /* Cached swapin only supports order 0 folio */
+> >                       folio =3D shmem_swapin_cluster(swap, gfp, info, i=
+ndex);
+> > @@ -2378,9 +2358,8 @@ static int shmem_swapin_folio(struct inode *inode=
+, pgoff_t index,
+> >        * and swap cache folios are never partially freed.
+> >        */
+> >       folio_lock(folio);
+> > -     if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
+> > -         shmem_confirm_swap(mapping, index, swap) < 0 ||
+> > -         folio->swap.val !=3D swap.val) {
+> > +     if (!folio_matches_swap_entry(folio, swap) ||
+> > +         shmem_confirm_swap(mapping, index, swap) < 0) {
+>
+> We should still keep the '!folio_test_swapcache(folio)' check here?
 
-  My concern is for breaking existing userland software that happens
-  to run on a system with SPM - but you can probably imagine many more
-  bad scenarios.
-
-~Gregory
+Thanks for the review, this one is OK because folio_test_swapcache is
+included in folio_matches_swap_entry already.
 
