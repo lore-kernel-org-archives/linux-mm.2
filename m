@@ -4,110 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDF9D12D7A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 15:59:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63674D12D7A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 16:09:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB4C46B0005; Wed,  3 Dec 2025 10:59:32 -0500 (EST)
+	id A606C6B0027; Wed,  3 Dec 2025 11:09:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E65F46B0007; Wed,  3 Dec 2025 10:59:32 -0500 (EST)
+	id A38626B0028; Wed,  3 Dec 2025 11:09:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7BCD6B0027; Wed,  3 Dec 2025 10:59:32 -0500 (EST)
+	id 926FE6B0029; Wed,  3 Dec 2025 11:09:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C6D6D6B0005
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 10:59:32 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 77B9B8A44E
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 15:59:32 +0000 (UTC)
-X-FDA: 84178619784.17.DA34044
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1A660160003
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 15:59:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=crSCjQ2S;
-	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 785B86B0027
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:09:55 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E774E13B89D
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 16:09:52 +0000 (UTC)
+X-FDA: 84178645824.19.D2BCEBB
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 64A6A1C0007
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 16:09:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=OzAaPrJ9;
+	spf=pass (imf21.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764777571;
+	s=arc-20220608; t=1764778190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5A837UYz/VXEyuk8nnXqBwp73570xZNtO/JfT35421A=;
-	b=k5MYMnkaC1J5tzeqC4uJGY5G9haUMqAjBlMccHiggs8IYzFn9HIID6+gZfVQAUtGDXKboS
-	Zp6NftTRH1yXk9528IJ6vZPmVe0qo2zbL0iY6BJ+wy0HOKYKGCNuxAAX1S6amBE6jdA5Uf
-	j5p8AvzxbwWoV3gHVcJLt9HTF0h2/Ok=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764777571; a=rsa-sha256;
+	bh=jXScALikZ30hQ2GZgvAK3QYxrVSr7/W2SKCyOSYy+M8=;
+	b=70OziLQC/rHpuf0GNvOSbI+jCGFiPkjs1XkKxvTMXCwmysGB5r6acm6qBrk/cASyx24lTt
+	UNfPgZhcVDEi/QrQyI1ZoSuvaU1Qao2tmrdZokgMsNh0vdu76f2yiPIY2/2hx3UqaGC85m
+	es17r8g74ILn/VdGV13AUiivLPi6iKA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764778190; a=rsa-sha256;
 	cv=none;
-	b=Qpg5uHlgSGh/maadsPeezpZ+oiEsxAW+tMrmmZyJ28KWOYDzOngcwSQOk0Pis/E2a6xsq8
-	rlZ4OmYA0DeDAdskzZ4TF6eKd5auQYFsqPaCFKPYjvHhpnuDuDTvkEzAGbvYGJvX5ACRcS
-	9IFR8zbjT3lpYBFLW+2Kfh8Rv9o3Fjc=
+	b=62dFX5b2uLPmDatXgPDh8IAFA8EUBa68bywReK6hkskrEjEifIGZeRfOU+88Ye4DZTH7o2
+	JnkyjRCs0iNiepEiNHk24lUiZh6xkuYqXzUoyDaxHMnO5lTitm0P+zVFOyJLDSX1APG/Wu
+	PFgwNp/QRuuG7ShTIFgHHJAlHulvJFQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=crSCjQ2S;
-	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 22B0D40E01C5;
-	Wed,  3 Dec 2025 15:59:26 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Jm55s75WWJiM; Wed,  3 Dec 2025 15:59:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764777560; bh=5A837UYz/VXEyuk8nnXqBwp73570xZNtO/JfT35421A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=crSCjQ2S+J5/iynhJFk9UKihxfc38IfS+Fw+h6iRq/8LXSIwi0PZJv90R4g8/MXGW
-	 r1ElmDKHkg1pX+OL1QKumUlyGktBGz40dSSxRhkFBLj1hpWXkgd0tPY3EeSvi2Ffe9
-	 R3JRQPSIIRI0DANEw+Up2ZSazhClnbnkhEvRkFjwYJbUlH2gJfbG9kvBfPXjzaUoLK
-	 RhDCGgQilS7jERyuWw9D4yM7BMjgs23Ye5kGOeTnUa1EGDCxkXBvUXZtrfkAoBNubc
-	 N505u3BhpJqlSR0GY0AL4khjQaOyO5Ea4hjoOOOG7j8GH1+w8PUeQtbmg2Vr/IVVyp
-	 1/BXb8LWqonyqZuD7Esuq8mevHplKYNoKJT06Zx/p9Hb658j7QxfrHqYYLjeQ6SrMN
-	 6Z60gQPxB274MQBcIMxuX3BBMX0lhZo0oMKeFDOD1fyoWeGAnB7ROl7b3YQAdjF8sv
-	 +D10Y9nVLzwhtMg/imH01R63OYEUQ4ZsprkebseeDMOADdpNbVFA1J7zwSlE+Xgd98
-	 +eWs+zJITIYNjpKW7NPZJdc0PhBJ/sT4mzgw8BzGPs8d+b7yBPGvj9iMK7CW9eqcZy
-	 Zw66QQpJ0prNo05BiJ95trN9iDyyqRDq/ZSmJlY02J9oZ4zgA3tYkV14xYeUuZKFZv
-	 DPfpr37J1otrYUf6UajKmiXo=
-Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C409040E0191;
-	Wed,  3 Dec 2025 15:59:02 +0000 (UTC)
-Date: Wed, 3 Dec 2025 16:58:55 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, ardb@kernel.org,
-	"Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com,
-	akpm@linux-foundation.org, osalvador@suse.de,
-	thomas.lendacky@amd.com, michael.roth@amd.com,
-	torvalds@linux-foundation.org
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <20251203155855.GCaTBeP8fQDLx3T0X8@fat_crate.local>
-References: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
- <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
- <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
- <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
- <052d7f47-edb6-4978-bc9a-c7eae469720f@kernel.org>
- <20251201191036.GEaS3oLBY8PEuE91Ap@fat_crate.local>
- <dcccdc4b-b7d7-47c4-b1b1-a6c70edb20fa@kernel.org>
- <20251201202507.GFaS35o7WtLJOM0_jh@fat_crate.local>
- <420865fb-34cc-43a8-820c-b15b5f24a27c@kernel.org>
- <etd7r45wmnuoftpckrzkzithr443ru6akgwqjgzw2vgmzqi7cs@camfecdmef74>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <etd7r45wmnuoftpckrzkzithr443ru6akgwqjgzw2vgmzqi7cs@camfecdmef74>
-X-Rspamd-Queue-Id: 1A660160003
-X-Rspamd-Server: rspam06
+	imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=OzAaPrJ9;
+	spf=pass (imf21.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B3CO5ib017680;
+	Wed, 3 Dec 2025 16:09:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jXScAL
+	ikZ30hQ2GZgvAK3QYxrVSr7/W2SKCyOSYy+M8=; b=OzAaPrJ9niAlz8YUabjc2c
+	D2rDIzen8I5c7OyZYxx2URHyV2XunQ2MUcgBaoNzneCJqJaoH45EyqRiZgfDjB+/
+	veCs0WNuB+IbYJeej2GoS0RN8J1IpA0hi2OgqVMfSotjONRPs+k2RuSnMpFy8HHN
+	uiAleHpdwlEsdAtRS2pAUCQ172+p/m8QMwvQAm9OmQg8jrxQBSxTCS49GJQDM/hd
+	YaiXShCl1Wyn3/gTBPTCgGV783dZ+t3yx4e2oTF2YM1ZjRt408LJ08mvqP4uL2wh
+	+BFiORtd4IG/QtGj3cFZ2h8ZbcqM1iCSyZ+Ofzu8c0xTKmsr/4136UJDD7xjesdw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrh73qnt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Dec 2025 16:09:15 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B3G6PaS010932;
+	Wed, 3 Dec 2025 16:09:14 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrh73qnm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Dec 2025 16:09:14 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B3E9LMX021504;
+	Wed, 3 Dec 2025 16:09:13 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4at8c6c5et-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Dec 2025 16:09:13 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B3G9B5859572634
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 3 Dec 2025 16:09:11 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7232D5805E;
+	Wed,  3 Dec 2025 16:09:11 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2DA365805D;
+	Wed,  3 Dec 2025 16:09:00 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.245.178])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  3 Dec 2025 16:08:59 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [PATCH v5 00/12] Nesting support for lazy MMU mode
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <20251124132228.622678-1-kevin.brodsky@arm.com>
+Date: Wed, 3 Dec 2025 21:38:46 +0530
+Cc: linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <94889730-1AEF-458F-B623-04092C0D6819@linux.ibm.com>
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=dK+rWeZb c=1 sm=1 tr=0 ts=693060ab cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8 a=20KFwNOVAAAA:8 a=NEAV23lmAAAA:8
+ a=VnNF1IyMAAAA:8 a=ebG-ZW-8AAAA:8 a=Z4Rwk6OoAAAA:8 a=yPCof4ZbAAAA:8
+ a=1UX6Do5GAAAA:8 a=QyXUC8HyAAAA:8 a=J1Y8HTJGAAAA:8 a=JfrnYn6hAAAA:8
+ a=oGMlB6cnAAAA:8 a=1XWaLZrsAAAA:8 a=iox4zFpeAAAA:8 a=pGLkceISAAAA:8
+ a=voM4FWlXAAAA:8 a=cWRNjhkoAAAA:8 a=FiMq9w3UmxbX_X-K2aIA:9 a=QEXdDO2ut3YA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22 a=Bj2TwAA_C77lQ_X2_dkp:22 a=HkZW87K1Qel5hWWM3VKY:22
+ a=Et2XPkok5AAZYJIKzHr1:22 a=y1Q9-5lHfBjTkpIzbSAN:22 a=1CNFftbPRP8L7MoqJWF3:22
+ a=NdAtdrkLVvyUPsUoGJp4:22 a=WzC6qhA0u3u7Ye7llzcV:22 a=IC2XNlieTeVoXbcui8wp:22
+ a=sVa6W5Aao32NNC1mekxh:22
+X-Proofpoint-GUID: 793QMPZ1KY-blGu-SBEcqhhoUxKTBTPT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAyMCBTYWx0ZWRfX0Y2RJ6pY6f9G
+ m7cnnUyc3HVayFdbJ8Y4k6LXm7VoMHSKC06j1sstdK8iRNOp43h8/5lXlJzRyMFMOkegM/YL0t7
+ uHv9SIDvRWXY/EKqqrIimWlBZRLSRAgOBF4gk2Xot87tbYXsiVnaukxT1saJqjqQ0r0bPe10fQw
+ ebRokn+rP5Dr6S57DFJViOyBvzPSu7nMhQXml2iQlGg8l7boxqiMcoTdjYFnse6EYftUPjxeWZe
+ MGmnOFTxzjWPZDmm/bKQ+e3L/l/GwpDCojvQuL7j2d5Yz5YuziA0XIkWiBZW3RPXY32AZclnmqt
+ wPoca86vF4yKC81xjojgszJzuCIvZcNgdX7sNhM04AVP6ms5j1l2VO43joUDFPf3weZ3oFA5u7V
+ hBuOHcByMOvgTlotD8Cjz6ve04L0kw==
+X-Proofpoint-ORIG-GUID: -W-wtyUpyFvwADIN6iXaZYxBgTf_cVPF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-03_02,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
+ bulkscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511290020
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 64A6A1C0007
+X-Stat-Signature: 9ajkfns7ktwm6g9ges87iedp3o8ue3ai
 X-Rspam-User: 
-X-Stat-Signature: 71frimxnf5hikde8jrxepzi6edhbnqkm
-X-HE-Tag: 1764777569-906136
-X-HE-Meta: U2FsdGVkX189SlO5mgZiHz39T2QEkxFljjOOvx0XFjeAVbE/iXDyh8fAEBzCZeZZR/rkIDOLmgqebUJ/IEsoIt4XofX2r4V51105GzDJU9yff1PiQ1H3igYF4wJrU7hqCRCaNwND7sWz9QKKA2JWCq7JYL7unbbA6bZ63UpG9f+z7jRywq9N2xnDd/kG5g1SbGftz4pMfEQLTli1Vielh5zSVfZIcAguA+dth4eENGnrFsZYmF4OkFlOl/XP9XTuhr/tD2FNvVAsm4+kRpQO/qha2BVx4lmJ27MJ00YA9fQO1A4YsGLnXHN5l+CDlb0g1px5VzfkGwI7WJYqfAcAotbl47y0GyRfw26z8na5mNbrxrqZNRjnxxR3cghx1+0/AS4p12lAVfP3gwSHzLQVwBEe6PX8HGsbs9NE+grmqsXuPt1yBX2jZovMsLU5+/Y/cWzAoj3wwo4ozdXdlGLW4yZtz+vRfeDoeAc/o0MEW2+nKSGCeErRCwRPuvT6Qc4N6heomMlFSQQu1uz+Q5TyPx9etCpiLJNBGP1SiL7LESjsvE8W+800Vzq0T1Qyr3A5ugCblJxUPpyure2w6nr7Ik7S21G2/RAF48WM7e+NUS/qaOqJCJHdk0LP8UPzu9zd+TSyjLoHFxCev1NV/Ej/HVDyQQfq8t09+hVabyYyiRCmqv3J547myH/BqjA5eNYsurOGwZ4e5Df1tvEg6hdP9IHhp+0PXnyxN7XeSMFGVg3A25b6uFa3/gFSqkMcunwcXUpDbufaEhniTx2pe2Qo0ukLe1PMcGYcnEsHwcW4qQj0GkPu1r05k6Eadln5qjsHUzZ0HMyDSzfJEw2NtMtJuswoxlxC8IKY6TR1O9PdM88030mhM1+BEMLoBp8YoUZk
+X-HE-Tag: 1764778190-830642
+X-HE-Meta: U2FsdGVkX1/KEbA0ADyGBACk4OEuhHJUH8IOts9kAfFolhY5d7jsoQ7XQQILi8MC76ysRsNvrIRrAe+W7TM7Gh7EPk60vMIfVJq+uKwy1rWXtBK8HCi2OZhWlRBhEAqrN10KGm3mbAvab4db+GVsGzTJOFz/Z2myZnVJSgLHQlvRDSAXs9IJI/ie/xyUjaNQzZmzi968od/D44IAJuaw8rXUZUQ0ggRq9JhFCSGlCse3EzhQdoxgBveNJJdkc6Sp1ZanWGOf3Du5AveQadbN5qaJAb4S00zR628i1JXtNKSQwW2zVPK00TKfov9vcBgLqf7BDxGqulgJrV3+9YVF5mI6l06+dFx117ne7EYLGT6LNGCg0ZY1IdKJh9hxtFuR4zn1Rry7IzzNFMdhTO44uQyrUxtD1MyE/3SZGPn3spF8z9AxGVNcL1eLJumPzBxkFmJMZZsI3XoCBpATyXd7WnDaAFeVBrAKEBQdJSjJe91LjZPLJK04Be3kL80wqqCpH6mKPq+f5+nHyvwKZ8CfdRtgrLoNx5RxsfykFhiWJXz4zivfeSq8NuSnr+yxbSm6kWFlxIB0wtKje2aEpMmkFFmxbD1JBHRKVSOLKn+uDW2aBiD6PzVZyk+kze+rIPreV+jwlqQ3c+z+40u/AIdQOOdOcjI7oQPSqkKE4xJ9rFHHbCEU/HEZe/naydtjFAeXja/LHOkZL1zsXwMrsq8dWyoGB/m/mXSUFo85WJ0nO3azUx6a9PhkdryNtZdG28/f+0VbGc6zf31HDuc9Ph3tAJsX3ZO2lvhG8k6eBaGBIPOgY4u4DVebkJBmXauaRKtgYqwFV6ISVCre7lSm8r19g2kaXff4/XyRjMRQ4c/s9EUwcOzzK9IA5Q/a/XrXlNxXzyJcJikSCah46wgUnTE5vSHr6uSP5vX1tdT6bROjtvgty4gulmST8524REqHmhOWL1m8NMyo5GEaLPQghb3
+ 1EN2GGRl
+ BJXLRckTnycLXu9MDWkz0Xwb3h19i+YMwpAoJ/9Q69ICoq3gz7uVrNNaetYMm/qfB1foccK/RVuyDXimJgtrabJj//vDB14D3bGwJqOdOND334vCMT8DGRYRP2hBXwbKHr7omav3Gv2wu8cXL49aFxeSWlT76imHZjbMkuGT2nBxsSmYTpebpMkjwWnWwMzxHVxdoJOgHphovirSyUQpN4kv5G5LYOfHQIBkrv2mNUsFV1aK1iOlBadubhLDmwAqOiOaMh4mM1GkQm+6+RibXwUiuj4k/SawbjxHM6R+wXdQNLO0+G1vrhiu2bIeiXoKyl71kycUmDK1StzmEnMQw+EIvV/FoMul3nGsC5jjtP4uAOWmuONMdulA14CRKb5oVJqVQeN1/izUKYgZ8h5gWnhZxbdhQKpSf/pVUvKkyOq8rjikJFnwSoRjOw9ngqIGikHH8ZtIMhDkoVFlxnihJWsYrZ9cDpl9okfXjMfyYlxxtbhGHx3gK/QfpW3FYOx+NhVFg7OaLuk6NerAJNueBg75B10XwIogxHjqFF074n5jL9lyrwIrI1NC5CWIIyM2cafTt11JH119bz8C4EIqO9SQ/uP2lnY2bpaEulfgKsbo0WJEwFdjvdyVurDT0rTiXg8d5zoYXzqp7DE5YgBlz7bDBlTiickpxZZAResIc4ENHMIG7I55u8CKj3sdrpnu7Qlq6BwNj23PMwPtLSbTC2Xu96k+IS9QSPNv8QoRZIX75DM4VZW77+8rYgcSgpPG+Zo6UDHIugaan0zRO5A/8/82w5+NgUzU4k/K556dq6acN3eEsfoEXafmjJ6y7GkJW0s2Yb0fI0wR6eCzhxEKhgYjYRQabGphzkkPmPpdENUUMuOmcViK4RNtO2DdSWd5pELBz1naHUyijUSqws5/ug5Wz7BgTeeSh4ga8WzH1UMBCxB8tHgcGefT9FezFWrYCALlxwYLUR8Iup0150JrYytfXZYlF
+ GPg5x8co
+ PCMOcJDEiV9K6WWfc9kFU0z6Af7LXINKpQllx7FFgzfvmf8/h2g6uVTOAKLuSc9H8IasDrLRhYC+7GLtcUg9Pee3uoWnGKUJWt6sW1gRo08=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,64 +183,306 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 02:46:23PM +0000, Kiryl Shutsemau wrote:
-> There is also the #1 Kernel Rule: "we do not break users."
 
-Do I need to point you to that too:
 
-Documentation/process/stable-api-nonsense.rst
+> On 24 Nov 2025, at 6:52=E2=80=AFPM, Kevin Brodsky =
+<kevin.brodsky@arm.com> wrote:
+>=20
+> When the lazy MMU mode was introduced eons ago, it wasn't made clear
+> whether such a sequence was legal:
+>=20
+> arch_enter_lazy_mmu_mode()
+> ...
+> arch_enter_lazy_mmu_mode()
+> ...
+> arch_leave_lazy_mmu_mode()
+> ...
+> arch_leave_lazy_mmu_mode()
+>=20
+> It seems fair to say that nested calls to
+> arch_{enter,leave}_lazy_mmu_mode() were not expected, and most
+> architectures never explicitly supported it.
+>=20
+> Nesting does in fact occur in certain configurations, and avoiding it
+> has proved difficult. This series therefore enables lazy_mmu sections =
+to
+> nest, on all architectures.
+>=20
+> Nesting is handled using a counter in task_struct (patch 8), like =
+other
+> stateless APIs such as pagefault_{disable,enable}(). This is fully
+> handled in a new generic layer in <linux/pgtable.h>; the arch_* API
+> remains unchanged. A new pair of calls, =
+lazy_mmu_mode_{pause,resume}(),
+> is also introduced to allow functions that are called with the lazy =
+MMU
+> mode enabled to temporarily pause it, regardless of nesting.
+>=20
+> An arch now opts in to using the lazy MMU mode by selecting
+> CONFIG_ARCH_LAZY_MMU; this is more appropriate now that we have a
+> generic API, especially with state conditionally added to task_struct.
+>=20
+> ---
+>=20
+> Background: Ryan Roberts' series from March [1] attempted to prevent
+> nesting from ever occurring, and mostly succeeded. Unfortunately, a
+> corner case (DEBUG_PAGEALLOC) may still cause nesting to occur on =
+arm64.
+> Ryan proposed [2] to address that corner case at the generic level but
+> this approach received pushback; [3] then attempted to solve the issue
+> on arm64 only, but it was deemed too fragile.
+>=20
+> It feels generally difficult to guarantee that lazy_mmu sections don't
+> nest, because callers of various standard mm functions do not know if
+> the function uses lazy_mmu itself.
+>=20
+> The overall approach in v3/v4 is very close to what David Hildenbrand
+> proposed on v2 [4].
+>=20
+> Unlike in v1/v2, no special provision is made for architectures to
+> save/restore extra state when entering/leaving the mode. Based on the
+> discussions so far, this does not seem to be required - an arch can
+> store any relevant state in thread_struct during arch_enter() and
+> restore it in arch_leave(). Nesting is not a concern as these =
+functions
+> are only called at the top level, not in nested sections.
+>=20
+> The introduction of a generic layer, and tracking of the lazy MMU =
+state
+> in task_struct, also allows to streamline the arch callbacks - this
+> series removes 67 lines from arch/.
+>=20
+> Patch overview:
+>=20
+> * Patch 1: cleanup - avoids having to deal with the powerpc
+>  context-switching code
+>=20
+> * Patch 2-4: prepare arch_flush_lazy_mmu_mode() to be called from the
+>  generic layer (patch 8)
+>=20
+> * Patch 5-6: new API + CONFIG_ARCH_LAZY_MMU
+>=20
+> * Patch 7: ensure correctness in interrupt context
+>=20
+> * Patch 8: nesting support
+>=20
+> * Patch 9-12: replace arch-specific tracking of lazy MMU mode with
+>  generic API
+>=20
+> This series has been tested by running the mm kselftests on arm64 with
+> DEBUG_VM, DEBUG_PAGEALLOC, KFENCE and KASAN. It was also build-tested =
+on
+> other architectures (with and without XEN_PV on x86).
+>=20
+> - Kevin
+>=20
+> [1] =
+https://lore.kernel.org/all/20250303141542.3371656-1-ryan.roberts@arm.com/=
 
-?
+> [2] =
+https://lore.kernel.org/all/20250530140446.2387131-1-ryan.roberts@arm.com/=
 
-> Booting a different version of the kernel is a core functionality of
-> kexec. It is widely used to deploy new kernels or revert to older ones.
-> Breaking this functionality is a show-stopper for most, if not all,
-> hyperscalers.
-> 
-> This specific change may not be a show-stopper as CoCo deployment is not
-> widespread enough to be noticed yet.
-> 
-> The notion that nobody promised that you can kexec into a different kernel
-> is absurd. It is used everywhere.
+> [3] =
+https://lore.kernel.org/all/20250606135654.178300-1-ryan.roberts@arm.com/
+> [4] =
+https://lore.kernel.org/all/ef343405-c394-4763-a79f-21381f217b6c@redhat.co=
+m/
+> ---
+> Changelog
+>=20
+> v4..v5:
+>=20
+> - Rebased on mm-unstable
+> - Patch 3: added missing radix_enabled() check in arch_flush()
+>  [Ritesh Harjani]
+> - Patch 6: declare arch_flush_lazy_mmu_mode() as static inline on x86
+>  [Ryan Roberts]
+> - Patch 7 (formerly 12): moved before patch 8 to ensure correctness in
+>  interrupt context [Ryan]. The diffs in in_lazy_mmu_mode() and
+>  queue_pte_barriers() are moved to patch 8 and 9 resp.
+> - Patch 8:
+>  * Removed all restrictions regarding lazy_mmu_mode_{pause,resume}().
+>    They may now be called even when lazy MMU isn't enabled, and
+>    any call to lazy_mmu_mode_* may be made while paused (such calls
+>    will be ignored). [David, Ryan]
+>  * lazy_mmu_state.{nesting_level,active} are replaced with
+>    {enable_count,pause_count} to track arbitrary nesting of both
+>    enable/disable and pause/resume [Ryan]
+>  * Added __task_lazy_mmu_mode_active() for use in patch 12 [David]
+>  * Added documentation for all the functions [Ryan]
+> - Patch 9: keep existing test + set TIF_LAZY_MMU_PENDING instead of
+>  atomic RMW [David, Ryan]
+> - Patch 12: use __task_lazy_mmu_mode_active() instead of accessing
+>  lazy_mmu_state directly [David]
+> - Collected R-b/A-b tags
+>=20
+> v4: =
+https://lore.kernel.org/all/20251029100909.3381140-1-kevin.brodsky@arm.com=
+/
+>=20
+> v3..v4:
+>=20
+> - Patch 2: restored ordering of preempt_{disable,enable}() [Dave =
+Hansen]
+> - Patch 5 onwards: s/ARCH_LAZY_MMU/ARCH_HAS_LAZY_MMU_MODE/ [Mike =
+Rapoport]
+> - Patch 7: renamed lazy_mmu_state members, removed VM_BUG_ON(),
+>  reordered writes to lazy_mmu_state members [David Hildenbrand]
+> - Dropped patch 13 as it doesn't seem justified [David H]
+> - Various improvements to commit messages [David H]
+>=20
+> v3: =
+https://lore.kernel.org/all/20251015082727.2395128-1-kevin.brodsky@arm.com=
+/
+>=20
+> v2..v3:
+>=20
+> - Full rewrite; dropped all Acked-by/Reviewed-by.
+> - Rebased on v6.18-rc1.
+>=20
+> v2: =
+https://lore.kernel.org/all/20250908073931.4159362-1-kevin.brodsky@arm.com=
+/
+>=20
+> v1..v2:
+> - Rebased on mm-unstable.
+> - Patch 2: handled new calls to enter()/leave(), clarified how the =
+"flush"
+>  pattern (leave() followed by enter()) is handled.
+> - Patch 5,6: removed unnecessary local variable [Alexander Gordeev's
+>  suggestion].
+> - Added Mike Rapoport's Acked-by.
+>=20
+> v1: =
+https://lore.kernel.org/all/20250904125736.3918646-1-kevin.brodsky@arm.com=
+/
+> ---
+> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+> Cc: Andreas Larsson <andreas@gaisler.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Woodhouse <dwmw2@infradead.org>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: Juergen Gross <jgross@suse.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Yeoreum Yun <yeoreum.yun@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: xen-devel@lists.xenproject.org
+> Cc: x86@kernel.org
+> ---
+> Alexander Gordeev (1):
+>  powerpc/64s: Do not re-activate batched TLB flush
+>=20
+> Kevin Brodsky (11):
+>  x86/xen: simplify flush_lazy_mmu()
+>  powerpc/mm: implement arch_flush_lazy_mmu_mode()
+>  sparc/mm: implement arch_flush_lazy_mmu_mode()
+>  mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  mm: introduce generic lazy_mmu helpers
+>  mm: bail out of lazy_mmu_mode_* in interrupt context
+>  mm: enable lazy_mmu sections to nest
+>  arm64: mm: replace TIF_LAZY_MMU with in_lazy_mmu_mode()
+>  powerpc/mm: replace batch->active with in_lazy_mmu_mode()
+>  sparc/mm: replace batch->active with in_lazy_mmu_mode()
+>  x86/xen: use lazy_mmu_state when context-switching
+>=20
+> arch/arm64/Kconfig                            |   1 +
+> arch/arm64/include/asm/pgtable.h              |  41 +----
+> arch/arm64/include/asm/thread_info.h          |   3 +-
+> arch/arm64/mm/mmu.c                           |   4 +-
+> arch/arm64/mm/pageattr.c                      |   4 +-
+> .../include/asm/book3s/64/tlbflush-hash.h     |  20 ++-
+> arch/powerpc/include/asm/thread_info.h        |   2 -
+> arch/powerpc/kernel/process.c                 |  25 ---
+> arch/powerpc/mm/book3s64/hash_tlb.c           |  10 +-
+> arch/powerpc/mm/book3s64/subpage_prot.c       |   4 +-
+> arch/powerpc/platforms/Kconfig.cputype        |   1 +
+> arch/sparc/Kconfig                            |   1 +
+> arch/sparc/include/asm/tlbflush_64.h          |   5 +-
+> arch/sparc/mm/tlb.c                           |  14 +-
+> arch/x86/Kconfig                              |   1 +
+> arch/x86/boot/compressed/misc.h               |   1 +
+> arch/x86/boot/startup/sme.c                   |   1 +
+> arch/x86/include/asm/paravirt.h               |   1 -
+> arch/x86/include/asm/pgtable.h                |   1 +
+> arch/x86/include/asm/thread_info.h            |   4 +-
+> arch/x86/xen/enlighten_pv.c                   |   3 +-
+> arch/x86/xen/mmu_pv.c                         |   6 +-
+> fs/proc/task_mmu.c                            |   4 +-
+> include/linux/mm_types_task.h                 |   5 +
+> include/linux/pgtable.h                       | 147 +++++++++++++++++-
+> include/linux/sched.h                         |  45 ++++++
+> mm/Kconfig                                    |   3 +
+> mm/kasan/shadow.c                             |   8 +-
+> mm/madvise.c                                  |  18 +--
+> mm/memory.c                                   |  16 +-
+> mm/migrate_device.c                           |   8 +-
+> mm/mprotect.c                                 |   4 +-
+> mm/mremap.c                                   |   4 +-
+> mm/userfaultfd.c                              |   4 +-
+> mm/vmalloc.c                                  |  12 +-
+> mm/vmscan.c                                   |  12 +-
+> 36 files changed, 282 insertions(+), 161 deletions(-)
 
-Dude, can you please stop handwaving and say what you really wanna say: you
-want different kernels to kexec. And it has worked so far but nothing
-guarantees that. And we should all agree on some strategy going forward and
-enforce it.
+Tested this patch series by applying on top of mm-unstable, on both HASH =
+and RADIX MMU, and all tests are passed on both MMU=E2=80=99s.
 
-I don't care if different kernels can kexec or not. If I need to kexec, then
-I simply build the same kernel.
+Ran: cache_shape, copyloops, mm from linux source, selftests/powerpc/ =
+and ran memory-hotplug from selftests/. Also ran below tests from =
+avocado misc-test repo.
 
-So I'd take a patch which breaks that and when the submitter gets stopped by
-you or someone else, I'll go tell him: "well, actually, I can't take your
-patch because Kiryl said so but that's his opinion."
+Link to repo: =
+https://github.com/avocado-framework-tests/avocado-misc-tests
 
-Do you see how absurd this is?!
+avocado-misc-tests/memory/stutter.py
+avocado-misc-tests/memory/eatmemory.py
+avocado-misc-tests/memory/hugepage_sanity.py
+avocado-misc-tests/memory/fork_mem.py
+avocado-misc-tests/memory/memory_api.py
+avocado-misc-tests/memory/mprotect.py
+avocado-misc-tests/memory/vatest.py =
+avocado-misc-tests/memory/vatest.py.data/vatest.yaml
+avocado-misc-tests/memory/transparent_hugepages.py
+avocado-misc-tests/memory/transparent_hugepages_swapping.py
+avocado-misc-tests/memory/transparent_hugepages_defrag.py
+avocado-misc-tests/memory/ksm_poison.py
 
-Geez, I'm tired of typing the same shit over and over again on this thread.
+If its good enough, please add below tag for PowerPC changes.
 
-Feel free to propose to make kexec'ing different kernels a rule and let's all
-discuss it but let's stop this nonsense of what worked and so on. The kernel
-gets complicated constantly, grows things here and there and without such
-a rule, are you going to sit around and guard that kexec works?
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 
-Pfff.
+Regards,
+Venkat.
+>=20
+>=20
+> base-commit: 1f1edd95f9231ba58a1e535b10200cb1eeaf1f67
+> --=20
+> 2.51.2
+>=20
 
-> I am not involved in the deployment of CoCo VMs, but I don't believe it
-> is specifically about CoCo or the kexec ABI. I think it is more about
-> the boot protocol. Kexec is one way to boot the kernel.
-> 
-> Should we consider the EFI configuration tables format as part of the
-> boot protocol?
-
-You're basically proving my point: this needs to be discussed and agreed upon.
-It doesn't matter if it used to work implicitly in the past.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
