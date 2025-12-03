@@ -4,106 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B3DD116F3
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:24:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67DC9D116F3
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:26:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2056B0007; Wed,  3 Dec 2025 04:24:02 -0500 (EST)
+	id C27B76B002E; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A596B002B; Wed,  3 Dec 2025 04:24:02 -0500 (EST)
+	id BD7BE6B0088; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F08E96B008A; Wed,  3 Dec 2025 04:24:01 -0500 (EST)
+	id AE0646B008A; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E2EE96B0007
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:24:01 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 149691604A1
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:59 +0000 (UTC)
-X-FDA: 84177622998.03.662D717
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 41B5F40003
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:23:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cvu5yFI/";
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 974386B002E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:26:07 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63FEA51870
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:07 +0000 (UTC)
+X-FDA: 84177628374.28.0742BA2
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 83D2CC0005
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:26:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=MmqUKW8w;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764753837;
+	s=arc-20220608; t=1764753965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=noeidY/JxZUlaO2BBPuBf7W+PlJySPwIeLEw72dpWi0=;
-	b=hbPMl8dh4K+LMiyYFMQ7pSN5B5TxY9HrapOKZ0iy+tKvcL5OGeCfN2FNl6bB0DtQTAfomd
-	ndl/2MtyRmI5pUnZC2R+snrURW0PIbfD1kE0UMrXikbEtH+RclD9+5TRdDdODZoItzpYnx
-	EivgacZdpHqSq2fW8towQJLaRw1J67U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753837; a=rsa-sha256;
-	cv=none;
-	b=iz2oQk+bKh2iDd/6qHnT4ATw7ivWG2iA9VRzQ8XH6u8NbtSEhB59bNDFI2oiLXgCvCKtgE
-	1lBpYE7E5mLfUCPwH6CLNboZFKd4dmVyAQEQToF3DkMM+q8VtwBln5S2MYRrOLsnmBO+Lh
-	mz81kW2cHrCj4tPORCMP7PIMl4xJVJM=
+	bh=Tah9iA7LYO4yjBk7uiNqYdwsN3RihMO5xorllOIAWP4=;
+	b=03F2D5THFH3GkRINUeGyQxmApwUIeboGgh45vjNLTEVR/84u1xPbTrrP4RuJB9lcHAP8tR
+	lki0xYJRQkcdhp2h2snT9GzoY+RoDZU0l2bkjjq1RCDnQHovz68GTnhbcWwZgn3i4F5S4g
+	5NQJ/NSzSoAPISkvDjaHVOTEtDblqo0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cvu5yFI/";
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1343241AD8;
-	Wed,  3 Dec 2025 09:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E1CC116B1;
-	Wed,  3 Dec 2025 09:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764753835;
-	bh=S4e+WORc08941gqGHI+Qfm/GmNkEJ5ySt5lGOScr0z4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cvu5yFI/MWJfoPp0dnwR0P+NhuCgNI2hiu03Tf6XZELP7zbJQpqm5isUjY9e/Tdfh
-	 T1FAti4re38m+kkle6trKUG6LfyK78Gorj+43AS2e5UAaONj+LDyx6102ue5fHUWS6
-	 OWQCREZ83ki2v2ja4OzL7nuPrPyjIF9xnFm7IcSjDbr+EcpfIRDxFigHPBc+ze8C9T
-	 DsmjFaKLsK5OTbq0yP2MUJdYQq+Mr6/7x5jCf3UlJikpFhCn5E7Tyafj+CHKqJ7j/d
-	 df7sIZoXwXVkQsejcLEMJuSYUCn/VVgUw/1IjYzOtcfs6u+RP8EKhtBYbWSfEdziKj
-	 RoG6FWK4bU01Q==
-Message-ID: <69bfdffd-8aa3-4375-9caf-b3311ff72448@kernel.org>
-Date: Wed, 3 Dec 2025 10:23:47 +0100
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=MmqUKW8w;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764753965; a=rsa-sha256;
+	cv=none;
+	b=p/UMsmQtrb7NjfqVvasVAm0CGX/L85pg9AVhQsXvGvPPH8nyPnp0Ho5S7nQijvXRpW5AjL
+	dpkgh+8yYQ2grqggWAd6wDs5xZy/OBLPp0MiaV4QpkCMIkDNTZfUQu5Hbkh+c4Hhlw4tos
+	T6rp0XMNa1XrjjY+8wT+5eA4Rgs9vEE=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4eddfb8c7f5so59834581cf.1
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:26:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1764753964; x=1765358764; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tah9iA7LYO4yjBk7uiNqYdwsN3RihMO5xorllOIAWP4=;
+        b=MmqUKW8wouNi8+lMVYXumdxaJ1phhYDzhntGEEVTpJW4fL6MHd/+y+AvwSgQzoA+5D
+         o7itZqOQaJKO99dsryJPqLjKOFK09Pi5xUWooKMHuqSoA2eEay5t9pfWIZrjAGBa6kIg
+         BEKkFDU411sWXAQnsWta6RKkY35ltyQhtTHVB83GOyCIfeFUvFTlAHPBCjO/oTU6/sN/
+         UHBDCswh2f/n9pBtQ5imhUJSmV9bE8JbnOsS9TbyrVSgGrVSWX/lsXJ1uJIGAw9Y7ds3
+         2gGA2Jnsu7EtF/zP67zeKO0hnMeK+wNBzx7cwyX5lYGXjgS3kSsqHYY/nji7BUO4UD65
+         Uedg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764753964; x=1765358764;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tah9iA7LYO4yjBk7uiNqYdwsN3RihMO5xorllOIAWP4=;
+        b=fXzPPgDFzq9vL4LwoGL3Y+j301XAJBJWtUI0QCW91YmGTCSgvIee4268O1UZeQdDLl
+         RuhQNSYjFm84KK2W7ZZpjwVrBsfMQkfEXOwFr/CQhOjLlEm/BUfhjA3wh9SXuAadATFc
+         3sBByzAaqsLoUj0FCPLyaLPYUH6iBosw+66NNlpsYDLdWTDe2T8/QUEBnQpI0cCBQajq
+         2CeNNaxPzULNyK1JNQP5ohNLJri4Dfpff9NdVH0GNZeyjGfRSd4opIZLnacDQoI4HhEA
+         Bq+B3AoQhr22ma9+NT4lD/ThXs+UzqlG6ndvf1dpo+40BodHQYoGQxnWPjIeRfjmmAjI
+         CxpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1mMF2FT1aQsSUSlUWH8ydcdehhJftXodEzyMsucDMvB08WSWsGD5tNzz+gy+VUX9xotXfsKJFlg==@kvack.org
+X-Gm-Message-State: AOJu0YyU4SrvXxafkMEopFBJQPjeJ7qaRMqOfx8murbKJEVfSMQjwGbF
+	eLIT9uQhrg7IJy6YNnlTzqfJ1NGNxfQGBO3bzgR40pnK8JGIt3yS7YRBoilVTnYUYbg=
+X-Gm-Gg: ASbGncu2XJPqEEq5nRtQSbt2I28rK5mj23uYfjkgfDFoXpVRgQBw9Zd0p0jhKiPpmLu
+	L5EKpRT4Vb4weKuPigV81w9jKW4IB0KtVY7WqWfu3iZjEzdsb2OTMJbBmm4tdOYOz2YTAX3adCX
+	Ni0PY8/K6F4dCHK4A27DFoSlh4Hm7u/cmJNFn9EiXBxLHbgaTwqK8ENPIzUYpHqas0RQcGdA2mh
+	JKhzVUsKsgHdgBEjjE2kWQos7RaDuvrk9Q0S1foNBHT5+RPG6CDqOckZHuWcKMFR5RSjCJs6X1U
+	mVJOjd+HtonHVizs2hxCI7cX7AiBOPyu0NQtjPt9FtFNWCH+mPfdgtUht8Ie7a84XJhNfxUu59Z
+	XMsSo6AyKl1Ftq3FYhSWXyP+gkB7CtcT+EAXQqZcsZ+DS34u7SvTYUwyypxa4OrsUH6bRoZoaSF
+	90usvYvYVxYpKz57+1uUTy2hVwmeLC+1i2azhKdht6kOYkhAMVQCHChTdBmXiePJvciBFjvA==
+X-Google-Smtp-Source: AGHT+IGCFbc47aPEF11h47uDLP1j4N+ZFov86gzUBU4eKZNiHrSyBdqxK04QEbh3fwr2eha0kQT3gg==
+X-Received: by 2002:a05:622a:190d:b0:4ed:5f45:42c0 with SMTP id d75a77b69052e-4f0176bff73mr22805341cf.62.1764753964647;
+        Wed, 03 Dec 2025 01:26:04 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd341f2absm109317821cf.17.2025.12.03.01.26.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 01:26:02 -0800 (PST)
+Date: Wed, 3 Dec 2025 04:26:01 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
+	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Oscar Salvador <OSalvador@suse.com>,
+	Juan Yescas <jyescas@google.com>
+Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
+ lock-free
+Message-ID: <aTACKT0b1jFM-G20@gourry-fedora-PF4VCD3F>
+References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
+ <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
+ <aS_0bgCs2qE0y1bJ@tiehlicka>
+ <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
+ <aS_4E2H5aJmSvWF7@tiehlicka>
+ <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
+ <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
+ <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
+ <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
- mode
-To: kalyazin@amazon.com, Peter Xu <peterx@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
- <hughd@google.com>, James Houghton <jthoughton@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20251130111812.699259-1-rppt@kernel.org>
- <20251130111812.699259-5-rppt@kernel.org>
- <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
- <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
- <553c64e8-d224-4764-9057-84289257cac9@amazon.com> <aS3f_PlxWLb-6NmR@x1.local>
- <76e3d5bf-df73-4293-84f6-0d6ddabd0fd7@amazon.com> <aS4BVC42JiUT51rS@x1.local>
- <415a5956-1dec-4f10-be36-85f6d4d8f4b4@amazon.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <415a5956-1dec-4f10-be36-85f6d4d8f4b4@amazon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 41B5F40003
-X-Stat-Signature: zsmgoyr9s4yt5cbngkbnfqfeozuues5m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
+X-Rspamd-Queue-Id: 83D2CC0005
 X-Rspam-User: 
-X-HE-Tag: 1764753837-347701
-X-HE-Meta: U2FsdGVkX19UHeAMpP5iQJECZuqsfxxhOd7IcEE3Q4i1F5sEXMkkv3ph4v81nSrgbsxnTevMwEbL15/hh8xXxP9pZMaW1hupiy92M+R8vd/GHiP2wJMLHEpethXWesQrDlbOZ2E7HBTI3z2wlqR/eSBAHjQRmA0hxfDwlhUOAp5z8jwrWnKOCKes0cDN0hPJllSo7CLBpfQWnut5xlqIiAJjaYe8SLFdMwDqB+2nMD3IfTZa02YjsGIf5U2s2HFG0XZMh02tfNqzu0Ju+U0V3FKz4x91mk4GHdDd68DQ9BSx74vjw6ibXreFsBWRQW7ght154QrortU8NbWtTE4rCkjSBV6AZ3S1X/QH8xw0xS6x0DmG/Y1M6PGFtAT/DF45KmECi8aK4pdP4fqRHyIDF2tRQZq3I7lwHjJBrX5gWAdynZUHvay8w8DsjjE+cnotz7FwmYSiclRhrBOkBmceQXIplB1s2OwsLn0PedLmMlZyOLCtRiV+DwM4RL2f46CzBGg/vKQov98ocFVJyUsFlEnGCRFJOPqpow1FsjDuf9ejXOhm2zJrr4QlVRnE0v6jfJy0ACKAL2DQKCG2LyadAASKguO3DDJKbzY0aAiuIbqE1VScUChFtBCAIQj+hYoRoGi1oWZfTqicCK0a4B3qz1G7vExvecxTwhRy0C6qTP+ZsnO9qQ5vbAC1yiCb5BOzPLdCW/SDfK0Zod8AAtyz4tGgfJ42CsINVcBKQBNuFen9sFkFVtdmoV5CoJu6p5Wqr0jkO2iXIUTPMDwdCs6u0NyfIVFKL5uoY10yixRxlwjsS2dBi2c+ILR0NWBTuMnfriuyJ+Ad5+a6rOIk8+KvntO/k9lxxIjiS+rNZ5YA8AJphmyUSBFDHHHVGkTG9CguugcgRouUWmRYE1JT8Bw9u0Ee5icwwff47gMoo0SpWCudvr/8TniPWnYDwPwduwlrArk8GIiLy8lEl1eGhU0
- 2PkFPEyx
- Sn0t6+rSRlnlae9Wk9OeHsLhuOarzYhgibbGM8baaxjVtCS3Ch8B/x5j7Sz4V4vwS3yXBz/+WV6BszNksM+MVmBlW6d31fxjRk6PZXeCC7HU4IkX4zIVok9c7oxw3/nsuAdG7i7Sk85Pl18cvZt0HXMYQwEbIg5/Tk49itjBp/8k5ijwaBpjYNog7RiTZUWPPkkG6DtDDK//9FAQ3ptLQGgDv8Z0kClMxO6lfHkV6tTNF7MIOIkgCRm+FEYfx7x076oxFlTW7k5fl0MZF/IR16BraIjyAmpwPBW5HQpfEcVKXwmh1KsS+mo4qlU0a+Oe9rrv5qufCPZjM2xCtAbx4aP/S0AAhgdgCtdxE
+X-Rspamd-Server: rspam05
+X-Stat-Signature: p4ope7y3pezgf1gnfn7hu7ozuoctaa4y
+X-HE-Tag: 1764753965-329913
+X-HE-Meta: U2FsdGVkX19A9j8MDxxy6WR9vEEOnvsi1i1aa1GZNDvzsV3NNYWjd7IyoD6YFaAZKJRIEjPxS1NM+USPWFzfXa38TE05dAMNyX98+WIqJghY4XQJegCwzVw+J0/hxD0b0FwtvuQfQ6sQRg46F9v/q5gGPp/Ju8eDAHnKh4PtvjuS1zejIGjNCWu/8/VsLxrnITHgVHf7oCxHDeL1jcoU6PdoQZwKduZqeg3/xaoSbZB8BEfcb1kmbgheXJbAaUxHnKOSKupAMFFW0MZj18vUrqbGuUwSPcN3uVdx2B1fFmhDVOxwzFi19PPW9qugYQFw8VYJOihUDU85ZvU7TQongrmrOYdvZZTj3lq8b+mrmhgt0I4SJizQP/XURGyuiQdql++2Zb2Be6J/AFg2vie+FpegSql72ungXdRftj3jxhKqFRLsCpmoijLVG6StVr/07/JzLHjh5BdYKsewNOCwbD9Gsk51F6anM0NKV9qd/Coj74pSgN6gdoNLti4Km+iPV0D9ymYEk+QSLA31GnhtnwxuqOwYUidqYr29hR0m/sy2mablsJN++QZFzuE0OACGnY6Y6NapxY07zv8jvAuKnJNJh86Yau23RTo80e/istLb3x7D4OQCDma0jebxzr9KHkPcLarWSgxT9HN8ZjOKXetdBDRGnsCqp0JUipXQQ+S7AwEkxq5wO7TNJyPlSsWrigQIyUMrWQeDaOOjXHfKRBzdvkRZsCpMY31IXg4RgbHQvtP+TzWocIfbwRu8djXIWOTapXC1GyQY8Yd3JnYso8772W6B1ev2T1+bkkxKsYNp3peePxO9DTsKxnZjXOdlNgyBOlbOYBHmP1EdCYN6nHemk4A8v+4+25EQy5khqreRkZtOOGKYjT0tIgQL9h0L2uyb/Xvcyd1mJpE4BNxYdXka3HAr85+qpELcuqFRj8G7O/PjgRiQCKrqmb5y33oE3i7hLgsquIWLFvxFYfk
+ kQ70qb2H
+ gZchk8p9iBj0oNdOqVejAfMPaAscOBSXRcsJOHeHzu4UFZZ7xxGhGVJJ88AURdMw5PcLbarIrLGycl8tQntzn8AYXjfxJrclOJiU9ZBaBY1P5WoLuxbvN4n8cLt6r0O0vEB3qDpLuOYxs5Oo6i1VDQ9NQFdeqM9sLDFwHl8M17X0f1UcgO4xo5NcS5xh2MItWTsyp/C0e40N6D277dM4Pe2PUk+uZN9YFSq7hMT8zMESOOatAtKvBg2HJ1wGugoK5M3NZYFuKxeHm9okNsyznpRA6YcS4WcqIeGfww+KqBfqmXn8pO1LiBvD2Sv78WUWXhcaazQYOGElFcvX1vclv1CGFbDscOJFjqoctuk/7cvOr83M874treeXJaQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,70 +132,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/2/25 12:50, Nikita Kalyazin wrote:
+On Wed, Dec 03, 2025 at 04:23:20AM -0500, Gregory Price wrote:
+> What luck, I do! :D
+> And i just noticed it's the same page over and over
 > 
-> 
-> On 01/12/2025 20:57, Peter Xu wrote:
->> On Mon, Dec 01, 2025 at 08:12:38PM +0000, Nikita Kalyazin wrote:
->>>
->>>
->>> On 01/12/2025 18:35, Peter Xu wrote:
->>>> On Mon, Dec 01, 2025 at 04:48:22PM +0000, Nikita Kalyazin wrote:
->>>>> I believe I found the precise point where we convinced ourselves that minor
->>>>> support was sufficient: [1].  If at this moment we don't find that reasoning
->>>>> valid anymore, then indeed implementing missing is the only option.
->>>>>
->>>>> [1] https://lore.kernel.org/kvm/Z9GsIDVYWoV8d8-C@x1.local
->>>>
->>>> Now after I re-read the discussion, I may have made a wrong statement
->>>> there, sorry.  I could have got slightly confused on when the write()
->>>> syscall can be involved.
->>>>
->>>> I agree if you want to get an event when cache missed with the current uffd
->>>> definitions and when pre-population is forbidden, then MISSING trap is
->>>> required.  That is, with/without the need of UFFDIO_COPY being available.
->>>>
->>>> Do I understand it right that UFFDIO_COPY is not allowed in your case, but
->>>> only write()?
->>>
->>> No, UFFDIO_COPY would work perfectly fine.  We will still use write()
->>> whenever we resolve stage-2 faults as they aren't visible to UFFD.  When a
->>> userfault occurs at an offset that already has a page in the cache, we will
->>> have to keep using UFFDIO_CONTINUE so it looks like both will be required:
->>>
->>>    - user mapping major fault -> UFFDIO_COPY (fills the cache and sets up
->>> userspace PT)
->>>    - user mapping minor fault -> UFFDIO_CONTINUE (only sets up userspace PT)
->>>    - stage-2 fault -> write() (only fills the cache)
->>
->> Is stage-2 fault about KVM_MEMORY_EXIT_FLAG_USERFAULT, per James's series?
-> 
-> Yes, that's the one ([1]).
-> 
-> [1]
-> https://lore.kernel.org/kvm/20250618042424.330664-1-jthoughton@google.com
-> 
->>
->> It looks fine indeed, but it looks slightly weird then, as you'll have two
->> ways to populate the page cache.  Logically here atomicity is indeed not
->> needed when you trap both MISSING + MINOR.
-> 
-> I reran the test based on the UFFDIO_COPY prototype I had using your
-> series [2], and UFFDIO_COPY is slower than write() to populate 512 MiB:
-> 237 vs 202 ms (+17%).  Even though UFFDIO_COPY alone is functionally
-> sufficient, I would prefer to have an option to use write() where
-> possible and only falling back to UFFDIO_COPY for userspace faults to
-> have better performance.
 
-Just so I understand correctly: we could even do without UFFDIO_COPY for 
-that scenario by using write() + minor faults?
+Should have noted: 6.13.2
 
-But what you are saying is that there might be a performance benefit in 
-using UFFDIO_COPY for userspace faults, to avoid the write()+minor fault 
-overhead?
+but it's kind of a frankenstein's 6.13.2 with stable backports, so I
+don't know what's been fixed between 6.13 and latest.  If there are
+relevant patches I can search for whether we have them.
 
--- 
-Cheers
+> [ 3404.119270] migrating pfn c06f176 failed ret:1
+> [ 3404.129152] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
+> [ 3404.148284] memcg:ffff88842e855000
+> [ 3404.155834] aops:btree_aops ino:1
+> [ 3404.163193] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
+> [ 3404.185408] raw: 17ffff066c00420c ffffc90066a13ca0 ffffc90066a13ca0 ffff88812b8502f8
+> [ 3404.202603] raw: 000000000ad28e5b ffff888859fd42d0 00000004ffffffff ffff88842e855000
+> [ 3404.219779] page dumped because: migration failure
+> 
 
-David
+~Gregory
 
