@@ -4,113 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7860D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 08:05:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 959DFD116F3
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 08:19:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 079966B0027; Wed,  3 Dec 2025 03:05:07 -0500 (EST)
+	id DB18D6B0029; Wed,  3 Dec 2025 03:19:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0035A6B0028; Wed,  3 Dec 2025 03:05:06 -0500 (EST)
+	id D89B86B002A; Wed,  3 Dec 2025 03:19:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34E96B0029; Wed,  3 Dec 2025 03:05:06 -0500 (EST)
+	id C77D76B002B; Wed,  3 Dec 2025 03:19:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF4D66B0027
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 03:05:06 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8246E132B34
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:05:04 +0000 (UTC)
-X-FDA: 84177424128.23.AE74BF5
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B240FC0004
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:05:02 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LdLhqZCe;
-	spf=pass (imf22.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8176B0029
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 03:19:02 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E63513B2FF
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:19:02 +0000 (UTC)
+X-FDA: 84177459324.24.D1472DD
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 62BACA0005
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:19:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=abF7PT5a;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764749102;
+	s=arc-20220608; t=1764749940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=R9a/AxV+wC8jwsiLQBhrbX+GTyTSM7uRmBDhsxzqnBc=;
-	b=0h41rQ71MvqgWPQpatPjHTIJsm+HY1y30VkGmbtwOLtfX1k3rCK+AkFU+o08nu+7sSXx0O
-	ofu0a2OpXlMhR8BBBntl8gR9Na/54SmFhcdUmA+k80LbSqpyeMi5i8u4pUCOrJ823uh9Su
-	Aajlk1pwHKZsM062w6V4xOMU46YP7RE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764749102; a=rsa-sha256;
-	cv=none;
-	b=MpWDN6TMgs2jqc6tt4Gk10nGH8PpcC/19iS8VEsHfm/DI7IzV9nnTteS3wSZqdbF+mp8cW
-	Nj7jf3HgkxXMSSEgjFsLAP6xC+oWp863pkNHi1UOk9FXHA6ChAfPX2EUL68lo3j92N8iGO
-	zb3xLXWAXzki7obG+vgWxNmR4ACy/Lw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bVMfaK9DBSZeHHhZl60d3mvaanEQhm1Qa80beqsAfnE=;
+	b=uemuRYdDzn0VlELJgVtKwfc27wkWapIMljvK9b3+4baHs755n1sMY3OTaiubKLHHQDhZ1J
+	a9DLStLgU/KnbHqU7ek/yr/IDKusV3gVyPT6Ojj3YdBEqH/BKazeYkucCx2R/XxdHfHXuT
+	vsnaau+GbUJO2INEcgQQusDzODVivbE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LdLhqZCe;
-	spf=pass (imf22.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7b8eff36e3bso10398823b3a.2
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 00:05:02 -0800 (PST)
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=abF7PT5a;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764749940; a=rsa-sha256;
+	cv=none;
+	b=haXl0QgXvgr1MIe4dzPAESNAg+mZOcRdEI5Imv92r7FGrR5ntxZU1/qQQ7n7PngLawxBIf
+	MTi5T7DnxbKvXlfjwcDn7oK16DhMdftSxp3H8eiT/kkrk35PQuQDODH5gsmTHQ9tuDjIB/
+	9zsCEakZtl7SV37XDZF1IPLJXRVhtcY=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b22624bcdaso740727085a.3
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 00:19:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764749101; x=1765353901; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9a/AxV+wC8jwsiLQBhrbX+GTyTSM7uRmBDhsxzqnBc=;
-        b=LdLhqZCesXOFrFmSHJdnpWG6MdTbKTWwlY84TI482Zyh8zDKQsIX92s/nr1xJeib3N
-         csSsEE7saW3iKiPr62+LxMTvhLv7VAJ5epGnFlES1FfaAxJZKzQQudkW9uUAiIjcJK4T
-         u5Pg7uoeWU6iPl7cgrPt27lKRMpb2q4o0UhukrVRwrz/RT9z2y1gC7wb80/rV2JAFj6m
-         zy2MiMylKLV2/PYfJ5cjeTyLBsbDuU2BhcZlgJURE2eUBMW+sHRfJ6+6wBnUknb5Xy1M
-         nk8oten0HLpCoMW0e/5ehByzjUrfTLxd+vrk5da5gubYVCz2k1ZOzPU8Ek/0F3M8kWFP
-         t5RQ==
+        d=gourry.net; s=google; t=1764749939; x=1765354739; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bVMfaK9DBSZeHHhZl60d3mvaanEQhm1Qa80beqsAfnE=;
+        b=abF7PT5a2N303vI2Hrqn2C6mHozyRXnIZDOw9rZW+SIFexsvHOEeqhrcgaujBE5tsT
+         xHm49wRAtW2xDwmmWtlz0f08GCstXU7vuKNczc1xTgZpq+oMVNfytVbczMKHrNvKDvdg
+         IA9cK06/8/HtbWoTraItRy1CsLSoeTTSlh0xTilrh7kWoGWaO+WWFscpcq4adL9xHu7L
+         6vuU/RAs8f2exPECK6GvK6sk3cZDPGYrOaPY9FUSeo9BF07W/ZpBhta5nfvQ9sD+lbhA
+         PhYjk1/wIsDSyEI5v/3TIwVVoJQU2FNe5WtHmaz6T5D3cJ3sC9sVl3kPNb/FKSo7Zl0y
+         kXtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764749101; x=1765353901;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R9a/AxV+wC8jwsiLQBhrbX+GTyTSM7uRmBDhsxzqnBc=;
-        b=WVlik7Og04Sed1CgPP1DZuYOr/FoB7993sDoIiBSgdfgxaGzxH8zN83Mh2Rgex9+9/
-         dDIAr3NTzj/cX7/ZzIijP4wZugKLgYZWLvOEEudwFdvj8h/GXAiQb+i/hT7RmGl5qmmI
-         N+G3hCbgncHl+twDvRrYfpqKP4mDI0fCWTZykXKA3+Kox9OoMMfj9P43fj9Z4KSo4rXw
-         UXs0LrwLwwqnU++Wbp0G+hieftYS5A96sfbjFVR0YO7rvEs42NaRHhjVsWVxruBAeVR/
-         k2HJ7v/bBapmbiV2UwwlPpXufkHrvOq3WFGldOSRl44fm8h5LWLorYVXi31d+rjLEsnU
-         VspA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVKaPQtwY93U2XWgwTok7Uxq6e+GeJSz5XQR+W98YZtmHmYRE7BfK79XUbRdJtqeNhJR3AGXAo6w==@kvack.org
-X-Gm-Message-State: AOJu0YzXnif9U5GKYi2Yw5PoKqtFKUtQz6GJazRVaUPjzrgFqIgLxrs+
-	XXgsfd56hKU5yB9Z6/3YNGKUU4GSm35S1tSJ6DGZGatlJjrBaB/XOsc6
-X-Gm-Gg: ASbGnct72MC/fuoH6xtoNyknoXPEfh7DoigkOEoW+S2S69REvXL+Zsvjs6OrILr1jLt
-	MHnuXZGKt46fZNFA9XZWCgRxvYPVIVttI2Mg/5xAx6NBKSf7D29xeafDD9STx7kNKLasshAgQGX
-	NBNDxki1snouo4Ust26bL0iZjmI4buI+vSDQRkIhxo/IbGciAjjOC+OfrgxjexDJ1aRfS4uXdj4
-	Fjigo6OWD8owjlViVT4sdTN454J1DIq/8pmHTuL+lPPqwE9DqnSAM77y5y1n2OqBtThdUIu3Yxm
-	6MWCXqlKW5Y8kA1JuL8X1EZd9xCpah5hfe36svPaDCWg986J62eNCYf74lg9hDqPg3Fm2O5/Rnh
-	I0LooHZWWEIsfKTpMRDr4HFetRi8ga1YyfSq18/HdVfNeQz0xxf/YFNEgkw+OJx0gqsR5Fa/aP9
-	9H7b5H9IIU+kEU
-X-Google-Smtp-Source: AGHT+IEKnfRdlKVBSs8FMLtPg066nv9w/0bsZDbFhrjOTm0rk01/YNwhJ9ucFUGfG3SebblIOnE7gg==
-X-Received: by 2002:a05:6a00:2d04:b0:7b8:bab9:5794 with SMTP id d2e1a72fcca58-7e00e3b938bmr1721264b3a.26.1764749101329;
-        Wed, 03 Dec 2025 00:05:01 -0800 (PST)
-Received: from HP-Note-Host.. ([222.234.91.137])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7d15f9260a4sm19331963b3a.58.2025.12.03.00.04.59
+        d=1e100.net; s=20230601; t=1764749939; x=1765354739;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bVMfaK9DBSZeHHhZl60d3mvaanEQhm1Qa80beqsAfnE=;
+        b=Oy/YCF2a46SG4C57G4P8GxnN0hlDAVHOKVxnH74Bwa2nLEIcmM5iCvXSeB3X/emnZb
+         Nx0mil7BFdd1xFB8GYP1oJ6uK9uefM7i/xS9tiz4hwqYhjv00kSVy+OJg6CWvBCJVQNH
+         oXcIRzJj4AlQxv0CArpBudoojYgQ4rvYSuDAy56DPC5TLBqLqktQ3Sp9kFtP0LrgAxL9
+         tjzsYYIq6wDrKWC/Z/9iEq6vwaYW1LS9zYV9hx+j9Z5Xoi0FrULAyEu5rIYJBfdWPqxZ
+         frPICYzP1ZjyNK1EP3rd1sttqJQbOfFKInxhpYYL17pjvLivGUDzSwjP+wRuZX8KlzD8
+         /woA==
+X-Gm-Message-State: AOJu0Yzl6N8quN98ffMfxAM7S/3sJjVtUEJF1kdDRin6I9sK8Pfi6M+O
+	95Ic3MxVHc9OowzUtbHlCDsm314erOfGJzpgSOe36JJj4jKiJgeFnvQotxBXAuDsrAyP+6x2uFG
+	jfw0D
+X-Gm-Gg: ASbGncvyP1qae1Q7zi61XfI30uJd3jUIVuekM8r5hDsHPsKW3qavIW1YwAjL6Ulu8o7
+	yUq2y+cf5eSOVE+gFbjZTHQ3KSjNp28Kk4WLFPytBa1SauVygkmqvF7SzfccBZW83YcNdEF/sz6
+	KgniLH1mBEJPCT2KTec0NRx0z1+NbWiebRu7Cd4/8y4rStPaK6PQ79XB5Vx1CvwJ/hpWtCsCW6V
+	p7xpP4dgP5QJvVfkrQ+ggBLG1UDvVr987eR/GdLHqMXfALN57LxAOxFgNsURbXNWnsm8tc+Dyll
+	arfiH/oTDx79LsHUU1jiBeh7w0JxwYw4VvtIF72LVSV7+fYUJV8N3t186q7K8I9z+1I0Xe6ZxAu
+	L4Gg7OOrPJVG2XiGRMa8O7ElGkI7hcoi15fvdKLmYw8mO1J4/QPRkIZk/TCEh3jeTJ8Cgw3tbcM
+	/qTadhqaBXLyhzjdv1WSDt0azidmT3AwokjNkO98JVLdjK4SZ0vSxGf4st8DzS61ylNxVRSYsF0
+	MF74Yst
+X-Google-Smtp-Source: AGHT+IF4V6+inMElcPd4cBToKnPH8czckhw4VafyJlwLQUg3slsWJlJvUS2iV4QYV/TfdfS2eCsT0g==
+X-Received: by 2002:a05:620a:3189:b0:8b2:eefb:c899 with SMTP id af79cd13be357-8b5e68a302fmr153138385a.71.1764749939365;
+        Wed, 03 Dec 2025 00:18:59 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b52a1de6b8sm1275953785a.54.2025.12.03.00.18.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 00:05:00 -0800 (PST)
-From: Jung-JaeJoon <rgbi3307@gmail.com>
-To: sj@kernel.org
-Cc: Jung-JaeJoon <rgbi3307@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	rgbi3307@naver.com
-Subject: [PATCH v2] mm/damon/stat: deduplicate intervals_goal setup in damon_stat_build_ctx()
-Date: Wed,  3 Dec 2025 17:04:33 +0900
-Message-ID: <20251203080440.16096-1-rgbi3307@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 03 Dec 2025 00:18:58 -0800 (PST)
+Date: Wed, 3 Dec 2025 03:18:57 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Jayaraj Rajappan <jayarajpr@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com
+Subject: Re: Calls to do_swap_page() from handle_pte_fault() on a system
+ where swap is not configured
+Message-ID: <aS_ycQQh5n1cVIRk@gourry-fedora-PF4VCD3F>
+References: <CAEJW1wECyPh-wbgnnoOGY460ido=U2A3rPhF1FQAv7txed1-Rw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+In-Reply-To: <CAEJW1wECyPh-wbgnnoOGY460ido=U2A3rPhF1FQAv7txed1-Rw@mail.gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 62BACA0005
+X-Stat-Signature: keqm6ja19w1xtrmr99m8t6wdfewymtmc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B240FC0004
-X-Stat-Signature: zzum4ygahtdezoaejmxph4phgcofyac6
-X-HE-Tag: 1764749102-76920
-X-HE-Meta: U2FsdGVkX1+CA1VGGAcflEDyblUwGpmCaweFmUGNkZkn/lEiYInzNVk5AwEcukFUJnP63m2QG8h2dbyuiTsBZjDH9Xgi/+8a6NM8TpSlSp6VRZ3igrRz7zO3W79qrE+XaLXV4VHpAoVWLv4j6FGdIZaCCX5fumHflhek1Y6xcAjE4n+5ruI8WzT5HRjagBzVSg6L5WpCPSvEWf7xSekYRGxWyPR8vBOg/czC06tu8lUzfXezKylivFjJKjhDZEZNCAFWhmst7Ht/rba/AJc5C9XcZJ39cwTd+vxFtWd8q3XiTzCQMRcqsEmp69D94ygFfk0H7HQH8dENiB1pF+fo1G4ZB8h0gy0NdE262iWFoAi76sn6aQLrvjMRuX8MF+SWfYjIGPD4SY258y6pjjWv/YQt6u3lJajhxuqxeLhpefugZLtVD8YK6O5InJ7O120amBI+6VdQxucbzs/gI7dZBAv48bMKO1B9GsrOuou2gbWN8H6iqn3X07NRBRgCNBxjMD2eAl3kYgDkcAmrCmSIDtWFXuPk7VojLDIO7dnBl7hhlTOX+vMVZIi/FnC3yTMW7CUDmUKEoUkcHcGjgOuxs6EQhs0PRro20uo6MJgEva2CGgMEIuHn6Gy4UoY6hjxdmHbC3os2vkVV3OEuGLt0L1Is64j5fvPd5Qrrf6ScN/OxqM3e0lR7GWRMVkdUyN/D+bu1k9YA42IOhC3SS6+BPK/hyx5SEoc8KLaGpFWXonBaPqdut0NuhASQijP6SYsvzuwCUrd2I01cSL4Mo7gA1j5PjcuNDKymAzBtaduInxjruh9qEBfsrKzCI7SWAtrEQ4msXl+AT0tVtOMK1VdNxvorCGncuocoo4Wz6nWQLZfuRBCSbcJDiPjJMds8lIYiwessMTNiiUBhelg7vhdcmR6TP1huM9Ywof9wlogM65cfQMUrqd5Hn/KjGNA5OczoeGtSL/JWd0ZZwCKb6NR
- ctc1b/tT
- GEmrxHencwYSEnuQHU43VCc+0JkY/44NqdxkGe1YpZgBOX0T+IQd3UGxs17k4IWAL6ey81LytoUblbYmXc7UPrHerbOAHdol5//b8z9UxOmoDQ1RDADeziRsnQj/XpKZsSwLC+J2eHW2z6JR4HPQNS1gSYv5gv5j/rcZH9+lOWhd6X04iiCrM64gq1dhyBIsEKFnY3ghkaNEaCK8MD5S2Yp6bzM8V82LJj83LwSxN6J9dVBOZJwdhFP3BNvQuPV6zcRDz5IeXgWe2NI0GZLHeCWsJ3VY0iPLaBR51UuwwXnGws5B6lNZHoBRMh7dFinjsate3lUVz9J+mhJue2Ab0wRIERurWMG4uN0xKiRjy1f3wc3ARzn3jdgV3gaqeJpg33NkLtRd0Njs3tC1lWMGmEn9L0V2NEvURQcTBVteZq2/xJe9/RxYZHQBf7zMfp9yIE7qXqCmN510Uqm1gnn0CGEX6C4+3X8D48Mz9Ky0hMFu6x/dtXdw2ioAB//340zgJyEt/3mxb3WLmAOaoQ4i0EnLnZL8/S3l2tVahLyqjkjnHbJXymZGV1RXUOEs1Aw3pOU6bDnaUeqVawgDrmGr1/RbXYJioar4BLkDV
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
+X-HE-Tag: 1764749940-822418
+X-HE-Meta: U2FsdGVkX19A7kkcs32lE+400bXKtU9NaE0MGqFrNP6eCE3l4Pwrm2snOTm7U0i93GTIGzYW2xzYrNlpQ99noBM/LRQyQxqwBBEVWmOH2mhhUl0W5R18YFq4eJPyRdo8sfS/V/izMMzDhC+GYkkTzrFXf12+YByzK/WJEnbGmPSK4Pe8dQRjah7rNrCKwlQRuOKPdjrt7DonHdBI+8S/WM0CGWu/OcL90N80orjkvawuMuEdpZMkp15dA0K1052nVD7cithERLR+elFzIjDd9bb19WPZQZVROGGhovdgq2Gd9WM3lF8LmyymVYZDGT1lzc+jw/uZ1pJibONdfTPP27djEPZnVtFNDVCaYkIkBvBjoqaIDL+2PU95PN2WJ2ue9jo6+FGu5qufHi70PH3MXZ2YlJYsN0/Wi6EQxYy3wo5x6MKNWL6IMetsWkFJllXb8lF9L4Jh/yq43EgMN2mZZmUS7ISLJXnYUIAWtPEu98kNmzPJFAfxC4kkZX/d3tFhUyf8CEm/nKRh5KvcVkCDIyBnFSSLvvw94i7MeW6LwKxqLZEm0PArzJ2LSmQ3nMe0Or6tQbjnOb3nTsmIqVnSk+9ZvYABG18aFqTudWkfdhyqb3UpQenOe5/BMOEG8pKBn47Eqwh+xu/rFJg/b4J7CQjYCYrawad2g/gicjknnHgGGz0oDt/t8oxXpLbGcigySol1VFy2dWdGJyElieUXbdjWPpcz8JV0i0W3EJnJLERWev0RY3ZCNPjI2Gj60Qzo68LnUZ/6UlxmaiyPMybSgZ8w6RPQqKPg+Dl56ToV4LKH4fWr/7r9iNhnayXdIfG2wAs0l20dkQbGxoZ10IUSRgFc7TRWul9swWBrLK5RCn/gDV99s6U2v3DEK27HBtZkKHEvvv1G0EbsySaPXxc30s31lO9PT2Ko+vjWU30ZUtRFAFNOyLBMBHTyXMn3z5lzmuPBgXE5dUmfO4B8Vh/
+ YqNGfQhf
+ j00lTgUYOXfLcWQrnjeDNm31MfDWX5HHeQ8qwPEZLmxC1qQSrfdjFsrXgnmhhDI6nbYiAHMjaRiCbLIv5qxCuP9FwBGiBNCa0FO4rR8Ma7c5SJgzNdZWednnDQH7XpuTB375/cknKBdDm7yWSOwxnBRtO9GL6YWoxuReUznA/Db64QVjmgCMx0oVk+DHk38D71+kBh7f3uWbhf3JbKd/8WaUfUx5IE9FkBK61fK7NgUeklzEe83NBEqFjRHxVmsG+8d/St+4A3eQpBXpSjOA4qi4nniMK9Rt4n1QVlSFJ1Mt4rSRXIhz+TcYm6gStxnRIMhP7aBTrri+y5t0R2yLIcVlrViH0Eewgj2taeNCP/WdCyExUzRhRE6SbPabRokN0aczNU6ziTYXr62SnhRiLjwQWNvcNUJzdBT0SfmkZ0sz1eUPvWdZaMr6+ljNSUdoPrqQbyjoNGRrUXtjXWrmNXC8Wu74NEp3ZT12kOf4fQKL+Tcc/XyvBJ9c26UkKaUy7Z1nFKSTgpN4an1z0JrcEMqQ05A==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,39 +123,440 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The damon_stat_build_ctx() function sets the values
-of attrs.intervals_goal structure members.
-These values are applied to damon_ctx in damon_set_attrs().
-However, It is resetting the values that were already applied previously
-to the same values.
-I suggest removing this code as it constitutes duplicate execution.
+On Wed, Dec 03, 2025 at 01:11:24PM +0530, Jayaraj Rajappan wrote:
+> Hi,
+> 
+> On a system where swap is not configured, profiling using Linux "perf"
+> tool shows that do_swap_page() gets called from handle_pte_fault().
+> Kernel version is 5.14.0. HugePages are disabled on the system. Trying
+> to understand what could cause do_swap_page() to be called when there
+> is no swap configured on the system.
+> 
 
-Signed-off-by: Jung-JaeJoon <rgbi3307@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
+all do_swap_page() call means is that the PTE is valid (something is
+there) but not present (the present-bit is not set, or whatever that
+particular architecture considers is present is not met)
+
+static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+{
+...
+        if (!vmf->pte)
+                return do_pte_missing(vmf);
+
+        if (!pte_present(vmf->orig_pte))
+                return do_swap_page(vmf);
+}
+
+
+There are other non-swap swap-entries that are handled by the same code.
+Transient migrations, device private, etc etc.
+
+swap-entries are being renamed "softleaf" entries here shortly:
+https://lore.kernel.org/linux-mm/cover.1762812360.git.lorenzo.stoakes@oracle.com/
+
+So it means "a software-entry is present" which could be any of:
+enum softleaf_type {
+	/* Fundamental types. */
+	SOFTLEAF_NONE,
+	SOFTLEAF_SWAP,
+	/* Migration types. */
+	SOFTLEAF_MIGRATION_READ,
+	SOFTLEAF_MIGRATION_READ_EXCLUSIVE,
+	SOFTLEAF_MIGRATION_WRITE,
+	/* Device types. */
+	SOFTLEAF_DEVICE_PRIVATE_READ,
+	SOFTLEAF_DEVICE_PRIVATE_WRITE,
+	SOFTLEAF_DEVICE_EXCLUSIVE,
+	/* H/W posion types. */
+	SOFTLEAF_HWPOISON,
+	/* Marker types. */
+	SOFTLEAF_MARKER,
+};
+
+-------
+
++Cc Lorenzo:
+
+do_swap_page() is a stale name now probably?
+
+I know there was a hold-off on changing actual swap code, but maybe
+worth changing do_swap_page -> do_softleaf_page?
+
+Not build or anything tested (sorry it's 3am insomnia time), basically just:
+
+s/do_swap_page/do_softleaf_page
+s/DO_SWAP_PAGE/DO_SOFTLEAF_PAGE
+
+No clue what's up with the special sparc stuff.
+
+~Gregory
+
+-------
+
+From 92de7131f74b9300ea711ceae98bbe137cf0058f Mon Sep 17 00:00:00 2001
+From: Gregory Price <gourry@gourry.net>
+Date: Wed, 3 Dec 2025 03:12:44 -0500
+Subject: [PATCH] mm: rename do_swap_page to do_softleaf_page
+
+do_swap_page is a stale function name with introductio of softleaf.
+
+Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- mm/damon/stat.c | 8 --------
- 1 file changed, 8 deletions(-)
+ Documentation/admin-guide/mm/ksm.rst                   |  2 +-
+ Documentation/gpu/rfc/gpusvm.rst                       |  2 +-
+ .../translations/zh_CN/admin-guide/mm/ksm.rst          |  2 +-
+ .../translations/zh_TW/admin-guide/mm/ksm.rst          |  2 +-
+ arch/sparc/include/asm/pgtable_64.h                    |  4 ++--
+ include/linux/ksm.h                                    |  4 ++--
+ include/linux/pgtable.h                                | 10 +++++-----
+ mm/internal.h                                          |  2 +-
+ mm/khugepaged.c                                        |  6 +++---
+ mm/ksm.c                                               |  2 +-
+ mm/memory-failure.c                                    |  2 +-
+ mm/memory.c                                            | 10 +++++-----
+ mm/page_io.c                                           |  2 +-
+ mm/rmap.c                                              |  4 ++--
+ mm/shmem.c                                             |  2 +-
+ mm/swapfile.c                                          |  6 +++---
+ mm/zswap.c                                             |  4 ++--
+ 17 files changed, 33 insertions(+), 33 deletions(-)
 
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index bf8626859902..51dd29685915 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -173,14 +173,6 @@ static struct damon_ctx *damon_stat_build_ctx(void)
- 	if (damon_set_attrs(ctx, &attrs))
- 		goto free_out;
+diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
+index ad8e7a41f3b5..4c660dbc908e 100644
+--- a/Documentation/admin-guide/mm/ksm.rst
++++ b/Documentation/admin-guide/mm/ksm.rst
+@@ -286,7 +286,7 @@ cow_ksm
  
--	/*
--	 * auto-tune sampling and aggregation interval aiming 4% DAMON-observed
--	 * accesses ratio, keeping sampling interval in [5ms, 10s] range.
--	 */
--	ctx->attrs.intervals_goal = (struct damon_intervals_goal) {
--		.access_bp = 400, .aggrs = 3,
--		.min_sample_us = 5000, .max_sample_us = 10000000,
--	};
- 	if (damon_select_ops(ctx, DAMON_OPS_PADDR))
- 		goto free_out;
+ ksm_swpin_copy
+ 	is incremented every time a KSM page is copied when swapping in
+-	note that KSM page might be copied when swapping in because do_swap_page()
++	note that KSM page might be copied when swapping in because do_softleaf_page()
+ 	cannot do all the locking needed to reconstitute a cross-anon_vma KSM page.
  
+ Advisor
+diff --git a/Documentation/gpu/rfc/gpusvm.rst b/Documentation/gpu/rfc/gpusvm.rst
+index 469db1372f16..3a444bf2768b 100644
+--- a/Documentation/gpu/rfc/gpusvm.rst
++++ b/Documentation/gpu/rfc/gpusvm.rst
+@@ -14,7 +14,7 @@ Agreed upon design principles
+ 	  this path. These are not required and generally a bad idea to
+ 	  invent driver defined locks to seal core MM races.
+ 	* An example of a driver-specific lock causing issues occurred before
+-	  fixing do_swap_page to lock the faulting page. A driver-exclusive lock
++	  fixing do_softleaf_page to lock the faulting page. A driver-exclusive lock
+ 	  in migrate_to_ram produced a stable livelock if enough threads read
+ 	  the faulting page.
+ 	* Partial migration is supported (i.e., a subset of pages attempting to
+diff --git a/Documentation/translations/zh_CN/admin-guide/mm/ksm.rst b/Documentation/translations/zh_CN/admin-guide/mm/ksm.rst
+index 0029c4fd2201..269cb94362ce 100644
+--- a/Documentation/translations/zh_CN/admin-guide/mm/ksm.rst
++++ b/Documentation/translations/zh_CN/admin-guide/mm/ksm.rst
+@@ -191,7 +191,7 @@ cow_ksm
+ 
+ ksm_swpin_copy
+         在换入时，每次KSM页被复制时都会被递增。请注意，KSM页在换入时可能会被复
+-        制，因为do_swap_page()不能做所有的锁，而需要重组一个跨anon_vma的KSM页。
++        制，因为do_softleaf_page()不能做所有的锁，而需要重组一个跨anon_vma的KSM页。
+ 
+ --
+ Izik Eidus,
+diff --git a/Documentation/translations/zh_TW/admin-guide/mm/ksm.rst b/Documentation/translations/zh_TW/admin-guide/mm/ksm.rst
+index 1b4944b3cf61..afea57754c41 100644
+--- a/Documentation/translations/zh_TW/admin-guide/mm/ksm.rst
++++ b/Documentation/translations/zh_TW/admin-guide/mm/ksm.rst
+@@ -191,7 +191,7 @@ cow_ksm
+ 
+ ksm_swpin_copy
+         在換入時，每次KSM頁被複制時都會被遞增。請注意，KSM頁在換入時可能會被複
+-        制，因爲do_swap_page()不能做所有的鎖，而需要重組一個跨anon_vma的KSM頁。
++        制，因爲do_softleaf_page()不能做所有的鎖，而需要重組一個跨anon_vma的KSM頁。
+ 
+ --
+ Izik Eidus,
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 615f460c50af..7fee128daf03 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -1054,8 +1054,8 @@ void adi_restore_tags(struct mm_struct *mm, struct vm_area_struct *vma,
+ int adi_save_tags(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		  unsigned long addr, pte_t oldpte);
+ 
+-#define __HAVE_ARCH_DO_SWAP_PAGE
+-static inline void arch_do_swap_page(struct mm_struct *mm,
++#define __HAVE_ARCH_DO_SOFTLEAF_PAGE
++static inline void arch_do_softleaf_page(struct mm_struct *mm,
+ 				     struct vm_area_struct *vma,
+ 				     unsigned long addr,
+ 				     pte_t pte, pte_t oldpte)
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index c982694c987b..a024ca1bae3a 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -81,10 +81,10 @@ static inline void ksm_exit(struct mm_struct *mm)
+ }
+ 
+ /*
+- * When do_swap_page() first faults in from swap what used to be a KSM page,
++ * When do_softleaf_page() first faults in from swap what used to be a KSM page,
+  * no problem, it will be assigned to this vma's anon_vma; but thereafter,
+  * it might be faulted into a different anon_vma (or perhaps to a different
+- * offset in the same anon_vma).  do_swap_page() cannot do all the locking
++ * offset in the same anon_vma).  do_softleaf_page() cannot do all the locking
+  * needed to reconstitute a cross-anon_vma KSM page: for now it has to make
+  * a copy, and leave remerging the pages to a later pass of ksmd.
+  *
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index b13b6f42be3c..21262969b6b3 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1142,8 +1142,8 @@ static inline int pgd_same(pgd_t pgd_a, pgd_t pgd_b)
+ }
+ #endif
+ 
+-#ifndef __HAVE_ARCH_DO_SWAP_PAGE
+-static inline void arch_do_swap_page_nr(struct mm_struct *mm,
++#ifndef __HAVE_ARCH_DO_SOFTLEAF_PAGE
++static inline void arch_do_softleaf_page_nr(struct mm_struct *mm,
+ 				     struct vm_area_struct *vma,
+ 				     unsigned long addr,
+ 				     pte_t pte, pte_t oldpte,
+@@ -1157,17 +1157,17 @@ static inline void arch_do_swap_page_nr(struct mm_struct *mm,
+  * page is being swapped out, this metadata must be saved so it can be
+  * restored when the page is swapped back in. SPARC M7 and newer
+  * processors support an ADI (Application Data Integrity) tag for the
+- * page as metadata for the page. arch_do_swap_page() can restore this
++ * page as metadata for the page. arch_do_softleaf_page() can restore this
+  * metadata when a page is swapped back in.
+  */
+-static inline void arch_do_swap_page_nr(struct mm_struct *mm,
++static inline void arch_do_softleaf_page_nr(struct mm_struct *mm,
+ 					struct vm_area_struct *vma,
+ 					unsigned long addr,
+ 					pte_t pte, pte_t oldpte,
+ 					int nr)
+ {
+ 	for (int i = 0; i < nr; i++) {
+-		arch_do_swap_page(vma->vm_mm, vma, addr + i * PAGE_SIZE,
++		arch_do_softleaf_page(vma->vm_mm, vma, addr + i * PAGE_SIZE,
+ 				pte_advance_pfn(pte, i),
+ 				pte_advance_pfn(oldpte, i));
+ 	}
+diff --git a/mm/internal.h b/mm/internal.h
+index 04c307ee33ae..7019db4f6dd6 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -436,7 +436,7 @@ static inline vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
+ 	return ret;
+ }
+ 
+-vm_fault_t do_swap_page(struct vm_fault *vmf);
++vm_fault_t do_softleaf_page(struct vm_fault *vmf);
+ void folio_rotate_reclaimable(struct folio *folio);
+ bool __folio_end_writeback(struct folio *folio);
+ void deactivate_file_folio(struct folio *folio);
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 89c33ef7aac3..a6e09e94834c 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1007,7 +1007,7 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
+ 		if (!pte++) {
+ 			/*
+ 			 * Here the ptl is only used to check pte_same() in
+-			 * do_swap_page(), so readonly version is enough.
++			 * do_softleaf_page(), so readonly version is enough.
+ 			 */
+ 			pte = pte_offset_map_ro_nolock(mm, pmd, addr, &ptl);
+ 			if (!pte) {
+@@ -1024,12 +1024,12 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
+ 
+ 		vmf.pte = pte;
+ 		vmf.ptl = ptl;
+-		ret = do_swap_page(&vmf);
++		ret = do_softleaf_page(&vmf);
+ 		/* Which unmaps pte (after perhaps re-checking the entry) */
+ 		pte = NULL;
+ 
+ 		/*
+-		 * do_swap_page returns VM_FAULT_RETRY with released mmap_lock.
++		 * do_softleaf_page returns VM_FAULT_RETRY with released mmap_lock.
+ 		 * Note we treat VM_FAULT_RETRY as VM_FAULT_ERROR here because
+ 		 * we do not retry here and swap entry will remain in pagetable
+ 		 * resulting in later failure.
+diff --git a/mm/ksm.c b/mm/ksm.c
+index cfc182255c7b..002140f01bf5 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3124,7 +3124,7 @@ struct folio *ksm_might_need_to_copy(struct folio *folio,
+ 	if (PageHWPoison(page))
+ 		return ERR_PTR(-EHWPOISON);
+ 	if (!folio_test_uptodate(folio))
+-		return folio;		/* let do_swap_page report the error */
++		return folio;		/* let do_softleaf_page report the error */
+ 
+ 	new_folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, addr);
+ 	if (new_folio &&
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index fbc5a01260c8..07e3a17af119 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1104,7 +1104,7 @@ static int me_pagecache_dirty(struct page_state *ps, struct page *p)
+  *      - but keep in the swap cache, so that when we return to it on
+  *        a later page fault, we know the application is accessing
+  *        corrupted data and shall be killed (we installed simple
+- *        interception code in do_swap_page to catch it).
++ *        interception code in do_softleaf_page to catch it).
+  *
+  * Clean swap cache pages can be directly isolated. A later page fault will
+  * bring in the known good data from disk.
+diff --git a/mm/memory.c b/mm/memory.c
+index 6675e87eb7dd..6d31eda830a5 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3371,7 +3371,7 @@ int apply_to_existing_page_range(struct mm_struct *mm, unsigned long addr,
+  * handle_pte_fault chooses page fault handler according to an entry which was
+  * read non-atomically.  Before making any commitment, on those architectures
+  * or configurations (e.g. i386 with PAE) which might give a mix of unmatched
+- * parts, do_swap_page must check under lock before unmapping the pte and
++ * parts, do_softleaf_page must check under lock before unmapping the pte and
+  * proceeding (but do_wp_page is only called after already making such a check;
+  * and do_anonymous_page can safely check later on).
+  */
+@@ -4569,7 +4569,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+ 		goto fallback;
+ 
+ 	/*
+-	 * For do_swap_page, find the highest order where the aligned range is
++	 * For do_softleaf_page, find the highest order where the aligned range is
+ 	 * completely swap entries with contiguous swap offsets.
+ 	 */
+ 	order = highest_order(orders);
+@@ -4618,7 +4618,7 @@ static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
+  * We return with the mmap_lock locked or unlocked in the same cases
+  * as does filemap_fault().
+  */
+-vm_fault_t do_swap_page(struct vm_fault *vmf)
++vm_fault_t do_softleaf_page(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct folio *swapcache, *folio = NULL;
+@@ -5008,7 +5008,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	VM_BUG_ON(!folio_test_anon(folio) ||
+ 			(pte_write(pte) && !PageAnonExclusive(page)));
+ 	set_ptes(vma->vm_mm, address, ptep, pte, nr_pages);
+-	arch_do_swap_page_nr(vma->vm_mm, vma, address,
++	arch_do_softleaf_page_nr(vma->vm_mm, vma, address,
+ 			pte, pte, nr_pages);
+ 
+ 	folio_unlock(folio);
+@@ -6234,7 +6234,7 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+ 		return do_pte_missing(vmf);
+ 
+ 	if (!pte_present(vmf->orig_pte))
+-		return do_swap_page(vmf);
++		return do_softleaf_page(vmf);
+ 
+ 	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
+ 		return do_numa_page(vmf);
+diff --git a/mm/page_io.c b/mm/page_io.c
+index 3c342db77ce3..3bcc8487b600 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -514,7 +514,7 @@ static bool swap_read_folio_zeromap(struct folio *folio)
+ 	/*
+ 	 * Swapping in a large folio that is partially in the zeromap is not
+ 	 * currently handled. Return true without marking the folio uptodate so
+-	 * that an IO error is emitted (e.g. do_swap_page() will sigbus).
++	 * that an IO error is emitted (e.g. do_softleaf_page() will sigbus).
+ 	 */
+ 	if (WARN_ON_ONCE(swap_zeromap_batch(folio->swap, nr_pages,
+ 			&is_zeromap) != nr_pages))
+diff --git a/mm/rmap.c b/mm/rmap.c
+index f955f02d570e..21c3a40ee824 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2535,7 +2535,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 
+ 			/*
+ 			 * Store the pfn of the page in a special migration
+-			 * pte. do_swap_page() will wait until the migration
++			 * pte. do_softleaf_page() will wait until the migration
+ 			 * pte is removed and then restart fault handling.
+ 			 */
+ 			if (writable)
+@@ -2755,7 +2755,7 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
+ 
+ 	/*
+ 	 * Store the pfn of the page in a special device-exclusive PFN swap PTE.
+-	 * do_swap_page() will trigger the conversion back while holding the
++	 * do_softleaf_page() will trigger the conversion back while holding the
+ 	 * folio lock.
+ 	 */
+ 	entry = make_device_exclusive_entry(page_to_pfn(page));
+diff --git a/mm/shmem.c b/mm/shmem.c
+index ad18172ff831..7fa65a8501b4 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2092,7 +2092,7 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
+  * we may need to copy to a suitable page before moving to filecache.
+  *
+  * In a future release, this may well be extended to respect cpuset and
+- * NUMA mempolicy, and applied also to anonymous pages in do_swap_page();
++ * NUMA mempolicy, and applied also to anonymous pages in do_softleaf_page();
+  * but for now it is a simple matter of zone.
+  */
+ static bool shmem_should_replace_folio(struct folio *folio, gfp_t gfp)
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index d12332423a06..40039586f56e 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1568,7 +1568,7 @@ static unsigned char swap_entry_put_locked(struct swap_info_struct *si,
+  * example, the following situation is possible.
+  *
+  *   CPU1				CPU2
+- *   do_swap_page()
++ *   do_softleaf_page()
+  *     ...				swapoff+swapon
+  *     __read_swap_cache_async()
+  *       swapcache_prepare()
+@@ -1578,7 +1578,7 @@ static unsigned char swap_entry_put_locked(struct swap_info_struct *si,
+  *
+  * In __swap_duplicate(), the swap_map need to be checked before
+  * changing partly because the specified swap entry may be for another
+- * swap device which has been swapoff.  And in do_swap_page(), after
++ * swap device which has been swapoff.  And in do_softleaf_page(), after
+  * the page is read from the swap device, the PTE is verified not
+  * changed with the page table locked to check whether the swap device
+  * has been swapoff or swapoff+swapon.
+@@ -2201,7 +2201,7 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
+ 		rmap_t rmap_flags = RMAP_NONE;
+ 
+ 		/*
+-		 * See do_swap_page(): writeback would be problematic.
++		 * See do_softleaf_page(): writeback would be problematic.
+ 		 * However, we do a folio_wait_writeback() just before this
+ 		 * call and have the folio locked.
+ 		 */
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 5d0f8b13a958..db85ad97ccdb 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1586,13 +1586,13 @@ bool zswap_store(struct folio *folio)
+  *
+  *  -EIO: if the swapped out content was in zswap, but could not be loaded
+  *  into the page due to a decompression failure. The folio is unlocked, but
+- *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
++ *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_softleaf_page()
+  *  will SIGBUS).
+  *
+  *  -EINVAL: if the swapped out content was in zswap, but the page belongs
+  *  to a large folio, which is not supported by zswap. The folio is unlocked,
+  *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+- *  do_swap_page() will SIGBUS).
++ *  do_softleaf_page() will SIGBUS).
+  *
+  *  -ENOENT: if the swapped out content was not in zswap. The folio remains
+  *  locked on return.
 -- 
-2.43.0
+2.52.0
 
 
