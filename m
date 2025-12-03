@@ -4,237 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDCFCD12D5F
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 13:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C70D12D5F
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 13:19:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C7E46B000E; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
+	id 622426B0012; Wed,  3 Dec 2025 08:19:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 778216B0010; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
+	id 5D2F46B0023; Wed,  3 Dec 2025 08:19:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F2296B0011; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
+	id 50FAA6B0024; Wed,  3 Dec 2025 08:19:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4851C6B000E
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4111F6B0012
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:19:57 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 18A30132EAC
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:16:32 +0000 (UTC)
-X-FDA: 84178209024.14.D158288
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazolkn19010000.outbound.protection.outlook.com [52.103.32.0])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1491940012
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:16:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=gSucX2MR;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=hotmail.de;
-	spf=pass (imf01.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.0 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764767789;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6343313AF3B
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:19:54 +0000 (UTC)
+X-FDA: 84178217508.14.40DB653
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D129E8000D
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:19:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RMgehdpn;
+	spf=pass (imf02.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764767992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boD+kR2RQRyalADD+eHD0JGp7yqNBUec15stCQBFrdo=;
-	b=kH3k48ZzHZbQoMJBbCP41lA8DXVuAtw8lR9S4epaGUMmdyjJ7mpmRPDlgCy6T5ZKufOVes
-	uetjSS9kfn9ZW+KQ+IohviWJ06va0mgETmpUPXgfVhKHofERwrrFl+OK5ZvemOXT+2G+tU
-	kgdpn44RLcJycrLDz0MUyMGjKoR/DEY=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=gSucX2MR;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=hotmail.de;
-	spf=pass (imf01.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.0 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764767789; a=rsa-sha256;
-	cv=pass;
-	b=Di50gyBpYnuWT+LEFezt9fndCNLaLfb/UyIehpNzCcT45YvC7Vs5P8XUxHS4Sic6hTM7aq
-	okIroUTTmxL+WM4I7cUPNYlEgCEugpnoYsywmLLV4Yr3vRQm93M5NLVOExatVDO2bqKGMY
-	YnOWqaklBnKvdBhI2x9y7asUppihJSo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ClWTOdMT9eH9okRCP6FEQ6HVp1uy3cUB1mC7ByifoepXGtsyPpvWGJ9kD45OPKZXnZyQS73M9RT2HtHs2+h9TYHLzTxNMrqCQN+7tBrnlbO2F1bRAmikbeaHE8QjMMLa3rt2G4zpPtdpJd0EDwBJA7xEIkSDIkwHbp7i5obTbxXHGUKsqsxTjB+ttGeC3kINCVMmlkCPJCPuPCEYWJe1lsm16GzIIp3T5bw5Cipf4dPae47Yc5ND0z3LETrQOtlSTz5vCSCP89bjURjMbwhz+yRwRc9wdXge7cIWOXypGTbeDPJrcPYeVEazFmoyky9GAs2Vkf6i4sUPPSd5UNcdNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=boD+kR2RQRyalADD+eHD0JGp7yqNBUec15stCQBFrdo=;
- b=Cmq4OqvUaMh/5PptoNOf89K5uG3CVv1W/MsvDsHF4RYkEQVfpP9vbdPMhmUDY1M0Cv6xQrp8Z1T40K36XvTGOMLVVfP2qxkHT5EwiJhCjCGVAgXGAoSvpUXBn8R87JkdIHsjloG+YQDXzT84n7MoYdjc5lLiIoOnCwc+Yu/7ogeeKEqv145ejtmB2IIPgbz6bc9X3qrEvDm/RCJ12xgbxjH4izvvqbrS1pZyX5HqegI6FvJ6sBiJF7yZZy0/ayb7QolCTFPFMbDwY9fYN47svVwkxPLOf+ZzbhmDGpH9Nr7OrXDVWRd5ZLzfxSSDUi6qZYIdN6iiK4+znjzz2N249g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=boD+kR2RQRyalADD+eHD0JGp7yqNBUec15stCQBFrdo=;
- b=gSucX2MRGlxdVnXjtJ8I4eEdAGu7+pgjG6ypYWyMyMoXkQFDmTQvVWVSfv2hZqKA1ZF/bs8aZrl5JdhIg9POk0gZxeGmyJU1hhPAERlOxOyJ+ZVmae0ExFrUkEqKIhVTi9Am99D8gxUOCG7bE0NjpWkzu4jZw1zJXvkNOnyIHol9UeK5rEzb82IGx6T4JCb/jHHSzBFYbHc5+AdUh7JPvkwfMfc+kW/mH85RZgAE3RY3zPDdSD83mQFWCFA55/TTPMSzN2TyD6pAOzMJn5YS6nbSErFkdZIzB1vbKjfRQZuM1/Q/4UKXKEq6mmHo52V9UxsX+0MKN7caXNoj4HPkJQ==
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4) by VI6PPFFEEBABE75.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:808:1::12b) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
- 2025 13:16:23 +0000
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49]) by GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49%8]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
- 13:16:22 +0000
-Message-ID:
- <GV2PPF74270EBEE90CDCD964F69E806EF58E4D9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-Date: Wed, 3 Dec 2025 14:16:29 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: Are setuid shell scripts safe? (Implied by
- security_bprm_creds_for_exec)
-To: "Eric W. Biederman" <ebiederm@xmission.com>,
- Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Alexey Dobriyan <adobriyan@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
- Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>,
- Will Drewry <wad@chromium.org>, Christian Brauner <brauner@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Serge Hallyn <serge@hallyn.com>, James Morris
- <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>,
- Helge Deller <deller@gmx.de>, Adrian Reber <areber@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
- Luis Chamberlain <mcgrof@kernel.org>,
- "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Frederic Weisbecker <frederic@kernel.org>, YueHaibing
- <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>,
- Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>,
- Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
- David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- "Joel Fernandes (Google)" <joel@joelfernandes.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Hans Liljestrand <ishkamiel@gmail.com>,
- Penglei Jiang <superman.xpt@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>,
- zohar@linux.ibm.com, linux-integrity@vger.kernel.org,
- Ryan Lee <ryan.lee@canonical.com>, apparmor <apparmor@lists.ubuntu.com>
-References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <87tsyozqdu.fsf@email.froward.int.ebiederm.org>
- <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
- <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>
- <6dc556a0a93c18fffec71322bf97441c74b3134e.camel@huaweicloud.com>
- <87v7iqtcev.fsf_-_@email.froward.int.ebiederm.org>
- <dca0f01500f9d6705dccf3b3ef616468b1f53f57.camel@huaweicloud.com>
- <87ms42rq3t.fsf@email.froward.int.ebiederm.org>
-Content-Language: en-US
-From: Bernd Edlinger <bernd.edlinger@hotmail.de>
-In-Reply-To: <87ms42rq3t.fsf@email.froward.int.ebiederm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0302.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f6::8) To GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4)
-X-Microsoft-Original-Message-ID:
- <48c3abf9-d80b-489a-a1e3-7593e6c91ba3@hotmail.de>
+	bh=KZjp3KH4oYjoP09YFcoEfJL55iESyRosmuIgMEErB2I=;
+	b=6GiBJjRBkhQmVJVhiTb2rlONo1HvIIGFoI0WFnWIG3GxitTkxkQ6izFrw10JueBolO7KG+
+	5DLaMHISW/SujdR7HpKQQ4GmpvYJw0fftNw57OfGadwXe8c9CEsMeYt3RNcj1/h8h8weyD
+	tXduGHZuPa+5fzsZINGNTanj1nCBP6Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RMgehdpn;
+	spf=pass (imf02.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764767992; a=rsa-sha256;
+	cv=none;
+	b=T+5ehiea60rXwcFGjXO+RkrbRQMz93CE0MpSVrWHASNzSsf1eMl+ivkAoXn00ls/68nWEq
+	0HYe3Z9iSGUMdCW+RkeZ37lPESZkIgEVonJjV4KfoivwMBzC1W/O4ECCmypkrrmavYdiwL
+	uvayVCJ/nVGG0V2RZGgnXtAsDvvyz40=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764767991;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KZjp3KH4oYjoP09YFcoEfJL55iESyRosmuIgMEErB2I=;
+	b=RMgehdpn6Lv0a5u0y1kbJskkyNZnUEsuEhGGVcZyL6uXBKP/ZtLbcXVeZ+HOMhJ1VRUOYb
+	FmsHKblNZKNSaqCVLInjm/fZAtrsnOMod9J7+FU8wBHmJ63m6jP87rF22nTjKp/lZn2sh5
+	4DVYaYmKyTc+L/1EpeY2xfl5IeftR+Q=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-i-Lo1j7fPkaMIH3DDc9aNw-1; Wed, 03 Dec 2025 08:19:47 -0500
+X-MC-Unique: i-Lo1j7fPkaMIH3DDc9aNw-1
+X-Mimecast-MFC-AGG-ID: i-Lo1j7fPkaMIH3DDc9aNw_1764767987
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-882381f2092so208671016d6.1
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 05:19:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764767987; x=1765372787;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KZjp3KH4oYjoP09YFcoEfJL55iESyRosmuIgMEErB2I=;
+        b=coeCcq3+5Cgb/oEtnn4Q/XaroQAAk27IwlB6jL/d3oO9HHuRLWRWJ3RtKuZN7Ri7+p
+         tafdIFm2PGT90i1q/AlcevZ7PYIl95LYCF6vHWWRnccNrVZnP2s0hhtm7cS0iTz+FfLA
+         sA6kkgSpjrlJcTWWINIlqadVvUdE5UO/gektvfcxuN2JKq5n5id8QoLssUWmfkO5FXH0
+         L8gjE3e6zQrgQU5spQmhwZIgZPIIQIwSkyXPWvY0DJAsi6HtlNHRQ0x0kDmjRVVdwgim
+         cmndJTOeKQ0czXzYgDkBLzG6CuG82W3vzIlNXElCWhCp9aRgg9Y902Yu2i4FLtb0J2KC
+         7WEA==
+X-Forwarded-Encrypted: i=1; AJvYcCW56D/ubkUt/5hKv2qkI6pyHsMSfBrUjqXl46/e7hSOunwwc//IakSqEmku3WtNbQTJ7phpTEUeVw==@kvack.org
+X-Gm-Message-State: AOJu0YzIOvvfYM7VG7SupMyh5yVD0odEK27ZNakOkLtav+JxTr9QmDwO
+	r7WgGBx3TPz0VTJtabg3B1PqG1M2AWy83rGZ6ekbr5/GCwzEVEY8e3k6KHpAHsroeSbXZrgBtZ6
+	0qi+vWRxiG7hvw9IwVfrNQ/rICpsn5cNkNP1RpzYtOeoKcgfVeK81
+X-Gm-Gg: ASbGncsxLotwe3fy5dYQ1Nw7Jiabx+CKoGVXJ18mToXN0CJnUPgr5eIeGH7Jjp4Clkr
+	h6B6VM6J439leFbJer4tWUf+d0HTuQDIr5ox9D3sHOVvz9BXTLYuOhqAO9DXmCt2mKy46pZadI+
+	wno4yXNa613wsCIdtGCZAqsn9UcoaAtLIfrYM13pJZtMncd8jc53N0SnhRt8hyE3nrrMkZ3qqix
+	C1yzjKJEUzq3Jebuf1eUbA54dN61cAmlm4N4VBNhZ/lE/lUVBvI6Gu8ysBMnL9mzjAlqQs5bbYU
+	6msbI+n3cpfhC2YOnqv/V/kGHR2jRoAkj69h/Ph4UBttUC3cXdXhmsD46iCO1dq6Gm/qiNeCO2G
+	+9fTjFfgLnNM=
+X-Received: by 2002:a05:6214:1cc7:b0:880:55e4:dde with SMTP id 6a1803df08f44-888195a2da7mr31326796d6.63.1764767987376;
+        Wed, 03 Dec 2025 05:19:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEKpNns4VOQafFjiG5hX4ruS+Ccvq4UMLfIJlDnhWMvAf/b8wqmyNsYkTvCIREynB7oBmmreA==
+X-Received: by 2002:a05:6214:1cc7:b0:880:55e4:dde with SMTP id 6a1803df08f44-888195a2da7mr31326296d6.63.1764767986938;
+        Wed, 03 Dec 2025 05:19:46 -0800 (PST)
+Received: from [192.168.2.110] ([76.65.77.217])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88652b91ba3sm128339296d6.53.2025.12.03.05.19.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Dec 2025 05:19:46 -0800 (PST)
+Message-ID: <81d3d168-fc0a-4519-ad7f-c6ab71294792@redhat.com>
+Date: Wed, 3 Dec 2025 08:19:35 -0500
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PPF74270EBEE:EE_|VI6PPFFEEBABE75:EE_
-X-MS-Office365-Filtering-Correlation-Id: 96121e53-5579-4465-da0e-08de326e2789
-X-MS-Exchange-SLBlob-MailProps:
-	cn60g5V53KM8AUe7PDnmNTykf4/SI5O5glPfIsjkZKAY0cUQJLkoKk6j6edDrT1KvFGUTV+svOJSBZhSn/dUD0hodMKLSAAywQHQpkk3lBcmJ7A6YrRP+1LTR21+5o6D+mXD4d94tgq4xKsk+fpSsA6xMCHkXTNodrCvZOury01SZpXushURizCLWG2sJICnMQMfRvJVTZkl+YIm6dMMuF8KS3y/c6ZVBTlSt52NVex7E0Ks4+u4poLKazVi+nnvf0Whv95X5WQNooVLDQ1/tTGGAIW6Jwf0mOcdvt+FR9HlAnD2F/0MMgVrLz8zp+5C2mfRO1LuvewCJnHpUq4E5rMdiqCZkINZ2T03w5qQUBNLcXEV8rfh0zUdN3JAnvrll7/UVGYIUxacRFIYeLQMib2TG3GRi0ALEmGdkItWjlmoJILr3q9JmiuKLE6SWB1IEwhssCF9B9I4kPIzyCsDk5YMzus3QAU4IbdSE7OGUfJj+vgf5m/2pb91mqO+t4NE/XZ3M78dq8cyV/r7HqtBrnDqnm2yHizDoOKq2CWyyeEPLusDiYfqKk0EzUJIpuuX7kRNhQTAQP4IK7a2tpyEK5kLBBVXrmwAuEFBYMg/COubeidHyWaTvBmeqs1YMHkZ9iVdyFHp65FHJkQE3zYuZUcCauHVy4zrnboZWrNlazgPbSsAmWvX7IaXoxpl75w2VjO3Wj7xI1EtcRvCc3V5iJyJ1mVwJN6XgLe4KTZYZfgMg85z5kg8sQf4+WU0ktJNkUs+LkVBgHb3oMZ6a98wmLrex45Gzhu6QazPAtR277l4Sep5VpaVkVz9mKAUyTW/xqrcLwfSLW9S553H4mtBkkvQRyV+/9zTHJwhEFZojnUngeGjY/kDgQ==
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|23021999003|6090799003|5072599009|51005399006|15080799012|461199028|41001999006|19110799012|21061999006|8060799015|10092599007|12121999013|440099028|3412199025|10035399007|40105399003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MlhNZkVmN3N1aGd3ZlJoNytJc2NsdCtwN0hoaWErTGswOXdmVmdIUUVuSTVL?=
- =?utf-8?B?WUdUZ2ZmVFN5Q2NPU1NYVXFPRmpRcVIvT1JaZ1BNVjFrdm1jeDI5L0lGaTVX?=
- =?utf-8?B?aDJSaldhand5NmtwbUN5WWpqK1NzeE0vUlJrUVdDcE8ybndYWDErd2NHOThF?=
- =?utf-8?B?anZNRnV5bEpOcFBleEVPN2Rpb0xxTkljWEJhRXRma1ZEaEd2eG5ELzJSZ09l?=
- =?utf-8?B?ZFRWQjBsRkZ0Nkk3MnpNT2ljbWJvYXcrUis0aVB6eHh5aGFVYkNRdlBkaUds?=
- =?utf-8?B?VWY4c3BUTnVGa2JKazM2bnpEL2xLbGZmOVF0ZHFhcnNhQzlOTFkydWFIejQr?=
- =?utf-8?B?M3pYN1RqRlQwL1V6OTdFSWR6TjFGaGowaWRBa2RvZ2RCWUlOc0JJaFBxNjdY?=
- =?utf-8?B?WXZzcG9IRXNDbHF0OHBYandSZll6dUxWWWdtc1poRWFhOSt2cEVnd2V1OWVo?=
- =?utf-8?B?NE90WEhDbXBLcitiNTZMYjNxN2dXZDJzamlCRzdvZERhWmVPVVRMenpCZzBx?=
- =?utf-8?B?SlZHQjc0Q2pjSTMxOFpNWjFSN1NkZ3VNcTlCaDdGVVMybHNERWl6d3NQOHBI?=
- =?utf-8?B?MFNDR2FDQ1lwaldWTW05cHl6bHlnNkZuMTdEc1dsM1hCQklITWlJVkFDcURw?=
- =?utf-8?B?dDNjWUJPbURKRUs4UDRiclBNcnZCaWgvWUsxS000NmkxalFrTWo4K2pVblVy?=
- =?utf-8?B?TERUdzBvaDRhNjVQdDBLYUZNZlJrSHZKemE5aGp1TjFMWmpxVHk2N0lYTG1m?=
- =?utf-8?B?K0tZZEw3NUhuVW9RNU5qVEt5MWdWMlhVaXFSeS9mN0JrZXJ2MWpMRXNsaGY2?=
- =?utf-8?B?QUw1TytQdEJDdDAwMCt2ZXVpTUtyWUN6bHNkbWpIekVta0RwZmxHOUNoZzlZ?=
- =?utf-8?B?VUU2SHZqSUd5ck54cWhVQVFGQlRpOWhTL0oreU9qajJsK25nMUpYdU9ZQnVX?=
- =?utf-8?B?S0lCQ3NudEVBYzNTYVpWaWxFdXdBUkxkMEplVnpiWXhIKzZ4ellaWnNKWTVh?=
- =?utf-8?B?ZzE0M2Y1cHIwWXFibUlZNVVMSlk4TWpCVDJ3N3FuUFVmcStKU0ZqdGQvczNk?=
- =?utf-8?B?SnEzakdqR2FPLy9mNXlsSGdGc2k5YzAxZTJWNVRNVFdRQ3dnYlE1c0pXUjV5?=
- =?utf-8?B?RFhBSUw1Y1NPeVRCb3Bmc2VKNlVJWitoUGZHVEZ3V1Q3SVIwMm91YjJKRUZt?=
- =?utf-8?B?N21NZTU4QU43ZTZVVEwveS9HUmtaQjcyaFUxYTh4Mk9hMUJIdjVnRXR4ZEly?=
- =?utf-8?B?bXlScHNtTnE2MThzdC9RRDJOUFYvRmZ1eTBob2ZkWExOdzlvZ0srTEJTelZs?=
- =?utf-8?B?emZ0dElyR3VicHZIYW5oNkh4SDN4SjdXWmxXTm8yazdGeE5Ib3NCOGJUTXpv?=
- =?utf-8?B?blJTVndSSlpWTDZaYUhLTzk2bU9wd2s4VTBKcEoxUmNHT0l1YkZHSzI1QmFj?=
- =?utf-8?B?QmROM2tROWhKWnVreWRTWjZYeWJnK0JXWEJVM2E2YTVwWmJRS1dKVDQ3ZDQz?=
- =?utf-8?B?NTdYSHhOeGRpOHAwM0Q0MThPUjd5M2NtNVhLOXBabE55UWFTWUo2S1Fkb3Vl?=
- =?utf-8?B?WUU3aTBMNG5uanlkWFZaQW1XMy92UmYxWSt5YXUwU0lUYklQY3IybnNHM1BH?=
- =?utf-8?B?Sy9zaUdaUnYyTjh0RU0rZ01LaHBxL0I5dis5WEkvazE1Sk5HNGlESHBOZUNM?=
- =?utf-8?B?cldkdnJSTEQxb0NnRHdHRHVmSDBuNU41RC9hYjBnbUw3cDFxTlZzemR6dXg1?=
- =?utf-8?B?c3MzS3M1QXpZUHNJRDU0blhzS3JzWk9QVEdVYnE5Zk9TZ21od2s4eWFYS0hE?=
- =?utf-8?Q?TVziMJzpKozTywDixVtEFCzOqF4mXhsPedVf0=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VW05SlYzZ0EwRTNpZ01sV3lyaTNSellBdGJTY3hBdVQzVkNhY2s0QzA5dFM0?=
- =?utf-8?B?NUhjaGJxUE1lTGRGblFpaUxHUmF1V2NjSSt2QXdDZE5SRS96YUd0ZzBoUWZm?=
- =?utf-8?B?L1dLb2VYSHVYTkhnclFVZklacmFpdjVOV2o4Yjg4a0ZSRmdIVTZod1lYWWk2?=
- =?utf-8?B?OEVDc3h4YWlsMVl6Vno3MjViZzdkcjlXOG90UlNta0N1cEVyeXR0MVBFeXo5?=
- =?utf-8?B?U2lQQjZ4NUtqdXZuQ3NaZlpiR2M0bHhadHNoOHl1ZkdyaEQrMGJCUVlIK2N4?=
- =?utf-8?B?MHNLbjZqNUxaNFhFVXRjbHRyL2kyMjZ0WlJlWlVpVkZzRjBVN0lxbCtHQ0p2?=
- =?utf-8?B?RDJ1WVRzWTJtS0Q0bG96UXplSUhmM1VFOGFORkRkVWM1aTBEaEZGeUNYRE53?=
- =?utf-8?B?YU1kUU1Ycm1PYVFnTXdINVRCZ3RBOFZuZU1hMGc5V216WmwzZzZOcjVOK0dm?=
- =?utf-8?B?aDhHeHVIbEZPa0dHRzhkQXVhMFk5WjRhUGRpRGZEVm9NN3Nac2JGak9FaE5X?=
- =?utf-8?B?b2xiSHNZWmdXMVovZmIvWGhodjltTXo2azlxTkcwNTVDVEVvZ3doV2R4NCtJ?=
- =?utf-8?B?RzFvZzBCbzQ3TlB0eWZ1UVpwL09lM3V6UjBqV2N4aDlNYm9haEFFTGpHRVh2?=
- =?utf-8?B?Vi9QeHhhUUc3OFpGTTl1MitoMytQbVplQ002UkJNMStscDlaK3J6ZkovdkY2?=
- =?utf-8?B?L2VGVGtLNmFuS1RKWHBnbUVtQ1dBc09NZldDdjhIeWVZMno2K2xmaXZXYnBy?=
- =?utf-8?B?VDJkejBnUWNYc250VjJWVnByOXBWOEpzcnRORXZsS1EzRzB5dllUMUpCRTQ1?=
- =?utf-8?B?K1VrNGZ2RnQ0MlJXaXQ4RzhGNEdnVWM5dUQ0aEdTZW5lb0R1RVJZRFdHdkFq?=
- =?utf-8?B?L3gyZ1o0Rktlb3Z6STJSVDVTR2R4Q2kvZ1ZEWjdBblE3b0RCTFJCOU80Y0lV?=
- =?utf-8?B?YkFNdElKYlZ2TkpqQTV5elFnTHViVTFBOS9HdWM2aTZqTWVueWlPQ1BLbHZo?=
- =?utf-8?B?alIzcC9PcTdxT0FDbTFIT2FKUXl6TDlWVzJBSVBYcmprL2U5L0g5NG5MUDc3?=
- =?utf-8?B?clJUSm1aT1UyNlYrQ2lkbW5oR1M2NENIL1VHWHphSENYV0RhUmJZZjVTMVlu?=
- =?utf-8?B?NXE4MmNuWDdweWc4ZG1SOVBkbVJCVlAvblRYVHlUemJWU3RhOTkyd3RnTFh1?=
- =?utf-8?B?V3EyRXJ3NWR0dklCb2RpT0wvSGhiUVp5NnlwdllrU0JFTEtjVlZ0bjBOclpk?=
- =?utf-8?B?REl3YTN6QTVxYU4wWUFUNTc2cmFkRHZ3Yy9TYVBBeExVOEhJRWxsMFVPYmJj?=
- =?utf-8?B?cXVUSm95MzRKYStuWDRpejVhZlNkRmwzcWhiQXBEQWE2b01NYkY4akIwUits?=
- =?utf-8?B?TGE0a3FPeHFhMldOQU9LQ1VaSGl1M01oVnJkalV3Ykl4NnZ5R3lTZlREbnAw?=
- =?utf-8?B?TkJCcDh6akRIS3lyZnZSbExxVzR2NnNWTU9lQnVnOFF5WnUwbDNmdExzaXht?=
- =?utf-8?B?ZGd5M2gyL2pKa2RRdTgxSnRGZCtkUDJKVUdKaGhmT0VuVmVmWnJwaFptZGp1?=
- =?utf-8?B?ZGR0WUhsQUtadnJ4eXZrWkh5ZW1XbnVySjRTV1pSNzlZbS96UGhZd0pGVEcw?=
- =?utf-8?B?OGJUT2pkZGFzTytSV2MvME9uS2VqMlFJLytWUVliWUZNeXBDRE5XYzVJNit3?=
- =?utf-8?B?aGNlcUVmdmppMzBMNGpKTG85V2Zjd2g4eXhqL2RsN3JXcDNyYXBBcDZxUGVX?=
- =?utf-8?Q?zXyL09SBBtAdU8qvI7VN0wevaGruRcPh2/qmkTB?=
-X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-87dd8.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96121e53-5579-4465-da0e-08de326e2789
-X-MS-Exchange-CrossTenant-AuthSource: GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 13:16:22.7968
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI6PPFFEEBABE75
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 04/10] drivers: i915 selftest: use pgtable_has_pmd_leaves()
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <cover.1762464515.git.luizcap@redhat.com>
+ <297c6fa3dfc50c28c05c0974c86a205984d752ed.1762464515.git.luizcap@redhat.com>
+ <8c745e54-1cb1-44d4-abc3-00e6511cf67c@kernel.org>
+ <21386400-9a67-4fcf-b686-1e7c9678d123@redhat.com>
+ <2149802c-b7cd-430c-8af0-99d26b0b7330@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <2149802c-b7cd-430c-8af0-99d26b0b7330@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: mMWnTjWPF-2i_IjQc6vK4JLmZdK-tUZvV_qxnZhrJIA_1764767987
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D129E8000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1491940012
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ymr8exg34oqu5za3otb8a13f8a5hj8im
-X-HE-Tag: 1764767788-887604
-X-HE-Meta: U2FsdGVkX1/8FuYl0EKzUntQe1vOjmmp+B2Ow3220UAk07CgSzpt+NNZbKHY1Xz015QjJw53/G05U85AF/03eC4nFfTomDWvVQCidirtes4uxDFx0w3I3PbnIniBmrkFcVblp4qZbmVFonljKNSTpDpWi8XQIu1vkgEPKrYLmnknGrAszkN/zbhlSC7ODrH0WDegheojTRF+DyMgui9AQ7Qr7w6C+dVLH6lMuVXPljnSOl6qOXRWM/7cdiZXx0AcAJ59STvroZme/mm6VAEq/2w+iicND9GGz927zZp7rb2QhOFNoX88VXtukl1tpVO7JzTQcq/z0e6hMW1uy5xPMMYJ+hYCjTKQIwIJ2cxfJt7Ri3G6ReZ7icac8ycW4JdY9thqTd6oSGhGcjeajt2sY/KS+L4q1ayxOgQAupqdk1u8KriUXWfvZ8Z7tauEy2rv/gzC4AH+6uETI/VZ2vFTuMDE6rIKVIIUTN7iBwUGKawuIWlMd5h87NhZXPiqJ08FA6kJN4J4BApCDHfFyLqVEBZ5zNCS2ZiII3kVnC5bO/CZkDtzB5RakOxbLReC5zajkUoEwJ0zm1odg2Rn7CLeOtNXg6VPL9QLA/PtHNE6CSDiIekQsHivU1AAktL2f+jaZSXvSUhnQ1241REgYxHMpySn7pQrIUxKwXX3+Bx88KYYtxCNf/zs7wIm8ao8wmHf9QrCUW7H9Dd3qh7EhpDVNPXlJAIF1FpYXFUBs5U0ygtSrXBIyZGO9umNscsy/WWqlEC1ezpFJkQCnzMhKiL5xd3+lxJavR9jYsDRU1URWRnU0cD6t6sod7gRSaFpPdCynZTkDYSM/gz9+Fd9tB1xg2anc8YFsnSBRrssclscBowOD0avtaYa6LrfGOJm+v0Kms2gg0AzbmH4sh7k35qneuymS13+xFNsofzcq9fTyYP6SqTAA9JPdeHSBZX6LDObGqmXARPFNkit8YF7aRj
- lDa237j0
- BE/7mhYBY+CPGNe6HZ2qCLIVPhsHOswORhqVkcCqFwaD9drm0Mw1LJ/Q6Rlq9LAp+AG4fylmFmZSbQlEqOXc6BD/HI2QF22c5SEQKHMf4paWqbO3avBHJFT/m5S/Rw+A7ICB2M34ygTTLqBlG/Bx5xGfC+B7E1QfI+ZvY7b3JGN4iCpE0XmmDY6irgI8QsYHEP3634oEW426DXo0icevcV8bEFacj7DA4C7qUDPWmLkwGMsixRDtA+YDt7p2CAT1NcVQi9r4wLn4Y4qk/JusBd3HqLnodlN7YUJrTifVto0ZROL12t2qe1hxKthrcZWNVrwqKZM0ssZYlQGXIMmspeEUFv20wRuhBhUklCHDaEkNRnC2FMYHBwfK6Y4JZLC5oLwJ/2Fb1/VUD3MinaH3O91ceQ2YpkG+iPvl7VyfWdvDKoFgRvrQMT8kRzhYlyPKa60gaYDwvnbYJP7A2t/wxhfnGzHLR34rRPPSnJaiwTkgJkY7FJLwe4hRXfGE5UhwsRJCboo2TarEb1Y4Ws/60mD87kH5ubQB9/YaN2ATDxhVK700GjK4h0YSPK1XTPc196leTyRIZfafRjSGk2nnc39yN2heNEHwqvDD9q07XkndfBRhwahEqUdmfqciokUSpwk2P2DNpmnffaAqAcpejGswkqGZp7alz4snwtGODUmPJpTkmEcg3b+SpMZP7QJDkreIkrfLTd4cB4RHg6/1xCRKESg7WUhGirTKIG7/pN33IdamZBa3V9X0yN0GX3bIRRVoOvEmAcvoN5lNLpgm+52jTlX09LpLrNQS47qtdiYQ/u01XK8oxrSzDDiZ5jqfy/K1GYfsX+jePu65aD83gMFvOCdYS+PF3815KA3Qu7aTLvpMReFkvPG8/A6JQMA0lnoQiRI9RxtbenITunaOZTLdNbFzFGZLW8t+3R8vNuPMcLLSwDUdq10FtFjUuIQbs07AKGFKhRNTweY0=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: udc5jec51ow4a7u8qe9jp733o6zmt4cd
+X-HE-Tag: 1764767991-231080
+X-HE-Meta: U2FsdGVkX19+QHWeA4iKdUGivcvh0q2jGMK5EKBMvif3ecv/6TFRhiS6r0Zzh4eC/v564zywObuUxq8KM9Hhokns+51K1hDwiR83rmvLeKO52h5O2hTCFowAFt0vOhdnobHHvDVu9qfz60/ko0e0pzfpIRxLt8TU60+2dT6MU/WyvgssLDm1+9A+evHo7OSlRJXEamKAPGFwMi86w4CcnZQ83PlTBBz9Ed9hD+cfZE/DggGX0fXFbT2zsT2Tco+o2Kl1CTLx1zrCJuMAxcYtTohbetqbgt9aZwY9x+G1+kNI907agZlfKZyx19QwiiqGVxjg8NXyk7HvJzVe5/y5B+0SpQtnKiss2RfSoph6Vw5lqcTN1GqHY+/7nWZjsm5lEVm7/U7FmIEztKYNMu8IbDe2qa3knwDyal3MrhihUiEynCTuDGgufPXj7Yaz8sdycYPotli8BTZ/cOjughLEpjQA7fr2GcsrPZ0MFNSp9AT5NzOKz+WyzgROpTcY1lVJFw5WVjyzp4TO3DBSr7FONGQBxGRzpV9sBP9oN8tU4kxxq/NAlhf4UzOWB8FtD6SZljZ2RRXl7TWMwVXrsLEp4yjrYzySnfO07+JAXcxsAGJl29LUw85E3hbu5J51KJGDfNxRtC/mEh3fOklboosB8/mPiT3Rqiza/a1hN9ruXW27hbnCqnjxuV1GwFjiR3j99ke7qt3eB9h0oBOE+K7w1uccJ2+63d7xlnbZN9KyghV6X8APcgcFJ7QNG4xuVXY3GJotSuh6rN8/JBXX3Iq94QQeNfBq0LIMhCiRK42BzDGw5Kafic6Usq3KZrWa4GAP57BlVtPP7XtFVln5Y8bP0wrFoy3exxiKJpNTKqtomHsUl8upJnhdYMGYttbDujpD0xjJ4oohjXlXCGANiTN+tBzNbvXn+rzGBBBliLl08IUaBBMPehxGui/HTe32L1Dvs0dIUHtyFYSbbL5+3DY
+ kIoezY+F
+ rLVmctiQcAOUDsCyeKZG01N6p2Hwd6VjELrrLmDwh1MGAlgofhmy5HsWJyubXZaTYEbjZk5GPQNEMtC09qwGzj+zFEg2OtahSd43UMZ38cuZYPjRk0rXKFKoX5lN8ReDggyPU83OOuuxnvAw+Dl1W0qlSmuq9Or3//eg90SmX8MGPuQYrNRZSz+ZdwiJX7KOJQy2XTmwRk9EKI3U/T2pDqajWLpuBKbtiCD3iw+/EYf1A8BtS/EUIqMtmhv/FfIp8RJS/gpZPG2V4Q1k8Z2FCexYVTiDVXYo8vlPGPC7S5rW4sXhVW23wmSlytN5cTfFdDNEdHTBfp/HWWHlQaf/yG2D2S4ANm6M9vV4aNyyJqbv9yYhUK2gFw7W3BhAENuT1vMPVSwzcbEjIL5UjuR2RDtBw2hjx91Fsk0y+DGdn0mjSzrfg7tfiKgcCTN+IAz6zSI2qcrpII5wKWG4Vm0IErjvlmPzIdUKsu4HeI60piTv4iDyMx3QeY/k1rq+hKYdQDGfQEXGeV/J6IWl/BoDBUGSstoGoV0gcbiQCUcGoBorOKq2XrpttyQIxMshXp8HzBIVZLXwsHRxKSYgTGqp1D02gm09qHsPOFCS5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -243,208 +137,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/1/25 19:53, Eric W. Biederman wrote:
-> Roberto Sassu <roberto.sassu@huaweicloud.com> writes:
-> 
->> On Mon, 2025-12-01 at 10:06 -0600, Eric W. Biederman wrote:
->>> Roberto Sassu <roberto.sassu@huaweicloud.com> writes:
->>>
->>>> + Mimi, linux-integrity (would be nice if we are in CC when linux-
->>>> security-module is in CC).
+On 2025-12-02 05:51, David Hildenbrand (Red Hat) wrote:
+> On 11/17/25 19:55, Luiz Capitulino wrote:
+>> On 2025-11-17 12:30, David Hildenbrand (Red Hat) wrote:
+>>> On 06.11.25 22:28, Luiz Capitulino wrote:
+>>>> igt_can_allocate_thp() uses has_transparente_hugepage() to check if
+>>>> PMD-sized pages are supported, use pgtable_has_pmd_leaves() instead.
 >>>>
->>>> Apologies for not answering earlier, it seems I don't receive the
->>>> emails from the linux-security-module mailing list (thanks Serge for
->>>> letting me know!).
+>>>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>>>> ---
+>>>>    drivers/gpu/drm/i915/gem/selftests/huge_pages.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
 >>>>
->>>> I see two main effects of this patch. First, the bprm_check_security
->>>> hook implementations will not see bprm->cred populated. That was a
->>>> problem before we made this patch:
->>>>
->>>> https://patchew.org/linux/20251008113503.2433343-1-roberto.sassu@huaweicloud.com/
+>>>> diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+>>>> index bd08605a1611..c76aafa36d2b 100644
+>>>> --- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+>>>> +++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+>>>> @@ -1316,7 +1316,7 @@ typedef struct drm_i915_gem_object *
+>>>>    static inline bool igt_can_allocate_thp(struct drm_i915_private *i915)
+>>>>    {
+>>>> -    return i915->mm.gemfs && has_transparent_hugepage();
+>>>> +    return i915->mm.gemfs && pgtable_has_pmd_leaves();
 >>>
->>> Thanks, that is definitely needed.
->>>
->>> Does calling process_measurement(CREDS_CHECK) on only the final file
->>> pass review?  Do you know of any cases where that will break things?
+>>> On second thought, is it problematic that we might be losing the CONFIG_TRANSPARENT_HUGEPAGE check? Should we check for that separately?
 >>
->> We intentionally changed the behavior of CREDS_CHECK to be invoked only
->> for the final file. We are monitoring for bug reports, if we receive
->> complains from people that the patch breaks their expectation we will
->> revisit the issue.
+>> That's a good point.
 >>
->> Any LSM implementing bprm_check_security looking for brpm->cred would
->> be affected by recalculating the DAC credentials for the final binary.
+>> In this RFC, pgtable_has_pmd_leaves() should be functionally equivalent
+>> to has_transparent_hugepage() so I think we're good. That beind said, I
+>> also think that we should disentangle pgtable_has_pmd_leaves() from THP
+>> now or in the future. When we do this the breakage you're spotting will
+>> happen.
 >>
->>> As it stands I don't think it should be assumed that any LSM has
->>> computed it's final creds until bprm_creds_from_file.  Not just the
->>> uid and gid.
+>> What about adding thp_has_pmd_support() which does:
 >>
->> Uhm, I can be wrong, but most LSMs calculate their state change in
->> bprm_creds_for_exec (git grep bprm_creds_for_exec|grep LSM_HOOK_INIT).
+>>     return IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && pgtable_has_pmd_leaves();
 >>
->>> If the patch you posted for review works that helps sort that mess out.
->>
->> Well, it works because we changed the expectation :)
+>> Then I can convert all the cases you spotted to thp_has_pmd_support().
 > 
-> I just haven't seen that code land in Linus's tree yet so I am a bit
-> cautious in adopting that.  It is definitely needed as the behavior
-> of IMA as v6.18 simply does not work in general.
-> 
->>>> to work around the problem of not calculating the final DAC credentials
->>>> early enough (well, we actually had to change our CREDS_CHECK hook
->>>> behavior).
->>>>
->>>> The second, I could not check. If I remember well, unlike the
->>>> capability LSM, SELinux/Apparmor/SMACK calculate the final credentials
->>>> based on the first file being executed (thus the script, not the
->>>> interpreter). Is this patch keeping the same behavior despite preparing
->>>> the credentials when the final binary is found?
->>>
->>> The patch I posted was.
->>>
->>> My brain is still reeling from the realization that our security modules
->>> have the implicit assumption that it is safe to calculate their security
->>> information from shell scripts.
->>
->> If I'm interpreting this behavior correctly (please any LSM maintainer
->> could comment on it), the intent is just to transition to a different
->> security context where a different set of rules could apply (since we
->> are executing a script).
->>
->> Imagine if for every script, the security transition is based on the
->> interpreter, it would be hard to differentiate between scripts and
->> associate to the respective processes different security labels.
->>
->>> In the first half of the 90's I remember there was lots of effort to try
->>> and make setuid shell scripts and setuid perl scripts work, and the
->>> final conclusion was it was a lost cause.
->>
->> Definitely I lack a lot of context...
-> 
-> From the usenet comp.unix.faq that was probably updated in 1994:
->     http://www.faqs.org/faqs/unix-faq/faq/part4/section-7.html
-> 
-> I have been trying to remember enough details by looking it up, but the
-> short version is that one of the big problems is there is a race between
-> the kernel doing it's thing and the shell opening the shell script.
-> 
-> Clever people have been able to take advantage of that race and insert
-> arbitrary code in that window for the shell to execute.  All you have to
-> do is google for how to find a reproducer if the one in the link above
-> is not enough.
-> 
->>> Now I look at security_bprm_creds_for_exec and security_bprm_check which
->>> both have the implicit assumption that it is indeed safe to compute the
->>> credentials from a shell script.
->>>
->>> When passing a file descriptor to execat we have
->>> BINPRM_FLAGS_PATH_INACCESSIBLE and use /dev/fd/NNN as the filename
->>> which reduces some of the races.
->>>
->>> However when just plain executing a shell script we pass the filename of
->>> the shell script as a command line argument, and expect the shell to
->>> open the filename again.  This has been a time of check to time of use
->>> race for decades, and one of the reasons we don't have setuid shell
->>> scripts.
->>
->> Yes, it would be really nice to fix it!
-> 
-> After 30 years I really don't expect that is even a reasonable request.
-> 
-> I think we are solidly into "Don't do that then", and the LSM security
-> hooks are definitely doing that.
-> 
-> There is the partial solution of passing /dev/fd instead of passing the
-> name of the script.  I suspect that would break things.  I don't
-> remember why that was never adopted.
-> 
-> I think even with the TOCTOU race fixed there were other serious issues.
-> 
-> I really think it behooves any security module people who want to use
-> the shell script as the basis of their security decisions to research
-> all of the old well known issues and describe how they don't apply.
-> 
-> All I have energy for is to point out it is broken as is and to start
-> moving code down into bprm_creds_from_file to avoid the race.
-> 
-> Right now as far as I can tell anything based upon the script itself
-> is worthless junk so changing that would not be breaking anything that
-> wasn't already broken.
-> 
->>> Yet the IMA implementation (without the above mentioned patch) assumes
->>> the final creds will be calculated before security_bprm_check is called,
->>> and security_bprm_creds_for_exec busily calculate the final creds.
->>>
->>> For some of the security modules I believe anyone can set any label they
->>> want on a file and they remain secure (At which point I don't understand
->>> the point of having labels on files).  I don't believe that is the case
->>> for selinux, or in general.
->>
->> A simple example for SELinux. Suppose that the parent process has type
->> initrc_t, then the SELinux policy configures the following transitions
->> based on the label of the first file executed (sesearch -T -s initrc_t
->> -c process):
->>
->> type_transition initrc_t NetworkManager_dispatcher_exec_t:process NetworkManager_dispatcher_t;
->> type_transition initrc_t NetworkManager_exec_t:process NetworkManager_t;
->> type_transition initrc_t NetworkManager_initrc_exec_t:process initrc_t;
->> type_transition initrc_t NetworkManager_priv_helper_exec_t:process NetworkManager_priv_helper_t;
->> type_transition initrc_t abrt_dump_oops_exec_t:process abrt_dump_oops_t;
->> type_transition initrc_t abrt_exec_t:process abrt_t;
->> [...]
->>
->> (there are 747 rules in my system).
->>
->> If the transition would be based on the interpreter label, it would be
->> hard to express with rules.
-> 
-> Which is a problem for the people making the rules engine.  Because
-> 30 years of experience with this problem says basing anything on the
-> script is already broken.
-> 
-> I understand the frustration, but it requires a new way of launching
-> shell scripts to even begin to make it secure.
-> 
->> If the transition does not occur for any reason the parent process
->> policy would still apply, but maybe it would not have the necessary
->> permissions for the execution of the script.
-> 
-> Yep.
-> 
->>> So just to remove the TOCTOU race the security_bprm_creds_for_exec
->>> and security_bprm_check hooks need to be removed, after moving their
->>> code into something like security_bprm_creds_from_file.
->>>
->>> Or am I missing something and even with the TOCTOU race are setuid shell
->>> scripts somehow safe now?
->>
->> Take this with a looot of salt, if there is a TOCTOU race, the script
->> will be executed with a security context that does not belong to it.
->> But the transition already happened. Not sure if it is safe.
-> 
-> Historically it hasn't been safe.
-> 
->> I also don't know how the TOCTOU race could be solved, but I also would
->> like it to be fixed. I'm available to comment on any proposal!
-> 
-> I am hoping someone who helped put these security hooks where they are
-> will speak up, and tell me what I am missing.
-> 
-> All I have the energy for right now is to point out security policies
-> based upon shell scripts appear to be security policies that only
-> protect you from well behaved programs.
-> 
+> I hope we can avoid such a wrapper for the time being. Maybe we can just keep pgtable_has_pmd_leaves() glued to CONFIG_TRANSPARENT_HUGEPAGE for now, and leave untangling that for the next cleanup?
 
-Hmm, yes, that looks like an issue.
-
-I would have expected the security engine to look at bprm->filenanme
-especially in the case, when bprm->interp != bprm->filename,
-and check that it is not a sym-link with write-access for the
-current user and of course also that the bprm->file is not a regular file
-which is writable by the current user, if that is the case I would have expected
-the secuity engine to enforce non-new-privs on a SUID executable somehow.
-
-
-Bernd.
+OK, I can do that in the v1 posting.
 
 
