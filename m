@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 551BCD1CDAB
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 23:25:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 110C6D1CDAC
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 23:30:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BD286B002B; Wed,  3 Dec 2025 18:25:31 -0500 (EST)
+	id 4F8E26B002E; Wed,  3 Dec 2025 18:30:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 846F06B002C; Wed,  3 Dec 2025 18:25:31 -0500 (EST)
+	id 4A8FC6B002F; Wed,  3 Dec 2025 18:30:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70F776B002D; Wed,  3 Dec 2025 18:25:31 -0500 (EST)
+	id 397BC6B0030; Wed,  3 Dec 2025 18:30:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 536286B002B
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 18:25:31 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6FBA1334E3
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 23:25:28 +0000 (UTC)
-X-FDA: 84179743536.19.A37932E
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D54BFA0019
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 23:25:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 272186B002E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 18:30:40 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D3F1D5B67F
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 23:30:39 +0000 (UTC)
+X-FDA: 84179756598.06.A72E13F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0B27DA0016
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 23:30:37 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xnz6kfYy;
-	spf=pass (imf25.hostedemail.com: domain of mmaurer@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mmaurer@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lgfupv1T;
+	spf=pass (imf25.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764804326;
+	s=arc-20220608; t=1764804638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a6uoVhNguoRPRGf5uoEhquoFovSI0B7deZMJWzTJLAU=;
-	b=thKlPOA0tq+D99fR5/BMozPlrGVfqp+kkHpdh7XdNEJzKxv8RMDR6Labj5Jxpmj4UipsdD
-	wCPWrSUvRDr4ORVE8Z4O7PqiQvOBl6PgsspJOFa4LrUxPzdqYTeXy2Jbn5NG1otrZm6WxG
-	h3g43KG9HLwmys/MBW+xsdjbgdBD8Qo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Mho2y9eNn4Xh2fW5Ei8exNQUI5PMBFsU8PI55hOiam4=;
+	b=ckCsyPMAHTOvZ8oyNaLRlGQ11bRYAZ1SY4F0zYkwA0ko4VInn9sKakYQceHU8vzU817+ke
+	o3i+2gnMUJH5jB+hOLKH4Ojcwlegf0l+lOxzAlqcB55DxrS46locL4QQuYtA/d4iVuAXWK
+	pWvd5+Q8/+ihOEkPgXCVTk1OYiq36LE=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xnz6kfYy;
-	spf=pass (imf25.hostedemail.com: domain of mmaurer@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mmaurer@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764804326; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lgfupv1T;
+	spf=pass (imf25.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764804638; a=rsa-sha256;
 	cv=none;
-	b=DiGBBaoBxwpAyqJgI+e2Yah3S6FU5KelD7W7m4BCqsMIWSNBWs+OShT7Rot5zoj8uygdc0
-	Jmjm8swSY2onTzsUBirt3+k7tAkIRPQxELpiaDfPQO1z99nWzBf5zPjTcBf1AjOXRtMUUl
-	w+tY7s6VVG06DLDUNyS0PxkMwCdxLFg=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-644fbd758b3so4096a12.0
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 15:25:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764804325; x=1765409125; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=a6uoVhNguoRPRGf5uoEhquoFovSI0B7deZMJWzTJLAU=;
-        b=xnz6kfYyGHZxK12t4NxaQ2lgllgL8YfU7N5p34RwN+ZXjebK1+csBd+Lw5Ucpepzvc
-         zO8yC+7Acjqy1vX8keaoO2cWpiZH5y411nOqqxpvjiSi0e6YKeQUNA1b4CwSRZy0HKtX
-         Rm8Ed+O4do3CJZMK3EZoueG53w9n94u4drGkCepcZxcDODT4QOBAwyKr45vy+UnkzcUj
-         uosZwzvbKpznugTVjOlYByfQa75UFjEskji0Aibyo0GYCUMPNLmySIT1yf/GRWB+D8WR
-         ACYQ20skJJIH0CSpj8dHBd1oaQEqGDMqnkFtFe+kI6wVSNFAzehnAyO5FYdBzZwf5qLg
-         7N5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764804325; x=1765409125;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a6uoVhNguoRPRGf5uoEhquoFovSI0B7deZMJWzTJLAU=;
-        b=Xq1j8PzE4p/3+lyn5e6dhq2RBi1cA/9mbrUB3OsVgwYdd5npbKismjLMyJ/tqFC51d
-         OnbMQV6zuYLYrXV4OPlV143G60dWi5S0SGsE7dxWydmASH0HqCF4hT8fppBZxaXvxMQF
-         YBXxYdEg+I62EVNrY4YhI5+MrJEkEGFqtbCNZj2a8ygmSz5pyZJjGHtzN/kOSFpvKrkM
-         nf7HT4rZJlIgypy5gy5vEXFH+PRSpEWW33FyEk/nHzPh7GwP8jxGvfQIYs0DgfKC6ZtY
-         kJPgS8+htGrMpoqj2a0G2UVFGOnlgnfwUSmkvzRhjBSklMCNdLg+aP6UH/vRgd6xVWuY
-         kmUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUzkqf7BRc+OUdtnoIiQLBCTGAe631obmH2ZKXFEe+wmrzO+OLC2GiJ79fZgZeXWH/rlv2p7nZylg==@kvack.org
-X-Gm-Message-State: AOJu0YwlkD7mf3/uaE6iXDTdhLCWn2OBkWxyTntqVJpIobZX9tk6rpeg
-	xVXKycD7pm1rFagStftvgtjdgXfKphtPjQbqRZ5rdN6rewQbDbEt0uGc/gXqF4nAcokl36ptkGi
-	leIYZPYR/lbvSAwL3wDvUz1M4lU4c2mS2b7jHKT5e
-X-Gm-Gg: ASbGncsZjlJAFBIwo/nxgn1hJfi/v3DKj82+1rLN+kDN2ziDdtMQG/k2eaKoztIqaFG
-	YXMPtaYWgfKcbQI6xguPOBFupSXdewH+ddBEY1A06Ktp4IUWIoQ7Gg+/mPf9lPXgh++ycKj0w3G
-	UtTfwz8mzEENZK5HW3QvuG62moSnh4X5+NMXpLrkYAgQoZ/VXl3S0+szc2YXH2vHhlxftQjYUwe
-	TJb5dgyDynoF4w7/HtO7KuOW2DuYQv4ERffEBLkxjK1IqiSk8Nhr95ZlZxbD/H8GPDQwPu2WdQS
-	j/ytcJc3G+kjKlrsaME1aA2u
-X-Google-Smtp-Source: AGHT+IEXEQTgoa3Tuakna4skmZg2pw/mrECwMwVvdW0fQYVmXvi58ZGexwzvZpC2XAuu5b911WZjF7TrDbbogWoEqU4=
-X-Received: by 2002:aa7:cf02:0:b0:640:8f9c:af3a with SMTP id
- 4fb4d7f45d1cf-647a7728a14mr14606a12.6.1764804325007; Wed, 03 Dec 2025
- 15:25:25 -0800 (PST)
+	b=YR8ynGtsFyIyHk3CLBPNHAKNdczoAQKunTo2DBuFMghhDt1zIc5UvL1MsTi7gOr1R/bg8N
+	MchAGoDGL6GHksPQ/kcLf14pdqGJO92dZ3CHswN7y4cE4CaMMS4BPTikG9OcyZyIaO20mn
+	IJkxFgujzDCQthGOBidNbf8ryHpmkEA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B4776017B;
+	Wed,  3 Dec 2025 23:30:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057EDC116B1;
+	Wed,  3 Dec 2025 23:30:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764804637;
+	bh=HNYogr7zzJHRiNSelDmcEoExR/fm7KJufnOedN0KEbY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lgfupv1TvQXvNqeGjsEp7Tb7NgOU0e+DsX6CLfuR9wVEbBaot1A4klXIvr5ctcExL
+	 T3s+zZcGsR+OygeA2G0H0Jcb5gyzD3sc+kYsRU1v0RDskISoueDITyehiu+9jMs9Lc
+	 HiGtzFqNOmXcKDRk5jVNUJJ0DF32fEJufg7vi4ZDsW5c/kmj4bqCS7dmON/Z/MJqSS
+	 46Mg4VjxhHc2XaO4nxnFte22hvLB8hcds5Xqp7zmHecQdT3IsC8/RKCP2veY2R2o88
+	 1Hyxj+kY/enbNebz4HmPBHZUCSySE1fjG4JT4z9zFlfHEzdt6m7SNSDqJw4APd0V2G
+	 sHr32uf/ljdRQ==
+From: Kees Cook <kees@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Kees Cook <kees@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joe Perches <joe@perches.com>,
+	Christoph Lameter <cl@linux.com>,
+	Marco Elver <elver@google.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jann Horn <jannh@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-mm@kvack.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v6 0/5] asdf
+Date: Wed,  3 Dec 2025 15:30:30 -0800
+Message-Id: <20251203233029.it.641-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251203212558.GB3060476@ax162>
-In-Reply-To: <20251203212558.GB3060476@ax162>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 3 Dec 2025 15:25:13 -0800
-X-Gm-Features: AWmQ_bmE-9G2UW0Equri3aRgg0NngGho89_DAwKEs6T1gQOz1p2ws5lgLkHiDf4
-Message-ID: <CAGSQo00bG7QF+u2WJQwMTiq6iGATcSfaAurkkppykkn+yTL-TQ@mail.gmail.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 6y1fehr777y1xpsstfx4bnfg5mddybqu
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3399; i=kees@kernel.org; h=from:subject:message-id; bh=HNYogr7zzJHRiNSelDmcEoExR/fm7KJufnOedN0KEbY=; b=owGbwMvMwCVmps19z/KJym7G02pJDJkGJyT5pu5Ks/h+QOPslH9hf+v13ieZh7re8V1xsexwQ VbmjgPeHaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABPRucXwPy5dv3HRNqWknabV F04JHmOrszu2vkQlesHtjGXfzG1+LGRkeFW1IKtFP/nHGbssV6lXa3wjfdaunP6ktsrIQt3Efh4 zLwA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0B27DA0016
+X-Rspamd-Server: rspam02
+X-Stat-Signature: uzjko1gtypixchowsc58sposnfqcunmh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D54BFA0019
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764804326-248550
-X-HE-Meta: U2FsdGVkX1/NxlvjoF7q3mX8xSwk68TVvQAGKWm6Do7lu8A3P3ryFkYSZ2hwJAKs60rgiBzF1i5YrzHadrrhZIWDXcPio1lydx4HTzFwHbbG17nY9rrdg3Y2FmrSTwKcDgvoCI923uAUrVq57VcUrgPPMs9Z714+7ZHNn/FmuPkN4Tjc17p7TXQbaNuQx5dUfPZsq7a43lARQBf7YuoB+sGVUfw2P7c5DF8UL+C9OhhMPKxwtkPg7DOwkTVLEt/JmROdYljT3HEeW02ON9V/XyaD/6I1YTlCJUvAm1THRwCdSAtosj0rR+Sqq3dyh+OGULVKhkmvXLJuvRnCSfM+R/Xk+PyefF+3Z2ilTBtGS4Ws+VZCAHVUT5WPpayzyjsqGZayNUsVP2w2M+LUmGgTJVsb3sGw0pnyXOad1gyIYowTieA3BKt3dr0YlIeqC4s+iOjJlOMMA06QjnSH5cbcIz8ETYFVpWnxHyvnk9QkRZUy60vNL+RX7LUTI0yQlHJXjP0m3R73hr+HjDtCqIjhOCv8NHkMmMEK8qaO02XwrN95zSZLfK0wifD+QbtfTRS2usHXQdjB138RwdqojO9l6ss6M+42jBpRxZfhpkpyJ2B5BGcvKQS8GGcZE4N/ir69ZY4tV155jHle7r90FJrNIJOSz/OcBdncL5DXTWlYmhyPtlL96Y77x8SS4/8vbOz/zoRvEq0jHj6c67glZBU2VsBf+oQLK+V/0BUgrm5lJkWsIoG5duQlOIipSIbqGbk1MJC5UTc1MFETm9AYI1jVS8OG1RAFUsEcBceusar8HXEt9OtiZpEy+fv86DPCXIgMJYMVyX4gftlwDDa8LrVU4IcTPBWDbw5vzijRA8B08Ks6re25hbxs0jvrKor2Dotc/4pj5/5OGJx24617fCNEinfMurMqNkSf14suvRiynah7w1KERlVKWHeiX7hCWR4w8hFloiDK7Ih8/wb9SGH
- Mw6Rc3D4
- OT3AIkNi+zkfvO+hqufFPbv9FQ0mOj6jH6jAU72+UU1AWU3hObsgGCeuAsyKpA+PlZthkrt4XE68CuG6Y0xtZcEfBzjPGBcCY64GMtITAIP8/UyBxR5HG2d212oEe2xjvF7A7DuqwCxJZ29EG9icO71sshAGsRLCkskXS3WLOvPbzCrTanvzxg8f4aKSOzhI24xx73RlNSS/SsU0JWJ4hZSsxkP/FadXn7G4lDJOC3LpXlWXMmHBQ3HOW7yAZ5NGO03/qrvH+9aljBQ4=
+X-HE-Tag: 1764804637-763145
+X-HE-Meta: U2FsdGVkX19dICHHk6duupHXJdp0aggLMONv3DkegGZkHuU147Ar21BlvKBSBZvduiItzvgKayniswhhoOU5A0+KjwjcO2wnDpK3MBCaZNT+LvWJlN+chNzybm/eEVIQrtQPhXtHi6NlKN1QA3e/6pqXaFp14GLl/pEtR8oWda6uBadUwNak205ldka/rV5PnfkKM9sC+OQxFlF9Kuo/qYII7v9YF0xz9MEPj/H9V0XLGlHqaWDcRd5QiY8cJ2jPPRN8HCvCQ97RmxxVjC7JQfTNAW3NHHYdmeiRIHU+H4soy4g/Gn/KnV7jcC/QWgbkUqvj9N8IQAi1XM8HhbiW2RpcyTn55jgZq0QiCyaqyE8Vyj9ydeuXnZasLR71lAJ8iWQI7iK5hA8QyJ9zr2QSZK7pL6PhLQqF93WXfNhhLk+6BWKnA5YE2wjYir9xBt+Q5A18VayR/0qX9hUcC9R/zXgZdI1xLGLNi3ZnvdmAHiqKisfvcYOYduaNfg8ixDopj49otJe+OgDJGfJjdxmWDPqYjiiGE/OUoPp33gEMZcO2D3nnzuxWiQZMIkQ7gEmt3R6e412x50osickS8/DcMSalxTohcckfPLVe3gH2NiFoZMdCNeTyT/6ZVcdZRtS/nnmNFN9YShHleEkd1gZn+MYAZJoYyXoIwNaZDtsNhyUr0jdpbKJ62RxPqaeVKYJsOiapMxmAotnyvsmhVR2c4XLAyPdJhOsBqf25CNc1xH+OhUB3bWc4+vsV6rbTUNcPXf8aMeZYbaqA+c5NEUZm7jc5cMNhKD9dTLju6hOwGKKSBhIIwiHyvDQZUlc0CIaipaELGosWVc4a6GNpJSAnAXpK86EZVhSMVNoocy9RabSKTMN1zXFwr81ne3koXTBZ4tRxta9otr1OLkpLosgBuQppZRfrgeoC20R78XmdVYU/kumOkJpgaQS7xD0fWlhPJUAWHFix9FFJEj4I95J
+ V3kXn7jo
+ zxlQG1NV+Nmq2qsOPGjiIf9jBcKhgFhNS0D297JTKI24oQh1+lnEeUkc8SfXJYm1WGVqdvJJKuIesOyjlaIu3AcV7Xe5XKDVnAB8xUhdP4oPoh8hamAknNXSvSJJuIUGSgxiqForugXrxEJIUa3nTXGkxrxmrFgKTFk4yixIwxTolNOAGS5QNUDevqg77DhFiAOZgAvJRpY5aV9k1TXC8Fpwgpn+IXjOi9NLW4/8li8+np/ziTAqRgL7N4Lp66GxDMNA98EhCxg4UMGN3u+CETYJnrIeOd6QP+z52fJNgtG4CoGd7NphmwDEuX3GhYJgmP4hiXSktlOKRTqez1d11SL3Xkfo2sd70R6G6jAKxIRX2u5wlYL7r5Ty9Zt0uowr697m0/fjUMemVcm4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,37 +127,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> I am just curious, why would someone want (or not) to do this? This help
-> text does not really indicate the point of the option, just what it
-> does. Is it just the standard tradeoffs with inlining (potential
-> improvements in performance due to better optimization opportunities
-> versus text size increase and icache pressure) or something else?
+Hi,
 
-The main situations where someone would want this off are:
-* Not using `clang` (should already be covered in config logic)
-* Out of tree module build without the whole kernel build tree (the
-`.bc` file produced here would need to be shipped to your out-of-tree
-module build environment - it essentially becomes like a header file
-for purposes of building an out-of-tree / DKMS Rust module)
-* Don't have matching `rustc` and `clang` LLVM (kind of covered in
-config logic - if anyone is using a non-release version of LLVM, the
-config may indicate them as compatible incorrectly).
-* Requires out-of-tree / DKMS Rust modules to build with the same LLVM
-revision as the kernel was built with - may be a packaging concern
+Here's an update for the kmalloc_obj() API proposal based on Linus's
+feedback. I normally wouldn't send this during the merge window,
+but I wanted to have it updated for discussion at LPC[1] (and here in
+email). Please see patches 1 and 4 for the bulk of the details. This is
+obviously not v6.19 material! :)
 
-While the usual inlining tradeoffs apply, all of these functions have
-been explicitly marked `static inline`, which indicates those
-tradeoffs have already been thought through.
+Replacing[2] all existing simple code patterns found via Coccinelle
+shows what could be replaced immediately (also saving roughly 1000 lines):
 
-I think that if we had a reliable signal of "`clang` and `rustc` use
-compatible bitcode", turning this on by default would be reasonable.
-As-is, we have a mostly-reliable signal, so defaulting it to off seems
-reasonable so that people don't get surprise miscompilations if they
-use a `clang` or `rustc` which are not using precisely a
-release-boundary LLVM version. People who know their toolchain story
-for x-lang is squared away can turn it on.
+ 7971 files changed, 19880 insertions(+), 20752 deletions(-)
 
->
-> Cheers,
-> Nathan
+This would take us from 24515 size-based k*alloc assignments to 7682:
+
+$ git grep ' = kv\?[mzcv]alloc\(\|_array\)(' | wc -l
+24515
+$ git reset --hard HEAD^
+HEAD is now at 8bccc91e6cdf treewide: kmalloc_obj conversion
+$ git grep ' = kv\?[mzcv]alloc\(\|_array\)(' | wc -l
+7682
+
+This treewide change could be done at the end of the merge window just
+before -rc1 is released (as is common for treewide changes). Handling
+this API change in backports to -stable should be possible without much
+hassle by backporting the __flex_counter() patch and this patch, while
+taking conversions as-needed.
+
+The impact on my bootable testing image size (with the treewide patch
+applied) is tiny. With both GCC 13 (no __counted_by support) and GCC 15
+(with __counted_by) the images are actually very slightly smaller:
+
+$ size -G gcc-boot/vmlinux.gcc*
+      text       data        bss      total filename
+  29975593   21527689   16601200   68104482 gcc-boot/vmlinux.gcc13-before
+  29969263   21528663   16601112   68099038 gcc-boot/vmlinux.gcc13-after
+  30555626   21291299   17086620   68933545 gcc-boot/vmlinux.gcc15-before
+  30550144   21292039   17086540   68928723 gcc-boot/vmlinux.gcc15-after
+
+Thanks!
+
+-Kees
+
+[1] https://lpc.events/event/19/contributions/2136/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/commit/?h=dev/v6.18-rc6/alloc_obj/v5&id=f79ee96ad6a3cafdb274fe15d3ae067724e72327
+
+ v6:
+   - Drop _sz() helpers and simplify the resulting internals
+   - Split _flex() helper into its own patch to make review easier
+   - Explicitly use TYPE within the internals to make things more readable
+   - Move treewide change details into the cover letter
+ v5: https://lore.kernel.org/lkml/20251122014258.do.018-kees@kernel.org/
+ v4: https://lore.kernel.org/lkml/20250315025852.it.568-kees@kernel.org/
+ v3: https://lore.kernel.org/lkml/20240822231324.make.666-kees@kernel.org/
+ v2: https://lore.kernel.org/lkml/20240807235433.work.317-kees@kernel.org/
+ v1: https://lore.kernel.org/lkml/20240719192744.work.264-kees@kernel.org/
+
+Kees Cook (5):
+  slab: Introduce kmalloc_obj() and family
+  checkpatch: Suggest kmalloc_obj family for sizeof allocations
+  compiler_types: Introduce __flex_counter() and family
+  slab: Introduce kmalloc_flex() and family
+  coccinelle: Add kmalloc_objs conversion script
+
+ scripts/checkpatch.pl                     |  39 ++++++--
+ scripts/coccinelle/api/kmalloc_objs.cocci | 109 ++++++++++++++++++++++
+ Documentation/process/deprecated.rst      |  31 ++++++
+ include/linux/compiler_types.h            |  31 ++++++
+ include/linux/overflow.h                  |  42 +++++++++
+ include/linux/slab.h                      | 106 +++++++++++++++++++++
+ 6 files changed, 352 insertions(+), 6 deletions(-)
+ create mode 100644 scripts/coccinelle/api/kmalloc_objs.cocci
+
+-- 
+2.34.1
+
 
