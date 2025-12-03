@@ -4,123 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE818D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15C79D116F3
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:03:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58E7D8D0003; Wed,  3 Dec 2025 04:02:26 -0500 (EST)
+	id 73E786B0027; Wed,  3 Dec 2025 04:03:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53F388D0001; Wed,  3 Dec 2025 04:02:26 -0500 (EST)
+	id 715F56B0032; Wed,  3 Dec 2025 04:03:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 455A58D0003; Wed,  3 Dec 2025 04:02:26 -0500 (EST)
+	id 62BC86B0062; Wed,  3 Dec 2025 04:03:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 30CA98D0001
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:02:26 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D460651931
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:02:25 +0000 (UTC)
-X-FDA: 84177568650.16.702C35A
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E974DC0019
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:02:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=YKnhNKIY;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FD226B0027
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:03:29 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C18359626
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:03:29 +0000 (UTC)
+X-FDA: 84177571338.11.B0C6F4F
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3FB53120002
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:03:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hMlWEx0x;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 33fwvaQkKCOYITQKMZgPTOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--aliceryhl.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=33fwvaQkKCOYITQKMZgPTOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764752607; a=rsa-sha256;
+	cv=none;
+	b=m8RIsxydfZyqfF56W7rkLRL75VrD90jlQ6HCEBVSbu2u/aU6p3AV2L0FxjoS1X9UyPE7mf
+	h6hVz5U/rf+aHtcSX5jkgtep//+02L2XKKQd55YCKGVsjF7Qd7upK3TVA6uV07Nu2iuhPQ
+	mZ4VVtx7BhEUAWtn6f8VkA5SFhM+jK8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hMlWEx0x;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of 33fwvaQkKCOYITQKMZgPTOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--aliceryhl.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=33fwvaQkKCOYITQKMZgPTOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764752543;
+	s=arc-20220608; t=1764752607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4saF+51MpcMqreRhfl2CsLn54xRQyLgAhIk0DIIYoNw=;
-	b=EAg5MerfSI9Lv/ozlNrbUZ59I6MUyMSmoJ0YoYV11V6T+MitTioqE5G9dl4kAkGFW6c/A2
-	5nsqqX9kWSTzRdG/RP77HdMYLcq5mAR2dtsgQOmvRyLrfObJ1hK+bjNv0D/Yb2qiHPEJ22
-	Cyp6kmw9850+hfsRD+p5gAd/uM4eAG0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764752544; a=rsa-sha256;
-	cv=none;
-	b=o2yMvw9xbe6Q8lng5RUJ++e+1Ise9XnsXULsV6HkrByGRl04Itinj+RoV4WutOciI0Q7pz
-	WQ2h8RPELOBzIbnGtr/qc709i7mx5ZtJrE73D/dsT3BfitqvUU4DudWFOSzNFu8+CBd0Ah
-	X1J938s7MGROdFCj9v8EAdNFE0yUlB0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=YKnhNKIY;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b2e530a748so555664985a.0
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:02:23 -0800 (PST)
+	bh=O12gERPToepovtHRRurtFX1amoOWltySW6VLkiynYXU=;
+	b=Jb5dUfxGDzQsm7/T6t1e7XIhJKOpmhgEVh3Kk4csEfsnyDY9I/Z/tTJIOgyzoElOBvfKNY
+	+7aPHWxU8XQ+/LXc7AYXB5HNHmPL7d/adRvJFfYN/Gig0LN2Lwl5SjRBU39e9fYRXGHYpq
+	4fs8KTdlWKMu2t0qjTqtegwEpZzsXIE=
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b73533b84eeso551958866b.3
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:03:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1764752543; x=1765357343; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4saF+51MpcMqreRhfl2CsLn54xRQyLgAhIk0DIIYoNw=;
-        b=YKnhNKIYqRwP7PWQC3yG9Bht/ITt4JKD2558bb+/WRQ0bKtpIiFTIfPYeFcYCLnRWv
-         ttBXvQYZjTbMFZ7A2tMChAa5kAeEe/ArlZNFwTDZ2eqEETBHMqmYcF7zCEdGIT6cERyW
-         6NNErOGyYwpV/0WZazNb/qE2zjkqmStJj/l2TO1kY4ZIIVJPUjppxeUXq8KEhF+tB7Ix
-         txLwEB7fCCJ4a9Pm1Rg1ktS4u8xSA72/07Q3vh51/fl6t0k85KLr/yoKIMLeTb4YSiNv
-         7eEPqhk6xDpeEXTU1LKpnrpDxovye7tSD701rUs1LsdBA7lzWZnNxCS8rkzVQ8oHxOk1
-         cRnQ==
+        d=google.com; s=20230601; t=1764752606; x=1765357406; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=O12gERPToepovtHRRurtFX1amoOWltySW6VLkiynYXU=;
+        b=hMlWEx0xj+e7/Gs8cJdgPzkP2aHTLlddg9vllLJ1dTGNPv0ap6Qdf7cKnYh/JM+QGR
+         vpTwO0sNqtIx15rr2Nh35TxBRFYFFVUkfqzEbSrdU8yfmLb0MiEu2+mSMTDAyNopzmUc
+         KivZ/879gPPV9orLNEvSC62xXedzFk2PA8rRm2BtwtXx1IE9BJJ6SmHhqnGEzx+OwCmB
+         1k9Kb1bSipoLyTWhGGFfiNdRYdX3zLBXXkzi2peoQpMJOKN5z7GGKAmL24zs6xqAvaJA
+         3DgN7s/4ypkhFEnkhHzRC5DziF4RnZWJxgb+fJAy83e9Btg4wloNkluagDydbiH1yQFL
+         uYTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764752543; x=1765357343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4saF+51MpcMqreRhfl2CsLn54xRQyLgAhIk0DIIYoNw=;
-        b=WnvOoP3dibp9wru9JEyDHdHwP2MzPsxO29TZUUcU/vAqwmNslSlo8Xvg4vm712nkRX
-         3A103x3TcRE5E49CwrVFBVxQYPC+sEdi7s0HtLHRzQMfuZl9/rFOur7sanq/zqW8D+Md
-         5IIfNlAtNwUrRbMWe2eRFvJX+2IjoZklQlr019XNDmo5lB2/6VYFJaTlFxvQBLzHj6Wy
-         Q2RkwdzMpziR8WazIK++pqATdxlFNjTyW6Br3a9fn4Oeo8zTvwe9JzBnXUPb+7tTrG1Y
-         NU2mVKU4UXOOwzGUUJU+TaK0lbXbB5cE2WYtvWhMWQ8eYp6xxs57HLD2c9ow4BK9tMLX
-         cxug==
-X-Forwarded-Encrypted: i=1; AJvYcCW/dbwU8dBaHPpqyp02agc5kyyzumzkYB8YXkox3QW5gmAKezae+B0S0qACyFeqxp3SfLzjz2laDQ==@kvack.org
-X-Gm-Message-State: AOJu0YzZwMsEDwS+zpQf5Sc9Y8gBnB+rzdRrMXH5ui9DNoscqMbppwvv
-	dLUABrUCxlMgEGS0vc53XmKNXbs70zKVoM/cetFujqw5kacOpCgvehRiX39en7qGwmLb+VBck8j
-	q2q46
-X-Gm-Gg: ASbGncuiJBcwGX17TS93Tz75FAKkIpsjOmiTLnrDfF2kAyx1kf7kBkJnyigw5nGMWbJ
-	9bSw3Q1lSvpSjntS4Qai6Tj8sccy2rUaRbAbDNScc9ozzdh2cmebc5zcgk0W0NX5jmZEY3XCjHq
-	XflH/jpYJ7LPJXdokZXvjK7geI//KP0KG9mATtITUKPoNLC84TwvBC83UsFlGYd8dW+zCIYLQcj
-	tWeubvpJs5PMgwGzrwiFRjPnrFE45j9FV5DCt42XGSpKBKQONwC9hxi46XV2FQU3YheiEAcMq1S
-	vGSx/sVFJtVcAYKKWA3pA9J19c6U6ooAXuEaofOWd/jKtpNGWOwAwr1ZIcFrc9uI3BO2x3b3kKA
-	AjB5UHHOKHDPVz3IfVnERluQu/qZu9/qbJWtsARvF8H6HBZufFwbE+A+Pw1z84VaXJUzDgpbNG5
-	dAIVGZLf70g2XQaFFyBuy+soGuZ03XHG2dr7SZHhpOxsbjUyOAmV+0DR1/+e6fI421gDrpsA==
-X-Google-Smtp-Source: AGHT+IGTm2nWUY9JPc6rZPyJWuZPb39lBOWDSCMEk0hxE/la6Ur82Jbp5YL+S/PQyNYLAP6umf5wkQ==
-X-Received: by 2002:a05:620a:372c:b0:8a7:2373:1c75 with SMTP id af79cd13be357-8b5e6c924f1mr186372385a.49.1764752543119;
-        Wed, 03 Dec 2025 01:02:23 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b52a1b759esm1283219685a.31.2025.12.03.01.02.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 01:02:22 -0800 (PST)
-Date: Wed, 3 Dec 2025 04:02:21 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
-	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Oscar Salvador <OSalvador@suse.com>
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-Message-ID: <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <aS_0bgCs2qE0y1bJ@tiehlicka>
- <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
- <aS_4E2H5aJmSvWF7@tiehlicka>
- <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E974DC0019
-X-Stat-Signature: wfocxk9h94qywy8digr57uo4wksapshe
+        d=1e100.net; s=20230601; t=1764752606; x=1765357406;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O12gERPToepovtHRRurtFX1amoOWltySW6VLkiynYXU=;
+        b=lI+lccWW+2fCxg4Jd/347AbxyDIMtCg+CgJ2H2y4mnl0q/aFourNkejGvPjeFmnWWF
+         2zVWr/+5SvpXumYDpYvx7RJJvHiueueUDWdK2RF5kyLhM5dLVT9El1NZ8xhZE3LYbwuB
+         +V2luufJUqGRLFBTffxtHQbFc0ZPInaOjfti2t58lzY3QXkEpIAxkqyV0nxMtwbn5hoX
+         pavsWWPnrq/+q2eca1lZMO/RfefIP/NLpur/P/xJIvI9O8maIZn6yr5P+1zd8ojHaYEF
+         V/ErNF5hEr35Q5Wv9cR2lettCON48/UkGdr1OuuFuBa/Z7teHVQHfjxOBAkJaTbN01bI
+         u2Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+Ow7p9abCc3hvhO9Lhaa7TUudRZh/lro7CyK1qnkDC08xU00PCN8Ee9IGOuUjmkggAeslCvMX6g==@kvack.org
+X-Gm-Message-State: AOJu0YyKlNedVSNdj8IMEb/AyoP7H6WM5fHXoOqlEMMujeOhZcMlOBza
+	ULbnpKplrhLV4Vfy1d4vGQORfJtXqt7eC6ug0soHqsWKCD/otMEiohIroQ9GCXc8AnvHOLl5mfk
+	IutoYAJ25JF95O4YO6A==
+X-Google-Smtp-Source: AGHT+IFmeLftbJQxnwM0KiQ8VG5sVq5t7Zj2O2RL3UaEZeeQUSx14/BQ0KA1rqaJvLEaOjdKPUHmbM+ifOPpjpw=
+X-Received: from ejcsl5.prod.google.com ([2002:a17:906:6185:b0:b78:1480:a1ce])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:2d8e:b0:b79:ca25:c11e with SMTP id a640c23a62f3a-b79dbea97e9mr144938766b.26.1764752605720;
+ Wed, 03 Dec 2025 01:03:25 -0800 (PST)
+Date: Wed, 3 Dec 2025 09:03:24 +0000
+In-Reply-To: <aS-VrkRdQc0H6nSs@tardis.local>
+Mime-Version: 1.0
+References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
+ <20251202-define-rust-helper-v1-24-a2e13cbc17a6@google.com> <aS-VrkRdQc0H6nSs@tardis.local>
+Message-ID: <aS_83HjEgLqLm4AR@google.com>
+Subject: Re: [PATCH 24/46] rust: mm: add __rust_helper to helpers
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3FB53120002
+X-Stat-Signature: 1ekzfypp3m9cy49futn1uenwqr4qif16
 X-Rspam-User: 
-X-HE-Tag: 1764752543-91305
-X-HE-Meta: U2FsdGVkX18nMb1jpq8Gd7zCJYWXLBfsZ6wi7BRasipQWIkLVtXAS3d1BqimHGkV0oMAkT7sAh+jXwfVmi15IPIsaYRhRhxfN0UaYu4DHNs298V/d93vz3wvTmwzuqaH8NHPioZRWwR52bV8bMR6r1vNvKCMsfqPzAi5l1S/u/D1l3CGz9ryymGV8sxthJAKxIrNBe/4A7ElbhbHwjUq6dAGyATbuZzl3NzrlJtidl7amw0t23c2sQBsdhK6N60MR2VN97TAozWrrnAEFdXtVwNcCYxqtwbm6yEyH2PJmqkcySbsFtjysj0TW/kUHZcPtoKOufaegc3JONpjID2Ph9luBt2yYUK5bZvBS3UYe8uWBfDZFTv5pdGEnlTRAPoi1EpaMTGiY49sQcfB79rLAMRrR2KOmVF5Gs1/qMb2uQ4GBS6uSb9cG6J29Fqn3GPWbMwvmKnA2Tz7MHySc9VFcCEMWGrDF4TOzgMjFlQlDjFHm5+NABXCm+kaMYe6wtkNi/fP6Q7S/t7mKK3n/bj7Eg+tLDHGEhTVoRJpX6J+cHTTtGDAeETPV3eW1ZsW6Cq9VkK+n7pFPg7tA4tg48WEmdSyskeupfpikHLASDyqO/ZwC1Ikv9vPzNAT9mDqqoigviOKuOKqpi2BgUvGOLAlKy2I/Yd/igLz2zuQznL6G/CS3gtsLZAhAJt6phEz/Ru3SwwSbvTSwxAzS6rp4WQvmg050rDPpr/+r1Yi/O2SyPgCN4lh4fwPfxirlI8oZbon44d2osMTy79zr1D/oMNjvLI7efxNgCHBwugI75R69lxU7d8kzZRnbM3QCgDKJd/mdMxFwUgITE96o0TVouYZYLH1qNGoJY2GkvJvr48+g89Je/9wAh+EaMrAS67kavXsr/nOPWq4cY+ASFg+J7Uqrdz43d3gDR/KLFCTGuI0J975+jiNderxNd7abhh8GZ3TFeDv6LmMUJgYh4l++R4
- 0YqsRDAE
- RCcXqOySUrAu0gkXy+p0Oto/+Qkln0ecRQtZnmjeC1SI9pzmoSH+TwL3puOGKccTGC1Sy+ZkrW63ppvQ+be6GvY26wx+42gWd11dunJpEST0i6l9NKoOja3fAaTVsZgYDlwNGmZ4YtPvu7P/gc1qpd2MfsRztgtkoP+OqmYDBI9wAEQWvAOVu0CS5+jpFLExkPVe8q80/L4rZjrg7hf391oIWmZLnKD6HVBxDgekj4JHQdPjxIttQloDXbTgp71Vdn+CXyE2Cntq8BW6aP/SLO5pRYYjgr0/cej62osPdLGOvAAiBo7szIkamCK3OdC2hcN4kwjz2U74V4w3O0xQNS65T4R73L1/8XooMWjMIaSjgzdCjq8Bj5MSkRA==
+X-HE-Tag: 1764752607-670224
+X-HE-Meta: U2FsdGVkX1/KCUVQpwHNFgVgmZbXBNd+rf0EgJEUUtgCcEnTh+8rW4yScpHWv2mVv0inc4z47wkJ9GTtjgV6V9TJSHRH9izi7Ota590gQWVNNPTvZeJJg3qKNS0YnW3z7Pnu6VEMMscxrxJlhwv5qznfUmvluFy9cS8zrHLVg4cmQlijH1wIezNreLiBdm4bOrrCm8jqqFySn9L557b50J1UNr5lD/ndv49kgf3LsxBZJ/sSYdNhViyigosSqp0ScnSGul/9VLlmW/rBd/A/ZSWpv4VhFygz+2JvLzAXYWBypTkVc8hPXTlzkjVz7y3Du+xe+XznUmyAJN/gVuupQhkEZgv4ueirdw7Jw+kne0c17Mdrpxe/aPL0UbQ/HoloUgEx0I4Fo2glcbqfewgWSavqHOtpxBaCFC1EF3Jq243Bfug/dY81eCN8PwB1Jtj3lc3r74f8cM3QHLWkvPSz79/oruS+2yJbcKjPccGHQrcXkWKC5F8y9Pc3nsnFtOwk94pscL6ZdKW+X+ux85xyG2J53Q4swEWWaoj8IUZg8ya2MFHHEMpTwu/iVE+i6NBIhlz2CePqIgTIiK4PKs6dHvpMGmj1LKIem7SYb/fQ71yiR3yEA2kBsr39jwmKLnMCGcw9MC7LvdmdjOoMKnl9jKSffQNZMJzkMhjFlSWhjhW1umZBLrlF77yEkQHHwDjeRhDG2FxqK0O1NOCd+PysBebm3cu5/AMvrNelP7MF6OCte1spmjTIJ59zl/n+DgnRIyd/ZNr7KcUm1bCQy0RxRVbVh5HXG+uKm6ItGxNV0Hg1BK1OoQakyVoOQ/Pzt576HfEgJiZ7DtuPkyDmwnVLX0Me3oCadVWR2llI890Dgd1KROpsWGFXXu1L93270ZfEO1x/xQKTSnBCkGK719aHEzDxjgCTwO36td/53ZOKZe3uvvN5IkZT7FIfO4XjNKOcvye7ltxGe1o4txcEEBJ
+ om05H/3e
+ zVOciwVl8ap9DxntDnWNjj5sZz2fA6zQyGYXnCMCyLzf7Gj1Y8Xgtxd0HOmOyuby3WS16E0tRzkM3wEXsBBX3wk+WQpZDrp4hmwXWnE9IQNuw12zzfIZAwtePECIBJoud5QDiAMW65xDdIKNZKGdwJrYeLQfffI7EQv5qmy0ob5QzUi4XULu3fhpenoLtSaUfjLt+Eu955r/84k7WObA2ZNrCI6wJyto8+ET2vO1G30zzaRP5N1flANLWHx7241VUYVmOxWjrd/9uZJfIxehzfbV6yy5jNcNN2Kw6R2Gh9FuLVIRbflkAzXVjnZn4B7U4EU0SnREweZl/1m1mGMgDUPDbjY9nR+qTo6PUa+vP87pjvWkK9km6dNKK8ZjXxCOcE22OA+fsh+8Dr/uzOFvx0ydxz3AyhIiI0IjCiK5yS4edGFH0zxtEsrT75w/t71pSBhOyx6mrOvl0juawKj9LePbnbxmcPhNBkfUgtmazONFNXkhOwHT828iAwCLVOFWmNdloo0PnqOUw9sRLhJXD+lUBS5gQFU6CffZXw7ro0kAW1NS6cgZDxND1eIwQAxvZAhtDkncQzf97/l/2Zt6YawjrotMYIKDnMEBejBXwww2EKnNLr6MT1AqEUTiwjIo2JcA1173igPVQ0vrc6DgpqQAxnkeJ5drf0BC69lHyG7K2Wgr9ZYNS7Kf5zSa+PcV6Qy8WRfKlD+Q4p9IMBmOR8zsMsc8cmkYv3+nUyZeJGKbggqxbps/shouZc3n16HoTChbFhaiq93XPlTUF3f01umNMiuZEDzrT4LeMXtNTbWgJolrSWp8if4S3PkuqeDB1nyGowTfkbISGEAs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,34 +111,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 09:51:52AM +0100, David Hildenbrand (Red Hat) wrote:
-> On 12/3/25 09:42, Michal Hocko wrote:
-> > > 		if (!ret) {
-> > > 			/*
-> > > 			 * TODO: fatal migration failures should bail
-> > > 			 * out
-> > > 			 */
-> > > 			do_migrate_range(pfn, end_pfn);
-> > > 		}
-> > > ...
-> > > 
-> > > Maybe it's time to implement the bail out?
+On Tue, Dec 02, 2025 at 05:43:10PM -0800, Boqun Feng wrote:
+> On Tue, Dec 02, 2025 at 07:37:48PM +0000, Alice Ryhl wrote:
+> > This is needed to inline these helpers into Rust code.
 > > 
-> > That would be great but can we tell transient from permanent migration
-> > failures? Maybe long term pins could be treated as permanent failure.
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> [...]
+> > --- a/rust/helpers/vmalloc.c
+> > +++ b/rust/helpers/vmalloc.c
+> > @@ -2,9 +2,10 @@
+> >  
+> >  #include <linux/vmalloc.h>
+> >  
+> > -void * __must_check __realloc_size(2)
+> > -rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
+> > -				gfp_t flags, int node)
+> > +__rust_helper void *__must_check __realloc_size(2)
+> > +	rust_helper_vrealloc_node_align(const void *p, size_t size,
 > 
-> Did we try offline a ZONE_MOVABLE block or a ZONE_NORMAL block? In case of
-> ZONE_MOABLE, bailing out is not really the right thing to do.
-> 
+> The indent here seems to be incorrect?
 
-My transient failure (although i'm not sure it was actually transient, i
-killed it and retried after a few minutes and it succeeded immediately)
-was on a ZONE_MOVABLE block.
+This is what I got from ClangFormat, but your suggestion does look
+better, so I'll update it.
 
-Kind of suggested to me there was some bad condition the resolved once I
-took a second to release the lock and try again.
-
-Can't speak for Aboorva's situation.
-
-~Gregory
+Alice
 
