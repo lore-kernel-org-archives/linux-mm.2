@@ -4,98 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0225BD12D4B
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 12:00:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDCFCD12D5F
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 13:16:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5952E6B0012; Wed,  3 Dec 2025 07:00:03 -0500 (EST)
+	id 7C7E46B000E; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5499D6B002C; Wed,  3 Dec 2025 07:00:03 -0500 (EST)
+	id 778216B0010; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BB66B0032; Wed,  3 Dec 2025 07:00:03 -0500 (EST)
+	id 5F2296B0011; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 353916B0012
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 07:00:03 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DF97213AF39
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 12:00:02 +0000 (UTC)
-X-FDA: 84178016244.11.992AFB9
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C5F2D80002
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:59:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764763200;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4851C6B000E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:16:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 18A30132EAC
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:16:32 +0000 (UTC)
+X-FDA: 84178209024.14.D158288
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazolkn19010000.outbound.protection.outlook.com [52.103.32.0])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1491940012
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:16:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=gSucX2MR;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=hotmail.de;
+	spf=pass (imf01.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.0 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764767789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cfR1op6I2ilEgsRWTWe25yHuD9w2fpD5VolsHrq/pDw=;
-	b=H5NC1pS2RI2vtQWMP9RfGon7YbyGWDS+8saDnzKxl/TswopU9EG2H0SGuCTY/UOHGU7SUb
-	022RI03K3NjonpNJ7B/iCoqX9S95TYDT8YPUPvN8N415cAY9nQtT+rC2EDsqaq0ttq9uYT
-	g2+bAOdB/kTsDBDojYlwKloBYeafMYI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764763200; a=rsa-sha256;
-	cv=none;
-	b=Sdnh6+FWAtaKWhx4Bo47PCP1ULSRHwVnsYieVF3Ditk71n+Fp0ePUoBsIkwbcj6c2fRSuv
-	3miMoWhRcKulKBAA72FW5e/DCJCC+56WEmT/eQGdhszk384UsaDtDaPsnvsanEuis62ESG
-	etucHNsKo3MO564B/Ve3C49I46C0qGE=
-X-UUID: 9425e766d03f11f0a38c85956e01ac42-20251203
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:5b83410b-1a13-40e2-9e25-4f438dd71b9a,IP:10,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:5
-X-CID-INFO: VERSION:1.3.6,REQID:5b83410b-1a13-40e2-9e25-4f438dd71b9a,IP:10,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:161b65e2e8a1b24f3f8f0378b4a6013a,BulkI
-	D:251120233527X6NZUQMX,BulkQuantity:2,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|841|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:
-	nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
-	,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 9425e766d03f11f0a38c85956e01ac42-20251203
-X-User: zhangguopeng@kylinos.cn
-Received: from [192.168.24.105] [(223.70.160.239)] by mailgw.kylinos.cn
-	(envelope-from <zhangguopeng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1309268471; Wed, 03 Dec 2025 19:59:53 +0800
-Message-ID: <440f6a44-5d1a-44d6-b776-ec58e6c79f37@kylinos.cn>
-Date: Wed, 3 Dec 2025 19:59:46 +0800
-MIME-Version: 1.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=boD+kR2RQRyalADD+eHD0JGp7yqNBUec15stCQBFrdo=;
+	b=kH3k48ZzHZbQoMJBbCP41lA8DXVuAtw8lR9S4epaGUMmdyjJ7mpmRPDlgCy6T5ZKufOVes
+	uetjSS9kfn9ZW+KQ+IohviWJ06va0mgETmpUPXgfVhKHofERwrrFl+OK5ZvemOXT+2G+tU
+	kgdpn44RLcJycrLDz0MUyMGjKoR/DEY=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b=gSucX2MR;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=hotmail.de;
+	spf=pass (imf01.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.0 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764767789; a=rsa-sha256;
+	cv=pass;
+	b=Di50gyBpYnuWT+LEFezt9fndCNLaLfb/UyIehpNzCcT45YvC7Vs5P8XUxHS4Sic6hTM7aq
+	okIroUTTmxL+WM4I7cUPNYlEgCEugpnoYsywmLLV4Yr3vRQm93M5NLVOExatVDO2bqKGMY
+	YnOWqaklBnKvdBhI2x9y7asUppihJSo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ClWTOdMT9eH9okRCP6FEQ6HVp1uy3cUB1mC7ByifoepXGtsyPpvWGJ9kD45OPKZXnZyQS73M9RT2HtHs2+h9TYHLzTxNMrqCQN+7tBrnlbO2F1bRAmikbeaHE8QjMMLa3rt2G4zpPtdpJd0EDwBJA7xEIkSDIkwHbp7i5obTbxXHGUKsqsxTjB+ttGeC3kINCVMmlkCPJCPuPCEYWJe1lsm16GzIIp3T5bw5Cipf4dPae47Yc5ND0z3LETrQOtlSTz5vCSCP89bjURjMbwhz+yRwRc9wdXge7cIWOXypGTbeDPJrcPYeVEazFmoyky9GAs2Vkf6i4sUPPSd5UNcdNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=boD+kR2RQRyalADD+eHD0JGp7yqNBUec15stCQBFrdo=;
+ b=Cmq4OqvUaMh/5PptoNOf89K5uG3CVv1W/MsvDsHF4RYkEQVfpP9vbdPMhmUDY1M0Cv6xQrp8Z1T40K36XvTGOMLVVfP2qxkHT5EwiJhCjCGVAgXGAoSvpUXBn8R87JkdIHsjloG+YQDXzT84n7MoYdjc5lLiIoOnCwc+Yu/7ogeeKEqv145ejtmB2IIPgbz6bc9X3qrEvDm/RCJ12xgbxjH4izvvqbrS1pZyX5HqegI6FvJ6sBiJF7yZZy0/ayb7QolCTFPFMbDwY9fYN47svVwkxPLOf+ZzbhmDGpH9Nr7OrXDVWRd5ZLzfxSSDUi6qZYIdN6iiK4+znjzz2N249g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=boD+kR2RQRyalADD+eHD0JGp7yqNBUec15stCQBFrdo=;
+ b=gSucX2MRGlxdVnXjtJ8I4eEdAGu7+pgjG6ypYWyMyMoXkQFDmTQvVWVSfv2hZqKA1ZF/bs8aZrl5JdhIg9POk0gZxeGmyJU1hhPAERlOxOyJ+ZVmae0ExFrUkEqKIhVTi9Am99D8gxUOCG7bE0NjpWkzu4jZw1zJXvkNOnyIHol9UeK5rEzb82IGx6T4JCb/jHHSzBFYbHc5+AdUh7JPvkwfMfc+kW/mH85RZgAE3RY3zPDdSD83mQFWCFA55/TTPMSzN2TyD6pAOzMJn5YS6nbSErFkdZIzB1vbKjfRQZuM1/Q/4UKXKEq6mmHo52V9UxsX+0MKN7caXNoj4HPkJQ==
+Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::8d4) by VI6PPFFEEBABE75.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:808:1::12b) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 13:16:23 +0000
+Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ ([fe80::dde:411d:b5f2:49]) by GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ ([fe80::dde:411d:b5f2:49%8]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
+ 13:16:22 +0000
+Message-ID:
+ <GV2PPF74270EBEE90CDCD964F69E806EF58E4D9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+Date: Wed, 3 Dec 2025 14:16:29 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] selftests: cgroup: make test_memcg_sock robust against
- delayed sock stats
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: tj@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- lance.yang@linux.dev, shuah@kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251120060406.2846257-1-zhangguopeng@kylinos.cn>
- <p655qedqjaakrnqpytc6dltejfluxo6jrffcltfz2ivonmk6lb@bxf5xlgo4iw2>
- <f7553219-e19d-4172-90da-a2077cb574cc@kylinos.cn>
-In-Reply-To: <f7553219-e19d-4172-90da-a2077cb574cc@kylinos.cn>
+Subject: Re: Are setuid shell scripts safe? (Implied by
+ security_bprm_creds_for_exec)
+To: "Eric W. Biederman" <ebiederm@xmission.com>,
+ Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
+ Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>,
+ Will Drewry <wad@chromium.org>, Christian Brauner <brauner@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Serge Hallyn <serge@hallyn.com>, James Morris
+ <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>,
+ Helge Deller <deller@gmx.de>, Adrian Reber <areber@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
+ Alexei Starovoitov <ast@kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Frederic Weisbecker <frederic@kernel.org>, YueHaibing
+ <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>,
+ Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>,
+ Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>,
+ Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
+ David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Hans Liljestrand <ishkamiel@gmail.com>,
+ Penglei Jiang <superman.xpt@gmail.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ zohar@linux.ibm.com, linux-integrity@vger.kernel.org,
+ Ryan Lee <ryan.lee@canonical.com>, apparmor <apparmor@lists.ubuntu.com>
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <87tsyozqdu.fsf@email.froward.int.ebiederm.org>
+ <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
+ <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>
+ <6dc556a0a93c18fffec71322bf97441c74b3134e.camel@huaweicloud.com>
+ <87v7iqtcev.fsf_-_@email.froward.int.ebiederm.org>
+ <dca0f01500f9d6705dccf3b3ef616468b1f53f57.camel@huaweicloud.com>
+ <87ms42rq3t.fsf@email.froward.int.ebiederm.org>
+Content-Language: en-US
+From: Bernd Edlinger <bernd.edlinger@hotmail.de>
+In-Reply-To: <87ms42rq3t.fsf@email.froward.int.ebiederm.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C5F2D80002
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0302.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f6::8) To GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::8d4)
+X-Microsoft-Original-Message-ID:
+ <48c3abf9-d80b-489a-a1e3-7593e6c91ba3@hotmail.de>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PPF74270EBEE:EE_|VI6PPFFEEBABE75:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96121e53-5579-4465-da0e-08de326e2789
+X-MS-Exchange-SLBlob-MailProps:
+	cn60g5V53KM8AUe7PDnmNTykf4/SI5O5glPfIsjkZKAY0cUQJLkoKk6j6edDrT1KvFGUTV+svOJSBZhSn/dUD0hodMKLSAAywQHQpkk3lBcmJ7A6YrRP+1LTR21+5o6D+mXD4d94tgq4xKsk+fpSsA6xMCHkXTNodrCvZOury01SZpXushURizCLWG2sJICnMQMfRvJVTZkl+YIm6dMMuF8KS3y/c6ZVBTlSt52NVex7E0Ks4+u4poLKazVi+nnvf0Whv95X5WQNooVLDQ1/tTGGAIW6Jwf0mOcdvt+FR9HlAnD2F/0MMgVrLz8zp+5C2mfRO1LuvewCJnHpUq4E5rMdiqCZkINZ2T03w5qQUBNLcXEV8rfh0zUdN3JAnvrll7/UVGYIUxacRFIYeLQMib2TG3GRi0ALEmGdkItWjlmoJILr3q9JmiuKLE6SWB1IEwhssCF9B9I4kPIzyCsDk5YMzus3QAU4IbdSE7OGUfJj+vgf5m/2pb91mqO+t4NE/XZ3M78dq8cyV/r7HqtBrnDqnm2yHizDoOKq2CWyyeEPLusDiYfqKk0EzUJIpuuX7kRNhQTAQP4IK7a2tpyEK5kLBBVXrmwAuEFBYMg/COubeidHyWaTvBmeqs1YMHkZ9iVdyFHp65FHJkQE3zYuZUcCauHVy4zrnboZWrNlazgPbSsAmWvX7IaXoxpl75w2VjO3Wj7xI1EtcRvCc3V5iJyJ1mVwJN6XgLe4KTZYZfgMg85z5kg8sQf4+WU0ktJNkUs+LkVBgHb3oMZ6a98wmLrex45Gzhu6QazPAtR277l4Sep5VpaVkVz9mKAUyTW/xqrcLwfSLW9S553H4mtBkkvQRyV+/9zTHJwhEFZojnUngeGjY/kDgQ==
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|23021999003|6090799003|5072599009|51005399006|15080799012|461199028|41001999006|19110799012|21061999006|8060799015|10092599007|12121999013|440099028|3412199025|10035399007|40105399003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MlhNZkVmN3N1aGd3ZlJoNytJc2NsdCtwN0hoaWErTGswOXdmVmdIUUVuSTVL?=
+ =?utf-8?B?WUdUZ2ZmVFN5Q2NPU1NYVXFPRmpRcVIvT1JaZ1BNVjFrdm1jeDI5L0lGaTVX?=
+ =?utf-8?B?aDJSaldhand5NmtwbUN5WWpqK1NzeE0vUlJrUVdDcE8ybndYWDErd2NHOThF?=
+ =?utf-8?B?anZNRnV5bEpOcFBleEVPN2Rpb0xxTkljWEJhRXRma1ZEaEd2eG5ELzJSZ09l?=
+ =?utf-8?B?ZFRWQjBsRkZ0Nkk3MnpNT2ljbWJvYXcrUis0aVB6eHh5aGFVYkNRdlBkaUds?=
+ =?utf-8?B?VWY4c3BUTnVGa2JKazM2bnpEL2xLbGZmOVF0ZHFhcnNhQzlOTFkydWFIejQr?=
+ =?utf-8?B?M3pYN1RqRlQwL1V6OTdFSWR6TjFGaGowaWRBa2RvZ2RCWUlOc0JJaFBxNjdY?=
+ =?utf-8?B?WXZzcG9IRXNDbHF0OHBYandSZll6dUxWWWdtc1poRWFhOSt2cEVnd2V1OWVo?=
+ =?utf-8?B?NE90WEhDbXBLcitiNTZMYjNxN2dXZDJzamlCRzdvZERhWmVPVVRMenpCZzBx?=
+ =?utf-8?B?SlZHQjc0Q2pjSTMxOFpNWjFSN1NkZ3VNcTlCaDdGVVMybHNERWl6d3NQOHBI?=
+ =?utf-8?B?MFNDR2FDQ1lwaldWTW05cHl6bHlnNkZuMTdEc1dsM1hCQklITWlJVkFDcURw?=
+ =?utf-8?B?dDNjWUJPbURKRUs4UDRiclBNcnZCaWgvWUsxS000NmkxalFrTWo4K2pVblVy?=
+ =?utf-8?B?TERUdzBvaDRhNjVQdDBLYUZNZlJrSHZKemE5aGp1TjFMWmpxVHk2N0lYTG1m?=
+ =?utf-8?B?K0tZZEw3NUhuVW9RNU5qVEt5MWdWMlhVaXFSeS9mN0JrZXJ2MWpMRXNsaGY2?=
+ =?utf-8?B?QUw1TytQdEJDdDAwMCt2ZXVpTUtyWUN6bHNkbWpIekVta0RwZmxHOUNoZzlZ?=
+ =?utf-8?B?VUU2SHZqSUd5ck54cWhVQVFGQlRpOWhTL0oreU9qajJsK25nMUpYdU9ZQnVX?=
+ =?utf-8?B?S0lCQ3NudEVBYzNTYVpWaWxFdXdBUkxkMEplVnpiWXhIKzZ4ellaWnNKWTVh?=
+ =?utf-8?B?ZzE0M2Y1cHIwWXFibUlZNVVMSlk4TWpCVDJ3N3FuUFVmcStKU0ZqdGQvczNk?=
+ =?utf-8?B?SnEzakdqR2FPLy9mNXlsSGdGc2k5YzAxZTJWNVRNVFdRQ3dnYlE1c0pXUjV5?=
+ =?utf-8?B?RFhBSUw1Y1NPeVRCb3Bmc2VKNlVJWitoUGZHVEZ3V1Q3SVIwMm91YjJKRUZt?=
+ =?utf-8?B?N21NZTU4QU43ZTZVVEwveS9HUmtaQjcyaFUxYTh4Mk9hMUJIdjVnRXR4ZEly?=
+ =?utf-8?B?bXlScHNtTnE2MThzdC9RRDJOUFYvRmZ1eTBob2ZkWExOdzlvZ0srTEJTelZs?=
+ =?utf-8?B?emZ0dElyR3VicHZIYW5oNkh4SDN4SjdXWmxXTm8yazdGeE5Ib3NCOGJUTXpv?=
+ =?utf-8?B?blJTVndSSlpWTDZaYUhLTzk2bU9wd2s4VTBKcEoxUmNHT0l1YkZHSzI1QmFj?=
+ =?utf-8?B?QmROM2tROWhKWnVreWRTWjZYeWJnK0JXWEJVM2E2YTVwWmJRS1dKVDQ3ZDQz?=
+ =?utf-8?B?NTdYSHhOeGRpOHAwM0Q0MThPUjd5M2NtNVhLOXBabE55UWFTWUo2S1Fkb3Vl?=
+ =?utf-8?B?WUU3aTBMNG5uanlkWFZaQW1XMy92UmYxWSt5YXUwU0lUYklQY3IybnNHM1BH?=
+ =?utf-8?B?Sy9zaUdaUnYyTjh0RU0rZ01LaHBxL0I5dis5WEkvazE1Sk5HNGlESHBOZUNM?=
+ =?utf-8?B?cldkdnJSTEQxb0NnRHdHRHVmSDBuNU41RC9hYjBnbUw3cDFxTlZzemR6dXg1?=
+ =?utf-8?B?c3MzS3M1QXpZUHNJRDU0blhzS3JzWk9QVEdVYnE5Zk9TZ21od2s4eWFYS0hE?=
+ =?utf-8?Q?TVziMJzpKozTywDixVtEFCzOqF4mXhsPedVf0=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VW05SlYzZ0EwRTNpZ01sV3lyaTNSellBdGJTY3hBdVQzVkNhY2s0QzA5dFM0?=
+ =?utf-8?B?NUhjaGJxUE1lTGRGblFpaUxHUmF1V2NjSSt2QXdDZE5SRS96YUd0ZzBoUWZm?=
+ =?utf-8?B?L1dLb2VYSHVYTkhnclFVZklacmFpdjVOV2o4Yjg4a0ZSRmdIVTZod1lYWWk2?=
+ =?utf-8?B?OEVDc3h4YWlsMVl6Vno3MjViZzdkcjlXOG90UlNta0N1cEVyeXR0MVBFeXo5?=
+ =?utf-8?B?U2lQQjZ4NUtqdXZuQ3NaZlpiR2M0bHhadHNoOHl1ZkdyaEQrMGJCUVlIK2N4?=
+ =?utf-8?B?MHNLbjZqNUxaNFhFVXRjbHRyL2kyMjZ0WlJlWlVpVkZzRjBVN0lxbCtHQ0p2?=
+ =?utf-8?B?RDJ1WVRzWTJtS0Q0bG96UXplSUhmM1VFOGFORkRkVWM1aTBEaEZGeUNYRE53?=
+ =?utf-8?B?YU1kUU1Ycm1PYVFnTXdINVRCZ3RBOFZuZU1hMGc5V216WmwzZzZOcjVOK0dm?=
+ =?utf-8?B?aDhHeHVIbEZPa0dHRzhkQXVhMFk5WjRhUGRpRGZEVm9NN3Nac2JGak9FaE5X?=
+ =?utf-8?B?b2xiSHNZWmdXMVovZmIvWGhodjltTXo2azlxTkcwNTVDVEVvZ3doV2R4NCtJ?=
+ =?utf-8?B?RzFvZzBCbzQ3TlB0eWZ1UVpwL09lM3V6UjBqV2N4aDlNYm9haEFFTGpHRVh2?=
+ =?utf-8?B?Vi9QeHhhUUc3OFpGTTl1MitoMytQbVplQ002UkJNMStscDlaK3J6ZkovdkY2?=
+ =?utf-8?B?L2VGVGtLNmFuS1RKWHBnbUVtQ1dBc09NZldDdjhIeWVZMno2K2xmaXZXYnBy?=
+ =?utf-8?B?VDJkejBnUWNYc250VjJWVnByOXBWOEpzcnRORXZsS1EzRzB5dllUMUpCRTQ1?=
+ =?utf-8?B?K1VrNGZ2RnQ0MlJXaXQ4RzhGNEdnVWM5dUQ0aEdTZW5lb0R1RVJZRFdHdkFq?=
+ =?utf-8?B?L3gyZ1o0Rktlb3Z6STJSVDVTR2R4Q2kvZ1ZEWjdBblE3b0RCTFJCOU80Y0lV?=
+ =?utf-8?B?YkFNdElKYlZ2TkpqQTV5elFnTHViVTFBOS9HdWM2aTZqTWVueWlPQ1BLbHZo?=
+ =?utf-8?B?alIzcC9PcTdxT0FDbTFIT2FKUXl6TDlWVzJBSVBYcmprL2U5L0g5NG5MUDc3?=
+ =?utf-8?B?clJUSm1aT1UyNlYrQ2lkbW5oR1M2NENIL1VHWHphSENYV0RhUmJZZjVTMVlu?=
+ =?utf-8?B?NXE4MmNuWDdweWc4ZG1SOVBkbVJCVlAvblRYVHlUemJWU3RhOTkyd3RnTFh1?=
+ =?utf-8?B?V3EyRXJ3NWR0dklCb2RpT0wvSGhiUVp5NnlwdllrU0JFTEtjVlZ0bjBOclpk?=
+ =?utf-8?B?REl3YTN6QTVxYU4wWUFUNTc2cmFkRHZ3Yy9TYVBBeExVOEhJRWxsMFVPYmJj?=
+ =?utf-8?B?cXVUSm95MzRKYStuWDRpejVhZlNkRmwzcWhiQXBEQWE2b01NYkY4akIwUits?=
+ =?utf-8?B?TGE0a3FPeHFhMldOQU9LQ1VaSGl1M01oVnJkalV3Ykl4NnZ5R3lTZlREbnAw?=
+ =?utf-8?B?TkJCcDh6akRIS3lyZnZSbExxVzR2NnNWTU9lQnVnOFF5WnUwbDNmdExzaXht?=
+ =?utf-8?B?ZGd5M2gyL2pKa2RRdTgxSnRGZCtkUDJKVUdKaGhmT0VuVmVmWnJwaFptZGp1?=
+ =?utf-8?B?ZGR0WUhsQUtadnJ4eXZrWkh5ZW1XbnVySjRTV1pSNzlZbS96UGhZd0pGVEcw?=
+ =?utf-8?B?OGJUT2pkZGFzTytSV2MvME9uS2VqMlFJLytWUVliWUZNeXBDRE5XYzVJNit3?=
+ =?utf-8?B?aGNlcUVmdmppMzBMNGpKTG85V2Zjd2g4eXhqL2RsN3JXcDNyYXBBcDZxUGVX?=
+ =?utf-8?Q?zXyL09SBBtAdU8qvI7VN0wevaGruRcPh2/qmkTB?=
+X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-87dd8.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96121e53-5579-4465-da0e-08de326e2789
+X-MS-Exchange-CrossTenant-AuthSource: GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 13:16:22.7968
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI6PPFFEEBABE75
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: h4yfegir8zf9k1npb5766czxqc9shnp6
-X-HE-Tag: 1764763199-361834
-X-HE-Meta: U2FsdGVkX18tMVSUlL/5G6Sj58pb2lopAZUJuDlFlqsyQnDLHEnekUHSPO89XGa07UKXl9sFOotJnF+Ew15WbIgYwRdLHkFcck/XJEd9W5c7qLMqPyxqL0Lv/QKgixAoRFGIy6mXfuEviGIFzcHnQiLqDiDj7dRzjgAuo/zpdpKGu0PMJt6hfvIkKJqQ3weqVnJKpfVXDlOoMB783V5ppQiT1+Nwba04sskye1SI+36RyMc4BUzA1yPxSyHANWSCV+M9L5QpTucxaO720zhwmfshdmdeH2k+eEOx5bRjsmmxnHgnhq1xKDwsmvZps8bx61XB9fpv1XXAewUbRDQiWDP35/R0cD391E3rWDdVVh1CbjETSVvAAzGpw343WCiU2oGjnj8Q1ufY6wu6OLT94i1lIXmqpAkztKUq7nKukMrsh4lZbwhrRCSYf5TJ3MgNLDMEnziHc6l+MGmuxvu31/s4hU7YtuHSd5AanJ2MXefihr6vAG8nJHi6YDlYPZmJv84hgpP+VPpdH8nrM8/IkhnO5liM0062X2VOFNWrN3RTW4FSuPfm/86UyKSYp/OuISjLGArFiisu181iurS8/9Uo/qWbQtE5OAhxN2X6G52e2etVU5gSpXeisrBbURPPozEMHxn2Mp7efJPMod4Ba9yZTZB/nsJFXzqkjA52WvTwJPSxLMTWs5W4AiG1lit76kxhSY0mo7Z0KP3+0fgPnFVMkuOQTeC5Eq3g8o14is7+ORTvwG2uwCxuBE8gBweVaBZRyfx95cji6hnPrCAQeOG36veMJj8rUCTmc51yaPCZ+K9vQgLm/Euyeenei8C/8RaAxA2jZ6u8j6DWfwWJCpe7LUor5G59WIfx3mskCpyuOFLEpLM1Wh72LMnr0E6cdWeehCr+gOuZJ/zTcJrvbBpxYUqCq8nhZ89VDGS4YSxEiAjjCivbZKqiayhgAwfWEt6plHkvL/SGi4fxMUv
- qQ5ZwzD8
- S9IKFxgYQC9s0wTV5lWTvsdTvxFmz1my4uL5xMsTvRIxymCLOuHFrB3XEC/sxdUierhaKLMEvaWcXgLdjvTzSeWpvnoEr/Jjqic3jRu/sDHiS5iqW7bHvR2tfvrUde8Flsrty6DOzEt8rAoaXAygPNDoTCKFcJe/ogX0wADPxu3aNA11vZlTSJWY1HKFpdDt8D2mTQuHE976nn1efD77EyIOJpJOmsQso2QDM
+X-Rspamd-Queue-Id: 1491940012
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ymr8exg34oqu5za3otb8a13f8a5hj8im
+X-HE-Tag: 1764767788-887604
+X-HE-Meta: U2FsdGVkX1/8FuYl0EKzUntQe1vOjmmp+B2Ow3220UAk07CgSzpt+NNZbKHY1Xz015QjJw53/G05U85AF/03eC4nFfTomDWvVQCidirtes4uxDFx0w3I3PbnIniBmrkFcVblp4qZbmVFonljKNSTpDpWi8XQIu1vkgEPKrYLmnknGrAszkN/zbhlSC7ODrH0WDegheojTRF+DyMgui9AQ7Qr7w6C+dVLH6lMuVXPljnSOl6qOXRWM/7cdiZXx0AcAJ59STvroZme/mm6VAEq/2w+iicND9GGz927zZp7rb2QhOFNoX88VXtukl1tpVO7JzTQcq/z0e6hMW1uy5xPMMYJ+hYCjTKQIwIJ2cxfJt7Ri3G6ReZ7icac8ycW4JdY9thqTd6oSGhGcjeajt2sY/KS+L4q1ayxOgQAupqdk1u8KriUXWfvZ8Z7tauEy2rv/gzC4AH+6uETI/VZ2vFTuMDE6rIKVIIUTN7iBwUGKawuIWlMd5h87NhZXPiqJ08FA6kJN4J4BApCDHfFyLqVEBZ5zNCS2ZiII3kVnC5bO/CZkDtzB5RakOxbLReC5zajkUoEwJ0zm1odg2Rn7CLeOtNXg6VPL9QLA/PtHNE6CSDiIekQsHivU1AAktL2f+jaZSXvSUhnQ1241REgYxHMpySn7pQrIUxKwXX3+Bx88KYYtxCNf/zs7wIm8ao8wmHf9QrCUW7H9Dd3qh7EhpDVNPXlJAIF1FpYXFUBs5U0ygtSrXBIyZGO9umNscsy/WWqlEC1ezpFJkQCnzMhKiL5xd3+lxJavR9jYsDRU1URWRnU0cD6t6sod7gRSaFpPdCynZTkDYSM/gz9+Fd9tB1xg2anc8YFsnSBRrssclscBowOD0avtaYa6LrfGOJm+v0Kms2gg0AzbmH4sh7k35qneuymS13+xFNsofzcq9fTyYP6SqTAA9JPdeHSBZX6LDObGqmXARPFNkit8YF7aRj
+ lDa237j0
+ BE/7mhYBY+CPGNe6HZ2qCLIVPhsHOswORhqVkcCqFwaD9drm0Mw1LJ/Q6Rlq9LAp+AG4fylmFmZSbQlEqOXc6BD/HI2QF22c5SEQKHMf4paWqbO3avBHJFT/m5S/Rw+A7ICB2M34ygTTLqBlG/Bx5xGfC+B7E1QfI+ZvY7b3JGN4iCpE0XmmDY6irgI8QsYHEP3634oEW426DXo0icevcV8bEFacj7DA4C7qUDPWmLkwGMsixRDtA+YDt7p2CAT1NcVQi9r4wLn4Y4qk/JusBd3HqLnodlN7YUJrTifVto0ZROL12t2qe1hxKthrcZWNVrwqKZM0ssZYlQGXIMmspeEUFv20wRuhBhUklCHDaEkNRnC2FMYHBwfK6Y4JZLC5oLwJ/2Fb1/VUD3MinaH3O91ceQ2YpkG+iPvl7VyfWdvDKoFgRvrQMT8kRzhYlyPKa60gaYDwvnbYJP7A2t/wxhfnGzHLR34rRPPSnJaiwTkgJkY7FJLwe4hRXfGE5UhwsRJCboo2TarEb1Y4Ws/60mD87kH5ubQB9/YaN2ATDxhVK700GjK4h0YSPK1XTPc196leTyRIZfafRjSGk2nnc39yN2heNEHwqvDD9q07XkndfBRhwahEqUdmfqciokUSpwk2P2DNpmnffaAqAcpejGswkqGZp7alz4snwtGODUmPJpTkmEcg3b+SpMZP7QJDkreIkrfLTd4cB4RHg6/1xCRKESg7WUhGirTKIG7/pN33IdamZBa3V9X0yN0GX3bIRRVoOvEmAcvoN5lNLpgm+52jTlX09LpLrNQS47qtdiYQ/u01XK8oxrSzDDiZ5jqfy/K1GYfsX+jePu65aD83gMFvOCdYS+PF3815KA3Qu7aTLvpMReFkvPG8/A6JQMA0lnoQiRI9RxtbenITunaOZTLdNbFzFGZLW8t+3R8vNuPMcLLSwDUdq10FtFjUuIQbs07AKGFKhRNTweY0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,171 +243,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 11/21/25 15:47, Guopeng Zhang wrote:
+On 12/1/25 19:53, Eric W. Biederman wrote:
+> Roberto Sassu <roberto.sassu@huaweicloud.com> writes:
 > 
+>> On Mon, 2025-12-01 at 10:06 -0600, Eric W. Biederman wrote:
+>>> Roberto Sassu <roberto.sassu@huaweicloud.com> writes:
+>>>
+>>>> + Mimi, linux-integrity (would be nice if we are in CC when linux-
+>>>> security-module is in CC).
+>>>>
+>>>> Apologies for not answering earlier, it seems I don't receive the
+>>>> emails from the linux-security-module mailing list (thanks Serge for
+>>>> letting me know!).
+>>>>
+>>>> I see two main effects of this patch. First, the bprm_check_security
+>>>> hook implementations will not see bprm->cred populated. That was a
+>>>> problem before we made this patch:
+>>>>
+>>>> https://patchew.org/linux/20251008113503.2433343-1-roberto.sassu@huaweicloud.com/
+>>>
+>>> Thanks, that is definitely needed.
+>>>
+>>> Does calling process_measurement(CREDS_CHECK) on only the final file
+>>> pass review?  Do you know of any cases where that will break things?
+>>
+>> We intentionally changed the behavior of CREDS_CHECK to be invoked only
+>> for the final file. We are monitoring for bug reports, if we receive
+>> complains from people that the patch breaks their expectation we will
+>> revisit the issue.
+>>
+>> Any LSM implementing bprm_check_security looking for brpm->cred would
+>> be affected by recalculating the DAC credentials for the final binary.
+>>
+>>> As it stands I don't think it should be assumed that any LSM has
+>>> computed it's final creds until bprm_creds_from_file.  Not just the
+>>> uid and gid.
+>>
+>> Uhm, I can be wrong, but most LSMs calculate their state change in
+>> bprm_creds_for_exec (git grep bprm_creds_for_exec|grep LSM_HOOK_INIT).
+>>
+>>> If the patch you posted for review works that helps sort that mess out.
+>>
+>> Well, it works because we changed the expectation :)
 > 
-> On 11/20/25 23:35, Michal Koutný wrote:
->> Hello Guopeng.
->>
->> +Cc Leon Huang Fu <leon.huangfu@shopee.com>   
->>
->> On Thu, Nov 20, 2025 at 02:04:06PM +0800, Guopeng Zhang <zhangguopeng@kylinos.cn> wrote:
->>> test_memcg_sock() currently requires that memory.stat's "sock " counter
->>> is exactly zero immediately after the TCP server exits. On a busy system
->>> this assumption is too strict:
->>>
->>>   - Socket memory may be freed with a small delay (e.g. RCU callbacks).
->>
->> (FTR, I remember there is `echo 1 > /sys/module/rcutree/parameters/do_rcu_barrier`,
->> however, I'm not sure it works always as expected (a reader may actually
->> wait for multi-stage RCU pipeline), so plain timeout is more reliable.)
->>
-> Hi Michal,
+> I just haven't seen that code land in Linus's tree yet so I am a bit
+> cautious in adopting that.  It is definitely needed as the behavior
+> of IMA as v6.18 simply does not work in general.
 > 
-> Thank you for the suggestion.
+>>>> to work around the problem of not calculating the final DAC credentials
+>>>> early enough (well, we actually had to change our CREDS_CHECK hook
+>>>> behavior).
+>>>>
+>>>> The second, I could not check. If I remember well, unlike the
+>>>> capability LSM, SELinux/Apparmor/SMACK calculate the final credentials
+>>>> based on the first file being executed (thus the script, not the
+>>>> interpreter). Is this patch keeping the same behavior despite preparing
+>>>> the credentials when the final binary is found?
+>>>
+>>> The patch I posted was.
+>>>
+>>> My brain is still reeling from the realization that our security modules
+>>> have the implicit assumption that it is safe to calculate their security
+>>> information from shell scripts.
+>>
+>> If I'm interpreting this behavior correctly (please any LSM maintainer
+>> could comment on it), the intent is just to transition to a different
+>> security context where a different set of rules could apply (since we
+>> are executing a script).
+>>
+>> Imagine if for every script, the security transition is based on the
+>> interpreter, it would be hard to differentiate between scripts and
+>> associate to the respective processes different security labels.
+>>
+>>> In the first half of the 90's I remember there was lots of effort to try
+>>> and make setuid shell scripts and setuid perl scripts work, and the
+>>> final conclusion was it was a lost cause.
+>>
+>> Definitely I lack a lot of context...
 > 
-> I tested using `echo 1 > /sys/module/rcutree/parameters/do_rcu_barrier`, but
-> unfortunately the effect was not very good on my setup. As you mentioned, a
-> reader may actually wait for the multi-stage RCU pipeline, so a plain timeout
-> seems more reliable here.
->>>   - memcg statistics are updated asynchronously via the rstat flushing
->>>     worker, so the "sock " value in memory.stat can stay non-zero for a
->>>     short period of time even after all socket memory has been uncharged.
->>>
->>> As a result, test_memcg_sock() can intermittently fail even though socket
->>> memory accounting is working correctly.
->>>
->>> Make the test more robust by polling memory.stat for the "sock "
->>> counter and allowing it some time to drop to zero instead of checking
->>> it only once.
->>
->> I like the approach of adaptive waiting to settle in such tests.
->>
->>> The timeout is set to 3 seconds to cover the periodic rstat flush
->>> interval (FLUSH_TIME = 2*HZ by default) plus some scheduling slack. If
->>> the counter does not become zero within the timeout, the test still
->>> fails as before.
->>>
->>> On my test system, running test_memcontrol 50 times produced:
->>>
->>>   - Before this patch:  6/50 runs passed.
->>>   - After this patch:  50/50 runs passed.
->>
->> BTW Have you looked into the number of retries until success?
->> Was it in accordance with the flushing interval?
->>
-> Yes. From my observations, it usually succeeds after about 10–15 retries on
-> average (roughly 1–1.5 seconds), and occasionally it takes more than 20 retries
-> (>2 seconds). This looks broadly in line with the periodic rstat flushing
-> interval (~2 seconds) plus some scheduling slack.
->>>
->>> Suggested-by: Lance Yang <lance.yang@linux.dev>
->>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->>> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
->>> ---
->>> v3:
->>>  - Move MEMCG_SOCKSTAT_WAIT_* defines after the #include block as
->>>    suggested.
->>> v2:
->>>  - Mention the periodic rstat flush interval (FLUSH_TIME = 2*HZ) in
->>>    the comment and clarify the rationale for the 3s timeout.
->>>  - Replace the hard-coded retry count and wait interval with macros
->>>    to avoid magic numbers and make the 3s timeout calculation explicit.
->>> ---
->>>  .../selftests/cgroup/test_memcontrol.c        | 30 ++++++++++++++++++-
->>>  1 file changed, 29 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
->>> index 4e1647568c5b..8ff7286fc80b 100644
->>> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
->>> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
->>> @@ -21,6 +21,9 @@
->>>  #include "kselftest.h"
->>>  #include "cgroup_util.h"
->>>  
->>> +#define MEMCG_SOCKSTAT_WAIT_RETRIES        30              /* 3s total */
->>> +#define MEMCG_SOCKSTAT_WAIT_INTERVAL_US    (100 * 1000)    /* 100 ms */
->>> +
->>>  static bool has_localevents;
->>>  static bool has_recursiveprot;
->>>  
->>> @@ -1384,6 +1387,8 @@ static int test_memcg_sock(const char *root)
->>>  	int bind_retries = 5, ret = KSFT_FAIL, pid, err;
->>>  	unsigned short port;
->>>  	char *memcg;
->>> +	long sock_post = -1;
->>> +	int i;
->>>  
->>>  	memcg = cg_name(root, "memcg_test");
->>>  	if (!memcg)
->>> @@ -1432,7 +1437,30 @@ static int test_memcg_sock(const char *root)
->>>  	if (cg_read_long(memcg, "memory.current") < 0)
->>>  		goto cleanup;
->>>  
->>> -	if (cg_read_key_long(memcg, "memory.stat", "sock "))
->>> +	/*
->>> +	 * memory.stat is updated asynchronously via the memcg rstat
->>> +	 * flushing worker, which runs periodically (every 2 seconds,
->>> +	 * see FLUSH_TIME). On a busy system, the "sock " counter may
->>> +	 * stay non-zero for a short period of time after the TCP
->>> +	 * connection is closed and all socket memory has been
->>> +	 * uncharged.
->>> +	 *
->>> +	 * Poll memory.stat for up to 3 seconds (~FLUSH_TIME plus some
->>> +	 * scheduling slack) and require that the "sock " counter
->>> +	 * eventually drops to zero.
->>> +	 */
->>> +	for (i = 0; i < MEMCG_SOCKSTAT_WAIT_RETRIES; i++) {
->>> +		sock_post = cg_read_key_long(memcg, "memory.stat", "sock ");
->>> +		if (sock_post < 0)
->>> +			goto cleanup;
->>> +
->>> +		if (!sock_post)
->>> +			break;
->>> +
->>> +		usleep(MEMCG_SOCKSTAT_WAIT_INTERVAL_US);
->>> +	}
->>
->> I think this may be useful also for othe tests (at least other
->> memory.stat checks), so some encapsulated implementation like a macro
->> with parameters
->> 	cg_read_assert_gt_with_retries(cg, file, field, exp, timeout, retries)
->> WDYT?
->>
->> Michal
+> From the usenet comp.unix.faq that was probably updated in 1994:
+>     http://www.faqs.org/faqs/unix-faq/faq/part4/section-7.html
 > 
-> That’s a great idea. I agree this pattern could be useful for other
-> `memory.stat` checks as well, and I will implement an encapsulated helper/macro
-> along those lines as per your suggestion.
+> I have been trying to remember enough details by looking it up, but the
+> short version is that one of the big problems is there is a race between
+> the kernel doing it's thing and the shell opening the shell script.
 > 
-> Thanks,
-> Guopeng
+> Clever people have been able to take advantage of that race and insert
+> arbitrary code in that window for the shell to execute.  All you have to
+> do is google for how to find a reproducer if the one in the link above
+> is not enough.
 > 
-Hi Michal,
+>>> Now I look at security_bprm_creds_for_exec and security_bprm_check which
+>>> both have the implicit assumption that it is indeed safe to compute the
+>>> credentials from a shell script.
+>>>
+>>> When passing a file descriptor to execat we have
+>>> BINPRM_FLAGS_PATH_INACCESSIBLE and use /dev/fd/NNN as the filename
+>>> which reduces some of the races.
+>>>
+>>> However when just plain executing a shell script we pass the filename of
+>>> the shell script as a command line argument, and expect the shell to
+>>> open the filename again.  This has been a time of check to time of use
+>>> race for decades, and one of the reasons we don't have setuid shell
+>>> scripts.
+>>
+>> Yes, it would be really nice to fix it!
+> 
+> After 30 years I really don't expect that is even a reasonable request.
+> 
+> I think we are solidly into "Don't do that then", and the LSM security
+> hooks are definitely doing that.
+> 
+> There is the partial solution of passing /dev/fd instead of passing the
+> name of the script.  I suspect that would break things.  I don't
+> remember why that was never adopted.
+> 
+> I think even with the TOCTOU race fixed there were other serious issues.
+> 
+> I really think it behooves any security module people who want to use
+> the shell script as the basis of their security decisions to research
+> all of the old well known issues and describe how they don't apply.
+> 
+> All I have energy for is to point out it is broken as is and to start
+> moving code down into bprm_creds_from_file to avoid the race.
+> 
+> Right now as far as I can tell anything based upon the script itself
+> is worthless junk so changing that would not be breaking anything that
+> wasn't already broken.
+> 
+>>> Yet the IMA implementation (without the above mentioned patch) assumes
+>>> the final creds will be calculated before security_bprm_check is called,
+>>> and security_bprm_creds_for_exec busily calculate the final creds.
+>>>
+>>> For some of the security modules I believe anyone can set any label they
+>>> want on a file and they remain secure (At which point I don't understand
+>>> the point of having labels on files).  I don't believe that is the case
+>>> for selinux, or in general.
+>>
+>> A simple example for SELinux. Suppose that the parent process has type
+>> initrc_t, then the SELinux policy configures the following transitions
+>> based on the label of the first file executed (sesearch -T -s initrc_t
+>> -c process):
+>>
+>> type_transition initrc_t NetworkManager_dispatcher_exec_t:process NetworkManager_dispatcher_t;
+>> type_transition initrc_t NetworkManager_exec_t:process NetworkManager_t;
+>> type_transition initrc_t NetworkManager_initrc_exec_t:process initrc_t;
+>> type_transition initrc_t NetworkManager_priv_helper_exec_t:process NetworkManager_priv_helper_t;
+>> type_transition initrc_t abrt_dump_oops_exec_t:process abrt_dump_oops_t;
+>> type_transition initrc_t abrt_exec_t:process abrt_t;
+>> [...]
+>>
+>> (there are 747 rules in my system).
+>>
+>> If the transition would be based on the interpreter label, it would be
+>> hard to express with rules.
+> 
+> Which is a problem for the people making the rules engine.  Because
+> 30 years of experience with this problem says basing anything on the
+> script is already broken.
+> 
+> I understand the frustration, but it requires a new way of launching
+> shell scripts to even begin to make it secure.
+> 
+>> If the transition does not occur for any reason the parent process
+>> policy would still apply, but maybe it would not have the necessary
+>> permissions for the execution of the script.
+> 
+> Yep.
+> 
+>>> So just to remove the TOCTOU race the security_bprm_creds_for_exec
+>>> and security_bprm_check hooks need to be removed, after moving their
+>>> code into something like security_bprm_creds_from_file.
+>>>
+>>> Or am I missing something and even with the TOCTOU race are setuid shell
+>>> scripts somehow safe now?
+>>
+>> Take this with a looot of salt, if there is a TOCTOU race, the script
+>> will be executed with a security context that does not belong to it.
+>> But the transition already happened. Not sure if it is safe.
+> 
+> Historically it hasn't been safe.
+> 
+>> I also don't know how the TOCTOU race could be solved, but I also would
+>> like it to be fixed. I'm available to comment on any proposal!
+> 
+> I am hoping someone who helped put these security hooks where they are
+> will speak up, and tell me what I am missing.
+> 
+> All I have the energy for right now is to point out security policies
+> based upon shell scripts appear to be security policies that only
+> protect you from well behaved programs.
+> 
 
-Thanks again for your earlier suggestion about encapsulating this pattern
-into a helper/macro like:
+Hmm, yes, that looks like an issue.
 
-    cg_read_assert_gt_with_retries(cg, file, field, exp, timeout, retries)
+I would have expected the security engine to look at bprm->filenanme
+especially in the case, when bprm->interp != bprm->filename,
+and check that it is not a sym-link with write-access for the
+current user and of course also that the bprm->file is not a regular file
+which is writable by the current user, if that is the case I would have expected
+the secuity engine to enforce non-new-privs on a SUID executable somehow.
 
-In v5 I tried to follow that direction by introducing a generic helper
-function:
 
-    cg_read_key_long_poll()
+Bernd.
 
-in cgroup_util.[ch]. This helper encapsulates the "poll with retries"
-logic and returns the final value, while leaving the actual assertion
-to the callers. Tests like test_memcg_sock() and test_kmem_dead_cgroups()
-then decide what condition they want to check (e.g. == 0, > 0, etc.),
-which seemed a bit more flexible and reusable for other cgroup stats.
-
-Please let me know if you think this direction makes sense or if you have
-any further suggestions.
-
-Thanks again for the suggestion and for your feedback.
-
-Best regards,
-Guopeng
 
