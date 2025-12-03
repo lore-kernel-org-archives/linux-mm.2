@@ -4,99 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98645D12694
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 11:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0F38D12D47
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 11:33:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEBB56B0012; Wed,  3 Dec 2025 06:29:00 -0500 (EST)
+	id D40B86B002D; Wed,  3 Dec 2025 06:33:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3AE6B0024; Wed,  3 Dec 2025 06:29:00 -0500 (EST)
+	id D1E156B002F; Wed,  3 Dec 2025 06:33:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D9BE6B002B; Wed,  3 Dec 2025 06:29:00 -0500 (EST)
+	id C55916B0030; Wed,  3 Dec 2025 06:33:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CFCA6B0012
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:29:00 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 379428A6CE
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:29:00 +0000 (UTC)
-X-FDA: 84177938040.28.259167B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 58A0518000F
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:28:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JBl22uYM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764761338; a=rsa-sha256;
-	cv=none;
-	b=OZbFYFu4B3tcS7GQJuZprw0MV+IiSpr2I4gC248k38ykeBkhu4HZsmXytLzzNYx2YuEfB4
-	5pnHjDXpYJunVzu3YdksmT+XkHKFJYK1U/t9/h5UO/bJxioo8fW0R2MynovtjXxulrfcAr
-	FK1qwe0QuK/pdpIpMPwedxaLirreuuo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JBl22uYM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B83156B002D
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:33:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42B8751A53
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:33:16 +0000 (UTC)
+X-FDA: 84177948792.17.B15155D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 820581C0014
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:33:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nCztgqpj;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764761338;
+	s=arc-20220608; t=1764761594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hDv7jVKuqB4LnEM069qeOLD7UtcigUvWNdOuGEPcVS0=;
-	b=N5xK/HrHIUX15DYoUeI5KlqQZ5ifXrvJOBZW9TxofqtX6aHosp4QWirmTlSZVCnBMUAqvp
-	Fw5WVd5Gx/TeELtqoKmrneL2mEA02plPO3q3nF6VQdo+u6jMqPeXek+9lwDDC/tUNM72D8
-	8NvEp17REsvXC+8IPv9UfTlyYiPOVPQ=
+	bh=SuMXrJe9b0QnrPCsmmwMPcceQHG5SR0InixorKifxRk=;
+	b=7O8yUO7Y9/TkHv22Mh076L53Eh3Z75AyOQlqfxlkQfvfw6LfIxH3qcpwRGldI0pYtN5l9l
+	b3TzxgjpVu+amMMtNFn211uSvHl/g4EXCCAZJ+Nl5Skm5ixP91AD5WyrwYNHaS6yayoTjk
+	U0BNZGoLIX1mPhaUtTFaZoke7AOHSZ8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nCztgqpj;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764761594; a=rsa-sha256;
+	cv=none;
+	b=JxhbDMoc12XeKw42JEmnKBPlFLAAIt3gjrYuPVi0vc2NeWKTKmmh0lIUbUsh2BYm56ilfc
+	NJ1NRiSIBDs74u6ZFcTjJ92x/IwVl3w7vVzluU4yeadaOF8B13HStv8KcTdIO2EVe+pOlF
+	PYQXTErClMMfqbtbWXDwcGGoXc57uio=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43CFF429D7;
-	Wed,  3 Dec 2025 11:28:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5234C4CEFB;
-	Wed,  3 Dec 2025 11:28:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C1E9560172;
+	Wed,  3 Dec 2025 11:33:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860C1C4CEFB;
+	Wed,  3 Dec 2025 11:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764761337;
-	bh=WjtABvSbCCnx3nvKrk1EoRHpHn4A/68rGFxZqC4DWH8=;
+	s=k20201202; t=1764761593;
+	bh=qkitV7n3IcZwSor/OK4RnlgMcECsoeewa2IMTxryTvE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JBl22uYMsIHsC6F3gqtDORz+MxQxHSbBOAiSBo1Xft5RQQbGgt3u7NN+kTir6Jhkk
-	 1HUyrOhbg05uTTWQcxEE9EYbUue+bgPPA7mfmLCUMfZveif40kflHpRUgwM/wAosio
-	 PgG/kwk5iUi8Ar0sDBuqBJ9di/dfWfJOxk/cY1Tq50T0/qJGq5xNylDoT+oKxIV468
-	 ddp8ZlwxT6EqgkI1/HqJne4XnVOT5QB/sfBSHj25srM3QTFHVaG7EGbIVwyDUG0yIq
-	 1xfKegT6U4o7SfaivnusJbg1MEk+T4PiTJ+apuAO/l9r9+yPH1+IIpvhaZ3vHl/LcD
-	 M4mcRafKFJmeQ==
-Message-ID: <036614fd-e588-402c-8eb3-770ee9187bbd@kernel.org>
-Date: Wed, 3 Dec 2025 12:28:51 +0100
+	b=nCztgqpjFPJOQS/0o8qWY8aAUUH6aR+l4w2XdhKpQ5sKYB7We7KzslTZ+3nbQyule
+	 FgDl4wiQ/l89eqUEeqViaSnvhZJV7idUHiDDE969P5md22Jl+yBQO+lkRAZ+/Cw0Y3
+	 sR+TUxQGQaqy2kaPcwwCb0dKgXkr+ldhiFlZ2qDQX09p6Tegf+fDUQ0gyzAny1HoTn
+	 IPrOjvMqN+g3Kx9U/6hWKIE5mDFL4KUIlwz98MKWCZeQUlllBYkQgu3n4fGE23flzD
+	 a+EHtyqOklKWqSyxCtoVsoNTx3TS9ofHegddCyTO7Jj4FV6oLoP65kLXFpvm+tOOcD
+	 vijTV0BaEbnvQ==
+Message-ID: <98cbf348-ff21-4c90-af32-b8009c34e5fd@kernel.org>
+Date: Wed, 3 Dec 2025 12:33:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-To: Gregory Price <gourry@gourry.net>
-Cc: Michal Hocko <mhocko@suse.com>, Andrew Morton
- <akpm@linux-foundation.org>, Aboorva Devarajan <aboorvad@linux.ibm.com>,
- vbabka@suse.cz, surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Oscar Salvador <OSalvador@suse.com>, Juan Yescas <jyescas@google.com>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <aS_0bgCs2qE0y1bJ@tiehlicka> <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
- <aS_4E2H5aJmSvWF7@tiehlicka>
- <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
- <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
- <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
- <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH -next] mm: vmscan: correct nr_requested tracing in
+ scan_folios
+To: Chen Ridong <chenridong@huaweicloud.com>, akpm@linux-foundation.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
+ shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, yuzhao@google.com,
+ jaewon31.kim@samsung.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, lujialin4@huawei.com,
+ chenridong@huawei.com
+References: <20251203094002.1745458-1-chenridong@huaweicloud.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <aTABiHsL8NbGWNaL@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20251203094002.1745458-1-chenridong@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 58A0518000F
-X-Stat-Signature: kx1bck9s9gxayc774r9zs376zn18ruwn
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 820581C0014
+X-Stat-Signature: z3gmc5xa7ix6nd4weqy96jt9hbj716jz
 X-Rspam-User: 
-X-HE-Tag: 1764761338-163589
-X-HE-Meta: U2FsdGVkX19yeUB8GpjFRYDJLmggvXzn94/MRZSFNbLsfj4CwbJDaGxQTf68LBYJ0DakTd95b2MNBgVhIs/JGxq/RzSiZzXvAny/h0h7Bxnswx/k1hXB59vVgTtNr48dHYT2nf/gvmJnvCtEeqN6RkXkZ960BWGpzWKbCVG0Sleu2GkBLuCp91hQJ6+St7g7e68H5mJo1O6wAiinqxIQDD6F4kXMpRsQF8jMTmt7rNzYoMiMRtZVBX1CQIs0a4BsjHHy/Aovjzv4c6cC2lj0miYOnDfDXiIX7SGMyDb7KBJ57X1pMBKVMF+svMmlsP8HDwWFV5kkIst7c8bG2RL96EJ2pAXOM7liP5CXrtTDG0vYNFKa+gNvozwWZ4arl6LgzU6vuUSqSqBVjGt2BjEsg5N7gdv3KOrKXgu+XhBrNWkjcbhfSzlDeSduK+t4KqkH0I+v+ciFdtCoi9B3h5oBZrvYRcEm4dM3KsUc5YhoMWDEybdqmbpcMdtiGkDOJTWjlMcINberUydQIx1then5XDF+WAHqlzD4foT6rny7uKcTrenLEPKUUkWGuMV5sehLDpbebPiSnkymU7/LJxeTXVglHRRRZFSLTAegpFS3a/CxM75Lz0/YiotuO1eROFxrKsiFwms5J6JrYY/P/1HtdjnNlLkz2CeNslT8dYjrFM14smX/wK9mHzC9GmipbDnXSNweMAIteF9QTFkBKDznzR/IEpBvhlMxLlSZ4wAnY/qR/8qWobVx75xg1aV9EcnYRh2+FCcrmDHhfnx0wnPq3YjSM8Y444fT4bfaps2BqzDiL/4kqb7DMtVC9wo7/m/HDxCRczlIf/cNo8YV/tL/BW4ztAh9/tdDSrI1LSvJPZvVjlgPUoE24fKDyIDj678GgzjbqdtyV1Q7P9qkt3+J0UlTbbTbtUKdr9IfkEgo+O8KpXJx1/Jj+IMKb29YxGxcOFbCCK0t2yW+OeTAka3
- ZfORHXYg
- s9W8JYN+4h+1K1PbPKaMiv97GlFqlU8tqn/CfPPTfqRoMXOM2kTdXnjIfETy3Zl7oA6GDoyzfV1/0S1xmox7lRRXz7GxHl0mxDktCNSLeJJ8KIcNEmZtlyKVoAFUq1EVi/Eny+3kypItcSpiQOJVc8JcVTIalwQMY0qgkie+d01xQ+s1n6RM1RExkKriduPMvPosDcBEmatVDQWFbXt/sktwYoaOgHexLHP4VDoFm+ma9uElPcp5nmD67wlBLPisZWwn7M7HAgxYxswyeV7XmIYJ81KDVPw4WnmHMH2jJY2Hjpo/xCwTs0/tvTg==
+X-HE-Tag: 1764761594-79978
+X-HE-Meta: U2FsdGVkX1/g/L3qKG3VkPl5kispyp/YV2/AItWbmsUpcQgsEWlWiIMj4ZLgJ/hwfhyKXRBWebx6FbdgL81WI1relkuFjVgRIc4iUugk4kV2I8Cw/fDb2IIxtrVS4qb3g4BsLMB1Uh4pxU9JB5+N15jrc86cwiy3eJl4cICMlSwYNeWEolp4FHZqJfSlC92YnzcE9I4oYAW8HTT2hPrhOlonOqPZM5OhZ1OPQVvAN7RPp2+22cHfuE7tAzylkd0kXnjg3JrzBLJuvxQETovh5wAr9D9+AFBikDY8DUWfS/fMOgirEBmNH8luIs06+lkDnsbINrVCrUgMsFK2dV+OiKzu1UhmOtktWS/l70Zvdnc9vLxuojp6kGqv9/eexcSqyV86cs9RAkbCqTVgsjLryE9Lmz/iGIgjYLtvMY8b4CYr8B1rVDjXO45Mo3FG4/qxzL7p1/QD4lkiRX/Ymk2y27dHfiCFrETeXDXHQS9fHt0rA6ypaHRKXtq3cu/VgedUA1gbsBFSbOmit+nVRhyXOocaJw7O2gnFQxCOqn7z76b3INUQnRUxT8abqfrFH2pbN2JaFt5So6Y9HqFhAvrAomsVwsAXYAP1gB3O3KNWjZsm+s6AxN2NKNcAy4+k4ZfirYhbC6R0s+PPxVfviiY/gmPU7vpOAn8sLAx3UsrEoN1Qt3rWmGLMHePitktYlbIelnEndsY8phFt10tdlN1cljL65PHcgiVvwbKf9oJCg89VybPTrq3uM7j4Xt77QIPhLLERYoSiHaljgVLATOFc9QRQg4o77VVDoCT8yL6zv3R/qxKwXnCiBoB64+zy9FE9y7MeMFjIv53aw/S8yZNXK4ZX0yZ+cfihMuBm6sR3s+71iDVvSOXsSFLMSrDvcBX5vRITkjkIetp/rdPj6xihucx1d9s37sBMRQ524NOXg6XRrbpJbN4S9oYA1PaiZ+UwlgxKKaKAEwtZfpaoyqz
+ ZGtGAHH2
+ qj183hRGi9oPQGP0P4QPZanoD5vF0DFJnWmXrp5Y2qCw0SdNmeOu+IMl8O2IZbuXdmzdUGEQWRFqpm55rg3UxJabaagmRPz6LCP59EWUSnojllibERqdjyrzJG8eTyO6CPX43D3+4TyviY35yu6vc0y/ZI4qcps1ol3Y/WoxkX+jqUO2w6J+zdZj30gOPD7cn4ljjcIYv8uYJUBgGEciHH22x+8tQ4D5AhIkgj1g0XYkGD+/BwWS5gsJ7eFVUHpu0TMMyYecrYsXShqAwMTj6DBgT18qqXVsA/LiMH7v/w42/KidLoEyN6phpyPcInd8QAa7DDNEPZRwGR/U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,65 +99,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/3/25 10:23, Gregory Price wrote:
-> On Wed, Dec 03, 2025 at 10:08:55AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/3/25 10:02, Gregory Price wrote:
->>>
->>> My transient failure (although i'm not sure it was actually transient, i
->>> killed it and retried after a few minutes and it succeeded immediately)
->>> was on a ZONE_MOVABLE block.
->>
->> Okay, so that one should not bail out. Longterm pinnins must never end up on
->> such memory, and if it happens, we have to identify why and fix it.
->>
->> We have this known problem of "stream of short-term pinnings" that can
->> temporarily turn memory effectively unmovable. Juan will talk about that at
->> LPC [1].
+On 12/3/25 10:40, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
 > 
-> Nice, fun, good topic. Looking forward to Japan n_n
+> When enabling vmscan tracing, it is observed that nr_requested is always
+> 4096, which is confusing.
 > 
->>
->> We have another set of problematic cases (vmsplice(), fuse) but I would
->> assume that these are not the cases you are hitting.
->>
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
 > 
-> We do use fuse, but this system was relatively quiet when i tried this.
+> This is because it prints MAX_LRU_BATCH, which is meaningless as it's a
+> constant. To fix this, modify it to print nr_to_scan as isolate_lru_folios
+> does.
 > 
-> We do have some proactive reclaim / demotion going on, but i don't think
-> it was that (see below).
+> Fixes: 8c2214fc9a47 ("mm: multi-gen LRU: reuse some legacy trace events")
+> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+> ---
+>   mm/vmscan.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->>>
->>> Kind of suggested to me there was some bad condition the resolved once I
->>> took a second to release the lock and try again.
->>
->> Hard to tell I'm afraid. Do you still have the dump_folio() calls we print
->> when migration fails?
->>
-> 
-> What luck, I do! :D
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index fddd168a9737..8cfafd50a7a8 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4601,7 +4601,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	count_memcg_events(memcg, item, isolated);
+>   	count_memcg_events(memcg, PGREFILL, sorted);
+>   	__count_vm_events(PGSCAN_ANON + type, isolated);
+> -	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, MAX_LRU_BATCH,
+> +	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+>   				scanned, skipped, isolated,
 
-:)
+We do that in isolate_lru_folios().
 
-> And i just noticed it's the same page over and over
-> 
-> [ 3404.119270] migrating pfn c06f176 failed ret:1
-> [ 3404.129152] page: refcount:4 mapcount:0 mapping:0000000061ca20ba index:0xad28e5b pfn:0xc06f176
-> [ 3404.148284] memcg:ffff88842e855000
-> [ 3404.155834] aops:btree_aops ino:1
+Given that we do
 
-Small folio. Not GUP-pinned (FOLL_PIN, otherwise our refcount would be 
- >= 1024.
+	int remaining = min(nr_to_scan, MAX_LRU_BATCH);
 
-It could be ordinary GUP (FOLL_GET) e.g., from vmsplice or some older 
-O_DIRECT user that was not converted to FOLL_PIN yet. But maybe it's 
-just btrfs / something else that temporarily holds a folio reference.
-
-
-Given that this is from 6.13 ... hard to tell :)
-
-> [ 3404.163193] flags: 0x17ffff066c00420c(referenced|uptodate|workingset|private|node=1|zone=3|lastcpupid=0x1ffff)
-
-Neither dirty nor under writeback.
+and effectively cap it, I wonder if we would want to trace that capped 
+valued instead of MAX_LRU_BATCH.
 
 -- 
 Cheers
