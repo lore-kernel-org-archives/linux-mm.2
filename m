@@ -4,123 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F95D12694
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:42:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0221DD12691
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:55:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EE866B007B; Wed,  3 Dec 2025 04:42:34 -0500 (EST)
+	id 33B086B0030; Wed,  3 Dec 2025 04:55:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C6426B008C; Wed,  3 Dec 2025 04:42:34 -0500 (EST)
+	id 2EBE56B0032; Wed,  3 Dec 2025 04:55:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DF0F6B0093; Wed,  3 Dec 2025 04:42:34 -0500 (EST)
+	id 1DAB76B0088; Wed,  3 Dec 2025 04:55:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7C76B007B
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:42:34 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F32ABC059B
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:42:33 +0000 (UTC)
-X-FDA: 84177669786.08.07A2B68
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CE6FCC0010
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:42:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NPVzaN8+;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 086126B0030
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:55:13 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 585BE13301C
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:55:09 +0000 (UTC)
+X-FDA: 84177701538.20.90F2EB3
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D38B74000E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:55:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764754952;
+	s=arc-20220608; t=1764755707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boQ69Ybh1wYDqumvtIviIzfcc3zlXtCv/CYxGlxCowA=;
-	b=t3hoSVlGHSNN27ddZ7ObKvNsl/qawa7/QyefEz2oTuhLsmsyt4TvMx+n870bgV2bcyIRuA
-	gisJ46AfJzz0t98z+8WgZyiRFQluBRGi3VqPjYabG70fcYNC7PF9b+SYUsp0TaKw75CrbF
-	c9iST4HZ8jXeUu8cA82zg8KRhCO8/wU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764754952; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=j2ucVbBRXJ5rVxE1BXZ1DIsnMyjNWnWmSg/imk14x18=;
+	b=1oTx73YGZWBZYYLY5yKTQAulchSGgiJIxgJ+KkEBhcDDB2gihWUXmkmNvRz8CNjNz04erO
+	zGFwG50pmRo+2upwPY1X7I7Id/+id8PPXnQWJmLv0fC9p2OANWnfYwW2ytHQ8F/L6d2ZaU
+	5FgXLSNR+OUp96VHgCOnp+06EX+huB0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764755707; a=rsa-sha256;
 	cv=none;
-	b=6R5631yYEDQ0a7dqHu4qBmieP7ATVkSm+PKVO/aD12JQnkTKSYAbEPEI4lSc6EfiFknjkk
-	cH2yxGB9hsKXsb2+YLacp8PXgY2WZ/nE1DaLvdEQSZHhqF8F9ev8mBCh7ty5+jrshRPhWG
-	7WO/OFul5k/C+d9MP1VAWMbu2qBQEME=
+	b=YNNg7tZYivLewks8R0dhjWTIANHomkaUG/2gB+srTeru/2aNV9MUj2MIMF31eCYplFjl0K
+	/G5xfr6kpo7L3FwW5PNo0QiXjCIyrygLU95WITfPtUz6IQ6Xc7emQV/MgN4INXPR9kcGWi
+	Rw1JI9u2SgJPqB+bz1sXWyhuaPWWRBY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NPVzaN8+;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b739ef3f739so460628166b.1
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:42:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1764754950; x=1765359750; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=boQ69Ybh1wYDqumvtIviIzfcc3zlXtCv/CYxGlxCowA=;
-        b=NPVzaN8+JX6VW+sp99Yf+azLlM9884WoMaZ0N5NR15aJ+wpboOf3Vj7LZ3PJ/uhh9r
-         InxMdZYKe+ARuQd0brwEekIaZUNuJPB4e/44q03UCk4U7O7zX7X9I1PSq/nrjxXhxWQ6
-         LNvutobCbUjv0njK7JKiOwCcohXyPGCt7Rq1Q92tgV0rCe+oEvlxL1FEuZfcPzJGW2uh
-         dCLPliduiUT/+p/+/ptaJKhqASF6p+h6nCHw13UEgqiJun4PbRTPtD3ZsQz9PlSZ0F0O
-         pY5kdNFXSyPSQzd5l905Uc4AkOMglXMo/d76NEIz9NeljCvnuOiOWSOGWVR/Pkwp3WSm
-         PWIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764754950; x=1765359750;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=boQ69Ybh1wYDqumvtIviIzfcc3zlXtCv/CYxGlxCowA=;
-        b=d7so6cuc1Ig3cEd0VPHIOBwkxGtnX0ofC5QO+BITEf4EA84dwZ2mHl4RlGme8MYWhq
-         P2JXDZdLvid0/Af17YyaA22Lpch6lLO/vj1W5ruO1H3iJ9w2+dyu6Tr24oxsGtivbzyQ
-         D98zr4NwgxGw5Q9c3JbZsU3tUoJfX8ENdMVccxuUAH5YofQ9mdYqSXE1+UqsDV93/8W+
-         SB8iV2fJtEnzjfS+QDa7umH9NL6ER0wgpj86HVDecuf+70W05viCGO2GLcujb9h5ttKv
-         KuvdCd8mfGABF2RZYesxO22DTi2lpga7TgswNzBhLM/BK/AHf+w+7WR+rkqmpvh+60nA
-         kogQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWI6TEfLHFwk9BvHUXSIVe7OpfvGRzKjhtESQipYnGPnHmnD0wHJqeWNL4ANP6NhPQD47335BPnKA==@kvack.org
-X-Gm-Message-State: AOJu0YxAT+uCbvr/TaCyhKd3uvSbFkZVygk2uDyiCr0mv8HjK/yTE8IQ
-	x2EIxInApeHep9nsH+iOddI95aHr7e0lKOPKO0oXLETHh+lfKa4CSl2mj1oTN1m2DSE=
-X-Gm-Gg: ASbGnctkd8FOf1dPijU3/vIrwrSDhoSfoKG1VEP5qzZhbj3OaCfNhb2yhYEbzzHu3Z0
-	UDSbO7CJJbP/3dnRcoyaDP25qWEbqzuEeiPf41lu8iyfmjO521ReGI/d9LxNZdgroQqDGR1VgZK
-	iAqkEjfHbHka8FnIr9T4fDfUcRWA5qu983Zc3Dq8KXs1C6U71p9NHFnJnk6h+Ofx5HNwRPYPxvM
-	04iObBTsKY2BgFbJJenY/97aJwq68r20zK9QcxudTq+jcl5odP9ZApib4FDJLSfxeKSVZRZ2z53
-	kZVkLhJxMfXjhto7/lwsjYvhlV1cetynnPtM5KKeU+fdYZ0L/LdepXa5VeFqP0rpgkENuuSlmb7
-	a0O12WxqUreH0GP1XezxAtEAdLHU0ixrllCzS/rXGScoTIEz6uDYkqBcf80Dz0ZGOtFT1EEAdo+
-	QjeJBAoh/KFCAFEWYLJg2ARgD4
-X-Google-Smtp-Source: AGHT+IHcwn95HVY/NChXlCfMvTjFUudFZ0VlJry9IHn85kRDo7Eua7qdhWEANQT1O7oNQyl1uYTssA==
-X-Received: by 2002:a17:907:3f96:b0:b79:b6c9:516c with SMTP id a640c23a62f3a-b79dc51b552mr181031766b.30.1764754950171;
-        Wed, 03 Dec 2025 01:42:30 -0800 (PST)
-Received: from localhost (109-81-89-155.rct.o2.cz. [109.81.89.155])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f4d533f2sm1749804166b.0.2025.12.03.01.42.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 01:42:29 -0800 (PST)
-Date: Wed, 3 Dec 2025 10:42:28 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Gregory Price <gourry@gourry.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
-	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Oscar Salvador <OSalvador@suse.com>
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-Message-ID: <aTAGBPuS_iUAWNKO@tiehlicka>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <aS_0bgCs2qE0y1bJ@tiehlicka>
- <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
- <aS_4E2H5aJmSvWF7@tiehlicka>
- <aS_8BgwR3R_geayy@gourry-fedora-PF4VCD3F>
- <8b89bb59-6b6a-4a79-a571-e97b9ae5287f@kernel.org>
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dLtKX4l8DzYQv49
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:54:56 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id D255A1A1943
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:54:59 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP4 (Coremail) with SMTP id gCh0CgC34Z7nCDBpCm_KAQ--.24312S2;
+	Wed, 03 Dec 2025 17:54:59 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com,
+	yuzhao@google.com,
+	jaewon31.kim@samsung.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huawei.com
+Subject: [PATCH -next] mm: vmscan: correct nr_requested tracing in scan_folios
+Date: Wed,  3 Dec 2025 09:40:02 +0000
+Message-Id: <20251203094002.1745458-1-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8b89bb59-6b6a-4a79-a571-e97b9ae5287f@kernel.org>
-X-Rspamd-Queue-Id: CE6FCC0010
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgC34Z7nCDBpCm_KAQ--.24312S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF15WFyfZFWxXFy8uw4xtFb_yoW8Ww17pa
+	yfur1xGFWfXr4aga4rZwn5Xa17tF42ya47GryYqr1xZ3s3Wa40k345Gr1UX3yxGr1kXryr
+	XasrKFnag3yDtFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
+	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a
+	6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
+	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
+	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
+	xUOBMKDUUUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Queue-Id: D38B74000E
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: mzksh9nsoidf6cnj3mmpx1y6mnmieik8
-X-HE-Tag: 1764754951-106314
-X-HE-Meta: U2FsdGVkX1/qRpbSRZdXnquUqKNA1wlLWtgjkIhyfFD2uFrcNiYMuN/5trY7wxO2dvCKArib8RpkWRcg1FhGHwdk+aQpjInw0JTq8KZbabLcaxzLD5yzW21W0CM9R2AhHShIBquzaEfMoKQYLqcC+BI1OrrG6hKO/wQEaQpC32d+oiXyJlQvag3eFg/3CdXdqcW/XELspUy7K7VEh03BWa5RyuqgwixQSLfsrUXXklgqxvjAHULD+ZwPwkDifo1sZqt3qcYua7IPHDWfDma7GdvTMbngpt9fY3fgMA7HGb0bEDIQoiqeCcqxI0MbhB6lautfesbRmDCfxipmzT3WITeo3Hu/JFRWK07xm1cnyo0W7TxO55H8sZNEukJeW+GRBxn9JToY/Ez9hFoeESgSV8/Ky/drAv0G9ZIjRwSuBkM4m95Gla1GuDKMmY3PRj6Xx9t0KSAC35LD+PXRaHcGsZro3yeI/y4pjwX/T06Qw3xHD1y/rLPiXfy7LqhyzOVRiJjoLYzP8StYVUuPockyG1jDEBPUek4XcUlOvSsDiv/ZkG2ayW0EOfRUwCfObdAY6N6nGOiDqvq01XkWIwHkatMROltZI7KzXxQmVeTWD1xAPWPKAfbZ8Oj9vpjX042Eujlnl/lM3mfhd0toubZpjBpoFgcvXRLTDUip+nv79P+eelGShMDu2UrHr3x1YpGVrXkzOH6k8GpuydSp8lF+xxqk4hAeKvVuA73oRUBCH6fdQMyU8ybeUPY1QzQV84D5neXFRKdB5HxwRYroDulv8wk3obkOvGirMwDlAw2D47UbSEeDgxnGXzNhiRW6h71DgAc9G65ZK6AlnhAE2B1Jmd2l376N3AAebeoDBqRbdBr7dFq0SnVRKVKrzv7orcg2w0JPV5kMal3L5a45lbxQc9bQ6Wh5NoS2CvEVTHQeA5t4Jp/GZQ93kY2qiSW80V9Llinaf7Yd1NQ9Ehc+Jbu
- 40N+bpB9
- TZ5FDfn8EP/T7JOn5bxXSgftsBmIQgUkWtDboy2BM1OKfiQOUQ5kiKn247fqgwV47hRfcLmVuC8UCkPkmZYvuUt7T4boUOoeigDl2a0+++9AznMH2D7BrGmXV9W5+VIBcs14+IIisPRklWbCKMsXkX8YSvPwQMRHQSvrW29EJVJMhO9CA3ZDvyPjJTYVMPWVWSRWScHRqJBwOZRPV6/x+Fr6qYUZT3guQ+ZKPHaau4JHvVd/PX2r9tg0ng8UWLdoBKhSmlO69yhx/RFQSTUaWgzV//uwJtW8FgyVbrC6zfYA/66HDZSeYgD+h/r03TgqZPVMbFcQTZCiVoPmzxLbaf19ozvkh0gNztJnwZo63xOEEYk59DZ3imPp8Z4+a0Vsyxyt2FIYynCedj/eLTcvBDkkJeQ==
+X-Stat-Signature: 56h879s9tnjeza3kg8f7pq69kaap4xmo
+X-HE-Tag: 1764755704-22664
+X-HE-Meta: U2FsdGVkX18SwSKiqEyhikTNMX+Xf72d+RjSWsXixE1SdoBHvbLf3fQ6n4BmlfliHiN2DWfJsDJ0jvJj1DSLDQQxTpQBYwM4EVjM3VyLkGy+svDp9Kz3nVFjbDG2fXqcIteBYAdxDAMs8rpvZ8xgPolSeiysvC1r+dkXwN55ke4v4f/1+EkPBzRjp30eaQRrxH8l3G4X8FMOKTo4SVoaZaR5YI+iG7gCBC+DgO5H7wYOedcVWPfJWODlJlB2ZXwLLHr29StrizYIcfd+DTKZC6tsfdvzGvR8uDDTouWzMuoX7Tp5UoOZtCvFBl5QthDBz6cHW9cQQc5ATSk3PSlOoFZG4K4lQtRo0YuHrb/pFHAS1CfJwQ9z3uZ9WdcPF6cHh2av3UNs9Ze3TUG1iuSP/2yHTTXLY7eIfewDj4tLVwbN/jU5xBBzyza5pOhms8ssjwYw7mp0ovvpzwh2vq13VpntSbUVtYJmkOJO7RifzYdqjM+wseZD0kiQBuIjFJ7Y8hxqhHjpl+dR3+G1fSxWmTzievun8o/EkE4NYyY/z3xX+TaA+a5t9qOvBmLfWT8/3N8sBNCEtrmPpgt6W4GWuCWdjRtSF/NsHyYSZZROAtyzgbEjk4e7zIYfVOmxcTrhop4YtZDnfCqQRfr8s7LJL1GTuTuBc7ZN1DBcgzhVTM+JL8m9alQaH+IOSRRprEqzbEosoDEuuK5WAoAPAZc/AaRHjcEOYH6gid7nvWUPzlwCl0MJcMM928XkO31plWmoBmGHqH+tsveFX9EyGjMglFleAM+jlOKyXzHV5aeHbtDmXjRSFO6fcU+RT7MgTNWRZO7OTIpHl4RkS1kARtD46LB3h4yXuomYh1eXSRIG3im24n7o9Jho/ThtOofEIfAgEeCmTwnZWbBJ88FMY6SlKR45f3gTXOpJe3cOIQTEe6AyLWxuWOywuVzvaxhr5Iw3k2tA3I5G6aNIyCOzc1B
+ 69IQ/zts
+ wkyK+Q+bdwUfJ8aFAFnZS5jJTNeDRWEThU+FwRyIRLs3TMFwEdxrdwqxXz+Ljtg3rTK0GetnOncv2D2Z4xHN89lFhW4CHr/PcUNmAYMtr9LijIH75oeOEItzDassmVNQrJlWyUXvDzzmTkLY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,71 +111,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 03-12-25 10:15:04, David Hildenbrand (Red Hat) wrote:
-> On 12/3/25 09:59, Gregory Price wrote:
-> > On Wed, Dec 03, 2025 at 09:42:59AM +0100, Michal Hocko wrote:
-> > > On Wed 03-12-25 03:35:51, Gregory Price wrote:
-> > > > 		if (!ret) {
-> > > > 			/*
-> > > > 			 * TODO: fatal migration failures should bail
-> > > > 			 * out
-> > > > 			 */
-> > > > 			do_migrate_range(pfn, end_pfn);
-> > > > 		}
-> > > > 
-> > > > Maybe it's time to implement the bail out?
-> > > 
-> > > That would be great but can we tell transient from permanent migration
-> > > failures? Maybe long term pins could be treated as permanent failure.
-> > > 
-> > 
-> > I see deep in migration code `migrate_pages_batch()` we would return
-> > "Some other failure" as fatal:
-> > 
-> > 	switch(rc) {
-> > 	case -ENOMEM:
-> > 		...
-> > 		/* Note: some long-term pin handing is done here */
-> > 		break;
-> > 	case -EAGAIN:
-> > 		...
-> > 		break;
-> > 	case 0:
-> > 		...
-> > 		list_move_tail(&folio->lru, &unmap_folios);
-> > 		list_add_tail(&dst->lru, &dst_folios);
-> > 		break;
-> > 	default:
-> > 		/*
-> > 		 * Permanent failure (-EBUSY, etc.):
-> > 		 * unlike -EAGAIN case, the failed folio is
-> > 		 * removed from migration folio list and not
-> > 		 * retried in the next outer loop.
-> > 		 */
-> > 		nr_failed++;
-> > 		stats->nr_thp_failed += is_thp;
-> > 		stats->nr_failed_pages += nr_pages;
-> > 		break;
-> > 	}
-> > 
-> > So at a minimum we could at least check for !(ENOMEM,EAGAIN) I suppose?
-> > 
-> > It's unclear to me based on this code here how longerm pinning would
-> > return.  Maybe David knows.
-> 
-> I would assume that additional references will always result in -EAGAIN.
-> Remember that we cannot distinguish short-term pins from long-term pins.
-> 
-> We should never have longterm-pins on ZONE_MOVABLE, unless something broke
-> that contract and needs to be fixed.
+From: Chen Ridong <chenridong@huawei.com>
 
-Right. But what should the hotplug code do under that condition. Loop
-for ever or fail reporting the broken contract? I would lean towards the
-latter. We have never promised that offlining will not fail ever for
-movable zones. We just guarantee that the operation is resistant against
-recovarable failures.
+When enabling vmscan tracing, it is observed that nr_requested is always
+4096, which is confusing.
 
+        mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+        mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+        mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+        mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+        mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+        mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+        mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+
+This is because it prints MAX_LRU_BATCH, which is meaningless as it's a
+constant. To fix this, modify it to print nr_to_scan as isolate_lru_folios
+does.
+
+Fixes: 8c2214fc9a47 ("mm: multi-gen LRU: reuse some legacy trace events")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+---
+ mm/vmscan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index fddd168a9737..8cfafd50a7a8 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4601,7 +4601,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	count_memcg_events(memcg, item, isolated);
+ 	count_memcg_events(memcg, PGREFILL, sorted);
+ 	__count_vm_events(PGSCAN_ANON + type, isolated);
+-	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, MAX_LRU_BATCH,
++	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+ 				scanned, skipped, isolated,
+ 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+ 	if (type == LRU_GEN_FILE)
 -- 
-Michal Hocko
-SUSE Labs
+2.34.1
+
 
