@@ -4,125 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6511ED12D6E
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 14:36:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF563D12D6D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 14:46:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFEBF6B0012; Wed,  3 Dec 2025 09:36:22 -0500 (EST)
+	id 38B1E6B000E; Wed,  3 Dec 2025 09:46:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD5A76B0023; Wed,  3 Dec 2025 09:36:22 -0500 (EST)
+	id 362DA6B0022; Wed,  3 Dec 2025 09:46:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEC0D6B0024; Wed,  3 Dec 2025 09:36:22 -0500 (EST)
+	id 251886B0023; Wed,  3 Dec 2025 09:46:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ECC06B0012
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:36:22 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51A1C16060A
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:36:22 +0000 (UTC)
-X-FDA: 84178410204.22.CFC0204
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4030B14000E
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:36:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 102196B000E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:46:30 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A58F2C04E5
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:46:29 +0000 (UTC)
+X-FDA: 84178435698.12.EA310BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 90A9E14000A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:46:27 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XzfmbaTJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=meskB6cU;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764772580;
+	s=arc-20220608; t=1764773187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WqZz+UdQZ7oDFGWPY3pfq+b8hIScIuAU1EHuxuuGOkM=;
-	b=jieHEZOzhB9xAHNz/XoKWNVJpNHbHQw3Q8+o4DH+5qrWYi9Z4raIb3iKYa0VTX06SzufAq
-	9eB7qCGds6FuuALOLpl1gvONtN+wWVHXYtFEU7bfMQlIxhiXpEGRs2osPJNSDRlGLzd71R
-	FIkQRml7hDoVjy+lYFMkr1PkX2xzEEo=
+	bh=WEFfvb/y82nxmbudkZ/4gYREH2nnmtIg5g8bcae0O9Y=;
+	b=UNzdQlX/uGonZkvkw6aiK6a2sPR9JXmUryTiHcNwsaYsIUsmUyNjjJv4M0P8Mb+HK9ziMw
+	oGxF0KOi4CJDmWkAd/UOsdskLNMxpusYT2ciz2aCk42tVNScXaBi6HXcE9ZOknmyBUhMxI
+	K9AyENi2lN11TQDeSAThOgA4Elp35/0=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XzfmbaTJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764772580; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=meskB6cU;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764773187; a=rsa-sha256;
 	cv=none;
-	b=inIoqMxKHF1zGSocS+pXwHCbTFbabmTgA+e4MD5VRp4Nd6fhcaUceelYEA99Gkbny0G/g9
-	x0U3KSHGqPd0gYM03yqy+l6cRz/qjxGaYawUTG2KBiY0r/ezTVkg8pFmWhfoy7D4v0iCum
-	MQdRgbTPp6iA0CXI6cZ6QbSSe04Q+mk=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b73b24f1784so34310266b.0
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 06:36:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764772578; x=1765377378; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WqZz+UdQZ7oDFGWPY3pfq+b8hIScIuAU1EHuxuuGOkM=;
-        b=XzfmbaTJuA0uXhOZi5oFgqf4nqudTR4xvH8ECD8rFvNZqGixoS+fRH4XXjDjyW+H83
-         UweR8RVbgc8lV1SgrDOqdLYFba+82VQrBVh0Umie3JYUnQA38j9xoTzVzcohVJChF5jz
-         5WdfpPvj1vaHSjlc5DiHbnL+je1GQ9uZbfopZm+qYsibDVMfRQUdwoER83qq4my7SmiF
-         Z4DnuVhkjcHlPKdeUoMPV9Lr6kRmLJEgIUBxde44Ryzj7q/yJp3BZOM2X+n2YFK3SW+m
-         HK05CSM16sqH2KKsWcxIdNO7VLDIfoSLd8A06LCzchi4RXTssGZbQGSHJBn4w4+P+Ols
-         Lnrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764772578; x=1765377378;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WqZz+UdQZ7oDFGWPY3pfq+b8hIScIuAU1EHuxuuGOkM=;
-        b=nqwQ9CDYRB008bfmM/5LdU+oZ05iq+4Wxtfy7lNNUmU8wVMBMYANxYxitTJfrtaVWE
-         4pFNkDnYuZaflIK2WQwy1w/LMhYQVXuAJNd89dmNqscMk/evcosNZduKUi1rIyl4Z6lU
-         TJmrZR1qw7/FUFX97H1zcftVrASeM7jFfl9unmH4CoYAwN5PhC5lweWPTTxCRKloPc2O
-         68LjiSEGcI5V2mAHuGQj3uJeT2N5MxL7J/xaaueBqCfA9q/E3oOcJovUn9WAjWgSNsMM
-         psUedx3ZRlbu0aViK6zCMZGBQvk6JSpLaF9LfzyuNguWmpz6jly8zxDnuIIYZxxaGXkb
-         Doow==
-X-Forwarded-Encrypted: i=1; AJvYcCV+07mbwzusNPW7dtNKJuXpqv+O7cmBxH/mNx7HfpS0Sn9Qs120XHAKFSqa6/1EqyornlOoLhTDZg==@kvack.org
-X-Gm-Message-State: AOJu0YyAZ8DuBOUR+azl3JYCD0xUxU28lt5tnGekJs+zm7+QZDqMZ9TT
-	cMykDZxoO4v3i/wVOqsYE7ybkYw5bgsX27xYrctvK2efOS17GIngSEaQ
-X-Gm-Gg: ASbGncvv6bh/bcqBQw2TNknjvVlowc3zNthfjHCu5bMv9OhxceUgEgkT+asQYOfKNLB
-	DyneFQDV/X6KHMrLbWqFvvyzObOC1TqZbKTpxrSU2x42Vm2znsZz9oYXqKzpGiA/KVNHdpmeK9S
-	9DVWET1zcqnLFpACJxfZfSLk5tCqqltdULJHSCF5LxgGzyZa+OtBVahC232Qs9L3FsA6bdSkUG5
-	h2kL8GxhTbU82TbKQ59YaWLCqvFJydMzUAKPYYkIkXoOSI1cmY4gP4REmEFNRp0605DYqC1vwvv
-	dcy6WS86MjFkLo+hBcb/PowJLcHlUbK9NsKIG5fd/PZd99AIZVdU485kT5wf017Yk4iO3TnDgXZ
-	gEaHhkHLdt/EFt7omMLmd0py4VyGhAo9HVEP9/KiqTqFeNZfZeGJpRiZn1CCbBU7HWjn7SLeeLG
-	eKYamjUyANJJ29YFvw1Ux3+ldkkwIRm4AsdgxV7k/8I0P5SS2ausRxP/lKp7bDziGD9tU=
-X-Google-Smtp-Source: AGHT+IEbSuoxuxIiiYavA9kyt0Y9xc37GOyuFjuL5z6ypyq1o/k1KWV6Pc/twF0cxMdezGXnX1EIXg==
-X-Received: by 2002:a17:907:97c1:b0:b73:1aba:2ebf with SMTP id a640c23a62f3a-b79d611ec22mr349376166b.2.1764772578287;
-        Wed, 03 Dec 2025 06:36:18 -0800 (PST)
-Received: from f (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f51c8393sm1811480366b.31.2025.12.03.06.36.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 06:36:17 -0800 (PST)
-Date: Wed, 3 Dec 2025 15:36:08 +0100
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Gabriel Krisman Bertazi <krisman@suse.de>
-Cc: Jan Kara <jack@suse.cz>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
- single-threaded tasks
-Message-ID: <6vss7walhjfjmgau5sytf5b3lyjadmfi4seh6amxlthl3sig3b@dpbuhz6ds26y>
-References: <20251127233635.4170047-1-krisman@suse.de>
- <f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
- <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
- <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com>
- <877bv6i5ts.fsf@mailhost.krisman.be>
- <CAGudoHFZhrNwM8bnkFUkad4x_ibZZqbax_psF7CX_SrFQprJbw@mail.gmail.com>
- <CAGudoHGYC=TdLfzQ0wW5NOrZh1Xy9aSHEYiMLqv_ekX5f52M7g@mail.gmail.com>
+	b=Wevo4BExsqrvE3WrTp8rGsr7zefTD28TVVSO36bxFo6MsR1ytF1g7UFKF0Ff39eXk8KGUW
+	37sxyQEd79h2gkhIw6WYgJQk3jXJOeSGYXtSDSpQD4T9RytpRjiacXOBi2s8PG+AZ43Wl4
+	rhdIrbLyVq/K+t2uJ29uJYnlS4DPVe8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 52387438C0;
+	Wed,  3 Dec 2025 14:46:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72D4C4AF09;
+	Wed,  3 Dec 2025 14:46:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764773186;
+	bh=jM/ow1A9leA7Y9bLZ+XmYp9O4P74p8od6dKc69m+yVg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=meskB6cU1n1VE+PIMLR/sLS4SpNTq+aY/SdiWd8UYCXrunUwa+UTSrlkDIOxgBk/I
+	 73HFYFwmmOc8vU51t9m8vQj+rwyd0/mBCvBWdKJyjPKGyYbZHYOTDyfokJhQCdVg83
+	 Oj9VcE640ATvCXvFehLWfejcg+RIQfcdCPvQrw1vY9LRhgm6pxWjnRXjeawrjQ7Jhp
+	 o3z2wFWRSfcF0Abor1FKS7h2YxwB6l8Uq4X8at8QUfxiqcgrR0BjWxlmC4hqHNw56w
+	 U1X6yf9NQ2MB7WRZjCnFBU/PI+4WeL0E3EO8LeGuKgL/vf2qiUcbogv9H9PQFrv4sW
+	 mg2hTNL2EDLmg==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E87B2F4006A;
+	Wed,  3 Dec 2025 09:46:24 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 03 Dec 2025 09:46:24 -0500
+X-ME-Sender: <xms:QE0waS_3NGTJK-w6vURM7E1_c0oPRA2gEmQAkQzacNL0DC18I7dDjg>
+    <xme:QE0waQFwdThNb4Pe9tNpgJCKk7VoecODKSOpsY5fNZ-F5IvEIghG6yPsqzuVCYEbG
+    sM9kCYH1Cw0HRK4s5uRIFWTJ7KHvA5zp48VelPhfUWyj6YkKOiUiW8k>
+X-ME-Received: <xmr:QE0waUCLb4CS2A7weFkB0y6cMGB78HKPFOyqZ3u_WCfpax7Au_p1iTLPVaUo7g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
+    uhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffegnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilh
+    hlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheehqddv
+    keeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrg
+    hmvgdpnhgspghrtghpthhtohepfeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
+    pegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhgusgeskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepphhr
+    shgrmhhprghtsegrmhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtg
+    hkrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhig
+    rdguvghvpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:QE0waeJMZGc9bkDKe62Qoo9fBpsyqxxPkzUp4WeqJtR4ada39767Lw>
+    <xmx:QE0waSwUvDspi7RHZn2deYxPPwH6dDnPAhqKzCq8XNK32YFfDkdy6w>
+    <xmx:QE0waVGE5M2S2aPwbYJuJ-x21zAawCQQqesCN0No31Z8PhrMhShurw>
+    <xmx:QE0wadSyZg_sWFO8lEFq-k1f-C8JJ_0pd70qS0rbx-WXJvbFew_LMQ>
+    <xmx:QE0wabVn1p6LrnsP3Lzve-NVE9Y11l5XvZ3uzU3D6dliGMsA8mXyXqhA>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Dec 2025 09:46:24 -0500 (EST)
+Date: Wed, 3 Dec 2025 14:46:23 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, ardb@kernel.org
+Cc: Borislav Petkov <bp@alien8.de>, "Pratik R. Sampat" <prsampat@amd.com>, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, 
+	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
+	mingo@redhat.com, dave.hansen@linux.intel.com, akpm@linux-foundation.org, 
+	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com, 
+	torvalds@linux-foundation.org
+Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
+Message-ID: <etd7r45wmnuoftpckrzkzithr443ru6akgwqjgzw2vgmzqi7cs@camfecdmef74>
+References: <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
+ <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+ <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
+ <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
+ <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
+ <052d7f47-edb6-4978-bc9a-c7eae469720f@kernel.org>
+ <20251201191036.GEaS3oLBY8PEuE91Ap@fat_crate.local>
+ <dcccdc4b-b7d7-47c4-b1b1-a6c70edb20fa@kernel.org>
+ <20251201202507.GFaS35o7WtLJOM0_jh@fat_crate.local>
+ <420865fb-34cc-43a8-820c-b15b5f24a27c@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGudoHGYC=TdLfzQ0wW5NOrZh1Xy9aSHEYiMLqv_ekX5f52M7g@mail.gmail.com>
+In-Reply-To: <420865fb-34cc-43a8-820c-b15b5f24a27c@kernel.org>
+X-Rspamd-Queue-Id: 90A9E14000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: qa7hbs9dimjp8udcx96eydy8arq4emqs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4030B14000E
-X-Rspamd-Server: rspam11
-X-Stat-Signature: c1yi8ufbnphybr5e41g14kk411c8ruz9
-X-HE-Tag: 1764772579-829412
-X-HE-Meta: U2FsdGVkX18FYkuzEDhMojPs2TbfRwPfu3tDuJQc/7vLM8hk1Uc5dhptTeQVKdRS4BgDjzuS3cZ5q8aGzZQlHbkmKkNjotvc+KWTcCzMRSD/b5XD2TQ6YH3Fpx6dsg6Z3oHtZhaP4sul9xDhbd8lwoAVFU7B3Cl01Ax+Wl6eZfUdcmwTykkGe8Vin+Hn6Mz/5rlTGjuL/p/R9tRjZH4Q7Yjy2vpBCNDvGv8Q8LlOXqthE6EyD1UtwwOUVaTCfnsDeHhUYxbxV60Y5J6ESXlqOpxRVbBitsNlfeQDRsFEyl1vxO6BPRzBgnhbJmGVdf1IENro+fEd2cUhBRs6p5vd2QDF1rtJE1kJsOZ0FgacP0ngiu/ndmt5Cseihyl2zQGP5IBi8tpSkvxvpkR5n7fggYnZc1b3wLhavEyIE+YcsG6zCfLgaqZ1xMmhPc6FufIzCrLdIjvikVMBGwN5tbKL/hD3TwsEt2jrvkidNUuP3u1N6jsKgdqjDxnh2CR6NqOZH8KTh4Piz3c1GZePAWolCXkEyz2cMZ+XPRcfjvKpzMlVANVn/SnRpevxg79JscShnb2GayvlQacgFBUqaj0eds9sI+uKrkfMQ70hkpwtXYY+74qd81ug7kWItY5VGtdwIfzmyXtT2D+Zj7WgIfMYrdplPJiFRwZ6c+rgIEP8Hjk7Y5vwuEcyI8Ly99oWVy/CIB25KVo5njDcQtsuZEX0jOLWiVeGwO1Ksa/VOFfvIMog1b6mdNb5TaQN+pt2j17pvcDbnzvS3Q+rcD+60LRvXSHuL1mUmhGd6pbfNlneKt08tJhtZ5cCzlUx7A5X7tPuhpkfthIb2X3hBmjnobIcpa7SmhiUDM1NuuJgLbN+3+8GGUBriURq9D/oqf1lS6zg63rTQu0qXPlH1hj5nka3wMNmUza8cUVnlX4LaTAC6dGLp193wvf+G80ABJ5jqPJs5KbN8Ujn/M7afMonCap
- 9lF1J1ti
- tvz+I4OfWZ4yS8CbvLTYYLveNZZY8rFT7x+mnIGZi9nnfAkOU9uiS+ZmjsQ85pihe0BmGV5tR+0aDFkgS0wBgmV0rBAyr6JamMuhVwvluVdSlsYBsqmL0ZzW33g5AA7aYkybCpM5CSgpym2J3ewQbgbzp/9LJ0r6liNYyMinXs/tP6A6YtatXKS1QYTLVVd/nh50R+nt/OM8InGA4hYo9GaOMWbu9kKhkBks7p0ZQAdM4zcWLoW+xFbwVHke54ae0qnwpd3sscFmuAL6kex0JOB4OPfCh2c+CjFqm8XVtLTFWzA4gSkH8C1xjSljbkdyoWaipEgk6aPGNFwxnCxyk9VfQDqePgTvTU6E7biP6WoluOfIynAm0T17IUBeV5QqBCK7wCUzv5Nv07ZMlqhgYGcClc1lt8Zi3dkJjJpL91X7vZaVZ4f3SsYEbY8CuuaqxhZf6cwdqbjTHo59HnPwZfgm7dyPV1iNg522NigJLe5Vrt1ub12Reg3Tanla0Fgt5Dh63QghxvLiwfFpivZD8a1erdhq2iXks2c1eRasNzCKmXuY4Wrhwh1MSUg==
+X-HE-Tag: 1764773187-591419
+X-HE-Meta: U2FsdGVkX19RHMmi7BQXRO9EV6ZXS420Ebf+1WkLypH9MlSX75fRJlxU4Eve+anY/FZWcjQQQCyeJWh5mSEuTq/GTXsKa31TithEQEKhp/BHLT/+mwFGrB4vaQdHJ3+EZnzqNX1qX13mSCFzwaiUGYvkE8xggp+CaQhLwgX8lokjttkaBf7X+klNdTRfT0weod8BJw4AGHad9i6ZEd1yJIgrKjkSj/lJ4GwrmWopV2cxWev7O5xKoWiLRhVYvalHo4l0ueoWPc6ZZMJoO/USH4HodTiTu9mwtR6K1UPBWuVB5fGqVpRo6F1Jg0vPH/WyMPUHeSP9S5ecfvEWGBMf5d1T3ylWVkyYsPKmvSesAJJ4tS0KY1MMnBjc9uCwm+pyCAjMf4EN7eHiPmgr3QBClbfrIM90bR0IY+VBIM/eeq62WWIyNNd9gp/gqG4oT3o3YAyEI3j4pW1MbALaMhhFryeJNWTYPJQK/AWTgciAvU/cb8CsAI1DpqBjMdrZCUYiP3ZQ5T++07PQZlDGuEjp7svaeh/xjrqA/2FaQuuxsTBOK1cYs9OXntk38fS/L7ujhiRBHVXyFaVfI++KNr6YOixgR/4v3NhnwkjLzdKtJRa6vbPuWUbZ3OWgThZ2YTinlXgydwvq/fdj14cVWUz+Rp6/kLDTIMd1Eltarbjc0cIKbpOolNodK2hbvHyOZtXaxYbpbZOD7xaCbhxLtiLUwYkQO2PbVb3/U0WqGa1yJRVt8AqSMClWKBf5PBc4YAGDnrffFd8rBFBggyVWr/sfr34akp14+S0ZG5LPI9ND6MwVLrthO3oR9WO/qDf1lOCQYQA4ONGtjgnXTuJFCN1G2wXDEx0NODj5jk2U4rMV+Z7R5c1N3mWgKvrHQvESposIFXLKmHY47faxePDWHQBDPdNjm8EzR90pvf0HOXjkUrUVonCAjePHA0wVGVgyvpXVt7UaQoxHXxr18gZGPPA
+ sGQ67lD2
+ n9dVUG9iGwo8AWb3hdBCbEvFtdv+7YUVO7z7jyTXtIP0+FlFTZ9QSuTaLR2F6GXlYx5fCBE4jxFwqEY1h35gpvuo38b7tA5a6OTtwjqPBC7AibSw16iTra0d8MmwMkgDdzn+KsOCOQsgt8KgVagmt92NflCtUiE5YzI6s6mwN65uBKGc+JY0G8X9k9sEa/ul1Tb+20pWZHMaymFFfhK2ZWrE0FNlSY7M2CkARJevZHE0FKTszz4wtWmEwQ9HfQHAmoXt13afXYyVNFLhG+geErgyKNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,216 +138,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 12:54:34PM +0100, Mateusz Guzik wrote:
-> So I got another idea and it boils down to coalescing cid init with
-> rss checks on exit.
+On Mon, Dec 01, 2025 at 09:36:58PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12/1/25 21:25, Borislav Petkov wrote:
+> > On Mon, Dec 01, 2025 at 09:10:26PM +0100, David Hildenbrand (Red Hat) wrote:
+> > > Just to be clear, I don't think it exist and also I don't think that it
+> > > should exist.
+> > 
+> > By that logic if it doesn't exist and someone sends a patch, I should simply
+> > ignore a review comment about that patch breaking some non-existent ABI and
+> > simply take it.
 > 
- 
-So short version is I implemented a POC and I have the same performance
-for single-threaded processes as your patchset when testing on Sapphire
-Rapids in an 80-way vm.
+> Well, we can always discuss and see if there is a way to not break a
+> specific use case, independent of any ABI stability guarantees.
 
-Caveats:
-- there is a performance bug on the cpu vs rep movsb (see https://lore.kernel.org/all/mwwusvl7jllmck64xczeka42lglmsh7mlthuvmmqlmi5stp3na@raiwozh466wz/), I worked around it like so:
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index e20e25b8b16c..1b538f7bbd89 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -189,6 +189,29 @@ ifeq ($(CONFIG_STACKPROTECTOR),y)
-     endif
- endif
- 
-+ifdef CONFIG_CC_IS_GCC
-+#
-+# Inline memcpy and memset handling policy for gcc.
-+#
-+# For ops of sizes known at compilation time it quickly resorts to issuing rep
-+# movsq and stosq. On most uarchs rep-prefixed ops have a significant startup
-+# latency and it is faster to issue regular stores (even if in loops) to handle
-+# small buffers.
-+#
-+# This of course comes at an expense in terms of i-cache footprint. bloat-o-meter
-+# reported 0.23% increase for enabling these.
-+#
-+# We inline up to 256 bytes, which in the best case issues few movs, in the
-+# worst case creates a 4 * 8 store loop.
-+#
-+# The upper limit was chosen semi-arbitrarily -- uarchs wildly differ between a
-+# threshold past which a rep-prefixed op becomes faster, 256 being the lowest
-+# common denominator. Someone(tm) should revisit this from time to time.
-+#
-+KBUILD_CFLAGS += -mmemcpy-strategy=unrolled_loop:256:noalign,libcall:-1:noalign
-+KBUILD_CFLAGS += -mmemset-strategy=unrolled_loop:256:noalign,libcall:-1:noalign
-+endif
-+
- #
- # If the function graph tracer is used with mcount instead of fentry,
- # '-maccumulate-outgoing-args' is needed to prevent a GCC bug
+There is also the #1 Kernel Rule: "we do not break users."
 
-- qemu version i'm saddled with does not pass FSRS to the guest, thus:
-diff --git a/arch/x86/lib/memset_64.S b/arch/x86/lib/memset_64.S
-index fb5a03cf5ab7..a692bb4cece4 100644
---- a/arch/x86/lib/memset_64.S
-+++ b/arch/x86/lib/memset_64.S
-@@ -30,7 +30,7 @@
-  * which the compiler could/should do much better anyway.
-  */
- SYM_TYPED_FUNC_START(__memset)
--       ALTERNATIVE "jmp memset_orig", "", X86_FEATURE_FSRS
-+//     ALTERNATIVE "jmp memset_orig", "", X86_FEATURE_FSRS
- 
-        movq %rdi,%r9
-        movb %sil,%al
+Booting a different version of the kernel is a core functionality of
+kexec. It is widely used to deploy new kernels or revert to older ones.
+Breaking this functionality is a show-stopper for most, if not all,
+hyperscalers.
 
-Baseline commit (+ the 2 above hacks) is the following:
-commit a8ec08bf32595ea4b109e3c7f679d4457d1c58c0
-Merge: ed80cc758b78 48233291461b
-Author: Vlastimil Babka <vbabka@suse.cz>
-Date:   Tue Nov 25 14:38:41 2025 +0100
+This specific change may not be a show-stopper as CoCo deployment is not
+widespread enough to be noticed yet.
 
-    Merge branch 'slab/for-6.19/mempool_alloc_bulk' into slab/for-next
+The notion that nobody promised that you can kexec into a different kernel
+is absurd. It is used everywhere.
 
-This is what the ctor/dtor branch is rebased on. It is missing some of
-the further changes to cid machinery in upstream, but they don't
-fundamentally mess with the core idea of the patch (pcpu memory is still
-allocated on mm creation and it is being zeroed) so I did not bother
-rebasing -- end perf will be the same.
+> > 
+> > Well, it certainly works for me.
+> > 
+> > Unless you folks come-a-runnin' later screaming it broke some use case of
+> > yours.
+> 
+> Heh, not me, but likely some of the CoCo folks regarding this specific use
+> case (kexec in a confidential VM).
+> 
+> > And then we're back to what I've been preaching on this thread from the
+> > very beginning: having a common agreement on what ABI Linux enforces.
+> 
+> Right. Maybe Kiryl knows more about this specific case as he brought up that
+> these structures are versioned.
 
-Benchmark is a static binary executing itself in a loop: http://apollo.backplane.com/DFlyMisc/doexec.c
-    
-$ cc -O2 -o static-doexec doexec.c
-$ taskset --cpu-list 1 ./static-doexec 1
+I am not involved in the deployment of CoCo VMs, but I don't believe it
+is specifically about CoCo or the kexec ABI. I think it is more about
+the boot protocol. Kexec is one way to boot the kernel.
 
-With ctor+dtor+unified walk I'm seeing 2% improvement over the baseline and the same performance as lazy counter.
+Should we consider the EFI configuration tables format as part of the
+boot protocol? I believe the answer is "yes," at least for some of them,
+like LINUX_EFI_INITRD_MEDIA_GUID.
 
-If nobody is willing to productize this I'm going to do it.
+I also think LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID should be considered in
+the same way.
 
-non-production hack below for reference:
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index cb9c6b16c311..f952ec1f59d1 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1439,7 +1439,7 @@ static inline cpumask_t *mm_cidmask(struct mm_struct *mm)
- 	return (struct cpumask *)cid_bitmap;
- }
- 
--static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p)
-+static inline void mm_init_cid_percpu(struct mm_struct *mm, struct task_struct *p)
- {
- 	int i;
- 
-@@ -1457,6 +1457,15 @@ static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p)
- 	cpumask_clear(mm_cidmask(mm));
- }
- 
-+static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p)
-+{
-+	mm->nr_cpus_allowed = p->nr_cpus_allowed;
-+	atomic_set(&mm->max_nr_cid, 0);
-+	raw_spin_lock_init(&mm->cpus_allowed_lock);
-+	cpumask_copy(mm_cpus_allowed(mm), &p->cpus_mask);
-+	cpumask_clear(mm_cidmask(mm));
-+}
-+
- static inline int mm_alloc_cid_noprof(struct mm_struct *mm)
- {
- 	mm->pcpu_cid = alloc_percpu_noprof(struct mm_cid);
-diff --git a/kernel/fork.c b/kernel/fork.c
-index a26319cddc3c..1575db9f0198 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -575,21 +575,46 @@ static inline int mm_alloc_id(struct mm_struct *mm) { return 0; }
- static inline void mm_free_id(struct mm_struct *mm) {}
- #endif /* CONFIG_MM_ID */
- 
-+/*
-+ * pretend this is fully integrated into hotplug support
-+ */
-+__cacheline_aligned_in_smp DEFINE_SEQLOCK(cpu_hotplug_lock);
-+
- static void check_mm(struct mm_struct *mm)
- {
--	int i;
-+	long rss_stat[NR_MM_COUNTERS];
-+	unsigned cpu_seq;
-+	int i, cpu;
- 
- 	BUILD_BUG_ON_MSG(ARRAY_SIZE(resident_page_types) != NR_MM_COUNTERS,
- 			 "Please make sure 'struct resident_page_types[]' is updated as well");
- 
--	for (i = 0; i < NR_MM_COUNTERS; i++) {
--		long x = percpu_counter_sum(&mm->rss_stat[i]);
-+	cpu_seq = read_seqbegin(&cpu_hotplug_lock);
-+	local_irq_disable();
-+	for (i = 0; i < NR_MM_COUNTERS; i++)
-+		rss_stat[i] = mm->rss_stat[i].count;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct mm_cid *pcpu_cid = per_cpu_ptr(mm->pcpu_cid, cpu);
-+
-+		pcpu_cid->cid = MM_CID_UNSET;
-+		pcpu_cid->recent_cid = MM_CID_UNSET;
-+		pcpu_cid->time = 0;
- 
--		if (unlikely(x)) {
-+		for (i = 0; i < NR_MM_COUNTERS; i++)
-+			rss_stat[i] += *per_cpu_ptr(mm->rss_stat[i].counters, cpu);
-+	}
-+	local_irq_enable();
-+	if (read_seqretry(&cpu_hotplug_lock, cpu_seq))
-+		BUG();
-+
-+	for (i = 0; i < NR_MM_COUNTERS; i++) {
-+		if (unlikely(rss_stat[i])) {
- 			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
--				 mm, resident_page_types[i], x,
-+				 mm, resident_page_types[i], rss_stat[i],
- 				 current->comm,
- 				 task_pid_nr(current));
-+			/* XXXBUG: ZERO IT OUT */
- 		}
- 	}
- 
-@@ -2953,10 +2978,19 @@ static int sighand_ctor(void *data)
- static int mm_struct_ctor(void *object)
- {
- 	struct mm_struct *mm = object;
-+	int cpu;
- 
- 	if (mm_alloc_cid(mm))
- 		return -ENOMEM;
- 
-+	for_each_possible_cpu(cpu) {
-+		struct mm_cid *pcpu_cid = per_cpu_ptr(mm->pcpu_cid, cpu);
-+
-+		pcpu_cid->cid = MM_CID_UNSET;
-+		pcpu_cid->recent_cid = MM_CID_UNSET;
-+		pcpu_cid->time = 0;
-+	}
-+
- 	if (percpu_counter_init_many(mm->rss_stat, 0, GFP_KERNEL,
- 				     NR_MM_COUNTERS)) {
- 		mm_destroy_cid(mm);
-diff --git a/mm/percpu.c b/mm/percpu.c
-index 7d036f42b5af..47e23ea90d7b 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1693,7 +1693,7 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
- 
- 	obj_cgroup_put(objcg);
- }
--bool pcpu_charge(void *ptr, size_t size, gfp_t gfp)
-+bool pcpu_charge(void __percpu *ptr, size_t size, gfp_t gfp)
- {
- 	struct obj_cgroup *objcg = NULL;
- 	void *addr;
-@@ -1710,7 +1710,7 @@ bool pcpu_charge(void *ptr, size_t size, gfp_t gfp)
- 	return true;
- }
- 
--void pcpu_uncharge(void *ptr, size_t size)
-+void pcpu_uncharge(void __percpu *ptr, size_t size)
- {
- 	void *addr;
- 	struct pcpu_chunk *chunk;
+Ard, do you have any comments on this?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
