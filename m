@@ -4,178 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD3A7D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5138D1266D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:09:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 150506B0088; Wed,  3 Dec 2025 04:05:48 -0500 (EST)
+	id D65F36B0062; Wed,  3 Dec 2025 04:09:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 128016B0089; Wed,  3 Dec 2025 04:05:48 -0500 (EST)
+	id D3D826B007B; Wed,  3 Dec 2025 04:09:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 016C56B008A; Wed,  3 Dec 2025 04:05:47 -0500 (EST)
+	id C7A5F6B008C; Wed,  3 Dec 2025 04:09:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E0DFE6B0088
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:05:47 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97FB0132F85
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:05:47 +0000 (UTC)
-X-FDA: 84177577134.08.6F9DBBC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5C0001A0013
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:05:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EqByOCv5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pRNfg0NC;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZnkZOsRi;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jn5u6PTh;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id B75F66B0062
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:09:04 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7723CBA376
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:09:04 +0000 (UTC)
+X-FDA: 84177585408.25.F202843
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D125520012
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:09:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mz1okwY4;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764752745;
+	s=arc-20220608; t=1764752942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9i0uZEXfryYmRDOj1tZU5zIDdqToxJZuStlSqSA5Cu4=;
-	b=eUYe0kLoL+5NpQamLn2xHRDj2MuJ9+luMAnQsWdqJLPBwvI0scSFvL+51m8Uuxya6EyYed
-	zEW6jCAbiCgEs8pIqIsKAgJbVdheYXMxxd7Xrp/u3iQNzWz6UWwTjnVb9DVd5GYCGXJ+D7
-	gBHGn/V+VPbPu8Ob452vKAts1Y8RK1M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764752745; a=rsa-sha256;
+	bh=g0Wz6vo/OWMFDPj5WqxbSMUMize9aPvl1lvtkJQdD0I=;
+	b=krqxCQp3VTiNCaQA61MX5W1UfqJE71FhtNdJ886Mg0lLfyWsfAck5K5nf4U71OopUS0FJ+
+	XDy0DARzU6jJHPcqPz2BpZZnJSwcfFgQT2TnciJPO0E1edM7fqPU/lOYPL6TPF48/li61K
+	cxWU1M7qe3b2+pGXeBXAT8GeZg+rxmk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764752942; a=rsa-sha256;
 	cv=none;
-	b=FXxp8Cc9tkA6eXQWBIokeg8qq4ITWpmDdmdUT2SAW4GTwzz/v+62YRN3FngkkCjxel/ZUo
-	a/G2zqSvWifoHqhwqmRQ4pSrIUuX7TML1jgyn63IrFjd0Y0EdDEnHbUOHu5aiRYfuy9Ku8
-	Qnb6zYI0sC5KJSlBROBSnP9pRHToUI4=
+	b=ReRc6GObJSfULl8e5OH26K7Rd/bdzZXXjReYpDh4nQQHh0jZ/Ha1gHAC9vGgcxcABXhSar
+	a8XiP1qBzeF+YjkxyF/fobyjO/UDeTr9VCPel+0rY5dUpFtsnE5gApEsiI7GXm487JtFa/
+	zAXIKu5bDOQEhc+O83Fj9Z/HdLkMjjU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EqByOCv5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pRNfg0NC;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZnkZOsRi;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jn5u6PTh;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 534CB5BD11;
-	Wed,  3 Dec 2025 09:05:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764752743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9i0uZEXfryYmRDOj1tZU5zIDdqToxJZuStlSqSA5Cu4=;
-	b=EqByOCv5f6xy2S5L3nmbUhfHb1PDE9/T2M63l4dNR358xxSx+4cMvQqWBdtYELnVlkx0et
-	xZh4XsitXv/TJFhSnY0bt/bJzosaLFyd1qChRJ8Q0uu1CTNCKtOAqk8FHD2MbVGfQ4S2+b
-	tvZhcaEePRrDw3EksA3FAseZdXC14c8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764752743;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9i0uZEXfryYmRDOj1tZU5zIDdqToxJZuStlSqSA5Cu4=;
-	b=pRNfg0NCClqR+Ks+uF00wQEcqN8zgB1pK4nu2/hFdWLhYfeoWYS9QWNtO/PzvazxMLEfvl
-	aaVQWbWToe3ww7CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764752742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9i0uZEXfryYmRDOj1tZU5zIDdqToxJZuStlSqSA5Cu4=;
-	b=ZnkZOsRicBnc60fjMWdIUpX/KxMGC0G6ddqckLYAkqaqjo1xqTQpPZMljxXKKtN5UITZes
-	/B6BkUcwT2MM7Y2Rv3asaQh9Dr6lTpvX1y3gPP9pAJaQUYK2TR/72ZV//Mx2xeXE5wAvjw
-	gvyA1bBAF8q/u5baMzxjIl5F7fnbvLc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764752742;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9i0uZEXfryYmRDOj1tZU5zIDdqToxJZuStlSqSA5Cu4=;
-	b=jn5u6PTh1tGUmJtSPjtvrIfSBOZnYustDCUnYNpSflvPBy2xcc+kU4TKnc89flxFNmcIb9
-	6e3TPQCYikwfoOBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 247F13EA63;
-	Wed,  3 Dec 2025 09:05:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZUyyB2b9L2nOdwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 03 Dec 2025 09:05:42 +0000
-Message-ID: <acd1a9db-6da6-4168-9493-3e9a920e6ede@suse.cz>
-Date: Wed, 3 Dec 2025 10:05:41 +0100
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mz1okwY4;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F3A160172;
+	Wed,  3 Dec 2025 09:09:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5E5C4CEFB;
+	Wed,  3 Dec 2025 09:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764752942;
+	bh=DGboUdc02G+DpViZWqGDqlr+OdnJvgeqDqzt2njLLJw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mz1okwY43bzv4DlTzIIKufOUolxcKo3ZlDf9oXnl1kBfxRtkyXPKPPB8dmRVvkLpf
+	 +Lm59YXef5cp3XRt5HQ4vjYd89/HqujIOYEW49KRIpAthAMQTFAKjHsvBWun107H2N
+	 CqrYLOn74KV2z6hkqT6S2Lz0mYXwnhWjCSKjDla0/V0TNhSQYzXvpGzRBDekyeKYfx
+	 3FMgFXtSK92YfW6brdHJGMPsffQr/elM8Zjk3iN6MqNDrp2QlZylNNUyC51eVKIlk1
+	 E2USKfQeaNffNCSlkMIl7LWnFQEZCqMXbICtx5pDR51CwlAkTIIK6fD8Wp9DF/zVCy
+	 TtKn60RSOuYmQ==
+Message-ID: <9de2f7e2-a202-499d-8858-6936beb251d9@kernel.org>
+Date: Wed, 3 Dec 2025 10:08:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/slab: introduce kvfree_rcu_barrier_on_cache() for
- cache destruction
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: surenb@google.com, Liam.Howlett@oracle.com, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, urezki@gmail.com,
- sidhartha.kumar@oracle.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
- maple-tree@lists.infradead.org, linux-modules@vger.kernel.org,
- mcgrof@kernel.org, petr.pavlu@suse.com, samitolvanen@google.com,
- atomlin@atomlin.com, lucas.demarchi@intel.com, akpm@linux-foundation.org,
- jonathanh@nvidia.com, stable@vger.kernel.org,
- Daniel Gomez <da.gomez@samsung.com>
-References: <20251202101626.783736-1-harry.yoo@oracle.com>
+Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
+ lock-free
+To: Gregory Price <gourry@gourry.net>
+Cc: Michal Hocko <mhocko@suse.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Aboorva Devarajan <aboorvad@linux.ibm.com>,
+ vbabka@suse.cz, surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Oscar Salvador <OSalvador@suse.com>, Juan Yescas <jyescas@google.com>
+References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
+ <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
+ <aS_0bgCs2qE0y1bJ@tiehlicka> <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
+ <aS_4E2H5aJmSvWF7@tiehlicka>
+ <47a8b4d5-f4d2-4772-b1b2-ee96bc21e742@kernel.org>
+ <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251202101626.783736-1-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <aS_8ndgdVbffPYGN@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C0001A0013
-X-Stat-Signature: cpqfzkkd4gg9a9zigs95j6opjhi1znss
-X-HE-Tag: 1764752745-856309
-X-HE-Meta: U2FsdGVkX19BrFPlQWt3qmP0KDVam04ZwvR9SixnOvey2nNemIy0KgHDqWs9fF1Fukc3rEMBbtXtvmqaywCHH+VNGnIHb1nEVwkI1IYIkJBIiiR4OFug1Z3HV24dyqv38+QbHVlTW/5oCXYGMotz1X8DUzBaD9b9UtV06EVY6aaxhPuDLaK0517zGVvuK5hVrOSW+w2Ui46sStE5BQ6JhmjNCQx5HVOA2ZPNl5AHxu3R+AXwQHtaY9NnWi1NJGzGFLGhX1qrQ6MpBhT404xeMy8ym3crbccJelJoaA5KnY/Z6Z4z6QbLDTAqmawleSniTCAWOu0/drlLOZxTk3sGZf4KKLsPD4oDQ86ODKWZ/nhLhJrObIEzrIldAZ3619zILKES0zdD+BuAaZeZPRHaMlylIPDjPX5TkaSDYNnKaQdFmqR4FiHQK9UlJya0+p11ygW5TlxG1a9NBElgXWMgUzxbWRAhYLqG1Wz7XOGm6gkt9prq46GzJUg1iKXq6YFpKR2Sjt6etupHtluxCeD1/Q5koR1rPMdkke2YQ41a5CEssR4JX0ZHUObmW+Kc7cKM1lOYyHJT+9aGT6D1o779sPTzlq2FTSi3NrsSurc8r0TTAyDmscEW8Atzmz+TCN0ywxzE5Cu+j5X08riOq6UMjw3fUweleMjxDmX3lBii9mRwIH1r4IcLDy0J9Heg/OoBzk0aBfN0QGSKx58km0wxA1skwSaWTNIYRW2/6Q5W0afcObRkZmszpyEVs1nol7XE5hCEnQyBOib2iTn2nVPRX4fO+9OryfqYuMxmRQ92rd+RbqMY7M2kl0tHRS+lTk9cNSraCup1WrEdnSjL4uc4mPXd7Jo+2d9fAxFNETAgWsCeKtXt/2+HsyZp03EeAQgUXFGnDjJo+qDBqe+p7r2Jd9JspAQm1/ASRTh7I8BLA8SvH+/w9bhJxrKaAjpNOFFCtW0yZRuoaxlc/og46bJ
- NwvapYNi
- xNGcmZk7RbmG5YZo=
+X-Rspamd-Queue-Id: D125520012
+X-Stat-Signature: u568bbfktn8xewuyfssfejxokpoufitj
+X-HE-Tag: 1764752942-757314
+X-HE-Meta: U2FsdGVkX1/Gr11eF60iGFGY7L8QSfH7g8FKtPW3Rc+d2mvQu7gNiuyK3lfMLv0JFbTMIoSQO9s2o6Ui8FEQLdsT1L07TIm1E8tjZ0nx+P8uFRUXAPVEKEIMLrCZkFnWnpHGtdysnno7XXWDVEMP4gDTVLQyn2j6EsklPLfMwY3kr5i6z86blvhLFoR2kpwYG52297A+tzLlXs0RjNi2FrPsJ95Te/mqsKPlUiP/UtUxL8iGFaczmn7ZvuoCCxszBMxLFRspE9Q77kApjJUfUYOlZ/giIrgdahfqmmVq34O4Fy3+Ym00oU+44iCy8kmIwxyPYR/0+0IDvl0BnR2H+Jtgb5FY6U0iK1pVHahHHB6+UlzVPBRmw6jV92edWj+pQKWSFwmDxjn9xdvGq3XvbbL4eDz4bWnvDKfqsptIcEnQ5y2dkQCvbU67P50gEYQq7FuLraKdg8lMNhJ4tYDyPArQGM9NXZVHDjkWTKNDYhH0XJudT/L6jLrOxRuyfa2k4F0DSuBs+4GHt6a+/p03XbHzgO5KI66t3GTS6pyuMkI9l61o8SBhbMq2f8nLs+D2l/SZ1Ph/1kZSJ6udTbrV/kfLpqNzR9IlMbx227bHj0NK47JvPKH9WRriXpTtCTTW35/XuDPn++BcztJp+MGMcrZF3/o/qOz7xw7MGEzKbJtqg4mTlD4oi3XSz68FqYB5u802iGS/bKLPen4rbmVJyEan2+7wvt7qrSClKJ9t2TzbBgKhxsZMWfa+5n8A+Umdi/FZW2hqkpQI4AvWfL7BOX/MWkjUOPRF3VFVazLxgxivsoWgCIoXmVyx3eagwfGBlV2qE/bd1wSLY/TGKXcB5vnnhD2T9cBzIESf2v/N3t1xMbQhHutLY1tPxTI7huh4JyPEaqgjyRiZwfgqMI+eoz/HgpEkkjwNZEz5oarV1yRZlHmqKb1OAwUj9WQOFVuvLqAlENRNHyL8aUC1/jN
+ OpIoUxOJ
+ 2iJJ46xL0E/5eRDQ5sjxew+QDr97rFN3Zu/6FGocwcrQVmK/EF1o7zaOWZVq01LHFxw8eo0Y0bcgqYxVqGejNzskeRpDHAAfx8vOVIr3PCPqZUcJSKm0o2IoRnnQT3qF8LI+WOYwjBFryRQcBdRGweJV6Do45+n+Uh9gpEH9Bw3mhCTlath9nsWPtDrBYXl10Z+ufZMvHJfc7cGTFXNG0sEyOwGiV/UlQuVaWUTxketXcuJLtixTMlurK4NEtuSkP/moEFBrkTvvyXqtjkgdkMZH4csl3Wp3F5GS4nN2gxTJW6J0XaW038m1N9NaH114OB2jocpSrxXaGFFNzVxL6MJ4DVh45uzGEJvNvaMoE6nGAaUWKQhb55gSLZ8kVO503eOtZJUswo28h2TU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,49 +103,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/2/25 11:16, Harry Yoo wrote:
-> Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
-> caches when a cache is destroyed. This is unnecessary; only the RCU
-> sheaves belonging to the cache being destroyed need to be flushed.
+On 12/3/25 10:02, Gregory Price wrote:
+> On Wed, Dec 03, 2025 at 09:51:52AM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 12/3/25 09:42, Michal Hocko wrote:
+>>>> 		if (!ret) {
+>>>> 			/*
+>>>> 			 * TODO: fatal migration failures should bail
+>>>> 			 * out
+>>>> 			 */
+>>>> 			do_migrate_range(pfn, end_pfn);
+>>>> 		}
+>>>> ...
+>>>>
+>>>> Maybe it's time to implement the bail out?
+>>>
+>>> That would be great but can we tell transient from permanent migration
+>>> failures? Maybe long term pins could be treated as permanent failure.
+>>
+>> Did we try offline a ZONE_MOVABLE block or a ZONE_NORMAL block? In case of
+>> ZONE_MOABLE, bailing out is not really the right thing to do.
+>>
 > 
-> As suggested by Vlastimil Babka, introduce a weaker form of
-> kvfree_rcu_barrier() that operates on a specific slab cache.
-> 
-> Factor out flush_rcu_sheaves_on_cache() from flush_all_rcu_sheaves() and
-> call it from flush_all_rcu_sheaves() and kvfree_rcu_barrier_on_cache().
-> 
-> Call kvfree_rcu_barrier_on_cache() instead of kvfree_rcu_barrier() on
-> cache destruction.
-> 
-> The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
-> 5900X machine (1 socket), by loading slub_kunit module.
-> 
-> Before:
->   Total calls: 19
->   Average latency (us): 18127
->   Total time (us): 344414
-> 
-> After:
->   Total calls: 19
->   Average latency (us): 10066
->   Total time (us): 191264
-> 
-> Two performance regression have been reported:
->   - stress module loader test's runtime increases by 50-60% (Daniel)
->   - internal graphics test's runtime on Tegra23 increases by 35% (Jon)
-> 
-> They are fixed by this change.
-> 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
-> Cc: <stable@vger.kernel.org>
-> Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c9301@suse.cz
-> Reported-and-tested-by: Daniel Gomez <da.gomez@samsung.com>
-> Closes: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org
-> Reported-and-tested-by: Jon Hunter <jonathanh@nvidia.com>
-> Closes: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> My transient failure (although i'm not sure it was actually transient, i
+> killed it and retried after a few minutes and it succeeded immediately)
+> was on a ZONE_MOVABLE block.
 
-Thanks a lot! Added to slab/for-next-fixes
+Okay, so that one should not bail out. Longterm pinnins must never end 
+up on such memory, and if it happens, we have to identify why and fix it.
 
+We have this known problem of "stream of short-term pinnings" that can 
+temporarily turn memory effectively unmovable. Juan will talk about that 
+at LPC [1].
+
+We have another set of problematic cases (vmsplice(), fuse) but I would 
+assume that these are not the cases you are hitting.
+
+So not sure what exact problem you were hitting.
+
+[1] https://lpc.events/event/19/contributions/2144/
+
+> 
+> Kind of suggested to me there was some bad condition the resolved once I
+> took a second to release the lock and try again.
+
+Hard to tell I'm afraid. Do you still have the dump_folio() calls we 
+print when migration fails?
+
+-- 
+Cheers
+
+David
 
