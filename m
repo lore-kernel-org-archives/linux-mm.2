@@ -4,190 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C336D15DAD
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 18:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43A77D15DAD
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 18:19:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 436E76B0023; Wed,  3 Dec 2025 13:10:07 -0500 (EST)
+	id 783C86B000C; Wed,  3 Dec 2025 13:19:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40E646B0028; Wed,  3 Dec 2025 13:10:07 -0500 (EST)
+	id 734146B0029; Wed,  3 Dec 2025 13:19:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FCFA6B0029; Wed,  3 Dec 2025 13:10:07 -0500 (EST)
+	id 6231D6B002A; Wed,  3 Dec 2025 13:19:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7596B0023
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:10:07 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C35E3C071F
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 18:10:06 +0000 (UTC)
-X-FDA: 84178948812.06.220AAC4
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020110.outbound.protection.outlook.com [52.101.195.110])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ED16C12000F
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 18:10:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=j5rZyJJM;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of gary@garyguo.net designates 52.101.195.110 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764785404;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D6966B000C
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 13:19:43 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE15D12E4C
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 18:19:42 +0000 (UTC)
+X-FDA: 84178973004.28.EB76DC5
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D904E180009
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 18:19:40 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=boxBGf6c;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764785981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CexfHDQVtU6Ucrh0kKELVpCwL8tP7Wkn47wKP4rMe5A=;
-	b=prluPHAqFDHhlu9WwX2ND0txjLLaQQF8UaJex9XQxYrttAb/MgThqQS6nM7LRQCsCkRmjw
-	hYyLH4bcxeSzPO1T+cszpio7cAUA+rNoEkCBTDPF5G6KySikrG6wkKbwARw8rFu9Oovvue
-	t7m/elz/zWcOQh3rEEcyVKuJ6X5ygYc=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=j5rZyJJM;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of gary@garyguo.net designates 52.101.195.110 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764785404; a=rsa-sha256;
-	cv=pass;
-	b=cyrEDOlUj1/X3nwX/SDJgP7kKQts1z0HznECbA4nyBmJ3G0jOY7h06mMK3xyxXiIGpSx2Q
-	LMD5KPGlLqd7z0oPc/23LpVd8qxbiQU+Oqbt/PL2AYTCjh+gN5NjomhI8ieM4TCwKcuK//
-	Rg9LFeTyK7t+WbmmFk2DjaHIEKnea4o=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RpxCcw98Er9lEEv2ZrSjy0wxVX7090XsVgS/Tu9M6GucCLW9RO/nDhBOyD0L0lkcZRoAD6FQa7W4o2HCIVEOGNhQ3K+sNR/0ZV9Z5oAHywZCLQQchUq1jMiN/wX3fMOLSZggRh8SKUo961SifrWGvaR2/oSxnUd+tz7NKyjiKESEvvpWyxz6qNrw4dMts5zV61UULPKR9qXVm9DOahD6h1MKCZ+0K088aYdhesaZDO7t58xcXevYcGK68Xu7GIhMeAjRcjA5FuQUJDhfLahL8gAM96dY4dTkC/QcQiH6Z4UyEZn5BGq5En36JAwy+t+I4gBCe/LTAg9HKd7BYKfRQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CexfHDQVtU6Ucrh0kKELVpCwL8tP7Wkn47wKP4rMe5A=;
- b=CPNl449Y0BzmGtxGwdRMv6C2LKtYitRq/mVRReGMjeLAl4N46id/jr4vO/pOkkIOvApeXr+JkYSKi6lLPfrIxuP9k4+w5Bcx4UM30fRLDM2gZFCJ1yiTn9UU9XHElRURYTpgiD2F0B+YQdmeXjLz4xQ9fPyxzGDUUX5120hFKa53VxWpGKIL6xqdbxQFdMlzBDLuk6rLX0uUXm1qTY2aKcc9SEPgE9zO9x/fTL2BY23NIEdhn24UDIOfLHqHa+yhoPXke/vhTe+M83oAwZjfl7AdT7jiwDwg3F+15tCJ4QS4wYlxGbODwMVlJwoUv1BTC60h6KJIpH7nO/ld0yJ/7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CexfHDQVtU6Ucrh0kKELVpCwL8tP7Wkn47wKP4rMe5A=;
- b=j5rZyJJMPVyztCs+RVx3dMDju5iZarcgGUlCEuwB1qDcAjq0KqD7xSpJM94BCM+B7UnfrAjxx1gEJnLa0T/15N4gs1f9nPVwmTmPwp5u64Cmv3bnBXlUaupUXHF5SxSTZSD8NkJC2xQ7GBV7BC1EWszusdtMdHOKdDmswfK9TJ4=
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO4P265MB5979.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:29c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Wed, 3 Dec
- 2025 18:09:59 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%6]) with mapi id 15.20.9388.003; Wed, 3 Dec 2025
- 18:09:58 +0000
-Date: Wed, 3 Dec 2025 18:09:55 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, "
- =?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
- Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki
- <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
- nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-Message-ID: <20251203180955.20b41904.gary@garyguo.net>
-In-Reply-To: <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
-	<20251202-inline-helpers-v1-4-879dae33a66a@google.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0225.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:315::10) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	bh=cvxsSNOGWdrE9akcNg/jRgoHeSCakoDs4XiZtxVygNw=;
+	b=aE9w1e93+ct831H9/HPQMMaW4OTMeGJtfQhCzqKmGWH2SAQgINLndZU/G/LKFE+HANTo4i
+	NgcbdQ9Az5Qs4/i5XUZexNZRGmUZLg5uEehFQyjGTRjt80hjSHVHYWE3xNfYuwLQnhcBKA
+	2XfJq+s84dd5gAH7jiis7oP21wnWOkg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=boxBGf6c;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764785981; a=rsa-sha256;
+	cv=none;
+	b=M6JNF4LLRZFwvSzJ0Ch7STZff+ZGdiXSJiDZVOh1k3k9YPHLIs84vVAvDEin8Hrcm3gxQ9
+	n9SPHN+jUx2AkFktoATvl9irHeuUqKjGlBmonmBF3Pk5IzWhIuQMSwKF4+hLRvnJAypqQg
+	mVSgjywjfpfOPij/RtbeDaS9vx7K7ec=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8b2f0f9e4cbso9974785a.0
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 10:19:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1764785980; x=1765390780; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cvxsSNOGWdrE9akcNg/jRgoHeSCakoDs4XiZtxVygNw=;
+        b=boxBGf6c9bYS0l8eQrGmpySbaUyPIAHBomRqvfk5PaOcUSC/FhOKbf1+S8Hk7DN7WS
+         uUxY8Hsd5lYYh3NT/RI4OYItmddoRx6hyp+YepWB+K2MxvdqgGNoygHOE62GBm8htb0P
+         PAPP530Xmrpl6jMIfZCGAWeipS67IvrI8gVaaRFHcx5Qc0S/eokT+yM5jrDvkyp9FLsh
+         zkdiKyONB3scPyPQAeoXTsHuz8ZfhIbYVLttX9Mt7bptXptpBAEFlh+NtsyMHJ9gP6Hh
+         kk7wne/Obi35LlDUHMAfQi2KNohtcoCKL+Ure+06BgApJ7UJ7Ngjy+RGuDcxyKbM2U2w
+         ia3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764785980; x=1765390780;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cvxsSNOGWdrE9akcNg/jRgoHeSCakoDs4XiZtxVygNw=;
+        b=rThaMmNNPByt3XC3shTKACdELgWas1fV/wNCFy5CXW6I5RwnwcrZjkMTbHXy+H2OOW
+         qo9ar/gTZ59qaLElkCSwhTu+DpiedlSfoAPQt/FYH7xHv0CCg/sSsGmQJC4JE/wVfITN
+         BuQ73zxblI8O3+k7F79/uP7NXtVsxro+vi/1LS1gOjQ3sEDaPdFajqHIuAY2phNhA2Eu
+         3jptboIdUjWF8e2LPPboFHQWJtQrI7B/m3t+TyHnveOJcnOjNDEXeRo3eZsHtOTAS7VI
+         dS7A5Wjbits5hTOwOwGp86nu1wAgq7nbX/lrSO/Ez7tL/JZhMpqDKQaoOngB6cWijH+w
+         Up6w==
+X-Gm-Message-State: AOJu0Yx9jS7h4xZutA5RnLGiSJ0nUWjZ6B11karhRfhWp/oc5B8YaOA9
+	VLmFW3Moob6Po3se1Zau+oGGZdExMBEr+GkaTOgBbEm45eIp3IE8dJnok10SMF7kSOk=
+X-Gm-Gg: ASbGncvyHaEWPk7goKk9j3M9nYF1uKcklzxbCxrvu8SAqoKWxocXPsNlqGCczw36kpS
+	WHeyEKgIB49M+h4NlCS+NM98ghI6QkIOBbfTNiUYVXEw/2Fm5mizDbGqq/QiFzs57JHyd8dyEel
+	eEJaGMaG06PAdCm7Ed/p3ZNwW2V5/O1lLMPXjlysWcYCvxTR0uVFPhHA03xcGFG/pka3soKjPLz
+	9xRphR8X9vgXvXh2VsAemTOxPk75/hoQ6UUGUp5SovCZXAAqQWDf12T1sPI9JiBcC9RokFgTeFO
+	JzZHP5MfQUZbQfvajGEZF7K3kUUw4vpui0Nk9mYDk0iFe8KUTWeFnVBLLmmxImxCwFAtJxL/odn
+	h6oyt0WZieReviPI6CeT7lVi5R+xdDN18c8FW/iCuAuVcuf+81wUegQYiKgn4zGYMDPU+Lnk7cp
+	lYnJzaxJteSw==
+X-Google-Smtp-Source: AGHT+IExlNX5MNBC3OYudvJIv4VEFspzEKTWEJsupXZUlcjDYuuJpB+YCUht9jfc5WZuK1q3vHl8NA==
+X-Received: by 2002:a05:620a:c4e:b0:8b2:ed3b:e642 with SMTP id af79cd13be357-8b615f82cbcmr63003185a.34.1764785979729;
+        Wed, 03 Dec 2025 10:19:39 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b5299a5377sm1334780185a.14.2025.12.03.10.19.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 10:19:39 -0800 (PST)
+Date: Wed, 3 Dec 2025 13:19:34 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
+	kas@kernel.org, dave.hansen@linux.intel.com,
+	rick.p.edgecombe@intel.com, muchun.song@linux.dev,
+	osalvador@suse.de, david@redhat.com, x86@kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Rientjes <rientjes@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH v4] page_alloc: allow migration of smaller hugepages
+ during contig_alloc
+Message-ID: <20251203181934.GB478168@cmpxchg.org>
+References: <20251203063004.185182-1-gourry@gourry.net>
+ <20251203173209.GA478168@cmpxchg.org>
+ <aTB5CJ0oFfPjavGx@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB5979:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61e487b0-0780-44d6-c641-08de32972ba6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xULtH1uQ5/WVaYKfYaadhQu6yqkbmFt/J2GRs0Mc3a9Pr3BWkxWxkuo9io9F?=
- =?us-ascii?Q?j6dXIyq/s7J4GqKY21w/d9baw/oGBgeseF0D8kMELbXykjp3oY5EWCQAMnpN?=
- =?us-ascii?Q?G2NF1lbBDviCf7/D5uplX9EczYN5G0sSa4z9BC95X7N3wu9O1mmbawD8XpDQ?=
- =?us-ascii?Q?gCXx8SqwcdNzh+O1EeQDeuWjQx/n+RLlSNmJbQWVXJrmv8atLc4B723JJko5?=
- =?us-ascii?Q?UrNEBZVpv+ZufYAY8Az7Z2a0uwkflX44j9BB9atIiXs+4phGRvD4uqgxjabC?=
- =?us-ascii?Q?yhA4NNhcaqQuNprqHtERUBhlJPZt7EpKq6H2zBbwJFAcufPW9ctrDcjA7yTS?=
- =?us-ascii?Q?2vF3LPTZdJOSNLyWTHbcsQtzyG42PjKZ1fDsrOBc+JoMM55x0Ca4H0Sv/Ja9?=
- =?us-ascii?Q?Ztwf6bg0lhvJADcojGAJ40Zeiytg2H2p1iL6TcHgY+iDc+TKPd8CXmA1iEjW?=
- =?us-ascii?Q?6JJrw4irDun7MaHECSytBfWqhQTAJysVGSDMEmH2i8dQ7F1m0r9yWkpsPCZS?=
- =?us-ascii?Q?lDuG2LqQyuiMBKKo+skLQPDTXw9Ml9whXpxc52ec4CQtyOPjzVhp5142yx5L?=
- =?us-ascii?Q?RdV0BXdPWCQ7QXw+HAoxFsd0MW3Lne1ArasDc24WdxD3xvP4zI6wVD2VhZjk?=
- =?us-ascii?Q?hP/p/QjVLY9GER5K1SudG0i4q8MuqXy2aDJKgpEmKBXEIedpKzwftUVran7Y?=
- =?us-ascii?Q?xFpzqig+JBQCWuFpAsVb/9UxKjg+PomxN3cl3f4Pm2KI0NftEGWL6Q5w9Agi?=
- =?us-ascii?Q?PU6xhvy3Wnd6ktGqfPvBp6CnGRDQN3U5jevzR716ZdWrgmLZOIZTVwKIKT1P?=
- =?us-ascii?Q?+QavHJgZ7aquE8TlvXAN3cpWYQauUCXdcNHhTNWYiatd7Msni8m93ilBC63s?=
- =?us-ascii?Q?vK4zkc3la/2YIA1uKTBZAYEookfgxJ0O0EIEE0mboOMjge1VpoBghimfxDax?=
- =?us-ascii?Q?AnyQc/ICznYEXJ2VfEvsUO3BeNn4sowl6V/Cp5/AnI6Vako7pCP5QrPR1Ldh?=
- =?us-ascii?Q?RnancqYcowsQ16QVLPR06ekNtWG0eo2PbhdhRRl4jMtInIxIlP0QreM/ZeYW?=
- =?us-ascii?Q?jN+pvzAIB9MsIP4I20PnfVeGtpLDK1iFrj3yD67uXyW8OkNtzmzf+PUPzRbm?=
- =?us-ascii?Q?p4tcnBN+Di/ymag8f0NoyfSWnFLqAq+wjU3/y4MmvapTzGu5lWFW+qX9IXbo?=
- =?us-ascii?Q?OXJgLnZpT8D48c9E2ZTmpyNfao6VBF0lirvvfwdm/Z1oqpPiJvka2diVTAGe?=
- =?us-ascii?Q?styNaF4UuAP22RHEdsDfpEWimAJpywUnl8bzIVFl3e01lEFJuaR/32Zy7z8W?=
- =?us-ascii?Q?f50cZ6xs/ECGkrMHt7VSX/hxvG9mKNQUTsHorGagnxoYtisctR+9CJUAPvDU?=
- =?us-ascii?Q?ePI/PuY1RVw/Gkm1noBXiDOVp44rrA/CNoyDkDWOuzaFUC7/nYmFb4tX3tk+?=
- =?us-ascii?Q?emZx6gzxwHgB2cpGQ56QeZz16JOoxlY/?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(10070799003)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QCShDrIfbEu1ceqjTfok+fLMfjrYH17deycsv5so/M6Su5K/RzSb42/lR2lr?=
- =?us-ascii?Q?XJU6DK5/wbCZ+iZiL32SES+LPvQz2Yz27CXRcQ5T2l4G1ysKBwVLn067Sq7V?=
- =?us-ascii?Q?06muWYLQ1aA8dHnkWAr4nE0p0hYEfamhfOHAP7raCrAyztWSU7ckOD2aT+WN?=
- =?us-ascii?Q?MUeicD2QmDXKJE2oI9xnCmi8S5uatMdetGRnPDVv+e5U58CX8gq56qe9J9vz?=
- =?us-ascii?Q?Yib+4qLrRBkce3TucRhknrshoUdFM46HK325CsTgtbjSgaz4AoR3DENctwzc?=
- =?us-ascii?Q?zmZfDVVGFa2IAMpzau1Avn/lJ5UCgMoKN0svyu9uujIxSCznUzBh0IHNteLX?=
- =?us-ascii?Q?F+eJZayjwdZ1iVHXi1W6sgN3SzjlUhP4CP+TGtZdoLAiruKNILWVR5q29n6U?=
- =?us-ascii?Q?pCji1DcyA+AyTjI8op0JzTFMBhsdg7AoFNWEp8+BNCoom8jTYezv6i6s64SG?=
- =?us-ascii?Q?grfIl/YtDIDxUr5DsgEi/Uu9qT5+CEhg1lTDHicsjFOCc/uCPHMdyeNuX2m6?=
- =?us-ascii?Q?+W/qHGJyQbPphvZewnnr1dq0ZC8mZwa4UVQDWEyAXCWQeY86wxLdZkgGYMHm?=
- =?us-ascii?Q?CU1AD0cf+nhrgqrRSsbvK9V1slRc/VsI3T3ZK8oycycQUGXM/2ONIG/ZEsWs?=
- =?us-ascii?Q?W2SStVC6vCC/sUw2h8jgPBV8xfNAhWm7LlA/O08vWe25Q2CdWMS01C2d4GbG?=
- =?us-ascii?Q?W8huetEImdAkfZyrldulotaluBO59pkke057b61NDymfwF5nPLaBegI+PNE2?=
- =?us-ascii?Q?NC0nRrMm99DeQebyrj86po4mWgrqT14yroVJ0pCWyQIa43RlsKyAEkHDRGkA?=
- =?us-ascii?Q?p11QVRMRWpEUWWHIouHs5aghebzolWZzeKuITzVrkXOgIpVK28pqPtDLYEpt?=
- =?us-ascii?Q?AALB8KLGLhl90jqgGLLJR7ZoeAZjOc2o+K5qhUm9suDPy/D8upsOpTo4HCB7?=
- =?us-ascii?Q?6uILrkRDzjJdWn6xSxuJU+rbmjkZh+8JsYzvQMsuzJHEahHFxr1neQbJxF/J?=
- =?us-ascii?Q?+ZcKDdBVCv508FyqSv5NYuT+BTXvdfRhowRsNBgFqBnwZytxQoOa8OOvmqZ/?=
- =?us-ascii?Q?hjRngX3+A7qJYHnoExdSXDEhb7OYuI14ksN8ckSJH1JsmBgQDY/zVI5gZlZ8?=
- =?us-ascii?Q?hNv1x3jSPLcD3P6ZuGVEZ55ES8RtO0A0zOKmDcL+5IshG21Qqe/nK3zebcD3?=
- =?us-ascii?Q?vnOx4YQQInHDrrvbMLdwghX6dDY0rhUT/aeJ7iORKFkyL6ACtjaTjpU0QaNq?=
- =?us-ascii?Q?ENEyvDaanBUM+5MeFdsFtUY0uWjhT1h6isoz4s20B5sJbIHXiMg+AsQwIPRG?=
- =?us-ascii?Q?0wMME7yZnUTi+d2qEG97gBHTcYDAjow4PXcnMylLB7E2qj7Dsf2aP3g0gbXi?=
- =?us-ascii?Q?UgR+0zvzbTUP4r3yx9VLyiFMYFw7wvprQsg+IMIjYe9TQWG+PxbBIQrKzqWa?=
- =?us-ascii?Q?G8gDTA77qDNkTeGsU6YrE1VlD11xgdIjhFhNhx4S8V+Ms2GCtBrSenMm7zHu?=
- =?us-ascii?Q?ZIjkaSFIVXoBERUdauaZSJf668NBRoSBg9TqM2VoG5YQt+QOWQHNvmC1narw?=
- =?us-ascii?Q?VhU18QlAIasuNRS5SHWYzZ6N6eKYAOsYNbBYP8Zq?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61e487b0-0780-44d6-c641-08de32972ba6
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 18:09:58.8621
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 44D/hHN+THU97QmZ9oIyZrOt7R9ckj0z6XjNktazVL0irrdr8jW5oCVfqv+777hcpWvtkOX0YsO/0o+7LEbSOg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB5979
-X-Rspamd-Queue-Id: ED16C12000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTB5CJ0oFfPjavGx@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D904E180009
+X-Stat-Signature: 54op386wtp459h4mpe3tiwmbm6ugh5oq
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ixiage61ioicxwioptewc7hzxffdkiw3
-X-HE-Tag: 1764785403-414464
-X-HE-Meta: U2FsdGVkX1/8DF9oqlwCvgGTjaTZu9WBMOJB0susF8USlO/51Fw0qke0tKwBiMA27zl19f3h3Hv3Hm1NnVyQELdMtd2a3LrDus5OHj5asYWTGu4wYedeI30N6P84BmPab4+O96BMBQ294KVWPHG31GemPv5quRkYbGfPjsO6Nqn5xFWBz3MUNBmivl4zcKIX1cXuexHwcIDACqtRCTDZiuNGtofW9Ve65c9feTRApvUJtoU2bDzylw3JQk6Bc9K7WrBaaPQ5wDV2sbxlcFDZyxih/J90LVjKNSZd5TftJDb6qg8ebopfUO2jgOa0WFWA+icHBjeZnS750BFcog78rPZNJaLN0rQmywYFg7WkQ+a0xIWOzh2BNjNr7+1KUAHod/AAr7g2wsAy23qB2ZmowQWM1vTHqbJnD1YOKzjfUOh1c5+zYINX6TsUFTagdig/GfL8gOZQGL2h2RvF7Zh17NBjW88+0w0JiJSynI6NVJOfF3xQ91Y/9hs5RS+BrmSWZXGi7jLokRxvoM9WFw7ZVrILD4ZXUSOyBHsLKvnqe/oTgeJfYuRV3tSE+5IgdjqPF4uXISLABqF6hNLSIDAdqPZiqHb2RABde80509QGhj+DfWOCH9uUyQ9x5B4wznBCDswtLiUw9RO6+xCzX738YXd0cjy1n516eObYuyA7695BDxhJjVrPgK6+VbWW4HrHczbAMLRBID9s42h1fyAU7BaF1q+BzbYvs6YOkjxBnWs64ij0jTEN3j5YeoEEFyTrnRh2Px0KdMpd7dVIIEAt0Fk8DTC/yPFJumwBS3aeTX7kmLZ+ivCHS+XpeuT/VyGhpRmcbNYiWXsiLVqFwaIGCnakDzsQhE9sJMWzr1reLnp+Hts2n8J9E+aa6SFU+ie455jxBFIuWHjYOtIeAOTgD/bB3WoQmuekJ+aaLrYDOgV8OLvJRFDffWJz3qGiTwjxwetbhQH0VOD/2jX+DLv
- XjtyJQrt
- eHchz+JkX8l/goX68Kr6C7oDd+TZjfMrewIQBoL045PUaDmOJZeL0lI3Tu53ThjWAK4t7pQp9buEpwUuf5XgjzWRcaNTZ7jAg6yaMwqTnpnM4Bqd/0LsRrDVQpfetBSyXxkECWtnwjCw5eie2oQb17fWNFJDTPLFTyx6UKBv06iCQjGGZFyqSzRviGioRL7MKB0u+ZhjLIpAnfcfi4o9JrAP2CrXK4l/0eqJAtV4KMWWBJQlGh23/mMATqjuh6qjcIM/k/ofcd7LIJaif6kyby53NSF1seKH/EmgBrOaZ7KR92zlYaEteS0zgE2MBFXWpk/70aT9+qDhk9zGpjcqAqN3FG6o0jLmUNQ8GWch4d3B2HXtArmQYrYcy4nCU8wDxGtjS75CSEb5pl3rZUVbZUvZ+E+hBu7cudFto0mbkpbTUUvJupBynZGh8LK/XT6N0kwgE1BpiZyWW4EBEuq0N+npFLw9hxEa8idgd+s+JZjdEiNfpcJ+xo/1tWCHIT87ez5kAiIrqvGp27E4PyTQ6NjyPKYooySkR35bLt4WkrX0HdxZzpEOipf7z8oQwXh2Pz3oj6R6qorxRNMX9AX96dV6zJ+PzQNJOTqwcqiOnPmk/9kMyu995mgbmDOAV4qFqLX99n/zhiIcJzBw=
+X-HE-Tag: 1764785980-875125
+X-HE-Meta: U2FsdGVkX1/GDbP1gi36JDcyB/EBqtxkUNo1BEOkkXwpmCelMWuWuulozL1LWD4kqOLXMS+uYP7EqikT5IvwGyCJPUC5aTD/92fNeaZBjJI1gSnPCfNwoyUmsxgQnrondE6TtEGjEFdoBCWxVt/GZlDt92pldWhCTdueBNw5lj7i8DmLAcVsL/M6TgzaODsroQHjhSYY13NFDLr/S+cKeeZZs2+8cXkQrFlmh5sKrB5ghXKE+n9TzeF8o1yCgY8XSriIVp2IVlTIjKKVzW7Hp/wWLr/k/kSacCe/xurX9aw1ina4WK3AMX855sRcuTh82cD8fPB2Kn6LXgBQAQO3N87giJacmmW4ujrTQr4EgxfVmOahnux/7UY5+QGfYxb5KNZIs15Lc/Q36H+mVac7jyCMmDOiYxFQWhLgzwf5Lg0zsJIqVVC4wXY0VXD8OpcFdUj8LE9KyHdX7fp8424inbdLUrvARE+bzkb1F0YEVgyllcTQhZbGIUOFH3aGx9aTtDCrwu63uJ46rUbkPfhgZFzYI12RIl16leCuVpCRWnJxM6Krvr4Q5mUKFk7d71WU9qonvz6pasHIHzcYRFXwYV1FwedgwlzsK7bMnc+OIn/8cbME1A7j4YpvXet0Rmu0M4YdmrMw6ZbnSDrDkIyPxFfCZkkOXnCvR0PPdr7Kp2TF2GPCIhYmlY43YVB/fLOJmLlwAi9+Ws069Ov++UBO1Nh/emnicOXWxOAHM1JibkTp702UN6NENjmMBimrNj0LOGe3+LTA3Ye1Efl4NGYfvQTphKhIWuJrPu9iP1YrR5us6UBPf0uup7UQL3WI6856K6HU4aLSYiaSg0VHssPMoszKAREBwllwhWEs4TEpLOmx0CNDvGd6LCib2CtisZOi6F+Bz0WTh111Qotqc/D1y9TfuIHrmaHQ8J1TY18Notrl/3qXij7PNowGu2em2h5zzPx0HYTqNcMacO9YLRn
+ gayCf78j
+ qk6N8cjhECtrsfXyVplmkqtGbPDqMsEPFe9PkhXKSCbmLWvA+THTqhf5pvM3pp3qXspLW1AmPa/eKcrLLEkjoVyCPzN+FFuqgkktusmyRaTkUxWDdq5VBgvmuK3lF17sFGuXAsxxSVoLR1eCJvbhCP2+FBCO/PyWWMKVdzDdA6jroNoXLiB6bh+A2FfON6LHUbYQotZp7k8weE4N7CHdmhhn9E0lmo8bBH4U0tRYGOk1u9IXUUxXhsL6lYOVTHwOTbCwXArQLF2N1gFCMj6LEhPe4nzkVXPNpV8y35cP8SWgkua5ZpnZYBbml5/4/ttvVBEJW0XZ01EhTdW75LgWFwpXqE0JC9pWS11uNcgjlnVz9SvX5M4uA3Vyd9E3kqBMkHNhpK20nz6GWZ5LwblhzIjZjSv7L2Z25ORURL4fWCLNiy6CxY9AsjrKd5F+fxplV0y3QNh7fQ2D+61otheKAy0AXBd9q5KaAoxOEFl9YAhpXcrcBL8Ypxdfh40MpKiRD+7yqb8BfCYwpRuIGUjYeN+08kw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,92 +128,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 02 Dec 2025 20:27:59 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> From: Gary Guo <gary@garyguo.net>
+On Wed, Dec 03, 2025 at 12:53:12PM -0500, Gregory Price wrote:
+> On Wed, Dec 03, 2025 at 12:32:09PM -0500, Johannes Weiner wrote:
+> > The reason I'm bringing this up is because this function overall looks
+> > kind of unnecessary. Page isolation checks all of these conditions
+> > already, and arbitrates huge pages on hugepage_migration_supported() -
+> > which seems to be the semantics you also desire here.
+> > 
+> > Would it make sense to just remove pfn_range_valid_contig()?
 > 
-> A new experimental Kconfig option, `RUST_INLINE_HELPERS` is added to
-> allow C helpers (which were created to allow Rust to call into
-> inline/macro C functions without having to re-implement the logic in
-> Rust) to be inlined into Rust crates without performing global LTO.
+> This seems like a pretty clear optimization that was added at some point
+> to prevent incurring the cost of starting to isolate 512MB of pages and
+> then having to go undo it because it ran into a single huge page.
 > 
-> If the option is enabled, the following is performed:
-> * For helpers, instead of compiling them to an object file to be linked
->   into vmlinux, they're compiled to LLVM IR.
-> * The LLVM IR is compiled to bitcode (This is step is not necessary, but
->   is a performance optimisation to prevent LLVM from always have to
->   reparse the same IR).
-> * When a Rust crate is compiled, instead of generating an object file, we
->   ask LLVM bitcode to be generated.
-> * llvm-link is invoked with --internalize to combine the helper bitcode
->   with the crate bitcode. This step is similar to LTO, but this is much
->   faster since it only needs to inline the helpers.
-> * clang is invoked to turn the combined bitcode into a final object file.
+>         for_each_zone_zonelist_nodemask(zone, z, zonelist,
+>                                         gfp_zone(gfp_mask), nodemask) {
 > 
-> The --internalize flag tells llvm-link to treat all symbols in
-> helpers.bc using `internal` linkage. This matches the behavior of
-> `clang` on `static inline` functions, and avoids exporting the symbol
-> from the object file.
-
-Huge shout-out to Matthew for discovering this option, this makes thing
-so much nicer and it feels way less hacky and more reliable now.
-
+>                 spin_lock_irqsave(&zone->lock, flags);
+>                 pfn = ALIGN(zone->zone_start_pfn, nr_pages);
+>                 while (zone_spans_last_pfn(zone, pfn, nr_pages)) {
+>                         if (pfn_range_valid_contig(zone, pfn, nr_pages)) {
 > 
-> To ensure that RUST_INLINE_HELPERS is not incompatible with BTF, we pass
-> the -g0 flag when building helpers. See commit 5daa0c35a1f0 ("rust:
-> Disallow BTF generation with Rust + LTO") for details.
-
-Again this is a much nicer way to workaround the issue than changing
-the language name in the DWARF info using text replacement that I come
-up with :)
-
+>                                 spin_unlock_irqrestore(&zone->lock, flags);
+>                                 ret = __alloc_contig_pages(pfn, nr_pages,
+>                                                         gfp_mask);
+>                                 spin_lock_irqsave(&zone->lock, flags);
 > 
-> We have an intended triple mismatch of `aarch64-unknown-none` vs
-> `aarch64-unknown-linux-gnu`, so we suppress the warning.
+>                         }
+>                         pfn += nr_pages;
+>                 }
+>                 spin_unlock_irqrestore(&zone->lock, flags);
+>         }
 > 
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Co-developed-by: Matthew Maurer <mmaurer@google.com>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  Makefile               |  4 +++-
->  lib/Kconfig.debug      | 15 +++++++++++++++
->  rust/Makefile          | 26 ++++++++++++++++++++++----
->  rust/exports.c         |  5 ++++-
->  scripts/Makefile.build |  5 ++++-
->  5 files changed, 48 insertions(+), 7 deletions(-)
+> and then
 > 
-> diff --git a/Makefile b/Makefile
-> index 96ddbaae7e12de71bcfabef4639de3a13a6e4815..5834bfd568548d1bee34b328dccce5d60f85526f 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -517,6 +517,8 @@ OBJCOPY		= $(LLVM_PREFIX)llvm-objcopy$(LLVM_SUFFIX)
->  OBJDUMP		= $(LLVM_PREFIX)llvm-objdump$(LLVM_SUFFIX)
->  READELF		= $(LLVM_PREFIX)llvm-readelf$(LLVM_SUFFIX)
->  STRIP		= $(LLVM_PREFIX)llvm-strip$(LLVM_SUFFIX)
-> +LLVM_LINK	= $(LLVM_PREFIX)llvm-link$(LLVM_SUFFIX)
-> +LLVM_AS		= $(LLVM_PREFIX)llvm-as$(LLVM_SUFFIX)
+> __alloc_contig_pages
+> 	ret = start_isolate_page_range(start, end, mode);
+> 
+> This is called without pre-checking the range for unmovable pages.
+> 
+> Seems dangerous to remove without significant data.
 
-I think this is no longer needed as we only use LLVM BC now without
-having to round-trip between LLVM IR.
+Fair enough. It just caught my eye that the page allocator is running
+all the same checks as page isolation itself.
 
->  else
->  CC		= $(CROSS_COMPILE)gcc
->  LD		= $(CROSS_COMPILE)ld
-> @@ -625,7 +627,7 @@ export RUSTC_BOOTSTRAP := 1
->  export CLIPPY_CONF_DIR := $(srctree)
->  
->  export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
-> -export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN
-> +export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN LLVM_LINK LLVM_AS
->  export HOSTRUSTC KBUILD_HOSTRUSTFLAGS
->  export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
->  export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
-
-Best,
-Gary
+I agree that a quick up front check is useful before updating hundreds
+of page blocks, then failing and unrolling on the last one. Arguably
+that should just be part of the isolation code, though, not a random
+callsite. But that move is better done in a separate patch.
 
