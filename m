@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F21BAD12D6D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 14:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17B83D12D6D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 14:27:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2228C6B000D; Wed,  3 Dec 2025 09:27:19 -0500 (EST)
+	id 5F41A6B0010; Wed,  3 Dec 2025 09:27:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FA626B000E; Wed,  3 Dec 2025 09:27:19 -0500 (EST)
+	id 5A4B56B0012; Wed,  3 Dec 2025 09:27:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E9766B0010; Wed,  3 Dec 2025 09:27:19 -0500 (EST)
+	id 499636B0010; Wed,  3 Dec 2025 09:27:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ECC956B000D
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:27:18 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4410B13215D
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:27:15 +0000 (UTC)
-X-FDA: 84178387230.13.7FFA731
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010034.outbound.protection.outlook.com [52.101.201.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 282F114001B
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:27:11 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Jt0fg4+8;
+	by kanga.kvack.org (Postfix) with ESMTP id 31AB06B0010
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:27:36 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2B21BACB1
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:27:35 +0000 (UTC)
+X-FDA: 84178388070.30.2831BE7
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011042.outbound.protection.outlook.com [52.101.62.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 145E418000C
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 14:27:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Nr1xA+jo;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.201.34 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	spf=pass (imf24.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.62.42 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764772032;
+	s=arc-20220608; t=1764772053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0fOdh18wbnLqD7A33Lq20mZUe0y2vQx2A8LMfM8cEJQ=;
-	b=v4z7iUttnZfpWwZZrAk73mUBquEsPbOlaDJHLmJMeNe1epIZEriW/zcO6RiQpAJv0coMj9
-	HwP+RUTUwpAUKlQD3V/Zjzxupq377aCo0K8qTf1GVhWuri+xQ36gE4gKbSlT/gu23b7gkp
-	hR/yegrg4J2KwvTlbL6Fpy4yzBENPP0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764772032; a=rsa-sha256;
+	bh=DLq3sRCccuBOY5xQm+JCcpgvrlciKDLjyDK5GLunx1w=;
+	b=BR4lecQgVzzjuPQvSr1l4VbIBhrkIeOVstYaTjd0jtdwQiQtz4km+RB39ZKgPwFLUNWoUx
+	frMgVcZRzP5vfLXqTWR0MU8mDmNpHBSQcuEq6NrKYXV4ZM6t+Sftwt4XBWO9lzoGkfg1i/
+	6lhSZcuqUX77Tw6KTreNtKdEMKc73KE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764772053; a=rsa-sha256;
 	cv=pass;
-	b=a85eoXC2GVP+06xOPzHyp1dlx7bjpvw9bL3Ndq1sQ7MtjpS1UmAhGCRt2e9Odoh43FX00k
-	01SzkOmy4PGdp/1eZvn+kMyptZT1Rh/eV6wahA3ffYhDXYDPwoA71J0tOw0xquupC8WEnX
-	GyJv2gNnmQ/ASQ21eMpfJYAWKHOqzyE=
+	b=fLxwjQ9A8CE2Qoy9u23cBaAG5wyExkbNSnOzqV9aqpbrqCcuFd0eqvCq8OX55mWNBnzLoe
+	XvyROxhtAHLlZEx0uiBsfPO7kB4LOC+ztHdU4cGYwvCekGzLMeVDMj+eygJCe8LyY8GKGC
+	9YbJMnK+VXyGYJzN/8yJNarTu35BIy4=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Jt0fg4+8;
+	imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Nr1xA+jo;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.201.34 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	spf=pass (imf24.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.62.42 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Hze+cepH5Q6fT/sILPNvTyVCBpzoW6KZO3z3jXjU2kr/3JVPnS7iMVfABM3iG1HVoDOTX+iRslssvG2U6QvyL78dZuhDt0nbaKXKFaarBa40C8AR90NoFpOqlQb/j08bAOjwuCXgE6eIzRyQdzmhtlkg+n9XZs9QcqEtoY9YcN5CuJDmEPJyYx33fDxIxbwxaGZHOGfT9g3Ci8v/Z2ifOjx5+bibQEy8ug/9UVjnSWjSvcHw8FT6R1zU/EcBRgtqycCVdw6qy0hoSZhKqhPHkeZ0h3un7sxiYDLxd+xBs8KoKUuaSjnWKapHS4WlZBf+wTZasDXVyTmeeQC9ErABkA==
+ b=FmHk+4gwq14wQAGE31Q2Y9Samm3oaZDXEklfegT6n84fNQPT3nejn+qwknKNPJ6GsQX6+z5eRUjKU+qcLxSYREhyg/KZ3CzOz325SmrwTjjCbIf+GPRguMZdYwvYX8e4du0N9tQo2EkydhX29hQaqGtOrPHsBnOzvBDQ9zlG/xFQPcaGGe3tDo1hwG9YA8RhoX0iXV3sb7U+l8StpUIhna5jHT8o9KvQ8dJhLqtDnzW4os17udYIoNA2WH2ykojL8pA2MCdwno7UbbiprdL0qO1oCPfy2PVunx1JzRVNiwULL7skGfdJAVlewgsorSL+vmI6qmf0o0K5iYOV0IAHxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0fOdh18wbnLqD7A33Lq20mZUe0y2vQx2A8LMfM8cEJQ=;
- b=QDHXYD9JIZ6HsEIhFRK4rn/lSaxSNRqePMaQ3bo9cLEEUysI00xgAzfyN9rgcem42qPQgqLyEMsxI+2OF/DnYZCrdw6a0xrb+YEZGRU4vcZ4uZMuqZt2UHlvZpAgDSbC4CJo/HMws+AMkCR8juPGxrr3kA12xfvQGltGboIhnDrYEZlCOdxwT/J12Q/1RWJjxPSofqnT/dT6R+2pZhzqWJGZNShLyzH3dj6cMjL5kcSB3QEK03QUn3iHouhG32shogUH/Gwe6Q1fYc2nHftgdIkyONPzXPa0ALFbO0VX3xCrUbpiJLai/Te/ooY1ce4qtahJRFJ6arLgyupH1el4lQ==
+ bh=DLq3sRCccuBOY5xQm+JCcpgvrlciKDLjyDK5GLunx1w=;
+ b=YkvQ0cHsmFVD2zDQQ78n5/RosC1qAGyVu8mfURYLkniCU9YD7FimcGZRWVbLLgCqdgIcFU1AbAN6pqpOY2+wUG6IZtTJUjpJImEf7zwEpBA7lyGlewhqNlbENA+PU2aCn/Tz1vl849fb/vqzYH0WKCzHeqpvA2TXQ6OteSWw186Qds24Fh4iYfA+7xzWurSoA8HpTWpsLDc26fUGcJKUCZ+WYL/mQmjwGQoBeog3CeOdZklYaNvO60IIL/hBEgf3GDrrOiXv5PpL6oR1a8ZPor4LG9I+TtXqJ0x7ybOGIA9Sw2C82EmcNrGPIghnoaFMxiM7plj/qK6ZJphOqSRXZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0fOdh18wbnLqD7A33Lq20mZUe0y2vQx2A8LMfM8cEJQ=;
- b=Jt0fg4+8on7f7vg9AmZ7redTeS7ILZNXHIGiJm7Zo8LDMwZPzoVcUoGC8QFTjSnqAE4+WxEu67osiUC1vtBsPVmUySsu7WT53kAGkA+GamoGkwRi8P5G07QN3/d+b/XlfI2WDXeic34Kmb3Wa1aeGGTiNAGuNzfJ9gkgkLnsl2g=
-Received: from BLAPR03CA0080.namprd03.prod.outlook.com (2603:10b6:208:329::25)
- by MN2PR12MB4344.namprd12.prod.outlook.com (2603:10b6:208:26e::11) with
+ bh=DLq3sRCccuBOY5xQm+JCcpgvrlciKDLjyDK5GLunx1w=;
+ b=Nr1xA+jofTuYZ8XgQYON9mwiUHGea3iXvK0huYthONjumabSlZUdZpW/iccKL7LAjvEka2RY0uc/HjiTIg5qFp1KT79BmnTAvBL8gDuJOj3fevzAywl0c3Q+qtsMFMQWAO3+cffr7VH2K09Z/ocdLBlse5HYHRHF7Ir72sd0+V0=
+Received: from BN9PR03CA0134.namprd03.prod.outlook.com (2603:10b6:408:fe::19)
+ by CH3PR12MB9431.namprd12.prod.outlook.com (2603:10b6:610:1c1::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Wed, 3 Dec
- 2025 14:27:09 +0000
-Received: from BN2PEPF000044A6.namprd04.prod.outlook.com
- (2603:10b6:208:329:cafe::8b) by BLAPR03CA0080.outlook.office365.com
- (2603:10b6:208:329::25) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 14:27:29 +0000
+Received: from BN2PEPF000044AC.namprd04.prod.outlook.com
+ (2603:10b6:408:fe:cafe::f9) by BN9PR03CA0134.outlook.office365.com
+ (2603:10b6:408:fe::19) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Wed,
- 3 Dec 2025 14:27:08 +0000
+ 3 Dec 2025 14:27:29 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -82,14 +82,14 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF000044A6.mail.protection.outlook.com (10.167.243.100) with Microsoft
+ BN2PEPF000044AC.mail.protection.outlook.com (10.167.243.107) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Wed, 3 Dec 2025 14:27:08 +0000
+ 15.20.9388.8 via Frontend Transport; Wed, 3 Dec 2025 14:27:29 +0000
 Received: from localhost (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 3 Dec
- 2025 08:27:07 -0600
-Date: Wed, 3 Dec 2025 07:47:17 -0600
+ 2025 08:27:28 -0600
+Date: Wed, 3 Dec 2025 08:26:48 -0600
 From: Michael Roth <michael.roth@amd.com>
 To: Yan Zhao <yan.y.zhao@intel.com>
 CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
@@ -98,78 +98,79 @@ CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
 	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
 	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
 	<ira.weiny@intel.com>
-Subject: Re: [PATCH 1/3] KVM: guest_memfd: Remove preparation tracking
-Message-ID: <20251203134717.475azsubs26pj2x4@amd.com>
+Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
+ populating guest memory
+Message-ID: <20251203142648.trx6sslxvxr26yzd@amd.com>
 References: <20251113230759.1562024-1-michael.roth@amd.com>
- <20251113230759.1562024-2-michael.roth@amd.com>
- <aR7blxIx6tKD2xiQ@yzhao56-desk.sh.intel.com>
- <20251121124314.36zlpzhwm5zglih2@amd.com>
- <aSUe1UfD3hXg2iMZ@yzhao56-desk.sh.intel.com>
- <20251201234447.5x62vhlg3d5mmtpw@amd.com>
- <aS6uoFyqF+SdGWlI@yzhao56-desk.sh.intel.com>
+ <20251113230759.1562024-4-michael.roth@amd.com>
+ <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
+ <20251121130144.u7eeaafonhcqf2bd@amd.com>
+ <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
+ <20251201221355.wvsm6qxwxax46v4t@amd.com>
+ <aS+kg+sHJ0lveupH@yzhao56-desk.sh.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <aS6uoFyqF+SdGWlI@yzhao56-desk.sh.intel.com>
+In-Reply-To: <aS+kg+sHJ0lveupH@yzhao56-desk.sh.intel.com>
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A6:EE_|MN2PR12MB4344:EE_
-X-MS-Office365-Filtering-Correlation-Id: 839ad995-6d65-4e83-ffec-08de32780a93
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044AC:EE_|CH3PR12MB9431:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9eca301-724a-4f86-076c-08de327816a4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026;
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UybG9uXCqAFN8IsqJEwy0jUp1/TQeiFpIkX61umKho055BQcf1ijQURVGv/F?=
- =?us-ascii?Q?HoquzrI4R+ZN6VUl9dEJ5LJhn1orDBlhTBCmYljod8gCune5x2Lo+8acKqDY?=
- =?us-ascii?Q?crd6ygxLC3NPKp5+c9mGfH+RAjI8XV7i6LE+iSyRUc4u902Bvox28yUGljJp?=
- =?us-ascii?Q?zmVOKwEtM+xwFLR5fHKtw4n3rBMi1wgesUbrd1v5I2z3dZPsZwJdpera1ijH?=
- =?us-ascii?Q?rfO2M+bX2jcYIA1IuzpnST1q2LwbUXM0KcGu1ZPF7TdZsRWZPMvKV40QCyx4?=
- =?us-ascii?Q?tWmITlQBk/2dzMF+/lCy6iJ55XmjN90gf7haQFfY83HaabeqA6Qgdb1aY4T3?=
- =?us-ascii?Q?LOL9TcAdT0h0eUod9C/MTuQKEv8FNd1ZpbvufpEd4QHnvFJvh5v3TwKyJH9Y?=
- =?us-ascii?Q?Irbaz2rsCmewjcngLNeYzR5neK2KB2KCM0q8x9rXuA+OMMNUxYmWpANwc9oV?=
- =?us-ascii?Q?KUZ8S8TAdDh6oUBTsh35oJBhl4UMjgT8UqtRDrdyFmfXIprdArbauJkSTTKX?=
- =?us-ascii?Q?bPJ9Bkqxvwr6hJZkrLMNeRg76R9gTIBcaVTbe9jJW5TLOFLqeQ+3jGBYJHou?=
- =?us-ascii?Q?5Ff3xgb+/y0ZEjtHCYjN29jfTJ3Jj8ntB8heLweFgRvJ6QFB3q2RHCch6rIG?=
- =?us-ascii?Q?fjoNEmbZM4EpNEnMboGSORHYUsA1Vc3ArpG79WWMjatHvYVQD41Kces6AmKQ?=
- =?us-ascii?Q?9296v4ZlsFYeOwDPEDTTN16Fg6RH9VEuK4Xku3lcSJ9pBJjLEsob2qRm1gmq?=
- =?us-ascii?Q?veityU6IEAOC7BJi1sUAxhY2n1hiE9jU/O1NlQC4w4OpGArYvAt+p4Z07Yq/?=
- =?us-ascii?Q?NSoDTq/SKNiFwNn5NpjMytEB8XaZ5I7/Mbf01CvwrQPMiavxxTWfwI3pLnBW?=
- =?us-ascii?Q?bvwpP48Ywy9Ubr0r2EB3Eqy0kEffJWz3i37rUSfDP2AtRHFHioFb8ZDp5BIA?=
- =?us-ascii?Q?Th/JVM4qCUwUYP6At+oGVrRgXBfakoh8y4FhGbYzbwfp2mHSTcFhxLyL5qc4?=
- =?us-ascii?Q?92VgT5BR/MEvZLEybpimxwzLp+QWQst3c9ccqyFLY5b3XHA9LvA+YZv0nVRm?=
- =?us-ascii?Q?L5/o0wdBNOsux87tqxmadNHewWs9hae8st4f+nKFltXychX82UQiEXeROejy?=
- =?us-ascii?Q?/Vg+dIQMGaDpl2s0Ux0aZ1sLS8dtj65yIusjRfs3BZNEjeR4bpCsuZarD5+k?=
- =?us-ascii?Q?Y9hUetSzC/W/dt6WIKF7E4M+x8g9cxvx3F89IUSxxR/zYWmK7ruzB5FuGCTB?=
- =?us-ascii?Q?ryRh5nytXn/hu06KMMOK7h6NZkYUN5lAmx6BY6CuDWOc9s4CIJxlHAf4IcCo?=
- =?us-ascii?Q?tj5f0osCAFLgCu8d+1qwph+ir2tXoUWq0EmJBc8K2SMuTsiOlQUZmpA3eNAG?=
- =?us-ascii?Q?ncSVLzyHtbSNk3JlYtfZH/+qmoFm0wQxc4m7AWVTPZBQ46VSg1QkAP/68UIq?=
- =?us-ascii?Q?T45IlTkui78HgXAfN7BStZ/FfCPZ/kiVr+BCG2DqYmET8LnT5cH7+Y4TwaTW?=
- =?us-ascii?Q?McvB80I3JWUgJb/AwWTxT1oefYjZgwQ8YvG0?=
+	=?us-ascii?Q?AOzriAtEEAuCXs9S0tPRcFFbB1aJ8Hw9Tht5IpTB2rw+YQxZq7+T/2oQPH+d?=
+ =?us-ascii?Q?MFE8Auomny/h3ZfUHQ5CS+8CPrPcuZuy3u70DPzaqsg+Sq0I8sG6lMTuqGf+?=
+ =?us-ascii?Q?/z/e6NcqpBoXobl3wW/WZ254CcdMAia9j52pHq5jT4yJzPbEcJbrDgUiTPJr?=
+ =?us-ascii?Q?2QBAIRVyoEQF/JZZkgR7wEXk3xCIlGk7K5j4UZEPue7lozdBSpijfYtqsMKH?=
+ =?us-ascii?Q?jI9zuCb4akeGaOR9qFrtZDQWzghKXj/0WRJMFc7ix9CZwyKSKYxVnKH335Iy?=
+ =?us-ascii?Q?p9s3HUAtMtvcINGLRf4rkDnDUeEZzcb3B0lw9a6Wwz99ebaeJV+EPQqE/Suo?=
+ =?us-ascii?Q?gCP8zYRN+HHbwN7s+Qwc8a3r0oZY56l9MH+7T6Q1xupiqDJujln7MhSNMdmZ?=
+ =?us-ascii?Q?M2mr2q/zA0uCkVp+7GZZtRYK9wU7azheAsuFIAelQRLoRXQsSzhV1oE92kXa?=
+ =?us-ascii?Q?vYJLSuhRVlZoNz5Qyce5fW8dLSV7nXOd6fLLcpoumattTrl0+WDu0yjUY+2q?=
+ =?us-ascii?Q?tWn3JxLX8Mh6Zw8Ao0wOrSJAG3aKs6f0ZKWi3u9pGAL8rrTLSwTfLfzI+JE5?=
+ =?us-ascii?Q?SmYZesKPE2M7J9oZUBygCzAL4OFoY0pC3eLauWEM7FjPcakOz2qgb1PJQS7j?=
+ =?us-ascii?Q?AkawmDfsyh3VgvGr8sYsq6Ch7ROVp/o7yUBf04QENfwqyWblJZRJG00Y/CR+?=
+ =?us-ascii?Q?kFfKmup+/6rTVCsdY7yEeRM9i5lQWIm4CrYX/cVMCzyHCPVbGfS58CPW78mm?=
+ =?us-ascii?Q?jbySP8zWYTIuVi7zD56IV8G4k4BQzx/qkvsJnGMD3XSQmBEACIkbaz3d8tJc?=
+ =?us-ascii?Q?bMVYW6zZh3T7mE1SwQ96h6+mj3iacf3XH4J6VhQUKgSCvCL0Vp67IFWy0JZp?=
+ =?us-ascii?Q?M146MdJgE10pgML1spXiZs4B/Q5cMAfg2fU9pqLmeKkQZzBokgR5yOvXU9gZ?=
+ =?us-ascii?Q?2zJmnhf9WpCYhIulougfW/lBQLoZUButXczGzjfDTA9ZqHdn0Y7dSK5bNZKN?=
+ =?us-ascii?Q?foR58B2ZAmRBY+6WDOQc9txfyOaK9CKGjJolG9vccZppNf9W89evfzQAngh9?=
+ =?us-ascii?Q?q8UgM5rYTR7f+1R0E1DX/TOvTr1H+eenQmLInKcJpnMi/HtOkBry1lL6IDpO?=
+ =?us-ascii?Q?LreZUgiaGz0KyAZypetI+OitLvTZG39vcN/DJEHnu2tAzzyfMdsRSN1EdGzH?=
+ =?us-ascii?Q?8OlQujSDE5VYVUIPAjmm5tulD4NaB1vjXeRtLH4yi/w1SCGkhkcNj+8aFk3r?=
+ =?us-ascii?Q?Q4Ycec+WTsZYpQ7hl99WWitUIlNxRxdNffAuJ9QHsZb7Cwv9N3uZQm+Y0E+o?=
+ =?us-ascii?Q?lT+3PJluzIp0xygji0aMFG1AMXJYO9w3I66TzSSgnSKGKeDAb7WoBk5T91rA?=
+ =?us-ascii?Q?7N/b697pAUbtMIkRKf8PhaekrL/B55KFtlWTfm/OrtiTX9iwvPbVyD3AXcXF?=
+ =?us-ascii?Q?haWTQlbaDy4hd6lTm7/yi/9JJQN6eelIbVLWvBkt4I2q1iqYHptLJYqUmoG9?=
+ =?us-ascii?Q?L+pcKDhAWFKrnqTIBOSBIAFHSRG69xPmPPWv?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(7416014)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 14:27:08.7743
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 14:27:29.0076
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 839ad995-6d65-4e83-ffec-08de32780a93
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9eca301-724a-4f86-076c-08de327816a4
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044A6.namprd04.prod.outlook.com
+	BN2PEPF000044AC.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4344
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9431
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 282F114001B
-X-Stat-Signature: 177byqa9pjpkrgx58akdktn187ki8jqh
-X-HE-Tag: 1764772031-205308
-X-HE-Meta: U2FsdGVkX1+GivDRPZA5Xy+fSjaXrmQTylWMfQmFZLizlB0G60k1f3ZOgcQJUpQKsGEhIYte2DIGkRxkXKHCNkFtMHmOd4FIVGeFf+PLI1tojkCmKkgiMGcHlHi6rnzpoYy+Gvrfr1ENJcn1lnLulDD6OP8+Sxe8j4x8VGbRiYiYbW86j3saMasL34jNGkcQBwL4FBSe+ogx4m7wiCOnBMunJlVRNyHL2ETp7TYU8wMHlmfEksyX6uW9QUD8+ZlDwqkxl5XxyThYESdBBZqwnWys+dj2GFunbFqMxwY4/Enhz9N6HG3nBUDN3CY1QMUVEmJVlCwsEAkzyxc9KVasTfvMbWJ+lp1/gDnpDkr9jpRtKBV+9cM3OK0YnqrweMZSdlVtaAcFi4hGWufJYAzVg9jwD90M+9rWCIfhVbnnKlSuxH4tH+h8N/lopR58wVoAvrjlHdFVQzz6PpWvmOgafwMHK2N+QNOnV7/gWsfkOuDaRsccjKD/HEuW/WcPzqh2/qp8ovemFwR2zAJ6MjQLggzOIlIJ+jLXsobHG3DLyuIE53CIJjgrtighmYNY7XCfKCipa1+5AdqdzrPsKi/BPoGvpFm3oSGC/R2INCSpPFyIgs4rvrEAaOnj/KdcJAkB49fvxk70CfIXINbK/mKEedVBLJCxZSZPdvWaR0/aWhfflEMpUiYX1JIiBXCUj+0QBKwr3QRBzwv8C77fMPUq8OypFY87QbUxKNjbSWC5PhyfqIfDmzFcrrUGk7GjbuXRl6rrwB0GJRXEdw01lYXTcGTL+dSOdjlpAwmbTki1EdtCXKm53Nv2UPuLATKMGaTwcyfW1I4N4d8cMLOqXqVBlazyWwQsFs9kbQuzRjl8h+QNUROXD3t44IjtDNTG62fuY/tgacPns8HAgcGRk1d5j0Jy+l1kpjyqG+4a+FTSPy1889IRbxeovjlaHBpkPs35yR7zAjBe9TvKJMjrvPn
- EVzh/4L9
- IhtMzqdgHDZIWF+ekjK57lp0wvsEpncbCgx/isCpyQQY6HAsVloMcePVBP9j9z/Tx13Dw8h4+IuAx7xqCTEAtL/V+ZaY1NBljfWDEr7iQEA6vaDl/qKrlhVc2rQQNOt+0/Yhmc8WXpC4JdLwQJR1++mOX7ewjr10ArEHIbX9V5JI14IcNl+WoNvLpAPIFdhSMifPm+331tjvAPelkBs5YrHQ2obr93wjlatSv8r3/jaLw3qS74nzsdzvCEz3l6L47MfJkbxLguHw6KGSZCDT2L8xJRvvbu1t72Vnnfe7Me07dop0ULTefirjQk7pVIPf+EW8mj1OCDLQ6oxUBpGdgVXf8XBegxus3xbkuEC15EAozeAkipr3kxt2B/N2zkdTdEO37HkN4RliwFY8rA1xEJryei3BC5wG9igDs9KiezMDXpAgJSYgGS4IpoLhy/t++NhqUAOkQ6dtsvCKM8KLAYSh2/jYbZLdwbSknp3dWxT25T89os5j1/kWwlZ3E1ERClNS/yaJrxkEiCjRzOgcIxFbouXeq9d67HL0xJbcwPVum60UC8TMK0o/AxWJacVMTKQ1mQIaXf3BoPo++n90sA5OrpGjXazB6beBVW6Ns+nC25trv/slj/Ak3O3815Y8qnlK7xMBC2E9ocbm4HeASpeKW3h52c+cZg6TpaI4LkbpJCgA=
+X-Rspamd-Queue-Id: 145E418000C
+X-Stat-Signature: cfrk56ggfahwpfjucaue9phk9zjb5nqb
+X-HE-Tag: 1764772052-47260
+X-HE-Meta: U2FsdGVkX1+px9ccRncsw71zJH1xraTvZCE8uP8z7E+snI6oktE4fJFQ2Z9EYfOXqj2QHkdtYVHK/utOE806S4SUOBMDYmodFEYZl+iKSn5sd6XZ4cLvUTmrNUkZCdGD0vI0Bgfel4QdbVKI0nfgaDfRluS51M6jUqzapZMnFc7nyawJVEgq2CEJRrRFZImhOgU77UfC4kzsjW+dhX2qOfWf+ZWeCBgms8GZR0JNFNaJf+DwyqpyeJ1LDH+w1cJ4JrMPSOc18AGMd4Z48hAUH+LGiHY/9+YASzuqHduHFelDlP0EKpHL38nJKylQTrNeu3OjoTWL6vGtUuUeTmJm+3QfvruNdfxnOhXm/ofkYPtZf9GIboKlJdNTA5iQoPmETt39vP9mG0JHXMKnXc+nBpPYXRMw2gQB4dc27XdNSk8FNUUMe4KuyLZPuYBbIRI4Ix+8GJ6OY7IvVWHGtXA/MyiAeKbr4Mrr0WyQau8T1EbzQSBLPXrvF76uWuqKt0ZFfQJwIP3wwBAZsHhn18LKnmUgMG/iaPu0t+w1RFHMgIWHOcYwkuRQahQLigZyUVFP3+NhjMTciZi8Zb5UlwoReZ/raZcxpodO1h2NllCLzampWh9mfdMOs+vZA8IeSd556HRLbCq6mvSEu5Qt3BO7XfejAooL1Up0bbG2y5Lxi/KIyhSzrSSRpSg3NoexZKiMPZmT9q93ejaHyDp2zGQB2pHFE5OTC3+T/qb14aDF7JVJZKgrfIeTRV8n/92eXCXkcceiBiu8CeRmTKAH7liFXPdju2mwh6jiBxtaXOoMYEEg85unuC7/PXK1S8zEfVfE7j5DQPiJHx1wiQjyG6uUlKiN0i+4rcV8CEdApjPDBSCl7eD5I0OXofI2YZ17XDYUwkEq5ZdPizJQcQtI75eCgKluoV4TtlKi4sPDUilSGp+VJmjZyTpyEZXgvXnm18EOSEghpWqVpqVdYpj4c6O
+ Z1PbMTaM
+ MCopdVfge3qBgVCFEiG8GgyAOOvpfWLKYiL9WYQEZ+nKsliPCQcXye/By9fSUOupUmS8gggTH2lbI8hgHLhGZJREXbErauiKWXnti2EHy2SEUjbYVUaGAHp3NDIRjD/EohkzR8rfDxs4mvRT0JtPoyC6Gul8jiyigmgzE5ysP8xmEWCOFuMVpRt5T4+LSJ1/C990SJ3SaMuy7oxE16PlJDr5HAogI/1LiTSplZlqLtIIpkP87FrDQ77ZSgqb9PJhMxDkY2CFESWD1johxnLctifU4RvkF5YysCjAlTLQO6n0WJ2Fna/nucEkE9gtBI35suQcLSiDJSq0UdAQ36P0SjgqD76jdTVUo3VD355vn4rAF0biV8+tT0cxHR6zTIyLNC2wK7pEsd/+zSdRiBlGw4nk3HkwoqBAxp2OQR0nwZgYQPSW1xEePv70CpEncNTezq9avyE6sFOt2+R9KxEG8guSvB6C56w/15YwV6zvEZ8cqFjmMtyi2aNa51YHrqQG3oXZgqsWhoBEl4GjLU6/2QIw2EGGfDMiIZYxUajJ3abe4KgEXZA6AmtD8UxGS97aG8yp2puylHoZJ5x2GN6LI6cJLueVt3fa8Z8hB5CjY3hszFRL37WzrXhREhRA7fV/1Op5588NV5LRbzfKs16AU8Wy7KlK2phEHvlH4F3xb2/qt1EfiXzHsYdY1uglqB8HF3GHK5JbdUd/jhT0Czia7d+fy9dLsiRXPhOyZRgSW2dPRBDMIsaaAdU4sow==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,203 +179,600 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 02, 2025 at 05:17:20PM +0800, Yan Zhao wrote:
-> On Mon, Dec 01, 2025 at 05:44:47PM -0600, Michael Roth wrote:
-> > On Tue, Nov 25, 2025 at 11:13:25AM +0800, Yan Zhao wrote:
-> > > On Fri, Nov 21, 2025 at 06:43:14AM -0600, Michael Roth wrote:
-> > > > On Thu, Nov 20, 2025 at 05:12:55PM +0800, Yan Zhao wrote:
-> > > > > On Thu, Nov 13, 2025 at 05:07:57PM -0600, Michael Roth wrote:
-> > > > > > @@ -797,19 +782,25 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+On Wed, Dec 03, 2025 at 10:46:27AM +0800, Yan Zhao wrote:
+> On Mon, Dec 01, 2025 at 04:13:55PM -0600, Michael Roth wrote:
+> > On Mon, Nov 24, 2025 at 05:31:46PM +0800, Yan Zhao wrote:
+> > > On Fri, Nov 21, 2025 at 07:01:44AM -0600, Michael Roth wrote:
+> > > > On Thu, Nov 20, 2025 at 05:11:48PM +0800, Yan Zhao wrote:
+> > > > > On Thu, Nov 13, 2025 at 05:07:59PM -0600, Michael Roth wrote:
+> > > > > > Currently the post-populate callbacks handle copying source pages into
+> > > > > > private GPA ranges backed by guest_memfd, where kvm_gmem_populate()
+> > > > > > acquires the filemap invalidate lock, then calls a post-populate
+> > > > > > callback which may issue a get_user_pages() on the source pages prior to
+> > > > > > copying them into the private GPA (e.g. TDX).
+> > > > > > 
+> > > > > > This will not be compatible with in-place conversion, where the
+> > > > > > userspace page fault path will attempt to acquire filemap invalidate
+> > > > > > lock while holding the mm->mmap_lock, leading to a potential ABBA
+> > > > > > deadlock[1].
+> > > > > > 
+> > > > > > Address this by hoisting the GUP above the filemap invalidate lock so
+> > > > > > that these page faults path can be taken early, prior to acquiring the
+> > > > > > filemap invalidate lock.
+> > > > > > 
+> > > > > > It's not currently clear whether this issue is reachable with the
+> > > > > > current implementation of guest_memfd, which doesn't support in-place
+> > > > > > conversion, however it does provide a consistent mechanism to provide
+> > > > > > stable source/target PFNs to callbacks rather than punting to
+> > > > > > vendor-specific code, which allows for more commonality across
+> > > > > > architectures, which may be worthwhile even without in-place conversion.
+> > > > > > 
+> > > > > > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > > > > > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > > > > > ---
+> > > > > >  arch/x86/kvm/svm/sev.c   | 40 ++++++++++++++++++++++++++------------
+> > > > > >  arch/x86/kvm/vmx/tdx.c   | 21 +++++---------------
+> > > > > >  include/linux/kvm_host.h |  3 ++-
+> > > > > >  virt/kvm/guest_memfd.c   | 42 ++++++++++++++++++++++++++++++++++------
+> > > > > >  4 files changed, 71 insertions(+), 35 deletions(-)
+> > > > > > 
+> > > > > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > > > > > index 0835c664fbfd..d0ac710697a2 100644
+> > > > > > --- a/arch/x86/kvm/svm/sev.c
+> > > > > > +++ b/arch/x86/kvm/svm/sev.c
+> > > > > > @@ -2260,7 +2260,8 @@ struct sev_gmem_populate_args {
+> > > > > >  };
+> > > > > >  
+> > > > > >  static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pfn,
+> > > > > > -				  void __user *src, int order, void *opaque)
+> > > > > > +				  struct page **src_pages, loff_t src_offset,
+> > > > > > +				  int order, void *opaque)
 > > > > > >  {
-> > > > > >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
-> > > > > >  	struct folio *folio;
-> > > > > > -	bool is_prepared = false;
-> > > > > >  	int r = 0;
+> > > > > >  	struct sev_gmem_populate_args *sev_populate_args = opaque;
+> > > > > >  	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+> > > > > > @@ -2268,7 +2269,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
+> > > > > >  	int npages = (1 << order);
+> > > > > >  	gfn_t gfn;
 > > > > > >  
-> > > > > >  	CLASS(gmem_get_file, file)(slot);
-> > > > > >  	if (!file)
-> > > > > >  		return -EFAULT;
+> > > > > > -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src))
+> > > > > > +	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_pages))
+> > > > > >  		return -EINVAL;
 > > > > > >  
-> > > > > > -	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared, max_order);
-> > > > > > +	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
-> > > > > >  	if (IS_ERR(folio))
-> > > > > >  		return PTR_ERR(folio);
+> > > > > >  	for (gfn = gfn_start, i = 0; gfn < gfn_start + npages; gfn++, i++) {
+> > > > > > @@ -2284,14 +2285,21 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
+> > > > > >  			goto err;
+> > > > > >  		}
 > > > > > >  
-> > > > > > -	if (!is_prepared)
-> > > > > > -		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
-> > > > > > +	if (!folio_test_uptodate(folio)) {
-> > > > > > +		unsigned long i, nr_pages = folio_nr_pages(folio);
+> > > > > > -		if (src) {
+> > > > > > -			void *vaddr = kmap_local_pfn(pfn + i);
+> > > > > > +		if (src_pages) {
+> > > > > > +			void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
+> > > > > > +			void *dst_vaddr = kmap_local_pfn(pfn + i);
+> > > > > >  
+> > > > > > -			if (copy_from_user(vaddr, src + i * PAGE_SIZE, PAGE_SIZE)) {
+> > > > > > -				ret = -EFAULT;
+> > > > > > -				goto err;
+> > > > > > +			memcpy(dst_vaddr, src_vaddr + src_offset, PAGE_SIZE - src_offset);
+> > > > > > +			kunmap_local(src_vaddr);
 > > > > > > +
-> > > > > > +		for (i = 0; i < nr_pages; i++)
-> > > > > > +			clear_highpage(folio_page(folio, i));
-> > > > > > +		folio_mark_uptodate(folio);
-> > > > > Here, the entire folio is cleared only when the folio is not marked uptodate.
-> > > > > Then, please check my questions at the bottom
+> > > > > > +			if (src_offset) {
+> > > > > > +				src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
+> > > > > > +
+> > > > > > +				memcpy(dst_vaddr + PAGE_SIZE - src_offset, src_vaddr, src_offset);
+> > > > > > +				kunmap_local(src_vaddr);
+> > > > > IIUC, src_offset is the src's offset from the first page. e.g.,
+> > > > > src could be 0x7fea82684100, with src_offset=0x100, while npages could be 512.
+> > > > > 
+> > > > > Then it looks like the two memcpy() calls here only work when npages == 1 ?
 > > > > 
-> > > > Yes, in this patch at least where I tried to mirror the current logic. I
-> > > > would not be surprised if we need to rework things for inplace/hugepage
-> > > > support though, but decoupling 'preparation' from the uptodate flag is
-> > > > the main goal here.
-> > > Could you elaborate a little why the decoupling is needed if it's not for
-> > > hugepage?
+> > > > src_offset ends up being the offset into the pair of src pages that we
+> > > > are using to fully populate a single dest page with each iteration. So
+> > > > if we start at src_offset, read a page worth of data, then we are now at
+> > > > src_offset in the next src page and the loop continues that way even if
+> > > > npages > 1.
+> > > > 
+> > > > If src_offset is 0 we never have to bother with straddling 2 src pages so
+> > > > the 2nd memcpy is skipped on every iteration.
+> > > > 
+> > > > That's the intent at least. Is there a flaw in the code/reasoning that I
+> > > > missed?
+> > > Oh, I got you. SNP expects a single src_offset applies for each src page.
+> > > 
+> > > So if npages = 2, there're 4 memcpy() calls.
+> > > 
+> > > src:  |---------|---------|---------|  (VA contiguous)
+> > >           ^         ^         ^
+> > >           |         |         |
+> > > dst:      |---------|---------|   (PA contiguous)
+> > > 
+> > > 
+> > > I previously incorrectly thought kvm_gmem_populate() should pass in src_offset
+> > > as 0 for the 2nd src page.
+> > > 
+> > > Would you consider checking if params.uaddr is PAGE_ALIGNED() in
+> > > snp_launch_update() to simplify the design?
 > > 
-> > For instance, for in-place conversion:
+> > This was an option mentioned in the cover letter and during PUCK. I am
+> > not opposed if that's the direction we decide, but I also don't think
+> > it makes big difference since:
 > > 
-> >   1. initial allocation: clear, set uptodate, fault in as private
-> >   2. private->shared: call invalidate hook, fault in as shared
-> >   3. shared->private: call prep hook, fault in as private
+> >    int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> >                                struct page **src_pages, loff_t src_offset,
+> >                                int order, void *opaque);
 > > 
-> > Here, 2/3 need to track where the current state is shared/private in
-> > order to make appropriate architecture-specific changes (e.g. RMP table
-> > updates). But we want to allow for non-destructive in-place conversion,
-> > where a page is 'uptodate', but not in the desired shared/private state.
-> > So 'uptodate' becomes a separate piece of state, which is still
-> > reasonable for gmem to track in the current 4K-only implementation, and
-> > provides for a reasonable approach to upstreaming in-place conversion,
-> > which isn't far off for either SNP or TDX.
-> To me, "1. initial allocation: clear, set uptodate" is more appropriate to
-> be done in kvm_gmem_get_folio(), instead of in kvm_gmem_get_pfn().
+> > basically reduces to Sean's originally proposed:
+> > 
+> >    int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> >                                struct page *src_pages, int order,
+> >                                void *opaque);
+> 
+> Hmm, the requirement of having each copy to dst_page account for src_offset
+> (which actually results in 2 copies) is quite confusing. I initially thought the
+> src_offset only applied to the first dst_page.
 
-The downside is that preallocating originally involved just
-preallocating, and zero'ing would happen lazily during fault time. (or
-upfront via KVM_PRE_FAULT_MEMORY).
+What I'm wondering though is if I'd done a better job of documenting
+this aspect, e.g. with the following comment added above
+kvm_gmem_populate_cb:
 
-But in the context of the hugetlb RFC, it certainly looks cleaner to do
-it there, since it could be done before any potential splitting activity,
-so then all the tail pages can inherit that initial uptodate flag.
+  /*
+   * ...
+   * 'src_pages': array of GUP'd struct page pointers corresponding to
+   *              the pages that store the data that is to be copied
+   *              into the HPA corresponding to 'pfn'
+   * 'src_offset': byte offset, relative to the first page in the array
+   *               of pages pointed to by 'src_pages', to begin copying
+   *               the data from.
+   *
+   * NOTE: if the caller of kvm_gmem_populate() enforces that 'src' is
+   * page-aligned, then 'src_offset' will always be zero, and src_pages
+   * will contain only 1 page to copy from, beginning at byte offset 0.
+   * In this case, callers can assume src_offset is 0.
+   */
+  int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+                              struct page **src_pages, loff_t src_offset,
+                              int order, void *opaque);
 
-We'd probably want to weigh that these trade-offs based on how it will
-affect hugepages, but that would be clearer in the context of a new
-posting of hugepage support on top of these changes. So I think it's
-better to address that change as a follow-up so we can consider it with
-more context.
+could the confusion have been avoided, or is it still unwieldly?
+
+I don't mind that users like SNP need to deal with the extra bits, but
+I'm hoping for users like TDX it isn't too cludgy.
 
 > 
-> With it, below looks reasonable to me.
-> > For hugepages, we'll have other things to consider, but those things are
-> > probably still somewhat far off, and so we shouldn't block steps toward
-> > in-place conversion based on uncertainty around hugepages. I think it's
-> > gotten enough attention at least that we know it *can* work, e.g. even
-> > if we take the inefficient/easy route of zero'ing the whole folio on
-> > initial access, setting it uptodate, and never doing anything with 
-> > uptodate again, it's still a usable implementation.
+> This will also cause kvm_gmem_populate() to allocate 1 more src_npages than
+> npages for dst pages.
 
-To me as well. But in the context of this series, against kvm/next, it
-creates userspace-visible changes to pre-allocation behavior that we
-can't justify in the context of this series alone, so as above I think
-that's something to save for hugepage follow-up.
+That's more of a decision on the part of userspace deciding to use
+non-page-aligned 'src' pointer to begin with.
 
-FWIW though, I ended up taking this approach for the hugetlb-based test
-branch, to address the fact (after you reminded me) that I wasn't fully
-zero'ing folio's in the kvm_gmem_populate() path:
+> 
+> > for any platform that enforces that the src is page-aligned, which
+> > doesn't seem like a huge technical burden, IMO, despite me initially
+> > thinking it would be gross when I brought this up during the PUCK call
+> > that preceeding this posting.
+> > > 
+> > > > > 
+> > > > > >  			}
+> > > > > > -			kunmap_local(vaddr);
+> > > > > > +
+> > > > > > +			kunmap_local(dst_vaddr);
+> > > > > >  		}
+> > > > > >  
+> > > > > >  		ret = rmp_make_private(pfn + i, gfn << PAGE_SHIFT, PG_LEVEL_4K,
+> > > > > > @@ -2331,12 +2339,20 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
+> > > > > >  	if (!snp_page_reclaim(kvm, pfn + i) &&
+> > > > > >  	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
+> > > > > >  	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
+> > > > > > -		void *vaddr = kmap_local_pfn(pfn + i);
+> > > > > > +		void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
+> > > > > > +		void *dst_vaddr = kmap_local_pfn(pfn + i);
+> > > > > >  
+> > > > > > -		if (copy_to_user(src + i * PAGE_SIZE, vaddr, PAGE_SIZE))
+> > > > > > -			pr_debug("Failed to write CPUID page back to userspace\n");
+> > > > > > +		memcpy(src_vaddr + src_offset, dst_vaddr, PAGE_SIZE - src_offset);
+> > > > > > +		kunmap_local(src_vaddr);
+> > > > > > +
+> > > > > > +		if (src_offset) {
+> > > > > > +			src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
+> > > > > > +
+> > > > > > +			memcpy(src_vaddr, dst_vaddr + PAGE_SIZE - src_offset, src_offset);
+> > > > > > +			kunmap_local(src_vaddr);
+> > > > > > +		}
+> > > > > >  
+> > > > > > -		kunmap_local(vaddr);
+> > > > > > +		kunmap_local(dst_vaddr);
+> > > > > >  	}
+> > > > > >  
+> > > > > >  	/* pfn + i is hypervisor-owned now, so skip below cleanup for it. */
+> > > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > > > > > index 57ed101a1181..dd5439ec1473 100644
+> > > > > > --- a/arch/x86/kvm/vmx/tdx.c
+> > > > > > +++ b/arch/x86/kvm/vmx/tdx.c
+> > > > > > @@ -3115,37 +3115,26 @@ struct tdx_gmem_post_populate_arg {
+> > > > > >  };
+> > > > > >  
+> > > > > >  static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> > > > > > -				  void __user *src, int order, void *_arg)
+> > > > > > +				  struct page **src_pages, loff_t src_offset,
+> > > > > > +				  int order, void *_arg)
+> > > > > >  {
+> > > > > >  	struct tdx_gmem_post_populate_arg *arg = _arg;
+> > > > > >  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+> > > > > >  	u64 err, entry, level_state;
+> > > > > >  	gpa_t gpa = gfn_to_gpa(gfn);
+> > > > > > -	struct page *src_page;
+> > > > > >  	int ret, i;
+> > > > > >  
+> > > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+> > > > > >  		return -EIO;
+> > > > > >  
+> > > > > > -	if (KVM_BUG_ON(!PAGE_ALIGNED(src), kvm))
+> > > > > > +	/* Source should be page-aligned, in which case src_offset will be 0. */
+> > > > > > +	if (KVM_BUG_ON(src_offset))
+> > > > > 	if (KVM_BUG_ON(src_offset, kvm))
+> > > > > 
+> > > > > >  		return -EINVAL;
+> > > > > >  
+> > > > > > -	/*
+> > > > > > -	 * Get the source page if it has been faulted in. Return failure if the
+> > > > > > -	 * source page has been swapped out or unmapped in primary memory.
+> > > > > > -	 */
+> > > > > > -	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
+> > > > > > -	if (ret < 0)
+> > > > > > -		return ret;
+> > > > > > -	if (ret != 1)
+> > > > > > -		return -ENOMEM;
+> > > > > > -
+> > > > > > -	kvm_tdx->page_add_src = src_page;
+> > > > > > +	kvm_tdx->page_add_src = src_pages[i];
+> > > > > src_pages[0] ? i is not initialized. 
+> > > > 
+> > > > Sorry, I switched on TDX options for compile testing but I must have done a
+> > > > sloppy job confirming it actually built. I'll re-test push these and squash
+> > > > in the fixes in the github tree.
+> > > > 
+> > > > > 
+> > > > > Should there also be a KVM_BUG_ON(order > 0, kvm) ?
+> > > > 
+> > > > Seems reasonable, but I'm not sure this is the right patch. Maybe I
+> > > > could squash it into the preceeding documentation patch so as to not
+> > > > give the impression this patch changes those expectations in any way.
+> > > I don't think it should be documented as a user requirement.
+> > 
+> > I didn't necessarily mean in the documentation, but mainly some patch
+> > other than this. If we add that check here as part of this patch, we
+> > give the impression that the order expectations are changing as a result
+> > of the changes here, when in reality they are exactly the same as
+> > before.
+> > 
+> > If not the documentation patch here, then I don't think it really fits
+> > in this series at all and would be more of a standalone patch against
+> > kvm/next.
+> > 
+> > The change here:
+> > 
+> >  -	if (KVM_BUG_ON(!PAGE_ALIGNED(src), kvm))
+> >  +	/* Source should be page-aligned, in which case src_offset will be 0. */
+> >  +	if (KVM_BUG_ON(src_offset))
+> > 
+> > made sense as part of this patch, because now that we are passing struct
+> > page *src_pages, we can no longer infer alignment from 'src' field, and
+> > instead need to infer it from src_offset being 0.
+> > 
+> > > 
+> > > However, we need to comment out that this assertion is due to that
+> > > tdx_vcpu_init_mem_region() passes npages as 1 to kvm_gmem_populate().
+> > 
+> > You mean for the KVM_BUG_ON(order > 0, kvm) you're proposing to add?
+> > Again, if feels awkward to address this as part of this series since it
+> > is an existing/unchanged behavior and not really the intent of this
+> > patchset.
+> That's true. src_pages[0] just makes it more eye-catching.
+> What about just adding a comment for src_pages[0] instead of KVM_BUG_ON()?
 
-  https://github.com/AMDESE/linux/commit/253fb30b076d81232deba0b02db070d5bc2b90b5
+That seems fair/relevant for this series.
 
-So maybe for your testing you could do similar. For newer hugepage
-support I'll likely do similar, but I don't think any of this reasoning
-or changes makes sense to people reviewing this series without already
-being aware of hugepage plans/development, so that's why I'm trying to
-keep this series more focused on in-place conversion enablement, because
-hugepage plans might be massively reworked for next posting based on LPC
-talks and changes in direction mentioned in recent guest_memfd calls and
-we are basically just hand-waving about what it will look like at this
-point while blocking other efforts.
+> 
+> > > > > >  	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+> > > > > >  	kvm_tdx->page_add_src = NULL;
+> > > > > >  
+> > > > > > -	put_page(src_page);
+> > > > > > -
+> > > > > >  	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
+> > > > > >  		return ret;
+> > > > > >  
+> > > > > > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> > > > > > index d93f75b05ae2..7e9d2403c61f 100644
+> > > > > > --- a/include/linux/kvm_host.h
+> > > > > > +++ b/include/linux/kvm_host.h
+> > > > > > @@ -2581,7 +2581,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
+> > > > > >   * Returns the number of pages that were populated.
+> > > > > >   */
+> > > > > >  typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> > > > > > -				    void __user *src, int order, void *opaque);
+> > > > > > +				    struct page **src_pages, loff_t src_offset,
+> > > > > > +				    int order, void *opaque);
+> > > > > >  
+> > > > > >  long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
+> > > > > >  		       kvm_gmem_populate_cb post_populate, void *opaque);
+> > > > > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > > > > > index 9160379df378..e9ac3fd4fd8f 100644
+> > > > > > --- a/virt/kvm/guest_memfd.c
+> > > > > > +++ b/virt/kvm/guest_memfd.c
+> > > > > > @@ -814,14 +814,17 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > > > > >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> > > > > >  
+> > > > > >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> > > > > > +
+> > > > > > +#define GMEM_GUP_NPAGES (1UL << PMD_ORDER)
+> > > > > Limiting GMEM_GUP_NPAGES to PMD_ORDER may only work when the max_order of a huge
+> > > > > folio is 2MB. What if the max_order returned from  __kvm_gmem_get_pfn() is 1GB
+> > > > > when src_pages[] can only hold up to 512 pages?
+> > > > 
+> > > > This was necessarily chosen in prep for hugepages, but more about my
+> > > > unease at letting userspace GUP arbitrarilly large ranges. PMD_ORDER
+> > > > happens to align with 2MB hugepages while seeming like a reasonable
+> > > > batching value so that's why I chose it.
+> > > >
+> > > > Even with 1GB support, I wasn't really planning to increase it. SNP
+> > > > doesn't really make use of RMP sizes >2MB, and it sounds like TDX
+> > > > handles promotion in a completely different path. So atm I'm leaning
+> > > > toward just letting GMEM_GUP_NPAGES be the cap for the max page size we
+> > > > support for kvm_gmem_populate() path and not bothering to change it
+> > > > until a solid use-case arises.
+> > > The problem is that with hugetlb-based guest_memfd, the folio itself could be
+> > > of 1GB, though SNP and TDX can force mapping at only 4KB.
+> > 
+> > If TDX wants to unload handling of page-clearing to its per-page
+> > post-populate callback and tie that its shared/private tracking that's
+> > perfectly fine by me.
+> > 
+> > *How* TDX tells gmem it wants this different behavior is a topic for a
+> > follow-up patchset, Vishal suggested kernel-internal flags to
+> > kvm_gmem_create(), which seemed reasonable to me. In that case, uptodate
+> Not sure which flag you are referring to with "Vishal suggested kernel-internal
+> flags to kvm_gmem_create()".
+> 
+> However, my point is that when the backend folio is 1GB in size (leading to
+> max_order being PUD_ORDER), even if SNP only maps at 2MB to RMP, it may hit the
+> warning of "!IS_ALIGNED(gfn, 1 << max_order)".
+
+I think I've had to remove that warning every time I start working on
+some new spin of THP/hugetlbfs-based SNP. I'm not objecting to that. But it's
+obvious there, in those contexts, and I can explain exactly why it's being
+removed.
+
+It's not obvious in this series, where all we have are hand-wavy thoughts
+about what hugepages will look like. For all we know we might decide that
+kvm_gmem_populate() path should just pre-split hugepages to make all the
+logic easier, or we decide to lock it in at 4K-only and just strip all the
+hugepage stuff out. I don't really know, and this doesn't seem like the place
+to try to hash all that out when nothing in this series will cause this
+existing WARN_ON to be tripped.
+
+> 
+> For TDX, it's worse because it always passes npages as 1, so it will also hit
+> the warning of "(npages - i) < (1 << max_order)".
+> 
+> Given that this patch already considers huge pages for SNP, it feels half-baked
+> to leave the WARN_ON() for future handling.
+>     WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
+>             (npages - i) < (1 << max_order));
+> 
+> > flag would probably just default to set and punt to post-populate/prep
+> > hooks, because we absolutely *do not* want to have to re-introduce per-4K
+> > tracking of this type of state within gmem, since getting rid of that sort
+> > of tracking requirement within gmem is the entire motivation of this
+> > series. And since, within this series, the uptodate flag and
+> > prep-tracking both have the same 4K granularity, it seems unecessary to
+> > address this here.
+> > 
+> > If you were to send a patchset on top of this (or even independently) that
+> > introduces said kernel-internal gmem flag to offload uptodate-tracking to
+> > post-populate/prep hooks, and utilize it to optimize the current 4K-only
+> > TDX implementation by letting TDX module handle the initial
+> > page-clearing, then I think that change/discussion can progress without
+> > being blocked in any major way by this series.
+> > 
+> > But I don't think we need to flesh all that out here, so long as we are
+> > aware of this as a future change/requirement and have reasonable
+> > indication that it is compatible with this series.
+> > 
+> > > 
+> > > Then since max_order = folio_order(folio) (at least in the tree for [1]), 
+> > > WARN_ON() in kvm_gmem_populate() could still be hit:
+> > > 
+> > > folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &max_order);
+> > > WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
+> > >         (npages - i) < (1 << max_order));
+> > 
+> > Yes, in the SNP implementation of hugetlb I ended up removing this
+> > warning, and in that case I also ended up forcing kvm_gmem_populate() to
+> > be 4K-only:
+> > 
+> >   https://github.com/AMDESE/linux/blob/snp-hugetlb-v2-wip0/virt/kvm/guest_memfd.c#L2372
+> 
+> For 1G (aka HugeTLB) page, this fix is also needed, which was missed in [1] and
+> I pointed out to Ackerley at [2].
+> 
+> [1] https://github.com/googleprodkernel/linux-cc/tree/gmem-1g-page-support-rfc-v2
+> [2] https://lore.kernel.org/all/aFPGPVbzo92t565h@yzhao56-desk.sh.intel.com/
+
+Yes, we'll likely need some kind of change here.
+
+I think, if we're trying to find common ground to build hugepage support
+on, you can assume this will be removed. But I just don't think we need
+to squash that into this series in order to make progress on those ends.
+
+> 
+> > but it makes a lot more sense to make those restrictions and changes in
+> > the context of hugepage support, rather than this series which is trying
+> > very hard to not do hugepage enablement, but simply keep what's partially
+> > there intact while reworking other things that have proven to be
+> > continued impediments to both in-place conversion and hugepage
+> > enablement.
+> Not sure how fixing the warning in this series could impede hugepage enabling :)
+> 
+> But if you prefer, I don't mind keeping it locally for longer.
+
+It's the whole burden of needing to anticipate hugepage design, while it
+is in a state of potentially massive flux just before LPC, in order to
+make tiny incremental progress toward enabling in-place conversion,
+which is something I think we can get upstream much sooner. Look at your
+changelog for the change above, for instance: it has no relevance in the
+context of this series. What do I put in its place? Bug reports about
+my experimental tree? It's just not the right place to try to justify
+these changes.
+
+And most of this weirdness stems from the fact that we prematurely added
+partial hugepage enablement to begin with. Let's not repeat these mistakes,
+and address changes in the proper context where we know they make sense.
+
+I considered stripping out the existing hugepage support as a pre-patch
+to avoid leaving these uncertainties in place while we are reworking
+things, but it felt like needless churn. But that's where I'm coming
+from with this series: let's get in-place conversion landed, get the API
+fleshed out, get it working, and then re-assess hugepages with all these
+common/intersecting bits out of the way. If we can remove some obstacles
+for hugepages as part of that, great, but that is not the main intent
+here.
 
 -Mike
 
 > 
-> <...>
-> > > > Assuming this patch goes upstream in some form, we will now have the
-> > > > following major differences versus previous code:
-> > > > 
-> > > >   1) uptodate flag only tracks whether a folio has been cleared
-> > > >   2) gmem always calls kvm_arch_gmem_prepare() via kvm_gmem_get_pfn() and
-> > > >      the architecture can handle it's own tracking at whatever granularity
-> > > >      it likes.
-> > > 2) looks good to me.
-> > > 
-> > > > My hope is that 1) can similarly be done in such a way that gmem does not
-> > > > need to track things at sub-hugepage granularity and necessitate the need
-> > > > for some new data structure/state/flag to track sub-page status.
-> > > I actually don't understand what uptodate flag helps gmem to track.
-> > > Why can't clear_highpage() be done inside arch specific code? TDX doesn't need
-> > > this clearing after all.
-> > 
-> > It could. E.g. via the kernel-internal gmem flag that I mentioned in my
-> > earlier reply, or some alternative. 
-> > 
-> > In the context of this series, uptodate flag continues to instruct
-> > kvm_gmem_get_pfn() that it doesn't not need to re-clear pages, because
-> > a prior kvm_gmem_get_pfn() or kvm_gmem_populate() already initialized
-> > the folio, and it is no longer tied to any notion of
-> > preparedness-tracking.
-> > 
-> > What use uptodate will have in the context of hugepages: I'm not sure.
-> > For non-in-place conversion, it's tempting to just let it continue to be
-> > per-folio and require clearing the whole folio on initial access, but
-> > it's not efficient. It may make sense to farm it out to
-> > post-populate/prep hooks instead, as you're suggesting for TDX.
-> > 
-> > But then, for in-place conversion, you have to deal with pages initially
-> > faulted in as shared. They might be split prior to initial access as a
-> > private page, where we can't assume TDX will have scrubbed things. So in
-> > that case it might still make sense to rely on it.
-> > 
-> > Definitely things that require some more thought. But having it inextricably
-> > tied to preparedness just makes preparation tracking similarly more
-> > complicated as it pulls it back into gmem when that does not seem to be
-> > the direction any architectures other SNP have/want to go.
-> > 
-> > > 
-> > > > My understanding based on prior discussion in guest_memfd calls was that
-> > > > it would be okay to go ahead and clear the entire folio at initial allocation
-> > > > time, and basically never mess with it again. It was also my understanding
-> > > That's where I don't follow in this patch.
-> > > I don't see where the entire folio A is cleared if it's only partially mapped by
-> > > kvm_gmem_populate(). kvm_gmem_get_pfn() won't clear folio A either due to
-> > > kvm_gmem_populate() has set the uptodate flag.
-> > > 
-> > > > that for TDX it might even be optimal to completely skip clearing the folio
-> > > > if it is getting mapped into SecureEPT as a hugepage since the TDX module
-> > > > would handle that, but that maybe conversely after private->shared there
-> > > > would be some need to reclear... I'll try to find that discussion and
-> > > > refresh. Vishal I believe suggested some flags to provide more control over
-> > > > this behavior.
-> > > > 
-> > > > > 
-> > > > > It's possible (at least for TDX) that a huge folio is only partially populated
-> > > > > by kvm_gmem_populate(). Then kvm_gmem_get_pfn() faults in another part of the
-> > > > > huge folio. For example, in TDX, GFN 0x81f belongs to the init memory region,
-> > > > > while GFN 0x820 is faulted after TD is running. However, these two GFNs can
-> > > > > belong to the same folio of order 9.
-> > > > 
-> > > > Would the above scheme of clearing the entire folio up front and not re-clearing
-> > > > at fault time work for this case?
-> > > This case doesn't affect TDX, because TDX clearing private pages internally in
-> > > SEAM APIs. So, as long as kvm_gmem_get_pfn() does not invoke clear_highpage()
-> > > after making a folio private, it works fine for TDX.
-> > > 
-> > > I was just trying to understand why SNP needs the clearing of entire folio in
-> > > kvm_gmem_get_pfn() while I don't see how the entire folio is cleared when it's
-> > > partially mapped in kvm_gmem_populate().
-> > > Also, I'm wondering if it would be better if SNP could move the clearing of
-> > > folio into something like kvm_arch_gmem_clear(), just as kvm_arch_gmem_prepare()
-> > > which is always invoked by kvm_gmem_get_pfn() and the architecture can handle
-> > > it's own tracking at whatever granularity.
-> > 
-> > Possibly, but I touched elsewhere on where in-place conversion might
-> > trip up this approach. At least decoupling them allows for the prep side
-> > of things to be moved to architecture-specific tracking. We can deal
-> > with uptodate separately I think.
+> > Also, there's talk now of enabling hugepages even without in-place
+> > conversion for hugetlbfs, and that will likely be the same path we
+> > follow for THP to remain in alignment. Rather than anticipating what all
+> > these changes will mean WRT hugepage implementation/requirements, I
+> > think it will be fruitful to remove some of the baggage that will
+> > complicate that process/discussion like this patchset attempts.
 > > 
 > > -Mike
 > > 
 > > > 
+> > > TDX is even easier to hit this warning because it always passes npages as 1.
+> > > 
+> > > [1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com
+> > > 
 > > >  
-> > > > > Note: the current code should not impact TDX. I'm just asking out of curiosity:)
+> > > > > Increasing GMEM_GUP_NPAGES to (1UL << PUD_ORDER) is probabaly not a good idea.
 > > > > > 
-> > > > > [1] https://lore.kernel.org/all/aQ3uj4BZL6uFQzrD@yzhao56-desk.sh.intel.com/
+> > > > > Given both TDX/SNP map at 4KB granularity, why not just invoke post_populate()
+> > > > > per 4KB while removing the max_order from post_populate() parameters, as done
+> > > > > in Sean's sketch patch [1]?
+> > > > 
+> > > > That's an option too, but SNP can make use of 2MB pages in the
+> > > > post-populate callback so I don't want to shut the door on that option
+> > > > just yet if it's not too much of a pain to work in. Given the guest BIOS
+> > > > lives primarily in 1 or 2 of these 2MB regions the benefits might be
+> > > > worthwhile, and SNP doesn't have a post-post-populate promotion path
+> > > > like TDX (at least, not one that would help much for guest boot times)
+> > > I see.
+> > > 
+> > > So, what about below change?
+> > > 
+> > > --- a/virt/kvm/guest_memfd.c
+> > > +++ b/virt/kvm/guest_memfd.c
+> > > @@ -878,11 +878,10 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> > >                 }
+> > > 
+> > >                 folio_unlock(folio);
+> > > -               WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
+> > > -                       (npages - i) < (1 << max_order));
+> > > 
+> > >                 ret = -EINVAL;
+> > > -               while (!kvm_range_has_memory_attributes(kvm, gfn, gfn + (1 << max_order),
+> > > +               while (!IS_ALIGNED(gfn, 1 << max_order) || (npages - i) < (1 << max_order) ||
+> > > +                      !kvm_range_has_memory_attributes(kvm, gfn, gfn + (1 << max_order),
+> > >                                                         KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> > >                                                         KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> > >                         if (!max_order)
+> > > 
+> > > 
+> > > 
+> > > > 
 > > > > > 
-> > > > >  
-> 
+> > > > > Then the WARN_ON() in kvm_gmem_populate() can be removed, which would be easily
+> > > > > triggered by TDX when max_order > 0 && npages == 1:
+> > > > > 
+> > > > >       WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
+> > > > >               (npages - i) < (1 << max_order));
+> > > > > 
+> > > > > 
+> > > > > [1] https://lore.kernel.org/all/aHEwT4X0RcfZzHlt@google.com/
+> > > > > 
+> > > > > >  long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
+> > > > > >  		       kvm_gmem_populate_cb post_populate, void *opaque)
+> > > > > >  {
+> > > > > >  	struct kvm_memory_slot *slot;
+> > > > > > -	void __user *p;
+> > > > > > -
+> > > > > > +	struct page **src_pages;
+> > > > > >  	int ret = 0, max_order;
+> > > > > > -	long i;
+> > > > > > +	loff_t src_offset = 0;
+> > > > > > +	long i, src_npages;
+> > > > > >  
+> > > > > >  	lockdep_assert_held(&kvm->slots_lock);
+> > > > > >  
+> > > > > > @@ -836,9 +839,28 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> > > > > >  	if (!file)
+> > > > > >  		return -EFAULT;
+> > > > > >  
+> > > > > > +	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
+> > > > > > +	npages = min_t(ulong, npages, GMEM_GUP_NPAGES);
+> > > > > > +
+> > > > > > +	if (src) {
+> > > > > > +		src_npages = IS_ALIGNED((unsigned long)src, PAGE_SIZE) ? npages : npages + 1;
+> > > > > > +
+> > > > > > +		src_pages = kmalloc_array(src_npages, sizeof(struct page *), GFP_KERNEL);
+> > > > > > +		if (!src_pages)
+> > > > > > +			return -ENOMEM;
+> > > > > > +
+> > > > > > +		ret = get_user_pages_fast((unsigned long)src, src_npages, 0, src_pages);
+> > > > > > +		if (ret < 0)
+> > > > > > +			return ret;
+> > > > > > +
+> > > > > > +		if (ret != src_npages)
+> > > > > > +			return -ENOMEM;
+> > > > > > +
+> > > > > > +		src_offset = (loff_t)(src - PTR_ALIGN_DOWN(src, PAGE_SIZE));
+> > > > > > +	}
+> > > > > > +
+> > > > > >  	filemap_invalidate_lock(file->f_mapping);
+> > > > > >  
+> > > > > > -	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
+> > > > > >  	for (i = 0; i < npages; i += (1 << max_order)) {
+> > > > > >  		struct folio *folio;
+> > > > > >  		gfn_t gfn = start_gfn + i;
+> > > > > > @@ -869,8 +891,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> > > > > >  			max_order--;
+> > > > > >  		}
+> > > > > >  
+> > > > > > -		p = src ? src + i * PAGE_SIZE : NULL;
+> > > > > > -		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
+> > > > > > +		ret = post_populate(kvm, gfn, pfn, src ? &src_pages[i] : NULL,
+> > > > > > +				    src_offset, max_order, opaque);
+> > > > > Why src_offset is not 0 starting from the 2nd page?
+> > > > > 
+> > > > > >  		if (!ret)
+> > > > > >  			folio_mark_uptodate(folio);
+> > > > > >  
+> > > > > > @@ -882,6 +904,14 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> > > > > >  
+> > > > > >  	filemap_invalidate_unlock(file->f_mapping);
+> > > > > >  
+> > > > > > +	if (src) {
+> > > > > > +		long j;
+> > > > > > +
+> > > > > > +		for (j = 0; j < src_npages; j++)
+> > > > > > +			put_page(src_pages[j]);
+> > > > > > +		kfree(src_pages);
+> > > > > > +	}
+> > > > > > +
+> > > > > >  	return ret && !i ? ret : i;
+> > > > > >  }
+> > > > > >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
+> > > > > > -- 
+> > > > > > 2.25.1
+> > > > > > 
 
