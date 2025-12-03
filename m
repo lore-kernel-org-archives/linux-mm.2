@@ -4,91 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD69CD1268C
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 01:29:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C46D1268C
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 01:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116A66B000D; Tue,  2 Dec 2025 20:29:52 -0500 (EST)
+	id 661256B0010; Tue,  2 Dec 2025 20:43:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7396B000E; Tue,  2 Dec 2025 20:29:52 -0500 (EST)
+	id 611E86B0011; Tue,  2 Dec 2025 20:43:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF8B76B0010; Tue,  2 Dec 2025 20:29:51 -0500 (EST)
+	id 501576B0012; Tue,  2 Dec 2025 20:43:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D778E6B000D
-	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 20:29:51 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 79AE113AC2F
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 01:29:51 +0000 (UTC)
-X-FDA: 84176428182.14.73D9DE0
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 930911C000A
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 01:29:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=grU07+R6;
-	spf=pass (imf21.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E21F6B0010
+	for <linux-mm@kvack.org>; Tue,  2 Dec 2025 20:43:16 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D48B6C03F5
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 01:43:15 +0000 (UTC)
+X-FDA: 84176461950.16.B27FA2E
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A05031C0006
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 01:43:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dCpwiOtD;
+	spf=pass (imf18.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764725390;
+	s=arc-20220608; t=1764726193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pTga2TAwNScG/3kVeor5h8KiVEoB630/ynsQmQFDxGs=;
-	b=EmvB4cyaiSKKbdSRohM9KNFiO/IRgcTijZ+LtoPKzlMmA32RPBY3S1l9ivr8+Rm1pmh6mT
-	ejeBtxBhRtvfcvnMPm0EOkehUUg6skdYj11hdmeaDWaw/EzuG4ZvWqawi4Lmnj0+D5yPNi
-	LF/lkgWwIvl7vuY4j9zNHOMSsV6u6u0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764725390; a=rsa-sha256;
-	cv=none;
-	b=wUY4omh17hkR/mvyCBrDbzVnBKY4oeAOF58ReN9K2t9xsB1mhU/ZEo0JZr7I8lkTZOKNeL
-	CcBwE+RjVtMBxc3kWGEjnN2Ltvq7yakr2OL/IAZEjQs3SSi7seot02LM4pbFyi2YYfeUfR
-	LnQDM7IEiYSHnrTD+Ui1JY9ikomAekM=
+	bh=ETjbU+fLGhGDfzxgTnDMenSPqcjRJRRAX4hkVQevMtY=;
+	b=mbu7KlCkzlX9GtPU381y+pOMiPlrmGjEAF/xcd9bdQu23n2eJuFgSA4YyjwESQszujO8dt
+	LRbjT1dgYBMFditZzmwr4wGnQ+GYUWOSrtXh1NgCKK/Z2wc74Mxy9BexZuW/yaeLX4LQt6
+	z79VdlbQAcqBCgaLDpfSu9wqXGXDhQw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=grU07+R6;
-	spf=pass (imf21.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dCpwiOtD;
+	spf=pass (imf18.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764726193; a=rsa-sha256;
+	cv=none;
+	b=1X6kej7Lj5ZUc3TOPhLsztcbbcqiOh5CdSDAgpa0wk7a5WinnU0i3NHjQefUAi5u8cZ9VW
+	axwTrXKaU5TfVABYw8Oeuq+Gw8Hgdr3md4vPmtVI9Z/L5fC00ZTbsAnetsRhbMpMhLz1p0
+	XbcPejYG1a38+CVX4m6dL2wJ3NdhtKg=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8b5ccceb382so75827485a.1
+        for <linux-mm@kvack.org>; Tue, 02 Dec 2025 17:43:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764726193; x=1765330993; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ETjbU+fLGhGDfzxgTnDMenSPqcjRJRRAX4hkVQevMtY=;
+        b=dCpwiOtDiXXmMcAJAjBdrWb2zAYYiNTXLQWg6PbBWb/BZ9zp7GT1FvEGvSIs2YNJKm
+         DK17V+LJazdTp/GkJKTYDSEM+4jGPQQLm982+chig4EDGkJ7wh1dvp6g28ABUmqZtSqf
+         DG/B5zrlPzcyjIwrobjh5DZ/WTlMIXeL1kmk00fRS2CZTnFT0r+5CNai2WtJVBHBAXLU
+         DvVVseoidqShzzaidBKlEJWMsCu7/srj4KYd3/M4gRrtQg+F1nYqQXi1bAvA3l8cD6SU
+         AdSYtKbFW/1vw5PXKlJvITIhqs84bLNknRMFve2V0CLJqmqNcnSWzStcFuJKvvEEyWL/
+         cqPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764726193; x=1765330993;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ETjbU+fLGhGDfzxgTnDMenSPqcjRJRRAX4hkVQevMtY=;
+        b=bcxAjaWCL1wDSc5x2pdgZCNvKuyo2eLdMbp+SFmwcXhNnO8EWWP9eFSfwUaeEoO4YA
+         nGBvEHWHbCvlAG8NZ/kzlQGr7Jh/fQU18R5YOIEUtgOAFjBx204Z8iAQpWeHF/OYD1c5
+         Dy+FQ8Iymkbt1AjYlxwa7y1PzEGdiCk0YVV75xbTNEMSTOYVrMsO/rXRngPgjXgqvikU
+         j3Qc+rRSmjrcA8N+QjDTPlDkjJCeltY96hl/v2gBPsU9kx01p9aHzosPYE7n0vIgNCkp
+         8U3nNPG59Ugwc6hUiJYeCLeQ+N3E0xHJHmA9CbtBquSQgcz9hALE9bjd1pBT1TegJepZ
+         fs1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW0rQi/ruw6PDMEU6NfzpnVm7pmExu8UYMPN34CcaEqCK/VtdVwXfRAZDiMqq4rQTOxBpSJbbEeUw==@kvack.org
+X-Gm-Message-State: AOJu0Yy8O6HrD3CdFnLcgO7ZC2zZ1kD+XAx6PDHPW9ZFNL5Yn+IpklxI
+	x6MBslirrgLCG6ADxohu9MIPKjK3nSnN2bauUHVGATvp8rfM4FTy3EvQ
+X-Gm-Gg: ASbGncsnMUmAWVyJttoyy8QP1xYgmRHF54d0ia5YKH51RswkUorhM1JXhRmyEo6JgTr
+	kwx/ptZ8u9zLteSe2FtawWjotg6PUGhTSh1AbpVCj+PI2kn5lCqxTorW48Sm5kBVHN7hWiNItkx
+	uRzB7SGMLhMvEe327xTzNUZyOs3q1/U7bkBGIEWkWOD389Cp8c+94kDIiZRepADoLAT4N7GSKcT
+	J7QxptiPe10/rxsR5kTZ9OC6DowWwI5kY9lTHhB/L47mkhPJShKf/FppUI/qaKVldmSnJFTS+wb
+	Y2g/cGXE1febv0dQpxNkFoXfdnO+vqTrGFFD2B6tpLIgajdxV8dFtNnWj1ZjENpGl9OdFA2AlDl
+	8tdAnCTM2gVVhV3KOxeV2DRnmuKHJTUb8NPT1OHv11giMT0U9wLdCg5DCKMGAdr+GH738N+psgs
+	8xn9BXA0kPpWGLbJfxcp8aDTH3MdevNYMSv7bfOkeD9ryVj0AxQmYDGzbfVnUX0RpjdONqvUaox
+	IFE233TvnLSRS3kNl90URtYcA==
+X-Google-Smtp-Source: AGHT+IHEy4Q54AuHhgpVA54+15RACthkHURALKVHD4XscXZnJiegxklSCLv18fakX1t0x2ItohbFLg==
+X-Received: by 2002:a05:620a:280d:b0:8b2:f29e:3b00 with SMTP id af79cd13be357-8b5e6a905e1mr82884385a.51.1764726192746;
+        Tue, 02 Dec 2025 17:43:12 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88652b6d32csm116059906d6.43.2025.12.02.17.43.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 17:43:12 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AF9EFF40077;
+	Tue,  2 Dec 2025 20:43:11 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 02 Dec 2025 20:43:11 -0500
+X-ME-Sender: <xms:r5UvaX8kRjw9Za8VOV-mDwKl3o5m_0sOG-_0gY2DzhaXqFs1WB-4NQ>
+    <xme:r5UvaWylMKb71xPmCEtNGlalZWQBaRdN0N5DrHUkCyJXg4F7rM_GTZCeQ3zRmj75F
+    q60IiluxBUUzsaRkN2rcFKnsAu-L6qyc7p3tvEi7IoSBGLBs02RwA>
+X-ME-Received: <xmr:r5UvafpOA_vo5dBFjZMzxKysd5miLLkD5HFhhr77YhSXq1iYQ2Lh1gVB230fzzFQF3wSA3D4LbB5Jaw-or3tKD5fN-t8Ydvi>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduheelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffeivden
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
+    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
+    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
+    hnrghmvgdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehruhhsth
+    dqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhho
+    rhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhirg
+    hmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopehurhgviihkihes
+    ghhmrghilhdrtghomhdprhgtphhtthhopehvihhtrghlhidrfihoohhlsehkohhnshhulh
+    hkohdrshgvpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
+X-ME-Proxy: <xmx:r5Uvafqz10y4zTuITFREwYLLR4rXPfVo0QZUQTq-dmXsQIoyXt3DEA>
+    <xmx:r5UvaXCmws2k4wKYaj8Yk8tuPB9NGZ5yGFiMF7ZfgoVl8LsEBmlI6Q>
+    <xmx:r5UvaVuOG89TuwnIhsuUIS07NgQcJIh4b-iTGA29NHJZOeeMtKNVkA>
+    <xmx:r5UvaeIgAKCeYGenBcAZ-OjK8X0JFRC6Fx8OUpqH_lgdaLwVpsBaag>
+    <xmx:r5UvaUaSaex5G1iDvNoOzsD3PtBz07z-14zzyZ0yCQyAK0Kic_s8cU8g>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 2 Dec 2025 20:43:11 -0500 (EST)
+Date: Tue, 2 Dec 2025 17:43:10 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
+Subject: Re: [PATCH 24/46] rust: mm: add __rust_helper to helpers
+Message-ID: <aS-VrkRdQc0H6nSs@tardis.local>
+References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
+ <20251202-define-rust-helper-v1-24-a2e13cbc17a6@google.com>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764725387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pTga2TAwNScG/3kVeor5h8KiVEoB630/ynsQmQFDxGs=;
-	b=grU07+R66tQWTudKxjuJrjV0MqznBwqRktZIsP40MY//R1tW1KaoBOXYQvn+qjXW6ahtjY
-	h7bzYUAxwwXES071fBPRlZzCn3xf/UJYEdr60FoYqgr0RMvfY9HKf6UgHTUTYJvxvLSPQ/
-	WpfOo8sCVlsEOsX+c3UZxuSctWTLboM=
-Date: Wed, 03 Dec 2025 01:29:36 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <e5e5bb62c5a40d2673cc1233860143571aab9d12@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v1] mm/kasan: Fix incorrect unpoisoning in vrealloc for
- KASAN
-To: "Kees Cook" <kees@kernel.org>
-Cc: linux-mm@kvack.org,
- syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, "Andrey Ryabinin"
- <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
- "Andrey Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov"
- <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Uladzislau Rezki"
- <urezki@gmail.com>, "Danilo Krummrich" <dakr@kernel.org>,
- kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org
-In-Reply-To: <202512021522.7888E2B6@keescook>
-References: <20251128111516.244497-1-jiayuan.chen@linux.dev>
- <202512021522.7888E2B6@keescook>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251202-define-rust-helper-v1-24-a2e13cbc17a6@google.com>
+X-Rspamd-Queue-Id: A05031C0006
+X-Rspamd-Server: rspam02
+X-Stat-Signature: xn55kbten85jiozqfn3b5rpb5xdiz1ep
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 930911C000A
-X-Stat-Signature: g1pocqrj4jo7zytaqq8qzu4gwffrg3sr
-X-HE-Tag: 1764725389-134430
-X-HE-Meta: U2FsdGVkX18VpPUOBVmqchZqDszN22KuoYvljfZYnnRCNti0SAJDFNo32n38AGnUzm26NoKmtUdEoWxZVGotLqP+A+2JQLBtH7fs8uUHJZdR+73G4RK2eAU4B13AywRMBubQDAWlzNihbHcsZYQw7JAiNK1ZV9VLxdunfcH56o+IZJ+p+7kpuS9AMW3reWd8ck/A/kBgoO46tbJ+qZTx5FxI8S5Xr4I6oypHTjkgL3FP3moJzJd2vf6dqIR8FpWV4qvsu7K2yZJSJU2WbdZt3fVKJzg1vTV534Ad6Upbn3TcxVtXYtAG0grGD+LX/+a2HGuWi3+HzELIhxxERNB23O0m182BNPJbWNdUvdUzXuhaOoCUg6To9zRMvniXdBAVQ6yyTWX1sWqpsDj2j4llqZde7Nsz4slJqxqGdnROG35uFQXS9sRF0NrU+WziPp18vMqFob08RZvpZaQUa4tvY5uLDqnIPzd2g80zLFaztmdSR9T04SLpOqYNji7tImgoVCBHYOuMA3GZCMYAiTWVCyHwW+LHkc5axrfUchwPva37z4gWIO0tc995kTsVBHOTVppggzQl1vwZlZNu7uFxpP57+KkvOHdAKYFS75I+3GUPMfiRT4AHCG0/FUF4c3Ele1VqDyFNTQWngBC6GOh9f8TesLRZOWmnMR3GXfOAdDPfd5j5GIjObDhzAn3FtKVel3gj+3g2RohVV9W3+n03U7Y388+cd/xgdRVqk0k/QNHmrKb1OYtjZjDuE/M/BPEJVEIoqpnWCS6hD6bxxOSSir/NEzaQD9NLooK8l3kWmu2S2Hby3P53cQuD3jflCuYSM3wqD9JAmwAyZcGGf4IvH6oXqwCggx8IZl1uk6HT6GV8VWDdEj3TgAdDHsbBIi6eyIq9Mcnr636NVuvQFsdO4DJiUhHeg6/h7BlrGxkTNJQkJOOje0Yf407dd9WoWeUrsYYzOVfNABp1V7+K/U4
- gtA==
+X-HE-Tag: 1764726193-636235
+X-HE-Meta: U2FsdGVkX1/FlVUAVdaAT/9Oivw0k+zjU7l6IzZPbRLLJX40bUFU7jtfJCkbqtzcWLp7KiGlc+SwoQtiegpgXbgAyLW3ln5vB+1m8MtE+9G1KoT2o/w6mZM+jOGkz31DMFlnuXNWSOutoWjqLKmMSFR4hG7nlseBFqFKfwQMW6h07xaB4FA8qATY8oafi16uCS9AMIEZclfJBOgf04Uh7z/QIyFOyU7T5WhTcWNz00QuBbSlxA8P0DdTrpsWgXOdrwf8bs19iOMQCxedPLW9bQBhKF0nFO7UVEgyYr00N9YWgHiOPm3RQsXX6QjxWHJhHKykxImo1nplgPGogdMaaOWSIJP8Pi+Vajn9ZCV4CkAcn889vbNPQEyYgCq3sINACALeq8eU3e8WsyVT3y4a5SoD/e1kWgDv6Qm1IdUOXrbcviVSqmuypzWC3Ftw8Rwe8hHX9H8JS+39wXSc24ANyqEkNWbd7W7x88ZIWy6qJV1GIo4OaMyFECXucNlC6ySVQ6KYgiAQP2Z0EZ9534I0qneFtLhQfhdmnR5ESIfuCTpxVsa5CZLgzPTiMz4XAz3gmbk+TYmyJyeu9Mm5YSzp4QwRZ6iUTYS6ON50bKTDkOG0dkLjNqx/nKFFSnFI3/w3V3y0B/Lsr+Vl6admdmuyi3PaVN/H5Hf/FjLid10h+mUwSaqbiwW/MyFzZCfMM8Fnuot4ZUkg7Q87+9Vtr8dWFOe+o0wwSNTca0Mfhk9bBbh+N7s4DZJE4nC+rJeUlp8i/fmYN2gDBUI256XwgYtytV4eQyMXUqTniPzhxcaCL31NadYowHni5gRDLkPnhSyOri8WUSEG1GUySMNcXAKKmzLG0cmItjpJhQg3NiB7zQiZ1+u4QDFZpnU/l3xZJRqLu8vVCeGi4Zh5A2Vzk0knOFBWdCcSIDgvYbcPAYc5qpMzdmmqK1lv00eVm3cFXBWlQrGdgdnYFbr/cuA5U1P
+ 18E9lNFH
+ EKf4m3ewNaGO5A0rCL2inRbKbsokfXtpNadyOONzNObMWQmmbqVVJexA1ybFBlXCJhLva7KBywejx4HesBCwlcBbqqE0WicWWL/nkZt2eHVdX4r+L4oKGWA4XQMR8EcIfhgyPE1NN/JMxWgyQTD8yxMS++3ga6kz+DADdj5FJyb0STkEHBL1V0meCXonoVYwpBPuJbcSkx4UuOanrWjjWm+sUqYPeEbZWgc9ySPxHce8r31JNKewVVSdjMcE48kNaE1GiqdTuxJwdMsZCs8QflD1Zd99tyM3QDUDtM7FubbBB8HJi/3PMO7zlqzjjHUVdsxo6DEiILAUuWglFy3eYfpx8mk8pSrSpktpwD997TFh4ZFSZAFJN45CrmoaiZZgvbCeSiV6CH3DS70XYZUiTk9HVe4K7eorCTzY6ztaieCEq8otNVijg0kqkO2J+SujrtKSMsyEQ6JaLSjNXyxXXdn0WhbGJH++CxQRKdDpRcKT5cdD0rWYe/IPNBz1TAThgrEY5cFtekGCcgCM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,59 +160,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2025/12/3 07:23, "Kees Cook" <kees@kernel.org mailto:kees@kernel.org?to=
-=3D%22Kees%20Cook%22%20%3Ckees%40kernel.org%3E > wrote:
+On Tue, Dec 02, 2025 at 07:37:48PM +0000, Alice Ryhl wrote:
+> This is needed to inline these helpers into Rust code.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+[...]
+> --- a/rust/helpers/vmalloc.c
+> +++ b/rust/helpers/vmalloc.c
+> @@ -2,9 +2,10 @@
+>  
+>  #include <linux/vmalloc.h>
+>  
+> -void * __must_check __realloc_size(2)
+> -rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
+> -				gfp_t flags, int node)
+> +__rust_helper void *__must_check __realloc_size(2)
+> +	rust_helper_vrealloc_node_align(const void *p, size_t size,
 
+The indent here seems to be incorrect?
 
->=20
->=20On Fri, Nov 28, 2025 at 07:15:14PM +0800, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes=
- two
-> >  issues:
-> >=20=20
->=20>  1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag wh=
-en
-> >  unpoisoning the extended region. This flag is required to correctly
-> >  associate the allocation with KASAN's vmalloc tracking.
-> >=20=20
->=20>  Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) expli=
-citly
-> >  sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with =
-it.
-> >  vrealloc must behave consistently =E2=80=94 especially when reusing =
-existing
-> >  vmalloc regions =E2=80=94 to ensure KASAN can track allocations corr=
-ectly.
-> >=20=20
->=20>  2. When vrealloc reuses an existing vmalloc region (without alloca=
-ting new
-> >  pages), KASAN previously generated a new tag, which broke tag-based
-> >  memory access tracking. We now add a 'reuse_tag' parameter to
-> >  __kasan_unpoison_vmalloc() to preserve the original tag in such case=
-s.
-> >=20=20
->=20>  A new helper kasan_unpoison_vralloc() is introduced to handle this=
- reuse
-> >  scenario, ensuring consistent tag behavior during reallocation.
-> >=20=20
->=20>  [1]: https://syzkaller.appspot.com/bug?extid=3D997752115a851cb0cf3=
-6
-> >=20=20
->=20>  Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc(=
-) sizing")
-> >=20
->=20Is this the right Fixes tag? I didn't change the kasan logic meaningf=
-ully
-> in the above patch, perhaps it should be commit d699440f58ce ("mm:
-> fix vrealloc()'s KASAN poisoning logic")
+Regards,
+Boqun
 
-
-The tag you provide is about shrinking but the issue I encountered was ab=
-out
-expanding(Grow the vm_area) and kasan_unpoison_vmalloc() didn't work well=
- with expanding.
-
-Thanks.
+> +					unsigned long align, gfp_t flags,
+> +					int node)
+>  {
+>  	return vrealloc_node_align(p, size, align, flags, node);
+>  }
+> 
+> -- 
+> 2.52.0.158.g65b55ccf14-goog
+> 
+> 
 
