@@ -4,115 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9EF5D1CDA6
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 22:28:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE5FCD1CDA9
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 22:44:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96D2D6B0026; Wed,  3 Dec 2025 17:28:53 -0500 (EST)
+	id E292F6B0022; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91CB46B0027; Wed,  3 Dec 2025 17:28:53 -0500 (EST)
+	id DDA536B0023; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 832376B0028; Wed,  3 Dec 2025 17:28:53 -0500 (EST)
+	id CEFC06B0024; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 70A5C6B0026
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:28:53 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F87C13BADB
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 22:28:53 +0000 (UTC)
-X-FDA: 84179600946.17.9668F6A
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 586B240004
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 22:28:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GJuBZZYB;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BBD996B0022
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 17:44:57 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70871160779
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 22:44:57 +0000 (UTC)
+X-FDA: 84179641434.27.6380CE2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9A518180008
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 22:44:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=teBeR5Jm;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764800931;
+	s=arc-20220608; t=1764801895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DJuYblw+dPBNjt91k0IyybwASRsrokbHzJNmEJrb9Ow=;
-	b=6Z1yYuisgLw5LVL5PEqXNKp3gP47FmePPk9Z7swjPCavmWR4dWUpcj+byi6+a7ECXKIh2o
-	3XDAUXleyWTL07QH2Kwqeal0+L1w89RICnhDmnJqNKzEWOu035Yw/B7sCAuoig7ommm8fu
-	q4YhTK7Et/lnnU/DHeIU1WijsEm/6us=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764800931; a=rsa-sha256;
-	cv=none;
-	b=IO6GVdKXv+cUyHdO8QGWOTfnzoR8JTKa9Xjdlt11ABoWGV1m5E0EOZEHzVBl3EOi6MNSTm
-	qzL3wBPArRpDzORlZ0jOEsuAbzTcawHM7iQDgFXFlg/MaNUT3alxgx5Ysw9J5RsAaT4WBy
-	oAyUsjChWRLbMEtOzLLiufTgMNZs40Y=
+	bh=/RmJtxbeGi6mWoIUj60Iza+z4p64cnX0BW2tW7vyjyQ=;
+	b=6pjchG8mPvve0cwl4w7BPGmTzqaLx0371JD624hHVAHtodsCp6wLpOHwm59iwI+J8rsiak
+	/IOjtfCjKB1B80djODCAxaP/PcHDLL0QF/6dWV5NbE8oF4e87cMksYs8VglsqqGhSnJMkX
+	DQcx8+5WGmJ8yZMh5q6eyex9EtaueYc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GJuBZZYB;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8b29ff9d18cso21907885a.3
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 14:28:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1764800930; x=1765405730; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DJuYblw+dPBNjt91k0IyybwASRsrokbHzJNmEJrb9Ow=;
-        b=GJuBZZYB0F3k0zWaU98eG1uoMeuWQq3wZzZlg6N11TY9hFGK4SgRoQNU5TizSXcvBe
-         Q+XxqkGUDFoye9u+Hpml/hYC23TkDFhcGXoqvNzDZnASDSWg8Vz65+pF0yM8zRjTNdwW
-         h0eLn2RBuxC/zIYrKyljQaK6mglQa3k/ygijSVORsvFT0iLWGXnINcP0+ldp4SFJBPZp
-         HfHehQ/9C+IAvq1Y1v/SLqXBh2tQIucChToVaXFn+RUTKiHlNjVZlUB0w8VvhhBbmo7t
-         +kIZIhmKrLOFBQkgk2PoYN9OM2sIH9wDVxm4TWoaIHT90bL74XjNY6yIujcvZPVqwjjA
-         G2fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764800930; x=1765405730;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DJuYblw+dPBNjt91k0IyybwASRsrokbHzJNmEJrb9Ow=;
-        b=DcvBp53NIJK+CNrU6HBQKIYVaXqob7Ot2/PtEb6NQyZEfkqSmm4cPRYA6jBhKh1UP8
-         JRdNTa7dgoa374A8Spn5fH2MtpjttJrqo398sK8zngiNqMknYaAeMQQg7rCEANCy/2OG
-         nT+PPGlal8oddc8exHZVCoWfLA/LyryTgdgLZ5WOX8aTynJUXzQjO3lnqULe8KNw0X5B
-         PN+MCPBEzme2b2dCF/nV1TG6YjgRCc+MZJDyGauhclc5stcW/5j3LPTobO783AhlbuL7
-         ONJTkJpypGtVLH1gxnajAKasr6eAIAUoo8roGuiUqGFoHV2m2qKItXUIIKX5VXym0yVs
-         Uqlw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlOyFGTtRPrWx4pTwicW3AGQJ51ulCRdKNaIRtrkb0YT/CI2kvacNGefpDAPd1jnHH9asFC/jJrg==@kvack.org
-X-Gm-Message-State: AOJu0YxPYgzzZqZ3PzSdKI7CtV+kPXNqUMBoDY7EFKbtkXQrp9kLl1Tv
-	14iqDzcHbuJV31+Z0UJuTv2Nsk28OVMxXp9txKoKfI3KXbs2CHUEiS4YZbR6fYMZOek=
-X-Gm-Gg: ASbGncstccTuC4+gFEOsHxbtl7MRtStjVhb6Cvq7AQ5bvuCpoeoZSF9yUuc0rdxiOjq
-	aVGgFqEmzmy2GsmD3iPwVSgxE/1vF7+xgHPPwWs6d1AjfrYYvfoqZVqOBR4jOdyVpYWK2E0oxPw
-	xtMMlTBjd63Io0QznByXzVUDQaJy35k/ejnhdrlv+mWF1RG5VdLI0InAi+fjrQY+4MUxiz1ufuj
-	S3lhDtXhms6gb/4e915OHKw2OdUGaiR1E6f/EhvGdcxNqaRTgofRDFkPkBHhvIg3keXYWUOZIUI
-	P2Cwuy4X15iBNcmW1pwsbGv7FWS719PQyebS0+VqXeT3Z4d3kVFeOMduQDhfB0fcFsl1mB1VxMN
-	f2yy1E6epd/GQtzlZG3R8+TcfNPBR8sWZztmff75aiOrLlmrZZOurcBYGckFfXpncnnI5atjSGk
-	ZcMpRau0HhUtNoif6gpRD3Vc9ZPRY=
-X-Google-Smtp-Source: AGHT+IEUEwizfwI1xIa7YtPlnP2+rXbYxdkvrH4FZM0/DpgOe51+DlMUC8XISbjJnJhjqbc0VNYliQ==
-X-Received: by 2002:a05:620a:2584:b0:8b1:c1d3:8e91 with SMTP id af79cd13be357-8b5e5b15b5bmr548684085a.39.1764800930450;
-        Wed, 03 Dec 2025 14:28:50 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd2fbb8d1sm130179381cf.9.2025.12.03.14.28.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 14:28:49 -0800 (PST)
-Date: Wed, 3 Dec 2025 17:28:49 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Jayaraj Rajappan <jayarajpr@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com
-Subject: Re: Calls to do_swap_page() from handle_pte_fault() on a system
- where swap is not configured
-Message-ID: <aTC5oXnJqoHFiJre@gourry-fedora-PF4VCD3F>
-References: <CAEJW1wECyPh-wbgnnoOGY460ido=U2A3rPhF1FQAv7txed1-Rw@mail.gmail.com>
- <aS_ycQQh5n1cVIRk@gourry-fedora-PF4VCD3F>
- <ac78e666-6c59-4faa-ab87-8b1c7caaeb9e@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ac78e666-6c59-4faa-ab87-8b1c7caaeb9e@kernel.org>
-X-Rspamd-Server: rspam12
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=teBeR5Jm;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764801895; a=rsa-sha256;
+	cv=none;
+	b=redx+nh5ohwVtHVDDDteSAZi3bur4gEGa3xKvspLf5LNUCb0QtLL3ShU07VymRnxx/Xbrc
+	Ii/qhMFZRKX0dAXrV/giLxlviPSFrr2qzDP5oUjvjW/COvxCZWxMnD34VGtH3jSX5anAY9
+	ElzZhRCI9eGULTc9h5cxVkW+KF1cNec=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C78543B7E;
+	Wed,  3 Dec 2025 22:44:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415DAC4CEF5;
+	Wed,  3 Dec 2025 22:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764801894;
+	bh=4Uj9vmf5W51Hq1VXIv7uGJ3HGRMZgiH69aSNHXLBM/A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=teBeR5JmucF/aVSYNvWbrQMxjrj1aDFVSGSjka5MJN9DX0cUY+g95fXVemCkWQs4J
+	 WZX7YA1tTnhHEeqTo0FPPHuBnn9BsXt1fON1Xmf/qYeRu98AVU3ZazEGFtzaW39WX2
+	 1lw6h+xbEkpLRCsPYdKxugGHQ9rVC3K+9b9NQOW8=
+Date: Wed, 3 Dec 2025 14:44:53 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>, llvm@lists.linux.dev,
+ oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>, Petr Mladek <pmladek@suse.com>
+Subject: Re: [linux-next:master 9966/13055] kernel/watchdog.c:74:22:
+ warning: unused variable 'hardlockup_si_mask'
+Message-Id: <20251203144453.be34d189c5e6668ce2da06b3@linux-foundation.org>
+In-Reply-To: <202512030920.NFKtekA7-lkp@intel.com>
+References: <202512030920.NFKtekA7-lkp@intel.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 586B240004
-X-Stat-Signature: oidskwadzztxgzhsen1jzqgbx54fs5pk
-X-HE-Tag: 1764800931-902326
-X-HE-Meta: U2FsdGVkX18KJESq1Hx1oSj0wj1hG9W6LtKfPwVsGByUy2275TdzVYCpOobS/RJAPxx41efxETaikoYfkC/OTzbPZ8r49XDIIBQ4RF+/OpRPXuQy+U/VrdCMhgd6Af0X9N39+K6/+Tuy4qzuussk6Wuwv9+ggc+1NjJsqnATbD+rUp4Ka10aTsz/x13dte3G1iZCNJK4yWqyQC9eotQCbKEFLUZTTBVgBEUWxtDPaLvr91vgSw88azz6PKOixIZMXtvARkqhZnOHbPoKkOe/627NrfmQi+27wuMypLdm8l66sH42iqYSjIF9IuqFtq1TNKDxUXk2E/Xk/CFoL8dF5t5MkPG+G2Xbcgy2HQ3X0sc5iC63qmWq2Vxm7Rl/UtjlLq5XF/RQpACY4tJKWlVf5gXoUAkDgJThq+yRBvH7Bn2GetvkqADqnEujrI0AgzTAe0YenoIW/a/f73R/JaM+0TVxoHlgkBVRQ1+t+ofbrg6QWbj6BuLDMGSoqtN6QI0leFFBiJh+PHHMDq45lOLqmbZmZnBeLci3Pz1TjLNzrdYSH5JcCCLRvDmpKDXBBIYqeuMXiQfqDtZG3q40YRNBlbcSsOqP/u3vE8kBGG9vO3t64vbasUNwfQsMKdJHIBHBfaC4zUN9ycDELaHsG7a5gzB89dl/Lb3R8nE8waz0g06pPd7mS6PI+cFqeO3NZxl0HUqj7Wjg9XXTCBOfBy23uMHDD6htWe3WPaJfV0YH53nGLBoD/bfVh8rPnW2X6ikp8UeRVlPkgVOCoMUOzbyw7cTfjmskWC384h8tD/7s6aC72QQed4O39ifsluuKMOkjp11Ek1ir82vnHiECkffUgLC23+s9sLPg/XwYVcW4Z24PRRZxQFr6TcoowzpQyPVRW2JEeGU83XDtdX1tdknn9AjcmHGIUvWldTOBXT3OeURXVC+LnWbu4p0qXEBdulQn5an/wu7kSoaIX0T9+jA
- 793jq3hL
- lbD/O2o+/E0YEntEyAkbeelZdyvMuZOmYHlhGspb9FZ68hAdInyGmSb3FoifB4qJou38WZnmRO2WlKtexKpyjfFR4QJ9hGeYPsDgkMsQ84DjJb86yud+L3u3iP7EgOlRT0Bs5I64Xv+3e0gr8YjOkruTd0Wt2jNFsjAfWudiSmrI5UNfJJpFAiZr4H6Cy6ZodCTfxr0Zpk2nu2W3/Yu/vzGz03++TmEjnMnUjm0i3Rj9nL2RrU14EaExWxqjMmWWDc57SagbsdZszeXS8dJSBdsmSwMRZko6g1RRvmeTSScaY6zBBkKIAZUePS0cwKC+psM8W0MywAK6IcwqFOgzjASinubll36KtAe91cB82PkRBKurdx9x2UVubtly2bz3xu5RG/4ovX8UgViZ49yUaYNaLPicgrQXB2g0HB2JDZSJxpknsPW8Un10NtD+aI5gyFZajWFhccwETC9hDhQDCYbvYkw==
+X-Rspamd-Queue-Id: 9A518180008
+X-Rspamd-Server: rspam11
+X-Stat-Signature: bfy5amqxkh8podmbqcb1qc7rd8ghggen
+X-HE-Tag: 1764801895-760492
+X-HE-Meta: U2FsdGVkX1+bUAs3s55B1lTKWSDd1AvtQy+uiy6xV6njMYDDBoB2E9MJtR7uIQRb7Dopv2RyU4/zDgm3cZfaH9f86yr3sBY3j8wnC5w1D+F0amt3ndHqj7VZ8JbAq3qt/1ymMRpGMGZzvNiy1WDPV2wd3/HG4mvdVo+Q0G+yIivstSh1qGTEDeXXzAB61aTfsWDL77QOLC4Xtwk0ad1UQVvniHFHCX7K5A6JRlyiEIBcQBdryH8nuJD1V0luNoEbzaERTL1vY1HCpl8yPFdItu3oSu5cEI+2vBcuHixLuQqYpBq6YE4+kfe3lgSBOs2ak/03ug13vr4qfKCOvra2Uqy84w4bwfhXhVFHNCdHDxsbi1YZAYrOoQIsJbmOuEGO6Xwpn3CPG5NtmZbxbgojYqBUW9iWhqTDoV33iAYcTuMqKGdl5NVh7CMV3SNKginuSKxDBktIT8NRrq1Lu7ajw9GA2FGULiSAbn5sKPgUHCFCOYNS7M46r44Qe3RjIQG/mUCW8mmd+MNhH1q4itdrDursmYwwr/eXV0IUYiK90shFy/xQmVl8n8erhYIhEPWCYPE1uT8tZ97M6oBQ+TEwCajFBcDUDv2l/rxyFGXMs8tCtst0PMZXnUl+4CEy/+TC/P7VmG7zjkCpk7BQlkNl1gY81K0o85qYZX9mv+SNrqkt0m3xJSBMJKNko3AJMMypqjKRPsUWCqBNntJUDMiuq/TsaFNQR1+eghBE2tijviOEANr0iWra0ykFg1aSzfP7T4kE4DyR0lsE9z8hWJJrhMkxGDkUYX0ydhpt+auWABHflleTo+DDGxwc/aOd2uAunOdVvgw29CAtpc2A20M2bjZAzOd4aVWPqOkkZVZuxWiiD4xOL7dDJRZLX4aErXziVAruxiuATwNC1IOs434V6nM7GKnr538w0Z2A+BWSdWXe4N+GOu2+AOHyMKNOeFowl22ZEwCOpoc7U+rA3aj
+ nR4RkN5N
+ liOPh/h6FKsK5VTcw2dQIWfcR3Y9tFijwVFafJXYbZjdA/62HEbz3Wt872s40uD4wq9SMLkvvqRBCApe1luggXiVmPGfJSlKE9B9kZJPhiy+G30bUs4f6sS0g+h9K6hBkxojikyN0O3N6Swhi2uWn2X3I4h4/k+oP2innAYW/d4IPq4rm34zMyJnU/mUH+DscsFbVau1hgBYJhloMMVLkWBq3FP9D2vDvd7/XlTMJX7uU9IcbnxLeLXaoTbYz04wao+UvSOeI7s8Gk8GQr79KERtXLNB8phOQHu3qDLrkJrubyzkJYUzHSHDmhqVoT6QyJXXLIYMBSmJV+Xcz2fhB0Yg5J/jsKjTRChaaiESk8zOYnFkPYLXV3BYkhrLUjAEV2z0za/O3PHDQqlac1vsd300hBrAjdzfjyuKhBbnumgLxu7oX3EtJdqOFjTKS4Prh5c4egpJSUIkBMJ9eji4OIm4yvt25yinz4u4U13wjZo53f6rirZmEdV40XDMVa2haTcJUzqulzq6u3yvFHLHMD1YChcaJQK+jybaXm67ZGHVH36HgMCkw5/nMElik0PM/1Ovl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,26 +92,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 11:12:23PM +0100, David Hildenbrand (Red Hat) wrote:
-> > 
-> >  From 92de7131f74b9300ea711ceae98bbe137cf0058f Mon Sep 17 00:00:00 2001
-> > From: Gregory Price <gourry@gourry.net>
-> > Date: Wed, 3 Dec 2025 03:12:44 -0500
-> > Subject: [PATCH] mm: rename do_swap_page to do_softleaf_page
-> > 
-> > do_swap_page is a stale function name with introductio of softleaf.
-> 
-> The "page" in "softleaf_page" is weird.
-> 
-> In general, the "do_*" is weird as well.
-> 
-> fault_handle_softleaf? Something like that?
->
+On Wed, 3 Dec 2025 09:05:30 +0800 kernel test robot <lkp@intel.com> wrote:
 
-Reasonable.  I will probably come back around on this after LPC.
-
-> -- 
-> Cheers
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   47b7b5e32bb7264b51b89186043e1ada4090b558
+> commit: a9af76a78760717361cccc884dc649e30db61c8b [9966/13055] watchdog: add sys_info sysctls to dump sys info on system lockup
+> config: powerpc64-randconfig-002-20251203 (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/config)
+> compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 734a912d0f025559fcf76bde9aaaeb0383c1625a)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/reproduce)
 > 
-> David
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202512030920.NFKtekA7-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> kernel/watchdog.c:74:22: warning: unused variable 'hardlockup_si_mask' [-Wunused-variable]
+>       74 | static unsigned long hardlockup_si_mask;
+>          |                      ^~~~~~~~~~~~~~~~~~
+>    1 warning generated.
+
+I'm testing the appended patch but it needs checking please.
+
+The comment for hardlockup_si_mask says
+
+ * bitmask to control what kinds of system info to be printed when
+ * hard lockup is detected, it could be task, memory, lock etc.
+ * Refer include/linux/sys_info.h for detailed bit definition.
+
+but the variable depends on "COUNTS_HRTIMER".  The comment doesn't
+mention hrtimers and I don't see why it should.  Not sure what's going
+on here.
+
+
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: kernel/watchdog.c: fix unused var warning
+Date: Wed Dec  3 02:34:40 PM PST 2025
+
+>> kernel/watchdog.c:74:22: warning: unused variable 'hardlockup_si_mask' [-Wunused-variable]
+      74 | static unsigned long hardlockup_si_mask;
+         |                      ^~~~~~~~~~~~~~~~~~
+   1 warning generated.
+
+Fixes: a9af76a78760 ("watchdog: add sys_info sysctls to dump sys info on system lockup")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512030920.NFKtekA7-lkp@intel.com/
+Link: https://lkml.kernel.org/r/202512030920.NFKtekA7-lkp@intel.com
+Cc: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/watchdog.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+--- a/kernel/watchdog.c~kernel-watchdogc-fix-unused-var-warning
++++ a/kernel/watchdog.c
+@@ -66,13 +66,6 @@ int __read_mostly sysctl_hardlockup_all_
+ unsigned int __read_mostly hardlockup_panic =
+ 			IS_ENABLED(CONFIG_BOOTPARAM_HARDLOCKUP_PANIC);
+ 
+-/*
+- * bitmasks to control what kinds of system info to be printed when
+- * hard lockup is detected, it could be task, memory, lock etc.
+- * Refer include/linux/sys_info.h for detailed bit definition.
+- */
+-static unsigned long hardlockup_si_mask;
+-
+ #ifdef CONFIG_SYSFS
+ 
+ static unsigned int hardlockup_count;
+@@ -135,6 +128,13 @@ __setup("nmi_watchdog=", hardlockup_pani
+ 
+ #if defined(CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER)
+ 
++/*
++ * bitmask to control what kinds of system info to be printed when
++ * hard lockup is detected, it could be task, memory, lock etc.
++ * Refer include/linux/sys_info.h for detailed bit definition.
++ */
++static unsigned long hardlockup_si_mask;
++
+ static DEFINE_PER_CPU(atomic_t, hrtimer_interrupts);
+ static DEFINE_PER_CPU(int, hrtimer_interrupts_saved);
+ static DEFINE_PER_CPU(bool, watchdog_hardlockup_warned);
+@@ -1250,6 +1250,7 @@ static const struct ctl_table watchdog_s
+ 		.extra1		= SYSCTL_ZERO,
+ 		.extra2		= SYSCTL_ONE,
+ 	},
++#if defined(CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER)
+ 	{
+ 		.procname	= "hardlockup_sys_info",
+ 		.data		= &hardlockup_si_mask,
+@@ -1257,6 +1258,7 @@ static const struct ctl_table watchdog_s
+ 		.mode		= 0644,
+ 		.proc_handler	= sysctl_sys_info_handler,
+ 	},
++#endif
+ #ifdef CONFIG_SMP
+ 	{
+ 		.procname	= "hardlockup_all_cpu_backtrace",
+_
+
 
