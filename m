@@ -4,119 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB757D1266D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 08:36:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEEA4D116F3
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 08:37:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDBC96B0012; Wed,  3 Dec 2025 03:35:59 -0500 (EST)
+	id F39C66B002A; Wed,  3 Dec 2025 03:37:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB36C6B0023; Wed,  3 Dec 2025 03:35:59 -0500 (EST)
+	id F117F6B002B; Wed,  3 Dec 2025 03:37:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA2986B0027; Wed,  3 Dec 2025 03:35:59 -0500 (EST)
+	id E27D56B002C; Wed,  3 Dec 2025 03:37:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9574D6B0012
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 03:35:59 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D9B8F518C8
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:35:55 +0000 (UTC)
-X-FDA: 84177501870.24.AFB1A8E
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 02583120006
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:35:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kQFcrWU1;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D080F6B002A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 03:37:15 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 53EAD1A04CA
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:37:13 +0000 (UTC)
+X-FDA: 84177505146.01.14CE678
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C7BFF1A000E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 08:37:09 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oNxlQ9EF;
+	spf=pass (imf19.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764750954;
+	s=arc-20220608; t=1764751031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LA3Ic4i9iG/4Wuv4J3py+fbGaONiUwvROdkBn6i8vWM=;
-	b=fzugLahs6mrD+2A+15K2R+QLKNPX9UOuCN+SqjAq7EIoO2NHKe/heLFy6N/pL7oFhWso2r
-	0OVYjTrH/8jsTu4LZ14MOe7ItCeCb0kflar5zQYblzdOwgJTkvsOKT0Z8zZiRcRmQNGhCI
-	6eIbQG6g78Hk8VjphW7P+v/RmhkCgaM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kQFcrWU1;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764750954; a=rsa-sha256;
+	bh=UxYE8UeBr+yZpsgsbYSj0jp5OruJ42SVkGftyYWINWU=;
+	b=QmakxnrYRqQmuovOXdmZgF6OCyplvxwvUAjobI+u10vo2P67iE65BUwUZjCTeHSX0SHnCo
+	GOqHmB33wnSeoeD8IhdJ0YGWdxTHj/KA/Hf1DTjyP2Xkeq1FuOC3QqNjqI+FaVV/Mq+TTW
+	zWSpEAjTGSIsqUYuEIzxc29m8NdKKns=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764751031; a=rsa-sha256;
 	cv=none;
-	b=MWtkxoSyNzIh2XWAjdYf+MQDs9Q9g+3Zh4Vi765Z3dqWehQN7aByGhoJEmBYCXe4AqNqv2
-	8kRK+YJTz11n6bLpz/v0MpXml6TO4Gga6Qv45VEFm1LrjC80l2/oC5gF8OUj2WdozKy0wo
-	85LaCgdqABMUpswxSGtgBSQf/FE0hUY=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ee1fca7a16so52886181cf.3
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 00:35:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1764750953; x=1765355753; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LA3Ic4i9iG/4Wuv4J3py+fbGaONiUwvROdkBn6i8vWM=;
-        b=kQFcrWU1SJx3GZIvAG84BCphBo0KtB6Gp/+MrZ7pZsiRJccRww9/PhvWeeI6XW0247
-         WD+jSQUwUBArjoyZAaAdfoLoZzvOnYXLRed/1r8utvtUb9+/KjpfQaL/RYPstpl49soi
-         VpuGRnqjeSMyeGPOR9bFLtHLUgQGCT8vQcG1KWdG24Ok8/T74sMLj4CJ8iQMwyoV9Zbi
-         Pw9MgX3MOcI1zwRMl0xViQvCn7I+0pblQO3/JMSFr6pzhPXWSErE7E4Pezsc3HZ56QUP
-         8ekG/acI3UIVFjlGRC23Zf0riWRF8km3425HMPLwn7Vf5wrOitTThOsPdgrLJSniVUN9
-         BdHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764750953; x=1765355753;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LA3Ic4i9iG/4Wuv4J3py+fbGaONiUwvROdkBn6i8vWM=;
-        b=Ld2ryBf2rGggZ1WjkfqWpp6x3CTyl5gmLoxsHRckW2mKsAbVbMMJ669KIURyyUUxAC
-         EWhyDtaULLdY7zSG5br+AZKZ4lYlMLc0ZQAuDfcWvlUvOKyYKwiYyKMtEHdCyaP6hatV
-         gci47+cbg7sMKOCM4hjSXvij7jr8vT6Jlztziw1snZZyB0B+bq2I2Co0pKEKRV/Rg2qm
-         F6hzXL1FnRtdpqnTr+N15AjXJFpOQJYZ5xLsgguYfiCsREVltlDO4y3LoWVhk3+LoeqL
-         o1lp8c8RloNW6bXhCS/RSRFNH2crgKVsbAOQjgXmqfxOWRUclxeldoTLsqYXzJcPnRCo
-         QMmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWYbvr/sSQCOjDaKHqM6RubyLBFnP7WX2hfxaftxIykjtogBwDA8dT5G3oR/lMvmzsUMxm863ESw==@kvack.org
-X-Gm-Message-State: AOJu0Yy4s7YFRo9JxJ1uMApfWg/YApfDNa580XjwZdo4JxxnaO7ledgm
-	Wm3yddP+x+gjWcEw5DlTNjpHn6uIOSbuF8RCd3eaEDzLS6mGSF6kCLzllwV5TrDQK64=
-X-Gm-Gg: ASbGncs9uRiBkZeP0Zxe6wP/QGKWHcxu3rHhAZEUlKJyoutwj0kZ9UqWblJc76kQbQO
-	saInWbXHEj4J5sN7pz3npDCpfe23F/DMk2L6L2ITsyWOhzbqnnaF/ZGYdl9x3uTUEq2uT0c+6An
-	t6lSEXdPD0DxssuI4SSU5br9TjcXx/jeqo+20U1Iw91GygnYs3mxcGGyUPhgbF9jYCDh1XiFLlE
-	5hadiHm5E5se9w6tBDgxsVfiSdbXuAAyTQ8+OXq/ZRzLPqvQ2Ke0/z/40foc/nrxC91PtTyRfMN
-	JHp3qEYaz98YDM5O9RvNrNsthmGMfRmd1kUFqM/8BLgzcx7JRd1QDYsENoFk+mqjgwnPoj/OOZB
-	TA5c0grV+ONKi5Q4Y2d94Nvm70vPxVVQwTWCbqbIYwi8MecoXT4gddskEiPt+3hayI7gOLZaWji
-	T+z+H4aj0MWBlaspv9xaxAQPJLigcIJXXRp3nLbjDO1GFjsojAfo5CRBWIreoNL/4CYE5B5w==
-X-Google-Smtp-Source: AGHT+IE+xTKCihlHnzhY+EDeazvLtTzGsfm3e95I2Isk/JbAyqkqXC51wwHlCSOST50MpY+yA0iIyw==
-X-Received: by 2002:ac8:580c:0:b0:4ed:6e15:d2c9 with SMTP id d75a77b69052e-4f0176c2d84mr18524351cf.71.1764750953001;
-        Wed, 03 Dec 2025 00:35:53 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-886524aff3csm126348616d6.5.2025.12.03.00.35.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 00:35:52 -0800 (PST)
-Date: Wed, 3 Dec 2025 03:35:51 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
-	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Oscar Salvador <OSalvador@suse.com>,
-	David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-Message-ID: <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <aS_0bgCs2qE0y1bJ@tiehlicka>
+	b=G9t0+uwAk3GXoJ8dPrcqxuCcATv1c3KOEW072LfrkVjKbc1sTvlzI82GziXtOtT/4Xim1w
+	yROuC5U8j664G+Rah8j2cmpj6SiShK7Jr/zYZf5OR/ltwwcwh0Qx8iJMa6PTlC82gDL1q0
+	3l99icyTj3g1XTlFUPLzxp4m5YAMUxU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oNxlQ9EF;
+	spf=pass (imf19.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 3 Dec 2025 08:37:01 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1764751027;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UxYE8UeBr+yZpsgsbYSj0jp5OruJ42SVkGftyYWINWU=;
+	b=oNxlQ9EFUkBCo+ThHwzCwWvtz1fAnbr6zht3rzIsg6Ayzy1IWHyUopGli+jZElCByenHE3
+	exYkX/bZs/UDY8hYPVXpgsx+j5eFJFJWZBxOLB23GbEVSSwiFQEmvCGqw/XLuw/Az403R/
+	WZyi3UQtSZZlyBmHp/3gXDKyWSrHp00=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, pratmal@google.com, sweettea@google.com, gthelen@google.com, 
+	weixugc@google.com
+Subject: Re: [PATCH RFC] mm: ghost swapfile support for zswap
+Message-ID: <gkbiqbml5ikvmqybklyzsff46gemhtczm374f4qx54y5glagru@elgd2tfmoezt>
+References: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aS_0bgCs2qE0y1bJ@tiehlicka>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 02583120006
-X-Stat-Signature: iz8dsg1ocj1zhsu7m93h7ufu9dneuiqi
+In-Reply-To: <20251121-ghost-v1-1-cfc0efcf3855@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1764750953-803751
-X-HE-Meta: U2FsdGVkX18xQ4TRNdc2T89UpU+WsoIfzgN3t4HO+GhNQ7LjJ++sVDt4rg5Uqxu9WGOW3ZMOe/aH9PcU5wEN3tolEwd5OsmOhXK5F/2M5t0RNcM42TYz9XoquvwI+649i8CURgw+bU+51qdu4SBgNcUMMTVZI9d2H3ERCozoKX5TjW9ega+5gO7AYs4LMwOVeR4NMUp0uWMb747BKADhf07LDjC/oViKBiahY69BROreWVvxFii8DTq4iMhejDM55Q9lBl22D8Hd4RzKsJQ2A6ieHTxgUrLbOP621eai3CkUMiCTmngCUz0a/WBozWnI1zmX7Il2EWwdH2mjQZdpRlfgly8hNXuAhZFIbZY6/pHBj2t4VFIVt3u4Jkhp/IUqO9K0jRqGVzElK/9XDAFXSCDY+S5q2AYZr88Mqs4nTw/jd5pTUAN7oOuov2JGQMc0GWWGlCMJSIn9XKF7C0jirw5oBoQXb0bfG+GECr9ibXO9KDiubpzI+VneZx6zjY1giuy8zBL2pZlszz0uZvexV+ajE2etwuXyqbsRwEPKz3459eKxbs1isQ4Ux93NOYTrgSsm+CraZVzUzxcuICBOy9IWbbjGFz3dIulnG7iA2JtGqHyoaNTy2EoO/JkXH5LZk1la91LNegXBJJP/EkSS3jmIanLle+1xhsvXkmj51hk7vz+/ItepyfhO3qzqftXM64Qcdo9uHrt1MGRsVDAOpGHiB6N9zsPI/j+InIruVBAKXWyUf/gOQspDzu0bk9zx4lUH5OQ7Me2k2J2QBxwgJ+HRMiBb6HSKE0San6cNtboTdQcWY1WhftRkTGYdjI/VUB/sWUgokfPv7NCkNyi7lgzWVRPLhARjn7PYk9vGVh1+W7CVdalII5ccztA8/I78v5ZJX8JAvbZvLA4claG0c3CoyiwW+hU+HuIHHTdqCyuieSLxVxRn6VvxVyNt7TIk1y8uED96mVIFiEKX/Nv
- mRFf7bst
- VpEeaBuONpM4muK6SgSFJqS/b3QGktI0iBY+YtNWUVCUCQhFQ+MrIbDOleBOZWXbJLfeW+O5/f6CgqsFJHxyPYvTZpO8Kg2gQBqeJ8rj+5B+gECkbESN3YZHyU2yOi36lDqBtjc4S7eazWFocLM73afO5N+xNgjWdYA0kWIzwbharBKu21uGKuFr/QWVXSqF68sDf5894bRDgpsrMPGYEF+bpW3waBN1zdcOwcMYEVcwtKMHGAcIt0gzYYqjIdvnVnq1M4BIvvaNR7j8XnI9Pjiq/XCZMGmwO0/WfPYXSwox+QDcF0UhpOP3ufq9Q7NshIVAi+ZtWq4Cu29REJSnPin0R/ZoXk/9kjLEIzjCpHap+/5mvzyLq2pD3cs9LrvxO7zr27GWGa7DucwvzmTY8u43Jfg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C7BFF1A000E
+X-Stat-Signature: qc59spswpgg8son4gieynjgex1x9erad
+X-HE-Tag: 1764751029-2885
+X-HE-Meta: U2FsdGVkX1/KkLAH9S8lTGMHkN91TchFegPniWiWY82Luhj9KA5FlJgs7pgQZZ+qAy4LSEg0GcTpoVrfVyqg6MFPWpVDvKC3iS1GZ6/9Pu04BzxPrhn0gDOl+OpQjQ2ux/8UCydiDAqWe6H1lvPcg0xATVEW2XrPwxmbFTMJv/frrEOiFLerlHEMdplm0TgWxlyEPFyCA/d3+VQN1X9/b7MQUjDn9pQV3PiM6CLCLEHSSwWdr68NWLTn3QE8BKuRurgB7DrlY0Z9X5dN2Hrj7v6fjJz6LjK7AapP1kbGgqzUT/z08A3El5TDDFr2vuhIVHyG4A20uiNRZ7aGo+pJcPNEcwJYHnyOr6SCvtNlSffBccN2KmNOVdUh6GoFIxMWJ8J+Zp75B7/8JkRAEtFSWfs47M/PI4ltPy7viFyD1m8uVXlygVw0adwZPjXYnaW99hg+qkrcSJWbMYX93+lD88PEGjTy0WlGfvxNlI9wBf1+/43C/y/vQDikfsPEiKBWE0aOhy9H2Rq64Z+T6Eo+b01ZKbuvcbklD+Rvf8FVI8+bUrQ7/CwHkPD2TA2MIhkfjPFE7Zyc/GDWi8ZnALP0LaVfcwfgX+EPoenKyDnNIfsU8UFodzlO6sMQWpytvMiTi1S5djsWwtPKiuMOnn8n2dWJYfyZpKcXxXuNu7tadK4jm+bxgozASpbX4CEBrCb1bKxdNs/XifVITcCfG3yRXIrBWqvRb2MoyTmcT1bznCPtHBB1kWd+un1ZAy191DWivgyQKe8zSVjSPQt8UpNPIfTn2MgHqrRZOgpHNuRdqY+COTtzjY6KI0UAiivIGc6ZGajzXM/AGUOiAK/FuSJcXa/uLIw5f5I7GT6iPzABNDl8jblwASIG63+8CAYzemK8JoO7EMotixf6VEeS85WmkJqBe2wRBypBLJugRvCY6vRoJFX/QOt8c1SLcY3wa6C+PfRSJjASvINcxTMh4u9
+ UG74TptW
+ wJsZy8UUn6Kuml6uA9VM6woiAIe1VvXTY3vt5DXgb7y0cfxHADnm8zuNO9ppwGb3L4t29RO5IQLEyaFRnkYHrI0n9NrZSLIUNIRvewLhEEfzONEJ7djq8E0Nq1o/eSvmoeTybCT7lDAM9HGnvMJQtLU/Wyoaq/vZaebIX3Ob8Ea73tYiNcwxtTuWmpiMnj/ufea4zFaFFHORXDZLCo98NsX1hI+9aZI6BHD3+DWoEtjLT2io=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,56 +91,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 09:27:26AM +0100, Michal Hocko wrote:
-> Let me add Oscar and David.
+On Fri, Nov 21, 2025 at 01:31:43AM -0800, Chris Li wrote:
+> The current zswap requires a backing swapfile. The swap slot used
+> by zswap is not able to be used by the swapfile. That waste swapfile
+> space.
 > 
-> On Mon 01-12-25 09:41:12, Andrew Morton wrote:
-> > On Mon,  1 Dec 2025 11:30:09 +0530 Aboorva Devarajan <aboorvad@linux.ibm.com> wrote:
-> > 
-> > > When page isolation loops indefinitely during memory offline, reading
-> > > /proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_lock,
-> > > causing hung task warnings.
-> > 
-> > That's pretty bad behavior.
-> > 
-> > I wonder if there are other problems which can be caused by this
-> > lengthy hold time.
+> The ghost swapfile is a swapfile that only contains the swapfile header
+> for zswap. The swapfile header indicate the size of the swapfile. There
+> is no swap data section in the ghost swapfile, therefore, no waste of
+> swapfile space.  As such, any write to a ghost swapfile will fail. To
+> prevents accidental read or write of ghost swapfile, bdev of
+> swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
+> flag because there is no rotation disk access when using zswap.
 > 
-> pcp_batch_high_lock is not taken in any performance critical path. It is
-> true that memory offlining can take long when memory is not free but I
-> am not sure we can do much better. I guess we could check contention on
-> the lock and drop it to make cpu hotplug events and
-> sysctl_min_unmapped_ratio_sysctl_handler smoother. The question is
-> whether this is a practical problem hit in real life.
+> The zswap write back has been disabled if all swapfiles in the system
+> are ghost swap files.
 > 
+> Signed-off-by: Chris Li <chrisl@kernel.org>
 
-I just today hit a scenario where offlining was blocked on migration
-failures that took an exceedingly long time to offline (many minutes)
-even on a relatively small block (256MB).
+I did not know which subthread to reply to at this point, so I am just
+replying to the main thread. I have been trying to stay out of this for
+various reasons, but I was mentioned a few times and I also think this
+is getting out of hand tbh.
 
-Now that I'm looking at the double-do-while loop in memory_hotplug.c
+First of all, I want to clarify that I am not "representing" any entity
+here, I am speaking as an upstream zswap maintainer. Obviously I have
+Google's interests in mind, but I am not representing Google here.
 
-zone_pcp_disable(zone);  /* (pcp_batch_high_lock) */
-...
-do {
-	do {
-...
-		cond_resched();
-		ret = scan_movable_pages(pfn, end_pfn, &pfn);
-		if (!ret) {
-			/*
-			 * TODO: fatal migration failures should bail
-			 * out
-			 */
-			do_migrate_range(pfn, end_pfn);
-		}
-	} while (!ret);
-} while (ret);
-...
-zone_pcp_enable(zone);  /* (pcp_batch_high_lock) */
+Second, Chris keeps bringing up that the community picked and/or
+strongly favored the swap table approach over virtual swap back in 2023.
+I just want to make it absolutely clear that this was NOT my read of the
+room, and I do not think that the community really made a decision or
+favored any approach back then.
 
+Third, Chris, please stop trying to force this into a company vs company
+situation. You keep mentioning personal attacks, but you are making this
+personal more than anyone in this thread by taking this approach.
 
-Maybe it's time to implement the bail out?
+Now with all of that out of the way, I want to try to salvage the
+technical discussion here. Taking several steps back, and
+oversimplifying a bit: Chris mentioned having a frontend and backend and
+an optional redirection when a page is moved between swap backends. This
+is conceptually the same as the virtual swap proposal.
 
-~Gregory
+I think the key difference here is:
+- In Chris's proposal, we start with a swap entry that represents a swap
+  slot in swapfile A. If we do writeback (or swap tiering), we create
+  another swap entry in swapfile B, and have the first swap entry point
+  to it instead of the slot in swapfile A. If we want to reuse the swap
+  slot in swapfile A, we create a new swap entry that points to it.
+
+  So we start with a swap entry that directly maps to a swap slot, and
+  optionally put a redirection there to point to another swap slot for
+  writeback/tiering.
+
+  Everything is a swapfile, even zswap will need to be represented by a
+  separate (ghost) swapfile.
+
+- In the virtual swap proposal, swap entries are in a completely
+  different space than swap slots. A swap entry points to an arbitrary
+  swap slot (or zswap entry) from the beginning, and writeback (or
+  tiering) does not change that, it only changes what is being pointed
+  to.
+
+Regarding memory overhead (assuming x86_64), Chris's proposal has 8
+bytes per entry in the swap table that is used to hold both the swap
+count as well as the swapcache or shadow entry. Nhat's RFC for virtual
+swap had 48 bytes of overhead, but that's a PoC of a specific
+implementaiton.
+
+Disregarding any specific implementation, any space optimizations that
+can be applied to the swap table (e.g. combining swap count and
+swapcache in an 8 byte field) can also be applied to virtual swap. The
+only *real* difference is that with virtual swap we need to store the
+swap slot (or zswap entry), while for the current swap table proposal it
+is implied by the index of the entry. That's an additional 8 bytes.
+
+So I think a fully optimized implementation of virtual swap could end up
+with an overhead of 16 bytes per-entry. Everything else (locks,
+rcu_head, etc) can probably be optimized away by using similar
+optimizations as the swap table (e.g. do locking and alloc/freeing in
+batches). In fact, I think we can use the swap table as the allocator in
+the virtual swap space, reusing all the locking and allocation
+optimizations. The difference would be that the swap table is indexed by
+the virtual swap ID rather than the swap slot index.
+
+Another important aspect here, in the simple case the swap table does
+have lower overhead than virtual swap (8 bytes vs 16 bytes). Although
+the difference isn't large to begin with, I don't think it's always the
+case. I think this is only true for the simple case of having a swapped
+out page on a disk swapfile or in a zswap (ghost) swapfile.
+
+Once a page is written back from zswap to disk swapfile, in the swap
+table approach we'll have two swap table entries. One in the ghost
+swapfile (with a redirection), and one in the disk swapfile. That's 16
+bytes, equal to the overhead of virtual swap.
+
+Now imagine a scenario where we have zswap, SSD, and HDD swapfiles with
+tiering. If a page goes to zswap, then SSD, then HDD, we'll end up with
+3 swap table entries for a single swapped out page. That's 24 bytes. So
+the memory overhead is not really constant, it scales with the number of
+tiers (as opposed to virtual swap).
+
+Another scenario is where we have SSD and HDD swapfiles with tiering. If
+a page starts in SSD and goes to HDD, we'll have to swap table entries
+for it (as above). The SSD entry would be wasted (has a redirection),
+but Chris mentioned that we can fix this by allocating another frontend
+cluster that points at the same SSD slot. How does this fit in the
+8-byte swap table entry tho? The 8-bytes can only hold the swapcache or
+shadow (and swapcount), but not the swap slot. For the current
+implementation, the slot is implied by the swap table index, but if we
+have separate front end swap tables, then we'll also need to store the
+actual slot.
+
+We can workaround this by having different types of clusters and swap
+tables, where "virtual" clusters have 16 bytes instead of 8 bytes per
+entry for that, sure.. but at that point we're at significantly more
+complexity to end up where virtual swap would have put us.
+
+Chris, Johannes, Nhat -- please correct me if I am wrong here or if I
+missed something. I think the current swap table work by Kairui is
+great, and we can reuse it for virtual swap (as I mentioned above). But
+I don't think forcing everything to use a swapfile and extending swap
+tables to support indirections and frontend/backend split is the way to
+go (for the reasons described above).
 
