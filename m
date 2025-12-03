@@ -4,185 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C18E9D1269A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 10:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 069FED12694
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 11:02:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC5086B002F; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
+	id BBFDC6B0023; Wed,  3 Dec 2025 06:02:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C75236B0030; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
+	id B70466B0024; Wed,  3 Dec 2025 06:02:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3D1B6B0032; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
+	id A86AC6B0027; Wed,  3 Dec 2025 06:02:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EF766B002F
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 05:19:14 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4824C59724
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 10:19:14 +0000 (UTC)
-X-FDA: 84177762228.11.17C8EB5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 73DB51A0013
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 10:19:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sia1MYIL;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 98EC06B0023
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:02:23 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DA2A132F81
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:02:23 +0000 (UTC)
+X-FDA: 84177870966.15.110957A
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 517822000D
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:02:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FwtFMygn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764757152;
+	s=arc-20220608; t=1764759741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i9QD6HVcKhaudvgQUmcrPWxae5Gbkj5XejxdA7YCuNM=;
-	b=fhdYJyiZ5DHUgAjBu6SVWeLhz9+SmXXohbIU8SnxbkjEuf01KjTT/PVKKmBjouZsseiP8d
-	dFsuAU2A2Dh0N2MRd28hjVclKI30nY1vQ0gNBMnH568ozamzousyF45LXyWu1Jo0xBc1pI
-	2fSN/AjD/bKXBXF9AW9qsi15iWSNamo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764757152; a=rsa-sha256;
-	cv=none;
-	b=E4uaXTXnr7MThd/2LOoPUVWy4SKUSnf2G2TfhhSVufBi81V1sdA1D8kNe9K4GgaSUfPYw5
-	HTvkkLtAFVe5BrmjRoKaqzltwjApwfOMKHut1vLad+cMUBpr97RySg5hOVuLbVAar2UQ6X
-	xHV0BdXjAqCFuRBuX28Kn9azPrWj3/0=
+	bh=zjQYrUnYX1G9wDCWJ9hOUs6jlLepDKVfUAud87QaSZE=;
+	b=Mtoxx3Dw0866G13urF98wKpTH5chnqDOPlz2rJqLVSfSyHCnIb4nBa71cZGNwb8gDqu3CQ
+	6VHROw5f2r0UqXJUbU7AIr9kvNm8zFvTcrPfky0ClwRW6K+ghrqGry3Yp+BTEhJYZbU6lK
+	2gcAvooCXAMkSka2x5FRLGSU61DFaAQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sia1MYIL;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE02C40235;
-	Wed,  3 Dec 2025 10:19:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25361C113D0;
-	Wed,  3 Dec 2025 10:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764757150;
-	bh=1ALGFmGlgOHY6f+bdLdgKebsX+au1yQ5dTRhimTaFoA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sia1MYILwN3OHyU8vJVbFzEbPmh+E9Rkdc13NmENJiNAQwujMzrx7aLJDYQwnRJH2
-	 icv0Cs7+2DiJlUtJrJ3jFjsxz5e5SC+H4b4cDPm/4/s+aTZepyO4AvrHMcRjPs8po7
-	 P0lAluHlqilBXk1Sh/B/XN0TZMdipTL7EolZ0FehsZ8XGO0/aidHMHK8ayQiiiT5TA
-	 U6OOgYna9Ec2DgYD68Hcv9/StfMLZVIApf1YAZumWdYivMJy+S1b4NF19fKc5R60wD
-	 vv/cJLS0nI7ttPeXB8OyKOFM1iSYjxfn/4avfs6o2Xu7czGUpIFQziUIbMv79dw+WM
-	 YExRE41C2xh0g==
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neilb@ownmail.net>,
-	linux-kernel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-afs@lists.infradead.org,
-	linux-btrfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	codalist@coda.cs.cmu.edu,
-	ecryptfs@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	gfs2@lists.linux.dev,
-	linux-um@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-mtd@lists.infradead.org,
-	jfs-discussion@lists.sourceforge.net,
-	linux-nfs@vger.kernel.org,
-	linux-nilfs@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev,
-	linux-karma-devel@lists.sourceforge.net,
-	devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	linux-xfs@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	NeilBrown <neil@brown.name>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Sterba <dsterba@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	Chris Mason <clm@fb.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Jan Harkes <jaharkes@cs.cmu.edu>,
-	coda@cs.cmu.edu,
-	Tyler Hicks <code@tyhicks.com>,
-	Jeremy Kerr <jk@ozlabs.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Bob Copeland <me@bobcopeland.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH RESEND v3] vfs: remove the excl argument from the ->create() inode_operation
-Date: Wed,  3 Dec 2025 11:18:32 +0100
-Message-ID: <20251203-sechzehn-lethargisch-cd739d4ff49a@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
-References: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FwtFMygn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764759741; a=rsa-sha256;
+	cv=none;
+	b=KI0yVqXkXP6yceeLMd2s+gfx+U/U9ioetDZ3ivOPsOi5ata+TM8VodI59lJYZCiIce5d3K
+	XOriywon7bZ6HNHptfbwogzBgbx8zdaNYvsuUEUxRKaXpaYrhTF5OpynNLrhOJJinXiw6/
+	p/ccC+yB/Z59PQCehiXkTY/hngkCJV8=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640860f97b5so9842640a12.2
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 03:02:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764759740; x=1765364540; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zjQYrUnYX1G9wDCWJ9hOUs6jlLepDKVfUAud87QaSZE=;
+        b=FwtFMygnStk8rulIlzYzhnugDqFifekRpCfTE+c45YJdBz1UTlNBCMzQL6HTjNd8aa
+         QccacdVH2HTdcGyrvf8i3Ltz63KR6SNMS9ZmoE4KAM+2h63+ioX7bNZzvaaQ+GwhYURU
+         nBjmqWHymEzeRmjLV0e7Ec+ZTUhFEyW0mlxwPpfqkhduTOryilJ58QFa5l259E4aQTry
+         Zfj6Lgvfmz5BKjqMSINGynlQdWS6kD6r5tflWZzt3EFBvS6DCkVKNqVuoA8g04THInXU
+         ClOnr5eM0jNEBWPhKzrPFo6YjlOtMj7FhICQmBnfxOBRLDjeSr+Mut5uvsaJr32S76iN
+         8hwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764759740; x=1765364540;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zjQYrUnYX1G9wDCWJ9hOUs6jlLepDKVfUAud87QaSZE=;
+        b=iu2u7MJFepDA6s2U3I2EMwZan84klF84QmE9ZvGkwHtWXbTYsz2paTcru6ZVo5Horx
+         B4PnjpWcfANL9KNnR8xMmAZ0xLbDhPLthqYGSpxAJUr68/aq37Lke7PUMTcU0XaZCs3e
+         N9U+MT0BOdycGeXjKzAHLQWC6sJJZthxDlS3mCXwGA7ZYlOa7eNfNEcHOmdv4FD52KuM
+         GX+8cv6Ky28FDjErepSEtY4TuZCVXU1vTxMajaSlKfLLOk6HbLzBzf2/+UgtjlYYhn+R
+         lKR2/wlCKJhwJnTrgFsvVVqCoMkDVSXrWbRiBYDlkLcq2BCdcFYy02/fQEmASZDTdsse
+         EkmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+BslErsHwSdmu8+xGfxI2aVwW+oHE8Orj0fce5qUn/G0CzXtJv+vt/imTkbmm5qRR/B22a+vPCw==@kvack.org
+X-Gm-Message-State: AOJu0YxXNmutWDyjZ0E8qJLd9tRiiVf+d/GW4BM9Gb4584ChIpbJAmnS
+	J/PoGdO+EwUtoAJhun6VpU6iNOsZyo5MCqyby3U9MVD7WhFpUaCr3GN0RMM4NNm1lhktMm/hkF2
+	zCIgGWRQfWRiJYeN7d0WwyUumcOmgpJY=
+X-Gm-Gg: ASbGncu9PFX/eGM0ujEar4W2W9yEjFesx60Ggo7MfAM2ZJE7fFEEWXhIpTFBeL80su7
+	jyjb6KnnNtawWEEqlNnr3UZLBA9QNZmoSlij8eJYDBK4opzr7RC0vwcCV8rxC4mLeDydzt94NPh
+	Y1f2ieuuUxBG0KPmkRuWcs2B/cpp6uRFpAwXpf3TsgP5So+d+fdMk2k0z/TNxuzyejINv7mG1hV
+	nvx4cDxrXdSffLDceUzwoc264D4yiEEPm0kb6Raascf/eLAIR7sBNCMQkmHKZ2rflOq6ldLqyYm
+	kyRPpOsrBjLRRV1FfWp8HJ2r3w==
+X-Google-Smtp-Source: AGHT+IEQR049x/z36Hoy4skA6q5Rf3EXQ/Q+JEh9RSkhbclOdc2LpB4wKZveqW8J8qqMdVRf6bIjskDhQZBXsHTIZiw=
+X-Received: by 2002:a05:6402:34c8:b0:643:8301:d107 with SMTP id
+ 4fb4d7f45d1cf-6479c4c15e9mr1452948a12.30.1764759739416; Wed, 03 Dec 2025
+ 03:02:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1370; i=brauner@kernel.org; h=from:subject:message-id; bh=1ALGFmGlgOHY6f+bdLdgKebsX+au1yQ5dTRhimTaFoA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQa8NXdfyOWEe7C1j7j3H39MtmOfckhfYU3uPbO3GJ5W X9idSdfRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwER6JjEyXElxiNLjXsTcG/zF veHQZtE3X3LuXMnZx/2vIaPja/5RBYb/9Vo7JnHefOS2MX2Dr5zm5id7fnmJz3GXVk7n4Wu5Kpf KBAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+References: <20251127233635.4170047-1-krisman@suse.de> <f1a1b7ba-c084-4e41-9242-8255f2664b76@efficios.com>
+ <yvghqmbugs3oejsvbh5rrw76rvtr2wfwqysjd7tw67z4tzpdbp@6zehhuzumiez>
+ <CAGudoHEyX1gdwG_MVf-M2KMHBE1Juo6VbfSyp3rbXoS+5JaNtw@mail.gmail.com> <877bv6i5ts.fsf@mailhost.krisman.be>
+In-Reply-To: <877bv6i5ts.fsf@mailhost.krisman.be>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Wed, 3 Dec 2025 12:02:07 +0100
+X-Gm-Features: AWmQ_bm0SWtbGrNBIQV7TXNIM9O_HeQOx1RP9_10jbGVkW1uvCtw8rd_7IQW5cY
+Message-ID: <CAGudoHFZhrNwM8bnkFUkad4x_ibZZqbax_psF7CX_SrFQprJbw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/4] Optimize rss_stat initialization/teardown for
+ single-threaded tasks
+To: Gabriel Krisman Bertazi <krisman@suse.de>
+Cc: Jan Kara <jack@suse.cz>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73DB51A0013
-X-Stat-Signature: xo5xknrucftkmq5xqdnkj7jpy9tnswjp
-X-HE-Tag: 1764757152-615706
-X-HE-Meta: U2FsdGVkX1/5F+601AyxRdOVy8MBoUEoiK7NbSBLJEnnUXe6UTb1g8lCFt7tyz0QCNTHQbe/Rp4phxBYgQlaoLl6F5pgt81Yi5xDvGou3zDJ/x77rsq47qwzMX7xUogmlxss069gBhzuEMAhlUy2yVK+poBHySkKhHQZz8sZoIIUMbec2x8R3Yn5ngabDIJv5qgK27yjx6eKYOylFhYL6tS61QnzcJB9Rn262OxFRMc0HtpY3kqnO1WqleB+kXbzricjxY4kmmN20Y9EyEP/HNR+fVuPPSNK3efDoTBdh02BPCfSIx2/CRRgoSIBDWXylkEnfZtkcLg3moX92tDPua8IgI058hwRPkV63vmhi440bxgqIdTP0pwUv9SqIoecQRYRuk7EyQjN/PG66FF6DuSc1jIJuzz2qtiR+o5FpHsRdQwypgFvHmkWj0xRruFN/om4wOqdjsufAFjml/ffH0GfmZ8ORx//CIrwjuqjTt7xM36M3zbVR++qtQFNTQujQTsb8VDsY58n0SN5JbyWDmSZuXLC//8+wBCdspmUstnwKeXms4A8o04sja4IL9psvDDHsg152L2SwdiSn98Y7VFy+xvjR2WE5quAzDLLe2XpqDUkajp5llv3PPCzE0faoQx4eX7ItoHgFqrC75+z02D+XZgmhaqrQAoc8nWB/IXBPSINqmf3vI6n98Z8TH2B60k9GL0dTGPLJuiKrOP4LabaDUlXR4EV27llt5jSfTj2CwQgo9kdnXUmSZJ/XKtqevI2vwWs1C6lvMZxaya0yR1+8v8ZqbgQHD6dOBoQIJfJQXRB/ilkWTj8Nz0S36G2pBtCF8KeZhe16IHGCdJ27kltcPT2cUHwafpwAwjYDjdNgb2PLi2oknnEgVDRfCJlfO76F6epJ8g0KRCjwfvyHxkTpS9YUaLqy7JfCaoV/vW+OivyiR3GlIwybVs+bc1aODcw47KCy0oLJkOyC/y
- hW3f2S8A
- fKPZUAlXtOCRnJSKRrt9cp1UCppqDxJVnmltKNlfv1R93BysTB2MUpIaTpO95s/ETf7ah+CCX4keaPv2wljg3nrpdu5JOUelzj/9932zN+NTjKQ2FAhKztzEtnfRGYyzg991j02IVSG5NfcT32C2j2QdYPSuYUUNhyAYQCIkt+jvODfmP/KlWCQNIhXmVJwJ84GM/DLVA8q/jK279u/f4WEpu/X2yCaXy7BQ/MUy9boXhG8dqQEjAtArGkBOLLcqgd7gQnjzfq1HGPpiF84VO0wdKSeV/vfQnNRJmlMcAbracWtCkm+gqGV9tfxHgYUbGwjTeLEZj/kvy5M9x7y0yAqlp+Fz4qNi7A/Oo3wnV45b2S919egBUxgOPNJ6i6bufeuxCt/hDDQyWepwLMJHT0knZQA==
+X-Rspamd-Queue-Id: 517822000D
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 774ab86abrwewgagquzwg4pipnkonkhc
+X-HE-Tag: 1764759741-387183
+X-HE-Meta: U2FsdGVkX19oIxX4YpCySwuMP5viTHP+XnSQ70Mto1D2F4sysTceMF54vg1YpsUsaLjcXKaCxYx3juyqFP3E3MQtI+53Ll8DP8L2GsSRzophJVcjvCtg9qceRSGwK4DlNhx7K+Tv/MAYdRay/jVjQxSR+PLIsLy1VEHZ9avbKMjPAPzUlwWShqc7MyeTM6/ZtnAcCXOXpOcEdwaQU17tXOXLsxAutLwDufGK7HkQWnojhkpDFGjvXV9D3G+BI11sscgtkxCSUdQpUT0kkQYLbmU3IQuQVpXb6H3WR2VEqpxl1/DPfAh5i8d4fg6d9JqsYYNjkZH2h2wGHQ7nIMiBrRjgRNcvw5jv0YQ+hTA6hSEJwgs9F7YkvQoxarVW4AqO4WFRZfgaR/p/Sgwvaq1gQ9ho60SJw/MEMzfk2lZ2URNBlU6UHuZecW0q4OmLF3P8YXMjJnw7CLPYktqBQM5eGM+iB22ExBmfnT1Hgtd/azDv0TI1B/AsclH5jUs9VHrzlpWKoEI+amAmE57GqhuPj3rJ1FVA41JqGo8+5eCKSgEGjrntD7nW/ERgfsLeQ31ySQyPBClEwPx6nrIe3wwcJWnhStEjp829Zlm7TzhjcMpHjfoantE+6DBTO1VSxPy+gdt6Cs9DhkBNq2IqlsTVldkLvxCJmgoVn9+dSRLWGARaJRmcPaDsvGwLUu3Cc7F74Uwwq4FtqxI3n2G2u8MMn4ZlW6zatpmPhW8HFS6mhlGuOQQtRph42TBbA/SxDyrB9ZmSWwp4+/JJyXwpMg39FJ6XvSV+7IZh8x9KcSkvd2uVqy2fMaRLGu/Qr9jGHu+EgWIpiSjzq8itOwoQx6/ws1StM9hOfr+/9Y5JPzBlSV5ped3KpgU7+d1Zpb+rfHWYZvplK+4tWkfYD4lvSSwAq8TmjrzHe/EwmD4x2f4CH26ZD0xh0a0hp2yZWCRpvSIUHJU1Aqvpk0pEkkrg/jL
+ VUxSYEKE
+ AdIYMeD4PQM3TDZ1iWjZxZ/05GjGdV/YpPFgvJC9smdmXFj43eaB3vMpDAxSmaU8UorSX4h7wNjeR7iC7vz8MBJvScwZVeXvZOJphTG5FcWWBOgtRk21Z9Bpav3AiFoSZJ7J7RNWwxrVePyghFDJ56BTaiQrbvMk+nX4LBBAVXCignWJRNwTwoiFQYygnQtv36koCX0AEurP/c8U3svo5T0Zy1buj4mQqPrfsDllz5P3/ETA6uQjVoTj0hWJKCxdnHnUcnRiUR5KzuV1SrR8JZcQ6FH3dyGmmNYMrPTfwHOTSSPVWszEwyYc8S09tTSaNfPfguxr7Bm2ZSveYni3Jt6I/N0iV4wDoMtdgvhycpxJFr3XZTczH3YmCyK3I3aFOJXZYPeaMqxZ4oJoqtJLphUl1EEVKkWUFjzhd1AWGiZfvof8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,34 +126,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 01 Dec 2025 08:11:42 -0500, Jeff Layton wrote:
-> With three exceptions, ->create() methods provided by filesystems ignore
-> the "excl" flag.  Those exception are NFS, GFS2 and vboxsf which all also
-> provide ->atomic_open.
-> 
-> Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
-> the "excl" argument to the ->create() inode_operation is always set to
-> true in vfs_create(). The ->create() call in lookup_open() sets it
-> according to the O_EXCL open flag, but is never called if the filesystem
-> provides ->atomic_open().
-> 
-> [...]
+On Mon, Dec 1, 2025 at 4:23=E2=80=AFPM Gabriel Krisman Bertazi <krisman@sus=
+e.de> wrote:
+>
+> Mateusz Guzik <mjguzik@gmail.com> writes:
+> > The major claims (by me anyway) are:
+> > 1. single-threaded operation for fork + exec suffers avoidable
+> > overhead even without the rss counter problem, which are tractable
+> > with the same kind of thing which would sort out the multi-threaded
+> > problem
+>
+> Agreed, there are more issues in the fork/exec path than just the
+> rss_stat.  The rss_stat performance is particularly relevant to us,
+> though, because it is a clear regression for single-threaded introduced
+> in 6.2.
+>
+> I took the time to test the slab constructor approach with the
+> /sbin/true microbenchmark.  I've seen only 2% gain on that tight loop in
+> the 80c machine, which, granted, is an artificial benchmark, but still a
+> good stressor of the single-threaded case.  With this patchset, I
+> reported 6% improvement, getting it close to the performance before the
+> pcpu rss_stats introduction. This is expected, as avoiding the pcpu
+> allocation and initialization all together for the single-threaded case,
+> where it is not necessary, will always be better than speeding up the
+> allocation (even though that a worthwhile effort itself, as Mathieu
+> pointed out)
 
-Applied to the vfs-6.20.mkdir branch of the vfs/vfs.git tree.
-Patches in the vfs-6.20.mkdir branch should appear in linux-next soon.
+I'm fine with the benchmark method, but it was used on a kernel which
+remains gimped by the avoidably slow walk in check_mm which I already
+talked about.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Per my prior commentary and can be patched up to only do the walk once
+instead of 4 times, and without taking locks.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+But that's still more work than nothing and let's say that's still too
+slow. 2 ideas were proposed how to avoid the walk altogether: I
+proposed expanding the tlb bitmap and Mathieu went with the cid
+machinery. Either way the walk over all CPUs is not there.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+With the walk issue fixed and all allocations cached thanks ctor/dtor,
+even the single-threaded fork/exec will be faster than it is with your
+patch thanks to *never* reaching to the per-cpu allocator (with your
+patch it is still going to happen for the cid stuff).
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.20.mkdir
+Additionally there are other locks which can be elided later with the
+ctor/dtor pair, further improving perf.
 
-[1/1] vfs: remove the excl argument from the ->create() inode_operation
-      https://git.kernel.org/vfs/vfs/c/7d91315b4335
+>
+> > 2. unfortunately there is an increasing number of multi-threaded (and
+> > often short lived) processes (example: lld, the linker form the llvm
+> > project; more broadly plenty of things Rust where people think
+> > threading =3D=3D performance)
+>
+> I don't agree with this argument, though.  Sure, there is an increasing
+> amount of multi-threaded applications, but this is not relevant.  The
+> relevant argument is the amount of single-threaded workloads. One
+> example are coreutils, which are spawned to death by scripts.  I did
+> take the care of testing the patchset with a full distro on my
+> day-to-day laptop and I wasn't surprised to see the vast majority of
+> forked tasks never fork a second thread.  The ones that do are most
+> often long-lived applications, where the cost of mm initialization is
+> way less relevant to the overall system performance.  Another example is
+> the fact real-world benchmarks, like kernbench, can be improved with
+> special-casing single-threads.
+>
+
+I stress one more time that a full fixup for the situation as I
+described above not only gets rid of the problem for *both* single-
+and multi- threaded operation, but ends up with code which is faster
+than your patchset even for the case you are patching for.
+
+The multi-threaded stuff *is* very much relevant because it is
+increasingly more common (see below). I did not claim that
+single-threaded workloads don't matter.
+
+I would not be arguing here if there was no feasible way to handle
+both or if handling the multi-threaded case still resulted in
+measurable overhead for single-threaded workloads.
+
+Since you mention configure scripts, I'm intimately familiar with
+large-scale building as a workload. While it is true that there is
+rampant usage of shell, sed and whatnot (all of which are
+single-threaded), things turn multi-threaded (and short-lived) very
+quickly once you go past the gnu toolchain and/or c/c++ codebases.
+
+For example the llvm linker is multi-threaded and short-lived. Since
+most real programs are small, during a large scale build of different
+programs you end up with tons of lld spawning and quitting all the
+time.
+
+Beyond that java, erlang, zig and others like to multi-thread as well.
+
+Rust is an emerging ecosystem where people think adding threading
+equals automatically better performance and where crate authors think
+it's fine to sneak in threads (my favourite offender is the ctrlc
+crate). And since Rust is growing in popularity you can expect the
+kind of single-threaded tooling you see right now will turn
+multi-threaded from under you over time.
+
+> > The pragmatic way forward (as I see it anyway) is to fix up the
+> > multi-threaded thing and see if trying to special case for
+> > single-threaded case is justifiable afterwards.
+> >
+> > Given that the current patchset has to resort to atomics in certain
+> > cases, there is some error-pronnes and runtime overhead associated
+> > with it going beyond merely checking if the process is
+> > single-threaded, which puts an additional question mark on it.
+>
+> I don't get why atomics would make it error-prone.  But, regarding the
+> runtime overhead, please note the main point of this approach is that
+> the hot path can be handled with a simple non-atomic variable write in
+> the task context, and not the atomic operation. The later is only used
+> for infrequent case where the counter is touched by an external task
+> such as OOM, khugepaged, etc.
+>
+
+The claim is there may be a bug where something should be using the
+atomic codepath but is not.
 
