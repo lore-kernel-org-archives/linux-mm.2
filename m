@@ -4,117 +4,232 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0212AD12691
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA2ABD116F3
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 09:36:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59D1F6B0096; Wed,  3 Dec 2025 04:29:09 -0500 (EST)
+	id EF82B6B0095; Wed,  3 Dec 2025 04:36:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D4F6B0098; Wed,  3 Dec 2025 04:29:09 -0500 (EST)
+	id ED0306B0096; Wed,  3 Dec 2025 04:36:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39FC96B0099; Wed,  3 Dec 2025 04:29:09 -0500 (EST)
+	id D97D56B0098; Wed,  3 Dec 2025 04:36:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 23F0A6B0096
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:29:09 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D525458DD7
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:29:08 +0000 (UTC)
-X-FDA: 84177635976.09.35C9E05
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 00A46A000A
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:29:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aTcOO1GU;
-	spf=pass (imf15.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764754147;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C48076B0095
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 04:36:07 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5081489342
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:36:07 +0000 (UTC)
+X-FDA: 84177653574.23.BC3E27F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 54C82C000A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 09:36:03 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YvsLqJnA;
+	spf=pass (imf10.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764754564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QdTv6wkSHwAMSOll3YwLh5RVP5GPGXPQVcJa4xCpXQ8=;
-	b=Q1bvMQAj0U8vqQ0vRBDmJ5IPAr90TYTMkVA/BhNwUc2jNXhboD8A36K+/iLe3BWLQd4vVV
-	U9uCU+q8SZqrqhAxU38ukWo5Vk2A2rnPVafS1yj3Uu61wp9Mh+N843XnWI8seBdhDUQF/s
-	Wun5At5f/ik+G4HmOhlVr8vBkcRApvU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764754147; a=rsa-sha256;
-	cv=none;
-	b=SwsD88GUJUGupA342c4I+S6L8XNlI2SaxxU5x1dvYsuhGCtKhT2uNP4pRwg75i/8YP4CWn
-	quPkiGYaFaP90Al2xLahHQ8+5WquzCvx7GuOna98nV2xusIny9S1P00r9T4eR6m/yWFYY/
-	6DA1mPPBx1W54sO/S7DWJnmjE1xgYn8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aTcOO1GU;
-	spf=pass (imf15.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640aa1445c3so9884564a12.1
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 01:29:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764754145; x=1765358945; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QdTv6wkSHwAMSOll3YwLh5RVP5GPGXPQVcJa4xCpXQ8=;
-        b=aTcOO1GUyZVdM5IlnXfwsKPOVTGhbBt+iLkLBfUAgK8+4btDZVZxf+dEbLC7Gu0kzh
-         KD4vJS+M0kpbiYDr3YkZOr7p9fUJL50eCQSxo4nL5IPPqGJNiTeMXjb46HdRC6ygOSt0
-         jAAf+TgqWPYJbY57KifG5kDv3qWvYUMedKcaGtD5iQwatBo58Xkue6tc627oNgghCx8r
-         81yxOQwdSCb0BjBlmKixLtuYqiUx7B1fwdEMxIAvQKuzLyOkwbvMNmOZ+4Ms7OFp2Nrp
-         sTrHIXZd+3hY7+/vl+yQfw36IPMjfqceJ4wADSe3Ye3I8vdeUhF7bY+MGoAEk0gWEynl
-         p8hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764754145; x=1765358945;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QdTv6wkSHwAMSOll3YwLh5RVP5GPGXPQVcJa4xCpXQ8=;
-        b=f98HynD0xLNfVDcurfoj1XPCJ6d25aezzjfECP0V+zL1WRO+/QLiY2TvDesBP1lDnN
-         OEPmeHRVKvLRb7QX31DOl7Bn3v6TVUmG1/MjfiyaRiQEmvdpbBSP2glSCu1BKfygVfdr
-         /BCxRQtNHE7iEZj0lOG+nP4g9x990iBSqTpN63k2B8+h/EErjsjQNqhbS4B5XOJZpzUk
-         jWVIIkWuAv5iXfQZPq/dHRIPDZD5NvRUC45oBq5ttY8mcqafFoi03d4N9HYUSNH8qWyC
-         BNN/MYZdo+YIKxTMkKxT+VWMsd5fgt714UOGsmfV6U+qPZmo0n/zRTY0QaFE5oCntTer
-         b/bw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlw3J4gOc7S4WZgLXlLzfGylUcM2XHELaLfWKI3/kQ/gEW1YF19DM44fpJzkGo+U053Qm2p2aK9Q==@kvack.org
-X-Gm-Message-State: AOJu0YxQM2W+EqdhZVpLaYbEazwvjjAI9AqxtdJry3u/0ZChfAUOi6k1
-	BxGZdSE9zRghpaHeiqUKZ2e6g3+P8HWrRUZfVFM42q748VHctfGfas/I
-X-Gm-Gg: ASbGncsaHfUdl8bInJrgPtk5b4W5wjZj8WlVxvQJBxWf5X0a/brY5zVsk93mKBnoS/A
-	9l5VFywHI4bA7QNDe9YqUqjKo3h/dCsxbcNBgrjzdrD85TRbglsRPzLljQ/P63jr2tqpuH5l7ZV
-	X8HzBApmo9gMTKvKB7OBhMqvB4aoJC+xtWn/UhDJMZRAm0IA+fvQVhXV1BWWuE3LDSgNFElG+Do
-	T1K8cSnCg4wo9tH0JgctjqMWeD1taV0YNsMvup59kpZGYAiZt9tnuWkqGvPlVMgPvDpq7MdDJYA
-	WjNofq+O8s2X4QN7tXvvfQO2pl9q4pYqQqZQMaky2nVt8MiIe3so1VKunT9YJhROtI2sst936oV
-	J5KC5CQt26ZG5GwowQHVmt2VXwCtHRCaxhskc4lSZyrfy9bAYZ079u++UIfbKm12VO+eRG364M8
-	J+esq/yjH1408yLGvXEcdN94qIw2fsUCzhl1LYNeI7DTwx5B0i0R/mHpqQP38=
-X-Google-Smtp-Source: AGHT+IGafodK6wrQHJ3egSmEyL5fp27hY/MK2pNcmMmGZDlnu9hdJtMQDjyaHTeG4cmC0C2KG74s0Q==
-X-Received: by 2002:a05:6402:1468:b0:647:7b37:2bc5 with SMTP id 4fb4d7f45d1cf-6479c4b2a3bmr1126107a12.31.1764754145323;
-        Wed, 03 Dec 2025 01:29:05 -0800 (PST)
-Received: from f.. (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64750a90d14sm17859981a12.10.2025.12.03.01.29.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 01:29:04 -0800 (PST)
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: oleg@redhat.com
-Cc: brauner@kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	willy@infradead.org,
-	Mateusz Guzik <mjguzik@gmail.com>
-Subject: [PATCH v2 2/2] pid: only take pidmap_lock once on alloc
-Date: Wed,  3 Dec 2025 10:28:51 +0100
-Message-ID: <20251203092851.287617-3-mjguzik@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251203092851.287617-1-mjguzik@gmail.com>
-References: <20251203092851.287617-1-mjguzik@gmail.com>
+	bh=b8azZL1YPHPW94QWVdSMtraKURSwvY0MYtrG/38gt6s=;
+	b=qhk9L1+2EdGLrsgz7rU3YDuPhtHhW2XteMo/pu0xhX6bYf0aAyX+p/gaxWg0GGvGUFJsyc
+	ip9bRhJowAQ0ayWXf+mygiYEUprosZm0O00alu+zgdUHYzVs7YkrSIOn0xNOz+xjMYl9vh
+	yUw6ZV1WkSby9SXBWrRcoY9J18dSTbg=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YvsLqJnA;
+	spf=pass (imf10.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764754564; a=rsa-sha256;
+	cv=fail;
+	b=SX8pek/l+0OwXsIRUEWvhCm+jOKg2AaBgCw8tf7KwLmAuBsxBWw/jLBK2sMqpzfgC7ITvH
+	0z7dDtiq+4hIYMMEY9P1tDjtbM28iLMyRzNa9aaxHoYq7/FdyTVKYct+p4cvRsd/tbA1cA
+	MMvM7cMHQulJczVvT9m3iEFJU6KqVug=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764754564; x=1796290564;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=n95hxRutEnjjEM6udoj3e11DkiA8MHgsUWFDxD3B20A=;
+  b=YvsLqJnAiTQDfjM7jpjiaIPLcLzZfhTpWjyrB9FWqtLyFje2vBZ2Cs9y
+   67hLyzZczi3CJJh0UOQgwB+s2u2uRsooCtUu8DBZH19rM+JUjGxPUBAHh
+   OPZPJeGs2P+SdG1SOL0W/ufxmQSNdOeRx44rXUutc9jh3rBzUmmNFvYh7
+   QFczL8Odqs4iubTYajjkJYUX8BIMDsCFJ1/ChjnyPvrz2/6SR05//dXEo
+   wR02Vu/mpKa/wxLjU68+vGW5vvr9zMLaILpkw5VEbay9itbFmWEM69B3T
+   caaTTgHjUmcNu4CUeHwUR7gOK56TjmT6d10tGzn6MSUCyH1NxQt18Hayk
+   g==;
+X-CSE-ConnectionGUID: FUDXtNbSQUyd/xEAqWLLtw==
+X-CSE-MsgGUID: Bkv9pm/3QMKQDIX0H84Oog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66906810"
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="66906810"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 01:36:02 -0800
+X-CSE-ConnectionGUID: 0gwqISHHSAy0SeZQ63n1dQ==
+X-CSE-MsgGUID: scjnW6PzSLSR2Z/pTe/SFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="225306506"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 01:36:03 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 3 Dec 2025 01:36:01 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Wed, 3 Dec 2025 01:36:01 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.42) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 3 Dec 2025 01:36:01 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OGNWL5WWyxDQQE52xAH0cvUCiuuvlf6oF6NPqWB7eodR8utvfbV/0AoffWnjypuwibnlbt2FGLt8wYMhXkarkA0DdsT1NukjXII8CstIkDd88WyNaNMiKqUCdD9enTie+W27MN1XrHJFHpXzvuee5k3Pd5I0BAL+aCSEVW8/nzcxIYT2V5W1zV8ufjBkbOXOj+f68wKXAwkmnNplvG6YhCbwCEKBeCb8kQUHU0lE/SzMCVNVHF1yv4IFdzFutpnjIms/265TENvpKFChcyXw0/5z9P2dNTShRof/5njN4y5XL2Jj5tkleZwE+3CEc4qKxPbYkUoGdN/iexI1Vko1Wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b8azZL1YPHPW94QWVdSMtraKURSwvY0MYtrG/38gt6s=;
+ b=yxy/yNly6o4GdwXHJiNcTVv3gz8E2nnmVoMLM+0ZobR5UAFsnQ4mHNXo53Yuwy9O77Wb7C34amEcdIKY87ozino8yQlc9XFhXFcMQolsb/HaeTY0P+jNT+ryr91ybiM9ruqd6MHsnFVQ0UvQbqYUtKUjyI6uzco28GanJqz3bD4Kte7OQytFXQAMeJ7vGL25AMZiq6CGnmdhECouhSdzNv2ea7+hBpRkYpkIAqVvis1lReuUPY6tvDplIO2rOBUZN6T4Kf4VSOK4VL96ubtFQqxH1td+110vkl+9AjU5N5QlJMI9LUgnITr97wozIOU4gKHs8NjeYTjMOlE7BWN9Wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
+ by LV8PR11MB8486.namprd11.prod.outlook.com (2603:10b6:408:1e8::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 09:35:54 +0000
+Received: from MW4PR11MB8289.namprd11.prod.outlook.com
+ ([fe80::d626:a4f8:c029:5022]) by MW4PR11MB8289.namprd11.prod.outlook.com
+ ([fe80::d626:a4f8:c029:5022%6]) with mapi id 15.20.9388.003; Wed, 3 Dec 2025
+ 09:35:54 +0000
+Message-ID: <9102cb70-e573-42d8-82c3-39d2af009e63@intel.com>
+Date: Wed, 3 Dec 2025 17:35:47 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/memory hotplug/unplug: Optimize zone->contiguous
+ update when changes pfn range
+To: Mike Rapoport <rppt@kernel.org>, "David Hildenbrand (Red Hat)"
+	<david@kernel.org>
+CC: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
+	<linux-mm@kvack.org>, Yong Hu <yong.hu@intel.com>, Nanhai Zou
+	<nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>, Tim Chen
+	<tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen
+	<yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>, Chen Zhang
+	<zhangchen.kidd@jd.com>, <linux-kernel@vger.kernel.org>
+References: <20251201132216.1636924-1-tianyou.li@intel.com>
+ <7633c77b-44eb-41f0-9c3a-1e5034b594e3@kernel.org>
+ <aS7F_ORMLBcAqQTz@kernel.org>
+Content-Language: en-US
+From: "Li, Tianyou" <tianyou.li@intel.com>
+In-Reply-To: <aS7F_ORMLBcAqQTz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TPYP295CA0032.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:7::13) To MW4PR11MB8289.namprd11.prod.outlook.com
+ (2603:10b6:303:1e8::9)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 00A46A000A
-X-Stat-Signature: 9ijqfnrtzyeccigm8mmiraqkd6djde5f
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB8289:EE_|LV8PR11MB8486:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7f7c139-611d-4569-a6a7-08de324f5ada
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WDVUS3BrbkFQWVhHcmtSbVNwbHJza09uM0pnRSsrcjNXQWR4dGVIa1pHL0xO?=
+ =?utf-8?B?STRuMUk1ak4wdElQekxwWTVzNmdONE0rVHdkLzE1c3NPMFBiYVdmY0tNbDQ2?=
+ =?utf-8?B?M01YVjFtN0xIQmtXbGZ4RzUvRzdVZ2JhSWZORDR6aTZwY2RicVI5K1h2MUx3?=
+ =?utf-8?B?RTB5Yzd6cmhCNDlvUmJqOXpHYmM5bk5xQXdGQXFjMVJ6bmNBWS8yUWhFd1NJ?=
+ =?utf-8?B?UXk4cXgxVjBHZ09tZ2M4NndPY0Y5S3AwR0hpa0FSNVQ0eWJCQ0Zra1U3NXNs?=
+ =?utf-8?B?S2U1MXZZL3Uzc3dOaUgrTS9tU0hZV0VnT1V6UlZ1VTlTQkhBV2p1ZnNBMlBD?=
+ =?utf-8?B?SjB2MzM3RTBVdldQSy8wVmJGTmhLanJyb1BFekdoMTEyWjBRelE0bzF0TWQx?=
+ =?utf-8?B?Um1ldkFoN1lrUFFJejUxV2xxSTg1cVlnK2dtdy9wS3NKcVBwcHhsYnp6cGM3?=
+ =?utf-8?B?TEJnZnNZY25iR0duekdvQkVOcU9EWXk2YzdaSEtiS1FzVjc2em1xUnJXRkNu?=
+ =?utf-8?B?QlJKVlZ1clBZTmpUMEc2Z2dkUGs2WStFQnE2aG91d0tPVzgwOFdYT3pXZjBB?=
+ =?utf-8?B?eG1EdFA2eHBzekxyWjN2ZkVWOTkxeVMrZDlYTnNwdU55WEVmRko3KzJWY2xv?=
+ =?utf-8?B?cGJBUlpXRDJuRU9OVHZ2dm5MME5kNjZuQ0xrRnJkUFg2RWsvQmRJOVFMRk9T?=
+ =?utf-8?B?R0YrdG8ydWUzcUY2NGRDbzZnSnVMOWh1RXk0TU5nWWY4ajFhbitoWFJJSEU4?=
+ =?utf-8?B?N0NSUWc0SDJOZmtaNmZtZkl1bDlJRmFhR1NZUmtYVkpRZk9qT3d2LzQxdW1t?=
+ =?utf-8?B?ZDA4eGdBaFVaMmFwUi8zeTc5TUtRSVhoelp0WUZQQU5Ibk11STc1aGJDQ29o?=
+ =?utf-8?B?QTJMcWJDMStvd0xjeTBEczZaellVbjQwSkZlVktzY1N4TjNNWUVtUEVXY0t2?=
+ =?utf-8?B?eXJ4RWtMM0tLUHMxeHBnVkZKYnNkNWhkSHc0emNnY1RFd3lRRzQrYk50bC96?=
+ =?utf-8?B?UFFoV3F0RE9uK1pUTkxPWTEraHk5dDBEUkpLYVowVDN6Zm5VRGNlcGJOVjMx?=
+ =?utf-8?B?ZWJKS0J4cENxV3VYR09zZExMYzFQaVE1Mk9CSU13U1Nuak9tL1NYMHAwT3cy?=
+ =?utf-8?B?bHZ4Y29jTkloWGpXWTVSU2tEVkRidVNwSG9idUx5M0VlNVczdDU1NVBRd2oy?=
+ =?utf-8?B?bExiSkROVVI0dURjQklkNDM1aTBEazY5UXAzaEYyVXdEeUpucXE1YVI2Zjhu?=
+ =?utf-8?B?SDMxMWdMU09yMFoxNFdVVEVpaEFXSFM5M0k2WDZDU3dEdVdhcSs1Z0tOUDlT?=
+ =?utf-8?B?dUU2MG1CSUN3dFFjM3E2QzlZTXM0MXlGdHc4WXE4UEc4dnlhWjBnY1I3RzND?=
+ =?utf-8?B?VERVd1ZYRm9VN1M3MldsMlZodnM1OW9sNjdOckNRQzZEN1RiWXdDT29lRHNp?=
+ =?utf-8?B?cHdRaitBd090QXkwTUlEVE41ZkwxaFo4S0dlYjFML0V2Qzk5VGMrZXFFaGtL?=
+ =?utf-8?B?NUJFZ05WVmltRi81VXJrT0dBR3VwZ0hGVFBiaUd0UTk5MW16NEtHUVBqN016?=
+ =?utf-8?B?VlBYTFR3YnFkRTFZM2dBeWlpT0RUWWh5TkEyL3pVa2VrSVYxOU5ublNnbk1V?=
+ =?utf-8?B?TG1adEFzMVZ4Z1NQNi9TZFBnYVhzdWNKdzZsdUlIZUFPL3hoQTd6RnJjMTBM?=
+ =?utf-8?B?R21iVmdRS2M1VFBxcDZGUnN2MklOK2llL2NMTWhEWDlFbG5vdGhNRlhySnhX?=
+ =?utf-8?B?a2Z2UldZdkowKythMUl4Nk55d25KR084alVMSXBqenhIY0IzdkJSN3FYQ2Y5?=
+ =?utf-8?B?VVFlYWZCSllpcmYxL3k3WFExRUFqbVJEQnM2QWFZR09BeUdPMzZxaTNRUHY1?=
+ =?utf-8?B?SVhWUVdianZsSUhoSEk2L2pZeVZ2cytHbkhYSkFybVBWUC8rc0hoUUVsUkYx?=
+ =?utf-8?Q?XVcPSzjh+/kCOygm7qzqwEYCGqUvSrby?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB8289.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlpWZjJ3MlQ1L2dKWmN3ZmkzTnZiR0xlcnZvc1EveGtVWW5oTEZ3NklRbWFt?=
+ =?utf-8?B?TG9BSXhvUHZrN3A5RFc5T3dVdlo0TTcxYjVZVWxtNmpUUjZGWXZrdE5ieXdG?=
+ =?utf-8?B?SVRBWmFCUGM3NUJlYlM1clZZNjJ2RFk2VnpVV1pKRUs3ODNZV04rNFF6T3h3?=
+ =?utf-8?B?VnJJUjhEK1pWV0V4U2tqOTZHRFMyRHpyMVdIc2F1VGpGV2llTC8vVHhBWWlk?=
+ =?utf-8?B?TjZsemlTNWRNK0k1SGFxN1lEZmpXbmkxRjhycU5SdjJLbFpvR0JLWkl2UFRM?=
+ =?utf-8?B?cUZqeTNkSGhUcTJjNzVrU0xURVRaWGM0UHR2dzkvOGFXNWxYMkZ3Y085cXFZ?=
+ =?utf-8?B?dFlPa0s5V1k2QUsweWk3VjNNWEkvMkRCdFc5cGpNTjZRZHRQTmNrS1VUNG9J?=
+ =?utf-8?B?QXNkZmxNRWc5dm10bVYzdkpvUHhoNE5EbkVraE9LTml5dGxTcUhqTENDb3p0?=
+ =?utf-8?B?QzFqcDJDMVZBOGZQT1JqUFZDaHkyVGxnOTgrVlFKb3ZhU0M1TzQ5ZFQ4b3dm?=
+ =?utf-8?B?RVVTS2QrWkZDUXdyT3lEQTJabEdnSVE0RlZGT05icGppcm1hWHdVeXFvdmt5?=
+ =?utf-8?B?ZmxkVlR3VnErSUtwL3E0bk83LzEvTkthS0RZTTBlRUh1b0poYUh4cmZRQ3Q3?=
+ =?utf-8?B?QWsyOEt2eXNDaFNKaHN2UXJLQnFHVnBQSG0vdDhNQlF2dHlVN0JkVkZGazNv?=
+ =?utf-8?B?OTZ5WUE3WmRBTHB0NDFwdjFZa3B1TTRFekpDZVA5M2hNNXNFMjdDT0k2N2JE?=
+ =?utf-8?B?RzZWYnJzNzBBb2d6L24zc3RWTnRkSHY5b3IrVHFSWFhkNU04SlRDbUlvNmVk?=
+ =?utf-8?B?MDRSKy81Mk12bVMwVVNoWmN0akxtNkxkb1ZQUFQ1QmozSlROMjM4Y1RDcDdI?=
+ =?utf-8?B?Z0hiaVFNUGxhaVBUZlNNWmdhdVJReFJGU1B2QldWakpjWkdWV1NjUDRxY2pQ?=
+ =?utf-8?B?TTRkNC9KU08vdjdJcnhPbzNoUUF6d2NGMkEvR2hCUDVTejdBcTQyb1VJVkJF?=
+ =?utf-8?B?YmFLUGxzcDQ2VHE4c0hDaVNicGVJQ1o0alh3bVd5QnR1bHJDR3hwQkRpVTlH?=
+ =?utf-8?B?U0FjekFSYm1zRWo4TXFNQXBzeU5pU3NMdU5NUno2amVTcHI5dkRKeWVuRE8z?=
+ =?utf-8?B?WUZtUEV4T3hjWVZqWGpzUzFZaVQrRFUxUER3V1YrQzRYenpxUngrcnpKNE5H?=
+ =?utf-8?B?WCtkZVhWWjhOMUdPZlY1MDRyVFNoZTduMUlzNzc0ZEZyZlV0MDNsS0w0czJq?=
+ =?utf-8?B?RGNPWGFTOVd1V1luZCtDYmYxUytoV2owWmI3NVBtTW54TWdhaGo5MFdlWWdV?=
+ =?utf-8?B?TTd0bzF3TTNLR3VnWEx4TmphNWVyNmhTajVrRjBkR096UXlid2xjTHBrcHVU?=
+ =?utf-8?B?Qkh6TTNNYzNGSTJrdHc5QVJQSk94S2xTWUk0aXNpSUdPUXVQMG1lLzBCTmRH?=
+ =?utf-8?B?UHFJbFEvZU5aR09QbG9lYjN5TktRa1NFWVgyK2V3VS9yZHR4NUU4RFRlcjdQ?=
+ =?utf-8?B?RW4zTDBjMk9TU2JHMHo0MzJHckhHRHMxb2QwQ1ovWm1QWGFITnZ2ZlV2RUZL?=
+ =?utf-8?B?Z1FpUjhpL00vOENxMU1GN0NiL2s4NjVTbXl5eVNwNWRLaTBkMFhSdDYrNVc3?=
+ =?utf-8?B?VmRBcUxhaGNiMk1LaHhvRytQTnJhOE1yQVoyTVY4bnZyUUFqTWJwdUtXd0xj?=
+ =?utf-8?B?eG41N0djQ096d1dNc2ZmcTEwOW5ZQkNBdzEvL3gyU1FlNGcydytiRFZ6QlZm?=
+ =?utf-8?B?aEdNZDJ2dWFReU5GWlQzc21lOUtkUlVpTUJhMXVsbTM1clFLT1BFMlVWb2Vr?=
+ =?utf-8?B?VTY5TzNkcEFGenBuL1J4NU5hQUZrdHJlME9JTUNwK0wvcGFsczg2OEt1akp5?=
+ =?utf-8?B?dDhoL2hrNXpkNzZpMUF0T1RLb250RzVITXhxQTVKUkord2Z4SVo2QSs1REhz?=
+ =?utf-8?B?YUJKMzRxakk5WG9qclRTeGIyTWhneUJ5SzZUT2RUTlEzdit0dFN6YS9jdE5a?=
+ =?utf-8?B?czkyVGY0VnZCbFE5VG1IeWJwekNJaG56MDU0cnphbEZZTWxkcTFPNG0wUnF0?=
+ =?utf-8?B?Ny9kVkxlSW0vNm5kZzgwN2pLVXBZRjFySWxPbWNYcnF4MDhQMllYUVpSK3dx?=
+ =?utf-8?Q?GgR/LamWuYwY43AuUJPiZEpT4?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7f7c139-611d-4569-a6a7-08de324f5ada
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB8289.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 09:35:54.4180
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y7/fdEK39BwEgQIx19mfMYbJ1IxVPh6n3ZZCjcFlJsOrftZmSKG6MRXYNkcdQYy1AskYsfBluOicuFOiTC0AgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8486
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: 54C82C000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 8i9pn47s67b6agsitdzkgsap8qcetdny
 X-Rspam-User: 
-X-HE-Tag: 1764754146-875336
-X-HE-Meta: U2FsdGVkX19JU9v1GT09ItbxsvFh3L9ifmdUnhlt2vZeEP/+KT8mm1QXKGJnZPzdd0BCP6YaiSPBMBlc+EAMkgN/UYja5tNHnn0OJ3JirhoBXRmSLwoRaLefWqpnS7eOiCMz2lnVe05KJgoTnSj36+AjGry1uooVTsJ/psZz7zI3OvCTM6rAZ0h6G3uBUMEqkdkr8R8R9LyinH5GfGccYtIe6SlECDmLvujR9jmNQJocnexPL6tcctB4sbzsfF4TQQoyYB1ALDTWNKA1T6ng8JA9kkG3svdXACvWQj+LxBg+6G46cO48CQLcpSAwhgDxhA9SB5+sPixYSqKOpoTCcA7UntcfOT+ZF6C3u7xqrYLSASUgH9A9ye4KKRUdG+Hi88gUw9hQYSCW3xtO2cfAEvwrAm6oLnsWqka+MC3a2BoiCRLIKSGngwrRgDmiqPd8QRmVSQTykuaTxXUqUy2nES2Hjt4F5hE5soT8P222ytqz3taVMjrl8Sqj+t+GqZSL35FknW8izE6TKyH6hrbwsU4fa7o4rUiuDtz83qjE0EnfEoZzo9Zl8Au8FhRGoh9hJoJRwWUXoWXkQ6oELU/jXiDPJPICcS5Vg8CxIk+xb6W/82j3+Xce0l7LLPkVSrDEPe1ItelOLJP9J/BKfAfxbCtYF5OBh8gTrew617fJ3rnFoIyaDgUp5PvgDj8briZ6QL+tTxqm54rNcF8i5UyQKOHLYXcRG1261Yz0taNnWl7AaDyqby9ITnd0t0x9jqwoQ+Fi9fNEON6QPr2c1jshw7gLYRYPW+xU2AllvN0UZL7zJu0pcA6Eg+JO1ORKvNMsq1GPbbtE+AQGbIbGtbQyMi4B6oBl+9LJ2x9rBZQSX1y/yQwEnMcwA4fjw0mlY/6HyaZjFNG3jjawy7GKOi+mRv66ZHpha1zWIIaBYnt1D8e3t2Wd5SdPZnF6KISq32ZfKrX4yMcgSWcPBQEkesO
- cpaOXQ3R
- fd0f7cQ/X8aSCQ7kqX/JTKLNb7SjB2BIlgCUmgJgnYjf9e6MMI9Z6b0hDzKXpgWJ+n99Rqe1ARK1LI6XaBXB3WkYAY20/I0nOJ74p0GFWf30aH2dw/KYl4c4mfPxEjNXMbMjABDvQTc4sQutjgj+hfmqXAk+PepBgv2u7V+1HAiuYGH7lCO87T0+2U9KM5OPiNJKl5z22389dvsXOKqABDlQ5lOQV1cOSo3IPFipHd/1rVFq+d3NO+TdTqSet3C/JsBpcIQ8I7uDZLJcsHjaKz59lPmm3N9BqYxwgZKOukqLwEyZgWj0kExSEyRm2kwl7EkTZ0VqUtdKacySl/QDrHlXVii/GoY5ilD0GmWpe9Eqs/73GHzKK2hpD9yNm/8JB7xSRgL2phoH7+gZcgyS/p1XOWzZMnBVJG73EuAyea52uyz3yc051VqQJDDHTR8qKlz/nfm1EG1Dqvck=
+X-HE-Tag: 1764754563-697363
+X-HE-Meta: U2FsdGVkX1+W8piX1f6feZvaPl7tPt7UNfdFGT4FumbHiLvkLGqnmGUlJJwPdlldVzNV+kiwaV3FLqpHLJAhxM8yE7ksDwrQ0Ts+qlsdelWzaqW9y78iz1xciEvVAQblT2Z1pWqe4F5u540LknjLuWesBOA1BVWFbS/JZDBDbRcSBmt822PxdrSchSXGnFA/xtNVENUN8Whpo7ZCo3G/30sKeiAtbfgCypOE7Htt0L1baefZ47EgbjKM9y/oDtESctZdtwaerOrq3Jq8rgwqx9v4DHA1aQT6n8m3RrMc5sBA5A02oGfNpHDxgA2q3iSzRKuPltrJbdFJFv3YxHw8U2xTa0aT6B7CCXBC7ddlQjEgCkxl6RyYC1Xu7xkhfD0GhtBfZZ+PIZP7ST62Uti22DfJZDCtOBokEvSqdhUWmZHcTBdJhJub2CNBeRVMlf/dNIxHkxphGIaSoXVoAN/SC4wPfvEwUOpmunK8QU/DrxHrpvzw+PPcbr/Bl7LWzWBFJG6lSXzJ7sCFIH1bGavkpbvOPQfVL/aikSOfeFqjSmbcWIsL3x2KVWmFoDIiPsTOFXLId1hi0wyY40Jj4trCV/ZySCEXe5hNILNkzpIUDBJe4Dp6xy8liLGC7T8R9idvjzq1qY1sRmQo90f0rP/Bcolm87hE1Tx1k4qJSKBa1jJq7XTyc7Wjcb0LW6lqnKM0yeUzTFAzMJTsV6NcvxDIO9lfwswig+bDyDA9xW/kbcw4amH2yNilOruNcyRKkKoNXd2Yn6J9GTon/IFisLPIqNMSSfFLu3vhORwjIIonuCTvgcu5W3MNNCn0IEFjHltFtvFKaqCyTkte41t1QlYslhVoACo4OOQeBWrYxFqcz3rp9Xll8nLCT7/sGhqMM2wvk6NnbKjoVP4WKjRdqFzk0BqC4+rEdYiKfzgCQ02X/LY7eZjKkfzhNHu2zMQdCjFSx9GAjVWbAmGU6zZ8LJA
+ 0bcEQOSo
+ b4XrYs8dYzU9PI3ILoINpm1z1YP3ZUJEU6ug9qWqvfELi5cEuucDd/Nmc0qOghEsV3HKE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,251 +238,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When spawning and killing threads in separate processes in parallel the
-primary bottleneck on the stock kernel is pidmap_lock, largely because
-of a back-to-back acquire in the common case. This aspect is fixed with
-the patch.
 
-Performance improvement varies between reboots. When benchmarking with
-20 processes creating and killing threads in a loop, the unpatched
-baseline hovers around 465k ops/s, while patched is anything between
-~510k ops/s and ~560k depending on false-sharing (which I only minimally
-sanitized). So this is at least 10% if you are unlucky.
+On 12/2/2025 6:57 PM, Mike Rapoport wrote:
+> On Mon, Dec 01, 2025 at 07:54:34PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 12/1/25 14:22, Tianyou Li wrote:
+> ...
+>
+>>>    void remove_pfn_range_from_zone(struct zone *zone,
+>>>    				      unsigned long start_pfn,
+>>>    				      unsigned long nr_pages)
+>>> @@ -551,6 +577,7 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>>>    	const unsigned long end_pfn = start_pfn + nr_pages;
+>>>    	struct pglist_data *pgdat = zone->zone_pgdat;
+>>>    	unsigned long pfn, cur_nr_pages;
+>>> +	enum zone_contiguous_state contiguous_state = CONTIGUOUS_UNDETERMINED;
+>>>    	/* Poison struct pages because they are now uninitialized again. */
+>>>    	for (pfn = start_pfn; pfn < end_pfn; pfn += cur_nr_pages) {
+>>> @@ -571,12 +598,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>>>    	if (zone_is_zone_device(zone))
+>>>    		return;
+>>> -	clear_zone_contiguous(zone);
+>>> +	contiguous_state = clear_zone_contiguous_for_shrinking(
+>>> +				zone, start_pfn, nr_pages);
+>> Reading this again, I wonder whether it would be nicer to have something
+>> like:
+>>
+>> new_contig_state = zone_contig_state_after_shrinking();
+>> clear_zone_contiguous(zone);
+> +1
+>
+>>> +static enum zone_contiguous_state __meminit clear_zone_contiguous_for_growing(
+>>> +		struct zone *zone, unsigned long start_pfn, unsigned long nr_pages)
+>>> +{
+>>> +	const unsigned long end_pfn = start_pfn + nr_pages;
+>>> +	enum zone_contiguous_state result = CONTIGUOUS_UNDETERMINED;
+>>> +
+>>> +	/*
+>>> +	 * Given the moved pfn range's contiguous property is always true,
+>>> +	 * under the conditional of empty zone, the contiguous property should
+>>> +	 * be true.
+>>> +	 */
+>> I don't think that comment is required.
+>>
+>>> +	if (zone_is_empty(zone))
+>>> +		result = CONTIGUOUS_DEFINITELY;
+>>> +
+>>> +	/*
+>>> +	 * If the moved pfn range does not intersect with the original zone span,
+>>> +	 * the contiguous property is surely false.
+>>> +	 */
+>>> +	else if (end_pfn < zone->zone_start_pfn || start_pfn > zone_end_pfn(zone))
+>>> +		result = CONTIGUOUS_DEFINITELY_NOT;
+>>> +
+>>> +	/*
+>>> +	 * If the moved pfn range is adjacent to the original zone span, given
+>>> +	 * the moved pfn range's contiguous property is always true, the zone's
+>>> +	 * contiguous property inherited from the original value.
+>>> +	 */
+>>> +	else if (end_pfn == zone->zone_start_pfn || start_pfn == zone_end_pfn(zone))
+>>> +		result = zone->contiguous ?
+>>> +			CONTIGUOUS_DEFINITELY : CONTIGUOUS_DEFINITELY_NOT;
+>>> +
+>>> +	/*
+>>> +	 * If the original zone's hole larger than the moved pages in the range,
+>>> +	 * the contiguous property is surely false.
+>>> +	 */
+>>> +	else if (nr_pages < (zone->spanned_pages - zone->present_pages))
+>>> +		result = CONTIGUOUS_DEFINITELY_NOT;
+>>> +
+>> This is a bit unreadable :)
+>>
+>> if (zone_is_empty(zone)) {
+>> 	result = CONTIGUOUS_DEFINITELY;
+>> } else if (...) {
+>> 	/* ... */
+>> 	...
+>> } else if (...) {
+>> 	...
+>> }
+> If we update zone state outside this function it can be even simpler:
+>
+> 	if (zone_is_empty(zone))
+> 		return CONTIGUOUS_DEFINITELY;
+>
+> 	if (nr_pages < (zone->spanned_pages - zone->present_pages))
+> 		return CONTIGUOUS_DEFINITELY_NOT;
+>
+> etc.
+>   
 
-The change also facilitated some cosmetic fixes.
 
-It has an unintentional side effect of no longer issuing spurious
-idr_preload() around idr_replace().
+Thanks Mike. It's doable, consider clear_zone_contiguous moved out.
 
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
----
- kernel/pid.c | 131 +++++++++++++++++++++++++++++++++------------------
- 1 file changed, 85 insertions(+), 46 deletions(-)
+>>> +	clear_zone_contiguous(zone);
+>>> +	return result;
+>>> +}
+>>> +
+>>>    /*
+>>>     * Associate the pfn range with the given zone, initializing the memmaps
+>>>     * and resizing the pgdat/zone data to span the added pages. After this
+>>> @@ -752,8 +821,8 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>>>    {
+>>>    	struct pglist_data *pgdat = zone->zone_pgdat;
+>>>    	int nid = pgdat->node_id;
+>>> -
+>>> -	clear_zone_contiguous(zone);
+>>> +	const enum zone_contiguous_state contiguous_state =
+>>> +		clear_zone_contiguous_for_growing(zone, start_pfn, nr_pages);
+>>>    	if (zone_is_empty(zone))
+>>>    		init_currently_empty_zone(zone, start_pfn, nr_pages);
+>>> @@ -783,7 +852,7 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>>>    			 MEMINIT_HOTPLUG, altmap, migratetype,
+>>>    			 isolate_pageblock);
+>>> -	set_zone_contiguous(zone);
+>>> +	set_zone_contiguous(zone, contiguous_state);
+>>>    }
+>>>    struct auto_movable_stats {
+>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>> index 7712d887b696..06db3fcf7f95 100644
+>>> --- a/mm/mm_init.c
+>>> +++ b/mm/mm_init.c
+>>> @@ -2263,26 +2263,34 @@ void __init init_cma_pageblock(struct page *page)
+>>>    }
+>>>    #endif
+>>> -void set_zone_contiguous(struct zone *zone)
+>>> +void set_zone_contiguous(struct zone *zone, enum zone_contiguous_state state)
+>>>    {
+>>>    	unsigned long block_start_pfn = zone->zone_start_pfn;
+>>>    	unsigned long block_end_pfn;
+>>> -	block_end_pfn = pageblock_end_pfn(block_start_pfn);
+>>> -	for (; block_start_pfn < zone_end_pfn(zone);
+>>> -			block_start_pfn = block_end_pfn,
+>>> -			 block_end_pfn += pageblock_nr_pages) {
+>>> +	if (state == CONTIGUOUS_DEFINITELY) {
+>>> +		zone->contiguous = true;
+>>> +		return;
+>>> +	} else if (state == CONTIGUOUS_DEFINITELY_NOT) {
+>>> +		// zone contiguous has already cleared as false, just return.
+> Please no C++ style comments.
 
-diff --git a/kernel/pid.c b/kernel/pid.c
-index a31771bc89c1..f45ae56db7da 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -159,58 +159,86 @@ void free_pids(struct pid **pids)
- 			free_pid(pids[tmp]);
- }
- 
--struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
--		      size_t set_tid_size)
-+struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
-+		      size_t arg_set_tid_size)
- {
-+	int set_tid[MAX_PID_NS_LEVEL + 1] = {};
-+	int pid_max[MAX_PID_NS_LEVEL + 1] = {};
- 	struct pid *pid;
- 	enum pid_type type;
- 	int i, nr;
- 	struct pid_namespace *tmp;
- 	struct upid *upid;
- 	int retval = -ENOMEM;
-+	bool retried_preload;
- 
- 	/*
--	 * set_tid_size contains the size of the set_tid array. Starting at
-+	 * arg_set_tid_size contains the size of the arg_set_tid array. Starting at
- 	 * the most nested currently active PID namespace it tells alloc_pid()
- 	 * which PID to set for a process in that most nested PID namespace
--	 * up to set_tid_size PID namespaces. It does not have to set the PID
--	 * for a process in all nested PID namespaces but set_tid_size must
-+	 * up to arg_set_tid_size PID namespaces. It does not have to set the PID
-+	 * for a process in all nested PID namespaces but arg_set_tid_size must
- 	 * never be greater than the current ns->level + 1.
- 	 */
--	if (set_tid_size > ns->level + 1)
-+	if (arg_set_tid_size > ns->level + 1)
- 		return ERR_PTR(-EINVAL);
- 
-+	/*
-+	 * Prep before we take locks:
-+	 *
-+	 * 1. allocate and fill in pid struct
-+	 */
- 	pid = kmem_cache_alloc(ns->pid_cachep, GFP_KERNEL);
- 	if (!pid)
- 		return ERR_PTR(retval);
- 
--	tmp = ns;
-+	get_pid_ns(ns);
- 	pid->level = ns->level;
-+	refcount_set(&pid->count, 1);
-+	spin_lock_init(&pid->lock);
-+	for (type = 0; type < PIDTYPE_MAX; ++type)
-+		INIT_HLIST_HEAD(&pid->tasks[type]);
-+	init_waitqueue_head(&pid->wait_pidfd);
-+	INIT_HLIST_HEAD(&pid->inodes);
- 
--	for (i = ns->level; i >= 0; i--) {
--		int tid = 0;
--		int pid_max = READ_ONCE(tmp->pid_max);
-+	/*
-+	 * 2. perm check checkpoint_restore_ns_capable()
-+	 *
-+	 * This stores found pid_max to make sure the used value is the same should
-+	 * later code need it.
-+	 */
-+	for (tmp = ns, i = ns->level; i >= 0; i--) {
-+		pid_max[ns->level - i] = READ_ONCE(tmp->pid_max);
- 
--		if (set_tid_size) {
--			tid = set_tid[ns->level - i];
-+		if (arg_set_tid_size) {
-+			int tid = set_tid[ns->level - i] = arg_set_tid[ns->level - i];
- 
- 			retval = -EINVAL;
--			if (tid < 1 || tid >= pid_max)
--				goto out_free;
-+			if (tid < 1 || tid >= pid_max[ns->level - i])
-+				goto out_abort;
- 			/*
- 			 * Also fail if a PID != 1 is requested and
- 			 * no PID 1 exists.
- 			 */
- 			if (tid != 1 && !tmp->child_reaper)
--				goto out_free;
-+				goto out_abort;
- 			retval = -EPERM;
- 			if (!checkpoint_restore_ns_capable(tmp->user_ns))
--				goto out_free;
--			set_tid_size--;
-+				goto out_abort;
-+			arg_set_tid_size--;
- 		}
- 
--		idr_preload(GFP_KERNEL);
--		spin_lock(&pidmap_lock);
-+		tmp = tmp->parent;
-+	}
-+
-+	/*
-+	 * Prep is done, id allocation goes here:
-+	 */
-+	retried_preload = false;
-+	idr_preload(GFP_KERNEL);
-+	spin_lock(&pidmap_lock);
-+	for (tmp = ns, i = ns->level; i >= 0;) {
-+		int tid = set_tid[ns->level - i];
- 
- 		if (tid) {
- 			nr = idr_alloc(&tmp->idr, NULL, tid,
-@@ -220,6 +248,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
- 			 * alreay in use. Return EEXIST in that case.
- 			 */
- 			if (nr == -ENOSPC)
-+
- 				nr = -EEXIST;
- 		} else {
- 			int pid_min = 1;
-@@ -235,19 +264,42 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
- 			 * a partially initialized PID (see below).
- 			 */
- 			nr = idr_alloc_cyclic(&tmp->idr, NULL, pid_min,
--					      pid_max, GFP_ATOMIC);
-+					      pid_max[ns->level - i], GFP_ATOMIC);
-+			if (nr == -ENOSPC)
-+				nr = -EAGAIN;
- 		}
--		spin_unlock(&pidmap_lock);
--		idr_preload_end();
- 
--		if (nr < 0) {
--			retval = (nr == -ENOSPC) ? -EAGAIN : nr;
-+		if (unlikely(nr < 0)) {
-+			/*
-+			 * Preload more memory if idr_alloc{,cyclic} failed with -ENOMEM.
-+			 *
-+			 * The IDR API only allows us to preload memory for one call, while we may end
-+			 * up doing several under pidmap_lock with GFP_ATOMIC. The situation may be
-+			 * salvageable with GFP_KERNEL. But make sure to not loop indefinitely if preload
-+			 * did not help (the routine unfortunately returns void, so we have no idea
-+			 * if it got anywhere).
-+			 *
-+			 * The lock can be safely dropped and picked up as historically pid allocation
-+			 * for different namespaces was *not* atomic -- we try to hold on to it the
-+			 * entire time only for performance reasons.
-+			 */
-+			if (nr == -ENOMEM && !retried_preload) {
-+				spin_unlock(&pidmap_lock);
-+				idr_preload_end();
-+				retried_preload = true;
-+				idr_preload(GFP_KERNEL);
-+				spin_lock(&pidmap_lock);
-+				continue;
-+			}
-+			retval = nr;
- 			goto out_free;
- 		}
- 
- 		pid->numbers[i].nr = nr;
- 		pid->numbers[i].ns = tmp;
- 		tmp = tmp->parent;
-+		i--;
-+		retried_preload = false;
- 	}
- 
- 	/*
-@@ -257,25 +309,15 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
- 	 * is what we have exposed to userspace for a long time and it is
- 	 * documented behavior for pid namespaces. So we can't easily
- 	 * change it even if there were an error code better suited.
-+	 *
-+	 * This can't be done earlier because we need to preserve other
-+	 * error conditions.
- 	 */
- 	retval = -ENOMEM;
--
--	get_pid_ns(ns);
--	refcount_set(&pid->count, 1);
--	spin_lock_init(&pid->lock);
--	for (type = 0; type < PIDTYPE_MAX; ++type)
--		INIT_HLIST_HEAD(&pid->tasks[type]);
--
--	init_waitqueue_head(&pid->wait_pidfd);
--	INIT_HLIST_HEAD(&pid->inodes);
--
--	upid = pid->numbers + ns->level;
--	idr_preload(GFP_KERNEL);
--	spin_lock(&pidmap_lock);
--	if (!(ns->pid_allocated & PIDNS_ADDING))
--		goto out_unlock;
-+	if (unlikely(!(ns->pid_allocated & PIDNS_ADDING)))
-+		goto out_free;
- 	pidfs_add_pid(pid);
--	for ( ; upid >= pid->numbers; --upid) {
-+	for (upid = pid->numbers + ns->level; upid >= pid->numbers; --upid) {
- 		/* Make the PID visible to find_pid_ns. */
- 		idr_replace(&upid->ns->idr, pid, upid->nr);
- 		upid->ns->pid_allocated++;
-@@ -286,13 +328,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
- 
- 	return pid;
- 
--out_unlock:
--	spin_unlock(&pidmap_lock);
--	idr_preload_end();
--	put_pid_ns(ns);
--
- out_free:
--	spin_lock(&pidmap_lock);
- 	while (++i <= ns->level) {
- 		upid = pid->numbers + i;
- 		idr_remove(&upid->ns->idr, upid->nr);
-@@ -303,7 +339,10 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
- 		idr_set_cursor(&ns->idr, 0);
- 
- 	spin_unlock(&pidmap_lock);
-+	idr_preload_end();
- 
-+out_abort:
-+	put_pid_ns(ns);
- 	kmem_cache_free(ns->pid_cachep, pid);
- 	return ERR_PTR(retval);
- }
--- 
-2.48.1
+
+Got it. Thanks.
+
+
+>>> +		return;
+>>> +	} else if (state == CONTIGUOUS_UNDETERMINED) {
+>>> +		block_end_pfn = pageblock_end_pfn(block_start_pfn);
+>>> +		for (; block_start_pfn < zone_end_pfn(zone);
+>>> +				block_start_pfn = block_end_pfn,
+>>> +				block_end_pfn += pageblock_nr_pages) {
+>>> -		block_end_pfn = min(block_end_pfn, zone_end_pfn(zone));
+>>> +			block_end_pfn = min(block_end_pfn, zone_end_pfn(zone));
+>>> -		if (!__pageblock_pfn_to_page(block_start_pfn,
+>>> -					     block_end_pfn, zone))
+>>> -			return;
+>>> -		cond_resched();
+>>> -	}
+>>> +			if (!__pageblock_pfn_to_page(block_start_pfn,
+>>> +						block_end_pfn, zone))
+>>> +				return;
+>>> +			cond_resched();
+>>> +		}
+>>> -	/* We confirm that there is no hole */
+>>> -	zone->contiguous = true;
+>>> +		/* We confirm that there is no hole */
+>>> +		zone->contiguous = true;
+>>> +	}
+>>>    }
+>>
+>> switch (state) {
+>> case CONTIGUOUS_DEFINITELY:
+>> 	zone->contiguous = true;
+>> 	return;
+>> case CONTIGUOUS_DEFINITELY_NOT:
+>> 	return;
+>> default:
+>> 	break;
+>> }
+>> ... unchanged logic.
+> I was going to suggest rather to drop 'else'
+>
+> 	if (state == CONTIGUOUS_DEFINITELY) {
+> 		zone->contiguous = true;
+> 		return;
+> 	}
+>
+> 	if (state == CONTIGUOUS_DEFINITELY_NOT)
+> 		return;
+>
+> 	... unchanged logic.
+>
+> but I don't feel strongly about it.
+>   
+
+
+Got it. Thanks.
 
 
