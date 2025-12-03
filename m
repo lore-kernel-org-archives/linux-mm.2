@@ -4,124 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1B2D12694
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 11:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D76FD12D41
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Dec 2025 11:22:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C01E96B0027; Wed,  3 Dec 2025 06:15:29 -0500 (EST)
+	id 75A356B0029; Wed,  3 Dec 2025 06:22:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD9D36B0029; Wed,  3 Dec 2025 06:15:29 -0500 (EST)
+	id 7314A6B002A; Wed,  3 Dec 2025 06:22:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEF666B002A; Wed,  3 Dec 2025 06:15:29 -0500 (EST)
+	id 66E3B6B002B; Wed,  3 Dec 2025 06:22:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A66C6B0027
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:15:29 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE6D913B437
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:15:26 +0000 (UTC)
-X-FDA: 84177903852.08.61F6ED0
-Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 08B854000A
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:15:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mVNmlXjF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of haoli.tcs@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=haoli.tcs@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764760525; a=rsa-sha256;
-	cv=none;
-	b=gTngrVUm3omNwPAfjYjpFkhxmcYSbLK/KqFxNub1LbrB7c158+zrw3gbo+AMsI6vlMNNuz
-	flqEgRgijUe/UGCjqyv7oQviWhBTwsxfCFSVZkW57WXwK+kuX0QVOApTwwbuPg95Z7Ac1Y
-	zFQExnlaAEdj8/FnlbKEAnDofHwQDDI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mVNmlXjF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of haoli.tcs@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=haoli.tcs@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 55C676B0029
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 06:22:40 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12AA3BA636
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:22:40 +0000 (UTC)
+X-FDA: 84177922080.14.9C5C91D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3D7D6A000E
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 11:22:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h1MQbpxV;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764760525;
+	s=arc-20220608; t=1764760958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4liKJMDGkOIyeh/41fba3sjQmLKDAy3L+mDjIKGTwug=;
-	b=NLcCamz4vnJKZ9QviYoGK5qgRT/YYfaYO+2WmMlbD/lPx3raXqSmKt9FmnCynMICqdtKdk
-	0Rhdkrx5ryLOZwZ3dFyRnOc2Z0y4PO4QG6pTeJh60H0TwZHJW6f0gj57Dt4FHKsGoAzyDS
-	A5xdL4HqqwGlIOX5r0OMs1m7bMp/Jcc=
-Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-bde0f62468cso6513387a12.2
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 03:15:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764760524; x=1765365324; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4liKJMDGkOIyeh/41fba3sjQmLKDAy3L+mDjIKGTwug=;
-        b=mVNmlXjFuSesrblk1Sh4hV7RmC/ccPGJvLjHth9hoN1jhMkqmhvOYfvudXtqlCp54e
-         it0uY/1jQSdZGfjeZRZNNe9+xm+lrAgeOYiqT2kRX/7B+4JKAOa8GJV/G2yiLg5WCfUr
-         gU+l2HWh0GMTnO8yZCr6G0iLbZIpJi++lw6ecc7Q0jyy1X2zF8eUhw8AYyhONaY4RWyK
-         IDiuAS6UWw5naRFV853GXzaFGeeD6DniQQYY1xMnzWkSE+Wc71yGbfzONw1vnL2cdnda
-         b8zKaokMdFj0QZjC9Z1dLWSf9l0aKtBM8Jq83MfAan8a5fRfdAT5v+BU8g7zJb5w+Hkf
-         IZQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764760524; x=1765365324;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4liKJMDGkOIyeh/41fba3sjQmLKDAy3L+mDjIKGTwug=;
-        b=rJryGLIjwbndVCEjCr1s+Vzo8Q4pXNDaKghPOshQ+EcvNKQfaA8U0QhkmXchLXCYLS
-         075jyv7aUsOfK3vp1WFRZmiMQNhD2TUXcuyT2ivaZl8GQPEXzeVl31M0ok1R33eQNuD/
-         n77vnqJyoGMhl7YjECr4u9voanK0Tj93a1gvTYhe/kVqI53rlyy/WdOFvFOXZvyyA8fF
-         2Ucm1r0FVnaQEgbiQywd/g2xygICr8U6JlA8Tv5CYUgkXzkhxRHyemtIRrq79o71VktL
-         qhTfUe6A1z5Q8gVpmnJQ3Zsk92iZIGK0DaSKCQyg1NOWrbrTGzCkGvn3N/CU49ig1f6q
-         sVgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrTaA95hGxeW+oXrgkpyYCkbP39pbJox+/k/ybTidI/pmhq0uSA+w21tX4kkPl8ElNzMZMbtEeBQ==@kvack.org
-X-Gm-Message-State: AOJu0YyNzJZN4WDol0EMm5Yoal2TZdstzxULOHJgtfuGGHzQRDaqDhlB
-	b3enSQi/OkgSNXTK/UkuU1QIAHBB+qsMZlnOqSAc9EKQQ1ZfW5sZ32No
-X-Gm-Gg: ASbGnct2gWmUUYtbaFLwJq2S7EWu4/M8BPbykmkA9IGhkcSDwvLd3oWazVyqxNSXjQ4
-	XUsvQiL03RSER1W282zF3mp28oMIoo+S0/CBu3JXf5mMJNbeN7eV44vQ2k7J/yzvnyVFeg8fyYZ
-	R9ylzVymNYuXY/wnZ4+n/qj2xkEHUOYa9JDnj8pwIcK6jcoY3MxW/3Fm7jpafXhYGExUmTHABj+
-	4E9uQsvXXNENMLmirksH0JMXJdQmiosCvULUjPuLeSYN8CRkfaawhaUv8HIwdmXY8//RhFzc4Rv
-	U+o+qKMqx6rsmSGKhBVaIk9bKQLtB4BwMhmCRh+zw9UrsAOFplMbvLoxaGK2EUNLBhXxdFnpiO7
-	XCqs6g1RJhKkpjBpDXdrQLoDLMn+XSReY9wJEkQIS5rXcEC3G5QCgdJr+BnXWdu+ydros7t1DPB
-	gDsExddw==
-X-Google-Smtp-Source: AGHT+IEa1o17eoKThPPEuyeA7M5bW6iPm6eREoKK7m3x0sxdXPE1FGvFnc1U90Oo1q8SxcKXVOB4uw==
-X-Received: by 2002:a05:693c:2288:b0:2a4:3592:cf60 with SMTP id 5a478bee46e88-2ab92d46d00mr1613349eec.4.1764760523491;
-        Wed, 03 Dec 2025 03:15:23 -0800 (PST)
-Received: from fedora ([2a01:7e03::f03c:91ff:fe02:b162])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a96560986csm95192316eec.2.2025.12.03.03.15.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 03:15:23 -0800 (PST)
-Date: Wed, 3 Dec 2025 19:15:12 +0800
-From: Hao Li <haoli.tcs@gmail.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Uladzislau Rezki <urezki@gmail.com>, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rcu@vger.kernel.org, maple-tree@lists.infradead.org, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: slub: add barn_get_full_sheaf() and refine empty-main sheaf
- replacement
-Message-ID: <dq67tbm6bbvm7opvuq5vwtjjrcnrponmhfv7xwnvpv6vp3u2lv@bkruq4dtx3rd>
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
- <20250910-slub-percpu-caches-v8-3-ca3099d8352c@suse.cz>
- <lvagftdnxgpyafafl2ish6x6phno6xstd6r3zxffs652lyxzyc@2pbngufu7wro>
- <aS_OrvHmgyhQzQIj@hyeyoo>
+	bh=1SCgMHqFatyBVvirqGBwfnr2sJ9r9hMYmJdXqkpxGVI=;
+	b=zSo5abEhexDnLiVf+gjod2VpNqms5RW9V6NfjkYbKvBP/G8++rpqokHcDxl71dzdQw42ln
+	xTfcHUdVjZTXIlttzS2mBslafArXKUQqCWWblG49oTaIkH2NmuiuaGQBIidwWDQ1dDw898
+	HEbw/Vai/E1TJLjt4DH2VjVqpl2HCh4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h1MQbpxV;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764760958; a=rsa-sha256;
+	cv=none;
+	b=Ybku0Ry/LbopaRepSGYsvyjjy2oKYjOJYFjSoqpFr1u3Ki3VC1QUKp39GyE57xaw/F4S9s
+	RfYHSEwgtfjLaWdMblNEjE0ACq9p/qhFjwBcW5blB1DRadnpwCjQm+Ks4jurRHATJ3ysAn
+	6ZtUtdL28oACN8TWARFq7snttnd0bWE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B3CE5417B7;
+	Wed,  3 Dec 2025 11:22:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C68CC4CEFB;
+	Wed,  3 Dec 2025 11:22:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764760956;
+	bh=Ra70rAIPocOZwVn8LAoNGHSFsWLKLEMD4yOgJi1DkYQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h1MQbpxV1pat+Gn/jAhwJCr0oz4+Izs2LeA/8W8gcmVlXTJpjcrPgJW8VinebpcqT
+	 lioBrQXYXvOw0prQ4x5kX+aCLAM51nwfQ+1tKxlUdKrRaMHcooYDwdKmEZ1WcynRWq
+	 2+gFdyRobfK2eXUoFCbuaHg7JeLUm2fGMG6GaM2plsKHG/8Wf8+/IudiV+1Gx+j2+5
+	 GWFnXkLFkUjMFO4JBRyf0Dgf5KdHegXlinoZRKt4P8U8Cusk/Xw9dClzaGmIpQc5cz
+	 clIMaCHvw6tNscd+dHnWgDs6smoBMHwS+hu27OjUBKuMDGPsf0uSazrvXG8IK4fhA9
+	 2mo9JjqvjkW2g==
+Message-ID: <4a9950fb-471e-4b04-8a0e-0f34e8b6a082@kernel.org>
+Date: Wed, 3 Dec 2025 12:22:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aS_OrvHmgyhQzQIj@hyeyoo>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 08B854000A
-X-Stat-Signature: 733hunjstxayyii9rrdt5r33jxxzwqit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
+ lock-free
+To: Michal Hocko <mhocko@suse.com>
+Cc: Gregory Price <gourry@gourry.net>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Aboorva Devarajan <aboorvad@linux.ibm.com>, vbabka@suse.cz,
+ surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Oscar Salvador <OSalvador@suse.com>
+References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
+ <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
+ <aS_0bgCs2qE0y1bJ@tiehlicka> <aS_2Z6ROtrxLQcRN@gourry-fedora-PF4VCD3F>
+ <aS_4E2H5aJmSvWF7@tiehlicka> <aS_8BgwR3R_geayy@gourry-fedora-PF4VCD3F>
+ <8b89bb59-6b6a-4a79-a571-e97b9ae5287f@kernel.org>
+ <aTAGBPuS_iUAWNKO@tiehlicka>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <aTAGBPuS_iUAWNKO@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3D7D6A000E
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 3rfkgjhikzbdf8m1mosqiuzqhz1ef98x
 X-Rspam-User: 
-X-HE-Tag: 1764760524-128944
-X-HE-Meta: U2FsdGVkX1/p1fpZliVccbAN8p6ZQZZSltSzr+QgOSCZbngnZuIaTLTbYpjxEO06w9LBra0sUJ4J2fY7yB2NuOzeCQFO9R7zWVilUzwCxxsFYAo5NSMiUD8QF3PFauIxlU0RqL3kTS/8xz+LYs1WuJVHICEAoHlyL6OLnwJlddlUUS2myC2b4CPjiIRJSjgSRLyuTyoawLAKylfYnmQ5/SD5HqW5hXRKPHoi5TvYTy0p3rcItWhaxCYcwpwxVo/+lEIeE6SdDEidNztUQdjooEsbMKKIlnLarC6kS9JTahB9sOI77cyE3ajfdB43v/YdwAu4LuubzU1RDUxJKveKFDs8ZpldOJhNHPA8980mDk1Zwtuai69bdbA5Mt5cIy6MW6Y7O7sXiPo2B+7UWn31hZAN1DRhutpFX5IlQmzBx3jt8/zzvR9HWbZti0r+RUBmUwG0Zv6lt+9gay4UgIAzIveIXP64LrQoq7edmgxINFUmhs7cSbuIChz5Lf7Ttl1jsdUCgt54nkAIZiBvSzuhFr1deT779wDuREIf1j09+d2a6Li214JsRKNDlagu//H9mVDo5khcjeo7cO28h24xIdbKVfLDI3J04P9fx4DAGou7AV4ew1Dmu0gK3QrNwb2jcyqEu8EQHcR2/YXBsXIbTufsgyqP1XJoh13SxV/jZk4wfs9FfolZqTWh02K9wza+F7oNAOYAb6OKkOqBGp3H/Lr+uDMwnmviypkKVIT/XGh6pEBJf2BozObz7EboZEbyLIP3/lOfW85OfYEEn/NFHFdGGhOC27hEGA6sbtnMQhBLEfGnp1Qh7X9TBggxIYaXzjbXx3aBPe8bqAAkl+O4gbRKOemK8J4chGXHAIGpRu2INDZV/sZ0J3/k5H13FMCt52j7V++arb8ngfCr6e57hq+6qwuqlBT2yeKLw+68fGYndWCG322IymJWiWBK7L36U1BQpyJKBGmdJPeuHLz
- 1RU8oPbS
- 2LDNpPn3Nn12yDytN5HO0VAxwEagq5N8nihHE16W6tvvdl50CVhqLKVRUCvGq891cmDMZ3LTD75FLHUV8lsr/eyC0zzc+Jv/6glH35X3M3uA7dZSQ/oqZdGSNmq1YjlP9Op33uFJSvpa5CLNhc3cPWrIcd4oGcmcRLjTKRRm0OghmRsnzp19pLlJiaCk5XHpY2cGMmHcadScPb3rHCE2In3YuTH90NGZw7DUcYG3L0fIg4cCwWKMXxukVMKCtyrP+AkjQ0ysryntyclLeI0R+efZWGpwueuWNWGtO70QOBdfEWMpFu8jFJxkxhgNpClV1syvxm6rh+rDcZnT8EnwtCJiS9fEs+v1SQ1nM1/z40LuTp/1L5x7UAbJGEJx3H8HSWPRx/utt/mFxKouT0sa1MiSvMNqap6R6DE8EzIl6mYBkabJjMBsRdwk6y/pGQnvQAhVYK6g0EbXeDlynUu+HGw6a13tLd6kFit8Fm3Hrz2M828Yf/Tn/XiM1reDeJ8+kzVth8hJsHArnzgnWQostVaYSJSNZxlmOKKJlqWVwATa+J86PkyPcJgLDzzBuDjZV6bXXbcbI9V2HLWsqjUX4C2EXZEa3DZ5LBld0GwFwR7F8st6pubGnn1F9Cwxgcx6pO5blilFmSvog/LJlFrxq64YdmKXr1Q3xi5s6YJ44pzemvkPSGBj/8Od1Ag==
+X-HE-Tag: 1764760957-212700
+X-HE-Meta: U2FsdGVkX19NbPoZbburSzwcKxBpLmt4eTqtc2WsqnW2q3LNx1dqJOG5AHyYHGaNlyQfrks+U/cohH7q38rbyIE1ICBzgrafREjGaJm6Y8TEsNt6sH6sdPxgjuKs4qEc4FlUg1FI43aaF5CJInpoTQrFCj4vGRRt1/vAznwO85hpoenZDQ7CIgCf2YxsXFcOKWuOZVbyORDtB//QJ+DzAurwDFyChEmkDdNR6SUYTguvY34vId9Gq+3YMOghkVroMV0zzvq5MKWWXyMn2gsZ6awSwD3mF3v8X6P5GL02QJDQ+/WUcjF2K9VXKyimiFG8WAraneNPgCvtnrITCqlldkUYYdYCFu4APph1DvmKG47gt5Z6qjGgDRnpzslxTGocl+t3Nr3GJ4f40nHQgzXHWe78LeSVSjO01OE7fSpWExaKog9dF8PEBuv1RTta7GS9dunV9TbKYPsb0R4KY4khAL/nNb9k2sFGUVviB/tWT23k8bDg+0vAfAlt1W3YLmxuuWgiT2fI6urwN95+EjiDZ8VAiOB6pGWzbl3PNvzQNkI3idKsj1s8iUdFKFMPDhLD362YhmkaW1gBf4ROMnYatXG61cMwfNCTwMAFmeZ/9oS03I20JKsxreawgFBgnBTqocaRjV5nj7fW8kO3kAlt+J34tVK4c6ZMUf/kXBO9dyPYFdJFg/hBvGoGITkAgvNtVtcs+fdN3WRVTBTyq7jECXO0+bj186RAOG+sGpD+TiEY6ZRtIWGofphfVuqX8Ye3LEMLaRs4OQvwk/6N1Pfwv20GFK9+zQHthKoFbi4dfD31iyYH1ZRp17o+pXPKvY+JVyPnfH3FEhQjOhMjxHvlfnZtUAGWa+9aV4dr5mjitkYxRARkpPBuAbfo34LU31DsWLLr0qXQqDufpmUDdr+T5GOuqWQiNQ8lirIC3GWEvRBsUrPTuHds1xDZhe9vbK57KdmYDnPVvqhR3CchhFU
+ GDIOCNWA
+ kj6R3IVXhRNce8HT+Z7OjnwSf/TccGlA0hwrV4LnNOnTqm7H+SYORq6OO3IdU+LHwip5I4nmjfC6iQGU5YUGT1DeyU7MntYDVNWsYjtsmkWrV4ZDcQUw+P5BJ8Q69wTG6pl3FybEj9gdarevDXvyojwSeaJlbTOJTFOOFwYNskMF1/V6tjcxMMcFjFmM8FCXDpScaA1mRQaoRp7fe5JIQRtDOGld0EcH82Kq/mi1L1wOztqkXKIw9d24OZS0aOrXJjlrRBCR6CziR7W75n/UOPtTM3jMJEybio1dMAGfZtk5YyW4IYUyn88LEpw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,78 +104,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 02:46:22PM +0900, Harry Yoo wrote:
-> On Tue, Dec 02, 2025 at 05:00:08PM +0800, Hao Li wrote:
-> > Introduce barn_get_full_sheaf(), a helper that detaches a full sheaf from
-> > the per-node barn without requiring an empty sheaf in exchange.
-> > 
-> > Use this helper in __pcs_replace_empty_main() to change how an empty main
-> > per-CPU sheaf is handled:
-> > 
-> >   - If pcs->spare is NULL and pcs->main is empty, first try to obtain a
-> >     full sheaf from the barn via barn_get_full_sheaf(). On success, park
-> >     the empty main sheaf in pcs->spare and install the full sheaf as the
-> >     new pcs->main.
-> > 
-> >   - If pcs->spare already exists and has objects, keep the existing
-> >     behavior of simply swapping pcs->main and pcs->spare.
-> > 
-> >   - Only when both pcs->main and pcs->spare are empty do we fall back to
-> >     barn_replace_empty_sheaf() and trade the empty main sheaf into the
-> >     barn in exchange for a full one.
+On 12/3/25 10:42, Michal Hocko wrote:
+> On Wed 03-12-25 10:15:04, David Hildenbrand (Red Hat) wrote:
+>> On 12/3/25 09:59, Gregory Price wrote:
+>>> On Wed, Dec 03, 2025 at 09:42:59AM +0100, Michal Hocko wrote:
+>>>> On Wed 03-12-25 03:35:51, Gregory Price wrote:
+>>>>> 		if (!ret) {
+>>>>> 			/*
+>>>>> 			 * TODO: fatal migration failures should bail
+>>>>> 			 * out
+>>>>> 			 */
+>>>>> 			do_migrate_range(pfn, end_pfn);
+>>>>> 		}
+>>>>>
+>>>>> Maybe it's time to implement the bail out?
+>>>>
+>>>> That would be great but can we tell transient from permanent migration
+>>>> failures? Maybe long term pins could be treated as permanent failure.
+>>>>
+>>>
+>>> I see deep in migration code `migrate_pages_batch()` we would return
+>>> "Some other failure" as fatal:
+>>>
+>>> 	switch(rc) {
+>>> 	case -ENOMEM:
+>>> 		...
+>>> 		/* Note: some long-term pin handing is done here */
+>>> 		break;
+>>> 	case -EAGAIN:
+>>> 		...
+>>> 		break;
+>>> 	case 0:
+>>> 		...
+>>> 		list_move_tail(&folio->lru, &unmap_folios);
+>>> 		list_add_tail(&dst->lru, &dst_folios);
+>>> 		break;
+>>> 	default:
+>>> 		/*
+>>> 		 * Permanent failure (-EBUSY, etc.):
+>>> 		 * unlike -EAGAIN case, the failed folio is
+>>> 		 * removed from migration folio list and not
+>>> 		 * retried in the next outer loop.
+>>> 		 */
+>>> 		nr_failed++;
+>>> 		stats->nr_thp_failed += is_thp;
+>>> 		stats->nr_failed_pages += nr_pages;
+>>> 		break;
+>>> 	}
+>>>
+>>> So at a minimum we could at least check for !(ENOMEM,EAGAIN) I suppose?
+>>>
+>>> It's unclear to me based on this code here how longerm pinning would
+>>> return.  Maybe David knows.
+>>
+>> I would assume that additional references will always result in -EAGAIN.
+>> Remember that we cannot distinguish short-term pins from long-term pins.
+>>
+>> We should never have longterm-pins on ZONE_MOVABLE, unless something broke
+>> that contract and needs to be fixed.
 > 
-> Hi Hao,
-> 
-> Yeah this is a very subtle difference between __pcs_replace_full_main()
-> and __pcs_replace_empty_main(), that the former installs the full main
-> sheaf in pcs->spare, while the latter replaces the empty main sheaf with
-> a full sheaf from the barn without populating pcs->spare.
+> Right. But what should the hotplug code do under that condition. Loop
+> for ever or fail reporting the broken contract? I would lean towards the
+> latter. 
 
-Exactly.
+If you can detect it reliably.
 
-> 
-> Is it intentional, Vlastimil?
-> 
-> > This makes the empty-main path more symmetric with __pcs_replace_full_main(),
-> > which for a full main sheaf parks the full sheaf in pcs->spare and pulls an
-> > empty sheaf from the barn. It also matches the documented design more closely:
-> > 
-> >   "When both percpu sheaves are found empty during an allocation, an empty
-> >    sheaf may be replaced with a full one from the per-node barn."
-> 
-> I'm not convinced that this change is worthwhile by adding more code;
-> you probably need to make a stronger argument for why it should be done.
+> We have never promised that offlining will not fail ever for
+> movable zones. We just guarantee that the operation is resistant against
+> recovarable failures.
 
-Hi Harry,
+Right, but we don't want it to fail for reasons where retrying a bit longer
+would just have worked.
 
-Let me explain my intuition in more detail.
 
-Previously, when pcs->main was empty and pcs->spare was NULL, we used
-barn_replace_empty_sheaf() to trade the empty main sheaf into the barn
-in exchange for a full one. As a result, pcs->main became full, but
-pcs->spare remained NULL. Later, when frees filled pcs->main again,
-__pcs_replace_full_main() had to call into the barn to obtain an empty
-sheaf, because there was still no local spare to use.
+What we document is:
 
-With this patch, when pcs->main is empty and pcs->spare is NULL,
-__pcs_replace_empty_main() instead uses barn_get_full_sheaf() to pull a
-full sheaf from the barn while keeping the now‑empty main sheaf locally
-as pcs->spare. The next time pcs->main becomes full,
-__pcs_replace_full_main() can simply swap main and spare, with no barn
-operations and no need to allocate a new empty sheaf.
+Memory Offlining and ZONE_MOVABLE
+---------------------------------
 
-In other words, although we still need one barn operation when main
-first becomes empty in __pcs_replace_empty_main(), we avoid a future
-barn operation on the subsequent “main full” path in
-__pcs_replace_full_main.
+Even with ZONE_MOVABLE, there are some corner cases where offlining a memory
+block might fail:
 
-Thanks.
+... list of corner cases
 
-> 
-> > Signed-off-by: Hao Li <haoli.tcs@gmail.com>
-> > ---
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+Further, when running into out of memory situations while migrating pages, or
+when still encountering permanently unmovable pages within ZONE_MOVABLE
+(-> BUG), memory offlining will keep retrying until it eventually succeeds.
+
+When offlining is triggered from user space, the offlining context can be
+terminated by sending a signal. A timeout based offlining can easily be
+implemented via::
+
+	% timeout $TIMEOUT offline_block | failure_handling
+
+-- 
+Cheers
+
+David
 
