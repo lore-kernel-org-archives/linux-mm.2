@@ -4,131 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3FF6D1CDB8
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 01:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 707A8D1CDB9
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 02:34:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC28D6B000E; Wed,  3 Dec 2025 20:55:11 -0500 (EST)
+	id 886106B000A; Wed,  3 Dec 2025 21:34:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E731B6B0010; Wed,  3 Dec 2025 20:55:11 -0500 (EST)
+	id 85D466B0012; Wed,  3 Dec 2025 21:34:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88CB6B0011; Wed,  3 Dec 2025 20:55:11 -0500 (EST)
+	id 79A606B0023; Wed,  3 Dec 2025 21:34:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C694F6B000E
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 20:55:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7F965B7F4
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:55:09 +0000 (UTC)
-X-FDA: 84180120738.02.8621919
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E2475160015
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:55:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PRMoANHF;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 68A6D6B000A
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 21:34:04 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0CC4A13BC0B
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 02:34:04 +0000 (UTC)
+X-FDA: 84180218808.07.DD517EB
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2D76DA000C
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 02:34:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=RwSXnQRX;
+	spf=pass (imf25.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.210.41 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764813307;
+	s=arc-20220608; t=1764815642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b9ZKBsX1w6UPefrLQ6j6TJQtLjEj4G2aPJhHSG5VU5E=;
-	b=rjYMb3UaNvOFnabPg0PHI/Qx1+TH/8hoJUdRmsOp/9YkNV5jwWhqJmLEZ5qVZkJXEF+76r
-	entVJVFD5GYE/1cOA6A4zxVf37scMzL/9aXAstH81uGOvWn4wdwTgQDUfr5yi9rWrbcJJS
-	MiRX/wP6Y/DGDRSW02xK0vf+nJ11EQI=
+	 in-reply-to:references:dkim-signature;
+	bh=8cBwp0aWYwyhGai8JhHTyTaXAP5UhX6tjhsjDn6rkoQ=;
+	b=qzGULzP7LR2YnCOFJpWO5jUZuGLb5LlH5gso0u3+rCO9v8SG3wh9CITbLjCwX1UnzXd/Pq
+	HQLgd791IfZhLBoievFmxHnBLSi2a3bhYEMg2c1l6wg35PCEuVqyYcBoTwUT2SQ4LbIDZm
+	3xG7xDG2juug0jI5bKCzbPI7HWLAXuk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PRMoANHF;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764813308; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=RwSXnQRX;
+	spf=pass (imf25.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.210.41 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764815642; a=rsa-sha256;
 	cv=none;
-	b=fRnG6V2aKXoILAUYohT/YzPzfFnqIOHjufG5I6IuBQxVEWP2aAO6VkFkGLBBOMM7OvfQAk
-	fCpPy0SFHvC7aUsiIdROZEC7hwcExq/f/ttvvHNC7pvpCjY9rktub0TgZSvVUsgRbBelQR
-	bt+OZMb5bc/n3w/R8ymnqHQMRmT0QTI=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2984dfae043so4301305ad.0
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 17:55:07 -0800 (PST)
+	b=5zM7fWW90tfcoYz62Szn2w7PJdErcPQCIYxNeAajeCj2WxDKlh9Q52wXx3RXs2vwEhpAjf
+	izTOnT28+IiFeicx8hmuV2/6MLcbOaOfoFyMfpRzu75/9V1oaicOQpc/ztiTad/lZSD3A4
+	GPUSAAQv5hqjD7mbmXADV+DmaMMDsqw=
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7c7533dbd87so408019a34.2
+        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 18:34:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764813307; x=1765418107; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b9ZKBsX1w6UPefrLQ6j6TJQtLjEj4G2aPJhHSG5VU5E=;
-        b=PRMoANHFPuN006gtl8Td89AvPBjUbnJq8AK3DJt6xeTLX+uN1gx+LXerc9hUV/hJtI
-         FbmSkQALsmnrNFkyH9/XPEZAxzqd74JHcj/LZ6REBhNCCPzg7BkTMKIspJjr3Fd1xX+Q
-         F0zFRpvOHklc9McVMOoAEMjzGtsIu/g8vAZFnQVBROgmblMqYpPkWHqiZWPBV4s30q/6
-         9bXCi57IpkvmnfzGEGLoUkZBYqo4vqr1KDSZTzw21WoLux3YAnyR1py8oWWddXpVfB1L
-         aTbGqIa8n/q73SxFRBEb5spo8yWFwsWQkB1vAzBvYt7wg6hZi5BkIeLRvFLB9TjfuHrL
-         uexQ==
+        d=linuxfoundation.org; s=google; t=1764815641; x=1765420441; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8cBwp0aWYwyhGai8JhHTyTaXAP5UhX6tjhsjDn6rkoQ=;
+        b=RwSXnQRXXZpx6eS9J9kn1aSyllRa3cT3b1vaSeLjE1uYCH3j7ZIMhPAt01c5BV9t7u
+         LA9k5Bq4f/acLzVdVgZo9UmN9BLMvlu7K7lEQx+wgP2NJisLEtdkLR4cQfCOS1qSPJSa
+         Jy0QEVsPCvHHmlZ6msNhoMiPwM842b6FXaVjI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764813307; x=1765418107;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=b9ZKBsX1w6UPefrLQ6j6TJQtLjEj4G2aPJhHSG5VU5E=;
-        b=GqNiyT635XgzD6+Ax/Jhg4W9nldH89hsv9Hmhr/nY0O9A9nkLKGFrGJmyjKnCnWwY+
-         noKEw2izyCsrPnBf4w8lFWsXtHbws3BC9QvWBgYtj8ZxQpldQG7U3CkuCELl2ASTenQ3
-         FFzOYJkLrCnL4/j+nso6mhJai1qkndRyjbpg1q3nmN4cvLr8dGsizAC8ROsLE9elpMga
-         l7ingjxKCRj2/tkxU46lN37pFYwBYIXvOcoBeZPByyizWz9sZ68mJgA1FWm7HX292VQ3
-         ot80jxo6EtBZ/Pf3JEh28cvfwJkLloHTpJLxj0GBrbFcIXUTIdqpXNzIUzgwRu1pyh8I
-         v+/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXHwpoWgDdotQKdG1RXixcGndEb0vq43wVT6LfPwTncS0G5cxU0/jTrazMC57uw30Ib02r0RXpmSw==@kvack.org
-X-Gm-Message-State: AOJu0YwETtELHwW8ta6RkzFYlGcsPxD3yCu4DWW0j0e8bTGd0EHOsMDf
-	GcLaov63YtQmVGtlE0XY4trh/65wQY4hUzJs2YCdyUW5R459Os4LGS7n
-X-Gm-Gg: ASbGnctBo5FX6xukMu4B1vqE2BX2dZqa3sKnCLASYgiAW1y5KWxfhE+1YWoS3as08HL
-	m+yKaAv+YJfF+/jr/UkEla29UGbET4UuKfXvomD1BeLaZMoLCCJcgJVWLpcO9BwZU1GFvYTOleF
-	fuA+dDkhOqtvy8T5L2RzTma89PLIPu40Bea2HEAQvFUny68pma1znlx7xyfuw8zZB7temiIhS42
-	z45ZItHYHtPvBT8HkiwHzgGzOTxQjm0C/wUcnVGjMLj9aL+OMyqsYfv0aLV/cvQpPuoA0lzqjrP
-	Rf0MRDjeHF5nM6hLo82rYH8SDrU2q20EGd7XEmoGI+a+XBD+71manjUOlN+2etkfjxDPXNV9C5O
-	ipLWfy/E1lZL5bjaUoLCr8xbXkJJBrdpBBSpCYyjpJB/j7VfikFSULOkle4p39EUKYoSIwi0D9r
-	9Neo9FvoTRoxjdI/k9QXkO9DjemD/2P9Hcw7cpJJEAYyMtFF5Fvg==
-X-Google-Smtp-Source: AGHT+IGq8c9oD3u5GYh05SjANvXBHmmeyohU8q+LRCLY9miurA1rAfYoEUrgRkiIG9sgighxtVHcGQ==
-X-Received: by 2002:a17:903:b07:b0:295:9b39:4533 with SMTP id d9443c01a7336-29d6839870dmr54019345ad.30.1764813306619;
-        Wed, 03 Dec 2025 17:55:06 -0800 (PST)
-Received: from localhost.localdomain ([2409:8900:1be3:8f38:b904:5201:d897:3883])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34930b5a195sm915502a91.3.2025.12.03.17.54.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 03 Dec 2025 17:55:06 -0800 (PST)
-From: wang lian <lianux.mm@gmail.com>
-To: shivankg@amd.com
-Cc: Branden.Moore@amd.com,
-	Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
+        d=1e100.net; s=20230601; t=1764815641; x=1765420441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8cBwp0aWYwyhGai8JhHTyTaXAP5UhX6tjhsjDn6rkoQ=;
+        b=FN+JNUSlMkHjeP0xXl/uAGLmICjKNo0Xv82adwFz2NdkkmKCztfczi2IFEmKPwT1Lo
+         5zgLHP/7qORAaDdz6SeOg0CJY6jsTSQMTawWkXz4xZxgCACWf+PUjhrmsRTT9L4KvL1i
+         1g9uQn6dQgjSHwVtq91z+t1QvfFq0cHIAVtB+hm6EwG3TCxiZEPRv4dHaChYYRBYbYay
+         EIUKLaMjCdq2BcQ8iDO7jQtbhSfMkijbm8kIaM+60xUMi5+SjFjzpMtJLuhy2xxTnBg2
+         NpekuEbGhhUEe+RS/XPrbeDlO/FdjY8L1U9ku/7PDTPQBokYtq5cO6XNA8OXgsqDPu3F
+         AvOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXiDrI2Non29X4UHJ8rYyz7BsnIuM0CS1f6HN324SiAGlwgcOyithmkt4eM9d48YlsI50r+dt2XA==@kvack.org
+X-Gm-Message-State: AOJu0YwNDbDMprIE+E/GDrrPV+T5t5lAQRzqzoqpF0IDxkR+lJpGjMqO
+	zbfZLxUWHbyNPMwZInP5D8TezRCIcz4pLD263lrAHbl6YOx3D7ARKtTwddrFA7q1bus=
+X-Gm-Gg: ASbGnctoue2boeAfvpalLiqJMQAMABCG+2lupqliCgCU5H5cBuGNd9phAVdjB2bbtE8
+	BnmDCq+QCFfgQeTGzx0wMqCLwBnFFNHNW2I4XRyMTAOsrwCfJaI8HxBvNPm9LF1HZWNoyNszi4r
+	IV1pwqftpGSpo8MWsK8jfrxjzamdz/NwHlbd45R+ury5t+iBX7OWrS3uR5p02RJbPhTO2xuGvU6
+	YeBbH7C5IuUfNX5yFG3b+UkO2Mf8C4KgwXyJyH88GJtWXTZlGaGwm3RUX2Au8MREM55CNmTJmBS
+	KQL7oNhKg987J2ZzwLCDSiqKd9Y7zQ6rM7W5T9y9hxCedUa+CF24JlpH2ST+gp9XPGI4TaF0mw2
+	rjnrLOeEC7uJFFDTUDR96cjOhBddLdKBIrOyEL4vGQaPt3kCBmDD0s26e3BOeNv1U7zesAUY+11
+	NqhIUHCdABStbaONAEZat3d+uzin5lzbf1Js0I
+X-Google-Smtp-Source: AGHT+IHvRpXJtnyiwKLjzZx/ozcRmKCi93mtb3M0cqUPz6Vsa5iPSfTaNpHqBjpIkA+snazfQwc2Tg==
+X-Received: by 2002:a05:6830:44aa:b0:78a:8b0d:cd54 with SMTP id 46e09a7af769-7c958c06fc3mr950721a34.34.1764815641091;
+        Wed, 03 Dec 2025 18:34:01 -0800 (PST)
+Received: from shuah-framework.internal ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c95a8f8d0bsm510833a34.5.2025.12.03.18.33.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 18:34:00 -0800 (PST)
+From: Shuah Khan <skhan@linuxfoundation.org>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: Shuah Khan <skhan@linuxfoundation.org>,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
 	lorenzo.stoakes@oracle.com,
-	mathieu.desnoyers@efficios.com,
-	mhiramat@kernel.org,
-	npache@redhat.com,
-	rostedt@goodmis.org,
-	ryan.roberts@arm.com,
-	ziy@nvidia.com,
-	zokeefe@google.com,
-	wang lian <lianux.mm@gmail.com>
-Subject: Re: [PATCH V3 1/2] mm/khugepaged: map dirty/writeback pages failures to EAGAIN
-Date: Thu,  4 Dec 2025 09:54:25 +0800
-Message-ID: <20251204015425.66988-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251201185604.210634-8-shivankg@amd.com>
-References: <20251201185604.210634-8-shivankg@amd.com>
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	masahiroy@kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb"
+Date: Wed,  3 Dec 2025 19:33:56 -0700
+Message-ID: <20251204023358.54107-1-skhan@linuxfoundation.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E2475160015
-X-Stat-Signature: d8uugwythawdinj3x54x5tena8jxq1ci
+X-Rspamd-Queue-Id: 2D76DA000C
+X-Stat-Signature: 7da748r3js3n8p5so4tgosebwiuycwnb
 X-Rspam-User: 
-X-HE-Tag: 1764813307-25532
-X-HE-Meta: U2FsdGVkX1+PqTXecxatN5TpLAen49mUIbR9pkqG2WuJuERRrlj/4V11RRDEN8xqo27PAPCaIIAz96LA1h6KCoFz7G2z9BCuBubNHbPDHADy3jd0a6mEuB9yFto6aAZINvgMpEQlcqgAqMoAJagaPlA4ilJY56PeZB0HprOQG5P325AChG8nayuytcrzULmQ8b7obp3+AufjlTkY+SVvfTB0TKMB89yssWXS2SyUBEvywct3kcmIJ7ptLtU7B+HPl7hW/dWUO3UBuChnCDOChgVQm0RxJhh+hXESF3YZLOIQ7W++eYV854jXiPbuiA68D4bYJ1KOGRlGv2kWFXlo7B2kcRI99m4sRBOcHFLxYVGV3cCqo3Y7/tOHnoPpwdiMMGasl9YTjPSKqinRh1rfl6U/YjCTivR1tQuBoQjZ+5KT60Q50hLp2x719aB71OVcScRPE1rJ6dRsYIUuwwmTWx/bGBzERl3ON3E+yJgFpH4BrhVOEnj7s4atYy5kHxIcG6EbUoLsKjwwb1SM1RBfpYJbffpFZJN001wNnJD9bmx0A8593ahfAHn7LF5Yt2ZqXcMjz6qIwSIcUwG1HkfPs+0724XnJoj62+dA+TErs97+wnim3V6HVZAS6B/4XYROfC+z/Lf5vFcspt6UBjLPNQHD+ariWYr/MDOBzb/nw9jMQKyAmIDX15JHiqCDcEstsyjgiOiomlO6wYO7Co+Ep1+UYb+h7dTNDK+gf8+7h0B5vWi2p24SB92GEiMD2n6fgh2Uc6OjLAtenNY8QE46Kap6SFbMYqBkawwUsQBpqAiMZandPJqRpld+Nsaw+Eu2aKpTiUUQM+A/j52oy2VzrbwabQnNQ93J0UudPWhNR1PG6IbF7UdXSrH9TtU+cH+UX2E8/3Dv6+hRGPi5p6cYoiHPPAFUItPhzpcuZua5ibf7bWIOKtvO/1DYKQEYhcMIPkqv/mpqCiSoFLWCJQI
- sWK3N/vs
- 3/+5m6OkOdhDjDETjJseMm8qkKwckSkg/yla0d2Z52oT/asu+gCSIhCqJH8oBy/sKBrydCZXnrei35ErZybBNNJ/LZ1GvEXRM/Qi/umD8M8xdiZo4odMQehP35m4nMxcLiRdwpjqOomc3Tsj6vN9pGhnCaAD8V6pJdpcYI9way6T3QtvZJMXYlqN6eeNR2m1A/0PqzUD+BoQNzNoxGnvIUsexErV32qMnVrA3yRwUnjBvca4DrMis2ah4pmfmPnSxKI+fBfK952yCIVh/zbiDccxrs6ypz6K41XyJoij4aeW9qS+HyW9l9yUdv3eMzNbwOYnsYlGEC/eFp7O13pQtn6im4Y7r5WQuRtvywTsO1g3tJB+miTsBvQ+T7uGRveTpxLW2DsoxmsVDGYxEF0/Ur/58p65OT5sbK0t/pNB+pt8Ke/odacatE8FItEkQlsBh2YWUQJi+R5NrCcIDLZlx4CGvuzqM9nAuRc4iLwPeDQJUA9J0ohBSKDakcaB+dt9k83Tb4Ha6bwT8dbV5R/kZRW4TvF1XD24NwJwd0Js24TdNlo0w5dZGHf6i7MO6myLmzLKOZUZpd542hhPBmfgzsB1S1UE9uVfwouRRS3jm9zIO17BG8VBBYJpNUUWjxFx+ddea
+X-HE-Tag: 1764815641-979623
+X-HE-Meta: U2FsdGVkX1+c89PvU8Fksw0iMuo0bBSeWrR1bOJ/tPRVhvkBeIUyJOhjmYo9NXiGDqcBM/GLRJyPaPx9JCAp8eeExwauT0lgWF/vys2hdwlLJYOK4oDOMp1GXnd05PlJzabV6pvTD+C7oY9uoAMdOaYvZEdxj6bltrZFg32/lFSxjzKrAnjwA5FL/xFhe8N9jL8TdecA6F5md9qdBwjgBGZxMqngj/H/pibMCOoWh4X8pWXuxSaUE5rvBtdrRr0jhiQCUsEcv+pKZ5km3dOXIR3T91b1+co1QX1nDsSrCfJoE1z7aoYDh7SgGHbdJ2929eYdG6EwJsEBJzx+xJKR/0F31gJBwt/d6vAk56GnsVioeHDqG00sjUs98nLsffuV6ZrxEG7wfDL86cmL26PgM4kdlrR49qCx7ljMWDuHe/oeuRyRJAKUfKD93Hb+UjclZMP+SJc942D7ytwu+i6eGNZfJhbWomhAivZ0lIBtz4fj/0YWBlGFPjywPSLnI53p0+9d1m3QBmHecupIE5ZUX2kjdax95ZfXBv+IJ183ChKNuwhbxKj8CcIHUq68BgbGA0aTOvv6Ld0APdD5p4QsNmucbTNqTJqvbMf9PXXItAcqmPZRYiT4EarPcNAiHjADbxLcY/7dUGV8kgaYhfXtoZ7BjcPUncBctiSXdDGIZH459FkficH7ILrP5B83grJky3Xhq7hojJld5F7vIhAc2BOS1F5QMbTUZVDscWHxYBh4Lk72QDwNEYCRv16uFa5aV6n+lbN9j+1SH1wesdR46Bjsjlgg+D2qYPyRFBazPMNyOoNcRdeyNO5TBu70x1T+F5O7FaHdfJguxN3KbAhYkYrW6P0xm/GNrQSryYskpVLACNM6VaEVviL6V2uEV7RZ/ffP0jN6GhNDFBayv7DjCI6wvE9EZP/3zOMeMUSuAk7nCEljdDKtIi/RVIyYM+Av1mynqnQ1WUxVM4m9rKM
+ eiEN0dTy
+ 4hEaMr3rlSvJZcdWD2xod4U/8LhLnDXXMU+zjEJnLv6Gtqx4/omRIXbAvSBc6wp0mowVbsqQMkGreUDlwOdfBAQEYSIAxpqW9o1tLcWvd8ida2/ipRxoO9HJ5vCR0t44Ycb4Y3piXI6IbiO9X4kvGEyB8F8XUWrXQwZ+93kg256RNrWrYuX9A+4AwQLrfruNnmj+DBmLt2jww4VXN4W5dYWxsUtUYl8YDOU6457v3OtZ62DVZZyBbSPmwqM1CPCF0Hp7LAY/axGO0+xzUXVtarJ2a0rWI9E9XwCi92ifMvmXHD1WYjzttNxctLzKxXfo2O8j+UIqE2XjbKPDC59v6rynNwastwd/RctsolrBADyGVOOzQPJY57oGAlJpsbryd7rQhCrkQSJJtSs5L69l9CHcfgjB6JJkcT+pfdy5oCpiCfebHSVT6uKDFOw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,28 +127,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> When collapse_file encounters dirty or writeback pages in file-backed
-> mappings, it currently returns SCAN_FAIL which maps to -EINVAL. This is
-> misleading as EINVAL suggests invalid arguments, whereas dirty/writeback
-> pages represent transient conditions that may resolve on retry.
-> 
-> Introduce SCAN_PAGE_DIRTY_OR_WRITEBACK to cover both dirty and writeback
-> states, mapping it to -EAGAIN. For MADV_COLLAPSE, this provides userspace
-> with a clear signal that retry may succeed after writeback completes.
-> For khugepaged, this is harmless as it will naturally revisit the range
-> during periodic scans after async writeback completes.
-> 
-> Reported-by: Branden Moore <Branden.Moore@amd.com>
-> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
-> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
+This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
 
-LGTM.
-Reviewed-by: wang lian <lianux.mm@gmail.com>
---
-Best Regards,
-wang lian
+Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
+systems. git fetch-pack fails when cloning large repos and make hangs
+or errors out of Makefile.build with Error: 139. These failures are
+random with git clone failing after fetching 1% of the objects, and
+make hangs while compiling random files.
+
+The blow is is one of the git clone failures:
+
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+Cloning into 'linux_6.19'...
+remote: Enumerating objects: 11173575, done.
+remote: Counting objects: 100% (785/785), done.
+remote: Compressing objects: 100% (373/373), done.
+remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+Resolving deltas: 100% (9195212/9195212), done.
+fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+fatal: fetch-pack: invalid index-pack output
+
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+---
+ arch/powerpc/Kconfig                   |  1 -
+ arch/powerpc/platforms/Kconfig.cputype |  1 +
+ include/linux/mm.h                     | 13 +++----------
+ mm/Kconfig                             |  7 -------
+ 4 files changed, 4 insertions(+), 18 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9537a61ebae0..e24f4d88885a 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -137,7 +137,6 @@ config PPC
+ 	select ARCH_HAS_DMA_OPS			if PPC64
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+-	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
+ 	select ARCH_HAS_KCOV
+ 	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 4c321a8ea896..7b527d18aa5e 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -423,6 +423,7 @@ config PPC_64S_HASH_MMU
+ config PPC_RADIX_MMU
+ 	bool "Radix MMU Support"
+ 	depends on PPC_BOOK3S_64
++	select ARCH_HAS_GIGANTIC_PAGE
+ 	default y
+ 	help
+ 	  Enable support for the Power ISA 3.0 Radix style MMU. Currently this
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7c79b3369b82..d16b33bacc32 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
+ 	return folio_large_nr_pages(folio);
+ }
+ 
+-#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
++#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+ /*
+  * We don't expect any folios that exceed buddy sizes (and consequently
+  * memory sections).
+@@ -2087,17 +2087,10 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
+  * pages are guaranteed to be contiguous.
+  */
+ #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
+-#elif defined(CONFIG_HUGETLB_PAGE)
+-/*
+- * There is no real limit on the folio size. We limit them to the maximum we
+- * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+- * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+- */
+-#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
+ #else
+ /*
+- * Without hugetlb, gigantic folios that are bigger than a single PUD are
+- * currently impossible.
++ * There is no real limit on the folio size. We limit them to the maximum we
++ * currently expect (e.g., hugetlb, dax).
+  */
+ #define MAX_FOLIO_ORDER		PUD_ORDER
+ #endif
+diff --git a/mm/Kconfig b/mm/Kconfig
+index ca3f146bc705..0e26f4fc8717 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -908,13 +908,6 @@ config PAGE_MAPCOUNT
+ config PGTABLE_HAS_HUGE_LEAVES
+ 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
+ 
+-#
+-# We can end up creating gigantic folio.
+-#
+-config HAVE_GIGANTIC_FOLIOS
+-	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
+-		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+-
+ # TODO: Allow to be enabled without THP
+ config ARCH_SUPPORTS_HUGE_PFNMAP
+ 	def_bool n
+-- 
+2.51.0
+
 
