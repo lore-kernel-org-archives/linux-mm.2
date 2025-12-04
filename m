@@ -4,118 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C661AD2168D
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 15:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7B87D2168D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 15:04:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 272F36B0007; Thu,  4 Dec 2025 10:04:37 -0500 (EST)
+	id 1D7966B00AA; Thu,  4 Dec 2025 10:04:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 223836B00AA; Thu,  4 Dec 2025 10:04:37 -0500 (EST)
+	id 1AE986B00B1; Thu,  4 Dec 2025 10:04:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13B106B00B0; Thu,  4 Dec 2025 10:04:37 -0500 (EST)
+	id 09E1A6B00B3; Thu,  4 Dec 2025 10:04:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 028056B0007
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 10:04:37 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AAB1B87CD4
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:04:36 +0000 (UTC)
-X-FDA: 84182110152.01.AE5A57A
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 96481120012
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:04:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=V74cBwbg;
-	spf=pass (imf29.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E929D6B00AA
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 10:04:41 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B60FC131892
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:04:41 +0000 (UTC)
+X-FDA: 84182110362.06.C24F7A5
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1B5A14000B
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:04:38 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="B5RneR/K";
+	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764860674;
+	s=arc-20220608; t=1764860679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2DDwYlN2TdolRTMzvF0ERtGgzkk3rvSJWuGnqVeCtdA=;
-	b=7wJcy313TIkMYz3jwkxf/6Rh3/8eUPZ5TuHTDO/dMnXkjDtlxVeRLJ8EHTTWlNOrTWGTlG
-	fqGPnC80pKJiKYuuhDdIQqyGPvmTwgjOal/BBL2VqaKBMjb3EIil+gPgg6is/yTebEW2CQ
-	R4qVVoNMou5rJGD/fHxPesBbCo/mf40=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764860674; a=rsa-sha256;
-	cv=none;
-	b=JiB5JeBT+yM5jZ6/pTA/Q7YvL2E00QZDWWjv8GeonqOXSVE/8ZTapy5KVsYvTIFZLcIXdA
-	nKOquRofmanhlr9DxcnjSLJBltbWWj0FuyNiXn6XHGWgl+xvPtZe4KAaRdRe/UwBnd/WsP
-	4seueKrKAEMVb7/FFa/ZYvQU0SC8Bwc=
+	bh=x/oVG6yt0b9tG4brIyUSYxsLsof1IU6gNnAr1g9Uea0=;
+	b=b6kuc011f7NRqIJ5bJ9Xz3nm+jbAPHqqdU9tAZKxcK8+xjGBocHhPSDuo+G6D4HhW9mm7I
+	/O1yRSsOHWhKsdebVZI81bAdgdbGes+FkhwSiDNXLovh4RFKbz/ag0trNNNamfucJEFn7v
+	ivEYJXMg8/E3v06cvPj8k951GniRBeY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=V74cBwbg;
-	spf=pass (imf29.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="B5RneR/K";
+	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477a219db05so7648335e9.2
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 07:04:34 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764860679; a=rsa-sha256;
+	cv=none;
+	b=Dh3KeR2+aHzOTfuNZWp0R8diCjEQAQQ/kyY9VbUBxzdzmwJ7Ykn6WeADDuuAL+0eIqGrsS
+	g4IpzPh/HVAyqmpWBIb7Ld3ZR2WAwywiT8cT+10MXLJYZxHjzTe07dCdukumWhjQMWmGSH
+	e2GpLXIo+rmVzqCUMwS3m7xFcw7pTG8=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42e2e77f519so830918f8f.2
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 07:04:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1764860673; x=1765465473; darn=kvack.org;
+        d=suse.com; s=google; t=1764860677; x=1765465477; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2DDwYlN2TdolRTMzvF0ERtGgzkk3rvSJWuGnqVeCtdA=;
-        b=V74cBwbgOqWAddD3NZXDi4Io6fFEzYOZ4zl4nTwGdCjd7O4FXDwjBrLVifbplXVIUp
-         1194Ti0HBVeqFGuklj0ekXFkHzGaXWrXwmBrhUs8iHVTcQrYfMV4HdbDWE9nQHs5gq+a
-         bVl8mW77bRHjJClFySPqcuy3II28zWQdLYPIRP/nOEK+LZFxldBUmnYBqi+++fqowKIY
-         WvRj+wtRns26tooysQPtw0FAMtxWAJTbzlmRa3fKfGlxRktW99zpgbxYPar0QjeMo79D
-         EDYbHd3WRCXB6HplGOrUD6zPDr8qu8UObbnzsC6CRO0pni8vC4kguAHexBx9vZYe0WAB
-         6VWg==
+        bh=x/oVG6yt0b9tG4brIyUSYxsLsof1IU6gNnAr1g9Uea0=;
+        b=B5RneR/KjnHGDhbR/ow5viw4DpCllpM4aZHD9k6oa3VL/F77hNuhmwLwDph+4BoTAK
+         T+i40RdbU7qKvkZXOjLbC9P2RBbmc3+KZHhOP3QPV3UDN9Y5wV8lU7gbcj0pBKm4m29s
+         +GoXdW7mtbEo3OLyRZvqNwRohG84LHN+iK+Sp9Zhz4YnT9sdNK0l9pSPVn3N+CuHT+si
+         Hd7kZJKC8nyMb2jrhhz8lkk3km83PPJey2AAqvb8sXpmImwmHYjvqDLdeaL8lQ4k2LYT
+         X8F3/G5N0BkDw+JgsDSmatl2BjUTMctL7qDDV4/OspsNxyTqbHmUzGtXS4r2PAg0SYaZ
+         3jog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764860673; x=1765465473;
+        d=1e100.net; s=20230601; t=1764860677; x=1765465477;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2DDwYlN2TdolRTMzvF0ERtGgzkk3rvSJWuGnqVeCtdA=;
-        b=Ttc8xWSH1xdmxGj52BJS1s2KM8oNMM6yEMf6V3Ewrak0rUsW4ACwq1bKrkUMSuZ679
-         hqXcDCPCQQx2js4t4+YngR5+yvhIP6M2fBnv6PNUF6Aou+FYs6pcM7fRIEWfDlAWmLft
-         8voHsHmAUUPhCoFMQfYleJkokxWwLgi6bqn5ZZs6ALOJS9l9xe73UjUG2pFQm+EuJVsd
-         QPFORJvdaJ922BsGajULY2Q+2G20Wo/J8jFxYA5RV4+rS+6sGyqk3YzZPMv7XxCGHb58
-         T5hSwWS6zZ8yJr2LROHnQPjShV2iZbKk5rHAmtSVqP25ffIGqEZKMsIp3UwBCF/Krub0
-         XbyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUrkN4u8ZNyRp+4Qb27BFizNbDoWhrFakJoLiHq2yD59nV71ZhcVI9Fb2SU4m9uuHZxzVw9YXDTFg==@kvack.org
-X-Gm-Message-State: AOJu0Yzp9/6RBn80ke1pgxdoCRJ1RcjTqIbbk+Z31njLWV4rQ/Yu+cz6
-	QnGM89+ZddvQop/HLZfVUQFQ921yx8dOGWRDvPiQWqWeBkEVYwiG1bWYcnyooUB9kgEaWKi8mWM
-	J2CWn
-X-Gm-Gg: ASbGnctuf4OfFjyTZhaAInl8XjKWmm8qExtNzrjZZOGpPszcvBAsGKpxuhAgqkBGBrQ
-	QSzsyGdpk3cYrEYACglFQav4hn84lyP5bx+SqseG2wUdn4a8lp7FGRbPgl23UqChHhS2G28S/z0
-	upcrczfHNcrD+RR8Yr38z0KzLRR8u0bmBQnThwH7E660c0zZM+Udk8oD+sLQvTRFxv2JGHWkaHz
-	8jCHaYIOtp6Rn8Y904gLsbxCSQPBs1Os2RwYHpIoMeI+pOQ6nyETDf9ovrg9j2v0+8vLeCH1JPz
-	Z6DCS95Dyn57oAHpUkVdlkPVa93TwWPfOw82UO3aT6gkhPJGwC8HTK7bfaxTR2w0/lmXrLCWdHA
-	EwiPS9i88yAA+L+8p6/hI7wpk5fCsSkHDNXolthPculou66HQSpHy8oYyHG9G/9abD+rceBYzPY
-	fqp23xB7nEGyM9bZQdvKYvxT8TPeX2Mko=
-X-Google-Smtp-Source: AGHT+IH2NIlz/wz6Kqufkv//L8zRMTY07VdB0gJrxPl/jBzW9+fRPbrtuIwMHrwY/OcmxIGtd7X+Tg==
-X-Received: by 2002:a05:600c:3b1f:b0:477:8a2a:123e with SMTP id 5b1f17b1804b1-4792af4046fmr57480815e9.33.1764860673050;
-        Thu, 04 Dec 2025 07:04:33 -0800 (PST)
+        bh=x/oVG6yt0b9tG4brIyUSYxsLsof1IU6gNnAr1g9Uea0=;
+        b=AgiXcQBxbxSJclp4hxkuBwNQFxa80fSX7Tfsa2OS66gtGHsIluuAKlGi33ywWritl3
+         DhzRCcMUuEP/QPNjLIUC04N3SK/3CxPLuN8R49Wns58O1wC6qh0UKPstOcBLu69TVT+f
+         /PJV1M8UGb0llpCAMm1Ihm0x+xdPSj8hFEpHFbIZfkfN67Ci4xAxuPsB3sC6ydQZQg8L
+         UR8fKGCIG8Ys7uDjM0YkTM8XQlXYsi8Ha6CBp2vmDyj5AXHl2g5vdCVZpEZxIXu0gihj
+         ZMx1HAGEWxcUU/g6kMoJ+Sd2g+jtWOKNcknJMnPDXGfclmIWCc8mfLgBjOpUQrcgS94o
+         LcMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUP+JXeYrFrydLzHAgDpqYeHWFgsnmeqzMdMW32dpCcXUOpuB4CdX3dpvDCS4QkRnzxarjgzCJepg==@kvack.org
+X-Gm-Message-State: AOJu0YxyvsGJrr6iZ8WP0bzaTJ0CMhRnw/6asa3ucVVkk/Ijlgr0JZzn
+	RPHxKg9ORZWkQC6ZMnuslrTVlVuCnZOM2b1U0worLskoDhXCe1BMfBubro2Oz9aThLw=
+X-Gm-Gg: ASbGnculL+jNb2Bc5ETy+1A5zU6YB9OdLdvGHoYMuQyWjHiO9NzfmPcfw7BRcNm1GsR
+	3Ae8Sg/r2yIqk6MDicLzB5wpj4IKy+PVj83AWwJRZ/by2u0SGYDr5h0Bw2uXTQKcZ8xFngQ8GxA
+	MBn2EZ8M+EfU+bfg7vkHJpDChoF8va5KStR3q1vbQBuX4sxgVndLF9Bow8M5ln57zs0gfIFCf9p
+	XOOpO+28VcSFrwkHt/AqhtzjQoEvdnpfUO8EPJfJS7WD877VZAUogz7F6ruILsbkLq34sRqNk/k
+	s3H7Ob2q5H5oIWr4Fb92K4F7xG3Su8u5sxUP690Na3saf5kxANeaa0kFCQTgYrgAuy7YGBkEL5z
+	QMCqeP1teI9gt9QQfKV3ZcYhjysdJCv1vfp3egcVhizvTEcQOgIJcvdEZvexnk0+1GlXgpT6X8c
+	Snq4d/hZDLeWiGp7/PMRMzeLhLgBC6OxE=
+X-Google-Smtp-Source: AGHT+IHE5sb784sH97jiBE9GQFt2QDlFdyIO48ifG+5s0esu24gZG4M3Ltveqfpo7zH5EorQZDV74Q==
+X-Received: by 2002:a5d:5f84:0:b0:3e7:45c7:828e with SMTP id ffacd0b85a97d-42f798482c0mr3517344f8f.33.1764860677527;
+        Thu, 04 Dec 2025 07:04:37 -0800 (PST)
 Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4792b02e7fbsm39364055e9.2.2025.12.04.07.04.31
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d222478sm3638410f8f.20.2025.12.04.07.04.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 07:04:32 -0800 (PST)
-Date: Thu, 4 Dec 2025 16:04:30 +0100
+        Thu, 04 Dec 2025 07:04:37 -0800 (PST)
+Date: Thu, 4 Dec 2025 16:04:35 +0100
 From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
 To: Guopeng Zhang <zhangguopeng@kylinos.cn>
 Cc: tj@kernel.org, hannes@cmpxchg.org, shuah@kernel.org, 
 	roman.gushchin@linux.dev, lance.yang@linux.dev, shakeel.butt@linux.dev, 
 	muchun.song@linux.dev, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] selftests: cgroup: Add cg_read_key_long_poll() to
- poll a cgroup key with retries
-Message-ID: <jp3gp3qbbqmq7nbn5i7qbsgxj3vwquibsxubvvkhc37p3pcc2m@24bljtuw6diy>
+Subject: Re: [PATCH v5 2/3] selftests: cgroup: make test_memcg_sock robust
+ against delayed sock stats
+Message-ID: <dyie6co47aemejhok5xjjmsvfjpsg2djmkbucnonent3afqylm@ojui2r4gb3ro>
 References: <20251203115631.947908-1-zhangguopeng@kylinos.cn>
- <20251203115631.947908-2-zhangguopeng@kylinos.cn>
+ <20251203115631.947908-3-zhangguopeng@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="alsebtq3iwjlaxr2"
+	protocol="application/pgp-signature"; boundary="yv3jk2strjnvzxuo"
 Content-Disposition: inline
-In-Reply-To: <20251203115631.947908-2-zhangguopeng@kylinos.cn>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 96481120012
-X-Stat-Signature: cxuoq4q4uqjwqdz9e5bgkomtes665wsm
+In-Reply-To: <20251203115631.947908-3-zhangguopeng@kylinos.cn>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1B5A14000B
+X-Stat-Signature: qamxmph5k4gutpdtrqkqc4ft64a4tjwc
 X-Rspam-User: 
-X-HE-Tag: 1764860674-617191
-X-HE-Meta: U2FsdGVkX19TGH0fgboupe3xP93Mzw9OKhfFbYmv/+Tq7wufOXeRzn9CPjaJcs2U9x+4IDZ/2GdKz1H6cqpHMDYRtCQ2vaFajS7BSuUEWjlHGDYCnWY9RU7LS/0IX/sPYW3NZcX6RLHI9dv3jKBT0ikNK/8ySb0Nrw2rApdoay+BmFHyisp9LmYvZL1lcn8TIDqVJO9YHM5Kj5Ewz0dyAtT8YO/T3LKzLX/lsXyv04DybsYVbOihUY9zfv3QjUVAo0g5rmsmioQNgfzn7UeBHeLMvHaupClHaNl8RzvgbqMpAo8YnjnFvodSqY3Y8t89OXeHc0M9sXJ0L0s2qgCVI9PUmrM4diE+NMOK1mzwyH8MJOrwB1I5Uy9jXbuRzFlskLFcS1cMvBNOZBspihcgIaqquUPlafqGkmKgVP3/bBnGS5MMuHWmMOTI2j7RtUUcyTogiOI1BCbINarp0bnez5pZr3RWz28Eib6jr5TMFRvSmqM6NHq8gyRqHLR1qRbMTP0cHlcmL4T3ZMzTfHNxjA4TevrFCRvGoUiioCl2u8HspglLnBqItvzHzlqGVQIgDtfRW2gw8mLZXlLYuJPMAP5OwAMEdYN0e7lXfR/lAvcUCzX8Nj9nRQw/Qf+vJ+36zQun24B6RRVB29I7MQ7SCs1fI67mpD5H63zlpzmnZMpsIn3qML78axwciL98oXC3/W3Um1XnabXiRzlIGgcg9TbKgZZxP2K+B2a+hUrN1yWFZ/RpfvBuPa7A9OqENTQ1psF5tdGTkprp4XwsqOA7HrUylZ1dQdMyzVnwMtAbj36NyHZ+dOn2fbQMGNXJb5sJ/VAawwYSCWlGcm4bpZj4zKRO9U0lU49lAHfGS0urVD1ew1OKuj8fNqZ/yosNhVqyqf31e1aOeZIWLiEVsCKqDviBA+0cB4oRc4ajv01vl/rnzcpE5rViyw44XVNM3LhEzO1z4Czfco0QU8wtqq6
- 9FeHQ/x0
- c3Wjp1j0ElSHI+Zcpbe5GQVkd5HrlGE6orhBE1M+YWtc4oqLZNNwp+0Fn8LOikNz7nrstnOfMvfGtcB+kovWr9DMjnSSnW98a3BoSPMAYHMzbhtwzsZGj7XwvZbcIkCfuh923U6gZXFN/EcJcfyR8cj06yn71RWZx4cY4yOAkw0yJTGzMqjGEucBz3glaRlaWX3zdpSZnttGAOpba4BN5/0B+uAm738gjLLc6VoOc6i42hrAKaJENYSmW1PXS1dLUCkaKQFetENEzzaTAkCvS68ILRpF2u6uikDZ+P0yCaOmNc8zX3mMhNJ2cy3secCfwO7JbUG9ofEwcEaUT4rqL8bzIBRf338Jsknsz57LBJ1z7LCii45jTGcOhLo90L2lERQUUODzuASzAQ18zxd0E8VWRRwgK0GWTB9+4QZ/HcpzORrRltuNWZahomjVcN+6awSR3/mcp9S9mXRxQOgTLXfeapW501a1XKySXR/sFjqLV0h4+DO717aiWVcvP49aBFhKdpM2WNdxmYH3ap7WKlGknlHhxwGvToWItTdLk89pTLqCVUwz6nTAEPixQcNi1GtE7CDN91I47MtkhUU/yNKC0BYh2fRcbmKw/aDdbL5nsRT4aDZU1v8XjfUyo8Zb8BQNce8ohrl/2jXEtfT3tLVQoXw==
+X-HE-Tag: 1764860678-72347
+X-HE-Meta: U2FsdGVkX18eNivdRO9E9R7/a2x18xtDhsWNHvtcI16CQQcqD6X/pJ21XxaHTvAni5/y6SUHzHxP1zcuc48oYxgE2pR3Y7OPqF+wCaxV0P1Es9v46xLbruKfGIvEZKUIksa9Bkbat48vhjEPix+JOWm2kQfFVrJNvlDGIYyVoY+ywTnWuPz6vmD8AOMzngY0XQ9EeP40AuaSFAimrYqkxh4zev6k7qnbAfVDM2GUcEeT5L8mEH9cznk0sJSDh2szcqyPx9YyXP2JH6/GDnXQv3BPOhZTp82Lg0OFWuz6GMSs59R1fmNAlNphIp2qgczt9CYvkvYqzH8PN9udAwPjNGBxSMzCcIFehCcp9aqgTcD/9BD5/EmIEA66fW/i2da3/paqa2F80wIs565ac+8jOxvPwrYsAFaYPK3adb2tR8aEMHHxL/asVdlenzxxVQjRrY5THiucpRG8a6nS1D+DF14b8ZKuCidnVx2qShbKXE4a3niDw82m4ZS5qbv9YT41ozLMM70KsLdIORoSmEuen8M4njBHrjpbIrZnB6lFtepKMxTnEAHGUG+XuMNmMwhBow0iIIs+yV15ZpWgLK8UJlI7Sj/B3Kt6OU43r+gdIpkzbjBthApZwpPuYxBhSeapvoUre+nU9BCMONAdS+8pM9UoHOUduZ+NnB/RBoSRQPdca39LuAkOA7xYB8l13mcXxZBGSoa9aIxF4z/HDwffcoDNdDTGr350Fv74Rh3/Yhb+j94yI1QRhwNFLAjg39A6G6fZqshryUCKz7ZRkOtHne/Hm5jSA557UyDn99tXqnh9+nbIixyQQwK+x/TFuPZ3+UmblCrObglMhdr1lt2fBbsRQGKspf/aYeEwYW8VHX361Hg1yjVL2mXCA4KRR9rMAcoUaMRuJykemhIbGw4Hxh/blPFnh9qpfW1wGTPl61ujUdLaNMZDpod9zkIBWat8wrfynF0PXO+2PqqsJZ4
+ A4ObHVuP
+ Wg4nqsqgYNlJ7Nfm3uJl2jfy24ibmjrEdv67BVvnNoyBdqUzRL4Sq9ZBCkiVqtCbBWMUVE4eWDmT5w3i4pypuWRztkH6UmKkmYhtfJ0c73+k4BmBEAoorPz37Iuxo2tG9UmkjxfWBCh97GnaPdUEFPFo728SVblnNFBO8rIVk0fDt6zhrslizDcMNjs3i/t5vuNX76/K5Rm6P5UOX0ClZgb5GFQzTlHk/xYcvdRWq07fLlw0MIiowPx7RPDfYriim+pUBgrQwH6owJssw6/f02zutXYfY7uh/KGzDEdbOOwbccx7lns9/b5iwq+PMMVyNob48hlM61Cpf/+42Kb3XCs5Cb0lyEYbHoouWo7E048j0HFej2arThbLcu3HsDGxsAQ6BuxYxcI5J+YLB7v81Ut2oXCmqE/uWMSy0nuSnsIxrlEhYEqupyn5o6+V6v3jRmkY0rlGKOEXSAg4MwpOT5F78rkySwHtRCrRy5Aoobe0p1FfCEJdfBicZ5gJ0aaNBFEq1d17BMvloxYlVRO+7POI8suya4gPolVIA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,47 +124,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---alsebtq3iwjlaxr2
+--yv3jk2strjnvzxuo
 Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v5 1/3] selftests: cgroup: Add cg_read_key_long_poll() to
- poll a cgroup key with retries
+Subject: Re: [PATCH v5 2/3] selftests: cgroup: make test_memcg_sock robust
+ against delayed sock stats
 MIME-Version: 1.0
 
-On Wed, Dec 03, 2025 at 07:56:29PM +0800, Guopeng Zhang <zhangguopeng@kylin=
+On Wed, Dec 03, 2025 at 07:56:30PM +0800, Guopeng Zhang <zhangguopeng@kylin=
 os.cn> wrote:
-> Introduce a new helper function `cg_read_key_long_poll()` in
-> cgroup_util.h. This function polls the specified key in a cgroup file
-> until it matches the expected value or the retry limit is reached,
-> with configurable wait intervals between retries.
+> test_memcg_sock() currently requires that memory.stat's "sock " counter
+> is exactly zero immediately after the TCP server exits. On a busy system
+> this assumption is too strict:
 >=20
-> This helper is particularly useful for handling asynchronously updated
-> cgroup statistics (e.g., memory.stat), where immediate reads may
-> observe stale values, especially on busy systems. It allows tests and
-> other utilities to handle such cases more flexibly.
+>   - Socket memory may be freed with a small delay (e.g. RCU callbacks).
+>   - memcg statistics are updated asynchronously via the rstat flushing
+>     worker, so the "sock " value in memory.stat can stay non-zero for a
+>     short period of time even after all socket memory has been uncharged.
+>=20
+> As a result, test_memcg_sock() can intermittently fail even though socket
+> memory accounting is working correctly.
+>=20
+> Make the test more robust by polling memory.stat for the "sock "
+> counter and allowing it some time to drop to zero instead of checking
+> it only once. The timeout is set to 3 seconds to cover the periodic
+> rstat flush interval (FLUSH_TIME =3D 2*HZ by default) plus some
+> scheduling slack. If the counter does not become zero within the
+> timeout, the test still fails as before.
+>=20
+> On my test system, running test_memcontrol 50 times produced:
+>=20
+>   - Before this patch:  6/50 runs passed.
+>   - After this patch:  50/50 runs passed.
 >=20
 > Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> Suggested-by: Michal Koutn=FD <mkoutny@suse.com>
+> Suggested-by: Lance Yang <lance.yang@linux.dev>
 > Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
 > ---
->  .../selftests/cgroup/lib/cgroup_util.c        | 21 +++++++++++++++++++
->  .../cgroup/lib/include/cgroup_util.h          |  5 +++++
->  2 files changed, 26 insertions(+)
+>  .../selftests/cgroup/test_memcontrol.c        | 20 ++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
 
 Acked-by: Michal Koutn=FD <mkoutny@suse.com>
 
---alsebtq3iwjlaxr2
+--yv3jk2strjnvzxuo
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaTGi+xsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AiVAQD9GDHbzq27fgmc8XyKGDiK
-IgD/7BYZ1+cvN45rEc0/vzoBAMk4RTHxSBm6UOa0ZfWYb1vuWJwjUshDzUhrZvnV
-/1oJ
-=YEEX
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaTGjABsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AiVEwD7BJrfWOByVOptuK3iVMCh
+fif6gFVXfUY7OTYHzXj5Z7AA/0EyqsqZ6vK/4ej9qB2PndhgnCbsP9ZadktOrMdz
+BbkA
+=wjUR
 -----END PGP SIGNATURE-----
 
---alsebtq3iwjlaxr2--
+--yv3jk2strjnvzxuo--
 
