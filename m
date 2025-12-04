@@ -4,118 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67493D2A54F
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 22:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93E55D2A551
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 22:10:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A8726B0011; Thu,  4 Dec 2025 17:05:22 -0500 (EST)
+	id DF51D6B0024; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 958B56B0012; Thu,  4 Dec 2025 17:05:22 -0500 (EST)
+	id DCD4C6B0026; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 847A56B00A0; Thu,  4 Dec 2025 17:05:22 -0500 (EST)
+	id D09DC6B0028; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D6E96B0011
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:05:22 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 071E85199B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:05:22 +0000 (UTC)
-X-FDA: 84183170484.06.EA57992
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 00FCA8000F
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:05:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=td0S35eY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764885920; a=rsa-sha256;
-	cv=none;
-	b=JjHwbon3hfMLCWxXaGRoQXmxZD91QJboC1s4OYJNn1i4XHl3E7qjPoPrvt/u+OyplWZMWA
-	/bDI0rmB+9x1WyIlBa9yBZGxSlq1XaZjHUJ0eDiueKM4kkifB9jS04M/r3W9DyuZWQboVv
-	oa+y09L0x7Iz4HmLtFQ9QjesJ4HdrdA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=td0S35eY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BF9FE6B0024
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35ADA50449
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:10:03 +0000 (UTC)
+X-FDA: 84183182286.19.4B0DA8C
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6A474140014
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:10:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MZ82etb6;
+	spf=pass (imf26.hostedemail.com: domain of 3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764885920;
+	s=arc-20220608; t=1764886201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BlMojaibJswZ58Md6lSPxnF32xXnO1Wd7Xx7hEEyCgs=;
-	b=ZaS7m7KHSa0gXkBgNCsU91rYqK9jHp6WBbHV9FpKsLyKxHUVO6c3+oa4uy8XTGWgbgfn1V
-	ruUkOoQ1YsDFZRvNziUCDTM9GAdewfVy+d/pG9T9SetqxHAv4Q9huiGWrnMfrDOnBTCkms
-	kMfPYKKMlo3PXZzl9PV2oriDxT0Dg60=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4edb8d6e98aso164981cf.0
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 14:05:19 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=54oIStPr/s4vJcJKPPdjRiweYi2k8HSZohU+IbZP+5k=;
+	b=xKE3Joh9MwPdHdgq9YqS+JkKCJdheiKj1CZtrta8iVCQsmD9rAT2C39auBsSIomkJYmrBK
+	bp7MmhG++fa51KR+Ge+WoFVIVCG+Px+z43QOr+OQ+QRy8MCr0t4QENo39iKPLCY8Vqec1Z
+	4OheNmQHm8A5ZeF7obaviuVMXaIWbdo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MZ82etb6;
+	spf=pass (imf26.hostedemail.com: domain of 3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764886201; a=rsa-sha256;
+	cv=none;
+	b=m+dcpNJMEIbgEc1qNd8gA5ID8nH4Fot+HQURkeF55/ZmT43eUu5pU1RzJdP1dm5Sph5G3t
+	WP3qVSyYXejuxOnW+kdBu2OGVxXduYr+nCyJqSA9a3W8AKtggm4oD8T5ElRm++CII5qIkn
+	ACjr94hHNh1dYteZTSvWt90zEhc9PPU=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-ba4c6ac8406so1195564a12.0
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 14:10:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764885919; x=1765490719; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BlMojaibJswZ58Md6lSPxnF32xXnO1Wd7Xx7hEEyCgs=;
-        b=td0S35eYW8/om8pDRl+VazAWIuU+ZJB7ScNPOcf0086AyM6oRtYbnZJ5gKaNv6KfYd
-         vWxk9pSyB5Rfd16w7IJRccwWM/AXPhyTgDmE1HNmzcp7ZFeYCF/Wsc+a87MbNbU9OXEX
-         CuNIVfcQMEga//ibDAck8rizLpvtxxEXFagAJgSXCFLUgiUjCVxuLxUETLVKIRZsp+CK
-         rwpw1HFWL+LupM2ZO4YUX95tEf2Yfc390G0orwFBqBdz078I7y84wTywpn1gLflo0Dd5
-         5QL8Kgy2vr6hpZhhdnMrf9kMB+uatsDp63JDiWJOMBsC+H6adCwQKF2g0jwovOK8fTX8
-         FLng==
+        d=google.com; s=20230601; t=1764886200; x=1765491000; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=54oIStPr/s4vJcJKPPdjRiweYi2k8HSZohU+IbZP+5k=;
+        b=MZ82etb6JzEnvZo4jauVBADNZ06Mci9vrN6C2nysSqLd6Zjv/fT78cHqfFltbU/dKJ
+         7xK28qQf1bjqBZV5ibHilkQLlMeCNT9PWxjD17sMEMhTCUIHpctvP4WfzhSqjr3laCpZ
+         iCrpSKfjWUM5IlM4xDgFfglVJaa2SZ+x33z7F+x2PKrqLYzeOhbIPnua3fGlubQXfab1
+         tgBAQYVcNqlLGUI2Z0TfehFivyJYftQGgjIOmXMg6bbLKcLw5epfSqeOkiRlM+RPdikR
+         XwHbfARZQY7MsqmtmNkhDsxzOsutAEvMGbbyefve3qfv/FiXyedNzrJYleFpWhbA7eo3
+         Jpww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764885919; x=1765490719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BlMojaibJswZ58Md6lSPxnF32xXnO1Wd7Xx7hEEyCgs=;
-        b=ssy72MRTIKKhSE66E4V7nw+68DZYSzsZg3+uQNaRY4SSelH0PoNffPguhKhahrtqBZ
-         SGLrUIJoDGB3a/nxRygKKcluseYzl5H02uH0g5/Yo+8SKJQ1PKvBrDaUOj6c1bjyt6xp
-         E4wfU9QcXxfqtFCqLWyUHwoDxKhupXMlSnYJr755m6I08zIdjK880oze+gjaQtYPBXzD
-         rlldWUrWLFp9sIVVJnu61Yq2d2XUILTlL6Ybt/GaiV4p5rAdZbnW0/1yn4BnYTELAJfU
-         Saoxh0EeeygwWDgLIXPrwJU+RGWuwSpl6KWEmit7qnj3mj5F/KnTGISUMupB7KxTgj02
-         WWvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXFRlXu3WH6oPVxLWrtdsHSGBRvxEzUQktbJCDn9c9waLE8k+UVnri0wtbND07yd9R4d51l3swRpg==@kvack.org
-X-Gm-Message-State: AOJu0Yzv+3tv0uqTtQ0SVez1AbkCsjZIcg690sXea3vkBovsh80MDFdS
-	iiIF7SN86ZQGplNoHUlXijhOKxuLZ8gV3lW1jpmjgAHPluw7uyMcnyKKvMF5ZCzUqg5m23mZXv8
-	nJ1xY3vK327+/AhjHHWwXbaVtqj2LVT6gLvgHaC4I
-X-Gm-Gg: ASbGnctTUpdoTrab673CH9ictaKAV+v38aM0K5CApPYgZpgz5hZ9DLHGSxVevjt86fq
-	EkX3bThx6Nj76D+nzLYq5AXsQ+haVr4oKl7rhQoyrAH3lj4FCJX133Ed5H6Ks6HhUEkpZlOibfa
-	eqBXmANRp7UOLTpcRJA+nTrRd26mHOZ9yQGlR/rbhrHIXfmxGSoxq878mXBODeeiEb5MsLABWim
-	tZwBXKwQ2HKnzJNMFTqqEY0YJvHLNA+cBz3M813x/5wBZbdNMFAgcb7cOqSk2ViRdc3hLhh120K
-	AgPv4u5jvGPZUj+XR9ryCd6MGg==
-X-Google-Smtp-Source: AGHT+IFPNi1Qq6VnpviOUxpKZr81dFMcXNcb6T+4p6OQ/SGAOQNaW0ByA8FKshNAIkMbBHJmIRv/I4XWmKWNYD2+UjQ=
-X-Received: by 2002:a05:622a:11c7:b0:4b7:9c77:6ba5 with SMTP id
- d75a77b69052e-4f0328c27f7mr986761cf.15.1764885918541; Thu, 04 Dec 2025
- 14:05:18 -0800 (PST)
-MIME-Version: 1.0
-References: <20251202101626.783736-1-harry.yoo@oracle.com>
-In-Reply-To: <20251202101626.783736-1-harry.yoo@oracle.com>
+        d=1e100.net; s=20230601; t=1764886200; x=1765491000;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=54oIStPr/s4vJcJKPPdjRiweYi2k8HSZohU+IbZP+5k=;
+        b=C8eDbo4DLZq7iJn/egqPvO5sU43upWxVAtq7v6CJdxJn+MBygmmR0rsa4t6puz0tQ/
+         FdfJGPovRM4MFgd67RARicshCeq7Fi6KTCi1CSQmGb3QWEr4xAn0DQ8ei8QNTpugg2GS
+         XSwNApNkWbqDI4zs70syxvTuOrKF0H6aVbu8uKhHeSf3NnVpEcZwe+0KthyayGfQzGVi
+         ocDH68ril3/QDYwkefCZKwQXP2u1p9+fkpOWiMQyFLOvHuoGkwHNcjV6q3zRXjY6riDL
+         gKRP8yNq+R25JvBouTN6vlCtXZlK3nZH6ns1fhcm2XaH0pBsY8iSykOPj2/IxjSrMW33
+         ROTg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGs7SSdlZmaGf93DPDEp7D2qEr7ZxkK9dYoSSdiBet3a+9ybTKQRaoxTZIgCwNEnk1TBAryMd5fA==@kvack.org
+X-Gm-Message-State: AOJu0YwpjJWYT2KSGm28/FwlsvrgE4+A5RH5H1Q1jWDAiiLKs8DzgOAY
+	/YOL2lkvDkmxz2c7SG+Y5TfATfUts14qWLzxYwUZ/AOUmJmfBe8ut2za1VBUhJLm6QvfVmI2eFC
+	OQV7BGw==
+X-Google-Smtp-Source: AGHT+IHLhrKsU7MdJp99+KvZZ/xCoXmF9qcszyx5DJq3SSgN+PpZivt51xKlhmqSsW0XWVKbU/tASHuysvs=
+X-Received: from dynm33.prod.google.com ([2002:a05:7300:2aa1:b0:2a4:664f:e91d])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:4d10:b0:2a4:3593:ddf2
+ with SMTP id 5a478bee46e88-2ab92e671a4mr4465065eec.31.1764886200002; Thu, 04
+ Dec 2025 14:10:00 -0800 (PST)
+Date: Thu,  4 Dec 2025 14:09:56 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
+Message-ID: <20251204220957.360838-1-surenb@google.com>
+Subject: [PATCH 1/1] alloc_tag: skip rcu barrier on module unload if profiling
+ was not enabled
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 4 Dec 2025 14:05:07 -0800
-X-Gm-Features: AQt7F2p0K1ADlvbRPKyMu031QLfpqGn6xZ7XRfN7KMrquLJSUSvofoLyz0mVl2M
-Message-ID: <CAJuCfpE+g65Dm8-r=psDJQf_O1rfBG62DOzx4mE1mb+ottUKmQ@mail.gmail.com>
-Subject: Re: [PATCH V2] mm/slab: introduce kvfree_rcu_barrier_on_cache() for
- cache destruction
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: vbabka@suse.cz, Liam.Howlett@oracle.com, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, urezki@gmail.com, 
-	sidhartha.kumar@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rcu@vger.kernel.org, maple-tree@lists.infradead.org, 
-	linux-modules@vger.kernel.org, mcgrof@kernel.org, petr.pavlu@suse.com, 
-	samitolvanen@google.com, atomlin@atomlin.com, lucas.demarchi@intel.com, 
-	akpm@linux-foundation.org, jonathanh@nvidia.com, stable@vger.kernel.org, 
-	Daniel Gomez <da.gomez@samsung.com>
+To: akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, vbabka@suse.cz, harry.yoo@oracle.com, 
+	da.gomez@kernel.org, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 00FCA8000F
-X-Stat-Signature: hh7xgm4y1kz18iej9pg8mp5efyc8muxs
+X-Rspamd-Queue-Id: 6A474140014
+X-Rspamd-Server: rspam02
+X-Stat-Signature: w6nrrbi4grd75g6swsqc7ahzjutn3dtc
 X-Rspam-User: 
-X-HE-Tag: 1764885919-423831
-X-HE-Meta: U2FsdGVkX19gOqfesFymYPuDIJNs/aIuJMggiApBVv3oDUhKdY8U3Ro4/Q28Ibx+rNl9U3FKiSe6A0wuDxIVB1FFViOokAo4HL6perH/BoERAlBnlrKGJBptjldTnfy5RouHL/CkLVsp9joR+dDzrHogU0fAS+i2yI26NNOIltZoYbmrAkDCPuXLgCyeCvWR8IUeB9H4hoohsTSAOs85Ac5nDd3HKx/muiOYI11bqEthZmiX0nbHB24ebKzTPEXsqMso3qbaoVaFcjMqf2QdSkTdE+kWnuTtWJCsyuJigYvN7YNFSBQketvXk+O/iNInHJeGKaWmvXIdM61/kB8vMUtb3kNvzygyZUdZiaiFxm+UMfAH0zlUwm5lOwvJhFoB+o6jc2hI/f/E1xvjV+Yl3LtXqLFEbIbbCOpnQWLATf8kSomE1MIRiPAtHd/rQut0Q2PF3ienHw0VF1fb5V71Lx+NiMBT2zLQF7zYFHGeEGrkpTnrKMgj4hmk6DnC7OBAHarkmuas7j36EIPf+ARuo4QcK+aYiY4aheOY919rbGUqc4ANLM7Puj+iFimWQzIET9OcVS8taE9+wF8jmiYyck7g2N4enamGmgt3lbTRz3lu4M/rdacf453KQ8YByQ3ZJ2ndQ3QVd1AoGDfpPr9a70qxA2F7+mJSYFbjppcyRlvwxmMwpfTmCXh2IlXoC9HDg1pLMFhYDgWARtIVynf976AnawPqFnEf/Orc8aPt9hdBH/Jht+WI7/97hLUY4Ny/tP9Iur8ZgnsmHHjyBOjWknORDhjLa8YEc7tZ5naDQyOi+tog73WiMywHOxN6LdVcHgUhvuxr878XFgOMfDFS+My90rm9bU+28W0VImDPxwL+q/bGewjwgzS5/f/mJTtA1XxPCqk5ceg7UaGxX+43SgjpInhL5ZXSxAIa8enA9iPGOSGE/4eky6/9O7/FKlYu2dPqXm+jLkTY0dRo5US
- KiSE8f+t
- GwE/LoQB5COp5rou6c7xRhTDnKJlRwv/Tu9YntHo3IXKFN9lRBpq1VvmlXDqSU1fOFJLwsyv3F/AEaYiYCDIneKvXdPX6nMW47739lVeA8OwYP4wmuOJjpHAx1LhWyZvp2fQRjulf8P/IwgslAZeFqPRROZ6HhDbjvEKoXTHhiv4o0ssNJ+cl5+WQ3Eqoj+bcEEtZmV2eob41WsCi7gqIvKy0ol8fAChOsyO6k411u9IGK+PaQ+aKqNhIhfV/Z2EtvhW/kjcvRX62agup6wBYErUks3XkpMPSB3MbJgNlWZRCfug=
+X-HE-Tag: 1764886201-575755
+X-HE-Meta: U2FsdGVkX18u5xgSFNfJ9Zuv15HvTPoq7qyrsk6zIHuWYAGx4v3LWq/+/7ClS7Zz8Fxgxk97ctiPD7XvqYEyVUURPRoYz8iRjjuLbRLlApnRzFsOCZ9CjWfjiy6jILagl8SExELi0u/yUPuPk8i49RLaZE+3+EFx/c4IJLXIe5dEXVwldmbET6fd36uNWumNBGDoo2Y4E+ndhs7i0NKk4F4pnHHgqvzzqxk5QPcFdOZlLbaUT4cUv4M1RgumZHMNIrJK+eRfkJ8fdRZCnA+63bkUkUjZ5fXQwPj00obT8LdN6fUk/sZFM9JaBcIq28/LcEbG1ERng1nYFALzR35O8B8+QuaUIPm9ciDvyJZjcK6C1bitoiv8Two/vHVmktP3zL5VHbYNvdOqCLOomT4E2VB5m2idivrpJGfIQAcFFk8Iby3GAca4yphaeMI8KfpL3ICm1jtTEztExp9UIBKh1HVW8P5VbcFUO+cDUwxw0S3cYKlzkd39nnY/OFlWunfCcuvZt59VLkVDLr/mQlhrrYATg0LuN6uxZPpAYMa9La1pxdK0q1Jd+zDIrGQXiMS2My6Q/et8ByIedYq6jRIDuau0ou5Yb0CuX0B0XpggQHLtXAkHrZjxUBSDuj9vXL4U6KOXl1ESKwxaOWHgHXorcT6AJtxcoXrFKAleiBNnfpu3XE+Ka1fcJJo6laUKC1vL0R9IqxtPSn6E5SdGg0Y1sLfRSqmJzQd5Iqs41a8MB3M9OSWbgl3KB19w8QggMG7C4KUrkgegpDAFiP2+zD+ttqH296WDtcfKHHs8FJQ4DZyIr7f8ewyS9nu7Sl+hZP5Rus8NFLxsa/C4MjHOYge+DFUJV+wq750hCQvSnbkBlJz+5ARISiwLtxoHJJsz7+79hZCfSyxsOr/zw1U76toiu3Z3F8oyjZlcVq93LWwBN5yuwv0xa7CjlydlVE5fbzpFZR0EG37FkSmZqp3TXA4
+ oXIsNman
+ KvypyowBAhLXkQw2B3srmJ3hxkmcKQwFQK+i80S+71LQSNSECqZPl8gCCeezRxFHFZG+rDMWqyF5v3opmPCTWDdqs9plqwyyd8b9m7mtoMEYmXfwyAjMDkYHVs5J5LRCXYqX+fhU39FFQnAkqTaFMNQmXrHKDxu7oJFqTfP+q/xlIbUWyVeALKkYbx868KvUZdEF0rn9Rem35jd3MQI7HEqJH23tCMc++LuSJEizWNU/UGmqm/SLZpnWoZ2RPfhLu2Og6cI7qoikPpschq0SmZwyn+ZpTOZ2MgdLPX8rBdbWtdQfyln7vPrWn5f8+12tGJwTXxgxHmhxsAB8KjceYclK7c6wTwPxxXjRKPfGgf9TQCr6N4gNeAYW9YRODWEGCVl+1NZTG8sGOBijq9jZ9f3xFZkdJs3B4k9x6eAZ9EQ8i4W0ZsQh4bdfsi5T9twz9ohcmpLbL5vXadNnfClsYws68tdR0Ycqtw4vBK8ArVUIeAM6wotBsY2cOPfIbZZRLEmspxl4T5MURx8Cfl6JmTgo1SiHq37sEipi0LmJ96WO0vC3x1AqVPd5znUbaayVs0vPg1ofZwncj7oHGtOaZyiUPfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,310 +108,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Dec 2, 2025 at 2:16=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wro=
-te:
->
-> Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
-> caches when a cache is destroyed. This is unnecessary; only the RCU
-> sheaves belonging to the cache being destroyed need to be flushed.
->
-> As suggested by Vlastimil Babka, introduce a weaker form of
-> kvfree_rcu_barrier() that operates on a specific slab cache.
->
-> Factor out flush_rcu_sheaves_on_cache() from flush_all_rcu_sheaves() and
-> call it from flush_all_rcu_sheaves() and kvfree_rcu_barrier_on_cache().
->
-> Call kvfree_rcu_barrier_on_cache() instead of kvfree_rcu_barrier() on
-> cache destruction.
->
-> The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
-> 5900X machine (1 socket), by loading slub_kunit module.
->
-> Before:
->   Total calls: 19
->   Average latency (us): 18127
->   Total time (us): 344414
->
-> After:
->   Total calls: 19
->   Average latency (us): 10066
->   Total time (us): 191264
->
-> Two performance regression have been reported:
->   - stress module loader test's runtime increases by 50-60% (Daniel)
->   - internal graphics test's runtime on Tegra23 increases by 35% (Jon)
->
-> They are fixed by this change.
->
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() op=
-erations")
-> Cc: <stable@vger.kernel.org>
-> Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c93=
-01@suse.cz
-> Reported-and-tested-by: Daniel Gomez <da.gomez@samsung.com>
-> Closes: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616d=
-d742@kernel.org
-> Reported-and-tested-by: Jon Hunter <jonathanh@nvidia.com>
-> Closes: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bb=
-f262@nvidia.com
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->
-> No code change, added proper tags and updated changelog.
->
->  include/linux/slab.h |  5 ++++
->  mm/slab.h            |  1 +
->  mm/slab_common.c     | 52 +++++++++++++++++++++++++++++------------
->  mm/slub.c            | 55 ++++++++++++++++++++++++--------------------
->  4 files changed, 73 insertions(+), 40 deletions(-)
->
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index cf443f064a66..937c93d44e8c 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -1149,6 +1149,10 @@ static inline void kvfree_rcu_barrier(void)
->  {
->         rcu_barrier();
->  }
-> +static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-> +{
-> +       rcu_barrier();
-> +}
->
->  static inline void kfree_rcu_scheduler_running(void) { }
->  #else
-> @@ -1156,6 +1160,7 @@ void kvfree_rcu_barrier(void);
->
->  void kfree_rcu_scheduler_running(void);
->  #endif
-> +void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
+RCU barrier in the module unload path is needed to ensure all kfree_rcu
+operations which modify tag counters are complete before we free the tags.
+However this is not necessary if memory allocation profiling was never
+enabled on the system. Introduce a sticky flag that records whether memory
+profiling was ever enabled and make the RCU barrier conditional.
 
-Should the above line be before the #endif? I was expecting something like =
-this:
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+---
+Applies over mm-new
 
-#ifndef CONFIG_KVFREE_RCU_BATCHED
-...
-static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-{
-    rcu_barrier();
-}
-#else
-...
-void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
-#endif
+ include/linux/codetag.h |  2 ++
+ lib/alloc_tag.c         | 11 ++++++++++-
+ lib/codetag.c           | 14 ++++++++++++--
+ 3 files changed, 24 insertions(+), 3 deletions(-)
 
-but when I apply this patch on mm-new I get this:
+diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+index 8ea2a5f7c98a..8a07a83cabdd 100644
+--- a/include/linux/codetag.h
++++ b/include/linux/codetag.h
+@@ -95,6 +95,7 @@ void codetag_free_module_sections(struct module *mod);
+ void codetag_module_replaced(struct module *mod, struct module *new_mod);
+ int codetag_load_module(struct module *mod);
+ void codetag_unload_module(struct module *mod);
++void codetag_flush_rcu_on_module_unload(void);
+ 
+ #else /* defined(CONFIG_CODE_TAGGING) && defined(CONFIG_MODULES) */
+ 
+@@ -109,6 +110,7 @@ static inline void codetag_free_module_sections(struct module *mod) {}
+ static inline void codetag_module_replaced(struct module *mod, struct module *new_mod) {}
+ static inline int codetag_load_module(struct module *mod) { return 0; }
+ static inline void codetag_unload_module(struct module *mod) {}
++static inline void codetag_flush_rcu_on_module_unload(void) {}
+ 
+ #endif /* defined(CONFIG_CODE_TAGGING) && defined(CONFIG_MODULES) */
+ 
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index 27fee57a5c91..173eebfacb1e 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -776,10 +776,16 @@ EXPORT_SYMBOL(page_alloc_tagging_ops);
+ static int proc_mem_profiling_handler(const struct ctl_table *table, int write,
+ 				      void *buffer, size_t *lenp, loff_t *ppos)
+ {
++	int ret;
++
+ 	if (!mem_profiling_support && write)
+ 		return -EINVAL;
+ 
+-	return proc_do_static_key(table, write, buffer, lenp, ppos);
++	ret = proc_do_static_key(table, write, buffer, lenp, ppos);
++	if (!ret && write && mem_alloc_profiling_enabled())
++		codetag_flush_rcu_on_module_unload();
++
++	return ret;
+ }
+ 
+ 
+@@ -829,6 +835,9 @@ static int __init alloc_tag_init(void)
+ 		return 0;
+ 	}
+ 
++	if (mem_alloc_profiling_enabled())
++		codetag_flush_rcu_on_module_unload();
++
+ 	if (!proc_create_seq_private(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_seq_op,
+ 				     sizeof(struct allocinfo_private), NULL)) {
+ 		pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
+diff --git a/lib/codetag.c b/lib/codetag.c
+index 545911cebd25..ed6d6425b62a 100644
+--- a/lib/codetag.c
++++ b/lib/codetag.c
+@@ -34,6 +34,7 @@ struct codetag_module {
+ 
+ static DEFINE_MUTEX(codetag_lock);
+ static LIST_HEAD(codetag_types);
++static bool flush_rcu_on_module_unload;
+ 
+ void codetag_lock_module_list(struct codetag_type *cttype, bool lock)
+ {
+@@ -335,6 +336,11 @@ int codetag_load_module(struct module *mod)
+ 	return ret;
+ }
+ 
++void codetag_flush_rcu_on_module_unload(void)
++{
++	flush_rcu_on_module_unload = true;
++}
++
+ void codetag_unload_module(struct module *mod)
+ {
+ 	struct codetag_type *cttype;
+@@ -342,8 +348,12 @@ void codetag_unload_module(struct module *mod)
+ 	if (!mod)
+ 		return;
+ 
+-	/* await any module's kfree_rcu() operations to complete */
+-	kvfree_rcu_barrier();
++	/*
++	 * Await any module's kfree_rcu() operations to complete
++	 * if profiling was ever enabled.
++	 */
++	if (flush_rcu_on_module_unload)
++		kvfree_rcu_barrier();
+ 
+ 	mutex_lock(&codetag_lock);
+ 	list_for_each_entry(cttype, &codetag_types, link) {
 
-#ifndef CONFIG_KVFREE_RCU_BATCHED
-...
-static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-{
-    rcu_barrier();
-}
-#else
-...
-#endif
-void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
+base-commit: 3f43be96f919cc611dcb2a4e38dd464831f4513e
+-- 
+2.52.0.223.gf5cc29aaa4-goog
 
-Other than that LGTM
-
->
->  /**
->   * kmalloc_size_roundup - Report allocation bucket size for the given si=
-ze
-> diff --git a/mm/slab.h b/mm/slab.h
-> index f730e012553c..e767aa7e91b0 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -422,6 +422,7 @@ static inline bool is_kmalloc_normal(struct kmem_cach=
-e *s)
->
->  bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
->  void flush_all_rcu_sheaves(void);
-> +void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
->
->  #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
->                          SLAB_CACHE_DMA32 | SLAB_PANIC | \
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 84dfff4f7b1f..dd8a49d6f9cc 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -492,7 +492,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
->                 return;
->
->         /* in-flight kfree_rcu()'s may include objects from our cache */
-> -       kvfree_rcu_barrier();
-> +       kvfree_rcu_barrier_on_cache(s);
->
->         if (IS_ENABLED(CONFIG_SLUB_RCU_DEBUG) &&
->             (s->flags & SLAB_TYPESAFE_BY_RCU)) {
-> @@ -2038,25 +2038,13 @@ void kvfree_call_rcu(struct rcu_head *head, void =
-*ptr)
->  }
->  EXPORT_SYMBOL_GPL(kvfree_call_rcu);
->
-> -/**
-> - * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-> - *
-> - * Note that a single argument of kvfree_rcu() call has a slow path that
-> - * triggers synchronize_rcu() following by freeing a pointer. It is done
-> - * before the return from the function. Therefore for any single-argumen=
-t
-> - * call that will result in a kfree() to a cache that is to be destroyed
-> - * during module exit, it is developer's responsibility to ensure that a=
-ll
-> - * such calls have returned before the call to kmem_cache_destroy().
-> - */
-> -void kvfree_rcu_barrier(void)
-> +static inline void __kvfree_rcu_barrier(void)
->  {
->         struct kfree_rcu_cpu_work *krwp;
->         struct kfree_rcu_cpu *krcp;
->         bool queued;
->         int i, cpu;
->
-> -       flush_all_rcu_sheaves();
-> -
->         /*
->          * Firstly we detach objects and queue them over an RCU-batch
->          * for all CPUs. Finally queued works are flushed for each CPU.
-> @@ -2118,8 +2106,43 @@ void kvfree_rcu_barrier(void)
->                 }
->         }
->  }
-> +
-> +/**
-> + * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-> + *
-> + * Note that a single argument of kvfree_rcu() call has a slow path that
-> + * triggers synchronize_rcu() following by freeing a pointer. It is done
-> + * before the return from the function. Therefore for any single-argumen=
-t
-> + * call that will result in a kfree() to a cache that is to be destroyed
-> + * during module exit, it is developer's responsibility to ensure that a=
-ll
-> + * such calls have returned before the call to kmem_cache_destroy().
-> + */
-> +void kvfree_rcu_barrier(void)
-> +{
-> +       flush_all_rcu_sheaves();
-> +       __kvfree_rcu_barrier();
-> +}
->  EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
->
-> +/**
-> + * kvfree_rcu_barrier_on_cache - Wait for in-flight kvfree_rcu() calls o=
-n a
-> + *                               specific slab cache.
-> + * @s: slab cache to wait for
-> + *
-> + * See the description of kvfree_rcu_barrier() for details.
-> + */
-> +void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-> +{
-> +       if (s->cpu_sheaves)
-> +               flush_rcu_sheaves_on_cache(s);
-> +       /*
-> +        * TODO: Introduce a version of __kvfree_rcu_barrier() that works
-> +        * on a specific slab cache.
-> +        */
-> +       __kvfree_rcu_barrier();
-> +}
-> +EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
-> +
->  static unsigned long
->  kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *s=
-c)
->  {
-> @@ -2215,4 +2238,3 @@ void __init kvfree_rcu_init(void)
->  }
->
->  #endif /* CONFIG_KVFREE_RCU_BATCHED */
-> -
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 785e25a14999..7cec2220712b 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -4118,42 +4118,47 @@ static void flush_rcu_sheaf(struct work_struct *w=
-)
->
->
->  /* needed for kvfree_rcu_barrier() */
-> -void flush_all_rcu_sheaves(void)
-> +void flush_rcu_sheaves_on_cache(struct kmem_cache *s)
->  {
->         struct slub_flush_work *sfw;
-> -       struct kmem_cache *s;
->         unsigned int cpu;
->
-> -       cpus_read_lock();
-> -       mutex_lock(&slab_mutex);
-> +       mutex_lock(&flush_lock);
->
-> -       list_for_each_entry(s, &slab_caches, list) {
-> -               if (!s->cpu_sheaves)
-> -                       continue;
-> +       for_each_online_cpu(cpu) {
-> +               sfw =3D &per_cpu(slub_flush, cpu);
->
-> -               mutex_lock(&flush_lock);
-> +               /*
-> +                * we don't check if rcu_free sheaf exists - racing
-> +                * __kfree_rcu_sheaf() might have just removed it.
-> +                * by executing flush_rcu_sheaf() on the cpu we make
-> +                * sure the __kfree_rcu_sheaf() finished its call_rcu()
-> +                */
->
-> -               for_each_online_cpu(cpu) {
-> -                       sfw =3D &per_cpu(slub_flush, cpu);
-> +               INIT_WORK(&sfw->work, flush_rcu_sheaf);
-> +               sfw->s =3D s;
-> +               queue_work_on(cpu, flushwq, &sfw->work);
-> +       }
->
-> -                       /*
-> -                        * we don't check if rcu_free sheaf exists - raci=
-ng
-> -                        * __kfree_rcu_sheaf() might have just removed it=
-.
-> -                        * by executing flush_rcu_sheaf() on the cpu we m=
-ake
-> -                        * sure the __kfree_rcu_sheaf() finished its call=
-_rcu()
-> -                        */
-> +       for_each_online_cpu(cpu) {
-> +               sfw =3D &per_cpu(slub_flush, cpu);
-> +               flush_work(&sfw->work);
-> +       }
->
-> -                       INIT_WORK(&sfw->work, flush_rcu_sheaf);
-> -                       sfw->s =3D s;
-> -                       queue_work_on(cpu, flushwq, &sfw->work);
-> -               }
-> +       mutex_unlock(&flush_lock);
-> +}
->
-> -               for_each_online_cpu(cpu) {
-> -                       sfw =3D &per_cpu(slub_flush, cpu);
-> -                       flush_work(&sfw->work);
-> -               }
-> +void flush_all_rcu_sheaves(void)
-> +{
-> +       struct kmem_cache *s;
-> +
-> +       cpus_read_lock();
-> +       mutex_lock(&slab_mutex);
->
-> -               mutex_unlock(&flush_lock);
-> +       list_for_each_entry(s, &slab_caches, list) {
-> +               if (!s->cpu_sheaves)
-> +                       continue;
-> +               flush_rcu_sheaves_on_cache(s);
->         }
->
->         mutex_unlock(&slab_mutex);
-> --
-> 2.43.0
->
 
