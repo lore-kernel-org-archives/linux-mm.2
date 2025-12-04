@@ -4,97 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42362D21696
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 15:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C5ADD2169D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 15:29:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 987BD6B00B5; Thu,  4 Dec 2025 10:26:45 -0500 (EST)
+	id F095F6B00A3; Thu,  4 Dec 2025 10:29:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9376A6B00D0; Thu,  4 Dec 2025 10:26:45 -0500 (EST)
+	id EE1056B00D7; Thu,  4 Dec 2025 10:29:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8267B6B00D1; Thu,  4 Dec 2025 10:26:45 -0500 (EST)
+	id DF6A46B00D8; Thu,  4 Dec 2025 10:29:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E4B96B00B5
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 10:26:45 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1B998B7297
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:26:45 +0000 (UTC)
-X-FDA: 84182165970.13.92738B2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CB8A86B00A3
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 10:29:01 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7BCE956FBE
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:29:01 +0000 (UTC)
+X-FDA: 84182171682.03.60723DD
 Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2319120004
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:26:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fYXLDovd;
-	spf=pass (imf13.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7D8AAC0011
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:28:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CEjB2Vkj;
+	spf=pass (imf10.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764862003;
+	s=arc-20220608; t=1764862139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hRDq8VRZX7ObisK4LUGIJP6XjIFCzmZAVr9+RtuDKSA=;
-	b=RIr2NXzcluc7zV7IWwRI7MGrXgxsHhrCBTAjOMmCSroGpgAulfRct0KPpEXVf12nxlqd1b
-	itJsQ4odeuUFtTiJ8G9efR4e/0lQtq7XJMcxmYyEQqq7v8gtY5lmq3TUIeOcMwKzkPkWLl
-	TLCmlUZEZzUtbI3zFAjN47eabchieAo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764862003; a=rsa-sha256;
+	bh=1MI5aTy+R1SqmI1yzGL1uAuu8o2FFOs1gD1ZnAhB164=;
+	b=vIprXxm1QGLTFjkIBg9iMtcKjqcib9xA73BvUzC8q/lnqsPaMFo3CClpxds6KSKQvHWzQk
+	Xh5+sBDeGpt2I7jmiY3ezmX61DTx0IBlgiSFGum2Kh9g+gsvzkJjXyDEZ89+NzKkA9LH3i
+	89f1UCTEYPtDM7P76Cf9b8ZaTtg1PF0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764862139; a=rsa-sha256;
 	cv=none;
-	b=V/yazSKoFNM4LSavq4wrjZc4RozAErO9VK6sLm/zd2ebq05lAND2H+rxdMTCIt5VVO8BxA
-	SIDmw4axPOhJ/6EjtWir6hTnbx5lGKK06K6DjCGChfOgpOLX0MlXl3m9YyFHvp08zireQj
-	mrwLdd8w0uZuQVYrbzDbpZPNJd7RFwg=
+	b=kn85v3AQclfcK8Y8XzAfPWgBkXG50hCKr9O7IJugW//0CVY3w/iVsCBJLJJSlnM2MgBvuQ
+	KPDUDFmnZ9LUjGcm/SUwz0ieruuqdm74ZzkVR4FIbtDPJXyZMt5xG4x5wMSSUTXskXHYiL
+	If1sfORSIhUUOVH5yTDKfdZI/pnfh7M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fYXLDovd;
-	spf=pass (imf13.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CEjB2Vkj;
+	spf=pass (imf10.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7633027cb2so175586466b.1
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 07:26:42 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7633027cb2so176113566b.1
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 07:28:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764862001; x=1765466801; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764862138; x=1765466938; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hRDq8VRZX7ObisK4LUGIJP6XjIFCzmZAVr9+RtuDKSA=;
-        b=fYXLDovdTqYFQfqsWVy53tuIOOAu0jEcyU6MfY6bspq70lugsGkMKJYmkqMzds+fbR
-         S/7mMU5avpSD0sGQoAzUet5xOoeVjCiq+WAwgXbo69YvA0AkyB5+zfmN1710cWAmUbSR
-         hLa5aFK0ADVd3GTviab2P94oUKEAdBmNN5NGYKxavAMaxx2ZNsOIO2YWb/So57yh4RgJ
-         6z+VzJpfkoQ1+W76AAAbGJfEJTbp4/EyjXym587L+uF8kNmd8nvT6OQhFBr3LzFAdK6m
-         LJgAUZ5z3PDPJkgkgkfWxWMnAPRjn5GCfDSBgMy9B8iy+lShZVZCpYMKjSTHqgpAdS4J
-         8sbQ==
+        bh=1MI5aTy+R1SqmI1yzGL1uAuu8o2FFOs1gD1ZnAhB164=;
+        b=CEjB2VkjEAAogIhskOW89GBZi2kZBNH/7FNZveqJaGvRgVui6maGKzP37gXtLMggKY
+         omth4pVqtZ3+THVnPCa/mhtRVktPOR5BsJqizRPpRyXdLkiGUsUCpN7z9hjiu25WHr9i
+         dljzO8nK/Z8c7cBcFmpWd9OAvsGlTiyckXWzZqVC5MYd4x+tHkYucmQB08NJ5dAgCNa4
+         7QgeMU070ABJfrFtnAZ1jFij3/04j53qKo+MowIH3GBKToV99VeF0oMyvMod+LTHX7J/
+         w3qJPlIE6XO9I6vfdRT343uPqFrpdPwrfPUrp4lZ0bEwnNzZf7+fA6YdtbQrS7UzX1of
+         mLlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764862001; x=1765466801;
+        d=1e100.net; s=20230601; t=1764862138; x=1765466938;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hRDq8VRZX7ObisK4LUGIJP6XjIFCzmZAVr9+RtuDKSA=;
-        b=A15CPmylpbxWTw+D3r4L/6rJTjAhJhI7w2LEii5gEJU9fHq8efU/ox+sUqnyqBSFeN
-         XyBlL1CpgrYUKbNOmtqKPsVDGKxWEsZglcIkwVitS0wh+xBlfuU8DtyIZAn7AK+io6dM
-         W8ynWuhLKwZIqMWmjkYB+uEnZaiPDAI6vfNkFZa6/PY/QdbZerf6lVpZwmGtEUA97H8+
-         x2EUNi+yqlyajyzLaGXOWJy2X0jwNlYKKsPctIdrIc3ZUsShiK6yDmoHMkAnWHWes9YJ
-         fd5amLgi1hvj258QMp0afEP/E0IplLe7lZqTgTNRvlRDkVAMTRjCWm3fQwuHx1K7ZYnm
-         xVZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXIce/V0vlraQVK13ouOCqimV/z64LxGYym/s2e193zOFalmxOemfFibytLnoI+7esCEL6AsS0jUg==@kvack.org
-X-Gm-Message-State: AOJu0YxkxbroS+mPlhdGSv7328GfxafDHasMoLLPvE6rK8za2/EyHFn+
-	oMzmooyDoVyar13mum4Fd9V7GJM35NA8TH9gugn3cTB0ZyWBiQ/wmwCqiCgdUCTCoFTK9LuqsmC
-	lXC+J1ednojnwTl1ndG15kUxEp0Metlw=
-X-Gm-Gg: ASbGncvhcHPMi2TaIpS3XNLm5/902LNMinSAZ20Ic5yWb6v++UjwBZEp2Z4lMVzPSI2
-	USZL2Erh9UNikJQCGwIFuYKy3+qswq2YJyUdr6oFxut8otTSTH0bHHg17mKdCu/TNhUE8FeudJW
-	IeW4G9NJxpwtfzXC+99fcqp7iYx9SVFy2N7rlPyOQG7VEYu7Nw5juILW2LI++Zqwu6+oF0L/Kau
-	f1AiegETq8O4dHo+XedkMtz8Ub8INhmNDm813grgNBgDF3zfRFvQ7CuKl3K91Ug1jokONEy8Ydb
-	uT1bj64JYrgWxYKCpItFybsxGOlZarLeOPqIBauAjfaiC2IOe6hNs//thdMoph6Tdz4wEF8=
-X-Google-Smtp-Source: AGHT+IHf4+6vdMmQuH6atM/AUDdteHFf5jPA5YYue6DOqMU4c8+wmNtqOkyMXD6oyoIIyUvm8ALQ6uS3zQy9c2rbSf4=
-X-Received: by 2002:a17:906:6a09:b0:b73:210a:44e with SMTP id
- a640c23a62f3a-b79dc51af33mr666433666b.30.1764862001190; Thu, 04 Dec 2025
- 07:26:41 -0800 (PST)
+        bh=1MI5aTy+R1SqmI1yzGL1uAuu8o2FFOs1gD1ZnAhB164=;
+        b=aZ0nTHbG9jzFYU/IZCmrrUsBIXK6aRNaFvENRT5vfKZUVHQ2IrVksfhSunn635cGDK
+         jvEbC4qqJwADoGzPNvy0Y1bVr9NMOIjd0rSVI3GWhGsQLYWnoS2gNGVibjBFsxRUb8G/
+         3bcrOGsu9JAZgBCCQBBhtwNye4kcw/vV0555z9VbF855vvseog81BLoDQlK0ooUEfDzj
+         VJMxouP6zvUgDHAcnmP7Jom+zwpFzUP1fA1fsqD7lLhRDimiyy4wp5iQS12NHkRRo621
+         r0vw91aLEkhtRLEgzYyyeMlaucCS+jv40ttOmizKpetlPOdTigRu0hvnL5MwzEGH6pPo
+         pJwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjB1zGE4zI6ANgb7ry1tcs7yNv8Byry+VYDmf8SKyB611US9xT1+FDx2/3bA8Z48hO99vi7JYKKQ==@kvack.org
+X-Gm-Message-State: AOJu0YzQywZ+eF43iubCMo7hp8XO0zyLFReqKbNL6YGtyFzpFmE8n7bh
+	SfAS3EhNIeq+4S+a/E/0i4Vi56Asa9T+l2Bi0uJT+Q/hFgIobf64EkuoyZ1sIqfXaZF7J/EXW75
+	jzHj5TWWAJVpbLRojYEs/btAIe9eaLAc=
+X-Gm-Gg: ASbGncslriRW8iN9ys+iZtLGrqjHUX1ATZcCUKV/gwhJLbLKnQx2dAWZxD9CR/Y2On3
+	pTuRO4KQI0j4JRXzyyfpPtNkfxgbBr5A2gWmgF8cHKmN9IpyzIBLj5qNxzRGb0GTx01XkQa8Y/q
+	0iFnscXgBdyLY9jJoA8qJAuiTqrifAfBdkz8KQpraX1LIvIXkOMS5wcfOTcivq/V9NhWxJu3lxC
+	t2rdv1wzySfOP+IFA5c8Iroi9h1KEo7IwdP70LkkFi+kCaVNLu+WOaDUdbnRL1xoS4w+uYbIXxD
+	llNYgepv5HV9EG6IFL+2l85EbAWeiCA+TZTw40y5DSNrP7Qg1xuI/jz02NdS5edMFuV+oAKlkIV
+	hc6+ofQ==
+X-Google-Smtp-Source: AGHT+IH6eUYV4d+UfitIHpvZN9b37gSPLRdlm7zTBgPDJFCsNGp7+lPPZkPWyRsTwe+8SSCyA0Xqdo2giH7fy6Ln9N4=
+X-Received: by 2002:a17:907:7b85:b0:b73:8792:c3ca with SMTP id
+ a640c23a62f3a-b79dc51af8cmr691284766b.32.1764862137818; Thu, 04 Dec 2025
+ 07:28:57 -0800 (PST)
 MIME-Version: 1.0
-References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com> <20251204141250.21114-10-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20251204141250.21114-10-ethan.w.s.graham@gmail.com>
+References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
+ <20251204141250.21114-10-ethan.w.s.graham@gmail.com> <CAHp75VfSkDvWVqi+W2iLJZhfe9+ZqSvTEN7Lh-JQbyKjPO6p_A@mail.gmail.com>
+In-Reply-To: <CAHp75VfSkDvWVqi+W2iLJZhfe9+ZqSvTEN7Lh-JQbyKjPO6p_A@mail.gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 4 Dec 2025 17:26:05 +0200
-X-Gm-Features: AWmQ_bmIoeQpAWoaWpHaqI6dnG4PTWdKQq3rnGgG66adF0zPHqO5BwO2Z5x6PEQ
-Message-ID: <CAHp75VfSkDvWVqi+W2iLJZhfe9+ZqSvTEN7Lh-JQbyKjPO6p_A@mail.gmail.com>
+Date: Thu, 4 Dec 2025 17:28:21 +0200
+X-Gm-Features: AWmQ_bneRNOGjAW4jDt5halz319V6V9HvLuc9jLOtFFaLshPIC4KOutQs5--etw
+Message-ID: <CAHp75VfgETRHgGkJdVezraFDogtB-KQT1UDWn2RyWeNZ6hCU=A@mail.gmail.com>
 Subject: Re: [PATCH 09/10] drivers/auxdisplay: add a KFuzzTest for parse_xy()
 To: Ethan Graham <ethan.w.s.graham@gmail.com>
 Cc: glider@google.com, andreyknvl@gmail.com, andy@kernel.org, 
@@ -105,18 +107,18 @@ Cc: glider@google.com, andreyknvl@gmail.com, andy@kernel.org,
 	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
 	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, lukas@wunner.de, rmoar@google.com, shuah@kernel.org, 
-	sj@kernel.org, tarasmadan@google.com, Ethan Graham <ethangraham@google.com>
+	sj@kernel.org, tarasmadan@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2319120004
-X-Stat-Signature: qgiyqocoh6txw71skbtqwd9zjasuz6zw
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7D8AAC0011
+X-Stat-Signature: ritx9n5g44mej394bsartqwizaih4kqb
 X-Rspam-User: 
-X-HE-Tag: 1764862002-93780
-X-HE-Meta: U2FsdGVkX1+qnAREF3IjkRKTlKxWaHtM6BdC4hX9be65MJghi6EzMVTWpPObi0dBP5bHmSaJq0BhuZjDxJdCfCZyFbz/uLaMY5lM4vDQ/JX+fngq7JF+MNX3U+hQARj6z9dX003wrBHB2GGdGCAHTa5Eqt1GYbV475zTZ16CrgzkFXEw3ykF2FncPw14dkHtIawVrqkMeiK23/R5qqI720caEPI+ndvba/Z/C4DzYSGCFzxF494nuKZotJNhBWPIcPzovO+9+RQwcQqAm1PskUKov5ENultreuAT7AHGkEQdZSEi5EtMqANhrmXb7cOaI55G/ZCzQPNt128g64mvtkAeltNw2nndPFaHU5FUyeQ3MnrZcEVWKd0D/wE1cNBML+MaEv/trP5dLxsJrWtmD2RvL1VGQwFd+ITGAfh7PdOLdaviHTilRCuk2bYXtKQo9pI9q3eJkhTDjQLSNTJZ4fnbtAQvy57x7fTBxCwq4dzuaIB6RdYaOEktkSR7qxHl7hvXtAuTrhYwdk6aPn7DrWMNXTsQ702XmijwD5Xx9iL/RCslSE8W63XG6mFuOu4iCk3Z6CxrF7hvkJMYQRTZ7RyJynx+GG7iUXrHrGSQhZMT38efJ+fOWphhrxv9XHJ8oYZS0kKPQlMOnJZ1FW7RCn9IrcM1/+8k6NkP3MKA0EefMaWdLdA9t2iRbqYVW9RSr6E3mQoBGGy0puPkePEey47YFlJ+Vy5YOZZ1yeVnKK56WVO7rSHxYpszn0MU+T0zkq01ZmL+62flrUXZDroV8A5xjSfpX8vNoLWhY15Zo8oPCpfr3ILKMC8H4atYLXFzcbdR7+nj5ElfwIxN6fjhaATvjyg0VAFZs+RgFBAmzKJOOU2+QcCunBYmzPtTGxPeVy8GsVZ4oE86P0CVhzPnGpgCsROQfsVRE15Ljee5r9UF73ibA6/NehJlifZBNaJ8KOCemyvNLvFQKl1KWo+
- qMm26HgB
- X5Ta91bXp2/BsHeof3fxEwGFF40GcgnzfhtV7A21ra7O3+kuCR/BiLyaPqI9F5w3vKqC4pFILR20edIM5ydvkWhU7UTW/+tSie7gXM5ok5H3i7BcezGtPPEK985TJY0Bdv0brQTiimGrTPXTJW++03Y2bTAV3bLMlwT54rv2eNs4DgCjD9haWPjAaKYBCxckeBWmVfh21f5fuahWAMY5jTeCS011DGxq0yYxraZbXKL0zB11ShkFUwDtKzLS+vhRwLvM4wHziFz6Jdaitcrzw7YaJjxxUjb78Ce+NMl+PhiAFwSwNT8+6koy8uoglntgL00o2Mj5WdEZ0L4AgmWRBi4tAf8GsVzPNF7xXajge8/b38ealQotRkgmLaNnWRcM0r+LIuFVqFH+EYgEn+5Kwe7/7JRw6cLG/UAu21WGYQPwseCkhKCfPsKuGcAYTwWhbVVB3rAdCCoAbjzeh7Mit5HK+DgvPNXPbgRZyfXz1AD4to5W8RBE1HiuBsGDwYgxxwuyTWFR3RUi/EnD+MTC0j0y/UhFt7pBYVGT9MbnBsd/IFbM=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1764862139-473675
+X-HE-Meta: U2FsdGVkX1/plYXvFKCrOJympb5hoiFL8duP4eSGYdLo66kjO6lHivCvtfDPJyhX89Sluoi+mOxBZJ2DPqKzwDvSasTuxR4AZsbYJxSZStM7ldaDC2Oqdt4rY6Oouy6YiBpWJkgf2vfceSZjrb8/lsmuC5r7S0QpyqfbmR7xKKrj4nefFn64yRtD4HcO+KyJ6MkiEDAsW/5fiO2zqboiIwMs+NDazsNkSGH4LM1jgtujtGYAhkRwI9pV0LMwmgvso0aqzsI7XDvISZVhtaGhiU+HmCNKyvY7OixnL+QYYJgQhLMeT/wWZXy5dBq4ynMNVJi9gHoVC9gKa/Ny4chtKS08Y4xxN8FSRrD2MG2fhZQAywXwiyvEk2VIo0A7kTugmmtkBAlBQ75l+reLys4CCohTrOQ7KtuvTN1Lm5V0In5KFaPgY/437RxoH2pRNHILS6GITj2ncicZ/xNXb5YUXVXbf4pNXacefz8dACTEcTlB8eV80VdXXKASYVkS15XSPhUbn3uLF8Z6dP2u+DRDKYJqz0iTcS0Kgsliywhfti++oXK07AW7+OYXZvJ5+8z0g9H5gwhBc5NM3tg8K09EJqv+V4qm0IoeFbgO1d7U2hhPHbx34ESl/RYY874uPp/RejGFh1hYVk9qBzYZkVHbtZxAtOkkXHf8ImMC8V6UfSlHTo0qPRT8qNZ+0mmzmBS+SJCWvy5YSpqVYvPpwV7QVixy2rTa/+kN9b+9FxKmJBw+spOXSSgmvt+QRAj4RvaVTF3ArxnUAXsmCQMz3Z0AnaLgEMjdpQbAENI+5DDt3fUpLmY2G64C3sAEDgx8LKgRt6MLprQTgnn0KR5BMjGb9EST6CmYwrcrP5BedqqoFKc6jPha6haXZLCDcUT6rpibKP+LdIsZCUdebAGClxrvvMedAp2WUFbTSaanF5OQBvrR7ecKS+q3mIqCCPmGzrqj2B5Rs0VUCJoC313moyy
+ 9g0+YIet
+ 1VGRFGjqGvuF1NNyfy4r9N/Hj9kVhIIuRiLlnr6cZEUU3yRwzOnXxYXoQ/3Nvg8XPRB3UHPeUZhcKdAUUtx6ScQ/OnX3CNGEZgcmdI6F6BN4BowZNF9YWZETtc9JTPtajgLYquwRX0zzkGrAwv2qv1IxoOll6QeHnRO8BXAidIvslBNPGvflSrCQRwYttO0b+crm0haMEoZkBeYBDCNsaSu7/WiD6FWqlgPqxATEoTxS3O5OskQokTdjA171iJDY4JNXaMvz2h/YfsZxh1VYXqk2sWwQSNv6UH2ObL7ycPYYI0OmYBJcBQw96k8k7G73G99ewsB1Ron5GKga7rWQRlC2/580cuoPTo6ulPnWYkFeGjdxRP6Mhzz84t306oA+p5l4eCiH1wFU1sCf4Lp7EwMgyqD+FFVq+qcNz466EtGaNPuko6WWy+6ToYMQ9sVsNFtj59Ie/6/a2MmTp3XzKzXl5ErurulgcFkHVK8B4DNVdaI/DzlQNnADFUPGo5j+QoiqvauaacTMi8413HuvON9EHd/CiN02a6iQAgbcVD2G2CHA=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,107 +126,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 4, 2025 at 4:13=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmail=
-.com> wrote:
->
-> From: Ethan Graham <ethangraham@google.com>
->
-> Add a KFuzzTest fuzzer for the parse_xy() function, located in a new
-> file under /drivers/auxdisplay/tests.
+On Thu, Dec 4, 2025 at 5:26=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Thu, Dec 4, 2025 at 4:13=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gma=
+il.com> wrote:
 
-drivers/...
+> > From: Ethan Graham <ethangraham@google.com>
 
-(no leading /)
-
-> To validate the correctness and effectiveness of this KFuzzTest target,
-> a bug was injected into parse_xy() like so:
->
-> drivers/auxdisplay/charlcd.c:179
-> - s =3D p;
-> + s =3D p + 1;
->
-> Although a simple off-by-one bug, it requires a specific input sequence
-> in order to trigger it, thus demonstrating the power of pairing
-> KFuzzTest with a coverage-guided fuzzer like syzkaller.
-
-fuzzers
-
-> Signed-off-by: Ethan Graham <ethangraham@google.com>
-> Signed-off-by: Ethan Graham <ethan.w.s.graham@gmail.com>
-
-I believe one of two SoBs is enough.
-
-> Acked-by: Alexander Potapenko <glider@google.com>
-
-...
-
-> --- a/drivers/auxdisplay/Makefile
-> +++ b/drivers/auxdisplay/Makefile
-> @@ -6,6 +6,9 @@
->  obj-$(CONFIG_ARM_CHARLCD)      +=3D arm-charlcd.o
->  obj-$(CONFIG_CFAG12864B)       +=3D cfag12864b.o cfag12864bfb.o
->  obj-$(CONFIG_CHARLCD)          +=3D charlcd.o
-> +ifeq ($(CONFIG_KFUZZTEST),y)
-> +CFLAGS_charlcd.o +=3D -include $(src)/tests/charlcd_kfuzz.c
-> +endif
->  obj-$(CONFIG_HD44780_COMMON)   +=3D hd44780_common.o
->  obj-$(CONFIG_HD44780)          +=3D hd44780.o
->  obj-$(CONFIG_HT16K33)          +=3D ht16k33.o
-
-Yes, this level of intrusion is fine to me.
-
-...
-
-> +++ b/drivers/auxdisplay/tests/charlcd_kfuzz.c
-
-So, this will require it to be expanded each time we want to add
-coverage. Can this be actually generated based on the C
-(preprocessed?) level of prototypes listed? Ideally I would like to
-see only some small meta-data and then the fuzzer should create the
-object based on the profile of the module.
-
-Input like:
-
-bool parse_xy(const char *s $nonnull$, unsigned long *x $nonnull$,
-unsigned long *y $nonnull$)
-Or even with the expected ranges, and then you can generate a code
-that tests the behaviour inside given ranges and outside, including
-invalid input, etc.
-
-But okay, the below seems not too big enough.
-
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * charlcd KFuzzTest target
-> + *
-> + * Copyright 2025 Google LLC
-> + */
-> +#include <linux/kfuzztest.h>
-> +
-> +struct parse_xy_arg {
-> +       const char *s;
-> +};
-
-> +static bool parse_xy(const char *s, unsigned long *x, unsigned long *y);
-
-Is it still needed?
-
-I mean, can we make sure that include in this case works as tail one
-and not head, because otherwise we would need to add the respective
-includes, i.e. for bool type here, which is missing. Also I *hope&
-that kfuzztest.h is NOT Yet Another Include EVERYTHING type of
-headers. Otherwise it breaks the whole idea behind modularity of the
-headers.
-
-> +FUZZ_TEST(test_parse_xy, struct parse_xy_arg)
-> +{
-> +       unsigned long x, y;
-> +
-> +       KFUZZTEST_EXPECT_NOT_NULL(parse_xy_arg, s);
-> +       KFUZZTEST_ANNOTATE_STRING(parse_xy_arg, s);
-> +       parse_xy(arg->s, &x, &y);
-> +}
-
+OK, this bounces. Please update the series to make sure you have no
+dead addresses in it.
 
 --=20
 With Best Regards,
