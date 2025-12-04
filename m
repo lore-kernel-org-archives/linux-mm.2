@@ -4,98 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3229CD1D870
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 06:05:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E09D8D1D86F
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 06:07:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A7EA6B0005; Thu,  4 Dec 2025 01:05:28 -0500 (EST)
+	id 229E56B0011; Thu,  4 Dec 2025 01:07:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57FC56B000E; Thu,  4 Dec 2025 01:05:28 -0500 (EST)
+	id 18BB36B0012; Thu,  4 Dec 2025 01:07:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BD486B0010; Thu,  4 Dec 2025 01:05:28 -0500 (EST)
+	id 07BC66B0023; Thu,  4 Dec 2025 01:07:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E5D36B0005
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:05:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D23DB5B938
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:05:27 +0000 (UTC)
-X-FDA: 84180751494.20.DDA786A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E7B906B0011
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:07:40 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7774B52059
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:07:38 +0000 (UTC)
+X-FDA: 84180756996.29.F89D46E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 07B0D120015
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:05:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ANW0GNEj;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id CDC0010000D
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:07:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZlPO1jE4;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764828326;
+	s=arc-20220608; t=1764828456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U0vP87NLn0faqDquxx6n+SX3sJxOtIzohsUBsjHD5P0=;
-	b=uv2nj01n0gVtlSD1VdmUHPuvTI1DRMawhzaD7k73Rbb2tzMoS/PVpgCDIlkv791MpuYfxU
-	LaZ7RzNYLZ88vuyUCg26IoYcaTaefLF4Dd8tN2MsZSfq07uFKSIkpdhQsZbiU0vFbUd2O6
-	XkCaiHM5BF/3Xk78WzYA7bIxJMnVg84=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ANW0GNEj;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764828326; a=rsa-sha256;
+	bh=yqvJm6uJUw30BK5grM8L9SL4qml1BXr2UM/5fM2dmZA=;
+	b=B3Lp77ELwQo8srnE0ibGhces8Qc2G+pnQAb/9cq5OgBe2gQKf3IzBhGh9lafIHGR5zr1be
+	iPFnhjYcZhwwcgIqkOopAQhQzXmJ6Hzal6AmED2HinH3oiqBzBt9LKivdf4bTIxqwvyU15
+	KqU6HGeJcGnyXzHEVV41WzlVnX/sLEA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764828456; a=rsa-sha256;
 	cv=none;
-	b=Kpfh5Q++gyn89hYj5BJTZ8QMYnztPQZjXou+wQCe6pvo1DRy7CqbihAok5LraenGIczNrp
-	YLim433hkXSIpGuuAud492HjkD1FgO9K1xu2D20K1Jiyq046LDOQgJJINPhdZ0mIM9uLwl
-	vGGfbl88r2eGgpJmMIEIgTwQGIeXx8s=
+	b=oLRERS9LDbJi7k3yMraMaug+J50nLEDZDXB8Z9Io+7tu3ZzjJ19MNoJg335fMt5U+ouo7T
+	hrKgoooIgu1ge1n3NNGcibgsyRVIk0ER+ILsMRtOF4BsOlnhfM57KOg6sSFgkkdn61b7i3
+	HOph4Xj402XvP0bgpCGTuTm7Lfa2BXc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZlPO1jE4;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0DCB943BAB;
-	Thu,  4 Dec 2025 06:05:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704ADC113D0;
-	Thu,  4 Dec 2025 06:05:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D422B44404;
+	Thu,  4 Dec 2025 06:07:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A065BC113D0;
+	Thu,  4 Dec 2025 06:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764828324;
-	bh=TpXXIkYEPpVTVHVJr+O1twTDJSV3XXf6h+Qq9iQ/lmg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ANW0GNEj11i4a6Ie3r7pRyD9O8Kys0m6A3l/sQiqrrmCNOznPZ3dh08TUw73jvkhp
-	 6b6hV+XCH4MWmqBUZqIyPGOq6HoD60Jab3Kqax2T/Wbv8noF3HvnWcsfxamhoK463G
-	 u6RYYtLDYRCxQ9AY5bYmNyvrMmcQfpDcaW6XdPVE7crtRaSpXKhSF9bc2AfTkFH/gu
-	 g5S8Eq5tZSIUFdiXpQwExdBdU+V9LY4euH3A2U6jEucTnl0g5sDS7LFtnx0l5wVc1v
-	 7iKZr/Kj2iK3fMgv5nnEF2pd3hsRFrCiYi+wRTTbwShVpEccXYopxg5d8mRPMy1ViW
-	 yJjlMIat7swpw==
-Message-ID: <2bc690ca-fa57-46fa-949b-28b5441cd364@kernel.org>
-Date: Thu, 4 Dec 2025 07:05:19 +0100
+	s=k20201202; t=1764828455;
+	bh=oW9YKnJzWB2+6bhflZNJrm7g/KPV070xkxno6gjgYUk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZlPO1jE4+cXIEbXbrYgmI1LOZn4FWTmffO/oZULe8KxYnUHl9HGcFtfewnOWg1sVT
+	 sIYh97Lk+BAF8ZjuTTQar07UmTVtc5kBka1ROibQScS+3lduJMkBNTecSDfHtz4Qm/
+	 h61HX/Ed1WyJW6H9QfSasuIDq/T+Ci4L7jEYYosAqSkoulfvkurQeFjk3IU60wWk/e
+	 AMbRg/allsp9drBAGnL7GFJbtcge2ygnVUrC6+lXUrGBbqhpbrD/kUR1PjzE8xNQM9
+	 NzINl3oGv/K0tdXi8zWMEA2e+mHrNDJkQ9vV7GrN6E59gaux4HmKLK3Vs9soHxn4pe
+	 z/wrdO7FIhuUg==
+Date: Wed, 3 Dec 2025 22:07:35 -0800
+From: Kees Cook <kees@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	John Hubbard <jhubbard@nvidia.com>, Joe Perches <joe@perches.com>,
+	Christoph Lameter <cl@linux.com>, Marco Elver <elver@google.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v6 0/5] asdf
+Message-ID: <202512032205.BCA3A5B1@keescook>
+References: <20251203233029.it.641-kees@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 6.18 amdgpu build error
-To: Shuah Khan <skhan@linuxfoundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org
-Cc: Alexander Deucher <Alexander.Deucher@amd.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- amd-gfx@lists.freedesktop.org, dri-devel <dri-devel@lists.freedesktop.org>,
- Guenter Roeck <linux@roeck-us.net>,
- Linux Memory Management List <linux-mm@kvack.org>
-References: <74032153-813a-4a40-8363-cce264f4d5ea@linuxfoundation.org>
- <1eb24816-530b-4470-8e58-ce7d8297996c@roeck-us.net>
- <0425d7b4-76e4-4057-83a5-a7b17a051c54@linuxfoundation.org>
- <ec77d11a-7613-4b75-8c9e-f2bba1595f0f@roeck-us.net>
- <9d520a1d-0b8d-4d30-b29f-230fc0f92b8a@linuxfoundation.org>
- <1f31b86d-283c-4878-92d0-ab90aed0c58d@roeck-us.net>
- <5af4522e-30ab-4eec-a861-c2760cdabd4f@linuxfoundation.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <5af4522e-30ab-4eec-a861-c2760cdabd4f@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ogeguwmx6spdps1rh9rzgkzcztibbfen
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251203233029.it.641-kees@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CDC0010000D
+X-Stat-Signature: mz4cdzpnwg1kncjgxtxeuscusfme7rr4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 07B0D120015
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764828325-120702
-X-HE-Meta: U2FsdGVkX1+UtvuHLpzInjwdz57lKoV5Qmtyy0ex9qHr56xpck+w4pBEDiNCH9Nh3DcLmom1p+0eWpmag7MV7iopaAcOGOLfM5bf9a/ZgpEYSQILwt2sMVD3M7GcTDDhr/NRHwh1LegqY8TkqXUygE1mbWsuBCbUaQUiWl/fPng+kWUQnyhEwTVwUS/VrQik9PvMj5lzxjNnn3ydS6Ir7EYkOD5ziyxXZMKuj+KAc9F8Cl/zp8uVJ4LF8tgeWdsVmjtNISqJxSlYWp7mSgCOVm2g44zvUKrhh7cUgugjIkP912CK4N8XoeOuBwSlf7BRiFVbbkiQma77QQlb0Qu7ExIaS7IRZpmutVGd6sVW0YvXBN9FmCDENDUf/tZ/TsIN+qrwACCK7AIYBocBHrSHCnJurzZWcDmg/AFx9gi86EcaxEaGYfntkzXYOY9XgvwVLnUrjQUymtO/n4WlEOP5xKJTO8irR3IOJjKAm56qpfMV1DucxBg2wh36U9jgChu6SE1ngjOzsjgPdEA7dGeMDgLu9RXB0WF3OkRuHvWrGRz+k7TV2og1tLEyQcdAG334SpykTX15efuGYA+M1ZiskpxEolWNITdUfY8k9h6CmeCoKPl9Vvt4cGjxiVsH9EoDaT75/X3TfbitJquehTOXrDGU4o5GDf83FcrqMhfMIXI9pTLOL9AlsyY5XKKwHJv/uaJ1Dj1m2tPlqF0EmU6xGEuJNdp5u7vKxV2UvK5uDEsvgpglMAAMHZc4RAyL7r7Hn7LGwBdljwg8Or6PZ+XVuVNypbOagsLf8x26rZ1cfhGaRQ3a9nwiC9dFUbbkwEzPcvApTjuuVYfvTngdGyhAyCAJdJMajI8DWBS6Gbqo2YhTHhe6uPwxe7xyGb8Xj5Ps6oKkHNMMQF59+HEBV+wVCov70BjEuJty8flrLPVhkIN7OH2gVrI6hU6FtFjPZHKa5rICnF4Aj1bIzeaHET5
- I/jdw8yA
- 6cJD2AEv9ErgGDcn1ZYvYsZoBiLLnVgoN623fFSo45fy+iZkFx3YRbz6S97LXMgNQa8WJZ2hF7EB/LDS3mgjnb/EPtskvVOB/8PR4s+dI2EiLDE7Dj/TgjhQ78rsEBUQngvMOLnEqdaw98Dw5+sFhhJ25TKqMSL2JIEAXKGrOYTAVKSXHRClrUXHnv1U+kvp18t9G9rB5nXOwsp02wL2F0Qnf3HNmb1Ix5svkRfzJLM8cmkqj/fqE9iyA9RWsh6T0x8f2HKrZm0yaf3AFuj6nNhT3VA==
+X-HE-Tag: 1764828456-296863
+X-HE-Meta: U2FsdGVkX19DXf/QMdDAeb9iNxkLTjAL0vjDxPsW/ec92U9C7Em4c4wEluOKitw6UJ9KGheWmH4h1lYrJrwysSes3OfhsOxccz+gFHggz1yC6laWQtf/BKG6e2+Lrh7lovlI0NJCLS2t8Rw9HW/i2lnsbbnctQ3bPnDqjvR+85eo8WxQhljDpMjnSwVd0cm6rUoM9E0KkzQ2PyZXAoWOHRjx9bk2xp/ZYb04zmTywvw71W2xsdhJb9365Bw8nqLIHfy2fLqUVzm6ceozprqZsKJsE5P2XtIt8dgRVVVmHFnSE7S6+ILcCp+dXgbO+i28QUd6c4CwaETWcM9unDYZXCWIQH43rRRX+5fXvI3ADKsBIRN1gWSZQtQYhklfTesiLLFICsLkLix3iOZ2Bl28fVjdYUJ+ntemKf1IH9+mQ5T9jXUf4c96s+pCqLNxRd8txss7qILIx2hAoCEba3nT6kihzIlXc+RCO5g63Q92OU34TGWP4odwr629AWsz4yGEz+mEHLs9+hOEk+iNS16LJs35gHQfmLceHliFo4fb8uVXOnzzMkaS+jsXw4HOb3bAaOSqwrBzrskBrX7yQWQpLFnpXEYLFmyJZe0zsVuHEfGdtwBqUAZiYJdNZx8cr0UBNM/R3NBZcKQ6AqAoUa2RzMMpygo6ORkLjZ2cqviP9f1srZ5Z++jeXgnVDtelmzHVHs+4oC00MEOKqBtFTXhnRFVzc6mhG8ELGGccujOqO8bw3+hns9wLicomr3Z6ZUBGDaPMn558z9YUs4RIXpvgMq451VJyIIsGCJrXKl/LFekEZ0PYzat8Z6FJS2GNVWUbV4P87McVtYOpUrrMQgM4MwekMRssqLzWLSPtaLaNypMi0bYk/Y4GcyDgUBGpJYL4HFtMttn2HM9QcB2PRMu/dWfbUIuE6rWyJz8+WvUHzjXL3EeGXxR/U/1UUy/5buvVu4EHkShmOl5FbcEE3MQ
+ 1BgTp7t2
+ DOLXVUSRycwlhwK0webOG5RCHf5QgDRhTAErT228gHqE334F41mG4m5t1yrU4/DQJowSEWcfwhL2I3boh7J72nMZf2mP87+mwwVmEnx2EB3AfcNEnHvW2lPInUWoh1/rwaIC0pyxavB3yEh4ID3DvYVhzGksAS7MHsYqZyFXRkyPouo+7MY7c6VA9rDAXUB8LY6wKDxHyXh/KACN8dx2ZY8pJJly4y1dLC3s6ha4fdWX3n3cVgYKN/9HiBWmSAzHzcDTbToSRWIIllqXw1IOds199wXLWw/BCJ7XKaJCZ4IbnNsz0EHLtXe15duO7x04e0xD4ZnHvZOV3kfc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,46 +118,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 03:34, Shuah Khan wrote:
-> On 12/3/25 18:06, Guenter Roeck wrote:
->> On 12/3/25 14:16, Shuah Khan wrote:
-> 
->>>
->>> CONFIG_RANDSTRUCT is disabled and so are the GCC_PLUGINS in my config.
->>
->> I guess that would have been too easy...
->>
->>> I am also seeing issues with cloning kernel.org repos on my system after
->>> a recent update:
->>>
->>> remote: Enumerating objects: 11177736, done.
->>> remote: Counting objects: 100% (1231/1231), done.
->>> remote: Compressing objects: 100% (624/624), done.
->>> remote: Total 11177736 (delta 855), reused 781 (delta 606), pack-reused 11176505 (from 1)
->>> Receiving objects: 100% (11177736/11177736), 3.01 GiB | 7.10 MiB/s, done.
->>> Resolving deltas: 100% (9198323/9198323), done.
->>> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
->>> fatal: fetch-pack: invalid index-pack output
->>>
->>
-> 
-> Linus, Andrew, and David,
-> 
-> Finally figured this out. I narrowed it to  to be the HAVE_GIGANTIC_FOLIOS
-> support that went into Linux 6.18-rc6 in this commit:
-> 
->   From 39231e8d6ba7f794b566fd91ebd88c0834a23b98 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> Date: Fri, 14 Nov 2025 22:49:20 +0100
-> Subject: [PATCH] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-> 
+> Subject: Re: [PATCH v6 0/5] asdf
 
-Unsuspected and confusing :(
+*sigh* Should have been:
 
-Let me take a look at reply on the revert.
+[PATCH v6 0/5] slab: Introduce kmalloc_obj() and family
 
 -- 
-Cheers
-
-David
+Kees Cook
 
