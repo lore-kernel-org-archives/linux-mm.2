@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A75B9D2A53C
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 21:15:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DD1CD2A532
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 21:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FC406B00B4; Thu,  4 Dec 2025 16:15:35 -0500 (EST)
+	id 537D96B00B0; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D5596B00B5; Thu,  4 Dec 2025 16:15:35 -0500 (EST)
+	id 50FED6B00DB; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 010A46B00CC; Thu,  4 Dec 2025 16:15:34 -0500 (EST)
+	id 44CCB6B00DD; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E0FB86B00B4
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:15:34 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 945491A039F
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:15:34 +0000 (UTC)
-X-FDA: 84183044988.25.E669297
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 35D7B6B00B0
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2CCAB89E4
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:27:14 +0000 (UTC)
+X-FDA: 84183074388.22.40E13AB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E77ED20016
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:15:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q3wf04Kn;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 439671A000F
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:27:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwZMdJYi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764883633; a=rsa-sha256;
+	cv=none;
+	b=ge3oQigz+BPFF6oP5fpifr9ehKmMRHbZ5FepHDF6t63m25T3D2pcXU3fWXZSUr15x9F+cl
+	EmT1/DNZLrTt3NB72N5u4AvaTwcsfCpHKqd1QSCHEhJg1Lk9T6HaQKRrQWvLS/YVv4ddex
+	pGNTXv6rKtuVLMo/Q+tIyKWexjPLtBQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwZMdJYi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764882932;
+	s=arc-20220608; t=1764883633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4b12iSL93twmi1pftTaGSzkq9YgdEKxM8olmaVvfbU=;
-	b=BI3wZhQrcDlXOfISR+LcTVWejuoTWYHIOkj4fVL/lgm+SxEne0i+VyDNiN0kNL+glbxOsz
-	tJN2J22qoEqsgphtUDANgQKqbwdY1+wxeeZaF40Pe/xkqDaQhn/jcQFg46pyB15bOH3twl
-	tWzssD/+HBfs6ewRT+FsqL2hyt3JZkY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764882932; a=rsa-sha256;
-	cv=none;
-	b=sT6jsobQZPCXdSPkW95X0DDptgEDh0zxXl/opOB9JiqbBAafMVHHhBLga0u0BxOj0cH9z9
-	A7md+v5r7Qy8VD2JdfIImIPuPkJhJSutmNaXcD1+CZ1CvYwnyoF++w1XbYAF5JPDMFEJQS
-	iIeC98FWl/v3evSFoOWvUJGZ1Ocmfwg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q3wf04Kn;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=09mxmHg2Z/Wa1Y7NAyngo1yrqctVpyeDUcumoglVSpc=;
+	b=ALluftiw9mqmG9ModXmPNsYHm6IxeJcwHYr6ffP80UTbPXR6dJZluUq3UeCxpFVL0rpZpn
+	Mmi5AJZLLdyMTQ7fRM62aASoZX0JTtaSiDT+cFru8xKjz1KHeVxfMSJNlGK0JmeJBXn9PF
+	tXHuAs1o1V832V1kpNZj8Cy0cCKMwD0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5745C60200;
-	Thu,  4 Dec 2025 21:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83279C4CEFB;
-	Thu,  4 Dec 2025 21:15:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A9D6660204;
+	Thu,  4 Dec 2025 21:27:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18577C4CEFB;
+	Thu,  4 Dec 2025 21:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764882932;
-	bh=6k2GRQBqjw6t/2Bq8gihyaMJPqlUwySvgrCW4cFAx6o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q3wf04KnbAkEHgWC+A33jjSzlZb8qEPLEkgwP7PI+FQ8KEvhTEw8OYkRJNLwKH18z
-	 lgdSCA+EMDz4TY4uqMvcQ8abxPe877MxDXPmHgRAS7vX6tuvvL3QKj4xHoKOz05Gfn
-	 Z9d3WL7m+Vv6vZ/LaCCKgPXsnSRbtmWhiM8ASk90zVNcg2Hm97YYCQ6jxe6T0mrPtx
-	 ecn5VKBeURBkElVh/va7higgF4X/VGeIyPYsmBhOP2aAzWWkllpzyQFVeWo87hiLIV
-	 9HdRRfFd9kEGnr+f8IBkKCe1fNlVZSX4IxlZylExgtC+CKpuFGLVmXfI0HQvE0T9eW
-	 zKnmnmjryd/Cw==
-Message-ID: <992028c4-dff1-49a5-9cef-42484783da8e@kernel.org>
-Date: Thu, 4 Dec 2025 22:15:27 +0100
+	s=k20201202; t=1764883632;
+	bh=+/9nEHZ6AaSyxVANsChIx0fzl5kuKPosTq+Q94nXS5Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SwZMdJYi3acOG/EsgN2/8AAaszdXWocRoZuqwRdsYLDUgBWGzYM3cP1VoOaV4gkIt
+	 22FZ9t/PaZiAkr3gGJTCaJE/8eBSb4hL5Xh663kXBWjQQgMfLvYKDy2f6BuwzUq9nf
+	 Vf/aS0zVEeRkFKaM1y46tT37+45wn3wdKXw843pHDvXybr5OC/ESU+20gGjhHelW5p
+	 HiuegQ60VJXdWExXgBK+/Z0f3RmHMe2jTMnxJ2SlsUmS/6XxNCM4DppLuLt4RTratl
+	 2Fv3iRhSqCR2aPs4RXQQA5/o9xrHZvlRWDmIkq0XEKj8PvGVUvA6t7y2TH7UZMMgUW
+	 o03GHxRje/JPA==
+Date: Thu, 4 Dec 2025 23:27:04 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, masahiroy@kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
+ hugetlb"
+Message-ID: <aTH8qCZinkL-4SDa@kernel.org>
+References: <20251204023358.54107-1-skhan@linuxfoundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] lib: xarray: free unused spare node in
- xas_create_range()
-To: Shardul Bankar <shardul.b@mpiricsoftware.com>, willy@infradead.org,
- linux-mm@kvack.org, akpm@linux-foundation.org
-Cc: dev.jain@arm.com, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, janak@mpiricsoftware.com, shardulsb08@gmail.com
-References: <7a31f01ac0d63788e5fbac15192c35229e1f980a.camel@mpiricsoftware.com>
- <20251201074540.3576327-1-shardul.b@mpiricsoftware.com>
- <57d5793d-2343-49b3-a30c-cd12dc40460d@kernel.org>
- <78c9b5eeb10051dd9791ed3cb0ce7a18eedc5e7f.camel@mpiricsoftware.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <78c9b5eeb10051dd9791ed3cb0ce7a18eedc5e7f.camel@mpiricsoftware.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E77ED20016
-X-Stat-Signature: he8r3f7a6dfs7e44pgf4jyhr7j7su75w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251204023358.54107-1-skhan@linuxfoundation.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 439671A000F
+X-Stat-Signature: p5ainwuc98afjiono1sn8h5ko9jrajy9
 X-Rspam-User: 
-X-HE-Tag: 1764882932-767512
-X-HE-Meta: U2FsdGVkX18IqI3CacEDWYSZbBuhIrBjYftXZQHaUPeh/dayyRj1go0U5xITYRpFM0HgpEksnHho2DIr84Fh7uJHGIPwDlcoogPj4TkNVe1qs0v6//mxjRmLGRBWp6G+OcIW/qwkYDFpBeH6L8z9AoslICtdDA4eM1nkXPJW566wiwt+7iXwqHB2jwutMPxKcuXizDnODT8wHq3p04vgWb9K0KEVwNeZtKfFgnnAYQJHHXi7qCemNGng3MmetunaKu1Ao/xRwTqPmiGo2Sk8D2fL56jk18cUhI1/KPcBJUko4O0hqvKtnWdUR+h4Lj4/McvRaSC3xZKBgW0wwH4lG5H1RvfVxBixlTqgNGbKXjAE7UXoUffCd1dQM8U/zMDr+JNtTIKbNdfgSSxr5hLQrauSvyKjFV+LrwNK7szr+pZa0dfbyGxLORlVLlOf6O52oikgES16tyThOzLJtGK/NgKZxv4dkGuiNAri35X0orFKAmICbpfjbQH7X6MwcGMTnYIEAgwDB9IKeWyYI0QICBkTXxHUPAcIyJegdI8u0pBD8UQpQ4QeHekj0UaaJHT4T8PrjYkHqwnp/tJg+XxTJ/4WcxufPqzU6qyADqzQFJ/M81VRFCDmq6UayKfB4YUJ2nKOY6HHlI1RWJaWeeSzWpBdHRDXQGlx7lT9U7IRaBghrmA22RmM2NPVYmrUhzsG7mBHP9e1Pp80WvvCvr0olW+g0ZPt5J1sS4SoO5PVF37aX/JlaJX0eKtjcewh6ePqGCXzQ85FsnlP9nQV/W+6MDPGStKknSqISl+nQVMwST2H7akKWcGewz6cEEPlD+KY4mZxJ5nc9phJx9HM2YFG46HvNQ8Oj3ggeEXDxk1lurcZhUASYvp4fOOz01N6LFVbnI7rVlKY3Pm26h8U7ieYIG/44lekXGwrTFmr5h+8nBPwvtCLXLyI2lC4dXzz+MEhFOSaTAoIHOvWdPJvxI5
- kLMBi3UX
- rAmbllF3cYmEBh+AJsP97Lb1xGVRdPAjdMKO8FfGIwl6JOM/Aoa/U9goKn0cBerlF9AHf3nPHCt/DbSflZarHEHhS1275WSOogNoJPTw/8EJ58Nfg75eglLUDDFMv2O5j8aJSFAD8dXGJ3lxkve4OQ0KqvfWfqeIqUujUZlyvHsEoyrozeF/ytkghgDfPqMAoK3hT64m1DwcPgUh9DOsiEbtaBB2Wd2xnjEGROPy7PVUKDyuEEHCOaL+1Ro5aXKssFd16zyN9J2PLj+qtDkTWXBAgFCNq7wyFjSw94kH1e+rcwbSlS9L0m/OKhAy5eThdBQ2wWlzC5lkzuKY=
+X-HE-Tag: 1764883633-426862
+X-HE-Meta: U2FsdGVkX1+y8zOnd+SQu4jo9Hr4mre/5pv4jKhdvzGfiF4ZK/m4OdYJs7KfAWwVAsFCQfIpImAHpw+qVUXSHV8BF1ylAQCifYou86QAej3r9pyD6lrsx/nHYrA8AjT86Sk+V6NoIcWh2iyGUOT2993XHAKO0eXGmONRuOrKMmKs7G/zlHd+gDnb30hIb5F0h6ACVswP7354Ayi1qqai7gTjtq3wJZ7GQfpmz1V7NTBXCY74YBPPf9eF8Stq9814VisLlEt+8crZ1Q9J7iuQcAMwFKfhuTZl4wot3a0coj3RBTMk1pbqkFih5vZxSJM+0Y7wPjeCHePwUvSuLKG8uC884Z75+IAHRPtP1qn7tUBGp9oSr1G51aFQCdT6uDScqeU0p1Gj+qcH3jGkat5YejXZxkbKTik7KtwP23gc7oiVd49RA9PoiYu4xeUgX4kNb1XPXEpPBY28ayKlf3nZgAIhlFaRiz5xoq89jI94XVV3btpUCH/HCusGIcnAxJdHETedYl81xeNXWbizjL1knhNl3guRfPC0ARAqaG34nJL8R0U3XW3svjTXAupp3nDIAkRL68cjanJJU6ijb05xrZQRniP9ccEespRo2W4BbdlRfXqbo5W1PHCLXasSEEo4N0N1yH7A2BJbqCG2lkRZ4zG3nlKYM8+xVWnz7vh3Y0Bfkr8Ay06srBnWn0f0JsaiBTTr7MRWGeAWLnetLrBxe+q4ToqezGAAFrI8Qlk4fqUl1Rxv6APy8SbXrT7a3nTedI8HFROg1ApRNiGwrwZSyqmsqAkd6wop2dn+w3n5YVPDBZHIqmEmJBfmZmfPBTjsnJPjV60uB1ptOXAIscf1HIJJyx9xTuz0GpbncEqS8rh7YRkLkwcu1SBFwxbrGLDne//kcy2GbXvJB6dKiOmc3duVA2N6GkFu3mA1BUcinegxv754QgLXXUxC3S2+GZqhBq2Dds9tFju9u4XfC8t
+ hxhfHxeQ
+ hoWIiDWrFHH9j5lLy5/w9feHBt5B6e9VZLUMEzJu4vBsfYdDxT3AlSG/NG3l5iZgbU2cSbri0bgPk0OIC8GAcjknNOWdJkYec7dbbAbmjfH0URl0g9rJeWZkEp4Gyba+bf6zEHBSlc42FpqMk+ilPHpSz1Ne+n3BeXdKhS3E3zkk6TOJx6/XTwKoLXUummq/kW/pYdFmsX3Cmw4iLqW61Cd0OpLgA6uz8PWfhUZbUmaPfzFhYAMw8WOko74kuiGT78GSDIj0eSsRr3U946u16sW00lkZleMAhlrHZgf9NpQ68jKAKoKJsqihBmSJ8cVSfOiDSFta07CylsfE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,62 +96,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 15:15, Shardul Bankar wrote:
-> On Mon, 2025-12-01 at 09:39 +0100, David Hildenbrand (Red Hat) wrote:
->> Please don't post new versions as reply to old versions.
->> ...
->>
->> ...
->> The first thing xas_destroy() does is check whether xa_alloc is set.
->>
->> I'd assume that the compiler is smart enough to inline xas_destroy()
->> completely here, so likely the xa_alloc check here can just be
->> dropped.
-> 
-> Got it, will share a v4 of the patch on a new chain with redundant
-> xas_destroy() removed.
-> 
->> Staring at xas_destroy() callers, we only have a single one outside
->> of
->> lib: mm/huge_memory.c:__folio_split()
->>
->> Is that one still required?
-> 
-> I checked the callers of xas_destroy(). Apart from the internal uses in
-> lib/xarray.c and the unit tests in lib/test_xarray.c, the only external
-> user is indeed mm/huge_memory.c:__folio_split().
-> 
-> That path is slightly different from the xas_nomem() retry loop I fixed
-> in xas_create_range():
-> 
-> 	__folio_split() goes through xas_split_alloc() and then
-> xas_split() / xas_try_split(), which allocate and consume nodes via
-> xas->xa_alloc.
-> 
-> 	The final xas_destroy(&xas) in __folio_split() is there to
-> drop any leftover split-allocation nodes, not the xas_nomem() spare
-> node I handled in xas_create_range().
-> 
-> So with the current code I don’t think I can safely declare that
-> xas_destroy() in __folio_split() is redundant- it still acts as the
-> last cleanup for the split helpers.
-> 
-> For v4 I’d therefore like to keep the scope focused on the syzkaller
-> leak and just drop the redundant "if (xa_alloc)" around xas_destroy()
-> in xas_create_range() as you suggested.
-> 
-> Separately, I agree it would be cleaner if the split helpers guaranteed
-> that xa_alloc is always cleared on return, so callers never have to
-> think about xas_destroy(). I can take a closer look at xas_split() /
-> xas_try_split() and, if it looks sound, propose a small follow-up
-> series that makes their cleanup behaviour explicit and then removes the
-> xas_destroy() from __folio_split().
+Hi Shuah,
 
-That makes sense, thanks. Handling it internally is certainly harder to 
-mess up by callers ...
+On Wed, Dec 03, 2025 at 07:33:56PM -0700, Shuah Khan wrote:
+> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+> 
+> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
+> systems. git fetch-pack fails when cloning large repos and make hangs
+> or errors out of Makefile.build with Error: 139. These failures are
+> random with git clone failing after fetching 1% of the objects, and
+> make hangs while compiling random files.
+> 
+> The blow is is one of the git clone failures:
+> 
+> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+> Cloning into 'linux_6.19'...
+> remote: Enumerating objects: 11173575, done.
+> remote: Counting objects: 100% (785/785), done.
+> remote: Compressing objects: 100% (373/373), done.
+> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+> Resolving deltas: 100% (9195212/9195212), done.
+> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+> fatal: fetch-pack: invalid index-pack output
+
+Do you have the kernel log for the failing system? 
 
 -- 
-Cheers
-
-David
+Sincerely yours,
+Mike.
 
