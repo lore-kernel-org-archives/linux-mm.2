@@ -4,95 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB112D1F9A0
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 09:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACD12D1D89F
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 09:46:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DB916B000D; Thu,  4 Dec 2025 04:44:56 -0500 (EST)
+	id F35726B0012; Thu,  4 Dec 2025 04:46:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B3886B0011; Thu,  4 Dec 2025 04:44:56 -0500 (EST)
+	id F0CF66B0023; Thu,  4 Dec 2025 04:46:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F32826B0012; Thu,  4 Dec 2025 04:44:55 -0500 (EST)
+	id E026D6B0024; Thu,  4 Dec 2025 04:46:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC1A76B000D
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 04:44:55 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1E731608EF
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:44:52 +0000 (UTC)
-X-FDA: 84181304424.29.F0DE035
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5B3671C0012
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:44:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcHgjceE;
-	spf=pass (imf21.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CECAB6B0012
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 04:46:10 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B0BE4140933
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:46:07 +0000 (UTC)
+X-FDA: 84181307574.15.6910F00
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D0829C0004
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:46:05 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=fMpnDXZU;
+	spf=pass (imf22.hostedemail.com: domain of 3XFgxaQkKCCM9KHBDQXGKFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3XFgxaQkKCCM9KHBDQXGKFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764841491;
+	s=arc-20220608; t=1764841565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Md7YEG8EeK6zCXkGgB3TAg2CV3Idn2v18gZ8hGgmdKs=;
-	b=gFfo1uR+jJeB+i/XvfQyb+CD9IpIkLu1ANCpnwxnbQddFz72er3psl2fehy+Ok64FyRfen
-	8zfzG2IsJNDFk96vS/l0muUFVxUQeLBtVKDTPGwfM6fJJhJsZ8zBWiX128e+n6Nevw0rNI
-	39SonHJOlgso40CFtdctaPTtEBmyQt0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcHgjceE;
-	spf=pass (imf21.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764841491; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7Y+LEByl2j3nWQKuuz9R99dq4dapViIO+66bH6orc1c=;
+	b=EZwrqGtwoFYMgk5X9M9+voWkIdlojjScJ7pfYIyejQbhFfHuBDcvHz1rrB6MCChMY3YC7D
+	c0oxhJszionv0f37k+sjV6TRkY9wgfrgh6zVglNWcICe5CJUHMea5o/VEtJ9jqwtOqXHvw
+	Cs9xHRAsAvJuVREWdr0RhDfyd6xasaQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764841566; a=rsa-sha256;
 	cv=none;
-	b=olTi0ilfOwTXEsr1oH8Iq35UHzVicjNO04Gdz9Ir9r9mUvApzlXfaooXYQ8ZRFESvFfHXR
-	ERS9IjKCUrvejz08A0O5icg/G4xOrQYtNcUvUd9LZDOHXid/6qsIbQ1kPOifIgmlokWk/4
-	76LasRBy/68YrknS8PcYkHkfyDpkObg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A96C6001A;
-	Thu,  4 Dec 2025 09:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3DDC116C6;
-	Thu,  4 Dec 2025 09:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764841490;
-	bh=jlmiccTMN/1Oqk4mzHOf5koXbzDGcyAl4fechJYospA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dcHgjceE/S19b53sOprVYiTrlqI/08Mr6v7CS1nGxHSNxHrep2exo1uQTYKX7KGHW
-	 dowxAtgAVci5tsKjhNLZYk0pN00xbr1bmkM9htxqLXRHNlOzI0GVliDk88GUOTRtlF
-	 0X0ZAJNnFSwRY2XxY0PgIdELvibm1oh9yAfC8de845ZNxsHgv8wjKoI8E245tuDMU3
-	 P6UMFqzlGEydIFy8eUQOvE9MPBTF+1YWuYexKqq2JiOz3oxBndm7d4/ctV5s49ko+z
-	 R7/+wGlD8uOWfxDImL9/CXHbOEVHSehnd0/QhGsTzm7a38DHI5uxsgEgwpZIwoJx3K
-	 Q6sy5TVSZ5L4w==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Kairui Song <kasong@tencent.com>,
-	David Hildenbrand <david@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Guo Weikang <guoweikang.kernel@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm: shmem: avoid build warning for CONFIG_SHMEM=n
-Date: Thu,  4 Dec 2025 10:44:40 +0100
-Message-Id: <20251204094444.1030143-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: aeyqfwtjy5xy1stzxkkp4ixowgjyubzd
+	b=CiQnem/Rm/5zhxVijv+C63ux2/f7aLR/0s7uTAXumUbYmGkR12GXJE5UFVl4jAZnluB8Op
+	Hx344kCqjzv55K7e2D/v7tBCV8T8ZfC7ZCz3oFghbGKVyW9b7vJ4zUARHVUqZkEvT8pTSK
+	pebZx7FdfQzDn836OVAgGabNnrl8I6s=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=fMpnDXZU;
+	spf=pass (imf22.hostedemail.com: domain of 3XFgxaQkKCCM9KHBDQXGKFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3XFgxaQkKCCM9KHBDQXGKFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-641632b8825so636533a12.0
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 01:46:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764841564; x=1765446364; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7Y+LEByl2j3nWQKuuz9R99dq4dapViIO+66bH6orc1c=;
+        b=fMpnDXZU4LergLns8sN6Uy3X5q6qhWgAxhuZcJt4kK0R++djaKnW6aej7QK55AecQa
+         CImjzwL2oqOxlVdxuEJb/+I+LIEU5uyW/hcUWlAZIiMleGx3DhOqGHtlu4+mx9SKapmh
+         OO2WAF0E4cOAnVDuBfHBqcY4A4LTZqrH41YS9nzkyxqXw2Oc4LtCoO5ZNa8qrVC5z/f5
+         9GjypUnZVwAE5kqDdkWz9DGdtSy53/cZlsDuaLu8op3S45nI3AG5CgpRUpEFmrHX2VxK
+         3OEOcQueJrQK2PElYENS8ADAlfHU4P/Y0zGzjAdXb2um9botsAXGAgCD4EKeeFy8IDo8
+         W5aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764841564; x=1765446364;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7Y+LEByl2j3nWQKuuz9R99dq4dapViIO+66bH6orc1c=;
+        b=coepLnbNQEkJ8aQCwbB00bBiKmhtxhmz4zQnK8X/db+HLYzMsba1tEVnJF4nbZwxp5
+         HksXE9ID6d2bRYot/PoctWsmWwYuI5O5BVS8D7QmbU4TPqpBp3ueYET5xIfJO6ypuZ6r
+         ocusWMpf4UVDbqAq5Jp+7Fpp5i69KppQKUgwiI5ILFZTzdjPnqsNtsL2JgyRmP6bQBce
+         9RNEAlyKsTfOHa4EtXSr2u/gQLsd8yPerSbP4c00Fk2bCIejYFA1Vsb7H58zcL0pFcp3
+         smP5VNLfmlewOLoHvuNyp1vPuD6XT50Eh29mqVU3BAGOYUA1InPanVBFrLhIZ+xI4h3p
+         NnhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWsb7sfkVL+puNQLDkOx6lCwQexR4OSgJ5VIFHfBHEpO9wKI9kbLSj1vl6ks5cw0wj/iFxDEVj0Cg==@kvack.org
+X-Gm-Message-State: AOJu0Yz9T0nyPHvgS29cP87A9PSlm8d6I3lmANcwo56c1waraxMq3Pbx
+	nyr7WSlZhGQOeb/kFhb9Ys6JD34nZGx5KY4OX096pDc+EsjK1Wzi4GNWhZg4h1nre4GY5Axk8p8
+	oRzC+cvIsyZ2XICJb4Q==
+X-Google-Smtp-Source: AGHT+IH+B9WzKRmSWzOuHrGLt1JUxDjhE9BQol+oE79eSw4Io68p4o5P8fUOkglayWG/HVrXi6i/Vno1TKnYch4=
+X-Received: from edbig1.prod.google.com ([2002:a05:6402:4581:b0:62f:24aa:896a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:1e94:b0:640:c640:98c5 with SMTP id 4fb4d7f45d1cf-6479c4c441bmr5333397a12.34.1764841564163;
+ Thu, 04 Dec 2025 01:46:04 -0800 (PST)
+Date: Thu, 4 Dec 2025 09:46:03 +0000
+In-Reply-To: <20251203212558.GB3060476@ax162>
+Mime-Version: 1.0
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251203212558.GB3060476@ax162>
+Message-ID: <aTFYWyUE-ln5KrsX@google.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B3671C0012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764841491-339101
-X-HE-Meta: U2FsdGVkX18x893R2pFEcVcIp7r3nvwbY3qSJ0WFWnfQLcUdH9Y0CXyu9bA3S1+HVlBAJXXlCb+5gAoqQ6sxX3MTJdZ6RZ3sB0uDgMkHQHouk17BnzCk05rJAxu89alk7RHCmyrpcEDzuH1PUtq1GXsw/F3J2KvMacrcIBT21ofrmw0W73bRosoyTkGP5zGUMaCeYvqzuq4o3/6aMPFqJ7KPRTPM1/gvLd4AFbs0QZH0xWpJyjYDnO1rppkFa66BK0cLUi05QfK/yyn17L2L9K/mlOp1TSnFJNGHDfZS41ufNasWaAGpDGIivNKyV2utZDDFcUBCPBvhKEZ+5rkGVHufrF6DS+78whYD3uWtuhXaNeRVsPYjG90VnZbJcF0FF2I9VzktNl+/PoOKKd6yxyDtMziNVU5TXmwL0c8+DL2r+bgR4Y1F10838fmK+y3zfdcPouYKLc81i8fMDokJgE6o3XOHzS7dink4gbis5EdVrdV4qdFLJkedCYhWrWMMGezqHi9MHQQwDrWU+sFX/PWvBDaxirC5ElE0dV+UwtQr1iEWBGXfmItziFTbn8IgcsngB6p/22N40BXvN+goRbpvBmaBat1+BeExduT9mmdvcMqI3r09pS8taLtXd3oMETrzeJQ7ej8cV+lOmIv6uGJ/Fmcw1fvZG7CIygqrfRxzN2vFEkHopspYQzG46rUHS8iJsXtxaGDHWsbMR/aWXwQ19kOY9S1Ia2jQMa/xPS7xcsZPNA03rSoyPc070LLzMHfrVCOBq67dF5vxUOTVunnsV8uWOiNQLQNU36ituVFY9moI8ujhl1pXbe9K1hdg4dvSVl/WokKs7S9ywksyTcSoieyKFVy+6lfVBJZV9oLNelxbZm3OCSKATl1Bmj13o7xMJbxZDxmEYzTImJuMXXniAHepNQFSQ6DMC3Bzd0+Z2QhnShrWgVvwCv0yJMb++dsM+zm94aXfTBnzGGc
- a3tcA1Wl
- g6+5ZwoYc5aJzsJcoZpMMSWNF7bSeLGGCcCZ8Op/S10yA146vpQ8waR8+IIcrCrgyLKRbyOymZDgGKerQtJ5DrOmi/YHhzEngNxwgGujBN0wq3janTumIK/vbVBDj9NBntSxNnvJJ2Itc0ag0nQ/OpwsgW9dDXo5zYr8wgMgMb02BzuJdoSlp+0xEf8QW7L0HOpk7lxYaZ6RwNtYRS9Zdp1wXGnph/F48SpW+X20LPcRS4J+NIHWeQ5dTiBzei6fVeYP2eTmGinEtNAL7yz9EAH+ttsWey7MF27wRu483rXR/J6l655b9VwfklIAbvNwMUkOv+l31urm82II9ahgfZ9EnR8aBitqoyVx/pf2KbHGlsB0=
+X-Rspamd-Queue-Id: D0829C0004
+X-Stat-Signature: h14rbx5hj9xidzrkabmqqhfjs7rs7bza
+X-HE-Tag: 1764841565-50547
+X-HE-Meta: U2FsdGVkX19MK6HvjsAwC0ch6sFOA0rDNoqVvkGjhx4SFSMgsdiZJsoW3Vgsoe6sl1F8wgqa13ZJS8R6nQcVyehBLXhEObS7UV0kC8RW4i00niTF0I3R7S1+iSV1MwrjWhMVDoFpb2hZhTNWVMEFGJ8xgzb/i3PAeGPHeCPSu9IJ59wbkHF7Y7xpQdhOUYN1Ehw8l7my/PSPQ7beOwogaoW8kO/sZoHF2yjUskJ+BY/CcVwXXdSym3X+VBuJmq4Y6MRZbKW7UHU9kYrbT4TX9NHG00B0YaUfXWTReQ/HsqaG6ueWe2B3Y000KJtxhMlvvMgiZl6DRSvAJCsqoAxAj+A8HJ7sUCFyeQx3pzPN57lW7irK+SHDvWrJxPaAYVCTWB5LmTa/lm39UanDY+9y8/NnXuuR4Pc9wmsXZ+viQosXOrJc2E3pc3Pdp2JE3Et50FdwNNpXfKwrQMAcaFpo5/kdaOGvSf/9fp47UuGHygHqc0MNlez7FAhf+4Nx5tnGwUEKd58Kl2/QZWPsNVh7ZD7m6HHVRoxRcapBZAvLTxlBKSyILZSaj7I1atCF+X3ZituYg69UQJatYh1dYSl4g+k7GT72jxbKcyO3UmA0TZ0WwP7EbJBGs6TvWzzVRGSW3iAZH3TTVk/K+YYQAXuPTb4tF1lX7EZ56G7vpI7p7glPZC8hxiXohVysQDWj2KAhgVgYk28SB6SY2gQYnl98ieIyMcNn/maRSrQPK/A3/99P2swMRPMUWNl0VurcJKoZb0OhP85uYG6v5ndTYQLqbJOHPJH14ounAuP8Lej+TPo8VEWISFOi1KW8VDiwZcQosV8Mt8qFsnbsIvIPVUsk9qeH/Mt/r6avXUlISxYj881dKM8abKU1E1rLUQZ2O/bN+RKfFmo29U53ZNzLI1bboT6M2uTl9JPobOR2D/BRlcrgusoL2HaiWsLKYvNv2Vwr04GrJLCcERaGc5xUx5T
+ vtPP8UxI
+ XSL38EDQ/wPy0rQUeqhIQkPBpgXJ2FKchH60NI/G5jP0KmFYKAef7ACsHh3IMngYP93Lra/CKTpHo7/o2M0Yopld+tKTAgCEsShmtvUOoyvhEVaE7Cpc0xQiM8mMEAMLgAnmBXsq8yVL59NEyVrNfxt5xZYqNro1vxvT3GOVme4YZkruUQqw1RrObWL6aetuFNPgkdHsskzWK73g+OjVAcD/DjHCQlNlx2UTgbFh9sPzzHZm5n9/Kb4z2zSJ8BaYZ/JBAqxYi+YKGnd2E163RT7u2YfxhDPfpaLadQLJ8HODFv76mXgO0AG3pFx/DVmkPHzqUAGsOqr6hf8V0hn1w0ESxoqXNynXPY5kc+a2hRGO9XF6WBO3aWLTmLjhowAKLeiDiK02EwJBkJJYGMyF056vBTkgOxCq3sJHuh4FgfiX6Tct3VyqwW8m2T5YxYeRJDBVSke8cbz7zh//AbGu5kRoZik+DpZNr93Xja7PKu8/2Z7jEGQx/646CBH6KY8EhtBYxoI1bzMkDCF0+d+1ony7OuqDjp/Rn4OU+By4AHzgT+1qQg4qKDT7qIu2LVX7j0I/oS9o/fHYxq3LXiUIxChVXgH8/bKysP6wW55JLrdLk3N9Tyl14lD8CT/UQZJp9wfG+wwkXT+BgcVwvQFe7GoqR3YuQE+pWOY/WN+Mdxvi6YqeFAnM1pHAoA+t8rE4wnvF0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,40 +119,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Wed, Dec 03, 2025 at 02:25:58PM -0700, Nathan Chancellor wrote:
+> Hi Alice,
+> 
+> On Tue, Dec 02, 2025 at 08:27:59PM +0000, Alice Ryhl wrote:
+> ...
+> > diff --git a/Makefile b/Makefile
+> > index 96ddbaae7e12de71bcfabef4639de3a13a6e4815..5834bfd568548d1bee34b328dccce5d60f85526f 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -517,6 +517,8 @@ OBJCOPY		= $(LLVM_PREFIX)llvm-objcopy$(LLVM_SUFFIX)
+> >  OBJDUMP		= $(LLVM_PREFIX)llvm-objdump$(LLVM_SUFFIX)
+> >  READELF		= $(LLVM_PREFIX)llvm-readelf$(LLVM_SUFFIX)
+> >  STRIP		= $(LLVM_PREFIX)llvm-strip$(LLVM_SUFFIX)
+> > +LLVM_LINK	= $(LLVM_PREFIX)llvm-link$(LLVM_SUFFIX)
+> > +LLVM_AS		= $(LLVM_PREFIX)llvm-as$(LLVM_SUFFIX)
+> 
+> Please keep the binutils alphabetized (i.e, put LLVM_LINK between AR and
+> NM).
+> 
+> Other than that, this seems fine from a Kbuild perspective (but I did
+> not look too hard).
 
-The newly added 'flags' variable is unused and causes a warning if
-CONFIG_SHMEM is disabled, since the shmem_acct_size() macro it is passed
-into does nothing:
+Sure will reorder.
 
-mm/shmem.c: In function '__shmem_file_setup':
-mm/shmem.c:5816:23: error: unused variable 'flags' [-Werror=unused-variable]
- 5816 |         unsigned long flags = (vm_flags & VM_NORESERVE) ? SHMEM_F_NORESERVE : 0;
-      |                       ^~~~~
+> >  else
+> >  CC		= $(CROSS_COMPILE)gcc
+> >  LD		= $(CROSS_COMPILE)ld
+> > @@ -625,7 +627,7 @@ export RUSTC_BOOTSTRAP := 1
+> >  export CLIPPY_CONF_DIR := $(srctree)
+> >  
+> >  export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
+> > -export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN
+> > +export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN LLVM_LINK LLVM_AS
+> >  export HOSTRUSTC KBUILD_HOSTRUSTFLAGS
+> >  export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
+> >  export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
+> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> > index 3034e294d50df55c4003c5fa5df442f59e711bd8..e63c5eb57b049aff988419ccd12dfd99d59f5080 100644
+> > --- a/lib/Kconfig.debug
+> > +++ b/lib/Kconfig.debug
+> > @@ -3427,6 +3427,21 @@ config RUST_KERNEL_DOCTESTS
+> >  
+> >  	  If unsure, say N.
+> >  
+> > +config RUST_INLINE_HELPERS
+> > +    bool "Inline C helpers into Rust crates (EXPERIMENTAL)"
+> > +    depends on RUST && RUSTC_CLANG_LLVM_COMPATIBLE
+> > +    depends on EXPERT
+> > +    help
+> > +        Links C helpers into Rust crates through LLVM IR.
+> > +
+> > +        If this option is enabled, instead of generating object files directly,
+> > +        rustc is asked to produce LLVM IR, which is then linked together with
+> > +        the LLVM IR of C helpers, before object file is generated.
+> > +
+> > +        This requires a matching LLVM version for Clang and rustc.
+> > +
+> > +        If unsure, say N.
+> > +
+> 
+> I am just curious, why would someone want (or not) to do this? This help
+> text does not really indicate the point of the option, just what it
+> does. Is it just the standard tradeoffs with inlining (potential
+> improvements in performance due to better optimization opportunities
+> versus text size increase and icache pressure) or something else?
 
-Replace the macro with an equivalent inline function to get the
-argument checking.
+Basically you probably want this on if you can enable it, but
+RUSTC_CLANG_LLVM_COMPATIBLE is actually a pretty harsh requirement. If
+you just install rustc and clang, it's likely they wont be sufficiently
+compatible for LTO to take place.
 
-Fixes: 6ff1610ced56 ("mm: shmem: use SHMEM_F_* flags instead of VM_* flags")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- mm/shmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll expand on this in the help text.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 3f194c9842a8..93746270c459 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5794,7 +5794,7 @@ EXPORT_SYMBOL_GPL(shmem_truncate_range);
- #define shmem_vm_ops				generic_file_vm_ops
- #define shmem_anon_vm_ops			generic_file_vm_ops
- #define shmem_file_operations			ramfs_file_operations
--#define shmem_acct_size(flags, size)		0
-+static inline int shmem_acct_size(unsigned long flags, loff_t size) { return 0; }
- #define shmem_unacct_size(flags, size)		do {} while (0)
- 
- static inline struct inode *shmem_get_inode(struct mnt_idmap *idmap,
--- 
-2.39.5
-
+Alice
 
