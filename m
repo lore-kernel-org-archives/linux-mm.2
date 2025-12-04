@@ -4,83 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB334D206A8
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED214D206A8
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44C886B0092; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
+	id 55F3D6B0010; Thu,  4 Dec 2025 09:13:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FCEB6B0093; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
+	id 536476B0096; Thu,  4 Dec 2025 09:13:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33A006B0095; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
+	id 42B106B0010; Thu,  4 Dec 2025 09:13:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 229386B0092
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BD47131600
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:12:44 +0000 (UTC)
-X-FDA: 84181979448.26.65E9399
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 12A4140016
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:12:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c3eRuugH;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764857562; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F99E6B0010
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:13:06 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01B851A01BF
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:13:05 +0000 (UTC)
+X-FDA: 84181980372.01.0DB7551
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 10D444000B
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:13:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZCwRpm0N;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764857584; a=rsa-sha256;
 	cv=none;
-	b=LChF9gu4aZa52p7Jw28R0zrMJ74+46Eucob4CmklfDHwiKWfvzVVRHdx60upe7cZfSpTz7
-	sQJnIPeE+Kps3GseHW+BuA3nJJJG9Ux4N0JIHx62R9o2G0F2XcaQ3QeswxaqQcCC7szM3m
-	8wLi2dYzd0Lc5DGGAfqmaYPTHXRE/vU=
+	b=sQxRneYfjoj3Ue+VMQAUWLaRr3vkhiohVenSf7OhS0cJ/ZLqs/OuhKY6EiPkvqG33zbNc1
+	Nu4N4CTgy9F4W4fn79HJiRJTgGNUmSnWsYeN1Tus1b9KJ88wn6jEBwcuAvE5wDEE5sXbrJ
+	Db0m4H7lsZevg0V/OA2rl8JaaKs5YAA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c3eRuugH;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZCwRpm0N;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764857562;
+	s=arc-20220608; t=1764857584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dkYSy/gbe5jT4GPBC3gX5tdFW8sy5n6ioyBwECgSNdo=;
-	b=Nt+X4lGJr5bx1xKrViUdSjcMxsfvppJq+AGoDEhz0vWoDN/h166Fz6B/OTXHLz5j1peAkG
-	GvIB0i47V7GkVM4IJB4H9ypdPsmpyZaIwp8c0ER15L1/R3w8NycwPUi0Xw1scpYZUtGNmf
-	4E7rdFgQ7QPkBq1Cm3UzT9nBs/fG4YQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1764857556; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=dkYSy/gbe5jT4GPBC3gX5tdFW8sy5n6ioyBwECgSNdo=;
-	b=c3eRuugHgBxaK8JmyAk36M6Y4GPQ3D+2QCA2SzUG7h/xt+YNCrHZE8ECTIaT7p3NEGN/QjYfXtX6LxWzgCD13U98ea7V1ZSZ54jS7EejzBpVncp1jWG9OIxY8e5ZvBTmByIaI/L6ZgMdlhOpT2a2p+m87n2S934mLzLSLdt0FFo=
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0Wu4cLfq_1764857555 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 04 Dec 2025 22:12:35 +0800
-Date: Thu, 4 Dec 2025 22:12:32 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: Petr Mladek <pmladek@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [linux-next:master 9966/13055] kernel/watchdog.c:74:22: warning:
- unused variable 'hardlockup_si_mask'
-Message-ID: <aTGW0AQJfQPKe0ao@U-2FWC9VHC-2323.local>
-References: <202512030920.NFKtekA7-lkp@intel.com>
- <20251203144453.be34d189c5e6668ce2da06b3@linux-foundation.org>
- <aTGO4iLrQnd4l6fO@pathway.suse.cz>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Zml3KS+UsrvHkR8m+pYaf5EprirpHcFq08V4fzn955Y=;
+	b=FupxNCrb57RYhKOlwj/ayYcGtCAuP+JTUN1H3xaVRRwTDOhxpycg+PUaHo9LlvxZ72iWpd
+	jJQ3WFMrpR796GPLZ5Q5ws8MmcjE90aJfqcM3QWIf1aRwO130ndb/3jBRIfqJqMiXD3X1b
+	sTnSGaXeJ0aFKZHlzZfWETn/LYaowow=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42e2e50c233so461937f8f.3
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 06:13:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764857582; x=1765462382; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zml3KS+UsrvHkR8m+pYaf5EprirpHcFq08V4fzn955Y=;
+        b=ZCwRpm0NUsd/ieuxG3A91HHQjctz8VF/4s6CTUM2QKq3eb72DD7h5F2m6V/IsjzmNV
+         sTnuJ8ytsDbB63vFTvqpJqxLLcURnGEOdN5c8Eqef/GKFPTAnyhj8OdW571R6N2DGgcx
+         hkODlWuyaUJsLNZTIeuHuTJzR0AxDcjWK0sZrgQEDOuDm9gKe9ammqSezsOtAbEiUafx
+         t5GAGgAK+qqWyJ1mtlq2vdATFf0HNr2pJIp4yc6NzbMk0bGv2x3hfSBxkxy1OTXq+Mvm
+         FUTwp2Yx5dEwVU/HusrgZ6jWhS5/eJT39m64tkfIN/XvbTzEzT8RwXA/444wmJlPeQ/p
+         kCsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764857582; x=1765462382;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zml3KS+UsrvHkR8m+pYaf5EprirpHcFq08V4fzn955Y=;
+        b=acBA6BALtZveYL7kKH0KT3ZEa3B1GoVZK9ZTh1GBW2EjOts6kHrLocRdb2mXZM07nj
+         Lw/wy48XIFcmPHZK+lxeF2QESsb3cwAyfyXX8t6CT2Pg86+122iXZTbfU8ijQUDTA5dy
+         PtZrhyxZnxsIJI6hZbszxKI5L3MOLdArrFeXzbkf71BEfKHuzNTBAW+vWwPO+ONm0Dft
+         SobjADBHR+i9Y3k2HGJbQj5WBFlZ4jguXuJBdOlTr0cxI/kCp12JaUbi8RXeW6NkdPUC
+         WobDlfiLdhmGi/R42mIxagHZXaZ32oPdZhXlHtoVIwQrATIu+mtOHgmiiUPIdVLAhauZ
+         hZHg==
+X-Forwarded-Encrypted: i=1; AJvYcCXcuhj22g087mThJ2pd/1TucoLb97s0DMvJyPG6RslWtjK1xXjumD7uwsUTS7gkSU8KAah+nmgZzQ==@kvack.org
+X-Gm-Message-State: AOJu0YxcUKKhwJhjIHTxEi/DNqARO2KICsOCXF7+Sx5JpJ4tvRJCwCBO
+	TS2/irSE96DGLvL1jyXs4kh7Nxt/PoPtCAfZ2AyMDrNadN+10RbdOW8C
+X-Gm-Gg: ASbGncsOFvNB4XFLwShVnOTwq2WO7Zlx+dl+iM8LY5cdYl3Ut995o4u6O2j4TjkJNx9
+	ZwreMCF77ghDinWJlKdKQfnjW4xxhFWj1oSj+tEa3y63VACBAayPXo+opawY5UvCljJMwGS0Vod
+	BV63ba4KKUsU0zRQSTHt7W8wEfrPIiwo8rvwhq7Mhop58NX2ITopGzMiOLm7i3SoPG4Z6xRhWHL
+	Ieq/eicGN6u23QKwAkQMwUKtynn60VdRq1bUju+X1XF5JnTxeqU2xLgkOu5iLF0VsvAX6FiaoOG
+	KdP+u0JMfcnOOxEIyrNqBlmgd7ouW+XolfLOv331rfPwWQUmLJgYQ4wdBhktnctzLGjn/5qokAf
+	vTZzzoAi7WTQPXyOp9qclFnSpxOMQPnZ5MSIiH08+B2h959Fe43+NHZh0itJ+jAiTEgmrY3WBA6
+	WLzRm17trXq0u5aX2vzNiZUvobvpT1Gf8Dj1xk0la/OSO7Ug0XbY0L5xqyZEEpiPEsBw==
+X-Google-Smtp-Source: AGHT+IFIh69RdA1vnCTw0PcitJb0iveYoA93ksIeD56K8ycLMTPv0k8+6CuwPbzV5nMxBZQhq5bF+A==
+X-Received: by 2002:a05:6000:2507:b0:42b:3e0a:64af with SMTP id ffacd0b85a97d-42f7317205bmr6670197f8f.11.1764857582226;
+        Thu, 04 Dec 2025 06:13:02 -0800 (PST)
+Received: from ethan-tp.d.ethz.ch (2001-67c-10ec-5744-8000--626.net6.ethz.ch. [2001:67c:10ec:5744:8000::626])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cbfeae9sm3605808f8f.13.2025.12.04.06.13.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 06:13:01 -0800 (PST)
+From: Ethan Graham <ethan.w.s.graham@gmail.com>
+To: ethan.w.s.graham@gmail.com,
+	glider@google.com
+Cc: andreyknvl@gmail.com,
+	andy@kernel.org,
+	andy.shevchenko@gmail.com,
+	brauner@kernel.org,
+	brendan.higgins@linux.dev,
+	davem@davemloft.net,
+	davidgow@google.com,
+	dhowells@redhat.com,
+	dvyukov@google.com,
+	elver@google.com,
+	herbert@gondor.apana.org.au,
+	ignat@cloudflare.com,
+	jack@suse.cz,
+	jannh@google.com,
+	johannes@sipsolutions.net,
+	kasan-dev@googlegroups.com,
+	kees@kernel.org,
+	kunit-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lukas@wunner.de,
+	rmoar@google.com,
+	shuah@kernel.org,
+	sj@kernel.org,
+	tarasmadan@google.com
+Subject: [PATCH v3 00/10] KFuzzTest: a new kernel fuzzing framework
+Date: Thu,  4 Dec 2025 15:12:39 +0100
+Message-ID: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aTGO4iLrQnd4l6fO@pathway.suse.cz>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 12A4140016
-X-Stat-Signature: jcduownir3pbxks646jopmay9cj3m9ab
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 10D444000B
+X-Stat-Signature: 9jmbq1zyw9mkotcg5iws31ihj14fw5ye
 X-Rspam-User: 
-X-HE-Tag: 1764857560-590871
-X-HE-Meta: U2FsdGVkX18WjMXE+V9xDfm9nkcIWOYf2T97iXfmwWeBPKgOAiSQrBDj1c0b9EMCSjL7PjRIhoD2aeJFPmgt9xTDYrEjX15Kffhv6hVVtZyMEq64CuY3iIw+DLDt/eu19yb1C81xC+iWUH9ggW/Q+3AxWhiYfiuLxGdgxBCCl1/P+YifnAFC1zI5ZLFjM1nokIN9Lcfh+9cCjw1RBdIf1AaK5oh5zNbz7B5NyWCpsDNgmdu5Ev9gMbn4uS0v6zXGtbFtsC/a4QD1ao9+9ICnj1fcCN/IscNCI5re1GARZJxmAUgX5lDMuEYCSbZFTvFu5HhwsBrnS5ZmFcMQI/L3f4hfmuBFzE9zPwFzNI4Imq71EFkfpRdIEKv02saZhZ99b0X0cppiFBO6BIzgPkaLKWQV/RJ2dUQESwWteNXmZAbmwwItP+bKACxb2g/wJ15qmbETZq26azMa1jZ6mtX2aAyDXQUR7IIYIS6UsOq30sDAg87mQOBECvGO+fSW1CTUBlYkmvEFI8cTocUd7kAH57RtU0IWbPYApsNQ/tA0fhTp4eCM1dlP89pEgwUDoR1alvjaL6kzG+i2l4gwSOI8VXKavs0gYTNgfDDYhJBai/YUJP4/GMdVE20sU/IGs6hVKiHKrdJ6CESn+fHs/5jKYI5kzSZFB2eNINH61Dt3aePhSOcTwtSXHuyymEkT7tOlnbKS3w9fo+YuHN9rzDX2JIvphasFMNyMjj2b0JqMJdzNFEJaO8SwLiJ+iWOA52n0+FgksTtmSPcE+WEEV0p5UUepfv4FofWLMwgtvWJxsFjYFdGD4rjNjL3YhNQmmyYM8cDvWIWMs4NEeRM7OeoRd+QlkKX2SbEtxwugxDXryzBWLByld4taLvYhPS7KRZVdKXqBvZTFmei3YkImkrpV1qhayv3UPf05lHO2P2kRgZ/BgkGSYo1CL/RyFw6bEu0xmJ50cpNHnnV/TiFPQgB
- 9eY/FuU2
- o9/ouECnyDIGCD2WeSbQwrfiAsyAHAKMDHoGvqMWax6beDIK1phneRfMVlb/ug4XEcpoRjhSDacaDp38LTHavHZHCPXCaubztoiNbrvB6spO5i3k9nSvEQ6v8ZBY3MWbLx4BSXK4yF6lIo+36bBwj2q8s2KbwwqYYPtGMD+3KTOT3YTehP4DeTKyJl+HQvLmUiB612vfHx1rZWtTCChKh6lTm3Ob/9gtN65tF5eYXtbgldTLJh0xYv1e0oPhZJEqlDjW6xyeaBFY07x7+HK5sylCa3XrRxR4PnnAu2pH6dzG78qSv5gN8rI7HAtRJ8sMkKpwZ1+LO6jMSE0yVWQyWtOpVG7TuClrsOQoQYJNQJ4Wt/+Y+khO1i0PhM0JbzfrmOKu8urz89WOEp5oDs2ucEt31BybaFvjzHmwxuB8C0sYTvgCUHMONP6Jq+5PGCMX5PUKE9tuPJufNlaiX9Tali+6/hrUfOtCkwX5Y59zwICJvRaw=
+X-HE-Tag: 1764857583-831128
+X-HE-Meta: U2FsdGVkX19Gphy+xOIf6P6ZKlV9B/u6k/fUAyGPNGyeU0kN4ed8opo3z7GrYEEEP8YfAxhJyDzU6COpk5UxoSy0apcv19Bq9jmKKqStXxMO5ph0p6h3Y5tXPenVZGmxSRfYRAqtmTunDiwE/jIr3YS4cOg3o3W8TUog23ToGCO0Ro4sWtlVABlhml0TUXG10Pp5Dr/cBS81JEuM9p1rxIiv3HpWJ5DakAslW/czKuaKzTvcVKMxVUO+N1YQ4gnZpW3svGHFjKClL/paBa9zGx9idrTvf1veZqT2V9HoCPOUMy0rXLjJ8oH66Sg5y3bddSG9jlORNcf/YHxw51Ym4xiA5d1soYKAgFmT6BcPa16aFU0vAraAx6gtIQ/gZArj3XTHHJRxJUTySWf61tyRlUpFvUZ/q3Ygc74drJ8n9myxYSMArC4oe8EmCbnCb35CGgr42A1/9MplFWsZ2twzDj3fbmiWT9louNKvyw27zVlx7gRzAKRQaS9rMbIlhFrt+rridPp5UyYY5se1MMQ0wtqcLlx3o9YCjU8c/bgT7Afpoe6TgEfUL/ROgwGSEZTT/FWY9mHbalMQ6JblNIPpnIN6O9uk0zzQGQE2nhHhxmFIzqK663ZMUqDQ/7LM16063V/oVX4j905B19j9Tmpga8MXv9p69AHGWG+UiIdLB89RVtP5Y138OEy5Q2/MDrzX+SReXLl6cMz7QiUmBrPvVBCnlp9vTaqjn2+9Qohv1CpsIV+ZjK7S2IP12dHk69p6Y/70o2//gOf1u9Na+hjRj4N1LO0pEqtqcT0TJHtnpx1Z/AQXEhzDTddE0kZWSJzcPgsPpeA/CC2nRcFNCTfARmHqudSXpM/ugABIjEQMaxusJIsDL/uq1JSYGChIckr/BX+4nAO699CV2rTXL2uA1UwkBjdQD0BzRYuDZgn2dvOwU02wj3KWV9fyQDrGn2upj+bhCXl92092EV9MfFx
+ NnAhIfEW
+ jr25TRP2jxxmAQCtD/TOOqRw9JTqynZbj4N5rYPio79Gpw6if2H2z+zLswQ0FHipu5ZCjF6H8GJpgXl/FgYpjlIZRZ4Zb0lsaktWlX/u9Mj2bD5VaV4Ydz3tXP2YrHpsYap00YMFVLic4JTx7a5IlOnTF+uWcZ05sdzGcmsEIGIZhYD026iypqZ0lQ8+ougcsv75jIkkyDm//53nEMQkToI2/pT4a4rBThqw6V1GqArPSv7iCb9/dp1wGvbRisoWm4fvjph+az9D645ISfM7CkbiCAFrjnffNQjcS1mbmxhg4y3WqxYVPkxUB12D7vVCwc6goGEyUvx7BvIxlb0n8m5Y+FhqofS7McV7GglUP1Jyi++ZL+4VfvNGFQseDdm1r2zOyB8aYTZI/Ya2zGwm3zNvrGh9k/z/g773ItbUXVjMFZ95v3DrJ7bEZeyK1KiWcJmPlDDw3kEmq8D71JBRG306Fnrq85GjsBJAJ12pEPvRws73sFy0L9kJp4nkiqkFlqM1t4jALdcN0aUawtD6qeW+2oN6KPcvfRatcUISUBwBAu3wtJo2QuOJRya1X8YE3E+G8JGeif2YE07eFtf8cf286SAq04wK2rSN+yLsUMbEeFktg3YmO3+zQcg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,97 +141,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 04, 2025 at 02:38:42PM +0100, Petr Mladek wrote:
-> On Wed 2025-12-03 14:44:53, Andrew Morton wrote:
-> > On Wed, 3 Dec 2025 09:05:30 +0800 kernel test robot <lkp@intel.com> wrote:
-> > 
-> > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> > > head:   47b7b5e32bb7264b51b89186043e1ada4090b558
-> > > commit: a9af76a78760717361cccc884dc649e30db61c8b [9966/13055] watchdog: add sys_info sysctls to dump sys info on system lockup
-> > > config: powerpc64-randconfig-002-20251203 (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/config)
-> > > compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 734a912d0f025559fcf76bde9aaaeb0383c1625a)
-> > > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/reproduce)
-> > > 
-> > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > > the same patch/commit), kindly add following tags
-> > > | Reported-by: kernel test robot <lkp@intel.com>
-> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202512030920.NFKtekA7-lkp@intel.com/
-> > > 
-> > > All warnings (new ones prefixed by >>):
-> > > 
-> > > >> kernel/watchdog.c:74:22: warning: unused variable 'hardlockup_si_mask' [-Wunused-variable]
-> > >       74 | static unsigned long hardlockup_si_mask;
-> > >          |                      ^~~~~~~~~~~~~~~~~~
-> > >    1 warning generated.
-> > 
-> > I'm testing the appended patch but it needs checking please.
-> > 
-> > The comment for hardlockup_si_mask says
-> > 
-> >  * bitmask to control what kinds of system info to be printed when
-> >  * hard lockup is detected, it could be task, memory, lock etc.
-> >  * Refer include/linux/sys_info.h for detailed bit definition.
-> > 
-> > but the variable depends on "COUNTS_HRTIMER".  The comment doesn't
-> > mention hrtimers and I don't see why it should.  Not sure what's going
-> > on here.
-> 
-> Good point! It took me some time to understand it.
-> 
-> So, powerpc implements its own watchog, see arch/powerpc/kernel/watchdog.c.
-> The watchdog is supported only by some powerpc platforms, see the
->    following line in arch/powerpc/Kconfig:
-> 
-> 	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC_BOOK3S_64 && SMP
-> 
-> As a result, the test system could have the following in the config,
-> see https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/config
-> 
-> 	CONFIG_HARDLOCKUP_DETECTOR=y
-> 	# CONFIG_HARDLOCKUP_DETECTOR_PERF is not set
-> 	# CONFIG_HARDLOCKUP_DETECTOR_BUDDY is not set
-> 	CONFIG_HARDLOCKUP_DETECTOR_ARCH=y
-> 
-> And "COUNTS_HRTIMER" is not defined.
+This patch series introduces KFuzzTest, a lightweight framework for
+creating in-kernel fuzz targets for internal kernel functions.
 
-Thanks for the check!
+The primary motivation for KFuzzTest is to simplify the fuzzing of
+low-level, relatively stateless functions (e.g., data parsers, format
+converters) that are difficult to exercise effectively from the syscall
+boundary. It is intended for in-situ fuzzing of kernel code without
+requiring that it be built as a separate userspace library or that its
+dependencies be stubbed out. Using a simple macro-based API, developers
+can add a new fuzz target with minimal boilerplate code.
 
-Was working on a reply at the same time :)
+The core design consists of three main parts:
+1. The `FUZZ_TEST(name, struct_type)` and `FUZZ_TEST_SIMPLE(name)`
+   macros that allow developers to easily define a fuzz test.
+2. A binary input format that allows a userspace fuzzer to serialize
+   complex, pointer-rich C structures into a single buffer.
+3. Metadata for test targets, constraints, and annotations, which is
+   emitted into dedicated ELF sections to allow for discovery and
+   inspection by userspace tools. These are found in
+   ".kfuzztest_{targets, constraints, annotations}".
 
-> > @@ -1250,6 +1250,7 @@ static const struct ctl_table watchdog_s
-> >  		.extra1		= SYSCTL_ZERO,
-> >  		.extra2		= SYSCTL_ONE,
-> >  	},
-> > +#if defined(CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER)
-> >  	{
-> >  		.procname	= "hardlockup_sys_info",
-> >  		.data		= &hardlockup_si_mask,
-> > @@ -1257,6 +1258,7 @@ static const struct ctl_table watchdog_s
-> >  		.mode		= 0644,
-> >  		.proc_handler	= sysctl_sys_info_handler,
-> >  	},
-> > +#endif
-> >  #ifdef CONFIG_SMP
-> >  	{
-> >  		.procname	= "hardlockup_all_cpu_backtrace",
-> > _
-> 
-> This patch makes some sense because the arch-specific watchdog does
-> not support the sys_info interface. And it is better than nothing.
-> definitely.
-> 
-> A better solution would be export the variable and handle it
-> in arch/powerpc/kernel/watchdog.c.
+As of September 2025, syzkaller supports KFuzzTest targets out of the
+box, and without requiring any hand-written descriptions - the fuzz
+target and its constraints + annotations are the sole source of truth.
 
-Yep!
+To validate the framework's end-to-end effectiveness, we performed an
+experiment by manually introducing an off-by-one buffer over-read into
+pkcs7_parse_message, like so:
 
-> It seems that powerpc is the only architecture which could define
-> HAVE_HARDLOCKUP_DETECTOR_ARCH.
-> 
-> Feng, would you have time to look at it?
+- ret = asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen);
++ ret = asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen + 1);
 
-Sure.
+A syzkaller instance fuzzing the new test_pkcs7_parse_message target
+introduced in patch 7 successfully triggered the bug inside of
+asn1_ber_decoder in under 30 seconds from a cold start. Similar
+experiments on the other new fuzz targets (patches 8-9) also
+successfully identified injected bugs, proving that KFuzzTest is
+effective when paired with a coverage-guided fuzzing engine.
 
-Thanks,
-Feng
+
+The patch series is structured as follows:
+- Patch 1 adds and exposes kasan_poison_range for poisoning memory
+  ranges with an unaligned start address and KASAN_GRANULE_SIZE aligned
+  end address.
+- Patch 2 introduces the core KFuzzTest API and data structures.
+- Patch 3 introduces the FUZZ_TEST_SIMPLE API for blob-based fuzzing.
+- Patch 4 adds the runtime implementation for the framework.
+- Patch 5 adds a tool for sending structured inputs into a fuzz target.
+- Patch 6 adds documentation.
+- Patch 7 provides sample fuzz targets.
+- Patch 8 defines fuzz targets for several functions in /crypto.
+- Patch 9 defines a fuzz target for parse_xy in /drivers/auxdisplay.
+- Patch 10 adds maintainer information for KFuzzTest.
+
+Changes since PR v2:
+- Introduce the FUZZ_TEST_SIMPLE macro (patch 3) for blob-based fuzzing,
+  and update the module code (now patch 4) to initialize an input_simple
+  debugfs file for such targets. While not explicitly requested by
+  Johannes Berg, this was developed to address his concerns of the
+  serialization format representing a hard barrier for entry.
+- Update the crypto/ fuzz targets to use the FUZZ_TEST_SIMPLE macro.
+- Per feedback from Kees Cook, the fuzz target for binfmt_load_script
+  (previously patch 9/10) has been dropped as it is trivial to fuzz from
+  userspace and therefore not a good example of KFuzzTest in action.
+- Per feedback from Andrey Konovalov, introduce some WARN_ONs and remove
+  redundant checks from kasan_poison_range.
+- Per feedback from Andrey Konovalov, move kasan_poison_range's
+  implementation into mm/kasan/common.c so that it is built with HW_TAGS
+  mode enabled.
+- Per feedback from Andy Shevchenko and Lukas Wunner, address the build
+  system concerns.
+
+Ethan Graham (10):
+  mm/kasan: implement kasan_poison_range
+  kfuzztest: add user-facing API and data structures
+  kfuzztest: introduce the FUZZ_TEST_SIMPLE macro
+  kfuzztest: implement core module and input processing
+  tools: add kfuzztest-bridge utility
+  kfuzztest: add ReST documentation
+  kfuzztest: add KFuzzTest sample fuzz targets
+  crypto: implement KFuzzTest targets for PKCS7 and RSA parsing
+  drivers/auxdisplay: add a KFuzzTest for parse_xy()
+  MAINTAINERS: add maintainer information for KFuzzTest
+
+ Documentation/dev-tools/index.rst             |   1 +
+ Documentation/dev-tools/kfuzztest.rst         | 491 +++++++++++++++
+ MAINTAINERS                                   |   8 +
+ crypto/asymmetric_keys/Makefile               |   2 +
+ crypto/asymmetric_keys/tests/Makefile         |   4 +
+ crypto/asymmetric_keys/tests/pkcs7_kfuzz.c    |  17 +
+ .../asymmetric_keys/tests/rsa_helper_kfuzz.c  |  20 +
+ drivers/auxdisplay/Makefile                   |   3 +
+ drivers/auxdisplay/tests/charlcd_kfuzz.c      |  22 +
+ include/asm-generic/vmlinux.lds.h             |  26 +-
+ include/linux/kasan.h                         |  11 +
+ include/linux/kfuzztest.h                     | 573 ++++++++++++++++++
+ lib/Kconfig.debug                             |   1 +
+ lib/Makefile                                  |   2 +
+ lib/kfuzztest/Kconfig                         |  20 +
+ lib/kfuzztest/Makefile                        |   4 +
+ lib/kfuzztest/main.c                          | 278 +++++++++
+ lib/kfuzztest/parse.c                         | 236 ++++++++
+ mm/kasan/common.c                             |  37 ++
+ samples/Kconfig                               |   7 +
+ samples/Makefile                              |   1 +
+ samples/kfuzztest/Makefile                    |   3 +
+ samples/kfuzztest/overflow_on_nested_buffer.c |  71 +++
+ samples/kfuzztest/underflow_on_buffer.c       |  51 ++
+ tools/Makefile                                |  18 +-
+ tools/testing/kfuzztest-bridge/.gitignore     |   2 +
+ tools/testing/kfuzztest-bridge/Build          |   6 +
+ tools/testing/kfuzztest-bridge/Makefile       |  49 ++
+ tools/testing/kfuzztest-bridge/bridge.c       | 115 ++++
+ tools/testing/kfuzztest-bridge/byte_buffer.c  |  85 +++
+ tools/testing/kfuzztest-bridge/byte_buffer.h  |  31 +
+ tools/testing/kfuzztest-bridge/encoder.c      | 390 ++++++++++++
+ tools/testing/kfuzztest-bridge/encoder.h      |  16 +
+ tools/testing/kfuzztest-bridge/input_lexer.c  | 256 ++++++++
+ tools/testing/kfuzztest-bridge/input_lexer.h  |  58 ++
+ tools/testing/kfuzztest-bridge/input_parser.c | 425 +++++++++++++
+ tools/testing/kfuzztest-bridge/input_parser.h |  82 +++
+ .../testing/kfuzztest-bridge/kfuzztest-bridge | Bin 0 -> 911160 bytes
+ tools/testing/kfuzztest-bridge/rand_stream.c  |  77 +++
+ tools/testing/kfuzztest-bridge/rand_stream.h  |  57 ++
+ 40 files changed, 3552 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/dev-tools/kfuzztest.rst
+ create mode 100644 crypto/asymmetric_keys/tests/Makefile
+ create mode 100644 crypto/asymmetric_keys/tests/pkcs7_kfuzz.c
+ create mode 100644 crypto/asymmetric_keys/tests/rsa_helper_kfuzz.c
+ create mode 100644 drivers/auxdisplay/tests/charlcd_kfuzz.c
+ create mode 100644 include/linux/kfuzztest.h
+ create mode 100644 lib/kfuzztest/Kconfig
+ create mode 100644 lib/kfuzztest/Makefile
+ create mode 100644 lib/kfuzztest/main.c
+ create mode 100644 lib/kfuzztest/parse.c
+ create mode 100644 samples/kfuzztest/Makefile
+ create mode 100644 samples/kfuzztest/overflow_on_nested_buffer.c
+ create mode 100644 samples/kfuzztest/underflow_on_buffer.c
+ create mode 100644 tools/testing/kfuzztest-bridge/.gitignore
+ create mode 100644 tools/testing/kfuzztest-bridge/Build
+ create mode 100644 tools/testing/kfuzztest-bridge/Makefile
+ create mode 100644 tools/testing/kfuzztest-bridge/bridge.c
+ create mode 100644 tools/testing/kfuzztest-bridge/byte_buffer.c
+ create mode 100644 tools/testing/kfuzztest-bridge/byte_buffer.h
+ create mode 100644 tools/testing/kfuzztest-bridge/encoder.c
+ create mode 100644 tools/testing/kfuzztest-bridge/encoder.h
+ create mode 100644 tools/testing/kfuzztest-bridge/input_lexer.c
+ create mode 100644 tools/testing/kfuzztest-bridge/input_lexer.h
+ create mode 100644 tools/testing/kfuzztest-bridge/input_parser.c
+ create mode 100644 tools/testing/kfuzztest-bridge/input_parser.h
+ create mode 100755 tools/testing/kfuzztest-bridge/kfuzztest-bridge
+ create mode 100644 tools/testing/kfuzztest-bridge/rand_stream.c
+ create mode 100644 tools/testing/kfuzztest-bridge/rand_stream.h
+
+-- 
+2.51.0
+
 
