@@ -4,90 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DD1CD2A532
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 21:27:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BAF6D2A54D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 21:39:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 537D96B00B0; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
+	id 616D56B00B8; Thu,  4 Dec 2025 16:39:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50FED6B00DB; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
+	id 5C77C6B00BB; Thu,  4 Dec 2025 16:39:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44CCB6B00DD; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
+	id 4B7166B00BE; Thu,  4 Dec 2025 16:39:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 35D7B6B00B0
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:27:15 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2CCAB89E4
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:27:14 +0000 (UTC)
-X-FDA: 84183074388.22.40E13AB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 439671A000F
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:27:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 35D576B00B8
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:39:03 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1AF5884D9
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:39:02 +0000 (UTC)
+X-FDA: 84183104124.12.7880F54
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BDDFC1A000F
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 21:39:00 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwZMdJYi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764883633; a=rsa-sha256;
-	cv=none;
-	b=ge3oQigz+BPFF6oP5fpifr9ehKmMRHbZ5FepHDF6t63m25T3D2pcXU3fWXZSUr15x9F+cl
-	EmT1/DNZLrTt3NB72N5u4AvaTwcsfCpHKqd1QSCHEhJg1Lk9T6HaQKRrQWvLS/YVv4ddex
-	pGNTXv6rKtuVLMo/Q+tIyKWexjPLtBQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwZMdJYi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WO2o2TCq;
+	spf=pass (imf19.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764883633;
+	s=arc-20220608; t=1764884340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=09mxmHg2Z/Wa1Y7NAyngo1yrqctVpyeDUcumoglVSpc=;
-	b=ALluftiw9mqmG9ModXmPNsYHm6IxeJcwHYr6ffP80UTbPXR6dJZluUq3UeCxpFVL0rpZpn
-	Mmi5AJZLLdyMTQ7fRM62aASoZX0JTtaSiDT+cFru8xKjz1KHeVxfMSJNlGK0JmeJBXn9PF
-	tXHuAs1o1V832V1kpNZj8Cy0cCKMwD0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9D6660204;
-	Thu,  4 Dec 2025 21:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18577C4CEFB;
-	Thu,  4 Dec 2025 21:27:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764883632;
-	bh=+/9nEHZ6AaSyxVANsChIx0fzl5kuKPosTq+Q94nXS5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SwZMdJYi3acOG/EsgN2/8AAaszdXWocRoZuqwRdsYLDUgBWGzYM3cP1VoOaV4gkIt
-	 22FZ9t/PaZiAkr3gGJTCaJE/8eBSb4hL5Xh663kXBWjQQgMfLvYKDy2f6BuwzUq9nf
-	 Vf/aS0zVEeRkFKaM1y46tT37+45wn3wdKXw843pHDvXybr5OC/ESU+20gGjhHelW5p
-	 HiuegQ60VJXdWExXgBK+/Z0f3RmHMe2jTMnxJ2SlsUmS/6XxNCM4DppLuLt4RTratl
-	 2Fv3iRhSqCR2aPs4RXQQA5/o9xrHZvlRWDmIkq0XEKj8PvGVUvA6t7y2TH7UZMMgUW
-	 o03GHxRje/JPA==
-Date: Thu, 4 Dec 2025 23:27:04 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, masahiroy@kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
- hugetlb"
-Message-ID: <aTH8qCZinkL-4SDa@kernel.org>
-References: <20251204023358.54107-1-skhan@linuxfoundation.org>
+	bh=7a4apymdvLMzvSssxC4jYelA1RIA+3s9lZemZv4hiVM=;
+	b=5jJ0KskZNfeG0RoX10geZ5mWYQ2PZkdx0BNBnpJg8lHaBW1ldrvEhWW9uUjIAonr33YM7B
+	/DI3lIW3o4aXFRa+yONlsM7QgX2mZduiiV896KhtkkJCxkBiHb0kZh0gA57iHA4Xvi1/pz
+	hrTcQV9AXcjXjuhVhyPD2M0yeIZdSK0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764884340; a=rsa-sha256;
+	cv=none;
+	b=QeU1ykV03GGnERGvEkxWpnYXkWl1gGzuIkPP6aFbFPBLcZ6Hh0ZuYDqf4/7Z17Coegxs24
+	G07BzFSSocWi0VxCp2uvi4m8wdhaL5EVrQZ5G7GUNKUf4EtUhiCatdKHlHgWg54b9BYbfJ
+	W6tjDotoNoP6eaCG+ZEZwGP00Dr+s7g=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WO2o2TCq;
+	spf=pass (imf19.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7aab7623f42so1645523b3a.2
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 13:39:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764884340; x=1765489140; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7a4apymdvLMzvSssxC4jYelA1RIA+3s9lZemZv4hiVM=;
+        b=WO2o2TCqNuN5XPJrtzN3YUSMQBfgk8jMSIanrxpSVWK9AJ/FzxyV56yNPWGOeTuiah
+         3NcWYGfi12JxLFoMQcAkqgU9pqxtkd/VTtopNdZhX4tHncBRueMJ28DfN9ZrMlg+cJXK
+         fl+wz3i1EOq4ID8Y5C2molBz+N78/io18BsWKq2/XOBYziCd9NqtOTdncUL7ii6Gwpqf
+         e18ejwEy23d1WirNIRezAoA9UXJ5LI+nrMHuLk6wGpm1IV77Gmdab4f4jtMGzyPZJLpt
+         B53fhly3EcyMMbKiVP3O53c3P87trk+6laeBR2QT+YcFGXrbHuCsnSRbBJgcHdcNl+Ho
+         oF3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764884340; x=1765489140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7a4apymdvLMzvSssxC4jYelA1RIA+3s9lZemZv4hiVM=;
+        b=ldQuZTnWvMKD9sUD5vtEcLFuiOYlS9jBUK2ps+1UXhlqU+CSVubREVj2Cm5nQlb3nC
+         5utGPVyM+BHvnh8TCYn69oF0tygnkrnPkFJkJnY+JpmJykYma0br65nV7jZ5aXcR1sha
+         +iy9blkuOnTMPxEXJqGQaXj/+MZ8z8PVn2JEN/wVyRUfm6G9ppOEb8zFPNtgwacG6rn1
+         MfzTIna553s+HgjWjYSax16oBNWRlDk7CuGdlxpH8K8FYpDOMjBPL7znDpyQli2JkuD9
+         aIg3a+Cs6/YBup9D+EZeEyXWwK4ZQ82192A7ZBJiOgAfiVB/y8rS23SG1+djUY5bTpPG
+         4RdA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9KUbnu4LUcZXjdXwQ0YlVYW52CSD1iYpCFDnCcHocuY2qoSZH8jnI/au1YyyvFDjMq0jhsIVizw==@kvack.org
+X-Gm-Message-State: AOJu0YyroBL5HgfWHsxQ9APdYIOqeIXvO1MywrKLEw9t+MG49OxUI8yx
+	IHw5wHprmzsKmHMcfG7ENnlOyfXQYdEzVHvYGfzNYiKdvf0x8lVypDpwo5WBvs+palI13Xtdmp/
+	VoqgyL+xOmkXCHF1mJOP78sSOx6BMWIk=
+X-Gm-Gg: ASbGncvRHbTJ1P9A3a29q+8EiL9Cv6gec0lZtyFuLTi6RT+EpokjYU0xqqt5/uRvlRf
+	qC19AVGDIk+zrXkhgZVY7zqHECoC731TtiZ2KpWREj1KS6jsrez5FeBM+s7ntaHUId8DI2vuHBH
+	fhudN6Wfb5dc05hqELxRl21U0jsLCP5ozghaIBF0QQ//BGW5Ev0v7v2rkzwGdluOvmSsEj1iSkj
+	HtnbZDEcfHYI+ak6tHqICPJJo0x1ELkDeY3BHelm6i7zKM0uiFccRXj7fFg+FGn3l9mvuJ32PdQ
+	Mt84KHI=
+X-Google-Smtp-Source: AGHT+IECekJX45uTX+rdJAmlqhj0+olEbSOJgBEbG8bNxunXp+W3mrNWLKVJtLnQ1vPBK4dnSvd+pVp/HLiKh/idEFw=
+X-Received: by 2002:a05:7022:410:b0:11b:82b8:40ae with SMTP id
+ a92af1059eb24-11df0c48844mr6019656c88.18.1764884339502; Thu, 04 Dec 2025
+ 13:38:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251204023358.54107-1-skhan@linuxfoundation.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 439671A000F
-X-Stat-Signature: p5ainwuc98afjiono1sn8h5ko9jrajy9
+References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
+ <20251204141250.21114-10-ethan.w.s.graham@gmail.com> <CAHp75VfSkDvWVqi+W2iLJZhfe9+ZqSvTEN7Lh-JQbyKjPO6p_A@mail.gmail.com>
+ <CANpmjNMQDs8egBfCMH_Nx7gdfxP+N40Lf6eD=-25afeTcbRS+Q@mail.gmail.com>
+ <CAHp75VfsD5Yj1_JcXS5gxnN3XpLjuA7nKTZMmMHB_q-qD2E8SA@mail.gmail.com>
+ <CANpmjNOKBw9qN4zwLzCsOkZUBegzU0eRTBmbt1z3WFvXOP+6ew@mail.gmail.com> <CAHp75Vd9VOH2zHFmoU5rrQCRqJSBG2UDCfKgvOR6hwavDVqHeQ@mail.gmail.com>
+In-Reply-To: <CAHp75Vd9VOH2zHFmoU5rrQCRqJSBG2UDCfKgvOR6hwavDVqHeQ@mail.gmail.com>
+From: Ethan Graham <ethan.w.s.graham@gmail.com>
+Date: Thu, 4 Dec 2025 22:38:47 +0100
+X-Gm-Features: AWmQ_bkrTLjU1bji3dq_q0_9aUL2KpYGKaTrBSm-1EAw-k6T0Q2iOVkzFyxbFXs
+Message-ID: <CANgxf6woLz0VBnmFqrhwQiLwrQkb5oLb+1tHoOU5+aN=a21k8Q@mail.gmail.com>
+Subject: Re: [PATCH 09/10] drivers/auxdisplay: add a KFuzzTest for parse_xy()
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Marco Elver <elver@google.com>, glider@google.com, andreyknvl@gmail.com, 
+	andy@kernel.org, brauner@kernel.org, brendan.higgins@linux.dev, 
+	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com, 
+	dvyukov@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
+	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
+	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lukas@wunner.de, shuah@kernel.org, sj@kernel.org, 
+	tarasmadan@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BDDFC1A000F
+X-Stat-Signature: tt9n4bq6bn6pzgq8i7aojghmz9iy8f5p
 X-Rspam-User: 
-X-HE-Tag: 1764883633-426862
-X-HE-Meta: U2FsdGVkX1+y8zOnd+SQu4jo9Hr4mre/5pv4jKhdvzGfiF4ZK/m4OdYJs7KfAWwVAsFCQfIpImAHpw+qVUXSHV8BF1ylAQCifYou86QAej3r9pyD6lrsx/nHYrA8AjT86Sk+V6NoIcWh2iyGUOT2993XHAKO0eXGmONRuOrKMmKs7G/zlHd+gDnb30hIb5F0h6ACVswP7354Ayi1qqai7gTjtq3wJZ7GQfpmz1V7NTBXCY74YBPPf9eF8Stq9814VisLlEt+8crZ1Q9J7iuQcAMwFKfhuTZl4wot3a0coj3RBTMk1pbqkFih5vZxSJM+0Y7wPjeCHePwUvSuLKG8uC884Z75+IAHRPtP1qn7tUBGp9oSr1G51aFQCdT6uDScqeU0p1Gj+qcH3jGkat5YejXZxkbKTik7KtwP23gc7oiVd49RA9PoiYu4xeUgX4kNb1XPXEpPBY28ayKlf3nZgAIhlFaRiz5xoq89jI94XVV3btpUCH/HCusGIcnAxJdHETedYl81xeNXWbizjL1knhNl3guRfPC0ARAqaG34nJL8R0U3XW3svjTXAupp3nDIAkRL68cjanJJU6ijb05xrZQRniP9ccEespRo2W4BbdlRfXqbo5W1PHCLXasSEEo4N0N1yH7A2BJbqCG2lkRZ4zG3nlKYM8+xVWnz7vh3Y0Bfkr8Ay06srBnWn0f0JsaiBTTr7MRWGeAWLnetLrBxe+q4ToqezGAAFrI8Qlk4fqUl1Rxv6APy8SbXrT7a3nTedI8HFROg1ApRNiGwrwZSyqmsqAkd6wop2dn+w3n5YVPDBZHIqmEmJBfmZmfPBTjsnJPjV60uB1ptOXAIscf1HIJJyx9xTuz0GpbncEqS8rh7YRkLkwcu1SBFwxbrGLDne//kcy2GbXvJB6dKiOmc3duVA2N6GkFu3mA1BUcinegxv754QgLXXUxC3S2+GZqhBq2Dds9tFju9u4XfC8t
- hxhfHxeQ
- hoWIiDWrFHH9j5lLy5/w9feHBt5B6e9VZLUMEzJu4vBsfYdDxT3AlSG/NG3l5iZgbU2cSbri0bgPk0OIC8GAcjknNOWdJkYec7dbbAbmjfH0URl0g9rJeWZkEp4Gyba+bf6zEHBSlc42FpqMk+ilPHpSz1Ne+n3BeXdKhS3E3zkk6TOJx6/XTwKoLXUummq/kW/pYdFmsX3Cmw4iLqW61Cd0OpLgA6uz8PWfhUZbUmaPfzFhYAMw8WOko74kuiGT78GSDIj0eSsRr3U946u16sW00lkZleMAhlrHZgf9NpQ68jKAKoKJsqihBmSJ8cVSfOiDSFta07CylsfE=
+X-HE-Tag: 1764884340-420169
+X-HE-Meta: U2FsdGVkX18iCfTZrjamypK80y/k8NwOLRyfCWmV1LpQpKSKyUN3pDE/sQXqOVawg0SltiS+pAuguRSeR72fEeUqJOBbi2l4FCze3gAi7O3fqRgZ6Q7s3IyvTmsF2E6o+4QQ9jPBOGoB9SoEYpW7We2pC/KardNRcLBncsVEjLgl7JUKJPW1QpskJNVdye3SND51TZJAcd+rrq+3fm1YOfX/eKoE3807u4OAkTacWPPzKtEMo8y/Jw4agx8XgmsJqJO6L8yo4g4PplOEvEZRMwzywGQB/HSbziJvCPyasWINOxvbPqK17e1T0DqC7lWPOxqSSfuAC0bxvDpkLyrXIcSGH8iariNhQ4ftXlzgv8kxjqkipz1CUxMwr6pEOiJYF8XevTGfHYrLJzXjt/hWdmXu8j3+73e7TKF7iEw3UZMVdndpLJvTgE+jLAFgpga00ot1shzVas7TwOdU1Ek5/39lJSWb/DjMnyhTl3Vcktqk+Q538qpKFUgIC0HgOWSWinh3Isa00sUkSjYp8Yaisvg2wLgE6uWFSwdn3amT9WqO67GeqWWgRI49AvJnZQ8qh4F/PQtGVLBRlohEKNNZ/0VXRW56JfW5PH/H5sdCpIr/6yWE4nNVC/CG5DWnkkUP/exPnRCO0R5C4J3ng2nYwZKzFTtBq7O1SBw78s7Rtvrt7k2ltOahbvpCaSzrmLbPk6f4UtRHzD0rpl28brRSTNQr3hxXaPtqLAT5nT4rhU7KglQYtQ1Lt6JdDw6zDelZ1Y3cAS/milrp3OQSQp3I/0pJ4Z4ovBwK3N7Ws+S6zZrXAPsNTFTQPyUNvlvju0HbP3067FzepFqLScuulUfNhXjjptNCO8V+hxBBb17/3DiqX9KBJU3tdK6FAFHtXfm7EIIMfonhXSmONm73abMDB+6rVBZuuErNkOCXJAqfZb/RLo1EFSI05cPeIvyvK5rfQVSiHoB8jTLk/P7Y73d
+ Vs43gTtl
+ wrG142KZ7F03DQWPlcoI1j0MqH1WCjJPS9BuIQyGWjbM3dKMNxA/Obpoh7CnOujnMywcbIQ+fwJYwfjOoNTopPKgV6TsE6+0eWgSVA7q7RtbT6bMYakbIUYr89ToF55wXQO4JqaT1kYh3Z7BngH/wFl7liGWZ1nvuERfvTGgD1xuqUcA8DWJyzAMuZxFV8HztF0AGkZI8SZhT68rkC53/ojKg8G212O4LEBFoq8pf5LahSYU9fzh13Itgx9uZUz1vMYnfJJUbFd/zUXJgW6lS5FfPZjJn0XTfIQ7jg0eJ5lo88vPBD7+SOlhVDYoq3mFAbLmPXPggnSFyc6MEOxyITdHRaQmun7lrENfns4Y2ukeynCYsS1YTRdjqVBQY4CV/y6PTy6NR8uIP/w0lnb7TjZOTGs9hdVfEldMKFOwwuZ+FsvuPC5+OEhy0nEBvLvJ8IIGffnabWq0YsgwUetjWs5jrpev4b1hcvbRkajA8pd3enCtp8jV5s+JHLyiW8UCZ6anXiza2kdID1mfCnVrI7b2qbmMWnVLjKtsUVemZMEuMfcNBoXNVKch6scUbnztTFNblgu3chCndOjI+gdCL/Rih+6O44DUVqQij
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,33 +128,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shuah,
+On Thu, Dec 4, 2025 at 6:10=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Thu, Dec 4, 2025 at 5:36=E2=80=AFPM Marco Elver <elver@google.com> wro=
+te:
+> > On Thu, 4 Dec 2025 at 16:34, Andy Shevchenko <andy.shevchenko@gmail.com=
+> wrote:
+> > > On Thu, Dec 4, 2025 at 5:33=E2=80=AFPM Marco Elver <elver@google.com>=
+ wrote:
+> > > > On Thu, 4 Dec 2025 at 16:26, Andy Shevchenko <andy.shevchenko@gmail=
+.com> wrote:
+>
+> [..]
+>
+> > > > > > Signed-off-by: Ethan Graham <ethangraham@google.com>
+> > > > > > Signed-off-by: Ethan Graham <ethan.w.s.graham@gmail.com>
+> > > > >
+> > > > > I believe one of two SoBs is enough.
+> > > >
+> > > > Per my interpretation of
+> > > > https://docs.kernel.org/process/submitting-patches.html#developer-s=
+-certificate-of-origin-1-1
+> > > > it's required where the affiliation/identity of the author has
+> > > > changed; it's as if another developer picked up the series and
+> > > > continues improving it.
+> > >
+> > > Since the original address does not exist, the Originally-by: or free
+> > > text in the commit message / cover letter should be enough.
+> >
+> > The original copyright still applies, and the SOB captures that.
+>
+> The problem is that you put a non-existing person there. Make sure
+> emails are not bouncing and I will not object (however, I just saw
+> Greg's reply).
 
-On Wed, Dec 03, 2025 at 07:33:56PM -0700, Shuah Khan wrote:
-> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
-> 
-> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
-> systems. git fetch-pack fails when cloning large repos and make hangs
-> or errors out of Makefile.build with Error: 139. These failures are
-> random with git clone failing after fetching 1% of the objects, and
-> make hangs while compiling random files.
-> 
-> The blow is is one of the git clone failures:
-> 
-> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
-> Cloning into 'linux_6.19'...
-> remote: Enumerating objects: 11173575, done.
-> remote: Counting objects: 100% (785/785), done.
-> remote: Compressing objects: 100% (373/373), done.
-> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
-> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
-> Resolving deltas: 100% (9195212/9195212), done.
-> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
-> fatal: fetch-pack: invalid index-pack output
+Understood. I'll stick to the single SoB in the next version as Greg
+suggested.
 
-Do you have the kernel log for the failing system? 
-
--- 
-Sincerely yours,
-Mike.
+This address is permanent, so there won't be any bouncing issues.
 
