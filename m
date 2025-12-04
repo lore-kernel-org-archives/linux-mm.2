@@ -4,122 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B468D216A5
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 15:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7217CD216A4
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 15:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA07B6B008C; Thu,  4 Dec 2025 10:43:17 -0500 (EST)
+	id D00126B00BC; Thu,  4 Dec 2025 10:43:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B77A16B00B8; Thu,  4 Dec 2025 10:43:17 -0500 (EST)
+	id CD74F6B00BD; Thu,  4 Dec 2025 10:43:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB49A6B00B9; Thu,  4 Dec 2025 10:43:17 -0500 (EST)
+	id BEDB96B00C3; Thu,  4 Dec 2025 10:43:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5146B008C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 10:43:17 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48BD9160263
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:43:17 +0000 (UTC)
-X-FDA: 84182207634.30.5C6DE4A
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6853440012
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:43:15 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KLNPxY18;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of elver@google.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=elver@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764862995; a=rsa-sha256;
-	cv=none;
-	b=Dh1UaTJnJTa68NyKXP6ZQK+gQL429U8+up5joihQlZIgm5mAOqPAfuxhCLdtOKWZjq18WD
-	Gp+BapBgn3u9eMoWbevzL0qu+k09QezIdrf34wn0wpcsNrYJB3dBXM0JVwBCUr/YiDR/p9
-	pIZ0b4+v45fLygjoUIjP9K0YjipdUkY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KLNPxY18;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of elver@google.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=elver@google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2D26B00BC
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 10:43:34 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F5AD1A0281
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:43:34 +0000 (UTC)
+X-FDA: 84182208348.16.28B5249
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B557740008
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:43:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/DxOp2m";
+	spf=pass (imf11.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764862995;
+	s=arc-20220608; t=1764863012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMOP4GkDr5ijMp2y62W7yYKXyYdN/GF/oZk8QJQ4apc=;
-	b=ycqNGcEDocpU5H5n5vJawXfYjV6HcdN7/R/KtdnHmpzOZEbvzmqsg5MxwRlQIR4NocC+Fk
-	NbKkhn+E8wulD8mBmPG9SJbk3fHQpf5vcg17JqPeq5ZjKs2WBE6TV+txraZ2R9bdn89sqx
-	/zPQPiYWz16S1kgKkaU3nPi35bMNIww=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7b9215e55e6so791576b3a.2
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 07:43:15 -0800 (PST)
+	bh=xcULqT1gBZ4JnBLfYhNZO/NSXxFxQuxnawJT72KsaCg=;
+	b=kZ4XPs5vesBdGrQ+CTlfWSVhKfOqc6rO+cJu2sDr6r34o2lqLxbMy5KfBZkRDOWjSo0zzH
+	LWdjxc2hPldSxs3gJ9KWGU+70XTl9qLrKMOT6/4RCtGzJ/qI3+u9lVP3Srn2N8+pT9dv+6
+	SJlxySDwrDn9bCsxoHgu5HbC8Ik66R0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764863012; a=rsa-sha256;
+	cv=none;
+	b=EtssmAQtsaoC6HdoykpZfoVRnVE8VEu/3r+hMENg1mAfCdMV6Je8VRyPHPCTuYhnvrVBNY
+	m2qVjR/KEo1Yv7z/Qrg2vRN2LrrYF2/oyHfdcm4P1IHFyaV/7mmhLH6X1ZdXMCViWFHkz3
+	CVAfw2nn7GeC+jbe+dclmuNe7istH3g=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/DxOp2m";
+	spf=pass (imf11.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-341988c720aso844518a91.3
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 07:43:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764862994; x=1765467794; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764863011; x=1765467811; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wMOP4GkDr5ijMp2y62W7yYKXyYdN/GF/oZk8QJQ4apc=;
-        b=KLNPxY1871REqUdIT5psVyEwMKKiHINyS4tjEBKmjrwGSnRv9XEs6apO8FBUUd1O2t
-         EuNrWbdakn9ObJkjmpz+R7ClNmuLJ7RL1u7WB+eyPSix0DcEeiS+KSq/iQV+K7BLLU+t
-         mqKEGn12TphkCEu0aHe221tqej2tK7avu/lMccjg8eViDOEn6QnKy2Ntlc6thtVMSev9
-         UjJ5KAAQU+U3FbiWDfqsbJD7OMzD3iYMIS+3VsG3CJkVm6eN8+O0bxn4Ea00LIyyFaMA
-         hzYokjgEG1TpRWXs61niGM07OIeWdZ8K/MUf8r9Rt3thVwB/n4i1j2B7VXM3kCfB5luW
-         mYiA==
+        bh=xcULqT1gBZ4JnBLfYhNZO/NSXxFxQuxnawJT72KsaCg=;
+        b=Z/DxOp2mrHgLlEsckTXKcAAcfI+Viq3q0JTGmCcwPjPTgIZSyfOZzxeIbrvMS8c4fA
+         ARBkiqWAHg+6y3ExgHj1/ib6nGEFB22Gv/O3vf5A+tbYTNiPDKedWjL2sFovBfltjYqH
+         b+zIJjk0PvZaemvmPOJF/qnMikNzvoOUl4dBWlgjtIT4JraBnIdmEptkiNeChcF/VVxC
+         WFhx9ZOR1M6Dn6CigwQhQAeipt7PXr15/tq5x8f2C0ECS5LQ+qLYxtCoQ5O5W8mtWi+F
+         kM8G8WYZL78X6lzUTAYLRvlHaq6UaCxy+V/yvRKxklikxTeO14W/cvMzYBKk3hTDQpOv
+         +Iwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764862994; x=1765467794;
+        d=1e100.net; s=20230601; t=1764863011; x=1765467811;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wMOP4GkDr5ijMp2y62W7yYKXyYdN/GF/oZk8QJQ4apc=;
-        b=ZW1pTYa9cJjClh7Gbn+2tgxxxvgbZAHRpfFemN1jYqkov18qCmh4NZ08Z4fI6dcC2m
-         LvzM0b7ig/Ds5UqGn+O4GPEfHC/pWOoD+VK00SFG784Fe3FqxhtY95mSEfFICOsR02lb
-         kjrd+4UYVS08IzGO+XLEDPffSmhiJ4UWoILa3ELfqARrGO6VMWS/GxTfh6NK0PGYi4p9
-         IMktmxyCl3YCXcRgRg4ihyEu3ZMMhC7vby2a8nYiRGMZirLBXd4rTa8PSh/1AzpTYdlB
-         4mkwFk2pvGUps1MqY+Ka76puXonk5L1chK/59kl9V7xIB2YDPhCQOVfnGKEtdL+DNOb6
-         ru8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWQSCd16UUQUusSsIvN2cupB3pfTEFyAYSvylT4J7pqtWr5k2fNcmFKCTtN633gBRMhjcsYdGEiWA==@kvack.org
-X-Gm-Message-State: AOJu0YzCWVtocMsSZZwGpAn/s03gSIn+on98urb1EWu9Wv0ss9hRQz+c
-	3EIE4ry069DSxb1GCowHpIIkKPo9ll2+ZcWCsWiZi9Y6+MB/xvpRztzrKAP+FfOn3rXDdbftI6U
-	bj918hl1pWMqfpaIkFjofgs4QrD1BJAmDp2IINeg3
-X-Gm-Gg: ASbGncuQES6Tbxq+SGS3NDb2s1imy2dCDeBcyqegX11ymz2yNBCKNWwFn1w6kPHlnc4
-	KWcw/i9DeHFWAytX8AMWWarc8IMfAzXmDJdXa2fU4Gc40TZF9YQC+jQgwu7+Ejb+llDN3900bjc
-	ZupEKJFGaZ21gUdOk9HEx6wdxpX+KavTluxahkabeWem0W3m/JenxZJ1+hgu7irwXIAVC+vinrD
-	cttAqM18jf01iMwZj14EiQTuUQl+oOCjP9T1CmTuw9PR8tTqK9+npXi2nntmNpxPsf27iP1QLzA
-	aC46RWc4qcU7HlTLXuWOjOzbtA==
-X-Google-Smtp-Source: AGHT+IHs2lXL9r27Oj25OTPLwrUpq+WjBSPrEBWJDAz2naZgENCLRnceIe8m1HwqG+PReSfilUhD4oQEt0040SIknFU=
-X-Received: by 2002:a05:7022:f511:b0:119:e56b:98a5 with SMTP id
- a92af1059eb24-11df6463cf7mr1323360c88.12.1764862993857; Thu, 04 Dec 2025
- 07:43:13 -0800 (PST)
+        bh=xcULqT1gBZ4JnBLfYhNZO/NSXxFxQuxnawJT72KsaCg=;
+        b=axAKtNJ4Jlh014zHpcEPiA7z1zt21Z1kDF7U7nXjPLyug6p8/UikgW39osF0GEW41+
+         2waAEQfDh5hGiRxwZ8ziQ+3lBrLLBn3D8/Ev5IWu2E+DHczqULCS9eZqJrfBYRwDTUY+
+         je6dLe6J9FW+hsf6IW5NFigA0mW6P2xjvdKJt0EdSC+9ddtqDkrAtBoTdBBiiT4yotii
+         nTgpbDMLDaWJWNiJwgS8m5mlvVdtKkeqxK96y1zc5+R5SmXSyFn7M6gXocZVkjmH/gxa
+         Au/xP1CRpkTQGr+HmyZ4miNHfwaxYu0Qdl+gK4ZjNAUVp77ephXF+V6gJmUqgAc6tj/x
+         iJOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWq4Ho9iLG+isNqcvOLSsYhSJFJNyc6lesBLCfVk603r6JDTrOuiXz6qD1k+mONEKCQhjMMvn9DAA==@kvack.org
+X-Gm-Message-State: AOJu0Yzc9QESsqYWSjReFAi+gS/kne0eKTjTS9X9QAGbACbchDed5j6G
+	gQ0ucW4y+H7F2Xcqv3mYNfqG5iBpn9IVusqOpRFEZJppLgJ/ed+bSHvkmIqGSYn5uO1PoBDjfT/
+	JMRNXnAqYYXPoQzb3hln713E6GR+mDg0=
+X-Gm-Gg: ASbGncvx7Kxh4cEKvDUKpycFezEfcrlc1KAjFQg8ogJu2GZScsK68rSHbzwtD/a8yvw
+	E3EZukbO2UDyh/gjI6uNcTfvhNXMudUssiNh3Tj46TcA/fMTWNl/OwCPP53rsD9/neuBOW1yOMb
+	nZA4BX9AP07gbYDV1+Er34TGaNRUaVdK+LdzWXd2BbJLH2IwE1lCszSuIuwTc2qFxAlto9QJH2I
+	3G6mASYJmeHWivBHmORONjR0u77z5+NHplpfcu3gUzUIHtg0CA80QKp2it5m0wyRyDKkADMVLup
+	vamN/A==
+X-Google-Smtp-Source: AGHT+IGPP0xbr8ijlvBCGceLouNPETyq6yt+2wUuDhEptf1TXNXkd61Kk0839gQ/19JRkHkqwlnGsXbepfF7hCbJxRQ=
+X-Received: by 2002:a17:90a:c883:b0:33b:d74b:179 with SMTP id
+ 98e67ed59e1d1-349126e0e1cmr7801599a91.27.1764863011360; Thu, 04 Dec 2025
+ 07:43:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
- <20251204141250.21114-10-ethan.w.s.graham@gmail.com> <CAHp75VfSkDvWVqi+W2iLJZhfe9+ZqSvTEN7Lh-JQbyKjPO6p_A@mail.gmail.com>
- <CANpmjNMQDs8egBfCMH_Nx7gdfxP+N40Lf6eD=-25afeTcbRS+Q@mail.gmail.com>
- <CAHp75VfsD5Yj1_JcXS5gxnN3XpLjuA7nKTZMmMHB_q-qD2E8SA@mail.gmail.com> <CANpmjNOKBw9qN4zwLzCsOkZUBegzU0eRTBmbt1z3WFvXOP+6ew@mail.gmail.com>
-In-Reply-To: <CANpmjNOKBw9qN4zwLzCsOkZUBegzU0eRTBmbt1z3WFvXOP+6ew@mail.gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Thu, 4 Dec 2025 16:42:37 +0100
-X-Gm-Features: AWmQ_bnyN22mbvWc2oz66fpJ7IbcLfdYObxM0FDhKEtXf6ssNmrNTIWoxgBISDw
-Message-ID: <CANpmjNNqCe5TxPriN-=OnS0nqGEYd-ChcZe6HQxwG4LZMuOwdA@mail.gmail.com>
-Subject: Re: [PATCH 09/10] drivers/auxdisplay: add a KFuzzTest for parse_xy()
-To: Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Ethan Graham <ethan.w.s.graham@gmail.com>, glider@google.com, andreyknvl@gmail.com, 
-	andy@kernel.org, brauner@kernel.org, brendan.higgins@linux.dev, 
-	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com, 
-	dvyukov@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
-	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lukas@wunner.de, shuah@kernel.org, sj@kernel.org, 
-	tarasmadan@google.com
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <87tsyozqdu.fsf@email.froward.int.ebiederm.org> <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
+ <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org> <6dc556a0a93c18fffec71322bf97441c74b3134e.camel@huaweicloud.com>
+ <87v7iqtcev.fsf_-_@email.froward.int.ebiederm.org>
+In-Reply-To: <87v7iqtcev.fsf_-_@email.froward.int.ebiederm.org>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Thu, 4 Dec 2025 10:43:20 -0500
+X-Gm-Features: AWmQ_bmUfrO0mY15dNq3SP9hR0Gn5EatRKdJVj7voKpq3-tHkT_aD9YVC4fN8UE
+Message-ID: <CAEjxPJ61OHDxmc2fgBp=hq27OoEhkO+Wwbb+rYAf2F9fM7gdLg@mail.gmail.com>
+Subject: Re: Are setuid shell scripts safe? (Implied by security_bprm_creds_for_exec)
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Roberto Sassu <roberto.sassu@huaweicloud.com>, 
+	Bernd Edlinger <bernd.edlinger@hotmail.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Alexey Dobriyan <adobriyan@gmail.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>, 
+	Christian Brauner <brauner@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>, 
+	James Morris <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>, 
+	Adrian Reber <areber@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>, 
+	Alexei Starovoitov <ast@kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	tiozhang <tiozhang@didiglobal.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Frederic Weisbecker <frederic@kernel.org>, YueHaibing <yuehaibing@huawei.com>, 
+	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>, 
+	Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>, 
+	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Elena Reshetova <elena.reshetova@intel.com>, David Windsor <dwindsor@gmail.com>, 
+	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Hans Liljestrand <ishkamiel@gmail.com>, Penglei Jiang <superman.xpt@gmail.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Adrian Ratiu <adrian.ratiu@collabora.com>, 
+	Ingo Molnar <mingo@kernel.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+	Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>, zohar@linux.ibm.com, 
+	linux-integrity@vger.kernel.org, Ryan Lee <ryan.lee@canonical.com>, 
+	apparmor <apparmor@lists.ubuntu.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6853440012
-X-Stat-Signature: jc7nar1iauk7ubx8iz8za5en3wkey9n5
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B557740008
+X-Stat-Signature: s35c3cncfagnfxxdfog5wh7533b9z7xu
 X-Rspam-User: 
-X-HE-Tag: 1764862995-194771
-X-HE-Meta: U2FsdGVkX18MB9luVn0cWicn/3uAiSEQvIC3oh8HyBqx1MD18W4fyv78H/yt8DmSBWH5130cn5uekMmDMIjKmp/VG5HxBWZo/PGY98Iz6OF39eQb4W1Iv6/4R+BsjABGNzdUQm+pflvYNa5iPh3E21+5RUpEPuHxmFCg+HOJmz2LLLGMQvjU6mcHnzj3yNLBvB8K3Py+pgALRcJjojSLx/CoEJTfhgEmcb1Bey6usMNKIGh+ELiCTDYMXIGoICVBFnCwPXPh5X2GQGhmDpTj7OfaTDi23izMKUnebS1GVKyaK148N/5n//+C0osfo8LqKVgvHH/Mk622Q2afvy1Vf2PlR6j5knkPLYqHazvfbURCx9TlRS8cR1mbrGzQsjAOaDghdVnGZExxPn2Vg1my6hv4eDNvnpz1UKVcUBSuyJPE2nl3UxUwaA6ptuwN5C46OZl3Wg6JwKPyRAK+K3h1NdlgJG4HHU0ZHcMJC18+QHkRo9rpDMnArmBQJ+8ugVgoMVVoL8quXhQjXQgrTMYflL8QI2VOEygWvAzm6nTryuGKcqgwBRab7t/onjTBNCFZ0z9e0m7NVaPQaz6gTLR50aVPmvY7lKqOSZ3swz8szSbEkyqkhsrSJSYxmEJlvPL3T8JO196PUN3fQdq2xYXzH7W0l09SBX2OlcdXXmiv04KGBPDgfm0q9vLhCs/oEFBWNhhqJDDMqgSoFG9FuEP/B2Fgr1eBOs8FcvtdsE01IkyIy3hp6M0W9EFeG8G5R5OwX+HqZM7aIjIFzrhoEaZ5m/26VzSSFgefwqpu9IGJ24RsWMLDVDt+OH8F78tKhJnQQZMAlCtzZA6AAowluKD0XKVB3lUi7oL9qe61aP5z6tOp34byzhtjYnxrWCtVuskNcNph5yPSHsmUn2/QbQYmlab/+gT9ztF1ykvY36DRv/pd91SnDSuGWZkCjlRK2M//f1c6+E5Ou1gu+T6X52w
- sazSV6kq
- 5ZLz4wy0A5dRLN7RkUnAARg91fat6JHSZ9r4UqN4y92s/ZGl7PyjbtStkSduhYsuwTCply4ZrOlvQjHesW6Wr8R8shyNz+HR3yJdFESt38R4Usk7AzvKLtTipg0oyhJCv9pUhfUzGfYQ/dtwvjIyHqfY5CxyQ7bIAcyezHKi1QftdRq3sPDMpHgvIB6ZXWR82bgs/zx3TLx//25q+88FExrGgE1eMDWvzWSCR1XBKXuYZxVIUMH/RFWzLTD/hxK0r8NamO4t6f747F0x8g5JAufnhhOcDa8Jcfp4n94T5EvEpOuUokw4CnviMdMENlwjCk2Vvc+AFdyBaPtocc8ofYWi34DKsAGgpBIdRPQBFIQyv3Wg314NHjea29ReqJOMrLiEAz8rRSqFbzLW8ljal/5yU+A==
+X-HE-Tag: 1764863012-750821
+X-HE-Meta: U2FsdGVkX1/6JUmp7OPJHhoDSqba4Jj52FLxnHOL9iIFNKKSYGaqcIdGE6Zn9sWBwspbHcUkTZxov5tdRSdH9pVipm4Hc//BlnY2qs9nxBxxEP5G2/QL3gwPWNmnZoA9zstJsimcOyOrHKtrcedMeIQd7Ol/+I8aMlEPz8HwxkvOEQup/hs6qktAAWysoZn3GyjYyb9fplUH0dGwb5+SwQXlc6awWXAbjRi6GryiQaW/FHdGOU8HVXwiVyzBWey6u6qmwvT/symmlReBzq80kiqNKx8pySkG2Z0XRR/DqHNui3o1wEr4aCvoR4ViqszyzkWZRrcTcQztXG3DZtlAw7xeniPFf/C7YgyAIfFLpRmVsqM24/wCspWXjM3XdGUb4j5zf0Cz4xTKH9VPC0L5i7fEMPOMIjRSRvLMfTu9/8OXl/f9kfFdjFj7dCBwetbjVgmqQeGz2IVARE2tVjOVBfmucb5O1Ao0SLrB3UopkhSfjPqdjbMoz3Z8916z+ISercPAdU/xA+D7d1SDcWvhcNtkPU6g4fk4Vmyy4GOtkLODptOe0O3GQ4KSDgPwA1ls+522fLzq4VrVrZbkbRXSxNyDpWLBvVUiHtTEk/Oz8eyzoxKgyhgf4E7sk5zJRPV/uI+iV6nzrte7IajgBR3U4/1NnlXNAL6Bdqj3oWHy6hhymtkfG7kvlKR1k6Q9BTau51X5E+DPgBt64bSUkjqt+6DIShxdZb+f67trUnHDpyprzQQgsYLegoTj/yKXjRUuXudCE/G01CKGfA88MqffcSGFRf87gVmzAqdKgHSVzMVVmBFtoH2TCznF5oNnlVbwAvIP0zVSVmo6XG1Qfm5g9oxatCKyOfMjwg7Iq8vbR9QbfKDmQJ7YclXPejDdtYl0u1hOIXxUH0yea9OF/k2LiuoH3ygZT4Whz3IaUU+Hf2ztrgOfQyv9o33QBFrMncqhrkcTk24sV4vVa30Aub7
+ vo5QUZto
+ 3CsJW5UzellqpE8xXbFEcdiutzRjkYVYWDDCggnS7QdTdW/H1Ua/dBkeQdAVZtEX2O0orEg2M2k2nZZVCrLjUGVA9hzQNhDQV6jAIlpZNUtkFNOtevi5L9cnsL6a+UmI5V1zybp428UWffpusPMvajgDaudDEGAO3d2alGrGnrSNF9txUexiWyXFxwivZFeeyM+1uqnuOgYapYBqMuLVMu2Lz59KG8S07AuizJ1WpLpZItDxr3NLsZVmXlA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,39 +155,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 4 Dec 2025 at 16:35, Marco Elver <elver@google.com> wrote:
-> On Thu, 4 Dec 2025 at 16:34, Andy Shevchenko <andy.shevchenko@gmail.com> =
-wrote:
-> >
-> > On Thu, Dec 4, 2025 at 5:33=E2=80=AFPM Marco Elver <elver@google.com> w=
-rote:
-> > > On Thu, 4 Dec 2025 at 16:26, Andy Shevchenko <andy.shevchenko@gmail.c=
-om> wrote:
-> >
-> > [..]
-> >
-> > > > > Signed-off-by: Ethan Graham <ethangraham@google.com>
-> > > > > Signed-off-by: Ethan Graham <ethan.w.s.graham@gmail.com>
-> > > >
-> > > > I believe one of two SoBs is enough.
-> > >
-> > > Per my interpretation of
-> > > https://docs.kernel.org/process/submitting-patches.html#developer-s-c=
-ertificate-of-origin-1-1
-> > > it's required where the affiliation/identity of the author has
-> > > changed; it's as if another developer picked up the series and
-> > > continues improving it.
-> >
-> > Since the original address does not exist, the Originally-by: or free
-> > text in the commit message / cover letter should be enough.
+On Mon, Dec 1, 2025 at 11:34=E2=80=AFAM Eric W. Biederman <ebiederm@xmissio=
+n.com> wrote:
 >
-> The original copyright still applies, and the SOB captures that.
+> Roberto Sassu <roberto.sassu@huaweicloud.com> writes:
+>
+> > + Mimi, linux-integrity (would be nice if we are in CC when linux-
+> > security-module is in CC).
+> >
+> > Apologies for not answering earlier, it seems I don't receive the
+> > emails from the linux-security-module mailing list (thanks Serge for
+> > letting me know!).
+> >
+> > I see two main effects of this patch. First, the bprm_check_security
+> > hook implementations will not see bprm->cred populated. That was a
+> > problem before we made this patch:
+> >
+> > https://patchew.org/linux/20251008113503.2433343-1-roberto.sassu@huawei=
+cloud.com/
+>
+> Thanks, that is definitely needed.
+>
+> Does calling process_measurement(CREDS_CHECK) on only the final file
+> pass review?  Do you know of any cases where that will break things?
+>
+> As it stands I don't think it should be assumed that any LSM has
+> computed it's final creds until bprm_creds_from_file.  Not just the
+> uid and gid.
+>
+> If the patch you posted for review works that helps sort that mess out.
+>
+> > to work around the problem of not calculating the final DAC credentials
+> > early enough (well, we actually had to change our CREDS_CHECK hook
+> > behavior).
+> >
+> > The second, I could not check. If I remember well, unlike the
+> > capability LSM, SELinux/Apparmor/SMACK calculate the final credentials
+> > based on the first file being executed (thus the script, not the
+> > interpreter). Is this patch keeping the same behavior despite preparing
+> > the credentials when the final binary is found?
+>
+> The patch I posted was.
+>
+> My brain is still reeling from the realization that our security modules
+> have the implicit assumption that it is safe to calculate their security
+> information from shell scripts.
+>
+> In the first half of the 90's I remember there was lots of effort to try
+> and make setuid shell scripts and setuid perl scripts work, and the
+> final conclusion was it was a lost cause.
+>
+> Now I look at security_bprm_creds_for_exec and security_bprm_check which
+> both have the implicit assumption that it is indeed safe to compute the
+> credentials from a shell script.
+>
+> When passing a file descriptor to execat we have
+> BINPRM_FLAGS_PATH_INACCESSIBLE and use /dev/fd/NNN as the filename
+> which reduces some of the races.
+>
+> However when just plain executing a shell script we pass the filename of
+> the shell script as a command line argument, and expect the shell to
+> open the filename again.  This has been a time of check to time of use
+> race for decades, and one of the reasons we don't have setuid shell
+> scripts.
+>
+> Yet the IMA implementation (without the above mentioned patch) assumes
+> the final creds will be calculated before security_bprm_check is called,
+> and security_bprm_creds_for_exec busily calculate the final creds.
+>
+> For some of the security modules I believe anyone can set any label they
+> want on a file and they remain secure (At which point I don't understand
+> the point of having labels on files).  I don't believe that is the case
+> for selinux, or in general.
+>
+> So just to remove the TOCTOU race the security_bprm_creds_for_exec
+> and security_bprm_check hooks need to be removed, after moving their
+> code into something like security_bprm_creds_from_file.
+>
+> Or am I missing something and even with the TOCTOU race are setuid shell
+> scripts somehow safe now?
 
-+Cc Greg - who might be able to shed a light on tricky cases like this.
-
-tldr; Ethan left Google, but continues to develop series in personal
-capacity. Question about double-SOB requirement above.
-
-Thanks,
--- Marco
+setuid shell scripts are not safe. But SELinux (and likely AppArmor
+and others) have long relied on the ability to transition on shell
+scripts to _shed_ permissions. That's a matter of writing your policy
+sensibly.
+Changing it would break existing userspace and policies.
 
