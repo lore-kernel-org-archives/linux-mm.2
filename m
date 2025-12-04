@@ -4,121 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FBDFD2444A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 17:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE0DBD24449
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 17:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE25C6B00A0; Thu,  4 Dec 2025 12:10:43 -0500 (EST)
+	id 4CE7F6B00B6; Thu,  4 Dec 2025 12:14:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A922C6B00C0; Thu,  4 Dec 2025 12:10:43 -0500 (EST)
+	id 47EC76B00B7; Thu,  4 Dec 2025 12:14:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 981878D0001; Thu,  4 Dec 2025 12:10:43 -0500 (EST)
+	id 36DF06B00B8; Thu,  4 Dec 2025 12:14:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8411C6B00A0
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:10:43 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23C161402FB
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:10:43 +0000 (UTC)
-X-FDA: 84182427966.02.BE904AC
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2F61080005
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:10:40 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LWq9SSt3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764868241; a=rsa-sha256;
-	cv=none;
-	b=u9Sxdo1nmOnpnUXLDOUX8ruzKFBNNVnVZTGfXlh1DCJMs2B5o2ZHbvt+9YFhsuzAi4GdP1
-	64sFP8pn6Zc8OC10HUbGUVokk6A8+4XCupfZI0At8YmPTHKJiF/PoD96nnowbzSMdp6DCH
-	aLSlBPCB1RgGsi/LcxaOA7vNYoWFs4Q=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LWq9SSt3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 219876B00B6
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:14:59 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB2D113A64B
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:14:58 +0000 (UTC)
+X-FDA: 84182438676.03.F06DDA7
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D557140013
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:14:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=oUX9g9gg;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764868241;
+	s=arc-20220608; t=1764868497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Luu0dLPCGlCn7g8rOb8w3AI39PT79ZYzQ5Pim7OffGo=;
-	b=0UYvffL/0F1xgWTQ5okE0VzBgZaucRAqZx0RriSFHmFsYs1LdkEKdl/nn/ZNbD5FCP2nqY
-	2xSaXUnBQ1DpIX2tTtFD1zPBNuAuOig4C2snvx+KVM55pvkf+l6W75/sPElPpRWljXON8q
-	MhpA2xNALVHYRwpUzCZOnQqJS1vsD8I=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b739ef3f739so195896066b.1
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 09:10:40 -0800 (PST)
+	bh=ofjwqiOcg1c3d6qFlj4mCLrxvUQwOrLehDW+ZXphizQ=;
+	b=PdFB8TN77q3N/JUqdbE099epGF+R8f92fnlIiVUO9hi34P10dDWn+8VD3mLhy3G2/3yCDn
+	3wFqjW2ZXKf4Ju0/difuBucq6Xaf0rRY4tLH4UenuewV1r/7lwdgdA166ufkyRU8GLHdhD
+	chuxVdMXPn3tja5QRTBaEyxoTwwewIs=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=oUX9g9gg;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764868497; a=rsa-sha256;
+	cv=none;
+	b=WgQxU4stEdo4JwIE4ARDeZjxeBxPe839EAd2H5kwCKbCW1w1oMH800LieSZFp9jpB2TGXl
+	gV89wcoCrgLYW0ZZnBIffryQocoxRr9DXqjY7U3/7Gmo289AcCbZu2WM4WQEvo78SrAIn6
+	S8Sj5QNjRcNbrysoIeTWyIJlWV0fzGk=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8845498be17so12508316d6.3
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 09:14:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764868240; x=1765473040; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Luu0dLPCGlCn7g8rOb8w3AI39PT79ZYzQ5Pim7OffGo=;
-        b=LWq9SSt3ncTzh0EYKpNXcfmxSHMTry0m7kIsLN1xNafZv7IFytr23w5HiMlATZm9On
-         zxKWdvZwnzKAHLBK6ZrsPQRkci93tm+Gy5TBEOgMrqeqmCRoX7vMCRDfTwmXQHhDWCsl
-         TfA1Y377LK6BBRKwxdd/TUXgJP4JY9O/444HmTUiJs7D+yZb1kydgeX1KBshbfej2Vao
-         wO64X2FN3ePhpxd3asZ8L3ZTKN6KeR0EXCp3NgV+WEu3PLi8IBipdQ+YWH5Y0jxMhHSx
-         6QG0pngKEyzqjp+odjF9y5iw9scQ2chdCEkSCl7+nMU0MsAJXsnF+c/s2n0GQKESVzJ3
-         K5CQ==
+        d=gourry.net; s=google; t=1764868496; x=1765473296; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ofjwqiOcg1c3d6qFlj4mCLrxvUQwOrLehDW+ZXphizQ=;
+        b=oUX9g9gg5/L6JvDR1ltAmRwM+lvG/14yVCuziIwecOIsfGFzDVyRox6PHp7IlKBReU
+         c3Yg0FE92igICUw0KSxcgeIFP+TbhA1jTUZNoXW1/5nKumzufLs4PeNmvgpxvdU+HsHt
+         PI8k8NA5kZwsbQM+w8ClIZv2CYWhJlk1JtlUxYroClQQKW/FtCaSYRO+Oy386dFyZJSu
+         3ifPtbmlHXDQvpXr1snvHlqavAqQhu17whYHma7ZEZW2D5CQtdM41L+AKdsVFNMnGj8+
+         dNvsBei7gP031XFDJiVgApSOBwpd9b9zsf+xYjsjjKL0PB6B8CFPu7PHaoaRUCoCmVK8
+         MmwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764868240; x=1765473040;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Luu0dLPCGlCn7g8rOb8w3AI39PT79ZYzQ5Pim7OffGo=;
-        b=VEGsSXxUtkSPvkq/hLMT5+/IqVCBpjsKvlwxSLkvMLikakTsw0Vd1iKaAhfaReyH9q
-         Z/9vCFK2P589frH8ab70WY3OhOk+jFqwNeTt0DkHODsCCjpdUOLBOT1sl9SPHIwQ+bwe
-         WH3IbPt8hqAzOOQ7H7EQnnS7QN8DO3MwgXn1/n1wAERFQ7tQIDKYTbJKAFWKjteB9kty
-         QlE138Ikrq+xXvdm+2HBUHpOZOU0f4Uy94HWQYdzaQUbqdQ1P/kqScxbzyycS9hCDUUj
-         K42um02nC7Xjwtk28LF5XkdpoAX5j0gSul+jymqyMYRHJIU2zFuCmCVUIOJY26jLf1Ar
-         5zmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJNX/k5fpaEinZEVKeTbiKEZ+jyAqaxHxJDCkqkCoMtfcUaFlEdeqn9TKapGYDz25r5jC5CHt7Jg==@kvack.org
-X-Gm-Message-State: AOJu0Yztb/4Zi0doZ3FsBntaXVAuq1zn4HPDcrY7tpUMZbmGD/5ID2ws
-	ygEo4TQZIJQYsTdoElFsQRQ5KNDz+OgpdySfXVjbHuARSJBsgko23RSWCxni4Da/EWGo2uzvOru
-	Zz1zSXJlpoVY+KUG6VyaQ0r89uRqXDFY=
-X-Gm-Gg: ASbGncvs112CxUbDW6JqC10sE8V9Ac3Qflp0B1nVzK79utInDq8IxSOmawQONwZ4k8C
-	5FMgJU198edT29RGPQEc2G5Iggbu0Fk7uAdWUYT6WFPTafOyb9Eng4vDCDtmi/uUuBNED7UAqhw
-	NCPvMi1i7ikPTZYtOonhjqw/UKisCMipeEyHKLCq890X9vm79e1ODs2CSUSjmAerO0HdHzb+0qi
-	sb4fy9+84QzBTX+Mgbzhx8D7znFmVYeCxma7zu+bP2dk2LegxJKj/FiuGLhJLzTEOiy+qa454pZ
-	T3C9L563Uy70iqz8HCY0vV8hcsgQd+oluL0DgTfMnsuYJnjymomlbXziJFeiNXrD+niB5u0=
-X-Google-Smtp-Source: AGHT+IEYKHVXa85Li2pElk6yFv5g6STpHzlef/8H62UofABcN9oQ3Wj+xk/v4+/gcktKR5nlyxnkhnAfTauuSY9u0Fc=
-X-Received: by 2002:a17:907:7f12:b0:b73:4aa5:35e5 with SMTP id
- a640c23a62f3a-b79ec3f09c1mr410215466b.7.1764868239255; Thu, 04 Dec 2025
- 09:10:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764868496; x=1765473296;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ofjwqiOcg1c3d6qFlj4mCLrxvUQwOrLehDW+ZXphizQ=;
+        b=grORH+Jbi+jueRzXo/bxDt6zuOf/OCCKdTnAIN/3V6EPa5BegOnW+V1MJPn5jFgsFm
+         acc/D7SgcMxG211DCfuHyp7qxFq8F5TOyOZTrZyp0xbh2HbFXRP1tsXXI9gtfW96M2mw
+         nWRUw4Ivk3wDRQKX45IkXm5zHaFq5ZSSjCAbdvfMd5GJGpNgN8Tdliice5kz//8CEkqL
+         m0eXB4MV7cT4C1bXAbyY1h1FsCTe+wIJjsqImBsyBjjz6RJDATvyEQYBeHQylTpL6ZSx
+         BSgrbqqzAgdoAWmnrMC2Z2GkLQDJidfZPqSFq/o9QYis4e0jGbameZEAkffVtYZ2v/6a
+         qvSQ==
+X-Gm-Message-State: AOJu0YwLn8Ey0uOp5KQTYiYMX6G8iXZ3QWohCRcO6pIVN/FrQ/Qx5Loj
+	pYswoiYJprwk9biseGS4BCbnwuPG2jJeGAmjjkZk5WjBLon4MYcqkcd6SVYCr4oghvo=
+X-Gm-Gg: ASbGncsvEEy/XUpTFe9QUD/x2aYU9quo+mPilPCHt5knzh1/ka1zGq4XmPQEjsk+feH
+	+7C0WcDrGH9CF/prkUl8KlGpv0TkpAWU7l/P+HT1Aywkelhsz/U9KD4WVJP11SyzSQcqq7eWfjs
+	jiNmaRZcijVj3qQp7nrmE6QszMM0yaEjvHEQpZg5vJGDZLOhZM+lqRk1Nw58ADDeg9voJ2l2A08
+	5MHLkQ9VnPtb53eooji/3kLQVLPFMWTrvttG45JRqm9xZ6TXlFy1lu/TRi0CoX9tijoWJZhCMLT
+	i6gCL+bTfDqHKEbWTiUBKKU+2quKwXVcwVF3hAbfeTzs1ko7q4bnAhkSqqQi1y2pbDIx9uYg+7O
+	9mbAQClKfa3l9SqZ9FYcnjNOA3qYtTYR5Q0/jClm1XbAsTJZo2vH4QCf04+dY+RF3zevoxu8+pX
+	e3or6d4pHiPu/8nlVJMUlRWfMjwo/z0NhrBYOljBLaD2VRQtIRBoFxwzTqo87kUOEaHJ9xtA==
+X-Google-Smtp-Source: AGHT+IFLxNiDK9rQo9yZICzkfx5ZdHibc8P8WJL1rCPgVT0okFH3vVSL8J1wXE0uJ8ACsbEHHX4ZRw==
+X-Received: by 2002:a05:6214:2461:b0:87f:bb8e:410b with SMTP id 6a1803df08f44-888194c5987mr105661836d6.3.1764868495500;
+        Thu, 04 Dec 2025 09:14:55 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88827f3347asm14832226d6.6.2025.12.04.09.14.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 09:14:54 -0800 (PST)
+Date: Thu, 4 Dec 2025 12:14:53 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, osalvador@suse.de,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	muchun.song@linux.dev, Mel Gorman <mgorman@suse.de>,
+	Alexandru Moise <00moses.alexander00@gmail.com>,
+	David Rientjes <rientjes@google.com>
+Subject: Re: [PATCH v3] mm, hugetlb: implement movable_gigantic_pages sysctl
+Message-ID: <aTHBjU5-Fio6CrwD@gourry-fedora-PF4VCD3F>
+References: <20251203063836.187016-1-gourry@gourry.net>
+ <305328e0-3011-409c-a040-76fc478d541a@kernel.org>
 MIME-Version: 1.0
-References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
- <20251204141250.21114-10-ethan.w.s.graham@gmail.com> <CAHp75VfSkDvWVqi+W2iLJZhfe9+ZqSvTEN7Lh-JQbyKjPO6p_A@mail.gmail.com>
- <CANpmjNMQDs8egBfCMH_Nx7gdfxP+N40Lf6eD=-25afeTcbRS+Q@mail.gmail.com>
- <CAHp75VfsD5Yj1_JcXS5gxnN3XpLjuA7nKTZMmMHB_q-qD2E8SA@mail.gmail.com> <CANpmjNOKBw9qN4zwLzCsOkZUBegzU0eRTBmbt1z3WFvXOP+6ew@mail.gmail.com>
-In-Reply-To: <CANpmjNOKBw9qN4zwLzCsOkZUBegzU0eRTBmbt1z3WFvXOP+6ew@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 4 Dec 2025 19:10:03 +0200
-X-Gm-Features: AWmQ_bmM6LnwCv_8DkzClBvkpIFbzUw_4DvWZVBU7sLi5C0dPTkjJPGuyU2cHmI
-Message-ID: <CAHp75Vd9VOH2zHFmoU5rrQCRqJSBG2UDCfKgvOR6hwavDVqHeQ@mail.gmail.com>
-Subject: Re: [PATCH 09/10] drivers/auxdisplay: add a KFuzzTest for parse_xy()
-To: Marco Elver <elver@google.com>
-Cc: Ethan Graham <ethan.w.s.graham@gmail.com>, glider@google.com, andreyknvl@gmail.com, 
-	andy@kernel.org, brauner@kernel.org, brendan.higgins@linux.dev, 
-	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com, 
-	dvyukov@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
-	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lukas@wunner.de, shuah@kernel.org, sj@kernel.org, 
-	tarasmadan@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2F61080005
-X-Stat-Signature: uud5pyq9zhjkhwp3abi8ryw9551qk5hy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <305328e0-3011-409c-a040-76fc478d541a@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D557140013
+X-Stat-Signature: qt8i1y1weprwzudyxdbxmw69saz1e8t5
 X-Rspam-User: 
-X-HE-Tag: 1764868240-189988
-X-HE-Meta: U2FsdGVkX19WFwLkdKSqjerkBDEcGeSDp9V9RWKChyL8ZD9YgCsDS/I3Xl7zod57iakCTsGSQ5bql6SGcG7lc9ZUnlFzDekbj/syin6jfhu3Zhl+ydz8Do5+GMaXIFLFIU7sVR8vFw6jY7rxvZbJ6AoXJMuemPQH+LlO3kNuYhuT9ewKpVix0/ZqJZkEhfNJ9X10nISwTvo0LU6xkpfe10yCMRUWV6ehQJIdoYfrdCtChDY/Br6xvo5uhQLE0R3e9RHcTwrSwIOZeaTVlL0kt4boLA6jOea94BwtZ6bJAsCQDoecrO6GeH3mW5uiefRI4B6DigwCVretLX5Sc8kIqw9QmvE8q9yLF6JnTZIOefIhz2tZ1nCJHI/Hu7/zNkIkQMhfyDQlq6e4m+SqoYyWWrtALCD7ohomvez1oayU29jXqPbqhHp1SZfxAoRl3eJyn7SmIMJdJFthjJPXuP51uWvGe6iKNJ2TXhfaoNXGfkXYOgNLs/rl69XPK1IGUix8iuyFS3lk6kY6/yIABEwi9JHlnv2rDIoRTxhuXgcQj5hQ/ZgXQh7Q3/eI58meEwPF2JPtmb3yxNu0Eg+4BFqSQ0UMJxStTNYT5B42VMenGofcl8JPyzC7PNmKAvESFrUR0I2wNzlD6qTtPdLd059eCJG8gJ1nHaSHP2yhyalM/yAXvHnInu9qPUL0/OS6+Pyft9FcduoNBjb8Rc5X/FEApaBfnbC/dxsZr2d7levnXWQfLs4oxUuV4x4PM8CQG4NFwL66J2wcMK+xvJVKB99M7ywmYWjelBMLvKUSCN26KdeHCB+tTUxNEkvRzlkHWRduz8ck8MwENEpx3pT+Cqeh/bH1Daa0H1J7pQhTO9UsKOFNQr3YBRVIFzBhxxwmaUbvWHbdju+7nmiwKjKkK3jleREs88j5eUY9ms4iYBvQYWEx/TrnYNRTvSNdZuSSrM0E02EOOU8seUxrNpSK3AP
- KgrHNFSj
- eHFQncaj0aQCaikhUblhFu8duB71tundiGM1Y8VIzwLcrihY8KIpu6+Txjps4nftBDuFpakDjCg7Ou+M/Bhf/hypVPBqkYu3lpgzNJha2I5inaSXnowzDIiUY86Oe6KS2JE5RYMMCofQl9oz14GxGA/ZylME1NSKbMKzU0WvKIM0+iXakDcxiEoHl52BNhZJCR2MePbV6MjlOQFV2EdEuyGkVymw4pqoIsH2nqvZwP4hLBDc4dMSUZHtA3Nm/OJLa0pwVjAXdNOMir6C00Vpm+JMfaUodrnQDS8LirWviHYr+tusQTWXkiR/GjLzDJ5R+U6tKkC7ffrhf0al7M24X+TdZTrT9qvHu0HyhaTxL2n0FB4LE1M5qEt0e+S7CEP7kNVw55Jyw92gw+FJBp3HRoLUi9yQSLbtBKxO1QW22XSzTPFnvyvaB+FoxAWUj3BlRqTWhxhCqaxu5U4sAME6ZSjmS33GQ4r3QIGcPTANbD5AbE4Ic/WYNF1DhO6qaFdM+r51BzA6d2bBJR4rdygL2H5rgYgkgWjGVLQyJxfor2WqmyBCcH3EDACGAPhZtxRuSkFQWxKKSgHAacisverY1lAuVjo6vLkZDYLfm
+X-HE-Tag: 1764868496-959837
+X-HE-Meta: U2FsdGVkX1+Hk+kIstRwNs0x+R1iIoGSrOvkWy2Xbxco1R2rHhnRGK86JGbcaJTkr2SCwkeZSrFpfc8LETXNyecIvAIdVAonHR1ho96U6SPlfbov4ZFJ5qgSDgnKrxxA2StSeWUZmZHDE2p1BhD6p4csEN2ie+70gYZD2h81cHUzbs3ZqLXCrk2t+BF0IOH3ax9RWlhu/kqjfreOf3jN3AVbKlhKlyjNbwSyixYxwmXiEZzssTRVLwhscQyHYcsdl7lK8YuuuKi1Z4NiIkLvkiUzHyV3iSgWf5TuJkQ2fKkMbsai0Wyn5QQkAiyNHe5l+gw7D4ol+MzpysT5Tte9YtLxNnzU3pnTTlJI+/shuSj9cu8zwcKDc7KotcnYauCKrqFAvTgaMR3Ggp9mR4WUId89pD/w3SczetzKxGmRMukmWeB+Fz0MERZ7qekCRJqYs8dYSwWz/47PJc3AlwkWCf2Yir083S2mMNxEAIkk1PcQcMwqoO4rxR8Elv51rXVRDGeQtiNbJA6eom4jv2VO5r4rBB30YxYq7vyRTsamEsObNaeHI+pMTSbzjdBwq/Uu0HbUPnX3nI8wDpGW3L6jO4X7Kia40lnZG15hb1pSFCUSFC4a05soy6cCB2s/1bk0ps/bvQrBWB6f0iG3tjPwNkCtZYlr9CVk1v9DzOQ4SonaqXi9aO07xC8NzqxRpAhx1hzUwe0MHHx3Pp5qaDEAXIaUdNtt7SZnuT6UUALrRSDETYP0GiovJTHcfnR2yR7kimeLOlhWPzQSDQbSm7ZUuQpQV/RqWg72seBxRBKx34X9ijxHBRQQVZ4Kp6UYYxTXZA0VnyKSreNtufq/QeQjbju/0qTw0Sj1wJyQmhK/TEdkUizhiDvcWJU4kFfOzEIjU/AnqM5kxFzIHS1GI4tMIoQJBhJOsdAyMYMwBrsc6DpL5Mn0jc/ZwsXjWezry7jewB2C7MlITM3nNulQCLe
+ DdypYWEA
+ S1NqkuYbIUlHX+SY2dhHgPomyKGSiOFafDmuq8lzP0QEYmfREWU0mGWiPIUXHw3OnojAQCJXk8RR0ntgtdOe4rdy1nSvSsMbTxzfZmUcMTQ4dWv8VC4ws4QhskhzhDQ9H6fWy9XYSAPOYQbn3ReaWEtFOgXgitr4f+h5spPc0TUqkDEPgTCxHVOFVgLoUaQmqDLqkdVkFlmybrlg2URj0T5JjHBcXqzMv4XBE02eeuVgKr9B8yz83JiIO1jW0VWWx3gv7Yq/S6OpbUdJhgjWFM2z5EiSLsv8F7vlQlkDrH/NC0mDJlP4zYjzisnqvY2csIfa4xjuemOXf7FS4q637vGutnaUgXeWFdOKJhD6OkoWhSPZpLyGS2dz7rlgZGIpVLjymCqNEFvbcowEerpf1b+KI4lIfEMIY1nFWnSKM3W1cr6mQzyFJ/KryTEWSy0UoUVeZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,39 +124,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 4, 2025 at 5:36=E2=80=AFPM Marco Elver <elver@google.com> wrote=
-:
-> On Thu, 4 Dec 2025 at 16:34, Andy Shevchenko <andy.shevchenko@gmail.com> =
-wrote:
-> > On Thu, Dec 4, 2025 at 5:33=E2=80=AFPM Marco Elver <elver@google.com> w=
-rote:
-> > > On Thu, 4 Dec 2025 at 16:26, Andy Shevchenko <andy.shevchenko@gmail.c=
-om> wrote:
+On Wed, Dec 03, 2025 at 10:26:20AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12/3/25 07:38, Gregory Price wrote:
+> > This reintroduces a concept removed by:
+> > commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
+> > 
+> > This sysctl provides flexibility between ZONE_MOVABLE use cases:
+> > 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
+> > 2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
+> > 
+> > When ZONE_MOVABLE is used to make huge page allocation more reliable,
+> > disallowing gigantic pages memory in this region is pointless.  If
+> > hotplug is not a requirement, we can loosen the restrictions to allow
+> > 1GB gigantic pages in ZONE_MOVABLE.
+> > 
+> > Since 1GB can be difficult to migrate / has impacts on compaction /
+> > defragmentation, we don't enable this by default. Notably, 1GB pages
+> > can only be migrated if another 1GB page is available - so hot-unplug
+> > will fail if such a page cannot be found.
+> 
+> In light of the other discussion: will it fail or will it simplt retry
+> forever, until there is a free 1g page?
+> 
 
-[..]
+It retries until a 1GB page is available.
 
-> > > > > Signed-off-by: Ethan Graham <ethangraham@google.com>
-> > > > > Signed-off-by: Ethan Graham <ethan.w.s.graham@gmail.com>
-> > > >
-> > > > I believe one of two SoBs is enough.
-> > >
-> > > Per my interpretation of
-> > > https://docs.kernel.org/process/submitting-patches.html#developer-s-c=
-ertificate-of-origin-1-1
-> > > it's required where the affiliation/identity of the author has
-> > > changed; it's as if another developer picked up the series and
-> > > continues improving it.
-> >
-> > Since the original address does not exist, the Originally-by: or free
-> > text in the commit message / cover letter should be enough.
->
-> The original copyright still applies, and the SOB captures that.
+Example test:
 
-The problem is that you put a non-existing person there. Make sure
-emails are not bouncing and I will not object (however, I just saw
-Greg's reply).
+echo 0 > node0/hugepages/..-1GB/nr_hugepages (dram node)
+echo 1 > node1/hugepages/..-1GB/nr_hugepages (zone_movable node)
+./alloc_huge &                               (allocate the page)
+./node1_offline  &                           (offline > memory*/state)
+sleep 5                                      (give offline time)
+echo 1 > node0/hugepages/..-1GB/nr_hugepages (dram node)
 
---=20
-With Best Regards,
-Andy Shevchenko
+This node1_offline generates migration failures until the last step
+occurs, at which point migration and node1_offline complete as expected.
+
+The migration failures produce the following:
+
+[  707.443105] migrating pfn c080000 failed ret:-12
+[  707.453353] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xc080000
+[  707.471315] head: order:18 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
+[  707.488504] anon flags: 0x17ffff0000000848(uptodate|owner_2|head|node=1|zone=3|lastcpupid=0x1ffff)
+[  707.508393] page_type: f4(hugetlb)
+[  707.515940] raw: 17ffff0000000848 ffa000007d873cc0 ffa000007d873cc0 ff1100082366c6e9
+[  707.533126] raw: 0000000000000000 0000000000000010 00000002f4000000 0000000000000000
+[  707.550317] head: 17ffff0000000848 ffa000007d873cc0 ffa000007d873cc0 ff1100082366c6e9
+[  707.567699] head: 0000000000000000 0000000000000010 00000002f4000000 0000000000000000
+[  707.585085] head: 17ffff0000000012 ffd4000302000001 0000000000000000 0000000000000000
+[  707.602469] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000040000
+[  707.619851] page dumped because: migration failure
+
+
+I can add this to the changelog if you prefer
+
+~Gregory
 
