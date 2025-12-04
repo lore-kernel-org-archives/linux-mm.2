@@ -4,125 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ECC1D29FB2
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 19:36:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ED75D29FB2
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 19:39:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7A4D6B0032; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
+	id 098C56B0023; Thu,  4 Dec 2025 14:39:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2A7E6B00DA; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
+	id 0710A6B0088; Thu,  4 Dec 2025 14:39:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF2DD6B00DB; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
+	id EEF926B00A4; Thu,  4 Dec 2025 14:39:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B2AA6B0032
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 422A5586F1
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:36:57 +0000 (UTC)
-X-FDA: 84182796474.18.9CC2661
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 342408000A
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:36:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=GV41TixF;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764877015; a=rsa-sha256;
-	cv=none;
-	b=0Y+lhOTM76dhUUYQpv/JML1OtMIfFSC7u6c6myUV6M0HWK6fzy7huvT4gdLJqWOSsQOQJ0
-	Gzs8XgP7Nz7ZQ2H9+pOWrxXyJB2RkMFo0eYs3s3zQcMGBnsidxQaS4olmlcvxeYglzmOjY
-	CVpYEYAcPKcFXRkZbd+bV5kcArnxd4Q=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=GV41TixF;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DDB706B0023
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:39:06 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 962F9B84CB
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:39:06 +0000 (UTC)
+X-FDA: 84182801892.21.4C6C915
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B0BB51C0018
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:39:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lxo07IQA;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764877015;
+	s=arc-20220608; t=1764877144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hfmTeirb3cJ8WH4Elb1KL8rsHozjiNCHYSp9+LExjhM=;
-	b=21xY3vVU+xicwW3etcX15uDMFM2bf/I19Z4+g2sl8HiqT4zLd49WgTEwlK7Bkq4lK1rRhB
-	EOqKWjavMHUCrdF6FqhPt28lL6MhLGBMLLSwXjzH+X2YJIq9MnVNJD7nbkfDr9RcdZ6eXC
-	vwZElNjdpqdmxgyiN/YdL3scSCgil+s=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b73a9592fb8so355751666b.1
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 11:36:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1764877013; x=1765481813; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hfmTeirb3cJ8WH4Elb1KL8rsHozjiNCHYSp9+LExjhM=;
-        b=GV41TixFKIW0qXo4kSbGOavPUB65abPTuffmjQQhWzpPuT0EbQ6e5FiojAREfFJ6dn
-         bksRZXfUDvDgfmZse6Y8FIisYJVCl10mFGu8pT8U2SRLENF5MGpe2fuoEyV+p+yNoj3H
-         4kxDfNudeC4KWtPOG3oaVJyLH9fhWXpiCU3MY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764877013; x=1765481813;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hfmTeirb3cJ8WH4Elb1KL8rsHozjiNCHYSp9+LExjhM=;
-        b=nRBVQZ+fhzGTeBINopS2PTWW0eBos9qKmpzEqEYe+Apoo0b4cBbVJ59v+O91MOG36l
-         ny5ISuf3bYKjcmOWig+CujvZfrhfu61PdxABkh31VCz0vjW7x9WvEPloeDL/W5RvTpXF
-         SUH+YnDWb7RWaQ95r7S671m+U3eIgoxt99CwoAWLLes6/1Lvp2M0BLsJ6ZMnujG4WLLm
-         JNwgpWbHw2+gbdjim7Gl41hHPM82bqw4WGQPn2sx1ekbwADh8ETnbhpLdyYBRLTRB+LE
-         pVVCGd9iFdBZt9tyH51DAOZZHreYpeS3bqCozj4yGPQuGCquX3zFQ0VTPzg8YFUXRSdy
-         l2sA==
-X-Forwarded-Encrypted: i=1; AJvYcCVF33rccHEceHnbCYB2s190IF9MsXeSs2FgWknwAmnsJ9plsquYhYYTOQdBqR1q1WNhVQ2fSY00EA==@kvack.org
-X-Gm-Message-State: AOJu0YxnRJIB303Bie1NsKyuzlDnn6+p3qg8j2cnBnKgDJ+2kUXqgyBG
-	b9RqHSuGs8XzMLnH9sxktW0qNs0i1MgZCbZInic76SBLrNSrTtl3PPH+D1Ppp91GSC24KuufJPQ
-	P7bbuxyI=
-X-Gm-Gg: ASbGnct8/9lPTjb1a+pFMvJzfw8+BLxkIH+2uENEgZHWyJAp0FfQi2We3SRUgBXjTI2
-	Un8rg+WWiinQZsiumTxdrjG4tgDRK1scY1/uQcYaGkl1ykmNqtkT150kUel+AOfk9RSvFLaOZvo
-	dhtdKd/C8b02JozywBIyx8r+0T8lLWAJo2ARQh0T61dogWnWTn662zXVCgxdzM7vcfWvVkrNS3l
-	t0ooN6dXWrH2Vc1jmp3frbbvI+/vWK1a1bxBlo/oGK8QPCPh5EUCOX7lwol0ulndAMvalhNfVc+
-	fSsZuRHgaMhEoVXqwYGXPa/JVHOC4OY7ynxqnq0w4MPSDsTLc5ae5Fg8MWfuaCF/Hd1UeGLsuHk
-	mOk0snnxq3YWO5KX4Nk1wmtNd6BnCKM2Czh3ySPANREJ3IhotLhzIxnF9YngO7tulLIipITblZb
-	/U4Ztjy7KGnyEtQZeGDsbI+YzHE5sanNHYQU7Fq6h4CEZwClnPMR4jfEpAfz+LNN8Eb1wkgSA=
-X-Google-Smtp-Source: AGHT+IFzlFcNZr1F/uKz7U6R/P8Zk9RIPsGSltDu5EK2nuCSLEPHH2ffWz4V841uTFx20cQKU+VsCg==
-X-Received: by 2002:a17:907:9808:b0:b75:5ac3:5323 with SMTP id a640c23a62f3a-b79eb66859amr460833466b.25.1764877013282;
-        Thu, 04 Dec 2025 11:36:53 -0800 (PST)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b79f4498d2fsm200230266b.21.2025.12.04.11.36.51
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Dec 2025 11:36:51 -0800 (PST)
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64320b9bb4bso2622353a12.0
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 11:36:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWizEdyrIHwGwUMTAFJBk6BxfDIdR1xKGA8ZsKodV2CJ3ljjzZdEYB0hPJBAx92WQjNqgJQEnoDJg==@kvack.org
-X-Received: by 2002:a05:6402:5189:b0:640:9997:a229 with SMTP id
- 4fb4d7f45d1cf-647a69e6acbmr4507453a12.3.1764877010898; Thu, 04 Dec 2025
- 11:36:50 -0800 (PST)
+	bh=zlnt8UMquDekV44NsGIqu3q4V2h5Bg8dHyh34gkZfkg=;
+	b=nfnkGlpd62x6LTMGkrj9QpwKDBq6litXX2Q041Kadmq7N2VNoi0gFo+w63o7GlzO2ISazy
+	jp3NQoSgqx7bGnr3dNY73cWn/GzFB/ELnPrJTsNh4UCqUG0DbszexxAfZV9s6FoFMlp9HC
+	ZV2t9n6pskcXWvIcV4biXCXlC3oA37Q=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lxo07IQA;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764877144; a=rsa-sha256;
+	cv=none;
+	b=iYq/9ujoN4eTWXm1vf9w1Xpc8G2aZvCY2d/IlIQMKRNKeZg7kDdKTWlXty0uYl+ksmoJvN
+	oQyIPpcejiNiPMRTkUhbkJRkjgSsCqf0wkWPDYNd7ooUsMzJwIHIn8FddOHntyXD4V7Ns/
+	F2OoM3+ttQqNC7leutEeHHOM7U8TRIU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FC8D43D05;
+	Thu,  4 Dec 2025 19:39:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED09C4CEFB;
+	Thu,  4 Dec 2025 19:38:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764877143;
+	bh=7xoWfZb/rQlOyV51uYCWOVPmwkaZ4pvqIYT0hW3+62M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Lxo07IQAhkWMt2l8zQ9z0zjXSecELZqm/Sl/HVxpGQ3HrR32VZ/HcjuZZIECRJyuc
+	 b9AzhJXdV5j/DiFeh1DcrpWMQCqz/W0KmqtebGB5fy6P7btaWJ2f325YRNUM085/yT
+	 8ax/GnH3DxXkdSyLt/Wkxp+BHtMijuaoql6FBscs/4yJUFlyB78XqPA/3MI/alf+Ga
+	 zCzXcq75PuK2Yx/PGKMG+wUeST30nFTCs+39VviL+9YHWYnLqEmJgSWHEyOtKHT6X9
+	 rMeg0TNesxFsC8wSY69xa/Dtn+qNfbKDxsspDfh93eWHo51STHZK6sqNvm3w8dX4gG
+	 T2SwhXwLTyAhQ==
+Message-ID: <8a5b59b9-112d-44cf-b81e-6f79f59bb999@kernel.org>
+Date: Thu, 4 Dec 2025 20:38:56 +0100
 MIME-Version: 1.0
-References: <74032153-813a-4a40-8363-cce264f4d5ea@linuxfoundation.org>
- <1eb24816-530b-4470-8e58-ce7d8297996c@roeck-us.net> <0425d7b4-76e4-4057-83a5-a7b17a051c54@linuxfoundation.org>
- <ec77d11a-7613-4b75-8c9e-f2bba1595f0f@roeck-us.net> <9d520a1d-0b8d-4d30-b29f-230fc0f92b8a@linuxfoundation.org>
- <1f31b86d-283c-4878-92d0-ab90aed0c58d@roeck-us.net> <5af4522e-30ab-4eec-a861-c2760cdabd4f@linuxfoundation.org>
- <2bc690ca-fa57-46fa-949b-28b5441cd364@kernel.org> <b24fc85c-0e6d-42f9-a6b9-05136409098f@linuxfoundation.org>
-In-Reply-To: <b24fc85c-0e6d-42f9-a6b9-05136409098f@linuxfoundation.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 4 Dec 2025 11:36:33 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whd-k3GhNGvVmP7W2p1d0d4ctqJ8iCuG8DbyKzgNqCL+g@mail.gmail.com>
-X-Gm-Features: AWmQ_bl15pRGGXuHFcuQkuAPhnzgKRm8fbeljiIJE8EGq1gNKXLgKf_oozB3SVU
-Message-ID: <CAHk-=whd-k3GhNGvVmP7W2p1d0d4ctqJ8iCuG8DbyKzgNqCL+g@mail.gmail.com>
-Subject: Re: Linux 6.18 amdgpu build error
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, akpm@linux-foundation.org, 
-	Alexander Deucher <Alexander.Deucher@amd.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, amd-gfx@lists.freedesktop.org, 
-	dri-devel <dri-devel@lists.freedesktop.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Linux Memory Management List <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 342408000A
-X-Stat-Signature: 4yhacrk5qhouo66b6nda1wbxqrux6sn8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
+ hugetlb"
+To: Shuah Khan <skhan@linuxfoundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+ masahiroy@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251204023358.54107-1-skhan@linuxfoundation.org>
+ <0b007374-1058-487c-8033-4f0d2830dc89@kernel.org>
+ <aTErsX-wfnxkNJ1G@kernel.org>
+ <78af7da4-d213-42c6-8ca6-c2bdca81f233@linuxfoundation.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <78af7da4-d213-42c6-8ca6-c2bdca81f233@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B0BB51C0018
+X-Stat-Signature: jdq8eqdoqr7ka3dobsubghdtxhsbaod3
 X-Rspam-User: 
-X-HE-Tag: 1764877014-788243
-X-HE-Meta: U2FsdGVkX1+dfoG/gyZ4w8f0Xtasg990brcVSh12YZL17v6G3eLg4QZ4Wd+zMwoCBJeezYQCC1XKQeFJSIxgULI404EgBvQpLN1BMNKye4ggyZEj7qorRTZFU0b1neyliHpQtYUWaurlq3rpWXSdf1AlJqgb/jfvpyJwkZee+TeQaNAFv20YOIHGFCNMAu+9w2qxRfTx81ZTYwKLXmNrMDqUQ07tyY7dlcHfnShzc0+xnp/Une8hZXqllWy9MUYwh34WlwmwCydSYg0uZQ1RAja9rLiax9JO+yPm33G6OA2eXe8f14RYGjZZLQzcLP+8DSRWOLviR0rm5msOhbxpEUJg+n1+ng5AEswZWkiWipZaDXDSnu8bZEEBiFbaQW+57akWW5xTiF0bF/4+aekq7dHaaAmgzP4jrY1JKPtkdcIuM26iwKQZMnAEf8b6d8P+lhT9hKtUSviKyXSyuAHa7bmDNPl9dmKZknY1oImK+w2eqvyabquxM3skGoaKSK4BXaKNVrgNC1ghjEG6DNb+T9Eakv2XRa8EOqUASfFkTfpi8jGN22tOU04pYwr82Q5m7jGrrQg/H155SvX5/0U8JoWs/SZHoWGeHAjlGSQyLsgraGrcTf8yZ9YQRLas7qN6Jw/ZEbGtyNQrmuaXZ9/WH+aS0GVdZpdi8y7jSX2Q/vmsZzBtJMZPZQIC4hwlP5HWq53Gpmt6J+rdzkaka5vK8MhwFWOwMbWn8sGqQlvF/gscksfAXuU/k6eyaoKu+gmjCp+XYgn4SDVHkIMgMLgxyYiRIkf5aUMUamMslldqhl1x6Fuz+mkPuoSuTiIq/rY3YZFK3TTjwHMQrezvIaNF/eYPzbZHVWRaKvhaxsSoUfj5xMWG9SpcIBRQLjSdHJGMOyZS1miq6MIiaXx+2qqPYJrUguYn8MqxfHSMAIgdeWcJVIlL9jO2st4cjlHqj1Niy5CJHJWDpOysozNSH8b
- UaMmUIZH
- vACreSaJS+y7R/p0u1Upzz/jH2rnhImpUllh39JpP8pmZCJzCOQsZhliV/VZ/YzOUGO3g5r24oamcYTIdyqvd2H5PZFkHGpaVZM0sRFIcRgm1nqWGwaFE571z0ByCInuSoKuWTTgJT6mUvKz4uCOkdKnt0H0B57UVpsP4s9BOY7t5UeF68UPtwgXWAx2iYRIevf6LGzgp+0YCqJI9BzWniIsDaH+E4Q+d68QV4/oJ/JiVO5+5+4oCMlmB4p36g4EVjb3UD6YNTC5RPi85EMZJypfmOw==
+X-HE-Tag: 1764877144-970323
+X-HE-Meta: U2FsdGVkX1/T+PqPo+iDIzer0yHW9a0gHIxKIUBb1NcFPYKMy4/glB0F32e82ADiRlZi71SOtpyxkLF2R7j4XIPBKUMOV4a2KTGvd3AzKi3D0yg8rjCjCgQ1GP+XIVi2MZ12EQB7AEimlkvtcWN/ompKHNk15oNWWemBLVvZpTf34lPlCWbR9Y979q1ME8FGYFG5vlT+6NqbC2nPnP22G7kCTtyY/NV1l7b1rdFFVa+Fs4pDBNaSdNJJIrfJZljND3vv4mvBaSpg/OqoaJY8A/414F/OF+MX/GEpeKkjUUSXa9hJlVXjYD7KyON9i1EHNPl5Jf79eYnZeMUrqthKksAjXWq/MICQ0ay3tJIT0pE6CzXVVzlRL9G5gM6XZhY4SlN2gxNt0TkhMMKioTAWPO7mvnPyQMmwmOz1m4WVEB6rdK8XKG/0U68A0G46Sm/nW7JwbqAAm8AqEoF5dX3Q1yazll7rSDVthjM6y/93HAqpwhTfWit46/A5Ea/7BQGt91Kmkmg8TXWZw7jCs3yDtE9OdaIzm6D674ccgW8oZxSIf3kE6nRnKoT8EopAadA5OM3mOMkXEuR9+GPeb8uo0NF8DjKBr1asdGZjFaLF/LnyA9iBtxy92EbxOYqO873gEveMwbr0VOb3UQBGKRlweFhKOMImWfCwDorGli23EZHLXnOJ8q/qcVLSGeQSs3zDvBqK6+zM3pt+G2T1GCtEfyVCaMwDAxRQKksHFwTmWu6OcRdX6oBVr5fzEiCUX8rc8JHN9OVvdN1isTY8JYFtq+6GD4XnhbCA8Jvz3HRYqJ7x4ZxUjko1OpT7uPmLOumR/t6+lI5igGwPtv68uH+nC8nTuwOIFNKYVVSyMXuujFwjxu2CFFn1BvP27idQ7xEwuJnmdyLA3exNL2MroOL7WruG7P7iwTJH+a0DyXyR/hJlKxkloLkFX6wzz9KjXiH/nWH13Ud2dBRcCJcRw8b
+ GG5FL2a0
+ 6JfgDIXqwga/g6pe9RUwJWpWw5z+1vYgbZR1gmohROUc45dRQPBhYb3d99oaQP0nuHH6HX3xxZyHiZdIeafZemrBsEnd9FVZSCdao2gV2VIYf4cal5uW8bUzZDKooGa5KfKrI7sSbvcjL3kVs0O12PgcvaGzjNtMhBBZqGRf/ozjFkzRvm3lMKRaaJfRfiI6q8UHP8IQVQa1m5R4Kuyb1lAPwpbgU1l3zgBD+W8HgRjIzTbYNKfKtXNcU49peR0s06wjAQ9fBvcFXi1kV7dNcUJVr63abktkokon4+ulYxK6MrNDMo+rlwMRe2jQOcFsOf9Nn5CYaHB51tpY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,38 +101,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 4 Dec 2025 at 09:40, Shuah Khan <skhan@linuxfoundation.org> wrote:
->
-> This commit has impact on all architectures, not a narrow scoped
-> powerpc only thing -  it enables HAVE_GIGANTIC_FOLIOS on x86_64
-> and changes the common code that determines MAX_FOLIO_ORDER in
-> include/linux/mm.h
+On 12/4/25 18:03, Shuah Khan wrote:
+> On 12/3/25 23:35, Mike Rapoport wrote:
+>> On Thu, Dec 04, 2025 at 07:17:06AM +0100, David Hildenbrand (Red Hat) wrote:
+>>> Hi,
+>>>
+>>> On 12/4/25 03:33, Shuah Khan wrote:
+>>>> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+>>>
+>>> That was supposed to fix powerpc handling though. So I think we have to
+>>> understand what is happening here.
+> 
+> This patch changes include/linux/mm.h and mm/Kconfig in addition to
+> arch/powerpc/Kconfig and arch/powerpc/platforms/Kconfig.cputype
+> 
+> With this patch HAVE_GIGANTIC_FOLIOS is enabled on x86_64 config
+> 
+> The following mm/Kconfig isn't arch specific. This makes this
+> not powerpc specific and this is enabled on x86_64
 
-So I suspect your bisection might not have worked out, and there might
-be two different things going on.
+Yes, and as the patch explains that's expected. See below.
 
-In particular, hugepages were broken in 6.18-rc6 due to commit
-adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero
-folio").
+> 
+> +#
+> +# We can end up creating gigantic folio.
+> +#
+> +config HAVE_GIGANTIC_FOLIOS
+> +       def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
+> +                (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+> +
+> 
+> The following change in include/linux/mm.h is also generic
+> and applies to x86_64 as well.
+> 
+> -#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+> +#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
+> 
+> Is this not intended on all architectures?
 
-That was then fixed for rc7 (and obviously final 6.18) by commit
-5bebe8de19264 ("mm/huge_memory: Fix initialization of huge zero
-folio"), but the breakage up until that time was a bit random.
+All expected. See below.
 
-End result: if you ever ended up bisecting into that broken range
-between those two commits, you would get failures on some loads (but
-not reliably), and your bisection would end up pointing to some random
-thing.
+> 
+>>>
+>>>>
+>>>> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
+>>>> systems. git fetch-pack fails when cloning large repos and make hangs
+>>>> or errors out of Makefile.build with Error: 139. These failures are
+>>>> random with git clone failing after fetching 1% of the objects, and
+>>>> make hangs while compiling random files.
+>>>
+>>> On which architecture do we see these issues and with which kernel configs?
+>>> Can you share one?
+> 
+> Config attached.
 
-But as mentioned, that particular problem would have been fixed in rc7
-and in final 6.18, so any issues you saw with the final build would
-have been due to something else.
+Okay, let's walk this through. The config has:
 
-Can I ask you to try to re-do the bisection, but with that commit
-5bebe8de19264 applied by hand - if it wasn't already there - every
-time you build a kernel that has adfb6609c680?
+CONFIG_HAVE_GIGANTIC_FOLIOS=y
+CONFIG_HUGETLB_PAGE=y
+CONFIG_ARCH_HAS_GIGANTIC_PAGE=y
+CONFIG_ZONE_DEVICE=y
+CONFIG_SPARSEMEM=y
+CONFIG_SPARSEMEM_VMEMMAP=y
 
-That way the bisection wouldn't be affected by that other known bug.
 
-                    Linus
+In the old code:
+
+#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+/*
+  * We don't expect any folios that exceed buddy sizes (and consequently
+  * memory sections).
+  */
+#define MAX_FOLIO_ORDER         MAX_PAGE_ORDER
+#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
+/*
+  * Only pages within a single memory section are guaranteed to be
+  * contiguous. By limiting folios to a single memory section, all folio
+  * pages are guaranteed to be contiguous.
+  */
+#define MAX_FOLIO_ORDER         PFN_SECTION_SHIFT
+#else
+/*
+  * There is no real limit on the folio size. We limit them to the maximum we
+  * currently expect (e.g., hugetlb, dax).
+  */
+#define MAX_FOLIO_ORDER         PUD_ORDER
+#endif
+
+
+We would get MAX_FOLIO_ORDER = PUD_ORDER = 18
+
+
+In the new code we will get:
+
+#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
+/*
+  * We don't expect any folios that exceed buddy sizes (and consequently
+  * memory sections).
+  */
+#define MAX_FOLIO_ORDER         MAX_PAGE_ORDER
+#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
+/*
+  * Only pages within a single memory section are guaranteed to be
+  * contiguous. By limiting folios to a single memory section, all folio
+  * pages are guaranteed to be contiguous.
+  */
+#define MAX_FOLIO_ORDER         PFN_SECTION_SHIFT
+#elif defined(CONFIG_HUGETLB_PAGE)
+/*
+  * There is no real limit on the folio size. We limit them to the maximum we
+  * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+  * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+  */
+#define MAX_FOLIO_ORDER         get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
+#else
+/*
+  * Without hugetlb, gigantic folios that are bigger than a single PUD are
+  * currently impossible.
+  */
+#define MAX_FOLIO_ORDER         PUD_ORDER
+#endif
+
+
+MAX_FOLIO_ORDER = get_order(SZ_16G) = 22
+
+
+That's expected and okay (raising the maximum we expect), as we only want to set a
+rough upper cap on the maximum folio size.
+
+As I raised, observe how MAX_FOLIO_ORDER is only used to
+* trigger warnings if we observe an unexpectedly large folio size. Safety checks.
+* use it when dumping a folio to detect possible folio corruption on unexpected folio sizes
+
+
+> 
+>>>
+>>>>
+>>>> The blow is is one of the git clone failures:
+>>>>
+>>>> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+>>>> Cloning into 'linux_6.19'...
+>>>> remote: Enumerating objects: 11173575, done.
+>>>> remote: Counting objects: 100% (785/785), done.
+>>>> remote: Compressing objects: 100% (373/373), done.
+>>>> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+>>>> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+>>>> Resolving deltas: 100% (9195212/9195212), done.
+>>>> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+>>>> fatal: fetch-pack: invalid index-pack output
+>>>
+>>> If I would have to guess, these symptoms match what we saw between commit
+>>> adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+>>> and commit 5bebe8de1926 ("mm/huge_memory: Fix initialization of huge zero folio").
+>>>
+>>> 5bebe8de1926 went into v6.18-rc7.
+>>>
+>>> Just to be sure, are you sure we were able to reproduce this issue with a
+>>> v6.18-rc7 or even v6.18 that contains 5bebe8de1926?
+>>>
+>>> Bisecting might give you wrong results, as the problems of adfb6609c680 do not
+>>> reproduce reliably.
+>>    
+>> I can confirm that bisecting gives odd results between v6.18-rc5 and
+>> v6.18-rc6. I was seeing failures in some tests, bisected a few times and
+>> got a bunch of bogus commits including 3470715e5c22 ("MAINTAINERS: update
+>> David Hildenbrand's email address") :)
+> 
+> I am sure this patch is the cause oh the problems I have seen on my two
+> systems. Reverting this commit solved issues since this commit does
+> impact all architectures enabling HAVE_GIGANTIC_FOLIOS if the conditions
+> are right.
+> 
+>>
+>> And 5bebe8de1926 actually solved the issue for me.
+> 
+> Were you seeing the problems I reported without 5bebe8de1926?
+> Is 5bebe8de1926 is 6.18?
+
+We were seeing all kinds of different segmentation faults or corruptions.
+In my case, every-time I tried to login something would segfault. For others,
+compilers stopped working or they got different random segfaults.
+
+Assume you think you have a shared zero page, but every time you reboot it's filled
+with other garbage data. Not good when your app assumes something contains 0s.
+
+> 
+> I can try this commit with 39231e8d6ba7f794b566fd91ebd88c0834a23b98
+> and see what happens on my system.
+
+Yes, please. I cannot yet make sense of how MAX_FOLIO_ORDER would make any
+difference.
+
+Unless you would actually be seeing one of the WARNINGS that are based on
+MAX_FOLIO_ORDER / MAX_FOLIO_NR_PAGES. But I guess none showed up in dmesg?
+
+-- 
+Cheers
+
+David
 
