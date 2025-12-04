@@ -4,96 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2924CD24451
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 17:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5741BD24458
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 18:06:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AF036B00A5; Thu,  4 Dec 2025 12:52:53 -0500 (EST)
+	id 93F506B00AB; Thu,  4 Dec 2025 13:06:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45FE36B00A7; Thu,  4 Dec 2025 12:52:53 -0500 (EST)
+	id 8EFF76B00B1; Thu,  4 Dec 2025 13:06:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 375878D0001; Thu,  4 Dec 2025 12:52:53 -0500 (EST)
+	id 7DE896B00B3; Thu,  4 Dec 2025 13:06:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2652B6B00A5
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:52:53 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0B5916033B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:52:52 +0000 (UTC)
-X-FDA: 84182534184.20.D349946
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 31E92180011
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:52:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OEprNUEv;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B4886B00AB
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 13:06:55 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A1CA1396C3
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 18:06:55 +0000 (UTC)
+X-FDA: 84182569590.27.E66EF27
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2BCE140018
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 18:06:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FdkInuLR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764871613; a=rsa-sha256;
+	cv=none;
+	b=CmK7O43PQwzOelDXE2TUoa70tY1Vmgw5y0koRsXBIWZxOwy4m+5zdm7T1pq6ixAyFIStl/
+	ahU3bpqfH57QhslJvLdmeuw7RVoRESIhAZl9x4Jo2Cj1Veab8+dKW/asBwIW0zMUpS0Vq+
+	QFVIv7jyGE3qp2jI25wojxe1liFDIvM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FdkInuLR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764870771;
+	s=arc-20220608; t=1764871613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IIM/SPjkK4FNsPgSjNgG/0QOsmrHFtDYau3v9eqdx3U=;
-	b=WEzrzjiRFD08XuXrtjAeQcIG6PjPjhDo05lqsPjdjdNEcMWXHB9xb592LJYnO7RZhtcnVs
-	80g0XKN/cVmRWz8fJgowLjo90bLqyLHB1W4TGFc1QWSquEkG9qowtPoo2751hspDQACJeP
-	Y2JRgr7l3AFQbRMglCabq7nowYpLDoM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764870771; a=rsa-sha256;
-	cv=none;
-	b=ERHujTUkh0OsstaASGAwlPky1A7/tJ5ZCGmBeo5PGMH3AAotzkczCGMFzrRw9xArwK7Ue7
-	/5Q6Gj/fVbYh9YBVn78VG+cz9JR7lpX0k4mjE3lpDchwnF78anFiw82w00mABjAqinWede
-	N/QCkNoyIJwLM0k6LaNr/n8cpKfH1rw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OEprNUEv;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26BE2601FD;
-	Thu,  4 Dec 2025 17:52:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED49C4CEFB;
-	Thu,  4 Dec 2025 17:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764870769;
-	bh=DA9sJvA5tPMf3L1jBZwxHdfTxY+amIPbtGepu9VIEh4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OEprNUEvW8qmIDYNlWFM/AsLXrtGLg2ss4MYpjzKW1LYFPYkt9h93qnZxylHoslXC
-	 IoPZKIHV88WcjIIfkywxKNnEur7UY9hIWAS1g5R7MZCRplpAnwCcKEoqi33oDQaXWP
-	 X+8DpHBAMDmYgLCdBRhiym+ogD6AE3Gyfe58ZHInmwwm5D2ZXkEdwavlMHj3gpYRaJ
-	 joDiliqQbezPP2qqZCRUtc9M4UrZfNbuLAIGJuX5V6uXwijLengdS5M64cklc1TpNS
-	 3GNOfNCW6eEKFL4LZ/Yie+bzoUu5lj0lLMS+ODRPv6fOLfOVLISuJOo0k3I7L8Fwul
-	 RzpIFh6w4QVYA==
-Date: Thu, 4 Dec 2025 19:52:41 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>, kas@kernel.org,
-	changyuanl@google.com, graf@amazon.com, leitao@debian.org,
-	thevlad@meta.com, pratyush@kernel.org, dave.hansen@linux.intel.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 2/2] mm/memblock: only mark/clear KHO scratch memory
- when needed
-Message-ID: <aTHKaaeY7_HCswbg@kernel.org>
-References: <20251128173257.969322-1-usamaarif642@gmail.com>
- <20251128173257.969322-3-usamaarif642@gmail.com>
- <aSwFwMVyFcPlOR10@kernel.org>
- <CA+CK2bB+OQ-8CDdQfN3UFxUJR62ZjZkFB3dN43LYaXavewk_ng@mail.gmail.com>
- <f1ee34be-44fd-4286-8b02-f69d3a2dbd26@gmail.com>
+	bh=Rrdp+Zf9csQrPT16ROUyOy+alatztNf+KHjGfCRhUpY=;
+	b=xpqBrGIneilxYysgjkZQi5/lbhZ5SJ8Vlb0RXv0uxkhU3Zm6YAAbE7zs2bmUUZWAW/eIac
+	GerPAXXKxF7yViZgV0t2k1MuLFKwnB5w5bUB/F+qqu29HDGlcShmcZUP4olxX6K92uROlR
+	QCXyioQYMRw5fSRyh93X3pbXClBG458=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ee05b2b1beso11121311cf.2
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 10:06:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764871612; x=1765476412; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rrdp+Zf9csQrPT16ROUyOy+alatztNf+KHjGfCRhUpY=;
+        b=FdkInuLRFJXx5p/z8YpL/PdwocrKRvu4KxcF2wwtMx2EoaHIJn0tWyGh7xo91AiTIy
+         B6mxQPwI4OabGC09WGio5MFXBUEqPhR10IBhGJmAit9tQRdFVSumRd+dwJKODVfpIxsA
+         S06D3l8nEImvPfiaKGGwshQ3c43a7XdCIX+ZsfSbfG2Lz57vbnZbn9kDvTqjYgNVF2EU
+         2gdl6BC/N2BuTZQxmC1Jsfje7QalSdTGr7cgD0gqOJUn4AvXxUDcsAErKs0jl1E1rlwd
+         wsXhPilUE5vdHhTouhaZLEAtfUCAKmHTEcfdg7mjlGXhfkNgQouThdmfDGGhHgkgi+hV
+         bw5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764871612; x=1765476412;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Rrdp+Zf9csQrPT16ROUyOy+alatztNf+KHjGfCRhUpY=;
+        b=eU5xndCIxB1hRu8WzBmbs3CcZPMmUdJS3BVAsE2X4MixYIcYNfcN0d2OGCeFEtz9Fl
+         iOqgvXgH+KWWkkBBO+yMb9wR/e7xSbbZnOnWVC0SikY9nnToDcuRVvfW79cOMd9U1l30
+         mytjRD09B0VPYjelOBEHmfML4aNavGju3Abv3PLP+gNCm9n2sh8GcPmioufihnxyDIjY
+         A6qQkJMIOCHaGQ++v6fpP1L+u3WaQVwzSWekBxKylPKFWv1iA7KgLuVcUZBnYDw9WIO5
+         rz6xeRizZ6p6qc6cVM5ODdy5htPC7ax0b0dTL37ll2ATUjrkujlMp7Mh2+mRpYn3XCCU
+         d7xw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFe/oKwywLTKp6JQzKEX2CM5beikAX0FAP2NSsTwyyqNawLRkRa9gLctz43Uu5AN5jkaBFp7opVg==@kvack.org
+X-Gm-Message-State: AOJu0YwhNmnbZneuCPGpYtR+2pYMyMOebnxs0NwDrAP5ZGEwyt2TVnv0
+	a09IV/pzHfY8m8smsmz4KPdJv+1QdbIqN8aEF7RUDM5CuNwgJxxlvHXPo566Gifr42uFRZ7pBVz
+	OCNdK3Bl7z6iyMikfL04OBUr++OzBLUw=
+X-Gm-Gg: ASbGncuxXuIMCd13Rs75wQ8etgG6srf3NrZtnCH89YVChyEtVXm/UhRmbIeFA2NkuK8
+	8UA0EgqQ+kFDG98rEljK6ZHLukA9Fxm6HTdKFYJONE8HRwVzjE3Z16rFhzNDqLaI7ijVoTNY5IH
+	Nn/e5yD5DVTZpLVJLtD0xOMAZk91qbcJL/HOgtycpIayT1oWsZ/xS0KFVK39fzxvBPgM5PvJCmh
+	QYd5ooc32lTkQWDqlXJRpMZZ1ilV9rdBpYPI90AzGbQXrEcEhqUUQKeKdPA+m5L5Qb9Gg==
+X-Google-Smtp-Source: AGHT+IG3fjIllf1M6OCTBTd4dSunSkyg52cMugpNYk6tQ4JIDEp/Anl2MiBIRm+2Hyasb11VlNQQzK6UXmCqQNXT5qw=
+X-Received: by 2002:a05:622a:554:b0:4ee:2bfb:1658 with SMTP id
+ d75a77b69052e-4f017655416mr83408181cf.45.1764871612155; Thu, 04 Dec 2025
+ 10:06:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f1ee34be-44fd-4286-8b02-f69d3a2dbd26@gmail.com>
-X-Rspamd-Queue-Id: 31E92180011
-X-Rspamd-Server: rspam06
+References: <20251120184211.2379439-1-joannelkoong@gmail.com>
+ <20251120184211.2379439-3-joannelkoong@gmail.com> <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
+ <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
+ <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org> <CAJnrk1aJeNmQLd99PuzWVp8EycBBNBf1NZEE+sM6BY_gS64DCw@mail.gmail.com>
+ <504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org> <CAJnrk1a1XsA9u1W-b4GLcyFXvZP41z7kWbJsdnEh7khcoco==A@mail.gmail.com>
+ <CAJfpegv7_UyTht-W9pimE-G6tZQ0nKU6fYo1K2hcoNSHYC3tpw@mail.gmail.com>
+In-Reply-To: <CAJfpegv7_UyTht-W9pimE-G6tZQ0nKU6fYo1K2hcoNSHYC3tpw@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 4 Dec 2025 10:06:40 -0800
+X-Gm-Features: AWmQ_bkfmaBxtqNiCodT9gGB1wJnTwkgc9tefeZRB6rVjqiHpy8rJCyBAd9v5hc
+Message-ID: <CAJnrk1bUrL5z=K-yKGXRX8W0RtXrnnwiidrCyboLrr+9RFwnww@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
+ hang in wait_sb_inodes()
+To: Miklos Szeredi <miklos@szeredi.hu>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	shakeel.butt@linux.dev, athul.krishna.kr@protonmail.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2BCE140018
+X-Stat-Signature: jxsobqegn94uy6ddp1dcnc7qzwbzttxi
 X-Rspam-User: 
-X-Stat-Signature: xtnq5r6p45b6zmx1rcx3qk63us8ezpf5
-X-HE-Tag: 1764870771-400582
-X-HE-Meta: U2FsdGVkX18Du8nKGQ8ntuK7GOHED7rJc3VsSO80cxLwS95bx0di0a7OIl9y9XmuevoyIeMrxqaI9giqWmz5ICLn9jQ4iZy0ZL9lsJO5ny0sjgznF5i0KN89dxZlJPRY/xWPyRDAYs7P/1MzRZJl7Iu3BgMd0+pWGbaXgQWetev1JjFWSpORipgTXehz/u9d7bGxG/M0xMxxPHFJswPSCquA4yPU4vJ9yCU5wZFDtjr8/YfasvwYt0yMvFwv6iLwmDiM0apFXimQV93QlDpgwpCTXXNPXld5S0/Xj5WI4XrW9y2OtnzxZTaDEeLc7aVtaPnvF5pm3Rv7EUFwekwdPQh0OpTqVTyCsxK9StWTUC006QEWHUAKjGs+6gNE5i0AJZwK0YKKEvT7KIgwlk6oVc6r1TsBHp2x5EHKgwKcg3XTyfUdNzYgJRW7QhkBFRI0HPfyo76fXiXJpdehVRXbvxJDBKfC9rQZ3GH8hlrcNW5tTcEz0n8XkJQJ219q9d551j/RIk1Jj9RkZ8LPYVlNCRu9zSCKvR0EqdWCyeNi338w7cgVXUiZuoIh/wVDICPZyLB75DP7sGMwhx7fyB8FJZhagWjz0E5/bJ4efZk72jukoRYtr0nOMMJPV5oNY27pSDCFzvbMoaMjIpAyN3kX3YXtb95beKbxpU1q2hvZ62xoJN4gR96qKn0bCBorEDMJk1DBxRJSeA/eOutQS/6+2M1A8m+IaQXeDWE8Wd1bNXVQTGBiC2S/Ar/SspOyik1bD21CGTamtHIGYGf+Fs9ffAiyQbiw2qT6PlnE42XtGCkpFGJgcBMcoFMBQebycHm1Hsgmq6ABS6qd5NbBVhWwZPQ9SKC2atPn+H6fj5k397bIZrZiDpvzbaAztj2atpmcrFz5b0al3LXj1R+K3j1ZD9TziCYfh2ik5RIUytTGRH1nMkHUzjP/g+LyoEv7eroie/8Jek7iDbfLlkHjCED
- nlRGAGC0
- zdoAlCxTx0U1eCBR3QrJyiTh2RbTD19FQzC/v/LNJ/sLPh1lTnVcm2TSFBCtdiZJMCJM22q9r4kERGtTbQZt+zznqA8kruwmyEU3OvhZHFlPgUd292ex/IRiZYmc3a2SnHJcEOZzWOlKAAq0a/Kr8qjwdYTxJWYjr0GR8trWnN6BN8vzStlZ0pvX9nbUJDSPrI+vDpQpl6Q4bOwnD+wkve/N/49veofy+EXPe94CosBywmS9gzmkby1Qby9xuwJUbSRdOKr7SChFJ6lH7jWmL2RyVQShwFXuyjgfSKNIh1om9126Kpr2sJcpGOLCNi+Wvza+80K9F/tu8YVe8di2AFGhu14C7cDldz2jFjuMw2DJ/qpZobpLToQXu8YBR2hR8YQdl
+X-HE-Tag: 1764871613-870468
+X-HE-Meta: U2FsdGVkX19apgsSbqCKhyEuvatkVz9b8ZEUzqIOBvsAeFrnjmtvhFE/lIyB898OpXrC5YAkMVLLj1Oil871z2Vv4jygQx37Lujk2g2bTR20rFfvZfkVEifpiioBkEgf4kp8AkpByPiA+nYvhPWpkIwPMBCTIwXYcZ43F3VHl/bHQYNktWiskDpSKIU81RtgTvEz1ou+LI5AuoBRApG0YUF7jB71th9n5TR82VLFJkhXbVfzYd52kBIdhAktlj+K5Cdz0fU58r46t0JWG9D52r9jL5gnWv/50eB/6JwN2ftGlVkFPREjc3xhFA/uR088hSq4raHcMSRtZJgAUdoJBwNwEn7ntCvt/5eysOP6Ep3QWiOyeqZ1Qvd4o7apkoM0yMImP8Oz+Yu7/VeUlxKgEZOPpQTRkq0Ax+7Ycsm8l6Ug4QT22cmPvdm1O/kLG8Umv0FDJEEM/ABi5D4Ya2HBAsbbgoetWQJrCDfivF6UatFsm/MkwIyWST4mlS0ohgcWsAQ8m/9D3j3EU8JF1gJc5BlDNIU1DFq8YLKSbkm+d/YpIa8MUiKxcVqlASQUm1+15xPS3uSHnBqVawiyyR5oZYBZtWHGx2rVPQ+UySePp4DutQjwo4WLdJv61JUfaJIe+iG7E/tABYW8ERPexG51QOgyXpZLmrCfLvSZzwl+TX6dwYO5RgQDLFs6KzQSK7s4Qyo8JgSCNqg9RFJGWuWGv4/5yNH8qylHJj8e4FeRnvqVqX2vxeZI1+XC8oa0JKMGuZt5AbQ3K+K4B9MyKxOgX6oEO80uQd3uQrHAUYHT+/LEN8Xk32IgaE1yyUrxABt/3wQdtEaRFV2gthb/QtrbtGOWIQmKXcKgVRpvrMuCi+O7u1F1C1o+Z71VmVc+OPGWMBuOKC7trGy7dU9V2SIK0NSG8hTqznQA4XYDSO+Fb6D/CLm416yPIQxwj5M3DNmKeEBKfQBIcaOHxWeuttc
+ kkJbNw+H
+ Q5poXPKi2fFIUFCpg9EP2mu4Nb+PwSQHpniZOGAlWZz6prqczIdefEJGcCiwnMNusw6XmeglCWyc0Ei60Z4tReeMmJH5XMvoBKh12gdBfQnAUUJq6NmBQHhQYHNdeoPNvYXXCjdkjH38t0/P1FW6GdZWHqY12bk8ROOsSByylSKDbjvPFvoS4S5oQT/44GyruveBe2WC8Z95NLBQNMPmhMqMce+qh1M6jReY78E7z90Lhdpl/rYN1v8kurAFs6y0a9GRVFVZAgfqX+hbzCl11cFueC6cadBO3ftCY5EMHSjnG2w/BV+uQEQ1ms8y9X57YA+nSrXPqQhB+7asr5gB4Hmvrvy+wrvrYlVUOzDHFpD8cTiYGaUlQB7qMJZl483JZ51NKC7gEP8yJWSAmdaAsxvU+PDAPKHG9S+pYWsX+xr/y04t5ZBjz7wHRhRHAW+wHui0b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,114 +123,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Usama,
+On Wed, Dec 3, 2025 at 1:28=E2=80=AFAM Miklos Szeredi <miklos@szeredi.hu> w=
+rote:
+>
+> On Wed, 26 Nov 2025 at 18:58, Joanne Koong <joannelkoong@gmail.com> wrote=
+:
+> >
+> > On Wed, Nov 26, 2025 at 2:55=E2=80=AFAM David Hildenbrand (Red Hat)
+> > <david@kernel.org> wrote:
+> > > >
+> > > >> having a flag that states something like that that
+> > > >> "AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC" would probable be what we woul=
+d want
+> > > >> to add to avoid waiting for writeback with clear semantics why it =
+is ok
+> > > >> in that specific scenario.
+> > > >
+> > > > Having a separate AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC mapping flag
+> > > > sounds reasonable to me and I agree is more clearer semantically.
+> > >
+> > > Good. Then it's clear that we are not waiting because writeback is
+> > > shaky, but because even if it would be working, because we don't have=
+ to
+> > > because there are no such guarantees.
+> > >
+> > > Maybe
+> > >
+> > > AS_NO_DATA_INTEGRITY
+> > >
+> > > or similar would be cleaner, I'll have to leave that to you and Miklo=
+s
+> > > to decide what exactly the semantics are that fuse currently doesn't
+> > > provide.
+> >
+> > After reading Miklos's reply, I must have misunderstood this then - my
+> > understanding was that the reason we couldn't guarantee data integrity
+> > in fuse was because of the temp pages design where checking the
+> > writeback flag on the real folio doesn't reflect writeback state, but
+> > that removing the temp pages and using the real folio now does
+> > guarantee this. But it seems like it's not as simple as that and
+> > there's no data integrity guarantees for other reasons.
+> >
+> > Changing this to AS_NO_DATA_INTEGRITY sounds good to me, if that
+> > sounds good to Miklos as well. Or do you have another preference,
+> > Miklos?
+>
+> Sure, sounds good.
+>
+> (Sorry about the delay, missed this.)
 
-On Thu, Dec 04, 2025 at 02:51:00PM +0000, Usama Arif wrote:
-> > On Sun, Nov 30, 2025 at 3:52 AM Mike Rapoport <rppt@kernel.org> wrote:
-> >>
-> >> On Fri, Nov 28, 2025 at 05:29:34PM +0000, Usama Arif wrote:
-> >>> The scratch memory for kexec handover is used to bootstrap the
-> >>> kexec'ed kernel. Only the 1st 1MB is used as scratch, and its a
-> >>> hack to get around limitations with KHO. It is only needed when
-> >>> CONFIG_KEXEC_HANDOVER is enabled and only if it is a KHO boot
-> >>> (both checked by is_kho_boot). Add check to prevent marking a KHO
-> >>> scratch region unless needed.
-> >>
-> >> I'm going to rewrite the changelog and queue this for upstream:
-> >>
-> >> The scratch memory for kexec handover is used to bootstrap the kexec'ed
-> >> kernel and it is only needed when it is a KHO boot, i.e. a kexec boot with
-> >> handover data passed from the previous kernel.
-> >>
-> >> Currently x86 marks the first megabyte of memory as KHO scratch even for
-> >> non-KHO boots if CONFIG_KEXEC_HANDOVER is enabled.
-> >>
-> >> Add check to prevent marking a KHO scratch regions unless they are actually
-> >> needed.
-> >>
-> >>> Fixes: a2daf83e10378 ("x86/e820: temporarily enable KHO scratch for memory below 1M")
-> >>> Reported-by: Vlad Poenaru <thevlad@meta.com>
-> >>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> >>> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> > 
-> > This patch causes panic with my tests in linux-next.
-> > 
-> > [    0.000000] Kernel panic - not syncing: Cannot allocate 17280 bytes
-> > for node 0 data
-> > [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted
-> > 6.18.0-next-20251203 #2 PREEMPT(undef)
-> > [    0.000000] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-> > BIOS 0.1 11/11/2019
-> > [    0.000000] Call Trace:
-> > [    0.000000]  <TASK>
-> > [    0.000000]  ? dump_stack_lvl+0x4e/0x70
-> > [    0.000000]  ? vpanic+0xcf/0x2b0
-> > [    0.000000]  ? panic+0x66/0x66
-> > [    0.000000]  ? alloc_node_data+0x32/0x90
-> > [    0.000000]  ? numa_register_nodes+0x82/0x100
-> > [    0.000000]  ? numa_init+0x36/0x120
-> > [    0.000000]  ? setup_arch+0x667/0x7f0
-> > [    0.000000]  ? start_kernel+0x58/0x640
-> > [    0.000000]  ? x86_64_start_reservations+0x24/0x30
-> > [    0.000000]  ? x86_64_start_kernel+0xc5/0xd0
-> > [    0.000000]  ? common_startup_64+0x13e/0x148
-> > [    0.000000]  </TASK>
-> > [    0.000000] ---[ end Kernel panic - not syncing: Cannot allocate
-> > 17280 bytes for node 0 data ]---
-> > PANIC: early exception 0x0d IP 10:ffffffff89007a13 error 763 cr2
-> > 0xffff991090a01000
-> > 
-> 
-> Thanks for reporting this and sorry for the bug!
-> 
-> So the patch was designed to remove the memblock_mark_kho_scratch in e820__memblock_setup if not
-> in KHO boot. But it broke memblock_mark_kho_scratch in kho_populate.
-> Moving kho_in.fdt_phys = fdt_phys to before the memblock_mark_scratch
-> should fix it. I dont have a setup where I can easily test KHO, but I think below
-> should fix it?
+Is the reason we can't guarantee data integrity because the server
+ultimately controls disk persistence whereby it can claim to have
+written data even if it didn't? If so, it seems like NFS / the other
+network-based filesystems would also have to set that
+AS_NO_DATA_INTEGRITY mapping flag too to be consistent? Or is there
+some other reason?
 
-This might, but this is too late for v6.19-rc1.
-For now I'm dropping this series from memblock/for-next.
-We can resume working on this after merge window closes.
- 
-> TBH using fdt_phys to check if the boot is KHO might be a bit hacky? Is it possible
-> to have a better check for this?
+Thanks,
+Joanne
 
-Presence of KHO FDT is a clear indication that it is a KHO boot.
-The issue is that during early boot ordering is hard and it's not always
-clear in which order features and configuration are detected and used. 
- 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 9dc51fab604f1..c331749e6452e 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1483,6 +1483,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->                 goto out;
->         }
->  
-> +       kho_in.fdt_phys = fdt_phys;
->         /*
->          * We pass a safe contiguous blocks of memory to use for early boot
->          * purporses from the previous kernel so that we can resize the
-> @@ -1513,7 +1514,6 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->          */
->         memblock_set_kho_scratch_only();
->  
-> -       kho_in.fdt_phys = fdt_phys;
->         kho_in.scratch_phys = scratch_phys;
->         kho_scratch_cnt = scratch_cnt;
->         pr_info("found kexec handover data.\n");
-> @@ -1524,7 +1524,10 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->         if (scratch)
->                 early_memunmap(scratch, scratch_len);
->         if (err)
-> +       {
-> +               kho_in.fdt_phys = 0;
->                 pr_warn("disabling KHO revival: %d\n", err);
-> +       }
->  }
 
--- 
-Sincerely yours,
-Mike.
+>
+> Thanks,
+> Miklos
 
