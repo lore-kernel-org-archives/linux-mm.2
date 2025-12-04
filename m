@@ -4,130 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E81D2A520
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 19:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ECC1D29FB2
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 19:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2F776B000E; Thu,  4 Dec 2025 14:31:09 -0500 (EST)
+	id C7A4D6B0032; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDF996B00A4; Thu,  4 Dec 2025 14:31:09 -0500 (EST)
+	id C2A7E6B00DA; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCEA06B00D7; Thu,  4 Dec 2025 14:31:09 -0500 (EST)
+	id AF2DD6B00DB; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A94606B000E
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:31:09 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7918916038B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:31:09 +0000 (UTC)
-X-FDA: 84182781858.26.6A39293
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 47E9AC001B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:31:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=afsk2n5H;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764876667; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B2AA6B0032
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:36:57 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 422A5586F1
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:36:57 +0000 (UTC)
+X-FDA: 84182796474.18.9CC2661
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 342408000A
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:36:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=GV41TixF;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764877015; a=rsa-sha256;
 	cv=none;
-	b=Z0sAT5aWJ/3dlxn5swTA4SxkeQcyHD2uC0f9AgeTeMPl5wjb44axevGF59InFhnPeuF+Mw
-	EkigJrOOJBOdGje4HnPUqY3DY6iTvP6TSSZlAe3kJzb5DlPvwMO95ND8GEDJSkpMsJCarJ
-	+yT6AeyWRTX+lzaedlZkyRCOypKVKjk=
+	b=0Y+lhOTM76dhUUYQpv/JML1OtMIfFSC7u6c6myUV6M0HWK6fzy7huvT4gdLJqWOSsQOQJ0
+	Gzs8XgP7Nz7ZQ2H9+pOWrxXyJB2RkMFo0eYs3s3zQcMGBnsidxQaS4olmlcvxeYglzmOjY
+	CVpYEYAcPKcFXRkZbd+bV5kcArnxd4Q=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=afsk2n5H;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=GV41TixF;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764876667;
+	s=arc-20220608; t=1764877015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LIMoyBwJn7av90qkAfxn/q6wIjiZW7ZSAh6MwAXyokE=;
-	b=4rJsPWVLM0c+CEOVbekh2nCILgaxX16NizbZzky1MDkBJxlrIFIh4E/isqCGB4KdZI+wfk
-	NAPLcMzDEFQTwRdGtri1qsUo30PFVzwpao0mMCVZfffW1MlmdYcu5RG0ipzM0BGgwjSor6
-	OL6YzbTTAng0c18gKIwuPVIFCGXkHmw=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3418ac74bffso844947a91.1
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 11:31:07 -0800 (PST)
+	bh=hfmTeirb3cJ8WH4Elb1KL8rsHozjiNCHYSp9+LExjhM=;
+	b=21xY3vVU+xicwW3etcX15uDMFM2bf/I19Z4+g2sl8HiqT4zLd49WgTEwlK7Bkq4lK1rRhB
+	EOqKWjavMHUCrdF6FqhPt28lL6MhLGBMLLSwXjzH+X2YJIq9MnVNJD7nbkfDr9RcdZ6eXC
+	vwZElNjdpqdmxgyiN/YdL3scSCgil+s=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b73a9592fb8so355751666b.1
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 11:36:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764876666; x=1765481466; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LIMoyBwJn7av90qkAfxn/q6wIjiZW7ZSAh6MwAXyokE=;
-        b=afsk2n5HMTeXPXy6fTWrR5+goPgjvZ9mBwJBqjclhxHdqNWPODN6YQrKax1CscB2Va
-         Qoy6NJbC+4v8WzAVFTAKPoMRronZE36BZUALJ0qziXyrOPwad1z5Vok9/jFFlRxSQfb8
-         v98X5x0NsFR46K13OgY4pX+ElPub2ugb4Gx5gfQQBhXWhK8oDyj6zcl6tL8/r7X/Uqy2
-         RVJON/UUQJSKufHuHTq8flJvD3sqcuRHtUMAuK8O3YuhyBt0+YE6Q7gy1DsZ/wQpSpJM
-         vs+zjWMWA8ZJvmBH9Iaf+9OC/Zvd/5TAgW61b6RNa66BBLv1zPIUbXWAjD2bFXyWMeDL
-         2d1w==
+        d=linux-foundation.org; s=google; t=1764877013; x=1765481813; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hfmTeirb3cJ8WH4Elb1KL8rsHozjiNCHYSp9+LExjhM=;
+        b=GV41TixFKIW0qXo4kSbGOavPUB65abPTuffmjQQhWzpPuT0EbQ6e5FiojAREfFJ6dn
+         bksRZXfUDvDgfmZse6Y8FIisYJVCl10mFGu8pT8U2SRLENF5MGpe2fuoEyV+p+yNoj3H
+         4kxDfNudeC4KWtPOG3oaVJyLH9fhWXpiCU3MY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764876666; x=1765481466;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LIMoyBwJn7av90qkAfxn/q6wIjiZW7ZSAh6MwAXyokE=;
-        b=M5PXT0a3e1TXVZjyouCmeQqrFwDq4heBdjs1NYK1QR3h/556zdCLWup33u75MFSKLS
-         1El1PwkO1zOy3j9fXBQqxshcK5JWZ/fHnswQOU+/0/GIzYfWi9QLGJY+hHpJgDg2fx3n
-         H2PgpWSv7fQlhM7G7axctliB+edFVzb7r44nlnR9unUJcCLp4OmTFxJpfyHTn4B5dYXL
-         +TYPrXaD0dvDGMsno+T0hrXnA48VUxCvADKNlp0r5SIB5AngAp0c5KF8g2jlFJ6dUK97
-         FNTUPUi1Gz9HQicZadKO3ROkseNM/Xnt2D9+/+XpNQyU8eU/0dTVHNx1oHAOOWWvqRVq
-         GZHQ==
-X-Gm-Message-State: AOJu0YzHjAMZHJ85Ns+fj3mjvV0bpkJOz4vEldZAllta3FRmpkF+nR16
-	k8SAAEqO9xO8vLmIu1nNgNj9BGAE6NemjDwbyiGGtpQHlK8mMsMFIOV6
-X-Gm-Gg: ASbGnctyRNK3YiAh1Y1YH6JtJzQuD2EBlgKJWKvh3WTxoFPuzvzslwRF1nEHulw8gsN
-	CnuhL1Ms82e1tePieAcmk0Z99+iLZymyg2G4kHCOy9XaTG0Nsg8Hpw4Im9dT2RJQcfXGJWwPcmn
-	LiQH4U6SgvsEWj1KkgM/qScgbRBFGJ8xcZmYPJJvQlg73V71ke4QvZPJrdTTuKKGRwjHRvBPyP4
-	jFyhobaYeerusCbZaV4b3WMvChEWS7frW7xOGYdOQj333Li0DFEX1tCmSmkWGeGbHdzgzudfzLF
-	dHGVY9+f0+eZ9ZOZwhw3nS1t7uzpXV3OyVh6NvJ9senzTqfUuTqMlZqSy3nJZqfg2D7KnnrjoYO
-	H5pG16hnuIvFFgJGY2xo+GJfkPLIaQ5YYYd4xJD+08ZZKl+HAe7hXkqM7k8Z7OpXV7WYFHsUN2f
-	eHJcoRdpGzHjnDQNJ7H1wsc6q1DqQZtiicwaEax2s3BwC5E5tlfXFqP1fgauU=
-X-Google-Smtp-Source: AGHT+IHc7nv/4V6WzRg5ybDSnfl1DlbA+tXjIOJmCku4lUOrp+NzASqiXTTHgcTYv3FBrgDA7wq+wg==
-X-Received: by 2002:a17:90b:4b82:b0:336:bfce:3b48 with SMTP id 98e67ed59e1d1-34947dabcbbmr3753351a91.9.1764876666104;
-        Thu, 04 Dec 2025 11:31:06 -0800 (PST)
-Received: from [127.0.0.1] ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bf686b3b5a9sm2552926a12.9.2025.12.04.11.31.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 11:31:05 -0800 (PST)
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 05 Dec 2025 03:29:27 +0800
-Subject: [PATCH v4 19/19] mm, swap: remove no longer needed _swap_info_get
+        d=1e100.net; s=20230601; t=1764877013; x=1765481813;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hfmTeirb3cJ8WH4Elb1KL8rsHozjiNCHYSp9+LExjhM=;
+        b=nRBVQZ+fhzGTeBINopS2PTWW0eBos9qKmpzEqEYe+Apoo0b4cBbVJ59v+O91MOG36l
+         ny5ISuf3bYKjcmOWig+CujvZfrhfu61PdxABkh31VCz0vjW7x9WvEPloeDL/W5RvTpXF
+         SUH+YnDWb7RWaQ95r7S671m+U3eIgoxt99CwoAWLLes6/1Lvp2M0BLsJ6ZMnujG4WLLm
+         JNwgpWbHw2+gbdjim7Gl41hHPM82bqw4WGQPn2sx1ekbwADh8ETnbhpLdyYBRLTRB+LE
+         pVVCGd9iFdBZt9tyH51DAOZZHreYpeS3bqCozj4yGPQuGCquX3zFQ0VTPzg8YFUXRSdy
+         l2sA==
+X-Forwarded-Encrypted: i=1; AJvYcCVF33rccHEceHnbCYB2s190IF9MsXeSs2FgWknwAmnsJ9plsquYhYYTOQdBqR1q1WNhVQ2fSY00EA==@kvack.org
+X-Gm-Message-State: AOJu0YxnRJIB303Bie1NsKyuzlDnn6+p3qg8j2cnBnKgDJ+2kUXqgyBG
+	b9RqHSuGs8XzMLnH9sxktW0qNs0i1MgZCbZInic76SBLrNSrTtl3PPH+D1Ppp91GSC24KuufJPQ
+	P7bbuxyI=
+X-Gm-Gg: ASbGnct8/9lPTjb1a+pFMvJzfw8+BLxkIH+2uENEgZHWyJAp0FfQi2We3SRUgBXjTI2
+	Un8rg+WWiinQZsiumTxdrjG4tgDRK1scY1/uQcYaGkl1ykmNqtkT150kUel+AOfk9RSvFLaOZvo
+	dhtdKd/C8b02JozywBIyx8r+0T8lLWAJo2ARQh0T61dogWnWTn662zXVCgxdzM7vcfWvVkrNS3l
+	t0ooN6dXWrH2Vc1jmp3frbbvI+/vWK1a1bxBlo/oGK8QPCPh5EUCOX7lwol0ulndAMvalhNfVc+
+	fSsZuRHgaMhEoVXqwYGXPa/JVHOC4OY7ynxqnq0w4MPSDsTLc5ae5Fg8MWfuaCF/Hd1UeGLsuHk
+	mOk0snnxq3YWO5KX4Nk1wmtNd6BnCKM2Czh3ySPANREJ3IhotLhzIxnF9YngO7tulLIipITblZb
+	/U4Ztjy7KGnyEtQZeGDsbI+YzHE5sanNHYQU7Fq6h4CEZwClnPMR4jfEpAfz+LNN8Eb1wkgSA=
+X-Google-Smtp-Source: AGHT+IFzlFcNZr1F/uKz7U6R/P8Zk9RIPsGSltDu5EK2nuCSLEPHH2ffWz4V841uTFx20cQKU+VsCg==
+X-Received: by 2002:a17:907:9808:b0:b75:5ac3:5323 with SMTP id a640c23a62f3a-b79eb66859amr460833466b.25.1764877013282;
+        Thu, 04 Dec 2025 11:36:53 -0800 (PST)
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b79f4498d2fsm200230266b.21.2025.12.04.11.36.51
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Dec 2025 11:36:51 -0800 (PST)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64320b9bb4bso2622353a12.0
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 11:36:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWizEdyrIHwGwUMTAFJBk6BxfDIdR1xKGA8ZsKodV2CJ3ljjzZdEYB0hPJBAx92WQjNqgJQEnoDJg==@kvack.org
+X-Received: by 2002:a05:6402:5189:b0:640:9997:a229 with SMTP id
+ 4fb4d7f45d1cf-647a69e6acbmr4507453a12.3.1764877010898; Thu, 04 Dec 2025
+ 11:36:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251205-swap-table-p2-v4-19-cb7e28a26a40@tencent.com>
-References: <20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com>
-In-Reply-To: <20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
- Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
- Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
- David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
- Youngjun Park <youngjun.park@lge.com>, Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764876574; l=3397;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=Hx+6RnEV6CvOtID5C4mncKak3zAk83r8RmTaFWHQlOY=;
- b=KjUWPjf/oIz3MVxWSNNjn0n/F6ra+PBZg3ElsA0eu14B/aoaT73yAjmo6sF/TjF54R4crzumu
- indUS8L6+RJDdd6gxn9Behlg073fv1wDi9pSKEpUf282zsXcF1vZqEZ
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 47E9AC001B
-X-Stat-Signature: f83h3rj8rd3ng863p1jkm3jbkondga8y
+References: <74032153-813a-4a40-8363-cce264f4d5ea@linuxfoundation.org>
+ <1eb24816-530b-4470-8e58-ce7d8297996c@roeck-us.net> <0425d7b4-76e4-4057-83a5-a7b17a051c54@linuxfoundation.org>
+ <ec77d11a-7613-4b75-8c9e-f2bba1595f0f@roeck-us.net> <9d520a1d-0b8d-4d30-b29f-230fc0f92b8a@linuxfoundation.org>
+ <1f31b86d-283c-4878-92d0-ab90aed0c58d@roeck-us.net> <5af4522e-30ab-4eec-a861-c2760cdabd4f@linuxfoundation.org>
+ <2bc690ca-fa57-46fa-949b-28b5441cd364@kernel.org> <b24fc85c-0e6d-42f9-a6b9-05136409098f@linuxfoundation.org>
+In-Reply-To: <b24fc85c-0e6d-42f9-a6b9-05136409098f@linuxfoundation.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 4 Dec 2025 11:36:33 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whd-k3GhNGvVmP7W2p1d0d4ctqJ8iCuG8DbyKzgNqCL+g@mail.gmail.com>
+X-Gm-Features: AWmQ_bl15pRGGXuHFcuQkuAPhnzgKRm8fbeljiIJE8EGq1gNKXLgKf_oozB3SVU
+Message-ID: <CAHk-=whd-k3GhNGvVmP7W2p1d0d4ctqJ8iCuG8DbyKzgNqCL+g@mail.gmail.com>
+Subject: Re: Linux 6.18 amdgpu build error
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, akpm@linux-foundation.org, 
+	Alexander Deucher <Alexander.Deucher@amd.com>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, amd-gfx@lists.freedesktop.org, 
+	dri-devel <dri-devel@lists.freedesktop.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 342408000A
+X-Stat-Signature: 4yhacrk5qhouo66b6nda1wbxqrux6sn8
 X-Rspam-User: 
-X-HE-Tag: 1764876667-218181
-X-HE-Meta: U2FsdGVkX1/JRi6IpSiF7LCvvc9soLRhjKyA2kS2CJWGCnCaoA1bZez6VoVt2eOCLtJj0MJWsjk7ljbc2imGNXmabFtb7eSB9muPJsm583QUMMvai/XVyZenYjS/s/BqoJYjFAau4V8vPvpj6ZTSriIFeQCZBXEK7zOIf/iZmgoxrMOWZQR1fprggLh/QovUO1QbRYnagrF57Rc0LWSEES6vuVPzuwJzTpWNLUE88M9N4qVXp8hf3cdo6fL61jRVjJTgyVYE3d7ztr4jVbcWJfGGP5M/8yKX1WD7Ck9jozb3VVn29D3//Xz/20XuJ/L58ZJQ9szUOqhWtCUIEZ/NYY3U4SinOysn9Bjjb7nSg0o0TpoGEDEaoBXDRtdPfaeFvTUYMzFcqTD3G8yP2xRI61sRgY/unxSL52ahwLAVEjJ8H4U60Jk4gFuSgsprDDJGthlYN16YB/gU1ivJxhlqw2oMRJSpeIdvofXA15IAkkuDhGhzpneRaInTiMkpvKIQuAu65PxOW/k2L95c/KCPkEeJ27lZ5sy2MUSqf7FJHertr3ybxaxAAWJ+vc/cAl4im11rXKAr+DU/32fxqIzRwGOLbfgeoo0Otkhqn7ABXqWE4mFndKteoxjGxR4x8FBK8tpeARgUTO4PPs1JgjgTCc5+RrPtF1JHCoYUJBWhCzAGRPH6QKQ+xxodhyRPBkYrMgL90d1i5QMNHbvCQjcKS81k+//7iKNrp6MkCiz/HcjEXdZ65rb+JwRvmjn29KB7rVdQNHj/SQTDhilpO9x5HDrhPlz865x2wYk9EgXQ9g4IRxVTBkYtvK6uM/PM0QmIguxsd05fsnfvYE2X0TJlLKPsv3eykseG3NmkriRjs9wttIYccvqfBTqERdei8ZxgEyq6SfiPQ5DRYwiAVL3GQqTOM1ROF2c1KxsLL48jUrkL9LK02tzM+hwgxHxtuWizDvh//782ZX2M4aBeSJG
- 1wau6NHu
- O+tKjBb9Fh9pl6qFYYnFYl6bQDSfC18StFznd8K5HxpbY3aveN+Vy5L8i5irHHADSu/Qx5LzQrdEGo5PVT78kjcuwFbs/dSKQ8v+2TSggDpBpYXSmcbSidCnyOFLzMParVU6cMYCEZeSAq0f0rJ8gQ8iA/+blF/w0Iquz7fkk2jCncpfa6iQcx+5787wTIpzEC8pN5l20p5ie1azfibxMz7yW8945sdjiCyR+l/+p2QmdEERaWkubC6dS6tySgNie6CUTa/MFDYXDcrMrD07tOfLHq5nOAiOeuHCc9o0WDFp+ABqMOWFxZDu06zpLPqA/PQWTPz1AuJrSLFX71qPleCU47iwibcWOsVedLe49++8wTuBzt2RIlh3uoGtoS85aGuyE5XgPuaSzJbC4YePv+Dh6Fu0mN+4Mewz5D3SpVv9RXWH1NagY8jCgKwDHkmEug8nDuwIa/Nrko92rk7DjCGjXkPP7OlUMyfNR
+X-HE-Tag: 1764877014-788243
+X-HE-Meta: U2FsdGVkX1+dfoG/gyZ4w8f0Xtasg990brcVSh12YZL17v6G3eLg4QZ4Wd+zMwoCBJeezYQCC1XKQeFJSIxgULI404EgBvQpLN1BMNKye4ggyZEj7qorRTZFU0b1neyliHpQtYUWaurlq3rpWXSdf1AlJqgb/jfvpyJwkZee+TeQaNAFv20YOIHGFCNMAu+9w2qxRfTx81ZTYwKLXmNrMDqUQ07tyY7dlcHfnShzc0+xnp/Une8hZXqllWy9MUYwh34WlwmwCydSYg0uZQ1RAja9rLiax9JO+yPm33G6OA2eXe8f14RYGjZZLQzcLP+8DSRWOLviR0rm5msOhbxpEUJg+n1+ng5AEswZWkiWipZaDXDSnu8bZEEBiFbaQW+57akWW5xTiF0bF/4+aekq7dHaaAmgzP4jrY1JKPtkdcIuM26iwKQZMnAEf8b6d8P+lhT9hKtUSviKyXSyuAHa7bmDNPl9dmKZknY1oImK+w2eqvyabquxM3skGoaKSK4BXaKNVrgNC1ghjEG6DNb+T9Eakv2XRa8EOqUASfFkTfpi8jGN22tOU04pYwr82Q5m7jGrrQg/H155SvX5/0U8JoWs/SZHoWGeHAjlGSQyLsgraGrcTf8yZ9YQRLas7qN6Jw/ZEbGtyNQrmuaXZ9/WH+aS0GVdZpdi8y7jSX2Q/vmsZzBtJMZPZQIC4hwlP5HWq53Gpmt6J+rdzkaka5vK8MhwFWOwMbWn8sGqQlvF/gscksfAXuU/k6eyaoKu+gmjCp+XYgn4SDVHkIMgMLgxyYiRIkf5aUMUamMslldqhl1x6Fuz+mkPuoSuTiIq/rY3YZFK3TTjwHMQrezvIaNF/eYPzbZHVWRaKvhaxsSoUfj5xMWG9SpcIBRQLjSdHJGMOyZS1miq6MIiaXx+2qqPYJrUguYn8MqxfHSMAIgdeWcJVIlL9jO2st4cjlHqj1Niy5CJHJWDpOysozNSH8b
+ UaMmUIZH
+ vACreSaJS+y7R/p0u1Upzz/jH2rnhImpUllh39JpP8pmZCJzCOQsZhliV/VZ/YzOUGO3g5r24oamcYTIdyqvd2H5PZFkHGpaVZM0sRFIcRgm1nqWGwaFE571z0ByCInuSoKuWTTgJT6mUvKz4uCOkdKnt0H0B57UVpsP4s9BOY7t5UeF68UPtwgXWAx2iYRIevf6LGzgp+0YCqJI9BzWniIsDaH+E4Q+d68QV4/oJ/JiVO5+5+4oCMlmB4p36g4EVjb3UD6YNTC5RPi85EMZJypfmOw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,118 +131,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On Thu, 4 Dec 2025 at 09:40, Shuah Khan <skhan@linuxfoundation.org> wrote:
+>
+> This commit has impact on all architectures, not a narrow scoped
+> powerpc only thing -  it enables HAVE_GIGANTIC_FOLIOS on x86_64
+> and changes the common code that determines MAX_FOLIO_ORDER in
+> include/linux/mm.h
 
-There are now only two users of _swap_info_get after consolidating
-these callers, folio_free_swap and swp_swapcount.
+So I suspect your bisection might not have worked out, and there might
+be two different things going on.
 
-folio_free_swap already holds the folio lock, and the folio
-must be in the swap cache, _swap_info_get is redundant.
+In particular, hugepages were broken in 6.18-rc6 due to commit
+adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero
+folio").
 
-For swp_swapcount, it should use get_swap_device instead. get_swap_device
-increases the device ref count, which is actually a bit safer. The
-only current use is smap walking, and the performance change here
-is tiny.
+That was then fixed for rc7 (and obviously final 6.18) by commit
+5bebe8de19264 ("mm/huge_memory: Fix initialization of huge zero
+folio"), but the breakage up until that time was a bit random.
 
-And after these changes, _swap_info_get is no longer used, so we can
-safely remove it.
+End result: if you ever ended up bisecting into that broken range
+between those two commits, you would get failures on some loads (but
+not reliably), and your bisection would end up pointing to some random
+thing.
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/swapfile.c | 47 ++++++-----------------------------------------
- 1 file changed, 6 insertions(+), 41 deletions(-)
+But as mentioned, that particular problem would have been fixed in rc7
+and in final 6.18, so any issues you saw with the final build would
+have been due to something else.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 50ed2d7f5b85..ce2a34858fa1 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -83,9 +83,7 @@ bool swap_migration_ad_supported;
- #endif	/* CONFIG_MIGRATION */
- 
- static const char Bad_file[] = "Bad swap file entry ";
--static const char Unused_file[] = "Unused swap file entry ";
- static const char Bad_offset[] = "Bad swap offset entry ";
--static const char Unused_offset[] = "Unused swap offset entry ";
- 
- /*
-  * all active swap_info_structs
-@@ -1600,41 +1598,6 @@ void folio_put_swap(struct folio *folio, struct page *subpage)
- 	swap_put_entries_cluster(si, swp_offset(entry), nr_pages, false);
- }
- 
--static struct swap_info_struct *_swap_info_get(swp_entry_t entry)
--{
--	struct swap_info_struct *si;
--	unsigned long offset;
--
--	if (!entry.val)
--		goto out;
--	si = swap_entry_to_info(entry);
--	if (!si)
--		goto bad_nofile;
--	if (data_race(!(si->flags & SWP_USED)))
--		goto bad_device;
--	offset = swp_offset(entry);
--	if (offset >= si->max)
--		goto bad_offset;
--	if (data_race(!si->swap_map[swp_offset(entry)]) &&
--	    !swap_cache_has_folio(entry))
--		goto bad_free;
--	return si;
--
--bad_free:
--	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
--	goto out;
--bad_offset:
--	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
--	goto out;
--bad_device:
--	pr_err("%s: %s%08lx\n", __func__, Unused_file, entry.val);
--	goto out;
--bad_nofile:
--	pr_err("%s: %s%08lx\n", __func__, Bad_file, entry.val);
--out:
--	return NULL;
--}
--
- static void swap_put_entry_locked(struct swap_info_struct *si,
- 				  struct swap_cluster_info *ci,
- 				  unsigned long offset)
-@@ -1793,7 +1756,7 @@ int swp_swapcount(swp_entry_t entry)
- 	pgoff_t offset;
- 	unsigned char *map;
- 
--	si = _swap_info_get(entry);
-+	si = get_swap_device(entry);
- 	if (!si)
- 		return 0;
- 
-@@ -1823,6 +1786,7 @@ int swp_swapcount(swp_entry_t entry)
- 	} while (tmp_count & COUNT_CONTINUED);
- out:
- 	swap_cluster_unlock(ci);
-+	put_swap_device(si);
- 	return count;
- }
- 
-@@ -1857,11 +1821,12 @@ static bool swap_page_trans_huge_swapped(struct swap_info_struct *si,
- static bool folio_swapped(struct folio *folio)
- {
- 	swp_entry_t entry = folio->swap;
--	struct swap_info_struct *si = _swap_info_get(entry);
-+	struct swap_info_struct *si;
- 
--	if (!si)
--		return false;
-+	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-+	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
- 
-+	si = __swap_entry_to_info(entry);
- 	if (!IS_ENABLED(CONFIG_THP_SWAP) || likely(!folio_test_large(folio)))
- 		return swap_entry_swapped(si, swp_offset(entry));
- 
+Can I ask you to try to re-do the bisection, but with that commit
+5bebe8de19264 applied by hand - if it wasn't already there - every
+time you build a kernel that has adfb6609c680?
 
--- 
-2.52.0
+That way the bisection wouldn't be affected by that other known bug.
 
+                    Linus
 
