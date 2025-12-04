@@ -4,98 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D848D1F9B9
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 11:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 633B3D1F9BD
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 11:11:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33F9E6B0028; Thu,  4 Dec 2025 06:03:11 -0500 (EST)
+	id 522E06B0006; Thu,  4 Dec 2025 06:11:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 316B66B002A; Thu,  4 Dec 2025 06:03:11 -0500 (EST)
+	id 4D4286B002B; Thu,  4 Dec 2025 06:11:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 206266B002B; Thu,  4 Dec 2025 06:03:11 -0500 (EST)
+	id 3E9AC6B002C; Thu,  4 Dec 2025 06:11:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 108BD6B0028
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:03:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 950C28AE26
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:03:10 +0000 (UTC)
-X-FDA: 84181501740.14.5787A7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E39F8C0020
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:03:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fTJtstxT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E8A16B0006
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:11:34 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AA0D13BEC6
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:11:32 +0000 (UTC)
+X-FDA: 84181522824.06.CA49F3B
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4B29F1C000E
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:11:30 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pSckmItV;
+	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764846188;
+	s=arc-20220608; t=1764846690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xjreYuMIoORXldHgA7y0Ksf5xKSWa2MK41mqHt0ZCeY=;
-	b=iSCOLPUHs8L4MruxVf5XwgdGnlmwsQ8UXWYYLpyhQUP/gwTigyfdojbOoW83KE2DJslUJg
-	UKpckOMuuBc94q0G7N19mkpB9qFX5TOwgMcdmvFYEPooDREsuncpYd4wMWn/5UCojK4U30
-	kt6Q0TNSO3V9T975e7IroL5DCMSa8Do=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fTJtstxT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764846188; a=rsa-sha256;
+	bh=Vs7IhsUdSawXMOrWf5f71JxGpFUjZulrktZ1Qm8Q2v8=;
+	b=b7IGXC2rNTru+sB0anLqyevqXXKj/irxDRgH73Gux7uBPLTz4vTJ06wxxHhdbW4MO1a0YO
+	HSvFLvYCqn5LC9AdAdMR1xRwR/hoPjuRQvL3Q117yafTuZ+ruoio+faSLHE4qco68Fb7LA
+	xykeag4EAMegVK6r9/qVXRp7/ZK08DM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764846690; a=rsa-sha256;
 	cv=none;
-	b=gYXN7kLwCdU84WxUsFB1HXU+P9K4fosIBr9MBUpfIv//HVIj7R5S7tlbkR4ibhGq3v8bul
-	Ln+kFhiMkW1yMMQZFfq8hcBWWtE2e+YpMGjLcbETWSQp6irew9T4xISkgP3pYYP7sD1PGy
-	G8mYHavlrPEA9rpnxQEyZJMZk4vXBqc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 49DD3601B0;
-	Thu,  4 Dec 2025 11:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01B5C4CEFB;
-	Thu,  4 Dec 2025 11:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764846188;
-	bh=VWw56lfVUxbu7RmFqR4iJTg6Fr4OZGMCryvW1pHXJ74=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fTJtstxTd7DHTEktZHzCsbEJ6ZYJe7o1ugVino9CQ10qs+kObJb6NVapIn+Aem/NM
-	 7sP/0tOxfL7E8LcIwVY1U471BCsA4Nz1kjsV6A6jZdBNTfIgXPFc3ttMdFgAW/3HWd
-	 6lxLBXAjWAyKllKvrh4s2KHWSKxIwCnQrz6+9aeeLOMKuSqevqwZ+VDsHyZuwnjhh3
-	 5dZtV5WUEiUKV8xaoB3+poV67kmozKb5v0q2BYZbE+ckYT/xjTljs74/EFy6BnDrws
-	 S5VD4A7ceq6aIf5UYc6UFJrKFWUcALSGfOD3TGHeqZJTNMB7Ku8SPqD1dTncvQbB0+
-	 KAPvFs2DMa/JA==
-Message-ID: <5e40dd55-c9ea-4387-bd9b-7a4410df9898@kernel.org>
-Date: Thu, 4 Dec 2025 12:03:02 +0100
+	b=rhyAPG0qHQe9LkfYQ6hwumURX3v7f2ht87XuZ5SAA5fGkKNrw/5nokBcHbeoX56lpeUsh4
+	HxZZeYv9BKc8R4n05wvJm6sPtnJeyxBgXFI8ZjzXxZz6s61q6/0haS0kOOfrIKr0mObn+V
+	CyckFPSie0efzabuqmw1tw4Hse8nkwM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pSckmItV;
+	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Vs7IhsUdSawXMOrWf5f71JxGpFUjZulrktZ1Qm8Q2v8=; b=pSckmItVUmdbVyusV0O0TfiwUY
+	WLEioelO4DKGDd2BeLrPn03kKXhorOAL18yBqgatV/WrvupIb+SeLl/jVYIf7YyVn9tdpumdAf3XO
+	v1L3ZKwMUYsApXPAEl7saGJq0Uc6SoSCq8tXizZ/VE3MZ9qLaeWPqwe0q8bSeaXVgeDzjgqUBnIDF
+	L+w02J8EK0BsOFt+Ja1MizLg+TbFRyqe+mliXx4e2jbDE/aAi5xpFI0lsf81zE0cBkQg7y4zrKh89
+	MQCsixAsQO4lW6rgp10bnayICypIt2TtsY6rNnrhfvd0ppat9BBV1D7K62OI3cP6vRmwXWjnpf74h
+	RtUugM5A==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vR7F7-000000045pY-0kUI;
+	Thu, 04 Dec 2025 11:11:25 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5415B3004B8; Thu, 04 Dec 2025 12:11:24 +0100 (CET)
+Date: Thu, 4 Dec 2025 12:11:24 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Josh Triplett <josh@joshtriplett.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
+Message-ID: <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
+ <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
+ <aTFhFXCqvy7nmDOp@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [v2] mm: shmem: avoid build warning for CONFIG_SHMEM=n
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Arnd Bergmann <arnd@kernel.org>, Hugh Dickins <hughd@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Arnd Bergmann <arnd@arndb.de>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Kairui Song
- <kasong@tencent.com>, Christian Brauner <brauner@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Guo Weikang <guoweikang.kernel@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251204102905.1048000-1-arnd@kernel.org>
- <93782526-c198-4590-b96b-c4f630b8ecbb@kernel.org>
- <aTFojchpaTywDh1D@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aTFojchpaTywDh1D@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTFhFXCqvy7nmDOp@google.com>
+X-Rspamd-Queue-Id: 4B29F1C000E
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E39F8C0020
-X-Rspamd-Server: rspam11
-X-Stat-Signature: eciy3bk8jconqtrhc5jh8jhpffdu6pdt
-X-HE-Tag: 1764846188-673339
-X-HE-Meta: U2FsdGVkX1/aT/CCOrutjJ7HF2Xad6C7cKomKuBu9U65ps7Puez4e9BxEEk+sFn4M9/gEpw3eIc91NRcOuo03CQprvbpwDsD8v6NGdzY4zV3nQZMkwB6APTTeSCixdclto2HWbG26tL/fc3t/938LArJTBmVjvIbPNjLkRcHf9pbtRpeRvxzfYLbkTXl9trhVdbTxgf8mrtbHPx0QBvxCTt78qrlS2ld1JvXCOhVQbPEFnKSLUkSzW1xp1aYE6iJvyoLro4YHUZhjpi618F1Mlyu2yPgL6wCoOkM1SDoGa0wnVGtZyozf7ZSON1Lkvx7FJBL4YizYzOHixTTG0xMandZB+BU+1sULsbjnPCB+uGRgXFBk8+SaPwyADEPVlPfWZJc1DAVAnU9ddOnW6Rx7+++Jl0Lj6VW/BPm9FAJV0xAbY+FjzWwe495E4nmRVQWL9ETf+OfBHuKgYMb3vvW25ENA5al0AguyQw2eTj+lSHORxtOBhAtFPivs6YpDXo3qnZa9hmIyldctI5zT/F0HNXXxMb2KHfU6XkahKdufi8s26RUAonNqQpGFiTbSOEFcUUL7xBCxaTjChoV2vdOPQezviZbB0iwBOcG8smwlw31jEEofkJFGO4Oh9k7381K6pA8UE52CuOVCzn1M4Bt0l7fn6hKGV0c9r/yEyycOjkXFkkCcaHo4fer0ce4dfm3pCBWx12DKXfuMj0xuRmge5LUBiIeA9n5Aed4KgE87W9lQhO1O1Q8z2KtoQpF4Uo5fiWZk/zcidNgQR01a1Eb7jX09U13vFBCExNaLQo2hWt7STxhby/Y+aXjkT6DmAV5J/9JnCs7zDHFrNRcMX+Ds3/gjVQV+FpYjGE+PFb5mwB3YfMRUJtJ7Tv/V27wIbQopBX8jhl477/nMe7e5/gFBh/M1RvOP93pZOBi0qqpD20Xpz+sMjOpi5Y/vB0HbRl0XqvhpndZL9QUnV69gz2
- JBbW9S4f
- weVIVp8hv5hDRsM3hFXG8UN1HTW3yl+WHKKyRWZG+A9v1CO+KUQj+4rj9Chmtk1c0TPT9veKh4WERUL+XaIuxqAhwIpRu7imAKxKuBm6kJSbUsJpfzcANk6PtxNs8eaVTo8O9zO6CQ40kvqW5VTrjQ7oBUrudN1dqRkNDgRYIwxHEk/Wu/6OJ1jU1JbEagS5/3yyH2n7u7681QkrGOpWKOayUejZQCg1WYu2HvCNAcU3iEqUR9dT2bBSqBJkwr7sdVf5KJpVNUDLHdcI6b5zUhY9LgRjnFIH2sKmCEd1g0WtaQLrKXTgRR9fzF+GSkZlxfBerCsBD85lZGBatqaVS2igNS23e14wbjsRCd9VanyR/pFQDGmre/o+IeshWRxUInDtWgACk6VAwzpnO643s59GpJA==
+X-Stat-Signature: d7577ru6g7uyp5gzdg9swha33xgn1jig
+X-HE-Tag: 1764846690-988936
+X-HE-Meta: U2FsdGVkX19udDxeuGWTj12NGQ6fOnv/ReDBO1YGt3RXSQGm1QRzZBv0r2ZTSMgstUZPGznpgBYo+MfB0Kc81oSA+m5/Sck0kSlQNeElx76zByl8OOy0ZceVf5HqxmgXyq08gYCMZgWI4k1izWyGF0MIFxsyhwFKIHlv7QsCWt4WwcMW4R0mCW/IWY8tCi2sFoq51Q7Ljp/VNUEsdojLTBrtHTg73lOyQlTOI0fcRYNW0Ck8Lt0SLkokpzg39YIn+do0KNh0GtS1k/T4rhlCLdZ+4XFvf4MuCU0HZH7ghUAkZJr+FVyCJ3r+jETloXccTPX7suSX1IoBXssnjcjo9zWxidigipszbCzTCT0bo68ILFpvLxWLWO39sTTZzgyL5s/gt16HMdtH+3riLOL21lhe4463J8b/rbvY7FQJRx1tMZYM9FbEjVWwsGgboZujKFuqfGW1lB7Gqs/ylHHVRwEuB4WjOdVD4/2Khg9yvbElMXaPgfWRsFTjy2le0IiXc7fX8UKSQGn7TyP48QfwpO4jDaHLNjKiEp0LTPbkrL4wTHO0/WWsOsyYxcKdu0Q7Z2Pk4robBVl9YNWTQqFiCr9mdPpNRKPVLTsiEn/WMJXLhSoWHxW9bQbMyTH2OlJixpMtNhmnNZD5okjhYPHwmZz0Wuk0JxWX54GKB9AWiwQMkdRPVtZjfHj9TxOiByK4BvKYeylLMRLRh5dmLItVAKihnck+BdOr3HCp1r+/opO0vhANPMldFmPrjpDVFnc1dGazetW0tfHkqIw6eKEbSuukJs5zRAVxXKUYoSx2zl+IB6N+6QXCHwMPkpNz6uW3lfOvaWEK5Ug8ijA8PsnCowpFQRaI7MRKS+KfDsT1a78IFraGgV/cWicqepjHIxlhXZ41TKtePFoxo87WthxxyXtM9givPDqJwcdT3Hmv847aPHLj+j29VV9GLBLTdKhzoZem69hwnO3OmMBGObo
+ CIaLD2pK
+ 3FmfiIGVP3Ui1VByXTi4hdxyXxz4oqWdnM1b2dCNKocEQ/vIiIYgFdAyyFRdBl5k/7oGGyqdp69qF0fdb8ZsUoJ3yAHvUOsPXMMWIz1FnAs3bUxpODiGIshK64iRdcX7czJO2TvDdnRmmmGWZtUjU3mQGvkJe/FiCbLmc0ng22oXv6Gsw4PEf7Rp42/B9RdNjs58GnTZbagQ6K1eYFLqhAF0INEn+204sE9EZYyaI2PNdro4kwfojobac2zXNF1jh2+eOvzYoBH9n/0enyIcq1mz/9SGPTI7mhoT4E9/QkYmiwFUv7jcgZGsH6SiMX6/enDDMiMn7HCxzj8pXQbZpZ9It6NBmluOT+Fkt+t/8qBu2FVYi2nEBf/B2dw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,50 +113,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 11:55, Mike Rapoport wrote:
-> On Thu, Dec 04, 2025 at 11:34:24AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/4/25 11:28, Arnd Bergmann wrote:
->>> From: Arnd Bergmann <arnd@arndb.de>
->>>
->>> The newly added 'flags' variable is unused and causes a warning if
->>> CONFIG_SHMEM is disabled, since the shmem_acct_size() macro it is passed
->>> into does nothing:
->>>
->>> mm/shmem.c: In function '__shmem_file_setup':
->>> mm/shmem.c:5816:23: error: unused variable 'flags' [-Werror=unused-variable]
->>>    5816 |         unsigned long flags = (vm_flags & VM_NORESERVE) ? SHMEM_F_NORESERVE : 0;
->>>         |                       ^~~~~
->>>
->>> Replace the two macros with equivalent inline functions tto get the
->>> argument checking.
->>>
->>> Fixes: 6ff1610ced56 ("mm: shmem: use SHMEM_F_* flags instead of VM_* flags")
->>
->> That's still not upstream, right?
->>
->> $ git tag --contains 6ff1610ced56
->> mm-everything-2025-11-29-19-43
->> mm-everything-2025-12-03-23-49
->> next-20251201
->> next-20251203
->> next-20251204
->>
->> So we can likely just squash it into the problematic commit before
->> proceeding with it?
+On Thu, Dec 04, 2025 at 10:23:17AM +0000, Alice Ryhl wrote:
+
+> > The other day [*] I proposed extending Rust such that it would be able
+> > to consume a clang precompiled header directly, this would allow doing
+> > away with most of all this. No more helpers and no more bindgen.
+> > 
+> > Would that not be a much saner approach to all this?
+> > 
+> > [*] https://lkml.kernel.org/r/20251124163315.GL4068168@noisy.programming.kicks-ass.net
 > 
-> It's mm-nonmm-stable, I don't think fixups can go there.
+> I have actually discussed similar ideas in the past with Josh Triplett,
+> so you are not the only one who thinks it is a good idea. Unfortunately,
+> the road to get there is long.
 
-Ah, I only looked at mm-stable and mm-unstable.
+Right. Earlier I also proposed using libclang to parse the C header and
+inject that. This might be a little simpler, in that..
 
-Confused why this is in nomm-stable and not mm-stable.
+> Another option to get rid of the helpers is that bindgen is working on a
+> --wrap-static-fns flag, which would generate the helpers for us.
+> However, that route would still require this patch for them to be
+> inlined.
+> 
+> One detail that makes the precompiled clang header really tricky is
+> that IMO we should not require RUSTC_CLANG_LLVM_COMPATIBLE for the
+> build. With bindgen, you just need bindgen and clang to match LLVMs.
+> That's easy since bindgen loads a dylib from your clang install. But if
+> you build this logic into rustc, then you need to be really careful to
+> get rustc and clang from the same source, and that same source must use
+> the same LLVM to build both.
 
+... if you build rustc against libclang they are necessarily from the
+same LLVM build.
 
-Anyhow:
+But that might be more tricky in that you might need ways to specify C
+specific build flags.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
--- 
-Cheers
-
-David
+Anyway, good to know people are in fact pondering this, because IMO the
+whole interoperability thing with C is quite terrible.
 
