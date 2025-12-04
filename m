@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6110BD1F9CD
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 11:53:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A90E7D1F9CF
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 11:55:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE73B6B0011; Thu,  4 Dec 2025 06:53:35 -0500 (EST)
+	id 163456B0008; Thu,  4 Dec 2025 06:55:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B96DA6B0029; Thu,  4 Dec 2025 06:53:35 -0500 (EST)
+	id 114036B000E; Thu,  4 Dec 2025 06:55:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A865E6B002A; Thu,  4 Dec 2025 06:53:35 -0500 (EST)
+	id 029E06B002B; Thu,  4 Dec 2025 06:55:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9300D6B0011
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:53:35 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 87BDE52242
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:53:33 +0000 (UTC)
-X-FDA: 84181628706.24.D6F8651
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E0AD480002
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:53:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l8F43iGu;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id E08DD6B0008
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:55:07 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DE6CBC3F2
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:55:07 +0000 (UTC)
+X-FDA: 84181632654.01.2B18C40
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4DE37C0002
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:55:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSVT9OMS;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764849211;
+	s=arc-20220608; t=1764849305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QVCBV6gKtnQy2rEAfBDSKKvn4qBqj1x+UGLpOf8yJyo=;
-	b=g9KJOps/cSAdSCqyBWMQSdPYlrbJ0/MqUqFJKiIIy9RjydYDdz3vup7xnIsOaIL/vWUoW5
-	inZLDDxos2ERO4uNexZV47UAA/9Uj4Idn46w6qvKu5ZwRdD7fQdgrJoLYzPKbWbJmfb8iT
-	ro5f4KEirXEw2vBP/70eruuUvDXnus4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764849211; a=rsa-sha256;
+	bh=QUKzIqjXOT1S93jDicjj1D81R/loWPmYSN7SgH3R27Q=;
+	b=Iv0u+HX50Nt8qrLHbOxxpL8JBzb9hUz1N0Rv9KcbRkVQ8VhFXX6JV1b42BLUeyDVbUpXCj
+	iRW7vgJ3fbm7tJ5zgzmw/QCht3fDTD0H/6BFPgURdoebUB3ySnKI9HtTG68U9fucizY2pS
+	4VVNCTUtw6BJKxZQ5QqjCNDu4oDEWco=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764849305; a=rsa-sha256;
 	cv=none;
-	b=7v/25QPbPdV3y5rvCZD3/6tGgHbrhZcZPqvHbRjfpyCXM0w/iMPtwfsz8ZB89GED8eegrt
-	speoziA1LZ2WF4zWQw2HlDcseDIc0hxhrj3/TApzR6S+hloevmHWdmNd12cJokXIt4EeLP
-	fds699N/BMZW0/hEtVFY2Aj0fVGVL88=
+	b=0UWu/k4V3qequZn4itNQkdzl/DkymghoGSxXOKbbQp62gudqCET4z6BbYvOU5EBaCPOFll
+	5JMF8Us32osBZhzhZte+UnEeCidITYR4DrjfAkARfAn83t7DjP8MeUeR6I21Z9P1EkpMLa
+	S6kjA8WIxeacUSkpoNU2PZikhvrQm+A=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l8F43iGu;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSVT9OMS;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35ECD601E6;
-	Thu,  4 Dec 2025 11:53:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8423DC4CEFB;
-	Thu,  4 Dec 2025 11:53:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F6DC444A0;
+	Thu,  4 Dec 2025 11:55:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FBEC4CEFB;
+	Thu,  4 Dec 2025 11:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764849210;
-	bh=Zpl414Y6vefFz+0mGA9CipSOvbTehPYA0WM0ZAZ5yEc=;
+	s=k20201202; t=1764849304;
+	bh=v4OR7s2iAfpeKTApYIZ900a9qVzXp95UxXLFYkoRXs8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l8F43iGu2V8NDUl3DIh/2+X2bfiJU3z4ZM3VULx8KpRVQtoH+xW7CH2tkww5ZTCxo
-	 Z732odFWqfzHNQy5SzNM5XixZWclVhNfUhvGgJiGbPutM3AwRHmsLfNCAboCSPDTP/
-	 mQ1qAy91zph5RvCXiIten7mneAop/GvZWqVrT+sRJH1n488UuXQMywvv0E8xZPYpO8
-	 hem4mPeZ8WDhirZ3INCR8Hs8TJNiMUf1+2/EkXzuyFkWiHk2/yA/ki9bTau+qinvtl
-	 uLvGed0JMtDUZ3H/ydu3YrDfOdvy/uR+aG5ySHHt6+QmCrIk7eopnc2uqCD/LCtR4b
-	 NGvDZU/gQZlqA==
-Message-ID: <0f08e893-6097-4ab1-8231-ac3304c51ee9@kernel.org>
-Date: Thu, 4 Dec 2025 12:53:18 +0100
+	b=qSVT9OMSfs7yyCsQPOsdN90XnNTtafjfUD/dmcMfCTu8c2/lzqD1FogceFgxXWzqr
+	 r203f3zuJK0foURONQHzxJY2jfHSaa5AoJChRe4r19+AoA9EnTfj6foTvHD81rZuYr
+	 +9WQJigb/TTGAv/7xHl4ji1cf24S+iuagvkePOMK308/MkKZZkTDd4wyyflPIau25X
+	 dYu0+XoM3toWaO6ttRBEFhHbAzSYaGblktewxJFBPQPKnwG/h9uUM5IOZm/d78tiKQ
+	 bk35ayeXFgwv0FBkufVLisWx3GU2X8p4Dr34J/GS+L/Fmlm5g5c4stAETD6d0Mn/kA
+	 LwCmKQbUjpj2A==
+Message-ID: <173a99ed-483e-44b4-9784-598464323a39@kernel.org>
+Date: Thu, 4 Dec 2025 12:54:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/12] mm: enable lazy_mmu sections to nest
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251124132228.622678-1-kevin.brodsky@arm.com>
- <20251124132228.622678-9-kevin.brodsky@arm.com>
- <23dcf752-0b75-45a7-84f8-25bddf97af08-agordeev@linux.ibm.com>
- <703cbee6-a813-4970-9232-34ee91ed8961@arm.com>
- <2c2b3382-7bdb-41a9-b48e-4fa9a44312ba@arm.com>
+Subject: Re: [PATCH -next] mm: vmscan: correct nr_requested tracing in
+ scan_folios
+To: Chen Ridong <chenridong@huaweicloud.com>, akpm@linux-foundation.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
+ shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, yuzhao@google.com,
+ jaewon31.kim@samsung.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, lujialin4@huawei.com,
+ chenridong@huawei.com
+References: <20251203094002.1745458-1-chenridong@huaweicloud.com>
+ <98cbf348-ff21-4c90-af32-b8009c34e5fd@kernel.org>
+ <75ce1699-2c5a-4aab-acee-cca5c6a1e37c@huaweicloud.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <2c2b3382-7bdb-41a9-b48e-4fa9a44312ba@arm.com>
+In-Reply-To: <75ce1699-2c5a-4aab-acee-cca5c6a1e37c@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E0AD480002
-X-Stat-Signature: x19z9ki474j4ckfnooq9ohw1zci78mci
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4DE37C0002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1764849211-533182
-X-HE-Meta: U2FsdGVkX18flhMPXquj/cc1qqsFhL9oAB+eJ+jW7WohwDcah8jy2pTHespTerPwW4/dLqCaO/bOhXLncamo95x8Lg5E/2JiFBvcn8KRJQ8uSWl9zXogBiVU14IEZQ+g/7VJCfXz+9pos2CqFVrJivr8chbJUGG8WlC7CvfqZW1iRgWJQqLkyLNKRp486dg+5Hf5Vslfn7OdK5P/63mXFSPm7FQAZpZXmXc1ntgTJJh6xyKyEnO7Jy1+P3i8WOq1qQy7kY2Lgz3x4ZroMSbTTLCcvmzbeeAIjSp/erIgdAsFFpXQ1yBxM2vY8h3o74EezQaaErOGbnhoUkwD7JafyxI9D6RzGmdjOwJ7F2J9DETqScNznvqZCgFfX57qrWe1TmbowuLL9ZJuT1kXmBYFXiJkfGGsKxFOJLztK2WFFlThBYHNF2v9PExAx41oolfe12SkFq0parsB6HBMw4174TemiaG/ORyJIaGjN0eJUSxc1sXVsKJJtmOnqbrFxF9jnxON45s2p8dc8DnOEj+cxb5uUbBIApXPiKHCxL+3Gmk4Ua1w0VPFA0O+NCITMBl8jjw6tRDNc72g2trubcwaIYj8oMJk9m4UR7kGbqp6Uy1OMUeX18WKKvT3G06Ivkf0a5TNDT9kmRWijdkeEykt4FiuvCwSwNUueA4oVUmz8MbJEokLwHxwfQx0hZF1g8U1k76eoMa7peaUphle+gX9HYDRmuZCtAuGaULLLkTTA0Kj4fw73DxgirFh5Y+BCgVXsvGGE6MSNDEi6tGtdKvtbo5sojbEk0i+fGvW8vW1C2eQQC4WE8BDdGW8JSAGp+KOv12KnZsie6OTRolHozItA6BR5jWTvcURgB2f+HfUiyEhsJ/q2DjQsuF7Ye5xIG+18T2xs4xquhItkdSevgsZ/nvJO1lzSGPovQoX9MXHIUBamAqNNn4TIaK6lB0UfJUAf1nU/myj2Y0N0r2cRnP
- 0Y0Ljh6y
- LYOMjsfv/kcmzR+Kh3EhwmOKvqjDEdanqDry1q5JkpBIxlKXuF/kpGrpq8nA6QLTx1Y+z1INDRE2rYe5VTkWlUpbBmBOj8111JakD9DHS176PWPGDRP5ZAZ4/LVf9D+X7/aha5iWQ0Ict7ttk8VV1Nppx8MPqXijAI4o9vK+zRum3i+/P8r6dR8lPoPi2OBb4LnLuf4vtnhJvUkpec5AGjjtM7QQ/ZzD0maBr2Vw2tkDOO5d8LgvmqwWWqnylK/F2B/lz/kojWbpvA8yx5cSzsnHwHwG9HKhAopf0ybbiVB+a72MPlyOSWOvIdSpmpbXUghHMrEhkk+YjMOPhDkRX5HrMlijEfvuzEGgPrQbNzHggRhyc9vnFhum0vX4hFeyvoaTV+lBJXj5xWUk3cvIEHCyQZz77EGaodPGF
+X-Stat-Signature: t6u9zoywb3yp5pny7pbbuyshm65h3jps
+X-HE-Tag: 1764849305-859186
+X-HE-Meta: U2FsdGVkX1//ArqpWVzInlpPExTk4I70cg55m6hvPSI0gFA3kAIF6VYLQ7MU1WJE7xn9THS7vB4EoEj6X8QgFVlV6OyYYWdx8LyBofjWXyQkD31lOqMdTzz2KpGLZzmB4ctj3aqU902cHkr4s6ng9FRZXgmQUufseTpINteKJQnhMa6xhAXXn36k1tL7BWP4zYU7rqfrBHXyw0I1dvcvVXrzwtgNCPS915rG0V7glCnL+cUDMiKPPCH+mR2JAf2Zkvl4Qr43O+kBMenRGZG+XmgrowtT1JctmJFHj91U+yoeHr4N+DWPJq73edbO7jC2DJYg/fwF7ZXSRaXk+QHgwItpFWYHyNDINt1pQbO2J5v/BF0O/+0Fd50vtbPCgGhiD2NM6k3nAacAqertJ4GHebo654ilCVIj3YnYJWKAuPy1qE+4ARFYmT+XBAGm7RW4y6LmjeWSnLQ+6UsJG2UGsA0NJy/bVPXaa0TXUGWfKH8wveIIwq8K8k8Q/8x5xhpNJBr6DOyds6DYAFRK5rRfXyO0uJuqrSEX+jiD/sQ0ecTBfr5nu9iBkYcH7MXuUqhrg05gVEisP5gPudZeltQZzkpK2xdE/NdHT5x7U8W5sixCSq6ACJB4xbMmECLS8Ym+bQMPi5aP8UPkUBgh80Krkn3cIOxcoBlKL1YBvhWKQNS53SfhwDDAOrWJCmfelD/px3IfKA+aDWmfcCwMAi09VcuxCyb1Lhgkm8NSMUgAMfx7x89/P6bmbJhm7yNFgwzi2mm1pmmowDrORIsXx1d9h8CCKBB1bh/rREQBobbfLhlnH05duSXpyl0DJL6TW+Hy9fyUapnkUW7IFV09Uh4JCsaIB0nXvoFTOMV5VzU/Q7le/H88ZGPUDgaiUaxe6vkNqdB5BSTqGPjMOdKhJm/6/6h1EzqtHYgE0ozCbqL3I3HU+ThA+VF3ymqu3UYu9zzgHlKquTBR/zCg8S3Gv6D
+ wiwBnK84
+ TCudeunr/1TNhw0IyrAC4miiUusSLjanDsGkEB8thEbKlWVioGimsqrHT2w2A84IZ7azC3wX9gK9eZgtZrpe3lH0r/3JzxB0gn45FTyQgLbC1lfBS/epI9Gjv+8JTm3wJjISXLPI6Gn26kSGHBD72fBEoPp1+P0lpzWyNLVsHCwb7BUipvpQVyfaZhnu/hZrCwmxRLt6ZwDGRI5x8OBpHqqvmNvtK9I27Benyeo+9OQuIE5aT4hlULOFy/DQ8t2qWAYRPYJfu0/AgE2o/elTrfS9/KfKqR7ZL3UwMOtBtAE4F9WTC3zFX6q4E+nbw3Erj3yAdxZId2eWfU6/sp6gx8+rpXOAezfVAHZ15
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,26 +101,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 06:25, Anshuman Khandual wrote:
+On 12/4/25 01:46, Chen Ridong wrote:
 > 
 > 
-> On 03/12/25 1:50 PM, Kevin Brodsky wrote:
->> On 28/11/2025 14:55, Alexander Gordeev wrote:
->>>> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
->>>> + * currently enabled.
->>> The in_lazy_mmu_mode() name looks ambiguous to me. When the lazy MMU mode
->>> is paused are we still in lazy MMU mode? The __task_lazy_mmu_mode_active()
->>> implementation suggests we are not, while one could still assume we are,
->>> just paused.
+> On 2025/12/3 19:33, David Hildenbrand (Red Hat) wrote:
+>> On 12/3/25 10:40, Chen Ridong wrote:
+>>> From: Chen Ridong <chenridong@huawei.com>
 >>>
->>> Should in_lazy_mmu_mode() be named e.g. as in_active_lazy_mmu_mode() such
->>> a confusion would not occur in the first place.
+>>> When enabling vmscan tracing, it is observed that nr_requested is always
+>>> 4096, which is confusing.
+>>>
+>>>           mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>>>           mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>>>           mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>>>           mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>>>           mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>>>           mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>>>           mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>>>
+>>> This is because it prints MAX_LRU_BATCH, which is meaningless as it's a
+>>> constant. To fix this, modify it to print nr_to_scan as isolate_lru_folios
+>>> does.
+>>>
+>>> Fixes: 8c2214fc9a47 ("mm: multi-gen LRU: reuse some legacy trace events")
+>>> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+>>> ---
+>>>    mm/vmscan.c | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>> index fddd168a9737..8cfafd50a7a8 100644
+>>> --- a/mm/vmscan.c
+>>> +++ b/mm/vmscan.c
+>>> @@ -4601,7 +4601,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>>>        count_memcg_events(memcg, item, isolated);
+>>>        count_memcg_events(memcg, PGREFILL, sorted);
+>>>        __count_vm_events(PGSCAN_ANON + type, isolated);
+>>> -    trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, MAX_LRU_BATCH,
+>>> +    trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+>>>                    scanned, skipped, isolated,
 >>
->> I see your point, how about is_lazy_mmu_mode_active()?
+>> We do that in isolate_lru_folios().
+>>
+>> Given that we do
+>>
+>>      int remaining = min(nr_to_scan, MAX_LRU_BATCH);
+>>
+>> and effectively cap it, I wonder if we would want to trace that capped valued instead of MAX_LRU_BATCH.
+>>
 > 
-> Agreed - is_lazy_mmu_mode_active() seems better.
+> I prefer tracing nr_to_scan, as it reflects the original target number of pages we intended to scan.
 
-+1, I was scratching my head over this in previous revisions as well.
+But it's misleading, because we're also tracing "scanned, skipped, 
+isolated", and one might wonder how it relates to nr_to_scan?
+
+> Even if nr_to_scan exceeds MAX_LRU_BATCH, we can still deduce that it was effectively capped by
+> examining the actual scanned, skipped, or isolated counts. However, if we trace min(nr_to_scan,
+> MAX_LRU_BATCH) instead, we would lose visibility into what the original nr_to_scan value was.
+
+Is that really required for the purpose we are tracing here?
 
 -- 
 Cheers
