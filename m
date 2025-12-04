@@ -4,124 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8E3DD1CDB9
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 02:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC3DBD1CDC6
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 03:37:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC8F86B0024; Wed,  3 Dec 2025 21:34:36 -0500 (EST)
+	id A55C06B0008; Wed,  3 Dec 2025 22:37:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA0426B0026; Wed,  3 Dec 2025 21:34:36 -0500 (EST)
+	id A2D356B000A; Wed,  3 Dec 2025 22:37:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDE1D6B0027; Wed,  3 Dec 2025 21:34:36 -0500 (EST)
+	id 969D46B000E; Wed,  3 Dec 2025 22:37:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD3E86B0024
-	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 21:34:36 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1665813BC28
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 02:34:34 +0000 (UTC)
-X-FDA: 84180220068.03.A4DB6D7
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4B6E710000D
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 02:34:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=Ep2HXzrs;
-	spf=pass (imf14.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.210.50 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 851BB6B0008
+	for <linux-mm@kvack.org>; Wed,  3 Dec 2025 22:37:12 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 329BF52028
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 03:37:12 +0000 (UTC)
+X-FDA: 84180377904.07.EBE3DDB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0A81BA000C
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 03:37:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764819430; a=rsa-sha256;
+	cv=none;
+	b=uzwA4bkxFVkxTDtF463eDnK1shrd8M+h6lpP49S7kdCzHN/zH+I9hT0f30oEePexGSeY3Q
+	4UGfs9Sh84WzxLHBkpJw67e3zL4nMTnY0YAFarDaK5ufzbgBM4I/IQp0/ReI+qdjIoLmsK
+	04VIjeMEDe6jruqD5EDmZsTk2TIVH0I=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764815672;
+	s=arc-20220608; t=1764819430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J15Qzup8zpCFV/gNARQXdZ6OyPMzPDnFJCLC0cemZ8E=;
-	b=6s4HpK3E9hwiArZJFOeOYH26rIdQ41kMq8koxD6OE7gPJ7JmievceA9CJbYfJG7Tv+bmsR
-	M78eyIFazWlwQW+UV3yYYNaKbT+nSQF9Q/P+hS8fl1yyGzNkoyj3jeOdbXWkbBX6c19AQq
-	zUJ6IldaDdhI1ZRLzZI5WUL1dawQJYY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=Ep2HXzrs;
-	spf=pass (imf14.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.210.50 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764815672; a=rsa-sha256;
-	cv=none;
-	b=ntI3vEaNbKjMpBbA+zH7T/GXSFciYx8/afhrZKXE6gPQ+nC5SegBETaxn5U1tC+lt8Kcdf
-	QuRifX5N6ms6VmQGtedYAaRg7ebLnwzqhasHuD66vHevTqLXJvkttKSFwWeuJTT92ymvUa
-	StuM3rHzSg/zYL+HMyl976K7xji5Qj0=
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7c75dd36b1bso340777a34.2
-        for <linux-mm@kvack.org>; Wed, 03 Dec 2025 18:34:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1764815671; x=1765420471; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J15Qzup8zpCFV/gNARQXdZ6OyPMzPDnFJCLC0cemZ8E=;
-        b=Ep2HXzrsWLZ0DDYjK+UQekmwdzGFizVlZ0oLzpgib0vt+G6BCqwegTKGB6ekzk5NJy
-         orA2rND5yGCSTrpDw+5nU7Psr0QOVnYKQYhSL6Ajop8ONy1w/UR/qQtPcPmfKRhcXlyS
-         fga3HeY+oWX0RGCWjHn+8GHdi548DkLAtxCdA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764815671; x=1765420471;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J15Qzup8zpCFV/gNARQXdZ6OyPMzPDnFJCLC0cemZ8E=;
-        b=myFZB5scwixDiQs4KporUEPCmH8nm2ZWfP57T7U05vFkJ0ZUyP9OOCSRUUwLKxnaKj
-         aIArxlAvXnufgmuUFf6R9n3toh0wteH6iMZKP9olu12zDuOy+kLCj5ZA79vn0qU3BAvJ
-         8jVPmz5N8Oap6PsS0DJE9z+dGTFghafbrCuWWuvh8GwSpnvyQgs//VQjS3g7O1qJ4RuL
-         RUSY5gsUZg7WbLoWyk+G+Pl1Jbu6aTGXTiHazelDKMum5NRyQwlymqBb+liJFf8L076g
-         AC1AmqVSSv7tkqW+ZgNC7QEH5cFaFschqFix/zVqZwd1SoyaZIZkcY3BkHpdGiRPzR0r
-         3scQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1xM3xoVi9NCLIvA9t20Y9Z0S9OGP/89C4JEn6JZoQAWv2MKtvz9eW3qnj8u8qpLIYFJf/Z7YRNA==@kvack.org
-X-Gm-Message-State: AOJu0YxSltscVcQCzpZyfMixxBwbrvoHhzOTRQHYzUSPTYZalAXhp48I
-	1VGu5Ojv2UVsguYI8i+1JBN3jJwqp+BTeBD1IA411ng18X7aQCYGs2EHgZ7gDoSnIAE=
-X-Gm-Gg: ASbGncuJbFtHXk+r6IPNNaOwciOa2HiK44YZLsUmrkBmdPLSqnS5Qt7meyJpPDrArpa
-	TIhV9I3CouAX+IS4rdMOPX1R9p2y81mlPyq7VqrMT+X8TdPAconDikemejaQqmvSXD20sFGpUQc
-	IzZjqp4kJfanl8KMR75xhQtxeJICSv/gJUj6ZZWkEDjA9kmG2JeXwuG1pfGx3cCHSF56Rypev+E
-	YL5Jz1bDnhGUhLq4Ub0X5q1Vj2AXf3n3O28V+ueXcpPyOfxPEzh17Lkx7kr813NugbTZhcmv4WW
-	JaMAXJHCXHU/EH+MKaU8vj4f4CvdIdPB0kE3CHq7kE1IcKRNYY4TrrX/HZsgaNkjnj8/EEncMm/
-	jzE9/0npN6+zWzs6cf0Eu01cp0g93HgBzeAf5cCtyr3QVn0iwYbDiF3qa8Ppc28Lg+gIhS6x+gC
-	jR77tGBs4wrT47nj8R600aiU0=
-X-Google-Smtp-Source: AGHT+IEWnMa2HXMsFLErerMFo+SUotzMPb4bdwSPX42eEhpYWTcWb/bFzyKol4nu8Pe7T8YoPPT7HQ==
-X-Received: by 2002:a05:6830:411a:b0:799:de78:29d1 with SMTP id 46e09a7af769-7c958b91783mr870804a34.15.1764815671317;
-        Wed, 03 Dec 2025 18:34:31 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c95ac84d2bsm415620a34.18.2025.12.03.18.34.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 18:34:30 -0800 (PST)
-Message-ID: <5af4522e-30ab-4eec-a861-c2760cdabd4f@linuxfoundation.org>
-Date: Wed, 3 Dec 2025 19:34:29 -0700
+	 in-reply-to:in-reply-to:references:references;
+	bh=dVecSCDZ4D/iA2ATENTvjoFCAr/DQefu4KL07xBdnlY=;
+	b=2vaIYuRw6x+Ir1Sc5qlvBI/961oE469aAEQvAqkpQACA4gCwUINPN5rrCddxuxXsUCtK8K
+	kpMXm09ySC/qbQQJ4ZKzIyy/pJ5RxYla5EQ4MluVdCeOM2GD1LkfnJVX12gcv3QZFIqQUs
+	PDqk+qgNlTnTq6DX1O1qOzdCjaoxBnY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63087339;
+	Wed,  3 Dec 2025 19:37:01 -0800 (PST)
+Received: from [10.164.18.78] (unknown [10.164.18.78])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EBB883F59E;
+	Wed,  3 Dec 2025 19:36:58 -0800 (PST)
+Message-ID: <15cc652c-937b-4d5b-98f3-7cdcecf28e27@arm.com>
+Date: Thu, 4 Dec 2025 09:06:56 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 6.18 amdgpu build error
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- akpm@linux-foundation.org, david@kernel.org
-Cc: Alexander Deucher <Alexander.Deucher@amd.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- amd-gfx@lists.freedesktop.org, dri-devel <dri-devel@lists.freedesktop.org>,
- Guenter Roeck <linux@roeck-us.net>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <74032153-813a-4a40-8363-cce264f4d5ea@linuxfoundation.org>
- <1eb24816-530b-4470-8e58-ce7d8297996c@roeck-us.net>
- <0425d7b4-76e4-4057-83a5-a7b17a051c54@linuxfoundation.org>
- <ec77d11a-7613-4b75-8c9e-f2bba1595f0f@roeck-us.net>
- <9d520a1d-0b8d-4d30-b29f-230fc0f92b8a@linuxfoundation.org>
- <1f31b86d-283c-4878-92d0-ab90aed0c58d@roeck-us.net>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH v5 02/12] x86/xen: simplify flush_lazy_mmu()
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+ <20251124132228.622678-3-kevin.brodsky@arm.com>
 Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <1f31b86d-283c-4878-92d0-ab90aed0c58d@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20251124132228.622678-3-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4B6E710000D
-X-Rspamd-Server: rspam02
-X-Stat-Signature: xa58hz6i8i5srfpctiz7jjo4znczed8k
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0A81BA000C
+X-Stat-Signature: ujzawqdinza4mhcpdagdzc5cd49ew949
 X-Rspam-User: 
-X-HE-Tag: 1764815672-12106
-X-HE-Meta: U2FsdGVkX1/VJb2pb88Aw/YNF37iaCXcQ/cVjErjsYkg/wtQC63K4S3avJ5VpVGQbg7ff+6pxPShQoZF1pml6LqD6bCoLsqgkNy8NGTzUr5DYI9Iz0Rkjr46zGrzNNHKHSakbpZfDuZEf1fCG+0Nqnm2PNP2yw2H+y3vjpUhfjnOzEuCCly7DsP5cHgYIjfBEfxesW4cJaeFmoRUtUOlk8RNRtxZGBohi4NjoJZL+a8w1aMEt1oPfOqaclHG3Pl3fSqgOoyOS5pd6K4vwiLn4FiL5xH9Ce5zJ1X/HQeO5pf1SLvXjaZHk3HWDbw6cVrLZAv9VzoV7RgORiapRErZZYZ6MyXqRdUbzIN0Sb4TVn8LHBlvIgHLPiJjx22PpNWNhguG9YFPHDIuI52KgusZ6Xi7uZdeeLHPuvk2qZQds4S3rlzUf/fAGpOLOZYVY3RflXaklFmYxgNbn9eMAQG6dEU5cfIQ+1nslgTKPAf4r/tLIVA5516pJykCyfRI31tkfSeJ2wh9k0KWncGlgMuud8VB+w2RkIhaW19C3/ph+qTH458YTX9VEVpCgVZa1soaRF4F/n3EkvjgIvmwyYLEJdBS6tCwkxmWoJy0b+5O0BblzsoRSOrVWOHL/yAoYdBCTGl1kRWeX1ql7pf8031mpOCWqtrEfxKSwhJtjgD3B0uH9puAFiVDKSqkSnvvDFCpNGBvg6pdWO/N/7PY2qJzcN7UR/ZisZyceaYOsZ/MUHu3NVVlTWQMmuNpWCAZ3l+jYwyMNd7I5BIW+cfyW3s4qgEMeAIgMXcBYWTTl6unpmZf06Z7F6JbXncftlctp8Xpz+xhdwU/0+EhIJJdNnUO1KlJV8eU2f0Cp1pLjpGo+yv1Q9hUm5F6TnBwVhskdKbbRM/7Uj/06K7QkiUtL8ccXwEck+k4Ju6eVl2wLqfNb0n+sLIUcIp1MZGFwplshC0pkffD9A8SsEG/qoZyK9c
- tDPcCnPr
- oB60Pe7k7bYHAtmerNHgLhxXGR7pQ4/2oiTirmEmM98LW7eXLEFCR7R326Q==
+X-HE-Tag: 1764819429-559922
+X-HE-Meta: U2FsdGVkX18p8usFouryfokhTnJ7SJ2M2nxjjW4adErzPHl1ppuF9fpgzpqPOYvwRnkq9CUE7bZhwdZNKEC2lubbwuGcJAxJvzm+2jxREhYT321G3aSbvDoV27cbQsYlpdWDkn8M3uwBhrPOIlpOVlbjjzUHELqlyk4FjZdDeaoUjgwOMQpse9Y7N43g0uFKLXZ/iQdricrbRs+mRRdt2Mb0idpgt3JI55QMnyAqj0y0BETsDC65b1IE/yCRlL98NkejhHwIzdLBbIFBEdNaJ75EVopLZYnTF5EbxrnW0fKQoyY5vbV421hYQQlh0XAW+TEDil4OVfHSeVY6uXHgvi6I+QTkMJdKWOQBzKZSDJAAvxCg5jdUUHTIkmH6vWecTh/en3ckWCU/e7ZnLbvj2KNmlyMcXRMnjz6vjR4hFcGOEaxaUckGbrI/37/kJCkYdVBVD57M710ejA9GoueXZlpZpUbxhWkIbAdWpTC7UJkxasftrfyjfGT9D3gct7Y3e++BdxycmAJKRUs4IEUm3192IUzv4CW0jscbx5p5kNskr3Iq7lB9FqxNJJPkKDXkX3Se+4Xoifl3xagGppA1UYDjrRrEfMGXT2IZSWSJeat7B3Me9iWcEvTmVIfAUv0QVdCHlWxVsUNB3SXhUC55PJ+NJK9CVwsncSVpTRdmBlR/bC+DviLxtaEKo0HduU25W0ri3JEULB/EjT3LbDuhrx7lVTr2r3GjZywS6sQlP0UN57pvYijZVJLWhE4BKPemoeXZ7VqeZ2LvDkg2kXoEjiB6Mb9rsZAv+xhUmW5dMy54YKSlQcqbwZWQEWcZ4Yu8s94Me3IMJLTiAIRlt5lQMyQgMAaK1ebftcJTMsR0jzM4PczlfePJ9cRuEiDmYiNyCfz+wvzOCdvorsJgBDw7xl+NWJr/Eze04gTucEUpxIUEtqjoI0qAdjZfkaC/Us16MhTlnlZIPcMP5swuSW6
+ 6IC+1AE7
+ 6N8wzMzKEEqZngmA/aqkgZ/+4FFSAdzWsT7Cm098rzbHSts3T8K3S5Ew6XajEy9I6Ph7ZDLo7qnTuurHp7cWYjhLu11VwC8LQOma2GnqjhltaAnxmba9AgX3dGMFwX0z8Wkqc13tDPXflnHKbdbcbec8J9ipUtmEWEe3dtZEhuHoUqyhLUGu5kefBA/qNw/232RH7QqBEtR4x6PW7i4529Wr8mU7u6U1nBB3gL/TbgWFyp4TsuUfQ4LutmtOhpV1YjJnILy3ueJ4SNqHEIOtyUf7npI2aTF0Wts1WmF/ilGk8j8uq0HZSv/XN3g2GOwgBskQfQjfGyuQ+gByz2XSbFH/vrHgGCFuBj9HPSOg96aa2GCorzd6QwGGqeNYZiZASPthKy1P4uxSZjtD0ubqTyW1eGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,54 +109,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/3/25 18:06, Guenter Roeck wrote:
-> On 12/3/25 14:16, Shuah Khan wrote:
 
->>
->> CONFIG_RANDSTRUCT is disabled and so are the GCC_PLUGINS in my config.
+
+On 24/11/25 6:52 PM, Kevin Brodsky wrote:
+> arch_flush_lazy_mmu_mode() is called when outstanding batched
+> pgtable operations must be completed immediately. There should
+> however be no need to leave and re-enter lazy MMU completely. The
+> only part of that sequence that we really need is xen_mc_flush();
+> call it directly.
 > 
-> I guess that would have been too easy...
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+> Reviewed-by: Juergen Gross <jgross@suse.com>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+>  arch/x86/xen/mmu_pv.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
->> I am also seeing issues with cloning kernel.org repos on my system after
->> a recent update:
->>
->> remote: Enumerating objects: 11177736, done.
->> remote: Counting objects: 100% (1231/1231), done.
->> remote: Compressing objects: 100% (624/624), done.
->> remote: Total 11177736 (delta 855), reused 781 (delta 606), pack-reused 11176505 (from 1)
->> Receiving objects: 100% (11177736/11177736), 3.01 GiB | 7.10 MiB/s, done.
->> Resolving deltas: 100% (9198323/9198323), done.
->> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
->> fatal: fetch-pack: invalid index-pack output
->>
-> 
-
-Linus, Andrew, and David,
-
-Finally figured this out. I narrowed it to  to be the HAVE_GIGANTIC_FOLIOS
-support that went into Linux 6.18-rc6 in this commit:
-
- From 39231e8d6ba7f794b566fd91ebd88c0834a23b98 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Fri, 14 Nov 2025 22:49:20 +0100
-Subject: [PATCH] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-
-This appears to be large change than the powerpc scope. It broke my workflow
-completely. I sent a revert so this doesn't cause problems for others.
-
-I can reproduce this problem om two systems - with this commit
-
-git fetch-pack fails when cloning large repos and make hangs
-or errors out of Makefile.build with Error: 139. These failures are
-random with git clone failing after fetching 1% of the objects, and
-make hangs while compiling random files
-
-These failures are random and confusing sending me down the path of
-looking at tool chain. Without this commit, I can clone and build
-kernels on the two systems I was seeing problems.
-
-thanks,
--- Shuah
-
+> diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+> index 2a4a8deaf612..7a35c3393df4 100644
+> --- a/arch/x86/xen/mmu_pv.c
+> +++ b/arch/x86/xen/mmu_pv.c
+> @@ -2139,10 +2139,8 @@ static void xen_flush_lazy_mmu(void)
+>  {
+>  	preempt_disable();
+>  
+> -	if (xen_get_lazy_mode() == XEN_LAZY_MMU) {
+> -		arch_leave_lazy_mmu_mode();
+> -		arch_enter_lazy_mmu_mode();
+> -	}
+> +	if (xen_get_lazy_mode() == XEN_LAZY_MMU)
+> +		xen_mc_flush();
+>  
+>  	preempt_enable();
+>  }
 
 
