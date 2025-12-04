@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAF70D1D86A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 06:17:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AAA8D1D86A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 06:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1511A6B0026; Thu,  4 Dec 2025 01:17:17 -0500 (EST)
+	id 863196B0024; Thu,  4 Dec 2025 01:23:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 128086B0027; Thu,  4 Dec 2025 01:17:17 -0500 (EST)
+	id 83A686B0027; Thu,  4 Dec 2025 01:23:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 065676B0028; Thu,  4 Dec 2025 01:17:17 -0500 (EST)
+	id 751536B0028; Thu,  4 Dec 2025 01:23:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EA27A6B0026
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:17:16 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95C851331FE
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:17:16 +0000 (UTC)
-X-FDA: 84180781272.12.3E676B5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C6D5D180008
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:17:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rRStUzRD;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 608E16B0024
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:23:33 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 050141408C8
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:23:32 +0000 (UTC)
+X-FDA: 84180797106.24.02772B4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C421D180003
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:23:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764829034;
+	s=arc-20220608; t=1764829411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gn1VRYVqjPDCBe/3B+3c2qEZ1R46oEbsGe4ohLKwUDM=;
-	b=mZ4MZw11gfBGcLOK7PThN00cot3eQhCdBJDe3hAjereThE71w2mVR70gpVLLr9e6aV5RAc
-	VCEAVfJC+W/KW6Y/J1xo5rLbvd6owulpTE6D6gKIYLpaD/35kQ0WlNGN2MaVHO1xCB1uRk
-	SOcMiceS/IuY03j83WesvzQb2SBV1sQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764829034; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=6l0HMzCxDiyUfxstnEkfZMMZ5+gP7tJN+XR0Bg9NIsQ=;
+	b=fF8FgLhqBpIweLorTQoGNxHFNUVjT2tGZw13RAQHd3fnejAVRxWLmRdtGi5c34FvxqKxmZ
+	OFvYZ6i2aDzYlqp/4jvj5Hn+D3JzvJdBOt134tLDSIJOIgicPFdeV+OAMcKsOqjLjkSQE1
+	kvtli7yZVeEuNjDIqJ9bY9x2OxeplNk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764829411; a=rsa-sha256;
 	cv=none;
-	b=oxqRTePNpguYrb2ZGsffH3l0pE+qdwPIBDyieMO8WJVgPapRQhf5/ePtUkFgeN7ik1aC7e
-	FN2REznEmvejnc3nGvyzaq/pXhtNMAId6YK1J1TfJCyByfYFLQbipEE91Hw5sB6ARltXAk
-	uIUTAgVWNifZKALiisF8VGplwUeMT5U=
+	b=3MLunGsTck04RL1oNqYRFPpwyTmmaS7GEuw1sy+YnF96JvmuEWYkJxHXV5vxAm8Z5xD0zi
+	vSR9pB6v3lodX4t7oMzoRqBRCMeC2ZWLMW5c9fSR43vFSR9CPDAucQbaScBCtKMAwe7UMV
+	VPDRnqPjgGIgfjgQuz4Z8k+q84EW408=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rRStUzRD;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF5B444244;
-	Thu,  4 Dec 2025 06:17:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAE8C113D0;
-	Thu,  4 Dec 2025 06:17:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764829033;
-	bh=Q8MUdHMvEgmjaaGlAO28ILhZXpbj6vh8gSr4j+aWy4I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rRStUzRDg7J6StefxqN06Vm3l470tFr4uFpW1lkwsXV2CHlF9G032x1MxsBtD9JlT
-	 kQDVwHTeTi1uRkYUBZLXDH2im/vhjY0njrN203gT3IAcTpfmAxGMa72lSZ4+s0jduq
-	 ZG6Ukj3IG3DwHWpuBKiePeewSA9ri5xvMStsLZnbEK6IFCYkJ22HgCsrduq/CoKNYN
-	 fU0Qrx94BoGuQVSY1SEZ3Gkm0WxfNgt3pl072vbPl2mXFemK895uribiDls4nD1U8N
-	 r1uGyYf+nomV0bFuGqyVJUdUSwpZahS6so2CHBXGx6YkplS1GWzKoqtZ9AZ26SsVtM
-	 G3gf9HY/zaOrg==
-Message-ID: <0b007374-1058-487c-8033-4f0d2830dc89@kernel.org>
-Date: Thu, 4 Dec 2025 07:17:06 +0100
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C7BD339;
+	Wed,  3 Dec 2025 22:23:22 -0800 (PST)
+Received: from [10.164.18.78] (unknown [10.164.18.78])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C12193F73B;
+	Wed,  3 Dec 2025 22:23:19 -0800 (PST)
+Message-ID: <2dfd54d7-fe2a-4921-85ff-a581392a777a@arm.com>
+Date: Thu, 4 Dec 2025 11:53:17 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
- hugetlb"
-To: Shuah Khan <skhan@linuxfoundation.org>, akpm@linux-foundation.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, masahiroy@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251204023358.54107-1-skhan@linuxfoundation.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH v5 08/12] mm: enable lazy_mmu sections to nest
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+ <20251124132228.622678-9-kevin.brodsky@arm.com>
 Content-Language: en-US
-In-Reply-To: <20251204023358.54107-1-skhan@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C6D5D180008
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20251124132228.622678-9-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C421D180003
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: 619gpmcg1i94tegg8kamuz6n9aotemst
-X-HE-Tag: 1764829034-148354
-X-HE-Meta: U2FsdGVkX1/66JvP6pnzhYxqH/5o40FVZmnv3rOaEVzK59jQaauQliLaGWaJWXKgJozQZMvn+0s/+lM099uJ/ny9G/1Z/I15YphjburKJguwIXVlpRU0M1nWJgicEhti0VOUIbNbey56veLWWGMJ/RrE9cFm6UyiFJQGkKuePyGdm5jFV/PKD3p6CgkQ3Hvq7TWEQOHbIxmGeANe/g+dcFKYuqvi3R1UAY09WqU8ZhTzDkbO00pbIk2G1kvF1WEXN0jutDNTYOyypYgO0Y5M6xBpuUzm8EdyeRbbmIZH4uha6cmc26a4AAi7fxNpvoYgdcntir1xeDlj7koHtBE74ATPX7dIotnCgb+jJS6FU9C4hpCBH2j/JS49gO/lMH1Ec7+gAb39BNXb9B/YWw2Tb0UvmvBOh6CtlD4rxolu0abyhoBr/OgrJaJMpQy+YRiSJ3InEFJ7qNUd231gpu5uaYOosti67bbnUv9I061j0h2Hb3TYMga0/MZ6Tk44jsFMhIpA1K5XAdfuJQmrAJZMg02VVzgNTvH9Pzpn+36LPfeEqmALUcoeOSEevCB/HJuh7Wr7D1rxHRS7oX0fYtq548UaYNwwP39lxdY7CvGkJNEeEAoPH7U7ErVQswcz7237jh4lgkr6rK0P6GKhO1qsATuDjvV0Znhydx03vyHcBz6DP19bm4HCmQiG4g3jerLtY7CHloiQsgu7L+k8FI7Pa+rVMJuY5vbShkX3drBgW8qT8aMa5He5RmqD97H6Z10T/S3IbuE34vnl+RXvyO5GPhPKJY762Y/YVNFcS8BHLYxX6EHy2XrUA3Ov/3eNxjgrujQkLhRtx8zt1mBbFQfXMr4dOXvx3gqn3u9V/9Wi3B+EA4MZYzxjpQbWQayWwnnFXU7zoLeBZui9tHkiHS1KAytKm10VsqR7Ez9lcfO1ahBtYb7Z64z0m7hZH+tX01sFXKAdzDPajJsDuDEqBoM
- VgmZ3os9
- 7Yj64mp/94xpfXJVCWlLBHwrofZR7nbh4Cf5ss+2/hrHmSl8LPutnLxTI19SzusqliaWILuKerxwK3oUcpLZzyh8w5IoLph3dGm40q09AOMVkCbH44wTzwy5DynP4rKbDOcHWcyTsF9LZd6gRE4qFOo7mc3nBDs2UXEzqo+I7ccpinqk2DJn4VlZLRPmSoN6EWBch/AOB4uToM8z8yQ2bnL0fUX+R/ExRvCemLLRNgoZ2HhWNJTSfDiRiWN6YTWzD4ySfCW+RQ2oG6u1VcZC1/e1hGJIb8ml1NaEOcDzX9pIjVB5YKGhv9+PDD9iR6ykNPBHJ3YNO46ZfYg94a4b1cGr5JKG9VFgLuPh0Z4zQXhELNFLfG9iscaf1S2jF+eH6lK1pydA4LZSjbVo=
+X-Stat-Signature: y6rrj1j59ws6r3p5nqeco6h838c83bss
+X-HE-Tag: 1764829410-755359
+X-HE-Meta: U2FsdGVkX1+yMQqpVH5WgIyJ5KF+FokdgUc2aQnCk8qiWJGVQ6aCR3waM/KzCkKQ4YsFAnJNupPQrar+BbewaThPTh4l6V5s6cL+F+3kxETrC/tcoEzcxE/tulWY0iRCFugUtP1fHxmYeBjp6+EoGdN9Cz+sp7zIRZbMcA+vmMs4nBct8MhoVZ1JVp4RpD3zKE1SAW3NviEbrrsY0lmbPN3RBqQ6hSrfaY///HkpnhXi1aavMKa+pku6nBtYIrDw6z6IjzI0IyWpTPtKXY14ls5/TcGlutMfo86yIUNu9sQEweiFU38ely5uh1XX7ZymbWNqBUjpxrrOSQtmPAdVtCB6eZJDOJszCVy9CC+P0z0qEfJptfpXupKM8Jdb7OcORfRyEzTVu1GTzxHcrH3TKlLQx38tQkwJ8OV/UG6YpHCyPKx8G9TVW8wVd9yhhftTvj9hOksWpa2mNA6jyMbZjpiu89/oygabhjcCuW/KPmdZr9qOWHsoYURZMRHRaLpJYXnA9Z8oT5vbr3C+AT+V+GSkbgQU1ED9ubozoDMtbyNBaEx3IlDhPJYnMjuGH+9oFBSyiJj0RZQWupGVhzj7ZFf1tfRV3gSQCuGSBDDg/VjWjRm1pQYJ8W8iXDSzD7kDuhK7DFSEmskH5Ps9M6rSzzCxuauyf8J7GGKSZTtnJltDhpzLLotLFwiaTHJNVyQary/Z86vPcZkbsBL9UsqT2LTAbCACEJ1ckdBdBdynvfVXRhZom/nR7PMikJdOil4VdghT4hV8dfgg3JM2yNoUcU67Y9OIzeFFhjKxs75tWJNgXYyXy9aOIao6QdiAAXSuybUgnHJvZitVrUVhmNy6gu4pOtz4IEd0keCjXP8wOwi1XF7uwnbUW3jlMKVwDvStxmW3DcZ1XjQeSDv2RhRIys3AYA+D6WhoSkJG/1wwBNaDc3YWE1SKVHIEHn0NWMaeFDuPmd5j4VtNur9X1ep
+ 1DkEpSSx
+ UTOmIoOIe1frk2OTqxmYIiBm9UJwyEDTfbCGC6oH53zBRq8cbmW7P3yOV9NsbTFReIj4VdrmpgT0ZR6pKOf9/DW7V01/zkgK62gOLxnVDKOaRVYwdrtx/Gs2HT6tSs88f/lTGVl+o9uKQODLNYwVcAWkBd8ojQFwe8ik2Ac1CYPnQCCYsCwC36kk1OERi0UNsycSRd96WjWGReUm/Ao00M8Ylx+oiS7elRNHkhoW8tyLhEvgoiefm0FVFppfD6qC33Oz/sO1LXTdPh8JpCBMJJaxehjPas1OAFncLHdu1bK034vMndKh0+VkWFzQJA19Enp/GQ2xbG7Nl4XHF5yqoUV2QgrG7RdmHaYXM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,161 +109,346 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On 12/4/25 03:33, Shuah Khan wrote:
-> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
-
-That was supposed to fix powerpc handling though. So I think we have to
-understand what is happening here.
-
+On 24/11/25 6:52 PM, Kevin Brodsky wrote:
+> Despite recent efforts to prevent lazy_mmu sections from nesting, it
+> remains difficult to ensure that it never occurs - and in fact it
+> does occur on arm64 in certain situations (CONFIG_DEBUG_PAGEALLOC).
+> Commit 1ef3095b1405 ("arm64/mm: Permit lazy_mmu_mode to be nested")
+> made nesting tolerable on arm64, but without truly supporting it:
+> the inner call to leave() disables the batching optimisation before
+> the outer section ends.
 > 
-> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
-> systems. git fetch-pack fails when cloning large repos and make hangs
-> or errors out of Makefile.build with Error: 139. These failures are
-> random with git clone failing after fetching 1% of the objects, and
-> make hangs while compiling random files.
-
-On which architecture do we see these issues and with which kernel configs?
-Can you share one?
-
+> This patch actually enables lazy_mmu sections to nest by tracking
+> the nesting level in task_struct, in a similar fashion to e.g.
+> pagefault_{enable,disable}(). This is fully handled by the generic
+> lazy_mmu helpers that were recently introduced.
 > 
-> The blow is is one of the git clone failures:
+> lazy_mmu sections were not initially intended to nest, so we need to
+> clarify the semantics w.r.t. the arch_*_lazy_mmu_mode() callbacks.
+> This patch takes the following approach:
 > 
-> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
-> Cloning into 'linux_6.19'...
-> remote: Enumerating objects: 11173575, done.
-> remote: Counting objects: 100% (785/785), done.
-> remote: Compressing objects: 100% (373/373), done.
-> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
-> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
-> Resolving deltas: 100% (9195212/9195212), done.
-> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
-> fatal: fetch-pack: invalid index-pack output
-
-If I would have to guess, these symptoms match what we saw between commit
-adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
-and commit 5bebe8de1926 ("mm/huge_memory: Fix initialization of huge zero folio").
-
-5bebe8de1926 went into v6.18-rc7.
-
-Just to be sure, are you sure we were able to reproduce this issue with a
-v6.18-rc7 or even v6.18 that contains 5bebe8de1926?
-
-Bisecting might give you wrong results, as the problems of adfb6609c680 do not
-reproduce reliably.
-
-
-The confusing bit is that MAX_FOLIO_ORDER is mostly used for warnings:
-
-$ git grep MAX_FOLIO_ORDER
-include/linux/mm.h:#define MAX_FOLIO_ORDER              MAX_PAGE_ORDER
-include/linux/mm.h:#define MAX_FOLIO_ORDER              PFN_SECTION_SHIFT
-include/linux/mm.h:#define MAX_FOLIO_ORDER              get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
-include/linux/mm.h:#define MAX_FOLIO_ORDER              PUD_ORDER
-include/linux/mm.h:#define MAX_FOLIO_NR_PAGES   (1UL << MAX_FOLIO_ORDER)
-mm/hugetlb.c:   BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
-mm/hugetlb.c:   WARN_ON(order > MAX_FOLIO_ORDER);
-mm/internal.h:  VM_WARN_ON_ONCE(order > MAX_FOLIO_ORDER);
-mm/memremap.c:  if (WARN_ONCE(pgmap->vmemmap_shift > MAX_FOLIO_ORDER,
-mm/page_alloc.c:        if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
-
-
-And MAX_FOLIO_NR_PAGES (derived from MAX_FOLIO_ORDER) is only used in a debug helper
-
-$ git grep MAX_FOLIO_NR_PAGES
-include/linux/mm.h:#define MAX_FOLIO_NR_PAGES   (1UL << MAX_FOLIO_ORDER)
-mm/util.c:      if (ps->idx < MAX_FOLIO_NR_PAGES) {
-
-
+> * The outermost calls to lazy_mmu_mode_{enable,disable}() trigger
+>   calls to arch_{enter,leave}_lazy_mmu_mode() - this is unchanged.
 > 
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+> * Nested calls to lazy_mmu_mode_{enable,disable}() are not forwarded
+>   to the arch via arch_{enter,leave} - lazy MMU remains enabled so
+>   the assumption is that these callbacks are not relevant. However,
+>   existing code may rely on a call to disable() to flush any batched
+>   state, regardless of nesting. arch_flush_lazy_mmu_mode() is
+>   therefore called in that situation.
+> 
+> A separate interface was recently introduced to temporarily pause
+> the lazy MMU mode: lazy_mmu_mode_{pause,resume}(). pause() fully
+> exits the mode *regardless of the nesting level*, and resume()
+> restores the mode at the same nesting level.
+> 
+> pause()/resume() are themselves allowed to nest, so we actually
+> store two nesting levels in task_struct: enable_count and
+> pause_count. A new helper in_lazy_mmu_mode() is introduced to
+> determine whether we are currently in lazy MMU mode; this will be
+> used in subsequent patches to replace the various ways arch's
+> currently track whether the mode is enabled.
+> 
+> In summary (enable/pause represent the values *after* the call):
+> 
+> lazy_mmu_mode_enable()		-> arch_enter()	    enable=1 pause=0
+>     lazy_mmu_mode_enable()	-> ø		    enable=2 pause=0
+> 	lazy_mmu_mode_pause()	-> arch_leave()     enable=2 pause=1
+> 	lazy_mmu_mode_resume()	-> arch_enter()     enable=2 pause=0
+>     lazy_mmu_mode_disable()	-> arch_flush()     enable=1 pause=0
+> lazy_mmu_mode_disable()		-> arch_leave()     enable=0 pause=0
+> 
+> Note: in_lazy_mmu_mode() is added to <linux/sched.h> to allow arch
+> headers included by <linux/pgtable.h> to use it.
+> 
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->   arch/powerpc/Kconfig                   |  1 -
->   arch/powerpc/platforms/Kconfig.cputype |  1 +
->   include/linux/mm.h                     | 13 +++----------
->   mm/Kconfig                             |  7 -------
->   4 files changed, 4 insertions(+), 18 deletions(-)
+>  arch/arm64/include/asm/pgtable.h |  12 ----
+>  include/linux/mm_types_task.h    |   5 ++
+>  include/linux/pgtable.h          | 115 +++++++++++++++++++++++++++++--
+>  include/linux/sched.h            |  45 ++++++++++++
+>  4 files changed, 158 insertions(+), 19 deletions(-)
 > 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 9537a61ebae0..e24f4d88885a 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -137,7 +137,6 @@ config PPC
->   	select ARCH_HAS_DMA_OPS			if PPC64
->   	select ARCH_HAS_FORTIFY_SOURCE
->   	select ARCH_HAS_GCOV_PROFILE_ALL
-> -	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
->   	select ARCH_HAS_KCOV
->   	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
->   	select ARCH_HAS_MEMBARRIER_CALLBACKS
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index 4c321a8ea896..7b527d18aa5e 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -423,6 +423,7 @@ config PPC_64S_HASH_MMU
->   config PPC_RADIX_MMU
->   	bool "Radix MMU Support"
->   	depends on PPC_BOOK3S_64
-> +	select ARCH_HAS_GIGANTIC_PAGE
->   	default y
->   	help
->   	  Enable support for the Power ISA 3.0 Radix style MMU. Currently this
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 7c79b3369b82..d16b33bacc32 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
->   	return folio_large_nr_pages(folio);
->   }
->   
-> -#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
-> +#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
->   /*
->    * We don't expect any folios that exceed buddy sizes (and consequently
->    * memory sections).
-> @@ -2087,17 +2087,10 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
->    * pages are guaranteed to be contiguous.
->    */
->   #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
-> -#elif defined(CONFIG_HUGETLB_PAGE)
-> -/*
-> - * There is no real limit on the folio size. We limit them to the maximum we
-> - * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
-> - * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
-> - */
-> -#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
->   #else
->   /*
-> - * Without hugetlb, gigantic folios that are bigger than a single PUD are
-> - * currently impossible.
-> + * There is no real limit on the folio size. We limit them to the maximum we
-> + * currently expect (e.g., hugetlb, dax).
->    */
->   #define MAX_FOLIO_ORDER		PUD_ORDER
->   #endif
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index ca3f146bc705..0e26f4fc8717 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -908,13 +908,6 @@ config PAGE_MAPCOUNT
->   config PGTABLE_HAS_HUGE_LEAVES
->   	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
->   
-> -#
-> -# We can end up creating gigantic folio.
-> -#
-> -config HAVE_GIGANTIC_FOLIOS
-> -	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
-> -		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index e596899f4029..a7d99dee3dc4 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -82,18 +82,6 @@ static inline void queue_pte_barriers(void)
+>  
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+> -	/*
+> -	 * lazy_mmu_mode is not supposed to permit nesting. But in practice this
+> -	 * does happen with CONFIG_DEBUG_PAGEALLOC, where a page allocation
+> -	 * inside a lazy_mmu_mode section (such as zap_pte_range()) will change
+> -	 * permissions on the linear map with apply_to_page_range(), which
+> -	 * re-enters lazy_mmu_mode. So we tolerate nesting in our
+> -	 * implementation. The first call to arch_leave_lazy_mmu_mode() will
+> -	 * flush and clear the flag such that the remainder of the work in the
+> -	 * outer nest behaves as if outside of lazy mmu mode. This is safe and
+> -	 * keeps tracking simple.
+> -	 */
 > -
->   # TODO: Allow to be enabled without THP
->   config ARCH_SUPPORTS_HUGE_PFNMAP
->   	def_bool n
+>  	set_thread_flag(TIF_LAZY_MMU);>  }
+
+Should not platform specific changes be deferred to subsequent patches until
+nesting is completely enabled in generic first ? Although no problem as such
+but would be bit cleaner.
+
+>  
+> diff --git a/include/linux/mm_types_task.h b/include/linux/mm_types_task.h
+> index a82aa80c0ba4..11bf319d78ec 100644
+> --- a/include/linux/mm_types_task.h
+> +++ b/include/linux/mm_types_task.h
+> @@ -88,4 +88,9 @@ struct tlbflush_unmap_batch {
+>  #endif
+>  };
+>  
+> +struct lazy_mmu_state {
+> +	u8 enable_count;
+> +	u8 pause_count;
+> +};
+> +
+
+Should not this be wrapped with CONFIG_ARCH_HAS_LAZY_MMU_MODE as the task_struct
+element 'lazy_mmu_state' is only available with the feature. Besides, is a depth
+of 256 really expected here ? 4 bits for each element would not be sufficient for
+a depth of 16 ?
 
 
--- 
-Cheers
+>  #endif /* _LINUX_MM_TYPES_TASK_H */
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 8ff6fdb4b13d..24fdb6f5c2e1 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -230,39 +230,140 @@ static inline int pmd_dirty(pmd_t pmd)
+>   * (In practice, for user PTE updates, the appropriate page table lock(s) are
+>   * held, but for kernel PTE updates, no lock is held). The mode is disabled in
+>   * interrupt context and calls to the lazy_mmu API have no effect.
+> - * Nesting is not permitted.
+> + *
+> + * The lazy MMU mode is enabled for a given block of code using:
+> + *
+> + *   lazy_mmu_mode_enable();
+> + *   <code>
+> + *   lazy_mmu_mode_disable();
+> + *
+> + * Nesting is permitted: <code> may itself use an enable()/disable() pair.
+> + * A nested call to enable() has no functional effect; however disable() causes
+> + * any batched architectural state to be flushed regardless of nesting. After a
 
-David
+Just wondering if there is a method for these generic helpers to ensure that platform
+really does the required flushing on _disable() or the expected platform semantics is
+only described via this comment alone ?
+
+> + * call to disable(), the caller can therefore rely on all previous page table
+> + * modifications to have taken effect, but the lazy MMU mode may still be
+> + * enabled.
+> + *
+> + * In certain cases, it may be desirable to temporarily pause the lazy MMU mode.
+> + * This can be done using:
+> + *
+> + *   lazy_mmu_mode_pause();
+> + *   <code>
+> + *   lazy_mmu_mode_resume();
+> + *
+> + * pause() ensures that the mode is exited regardless of the nesting level;
+> + * resume() re-enters the mode at the same nesting level. Any call to the
+> + * lazy_mmu_mode_* API between those two calls has no effect. In particular,
+> + * this means that pause()/resume() pairs may nest.
+> + *
+> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
+> + * currently enabled.
+
+Just wondering - could a corresponding test be included probably via KUNIT_TEST
+to ensure the above described semantics are being followed.
+
+>   */
+>  #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> +/**
+> + * lazy_mmu_mode_enable() - Enable the lazy MMU mode.
+> + *
+> + * Enters a new lazy MMU mode section; if the mode was not already enabled,
+> + * enables it and calls arch_enter_lazy_mmu_mode().
+> + *
+> + * Must be paired with a call to lazy_mmu_mode_disable().
+> + *
+> + * Has no effect if called:
+> + * - While paused - see lazy_mmu_mode_pause()
+> + * - In interrupt context
+> + */
+>  static inline void lazy_mmu_mode_enable(void)
+>  {
+> -	if (in_interrupt())
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+> +	if (in_interrupt() || state->pause_count > 0)
+>  		return;
+>  
+> -	arch_enter_lazy_mmu_mode();
+> +	VM_WARN_ON_ONCE(state->enable_count == U8_MAX);
+> +
+> +	if (state->enable_count++ == 0)
+> +		arch_enter_lazy_mmu_mode();
+
+When lazy_mmu_mode_enable() gets called for the first time with state->enable_count as 0,
+then arch_enter_lazy_mmu_mode() will not get called ? Bit confused.
+
+>  }
+>  
+> +/**
+> + * lazy_mmu_mode_disable() - Disable the lazy MMU mode.
+> + *
+> + * Exits the current lazy MMU mode section. If it is the outermost section,
+> + * disables the mode and calls arch_leave_lazy_mmu_mode(). Otherwise (nested
+> + * section), calls arch_flush_lazy_mmu_mode().
+> + *
+> + * Must match a call to lazy_mmu_mode_enable().
+> + *
+> + * Has no effect if called:
+> + * - While paused - see lazy_mmu_mode_pause()
+> + * - In interrupt context
+> + */
+>  static inline void lazy_mmu_mode_disable(void)
+>  {
+> -	if (in_interrupt())
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+> +	if (in_interrupt() || state->pause_count > 0)
+>  		return;
+>  
+> -	arch_leave_lazy_mmu_mode();
+> +	VM_WARN_ON_ONCE(state->enable_count == 0);
+> +
+> +	if (--state->enable_count == 0)
+> +		arch_leave_lazy_mmu_mode();
+> +	else /* Exiting a nested section */
+> +		arch_flush_lazy_mmu_mode();
+> +
+>  }
+>  
+> +/**
+> + * lazy_mmu_mode_pause() - Pause the lazy MMU mode.
+> + *
+> + * Pauses the lazy MMU mode; if it is currently active, disables it and calls
+> + * arch_leave_lazy_mmu_mode().
+> + *
+> + * Must be paired with a call to lazy_mmu_mode_resume(). Calls to the
+> + * lazy_mmu_mode_* API have no effect until the matching resume() call.
+> + *
+> + * Has no effect if called:
+> + * - While paused (inside another pause()/resume() pair)
+> + * - In interrupt context
+> + */
+>  static inline void lazy_mmu_mode_pause(void)
+>  {
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+>  	if (in_interrupt())
+>  		return;
+>  
+> -	arch_leave_lazy_mmu_mode();
+> +	VM_WARN_ON_ONCE(state->pause_count == U8_MAX);
+> +
+> +	if (state->pause_count++ == 0 && state->enable_count > 0)
+> +		arch_leave_lazy_mmu_mode();
+>  }
+>  
+> +/**
+> + * lazy_mmu_mode_pause() - Resume the lazy MMU mode.
+> + *
+> + * Resumes the lazy MMU mode; if it was active at the point where the matching
+> + * call to lazy_mmu_mode_pause() was made, re-enables it and calls
+> + * arch_enter_lazy_mmu_mode().
+> + *
+> + * Must match a call to lazy_mmu_mode_pause().
+> + *
+> + * Has no effect if called:
+> + * - While paused (inside another pause()/resume() pair)
+> + * - In interrupt context
+> + */
+>  static inline void lazy_mmu_mode_resume(void)
+>  {
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+>  	if (in_interrupt())
+>  		return;
+>  
+> -	arch_enter_lazy_mmu_mode();
+> +	VM_WARN_ON_ONCE(state->pause_count == 0);
+> +
+> +	if (--state->pause_count == 0 && state->enable_count > 0)
+> +		arch_enter_lazy_mmu_mode();
+>  }
+
+Should not state->pause/enable_count tests and increment/decrement be handled
+inside include/linux/sched via helpers like in_lazy_mmu_mode() ? This is will
+ensure cleaner abstraction with respect to task_struct.
+
+>  #else
+>  static inline void lazy_mmu_mode_enable(void) {}
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index b469878de25c..847e242376db 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1441,6 +1441,10 @@ struct task_struct {
+>  
+>  	struct page_frag		task_frag;
+>  
+> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> +	struct lazy_mmu_state		lazy_mmu_state;
+> +#endif
+> +
+>  #ifdef CONFIG_TASK_DELAY_ACCT
+>  	struct task_delay_info		*delays;
+>  #endif
+> @@ -1724,6 +1728,47 @@ static inline char task_state_to_char(struct task_struct *tsk)
+>  	return task_index_to_char(task_state_index(tsk));
+>  }
+>  
+> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> +/**
+> + * __task_lazy_mmu_mode_active() - Test the lazy MMU mode state for a task.
+> + * @tsk: The task to check.
+> + *
+> + * Test whether @tsk has its lazy MMU mode state set to active (i.e. enabled
+> + * and not paused).
+> + *
+> + * This function only considers the state saved in task_struct; to test whether
+> + * current actually is in lazy MMU mode, in_lazy_mmu_mode() should be used
+> + * instead.
+> + *
+> + * This function is intended for architectures that implement the lazy MMU
+> + * mode; it must not be called from generic code.
+> + */
+> +static inline bool __task_lazy_mmu_mode_active(struct task_struct *tsk)
+> +{
+> +	struct lazy_mmu_state *state = &tsk->lazy_mmu_state;
+> +
+> +	return state->enable_count > 0 && state->pause_count == 0;
+> +}
+> +
+> +/**
+> + * in_lazy_mmu_mode() - Test whether we are currently in lazy MMU mode.
+> + *
+> + * Test whether the current context is in lazy MMU mode. This is true if both:
+> + * 1. We are not in interrupt context
+> + * 2. Lazy MMU mode is active for the current task
+> + *
+> + * This function is intended for architectures that implement the lazy MMU
+> + * mode; it must not be called from generic code.
+> + */
+> +static inline bool in_lazy_mmu_mode(void)
+> +{
+> +	if (in_interrupt())
+> +		return false;
+> +
+> +	return __task_lazy_mmu_mode_active(current);
+> +}
+> +#endif
+> +
+>  extern struct pid *cad_pid;
+>  
+>  /*
+
 
