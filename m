@@ -4,116 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAD18D206A8
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:11:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB334D206A8
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:12:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EA046B000C; Thu,  4 Dec 2025 09:11:25 -0500 (EST)
+	id 44C886B0092; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29A356B008A; Thu,  4 Dec 2025 09:11:25 -0500 (EST)
+	id 3FCEB6B0093; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 162756B008C; Thu,  4 Dec 2025 09:11:25 -0500 (EST)
+	id 33A006B0095; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 013546B000C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:11:24 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A307DC01A4
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:11:24 +0000 (UTC)
-X-FDA: 84181976088.12.9A5F1E7
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 894FE18001C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:11:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Wd2pyX+b;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 229386B0092
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:12:47 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BD47131600
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:12:44 +0000 (UTC)
+X-FDA: 84181979448.26.65E9399
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 12A4140016
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:12:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c3eRuugH;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764857562; a=rsa-sha256;
+	cv=none;
+	b=LChF9gu4aZa52p7Jw28R0zrMJ74+46Eucob4CmklfDHwiKWfvzVVRHdx60upe7cZfSpTz7
+	sQJnIPeE+Kps3GseHW+BuA3nJJJG9Ux4N0JIHx62R9o2G0F2XcaQ3QeswxaqQcCC7szM3m
+	8wLi2dYzd0Lc5DGGAfqmaYPTHXRE/vU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c3eRuugH;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764857482;
+	s=arc-20220608; t=1764857562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7tkRn95qVGHRVjDZn+eGOwJkoMDfDMgAwJnLmn1mIEc=;
-	b=gpU0uTQlTXCL0akiywfRdkfNMZEYUlA+d3aXF1NhCyI8G3Hs2O6GF7LWGLQMgw+n9nz9lG
-	CdPUNRm7BaacwsFEEJEQYJJLGXl4vyrSk1hKPryPohj1tGbI0pR++5DT43E8eT8le04V4r
-	Q9HQ/r9HRns39hgBvUPUldWaLOrbtAY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Wd2pyX+b;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764857482; a=rsa-sha256;
-	cv=none;
-	b=tM5tR8MKTH/klIokC0kyM90jsUMts0S2ygqt8bcBMdOVHGHrrVbuN8N4Fco9dXKey869ha
-	YlRmmaWz9qh3gihQT5VQqqTDh2y+teA/j7PWDD5HKkT0iFg21HzqZZ0ReY1vjzM2ef/k3Z
-	qZSgcdK/pbsNkDOmbK+YLIlOboLUecM=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6418b55f86dso1657589a12.1
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 06:11:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1764857481; x=1765462281; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7tkRn95qVGHRVjDZn+eGOwJkoMDfDMgAwJnLmn1mIEc=;
-        b=Wd2pyX+bktuujgLYtGnditF0efOT9+RgRCyzbwRG03PKetiyHcKVK6lukLIIGYdPzt
-         jUugpmfoYSv/tG906mRCapgygA9TX9Fv+gfr/yvkMYWa7oFNHji5I0c/AUFtOM5QRvSs
-         AcsV/4XCo1gHlxx6Gf8KqcVUdkLyRqdTEVNKiqbHR43JiSS7+ZPKzdcq9HniPdXh2RAj
-         4s/An8crzTpaWpF0OfG0zxH2JiJu7OKzJj0X+AWsxPsdlsvSkfOHqLB97eW/PTOpGpfN
-         eDHZnDA5ywQ8Ym2DCIm0VxcIda2ZU5R6bkILBnBdpPPFnz6y8cUpMKkXKIhCeIc2yGTR
-         NirA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764857481; x=1765462281;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7tkRn95qVGHRVjDZn+eGOwJkoMDfDMgAwJnLmn1mIEc=;
-        b=GS52Whhme5yqVWbVEtmE4XRp0Ht/ecdFTk3Bt9Q7f2EeTfkxzA7Xy8U5sB8S46FpIY
-         CgrUFk1NnVsvILjJfdy85oOehBD98RmP02lgm7x9z7knW0iNXCk3McR/snot4eIsrg/A
-         Xe1PfRaiusdtHArp3AIvVwpY+ZXVCz9BZZa4xO1Vxq1ObI6Tz8/UmzECuVl0zw2JiWOL
-         kXQrfoRyyRg/RQto+PlOe3ggcus7slDbBbwlCaUiVWu8dpnBiTn38X7GVYTOLaIbZwib
-         07/HT7qtBxFFMHTiQr4rPzNqXyaoxdIErjyKvgHRuuhWh4uhFxPVyswmZizXoatPELLx
-         iCdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUB5IoXFYTRA4vWU5G3Gc4Psqyhc8pWFMZHfZq8HzduO/zsfBFfeAqa5VGChwjBKeghsDmT74rEuw==@kvack.org
-X-Gm-Message-State: AOJu0Ywmcjsk0G9J0fSU2QNz3XfSUsOzqTWlfW2fMsM9A1Eqkj3tjiP1
-	xjwMhYMdUwS2F6jJmfC5/092z0JlG7Uy9AhG1FJV5XP1I0R+71MwPUuMXGuo86uX/D20d3rnyne
-	PXad9gl92mJj/avKmlWnECetdp9Bnktf0hubtxa/ABg==
-X-Gm-Gg: ASbGncvYPUfuXcPlHkdB7VHriluBrzo6nJD7nMIf8UOu1D/VQqo+N8Ib5mcoIq0Xs36
-	dbPRZ+BI8uD9NfKG1MxR1HBMnn4mSz01CeY4dQdidbFIxpvgJcfzyS7yalAehHv3NMhX7Oo6qU2
-	jzSKCk1RbV//pRGiHNy3YIBOypaBl9cHbBYShvuXoAbjLTHHCWAg5NolwyuXEyE/PEqiMlieRoe
-	f3CtaQq6jQoeyXX/rARXJ0GaNuc5ao3l+gS0EDkbIpKlm1EkPPW4qrBSzBLkfmzz2TWcs0rAeyT
-	4LI=
-X-Google-Smtp-Source: AGHT+IEhRAVoLtpsqJPUWAmo1GTMqaZj8n1T7c6oR6OIyFmDC94SnW4iSsp1l0JsjDPMeePySrZtC7tGSA7zBq94e9s=
-X-Received: by 2002:a05:6402:35c8:b0:640:a9fb:3464 with SMTP id
- 4fb4d7f45d1cf-6479c471f70mr6117707a12.7.1764857480963; Thu, 04 Dec 2025
- 06:11:20 -0800 (PST)
+	bh=dkYSy/gbe5jT4GPBC3gX5tdFW8sy5n6ioyBwECgSNdo=;
+	b=Nt+X4lGJr5bx1xKrViUdSjcMxsfvppJq+AGoDEhz0vWoDN/h166Fz6B/OTXHLz5j1peAkG
+	GvIB0i47V7GkVM4IJB4H9ypdPsmpyZaIwp8c0ER15L1/R3w8NycwPUi0Xw1scpYZUtGNmf
+	4E7rdFgQ7QPkBq1Cm3UzT9nBs/fG4YQ=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1764857556; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=dkYSy/gbe5jT4GPBC3gX5tdFW8sy5n6ioyBwECgSNdo=;
+	b=c3eRuugHgBxaK8JmyAk36M6Y4GPQ3D+2QCA2SzUG7h/xt+YNCrHZE8ECTIaT7p3NEGN/QjYfXtX6LxWzgCD13U98ea7V1ZSZ54jS7EejzBpVncp1jWG9OIxY8e5ZvBTmByIaI/L6ZgMdlhOpT2a2p+m87n2S934mLzLSLdt0FFo=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0Wu4cLfq_1764857555 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 04 Dec 2025 22:12:35 +0800
+Date: Thu, 4 Dec 2025 22:12:32 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Petr Mladek <pmladek@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [linux-next:master 9966/13055] kernel/watchdog.c:74:22: warning:
+ unused variable 'hardlockup_si_mask'
+Message-ID: <aTGW0AQJfQPKe0ao@U-2FWC9VHC-2323.local>
+References: <202512030920.NFKtekA7-lkp@intel.com>
+ <20251203144453.be34d189c5e6668ce2da06b3@linux-foundation.org>
+ <aTGO4iLrQnd4l6fO@pathway.suse.cz>
 MIME-Version: 1.0
-References: <20251204102905.1048000-1-arnd@kernel.org>
-In-Reply-To: <20251204102905.1048000-1-arnd@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 4 Dec 2025 09:10:43 -0500
-X-Gm-Features: AWmQ_bnnGYOfI1j_ZtSYbZZRrojADNXpeVU38MiJhLSZDkVtvQ5nO9cDjJiYKYw
-Message-ID: <CA+CK2bD2HTpJm9xsL1+V=EOUkrn1QrCks+T14nB8doyDfN=JyQ@mail.gmail.com>
-Subject: Re: [PATCH] [v2] mm: shmem: avoid build warning for CONFIG_SHMEM=n
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Kairui Song <kasong@tencent.com>, 
-	David Hildenbrand <david@kernel.org>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Guo Weikang <guoweikang.kernel@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4yccj36m9d7kwzogpm53jytuw3c1u8wg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aTGO4iLrQnd4l6fO@pathway.suse.cz>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 12A4140016
+X-Stat-Signature: jcduownir3pbxks646jopmay9cj3m9ab
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 894FE18001C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764857482-875241
-X-HE-Meta: U2FsdGVkX18vsPoOEF6rvbW/aA6huRfSeqFgHUV6aVjuEnJKxAlE1LxiTsu5t8jfkQ5w5uTDEEtklsTrve6c6L2rF7DaKdEJ+FE/O5QzInMd+EhdZR8p7J+/KRE5kNDlRH8tzHu9pw7TXqP717GByV0DSzMHRWJAHbNPLxgDaDMbSALwOk2RXE9886ZF9yMBhMU1B2lrsP6WgXiE9TqsvDrYvuB845tJ2C5FMVqocCRDH0Y07TBchRupJyb8NR1vb2u+6za4NJQ5UJMpES9+QlMfUU9pTd0TAdA0YHNxMpRw3dnzpfbFUnSFdW66vDijZYNyDeKgJxZaaStCeVhE1lMOl2pBbabb3CzNfdc8BDdXGs3mn57b9mt8pxBhKbgbmJfK9MBlrZHbKZthsNoOekrFE5n0zKnTyRbnJIITnDCeM9vjQrfJ+4qcHukDJxdz2RBZjfzISJXFTye/XDAABhH/ClCaZA9nXxWyzMMH+yVeYp4KMW8cTDt7jdtjIRVzdi/Bmwix4vigBvEyeb393r202OomyMkSTLXO/ujMZCLRtxge1PMx/8Zcp3wAHgebLqUY4ECv83P6lVkgrKPbSyLJJ03xtmfTOzW71CFKirDiGzLvd/+kTe0Hps50K3VLbrP94o4UJDO/8RED3RSiwfw3U502Zz8qCpg+JOz4RCL3PRGIR2hzkgdoHzpUOS0Rv8LUx6lP+bXt0z1FY/o7/VBwCb53zHsQcZlFQ0nd32V240gtNENdKer5QgIpRI2F6uHpGrr9LcitweC7CMD9OFlufOJg9zRYhmCVo+mDHnqWNHNftyAP2cpCK2Aatz2kdLCI0+vxhs8Tvh4yrNTqL3EJjuogzJ8Oi/Fpf0uGIbXBAsuAVtM+HSSwAhyz96rVzb/gVYaOeC4NwNJCvYmyz8tb1VqEVADV9VfW4fruECHV9Jp7OZbxCDm82byk/QJjbw5hWyNrzjThge+mZBz
- v1CcfRnQ
- TQTBK2dJ7uUBm7GCjErSbm11rP7ZQgBQ0ljfkhwQOjA+lrv/j2aaIdkpMQoaEZoDyKCfpy786hJBcKJCqeercpceHmWZ20RmDh9VTgWbBi9GeGK39P2HVKswsCagI7PcsvtvHGvsR4PNLNY/8ZqmYKAe0inzghQM8lGUYTwG+lBtJ0iwF2YMaws+JGZSh290b0UcczkZ5Y/FGq6ckyuhyz6Q6ZZ/Xa8ZOHU+S/P01nmPHoLvKt/hGZBJIsazKSVQ4X2CFHDjaWtwnwK+5i1QCYInMkLtSbwGYpWvReXtEd7lcdMlGn70lXyXflzVDnhaOzBBXMsF7Du+uacvop9LYIHy8Wtjh/5W7Z3xQkUTHPnXkSDvCFJktdwuVI4XLH6zqBE/BRTkRGNqypkw=
+X-HE-Tag: 1764857560-590871
+X-HE-Meta: U2FsdGVkX18WjMXE+V9xDfm9nkcIWOYf2T97iXfmwWeBPKgOAiSQrBDj1c0b9EMCSjL7PjRIhoD2aeJFPmgt9xTDYrEjX15Kffhv6hVVtZyMEq64CuY3iIw+DLDt/eu19yb1C81xC+iWUH9ggW/Q+3AxWhiYfiuLxGdgxBCCl1/P+YifnAFC1zI5ZLFjM1nokIN9Lcfh+9cCjw1RBdIf1AaK5oh5zNbz7B5NyWCpsDNgmdu5Ev9gMbn4uS0v6zXGtbFtsC/a4QD1ao9+9ICnj1fcCN/IscNCI5re1GARZJxmAUgX5lDMuEYCSbZFTvFu5HhwsBrnS5ZmFcMQI/L3f4hfmuBFzE9zPwFzNI4Imq71EFkfpRdIEKv02saZhZ99b0X0cppiFBO6BIzgPkaLKWQV/RJ2dUQESwWteNXmZAbmwwItP+bKACxb2g/wJ15qmbETZq26azMa1jZ6mtX2aAyDXQUR7IIYIS6UsOq30sDAg87mQOBECvGO+fSW1CTUBlYkmvEFI8cTocUd7kAH57RtU0IWbPYApsNQ/tA0fhTp4eCM1dlP89pEgwUDoR1alvjaL6kzG+i2l4gwSOI8VXKavs0gYTNgfDDYhJBai/YUJP4/GMdVE20sU/IGs6hVKiHKrdJ6CESn+fHs/5jKYI5kzSZFB2eNINH61Dt3aePhSOcTwtSXHuyymEkT7tOlnbKS3w9fo+YuHN9rzDX2JIvphasFMNyMjj2b0JqMJdzNFEJaO8SwLiJ+iWOA52n0+FgksTtmSPcE+WEEV0p5UUepfv4FofWLMwgtvWJxsFjYFdGD4rjNjL3YhNQmmyYM8cDvWIWMs4NEeRM7OeoRd+QlkKX2SbEtxwugxDXryzBWLByld4taLvYhPS7KRZVdKXqBvZTFmei3YkImkrpV1qhayv3UPf05lHO2P2kRgZ/BgkGSYo1CL/RyFw6bEu0xmJ50cpNHnnV/TiFPQgB
+ 9eY/FuU2
+ o9/ouECnyDIGCD2WeSbQwrfiAsyAHAKMDHoGvqMWax6beDIK1phneRfMVlb/ug4XEcpoRjhSDacaDp38LTHavHZHCPXCaubztoiNbrvB6spO5i3k9nSvEQ6v8ZBY3MWbLx4BSXK4yF6lIo+36bBwj2q8s2KbwwqYYPtGMD+3KTOT3YTehP4DeTKyJl+HQvLmUiB612vfHx1rZWtTCChKh6lTm3Ob/9gtN65tF5eYXtbgldTLJh0xYv1e0oPhZJEqlDjW6xyeaBFY07x7+HK5sylCa3XrRxR4PnnAu2pH6dzG78qSv5gN8rI7HAtRJ8sMkKpwZ1+LO6jMSE0yVWQyWtOpVG7TuClrsOQoQYJNQJ4Wt/+Y+khO1i0PhM0JbzfrmOKu8urz89WOEp5oDs2ucEt31BybaFvjzHmwxuB8C0sYTvgCUHMONP6Jq+5PGCMX5PUKE9tuPJufNlaiX9Tali+6/hrUfOtCkwX5Y59zwICJvRaw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,63 +89,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 4, 2025 at 5:29=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wrot=
-e:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> The newly added 'flags' variable is unused and causes a warning if
-> CONFIG_SHMEM is disabled, since the shmem_acct_size() macro it is passed
-> into does nothing:
->
-> mm/shmem.c: In function '__shmem_file_setup':
-> mm/shmem.c:5816:23: error: unused variable 'flags' [-Werror=3Dunused-vari=
-able]
->  5816 |         unsigned long flags =3D (vm_flags & VM_NORESERVE) ? SHMEM=
-_F_NORESERVE : 0;
->       |                       ^~~~~
->
-> Replace the two macros with equivalent inline functions tto get the
-> argument checking.
->
-> Fixes: 6ff1610ced56 ("mm: shmem: use SHMEM_F_* flags instead of VM_* flag=
-s")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> v2: make shmem_unacct_size() inline as well.
+On Thu, Dec 04, 2025 at 02:38:42PM +0100, Petr Mladek wrote:
+> On Wed 2025-12-03 14:44:53, Andrew Morton wrote:
+> > On Wed, 3 Dec 2025 09:05:30 +0800 kernel test robot <lkp@intel.com> wrote:
+> > 
+> > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> > > head:   47b7b5e32bb7264b51b89186043e1ada4090b558
+> > > commit: a9af76a78760717361cccc884dc649e30db61c8b [9966/13055] watchdog: add sys_info sysctls to dump sys info on system lockup
+> > > config: powerpc64-randconfig-002-20251203 (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/config)
+> > > compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 734a912d0f025559fcf76bde9aaaeb0383c1625a)
+> > > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/reproduce)
+> > > 
+> > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > > the same patch/commit), kindly add following tags
+> > > | Reported-by: kernel test robot <lkp@intel.com>
+> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202512030920.NFKtekA7-lkp@intel.com/
+> > > 
+> > > All warnings (new ones prefixed by >>):
+> > > 
+> > > >> kernel/watchdog.c:74:22: warning: unused variable 'hardlockup_si_mask' [-Wunused-variable]
+> > >       74 | static unsigned long hardlockup_si_mask;
+> > >          |                      ^~~~~~~~~~~~~~~~~~
+> > >    1 warning generated.
+> > 
+> > I'm testing the appended patch but it needs checking please.
+> > 
+> > The comment for hardlockup_si_mask says
+> > 
+> >  * bitmask to control what kinds of system info to be printed when
+> >  * hard lockup is detected, it could be task, memory, lock etc.
+> >  * Refer include/linux/sys_info.h for detailed bit definition.
+> > 
+> > but the variable depends on "COUNTS_HRTIMER".  The comment doesn't
+> > mention hrtimers and I don't see why it should.  Not sure what's going
+> > on here.
+> 
+> Good point! It took me some time to understand it.
+> 
+> So, powerpc implements its own watchog, see arch/powerpc/kernel/watchdog.c.
+> The watchdog is supported only by some powerpc platforms, see the
+>    following line in arch/powerpc/Kconfig:
+> 
+> 	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC_BOOK3S_64 && SMP
+> 
+> As a result, the test system could have the following in the config,
+> see https://download.01.org/0day-ci/archive/20251203/202512030920.NFKtekA7-lkp@intel.com/config
+> 
+> 	CONFIG_HARDLOCKUP_DETECTOR=y
+> 	# CONFIG_HARDLOCKUP_DETECTOR_PERF is not set
+> 	# CONFIG_HARDLOCKUP_DETECTOR_BUDDY is not set
+> 	CONFIG_HARDLOCKUP_DETECTOR_ARCH=y
+> 
+> And "COUNTS_HRTIMER" is not defined.
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Thanks for the check!
 
-for v2 as well, thank you for the fixes! :-)
+Was working on a reply at the same time :)
 
-> ---
->  mm/shmem.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 3f194c9842a8..b329b5302c48 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -5794,8 +5794,15 @@ EXPORT_SYMBOL_GPL(shmem_truncate_range);
->  #define shmem_vm_ops                           generic_file_vm_ops
->  #define shmem_anon_vm_ops                      generic_file_vm_ops
->  #define shmem_file_operations                  ramfs_file_operations
-> -#define shmem_acct_size(flags, size)           0
-> -#define shmem_unacct_size(flags, size)         do {} while (0)
-> +
-> +static inline int shmem_acct_size(unsigned long flags, loff_t size)
-> +{
-> +       return 0;
-> +}
-> +
-> +static inline void shmem_unacct_size(unsigned long flags, loff_t size)
-> +{
-> +}
->
->  static inline struct inode *shmem_get_inode(struct mnt_idmap *idmap,
->                                 struct super_block *sb, struct inode *dir=
-,
-> --
-> 2.39.5
->
+> > @@ -1250,6 +1250,7 @@ static const struct ctl_table watchdog_s
+> >  		.extra1		= SYSCTL_ZERO,
+> >  		.extra2		= SYSCTL_ONE,
+> >  	},
+> > +#if defined(CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER)
+> >  	{
+> >  		.procname	= "hardlockup_sys_info",
+> >  		.data		= &hardlockup_si_mask,
+> > @@ -1257,6 +1258,7 @@ static const struct ctl_table watchdog_s
+> >  		.mode		= 0644,
+> >  		.proc_handler	= sysctl_sys_info_handler,
+> >  	},
+> > +#endif
+> >  #ifdef CONFIG_SMP
+> >  	{
+> >  		.procname	= "hardlockup_all_cpu_backtrace",
+> > _
+> 
+> This patch makes some sense because the arch-specific watchdog does
+> not support the sys_info interface. And it is better than nothing.
+> definitely.
+> 
+> A better solution would be export the variable and handle it
+> in arch/powerpc/kernel/watchdog.c.
+
+Yep!
+
+> It seems that powerpc is the only architecture which could define
+> HAVE_HARDLOCKUP_DETECTOR_ARCH.
+> 
+> Feng, would you have time to look at it?
+
+Sure.
+
+Thanks,
+Feng
 
