@@ -4,88 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC76D2A551
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 22:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D381D2CDE7
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 23:20:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C16A66B0092; Thu,  4 Dec 2025 17:30:03 -0500 (EST)
+	id 1797D6B0008; Thu,  4 Dec 2025 18:20:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB00D6B00BB; Thu,  4 Dec 2025 17:30:03 -0500 (EST)
+	id 0DB0C6B0062; Thu,  4 Dec 2025 18:20:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9E2B6B00BC; Thu,  4 Dec 2025 17:30:03 -0500 (EST)
+	id F0BE06B00B1; Thu,  4 Dec 2025 18:20:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 943836B0092
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:30:03 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38C7A1403A5
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:30:03 +0000 (UTC)
-X-FDA: 84183232686.24.D8DCA94
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F21B74000B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:30:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vrXk+BB4;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DD1B56B0008
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 18:20:20 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6284716020D
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 23:20:20 +0000 (UTC)
+X-FDA: 84183359400.27.1DA2032
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 47D7D180003
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 23:20:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b="d/SkqT6/";
+	spf=pass (imf06.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.160.46 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764887401;
+	s=arc-20220608; t=1764890418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ZYSwOESe8KGknL6RO9823p3TDyuaFDKtZ3tBskISlA=;
-	b=gYVyxX5TgOm/xMrGS7HhKswooROZCvUUbahy07bW6JJjLsdolddd4o8q7wDgQeaEQczz9G
-	7DpNQsJkxUWR939103WLUDxm4G7mR5UPn19tyFNZ5PoPNUxKjZuUqHvkrNisxhgug/9oxW
-	idb5jt7tPlD6krVtsCjIqJ5h2YwDO08=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764887401; a=rsa-sha256;
+	bh=1ilabqU0ZPIRb1Uuq8o42HfQ+CvcrcgaYSOj/pymfPA=;
+	b=TgjwbV5JjfU8OWQuHVrR/R4clY2/qo78o3fGlsBGCoK6gKznHFThfiQ840zp4pGd9qyapk
+	YZ39JH7Jb2eLKb4/zCAUtbiKGCFXF8B/SOiEG+tULlz15V7hA70HeZ1rgu8hPC7iNgJhkO
+	qmPzl2Ptlfm2iv5H7LwZ6nlms9a1L54=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764890418; a=rsa-sha256;
 	cv=none;
-	b=E81SkXhXMpmAjsyuJV7jkCUAC+UQq4f84T0B+V4PsZsta6G7cYLUglrfCQTSGMx8cudIYL
-	ohPum1PhCG82nzcuIun4pd7ZhmYkoqf3LDNuKGIfCYSzec+/tFhxuT0wFuNIuzXdBFTe+H
-	gFsA95Ek25XyAwrQo+rVANJdHTMTCSU=
+	b=5lrgXRtKXVnNgMMt878hIVkDaI1nBg+9xRrS1IfQATQkWqeuCm3yalZj8empAK83pgtR2X
+	dSj/KSTN49tV8S6SIKbJW6Mpr5uu1Jn1tZezmNSQA0BwmRHRlb7klLbk25Z0S8DpEfc8WW
+	/o18+zI5ISXlFXnlV9gSPdkjNevvdUQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vrXk+BB4;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 4 Dec 2025 14:29:51 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764887398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ZYSwOESe8KGknL6RO9823p3TDyuaFDKtZ3tBskISlA=;
-	b=vrXk+BB4vd8tsHzc/9rBCiqMkFvgVmd1PUjLJaTjRYJ/zNYdPX7+JdPxEE26gICqmMSoD+
-	7kOtjrOFjQ3Uzetugdn5Do3Kf9UiQzv2iC1fGbIlOL8alf33vMmTaC5PWjLlisa9iRM6sl
-	2TmB/4+U9eQ56pgpC01DRWlxc2XG1cw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, corbet@lwn.net, hannes@cmpxchg.org, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, yuzhao@google.com, zhengqi.arch@bytedance.com, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, lujialin4@huawei.com, chenridong@huawei.com
-Subject: Re: [RFC PATCH -next 1/2] mm/mglru: use mem_cgroup_iter for global
- reclaim
-Message-ID: <tvrspnhlo7x7gpjc4nn7f73b2qoyphkpaxlcnnn4fsxciv6bks@3dibvbs7u5do>
-References: <20251204123124.1822965-1-chenridong@huaweicloud.com>
- <20251204123124.1822965-2-chenridong@huaweicloud.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b="d/SkqT6/";
+	spf=pass (imf06.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.160.46 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-3e80c483a13so1169362fac.2
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 15:20:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1764890417; x=1765495217; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1ilabqU0ZPIRb1Uuq8o42HfQ+CvcrcgaYSOj/pymfPA=;
+        b=d/SkqT6/QiotfBuYKze8odDJFN6LE8pp3YByFA068V9HOWAB2jkD1QRSqQX/QjoIzf
+         mKLJMOQW9ZctGbpQtPUQ7+b3RxJK5o6msdoJCHsG3J4maXZaRBZMmjfyS6BVCNAcYwgW
+         uG9y0S3tdzTZUQTazJbqy0F3wvNzUUiDOCqxg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764890417; x=1765495217;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1ilabqU0ZPIRb1Uuq8o42HfQ+CvcrcgaYSOj/pymfPA=;
+        b=AlZqnYXieL7657vUyhIBZEsOzeSZJGWhEGiTB8qzWp3mltX9SX6yaa32utquoy6ZJu
+         FE6EQ8bZn6vZ2/ddxVjHgbkQDvGrj31N1rin5vDe1pyoCcvGatask+xNV/1r2FXaX0l2
+         stxTpipImGRoR9XLH+0xojF9dmAaZmuTq8JhWaLgDGOIbOpo9gcc96tNZMQllSAVIckV
+         IWxzTRcRtInj8XV50DdZNYsTIMXjYVyHnPKMWHtktcPMPjfcnwhZBbfyphFUIbcYLeiS
+         TGkjZDauNTdZodwp/XNyJHSQS0rdIzqd5Xg0LeCpdgOw6A2POnbhYPucvlMuhV3SdeuQ
+         n6fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWIAFsosMD/oYhNNegmjBM/xEB73XBYbgca18kdRiihI6F8Mv4+uQVEAAss+YhKtUxSzGOvgJ6Z9w==@kvack.org
+X-Gm-Message-State: AOJu0YxcvzBO9ze+vCMQKN230ffrWMia0sNuN5BMHjo6CtqBeQ/lHNUS
+	1tiGO4gtMzsYv0DZ57mdJaHZnBA16l7p8GYS0bXIiLmn6g98pUECmr5OTSBShV1st5E=
+X-Gm-Gg: ASbGncv/2OLg4nWRwcmojDk++22KShAiC1p7x5IIzHvQTLkPrlJdzh8yqx1Wf1L8+MH
+	ngH18BVUiDryuCHTKy/vntjYhkwCeeKgCtu0sXbpVUCbnDgkHm1W36sBAX2F8hAwnYEc6REznBl
+	E49E2ZQDWyeJQbkmXxAfE/RvLJMrsz8ujQzqPI8QYUNcYFX2zd/DQ6MBJ3z3U4IBzi3HLWOmr5u
+	irmU/4Sl98RNdyfW9Kxums+711af7qjFn2If6E6xAuobadW0bAsAX/hINBmuLshS2e/5HdFiSJt
+	OETGQR436uA1aEhnVCa0xSXpi+zaQiBtJjN7rAtLBl94QySSSKy10vuupWfPvEKjXq6JGPkVNUj
+	e5ONmktjzfMyNecGLI6v0Vy6AL7FLjYddLIcc9yuOPFQ33fEJB38MftKrhWWa4HiFcTtE9QsHdp
+	cW+2JVfWxWcPqg8bO4qGJF97s=
+X-Google-Smtp-Source: AGHT+IEWl3G9taWVAc0FXunulp0EUlwKR0OqZ4+JiONHzArIhRnKO+2ONevOYyoQ9T+k/jyvf8v9NA==
+X-Received: by 2002:a05:6870:ec8b:b0:3ec:4e22:bbb0 with SMTP id 586e51a60fabf-3f1691d07f6mr3791225fac.18.1764890417156;
+        Thu, 04 Dec 2025 15:20:17 -0800 (PST)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f50aa9ed65sm2288970fac.7.2025.12.04.15.20.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Dec 2025 15:20:16 -0800 (PST)
+Message-ID: <3cd2240b-ec2c-45d0-b73b-b66c83e75b9f@linuxfoundation.org>
+Date: Thu, 4 Dec 2025 16:20:15 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251204123124.1822965-2-chenridong@huaweicloud.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F21B74000B
-X-Stat-Signature: hef4axmuefktidt5p3a7jwfogtz7bepo
+User-Agent: Mozilla Thunderbird
+Subject: Re: Linux 6.18 amdgpu build error
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: akpm@linux-foundation.org, Alexander Deucher <Alexander.Deucher@amd.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ amd-gfx@lists.freedesktop.org, dri-devel <dri-devel@lists.freedesktop.org>,
+ Guenter Roeck <linux@roeck-us.net>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <74032153-813a-4a40-8363-cce264f4d5ea@linuxfoundation.org>
+ <1eb24816-530b-4470-8e58-ce7d8297996c@roeck-us.net>
+ <0425d7b4-76e4-4057-83a5-a7b17a051c54@linuxfoundation.org>
+ <ec77d11a-7613-4b75-8c9e-f2bba1595f0f@roeck-us.net>
+ <9d520a1d-0b8d-4d30-b29f-230fc0f92b8a@linuxfoundation.org>
+ <1f31b86d-283c-4878-92d0-ab90aed0c58d@roeck-us.net>
+ <5af4522e-30ab-4eec-a861-c2760cdabd4f@linuxfoundation.org>
+ <2bc690ca-fa57-46fa-949b-28b5441cd364@kernel.org>
+ <b24fc85c-0e6d-42f9-a6b9-05136409098f@linuxfoundation.org>
+ <CAHk-=whd-k3GhNGvVmP7W2p1d0d4ctqJ8iCuG8DbyKzgNqCL+g@mail.gmail.com>
+ <3b6d6e50-91ac-435e-adad-a67d4198a5b5@kernel.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <3b6d6e50-91ac-435e-adad-a67d4198a5b5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1764887400-594150
-X-HE-Meta: U2FsdGVkX1+GpNycGVjGcQAr2+I36PPiJ26joLetQpMKbwOOnD93P/D4P20VnWshM5u5vWNHlqRksE15ulLYsp9FiiFMvzUXuwTE9SpTCSRNZGUZRlpVOY0Ofa5rAAwtXT5VvYUXppldLfR8PdCFV5Da60Umc/I8dP1HxWFGX+9O0iqS3ZDiyhq6c3BaH6jX8XdZGfNrYetC4kMYfI1zToHg6VR/SJo2cXyH2CHf6INf4b9FZmbCObnpvWgrPyg1usdU2ezuV9yVPBG/4iz/HB3WX2C6FxcIqXxkU+2oSHayL2dpw7mE3Jt/Vh8iLyLYislJWgN70CyRmZ3EH+WPkivgiVetFHyLmmUX2j4Q3jlLDrRwPb0s8iqwbAwwuwe0QLDzGdT6GEPy89eoj/PEUV8X+9pxwdxFziV6AkBWje65GMpeEe8rSSqMWd/Gl4KYCUNqgqbuFk0ARDgdxD+ftLOD8MCB+v8eDUGqeStbLlzbvKx8fK55u5lIZt1PB0qObwuFGYpiMJKy4kkLYla4bLgrmF2W+vVC4G+ZcAN7LVhAJs0Db6Hxe/l24HfLSQ26FleYdaN4Hl/EQJyR2mm0r5ivLPnFTElRNwOBczlj0yA3gUo/4c53j02PyuD10oYGYv3KtAOYsuyVCTGs8CPPxRTPEgwVS+0pB5zXBqd0fjUL2hE3eqw+FXNeVlY/jRXVUg1JThcvlwSCkQPGT1t9StW0HYvwDiYC8FjnCi75IIA3kZ/I1C2h2tD1uHROi11FUoCVj9RvTKRwYQ16KZcOS1oQ9nT38ogDBhEBzhRtqlZsfvmTk7rPYAbo6qWgqDQCPWCiuV3ECr0Q5GZf+5krdq8mNm0CBdc/InLYgyQVUYfhDcfMqp6rPl/3uAKL5HVkGkF2oQUev22XjVs4qcWiChx9xsewTyOSqznrQp4V+0eCy3Ar7qeQAevH7/kj0DDSm708Tdw56LeRvQXuC9b
- c2wzjFPs
- SR0xJUNejvfetyX1j4C1FqVdTKzVz/mjzeufR7DQQtKCiSHXI29VJpbCK3794Cx6+vYk2YRvJG/UbkDfBTL3TFBH9DracNT2vl7EpRKDsLMc1YqWecVu1eSKMRDHPRVixvetG9vRo26RBdHFWx9+C9q/IvYeCc3QVRJ/ZDRedBrboeg0JXTUxgXR9Cc2jMkP5payNBdvduaNZ78U1pTwRFronQp2GANCqIIkiIJNRnszzqFAxC6cMfvCIT6Lf2O88vIDTX2SnQGrUt5qbEaKqlP8sveXcwNJfDFbeWbXDjmTKkNgbkNWaSRkNITam3Ibz8LfRBauK3FfuJt2IIWSUpK1sSpQLQRf6DxwRpF8d3zfLiBY9C5ImOyfJk0x6jjn1kfzp
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 47D7D180003
+X-Stat-Signature: 1thqm9qtcpkn7ho6em1pxkmb39deubwc
+X-HE-Tag: 1764890418-62698
+X-HE-Meta: U2FsdGVkX1/xCeyyHM55QD3//2b3LTRfXOjocHyFdI4fPEfn42xdq2CVqTWXeZPPuiktwBbYQuDRb4sk+6rOv4jmslx8mxzzrMTxCvF7seqd+khoyrFJHLFH/dbTvrpSqa52OCBZoe+go5KQMNih4DrTYFFLlMYYf8V3+I4imSWXA881G0PhzJM2AaIdGDVrVzMmwLXZ9fzeGy+DF6h+Wuc3BeETU9D/OUCi0I8sWk5vpVWspjOEmjE4+G8YgK6qE8XfyHrmKm/v2IrFzMrxdo81QwTfpgYQiaDI9c/TU8+vxJJM9b6qSP9vZjL63EfUljBwZ7tfQxLtznNqrb81bYwnA7DFWwj9QBJNRlTwtyFdtbl042KUfni1RRlxS+ZTo2MD63DAZB1kJrK7QMaRq5pTLOqzA28bROWZUwjjhCQVhoRVNIXBwTMvrDg9FvGKRNg7lvPZ688FeOnn82QXGKle5FANPbytjvJvutnFi33HPu3nGRDrCxzDGgnjakXHKyS3iTpbT8W0XZqzUkSVYAPUIXpaf8G2CJxzm6UnCSsF8ssjA/aksgoUrcJcNjWLwdZa18zVhibI9yjUpCZvK/J0p6sWUGs3zxxqpNN2RhUJu08We+M2LndDL9pwA31Tz2f+hqBhehteJWojTfRGzLvIsFvOmd/bmp7/66xXmCyJEFPavQYjMIBXc3fdiBq3sUyXUv8ZvWEkUYY2sY2hcvQMwXSXz7IxhstJFc/J7pUHOb+Kc1vYLhG/K5r3bxEpnPR3ZYtITBe9ooNBJYtve5C+GeIOwfjxipl0R2HghuMPXLscRae88S9hCtes3MX6x7WE2UKxWm3uZUa4tvOJJAEwWIj3OsazfxhhfKtFUIuN9p4kC+MD9WtSyGzbbRwmeM7F0fbP+medpMqr2uaUWvRPcpKFsG+zW7CZLM37Ijo2rdJo/O/H2xqoXQqzFl8h2pyK23ggMoFIaeivK6S
+ 74n4tQNd
+ Zndbbw2tBmgM8Chkc8ZQaRQ3jm0hV+lJ34zZNPpjJxz/kVFez60nPhS3yBZdsYMMcvyV124KANT2/5b3aafoi2pU0lZCSl0eNdEuxGXbatAedNg45mj2Aiqb/onYnBXy41OAWzDDfjR3Vo9sNaDmSaGPEF/haoF5fPqr+X9jsylBRwwLV6NbgO6iuHgCxUGjKR4BLJzlSXx3GPgpKRtr7Vh3wBAWsvqr2r8WqSmqnCSvkqYPPNjussZtf3s9n6V9ZxRvx16QTQa56XthZ2JIaYvxa19n76ybzOMUGzYVMJJZmdlDadT5h+6QISe5SdEpvjPQLThLrnWqTb8Dr8SXu9Wi1MtogH3UoPYUuuBj97HbRrseOkCgY9vzRHD5nQIe6/2bW5jToN4qEAtrf0xb1cSK8J9R84YShKISx2Z/BYIElndQ0sKIb5I+exg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,106 +135,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Chen,
+On 12/4/25 12:45, David Hildenbrand (Red Hat) wrote:
+> On 12/4/25 20:36, Linus Torvalds wrote:
+>> On Thu, 4 Dec 2025 at 09:40, Shuah Khan <skhan@linuxfoundation.org> wrote:
+>>>
+>>> This commit has impact on all architectures, not a narrow scoped
+>>> powerpc only thing -  it enables HAVE_GIGANTIC_FOLIOS on x86_64
+>>> and changes the common code that determines MAX_FOLIO_ORDER in
+>>> include/linux/mm.h
+>>
+>> So I suspect your bisection might not have worked out, and there might
+>> be two different things going on.
+>>
+>> In particular, hugepages were broken in 6.18-rc6 due to commit
+>> adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero
+>> folio").
+>>
+>> That was then fixed for rc7 (and obviously final 6.18) by commit
+>> 5bebe8de19264 ("mm/huge_memory: Fix initialization of huge zero
+>> folio"), but the breakage up until that time was a bit random.
+>>
 
-On Thu, Dec 04, 2025 at 12:31:23PM +0000, Chen Ridong wrote:
-> From: Chen Ridong <chenridong@huawei.com>
-> 
-> The memcg LRU was originally introduced for global reclaim to enhance
-> scalability. However, its implementation complexity has led to performance
-> regressions when dealing with a large number of memory cgroups [1].
-> 
-> As suggested by Johannes [1], this patch adopts mem_cgroup_iter with
-> cookie-based iteration for global reclaim, aligning with the approach
-> already used in shrink_node_memcgs. This simplification removes the
-> dedicated memcg LRU tracking while maintaining the core functionality.
-> 
-> It performed a stress test based on Zhao Yu's methodology [2] on a
-> 1 TB, 4-node NUMA system. The results are summarized below:
-> 
-> 					memcg LRU    memcg iter
-> stddev(pgsteal) / mean(pgsteal)            91.2%         75.7%
-> sum(pgsteal) / sum(requested)             216.4%        230.5%
-> 
-> The new implementation demonstrates a significant improvement in
-> fairness, reducing the standard deviation relative to the mean by
-> 15.5 percentage points. While the reclaim accuracy shows a slight
-> increase in overscan (from 85086871 to 90633890, 6.5%).
-> 
-> The primary benefits of this change are:
-> 1. Simplified codebase by removing custom memcg LRU infrastructure
-> 2. Improved fairness in memory reclaim across multiple cgroups
-> 3. Better performance when creating many memory cgroups
-> 
-> [1] https://lore.kernel.org/r/20251126171513.GC135004@cmpxchg.org
-> [2] https://lore.kernel.org/r/20221222041905.2431096-7-yuzhao@google.com
-> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Both my systems were running rc6 - I was stuck in a state
+where I was able to rebase to rc7 and then 6.18, but could
+never build either one.
 
-Thanks a lot of this awesome work.
+>> End result: if you ever ended up bisecting into that broken range
+>> between those two commits, you would get failures on some loads (but
+>> not reliably), and your bisection would end up pointing to some random
+>> thing.
+>>
+>> But as mentioned, that particular problem would have been fixed in rc7
+>> and in final 6.18, so any issues you saw with the final build would
+>> have been due to something else.
+>>
+>> Can I ask you to try to re-do the bisection, but with that commit
+>> 5bebe8de19264 applied by hand - if it wasn't already there - every
+>> time you build a kernel that has adfb6609c680?
 
-> ---
->  mm/vmscan.c | 117 ++++++++++++++++------------------------------------
->  1 file changed, 36 insertions(+), 81 deletions(-)
+When I suspected rc6 to be the problem, I booted rc5 and compiled 6.18
+after reverting 39231e8d6ba based on config file changes between rc5
+and rc6.
+
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index fddd168a9737..70b0e7e5393c 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4895,27 +4895,14 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->  	return nr_to_scan < 0;
->  }
->  
-> -static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
-> +static void shrink_one(struct lruvec *lruvec, struct scan_control *sc)
->  {
-> -	bool success;
->  	unsigned long scanned = sc->nr_scanned;
->  	unsigned long reclaimed = sc->nr_reclaimed;
-> -	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->  	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->  
-> -	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
-> -	if (mem_cgroup_below_min(NULL, memcg))
-> -		return MEMCG_LRU_YOUNG;
-> -
-> -	if (mem_cgroup_below_low(NULL, memcg)) {
-> -		/* see the comment on MEMCG_NR_GENS */
-> -		if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL)
-> -			return MEMCG_LRU_TAIL;
-> -
-> -		memcg_memory_event(memcg, MEMCG_LOW);
-> -	}
-> -
-> -	success = try_to_shrink_lruvec(lruvec, sc);
-> +	try_to_shrink_lruvec(lruvec, sc);
->  
->  	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
->  
-> @@ -4924,86 +4911,55 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
->  			   sc->nr_reclaimed - reclaimed);
->  
->  	flush_reclaim_state(sc);
+> Right, that's what I also proposed in [1].
+> 
+> I cannot make sense of how 39231e8d6ba could possibly trigger it given that it only affects the value of MAX_FOLIO_ORDER --- which is primarily used for safety checks and snapshot_page(), nothing that could explain changed application behavior, really.
+> 
+> But while Shuah is retesting, I'll go have a yet another look.
 
-Unrealted to your patch but why this flush_reclaim_state() is at
-different place from the non-MGLRU code path?
+I retested on both systems on 6.18 making sure I have 5bebe8de19264
+and 39231e8d6ba in there. I cloned linux_next and built it on both.
 
-> -
-> -	if (success && mem_cgroup_online(memcg))
-> -		return MEMCG_LRU_YOUNG;
-> -
-> -	if (!success && lruvec_is_sizable(lruvec, sc))
-> -		return 0;
-> -
-> -	/* one retry if offlined or too small */
-> -	return READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL ?
-> -	       MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
->  }
->  
->  static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+I didn't see any problems on 6.18. Having said that, It might make
+sense to hold off on including 39231e8d6ba in 6.18 so there is more
+time to test beyond 2 rc cycles. That is for you all to decide.
 
-This function kind of become very similar to shrink_node_memcgs()
-function other than shrink_one vs shrink_lruvec. Can you try to combine
-them and see if it looks not-ugly? Otherwise the code looks good to me.
-
+thanks,
+-- Shuah
 
