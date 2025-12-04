@@ -4,174 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7377ED29FA7
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 18:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 557F1D29FAB
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 18:29:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB7826B009D; Thu,  4 Dec 2025 13:17:02 -0500 (EST)
+	id 704836B00A9; Thu,  4 Dec 2025 13:28:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A94CF6B009E; Thu,  4 Dec 2025 13:17:02 -0500 (EST)
+	id 6B4B36B00B1; Thu,  4 Dec 2025 13:28:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97E106B009F; Thu,  4 Dec 2025 13:17:02 -0500 (EST)
+	id 5A4EA6B00B7; Thu,  4 Dec 2025 13:28:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 854A26B009D
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 13:17:02 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F6C2B74CE
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 18:17:02 +0000 (UTC)
-X-FDA: 84182595084.27.7DD3C2D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9B5294000A
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 18:16:59 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="dutGMv/N";
-	spf=pass (imf11.hostedemail.com: domain of clg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 42A5B6B00A9
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 13:28:59 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF3131A0313
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 18:28:58 +0000 (UTC)
+X-FDA: 84182625156.14.9E2E1DE
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9A3B220006
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 18:28:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YfYAmRHI;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764872219;
+	s=arc-20220608; t=1764872936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eirtc4OeV7lF+HDc34TcziSlprrtqsjl7v9RehYvcZU=;
-	b=DYvGaEwLisTN3T1Ti33wkzyQ2AWZp1JqpBGScae1RvbfiddpyjJmod1L3Kf5u9yknT1XkC
-	EQWJxN4NzOfozjkRM4f+cAaKcZpKeA8YpoALH/X5YCQrvJBaniKKHhDa373y/j0X9WnIi0
-	lBDWyC19JvmNNnHYmOuNNVEZe3vpvlA=
+	bh=EbYKo00Iv7GRqeuEurZ+VNuUOvRrRabNx4MSyyDcnsw=;
+	b=30SmJL9Sp1fx01W3LM50KYyzO/x4z++Y15r5vlrKGauf9x/pQow1Z6zTWLes5By7r7tK5K
+	NVSi0fS6V5xMzTU0pJ5FqktqMaRIzoUEZxs7nJ4USZlG+JdwQiDJQlxwx7htU5GErzoeII
+	g8EP/Fs9HG6v0wSok5eWJZIYUb+PhsE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="dutGMv/N";
-	spf=pass (imf11.hostedemail.com: domain of clg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=clg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764872219; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YfYAmRHI;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764872937; a=rsa-sha256;
 	cv=none;
-	b=zsK5FsvpSV3TtjmLzMmcthiIoO75xqVcih3EnPkh4JEyfbgc1gf3i6qxtOtW+r6LyPV9KH
-	Va2BOn6t7QqNllZP46uVKblPDVzn+0nIWUV6k43S7p3e0kafick8+Lct3JCQOeswCSOM+W
-	ShNiV9sdeJUFVGbD9Tnb3o2I6PT/9wQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764872219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eirtc4OeV7lF+HDc34TcziSlprrtqsjl7v9RehYvcZU=;
-	b=dutGMv/NZGXlHE+xCf1PoqCjy8ynOwICAoyRNOF7RjhfsrWrZC3tshiTFFpvSbw1mUfnXg
-	m4vKrVzdnJziSCmKR4KzS6jev4zv5kVdgaRPxcBqgcsfAs8lh7A2I2vW30QV94G29sq+K7
-	L5k4Gv6XGK5QQ5sw+0Wj2uEGVAATY38=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-uewOjQCeMfiajLUBdTsZTw-1; Thu, 04 Dec 2025 13:16:57 -0500
-X-MC-Unique: uewOjQCeMfiajLUBdTsZTw-1
-X-Mimecast-MFC-AGG-ID: uewOjQCeMfiajLUBdTsZTw_1764872216
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42b2f79759bso823945f8f.2
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 10:16:57 -0800 (PST)
+	b=HhaMdcpXav4Y3VM0mOZz0gCnax0bbILl2uZ1MkWcxCDYZFKWEkXP7vEAelO2W/G23P+VXf
+	UMS5UXZpoumvj+N1HYWqcRZ7ZZ2FHkLUoqBaGwKbaq/52k2ROdkhorCiR41A+o30Hf7KYg
+	Aop58w7XlNWG0yNw2aFvqeeKTZG/qug=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ee1e18fb37so12163991cf.0
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 10:28:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1764872935; x=1765477735; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EbYKo00Iv7GRqeuEurZ+VNuUOvRrRabNx4MSyyDcnsw=;
+        b=YfYAmRHIh5whMCDL2VrIQPMp/sXEA7bINEIy3T6WjrFsis5PIMzVNAe+sKOmcFz2dN
+         z+kkX4v9R1sr4KiS4mCIq0m7bJx448kaaEG3QNDReBBkWFZYyXbMWWO49WBxpbGOPjDi
+         OgtxGzie3gc9kYxbj6yay5sw3JDk7bVd89hfOlNae5dsEu9tFh8PfG6OlZtt0T+MNL6D
+         lJ2cxS69wVOSvWjtXRSN/EdCsUXK2jP3McmZLiP+WTqZk4oGtM+mHbtTc7QT+QJdtTr+
+         9/vCbGdFD/WY0C6sZiesVtB7u7Ve8Q4GKdRZoJPFKsGR8QlgYq57ufMk5KjqCNf+u8Fm
+         cEQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764872216; x=1765477016;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eirtc4OeV7lF+HDc34TcziSlprrtqsjl7v9RehYvcZU=;
-        b=YAAMKRomCXTOVYa3qlcybHq3OAeeLSHqIiPtfjrKLo+X4UZwF2eONyM8xks7JcNiH6
-         w+RCOclX2EMHIAEKc+1gChQMwHY+Uq4CPsme4bZWryd5dYbQQPMo4Wig2nnXv1yn+JeH
-         fD/rKqTmxBp4DFpcnUY29rr4tZjLQngiLjmpeVtsy7ozIXbKudhJZhQ83OVGZHrMQTAq
-         OLBnslKQajEVA+wv1kVMJMtH8gYtAa03I0w88vlUJOEk6CyIP0Wd8S1ppcfB9elXxsry
-         NuoIiQ6oUZu815xZ0VrrjfkNlx4kjSaxFYXUp580Q0XISisSsB0CPU1W3m41XfND27lG
-         J6rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHFph4QBXOOMpvvcJw1jr6j2uROIq5zKTvK+nCmqN2AE0QQqztNEQaHVAZDeaHPlB8En6LkA9USQ==@kvack.org
-X-Gm-Message-State: AOJu0YxxLvNmdEk1jixrlhpx2SibolOUySYgHEAdEXRpZTsbkFB5wGnR
-	bdZFrwiSPQ9Aua6r9HZiAUjhxk6t+Dxi1RmBcMizGhsBvkZN48nipMMolHiYSdtDEzpwEkU2f3a
-	5phVfp1T7r+Wi2+5C1VDD483igxdFTAJOMiAGxxCit6grg/TO0YEM
-X-Gm-Gg: ASbGncuBhNIFMpHlvndI9+P12xlYqaY5naerfPxK/+2m1kaLN7XKSz7310z+beEHcJo
-	j8fp1Y1UL0BTEW/oMXPaaPxBeBhwTxyQxqy8iOku4ZwhQf4F65VpcVctyS6wMP7T+2vkFFxQfpj
-	ykqAYR552muIJtg8WUqzR3ynpiga7Z43BuYAMxb5lhshcV7681T+CJaRGMDeSzPjv+N3pHql0+d
-	fMZ/menI9nYif1QnsB+KAMWCRCkg6qFsSPRV7lVIQB3R6GspXeeHof38dS1LTtbfdsqALFAMbRo
-	5vV+yklSy6QpkZhdhUMIAZumOIPCg6BtHDs8BLf9jciiWIpXJLjREMoLJTDLPe3rTTb23emu6W9
-	LHIdy0QWR2GVn1EeybEGvaYwJjXWDhU4CV+xdwdII2B9SEa4u
-X-Received: by 2002:a05:6000:40cb:b0:429:ca7f:8d70 with SMTP id ffacd0b85a97d-42f731728cbmr7553700f8f.15.1764872216017;
-        Thu, 04 Dec 2025 10:16:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHHsNa2uHt8wNcyB2Wb02dOnnMd8Uiu88xRl/KelRrPJiBftSyGR+BDd3v8V9I+wEeIzVFlXA==
-X-Received: by 2002:a05:6000:40cb:b0:429:ca7f:8d70 with SMTP id ffacd0b85a97d-42f731728cbmr7553657f8f.15.1764872215452;
-        Thu, 04 Dec 2025 10:16:55 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c? ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cbe9032sm4052320f8f.1.2025.12.04.10.16.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Dec 2025 10:16:54 -0800 (PST)
-Message-ID: <e2033095-9bf1-4d9c-9a5b-01148eaffc30@redhat.com>
-Date: Thu, 4 Dec 2025 19:16:54 +0100
+        d=1e100.net; s=20230601; t=1764872935; x=1765477735;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EbYKo00Iv7GRqeuEurZ+VNuUOvRrRabNx4MSyyDcnsw=;
+        b=DeME2QneofzP55MYJmOuwmIeRzJexjIwapu+vJIwpbdxRXbEzvVFXpsXsk12rF1rlJ
+         4hyHzX/3MtxECb+KKCw2jYVpw9ix9k3jth6GYh60yDD67LqFGTk9VU0USKUj2QHis/wJ
+         /7OouvZjwN8LUF1UDYSCRCBcsdmBB4GoVsKKvDopW40q00g3JPOkILd0LmzCwZujxGu1
+         ZbCR16UjI/dLhHjhY7DxA0Tm1L62uTog+QlOTNQG/c7o3ES9wfK4Q5Z6N/Q7r+Vs4O18
+         sBlEzqLkEjFn0Y/y0VPedJ3+G39GL27tP/Mru7y5AFsj1p9re2sSFDD+3d+SBn9i6VZk
+         Tt+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVSg1jeYK8hwmqkM5Jnmg8XCSHVDBh7L5NQnPe0FfOQSRvyD8DozZyk0WCd2d9iVjetnNgRv2/jaA==@kvack.org
+X-Gm-Message-State: AOJu0YzSAjFkEf0sNjGkqctGlRgnG87CahNfRc+Fi/uM+bjcfqO0jsq4
+	t1QvQP73jY6Hzy3wiguusZD3RRO3Nu2GG939yZKQSKosfU32oV8F03FgtMVHUNOdQlA=
+X-Gm-Gg: ASbGnctsEwFoLToewAlE73gNY+Lg/+aCRXfCo/izvH8LAsrgsxoAdVF9gxsnMC+3kt5
+	WAgPVvCMgPOMDHPmh8wrNXuPRJUm14LKDn2FDRZyPTFheaZ7Em00/4wk8VWnLKPNSq7AkMEC6EY
+	A+kJ80IYq6y5OF2aVf7AglH9DD/Io9oDreAMpvQl48w0534XBnL+Tg9bIObSV+gtLdjSahPQ3a1
+	FNjiHo+D5aRca3CGcFJ8n89R/s7OCNN93jUf0cDDggnZ8B8eHPrfwiplanDQtolaHhAEU9k39/f
+	h5qxVxlVPavzA1DfE+Qb4t6KprDZOAOjldQ+zyfgurzmhLCQYbdMPGeO9o1VpIDSDYxOW1c4HmB
+	VdzsZLptPwK5QoZCY0uKlw0L3UQwDZCqCM7tNxVQh6m8Frmn//70UWPKAF1fz0x7h7eqVOlsBN8
+	f0gKHuvnFehwQEm+QF1DNa
+X-Google-Smtp-Source: AGHT+IGZlFZPSAeM4UXQLHs00EEi+GdYO84wd6mPsj8XuMELP7WRFAZg4UDdzJCd4HZJh7eQnkG5Jg==
+X-Received: by 2002:ac8:59cf:0:b0:4ed:e5c1:798 with SMTP id d75a77b69052e-4f023a08b64mr52873691cf.35.1764872935525;
+        Thu, 04 Dec 2025 10:28:55 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88827f49e51sm15291736d6.15.2025.12.04.10.28.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 10:28:54 -0800 (PST)
+Date: Thu, 4 Dec 2025 13:28:50 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, yuzhao@google.com,
+	zhengqi.arch@bytedance.com, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, lujialin4@huawei.com,
+	chenridong@huawei.com
+Subject: Re: [RFC PATCH -next 1/2] mm/mglru: use mem_cgroup_iter for global
+ reclaim
+Message-ID: <20251204182850.GA481418@cmpxchg.org>
+References: <20251204123124.1822965-1-chenridong@huaweicloud.com>
+ <20251204123124.1822965-2-chenridong@huaweicloud.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] mm/vfio: huge pfnmaps with !MAP_FIXED mappings
-To: Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Nico Pache <npache@redhat.com>,
- Zi Yan <ziy@nvidia.com>, Alex Mastro <amastro@fb.com>,
- David Hildenbrand <david@redhat.com>, Alex Williamson <alex@shazbot.org>,
- Zhi Wang <zhiw@nvidia.com>, David Laight <david.laight.linux@gmail.com>,
- Yi Liu <yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
- Kevin Tian <kevin.tian@intel.com>, Andrew Morton <akpm@linux-foundation.org>
-References: <20251204151003.171039-1-peterx@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20251204151003.171039-1-peterx@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KS2rYm2Hx02M_I6DhxKfEf1Wdvlc4J4WNsVIBEV9zbU_1764872216
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9B5294000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251204123124.1822965-2-chenridong@huaweicloud.com>
+X-Rspamd-Queue-Id: 9A3B220006
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: ijetrc8s3hqnuczx4cnoyjokfmqpibn7
-X-HE-Tag: 1764872219-847650
-X-HE-Meta: U2FsdGVkX1/rJe5K6R5U7U1MCFfTttDUDcafvqrZqIuLgUZHhzSt71Bq5g+WzM6o0tbgyzBSsVYccqloedgi3qzdkWkkKXvrdWAO1diHlLNNYaaweASqGnk0X/7p3Fm5/TS7CNBb8GEmhgOnVpJ4w8IWIUQKZZDlew0i3bCrSU+Hlzn+KfDe+kt+qJ/MlMlGWjFRiuqUzxQdzn6B8Jxz3LIBkkDImw2rVhwfH3g/VbLecviM0/zbubytb7UKXgWrJlKXOLtHbGhSU1fHBWM7hXUOd7Aj8hZBn1Dv9k6KFU7G1ke+VTwBN1CXJymY6cJa/IF0agWnm+4s4LZxF/2JZxNcuD3faBU3Nz+UFJsJ/ESPbx8dm9fbV9d01k1YYIq7/ElyzxWFo4Q5KlMB7n2PXaqXWQuu/SDQ5EFK2ITD5lJllTwEOgkqZQmedp9FCgllSPcHRK4iWjRfdA5Vo+AkFmwf018T9AKhNPj//n72dUaSlWBz6lJHUM9+XQsGIG4mQxpqchOb3bko/jzH8/GT0cOWJes4EhFaM4E8qKvTYt0SuyO7ieuFzN3x8GtNFJlsDJZd/eqVKuJmUeNnhQ3zEtjedaXZHl6CgCflJdBkfusDEGLgJ9qtUqxO/MB+nMZJX+9rTZ4VH8xfvoVeqiaTA2x4muxsxswGXtUgTc9sTLyIC786FCIchZfA+Nr6pky68Zyd+9I4psU2KHo8jBhEWsVaAwgm/6U83TpyxwqhJUjCGC5NAxRulkSOLxDS3Z6ghXnlrwt5domdmqMLy9q+NW1gp6EWvI4cNhiyBbQGA8Ed8z/8nPzWh8YMKHmjfQm65J2ISmCOhv4JiI0iD/pgQgzq4Eu7FyeOAPqo0y+jKiaYn1nIoIBQ7i5nepeE5/c91e+2GX3fAOsAxaK0M2ZVTmehBkzUJKfDI7n0aapvxPAF8qdFBwCr+rJXeVfbOVGru+8pBoGvlbD2+av6ruF
- zIPtOoBg
- 60O/zKLS/Z422QdigpGgUMC0ODGfW5VBpMlYZHtOoZNm9D69sxy4HAwdlLedv6pggEiSnLaoKAPELGYkh9qqBfI/XDtkWXt06I9l4uq9y5CSpovlv+zPDBccwFDtV8aViPboAY8Fk0J8KUfX/BI+Cx9y6fyMrDCGHEnW7X/Ecnh9X2AAI+itFKJVN+zgL5i43emGzeQQ6Yzcn9TYiJLRh1hpYCJiX7gAEwvoNnylYawDPp4arrbOSkFQEL8RpGMFl+nnu9lLja+G08uDl97ASvbFt8BL5hwEtIQP29xWngvXTthbuGa1YkNyhjolPzB+1MOviuaIIpNLZZjGTkM1jKKR9xe40eViuI0BBkQeJfwpKOc9sChBPoByQDmPlmsgeQtjbCUoXj5/N0WiUr18cBlug86iTl3Tu3MwLPN53tyhxjAWX/gKu0IwUMhwm0pO+gVsdRm5W/qTln3eGg5xO3ycRiWcoVmd/ncOxaQDwmAzw9t7SCpTv7ijLBXQ6HuHVSyOczAQb4C6zk2T5RD+GOnoDkEPzYDQ4LcuMmFWeyfAT9zpn8E6PDOCe2azYxY4lO8w66PgE3RZ6PDM2k/jDPMaczHze6tlH+fEESCfObRvPDmkj9BbWDZowgxS4JzAZ872e1YiHPNayJyYsde7ODOmOCb6NGPRobkPwde3CPd1XSsKmwrH2idvf5Q==
+X-Stat-Signature: 4m9m6c3gdgpi6jc7ncmgpdjih3e88p1y
+X-HE-Tag: 1764872936-745768
+X-HE-Meta: U2FsdGVkX19Po6PkD3WExZmpVclpGF/TgW1rL0Fn0BBq0XifdmQ5NqwnnnctQiRfj1ce6Vh/xzeUstM7XYZgPK4xtYDLsig41T2vVronykk86RcPydi19szT1L0ryI1Nokgoxq7fEawu3Gnb/R59IhCTrCcioRZJeE/Tepby8lY0rsBQod9Zlw7YxXlA6E0J3RVqGGNWtFhG6xo4kRhaa95LBkgPTbuhmT/vwGPbldn32W0MMahKAQ8NhbWwa1wKfeJGuksOFuECFn6aswoDRQNAb/TGcC2FWsbhWl8wj763XIqdMmUoalg+eJNvyVHV0cTQTzgKNeoizEgTvUxzEGfwtinTtIx+D+HHVHbo/6Aa78R9XPb+lz1UGyfTYCd2nysxyMBAHmrkmM64ckic/krozGSiBfnZhiKoygEfUyUe2k5aUfaWSdAcID/P4cOZ67OVvC9Bk/w0rIYxdkktQyLDn0hYvnUAPWpHJGihSIqPqkTv2+zc6KSusG73A2WFrkQt8LZsvGlVBOcKWPo6BaH62YkjvsR16EJJASPAmjrGiGPvZqnd4eAf2yX2ZjUiMH9MmxShG1OdIfCHeLC6UeXA7HvvB/koQ0NG1gQGoVkxCUZPB/ZP2vvE1ayB0iZ5jeqIabBZKW0IqhoaHkNN3eJO4mmWHcE76gyuV2pi2X0S+0dTgeo1gQHsNaEIcaYKNNX8Qvkondyoa/NFGWUN0l4jTNiEmZm38up+rvjaCyTfdCNAiUgXiEZS/3Rc34OuSWKXguBQcXURXIjN6ThBAF5KAMlvTSQI2BSaFuyx9DXvOfekBP3FS5ZUS4FaPgv0S3DW3ESUcKfeglMUTn31A4ej5fJ63EKn5TBmcc38l7t677wDRiTddUSdBoY//mjMpRKXlGCvQIQ5/LhlCpJTrb9fK/tkmnKfcSh41X0qbk1ikNP6lIKuVgblBtCLERzhOaoICh/2Qt086soebg7
+ UPti3Be3
+ vaWBcdTRcclUChAyP+TEI31SgJNKgC0tQKha+HOczYUZvchmbFUFfabYFgOY7ajoIJLp1fSUmoAkZDW7iW2dw1F/5n8XQ74mU8kV247UEEboR48ZW5ysG50Wu7etidHPS/TQ0eomP7tv5yyG8TPMXjxf4rPtqmlNtVXvzMi451B74zx+CrC4wsJKxEOBkLmceJYcVu2NcAG2+3mer4sRapWnqcOlaAK/M3qrE4pdLLTvs+v7SjBS493pEk4PophVikSnY7egXvWE772XqoRZEVfLDrbYX1giHT/pwAheo59URE0vjDDVdUlfhKasv/y1lfQAnqoLNvG6JY3vjYojcC89UyBEk32W1iPAJ+PlusfHAV90we2NZGmkCIAx6PMS5Il31xpSu7xrTvCiCGsLw8E78n5+y5jxz0wPoHh5ZGBT/AToSDGhCEkUrAhWOg1NVMI9qdUlzdig4EiSWsLb6wf2ZhSki4d1iubuyBno1jqiyc7pAGr4olPs5VYxwzWww0srXtIfbluG6agbpZ9EvJwKKDmGrX5DFIUg/SYrUJTnM8+QvMh8uKwB8b/+ZQ9+EnjEsVMTl47nLQlvezDxc6Gc7siifWq5L6gfv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,115 +128,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 16:09, Peter Xu wrote:
-> This series is based on v6.18.  It allows mmap(!MAP_FIXED) to work with
-> huge pfnmaps with best effort.  Meanwhile, it enables it for vfio-pci as
-> the first user.
+On Thu, Dec 04, 2025 at 12:31:23PM +0000, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
 > 
-> v1: https://lore.kernel.org/r/20250613134111.469884-1-peterx@redhat.com
+> The memcg LRU was originally introduced for global reclaim to enhance
+> scalability. However, its implementation complexity has led to performance
+> regressions when dealing with a large number of memory cgroups [1].
 > 
-> A changelog may not apply because all the patches were rewrote based on a
-> new interface this v2 introduced.  Hence omitted.
+> As suggested by Johannes [1], this patch adopts mem_cgroup_iter with
+> cookie-based iteration for global reclaim, aligning with the approach
+> already used in shrink_node_memcgs. This simplification removes the
+> dedicated memcg LRU tracking while maintaining the core functionality.
 > 
-> In this version, a new file operation, get_mapping_order(), is introduced
-> (based on discussion with Jason on v1) to minimize the code needed for
-> drivers to implement this.  It also helps avoid exporting any mm functions.
-> One can refer to the discussion in v1 for more information.
+> It performed a stress test based on Zhao Yu's methodology [2] on a
+> 1 TB, 4-node NUMA system. The results are summarized below:
 > 
-> Currently, get_mapping_order() API is define as:
+> 					memcg LRU    memcg iter
+> stddev(pgsteal) / mean(pgsteal)            91.2%         75.7%
+> sum(pgsteal) / sum(requested)             216.4%        230.5%
 > 
->    int (*get_mapping_order)(struct file *file, unsigned long pgoff, size_t len);
+> The new implementation demonstrates a significant improvement in
+> fairness, reducing the standard deviation relative to the mean by
+> 15.5 percentage points. While the reclaim accuracy shows a slight
+> increase in overscan (from 85086871 to 90633890, 6.5%).
 > 
-> The first argument is the file pointer, the 2nd+3rd are the pgoff+len
-> specified from a mmap() request.  The driver can use this interface to
-> opt-in providing mapping order hints to core mm on VA allocations for the
-> range of the file specified.  I kept the interface as simple for now, so
-> that core mm will always do the alignment with pgoff assuming that would
-> always work.  The driver can only report the order from pgoff+len, which
-> will be used to do the alignment.
+> The primary benefits of this change are:
+> 1. Simplified codebase by removing custom memcg LRU infrastructure
+> 2. Improved fairness in memory reclaim across multiple cgroups
+> 3. Better performance when creating many memory cgroups
 > 
-> Before this series, an userapp in most cases need to be modified to benefit
-> from huge mappings to provide huge size aligned VA using MAP_FIXED.  After
-> this series, the userapp can benefit from huge pfnmap automatically after
-> the kernel upgrades, with no userspace modifications.
-> 
-> It's still best-effort, because the auto-alignment will require a larger VA
-> range to be allocated via the per-arch allocator, hence if the huge-mapping
-> aligned VA cannot be allocated then it'll still fallback to small mappings
-> like before.  However that's from theory POV: in reality I don't yet know
-> when it'll fail especially when on a 64bits system.
-> 
-> So far, only vfio-pci is supported.  But the logic should be applicable to
-> all the drivers that support or will support huge pfnmaps.  I've copied
-> some more people in this version too from hardware perspective.
-> 
-> For testings:
-> 
-> - checkpatch.pl
-> - cross build harness
-> - unit test that I got from Alex [1], checking mmap() alignments on a QEMU
->    instance with an 128MB bar.
-> 
-> Checking the alignments look all sane with mmap(!MAP_FIXED), and huge
-> mappings properly installed.  I didn't observe anything wrong.
-> 
-> I currently lack larger bars to test PUD sizes.  Please kindly report if
-> one can run this with 1G+ bars and hit issues.
+> [1] https://lore.kernel.org/r/20251126171513.GC135004@cmpxchg.org
+> [2] https://lore.kernel.org/r/20221222041905.2431096-7-yuzhao@google.com
+> Signed-off-by: Chen Ridong <chenridong@huawei.com>
 
-LGTM, with a 32G BAR :
+Acked-by: Johannes Weiner <hannes@cmxpchg.org>
 
-Using device 0000:02:00.0 in IOMMU group 27
-Device 0000:02:00.0 supports 9 regions, 5 irqs
-[BAR0]: size 0x1000000, order 24, offset 0x0, flags 0xf
-Testing BAR0, require at least 21 bit alignment
-[PASS] Minimum alignment 21
-Testing random offset
-[PASS] Random offset
-Testing random size
-[PASS] Random size
-[BAR1]: size 0x800000000, order 35, offset 0x10000000000, flags 0x7
-Testing BAR1, require at least 30 bit alignment
-[PASS] Minimum alignment 31
-Testing random offset
-[PASS] Random offset
-Testing random size
-[PASS] Random size
-[BAR3]: size 0x2000000, order 25, offset 0x30000000000, flags 0x7
-Testing BAR3, require at least 21 bit alignment
-[PASS] Minimum alignment 21
-Testing random offset
-[PASS] Random offset
-Testing random size
-[PASS] Random size
+The diff and the test results look good to me. Comparing the resulting
+shrink_many() with shrink_node_memcgs(), this also looks like a great
+step towards maintainability and unification.
 
-
-C.
-
-> 
-> Alex Mastro: thanks for the testing offered in v1, but since this series
-> was rewritten, a re-test will be needed.  I hence didn't collect the T-b.
-> 
-> Comments welcomed, thanks.
-> 
-> [1] https://github.com/awilliam/tests/blob/vfio-pci-device-map-alignment/vfio-pci-device-map-alignment.c
-> 
-> Peter Xu (4):
->    mm/thp: Allow thp_get_unmapped_area_vmflags() to take alignment
->    mm: Add file_operations.get_mapping_order()
->    vfio: Introduce vfio_device_ops.get_mapping_order hook
->    vfio-pci: Best-effort huge pfnmaps with !MAP_FIXED mappings
-> 
->   Documentation/filesystems/vfs.rst |  4 +++
->   drivers/vfio/pci/vfio_pci.c       |  1 +
->   drivers/vfio/pci/vfio_pci_core.c  | 49 ++++++++++++++++++++++++++
->   drivers/vfio/vfio_main.c          | 14 ++++++++
->   include/linux/fs.h                |  1 +
->   include/linux/huge_mm.h           |  5 +--
->   include/linux/vfio.h              |  5 +++
->   include/linux/vfio_pci_core.h     |  2 ++
->   mm/huge_memory.c                  |  7 ++--
->   mm/mmap.c                         | 58 +++++++++++++++++++++++++++----
->   10 files changed, 135 insertions(+), 11 deletions(-)
-> 
+Thanks!
 
 
