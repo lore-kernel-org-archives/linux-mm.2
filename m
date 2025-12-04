@@ -4,130 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF79D29FBE
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 19:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED00D2A520
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 19:29:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C676D6B002C; Thu,  4 Dec 2025 14:29:30 -0500 (EST)
+	id DA0846B008A; Thu,  4 Dec 2025 14:29:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3F816B0032; Thu,  4 Dec 2025 14:29:30 -0500 (EST)
+	id D783B6B00B3; Thu,  4 Dec 2025 14:29:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B55486B0062; Thu,  4 Dec 2025 14:29:30 -0500 (EST)
+	id C8ED06B00B4; Thu,  4 Dec 2025 14:29:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A422D6B002C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:29:30 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35F1056163
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:29:30 +0000 (UTC)
-X-FDA: 84182777700.30.709CAE9
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 76FA818001B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:29:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gtc7ECqm;
-	spf=pass (imf16.hostedemail.com: domain of mmaurer@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=mmaurer@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B46DF6B008A
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:29:43 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E65A897EF
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:29:43 +0000 (UTC)
+X-FDA: 84182778246.10.8F2A3FC
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 42EE910000D
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:29:41 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Iom/+Yts";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764876568;
+	s=arc-20220608; t=1764876581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=li2jOPCpnZmjfOxkVB/u3Ntjt/9n1Mv+93gAuK1nZY4=;
-	b=CIRmQ81cZRu+uG13elI/H+r6WBQs0KFAo/c3zM5SYacPo8X2USin45JufXzVRElz6tzPGQ
-	fZQQ12DEZuHbJXDj7O02Vy+M3462Kwdm0GjVf6SHW0KFuoXJMgIeTZiPThRL817lkw5FIl
-	o/EIcmo5Oig8Kzpe6KWFhEcvkxYTnAQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764876568; a=rsa-sha256;
-	cv=none;
-	b=e/rYObdhRS0L4DdBo/tAbYKL4v6oQxbldUK88xmYclcur6e/CxiAjFpKrxDvKmvlbSBq2M
-	Y7uk9bSLGegMdi2T8KW4dFItNpdrXrImRNT3RHsHwhkTM3NbQlbgH8E+dScRLbgRjHHWjb
-	dWB2nOWfEMHnIVF9Istu13K3Q9TQXq0=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/50DzzGGuZCmEfhhyIsQODb6cUpEszW9hVXDiA/0gbE=;
+	b=IJHo4oBDwBkrdClmO1uB6LoPmg9jH3kPTAPMxDssrnuqtTX8ssyOTLjz9dM3Il6quGSSJY
+	xgAyvZxLPcr4Gzk8w3lshzswoAIj36/P3mF/aBZxsrOcspKcKlxoxGqN183hzlHvqT1dB5
+	u85MwwemR9VjIWI4Z3uYWrBGWxVFXOU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gtc7ECqm;
-	spf=pass (imf16.hostedemail.com: domain of mmaurer@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=mmaurer@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4edb8d6e98aso83621cf.0
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 11:29:28 -0800 (PST)
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Iom/+Yts";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764876581; a=rsa-sha256;
+	cv=none;
+	b=XY9QM9BCj5whTGF68kpx2FT+FL7VpAooAfTMekFUY2faQRHWCBS6IVmY4A/t+JV2yAQF6U
+	aa5tayjxR2BujwJNhFq5cJ3PIX5tSYHF6yGT7NIESWJSMFimPdscb7450+iB07UMvxp0I1
+	rjeN/Co7HjnWqQdetwkXHcd0LF3kpos=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7c66822dd6dso1548561b3a.0
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 11:29:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764876567; x=1765481367; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=li2jOPCpnZmjfOxkVB/u3Ntjt/9n1Mv+93gAuK1nZY4=;
-        b=gtc7ECqmiHE8Nss5DOVQkLsC8S4h9auet2eELkr6MHCYXW0TJRNVuD5JyWf6/EFNDo
-         5EXPXzUUuuL9UbjR6QpyU6oF4hh8PegOgN2UF7FJUAr4OS0oRr2dM3G4wJsRIJcd90fl
-         Fx/KotqmEODzHl7obkOsDIfeTfDGdBKhe8SnXKKD7jNdXixdWZ+sOteGiMZyu4CmLClD
-         fSlpTL0Zv2Rj7StIAcAO1ZfzE5KUAIoLPbHt674sLaid7OZgzh3Q7puMoK20GOgqvfhv
-         uOImwRiviAPYfe8D0hHY9B2yEyVpcJo3ecMmA8X7tjgF88zKF5ai8jV4g6iVgngSmTSk
-         SVqw==
+        d=gmail.com; s=20230601; t=1764876580; x=1765481380; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/50DzzGGuZCmEfhhyIsQODb6cUpEszW9hVXDiA/0gbE=;
+        b=Iom/+Ytsn0bKXy7JYEh78ml38x+hJsUuJYU1RH2ENpdW9OxTjTVgX25ypCrnonVIKs
+         ZRBqibQ8AxPyhaNr0nuJPtKyXnuQp5QHmEUpOM7ZdTiufzPOb7UHkdXyJAawmkEdMTia
+         grUxZrIt0xW+lgmjdgf4d0N5kFYEH5/SnA/QEqjOZhm3+piTiExLLjuVj7bMniGrWffd
+         wEwrF/WGDJqgB9eGDWjlGAJ2Ra/XBgZ2V7ONNOQpCy6wGWZE6xrP5IDIk0eVD2oXLu9c
+         1nDBhPVcWHpuxR9o98hXmzM69PhSCP6+d1y9hlOxotzXnyPi2hRCirk2CqN9gj7/jlFi
+         ShNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764876567; x=1765481367;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=li2jOPCpnZmjfOxkVB/u3Ntjt/9n1Mv+93gAuK1nZY4=;
-        b=MQdIjR9XmnjD+hKcXUSGD6D4Gd+xSbD8h/xqUCEh8ZzdscuJWhtvRWJ2GFkJ7wZ/un
-         ztKnPelMJgT/WDgH7vuNN5wUpAffV6vmd+F14QxIeW2ynAu2MQU0E56bWuOo6QXdIASt
-         HGet9LEIYm+TYUIAjg0FvVOcOaVgzp2EESTquWkEb4/m4aG8E7QaPvW8QxsbNfNmfN6U
-         /VAGhfgPXE7itdFnKGl5BZnAH5Blri3gtEn5VjckQbGRggdC7JjSfMBKWSLSOZLCxTQv
-         8HX921O+lnL13+JiwWATaHOsTJEONAgVwWhiW8O6MhHAXOL98aA1/RfN2uhPijq1bocx
-         3tbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLhIcYvAjAPCGDpsdkw69K0j37iIYcXIm+HUvMRvHXECLNh0Fk5pbfYob9hMm0Hb+PmgocTLKFZA==@kvack.org
-X-Gm-Message-State: AOJu0YzjFk4lTwWbvJ/RoPAxQ+8/WgivymlgpOqSy8lJ1Wd7Dom+Qia9
-	f73n9qbWKfe8yxiiA7W5w7MM3ci2FJu88Fscbhpejqey5vG5qGYLaklNEXm30T3PPwYYoJ369cR
-	AddEUrIJOqd7Ykq0+B+zgkAhIy+NLC/4dg4XqUeeU
-X-Gm-Gg: ASbGncscYwsxkj2mF4joUKJIF0uBJDvOeN9/iMVDTErfhoFIM+c0RUyMHFdNukRtoVv
-	sgC4jFWTiECrzQWJ5khp4DbQhc284FmWdv23UH9AyBcNdweMqQlgvFU5vEx39xSFlGp0a09+8El
-	kk3g1xr//tn/5o7FwW5qTZhhwatPPNgBZKs8duawBcQv2JbYnUVjyBUpvLfCuI8wGVJcWdK1AZC
-	jN1iz/DnxYoReAzpwmjwN5ihF4hASC0aKVejbciIb/WY4PsSQ70Pr3KlXH14RNxk68oj6/08gV7
-	VBW0TFP2vKtQ5y+a8MW89S+xKg==
-X-Google-Smtp-Source: AGHT+IG/7kUZxd/9UMd9RxOWK7oRJw6LsWkyhbSwzHRq9dv3XGK3gE0ZwwYu8Q59dnHZWlQ+QWACJNmSaDdEdt4GFj0=
-X-Received: by 2002:ac8:7d91:0:b0:4ed:ff77:1a87 with SMTP id
- d75a77b69052e-4f0310036bbmr1019101cf.19.1764876567093; Thu, 04 Dec 2025
- 11:29:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764876580; x=1765481380;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/50DzzGGuZCmEfhhyIsQODb6cUpEszW9hVXDiA/0gbE=;
+        b=OnTF4Vfm1YwxKzJfRF54EFW8D9unh5hhzzw+GWbcNdrJXeNt94RVfl6V0WbBkDWOXH
+         d8QL80pnkREn5VpZN7+NDI3R8UP2nL2pV4OnxFYJCrEmVMUcz5Aby4fOIjUyksDJELEz
+         93rm5VKsoYVjP/mSMuV57UfLd/2wEGUYlm88/L5j0lWg79IqKhEAPpFXK3f2QzyJS4u7
+         Y8o+sKi/rwMFwTK2cjOhGP8B3a5JAj9Dt3Pes2re8rXmDPkTKmRqlk1U/qTkyqCRwfs9
+         7Cnlciv3DW5BvWOWHER5JOyLOP+G4HfKi3iPhnv9slcJnv9dpNi65guLhoujgM6ghsAb
+         JMUg==
+X-Gm-Message-State: AOJu0YzdrmA3sDzjvRD00SpnbZGac0YDXPQw4fX9JGqjrpqXZkdehN9Q
+	wIbeBlTYwyqA6zBMNjQBM8Q2ek3Y7q+jMZoZdlWZFkuieGkSrfwwhd1w
+X-Gm-Gg: ASbGncsgpsOw8h/+URgZsJwyJnMdOr2wKvD3a3feZllF7NxqFw+funTo84ZPhsDaf3v
+	PfsqNGxfxryGXOEkaomT9rYMsp2WS0ZNp6ppZIlUqOtlXx21IcYjWNR02EcY9e46ZeQkW7W4gOs
+	TmFnCGxj8lVW7w5DvaOodh1XRDr1+sfUklUGSRlLPj39IdsempuQfgzLheLYoJFlIyFOtpcgJq7
+	6rYjBKeDJcsX58YFFvKAbjOy3f7ruSuiYqJXyY/8v33eGaA+6FFmcMVoU2tFjRNp6e24eaIdSRS
+	YonC0DJzbVHVyptI+IyxVZx2qIMMPPauITu4RXQBLSJGQZa6imWuLQPPvHWRwcZj0o3hOOk02mc
+	K1Ycpu90+0SQb7wnrtjPhWmgtyVrooB3cj/nik7ILcXws+0CHGSB5Y+kuPmFTdpKSLVEZXhHSqj
+	3NgnXs74GzFmwVTEZpihvU58m0hgbWggQuTXdK8g/te1ETOYyW
+X-Google-Smtp-Source: AGHT+IF+2CfReFeq8hvspaAgpVnWK4HktTpnrfb9z1IuPTDozQBneIgBBx+omJly5DQDoOr9RFkKyA==
+X-Received: by 2002:a05:6a20:734d:b0:334:7e78:7030 with SMTP id adf61e73a8af0-364032d799cmr4983387637.8.1764876579753;
+        Thu, 04 Dec 2025 11:29:39 -0800 (PST)
+Received: from [127.0.0.1] ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bf686b3b5a9sm2552926a12.9.2025.12.04.11.29.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 11:29:39 -0800 (PST)
+From: Kairui Song <ryncsn@gmail.com>
+Subject: [PATCH v4 00/19] mm, swap: swap table phase II: unify swapin use
+ swap cache and cleanup flags
+Date: Fri, 05 Dec 2025 03:29:08 +0800
+Message-Id: <20251205-swap-table-p2-v4-0-cb7e28a26a40@tencent.com>
 MIME-Version: 1.0
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
- <aTFhFXCqvy7nmDOp@google.com> <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
- <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com>
- <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io> <aTGJdlwMRxGg2iZ1@google.com>
- <20251204142742.GM2528459@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251204142742.GM2528459@noisy.programming.kicks-ass.net>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Thu, 4 Dec 2025 11:29:13 -0800
-X-Gm-Features: AWmQ_blF4lJt3BfO2o2NOJRf3_Ss0kAS-vrqLdfp0qFcfHcQVmwUbXFySwWbsjc
-Message-ID: <CAGSQo01Am_rNeZqnqZU3hY7SwWG=dTHtzcksPSHUTiasgex+cA@mail.gmail.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Antoni Boucher <bouanto@zoho.com>, 
-	Arthur Cohen <arthur.cohen@embecosm.com>, Gary Guo <gary@garyguo.net>, 
-	Josh Triplett <josh@joshtriplett.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 76FA818001B
-X-Stat-Signature: hxpdad4zzzf43yfuf4carbttk9hqgstz
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAXhMWkC/2XO0QrCIBTG8VcJrzPUM3V11XtEF07PmlBuzGHF2
+ Ls3R1Cty+/A788ZScTeYySHzUh6TD76Nsyj2G6IbUy4IPVu3kQwITljmsa76ehgqivSTlDtgJU
+ KpYXSkNl0Pdb+sfRO53k3Pg5t/1zyiefruyT2q1LilFFwBdRQKbQgjgMGi2HY2fZGciuJj+d8/
+ UkS2WsNDBUa5eS/hy8v5NpD9lDLotZMG2l//TRNLxykUUEsAQAA
+X-Change-ID: 20251007-swap-table-p2-7d3086e5c38a
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+ Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+ David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Youngjun Park <youngjun.park@lge.com>, Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>, 
+ linux-pm@vger.kernel.org, "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764876574; l=8814;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=i5RlmtxXCdWtwZB3hf9A8JL1M1/AKu+ssjIASvWZXBQ=;
+ b=UJFtVp18Ijq5QeH5ZU3bL5PKApkxQYMRCCQifrUtxMCdnJ6K/xkLqRsVG/0SOgg4Yd5FjqVbT
+ nCRZxdRnv1XANkY9Ea8KY5Apizf29tmEz2ByoebeLZoT3RerziEvVzw
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Rspam-User: 
-X-HE-Tag: 1764876568-338087
-X-HE-Meta: U2FsdGVkX1+Wh+tU9MG6Fl2L+SdVlKR1lnu7PeZ+uOvl5l4sSUWdSE3n9L6t4WipAF9MO0DeFpXHVnpT8mMeazBGjwiT/GKTtO2nFgo4AhcGrOJNfkvylYvNXF+TtZP/dX7iHIspAiwRpxy07lTtcbjWQGLoevrJ6It+Z+n4RrTGICT2lrEAkxbbvaj3uM5xjC+RMOKgxIWNnJqbdcvXcQdhseNZtwE5/PGS0yoaUAdWWROPZl/heibWWeYXLoYcmFbLCa2ROR21e75Y9S/tNMW4lWBWLTqz+07BkzQvnkwsSL3C0WIHyCoTCv2G2Za4a1pTLO4cLhV0DkK3qaHCOks89NPK/Vblt75GZnD8xK848wBZmkak2GbybinNtOE2sMZ5tirh0VdYc3McbCoYqObRK97jPf3BzmRAwgSnj/anJu+1t08yQZAt6IbUZiZb+p0FewRiVFsIozHatJJ6esaqCU8hgcRxl68m0gu1oyewrr/vxeOc6lwnwODNXaLQrqMEOmd/BBoN99AR7Btn28bONRijueysYrSqBzM1IlgJQYYJw9XRh8VHxiK217+EUDzXvKfKxbGXoYZQ4bSrbIy2co5t4Oy/AYn0vYT9HetsRhs1RiXbxdqZXq5HGxUfzfuAbjfjQgWf9wFZGihYnaqezcoJkQV+pkfn+fH3Srj8EdEgDRaX6HoS6GOZDpr/uwMMTQU4Qy9s9Eo4q2eyVdP9mQpfiQ+Reidcc6F5Rzz0CXsXQGvG5/twL2CPg4KJCaNPeEH6R1cV/3Tffgl4/grGsIfszo07XNi44r+DCHYKuccqmG9v1cPLrlUi2LYQxNJR50UR3NHZG3WVB1sbTdxLHZ1LjOtW26MvCfy3UZRTl1A71zarV1vhGwgG4v29wlIWwyUDpvTl8QCK2K3keVjVnhQpudlW0s6IM/Y2UCfqYHajIaofV69Z+Ct+M/AZrpDAT48+4db+WiEbzwL
- Hcp03jg6
- HUUGMbjQaZollfxk=
+X-Rspamd-Queue-Id: 42EE910000D
+X-Rspamd-Server: rspam11
+X-Stat-Signature: fmu6si63i6r35qcjry8m931csqqrzc74
+X-HE-Tag: 1764876581-625667
+X-HE-Meta: U2FsdGVkX1/KSqCLObViRPkRKLOrlxwE4iQGSsncrafha0Cety0Q92NcNS4Pd5qCIbOSzZyuuXAx5aKJdtb/yY64ejbRRnpLo92i7fCkLWpQeXMUuJk/mgUJoYG8jKsJILcCp6tpX9dbPXRZwMfCs859KufYUJ029E0q02UabgIq4NAaCRydpW7pMn8ySwG2yyt2DxOlpWYWvAjc0uHlRK86YIw+UVpsBal7R5Sqpr55XmoRiqcMwaAvPFI9slQBxJNz+cVl3vhQzzjS2vg4OW+vnneZK0fYPVaf/2ugnh3hCQqncrq+hRYwOtC0bkBdtQ5exiTSp/6mZ7hTsFs90JBqvXfvw2Eed1WBB15qXrZqtQglT6bCbDEl0Zas4kxJFUpkCo/wkaZnCR7S1q/JZADoeW9abAbIUgtCzj8C6XYaPB9AHq3gUifw2mfdl8HZKfxNHeFzQNjxFq+Ztb7wfzuyAlmgBrFTpy1mIffzYbBcElhP0JmYZPQVcGuChFYXwdd17QlZj5T/TMU2qFK70ZJCghzQUusjaAIdsozN+6q/682nSKDua2v/7kfsg+Sb34+3jjDf/Zfw5p3X+sRfD0+25C63+Er+fHlCpQeyRqnOpIAswaQEW9yET/474uJMdR1BtcgnrNMfA8tb7rDGylsPeB8rQ5DMS+zIXfgTym3usGXfplYzKLiyr0VD9JQQrCEqrtItZJIKZbaD5Ygqs+YbiPK0MqeM+yl/JC+MLcjB2Z9VH5cD3T/xczKlr4sBLh5LEOfDAKRURrfcxxIFahwPuN+5EMRKOBxD/E3iEiHwjhsnH5LiXEn6pEmoGy41fwTHVK3l01Wc9RE2xxFT4x3P4K0POI0WBpWHStD1o6NDVvrKcMpOOWnzFK8M7mLt6zXfqoPHhcgzyO67rSydDDKAH6y4J3TgpgJyAshEft8tYtgzQm6r9FNJXWaYLUTBPXyzKmTGnGeEdZ0CyIg
+ ulKpZkdR
+ iCq09RMiqeOanfiRRr/ZhNm2iRMU9FISBnWPvA+Ju8qO6rhl9DCloBi1RiVO6J9GRSQX2Gx1+d9noZTz7o6moQVCpoyam/cRVC5imYvgcQTvMUXPv7M709qZVKqIPzqxf4ZLf7k6U5p8DM8Vl3Fsltj69OfoCAnh7nJOBtcJCK+VI/3IInovTz2IYFRbkD+zpQA+M4w+U9qty8pR237FuU4DCYg6g82VPju0mywUMrAtpxoUPPKjiXTgeU1z0dmj0cz8/DXh/kzz+CcmCr444OZvB8NaXeWmU2tQxAUBltUsbXnN+n7VWS3Z1BVCSw7SoHSSaRQzOS8+J5El+Wp8cKiaGSXgFuQq/tJAhSwNwE5NjSuk6YAionTMRQ2Xkz7L24jpZSzLMzTuDSrJCteyJOldqQLJ7kulmdKZIJHyrB19IY4v7VYMVTocu72572d7ykExbEQkEIWgCb99cud0BjBuguzr4oV+9q7qq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,99 +139,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 4, 2025 at 6:27=E2=80=AFAM Peter Zijlstra <peterz@infradead.org=
-> wrote:
->
-> On Thu, Dec 04, 2025 at 01:15:34PM +0000, Alice Ryhl wrote:
-> > On Thu, Dec 04, 2025 at 01:49:28PM +0100, Emilio Cobos =C3=81lvarez wro=
-te:
-> > > On 12/4/25 12:57 PM, Miguel Ojeda wrote:
-> > > > On Thu, Dec 4, 2025 at 12:11=E2=80=AFPM Peter Zijlstra <peterz@infr=
-adead.org> wrote:
-> > > > >
-> > > > > Right. Earlier I also proposed using libclang to parse the C head=
-er and
-> > > > > inject that. This might be a little simpler, in that..
-> > > >
-> > > > Yeah, that would be closer to the `bindgen` route in that `libclang=
-`
-> > > > gets already involved.
-> > >
-> > > Yeah, so... there are existing tools (c2rust [0] being the actively
-> > > maintained one IIUC) that in theory could do something like that (tra=
-nslate
-> > > the bodies of the functions from C to Rust so that rustc could consum=
-e them
-> > > directly rather than via LLVM LTO).
-> > >
-> > > I think the intended use case is more "translate a whole C project in=
-to
-> > > rust", but it could be interesting to test how well / poorly it perfo=
-rms
-> > > with the kernel helpers / with a single header translated to Rust.
-> > >
-> > > I personally haven't tried it because for work I need to deal with C+=
-+,
-> > > which means that automatic translation to Rust is a lot harder / prob=
-ably
-> > > impossible in general. So for Firefox we end up relying on bindgen +
-> > > cross-language LTO for this kind of thing, and it works well for us.
-> > >
-> > > If I'm understanding correctly, it seems the kernel needs this extra =
-bit of
-> > > help (__always_inline) to push LLVM to inline C functions into rust, =
-which
-> > > is a bit unfortunate... But this approach seems sensible to me, for n=
-ow at
-> > > least.
-> > >
-> > > FWIW Bindgen recently gained an option to generate inline functions [=
-1],
-> > > which could help avoid at least the bindgen ifdef in the patch series=
-?
-> > >
-> > > Anyways, it might be interesting to give c2rust a go on the kernel he=
-lpers
-> > > if nobody has done so, and see how well / poorly it works in practice=
-? Of
-> > > course probably introducing a new dependency would be kind of a pain,=
- but
-> > > could be a good data point for pushing into adding something like it =
-built
-> > > into rustc...
-> >
-> > I already tried c2rust as an alternative to this patch. It works okay
-> > for many functions, but it's missing support for some features such as
-> > asm goto, though this is fixable. But a larger issue is that some thing=
-s
-> > simply do not translate to Rust right now. For example:
-> >
-> > * Atomics use the Ir operand.
-> > * static_branch uses the i operand.
-> >
-> > neither of which translate directly to Rust.
+This series removes the SWP_SYNCHRONOUS_IO swap cache bypass swapin code and
+special swap flag bits including SWAP_HAS_CACHE, along with many historical
+issues. The performance is about ~20% better for some workloads, like
+Redis with persistence. This also cleans up the code to prepare for
+later phases, some patches are from a previously posted series.
 
-I took a shot at `c2rust` as well, the summary was that `c2rust` was missin=
-g:
-* Asm goto support
-* __builtin_types_compatible_p
-* Deduced types
-* __count
-* _Generic
+Swap cache bypassing and swap synchronization in general had many
+issues. Some are solved as workarounds, and some are still there [1]. To
+resolve them in a clean way, one good solution is to always use swap
+cache as the synchronization layer [2]. So we have to remove the swap
+cache bypass swap-in path first. It wasn't very doable due to
+performance issues, but now combined with the swap table, removing
+the swap cache bypass path will instead improve the performance,
+there is no reason to keep it.
 
-I was adding hacky implementations along the way to see if things
-could be made to work, but the %l and %i missing in Rust itself that
-Alice pointed out were not things that could really be worked around.
+Now we can rework the swap entry and cache synchronization following
+the new design. Swap cache synchronization was heavily relying on
+SWAP_HAS_CACHE, which is the cause of many issues. By dropping the usage
+of special swap map bits and related workarounds, we get a cleaner code
+base and prepare for merging the swap count into the swap table in the
+next step.
 
-I also think that the bitcode-based approach is more future proof -
-the kernel may pick up new C features that `c2rust` hasn't yet learned
-about. If `clang` is in charge of generating the bitcode for the
-to-be-inlined helpers, we don't risk any desync in terms of what
-features are supported either by `c2rust` or by `rustc` relative to
-what's in use by the rest of the kernel.
+And swap_map is now only used for swap count, so in the next phase,
+swap_map can be merged into the swap table, which will clean up more
+things and start to reduce the static memory usage. Removal of
+swap_cgroup_ctrl is also doable, but needs to be done after we also
+simplify the allocation of swapin folios: always use the new
+swap_cache_alloc_folio helper so the accounting will also be managed by
+the swap layer by then.
 
->
-> Right this. AFAIK Rust simply does not have feature parity with inline
-> asm. Them having picked a wildly different syntax for inline asm didn't
-> help either of course. But Rust is Rust, must have terrible syntax :-)
+Test results:
+
+Redis / Valkey bench:
+=====================
+
+Testing on a ARM64 VM 1.5G memory:
+Server: valkey-server --maxmemory 2560M
+Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+
+        no persistence              with BGSAVE
+Before: 460475.84 RPS               311591.19 RPS
+After:  451943.34 RPS (-1.9%)       371379.06 RPS (+19.2%)
+
+Testing on a x86_64 VM with 4G memory (system components takes about 2G):
+Server:
+Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+
+        no persistence              with BGSAVE
+Before: 306044.38 RPS               102745.88 RPS
+After:  309645.44 RPS (+1.2%)       125313.28 RPS (+22.0%)
+
+The performance is a lot better when persistence is applied. This should
+apply to many other workloads that involve sharing memory and COW. A
+slight performance drop was observed for the ARM64 Redis test: We are
+still using swap_map to track the swap count, which is causing redundant
+cache and CPU overhead and is not very performance-friendly for some
+arches. This will be improved once we merge the swap map into the swap
+table (as already demonstrated previously [3]).
+
+vm-scabiity
+===========
+usemem --init-time -O -y -x -n 32 1536M (16G memory, global pressure,
+simulated PMEM as swap), average result of 6 test run:
+
+                           Before:         After:
+System time:               282.22s         283.47s
+Sum Throughput:            5677.35 MB/s    5688.78 MB/s
+Single process Throughput: 176.41 MB/s     176.23 MB/s
+Free latency:              518477.96 us    521488.06 us
+
+Which is almost identical.
+
+Build kernel test:
+==================
+Test using ZRAM as SWAP, make -j48, defconfig, on a x86_64 VM
+with 4G RAM, under global pressure, avg of 32 test run:
+
+                Before            After:
+System time:    1379.91s          1364.22s (-0.11%)
+
+Test using ZSWAP with NVME SWAP, make -j48, defconfig, on a x86_64 VM
+with 4G RAM, under global pressure, avg of 32 test run:
+
+                Before            After:
+System time:    1822.52s          1803.33s (-0.11%)
+
+Which is almost identical.
+
+MySQL:
+======
+sysbench /usr/share/sysbench/oltp_read_only.lua --tables=16
+--table-size=1000000 --threads=96 --time=600 (using ZRAM as SWAP, in a
+512M memory cgroup, buffer pool set to 3G, 3 test run and 180s warm up).
+
+Before: 318162.18 qps
+After:  318512.01 qps (+0.01%)
+
+In conclusion, the result is looking better or identical for most cases,
+and it's especially better for workloads with swap count > 1 on SYNC_IO
+devices, about ~20% gain in above test. Next phases will start to merge
+swap count into swap table and reduce memory usage.
+
+One more gain here is that we now have better support for THP swapin.
+Previously, the THP swapin was bound with swap cache bypassing, which
+only works for single-mapped folios. Removing the bypassing path also
+enabled THP swapin for all folios. The THP swapin is still limited to
+SYNC_IO devices, the limitation can be removed later.
+
+This may cause more serious THP thrashing for certain workloads, but that's
+not an issue caused by this series, it's a common THP issue we should resolve
+separately.
+
+Link: https://lore.kernel.org/linux-mm/CAMgjq7D5qoFEK9Omvd5_Zqs6M+TEoG03+2i_mhuP5CQPSOPrmQ@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/linux-mm/20240326185032.72159-1-ryncsn@gmail.com/ [2]
+Link: https://lore.kernel.org/linux-mm/20250514201729.48420-1-ryncsn@gmail.com/ [3]
+
+Suggested-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Changes in v4:
+Based on mm-unstalbe, basically same with V3, mostly comment update and more
+sanity checks. Stress test and performance test is looking good and basically
+same as before.
+- Rebase on latest mm-unstable, should be also mergeable with mm-new.
+- Update the shmem update commit message as suggested by, and reviewed
+  by [ Baolin Wang ].
+- Add a WARN_ON to catch more potential issue and update a few comments.
+- Link to v3: https://lore.kernel.org/r/20251125-swap-table-p2-v3-0-33f54f707a5c@tencent.com
+
+Changes in v3:
+- Imporve and update comments [ Barry Song, YoungJun Park, Chris Li ]
+- Simplify the changes of cluster_reclaim_range a bit, as YoungJun points
+  out the change looked confusing.
+- Fix a few typos I found during self review.
+- Fix a few build error and warns.
+- Link to v2: https://lore.kernel.org/r/20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com
+
+Changes in v2:
+- Rebased on latest mm-new to resolve conflicts, also appliable to
+  mm-unstable.
+- Imporve comment, and commit messages in multiple commits, many thanks to
+  [Barry Song, YoungJun Park, Yosry Ahmed ]
+- Fix cluster usable check in allocator [ YoungJun Park]
+- Improve cover letter [ Chris Li ]
+- Collect Reviewed-by [ Yosry Ahmed ]
+- Fix a few build warning and issues from build bot.
+- Link to v1: https://lore.kernel.org/r/20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com
+
+---
+Kairui Song (18):
+      mm, swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+      mm, swap: split swap cache preparation loop into a standalone helper
+      mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
+      mm, swap: always try to free swap cache for SWP_SYNCHRONOUS_IO devices
+      mm, swap: simplify the code and reduce indention
+      mm, swap: free the swap cache after folio is mapped
+      mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO
+      mm, swap: swap entry of a bad slot should not be considered as swapped out
+      mm, swap: consolidate cluster reclaim and usability check
+      mm, swap: split locked entry duplicating into a standalone helper
+      mm, swap: use swap cache as the swap in synchronize layer
+      mm, swap: remove workaround for unsynchronized swap map cache state
+      mm, swap: cleanup swap entry management workflow
+      mm, swap: add folio to swap cache directly on allocation
+      mm, swap: check swap table directly for checking cache
+      mm, swap: clean up and improve swap entries freeing
+      mm, swap: drop the SWAP_HAS_CACHE flag
+      mm, swap: remove no longer needed _swap_info_get
+
+Nhat Pham (1):
+      mm/shmem, swap: remove SWAP_MAP_SHMEM
+
+ arch/s390/mm/gmap_helpers.c |   2 +-
+ arch/s390/mm/pgtable.c      |   2 +-
+ include/linux/swap.h        |  77 ++--
+ kernel/power/swap.c         |  10 +-
+ mm/madvise.c                |   2 +-
+ mm/memory.c                 | 276 +++++++-------
+ mm/rmap.c                   |   7 +-
+ mm/shmem.c                  |  75 ++--
+ mm/swap.h                   |  70 +++-
+ mm/swap_state.c             | 338 +++++++++++------
+ mm/swapfile.c               | 864 ++++++++++++++++++++------------------------
+ mm/userfaultfd.c            |  10 +-
+ mm/vmscan.c                 |   1 -
+ mm/zswap.c                  |   4 +-
+ 14 files changed, 862 insertions(+), 876 deletions(-)
+---
+base-commit: 92440888882ad21791a07ff8809807ef1d2c2a42
+change-id: 20251007-swap-table-p2-7d3086e5c38a
+
+Best regards,
+-- 
+Kairui Song <kasong@tencent.com>
+
 
