@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C365ED206A7
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:13:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BF70D206A7
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:13:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 890F36B00A0; Thu,  4 Dec 2025 09:13:21 -0500 (EST)
+	id 7CFF86B00A1; Thu,  4 Dec 2025 09:13:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7803D6B00A1; Thu,  4 Dec 2025 09:13:21 -0500 (EST)
+	id 75A586B00A2; Thu,  4 Dec 2025 09:13:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620E86B00A2; Thu,  4 Dec 2025 09:13:21 -0500 (EST)
+	id 648436B00A3; Thu,  4 Dec 2025 09:13:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 453526B00A0
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:13:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 024391A0128
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:13:20 +0000 (UTC)
-X-FDA: 84181981002.04.02BBD0E
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E25E4140015
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:13:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DISJXV6D;
-	spf=pass (imf26.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F9B66B00A1
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:13:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 181D8129E0
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:13:22 +0000 (UTC)
+X-FDA: 84181981044.27.D2A7AEB
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 379A014000A
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:13:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C5caJYG3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764857600; a=rsa-sha256;
+	cv=none;
+	b=K+6XBw+Si2lTPFguwOekiJCzCqDY49keMyw8iCNeMaDCbnagf4Q85EdL/84Gu92mx/82Wn
+	tucAj6h5bpCNvSKfSWf8HSmGs+ILGfvFyojOvlCwj4vCGwCbPtVwWA3AGvqann3zN5OWDl
+	lqFmbwH8Q2aeLPt+msbGrp0ROBNuBCA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C5caJYG3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764857599;
+	s=arc-20220608; t=1764857600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ekn2DBIpCkQXanmNkedEYdcryjYDg+bStsY06P8Miig=;
-	b=DOhE6Pbxw3iJTYOKZe8ppLfORgIZUGTynZ6cxYV9lszVNHGg3+A17K2EeCrHixOPmeSm1P
-	kiX6B08hO9uY6Pxgitu8NQ8iS9CBcpxw6C/OD4ZrUkuOLOQd6jrxIJqs1SYxWb0NuP3bqp
-	xw5GxHLR6Defkr2utGprrLoFfm0Y220=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DISJXV6D;
-	spf=pass (imf26.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764857599; a=rsa-sha256;
-	cv=none;
-	b=lp4CPw0a3IQSyxSbovLP7NnwsUcHGXVz2a/lWAX/5l2Cqh+Gqy1Ua0mvHmSrQC/pIQUb6V
-	dWtjywwORMXOK2XjBmqpw4EUb1SBz1TVV30u8RW55IQnSGWd0JWVFy12lEqDrFiclvGQ0S
-	UCw1XXDLkBv9Il5mXYHyNnjRtBXGhFg=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47775fb6c56so9111325e9.1
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 06:13:18 -0800 (PST)
+	bh=sGnt8bTKaac1K6msaRLVltkt9xGbtE5aMKqhuya716s=;
+	b=OolbjnkpYrr2OmMiDXZTG7tfJyfzAGHmwmtA7QAGXiOyo/ZWq2rO8R7hmeMiP+fJdLZTUt
+	jJQ2SsAIakMLHzWLN6g1nVaPdm+HjwgNisWPexPfUB4KCYM5Lu8OTaqyVJ63QXjwi3gm2E
+	fdeqm0oPX8kudwzaxv+ETTGVsD5D1dE=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so617206f8f.3
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 06:13:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764857597; x=1765462397; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764857599; x=1765462399; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ekn2DBIpCkQXanmNkedEYdcryjYDg+bStsY06P8Miig=;
-        b=DISJXV6D1S0xaJUCB0iC1p2qeJAHXHYGMV2Gynf8yJm4eKNtIWXYv8xn908p8gZJNo
-         +J3kTQ5pY8vtQJijm7Le63kkDdnOpUrGej0YHXMjwrM6mKs3kdC5o9V7mzW/M7yzihcy
-         lA82ST7fjvsz21/2Nzev0s1j5jQtVofQ3fJqhsD/88orFJhP+31Z5c0zLrJCldwvw7wP
-         clNz9nqfZen/URjNRz63GeeThi2pqTpBjv8PG8eXS4/FBBUxTEdVk76HoegGok7aU9eG
-         GiDWN/T+HyQ6FJKiFP39M8l6eVs3ZivTqCClCpCgjupdRT636wQLJ8fMLO/UDOQGwGlG
-         24SA==
+        bh=sGnt8bTKaac1K6msaRLVltkt9xGbtE5aMKqhuya716s=;
+        b=C5caJYG3tE7si67fBNl70Azm1lg1snkAC1UmiO3sOXn79hhd4MYAuA+KTnrWtaYaue
+         xNeICm1wHAzub/OHa+12Sqrk/sIPSlu2BKFYLUyri2DVGPYxAdJbNYD/iAS0qNF5GP7N
+         uPwT7iQfsUbQzOlVyWvDqyZVZb8OM+Db6jrhJYFdpBDw6I8nzfT7OsR+hFyWgVWZKanE
+         Bos6zFFOWUkjG+WQj2rfqajQtOLDPMMYvcQA57zfQfj59UZqPQ576L4x5e4Dv44J4Jla
+         ETiwQekwGcb48j+Z/ePsjHbW04XhifEZle1EmaZat8yCn3tbyjFAfA/bLNJvRwzm28Ko
+         nsIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764857597; x=1765462397;
+        d=1e100.net; s=20230601; t=1764857599; x=1765462399;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Ekn2DBIpCkQXanmNkedEYdcryjYDg+bStsY06P8Miig=;
-        b=Znld2Fy3tuEsm82e8YUhabLf8FYMRdyzu2QO7dPyJOeeRzb1LlPizoCZnpxdwDyG5J
-         1Gp3iSLzP6siG+gW5yzIbrJfcQ0/Fd70LlI0Twx7SQpX8e3itO3cHKbG4+Q/8D1yVhN4
-         4PIULGSLobIjuO0Doq/iQOITwiTOsRmmxAsy12pY+v6seZNdt2xjN9S2HYZc8TA7qLrd
-         +YQi3f719BFqRa6xZVj2Ohghxf6wdxQjin/tovO1iSkoIU9Dda4/iYLeCSitWZ/doIi2
-         nME/KCQOuSG9YMwr+Fs+kj0Tx4QDaiN/AE71m3TxOtahVoxzCohyh2IAO2Ah6/cYh/4E
-         RE4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVaK7WmpOodoce1VjeFov6RIn1mo3v51+c6jXEtTPHJe/kOhKneeivSla+KkkGQb0gHIx+aBkPmrw==@kvack.org
-X-Gm-Message-State: AOJu0YwU67kchqThFf8XBJh2QK5yU+9ngAhqf+xlzlxo1NiQnGd7nQCe
-	rlWvM1aNlRtnKZUxLsWbAukoPq4OJDIgI39pYV0JhfjKrgi1T8+Kawri
-X-Gm-Gg: ASbGncs15k298shhfNONlqSg1rJ8JrzbgbrUL97vfohzQ+Uw8GktJlEQ6nawc8o7L9c
-	u/LBBV7F+uQP9wJu/ZbCjJBIUQwcUJK7ubOA2eg29DGHqX/BC5VcXgm4VxBYK02aPZwdHIzWC1i
-	DnreDheTVfvqu58hJ7Okabr1nG3DQFKlhXfnhJNMuH+Lzmmehh+CEllSZ5W/WYpbNnGGC2Bu36B
-	51q0fzsYuMlfyjcq+UkOElNcT6FCkfgS0CTxp4DcXZ768dK86O7xb/+KlIwybbgkkE/ZDPtY4XX
-	jPI0tDc9sSENxAqxL8XwrZyNDxV1hnBiuq5kvEcT2sq4y+0mwLFqyMzDS04G3Ev+rKTTCVFj1Gu
-	l5YWX6UjZT0LF2F8fBNsFZjMgThaec+IvNFRUzI7MYY2G3Sk00rxc0FElAyJ0Ti1ivWHMsReZ2j
-	IVdbh9onLzNyrjaIiX7003/1ZFtf2tOlA9EOMxcYsu/ZnNs6DruyFyshulcSZQv29zJQ==
-X-Google-Smtp-Source: AGHT+IF0jf9L5DYl+1CaWZ41zHsxhPYhONOE+2bdn2S71mNR6t6KEufMrADSOSJwyHdeDKC7Wy8upA==
-X-Received: by 2002:a05:6000:144c:b0:3e8:b4cb:c3dc with SMTP id ffacd0b85a97d-42f79514872mr3363210f8f.3.1764857597333;
-        Thu, 04 Dec 2025 06:13:17 -0800 (PST)
+        bh=sGnt8bTKaac1K6msaRLVltkt9xGbtE5aMKqhuya716s=;
+        b=UHWHeKrXCjF8cBmIm9QWSDXfADyFW4UL9nfyhjMBAA2YT4svbWLHy+8pI9QOTkgbtq
+         E+HMAN28rhDwLAdcpjMYboHExltShwwy08ejuYcZK3zLNuJQBJNypLRYhC55JX6HBecY
+         6DX6ab2tE9rK8fNR5Txx5cGPN29k/dAmm4Bcvmt/cObNStvXr8tfORhD7sKDjlVHLlaK
+         N5QnDopjftDQy6+E62pecwx462w7vOiTRaGj8rkZxoJc3YyKbd/TWaLBVVYZl1xcIb7/
+         HL1BHW3MIqUn0TZmJedu1ewJ0qlJaDdoljqpYqfHh/kthUG66v/zT0s1YWagH9uwKgOq
+         vdcw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAr27Ww1P8cN+5h2NM0J/ZKu4xqtnK+SQ1Lply5chD3ngTOw+Q74Mdp4VpAOORFOimr/N+tYXY4g==@kvack.org
+X-Gm-Message-State: AOJu0YyHCIc0ePMMiE+yrHrSM6RcF0D5rNRhLJwQVQSo+bzQvh53/bFw
+	mpT3nzr3/8DPP84gelxhjqSMshQDjp7RxfckIcOhHSHybcPllfGEdK79
+X-Gm-Gg: ASbGncsZik6EDfJvOzO/25DQzn8w8gNxjztuA6e4j6of6BDCX+Gy3UTDgxC6SKYsTVH
+	BwrUvkZe700/aPLqIcxLfLbukSj2IiuF/UGNtmBe46ZD75KbniuaSGjiP1xZCjqwi2N58cwI9nD
+	HEWe87mJUw+N1uvrkM1nSEf1XeYQ/cnjYEEkee6K9EE53TUBp2sdxBAun0Sj1gWaUEOcw5AFrCg
+	8kTkUw8IhvozTk+D3VcLgEfztdhZTBzlBwbe8uB9Ory2/6nBoHX6lX9Wu01yEUuZ8T83K5BmvNG
+	wl7NIsanF3YrpQMEa8+r0xyicJrOjlmrgfzps93j539UByZDx2Q49fpJS4EoKH5LBjKZEywhAbh
+	vTMACk3aOfdbWlGDWYfx5r/jK8W7fsCenTuPgp2uIRGchWMcj7o/3FjGLv46A6/Ac+GSEZUCiKW
+	iUe3qPkdBG7hKs+gJfaqn4GYFufi40fjYbsngTfD++JXaMEOlGE+P3PpLmYsIBb9W+3A==
+X-Google-Smtp-Source: AGHT+IHxDahYGwa5aI52HyW8cxdFR6RMIDSPOdl390+QQfG8ySHaxkFn6koa/YtHAqSa67lSItxZ9w==
+X-Received: by 2002:a05:6000:2510:b0:42b:3a1b:f71a with SMTP id ffacd0b85a97d-42f79800f02mr3172811f8f.23.1764857598697;
+        Thu, 04 Dec 2025 06:13:18 -0800 (PST)
 Received: from ethan-tp.d.ethz.ch (2001-67c-10ec-5744-8000--626.net6.ethz.ch. [2001:67c:10ec:5744:8000::626])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cbfeae9sm3605808f8f.13.2025.12.04.06.13.16
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cbfeae9sm3605808f8f.13.2025.12.04.06.13.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 06:13:16 -0800 (PST)
+        Thu, 04 Dec 2025 06:13:18 -0800 (PST)
 From: Ethan Graham <ethan.w.s.graham@gmail.com>
 To: ethan.w.s.graham@gmail.com,
 	glider@google.com
@@ -121,22 +121,22 @@ Cc: andreyknvl@gmail.com,
 	sj@kernel.org,
 	tarasmadan@google.com,
 	Ethan Graham <ethangraham@google.com>
-Subject: [PATCH 09/10] drivers/auxdisplay: add a KFuzzTest for parse_xy()
-Date: Thu,  4 Dec 2025 15:12:48 +0100
-Message-ID: <20251204141250.21114-10-ethan.w.s.graham@gmail.com>
+Subject: [PATCH 10/10] MAINTAINERS: add maintainer information for KFuzzTest
+Date: Thu,  4 Dec 2025 15:12:49 +0100
+Message-ID: <20251204141250.21114-11-ethan.w.s.graham@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
 References: <20251204141250.21114-1-ethan.w.s.graham@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E25E4140015
-X-Stat-Signature: 1oxhcao65nt9drj86rugg6xj55ppbhp4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 379A014000A
+X-Stat-Signature: ntgeocf3it8cppy9zzu5g4jyuisyxtbm
 X-Rspam-User: 
-X-HE-Tag: 1764857598-544429
-X-HE-Meta: U2FsdGVkX1/pFne4dr/ebrB0Tw7qmXxHaVQEA0BiILyc4hcdKXf6jISq01sRoxDRjIETEC13RWR1ekWoDMPJEYKK88pugLBD9zFpX8HNpHIeiBApv9Sr4v6WD9XCEHYH5785gcs2D66S+oPfSuNFlg0WQTNXdHDZakLiJiY27EpLMsAMyXDm45FPqubqrn8VFTmZfO/HGT6O9iDlJv+CF90gcDjIXItnzscI931PlSLlFDv8uOCsJowwjBI8rwXufJHBAXf0oW/VzWLzOSouJ/MJnbrpfCOI5Xo9jWpNN1gRBwsqGXJSMx60sUc6dNtcSxzeUm8WDbJLKJ5R8asT9vIZ2bKe7Y8PHkg/FHtH4onvsB+W+vhTzaXVjIdO9snzTFzjWqTtRlj+Ut2KxxSp87KrlYqUWzZlPHntAWWQcEKF+XTAQlrYkNAvT54bJMu95ge/Q+rPEJ5r48kmBDYm7BjCfGon6OzvUSvjrYT/fFuyy4MHG/b1GY4g39SPG8fwC1pUYoRIRpVPeuIwdKefnFjurRWm8I7SnVv5LW104xivR4pT6suDEPRXjxO/cqaYs6mPHCe6xRgoeRBDF7MeJEB0L2IMRA6O/EcZvhVvISDjHbsiLbWRWI3qpjxWZXiebRmP0bYo14oZwKlTXAHs9urGajhzYflvR6qmYA7V4zi3/oIJuQZKO9cqCvA9zA06fBM6FmTb+8pORoO/deURtfLj/fm8ZN9xVUuKtEbhUnGI+K0l8gnRX0SQghpwgCEnpKRFEISR/7eb0YhsG+bMhMfCqh8awQieOzUJOepLAzR7ICkIGQsp4ryi6q6kySbyi38RYo7PhNLiUDCfKB0Gc2JZAd8TxyX6z9TMvVJKASxZJOB4EQRvS4stw5DuvgxsrzdYETkwretYGJsb2erFN4FzosgfZu2tByVg2c4uaOrkdiaWJzcDbu4rucu6zAHjVLcfS7aaOywER+Mwwp8
- Q2b51j8/
- KXgDI2rH/Lw0q9wmz2WPMLLh+TVldZmfXv8/HMnlo1OpTDie2x/p/ofzEz2ac+LR4DdY/qWkstDRsAvwc+lWXL59Jb/TMvsxzdmUMWFqPq9APA8ciGwIVL/9NfpV/WzS324mhg0bVwkrdAqH6g3WafjiRmMcoi2lrtUIxjfMmU96DE+N6RBhcDuWlUO3FnhjiQFPTcQo2D4j7+dJt2J3/YOa1WEevyI//Cn609uzBBu6wC7wj4hdD2YO2g0j9w1PbI9/TzIXxM+hrXS9hkt2kYj1/3xS6PH2ISW82Nt4FsTol0d0G3q7zNLHmV/3cKTCIRA0CELzoZIsKrmcxuY2qmsTcT3BP4Zi4tVT4N24kcHZsWMmNuTvyh0u+LHq9OF9khxm4AU1FEyTmCipbY9KdQqbyYo4SxjdUI7pvFDYyJbxatT3iyBTot55q7eOi3erILoE+6zLZ5e0vWlZvbGbAhFGxPiX7C9V8B/1oVvQ8Vz6mbqGwv2nYwOtKEl258rvNod4UqteBxI+RpZTVY9qLpu/yTC1/2jsxdrhccdSrSKYbJ+7qg6WkftFJgNJnCH+Nj8LISRZhEpk/Ympe167IDPRKic5OclS7WTBUrWfadbiQXZwqrnjzgbKA759kj+QjzAtBWFOR0AubC1eLqW1EVHpNNkJCV+2TM3BiOFI8dFvPckvoIhGlFTh104pVflTwMQbkfylqD0Fbh2oCG+nCaDChuQ==
+X-HE-Tag: 1764857599-596348
+X-HE-Meta: U2FsdGVkX19H7f7qwbcAOD8lkZj6wCgceZjmmsk/gSkOi9jL882vr2NAYXAbrxJaSILBwJwr3JNeRh4afsoxGzEGIlCA6CHd4/xymQEbLWW1RDgMWrDQgpj7zC4i4gGcQwNNd1yI9GnLvw6qJYHnz18Csnsk/afyvyGerPWOJLz/XrQ8w0h+ZsmbN46d7AyDJ8g3FCCjCPo0XFIE1XrWAT4CMDmnzqmBRtOB0TcckxycAxwABAuu8+VPY7ynpuZ6UtVPA/yxq0rIBbedpGTDquFc1Ga12wknVODtkEP+vTTFSq82auXFRpuveigw3Y9roH1YMDX03zVX3SShoOobLUXiIlte9hjhd2tIELnl0IKuIGoBkr0jLFON1qGBa3NvVOpXMf5O+BfPRc0b3+CEEux/BiyCOqBQZDgFFBafKLnkv/iolktaJ4sB4FDSatRC6XI6FWuAB/u6E3kk+8k6WwFuTKy00Ey8dnqsFy/K4OdC1nUXAwxZpRA2LZrXQUoR4qTtmkfkUx6e/a4YVGTYLB8MqjzCKFzG6QpbYDFZJVvN5kLeV35yb42tovGdczLxjHTp/agXf31M+JjJ5vFWVv7e3dnMWJj5S584nx+8fjdGfxWEo0Mqq2Slt6i8SkzkqZaf4pFEXVmyxyU6lipFAUn1c6aHdEPn/GIcR61N9W9kc+ONRNRKEi3QRwXVXLUpZbTIFwk888fHThVA7Sk0b6ACle+HIihGqUAwRb70ZhnOr1Yvgc1QGBRB4kEAPJ4Ne0Ndr5ckLMdAaElSvs9/DVb/gw8epPX7kYToJ55PGbsHAAVfM3/skZR1p+5+2EPnTRGpVHLXm4XZ0/JiFGx3qFLPVSxCFLfVEkPAowgF9RFTgvYtRioK7tAy0o39E3dn7OgqoQlQqhPWYo6uAG/gl5x+rFZ9Z5JASUBGGCSNUE2QaO58Bm/1+38cDx6ZXSplfimoLOIGRcMQzgptWim
+ nqYTcTTA
+ 2xOUmMPI+jrTUZLgCV/cvbDP45JbLmsK4FD0SIAUBy+eRY52Mgh/wB+279ef/2IZKWyeMmLObBEYoj4fe8wjdU8AXEdP67sVM9cWqXZn9m/srR1TbCnx0X+kvpD75dRt+PaB/TDNxeBAuJHvsi4Ap+C1v5dBqG5YOnMBff86NPI4xZgY9PmVmg+LDSq4IxiZBZlp3mCgHSnROCvnzwwpbv1eqSv49eGgq+ZDFYZz0vCL3+sJn+SpAA2zfUGMO/nOvc32ePWroz2VaiBIUQUIguoHCt/AyyxTeNxrjUqDFDK6PsT/LWTHg0FCrsGpLxooobteiuwzt7WZIosJtGGDfWJuaaeVTHWkmzHAKbhO3dm4aw59wM9GmN20l77NhEtwV+8/4EFn+TcsyA9skw8gFRxHUp6FTdMVOUyOKEsaPBFgJCcJrHHuQWcN2a4w2sEIwHFwTfazBT6f6tW1bMIgvnqjcXY3+4es3/8rBfO64DDJ3hDczffKdT6a8OWH6qpMt5cBfvG0H6PHR1oiHwx+37YkUBQ74qRpsAoaE9+LtrsWTaMpHIJovus9IO7CDwyggmT4oxH8cFxdiO5akOMMLAcBGnyqNF6Ke+Ui/EJe6EQBLMkVwEMdH+rSrhq/Lf6r5ZyFt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,19 +147,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ethan Graham <ethangraham@google.com>
 
-Add a KFuzzTest fuzzer for the parse_xy() function, located in a new
-file under /drivers/auxdisplay/tests.
-
-To validate the correctness and effectiveness of this KFuzzTest target,
-a bug was injected into parse_xy() like so:
-
-drivers/auxdisplay/charlcd.c:179
-- s = p;
-+ s = p + 1;
-
-Although a simple off-by-one bug, it requires a specific input sequence
-in order to trigger it, thus demonstrating the power of pairing
-KFuzzTest with a coverage-guided fuzzer like syzkaller.
+Add myself as maintainer and Alexander Potapenko as reviewer for
+KFuzzTest.
 
 Signed-off-by: Ethan Graham <ethangraham@google.com>
 Signed-off-by: Ethan Graham <ethan.w.s.graham@gmail.com>
@@ -167,60 +156,32 @@ Acked-by: Alexander Potapenko <glider@google.com>
 
 ---
 PR v3:
-- Remove conditional inclusion of charlcd_kfuzz.c from charlcd.c, as
-  requested by Andy Shevchenko.
-- Update auxdisplay Makefile to conditionally build charlcd_kfuzz.c when
-  CONFIG_KFUZZTEST=y, as suggested by Lukas Wunner and Andy Shevchenko.
-- Foward declare parse_xy in charlcd_kfuzz.c.
+- Update MAINTAINERS to reflect the correct location of kfuzztest-bridge
+  under tools/testing as pointed out by SeongJae Park.
 ---
 ---
- drivers/auxdisplay/Makefile              |  3 +++
- drivers/auxdisplay/tests/charlcd_kfuzz.c | 22 ++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
- create mode 100644 drivers/auxdisplay/tests/charlcd_kfuzz.c
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/auxdisplay/Makefile b/drivers/auxdisplay/Makefile
-index f5c13ed1cd4f..af00b0a173de 100644
---- a/drivers/auxdisplay/Makefile
-+++ b/drivers/auxdisplay/Makefile
-@@ -6,6 +6,9 @@
- obj-$(CONFIG_ARM_CHARLCD)	+= arm-charlcd.o
- obj-$(CONFIG_CFAG12864B)	+= cfag12864b.o cfag12864bfb.o
- obj-$(CONFIG_CHARLCD)		+= charlcd.o
-+ifeq ($(CONFIG_KFUZZTEST),y)
-+CFLAGS_charlcd.o += -include $(src)/tests/charlcd_kfuzz.c
-+endif
- obj-$(CONFIG_HD44780_COMMON)	+= hd44780_common.o
- obj-$(CONFIG_HD44780)		+= hd44780.o
- obj-$(CONFIG_HT16K33)		+= ht16k33.o
-diff --git a/drivers/auxdisplay/tests/charlcd_kfuzz.c b/drivers/auxdisplay/tests/charlcd_kfuzz.c
-new file mode 100644
-index 000000000000..3adf510f4356
---- /dev/null
-+++ b/drivers/auxdisplay/tests/charlcd_kfuzz.c
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * charlcd KFuzzTest target
-+ *
-+ * Copyright 2025 Google LLC
-+ */
-+#include <linux/kfuzztest.h>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6dcfbd11efef..3ad357477f92 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13641,6 +13641,14 @@ F:	include/linux/kfifo.h
+ F:	lib/kfifo.c
+ F:	samples/kfifo/
+ 
++KFUZZTEST
++M:  Ethan Graham <ethan.w.s.graham@gmail.com>
++R:  Alexander Potapenko <glider@google.com>
++F:  include/linux/kfuzztest.h
++F:  lib/kfuzztest/
++F:  Documentation/dev-tools/kfuzztest.rst
++F:  tools/testing/kfuzztest-bridge/
 +
-+struct parse_xy_arg {
-+	const char *s;
-+};
-+
-+static bool parse_xy(const char *s, unsigned long *x, unsigned long *y);
-+
-+FUZZ_TEST(test_parse_xy, struct parse_xy_arg)
-+{
-+	unsigned long x, y;
-+
-+	KFUZZTEST_EXPECT_NOT_NULL(parse_xy_arg, s);
-+	KFUZZTEST_ANNOTATE_STRING(parse_xy_arg, s);
-+	parse_xy(arg->s, &x, &y);
-+}
+ KGDB / KDB /debug_core
+ M:	Jason Wessel <jason.wessel@windriver.com>
+ M:	Daniel Thompson <danielt@kernel.org>
 -- 
 2.51.0
 
