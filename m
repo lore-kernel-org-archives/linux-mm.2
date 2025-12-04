@@ -4,102 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93E55D2A551
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 22:10:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B585D2A54F
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 22:12:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF51D6B0024; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
+	id BDE156B00A4; Thu,  4 Dec 2025 17:12:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCD4C6B0026; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
+	id BAEEB6B00A5; Thu,  4 Dec 2025 17:12:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D09DC6B0028; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
+	id AEBFF6B00A7; Thu,  4 Dec 2025 17:12:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BF9FE6B0024
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:10:03 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0696B00A4
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:12:17 -0500 (EST)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35ADA50449
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:10:03 +0000 (UTC)
-X-FDA: 84183182286.19.4B0DA8C
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6A474140014
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:10:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MZ82etb6;
-	spf=pass (imf26.hostedemail.com: domain of 3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B55051B61
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:12:17 +0000 (UTC)
+X-FDA: 84183187914.19.3A04F12
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9A6DE40006
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:12:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IAzw1OUH;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764886201;
+	s=arc-20220608; t=1764886335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=54oIStPr/s4vJcJKPPdjRiweYi2k8HSZohU+IbZP+5k=;
-	b=xKE3Joh9MwPdHdgq9YqS+JkKCJdheiKj1CZtrta8iVCQsmD9rAT2C39auBsSIomkJYmrBK
-	bp7MmhG++fa51KR+Ge+WoFVIVCG+Px+z43QOr+OQ+QRy8MCr0t4QENo39iKPLCY8Vqec1Z
-	4OheNmQHm8A5ZeF7obaviuVMXaIWbdo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MZ82etb6;
-	spf=pass (imf26.hostedemail.com: domain of 3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3uAYyaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764886201; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=f6o6wb1SzKvDVPK/vKLO178hrGck2AjfeqCB0/HR958=;
+	b=z5588voqAVSj89vzY6jqcvbT7cYG6UmEDtffUm7t9/aH3OcIcZcBdQ+LKDSk9quXPfwdEz
+	6lcQ7mw3C+snJiaRHGAjEnzk9ncCQdRCVm+1fgGC4dDNUTybv4wOIHwTlUhV8vl+fEXTHZ
+	mzWRwkMZkq5Q6m+Pk2t87/SxdOfCPgY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764886335; a=rsa-sha256;
 	cv=none;
-	b=m+dcpNJMEIbgEc1qNd8gA5ID8nH4Fot+HQURkeF55/ZmT43eUu5pU1RzJdP1dm5Sph5G3t
-	WP3qVSyYXejuxOnW+kdBu2OGVxXduYr+nCyJqSA9a3W8AKtggm4oD8T5ElRm++CII5qIkn
-	ACjr94hHNh1dYteZTSvWt90zEhc9PPU=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-ba4c6ac8406so1195564a12.0
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 14:10:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764886200; x=1765491000; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=54oIStPr/s4vJcJKPPdjRiweYi2k8HSZohU+IbZP+5k=;
-        b=MZ82etb6JzEnvZo4jauVBADNZ06Mci9vrN6C2nysSqLd6Zjv/fT78cHqfFltbU/dKJ
-         7xK28qQf1bjqBZV5ibHilkQLlMeCNT9PWxjD17sMEMhTCUIHpctvP4WfzhSqjr3laCpZ
-         iCrpSKfjWUM5IlM4xDgFfglVJaa2SZ+x33z7F+x2PKrqLYzeOhbIPnua3fGlubQXfab1
-         tgBAQYVcNqlLGUI2Z0TfehFivyJYftQGgjIOmXMg6bbLKcLw5epfSqeOkiRlM+RPdikR
-         XwHbfARZQY7MsqmtmNkhDsxzOsutAEvMGbbyefve3qfv/FiXyedNzrJYleFpWhbA7eo3
-         Jpww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764886200; x=1765491000;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=54oIStPr/s4vJcJKPPdjRiweYi2k8HSZohU+IbZP+5k=;
-        b=C8eDbo4DLZq7iJn/egqPvO5sU43upWxVAtq7v6CJdxJn+MBygmmR0rsa4t6puz0tQ/
-         FdfJGPovRM4MFgd67RARicshCeq7Fi6KTCi1CSQmGb3QWEr4xAn0DQ8ei8QNTpugg2GS
-         XSwNApNkWbqDI4zs70syxvTuOrKF0H6aVbu8uKhHeSf3NnVpEcZwe+0KthyayGfQzGVi
-         ocDH68ril3/QDYwkefCZKwQXP2u1p9+fkpOWiMQyFLOvHuoGkwHNcjV6q3zRXjY6riDL
-         gKRP8yNq+R25JvBouTN6vlCtXZlK3nZH6ns1fhcm2XaH0pBsY8iSykOPj2/IxjSrMW33
-         ROTg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGs7SSdlZmaGf93DPDEp7D2qEr7ZxkK9dYoSSdiBet3a+9ybTKQRaoxTZIgCwNEnk1TBAryMd5fA==@kvack.org
-X-Gm-Message-State: AOJu0YwpjJWYT2KSGm28/FwlsvrgE4+A5RH5H1Q1jWDAiiLKs8DzgOAY
-	/YOL2lkvDkmxz2c7SG+Y5TfATfUts14qWLzxYwUZ/AOUmJmfBe8ut2za1VBUhJLm6QvfVmI2eFC
-	OQV7BGw==
-X-Google-Smtp-Source: AGHT+IHLhrKsU7MdJp99+KvZZ/xCoXmF9qcszyx5DJq3SSgN+PpZivt51xKlhmqSsW0XWVKbU/tASHuysvs=
-X-Received: from dynm33.prod.google.com ([2002:a05:7300:2aa1:b0:2a4:664f:e91d])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:4d10:b0:2a4:3593:ddf2
- with SMTP id 5a478bee46e88-2ab92e671a4mr4465065eec.31.1764886200002; Thu, 04
- Dec 2025 14:10:00 -0800 (PST)
-Date: Thu,  4 Dec 2025 14:09:56 -0800
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251204220957.360838-1-surenb@google.com>
-Subject: [PATCH 1/1] alloc_tag: skip rcu barrier on module unload if profiling
- was not enabled
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, vbabka@suse.cz, harry.yoo@oracle.com, 
-	da.gomez@kernel.org, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6A474140014
-X-Rspamd-Server: rspam02
-X-Stat-Signature: w6nrrbi4grd75g6swsqc7ahzjutn3dtc
+	b=X+AnbMiB+Sq9Gsgfewl8GoxmkcBFLlp/aLQpufpec61SL22ZY4cHxNfcJpvxZ47fG+7aHB
+	jSDI8pXwQU/SJmZ3FqbyKRudkyxsEfKSlee08OWKNutrM0XWSAaWzZAqpIXn6t/LVFK7Q2
+	biNjqDQbzZyBmdEoUqB9oELYo1vllKE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IAzw1OUH;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CD13C601ED;
+	Thu,  4 Dec 2025 22:12:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17168C113D0;
+	Thu,  4 Dec 2025 22:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764886334;
+	bh=ubLwl5+CgitwUP+ApeREHrjaIt9HSqJeqF496mwgdzU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IAzw1OUHYgUWBP5mdicRgkXgo68l062ZNu3AOYLPZXPFoAEtFD1fhoIwy2uRycPZY
+	 96wUtdi8CnoG3eZUHlVW37tSpWW6YJl6D8dn2jqFgwB+4tDZ9jzkbADts5LgJ94LKX
+	 9u5T6aFzJsO61OIQXrXQfZqjRX+qVBy1/I2z7Vxe1H/OExo7dhtAtfnEkgg69CRkGk
+	 4VGCkxc6Zf/JDHGdwrUYFCpVp6pb3dBU9b5LZBoBse7FvyGmKojZRmzdvvgpvpiMpb
+	 mF5For1ffogsUFSD6jGYvu7hFZWxq0+HwB5Y85vSctNh9hlsn5Ox6Mku0zKBmni9Mb
+	 F1Twn2KYLcVzg==
+Message-ID: <b64f1627-0627-4e4a-b547-5e54167f318e@kernel.org>
+Date: Thu, 4 Dec 2025 23:12:06 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
+ hugetlb"
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, masahiroy@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20251204023358.54107-1-skhan@linuxfoundation.org>
+ <20251204135746.6d291cc861b4507b1fe95aaa@linux-foundation.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251204135746.6d291cc861b4507b1fe95aaa@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9A6DE40006
+X-Stat-Signature: jcbik68boqszmymcct68xcrbiim3juim
 X-Rspam-User: 
-X-HE-Tag: 1764886201-575755
-X-HE-Meta: U2FsdGVkX18u5xgSFNfJ9Zuv15HvTPoq7qyrsk6zIHuWYAGx4v3LWq/+/7ClS7Zz8Fxgxk97ctiPD7XvqYEyVUURPRoYz8iRjjuLbRLlApnRzFsOCZ9CjWfjiy6jILagl8SExELi0u/yUPuPk8i49RLaZE+3+EFx/c4IJLXIe5dEXVwldmbET6fd36uNWumNBGDoo2Y4E+ndhs7i0NKk4F4pnHHgqvzzqxk5QPcFdOZlLbaUT4cUv4M1RgumZHMNIrJK+eRfkJ8fdRZCnA+63bkUkUjZ5fXQwPj00obT8LdN6fUk/sZFM9JaBcIq28/LcEbG1ERng1nYFALzR35O8B8+QuaUIPm9ciDvyJZjcK6C1bitoiv8Two/vHVmktP3zL5VHbYNvdOqCLOomT4E2VB5m2idivrpJGfIQAcFFk8Iby3GAca4yphaeMI8KfpL3ICm1jtTEztExp9UIBKh1HVW8P5VbcFUO+cDUwxw0S3cYKlzkd39nnY/OFlWunfCcuvZt59VLkVDLr/mQlhrrYATg0LuN6uxZPpAYMa9La1pxdK0q1Jd+zDIrGQXiMS2My6Q/et8ByIedYq6jRIDuau0ou5Yb0CuX0B0XpggQHLtXAkHrZjxUBSDuj9vXL4U6KOXl1ESKwxaOWHgHXorcT6AJtxcoXrFKAleiBNnfpu3XE+Ka1fcJJo6laUKC1vL0R9IqxtPSn6E5SdGg0Y1sLfRSqmJzQd5Iqs41a8MB3M9OSWbgl3KB19w8QggMG7C4KUrkgegpDAFiP2+zD+ttqH296WDtcfKHHs8FJQ4DZyIr7f8ewyS9nu7Sl+hZP5Rus8NFLxsa/C4MjHOYge+DFUJV+wq750hCQvSnbkBlJz+5ARISiwLtxoHJJsz7+79hZCfSyxsOr/zw1U76toiu3Z3F8oyjZlcVq93LWwBN5yuwv0xa7CjlydlVE5fbzpFZR0EG37FkSmZqp3TXA4
- oXIsNman
- KvypyowBAhLXkQw2B3srmJ3hxkmcKQwFQK+i80S+71LQSNSECqZPl8gCCeezRxFHFZG+rDMWqyF5v3opmPCTWDdqs9plqwyyd8b9m7mtoMEYmXfwyAjMDkYHVs5J5LRCXYqX+fhU39FFQnAkqTaFMNQmXrHKDxu7oJFqTfP+q/xlIbUWyVeALKkYbx868KvUZdEF0rn9Rem35jd3MQI7HEqJH23tCMc++LuSJEizWNU/UGmqm/SLZpnWoZ2RPfhLu2Og6cI7qoikPpschq0SmZwyn+ZpTOZ2MgdLPX8rBdbWtdQfyln7vPrWn5f8+12tGJwTXxgxHmhxsAB8KjceYclK7c6wTwPxxXjRKPfGgf9TQCr6N4gNeAYW9YRODWEGCVl+1NZTG8sGOBijq9jZ9f3xFZkdJs3B4k9x6eAZ9EQ8i4W0ZsQh4bdfsi5T9twz9ohcmpLbL5vXadNnfClsYws68tdR0Ycqtw4vBK8ArVUIeAM6wotBsY2cOPfIbZZRLEmspxl4T5MURx8Cfl6JmTgo1SiHq37sEipi0LmJ96WO0vC3x1AqVPd5znUbaayVs0vPg1ofZwncj7oHGtOaZyiUPfA==
+X-HE-Tag: 1764886335-438420
+X-HE-Meta: U2FsdGVkX19deUit9uaJ5apLSCYsiEG4IeYO5RTHrIYh3B9yAD2jrPTCkZn0YCYCSXj0/47zuIQWzb6kuaMP7FsHSInHS12bHpotzJy5/YAh6380eV/AfclSL5Qu+BrC4DXw+PfD4XlmgV2eVRikgXG31JTeKWhRCg08jMqqO3C/gQhChU33FcOREpt0Cm/BD0HUEogdYFdRIxyCWc+EAxLNaDkiQs5szOOiHV7WifTjlNacVgZfcZ4tKxhecramZwM4MW3EK2wTDk878KxMexnbK+RjgKL5hSYVkqr8BCip1YyGu4egJYCVaY7jJApAL5dxgajUbayrS4653RTjdj3QSyHBItMIrhKALXHTMLXBcsrrv7Wf3XTJls+NSY5X9Xgx98sX5HdnSyABMH8n7GvXVZ+So6OQ1Sdx18xJwLPVRz6Nqpgp38SbpL/qjgimlSknK7oEdPj4VpCt6e7n5yU0Ws1wPf7bzt9kfSH2AsxgBghN6cVcWrI5uaRhUZY4BQUk8RJPstQn3scsN3cg/lvY/cBnBqclOJjmLChtQsOyXr2fApC1kF2gwTeeyfkkbK8cx0pZ/95SMVEmp5gb9gRLvL+jXtZTmjGcAFujYHLok4KEIoMN+Fe2vO+npZYy08VcmdNQZgcxpwTwFqQO3OsMr+YkM9zv/kXDdHI4VoGa7jsbdzGRJhrFWbkcJyW379uB4E7kn4m1FFQ0oHPDKuZFr9orMZZFsFm3O/8koyQsok088BF119waARPfUzoOUokm3hZIXjwcWDBZOk8RSIFtT+Z3LMZwLWJy0oTqGhbA3SplSjQV2juJ6DiCBBdgSP9tzYjbfhpOwWk04ZTbkonXAFx+Kee0dGS/g+bhipReyod+vRAndjBPBUk31O3IduOJj2t8Vd+d+hecRiPiUht4N6xLlJD5x6Tcd/bghdjHaRS4sXDGxRbLtCotHyvVBGN1o5uqVkEi0xB6si2
+ B3XxqB0O
+ J7DFx1N4H+uViODgqz6WMIIKIA8N7PvtZfCl8GitlDf1qkSjj/loDQN3Y4XSS4I4wzipEhIVonz3Y1JG8uxfpg1O47cEGs6Ar5h7OxXGRTCcGrIwS8OXASE6UeTxOz79ZPg400xriuQL+4C//BuuciFglUrCt1oDSeC8g0CgkaFi0poPbd876JaW9hka/uQ1PC6X3kfqYY37ERQPx/DN4l6JjBntyIitLlOT00CGGxZ7djkX97R6rQqZyT6Gzt71LNjvCndB7NuLvpd371DWXXlgAa1+nsBo2ffrxn9rKENZvhFCa5Atk2IHzuzS5ovGPGHalWBH4oLh5vgawG/ToFXo4LvovLc6wb7QrctoSBkWxmMUJ3uPvhCg5kmaHiZpnlp0GbmWeeqQwppM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,116 +101,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-RCU barrier in the module unload path is needed to ensure all kfree_rcu
-operations which modify tag counters are complete before we free the tags.
-However this is not necessary if memory allocation profiling was never
-enabled on the system. Introduce a sticky flag that records whether memory
-profiling was ever enabled and make the RCU barrier conditional.
+On 12/4/25 22:57, Andrew Morton wrote:
+> On Wed,  3 Dec 2025 19:33:56 -0700 Shuah Khan <skhan@linuxfoundation.org> wrote:
+> 
+>> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+>>
+>> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
+>> systems. git fetch-pack fails when cloning large repos and make hangs
+>> or errors out of Makefile.build with Error: 139. These failures are
+>> random with git clone failing after fetching 1% of the objects, and
+>> make hangs while compiling random files.
+>>
+>> The blow is is one of the git clone failures:
+>>
+>> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+>> Cloning into 'linux_6.19'...
+>> remote: Enumerating objects: 11173575, done.
+>> remote: Counting objects: 100% (785/785), done.
+>> remote: Compressing objects: 100% (373/373), done.
+>> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+>> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+>> Resolving deltas: 100% (9195212/9195212), done.
+>> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+>> fatal: fetch-pack: invalid index-pack output
+> 
+> 39231e8d6ba7 simply shuffles ifdefs and Kconfig items, so I assume it
+> exposed a pre-existing bug.
+> 
+> Reverting 39231e8d6ba7 will re-hide that bug.
+> 
+> And that isn't a bad thing.  If we re-hide the bug in 6.18.x and in
+> mainline then that relieves the people who are hitting this and it
+> takes the pressure off David, Mike and yourself to get the underlying
+> bug fixed in a hurry.
+> 
+> So I think I'll queue this as a hotfix, plan to send it Linuswards in a
+> couple of days.
+> 
+> Or Linus may choose to apply it directly or to do a local revert of
+> 39231e8d6ba7.  But I don't see how a local revert will get communicated
+> to the 6.18.x maintainers.
+> 
+> David, Linus, opinions please?
 
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
-Applies over mm-new
+I have so far no indication that this patch here would change anything 
+relevant to the problem we are seeing, all it does is changing 
+MAX_FOLIO_ORDER that does not affect any logic we would really care 
+about here (safety checks and snapshot_page()).
 
- include/linux/codetag.h |  2 ++
- lib/alloc_tag.c         | 11 ++++++++++-
- lib/codetag.c           | 14 ++++++++++++--
- 3 files changed, 24 insertions(+), 3 deletions(-)
+Can we please wait a bit so we have confirmation that it's not a 
+leftover from the huge-zero-folio thingy or something different?
 
-diff --git a/include/linux/codetag.h b/include/linux/codetag.h
-index 8ea2a5f7c98a..8a07a83cabdd 100644
---- a/include/linux/codetag.h
-+++ b/include/linux/codetag.h
-@@ -95,6 +95,7 @@ void codetag_free_module_sections(struct module *mod);
- void codetag_module_replaced(struct module *mod, struct module *new_mod);
- int codetag_load_module(struct module *mod);
- void codetag_unload_module(struct module *mod);
-+void codetag_flush_rcu_on_module_unload(void);
- 
- #else /* defined(CONFIG_CODE_TAGGING) && defined(CONFIG_MODULES) */
- 
-@@ -109,6 +110,7 @@ static inline void codetag_free_module_sections(struct module *mod) {}
- static inline void codetag_module_replaced(struct module *mod, struct module *new_mod) {}
- static inline int codetag_load_module(struct module *mod) { return 0; }
- static inline void codetag_unload_module(struct module *mod) {}
-+static inline void codetag_flush_rcu_on_module_unload(void) {}
- 
- #endif /* defined(CONFIG_CODE_TAGGING) && defined(CONFIG_MODULES) */
- 
-diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-index 27fee57a5c91..173eebfacb1e 100644
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -776,10 +776,16 @@ EXPORT_SYMBOL(page_alloc_tagging_ops);
- static int proc_mem_profiling_handler(const struct ctl_table *table, int write,
- 				      void *buffer, size_t *lenp, loff_t *ppos)
- {
-+	int ret;
-+
- 	if (!mem_profiling_support && write)
- 		return -EINVAL;
- 
--	return proc_do_static_key(table, write, buffer, lenp, ppos);
-+	ret = proc_do_static_key(table, write, buffer, lenp, ppos);
-+	if (!ret && write && mem_alloc_profiling_enabled())
-+		codetag_flush_rcu_on_module_unload();
-+
-+	return ret;
- }
- 
- 
-@@ -829,6 +835,9 @@ static int __init alloc_tag_init(void)
- 		return 0;
- 	}
- 
-+	if (mem_alloc_profiling_enabled())
-+		codetag_flush_rcu_on_module_unload();
-+
- 	if (!proc_create_seq_private(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_seq_op,
- 				     sizeof(struct allocinfo_private), NULL)) {
- 		pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
-diff --git a/lib/codetag.c b/lib/codetag.c
-index 545911cebd25..ed6d6425b62a 100644
---- a/lib/codetag.c
-+++ b/lib/codetag.c
-@@ -34,6 +34,7 @@ struct codetag_module {
- 
- static DEFINE_MUTEX(codetag_lock);
- static LIST_HEAD(codetag_types);
-+static bool flush_rcu_on_module_unload;
- 
- void codetag_lock_module_list(struct codetag_type *cttype, bool lock)
- {
-@@ -335,6 +336,11 @@ int codetag_load_module(struct module *mod)
- 	return ret;
- }
- 
-+void codetag_flush_rcu_on_module_unload(void)
-+{
-+	flush_rcu_on_module_unload = true;
-+}
-+
- void codetag_unload_module(struct module *mod)
- {
- 	struct codetag_type *cttype;
-@@ -342,8 +348,12 @@ void codetag_unload_module(struct module *mod)
- 	if (!mod)
- 		return;
- 
--	/* await any module's kfree_rcu() operations to complete */
--	kvfree_rcu_barrier();
-+	/*
-+	 * Await any module's kfree_rcu() operations to complete
-+	 * if profiling was ever enabled.
-+	 */
-+	if (flush_rcu_on_module_unload)
-+		kvfree_rcu_barrier();
- 
- 	mutex_lock(&codetag_lock);
- 	list_for_each_entry(cttype, &codetag_types, link) {
+As Mike reports, he found ways to reproduce something similar even with 
+39231e8d6ba7 reverted.
 
-base-commit: 3f43be96f919cc611dcb2a4e38dd464831f4513e
 -- 
-2.52.0.223.gf5cc29aaa4-goog
+Cheers
 
+David
 
