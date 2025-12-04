@@ -4,115 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B618D1F9D5
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 12:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE93D1F9D5
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 12:42:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B69816B002A; Thu,  4 Dec 2025 07:39:16 -0500 (EST)
+	id 9C11E6B000D; Thu,  4 Dec 2025 07:42:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B41586B002B; Thu,  4 Dec 2025 07:39:16 -0500 (EST)
+	id 998D96B0010; Thu,  4 Dec 2025 07:42:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7F616B002C; Thu,  4 Dec 2025 07:39:16 -0500 (EST)
+	id 8D5AC6B002D; Thu,  4 Dec 2025 07:42:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 984666B002A
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 07:39:16 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 45785140131
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:39:16 +0000 (UTC)
-X-FDA: 84181743912.08.47B3154
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0808BC0004
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:39:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=GplumZ8R;
-	spf=none (imf22.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 80B8D6B000D
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 07:42:30 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38EF614013B
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:42:27 +0000 (UTC)
+X-FDA: 84181751934.22.7A2E353
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7EB171A000E
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:42:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=brJP1+z2;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764851954;
+	s=arc-20220608; t=1764852145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=89lu85i9iy0uktaUJpKiLn2xYKgVihXHfm6nPHuJVes=;
-	b=bWmbx8bh6FtIxwDh29goyp8VTIYdpcAzdf/CiwmTHOkqJCKv1YtiUXBYE6vV1B1anUHoNB
-	YhV8KszIL8ZvDP6y+LpNTZ4hauX6muqDYRcUj7m3qtBAgxpbc4T1V/2P8Urmwsz/nBcPu5
-	vAKCAbqc2WUPXnUCu1/LwiyrX9HMW/s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764851954; a=rsa-sha256;
+	bh=06vN+NQZapDoZdJH0W7ZXKrqsn8wKKoOS1eC5r2tWnE=;
+	b=VV1rITHNhyUqR+5d1HvJxy6CivrTgbatRShSWpv6vj0FlETJxz4x2oQl9Pbf6nUuqjINwA
+	4nh05JRc5nYOlviVr9K9lcbaxiwBvfW/FAUOgtZ/L/MgdC4/gLSNBvVXUz9og770kymshV
+	MGA/IuBFn+Q5+xRgdBVgzMSaVuceCLQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764852145; a=rsa-sha256;
 	cv=none;
-	b=omPG0WhvXTynjHS0nI8lc1IytaRfuGGJX99H4ZoQNmAzQjYSWDFi2/fo14Ajm3K0j9Ktuk
-	kSJtnN7bA/Rx9ItRs2qgOq3lwHKc1XNNwFa1dBOI40BDw51UKbh4X4VXfR/woIef5h/Lgv
-	RAXWdJgAciKST4KGBAtRyd4ubRM5vYI=
+	b=R8TtCeIKK02qAJVQsJF8PD9OWO09dk31rkSr96MxPoP2gzgSh/0eSbzzylB0lElb+pbBz5
+	4GcNEKEOJO4ib+QdyZif1l6N5NhttVB3ssCoxV/0i1UlCQWcKQr1uOP/ujMQtcr3Jfy9eJ
+	cvg2CrWZkTDCSyrN7EH+e0q3MLtxzf0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=GplumZ8R;
-	spf=none (imf22.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=89lu85i9iy0uktaUJpKiLn2xYKgVihXHfm6nPHuJVes=; b=GplumZ8RG+7r6/RPRCpIzWalST
-	NTK1VlmdgSv0o+Os8U5TzCte9QhrImE8ky577kp1+pdEzf2iGrChGjDqxoyy/0vpTHDXW6R358Y9v
-	4s9he+SA95cAcvXPvfP0YBsWkdxh0OLAIa4ikICD1C0FM1/6YmeS3FnRMnDkvQ903kDIFoZLEjGcp
-	critL25nfa75jdtZxsYk6dpxMjznn1ANNnAC9Ogdkx8FUpBItwRRjQD0bFgXGIIjXqqlNXTcUgBjk
-	Ky9P+0Q88jUy3RAcc358iN4ZHT3zQHEAuAbNqWod1N2S9oE+SwhJGOJtsxAOvpKdBk3IC30t+MUo2
-	ndsqrLVA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vR8bz-00000004BHZ-3Shg;
-	Thu, 04 Dec 2025 12:39:08 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id C5A3D3004F8; Thu, 04 Dec 2025 13:39:06 +0100 (CET)
-Date: Thu, 4 Dec 2025 13:39:06 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Antoni Boucher <bouanto@zoho.com>,
-	Emilio Cobos =?iso-8859-1?Q?=C1lvarez?= <emilio@crisal.io>,
-	Arthur Cohen <arthur.cohen@embecosm.com>,
-	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-Message-ID: <20251204123906.GL2528459@noisy.programming.kicks-ass.net>
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
- <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
- <aTFhFXCqvy7nmDOp@google.com>
- <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
- <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=brJP1+z2;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A12FD601E3;
+	Thu,  4 Dec 2025 12:42:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35E5C4CEFB;
+	Thu,  4 Dec 2025 12:42:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764852144;
+	bh=8IEFSuSrYHqIBmea/jkeB6Aa+5WiQ6kLiFusAPNBjhs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=brJP1+z26wVKIZMVtWGv/VObdgbyW/nl5Ryl8E1JWdUv+s2XaZjH/yZxbMdIkpAE/
+	 vExncNyidXnpQz5I4ou62AkWSsUcC5ChMDID0fXSk91IYIVfhwaE6Vp6viAt14EWYH
+	 fP0o1P1rhEZDV4eSUcYD0p5s0zT7Q/4IC8C761st0z7Ybc9HIszJuIjNvH04cCoCJp
+	 IfymBV1DwHyojOEaHlFGZ2inIDBlbqyv+KvnkQAbj5zCS2BQI2T3/sqwGUEEZkzgeV
+	 ceRTeF/+edGXHQP7zqyQ93mpQmtIidZwJWsH4RwraNfpz5vjq6F2k7+RnWvbaJBmmZ
+	 lR0n580s61n0g==
+Message-ID: <308c809e-160a-4829-a8b9-9c7682fcd251@kernel.org>
+Date: Thu, 4 Dec 2025 13:42:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next v2] mm: vmscan: correct nr_requested tracing in
+ scan_folios
+To: Chen Ridong <chenridong@huaweicloud.com>, akpm@linux-foundation.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
+ shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, yuzhao@google.com,
+ jaewon31.kim@samsung.com, ioworker0@gmail.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, lujialin4@huawei.com,
+ chenridong@huawei.com
+References: <20251204122355.1822919-1-chenridong@huaweicloud.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251204122355.1822919-1-chenridong@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7EB171A000E
+X-Stat-Signature: n4765exbq1c4hhehw8a8yosigecypu6r
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0808BC0004
-X-Stat-Signature: y9sot6jspme43wymfpqobcifh1t9q7sz
-X-HE-Tag: 1764851953-536567
-X-HE-Meta: U2FsdGVkX1+awuhwEFlZt0sZxJyUxhOgKCP4pYC6SHkdd3HwWgfGc9TsdmtTONPCZH7AvG5qiIauitsVjeAxalOpCx7yo2pZvyIy8828I3RU9c5cPDbxLBpx/mKVaiCubUKCE12dp0opVWTJa0U97YNt6JXzbzAtLflH/5qG1De6IN1cRcEpEBR4ZdvniV8TJVk4PaGuyvFL4U0bN+IfLmXHTmOFzVd/Z76lxkG4DTqFNwqgB2uz9hcUXqdIn5V2UAS+LoNnE28kYSVNbXXA0FpQVMAnxxEsNTPhSqD4x+TEOFtt9IeO/+GR9pQkn/iGsBcLuN1b0rflMKR5nWwOW4+5ZZQCk9/AW9H/HYsOCPzPel4EyE93RgFBx5K4+hIXRPc/6PCsKa0gqanJYhZIHBza9wmA+rZlgAERw0vpvfNncUWpqrhLeuDiZaivgshzPy6VqvgTL51HW9VmU/Wnok4yPiFNjPRWj1IJu/DIWTM0TsNhBNHyEwcO9FrwMApEufkSV1OuWNnqszHXlYiGPdnYWq1gSeCaLmI1OABoh5aRqlJdwaFIwT5Yw+BnsqXs9m/SfCZBYxWZ/BwZvB+rUZdzXptiF4agc3eJBEcdPplvszF1kjAviulcYZEX4C61IzhivQjsV1LbjcBiHHpJ6pdRxlWhUTvUsl/t/Q9ofupO+DSxw+TVfSqYsVUp5zvhizvlzu705UcxAaoFLFkgGJPFOBfyoOSJW0FieWav1baV6r+zOy6ud4C9PqUddHw7TSJn4T5lJQtl9OZBV0QXh2iLnBKOsm75n0vFZvcEZ8XWNjvCF5CMQVPLIAk8tGFr8zjxtEvYxHuWEDBcED97dmfFQcXs61sHumMfWSUEUcJ0mjOAIkOuOnJ6Pt33GcPvwNNSO+door503qZPRYfvh6YSLSCQ9hD23FqqPA2RbVyRnz4nqZX3loCgOj0PSB2ufZi0Hvsh00hb/FPlEzy
- GIfUg3V2
- v42Pp7ldcJ65kdHIB+ApEKVEixYkSqs7cx65cGq1UFN53leWVQ3sEYtd4ToPdgPuNEghAT381BOcEDbVjGHindV3VW/mimCNji5SWamxbIuqyoBrRsxfo3i+wiat8sYbmJJmAg+GqOjNYUOyp4KuDZBTdVfaank5T/pjjAzBl5oluo6Itjsq9wZCTQo812u0pqakcCr1d1I7FJJb/s7imFu8F0P+maLv3u5ypSIFVhsQjJRkLgRTzhqzzsMgAGNNg3F/h0SP8iaCFZnSgRe4cKjQ3xNQvYcP7TsDgZxbPYHEB0AfrDQcAlxI+n8V92h2JO4bYxLAanh9nIXx2ivcMv7q7JjvqK//puJRmhgj0EdIC9NmAcQD/ygJvog==
+X-HE-Tag: 1764852145-122954
+X-HE-Meta: U2FsdGVkX1/x6fOxgx2Goc5sKxphbxkZP2W0rqFwn/Im6GAR2JU0RzRtnG2G78EWxQ9iaAeYpa7ziv7ki8yP47OqEyfaq73DPtkAKy8t2zt69b4IiRwUWWdMUWlfdONRCD0j55ZJJCDqO1p5CvcNT8+xB03voycF3Wj+v8NKOcSAH4a53Mu3jZYgXRquO2B+0zp95/kI2aq5fZZqdkzPoj7cO55l+lq0HtD1r8dlii9u0c7U7qugjitpBFn5vIKCQ3Fu6vSwq5DzI0yD0mUHp01ukY7DmEk/ctEsJ79x5DN+vCc5ijfuhjrnKNtebt3+SiAlY80h6nbn7IU1GcFJCo/+3YedPtEz2mCPnsFbqmT+zisuqr7e9wp5I2fdDurn8RueHcDgz+6mXYlYm+9kakZK7XHJO3j1jD6Uv1AwFKCE74zML6vdMLZkSbzX+TTDUFKO+mlQ16lx7se5p1s4KvxoWb+/1A3onCABP1nnb44RojjUb3F/WcF05PAcCEwdjQ/jIyvdiiRZcQ+qWqr26vMlK9efcXfB1K05fxfhAZO1fsVHlINQ+v+IbXxXDYO9/iw0QO7YccWbfKrm2Y1FtkUuT7LG8SmABlVRn++0nycQgOBTQffStetuMPWXOpamx06H1QUfyvTf8fH7P3XWFYk1fmC66jgqnZow4J/t7Pir4pPaSRrkTDxQBbnjyUyryBEmOdFJwqXnAhFWuc86IBAHA/t9f5siWtr1z03f7vXJWSOMuPPZ6mOMZ69eYJ5Jmp4AjWlsPNJtyo5gXx5LidLJ5iRyP++/8eVYF1Av5vURGIzX/xEDDCTa3a4d67ebrQFjQ9gQ7OxCiM+zLs53BL0YqA6//sa60/QWLsyQAXVIga/PFqsnG6eiYqv6JZTBFGyk02Mai6MujlwrhQMXfcDNzgzIb1cC7kDQ15GIdxGcakmB+vsIY/yEt12BVo9ClFYrllVltvjM0zgjl9A
+ fzATrJII
+ gc2gsSSmsCn10zupGPaRRELzuaH8tN+ESgwILj0TaNYOmqv36g14uKZcfj0G65cHWV/yvpyS4sDZVx99+Ikg0Wn7lDK9akOTHfBB/F12UFqFa/ODtGsVrRGMau38uNJMZWqXtUrsRcHXIyR9dIrtcB0/S4x51QMDB7c75OFyN1K1/k7r/ks4P4hyeAeG5SljDmaEsnfyvIstckmkJDnXq1s7S7NYzR0elJBNIt1MnRcafdeY6bwO5b/8q/DQ/C+i1C899uywXi6Kv9xYRh7UAq3JUpSiXEk4UnjEzhDxu5jA3i7ksStD0aUs4x+eFltGxojHweTpoE+3J2JJu76qqTaxhr82e5mk92F7E
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,71 +99,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 04, 2025 at 12:57:31PM +0100, Miguel Ojeda wrote:
-> On Thu, Dec 4, 2025 at 12:11 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > Right. Earlier I also proposed using libclang to parse the C header and
-> > inject that. This might be a little simpler, in that..
+On 12/4/25 13:23, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
 > 
-> Yeah, that would be closer to the `bindgen` route in that `libclang`
-> gets already involved.
+> When enabling vmscan tracing, it is observed that nr_requested is always
+> 4096, which is confusing.
 > 
-> > ... if you build rustc against libclang they are necessarily from the
-> > same LLVM build.
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
+>          mm_vmscan_lru_isolate: classzone=3 order=0 nr_requested=4096 ...
 > 
-> So currently there are 3 "LLVMs" that get involved:
+> This is because it prints MAX_LRU_BATCH, which is meaningless as it's a
+> constant. To fix this, modify it to print capped valued.
 > 
->   - The one Clang uses (in LLVM=1 builds).
-
-Well, being on Debian, I'm more likely to be using LLVM=-22 (or whatever
-actual version is required, 22 just being the latest shipped by Debian
-at this point in time).
-
->   - The one `rustc` uses (the LLVM backend).
->   - The one `bindgen` uses (via libclang).
-
-These are not necessarily the same? That is, is not bindgen part of the
-rustc project and so would be built against the same LLVM?
-
-> If that is all done within `rustc` (so no `bindgen`), then there may
-> still be `rustc` vs. Clang mismatches, which are harder to resolve in
-> the Rust side at least (it is easier to pick another Clang version to
-> match).
+> Fixes: 8c2214fc9a47 ("mm: multi-gen LRU: reuse some legacy trace events")
+> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+> ---
+>   mm/vmscan.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> For those using builds from distros, that shouldn't be a problem.
-> Others using external `rustc` builds, e.g. from `rustup` (e.g. for
-> testing different Rust versions) it would be harder.
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 584f41eb4c14..a0a74cac947b 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4404,7 +4404,8 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	int scanned = 0;
+>   	int isolated = 0;
+>   	int skipped = 0;
+> -	int remaining = min(nr_to_scan, MAX_LRU_BATCH);
+> +	int scan_batch = min(nr_to_scan, MAX_LRU_BATCH);
+> +	int remaining = scan_batch;
+>   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+>   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>   
+> @@ -4464,7 +4465,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	count_memcg_events(memcg, item, isolated);
+>   	count_memcg_events(memcg, PGREFILL, sorted);
+>   	__count_vm_events(PGSCAN_ANON + type, isolated);
+> -	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, MAX_LRU_BATCH,
+> +	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batch,
+>   				scanned, skipped, isolated,
+>   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>   	if (type == LRU_GEN_FILE)
 
-Make rust part of LLVM and get them all built and distributed
-together... such that LLVM=-23 will get me a coherent set of tools.
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-/me runs like crazeh ;-)
+-- 
+Cheers
 
-> There is also the question about GCC. A deeper integration into
-> `rustc` would ideally need to have a way (perhaps depending on the
-> backend picked?) to support GCC builds properly (to read the header
-> and flags as expected, as you mention).
-
-Right, so the backend that spits out C could obviously just pass through
-any C headers. But otherwise, inlining C headers (and inline functions)
-would be something that is independent of the C files. At the end of the
-day all that really matters is the architecture C ABI.
-
-That is, if rustc inlines a C function from a header, it doesn't matter
-it used libclang to do so, even if the C files are then compiled with
-GCC.
-
-> And finally there is the question of what GCC Rust would do in such a
-> case. Things have substantially changed on the GCC Rust in the last
-> years, and they are now closer to build the kernel, thus I think their
-> side of things is getting important to consider too.
-> 
-> Cc'ing Emilio (`bindgen`), Antoni (GCC backend) and Arthur (GCC Rust)
-> so that they are in the loop -- context at:
-
-Right, so clearly GCC has the capability to parse C headers :-) So I
-would imagine their Rust front-end would be able to hand off C headers
-and get back IR much like LLVM based projects can using libclang.
-
-
+David
 
