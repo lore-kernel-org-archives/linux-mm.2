@@ -4,146 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34F7DD24449
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 17:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A77D2444B
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 17:27:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F55B6B0088; Thu,  4 Dec 2025 12:19:20 -0500 (EST)
+	id CFC116B00B0; Thu,  4 Dec 2025 12:27:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CC6E6B00A5; Thu,  4 Dec 2025 12:19:20 -0500 (EST)
+	id CAC7C6B00B1; Thu,  4 Dec 2025 12:27:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BB2F6B00C1; Thu,  4 Dec 2025 12:19:20 -0500 (EST)
+	id B748E6B00B4; Thu,  4 Dec 2025 12:27:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 67C8F6B0088
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:19:20 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1196C8924D
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:19:20 +0000 (UTC)
-X-FDA: 84182449680.28.1FBBBC5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8DF738000C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:19:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E5QxuICe;
-	spf=pass (imf02.hostedemail.com: domain of cmirabil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=cmirabil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A3CDE6B00B0
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 12:27:29 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21C2B890BE
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:27:29 +0000 (UTC)
+X-FDA: 84182470218.29.6F792F7
+Received: from fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.132.221])
+	by imf14.hostedemail.com (Postfix) with ESMTP id AE80F100002
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:27:26 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=WJ1OcT9X;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf14.hostedemail.com: domain of "prvs=4269f7937=kalyazin@amazon.co.uk" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=4269f7937=kalyazin@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764869247; a=rsa-sha256;
+	cv=none;
+	b=DLJ3EET8hSb3Rn4cZwJpMn+gPQhRr2XJNxiU+Re3fVC7zz5+K9OT//Hgm2teOR3TL6oTgh
+	nF6iTwp7LwMIjlm+jDqbqs7ZEJMcEgFidnG1FQkzyZel46FqDqg8T+YRhvPNbcvZ2nXzeB
+	PCIJGr0c4wGWEbvqhwmKrcLnIesLKTs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=WJ1OcT9X;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf14.hostedemail.com: domain of "prvs=4269f7937=kalyazin@amazon.co.uk" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=4269f7937=kalyazin@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764868757;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764869247;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tbhl1hB6Go7cKeEzi9fq0ksxVXWeewQm1ULfbDi4zC4=;
-	b=8cXjAWr+EdShLssQX10Au450Z5LtxWAqnQQxUBB4l5m0ictm34/kbZDGMVU9x+kjJCiXYJ
-	GgYqmEERBGXd5535kj0qCtxua6sULGC6QuzY0FgC4r/I81W5p1Zy6LN3eYqfgWgaOITJbp
-	21rewfJjQMtb9qeO2YNNh9pZ9kSjKbY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E5QxuICe;
-	spf=pass (imf02.hostedemail.com: domain of cmirabil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=cmirabil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764868757; a=rsa-sha256;
-	cv=none;
-	b=TvPqUat2SBWcQEcTcMpyjGFewZRStrFQfrO2I4zSmwJ6/l7XF7ewyMSQ+JrS6inz5+AhwU
-	zkcOga8Hg35wTqulVEgX16CeMssTfqywn1U2Wfld0nNOd00SvVtHU0iQ7sGE1S+yS74DjH
-	ywirVD4GNPYPtEhjrfgI1O1376mtUik=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764868756;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tbhl1hB6Go7cKeEzi9fq0ksxVXWeewQm1ULfbDi4zC4=;
-	b=E5QxuICeo9FKTeP3+4l3ttmQGIuqqbORbSEWoQ+H/F1HoF9aJOdw6NSi7d3JPkHwWTJdqc
-	oIaIRJPdwOEnMH4fA3U5Xmd6snI7QMYUic/Rq8EilapvUDrttsLc02j7XRz9HnGCgOAGmR
-	NXjgbNjw/JalK27Mv91uLhNMl7d45wg=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-gC22A7RkNzqfWRUPTP34GQ-1; Thu, 04 Dec 2025 12:19:10 -0500
-X-MC-Unique: gC22A7RkNzqfWRUPTP34GQ-1
-X-Mimecast-MFC-AGG-ID: gC22A7RkNzqfWRUPTP34GQ_1764868750
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-9371e5b4a4fso1623921241.3
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 09:19:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764868750; x=1765473550;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tbhl1hB6Go7cKeEzi9fq0ksxVXWeewQm1ULfbDi4zC4=;
-        b=M0TEA7ymofZTzCtECtYgAAySxmkyt3J9LVSN11GSh054ul8XCWe0Jbx7/4ge5gDDUx
-         wwszmTi2eA+ayD0eADkmdI6mm8oloTYEgayphuJLjzEqMm/35T15L9xxf0FjaZBadL0M
-         QLTzagrm6qVv4dw5CbnqehKVtX5h9RThIJsCb1kX6cu/GTKgya3rWEQBBtQnWx8Ec60C
-         QLUIC7kLRTXvEZA8r+JWgjyUaNWO5aZzgdfyLIc9bkHjBEHWB/7KBshEEluSlko0A35i
-         +h+eoCI1yLjpZOqHyrcMwqkCGAQX2/P6XKBpQCMZmdIYECa4ktklwQUNIItJtM+Pr4rX
-         nerA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgDNN0/6nl74r4a1opqVyot0eiViTZkiy8CuZ+P7yeMzU+xmdLpp0uyFX6xIbt3batt1Zc6VIujw==@kvack.org
-X-Gm-Message-State: AOJu0YyogfCsE0+GCOo2Y/gKEWAKyQ0QMFQ1VkACnH4fxQ2UOL9OfxFx
-	TORvVsn/KqdHVYjfNYl/5ewunOcEUmfWQFb2mS1Xc6fxUHaGiiSaZXWTPA+ORN/J+OzFQMWg9E9
-	3sBJ0a7Lpcqppzv9jy9Nk20thT7cpnmBM4ZJYfe/qIGGaNJ8eXZ62z8wrg2d/bMFP7zUe1dt9gF
-	MD5N+f6XjTakMLkhftu8EUOJF0NsQ=
-X-Gm-Gg: ASbGncsbR8OFvYnIuwoQGzFI2NCZsKYWgHgxV2ruQttDDL1Ih8vKi9fdo1T+rdv8yAq
-	MBTB8mlWBc8L9F3WvXYcHqpZiR/0ckhLzvfjd502ujq/wEY/2ZsmYX8Y0cNdSfDxihE65d8QCzd
-	7wM1CMu2m+Hy4tR1F15kLCP2HDwbUi/LSyq0hThKXlER9JpMdPDtkajlqv8f6V1XxtED10koW/N
-	Fo=
-X-Received: by 2002:a05:6122:219e:b0:55b:d85:5073 with SMTP id 71dfb90a1353d-55e69d33928mr1380193e0c.4.1764868750235;
-        Thu, 04 Dec 2025 09:19:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEeIB0YNcpJAiGx/GNuObvXw/sfsBoL+Pu7iwpKlscfZjHDAR4upRzogd+N3zgiWodvzIxUpcfLPOjZg7ZeO+k=
-X-Received: by 2002:a05:6122:219e:b0:55b:d85:5073 with SMTP id
- 71dfb90a1353d-55e69d33928mr1380133e0c.4.1764868749828; Thu, 04 Dec 2025
- 09:19:09 -0800 (PST)
+	bh=+B+opqRca5hXbovGvQR+mVja5lmSAC1UXe+INpSdy+s=;
+	b=hHOdoecgvV7u0Iyg+rsyce2VB5a0DLUaYaXtPkamvWMgPzfs6MjZyistDAbKTno8RrlW/D
+	a3dN5QDIZ+OKWcp6on6TpmnDvgPW5GIHEuy+FBUwMQEq6k4cVGXbfnBSV6gx3LWVSTC984
+	eMyJTszByXjMeEr48McCaS3Nqp6F9VQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1764869246; x=1796405246;
+  h=message-id:date:mime-version:reply-to:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=+B+opqRca5hXbovGvQR+mVja5lmSAC1UXe+INpSdy+s=;
+  b=WJ1OcT9Xu66XpYzxeZ3s7wqV4FlKHbQWkiD2KQf5xMbswAuGBU1mPd9s
+   Q/0uY8JV6tvHjBpZacm4y9AlW+ULwOcG+IQFIhpHc0z4Slcmae+apf1mZ
+   rhCLzK8RAIfLplQriDM+LH7u/YXmrt6ow9aULxUAaae/QboLvGyCBE/vG
+   LDzcwFmwdRVGWUsOJh+2nAw8N9zmU/AJm/CVs/c6F4NVMNHoPq6A98pXj
+   iEANWbwUcmOezpUNUalQbN0zkgIcc5RfzpG2bdE0z3TUxWs6MKfgEZ5Jd
+   mpj7zIeay0qZCbnF3Xlpqa5ESXNhxCzuAaKahszXKT3lqcmbj+sfNUsSv
+   Q==;
+X-CSE-ConnectionGUID: tD7J2gDkR+OI14Z+1N4E4A==
+X-CSE-MsgGUID: yxbASA5+QGOcaYoyBNhwmA==
+X-IronPort-AV: E=Sophos;i="6.20,249,1758585600"; 
+   d="scan'208";a="6143936"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 17:27:09 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:2904]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.45.40:2525] with esmtp (Farcaster)
+ id 2e22cb74-9984-4686-b8b5-55012d26fc9d; Thu, 4 Dec 2025 17:27:09 +0000 (UTC)
+X-Farcaster-Flow-ID: 2e22cb74-9984-4686-b8b5-55012d26fc9d
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Thu, 4 Dec 2025 17:27:07 +0000
+Received: from [192.168.12.174] (10.106.82.9) by EX19D005EUB003.ant.amazon.com
+ (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Thu, 4 Dec 2025
+ 17:27:06 +0000
+Message-ID: <2afda7a3-3c48-44e4-b462-49e0d223208b@amazon.com>
+Date: Thu, 4 Dec 2025 17:27:04 +0000
 MIME-Version: 1.0
-References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
- <20251112-v5_user_cfi_series-v23-24-b55691eacf4f@rivosinc.com> <20251204175055-fefb76ff-2ff2-48b8-b92c-3d3ce33ec9f5@linutronix.de>
-In-Reply-To: <20251204175055-fefb76ff-2ff2-48b8-b92c-3d3ce33ec9f5@linutronix.de>
-From: Charles Mirabile <cmirabil@redhat.com>
-Date: Thu, 4 Dec 2025 12:18:57 -0500
-X-Gm-Features: AWmQ_bn9PjdtETVMsD9KORY8lffIPeFGUkSijG0lA3xh-eP2WvDjQUg18Xtxf3s
-Message-ID: <CABe3_aH6wRzKt+f8RyG+0mN0Kyu2eASRn4URxgU4R-zEmdwBgA@mail.gmail.com>
-Subject: Re: [PATCH v23 24/28] arch/riscv: dual vdso creation logic and select
- vdso based on hw
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Deepak Gupta <debug@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pGX2QksgOPYbv9q_hwgnGggjW5XmNwaXP3ZWarfjl_U_1764868750
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8DF738000C
-X-Stat-Signature: xrba18wsmzz7x1eqw59sbg5stzztt8mr
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v3 4/5] guest_memfd: add support for userfaultfd minor
+ mode
+From: Nikita Kalyazin <kalyazin@amazon.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Peter Xu
+	<peterx@redhat.com>
+CC: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>, Andrea Arcangeli
+	<aarcange@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "Axel
+ Rasmussen" <axelrasmussen@google.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, "James
+ Houghton" <jthoughton@google.com>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Paolo Bonzini <pbonzini@redhat.com>, "Sean
+ Christopherson" <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20251130111812.699259-1-rppt@kernel.org>
+ <20251130111812.699259-5-rppt@kernel.org>
+ <652578cc-eeff-4996-8c80-e26682a57e6d@amazon.com>
+ <2d98c597-0789-4251-843d-bfe36de25bd2@kernel.org>
+ <553c64e8-d224-4764-9057-84289257cac9@amazon.com> <aS3f_PlxWLb-6NmR@x1.local>
+ <76e3d5bf-df73-4293-84f6-0d6ddabd0fd7@amazon.com> <aS4BVC42JiUT51rS@x1.local>
+ <415a5956-1dec-4f10-be36-85f6d4d8f4b4@amazon.com>
+ <69bfdffd-8aa3-4375-9caf-b3311ff72448@kernel.org>
+ <6b21d20c-447f-4059-8cbd-76a8eeebe834@amazon.com>
+Content-Language: en-US
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
+ CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
+ i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
+In-Reply-To: <6b21d20c-447f-4059-8cbd-76a8eeebe834@amazon.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.106.82.9]
+X-ClientProxiedBy: EX19D015EUB004.ant.amazon.com (10.252.51.13) To
+ EX19D005EUB003.ant.amazon.com (10.252.51.31)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AE80F100002
+X-Stat-Signature: r6c4whrnikj4s4g86d9oax44fpsod1aa
 X-Rspam-User: 
-X-HE-Tag: 1764868757-672927
-X-HE-Meta: U2FsdGVkX1+LuQCjtwJWjVLlM9/Tjr1GR0tcNV5Ov4wv7b0PiOeAqDpvKiCrNhcDy6D1tWo/izskmbrJ9i7SZQy/Zv427iVOAziAV9RrXcGqyotglQVc/71jFfBQsdyKF0njKk9iQ4zGAXncNpIgQ4nx1xUYjywFcKjePjEtxUt9m9a+pxz5+YuaZ9ylqu2xxE4OTF6JADBGlQr3vgCzt+I1N56HmvIir6fVUgNkdjuKZuJ4TBw7KGGoQ92eHaXQwq/7XY2Gg8mdgLSWs0GB+gbyV0n1nYWL9iS+4xv3pJ3dOGKBZTUDY9EcKrvu5K0Y8O+DlEpZ9k0lpmD7EjGMSQbgrKkKVTaIH6QMSWVJTSnABSi+gcmg+CqK6bEIZ9q+d2Zsq+aYRunWUk0mots3AICh2tXGNeGjyhzshOyvN1e27D0HevQ5GGyl6G1r5Ei4zmtLUCtBNjLoGpEh1P5kTyq8nEgl7pykw3Foun9p6oJtPv2lRKtdpo6fjrh8MNKgcVxKGHS+cUZZhDCQc093JHfdtiXZgx3DmU5xv8N+cOTHIelq0Mt+NZo30ol3Fs5PokEtUOUygeCAl0VzUzmIWxHu9+XFXAs4TaO6biUoyL4JTfAF0xFtcQDUAyUhLe/GM1uwzwXe6HKN5O3WivnkQRYIyYl2KSjwBhd46/c1d+8dR3wlnZRpj5f66d/M4A//Ah6jaAEdDei8j4rtaX5JRTZE15e/lNYGUZNQ2N/8mP+SiyUYABM1QmAdLqqPrZw8HuZP9aK2qPIfUzYMQqjkthKW2x9lz76TjNwjJBzoG6j/NY57REYltPVg5e/upauIhwE3O0mirdNaK9vn7/PofwwjHP3HKSTF4XQn2y+QpOw5SYOJNJaPOV/4y20WFbTRHP6TQTOHJsY3cr46d2aSkFTZXJ2zLrcTRTNnh6NNk8pl787PXAFkPrntkh8fr3athXo9AUN/Igi/02Mhmk1
- 4/JmPZoC
- qMnngBexEHYuW9tSsWBP5BBLnjdSO/D1irUwyqgR2mqhWM3DSgYb3iCmU/ZzBVFn0DQh5TObsAfq7Kn9fplXq8xDNza16qNpfkMzu/JrHIdKlLyenTyqdNYe4EUToexZTVuLOvKNyd1zh4RfgYX98BVFBH5MlNKNgc3OXyHTIz8huZdORuqAN1A6jzsgDlIN0zcsmTjl9tXCjtT6ktwFlvwxCBduIU2JwEq0MYk56SzvazsYTvlPkKfKRSz6HpvnR+zWy+M0ef31lyGV3i7tjfAV3VHLmhX5lin2oJk8kaEUVscQH6rMbhoewxnh0hIi/9WPYcYeVIKHE/pT7yOVN+ckcct+PUFwZPfV5zc63C4eqCp9RgF6hp1AkCqNRiO6KXpyqmZbvm0/yCllGDHgsofx/XIQliLCq0EfKsqduwC8ss2a6H5PHhv9+YJVU5ookbjbgbfxUg3SjBtIEr3HONhzwGOtRQ30NKBmtsK/radrBXO09192u4m2z5nKoBL1FIsJl
+X-HE-Tag: 1764869246-245978
+X-HE-Meta: U2FsdGVkX1/dDv3HcfdrrgTcSivzsxVMVmIdpNIJQxUYaYDjshps3kptyT2wbjx0URDfsTj/MRtOimlO6Q3WuiE1n7LpjMrEvLdYaPhgd4I0/2Y30mIQ7xfLGpvoIGpPofA1vu4hL3850DwQTxDq8WiJlMDAr3S7Mb+7bDTXal4wvp6Wzb3PPF3DH4bn+SAZjS8Dsb6RIaaOaNeMS8NBD5+xGALRtiA+iNqn2ekL2xnsMG16wDlk85mhVPjH+yT4SAz24gY1e/hcWzrZimUXKiswWTMFJKTm/2vZeqm572+ua/b9aicjQADctoY5/oR7uhinsmHownko93JvGtwyTCE5mCoWl1Etc14gwsljM2VDp6or5wgkqT1ot34QkBrG8U5y66trJc5N2wIzFPGzXvXlQzZ+GWfcdswvLYrfqgoUPN+YjmnXzUWwO38cebLvRnDA+ucPTxYcEh/fruWYSjev9ySrlhAZkkHSWdMV3NIO0Ny9uK8CzIUx7Y0eEJo9nj+F8qE6lsV2PnHtxrDbA2HdX64pWtooz80vOkRlDY7X4SLiXcZN/7+uRpKCkdK3QMG24CU0R8eBLaoHe6m2RVBVViMqcrrYQhfWEh7UrSyIowPkgp7uJrZOi4nO5pyrA4EKUYzkG7/mLLrS/e6yWIV/m7FC7rRqaRTLKckOYzzzhCS6/703GJjryx2v5LI5nFuf34m30Z2vVZRryzw4BxcckWeZEs2Hwe/Q12+h3BXq+NahSCauyeyClOApYTFlOixPN+VtnKsFlVVHDOhaWJJ7/wWH+Y8ehxTVaFMpaQLZtZ/Up66DMl5/+zNkqzkNROsFARtPn+XNZDtk6AU4HHdB/U3VOPfeWnjEkF9htG4eDHKrdidPVTY0KoZG8sCviZ7+U2f3P/W60k5zyRO4KEr2WZjCViBKpzYtcK2L9E3QohxdnfzMPIOHPH94WunK8RrRSwTPbw2ilXIrGQm
+ VNLWqeYv
+ FucStPaAdwkxROHM48wTvel02Gg4IwM5+aUPuDIX8ScEMSuN1VOxDqeluhXooIBQBS3HLlFJzneqIl2U7vZXiclimPjLb3h1jv5s3kCngO5Q2GheQNfp0SKuYPIXnbCSDRBrgWFUWaZFmn9q9mmUDcF3utsWAynfyDcf4xOFOaCI9/+tgdNZheTfCdrh85sy9HSS4f69ZsZRjhF7ouoTlsk0v3kRq+bjq1Wx3CgbUoSsqBbt69ZXOdasBdnNLGzDoz0DLEM0ZGvixm2JyO89RsMkHmSqDSDXofdmkzutOPp5t6RMqlZv5Wbb9fRsnXyAfPAHgkrhGIjnp/t9GPzwNkSB2dY1AzTKEgS+K9/dygZROaAxvZipVb8DoXK0YwdEmjEBOpmn/ItxJcahGU74GrZk7wNRbDmu7CY4H5n6MOAe+QTJ4A8I6xdsakKXgg96SB5ERmqW96oImTP6O1jVwH2SoWfcDWTVy3vWh0WgMqmsBmENgNLTWsrz9CWOefgIL0i6dopEPCvvvumNo/R1x2wOnK2NDnl+NgxBPs+PoxLkrm0qaAdM/O2R4jVQtGO2DpTwvnFWs6iVG5XQv/FFLumDFRnXR+vHmoVWWKAj0lICEYGnN+v8MjB2MJrVmZETNfVgIuK1AvP96wSlcQENLoprzVUnpxWGH2sb7McC+Dur6/Sq7jz9Vzqs2K8vTtpAM7A4WK8u4UeNaO5fLDwklzMxfKZSTmMylD4KpY6qmpB6bFdGRhEujATStAmsvshsvSpJN3Dqwp3Ipv2TeKk60cnWl+G+5zQAonOQq54yOjoymb/gwVWlgORqawEsJryOqXn4AjzDpIDYlUG6WjwzhpdCMvTeOEcd/+1XZO6Ldo8+owHcOJ6YRvN6e8jpg2e1HTuuDYTcOHvpVY0zF7GpvPOSruHpa+PtubkxIjLTK0a30spcsYOcX425kO87PmwEnDsR5MqTkf02ldfTNFf5Dh8T48IDw
+ 05whZIYo
+ uoq1cszgOFZItnN9G3WUYHoJdmAGkmDHx0tLaHr+IzbxcoM0FzPEkdEz3DUUm/5gnNVZgRfy8MUjsIEXYmEn3w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,45 +144,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 4, 2025 at 12:04=E2=80=AFPM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
->
-> On Wed, Nov 12, 2025 at 04:43:22PM -0800, Deepak Gupta via B4 Relay wrote=
-:
-> > From: Deepak Gupta <debug@rivosinc.com>
-> >
-> > Shadow stack instructions are taken from zimop (mandated on RVA23).
-> > Any hardware prior to RVA23 profile will fault on shadow stack instruct=
-ion.
-> > Any userspace with shadow stack instruction in it will fault on such
-> > hardware. Thus such userspace can't be brought onto such a hardware.
-> >
-> > It's not known how userspace will respond to such binary fragmentation.
-> > However in order to keep kernel portable across such different hardware=
-,
-> > `arch/riscv/kernel/vdso_cfi` is created which has logic (Makefile) to
-> > compile `arch/riscv/kernel/vdso` sources with cfi flags and then change=
-s
-> > in `arch/riscv/kernel/vdso.c` for selecting appropriate vdso depending
-> > on whether underlying hardware(cpu) implements zimop extension. Offset
-> > of vdso symbols will change due to having two different vdso binaries,
-> > there is added logic to include new generated vdso offset header and
-> > dynamically select offset (like for rt_sigreturn).
->
-> If the used vDSO variant only depends on the hardware and nothing else,
-> why not use alternative patching and avoid the complexity?
-> I see that RISCV_ALTERNATIVE depends on !XIP_KERNEL but the vDSO code is
-> moved to dynamically allocated memory in any case, so it is patchable.
 
-These instructions are emitted by the toolchain in the C code, so a
-traditional approach with alternatives is not exactly feasible. Maybe
-you could do it by scan the binary for them, but that sounds dubious.
 
->
-> > Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> > Acked-by: Charles Mirabile <cmirabil@redhat.com>
->
-> (...)
->
+On 03/12/2025 10:03, Nikita Kalyazin wrote:
+> On 03/12/2025 09:23, David Hildenbrand (Red Hat) wrote:
+>> On 12/2/25 12:50, Nikita Kalyazin wrote:
+>>>
+>>>
+>>> On 01/12/2025 20:57, Peter Xu wrote:
+>>>> On Mon, Dec 01, 2025 at 08:12:38PM +0000, Nikita Kalyazin wrote:
+>>>>>
+>>>>>
+>>>>> On 01/12/2025 18:35, Peter Xu wrote:
+>>>>>> On Mon, Dec 01, 2025 at 04:48:22PM +0000, Nikita Kalyazin wrote:
+>>>>>>> I believe I found the precise point where we convinced ourselves 
+>>>>>>> that minor
+>>>>>>> support was sufficient: [1].  If at this moment we don't find 
+>>>>>>> that reasoning
+>>>>>>> valid anymore, then indeed implementing missing is the only option.
+>>>>>>>
+>>>>>>> [1] https://lore.kernel.org/kvm/Z9GsIDVYWoV8d8-C@x1.local
+>>>>>>
+>>>>>> Now after I re-read the discussion, I may have made a wrong statement
+>>>>>> there, sorry.  I could have got slightly confused on when the write()
+>>>>>> syscall can be involved.
+>>>>>>
+>>>>>> I agree if you want to get an event when cache missed with the 
+>>>>>> current uffd
+>>>>>> definitions and when pre-population is forbidden, then MISSING 
+>>>>>> trap is
+>>>>>> required.  That is, with/without the need of UFFDIO_COPY being 
+>>>>>> available.
+>>>>>>
+>>>>>> Do I understand it right that UFFDIO_COPY is not allowed in your 
+>>>>>> case, but
+>>>>>> only write()?
+>>>>>
+>>>>> No, UFFDIO_COPY would work perfectly fine.  We will still use write()
+>>>>> whenever we resolve stage-2 faults as they aren't visible to UFFD. 
+>>>>> When a
+>>>>> userfault occurs at an offset that already has a page in the cache, 
+>>>>> we will
+>>>>> have to keep using UFFDIO_CONTINUE so it looks like both will be 
+>>>>> required:
+>>>>>
+>>>>>    - user mapping major fault -> UFFDIO_COPY (fills the cache and 
+>>>>> sets up
+>>>>> userspace PT)
+>>>>>    - user mapping minor fault -> UFFDIO_CONTINUE (only sets up 
+>>>>> userspace PT)
+>>>>>    - stage-2 fault -> write() (only fills the cache)
+>>>>
+>>>> Is stage-2 fault about KVM_MEMORY_EXIT_FLAG_USERFAULT, per James's 
+>>>> series?
+>>>
+>>> Yes, that's the one ([1]).
+>>>
+>>> [1]
+>>> https://lore.kernel.org/kvm/20250618042424.330664-1- 
+>>> jthoughton@google.com
+>>>
+>>>>
+>>>> It looks fine indeed, but it looks slightly weird then, as you'll 
+>>>> have two
+>>>> ways to populate the page cache.  Logically here atomicity is indeed 
+>>>> not
+>>>> needed when you trap both MISSING + MINOR.
+>>>
+>>> I reran the test based on the UFFDIO_COPY prototype I had using your
+>>> series [2], and UFFDIO_COPY is slower than write() to populate 512 MiB:
+>>> 237 vs 202 ms (+17%).  Even though UFFDIO_COPY alone is functionally
+>>> sufficient, I would prefer to have an option to use write() where
+>>> possible and only falling back to UFFDIO_COPY for userspace faults to
+>>> have better performance.
+>>
+>> Just so I understand correctly: we could even do without UFFDIO_COPY for
+>> that scenario by using write() + minor faults?
+> 
+> We still need major fault notifications as well (which we were 
+> accidentally generating until this version).  But we can resolve them 
+> with write() + UFFDIO_CONTINUE instead of UFFDIO_COPY.
+
+We had a conversation about that at the guest_memfd sync today:
+
+Q: Is it possible from the API point of view to support MISSING 
+notifications without supporting UFFDIO_COPY?
+
+A: The manpage [1] says on UFFDIO_REGISTER_MODE_MISSING that "the page 
+fault is resolved from user-space by either an UFFDIO_COPY or an 
+UFFDIO_ZEROPAGE ioctl", but I don't think it's actually enforced 
+anywhere in the code.
+
+Q: UFFDIO_COPY is supposed to provide atomic semantics, while write() + 
+UFFDIO_CONTINUE does not. Is it a problem?
+
+A: It isn't a problem for the particular Firecracker use case because 1) 
+vCPUs can be prevented from seeing partially populated pages in the 
+cache via KVM userfault intercept [2] and 2) we do not use other 
+userspace mappings.  However, as James pointed, in the general case, 
+other actors may observe partially populated pages via other userspace 
+mappings.
+
+[1] https://man7.org/linux/man-pages/man2/userfaultfd.2.html
+[2] 
+https://lore.kernel.org/kvm/20250618042424.330664-1-jthoughton@google.com
+
+> 
+>>
+>> But what you are saying is that there might be a performance benefit in
+>> using UFFDIO_COPY for userspace faults, to avoid the write()+minor fault
+>> overhead?
+> 
+> UFFDIO_COPY _may_ be faster to resolve userspace faults because it's a 
+> single syscall instead of two, but the amount of userspace faults, at 
+> least in our scenario, is negligible compared to the amount of stage-2 
+> faults, so I wouldn't use it as an argument for supporting UFFDIO_COPY 
+> if it can be avoided.
+> 
+>>
+>> -- 
+>> Cheers
+>>
+>> David
+> 
 
 
