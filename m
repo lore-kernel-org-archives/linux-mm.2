@@ -4,92 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 901E0D2A54F
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 22:16:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 086E1D2A55F
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 22:18:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA4396B000E; Thu,  4 Dec 2025 17:16:55 -0500 (EST)
+	id 6634B6B00B4; Thu,  4 Dec 2025 17:17:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C52DB6B0023; Thu,  4 Dec 2025 17:16:55 -0500 (EST)
+	id 641F06B00B5; Thu,  4 Dec 2025 17:17:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B692D6B00B1; Thu,  4 Dec 2025 17:16:55 -0500 (EST)
+	id 5523B6B00CA; Thu,  4 Dec 2025 17:17:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A4C646B000E
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:16:55 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FD6DC03DB
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:16:55 +0000 (UTC)
-X-FDA: 84183199590.25.625DCAD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 89C68180009
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:16:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KBuApwTD;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 44A5F6B00B4
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 17:17:59 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EBBA513A115
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:17:58 +0000 (UTC)
+X-FDA: 84183202236.28.A0CECE8
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4EF3040014
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:17:57 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pOEb2Ri0;
+	spf=none (imf27.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764886613;
+	s=arc-20220608; t=1764886677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sOX/TOsanFFog9S4Tjf5TWZloru62X5i8eBVTOZ0QU8=;
-	b=35R3i9NUMxtYRlwR15ahTBOazaniZPrgA+GSaJLhIn6k8QfxS2SQQO0je2hL5MRn9lOmAL
-	5uU81RvcEVh71inU4pBDS6FlmFBxBqX3Jjz07dg9vEZObVxC2eUbqk4ncsHYNSgmwzS5QQ
-	vwnYqrWo3iGQ0xPyX+WdWbdH/K6PBOQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764886613; a=rsa-sha256;
+	bh=k6QVH/SWdP5H8bXIHeIZZPkQwVxQdNZJmtX24mN9i90=;
+	b=Jc83Js1zU9qY5utaKqgvhEFFIo6cgi4dS0s/H9xTAgOmbtIpdYuk55Fm4yAoyVf/lyzYeT
+	Ann1FP9HEdpMWTzE7EkxAgiFtmMDVcP+AI5CReBrPfbVLBkRFaqwTUQBfciNmZQ4IGkqFm
+	e0nuB/Z186K1TJCLiQW4CSLsD5p//sY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764886677; a=rsa-sha256;
 	cv=none;
-	b=jNI6xxVatA48OoxOlzSGiOQsdz8MrKWdd8ZxtJHx2xx+3vDpvNHSZs2xD6lPNpI1NzThSY
-	wLYHSVGdbfPUxnQ6Vy6GS0EgZPGksbvtvDRtLENWv7H/8SyQN92vtLQrSrNS06mXcJVK60
-	wHWVseTwVTSoNObpHrrocO1S3zPv9MU=
+	b=Yu9Tw5NB71/xxHSFncFCtgh6ZtdjfHh8l0Nyg+XbPI4ZUgWRw4zFpa+EC4t/w36kyrag2+
+	zPFVdsvkMSCLFpIU9wU/N7W2Jnch9OUvckUbcJBCN+X5mqf9MfQGuIpQtxSFd5kw1C2wLN
+	EuuhfBAYhYOOhmVi+4/v8zA/ZOpz69I=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KBuApwTD;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 52FBA42BA0;
-	Thu,  4 Dec 2025 22:16:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D13FC4CEFB;
-	Thu,  4 Dec 2025 22:16:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764886612;
-	bh=GIuj8czK7JN8iz28EipslA6aGAVYQK/Gu9reaHBCPGc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KBuApwTDXxWWdiJtQf5qi+0VX47yor8Nk3F7562GYuC/SHmqcNeAWPL9H/c8XV8DC
-	 UPqGDSIG+kiOWeBOB2NOnleo4M6fuA+1IUkD0gtnUP2MHOPxx+GRl3FHzajYTp/mdj
-	 YhItdid8utmBaZBdehY95VBwYuAeXWDgyAXUqsNbvJfJVdOXTx+DdbZnmHRJ/yuemW
-	 5E6TamsqebK90TLJQSk7/QyvhdNy8bmKE0UJOaQI1ovMRqWIv9iqKocBetKjbVcGlF
-	 Y95h+kTKIqv9R3MRTVA4DXw+fZbKZYhZ20Diq0x07sT7jnzqNDzgkxxaVPxW3UeckK
-	 /XNqUzLH3VJjw==
-Message-ID: <51d8549e-b084-498e-84c0-76fd3de116cb@kernel.org>
-Date: Thu, 4 Dec 2025 23:16:45 +0100
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pOEb2Ri0;
+	spf=none (imf27.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=k6QVH/SWdP5H8bXIHeIZZPkQwVxQdNZJmtX24mN9i90=; b=pOEb2Ri0+biaDj8R76FKt8db8+
+	gNL4On3s42n2VRZLuJ70zlejVBo2mDgEk/EYYRx/Yt6E52rWb2buoeFpKyiPguCD0G5syhjXcXBeU
+	ze8d4CiTnMu2hAUWOfHD86DLXyVg/QKtpmBx4m0/vbRsPbjLQpe1akjW3F7V2zP6njlBxdpOguU4j
+	0FcrSKxHcCoKKFK4udrdX7Rn0v/C5CI+Z+ck3F3guEDNZ8VW0MRBqjbP2vKfZa5ixuhKpyMsGsRBk
+	Ut7N2ENViN/YTYVaQce/7brCDDoNtk5mhj0U25jHEnkusKsVLvJxUrtBZEPmPok1jgN5WvqEg5/PM
+	hiEYREbA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vRHdh-00000008ihQ-23Ud;
+	Thu, 04 Dec 2025 22:17:31 +0000
+Message-ID: <b5feba48-7e7c-4ab9-a193-072f3980f525@infradead.org>
+Date: Thu, 4 Dec 2025 14:17:27 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
- hugetlb"
-To: Shuah Khan <skhan@linuxfoundation.org>, akpm@linux-foundation.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, masahiroy@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251204023358.54107-1-skhan@linuxfoundation.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH v24 25/28] riscv: create a config for shadow stack and
+ landing pad instr support
+To: Deepak Gupta <debug@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Christian Brauner <brauner@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+ Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+ Zong Li <zong.li@sifive.com>, Andreas Korb
+ <andreas.korb@aisec.fraunhofer.de>,
+ Valentin Haudiquet <valentin.haudiquet@canonical.com>
+References: <20251204-v5_user_cfi_series-v24-0-ada7a3ba14dc@rivosinc.com>
+ <20251204-v5_user_cfi_series-v24-25-ada7a3ba14dc@rivosinc.com>
 Content-Language: en-US
-In-Reply-To: <20251204023358.54107-1-skhan@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20251204-v5_user_cfi_series-v24-25-ada7a3ba14dc@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 89C68180009
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4EF3040014
+X-Stat-Signature: cw3s1wpnbgta18midiie3pc6fm4ywn1d
 X-Rspam-User: 
-X-Stat-Signature: 5mmbdtw3r4myo1r8keqs5h7hscptwq9y
-X-HE-Tag: 1764886613-337024
-X-HE-Meta: U2FsdGVkX1+rNhs69Z49xMEOtzeNgdf5LPQsXdpfxmpxDdd/h0pqVZnWPp9mH8EUhdQTvbazOqeRgiFBpvmTnPU0fkPRb2fwAxc34SZ1TkfBpYgt3YTzPfWcU9M+prwHUDSXcoGgydbm/wkYDTd9/JkQ5ppXwkpor4nMaRdrCknxjUTmlBQtgFWhGO5d0ZeCSROyMWH6794/86GFxcMLrqEsk9x2QH/XUuyzikGMt8TRZMtZpSsmla3hLnjtikd1hfL5Fp3hKjL28olLst3+SeicJz96dYLmb/j94Q6ZS5t1SqSKJ1F07pvcTQajWvxZHq3m9im9gCroXgugKGl/q0oYCSNAPC41t5L5eu5sZs0n+4S1ewvq5wQVI7JMcJB7ei1J76t2AD/RFA9VFFwuCwdVUqSOz2gMJTjPnXvDrLPQDKPt299Rl0w8Nz2CE0YIyXlSu6VAc7sdmSA2YOx4cLHbWdkBZEErbi/ECBZJgVlmoFROfBmIc4UnrUpz+Uml/LnU+a6jq4iaVsrqGiManmXwEL8NJbCVKD//0X8tRa10Gv19OWEbQRh1Ws0XOrp13gMx9VDxwtmVfByn/oylm466MZOdqNPjWIled8BWU2hFIScYgZSU0ZDXhQePa+PjOURgihtuTMl+q6/ztdymJ3UVXHvJL2a671wqstFhpu3L48povx9Mepo35V0wjZNcRy0y+ns3C9fWfnQAV59yKjx9RxZ56DFKHDReIStTH0rtvGRTtQzdnry12ghEV/w/djyFOg2GhbNXzXjm5rLCnMYUHYUh95Ri2wMZJUJdCXo6YckbuIDiuY2qzDL2nEMtv/7tZytxwYKnvellXFi8xoXO/bbdf8KEQLBN7EhNhs5vhOzF3JzWHRzb04l4qlUh6SqtZfnyiIYU2YvZn6CBD6tKz69CrhaqwSQHRpIk1F8UN55FZl5+cqbv1pCSBpF9l3lgSSjsPQfAoHZRaQW
- EllQzQ42
- qCrKd2v0+QkM0Uy+Nbrq7sxPjd0wYx7MJFMlnbW/FSz9Z4C9ImD27KJe+l+YxgD9kd14e5+9vJadGBNSldPKUbzfXKEuot9hFb33mD7BzJdEEVXF+d0SnDKz0IPDJnZWSettAmP/pdCNJ4N8jYcikmi3xF6SZQdaMKDKpqcItYIcw38//Z0zG9vsEnvGVmSqFTizAQvi/rFKVsKPLtnlyoe3MMvPV6kFaQEnH8a/PM1U2rDnkU585hWijEpKQ02poFcVNRUTsV+1MMnhUfI0ve776pOo+a5qqYcIeL+yMs2UjA5UoT5LUl2ugjxC377clznjBw3KIp1ffAt82piP8SsNn058FJjPuUtUkEgIgJ3SJLhOIv2zEO16L/ZGoLzJWrskViGTDLp+Ww/33MRsBbu1hl4iheZHKcXMh0DjEuDIIa6hMcE8fBotSa4B68lTqLG6v
+X-HE-Tag: 1764886677-121579
+X-HE-Meta: U2FsdGVkX1/FsCecOtWVGaDJJaDLG06CAlM3x0jCIIkc9XMx3kTZL9hVQsyVv602xMFl115zy8r46WEHLmfT/ua2RZzB0JC7wnG/H1GvyPgV1P8nl4GrF8cnRnc2OYnAp8usmsgVjH0MH58eTa6ACRdXmUVL2xV8JmVRarMJipAKZwv07WN5rWbqp9dkQk6U5OBU008swGk6KC+KVXxBJyZlf+iWOb4Gz7lHS5tTRKGU4zmcR4dS3DsH0GAtWUCrIhZ9O9zNANTCKKmrO7QVM+MSJt9Xc49CfVgMG6e9nNscH7KMXx1PQa7faFXvZ22thyaElwONqEqRHPELxsHiZRinAEa9sXQ0atYWWAWtAZuCxrzVIUVA7JA2d5CrbwL1Q8c3+5mnesPygsgAWj+vJTeLj9+ba3IcLEwPYz+lgnMq/IXQxQc3YlDHi2dKqOXwHJ66Az+GVlTMbxoxa3A3RM6hcEERA41sIlu4WLivzVkkJTl6x94t7tINae7WL8/HxHe/WFLmUPNwhSsUI1AZ3sQxmxqBRZyxpY9tAytGKwa/HYkiTy9vTpzdCaQ/3P/469yn7D/9CIc3W/+6lli5nS150vyfl0uTCeR57QBndW88ZPUhTU0J6GG0Dk+FITsiIie6HTvRVikZGyC7XEoR5q+HyXSUs8cW4nZUjzkJxxhD6huw+6FPctH5oUvfPwdxeQJZ2/FGlwOfog1sQazohCl60mkJOC5FZb3LOJHOnAEBO20gUS3R+8nl/FJs4fWkclpKR+Rpy27efYmE/+H/rC6l7+PmzVP8WTehUEO7p8+HnqsdsSuB874hLzAEUHHe/QUF673jjSQTc2vGKVGwOighzRY0sRpcNn8BQxLJf3IEfnBrCkEkhMA4DrqITK31qs+1PhIMxx2NnXkmT5SNKcdm9fOX6FdukB+fr4DlU/kzjtgAZxQe+sVL71AY/kEEugjRbyBAJSfoGJ7PIQw
+ n8q3CzjM
+ FlqIYtc3e7V43AsTuP6iMU7k0aDWu8M9mLEuHwIqyRlBC385bGPyrMCLAZMNlmI3xvpGimvYatjyEB982ye4OaJ8K8+xFhF/BpICZsYDxqpdy5tjgWTqWLDa+AUv90+p5KF7wdpWC0HKUJ07OEZyJ4/aEfam74CI52IzSVltRs3Fb88dPj40+0hUcw7h5ASRGXNrP3/1dMMcnnmcP7apO++6Swfg8DlATo5IlkiC7WFBo39WFDyOCnh10h7bm/WDbQR2OnjyHCQAAejpNnSJmGUWFHYHvue8S6nHSTcXbfo0KBc/AK5KzufuHagLD4sjxzhagQ+qzM5SyegQKj7FpmM5IehhTp/UFpjhSMoCvCqr6NBL9WqoIheV2PcnDvmiaKsUSwFdK/AGwVbmoESIWEPawpjEdA76AshIHSFOiA4bZ2lKJCsS+7FH9nCVkUMA/SykSuubIBZ6asKlORQlQaE9FeN7wQU0/xClFt/K8ndEfr0NbAtOQWCVhyWZS4n/pQjgsBAJBj5SZYdjjwk3ort/nYH81rXCmQBs9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,30 +124,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 03:33, Shuah Khan wrote:
-> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+
+
+On 12/4/25 12:04 PM, Deepak Gupta wrote:
+> This patch creates a config for shadow stack support and landing pad instr
+> support. Shadow stack support and landing instr support can be enabled by
+> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` wires
+> up path to enumerate CPU support and if cpu support exists, kernel will
+> support cpu assisted user mode cfi.
 > 
-> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
-> systems. git fetch-pack fails when cloning large repos and make hangs
-> or errors out of Makefile.build with Error: 139. 
+> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS`,
+> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
+> 
+> Reviewed-by: Zong Li <zong.li@sifive.com>
+> Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
+> Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+> ---
+>  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
+>  arch/riscv/configs/hardening.config |  4 ++++
+>  2 files changed, 26 insertions(+)
+> 
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 0c6038dc5dfd..f5574c6f66d8 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
+>  
+>            If unsure, say N.
+>  
+> +config RISCV_USER_CFI
+> +	def_bool y
+> +	bool "riscv userspace control flow integrity"
+> +	depends on 64BIT && \
+> +		$(cc-option,-mabi=lp64 -march=rv64ima_zicfiss_zicfilp -fcf-protection=full)
+> +	depends on RISCV_ALTERNATIVE
+> +	select RISCV_SBI
+> +	select ARCH_HAS_USER_SHADOW_STACK
+> +	select ARCH_USES_HIGH_VMA_FLAGS
+> +	select DYNAMIC_SIGFRAME
+> +	help
+> +	  Provides CPU assisted control flow integrity to userspace tasks.
 
-Looking at the last part, "Error 139" was confirmed to be fixed in 6.18, 
-right? At least reading [1] there I find
+	           CPU-assisted
 
-"it was issue of 6.18.0-rc6 kernel itself. After switching to default 
-Arch Linux kernel build went without problem and I'm now on 6.18 stable 
-kernel."
+> +	  Control flow integrity is provided by implementing shadow stack for
+> +	  backward edge and indirect branch tracking for forward edge in program.
+> +	  Shadow stack protection is a hardware feature that detects function
+> +	  return address corruption. This helps mitigate ROP attacks.
+> +	  Indirect branch tracking enforces that all indirect branches must land
+> +	  on a landing pad instruction else CPU will fault. This mitigates against
+> +	  JOP / COP attacks. Applications must be enabled to use it, and old user-
+> +	  space does not get protection "for free".
+> +	  default y.
 
-Did you mange to report the make issue you reported here [2] on 6.18 as 
-well, or only pre 6.18-rc7?
+	  Default is y if hardware supports it.
+?
 
+> +
+>  endmenu # "Kernel features"
 
-[1] https://gitlab.freedesktop.org/drm/amd/-/issues/4724
-[2] 
-https://lore.kernel.org/all/5af4522e-30ab-4eec-a861-c2760cdabd4f@linuxfoundation.org/T/#u
 
 -- 
-Cheers
+~Randy
 
-David
 
