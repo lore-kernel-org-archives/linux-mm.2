@@ -4,117 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B34D206A9
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:27:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F813D206A9
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:31:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA7546B00A6; Thu,  4 Dec 2025 09:27:52 -0500 (EST)
+	id 641946B002D; Thu,  4 Dec 2025 09:31:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A576A6B00A7; Thu,  4 Dec 2025 09:27:52 -0500 (EST)
+	id 5F2056B0093; Thu,  4 Dec 2025 09:31:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 947126B00A8; Thu,  4 Dec 2025 09:27:52 -0500 (EST)
+	id 4E0AD6B00A5; Thu,  4 Dec 2025 09:31:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 826096B00A6
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:27:52 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2719A139250
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:27:52 +0000 (UTC)
-X-FDA: 84182017584.04.C9BE3A2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EAA5918000C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:27:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YwrF7ndD;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf24.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 38DE76B002D
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:31:40 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E96AAB6B6A
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:31:39 +0000 (UTC)
+X-FDA: 84182027118.09.4344AD8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8689C140022
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:31:37 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LuraFdCn;
+	spf=pass (imf23.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764858470;
+	s=arc-20220608; t=1764858697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fFnv22fcQB5aFcCjIbe5QaQi5Ay10FFsnk0wQwnxL/U=;
-	b=ZXIMyAOIYQoqc1kv8ZQf6xeLiN/kZ6uH3WmnPfnHnEt0QeIuDDd9Dxmu8aFf1M5JNnsocO
-	xlmwLqI+3jMJ5zdWi3FTOBoR55rLQVHfD2SqmS2cfXLGyPEmryzbvG0jIUEvNVjPB11e8D
-	ZAhNjtSgwR4Wmr1siERE1a9onRKkgXY=
+	bh=8svFyJFXxwthUnxYwg8b9pc9HtZrBQvHp0Eb3p2+C8w=;
+	b=shn1lLIJlraPlP+XtqYvNhB8ZKZxepx+VcXcZNfMv/6cglgN4vn/DQTOMXD9pXN1Jgfo/v
+	rlOtjWG5jae9oeNftC5WE3d0c/9GH4hWPc6LC/Vhj7HBRZjU8ykqTbYwd9psJm6w750Eng
+	XQRXNq1yGKPaxt+96TMp5fk+EGfSQj4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YwrF7ndD;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf24.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764858470; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LuraFdCn;
+	spf=pass (imf23.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764858697; a=rsa-sha256;
 	cv=none;
-	b=6q32Q1Kbasm9LAcLcPbIYkFQmOOIt9n5QxWT0Lk0g1J5a+E/yr9im+H0kCKei8o4K6kSFc
-	c67176vTHucTMvrX6m9FHIK6fU3+c4CAZrAIX3M++qZdqFbsbPzAdhh8i8GEi1++68fxEd
-	z47/kR2hHmmZ/o+vMgI09Qp9uNKxB3A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=fFnv22fcQB5aFcCjIbe5QaQi5Ay10FFsnk0wQwnxL/U=; b=YwrF7ndD6dZYtSnBju5djLf3B3
-	9BwkHu8OrlzXfyMe9mncsj4GToO/8tqG0JtcRmUtUn95c3+ke4l7EthXBRpW1hDCA4txDm0KfBxlr
-	uac/gVsFQHXWTT+0ldDi39DQYGDL7a09ckPOmCBRint6yxH5rrJeIDc88cwxVabg2dXtL8kn2nMt+
-	vgvICwVvQw2tHBO07bBT954nsePfsujxuOldWJA2g2bIZA7a2me0JT2k5VO8kTeZWtLVle+Ebt+MS
-	Q7bCGN4x5drE0np+zjvUTukF6CuC4mr5TlM7VO2qJC14ZL3jBLYAn5c9sIqH8WtCmYeUUz4Lh9uCL
-	XJbsVcSw==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vRAJ6-00000004IZt-18oA;
-	Thu, 04 Dec 2025 14:27:44 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id EF8FC3030B1; Thu, 04 Dec 2025 15:27:42 +0100 (CET)
-Date: Thu, 4 Dec 2025 15:27:42 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Emilio Cobos =?iso-8859-1?Q?=C1lvarez?= <emilio@crisal.io>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Antoni Boucher <bouanto@zoho.com>,
-	Arthur Cohen <arthur.cohen@embecosm.com>,
-	Gary Guo <gary@garyguo.net>, Josh Triplett <josh@joshtriplett.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-Message-ID: <20251204142742.GM2528459@noisy.programming.kicks-ass.net>
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
- <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
- <aTFhFXCqvy7nmDOp@google.com>
- <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
- <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com>
- <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io>
- <aTGJdlwMRxGg2iZ1@google.com>
+	b=A7y5JJgtlUCKvkBJFYXx7nwBQdPRGBBZBQcyTwTiba7O3sXg+wZyKALGwXYI1pvJ6FevJe
+	Zfkn/hU/bx11AIMmwxV6qR/4bS2bgnGb8TQpIo9jp1aQ3XGprmNn1Z48E8fP/nQVrlvwy/
+	uDgl3NAuU9h6ZFSmPOAqioGOT9XTMEc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764858696;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8svFyJFXxwthUnxYwg8b9pc9HtZrBQvHp0Eb3p2+C8w=;
+	b=LuraFdCnWLF63VOhNFO9dvriw97PkXooyi1vxvnZhdlfopuLDfBmYcrTMHOtS84ZCZbArx
+	Yot1JcI8E/0xs81VRf1EM6xT1GdHB1QK/cze7r0FAwRMekGVb87OzgaufB/ucZtPkv0Dp8
+	eaonOq/JcH5WUA+W338uie+e37HX8Wo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-VUX6OVjbNZSz733o-nNyqQ-1; Thu,
+ 04 Dec 2025 09:31:32 -0500
+X-MC-Unique: VUX6OVjbNZSz733o-nNyqQ-1
+X-Mimecast-MFC-AGG-ID: VUX6OVjbNZSz733o-nNyqQ_1764858690
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A94D1956096;
+	Thu,  4 Dec 2025 14:31:29 +0000 (UTC)
+Received: from fedora (unknown [10.45.226.144])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C8AFE180045B;
+	Thu,  4 Dec 2025 14:31:25 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Thu,  4 Dec 2025 15:31:28 +0100 (CET)
+Date: Thu, 4 Dec 2025 15:31:24 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: brauner@kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org, willy@infradead.org
+Subject: Re: [PATCH v2 2/2] pid: only take pidmap_lock once on alloc
+Message-ID: <aTGbPIsEO94cFHZr@redhat.com>
+References: <20251203092851.287617-1-mjguzik@gmail.com>
+ <20251203092851.287617-3-mjguzik@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aTGJdlwMRxGg2iZ1@google.com>
+In-Reply-To: <20251203092851.287617-3-mjguzik@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Stat-Signature: zn1jxzj3rskk9hki7irjua43gz34owob
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EAA5918000C
-X-Rspamd-Server: rspam11
-X-Stat-Signature: fq7fcokyeypg1cd8rykh7ypffxgmha4n
-X-HE-Tag: 1764858469-967190
-X-HE-Meta: U2FsdGVkX1+59Natx4/hsnBt5dmtDJLq2LtlsmTs+MJ3YGANGFtG69PjYXs67p6Zxl9Df82xM0yzHipAe3dPSRonr+BRbNDMpoFJOje9FdLbhKtfA56NAUC3CzxPQr+dB5vQUorTS24qDwkldDbIeK6pP5tVmeoeiHK0zY7eskRnEjGN0/9q5lYACy3E/LIjl4xEc/4v11wmNRqltwUpT3rtIhLg3XuNuUbAIacPn4ScAk+OAbGjKVa3puSx6XvU0lsgZgimoY6I/Glrfcxnph8JpXwP4zg8Hx/94sRbaxVdq4JVShUiHgvUP5FG9C3L12/jUNDzIjaH5YHldTDyKhYvkyf1gwiG/294jbwl2rX2BJUDLJKKXX3LJqSFdZmMfxdYbl+rkHLZV/NFyrsGbdMspEN0hXR7NyVzE4J/4x1QyXt6epAb7I2iq2YKOL1OD4b+kdJhnR0n2uTfZAvHfd6Fzy5mVcn5osDkBcf5z783g4564fyvMIyVmNbp8R8x/mle8j7NyWg6kknFX016zkdY8P5tDqk2Rk3bo8dXi5P67wXtVVwE3Y8jncxSioxn4eHqKRAInvb8R8FyM4DUOle6RL06Xd8HRqZu4GVmUrnaY5ayCZsIVe2jCTUKfsOo9HM4NGAEENQoPaVQqT8APRZ7Cx7VtONYTQK7yKMEJNTfitqwpFk3Ad0nPAjaPIysgrwcRsVOampsb4YKkAPqe3CRn8Xwd9AGQhMJsKnFtp3mB2oRJCkCEKzBb/oWD908yX+3CxYhy5sbzAI/pjRpWU+SIWDYomXx2z18d7FeDhtIOzwHfJQYMPqDQ0k8T1i40/3KmHBNAvjtwadPdCX0c6ve4TmAr2I8KULL5rpReKkBqvrU76HCS0zv4gAOEG4Tv5RcU+EGWRePlSwVxDjEIcyvNqf39nxrASSlQFiIp2qR2HDascruOrVTURUJn9cf4lmyOduPoKmMa6hhtt1
- PbJbTFmv
- YGBSTd9+WBHKqHebqhuoetbFtLrwe2Lz31Gb2xXPMx8iCxQC1/FWLBW8LiC/BzcxES2koyUGkOqrQTbt57HW4RVJrI+WOasZ9rE8kU94oTcqk7S/LzPsr8gnN21nyJYtGox5ZgmSvjQzUVJlW3rNAQ0dHzpRMPP4QUXPtjb8mI54UFGIoav+zNbPldRnwo3w97Mv5MZEdB5dna0/YrBjq/DcyNofFFcHXVwBn3PgheWiGAQDfMI+MdseD+twPisca8cJXtkWlPfO/Y1JdrW/ToSHg7lpke1K3CBX5ye1pyjlILujfncQrfPPW5uhSvynyM2krznFC3xT5+/FLE1V2tN05Ji1qNrw0ejI1ywyZ426hrdz00oihTYpY204tnq86sTYU1qs19SCO53U=
+X-Rspamd-Queue-Id: 8689C140022
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764858697-234296
+X-HE-Meta: U2FsdGVkX18CIxzKnn3bHaEOpB+wfP/s1gmjnmYlznIxAflZ7ePoyRmhuSYMZnFYLie2VV7ZxHyFXe5uLLWxHpBhyS3RtpgEeT6npejduPcm5MaPGznS7t5RhHoPAHcGOI9RPihOotocotWGpMDtKAq4tc6co5H9W/LWYhnRGnyBcMxEQtnBgafS+gApm9EFiGsHY6SjMKPgNqUFPS1ZLjtI9FyAec9029XlAx9Sfm6Uto3D7q0vmJI3gKI5QhD5ByVTxdsQS8jcbmygbVL+XiZLinXaNo3IutNq3FD+nssUSaiwVrsXOLXSBiD9P4Nz0xgs9Gh6QccdLeXwNuHRhySyMBRHwlKo7lFnelG/337enXUxzRgp1URPYh1nmdDuYnHqKxP+ae15aLay/mBrdBllsfDq6OpxClwsfuGP/oofvMv7EjxKEjjIIrVPMZiIUSeFJVZTPEqcAhcXw1YGLDeByhNG+JFpbsPD8eI8npCC3Oa8d7HxkdfFQ8FgchWQQnAop/JzxIonB2N0/P5ApzTKYnLtZ/4bjIlWoMlElPMADthKOQ6jOkGvxn2e2OP4mZ0eYauk7GcnRetgJzln5qR3OZrCEFtgKrjB5zfqq9UrfsJ50N1LcWeHr2iGVY0yQgR+lZVu9PpPnUDnyQS3Pbr5LYJ+P+pKknoRo53gsNIZ+ND2qnDS85HGUkaC5HFHBJXnf0ZMyCohw0iVsAhykJnRBFXHI7ok8Mwp6goAHG16R+1rdtrEvBnqCu3jop3GdUpvRAbnjUD54kc21Qkqbk5iUtLE+W51c1FVffjHPtv6ZPNaGHU45DK453NJkFLZVGuEk3ywK38v1IyG0CohlIXzNFP5cjyI72VG1d+CMmHerias6Lk4A2o4DEKuuY3Up9cxJkHkuo5Wtjpg8QbUZqMoAi1/Jf0vgnvvssg8DFLDF8kRhGM0Gc6IXpqMiuEWbE3feJbWszf55j7BotL
+ 8IJcZlza
+ XFfSw7ZsEgfvlHMqCP5Bw9vZlyCPB5r9Y9j0bTr6lDmueUvOERzl0zE0dH7T637pKE8DqphIUVZOe+AOAo0r50oGGTV/aWfVfdqwSO2PNzSh7IyOmEasTmasfT9xUv0gq/ZmLFmaLSmLugRJkX3wsHsRM7Ol9tYsduk/4Z60ZeHSeGtWHue/751aTlmBlnUkajmEpTeGRmxK726PjGwbYaEJNfr3EnuA9PtPfAJZrOSf5Dg6sLP66G+05sxEQLZxAWFrLyU+0e+v//RNx0Yr4QzlM5I+SK8kCrfnKuLsJLxIb6wHnPvUwI0GtgoSWmP8qXLBjby5d4KHnxNJmvGfhnS6ghmIij5PYmU2Y32Fe4TrOajOQ8LUL5HxIMXLzpDnJElbqFl5RupySrVolWdCnsz1tpvMqe6WKSuD8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,56 +105,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 04, 2025 at 01:15:34PM +0000, Alice Ryhl wrote:
-> On Thu, Dec 04, 2025 at 01:49:28PM +0100, Emilio Cobos Álvarez wrote:
-> > On 12/4/25 12:57 PM, Miguel Ojeda wrote:
-> > > On Thu, Dec 4, 2025 at 12:11 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > > 
-> > > > Right. Earlier I also proposed using libclang to parse the C header and
-> > > > inject that. This might be a little simpler, in that..
-> > > 
-> > > Yeah, that would be closer to the `bindgen` route in that `libclang`
-> > > gets already involved.
-> > 
-> > Yeah, so... there are existing tools (c2rust [0] being the actively
-> > maintained one IIUC) that in theory could do something like that (translate
-> > the bodies of the functions from C to Rust so that rustc could consume them
-> > directly rather than via LLVM LTO).
-> > 
-> > I think the intended use case is more "translate a whole C project into
-> > rust", but it could be interesting to test how well / poorly it performs
-> > with the kernel helpers / with a single header translated to Rust.
-> > 
-> > I personally haven't tried it because for work I need to deal with C++,
-> > which means that automatic translation to Rust is a lot harder / probably
-> > impossible in general. So for Firefox we end up relying on bindgen +
-> > cross-language LTO for this kind of thing, and it works well for us.
-> > 
-> > If I'm understanding correctly, it seems the kernel needs this extra bit of
-> > help (__always_inline) to push LLVM to inline C functions into rust, which
-> > is a bit unfortunate... But this approach seems sensible to me, for now at
-> > least.
-> > 
-> > FWIW Bindgen recently gained an option to generate inline functions [1],
-> > which could help avoid at least the bindgen ifdef in the patch series?
-> > 
-> > Anyways, it might be interesting to give c2rust a go on the kernel helpers
-> > if nobody has done so, and see how well / poorly it works in practice? Of
-> > course probably introducing a new dependency would be kind of a pain, but
-> > could be a good data point for pushing into adding something like it built
-> > into rustc...
-> 
-> I already tried c2rust as an alternative to this patch. It works okay
-> for many functions, but it's missing support for some features such as
-> asm goto, though this is fixable. But a larger issue is that some things
-> simply do not translate to Rust right now. For example:
-> 
-> * Atomics use the Ir operand.
-> * static_branch uses the i operand.
-> 
-> neither of which translate directly to Rust.
+On 12/03, Mateusz Guzik wrote:
+>
+> It has an unintentional side effect of no longer issuing spurious
+> idr_preload() around idr_replace().
+                       ^^^^^^^^^^^
 
-Right this. AFAIK Rust simply does not have feature parity with inline
-asm. Them having picked a wildly different syntax for inline asm didn't
-help either of course. But Rust is Rust, must have terrible syntax :-)
+Around pidfs_add_pid(). The extra idr_preload/end was added by commit
+9698d5a483654 ("pidfs: rework inode number allocation") because
+pidfs_add_pid() used to call idr_alloc_cyclic(GFP_ATOMIC) too.
+
+The patch looks technically correct to me, so FWIW
+
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+
 
