@@ -4,93 +4,344 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2413D1F9AF
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:38:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D299D206BF
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 14:41:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F4816B008C; Thu,  4 Dec 2025 09:38:20 -0500 (EST)
+	id 6F32E6B0031; Thu,  4 Dec 2025 09:41:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CC776B009F; Thu,  4 Dec 2025 09:38:20 -0500 (EST)
+	id 6A30D6B00A2; Thu,  4 Dec 2025 09:41:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E2486B00A2; Thu,  4 Dec 2025 09:38:20 -0500 (EST)
+	id 4F6886B00AC; Thu,  4 Dec 2025 09:41:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B0456B008C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:38:20 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A50AC12A3C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:38:19 +0000 (UTC)
-X-FDA: 84182043918.08.9FA347A
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7DB014000B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:38:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JM4wZYbS;
-	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764859098;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 370516B0031
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 09:41:24 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 027651393BD
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:41:23 +0000 (UTC)
+X-FDA: 84182051688.29.ED5BEC0
+Received: from mail-edgeMUC221.fraunhofer.de (mail-edgemuc221.fraunhofer.de [192.102.154.221])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8793980006
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 14:41:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=aisec.fraunhofer.de header.s=emailbd1 header.b=HHRivTcg;
+	dkim=pass header.d=fraunhofer.onmicrosoft.com header.s=selector2-fraunhofer-onmicrosoft-com header.b=FJaiQhJD;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=aisec.fraunhofer.de;
+	spf=pass (imf30.hostedemail.com: domain of andreas.korb@aisec.fraunhofer.de designates 192.102.154.221 as permitted sender) smtp.mailfrom=andreas.korb@aisec.fraunhofer.de
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764859280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oyv8T3zljC5amsZPaB9Pcte8dRSYUhsdKHtrFYp3ltI=;
-	b=w/BUrCyAc3b+h4n6ZB0G9CagG9uDpX76Tl3X8X0VBH2evJ3NnufE4Ry2SghLjcoa0J2E4B
-	4Yc02v/vZNwv5FV8c74rLvBME8c5qtBSSqxT8v+twcfMXSrvkXt/quwD7NjO5co4DnC3Dd
-	QVIGHau0sSf1n4wo5+6NQBWeOAJlWe4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JM4wZYbS;
-	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764859098; a=rsa-sha256;
-	cv=none;
-	b=Kzw1EN9tBktoaFnDiWNdrMfuG169T8xWtJ5m5Id261UpW8FJ02pnFgpemYbDVo28Y5eWNz
-	AO/EgrBHZRF23kfbIhGBMS/MleFGIwfkI1uPhW3ScNmuNQtvIbuWiS2cQ6rcFxlrWj4C4h
-	qeTgovHLCXtlfKqs4UnJcYcdvBOINLQ=
+	bh=RLMriuCadsnJtGQYE3HzU9vrXSvvNC0CshUqifJncdw=;
+	b=zNp3iDPng4OPxtgMmV6OXFs8bAcMgY/FI85dCVHDroIy30LRGx68b9WknXEtpoWxxSAnBE
+	5XWPRkmdzUceGfRMzFZOxAkY2ZdV69qC9Az2H3/6EB5VFwGkkFAqzkev3vsp45qCdEDEhw
+	3/CDmDanJdiAUELeBuJ1TQk8nELtHoY=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=aisec.fraunhofer.de header.s=emailbd1 header.b=HHRivTcg;
+	dkim=pass header.d=fraunhofer.onmicrosoft.com header.s=selector2-fraunhofer-onmicrosoft-com header.b=FJaiQhJD;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=aisec.fraunhofer.de;
+	spf=pass (imf30.hostedemail.com: domain of andreas.korb@aisec.fraunhofer.de designates 192.102.154.221 as permitted sender) smtp.mailfrom=andreas.korb@aisec.fraunhofer.de
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1764859280; a=rsa-sha256;
+	cv=pass;
+	b=16KmUc9910qM/Eg6/sa+ksx8DZepC/n6WQdz46NSpsPkg/Sq0XUV/tQ+J3JLXx439Rr65o
+	ML+tI0w7Rl78FSfxenV5Qf7O65wQDyuLh89bYJ+clSMBfdXXleSbbpMC90mBl+I2K/oBjd
+	z33lWTQIpD5g2r46MR8YqjARJnrupNg=
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=aisec.fraunhofer.de; i=@aisec.fraunhofer.de;
+  q=dns/txt; s=emailbd1; t=1764859279; x=1796395279;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=RLMriuCadsnJtGQYE3HzU9vrXSvvNC0CshUqifJncdw=;
+  b=HHRivTcgLxfZNUbFnqNaQjXbSw4gYOIL+UfigJIG8rZRg+Re9+12nqGK
+   5ooh7IYmmfBWnp4dz9Y7TsRGpVKeadvOQRvxeRdA/4DxL8bqNWVRmXc/G
+   UQF1xOMCbmMF1C8a7Bc6KSw9xYPl0MRJKXUSA3chVJ+KKcNOQjCOiHmSH
+   4984bKcerOaUeEdrDL1GMVLq3ZQ5gsew3RmkUh7o6Z2FI5jVkkjMciNxR
+   uwXcd+BHVlmoO8eTrEcnYvfx7sURb7uhdcdnP2H2vePPyrg1XOUP+2QyH
+   MDnMS4C+vx80RdBA9uzGjbb1JodKO7y9+VxLjAy61AIuNoHkIldrIt6lO
+   w==;
+X-CSE-ConnectionGUID: rhBx4bCTS0CsWWvyBy+0ww==
+X-CSE-MsgGUID: kmb5G2BFSwqTPOpqxpo+xQ==
+X-ThreatScanner-Verdict: Negative
+X-IPAS-Result: =?us-ascii?q?A2E8EACWRZ5o/3KjZsBaHAEBATwBAQQEAQECAQEHAQGBa?=
+ =?us-ascii?q?AKCPkABgiSzOIJQA1cPAQEBAQEBAQEBCAEUEyoEAQEDBIUAAowlJzcGDgEBA?=
+ =?us-ascii?q?QEDAQEBAQECBQEBAQEBAQEBAQEBCwEBBgECAQEBBAgBAoEdhglGDYJbgSyBJ?=
+ =?us-ascii?q?gEBAQEBAQEBAQEBAR0CNVYGMgENAQE3AQ8LRjElBg4FgwKCJAQSAzKzJYEBg?=
+ =?us-ascii?q?gwBAQbbKRhjgWQJCQGBPwGDfIFwgmQBhHxwhHc2gVVEgUqCdT6EWDiFd4M8m?=
+ =?us-ascii?q?jtICngcA1ksAVUTDQoLBwWBIEMDNQwLLhUjSwUtHYEnfYQbhCgrT4IidYF3Q?=
+ =?us-ascii?q?Rk/g1MeBmsPBoEVGR4tAgICBQJDPoFdFwYeBiASAgICAgKBA0ADCxgNSBEsN?=
+ =?us-ascii?q?xQbRG4HkzaEHplUAa9rNAeCOIFngV4GDJ9nGjODcQGTbpMLLpFShwapFgIEA?=
+ =?us-ascii?q?gQFAhAIgX5mgRozGiSCS2tSGQ+SIbMhdwI6AgcLAQEDCZIegUsBAQ?=
+IronPort-PHdr: A9a23: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
+ B2JHiF6oXCecYc=
+X-Talos-CUID: 9a23:vCuiOGFwlnPAbDicqmJ99GQERsoOTkaF52zvHFGpI3cqEKKKHAo=
+X-Talos-MUID: =?us-ascii?q?9a23=3AZPIg6A8KPi9CEvZ7XFqw2RiQf8Rt6fmBUmojqoo?=
+ =?us-ascii?q?fh/GjLTVgIzDenA3iFw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.17,290,1747692000"; 
+   d="scan'208";a="14696750"
+Received: from mail-mtabi114.fraunhofer.de ([192.102.163.114])
+  by mail-edgeMUC221.fraunhofer.de with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 04 Dec 2025 15:41:11 +0100
+X-CSE-ConnectionGUID: BxfhdMtyT9uHrwlPrBp81A==
+X-CSE-MsgGUID: z/Upmx2/T8Cd0RCP38knMQ==
+IronPort-SDR: 69319d86_ylNMWcl3QOmVyb/O6GJpXJCqzZo4X6JmYE+hNik3XZUIybu
+ 5nZTv5JC2z3gvbTRRsvIbawm1lIzvJz4NvGjBcA==
+X-IPAS-Result: =?us-ascii?q?A0BBBQBMVK1o/3+zYZlagS6BLoFuUkABgRyBCYghAQGFL?=
+ =?us-ascii?q?KVoglADVw8BAwEBAQEBCAFRBAEBhQcCjCYnNwYOAQIBAQIBAQEBAwIDAQEBA?=
+ =?us-ascii?q?QEBAQEBAQELAQEFAQEBAgEBBgWBDhOGTw2GWwIBAxIgAQ0BATcBDwtGMSUGD?=
+ =?us-ascii?q?gUigmCCJQQSAzUCAgKtNgGBQAKMV4EBggwBAQYEBNshGGOBZAkJAYE/g3yBc?=
+ =?us-ascii?q?IJkAYR8cIR3NoFVRIFKgnU+hRCFd4M8ml1ICngcA1ksAVUTDQoLBwWBIEMDN?=
+ =?us-ascii?q?QwLLhUjSwUtHYEneYQVhB8rT4IbcoF1QRk/g1MeBmsPBoEVGUkCAgIFAkM+g?=
+ =?us-ascii?q?XEGHgYfEgIDAQICgRAQAm5AAwsYDUgRLDcUG0RuB5N3hCKZVAGvazQHgjiBZ?=
+ =?us-ascii?q?4FeBgyfZxozg3EBk26TCy6RUocGqRYCBAIEBQIQAQEGgX4mP4EaMxokgktrT?=
+ =?us-ascii?q?wMZD5IhujFEMwI6AgcLAQEDCZNnAQE?=
+IronPort-PHdr: A9a23:3KWIXhzBG3mGIGvXCzKPy1BlVkEcU8jcIFtMudIu3qhVe+G4/524Y
+ RKMrf44llLNVJXW57Vehu7fo63sCgliqZrUvmoLbZpMUBEIk4MRmQkhC9SCEkr1MLjhaClpV
+ N8XT1Jh8nqnNlIPXcjkbkDUonq84CRXHRP6NAFvIf/yFJKXhMOyhIXQs52GTR9PgWiRaK9/f
+ i6rpwfcvdVEpIZ5Ma8+x17ojiljfOJKyGV0YG6Chxuuw+aV0dtd/j5LuvUnpf4FdJ6/UrQzT
+ bVeAzljCG0z6MDxnDXoTQaE5Sh5MC0ckk9yJy3f7QzRV5vqtAnmmdNM9XK6L/CnU6oEYiq8y
+ YwzYwTotT4GORw/+23I358V7upR9TyDrh1Gw6z4TL+ZP9FTd67kJPw5dXsZDvgJfQVbDbuRN
+ 4IyJeM+Av8Hpajeg31fpkbkHwCWAer+1RULvjzQ2vI09dscKjzi7g87To8Kk0v1/dDkPbgIC
+ rG656uZlCjnSf1S+xLt97nLVEgDivimW4hMV5DawmsPCAfn31Wwr4f3Hj+k8e4pkjOhweZFT
+ rquonYL+z9jqzH23/Z3042Kq6lN+3aVyz9V49wlBIjrAF4+YMSjFoNXrT3fLYZtX8c+Fnlho
+ z1polVnkZuyfSxPzYgu7T+GMqDBfZKB/xTjU+icO3F0iSEtdLG+gkOq+FO7gq3nV8ay2UpXt
+ CcNjNTWt34M2hCSosiKQ/dw5AGgjB6BzQnO7OFDL00u063dLp8q2LkrkZQP90/EG0fL
+IronPort-Data: A9a23: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
+ OohsEN5YcklYQl5TA==
+IronPort-HdrOrdr: A9a23:86HGwqsPjKNUoApXFF72tN9d7skDiNV00zEX/kB9WHVpm62j5q
+ OTdJZy73XJYVMqNU3I9urtBEDtexzhHPxOgLX5VI3KNGLbUQCTTL2Kg7GN/xTQXwXk9uVUkY
+ p9aKB0DdHdCVB7iILG+wGzEdo64NTvytHNuc7ui193TQpjL4d67wl4DQ6HEkp5ACFeHJ84Hp
+ KA5sxBzgDQHEg/X4CSHXkPV6zkvN3ElJXvfB4ACVod5AGKiVqTmdzHLyQ=
+X-Talos-CUID: 9a23:+Que/2A3o/rx3BD6EzNeznwtO5g1TnzU9WrBenTmBnhQEKLAHA==
+X-Talos-MUID: 9a23:nJJTPAtdy74t/V5lAM2nlm9oFOVOxfqSUx4hkcUttdeiEX1CAmLI
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.18,214,1751234400"; 
+   d="scan'208";a="29867851"
+Received: from exo-hybrid-bi.ads.fraunhofer.de (HELO smtp.exch.fraunhofer.de) ([153.97.179.127])
+  by mail-mtaBI114.fraunhofer.de with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 15:41:10 +0100
+Received: from XCH-HYBRID-04.ads.fraunhofer.de (10.225.9.46) by
+ XCH-HYBRID-03.ads.fraunhofer.de (10.225.9.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 4 Dec 2025 15:41:10 +0100
+Received: from FR6P281CU001.outbound.protection.outlook.com (40.93.78.3) by
+ XCH-HYBRID-04.ads.fraunhofer.de (10.225.9.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 4 Dec 2025 15:41:10 +0100
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=geQgxduEiMJy3W6WZVaTDtfpCSPHl206gaGZVCnRsKgv2OVSipu/E8YUBHV5m9aHwpBJUnVBRJWquk4uR7yb7qKEFsntz3zMsdr6DNuR7Y6Ls7Llf+H8eyiURBuxxScLxLY5D/sxcENJeqTHuD0UjU5Xr8DHbrpzx9u7LklqJ1aEshid9JMDKrZQlRlT+mwkuLTxuAum/07oKji24Q+HI8s41+k1LbPB3m21EJ68TqGeYC/NlQm+cJxF/gDekcAPIU5eksCAflRoC+uVCSkwcmlFfKgB52NDJXpLlTVGN9Dy7WIMt5cem+4LGkZjQM8Souyul7anmHCWEmUVP0kfgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RLMriuCadsnJtGQYE3HzU9vrXSvvNC0CshUqifJncdw=;
+ b=FQy4KWai6IYUr+to8qAr9zNugvBZ/CbZ/ej5vkzl31kNxs9Pwgj9wBMIslJNNWk4a2wxTjR7Bx7KunPz4ScK5ZDNuB8nXy8V5EcqZFIkx0HbNsdeaABu0TTOpRD5yGQ1y7IyEdFftP+F6ESsmIiP/JoHu6FJC5LOxfo0y1dK/T6ASaE4M8dL2AhtrKZjfr4e4SmGfnfTqG7VSiC1xLJy78scwY4sPEYBM4rfTd5JLtSMrSPTcVXtxohPx+fjVgrlEvnFm9UpBaLrhU5ubVgjsVsfZduv2hyZBySmhPOnaUwlnPTR1HKo76a7w+DoY3JCDQTfdV0H0c04KlkCm+Hfiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aisec.fraunhofer.de; dmarc=pass action=none
+ header.from=aisec.fraunhofer.de; dkim=pass header.d=aisec.fraunhofer.de;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fraunhofer.onmicrosoft.com; s=selector2-fraunhofer-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RLMriuCadsnJtGQYE3HzU9vrXSvvNC0CshUqifJncdw=;
+ b=FJaiQhJDDVdcCEaeQ1GKXy08V0BArgPE0aUBaWWq7bIKLN9c52raRmaywB+P+No7fNWUSULZks95lKWI9myawr39gCj91uLNflJMxwYkN0JCaBnRTN2ccJHwlJ9hHnczIdYObLI3RFdMs0iApD8Vzaa1qY31l+EC0YN9VrDK2xI=
+Received: from BE1P281MB2435.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:43::5) by
+ FR0P281MB2367.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:26::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9388.9; Thu, 4 Dec 2025 14:41:09 +0000
+Received: from BE1P281MB2435.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::ae34:1ec2:9d34:a9fb]) by BE1P281MB2435.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::ae34:1ec2:9d34:a9fb%5]) with mapi id 15.20.9388.009; Thu, 4 Dec 2025
+ 14:41:09 +0000
+From: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
+To: <devnull+debug.rivosinc.com@kernel.org>
+CC: <Liam.Howlett@oracle.com>, <a.hindborg@kernel.org>,
+	<akpm@linux-foundation.org>, <alex.gaynor@gmail.com>,
+	<alexghiti@rivosinc.com>, <aliceryhl@google.com>, <alistair.francis@wdc.com>,
+	<andybnac@gmail.com>, <aou@eecs.berkeley.edu>, <arnd@arndb.de>,
+	<atishp@rivosinc.com>, <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>,
+	<bp@alien8.de>, <brauner@kernel.org>, <broonie@kernel.org>,
+	<charlie@rivosinc.com>, <cleger@rivosinc.com>, <conor+dt@kernel.org>,
+	<conor@kernel.org>, <corbet@lwn.net>, <dave.hansen@linux.intel.com>,
+	<debug@rivosinc.com>, <devicetree@vger.kernel.org>, <ebiederm@xmission.com>,
+	<evan@rivosinc.com>, <gary@garyguo.net>, <hpa@zytor.com>, <jannh@google.com>,
+	<jim.shu@sifive.com>, <kees@kernel.org>, <kito.cheng@sifive.com>,
+	<krzk+dt@kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
+	<lorenzo.stoakes@oracle.com>, <lossin@kernel.org>, <mingo@redhat.com>,
+	<ojeda@kernel.org>, <oleg@redhat.com>, <palmer@dabbelt.com>,
+	<paul.walmsley@sifive.com>, <peterz@infradead.org>,
+	<richard.henderson@linaro.org>, <rick.p.edgecombe@intel.com>,
+	<robh@kernel.org>, <rust-for-linux@vger.kernel.org>,
+	<samitolvanen@google.com>, <shuah@kernel.org>, <tglx@linutronix.de>,
+	<tmgross@umich.edu>, <vbabka@suse.cz>, <x86@kernel.org>,
+	<zong.li@sifive.com>, Andreas Korb <andreas.korb@aisec.fraunhofer.de>
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
+Date: Thu,  4 Dec 2025 15:41:00 +0100
+Message-ID: <20251204144100.9779-1-andreas.korb@aisec.fraunhofer.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+References: <20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR3P281CA0022.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1c::10) To BE1P281MB2435.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:43::5)
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764859095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oyv8T3zljC5amsZPaB9Pcte8dRSYUhsdKHtrFYp3ltI=;
-	b=JM4wZYbS6PN4WOkpcTsmyfuEYnqIDtFc8l3AXkH0Qf62PC/gWco3qiHf/uptpNFXlrMpew
-	n/cyWOCkBUDhw8VloiuQNrXbBYec75TdhztnT+UEVVBy4lpnXKawdURO1rU1zqQ030nIG5
-	RmyNLeEWz7rVwOteYtoF+dwr8ZpVlgw=
-Date: Thu, 04 Dec 2025 14:38:12 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <ef40d7bb8d28a5cde0547945a0a44e05b56d0e76@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v1] mm/kasan: Fix incorrect unpoisoning in vrealloc for
- KASAN
-To: "Maciej Wieczor-Retman" <m.wieczorretman@pm.me>
-Cc: "Maciej Wieczor-Retman" <maciej.wieczor-retman@intel.com>,
- linux-mm@kvack.org,
- syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, "Andrey Ryabinin"
- <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
- "Andrey Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov"
- <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Uladzislau Rezki"
- <urezki@gmail.com>, "Danilo Krummrich" <dakr@kernel.org>, "Kees Cook"
- <kees@kernel.org>, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org
-In-Reply-To: <5o7owlr4ap5fridqlkerrnuvwwlgldr35gvkcf6df4fufatrr6@yn5rmfn54i62>
-References: <5o7owlr4ap5fridqlkerrnuvwwlgldr35gvkcf6df4fufatrr6@yn5rmfn54i62>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: em91abxj6r163krehf14nm1nyfaexbt6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BE1P281MB2435:EE_|FR0P281MB2367:EE_
+X-MS-Office365-Filtering-Correlation-Id: a3806dc3-7a34-428f-f780-08de334329ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?j7ZnkeH7xu4FVNonA2m6IVPZWAxU54GLZ1Tb19Ghg5lFrSEP2RDKCsiIrGLm?=
+ =?us-ascii?Q?0MTyzkjEoN5MMwfs0DcC32S/24qr04+kl+aAoqIgq1Vx4rBUjkwPlBe4dTyi?=
+ =?us-ascii?Q?Ka8zKBrJzZRjZfP2NuwzIc9smIEEK4pO9xcCjWsa2bCg69O1189HJBcCHO+V?=
+ =?us-ascii?Q?s5A7xUYKRmt6ojaPQrn+38M/DG4rZSvZFsHPKrrLJvnhXMDBmYpA/IOl6SvA?=
+ =?us-ascii?Q?/4vJlGoVoKGV9SYTOkQZkStqabDqPOHigUv0kmZQExnFv+pqcZkb09HJH34h?=
+ =?us-ascii?Q?RE6inql1jqwFw55l/gPiVYwF8pPUfkGQVM3NliFpML7aI3ck8IQbO4RyK0Wv?=
+ =?us-ascii?Q?IDSdlkrtV4okK6mBRf6vK4cnAKUAK9zrepea/UwtIPdSTfpQKit6ZLBSJdSg?=
+ =?us-ascii?Q?gn1Sqr/MHZXTefxcpUiengzcMgUF4XeHgouluxJxMaxhwtmYVgHZjcnVNXJp?=
+ =?us-ascii?Q?ol+8zz/WZC9S4O3SO7K8tgHRiO8lIjSYj3FwE0ykrMarN0OLAK95ymWC4N0V?=
+ =?us-ascii?Q?UyimwV4pphx0XO2B4wrocpQ/Wy/CU3dBtC4BPgZLCqjxJPqDJV8dgjDU80wN?=
+ =?us-ascii?Q?703q/K2oX5umxcR50TvQ5vZfTP2ULMXFH3II6Q21j+xgm4SRYyjZK57YLeCT?=
+ =?us-ascii?Q?ql4yipC/X7s0rWnYhSlm5OtXtCFLTlTDev/dPwckffslOUk7d0BYigNNoNu3?=
+ =?us-ascii?Q?ookbVihV9pPypTs1Yi5ZkSdzHU09c28l7oaBcBnFy6L03asHWkBtKkjGnzxl?=
+ =?us-ascii?Q?QGyeBX/VfFmKA9s/wCm2D4UlZawtOJ+4P38O/V08zazsjOvqnGqzm4lN4V2V?=
+ =?us-ascii?Q?WcwlI/d6ynRv3xK09Rx0QWKeG19MYR12cd1TznDbH2BiQr9zlrO3S1bdTTUi?=
+ =?us-ascii?Q?L2Ls3jjKtCj8yt6U+iWR+A/daMf9y+8f/cBsQbQPJ7DJbbvXylxzI+qFiY5v?=
+ =?us-ascii?Q?Iw0cglMJOP2+KtiTek1dSPJkBRhXTmYxZLoJydlTLMjDTqD8N3hMa0NZCRbT?=
+ =?us-ascii?Q?/5puEQq2QJZ/ThOf2Kcy/qD3+O1ENLzY2XFO5FFPPXmlgkc5dbS/Y7tXvmAX?=
+ =?us-ascii?Q?n1NEBlRbPdQMk7p8dXRSMe9swsU3wg5/UxWo5vQkKUtgdM6QGQE7A+7I2Mom?=
+ =?us-ascii?Q?F0ZhdZ66RBEuHSE1NAxZi9SlEEzPbAFR16XBolK5ZThBgwewYDKtMu3wx9YG?=
+ =?us-ascii?Q?klNGbXhiVgitvCii/mkTbjg1bde3oYbWVTw57irRv0rx042xsNYErefrKTBN?=
+ =?us-ascii?Q?ebbQh/3VIvz/3AcHWRB2ytV+j8YxABpAXNuJYYGHYvjK1WnwQI1nUNQgVm2o?=
+ =?us-ascii?Q?oiIOuI2A76+p04rYpiSIKD/g7YHu63/uy5+HvzKvEUPKTlTtLVvmSXfQux6J?=
+ =?us-ascii?Q?h+sv3YGJY+VI3G51RI9oIvMvaaNJqNXfqqk+yDC8RZfRwAOKV7RzchCwEnmV?=
+ =?us-ascii?Q?eBwtvV8Q3zzxXV7lMEksbsO9umRoQeVv?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BE1P281MB2435.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vby15zmuOqf5gAy+Ch77ZKrjjLeLSKJ+zFLjUo7qdw0z5+qQ1OS1OnTUAqlB?=
+ =?us-ascii?Q?if2ERpKxLmcrAvojadn+OLZH5J/GXhBRBYdi90zJ0zRWM4hw0RGin2TURaSN?=
+ =?us-ascii?Q?Emuh7SnYmxvlXxkdiMT5yZ4PWPzROzYlhXsKJZaTDxxLuRbgYTex/2zbMfiX?=
+ =?us-ascii?Q?2FKTuthV36P3veMvGPtZK3yaciCVp8q8bdA6FWCCeNW8Y6t2jpSODkKQ4gKR?=
+ =?us-ascii?Q?u/lhvnNiLT1IEyjmPPL+84acrBMyl4qUS2bLvJCtOZkapgNwnWh46gEowB3s?=
+ =?us-ascii?Q?xjbPpEEtxDpFnqhaz5rxONGsOyq0k78gQYIXqejltk9R1mS1LYgU+tvNUOC0?=
+ =?us-ascii?Q?3OD3Vf1oXejNwORM03LzltxKGlbjwSEGfYMA61RwVpcNerbEmPLFHFeQxa+i?=
+ =?us-ascii?Q?E0p6VFN6TCfLG5bhdN7/7WR54+ANA+hFJ74PJAJWJjGvOtE7KEUaFz9KjdM2?=
+ =?us-ascii?Q?og/pCyr9ypSkbX22n01VHWS9ShAxbGlhBhzcdY8V5rd6ZqFOP6Ktn9LOoMms?=
+ =?us-ascii?Q?x3duF+SxQiF49gOMHkki1PrqO+MS6nNGcIJIB5sRhJpYJVaDRqFNl5Mk+J9c?=
+ =?us-ascii?Q?ysXkA0oZjbDxw4KQD85FHOFtaDlz1yEOKC69GcBzvypFHrKDsjvHBg6WN8UL?=
+ =?us-ascii?Q?6ndHvJYD6gg6rM5EcerqZqBWvoT19CgYF88Ld31AMc3V9uN5JJA17i55res8?=
+ =?us-ascii?Q?aoyuw9nb+vSqLP07jQ28hSpecWugxvdhrb7W4gzgRLQz+EjTkIdGngtjO0+y?=
+ =?us-ascii?Q?K55X8URFi5ybKhd196ZNdroAUruityl8a6KlPpxOf59M1qass08EdGHXxt+f?=
+ =?us-ascii?Q?xh/gcolSXZa3M5/23LyhJMkjRHRSmCqm2xCsL0IybEwuCUM40EMjzEPEPkLu?=
+ =?us-ascii?Q?/MFj+hprwHitL6qGIs269gPyXi8ytURhE4SHmv9E8AZ8/LSTlJVdivReeixN?=
+ =?us-ascii?Q?T9AjJIL7dQzTD/YhQPGcUU8MV7PZjjteo/kQRF+Ne/kekxrca5SP/wRG8BRL?=
+ =?us-ascii?Q?wPS7lFf4HAO6Pk8eNEJCtmGKbFGiv+mtUG7hWaZgPiCYDZ7K1lQhQh0KaBP4?=
+ =?us-ascii?Q?uyKxRgUn7YG7FvI2vmLTyIPDe8+P+Z0kxWILWNPzpPHhM1tubT8WeKyWOJQJ?=
+ =?us-ascii?Q?iBgW1fraO821H6Ce/nGifosJ+MARYBhTJ6l0QAx8km6Ne9O29L/BBakteWsQ?=
+ =?us-ascii?Q?QOZS6emOrJ1dPV6Hx/cu5ILjjv9WMAUlHrkjTdDrmLfnKJ80fWGFVcxwW7T+?=
+ =?us-ascii?Q?OzRtJd2rqM6GGdkJdpVv25XiZePo30XQ0lupnIV5Z6htgjlyP9WCbMc9qhEl?=
+ =?us-ascii?Q?gGZeBe7w3bYxa0exNMx/+xZX5hrbCR9nT2hzmfZFGPWF50JeI42kII+lDhwN?=
+ =?us-ascii?Q?PVk7sPyo/IbHODhj6SbCfuNUMNiyaql5om/CNhY55nXUVJGzfj28OBMsNJKd?=
+ =?us-ascii?Q?rELXIqDxKsorrAkolp+4SrfRvKpeQpaj49G9kgosf9/MeoN9ymOMBawtX2hh?=
+ =?us-ascii?Q?C/IB0n4yswOEfCejHy3gXYmvrhof/CpQrVb84mWT9LFnkTreFh34fY2/c/Jk?=
+ =?us-ascii?Q?BLC1Zq2w6M09il9CyIfWUsNtOUUvVP6oCHuDw9oLyif6u6h/qPsuUt6IQupn?=
+ =?us-ascii?Q?no6ANcEslPY9JP34AYWu3S8=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3806dc3-7a34-428f-f780-08de334329ce
+X-MS-Exchange-CrossTenant-AuthSource: BE1P281MB2435.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 14:41:09.2260
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f930300c-c97d-4019-be03-add650a171c4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NLt8czyuY+lmO++i7ewCVaU4pYX+wO6s1oEFan7GF0x/4Wm0/z0JbkzYqdAOrJ7Fu9TFYDNoZtKTm0uS9ooRsD84XOoLjYT+ntFcOpIfe0r4A6MbxqZJsz+oQutXJKj1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR0P281MB2367
+X-OriginatorOrg: aisec.fraunhofer.de
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7DB014000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764859097-539406
-X-HE-Meta: U2FsdGVkX1+R97SirPoWJgL+tnNO0DbCB9RVkRRe7vZ50eNTXgN+Ck30BmZkCDGt1MA/6500SDkvePraY/hPbNhzMHQZDIzY4i17OWuOKBNXlP/v4qdOgGEFHCPu1HGJI+tZqIw1BXNuffFM4ucMK16VOPsUDzQCAQTfQq+zh2YZR62UylDECPLOu8XBQt+MjWPiR/3zluJVlo333fVITrePjhSeMlbjvEK5pp1VK8Q5EaNbsI3D+bsFaYcWfeckknaqZ0DvztAGWiWz/AtH6/ZRQPxWP9G1OX0xtXe0hlUUr9xegCoFwIL6VOs3Yb+QTgQwKFWyrXItxLxvm8eyD+NiCULu1AqUdQoAZgZ/HdsD5Ii9VyKw7FoWb8Wh8VZSBrVsRd7+/UoXKy/cGpQYcu9yOlmm53EeWmLkLNuO5H4ic+g03UPhl5ubfv6HGopNp9wqj2/V/Y0+C4YKlxh4jkrkR1PHxffsV883xkRkgi2GtKxfNpwXho9xkskWKXngosgOjgyK5aH0G18GUY4rzD/OQ5aNNoQwREmmKaCPzmVs5w+HD35qwxuX9ytsRoU96eyLf7GOtKB+IyWlL8poUG1XvJe3TLPRhEP/UB7K3qwbs2tISBDrTiIzFDsi7u+zJTVyxgwuYbn65ODTPPdm3quzwNCNjp/BLRTURJNnic9owN3y5uu18SP1sU7kzhb6qODH9VS5jkkGKOah6MPh7kHylj6h4PlBzhOxcXbahS55woarAurUpIP84cfzDfzbQHGIU3e4vbG30dXtNTnS8BzxxuEITUxAOOA1hkmrbz8Ui7N/FxWTn/j/y7ZatZ2f/DjE+8SeX+JHbxZX/fVygyHgEv1/qcB8o1GcdYAfOG58gEwZhcytoFtlnSmMPDAPLXjIxbZR/eU31iqAFd3HSYtNuPKdEq7xgB+hbhl8/pGrOUO/msL3dOv86ESsOymYmD5KX3jgXU1OPdT1tLr
- r1SKxoF2
- dvlesCOJIvtOcOEu1xmCCK7ky1Xm4ziLurULM4r4T7sx+u6YTktsxiwJIehuHbwYtp02/nx/bnCyqnGWcDp7wD8H/CkJO8brMTyEyEJgWo6qcWv2r/jXqSHcheZ9EGE+6pNHeV5Kal4wasR7/8eIlKkvJb+xefTfWW8wrX5bVebcKZl1kjJq5KcYeEaZw36pIK+XYXF6dhLVvqRyKgOK66IYLs05H85p+Xwb8yyOhpNL7J1FYIApmZiZ2Age0CRYLXF8DI9F9JTa8nt7/4SruMN+GP8HLWI6quqZZGxsCC2nFGGSu7THVKKH6bk1lL6SyRuW1LaMxMd7/M+m6iD9sapW9yYsMrEDXGtH1
+X-Rspamd-Queue-Id: 8793980006
+X-Rspamd-Server: rspam11
+X-Stat-Signature: dcybwfwubpgins6irs34kmmpymnmtg4c
+X-HE-Tag: 1764859279-265403
+X-HE-Meta: U2FsdGVkX183JWH0fPfNeYkws8/UwJIAkN1N42l/8q1VC9+7L+vuq0HcO4J9xMkWLaSdRAyX9FnHculWDinOlLd8t4sOUUuwTsTSx66MqwOsgAZX7Xu+R6gHcxwMkWjGUAL8rT/VbJi8Kh5d7DWuM838vLrEMP69zfQcgYPxO2fcWXCJXEDLc4nLrr6INJXDxM5TVS1vr6PIFJILKCUfnDm6dTdZpQx1beq9mpLoEphJuBgSREa+SzYGUfDpBZ0cxoJish1fzAC4KId99qyJ0vI3aQ8EOzVmJklm+cHbQuTK7KvMtI1ug4u0aBKjf0NOs1x3gLzlNtfdxYt/KA9eTGY4Vh63TnZ1idN6X7FWXQFHDiAWPMeMID4JHeiS13+6F2q7OcMMAbnr/+MZ35Vyi2RDaXptffSLP+P31NKfJfN4GjOJO598LPdwBNWDyC4B2YRdf7/vgGOd8uFt9YFKHcsRo6nVEvZAq89JlMl+Il13BYqa2r704D9uVy894kAw1g6ObOuzW18WuGTAPDjovDuIQd/rMKPfp3SEpsZtaUucvzHLDvdf7RyKMu2B6VNFYUc3ozjju427rUxRcWFiDqbZ0tBRvbz+LMKfAHn+GAVq5mPglp1ns5wk9hxeloDBS00FcmrZifB9qGo6QQhVL1YB+eFv5+kduBIlSK3zSfH1rRLETrbo6snwTi2CbkXL5L8NhK+LA8s2MnwspAUZunMwFlpHkDM3pvk4Ywh7wUFdxPNsNfiB4XPP/WFK4+icoF4HTzd2x4gsrSzB9yMparqAvmpHbYoNYq4QHXm0GVeSouz23IrsBffq5Q4ejSy35FcSkoIdUUO196wJ7nC3O83gzL/8vtGhyWh1NYXOUntkevYKggFmRScGfP0AAFhwo22V5zBp6TCktzpF5bsj40YTXofUCdXD8g4wQ0YAoZbNQl7v//XNwAVaQixg6VwI8v5ip8tXWwRAEqcozxr
+ UofN/K++
+ nxe4fW3LNwlP+cfRueal6/p01N6Q4Q3wijSreC4piNs7mwsp1eU7HJjUqm/65lV70kDSVSd3qEDbPEIzN2IfO5/VKrKMGKE8s8m0AeJY4jdKD7j0cDOglSb1milTUBanhUDREdEdZbWQf3ZiKnQ9lO6zJ6Pp+ECC4nx+yDPMwdTmntOb0PEmXa1nBVfkxkAmAX7Ntr0DGurtX6lEQpO6zKLJFpWWbIjcPLp6C3Ktnw4wIrRtranfk73aUtbCm3MpDPe1fRXvJOX5VcQSpF59UToLSm6lrqfvsy9f7vykW9or0WANxz7/mt+9DEBET7PBPC+j8CeT6QjK0xu+Ca0nAbmrsjd6hEWpttEqQpcl2lFuxv6W8GLjfw+UBQPxza4+IrSzqpdTEnz6VeJAPkst2JBxIW4u/vc2nNE1r870OX75LUGABescPYktwpWcMfNuTDz7NT/yBm5LRT0+hftx7BNiJttmG3dRD2VP3EevQA17XEPWSofzt/2m+VoDAQi75qG3HZ8hq0Pu+YwYlEPXNGhRFeh6RSwp0OhsNoK0o8OJSOEeC1mha3enqBA8VHGKaWi+RDCcmrg2PDKaFGb7FjFufL8otdy3H02xX1tTv49eyozb2TgQ9yzTpdjA7gTPJrTYcvjV6Ln0wk0NoALJiq7XgMnA3vL1rsrzXtQsDKN5hWJMPdTc+IBbaLZIdCt33CJnx+SD2gEBm3tyW+vFOUtZK/h5OAJl0SPJAyHX1/c/CZpQKPROpFDwEiAMyyuIz8xyserHSjSvhzlNsWL/B7vMt6Y2ZKssrCcBSPsF6kCdtIBl/J85CtGuY6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,309 +350,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-December 4, 2025 at 21:55, "Maciej Wieczor-Retman" <m.wieczorretman@pm.me=
- mailto:m.wieczorretman@pm.me?to=3D%22Maciej%20Wieczor-Retman%22%20%3Cm.w=
-ieczorretman%40pm.me%3E > wrote:
+Tested on qemu and on a custom hardware implementation of zicfiss and zicfilp in the CVA6 core
 
-
->=20
->=20On 2025-12-03 at 02:05:11 +0000, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> December 3, 2025 at 04:48, "Maciej Wieczor-Retman" <maciej.wieczor-=
-retman@intel.com mailto:maciej.wieczor-retman@intel.com?to=3D%22Maciej%20=
-Wieczor-Retman%22%20%3Cmaciej.wieczor-retman%40intel.com%3E > wrote:
-> >=20
->=20> >=20
->=20> > Hi, I'm working on [1]. As Andrew pointed out to me the patches a=
-re quite
-> > >  similar. I was wondering if you mind if the reuse_tag was an actua=
-l tag value?
-> > >  Instead of just bool toggling the usage of kasan_random_tag()?
-> > >=20=20
->=20> >  I tested the problem I'm seeing, with your patch and the tags en=
-d up being reset.
-> > >  That's because the vms[area] pointers that I want to unpoison don'=
-t have a tag
-> > >  set, but generating a different random tag for each vms[] pointer =
-crashes the
-> > >  kernel down the line. So __kasan_unpoison_vmalloc() needs to be ca=
-lled on each
-> > >  one but with the same tag.
-> > >=20=20
->=20> >  Arguably I noticed my series also just resets the tags right now=
-, but I'm
-> > >  working to correct it at the moment. I can send a fixed version to=
-morrow. Just
-> > >  wanted to ask if having __kasan_unpoison_vmalloc() set an actual p=
-redefined tag
-> > >  is a problem from your point of view?
-> > >=20=20
->=20> >  [1] https://lore.kernel.org/all/cover.1764685296.git.m.wieczorre=
-tman@pm.me/
-> > >=20
->=20> Hi Maciej,
-> >=20
->=20> It seems we're focusing on different issues, but feel free to reuse=
- or modify the 'reuse_tag'.
-> > It's intended to preserve the tag in one 'vma'.
-> >=20
->=20> I'd also be happy to help reproduce and test your changes to ensure=
- the issue I encountered
-> > isn't regressed once you send a patch based on mine.=20
->=20>=20
->=20> Thanks.
-> >=20
->=20After reading Andrey's comments on your patches and mine I tried appl=
-ying all
-> the changes to test the flag approach. Now my patches don't modify any =
-vrealloc
-> related code. I came up with something like this below from your patch.=
- Just
-> tested it and it works fine on my end, does it look okay to you?
->=20
->=20---
->  include/linux/kasan.h | 1 +
->  mm/kasan/hw_tags.c | 3 ++-
->  mm/kasan/shadow.c | 4 +++-
->  mm/vmalloc.c | 6 ++++--
->  4 files changed, 10 insertions(+), 4 deletions(-)
->=20
->=20diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index 03e263fb9fa1..068f62d07122 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -28,6 +28,7 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
->  #define KASAN_VMALLOC_INIT ((__force kasan_vmalloc_flags_t)0x01u)
->  #define KASAN_VMALLOC_VM_ALLOC ((__force kasan_vmalloc_flags_t)0x02u)
->  #define KASAN_VMALLOC_PROT_NORMAL ((__force kasan_vmalloc_flags_t)0x04=
-u)
-> +#define KASAN_VMALLOC_KEEP_TAG ((__force kasan_vmalloc_flags_t)0x08u)
->=20=20
->=20 #define KASAN_VMALLOC_PAGE_RANGE 0x1 /* Apply exsiting page range */
->  #define KASAN_VMALLOC_TLB_FLUSH 0x2 /* TLB flush */
-> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-> index 1c373cc4b3fa..e6d7ee544c28 100644
-> --- a/mm/kasan/hw_tags.c
-> +++ b/mm/kasan/hw_tags.c
-> @@ -361,7 +361,8 @@ void *__kasan_unpoison_vmalloc(const void *start, u=
-nsigned long size,
->  return (void *)start;
->  }
->=20=20
->=20- tag =3D kasan_random_tag();
-> + tag =3D (flags & KASAN_VMALLOC_KEEP_TAG) ? get_tag(start) :
-> + kasan_random_tag();
->  start =3D set_tag(start, tag);
->=20=20
->=20 /* Unpoison and initialize memory up to size. */
-> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> index 5d2a876035d6..6dd61093d1d5 100644
-> --- a/mm/kasan/shadow.c
-> +++ b/mm/kasan/shadow.c
-> @@ -648,7 +648,9 @@ void *__kasan_unpoison_vmalloc(const void *start, u=
-nsigned long size,
->  !(flags & KASAN_VMALLOC_PROT_NORMAL))
->  return (void *)start;
->=20=20
->=20- start =3D set_tag(start, kasan_random_tag());
-> + if (!(flags & KASAN_VMALLOC_KEEP_TAG))
-> + start =3D set_tag(start, kasan_random_tag());
-> +
->  kasan_unpoison(start, size, false);
->  return (void *)start;
->  }
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index ead22a610b18..c939dc04baa5 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4180,8 +4180,10 @@ void *vrealloc_node_align_noprof(const void *p, =
-size_t size, unsigned long align
->  * We already have the bytes available in the allocation; use them.
->  */
->  if (size <=3D alloced_size) {
-> - kasan_unpoison_vmalloc(p + old_size, size - old_size,
-> - KASAN_VMALLOC_PROT_NORMAL);
-> + kasan_unpoison_vmalloc(p, size,
-> + KASAN_VMALLOC_PROT_NORMAL |
-> + KASAN_VMALLOC_VM_ALLOC |
-> + KASAN_VMALLOC_KEEP_TAG);
->  /*
->  * No need to zero memory here, as unused memory will have
->  * already been zeroed at initial allocation time or during
->=20
->=20--=20
->=20Kind regards
-> Maciej Wiecz=C3=B3r-Retman
->
-
-
-I think I don't need KEEP_TAG flag anymore, following patch works well an=
-d all kasan tests run successfully
-with CONFIG_KASAN_SW_TAGS/CONFIG_KASAN_HW_TAGS/CONFIG_KASAN_GENERIC
-
-
-diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-index 1c373cc4b3fa..8b819a9b2a27 100644
---- a/mm/kasan/hw_tags.c
-+++ b/mm/kasan/hw_tags.c
-@@ -394,6 +394,11 @@ void __kasan_poison_vmalloc(const void *start, unsig=
-ned long size)
- 	 * The physical pages backing the vmalloc() allocation are poisoned
- 	 * through the usual page_alloc paths.
- 	 */
-+	if (!is_vmalloc_or_module_addr(start))
-+		return;
-+
-+	size =3D round_up(size, KASAN_GRANULE_SIZE);
-+	kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
- }
-
- #endif
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index 2cafca31b092..a5f683c3abde 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -1840,6 +1840,84 @@ static void vmalloc_helpers_tags(struct kunit *tes=
-t)
- 	vfree(ptr);
- }
-
-+
-+static void vrealloc_helpers(struct kunit *test, bool tags)
-+{
-+	char *ptr;
-+	size_t size =3D PAGE_SIZE / 2 - KASAN_GRANULE_SIZE - 5;
-+
-+	if (!kasan_vmalloc_enabled())
-+		kunit_skip(test, "Test requires kasan.vmalloc=3Don");
-+
-+	ptr =3D (char *)vmalloc(size);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
-+
-+	OPTIMIZER_HIDE_VAR(ptr);
-+
-+	size +=3D PAGE_SIZE / 2;
-+	ptr =3D vrealloc(ptr, size, GFP_KERNEL);
-+	/* Check that the returned pointer is tagged. */
-+	if (tags) {
-+		KUNIT_EXPECT_GE(test, (u8)get_tag(ptr), (u8)KASAN_TAG_MIN);
-+		KUNIT_EXPECT_LT(test, (u8)get_tag(ptr), (u8)KASAN_TAG_KERNEL);
-+	}
-+	/* Make sure in-bounds accesses are valid. */
-+	ptr[0] =3D 0;
-+	ptr[size - 1] =3D 0;
-+
-+	/* Make sure exported vmalloc helpers handle tagged pointers. */
-+	KUNIT_ASSERT_TRUE(test, is_vmalloc_addr(ptr));
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, vmalloc_to_page(ptr));
-+
-+	size -=3D PAGE_SIZE / 2;
-+	ptr =3D vrealloc(ptr, size, GFP_KERNEL);
-+
-+	/* Check that the returned pointer is tagged. */
-+	KUNIT_EXPECT_GE(test, (u8)get_tag(ptr), (u8)KASAN_TAG_MIN);
-+	KUNIT_EXPECT_LT(test, (u8)get_tag(ptr), (u8)KASAN_TAG_KERNEL);
-+
-+	/* Make sure exported vmalloc helpers handle tagged pointers. */
-+	KUNIT_ASSERT_TRUE(test, is_vmalloc_addr(ptr));
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, vmalloc_to_page(ptr));
-+
-+
-+	/* This access must cause a KASAN report. */
-+	KUNIT_EXPECT_KASAN_FAIL_READ(test, ((volatile char *)ptr)[size + 5]);
-+
-+
-+#if !IS_MODULE(CONFIG_KASAN_KUNIT_TEST)
-+	{
-+		int rv;
-+
-+		/* Make sure vrealloc'ed memory permissions can be changed. */
-+		rv =3D set_memory_ro((unsigned long)ptr, 1);
-+		KUNIT_ASSERT_GE(test, rv, 0);
-+		rv =3D set_memory_rw((unsigned long)ptr, 1);
-+		KUNIT_ASSERT_GE(test, rv, 0);
-+	}
-+#endif
-+
-+	vfree(ptr);
-+}
-+
-+static void vrealloc_helpers_tags(struct kunit *test)
-+{
-+	/* This test is intended for tag-based modes. */
-+	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_KASAN_GENERIC);
-+
-+	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_VMALLOC);
-+	vrealloc_helpers(test, true);
-+}
-+
-+static void vrealloc_helpers_generic(struct kunit *test)
-+{
-+	/* This test is intended for tag-based modes. */
-+	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
-+
-+	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_VMALLOC);
-+	vrealloc_helpers(test, false);
-+}
-+
- static void vmalloc_oob(struct kunit *test)
- {
- 	char *v_ptr, *p_ptr;
-@@ -2241,6 +2319,8 @@ static struct kunit_case kasan_kunit_test_cases[] =
-=3D {
- 	KUNIT_CASE_SLOW(kasan_atomics),
- 	KUNIT_CASE(vmalloc_helpers_tags),
- 	KUNIT_CASE(vmalloc_oob),
-+	KUNIT_CASE(vrealloc_helpers_tags),
-+	KUNIT_CASE(vrealloc_helpers_generic),
- 	KUNIT_CASE(vmap_tags),
- 	KUNIT_CASE(vm_map_ram_tags),
- 	KUNIT_CASE(match_all_not_assigned),
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 798b2ed21e46..9ba2e8a346d6 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4128,6 +4128,7 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
- void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned lo=
-ng align,
- 				 gfp_t flags, int nid)
- {
-+	asan_vmalloc_flags_t flags;
- 	struct vm_struct *vm =3D NULL;
- 	size_t alloced_size =3D 0;
- 	size_t old_size =3D 0;
-@@ -4158,25 +4159,26 @@ void *vrealloc_node_align_noprof(const void *p, s=
-ize_t size, unsigned long align
- 			goto need_realloc;
- 	}
-
-+	flags =3D KASAN_VMALLOC_PROT_NORMAL | KASAN_VMALLOC_VM_ALLOC;
- 	/*
- 	 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
- 	 * would be a good heuristic for when to shrink the vm_area?
- 	 */
--	if (size <=3D old_size) {
-+	if (p && size <=3D old_size) {
- 		/* Zero out "freed" memory, potentially for future realloc. */
- 		if (want_init_on_free() || want_init_on_alloc(flags))
- 			memset((void *)p + size, 0, old_size - size);
- 		vm->requested_size =3D size;
--		kasan_poison_vmalloc(p + size, old_size - size);
-+		kasan_poison_vmalloc(p, alloced_size);
-+		p =3D kasan_unpoison_vmalloc(p, size, flags);
- 		return (void *)p;
- 	}
-
- 	/*
- 	 * We already have the bytes available in the allocation; use them.
- 	 */
--	if (size <=3D alloced_size) {
--		kasan_unpoison_vmalloc(p + old_size, size - old_size,
--				       KASAN_VMALLOC_PROT_NORMAL);
-+	if (p && size <=3D alloced_size) {
-+		p =3D kasan_unpoison_vmalloc(p, size, flags);
- 		/*
- 		 * No need to zero memory here, as unused memory will have
- 		 * already been zeroed at initial allocation time or during
+Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
 
