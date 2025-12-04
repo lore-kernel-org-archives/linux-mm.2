@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F60DD216AE
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 16:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4320CD216BC
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 16:56:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A4666B00BE; Thu,  4 Dec 2025 11:41:03 -0500 (EST)
+	id 6CF196B0095; Thu,  4 Dec 2025 11:56:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87BD26B00BF; Thu,  4 Dec 2025 11:41:03 -0500 (EST)
+	id 6AC826B00C1; Thu,  4 Dec 2025 11:56:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B92D6B00C0; Thu,  4 Dec 2025 11:41:03 -0500 (EST)
+	id 5E2B56B00C2; Thu,  4 Dec 2025 11:56:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D75F6B00BE
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:41:03 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42441583F2
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:41:03 +0000 (UTC)
-X-FDA: 84182353206.16.7612824
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5957B140005
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:41:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GIZtFvKy;
-	spf=pass (imf09.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D9BE6B0095
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 11:56:26 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BFCF41A022C
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:56:25 +0000 (UTC)
+X-FDA: 84182391930.01.108CE5E
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8A5FC12000F
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 16:56:23 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=2rWkL1Xy;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=fx0jXRJ2;
+	spf=pass (imf29.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764866461;
+	s=arc-20220608; t=1764867384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vXS4+o2Fq+EVRwWvGJTitCnGquHusQLvUPzYznKmUto=;
-	b=UvMz9PKqqQtmMrlu2sgJUtAYbNfBj9m/TKeN1QDxHp9DyoDzYYlN5Pbr5o9OyO3SORiRfi
-	Pq1fjomufXtOICUqrLegAJ+r4Gt7qnxrtVV6Mxe8WjsxqA7KF9xYFzxwg1kJ3ZjINTApIh
-	sYtwNabqbq5H7LzacD6zw3kIfDyhJjU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GIZtFvKy;
-	spf=pass (imf09.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764866461; a=rsa-sha256;
+	bh=c9+6XlmLlKbjUhjn7O7UGpoRgL/0BI1e50erzPzpDlQ=;
+	b=DppcT37tLOQK/BKhwPRLxmO8kitM11jiKmdC0KH4oyS7elx0LPs9uermRz0LQJ8NghVFCK
+	IoPjavDqCdDn9P9/6aSJ0bnS2SlIIOrA6rPTHdfFTzhgimyqv7o+FJEItXMmZDVqIiD4c5
+	g4/eze131OC5kiLqYB/EEPicXhd/HX4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764867384; a=rsa-sha256;
 	cv=none;
-	b=5GgKXb3VAOctPPdzgfbnS9TNJQn+FCxSPGyDwyHUjEGp1JcmI5UAixXZmqhSimn6hKH+T1
-	PD7V8adT2tchldXf6284xbYqsEVu3oHC9PksA1PKhQJ4M1qZOw4UGphGxiwynqvIazMrMN
-	PYzlu1Q0VwyMU8gbZs6lyEYmTo+JVnM=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so740368f8f.3
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 08:41:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764866460; x=1765471260; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vXS4+o2Fq+EVRwWvGJTitCnGquHusQLvUPzYznKmUto=;
-        b=GIZtFvKyy75+reM+J1vsQXe+G3yYe5fV5TUM6t1hz5SwXuhW5jrPGdl6Q0Ke2jkSaI
-         vv/urXyN1F5+D05OcZszH9TtdEawJJ7eUfl51Ndx8knSR2c+7b+d4gfAiOux+0mfKb7L
-         kkpGQNx0ju5r0TAyYbIpCRNlbBus1JATRjcMbUFRQ1KCmd25OzLKcQBqM78INlKJhvcQ
-         y9eXXnCbfEa3dWmBPRvJ1NnJyq9teHHik0TEvvPB0IKlEMVFflMFIOv6nLBDJHXsL1+l
-         WgVsxDbsbdFF3V7ErvS+Ffi3Su7bjNfX0BarPCQ15Y9SeRU/mjjXofLq6hQLDTKOn+//
-         77mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764866460; x=1765471260;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vXS4+o2Fq+EVRwWvGJTitCnGquHusQLvUPzYznKmUto=;
-        b=auyWKHhudbOX1zt6ii+bFZ9B9rgoOLmNH6LSqEVlE4/KRDxcvS7NvcWwcpnG9tzGAT
-         /bcNyMM6H1FnQpWPQZWXVLhjB5Zcu1VaAa6q10mpTHkZmMz1GIltITmBXOi5zVX4duAS
-         AZTOhCjrN2UzxGf8svVjVn8blYmk5ll8cixethjd8+RLF4zZr+vGQKtRI8ITLwy/efeO
-         fdXRr3BZC7qFhvQ8fZ+yAtAbgDlKsXA2erLi0GpDz2ev4pbhOIksdOtNPipKN/E/cMU2
-         liVvH1Z7h9m3UcuKpDWlvDRIPBJ+qBEhojt3UvUtR3D9v1Xzsj9h8Eu6uKrDbm6gRCwQ
-         6/vw==
-X-Gm-Message-State: AOJu0YzQdxz6WmoZ7uCvAjRnhU+yQrZSv1m39sditofwpvRU5y/X6KN0
-	uEerol5Fcvq5kYK5tKBV7BwqQrznP1Kw8Wj389U43jeFGCPVgkWKl9sqUi5J+U8LE79DvR3XX27
-	4HwmT4ajtrzBwsmdnL6NL1bDEgnpdjbE=
-X-Gm-Gg: ASbGnctnQ0Pj4+x206jJ3PCeflr3dEDp3Jr6iZwDaf4MkjVQur0kVqa/PPdqS0JwZhi
-	H2PVSmyEzTMy6R7PGkuG6DC3bz3X36vLmKpLjzhz0kU8xFV64z5+vqmcoULqihIWioBkrqZ9/8j
-	TbEeZCcpMDp0+ig8UR/UfDR+w/i2pFm+Hch512VqyXxIiDbLkQxQ55IcD93Jh8yMFZXplYvrPDb
-	mH6xtkDRpX4H/gssHJ+L/KWNoxS5aOIuEtVnY11hetKN3t9BLsrHpcrW9GZSQHWqypumbV+hCeg
-	liF4JtigfgB11g0KuaUKBgdq5Dth
-X-Google-Smtp-Source: AGHT+IF14EPNbw0mdpWV5SBluMRzFazpxK6xkz22t/kSoBSDcMkFk+7hReZ/2u7DRvKtxZQ8Xd9AGL3Y1VECoWoltus=
-X-Received: by 2002:a05:6000:4212:b0:42b:3dfb:645f with SMTP id
- ffacd0b85a97d-42f79858038mr3500253f8f.47.1764866459724; Thu, 04 Dec 2025
- 08:40:59 -0800 (PST)
+	b=r2BCqByOAaBXYcKi1e8nGJoueIBPapNKNx29JIm9xCQUddYEExIebVBe45ZdD3hgvThbIZ
+	kExsoFSEAt0uoKHJ0WYRwYFwzmD2+VAIXB7YF9U3PiY2iaZ0bQxmsNeYC0hJsm22qL2QW3
+	owaGhyVIQvCxwAuy4VPm5mxI2cnoMMA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=2rWkL1Xy;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=fx0jXRJ2;
+	spf=pass (imf29.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+Date: Thu, 4 Dec 2025 17:56:19 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764867381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c9+6XlmLlKbjUhjn7O7UGpoRgL/0BI1e50erzPzpDlQ=;
+	b=2rWkL1XyAhcgyqrW14MMF3qaUQSr8YYDNiCKry0x0QBsV4l5x3+Ycw5+Jmi0h0i54S8RRK
+	E+E1i9Sf249ovLQIsdHJYJbyeELFizphpxVyW0iv3gMQVsNLZQNI3+0uo8gMM5+J8gdwAU
+	TQlFxaGVQAKpquAo5xJmu7Sg3eUNUg0oqHbXewl81F1jiHSx62cUQYCc3/lDBDD9nZaXUb
+	D0kNhjyLt3Lx6Iynot+ksQqb9CYSPxpgVVg03P7IjPAK3p6UMbKbdvfL0mIG0Mr+TozaUc
+	Idwaz543w+GDt5FHrMnfh8wFNTyTtt6ss8MbiHwTTQI9/sWdQYGNRLif/kaz1A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764867381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c9+6XlmLlKbjUhjn7O7UGpoRgL/0BI1e50erzPzpDlQ=;
+	b=fx0jXRJ2uwCZoiAF6TP+4b8/8ynViDEX2+cIYHls3j9u/NOxevNN3FgjINA/To4UgHgvMH
+	l2OPXdUE9HBBQkCw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, 
+	Kees Cook <kees@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
+	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org, Charles Mirabile <cmirabil@redhat.com>
+Subject: Re: [PATCH v23 24/28] arch/riscv: dual vdso creation logic and
+ select vdso based on hw
+Message-ID: <20251204175055-fefb76ff-2ff2-48b8-b92c-3d3ce33ec9f5@linutronix.de>
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+ <20251112-v5_user_cfi_series-v23-24-b55691eacf4f@rivosinc.com>
 MIME-Version: 1.0
-References: <20251128033320.1349620-1-bhe@redhat.com> <20251128033320.1349620-13-bhe@redhat.com>
-In-Reply-To: <20251128033320.1349620-13-bhe@redhat.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Thu, 4 Dec 2025 17:40:48 +0100
-X-Gm-Features: AWmQ_bmxfZbuU8zhqgeyaLqAy9mjVXVUUmOMRc0g7rdfnIXPuRMuopEGEYYo_ps
-Message-ID: <CA+fCnZfw5V4HqHepJUbH5cFSEj1G4yvJMb=1Tjd_7WDBP7uUfQ@mail.gmail.com>
-Subject: Re: [PATCH v4 12/12] mm/kasan: make kasan=on|off take effect for all
- three modes
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com, 
-	dvyukov@google.com, vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
-	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, elver@google.com, sj@kernel.org, 
-	lorenzo.stoakes@oracle.com, snovitoll@gmail.com, christophe.leroy@csgroup.eu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: h44zac41b9q818yszqtzi38fm3ioxrww
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251112-v5_user_cfi_series-v23-24-b55691eacf4f@rivosinc.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5957B140005
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764866461-526056
-X-HE-Meta: U2FsdGVkX1+LbmKj7+J/WWYE6HH3L2uE4Qxk9Gu1QsFdpwKW5Ml0OpGhOIjcKbA8xoWkVmFUB0qluYWCs3X+RjP++81AAXwP+kjFmSqd6JILMRfmoSHkeBN3qGqBjQc+jLkZvtZ+2qopmkznvRokYwwzd8jwLdKHuL1GF9LMONCaL7IDKjSzXVKoqpK/I9cQLDL6mGy8NtVwTuFSHpmX7RadZs9yYxrP0dLx9QDEuXHOL0l8hq3J++VG/9954LOS0kHwUU6XWNRWvAXcttjPu+kP5cAdli/uYSeC7de2v2wwbwYK0LJ5EkwEq8QbKpNTDJiIZtG22U4bQO3yPk9AIXxg/eRKxTukcgIUq2K12ydyMMM2k5B8shGnAxPNuFh+GoLd/bsRaafckesIe2L2TyjNWIJzDfb9Kg+4/A0t5IIvAi0CE6whXghACVSD4D9WQLmFXmic0SVl21MCaihe8lWiOBbcaY5g4sQkMgnF/fZC4hYsa/KieaFJumSEGcHm9J8SL1htVQ6RQf6AwQyiibhw/GOtN5TiXH/GTZeesG7BDUQ8tIyx4OyRVcn1kRfPwRc/VIPQvYGcWiT50MF4t9XGDZuVAXVNfShVIetHAMOKl+pj181UpISPskd0Cj4dCyeSz15+pUXIThD/60CgwsmaNEnU686OZOr0fcWhQgFrER6XzHN2CaPtmzEiZRI5O6ckoTj1koFt/pQ4bZMzFCoXN67wDVKmt5s3l8ouFAho/LIxf+lCRwEB9hopE0QFXjyUf+6ZrtBOjWvrBl7mGXInXuS2omoDAdeM9b0neg3JjlE1u+cEJAZs0c6Y6MTO1l6eLV2Whzx1Ud8N81/SB1J+37nuOWh5B+7j9SLy+M+rR2FlekA1vNDvpY+4+MP6pbkPNIUKWK+9RScYwbRQS6Av7Pq7oWwnkY9mhNKDIR/57Q1Ud0vA9Hf0K37Cb4IjaufNGZh3FCF5Z5qPVmk
- CUPUhmZC
- Czh0ViNb2VgdUYwTbpNHjdnS//tgCuInqAF6zccdP5R7CqHaeQ90M1ovstpZMNNG2IM82S16/sPLhBgKUY4tZBQZevi0I1rdF/TVp5dgcNBd+kNBJPy4RZK8Jj9/siH66oRHiHfdSKLrsWdQyJmCmk3NZx1Lqii1rRf4sl3cV6oOWV4fHGO5Reb/ZhGz4uoZ4Oi+4ys7pCNKG9zV9TgY28I/hQzxM8uANsQFUTnYbM183kDN3hydOBe7O0h3B+JsLPE4TItB+MEWmu/uBl6OSfPCmM8O/9M70Z9loMXMGSw+u2LPmqrTgCCwJxGPAoK+7OikS80sVQsMVpajbwxKnxmK7w7Ipgksq9rPDd/wo0LYeb2LYc8OCCgeLSSiyxa6uAlKMTg4NVs0a+HTjIzMObpwWN4CbJBfdWEolZKlSpUcSuUP/U56OCN1Av6kw2G0xp4RtqRyjtlgV0n/x7ewBhteshFnJzWT3saIXOopir6r+TLRWZQOL9gkQ+am3+UCRFk80YaOMwwLl+U9J26c6EQuBVP4nWUiqjvm5XI7kiC70SZ1bvqnP9vhTGcJLIJfUXiMW
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8A5FC12000F
+X-Stat-Signature: fyqzyfu5ebbdgx1mdh86d8iryr6c8xa3
+X-HE-Tag: 1764867383-345701
+X-HE-Meta: U2FsdGVkX1+T27ib8eQybMsRq0GJdkkZf1YmBrQxXP1Nff0/OuxdeAi7M49cvEVOfJ6n8SasiWw6GkmB8ave99D8dnJfoI/ueGrvjtje8fB4ntlOsnF4s+BX+mHqVqr57loubp1qrbOfpENhvL6nH1XJD6b0cviGvbGbvpwZ2riR4IELMSe+nmAXMvuVZA617RZ1+y7HFUpmjxjWtfSCz7MW4XWoSeP9WzrLopxMQPm+1icO5LoTmTHohm2TdG6eFpkf0ah08m0NSElxm9WdWmCyn0QC87lV0JUqBvi0LiLTPVfeLqbXov9jEsvknbOxSuRTIwN07kzO2gDt+mGcOEnz7EDYgaI698bJqcW1r3JH9R0pJg+K4RupqttgDsN5LBMh45eVfgGmFTQqFXkHwxMnUvNl/5LH8kdwPDh8Wh228Sxiz9G3Wr+6pxN1N+S9OsYNTjDxURR4zHldeEqv44t2cQRT/CU/YM2nYC7isu/kpCB0/w37l0w0G+Uu9IAwaoJjfQzDh8dnQWzDJbJkzBAdNC86iLe5oCCtsg8s5E0M+B2gQSG0fv42nNlOvgkAMudl1tJ74A0gpRB/DUaeZWFk/G1bSU21W5K4vGow2pKz7r9eXfadtYSLEbT+Zo8Rx7OE68BKbpVt0OORc3dhpWY1F0HeGrDsEt1H6Rc9cDz8OAHnmWqsHrNNmreCYGuEuh3+vSlXvIfuHRb3ULLVVisLlqGczTBElvEB+pXAEa4MKYcz8QII408k4jkds2JwZL5K/hG48UfvnOwB4gYhMnWDSQnaFLJYguVcMAhvHDWy+VWbLTWtjrlP3kMBdEpY+fnbqvr/rrD0G5XoU0VhbiWUg3MgJYXhIom+s+J+Plc+x/Dj13FEOOl6aMcXK2J4WkIXdPqCzW8EOUkZWwPwDFB0Mk15qFTxwidIP5XNR3iTwAbe2h3foUjEPk+MTC05D12frvCnaWMmMjktL4r
+ NndX6M+s
+ W4sSgKRDgkmQSilPBDzh3fF01VftiM+jlQaD1ohUeRuAWV8mSYzCyC5Sg33RJF5XDnLFDdlINT64mTm4hzm+1B5ncv+sM3+gIID8pDxlTS5BrL8AHnQtNdf0S4tVLPTGQXLTNTfHSDfI374I5wbZ0lGXyQ9K+7e1AAzUz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,65 +121,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 28, 2025 at 4:35=E2=80=AFAM 'Baoquan He' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
->
-> Now everything is ready, set kasan=3Doff can disable kasan for all
-> three modes.
->
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
->  include/linux/kasan-enabled.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.=
-h
-> index b05ec6329fbe..b33c92cc6bd8 100644
-> --- a/include/linux/kasan-enabled.h
-> +++ b/include/linux/kasan-enabled.h
-> @@ -4,6 +4,7 @@
->
->  #include <linux/static_key.h>
->
-> +#ifdef CONFIG_KASAN
->  extern bool kasan_arg_disabled;
->
->  /*
-> @@ -12,7 +13,6 @@ extern bool kasan_arg_disabled;
->   */
->  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
->
-> -#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
+On Wed, Nov 12, 2025 at 04:43:22PM -0800, Deepak Gupta via B4 Relay wrote:
+> From: Deepak Gupta <debug@rivosinc.com>
+> 
+> Shadow stack instructions are taken from zimop (mandated on RVA23).
+> Any hardware prior to RVA23 profile will fault on shadow stack instruction.
+> Any userspace with shadow stack instruction in it will fault on such
+> hardware. Thus such userspace can't be brought onto such a hardware.
+> 
+> It's not known how userspace will respond to such binary fragmentation.
+> However in order to keep kernel portable across such different hardware,
+> `arch/riscv/kernel/vdso_cfi` is created which has logic (Makefile) to
+> compile `arch/riscv/kernel/vdso` sources with cfi flags and then changes
+> in `arch/riscv/kernel/vdso.c` for selecting appropriate vdso depending
+> on whether underlying hardware(cpu) implements zimop extension. Offset
+> of vdso symbols will change due to having two different vdso binaries,
+> there is added logic to include new generated vdso offset header and
+> dynamically select offset (like for rt_sigreturn).
 
-So do we still need CONFIG_ARCH_DEFER_KASAN? If not, it needs to be removed=
-.
+If the used vDSO variant only depends on the hardware and nothing else,
+why not use alternative patching and avoid the complexity?
+I see that RISCV_ALTERNATIVE depends on !XIP_KERNEL but the vDSO code is
+moved to dynamically allocated memory in any case, so it is patchable.
 
-But if we only allow kasan=3Doff for x86/arm64 after all (see my comment
-to the cover letter), I believe we need to keep it.
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+> Acked-by: Charles Mirabile <cmirabil@redhat.com>
 
-
->  /*
->   * Runtime control for shadow memory initialization or HW_TAGS mode.
->   * Uses static key for architectures that need deferred KASAN or HW_TAGS=
-.
-> @@ -30,7 +30,7 @@ static inline void kasan_enable(void)
->  /* For architectures that can enable KASAN early, use compile-time check=
-. */
->  static __always_inline bool kasan_enabled(void)
->  {
-> -       return IS_ENABLED(CONFIG_KASAN);
-> +       return false;
->  }
->
->  static inline void kasan_enable(void) {}
-> --
-> 2.41.0
->
-> --
-> You received this message because you are subscribed to the Google Groups=
- "kasan-dev" group.
-> To unsubscribe from this group and stop receiving emails from it, send an=
- email to kasan-dev+unsubscribe@googlegroups.com.
-> To view this discussion visit https://groups.google.com/d/msgid/kasan-dev=
-/20251128033320.1349620-13-bhe%40redhat.com.
+(...)
 
