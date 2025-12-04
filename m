@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04F16D2A53B
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 20:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04FD8D2A532
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 20:59:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A05E6B007B; Thu,  4 Dec 2025 15:58:12 -0500 (EST)
+	id 6538F6B0006; Thu,  4 Dec 2025 15:59:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 450DC6B009F; Thu,  4 Dec 2025 15:58:12 -0500 (EST)
+	id 629CA6B002D; Thu,  4 Dec 2025 15:59:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 340FE6B00A1; Thu,  4 Dec 2025 15:58:12 -0500 (EST)
+	id 53F936B00AC; Thu,  4 Dec 2025 15:59:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 23E586B007B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:58:12 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B6C851A02A5
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 20:58:11 +0000 (UTC)
-X-FDA: 84183001182.28.DD84075
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 15A0D180008
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 20:58:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uClXz34X;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F1856B0006
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 15:59:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA44F88AF3
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 20:59:21 +0000 (UTC)
+X-FDA: 84183004122.27.D33EB9A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1FE9E10000C
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 20:59:19 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tA78S6gr;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764881890;
+	s=arc-20220608; t=1764881960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a+A2Fv0iOqbL7KYLNpelnPx5k62VuTOY+fSutEiUX6c=;
-	b=lIbdywrsTz4UWrOWcq+li0Iep+WSJFUwXGoGedCAu8yyPNv10ttWGj0w0eVssVrSlcx3Hy
-	/eBLsOCXgWliyMgmoEHSlJ4CSKnIGRxY2aEAXSTJ5lwx0LE3fZd49HEok/PXdTCrRLwJ7/
-	7EskR2aeDUq4R83heyQhmU9hvwo+FuQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uClXz34X;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764881890; a=rsa-sha256;
+	bh=41V0btNF7KA2O1dznjGGyHba5bnZAFC6fB5jUVf1x/U=;
+	b=6EKHWqUC+sqKuj1JRqHK8ZLZquMmqoJo95i9uVldmmOc6akapaYXBtPT53Eb9MPiEJ6sdb
+	bUpbRVzd2n62a/asoa/kSCED0P10Yui3F+GCMUlPXKJ1kGkx79ZWsQGXE/+iuUicdLsQ0T
+	OgEvB2MhS/+yNVYUwAyJZkTBt2ZRP8I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764881960; a=rsa-sha256;
 	cv=none;
-	b=YLE9uSB95xxHqWW0bA5QnIH1gTI4oLDkGhoYJtCZJN3UlQV35oMZSN53F+LymIwAa23w9h
-	vYkgWhcA4X5iWu8tRTwjaOWohjJj7ZkOWUydQbxzLnVcudxzCd4pIUxxZ2d2uAJK1/jreA
-	o40UauEbZnrc56x8mgfSWbRceiIOqi8=
+	b=iXINF7trb5l3sR9Uy19BRK/0P5PcNpmJ6bwgd1ZwsJ+c3C6b+PXoFqJUvWEu2eZrCDfFzr
+	Vd6/P9k33VmzlGF6KxnzS3SCItTFLRLYe93MVCnF6fPoTQlayY7GifREvXCCqn2yYZWdLB
+	BuJV5S7B/MJBWn+bDW8yYjjzStDDXwk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tA78S6gr;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D21B60202;
-	Thu,  4 Dec 2025 20:58:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F3AC4CEFB;
-	Thu,  4 Dec 2025 20:58:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E4FA443A6E;
+	Thu,  4 Dec 2025 20:59:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90672C113D0;
+	Thu,  4 Dec 2025 20:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764881888;
-	bh=loobrzi70Pz8tRGrBPxxU+Z3c+tNVIg/LFKhDULsEAI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uClXz34XPXMkEKff3YIWkBOZ37RSNuVgI+nxzOy4TOM+DZPFXJFT5LoRMPVzQVDB+
-	 eGM6XD/mm14R4hH1LID2HzwVCSwnLVXazDKHDElM9jZdFe2JxumKbIvocccvJw7wPX
-	 SpavRLRZFhmxTuotit33kbMWKD3Jy9YkeXhOi9JHK2fZiONV1G26eNS58b05e1lX/M
-	 WkkyCucIFVM9KECbZuASEanszKlXzX74vlOX2t8FAWc163PSPTdmjRIRhB4TQtECbE
-	 XhqjHHjVFKU7pN+ZflKZPDUQdRq8mJjx1d3ZTOmZpCS1u3E39BiOePBI/xM0TBvqRB
-	 QPZLVe7hqQKnA==
-Message-ID: <48344838-d601-45ae-b260-01eb6b2fa422@kernel.org>
-Date: Thu, 4 Dec 2025 21:58:01 +0100
+	s=k20201202; t=1764881958;
+	bh=4O9Ah99qQTol32t/P1TpxoZv82j3pnx84+70Fb5YdUY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tA78S6gr+Qh7bTbz1ZeQsKn2yGl8q4Zf+nVGht3F99N8vJ/cfaY3BEbh1wNMwik04
+	 6yI4dWNE7oOeGtCS8nDKTWo023FfpA2DYMkTLCkIv2pNSHah+uEDPIdVrQ37UbYhHa
+	 PEmBvcA84WFCfGaks4Q6Kk3d796ZNH8pgOvqH3/bZLB/x2gqMu5lY17lL5C+mbbxG0
+	 l+fkHGM4GZfABuGw+vc9NNNnO7Zn6vH+qVtRfH9DEqIMQF0/UAxuZKXiAqcoKofPwq
+	 t5jjTTwFiUSnt6w8ox3aYTVelANQ+D9kaLir7yFW1Pta6MLisJFL68Lpv0Cijor3wI
+	 xZH0ghAZwUgMQ==
+Date: Thu, 4 Dec 2025 22:59:10 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+	akpm@linux-foundation.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+	npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, masahiroy@kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
+ hugetlb"
+Message-ID: <aTH2HqxZjmFHWlSJ@kernel.org>
+References: <20251204023358.54107-1-skhan@linuxfoundation.org>
+ <0b007374-1058-487c-8033-4f0d2830dc89@kernel.org>
+ <aTErsX-wfnxkNJ1G@kernel.org>
+ <78af7da4-d213-42c6-8ca6-c2bdca81f233@linuxfoundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm, hugetlb: implement movable_gigantic_pages sysctl
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, osalvador@suse.de, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
- muchun.song@linux.dev, Mel Gorman <mgorman@suse.de>,
- Alexandru Moise <00moses.alexander00@gmail.com>,
- David Rientjes <rientjes@google.com>
-References: <20251203063836.187016-1-gourry@gourry.net>
- <305328e0-3011-409c-a040-76fc478d541a@kernel.org>
- <aTHBjU5-Fio6CrwD@gourry-fedora-PF4VCD3F>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aTHBjU5-Fio6CrwD@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 15A0D180008
-X-Rspamd-Server: rspam02
-X-Stat-Signature: z5zrhgrz5scoq1dybw9bt1o5d86yzyfq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <78af7da4-d213-42c6-8ca6-c2bdca81f233@linuxfoundation.org>
 X-Rspam-User: 
-X-HE-Tag: 1764881889-666678
-X-HE-Meta: U2FsdGVkX1/wETxRny3vFH100DMpN5TI8MhMCsTNEEwlf+0eDJ4c+i4OQ3PN1kPW+7V4ig1HXvyM0k7w2apdjFfx8NlflFFhKIDkrhg4l7Sv9laf5vkeNmd+T45nTxuSPmjb42B/dZhcVitESTxhPrLXNNxX62tFcDkGASIgdOAHjsXrxHtUwNDhzJHe2n2bh3i1bBDbHu+w6ApotanOcZNDonvbzSZCYecrOXtxROtzZ28DF00zy7fHYuh1/ByuPjwtw6P6mVgMi7KO009JjvsAccrJn08grVaR/QkDve3SDtT6y576eT8RP8hSgntgZIWKOt5UaqOqoJO012PSIK4Ry2sizCl9vC95fzY3+PC23XLH0/Kq67NrinN3nSrBVa09KfMl4PZWd79A60IP3Y7hZwSIK//smCvtH1XdsxKUria0JMLL1hGx6RhiI195VP7YbLkP3pG7Q/PZQF5terPC3Y9LHcMWZm+O0ojNTsZx/J5hjTJGEAPtJkTl+vVQV38b+sDFoH6svNDJdgR2RvuF5yytkf8zEp91m/nQNPqkSskrE4QfGNuy5Xf4Me2uF+kv1GXeC69eD93NETeyppmn6U5VIuQ01rxcIrGqaPIY4iD5ZN7OQUWnLy2drZlQ/m1FUcctNN3pU9xDxcK7oubQsDW19qnt2gIL9MIRctvIostIJsULxSW+85c1JD0XLw9edJH+EawYzyVxe1dvWR0JNxoRANmByQkFRyvwpdFyOAVcRlWmRMb+B1Mp7z6HrirzBKMLUNMH2P7/SaY/JZL+RtXxPiYo66L3UXNaz84xo1hnBbI2qO5250eTSom+M8HOBCGKfQPb7mvq6W+2Bk+9gkq2Tx/HWLgzUJgvlUkU0UIvv/cTYRlCSeb41YEdzpVKgfpY1edSH5dsOUKaViAFRGZZHn0oPs1DEsp+x49EnfokEIlSxiaQt/E5NN31Mhe3OP82zlSsESyB1Fb
- s3NkDzAB
- A5dflNTUhwJ4hmCx50EAbL+uR283eB7lOGTaM3DpZtCeO6qp0sBbdiLzijh2b3ntjFdQMFAQA3rDKzPrBqC72xs4HbL6Futb0o87Ol/l3OLyBT933WZton8Ijxif19GvkNHULwZXTVEG1Y9U0UH4cRH9okgrUEfE5hHYEByrSmwK9eucXNlQa3LGLoIKET/4n3jnRSZjNH55t9gRTN4yhBDPWDbHT8ZNYCRismDCkjQWC80VZoYeU2Be3lc8+N7uVnkmW4jhS1OZ52NAk7wHKHznGcT6/89l9zd6QbROGnMUHeDmSGAHPq1WZ+QWdSWR8o5B0Gron7dys0l7uO9LJHvba9M6HEN71kG6XGk3JOJQpvyThofVAwVq7+g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1FE9E10000C
+X-Stat-Signature: kdz9f8f1y9y1zmmrerm87pjeoezt6yy4
+X-HE-Tag: 1764881959-209636
+X-HE-Meta: U2FsdGVkX1/9N8YpxhahpmRmjqKOKPmqZ7wCfjSm+PpAKdjMrdfSQy83JU65leOMABASHO5KnV+xFWAwUnHcaIG40af2rhs/EKpuhWtrzcdOmc6pKCahgR7cTMWjkSnMlqQ08K8EjC+2689LUJ3V80W6uyaLQoAzHw8xJXRIQwzmhYGhXNGJePXjVR9rik1a4K2kp1bwqMyegPQrsOQW+cl0T6JSw2CgHO90oQ/uSG0YQEIenHu9o7A9HkO4ThR25LaDCSHgggYWjWQPt+ND3PJ84VffCZBdOmFuho6Sr+DggD+f3dMWkR61roYBfAoqewSZYp2cR4lGYjJfy9tAzO5WRz7uTVt8HBvJHy6y61WUV41KnGsRLCOPX8YXQ5SOSx9oP//IKCRWIZ86o9/F04BeUNeAN0MT6/Ws4y2Es6PBcPvHnkiLYGUUmRBLziYBsb0nwEcHK9aei78T15j04Qpy5OY8Qk8j/XYvocC+fStv04IRGTGOWy0xo1sjbex7cZJxw6FNGPNxcVImjErNw0KFRFip2oN1EYFUAlE2Znn2XiXzJjsJ0TGYob7MgXHOpZP4lKrhUb5jcosbuk9P8jH/pgGhohq8hbRb0P2wCxQxrespj2hamEDXN6+DzDA0lQ4msCvHCH/CCq8zUqK7+kFwKrs8QWMFWmFWaUTp4j4xI0SnNy/Gq+uDDTjwwq/5qItTzjtJx/nrAlKXIPWYY1GFbECmeG1JlcGbn4l9OPhYtYi2Gm92X+I5g014sAOK0tFl3H/RWLP4iA6a/IYoWrIXeX1nXOYtH6UwTy+OuosdAOilQ6uZtMx4C44OsI4aYTYdtzOVOKK/asORrnojT8ikZLGXXqiRgpwrJBqLc0pnoKq7VtNVlbjoSo4rDxzC63rf1N8ENdd23wBCpCMXTT+Rylwye/X1CLMiluIuFxNr4z8FMQZfeZKLYgqdj41jbwOlNvR/0/Ug8woUwEk
+ 1t60GvCF
+ TQMHe/716oVRNf90jGsb0eItJNmzYZ6VDwjFk3mEXQmXujmxZzi3OgUM1ZzlPTINd4M47bnaxPy0lUjrP7NOVZi466xKQtdT8v9cfZtJNzXAU8KtyQLU7Y59t7eCxPmtkxa7ykZny6RPbCle0dsKCCvbWjcC7Pwu7HL4ckcY8fh5WfrDy3ZNjYeW4n7+2inrtdYi296KjKXWONSsg/acyRa7647VuusViEVEod/c1cyF4sUm8AUHq6YENZbYmWXcFw7UdzdD/6nkIi3tYZJYYqXZJ143NBUw0IM+EOYkewv/DsJd+4BzPvdF+u6RmqL/PVYWRMoNPQAGKOUc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,69 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 18:14, Gregory Price wrote:
-> On Wed, Dec 03, 2025 at 10:26:20AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/3/25 07:38, Gregory Price wrote:
->>> This reintroduces a concept removed by:
->>> commit d6cb41cc44c6 ("mm, hugetlb: remove hugepages_treat_as_movable sysctl")
->>>
->>> This sysctl provides flexibility between ZONE_MOVABLE use cases:
->>> 1) onlining memory in ZONE_MOVABLE to maintain hotplug compatibility
->>> 2) onlining memory in ZONE_MOVABLE to make hugepage allocate reliable
->>>
->>> When ZONE_MOVABLE is used to make huge page allocation more reliable,
->>> disallowing gigantic pages memory in this region is pointless.  If
->>> hotplug is not a requirement, we can loosen the restrictions to allow
->>> 1GB gigantic pages in ZONE_MOVABLE.
->>>
->>> Since 1GB can be difficult to migrate / has impacts on compaction /
->>> defragmentation, we don't enable this by default. Notably, 1GB pages
->>> can only be migrated if another 1GB page is available - so hot-unplug
->>> will fail if such a page cannot be found.
->>
->> In light of the other discussion: will it fail or will it simplt retry
->> forever, until there is a free 1g page?
->>
+On Thu, Dec 04, 2025 at 10:03:09AM -0700, Shuah Khan wrote:
+> On 12/3/25 23:35, Mike Rapoport wrote:
+> > On Thu, Dec 04, 2025 at 07:17:06AM +0100, David Hildenbrand (Red Hat) wrote:
+> > > >
+> > > > The blow is is one of the git clone failures:
+> > > > 
+> > > > git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+> > > > Cloning into 'linux_6.19'...
+> > > > remote: Enumerating objects: 11173575, done.
+> > > > remote: Counting objects: 100% (785/785), done.
+> > > > remote: Compressing objects: 100% (373/373), done.
+> > > > remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+> > > > Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+> > > > Resolving deltas: 100% (9195212/9195212), done.
+> > > > fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+> > > > fatal: fetch-pack: invalid index-pack output
+> > > 
+> > > If I would have to guess, these symptoms match what we saw between commit
+> > > adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+> > > and commit 5bebe8de1926 ("mm/huge_memory: Fix initialization of huge zero folio").
+> > > 
+> > > 5bebe8de1926 went into v6.18-rc7.
+> > > 
+> > > Just to be sure, are you sure we were able to reproduce this issue with a
+> > > v6.18-rc7 or even v6.18 that contains 5bebe8de1926?
+> > > 
+> > > Bisecting might give you wrong results, as the problems of adfb6609c680 do not
+> > > reproduce reliably.
+> > I can confirm that bisecting gives odd results between v6.18-rc5 and
+> > v6.18-rc6. I was seeing failures in some tests, bisected a few times and
+> > got a bunch of bogus commits including 3470715e5c22 ("MAINTAINERS: update
+> > David Hildenbrand's email address") :)
 > 
-> It retries until a 1GB page is available.
-> 
-> Example test:
-> 
-> echo 0 > node0/hugepages/..-1GB/nr_hugepages (dram node)
-> echo 1 > node1/hugepages/..-1GB/nr_hugepages (zone_movable node)
-> ./alloc_huge &                               (allocate the page)
-> ./node1_offline  &                           (offline > memory*/state)
-> sleep 5                                      (give offline time)
-> echo 1 > node0/hugepages/..-1GB/nr_hugepages (dram node)
-> 
-> This node1_offline generates migration failures until the last step
-> occurs, at which point migration and node1_offline complete as expected.
-> 
-> The migration failures produce the following:
-> 
-> [  707.443105] migrating pfn c080000 failed ret:-12
-> [  707.453353] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xc080000
-> [  707.471315] head: order:18 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
-> [  707.488504] anon flags: 0x17ffff0000000848(uptodate|owner_2|head|node=1|zone=3|lastcpupid=0x1ffff)
-> [  707.508393] page_type: f4(hugetlb)
-> [  707.515940] raw: 17ffff0000000848 ffa000007d873cc0 ffa000007d873cc0 ff1100082366c6e9
-> [  707.533126] raw: 0000000000000000 0000000000000010 00000002f4000000 0000000000000000
-> [  707.550317] head: 17ffff0000000848 ffa000007d873cc0 ffa000007d873cc0 ff1100082366c6e9
-> [  707.567699] head: 0000000000000000 0000000000000010 00000002f4000000 0000000000000000
-> [  707.585085] head: 17ffff0000000012 ffd4000302000001 0000000000000000 0000000000000000
-> [  707.602469] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000040000
-> [  707.619851] page dumped because: migration failure
-> 
-> 
-> I can add this to the changelog if you prefer
+> I am sure this patch is the cause oh the problems I have seen on my two
+> systems. Reverting this commit solved issues since this commit does
+> impact all architectures enabling HAVE_GIGANTIC_FOLIOS if the conditions
+> are right.
 
-Yes, we should document that. I guess it's just what we already document 
-in the memory hotplug doc: it keeps retrying until there is sufficient 
-free memory.
-
+The issue reproduces for me with 39231e8d6ba7 reverted as well.
+If I run git clone <linux repo> in a VM with 2G of ram it becomes
+unresponsive at about 40% of "Receiving objects" and than git errors out
+with "invalid index-pack output"
 
 -- 
-Cheers
-
-David
+Sincerely yours,
+Mike.
 
