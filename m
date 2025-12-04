@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11320D1D870
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 06:35:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C69D1D86F
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Dec 2025 06:47:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8A226B0024; Thu,  4 Dec 2025 01:35:41 -0500 (EST)
+	id 4CCF56B000E; Thu,  4 Dec 2025 01:47:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D39946B0027; Thu,  4 Dec 2025 01:35:41 -0500 (EST)
+	id 4A4876B0012; Thu,  4 Dec 2025 01:47:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C02286B0028; Thu,  4 Dec 2025 01:35:41 -0500 (EST)
+	id 3E19F6B0023; Thu,  4 Dec 2025 01:47:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AAFB06B0024
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:35:41 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 698FBC08C9
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:35:41 +0000 (UTC)
-X-FDA: 84180827682.02.F435A5B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AD645C0003
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:35:39 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R+ldRRBi;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 29CEB6B000E
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 01:47:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7893913374E
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:46:59 +0000 (UTC)
+X-FDA: 84180856158.22.C712469
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AA084160008
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 06:46:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=DMfKoLH0;
+	spf=none (imf08.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764830139;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764830818;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VMNWtiG2wLZCiiTb8hWON6DA6cKjLvUOMbNv7bwc9vg=;
-	b=1uqGXnir7ne5OjXpyY0eLPC0nRvfXFPSVVkE+UicvNYDtTDzNV32XUQwJfVTKhTEUnz138
-	eAvSqZeYEtp0/7+Iu86Z8OCPWjt5m1PzZRyPqXbYC+yH1idxmTUcb6NYx39GNpmYBM3kvc
-	yh9e6TtMishS7vS/qAnenpKMstZega8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R+ldRRBi;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764830139; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6V+oBcK/j52G6lsVveD6nE1Y0DSxEoZWG7pTjATtvx0=;
+	b=wg6FufWyD5FPv12Oi1ZN5m+1vn2/viLhXdOzfwtp+e0tt36AxQnjRQU2JekociZHoLhTcX
+	KmzUx6Eo8i1pDap0ueY5DgF72sJi1gHxrFPEDBjUilyYM9apUIHJmz5r+SSnifA6bz65lD
+	E3QEaJiESFK1vh9OjxjKj3muRkB4iaQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764830818; a=rsa-sha256;
 	cv=none;
-	b=cNNTwQJrkdeTlHlcoktNTbre2h4ZniTtX3JGh8J/g2rfctiYY2PjrOdpDgsEejErHl3r34
-	Gg7nfcigt8Iw6sNBNrpFqX8X/yT9NMc+u9Cc0tZuD8ahhk5UW9+6zZ/UOabtN0QfGcqV0J
-	MGvoRQA8Ibqh9xePo2KlRujUnRlwVvU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7596440C8;
-	Thu,  4 Dec 2025 06:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D98AC116B1;
-	Thu,  4 Dec 2025 06:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764830138;
-	bh=qq3I0S0VU3J5LrRdFM+Ka9HFuuLq+p5MynEaJa1wcxM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R+ldRRBi6aiMJPPSDQZU9HBz0zY9HhoA71Pc9+FYL+UMbj5AI8j89CjK9UWMCqU5O
-	 1Uunf3lmic+ZUt8pEkCXfUyQQwXMVGWNrp0AfLUv/YYd2HarhxyP3pPfirJ+TdegG/
-	 P/u4g6mTJ2sG2nBTonoGHuwwsEWXWRdfsxeEG8XVkhdvUfngY2EMcav0A67BYFWXtz
-	 +S7NaS1uT3fF0BDvECrj6CKUj7Ty16yHcv4HVgiCcitWEmb45pVUsEQTqdKzbiGJmr
-	 nz1Mr7AYPjXr0d8Ck5IPPH72P5qqpggCBKVd4MP6tekBbWBHhOsjAETnKvAQjEfWdp
-	 qGTUFJX85CPxw==
-Date: Thu, 4 Dec 2025 08:35:29 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, akpm@linux-foundation.org,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, masahiroy@kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
- hugetlb"
-Message-ID: <aTErsX-wfnxkNJ1G@kernel.org>
-References: <20251204023358.54107-1-skhan@linuxfoundation.org>
- <0b007374-1058-487c-8033-4f0d2830dc89@kernel.org>
+	b=y/l9PH8KoSKGsK0t4K396kHP7FgGBFoqH+Hep0QibHUvPQ0ehVqr/Jm1QsFJKscvPsHVoT
+	sTZCyt/7GvEdAavwsulElLGpry1JF7II0MIflEi//8WQia8t5qIDUnYNiake7Oq+qH85HX
+	vw38D99+hqwKMnBKUxXESOBwHFyXS3g=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=DMfKoLH0;
+	spf=none (imf08.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=6V+oBcK/j52G6lsVveD6nE1Y0DSxEoZWG7pTjATtvx0=; b=DMfKoLH0UioN2bZkTLYha18j63
+	teVEXM2GOEXu0WVLPSffJuq1oNWr3Y8E4BvLx/NQpTGLhn/A7nraB5izgk5B/up/rep0ox91kQqvc
+	iFuyRCUTDTMjVojmT48vkXvYqwxDtvyQ3mzCTBAQwg1vOYto/f6IOmX8yscxV8lJEkrK+XvEf8qK9
+	hzvOhwPJZe8gEGdrzwrq4S+j9OQRnxivkeQXc6xVa8UID5cW6BeKT63HYouXuMiSyHuSo5/fWbbtR
+	nXID9o4oSOQd75OJkYQreZuMnJhLfbAPgK+N7TIK/toyLJjf29/y6kqHAuKzcdo8lUfesJy3aC6T9
+	hLfqJadg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vR37K-0000000A4eR-3hi7;
+	Thu, 04 Dec 2025 06:47:07 +0000
+Date: Thu, 4 Dec 2025 06:47:06 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Ian Kent <raven@themaw.net>, Miklos Szeredi <miklos@szeredi.hu>,
+	NeilBrown <neil@brown.name>,
+	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	Kees Cook <kees@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	John Johansen <john.johansen@canonical.com>,
+	selinux@vger.kernel.org,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	bpf@vger.kernel.org, Chris Mason <clm@meta.com>
+Subject: [git pull][vfs] tree-in-dcache stuff
+Message-ID: <20251204064706.GJ1712166@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0b007374-1058-487c-8033-4f0d2830dc89@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AD645C0003
-X-Stat-Signature: oszutm7g9iwhpr4d1kdg93bwmqfp7ktq
 X-Rspam-User: 
-X-HE-Tag: 1764830139-554668
-X-HE-Meta: U2FsdGVkX18Pm0pWhFl1ZRCZfdQexdr7dC7tKPxwiWviJ/EQpRTRCLgZmBSIK43eJp7I9MikT4ajIRkDz4tD+UUD26DM0WvACNYIO/SlsKJ7uI6Omc29Wn1lHAXxtgFFy4i6lf0qiMl2Ie9XoQjKYuRsB3UZkdpy8tnoKm4bsX+qcghjJeHfe5H+M8qFLTtNTM+E6ESKvWk9FvFClryXuNNoURg6kLM+iZd1EuaqJ4aLaGbakzBDqhLztKj6BBnF46Ja94i1Dl59flBHNQxYiJzKalpLS3Birl5yDL1sEjxGva0EC2X4pz0JZqAENpl/5dGwGLhY3P00elPRgnofbgqFWQ5OhVDI2Shpmpo33f/UxavotWWSESQ6W5c1MWZSjzbBwTV1yLJy3iulNfKjpZ7zVunHNEhBjlf+Z3hbAN9s03CdBVv+l1a4VIjTng9Iaa0V7L3MCBXREwTPlKFi0f3nR7FnBK3i7Yzj+FJ+gKwuPsjfw+4yxcTZUsJj+5SolVQkHesgHpZpZiUGsr19yCQP6Vkva2cLimnImfWCox680UiM4hS0gaA7XLK9IIKdBp1sGdJCLcpMXCePZUKgkG6J3bWSys+izz3vuFnoVOJtQgZt/4MaDSuZybZrbk5w9j/xL0Vg2hoUrYtH0PgXnujj/UKyoPyVK43LbkFVIKmxr/ZaivDwcLNehSnCLqB302GSK10iwosP2vuLHzBNHBObBQrXhTtkv80+6+fQyemt+abt/kAo3T/xINnhdKhfjuznu56ck8XHKIYP+i7wgFR2T/8RRhYPRXvRHUdvVRhMwMBFfUf95Je5WyBRUahhHfHKQ/15aF8PZqprEUJVDcTDB1OeE57VFCWkNFiTtjEwm2IzuLckSByzU6ejnG+ThloEgV3DgOVB1hqUm7fBAxCQFqDO+pGlc+dBu7M+2Vd2lajU6ESNVq3z67fw21HIL+a4HbKcrV0hKU3GzCN
- vPSOqHgx
- iOHCn4qsKb+LJv6k26YFiuuO0txJK4Qz8EFpDQ//kBQbP03433wFw3Qdt5Lg2YYRfcLyRIJ2IF1ASEJktutCl8CWgTW8F0dGxbIftiDlCSYIc8ta3ENDZx8e/Qi4RIN5ND+iTnFPWkHYB2UhM0d5H1udVV12rXdIPb7uGHz47kzs8gTJXSh7T5J84aYUk7fO85yAavXj8ytQZhEcanntMhG9IxrvB547ZH18DEpK+V+XnrG40uWoVrpxhnsqWBJfi6+7aNiAI80eoS5tqKuvr0RrDbIJmAJa5jbXBqHid1BEs7UU8JGbngICTdCIPKfUxLBWt+2YPeR72w3A=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AA084160008
+X-Stat-Signature: gcwkujhocdxonrtmqcobcgpx43e7as5u
+X-HE-Tag: 1764830817-447166
+X-HE-Meta: U2FsdGVkX1/hIWS4pQ7aMXZam2/Y8bgXY3d7s1raTwZZb8DIlhZia0fFwu2pF1HAntUVSbkpxRRuJRd10TqWU8X+Wlwbe7Gr0zmSlgSTq5w4H504kzJ/IKI8+t5F7Fwhpb/qyVw7nv1NkO+yeU6ryslaqpNgoSd4u1CuCqVHEueUpLiDl2qt5nTH6A58bSspN1ADwSWy+kaS9NrFe4op7HDTv/OwatbftnlVh/Rzby0qK3qJ79x89KGk36pEXhbkH9AYTQkmIH/tisdEQZULLiwpWnt7X7yffyk1M9DI2j+E/VqCfbmz8+ZHCyV5t0CNHpqEVFhP2PWQmr736rZvwfrEsyLG374hCYVk2R00CVXBKW7JVYExxfQR42mcKglOzQryixy5SQsuqSaQ55uIHxyU0Qc2cx0uWjZpm4pgQq7WMpdi63+2DGIr9chWQ1aW7CSCeLm2DCPntsmpdg/SB7MBhfNR32gtDKWXEp9VuAxdhdElh0zbLxyZ8hkToeRHN51fuS1JEgo4AIW+zy3HbHu/1672okW0AYwGy4++TvCtmaPUuE1kC93CVxPrFjNMGxNb2nl8gDTC88amREhhbT1kTzBfV/0lgZLY/qpjRLXECFWTXzSjbVG1TUxVPe5YaDrPvpdVRMrISmR9oqmRBBK/Lfjq337kzwiq4RmFph2vS8fpvlyw4pJ6pHKGzWVlOY8XOtVCteEcS7bB+lEMNoVKyNmz0hydDYTafIncceTAWtuSRmTJqNGbd+R2jW0IZuoDlqZhU0S4XSsR/bQASREdWXMmmdNtfNqjmWAgLp0SPmhiZUnmdgtAZCw66u6mKZ5hQ6wpnHq6kT8FY2AhF5y3tqxe3VFM5b9xbtsOIEWYMBUyPaSWSEQG3DZVyjJab9TD5WC8/eyWoLOeCfhe1yWh284JWEUDRMnl1uIyb0nC73YdP8R2Iw8IGuXHXxVKxg8ieHVWOK/+XAWlK0+
+ zv/XRf9P
+ gw7hHGlOrZOPHDyAAcXUefN2sU/qhwxuHt/42RGif2sTyNkEUp3pTwANvGtu0ZJCqM0RQM44mRGLSV318+q3xxPIhjA0kG2O3z/o/KK/ATLUXiDbT3aUA2qsAxzRhYsXtS0p+Ig69V/69zJOMjTSPXUfFjYa5ic5tmav56hmf3yhDxVjdiMk5GEJzR5390IyqIAXf3ZeT11AE4T0SvTXuLPUBW1GNtxY0vcNBTfv9gs3xHxxW2VRcpd2i1I5qo8ihdRYvaNlXf3TEgKKeealgPXQ0YqdilDe/YEdZS76POZR63bcpLsAecN8pq8wQAkhAFIxQST12diUbqqOsooCpyVWnkpMVPgJWixsULEiArYzTV2zvzysL0NVTdxX7O56T7gf1+c2tqpRfvrVSyD/JptViD1g5ZIPaGPO0p0FqRmKk5e0qUfC7xw5Ix/2EBV73+riGwfPaAB7UhmmVbTydgrNyfr2Km8o8i7rNOpVe/YHnRuUId26iCqUcszO1frKOa8q5z4f7NlBhDDUI+UtRJqGksQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,59 +98,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 04, 2025 at 07:17:06AM +0100, David Hildenbrand (Red Hat) wrote:
-> Hi,
-> 
-> On 12/4/25 03:33, Shuah Khan wrote:
-> > This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
-> 
-> That was supposed to fix powerpc handling though. So I think we have to
-> understand what is happening here.
-> 
-> > 
-> > Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
-> > systems. git fetch-pack fails when cloning large repos and make hangs
-> > or errors out of Makefile.build with Error: 139. These failures are
-> > random with git clone failing after fetching 1% of the objects, and
-> > make hangs while compiling random files.
-> 
-> On which architecture do we see these issues and with which kernel configs?
-> Can you share one?
-> 
-> > 
-> > The blow is is one of the git clone failures:
-> > 
-> > git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
-> > Cloning into 'linux_6.19'...
-> > remote: Enumerating objects: 11173575, done.
-> > remote: Counting objects: 100% (785/785), done.
-> > remote: Compressing objects: 100% (373/373), done.
-> > remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
-> > Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
-> > Resolving deltas: 100% (9195212/9195212), done.
-> > fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
-> > fatal: fetch-pack: invalid index-pack output
-> 
-> If I would have to guess, these symptoms match what we saw between commit
-> adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
-> and commit 5bebe8de1926 ("mm/huge_memory: Fix initialization of huge zero folio").
-> 
-> 5bebe8de1926 went into v6.18-rc7.
-> 
-> Just to be sure, are you sure we were able to reproduce this issue with a
-> v6.18-rc7 or even v6.18 that contains 5bebe8de1926?
-> 
-> Bisecting might give you wrong results, as the problems of adfb6609c680 do not
-> reproduce reliably.
- 
-I can confirm that bisecting gives odd results between v6.18-rc5 and
-v6.18-rc6. I was seeing failures in some tests, bisected a few times and
-got a bunch of bogus commits including 3470715e5c22 ("MAINTAINERS: update
-David Hildenbrand's email address") :)
+The following changes since commit e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c:
 
-And 5bebe8de1926 actually solved the issue for me.
+  Linux 6.18-rc5 (2025-11-09 15:10:19 -0800)
 
--- 
-Sincerely yours,
-Mike.
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git tags/pull-persistency
+
+for you to fetch changes up to eb028c33451af08bb34f45c6be6967ef1c98cbd1:
+
+  d_make_discardable(): warn if given a non-persistent dentry (2025-11-17 23:59:27 -0500)
+
+	Conflicts in Documentation/filesystems/porting.rst, fs/dcache.c,
+fs/debugfs/inode.c and security/apparmor/apparmorfs.c; proposed resolution
+in #proposed-merge (same as in -next).  Details of conflicts:
+Documentation/filesystems/porting.rst:
+	usual trivial append/append conflict
+fs/dcache.c in d_instantiate_new():
+	pulling spin_unlock(&entry->d_lock) from __d_instantiate() into
+	callers in this branch vs. changes of the lines immediately
+	following the call of __d_instantiate() in mainline.  Obvious
+	resolution.
+fs/debugfs/inode.c in __debugfs_create_file(), debugfs_create_dir()
+	and debugfs_create_automount():
+	removal of pointless check in this branch vs. changes of
+	(unreachable) failure handling in mainline.
+	Resolution: remove it, it's still a dead code.
+fs/debugfs/inode.c in debugfs_create_symlink():
+	d_instantiate() -> d_make_persistent() in this branch,
+	end_creating() -> debugfs_end_creating() in mainline.
+	Obvious resolution...
+security/apparmor/apparmorfs.c in aafs_remove():
+	switch of simple_rmdir() and simple_unlink() to
+	__simple_{rmdir,unlink}() in this branch vs. switch to
+	start_removing_dentry()/end_removing() around those calls
+	in mainline.  Resolution: switch simple_{rmdir,unlink}() as in
+	this branch.  TBH, I rather doubt that mainline change there was
+	worthwhile - aafs interaction with VFS locking is...  special,
+	and _ANY_ changes of locking protocol on our end will have to
+	consider that location very carefully anyway; making it look
+	like a regular removal is at that stage is asking for trouble.
+
+----------------------------------------------------------------
+Some filesystems use a kinda-sorta controlled dentry refcount leak to pin
+dentries of created objects in dcache (and undo it when removing those).
+Reference is grabbed and not released, but it's not actually _stored_
+anywhere.  That works, but it's hard to follow and verify; among other
+things, we have no way to tell _which_ of the increments is intended
+to be an unpaired one.  Worse, on removal we need to decide whether
+the reference had already been dropped, which can be non-trivial if
+that removal is on umount and we need to figure out if this dentry is
+pinned due to e.g. unlink() not done.  Usually that is handled by using
+kill_litter_super() as ->kill_sb(), but there are open-coded special
+cases of the same (consider e.g. /proc/self).
+
+Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
+marking those "leaked" dentries.  Having it set claims responsibility
+for +1 in refcount.
+
+The end result this series is aiming for:
+
+* get these unbalanced dget() and dput() replaced with new primitives that
+  would, in addition to adjusting refcount, set and clear persistency flag.
+* instead of having kill_litter_super() mess with removing the remaining
+  "leaked" references (e.g. for all tmpfs files that hadn't been removed
+  prior to umount), have the regular shrink_dcache_for_umount() strip
+  DCACHE_PERSISTENT of all dentries, dropping the corresponding
+  reference if it had been set.  After that kill_litter_super() becomes
+  an equivalent of kill_anon_super().
+
+Doing that in a single step is not feasible - it would affect too many places
+in too many filesystems.  It has to be split into a series.
+
+This work has really started early in 2024; quite a few preliminary pieces
+have already gone into mainline.  This chunk is finally getting to the
+meat of that stuff - infrastructure and most of the conversions to it.
+
+Some pieces are still sitting in the local branches, but the bulk of
+that stuff is here.
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+
+----------------------------------------------------------------
+Al Viro (54):
+      fuse_ctl_add_conn(): fix nlink breakage in case of early failure
+      tracefs: fix a leak in eventfs_create_events_dir()
+      new helper: simple_remove_by_name()
+      new helper: simple_done_creating()
+      introduce a flag for explicitly marking persistently pinned dentries
+      primitives for maintaining persisitency
+      convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
+      convert ramfs and tmpfs
+      procfs: make /self and /thread_self dentries persistent
+      configfs, securityfs: kill_litter_super() not needed
+      convert xenfs
+      convert smackfs
+      convert hugetlbfs
+      convert mqueue
+      convert bpf
+      convert dlmfs
+      convert fuse_ctl
+      convert pstore
+      convert tracefs
+      convert debugfs
+      debugfs: remove duplicate checks in callers of start_creating()
+      convert efivarfs
+      convert spufs
+      convert ibmasmfs
+      ibmasmfs: get rid of ibmasmfs_dir_ops
+      convert devpts
+      binderfs: use simple_start_creating()
+      binderfs_binder_ctl_create(): kill a bogus check
+      convert binderfs
+      autofs_{rmdir,unlink}: dentry->d_fsdata->dentry == dentry there
+      convert autofs
+      convert binfmt_misc
+      selinuxfs: don't stash the dentry of /policy_capabilities
+      selinuxfs: new helper for attaching files to tree
+      convert selinuxfs
+      functionfs: don't abuse ffs_data_closed() on fs shutdown
+      functionfs: don't bother with ffs->ref in ffs_data_{opened,closed}()
+      functionfs: need to cancel ->reset_work in ->kill_sb()
+      functionfs: fix the open/removal races
+      functionfs: switch to simple_remove_by_name()
+      convert functionfs
+      gadgetfs: switch to simple_remove_by_name()
+      convert gadgetfs
+      hypfs: don't pin dentries twice
+      hypfs: switch hypfs_create_str() to returning int
+      hypfs: swich hypfs_create_u64() to returning int
+      convert hypfs
+      convert rpc_pipefs
+      convert nfsctl
+      convert rust_binderfs
+      get rid of kill_litter_super()
+      convert securityfs
+      kill securityfs_recursive_remove()
+      d_make_discardable(): warn if given a non-persistent dentry
+
+ Documentation/filesystems/porting.rst     |   7 ++
+ arch/powerpc/platforms/cell/spufs/inode.c |  17 ++-
+ arch/s390/hypfs/hypfs.h                   |   6 +-
+ arch/s390/hypfs/hypfs_diag_fs.c           |  60 ++++------
+ arch/s390/hypfs/hypfs_vm_fs.c             |  21 ++--
+ arch/s390/hypfs/inode.c                   |  82 +++++--------
+ drivers/android/binder/rust_binderfs.c    | 121 ++++++-------------
+ drivers/android/binderfs.c                |  82 +++----------
+ drivers/base/devtmpfs.c                   |   2 +-
+ drivers/misc/ibmasm/ibmasmfs.c            |  24 ++--
+ drivers/usb/gadget/function/f_fs.c        | 144 +++++++++++++----------
+ drivers/usb/gadget/legacy/inode.c         |  49 ++++----
+ drivers/xen/xenfs/super.c                 |   2 +-
+ fs/autofs/inode.c                         |   2 +-
+ fs/autofs/root.c                          |  11 +-
+ fs/binfmt_misc.c                          |  69 ++++++-----
+ fs/configfs/dir.c                         |  10 +-
+ fs/configfs/inode.c                       |   3 +-
+ fs/configfs/mount.c                       |   2 +-
+ fs/dcache.c                               | 111 +++++++++++-------
+ fs/debugfs/inode.c                        |  32 ++----
+ fs/devpts/inode.c                         |  57 ++++-----
+ fs/efivarfs/inode.c                       |   7 +-
+ fs/efivarfs/super.c                       |   5 +-
+ fs/fuse/control.c                         |  38 +++---
+ fs/hugetlbfs/inode.c                      |  12 +-
+ fs/internal.h                             |   1 -
+ fs/libfs.c                                |  52 +++++++--
+ fs/nfsd/nfsctl.c                          |  18 +--
+ fs/ocfs2/dlmfs/dlmfs.c                    |   8 +-
+ fs/proc/base.c                            |   6 +-
+ fs/proc/internal.h                        |   1 +
+ fs/proc/root.c                            |  14 +--
+ fs/proc/self.c                            |  10 +-
+ fs/proc/thread_self.c                     |  11 +-
+ fs/pstore/inode.c                         |   7 +-
+ fs/ramfs/inode.c                          |   8 +-
+ fs/super.c                                |   8 --
+ fs/tracefs/event_inode.c                  |   7 +-
+ fs/tracefs/inode.c                        |  13 +--
+ include/linux/dcache.h                    |   4 +-
+ include/linux/fs.h                        |   6 +-
+ include/linux/proc_fs.h                   |   2 -
+ include/linux/security.h                  |   2 -
+ init/do_mounts.c                          |   2 +-
+ ipc/mqueue.c                              |  12 +-
+ kernel/bpf/inode.c                        |  15 +--
+ mm/shmem.c                                |  38 ++----
+ net/sunrpc/rpc_pipe.c                     |  27 ++---
+ security/apparmor/apparmorfs.c            |  13 ++-
+ security/inode.c                          |  35 +++---
+ security/selinux/selinuxfs.c              | 185 +++++++++++++-----------------
+ security/smack/smackfs.c                  |   2 +-
+ 53 files changed, 649 insertions(+), 834 deletions(-)
 
