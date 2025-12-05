@@ -4,92 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53506D3749B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 20:18:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CFAED3749B
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 20:19:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD8DB6B02DF; Fri,  5 Dec 2025 15:18:26 -0500 (EST)
+	id 7F44A6B00A8; Fri,  5 Dec 2025 15:19:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A88AA6B02E1; Fri,  5 Dec 2025 15:18:26 -0500 (EST)
+	id 7A45C6B00A9; Fri,  5 Dec 2025 15:19:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99E036B02E2; Fri,  5 Dec 2025 15:18:26 -0500 (EST)
+	id 693EF6B00AA; Fri,  5 Dec 2025 15:19:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 88AA36B02DF
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:18:26 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EAC2B8112
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:18:26 +0000 (UTC)
-X-FDA: 84186529812.29.4E8C19F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8415D40004
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:18:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GzuH+956;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764965904; a=rsa-sha256;
-	cv=none;
-	b=qMxxsuLewoFf9Q/0sq2HzeVLPjb6y4R6n/FQeZN8vh9gxepZINRoRyja9mU3c4cDmOKfvs
-	1sIwQ/YrWci+kfl4H3WLkJKGBRxfMsrj7U6/n/FN5ZnUZiUlry9Q+Qm/iiwLq+gHiIlkya
-	NamN+TmhN5J6sbPBBkr0uXJ4rlZgF9s=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 55A336B00A8
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:19:11 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 219DE1A02E5
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:19:11 +0000 (UTC)
+X-FDA: 84186531702.20.3D3D403
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 83E4514000D
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:19:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=bxqGkefi;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764965904;
+	s=arc-20220608; t=1764965949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ipnhun9JCYpSoxIgvOa6fJKBnTUvOlFwPhsQMnHoalk=;
-	b=IccIlqXqLYIMuWKY5G8qaBdl0w6Ucias99DO1NBjftFVDSzoUKckrpIEnwOJ9mfwsyT4N/
-	aCzfuvh0Ljvnk6xT/w79lH/ZtZdweCJwD2kQYKXtnV7zJsNg4B6q4pFedDzqe4zz/UuirU
-	spA3FXJmn6lJtx5uAaUehHcaZicudyc=
+	bh=+k+j5zpiOXPUaOMclkmVjKztohgymIQPYnO7V/a+C/w=;
+	b=iuAlYM8tkBF7IlWDmnuRMmjT6qFvEd50DeoF6OpSG2vA2JOH75KwGJSY5ArhAxbeTBxBTL
+	ex3QNYWfwF+Swp6O0sTX8uWDXI2j7C+LXICRur366Co3wfaXffyCnsr9sPcxBYLSZSDBQ2
+	G5sxVpq4MfUqYd3kZ/4sd5zEAgTcobE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GzuH+956;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F28C360138;
-	Fri,  5 Dec 2025 20:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2623C4CEF1;
-	Fri,  5 Dec 2025 20:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764965903;
-	bh=HQuk+LoAt1ilJ9+l61gCZEqNMa+zVqm+64YEoeQNKEs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GzuH+9567mOPIpXag3z4woawi3CLBh4zMhzSRFmboSOtbW7UriLFohM5GrBEMfzOF
-	 Pr7GUS4SVmWspQ6MMaXW5tV4l8Twf+SG7qIs73eT9lhKZLu8Evh5Gm+UCp73zHLvMo
-	 IuACR/G6fW+Elvl3OuTY6/wlYIBx3xFTEbk0LKMPHULzroa4DmVuppLhVhFB2gb+KQ
-	 0yv0eWOiHFA4wyn3xOX17J3lMR/1jl7Ii37Zm14qDtcglmJOHdAw38h7NDuC2iDVEv
-	 x+EKiklJUNGuEmYfQaF6KOylBc+xRrkEhpUxB5X86PwQRIU3XEjnvf2ZHdIZsp2N5l
-	 GAQGxE/VtL64Q==
-Message-ID: <dcaba52e-7af0-4a36-b2f9-dfc2f83a4e10@kernel.org>
-Date: Fri, 5 Dec 2025 21:18:18 +0100
+	imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=bxqGkefi;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764965949; a=rsa-sha256;
+	cv=none;
+	b=mQb9On6y9lI8CK18u6cFayqOp9C87nZm2PG70sIhuxyWTfaNaGtNnjzOKsbjIOsjSEezMv
+	Bz7QfyKKQbx8+GVqHnfglPSOAvhV3zNrmihKsICdNjUTmXsAW2mngDMaSkvQXuMViLYYFM
+	YZcFHPuVeGV3HCa9YozqH9mvZevTFBU=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E159140E0218;
+	Fri,  5 Dec 2025 20:19:03 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id YMkoYSsiYCqw; Fri,  5 Dec 2025 20:19:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1764965939; bh=+k+j5zpiOXPUaOMclkmVjKztohgymIQPYnO7V/a+C/w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bxqGkefiEe2JFBIhARr9tXH5BeezbVW/58uxKq/Tfdv1Y3tcJ64dJ1cdY5nzgOcDx
+	 Me/EwWk+UXXs5J5ilfhEsv4wRvMy6BoVgrjCQn7zbTZT2qYHO7fKRxALp2n6Qt5htI
+	 gTAQ7c8xibH7fPZ24PWS1/mprjgWrwEhVK5CwZ82QcZ5336mD6SqPK/onz+yTMAXLP
+	 Uo4I7c8WqByXwRacksIdRkqnh8YO6p8CMsqM/PCHezHIYa9d4lP93ibGWI3ZNiVxAM
+	 mPb8gsmuEss401Wbz/xAbQNSUOuwu1r41oOvGUaV5kZBIn4MHLDAY7CJYqZBL9W3ap
+	 laFZ7I+Zcr/T9Q/3ukCSfpG9cZXEK5vOti5wbd4vPFVuUFGTZ5MyID5VShadi3zIRl
+	 xGQjT6zxjvwEqh0co2EFJhK3Wd2fCAbzZ0qQWgj1uBN8lkhIN9EAp7ruVUbMpryNy7
+	 Jki+8RlqBEddLzRCQhp0Rdzku+HsxukwOUwD/gyU69z3FlEw5ppsXfaJyz+G7RLJzh
+	 93hDC8gTmjSc4rYF7NhWhumcNWaQKLgqxtOxNJQCwIdPBsVUgVBY9zZpFZ/dqOCZNB
+	 Er3+sydfYNzFkSoqjM9orlD665WhWzJ3uGh+eWKn7Ik+dRECEpFAfI3O1YBJgdo385
+	 7MzW5WnEhsH8ZS8oz2Pgz8H4=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D6DE840E0173;
+	Fri,  5 Dec 2025 20:17:54 +0000 (UTC)
+Date: Fri, 5 Dec 2025 21:17:47 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: debug@rivosinc.com, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
+	richard.henderson@linaro.org, jim.shu@sifive.com,
+	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+	alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>,
+	Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
+	Valentin Haudiquet <valentin.haudiquet@canonical.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Charles Mirabile <cmirabil@redhat.com>
+Subject: Re: [PATCH v25 00/28] riscv control-flow integrity for usermode
+Message-ID: <20251205201747.GAaTM963Zy4gr820KV@fat_crate.local>
+References: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com>
+ <d45808b5-44c3-42c6-a54c-3a13606ee39d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
-To: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- oliver.sang@intel.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
- <20251205121501.bf47efd78d0a1a8f0370645c@linux-foundation.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251205121501.bf47efd78d0a1a8f0370645c@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8415D40004
-X-Stat-Signature: mbn77ydaf45wcu68k4tjhmtard5ffeu8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d45808b5-44c3-42c6-a54c-3a13606ee39d@kernel.org>
+X-Stat-Signature: cp9sdizfx4mjnwjmf5teyga64y5q6s9n
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1764965904-389201
-X-HE-Meta: U2FsdGVkX1/CL5bBNEDFkyJhd111yvT/sZ5DG0Ajd3fo1JQXELGdR04Q3muC5vmT5HRFI3hFgXX20+3dccsLZQHOWU/A6p7vNjeqkVoLWRnQn64ffnZk0AcoTsjRal1f3fTCWTIH770mfW8niZ5oVlzI/kEA+EqW4NqkT7QJkWebECyKVTNgs6dym/lbRLgtP1IWFwkjM8NaYmKRHSvRnBHXCKwYB9z+Jne0C2bTjI6HVCzpzWH/npFeidrpErIHjfY9E3zhAwSjs1CXaFTCyrFMNmH4QW8g+MwRd1O9S9nd1guPLy5cFmQWLmRfFH96OjXBjN92Zxs7q3haCgnjyciFIKMC92ppc+c9kPMNv6Hnub0PNztXF0U13aq38FVamOmgaJMwQY5MNxN2BFWn06BHIygzUyYnp2xLwx+Tz4ApEBZhwoekrcIxlEtpT7TJBCiUNdN3bYA9RTF3hga6YWpjwnCN31lJ2qsdM4marYBGEtwpL2AGXIrAHzV21MmrTVP6TtVnYkfLQJmUmp3qMlGvFDeUq6lZEaDdMcqatrOkLhXX2v06ihbVRpauy+uVfdwY2xyCDeWWOpG+l1XZrvrWoPAXOMJELLRUQDXkgGtkqfOBd/pVMKUutq71HGVfAllJk1fZ58bNINA8xchPncfPoGyHjspMpPvWiRFXqy7cISJYRZd6fCDKyPxv05RDZOKarUXHyRZNW7Bwus456/bxHl235oXYwHLOck9oRGcwhJUyp5WoUW5u6xHA3gfcb/ohdkWqUv/5caAuKEGQwLXJS25oIJGp45tjUs88ViVWT0fdEotxzqN8RA759GQ94r07j2hTlTqhcNh8joCljJYf3Azu8hFfeWHEGyz6P0e18AWOiUQPVqA6gJ5uh8In6FZetulnUXJAXc2BtYvyP4hvEpFdhew/gCpnWHfobPLcqmHe5K+4sYb+BAy6W3IicGoOQsir8P64JC4qz9M
- 23p3j4Ro
- 4MaMjFiCMUfre/+6u91aOC7lY15oRV749Wks/u0XZIAdtTPOMFml6BJVisQZ8mlxAR9HYBKnvSkg/F+ZHTUJ89NvY1Q2gIkRvaOpqlAyORFG2nT8UCL51E1MkySpgCW0waeMOFe1aPwBDt2i52wnXFIXbCNUmQIsguS1CmDF0nIwmGfHGbz+r1jBEBf2B96KBK4lQZNLVbML9J2f1XEwxX9U5ud9niMocclQCmcGg2EKStmbZRPb8EcIZ8xkNi5XAnbVdeRfH/6qPcl7HtGvcam5aoQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 83E4514000D
+X-HE-Tag: 1764965948-676313
+X-HE-Meta: U2FsdGVkX1+j+S9Mnx+DMbcM4QlYiUfbUTFN1fAcHMuo8Che2ZCvGClgsA6tiebtrqY9SpybMjfojc7xG3XWBpihLPgGF7VXEIa/UFBPkeVHjQWqJ+VvF+uYq/E7ZtnsMfF1Xvy6UYiBp8UNB9/juGFggidnwqgyV/cIMRxncabIMeu/4Jggzck4Vk2AHdtrt8sCPfqZkBHZqhes4MAt93UxS2cJitcGqZN+XkYxQbCEw5NBaM+v3Ua7fAUj/ybXlNaMI5CqTlTKy7sbu0BZtGr6m1SmflMNmEcP8AYFVYJQ5aWt8GUAcrtO1c60K/++z/c5G7Jq8AYyr6GTlYZOE4qcb36QlPVUPoC9MENuJRLUAUbP7z4gNdwSufLkO5QNPgd9Ux/p+42d52g8BOIHe2dQapznWIwnbG2MeR0/W3wEHAl1JH67poKNNDMS4+TQjy1btflcfZetAduDz7PpipcRHM2Uz0A9AAnhyhVC254i/82RAulgCs48NQSC9aYHxsx5VlxPKxTPYhI1EWhivMhur9Yl8tSPGpLVMlmNxf++wM36/wKVDIH/KZ5zvJVwDtCS43BQYJ28Bcklasu0k1l0YsTnYahx+bCT30dKbK2+wGSyXpp3mDbHRtBLZ4RKqUIY3xQCjq389DGiIU20++O9NL2pF2vdaGJ+VwZ8p/6+kkoktu7ZqCZNVN5ewGCzzjUyVTre4244QGoI2PFlBn0Okv/M4vYU4hf9PZAC38RZoUh3zW7sEf4FmcfsNNB/U93OJvMzk4RJDtYW1vlQ5ixKmsjQfLitssfQHZZ0ufNIRQcRnZbb8yyevjvrQcx8pLOoBA+FPXDTRaVHu1TeO65nw5S2OEL4zbb1hk/igDWH62J6iH5rnN+oYRY0i6LSs9yikO/Svlgv6xFyHDbnJQBsgFDcvQXRf7TZH4MLJcY/7+B6plS5wCXxdSvyDdxzUNI/JnToH2RlGotLeTq
+ kDZ7D55c
+ TLSbJ2YdNZzHxPP+jCPums9JNLX0GJ5YzOGkUsoNtcuW+SvvjtwVHfzJdBtkRnmvhpDVLC5T5MM4/f9t30UR+flV8HpIXyLEcFdKvW9NpzeWUHQEQhwYwzywQwEqyvavtomoeMYp2bRHQuP83/G417PStlRyoHnhqA1gBXwVRsugAGG3f1iQAjITCPm67CIvSsVk2L1JUlxHZMnanm+0zk/x109YWdx2IffSbO2E6R0v1xwdFrx9Kd4l7mz+nz41pf5VXgHAhgblU3fcy8EbqMfR5/6eUBzdwA5rr6tbT9II0Ewc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,40 +143,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/5/25 21:15, Andrew Morton wrote:
-> On Fri,  5 Dec 2025 17:50:37 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> 
->> Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly changed
->>
->> ...
->>
->> Andrew - note I've referenced the linux-next commit number above, could you
->> replace with the upstream commit hash once your PR is taken? Thanks!
-> 
-> That's in mm-stable so the hash shouldn't be changing.
+On Fri, Dec 05, 2025 at 08:32:32PM +0100, Krzysztof Kozlowski wrote:
+> On 05/12/2025 19:41, Deepak Gupta via B4 Relay wrote:
+> > v25: Removal of `riscv_nousercfi` from `cpufeature.c` and instead placing
+> > it as extern in `usercfi.h` was leading to build error whene cfi config
+> > is not selected. Placed `riscv_nousercfi` outside cfi config ifdef block
+> > in `usercfi.h`
 > 
 > 
-> I'm not really sure what's the best way to determine this.  I use
-> 
-> hp2:/usr/src/mm> git tag --contains 2b6a3f061f11
-> mm-everything-2025-11-29-19-43
-> mm-everything-2025-12-01-19-02
-> mm-everything-2025-12-03-23-49
-> mm-everything-2025-12-05-00-55
-> mm-stable-2025-12-03-21-26
+> Please stop. You sent this 28-patch-bomb TWICE to 50 or 60 addresses.
+> It's actually merge window so it should wait in the first place, but for
+> sure sending it multiple times does not help. Please observe the Linux
+> development process.
 
-I asked myself the same question a couple of times.
-
-Maybe this?
-
-  $ git branch -r --contains 2b6a3f061f11
-   mm/mm-everything
-   mm/mm-new
-   mm/mm-stable
-
+You can just delete them. I don't know about you but riscv shadow stack is not
+something I even pretend to know so it all goes to /dev/null
 
 -- 
-Cheers
+Regards/Gruss,
+    Boris.
 
-David
+https://people.kernel.org/tglx/notes-about-netiquette
 
