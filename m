@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CEF1D2E016
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C9BD2E017
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B49D6B00FB; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
+	id 547B96B00F4; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A9106B00F4; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
+	id 38F0A6B00F3; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDEEE6B00F5; Fri,  5 Dec 2025 02:20:04 -0500 (EST)
+	id E655F6B00F3; Fri,  5 Dec 2025 02:20:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8990A6B00F5
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D1E16B00F4
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:20:04 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5166A1A04ED
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 67B4E51E2A
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:04 +0000 (UTC)
-X-FDA: 84184568328.05.5D4EBD7
+X-FDA: 84184568328.30.A72B7CC
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 66E36100002
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A5F4180008
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1764919202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=igOAQV6CSHNc2r3QYmChQK0lqKt7aIgNioL79ZTzzhw=;
-	b=Mmkm0C0h8poNDiAF01izaT1DJaUy6zdU0WzHIjw+bvCxRpyqag0o6XCvi8rJlZk40C180/
-	sK3PXAW73uQPb03VkT3sZqDn3VFUiXps/Hd/95GPxhXPoiVm078qIAvIjI2s2YWFNvrxCl
-	rbDXdwHYCSs3gC7zLn9163TcLLY1OZQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	bh=Vu1ujTQiPlAM/knJ0P2/edDU1UsUdkwH4UafbJoB6yo=;
+	b=HjmRTwQTNFBk74TwaQqxPTPJuGlED6tHC8FZ3FZ+GjnLlA/EwAXG6i/UpkfyNtD0FWpogM
+	MaAR8HOes3xiTBu/ZyL1oR5RyJSCklZcuoi18kQAALwWUethvVsaKdvrI8lrai7Nj9PSoW
+	sTYR3l+pZRVJ8f4vMOOTeTqy4FN7GR0=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919202; a=rsa-sha256;
 	cv=none;
-	b=rgCEvqGIUf7GuKyz49n/VJwA8zoE8ff4o0YCqQvsevKVYU3GlSRyfOxKqAVqotMN5OCVbE
-	HQ0oI4hHA/+e4kV11zjI0OQmxj1mNJ1WVvB2gIgOWus68cDb1Qd+9EGmgt8//Jt1C4r8D4
-	BqeOz/lJAeI7PjgO2JR6Par0vNl4mjk=
-X-AuditID: a67dfc5b-c45ff70000001609-4d-693287712395
+	b=E776EZtDeF+Wyoi1eN+oMjLU7b2Oxqvt5vRyDddH55FFND/8FkSnEYB6EHeLU2qEj/Hzui
+	l0HRLoOx05wPo4H+WgG3Oyc2Ws2lJ49kZIe0lGTYfHpNVLM0VUI0dcGL7TmRXUpm0R5DHF
+	dZppuMrhPb29EyyE4lCThhWyyQqYXvU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c45ff70000001609-8a-693287722131
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -212,53 +212,54 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 28/42] dept: assign unique dept_key to each distinct dma fence caller
-Date: Fri,  5 Dec 2025 16:18:41 +0900
-Message-Id: <20251205071855.72743-29-byungchul@sk.com>
+Subject: [PATCH v18 30/42] dept: make dept stop from working on debug_locks_off()
+Date: Fri,  5 Dec 2025 16:18:43 +0900
+Message-Id: <20251205071855.72743-31-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSfUhTexgH8H7n5bc53OXcJXRSwVhEYGlaGU9Q94pwbycouFD9UUG3Ux7a
-	oU1tmi9BZOVwmXnNmN3rqtksGWq5tiK1TLNaWa6tN11lzsy3lS9grmFpu7rovw/P9/k+fz1S
-	UvGajpSKaVmCNo1XK7GMko2Gm+O0hSvFhIeWSNDrjkDn0VYK/JN6Cs7V12GYMd6UgPtqLQKv
-	X48g8M1Igq4xSMHk1FsJGI4iCDY7EHjcLSR8tn7H8OneBALD+34M49XFCCoGjRLwPdgAo95b
-	NATfDRFQ3f+dgP7WQgQmsx3DN6eLhLMGN4Lrjh4EzZZjGAZKb5Dw0j+Ood1wEsOYFcN5YxmC
-	41X1GMrP2yho7G2SQHd5GQG1ts3grR6kwHh2mICOqu5ZOV/Q0GepkECwMh2ujrpoaO/ppOFm
-	fq8EbB9m9d+Fbgz6mUkEjoY+AoqtN2joqQvSUD/kIeCJ4xEFrqYrNFzuekbA+14PDXZnBwlf
-	SqLAffoUDZ7SAQRXxswYzowNouRULqAroTjd8xnM1V2oQ9y9kXGSK7DncJefjGDuq/8V5h6b
-	We60M45rrHgn4SptB7mC+6M0Z7fEclW3fQT35tN6zlZzAv8Vt0O2LlVQi9mCdsVvu2WqsjtF
-	dEbf2lyXb0iSjxrji1CYlGVWs03+f6mf1hlriDljZinr8UyRc45gFrH2U4N0EZJJSeZFDFs4
-	VRIK5jPb2WvDplCZYpawAWcHnrOcWcMet7cRP47GsLXW1tB+2Ozc0PU1ZAWTxJqKAqGjLGMK
-	Y1va2/GPwkL2rsVDlSJ5JZpXgxRiWraGF9Wr41V5aWJu/N50jQ3NPlz14emdDWjCvaUNMVKk
-	DJe35iSKCprPzszTtCFWSioj5CPqBFEhT+XzDgna9L+1B9VCZhuKklLKBfKVX3JSFcw+PkvY
-	LwgZgvZnSkjDIvPRn8oC9NCRvE217uPaV+W/R/Bmbdle78aYVSkbjG7bxnkpnYunc/YlvhSL
-	Ta8Lcxcca3h6P6klqeGfAsMv/clKuSM6unlPYE3WsviEVRcPtdjm+4q7zJMVKc826fRbfQOi
-	Zljj0uT3pFi9B7Iyti7v/EO5K6rb+Dl60/5w1fQEf+lXJZWp4hNjSW0m/z+YVYC2bAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTcRTG+7+3zdHkZRm9WVCMLhBlKl1OFJFf8o9g9CGK+pIzX/LFOWsz
-	SyNqruVaF3S0SXszzXSV01JnpdVSlOympK3ULqbFsoaaZepwpjaNvhx+5zzPeTgfjpRU1NLh
-	UkGTzms1KrWSkVGyHZsNaw7nRAuRP3sXgsl4Ej72eGno0DdQMDpiouDKnXIGJsX7EjBVX6bh
-	WWc2BW23nQh6Rk0I/BMiCca6aQomLc0SGBn/IAGrHsG0uxmBrd1CQldbPQnlNXoCfldOMdDf
-	NIzA+tnLQL5PT8GQ4zwCe58oAd+TWBjseUjDdPc3AjrHBhA4vFMEeBtyEEzaUqCw2BVct/1k
-	YKL1FQn51jYE1z53kzDs60VQ0/wJgftmNgNfc++S4PGGwpvRIQaeW88xMNh+hYAflQwUZbtp
-	aG/pR1AgWhD0vXcTYLh+hwFbQTUFdb0PJNDe/4eAjzYLAc7qeOhx9FHwMreYCJ4bdFUtADHf
-	QATLdwKsFQ8JGHeUSbaVIuw3XqRwmesegY2vJxlcfrUc4YmABeGRUgOJjbnBtmlgiMSnXUdx
-	6csBBgdG3zLYPVZE4RfFHC45GyBwXusaXGfvluyM2SfbksSrhQxeu3ZrgizZ8thMH/qy6dgr
-	3zfJKVQXYUYhUo5dxxnFMmKGGXYl19U1Ts5wGLuUc13oo81IJiVZzxIuZ/zirDCP3ctVfS+k
-	Zphil3P+1hZmhuXsBs7gaiT+hS7hnJUNs/6Q4NzaGZhlBbueKzT76VwkK0JzylCYoMlIVQnq
-	9RG6lORMjXAs4kBaajUK/pPjxJ+8WjTiiW1ErBQp58objkYJClqVoctMbUSclFSGyQfUkYJC
-	nqTKzOK1afu1R9S8rhEtklLKBfK4PXyCgj2oSudTeP4Qr/2vEtKQ8FNoRY0u/tYt14V5VOz8
-	wK/E+DT75po4W3LJjY2mqIgVOPQ+Tszj02sLOnaeGdtzoinag/M7B7dUxeigUJEYWn/Jt53f
-	WLFacM8RF2tUYn9M2HExZJHeHKc5s3rpo6QE++5d4RV2jbM1MPSgw+l/+sNT4ihKSF9oyTK+
-	w1lTy4aVlC5ZFbWK1OpUfwEB28b5SwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTZxjG953znQvFLiedxk/U6GrQBDcHBsz7x+JIpvHIXzo10ZmMNXIm
+	J5Zqyn3LsE4uBRW1SUGgIteGQI3aDgWEDdlEGaDFOujGpcVwkQgSkUIKOAYY/3nzy/O8z5s8
+	ycvTKjcTxMu6BEmv02jVrAIrJlaVfa7P2imHXndsAWPGWfBNGzFYbtlYeFd0jwOjvYABj8+I
+	IKN+EcM7UysH0/5eDsznELidv9Ng+/UcBW9v/8fCpPUigrGH+2Cxf5SCnplxBEPNWQjmO5/S
+	kG92Iigd7KdhasyLoKnqFxZcQx/Dc98kC23mCyxMdFko6Op4haDe28BBX56JAo91BEP+GAt5
+	d9ZCUf55amm8pMB88z4Ffms1Bx3lfRishmAo6nQx8KKqkIPWmlEO+i+bMbQNdDPwasTEgudR
+	JgP3DN6lQg0+DE3/bofSzAoMBcV9LDQ2tWFwNVhYGLAtMmAommXgWY0Tw61RNwXtrY8x9HZe
+	5qCyp4sCR2cHDc6rlxhwXxlGcPN1GRsZI85m5GKx2nGXEm3FNiTOz5mQmO5IFivbx1mxaaYE
+	ixXZc5RYX9jPiSX2RDH9zwlGdFSFiOWNY5RYOuVjRHt1Nivap0zcgZBvFV/GSFo5SdJ/sft7
+	RezcQi99ZlCZYjJlMwZ0PTAH8TwRwsm1woQPaLRtyEEBPCtsI263n17m1cJm4rg0wuQgBU8L
+	rk0ky5+7YnwiHCS2xjq8nMVCMKl9wi3LSmEX+eeBi1lmImwiNbebV9YDlnRzz9wKq4QIciNn
+	duUmEcoDyLC/hX0fWEceVLnxFaQsQR9VI5WsS4rTyNrwHbGpOjllx4nTcXa09G/WnxeO16Ep
+	56EWJPBIvUrZnBwmqxhNUnxqXAsiPK1erRzXhsoqZYwm9UdJfzpan6iV4lvQeh6r1yp3ziTH
+	qISTmgTplCSdkfQfXIoPCDKgw2ERiwsFu/enh/vpbzZ6hN8i6waihraG7j/UnndqT0V3ZNqa
+	MndNRNigvThu9P6jY3Vv1qSu+zRLPWkIjD7y0/ATXffw3r/a1m9VKXJrn772HB8wBf0QGW3x
+	Pvvs6LaStLQNg28Of3cHyu0nn0dF1XrJ3ZGNylj+qz0J/q9l+INY/lbj+FhNWAitj9f8D5qj
+	NXtrAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93XrqvFZQreLDJGDwrUjB4njSyivARF9U8PAl12y+V8tJVl
+	EPloOdeDeWOTWqZpjtBVplmajUzLUntsWWmPZdZaiZY9Ns3ptCn0z+Fzvg84fxwal94iQ2hF
+	ygFelSJXyigxId4YnRO2P3eRYmHRieWg1RyD911OEl5nNRDgcWsJuHDdQoHPdFsE2qpzJDzu
+	yCbAdq0CQZdHi2Bw2ISDpm6MAJ/QLAL30DsRGLIQjFmbERjtAg6dtns4WG5mYfCncpSC3qbf
+	CAzdTgoKerII6DefQnDeZRJBz8NY+N5VT8KY4ysGHQN9CMzOUQycDbkIfMYkKCqp9teNPykY
+	fvochwKDDcGlbgcOv3s+IrjZ/AGB9Uo2BV/0NTi0O6fCS08/BS2GkxR8t1/A4EclBcXZVhLs
+	T3oRFJoEBK63VgxySq9TYCysIqDu4x0R2HtHMHhvFDCoqNoAXWYXAW36Esx/rj91IxhMBTmY
+	f3zDwHC1HoMhc7loVRniBjVnCK68+hbGaV74KM5y0YK4Ya+AOHdZDs5p9P61qa8f545XH+LK
+	2voozut5RXHWgWKCay1huct5XozLfxrG1Z13iDat3iFesZtXKtJ5VcTKeHGid+QdntYtOSwI
+	eWQmKpysQzTNMotZrWWGDgXQFDOP7ewcwsc5iJnFVp92kTokpnGmPZTNHTozYQQym1nL3Vpi
+	vEswc9iaZ6JxWcIsZd/cbyfHmWVC2YrKhol4gF83dHgnWMosYYt0g6QeiYvRpHIUpEhJT5Yr
+	lEvC1UmJGSmKw+EJqclVyP9N5qMj+bXI3R7biBgayaZIGg5FKqSkPF2dkdyIWBqXBUn6lAsV
+	UsluecYRXpUapzqo5NWNaDpNyIIl67fy8VJmr/wAn8Tzabzqv4vRASGZ6FOuRx+1LDg1L06Y
+	Vhj76+ze0GjnhuiZMZFcRIJ0135HZtRz2zpX/WhZ3d/YmCO+uX/rY6Jaz32+lscHTgoocr/V
+	F+swtDi1Bp3etpKcvjbOs2PngwH79tbA/HzDAluE8Ge7M7zUl/jAkdEy40NIz/zh1Vvmp+n3
+	qOKa2H3q2WseyQh1ojxyAa5Sy/8BP5Wpp0kDAAA=
 X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: 8A5F4180008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 66E36100002
-X-Rspamd-Server: rspam11
-X-Stat-Signature: j96zpict1dqqtjr74rr9zxsrb9hy37kq
-X-HE-Tag: 1764919202-399277
-X-HE-Meta: U2FsdGVkX1/JsIErXGw4qagLAnWvmLXGaxIymCCfB3oE2E/d9YKjQUW+zHNbvnaXZOfijwSAvPGKNXy0oO/mbc4AE3wzWIOqt2xGmRuY2GXwzJV6v7ZvVuhyokpZ19aDGs7SRfIkVIeoRmpBxXn0MwtaXG26gksTm8t8+zYIFzNq4K2Kapbti/rHjPBU4MKJobMyCZ7LevrySvTiwghH06gwAZABH8iMcSmM5+e9Pkr99/6mfZbKIlHcrjRY1PRTmhkZtiM7b7frtQa9ijm96hWN/2JcB7TCakYaXqCPIr82y38pI+96Rz4sb7pVkqOa3GsMNaGMmtL8EFAbUb1xP3VEaPeaKfUrxpLInOCdgvGrmYV6RsUzm+H9nvbXBMgt75PROXQxsvqu3tnfMzXsmS2ScoM41ckT7N23Bqh5TUbLXY5ko1LM+iiSxh7n7S3n8FB3a07AkXykmvzd+ZqQVzyt2AJBryf5FFs5iMQcv3NpiiDK75TOE+YvAZY7B1ZWII7I/1ffWfdFmqUI5+WmzBDipAupcvt2oJ9QfE953jtvDZABRUFDdHZBtH764HJEkEJmJGMA+qacs+ptg4Q16Psl9P91cDwftlrpKbXCugpTyuIob0+DnUnLCiG1Wlphwq4YHmSDz52t2dJjKcStcXWVg5s1lNxq36NJ24NCbjzuM5rz3VyzJHhlBMmuO9N8W/WHiz9dlef1xwTeCdfGI74ncln2zmE6tD6aDQ9ArCE4Lf34CZxDps7TA88hPRSW3BdjGEVI4XpG4YqpkGD8ihJBYySv41QAdbhae3J/mhOG0DJadHzhGuyd3cdIexJzj9Lr5n97TfBXeWLEmYcR7JbqGMDPr1BmYAKHFMGTdFfaC49LzzhSVWG5jCrZF3w5KfRoMopJgB4Y+cdozRWY1l5gamevlB60c4PguJ3s3fAY+Ty5oa3WFXU+lABlUfaN0YKrvjenqIY4BCu+Roz
- 1K/IvnV8
- e9Q7cTmj5DPPN/o7DBV9+knlzS7f6tYoAEp047U3RxhdrshrQ7U2PRx8MUUDkDrDWDJK8uCqsmcVs++IDvWB0MSvPrg==
+X-Stat-Signature: r31y4ytgceieq5fhzhhpijth5ut3so7m
+X-HE-Tag: 1764919202-932850
+X-HE-Meta: U2FsdGVkX194izgUVu4hrVRKIIZRyjUJrtc4DSk0VqTBGuTSIn3lZp1kJisW45leF5jiX2fdAC+NlxkZKmtrB/u5SK1AkLMfsCiXyDmJTLx6l5JhBGRZ990hxrz5XMLZHWf/Nivuz3yuRNFMWCkXo0DYXOnV8KgsfrLsgeivFEZ2rUasIddnZvp3H5cw+xgnhSK8qWnJgXJXK2GhawCfIKJrL+EfiiWyXV5g1Jpu+n4XABPH5Hbz8dUswZVq+LiudmcydIAaQXENh7eNtijD/kOUkDJ6BVm0FVeRnY7eJb9afE/JK+vnRA/g75q/UDbkz4KtcLjWCEIWnLfWQ9vwUpfLPQYhkltOE8mLVqiwUBAx7oPdReAmeXKdld4GPeMGI+8X4aXO5RArJGnEhspm6GZKwNhYm4TiYH25yQ2Sk4NygC5KYTulFn/YcE+65Tm22I+zhv9DZeHhIiR4U2YolFxJ/RYCXyjfs+mIQnso5TjjrDPMrfAqyUxT+AjORqJcM7t+ieRdB3U/9KJk53gwRMrw7APUisCX3PPl+Ov1pjOkxhgo9uQw2PglVh1k/AHoBCKMeOHCk6wYqNamBvRcCkd19Y/0zSwuPAEXr53Q7DUm4Jn3wbwvWCEpsUElI6pNV4hl9bOvnjxc6SPh6Ecd/gVp3gtkWehV3uxL/mIH5axcHm3mPgSnCRZbsG0lM23yuaytGNCLGGYpofc1zhid+f9I1qw8jXYhNiX+VQAaombSqSOCTe8TSPUyfd45QpTUG84xbr3FJe7GpAIyTlUqcMcRA5fgvv9gelIvfhXJdWCId9izIetN/rwrekbxC82fEjNOibI3aAUYMJVERtmgeo59VleunaU6p0/8BevtaVMQR6R7okqY1+K7E95pIV081lEZoMaA+8DKa679kzx8/HP/8otbIUnPgrHhdG+PvcmKdTbph8YxQsR7qMxHvb+nWycqR641KgxpWSoLaHU
+ hgsY/R9V
+ ZpQ/lR+Szvk9Bs9iNj1XmXS0Fcg70o9OjHMZdDu+RPi1DMsG/tvkh1pu+ACkHlyPMmRouis4gVuzLdww/ZOmelv9+O5yPDl0drkhIYafuoppRb902bEEmP+mJIlBV4uuyzkT1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -267,209 +268,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-dma fence can be used at various points in the code and it's very hard
-to distinguish dma fences between different usages.  Using a single
-dept_key for all the dma fences could trigger false positive reports.
-
-Assign unique dept_key to each distinct dma fence wait to avoid false
-positive reports.
+For many reasons, debug_locks_off() is called to stop lock debuging
+feature e.g. on panic().  dept should also stop it in the conditions.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- drivers/dma-buf/dma-fence.c | 18 ++++-----
- include/linux/dma-fence.h   | 74 +++++++++++++++++++++++++++++--------
- 2 files changed, 68 insertions(+), 24 deletions(-)
+ include/linux/dept.h     | 2 ++
+ kernel/dependency/dept.c | 6 ++++++
+ lib/debug_locks.c        | 2 ++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
-index f2cc7068af65..ca0ff298859b 100644
---- a/drivers/dma-buf/dma-fence.c
-+++ b/drivers/dma-buf/dma-fence.c
-@@ -479,7 +479,7 @@ int dma_fence_signal(struct dma_fence *fence)
- EXPORT_SYMBOL(dma_fence_signal);
+diff --git a/include/linux/dept.h b/include/linux/dept.h
+index bbcb48f6140a..8b41f7a65abb 100644
+--- a/include/linux/dept.h
++++ b/include/linux/dept.h
+@@ -142,6 +142,7 @@ struct dept_ext_wgen {
+ 	unsigned int wgen;
+ };
  
- /**
-- * dma_fence_wait_timeout - sleep until the fence gets signaled
-+ * __dma_fence_wait_timeout - sleep until the fence gets signaled
-  * or until timeout elapses
-  * @fence: the fence to wait on
-  * @intr: if true, do an interruptible wait
-@@ -497,7 +497,7 @@ EXPORT_SYMBOL(dma_fence_signal);
-  * See also dma_fence_wait() and dma_fence_wait_any_timeout().
-  */
- signed long
--dma_fence_wait_timeout(struct dma_fence *fence, bool intr, signed long timeout)
-+__dma_fence_wait_timeout(struct dma_fence *fence, bool intr, signed long timeout)
- {
- 	signed long ret;
++extern void dept_stop_emerg(void);
+ extern void dept_on(void);
+ extern void dept_off(void);
+ extern void dept_init(void);
+@@ -194,6 +195,7 @@ struct dept_ext_wgen { };
  
-@@ -526,7 +526,7 @@ dma_fence_wait_timeout(struct dma_fence *fence, bool intr, signed long timeout)
- 	}
- 	return ret;
- }
--EXPORT_SYMBOL(dma_fence_wait_timeout);
-+EXPORT_SYMBOL(__dma_fence_wait_timeout);
+ #define DEPT_MAP_INITIALIZER(n, k) { }
  
- /**
-  * dma_fence_release - default release function for fences
-@@ -762,7 +762,7 @@ dma_fence_default_wait_cb(struct dma_fence *fence, struct dma_fence_cb *cb)
++#define dept_stop_emerg()				do { } while (0)
+ #define dept_on()					do { } while (0)
+ #define dept_off()					do { } while (0)
+ #define dept_init()					do { } while (0)
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index a0eb4b108de0..1de61306418b 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -187,6 +187,12 @@ static void dept_unlock(void)
+ 	arch_spin_unlock(&dept_spin);
  }
  
- /**
-- * dma_fence_default_wait - default sleep until the fence gets signaled
-+ * __dma_fence_default_wait - default sleep until the fence gets signaled
-  * or until timeout elapses
-  * @fence: the fence to wait on
-  * @intr: if true, do an interruptible wait
-@@ -774,7 +774,7 @@ dma_fence_default_wait_cb(struct dma_fence *fence, struct dma_fence_cb *cb)
-  * functions taking a jiffies timeout.
-  */
- signed long
--dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
-+__dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
- {
- 	struct default_wait_cb cb;
- 	unsigned long flags;
-@@ -823,7 +823,7 @@ dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
- 	spin_unlock_irqrestore(fence->lock, flags);
- 	return ret;
- }
--EXPORT_SYMBOL(dma_fence_default_wait);
-+EXPORT_SYMBOL(__dma_fence_default_wait);
- 
- static bool
- dma_fence_test_signaled_any(struct dma_fence **fences, uint32_t count,
-@@ -843,7 +843,7 @@ dma_fence_test_signaled_any(struct dma_fence **fences, uint32_t count,
- }
- 
- /**
-- * dma_fence_wait_any_timeout - sleep until any fence gets signaled
-+ * __dma_fence_wait_any_timeout - sleep until any fence gets signaled
-  * or until timeout elapses
-  * @fences: array of fences to wait on
-  * @count: number of fences to wait on
-@@ -863,7 +863,7 @@ dma_fence_test_signaled_any(struct dma_fence **fences, uint32_t count,
-  * See also dma_fence_wait() and dma_fence_wait_timeout().
-  */
- signed long
--dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
-+__dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
- 			   bool intr, signed long timeout, uint32_t *idx)
- {
- 	struct default_wait_cb *cb;
-@@ -931,7 +931,7 @@ dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
- 
- 	return ret;
- }
--EXPORT_SYMBOL(dma_fence_wait_any_timeout);
-+EXPORT_SYMBOL(__dma_fence_wait_any_timeout);
- 
- /**
-  * DOC: deadline hints
-diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
-index 64639e104110..1062fbb637e5 100644
---- a/include/linux/dma-fence.h
-+++ b/include/linux/dma-fence.h
-@@ -369,8 +369,22 @@ int dma_fence_signal_locked(struct dma_fence *fence);
- int dma_fence_signal_timestamp(struct dma_fence *fence, ktime_t timestamp);
- int dma_fence_signal_timestamp_locked(struct dma_fence *fence,
- 				      ktime_t timestamp);
--signed long dma_fence_default_wait(struct dma_fence *fence,
-+signed long __dma_fence_default_wait(struct dma_fence *fence,
- 				   bool intr, signed long timeout);
++void dept_stop_emerg(void)
++{
++	WRITE_ONCE(dept_stop, 1);
++}
++EXPORT_SYMBOL_GPL(dept_stop_emerg);
 +
-+/*
-+ * Associate every caller with its own dept map.
-+ */
-+#define dma_fence_default_wait(f, intr, t)				\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, t);				\
-+	__ret = __dma_fence_default_wait(f, intr, t);			\
-+	sdt_might_sleep_end();						\
-+	__ret;								\
-+})
-+
- int dma_fence_add_callback(struct dma_fence *fence,
- 			   struct dma_fence_cb *cb,
- 			   dma_fence_func_t func);
-@@ -607,12 +621,37 @@ static inline ktime_t dma_fence_timestamp(struct dma_fence *fence)
- 	return fence->timestamp;
- }
- 
--signed long dma_fence_wait_timeout(struct dma_fence *,
-+signed long __dma_fence_wait_timeout(struct dma_fence *,
- 				   bool intr, signed long timeout);
--signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
-+signed long __dma_fence_wait_any_timeout(struct dma_fence **fences,
- 				       uint32_t count,
- 				       bool intr, signed long timeout,
- 				       uint32_t *idx);
-+/*
-+ * Associate every caller with its own dept map.
-+ */
-+#define dma_fence_wait_timeout(f, intr, t)				\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, t);				\
-+	__ret = __dma_fence_wait_timeout(f, intr, t);			\
-+	sdt_might_sleep_end();						\
-+	__ret;								\
-+})
-+
-+/*
-+ * Associate every caller with its own dept map.
-+ */
-+#define dma_fence_wait_any_timeout(fpp, count, intr, t, idx)		\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, t);				\
-+	__ret = __dma_fence_wait_any_timeout(fpp, count, intr, t, idx);	\
-+	sdt_might_sleep_end();						\
-+	__ret;								\
-+})
- 
- /**
-  * dma_fence_wait - sleep until the fence gets signaled
-@@ -628,19 +667,24 @@ signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
-  * fence might be freed before return, resulting in undefined behavior.
-  *
-  * See also dma_fence_wait_timeout() and dma_fence_wait_any_timeout().
-+ *
-+ * Associate every caller with its own dept map.
+ enum bfs_ret {
+ 	BFS_CONTINUE,
+ 	BFS_DONE,
+diff --git a/lib/debug_locks.c b/lib/debug_locks.c
+index a75ee30b77cb..14a965914a8f 100644
+--- a/lib/debug_locks.c
++++ b/lib/debug_locks.c
+@@ -38,6 +38,8 @@ EXPORT_SYMBOL_GPL(debug_locks_silent);
   */
--static inline signed long dma_fence_wait(struct dma_fence *fence, bool intr)
--{
--	signed long ret;
--
--	/* Since dma_fence_wait_timeout cannot timeout with
--	 * MAX_SCHEDULE_TIMEOUT, only valid return values are
--	 * -ERESTARTSYS and MAX_SCHEDULE_TIMEOUT.
--	 */
--	ret = dma_fence_wait_timeout(fence, intr, MAX_SCHEDULE_TIMEOUT);
--
--	return ret < 0 ? ret : 0;
--}
-+#define dma_fence_wait(f, intr)						\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, MAX_SCHEDULE_TIMEOUT);	\
-+	__ret = __dma_fence_wait_timeout(f, intr, MAX_SCHEDULE_TIMEOUT);\
-+	sdt_might_sleep_end();						\
-+									\
-+	/*								\
-+	 * Since dma_fence_wait_timeout cannot timeout with		\
-+	 * MAX_SCHEDULE_TIMEOUT, only valid return values are		\
-+	 * -ERESTARTSYS and MAX_SCHEDULE_TIMEOUT.			\
-+	 */								\
-+	__ret < 0 ? __ret : 0;						\
-+})
- 
- void dma_fence_set_deadline(struct dma_fence *fence, ktime_t deadline);
- 
+ int debug_locks_off(void)
+ {
++	dept_stop_emerg();
++
+ 	if (debug_locks && __debug_locks_off()) {
+ 		if (!debug_locks_silent) {
+ 			console_verbose();
 -- 
 2.17.1
 
