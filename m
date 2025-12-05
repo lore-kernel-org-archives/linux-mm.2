@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28045D2CDF5
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 00:38:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DBC9D2CDF5
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 00:58:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4D3A6B0005; Thu,  4 Dec 2025 19:38:58 -0500 (EST)
+	id 5A9B56B000C; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD67E6B0023; Thu,  4 Dec 2025 19:38:58 -0500 (EST)
+	id 55A276B0010; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B774B6B0026; Thu,  4 Dec 2025 19:38:58 -0500 (EST)
+	id 4496C6B00CF; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A3B6F6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:38:58 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 26F011330EC
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:38:58 +0000 (UTC)
-X-FDA: 84183557556.19.F5EF5F9
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6FF734000A
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:38:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fMDTkzEb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3nykyaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3nykyaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764895136; a=rsa-sha256;
-	cv=none;
-	b=oWbasVUVTGeTr8JZdibOHHlc1v0OVDOMs71yxtJfCkukM11W8X72d8uxy8hGU9YbdUbCUM
-	YgHsbsjWR2scDTdKYyvXcyOj504amwyxxgphLkRB1EVWzgp5+zbHG1PH0SvU7q76b1UPKp
-	DYQlfuCMTdfshFePbktrjw5MFhRhuFo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fMDTkzEb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3nykyaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3nykyaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2F02D6B000C
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D0E241331EB
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:47 +0000 (UTC)
+X-FDA: 84183607494.02.C6B6C0D
+Received: from mail-oi1-f201.google.com (mail-oi1-f201.google.com [209.85.167.201])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1F08E1C0017
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mVrzgYR9;
+	spf=pass (imf18.hostedemail.com: domain of 3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com designates 209.85.167.201 as permitted sender) smtp.mailfrom=3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764895136;
+	s=arc-20220608; t=1764896326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jRGGucjhuVnCsCWM106TPSms/6ZdG6m5JJbmww1ag3Y=;
-	b=26y2oNEV+Qg1Scedmu0PFtvoD/clg8ANVRv8cOcHMNDSCKqqHr5Pza02yzGW3GYH73K5aq
-	xJkSIvAT6g62jULm4wuqS0m4h7fPkwK/blmC+9ua0kbOP/rjiviPdlDxn3AiVT3H4fK84b
-	872PZy8CE294sjOVOPZo8LrfOZfKzoE=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7aa9f595688so2426653b3a.2
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 16:38:56 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OkIFDglYe+NNTa2m54quJMQQhad7qn1qBiLg81dFGHA=;
+	b=lxuVDlS5ZpP37tTZnTb3EBnWt42QDXAF2lstrFy2cwYga8dvlw8WnE2MkQEWy0XtC9XYTT
+	mHdfP/dOkXQ2NP1+bE0ouTpPeCAhXjn9dxV0VXGZb9DpePSY039b0o7ZhrImYaPPXtb/Vv
+	etlewaQFfep4BmqdqmMNUslOIPibteE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mVrzgYR9;
+	spf=pass (imf18.hostedemail.com: domain of 3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com designates 209.85.167.201 as permitted sender) smtp.mailfrom=3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764896326; a=rsa-sha256;
+	cv=none;
+	b=3tpgmT5Jxar8ucrCvlqBa2mxKH3nyv8L4qiYhUMPwioyuuxNoD81eYvOZfQYvOQOm4gxEA
+	9PJ88YYLiHLcb9PctM7/XpF4Xm24Q5S+h8Ye4Lk44X+DNqKy9/dWCSisZ2XxkoWDTBKR+i
+	a92Xt0bvA8l3BMW1Es3F3bdtReSVGXc=
+Received: by mail-oi1-f201.google.com with SMTP id 5614622812f47-4510650af52so2166493b6e.3
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 16:58:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764895135; x=1765499935; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jRGGucjhuVnCsCWM106TPSms/6ZdG6m5JJbmww1ag3Y=;
-        b=fMDTkzEbMsFsrkGoIcEwnwrgskbtL2ExrBObPj/SdEzKxt73MerNo39Pr51NhiFrNT
-         zHLlT9KKYKgqKTHT1R1h4zugLcqcUeEZmD+l+3oNQ/YCpWjKTqyGkX86XcJ30+5YX3cy
-         9L+2n7KFdDGNxrJCuEc1Cttm+YBKhd0P2iDmRpy3+4LrF2Z64ujBhBXroXBW+BcrPwtk
-         MGq6mqYAOl5d9LjaUEoGmDa9Bf7KkqZ/fzp+CEeTY8HE368oOB9zYGwwt1ZdNn77IMTc
-         fqJ6DDwDlsnIGgZUBSa0BZHVc6+abxUUKJ9Oo3+l03I3tAnQwJ9HIESgcXrzHSij+sSN
-         w0SA==
+        d=google.com; s=20230601; t=1764896325; x=1765501125; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OkIFDglYe+NNTa2m54quJMQQhad7qn1qBiLg81dFGHA=;
+        b=mVrzgYR9dollPk1Tqxb+6xnSxpjC6R5g7mONHmMfAKV2dnc3XekOzFIfftr/OsTRwO
+         n4LUhPnnP9z2IaLXcUgWkKRK+ZKiBJSlZhzYP0zUaiMqi5/zcPatBPXdlOiXgkbSlfPy
+         qggabdJOsoY0V20SIRMW5ZR2ivPcbOWSE7kfoa5bW7pSaSKRINbfHa44h3srl4pt/6ek
+         o1LMCr+lcjhWBc5PUBNR9YYA/I9ASKyUU4F0uBEIW2KQXGP9pDhvoxol5cw7u6ykKZ1P
+         0uUMefoqgTRSHDBVBddcF+DiNUS5+I6VAc9qeNVGq2TAokocnicAoYP66oMtr95ZeB8I
+         gDmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764895135; x=1765499935;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jRGGucjhuVnCsCWM106TPSms/6ZdG6m5JJbmww1ag3Y=;
-        b=sWM/ds5l2VC+zNLY343lGtKxsHB21Gn3v7HzDbf6ipuB20El4RURDOl8ZrK35k6vnZ
-         WEROzrIRPan9IF+1AO787dByBNW6sZDwfA+wzBXMf3qt0DU1vO4X0TSadrYz3KUTVXTH
-         gm7BOZ5LoXDxeBU1sI5G7wxDoE86VQtDPGj0BuRFSiYvNTdI9xgTMLzVM59OMTEUP6AH
-         DSCkI//91kXu0nMpmT2pwSJvVtcxkF+3UHywsI4BgB1vu2B4SIhinUkEZsTmmutCZ2Wp
-         SV0o2jSvR+r44F1yR0KmZwjkIcY0+m8OxAz2NA3JPFDqjyNaURlN6FfjswlbdBxpBfqb
-         L4CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhQXNGQEfHdFpWwye3HaFWjhtdtEMSwBM/iLHgYoL5NIFzSknYuUvvso1dr890Q7+l5S67qyvrSA==@kvack.org
-X-Gm-Message-State: AOJu0YzbCj/hDk+39ANTbW08/eXHhPqXqyW8MRTG1vkP9QuxUPO5i0cz
-	gggKg4/tuT86ftZkWK99Yv4fHQ3LgdMjSHIN3KsBdqeeoTMgZxpTloWP6o1SjMTMMD7kvCwm0P+
-	oF8/JxxB0e4FDPoeN8uGYTl3CYw==
-X-Google-Smtp-Source: AGHT+IEI+4QWSaT65yNp/2TgxcZCaFaqgv6I/9Ib9/x1qCnTFXLErIvauCddCu2q9NT77PNc/mruEXOJV7Fmqs3GVw==
-X-Received: from pgjr9.prod.google.com ([2002:a63:ec49:0:b0:bac:a20:5f05])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:3387:b0:342:352c:77e5 with SMTP id adf61e73a8af0-363f5ea890bmr9279671637.54.1764895135064;
- Thu, 04 Dec 2025 16:38:55 -0800 (PST)
-Date: Thu, 04 Dec 2025 16:38:53 -0800
-In-Reply-To: <diqztsysb4zc.fsf@google.com>
+        d=1e100.net; s=20230601; t=1764896325; x=1765501125;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OkIFDglYe+NNTa2m54quJMQQhad7qn1qBiLg81dFGHA=;
+        b=qQK/WJC2u+1izwdh1sPkCN7IB/Px+sDDeKeV0kjg5VlQqa3tXDfzSdh2drBY+BC6V2
+         0Fsgq+dYRpKm+adJTVszLhDwcN28snMLyey9KJH+RGT12d8qpCzjoJgoznoL1sQ+mB/a
+         VS0BSleFHA29KKjClJ4DsFmZIY7GGKHv1H4RKXfuZCsbxJF9kHEvOfAZokgAfBzA4H0Y
+         JhCjQbQJf6k32aI4OarXzi22w18hfq6Ng9ZiAmv7Nd0M7z8hd98Kj4PxPOoQJUjj5QFs
+         VzbWtH5J+CJRHLT5OGPIqjxc6dQQcRpbKo+ZzeHHF301WkiwnBb1WmfFeH/fAr3QScKD
+         vgdg==
+X-Forwarded-Encrypted: i=1; AJvYcCU7u8Hnj/8IdHvd1qCmaWL+/AIMM0q+wV0QKNBn8bWL6watvOluXyhxhv1RyD5/tEivLQ82uw6C4A==@kvack.org
+X-Gm-Message-State: AOJu0YxbxK6/5l2Uqopiu+ePN7VoZP8bIxzWhPIi7TWtuXhKfq6Nrp+b
+	zoPrMFB2T5SH/4ziuFFqYDVtGw4T3EitbyNvFZAJj4PoR9WhZAaXtI0eBGolMjl+Pbdz6CMbWVH
+	VwzHHUg==
+X-Google-Smtp-Source: AGHT+IHj0LPEa/ejQQf0MUYWeJwJfYADQwqU4BCYqxCRyoUpapAb59gw8xQzZvkTJOVDLbICm1TVHGWi4NY=
+X-Received: from ioby11.prod.google.com ([2002:a6b:d80b:0:b0:949:806:8e17])
+ (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6808:2383:b0:44d:aa8b:58f6
+ with SMTP id 5614622812f47-45379d21b91mr2858055b6e.1.1764896324986; Thu, 04
+ Dec 2025 16:58:44 -0800 (PST)
+Date: Fri,  5 Dec 2025 00:58:28 +0000
 Mime-Version: 1.0
-References: <20251117224701.1279139-1-ackerleytng@google.com>
- <aRuuRGxw2vuXcVv6@casper.infradead.org> <diqztsysb4zc.fsf@google.com>
-Message-ID: <diqz8qfh69uq.fsf@google.com>
-Subject: Re: [RFC PATCH 0/4] Extend xas_split* to support splitting
- arbitrarily large entries
-From: Ackerley Tng <ackerleytng@google.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, david@redhat.com, 
-	michael.roth@amd.com, vannapurve@google.com
+X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
+Message-ID: <20251205005841.3942668-1-avagin@google.com>
+Subject: [PATCH 0/3] cgroup/misc: Add hwcap masks to the misc controller
+From: Andrei Vagin <avagin@google.com>
+To: Kees Cook <kees@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, criu@lists.linux.dev, 
+	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6FF734000A
-X-Stat-Signature: meyyookqg4hca7z3n1o98xkgpn3n9uwq
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: id7ur5d8efg49f5ffch658okeaui4hxr
 X-Rspam-User: 
-X-HE-Tag: 1764895136-825375
-X-HE-Meta: U2FsdGVkX18wb7dFedsFsnp5vfa27IF6dbUsZcEyQ/DHSsluefos0U23a8JohrWG0UPq7+g1gOsuytRrA1FmvJj0IFYyZCrdnXfM3MA5+UYDkx6rVaJjhkUxGekrgjlsrzQvxsQcU9nVGr4OG0b7ZtCuC0VFZiUfQWEw5g8l5ckrdE9Ujgrh1giO5ThKUX7tib058jFyePlGPRaJIPzaUTpqY8sctbj45cwKTDqbl6sR4AmE9Nejiy8TpkpXVnbP673KdPZYxOvJuRx6KfUf4BQNdZSf2rpG+ufgLnb+OmkZct1B5tv2mIp8xzf3CJlTiVuTaxmWg1NUY6/u3Bu+82xgmw6+8WAfOG25K8ADPDbSLWfk6cNT8MHVwFGA+yXarmM4h6FlRjxNfuDagKurm5f0uwDYNrtMYayyzAW06/Kh9y4b/5V4cy0AN2IvcwqyM8KS8Nqs9ixrvFXWlY2vMwd4q4CfucQSH/uynDa3AqOP3SxYPKCbX0nco8DdZaLghgEb6RQdbe9uh0hcIscYX6jo1U8PnERmY9UO6Gvo3NP3Mi4ALoqcqFkfOmOknW/BRGoe38D7DTdEOHpkfE7fTMDPQgnsxTIIh0M8e6A9tPbe3KdS0LzzM4izu/vs1piXWeDHsB3T3/q6kUYC6tZlCirk9egLY7pXm7PEpsA3zVTgUUOXp+xoYSP285QbphytYXMdQ1w0gBvKxOmx2Q2OVcv59+k58+opLpQaQt92QPjLTVtKx5dITUlVuohRo4x4tbHL+d/UhBI9yp7Etd4ODM063T/b0vHHWZm3W17Q8jcRPWPBwVUWtTnWOCtzXjn8hm6bVTYk8NaPJrNuJZQgjJDb/hhBmJv89s/BHv9OuU/TSjH+oVfGSyVYoRf5Wpc+egwaIdAW6ZKX2vSQk00rtQwy6sfXZcfmAsc58SceDRpwQ2YxjtvsRg5NameAeJxjOuGcm0JIhBwvwZgHQZ4
- z5fXOjQd
- SHeqIQYFy2m6Znxb8dWHMIqYVx74q+WzSaPjGAZlrmauHD5PlYEJlR4uR3VV2w48V7Raxilb7F0TdQXhYovAcnDpnduCKIJ23AnuUOvmvX5tYmlLoCaIfZFaf05bMZlrecFD/+nyaQHG0UG+fpXY8+rObgn05gNVSY3Yo9RHq4C8vmRiU8UqEGShCUPis5MlRGrJMd0oSVumzIB7F+sauy512C40wxvzj4jow6QmNWoYbmTKJMjuC/n03ACkFrGc7/qpRWfmHTy5nKn5kqjsS62aE5UhkXsXD7adJCRGurd8lEgUdpRBv9+Hi/qrrvReA+A5bp6KQVcys8om4kQoRPjFEwtdtKUJ38U+HbyGRtK0yBVlPBB9Q+z7xpQ==
+X-Rspamd-Queue-Id: 1F08E1C0017
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1764896325-763166
+X-HE-Meta: U2FsdGVkX19TpVsyJhZTG5yp/tBhgkHU97Pb2cTwpAhJRY8Opof4yhQJRBn2UZsoOruBwz7eX2kPK8HeelfBus8DVtGguNnyUB9eF3SX8qmXmvNvhqkSy1nE2Sxz/cPW3FG75xwhJnaz5DWzLD/ykABhhzYoYHCMkCTnNxYFAV48v80/pANcriay0c9TKbHIedl1PdHiOBZIfsuy136KutHxQQ5aPYBJbhFS8ZsbsN314Cgv6jb0i0NvvGlmBQFmIdmicbErX9C9uf+iTAwwPmd/4aAOrm76+BhGCkEme03RermLtp750p6lRU2RdhhMsfyym0O6UTz/Zuj0pMUCw4t3qVb1wpSlDOvLaH3olU5cUDpdjZddApO3ZIDu2qpuNw8e7cS/ZmqN7q49ci/h+3cIMHxWAnFNJcCGGdG7m2NMWTfxh1PiLgKSwbauH06KVIm4QJECtP/A6II3hwFe/vZgPRgWeFrAfWni0y+4hkToJ9oKlSchETTkpdM2MJ4ujhBTNDgYG16or66b9FKPbZQv5la9bNZUAtwDOPRXt3mzrJ5Z1X9Erot2Dq2y5JZfJ0lafv2J6uXWscO9Gw5mpSfUyp0IiWna0tLpCBBt5//vCgbjadQ0urwz9+blwt7ZfD3HWiksOVv3GFL5msDMjSscmH90lP1Y2T7u87HwtkQnW/LWwcWVfP6NDIQk0LDmz9qYO11ueefElzXf8jb0mOm+ig98X3fNM9OrmTMU/VZoZ8MaeDlztmsqtPPgZ4iI70cW45OnDEun/6uG+tljeAlCaUAfSFOoF2yTOsKr5sQaxCEoCnwbJOTRvyTzFIEOxXrDfNBXZmnfDU6aFM3zTIxLmGpu7307ZhUlZf0qBqSu5atFX1yX2wr+UBQW/C3wgw6Jfh/NLd9IdD/TMaPhynVx7FZGWhOIQZh9U93/CjxfyIGBPSw9KHpr7kxgCOFEFFNTKwR28k4Ht1QVDRB
+ L0ipK3hs
+ pgo/dxrSFncsJuD6GH4h/fzm9PEc6b02qaAWmIn353w36iIHvVF/cDQI382cIojxaZqjfuy9f+tHNBmhCmQ2S7ieOqrw3BiodKg1xb3YQFHz/PPBNH1sokv+NlHWfeoq5zKpzBihN174Z/hwpZfMmoDs1xlj68+TVx9g+6J0zzoqS6eromzsiALTdYLr6oAB1UjVgsYx6jcTqHzlOD7zjdZai/iZ5UKWK6O1NKVgVPjLUT2Zh/FZ+XLzfLEdJWGWfpN4wmM4aQBsOQcz25s/FoBQ5XGB4VYECAdG+vJ7/CzpqW8eFxlAr4zcgfTPlSeh3bl91Uev4xgIJ0z/j4boAytJ1An/3aYJJMMz2a5AnTkVALVrmJeNvSq7KHPoPRiNvzafAX7I19njwEuHSY2fWmxbB2PQmQnen01fY/vx7fx3nfFFfHbife92nI4GlS471liva9YPFF2nC0WX4IP/WzIs/2iRYq23cxvqrVMUbyyso8h0nQ2LW/jA3UIJ1XoSEs247iebTIzsRnyD6w63folq2PxBDVNcRCjeUMBG/7CeMEvYYeX/IDTDyCBvAs7x82kSo/RSqqjL6ld3Tu9nZGM3NQROAshgPEAwAhpmXnVi0MYzIjUFgwwtthypu51HvmwvYClzKI4GxTDiuETukdvcyYZ8With8PSdVQz1j/1qaeu2Unzm5oLKhUdoIr4m1Hf6+iUX68Y6MAssztTDEEbsApwgS1w+oZ7S2IBnulVbbwkZt6poJBDTjQwZglNTjvDRH9OGI5nig9Pk0YnE1b5Ise24G4rHwXHrBh34Ng6J/MzXUWaN0aQsT8+gd4DWX52Twt/J5+hXgwW0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,80 +111,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+This patch series introduces a mechanism to mask hardware capabilities
+(AT_HWCAP) reported to user-space processes via the misc cgroup
+controller.
 
-> Matthew Wilcox <willy@infradead.org> writes:
->
->> On Mon, Nov 17, 2025 at 02:46:57PM -0800, Ackerley Tng wrote:
->>> guest_memfd is planning to store huge pages in the filemap, and
->>> guest_memfd's use of huge pages involves splitting of huge pages into
->>> individual pages. Splitting of huge pages also involves splitting of
->>> the filemap entries for the pages being split.
->
->>
->> Hm, I'm not most concerned about the number of nodes you're allocating.
->
-> Thanks for reminding me, I left this out of the original message.
->
-> Splitting the xarray entry for a 1G folio (in a shift-18 node for
-> order=18 on x86), assuming XA_CHUNK_SHIFT is 6, would involve
->
-> + shift-18 node (the original node will be reused - no new allocations)
-> + shift-12 node: 1 node allocated
-> + shift-6 node : 64 nodes allocated
-> + shift-0 node : 64 * 64 = 4096 nodes allocated
->
-> This brings the total number of allocated nodes to 4161 nodes. struct
-> xa_node is 576 bytes, so that's 2396736 bytes or 2.28 MB, so splitting a
-> 1G folio to 4K pages costs ~2.5 MB just in filemap (XArray) entry
-> splitting. The other large memory cost would be from undoing HVO for the
-> HugeTLB folio.
->
+To support C/R operations (snapshots, live migration) in heterogeneous
+clusters, we must ensure that processes utilize CPU features available
+on all potential target nodes. To solve this, we need to advertise a
+common feature set across the cluster. This patchset allows users to
+configure a mask for AT_HWCAP, AT_HWCAP2. This ensures that applications
+within a container only detect and use features guaranteed to be
+available on all potential target hosts.
 
-At the guest_memfd biweekly call this morning, we touched on this topic
-again. David pointed out that the ~2MB overhead to store a 1G folio in
-the filemap seems a little high.
+The first patch adds the mask interface to the misc cgroup controller,
+allowing users to set masks for AT_HWCAP, AT_HWCAP2...
 
-IIUC the above is correct, so even if we put aside splitting, without
-multi-index XArrays, storing a 1G folio in the filemap would incur this
-number of nodes in overheads. (Hence multi-index XArrays are great :))
+The second patch adds a selftest to verify the functionality of the new
+interface, ensuring masks are applied and inherited correctly.
 
->> I'm most concerned that, once we have memdescs, splitting a 1GB page
->> into 512 * 512 4kB pages is going to involve allocating about 20MB
->> of memory (80 bytes * 512 * 512).
->
-> I definitely need to catch up on memdescs. What's the best place for me
-> to learn/get an overview of how memdescs will describe memory/replace
-> struct folios?
->
-> I think there might be a better way to solve the original problem of
-> usage tracking with memdesc support, but this was intended to make
-> progress before memdescs.
->
->> Is this necessary to do all at once?
->
-> The plan for guest_memfd was to first split from 1G to 4K, then optimize
-> on that by splitting in stages, from 1G to 2M as much as possible, then
-> to 4K only for the page ranges that the guest shared with the host.
+The third patch updates the documentation.
 
-David asked if splitting from 1G to 2M would remove the need for this
-extension patch series. On the call, I wrongly agreed - looking at the
-code again, even though the existing code kind of takes input for the
-target order of the split though xas, it actually still does not split
-to the requested order.
+Cc: Kees Cook <kees@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Michal Koutn=C3=BD" <mkoutny@suse.com>
+Cc: Vipin Sharma <vipinsh@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
 
-I think some workarounds could be possible, but for the introduction of
-guest_memfd HugeTLB with folio restructuring, taking a dependency on
-non-uniform splits (splitting 1G to 511 2M folios and 512 4K folios) is
-significant complexity for a single series. It is significant because in
-addition to having to deal with non-uniform splits of the folios, we'd
-also have to deal with non-uniform HugeTLB vmemmap optimization.
+Andrei Vagin (3):
+  cgroup, binfmt_elf: Add hwcap masks to the misc controller
+  selftests/cgroup: Add a test for the misc.mask cgroup interface
+  Documentation: cgroup-v2: Document misc.mask interface
 
-Hence I'm hoping that I could get help reviewing these changes, so that
-guest_memfd HugeTLB with non-uniform splits could be handled in a later
-stage as an optimization. Besides, David says generalizing this could
-help unblock other things (I forgot the detail, maybe David can chime in
-here) :)
-
-Thanks!
+ Documentation/admin-guide/cgroup-v2.rst    |  25 ++++
+ Documentation/arch/arm64/elf_hwcaps.rst    |  21 ++++
+ fs/binfmt_elf.c                            |  24 +++-
+ include/linux/misc_cgroup.h                |  25 ++++
+ kernel/cgroup/misc.c                       | 126 +++++++++++++++++++++
+ tools/testing/selftests/cgroup/.gitignore  |   1 +
+ tools/testing/selftests/cgroup/Makefile    |   2 +
+ tools/testing/selftests/cgroup/config      |   1 +
+ tools/testing/selftests/cgroup/test_misc.c | 114 +++++++++++++++++++
+ 9 files changed, 335 insertions(+), 4 deletions(-)
+ create mode 100644 tools/testing/selftests/cgroup/test_misc.c
 
