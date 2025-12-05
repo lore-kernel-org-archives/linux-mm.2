@@ -4,106 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE626D2CDF2
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 00:58:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE75D2CE01
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 01:09:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A1E46B00DB; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
+	id 54D316B009F; Thu,  4 Dec 2025 20:09:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9534D6B00DE; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
+	id 4FEAB6B00B8; Thu,  4 Dec 2025 20:09:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A4EA6B00DF; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
+	id 4134A6B00DE; Thu,  4 Dec 2025 20:09:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 61E766B00DB
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28E9E1331EB
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:52 +0000 (UTC)
-X-FDA: 84183607704.10.3C256AE
-Received: from mail-oi1-f202.google.com (mail-oi1-f202.google.com [209.85.167.202])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 656B440004
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZWYoQZEs;
-	spf=pass (imf27.hostedemail.com: domain of 3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DB736B009F
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 20:09:13 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9F4D133216
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 01:09:12 +0000 (UTC)
+X-FDA: 84183633744.05.720B078
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DF45C40003
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 01:09:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JvqjEn73;
+	spf=pass (imf01.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764896330;
+	s=arc-20220608; t=1764896951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bVE0N0KUpY0wO1fMUhmyg8I9ioeDz1sYwcQ5NNPx/VI=;
-	b=lbFMkOBSWXHCReEOtXoj1mam/tnybujFDyYO8c6BPJZYd8Wvx4p2S+/DvEpjjzEhXjly6A
-	IIP4daLiIf4QCMoCZasZfL1dlKdy48pPjxDU3YIXLEhevSdPux2PuH2tmxtrUXgOTDYQ9z
-	qFMQrCT8AtnDFrPVw938QHGxs2hE1n8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764896330; a=rsa-sha256;
+	bh=ESNpKydnctKAjT+ZBVg0a3DE2zeWzMFqr1QgEt4u5co=;
+	b=DpFDCJQ8/HoPR42iyusNa8q36fsIM4EYz8JI8tgvhpO0xlYEMh/odqGRG9wdbkUICSASja
+	E/8K50gRCOn9XNy06pKhBgpRkR+TBAmjWR2MqtKtw274EibBUgFVM/rJ7o3Z5TGqJAtAjm
+	kROV7UA/oqz1AuRHIIdFR9qvbc5aWfQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764896951; a=rsa-sha256;
 	cv=none;
-	b=p4wZpZ3s26x40gCWcOeROBab/lAVYEPtbpc5bXOtAl6KF0zNSz/IurUWEYehyhXAstJzud
-	W7u1FsnyGDgXNfYG/iYVuAoDUh2EzOs5zIx99XyCCPDneZR5a2/D4qn0x4J4JOhGfJE2Wv
-	+dQXwoaOE3wYoiq0oPKZxVFUo3gbrKg=
+	b=DK/tr+N5KR151D7nooDtLkPHb4zjxN24NgamnS1AWIwHKiLt3PaIesAVctusw5h9cYAnht
+	FGnaZMaJDhnN8Tfw/IMBbtQJKz/vBJjdkbHF5x76zi+wx7wK6OoMINRwI1hsl4D+pGH1B2
+	c11avJphIJuFeMIvUe8pOoGdu3ne7HA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZWYoQZEs;
-	spf=pass (imf27.hostedemail.com: domain of 3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-450b8303c1cso2153395b6e.0
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 16:58:50 -0800 (PST)
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JvqjEn73;
+	spf=pass (imf01.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4779aa4f928so15737825e9.1
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 17:09:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764896329; x=1765501129; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bVE0N0KUpY0wO1fMUhmyg8I9ioeDz1sYwcQ5NNPx/VI=;
-        b=ZWYoQZEsbUbpGvDOG9vWIBN+lKyUjjUtWQ/mWxiPYEc0L6ZQkuTVrHIrilzG+KMz8/
-         Ldy3mGWvaJSSU6GJJOk+3KBplRcErkb2TIQ+gpf7Or/tyabhBEJTEk+KUEgkw8s8gdin
-         Sz7etf+6N0OaO5EtQAum3gy0VsJAWTb/Jd41xvLdUEhWLagZdUTvAAD7GP5rJQWaKf1K
-         ymfm+OGcJ2Cv4KbmURTnllFF+yI6F6OMQGT3N4zhtYp5aovo8f1HeEafeyoRYRFlFI9O
-         5P6mG8qQGYI4ZyhUYSF44Xs4IIrFgdp8NTBkrYV/mPCcWHlHhOvWLXBhWzvAd8e1vAV2
-         j8vg==
+        d=gmail.com; s=20230601; t=1764896949; x=1765501749; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ESNpKydnctKAjT+ZBVg0a3DE2zeWzMFqr1QgEt4u5co=;
+        b=JvqjEn73+YWXdlYHgObmslBjIygmeaQlXrwKR/22+AFIFbaxBGzSZnc7M+TAwVrXxx
+         u4wshbU4ohsXTDOq+k0h+fdksgrJxtFqES0WY1AyLk/IsP3uwk3QPMvU19ay1rDJVayf
+         JtJ8ObGci7GzYTrTZPnnXN9Sj+qs3P1wBckzet9boY5q7yCz9HJeXYyFpvphmGnKFkCJ
+         tGA3aQi7WHGYRkr4GGisHJZHv7gghc8imdF3VXiWf+FYK/Y2lDqgVFI9uJWHds2MExiR
+         EL3A/dupuXkuXNkOdBWUwxdtHZgDyrLZmXQW0HgnlYLKcn+Eb8zqQR42vI3L97w4Ad6d
+         OpyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764896329; x=1765501129;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bVE0N0KUpY0wO1fMUhmyg8I9ioeDz1sYwcQ5NNPx/VI=;
-        b=vyGKxRxA3CYOjUyqdTihp+ebvurHM7xbfj+LK/U/bG3QjHylFAJ/gkaMaQ0AtgJ4Xm
-         mxLMiJMIj40ppyebcQ0z9AfKkFrSX+vRogJ1NaE6750QaZaOG/1rFu0b/tp2idqDRWQ+
-         hXVPKh/sGezsdFOsumTHr8qCddq82xRtv6nV2ylfFQoObqeKorDxl9M56452ah3Caa/N
-         XdwTTH+agehif94LIgLPRF4R17Zg00HgCTxL87K4oqByUkPMBITiX26ln4+BkGLx6mfq
-         3Fs5i2Cz/n7yZRtuv7eNG3kEjQBaoBheLh42g/UdnJbzvfvf/2jXLx3/msFIgg9AQqUC
-         lb2A==
-X-Forwarded-Encrypted: i=1; AJvYcCU/0Mh4IYEWBbQxAm19gnhGi9x5IRPQWC8HQCAMPrx1jWqfRjOtXLQyKFlGbsKWbL7u+DR6pmGVqA==@kvack.org
-X-Gm-Message-State: AOJu0YwNK5NVBxi0UD9O7MWx7LhCqL9pujhI7xWJBxRTsD/UMWWptWwW
-	w3r81wzPsaBqFYm7XZ9PnPBcqWWHxmOf6EQ+tYqkm+cYUJTsRcHKvzfgGIaaha9o/M1g9WSsiK2
-	yeCiLGQ==
-X-Google-Smtp-Source: AGHT+IFifApyQ81uqcVNp3ozqjh2VV5F+exYOtd6RAsz1O9td1lhZ/L2nTazk9kUzTzPa/vDQgHRCZrkH4g=
-X-Received: from iobfb16.prod.google.com ([2002:a05:6602:3f90:b0:949:11f9:31f7])
- (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6808:11c4:b0:450:b3ec:c154
- with SMTP id 5614622812f47-4536e3de299mr4587772b6e.25.1764896329505; Thu, 04
- Dec 2025 16:58:49 -0800 (PST)
-Date: Fri,  5 Dec 2025 00:58:32 +0000
-In-Reply-To: <20251205005841.3942668-1-avagin@google.com>
-Mime-Version: 1.0
-References: <20251205005841.3942668-1-avagin@google.com>
-X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251205005841.3942668-5-avagin@google.com>
-Subject: [PATCH 3/3] Documentation: cgroup-v2: Document misc.mask interface
-From: Andrei Vagin <avagin@google.com>
-To: Kees Cook <kees@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, criu@lists.linux.dev, 
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Andrei Vagin <avagin@google.com>
+        d=1e100.net; s=20230601; t=1764896949; x=1765501749;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ESNpKydnctKAjT+ZBVg0a3DE2zeWzMFqr1QgEt4u5co=;
+        b=fjMbFKQQMMOj8qzvK+TEgSAjfjJ1epNGM0rqr+UgFxV5MwgvVAWmxoYivTbyh1EqnO
+         NHUb/1JgUYciQSBNXTyVs8GhiE8mO6giJ1lHbjegLiiZgRQvr3D/NbGuXuEl96O1rocG
+         HnxlDPPXeC2IyXbiJYmTLaUAEuVIapEqhcuRGVFSZd5+WVccc8HaWYJes3BTnYa9K9UF
+         pNsjU2xIcx9y478dUGhprzF5/ZkaCXyoX28k0i23BGyk+UenvAgvaoKDHKLCtDknMt2w
+         kEqzIiNPQDmr4KqEtwh/CzdOTzuJ4cxgMdOae5VF0WF7FfQ7E7m4Bjo8gsSfFnOjBjqJ
+         NZ9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUuGuuNb2yjJgrxh+TVUTbEJpsIoWKwIbfCvwNZHJVNge9xn0M777glELE70JZbBRFGeTEuU30UyA==@kvack.org
+X-Gm-Message-State: AOJu0YwmqUjfo0+iLEZyvIzg3edNv1oRJeyTnZrlen7m0zLyyibAqCrA
+	pzOILvSTALYuzShFyQyD60OFPGh/9ESvMnrwqkpRvaR3/oi6DoRWh4R84eCIOmRR/BlU+D4FjZ+
+	KCicUKDRfStDYlPVMs763ZOatcoVZ1J8=
+X-Gm-Gg: ASbGncs42oHTGb2LlSA+Jn2dmxiUJOhwUxowvbZeYieaYeqKGs2sPfuK43RMcpAZcz9
+	YWaDv7D9Zyg+NV1cBhxcRnUeTbGyhPwi1QKhWQn+jlIfLy2J2Al0SqpBToHel236nYVeHlaB8mf
+	OaEHS+32DfAzMyBmoXZlbn9BzDITtaSUMG7GrOldUJr7u7hJq7UFU+olraa7MZIZJQ4KarysZBC
+	gt3GU+Rasqyf7k2Kdc22w0H4BGtimWMvMZV/Jn7Rpr+A8txjoEHFqX93+m2Xi8+hLkYcWgQv3th
+	Eib/DFpHe87D7hRPJ2FnvgOEgSXdiJv3
+X-Google-Smtp-Source: AGHT+IHuCdH//3zlGLVdXGt0vj0NK20frSWSi/Ir9mCKPbJuGtJWzIdesvTg2a1k9mrd+Fm1Zx/kAf3Ue4yxRd1xWxE=
+X-Received: by 2002:a05:6000:250d:b0:42b:530c:d8b5 with SMTP id
+ ffacd0b85a97d-42f79867232mr5216864f8f.58.1764896948983; Thu, 04 Dec 2025
+ 17:09:08 -0800 (PST)
+MIME-Version: 1.0
+References: <cover.1764874575.git.m.wieczorretman@pm.me> <38dece0a4074c43e48150d1e242f8242c73bf1a5.1764874575.git.m.wieczorretman@pm.me>
+In-Reply-To: <38dece0a4074c43e48150d1e242f8242c73bf1a5.1764874575.git.m.wieczorretman@pm.me>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Fri, 5 Dec 2025 02:08:57 +0100
+X-Gm-Features: AQt7F2rJmIzAQLLWNUCtlHH3vMgTJvmbF98DSGlcKvxxcaL8y5jTuVOv6OgUATo
+Message-ID: <CA+fCnZdsdLYqRe3DQPv-ATAsXwKPMExfEyODt134het_9B01Zg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm/kasan: Fix incorrect unpoisoning in vrealloc
+ for KASAN
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, jiayuan.chen@linux.dev, 
+	syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 656B440004
-X-Stat-Signature: mpxpiskuaakxkdjjqw3718u5xdfgbgsw
-X-HE-Tag: 1764896330-149488
-X-HE-Meta: U2FsdGVkX18RE/KIKHDu0UspIfUJlj1WaIjk2TJ/Z/98ldPS8pbpghz088aAfDhoR0HtDOHmMnNQE8ZUd+RrqmfZAHoO1D2yRiareEri2PGhc+IGxrXISg12+c88ibNEx+kUp8LG4NiZ/FI6D1LoWlRAKjlkXdgg2l047KKixjXrn/pXLvZx9ACpDy0bzFfn/NNJ7cn6vKpKR1EXW0UkyTS/FhEE3ff8/6TDeAthB1mFYtP7FZfIaAD0GOlekY5uI0XTuC/xYXQLhgsf7uaW7FLqa1a7Bn1Gytm0yQV+MJjTex+RyU+eBK7IiWJ/rf84lCZldfJtZthT9HLkDShEmqdgSa2QDV8EyeyCUhx4ZnWFndOqdPig0ZvA41izGmLmG1EL7IJhdyYaZePfWV8XJxWguUcPc8GD6hu+4EvE6mWtyZKgeVL3RcZUwFChz1sPkWP4w5hp7yE0UZiIXVbsVRXQgbRTKUi961ZD7neb46x2dBlPVPdzKT+4/MN7UxSRoESQVeVOrd/MRxk5g/WWL+yZbOOXhSfO6+paSmyb+JzUanOAvNS3OniEND18/niWEPUKoY4l6opcLFLwbkiYI9r+EdbjiLsccNke7I+kBzREzSlQf5Y08eiGMbWiqTbJz/XgYK8ZvdyMmpebJLo1aVFpawaySGUhLgTBef6HCmJBpI3NcIbDS5ikwspXmqmHWq2KouHpVU08KN+HV3b47lYdC9nsGeepCCMoL2rDu/TzP/oEISSjNM1YClOk7dCCaZiNwp0hZhg2NJuSS3oyH/NvQg1VcsPjGFRo6VUr/ixO/hJuy6gNKRf50QQg3rEc9tunW6Lgxc8dXR0Es4HYYWVA4fgDn/LBty9o0PxgaSNQlZa7Vke5ZgXK3MbZdQf0YvDDjL/5YckMU4TFr+jZVu0yY5HQmnSMt0vWbkEO7RZa8Bdq30ukaQUJXCozJbnSkcQ1XMIlyT7/0T+QKVq
- oMsFgEBc
- BwDa+cesfhvxJl47RsG2UF4iFdtNNzE/Vx4/Lby242Lfi8LGLHqoYL0JCMUTTRAz7p0lSh4akrHY25SW6MLB/lWbe9Q4u5C1Q5yyVY/EweeGnW+aQ+DokvbKwCumJNjlfxiOhMAc1JiIuovnieLxQ/FLFgvPyc7/LfsWlkQaLDntJb/2AypUVQPDkB0Bt1ihqJum49Y/TCngZq58vNigxXmSJCp6aswhpHt16YEcQZcZ5tiwUuLVsdP8xGaizkkQaffM11x4yXsPuti2pS37bqciP6A+xsyZXg92GCvCyVAB/FtNe7GyykC6VyKMFw+JwHgnjAa4WqCCmrPibXSKDSCQna8EfFI0vjaG1q2gJlVMzu0phCaHSnwzxGu5w+bh65mAbTS8uKoILtbO359Jg1fAFc8kdoGkxvKq8yEoCZBqE0BWor5RWj8K+NewsU1ca48rORn7Jjb34CV3OinAgDX39pleEnKARFLnDV2IbmUl0I8yrx7VN5h9XnisTBoDZmjRBtPlD5QtZ1CwuDSOrcyQv9mKldmCLCd5fSUMs0zmm4Sg=
+X-Rspamd-Queue-Id: DF45C40003
+X-Stat-Signature: uq8ubhjkea1ifcgi149grior3zugzqz1
+X-HE-Tag: 1764896950-68849
+X-HE-Meta: U2FsdGVkX1/CPxcv1v8PB/eb2wDaVoC+E1Qq0tbHqdEJMrtihfuxgYpXuH7bB9qa1mANkshcYME+F0/dKZhh92OXxFaW3N7e/EqPU/bGyL3h83DHUGPeUS9F6Fx+t1QViSRzvjhnd1BG+EGh2bBCU4eWf7gc+oH7cuEyVu5Kv7QbDI7qRUJK+YFgEIflnO3/KdygKJXZC0B4V/ZcuQAzZ1j/WSOg6DRQiQDZU1CtwKGx1/Gbvrketx+AnpNqRJlpQrDsfV/4/TBn7jlOQPuxQTgwsG4nxC2pdE71wvbqPDYus3mjXeDGRRUAMkgRqsVDXZxuZk/3xLAmJQU2I2V0Dnt/wa4w7LHkuyM0+bIPjanNBkaxqHzGFHywZtRk+Vi3dCF97zxG3hT3NTzmS0VG5zF8/kGuLoeAvI+xGNYqauPIgm0pc5Hw10jU16vTZg98Ld9XjfqwzYSfGYFyxjRRH/fzzxbASdN57vGFGs92QNVpCEXiBuURVOXVN0KiAYTPJCBiXmJUmjYOFwD+Cm4hdevKWkq08d07SgOkA9n5hFle1A5Z5+iDseu3QQPU+NLDAQB6o6YEt03K+SWK7rIcuiCkqnGIfccM9pFbOcDBfr+ptFRDykdZIo2YizePnJkUDKaBlBTad0W5m/YD7phIBVoEJhtTdZc1LbAntIZ6PB8+KG2oqWb+ADadXhSyu6itBs86SHXu3L6OmYJr4X3ipe9zcd6tdGI0cH6U7RSv0PbpB6o0UsCRqmIVPiduev7qaR/9N/UCcc/PqUrRa9rDvMYVJZEsfbnko54k4yhmDASanxHBd6TaoO7h/ecjllnEQz0NupWpuUSFzXaUxFkOlmRLW6lkqwZZwyGFfV89H+BZpo3IBA8jr8BwoIDZCdo/sq8QfQXCji+PgzLG9/MNzyNNwrMl5UOLhMReSqoZrKhAtQLQk/5Y4/7rdjfDY+CSyiNH0oRFFssh5mRkmf1
+ wBimpGMa
+ j2TZ+A9Kt8Y4TSDrXfnOkr/I9rJITd/n7Hl17c3D+Ze2F46XQOiFFyxDFyfGfaBTEfNC4/2Ap0A/ufRv9zgQtKgu/GJyb4uuUgUvYbgX9DopECPpLyszBKrs+w7MjoVQK/y3Bo3quRuaTjS3WUiYkVVpPoHdOSCZbdb60nf4KyEyNNPBAubEajfFOWZcWnmxKEQWzh8E4bo9VQJFTBbJG0RIqAZkjJAo5Ps8ZMtsRisadFRD+AiLgBRIIe1O0EvrQlsPR5ytmrWaxx5nHqpdrEk9Os/XlP5ucX0Q4LF4dC0ts4oJc/+J2fMp0AvL0Z0V0NHL3+Vgu3jkFXksJEFZ98IOcaFoGpMRIWJr3JOVZtwB6K6EfhrCvDCvNo0DO70zA6oHsnmiZjdDu4pMPkBq/4LzjkEJysVcPVRH7YIFjOzqic/6LruqFkIZbExl/9MyDbl5zPdE1rOUbhpXHI1MMK+AGxoAw/GKcEe5/DxEURo526AVPBHxS3WF/efJf3FEUq55iyafJZtLkg1FmYC34r+JidOg5SI2n2UROmy2tvjhb44xDgMRYZODesQXr2bNCWduaBztU9/LNYxWW3lALm5nwuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,84 +123,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Updates the cgroup-v2 documentation to include details about the newly
-introduced 'misc.mask' interface. This interface, part of the 'misc'
-cgroup controller, allows masking out hardware capabilities (AT_HWCAP,
-AT_HWCAP2, AT_HWCAP3, AT_HWCAP4) reported to user-space processes within
-a cgroup.
+On Thu, Dec 4, 2025 at 8:00=E2=80=AFPM Maciej Wieczor-Retman
+<m.wieczorretman@pm.me> wrote:
+>
+> From: Jiayuan Chen <jiayuan.chen@linux.dev>
+>
+> Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes two
+> issues:
+>
+> 1. In vrealloc the KASAN_VMALLOC_VM_ALLOC flag is missing when
+>    unpoisoning the extended region. This flag is required to correctly
+>    associate the allocation with KASAN's vmalloc tracking.
+>
+>    Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explicitl=
+y
+>    sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with it=
+.
+>    vrealloc must behave consistently =E2=80=94 especially when reusing ex=
+isting
+>    vmalloc regions =E2=80=94 to ensure KASAN can track allocations correc=
+tly.
+>
+> 2. When vrealloc reuses an existing vmalloc region (without allocating
+>    new pages) KASAN generates a new tag, which breaks tag-based memory
+>    access tracking.
+>
+> Introduce KASAN_VMALLOC_KEEP_TAG, a new KASAN flag that allows reusing
+> the tag already attached to the pointer, ensuring consistent tag
+> behavior during reallocation.
+>
+> Pass KASAN_VMALLOC_KEEP_TAG and KASAN_VMALLOC_VM_ALLOC to the
+> kasan_unpoison_vmalloc inside vrealloc_node_align_noprof().
+>
+> [1]: https://syzkaller.appspot.com/bug?extid=3D997752115a851cb0cf36
+>
+> Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizin=
+g")
+> Reported-by: syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68e243a2.050a0220.1696c6.007d.GAE@goo=
+gle.com/T/
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Co-developed-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> ---
+>  include/linux/kasan.h | 1 +
+>  mm/kasan/hw_tags.c    | 2 +-
+>  mm/kasan/shadow.c     | 4 +++-
+>  mm/vmalloc.c          | 4 +++-
+>  4 files changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index d12e1a5f5a9a..6d7972bb390c 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -28,6 +28,7 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
+>  #define KASAN_VMALLOC_INIT             ((__force kasan_vmalloc_flags_t)0=
+x01u)
+>  #define KASAN_VMALLOC_VM_ALLOC         ((__force kasan_vmalloc_flags_t)0=
+x02u)
+>  #define KASAN_VMALLOC_PROT_NORMAL      ((__force kasan_vmalloc_flags_t)0=
+x04u)
+> +#define KASAN_VMALLOC_KEEP_TAG         ((__force kasan_vmalloc_flags_t)0=
+x08u)
+>
+>  #define KASAN_VMALLOC_PAGE_RANGE 0x1 /* Apply exsiting page range */
+>  #define KASAN_VMALLOC_TLB_FLUSH  0x2 /* TLB flush */
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index 1c373cc4b3fa..cbef5e450954 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -361,7 +361,7 @@ void *__kasan_unpoison_vmalloc(const void *start, uns=
+igned long size,
+>                 return (void *)start;
+>         }
+>
+> -       tag =3D kasan_random_tag();
+> +       tag =3D (flags & KASAN_VMALLOC_KEEP_TAG) ? get_tag(start) : kasan=
+_random_tag();
+>         start =3D set_tag(start, tag);
+>
+>         /* Unpoison and initialize memory up to size. */
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index 5d2a876035d6..5e47ae7fdd59 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -648,7 +648,9 @@ void *__kasan_unpoison_vmalloc(const void *start, uns=
+igned long size,
+>             !(flags & KASAN_VMALLOC_PROT_NORMAL))
+>                 return (void *)start;
+>
+> -       start =3D set_tag(start, kasan_random_tag());
+> +       if (unlikely(!(flags & KASAN_VMALLOC_KEEP_TAG)))
+> +               start =3D set_tag(start, kasan_random_tag());
+> +
+>         kasan_unpoison(start, size, false);
+>         return (void *)start;
+>  }
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 798b2ed21e46..22a73a087135 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4176,7 +4176,9 @@ void *vrealloc_node_align_noprof(const void *p, siz=
+e_t size, unsigned long align
+>          */
+>         if (size <=3D alloced_size) {
+>                 kasan_unpoison_vmalloc(p + old_size, size - old_size,
+> -                                      KASAN_VMALLOC_PROT_NORMAL);
+> +                                      KASAN_VMALLOC_PROT_NORMAL |
+> +                                      KASAN_VMALLOC_VM_ALLOC |
+> +                                      KASAN_VMALLOC_KEEP_TAG);
+>                 /*
+>                  * No need to zero memory here, as unused memory will hav=
+e
+>                  * already been zeroed at initial allocation time or duri=
+ng
+> --
+> 2.52.0
+>
 
-Signed-off-by: Andrei Vagin <avagin@google.com>
----
- Documentation/admin-guide/cgroup-v2.rst | 25 +++++++++++++++++++++++++
- Documentation/arch/arm64/elf_hwcaps.rst | 21 +++++++++++++++++++++
- 2 files changed, 46 insertions(+)
-
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 4c072e85acdf..9d9d923e0d4e 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -2924,6 +2924,31 @@ Miscellaneous controller provides 3 interface files. If two misc resources (res_
-         cgroup i.e. not hierarchical. The file modified event generated on
-         this file reflects only the local events.
- 
-+Miscellaneous controller provides one interface file to control masks.
-+
-+  misc.mask
-+	A read-write flat-keyed file shown in all cgroups. It allows
-+	setting/reading the masks.  The file format is a series of lines, each
-+	describing a mask of a specific mask type.
-+
-+	The file has the following format for each line::
-+
-+	  $NAME\t$LOCAL_MASK\t$EFFECTIVE_MASK
-+
-+	Where $NAME is the mask type name, $LOCAL_MASK is the mask for the
-+	current cgroup, and $EFFECTIVE_MASK is the effective mask for the
-+	current cgroup, which is a combination of the masks from the current
-+	cgroup and all its ancestors.
-+
-+	To set a mask, write a string in the following format to the file::
-+
-+	  $NAME $MASK
-+
-+	For example, to set a mask for the mask_a type, you would write the
-+	following to the file::
-+
-+	  # echo "mask_a 0x3000" > misc.mask
-+
- Migration and Ownership
- ~~~~~~~~~~~~~~~~~~~~~~~
- 
-diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
-index a15df4956849..5526daff5d30 100644
---- a/Documentation/arch/arm64/elf_hwcaps.rst
-+++ b/Documentation/arch/arm64/elf_hwcaps.rst
-@@ -450,3 +450,24 @@ HWCAP3_LSFE
- 
- For interoperation with userspace, the kernel guarantees that bits 62
- and 63 of AT_HWCAP will always be returned as 0.
-+
-+5. Masking hwcaps for a group of processes
-+--------------------------------
-+
-+The misc cgroup controller provides a mechanism to mask hwcaps for a specific
-+workload. This can be useful for limiting the features available to a
-+containerized application.
-+
-+To mask hwcaps, you can write a mask to the ``misc.mask`` file in the cgroup
-+directory. The mask is specified per AT_HWCAP entry (AT_HWCAP, AT_HWCAP2,
-+AT_HWCAP3) in the format ``<HWCAP_ENTRY_NAME> <BITMASK>``.
-+
-+For example, to mask ``HWCAP_FP`` and ``HWCAP_ASIMD`` (which are represented by
-+bits 0 and 1 of AT_HWCAP, so a mask of 0x3) for a workload, you would write the
-+mask for AT_HWCAP to the ``misc.mask`` file in the new cgroup directory::
-+
-+    # echo "AT_HWCAP 0x3" > /sys/fs/cgroup/misc/my-workload/misc.mask
-+
-+Any new processes started in this cgroup will have the specified hwcaps
-+masked. You can verify this by reading the ``misc.mask`` file, which will
-+show the effective mask for the cgroup.
--- 
-2.52.0.223.gf5cc29aaa4-goog
-
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 
