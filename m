@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6263D339B3
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 18:22:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64552D339A2
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 18:22:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE0E86B01B1; Fri,  5 Dec 2025 13:22:40 -0500 (EST)
+	id D03866B01F1; Fri,  5 Dec 2025 13:22:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6A506B01F1; Fri,  5 Dec 2025 13:22:40 -0500 (EST)
+	id C8DE46B01F2; Fri,  5 Dec 2025 13:22:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E61C6B01B1; Fri,  5 Dec 2025 13:22:40 -0500 (EST)
+	id A1C416B01F3; Fri,  5 Dec 2025 13:22:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66DA46B01B1
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:22:40 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31DC31602A9
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:40 +0000 (UTC)
-X-FDA: 84186238080.08.06BA588
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 88DD36B01F1
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:22:41 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5D28612D31
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:41 +0000 (UTC)
+X-FDA: 84186238122.07.7B1D2C4
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5FF0C10000D
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=gJVyk8Gw;
-	spf=pass (imf05.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 82F921C000D
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:39 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=l1OJITzD;
+	spf=pass (imf18.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764958958; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764958959; a=rsa-sha256;
 	cv=none;
-	b=AplqRd1UAYj5YRKaEhIW0Pza4+IQw5fecxFid6x2ioa7Qq1sKuqShmYfg0Haxv+u6+ayIV
-	pa9/x9iEF2JHk6gBl03pA+vLFBlqEB8E+ofhXNeI03shdwhPS+5uY2bqOW2L3ikmj/qLxU
-	MRFDdxQMQb63LXz1+keLIyg3+tW2lR0=
+	b=LShm29hVsENmc39IoGflnubOMmWszbehTxXCv6qg2rbxLIHSv1kgNXsfD3ZwvdbLA1iZ5y
+	bK0ZT7k2HPOsYK14t+yKeH3SBFE0tXu7QR39RqrFvaYrCG7pDYu6ZWPMSL+Bpvr22t5+R+
+	rQ70JST0WXIoLbcYFI6hWYdmDI/Mdcc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764958958;
+	s=arc-20220608; t=1764958959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u61gmaUoZ9v3ZmsGpURrMvAa2JFBGizQKt9pLwRoWts=;
-	b=6uesq1A1XU4eoNuDdmOfAy/QbTj5akxFciK2jKKdsvYcD+GLJWB+InckWDJGl36EAtWeAx
-	4s+EQ1tk6gaSLP9Ga7jsHV63qPlk2FBea7idET1DsrYnGK/TED9olUu1N+9EEWkSPtIAxf
-	U4WhFRjLk6t3hgCgp45iwglZfQMk838=
+	bh=dwtuZRR14MSF73UCHadmv/P6C1lGn/xb0tBTBvgAB/s=;
+	b=gcUwpEnJzAcyMgrzLVGygiKkG8IqCVo7JGirlJoJaC4hHVne37kdrDNE273b8PG7dzBQfj
+	CDy/mKufC5eFjZ05YIzwwBxi+24Iyxjg/+4azILHSZ9IdN5arWY6ISrTdHhBRaxz7fugLN
+	/VHjIOSVObulYhNzb4ineEsQpWt3o9w=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=gJVyk8Gw;
-	spf=pass (imf05.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=l1OJITzD;
+	spf=pass (imf18.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764958955;
-	bh=YS8/vqBJoLcfbhBEgaog8sdplpPEafy556rfQqhGLYk=;
+	s=mail; t=1764958956;
+	bh=Et6YpaCJQxTZg9u5ElaUSynxt3OiFubIAZT3m0KdhxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJVyk8GwvhhWGI54AEpETBCfNvxuL9VMECU5vNSrm/yMQXGJV1gX41FydeCCopRib
-	 ioHw6GjLJkmPFw9zccEHJLrdlHlYRpcUUrDC2CoC90ofWBMi7WvhjICUUZrWwFVbHU
-	 hcWcKMB0ADfve5PF97EdkHoVtoWzPm/Jfmxp2Vw0Vnf6ao6g98tx8HfhJ8CWG5yFf0
-	 Q7XMahxXIxOdD1+koHUm5Yk8mJT/2IMd0AGwObl1L8/ofN8/TEbyoVhcQq2xE0iSra
-	 oPW7sRdgdDowTSuY+S9wgABe7PCUj5uzC8V6kc+gClg3uAGVZ7L7Arl1Ar7j3krcOU
-	 gZB9rvJDz246w==
+	b=l1OJITzDddBfCtq7KhUQ2GPf+0RMahMUnqBaHI+5of0gS/3lgAIhIionM2YRjlUqm
+	 eJ/k+tPUed/5sfbdYwTyLeB8VsQhVka5xKk5v6HG/QMiqZIn1IdN3nPQxLTyBn1wyj
+	 o9/NRa4O6mleisf8GxPFdD5IonXIX8occXrh0KRvWt4sOT4lJlWfRjgiHEGYtQKp90
+	 rojegf1TyKZ8X3q/jjck9IJsQV7i8xOZ2wO4VTbfaU38dKaaP+io6teuC40KeUnSv+
+	 3hnS7oE5546WqMCpirjsX2qyaSjluzBtZ6JwZdQRuXpTRWUptWBOFsUsNR1Ma2wL6U
+	 ajjq10skkT8fA==
 Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 15C9017E1155;
-	Fri,  5 Dec 2025 19:22:35 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1668E17E12D5;
+	Fri,  5 Dec 2025 19:22:36 +0100 (CET)
 From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
@@ -101,23 +101,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kernel@collabora.com
-Subject: [PATCH v13 01/10] drm/shmem-helper: Simplify page offset calculation in fault handler
-Date: Fri,  5 Dec 2025 19:22:22 +0100
-Message-ID: <20251205182231.194072-2-loic.molinari@collabora.com>
+Subject: [PATCH v13 02/10] drm/shmem-helper: Map huge pages in fault handler
+Date: Fri,  5 Dec 2025 19:22:23 +0100
+Message-ID: <20251205182231.194072-3-loic.molinari@collabora.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251205182231.194072-1-loic.molinari@collabora.com>
 References: <20251205182231.194072-1-loic.molinari@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5FF0C10000D
-X-Stat-Signature: e7ghmjppa5gomqd9zzkcxfo3h4f5wbg7
+X-Rspamd-Queue-Id: 82F921C000D
+X-Stat-Signature: dda6kfqp1ffsosconf48cy65uxo7zzeo
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1764958958-318018
-X-HE-Meta: U2FsdGVkX18mnons1E4n4pAOBv6L9F6ZTPyDGwoR6kg94zHy5FveGo5+qoIuAFVWcogY1zei/fZBz6WPKhmTM3hfNAspP7eQX7Vgqpn8aMIMdWMnLenx0NGDcRuhPBryjsaT/Px7dYxI8V9FDP/WufDNKPPvjG5SB4JiY+jtTMu1kVlnC+1r8ob5EvgDELsyZKdu/F3FT+Q8D0MFHdujESyw0K3IEUY5JpMy0UGhqbrUphI6kkEF77IpHavyo/hz960DdTGsxJdKQR1h3Rf5ydTeY7Mfe6h6zRWF3YpGgAeXAoVHx5kUNNFXihz5hY0hh3Sv/BzBurmwxc391OvWx2yIHtVdb2+dq5Y1joKDU190QwDRRWiSnOLXQeFgNlUFpj9hotAb+zO973AyiIor6003fQ8na8Law1bTcZM6RLJ3EJL2h365czZZ4ayhZbgBTi3hT2EfOVcMXuAYxvzuRSHKKnjghqBx1R3ay0g/6ZVz1mmedH6B5Z4ooHtDCtyl3pmw3onEwUZqztK42pSNq2PTfgVRjmTcT++LAhQGiKK3zlTrDwlD1xxMMnN/rHICxpcNRn00WBk8gXK/++zWp1yyE1VLFWGIR7XfW39nBydudiHFY4mgbHZG0O4MY+j4BQ9+YMYcwnLVy56g62aukI5fgpiW1gQ7w947KowHNy6LSe6KcZQbERS+RaB9HUBlN5F3tRE4TO1LChNAIkEGTu3oufB2vBnkdalpk3JJySqfWpySKHxBe6QQi1HTvNDjjWJ4T+dp4Gds+9kC9LS7i/8X0b5cJn2wIqYaGdvHY8C+s5xdPNS8GoISVdJJ3n7tGNLP718gso0cRm5wbnV944cIaFT8JiUb3tOsh6uXJy5Dd2BY5WXKWPK809x8pxnkzCW3XF2+rKScWollpyLi0p0oYIXZlbRH9NpppcZbORT4mdQ0LjiSi/5OwU4KScdhkzTosQgeqZm2k8EtgNJ
- exXh+OK6
- UPNOVLjMIkWxUwElGXZlfRH06CUFGrL6jMFrte63EbfAtx2qH/7J7fSzjdhqpVFdVv8xjlhX6yajMJMe+E8hezzjC5vYVz7FsoacyNbmSzY6u60vw8ZNWEi0w99kQIalxXgzxWdxM4WJE1rP8klZwxdZ+NOTGoAp6W6aoni/dDjH1kWYPRw0kyBQfdkEBF9FcncFSmsVmxpq4ksBDEPBe/7IaYFqCQNf2TUesVbvXUn984ROGbaj0aVyMPNnHJIeZwJdQKzkTo4y095K2Z5TbCfGiuO/SFhXKTNc7zbnGrGl3BxBSOQKHI4DK5lW3/FTfijg0e0kktpBy2M8K0wfmHCG6yQ1r8MPb8jdPtBO6jM6gnmS8jEIRHF0S9d/FX8zGaP0W
+X-HE-Tag: 1764958959-215360
+X-HE-Meta: U2FsdGVkX1+7da07J/kQpMJsmfkzveJvputsKX2bTls7FP+l+m4+xqL5fur5crvwFKtMVsgj6GElDyBT4vYP35ICUEwwflmTTFS9dAtrQvvOmuLnS6uHOel0VDW2PSA7bGDgHFcJaqzfNiJ9Gyk0cwC+w0SmAOu84GWPOizJRjQO9hBQAFGUS0j2b4ydviHhaeY18esAWV+8ik6B+4HL2TQk7txXFL6pGYkAlMtpGUbxWGn2lAHiAdfolZfTKKoEB4Ztke4NjVME5K4wLZ/4ibg+2esJzgdNkpmYh+v12e9aQkIm6YRniOGlkZAKTCqQGsJp24VGNHLpTjB1cIqPcLJJbQ/Jg8SYbnOHooDJkmM6LvvdrY8gE2I1XGUZET4QI6MXuFJUAjmymdlhoF2Q2gLkm2RgtMilc0sOF0scumI9d5zWEPvcX9zx/akkd34THd2p9FrLjZiVcTlKhTt3tT7SOjc/xwUEu9SkKenC5vz1ZypozeuagIEcnStBlvap76jryYaIQVWLmpaaG+EZroQpsgkqa4PrBTt8kYyMN8UcA9CSvzVOUMJCpt/Qv9R2sgTlYLWnKDW599zKHb82EEtj4K2ngIKV2flNjKgbUJ6AOK0nWkmMazmxTsN6Ul9Dmv+MhXWlQ8UFGycYM4x5H1k9pJYeCJ6xOsKP3C9iOBPpmpBVlPwCpNgOzMZTc2iVSBcMNYzhKeqxuq2keNrm9RLvC39U7nyhS/jWO37NdW+n168Mco5ebY6SyayIQXFLJmDX+z94ur+jvqdt1j4MnawtJiMjfmBVrxwutI83wrvV/vYH3M0Qm1wZEQf1Pj4ZMK1ptAuUUOztIRmz1QOHPGLns79vLkvk8sgDu1IGux91K4oHAfjzKyt+AuDlItn8UhoeWkdNlFgJTyH3FEoc+sx6k2WmLd4gEr8/CJEeKJ/js6PYwzQVgVoyzxWeGwJWZCih88ZznXOZL1uw5cw
+ uvP1vYAa
+ /e1nwlS/BCi+V6ODaLy9qmAEhtUhtrJBvamI+a9ZYKWa0qqUtd/XB2SJjtHERzfWKX0AKZ7YS8BY5srENhXt1Da/qKq6LL1QVy8lJxsWZfGNjS8bxZ8g0s0OGTKF71dxRFHGjqox6dTepS9NCQPO9+ZAMjYa8HUd3FgEEOeEikDaaneRspGjMOK622TfZh1a68Ll6w7+pDeL0hXqc/rwL5qCkze380i04pYe4kL8c04HjlkyU+YIkJyo9smKZ2EA1rkNngNNVQ0GjwRjDhykh0+aNgmiX1joS0RRaagZB+myD354mCW9eZUxFixfxaLaVDdOZhmi/oKQaeUVa3ge86s9gbp2h8MfqGwBNkg3d+n9LF52gcWWgVq7/cIvljU5q0F42tjLdOvtrHcdypM5D5xdIi/ONY6wEYYHjvc+p+aYXiH6NkRhS4X5qfnoaCaWMCanTwHx30yEcibx7WynmonDHnrI9VvXA/aNwb6lcfvnt3Ug7Ozy/3hF6eddcq+aaDS4F
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,42 +126,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For a fault at address addr, the page offset is
-  page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT
-              = ((addr & PAGE_MASK) - vma->vm_start) >> PAGE_SHIFT
-	      = (addr - vma->vm_start) >> PAGE_SHIFT
+Attempt a PMD sized PFN insertion into the VMA if the faulty address
+of the fault handler is part of a huge page.
 
-Since the faulty logical page offset based on VMA is
-  vmf->pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT)
+On builds with CONFIG_TRANSPARENT_HUGEPAGE enabled, if the mmap() user
+address is PMD size aligned, if the GEM object is backed by shmem
+buffers on mountpoints setting the 'huge=' option and if the shmem
+backing store manages to allocate a huge folio, CPU mapping would then
+benefit from significantly increased memcpy() performance. When these
+conditions are met on a system with 2 MiB huge pages, an aligned copy
+of 2 MiB would raise a single page fault instead of 4096.
 
-We can slightly simplify the calculation using
-  page_offset = vmf->pgoff - vma->vm_pgoff
+v4:
+- implement map_pages instead of huge_fault
+
+v6:
+- get rid of map_pages handler for now (keep it for another series
+  along with arm64 contpte support)
 
 v11:
-- remove misleading comment
+- remove page fault validity check helper
+- rename drm_gem_shmem_map_pmd() to drm_gem_shmem_try_map_pmd()
 - add Boris R-b
+
+v12:
+- move up ret var decl in fault handler to minimize diff
 
 Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 35 +++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-index dc94a27710e5..e47ab3ebb5c2 100644
+index e47ab3ebb5c2..e67216cbb469 100644
 --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
 +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -577,8 +577,8 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
- 	struct page *page;
+@@ -567,6 +567,26 @@ int drm_gem_shmem_dumb_create(struct drm_file *file, struct drm_device *dev,
+ }
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
+ 
++static bool drm_gem_shmem_try_map_pmd(struct vm_fault *vmf, unsigned long addr,
++				      struct page *page)
++{
++#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
++	unsigned long pfn = page_to_pfn(page);
++	unsigned long paddr = pfn << PAGE_SHIFT;
++	bool aligned = (addr & ~PMD_MASK) == (paddr & ~PMD_MASK);
++
++	if (aligned &&
++	    pmd_none(*vmf->pmd) &&
++	    folio_test_pmd_mappable(page_folio(page))) {
++		pfn &= PMD_MASK >> PAGE_SHIFT;
++		if (vmf_insert_pfn_pmd(vmf, pfn, false) == VM_FAULT_NOPAGE)
++			return true;
++	}
++#endif
++
++	return false;
++}
++
+ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+@@ -574,8 +594,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+ 	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+ 	loff_t num_pages = obj->size >> PAGE_SHIFT;
+ 	vm_fault_t ret;
+-	struct page *page;
++	struct page **pages = shmem->pages;
  	pgoff_t page_offset;
++	unsigned long pfn;
  
--	/* We don't use vmf->pgoff since that has the fake offset */
--	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
-+	/* Offset to faulty address in the VMA. */
-+	page_offset = vmf->pgoff - vma->vm_pgoff;
+ 	/* Offset to faulty address in the VMA. */
+ 	page_offset = vmf->pgoff - vma->vm_pgoff;
+@@ -586,12 +607,18 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+ 	    drm_WARN_ON_ONCE(obj->dev, !shmem->pages) ||
+ 	    shmem->madv < 0) {
+ 		ret = VM_FAULT_SIGBUS;
+-	} else {
+-		page = shmem->pages[page_offset];
++		goto out;
++	}
  
- 	dma_resv_lock(shmem->base.resv, NULL);
+-		ret = vmf_insert_pfn(vma, vmf->address, page_to_pfn(page));
++	if (drm_gem_shmem_try_map_pmd(vmf, vmf->address, pages[page_offset])) {
++		ret = VM_FAULT_NOPAGE;
++		goto out;
+ 	}
  
++	pfn = page_to_pfn(pages[page_offset]);
++	ret = vmf_insert_pfn(vma, vmf->address, pfn);
++
++ out:
+ 	dma_resv_unlock(shmem->base.resv);
+ 
+ 	return ret;
 -- 
 2.47.3
 
