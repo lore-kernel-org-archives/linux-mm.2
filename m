@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AEC8D2F7E7
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 12:08:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55564D2F7CC
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 12:47:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48F9A6B0147; Fri,  5 Dec 2025 07:08:40 -0500 (EST)
+	id 221496B014A; Fri,  5 Dec 2025 07:47:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43FE66B0148; Fri,  5 Dec 2025 07:08:40 -0500 (EST)
+	id 1F98D6B014C; Fri,  5 Dec 2025 07:47:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 307B36B014A; Fri,  5 Dec 2025 07:08:40 -0500 (EST)
+	id 137446B0150; Fri,  5 Dec 2025 07:47:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 14E036B0147
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:08:40 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDCEC59619
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:08:39 +0000 (UTC)
-X-FDA: 84185295558.23.949038F
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 791011C0018
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:08:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=JrZon1c+;
-	spf=none (imf20.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
-	dmarc=pass (policy=none) header.from=armlinux.org.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 005076B014A
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:47:26 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8EF9913311F
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:47:26 +0000 (UTC)
+X-FDA: 84185393292.17.5505F03
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4C6C8140011
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:47:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764936518;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764938844;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qOqOO1RkHv+TL4sHO2I/M94wigINI1Cn0aqofm8+DJM=;
-	b=0p1QSa7Q7bV5w60ksSB2x84BqzbrsVM1OSt/ke6zOAeKZzSoOXmzRugMesS2Ha4LKzj8ck
-	KhvYbRjTu36xZCYqGinavLcysVWPi3ceH1+FKBUsZmrrZt8hh7i171ks4ypF3SZHRUIy0I
-	pPD+caEWgLdILF3g7yyycv9UcdtxfKs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764936518; a=rsa-sha256;
-	cv=none;
-	b=wo9D9ylgq/Ymc3QxdU68tyeHxVBfN2nmTyYyjDy08/Q1o+mDiByO80IZhtunWFgUc7gfow
-	kuo3KzzSGOxkYhNvPSbetYAGuJ2IZXWgtfdborRi4CzDI4HW11OU2b0kbHsuZcIOER29lL
-	VeBGuSGHTsh9ZpQmoV5AvCw+ZYrEZdY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bIPVyCSJgatZ7JLbD2Uja0xaWq0e923lFU6Qth2saH0=;
+	b=xwJkJt6XYtxaTozrhb4wxKFaObhG3VukAHGNxYSX1D6MhNMWt8JclO6T/VyKwnQp+tyotK
+	auPiXpd5KQ1r4BU5b/fLuBBke9iV1cUkOh8dPo3mT929GNiTYJJTRrzdjz+Qrj+bfGAPnw
+	RhovQ4jFcx15CziAPCwONVDgq3mlaBk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=JrZon1c+;
-	spf=none (imf20.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
-	dmarc=pass (policy=none) header.from=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=qOqOO1RkHv+TL4sHO2I/M94wigINI1Cn0aqofm8+DJM=; b=JrZon1c+goGZ/cvJPITZz+HQAG
-	H8Glqh4GmzB4ynFJAlqotxWYu/at+K2gILu3ugTSYfgyyA9nlgkYCOH9DsRXqv3mk+Id9XnDEeOyo
-	KPPF7riTyhWttscjHg/UmGw+FFzHJ+L3PDkBoL47BA7n8mYjoZSHW/H/o341Ym97v+olzn/mai3wg
-	jtud26oX+CTo/9jlt8VAMQYI2a5VHeGTe/kcmC2pGu8768drFMpPega2QiNq3vkswcBw485F65wHM
-	TiWeqs1otv1R5KDD6QrYP4z85DZ5jaJokaX/uCSIHMgPaKqDiJ87vv2t31h78rMOxahMYDXcOxl2s
-	+bhzADnQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53922)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vRUbi-000000004aX-0Y8R;
-	Fri, 05 Dec 2025 12:08:18 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vRUbe-0000000025R-1Eju;
-	Fri, 05 Dec 2025 12:08:14 +0000
-Date: Fri, 5 Dec 2025 12:08:14 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	brauner@kernel.org, catalin.marinas@arm.com, hch@lst.de,
-	jack@suse.com, linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, pangliyuan1@huawei.com,
-	wangkefeng.wang@huawei.com, will@kernel.org,
-	wozizhi@huaweicloud.com, yangerkun@huawei.com
-Subject: Re: [Bug report] hash_name() may cross page boundary and trigger
- sleep in RCU context
-Message-ID: <aTLLLuup7TeAqFVL@shell.armlinux.org.uk>
-References: <CAHk-=wg4ZnsfpgXYL5qhjYDYo1Gnssz+VxnKZzHXMEmE7qrnQQ@mail.gmail.com>
- <20251203014800.4988-1-xieyuanbin1@huawei.com>
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764938844; a=rsa-sha256;
+	cv=none;
+	b=y5CpzEfiZFYGJZRRAq/dSAE40w8iDRQHnOuLhSB3bINJJH9iWEyXBuS19UHUSVt9s1cKX8
+	9RbwM9bmDYbYC9JqjmFgLxbcirIKVJwI59xmSs7lQww6netUkB1fS2AG/4knWZDuORwCRh
+	Ev98joEpMBVR6Y1xHeIOLptvz0Qh47E=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD460339;
+	Fri,  5 Dec 2025 04:47:15 -0800 (PST)
+Received: from [10.44.160.68] (e126510-lin.lund.arm.com [10.44.160.68])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A5F6D3F86F;
+	Fri,  5 Dec 2025 04:47:15 -0800 (PST)
+Message-ID: <573881f1-60f7-4eb3-a484-1df4858aa1b4@arm.com>
+Date: Fri, 5 Dec 2025 13:47:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251203014800.4988-1-xieyuanbin1@huawei.com>
-X-Rspamd-Queue-Id: 791011C0018
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 06/12] mm: introduce generic lazy_mmu helpers
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+ <20251124132228.622678-7-kevin.brodsky@arm.com>
+ <e43c147f-bff8-462a-88dc-4345500f4ed7@arm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <e43c147f-bff8-462a-88dc-4345500f4ed7@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4C6C8140011
+X-Stat-Signature: czxymf9fwruw34hn3xzgi9eijihezjbb
 X-Rspam-User: 
-X-Stat-Signature: bxxn8buq3yuagtb7aisfiq1oniez9t6w
-X-HE-Tag: 1764936517-275199
-X-HE-Meta: U2FsdGVkX1+zJqEFBRP0LPYz4RFjLj4/kti2HIXOeDDy+m0eoqgi6VBW+t75l8123DGBGfBT+higy9rRdUAnUpL9263DZdIJq6w3UzifkwKnUHqxtgEVwRtGef508SRgWfuH9/ruo7HJWrRn7BurcS+vJz2qM+9QYtaEqaVg5C64a3zn/8uPWbB9v0NiutXFPw/Bg6YsDPgrs7fCQRQA5WCgZWNvXSCcuYyZamBHsQZwZA4kPUwDVBnaRl5PRlMttpC1HLIHpws4iVuMcbIKefYkMQP0RZfO0GnJWcHKobFhc+AqKCIzfGsVzssWGsyxSOJ4EpiGUYMMC3DUgj8qioRg8lXYmyhuNh/WtjEK1hxT2w+z3ZcXSKSQP74ZVdvm4oFWx7nsDAGADNGxtU/iKHCcHGbE0P3eW4lIC8UrI7cJ7dn0RyaC1uYQ0IK4N9FqRTaXRuGdXZp3faGHLT9jAOHElCsmEI5GUzCpRWn4CmXcpOMikS8LIH1bzKunbbgcRBYq6QHefIQ49flQrGXBbQeGQZ1SWlXTK2CzhRaZFMtAJRCFhZ63YoSGlot1vcWTzu4an3OapfCkYtovD5anFrrL4/PNMhjd/aBQlb5GTRhfwJt35pwNitoZzYR4v5zGtZoBVncKWvzLG1n+00gcmfKCRjPJwS3N3i72jez3X0YNFcfXk/dahKxY+exLB6FBhv7mQ/eDl/1a6MCfIooPKZrCTEhltjETaHfjLmxtOGIgsySuanYxok4FLTqFLS8rBSH31UDlZ80TobvUy5j/qxGVZAFLM4gVit0i+erH0tmZb9ORk+JJHCnlSn0XGzxqrFeFM6SwraDdeNO2HWb8Ni7URp8EOFv70+nxs+CHhK3vtZ8VtITL3s+gsin9oRUWzRrYOuNBf/CSGbeNlCcUCRtLm6zCAXzwW1SWzIbOA07cTaz3kEd/8wGgSVS3dmIeQLZkYsz7eUAWrn9sLtV
- IA+0dmh7
- q8PZTuAhEeFOwV1zeE4H8TmPJBcoruYPbCazz3viVG+dkkc/iu1ZdR9Szkh+JAUdrST6afhpHXyQuWRE2m+G8dVvpfeu8VNjfwupSsMWDLP2EKwbJHKpDg48ugiPUWf/fpUqctFV3SeYM41JFRD1Iu0AFSjVlPzxxnceEuufxlYKNK2McY9wpqw4JZa0AXDmcmtfqU15AN18GsJmJvOeGNaqgBAMdITta5+EpChipvimKT36yX9nEW2uHlT7VMvpPo8i01vRCEvecwmWnQICeQtNuap4/2XpxlsFPKSnuF9bwlBnMxhGBTcdnPTYaobFVJ2aSly8/0AUuOhEp1RfgXI/e0/6bZusIa0v41Ee47gd27uGnqrmIrKr8h9j3+vjs3upTVkqw6yU/su7YtS+bccphwiqV52ylQwSYpoOiWddJ3SqnUpTXdig2KCWTVsxTDPJ6ysZ2ComEGTYbLG5bXlkB3qPyX05cAWMNxtHug8Z6rE9gzLz7g8MntG53/hgqwKPYrJS2TzOBm+f6+543R9KntLPIv3tj8dmUmjuYsxRZvUYTNNfbd3LHxBnIXgWutdhG0yhIKoBbLS3hZRHbclqe4Q==
+X-HE-Tag: 1764938844-654979
+X-HE-Meta: U2FsdGVkX1+oDbVEN7R1/f6h7n31Vc+AVsK2YSOxgx3SH5tv+B/uAU6umAdZTOMTzehWph4w35ewbCtLrXX+NeOo+6pZ1pTDRvLiFYVkOZuZBii8OVQO4SCs2fQMopervs94xwF1BbSD2iGF756D2A+0zMl2gv+EC6m/sm9iLA6eynVAHd1D68zzSOm1j1BOhq4GxS5IRGsiElaTM7W9fGKaF0ul7GaWU3unCQfcw+OnmJTvshhIam15ZQqrzz9cayku2XBYX5EhmOk2acF18lQHwe6RYc1XoG9dPF++RF4zprQQIj2nTDTUS4UrdiNFDwxZHP+opw1SEEXkNuSDy5x1weRD5WhHfYMtZ7lNyba7kTeefVUidR7NxH1F7bRxfrIEpiXGgQ03ykYoWjlpO9lL+slRqAz4gaWWtNCbQctxJreT7EGr/Z8xPHg7Q2/2Nfvgs3R23MxHLdHfpApHgPZiKbagY2Mg3d6dktzJEWYshFR7IIEgJntWEqy7BQGlgcH2kQGmiS3jWsGqTPnBMJY945nx88l0soBLBa22c+mqVgIQCmV94rHc/eAW95d6GgQpF4vpVwBnlx7M+TeMn3LxIKaqE0vIlmMVyet/klbL084srcLuYhLsXF4VLHGbcHTdIzIV7RBDXcoNJ9LpsUBvTZJE0+3DlxrRexuc5y2qxaRQtOh60SBc3tPNnGzYsE2nHuacc1O6EX0bfv2b3hbF7W+8r0tcL3nn+GjcYdPl6FfFJNvfJr4GcNMu8sFB3qaiLHjO+puCAskvJpgv8wynrti1nzZT7k4jld7P9juc6WnRzbyDeEIBdEmMiktPAdM1HQYItINnwhrtZsIJT9OD0Qq/EVTW9m29GVR7OOeFte9CUcB1l/SJIi3wGML34Smp2JP6Q/B1Wavv/IxrwnKHRORJiRtKWFBE64oPFYZptjc7PwiM08mrB3+BZoHzAPwMBbSsdrHSSBN73sx
+ VsjMqK52
+ TvjZt0YgflvSXVY0TkHVtKdiifDXRum81LTjyfubVRR1RWH8vVzYWlcT0a0QBYus/793C8xYp4baXMkgoSwVlih8SP1Xgiet0OWMLh4iHVuEDu4MDo2Y5h1kK6U84HEYOyqGylFHKCTjvyIisCJSa9tB7ANP4/p77/RtiXD2F56fnmXxcJj1oV+vN34PF8alQZzKam8B0AXWAKdkCh43G0h2bLnz/tiKpFwmvCJTrPWORUOIcyINkyQ2f3YRiZhvN81jcyPERhQsV71A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,153 +110,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 09:48:00AM +0800, Xie Yuanbin wrote:
-> On Tue, 2 Dec 2025 14:07:25 -0800, Linus Torvalds wrote:
-> > On Tue, 2 Dec 2025 at 04:43, Russell King (Oracle)
-> > <linux@armlinux.org.uk> wrote:
-> >>
-> >> What I'm thinking is to address both of these by handling kernel space
-> >> page faults (which will be permission or PTE-not-present) separately
-> >> (not even build tested):
-> >
-> > That patch looks sane to me.
-> >
-> > But I also didn't build test it, just scanned it visually ;)
-> 
-> That patch removes harden_branch_predictor() from __do_user_fault(), and
-> moves it to do_page_fault()->do_kernel_address_page_fault(). 
-> This resolves previously mentioned kernel warning issue. However,
-> __do_user_fault() is not only called by do_page_fault(), it is
-> alse called by do_bad_area(), do_sect_fault() and do_translation_fault().
-> 
-> So I think that some harden_branch_predictor() is missing on other paths.
-> According to my tests, when CONFIG_ARM_LPAE=n, harden_branch_predictor()
-> will never be called anymore, even if a user program trys to access the
-> kernel address.
-> 
-> Or perhaps I've misunderstood something, could you please point it out?
-> Thank you very much.
+On 04/12/2025 05:17, Anshuman Khandual wrote:
+> On 24/11/25 6:52 PM, Kevin Brodsky wrote:
+>> The implementation of the lazy MMU mode is currently entirely
+>> arch-specific; core code directly calls arch helpers:
+>> arch_{enter,leave}_lazy_mmu_mode().
+>>
+>> We are about to introduce support for nested lazy MMU sections.
+>> As things stand we'd have to duplicate that logic in every arch
+>> implementing lazy_mmu - adding to a fair amount of logic
+>> already duplicated across lazy_mmu implementations.
+>>
+>> This patch therefore introduces a new generic layer that calls the
+>> existing arch_* helpers. Two pair of calls are introduced:
+>>
+>> * lazy_mmu_mode_enable() ... lazy_mmu_mode_disable()
+>>     This is the standard case where the mode is enabled for a given
+>>     block of code by surrounding it with enable() and disable()
+>>     calls.
+>>
+>> * lazy_mmu_mode_pause() ... lazy_mmu_mode_resume()
+>>     This is for situations where the mode is temporarily disabled
+>>     by first calling pause() and then resume() (e.g. to prevent any
+>>     batching from occurring in a critical section).
+>>
+>> The documentation in <linux/pgtable.h> will be updated in a
+>> subsequent patch.
+>>> No functional change should be introduced at this stage.
+>> The implementation of enable()/resume() and disable()/pause() is
+>> currently identical, but nesting support will change that.
+>>
+>> Most of the call sites have been updated using the following
+>> Coccinelle script:
+>>
+>> @@
+>> @@
+>> {
+>> ...
+>> - arch_enter_lazy_mmu_mode();
+>> + lazy_mmu_mode_enable();
+>> ...
+>> - arch_leave_lazy_mmu_mode();
+>> + lazy_mmu_mode_disable();
+>> ...
+>> }
+>>
+>> @@
+>> @@
+>> {
+>> ...
+>> - arch_leave_lazy_mmu_mode();
+>> + lazy_mmu_mode_pause();
+>> ...
+>> - arch_enter_lazy_mmu_mode();
+>> + lazy_mmu_mode_resume();
+>> ...
+>> }
+> At this point arch_enter/leave_lazy_mmu_mode() helpers are still
+> present on a given platform but now being called from new generic
+> helpers lazy_mmu_mode_enable/disable(). Well except x86, there is
+> direct call sites for those old helpers.
 
-Right, let's split these issues into separate patches. Please test this
-patch, which should address only the hash_name() fault issue, and
-provides the basis for fixing the branch predictor issue.
+Indeed, see notes below regarding x86. The direct calls to arch_flush()
+are specific to x86 and there shouldn't be a need for a generic abstraction.
 
-Yes, at the moment, do_kernel_address_page_fault() looks very much like
-do_bad_area(), but with the addition of the IRQ-enable if the parent
-context was enabled, but the following patch to address the branch
-predictor hardening will show why its different.
+- Kevin
 
-In my opinion, this approach makes the handling for kernel address
-page faults (non-present pages and page permission faults) much easier
-to understand.
-
-Note that this will call __do_user_fault() with interrupts disabled.
-
-Build tested, and remotely boot tested on Cortex-A5 hardware but
-without kfence enabled. Also tested usermode access to kernel space
-which fails with SEGV:
-- read from 0xc0000000 (section permission fault, do_sect_fault)
-- read from 0xffff2000 (page translation fault, do_page_fault)
-- read from 0xffff0000 (vectors page - read possible as expected)
-- write to 0xffff0000 (page permission fault, do_page_fault)
-
-8<===
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH] ARM: fix hash_name() fault
-
-Zizhi Wo reports:
-
-"During the execution of hash_name()->load_unaligned_zeropad(), a
- potential memory access beyond the PAGE boundary may occur. For
- example, when the filename length is near the PAGE_SIZE boundary.
- This triggers a page fault, which leads to a call to
- do_page_fault()->mmap_read_trylock(). If we can't acquire the lock,
- we have to fall back to the mmap_read_lock() path, which calls
- might_sleep(). This breaks RCU semantics because path lookup occurs
- under an RCU read-side critical section."
-
-This is seen with CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_KFENCE=y.
-
-Kernel addresses (with the exception of the vectors/kuser helper
-page) do not have VMAs associated with them. If the vectors/kuser
-helper page faults, then there are two possibilities:
-
-1. if the fault happened while in kernel mode, then we're basically
-   dead, because the CPU won't be able to vector through this page
-   to handle the fault.
-2. if the fault happened while in user mode, that means the page was
-   protected from user access, and we want to fault anyway.
-
-Thus, we can handle kernel addresses from any context entirely
-separately without going anywhere near the mmap lock. This gives us
-an entirely non-sleeping path for all kernel mode kernel address
-faults.
-
-Reported-by: Zizhi Wo <wozizhi@huaweicloud.com>
-Reported-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Link: https://lore.kernel.org/r/20251126090505.3057219-1-wozizhi@huaweicloud.com
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- arch/arm/mm/fault.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index 46169fe42c61..2bbec38ced97 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -260,6 +260,35 @@ static inline bool ttbr0_usermode_access_allowed(struct pt_regs *regs)
- }
- #endif
- 
-+static int __kprobes
-+do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
-+			     unsigned int fsr, struct pt_regs *regs)
-+{
-+	if (user_mode(regs)) {
-+		/*
-+		 * Fault from user mode for a kernel space address. User mode
-+		 * should not be faulting in kernel space, which includes the
-+		 * vector/khelper page. Send a SIGSEGV.
-+		 */
-+		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
-+	} else {
-+		/*
-+		 * Fault from kernel mode. Enable interrupts if they were
-+		 * enabled in the parent context. Section (upper page table)
-+		 * translation faults are handled via do_translation_fault(),
-+		 * so we will only get here for a non-present kernel space
-+		 * PTE or PTE permission fault. This may happen in exceptional
-+		 * circumstances and need the fixup tables to be walked.
-+		 */
-+		if (interrupts_enabled(regs))
-+			local_irq_enable();
-+
-+		__do_kernel_fault(mm, addr, fsr, regs);
-+	}
-+
-+	return 0;
-+}
-+
- static int __kprobes
- do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- {
-@@ -273,6 +302,12 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- 	if (kprobe_page_fault(regs, fsr))
- 		return 0;
- 
-+	/*
-+	 * Handle kernel addresses faults separately, which avoids touching
-+	 * the mmap lock from contexts that are not able to sleep.
-+	 */
-+	if (addr >= TASK_SIZE)
-+		return do_kernel_address_page_fault(mm, addr, fsr, regs);
- 
- 	/* Enable interrupts if they were enabled in the parent context. */
- 	if (interrupts_enabled(regs))
--- 
-2.47.3
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> arch/arm64/include/asm/pgtable.h:static inline void arch_enter_lazy_mmu_mode(void)
+> arch/arm64/include/asm/pgtable.h:static inline void arch_leave_lazy_mmu_mode(void)
+>
+> arch/arm64/mm/mmu.c:    lazy_mmu_mode_enable();
+> arch/arm64/mm/pageattr.c:       lazy_mmu_mode_enable();
+>
+> arch/arm64/mm/mmu.c:    lazy_mmu_mode_disable();
+> arch/arm64/mm/pageattr.c:       lazy_mmu_mode_disable();
+>
+>> A couple of notes regarding x86:
+>>
+>> * Xen is currently the only case where explicit handling is required
+>>   for lazy MMU when context-switching. This is purely an
+>>   implementation detail and using the generic lazy_mmu_mode_*
+>>   functions would cause trouble when nesting support is introduced,
+>>   because the generic functions must be called from the current task.
+>>   For that reason we still use arch_leave() and arch_enter() there.
+>>
+>> * x86 calls arch_flush_lazy_mmu_mode() unconditionally in a few
+>>   places, but only defines it if PARAVIRT_XXL is selected, and we
+>>   are removing the fallback in <linux/pgtable.h>. Add a new fallback
+>>   definition to <asm/pgtable.h> to keep things building.
+>>
+>> [...]
 
