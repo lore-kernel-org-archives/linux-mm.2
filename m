@@ -4,40 +4,35 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B76B7D339B4
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 18:22:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDB5D339B2
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 18:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ABEC6B01F3; Fri,  5 Dec 2025 13:22:42 -0500 (EST)
+	id C8E3B6B01F4; Fri,  5 Dec 2025 13:22:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 736066B01F4; Fri,  5 Dec 2025 13:22:42 -0500 (EST)
+	id BA21A6B01F7; Fri,  5 Dec 2025 13:22:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B00A6B01F5; Fri,  5 Dec 2025 13:22:42 -0500 (EST)
+	id A31FE6B01F6; Fri,  5 Dec 2025 13:22:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 130FB6B01F3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8688F6B01F6
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:22:42 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF09688BA0
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:41 +0000 (UTC)
-X-FDA: 84186238122.21.2B1F083
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F44F1A0263
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:42 +0000 (UTC)
+X-FDA: 84186238164.19.182744E
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 11C7D18000F
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=itX7X6Pq;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf16.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id 515BD140006
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:22:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=I1kWmW9Q;
+	spf=pass (imf09.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764958960; a=rsa-sha256;
 	cv=none;
-	b=zBULaZc0LtjriBzIIhwDwRWpKTnvtZeaMFxcM0dJh1E798ND9lkVPpVx3A3YFbiBAIP8p8
-	rPmDSlYWNAPE9VsTmwPFs7uambEFZ6lVJ9HPbJKZY1Li07mLGPnCJKUEnSbNE+hR3wEFat
-	TFsG/pf2E1JAR6ZfXrEEJE26LU3XZfY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=itX7X6Pq;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf16.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+	b=P4/6zVspEjs0VVKk8d/PdU/WHZPTolSrWvNjhY1KfKOJp9b+tejQ25uoifFaiJE4b11Rt6
+	Smtv5znJilRWT0mkQgA6B8i1wdE6OrkknEb+/csE/sDB3x9XJlJ81lLNvSVnPO8V+sjomu
+	KfVKY8uHi517/T6UU7BbS4U7RYJZUko=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1764958960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -45,27 +40,32 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sxv/sZQcGM/SMoc4oAyCr8/yr9l0f+9bhHKNj0qXtzY=;
-	b=PZuugVftNkAnoPMIyQvG4QIEshNOYBZBInDJFP7KqqcVd4k+q5qKI0wkCeBuQsNogPr9z/
-	CI/HC7W0StY/sbAg71hNvLgUthvkXFqjrxIJhAOotLfWE/wco9EX/zBaDHNUvqHtkQIXqr
-	U00YE/R8++iZWTVIaiGz0OfaiJw1z2M=
+	bh=qlkV1iBzrDLIZuPYBOBgasEgZU4g5pRj2/PrSq9li84=;
+	b=f80rRmgAUI9kSYoKdqlJWjd9anuNP/P6joYQrUPJhX/cyPYLVH5uH53tNdmX0/tMZt/3n4
+	IB87x56rFkgBsG6IiAQZbRDDdi+24rjkPZ0vqAfMzB4N3XJViq/J418NpW5MNQS7DdQ/e9
+	FAvMSE2k9a5iXF9LLn9+8Gfo0K26WAI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=I1kWmW9Q;
+	spf=pass (imf09.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764958957;
-	bh=l3KOxgbsDeFvoAA9+oMRdpSVUin1NtFGF9oS7CWPszw=;
+	s=mail; t=1764958958;
+	bh=9th0tLAngJVGd6qH652rQnjACAMqlVf6KbfxdfP115A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itX7X6PqMxsyYWjyGe+2LDGh8ND+vN6q6gCYaaDDKZBa0pUP5azeoOO1tEBjC6KTX
-	 8/SPTQ9LN25BfeV35fSJNw1mUG/PP3iRCAv81A3QKwM+DeWPygRnAxqG4KWmWDkBaK
-	 hwnZewNTZLwJeKlALucDbeikoaLOSmVF9wLgjdc/KtWflaZDwwruPNUCvP0MLtmVvo
-	 oqIlIHTaBRTDq59SxvjrBKJdB8CjzpGJVMKKykiiZ+aZLpnGjYla9CcHLeF21H3v/m
-	 EPvlVbKnasO/iihxW0pLIpD/12PSr1qvB31MCWkQVDZR4YKyP1urhu2NSqMZW8pNJP
-	 bPw9jR4Pax5gA==
+	b=I1kWmW9QM+Jh4+naBth/uQMOiskpA6yHznTwETXhdqjRM1K4ddqfooXiPlqTX8h4m
+	 lNPfyRNkgEorwn69T/IGUQOTZPuZKmzJxToGQChJ+DkXMtArWmUuOnuDWXcR6c0HZ2
+	 gMa5HZCZ0ZA1DOdFUKSsfs3ncfHdDNfuwNmv4N6FpApMAWxx3GKcfmR59Ch55L+LTT
+	 4MlLSjezfDNavB3DnAR/5tdWC+Iin/vrqYfdJm5lSxcfeadpgOCY6U+KFnIEpihuUX
+	 ITU5+rUsC6HDTVKylmn75JrBSN44yNYTPhqtM9WNdTjCIKxfPwALry/H3+tOdF5LxE
+	 mbeY9VCdlaXOA==
 Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 13EB917E13D8;
-	Fri,  5 Dec 2025 19:22:37 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 14E5C17E14DD;
+	Fri,  5 Dec 2025 19:22:38 +0100 (CET)
 From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
@@ -101,23 +101,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kernel@collabora.com
-Subject: [PATCH v13 03/10] drm/gem: Introduce drm_gem_get_unmapped_area() fop
-Date: Fri,  5 Dec 2025 19:22:24 +0100
-Message-ID: <20251205182231.194072-4-loic.molinari@collabora.com>
+Subject: [PATCH v13 04/10] drm/gem: Add huge tmpfs mountpoint helpers
+Date: Fri,  5 Dec 2025 19:22:25 +0100
+Message-ID: <20251205182231.194072-5-loic.molinari@collabora.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251205182231.194072-1-loic.molinari@collabora.com>
 References: <20251205182231.194072-1-loic.molinari@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xfo1knrfnf513658msyidecn4cj6c89k
+X-Rspamd-Queue-Id: 515BD140006
+X-Stat-Signature: knwbp31c81pjk37m7f97eiu99i4qr4nm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 11C7D18000F
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1764958959-427509
-X-HE-Meta: U2FsdGVkX1+TJIbe7dfKacKnM90cOy65frc8MufdECYK11mJPAeBcKis01L13yClyAj5fEnimIypeWzaQC3OhzrZh/OcjrQxREYPpAIE6zjzLHVGdbDgOocYiWY76DzXzZwfV8ThloP+c8ywUd0WQAUzPRKGT/ZxiQDrd/Eb0F7/x8R5Tj2ziYz+aGzLoBQXdmmUlNmPnP8gPvCJ4+G2pnnlO8yqAh+TWTh9o0owZdN2KQK750ZVEPXmI0EHSEg2q1njo3hD0WwKWv24LQqCcFhixBOfdKQF2IR/YokGj8F0DS4EhA9Yute1+DyZWUIzFqF+Qtpnz225nYeglyNdPpDIyy5cUrlv7XjqDerWLhBoxGnMPDwUgjszd0Tm75oVQGSoHU/JuXE3mDii5R7nXNr6uaNgCSfRd4WVLgIsF0VLQ9tR9dF1AoZRnzPSOYPX0JtpeRF37T1Kes+XyTyaZPeeXBv5auWoBtg1vTa47iZ+EwdI5khV/L5PiWTjT2AlnC0fRycWQA3ONmG00g8j4EO3LTnxqelosmUIc42NQO11rifhbc8j+S6KgFeieYqcNMEaT8r3VvGaWkVAaNoExt2XpONt03YGdZNLFb2qOservZK36L6XtI/74g+p6KueZg3JzEo7HhdROKxEJyzVIPL3VoZ3cp1nvxR/6GDSzN57EwHzHkEazTFEp151BxwIvb0uZu+Y873NZUxz1gNGDQpTXO54mR39XzVP61J0RtmviE1B2ClCoppNPcxGJktwF2nrl+jTpbs+6vx7XoZ8sU/2qjF4kTm/LwF6VRTeF/RZaPmsWRWPLBTfYcBS7KiJafcD2Wze+1AIkl4z0856DjPT5nl13HrjPd8rwg88JeSPxP4dCQfXUPOHgxUD25/NRuf7DmutmAk0aHKlvxNBWPqalkWCQJ6LwC/wo8yZe/ZJaDykORKY8O3FMpPV3G9IOcK9bHFKquTgexaDeoR
- Ev3C7xaM
- ZwP8acwaj8HMNPG0zKF5lysuPDcxGamstzJwyOtZxsx9+q9R+QOWVW6PAzgh895NeLcNM9Qdeft3MYdZwdTFdxrf3wEhPXE2CPB7F9TV9mE5puCeuWOhaSDNXDS40lwEifBpAHAsDKelvkOCbXt/fc5oSJIlWgbGALj8nXuel8t2dNZoPcfT0z4fAJNnsHX/2I4vOV8SLlGWTdRFC8UnV4g9U+yNCRwxRv6iXeDGUuS2+84zah5hz418c07UnP3jlYg9h0D9uihSmg0pKp34oocmrliorD7NnEFzKOSrf+Z4gxTHmx0aUvkiTh+xeY4ohRkaFdQDmK8AKXQx31Cgm23RK10N02CXOKWcTzw7oGS3o2UOKKtfEKpytC4UDjRthf4I+iuHEyR4s+etxLDdoOGe8RtLg3bR7SedFc9/dHNQ/mPQ=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1764958960-764973
+X-HE-Meta: U2FsdGVkX1849WYQuRQLxaIiVK3cyvlZxRKJ2tOixG7leqtQQB9jaoyjDTFodUdo8YvkLp/CgFlaJz4xHGnYqZbfM2vs9f4KNAUlBc3+OZcfd8fiWtYMv7YoIQElQUkgiiB1LDLDKy6sOcareLzRfKTNEDAkSH611WUDhjgHAt47hQfyFcsn7l3xUPemHfHVUl1N4f8m8Fr7LcwQgnnYUux41Uux0mpvQsfP/I1wq8jLxAmliJWL6WGf4MRZjpPcYOPxiCSCwgQvvEJV3eu1YahAqXnl+jNw1Gzt0GtCxghcWjvxUwXyhyLCk+0/VIczolqx+Wcc8soGfTrkAIRZA5WJFErKdP2adSQJUHs63TL7N+7eSUNYtDe+TiuBtm84gPJzVajV2leRzT7lCeMPkhw10fecXoBhAuO35cPWmTC4zoxhkKUYt2j44xxdH+iQUG2ePdr117F818AfrwnHJa4qEV9V2m2iNH1JP8Jka1DNTbZHg2Ro7rPB1VkCAmUeP8WQuKIzTysc5e3iu1+RK+S5o8rv2M25SLtrtQOjKlxLbnjZsFf4LcJKugaW5S1OM3I3blkjFe0OOurJcE8v9aCigcpCsmYFmxEF5ZB0oHLnCgYwIow2viVAkoBq17jcoRwNXUYRVm8dVfFWfOaHVWz1DDqpG6LSfx+MY8WxpU+qW4SQ5WLTBM4qd40KQjgaVvG3iz87cO6t32LLBh22RKy5QEpXWRaxHwVIh1ys411urrXN2lmNelhQdp4mOXXGt4e7OKCdO+oOxr6p45YYygNgdZf7IxgDAZU6BBYeWp93H/snHsZYfTMo9xoaYZlsEPPH38rmY1k5CYyjCQLBYdxKri5ZvtgcsH4tNDGKz2FgJmZ7tTHCAdvU2zb2Cj6Mz1cKpBjtAs8Hqn4LPA5xg9Meut0S6PckuvreTVIoHPBRk2F+GMW3K/5ICRG/9qUADV1RuQ3uqf57cHMnX6H
+ I+z/NcCC
+ FP/E2VvSqkKylHdU1hyTrp3n/uXIUENqkefrSmGMI2RiCLgCJHi0xsVmg+KAaVLwk1jicrhaXEmW6WvoLRG8VvW8OJCEdqa+PBMYD10wYQGeoJ2/MTX2gob8Tz2Ry+wNVbaRlsfJAm58w/cqxqPJ4qMepp4dSGmYyD/zOo4kHx2rdhvUFaiO0DKJseItDiD3sIX5t8ZMwKNcRXj3oPUxk9l0ZOXTuQgeDslxxX81EGhzO+MCluxWquetoqzFhzPne8CUiNRWGpyQ5kfMTWQ1RX6iwHgbBxtQUOGoFKm2fYxE0bivBwqlAIW/kFX6NB2Zex0YgRHWkH83HAnoKhNg057tivI6reaN9S2CCjErS7evZosGjmjlKkh7f6b6uXeIejzEPuZ0632/31qEuH5prk0BZKRLDA2u5J5/cL73Th+YpVAkrlgW3YQ23iMpKFgIrsqtG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,220 +126,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mmap() calls on the DRM file pointer currently always end up using
-mm_get_unmapped_area() to get a free mapping region. On builds with
-CONFIG_TRANSPARENT_HUGEPAGE enabled, this isn't ideal for GEM objects
-backed by shmem buffers on mountpoints setting the 'huge=' option
-because it can't correctly figure out the potentially huge address
-alignment required.
+Add the drm_gem_huge_mnt_create() and drm_gem_get_huge_mnt() helpers
+to avoid code duplication in the i915, V3D, Panfrost and Panthor
+drivers. The former creates and mounts a dedicated huge tmpfs
+mountpoint, for the lifetime of a DRM device, used at GEM object
+initialization. The latter retrieves the dedicated huge tmpfs
+mountpoint used by a DRM device.
 
-This commit introduces the drm_gem_get_unmapped_area() function which
-is meant to be used as a get_unmapped_area file operation on the DRM
-file pointer to lookup GEM objects based on their fake offsets and get
-a properly aligned region by calling shmem_get_unmapped_area() with
-the right file pointer. If a GEM object isn't available at the given
-offset or if the caller isn't granted access to it, the function falls
-back to mm_get_unmapped_area().
-
-This also makes drm_gem_get_unmapped_area() part of the default GEM
-file operations so that all the DRM drivers can benefit from more
-efficient mappings thanks to the huge page fault handler introduced in
-previous commit 'drm/shmem-helper: Add huge page fault handler'.
-
-The shmem_get_unmapped_area() function needs to be exported so that
-it can be used from the DRM subsystem.
+The next commits will port drivers to these helpers.
 
 v3:
-- include <linux/sched/mm.h> in drm_gem.c
-- forward to shmem layer in builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+- store huge tmpfs mountpoint in drm_device
+
+v4:
+- return 0 in builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+- return 0 when huge_mnt already exists
+- use new vfs_parse_fs_string() helper
+
+v5:
+- remove warning on !dev->huge_mnt and reset to NULL on free
+- inline drm_gem_huge_mnt_create() to remove func from text and avoid
+  calls in builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+- compile out drm_device's huge_mnt field in builds with
+  CONFIG_TRANSPARENT_HUGEPAGE=n
+- add drm_gem_has_huge_mnt() helper
 
 v6:
-- use GPL variant to export drm_gem_get_unmapped_area()
-- don't export shmem_get_unmapped_area() anymore (use f_op instead)
+- move huge_mnt doc into ifdef'd section
+- either inline or export drm_gem_huge_mnt_create()
+
+v7:
+- include <drm/drm_device.h> in drm_gem.h
+
+v9:
+- replace drm_gem_has_huge_mnt() by drm_gem_get_huge_mnt()
 
 v11:
-- rename drm_gem_object_lookup_from_offset() to
-  drm_gem_object_lookup_at_offset()
-- add Boris R-b
+- doc fixes
+- add Boris and Maíra R-bs
 
 Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
 ---
- drivers/gpu/drm/drm_gem.c | 108 ++++++++++++++++++++++++++++++--------
- include/drm/drm_gem.h     |   4 ++
- 2 files changed, 90 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/drm_gem.c | 57 +++++++++++++++++++++++++++++++++++++++
+ include/drm/drm_device.h  | 15 +++++++++++
+ include/drm/drm_gem.h     | 33 +++++++++++++++++++++++
+ 3 files changed, 105 insertions(+)
 
 diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index efc79bbf3c73..933fc89dd648 100644
+index 933fc89dd648..32dddb23e211 100644
 --- a/drivers/gpu/drm/drm_gem.c
 +++ b/drivers/gpu/drm/drm_gem.c
-@@ -36,6 +36,7 @@
- #include <linux/module.h>
- #include <linux/pagemap.h>
- #include <linux/pagevec.h>
-+#include <linux/sched/mm.h>
- #include <linux/shmem_fs.h>
- #include <linux/slab.h>
- #include <linux/string_helpers.h>
-@@ -1177,36 +1178,27 @@ int drm_gem_mmap_obj(struct drm_gem_object *obj, unsigned long obj_size,
- }
- EXPORT_SYMBOL(drm_gem_mmap_obj);
- 
--/**
-- * drm_gem_mmap - memory map routine for GEM objects
-- * @filp: DRM file pointer
-- * @vma: VMA for the area to be mapped
-- *
-- * If a driver supports GEM object mapping, mmap calls on the DRM file
-- * descriptor will end up here.
-- *
-- * Look up the GEM object based on the offset passed in (vma->vm_pgoff will
-- * contain the fake offset we created when the GTT map ioctl was called on
-- * the object) and map it with a call to drm_gem_mmap_obj().
-- *
-- * If the caller is not granted access to the buffer object, the mmap will fail
-- * with EACCES. Please see the vma manager for more information.
-+/*
-+ * Look up a GEM object in offset space based on the exact start address. The
-+ * caller must be granted access to the object. Returns a GEM object on success
-+ * or a negative error code on failure. The returned GEM object needs to be
-+ * released with drm_gem_object_put().
+@@ -29,6 +29,9 @@
+ #include <linux/export.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#include <linux/fs_context.h>
++#endif
+ #include <linux/iosys-map.h>
+ #include <linux/mem_encrypt.h>
+ #include <linux/mm.h>
+@@ -82,6 +85,60 @@
+  * up at a later date, and as our interface with shmfs for memory allocation.
   */
--int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
-+static struct drm_gem_object *
-+drm_gem_object_lookup_at_offset(struct file *filp, unsigned long start,
-+				unsigned long pages)
- {
- 	struct drm_file *priv = filp->private_data;
- 	struct drm_device *dev = priv->minor->dev;
- 	struct drm_gem_object *obj = NULL;
- 	struct drm_vma_offset_node *node;
--	int ret;
  
- 	if (drm_dev_is_unplugged(dev))
--		return -ENODEV;
-+		return ERR_PTR(-ENODEV);
- 
- 	drm_vma_offset_lock_lookup(dev->vma_offset_manager);
- 	node = drm_vma_offset_exact_lookup_locked(dev->vma_offset_manager,
--						  vma->vm_pgoff,
--						  vma_pages(vma));
-+						  start, pages);
- 	if (likely(node)) {
- 		obj = container_of(node, struct drm_gem_object, vma_node);
- 		/*
-@@ -1225,14 +1217,86 @@ int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
- 	drm_vma_offset_unlock_lookup(dev->vma_offset_manager);
- 
- 	if (!obj)
--		return -EINVAL;
-+		return ERR_PTR(-EINVAL);
- 
- 	if (!drm_vma_node_is_allowed(node, priv)) {
- 		drm_gem_object_put(obj);
--		return -EACCES;
-+		return ERR_PTR(-EACCES);
- 	}
- 
--	ret = drm_gem_mmap_obj(obj, drm_vma_node_size(node) << PAGE_SHIFT,
-+	return obj;
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++static void drm_gem_huge_mnt_free(struct drm_device *dev, void *data)
++{
++	kern_unmount(dev->huge_mnt);
 +}
 +
 +/**
-+ * drm_gem_get_unmapped_area - get memory mapping region routine for GEM objects
-+ * @filp: DRM file pointer
-+ * @uaddr: User address hint
-+ * @len: Mapping length
-+ * @pgoff: Offset (in pages)
-+ * @flags: Mapping flags
++ * drm_gem_huge_mnt_create - Create, mount and use a huge tmpfs mountpoint
++ * @dev: DRM device that will use the huge tmpfs mountpoint
++ * @value: huge tmpfs mount option value
 + *
-+ * If a driver supports GEM object mapping, before ending up in drm_gem_mmap(),
-+ * mmap calls on the DRM file descriptor will first try to find a free linear
-+ * address space large enough for a mapping. Since GEM objects are backed by
-+ * shmem buffers, this should preferably be handled by the shmem virtual memory
-+ * filesystem which can appropriately align addresses to huge page sizes when
-+ * needed.
++ * This function creates and mounts a dedicated huge tmpfs mountpoint for the
++ * lifetime of the DRM device @dev which is used at GEM object initialization
++ * with drm_gem_object_init().
 + *
-+ * Look up the GEM object based on the offset passed in (vma->vm_pgoff will
-+ * contain the fake offset we created) and call shmem_get_unmapped_area() with
-+ * the right file pointer.
++ * The most common option for @value is "within_size" which only allocates huge
++ * pages if the page will be fully within the GEM object size. "always",
++ * "advise" and "never" are supported too but the latter would just create a
++ * mountpoint similar to the default one (`shm_mnt`). See shmemfs and
++ * Transparent Hugepage for more information.
 + *
-+ * If a GEM object is not available at the given offset or if the caller is not
-+ * granted access to it, fall back to mm_get_unmapped_area().
++ * Returns:
++ * 0 on success or a negative error code on failure.
 + */
-+unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
-+					unsigned long len, unsigned long pgoff,
-+					unsigned long flags)
++int drm_gem_huge_mnt_create(struct drm_device *dev, const char *value)
 +{
-+	struct drm_gem_object *obj;
-+	unsigned long ret;
-+
-+	obj = drm_gem_object_lookup_at_offset(filp, pgoff, len >> PAGE_SHIFT);
-+	if (IS_ERR(obj) || !obj->filp || !obj->filp->f_op->get_unmapped_area)
-+		return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0,
-+					    flags);
-+
-+	ret = obj->filp->f_op->get_unmapped_area(obj->filp, uaddr, len, 0,
-+						 flags);
-+
-+	drm_gem_object_put(obj);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(drm_gem_get_unmapped_area);
-+
-+/**
-+ * drm_gem_mmap - memory map routine for GEM objects
-+ * @filp: DRM file pointer
-+ * @vma: VMA for the area to be mapped
-+ *
-+ * If a driver supports GEM object mapping, mmap calls on the DRM file
-+ * descriptor will end up here.
-+ *
-+ * Look up the GEM object based on the offset passed in (vma->vm_pgoff will
-+ * contain the fake offset we created) and map it with a call to
-+ * drm_gem_mmap_obj().
-+ *
-+ * If the caller is not granted access to the buffer object, the mmap will fail
-+ * with EACCES. Please see the vma manager for more information.
-+ */
-+int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
-+{
-+	struct drm_gem_object *obj;
++	struct file_system_type *type;
++	struct fs_context *fc;
 +	int ret;
 +
-+	obj = drm_gem_object_lookup_at_offset(filp, vma->vm_pgoff,
-+					      vma_pages(vma));
-+	if (IS_ERR(obj))
-+		return PTR_ERR(obj);
++	if (unlikely(drm_gem_get_huge_mnt(dev)))
++		return 0;
 +
-+	ret = drm_gem_mmap_obj(obj,
-+			       drm_vma_node_size(&obj->vma_node) << PAGE_SHIFT,
- 			       vma);
++	type = get_fs_type("tmpfs");
++	if (unlikely(!type))
++		return -EOPNOTSUPP;
++	fc = fs_context_for_mount(type, SB_KERNMOUNT);
++	if (IS_ERR(fc))
++		return PTR_ERR(fc);
++	ret = vfs_parse_fs_string(fc, "source", "tmpfs");
++	if (unlikely(ret))
++		return -ENOPARAM;
++	ret = vfs_parse_fs_string(fc, "huge", value);
++	if (unlikely(ret))
++		return -ENOPARAM;
++
++	dev->huge_mnt = fc_mount_longterm(fc);
++	put_fs_context(fc);
++
++	return drmm_add_action_or_reset(dev, drm_gem_huge_mnt_free, NULL);
++}
++EXPORT_SYMBOL_GPL(drm_gem_huge_mnt_create);
++#endif
++
+ static void
+ drm_gem_init_release(struct drm_device *dev, void *ptr)
+ {
+diff --git a/include/drm/drm_device.h b/include/drm/drm_device.h
+index 5af49c5c3778..bc78fb77cc27 100644
+--- a/include/drm/drm_device.h
++++ b/include/drm/drm_device.h
+@@ -3,6 +3,9 @@
  
- 	drm_gem_object_put(obj);
+ #include <linux/list.h>
+ #include <linux/kref.h>
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#include <linux/mount.h>
++#endif
+ #include <linux/mutex.h>
+ #include <linux/idr.h>
+ #include <linux/sched.h>
+@@ -168,6 +171,18 @@ struct drm_device {
+ 	 */
+ 	struct drm_master *master;
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	/**
++	 * @huge_mnt:
++	 *
++	 * Huge tmpfs mountpoint used at GEM object initialization
++	 * drm_gem_object_init(). Drivers can call drm_gem_huge_mnt_create() to
++	 * create, mount and use it. The default tmpfs mountpoint (`shm_mnt`) is
++	 * used if NULL.
++	 */
++	struct vfsmount *huge_mnt;
++#endif
++
+ 	/**
+ 	 * @driver_features: per-device driver features
+ 	 *
 diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-index 8d48d2af2649..7c8bd67d087c 100644
+index 7c8bd67d087c..97b5fca8966d 100644
 --- a/include/drm/drm_gem.h
 +++ b/include/drm/drm_gem.h
-@@ -469,6 +469,7 @@ struct drm_gem_object {
- 	.poll		= drm_poll,\
- 	.read		= drm_read,\
- 	.llseek		= noop_llseek,\
-+	.get_unmapped_area	= drm_gem_get_unmapped_area,\
- 	.mmap		= drm_gem_mmap, \
- 	.fop_flags	= FOP_UNSIGNED_OFFSET
+@@ -40,6 +40,9 @@
+ #include <linux/list.h>
+ #include <linux/mutex.h>
  
-@@ -506,6 +507,9 @@ void drm_gem_vm_close(struct vm_area_struct *vma);
- int drm_gem_mmap_obj(struct drm_gem_object *obj, unsigned long obj_size,
- 		     struct vm_area_struct *vma);
- int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma);
-+unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
-+					unsigned long len, unsigned long pgoff,
-+					unsigned long flags);
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#include <drm/drm_device.h>
++#endif
+ #include <drm/drm_vma_manager.h>
  
- /**
-  * drm_gem_object_get - acquire a GEM buffer object reference
+ struct iosys_map;
+@@ -492,6 +495,36 @@ struct drm_gem_object {
+ 		DRM_GEM_FOPS,\
+ 	}
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++int drm_gem_huge_mnt_create(struct drm_device *dev, const char *value);
++#else
++static inline int drm_gem_huge_mnt_create(struct drm_device *dev,
++					  const char *value)
++{
++	return 0;
++}
++#endif
++
++/**
++ * drm_gem_get_huge_mnt - Get the huge tmpfs mountpoint used by a DRM device
++ * @dev: DRM device
++
++ * This function gets the huge tmpfs mountpoint used by DRM device @dev. A huge
++ * tmpfs mountpoint is used instead of `shm_mnt` after a successful call to
++ * drm_gem_huge_mnt_create() when CONFIG_TRANSPARENT_HUGEPAGE is enabled.
++
++ * Returns:
++ * The huge tmpfs mountpoint in use, NULL otherwise.
++ */
++static inline struct vfsmount *drm_gem_get_huge_mnt(struct drm_device *dev)
++{
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	return dev->huge_mnt;
++#else
++	return NULL;
++#endif
++}
++
+ void drm_gem_object_release(struct drm_gem_object *obj);
+ void drm_gem_object_free(struct kref *kref);
+ int drm_gem_object_init(struct drm_device *dev,
 -- 
 2.47.3
 
