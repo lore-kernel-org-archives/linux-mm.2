@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8AAD2E014
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11848D2E017
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47A8E6B00FF; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
+	id 716C46B0104; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42B5D6B00FC; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
+	id 627A46B0106; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D6106B0104; Fri,  5 Dec 2025 02:20:06 -0500 (EST)
+	id 1BB706B0101; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A7BE36B00FF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D28CE6B00FC
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:20:06 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70D341404D1
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9AE1A13AB69
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:06 +0000 (UTC)
-X-FDA: 84184568412.01.D74F9BB
+X-FDA: 84184568412.22.EB973F9
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9C510100008
+	by imf13.hostedemail.com (Postfix) with ESMTP id B9F742000A
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Authentication-Results: imf13.hostedemail.com;
+	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1764919205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=9+0pQ2yTe5TnnMKj2ouqk8T9hEWue/ZW3gPMNPMKFx8=;
-	b=jfIP/gqzE2QN5CS2Z/QMhw59+Z1CCoKVouHCCske/hYiW2wWL/EUEuclIFp2nYmKVRP4pn
-	0G6p38Fsy+zVsBfuijFd+/PLHaym94BJxUblxboAYnenYt3tG799brRjqT0fXJAmbC3eLj
-	znEaYKMSh74ag8YWMkRZ4QoUrj1mcKQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	bh=qekGrP/YMqxKH+DbEIf7epJip+CtOpUjIRFgKxmaUKE=;
+	b=18pfpJuLR0lbLw8mtKZ3Emfuh2AGuUN3QYC27aClJorbNtPnQPSzbXIhBgmj7KtA+LsAv/
+	RsJ4vQX9vySocXtMBM17e0r8+I5taGnkCOfQJKHrhtnGztGWWH90tTFJc81HePE4JXSvbk
+	Pu7KQBa+++tlkZtdLldJzPJGaWuZL24=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919205; a=rsa-sha256;
 	cv=none;
-	b=HzukIwfly+fugFzwVVIUrXxLx9BcbO5LUR/cOFDx4EC78YsoL05FwYX1Ir3h4UKN+wlS3z
-	lsceSO2EZlnuqAg60Lx+kv6+xtEE6N7YcoNW7E1r+m4U3Oi96wBaNStY1bxKMtZjt1fHsA
-	dZWevq6DY0F06mmVdgwHA2jwqCH3X9A=
-X-AuditID: a67dfc5b-c45ff70000001609-23-69328773bf67
+	b=q6ZwVlkAjRJz+7x9lPgNP2qH5AmMcgfQaS7WmRR79bEtqC2rAcwuCAXa2KqLwgUgft6VNg
+	hLNRRMKcu8a3fA1CfktXj02g3WFlm78R1jees9jv6hr6v91tiwAL87Ue/fhYeFZdgSnG8/
+	FMebH2WoK2CFlpUqAGl1Vw+a9GpmU5Q=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c45ff70000001609-5f-69328773bffd
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -212,54 +212,54 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 35/42] dept: introduce event_site() to disable event tracking if it's recoverable
-Date: Fri,  5 Dec 2025 16:18:48 +0900
-Message-Id: <20251205071855.72743-36-byungchul@sk.com>
+Subject: [PATCH v18 37/42] dept: call dept_hardirqs_off() in local_irq_*() regardless of irq state
+Date: Fri,  5 Dec 2025 16:18:50 +0900
+Message-Id: <20251205071855.72743-38-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUwTdxzG/d397npUGi8dZCdkovUtcZvzfV+RLMYZc4m6zLgYoi5yg5tc
-	LOBa5EVdBghSmCASC9o2UIdikVYIVcM0zK5qAwNikUyaDsE3ujmoRmYlFgpCp/9888nz5Hm+
-	/zwMqfyLimGk9ExRky6oVbQcy/2R5z7VFq+SVox0rQdd0U9wP9+BIfBKh8HUZKWhva8Ag/ty
-	I4LBgA7B2LiRhFClSwZVPZUkWK/kE/Bf8yQN1c/yMRh8Rhn4B29QUP90koCnjmIEoaoDMN59
-	l4RqvRvB6LOHCK64BhC0WQpoGKq4SkKH/mca/D0mAp4302AuaKOgp2sYgc/bRsCxuiYaeoYn
-	COivqiSgsWU7DNb78PQ/GozVx4jp8w8BetsNArrq+jEYu3speGwxyGDKnAEPTuoxXPbfpaBj
-	4D4F1hM+EnTXAxjOHT+P4WxNPw260CsEvddNNJxovkrBgHWKgjzjGAX3Gt0Ymv72ENDpasfQ
-	YWjA8OihhwJ7dxcJr8tjwX2qjAJPxRDamMKPFZVj/pL9GsEX3QvRvLXGivjxYCXib428IPlC
-	ezZ/oXOE5oOBP2n+j184/nxJkOB/NTyQ8YW/eWW8ueUQX3jbT/F2y7KvP94tT0gR1VKWqPns
-	iyR5am8oSB18Mi/nxUAZzkMXuFIUwXDsGu7m6Gn6PdtKamQzTLNLOY/nDTnDUex8zl7mo0qR
-	nCHZ3jiu+E152PiAFTnT6X/DAcwu5gJ9w2Fdwa7jXl70viuN4xqbHWE9YlrX9wXDrGTXcrWl
-	Y+FSjq2N4Nprq9D/gbnc7xYPrkAKM5p1CSml9Kw0QVKvWZ6amy7lLE/OSGtB05Or/3FiTysa
-	de90IpZBqkiFI3ulpKSELG1umhNxDKmKUoyoV0hKRYqQe1jUZOzTHFKLWieKZbDqQ8Wq19kp
-	Sna/kCkeEMWDoua9SzARMXlI+51l0RKVtClo0x1vNczPa1195/vtXxqir8lMs7NMnwi+BT8Q
-	sbP33JmIjk+K+WbW55lbmKH49tXOts0Lv+p05G9d6/h235zEyaKkI7uiPrqZsMO0IOfohm0b
-	CqgjLkVJ6aMzHlukvc660ZWc6Cy0xYY6vd5h8954XT0hHE1uiL4lqbA2VVi5jNRohbcR2gwh
-	bgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93XrqPlZQldCixGkfS0JweSyCi6BEX0TyH0GHbJi5vKZj6i
-	h9OGZvlotWlOzayt8FGmVpqMhpFkZW6tmlhLpWXZNMuctum0teifw/d8vud7OH8cGpe2kAtp
-	ISmVVyXJFTJKTIj3bslZrc5dL0R/tc6DPO1Z+NDnJuGdxkqAdzyPgPK7dRQEjA9FkNd4lYRn
-	zmwCbHdqEfR58xBMThlx0LbOEhDQdYhg3PdeBHoNgllLBwKDXYdDj+0xDnXNGgx+NcxQ4Hky
-	hkA/4KagZEhDwKj5IoKyQaMIhp7ugpG+NhJmXV8wcE4MIzC7ZzBwW3MRBAyJcK26KRg3/KBg
-	qqsbhxK9DcH1ARcOY0P9CJo7PiKw3M6m4HPxfRwc7nnwxjtKQaf+AgUj9nIMvjdQUJVtIcH+
-	0oOgwqhDMNhrwSDnxl0KDBWNBLT2PxKB3TONwQeDDoPaxj3QZx4k4EVxNRY8Nzh1bwEYS3Kw
-	YPmKgb6+DQOfuUa0zYS4SW0hwdU0PcA47esAxdVV1iFuyq9D3LgpB+e0xcH2yfAozp1rSudM
-	L4Ypzu99S3GWiSqCe17NcjfP+zHuUtdqrrXMJdoXGyeOOcYrhDRetXbrUXGCI+AnUz5FZox+
-	LCCykInNR2E0y2xk689Xiv5qilnO9vT48L86glnCNhUMkvlITOOMYzGb6ysMGfMZni2/8i0U
-	IJhlrNfpCXEJs5n9eauX+rd0MVvbYA3xsCDXO/0hLWU2sdfyJ8liJK5Cc2pQhJCUppQLik1r
-	1IkJmUlCxpr4ZGUjCv6T+fT0pRY07tjVjhgayeZKrOnrBCkpT1NnKtsRS+OyCMmwIlqQSo7J
-	M0/yquQjqhMKXt2OFtGEbIFk9wH+qJQ5Lk/lE3k+hVf9dzE6bGEWshzOmLDEHhcKpk/cj+l+
-	WFi2YYcp+/ISl+9df1T4mbiE3wM7iqoziravOjIWV7T0YvNkVn1vvG95aaTnW+erzfG/04Sd
-	j1qe3oq64kgdGslvO5B50KSMfnNopsu0Ni71qnlamRxT2qI2O7u9tm7XfqMmnV6199TKiMdE
-	zA17abgtUUaoE+TrVuAqtfwPz1lkY0sDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTdxTH97v3dx+tVO+qkasmapoYDfjCV84favxj0esfJhqdfzgN1nGV
+	G8oj5SXTZWAhIPNRG8HUirSInQEMpLW61tXU6piIVVknVESEiTDGQ0UEedYLxn9OPud8z/nm
+	nOSwpLqJms9KSWmiPkmr09BKrOyLsK1Iy18jrS45xUPLqw4KGnN8GD4OFmCYsNxioMBhpuBB
+	0wkMw2MWEvLcYVkw1TJQlIMg7K1F8KFmkoaeewMIito7aLjQnYPhrf0UgoudFga6/9wGTUO9
+	COwdkwR0+PIRTBQnQGmZUx4qfkfDWOAJCbb2lyQMdLchuFHbiuCN0UVCX8MlAvpraLCe8FLQ
+	8KgHQYnFhKCz2UuA4Uo1De42DwMNPeMEtBSbCKh07IB6Yxkhr0CD5YKBkMN/BIzYKxh4dKUF
+	gz17CVgCQQrG22MgbE2G2souBupaGym4ld0m3+r5iMHbHA3myy00/OGtw1AwMYgg6LlEQ2tV
+	mIK/K59iqO4KEfAicJaBJ57r1JY4YTjvDBYqnDcJoepyFRLGRk1IGLxqIIU8o5ze631LCrnO
+	TME7ZMXCwzJeKD85SgjnAisE98WXjJB7p5kRrI50Ifd+H7Vz1T7lxjhRJ2WI+lWbDyrjw74b
+	VErOrKN5twdwNuqbUYgULM+t4wvqS5ivbHY8w1NMc0v5UGiEnOI53GLeebqTKkRKluSCi/j8
+	kTOywLKzuUN8XeOeqR7MLeH9rmpiilXcBt4wGiC+eC7iK2t80z4KuV7UNDrNam49X1o4PO3J
+	c78peEP5XfrLwDz+7rUQNiKVFX1TgdRSUkaiVtKtWxmflSQdXfljcqIDye9m/3n8h9/RwNPd
+	fsSxSBOh8mXGSGpKm5GalehHPEtq5qh6dasltSpOm/WTqE+O1afrxFQ/WsBiTaRqzVBmnJo7
+	ok0TE0QxRdR/VQlWMT8bnV3u2hKRYjy09fWDaFO0Y/Lb0nnbk6O+j1nY43ab/n/W7J+5lF5b
+	74o1fNqE+xM3/HPc3PD+yGP3NufaSLT/8f3XCTf32p6bG2t+6Z/pDbVJ/9qCu5wRlHT7WGTa
+	6X63xXM9/F2X669l5Znc4V9tUfHB5RvT2+ceV5xn18eWHlhc1qnBqfHamChSn6r9DDZAbnpq
+	AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93XrqvlbQldCioGPZA0LYvTkwqiS+8XFUWPW150OK02tSyi
+	5lqamdhiE12mWQ6bmjYtM1mNVfYwy0epVKbSWplbhrnETbNZ9M/hc873e76cPw6NS6vIybQ8
+	Ll5QxvEKGSUmxBuXaEJUKfPkYe6GOZCqPQ0fOhwktKhtBHj6Uwm4UlZCwbCxSgSplmwSnrUm
+	E9BwqxhBhycVwYDPiIO2eoSAYV2tCPoH34tAr0YwYq1FYGjU4dDW8BCHkko1Bj/Lf1PQ86gP
+	gb7LQUFWt5qAXlM6ghynUQTdT9aAu6OGhJH2Lxi0/nIhMDl+Y+CwpSAYNsRAXkGFf93wgwJf
+	/WscsvQNCK51tePQ192JoLL2IwJrUTIFnzPv4NDsGA9vPL0UPNdfoMDdeAWD7+UU5CdbSWh8
+	2YMg16hD4HxnxUBzvYwCQ66FgOrO+yJo7BnC4INBh0GxZQN0mJwE1GUWYP5z/a7bk8CYpcH8
+	5SsG+tIaDAZNZtGKQsQNaDMIzlxxF+O0TcMUV3K1BHE+rw5x/YUanNNm+ttHrl6cO1txjCus
+	c1Gc1/OW4qy/8gnuRQHL3TjvxbhL9SFcdU67aPPK3eKlkYJCnigo5y4/II4esVWSR9SBx7U1
+	fcQZ5B6bhgJololgsy1viVGmmFlsW9sgPspBzHS24qKTTENiGmeap7Epgxl+gaYnMgfZ5y3b
+	Rz0EM4O13ynDRlnCLGQ13nrsX+Y0trjc9jcnwD/Xt3r/spRZwOalDZCZSJyPxphRkDwuMZaX
+	KxaEqmKik+Lkx0MPHY61IP87mU4NXbqH+pvX2BFDI9k4ie1YuFxK8omqpFg7YmlcFiRxKcLk
+	Ukkkn3RCUB7er0xQCCo7mkITskmStTuFA1Imio8XYgThiKD8r2J0wOQz6OTq+C2eg/ZSuOFb
+	fLSyKKpzU/jp9Ii6wPW8OjBy9bjHl29+Z51jkiPOlT8NnJlR01SUrndVWc2+hNzZ13OGaMUy
+	R9OivWfN3K6y9SH8g31hp9zRWz/t3zC1YO+q4Hsts9flvaya8e2upvXEvoTbn9/N3zNxQpG2
+	a5smKupV8I5v08NeyQhVNB8ejCtV/B+AnKgLSgMAAA==
 X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C510100008
-X-Rspamd-Server: rspam11
-X-Stat-Signature: gn58df86z3m6qjxrk9bbx4e69ahpdma7
-X-HE-Tag: 1764919204-436541
-X-HE-Meta: U2FsdGVkX1/+v8ZigpDc/LqmKL8dd7iHZWSbdw0hOtFTjZVj1+WE8IBSB32aqX0CJGWldSP2a9IeHH/MqvWfBBAZ8RTi4f6/C2DUCDXyqhSBqhKsWc8hrOM2FuQD0B3R/2U5Nb3vRvSzBDw+zHvtqOWVCx1FwKemQtCBaujf8EdQcusxWcfhMcHqqDq+dO86iwZuHNfw3rq3xbFfMe20fSmWNcrIV8fsRH8umzTjWSZCIS2NA+Aznay4LDkL8xaY5b2PiM+TxdxTE1IY4lb/YhRHhfdgLxkszh9H4JtMcYE/UXqUitRJItKs2Pyv0LkyZjqGTwbKJhqWi1O22ID6ICvi1z8aublPv+qGb5VlYseVhvZWWmx6ax5B2MdKtjnt0ihvkSoRiU2OTazVORI/lUn7z8zkwNpsQB+tAEr5o+uLgOg76eme518bulsmQCiKeh5v2aWW7HcqmaGN5FcmvmPFfPFUoXh+yGO1smjfWSuluPTGLDUczC7AfCR9O4ruzW17sbX4huFzzWaWSd+Mz5qISg2ZRLWUB5oNiP5IIxXMvU0Ghv1Cs+qhF9Oml8JgFVQwqf0+yLKXg12eIqX3iEvJNOpljqhYL8JsrHfvX4CQRIyHrWNFHf4gmNQ7OQ1nkp1Ogocorh1E7hlTFOj5FQpv3ZU4m0N77DMSwIkUv7uEabMj0l9IAqJxG/UDCAdAhiY4TonW6dyuMyh92Q1qpMuub65fFTjMsy85OWWvSfwbr/IXZgUYxsWpsZt/0o/Va0zLy8oZLeOzXe7cVVp2Fkotwd2aJ4kvoHhHVJWAOOulGmlVGtLwFGaYxXt7lPMu1d8a9OuIsq5afvaM3LMoSFiqGuZiCHaJRJox3VKRqPAnvC9fN+1ZTMdpU0Z81e35BmmQZpcxAoVjsKMUhOjbqwxihPCdixmnckk6GptuJfF+YVWLSiBzrvaIkXW4lq3EgbUbVEenzvWFryZulMu
- /I5YyN4P
- v5qkifLB4XOqK9GA4xCO9jUWjEStLDxhEw93knU1cPdqHj3UfDEZWf0dJJHM0I4FRt4sH7ZIBCVKLEbyWkxdmL/1W6NadxCMgxqhxX7DsUj3fZvUpLMoFs1NMFpvKeQh9Sczg
+X-Rspamd-Queue-Id: B9F742000A
+X-Stat-Signature: 66rufqgyaqutgqpof9548pgsb57aeu1z
+X-HE-Tag: 1764919204-487824
+X-HE-Meta: U2FsdGVkX1/da6iem+mNbTRK86hZQsUne18suaurmfiAuCBCb8Vp3xsysXGgSnM8bfkgOLpOBbA8yLJMmtkfdmecEq+J6w2v+FnB6FLCYhgCPdKueN56SpTXE+2/477cKOFlq+FTpLYq3CXHe54VBwc8iuLVxhmlLOhIQqReawvSYgvax3L+wZ1RvG+EV04D6EQyVjzP/MUN79on9fFOx5WNvSsKHvoND6PYI9AMWQMz/UBCR6krTlrPflScucguTOARgAknQApgBX1PsYXGzuxWmvvyRMEcQZdHsoER/2kFZgVfQSifeE6Ocw/VflxHpGQir4YzJHL53MK2kVpFJoc7btyGqIFcIOrfwsAFEaG/M8BZFPVqU36F1N/ogGvTOiydUvMbd86gu+oRgMcnk43ygyaT8+qMkpG9nUwXV1dNfYOKpB0z80wGJdxNNgylkZgGU1vBi58qEnPqHAhKOqb8Ps3oPVQLnqAYXKH3yjW9RCOk5lDJWGehY7h7a+YALMHwSZbaZq4gBICuHuGr/0gGeZQq8jb89oX70iry0/YExWROeJR0JRgNCl4f04w0EBdqFV//tk9WKA1UkkA2qXOfw5X1K2eCeTg7cSQIQfRFuFVhabhYatmDHoib6c1zrtzRPiwtSUnd4yixMminHNwammNWoIKXsw14E25p1bOd3wqWpBhRy+1IdeQP7KcuN7m5HcbuZ4DcT3IMvdUv5gQzZg/JnRsUTtj01FD9ZqgjWerW8TVDlQHA8We16z1J6neehGRatz6A0hYxg8m20lEzGhW1y9VbniXLSRYdaKIZbvEKUw2m4QuYy+Ywpn6SoT240KYCnk7TyEE7ay8cO6BVgCpaqudZKjSqv86gGO6x3MuYs6SvxzRmA6NfK9gzkjVJAw7Wv7myJAZJ0PXo5C3UKEp5I/ytm8DuzXZzdK3MjiFwOuzbLw4NPgBKAdNXjkBmjkBoIllCZkFa+ui
+ sxOeta5T
+ PUkBSBvxD9kJsuCMGjLDzQLoVUEz/tNG6kEeYgQiE3KvMPA0dne8pJCvzYpa1tzMWdzQEMKocktzmsolNP0ims8kF+AYBCSg/OqW2H1aPE6E4yvQpcLsOTlPPw9nfUplJu7E4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,128 +268,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With multi event sites for a single wait, dept allows to skip tracking
-an event that is recoverable by other recover paths.
+For dept to function properly, dept_task()->hardirqs_enabled must be set
+correctly.  If it fails to set this value to false, for example, dept
+may mistakenly think irq is still enabled even when it's not.
 
-Introduce an API, event_site(), to skip tracking the event in the case.
+Do dept_hardirqs_off() regardless of irq state not to miss any
+unexpected cases by any chance e.g. changes of the state by asm code.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/dept.h     | 30 ++++++++++++++++++++++++++++++
- include/linux/sched.h    |  6 ++++++
- kernel/dependency/dept.c | 20 ++++++++++++++++++++
- 3 files changed, 56 insertions(+)
+ include/linux/irqflags.h | 14 ++++++++++++++
+ kernel/dependency/dept.c |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/linux/dept.h b/include/linux/dept.h
-index c796cdceb04e..7b822caee874 100644
---- a/include/linux/dept.h
-+++ b/include/linux/dept.h
-@@ -239,6 +239,31 @@ extern void dept_task_exit(struct task_struct *t);
- extern void dept_free_range(void *start, unsigned int sz);
- extern void dept_mark_event_site_used(void *start, void *end);
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index d8b9cf093f83..586f5bad4da7 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -214,6 +214,13 @@ extern void warn_bogus_irq_restore(void);
+ 		raw_local_irq_disable();		\
+ 		if (!was_disabled)			\
+ 			trace_hardirqs_off();		\
++		/*					\
++		 * Just in case that C code has missed	\
++		 * trace_hardirqs_off() at the first	\
++		 * place e.g. disabling irq at asm code.\
++		 */					\
++		else					\
++			dept_hardirqs_off();		\
+ 	} while (0)
  
-+extern void disable_event_track(void);
-+extern void enable_event_track(void);
-+
-+#define event_site(es, evt_func, ...)					\
-+do {									\
-+	unsigned long _flags;						\
-+	bool _disable;							\
-+									\
-+	local_irq_save(_flags);						\
-+	dept_event_site_used(es);					\
-+	/*								\
-+	 * If !list_empty(&(es)->dept_head), the event site can be	\
-+	 * recovered by others.  Do not track event dependency if so.	\
-+	 */								\
-+	_disable = !list_empty(&(es)->dep_head);			\
-+	if (_disable)							\
-+		disable_event_track();					\
-+									\
-+	evt_func(__VA_ARGS__);						\
-+									\
-+	if (_disable)							\
-+		enable_event_track();					\
-+	local_irq_restore(_flags);					\
-+} while (0)
-+
- extern void dept_map_init(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
- extern void dept_map_reinit(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
- extern void dept_ext_wgen_init(struct dept_ext_wgen *ewg);
-@@ -302,6 +327,11 @@ struct dept_event_site { };
- #define dept_task_exit(t)				do { } while (0)
- #define dept_free_range(s, sz)				do { } while (0)
- #define dept_mark_event_site_used(s, e)			do { } while (0)
-+#define event_site(es, evt_func, ...)					\
-+do {									\
-+	(void)(es);							\
-+	evt_func(__VA_ARGS__);						\
-+} while (0)
+ #define local_irq_save(flags)				\
+@@ -221,6 +228,13 @@ extern void warn_bogus_irq_restore(void);
+ 		raw_local_irq_save(flags);		\
+ 		if (!raw_irqs_disabled_flags(flags))	\
+ 			trace_hardirqs_off();		\
++		/*					\
++		 * Just in case that C code has missed	\
++		 * trace_hardirqs_off() at the first	\
++		 * place e.g. disabling irq at asm code.\
++		 */					\
++		else					\
++			dept_hardirqs_off();		\
+ 	} while (0)
  
- #define dept_map_init(m, k, su, n)			do { (void)(n); (void)(k); } while (0)
- #define dept_map_reinit(m, k, su, n)			do { (void)(n); (void)(k); } while (0)
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 5834555a3d09..a1737631ff54 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -879,6 +879,11 @@ struct dept_task {
- 	 */
- 	int				missing_ecxt;
- 
-+	/*
-+	 * not to track events
-+	 */
-+	int				disable_event_track_cnt;
-+
- 	/*
- 	 * for tracking IRQ-enable state
- 	 */
-@@ -916,6 +921,7 @@ struct dept_task {
- 	.stage_wait_stack = NULL,				\
- 	.stage_lock = (arch_spinlock_t)__ARCH_SPIN_LOCK_UNLOCKED,\
- 	.missing_ecxt = 0,					\
-+	.disable_event_track_cnt = 0,				\
- 	.hardirqs_enabled = false,				\
- 	.softirqs_enabled = false,				\
- 	.task_exit = false,					\
+ #define local_irq_restore(flags)			\
 diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 07d883579269..3c3ec2701bd6 100644
+index 0f4464657288..a17b185d6a6a 100644
 --- a/kernel/dependency/dept.c
 +++ b/kernel/dependency/dept.c
-@@ -2573,6 +2573,23 @@ static void __dept_wait(struct dept_map *m, unsigned long w_f,
- 	}
+@@ -2248,6 +2248,7 @@ void noinstr dept_hardirqs_off(void)
+ 	 */
+ 	dept_task()->hardirqs_enabled = false;
  }
++EXPORT_SYMBOL_GPL(dept_hardirqs_off);
  
-+void disable_event_track(void)
-+{
-+	dept_task()->disable_event_track_cnt++;
-+}
-+EXPORT_SYMBOL_GPL(disable_event_track);
-+
-+void enable_event_track(void)
-+{
-+	dept_task()->disable_event_track_cnt--;
-+}
-+EXPORT_SYMBOL_GPL(enable_event_track);
-+
-+static bool event_track_disabled(void)
-+{
-+	return !!dept_task()->disable_event_track_cnt;
-+}
-+
- /*
-  * Called between dept_enter() and dept_exit().
-  */
-@@ -2585,6 +2602,9 @@ static void __dept_event(struct dept_map *m, struct dept_map *real_m,
- 	struct dept_key *k;
- 	int e;
- 
-+	if (event_track_disabled())
-+		return;
-+
- 	e = find_first_bit(&e_f, DEPT_MAX_SUBCLASSES_EVT);
- 
- 	if (DEPT_WARN_ON(e >= DEPT_MAX_SUBCLASSES_EVT))
+ void noinstr dept_update_cxt(void)
+ {
 -- 
 2.17.1
 
