@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8420DD2E016
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DD10D2E016
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AD126B0102; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
+	id B80D06B0101; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90B276B00FC; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
+	id B08DF6B0106; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 390866B0100; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
+	id 713C66B0101; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D8D756B0102
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:20:06 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B255F1404C2
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:06 +0000 (UTC)
-X-FDA: 84184568412.17.1ED01C1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 53A9D6B0105
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:20:07 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D0681604CB
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:07 +0000 (UTC)
+X-FDA: 84184568454.24.85CB497
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AE69B180002
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by imf07.hostedemail.com (Postfix) with ESMTP id 53CEE40002
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1764919205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=D9lJhkgIyl4Q6iUGlv9gXKwumhElTNY3lELIGuZtzsc=;
-	b=QiGkXP9IQ0twxi9pcN4z8R2eBbiZp7tBt7dNv6Jj9q1qnFOCqmPFKMvSKJKeagyln5rHr6
-	FexnawKquQziZZcEnRRaL4lfTyz1/eyGEYtLfhYysVpHVZfPUjklLMXSFpv7Kev/DLg1jq
-	nJwuMDCFOU0zz/uT6xygAtALjfi9WUE=
+	bh=UWD4TubwAeIBKR7d9zSJFGXCU5GWoeH6ZFpPXRfskmk=;
+	b=kBHJ0ri09aqRSwsmF5qoo1y7BHcEizPAyGJVQOVcBORpYGREJRTcJ41ori4OxWsLFlBO+K
+	MqYAbr69fJu7ARE5i4n2XvWtZmUJvJ/rkGh4jdC6nOP9ZG/SA9nevavfgaxYpoT8hZQ5br
+	2nIHDcz8BCMaN4Z1yWlb+oZSo8iMSHQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919205; a=rsa-sha256;
 	cv=none;
-	b=Mw4Zz3TlBQig5OO/R1EZpv5y3cNP6Rb7nr1eVVdbZVwsz8Q+Rus22+xqhMONje8unDAILT
-	CpqFT1yfj16ZP2aXecPkceFzll+NRJ9dXIxTj/7uXn+pFM7j36XtaOVlGp7n75ext2Ilfq
-	UoyykWpI1ZRA3sGw1rrrLrCAnF+d4bs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
-	dmarc=none
-X-AuditID: a67dfc5b-c2dff70000001609-42-69328773e512
+	b=xg4kMTcaNUPzaSNCsXamBkQny7D8d70Rq7ovR5bQNFOyJMIKxfAcfxoyOq2XVqWaeXfKSH
+	fQmmN1LaXvDD5Z5Lp3ENhg/yEcfl9JM0SbbzAgdiexaxA3iD+w/VkcuRpVAtLRSxuxNoG1
+	bnJalo8+e1O0Kqj8TybUFDpXb79ZFQQ=
+X-AuditID: a67dfc5b-c2dff70000001609-a1-69328775258d
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -212,54 +212,54 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 36/42] dept: implement a basic unit test for dept
-Date: Fri,  5 Dec 2025 16:18:49 +0900
-Message-Id: <20251205071855.72743-37-byungchul@sk.com>
+Subject: [PATCH v18 39/42] dept: introduce APIs to set page usage and use subclasses_evt for the usage
+Date: Fri,  5 Dec 2025 16:18:52 +0900
+Message-Id: <20251205071855.72743-40-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0xTZxgHcN9zeU9pbHZWSTiyGE2ncdHAxFue6CKYTHm/bDFRE8d02siZ
-	NJaLLaCYEAFFCvFSqwUVtWhnQVoVj5igICI3jWioJdaKYCtilXsEqiDiBNRvv/z/z/N8emS0
-	8jkbKtMkJIu6BLVWheWMvG/6+bDknMWaRW86aDBk74M2bycL3oABwYexQhqGR59zYM5EkP/Y
-	RIPHeYcGR3kmBT11gwjMLzsxDNgOIehqiIY+byULlgvXMYw9aqahwOxEUN74AsHZQhMCf+tt
-	CvZbr2LIPysxcNN3iwO79Ad4bX4G8q+FQGHBWwrMlyspeGhtY8CWMQ96/CYM0rMGBI5Dfhqk
-	V24WbrcuhFPn2jA0VnRQ0HLrDIYXjv9ZcNY0seCyOxloarzPwEufZyI7dpiF4/1+BM8Kejmw
-	BQY4cNUUUZB518qA/8lBCi5ZihHkvK3EUG3wUXCxpI+FukAvBQ/ahzj42F7BgttkwWB/zID5
-	kwFD2btiDJlDXgQjZa9Y6DcOs1FRJNs1jonjnAOR4Yv7aZJtnFBd7wBNHlwQyLFHYeTm6XaO
-	HKhu5UiRlEIO1PexxFrVRZHzgwGWSKW5mEiDJo60uavwOlWM/LdYUatJFXW/rtomj+u2jdFJ
-	J6L3XGn20RmoYWUeCpIJ/FKhq2kIf7c03sNNGvPzBY9nlJ50MD9HuH7Yz+YhuYzmW2YLOaNH
-	pooZ/BqhoPU1O2mGnyd03HMxk1bwywVH1udvR2cL9rKaqfmgidz89OOUlfwywZL3YeqowFuC
-	hPobZu7rwkzhbomHMSJFEZpWipSahNR4tUa7NDwuLUGzJ3x7YryEJl7Olv7p7wo06Fxfi3gZ
-	Uk1X1OyO0ChZdao+Lb4WCTJaFazo1S7SKBWx6rS9oi5xqy5FK+pr0U8yRhWiWPx+d6yS36FO
-	FneKYpKo+95SsqDQDJReHbWkfUn0wcAPQ90t7hmR1o148/ENrvTUiD9zk8OpbSm/j/V7fVmn
-	fZEkpbR5JCvxL/dKfdLc8X+4zorA2ku1Mc3V8VuO2kfK/9ucFLwp9JeYk5XGzyHRluVh9i2x
-	//pGSqxUx4KqUbLOnB6Zu8sQ+XP3jwHj3PqT3cWr6Vmz3CtUjD5OHbGA1unVXwCy08hbbgMA
-	AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTcRTG+7+3zdHiZQm9GJKMIggqtYwTVhiRvhRl5YfIL7rqpQ2nxZa3
-	IErX8tZFR5vkKs1ylS612U1tJdPMNMmppWi2GXNlzgxTl1vTptGXw++c5zkP58Ph46LnZBBf
-	lnKaU6RI5GJKQAj2R6rWK3PCZaGPrgZDrvocfLI5SPiY1UTA9FQuATdqjBT49M94kGu6TkJb
-	XzYBXdVVCGzTuQjcXj0O6vp5AnyaVh5MzQ7yQJuFYN7cikBn1eDQ3/UKB+PjLAx+1c5RMNY8
-	iUA77KCgeDSLgAnDJQQlTj0PRl/HwLitkYT5oa8Y9M24EBgccxg4mnIQ+HRJUFpe51/X/aTA
-	2/keh2JtF4Lbw0M4TI7aETxu/YzAfD+bgpHCJzj0OJZB7/QEBW+1BRSMW29g8KOWgrJsMwnW
-	d2MIbuo1CJwDZgxUd2oo0N00EVBvb+CBdewPBp90GgyqTPvAZnAS0FFYjvnP9bserQB9sQrz
-	l28YaB82YjBrqORFVSDWrb5CsJV1TzFW3e2jWOMtI2K9Hg1ipypUOKsu9LfNrgmcvVCXzlZ0
-	uCjWM/2BYs0zZQTbXs6wd/M8GFvUuZ6tLxniHdgZL9h2nJPL0jjFxh2JAul3gxc/dS0mo/q9
-	HT+PXkfmowA+Q29mTL4x3gJT9Fqmv38WX+BAOoSpu+wk85GAj9M9q5ic2SuLwnJ6N1M8MEIu
-	MEGvYb686SYWWEhvYYzZc9S/0FVMVW3Toj/AP9f2eRZZREcwpflushAJytCSShQoS0lLlsjk
-	ERuUSdLMFFnGhmMnk03I/0+Gs3+KnqOpnhgLovlIvFTYlB4mE5GSNGVmsgUxfFwcKHTJQ2Ui
-	4XFJ5hlOcTJBkSrnlBa0kk+IVwj3HOYSRfQJyWkuieNOcYr/KsYPCDqPSowZMfFtR4PO9TVq
-	HDlzNULVxWB7EX31d4E0YfJQ+B3HcFt/nG2v27W8RHhpbcvq+yPt1W9NEW40E5p6tAHt6UJS
-	Z+rB2MjWn3pHwomIe7HWhryM+FhvHDXYe+zljmUqz64DO6NfGEMCLFH2Zx2qBy2W6Hp92vZd
-	sDW9pvLIJjGhlErC1uEKpeQvv2O8gEsDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTH99x7n3tvO2puOpJdIZmuZjEzzFmi5ESN4rdrptFEzZbtw2zG
+	HdysVNIqCIm8SCsVmExmMVDBblgoUKVpNb5CBIRNoDhoIiggL0EIFTTy3lJ1BfXbL///ye+c
+	D4cllf04ipV0x0W9TqNV0XJKPh3x1zepebHSFlcLC2ZTFszPmSkwu0sxDM2bESwuW0mw5CAo
+	6S4mwXk9h4AXLTMILCNjNEwP3cXQuzCFoGrsLQENjtM0+MbWwENLAQ220w0Yxp82EJBbWU9D
+	Sbmbgu4XIQLq3PshUFXLgNXrwzDqKGMgNKKGtroJBob+OYPhZvYwA+4nrQicheMkmO/MU1Ba
+	MUDDM+c7DPUTfQR0tP1LwcOyGgr6vUUMPLpzFYO9t5sAj7eThJymSgpqGrw0FI/PMOC1dmEY
+	OOenoNE8TIDdMY1hoqycgPbBWQb+7LHREBy8heFx8eUwVYf3tgfbCTAVBhiwhMw0FJhKKLjR
+	usiA63U1DTmzQwiMA9tgeekSDeVz6vh4wdTzhhacFU4kzNlzSaFl6hUpGD1pgr1jihZulw0y
+	grHxKSPY3CcE44NpLHgcm4TKe5OE4K49SwvumWJGGHh8jxZednUxB7/8Ub4zQdRKqaL+211H
+	5Umm/iCZUhR3stvowtnoYkw+krE8t5V32G6TH7nWWYFWmOY28n19gdU8klvPe34fx/lIzpKc
+	bx2fFzgXLlj2M+5X3tkcuTJDcV/xFUs3mBVWcHG8/e9r+L1zHV/nur/qkYVzS29wlZXcNv5y
+	/uKqk+cqZfx1790PR6zlmxx91B9IYUOf1CKlpEtN1kjarZuT0nXSyc2/HEt2o/DLVZ0K/XQL
+	zfx3qBlxLFJFKO6nqSUl1qQa0pObEc+SqkjFlHaLpFQkaNIzRP2xn/UntKKhGUWzlOpzRexC
+	WoKSS9QcF38TxRRR/7ElWFlUNvp6xG/QKfwy7koBRLfVPPAndko3H+H2PT3R1v76tjN7zREu
+	76Ej+y+gzOW4/MRq9YbCA8/t+ouHNWtiMia3Z4SaRN2ca/R840ZfkUx51Pf9DxM7sBiMNiy9
+	CUitu6O+sxYNy/blei582hGzKzErftiVeXA2zr8+ZUP9F3u5K6UqypCkUW8i9QbN/wCtvHFu
+	AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUhTcRTG+9+3XVeLy7K8FfSyiOhNLTIOFVF96Rb0AgVRETnqpsM5bVNL
+	I2qu4dK0udiGrtQsR+nK5bKyGommZBa6LB3psmitlpa9OG0ztVn05fA753nOw/lwaFx8l5xF
+	yxRpvFIhlUsoISHcvlazPD1npSy2qWUB6LSnoKfXS0Knup6AwKCOgIvVNgpGLXcFoKspIuFJ
+	VzYB7TerEPQGdAiGRyw4aOvGCRg1NAtgMNgtAKMawbizGYHJZcDB3f4IB9ttNQY/7WMU9DX+
+	QGB856XA7FcTMGA9h6DYZxGAv2kzfOl9QMK45yMGXUP9CKzeMQy89TkIRk1JUFruCK+bvlEw
+	8rwNB7OxHcHldx4cfvjfIrjd/AaB81o2BR/0tTh0eKfCy8AABS3GPAq+uC5i8NVOQVm2kwTX
+	sz4ElywGBL7XTgw0V6opMF2qIaDu7X0BuPp+Y9BjMmBQVbMNeq0+Alr15Vj43LDrVhRYzBos
+	XD5hYLzxAIOgtVKwoQJxw9oCgqt03ME47YtRirOV2BA3EjIgbrBCg3Nafbht7B/AuTOOY1xF
+	az/FhQKvKM45VEZwT8tZ7urZEMYVPl/O1RV7BDs37hOuO8zLZRm8MmZ9vDBR2x3CU8+vPu46
+	YydPI/OyXBRBs8wqttJWgiaYYhaxbncQn+BIZh7ryPeRuUhI40zHXDYnWBAWaHoac4S1NURO
+	eAhmIVvyq1YwwSJmNVtRfpP8lzmXrbLX/82JCM+NXaG/LGbi2NLcYVKPhGVoUiWKlCkykqUy
+	eVy0KikxUyE7Hn0oJbkGhd/JevJ34T002LG5ATE0kkwR1R9bIROT0gxVZnIDYmlcEinql8fK
+	xKLD0swsXplyUJku51UNaDZNSKJEW/fw8WImQZrGJ/F8Kq/8r2J0xKzTSId2z0iIsU/Z1bfl
+	gjuqMPHCx7jieU3eTXZ+vXZGfmiLqzW7TV9qWKMXzV+cvzfa86zHn7d7//TFKuECn07zvrjt
+	c9ZjddHO+7U+/9KD14d+TU6ammXurD5wMvbct8I5EQ9L3Am+oz3x4470bt4Wow94gidOHMop
+	+i6dWTBfEb9jjYRQJUpXLMGVKukfSrjLMUoDAAA=
 X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: AE69B180002
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: zwurazbw3gt91aj6swcyordi6mc6y8nf
-X-HE-Tag: 1764919204-132626
-X-HE-Meta: U2FsdGVkX18eG8JB8dZqhPeptg9Tkg+91DSXf+OVNx97Fr1dJZMErGVFN2e3kLW6uouml7q3fYpmFdER0bxMF97ZmixZTms5U973y8gDf/mtJf6No3KNHJ+NcKDpiJSkmbf3WLyxMbpx4Udo+Z/oruPy0+0BwRh/v6VeFUrY0OsrJwFk6d8TYmCf6C7+8gVnMWS5FIFI/jJuTDrcnKZvBZsSpgFDVPbcFZaPC9iTvFu9mUIGGYRd2Uo8GCY7owd3U0dm0GMPVO7nhdlbC8TQAlHXFNmlKKXk2Es+5To9/UG0MSVmufKIRC717Uu1J0jJQgj2hIVq0JeNBh9OV2f55So4OO8r5plqVT32zL345UhK3OVhxZdUow3hN0CKT6sNuBvqfC8mV83UQzBobfnc+WENmBic4SA8lA4K7BnR5ep4ZUJiRu+LmivG0MRGRWfe1iHi7jHgDo9dZnvYB0iajbT+UatK0np3v+JFyunBhvFUMqBgeJzLiNMEjPYkpNc3e9wKOCTyNxg6ha/g87mmrsmT/NgnPzO1ywfXmXKOx5PweaAwCVWhZHn20Ncj5E3Lj70gRvzZvaH1m1UKD/1m9A1B/07KmWBei+Yjf/vJ2+5NDAcDc1GP67SxMf68H4rRF2AuaIew/4PjiifYlI5Maef2hxetwZOQZi56MgG1s8Np5VM1c0GLNqF1d00bm9q3LkNiggVxce4DhymC8J3bVmi0ZuTX6cfu0bxne3xzvzhIGkYID9UuB1Qdp23m5LCM9Lw5PRkJxAywdbiEE3Mvzn/SUfddqdmYGhMYBlRoU36L7McaBoArhs8ooU27Gw0865+DRgE78VbRY2ZqyqHY8imN6an351WnbMiqVuo0IWd0s52/PaL1HGZbd4naZ3k34BJ5rRDh31v+8p88HLfx1rr/G7sBQOfn5lHX3hanE7K0bHM1zztwcNH5jAMFHIgJg27cHnUzV0HBaVUu8qL
- hIom34sC
- ENY46chViupuiEFCKz8bG6i8lKDmB7hBfhPhh2pmtWecqD7XN1psqoj3D5qUgmDTG06kf6fcAQsFecp6FtQBaXu5ACJlgE+tN7Fs6FCQ4o2vl0R8=
+X-Rspamd-Queue-Id: 53CEE40002
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 8qc5wkywir7powrhxzki5oqz7kcks8em
+X-HE-Tag: 1764919205-828039
+X-HE-Meta: U2FsdGVkX19C4gVbnNb2sy3fMauziLdYD8uV+mSFFXQanxRhpQtEjwS9Eua2LrpKrHQu6PVkr6mTxttfvvzjnEu4IjtNhAf4KtOqUpnZ9DG5VnpSB9/Ymks0D5bawbVEM3yorepNE9jaeOwl+20UtO3IhCO+z/FmVyfvuUau8DoJHcK23uag4tbI56GkZz3GnUqrKe+vw65L3BBfCURp6AEDW1/x0tw0j2vXy5GXHLzh41HsSV+87GLGaEMjL6LSpb2P/NS+hjP/ETULAy9tOx8CbFpAuUgCDzhiK9aBAIMI6fnOs57n/OUCvetPERd+wJ7kjn81h7ePtww9GxM+qGDlgmLvSXGnviRWgcpKNLEL4KytFAMCLoeewOcQGjWR5VbUeb2uBULBGakoS0xf+WAZbJTOazn2hMPXSpnd6IF7/mqoYdVbdxjcODUnrBFkIM7vwGgqy0t/SM2imUmwRmxt1TQSOmC69nvUFO7n3r2X1FHtZnQlDVwFwJlp9vIA56iFonOX0kItFjGIbIu4AE+FeZClM40Z0go/pvXtzjhjDnXSKF8mDCQWh2vWwiESvyiQcEluxSj/xHvXkDwlEf7sFS1/o2iNLeUIJy7gP1/y6uguKK8UCTKMMFtQy1v4ABUhmEuLU85jS8JTIvx30vMI5hlMGAy9zg8XGElZoM7ONsXnCnlyuVIan14Ji7F6svyXfW7C6e+sycQQuDdYHl9nG6GWOb59YUeXyYPFkfsXZtDANWE2L3a6NMdXHt/7BTfY4Qln97WC4SR7vLnH3QJRzC1ubxOL1n6GOSjyxQMir7kFmFfo4TZIRNPf4mDFmjHqNr7PvgHxi2Zvd6b9w+kgQpWd+1brL3YksHr6gl46NLb/g8e4/w8kco7rIjGprQJsF9etgryrqdr2U7imweum5n45YPUiaOkjUhofxDA/+xvLBg4ZE85VyqsSvaAiOwS+UWqw24XA7Xppf+s
+ 9YzB6+t0
+ Fl5RYm61QmziNypJIgHGp5PUviXVZD9ZzjYfDleX7vV02aL/SHH44oMxsAl0usKCYTb+Am6GMcuuCFT8BY8ZDJLCDVZOcmupJAlyzK8YgZz8jyaIKPmH4QZ4a984Dt1lRD4yJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,350 +268,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement CONFIG_DEPT_UNIT_TEST introducing a kernel module that runs
-basic unit test for dept.
+False positive reports have been observed since dept assumes that all
+the pages have the same dept class, but the class should be split since
+the call paths are different depending on what the page is used for.
+
+At least, ones for block device and ones for regular file have
+exclusively different usages.
+
+Define usage candidates like:
+
+   DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+   DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+   DEPT_PAGE_DEFAULT       /* the others */
+
+Introduce APIs to set each page usage properly and make sure not to
+interact between DEPT_PAGE_REGFILE_CACHE and DEPT_PAGE_BDEV_CACHE.
+Besides that, it allows the other cases:
+
+   interaction between DEPT_PAGE_DEFAULT and DEPT_PAGE_REGFILE_CACHE,
+   interaction between DEPT_PAGE_DEFAULT and DEPT_PAGE_BDEV_CACHE,
+   interaction between DEPT_PAGE_DEFAULT and DEPT_PAGE_DEFAULT.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/dept_unit_test.h     |  67 +++++++++++
- kernel/dependency/Makefile         |   1 +
- kernel/dependency/dept.c           |  12 ++
- kernel/dependency/dept_unit_test.c | 173 +++++++++++++++++++++++++++++
- lib/Kconfig.debug                  |  12 ++
- 5 files changed, 265 insertions(+)
- create mode 100644 include/linux/dept_unit_test.h
- create mode 100644 kernel/dependency/dept_unit_test.c
+ include/linux/dept.h       | 34 ++++++++++++++-
+ include/linux/mm_types.h   |  1 +
+ include/linux/page-flags.h | 89 +++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 120 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/dept_unit_test.h b/include/linux/dept_unit_test.h
-new file mode 100644
-index 000000000000..7612b4e97e69
---- /dev/null
-+++ b/include/linux/dept_unit_test.h
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0+
+diff --git a/include/linux/dept.h b/include/linux/dept.h
+index 7b822caee874..b3bb1a1a7eb5 100644
+--- a/include/linux/dept.h
++++ b/include/linux/dept.h
+@@ -19,8 +19,8 @@ struct task_struct;
+ #define DEPT_MAX_WAIT_HIST		64
+ #define DEPT_MAX_ECXT_HELD		48
+ 
+-#define DEPT_MAX_SUBCLASSES		16
+-#define DEPT_MAX_SUBCLASSES_EVT		2
++#define DEPT_MAX_SUBCLASSES		24
++#define DEPT_MAX_SUBCLASSES_EVT		3
+ #define DEPT_MAX_SUBCLASSES_USR		(DEPT_MAX_SUBCLASSES / DEPT_MAX_SUBCLASSES_EVT)
+ #define DEPT_MAX_SUBCLASSES_CACHE	2
+ 
+@@ -142,6 +142,35 @@ struct dept_ext_wgen {
+ 	unsigned int wgen;
+ };
+ 
++enum {
++	DEPT_PAGE_DEFAULT = 0,
++	DEPT_PAGE_REGFILE_CACHE,	/* regular file page cache */
++	DEPT_PAGE_BDEV_CACHE,		/* block device cache */
++	DEPT_PAGE_USAGE_NR,		/* nr of usages options */
++};
++
++#define DEPT_PAGE_USAGE_SHIFT 16
++#define DEPT_PAGE_USAGE_MASK ((1U << DEPT_PAGE_USAGE_SHIFT) - 1)
++#define DEPT_PAGE_USAGE_PENDING_MASK (DEPT_PAGE_USAGE_MASK << DEPT_PAGE_USAGE_SHIFT)
++
 +/*
-+ * DEPT unit test
-+ *
-+ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
-+ *
-+ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
++ * Identify each page's usage type
 + */
-+
-+#ifndef __LINUX_DEPT_UNIT_TEST_H
-+#define __LINUX_DEPT_UNIT_TEST_H
-+
-+#if defined(CONFIG_DEPT_UNIT_TEST) || defined(CONFIG_DEPT_UNIT_TEST_MODULE)
-+struct dept_ut {
-+	bool circle_detected;
-+	bool recover_circle_detected;
-+
-+	int ecxt_stack_total_cnt;
-+	int wait_stack_total_cnt;
-+	int evnt_stack_total_cnt;
-+	int ecxt_stack_valid_cnt;
-+	int wait_stack_valid_cnt;
-+	int evnt_stack_valid_cnt;
++struct dept_page_usage {
++	/*
++	 * low 16 bits  : the current usage type
++	 * high 16 bits : usage type requested to be set
++	 *
++	 * Do not apply usage type on request immediately but postpone
++	 * it until the next use of PG flags.  For example, if the page
++	 * is already within a PG_locked critical section, regard it as
++	 * DEPT_PAGE_DEFAULT temporarily at least until the section ends
++	 * e.g. folio_unlock() since it's still unclear which usage type
++	 * the page acts within the section.
++	 */
++	atomic_t type; /* Update and read atomically */
 +};
 +
-+extern struct dept_ut dept_ut_results;
-+
-+static inline void dept_ut_circle_detect(void)
-+{
-+	dept_ut_results.circle_detected = true;
-+}
-+static inline void dept_ut_recover_circle_detect(void)
-+{
-+	dept_ut_results.recover_circle_detected = true;
-+}
-+static inline void dept_ut_ecxt_stack_account(bool valid)
-+{
-+	dept_ut_results.ecxt_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.ecxt_stack_valid_cnt++;
-+}
-+static inline void dept_ut_wait_stack_account(bool valid)
-+{
-+	dept_ut_results.wait_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.wait_stack_valid_cnt++;
-+}
-+static inline void dept_ut_evnt_stack_account(bool valid)
-+{
-+	dept_ut_results.evnt_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.evnt_stack_valid_cnt++;
-+}
-+#else
-+struct dept_ut {};
-+
-+#define dept_ut_circle_detect() do { } while (0)
-+#define dept_ut_recover_circle_detect() do { } while (0)
-+#define dept_ut_ecxt_stack_account(v) do { } while (0)
-+#define dept_ut_wait_stack_account(v) do { } while (0)
-+#define dept_ut_evnt_stack_account(v) do { } while (0)
-+
-+#endif
-+#endif /* __LINUX_DEPT_UNIT_TEST_H */
-diff --git a/kernel/dependency/Makefile b/kernel/dependency/Makefile
-index 92f165400187..fc584ca87124 100644
---- a/kernel/dependency/Makefile
-+++ b/kernel/dependency/Makefile
-@@ -2,3 +2,4 @@
+ struct dept_event_site {
+ 	/*
+ 	 * event site name
+@@ -314,6 +343,7 @@ extern void dept_hardirqs_off(void);
+ struct dept_key { };
+ struct dept_map { };
+ struct dept_ext_wgen { };
++struct dept_page_usage { };
+ struct dept_event_site { };
  
- obj-$(CONFIG_DEPT) += dept.o
- obj-$(CONFIG_DEPT) += dept_proc.o
-+obj-$(CONFIG_DEPT_UNIT_TEST) += dept_unit_test.o
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 3c3ec2701bd6..0f4464657288 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -78,8 +78,12 @@
- #include <linux/workqueue.h>
- #include <linux/irq_work.h>
- #include <linux/vmalloc.h>
-+#include <linux/dept_unit_test.h>
- #include "dept_internal.h"
+ #define DEPT_MAP_INITIALIZER(n, k) { }
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 42b6959882b3..85d06073d37b 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -220,6 +220,7 @@ struct page {
+ 	struct page *kmsan_shadow;
+ 	struct page *kmsan_origin;
+ #endif
++	struct dept_page_usage usage;
+ 	struct dept_ext_wgen pg_locked_wgen;
+ } _struct_page_alignment;
  
-+struct dept_ut dept_ut_results;
-+EXPORT_SYMBOL_GPL(dept_ut_results);
-+
- static int dept_stop;
- static int dept_per_cpu_ready;
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 8ab39823ea31..0b0655354b08 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -204,6 +204,80 @@ enum pageflags {
  
-@@ -826,6 +830,10 @@ static void print_dep(struct dept_dep *d)
- 			pr_warn("(wait to wake up)\n");
- 			print_ip_stack(0, e->ewait_stack);
- 		}
-+
-+		dept_ut_ecxt_stack_account(valid_stack(e->ecxt_stack));
-+		dept_ut_wait_stack_account(valid_stack(w->wait_stack));
-+		dept_ut_evnt_stack_account(valid_stack(e->event_stack));
- 	}
- }
+ extern struct dept_map pg_locked_map;
  
-@@ -920,6 +928,8 @@ static void print_circle(struct dept_class *c)
- 	dump_stack();
- 
- 	dept_outworld_exit();
-+
-+	dept_ut_circle_detect();
- }
- 
- /*
-@@ -1021,6 +1031,8 @@ static void print_recover_circle(struct dept_event_site *es)
- 	dump_stack();
- 
- 	dept_outworld_exit();
-+
-+	dept_ut_recover_circle_detect();
- }
- 
- static void bfs_init_recover(void *node, void *in, void **out)
-diff --git a/kernel/dependency/dept_unit_test.c b/kernel/dependency/dept_unit_test.c
-new file mode 100644
-index 000000000000..88e846b9f876
---- /dev/null
-+++ b/kernel/dependency/dept_unit_test.c
-@@ -0,0 +1,173 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * DEPT unit test
-+ *
-+ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
-+ *
-+ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/spinlock.h>
-+#include <linux/mutex.h>
-+#include <linux/dept.h>
-+#include <linux/dept_unit_test.h>
-+
-+MODULE_DESCRIPTION("DEPT unit test");
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Byungchul Park <max.byungchul.park@sk.com>");
-+
-+struct unit {
-+	const char *name;
-+	bool (*func)(void);
-+	bool result;
-+};
-+
-+static DEFINE_SPINLOCK(s1);
-+static DEFINE_SPINLOCK(s2);
-+static bool test_spin_lock_deadlock(void)
-+{
-+	dept_ut_results.circle_detected = false;
-+
-+	spin_lock(&s1);
-+	spin_lock(&s2);
-+	spin_unlock(&s2);
-+	spin_unlock(&s1);
-+
-+	spin_lock(&s2);
-+	spin_lock(&s1);
-+	spin_unlock(&s1);
-+	spin_unlock(&s2);
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static DEFINE_MUTEX(m1);
-+static DEFINE_MUTEX(m2);
-+static bool test_mutex_lock_deadlock(void)
-+{
-+	dept_ut_results.circle_detected = false;
-+
-+	mutex_lock(&m1);
-+	mutex_lock(&m2);
-+	mutex_unlock(&m2);
-+	mutex_unlock(&m1);
-+
-+	mutex_lock(&m2);
-+	mutex_lock(&m1);
-+	mutex_unlock(&m1);
-+	mutex_unlock(&m2);
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static bool test_wait_event_deadlock(void)
-+{
-+	struct dept_map dmap1;
-+	struct dept_map dmap2;
-+
-+	sdt_map_init(&dmap1);
-+	sdt_map_init(&dmap2);
-+
-+	dept_ut_results.circle_detected = false;
-+
-+	sdt_request_event(&dmap1); /* [S] */
-+	sdt_wait(&dmap2); /* [W] */
-+	sdt_event(&dmap1); /* [E] */
-+
-+	sdt_request_event(&dmap2); /* [S] */
-+	sdt_wait(&dmap1); /* [W] */
-+	sdt_event(&dmap2); /* [E] */
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static void dummy_event(void)
-+{
-+	/* Do nothing. */
-+}
-+
-+static DEFINE_DEPT_EVENT_SITE(es1);
-+static DEFINE_DEPT_EVENT_SITE(es2);
-+static bool test_recover_deadlock(void)
-+{
-+	dept_ut_results.recover_circle_detected = false;
-+
-+	dept_recover_event(&es1, &es2);
-+	dept_recover_event(&es2, &es1);
-+
-+	event_site(&es1, dummy_event);
-+	event_site(&es2, dummy_event);
-+
-+	return dept_ut_results.recover_circle_detected;
-+}
-+
-+static struct unit units[] = {
-+	{
-+		.name = "spin lock deadlock test",
-+		.func = test_spin_lock_deadlock,
-+	},
-+	{
-+		.name = "mutex lock deadlock test",
-+		.func = test_mutex_lock_deadlock,
-+	},
-+	{
-+		.name = "wait event deadlock test",
-+		.func = test_wait_event_deadlock,
-+	},
-+	{
-+		.name = "event recover deadlock test",
-+		.func = test_recover_deadlock,
-+	},
-+};
-+
-+static int __init dept_ut_init(void)
-+{
-+	int i;
-+
-+	lockdep_off();
-+
-+	dept_ut_results.ecxt_stack_valid_cnt = 0;
-+	dept_ut_results.ecxt_stack_total_cnt = 0;
-+	dept_ut_results.wait_stack_valid_cnt = 0;
-+	dept_ut_results.wait_stack_total_cnt = 0;
-+	dept_ut_results.evnt_stack_valid_cnt = 0;
-+	dept_ut_results.evnt_stack_total_cnt = 0;
-+
-+	for (i = 0; i < ARRAY_SIZE(units); i++)
-+		units[i].result = units[i].func();
-+
-+	pr_info("\n");
-+	pr_info("******************************************\n");
-+	pr_info("DEPT unit test results\n");
-+	pr_info("******************************************\n");
-+	for (i = 0; i < ARRAY_SIZE(units); i++) {
-+		pr_info("(%s) %s\n", units[i].result ? "pass" : "fail",
-+				units[i].name);
-+	}
-+	pr_info("ecxt stack valid count = %d/%d\n",
-+			dept_ut_results.ecxt_stack_valid_cnt,
-+			dept_ut_results.ecxt_stack_total_cnt);
-+	pr_info("wait stack valid count = %d/%d\n",
-+			dept_ut_results.wait_stack_valid_cnt,
-+			dept_ut_results.wait_stack_total_cnt);
-+	pr_info("event stack valid count = %d/%d\n",
-+			dept_ut_results.evnt_stack_valid_cnt,
-+			dept_ut_results.evnt_stack_total_cnt);
-+	pr_info("******************************************\n");
-+	pr_info("\n");
-+
-+	lockdep_on();
-+
-+	return 0;
-+}
-+
-+static void dept_ut_cleanup(void)
++static inline void dept_set_page_usage(struct page *p,
++		unsigned int new_type)
 +{
 +	/*
-+	 * Do nothing for now.
++	 * Consider the page as DEPT_PAGE_DEFAULT until the next use of
++	 * PG flags e.g. folio_lock().
 +	 */
++	unsigned int type = DEPT_PAGE_DEFAULT;
++
++	if (WARN_ON_ONCE(new_type >= DEPT_PAGE_USAGE_NR))
++		return;
++
++	new_type <<= DEPT_PAGE_USAGE_SHIFT;
++	new_type |= type & DEPT_PAGE_USAGE_MASK;
++	atomic_set(&p->usage.type, new_type);
 +}
 +
-+module_init(dept_ut_init);
-+module_exit(dept_ut_cleanup);
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 540583425d8e..86e26b9708fa 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1404,6 +1404,18 @@ config DEPT_AGGRESSIVE_TIMEOUT_WAIT
- 	  that timeout is used to avoid a deadlock. Say N if you'd like
- 	  to avoid verbose reports.
++static inline void dept_set_folio_usage(struct folio *f,
++		unsigned int new_type)
++{
++	dept_set_page_usage(&f->page, new_type);
++}
++
++static inline void dept_reset_page_usage(struct page *p)
++{
++	dept_set_page_usage(p, DEPT_PAGE_DEFAULT);
++}
++
++static inline void dept_reset_folio_usage(struct folio *f)
++{
++	dept_reset_page_usage(&f->page);
++}
++
++static inline void dept_update_page_usage(struct page *p)
++{
++	unsigned int type = atomic_read(&p->usage.type);
++	unsigned int new_type;
++
++retry:
++	new_type = type & DEPT_PAGE_USAGE_PENDING_MASK;
++	new_type >>= DEPT_PAGE_USAGE_SHIFT;
++	new_type |= type & DEPT_PAGE_USAGE_PENDING_MASK;
++
++	/*
++	 * Already updated by others.
++	 */
++	if (type == new_type)
++		return;
++
++	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
++		goto retry;
++}
++
++static inline unsigned long dept_event_flags(struct page *p, bool wait)
++{
++	unsigned int type;
++
++	type = atomic_read(&p->usage.type) & DEPT_PAGE_USAGE_MASK;
++
++	if (WARN_ON_ONCE(type >= DEPT_PAGE_USAGE_NR))
++		return 0;
++
++	/*
++	 * wait
++	 */
++	if (wait)
++		return (1UL << DEPT_PAGE_DEFAULT) | (1UL << type);
++
++	/*
++	 * event
++	 */
++	return 1UL << type;
++}
++
+ /*
+  * Place the following annotations in its suitable point in code:
+  *
+@@ -214,20 +288,29 @@ extern struct dept_map pg_locked_map;
  
-+config DEPT_UNIT_TEST
-+	tristate "unit test for DEPT"
-+	depends on DEBUG_KERNEL && DEPT
-+	default n
-+	help
-+	  This option provides a kernel module that runs unit test for
-+	  DEPT.
+ static inline void dept_page_set_bit(struct page *p, int bit_nr)
+ {
++	dept_update_page_usage(p);
 +
-+	  Say Y if you want DEPT unit test to be built into the kernel.
-+	  Say M if you want DEPT unit test to build as a module.
-+	  Say N if you are unsure.
+ 	if (bit_nr == PG_locked)
+ 		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
+ }
+ 
+ static inline void dept_page_clear_bit(struct page *p, int bit_nr)
+ {
++	unsigned long evt_f = dept_event_flags(p, false);
 +
- config LOCK_DEBUGGING_SUPPORT
- 	bool
- 	depends on TRACE_IRQFLAGS_SUPPORT && STACKTRACE_SUPPORT && LOCKDEP_SUPPORT
+ 	if (bit_nr == PG_locked)
+-		dept_event(&pg_locked_map, 1UL, _RET_IP_, __func__, &p->pg_locked_wgen);
++		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
+ }
+ 
+ static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
+ {
++	unsigned long evt_f;
++
++	dept_update_page_usage(p);
++	evt_f = dept_event_flags(p, true);
++
+ 	if (bit_nr == PG_locked)
+-		dept_wait(&pg_locked_map, 1UL, _RET_IP_, __func__, 0, -1L);
++		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
+ }
+ 
+ static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
+@@ -245,6 +328,8 @@ static inline void dept_folio_wait_on_bit(struct folio *f, int bit_nr)
+ 	dept_page_wait_on_bit(&f->page, bit_nr);
+ }
+ #else
++#define dept_set_page_usage(p, t)		do { } while (0)
++#define dept_reset_page_usage(p)		do { } while (0)
+ #define dept_page_set_bit(p, bit_nr)		do { } while (0)
+ #define dept_page_clear_bit(p, bit_nr)		do { } while (0)
+ #define dept_page_wait_on_bit(p, bit_nr)	do { } while (0)
 -- 
 2.17.1
 
