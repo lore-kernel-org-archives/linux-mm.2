@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F3D5D2E016
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3152D2E016
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:22:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 084476B0106; Fri,  5 Dec 2025 02:20:09 -0500 (EST)
+	id 517D56B0107; Fri,  5 Dec 2025 02:20:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F28666B010A; Fri,  5 Dec 2025 02:20:08 -0500 (EST)
+	id 4A1A06B010A; Fri,  5 Dec 2025 02:20:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D05F26B0108; Fri,  5 Dec 2025 02:20:08 -0500 (EST)
+	id 231256B010B; Fri,  5 Dec 2025 02:20:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B2EAB6B0106
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB7366B0107
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:20:08 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7363659025
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA00051ED9
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:08 +0000 (UTC)
-X-FDA: 84184568496.26.8F355D5
+X-FDA: 84184568496.12.06C4E89
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8FEE840003
+	by imf11.hostedemail.com (Postfix) with ESMTP id D9A7840002
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919206; a=rsa-sha256;
-	cv=none;
-	b=cbGX9f0BzM5e9L8ATK8pZwNzVd+uaDTBTFZFjIxplP1JaD4Rl+2xhmF/lWq0iSlsXiOg1f
-	vmo/JqYpMenatdH7jdhB/PY42K+2wLNNP5VMT8t/ejNja5S8Z5QDddw6mV19AroTTw0Tbb
-	1U5j++VlLwrvHiiw6WqFmMBRUgLS1VE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764919206;
+	s=arc-20220608; t=1764919207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=sIR+SNPsXLYmAGDwro0+InR/76r5568aiEthpcTompE=;
-	b=VoJJfM0LxI5Ueqez8oHivWkXuy2UFLb/j26SQgXq4z8heTrBvbXSxsJ0XqelJzy8LOJNEw
-	vVqCJBLOotdsFLr0EtgbSF5r8pYMMGZoZwdoPFy9DqXVEouDjRYfqYMqw8/R89EeDT2sHB
-	xHLiQGFyVq60Pa+NWLIJC3GO4QcRpv4=
-X-AuditID: a67dfc5b-c2dff70000001609-bf-69328776a145
+	bh=WArLovSFXaT8otVlpV7KIF50R+FCcBURwHrSO1jZKQs=;
+	b=fTILq7kAVBU0nM+o+IRZRotHReHR8ZMUpfOxcCKyJZ04gMHYTmTOhwPWEhBPn0/F5ihsFW
+	u1dhc2u7hhxjmGEuCWsqH6w7th2+0z60DC3XFfjwfFy297pR+hhz0VNis0dXt1Oa/1Pd00
+	p9GTlf4f0ftzzNGEk6zzqM3VGJSxGn0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919207; a=rsa-sha256;
+	cv=none;
+	b=mczQigFQQRwggLcWWQFYJ6LEZsM5GeAmU3uz1S+1/a/Or6uYfEZ0Ly7vdTCeOZIzigwbuK
+	3QFwbYQx49IaRHFBAfgg9f5MOPbDGMD82JTmRisLVrCRA13qPzFSqGvAFTbqpfa3ELa3p5
+	IHoV6fHNsdCwfBXzHxC83aNZr8f5cjE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c45ff70000001609-fb-69328776f97a
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -212,54 +212,54 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 40/42] dept: track PG_writeback with dept
-Date: Fri,  5 Dec 2025 16:18:53 +0900
-Message-Id: <20251205071855.72743-41-byungchul@sk.com>
+Subject: [PATCH v18 42/42] mm: percpu: increase PERCPU_DYNAMIC_SIZE_SHIFT on DEPT and large PAGE_SIZE
+Date: Fri,  5 Dec 2025 16:18:55 +0900
+Message-Id: <20251205071855.72743-43-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSW0xTaRSF/c+1bag5qSQeIZFJ1ZiYiEAEt4lOfHE4mUSD8UEdjNrIURpL
-	0aKVTmJCkSqSsdYarIKViiNC2ygeBG9QsRQ0aAkXhaoMF8U6DTCMpdgpIk7B+PbtvfZeWQ9L
-	hMv6yTiRUn2U16gVKjklISTjMZWrtadTlElhTzz0D46QUCxcJuFZXyEBg1PFCAwPvhHw1dxG
-	QyjyloZSPYLJ2lkKLAE9AYHWdKgamcUgGBhCcLdtAEFTdSEFH0z1OPSMLISXUxMU2AqbSOh6
-	MYrgolUgoGt0BgOHsAXKLScxiFTZaSj39pDwrrqMhpnhZGhzfKRh8OkpEpx/+HEQ3vdGU30N
-	IRhwfiOhoDxMQrejk4Dnbc8IGB7ykVDnfYFD5/mzJPhMHxC8tozRUDU1QUN3sw0D/6tTGNQ0
-	eSmoqbiJwOwP0lD/2IDAVTyEgef2PQxu+1twuNBto6BOKMWh11xBgbehPZpMb0RQ3xqmofbT
-	TQr0k4MIivpTwdiRDtZQMoQcdmrTJi5sMBKc86oTcV+mzYgL3TiJcwZTdGwZm8C5G8/HKK69
-	kuX+PDONcQ/K/qK5ItcbmrMJx7gizzjJXW8MYJxgP0NxQtBMZyT8JtmQxauUWl6z5ud9kuxb
-	/1Sjw5Gl+cMNRqwARZaUILGIZday18pC1A+21HQRc0wxK1mfL4LPcSzzE1t31k+WIIkIZ3oS
-	2NMR47ywiNnIXrzVQs4xwaxgg/8+xuZYyqSxlyeDxHfTBNZR2zx/L47uS/um51nGpLIVJeF5
-	U5YpF7N3+s7h3x+WsE+qfYQJSW1ogR3JlGptjkKpWpuYrVMr8xP35+YIKNq5qhMzmfdRsHO7
-	GzEiJI+RNh9PVspIhTZPl+NGrAiXx0rHVElKmTRLofud1+Tu1RxT8XluFC8i5IulKZ+PZ8mY
-	g4qj/CGeP8xrfqiYSBxXgE6U6ZJsAW3qoUpPfONUBnxe/mRlwXiC2FS4N8brTd/Vb3fMegML
-	tv5t6Thfuzrp4FB8Zr6tb33riNtKW9t1rprE2B139FfYbYautC+bH6W51e8zrJm5l/6TzTS2
-	7Old50rbvezqveu/9KrxX5vxc84Dn9aV5ruuNYym2HYe6XjokRN52YrkVbgmT/E/T6d84W8D
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxTG/d/7v/97Wym5qSZcXxKXJpsJURSj5sRsuGRbcvdhyZJ9cHEf
+	ZpUb21iKaZHKlmW1QqiICpi2kSIWHE1Dy1sr42XWVWCMhhGLKO2QqrwEcUJIHIUAug5q/HLy
+	y3nO8zxfDkcr48x2TqsvkAx6tU5F5Fg+n1a311R6QLvf0bsTrCU/w+iFEIbEohVDTYuPwFtn
+	BwtW/w0GBqIWDJFmL4JnCSuC5TUnDYsrT1iwD1fREIv8ToPvzgUK/m39j4BtYprAgrscQTL+
+	goLo0hyC6VApglv1AQJrQw9ocNgiCOom4jQEPRYCI9Pp8CixQCBsu0xgfriGApclyMBNZxWC
+	mbEgBeP2Kgq8/q/gmXsGw2BFPQX2tgxwOi5S62OWAlvTbxT8dXscg3NohIFJTzULSVc+xK/Z
+	MISfjjLwaqaKQIf5OQv+v/9AYO1OYPBPrQs3ascJ3A2GMfR3TlIw0l1DoLy1nYGnviQDkdAg
+	Aw+9kfXW/gEMT4ausfCgu4mBhugwBRPPY8ynueJyyVUsNgZ+pURfrQ+Jiw0XabF3boEWiwMm
+	sWFwjoiricdEDC65sFg5tFfsqo6zYvG9MVZ0+c+JxX3zjBjwZIq3776kvt5zXP5xrqTTFkqG
+	fTkn5JpYX4w52y4732FNsmY0yZYhGSfwB4WBvivkPffXO/AGE363EIut0Bu8lf9ACFyZYcqQ
+	nKP5kV1C6crVlLCFl4RZuzllxvyHQlN5OGVW8IcF28tJ9C50l+BtDaXuZRv76GqKlfwh4VbZ
+	cipU4J0yYba8hH5n2Cbc98RwBVK40KZGpNTqC/PUWt3BLE2RXns+61R+nh+tP537pzffdaLX
+	kW96EM8hVZoiZMrWKhl1obEorwcJHK3aqpjT7dcqFbnqoh8kQ/73hnM6ydiDdnBYlaE4sGTK
+	VfKn1QXSGUk6KxneqxQn225G7potwyVjGhC8GTms55d9n3Vpej9J78xyN/dMOSrc1WnZqjbT
+	yYKjdZUn9B+lWwQCx/484iGXfBa1S3XY3XI0Th0/FD0SzuHunPyn6HTbjkROx+iXjaXXN08t
+	X+6yD67KpNrmH1vGVZWZyUdGs2J14Fv//fb0S19cn/h8bU93lwobNersTNpgVP8Pisz1+XAD
 	AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+923o8VtSd0MykYRBNoDixM9qD+qS5D0V0UEOfKWN+eDzUdG
-	YdMumpas2Sa5fGQ5TE3XZqnZaChJ75xWSrVMmpa5tHw2l9o0+ufwOef7PV/OH4fBFQ1kCCPG
-	JwmaeJVaSckIWeTWzLDkrI3i+jIpArKldPjY7SHhnc5JwNhoNgHXa6spmDLX05Btu0bCk84M
-	AtpqqhB0j2UjmPCbcZAaZwiYMrTSMOr7QINRh2DG0YrA5DLg0NX2CIfqOh0GI9ZpCgZahhEY
-	ezwUFPTrCBiyXEJQ2Gemof/xXvjR3UTCjPsrBp3jXgQWzzQGHmcWgilTLJSU2QPrpp8U+F++
-	xqHA2IbgRo8bh+H+zwjqWj8hcFRkUNCrv4dDh2cBvBkbouCpMZeCH67rGAxaKSjNcJDgejGA
-	oMhsQND33oFB5s1aCkxFNgIaPz+gwTXwB4OPJgMGVbb90G3pI+C5vgwLnBtw3V0C5oJMLFC+
-	YWC804SBz1JJ7yxH/ISUR/CV9vsYL7VPUXx1cTXi/ZMGxI+WZ+K8pA+0Ld4hnL9gT+XLn3sp
-	fnLsLcU7xksJ/lkZx9+6OInxV16G8Y2FbvrAriOybdGCWkwRNOt2RMliagYrUKJv+eme+3nY
-	eeRbmoOCGI6N4Apuu4hZptg1XFeXD5/lYDaUs1/uI3OQjMHZjhVcli9vTljEbudMNS3kLBPs
-	am745yNsluXsZu7ayDDxL3QFV2V1zvmDAnNj5+QcK9hNXEnOBKlHslI0rxIFi/EpcSpRvSlc
-	GxuTFi+eDj+eEGdDgX+ynPtzpQGNduxtRiyDlPPlztQNooJUpWjT4poRx+DKYLlXvV5UyKNV
-	aWcETcIxTbJa0DajZQyhXCLfd0iIUrAnVUlCrCAkCpr/KsYEhZxHxQ11Cekq84lDBze/Ct1z
-	tPhUVMdjjTnfeXehfW14mGQ1rEwvKuEGv+yIfvXQpZOW+UMdqx6KjZ25bfvIXmd707OkX78X
-	aw7HJRfLdkcOzUt1WrxifVaFtHQkVKxPFPVnS9cZr85vWZC/hSmMzHf3br0ZQee4u/wv/O++
-	76Yz2pWENka1YS2u0ar+AkgIPJZLAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa2yLcRTG/d9rVyqvGnszH9CwicxtMTlxJ2FvJERCIi4LxctqbdHabBLs
+	olkNSzXa2boxZSW728VsNGZY3LWG1WXK1Gg2m0y3pe266Sa+nPzOeZ7n5Hw4Alx8mwwXyJRH
+	eJVSKpdQQkK4YUnGnKTMaNn8CnsoaDUn4ZPTRcK7tEYC+jxaAvIrSikImOpo0FblkvC4NZ0A
+	W3kJAmefFsGA34SDpn6YgIC+mQaP9yMNhjQEw9ZmBEa7HgeH7R4OpTVpGPypHKKg80EvAsNX
+	FwU57jQCeixnEeR1mGhwP4qFX847JAy3/cCgtb8LgcU1hIGrMRNBwJgAl83VwbjxNwX+F69w
+	yDHYEFz52oZDr/sLgprmzwisN9Ip+K6rxaHFNR7e9PVQ8MRwhoJf9nwMuispKEy3kmB/3omg
+	wKRH0PHBikHG1QoKjAVVBNR/aaDB3jmIwSejHoOSqvXgtHQQ8ExnxoLnBl03w8CUk4EFy08M
+	DGV3MPBaiumVRYgb0GQTXHH1LYzTvA5QXOmlUsT5fXrEeYoycE6jC7YPunpw7lT1Ua7oWRfF
+	+freUpy1v5DgnppZ7tppH8adfzGHq89rozeu2iZcupeXy5J41bzlu4TxjocO8lBtSHKddphO
+	Re10FgoRsMxCttmcQ4wwxUSyDocXH+FQZhpbfa6DzEJCAc60TGUzvdmjwkSGZ38aU6kRJpiZ
+	bNnZJ6NhEbOINbjb0b+lU9mSysZRf8jIvNU3ymImhr2cNUDqkLAQjSlGoTJlkkIqk8fMVSfE
+	pyhlyXP3HFRUoeA/WY4Pnr+NPC2xTYgRIMk4UePRBTIxKU1SpyiaECvAJaGiLvl8mVi0V5py
+	jFcd3KlKlPPqJjRFQEjCROu28LvEzH7pET6B5w/xqv8qJggJT0WTFIH77pjV3rjT7mX73m+d
+	3ss1dK/1r4xesSb5W/a4qN7N/gNXdksvSmyxm8oPM4P32/s9WkVuuG7D7O113f7oGWz4btOJ
+	6/aauO4hItJ71//YnFtg8/AlLy+caytq3aFR7kkMy4xQRhCzJvgaFua9ipoxdrLhuPremkQn
+	u1hdliAh1PHSBbNxlVr6F6fDGrJLAwAA
 X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8FEE840003
-X-Stat-Signature: m99qjsm5mz7d4ct3p9z6rcg4f75bcygm
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D9A7840002
+X-Stat-Signature: 1qxprtp3ix5rbuuezk1j51kfqsiketku
 X-Rspam-User: 
-X-HE-Tag: 1764919206-586027
-X-HE-Meta: U2FsdGVkX180XseTfQsZw6nFS8I32xS82swX9En6BZT2KDDCJHvIBdtwA51oS6E1+eZm3h1c8Fkq8+8t3J6HMlEAtIWF/lrJiLiz1OUGfBbxSuvEz2FZQCuiVtVvIAJUjZpq7Q0Or5Y5rhpCcIXJRcsD4MlSNF+EHre3ZG7bOmX0Mgm/kC5gGEjC+xqP9+rD55pe0Y3AG6sI9nXlDuB9CvbN8q4lPfu5rbQqDJk7Cfvh33t/UwrCEja3KNTOFDHrSIJ7JepJCiOR2nBQvEHv5oB+pBw54rXVslQfWamh8EmB9sTPKMfucIfImgv7lrVHuLYkvm4mGDHmti7/AlnhHZbqfIrmoWm62aQuPTsopCtTlKF0R9wP/FNij8UHsNc0bTsaMsqQCZyTO0dyiUfQLYDZbQRXkLwroiZKPvJtJKxnZA61KW+TupcnrRDG65PolW5D9LWCcmywvHAucojUwZS9O/JulYAVrH/3tk9dnhfDfpIv0HmWVZzMVA58DqwTzZFzf18gcS3RQRhNDuXpbRr9fGdbLih+Ro0rzG3dz0JQNWff+Y+aRod7jkCZL4eASDr0LatnzzFBNILnA4XvFtcZxEmwd039tQ6YGH78yB6IZY1ZOjN8JB24YUZSPUIUtqj19M80Ilqbp4BEWCraoFQCdkwf67Ndn3YSfcqnE423QDKo6zMUxN2qjU4163zKroq7GtptBTMTKEUbreL7G7Znugnrzzuibm5LFQN811/1bLDKujFhmU97b2RAr9eFRU7sAdewLnWARUvCDT318H+ToYcBcfhuwyVHS68WtOwmaDAIjmEvtL7wiOB1W6fiNymQfPFBTZgx/k+kJ8VfZqR8TqG+Ey9vgLPufm2XdOu9HTRANADvgZBuG1+Cpn7pO+/rhdT79G9ExVUkxVDtjMnH1Ykd8IcxB9FR9sL9wL9ALH3dk1fwWxkokAA0iIe0X8WvAN8lTee9fh56LHB
- i+BhU5sG
- N0pIuWYtRK2K2ICRFlgkkkceguIyYKxumgyPL09qtLMdIhpGt5wKqKMmpvsaaujRA7odewWnG5lKLyXMe4/XUULA5WCOr2q+L49bELZdQ0WnhoTBQQvVhF1ZyJvAYo8hszwkI
+X-HE-Tag: 1764919206-593622
+X-HE-Meta: U2FsdGVkX185slNVBAh5kqspFe/eVGgvooab+Ecnd7YdiB4262oPxfnxIAcoDMw1BBVgCNfWi8K2BMJTAZNeRXE7CAfdP/Pl43ikwNfbRRtphCz3Ry2Cm+ab5e2S8iZAGzT9kKFalcY6wZ9DVg4iV6vYEDxc9vgnOUcvGfA5M2yRQlrChYmTa0Sd2nLOkAws6AiZbdIuMqnmg0yQFDkawYxkHvTAoVeorEBFaBVummpWoV/FXiAPUUP1OJXhgqDnCyQnU4wurtSgrORjDizTl1NA3yXRh3UKC3vQzIxK0mkX7TrxQN83vajECnA9FKRgHiOsNXMwzd5MeHLmhypJzEyRMY81w9HNlRAc8ZwaeqeNR3mJ/tnigb1VArK6bQz0/pAoI/pW3uT/6ECcFJOSaWLhS1SFG22DUhtPBPQ3c2MHQS8oyvIu3yMMAp+NozfQvgFaC3NTKaJzdhi/VU2j/anRjwJxLmYK1BqKKvrqjB1TXvbCiBu8tOQg4c+wI48xlPWlu3yJhSndm2ZRKTjZjXES2ZE1dKrh2v32zuwVA5xrjB3UTV6XCNaRZgxDkKiCfLwCawG58ON4atV336DcHFPqh2VlUZtYQNB6wOBlutJc+tp7qa/SmkvqM0EbAM1lXkyhCJUhuGZY02ztQGCy5BpQdhQEg8CjHYtkdvn73dA9cob/9giTxqqbWOmQ5omhsHjkFubmdfnTmd4p6xUTroFoc248oAoaj59/emkfTauO0UFRoWkPLIJKu5kRdpaIvPXja9O5bmGTs8jq4wqHB88uTL86aJRLyIILcINwrpEyLKc5sAEdEifJ8DipxITXEXYe+n8uucBwJuYeFxGJHwYyGiSrcEbKqfHRECC30L6sydmdk2CjsGFlsaUx8EeoHkydMGGiuwqahOiykqEL/Rq83K5uClkVreWnDL2bFL7gXPDEz+CCmMGVqeiJ2IQWVTwZkwxWfqcdzstWtZe
+ XWAExd2j
+ EYD73W0mUowKoGCdeC71JMnhQsqKz4YIZac2E1NeiGKbT+xlxn0NHZ2OGRE2jlH1pyq1fFKxqvowNon1IgmqwE+GgLkgVz5UAC33hbnFXOCnfuU2F7qnLOJk0+Htvjet+7TTS4lrydfmRpb0PvEni8eWQ/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,111 +268,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Makes dept able to track PG_writeback waits and events, which will be
-useful in practice.
+Yunseong reported a build failure due to the BUILD_BUG_ON() statement in
+alloc_kmem_cache_cpus().  In the following test:
 
+  PERCPU_DYNAMIC_EARLY_SIZE < NR_KMALLOC_TYPES * KMALLOC_SHIFT_HIGH * sizeof(struct kmem_cache_cpu)
+
+The following factors increase the right side of the equation:
+
+  1. PAGE_SIZE > 4KiB increases KMALLOC_SHIFT_HIGH.
+  2. DEPT increases the size of the local_lock_t in kmem_cache_cpu.
+
+Increase PERCPU_DYNAMIC_SIZE_SHIFT to 11 on configs with PAGE_SIZE
+larger than 4KiB and DEPT enabled.
+
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/mm_types.h   | 1 +
- include/linux/page-flags.h | 7 +++++++
- mm/filemap.c               | 6 +++++-
- mm/mm_init.c               | 1 +
- 4 files changed, 14 insertions(+), 1 deletion(-)
+ include/linux/percpu.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 85d06073d37b..fa6ba4196e0d 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -222,6 +222,7 @@ struct page {
+diff --git a/include/linux/percpu.h b/include/linux/percpu.h
+index 85bf8dd9f087..dd74321d4bbd 100644
+--- a/include/linux/percpu.h
++++ b/include/linux/percpu.h
+@@ -43,7 +43,11 @@
+ # define PERCPU_DYNAMIC_SIZE_SHIFT      12
+ #endif /* LOCKDEP and PAGE_SIZE > 4KiB */
+ #else
++#if defined(CONFIG_DEPT) && !defined(CONFIG_PAGE_SIZE_4KB)
++#define PERCPU_DYNAMIC_SIZE_SHIFT      11
++#else
+ #define PERCPU_DYNAMIC_SIZE_SHIFT      10
++#endif /* DEPT and PAGE_SIZE > 4KiB */
  #endif
- 	struct dept_page_usage usage;
- 	struct dept_ext_wgen pg_locked_wgen;
-+	struct dept_ext_wgen pg_writeback_wgen;
- } _struct_page_alignment;
  
  /*
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 0b0655354b08..ec736811a2c6 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -203,6 +203,7 @@ enum pageflags {
- #include <linux/dept.h>
- 
- extern struct dept_map pg_locked_map;
-+extern struct dept_map pg_writeback_map;
- 
- static inline void dept_set_page_usage(struct page *p,
- 		unsigned int new_type)
-@@ -292,6 +293,8 @@ static inline void dept_page_set_bit(struct page *p, int bit_nr)
- 
- 	if (bit_nr == PG_locked)
- 		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
-+	else if (bit_nr == PG_writeback)
-+		dept_request_event(&pg_writeback_map, &p->pg_writeback_wgen);
- }
- 
- static inline void dept_page_clear_bit(struct page *p, int bit_nr)
-@@ -300,6 +303,8 @@ static inline void dept_page_clear_bit(struct page *p, int bit_nr)
- 
- 	if (bit_nr == PG_locked)
- 		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
-+	else if (bit_nr == PG_writeback)
-+		dept_event(&pg_writeback_map, evt_f, _RET_IP_, __func__, &p->pg_writeback_wgen);
- }
- 
- static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
-@@ -311,6 +316,8 @@ static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
- 
- 	if (bit_nr == PG_locked)
- 		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
-+	else if (bit_nr == PG_writeback)
-+		dept_wait(&pg_writeback_map, evt_f, _RET_IP_, __func__, 0, -1L);
- }
- 
- static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
-diff --git a/mm/filemap.c b/mm/filemap.c
-index d7e567af3261..0ce3f9307582 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1191,7 +1191,7 @@ static void folio_wake_bit(struct folio *folio, int bit_nr)
- 	 * dept_page_clear_bit() being called multiple times is harmless.
- 	 * The worst case is to miss some dependencies but it's okay.
- 	 */
--	if (bit_nr == PG_locked)
-+	if (bit_nr == PG_locked || bit_nr == PG_writeback)
- 		dept_page_clear_bit(&folio->page, bit_nr);
- 
- 	spin_lock_irqsave(&q->lock, flags);
-@@ -1248,6 +1248,9 @@ static inline bool folio_trylock_flag(struct folio *folio, int bit_nr,
- struct dept_map __maybe_unused pg_locked_map = DEPT_MAP_INITIALIZER(pg_locked_map, NULL);
- EXPORT_SYMBOL(pg_locked_map);
- 
-+struct dept_map __maybe_unused pg_writeback_map = DEPT_MAP_INITIALIZER(pg_writeback_map, NULL);
-+EXPORT_SYMBOL(pg_writeback_map);
-+
- static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 		int state, enum behavior behavior)
- {
-@@ -1686,6 +1689,7 @@ void folio_end_writeback_no_dropbehind(struct folio *folio)
- 		folio_rotate_reclaimable(folio);
- 	}
- 
-+	dept_page_clear_bit(&folio->page, PG_writeback);
- 	if (__folio_end_writeback(folio))
- 		folio_wake_bit(folio, PG_writeback);
- 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index f1d3e4afd43b..9f99eeb99ca3 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -589,6 +589,7 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
- 	page_cpupid_reset_last(page);
- 	page_kasan_tag_reset(page);
- 	dept_ext_wgen_init(&page->pg_locked_wgen);
-+	dept_ext_wgen_init(&page->pg_writeback_wgen);
- 
- 	INIT_LIST_HEAD(&page->lru);
- #ifdef WANT_PAGE_VIRTUAL
 -- 
 2.17.1
 
