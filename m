@@ -4,84 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC981D2E032
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 08:01:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40B4AD2F7C0
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 08:37:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D5186B0134; Fri,  5 Dec 2025 03:01:43 -0500 (EST)
+	id 5C6836B0128; Fri,  5 Dec 2025 03:37:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AC806B0136; Fri,  5 Dec 2025 03:01:43 -0500 (EST)
+	id 576F56B0129; Fri,  5 Dec 2025 03:37:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E95F6B0137; Fri,  5 Dec 2025 03:01:43 -0500 (EST)
+	id 43E936B012D; Fri,  5 Dec 2025 03:37:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 30C0F6B0134
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 03:01:43 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A288F13B138
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 08:01:42 +0000 (UTC)
-X-FDA: 84184673244.16.4A8B575
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CE7724000A
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 08:01:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=mwzwteWz;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf27.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764921701; a=rsa-sha256;
-	cv=none;
-	b=4Yh1E/eJ9wcKB4DfFortwY1a035I8vO0dLlym21OtqX/Ou0gNuiBPBrsaOHC7TuHxkDaYW
-	hMc9gBjhEqFNtt5XRoQ/PVg3gWFPfMkBBU/d4qeHq9ltxB8POfTfqme5stZ3aUxH/GhH0u
-	xihVOdrHqtqiM1vE8I1asOrdYNW0Axc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=mwzwteWz;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf27.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BF606B0128
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 03:37:50 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0C6B1404EF
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 08:37:49 +0000 (UTC)
+X-FDA: 84184764258.05.5DBD4BB
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AFFF48000E
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 08:37:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=SHsjBNMB;
+	spf=pass (imf30.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764921701;
+	s=arc-20220608; t=1764923868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zgc5Bfim5kR7lSEF9D/3QfXneWnjNYTl3zLRKpUUg0w=;
-	b=L8k4cQ4nnYFNZRDtnGK0q+egwl2VCcF2TZD+SEMpBRYKir2PHb5EGVr7HvTJcrcWLVkodv
-	yIIzuZ3m9rrXkhQl10gKNtAT34hIse+qMcjZO1kyGqgATPumskBlV/AeiSF1xdGSJ1TWiO
-	6g5HQM11e1eCRet5geCbOAxvReDAxb4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1764921698; x=1765180898;
-	bh=Zgc5Bfim5kR7lSEF9D/3QfXneWnjNYTl3zLRKpUUg0w=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=mwzwteWzQ4+P+0EheVmeVZVyCucCeGcOdcgEVReGyJxazYbDrOdG1S7D0jCMUamfp
-	 iydGU9+1EY6vFnlYBpjho6eu3YGlllfWJ2wa5oMcArU7QaC4un+wOMvnB64rlc5+XJ
-	 jD70CbVLek+OcQzYRzDcZlWFx9rDEpOdvdynAg3HLrrWJiXfjcMU4iK849dVdORqy5
-	 dWiuL1WI0jK7e3Bu8kDH2yay9JzGxXcB672cRzePhHmBO0oT0hxTGqCWsV4m7XNQ1y
-	 q8gAdM8XXoCsHgwaEKlsUZ5QtgnUFQP4VR21r1c4Nl68QPGh59rwJvpxYkxGC+j5ud
-	 WZbdLoJpZ6M5g==
-Date: Fri, 05 Dec 2025 08:01:34 +0000
-To: Andrey Konovalov <andreyknvl@gmail.com>
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, jiayuan.chen@linux.dev, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/3] kasan: Refactor pcpu kasan vmalloc unpoison
-Message-ID: <mtfitb3vqbcqzezrckjlo2vyszb3ufqgimmpmfhnybrkjt7m6f@3ovjldsuitwc>
-In-Reply-To: <CA+fCnZfRTyNbRcU9jNB2O2EeXuoT0T2dY9atFyXy5P0jT1-QWw@mail.gmail.com>
-References: <cover.1764874575.git.m.wieczorretman@pm.me> <eb61d93b907e262eefcaa130261a08bcb6c5ce51.1764874575.git.m.wieczorretman@pm.me> <CA+fCnZfRTyNbRcU9jNB2O2EeXuoT0T2dY9atFyXy5P0jT1-QWw@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 2cea9ea5c467759ad35e9323c2a7e8e0c5500488
+	bh=qJ0pmUoz9AytAELMjaAQvsoWskxkIhEiPLZAg+88Dcg=;
+	b=cXrf0GL8p0lbdmncnWLJZ2569h/g5eT27Iu5NphRD1GMHzRCjyI71GymHtUnuzlQsLe7+e
+	MMQes9qgowQytNqzV6V1/OPzudOkYXrNWuAMXJvI7wb+pRILYdgX5xSeJtTrLmumHlNm2B
+	RtQptTigS5+E/K0w/9kHBlYs+Wx+Ld8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=SHsjBNMB;
+	spf=pass (imf30.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764923868; a=rsa-sha256;
+	cv=none;
+	b=x66VQnXfIQHDOLNE+nDrJOmqEkS/Gh8qAbvw+8hDLOntBto7vcYWzDJA1sBcJ/7UduQBmB
+	K2fc9EwGHccpjIc66fPQvPTJ96Xx488rG6Wok+TO1AcsrkQk049/x5IJrqWDb6WUBpQoZx
+	h/UhQspbTKUKYjlyPz0wECgdpBvw3kY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1764923864;
+	bh=vb9XpXw7tikqGD7dN5IxdYV1C0hh+2qgb4lHz2++flU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SHsjBNMB4L/CLDa0mJZba/G4j5uQf7rXUxwSljlFwSwKwzKvMQyWtDyZutqCBDlNZ
+	 767SdC7BUqK5D2y+u8tA1mR9V1qVFO6uZLvi52LNXD0KFVwMX0fIV8n+y9fvyadREF
+	 to4qaUM9ddiEiJrLLEGoeucfCpyf1LtjC38VnYlIyLLwicFy1yYsKW1ScBnnBtlr3W
+	 2YNqa9p0MfhEkK7DHx9LgWc69oAFva6xjyvYdvyCrQiwXNRyWQIPAH0Lr/nFnt9nWp
+	 vrGpdS+ujeczP0NFLFVXoVz86oa97TL/+wghFja956+nNnRWYRtLodJrh1wqjz5kTl
+	 mFYJhBC9TyJ/A==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9238417E11FB;
+	Fri,  5 Dec 2025 09:37:43 +0100 (CET)
+Message-ID: <34675e64-d74f-4484-8d18-37dfec46acc7@collabora.com>
+Date: Fri, 5 Dec 2025 09:37:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CE7724000A
-X-Stat-Signature: g4mz1jec36w59eg4atg7qqxztdqgj6ds
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 05/11] drm/i915: Use huge tmpfs mountpoint helpers
+To: Tvrtko Ursulin <tursulin@ursulin.net>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christopher Healy <healych@amazon.com>, Matthew Wilcox
+ <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+References: <20251114170303.2800-1-loic.molinari@collabora.com>
+ <20251114170303.2800-6-loic.molinari@collabora.com>
+ <fee6476e-3168-4f4f-ae2f-3ef65fe209b0@ursulin.net>
+ <240d0dce-bbc4-4c82-9f9f-7f4625da8315@collabora.com>
+ <0a233d0d-17a2-4f5b-85bb-a33451ec6e9f@ursulin.net>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <0a233d0d-17a2-4f5b-85bb-a33451ec6e9f@ursulin.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AFFF48000E
 X-Rspam-User: 
-X-HE-Tag: 1764921700-642928
-X-HE-Meta: U2FsdGVkX1/jY7VFWUZiBKLrRCFWQLufqWhZhrUi7s84Nwup6/UXossbMCdWQ9ywZeoeFTzFrSdtABh5PhbKlvGGvG6EAu3tWm70dIzvVeqHFUb2mJRDUP9NoIFrALYevrZRtpunSiX1Fz11Qwl/n/D42q7X82BDapusjws95oy6KEu5g2fFRRODvTjwMGNkw7lHiUZxLtfwuqOcXB6zbMbZDCjIvYDxnss6bLYsK7poNtO+G+Yh+6h/0Ds5tZ4bFkHhsKUTLWdrQVSqdNigOIUDWxcXbtJZD6tvHaf/ncQOxj/0YDdepZph+YBqOtTLsr14fcaTgPEBqcWS+b4t9PIhwDtY0ZvlBqlY5dqX6ANJgyV0CaXu/Y7wxwfsCD/FL1kXwt9+jSni4z4KWvxruc9IYEZIvvijfwS5OBbWCiT4cPySCBqWaMSOVEfaLAtfbHRj4is2Fw7i/8UEJmae37AFk2VBGQthcT2NFOLCrqkJFDqJpPYOIlybrMoz2pUIRGZ5sBl2fsF6a+Zw3qozN9BI1IHwTWn0lX5hno8d/BBdOSmRNwvfzjvDIJN2YWgvKlD5va7DyAvora/rcEWQHz9ROnlej2Bk8BXMY6cRCYtt+fNhWDmA6X8SfeW/wHQ5vK1P4LpwvD4cPwbFzZtUVNibG5dfnmv3o7AHAexYWfB++rKarpxyxnJ6M9NbD+MuDy6qKgUewwcAHHNMLG5mSNHy/DF3rQJmrS83FMuaSVqNYaT6aJzc6p40piPKTnbAlBSQPg2l33+jO6hgvKcYSWbcMYhQaRP6PfoEBOFeh7EBYV5YfYE4LJ8oBoAzmbENAwc7QFkaUK3SQ0Mtjauhmb7kbBBxDchQlECgmeq9zjAy23irqhF+LfNCovcbJq2BAKctXHeZIm2PzOHe2a8D8FUqzyEsZQXxUuXgzeqN6cS0FbrcofWPeSQvryE1QulXQWK216XPTWMmAse/vC6
- 4ZdPGDME
- htV192H/VTgtjMT91XfsgESK/JMW5DNPipZqqckAUarF7CIP42iXJoPCugJ79fn3jeBfh1Vv7GWvcpSsZPbXEwMkwmFbv12dCwizjLSNmFwJrYFbX5ilD2lwj/EAPAeC4OBj+awb3VfuOJcMHDIcXyBQ0u3jTOA56Gl7GidydNt8r7LGKGvJCME7A7K0u82hpe/wDr+unwAaGofuVV/izRcC7TacVeB7kGHqlNP2/GGH5bKktn35TnossOY6BrZ4/TvV4K71vwcYOl80b4pgfSS3ukasmTvezL2vpK+7F/zdpmae0uvwPgvCoVUnJHgDDYPlxeMYh6muxAKE=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ih5az4hhfnjgponmi616e31dj3ui5cha
+X-HE-Tag: 1764923867-622448
+X-HE-Meta: U2FsdGVkX1+Kw9F8pl0j5LHrlHk8zYnv5gk78ztlV21pKXIc7KeTfQSlkPzJxVxwzAH6nwchwykD6GzjQGtluxX45LXJAKKcCECGGUcFttzn0GPYwZgnD4zSStaRnQQlpkTCVgZ4e4uf7zMF6y5Atr9eQKgwPIRiscoeT8poeySRflgxNHrJi93XL9RPmLgMK+S5cACRNPWKtrCevFklJ6qYw505b1w4qHZWanBZSDqm8PE37dUOxATmEvliBh1QMi81Qqr5aLaMwS+0y+AnBL5SUyUXogZHa370OkFXqqgrlOI6MspAlwNxF8R27jtopcqC37/K/tRfyEZ4f6YCjbrRtayb0EIbg/XP4IE7deF3Rz/ae98dDlJWrG40m/ZvLkmtVyRfOgWvFxDOPiequm9AyFjUpoz2CQiQs136QtJ8axHeg0s84LSOiG9cLd4dIxmK/meUrJkZr8oZgA1w7QEWc06kBSuSc9AfqIwAY8jZnQxdEVvuqbMrfllUZTg5F2W+Nz7BaNQBhgaRMKWaIygAzlRH9Cy4wVPID88YcqGFH3VyqcTap+hNGPgXbSfhO8M6YC+9anjzbaG5kStDNdSxCmMagLoJUVSNA4YBK+FBxsF8qiI2BySmPFYkJ/J7tnmrrNye46EkPL/CS8L837q+JDaKyCFbzEfPAi2aOkDtFtDUQHCDX4B1rY7J1BSkw468t9AKXSPVAC9Kn0+PJ8bNFIeUFZA0mhKdlvKGm16pLIUm5TodvxHl5xZreXyLZKGyf/UpeQrYvcu1SYc8zMWn4/XrIqRGS4wM4gsrsgT4rInJPR5gxDKfpFfcjwKTNlKdEj4eeLoce+AjofABG/eI9djvpg7HIrgHYiZtr/XAB/a47AcJL96YW/tYS7Hv4hcfUnilxgSYNHpEskJNpCRz0rnqusdBqY/d64B+J5JS/gk2F8O+40K6ZkK9Kg3jXykr2JWj5qENnWCA4fb
+ rwF/oKap
+ hCbTmKxaVF+eVNH98DzLxGWjOt4F2HrpVilbaM1xVerclPgK24yW+DhnrGPNu8zH5x+8H6+bNRBv9RRbFU6zq9aDL91FqXGXgAr4dmjcfwbtULGcva0aOetLiKwZrhMPv5m7NHgt2Iozq5wD3H4ca4RcXSbDFWbNzsOHw4GRCYf3IfkXasxbX/eS75tMjeodtrc7Pmeb3N13ioauBmNDAFp7HcdH8a2ip78QGrpgA678+XgGPyr/f73shB6RitXy7i56eRG4AJehk1RZrjAxi9KbRMJoZMRO6P91Yc7J4S1CywTecVrsmJHkAg6v+oOXQRh78WsEPDgb7SPBIOWkCLzRDmoMKN7KzUTj8DLdjY4JEccWkDxNE6oIMxmFJX4GZPAuukIVqdLwYmZhRt9gNT1zx1KhOXwHzE3YaGWCH7fXKyVwCjliLPGXiOCk+Ee5/Is9f20wM+bd5/cY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,43 +120,490 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-12-05 at 02:09:02 +0100, Andrey Konovalov wrote:
->On Thu, Dec 4, 2025 at 8:00=E2=80=AFPM Maciej Wieczor-Retman
-><m.wieczorretman@pm.me> wrote:
->>
->> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->>
->> A KASAN tag mismatch, possibly causing a kernel panic, can be observed
->> on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
->> It was reported on arm64 and reproduced on x86. It can be explained in
->> the following points:
->>
->>         1. There can be more than one virtual memory chunk.
->>         2. Chunk's base address has a tag.
->>         3. The base address points at the first chunk and thus inherits
->>            the tag of the first chunk.
->>         4. The subsequent chunks will be accessed with the tag from the
->>            first chunk.
->>         5. Thus, the subsequent chunks need to have their tag set to
->>            match that of the first chunk.
->>
->> Refactor code by reusing __kasan_unpoison_vmalloc in a new helper in
->> preparation for the actual fix.
->>
->> Changelog v1 (after splitting of from the KASAN series):
->> - Rewrite first paragraph of the patch message to point at the user
->>   impact of the issue.
->> - Move helper to common.c so it can be compiled in all KASAN modes.
->
->Nit: Can put this part after ---.
+Hi Tvrtko,
 
-Thanks for noticing that, guess I need to revise my script that moves
-these under the three dashes
+On 02/12/2025 12:01, Tvrtko Ursulin wrote:
+> 
+> On 28/11/2025 18:41, Loïc Molinari wrote:
+>> On 20/11/2025 10:31, Tvrtko Ursulin wrote:
+>>>
+>>> On 14/11/2025 17:02, Loïc Molinari wrote:
+>>>> Make use of the new drm_gem_huge_mnt_create() and
+>>>> drm_gem_get_huge_mnt() helpers to avoid code duplication. Now that
+>>>> it's just a few lines long, the single function in i915_gemfs.c is
+>>>> moved into v3d_gem_shmem.c.
+>>>>
+>>>> v3:
+>>>> - use huge tmpfs mountpoint in drm_device
+>>>> - move i915_gemfs.c into i915_gem_shmem.c
+>>>>
+>>>> v4:
+>>>> - clean up mountpoint creation error handling
+>>>>
+>>>> v5:
+>>>> - use drm_gem_has_huge_mnt() helper
+>>>>
+>>>> v7:
+>>>> - include <drm/drm_print.h> in i915_gem_shmem.c
+>>>>
+>>>> v8:
+>>>> - keep logging notice message with CONFIG_TRANSPARENT_HUGEPAGE=n
+>>>> - don't access huge_mnt field with CONFIG_TRANSPARENT_HUGEPAGE=n
+>>>>
+>>>> v9:
+>>>> - replace drm_gem_has_huge_mnt() by drm_gem_get_huge_mnt()
+>>>> - remove useless ternary op test in selftests/huge_pages.c
+>>>>
+>>>> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+>>>> ---
+>>>>   drivers/gpu/drm/i915/Makefile                 |  3 +-
+>>>>   drivers/gpu/drm/i915/gem/i915_gem_shmem.c     | 48 +++++++++----
+>>>>   drivers/gpu/drm/i915/gem/i915_gemfs.c         | 71 
+>>>> -------------------
+>>>>   drivers/gpu/drm/i915/gem/i915_gemfs.h         | 14 ----
+>>>>   .../gpu/drm/i915/gem/selftests/huge_pages.c   | 16 +++--
+>>>>   drivers/gpu/drm/i915/i915_drv.h               |  5 --
+>>>>   6 files changed, 47 insertions(+), 110 deletions(-)
+>>>>   delete mode 100644 drivers/gpu/drm/i915/gem/i915_gemfs.c
+>>>>   delete mode 100644 drivers/gpu/drm/i915/gem/i915_gemfs.h
+>>>>
+>>>> diff --git a/drivers/gpu/drm/i915/Makefile b/drivers/gpu/drm/i915/ 
+>>>> Makefile
+>>>> index 84ec79b64960..b5a8c0a6b747 100644
+>>>> --- a/drivers/gpu/drm/i915/Makefile
+>>>> +++ b/drivers/gpu/drm/i915/Makefile
+>>>> @@ -169,8 +169,7 @@ gem-y += \
+>>>>       gem/i915_gem_ttm_move.o \
+>>>>       gem/i915_gem_ttm_pm.o \
+>>>>       gem/i915_gem_userptr.o \
+>>>> -    gem/i915_gem_wait.o \
+>>>> -    gem/i915_gemfs.o
+>>>> +    gem/i915_gem_wait.o
+>>>>   i915-y += \
+>>>>       $(gem-y) \
+>>>>       i915_active.o \
+>>>> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/ 
+>>>> gpu/ drm/i915/gem/i915_gem_shmem.c
+>>>> index 26dda55a07ff..15c2c6fde2ac 100644
+>>>> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+>>>> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+>>>> @@ -9,14 +9,16 @@
+>>>>   #include <linux/uio.h>
+>>>>   #include <drm/drm_cache.h>
+>>>> +#include <drm/drm_gem.h>
+>>>> +#include <drm/drm_print.h>
+>>>>   #include "gem/i915_gem_region.h"
+>>>>   #include "i915_drv.h"
+>>>>   #include "i915_gem_object.h"
+>>>>   #include "i915_gem_tiling.h"
+>>>> -#include "i915_gemfs.h"
+>>>>   #include "i915_scatterlist.h"
+>>>>   #include "i915_trace.h"
+>>>> +#include "i915_utils.h"
+>>>>   /*
+>>>>    * Move folios to appropriate lru and release the batch, 
+>>>> decrementing the
+>>>> @@ -497,6 +499,7 @@ static int __create_shmem(struct 
+>>>> drm_i915_private *i915,
+>>>>                 resource_size_t size)
+>>>>   {
+>>>>       unsigned long flags = VM_NORESERVE;
+>>>> +    struct vfsmount *huge_mnt;
+>>>>       struct file *filp;
+>>>>       drm_gem_private_object_init(&i915->drm, obj, size);
+>>>> @@ -515,9 +518,9 @@ static int __create_shmem(struct 
+>>>> drm_i915_private *i915,
+>>>>       if (BITS_PER_LONG == 64 && size > MAX_LFS_FILESIZE)
+>>>>           return -E2BIG;
+>>>> -    if (i915->mm.gemfs)
+>>>> -        filp = shmem_file_setup_with_mnt(i915->mm.gemfs, "i915", size,
+>>>> -                         flags);
+>>>> +    huge_mnt = drm_gem_get_huge_mnt(&i915->drm);
+>>>> +    if (huge_mnt)
+>>>> +        filp = shmem_file_setup_with_mnt(huge_mnt, "i915", size, 
+>>>> flags);
+>>>>       else
+>>>>           filp = shmem_file_setup("i915", size, flags);
+>>>>       if (IS_ERR(filp))
+>>>> @@ -644,21 +647,40 @@ i915_gem_object_create_shmem_from_data(struct 
+>>>> drm_i915_private *i915,
+>>>>   static int init_shmem(struct intel_memory_region *mem)
+>>>>   {
+>>>> -    i915_gemfs_init(mem->i915);
+>>>> -    intel_memory_region_set_name(mem, "system");
+>>>> +    struct drm_i915_private *i915 = mem->i915;
+>>>> -    return 0; /* We have fallback to the kernel mnt if gemfs init 
+>>>> failed. */
+>>>> -}
+>>>> +    /*
+>>>> +     * By creating our own shmemfs mountpoint, we can pass in
+>>>> +     * mount flags that better match our usecase.
+>>>> +     *
+>>>> +     * One example, although it is probably better with a per-file
+>>>> +     * control, is selecting huge page allocations 
+>>>> ("huge=within_size").
+>>>> +     * However, we only do so on platforms which benefit from it, 
+>>>> or to
+>>>> +     * offset the overhead of iommu lookups, where with latter it 
+>>>> is a net
+>>>> +     * win even on platforms which would otherwise see some 
+>>>> performance
+>>>> +     * regressions such a slow reads issue on Broadwell and Skylake.
+>>>> +     */
+>>>> -static int release_shmem(struct intel_memory_region *mem)
+>>>> -{
+>>>> -    i915_gemfs_fini(mem->i915);
+>>>> -    return 0;
+>>>> +    if (GRAPHICS_VER(i915) < 11 && !i915_vtd_active(i915))
+>>>> +        goto no_thp;
+>>>> +
+>>>> +    drm_gem_huge_mnt_create(&i915->drm, "within_size");
+>>>> +    if (drm_gem_get_huge_mnt(&i915->drm))
+>>>> +        drm_info(&i915->drm, "Using Transparent Hugepages\n");
+>>>> +    else
+>>>> +        drm_notice(&i915->drm,
+>>>> +               "Transparent Hugepage support is recommended for 
+>>>> optimal performance%s\n",
+>>>> +               GRAPHICS_VER(i915) >= 11 ? " on this platform!" :
+>>>> +                              " when IOMMU is enabled!");
+>>>> +
+>>>> + no_thp:
+>>>> +    intel_memory_region_set_name(mem, "system");
+>>>> +
+>>>> +    return 0; /* We have fallback to the kernel mnt if huge mnt 
+>>>> failed. */
+>>>>   }
+>>>>   static const struct intel_memory_region_ops shmem_region_ops = {
+>>>>       .init = init_shmem,
+>>>> -    .release = release_shmem,
+>>>>       .init_object = shmem_object_init,
+>>>>   };
+>>>> diff --git a/drivers/gpu/drm/i915/gem/i915_gemfs.c b/drivers/gpu/ 
+>>>> drm/ i915/gem/i915_gemfs.c
+>>>> deleted file mode 100644
+>>>> index 1f1290214031..000000000000
+>>>> --- a/drivers/gpu/drm/i915/gem/i915_gemfs.c
+>>>> +++ /dev/null
+>>>> @@ -1,71 +0,0 @@
+>>>> -// SPDX-License-Identifier: MIT
+>>>> -/*
+>>>> - * Copyright © 2017 Intel Corporation
+>>>> - */
+>>>> -
+>>>> -#include <linux/fs.h>
+>>>> -#include <linux/mount.h>
+>>>> -#include <linux/fs_context.h>
+>>>> -
+>>>> -#include <drm/drm_print.h>
+>>>> -
+>>>> -#include "i915_drv.h"
+>>>> -#include "i915_gemfs.h"
+>>>> -#include "i915_utils.h"
+>>>> -
+>>>> -void i915_gemfs_init(struct drm_i915_private *i915)
+>>>> -{
+>>>> -    struct file_system_type *type;
+>>>> -    struct fs_context *fc;
+>>>> -    struct vfsmount *gemfs;
+>>>> -    int ret;
+>>>> -
+>>>> -    /*
+>>>> -     * By creating our own shmemfs mountpoint, we can pass in
+>>>> -     * mount flags that better match our usecase.
+>>>> -     *
+>>>> -     * One example, although it is probably better with a per-file
+>>>> -     * control, is selecting huge page allocations 
+>>>> ("huge=within_size").
+>>>> -     * However, we only do so on platforms which benefit from it, 
+>>>> or to
+>>>> -     * offset the overhead of iommu lookups, where with latter it 
+>>>> is a net
+>>>> -     * win even on platforms which would otherwise see some 
+>>>> performance
+>>>> -     * regressions such a slow reads issue on Broadwell and Skylake.
+>>>> -     */
+>>>> -
+>>>> -    if (GRAPHICS_VER(i915) < 11 && !i915_vtd_active(i915))
+>>>> -        return;
+>>>> -
+>>>> -    if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>>>> -        goto err;
+>>>> -
+>>>> -    type = get_fs_type("tmpfs");
+>>>> -    if (!type)
+>>>> -        goto err;
+>>>> -
+>>>> -    fc = fs_context_for_mount(type, SB_KERNMOUNT);
+>>>> -    if (IS_ERR(fc))
+>>>> -        goto err;
+>>>> -    ret = vfs_parse_fs_string(fc, "source", "tmpfs");
+>>>> -    if (!ret)
+>>>> -        ret = vfs_parse_fs_string(fc, "huge", "within_size");
+>>>> -    if (!ret)
+>>>> -        gemfs = fc_mount_longterm(fc);
+>>>> -    put_fs_context(fc);
+>>>> -    if (ret)
+>>>> -        goto err;
+>>>> -
+>>>> -    i915->mm.gemfs = gemfs;
+>>>> -    drm_info(&i915->drm, "Using Transparent Hugepages\n");
+>>>> -    return;
+>>>> -
+>>>> -err:
+>>>> -    drm_notice(&i915->drm,
+>>>> -           "Transparent Hugepage support is recommended for optimal 
+>>>> performance%s\n",
+>>>> -           GRAPHICS_VER(i915) >= 11 ? " on this platform!" :
+>>>> -                          " when IOMMU is enabled!");
+>>>> -}
+>>>> -
+>>>> -void i915_gemfs_fini(struct drm_i915_private *i915)
+>>>> -{
+>>>> -    kern_unmount(i915->mm.gemfs);
+>>>> -}
+>>>> diff --git a/drivers/gpu/drm/i915/gem/i915_gemfs.h b/drivers/gpu/ 
+>>>> drm/ i915/gem/i915_gemfs.h
+>>>> deleted file mode 100644
+>>>> index 16d4333c9a4e..000000000000
+>>>> --- a/drivers/gpu/drm/i915/gem/i915_gemfs.h
+>>>> +++ /dev/null
+>>>> @@ -1,14 +0,0 @@
+>>>> -/* SPDX-License-Identifier: MIT */
+>>>> -/*
+>>>> - * Copyright © 2017 Intel Corporation
+>>>> - */
+>>>> -
+>>>> -#ifndef __I915_GEMFS_H__
+>>>> -#define __I915_GEMFS_H__
+>>>> -
+>>>> -struct drm_i915_private;
+>>>> -
+>>>> -void i915_gemfs_init(struct drm_i915_private *i915);
+>>>> -void i915_gemfs_fini(struct drm_i915_private *i915);
+>>>> -
+>>>> -#endif
+>>>> diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/ 
+>>>> drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+>>>> index bd08605a1611..28aef75630a2 100644
+>>>> --- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+>>>> +++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+>>>> @@ -1316,7 +1316,7 @@ typedef struct drm_i915_gem_object *
+>>>>   static inline bool igt_can_allocate_thp(struct drm_i915_private 
+>>>> *i915)
+>>>>   {
+>>>> -    return i915->mm.gemfs && has_transparent_hugepage();
+>>>> +    return !!drm_gem_get_huge_mnt(&i915->drm);
+>>>>   }
+>>>>   static struct drm_i915_gem_object *
+>>>> @@ -1761,7 +1761,9 @@ static int igt_tmpfs_fallback(void *arg)
+>>>>       struct drm_i915_private *i915 = arg;
+>>>>       struct i915_address_space *vm;
+>>>>       struct i915_gem_context *ctx;
+>>>> -    struct vfsmount *gemfs = i915->mm.gemfs;
+>>>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>> +    struct vfsmount *huge_mnt = i915->drm.huge_mnt;
+>>>> +#endif
+>>>>       struct drm_i915_gem_object *obj;
+>>>>       struct i915_vma *vma;
+>>>>       struct file *file;
+>>>> @@ -1782,10 +1784,12 @@ static int igt_tmpfs_fallback(void *arg)
+>>>>       /*
+>>>>        * Make sure that we don't burst into a ball of flames upon 
+>>>> falling back
+>>>>        * to tmpfs, which we rely on if on the off-chance we 
+>>>> encounter a failure
+>>>> -     * when setting up gemfs.
+>>>> +     * when setting up a huge mountpoint.
+>>>>        */
+>>>> -    i915->mm.gemfs = NULL;
+>>>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>> +    i915->drm.huge_mnt = NULL;
+>>>> +#endif
+>>>>       obj = i915_gem_object_create_shmem(i915, PAGE_SIZE);
+>>>>       if (IS_ERR(obj)) {
+>>>> @@ -1819,7 +1823,9 @@ static int igt_tmpfs_fallback(void *arg)
+>>>>   out_put:
+>>>>       i915_gem_object_put(obj);
+>>>>   out_restore:
+>>>> -    i915->mm.gemfs = gemfs;
+>>>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>> +    i915->drm.huge_mnt = huge_mnt;
+>>>> +#endif
+>>>
+>>> Apart from this layering violation in the selftest, this version 
+>>> looks good to me. I am just wondering if we could somehow improve 
+>>> this aspect. I was thinking a self-test builds only special version 
+>>> of i915_gem_object_create_shmem. Call chain is deep but there are 
+>>> flags passed on:
+>>>
+>>> i915_gem_object_create_shmem
+>>>    i915_gem_object_create_region
+>>>      __i915_gem_object_create_region
+>>>        err = mem->ops->init_object(
+>>>
+>>> So we could add a new helper like:
+>>>
+>>> selftests_create_shmem
+>>>    i915_gem_object_create_region(...flags = 
+>>> I915_BO_ALLOC_SELFTESTS_NOTHP...)
+>>>
+>>> And in __create_shmem we just make it:
+>>>
+>>> ...
+>>> huge_mnt = drm_gem_get_huge_mnt(&i915->drm) &&
+>>> if (IS_ENABLED(..SELFTESTS..) &&
+>>>      (flags & I915_BO_ALLOC_SELFTESTS_NOTHP))
+>>>      huge_mnt = NULL;
+>>> ...
+>>>
+>>> It would avoid the ifdef and needing to play games with the DRM 
+>>> internals.
+>>>
+>>> How does that sound to you?
+>>
+>> That sounds better to me but I'm not very familiar with the i915 
+>> testing process. Would you be ready to accept the currect ifdef'd 
+>> version for now and let me take a better look at that proposal later 
+>> for a follow-up patch series?
+> 
+> I would rather we do it in one go. I assume you are compile testing the 
+> i915 part? I so, would you be happy to integrate something like this in 
+> your patch (adjusted for your changes):
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object_types.h b/drivers/ 
+> gpu/drm/i915/gem/i915_gem_object_types.h
+> index 465ce94aee76..4dbd61280c93 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_object_types.h
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_object_types.h
+> @@ -348,12 +348,14 @@ struct drm_i915_gem_object {
+>    */
+>   #define I915_BO_ALLOC_GPU_ONLY      BIT(6)
+>   #define I915_BO_ALLOC_CCS_AUX      BIT(7)
+> +#define I915_BO_ALLOC_NOTHP       BIT(8)
+>   /*
+>    * Object is allowed to retain its initial data and will not be 
+> cleared on first
+>    * access if used along with I915_BO_ALLOC_USER. This is mainly to keep
+>    * preallocated framebuffer data intact while transitioning it to 
+> i915drmfb.
+>    */
+> -#define I915_BO_PREALLOC      BIT(8)
+> +#define I915_BO_PREALLOC      BIT(9)
+> +
+>   #define I915_BO_ALLOC_FLAGS (I915_BO_ALLOC_CONTIGUOUS | \
+>                    I915_BO_ALLOC_VOLATILE | \
+>                    I915_BO_ALLOC_CPU_CLEAR | \
+> @@ -362,10 +364,12 @@ struct drm_i915_gem_object {
+>                    I915_BO_ALLOC_PM_EARLY | \
+>                    I915_BO_ALLOC_GPU_ONLY | \
+>                    I915_BO_ALLOC_CCS_AUX | \
+> +                 I915_BO_ALLOC_NOTHP | \
+>                    I915_BO_PREALLOC)
+> -#define I915_BO_READONLY          BIT(9)
+> -#define I915_TILING_QUIRK_BIT     10 /* unknown swizzling; do not 
+> release! */
+> -#define I915_BO_PROTECTED         BIT(11)
+> +#define I915_BO_READONLY          BIT(10)
+> +#define I915_TILING_QUIRK_BIT     11 /* unknown swizzling; do not 
+> release! */
+> +#define I915_BO_PROTECTED         BIT(12)
+> +
+>       /**
+>        * @mem_flags - Mutable placement-related flags
+>        *
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/ 
+> drm/i915/gem/i915_gem_shmem.c
+> index 26dda55a07ff..a1e876ce7bb9 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> @@ -494,7 +494,8 @@ const struct drm_i915_gem_object_ops 
+> i915_gem_shmem_ops = {
+> 
+>   static int __create_shmem(struct drm_i915_private *i915,
+>                 struct drm_gem_object *obj,
+> -              resource_size_t size)
+> +              resource_size_t size,
+> +              unsigned int flags)
+>   {
+>       unsigned long flags = VM_NORESERVE;
+>       struct file *filp;
+> @@ -515,7 +516,7 @@ static int __create_shmem(struct drm_i915_private 
+> *i915,
+>       if (BITS_PER_LONG == 64 && size > MAX_LFS_FILESIZE)
+>           return -E2BIG;
+> 
+> -    if (i915->mm.gemfs)
+> +    if (!(flags & I915_BO_ALLOC_NOTHP) && i915->mm.gemfs)
+>           filp = shmem_file_setup_with_mnt(i915->mm.gemfs, "i915", size,
+>                            flags);
+>       else
+> @@ -548,7 +549,7 @@ static int shmem_object_init(struct 
+> intel_memory_region *mem,
+>       gfp_t mask;
+>       int ret;
+> 
+> -    ret = __create_shmem(i915, &obj->base, size);
+> +    ret = __create_shmem(i915, &obj->base, size, flags);
+>       if (ret)
+>           return ret;
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/ 
+> gpu/drm/i915/gem/selftests/huge_pages.c
+> index bd08605a1611..c296af381007 100644
+> --- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+> +++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+> @@ -1787,7 +1787,8 @@ static int igt_tmpfs_fallback(void *arg)
+> 
+>       i915->mm.gemfs = NULL;
+> 
+> -    obj = i915_gem_object_create_shmem(i915, PAGE_SIZE);
+> +    obj = i915_gem_object_create_region(i915- 
+>  >mm.regions[INTEL_REGION_SMEM],
+> +                        PAGE_SIZE, 0, I915_BO_ALLOC_NOTHP);
+>       if (IS_ERR(obj)) {
+>           err = PTR_ERR(obj);
+>           goto out_restore;
+> 
+> 
+> If it compiles I would take that and will handle any CI fall out.
 
-...
+Thanks for that! I've integrated it into my i915 patch and compile 
+tested it. I'll send a new version.
 
---=20
-Kind regards
-Maciej Wiecz=C3=B3r-Retman
+Regards,
+Loïc
+
+> Regards,
+> 
+> Tvrtko
+> 
+> 
+>> Regards,
+>>
+>> Loïc
+>>
+>>> Regards,
+>>>
+>>> Tvrtko
+>>>
+>>>>       i915_vm_put(vm);
+>>>>   out:
+>>>> diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/ 
+>>>> i915_drv.h
+>>>> index 95f9ddf22ce4..93a5af3de334 100644
+>>>> --- a/drivers/gpu/drm/i915/i915_drv.h
+>>>> +++ b/drivers/gpu/drm/i915/i915_drv.h
+>>>> @@ -141,11 +141,6 @@ struct i915_gem_mm {
+>>>>        */
+>>>>       atomic_t free_count;
+>>>> -    /**
+>>>> -     * tmpfs instance used for shmem backed objects
+>>>> -     */
+>>>> -    struct vfsmount *gemfs;
+>>>> -
+>>>>       struct intel_memory_region *regions[INTEL_REGION_UNKNOWN];
+>>>>       struct notifier_block oom_notifier;
+>>
+> 
 
 
