@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18FBDD339A0
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 17:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11E7D33998
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 17:30:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 696146B019D; Fri,  5 Dec 2025 12:27:03 -0500 (EST)
+	id F29D76B019F; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64CF46B019F; Fri,  5 Dec 2025 12:27:03 -0500 (EST)
+	id EDA276B01A1; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E76A6B01A0; Fri,  5 Dec 2025 12:27:03 -0500 (EST)
+	id DA1AC6B01A2; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 355896B019D
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:27:03 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D50E6130023
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:27:02 +0000 (UTC)
-X-FDA: 84186097884.16.F391810
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 51E2C40004
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:27:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YuPWySH+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764955621; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C73C36B019F
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C43E13A112
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:30:17 +0000 (UTC)
+X-FDA: 84186106074.06.2A389FC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 08BA240025
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:30:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ll6/rdkt";
+	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764955815; a=rsa-sha256;
 	cv=none;
-	b=fYGgn99HxoSyNdNbbqrKteRDSXdFZj9KKU6aHZWWoNN+SRV9/l2iB8ireFEWty6Lw8b3I8
-	LOy+Mj1vYZc1ZaxCYLyHeiIrDcJhOWZT+kR6kJK8g1/TlCwIrDovWgPQiTUPMndWtnAnaA
-	+uIOYjhTbJKWqsvy0ZArtOVPxJX5lJY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YuPWySH+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	b=2IWTw/DESigAQ3pcVIWSKYSEmQDnHINZkHJgCRpG4rXEh0bOPB7IYyuHa4ZpZLVsaKU85Y
+	/xWtJFRd8Qr29baE5HJG5gaRb9nfl2U+QQwj5pePe5bifj00vs3tMMaAZxSvD3SbbJ0wDF
+	7n6cHGzDNZeieWaCe09JxqB7FL2sMX0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764955621;
+	s=arc-20220608; t=1764955815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TiOVcOZkI/VIL7to8gRsFacU6zZ3s4rybKs5cLeYlPA=;
-	b=UxNVbG51FJq0aDWO2O4Ixxk9kpd/ymEkPODY2DSCMl6kFnyfo7V4rvpsg2X2X32duPhLUO
-	1MV6WJSiUYLegrQmvD8cU1aRVDmGnkAH8usVgf6rt1hs0AnAAQZIRwGtD3B//1SdkU2AUY
-	Qpdmke0t0zc1KbJjjsALBhf978OSD3s=
+	bh=YJgL+iUOt/YqHOqXE/R9N+q5c61t8q0S51RLJGnjeHw=;
+	b=A6b4Mv5S0CwIccCGSmceaIzuWiBA6uwa6elQ/drMsGyF6Pkcr/SZztmIrS1o3EHEMMXwOA
+	Ho3H25V8oQEJZKqGuNlDYXMZvSNVz/sSaFhwf9ZKrYcOdRH7MCel2Ze+VfOHzpFxHUsMRM
+	kns+P0eAZlRa8mqWTL3HzikjlByr9KA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ll6/rdkt";
+	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764955621; x=1796491621;
+  t=1764955815; x=1796491815;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=TmM8G4lNHaUxZQSRyqB2EBkn6Cn3E5Bi3cEB/xO+pjM=;
-  b=YuPWySH+zDHMg7kv/2AJoctp9qKGvbe8Ew3rdLIRBIWRym6G8IC5e+DG
-   vIZ/e2sUMbgUAX/eTW0u8alf6rJ1EQCJlSK/Fkpgjk44yI4VHiu3mkFuw
-   Y09Aiu4/qBOVjhI6HqwKkFWvGBMJk8wnagDR7ade/3EQFqsnOxpGIctn9
-   /zciIIbEBhFjpn28ixWrbNpzqPPe44ZWbM1kjG0Mxu3tSPB+c4EcGUi2J
-   SnpkendyJtPIZWEOyGPPMZIfzfMHwN1O7Nj5KRKm5eXQoUYVbEQ1IC4sP
-   LbYCQalolE5liVVAdUkbg1lDLgTGdUevRUJi0MMMhItgkiLkuJcAXQtDO
-   Q==;
-X-CSE-ConnectionGUID: CQ7fchcdTJu+3BZXNJS5Fw==
-X-CSE-MsgGUID: QUPgUm7dTe+eZ5ctL25fHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="77612343"
+  bh=+ffseYP4FsqtlkEAydL2rHyJW7f5NEUUyD1ipfBMGZA=;
+  b=ll6/rdktwecXVuNB97lTY2f74lUKt4kmh2tHn2JACtZxSyS/IbCB8mOd
+   S6UWMNSP4na3FwQS+xtI7u8oDdQPspfNRcf5MSmyzvfAxyUMU5kYJfN+F
+   zY1nEEsdv/2UbpE5ufYw5YPdkRKOUUSnuFGj0rq09V3dThq0PmY6eOHjs
+   vU+GhebcLxJaGmj0mRjbesRj3E/GM4bETWc95t7D0jY5sCHauYiQhtc66
+   FOMvrD/IJ+lR3CK9udYW71ro6KdULTm9X0vGVnOGDjv4/p3Orka1GLSct
+   kCPKJFYeXHtY8C7h612gkL7DpraqieOCLDkRO85hm5cfiSulqjTYHY/IO
+   w==;
+X-CSE-ConnectionGUID: B/zgqoNYS1eQo9k0BueXiA==
+X-CSE-MsgGUID: pAx6CxzfSHK6Ti2qeu7zLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="92471060"
 X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="77612343"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:26:59 -0800
-X-CSE-ConnectionGUID: F9P4sbSUS1agtmmb/ST5Xg==
-X-CSE-MsgGUID: RM8P4RCTRyq268Qov786Aw==
+   d="scan'208";a="92471060"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:30:13 -0800
+X-CSE-ConnectionGUID: 0zVgGn7kRryd4YRQDDxvpw==
+X-CSE-MsgGUID: JpgCbNWPR9SJGQ2HiyIx1Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="194646785"
+   d="scan'208";a="232715651"
 Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.108.173]) ([10.125.108.173])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:26:57 -0800
-Message-ID: <9409531b-589b-4a54-b122-06a3cf0846f3@intel.com>
-Date: Fri, 5 Dec 2025 09:26:56 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:30:11 -0800
+Message-ID: <51a059a1-f03a-4b43-8df6-d31fca09cce7@intel.com>
+Date: Fri, 5 Dec 2025 09:30:09 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 01/13] x86: export set_direct_map_valid_noflush to KVM
- module
+Subject: Re: [PATCH v8 05/13] KVM: guest_memfd: Add flag to remove from direct
+ map
 To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
@@ -150,7 +150,7 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
  <xmarcalx@amazon.co.uk>
 References: <20251205165743.9341-1-kalyazin@amazon.com>
- <20251205165743.9341-2-kalyazin@amazon.com>
+ <20251205165743.9341-6-kalyazin@amazon.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -196,17 +196,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251205165743.9341-2-kalyazin@amazon.com>
+In-Reply-To: <20251205165743.9341-6-kalyazin@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eh99dosos5epx47ywzba6iaaiu3u4q7k
+X-Rspamd-Queue-Id: 08BA240025
+X-Stat-Signature: c3zemy7j6xgkyfzdctemg7rwa37gza71
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51E2C40004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1764955620-17567
-X-HE-Meta: U2FsdGVkX1+QYjn1iNx7YX3AeYsfN2m8+YOiu/YoSJNGyEt9vQhwbZMqaT0Rb6SSwnjqk5dGyTjvUmsCUanuVwsR5BhkPRyCKuhV9sxF8ukkFDfM6CZ99BARgbvHbvwJH7DJrYU+9z/keKJNuTExKUP0Jhq9Apu8bcduH5CwmEPIDjd1ceBmsEnrcGr2/jQQH4aws0tvGH3HIq+OMLD3FWjrHMOjjHvSj+M8nA7Dvm/zGxovVLLqT8RSKOEu3WDDvFEBuMAWp06T+S7drVkRUdzv758es3Kg179tAOjp7zQEEAFOAq/a4wJaj0Dsc+thHK/5fkgCQQTYSUU67DkwKJ3ynFkpN2CoHBHY1AqE+3fgFtxoIIyAQA2IvHAT5oI1pYc9VAKrbMLyNnh6m1TQ+YFmxoCF72iXbLdpN8A4KqYSQ4Bx36l7SQ+wVfs8EXaHrp8ZeDcARemhyZO9UFJjn/zgu+8eFp7MSr/ALFr39mnjiS4GlH7y1Ax+W01P/a5d7s45iAIRsr4IQNoNELDnIsJMe6fe0Of3ryBpX1LoLT/+1WMOipxoUyAgDSRMp7GUKFCbndyt5D7SqCJJ7x/Rq2Kv0VTyGl6oWyJwPWoYVrhNK3WqA/YlnGNZs8s3okwD94yShtdy/x7KW+iH4XGqRfIkf6kj4MNyA7WlZOg4zfkganAJVZLZ51gni4VilJSW8M8RtIJXruvWyEhrjOlncIEx+UrpAUccg4gVhar9X52snPc3wjgnm9hNwtBRcgVan56W85WqLR9ZeNvk4WdH/xabdg2qtRvgEVAJrcZBSNfXfRsNioHq/s34+Gp2oGDHgqDv+DS8EZgnPes4ci6NjUgODbCtt8a62RRLKQudgWMhpDtdAO2pxUfa8yyZ36V8LO2ezwukRop52LxQcttm3b3+3MCG8gttVxXrynBVnFcDTyGYfFET7KWKvMBZDMWCx3ru5Lp1ElJ2KeS8c7+
- XFE+AqHK
- fxfISqViEbhshJ3b6CNI6VFKc9/UPyD2C2Ceiwen/G5sIPaAhoxMhBdGlE8+lhbsA+a1Y
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1764955814-451914
+X-HE-Meta: U2FsdGVkX199KlbfgbjXgui+2tMSbk92I3oDPOBZ1LtCvNSohjJ7tknQa71UxEuFjiPMVnrqubcihcYs0kGjqq6zbAETltCYer0JjfXQzEbAAe7m62rzQ4v1uYwzfW0qosi5i/7V3nmGNGOMdoJ83uJjXP/SJ0ryr4mvEzqjcWOlXgNSHfkNor/xgkxbSFAcj0xBlzneQmEzilrn5nf9RxNXkpjRfUAGa7CxLt2fmyAWuO4/QDKrywvjKg5ABe+5ZgT3JDlAN9UgzanGCN3qc7ohnlw0zqQdWCi3aVYJRISB0xOtnFoBA2JCK91Zwd6v6yKl+TsHcySBYbdKgalg/f25lyAcPfIYxAeu0DQZpf4i+Nle8r07J1PzabH3RYq85yh7Zbe2oqLajQ4kfAdmyl/LCxrRw9pQaIuOqWFTNHdrtR3+bMQJczhToiWh1wIgN66n9RieXvln4BZOHVebuVi2NTyJfRTRvP2tnxAKVYxnZpDABRPl1aUuGp51d3yfyoy1DFazY8E4+ahhZHYZ0Vk5F+xNmcFwEHajzb9KAOzw/NCW8V07CKM+/KY9n557hQkYI3wguBavHUgRnl43FnufMWAqGHPS7y0sgIxHyMRMVThvJ3DwCZNMSlZtPoGYKXHEOWLPD+TAbUboXflpMuLa6IJCWO/ioMb001/nqHmdUUhnWqKMrycK8+Cf6gF1qMcgGdj0L0CKV5AOgeZODDPmJrt+Zo721DIwz3DI4e7iV77MNaasIYrByzPrIKGP0+2vNJpy+rHIz9AXwCShb1fta4SBsNLZ8+Al1Hceuu48TefjG2s2UjyNG9vv7eamfJBPd8aINCKNtBAaooKHxk7sLjTg3eqKj2M3aAqGEVdVTsvo5pipQX8dTitIlEqdyfuX00LDsWQWTSpU3z+WPapPzRKtpCnw9UABlQEXs3Jap83J2u8Mt1wLZkDWDzx6OVDEldAHSicpqZIGgBP
+ dAje28Ui
+ JNfhBbrAzFP86N0HclCbY2a1clTqcFubUz1WcbcPZqZx9qlsWzHWdGC2kZqLvtD1JA35m3svcBBcRSa5zPNqMVFNV427IqowRdM6OvSyXVeQikF64hubcFdgKmeNoldXY5qp7vV0JQwp8EFtHHmZ9pvks/kxhZ6Rm/dObgzFRw+imyj5gax+6WEnsoy3mrzkcx9QU/KSISFanJVv0N3JiQJFW3yI/TqeR7W2ZAKDC3RV83ECdnerjX/kGMYxL27zFIMOAuzkmkImqMZhtrjkppPqOwF+Pp4eoC2FurrxY7lDHK+gCUfuMM2Fg6K6soDDGWGFQpHm9cg4VoHcz8eckfud+fOhoARKaBoA7Ye0q5yJAbzg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -215,19 +215,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/5/25 08:57, Kalyazin, Nikita wrote:
-...
-> +EXPORT_SYMBOL_FOR_MODULES(set_direct_map_valid_noflush, "kvm");
+On 12/5/25 08:58, Kalyazin, Nikita wrote:
+> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
+> +{
+> +	/*
+> +	 * Direct map restoration cannot fail, as the only error condition
+> +	 * for direct map manipulation is failure to allocate page tables
+> +	 * when splitting huge pages, but this split would have already
+> +	 * happened in set_direct_map_invalid_noflush() in kvm_gmem_folio_zap_direct_map().
+> +	 * Thus set_direct_map_valid_noflush() here only updates prot bits.
+> +	 */
+> +	if (kvm_gmem_folio_no_direct_map(folio))
+> +		set_direct_map_valid_noflush(folio_page(folio, 0), folio_nr_pages(folio),
+> +					 true);
+> +}
 
-I think this export is a bad idea. The interface is abhorrent enough,
-but exporting it just invites abuse and bugs.
+This is rather hopeful programming.
 
-I think what this really needs is a pair of helpers that are just:
+I can think of a number of ways that this assumption might become invalid.
+This at *least* check for set_direct_map_valid_noflush() failures (or
+whatever interface you end up using)?
 
-	folio_zap_direct_map()
-and
-	folio_restore_direct_map()
-
-that take a folio. *Those* can get exported to modules and those should
-internally flush the TLB and not expect callers to do it.
+A WARN_ON_ONCE() would be fine.
 
