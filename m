@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03C51D2E014
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 251B4D2E017
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 984CC6B00F5; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
+	id ABDE36B00F7; Fri,  5 Dec 2025 02:20:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E7906B00FF; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
+	id A472D6B00FC; Fri,  5 Dec 2025 02:20:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D94F6B00F7; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
+	id 898BB6B00FF; Fri,  5 Dec 2025 02:20:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 261686B00FF
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:20:05 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6839590BC
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:04 +0000 (UTC)
-X-FDA: 84184568328.04.5E1E58F
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 65CA76B00F7
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:20:06 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DCE813347F
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:06 +0000 (UTC)
+X-FDA: 84184568412.10.3DD6B8F
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1F15640003
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2840A40003
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:20:03 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919204; a=rsa-sha256;
+	cv=none;
+	b=4IDGu8sUF3oNZzMBLs/wMkyPu3+fS6T+e9LJecQzoy6jBHv7ndoBMyMEd3tb+2MJEUJgKm
+	AvDbVc/XP7gDJGN148GQ2GsnR1YEf4/GXfWK3WmiIC2gFwfhUMLQMGKE/mfOFDKutai0qH
+	+75zAEfIzWQaWJ+JRXCPv3UatE6fmT8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764919203;
+	s=arc-20220608; t=1764919204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=YcZh1vV8SgfnVfzw8dvpv0mjAeTrgvYMwuwe6YQxv7g=;
-	b=3MUpbiavhR0ayb6FcUnvWYSJA7cG7d88FVdrbcMO2pIGOUJAMOxOUsupvdXqBuvAq8TcKI
-	ZkyuHtcWRSKNaILKb26YFyd/O2ZeX/4W54oI4QB0We23HWgd6TnwiVMNlrfneVlP788fb0
-	CB07iD0m8PEO4DdBE2AHu6+Jo1CbOpo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919203; a=rsa-sha256;
-	cv=none;
-	b=NDjNAHtcT9ArqAJ3XjHHUEa7N6F11twauUtKHDxITdONSVv6b09JUlKjXT+bX6In5QYs/l
-	ldyAO9cEeFCSqZqhUm5/i4Zr/PZrw9p+GTPXlAssvM0JNBDxahPrHJWLhgt55YCKnPgUin
-	/VWJZlv2SnM06M8WmJEAST35Ags9dVQ=
-X-AuditID: a67dfc5b-c45ff70000001609-c6-6932877297a9
+	bh=+HPkZ+RQ+sA8J0ONBLnI29qjI8ZpQRSXy2L/010uhRY=;
+	b=coV/qLAguVkT/r0gUadRgIoFLUlY7egikNk2JmTBwZNv6bt/oGeaLYA+3lMIADRrLnXJjF
+	YCN7M2TpimpqHC32PyCtJmjth/LhzXx/pFpTleeGSRWdDYZpxAzulXu20lRIpLAjdr8zgq
+	8AFfcJWpf68UyKk2bTHtMR0Cj1B3+RI=
+X-AuditID: a67dfc5b-c45ff70000001609-e4-69328772042c
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -212,54 +212,53 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 32/42] completion, dept: introduce init_completion_dmap() API
-Date: Fri,  5 Dec 2025 16:18:45 +0900
-Message-Id: <20251205071855.72743-33-byungchul@sk.com>
+Subject: [PATCH v18 33/42] dept: introduce a new type of dependency tracking between multi event sites
+Date: Fri,  5 Dec 2025 16:18:46 +0900
+Message-Id: <20251205071855.72743-34-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTZxjH955bTytNTioZZ7qFrQuZ01DBiHk+LNPEXV4zjVO3fdAls5ET
-	OaEgaS2XMZPWiVydTU2L0o2b2jE4AjlgJkK1A+xwiBY10k0Bi4wNC2NWLqHIXGHz2y/P//n/
-	ni8PS2ru06tYMfOwYMzUG7SMilJNxtQmmgo3iEnDo0q4Z/VSMDNdRMG3TRIDi64fFVAkn6Gh
-	Z+AoBf7GBgTDM0UI5hZcJCzafQqYnr+vAIcVwXOPD4Gz305CwH+VBKnVSkCoK4zAERxloHzc
-	SsGUuwzB5HA7DQOzEwjco/8QMOotRBBy/s3AQt8tEsodfgQ1wUESwuMPEbT6hhD8brtIwl/N
-	DPTfCCH4+mwTA87vZAraHl5WQH/oGQEPnHYCGuQd0GurJaK3GHBcaCdg3l2vALclAUbqKhQw
-	eNJBQePkLRquD92jITRmZ0D+9RqC6btBAqSyMRLkR9HA89s6qDl+joIzlQ8Y6PBcp8B3aYSA
-	suaLNAxJz2mwuOZo8Ht7aWj6I0BAr6+H2pKKC24vMliqlBBeiNgRLrBFqWtiisTHWnKwZ7aa
-	wr/U8vhccYTAbRWDClwtm3FL3Vp8tmOcwDXhGRrL9cUMlsN2xceJe1XvpAoGMVswrn93vyrt
-	fJOLyfK8ndv91IYsKBJfgpQsz23kT7eeoF5wsDeMlpjh3uIDgXlyiWO51/mWE2N0CVKxJHcn
-	ni+c/yYasOxKbhf/+GTK0g7FJfDlQfdyV81t4mfLuv93xvMNzd5ljzI6dwxEllnDpfBVJXPL
-	Tp77XslfqW5F/xVe4X+qC1A2pK5GL9UjjZiZnaEXDRt1aXmZYq7uwKEMGUVfzn3k2b5LKOzf
-	04k4Fmlj1N6cZFFD67NNeRmdiGdJbax6wpAkatSp+rwvBeOhL4xmg2DqRKtZShun3jCbk6rh
-	DuoPC+mCkCUYX6QEq1xlQSuclwcMTz4yp5jvVuYX19HmI7oE6dPGN2ML8O6afMtW70pN0aAu
-	uXT3nkef3Jz+ak3G/sdJ78esiSRU0duPVb3286b2bX3pI5+Xfmh8ujkrd1/LTsn1cofId74X
-	t/jEl6/R9um24kBp/A8TPfZTf5oPbpmq+CC9Szr6KhR/9oZ1rj1JS5nS9MlrSaNJ/y8NsqoD
-	bgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzVSbUxTZxT2vV+9NFZuKgl3LgtLE2NmgoKh5sw5Hf4Yb7bMaMziNBqp80Yu
-	lI+0CpQELWADotParK1aFWTSGKiCrQ5QG7Boo2MEGCr4gUDSsVVAFmhLWqisYPxz8pzzfOT5
-	cVhS3kKvYsW8I4ImT6VWMFJKuv2rimRN5QYxpdX4GVQZjsPrYR8Nz8s6KAgGqii41ORgIGpr
-	kUCV8wINjwfKKei92YhgOFiFYHbORoKhbYGCqMkrgUD4lQTMZQgW3F4Elj4TCYO97SQ4bpcR
-	MNP8noHxzmkE5lEfA1Z/GQVT9tMILo7ZJOB/lAGTw/doWBj6h4CB0AQCu+89Ab6OSgRRSw7U
-	1Llidst/DMx195BgNfciuDo6RMK0fwTBbe8bBO7r5Qz8bbxDQr9vBTwNTjHwxHyKgcm+SwS8
-	a2agttxNQ9+f4wgu20wIxl66Caj4rYkBy2UnBW0jdyXQNz5PwGuLiYBG5w8wbB+joMtYR8Tq
-	xlS3EsFmrSBi418CzDfuERC2N0i+qUd41nCGwg2u3wls+CvKYMcVB8JzERPCgfoKEhuMsbVz
-	YorEJ1xFuL5rgsGR4DMGu0O1FP6jjsfXTkYIfK47GbddHJLsSN8r3XxIUIuFgmb9lkxpVn2T
-	jSlwf1H8cMaI9CiSVI3iWJ5L40e7ptEiZrg1/OBgmFzECdznvOuXMboaSVmS60/iK8NnYgTL
-	ruR28m/PKhc1FLeat47al7wybiMfOv2Q+pCZxDc2dyzlxMXu5oHIEpZzSr6mepY2ImktWtaA
-	EsS8wlyVqFau0+Zk6fLE4nU/5+c6Ueyd7KXz51pRoD/DgzgWKZbLOopSRTmtKtTqcj2IZ0lF
-	gmxCnSLKZYdUuhJBk39Ac1QtaD3oU5ZSJMq+2y1kyrnDqiNCjiAUCJqPLMHGrdKj4/md0/s3
-	WnhdyX1vaFw4tvqqN/vr3LMuPx0OvTp/YVt556Zfv9WXlkhd4OH2rHek1/I9p5KzD2ZHrDjJ
-	v4tVzswlNBpbdJOYOJ8RMKS074j/XnTqg/a0lfplax37hn5892Bhq3JXfOikhyh6Ef3kJ++X
-	baU1L05sl8TTTYZMBaXNUqWuJTVa1f8LVNtlSgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTcRjG/Z+7Y4vTKjzlh2JhkZBpdHmh6PIhPBB2ob6UQa12ytXU3MpL
+	JLnIXFKWqy1KyWk0bVtpZ3ZRWyxFw0yaFbnyXmNmzrKlhqHZNPr243me93l54WVw+XtyAaNO
+	OSFoU5QaBSUhJEPS0uW6vJXq2HfOSDDknoHOHh8JoyMGAoorHRRMFj2mwSDeIMFz344gt2aK
+	gJHxDhpMegTmNiMOjmo9Bj+r/lAw2BBEYOrzUXB9QE/ATX8RDQON8TDV1Y9B+1gAgdX3BwOf
+	Ow/BpPkYlJQ5Q0Pm4VDe5EFQ2teFQ3CgF0F1UzcCV8VZCobaijGwnHWRUNNbS0Pb4AQGnWYj
+	BnYxAXqsfgJarpRhoX0UmB9EQNH1LxiY7tVhMG610fDqdicB1pwo6LpsIqC5+z0Jg34jBY9z
+	emkQPzQicFz042CoHSVA/BxyDZMjCJqefMLgYtVDErodU6G73S0kvLF7CKjs92LwuvYeCX29
+	XhKcra9wGCuI3KTif+UWELzN+QjjHbcciG8IfMf5c84M/k5LgOJdYxaCf1nG8TU3u2j+3LOP
+	NG8RT/LOimj+9tMBjC8NjpK8aLtA8WLQSO9YtleyXiVo1OmCdsWGA5Kk9gnl8cJDmY3ieToH
+	Fe7IR+EMx67iOorzyf9sdZXPMMUu5bzecXya57KLOOclf0iXMDj7diGXN14QMhhmDnuY0/ct
+	ns4QbBQ33PqNnpZl7BrOdDfxX+VCzl7lnqkJn5bbf8+wnF3NleT/mqnk2JJwriRgx/4NzOee
+	V3iJK0hmQWE2JFenpCcr1ZpVMUlZKerMmEOpySIKfZs1eyLxCQp6dtUjlkEKqcydEaeWk8p0
+	XVZyPeIYXDFXFtDEquUylTLrlKBN3a89qRF09SiSIRQRspVjGSo5e0R5QjgmCMcF7X8XY8IX
+	5CBVmOLHUIIxLSLDNavOLjuwxPGizrGzufawwVOe1tKBYglb/td57T2z+zcGC05n7Wwdkma/
+	2xSZljg8586E/lrD2nq79W55/O7MLZUjw3vIbcX9l1Mrt0s7LdKmq/uiGNNBdzMXvbm7sGjF
+	uuyasN1h8Vt/WrPjjvquDq5NcJtXRykIXZIyLhrX6pR/Ae9POqRpAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzVSWUwTURT1zUxnhsbqWEkcNQrWGHFB0bjcqHH5cqLR+GHU6AcOMMqEFrBF
+	BJdIqbW4Bpq0RCsKKFWhCLagIqk2KMSNWESlLmymooQiRAuEAmKr8efm3HPOPTkfl8bl1ZIZ
+	tJicJqiTeaWClBLS7Wt10WrDcjGmo38x5OhPwud2rwTea10EDPhzCLhSYSNhzHKfghz7JQk8
+	a8kmwH2nDEH7QA6CoRELDvqacQLGjA0U+Ic/UWDSIhh3NiAwNxlx8Lgf42Cr0mLwq/I3CT1P
+	fiIwdXpJyO/WEtBnPY/gcpeFgu76zdDbXiuB8dZvGLQM+hBYvb8x8LoMCMbMSXCt2BE8N/eT
+	MNL4God8kxtBUWcrDj+7OxBUNbQhcN7KJuFrbjUOzd5J8Hagj4TnpnMk9DZdweBHJQmF2U4J
+	NL3qQVBgMSLo+ujEQHe9ggRzgZ2Amo6HFDT1jGLw2WzEoMy+DdqtXQS8zC3GgnWDrrvTwJKv
+	w4LjOwam8loMhq2l1MYSxA3pLxJcqeMexunfjJGc7aoNcSMBI+L8JTqc0+cG1ye+Ppw75TjC
+	lbz0kVxg4B3JOQcLCe5FMcvdOBPAuLzGaK7mciu1Y9Ne6boEQSmmC+ql6/dLE1tG+dS8+Ix6
+	+2kqC+XtOIvCaJZZwVqdNyUhTDLzWY9nGA/hcCaSdVzoCvJSGmeaI1jD8MWgQNNTmQOstnNu
+	yEMw89j+xh9UiJYxq1jT7X3/IiPYskrX35iwEN0S+IvlzEr22tkhSS6SFqIJpShcTE5X8aJy
+	5RJNUmJmspixJD5FZUfBZ7KeGM17gPzNm+sQQyPFRJnryDJRLuHTNZmqOsTSuCJc5lPGiHJZ
+	Ap95VFCnxKoPKwVNHZpJE4ppsi27hf1y5iCfJiQJQqqg/q9idNiMLBSVFL3LMPP4oQ1ZsbOm
+	tx076b8wb/4ro2rrkK3QcKN8tmdPZHfFqjXH1xXgX2R90UuPqkQPQbra3O6nHSkZ2XGnx6cE
+	pk6it3p9j/zKernG6YjJX/AxalFE3M4PbG9kCrM6taiRL8q0Dm4Lm+yzMm3xVQWviedpETsX
+	xB56N0e3WkFoEvllC3G1hv8DvAV2HUgDAAA=
 X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2840A40003
+X-Stat-Signature: afd963nx4rq3ob6pc7iy6fatyzkf5gb5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F15640003
-X-Rspamd-Server: rspam11
-X-Stat-Signature: xgm71nk7thwtjq99mmu5bmq1fcngn9sa
-X-HE-Tag: 1764919202-910108
-X-HE-Meta: U2FsdGVkX1/KXcF1NIy8qvlH0srLMyyyyClct4OWIbdYZoSsL/BjGXLzDGI+kTB8ahPhqTksJQiKhGZJ59O2iy+AA5cpmVk4nXpd/6gOf467Rii9nB+jDzJBp9+Xl57Q4U8PwCVKjCM7n3CbLioPXgOd+UvsW1nvshS7u6LS81TvJw9SIzJQlMtrO+SYJA0cuC0YcvJK1Smx+VL7jnCW+5bT4ipvm1FtWrJBf1o610pKQV1nqw3M/ry4HS26NruNYBLnydLTNMfu3+Hb6NlvyzPckUIsrASRglG7rsfh3B5gJZmchZmtid/vAVKeHOKT4tvq1NDNbOgwo7Y9TU/bwnsXBSl6ywcRWxGjwTITTcD2qxs9faQ9TLfI8MeSyY/gqgr20HiiJIS+zCXhrkYXtd+gyDoop4Gnn/O3wQgrE4fjK29ulcKEQGj1pNz1WeuMny7zcE9gpgU4+NKZhbku8B53lEbmBSenuiDk7YYF9Wi08DJoZfXWQG2m/+m8o//ESpLhb8SPRfJSan4bZL1oJDUrR+GNDb+7lC8kzgJSuCMAXuR9GJLcAE9bmgP0ScRtBcbab2AzRfBfZjCgrvPyUtNDsA+j4akAqYUDvBq/mqauTq9BkNtJFzehofvXhw2St1l5fjHvUdxlHp304KYXB2kh/ocJJ+tl3Z4LEziFydAuDgi8FGJN+qe6WjaqhzD9W1hvwZsCN2DsnFT1Ehc6oCLd9/v5bwTS7nTDsMxJYud4equLF6lf7BTNDBO+dWNlP5Rt5+9xGHAh+gOSurLQ+4hK1UERc4HLXCHYWOZ1YAubQLr89igXc5QGaGINYMLThkAFHPViAL6fZ2Ypwg5CauEjjtZ4PuxH1cBgVLa/4vfIzyTC+IM/cBBkj9w3GHgo2JU38OU3w/n5CC/m6vD88XmlYxMA9z803y+t+0MkDUbNj64MN5e1AU5jFQGyjNAuOlbrsWSw+yMhgdV9RtZ
- jQgX4+w9
- agnFGSo3h3sBQKmY1gY4hcCEPK+VKYqagxvVWKngGZmmolJkOPrQngXqXrRMur23PhCKKuCCjGE7Re+OARexf7N8oHiD98g+AgBUyazoEaHr6M0MEhGXa3YdJB/wG7xW1QoFX
+X-HE-Tag: 1764919203-224134
+X-HE-Meta: U2FsdGVkX1/yINhVVHdxKCxNT4OKtjUbDgsP+ER+GpKuOILTwZ+IScxvN1xYtem0bMZHsyIqOe5Vvope96kZVsBf8fxyIEHFFifBJ/mfp/wbXhiDk+TIC2hgcOttsRkov/0Vjz4UGbiFfsXAyoD+BmrX232LQy3dh9Jlh7dbCq1bQ0RIq+HoDhhvTAR0HtmR8eyP2hhBjBJPHX4VWj0AUntvHUclremDcAeSJuXVTj0I27JUzVr8te/iteGrYD5nNSbNP3qDuA03sr363lCgNd7IDxMikeWer2mv/bfTb0iU7if0GvJkOSlUIca33pcphqJokK3pelpwLLp/eD70oKyJ/Wxs2S6WE5bNbd1khPCwsVfphqYmYa4P7N9RPTd5xALnK++ixMQatVT9WpSm7DmYpDVZSarPzoFi7D6ZfYszZiuXAB5jgBp818smjA6FF4DS+0B5tZHwUi0OnGB+bAeAKB6nOnyZKTiOyvoI8kKMy9g8q9qzouJZNZEIaPVDihHbvhFwJAzonR7iNgR2Ws6B6axUJUWAuZO9pMFakMARipKzk4jBbN6mIDrobT0lfx0JsKDd1WTR+f/TyRKbYRqPtCyJlbQIPoVEActYmYGEGKhlrV4yhB9YrpVy+xeow9aulcDT2nVyznRWKhKdxykHkVXiOuhYlCNZHcGOCNiqOHEzP8B5CnQsmGMpSBaE9GzIZKj/MsNoNyW9Si6YXI9sUnRtFhO1l2hX0RSlK7b5SrJokwTN+6yUKhS4u2h6in+gY/2GBDuzIi/uV58LpAWSoQEyYxk7Z7FHYHE/HbUQnKyKbD99c5WoZ/Ueu8Yr1O+UDGL1VvdS5uVn1JC6/UMdl1MjsA1Yu6XmgQGNEVM++VjtizEZ6grGVCla3vRYhDfB2t+ljW1Oe5yWlvE1Wl+9KyHS9hE2ACMLhG8nvy6fyFff3mMMzqz+rizx9pKTtG8+CLaF0pfN5qSgOEi
+ PfbSbyzP
+ KLOHkmQWBAt3CemzNvbUK/zNnYSs1CfX1Z3AZe8SB2lT8674=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,157 +267,418 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, dept uses dept's map embedded in task_struct to track
-dependencies related to wait_for_completion() and its family.  So it
-doesn't need an explicit map basically.
+It's worth reporting wait-event circular dependency even if it doesn't
+lead to an actual deadlock, because it's a good information about a
+circular dependency anyway.  However, it should be suppressed once
+turning out it doesn't lead an actual deadlock, for instance, there are
+other wake-up(or event) paths.
 
-However, for those who want to set the maps with customized class or
-key, introduce a new API to use external maps.
+The report needs to be suppressed by annotating that an event can be
+recovered by other sites triggering the desired wake-up, using a newly
+introduced API, dept_recover_event() specifying an event site and its
+recover site.
+
+By the introduction, need of a new type of dependency tracking arises
+since a loop of recover dependency could trigger another type of
+deadlock.  So implement a logic to track the new type of dependency
+between multi event sites for a single wait.
+
+Lastly, to make sure that recover sites must be used in code, introduce
+a section '.dept.event_sites' to mark it as 'used' only if used in code,
+and warn it if dept_recover_event()s are annotated with recover sites,
+not used in code.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/completion.h | 40 +++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ include/asm-generic/vmlinux.lds.h |  13 +-
+ include/linux/dept.h              |  91 ++++++++++++++
+ kernel/dependency/dept.c          | 196 ++++++++++++++++++++++++++++++
+ 3 files changed, 299 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/completion.h b/include/linux/completion.h
-index 4d8fb1d95c0a..e50f7d9b4b97 100644
---- a/include/linux/completion.h
-+++ b/include/linux/completion.h
-@@ -27,17 +27,15 @@
- struct completion {
- 	unsigned int done;
- 	struct swait_queue_head wait;
-+	struct dept_map *dmap;
- };
- 
--#define init_completion(x)				\
--do {							\
--	__init_completion(x);				\
--} while (0)
-+#define init_completion(x) init_completion_dmap(x, NULL)
- 
- /*
-- * XXX: No use cases for now. Fill the body when needed.
-+ * XXX: This usage using lockdep's map should be deprecated.
-  */
--#define init_completion_map(x, m) init_completion(x)
-+#define init_completion_map(x, m) init_completion_dmap(x, NULL)
- 
- static inline void complete_acquire(struct completion *x, long timeout)
- {
-@@ -48,8 +46,11 @@ static inline void complete_release(struct completion *x)
- }
- 
- #define COMPLETION_INITIALIZER(work) \
--	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), }
-+	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), .dmap = NULL, }
- 
-+/*
-+ * XXX: This usage using lockdep's map should be deprecated.
-+ */
- #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
- 	(*({ init_completion_map(&(work), &(map)); &(work); }))
- 
-@@ -90,15 +91,18 @@ static inline void complete_release(struct completion *x)
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index a464ff6c1a61..2680f85b677a 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -717,6 +717,16 @@
+ #define KERNEL_CTORS()
  #endif
  
- /**
-- * __init_completion - Initialize a dynamically allocated completion
-+ * init_completion_dmap - Initialize a dynamically allocated completion
-  * @x:  pointer to completion structure that is to be initialized
-+ * @dmap:  pointer to external dept's map to be used as a separated map
-  *
-  * This inline function will initialize a dynamically created completion
-  * structure.
-  */
--static inline void __init_completion(struct completion *x)
-+static inline void init_completion_dmap(struct completion *x,
-+		struct dept_map *dmap)
- {
- 	x->done = 0;
-+	x->dmap = dmap;
- 	init_swait_queue_head(&x->wait);
++#ifdef CONFIG_DEPT
++#define DEPT_EVNET_SITES_USED()						\
++	. = ALIGN(8);							\
++	__dept_event_sites_start = .;					\
++	KEEP(*(.dept.event_sites))					\
++	__dept_event_sites_end = .;
++#else
++#define DEPT_EVNET_SITES_USED()
++#endif
++
+ /* init and exit section handling */
+ #define INIT_DATA							\
+ 	KEEP(*(SORT(___kentry+*)))					\
+@@ -741,7 +751,8 @@
+ 	EARLYCON_TABLE()						\
+ 	LSM_TABLE()							\
+ 	EARLY_LSM_TABLE()						\
+-	KUNIT_INIT_TABLE()
++	KUNIT_INIT_TABLE()						\
++	DEPT_EVNET_SITES_USED()
+ 
+ #define INIT_TEXT							\
+ 	*(.init.text .init.text.*)					\
+diff --git a/include/linux/dept.h b/include/linux/dept.h
+index 8b41f7a65abb..44083e6651ab 100644
+--- a/include/linux/dept.h
++++ b/include/linux/dept.h
+@@ -142,6 +142,82 @@ struct dept_ext_wgen {
+ 	unsigned int wgen;
+ };
+ 
++struct dept_event_site {
++	/*
++	 * event site name
++	 */
++	const char			*name;
++
++	/*
++	 * function name where the event is triggered in
++	 */
++	const char			*func_name;
++
++	/*
++	 * for associating its recover dependencies
++	 */
++	struct list_head		dep_head;
++	struct list_head		dep_rev_head;
++
++	/*
++	 * for BFS
++	 */
++	unsigned int			bfs_gen;
++	struct dept_event_site		*bfs_parent;
++	struct list_head		bfs_node;
++
++	/*
++	 * flag indicating the event is not only declared but also
++	 * actually used in code
++	 */
++	bool				used;
++};
++
++struct dept_event_site_dep {
++	struct dept_event_site		*evt_site;
++	struct dept_event_site		*recover_site;
++
++	/*
++	 * for linking to dept_event objects
++	 */
++	struct list_head		dep_node;
++	struct list_head		dep_rev_node;
++};
++
++#define DEPT_EVENT_SITE_INITIALIZER(es)					\
++{									\
++	.name = #es,							\
++	.func_name = NULL,						\
++	.dep_head = LIST_HEAD_INIT((es).dep_head),			\
++	.dep_rev_head = LIST_HEAD_INIT((es).dep_rev_head),		\
++	.bfs_gen = 0,							\
++	.bfs_parent = NULL,						\
++	.bfs_node = LIST_HEAD_INIT((es).bfs_node),			\
++	.used = false,							\
++}
++
++#define DEPT_EVENT_SITE_DEP_INITIALIZER(esd)				\
++{									\
++	.evt_site = NULL,						\
++	.recover_site = NULL,						\
++	.dep_node = LIST_HEAD_INIT((esd).dep_node),			\
++	.dep_rev_node = LIST_HEAD_INIT((esd).dep_rev_node),		\
++}
++
++struct dept_event_site_init {
++	struct dept_event_site *evt_site;
++	const char *func_name;
++};
++
++#define dept_event_site_used(es)					\
++do {									\
++	static struct dept_event_site_init _evtinit __initdata =	\
++		{ .evt_site = (es), .func_name = __func__ };		\
++	static struct dept_event_site_init *_evtinitp __used		\
++		__attribute__((__section__(".dept.event_sites"))) =	\
++		&_evtinit;						\
++} while (0)
++
+ extern void dept_stop_emerg(void);
+ extern void dept_on(void);
+ extern void dept_off(void);
+@@ -179,6 +255,14 @@ static inline void dept_ecxt_enter_nokeep(struct dept_map *m)
+ extern void dept_key_init(struct dept_key *k);
+ extern void dept_key_destroy(struct dept_key *k);
+ extern void dept_map_ecxt_modify(struct dept_map *m, unsigned long e_f, struct dept_key *new_k, unsigned long new_e_f, unsigned long new_ip, const char *new_c_fn, const char *new_e_fn, int new_sub_l);
++extern void __dept_recover_event(struct dept_event_site_dep *esd, struct dept_event_site *es, struct dept_event_site *rs);
++
++#define dept_recover_event(es, rs)					\
++do {									\
++	static struct dept_event_site_dep _esd = DEPT_EVENT_SITE_DEP_INITIALIZER(_esd);\
++									\
++	__dept_recover_event(&_esd, es, rs);				\
++} while (0)
+ 
+ extern void dept_softirq_enter(void);
+ extern void dept_hardirq_enter(void);
+@@ -192,8 +276,10 @@ extern void dept_hardirqs_off(void);
+ struct dept_key { };
+ struct dept_map { };
+ struct dept_ext_wgen { };
++struct dept_event_site { };
+ 
+ #define DEPT_MAP_INITIALIZER(n, k) { }
++#define DEPT_EVENT_SITE_INITIALIZER(es) { }
+ 
+ #define dept_stop_emerg()				do { } while (0)
+ #define dept_on()					do { } while (0)
+@@ -224,6 +310,7 @@ struct dept_ext_wgen { };
+ #define dept_key_init(k)				do { (void)(k); } while (0)
+ #define dept_key_destroy(k)				do { (void)(k); } while (0)
+ #define dept_map_ecxt_modify(m, e_f, n_k, n_e_f, n_ip, n_c_fn, n_e_fn, n_sl) do { (void)(n_k); (void)(n_c_fn); (void)(n_e_fn); } while (0)
++#define dept_recover_event(es, rs)			do { } while (0)
+ 
+ #define dept_softirq_enter()				do { } while (0)
+ #define dept_hardirq_enter()				do { } while (0)
+@@ -234,4 +321,8 @@ struct dept_ext_wgen { };
+ 
+ #define dept_set_lockdep_map(m, lockdep_m)		do { } while (0)
+ #endif
++
++#define DECLARE_DEPT_EVENT_SITE(es) extern struct dept_event_site (es)
++#define DEFINE_DEPT_EVENT_SITE(es) struct dept_event_site (es) = DEPT_EVENT_SITE_INITIALIZER(es)
++
+ #endif /* __LINUX_DEPT_H */
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index 1de61306418b..b14400c4f83b 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -973,6 +973,117 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
+ 	}
  }
  
-@@ -136,13 +140,13 @@ extern void complete_all(struct completion *);
++/*
++ * Recover dependency between event sites
++ * =====================================================================
++ * Even though an event is in a chain of wait-event circular dependency,
++ * the corresponding wait might be woken up by another site triggering
++ * the desired event.  To reflect that, dept allows to annotate the
++ * recover relationship between event sites using __dept_recover_event().
++ * However, that requires to track a new type of dependency between the
++ * event sites.
++ */
++
++/*
++ * Print all events in the circle.
++ */
++static void print_recover_circle(struct dept_event_site *es)
++{
++	struct dept_event_site *from = es->bfs_parent;
++	struct dept_event_site *to = es;
++
++	dept_outworld_enter();
++
++	pr_warn("===================================================\n");
++	pr_warn("DEPT: Circular recover dependency has been detected.\n");
++	pr_warn("%s %.*s %s\n", init_utsname()->release,
++		(int)strcspn(init_utsname()->version, " "),
++		init_utsname()->version,
++		print_tainted());
++	pr_warn("---------------------------------------------------\n");
++
++	do {
++		print_spc(1, "event site(%s@%s)\n", from->name, from->func_name);
++		print_spc(1, "-> event site(%s@%s)\n", to->name, to->func_name);
++		to = from;
++		from = from->bfs_parent;
++
++		if (to != es)
++			pr_warn("\n");
++	} while (to != es);
++
++	pr_warn("---------------------------------------------------\n");
++	pr_warn("information that might be helpful\n");
++	pr_warn("---------------------------------------------------\n");
++	dump_stack();
++
++	dept_outworld_exit();
++}
++
++static void bfs_init_recover(void *node, void *in, void **out)
++{
++	struct dept_event_site *root = (struct dept_event_site *)node;
++	struct dept_event_site_dep *new = (struct dept_event_site_dep *)in;
++
++	root->bfs_gen = bfs_gen;
++	new->recover_site->bfs_parent = new->evt_site;
++}
++
++static void bfs_extend_recover(struct list_head *h, void *node)
++{
++	struct dept_event_site *cur = (struct dept_event_site *)node;
++	struct dept_event_site_dep *esd;
++
++	list_for_each_entry(esd, &cur->dep_head, dep_node) {
++		struct dept_event_site *next = esd->recover_site;
++
++		if (bfs_gen == next->bfs_gen)
++			continue;
++		next->bfs_parent = cur;
++		next->bfs_gen = bfs_gen;
++		list_add_tail(&next->bfs_node, h);
++	}
++}
++
++static void *bfs_dequeue_recover(struct list_head *h)
++{
++	struct dept_event_site *es;
++
++	DEPT_WARN_ON(list_empty(h));
++
++	es = list_first_entry(h, struct dept_event_site, bfs_node);
++	list_del(&es->bfs_node);
++	return es;
++}
++
++static enum bfs_ret cb_check_recover_dl(void *node, void *in, void **out)
++{
++	struct dept_event_site *cur = (struct dept_event_site *)node;
++	struct dept_event_site_dep *new = (struct dept_event_site_dep *)in;
++
++	if (cur == new->evt_site) {
++		print_recover_circle(new->recover_site);
++		return BFS_DONE;
++	}
++
++	return BFS_CONTINUE;
++}
++
++/*
++ * NOTE: Must be called with dept_lock held.
++ */
++static void check_recover_dl_bfs(struct dept_event_site_dep *esd)
++{
++	struct bfs_ops ops = {
++		.bfs_init = bfs_init_recover,
++		.extend = bfs_extend_recover,
++		.dequeue = bfs_dequeue_recover,
++		.callback = cb_check_recover_dl,
++	};
++
++	bfs((void *)esd->recover_site, &ops, (void *)esd, NULL);
++}
++
+ /*
+  * Main operations
+  * =====================================================================
+@@ -3166,8 +3277,78 @@ static void migrate_per_cpu_pool(void)
+ 	}
+ }
  
- #define wait_for_completion(x)						\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion(x);					\
- 	sdt_might_sleep_end();						\
- })
- #define wait_for_completion_io(x)					\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion_io(x);					\
- 	sdt_might_sleep_end();						\
- })
-@@ -150,7 +154,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_interruptible(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -159,7 +163,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_killable(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -168,7 +172,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_state(x, s);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -177,7 +181,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -186,7 +190,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_io_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -195,7 +199,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_interruptible_timeout(x, t);	\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -204,7 +208,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_killable_timeout(x, t);		\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
++static bool dept_recover_ready;
++
++void __dept_recover_event(struct dept_event_site_dep *esd,
++		struct dept_event_site *es, struct dept_event_site *rs)
++{
++	struct dept_task *dt = dept_task();
++	unsigned long flags;
++
++	if (unlikely(!dept_working()))
++		return;
++
++	if (dt->recursive)
++		return;
++
++	if (!esd || !es || !rs) {
++		DEPT_WARN_ONCE("All the parameters should be !NULL.\n");
++		return;
++	}
++
++	/*
++	 * Check locklessly if another already has done it for us.
++	 */
++	if (READ_ONCE(esd->evt_site))
++		return;
++
++	if (!dept_recover_ready) {
++		DEPT_WARN("Should be called once dept_recover_ready.\n");
++		return;
++	}
++
++	flags = dept_enter();
++	if (unlikely(!dept_lock()))
++		goto exit;
++
++	/*
++	 * Check if another already has done it for us with lock held.
++	 */
++	if (esd->evt_site)
++		goto unlock;
++
++	/*
++	 * Can be used as an indicator of whether this
++	 * __dept_recover_event() has been processed or not as well as
++	 * for storing its associated events.
++	 */
++	WRITE_ONCE(esd->evt_site, es);
++	esd->recover_site = rs;
++
++	if (!es->used || !rs->used) {
++		if (!es->used)
++			DEPT_INFO("dept_event_site %s has never been used.\n", es->name);
++		if (!rs->used)
++			DEPT_INFO("dept_event_site %s has never been used.\n", rs->name);
++
++		DEPT_WARN("Cannot track recover dependency with events that never used.\n");
++		goto unlock;
++	}
++
++	list_add(&esd->dep_node, &es->dep_head);
++	list_add(&esd->dep_rev_node, &rs->dep_rev_head);
++	check_recover_dl_bfs(esd);
++unlock:
++	dept_unlock();
++exit:
++	dept_exit(flags);
++}
++EXPORT_SYMBOL_GPL(__dept_recover_event);
++
+ #define B2KB(B) ((B) / 1024)
+ 
++extern char __dept_event_sites_start[], __dept_event_sites_end[];
++
+ /*
+  * Should be called after setup_per_cpu_areas() and before no non-boot
+  * CPUs have been on.
+@@ -3175,6 +3356,21 @@ static void migrate_per_cpu_pool(void)
+ void __init dept_init(void)
+ {
+ 	size_t mem_total = 0;
++	struct dept_event_site_init **evtinitpp;
++
++	/*
++	 * dept recover dependency tracking works from now on.
++	 */
++	for (evtinitpp = (struct dept_event_site_init **)__dept_event_sites_start;
++	     evtinitpp < (struct dept_event_site_init **)__dept_event_sites_end;
++	     evtinitpp++) {
++		(*evtinitpp)->evt_site->used = true;
++		(*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
++		pr_info("dept_event %s@%s is initialized.\n",
++				(*evtinitpp)->evt_site->name,
++				(*evtinitpp)->evt_site->func_name);
++	}
++	dept_recover_ready = true;
+ 
+ 	local_irq_disable();
+ 	dept_per_cpu_ready = 1;
 -- 
 2.17.1
 
