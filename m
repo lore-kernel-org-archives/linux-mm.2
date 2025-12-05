@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DE7CD2E014
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:19:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C348D2E017
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:19:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1836B00CD; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
+	id D7E0A6B00CA; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93ACF6B00D3; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
+	id D05466B00CE; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 786A76B00CD; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
+	id B08DB6B00D5; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 649DB6B00CA
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CD116B00CC
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E0CEB9A7F
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39C67C04FC
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:55 +0000 (UTC)
-X-FDA: 84184567950.14.EDABA79
+X-FDA: 84184567950.08.AE5CF7B
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1500620006
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:52 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 80B4F18000E
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:51 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1764919193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=kMFshlb9jprhYr4PTAQc1Jvtsfr5P4/luLNT0q9ZeVE=;
-	b=wOBfjDOARg73YKTLsoktYQWyFdg6bsD7aErR66KBtF+aS7797qpbaKU16Wu6CPlc/hkrP+
-	D7EIh+7ZKwItL+0IEZtkSKdbCysgXzvEvOLYG1uFzQArY9pvVz7FK4lZAlypTgGsDlrNrx
-	cui0APHxAxGDVo7VN8dWziIcudiBoEM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=ugGwnhtRYbUcA39YbizK3s3+fGgUy8BBsKNWpPjn72U=;
+	b=a32Yp2RmHx8TLW/seMhU/DIZt9tOasV18RxvWK2QkUTjInSnbfDNjxv8S4gctDbCq4kVSA
+	bBJZZa4pQdfbhbv5GJNz5X2o9EOvRdJ7RFGHTy2HlVoOGEb1+M1fpT6zdKfhVoxDV6WVia
+	F9R3LzDPch3XpY2ok0yZC4af9hyqMro=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919193; a=rsa-sha256;
 	cv=none;
-	b=PxzoL5Lh86IGwLtfl8g/NSuWIXxCmydyed0Mf2Bw2vSw6kmlCEfC23IrB5bevrC5MLTUS9
-	DCXzZm2Ai7VtXM47RpESoIyVM5mz28WLV5HwflvLZw4qOEwOramgkfE38vhpql71Hcrod7
-	2PgEX5cyyrK4+67fib/G07WZzkUEkdE=
+	b=rXXX5idXZofKuUqNNr1YWsiN1UfYBSIoCevEANjSBcSh5aq3ibO3h8muJvqMP5IGlEmagP
+	5XQxXIVd4RQe19KsDgfd/gSeGh5qFxINMQF7f6aLGFhmF5SfXG6fypuUrkniuojrWGxtK/
+	hbZT4XEb/dGaH368irWbhnfKsGsh/cs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
+	imf06.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
 	dmarc=none
-X-AuditID: a67dfc5b-c45ff70000001609-69-6932876b59c8
+X-AuditID: a67dfc5b-c45ff70000001609-eb-6932876a750c
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -212,54 +213,56 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 04/42] dept: tie to lockdep and IRQ tracing
-Date: Fri,  5 Dec 2025 16:18:17 +0900
-Message-Id: <20251205071855.72743-5-byungchul@sk.com>
+Subject: [PATCH v18 00/42] DEPT(DEPendency Tracker)
+Date: Fri,  5 Dec 2025 16:18:13 +0900
+Message-Id: <20251205071855.72743-1-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
-References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxjF9//f/32hodlNNfNOE51dRGMiKtHtyWbovu0uTl3C3IctUSu9
-	GzcUNK28bTMrMAZjKIRYzaiDAqMhtEhtEdkKEyEjc0raDiINLwLKShh0xI5Si6Krdfv2y3PO
-	c86Xw1GqMXojJ+eekQy5Wr2aURBFKLlpV3Z5mrzHN5YCFWVfwcTULA13i/sIRJYrCFzucDCw
-	ZrnOwm+jJQR8V+wIpiIVCKKPLRSs1Q6yEPDdoMDRWYzhH+dTBhYGwgjMM7MMXJovJrBkq0JQ
-	F7SwMP/ruxCa8tDwbHIOw2xfOYK1i9nQ0OSOW80+BI0zkxSE56cR/FlzjYKRyBIDIf9lDH87
-	GbCW9NLgv7OAIDjWi6G0uYOBiz+4CNhdh2DKFiTxuvjl6gawXCrFYG73YIjZ2liwmbaBZWiY
-	hvutdSwM2udYuBLy0rAQrGVgeWQGg6MqSIHrwV0avq+fYKCn9xaBwe77GKqc12i453hGg8kS
-	paFjLoBhfKiaBe/P7TS0jPoxuIfuUO/oxGjZeSK2ubuwWPbHGiM66h1IfLxai8TlllJKHFhc
-	osSv3QViy+1FRuxdsRLxx29XsfhT3SQrWl15ort1p9jcM4/FxnCE/iD1Y8UBnaSX8yXD7vQT
-	iqymTi97+q8vCsdtLcSEbp6sRBwn8PuExlsfVaKkBPZcWKWeM8NvFwKBWILX868J7nNBuhIp
-	OIof3iKUx84nhHW8RrCHrQkm/DbhkaeOPGclv1+o96/gF6FbBLuzL+FJ4t8QzKMvClRxT0Nl
-	NBEq8A1JQmz63H8Prwo3WwOkBimt6KU2pJJz83O0sn5falZRrlyYmnkqx4Xii7OdffJJNwr7
-	MvoRzyF1srKvYK+sorX5xqKcfiRwlHq9clG/R1YpddqizyXDqeOGPL1k7EebOKLeoExbKdCp
-	+M+0Z6RsSTotGf5XMZe00YSshSMH03dPtLc1Z/jdN7oPlp3YvH9T0e3M8Fb1rgVNtWWxB299
-	a9LsKc3IPHz0cDJ5OfZNJN+7IyUl2vW28aHmy+6SNK2Y/uZQ8JjR/WCm8KnXoTmS/suh93S/
-	H7mQF7o3Oj3Q9eGw/L6n/fVj9sCEZkdn9bip6uyn/kc1TqR6BX+nJsYs7d6dlMGo/RckfZvl
-	bQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSf0zMcRjHfb6/7jp39t1p+k6b7ObHZovKjz0b82MzvmzMH8yG4Yvv9NUV
-	u0u6/OrKKUXOzV10ItGx65AuKbmcmvMj1Ik6lIudSEdKP1xJTuafZ69n7/fzvJ8/HjEuryAn
-	ioWERF6VwCkVlISQrJ6fHrkrI0aIOnlmAWTqDkOL10dCk9ZJQF9vJgHnbtgoGDbfFkFm6VkS
-	HjWnEdBwvRiBty8TwcCQGQdd5QgBwwaXCHoDb0Vg1CIYcbgQmNwGHDwN93CwlWkx+FHym4LO
-	2h4Exvc+CnI7tAR0WY4jyGs3i6DjwXL46q0iYaT1EwbN/X4EFt9vDHzODATDpji4UGgPjpu+
-	UzD0rB6HXGMDgovvW3Ho6WhDUOZ6h8BxNY2Cj/pbODT6xsHLvi4KHhuzKfjqPofBtxIKCtIc
-	JLifdiLINxsQtL9xYJB+6QYFpvxSAirb7ojA3fkLgxaTAYPi0lXgtbQTUKcvxILnBl03w8Cc
-	m44Fy2cMjNeqMAhYrKLFRYgd0OUQrNVejrG6F8MUaztvQ+zQoAGxvUXpOKvTB9tafxfOHrHv
-	Y4vq/BQ72PeKYh39BQT7pJBhLx8bxNhTzyLZyrxW0ZolGyQLdvBKIYlXzVq4VRJbWFYv2vNl
-	f/JbSxGRiu5vy0IhYoaew9w9PYj/ZYqezng8gVEOpScz9hPtZBaSiHG6MYLJCOSMCuPpRUxx
-	T8EoE/RU5mdVHvGXZfRc5ry7H/u3NIIpLnGOekLoeYyx+V+APOi5kDVA6pGkAI2xolAhISme
-	E5RzZ6rjYjUJQvLM7bvjS1HwnywHf52qQL2Ny2sQLUYKqcy5L1qQk1ySWhNfgxgxrgiV+ZVR
-	gly2g9Ok8KrdW1R7lby6BoWLCUWYbOV6fquc3skl8nE8v4dX/VcxccjEVISPnS1LjGiQVvFH
-	ulctVV87dPKo36V3XZKGrUjxPPiSHdMWe/M78xpXHagLXxTgvOus0wGzVzeZ1pZPQarLlMyW
-	rdE8n/awfEtE1rbNTd5l3UuFsVc+/HSnWnfGkNH13rLI7o351S1TBrzSkpwJ2ZsmhXZvCk9J
-	zpCednFaj1NBqGO56Bm4Ss39ATlaouFLAwAA
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxbZRTG89773ttLs85rN+K7aURryJItTpjTnJjFaaLxJkZDNIuJbtFO
+	7kZd+Wr5XObsBrWVMceKDGmR8bWGQLdiO8zA4mqRZqxsqVRYhcHAdVUEwkbKSPmwFtzi/jl5
+	8jznd55/DkfLDexmTpWVJ2qylGoFK8XSmXUNz39m2KFK+caiAKP+Cxg65sYwHzFiqLXbWDA6
+	ahi4cuM4Bv+FNgQLSxYa9J0xDCsmrwQi0REJxLq9CIL+yzRM9cwhqJ48hmHWWo7AHLZIYLL3
+	LZi59SMDN+5PI7CG/qEg5DYgWDlzCM42OlmorvIjuOgdQ3CnooOGQGg99FWdYOHX/ikE4eFu
+	Ckqa7Cx0jndJ4OYZEwVtjnfgljWMwVfRSMXrWLBUl1Dx8RcFUWurBPqbbmKw6pJheSIVYvXZ
+	MHqqCsNU2MSC4/deBJHfJigwds1jcNweYqB7eBs0fNmMwdXdh8G4EkHgvfQHBYGuWhbGbDEG
+	dJYFBux/Binwea9gGLl2SgIT40EGnNf66dfSBf3ACivY6mxIWFo0IaFnepYWSp2FwjnfNCss
+	zg+ywtVGIjR/tUgJneZRiVD607BEqHfkC6W/zDCCs2Wr0OSapISGuXkmLeVD6a50Ua0qEDUv
+	vPqJNOO0/o2cO5dRUXttPa1DoyZUhhI4wu8ktut25qH2NJ9gVzXLbyHBYJRe1Rv5Z4jzZDi+
+	I+VoPpBEDNGv14IN/ItEZx1YAzCfTO61f7umZfxL5PQPkQcFSaSt3U3/5z9O+mpCuAxx8UNb
+	iL1OvmrT8ZWSDgu9ep/wVxPIwNLcA3YT+bkliCvQevMjuPl/3PwIXo/oViRXZRVkKlXqndsz
+	irNURds/zc50oPh7Wj9f/ugSmvO/70E8hxTrZO7CVJWcURZoizM9iHC0YqNsWp2iksvSlcWH
+	RU32x5p8taj1oCc5rHhCtuN+YbqcP6jMEw+JYo6oeZhSXMJmHUpcHNxtOanf39G6r8YXqDu8
+	UHBRXzn2XNWBIZJ21pfk8r3t7/VsStz21Eg55ZBW5rTn5QY0ift2XX/lqJhypFI/TL18915P
+	kaL4vb8/mDAkP3071FJ23KI5Up539Nk014bz2vx3c7M5V7R0z97xN5dbXx/PdTvufje4u+HC
+	97Oxx9yZCqzNUKZupTVa5b8PHSi8mgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTdxTG97//29tLty7XiuFGP7hUp4lGfEGTk3TRacy8GufmPmiybGoj
+	N/ZKqaZVkCVGSunocJK2SYu2CJVBo8CkUnxB00AgEtE5eVHAl66QXcs6ijgpkoIFC26ZX06e
+	c87veXI+HBorhiQLaUF3jNfr1FolJSNlu1SmVULROmGNOLMOLOZT8CwkSqDX2ELCeMxCQll9
+	HQUJ93UpWBrOSeBOXwEJnZdrEYTGLQgmptwYzE0zJCTs7VKIxZ9KwWFEMBNoR+DssmPo72zG
+	UNdoJGDMN03BcNsrBI5BkYLSiJGEUe/PCFxhtxQit7fBSOiWBGaCQwT0vY4i8IrTBIgtRQgS
+	ziyoqPQn7c6XFEzdf4Ch1NGJ4MJgEMOryACCxvY/EAQuFlDw3HoVQ4/4MTwcH6Wgw3GagpGu
+	MgJe+CjwFAQk0PXbMILzbjuC8JMAAaZf6ilwnm8goWngphS6ht8Q8MxpJ6C24UsIecMk3LNW
+	Eslzk9SVNHCXmohk+YsAx6+3CIh7a6SfVyNuwlxCcjX+awRn7k5QXF15HeKmJu2Ii1WbMGe2
+	Jtu26CjmCv25XPW9KMVNjj+iuMBrD8ndrWS5qp8mCc52fxXX5ApKv978reyzTF4r5PD61RsP
+	yDQ289ajz5vRCV+ZB+ejoB0VoxSaZdazrVWnqVlNMcvZ/v44ntWpzCes/0xYUoxkNGZ6FrNF
+	8ZK5xXwmg833ds8ZSOZT9h/f2TktZzawtmuxf0MXs7W+FvxuPo/tOCeSxYhOBi1n68sVs2Oc
+	RExX3diKPnS9R7n+p1zvUR6Ea1CqoMvJVgvaDemGLE2eTjiRfvBIdgNKvp/35BvbDRTr2daK
+	GBopP5K35K4VFBJ1jiEvuxWxNFamyqPaNYJCnqnO+4HXH9mvP67lDa1oEU0q0+Q79vIHFMwh
+	9TE+i+eP8vr/tgSdsjAflT0s701XaYb23t614EXi+0Ixc6KiL7pzsojbtyR+dnsiI7zCQkSW
+	Hq7SxUc3Pf7gK++eLd22oMlx/M/tIykLImM3Qk8uzdNYlzX/OKhvnK7/u3xl2p2nF0qyti5V
+	qTIuL1JFK4Y27/R8I27aPdDLG3/PzRe/8Jd8xxZOxcciOR18m5I0aNRrV2C9Qf0WhpQSdHoD
+	AAA=
 X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 80B4F18000E
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1500620006
-X-Stat-Signature: 6yeerwgocnkd53xm7mbp1ubxabe5mfen
-X-HE-Tag: 1764919192-668614
-X-HE-Meta: U2FsdGVkX1/k7SgDyOAFy9pABYyYrsvF+kYzDT+nqj5smbAH+iPsQUfe3ZBZcK5C3Jq6JNoyl9u12Ltarn5K0hiNI/cHGlY9cJoNbBUBPvYLF3EXKarqKnQCniiyPJKfX3l01lk2vNnGIWZCUUxaLDFyRBDcP6K1R4PX8E2Gg0q7/tviz7KCr5gJeWIguv3H0Xj53cc/NMJMhHsodw95KTqdkBX83zYzlDYiQ3tdwV7TgNye3h1JuhrNdALIDrcyIQC49UKYrUuyR/N/DPB9aZrPXBXnyNyF3xI4x1GcGn/IFZCDrJjhUP7lweadHN1tlGpzqGWx5y89FyAgQcfliAIDzNirQua3Fk81oPZgQAptff2e+06qrsQZDXcOdZUfj0XIV3LPaReRaji/1y2FaVWFJbUdXyglZL3GPiubE+DvHCUCw75C287INcKZUZ8YA0e3WWP8wFV/HvG2PTfIMpLNNWlHQIDAufWM7rNWYgvfuZAKbxfnRezCmMJB1cOTxXn3qS10f138NJfTiNdjOWgJXDqD7RvhqLP+b7ZU+mJuUGuFhmJh2hsYYntxq4yFrhWY15Ot0ZrSupskQu7+bg3+URTeS72Qqt77bKt56rsxUrqq39oemdGQ8oQUAqMIz/HurFKZeIs5HfwSHn5wjyoJt9nZJEJVZrqirs4e4d4ody8xDFASWNXjIK1ku/4GnufcXGLW2wfNE/66ypCrStbY9oxvkuTtpUhF/XBlEmWpAljNPGDpyuwLQU4wapIUTUAN8mvgzc2kPRRI7Dy8J2qQxPw/seKMqu3gd5TVSWpE/k/pBH0F1PXcPeY1db0bc/XMzJM4w4nOJYBfxAkld71/PzZ+zdo/TKQetoFUcKumUxp75GHVhY9o9+zklZZfAgtUwgd6ZKhlJZ5iuKgOsq3TNH/inIBmbhveGSGw6KVzIcsRSOmRXqyd639mH5pmV6i8kB3ziMYRosUg6Jt
- fvDiYa7O
- ObfwEZvIah9rgqz5fkjfe32it+4tAzcvlUWj+WsWoaElzms0ABkOT1IglcPenau1OabCxykhvCpQgGLE=
+X-Stat-Signature: pinm6uctoax34oae1ggfq1ucynuf8ej3
+X-HE-Tag: 1764919191-824308
+X-HE-Meta: U2FsdGVkX1/vmgl5rz8Hqwy+UvwOhVBQdAYq0nIBJJU28U0DU7fwFdvHDpaS2lS8BOp9UNLxgrs1EOjcWgpvrFfEXk6WXRgkBpIbUWy5HNYORNx5ABdVbqpsM+OEP2EPEZPY/bg6mzf3C7LbeSvNcM1+8UUt0zRcvZP1zpMW2ktSWB5ighmpF7/LfcCQ3RnJv7r+60WM7n7q9/8vTW6+mr1y6C0c+F/24I05fa3f1DqFfJpmE9+8BZoYAip3sdXTnD5+liujy7kkhKSNq3+6dLIGEDGG8zeI9Ho8//Jr/53txqMZtLbxkBY8HCs6GQiC1m913mksrR1kHewy/7vaIRziD7WBmTMdC60U41BNtVYLU/tGyH2gBLL2Vi3JbV7bvggWbsP/mnZrKjvP6178uZV8M9P51siqDI1wp+v+RCZgfukpnqFwuaFBVIUBPkBzYVDRf2SjlG9pDIqMfg+2m2BSxLwJM8KGLdOntnAOShZhzL2jfpci+2b5+bnHrDSPFCkWPXN02DwTU1lfufIrCHXPnf6MvQP+f0YOYHlykb3b/q5yjPD6/eCV2Hq8CHYMC3v7xO79ahpvH4ls620Y6FqZ0//TsCocpYwoivWY2gENri1+AysB9xlES275/1luBFOgaPgNXYu7IQkT2Z6nFwXP5ED7wLP8suHumip7rWkI5ygtrZFfJVRm1eiFsNOKO7Q6JwxYQNdENGAQQYAhqYSyIhFoteBrL+YvA0JKNzKVk8WIBo9JB8aUvkmMOE1jEiYABaybfUwz/AkjDgW2PmLSqx78SKdmmTPCsQ4utoNmuw07gBUSwOel0J5yT/a0b/pCjJ+OlgCLGxEMx1xdjZ71STGJYDl4o9AV77n/MLfuHLqn3O2sYQqnG7K3LGTt3PMwz1PbKusUjCgOXI7SpZAf9tylRWTTZMO8tt6fqqnP0TRMAMvvtJb2GbWygqSPcBtkz6assiUKY+h/cnh
+ Pw7TMGDP
+ igX/7ZoAzt2y1j3vvo9OWQpeJ0Qm9TQ/t38bgnIZashGPGfEO7/PB6+yuCEHqI5ujFh6NWyxoVHhvsmMAW1Vyc5eHhwf8VSWRXWdITlujbgTbpp6nXp3E/TAjr3E5urw4QZ3gyaFNqfXH88W+pWCIdBaybMtyLcmyyaQqXXJ2/InnmDewPhcO+Qns/EfDDgHNurDFtp4gyeWSEvawCv2YppVn8XQhc09D2e35IxUB2FePrTUVhXbJLLH+TgNoKfC7X6HQpAcHko/y8kO6gSYD5Bqn4GtyEa6px4qQRTaTcy2qXeMb8nEO+vHX6OS61r0Yh9sN/Yjmzkat9Qc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,478 +271,539 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-How to place dept this way looks so ugly.  However, it's inevitable for
-now.  The way should be enhanced gradually.
+I'm happy to see that DEPT reported real problems in practice:
 
-Signed-off-by: Byungchul Park <byungchul@sk.com>
+   https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/
+   https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+   https://lore.kernel.org/all/b6e00e77-4a8c-4e05-ab79-266bf05fcc2d@igalia.com/
+
+I’ve added documentation describing DEPT — this should help you
+understand what DEPT is and how it works.  You can use DEPT simply by
+enabling CONFIG_DEPT and checking dmesg at runtime.
 ---
- include/linux/irqflags.h            |   7 +-
- include/linux/local_lock_internal.h |   1 +
- include/linux/lockdep.h             | 102 ++++++++++++++++++++++------
- include/linux/lockdep_types.h       |   3 +
- include/linux/mutex.h               |   1 +
- include/linux/percpu-rwsem.h        |   2 +-
- include/linux/rtmutex.h             |   1 +
- include/linux/rwlock_types.h        |   1 +
- include/linux/rwsem.h               |   1 +
- include/linux/seqlock.h             |   2 +-
- include/linux/spinlock_types_raw.h  |   3 +
- include/linux/srcu.h                |   2 +-
- kernel/dependency/dept.c            |   8 +--
- kernel/locking/lockdep.c            |  22 ++++++
- 14 files changed, 127 insertions(+), 29 deletions(-)
 
-diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index 57b074e0cfbb..d8b9cf093f83 100644
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -15,6 +15,7 @@
- #include <linux/irqflags_types.h>
- #include <linux/typecheck.h>
- #include <linux/cleanup.h>
-+#include <linux/dept.h>
- #include <asm/irqflags.h>
- #include <asm/percpu.h>
- 
-@@ -55,8 +56,10 @@ extern void trace_hardirqs_off(void);
- # define lockdep_softirqs_enabled(p)	((p)->softirqs_enabled)
- # define lockdep_hardirq_enter()			\
- do {							\
--	if (__this_cpu_inc_return(hardirq_context) == 1)\
-+	if (__this_cpu_inc_return(hardirq_context) == 1) { \
- 		current->hardirq_threaded = 0;		\
-+		dept_hardirq_enter();			\
-+	}						\
- } while (0)
- # define lockdep_hardirq_threaded()		\
- do {						\
-@@ -131,6 +134,8 @@ do {						\
- # define lockdep_softirq_enter()		\
- do {						\
- 	current->softirq_context++;		\
-+	if (current->softirq_context == 1)	\
-+		dept_softirq_enter();		\
- } while (0)
- # define lockdep_softirq_exit()			\
- do {						\
-diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock_internal.h
-index 8f82b4eb542f..3e30fea95f92 100644
---- a/include/linux/local_lock_internal.h
-+++ b/include/linux/local_lock_internal.h
-@@ -30,6 +30,7 @@ typedef struct {
- 		.name = #lockname,			\
- 		.wait_type_inner = LD_WAIT_CONFIG,	\
- 		.lock_type = LD_LOCK_PERCPU,		\
-+		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
- 	},						\
- 	.owner = NULL,
- 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index dd634103b014..ebfc781c3095 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -12,6 +12,7 @@
- 
- #include <linux/lockdep_types.h>
- #include <linux/smp.h>
-+#include <linux/dept_ldt.h>
- #include <asm/percpu.h>
- 
- struct task_struct;
-@@ -39,6 +40,8 @@ static inline void lockdep_copy_map(struct lockdep_map *to,
- 	 */
- 	for (i = 0; i < NR_LOCKDEP_CACHING_CLASSES; i++)
- 		to->class_cache[i] = NULL;
-+
-+	dept_map_copy(&to->dmap, &from->dmap);
- }
- 
- /*
-@@ -428,7 +431,8 @@ enum xhlock_context_t {
-  * Note that _name must not be NULL.
-  */
- #define STATIC_LOCKDEP_MAP_INIT(_name, _key) \
--	{ .name = (_name), .key = (void *)(_key), }
-+	{ .name = (_name), .key = (void *)(_key), \
-+	  .dmap = DEPT_MAP_INITIALIZER(_name, _key) }
- 
- static inline void lockdep_invariant_state(bool force) {}
- static inline void lockdep_free_task(struct task_struct *task) {}
-@@ -510,33 +514,89 @@ extern bool read_lock_is_recursive(void);
- #define lock_acquire_shared(l, s, t, n, i)		lock_acquire(l, s, t, 1, 1, n, i)
- #define lock_acquire_shared_recursive(l, s, t, n, i)	lock_acquire(l, s, t, 2, 1, n, i)
- 
--#define spin_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
--#define spin_acquire_nest(l, s, t, n, i)	lock_acquire_exclusive(l, s, t, n, i)
--#define spin_release(l, i)			lock_release(l, i)
--
--#define rwlock_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
-+#define spin_acquire(l, s, t, i)					\
-+do {									\
-+	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
-+	lock_acquire_exclusive(l, s, t, NULL, i);			\
-+} while (0)
-+#define spin_acquire_nest(l, s, t, n, i)				\
-+do {									\
-+	ldt_lock(&(l)->dmap, s, t, n, i);				\
-+	lock_acquire_exclusive(l, s, t, n, i);				\
-+} while (0)
-+#define spin_release(l, i)						\
-+do {									\
-+	ldt_unlock(&(l)->dmap, i);					\
-+	lock_release(l, i);						\
-+} while (0)
-+#define rwlock_acquire(l, s, t, i)					\
-+do {									\
-+	ldt_wlock(&(l)->dmap, s, t, NULL, i);				\
-+	lock_acquire_exclusive(l, s, t, NULL, i);			\
-+} while (0)
- #define rwlock_acquire_read(l, s, t, i)					\
- do {									\
-+	ldt_rlock(&(l)->dmap, s, t, NULL, i, !read_lock_is_recursive());\
- 	if (read_lock_is_recursive())					\
- 		lock_acquire_shared_recursive(l, s, t, NULL, i);	\
- 	else								\
- 		lock_acquire_shared(l, s, t, NULL, i);			\
- } while (0)
--
--#define rwlock_release(l, i)			lock_release(l, i)
--
--#define seqcount_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
--#define seqcount_acquire_read(l, s, t, i)	lock_acquire_shared_recursive(l, s, t, NULL, i)
--#define seqcount_release(l, i)			lock_release(l, i)
--
--#define mutex_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
--#define mutex_acquire_nest(l, s, t, n, i)	lock_acquire_exclusive(l, s, t, n, i)
--#define mutex_release(l, i)			lock_release(l, i)
--
--#define rwsem_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
--#define rwsem_acquire_nest(l, s, t, n, i)	lock_acquire_exclusive(l, s, t, n, i)
--#define rwsem_acquire_read(l, s, t, i)		lock_acquire_shared(l, s, t, NULL, i)
--#define rwsem_release(l, i)			lock_release(l, i)
-+#define rwlock_release(l, i)						\
-+do {									\
-+	ldt_unlock(&(l)->dmap, i);					\
-+	lock_release(l, i);						\
-+} while (0)
-+#define seqcount_acquire(l, s, t, i)					\
-+do {									\
-+	ldt_wlock(&(l)->dmap, s, t, NULL, i);				\
-+	lock_acquire_exclusive(l, s, t, NULL, i);			\
-+} while (0)
-+#define seqcount_acquire_read(l, s, t, i)				\
-+do {									\
-+	ldt_rlock(&(l)->dmap, s, t, NULL, i, false);			\
-+	lock_acquire_shared_recursive(l, s, t, NULL, i);		\
-+} while (0)
-+#define seqcount_release(l, i)						\
-+do {									\
-+	ldt_unlock(&(l)->dmap, i);					\
-+	lock_release(l, i);						\
-+} while (0)
-+#define mutex_acquire(l, s, t, i)					\
-+do {									\
-+	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
-+	lock_acquire_exclusive(l, s, t, NULL, i);			\
-+} while (0)
-+#define mutex_acquire_nest(l, s, t, n, i)				\
-+do {									\
-+	ldt_lock(&(l)->dmap, s, t, n, i);				\
-+	lock_acquire_exclusive(l, s, t, n, i);				\
-+} while (0)
-+#define mutex_release(l, i)						\
-+do {									\
-+	ldt_unlock(&(l)->dmap, i);					\
-+	lock_release(l, i);						\
-+} while (0)
-+#define rwsem_acquire(l, s, t, i)					\
-+do {									\
-+	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
-+	lock_acquire_exclusive(l, s, t, NULL, i);			\
-+} while (0)
-+#define rwsem_acquire_nest(l, s, t, n, i)				\
-+do {									\
-+	ldt_lock(&(l)->dmap, s, t, n, i);				\
-+	lock_acquire_exclusive(l, s, t, n, i);				\
-+} while (0)
-+#define rwsem_acquire_read(l, s, t, i)					\
-+do {									\
-+	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
-+	lock_acquire_shared(l, s, t, NULL, i);				\
-+} while (0)
-+#define rwsem_release(l, i)						\
-+do {									\
-+	ldt_unlock(&(l)->dmap, i);					\
-+	lock_release(l, i);						\
-+} while (0)
- 
- #define lock_map_acquire(l)			lock_acquire_exclusive(l, 0, 0, NULL, _THIS_IP_)
- #define lock_map_acquire_try(l)			lock_acquire_exclusive(l, 0, 1, NULL, _THIS_IP_)
-diff --git a/include/linux/lockdep_types.h b/include/linux/lockdep_types.h
-index eae115a26488..0c3389ed26b6 100644
---- a/include/linux/lockdep_types.h
-+++ b/include/linux/lockdep_types.h
-@@ -11,6 +11,7 @@
- #define __LINUX_LOCKDEP_TYPES_H
- 
- #include <linux/types.h>
-+#include <linux/dept.h>
- 
- #define MAX_LOCKDEP_SUBCLASSES		8UL
- 
-@@ -77,6 +78,7 @@ struct lock_class_key {
- 		struct hlist_node		hash_entry;
- 		struct lockdep_subclass_key	subkeys[MAX_LOCKDEP_SUBCLASSES];
- 	};
-+	struct dept_key				dkey;
- };
- 
- extern struct lock_class_key __lockdep_no_validate__;
-@@ -195,6 +197,7 @@ struct lockdep_map {
- 	int				cpu;
- 	unsigned long			ip;
- #endif
-+	struct dept_map			dmap;
- };
- 
- struct pin_cookie { unsigned int val; };
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index bf535f0118bb..dae4f3fede49 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -29,6 +29,7 @@ struct device;
- 		, .dep_map = {					\
- 			.name = #lockname,			\
- 			.wait_type_inner = LD_WAIT_SLEEP,	\
-+			.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
- 		}
- #else
- # define __DEP_MAP_MUTEX_INITIALIZER(lockname)
-diff --git a/include/linux/percpu-rwsem.h b/include/linux/percpu-rwsem.h
-index 288f5235649a..11eece738f1f 100644
---- a/include/linux/percpu-rwsem.h
-+++ b/include/linux/percpu-rwsem.h
-@@ -22,7 +22,7 @@ struct percpu_rw_semaphore {
- };
- 
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
--#define __PERCPU_RWSEM_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname },
-+#define __PERCPU_RWSEM_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname, .dmap = DEPT_MAP_INITIALIZER(lockname, NULL) },
- #else
- #define __PERCPU_RWSEM_DEP_MAP_INIT(lockname)
- #endif
-diff --git a/include/linux/rtmutex.h b/include/linux/rtmutex.h
-index ede4c6bf6f22..ac68c3e5e2ec 100644
---- a/include/linux/rtmutex.h
-+++ b/include/linux/rtmutex.h
-@@ -91,6 +91,7 @@ do { \
- 	.dep_map = {					\
- 		.name = #mutexname,			\
- 		.wait_type_inner = LD_WAIT_SLEEP,	\
-+		.dmap = DEPT_MAP_INITIALIZER(mutexname, NULL),\
- 	}
- #else
- #define __DEP_MAP_RT_MUTEX_INITIALIZER(mutexname)
-diff --git a/include/linux/rwlock_types.h b/include/linux/rwlock_types.h
-index 1948442e7750..6e58dfc84997 100644
---- a/include/linux/rwlock_types.h
-+++ b/include/linux/rwlock_types.h
-@@ -10,6 +10,7 @@
- 	.dep_map = {							\
- 		.name = #lockname,					\
- 		.wait_type_inner = LD_WAIT_CONFIG,			\
-+		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),		\
- 	}
- #else
- # define RW_DEP_MAP_INIT(lockname)
-diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
-index f1aaf676a874..0f349c83a7dc 100644
---- a/include/linux/rwsem.h
-+++ b/include/linux/rwsem.h
-@@ -22,6 +22,7 @@
- 	.dep_map = {					\
- 		.name = #lockname,			\
- 		.wait_type_inner = LD_WAIT_SLEEP,	\
-+		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
- 	},
- #else
- # define __RWSEM_DEP_MAP_INIT(lockname)
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index a8a8661839b6..5f18e11be14e 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -51,7 +51,7 @@ static inline void __seqcount_init(seqcount_t *s, const char *name,
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 
- # define SEQCOUNT_DEP_MAP_INIT(lockname)				\
--		.dep_map = { .name = #lockname }
-+		.dep_map = { .name = #lockname, .dmap = DEPT_MAP_INITIALIZER(lockname, NULL) }
- 
- /**
-  * seqcount_init() - runtime initializer for seqcount_t
-diff --git a/include/linux/spinlock_types_raw.h b/include/linux/spinlock_types_raw.h
-index 91cb36b65a17..3dcc551ded25 100644
---- a/include/linux/spinlock_types_raw.h
-+++ b/include/linux/spinlock_types_raw.h
-@@ -31,11 +31,13 @@ typedef struct raw_spinlock {
- 	.dep_map = {					\
- 		.name = #lockname,			\
- 		.wait_type_inner = LD_WAIT_SPIN,	\
-+		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
- 	}
- # define SPIN_DEP_MAP_INIT(lockname)			\
- 	.dep_map = {					\
- 		.name = #lockname,			\
- 		.wait_type_inner = LD_WAIT_CONFIG,	\
-+		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
- 	}
- 
- # define LOCAL_SPIN_DEP_MAP_INIT(lockname)		\
-@@ -43,6 +45,7 @@ typedef struct raw_spinlock {
- 		.name = #lockname,			\
- 		.wait_type_inner = LD_WAIT_CONFIG,	\
- 		.lock_type = LD_LOCK_PERCPU,		\
-+		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
- 	}
- #else
- # define RAW_SPIN_DEP_MAP_INIT(lockname)
-diff --git a/include/linux/srcu.h b/include/linux/srcu.h
-index 344ad51c8f6c..61c0ca3a1ef8 100644
---- a/include/linux/srcu.h
-+++ b/include/linux/srcu.h
-@@ -53,7 +53,7 @@ int __init_srcu_struct_fast_updown(struct srcu_struct *ssp, const char *name,
- 	__init_srcu_struct_fast_updown((ssp), #ssp, &__srcu_key); \
- })
- 
--#define __SRCU_DEP_MAP_INIT(srcu_name)	.dep_map = { .name = #srcu_name },
-+#define __SRCU_DEP_MAP_INIT(srcu_name)	.dep_map = { .name = #srcu_name, .dmap = DEPT_MAP_INITIALIZER(srcu_name, NULL) },
- #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
- 
- int init_srcu_struct(struct srcu_struct *ssp);
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index f2a9456f63f6..18b238931699 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -250,10 +250,10 @@ static bool dept_working(void)
-  * Even k == NULL is considered as a valid key because it would use
-  * &->map_key as the key in that case.
-  */
--struct dept_key __dept_no_validate__;
-+extern struct lock_class_key __lockdep_no_validate__;
- static bool valid_key(struct dept_key *k)
- {
--	return &__dept_no_validate__ != k;
-+	return &__lockdep_no_validate__.dkey != k;
- }
- 
- /*
-@@ -1921,7 +1921,7 @@ void dept_softirqs_off(void)
- 	dept_task()->softirqs_enabled = false;
- }
- 
--void dept_hardirqs_off(void)
-+void noinstr dept_hardirqs_off(void)
- {
- 	/*
- 	 * Assumes that it's called with IRQ disabled so that accessing
-@@ -1943,7 +1943,7 @@ void dept_softirq_enter(void)
- /*
-  * Ensure it's the outmost hardirq context.
-  */
--void dept_hardirq_enter(void)
-+void noinstr dept_hardirq_enter(void)
- {
- 	struct dept_task *dt = dept_task();
- 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 2d4c5bab5af8..dc97f2753ef8 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -1224,6 +1224,8 @@ void lockdep_register_key(struct lock_class_key *key)
- 	struct lock_class_key *k;
- 	unsigned long flags;
- 
-+	dept_key_init(&key->dkey);
-+
- 	if (WARN_ON_ONCE(static_obj(key)))
- 		return;
- 	hash_head = keyhashentry(key);
-@@ -4361,6 +4363,8 @@ static void __trace_hardirqs_on_caller(void)
-  */
- void lockdep_hardirqs_on_prepare(void)
- {
-+	dept_hardirqs_on();
-+
- 	if (unlikely(!debug_locks))
- 		return;
- 
-@@ -4481,6 +4485,8 @@ EXPORT_SYMBOL_GPL(lockdep_hardirqs_on);
-  */
- void noinstr lockdep_hardirqs_off(unsigned long ip)
- {
-+	dept_hardirqs_off();
-+
- 	if (unlikely(!debug_locks))
- 		return;
- 
-@@ -4525,6 +4531,8 @@ void lockdep_softirqs_on(unsigned long ip)
- {
- 	struct irqtrace_events *trace = &current->irqtrace;
- 
-+	dept_softirqs_on_ip(ip);
-+
- 	if (unlikely(!lockdep_enabled()))
- 		return;
- 
-@@ -4563,6 +4571,8 @@ void lockdep_softirqs_on(unsigned long ip)
-  */
- void lockdep_softirqs_off(unsigned long ip)
- {
-+	dept_softirqs_off();
-+
- 	if (unlikely(!lockdep_enabled()))
- 		return;
- 
-@@ -4940,6 +4950,8 @@ void lockdep_init_map_type(struct lockdep_map *lock, const char *name,
- {
- 	int i;
- 
-+	ldt_init(&lock->dmap, &key->dkey, subclass, name);
-+
- 	for (i = 0; i < NR_LOCKDEP_CACHING_CLASSES; i++)
- 		lock->class_cache[i] = NULL;
- 
-@@ -5736,6 +5748,12 @@ void lock_set_class(struct lockdep_map *lock, const char *name,
- {
- 	unsigned long flags;
- 
-+	/*
-+	 * dept_map_(re)init() might be called twice redundantly. But
-+	 * there's no choice as long as Dept relies on Lockdep.
-+	 */
-+	ldt_set_class(&lock->dmap, name, &key->dkey, subclass, ip);
-+
- 	if (unlikely(!lockdep_enabled()))
- 		return;
- 
-@@ -5753,6 +5771,8 @@ void lock_downgrade(struct lockdep_map *lock, unsigned long ip)
- {
- 	unsigned long flags;
- 
-+	ldt_downgrade(&lock->dmap, ip);
-+
- 	if (unlikely(!lockdep_enabled()))
- 		return;
- 
-@@ -6588,6 +6608,8 @@ void lockdep_unregister_key(struct lock_class_key *key)
- 	bool found = false;
- 	bool need_callback = false;
- 
-+	dept_key_destroy(&key->dkey);
-+
- 	might_sleep();
- 
- 	if (WARN_ON_ONCE(static_obj(key)))
+Hi Linus and folks,
+
+I’ve been developing a tool to detect deadlock possibilities by tracking
+waits/events — rather than lock acquisition order — to cover all the
+synchronization mechanisms.  To summarize the design rationale, starting
+from the problem statement, through analysis, to the solution:
+
+   CURRENT STATUS
+   --------------
+   Lockdep tracks lock acquisition order to identify deadlock conditions.
+   Additionally, it tracks IRQ state changes — via {en,dis}able — to
+   detect cases where locks are acquired unintentionally during
+   interrupt handling.
+   
+   PROBLEM
+   -------
+   Waits and their associated events that are never reachable can
+   eventually lead to deadlocks.  However, since Lockdep focuses solely
+   on lock acquisition order, it has inherent limitations when handling
+   waits and events.
+   
+   Moreover, by tracking only lock acquisition order, Lockdep cannot
+   properly handle read locks or cross-event scenarios — such as
+   wait_for_completion() and complete() — making it increasingly
+   inadequate as a general-purpose deadlock detection tool.
+   
+   SOLUTION
+   --------
+   Once again, waits and their associated events that are never
+   reachable can eventually lead to deadlocks.  The new solution, DEPT,
+   focuses directly on waits and events.  DEPT monitors waits and events,
+   and reports them when any become unreachable.
+
+DEPT provides:
+
+   * Correct handling of read locks.
+   * Support for general waits and events.
+   * Continuous operation, even after multiple reports.
+   * Simple, intuitive annotation APIs.
+
+There are still false positives, and some are already being worked on
+for suppression.  Especially splitting the folio class into several
+appropriate classes e.g. block device mapping class and regular file
+mapping class, is currently under active development by me and Yeoreum
+Yun.
+
+Anyway, these efforts will need to continue for a while, as we’ve seen
+with lockdep over two decades.  DEPT is tagged as EXPERIMENTAL in
+Kconfig — meaning it’s not yet suitable for use as an automation tool.
+
+However, for those who are interested in using DEPT to analyze complex
+synchronization patterns and extract dependency insights, DEPT would be
+a great tool for the purpose.
+
+Thanks for your support and contributions to:
+
+   Harry Yoo <harry.yoo@oracle.com>
+   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+   Yunseong Kim <ysk@kzalloc.com>
+   Yeoreum Yun <yeoreum.yun@arm.com>
+
+FAQ
+---
+Q. Is this the first attempt to solve this problem?
+A. No. The cross-release feature (commit b09be676e0ff2) attempted to
+   address it — as a Lockdep extension.  It was merged, but quickly
+   reverted, because:
+
+   While it uncovered valuable hidden issues, it also introduced false
+   positives.  Since these false positives mask further real problems
+   with Lockdep — and developers strongly dislike them — the feature was
+   rolled back.
+
+Q. Why wasn’t DEPT built as a Lockdep extension?
+A. Lockdep is the result of years of work by kernel developers — and is
+   now very stable. But I chose to build DEPT separately, because:
+
+   While reusing BFS(Breadth First Search) and Lockdep’s hashing is
+   beneficial, the rest of the system must be rebuilt from scratch to
+   align with DEPT’s wait-event model — since Lockdep was originally
+   designed for tracking lock acquisition orders, not wait-event
+   dependencies.
+
+Q. Do you plan to replace Lockdep entirely?
+A. Not at all — Lockdep still plays a vital role in validating correct
+   lock usage.  While its dependency-checking logic should eventually be
+   superseded by DEPT, the rest of its functionality should stay.
+
+Q. Should we replace the dependency check immediately?
+A. Absolutely not.  Lockdep’s stability is the result of years of hard
+   work by kernel developers.  Lockdep and DEPT should run side by side
+   until DEPT matures.
+
+Q. Stronger detection often leads to more false positives — which was a
+   major pain point when cross-release was added.  Is DEPT designed to
+   handle this?
+A. Yes.  DEPT’s simple, generalized design enables flexible reporting —
+   so while false positives still need fixing, they’re far less
+   disruptive than they were under the Lockdep extension, cross-release.
+
+Q. Why not fix all false positives out-of-tree before merging?
+A. Since the affected subsystems span the entire kernel, like Lockdep,
+   which has relied on annotations to avoid false positives over the
+   last two decades, DEPT too will require the annotation efforts.
+
+   Performing annotation work within the mainline will help us add
+   annotations more appropriately and will also make DEPT a useful tool
+   for a wider range of users more quickly.
+
+   CONFIG_DEPT is marked EXPERIMENTAL, so it’s opt-in. Some users are
+   already interested in using DEPT to analyze complex synchronization
+   patterns and extract dependency insights.
+
+	Byungchul
+---
+Changes from v17:
+
+	1. Rebase on the mainline as of 2025 Dec 5.
+	2. Convert the documents' format from txt to rst. (feedbacked
+	   by Jonathan Corbet and Bagas Sanjaya)
+	3. Move the documents from 'Documentation/dependency' to
+	   'Documentation/dev-tools'. (feedbakced by Jonathan Corbet)
+	4. Improve the documentation. (feedbacked by NeilBrown)
+	5. Use a common function, enter_from_user_mode(), instead of
+	   arch specific code, to notice context switch from user mode.
+	   (feedbacked by Dave Hansen, Mark Rutland, and Mark Brown)
+	6. Resolve the header dependency issue by using dept's internal
+	   header, instead of relocating 'struct llist_{head,node}' to
+	   another header. (feedbacked by Greg KH)
+	7. Improve page(or folio) usage type APIs.
+	8. Add rust helper for wait_for_completion(). (feedbacked by
+	   Guangbo Cui, Boqun Feng, and Danilo Krummrich)
+	9. Refine some commit messages.
+
+Changes from v16:
+
+	1. Rebase on v6.17.
+	2. Fix a false positive from rcu (by Yunseong Kim)
+	3. Introduce APIs to set page's usage, dept_set_page_usage() and
+	   dept_reset_page_usage() to avoid false positives.
+	4. Consider lock_page() as a potential wait unconditionally.
+	5. Consider folio_lock_killable() as a potential wait
+	   unconditionally.
+	6. Add support for tracking PG_writeback waits and events.
+	7. Fix two build errors due to the additional debug information
+	   added by dept. (by Yunseong Kim)
+
+Changes from v15:
+
+	1. Fix typo and improve comments and commit messages (feedbacked
+	   by ALOK TIWARI, Waiman Long, and kernel test robot).
+	2. Do not stop dept on detection of cicular dependency of
+	   recover event, allowing to keep reporting.
+	3. Add SK hynix to copyright.
+	4. Consider folio_lock() as a potential wait unconditionally.
+	5. Fix Kconfig dependency bug (feedbacked by kernel test rebot).
+	6. Do not suppress reports that involve classes even that have
+	   already involved in other reports, allowing to keep
+	   reporting.
+
+Changes from v14:
+
+	1. Rebase on the current latest, v6.15-rc6.
+	2. Refactor dept code.
+	3. With multi event sites for a single wait, even if an event
+	   forms a circular dependency, the event can be recovered by
+	   other event(or wake up) paths.  Even though informing the
+	   circular dependency is worthy but it should be suppressed
+	   once informing it, if it doesn't lead an actual deadlock.  So
+	   introduce APIs to annotate the relationship between event
+	   site and recover site, that are, event_site() and
+	   dept_recover_event().
+	4. wait_for_completion() worked with dept map embedded in struct
+	   completion.  However, it generates a few false positves since
+	   all the waits using the instance of struct completion, share
+	   the map and key.  To avoid the false positves, make it not to
+	   share the map and key but each wait_for_completion() caller
+	   have its own key by default.  Of course, external maps also
+	   can be used if needed.
+	5. Fix a bug about hardirq on/off tracing.
+	6. Implement basic unit test for dept.
+	7. Add more supports for dma fence synchronization.
+	8. Add emergency stop of dept e.g. on panic().
+	9. Fix false positives by mmu_notifier_invalidate_*().
+	10. Fix recursive call bug by DEPT_WARN_*() and DEPT_STOP().
+	11. Fix trivial bugs in DEPT_WARN_*() and DEPT_STOP().
+	12. Fix a bug that a spin lock, dept_pool_spin, is used in
+	    both contexts of irq disabled and enabled without irq
+	    disabled.
+	13. Suppress reports with classes, any of that already have
+	    been reported, even though they have different chains but
+	    being barely meaningful.
+	14. Print stacktrace of the wait that an event is now waking up,
+	    not only stacktrace of the event.
+	15. Make dept aware of lockdep_cmp_fn() that is used to avoid
+	    false positives in lockdep so that dept can also avoid them.
+	16. Do do_event() only if there are no ecxts have been
+	    delimited.
+	17. Fix a bug that was not synchronized for stage_m in struct
+	    dept_task, using a spin lock, dept_task()->stage_lock.
+	18. Fix a bug that dept didn't handle the case that multiple
+	    ttwus for a single waiter can be called at the same time
+	    e.i. a race issue.
+	19. Distinguish each kernel context from others, not only by
+	    system call but also by user oriented fault so that dept can
+	    work with more accuracy information about kernel context.
+	    That helps to avoid a few false positives.
+	20. Limit dept's working to x86_64 and arm64.
+
+Changes from v13:
+
+	1. Rebase on the current latest version, v6.9-rc7.
+	2. Add 'dept' documentation describing dept APIs.
+
+Changes from v12:
+
+	1. Refine the whole document for dept.
+	2. Add 'Interpret dept report' section in the document, using a
+	   deadlock report obtained in practice. Hope this version of
+	   document helps guys understand dept better.
+
+	   https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/#t
+	   https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+
+Changes from v11:
+
+	1. Add 'dept' documentation describing the concept of dept.
+	2. Rewrite the commit messages of the following commits for
+	   using weaker lockdep annotation, for better description.
+
+	   fs/jbd2: Use a weaker annotation in journal handling
+	   cpu/hotplug: Use a weaker annotation in AP thread
+
+	   (feedbacked by Thomas Gleixner)
+
+Changes from v10:
+
+	1. Fix noinstr warning when building kernel source.
+	2. dept has been reporting some false positives due to the folio
+	   lock's unfairness. Reflect it and make dept work based on
+	   dept annotaions instead of just wait and wake up primitives.
+	3. Remove the support for PG_writeback while working on 2. I
+	   will add the support later if needed.
+	4. dept didn't print stacktrace for [S] if the participant of a
+	   deadlock is not lock mechanism but general wait and event.
+	   However, it made hard to interpret the report in that case.
+	   So add support to print stacktrace of the requestor who asked
+	   the event context to run - usually a waiter of the event does
+	   it just before going to wait state.
+	5. Give up tracking raw_local_irq_{disable,enable}() since it
+	   totally messed up dept's irq tracking. So make it work in the
+	   same way as lockdep does. I will consider it once any false
+	   positives by those are observed again.
+	6. Change the manual rwsem_acquire_read(->j_trans_commit_map)
+	   annotation in fs/jbd2/transaction.c to the try version so
+	   that it works as much as it exactly needs.
+	7. Remove unnecessary 'inline' keyword in dept.c and add
+	   '__maybe_unused' to a needed place.
+
+Changes from v9:
+
+	1. Fix a bug. SDT tracking didn't work well because of my big
+	   mistake that I should've used waiter's map to indentify its
+	   class but it had been working with waker's one. FYI,
+	   PG_locked and PG_writeback weren't affected. They still
+	   worked well. (reported by YoungJun)
+	
+Changes from v8:
+
+	1. Fix build error by adding EXPORT_SYMBOL(PG_locked_map) and
+	   EXPORT_SYMBOL(PG_writeback_map) for kernel module build -
+	   appologize for that. (reported by kernel test robot)
+	2. Fix build error by removing header file's circular dependency
+	   that was caused by "atomic.h", "kernel.h" and "irqflags.h",
+	   which I introduced - appolgize for that. (reported by kernel
+	   test robot)
+
+Changes from v7:
+
+	1. Fix a bug that cannot track rwlock dependency properly,
+	   introduced in v7. (reported by Boqun and lockdep selftest)
+	2. Track wait/event of PG_{locked,writeback} more aggressively
+	   assuming that when a bit of PG_{locked,writeback} is cleared
+	   there might be waits on the bit. (reported by Linus, Hillf
+	   and syzbot)
+	3. Fix and clean bad style code e.i. unnecessarily introduced
+	   a randome pattern and so on. (pointed out by Linux)
+	4. Clean code for applying dept to wait_for_completion().
+
+Changes from v6:
+
+	1. Tie to task scheduler code to track sleep and try_to_wake_up()
+	   assuming sleeps cause waits, try_to_wake_up()s would be the
+	   events that those are waiting for, of course with proper dept
+	   annotations, sdt_might_sleep_weak(), sdt_might_sleep_strong()
+	   and so on. For these cases, class is classified at sleep
+	   entrance rather than the synchronization initialization code.
+	   Which would extremely reduce false alarms.
+	2. Remove the dept associated instance in each page struct for
+	   tracking dependencies by PG_locked and PG_writeback thanks to
+	   the 1. work above.
+	3. Introduce CONFIG_dept_AGGRESIVE_TIMEOUT_WAIT to suppress
+	   reports that waits with timeout set are involved, for those
+	   who don't like verbose reporting.
+	4. Add a mechanism to refill the internal memory pools on
+	   running out so that dept could keep working as long as free
+	   memory is available in the system.
+	5. Re-enable tracking hashed-waitqueue wait. That's going to no
+	   longer generate false positives because class is classified
+	   at sleep entrance rather than the waitqueue initailization.
+	6. Refactor to make it easier to port onto each new version of
+	   the kernel.
+	7. Apply dept to dma fence.
+	8. Do trivial optimizaitions.
+
+Changes from v5:
+
+	1. Use just pr_warn_once() rather than WARN_ONCE() on the lack
+	   of internal resources because WARN_*() printing stacktrace is
+	   too much for informing the lack. (feedback from Ted, Hyeonggon)
+	2. Fix trivial bugs like missing initializing a struct before
+	   using it.
+	3. Assign a different class per task when handling onstack
+	   variables for waitqueue or the like. Which makes dept
+	   distinguish between onstack variables of different tasks so
+	   as to prevent false positives. (reported by Hyeonggon)
+	4. Make dept aware of even raw_local_irq_*() to prevent false
+	   positives. (reported by Hyeonggon)
+	5. Don't consider dependencies between the events that might be
+	   triggered within __schedule() and the waits that requires
+	    __schedule(), real ones. (reported by Hyeonggon)
+	6. Unstage the staged wait that has prepare_to_wait_event()'ed
+	   *and* yet to get to __schedule(), if we encounter __schedule()
+	   in-between for another sleep, which is possible if e.g. a
+	   mutex_lock() exists in 'condition' of ___wait_event().
+	7. Turn on CONFIG_PROVE_LOCKING when CONFIG_DEPT is on, to rely
+	   on the hardirq and softirq entrance tracing to make dept more
+	   portable for now.
+
+Changes from v4:
+
+	1. Fix some bugs that produce false alarms.
+	2. Distinguish each syscall context from another *for arm64*.
+	3. Make it not warn it but just print it in case dept ring
+	   buffer gets exhausted. (feedback from Hyeonggon)
+	4. Explicitely describe "EXPERIMENTAL" and "dept might produce
+	   false positive reports" in Kconfig. (feedback from Ted)
+
+Changes from v3:
+
+	1. dept shouldn't create dependencies between different depths
+	   of a class that were indicated by *_lock_nested(). dept
+	   normally doesn't but it does once another lock class comes
+	   in. So fixed it. (feedback from Hyeonggon)
+	2. dept considered a wait as a real wait once getting to
+	   __schedule() even if it has been set to TASK_RUNNING by wake
+	   up sources in advance. Fixed it so that dept doesn't consider
+	   the case as a real wait. (feedback from Jan Kara)
+	3. Stop tracking dependencies with a map once the event
+	   associated with the map has been handled. dept will start to
+	   work with the map again, on the next sleep.
+
+Changes from v2:
+
+	1. Disable dept on bit_wait_table[] in sched/wait_bit.c
+	   reporting a lot of false positives, which is my fault.
+	   Wait/event for bit_wait_table[] should've been tagged in a
+	   higher layer for better work, which is a future work.
+	   (feedback from Jan Kara)
+	2. Disable dept on crypto_larval's completion to prevent a false
+	   positive.
+
+Changes from v1:
+
+	1. Fix coding style and typo. (feedback from Steven)
+	2. Distinguish each work context from another in workqueue.
+	3. Skip checking lock acquisition with nest_lock, which is about
+	   correct lock usage that should be checked by lockdep.
+
+Changes from RFC(v0):
+
+	1. Prevent adding a wait tag at prepare_to_wait() but __schedule().
+	   (feedback from Linus and Matthew)
+	2. Use try version at lockdep_acquire_cpus_lock() annotation.
+	3. Distinguish each syscall context from another.
+
+Byungchul Park (41):
+  dept: implement DEPT(DEPendency Tracker)
+  dept: add single event dependency tracker APIs
+  dept: add lock dependency tracker APIs
+  dept: tie to lockdep and IRQ tracing
+  dept: add proc knobs to show stats and dependency graph
+  dept: distinguish each kernel context from another
+  dept: distinguish each work from another
+  dept: add a mechanism to refill the internal memory pools on running
+    out
+  dept: record the latest one out of consecutive waits of the same class
+  dept: apply sdt_might_sleep_{start,end}() to
+    wait_for_completion()/complete()
+  dept: apply sdt_might_sleep_{start,end}() to swait
+  dept: apply sdt_might_sleep_{start,end}() to waitqueue wait
+  dept: apply sdt_might_sleep_{start,end}() to hashed-waitqueue wait
+  dept: apply sdt_might_sleep_{start,end}() to dma fence
+  dept: track timeout waits separately with a new Kconfig
+  dept: apply timeout consideration to wait_for_completion()/complete()
+  dept: apply timeout consideration to swait
+  dept: apply timeout consideration to waitqueue wait
+  dept: apply timeout consideration to hashed-waitqueue wait
+  dept: apply timeout consideration to dma fence wait
+  dept: make dept able to work with an external wgen
+  dept: track PG_locked with dept
+  dept: print staged wait's stacktrace on report
+  locking/lockdep: prevent various lockdep assertions when
+    lockdep_off()'ed
+  dept: add documents for dept
+  cpu/hotplug: use a weaker annotation in AP thread
+  dept: assign dept map to mmu notifier invalidation synchronization
+  dept: assign unique dept_key to each distinct dma fence caller
+  dept: make dept aware of lockdep_set_lock_cmp_fn() annotation
+  dept: make dept stop from working on debug_locks_off()
+  dept: assign unique dept_key to each distinct wait_for_completion()
+    caller
+  completion, dept: introduce init_completion_dmap() API
+  dept: introduce a new type of dependency tracking between multi event
+    sites
+  dept: add module support for struct dept_event_site and
+    dept_event_site_dep
+  dept: introduce event_site() to disable event tracking if it's
+    recoverable
+  dept: implement a basic unit test for dept
+  dept: call dept_hardirqs_off() in local_irq_*() regardless of irq
+    state
+  dept: introduce APIs to set page usage and use subclasses_evt for the
+    usage
+  dept: track PG_writeback with dept
+  SUNRPC: relocate struct rcu_head to the first field of struct rpc_xprt
+  mm: percpu: increase PERCPU_DYNAMIC_SIZE_SHIFT on DEPT and large
+    PAGE_SIZE
+
+Yunseong Kim (1):
+  rcu/update: fix same dept key collision between various types of RCU
+
+ Documentation/dev-tools/dept.rst     |  778 ++++++
+ Documentation/dev-tools/dept_api.rst |  125 +
+ drivers/dma-buf/dma-fence.c          |   23 +-
+ include/asm-generic/vmlinux.lds.h    |   13 +-
+ include/linux/completion.h           |  124 +-
+ include/linux/dept.h                 |  402 +++
+ include/linux/dept_ldt.h             |   78 +
+ include/linux/dept_sdt.h             |   68 +
+ include/linux/dept_unit_test.h       |   67 +
+ include/linux/dma-fence.h            |   74 +-
+ include/linux/hardirq.h              |    3 +
+ include/linux/irq-entry-common.h     |    4 +
+ include/linux/irqflags.h             |   21 +-
+ include/linux/local_lock_internal.h  |    1 +
+ include/linux/lockdep.h              |  105 +-
+ include/linux/lockdep_types.h        |    3 +
+ include/linux/mm_types.h             |    4 +
+ include/linux/mmu_notifier.h         |   26 +
+ include/linux/module.h               |    5 +
+ include/linux/mutex.h                |    1 +
+ include/linux/page-flags.h           |  217 +-
+ include/linux/pagemap.h              |   37 +-
+ include/linux/percpu-rwsem.h         |    2 +-
+ include/linux/percpu.h               |    4 +
+ include/linux/rcupdate_wait.h        |   13 +-
+ include/linux/rtmutex.h              |    1 +
+ include/linux/rwlock_types.h         |    1 +
+ include/linux/rwsem.h                |    1 +
+ include/linux/sched.h                |  118 +
+ include/linux/seqlock.h              |    2 +-
+ include/linux/spinlock_types_raw.h   |    3 +
+ include/linux/srcu.h                 |    2 +-
+ include/linux/sunrpc/xprt.h          |    9 +-
+ include/linux/swait.h                |    3 +
+ include/linux/wait.h                 |    3 +
+ include/linux/wait_bit.h             |    3 +
+ init/init_task.c                     |    2 +
+ init/main.c                          |    2 +
+ kernel/Makefile                      |    1 +
+ kernel/cpu.c                         |    2 +-
+ kernel/dependency/Makefile           |    5 +
+ kernel/dependency/dept.c             | 3499 ++++++++++++++++++++++++++
+ kernel/dependency/dept_hash.h        |   10 +
+ kernel/dependency/dept_internal.h    |  314 +++
+ kernel/dependency/dept_object.h      |   13 +
+ kernel/dependency/dept_proc.c        |   94 +
+ kernel/dependency/dept_unit_test.c   |  173 ++
+ kernel/exit.c                        |    1 +
+ kernel/fork.c                        |    2 +
+ kernel/locking/lockdep.c             |   33 +
+ kernel/module/main.c                 |   19 +
+ kernel/rcu/rcu.h                     |    1 +
+ kernel/rcu/update.c                  |    5 +-
+ kernel/sched/completion.c            |   62 +-
+ kernel/sched/core.c                  |    9 +
+ kernel/workqueue.c                   |    3 +
+ lib/Kconfig.debug                    |   48 +
+ lib/debug_locks.c                    |    2 +
+ lib/locking-selftest.c               |    2 +
+ mm/filemap.c                         |   38 +
+ mm/mm_init.c                         |    3 +
+ mm/mmu_notifier.c                    |   31 +-
+ rust/helpers/completion.c            |    5 +
+ 63 files changed, 6602 insertions(+), 121 deletions(-)
+ create mode 100644 Documentation/dev-tools/dept.rst
+ create mode 100644 Documentation/dev-tools/dept_api.rst
+ create mode 100644 include/linux/dept.h
+ create mode 100644 include/linux/dept_ldt.h
+ create mode 100644 include/linux/dept_sdt.h
+ create mode 100644 include/linux/dept_unit_test.h
+ create mode 100644 kernel/dependency/Makefile
+ create mode 100644 kernel/dependency/dept.c
+ create mode 100644 kernel/dependency/dept_hash.h
+ create mode 100644 kernel/dependency/dept_internal.h
+ create mode 100644 kernel/dependency/dept_object.h
+ create mode 100644 kernel/dependency/dept_proc.c
+ create mode 100644 kernel/dependency/dept_unit_test.c
+
+
+base-commit: 43dfc13ca972988e620a6edb72956981b75ab6b0
 -- 
 2.17.1
 
