@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E892D2E016
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:20:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 932D6D2E016
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 809A46B00CE; Fri,  5 Dec 2025 02:19:56 -0500 (EST)
+	id F02B66B00E1; Fri,  5 Dec 2025 02:19:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75F696B00D5; Fri,  5 Dec 2025 02:19:56 -0500 (EST)
+	id E3D7B6B00DE; Fri,  5 Dec 2025 02:19:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 257446B00D7; Fri,  5 Dec 2025 02:19:56 -0500 (EST)
+	id AE2656B00DA; Fri,  5 Dec 2025 02:19:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCED26B00D5
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF37CB95D3
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:55 +0000 (UTC)
-X-FDA: 84184567950.15.522981C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C5B56B00D5
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:19:57 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59EA21604D4
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:57 +0000 (UTC)
+X-FDA: 84184568034.07.84A6098
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D39524000B
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7C44D40004
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764919194;
+	s=arc-20220608; t=1764919195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=GAqSOOL1XbhUXGIFpOqA7BHmYFmV/VCylBQC4D8RgJE=;
-	b=IIqTV1SmN8KoBbagIOS99DaFUdxqfEXYYU8rU6d0dIbLWQEcRTxi19veJBeFiLT/Xrybdw
-	+gkuPZuUu56qDmnFKcKsQOunn4QNcZzl7Jj5oZGJ+W1Ip9oXoROyBE2lceT4cyszTfYrbS
-	CJSrwIAmcp0ApykzPPi8oj+PtOEctg4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919194; a=rsa-sha256;
+	bh=Q10KiPiNcSpIrJjBNLIt4M5Zq4pK/Hv8+FQhNRLnpaM=;
+	b=36noqQABdONZ60wyGMX6rTsfC4cgUftPdF2xYWTlT1z6JxSFFBPo8cmlOTXemKyl84/4zz
+	UAVgUlXzNUEbjyrraVgmQIFba6bda14xkiUuMd/cTNc4I2KcsB2UDfpWCRtc/Nesbmd8Xv
+	DaJtvSIv72SxSTZ94Ean5A5UgkhumZo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919195; a=rsa-sha256;
 	cv=none;
-	b=LXdChNoj8vidUu9uoGiwfCKqAZA6xwfxfk4gXEPsncKbZMRgyq9Ss/BkMm5u0qzcrW0XPY
-	Tqlg/DZhaoA/mE4zcnyoNi+/JBFbj5L3IvMc6ETc7Ff/UPYWjovuIEW/7RQA6LEU/U+Kqa
-	j98cJNemXhdB3mouwBkurUqhLkawwU4=
-X-AuditID: a67dfc5b-c45ff70000001609-8a-6932876bfbef
+	b=FJAm8oZo+T6fPrX2kjiVF6OY7WEGZkc1jscixjM66hztd+44rMAF++qMQ08Dn/dqsSr4oL
+	t8wxk4b1JqNZDRJByhNvgoWRnX1VfgzazrU8BCAJ5BJeQwuXFZZsQFBUhaGLuMgAW7TrtC
+	NNKB2Wi2pzQOca0dhC6rZt1C6W14kos=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c2dff70000001609-c6-6932876c6a95
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -212,54 +212,54 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 05/42] dept: add proc knobs to show stats and dependency graph
-Date: Fri,  5 Dec 2025 16:18:18 +0900
-Message-Id: <20251205071855.72743-6-byungchul@sk.com>
+Subject: [PATCH v18 07/42] dept: distinguish each work from another
+Date: Fri,  5 Dec 2025 16:18:20 +0900
+Message-Id: <20251205071855.72743-8-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxiH/Z97O6sn9cLRxYg1SkZiJwaXN27Z2Ifpicmi0cwY+SBncpRi
-	uaQgiGZZYQgdQ+1qwEgVSoe10g7cqQhWyhhqM8RL8YKVCENhVAakhlEIt3UU45c3T97f730+
-	vQyu7CJXM5r0bFGXLmhVlJyQjy6u3qQt3qLZ/M9VHLryWwkIjRsIuFjvpGDO3EiDQbpAgq/O
-	geCvkAHB5IwZhzmTl4ayfARhjxeB3/c7Ds7r+RgEbaUIKgbNNAzd3QHhngAGA63FCObKj0KV
-	1UXBcPlbCmYePMLhfJkPQfWrHhzGhvoQXPf2IvDYCyj429iAw5OBJfA0FKSgvewnCkY7L2Jg
-	KfCQ0Hl/GMElswnBYLcHg/JLEgE3+9w0dA7PYvCy3ISBQ/oaOoxWDMznf4iMNxhM2WppsOk3
-	wGt7BQ2zr+IgbMkAryNAQ93oIxIa9X00SC/uIjC4QwRI/V0kVBfVEHCh8iUFzZ52ArxNrzEo
-	vdZAQq8zTILePEnCY4ePgPqAH0tI5mtdNzDeWelE/My0CfG3R4I4X+jK5S93jFC8Z8JC8Pes
-	HF/z4zTG//xgE3+zoofmC1u6ad4iHeNd9lj+l+YhjK8eC5G71QfknyWLWk2OqPv48yR5yr1n
-	2ZnBmOOlbjfSIym6BMkYjo3nfC1F1HvuL+0lIkyxMZzfP4VHeDkbzblOD5IlSM7g7JO1XPHU
-	mfmAYZaxe7gz/yZFOgS7gTNUNJCRtYLdyrknlO+UaznHtdYFjYz9hCt7Pr3AyvlKVcnkgpJj
-	q2RcY0ER+e5gFfeH3U8YkcKCFtUipSY9J03QaOPVKXnpmuPqQxlpEpr/Ntt3s4lNaMy3tw2x
-	DFItVrTmxmmUpJCTlZfWhjgGVy1XjGg3a5SKZCHvhKjLOKg7phWz2tCHDKGKUmyZyE1WskeE
-	bPGoKGaKuvcpxshW69G6+I2TdflpxWd/dR1KTaWi4u8Y93/RlrTu1J90VHfLwW8yv008QHXY
-	x40tTvXOOdet8Kfrv2zaLTUFQofPvRDHyUXbY3d91LBmxVL3YfVXQso5Y2LGyVXBK9YE13+/
-	2WIrtStr4e3OU4+jhYfY96bBFdaEfVvXtOOBbcMf9BaGE2U1KiIrRYiLxXVZwv+o9G4EaQMA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxiH/Z871ZKTzsQjfig5yWKiUcHA8s6o8ZLo+aIxXmKUD9qNM2ks
+	BVsF8bJQRYoNAmMWsnIrUlmlXKQd3kaXWoG5aRHUaZVixEG1IFUrhYAI1hq/PcnvyfN+eRlc
+	5iPjGKX6sKhRK1Q8JSEko/Nql6n0K5UJhfp46Gm2IRib7KNh1tmFYORWCIFxYJCC8oCOgDf1
+	hQhM/goaAp2bYbb/JQb1gzMYDLr0EbfsLQWhwHMEQyVtODwMv6FgtLcSA/MpJwllVXYCekem
+	MXhhNUXq5gzoLzYSMOIvpcD+pBNBY6Efh4IbYQKcT5dCbb6FgN+qfRR0XXuBwbPGWRJaXnox
+	+Md0iYA+TzEN9240keDw3MXBWzKEoCl4gYJfg34E911mDHQ36wiwvisn4VLN7whK/SEaQpZx
+	AvLfz5Dw9zkXBvpXf1LgqegmId/SikFHy1UMLlpHSfi3/z0NDrsRh1BVRDZOF1BQoStCUNAx
+	jkNb5wQNeb5kqBpLhDFbAwVNHx+hdeuEBscVTGisbkTCxTuvKWEq/B8lXDf104LZfkRwWJcI
+	de0BTHg6skawN5ylBHuolBZqP7zCBd+jdkoIdnfTwvWB74XaXCO+LW6vZHWqqFJmiZoVa/dL
+	0sIPm4nMIH20r/IPLBe1UwYUw3BsEnfmtI7+ygO+HvwzU+xizuudjPJ8Np5znPOTBiRhcPaB
+	nNNPFkUGhvmG3cjVnT/x2SHYb7nWUkO0KWWTuZlfrpBfmnLOdtkV7cSw33HGx1NRlkWcGsNE
+	tMmxNTGc4eqXYxy7kLtp9RIlSGpGcxqQTKnOSlcoVUnL03LUyqPLf8xIt6PIz9WfnE65hkI9
+	O9yIZRA/T+rKTlTKSEWWNifdjTgG5+dLX6sSlDJpqiLnmKjJ2Kc5ohK1brSIIfgF0pXj2aky
+	9oDisHhQFDNFzdcVY2LictG2RVL5dt4Uvv1B1zac0dF2n3cObemd3qh12obVe/6SxUKZOb78
+	p4nmGc09eXF5EX6o2hYrtwT/l7xLGJ47qxOnNnnGn6y6dVCqyFPhu3cu+/l4l37FnV3J2QWe
+	Ve5AiuUA35x0mXsw9MPWvFjRXF/dZOb3bdjvrtS2rM9s3bGQJ7RpisQluEar+ASAi+9MbwMA
 	AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93XrqvVZUreiigGYU97UHGoiDLKW1BYEkISOeqSN6fFttQF
-	YbqGy0zWYBs5zUc6QlfZzMrFaiiJZg8flWbZjJYmW610Kmpms+ifw+ec7/d8OX8cGpfWkQtp
-	IU3NK9PkChklJsQHtmrXpORuENb1lDGg12XBB4+XhLfZbgJGgnoCiu7YKZiyPhCB3nGNhOau
-	HALablcj8IzoEYxNWnHQ1U8TMGVsEkFw/L0ITNkIpl1NCMztRhy6257gYL+XjcFwzW8KfI1D
-	CEyfvBRYBrMJCNjyERT2W0Uw+DQWvnkekTDdO4BB16gfgc37GwOvOxfBlDkFSsprQ+vmHxRM
-	vniFg8XUhqDsUy8OQ4N9CO41fUTguplDwRdDHQ6d3rnweiRAQYvpMgXf2osw+F5DQWmOi4T2
-	5z4ExVYjgv4eFwbaG3coMBc7CKjvc4qg3fcLgw9mIwbVjv3gsfUT0Goox0Lnhlx3I8Fq0WKh
-	8hUD061HGIzbqkQ7KhE3pisguKra+xin65iiOPt1O+ImJ4yIC1ZqcU5nCLWN/gDOXazN4Cpb
-	/RQ3MfKG4lyjpQT3rJzlKi5NYNzVF2u4+sJeUdzOI+JtJ3iFkM4r125PEic/e6M+E4jKzHc6
-	0QXkWJqHwmiW2ch+zv9IzDDFRLHd3eP4DEcwS9naK/1kHhLTONO5hM0dLwgJNB3OHGILhpNm
-	PASzjNUX1pEzYwmziXWOSv9FLmGra9x/Y8KYzaypa+IvS0OWkrwx0oDEpWhWFYoQ0tJT5YJi
-	U7QqJVmTJmRGHz+d6kChZ7Kd/3X1IQp2xjYghkayORJ3xnpBSsrTVZrUBsTSuCxC4lesE6SS
-	E3LNOV55+pjyrIJXNaBFNCGLlOxL4JOkzEm5mk/h+TO88r+K0WELL6B9QXXCxj2RVhw75D88
-	9D7eP+9U+M/iHqY1qW/+0SJ75o5d8+tfDmh8C5LPD2Qid9bOxJifvK/jSWygb7Vl8UHnWvWq
-	jMfvjsd3Eh7jii0JuoL4KPnNZg+vNydqKiuyKlYP723Zu3yeJa5McO0Gd8mN8GUxs2Pc2hyh
-	I9HQ9qpJRqiS5etX4kqV/A+D/3p7SAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xScRjG+58bRxbtjNw65YcaW7ObZK3L27RW64Onmt2+tLVWUZ7iBGqD
+	Mm25UiJNuwATWGJqlsyUyrxUlhRRua5LstJSQzeyHJZdRFNCI1tf3v3ePc/77Pnw0rj0JjmN
+	FlIO8JoUhVpGiQnx+jhdjCpnoRCb8y4ecvVHocPrI+FtlouAwEAuAUXXHBSEbDdFkFtzjoTH
+	rdkENF+tQuAN5CIYCtpw0DeMERAyNYlgYLhdBOYsBGPOJgQWjwmHtuZ7ODjqsjD4WT1Kgf/B
+	DwTmbh8F1t4sAvrtpxAU9thE0PsoAb5475Aw1vkJg9bBPgR23ygGPlcOgpBFBSVlteFzyzcK
+	gi9e4mA1NyO40N2Jw4/eLgR1TR8QOCuyKfhoqMehxTcJXgf6KXhizqfgi6cIg6/VFJRmO0nw
+	PPcjOG8zIeh578RAd/EaBZbzNQQ0dN0Wgcf/G4MOiwmDqppE8Np7CHhmKMPCdcOu61PAZtVh
+	4fEZA/OVOxgM2ytFK8sRN6Q/Q3CVtTcwTv8qRHGOYgfigiMmxA2U63BObwivD/r6ce547SGu
+	/FkfxY0E3lCcc7CU4J6WsdylkyMYZ3wRwzUUdoo2rtoqjk/i1UIar5m/YqdYGXh9ldj/VZTe
+	XlSHHUONVB6KoFlmEdvd0Yz/ZYqJZtvahsc5kpnB1p7uIfOQmMaZlulszvCZsEDTk5nV7MWC
+	I389BDOTvW7KG8+RMIvZUeMN8l/mdLaq2jWeE8EsYc2tI+MsDXtK8oZIAxKXogmVKFJISUtW
+	COrFcq1KmZEipMt3pybXoPA72TN/G2+hgZYEN2JoJJsocR1aIEhJRZo2I9mNWBqXRUr61LGC
+	VJKkyDjMa1J3aA6qea0bRdGEbIpk7RZ+p5TZqzjAq3h+P6/5r2J0xLRjyNnIxRUsu+yV8+59
+	e+pNUa+mPh1sjMfy7xuYuIeCTvn+yaeZhd3r+Eym+LEzf/vWmHfe5U6rfxfObzZF9UrnCR5X
+	e9Imd7DeeCnxbvBXxtQKB9yLTj2R4NlSui95YWj+XP2igiMuZcXZ9K6lD8eMG2YP4d/nrYmV
+	F6mstsxZ22SEVqlYMAfXaBV/AArVmUJKAwAA
 X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7C44D40004
+X-Stat-Signature: 74q97er1hr8wpsercopn8355r4epcmgd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D39524000B
-X-Rspamd-Server: rspam11
-X-Stat-Signature: hmwwhkwt74ocnuehjzwguofjpzzj5yt1
-X-HE-Tag: 1764919193-396503
-X-HE-Meta: U2FsdGVkX19o7RTv7Yf5+7c+PnIi4jmei84OSx86k9tkjYAEeQhf2g5GDZ8KKlr6DLCsNqED7pzcfLuO2HsD4PwxqHJQbbDymHVHbaO6ttt0PcLf+wHFqMNqXe8YU/vF8v3Cmn6EfVe0VlQ7cd6jmHeeJWmVq1+69s6e0B3NmtizANCMmzumWq8kETEo5xJxoRzPX6AF4exGJNbn0c21d1qSqsN+ORnX/vBNeVIH6ENqBjfIfJGoIJJ/Z01B9kA4UC4uGA5pNA3JV9IYb80FyleF6XsFehHYH0JAFds/7rFMHMsJSgrtlc4+42pf/KBPIr7i0gbvvyDpqIv1AT+POWPVUZLmDcfqF+uc7YIdVAQXWo0VFIeKLsqLA+WeHbOG94p9V/3tUdOOHhL9hsHW9HNq+xKZc/nOsx00psSpi9llp9EQYFG9ozyVZWgNssNtN8frGIyA1QpdJaM99D5Wnq+8bg5W0BdPs8AEm1otzrJJUClgGDAohlq8fsVX+ypJYBb71+50WCN5BqK7nZxMkeUyJ6qbCYgCIMuMVI44PlfUI4MbYCCem95kpx/gh1pW6y+IRTFFk7iOWM/UBT3m0sTyb80CVaSpEpx0EV50AEDPDC8K/fiktgTnamR0zrYtibGRuGswC90uDFeSHUM20HHOCoS+D4livKolc5/E14iJzdVxWsyU1xDH79IYZlfw7Y3wqS/4V9obzvf4lEqVugWw7P8QZ60I2ny4S3/VbcqwyNCLaP75RnF/HL/BjH+F/abdqJ1YtoEpCU2a9Also1zcaVoCeab7H0FX+nIiur98DDOTl6wAkh13NtlEMkU8M28oB5pUN3U/tbquF8UHyPNf0xxgNQr2RWWXJtFyLPvQC/djPZyrs+k2MMnPIRUPIbuSEv/JUZfW0T1r19GkOLWfc6uoLvXeOa/mButyoe3sFXYS9wYghT+QXUTyRypvqIXZTZ8+hj9aqGZRTNL
- THrH+L3e
- BESyCO+9zoXi0f2Bi0Jk/0UCy41elZEjLHht+
+X-HE-Tag: 1764919195-280377
+X-HE-Meta: U2FsdGVkX1+yzTw23bDVl2fBeuAF70Q6dAZOPfPo7aTHt622kJ7jo+yfsfuQGnh/pcpfXp5tn2zvrkuiggpgZyjtAWee7fO8tPmfBlFXs7CyqStM+YTQOext7uhUGgPxNcCEUAyzvOQBJnSFCwIviUmD9xBfAeSsG+d729i63g6K531jYnYhbGxECSlBWetLrqz1A9tkpb0Lj8pPbo27n0LfedcWoBcb1KErK3pWQY9uNcWUEEy+V6UovbrS5F+W+X0Mazl/hYjrL6c/z4eqhxr9hQDRPju/IhQYLtcWUjMSbW9H/d0jaMNGvNs+2HqpskHZ7W3iUqwXQ6navveKj4D0o7lssj+UqBDUE8TzGvmJ80gW219aXP7uWyv3QOFpVSyfN4/geE0pEvbzvCks9fBIaC8N4btPYK+aBbU3CkanWG8NwOkRVjsjeHoDyjT/oLysaTe9wMAFQdhh33ldGGlkt1jLeXoNn5Fu6+nUQ3b9E/lK1mbZ1j7PoPmvQOqyxhSpkNf5dnIc9dadQYRRcb0gfeJ+3apWK45ZBjaTOrpeXKaouZwOKoYc8J6Eh6eG4cXZb4i9x/xZduWp8XkczgqGPS+2lSau0AmilDHxtMcTI8GPyhuU6RxL7gGtHFVI6RPjuOI9BikO+f3sSQHhu/GEU950qaHoUiN+FUqfFQWtxDxZTHUc+7/zYYfDzdPCfxZRAPm8D7OQRWyl2yO8hDzT+S5VUAVLNRBrN1LHFxSBs11bWa2q7JrW4R1kADIZErS7ezKGjMzA7KhynBPVeBg0wCDwZ3w5QqG3g6mrC/5mjqsO8g7aeiuQRofa+8vClAkklf+uLqnPYVhYjZ11nvCTwCjIMVwbzdAFDM0b1gQJGzBoPgEzPtK6oyRJPZwwGmXXYOgb4XMnVj+4CDDzcKvzr3UmcXghq9jygcpTRMJqKYtiKaDngUXQFbwQlaQzLr+Jn4TGoztLKCCaiU4
+ Ke6GQFNP
+ xa2hTQlecl8J2jAYK2m8DU1Ehz91IqqZPV41WZnY9OYzR48Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,184 +268,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It'd be useful to show dept internal stats and dependency graph on
-runtime via proc for better information.  Introduce the knobs.
+Workqueue already provides concurrency control.  By that, any wait in a
+work doesn't prevents events in other works with the control enabled.
+Thus, each work would better be considered a different context.
+
+So let dept assign a different context id to each work.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- kernel/dependency/Makefile        |  1 +
- kernel/dependency/dept.c          | 11 +---
- kernel/dependency/dept_internal.h | 10 ++++
- kernel/dependency/dept_proc.c     | 96 +++++++++++++++++++++++++++++++
- 4 files changed, 109 insertions(+), 9 deletions(-)
- create mode 100644 kernel/dependency/dept_proc.c
+ kernel/workqueue.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/dependency/Makefile b/kernel/dependency/Makefile
-index b5cfb8a03c0c..92f165400187 100644
---- a/kernel/dependency/Makefile
-+++ b/kernel/dependency/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- obj-$(CONFIG_DEPT) += dept.o
-+obj-$(CONFIG_DEPT) += dept_proc.o
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 18b238931699..dfe9dfdb6991 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -266,20 +266,13 @@ static bool valid_key(struct dept_key *k)
-  *       have been freed will be placed.
-  */
- 
--enum object_t {
--#define OBJECT(id, nr) OBJECT_##id,
--	#include "dept_object.h"
--#undef OBJECT
--	OBJECT_NR,
--};
--
- #define OBJECT(id, nr)							\
- static struct dept_##id spool_##id[nr];					\
- static DEFINE_PER_CPU(struct llist_head, lpool_##id);
- 	#include "dept_object.h"
- #undef OBJECT
- 
--static struct dept_pool dept_pool[OBJECT_NR] = {
-+struct dept_pool dept_pool[OBJECT_NR] = {
- #define OBJECT(id, nr) {						\
- 	.name = #id,							\
- 	.obj_sz = sizeof(struct dept_##id),				\
-@@ -2083,7 +2076,7 @@ void dept_map_copy(struct dept_map *to, struct dept_map *from)
- 	clean_classes_cache(&to->map_key);
- }
- 
--static LIST_HEAD(dept_classes);
-+LIST_HEAD(dept_classes);
- 
- static bool within(const void *addr, void *start, unsigned long size)
- {
-diff --git a/kernel/dependency/dept_internal.h b/kernel/dependency/dept_internal.h
-index 9b28398fecfd..a1eb1ed647a7 100644
---- a/kernel/dependency/dept_internal.h
-+++ b/kernel/dependency/dept_internal.h
-@@ -279,5 +279,15 @@ struct dept_hash {
- 	int				bits;
- };
- 
-+enum object_t {
-+#define OBJECT(id, nr) OBJECT_##id,
-+	#include "dept_object.h"
-+#undef OBJECT
-+	OBJECT_NR,
-+};
-+
-+extern struct list_head dept_classes;
-+extern struct dept_pool dept_pool[];
-+
- #endif
- #endif /* __DEPT_INTERNAL_H */
-diff --git a/kernel/dependency/dept_proc.c b/kernel/dependency/dept_proc.c
-new file mode 100644
-index 000000000000..97beaf397715
---- /dev/null
-+++ b/kernel/dependency/dept_proc.c
-@@ -0,0 +1,96 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Procfs knobs for Dept(DEPendency Tracker)
-+ *
-+ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
-+ *
-+ *  Copyright (C) 2021 LG Electronics, Inc. , Byungchul Park
-+ *  Copyright (C) 2024 SK hynix, Inc. , Byungchul Park
-+ */
-+#include <linux/proc_fs.h>
-+#include <linux/seq_file.h>
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 253311af47c6..ab7425adc826 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -55,6 +55,7 @@
+ #include <linux/kvm_para.h>
+ #include <linux/delay.h>
+ #include <linux/irq_work.h>
 +#include <linux/dept.h>
-+#include "dept_internal.h"
+ 
+ #include "workqueue_internal.h"
+ 
+@@ -3174,6 +3175,8 @@ __acquires(&pool->lock)
+ 
+ 	lockdep_copy_map(&lockdep_map, &work->lockdep_map);
+ #endif
++	dept_update_cxt();
 +
-+static void *l_next(struct seq_file *m, void *v, loff_t *pos)
-+{
-+	/*
-+	 * XXX: Serialize list traversal if needed. The following might
-+	 * give a wrong information on contention.
-+	 */
-+	return seq_list_next(v, &dept_classes, pos);
-+}
-+
-+static void *l_start(struct seq_file *m, loff_t *pos)
-+{
-+	/*
-+	 * XXX: Serialize list traversal if needed. The following might
-+	 * give a wrong information on contention.
-+	 */
-+	return seq_list_start_head(&dept_classes, *pos);
-+}
-+
-+static void l_stop(struct seq_file *m, void *v)
-+{
-+}
-+
-+static int l_show(struct seq_file *m, void *v)
-+{
-+	struct dept_class *fc = list_entry(v, struct dept_class, all_node);
-+	struct dept_dep *d;
-+	const char *prefix;
-+
-+	if (v == &dept_classes) {
-+		seq_puts(m, "All classes:\n\n");
-+		return 0;
-+	}
-+
-+	prefix = fc->sched_map ? "<sched> " : "";
-+	seq_printf(m, "[%p] %s%s\n", (void *)fc->key, prefix, fc->name);
-+
-+	/*
-+	 * XXX: Serialize list traversal if needed. The following might
-+	 * give a wrong information on contention.
-+	 */
-+	list_for_each_entry(d, &fc->dep_head, dep_node) {
-+		struct dept_class *tc = d->wait->class;
-+
-+		prefix = tc->sched_map ? "<sched> " : "";
-+		seq_printf(m, " -> [%p] %s%s\n", (void *)tc->key, prefix, tc->name);
-+	}
-+	seq_puts(m, "\n");
-+
-+	return 0;
-+}
-+
-+static const struct seq_operations dept_deps_ops = {
-+	.start	= l_start,
-+	.next	= l_next,
-+	.stop	= l_stop,
-+	.show	= l_show,
-+};
-+
-+static int dept_stats_show(struct seq_file *m, void *v)
-+{
-+	int r;
-+
-+	seq_puts(m, "Availability in the static pools:\n\n");
-+#define OBJECT(id, nr)							\
-+	r = atomic_read(&dept_pool[OBJECT_##id].obj_nr);		\
-+	if (r < 0)							\
-+		r = 0;							\
-+	seq_printf(m, "%s\t%d/%d(%d%%)\n", #id, r, nr, (r * 100) / (nr));
-+	#include "dept_object.h"
-+#undef  OBJECT
-+
-+	return 0;
-+}
-+
-+static int __init dept_proc_init(void)
-+{
-+	proc_create_seq("dept_deps", S_IRUSR, NULL, &dept_deps_ops);
-+	proc_create_single("dept_stats", S_IRUSR, NULL, dept_stats_show);
-+	return 0;
-+}
-+
-+__initcall(dept_proc_init);
+ 	/* ensure we're on the correct CPU */
+ 	WARN_ON_ONCE(!(pool->flags & POOL_DISASSOCIATED) &&
+ 		     raw_smp_processor_id() != pool->cpu);
 -- 
 2.17.1
 
