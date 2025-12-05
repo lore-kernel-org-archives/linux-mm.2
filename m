@@ -4,114 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BF7D32D9D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 15:07:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B2F2D33994
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 16:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A93B86B017B; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
+	id 36A3F6B0006; Fri,  5 Dec 2025 11:58:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A449B6B017F; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
+	id 2F3446B000A; Fri,  5 Dec 2025 11:58:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 981D46B0180; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
+	id 1942A6B000D; Fri,  5 Dec 2025 11:58:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 867876B017B
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 32AA1132B8D
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:07:29 +0000 (UTC)
-X-FDA: 84185746218.07.52CE784
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 36D5880007
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:07:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jTeFy8wh;
-	spf=pass (imf30.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F11F56B0006
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 11:58:07 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80B7F13A124
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 16:58:07 +0000 (UTC)
+X-FDA: 84186025014.06.FEA6520
+Received: from fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.65.3.180])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 03FBC16001B
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 16:58:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=WPgbrSxP;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=42773fd06=kalyazin@amazon.co.uk" designates 3.65.3.180 as permitted sender) smtp.mailfrom="prvs=42773fd06=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764947247;
+	s=arc-20220608; t=1764953885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u9Sh1gr9sSQ2OQz4zUzJ40SzpPcpTrnjv9Hty5mB8+A=;
-	b=e28sR/mjgAnA4q6pAwba0THuKf0VK+tfBQoPTPiDc/HPD5GiMoExTi6yxcQ8XFLapc5z0D
-	C3AwblmILBSmuF67+msziXOmDN5xw8IFTsBm3BiQI1GCjDSP7lKjo7XuA7CuJKN4FqQTdW
-	ASFy3msb2zFf4l17ZZ6GS1F0vEgSCik=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764947247; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=5xjYTj8X5HwetCCZmy/ho1YfHMjgHekQDOcmjzpSUS8=;
+	b=6JGAQYexONb96k012/YCq3KXvIMWetvBwtQEE42OIbSIWf398ZO/31NlWTfV94Qh3dfphf
+	IS18MXL5+FomkGQgYPbZ4qY5upk8OwsCJtTZYZA+fnDI1jyZmgjdrIj0Kf67Wkvc6P5lqZ
+	gG7Nr/bZx3MB+GStyEy5taJv4155fLU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764953885; a=rsa-sha256;
 	cv=none;
-	b=YF4y7og2uK5I0P5mRoF9pZXTMTLNpC3xMugoiuI1+onB+dquQ39Ns9HkH7Ti3rLOf2WlJF
-	/KmNkXavGKCbjUk95MRSwZrsgIl8sKjK4N+6X1k6JH0PzNPJReVnXj1nyrrN0Kx/+1S9Cb
-	ZxWmm41RlDYdPC/BPYKY0NdhzIeI4JM=
+	b=idYLGip0j3EhicS1ZNP/9zrLQz6e7NfqW4yrdl0S04vM0L5fb+uU8uAPf8eXT06ydP/z9o
+	iczcE4J6tqFvEVL/kuKREp04RPkJdpjQAyVAmPSkxXeVaQcKtEO9QhE6KovUG+egz7+up4
+	L0e0n7catFcfI5fLoceDCkr35ZVkVzw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jTeFy8wh;
-	spf=pass (imf30.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42e2e3c3a83so1081759f8f.1
-        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 07:07:26 -0800 (PST)
+	imf08.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=WPgbrSxP;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=42773fd06=kalyazin@amazon.co.uk" designates 3.65.3.180 as permitted sender) smtp.mailfrom="prvs=42773fd06=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764947246; x=1765552046; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u9Sh1gr9sSQ2OQz4zUzJ40SzpPcpTrnjv9Hty5mB8+A=;
-        b=jTeFy8whGavqdveuPhlkABAqUMCvy9UN1n7tIWAd2iQwI1sUFgiKS0cFfC+DRRY8R0
-         zVnjPVOKPVbUJIujmoLddZmqjb8aneZQwP51Uf3DhvYezUDMoOVmG4PQ+dIowRZQayof
-         OtFmv4PTfxmVfEIk6Gl930oWp+VEATmTb8KBM2ImtNWYIxfbZMgRHOtsNZkCFqtqKK+1
-         A2i0Hk0eO7HHckFAk1bfZHc+Zc7gAVLMHR1zExmsKOZ6GxgPJAwtqCmiB1hO7xYmQt4f
-         ytadZyrtxzP4tWgPzgiY4NZal7iAN26/mkJmiKMzj+7vsJXpiXLmqCPQABLhBcBj9Fx9
-         ga/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764947246; x=1765552046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=u9Sh1gr9sSQ2OQz4zUzJ40SzpPcpTrnjv9Hty5mB8+A=;
-        b=hfLVBqr/4oM/URcW2O9/+dbd8STqB2LbOVY+Oaw59URxhzAlWGg0ntzDqoLe+GKKZO
-         +lDb8dSYvv4gJM2QvKBxLWC4kv/dN7JRKBe9REwQLnAfgYJMDoBlNLXkURvbN9bP4kcJ
-         sGEjwYqVjD9EFRCi8Kc5YFP/pKAcXvAV19EfTpodfq43hmR+TopUtZcbLLortpcJjXl3
-         NCj77mpQfgPE2CVXVTyo7w0lYbxhy9EErFfzFBu26vz9MZD0HinRRpkLwFEArCiMlmkH
-         r1HoQDjjfSJx8n3eC56tEcOM3kcuUxVQfRNMecLe4yfQQ67L08EmsIV3U3jzM4hqb3ww
-         olOA==
-X-Gm-Message-State: AOJu0YzQdwI3EHir7t3IEWPwFg1gg4gO2wwLCkHXyxSvIHbBlLNkYXCb
-	ga8JmVRVxNaHFZR8K9YSb2bzx8/6H8XIWU06hxO7huMpedl8uVfUM9R20gKUg+ac7NtQFAHtDRa
-	f4GgUhXWWVPiLZQkWqwTJN9Ebi6ORZ1s=
-X-Gm-Gg: ASbGnctN4HIcq+Vwa3MUhLxXuVBLJ+GzUf16ofkKWXVmdh0TAWHfUyAcrHYyVw9ay5d
-	yGG/eWNv4sLL9gZPvxar/MJll0cw7RnKwIHZwN4Jsq8IURfZ0CTTakgPLcLTy+b+D/5GzGG8Z60
-	B1jxTaj68GLk3gF7NxiiiH2/FqA/rmyMutvXLhcOtODQawOAtYQGbfBc4VG8hJC+ySTkY51+2pw
-	y9PtoFc5AFpVyL3KMFAg63j6DhdY/TiBiIFa2Lv9rEtDniaTkoNDwuB7Hr6PpuLv2sLbf7Jv7vA
-	TaDcV6Fg2OF3GqnTg4vvY5JTWV+GYVqlTw==
-X-Google-Smtp-Source: AGHT+IFPNstD42JyEsdAwcyvNzKrPqWXxWF88WKwbukJxgV5AcHCpundKVhQRbFA20xriAn3ElLB1BNzDwQJkxHjQm4=
-X-Received: by 2002:a05:6000:2c09:b0:429:8b01:c08d with SMTP id
- ffacd0b85a97d-42f731bc24dmr11041756f8f.41.1764947245574; Fri, 05 Dec 2025
- 07:07:25 -0800 (PST)
-MIME-Version: 1.0
-References: <20251128033320.1349620-1-bhe@redhat.com> <CA+fCnZcVV5=AJUNfy6G2T-UZCbAL=7NivmWkBr6LMSnzzTZ8Kg@mail.gmail.com>
- <aTKGYzREbj/6Hwz6@fedora>
-In-Reply-To: <aTKGYzREbj/6Hwz6@fedora>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Fri, 5 Dec 2025 16:07:14 +0100
-X-Gm-Features: AQt7F2pv1BpZjdGZf4uiwOOKMqx6h_y-AphkDn6MuXmCXnyvxBMukG84fsup2wA
-Message-ID: <CA+fCnZewpfDzdo51s6eGPzNohdQ6xHkBwX-Sxo1qty8pBgHZ4w@mail.gmail.com>
-Subject: Re: [PATCH v4 00/12] mm/kasan: make kasan=on|off work for all three modes
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com, 
-	dvyukov@google.com, vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
-	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, elver@google.com, sj@kernel.org, 
-	lorenzo.stoakes@oracle.com, snovitoll@gmail.com, christophe.leroy@csgroup.eu
-Content-Type: text/plain; charset="UTF-8"
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1764953885; x=1796489885;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=5xjYTj8X5HwetCCZmy/ho1YfHMjgHekQDOcmjzpSUS8=;
+  b=WPgbrSxPFhFFea/nSZy6GzCKAT1EZD6Mh0FS8yQfG2mRcT76NkpBw3v8
+   Fs53lAp7DiuHG7yoaRwxHU9c2t7OoJv0R6f/yOhaMHFJoJUofitgJJUy3
+   HCSxqBPbsvmv3zxh5/DhbkLe82Kf/EAINbEZsF4YksyDKGB98nWbMi0ub
+   ONDDaI0vnO4BNYPh1kyMPfan/N2b/d5MUAoA6oK1fRH4y66Jb792mwu8Y
+   ORHtpeZr773/YS41lSAyo3uw4VPWmwWhfkKmkPrIGUxoDtWPQxxVDbDV+
+   pJOcNJJHHdH3QzG5K9ZBtRz52tqDKM4NbZE6kwJ5v5iOMNTjdi3Ov9TR2
+   w==;
+X-CSE-ConnectionGUID: PZ+vMz7dRbCMsLBLT8Gdaw==
+X-CSE-MsgGUID: w5Ol/ml1TDK9X+g8vPtOgw==
+X-IronPort-AV: E=Sophos;i="6.20,252,1758585600"; 
+   d="scan'208";a="6306224"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 16:57:47 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:8759]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.34.107:2525] with esmtp (Farcaster)
+ id 0c512124-b02e-40ba-accc-7940a3109b59; Fri, 5 Dec 2025 16:57:46 +0000 (UTC)
+X-Farcaster-Flow-ID: 0c512124-b02e-40ba-accc-7940a3109b59
+Received: from EX19D005EUB001.ant.amazon.com (10.252.51.12) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Fri, 5 Dec 2025 16:57:46 +0000
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19D005EUB001.ant.amazon.com (10.252.51.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Fri, 5 Dec 2025 16:57:45 +0000
+Received: from EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c]) by
+ EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c%3]) with mapi id
+ 15.02.2562.029; Fri, 5 Dec 2025 16:57:45 +0000
+From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
+	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
+	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org"
+	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
+	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev"
+	<yonghong.song@linux.dev>, "john.fastabend@gmail.com"
+	<john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
+	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
+	"riel@surriel.com" <riel@surriel.com>, "baohua@kernel.org"
+	<baohua@kernel.org>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
+	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
+	<coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "maobibo@loongson.cn"
+	<maobibo@loongson.cn>, "prsampat@amd.com" <prsampat@amd.com>,
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "isaku.yamahata@intel.com"
+	<isaku.yamahata@intel.com>, "jmattson@google.com" <jmattson@google.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "vannapurve@google.com"
+	<vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev"
+	<patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri,
+ Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>
+Subject: [PATCH v8 00/13] Direct Map Removal Support for guest_memfd
+Thread-Topic: [PATCH v8 00/13] Direct Map Removal Support for guest_memfd
+Thread-Index: AQHcZghHzqqX7URA4kyxe1tOPZcLlA==
+Date: Fri, 5 Dec 2025 16:57:45 +0000
+Message-ID: <20251205165743.9341-1-kalyazin@amazon.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.103.116]
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 36D5880007
-X-Stat-Signature: i1th5uzqhji5q19rmfa54kkgksa9x9c8
-X-HE-Tag: 1764947246-205392
-X-HE-Meta: U2FsdGVkX19XC3SH09dJ8iIHmqplCXTLQJsTPeEVnPuuoxzDdyMpv0VOacmIc9tCDKmoso824VBOICFeT4NNSsg682727qEaoeETtt/JJWnOHtmlPMJCCxnbx5hdK2DIDKXfTeP5K9vVGdTD9TkHr+O//sQtJbmITJwMXLtp8ecOX9ZTU+HV8iuWhIt934Ukvb2G1Hcx6t0NFhpESKuTArCd+xLPpRvEJYLgc+EWYsr+PPYiqGAsbFV2pRrES835MaiFNucfggiGhrOXPRqHzOrOli98oGVtPKZiVp2mGqv7++9yGOnFbJdD/fhSVlvefsVMFBXwp8K+v+uDZVgHYrczrkhG1yUe9rrHabXVHY+fBGKVogM/TevHYMMAAwevAg+dAqKCndr1Gm/111a36yQpfl5N5Lnogf+lhmd8CUIHSDWR/4FijDk8pz+6pES9yc95NBbqL8IaEL0SsBFMEz94YFQpqOvqfwxbkYzELbiAz7n4Gt//xmb0/AQm9BukxLT6AsdcHjVbjA6DVM8qHR/Jhc+hMIxC6VjQLI57SluEmnEQcb5QUI8qpKS6Wpz2CdpjWGSVTUGxuh9sePzgtSWVIAD4XlkbbfXa+l9e8MKmRwOg/HXJOXl2qJNFmlaA1TSBBnzeY4ZufrzLomsr5Tr9vlAOHqj8pLhMhh2wYn8Y2UfI/W6GI5cLu8AdUcJ09yNTYi3pLqbxLYH0D38AbdigW4FlVufIwtmI4yt1rNWDMKPrgC+Pb9dLRGzg6RoEoprJZhMs2VXrp5KFGEXEq9wrnbFdKFSbjLpX+kcVc2wW7RHoL6FjVSWt+dgm3DXMVw0XkM+Hg2PJJBNkZtn0De56Ywd6fYGaZwxYdfpKOFmCwH35e+hJhuSS826Jjlar95+PTFIwlMRIlyaFmieOiMYwrcAzSvNtOVJ9Ts68Sj69GdKJbQzZpC0Z3mM5ffMzEuxuEEUD2/9fPrYlotO
- zejoL9kR
- 14gpNfLJ+HHNTwMc5e+VjmGLeMhAENrYwC4pdp7ODoRW8qG2Tg4ge228U0/F9MKV3+vquQNW3+1bm2iqO0aIls24HpnkdG+XPah2xdkiBnEXxD63pTy5h7hgrx5x8WN3HJPLKhsR2kC72p+Kco2Jmy5PEoB0Rct3CPqgNe14z4vnS1CJMfBWVMRA0zZNWo+S75feZfrTzsBU3NtHFfvUmySXBqHGKM2vkibivcJqEsEpzHzIaTBy9QhtWlriC07uygAwjPRdb9oe/cpfNwJmdav4vvH0rNPc3I1QRziWmdRiGUbnuy93kukQacVelReC/XigGeSEvDcODw0JfkucIyGDHghZAUMxWqyJmNiQQMTXEYeBqrFOnHu70+o/aPsoLwtIjSn40v6aWStqqBOlnDGSRAqcFI9f546MOtVhXlwmOxXMMiUpxFfq3jH3RnPWvM4Cd
+X-Rspamd-Queue-Id: 03FBC16001B
+X-Stat-Signature: nk1d95d63szm64ozb65ck9bs5rjfebso
+X-HE-Tag: 1764953884-883518
+X-HE-Meta: U2FsdGVkX19TGY+mj7fx2MUcn+z5O7R9iQnhfbgmKbzAJP9WmUK5d9mJbZ4nr6mTsDmDsTg0UFXaUTlU6PPBHetQxDyueN6p75m9GqjCVUOiGvRKn+Hh+w0fWvhKYger3TNMrEQ1yg8bhN2sBtAbx4MNIEEVjSXc5IlCi8E69ZLw5WKxM7HQ7IYgMuLgLjpp65XztoAtJ+WnUezuWsQt191GtwqiVm9bb5ehD46svya4QZdnXDVj/sBrKCbgw449XpxzGYCJchCg2M/EcHReYNLiEAzZEoaAVf2zNreeKMjVTmFiO75o0ZqeYEOxIcqL2DUrw0PLXx9JCPmcHtiig1XVj3OCItXPMjsr7NNZGf10WrD6OBPdywWkGyPMqP92p8b381OpKJpvHP2O8vKZTOuSCTJnUod1DzQbFQdyEsHXOTyODbTlrWm3mTpnmdiOOlpO1NHw62/uuHmJXtH4B7BDPfqjXVvm3+S28HzaS7EsCQmYpWqO/iyf/cIa0lEL/s4SDz23akv1t7o1VbvkyJPyMuiBxx7m7fbCJYegETVIul90dhqhHF1nSo+9OQgAQibjTEyVAjmyT1IYJ8+BnV8im3FxGN4sc2tooDBeESnmN5T4x5AsVlf1iyGgK1qj1k31J0N7VeTeQMIYuj/ZAd0w/dNVcZrL2s/aJMRlVVjJeVHyFHvwkQOKEZf/kvMaGjQzXuo6MIcDZXm5JleQB7hN0IsjiIOMhBsVo/FNMXW7cElb1yY6TdgGzlSOzyp9tT0mXuRx2tr7A3iu0h2YGYeKbLHG+c/6XGSrf33qnXqKS2mmzgEs1v5gbjdeH1S8RnRO/FEGLEf9ySktl61nOSruRiNe5uggaQOU4Fd1puVLh7SQkzjXwxUBMJaqOznq08DEPkd/RW0x5I6+dosYpnYouwcw4yam6Cc6MTjd1w7ABA7L+SmNiGKDtWRTpKcGtAU5EdkZMwK7oOJD9op
+ +yNE389B
+ csyN55rHNzjmlan42N9CYW550iE2bB0xM/OZczoT/GLH/pXaiitTj8LY+6li/a5dz8KfRAbDoZ4z0/tgKNcQv5/sfMuQWqE0hz9tbbTAeAG4+Rkt0kodDRulZ3Y4PgufS4idqv97mk0dP9a0C4Fi1SUKLnZh0+aRwFW6VBBKgq95DjWPrV9kMxEVFS9pHruVtjaSF3Zmgig35eiiUETxTCcKf6gE6Hv77ufWwwkXxZ2HjeUYpDhcdgDIXiPsOgsmqsFZyDEFR8ryO+jToJa+bUUtNcAy6oOL3xHTnau2q7A9KqiYGa3ZW7Z7RSOKx4DoY/KDNumD9IwhZFvefBOrvAAmg/4THUQLDvDvPx4UAwAIsIneFHyRTrKZ7AF7D8IrXumc1KHZF6NNuM15s/V1rdNQR92AW+G+HKDBKecpnVuNTnU6r807/PkH4/dXuwSr0V8h5LcKxAhPTNSTm0RCoPvfG1irXPD3RrSv0Y2/UU3d5gIw9LgbTEQT8iQzupxracyZtSnz7ZfykLPgpRIivaftutxLeEIme60glshLbGIT+JGjYQGj5PX9ZqRyckCFzuDnLnanpVo8eVA27gonujV5IqJRB9ufVAMOBQ+mk3lO2Xl7MiovdWO1FZ3kuu4/5I7nk7XEht4fdll6dtJ61nJAaA1ecxmKGl6kDHInQrWC5hcfSmKslDMUTSjKJ2t1Xd4MC6gqHjeFuEe0wjdd9UV5YxVxLZj7rH2eLn0dogA9HYafBfciuylAm1cGB8tS7NqlJ7HowaX18enSq1Tt6HCgcduUV36+rbF8+grO7zmb1wWMQB3NsFIoCakjswd7Qj7F3ygaGQ8yxY/jzTuvr8qmjHMCPTWigZclo+x3f9cULYBpiOamJLmRsPQVlo3/ZSBzkD6pR0RM6AnFhcVJt5CFE7X90v4pqRQOvjSlYpChA5eg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,28 +165,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 5, 2025 at 8:14=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
->
-> > I also wonder if we should keep this kasan=3Doff functionality
-> > conservative and limit it to x86 and arm64 (since these are the only
-> > two tested architectures).
->
-> We may not need to do that. I tested on arm64 because it has sw_tags and
-> hw_tags. And if x86_64 and arm64 works well with kasan=3Doff in generic
-> mode, it should be fine on other architectures. I am a little more
-> familiar with operations on x86/arm64 than others.  I can manage to get
-> power system to test kasan=3Doff in generic mode, if that is required.
-> From my side, I would like to see x86_64/arm64/s390/power to have
-> kasan=3Doff because RHEL support these architectures. I need consult peop=
-le
-> to make clear how to change in s390. Will post patch later or ask other
-> people to help do that.
->
-> While there seems to be no reason we don't let other arch-es have this
-> benefit if the underlying code has paved the way, the arch side only need=
-s
-> two lines of judgement code. Personal opinion.
-
-OK, but it would be great if the arch maintainers could review and
-test the changes.
+[ based on kvm/next ]=0A=
+=0A=
+Unmapping virtual machine guest memory from the host kernel's direct map=0A=
+is a successful mitigation against Spectre-style transient execution=0A=
+issues: if the kernel page tables do not contain entries pointing to=0A=
+guest memory, then any attempted speculative read through the direct map=0A=
+will necessarily be blocked by the MMU before any observable=0A=
+microarchitectural side-effects happen.  This means that Spectre-gadgets=0A=
+and similar cannot be used to target virtual machine memory.  Roughly=0A=
+60% of speculative execution issues fall into this category [1, Table=0A=
+1].=0A=
+=0A=
+This patch series extends guest_memfd with the ability to remove its=0A=
+memory from the host kernel's direct map, to be able to attain the above=0A=
+protection for KVM guests running inside guest_memfd.=0A=
+=0A=
+Additionally, a Firecracker branch with support for these VMs can be=0A=
+found on GitHub [2].=0A=
+=0A=
+For more details, please refer to the v5 cover letter.  No substantial=0A=
+changes in design have taken place since.=0A=
+=0A=
+See also related write() syscall support in guest_memfd [3] where=0A=
+the interoperation between the two features is described.=0A=
+=0A=
+Changes since v7:=0A=
+ - David: separate patches for adding x86 and ARM support=0A=
+ - Dave/Will: drop support for disabling TLB flushes=0A=
+=0A=
+v7: https://lore.kernel.org/kvm/20250924151101.2225820-1-patrick.roy@campus=
+.lmu.de=0A=
+v6: https://lore.kernel.org/kvm/20250912091708.17502-1-roypat@amazon.co.uk=
+=0A=
+v5: https://lore.kernel.org/kvm/20250828093902.2719-1-roypat@amazon.co.uk=
+=0A=
+v4: https://lore.kernel.org/kvm/20250221160728.1584559-1-roypat@amazon.co.u=
+k=0A=
+RFCv3: https://lore.kernel.org/kvm/20241030134912.515725-1-roypat@amazon.co=
+.uk=0A=
+RFCv2: https://lore.kernel.org/kvm/20240910163038.1298452-1-roypat@amazon.c=
+o.uk=0A=
+RFCv1: https://lore.kernel.org/kvm/20240709132041.3625501-1-roypat@amazon.c=
+o.uk=0A=
+=0A=
+[1] https://download.vusec.net/papers/quarantine_raid23.pdf=0A=
+[2] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-=
+hiding=0A=
+[3] https://lore.kernel.org/kvm/20251114151828.98165-1-kalyazin@amazon.com=
+=0A=
+=0A=
+Patrick Roy (13):=0A=
+  x86: export set_direct_map_valid_noflush to KVM module=0A=
+  x86/tlb: export flush_tlb_kernel_range to KVM module=0A=
+  mm: introduce AS_NO_DIRECT_MAP=0A=
+  KVM: guest_memfd: Add stub for kvm_arch_gmem_invalidate=0A=
+  KVM: guest_memfd: Add flag to remove from direct map=0A=
+  KVM: x86: define kvm_arch_gmem_supports_no_direct_map()=0A=
+  KVM: arm64: define kvm_arch_gmem_supports_no_direct_map()=0A=
+  KVM: selftests: load elf via bounce buffer=0A=
+  KVM: selftests: set KVM_MEM_GUEST_MEMFD in vm_mem_add() if guest_memfd=0A=
+    !=3D -1=0A=
+  KVM: selftests: Add guest_memfd based vm_mem_backing_src_types=0A=
+  KVM: selftests: cover GUEST_MEMFD_FLAG_NO_DIRECT_MAP in existing=0A=
+    selftests=0A=
+  KVM: selftests: stuff vm_mem_backing_src_type into vm_shape=0A=
+  KVM: selftests: Test guest execution from direct map removed gmem=0A=
+=0A=
+ Documentation/virt/kvm/api.rst                | 22 ++++---=0A=
+ arch/arm64/include/asm/kvm_host.h             | 13 ++++=0A=
+ arch/x86/include/asm/kvm_host.h               |  9 +++=0A=
+ arch/x86/include/asm/tlbflush.h               |  3 +-=0A=
+ arch/x86/mm/pat/set_memory.c                  |  1 +=0A=
+ arch/x86/mm/tlb.c                             |  1 +=0A=
+ include/linux/kvm_host.h                      | 14 ++++=0A=
+ include/linux/pagemap.h                       | 16 +++++=0A=
+ include/linux/secretmem.h                     | 18 ------=0A=
+ include/uapi/linux/kvm.h                      |  1 +=0A=
+ lib/buildid.c                                 |  4 +-=0A=
+ mm/gup.c                                      | 19 ++----=0A=
+ mm/mlock.c                                    |  2 +-=0A=
+ mm/secretmem.c                                |  8 +--=0A=
+ .../testing/selftests/kvm/guest_memfd_test.c  | 17 ++++-=0A=
+ .../testing/selftests/kvm/include/kvm_util.h  | 37 ++++++++---=0A=
+ .../testing/selftests/kvm/include/test_util.h |  8 +++=0A=
+ tools/testing/selftests/kvm/lib/elf.c         |  8 +--=0A=
+ tools/testing/selftests/kvm/lib/io.c          | 23 +++++++=0A=
+ tools/testing/selftests/kvm/lib/kvm_util.c    | 59 +++++++++--------=0A=
+ tools/testing/selftests/kvm/lib/test_util.c   |  8 +++=0A=
+ tools/testing/selftests/kvm/lib/x86/sev.c     |  1 +=0A=
+ .../selftests/kvm/pre_fault_memory_test.c     |  1 +=0A=
+ .../selftests/kvm/set_memory_region_test.c    | 52 +++++++++++++--=0A=
+ .../kvm/x86/private_mem_conversions_test.c    |  7 +-=0A=
+ virt/kvm/guest_memfd.c                        | 64 +++++++++++++++++--=0A=
+ 26 files changed, 314 insertions(+), 102 deletions(-)=0A=
+=0A=
+=0A=
+base-commit: e0c26d47def7382d7dbd9cad58bc653aed75737a=0A=
+-- =0A=
+2.50.1=0A=
+=0A=
 
