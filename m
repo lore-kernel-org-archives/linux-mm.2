@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 450E9D339A0
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 17:23:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B9DD3399E
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 17:24:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 889006B019A; Fri,  5 Dec 2025 12:23:35 -0500 (EST)
+	id B97DF6B019B; Fri,  5 Dec 2025 12:24:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 860AF6B019B; Fri,  5 Dec 2025 12:23:35 -0500 (EST)
+	id B49146B019D; Fri,  5 Dec 2025 12:24:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74F696B019C; Fri,  5 Dec 2025 12:23:35 -0500 (EST)
+	id A11386B019E; Fri,  5 Dec 2025 12:24:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 621416B019A
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:23:35 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 662A513A1F7
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:23:34 +0000 (UTC)
-X-FDA: 84186089148.03.78E140F
-Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E8E0140010
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:23:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nUwL+l9B;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 869176B019B
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:24:11 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D399B139BD0
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:24:10 +0000 (UTC)
+X-FDA: 84186090660.19.A925511
+Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6CABC80012
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:24:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=mD7jNOXb;
 	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf27.hostedemail.com: domain of "prvs=42773fd06=kalyazin@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=42773fd06=kalyazin@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764955412; a=rsa-sha256;
+	spf=pass (imf02.hostedemail.com: domain of "prvs=42773fd06=kalyazin@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=42773fd06=kalyazin@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764955448; a=rsa-sha256;
 	cv=none;
-	b=tfqF7Dn1ZgCew0dmG9q+Vyhzag1K8sas14Vp7XPe2CKHmSpsN7NcF5FxnyVi3dAEhDaTnp
-	MlX8J3Nrl6g8lhp1eqZtbI1859C2nDONG3E83x8Crm1H4My26IKI0VOuLeZeAP2PpZC+RG
-	sJ0BlYcf4bTDDSR+jBl+C2xPlJcItxM=
+	b=urxFCPthqMtH7m72/AcDXUPI4rQk3IXf+6l+RMuxKrEBaTOwdiHgeFwSD1zL1I2KzvmAtV
+	GkaUOFSvAaPkImc50cLlU1pO3ZIRisXRKtwD4KfIM5N340t4VeE437ZJd9otRu34/ML1sK
+	wuxTK+VW6MpVpWz/rArwnFZrN1H9+0A=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nUwL+l9B;
+	imf02.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=mD7jNOXb;
 	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf27.hostedemail.com: domain of "prvs=42773fd06=kalyazin@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=42773fd06=kalyazin@amazon.co.uk"
+	spf=pass (imf02.hostedemail.com: domain of "prvs=42773fd06=kalyazin@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=42773fd06=kalyazin@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764955412;
+	s=arc-20220608; t=1764955448;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RienKcTqqmsGG8zizmirrEKiZCGuAJt5fOpB1029IRQ=;
-	b=EFXM6/1jqZFkhdmY6UP8BZ8ohku56xnE+620A54OcmnHIJmpcN9FyEQm5siSdo3R9akXy9
-	6Bbm5M1lLxdrL7hougaU2qIMNEUKIN9MmnDigT+aZfn5IELo87Pxb0A8wcB5Eyr6uYp195
-	7G/AtiVgzE6mVaQgEPSU7tzahDwlRVU=
+	bh=DnhB+PvK+wkKdNvTrP/dFYEJueius5f77QIgV9qQQYw=;
+	b=2kGM+FHt+AD2ckO9k14l+emRSA2nrUC3ykU2rDd50dNklbbb0whAGWIFL7n5lsv5NBtm9B
+	ldpIQcx1dL7jkDO1lHsd3mjSX3bnwAPBQWP1fGMnLSz/Px23HP4hHY2cwJA/uxKpqZMf5r
+	g/1zzxGw5QGwpbWyzrfgRDr/3llp8Wg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1764955412; x=1796491412;
+  t=1764955448; x=1796491448;
   h=message-id:date:mime-version:reply-to:subject:to:cc:
    references:from:in-reply-to:content-transfer-encoding;
-  bh=RienKcTqqmsGG8zizmirrEKiZCGuAJt5fOpB1029IRQ=;
-  b=nUwL+l9BiKZ+uIUQHnjUtXiC0HIxcfwQn7jJrgQx5MXceI/tky0Fvu9u
-   vCxKRCJa/IQjI6YaIA9b7FFAQVOsMryYam8+uZj8sdz5ONtD5dzsPaQCX
-   ihVaeZrTkfdebu/j+Najpm3avnqttguypaFf0octgywbQ34KmXsFkMyc9
-   kWGEkYbqZclUAVGPpxFj5dRhyI88VweO2qDN0zqWl6n6J4HdsNXTTmLLd
-   84TWV1iHXw999VSiAjtNYgH/Mj/JIiGBvVoSmEnXL4Y9HCiThjr5EhBln
-   G7Gc4UzGXX2FMlgEuHxDZ/H9GnLJhnhhqOPWH7iFj/QZur4HBod38ARZi
-   g==;
-X-CSE-ConnectionGUID: U9T32tygTySwaMWRVIxYXw==
-X-CSE-MsgGUID: ezeiUYqjT6+LtvlkxY9Q1A==
+  bh=DnhB+PvK+wkKdNvTrP/dFYEJueius5f77QIgV9qQQYw=;
+  b=mD7jNOXbMD9GrpNDHj6ZCJZ4I4xMEchJl+l6LBDxVSvjSWfxRVmqW017
+   3vPF2a+uhlizVerL6uWg67KNGkAQweHdDmEcIup8WO1XZuAaQGc0rBu5y
+   wU5cDvAC3j4T7Pd8FnAemMdBCLF4iSBGvAqbGOGAoOHHnYimiP5qB8LcW
+   LuEEBSauW3dapt2AnPimTW3loAFJyL7Gc/UAUln/odukRHUbLExUNGfMr
+   YstCSVKSb62MxKlExX8BVOq2dhAzvNy1GuV6RSSpkGuiSUzRVH+Xo5TlG
+   cwJ3B8PFWKCds0V0dSBAjr0/MKobmaFI63jVQUCOzpZFwBaEODXPNj+Yp
+   Q==;
+X-CSE-ConnectionGUID: ui1OxgzNTLeAgy/kgfWZcQ==
+X-CSE-MsgGUID: 0QAryot6QayZ+88faD+iVA==
 X-IronPort-AV: E=Sophos;i="6.20,252,1758585600"; 
-   d="scan'208";a="6302828"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 17:23:30 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.236:4382]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.6.214:2525] with esmtp (Farcaster)
- id ba644cd0-1d42-4328-b08c-52f3a96e0bd0; Fri, 5 Dec 2025 17:23:30 +0000 (UTC)
-X-Farcaster-Flow-ID: ba644cd0-1d42-4328-b08c-52f3a96e0bd0
+   d="scan'208";a="6200858"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 17:24:07 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:5625]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.44.106:2525] with esmtp (Farcaster)
+ id 59f2028b-9252-4cab-b235-d8859489381a; Fri, 5 Dec 2025 17:24:06 +0000 (UTC)
+X-Farcaster-Flow-ID: 59f2028b-9252-4cab-b235-d8859489381a
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Fri, 5 Dec 2025 17:23:26 +0000
+ Fri, 5 Dec 2025 17:24:06 +0000
 Received: from [192.168.14.68] (10.106.83.5) by EX19D005EUB003.ant.amazon.com
  (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Fri, 5 Dec 2025
- 17:23:23 +0000
-Message-ID: <356ece73-83ff-4c0f-a3fb-4b24df7953b3@amazon.com>
-Date: Fri, 5 Dec 2025 17:23:22 +0000
+ 17:24:03 +0000
+Message-ID: <359e292c-4173-49c8-8088-257b4c301300@amazon.com>
+Date: Fri, 5 Dec 2025 17:24:02 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v7 05/12] KVM: guest_memfd: Add flag to remove from direct
- map
-To: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v7 12/12] KVM: selftests: Test guest execution from direct
+ map removed gmem
+To: Brendan Jackman <jackmanb@google.com>
 CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev"
 	<oliver.upton@linux.dev>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
@@ -131,7 +131,8 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	<david@kernel.org>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>
 References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
  <20250924152214.7292-1-roypat@amazon.co.uk>
- <20250924152214.7292-2-roypat@amazon.co.uk> <yq5ajz07czvz.fsf@kernel.org>
+ <20250924152214.7292-9-roypat@amazon.co.uk>
+ <DDVTTQZBJXAK.1OC7BTWCVCP9U@google.com>
 Content-Language: en-US
 From: Nikita Kalyazin <kalyazin@amazon.com>
 Autocrypt: addr=kalyazin@amazon.com; keydata=
@@ -143,22 +144,22 @@ Autocrypt: addr=kalyazin@amazon.com; keydata=
  ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
  ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
  i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <yq5ajz07czvz.fsf@kernel.org>
+In-Reply-To: <DDVTTQZBJXAK.1OC7BTWCVCP9U@google.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.106.83.5]
-X-ClientProxiedBy: EX19D008EUC001.ant.amazon.com (10.252.51.165) To
+X-ClientProxiedBy: EX19D004EUA004.ant.amazon.com (10.252.50.183) To
  EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E8E0140010
-X-Stat-Signature: o5k1qrjesadsjs6ean8skkfdfoaenboc
 X-Rspam-User: 
-X-HE-Tag: 1764955411-282589
-X-HE-Meta: U2FsdGVkX1+GX8F/7Po/YEmLSaQo77ubZPDwYplhtPTPl26mpu5Do/OwlFJb0l6ZSq9lsOonr8/V+/rcOuzopfOFMm42FpbPb22bzZwaIzpdEKYt2VJs+Fa6DkNiy8AzMVVrI3RqQj9OqC2DQF9fQwHrbvVEu9vu4TTpiDde1l0vJzR0DR99qawlsdAJkWdUzeqM43dUcMEW5PlM2MVo0Ak34biml2sSSa1sW2NMA0UY6EqQEd97wBV1131+Z5TfPqxdX4AGzjSjKq+s5F5mh3VGh9EF1J4bRvyN5Na7SUysrJCJxgW10GIVAB2c2HItE2+QGwsezubqvAesSblZQ9YxDpkjVcPN6HNVxjTxbRrirHt7+KcW4yoRuT3NAD2SYa3Bm7RATdWHs5vCMW/pD04PiPKEH0O23/JqjH3K1VbDy5lNY5nl/axzb7j311teGWDzn19aQhSHQ4s1f+YzY840lIGVZKKgEQclcUvU5XrvIkMYMbXGT2Y+8mR256s3tYHJbPq2GMyssj4MHey+J8bwwBBYyYfSYgWuhj52E1OLy04kk5WuhYkXXwriwyMTkBkp94A2mYc8HXsOU+i905qFSVQSqD4QRZ5YVZhpLAYhAQU7wm3Z6xT9C79myycueCwXHztAvh8JT7jK2/1UvgVBrrA9axkFUj1qQbR2KE87zWtjX0hZqH3yASoQvPAQIWb6KE0rUreuFYTPwOajN/TUQ/MoXZSnl353aDmmTUuKvvTk1Y5at6sfeh6Y2hkhQdbPHyvWqQpRJdhLcA1o7ItFYwF6oyF2AjLelZmeeT0LPXRlU+mzA2R1Qf2+6WHHivA1yNLnr7wq4eEYCrYrkeY7OJuNdx9xf5pyzlVs3rYtLnfWoY8CbN7y7aSDzjqRs16x3nUNpgRAGU5hrdbHKAD7oHA/aYYriB1M3mmKio+C/af1drVHDG6Sno5/FWFRYKahMJSoEb59/VVYoAx
- tIU/ZNHm
- 6Agtbmz9CvnyzpDK88+eXqvLrGwC2VZd9TeIdmMHLbssAcTnkD8kh0omx2iQbH7CbVQUOQohoJirmLsBbbnK8O3xVdifQPX195mFNbHjCGmcyszRM28ORjEf4eXIZ/Ol17puLONPTPp9uIeLMGtOuYmIk/l7Y2DbMJoTVRQL6m+YVfn4eDOa3hrwy5bDEnJhfsrmHXqBun0sybpyi1RLDyBnzqHlellICVPtRgv/eoJQvTFIyZMiGWiPUM2bHFXLy4Plgs8Ue1/sMl5dFGCiF7cX1pq4be78PszyLThK2PCCl9jtlYn9850espLngqmPGEBb1WXEBjjJWVxGyqa2cfGTbzvCQHU6mH3omrqVrF41jJYvtzphTKmrOHeRG5yQ5EKCRBP+yYhsJvJ7JEGmp38DgbhmHndsvt1eqx3siDxrzSUEU8G3YDLow5aMCZ4iHRkkgtyx2E0IkpWPASqP3q3EvbyYN+iAokpr1HKe74eCibl8fH7tEX1KgJ3FeDZAUb8UcFb/Ca39g5I2asZbCW5ULYyCNZdLNaTl0FFrHZB6f9ukMbsQEHzI7YvV0OjL9gePntU5Q6G56Dyg3SpezNV86ijKyL4JX09Yr6X9XkwM31BGuweAd94bh41xPp70s2OvN8Vnzfu0QpPGHtC7NFxo9k6UlSkXnNeCCmBSDAlwf7SKGTnFcY/9v35hhHtnjprAfAXpCuxCam38bhJt5jRnARIKVJ5AHn/9nIRiYytvVuK8sJcf7Qz+GPGuhMn+DP0Ta2pIGZw3Nrt4Xd+NB0gu7s7sxD6grP5t5sO9YZm/EXGZWUmZyuYeDy1iLWWNBeDpfgVmEISjTe0Wmh8BVvFuFNtzaascTWnTCvlI1f23pzx2dTFwP8G40Dgcju1g8ygUh0Mec81cA12bmTWJTup3rDiYxWrt9BPOSyyb3JjQolByGVbbVJbiOgN0WcEme1uowcEyGtOwESNgY2rTvIk5ffoLK
- qSxKSmee
- m8RQmNmkxOYAGRKp9agBQZDtlaYhBdLYLEjLdFTm097vM0EIR2pP1K/KQW1EkxCBVaiPOLGQq13Dv+W77tNAqUfG/YaK8R2C
+X-Rspamd-Queue-Id: 6CABC80012
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 9odmx9emkntakqgc3ky964gbewhytqdi
+X-HE-Tag: 1764955448-950619
+X-HE-Meta: U2FsdGVkX18/DdBQkJbGEt+MGse81iPNHRNQ6bVsj0duJfc2D9u3ggq1HCXSHeml+px/vYAkj1twl29un1fQN6gcGEw8QOeHlXEfMhoRD3guMiDwwBvOjEtxdm4cpLeRNchXjs2FkrKxQuDvngos8elxzbnU0LXVgCDqF9kbOzrbq+gKxhrHDg9+TSdtqlF6Wo7QRXXWwNLtGOjQ0qunDkd9Ud8cx208zXvRD01Hx9ySHGCymDxZyQ8IxQp4baffZH0klU7A1JM5RG6tB1EqE56ZCop7ItNkbBWHGVrvzZePRp0ZuskLHV7rgGasmjt0KJch4SZksHMnrRCSyNWO/r6jzFnHmbfHpGuTlSuH+lJq9XEogkW7fhLVI2xgtz1v7oxteIqwCwj1l+LYRbZ7QoLXYuES/YjIqgTBCkcP3oQiqVbPVnUwm6Mk5Ihzy2ewurO7vK4cZK4OF8Bg9J8wHLPjvYInBmOkHaYKsRk9lTFWNEOEP4UN/v1mG04R4ZQwqIrXqIR8FCVDZ/T0bT+Joed5UyGw/gjpJTS/AVmqxTRpKecpkSf7jwg4JFMZ7cmxA/o+VV+ym9XEpcq8DG5SbVzHJpVivBdK9+vnRHBJnKy3XxCSiutXi+1ObyxR2HiukGwVWVakC7rE6IBfDVlVk6mTseI8yjjgNW3BfBiClO8zLT7NC6QVkKrfM3ivVTBMtmZxEmtHSCIvxc2BizON3n/GhtqCMIdEftroMRfhcAfjUlv8dYny1NbF4H8ha365l8QPsokabc/ieAV4ZcncL2W1L4wn/CUdWOjhWiMtEw/EN9GUhuElOBnFclqxhvFTcQbSwKTn33GecQVXQXq6uxMLoCAvHICq13qXoNybunhIuHou9TrJ7AIrZs8qxBIJN2EOc9jYrDCORSoA4kj6NxaDezdQmEwFoNg81WByxQuhVHTqEeOnaaJoXUvwsqoh1IOKoJS1TbkW7RulOTh
+ OezvpXPZ
+ kEu4oNRkePLz8XQLWY+yh+d2u4nDX2EX9hiJvupTw2l0D6CUNnK+WfjFDXpMPnJQ7Q7Sa7VYshfcqPpX9DXm1FASCnrUQBawz0Yn0WoxGAK2JtVDfi/Qgw1AJyPL5OYH2WnY6W4Fe9OyLi0/mmLsMbYCxUv4uvtgrFfHuqb3yL1yhAmucr9ZDhlAgY8CeEyWT6QPlp9jO3oT+dbPho2FUh4IRnFFTK0zHdWJ0ssQ3KzF4l4Wb8NOZabAkVZ6UH0vJ/vNL0pGkj7KugHIwMS66b/KMZuBj3yUDRLpsb3ihjcE0SJcvjK+edh8bwZtJgmwMTB0kZkcGWVHSnQO9KfZNWB3k++BeW/KLqDVRcIWwy3Mwv5+dtnmdp3qE0GgNCseUIcsLYLisJUDx/4WtHbbD0wGgQp31LsADLJPMfVwIZc1SKVCa7UOJvZtGNnlOndpt2UeA5wwUW7pUn9xQ5wYcnK/Al2Yl0zylp2ipC8obseMRdnRHEePbKwSvRsqfRAOUelWP/AMpzCSX5V5c9Gt+HNark7rowVJ8hFnxGLUov/bLvU0biHoJbcSlYFDe6Pl64snI6mcz81TQTm+UVX7K9ogKHQC0alu90CPmoFwb5bcbCc9FI9XmGaQbM7kqDlyIXMu55YHYrvAddPDNNWWPiKY+NI8pK+gRLX5/dgIX5PIKdyS6RHoLLg48hfvMNAQRtUX6aOaA6uVeKnRNzDBw3ZkVrPTzmZqhRbOylHpVoTV4W4Vcv6uuvMyXk0TZLLzzrpkU2udpdK79aCyuSZF2NPuJo4y9ZFVAbgfpdBZ3yNCAexL6X1vdGAh7wlv8AQlz7ENPxyC0nmCUUItwGaPPsCXk+kk5kDnC2OIn+/PUmBwXANFcYQ2ZWsqwnhrEWWwyhlFwMJgpviOFzMysquH7ldtsgPXY56WSZGWnFM7eIGZXuq6GhuCjqz9fAZdBAEWN/ext7qMo76p0DLgpM+Jpqk44SCnk
+ 4sWr39Lt
+ h8saMsg1m1efwrp746gLYdzEFtUAMhEHjZu512NtKUxip8/E8GR4u7rCQbEapE0HNR41hbmicK5TQmbSDeVVbhrzZU6bTZ2TQTZP9sx1WK4CunNGHfU3Nlfev9WtBNLx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -169,48 +170,100 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 03/11/2025 07:57, Aneesh Kumar K.V wrote:
-> "Roy, Patrick" <roypat@amazon.co.uk> writes:
-> 
-> ....
-> 
->> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
+On 30/10/2025 17:18, Brendan Jackman wrote:
+> On Wed Sep 24, 2025 at 3:22 PM UTC, Patrick Roy wrote:
+>> Add a selftest that loads itself into guest_memfd (via
+>> GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This
+>> exercises x86 MMIO emulation code inside KVM for guest_memfd-backed
+>> memslots where the guest_memfd folios are direct map removed.
+>> Particularly, it validates that x86 MMIO emulation code (guest page
+>> table walks + instruction fetch) correctly accesses gmem through the VMA
+>> that's been reflected into the memslot's userspace_addr field (instead
+>> of trying to do direct map accesses).
+>>
+>> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
+>> ---
+>>   .../selftests/kvm/set_memory_region_test.c    | 50 +++++++++++++++++--
+>>   1 file changed, 46 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+>> index ce3ac0fd6dfb..cb3bc642d376 100644
+>> --- a/tools/testing/selftests/kvm/set_memory_region_test.c
+>> +++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+>> @@ -603,6 +603,41 @@ static void test_mmio_during_vectoring(void)
+>>
+>>        kvm_vm_free(vm);
+>>   }
+>> +
+>> +static void guest_code_trigger_mmio(void)
 >> +{
->> +     if (kvm_gmem_folio_no_direct_map(folio))
->> +             return 0;
+>> +     /*
+>> +      * Read some GPA that is not backed by a memslot. KVM consider this
+>> +      * as MMIO and tell userspace to emulate the read.
+>> +      */
+>> +     READ_ONCE(*((uint64_t *)MEM_REGION_GPA));
 >> +
->> +     int r = set_direct_map_valid_noflush(folio_page(folio, 0), folio_nr_pages(folio),
->> +                                      false);
->> +
->> +     if (!r) {
->> +             unsigned long addr = (unsigned long) folio_address(folio);
->> +             folio->private = (void *) ((u64) folio->private & KVM_GMEM_FOLIO_NO_DIRECT_MAP);
->> +             flush_tlb_kernel_range(addr, addr + folio_size(folio));
->> +     }
->> +
->> +     return r;
+>> +     GUEST_DONE();
 >> +}
+>> +
+>> +static void test_guest_memfd_mmio(void)
+>> +{
+>> +     struct kvm_vm *vm;
+>> +     struct kvm_vcpu *vcpu;
+>> +     struct vm_shape shape = {
+>> +             .mode = VM_MODE_DEFAULT,
+>> +             .src_type = VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,
+>> +     };
+>> +     pthread_t vcpu_thread;
+>> +
+>> +     pr_info("Testing MMIO emulation for instructions in gmem\n");
+>> +
+>> +     vm = __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigger_mmio);
 > 
-> These 'noflush' functions are actually doing flush_tlb_kernel
+> When I run this test on my minimal config in a nested VM I get:
 > 
-> [-]  ∘ flush_tlb_kernel_range
->   |-[-]  ← __change_memory_common
->   |  `-[-]  ← set_memory_valid
->   |     `-   ← set_direct_map_valid_noflush
+> [root@testvm:~]# /nix/store/xlxd60n7v1qfr6s5zxda410zrzdd0xc2-kselftests/bin/run_kselftest.sh -t kvm:set_memory_region_test
+> TAP version 13
+> 1..1
+> # timeout set to 120
+> # selftests: kvm: set_memory_region_test
+> # Random seed: 0x6b8b4567
+> # Testing KVM_RUN with zero added memory regions
+> # Testing MMIO during vectoring error handling
+> # Allowed number of memory slots: 32764
+> # Adding slots 0..32763, each memory region with 2048K size
+> # Testing MMIO emulation for instructions in gmem
+> # ==== Test Assertion Failure ====
+> #   lib/kvm_util.c:1118: region->mmap_start != MAP_FAILED
+> #   pid=614 tid=614 errno=19 - No such device
+> #      1        0x0000000000407b02: vm_mem_add at ??:?
+> #      2        0x000000000040a924: __vm_create at ??:?
+> #      3        0x000000000040ab16: __vm_create_shape_with_one_vcpu at ??:?
+> #      4        0x00000000004042cf: main at ??:?
+> #      5        0x00007faa6b08a47d: ?? ??:0
+> #      6        0x00007faa6b08a538: ?? ??:0
+> #      7        0x0000000000404384: _start at ??:?
+> #   mmap() failed, rc: -1 errno: 19 (No such device)
+> 
+> Here's the kconfig I'm using (basically defconfig+KVM):
+> 
+> https://gist.githubusercontent.com/bjackman/4ea941ef5072606769211f3b000c8ed7/raw/73808882ddae6ff2ae8a0be85ac977b2980f7292/kconfig.txt
+> 
+> Sorry I'm too ignorant about KVM to know what I'm missing here but I
+> guess it's a missing TEST_REQUIRE()?
 
-Hi Aneesh,
+Hi Brendan,
 
-Thanks for pointing at that.  I ran internal tests and it appears that 
-the second flush_tlb_kernel_range() call does add a latency similar to 
-the one coming from the first call, even though it intuitively should be 
-a no-op.  I have to admit that I am not aware of a safe way to avoid the 
-second flushing on ARM while keeping the guest_memfd code arch-agnostic. 
-  Perhaps I should seek Will's counsel for it.  Nevertheless, I don't 
-think there is a concern from the functional point of view.
+I ran the set_memory_region_test on the v8 [1] with your config with 
+minor modifications (I had to enable XFS to be able to mount my rootfs 
+and THP as the test appeared to depend on it), and was not able to 
+reproduce the failure.  Please let me know whether the v8 still fails 
+for you if you have time to try it.
+
+[1] https://lore.kernel.org/kvm/20251205165743.9341-1-kalyazin@amazon.com
 
 Nikita
 
 > 
-> -aneesh
 
 
