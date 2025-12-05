@@ -4,209 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11E7D33998
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 17:30:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F23D339A2
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 17:35:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F29D76B019F; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
+	id 91DF26B0022; Fri,  5 Dec 2025 12:35:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDA276B01A1; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
+	id 8F4B96B0024; Fri,  5 Dec 2025 12:35:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1AC6B01A2; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
+	id 80A966B0027; Fri,  5 Dec 2025 12:35:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C73C36B019F
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:30:17 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C43E13A112
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:30:17 +0000 (UTC)
-X-FDA: 84186106074.06.2A389FC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 08BA240025
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:30:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="ll6/rdkt";
-	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764955815; a=rsa-sha256;
-	cv=none;
-	b=2IWTw/DESigAQ3pcVIWSKYSEmQDnHINZkHJgCRpG4rXEh0bOPB7IYyuHa4ZpZLVsaKU85Y
-	/xWtJFRd8Qr29baE5HJG5gaRb9nfl2U+QQwj5pePe5bifj00vs3tMMaAZxSvD3SbbJ0wDF
-	7n6cHGzDNZeieWaCe09JxqB7FL2sMX0=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B2E46B0022
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:35:35 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D10AC0252
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:35:35 +0000 (UTC)
+X-FDA: 84186119430.19.CEC814B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5DAD620004
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:35:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJzLIK7e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764955815;
+	s=arc-20220608; t=1764956133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJgL+iUOt/YqHOqXE/R9N+q5c61t8q0S51RLJGnjeHw=;
-	b=A6b4Mv5S0CwIccCGSmceaIzuWiBA6uwa6elQ/drMsGyF6Pkcr/SZztmIrS1o3EHEMMXwOA
-	Ho3H25V8oQEJZKqGuNlDYXMZvSNVz/sSaFhwf9ZKrYcOdRH7MCel2Ze+VfOHzpFxHUsMRM
-	kns+P0eAZlRa8mqWTL3HzikjlByr9KA=
+	bh=4aHnUTAcAwfhIom3WZaL6UvRje53iaslLndPRpEpiIY=;
+	b=HuWF8hUMgkq/pnRIOuVmL0CjSXB4NkDKqEvWo1hnjQHYEFR6gg+2Ucdnmjx5R5LjYHSlgW
+	jtp14K+w4fG6VOsZeAJcBPiWd8o/3MMeHDNP8AddLmLQ+p5YfdzB6VWs9VvWVY3aGTuYPu
+	u0jky5OCwaNAf7GNRuyWHBDP6+YgeJY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="ll6/rdkt";
-	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764955815; x=1796491815;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+ffseYP4FsqtlkEAydL2rHyJW7f5NEUUyD1ipfBMGZA=;
-  b=ll6/rdktwecXVuNB97lTY2f74lUKt4kmh2tHn2JACtZxSyS/IbCB8mOd
-   S6UWMNSP4na3FwQS+xtI7u8oDdQPspfNRcf5MSmyzvfAxyUMU5kYJfN+F
-   zY1nEEsdv/2UbpE5ufYw5YPdkRKOUUSnuFGj0rq09V3dThq0PmY6eOHjs
-   vU+GhebcLxJaGmj0mRjbesRj3E/GM4bETWc95t7D0jY5sCHauYiQhtc66
-   FOMvrD/IJ+lR3CK9udYW71ro6KdULTm9X0vGVnOGDjv4/p3Orka1GLSct
-   kCPKJFYeXHtY8C7h612gkL7DpraqieOCLDkRO85hm5cfiSulqjTYHY/IO
-   w==;
-X-CSE-ConnectionGUID: B/zgqoNYS1eQo9k0BueXiA==
-X-CSE-MsgGUID: pAx6CxzfSHK6Ti2qeu7zLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="92471060"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="92471060"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:30:13 -0800
-X-CSE-ConnectionGUID: 0zVgGn7kRryd4YRQDDxvpw==
-X-CSE-MsgGUID: JpgCbNWPR9SJGQ2HiyIx1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="232715651"
-Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.108.173]) ([10.125.108.173])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:30:11 -0800
-Message-ID: <51a059a1-f03a-4b43-8df6-d31fca09cce7@intel.com>
-Date: Fri, 5 Dec 2025 09:30:09 -0800
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJzLIK7e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764956133; a=rsa-sha256;
+	cv=none;
+	b=Z24Xsx1XAI6fQIly9BS2gk1Zwpf+LUabZFYkeJGrMeBKuxIEhbgxgk6ItIwurEKRN8SVRY
+	MRPLAIFVooPcsVGHI76GhMAdG5h3DhkLWelNSZOQuZ3wQvH+fxo89w5gdlCiFndVHSsxcr
+	QBalBYi1WAdKBpq1/3cTKt/7VHsePko=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D0B643F6D;
+	Fri,  5 Dec 2025 17:35:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026E3C4CEF1;
+	Fri,  5 Dec 2025 17:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764956132;
+	bh=9Jm4Oan9nsLhHItq9sLNPfsHbijlEVqpoSBh7EudzJE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XJzLIK7eT6vXLmEG/WRda3rNsh1pJ4OHzjKkWVmB4V5ErEAojrGME2XTWIDbUiDKN
+	 47i8/dZpsedoqb7iwkBEjeMK3CkdWKzbaJjIrxWULHvZBIeoaL3UW2D22Kk1cX/MqK
+	 SLJH5x2I7PWSZf5nHaqlKEr5UwEnnZb60EKniwnUB+BmemMx16zyqGoo5XwA6uJj5l
+	 Rl7ZCgdCToicNZWTM9zQa+zohFURWVjgpkZJGq4FRPKM1YDw/TDVh/JW/kvwjmd2Ln
+	 3VeH7PScNpU31DgVbSvpc5goE6nh9W++yqZqt+W2wuOLGtaG1TTa2wXRJygYZLlXZX
+	 FRcjh1NphzYFQ==
+Date: Fri, 5 Dec 2025 07:35:30 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
+Message-ID: <aTMX4tycdzKlaqaH@slm.duckdns.org>
+References: <20251205022437.1743547-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/13] KVM: guest_memfd: Add flag to remove from direct
- map
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oupton@kernel.org" <oupton@kernel.org>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "david@kernel.org" <david@kernel.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com"
- <riel@surriel.com>, "baohua@kernel.org" <baohua@kernel.org>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "jgross@suse.com" <jgross@suse.com>,
- "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
- "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "prsampat@amd.com" <prsampat@amd.com>,
- "mlevitsk@redhat.com" <mlevitsk@redhat.com>,
- "isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "jthoughton@google.com" <jthoughton@google.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "vannapurve@google.com" <vannapurve@google.com>,
- "jackmanb@google.com" <jackmanb@google.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
- <xmarcalx@amazon.co.uk>
-References: <20251205165743.9341-1-kalyazin@amazon.com>
- <20251205165743.9341-6-kalyazin@amazon.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20251205165743.9341-6-kalyazin@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 08BA240025
-X-Stat-Signature: c3zemy7j6xgkyfzdctemg7rwa37gza71
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205022437.1743547-1-shakeel.butt@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1764955814-451914
-X-HE-Meta: U2FsdGVkX199KlbfgbjXgui+2tMSbk92I3oDPOBZ1LtCvNSohjJ7tknQa71UxEuFjiPMVnrqubcihcYs0kGjqq6zbAETltCYer0JjfXQzEbAAe7m62rzQ4v1uYwzfW0qosi5i/7V3nmGNGOMdoJ83uJjXP/SJ0ryr4mvEzqjcWOlXgNSHfkNor/xgkxbSFAcj0xBlzneQmEzilrn5nf9RxNXkpjRfUAGa7CxLt2fmyAWuO4/QDKrywvjKg5ABe+5ZgT3JDlAN9UgzanGCN3qc7ohnlw0zqQdWCi3aVYJRISB0xOtnFoBA2JCK91Zwd6v6yKl+TsHcySBYbdKgalg/f25lyAcPfIYxAeu0DQZpf4i+Nle8r07J1PzabH3RYq85yh7Zbe2oqLajQ4kfAdmyl/LCxrRw9pQaIuOqWFTNHdrtR3+bMQJczhToiWh1wIgN66n9RieXvln4BZOHVebuVi2NTyJfRTRvP2tnxAKVYxnZpDABRPl1aUuGp51d3yfyoy1DFazY8E4+ahhZHYZ0Vk5F+xNmcFwEHajzb9KAOzw/NCW8V07CKM+/KY9n557hQkYI3wguBavHUgRnl43FnufMWAqGHPS7y0sgIxHyMRMVThvJ3DwCZNMSlZtPoGYKXHEOWLPD+TAbUboXflpMuLa6IJCWO/ioMb001/nqHmdUUhnWqKMrycK8+Cf6gF1qMcgGdj0L0CKV5AOgeZODDPmJrt+Zo721DIwz3DI4e7iV77MNaasIYrByzPrIKGP0+2vNJpy+rHIz9AXwCShb1fta4SBsNLZ8+Al1Hceuu48TefjG2s2UjyNG9vv7eamfJBPd8aINCKNtBAaooKHxk7sLjTg3eqKj2M3aAqGEVdVTsvo5pipQX8dTitIlEqdyfuX00LDsWQWTSpU3z+WPapPzRKtpCnw9UABlQEXs3Jap83J2u8Mt1wLZkDWDzx6OVDEldAHSicpqZIGgBP
- dAje28Ui
- JNfhBbrAzFP86N0HclCbY2a1clTqcFubUz1WcbcPZqZx9qlsWzHWdGC2kZqLvtD1JA35m3svcBBcRSa5zPNqMVFNV427IqowRdM6OvSyXVeQikF64hubcFdgKmeNoldXY5qp7vV0JQwp8EFtHHmZ9pvks/kxhZ6Rm/dObgzFRw+imyj5gax+6WEnsoy3mrzkcx9QU/KSISFanJVv0N3JiQJFW3yI/TqeR7W2ZAKDC3RV83ECdnerjX/kGMYxL27zFIMOAuzkmkImqMZhtrjkppPqOwF+Pp4eoC2FurrxY7lDHK+gCUfuMM2Fg6K6soDDGWGFQpHm9cg4VoHcz8eckfud+fOhoARKaBoA7Ye0q5yJAbzg=
+X-Stat-Signature: 7wooofed4bk3tygamofz3bdpfa6e5diy
+X-Rspamd-Queue-Id: 5DAD620004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1764956133-56728
+X-HE-Meta: U2FsdGVkX1+vHx1O8rV3X4ZaJ/jV8bTmlVUC4sfhmEJcwCm4AB2Hm3LzpV2/LPBobC9OaVmKLZMxFtITTiLAuGigEUr18Z7vRU84F2dqQynDF1QmnjvRFIUHAbsHyvfz5P9MMkDDLRrn8MsRstcUFeAwwz/QRNy42VYXjIDOCgKNZuTXGt3/S7L3DPpALSkehSy2TGUkC2PwFHZmfy5pSSoiHrBxlQYDdtRtu3pgUH11ArQ3MTnMNEYuT2+LFgKR+om6e8vR0twMKJDY+u1oWsXqLWNY87nh+LkMLWRKhgJCUKkWoSwKPWeR46qbj647QZXdTYj9DCoWZL+LwjdGfBBhdSI8dmLUUog4o7ek7fJhlqW3wRUoWMHJRdcWepKAp2cHAmaEo/DDH83VgWk3nbV4O9gnjLIxjmvamQH7ixjj55SaNXKiaXtfnc1kXP3BGf7vB6Pwjy6mhqmEDxtjFfL0OxmYf04QiEjhoGIL5fEhNJlk3qK6iIzZclaC4+Z9H2foR+k8faYJ8Mj2KTNgqg368p1dAQ/LPUvjGfBZMFPNyKGfygraHEPU6oWpM8qLGyLixdatacr8wIB0bqnuCVh4+VEvIjEp28hW5gJcnDGP7Q6kP/fAuDiTy+oop8Pj8IZzs9uPZCnGQoM3rkWCphLGQk7fj7G1B+3dMlSx0YuBpouWoP5DeWLvJqJRh9wfy56loAnOD5gQ3kw6ci+UR9G8lNeCDD91YQYgjYcT4Xsbh35Gjh38LeaO5WpVml6Hy8G7derTvRV+4q77mw/ai0fO7ei6myfG6Y1W96uqWf45OB+Pmd1lwuC7EfR01fLhI1N3DumdkxUtZA8ZCGctoUx9mV/4gdplPPYBeD8l5XRCgd2HhyCFZpItEuOqrNo5unY6OfNIJK1BHWZUMfqusAx6SpnPlAP6UvqPjT235MHvMA+4DtlhiRWTBXTAPO3QO39gCmVJjfs5AnWmz6y
+ r7KlIBjp
+ omvaK7+En18quel/KcOOfwYgjy5t3Nsn7NuSDj0bwcFrbaGypro0neE9YPhg+MO26F2Z/C75A+Ez5t2AhCSfP4XGuUWfpLX9CXO06PTqe8E56HtEFUKIymUSNU6X9k8hV7RGuN4HHYw4HItSiBXOmgobd5vGh22ScimvIq96Rfplk9tY7u0qjM/7cguME2oQLztXovvsLPDzreb0H2tuReoSFyqpaYI582w1K5o0pA/GEkfgo6T/o6oxrlUKf2RwLAniY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -215,26 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/5/25 08:58, Kalyazin, Nikita wrote:
-> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
-> +{
-> +	/*
-> +	 * Direct map restoration cannot fail, as the only error condition
-> +	 * for direct map manipulation is failure to allocate page tables
-> +	 * when splitting huge pages, but this split would have already
-> +	 * happened in set_direct_map_invalid_noflush() in kvm_gmem_folio_zap_direct_map().
-> +	 * Thus set_direct_map_valid_noflush() here only updates prot bits.
-> +	 */
-> +	if (kvm_gmem_folio_no_direct_map(folio))
-> +		set_direct_map_valid_noflush(folio_page(folio, 0), folio_nr_pages(folio),
-> +					 true);
-> +}
+Hello,
 
-This is rather hopeful programming.
+On Thu, Dec 04, 2025 at 06:24:37PM -0800, Shakeel Butt wrote:
+...
+> In Meta's fleet running the kernel with the commit 36df6e3dbd7e, we are
+> observing on some machines the memcg stats are getting skewed by more
+> than the actual memory on the system. On close inspection, we noticed
+> that lockless node for a workload for specific CPU was in the bad state
+> and thus all the updates on that CPU for that cgroup was being lost. At
+> the moment, we are not sure if this CMPXCHG without LOCK is the cause of
+> that but this needs to be fixed irrespective.
 
-I can think of a number of ways that this assumption might become invalid.
-This at *least* check for set_direct_map_valid_noflush() failures (or
-whatever interface you end up using)?
+Is there a plausible theory of events that can explain the skew with the use
+of this_cpu_cmpxchg()? lnode.next being set to self but this_cpu_cmpxchg()
+returning something else? It may be useful to write a targeted repro for the
+particular combination - this_cpu_cmpxchg() vs. remote NULL clearing and see
+whether this_cpu_cmpxchg() can return a value that doesn't agree with what
+gets written in the memory.
 
-A WARN_ON_ONCE() would be fine.
+> @@ -113,9 +112,8 @@ __bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
+>  	 * successful and the winner will eventually add the per-cpu lnode to
+>  	 * the llist.
+>  	 */
+> -	self = &rstatc->lnode;
+> -	rstatc_pcpu = css->rstat_cpu;
+> -	if (this_cpu_cmpxchg(rstatc_pcpu->lnode.next, self, NULL) != self)
+> +	expected = &rstatc->lnode;
+> +	if (!try_cmpxchg(&rstatc->lnode.next, &expected, NULL))
+
+Given that this is a relatively cold path, I don't see a problem with using
+locked op here even if this wasn't necessarily the culprit; however, can you
+please update the comment right above accordingly and explain why the locked
+op is used? After this patch, the commend and code disagree.
+
+Thanks.
+
+-- 
+tejun
 
