@@ -4,105 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DBC9D2CDF5
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 00:58:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 924FCD2CDF2
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 00:58:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A9B56B000C; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
+	id A65C46B0010; Thu,  4 Dec 2025 19:58:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55A276B0010; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
+	id A15C16B00D0; Thu,  4 Dec 2025 19:58:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4496C6B00CF; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
+	id 8B8406B00D5; Thu,  4 Dec 2025 19:58:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F02D6B000C
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:58:48 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D0E241331EB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72E2F6B0010
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:58:49 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29A3755A6D
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:49 +0000 (UTC)
+X-FDA: 84183607578.08.6F91647
+Received: from mail-oa1-f73.google.com (mail-oa1-f73.google.com [209.85.160.73])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 48E5A140006
 	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:47 +0000 (UTC)
-X-FDA: 84183607494.02.C6B6C0D
-Received: from mail-oi1-f201.google.com (mail-oi1-f201.google.com [209.85.167.201])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1F08E1C0017
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mVrzgYR9;
-	spf=pass (imf18.hostedemail.com: domain of 3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com designates 209.85.167.201 as permitted sender) smtp.mailfrom=3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LLPfqzf0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3Ri4yaQYKCLsbwbhjohpphmf.dpnmjovy-nnlwbdl.psh@flex--avagin.bounces.google.com designates 209.85.160.73 as permitted sender) smtp.mailfrom=3Ri4yaQYKCLsbwbhjohpphmf.dpnmjovy-nnlwbdl.psh@flex--avagin.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764896327; a=rsa-sha256;
+	cv=none;
+	b=3ni+zOpRbNX3cOBiFr8k0nzXT4svgEhjJisG20GHAmfbkkfLvKj2vfu5UWujS3L43U+Rcd
+	l+POABI4fLF394enHO7jNgL32a6ZMsNut99ImtKpBo8HHRHrtthSbkWsbOEnvo4UgvmbBe
+	WGkFHXb4AtUm+o4ihghups9G79aXTTQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LLPfqzf0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3Ri4yaQYKCLsbwbhjohpphmf.dpnmjovy-nnlwbdl.psh@flex--avagin.bounces.google.com designates 209.85.160.73 as permitted sender) smtp.mailfrom=3Ri4yaQYKCLsbwbhjohpphmf.dpnmjovy-nnlwbdl.psh@flex--avagin.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764896326;
+	s=arc-20220608; t=1764896327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=OkIFDglYe+NNTa2m54quJMQQhad7qn1qBiLg81dFGHA=;
-	b=lxuVDlS5ZpP37tTZnTb3EBnWt42QDXAF2lstrFy2cwYga8dvlw8WnE2MkQEWy0XtC9XYTT
-	mHdfP/dOkXQ2NP1+bE0ouTpPeCAhXjn9dxV0VXGZb9DpePSY039b0o7ZhrImYaPPXtb/Vv
-	etlewaQFfep4BmqdqmMNUslOIPibteE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mVrzgYR9;
-	spf=pass (imf18.hostedemail.com: domain of 3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com designates 209.85.167.201 as permitted sender) smtp.mailfrom=3RC4yaQYKCLkZuZfhmfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--avagin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764896326; a=rsa-sha256;
-	cv=none;
-	b=3tpgmT5Jxar8ucrCvlqBa2mxKH3nyv8L4qiYhUMPwioyuuxNoD81eYvOZfQYvOQOm4gxEA
-	9PJ88YYLiHLcb9PctM7/XpF4Xm24Q5S+h8Ye4Lk44X+DNqKy9/dWCSisZ2XxkoWDTBKR+i
-	a92Xt0bvA8l3BMW1Es3F3bdtReSVGXc=
-Received: by mail-oi1-f201.google.com with SMTP id 5614622812f47-4510650af52so2166493b6e.3
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 16:58:45 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=l1Ka/G7ByT2+kY8UIiF65zUCvkc5PFIL+KWxYDYgrVo=;
+	b=BTBOhgKpasCNz7a7admMxPd5WWpJi9+u5ZxpudYnPc3akl2OChmih4zEsx5rbSwtHpYyCa
+	Mc92R1hUsyKJeNfGxsQhnAHRlmeHTTn0xkZzl+K+U7AlyDK+1NRAn2H74UqVJM5gLp5lmS
+	2yRRGdfu++XPlEOqI9iefkGfN0Sm7V8=
+Received: by mail-oa1-f73.google.com with SMTP id 586e51a60fabf-3e890e6be00so2717595fac.3
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 16:58:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764896325; x=1765501125; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OkIFDglYe+NNTa2m54quJMQQhad7qn1qBiLg81dFGHA=;
-        b=mVrzgYR9dollPk1Tqxb+6xnSxpjC6R5g7mONHmMfAKV2dnc3XekOzFIfftr/OsTRwO
-         n4LUhPnnP9z2IaLXcUgWkKRK+ZKiBJSlZhzYP0zUaiMqi5/zcPatBPXdlOiXgkbSlfPy
-         qggabdJOsoY0V20SIRMW5ZR2ivPcbOWSE7kfoa5bW7pSaSKRINbfHa44h3srl4pt/6ek
-         o1LMCr+lcjhWBc5PUBNR9YYA/I9ASKyUU4F0uBEIW2KQXGP9pDhvoxol5cw7u6ykKZ1P
-         0uUMefoqgTRSHDBVBddcF+DiNUS5+I6VAc9qeNVGq2TAokocnicAoYP66oMtr95ZeB8I
-         gDmQ==
+        d=google.com; s=20230601; t=1764896326; x=1765501126; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=l1Ka/G7ByT2+kY8UIiF65zUCvkc5PFIL+KWxYDYgrVo=;
+        b=LLPfqzf0zQqKx79bxxQueJ5IxQjo7kNsbWNDipkP+cZyuuxUhuaYNa1PdUjKcMYvGr
+         3Y1rGdxqueljRVuB5G38r6zaKPrQJpWMkaOOhGWCNaj9Gk8kiHCjg3LxnhqVbNoU1Dh4
+         VEF0lKw7cQEJUs4wjzNZ/C81yrMDrbFCMGCyyTC7xoPUGSwokFZYcXNS122G4lfeiMqb
+         7tn3/zsiz5HtujTI5JOFYLFLi+gYZLWJEHN/k90xUdmnwXNdiXpoE/KTh68mYJXkfD99
+         jX4b8cDw5UvcJFgxt3i/WTIwlLvyxQ1yPMA/Q7SGyuxVgWzcuorgeGZHCRL+PGcWjgsH
+         yG2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764896325; x=1765501125;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OkIFDglYe+NNTa2m54quJMQQhad7qn1qBiLg81dFGHA=;
-        b=qQK/WJC2u+1izwdh1sPkCN7IB/Px+sDDeKeV0kjg5VlQqa3tXDfzSdh2drBY+BC6V2
-         0Fsgq+dYRpKm+adJTVszLhDwcN28snMLyey9KJH+RGT12d8qpCzjoJgoznoL1sQ+mB/a
-         VS0BSleFHA29KKjClJ4DsFmZIY7GGKHv1H4RKXfuZCsbxJF9kHEvOfAZokgAfBzA4H0Y
-         JhCjQbQJf6k32aI4OarXzi22w18hfq6Ng9ZiAmv7Nd0M7z8hd98Kj4PxPOoQJUjj5QFs
-         VzbWtH5J+CJRHLT5OGPIqjxc6dQQcRpbKo+ZzeHHF301WkiwnBb1WmfFeH/fAr3QScKD
-         vgdg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7u8Hnj/8IdHvd1qCmaWL+/AIMM0q+wV0QKNBn8bWL6watvOluXyhxhv1RyD5/tEivLQ82uw6C4A==@kvack.org
-X-Gm-Message-State: AOJu0YxbxK6/5l2Uqopiu+ePN7VoZP8bIxzWhPIi7TWtuXhKfq6Nrp+b
-	zoPrMFB2T5SH/4ziuFFqYDVtGw4T3EitbyNvFZAJj4PoR9WhZAaXtI0eBGolMjl+Pbdz6CMbWVH
-	VwzHHUg==
-X-Google-Smtp-Source: AGHT+IHj0LPEa/ejQQf0MUYWeJwJfYADQwqU4BCYqxCRyoUpapAb59gw8xQzZvkTJOVDLbICm1TVHGWi4NY=
-X-Received: from ioby11.prod.google.com ([2002:a6b:d80b:0:b0:949:806:8e17])
- (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6808:2383:b0:44d:aa8b:58f6
- with SMTP id 5614622812f47-45379d21b91mr2858055b6e.1.1764896324986; Thu, 04
- Dec 2025 16:58:44 -0800 (PST)
-Date: Fri,  5 Dec 2025 00:58:28 +0000
+        d=1e100.net; s=20230601; t=1764896326; x=1765501126;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l1Ka/G7ByT2+kY8UIiF65zUCvkc5PFIL+KWxYDYgrVo=;
+        b=MuKeXCaM0fC35MHjJCuMRmswdbNXs3OS/KTagknB+WqLxz2EIvIppAD+lMEg9Mpb54
+         OqxiJfu+b3EdeMTAUgz/5RnU5bYSED12HJ74dytqxxJaJzxzvUg11BLeGqURaGWTnLh1
+         S9zSUwLblzqNceciE3nH3czx2iTGi8gXDXKgAh6Z54rwdPe3DcZnMDWZgvkQi1bPPszM
+         Oshor9r/sO+6qyuXnN0k/+2Wc3j+XmPEwJLEn7IZfJfEto9ohOBFubg7sK/TFJRklawS
+         j+zuZrpT0HjlGq6bnoXbe1QnYx6eyyXLpGoib6y66X6H8xX0RsrwJKetHJ7D3NtY8L7M
+         qxUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTIusIVhaLYrM9qqgkaVax0RXZ9c/zvIqZCGGhLhaREpmELEiIPRsD2GnXAxbMZumU20bAymzWjg==@kvack.org
+X-Gm-Message-State: AOJu0Yxs2821PZF/N17Wk+4DsISIeadcskMnsARxqEQS7P6DjvgDcaVA
+	KCaFYa2QY6AledphYPNzdb2mwsTcXhlRqf67sjCkVi59y2hAjPYlIoPZ9Tl1s0Blupy5ob+Fv74
+	NTDYaLg==
+X-Google-Smtp-Source: AGHT+IEwsKSsZMSp6xx5UIj2r6LD+T7cD7UXVYxQ9IkaQIcbU4lDaPVqZhMj+NwIGSDCYm3tG6SS17DBIEk=
+X-Received: from oacnz12.prod.google.com ([2002:a05:6871:758c:b0:3e7:db6c:48b])
+ (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6870:888f:b0:3e8:8e57:a7a1
+ with SMTP id 586e51a60fabf-3f5067dfc56mr2969051fac.52.1764896326246; Thu, 04
+ Dec 2025 16:58:46 -0800 (PST)
+Date: Fri,  5 Dec 2025 00:58:29 +0000
+In-Reply-To: <20251205005841.3942668-1-avagin@google.com>
 Mime-Version: 1.0
+References: <20251205005841.3942668-1-avagin@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251205005841.3942668-1-avagin@google.com>
-Subject: [PATCH 0/3] cgroup/misc: Add hwcap masks to the misc controller
+Message-ID: <20251205005841.3942668-2-avagin@google.com>
+Subject: [PATCH 1/3] cgroup, binfmt_elf: Add hwcap masks to the misc controller
 From: Andrei Vagin <avagin@google.com>
 To: Kees Cook <kees@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	linux-mm@kvack.org, cgroups@vger.kernel.org, criu@lists.linux.dev, 
 	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Andrei Vagin <avagin@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: id7ur5d8efg49f5ffch658okeaui4hxr
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 48E5A140006
+X-Stat-Signature: r9k11tp6wo6w1cnzsiwmte9i6r11uo7c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F08E1C0017
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764896325-763166
-X-HE-Meta: U2FsdGVkX19TpVsyJhZTG5yp/tBhgkHU97Pb2cTwpAhJRY8Opof4yhQJRBn2UZsoOruBwz7eX2kPK8HeelfBus8DVtGguNnyUB9eF3SX8qmXmvNvhqkSy1nE2Sxz/cPW3FG75xwhJnaz5DWzLD/ykABhhzYoYHCMkCTnNxYFAV48v80/pANcriay0c9TKbHIedl1PdHiOBZIfsuy136KutHxQQ5aPYBJbhFS8ZsbsN314Cgv6jb0i0NvvGlmBQFmIdmicbErX9C9uf+iTAwwPmd/4aAOrm76+BhGCkEme03RermLtp750p6lRU2RdhhMsfyym0O6UTz/Zuj0pMUCw4t3qVb1wpSlDOvLaH3olU5cUDpdjZddApO3ZIDu2qpuNw8e7cS/ZmqN7q49ci/h+3cIMHxWAnFNJcCGGdG7m2NMWTfxh1PiLgKSwbauH06KVIm4QJECtP/A6II3hwFe/vZgPRgWeFrAfWni0y+4hkToJ9oKlSchETTkpdM2MJ4ujhBTNDgYG16or66b9FKPbZQv5la9bNZUAtwDOPRXt3mzrJ5Z1X9Erot2Dq2y5JZfJ0lafv2J6uXWscO9Gw5mpSfUyp0IiWna0tLpCBBt5//vCgbjadQ0urwz9+blwt7ZfD3HWiksOVv3GFL5msDMjSscmH90lP1Y2T7u87HwtkQnW/LWwcWVfP6NDIQk0LDmz9qYO11ueefElzXf8jb0mOm+ig98X3fNM9OrmTMU/VZoZ8MaeDlztmsqtPPgZ4iI70cW45OnDEun/6uG+tljeAlCaUAfSFOoF2yTOsKr5sQaxCEoCnwbJOTRvyTzFIEOxXrDfNBXZmnfDU6aFM3zTIxLmGpu7307ZhUlZf0qBqSu5atFX1yX2wr+UBQW/C3wgw6Jfh/NLd9IdD/TMaPhynVx7FZGWhOIQZh9U93/CjxfyIGBPSw9KHpr7kxgCOFEFFNTKwR28k4Ht1QVDRB
- L0ipK3hs
- pgo/dxrSFncsJuD6GH4h/fzm9PEc6b02qaAWmIn353w36iIHvVF/cDQI382cIojxaZqjfuy9f+tHNBmhCmQ2S7ieOqrw3BiodKg1xb3YQFHz/PPBNH1sokv+NlHWfeoq5zKpzBihN174Z/hwpZfMmoDs1xlj68+TVx9g+6J0zzoqS6eromzsiALTdYLr6oAB1UjVgsYx6jcTqHzlOD7zjdZai/iZ5UKWK6O1NKVgVPjLUT2Zh/FZ+XLzfLEdJWGWfpN4wmM4aQBsOQcz25s/FoBQ5XGB4VYECAdG+vJ7/CzpqW8eFxlAr4zcgfTPlSeh3bl91Uev4xgIJ0z/j4boAytJ1An/3aYJJMMz2a5AnTkVALVrmJeNvSq7KHPoPRiNvzafAX7I19njwEuHSY2fWmxbB2PQmQnen01fY/vx7fx3nfFFfHbife92nI4GlS471liva9YPFF2nC0WX4IP/WzIs/2iRYq23cxvqrVMUbyyso8h0nQ2LW/jA3UIJ1XoSEs247iebTIzsRnyD6w63folq2PxBDVNcRCjeUMBG/7CeMEvYYeX/IDTDyCBvAs7x82kSo/RSqqjL6ld3Tu9nZGM3NQROAshgPEAwAhpmXnVi0MYzIjUFgwwtthypu51HvmwvYClzKI4GxTDiuETukdvcyYZ8With8PSdVQz1j/1qaeu2Unzm5oLKhUdoIr4m1Hf6+iUX68Y6MAssztTDEEbsApwgS1w+oZ7S2IBnulVbbwkZt6poJBDTjQwZglNTjvDRH9OGI5nig9Pk0YnE1b5Ise24G4rHwXHrBh34Ng6J/MzXUWaN0aQsT8+gd4DWX52Twt/J5+hXgwW0=
+X-HE-Tag: 1764896327-6761
+X-HE-Meta: U2FsdGVkX1+icMklk/Qo8887DE2Yy/HSYWJjSq/u/r3kmsD3I6kE+kYrsMQiVj8L0XYD2z6uvd557F+JI0hYAoUHWD6TB6H56d0My56pBNHtQK84XILtSazOIo3GrWpd+3fUZXhIr3kwxl/LF5WBtMkAFYB7tSiK4ZhQZn2Ga3DqAn0eeKmeQxyQego84+BS3vag0xO3agrQVzyxJ7PwOPEB1QVrvmL2W0h5tvMSqaeAo8VODhtcC48MGmxCdKkFK5j/4NzS93kopU8j4R5wuz+k67pBTy1u9b5wZTvzkwyER6zkbkALOtBkJ6jcIu7LygELkRmfNI162l26Clb9Vc5B/YQreUoySXoFCv+jSrse3GQF+HggR1Zh0ma4bj8XKQoKYaRmPQ28xjs5IAiJEFdSu7RborbsMc7D12SynU9fuubnUqkWka/76gG0o1RFldNLLhg+IUnT5RfqTKl7GsV75BiDBmsQAkpKJv0O0/l6Ti/Hd8a9idQxd19qWqj3eM/JihZRAyebby/oIrmgREnM1HDd3cUH5BPKBrIX9QJkPaoA9Q1ZgV64rtECUkOek31ooanYIvAV3CD/yNaUS8GZCsV7WhPI5ywAQD/rwAXZdaFIr1BmLSgThdE9yVy0bwsNl3Ja4PAN/IBOKZrj7RFKtD0WYIsUtLFywc/TlAa8ncXqQFnOKpn8SILJo+4eel7LX7fER/NWO3K+2bZcops/9jzQmrvhC9UdZBGZXxZ8r3zRygK+5McGLdRCUlzpUWWVp0hQ//nkgPCR5ZZ0qzGUvl/yM+JMbRaydpL/9EK5MBbWHI+/gZKehHn8HA1D5B3QVWG0NWfT91oNO1+Iz4Gg5pNEqKQJ6s8ZIQ8IiRHEHxNZOflEt8AclL5tvuPDHTceO5Dg80NA/sevoxNpsVBVOEkN8HDUAnNgu64UBjU0o+AO3um41S71YXd+35ZgckQ6X3fzBuT+kc1+GP2
+ cwK47610
+ XjJbQDGCpoEmG43q7qQOELQlb97x1PFx3JhHibOYB1jQY5dx5vz6CNmPrAxqRZksXQJUE2+l2YvREsvc0uppfOAvT+cMdRFlemJ9xq2ui+C7t9y40L5AEhzdAWWCwCo9P7uFswWPgb0RjEg8MPgHGLf5uBCokFONUInWZYoN9E7sGsL7QLPN8GZpc4NEhMpOXclVA+zSm3uYB7y0syZ1Vvf7TzndloWn/TXPU1kIFdLWBNFXQ39uwnSXCEnVYsjbcMgCdMk6PPQC7Vx9KaP6xk+z17mtC9FcMyvkHUD4NK9Sjki4TZZF3g5bu2N1YXA02bBKp3uLTCG7R76XGl31k935lN6/W4NLHJmeqED2ak6cpn2PKZvb7UVypBG8w084QRgk+k2z3bdBJP16QacyZ9ajSy/u1HPkXlbvYnDIXYdW06/nC/rZLvKHXDyEwdx+TqHj5Oo7qLv7M+JY+pilGsOmDBxU4/zSkilUPJQhCQ63WEAsLS+kp5oXyDyakxOFSlHF8v7+n36nNhq1LSsU6FzhwKDn37nHDtafk2zeHZbESDOoSONaWiN1X0FO44i+d9K6L5FV+yJ/9MRv+7UWrZsYFiA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,47 +112,306 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series introduces a mechanism to mask hardware capabilities
-(AT_HWCAP) reported to user-space processes via the misc cgroup
-controller.
+Add an interface to the misc cgroup controller that allows masking out
+hardware capabilities (AT_HWCAP) reported to user-space processes. This
+provides a mechanism to restrict the features a containerized
+application can see.
 
-To support C/R operations (snapshots, live migration) in heterogeneous
-clusters, we must ensure that processes utilize CPU features available
-on all potential target nodes. To solve this, we need to advertise a
-common feature set across the cluster. This patchset allows users to
-configure a mask for AT_HWCAP, AT_HWCAP2. This ensures that applications
-within a container only detect and use features guaranteed to be
-available on all potential target hosts.
+The new "misc.mask" cgroup file allows users to specify masks for
+AT_HWCAP, AT_HWCAP2, AT_HWCAP3, and AT_HWCAP4.
 
-The first patch adds the mask interface to the misc cgroup controller,
-allowing users to set masks for AT_HWCAP, AT_HWCAP2...
+The output of "misc.mask" is extended to display the effective mask,
+which is a combination of the masks from the current cgroup and all its
+ancestors.
 
-The second patch adds a selftest to verify the functionality of the new
-interface, ensuring masks are applied and inherited correctly.
+Signed-off-by: Andrei Vagin <avagin@google.com>
+---
+ fs/binfmt_elf.c             |  24 +++++--
+ include/linux/misc_cgroup.h |  25 +++++++
+ kernel/cgroup/misc.c        | 126 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 171 insertions(+), 4 deletions(-)
 
-The third patch updates the documentation.
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 3eb734c192e9..59137784e81d 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -47,6 +47,7 @@
+ #include <linux/dax.h>
+ #include <linux/uaccess.h>
+ #include <uapi/linux/rseq.h>
++#include <linux/misc_cgroup.h>
+ #include <asm/param.h>
+ #include <asm/page.h>
+ 
+@@ -182,6 +183,21 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
+ 	int ei_index;
+ 	const struct cred *cred = current_cred();
+ 	struct vm_area_struct *vma;
++	struct misc_cg *misc_cg;
++	u64 hwcap_mask[4] = {0, 0, 0, 0};
++
++	misc_cg = get_current_misc_cg();
++	misc_cg_get_mask(MISC_CG_MASK_HWCAP, misc_cg, &hwcap_mask[0]);
++#ifdef ELF_HWCAP2
++	misc_cg_get_mask(MISC_CG_MASK_HWCAP2, misc_cg, &hwcap_mask[1]);
++#endif
++#ifdef ELF_HWCAP3
++	misc_cg_get_mask(MISC_CG_MASK_HWCAP3, misc_cg, &hwcap_mask[2]);
++#endif
++#ifdef ELF_HWCAP4
++	misc_cg_get_mask(MISC_CG_MASK_HWCAP4, misc_cg, &hwcap_mask[3]);
++#endif
++	put_misc_cg(misc_cg);
+ 
+ 	/*
+ 	 * In some cases (e.g. Hyper-Threading), we want to avoid L1
+@@ -246,7 +262,7 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
+ 	 */
+ 	ARCH_DLINFO;
+ #endif
+-	NEW_AUX_ENT(AT_HWCAP, ELF_HWCAP);
++	NEW_AUX_ENT(AT_HWCAP, ELF_HWCAP & ~hwcap_mask[0]);
+ 	NEW_AUX_ENT(AT_PAGESZ, ELF_EXEC_PAGESIZE);
+ 	NEW_AUX_ENT(AT_CLKTCK, CLOCKS_PER_SEC);
+ 	NEW_AUX_ENT(AT_PHDR, phdr_addr);
+@@ -264,13 +280,13 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
+ 	NEW_AUX_ENT(AT_SECURE, bprm->secureexec);
+ 	NEW_AUX_ENT(AT_RANDOM, (elf_addr_t)(unsigned long)u_rand_bytes);
+ #ifdef ELF_HWCAP2
+-	NEW_AUX_ENT(AT_HWCAP2, ELF_HWCAP2);
++	NEW_AUX_ENT(AT_HWCAP2, ELF_HWCAP2 & ~hwcap_mask[1]);
+ #endif
+ #ifdef ELF_HWCAP3
+-	NEW_AUX_ENT(AT_HWCAP3, ELF_HWCAP3);
++	NEW_AUX_ENT(AT_HWCAP3, ELF_HWCAP3 & ~hwcap_mask[2]);
+ #endif
+ #ifdef ELF_HWCAP4
+-	NEW_AUX_ENT(AT_HWCAP4, ELF_HWCAP4);
++	NEW_AUX_ENT(AT_HWCAP4, ELF_HWCAP4 & ~hwcap_mask[3]);
+ #endif
+ 	NEW_AUX_ENT(AT_EXECFN, bprm->exec);
+ 	if (k_platform) {
+diff --git a/include/linux/misc_cgroup.h b/include/linux/misc_cgroup.h
+index 0cb36a3ffc47..cff830c238fb 100644
+--- a/include/linux/misc_cgroup.h
++++ b/include/linux/misc_cgroup.h
+@@ -8,6 +8,8 @@
+ #ifndef _MISC_CGROUP_H_
+ #define _MISC_CGROUP_H_
+ 
++#include <linux/elf.h>
++
+ /**
+  * enum misc_res_type - Types of misc cgroup entries supported by the host.
+  */
+@@ -26,6 +28,20 @@ enum misc_res_type {
+ 	MISC_CG_RES_TYPES
+ };
+ 
++enum misc_mask_type {
++	MISC_CG_MASK_HWCAP,
++#ifdef ELF_HWCAP2
++	MISC_CG_MASK_HWCAP2,
++#endif
++#ifdef ELF_HWCAP3
++	MISC_CG_MASK_HWCAP3,
++#endif
++#ifdef ELF_HWCAP4
++	MISC_CG_MASK_HWCAP4,
++#endif
++	MISC_CG_MASK_TYPES
++};
++
+ struct misc_cg;
+ 
+ #ifdef CONFIG_CGROUP_MISC
+@@ -62,12 +78,15 @@ struct misc_cg {
+ 	struct cgroup_file events_local_file;
+ 
+ 	struct misc_res res[MISC_CG_RES_TYPES];
++	u64 mask[MISC_CG_MASK_TYPES];
+ };
+ 
+ int misc_cg_set_capacity(enum misc_res_type type, u64 capacity);
+ int misc_cg_try_charge(enum misc_res_type type, struct misc_cg *cg, u64 amount);
+ void misc_cg_uncharge(enum misc_res_type type, struct misc_cg *cg, u64 amount);
+ 
++int misc_cg_get_mask(enum misc_mask_type type, struct misc_cg *cg, u64 *pmask);
++
+ /**
+  * css_misc() - Get misc cgroup from the css.
+  * @css: cgroup subsys state object.
+@@ -134,5 +153,11 @@ static inline void put_misc_cg(struct misc_cg *cg)
+ {
+ }
+ 
++static inline int misc_cg_get_mask(enum misc_mask_type type, struct misc_cg *cg, u64 *pmask)
++{
++	*pmask = 0;
++	return 0;
++}
++
+ #endif /* CONFIG_CGROUP_MISC */
+ #endif /* _MISC_CGROUP_H_ */
+diff --git a/kernel/cgroup/misc.c b/kernel/cgroup/misc.c
+index 6a01d91ea4cb..d1386d86060f 100644
+--- a/kernel/cgroup/misc.c
++++ b/kernel/cgroup/misc.c
+@@ -30,6 +30,19 @@ static const char *const misc_res_name[] = {
+ #endif
+ };
+ 
++static const char *const misc_mask_name[] = {
++	"AT_HWCAP",
++#ifdef ELF_HWCAP2
++	"AT_HWCAP2",
++#endif
++#ifdef ELF_HWCAP3
++	"AT_HWCAP3",
++#endif
++#ifdef ELF_HWCAP4
++	"AT_HWCAP4",
++#endif
++};
++
+ /* Root misc cgroup */
+ static struct misc_cg root_cg;
+ 
+@@ -71,6 +84,11 @@ static inline bool valid_type(enum misc_res_type type)
+ 	return type >= 0 && type < MISC_CG_RES_TYPES;
+ }
+ 
++static inline bool valid_mask_type(enum misc_mask_type type)
++{
++	return type >= 0 && type < MISC_CG_MASK_TYPES;
++}
++
+ /**
+  * misc_cg_set_capacity() - Set the capacity of the misc cgroup res.
+  * @type: Type of the misc res.
+@@ -391,6 +409,109 @@ static int misc_events_local_show(struct seq_file *sf, void *v)
+ 	return __misc_events_show(sf, true);
+ }
+ 
++/**
++ * misc_cg_get_mask() - Get the mask of the specified type.
++ * @type: The misc mask type.
++ * @cg: The misc cgroup.
++ * @pmask: Pointer to the resulting mask.
++ *
++ * This function calculates the effective mask for a given cgroup by walking up
++ * the hierarchy and ORing the masks from all parent cgroupfs. The final result
++ * is stored in the location pointed to by @pmask.
++ *
++ * Context: Any context.
++ * Return: 0 on success, -EINVAL if @type is invalid.
++ */
++int misc_cg_get_mask(enum misc_mask_type type, struct misc_cg *cg, u64 *pmask)
++{
++	struct misc_cg *i;
++	u64 mask = 0;
++
++	if (!(valid_mask_type(type)))
++		return -EINVAL;
++
++	for (i = cg; i; i = parent_misc(i))
++		mask |= READ_ONCE(i->mask[type]);
++
++	*pmask = mask;
++	return 0;
++}
++
++/**
++ * misc_cg_mask_show() - Show the misc cgroup masks.
++ * @sf: Interface file
++ * @v: Arguments passed
++ *
++ * Context: Any context.
++ * Return: 0 to denote successful print.
++ */
++static int misc_cg_mask_show(struct seq_file *sf, void *v)
++{
++	struct misc_cg *cg = css_misc(seq_css(sf));
++	int i;
++
++	for (i = 0; i < MISC_CG_MASK_TYPES; i++) {
++		u64 rval, val = READ_ONCE(cg->mask[i]);
++
++		misc_cg_get_mask(i, cg, &rval);
++		seq_printf(sf, "%s\t%#016llx\t%#016llx\n", misc_mask_name[i], val, rval);
++	}
++
++	return 0;
++}
++
++/**
++ * misc_cg_mask_write() - Update the mask of the specified type.
++ * @of: Handler for the file.
++ * @buf: The buffer containing the user's input.
++ * @nbytes: The number of bytes in @buf.
++ * @off: The offset in the file.
++ *
++ * This function parses a user-provided string to update a mask.
++ * The expected format is "<mask_name> <value>", for example:
++ *
++ * echo "AT_HWCAP 0xf00" > misc.mask
++ *
++ * Context: Process context.
++ * Return: The number of bytes processed on success, or a negative error code
++ * on failure.
++ */
++static ssize_t misc_cg_mask_write(struct kernfs_open_file *of, char *buf,
++				 size_t nbytes, loff_t off)
++{
++	struct misc_cg *cg;
++	u64 max;
++	int ret = 0, i;
++	enum misc_mask_type type = MISC_CG_MASK_TYPES;
++	char *token;
++
++	buf = strstrip(buf);
++	token = strsep(&buf, " ");
++
++	if (!token || !buf)
++		return -EINVAL;
++
++	for (i = 0; i < MISC_CG_MASK_TYPES; i++) {
++		if (!strcmp(misc_mask_name[i], token)) {
++			type = i;
++			break;
++		}
++	}
++
++	if (type == MISC_CG_MASK_TYPES)
++		return -EINVAL;
++
++	ret = kstrtou64(buf, 0, &max);
++	if (ret)
++		return ret;
++
++	cg = css_misc(of_css(of));
++
++	WRITE_ONCE(cg->mask[type], max);
++
++	return nbytes;
++}
++
+ /* Misc cgroup interface files */
+ static struct cftype misc_cg_files[] = {
+ 	{
+@@ -424,6 +545,11 @@ static struct cftype misc_cg_files[] = {
+ 		.file_offset = offsetof(struct misc_cg, events_local_file),
+ 		.seq_show = misc_events_local_show,
+ 	},
++	{
++		.name = "mask",
++		.write = misc_cg_mask_write,
++		.seq_show = misc_cg_mask_show,
++	},
+ 	{}
+ };
+ 
+-- 
+2.52.0.223.gf5cc29aaa4-goog
 
-Cc: Kees Cook <kees@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: "Michal Koutn=C3=BD" <mkoutny@suse.com>
-Cc: Vipin Sharma <vipinsh@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-
-Andrei Vagin (3):
-  cgroup, binfmt_elf: Add hwcap masks to the misc controller
-  selftests/cgroup: Add a test for the misc.mask cgroup interface
-  Documentation: cgroup-v2: Document misc.mask interface
-
- Documentation/admin-guide/cgroup-v2.rst    |  25 ++++
- Documentation/arch/arm64/elf_hwcaps.rst    |  21 ++++
- fs/binfmt_elf.c                            |  24 +++-
- include/linux/misc_cgroup.h                |  25 ++++
- kernel/cgroup/misc.c                       | 126 +++++++++++++++++++++
- tools/testing/selftests/cgroup/.gitignore  |   1 +
- tools/testing/selftests/cgroup/Makefile    |   2 +
- tools/testing/selftests/cgroup/config      |   1 +
- tools/testing/selftests/cgroup/test_misc.c | 114 +++++++++++++++++++
- 9 files changed, 335 insertions(+), 4 deletions(-)
- create mode 100644 tools/testing/selftests/cgroup/test_misc.c
 
