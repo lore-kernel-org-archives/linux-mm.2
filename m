@@ -4,80 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94A8D2CE1F
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 04:35:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12FC4D2E008
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 06:39:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52B516B009B; Thu,  4 Dec 2025 23:35:11 -0500 (EST)
+	id 9C07D6B002E; Fri,  5 Dec 2025 01:39:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503016B00FE; Thu,  4 Dec 2025 23:35:11 -0500 (EST)
+	id 971426B0096; Fri,  5 Dec 2025 01:39:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 467C36B0100; Thu,  4 Dec 2025 23:35:11 -0500 (EST)
+	id 8AE956B00C7; Fri,  5 Dec 2025 01:39:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 391EC6B009B
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 23:35:11 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B32A6568CE
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 04:35:10 +0000 (UTC)
-X-FDA: 84184152780.21.318B34A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BF7E6A0006
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 04:35:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YhV6zJf9;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764909309; a=rsa-sha256;
-	cv=none;
-	b=hUiezkMcbb83C4bNdMS41/6ZAWyBllU7III2Z9c3crV9ateNHs0d8XQjWrjNa4KQA2BwEX
-	Wr9av2UsxZbE/mB2HtI9OZw+dzgeFhuC6lHixkvViXF0a15cmacwbHG5CZZ+df/SmNkKSQ
-	lXG5rUvon44ZhjqKEK4CDfkepJ7vfes=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YhV6zJf9;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 79ACB6B002E
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 01:39:48 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A5C51404AF
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 06:39:48 +0000 (UTC)
+X-FDA: 84184466856.24.A89591D
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3ED6E80002
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 06:39:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VRuMIeyC;
+	spf=pass (imf30.hostedemail.com: domain of avagin@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=avagin@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764909309;
+	s=arc-20220608; t=1764916786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gK01jioExk9QgqqKJWuj0nW12vKsCLoPguQ+woKkLDE=;
-	b=m3Wq5m2KM+yIetlmnV8xcxU8Y8KuE1T6g7mV0R6oyX2YPn6syI5uaJGbEcJp6eymBcRWKl
-	qHIaGugFespxcYphkF3BZUFP3Gy83VrcDY9UmH4q+rIgNmp/ugTi4/DkLbVvuSYhQ9gg7j
-	liHxnMxqzY11O3NV017sa/KIAb7pCto=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=gK01jioExk9QgqqKJWuj0nW12vKsCLoPguQ+woKkLDE=; b=YhV6zJf9UwxxQfXPraH5u8Zr0A
-	EUtovP42SQHEcoP4rCDrTQezaxtICdjr5GB67zDW09lfUnzCwlSHonY82uU8gauwMyL9rgEYR2nPI
-	PuFgp3jL5EsEms8rDPNmLrHAvUaPlu5zMLtf/HtlkvQBF8CMNEJ65isd5j39Tu7y2NRRRdpk8wgcN
-	iQfMl4TDDdzzQlz9lnYQTWDPUPiHh0YzCecUv6jMrf6KxAww71ec6+NyO5RRZBrnBNjZsp3qIi93l
-	N/pB2x+KGPO2uY3YAZhUWDGiV79M2qPCHgfzKXsuFNMsQE9JcC27gOIJFRTjElLgkRzcHqGboYHGr
-	rc6p0MQQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vRNX5-00000005A2T-0Xng;
-	Fri, 05 Dec 2025 04:35:03 +0000
-Date: Fri, 5 Dec 2025 04:35:02 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
-	Song Liu <songliubraving@fb.com>
-Subject: Removal of CONFIG_READ_ONLY_THP_FOR_FS
-Message-ID: <aTJg9vOijOGVTnVt@casper.infradead.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xos3/gKqsqARg566cAUpDT+mdSxuLsIU5NrhIm44L6M=;
+	b=vEQ24GWwOzKOxSDaurWCVGuZ4eHV50jYs4Y1GXxyLWEyOIgn6DH+AippBzMmTeLhOJy8+B
+	CICPOqCbB2MmJU/xBZ9EKKlV5cula0pY/tDlxLRt7HLrHb/PrNSl25Tbg2CFEGiymUN305
+	+yu7M4sescRpr7XyJ8QXEwy7lqQ/JHk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VRuMIeyC;
+	spf=pass (imf30.hostedemail.com: domain of avagin@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=avagin@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764916786; a=rsa-sha256;
+	cv=none;
+	b=iuftycZNIV9bLOaYugoyC/S210S0xkZode5sVNrMx5570VKUEvmFmmzHN0Ii1GJpnxWLC/
+	ngji9fBQyE6HtEh5+qCcz4gszvJKyMeA9OKInFabCtAcKubnJTZSXWze4n8bUrAz96T9sZ
+	9XxTqhZl1gHVbqWQtB8rWnPT2Oo0UNg=
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6596897c2b5so971727eaf.0
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 22:39:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764916785; x=1765521585; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xos3/gKqsqARg566cAUpDT+mdSxuLsIU5NrhIm44L6M=;
+        b=VRuMIeyCkLkXuVcnXeUJ1Em76eMS8nzaw7qrOpA76ulQKR7I3oKObcLI3s4IuOqUzv
+         LmFyIH7iVa+dAq4DzNE4/UNVMEix1y/gPkQGBMoqhmp2Aim98W8lHvzwFX0Z7VzA6hi0
+         wxlRYzEN+hc2Dq6ByFrb9Po/PEyQMXJ+iBhFJ2MgZGGB05O6nMJU9Fz0N6pPcJ6LlfIT
+         bmnCDYZ3Y/7EmGptsamtR1CK+HNB19ipulMYeCt4JA5JDXqrwX7/hQqF9nImqtcfwNRN
+         WQ7eo2f/MZdxF6JCV6QgiJoTrZdECPMGPTqgxAmfoTZMToESIfFnomHZAj8K+hFaUza4
+         zErA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764916785; x=1765521585;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xos3/gKqsqARg566cAUpDT+mdSxuLsIU5NrhIm44L6M=;
+        b=NXY5oCrkz6ojGLli/rHDZrNWohUctqHVtfC40erANDcUMOvyrFgqJ15wuD9mibBkkM
+         hpwusHWcOiKPxU9wO4ex4ao4BtCY4dg8bkLsE+8l5dq9Enr4RwmMlg215rs4kF4+7rGp
+         U5hPMJnxPG5OFQyt66dQJaHjWUoahgkuJb6RY7oGHhr/GDRHg4iS2r9PJepO0SuFUbdr
+         QqASf/kKDT7l9wyuS7Mpo9DAsYjTYTMyblDvjmJ0V9lZl3qJax3yUIEoku1D/I0b3m6y
+         QVov0hanf9amexZ00peBH2kEAZdTlg6Gdysdx7Ezi/Dkwr3khciF3h2NoqWgyAL73TlV
+         xPlA==
+X-Forwarded-Encrypted: i=1; AJvYcCWR+UFcu/MQa/2h+2rFdiPuNg1ewA59DReZ0TYgjYCRr5e1Tb2V2xl6+EZ8kokWUkgVpkASbANX4A==@kvack.org
+X-Gm-Message-State: AOJu0Yz3bIS2we0sO1LhO3v7v/Ha1gE380Kiawk4hr6BWPHluLAJSFfp
+	Rzzl309q9SW4cSCpukrD6d90YpVbgDlqHhIrzrVOATddy1hONIjVP/i7Xe8ZwA40c9egl/ud0Rk
+	syEVSTNGItkR5yHthMzyaImW5s06EoDw=
+X-Gm-Gg: ASbGnctC8NzX4Sr+oorjUR4O6sBUYlZJE1jiX4xcISsRh8sygjAEeeV8+E0rgySpsaT
+	oKUdRDamj3GhWjrFsvSwj9Oh1wd4ZJLNu3HWLoIEDs6X4C4AYQUIDh+RsGhqAGgT32QGpusy9mR
+	f6cqvAH+IjzyosQmONvGME5FaXX+/Y8NoT1CsHu17+kZfQFbpi5wsXr4w5YkqmJtxnwqTu0L5Wg
+	e+VFKSc9zRvttKaBRogxoXYiz9l6HlsYB6Gc1T97uwC8qS1UGIcFK/eWEfRLLVr2DGT7fE3
+X-Google-Smtp-Source: AGHT+IHbvPZzUKtzKOwSB0dGiwkv726da9NNiQT6QaR1QMK1BNnACaPRk9hA/hPZpkFIaQtQU42Cp1O5EiqTIF9MfqU=
+X-Received: by 2002:a05:6808:6f87:b0:44f:fc93:f612 with SMTP id
+ 5614622812f47-45379dad9e6mr3120038b6e.32.1764916785070; Thu, 04 Dec 2025
+ 22:39:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BF7E6A0006
-X-Stat-Signature: 9518f18z7yj3z84j6bwa7zefqj3sthd7
+References: <20251205005841.3942668-1-avagin@google.com> <57a7d8c3-a911-4729-bc39-ba3a1d810990@huaweicloud.com>
+In-Reply-To: <57a7d8c3-a911-4729-bc39-ba3a1d810990@huaweicloud.com>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Thu, 4 Dec 2025 22:39:33 -0800
+X-Gm-Features: AWmQ_bmnaGxfuYW3uI63fXs7wkN5Gs-TsqIbCFxvBK_--CTpOzbn9u2q1u0Kpoo
+Message-ID: <CANaxB-x5qVv_yYR7aYYdrd26uFRk=Zsd243+TeBWMn47wi++eA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] cgroup/misc: Add hwcap masks to the misc controller
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	criu@lists.linux.dev, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3ED6E80002
+X-Stat-Signature: fpfmgsuh3zzz7thwfd8nosjac3gtqwic
 X-Rspam-User: 
-X-HE-Tag: 1764909307-413754
-X-HE-Meta: U2FsdGVkX18Kpfjac7IHaOdqx35WsKIn3fa17O6gJDLf1mgKmyTkrv8yRu3P8I2hyfO9NbsTl6lpRMd407HKloncgak/7IYAxUM8PH4HVATVsrpd155yaoSkh1rrmM6p60D0LBx7J4olZEfkxHclnPY5qDCxSMuv3pf8m+s3enXsaptHnKuXqCf0Cih5RDFzCTNf/wNuHJndPyghSrteE64u4vyOL/BNVAn0hwmcVrWfJ6js4yEV6QeXSAAG4jksckDMO47v7reT6xTNfxsWs4bEcCk6cb8lIk1JF8QeMUaOQsRLt6dDHg9vybQZURAOxbxdoyhrC5bLGPwc0IwzTUshJ4I1H9812fWV6qsgpdSn+oxBgkbFjUi94AuvrbzGlGgitcqCkbkOLjYZ9R+bTVCy4Pj0j1ns6K+8jrZibkDwoJKnI8z8MduQKiaoIGi/lrqbaKuBmnZRsRjPUhG14u/i8LGnDpGfu7ekYzxoWx4QnlseLC3TXI14ldrYBK1NrId2EffY7tVZD/M2InpfgR6GhxdN1amNS7W7KIqGsN+M9/iSPjwwYWZuzsZpTJuC0VqOh/rbfpSV08BLbkq2TLooTVNBxGSqeWQ2tQHW8sN0xKL6IlfMGGxT7JcqeSr4BXf/PoZqHHRyWXZbLkQtmFOg//KDrIA+qdwB8p+M6eq4Q7P+7CXfb4b77dFtupWtXFluiiLWs9v5uYPJDQG6/UnaIl2/iMr+a2leVB6YdoXa9dfhDTbwRMFrV0vZguVGSv7lcHVtO1RNZdZh3aZNlQETu5mN1gzPtqzkbs2n02eEp0+95m4ghE4Wm/I8gm6Ps0HIT3uaiGnOO5hKGajydcOrWgrbiAY1pEwAD4jnug6pF6B/pglmBi5Z5Q+wqlz5k5ccxjAEE1lqmrNYGuf62qBayiEbCn7r+v5eA88TxtAFy4urNNtXBibHEZ9aA1F+SNY3MCX2O2oJp+uSVad
- LaF1j8bv
- 8qIM2kKnLdCNn5GCEMyVbX4PG4NRhoSbbzk8Bh4FxGVs061EOKx20PXwFHmUziF1ZlZjHJKpqjFY5MGYvMdTmXPe/eyzvgl6O0VUmLK9MHpD+3d8dIMOhs+r5mtWqfDlnV8wMZY91ppwMOGYHoaRmESGgKwSKJNE/OtJjw283/c4XtCFdGNP1zDMW6LQSNan7/6acnDMrVCQQrZbPGBn4HpkZmmMLdep5fpHA6Dq93grIctbuWPjVT99+52A+7sjJIUOL
+X-HE-Tag: 1764916786-679384
+X-HE-Meta: U2FsdGVkX1/G0NXSkCx25hUoBU1xw9cRXpqGmjC+D4NrIWQStTG9oIfSFqq3LUOHX+3YTKEqhFmXGjsHTNGE70t8/e46uslrXym8K9chr3dXFUOz3eNsaWPwOTtVx8MFLHBe/zUMExAeR2sJH3ETrvLQV+LhcgdLSz7ABdCjaTitxt/OFDPRX7WnktsZjOS6BNMY/Lfh3wMld/sWDKsD3T+nqJxMQbUd74b2eil2FkZH2zBHlX1uah38CkzaB9FZ+KcsYZBl2qM+n2m0EVmzBuw8HgT8U1bRrLUB/oImzRzfJCDJxW79MQpGoGCKLOqpo8RIrUCWkz2fX8ZfzEQcIYb7Qt3BpXYz57fXjGFFzt/ZU9Ljk/SIUUNCLEhYo8fCSAc3OEvtB0lWQMjahLYhYOScWKvD36FOypnXgoD7OLi676jE/ILgzqUm85a/5yZdzRjipuDXAYBYcqM3u9+wPHLoSMRQZ4X+boU2XLahPVxh6n91mqlP8W9iSDn+iLv65ejyfpyeOtZ4cW32N2ZW6+n9I24VhHgI74um/RxCuHf0yvicvZUXv9SIgpRSe4ZvMXdGXGS5IThQ7JLfcmZGQMPdRN85tUDO0IyCzn/fLmVzGMaRtMmJE4vgHYkP8zd9W/ktNNJkzO+I9ZlObtCsfGBe8crgFsJg8+06aRq2GZqwaNyv0aI2LM+wkRAFW8EQOIP7chD9w9RuQgC4g5B3jo58D3JSjY6CFqYPo5qtACPjVEMvav3bzj0bCa2EYTYIurGm5dq+gu4cP7EW5VttaDJhbgXzbA4EnGZozY31rtd2WFITam8DwonPN2TgQZHdTkAV+EQPkn60f6ymDEyXxR3R+/3q+Ty0QDTmFoyfOueZzVGEngFIuLJ7zl7k9X+zxj4sD3dUYblHnH6iwOu7FvigIgd6KSwrylFlLlcCRVIj5jFq0+2DID7b1DGuZqINzKF37iOVkmOxc4JM61D
+ Zb3YIWv2
+ 6iftvrXRIHJP29cV6onkoxDApchDYEnUIwWPXRYW82CIWzTlsEOfRXtnnUJ4cFKrL5Q6756+Ybyo2vo5BBDFgiddAd0ac6XYWb8J1ch3dQ9K/D1xeghvP9sK5df+nlWTDEw8KMyc4L/KTfcKBAwn4ZzWcwd38bej+uDdILxKgjg73n7/Wu+XVop2Xe2bKfX1duO9pKAUaDtCIV7xflvdSu52EUGgrlm/8nrtcqjOtVlzSobVhI6mRc3rzqciW/ZTAHXhfcBcvZ+BeBg9EXrCirJVhHvkkKe4/kRXkxpi0tBhTpQ/qMkuRkgNtKLV68Om26SNWnSIVQ1cyKQunHoQmcXjk8w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,25 +119,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a heads-up that CONFIG_READ_ONLY_THP_FOR_FS is going to be removed
-during the next merge window.  When it was merged in 2019, it was always
-intended as a temporary step towards the more general solution which ended
-up being merged as large folios.  It has been a good feature which helped
-a lot, both as a way to develop other code which was eeded for large
-folios and it provided an immediate solution for improved performance.
+On Thu, Dec 4, 2025 at 6:52=E2=80=AFPM Chen Ridong <chenridong@huaweicloud.=
+com> wrote:
+>
+>
+>
+> On 2025/12/5 8:58, Andrei Vagin wrote:
+> > This patch series introduces a mechanism to mask hardware capabilities
+> > (AT_HWCAP) reported to user-space processes via the misc cgroup
+> > controller.
+> >
+> > To support C/R operations (snapshots, live migration) in heterogeneous
+> > clusters, we must ensure that processes utilize CPU features available
+> > on all potential target nodes. To solve this, we need to advertise a
+> > common feature set across the cluster. This patchset allows users to
+> > configure a mask for AT_HWCAP, AT_HWCAP2. This ensures that application=
+s
+> > within a container only detect and use features guaranteed to be
+> > available on all potential target hosts.
+> >
+>
+> Could you elaborate on how this mask mechanism would be used in practice?
+>
+> Based on my understanding of the implementation, the parent=E2=80=99s mas=
+k is effectively a subset of the
+> child=E2=80=99s mask, meaning the parent does not impose any additional r=
+estrictions on its children. This
+> behavior appears to differ from typical cgroup controllers, where childre=
+n are further constrained
+> by their parent=E2=80=99s settings. This raises the question: is the cgro=
+up model an appropriate fit for
+> this functionality?
 
-Now the majority of filesystems where performance is relevant have been
-converted to support large folios (afs, btrfs, erofs, ext4, nfs, smb,
-tmpfs, xfs, zonefs) with f2fs in progress.  It's time to get rid of
-CONFIG_READ_ONLY_THP_FOR_FS.  It unnecessarily bloats struct inode and
-it's now getting in the way of removing the old uniform split behaviour
-of split_huge_page_to_list_to_order().
+Chen,
 
-If more work needs to be done to your filesystem to support PMD-sized
-folios, this would be a great time to do it ;-)  There's lots of examples
-to learn from now; the infrastructure should all be in place, and I'll
-be available to help after Plumbers (December 15th).
+Thank you for the question. I think I was not clear enough in the
+description.
 
-[note: all relevant filesystem mailing lists are on the bcc so as not to
-alarm mailing list managers]
+The misc.mask file works by masking out available features; any feature
+bit set in the mask will not be advertised to processes within that
+cgroup. When a child cgroup is created, its effective mask is  a
+combination of its own mask and its parent's effective mask. This means
+any feature masked by either the parent or the child will be hidden from
+processes in the child cgroup.
+
+For example:
+- If a parent cgroup masks out feature A (mask=3D0b001), processes in it
+  won't see feature A.
+- If we create a child cgroup under it and set its mask to hide feature
+  B (mask=3D0b010), the effective mask for processes in the child cgroup
+  becomes 0b011. They will see neither feature A nor B.
+
+This ensures that a feature hidden by a parent cannot be re-enabled by a
+child. A child can only impose further restrictions by masking out
+additional features. I think this behaviour is well aligned with the cgroup
+model.
+
+Thanks,
+Andrei
 
