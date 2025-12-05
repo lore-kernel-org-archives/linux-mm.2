@@ -4,118 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B01AD339B9
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 18:43:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72E9D339AE
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 18:52:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 015BB6B02B0; Fri,  5 Dec 2025 13:43:48 -0500 (EST)
+	id 0ED696B02B2; Fri,  5 Dec 2025 13:52:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0A3D6B02B1; Fri,  5 Dec 2025 13:43:47 -0500 (EST)
+	id 0C57A6B02B3; Fri,  5 Dec 2025 13:52:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF89F6B02B2; Fri,  5 Dec 2025 13:43:47 -0500 (EST)
+	id F1CCA6B02B4; Fri,  5 Dec 2025 13:52:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CAB8E6B02B0
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:43:47 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8551687FBA
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:43:47 +0000 (UTC)
-X-FDA: 84186291294.05.39710DB
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 92A328000A
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:43:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HTuSvBOB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764960225; a=rsa-sha256;
-	cv=none;
-	b=W6qPC5e8mOf1JNfTeSyvAJd16Y9xou8KR0c9EmHuwWptrIVDvwodvujrdNszYrJ9XScnvg
-	Oa3Y/zGpHfSYFGVpq1jXQZcpNa4P0qwWjA3DdPbr2p32cIrPEQBbWp3u9ZrnQLpwlUWZJf
-	cKZgKCRxfwy6ItY4XpE7Q3hLnsSA9zw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HTuSvBOB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB18C6B02B2
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:52:09 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 871BA1602DB
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:52:09 +0000 (UTC)
+X-FDA: 84186312378.26.12F6CF6
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7F67B160018
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:52:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fgv+qnvZ;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764960225;
+	s=arc-20220608; t=1764960727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e7/1aFNzttjrEmgH/GMBCatif7QSIzkL0ePxeJlf7xU=;
-	b=duc4YSm6Tz3fZPuQFsMFI2xJk6NXHJPsALYQo8vGmdWTYtSrd3tMZF8sclXNuWkRwfOAW+
-	vS278QVdr7fCQwKYn1ltxtQux9sp8s2p2nflmTLmUWdkFI2AEnE9gyrCpNGpGiIZgZ8Aha
-	QQp9Vfmpt5mcvZ0c+drN/Qxl5cAz+i8=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so20244555e9.0
-        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 10:43:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764960224; x=1765565024; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e7/1aFNzttjrEmgH/GMBCatif7QSIzkL0ePxeJlf7xU=;
-        b=HTuSvBOBriRh5MHiuasnbES8Fps4N7rOMta/Ybuc1fU7zZV5VEV6q9bMcW2Gf8n7BV
-         Ud2VN7c17fq8OeCTIMkEE4dY9mhg1NdtkvjUk/PjPVZuKLFI2tv/mJvJxO12mlZRLpb8
-         GnTPqnnFw1mqaLhgoblRsB4+H4vlf14rBQRoWfawevNGHts6GSpfbECGGFTQK05lEL5e
-         NMGRPOZM9Ju+GLXpc0aDa3xM7wdZRJ5CINGA6flExeY33+GxjGC6xe/3HcUmByEKzCfc
-         1TjHLH4DXzHeaFhG1HIu6PzlLZwucFTJikQ2S4P1y9+g6QT4sujBn8Hz+tN31JTXVlML
-         oV3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764960224; x=1765565024;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=e7/1aFNzttjrEmgH/GMBCatif7QSIzkL0ePxeJlf7xU=;
-        b=SIuZgcX7vZbbj0Q/bdyxI7g7nKO6oNaec4PAVZ6KZRGGb/Ut4+Z1wiCHFf+dGtbVcM
-         NvoBC1yohExXQKCg+u/M1zfNegJu7Okmzqxfno7uqHlH1DESy5P7yjj7HGgSB3beYNZs
-         6qfpEi6E0A8b4O60euiifN748hnyh/StbTl4B1rxERFk+EbK8FKrUJgUb02XPxYOJfgP
-         67VDF2rh+1MccPx30Qyakj5sJNn/R2k5ZYz0QHKZXOi5tlvvs0GcDHoK57Jpf3nVwr6K
-         l8N678rBnslAvmx0/rLE69HSoV9qFhnE/QG/kn3eo2xqHCN/lDh/UG+CgiEzUNFyPYHg
-         Sd9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWDHPrJWrWG+b2n8QLTcVdeI2kRiuarP9EndTyd5BXUgELZAy4cMi9ZhtT1X+zXHAtcnBWy250Pmg==@kvack.org
-X-Gm-Message-State: AOJu0YwL3dnyLaXpHZFlAd9Ax/QRTtlqk06OmruNM7qX7xhaZlPDjqP0
-	X2thpUfMF7seM3Jmyq7xmu/24UTryoq3ofHcbGMmGq7KQ9Sj2xj1VuXl
-X-Gm-Gg: ASbGncuCvsxUAPot49LY3ZrihIsQC89jnMB2HCMW1SrrVtR4UkBjh2EFNy4lii9y4ui
-	1fF7KCVtsCTLLt6MsYs2Y/0AsBStW3naSJjwAQl5QGy52nXk6wB8Z2Nad5cZ/90TnJ8fADp6tRF
-	MPmT0X5lUhKEaCepSxqyW6S6gGsAIqu2rIZVlzSw1W28ICe0YuPACKDyZ2QkWpJuwirkzXB0Wnt
-	yVY6uDYv9RkWx2bmi8Kv0NS9ZBCUbZJnzXlE6NQpvgUdkIvZSC4zigFPbrOnp1Gw9IDnsRjE601
-	PDZ30XXi1bcqs+rKZSyZhe0RTuyxpnwymUWAlmvY3uzTd2C6iQcg8rVrdaNmJGKOdKUXxi7HuVT
-	1GHvpiZXHyOdwcg21KrClUKd7TbFabEsfYZJIsvhKTAkBpLgbqL5Ev+KScAI2p9E3stbRSz4shJ
-	pS98W6GRWGofTTjcdoVVaHytuA+q2Z3IS8/UlF9BcGltj89WHb3zvrOvVUnDYpgNw=
-X-Google-Smtp-Source: AGHT+IH8oQxJQ9sHJHXNwvtBMYhabUCo0pJF3Bl/B5exsqnwQClYz+RaZdZVl5XMm6m3+ze+0+ysCA==
-X-Received: by 2002:a05:600c:6097:b0:477:632a:fd67 with SMTP id 5b1f17b1804b1-47939df44c9mr3268515e9.12.1764960223836;
-        Fri, 05 Dec 2025 10:43:43 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47930c76edcsm96140615e9.11.2025.12.05.10.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 10:43:43 -0800 (PST)
-Date: Fri, 5 Dec 2025 18:43:42 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
- Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
-Message-ID: <20251205184342.2cfcc73e@pumpkin>
-In-Reply-To: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
-References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=kwB4FIQ4wqkM4BN5rZZX2NVwtIL9s/PS1C1n75qh8Bo=;
+	b=ynR5KZ6BKB/4pcUowY3UE+lo2em1Y7gaSCL2PJHMAejYiL7kGCRiE9mCwKdAlucLWtezz9
+	BXBN83G5+ECioFLyEMTOhJfwMVLGWOAcLNshSSPLB+aWsTrIH2EhFcOeVhpxnnHtw6KS2C
+	i1jofv2+ZcDgUktZtWZZIegI3JJMvmk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764960727; a=rsa-sha256;
+	cv=none;
+	b=nhRvK06Ig4WUrFEBhO7kMEdL3QAOmMxKO9gV1t8bXEgNNOTeILGCsSQx9mY7qHsT/WeaUE
+	JtPUfRKJiG2mRh+R6X3rIX0k+ggRad6W0dPJPOTAIL0vDYxq6VlLf2S2mmkGqScZAd8wI5
+	SWHlSO1Hjm04GkwDzikenIEDw7P8ATM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fgv+qnvZ;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 5 Dec 2025 10:51:51 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1764960725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kwB4FIQ4wqkM4BN5rZZX2NVwtIL9s/PS1C1n75qh8Bo=;
+	b=fgv+qnvZUf7HgDmod9GHbk7XDp+rCy+g3fOfQemdK4rVAfeO9zKwiz2WpvxvrLdQBmVLYc
+	diSWUc68PGyWCqzvWBAQcm3mxH+g40438S3BSPYD4bW99ZNy4R6BxIQRNeFX8qyn6MJVhj
+	vhIyoJQCAG/vrVzS00o7tt0QhfjJFZs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tejun Heo <tj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
+	JP Kobryn <inwardvessel@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
+Message-ID: <efiagdwmzfwpdzps74fvcwq3n4cs36q33ij7eebcpssactv3zu@se4hqiwxcfxq>
+References: <20251205022437.1743547-1-shakeel.butt@linux.dev>
+ <aTMX4tycdzKlaqaH@slm.duckdns.org>
+ <5i4ei2rbszdwlezpi63h5ksmckry27ffx6kfcg74qbvgjk22ao@2y2jeadg43y3>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5i4ei2rbszdwlezpi63h5ksmckry27ffx6kfcg74qbvgjk22ao@2y2jeadg43y3>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7F67B160018
+X-Stat-Signature: bp3hu13zhnbw9z4f6ugyoesutescfp4h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 92A328000A
-X-Rspamd-Server: rspam10
-X-Stat-Signature: g8xfy6e5icks7rknwjms73z9i3uztau3
-X-HE-Tag: 1764960225-914273
-X-HE-Meta: U2FsdGVkX19mH2A8jgr1J9+YUZpIKFGCPAYlbVRzslTSUqkWkRYKvrGndQZOoJWJFu37azj1QT1Fx4rf05yoWMRaQnOTtPHs7RoQ4G1kbpxWPkKthrTpEu8BEzjs/frQvHw+q/WoLEkcNOtidEwnp8dc0FR53h4MzHtDj+xhM+iplxWZKzJK7Lz/FcMFrjeUJ4voouPgsjpeZ9uRLACGe4scIlgoPy1lgdU/zqToY/YwGncx+SRPbkXZaBcx1g60bGMmE2QMiJjVrr7IQ5mrHIbRCj3k1N2zTVZ3ipEpue7gWv67BP3FrqloCpGnVyef+VSL+zzaHiTld3dQnw9rQbZBMDPodO2IJg0gJAB/vZYvKmmMCTyVRSzFZyFJHFd8oxHMyT+AhycXEdn7b+Me5Ujgku1LIXJAJeJUz/BmiFSkFHwgKwtlyNM+Z/j2FK/9DnEzToCJUs75689pbi/mKSiamHCT/+XLRtXAZFF5Bv4tP0NqZ9gtQ0vNsfVRcJslevaroChtVaA94n9zYHPtjSveKzpyC4RtQf8/Hy//U/iuHR8cKEE8uASlh+8E6Wg7uQEw32HrKDiwM7B9ddUQtVfqBkXJR9FXKfi7vOgP6cZ7AXG4y19milf5Ks4NnHkdHcHbbXoz3ho77ZkaMFq37h4rzmK+I3kpikaXJ2hR/Y/kX8Z16TSOY3ZvNxLm3O/RyUFUE9g+N3bqSvi6iLHHGDCTwW1VMMsJgvPXE4b5SrFTz1lEGn0WaLzQ7XAJHlXMsIRfTOCAOfeTt0fzd0kSeoTuXUJpEGJgaqkm2z9iwjWXo0LG1bC1cSknwZxVELzjkk0ylJUjwoVrrAzogNAjv55XpqHAMQ/Eq4DSSsjG6ZVUQDQA50Cq+nbPYkjTp6SZrQ+JUPb/yLzW1gYty5aJYopEfhRfblylqew/QT77xk5ExzTtBKeX1G40lKLVK7TFv6er1PUe+rzS44TBwb7
- I5JDY1Qr
- +FDVzpteXI7OAFDGvuPF0azTILSUsW9ppD9H9ae/zsEjQyZcP0v+RF8Kb0KM7dxodezSsANc/Y9gyQqp/eMGKcg93mi82qRTMcxVBSk4trEUIsoTFPJ3jWcFnank7vpKnzPIG9NFQ9prGGne28EOBVCPc/wyeSp58S4nQ7AKHXKJLwxJ+2WEsvea5nsdFexHhESbFbgltanSrX6f7wH0EdlQ4neM7OYE5Fh0iZ+hNEgiFcjd/1aSKusxXyzxC4mhidCl49hZ5HSgevUYruSW7EpdSi78vCs//SkaxttX1AIJl8ckFO2l/kXHblLShCWLODvJzt4GTxlxlrVlkD35wcQBazKu7xN51o4HOh8I54fvdqus+sApYpp3uB3TyhxKcM4/Ftno9Gw1a5a/A5MJ0/1qTMUlgWqrwGJO2/5cGybm/z2H+frF0xE/Kdhd3oKeqQKx0odhmSx7olYvPR+0GunJXCn29Yb70/5iRBgItRrxzQr3NwTjUGVPPJP2R/khmXdZc9Dl4RGbqC5UjDF7DDSmYiA==
+X-HE-Tag: 1764960727-133318
+X-HE-Meta: U2FsdGVkX18b1tfAnh2J7YZJyFNRR5Xe59XdutLOK4i+YcjNi2PRTySFiSdDUcVghMovezwSlMFGhl4kWKp5qUZnEEOCgZsQzN9ovqKeokJpQtutEsheXd7R97TlRSDLw0tx4SEa0XMBT3woVzM+roErH4N1kgRDb26Klz1r9hA98q6eBNo+MCY3+R5uL6VDO2SsJdpIBh9UxVmFZjD88WQdOgfYGWNPyd/u1bc1YnN8J1iuaJGZwS6J5WpxkljQIY1cHcTOV8j55L2ofyVdUx6qdyYiEV5jbUYlsaaFG1RqODbA8j+3/jMhuAPNP66uJSEj/Sk300oADZ2dzvkChoT4lntyAA5tVu+PZKr9AaU17hThDfRPisjwvVgNPB0y049ZSENQxJO76po35utb9QiMLUtUEgeVOVRZh3sjLVn24Ev4Ek7urpPxZ5H5bEVLCHVl/QwKKSNaXON14smtK+2jr0noHhTvnV0rx5HS+kBONIUZmTSqTlhqvVySBC36k37ofewZEv4SF3dJ9S0nxqWjqsnf5Kf+kSnJ87Y+MvhxeAXshSdkVUNpdozCKc5b6HZsYWj5FX8yzRO2FOaFvzdqTuNJf3RLmG16mnoIIjsZLCgFX6u4tgiEVkkkjnbm12U/U0bmS7BFWBnI2bDzUzTiwxHWmpSoFJ+eFa8rYs7zd4fqHdBua9FRKMx8FP2N1at+U03MgQibDzD7q+L6Dok2TwMld18Icpowc/tNmHX9p2ag1YV0GsRAqR3sFRd/rQFS6+uoBE+XnvcjSfJCafvHIQT1nKEOGs2YKQ+mZR82s+dtz5V844nWo2g0+Jh7nA0e01QWxyoq6Z4WIaiIQVFr7vllXO5P68QqyBcogWXj7QFAKfoVOQgw75QHFQIXZIAl2Ha2M6tJWHgzRu0XYx7aU+5DRZdAYSHtxerLLqsD9Km+5/l+h5NnphTDWFodfhnCVHUpkZbiYiYMtKc
+ pBUbl55x
+ 2K720vk3s1crf8lkSxhb1xXcNQ2HThiRNXCBbv2MxKu/rPdcy8y4I2xk5QAGgUVx282BfCMDmnW2OCwbRWGQTyTDVQPhZUSDmiIZy5vG+fry9yryyZqAtbJJ7n0GOml14QSf7BNw1PwOTdRMNOWYdINqd+5v60tmyOnyUv5IYihMlZlw33gyEPiieeMvG9jV6qS1yet4766ehBV+XWneCMZ9g3x/ech57Y6fEfGK1HGyLOa/qGqJcy498HDvDToieubnEIt0ZQb1958jz66PVUj75Tg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,58 +95,349 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  5 Dec 2025 17:50:37 +0000
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Fri, Dec 05, 2025 at 09:59:39AM -0800, Shakeel Butt wrote:
+> On Fri, Dec 05, 2025 at 07:35:30AM -1000, Tejun Heo wrote:
+> > Hello,
+> > 
+> > On Thu, Dec 04, 2025 at 06:24:37PM -0800, Shakeel Butt wrote:
+> > ...
+> > > In Meta's fleet running the kernel with the commit 36df6e3dbd7e, we are
+> > > observing on some machines the memcg stats are getting skewed by more
+> > > than the actual memory on the system. On close inspection, we noticed
+> > > that lockless node for a workload for specific CPU was in the bad state
+> > > and thus all the updates on that CPU for that cgroup was being lost. At
+> > > the moment, we are not sure if this CMPXCHG without LOCK is the cause of
+> > > that but this needs to be fixed irrespective.
+> > 
+> > Is there a plausible theory of events that can explain the skew with the use
+> > of this_cpu_cmpxchg()? lnode.next being set to self but this_cpu_cmpxchg()
+> > returning something else? It may be useful to write a targeted repro for the
+> > particular combination - this_cpu_cmpxchg() vs. remote NULL clearing and see
+> > whether this_cpu_cmpxchg() can return a value that doesn't agree with what
+> > gets written in the memory.
+> 
+> Yes, I am working on creating a repro for this and will share the
+> results.
+> 
 
-> Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly changed
-> how VMA flags are declared, utilising an enum of VMA bit values and
-> ifdef-fery VM_xxx flag declarations via macro.
-> 
-> As part of this change, it uses INIT_VM_FLAG() to define VM_xxx flags from
-> the newly introduced VMA bit numbers.
-> 
-> However, use of this macro results in apparently unfortunate macro
-> expansion and resulted in a performance degradation.This appears to be due
-> to the (__force int), which is required for the sparse typechecking to
-> work.
+I think I found the repro pasted below and can be built using following
+command:
 
-Does sparse complain if you just add 0? As in:
-#define INIT_VM_FLAG(name) BIT(VMA_ ## name ## _BIT + 0u)
+ $ gcc -O2 -pthread -o cmpxchg_race cmpxchg_race.c
+ $ cat cmpxchg_race.c
 
-That should change the type without affecting what BIT() expands to.
 
-	David
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdbool.h>
+#include <sched.h>
+#include <string.h>
 
-> 
-> Avoid macro expansion issues by simply using 1UL << bitnum.
-> 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202512041634.150c7e4f-lkp@intel.com
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
-> 
-> Andrew - note I've referenced the linux-next commit number above, could you
-> replace with the upstream commit hash once your PR is taken? Thanks!
-> 
->  include/linux/mm.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index a2f38fb68840..c4438b30c140 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -395,7 +395,8 @@ enum {
->  #undef DECLARE_VMA_BIT
->  #undef DECLARE_VMA_BIT_ALIAS
-> 
-> -#define INIT_VM_FLAG(name) BIT((__force int) VMA_ ## name ## _BIT)
-> +#define INIT_VM_FLAG(name) (1UL << (__force int)(VMA_ ## name ## _BIT))
-> +
->  #define VM_READ		INIT_VM_FLAG(READ)
->  #define VM_WRITE	INIT_VM_FLAG(WRITE)
->  #define VM_EXEC		INIT_VM_FLAG(EXEC)
-> --
-> 2.52.0
-> 
+// Kernel-style macros adapted for user-space
+#define READ_ONCE(x) (*(volatile typeof(x) *)&(x))
+#define WRITE_ONCE(x, val) do { *(volatile typeof(x) *)&(x) = (val); } while (0)
+
+// Simple llist implementation - EXACT KERNEL DEFINITIONS
+struct llist_node {
+    struct llist_node *next;
+};
+
+struct llist_head {
+    struct llist_node *first;
+};
+
+// smp_load_acquire - load with acquire semantics
+#define smp_load_acquire(p)                     \
+({                                              \
+    typeof(*p) ___p1 = READ_ONCE(*p);          \
+    __atomic_thread_fence(__ATOMIC_ACQUIRE);    \
+    ___p1;                                      \
+})
+
+// try_cmpxchg - compare and exchange, updates old value on failure
+static inline bool try_cmpxchg(struct llist_node **ptr, struct llist_node **old, struct llist_node *new)
+{
+    typeof(*ptr) __old = *old;
+    typeof(*ptr) __ret;
+
+    asm volatile("lock cmpxchgq %2, %1"
+                 : "=a" (__ret), "+m" (*ptr)
+                 : "r" (new), "0" (__old)
+                 : "memory");
+
+    if (__ret == __old)
+        return true;
+
+    *old = __ret;
+    return false;
+}
+
+/**
+ * init_llist_node - initialize lock-less list node
+ * From: include/linux/llist.h:84-87
+ */
+static inline void init_llist_node(struct llist_node *node)
+{
+    node->next = node;
+}
+
+/**
+ * llist_on_list - test if a lock-list list node is on a list
+ * From: include/linux/llist.h:98-101
+ */
+static inline bool llist_on_list(const struct llist_node *node)
+{
+    return node->next != node;
+}
+
+/**
+ * llist_add_batch - add several linked entries in batch
+ * From: include/linux/llist.h:234-245
+ */
+static inline bool llist_add_batch(struct llist_node *new_first,
+                   struct llist_node *new_last,
+                   struct llist_head *head)
+{
+    struct llist_node *first = READ_ONCE(head->first);
+
+    do {
+        new_last->next = first;
+    } while (!try_cmpxchg(&head->first, &first, new_first));
+
+    return !first;
+}
+
+/**
+ * llist_add - add a new entry
+ * From: include/linux/llist.h:263-266
+ */
+static inline bool llist_add(struct llist_node *new, struct llist_head *head)
+{
+    return llist_add_batch(new, new, head);
+}
+
+/**
+ * llist_del_first - delete the first entry of lock-less list
+ * From: lib/llist.c:31-43
+ */
+struct llist_node *llist_del_first(struct llist_head *head)
+{
+    struct llist_node *entry, *next;
+
+    entry = smp_load_acquire(&head->first);
+    do {
+        if (entry == NULL)
+            return NULL;
+        next = READ_ONCE(entry->next);
+    } while (!try_cmpxchg(&head->first, &entry, next));
+
+    return entry;
+}
+
+/**
+ * llist_del_first_init - delete first entry and mark as off-list
+ * From: include/linux/llist.h:303-310
+ */
+static inline struct llist_node *llist_del_first_init(struct llist_head *head)
+{
+    struct llist_node *n = llist_del_first(head);
+
+    if (n)
+        init_llist_node(n);
+    return n;
+}
+
+// Global list and node
+struct llist_head global_list = { .first = NULL };
+struct llist_node node_self;
+
+volatile bool stop = false;
+volatile uint64_t success_count = 0;
+volatile uint64_t already_count = 0;
+volatile uint64_t del_count = 0;
+volatile uint64_t empty_count = 0;
+
+bool use_locked_cmpxchg = false;
+
+// CMPXCHG without LOCK
+static inline bool cmpxchg_unlocked(struct llist_node **ptr, struct llist_node *old, struct llist_node *new_val)
+{
+    struct llist_node *prev = old;
+    asm volatile(
+        "cmpxchgq %2, %1"  // No lock prefix!
+        : "+a" (prev), "+m" (*ptr)
+        : "r" (new_val)
+        : "memory"
+    );
+    return prev == old;
+}
+
+// CMPXCHG with LOCK
+static inline bool cmpxchg_locked(struct llist_node **ptr, struct llist_node *old, struct llist_node *new_val)
+{
+    struct llist_node *prev = old;
+    asm volatile(
+        "lock cmpxchgq %2, %1"  // WITH lock prefix!
+        : "+a" (prev), "+m" (*ptr)
+        : "r" (new_val)
+        : "memory"
+    );
+    return prev == old;
+}
+
+// Check if node is in the list
+bool is_node_in_list(struct llist_head *head, struct llist_node *node)
+{
+    struct llist_node *curr = READ_ONCE(head->first);
+    while (curr) {
+        if (curr == node)
+            return true;
+        curr = READ_ONCE(curr->next);
+    }
+    return false;
+}
+
+// Thread 1: Simulates css_rstat_updated()
+void *thread_cmpxchg(void *arg)
+{
+    printf("Thread 1 (UPDATER): using %s CMPXCHG\n",
+           use_locked_cmpxchg ? "LOCKED" : "UNLOCKED");
+
+    while (!stop) {
+        // Try to atomically change from self to NULL (win the race)
+        bool success;
+        if (use_locked_cmpxchg) {
+            success = cmpxchg_locked(&node_self.next, &node_self, NULL);
+        } else {
+            success = cmpxchg_unlocked(&node_self.next, &node_self, NULL);
+        }
+
+        if (success) {
+            // We won! Add to the global list
+            llist_add(&node_self, &global_list);
+            success_count++;
+        } else {
+            already_count++;
+        }
+    }
+    return NULL;
+}
+
+// Thread 2: Simulates css_process_update_tree() -> llist_del_first_init()
+void *thread_write(void *arg)
+{
+    printf("Thread 2 (FLUSHER): doing llist_del_first_init\n");
+
+    while (!stop) {
+        // Remove first node from list and reinitialize it (sets next = self)
+        struct llist_node *node = llist_del_first_init(&global_list);
+        if (node) {
+            del_count++;
+        } else {
+	    empty_count++;
+	}
+    }
+    return NULL;
+}
+
+void run_test(bool use_lock, int duration)
+{
+    pthread_t t1, t2;
+
+    use_locked_cmpxchg = use_lock;
+    stop = false;
+    success_count = 0;
+    del_count = 0;
+    empty_count = 0;
+    already_count = 0;
+
+    // Initialize: node_self.next = self (not on list)
+    init_llist_node(&node_self);
+    global_list.first = NULL;
+
+    printf("\n=== Running test with %s CMPXCHG for %d seconds ===\n",
+           use_lock ? "LOCKED" : "UNLOCKED", duration);
+
+    pthread_create(&t1, NULL, thread_cmpxchg, NULL);
+    pthread_create(&t2, NULL, thread_write, NULL);
+
+    sleep(duration);
+    stop = true;
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    // Check final state
+    struct llist_node *next = READ_ONCE(node_self.next);
+    bool on_list = is_node_in_list(&global_list, &node_self);
+
+    printf("\n=== Results (%s CMPXCHG) ===\n", use_lock ? "LOCKED" : "UNLOCKED");
+    printf("Successful cmpxchg: %lu\n", success_count);
+    printf("Already on list:    %lu\n", already_count);
+    printf("Deletions:          %lu\n", del_count);
+    printf("Empty list:         %lu\n", empty_count);
+    printf("\nFinal state:\n");
+    printf("  node_self.next:   %s\n",
+           next == NULL ? "NULL" : (next == &node_self ? "self" : "OTHER"));
+    printf("  On global list:   %s\n", on_list ? "YES" : "NO");
+
+    // Check for failure condition
+    bool failed = false;
+
+    if (next == NULL && !on_list) {
+        printf("\n*** FAILURE DETECTED! ***\n");
+        printf("node_self.next is NULL but node is NOT on the list!\n");
+        printf("This means we 'won' the cmpxchg race but lost the update.\n");
+        failed = true;
+    } else if (next == &node_self && !on_list) {
+        printf("\n✓ OK: node_self.next is self and not on list (expected state)\n");
+    } else if (next == NULL && on_list) {
+        printf("\n✓ OK: node_self.next is NULL and on list (expected state)\n");
+    } else if (on_list) {
+        printf("\n✓ OK: node is on list\n");
+    } else {
+        printf("\n✓ OK: consistent state\n");
+    }
+
+    if (failed) {
+        printf("\nThis demonstrates the race condition where:\n");
+        printf("1. Thread 1 does unlocked cmpxchg(node_self.next, self, NULL) → succeeds\n");
+        printf("2. Thread 2 does init_llist_node() → writes node_self.next = self\n");
+        printf("3. Thread 1 thinks it won but the write from Thread 2 was lost\n");
+        printf("4. Thread 1 adds node to list\n");
+        printf("5. Thread 2 removes node and does init_llist_node() again\n");
+        printf("6. Final state: next=NULL but not on list (INCONSISTENT!)\n");
+    }
+}
+
+int main(int argc, char *argv[])
+{
+    int duration = argc > 1 ? atoi(argv[1]) : 3;
+
+    printf("=== Simulating css_rstat_updated() Race Condition ===\n");
+    printf("Using EXACT kernel llist implementations from:\n");
+    printf("  - include/linux/llist.h (init_llist_node, llist_on_list, llist_add)\n");
+    printf("  - lib/llist.c (llist_del_first)\n");
+    printf("\n");
+    printf("This emulates the exact kernel scenario:\n");
+    printf("  Thread 1: css_rstat_updated() - cmpxchg + llist_add\n");
+    printf("  Thread 2: css_process_update_tree() - llist_del_first_init\n");
+    printf("\n");
+
+    // Run with unlocked CMPXCHG (the bug)
+    run_test(false, duration);
+
+    printf("\n");
+    printf("========================================\n");
+
+    // Run with locked CMPXCHG (the fix)
+    run_test(true, duration);
+
+    return 0;
+}
 
 
