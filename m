@@ -4,161 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7AB2D3748A
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 19:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCD4D3748A
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 19:35:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C21F46B02B8; Fri,  5 Dec 2025 14:32:54 -0500 (EST)
+	id 0B6496B02B9; Fri,  5 Dec 2025 14:35:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF9AE6B02B9; Fri,  5 Dec 2025 14:32:54 -0500 (EST)
+	id 067756B02BB; Fri,  5 Dec 2025 14:35:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0F126B02BA; Fri,  5 Dec 2025 14:32:54 -0500 (EST)
+	id EE5B76B02BC; Fri,  5 Dec 2025 14:35:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FFF56B02B8
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 14:32:54 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 263131402DF
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:32:54 +0000 (UTC)
-X-FDA: 84186415068.24.B477FC8
+	by kanga.kvack.org (Postfix) with ESMTP id DA2F76B02B9
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 14:35:57 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEF0AC02F6
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:35:57 +0000 (UTC)
+X-FDA: 84186422754.25.39EFCC4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4FB7140016
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:32:52 +0000 (UTC)
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2A5E340014
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:35:56 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gk0SMWPx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764963172; a=rsa-sha256;
-	cv=none;
-	b=xds1vGAobxne4e7TpFj7ely6btvZsYd/UKFRbvBxqY2ULVIY+4InLY4yM+Xjesf2oac101
-	IuSKI9hJCpQ8rywvuxOtCkoXBcfY9eDGFnsMHxdehxvaOKtttVNFt6LDdf0B9KB8V8DNoc
-	+jpGdd02Hj7+YLcClDv+tAE6QADw2Lg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gk0SMWPx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X2q1VX+f;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764963172;
+	s=arc-20220608; t=1764963356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7WuHACCrLw7Ij9mjNNDsCgnUG5pnSjF69HKLgKQcvB4=;
-	b=4mWYZp5SJE4QEaz60Kh8QBEdBU1o+RbIkmV5b67CHS3m/Ykwx0EPoqCUVJGIKKWwm/4cQk
-	pVezhlpO/80JG+pxq3gbzFynY4YwJcuXFuV3jCCeV6qKgKU08eODxNWzAA6Bs+jT3ATPG+
-	pP4EMVwWTEjiaG3pbw/BdE932KWn+o4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jYMIlr5sZlLtMHMecqz1/Hy+Y9yUyCbq7gJT/lE17rU=;
+	b=ulygfRU3kX6/8H4UiWJnWktkJSvnuheOCtCSQYdN6eX4LkxgVpIiv0ml+ZkwcpvGlrP7yr
+	AAZjqV+tJauIV0+VDlwkyxRs2SLNRsNFmuu2OuRkM8+vRiDckzIrq9V5h/4/f2vL0ZRbJm
+	CVco6CKe1zaMUIC4M2vgHbRp66JJbgY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X2q1VX+f;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764963356; a=rsa-sha256;
+	cv=none;
+	b=1rcnD50C80L7m1j6gkNhpb7YzCeXAm/Rn8iDc6XBMPO2jhSqAhnShj2UYo8Yj1eJmZlUeW
+	s5nJZkYHexo03QtYQKGjI3J6hpaN+9u0RjZQ+EHoD5sIBNOTe65NJy+oBR/mpNZ0XRETex
+	aQIry7k0ZjlUvgxurdRC1PANQW5nENk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0180560053;
-	Fri,  5 Dec 2025 19:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45914C4CEF1;
-	Fri,  5 Dec 2025 19:32:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8787A60122
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:35:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1E9C4CEF1;
+	Fri,  5 Dec 2025 19:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764963170;
-	bh=7WuHACCrLw7Ij9mjNNDsCgnUG5pnSjF69HKLgKQcvB4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gk0SMWPxxBv2FrPBRU84wE7AZD0o4+fLvrhaoJgHozSBhDl3a7ZZAvU9uVo2ll6Zg
-	 I+v/7ZSqOmAzBlyIpRiLTsjvztfKvUeaC4UWnvrKk9IWjfJc40MsZj9+LQHQebDWPF
-	 sSpRgnXIC0/UBkff5oHzznigldGYOqThG1E7o1oa9jeIH+AtZHK7htHr9jwyY92VpR
-	 tSaUoLTf7BLZiffzZHG4Cjxbinl7e4hk50lIpx+Amp3yCc4BA1mmqkZ+pNvt8sDyUl
-	 WIgsEtRnWYHOk4PhkXXn70A0c48E67OX4QVUByXh9m3dI1GeQUfYISbM3ZlcjTT3Hb
-	 z2JmYnkslxiZw==
-Message-ID: <d45808b5-44c3-42c6-a54c-3a13606ee39d@kernel.org>
-Date: Fri, 5 Dec 2025 20:32:32 +0100
+	s=k20201202; t=1764963355;
+	bh=Jo4zjCKoG72AfS5e5YfO2hAlRtFfxB493GBbVpdnDZI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X2q1VX+fPSakm2kn9lOkU7VM3+bYchl6VDy99IAV7b8yB95z6MriO7Qs46gLDOqHo
+	 oVrmeZK9xba0I/uQn8CnDddO0nr3aolWK+w4C4XbWCrsLyGhLqu7HQeDK3EuVU32lA
+	 Y7zp7m8oMQfT9XiIjV6788caylne2dgns3SNRxpU3dA1ot3uJBixNour2ORLUiRWM0
+	 24DkMadpERWJghahN2fWVcn25wDsAabQCp/G2bXCEVJ8swbuRjeQ+Hwj/vM4CY/m88
+	 /MyyYtHohUGvElnGU5d+r216P2lRT5wM9LilhOjAvnmJGxCoHL3ZPFcgMBX8uOgQAY
+	 2QYxp88BIquNA==
+From: SeongJae Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2025-12-06
+Date: Fri,  5 Dec 2025 11:35:39 -0800
+Message-ID: <20251205193540.75695-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v25 00/28] riscv control-flow integrity for usermode
-To: debug@rivosinc.com, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Christian Brauner <brauner@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-riscv@lists.infradead.org,
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
- Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>,
- Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
- Valentin Haudiquet <valentin.haudiquet@canonical.com>,
- Paul Walmsley <pjw@kernel.org>, Charles Mirabile <cmirabil@redhat.com>
-References: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4FB7140016
-X-Stat-Signature: 47ju1r9nqjj6eoetmt1pfxu89hj5jpa5
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: puftr8pqqqznwf5o9uehojxod9dq9joe
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1764963172-643923
-X-HE-Meta: U2FsdGVkX1+coW/3siuc4y0Txsx6DUmGEIaKP/ZIMKDAqc/Dq3cJ1rNetg+Xlrg5++T2aCDYyLhaki3SjiXGlZe42KlvrmtIQ+mfBNLotq8VvEtdPWg0VKaG+ba0mhU55bYw/bvZlzZMV//V5Npe7XHBPtiBgayO/CZ/CWFuo9KX0trVctOi4HAZsznonLmYwbYNpLExsbDKir6e1eVsxmu0/ZPlPQIbMBBQ2Uy3gwHOgEpKMBqI6h/meESb2/CErpADUDOUNCHB7CxPhG4KaD/230xtkm7IaUNdc1rhtsDsp/MBVmbGV1Nnyz/W4JLUigwJ8TcRoelOFmG20noTBufIFvd0JxFzGQFS8AZXI7r9DCxyhidIzcz8oJiioFrses9Fe7EksTU2tu+DEHFhdgcbISbNEff0PfqDg8jazg/vtvHzp+h4byA9K0ClKx/ILsVxn6K/8tNsK+/PIFTmh76Vk5ZsA6KcI6WZNbKQE2ddHZAK7pWbmn1OGzYupIK2xp1wpWEK7+UmVQdXf816oPdSPu3MwMRFvmdXMlLqJ/97mdRARePm1IbHfF+htM3/C5kxMQlri0X2XKwg1pOqDC+4oKOofWsbzXsgMjos6lJcsdVQAp2Iocxnbv2Sq3bPMKpeg5VPcATPgANhDD465tT5GLtr2pxt0KhQWs93onqoIYLql9cDp++VLYSoBenNAPvFanGEFWCaqQWT2gDpyKgH9tjEl5kOxk1hHoPkeQZ3px6ahguXCGnndSXi+WfucWauOU8SbLBdrTT2kU52xpkszoBZBWJpeRM0On8p6W/57CG4Gw6Kii6cEE4wsDqIvMqZCJwUOD1LKwUXcVhxYs+2g8eb6b5lVv4pFe9tAsHUd8/SG+7/67sTT0KhPYXgOFNRUnyo7acaA2AxvMk8bHIfhZjLWg3qFJjEeiIvGpRlXBfgJZcyyUMIRO8vEnk80IzdbmW3s8cIB+NuWX5
- paQfjEZA
- 16vUQwKlJgh4K57JxLTOKp+YyhdCREaztGkIscgq1CLVf9nlxhyhUxO5cAl/PfN7cx8k16XDmqyNWhHnBrXMbzxN+3lWyvtSizNxg5PrRP7T+yC6l01oN9V1Difp4pIB4nPKfhA6hWPpty9awKNKwsielvFrzAQbTveMY2FJ2zj8GQyBXqYrej2SpeyRI6DJpwSbwyEdlIHYlS30q3ggU3JXme+PGVUuU8aB+GkH/SrVFl7FxoFygrFXfRvbBIv9HcA3Z7c8T26gX4aJw4bTFcXnzMtn6qEkN1B3wj+VG6ZWXjLH7VI/hpJSSw/0LEywwBuW6873NtEhz2hE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2A5E340014
+X-HE-Tag: 1764963356-862799
+X-HE-Meta: U2FsdGVkX19QLltvbtJ7HgFSmRge38du9bqrHNyOfYfFdFhEemO+7rNuLtJwlo6uebcYQC98Knqi3nDGgWLfsDLCNPzLfCn5gJqJluPhZ7tTrw8n+PEBBZ1u3Kvmbms1amfW6CKMT0yRQhjWVtEyUvOp9sQqZEbeo3U4BIuBOmaWxctk4vci+2a02Dg6dY5WKNFoO6rRjPVSuS56acohAIAqifYMy76ffjOarY9Ro+WeqKue8VxsTgal0qGrtbJTWH43w0w36qrQ1DjQY8ranpYTDnoPPS9qZwm9JK5VH8R+9zRctOmlBD71BsB7TJALJT3XXg5spUYDFlqs4Eg5odgbudFriNnYLSPj3IxQ10q/7aFglnQzAbusC9hp2b9mqeeG6aj6GO95clA7sLHPJjCla0c9hXNX+mNpCWFC5a4I4NaE+e3nYw3y/3hzFtiw18xY0C7MZn+SbBAYIXJkVGYLj8T2+eSlv0+KZ9svFSbVyuse9M55mToxVogdS80u2GMFH8gL1STYuwa/wfZXb7O5jVr78GySDMZ65/jHRjuu4UNZD/0GWfHNRtcgElD/q1wEtgEtqHfi4kAQFQDJLRGCYVD7wpW4gebYrqFpa5gIEbeewxd8QX/XEu0oClUIaIh9bkf4hZgVftqYR0AEjajspZrwyaTCEzHi0HHiOKdJkHIv9HJC0jWxJhwOb9BTojJxLAa54m9aUeB21yBnDNauuo8FwuCdL4QErnbpoUfh/wVgS/6uICn/YG5pTrmO80dojJrBw3Xl5G0837YJWP2TJp3E+aTf/RxYahPbfm0Z58L0NS6Kw5vh3WpFdstbbKEs11AMzR2HPkh2/K+Klhwqntdlq0g9cYya/xtfvgOAF72dCQjZxm5C5zmVlH6U1q9CoIcu4APSPWmk83AcY7Ch085EbT/4ufV0EwXwp+8VhzXhD1Gr4WtnMzJl8NQLALhL/jcA7elpEHUSWil
+ y595N2Q4
+ YO5uhs0HQR6l56pAStfv8rmNVcesMAgRUF4PgPQX7jjMeAzbMY+whLEbdQf1YZzbWqxA4GvLt4O38MbN2Hvnc2sVFD91xqftB2XME8u9h+T2Rt9Dix47Fq39OeNY0uwsWMxWR0RRAhBtPrhdKg6wfVCskszmltiXAqg1WYHa+9Zy5JV/j5L23AMSdcFUq/9POUiaHyTtMsQow/xSRAOkF+wH1NEljOpYP/D1gxMg0Af1eNY8vtdh+9ZQP4QnohJ8b0xi3bLMxh3YIxbs/kyRp7EXZUh0QbH9P3o9iv0qcaQ+Ocsdb+18vGk2PSg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,18 +90,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/12/2025 19:41, Deepak Gupta via B4 Relay wrote:
-> v25: Removal of `riscv_nousercfi` from `cpufeature.c` and instead placing
-> it as extern in `usercfi.h` was leading to build error whene cfi config
-> is not selected. Placed `riscv_nousercfi` outside cfi config ifdef block
-> in `usercfi.h`
+Hello,
 
 
-Please stop. You sent this 28-patch-bomb TWICE to 50 or 60 addresses.
-It's actually merge window so it should wait in the first place, but for
-sure sending it multiple times does not help. Please observe the Linux
-development process.
+This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
+(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
+for the week of 2025-12-08.
 
-Best regards,
-Krzysztof
+On the week of 2025-12-08, I will travel Japan for OSSummit Japan and LPC.
+Attending video calls on the usual Pacific time-optimized time slot during the
+week will be challenging for me.  So let's do the chats for the week without
+the pre-booked time slots, but as an unlimited and possibly in-person version.
+That is, let's make it can happen at any time and any place (not only Google
+Meet but also somewhere in Tokyo, Japan) as long as we can.
+
+If you have any DAMON topic that you want to discuss with me during the week,
+send an email to sj@kernel.org saying you have a topic to discuss, with
+when/where you want to meet.  Then we can further adjust our schedule.  If you
+also attend OSSummit Japan or LPC in person, you are also very welcome to just
+reach out to me in person at any time/place without making appointment.  Then,
+we can have an instant in-person DAMON Beer/Coffee/Tea chat.
+
+So next time slots including six virtual-only ones are as below.
+
+(week of 2025-12-08 is all reservable for virtual and/or in-person chats in
+Tokyo, Japan)
+2025-12-22 (Mon) 18:00 PT (not yet reserved)
+2025-12-24 (Wed) 09:30 PT (not yet reserved)
+2026-01-05 (Mon) 18:00 PT (not yet reserved)
+2026-01-07 (Wed) 09:30 PT (not yet reserved)
+2026-01-19 (Mon) 18:00 PT (not yet reserved)
+2026-01-21 (Wed) 09:30 PT (not yet reserved)
+
+Please reach out to me (sj@kernel.org or whatever) to reserve the
+not-yet-reserved time slots for your topics.  The reservation is made in a
+First-Come First-Served way, and I will send a Google Meet link to
+reservation-confirmed attendees.
+
+Please note that other time slots are also available on demands.
+
+Shared Calendar
+---------------
+
+You can get the schedule via this shared Google Calendar:
+https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
+
+You can also get the past and upcoming schedules via
+https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
+
+
+Thanks,
+SJ
 
