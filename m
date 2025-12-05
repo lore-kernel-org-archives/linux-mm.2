@@ -4,101 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E6ED2F7EE
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 13:00:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB0FD2F7EF
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 13:54:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 265DF6B0155; Fri,  5 Dec 2025 08:00:53 -0500 (EST)
+	id EF8086B0145; Fri,  5 Dec 2025 08:54:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 216996B0156; Fri,  5 Dec 2025 08:00:53 -0500 (EST)
+	id E81FA6B0153; Fri,  5 Dec 2025 08:54:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 105516B0157; Fri,  5 Dec 2025 08:00:53 -0500 (EST)
+	id D49AA6B0154; Fri,  5 Dec 2025 08:54:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EA6936B0155
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 08:00:52 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BC0ED6B0145
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 08:54:56 -0500 (EST)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 93D1C137DDB
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:00:52 +0000 (UTC)
-X-FDA: 84185427144.28.9974C57
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DDE68100018
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:00:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E146138AF6
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:54:56 +0000 (UTC)
+X-FDA: 84185563392.28.9D51EAA
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5C5D68000B
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:54:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FviYcjdk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764942894; a=rsa-sha256;
+	cv=none;
+	b=0d8m+5LGfclbPxMy+rXmgj/RHR2+sBR4i6F/VP64RbPb6kEjaHlQwVFEW90Sb9SN9v0DCU
+	z6Oapp/Z9rApyhseY61K5EUii8GgWh8znpkV7sTtJYCFI4V2zteMBehmdcltG3oKyhdnBm
+	zKewm4Q7MH6mX+48a7HicNMc9ckDmC4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FviYcjdk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764939651;
+	s=arc-20220608; t=1764942894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O/A7vZpgIBnKA8LnxsqL7KkP6nyGfOKKNJo36CMVlRE=;
-	b=EBXyw5u1NT6mTAvEGi7/GQs92ZfoLXLPS3GwI8h1d4DILet/Ew2YBI7GHHE5CG/GIMhAxr
-	VyflB4OU90xhAAeLNDC6QkzFPqn3IwrL6K+0HGb5D6YVPAosvXuKLTzx/P+HNi3/5y34BP
-	eXX9UG1UX0wQzRaVmV1Udbnb0L6UV7c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764939651; a=rsa-sha256;
-	cv=none;
-	b=ehu4+YmOO9UCQa9W6O6Y9KtyEHWAvUPxyZ4MyCk1HUlM4mS5susQsRnOURWYvNz7cTgXN4
-	+5rSHBKhqT1NXeuj8XeYAKogokp+t6uvRqJ5NLLVwGdrLnnCK1MH8kqqPdn6/ulYkI1P9a
-	nDyjoC0T/Ega+qRBaVylMXSnPHpAouA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A482F19F6;
-	Fri,  5 Dec 2025 05:00:42 -0800 (PST)
-Received: from [10.44.160.68] (e126510-lin.lund.arm.com [10.44.160.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 164973F59E;
-	Fri,  5 Dec 2025 05:00:39 -0800 (PST)
-Message-ID: <f07f5f70-eb4c-4e45-b7d6-96c8455255d2@arm.com>
-Date: Fri, 5 Dec 2025 14:00:37 +0100
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XqA0GadxzNDdiyG36a0fVSlW+wUaJcQziD5Q44Wd8q0=;
+	b=8abWhhkcKXThSHxXLW064utRd3wu3B+sqi1GeaRAJFyf/uSIJ5cIm8o8RXR83unfsTXGqa
+	fDXccchXmnYq58ju0zKxoRegm6Nm0nYAXW5DUbFLtNiFrySrCMg4LGXpvUdsiFwENt/fvD
+	Qv7zoqPzSmb0dRbDaRNKvAIVYXJNZGg=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42e2e5da5fcso1412892f8f.0
+        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 05:54:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764942893; x=1765547693; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XqA0GadxzNDdiyG36a0fVSlW+wUaJcQziD5Q44Wd8q0=;
+        b=FviYcjdkXiNFju43yy9xKE8uN01EWqcwee0uSs9qVaANUmTkbqnly/3V9DGAN7pwtk
+         XN9ZXV7B/Oc7vSLv2jcghEaESPdJh2pZ43b90nSPYo0+GHVMiGAc5FCz3F3Q8KoYZ4Vi
+         v6oGVXCfOjR54GfBMEYC2qKYZI0c0lOBKcM5Kq77aAMuwFiZNwLncp07q4I/scfKl2qn
+         tYe8TJmX2l536tOppmycJEURjxL5Ei/s0fRoStthDJWlvJNKSkN5X4Zfb0OTSJPbpAyx
+         fYr713CXvsli9cilJ4NVF8DRlyO7wHXJONAlGzvTR3pVy2S12Vy3ArRdQCm05LZWpkix
+         NcRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764942893; x=1765547693;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XqA0GadxzNDdiyG36a0fVSlW+wUaJcQziD5Q44Wd8q0=;
+        b=v8R4TRI89LVKsagU6+rIz+KTXYro5HxWW5cL1O9B9chYozOW5fejv+T4KLqzMuMGeC
+         ep2nX3h2qKBcI1H4/9LGYC8hBAdwVnlVTcS5wxO90awU20T7B+UI461f+9ibicZqKRZZ
+         6ScJ3fmG9P97VChd3+MP0bHZoAskW7GjbzdC2fjgxdK+oE2mFwnCo2Cu4IIxzPPufiM2
+         4CFQ3MWI8jUG6mrQs6wiY2Y25nEB0eryBUgpjRRRK93+qhhs7WEcVvBjZ3bG2iTS7BWy
+         JdJlwWEiP4CUpIigRMQsIcdnOwgUQ18TBhL12vKOtiZQJjWn/mDPjkqx3ahrdt8DOuCQ
+         UHcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvnllas7PwLiDQKh2Ml5Th0d59sv0xbyJMTOsaMR8/eJxT+iO1Roo2Y2ZcD6GBaaWEoBhitZI5ZA==@kvack.org
+X-Gm-Message-State: AOJu0Yzh9di8nLVCOKKDssqjhb5SAVIB/UNXdu6iVpxePOdX6IOajJQQ
+	J50Hol2Bj9Ra9MP2EpVH/Zd+z+zTla+9eXc5Jf5iPsMbfiGbj73mabA4GcALqSU73arZjbnnbXb
+	k55m2jP6oK8WYwLrWMD+dDuy+SENdEqM=
+X-Gm-Gg: ASbGncsTs3elkbTIpBBw9Y+q06E198pjAA8oB+sI/80V5ruDQPBN2IEwdNwk5URkOBH
+	U2aBGW19eiYCRCNMWomJmD2LIMKum8yxiUNQUf1QXlk4poBoy39V4rHs7sv1JiPohsXVvR9YCYn
+	HL2F2LK5Bf/Gcn1S1WlblfoLA4051dbE4R5fwOJ2YYBhwyFu3I5rpobz3MMDc4i5IFkejg3HhW6
+	7w1VuTtKyRLIEE3PTXAd9LJGQ6o+qU9Jf9IjrH2djxekvnnZx1syEFtQvHIxDz7gIA//8koW+nC
+	UMEW+1WY86QNSAdfCcwnu580KT7md0GBHw==
+X-Google-Smtp-Source: AGHT+IFKSWTL3hPVglpUiyvk1EerA9GEspZ+MoPANPg5V4fZMvViVoVP2v1WgBqbthmdzniP274hp3CHzGJhnxBcszg=
+X-Received: by 2002:a05:6000:430a:b0:42b:32a0:3490 with SMTP id
+ ffacd0b85a97d-42f7985ea53mr7266209f8f.49.1764942892496; Fri, 05 Dec 2025
+ 05:54:52 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/12] Nesting support for lazy MMU mode
-To: Venkat <venkat88@linux.ibm.com>
-Cc: linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251124132228.622678-1-kevin.brodsky@arm.com>
- <94889730-1AEF-458F-B623-04092C0D6819@linux.ibm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <94889730-1AEF-458F-B623-04092C0D6819@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+References: <cover.1764874575.git.m.wieczorretman@pm.me> <873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me>
+ <CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com>
+ <20251204192237.0d7a07c9961843503c08ebab@linux-foundation.org>
+ <CA+fCnZfBqNKAkwKmdu7YAPWjPDWY=wRkUiWuYjEzK4_tNhSGFA@mail.gmail.com> <qg2tmzw5me43idoal3egqtr5i6rdizhxsaybtsesahec3lrrus@3ccq3qtarfyj>
+In-Reply-To: <qg2tmzw5me43idoal3egqtr5i6rdizhxsaybtsesahec3lrrus@3ccq3qtarfyj>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Fri, 5 Dec 2025 14:54:40 +0100
+X-Gm-Features: AQt7F2o1xS0hHM8DgwvkRj9a0T3Q-4e4zvUroh1u1jgGrLZaZp4ZkwOF-iWjFVM
+Message-ID: <CA+fCnZdHU=0EL2nedasTCRUjo45RHg-U=0JTe6VrAiG=90cm4A@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] kasan: Unpoison vms[area] addresses with a common tag
+To: =?UTF-8?Q?Maciej_Wiecz=C3=B3r=2DRetman?= <m.wieczorretman@pm.me>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, jiayuan.chen@linux.dev, 
+	stable@vger.kernel.org, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5C5D68000B
+X-Stat-Signature: cwa31ad8rkb1ihnj1jr3iutdm58etsc1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DDE68100018
-X-Stat-Signature: wj5q9xtbpio5nmca3xrjfo9sac7w3idi
-X-HE-Tag: 1764939650-716807
-X-HE-Meta: U2FsdGVkX19RL6+C+X+OACOfcMZ0rKvjJsmj6b0L/WCHZo0Cm3V5rWOi+QWjgCaA246sCOP/hpbD4zSsYFbYNQUoMbLJbCAg4IjcqtucwsaEOpgbHd1c4dtwuem9xNWTZlgoW3TOA60YkqmoqDjfidx3A9y6vWckv2BqVo0QTtqVU1QlrRQreeIE3pNPWek8mW43Vc+bo+e9wVDRDQTZo4gBCp03SCw01i0+17VC+kCjzEYnK8oZVok0I68e6fLwyT8xXsiXw3ZZrjzppjWa2+pjwkzvpW1Fx5LM0k9fsJgF3ATk3j1LZQvamraoc8gslUzcD3UUvragAMmxAbzqCF/IGR2tMipat6vls9axYpEBsqxb+pu8+FF3P94oyGHdHrwT2ZyE+L/GXFZyphAwzyef97Px55cF0Ai20wNKA3zOaJMrId3QA1rvhjW1j1bUw+qfGuXADHjKChhghaQiSQbIUxyeaG94snytrNnmyhBZeRFOyy0q5c9OHAbptPuQE86w8NPgKDg21Q70Gtf3dDQqpQJWAk+Z3lSW5zbchey6qyanGCwk02KYLmQJgE/o7efyB40XMJkwF2qAN2OpVWqgv51UNJafF6usO8c+NT9TXU5RVJjF5+N9GhSlymNSsdaLsNovQZEMX2kCoU9H0zcilADBRywCkeeVj6+3NU8myLZ3HT49LBAhFPP146E6vTf6EQ+BAxeMvIAqko8hc327ulIpj46S+wWK4aWBgoacw9uVZun/ypU/JTyJe8DhHfGKnMA/qV9yZ47NpPQnC35ywbBsIYzKZ8fJSaiOl7RWgSKB5S8MYXTNwaeRoZhaWzdh1c3BoxyydeV6vqGDnTN/jg8QQvLV8Q3pxyOd5SCTksamp8TXiE3wqSIUrr0rbwSBWoqb6Bwc9QTkxkqdooY76Lx6fNSS
+X-HE-Tag: 1764942894-565433
+X-HE-Meta: U2FsdGVkX1/WrEejnr1HQ4hHJoVk8YXkrPH59bNmWITWlL6Znylid0K6biwFXt+yZiNdJsneNxau6WTXSW2o6aKt2alhJWTCjZxcJDt0SEQR9upmaOvHgylmvEox8oJK8sb9Lc/D/JCqTwgHFGGrHDJU/jqr1S4jPJ+kG2Lwy5BzvX+ur0Dc79l16Jv8QINGsp6SnDEWJfecCqcFCsPfkJPKY9h5rETMXZ2kISnNjQfhksYWtYqdd3J9bzTjhABD7Bke6/NT6m2DTV4EjoxqhwEJEMM4VNEmvEd+c/seeDAYSFJ8i81x++IUmsrOBDM1y5iHg2FRks7p32TY9bvLrFrnDX9gCpodJ8E9oTkovQPmcS9vaGRRaeJipUU9r8OJOiTRZ09539PLW++3EEamfa92tgmDtchwMz1xMcrU7UR85p8cmAzpXIwSXT2RCF7Tx6pCULDlkcR9DuZhFYXwBjx8tQSPrV/9a+M+xSPYa7jWdjIeNn+fIacVhmR12EGY60eMio8iJJoyDuYVEyX99OHGuN2HzxXeSQEjCRlkdiDByCAQt1IIGvvAIEfe5+ihWV1WJ3yU8xp9SQqf5wIV6RDKO8u7bouBfSLzYxHYS8zeUFS5G24xjQdY+vscmG/6V5bknvSh1moFVhYgwb4Wot1ka0nO27EXvBLvmvw8A5bgquRFjTGi3EGqcXWpZ4msdBXPeOq8hMmt/TZLp6o5Y6LhyhB7pVsVizifvifaDZD6jlYyAMFq+C1b+Lb4ecWQGKJxpgTRRY/8rn/fVIFMRpeugZz2F+JGNv50xHphhjJ0XxinmeB8JqWWbMUtsKXnB9E4sTLwWNQxXCD4l7edDzM2atMAn9qe/4me98R3I8j554v1G1Us69nhN+Yc8886SrGDSqTEgeAes1r17BAp5uwXzdFELEYY5VXFNxW6Q0Xt854DRXP2qx1ZYbEgaxVAGvK1iFGNQb85ZrcIdGa
+ U2LYbw9j
+ YlOQuLcCiZDtv4s2WwXzIxyD7lli+YkVi7vpEoIAvYpwZQ6qtSdf4cHM9UeFNfh6C+dWYquR2HLUXdvBPBZnPXLjKVT2F1kMWTdM2tH0ViL028EdKRrUDGR4XPwW5tmUSuAITKx9gaN2lMNh1Lwng1cI5g3Rnu5/fHRav6/OPEfMiXPWzbmFEdd3EKi4YdKmNHwXBX1AMkqGTE5ZXTANMQaasUe1dv1W/irTez80I7w9DzS3J/lqz4C1SJRZrirk23rbQwQi30FHmQc1KyQDVGlwq/Q3sQqAJdcav93jWV/V5Ab2+bDHzbLF1praafc+XjnRlGqLIklv+MAU23r89E/LcXUOKdByIWYjxiT2/oDZptxhzUwSDR5dALHB7rafRP49l9GKapRVUO6zR2mHZhLKfr2aOBHbh4HAzHPja07XJRVxI9CJ0OR1tAQGsdtYkOLvV3EXcjPLpLLVDlVsV79NGRMEMtVVxl2PO0iN0N59Rj8M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,31 +124,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/12/2025 17:08, Venkat wrote:
-> [...]
-> Tested this patch series by applying on top of mm-unstable, on both HASH and RADIX MMU, and all tests are passed on both MMU’s.
+On Fri, Dec 5, 2025 at 8:55=E2=80=AFAM Maciej Wiecz=C3=B3r-Retman
+<m.wieczorretman@pm.me> wrote:
 >
-> Ran: cache_shape, copyloops, mm from linux source, selftests/powerpc/ and ran memory-hotplug from selftests/. Also ran below tests from avocado misc-test repo.
->
-> Link to repo: https://github.com/avocado-framework-tests/avocado-misc-tests
->
-> avocado-misc-tests/memory/stutter.py
-> avocado-misc-tests/memory/eatmemory.py
-> avocado-misc-tests/memory/hugepage_sanity.py
-> avocado-misc-tests/memory/fork_mem.py
-> avocado-misc-tests/memory/memory_api.py
-> avocado-misc-tests/memory/mprotect.py
-> avocado-misc-tests/memory/vatest.py avocado-misc-tests/memory/vatest.py.data/vatest.yaml
-> avocado-misc-tests/memory/transparent_hugepages.py
-> avocado-misc-tests/memory/transparent_hugepages_swapping.py
-> avocado-misc-tests/memory/transparent_hugepages_defrag.py
-> avocado-misc-tests/memory/ksm_poison.py
->
-> If its good enough, please add below tag for PowerPC changes.
->
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Thanks for checking the patches out, do you want me to send v4 with this
+> correction or is it redundant now that Andrew already wrote it?
 
-Many thanks for the testing! Will add your tag to patch 1, 3 and 10.
-
-- Kevin
+Either way is fine with me, thanks!
 
