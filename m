@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59B78D2CE1A
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 03:38:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E286D2CE18
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 03:40:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B0306B00EA; Thu,  4 Dec 2025 22:38:43 -0500 (EST)
+	id C6E416B00F6; Thu,  4 Dec 2025 22:40:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 760186B00EB; Thu,  4 Dec 2025 22:38:43 -0500 (EST)
+	id C45DC6B00F7; Thu,  4 Dec 2025 22:40:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64F0E6B00EC; Thu,  4 Dec 2025 22:38:43 -0500 (EST)
+	id B839F6B00F8; Thu,  4 Dec 2025 22:40:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5383B6B00EA
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:38:43 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C92FC84E3B
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 03:38:42 +0000 (UTC)
-X-FDA: 84184010484.20.D248B54
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D83141C000D
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 03:38:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QyebYQaL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764905921; a=rsa-sha256;
-	cv=none;
-	b=J/QKSG6Eql7y8l7LMcuj4/fqkJoSAHhbFrcoFeX2m4/yW/wUnrfeF6urtPqYuDKIFIJpDU
-	OduOhS1nWjnEZYqrFqTau67uHJa2L5DH9WR0J2QaSg094TO75+FlHcFDDKfSMSG7/Ko/vT
-	PR0hBipSdyJMu/l3VBa9YR93U0dpV9A=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QyebYQaL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A94CE6B00F6
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 22:40:26 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 37060160410
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 03:40:26 +0000 (UTC)
+X-FDA: 84184014852.27.20B3FFF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A41C7C000A
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 03:40:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TsxVmgkH;
+	spf=pass (imf10.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764905921;
+	s=arc-20220608; t=1764906024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fl+caqWL5n0dvFbZchH+YmZ4xMTXCKbX5vTDeE5p1t4=;
-	b=ZuYrktSzPnVVFmqZijFuQlDKZJBh/uUtJ1wwg/a91dDKe7O9T59vU1k5MaboAGvge4Mbd5
-	rvFhNczsf7+hi2ZsbAbq8Q3A1Uq61UGb1O5g6alUxFYVjWrXTA6BDDXz7AKTfllt4aLvZf
-	NhG9fCEv4F0oOX0MupjP92JbRLQiIy0=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42e2e47be25so884279f8f.2
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 19:38:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764905919; x=1765510719; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fl+caqWL5n0dvFbZchH+YmZ4xMTXCKbX5vTDeE5p1t4=;
-        b=QyebYQaLnNFlEO0r4hGep3dUVYKuIueJ/ispV/YeJUsZ65ve9Nq4dWM2MU0s01l0VJ
-         0YT5uXCUBbhRFCAAraClal3W7B6t6RrcKf15E4wsHJ4FNFMX+s8Adu+TsTTrFzhQsSDM
-         JA1scxE1gEIhjYOpH2epZ+QSTykiC/3x+TXEbNyythnZt/uf/1SsF209Ds42VRX0AUR+
-         Z7Q4MECeP7jTFhiZYWIGZ1tZBydwkvXHSH/W7nx/DCrASNlrn9mdLbiPns8oz6i1kiTg
-         R8RNI6Y+381RvEcJP79pt/FWyWhMvlAIb7ctQs4rfcahu8OnXzzZb6a6plX4PRoe3hRT
-         CRVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764905919; x=1765510719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fl+caqWL5n0dvFbZchH+YmZ4xMTXCKbX5vTDeE5p1t4=;
-        b=DFIH3ByQdasN4ldsKrV/1e/E895dzq5YVMb4lzFN1YfAOorr/cPOOMnzqf/2hv+ZGy
-         tveFbKqdblIQ3R8bXdZQWp90e7EkvoCmBfv+eixSyPNYF8VTHwqVeG1ZnX5u6apGPRNR
-         xK0OTBHmL5Rjq3gLMTWNfLwj2ITWCp4wCyuXKL/CSWvjZCYzNQcIc/KmqsWUIjSI7CYx
-         Ii19wUIkVkAySMweHuWlnoUwRVUX2MEKGj/mZ80ZebczDx3f2DNiSM5kyIdqhRcMewyB
-         Hw6Nd4Y2smM01UdVRI1qpQEqEAywl64P9D1qhYG3guOV4opFtz42D6WBi15dGWSof4uy
-         Kywg==
-X-Forwarded-Encrypted: i=1; AJvYcCVIm590EFZvH7rgFEdXf/J8cLlFi11+7PBYTCnPPOcWBFBx77x95dPGvLB5UybVwCT2kWwzEr1ebw==@kvack.org
-X-Gm-Message-State: AOJu0YwF/TVHiZUwMGspMoBEUeKhX5233pOFRGsElkqHEEuXoeVmLq+d
-	3nbh75KS7jxgKetNSLY28WWwSW462JdiyA0P5LIY8ha/zk852gBre86ldOIkHwunXEUukj0MtqO
-	sJ3x+bbQLy8p9sbmIztb2QdH5EtMoGHE=
-X-Gm-Gg: ASbGnctRr83P7WZ0NIwj2Uymkeknrl8idY3GqWoO6vcdsAPotqytZ+M2s84BlJB9QOV
-	jWX8Zo5XpJSQs6suleHMfI0reo54MMDYNPR4zvm2ig3om4Zc0ANb3V0cKszzPUY2XlLu3RiUc1P
-	joeCPcObcUeHFMyenfKwTx9p5IJ/uMstCWMACBLycWyQEcY/aQmIEJZtJteH22LkQ6cuClpOxjb
-	AXzDaJfd1E7opIUx1gRpZ6wo5mqcFXACHUq41jS1CLbf0GCZKaPh7Yb4X8K3GWoMvbStCEe73Sk
-	TokZr7pweKnpofAMzPvS7uvsOlBbhQvDbtPkuU5U70c=
-X-Google-Smtp-Source: AGHT+IEb0cv8ajRkhP7gPEE04bA4LbLhiR6KMPX5vUsECmsEKi+k2NDEA1RGG2g6E2/gLEUu60VXhRWF46TPGjbxI7g=
-X-Received: by 2002:a05:6000:18a6:b0:42b:4069:428a with SMTP id
- ffacd0b85a97d-42f79514c50mr5364434f8f.12.1764905919003; Thu, 04 Dec 2025
- 19:38:39 -0800 (PST)
+	bh=2XwREYxKSw05YMjoXQcYwWLwl4+TgwVTsoQgX7AfDkc=;
+	b=zPnhmQlmTgmC1PeC51qrwo4kXuvaaA/nseRDMK27n6tzAnFaoJ+0faUnuHOyhDEUOnd7mw
+	I7W3C/2cJHg0u5OF20qre3u0OZWFR7rUc5yLurpd50ILB5ZKSiRlxpk71vS/5lxM6O7KnJ
+	ZMceRxU6Rv3N7tuSSCbyiASUwCXpopw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764906024; a=rsa-sha256;
+	cv=none;
+	b=0AGRFIvFGYaLDkiOwDL82T8sRlqUTiLV8SRhzVQnMcZ+DbaDKw/Z2w4xZ8/20xSLV/ZsWC
+	/pfzmR0aliPd2y5fu+tLya1dHzi1shLiSaRau8inJIOIx3SZd/IGa0Lh6wXTQ9f6D3J6ge
+	GzxDht6zawRoS2TmgiOTKW+AyQtHZ9c=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TsxVmgkH;
+	spf=pass (imf10.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 221D960206;
+	Fri,  5 Dec 2025 03:40:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB03C4CEFB;
+	Fri,  5 Dec 2025 03:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764906023;
+	bh=pmtBP/IRAchq9Y+Of4LdB+8xUK6lrQZOgkP3KGgymBs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TsxVmgkHn5wz5hbY7X9e3YNY1yGivGCcIOtNeg3iaYGszqvV7YnRbUAHyCeXbbKgz
+	 FUdcYygxNjaB9gm3Q41cR98Ivd1A94Q5fiiOwHbgm3cg8DFnYKJkAFjciSp/WTQWSM
+	 8vk1nl3T+71SZ4FTbQLNjV6Z4SvdD7jNc6i1XSGATq4IHdyZI7aWQvZ+SSs4vTBd1R
+	 9NVxrTKMKfsq6lXfhnSv0tMxb/+hWqP5A/Q6ReMb4dNM1opuVkh+Ax2p0li7qNbNWk
+	 pG9ABSvmz6ibZwjC+ayCzcinjeWngw046Nxs71xsBefPtZ9CjiPdWBCPFXDorKRZE9
+	 KC3xE1ArkomLg==
+Date: Thu, 4 Dec 2025 19:40:23 -0800
+From: Kees Cook <kees@kernel.org>
+To: Andrei Vagin <avagin@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, cgroups@vger.kernel.org, criu@lists.linux.dev,
+	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH 1/3] cgroup, binfmt_elf: Add hwcap masks to the misc
+ controller
+Message-ID: <202512041939.63DA7C96C2@keescook>
+References: <20251205005841.3942668-1-avagin@google.com>
+ <20251205005841.3942668-2-avagin@google.com>
 MIME-Version: 1.0
-References: <cover.1764874575.git.m.wieczorretman@pm.me> <873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me>
- <CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com> <20251204192237.0d7a07c9961843503c08ebab@linux-foundation.org>
-In-Reply-To: <20251204192237.0d7a07c9961843503c08ebab@linux-foundation.org>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Fri, 5 Dec 2025 04:38:27 +0100
-X-Gm-Features: AQt7F2r4SDeGe1uHCJN0ZI3Zd_JW0xi9yGmGe6DkXMc4yWVA8HXcBjqiziEEKSE
-Message-ID: <CA+fCnZfBqNKAkwKmdu7YAPWjPDWY=wRkUiWuYjEzK4_tNhSGFA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] kasan: Unpoison vms[area] addresses with a common tag
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, jiayuan.chen@linux.dev, 
-	stable@vger.kernel.org, 
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D83141C000D
-X-Stat-Signature: kw19zkbq6497o3dj1g1w65j4syt7ogq4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205005841.3942668-2-avagin@google.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A41C7C000A
+X-Stat-Signature: kw9cuekkuebq41d1supzjuxwb3n7fz86
 X-Rspam-User: 
-X-HE-Tag: 1764905920-291315
-X-HE-Meta: U2FsdGVkX1+NzkzH5uj4V41Og5j+k/4F1zf9wUnxRHly+azjiLSgkerqRvlfAAlSzVVdA9jdeSF8WdvnUju4S0lLBqzQaz4M3ySlHDR+I0TldFjLrp2pnxWBg5d/2T6HC8B5GeEsl/32oqQz9qqJr1Vhf8iach4vbmv4L6wKcNM/7FvAgc61XVPXzQAPSrED6vG8Ti1IbczTvJ9HdvXfmNwN4vi15hdDRxbeRVtjJ4Y76gE8dV7w7s1mItyghKyvbv9TlGQL6t6jegB/JbVhhsUmq97M5Bq1xl+8KlPxMJ+d7Xz6+ulAY0jjfmaJ5vn3D/hgRkj0GfKtmKxxEahSfl+mwewRBQkEgzi6nRyF6Gv6my3Ow0I60I8VAjn1kM0Ll4pkMM7paTYYJ5p3p9XS3x+bONxXSkTKDCImFwVSxfymDlfMvfejFbgyfCsxsz0X56Uvm1tZ6N4169a5Jg7AnzSlejFlHp5rbL90SNDjbdu2mjJ3zZcRVQu+yR9qfh86NAz8NIJicOWJVW6+aN49WxRdh8y8H43sRIbE0NDnPP8AOInW9FNvSnn6Gwv1UKR7Mz0sVOx4z55smdK7AN03o47CVo1Q1odHUKn5HHOBKdECJZ0XRMd5cEnGK0jUJPS3JJx/0xFkxbIfqJaVe5oBrk1mxxq7+ygFUsVNqtvpWiLzTiNtC4CZ5hdp7CcfCTbmDmJaU5r3TP2dBkEnM+aTffOX0c+XmY36rbvBD6Rn4oiRvVaohClKvj1eN31kZb2XywCMDVLUxGNOzX5/EhTGRcJxr0uK4Cc9VITQ7uPUzQbJzmURMQhr4JrSe9lAZ4qpAVHd9WwPoZN/4J3HTDtusG6zhaKz7Zwc+ooQQzmhrB6/CBhQUahTnif81zHwtRhT0IfFzY+LFsWzSHM4uK3BlRUJGvG9wvr1cVqx2M+7s4Hrqg1C2e5Ocut66HTp4cem/8+t+GDhEUZWRuXbvdV
- ZR+x2QFi
- J60VN9o2ot6fvCgJBM2xOkzJ1XGmCQo1otKpT9kbd0vK9MHqazb4Uc7ViA2ph7gQfjU+pkS5rCQ71JfXN9o/WA1Ehzoi9L7NWw8qUJvzeeZ7mjfLI3T+lbho1f8aGjklIp40UpgDE99qBgNbgcSlhzc1LqXKvq9D2GbeKlAN64vHpXrw0jE1/KKH+Wy6p2vGVp4jWfbwxd/SdnF6IPXWcUYRM4Wg2xQOf00MysmfNxL8NXEmgp/MI6xNagBRJI3nicaIH99B40A5eya3A10U3UCQja2ETQvt5UH6COJAFkta4q/VkGs+cca7amMb6CYF3THQcaXDIsIvqfDpSFCKhh4xmry85i5F0EZ9BWqkBkzq46VFL3o4Y1zj1YCmtsUHoUHLkkSfBRp5eljraxvSPxAID7OQz80tFRq/bzDZcDjyOo3+s7JtTjX5mck1Q/j4dCP3fX5BAGS+JWrv+k7W5UucS5Tj3sXrTYnpBPhH8qLl6MBUhGS7aw9M//JVEKUA8RMaa
+X-HE-Tag: 1764906024-676691
+X-HE-Meta: U2FsdGVkX19D80/gjxi6rUvb/A+1GCy6zXTqVE2aHdjTh1pkERduVWytQbCOkdnyB1Coj6TrTUAdGCrjRz3XNCEJ4CiQbWMQwZ6oh7pTLcORwLnc943KvhvXzawpRZpBJTUKwM9KoX+t/rEMS4adqh99uCwIuOB8uxjLURvcuVHqNNacks6rA0XIVxjxhmZgwKS2oG8H6+PGPEKPWobOv1dO9jEyao1y8Cbq7nPEC4j9T43NaP//wCYU2uvKPg2uIv6bpTV11K3tozk/wemGu7I0y/rQuSK/cjpUO7+a/9a1kOdqrhH3C9tAlMUggwJA+YcZ5INHQIczaexAS5HP6RdS1ufRpHo5col/e67KcX70GGhkTGT7JUPBjVGTjOD4EKaOGJTNgjIRY5yXshSJUsHbqhaR7FV9urc2ABY6vlcz8TSbTL8DYqKl9XgNv9hOicFwQ4vS6TDbmdcxc8W8i0F/quTjqG5XdGB4vMHAUYRHPPTwE9maor9kj7m8Q3q2l5FS4W1nhPuQMizOJO3G557nlNEtcw4pbNI4dPm7pjGbHTbEhbjg33/ifqJEOYt+uOyFBZzygCzaakHhsCGyQgIxtgWV3S3NlD0MYvYPcMhE3zQYGPNXPfksUUTH4phymCMINnym4pb9afmb55F74lThX/IaqkkcTW0sK/FOjr3nW/QVUiSCkgWKEpULXqw7HHjdwZm0/KIDD9twFD09r6OQN8i9qccQO51UaM3uYdZbd3VhlCZsIyIVeVk+9tmzGdQR36i0rPWdPXa1NB+bMpW2niIhyHnWRKzxSG7S5sQP8YNcKwOiY1eTd24noGa5LsOp3AstZRKYFT1XAid9QR4Hww1pRLKXIPY7QaqR+kq2T4sj2YRdb2y83Gt8wOkeK1Sx28AoHFCoE/DG8+4EDpzbHLcRCRn4U+pMkyIhrvxaZHvFHCk67HtsgVt3UbUuNRK/b5/HuACpUQ3ihbc
+ 025KfBfP
+ i0xVD3TLEmiy9YWtgqUZlrSJ4dWuFXkB9jQyK4jz0JW2rEIveQPtnOCBrhK4Vzx9fH9mKDSwsL0J3M89lRCbvfSQKdczTcOJ8N08NHxcikPKfWW0hxH1KcPJQsZxbaVOJB9AelRQCxguMl1cjFnXOSn25wxv9fP35Ap7zCC17pVrZQxhi8evtM0qTpLsFSe4bDTBNPUvBHkipD2KE8t4PdPUX2o3iJ89tD7lR/jtEyQ5H0JL4vd7Ltom4eor9y9xSucqHbNaXqmfNZpX+7i4gUxQ+VocCTZF/JKpcv7KZwPkCF1hyN1sUEVjf0Hp18JwH+hPupGYskMb1YDAZzNlEW52F3T16r/AZH8H4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,52 +96,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 5, 2025 at 4:22=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Fri, 5 Dec 2025 02:09:06 +0100 Andrey Konovalov <andreyknvl@gmail.com>=
- wrote:
->
-> > > --- a/mm/kasan/common.c
-> > > +++ b/mm/kasan/common.c
-> > > @@ -591,11 +591,28 @@ void __kasan_unpoison_vmap_areas(struct vm_stru=
-ct **vms, int nr_vms,
-> > >         unsigned long size;
-> > >         void *addr;
-> > >         int area;
-> > > +       u8 tag;
-> > > +
-> > > +       /*
-> > > +        * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[]=
- pointers
-> > > +        * would be unpoisoned with the KASAN_TAG_KERNEL which would =
-disable
-> > > +        * KASAN checks down the line.
-> > > +        */
-> > > +       if (flags & KASAN_VMALLOC_KEEP_TAG) {
-> >
-> > I think we can do a WARN_ON() here: passing KASAN_VMALLOC_KEEP_TAG to
-> > this function would be a bug in KASAN annotations and thus a kernel
-> > bug. Therefore, printing a WARNING seems justified.
->
-> This?
->
-> --- a/mm/kasan/common.c~kasan-unpoison-vms-addresses-with-a-common-tag-fi=
-x
-> +++ a/mm/kasan/common.c
-> @@ -598,7 +598,7 @@ void __kasan_unpoison_vmap_areas(struct
->          * would be unpoisoned with the KASAN_TAG_KERNEL which would disa=
-ble
->          * KASAN checks down the line.
->          */
-> -       if (flags & KASAN_VMALLOC_KEEP_TAG) {
-> +       if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG)) {
->                 pr_warn("KASAN_VMALLOC_KEEP_TAG flag shouldn't be already=
- set!\n");
->                 return;
->         }
-> _
->
+On Fri, Dec 05, 2025 at 12:58:29AM +0000, Andrei Vagin wrote:
+> Add an interface to the misc cgroup controller that allows masking out
+> hardware capabilities (AT_HWCAP) reported to user-space processes. This
+> provides a mechanism to restrict the features a containerized
+> application can see.
+> 
+> The new "misc.mask" cgroup file allows users to specify masks for
+> AT_HWCAP, AT_HWCAP2, AT_HWCAP3, and AT_HWCAP4.
+> 
+> The output of "misc.mask" is extended to display the effective mask,
+> which is a combination of the masks from the current cgroup and all its
+> ancestors.
+> 
+> Signed-off-by: Andrei Vagin <avagin@google.com>
+> ---
+>  fs/binfmt_elf.c             |  24 +++++--
+>  include/linux/misc_cgroup.h |  25 +++++++
+>  kernel/cgroup/misc.c        | 126 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 171 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> index 3eb734c192e9..59137784e81d 100644
+> --- a/fs/binfmt_elf.c
+> +++ b/fs/binfmt_elf.c
+> @@ -47,6 +47,7 @@
+>  #include <linux/dax.h>
+>  #include <linux/uaccess.h>
+>  #include <uapi/linux/rseq.h>
+> +#include <linux/misc_cgroup.h>
+>  #include <asm/param.h>
+>  #include <asm/page.h>
+>  
+> @@ -182,6 +183,21 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
+>  	int ei_index;
+>  	const struct cred *cred = current_cred();
+>  	struct vm_area_struct *vma;
+> +	struct misc_cg *misc_cg;
+> +	u64 hwcap_mask[4] = {0, 0, 0, 0};
+> +
+> +	misc_cg = get_current_misc_cg();
+> +	misc_cg_get_mask(MISC_CG_MASK_HWCAP, misc_cg, &hwcap_mask[0]);
+> +#ifdef ELF_HWCAP2
+> +	misc_cg_get_mask(MISC_CG_MASK_HWCAP2, misc_cg, &hwcap_mask[1]);
+> +#endif
+> +#ifdef ELF_HWCAP3
+> +	misc_cg_get_mask(MISC_CG_MASK_HWCAP3, misc_cg, &hwcap_mask[2]);
+> +#endif
+> +#ifdef ELF_HWCAP4
+> +	misc_cg_get_mask(MISC_CG_MASK_HWCAP4, misc_cg, &hwcap_mask[3]);
+> +#endif
 
-Can also drop pr_warn(), but this is fine too. Thanks!
+Can we avoid having the open-coded 4, 0, 1, 2, 3 where these are used?
+I imagine it also doesn't need to be a 4 element array if ELF_HWCAP4
+isn't defined, etc?
+
+-- 
+Kees Cook
 
