@@ -4,85 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D835AD339A2
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 17:59:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE711D339B2
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 18:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 140536B01A8; Fri,  5 Dec 2025 12:59:50 -0500 (EST)
+	id 7CE8E6B01AA; Fri,  5 Dec 2025 13:20:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1189B6B01A9; Fri,  5 Dec 2025 12:59:50 -0500 (EST)
+	id 77EE76B01AB; Fri,  5 Dec 2025 13:20:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02DBA6B01AA; Fri,  5 Dec 2025 12:59:49 -0500 (EST)
+	id 695026B01AE; Fri,  5 Dec 2025 13:20:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E1BDB6B01A8
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 12:59:49 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 619B71402A7
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:59:49 +0000 (UTC)
-X-FDA: 84186180498.20.454BE1A
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 90FE140012
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 17:59:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o3mRSowa;
-	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 51F026B01AA
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 13:20:04 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07700B7B6E
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:20:04 +0000 (UTC)
+X-FDA: 84186231528.04.8ABADDB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 417C3140014
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:20:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IkWGNHpi;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764958802; a=rsa-sha256;
+	cv=none;
+	b=7/sQi8u6uYgPTTjmsdL9fY+sBag8MckOAMupIh7zFOgU7kd7eFdZoaK/ifrPQmN0/EvPLA
+	ny/eIBCScJ3UfxaROihA4qcXp3hWAiSRLUoqq3/cxA2PUlOw6e8wz2DK0daFUTXnL2JVNU
+	ybcjtNDosOHmxuSqAwqXDFJu6a6tJnI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IkWGNHpi;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764957587;
+	s=arc-20220608; t=1764958802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZga2sY8Qmp2/WVvb8+m7PCG2wK/ft532jEwDd9YS1c=;
-	b=RZQOTe9K9SywTbDPMHYNDp6nv1nhNO2N30RgVHTYbcPrMz4h8cdqnJjzWO5oHO2jGkrS85
-	Ps5r0FnFkCN5fszbYxX/VpzASuM6Vhn9BLbX7EaDMgRvW2z5jguA9l4ZGgVP6/Q+4oy7b0
-	6j2/k3sGOdhYKf7lCK+IjDhJr69tANE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764957587; a=rsa-sha256;
-	cv=none;
-	b=ghcp4t88FRH6l+foHoP/d6yjCuPeQ/6++hScaPnKxSOFIppekkCu9IOK2GUXYq2urQdHpD
-	HDSwEipfOiK+blk4VJjoAOajpL/R8CQLRW3FXwGeoMZZjZKWOD1bbwgrcbm5WWy7WiL7Es
-	CBZB6wRVTB6JGVqumY+TAVlaPskikqM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o3mRSowa;
-	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Fri, 5 Dec 2025 09:59:39 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764957585;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LZga2sY8Qmp2/WVvb8+m7PCG2wK/ft532jEwDd9YS1c=;
-	b=o3mRSowaEdnSqTNDv/GCctEwZbze+Cp/dEg7ya4Hd5Y+PSfzxt0U+zKHu+prOtywXzZKwy
-	CCI3/HlzDm+W/lUONFsJiNus+r8Pe2ZHpqSsmAYElGF1kSIHNogLu78kM8RBXuuS4follI
-	RTOr22Hcutbcv9fLZCvM7haoxvcrFkk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Tejun Heo <tj@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-	JP Kobryn <inwardvessel@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
-Message-ID: <5i4ei2rbszdwlezpi63h5ksmckry27ffx6kfcg74qbvgjk22ao@2y2jeadg43y3>
-References: <20251205022437.1743547-1-shakeel.butt@linux.dev>
- <aTMX4tycdzKlaqaH@slm.duckdns.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTMX4tycdzKlaqaH@slm.duckdns.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 90FE140012
-X-Stat-Signature: rka3b8yz7uwm8mpuiijbgdaoo4xsmoh9
+	bh=TB5O1IivxgT40PMCiat1nUPFv7ewjxHUnFbq0ckScDM=;
+	b=CbEx51r1pX/WI3XKRXlAr70UcWSVGaQwNtDj7RWQpdSb9uOvZD9sudbp1slccew1vBLojm
+	1LE50QeFU18fNe2+5U83NWMhr36WcWcDwzL+ePAQE9KPqSLjdVVAcagnU0dCFDFMRAhe9x
+	TKFVOkYDW+w0fiw7ZCd3Kg1pkn0321U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 72FBA60010;
+	Fri,  5 Dec 2025 18:20:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E392C4CEF1;
+	Fri,  5 Dec 2025 18:20:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764958801;
+	bh=uWu59OOnukX41sFdZObKv7Syg27XPL0QGtwNOMvGJSE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=IkWGNHpiezZQcCDCyS+Jz9xPdN6j423fwolXLjv6Qzs/t5OXs4LjIdSkioy/9nAlE
+	 3g8bFq8XAuinz65X0BHEHz7pVBa/y0ERbNIx2ACo9u6Hy8Priz1AeMs73MvNc2ygol
+	 HqjASwbYLerygzx50pzCxEeP4KgUbI1x+Zvhpajk=
+Date: Fri, 5 Dec 2025 10:19:59 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ surenb@google.com, mhocko@suse.com, masahiroy@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH] Revert
+ "mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb"
+Message-Id: <20251205101959.b9e89f4416e90d54646c2f63@linux-foundation.org>
+In-Reply-To: <057ff845-6ab3-46a2-82df-067c25bef56e@kernel.org>
+References: <20251204023358.54107-1-skhan@linuxfoundation.org>
+	<20251204135746.6d291cc861b4507b1fe95aaa@linux-foundation.org>
+	<aTKDRF2sMdM_5aRB@kernel.org>
+	<dc22e2e2-a62b-4b9f-9fb0-f3a42a57b00f@kernel.org>
+	<057ff845-6ab3-46a2-82df-067c25bef56e@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 417C3140014
+X-Stat-Signature: 7bz5gjjcbb69hngp3t7nxt11xw31j31z
 X-Rspam-User: 
-X-HE-Tag: 1764957587-460573
-X-HE-Meta: U2FsdGVkX1+Lda7baS6nNQrN/wHCq3tPhmSg+VVJCPhXIrmlh87Va585S7GDY4jvf3rMJRyPwxzQpnTKbnJ3/Sh9FMLL6di5sw5RmNz5gk0+Du7jbvX6TVBsDh7ugWvExMPrHfAMI4TM6GwLHy3GxB+Cztg3EfOZX3jW35PqJcDFiL/gAHr6cQiB+3KeT8gvSKrrlP9w5bf5TkJIsBL+t1ANqWyiEkg5QbRYs1YyNw85PAWJ4frFFZn5NTEhd/pbXPvmNwwpq7g9t1ICdjojmT91XMt0j0HMSd8Il+tsqQtVouLhcUC9ayqkJNlvH1TR7RKUhevBJOf6AakFIaRKx+slhLgRNYcysWTPdy1WFvCNinQj/A2MwfPQUHmFlZ/wIUxhr4QPAjUfnGBfDiJ9BRZErL3YP1hdwUlbbNNdENgsctrpDZg/ZeDlUdrk5okYMOfHthAwRBXYRJOsQSrT0CaiBH5M6WEpKxmQPV00bCooWQAS67kD3nzNp2589wVEvq/LyWYliQxF7QioAcHXYt5tv9bqgax87dwn0ZlA/dfmU0Ckt7kP94C6H5Z0L2n4OoJLItZS8mBAYgdpVui1r2s2zuGM6mLvuZQbkq969MSEqOV9BNZUhknBmaGpYUgIETKiMV0Uhvz5/gJ/tPIuACJGyefwxopTjEpRVFh9jtPu908Kqne1gW5FLc68rt5gXEHP1hV7ioRL3kwta+JMP2GLptrlNx0qiQSKiYMBnG5fExdjCcFz2HE92+B0hZ52JUMuNXSza5VQwDa4IJmrwcCSiTmlI2w99GzL7VV2qS7CVYbkFZicTX6olYr/oxaC37jq20bCC8JFGYV+xXgcSqMnh0reajD1pWOp76yZ8bu83UapK2kYaZdCkviYW7Mnefdq9zL7bHdGUkLWZdKZ2t/D7ajwPpHvkM0gVGNN38V0o5AoKCu/tTmL6vy91ZO//DD9LCIJcc9khZuuP7r
- Icb1aHRG
- DaJj6bYe1J2/8nqT7RnYZimqoCETojjNDYjIBApbnnlLlkY/tkZ3bDM52/uatXAL+YNrtmMSGjuBbRtkEtAleOva4baypLIFziRr0qtRxVFVpYwSvxgpGylS+Prne5JpF9/nMsVK1+GSL8Z1Pdt3rO2U6eJJ1RYtKU/Ebn5a4l7obGlDb7SaQj4NctDXajPnsHDoH7gJw6j+ecx1k3qp9+8ISagIz970gbbNM3CagRd+9AEurgs5GX6G3c0z5xGs18mtt
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1764958802-51954
+X-HE-Meta: U2FsdGVkX1+xdDs7m6lSecxyeDPaqICwVzhZqs+dMr5vxnRUosU/LLBD/1VSk1Jon+Hd4nAvzaFmhwiJIpMpKSpkffeZbwtsxslQqT65V6hWTsQ/nMwV9KIah48f+h1AYK+rhnqM2RIcoz/ndmPFpkoSVIVeYRejHNtJIoN6o/VckBO/aQcqj8H6LvnS6Rn/sm70cqCyUSWfQiI9DxL9CG6WyN/+2FzO421AreY8HwEPF/jFzWka39+6IUhyJGjFBuUJ8zgwZQGzjE9eHEAewJJSvKH48915Fv5QeW9x5HteQZ+plWXLQGwF0ic8le3cX70D2GyeqVH/Xom1z6TIJNZj/XxtCoOtPPWnhdxPE2NaDTNiVHMwMfRatcImBH2NPFSoMJrdjb4EWCE6Z5X9+TjT2hk1X6EILdjJ8xEr4az4gDjraf4a9tKLgWRyOBD6zvvY+/0heXbpy3R+F3vYeONX+cVDaPEFlXRxVTVMiQhIVlhJzOOo3RFB4t1jdKDgP6pygAXei2uilzcByLnLaJnef9c+ysgIRq9ryeUhpK4JV7keByj2u8pCymrNTaizf2J30akpg90I1mAjpkui61EY6GOnLP1RUNSdgU2Rxc1YNgDSRH1aXiZ3LgmGDn5omHlKr6fZkpqHg8lcOl7ow2vyib+iaanU5GyIXlCusuW9AOWOelLQMMOqh86Xf/bNqJQg8+UFSPbBmSpZCKQCfvDxBAjCcdUDEcMrI6kNESyfPjs1hv781hmvl3V0FR3y6NnBa/HwFo7HOky/a8dmFTP5h/xcaI+tpHiYcqZr72VkPUwgqFsMz/ozbB6P8hlNiHP8IgDNWdo/asRANe75/K/QO5HJQs7T7e0M1AGMmffDMp6yUo6nYg1an+U5fjFNflF/c1KYPgyf3TC8BwB+EOrH6gGAPHOQ3sN9TcXwfWzm0jPRm3vaTOWFHT5YZTw1E7T2OXyR3iukJL7GRVy
+ 3WBaV5SL
+ HOz9PyMKxN8xBsrSmfq9n7yD2WOJa9BKwy5N6AcX07tIqF9zeI9kQhQPQuPToE+Wom9yEOPc+7GtPRLk7vdvUsUHSzmYVWJ5rocqJ87u1RhkBy2GTE8hVh6IbBedjSL/Cm9nbV7jdpE1aK0IkW2lgUZuI+2GIsyvAqHI5bmnUX4SlMWk9H2Fn6ChVUi2dcsUG5aEN1+IPwEhKv6BTy4jBStvZihQxs91+ACHhU4JRpP0JtPGXqB3nNPmVb3hPcUa49hXTHPpcqvw+mH2xhD9g/P3TdTS3S+VNiuuJOQZSa0prCx1T/4Z6CHWQO4IkSQ+J08dr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,44 +100,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 05, 2025 at 07:35:30AM -1000, Tejun Heo wrote:
-> Hello,
-> 
-> On Thu, Dec 04, 2025 at 06:24:37PM -0800, Shakeel Butt wrote:
-> ...
-> > In Meta's fleet running the kernel with the commit 36df6e3dbd7e, we are
-> > observing on some machines the memcg stats are getting skewed by more
-> > than the actual memory on the system. On close inspection, we noticed
-> > that lockless node for a workload for specific CPU was in the bad state
-> > and thus all the updates on that CPU for that cgroup was being lost. At
-> > the moment, we are not sure if this CMPXCHG without LOCK is the cause of
-> > that but this needs to be fixed irrespective.
-> 
-> Is there a plausible theory of events that can explain the skew with the use
-> of this_cpu_cmpxchg()? lnode.next being set to self but this_cpu_cmpxchg()
-> returning something else? It may be useful to write a targeted repro for the
-> particular combination - this_cpu_cmpxchg() vs. remote NULL clearing and see
-> whether this_cpu_cmpxchg() can return a value that doesn't agree with what
-> gets written in the memory.
+On Fri, 5 Dec 2025 08:41:07 +0100 "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
 
-Yes, I am working on creating a repro for this and will share the
-results.
-
+> > Thinking about reverting arbitrary commits after Shuah clearly tested 
+> > something wrong is completely unreasonable.
+> > 
 > 
-> > @@ -113,9 +112,8 @@ __bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
-> >  	 * successful and the winner will eventually add the per-cpu lnode to
-> >  	 * the llist.
-> >  	 */
-> > -	self = &rstatc->lnode;
-> > -	rstatc_pcpu = css->rstat_cpu;
-> > -	if (this_cpu_cmpxchg(rstatc_pcpu->lnode.next, self, NULL) != self)
-> > +	expected = &rstatc->lnode;
-> > +	if (!try_cmpxchg(&rstatc->lnode.next, &expected, NULL))
+> That irrelevant revert has already been applied on mm-hotfixes-unstable, 
+> see https://lore.kernel.org/all/20251204215938.750D3C4CEFB@smtp.kernel.org/
 > 
-> Given that this is a relatively cold path, I don't see a problem with using
-> locked op here even if this wasn't necessarily the culprit; however, can you
-> please update the comment right above accordingly and explain why the locked
-> op is used? After this patch, the commend and code disagree.
+> Andrew, could you please drop it ?
 
-Thanks and yes I will update the comment in the next version.
+I already disabled it - it never made it into linux-next.
 
