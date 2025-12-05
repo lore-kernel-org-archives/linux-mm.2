@@ -4,105 +4,262 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36DD0D2E012
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:15:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DE7CD2E014
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 07:19:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A9926B00C6; Fri,  5 Dec 2025 02:14:59 -0500 (EST)
+	id 9B1836B00CD; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 581C86B00C8; Fri,  5 Dec 2025 02:14:59 -0500 (EST)
+	id 93ACF6B00D3; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BE4F6B00CA; Fri,  5 Dec 2025 02:14:59 -0500 (EST)
+	id 786A76B00CD; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 363BA6B00C6
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:14:59 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D88891A04F9
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:14:58 +0000 (UTC)
-X-FDA: 84184555476.22.B55780B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C9D49C0007
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:14:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QhdAI/v5";
-	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 649DB6B00CA
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 02:19:55 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E0CEB9A7F
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:55 +0000 (UTC)
+X-FDA: 84184567950.14.EDABA79
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1500620006
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 07:19:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764918897;
+	s=arc-20220608; t=1764919193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NQFFwyyrbmSQDwjSydErzLovNjSAb4Pxxp/akbzvISk=;
-	b=gRcYQS+CE/koaBZzXZD+W0263VG5xQUBNbp2glzUof2eURtL1yNHGMtH7E0i3AXCRFsDAy
-	HqGF2F53tCXY8eD0bkEGHH9BxN206vT5c02i2rnjrZIdSIgTQeTY71YnhShBGPqp/hs/gw
-	4qzMq38wSA3n57hNZwari3lYXl6o7CY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764918897; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=kMFshlb9jprhYr4PTAQc1Jvtsfr5P4/luLNT0q9ZeVE=;
+	b=wOBfjDOARg73YKTLsoktYQWyFdg6bsD7aErR66KBtF+aS7797qpbaKU16Wu6CPlc/hkrP+
+	D7EIh+7ZKwItL+0IEZtkSKdbCysgXzvEvOLYG1uFzQArY9pvVz7FK4lZAlypTgGsDlrNrx
+	cui0APHxAxGDVo7VN8dWziIcudiBoEM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764919193; a=rsa-sha256;
 	cv=none;
-	b=CH4T1KiyUEpNMX88jz0MjGRfnWhXzAwEvyGR9QtO79vrnBAhs7gaL+Ht3G2j7lb7ds90nL
-	hsB6HIu7vs/Cs2wKwGCfbpyV+1JG7hPvn4pHrhQWGDt/6AV87g8CMAaYR92vQcoG6GZy7q
-	vWeFuWkTMPldDakNIe1B8oroWwzfLpw=
+	b=PxzoL5Lh86IGwLtfl8g/NSuWIXxCmydyed0Mf2Bw2vSw6kmlCEfC23IrB5bevrC5MLTUS9
+	DCXzZm2Ai7VtXM47RpESoIyVM5mz28WLV5HwflvLZw4qOEwOramgkfE38vhpql71Hcrod7
+	2PgEX5cyyrK4+67fib/G07WZzkUEkdE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QhdAI/v5";
-	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764918896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQFFwyyrbmSQDwjSydErzLovNjSAb4Pxxp/akbzvISk=;
-	b=QhdAI/v5DL29B27aKkKW17njt2NXDUaj5zLRgQ9PnYjbelepEL9uBAOMeRl0+QZBCLqO0i
-	FBWGA9Y4KtVNcC5PeCSA3psM+JAGkUXUKnNnIohtVJcTYPYZtJalja+6zf0d7N9IxRHvP0
-	ky8s31nm1M/3dL1aEhtPlsD+DQeBIDM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-159-U-7T_gsNNiuj00amjV2_Jg-1; Fri,
- 05 Dec 2025 02:14:52 -0500
-X-MC-Unique: U-7T_gsNNiuj00amjV2_Jg-1
-X-Mimecast-MFC-AGG-ID: U-7T_gsNNiuj00amjV2_Jg_1764918890
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C2D2F1956095;
-	Fri,  5 Dec 2025 07:14:49 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.128])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 988881800577;
-	Fri,  5 Dec 2025 07:14:47 +0000 (UTC)
-Date: Fri, 5 Dec 2025 15:14:43 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	elver@google.com, sj@kernel.org, lorenzo.stoakes@oracle.com,
-	snovitoll@gmail.com, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH v4 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Message-ID: <aTKGYzREbj/6Hwz6@fedora>
-References: <20251128033320.1349620-1-bhe@redhat.com>
- <CA+fCnZcVV5=AJUNfy6G2T-UZCbAL=7NivmWkBr6LMSnzzTZ8Kg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZcVV5=AJUNfy6G2T-UZCbAL=7NivmWkBr6LMSnzzTZ8Kg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: C9D49C0007
-X-Rspamd-Server: rspam06
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c45ff70000001609-69-6932876b59c8
+From: Byungchul Park <byungchul@sk.com>
+To: linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com,
+	torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	will@kernel.org,
+	tglx@linutronix.de,
+	rostedt@goodmis.org,
+	joel@joelfernandes.org,
+	sashal@kernel.org,
+	daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com,
+	johannes.berg@intel.com,
+	tj@kernel.org,
+	tytso@mit.edu,
+	willy@infradead.org,
+	david@fromorbit.com,
+	amir73il@gmail.com,
+	gregkh@linuxfoundation.org,
+	kernel-team@lge.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	mhocko@kernel.org,
+	minchan@kernel.org,
+	hannes@cmpxchg.org,
+	vdavydov.dev@gmail.com,
+	sj@kernel.org,
+	jglisse@redhat.com,
+	dennis@kernel.org,
+	cl@linux.com,
+	penberg@kernel.org,
+	rientjes@google.com,
+	vbabka@suse.cz,
+	ngupta@vflare.org,
+	linux-block@vger.kernel.org,
+	josef@toxicpanda.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	dan.j.williams@intel.com,
+	hch@infradead.org,
+	djwong@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com,
+	chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com,
+	boqun.feng@gmail.com,
+	longman@redhat.com,
+	yunseong.kim@ericsson.com,
+	ysk@kzalloc.com,
+	yeoreum.yun@arm.com,
+	netdev@vger.kernel.org,
+	matthew.brost@intel.com,
+	her0gyugyu@gmail.com,
+	corbet@lwn.net,
+	catalin.marinas@arm.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	luto@kernel.org,
+	sumit.semwal@linaro.org,
+	gustavo@padovan.org,
+	christian.koenig@amd.com,
+	andi.shyti@kernel.org,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	paulmck@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	chuck.lever@oracle.com,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	kees@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	mark.rutland@arm.com,
+	ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com,
+	wangkefeng.wang@huawei.com,
+	broonie@kernel.org,
+	kevin.brodsky@arm.com,
+	dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev,
+	ast@kernel.org,
+	ziy@nvidia.com,
+	yuzhao@google.com,
+	baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com,
+	joel.granados@kernel.org,
+	richard.weiyang@gmail.com,
+	geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com,
+	linux@treblig.org,
+	alexander.shishkin@linux.intel.com,
+	lillian@star-ark.net,
+	chenhuacai@kernel.org,
+	francesco@valla.it,
+	guoweikang.kernel@gmail.com,
+	link@vivo.com,
+	jpoimboe@kernel.org,
+	masahiroy@kernel.org,
+	brauner@kernel.org,
+	thomas.weissschuh@linutronix.de,
+	oleg@redhat.com,
+	mjguzik@gmail.com,
+	andrii@kernel.org,
+	wangfushuai@baidu.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	2407018371@qq.com,
+	dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com,
+	neilb@ownmail.net,
+	bagasdotme@gmail.com,
+	wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com,
+	geert@linux-m68k.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v18 04/42] dept: tie to lockdep and IRQ tracing
+Date: Fri,  5 Dec 2025 16:18:17 +0900
+Message-Id: <20251205071855.72743-5-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxjF9//f/32hodlNNfNOE51dRGMiKtHtyWbovu0uTl3C3IctUSu9
+	GzcUNK28bTMrMAZjKIRYzaiDAqMhtEhtEdkKEyEjc0raDiINLwLKShh0xI5Si6Krdfv2y3PO
+	c86Xw1GqMXojJ+eekQy5Wr2aURBFKLlpV3Z5mrzHN5YCFWVfwcTULA13i/sIRJYrCFzucDCw
+	ZrnOwm+jJQR8V+wIpiIVCKKPLRSs1Q6yEPDdoMDRWYzhH+dTBhYGwgjMM7MMXJovJrBkq0JQ
+	F7SwMP/ruxCa8tDwbHIOw2xfOYK1i9nQ0OSOW80+BI0zkxSE56cR/FlzjYKRyBIDIf9lDH87
+	GbCW9NLgv7OAIDjWi6G0uYOBiz+4CNhdh2DKFiTxuvjl6gawXCrFYG73YIjZ2liwmbaBZWiY
+	hvutdSwM2udYuBLy0rAQrGVgeWQGg6MqSIHrwV0avq+fYKCn9xaBwe77GKqc12i453hGg8kS
+	paFjLoBhfKiaBe/P7TS0jPoxuIfuUO/oxGjZeSK2ubuwWPbHGiM66h1IfLxai8TlllJKHFhc
+	osSv3QViy+1FRuxdsRLxx29XsfhT3SQrWl15ort1p9jcM4/FxnCE/iD1Y8UBnaSX8yXD7vQT
+	iqymTi97+q8vCsdtLcSEbp6sRBwn8PuExlsfVaKkBPZcWKWeM8NvFwKBWILX868J7nNBuhIp
+	OIof3iKUx84nhHW8RrCHrQkm/DbhkaeOPGclv1+o96/gF6FbBLuzL+FJ4t8QzKMvClRxT0Nl
+	NBEq8A1JQmz63H8Prwo3WwOkBimt6KU2pJJz83O0sn5falZRrlyYmnkqx4Xii7OdffJJNwr7
+	MvoRzyF1srKvYK+sorX5xqKcfiRwlHq9clG/R1YpddqizyXDqeOGPL1k7EebOKLeoExbKdCp
+	+M+0Z6RsSTotGf5XMZe00YSshSMH03dPtLc1Z/jdN7oPlp3YvH9T0e3M8Fb1rgVNtWWxB299
+	a9LsKc3IPHz0cDJ5OfZNJN+7IyUl2vW28aHmy+6SNK2Y/uZQ8JjR/WCm8KnXoTmS/suh93S/
+	H7mQF7o3Oj3Q9eGw/L6n/fVj9sCEZkdn9bip6uyn/kc1TqR6BX+nJsYs7d6dlMGo/RckfZvl
+	bQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSf0zMcRjHfb6/7jp39t1p+k6b7ObHZovKjz0b82MzvmzMH8yG4Yvv9NUV
+	u0u6/OrKKUXOzV10ItGx65AuKbmcmvMj1Ik6lIudSEdKP1xJTuafZ69n7/fzvJ8/HjEuryAn
+	ioWERF6VwCkVlISQrJ6fHrkrI0aIOnlmAWTqDkOL10dCk9ZJQF9vJgHnbtgoGDbfFkFm6VkS
+	HjWnEdBwvRiBty8TwcCQGQdd5QgBwwaXCHoDb0Vg1CIYcbgQmNwGHDwN93CwlWkx+FHym4LO
+	2h4Exvc+CnI7tAR0WY4jyGs3i6DjwXL46q0iYaT1EwbN/X4EFt9vDHzODATDpji4UGgPjpu+
+	UzD0rB6HXGMDgovvW3Ho6WhDUOZ6h8BxNY2Cj/pbODT6xsHLvi4KHhuzKfjqPofBtxIKCtIc
+	JLifdiLINxsQtL9xYJB+6QYFpvxSAirb7ojA3fkLgxaTAYPi0lXgtbQTUKcvxILnBl03w8Cc
+	m44Fy2cMjNeqMAhYrKLFRYgd0OUQrNVejrG6F8MUaztvQ+zQoAGxvUXpOKvTB9tafxfOHrHv
+	Y4vq/BQ72PeKYh39BQT7pJBhLx8bxNhTzyLZyrxW0ZolGyQLdvBKIYlXzVq4VRJbWFYv2vNl
+	f/JbSxGRiu5vy0IhYoaew9w9PYj/ZYqezng8gVEOpScz9hPtZBaSiHG6MYLJCOSMCuPpRUxx
+	T8EoE/RU5mdVHvGXZfRc5ry7H/u3NIIpLnGOekLoeYyx+V+APOi5kDVA6pGkAI2xolAhISme
+	E5RzZ6rjYjUJQvLM7bvjS1HwnywHf52qQL2Ny2sQLUYKqcy5L1qQk1ySWhNfgxgxrgiV+ZVR
+	gly2g9Ok8KrdW1R7lby6BoWLCUWYbOV6fquc3skl8nE8v4dX/VcxccjEVISPnS1LjGiQVvFH
+	ulctVV87dPKo36V3XZKGrUjxPPiSHdMWe/M78xpXHagLXxTgvOus0wGzVzeZ1pZPQarLlMyW
+	rdE8n/awfEtE1rbNTd5l3UuFsVc+/HSnWnfGkNH13rLI7o351S1TBrzSkpwJ2ZsmhXZvCk9J
+	zpCednFaj1NBqGO56Bm4Ss39ATlaouFLAwAA
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Stat-Signature: dayyzkqhd5kiu4igu35powozxo56ow4o
-X-HE-Tag: 1764918896-341970
-X-HE-Meta: U2FsdGVkX18vM0JMabpQJg9z9yLn3U6oK0nhkzl6XrKbSIDxGemUX6anaeOeBtjJwXP+8xtjdvcVKvBw8XQ4d24insHpvIuQDW6rbENNBcKJLpItkFL9ZdT1g5Zk2XTsW5USMUAB5T9zFJHd8aOQjqhR0dYvLkJEZ8ayY3OfcQZAFY8/tnqpNs8NHl2RZctKWB3qBjei6h3V3CoT4QGOzgOfDdNWzNRZt9Zxw5n9HMSjh4pwJVvp4N5hoTdBFc33M9+uL6otUvDvauB/Ajlcfvy+DU0CmlxrgoJJwNUhEkO/rnbubzxUZ/pP0kZcjwIF1cBOlItauTp/wUV4DCDwBC11FpErRCyWXT+6dGUqKLLyznga66DpFy7lGkrYnbo8BRSjCxA+cRn2BHiC2nL8N4UEOr9BLrefi2g+urUJ0GiCGppKXGkoFrIH1wGUJ96Cn76qO8su8tcZ0Y3u2tVx0yCe5Of0G0kxK1vLlFIj4yFKdhUJ3n2gxc2q85BZbgezSqHFazhilze0IBwk3Lf755KUG633wGco/y8v8Mh6OwfQyMWe3y3IofYoDk08m2qPX8I5mieFOWaFGMLQgEVGzFHLdSfmrLYy83K9+a+Uhqfmm38Gvw8r3dPQqpzxuDw3I57f5TGlpOdtEHsjIzyOmUidrLQHN5OXLrafNNIYAc6MeozeNuIpsWTD4+AoRnIozbiJ1SBXldxyTxq8XS2cclJq+ONnPyVCmjUHAeKa5H0zt/jfekVarNKdx435g2fZYzkOlUDlGB0i+ochbt2t0egjMaspr73I4UOjv8O4jO0DV+vLOEoD8dROsu1khzN25U8n7UMVbyK6c/yooXp6zQQ/DDY3iMVrkZS9BJEqSWhqZn2EWbMr8i5AxueQuPsAHrZ3Ofsgd+jdBtrL66YoXJ7gn45HFbImDwGb5vbTumzSckfIIwFakvXHJh4fFUL3N5b0DEnC4X3m2Mi5QrP
- IX/KwzdA
- fJ65siR+JB9/y9pFa4SkE+nBaaQGt7ADrZBdrDiRWiF6ByoNkmh5hC/oQAGHslPjiExdv4wP2Vf3EWDJ/i9051Q3wzdx7n27PyGrmFspQs+kAwI9Jcryfv5RxA7e45OlN+mo02MnWRSE4Yxx2LH6S7ztt+vfDaH37kuNSl3+n3WnkLuDe/lmX/haROCMeP5jSca+Fbv/3dsd9yZk0VrV7OmbmseAZHE9YrLLw08AGLjjSmJBCn9HmPulGtMetT7otySZCHxGdzl6LdReCrxIkO2OBZoSDJpMZmWSL3wndCFZwXmb/7kLm69/GvHqPRasDdxaZRmcxdyEjxVK+59RXmm5izlI9jnDqIf4Tg1pZY/622CZJJRJ0aM/Gyls1HPjisLtXY0/f1/rQQt5gSWzZ8GyOpwgFeYfKg2Vk0RvIb12hdk1UA8nHlMbdxPSuPN8/S7GE5QjpfyuOEcqjBJLhlWKms3OT1omkUGKmtycZyc3W/7APqeWaOBhzelR4TNCtFWN2
+X-Rspamd-Queue-Id: 1500620006
+X-Stat-Signature: 6yeerwgocnkd53xm7mbp1ubxabe5mfen
+X-HE-Tag: 1764919192-668614
+X-HE-Meta: U2FsdGVkX1/k7SgDyOAFy9pABYyYrsvF+kYzDT+nqj5smbAH+iPsQUfe3ZBZcK5C3Jq6JNoyl9u12Ltarn5K0hiNI/cHGlY9cJoNbBUBPvYLF3EXKarqKnQCniiyPJKfX3l01lk2vNnGIWZCUUxaLDFyRBDcP6K1R4PX8E2Gg0q7/tviz7KCr5gJeWIguv3H0Xj53cc/NMJMhHsodw95KTqdkBX83zYzlDYiQ3tdwV7TgNye3h1JuhrNdALIDrcyIQC49UKYrUuyR/N/DPB9aZrPXBXnyNyF3xI4x1GcGn/IFZCDrJjhUP7lweadHN1tlGpzqGWx5y89FyAgQcfliAIDzNirQua3Fk81oPZgQAptff2e+06qrsQZDXcOdZUfj0XIV3LPaReRaji/1y2FaVWFJbUdXyglZL3GPiubE+DvHCUCw75C287INcKZUZ8YA0e3WWP8wFV/HvG2PTfIMpLNNWlHQIDAufWM7rNWYgvfuZAKbxfnRezCmMJB1cOTxXn3qS10f138NJfTiNdjOWgJXDqD7RvhqLP+b7ZU+mJuUGuFhmJh2hsYYntxq4yFrhWY15Ot0ZrSupskQu7+bg3+URTeS72Qqt77bKt56rsxUrqq39oemdGQ8oQUAqMIz/HurFKZeIs5HfwSHn5wjyoJt9nZJEJVZrqirs4e4d4ody8xDFASWNXjIK1ku/4GnufcXGLW2wfNE/66ypCrStbY9oxvkuTtpUhF/XBlEmWpAljNPGDpyuwLQU4wapIUTUAN8mvgzc2kPRRI7Dy8J2qQxPw/seKMqu3gd5TVSWpE/k/pBH0F1PXcPeY1db0bc/XMzJM4w4nOJYBfxAkld71/PzZ+zdo/TKQetoFUcKumUxp75GHVhY9o9+zklZZfAgtUwgd6ZKhlJZ5iuKgOsq3TNH/inIBmbhveGSGw6KVzIcsRSOmRXqyd639mH5pmV6i8kB3ziMYRosUg6Jt
+ fvDiYa7O
+ ObfwEZvIah9rgqz5fkjfe32it+4tAzcvlUWj+WsWoaElzms0ABkOT1IglcPenau1OabCxykhvCpQgGLE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,190 +268,479 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/04/25 at 05:38pm, Andrey Konovalov wrote:
-> On Fri, Nov 28, 2025 at 4:33 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > Currently only hw_tags mode of kasan can be enabled or disabled with
-> > kernel parameter kasan=on|off for built kernel. For kasan generic and
-> > sw_tags mode, there's no way to disable them once kernel is built.
-> >
-> > This is not convenient sometime, e.g in system kdump is configured.
-> > When the 1st kernel has KASAN enabled and crash triggered to switch to
-> > kdump kernel, the generic or sw_tags mode will cost much extra memory
-> > while in fact it's meaningless to have kasan in kdump kernel
-> >
-> > There are two parts of big amount of memory requiring for kasan enabed
-> > kernel. One is the direct memory mapping shadow of kasan, which is 1/8
-> > of system RAM in generic mode and 1/16 of system RAM in sw_tags mode;
-> > the other is the shadow meomry for vmalloc which causes big meomry
-> > usage in kdump kernel because of lazy vmap freeing. By introducing
-> > "kasan=off|on", if we specify 'kasan=off', the former is avoided by skipping
-> > the kasan_init(), and the latter is avoided by not building the vmalloc
-> > shadow for vmalloc.
-> >
-> > So this patchset moves the kasan=on|off out of hw_tags scope and into
-> > common code to make it visible in generic and sw_tags mode too. Then we
-> > can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
-> > kasan.
-> >
-> > Testing:
-> > ========
-> > - Testing on x86_64 and arm64 for generic mode passed when kasan=on or
-> >   kasan=off.
-> >
-> > - Testing on arm64 with sw_tags mode passed when kasan=off is set. But
-> >   when I tried to test sw_tags on arm64, the system bootup failed. It's
-> >   not introduced by my patchset, the original code has the bug. I have
-> >   reported it to upstream.
-> >   - System is broken in KASAN sw_tags mode during bootup
-> >     - https://lore.kernel.org/all/aSXKqJTkZPNskFop@MiWiFi-R3L-srv/T/#u
-> 
-> This will hopefully be fixed soon, so you'll be able to test.
+How to place dept this way looks so ugly.  However, it's inevitable for
+now.  The way should be enhanced gradually.
 
-Great news, thanks for telling. And thanks a lot for careful reviewing.
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ include/linux/irqflags.h            |   7 +-
+ include/linux/local_lock_internal.h |   1 +
+ include/linux/lockdep.h             | 102 ++++++++++++++++++++++------
+ include/linux/lockdep_types.h       |   3 +
+ include/linux/mutex.h               |   1 +
+ include/linux/percpu-rwsem.h        |   2 +-
+ include/linux/rtmutex.h             |   1 +
+ include/linux/rwlock_types.h        |   1 +
+ include/linux/rwsem.h               |   1 +
+ include/linux/seqlock.h             |   2 +-
+ include/linux/spinlock_types_raw.h  |   3 +
+ include/linux/srcu.h                |   2 +-
+ kernel/dependency/dept.c            |   8 +--
+ kernel/locking/lockdep.c            |  22 ++++++
+ 14 files changed, 127 insertions(+), 29 deletions(-)
 
-> 
-> >
-> > - Haven't found hardware to test hw_tags. If anybody has the system,
-> >   please help take a test.
-> 
-> You don't need hardware to run the HW_TAGS mode, just pass -machine
-> virt,mte=on to QEMU.
-
-That's great, I will manage to test it in this way.
-
-> 
-> I also wonder if we should keep this kasan=off functionality
-> conservative and limit it to x86 and arm64 (since these are the only
-> two tested architectures).
-
-We may not need to do that. I tested on arm64 because it has sw_tags and
-hw_tags. And if x86_64 and arm64 works well with kasan=off in generic
-mode, it should be fine on other architectures. I am a little more
-familiar with operations on x86/arm64 than others.  I can manage to get
-power system to test kasan=off in generic mode, if that is required.
-From my side, I would like to see x86_64/arm64/s390/power to have
-kasan=off because RHEL support these architectures. I need consult people
-to make clear how to change in s390. Will post patch later or ask other
-people to help do that.
-
-While there seems to be no reason we don't let other arch-es have this
-benefit if the underlying code has paved the way, the arch side only needs
-two lines of judgement code. Personal opinion.
-
-> >
-> > Changelog:
-> > ====
-> > v3->v4:
-> > - Rebase code to the latest linux-next/master to make the whole patchset
-> >   set on top of
-> >   [PATCH 0/2] kasan: cleanups for kasan_enabled() checks
-> >   [PATCH v6 0/2] kasan: unify kasan_enabled() and remove arch-specific implementations
-> 
-> Note that are also:
-> 
-> [PATCH 1/2] kasan: remove __kasan_save_free_info wrapper
-> [PATCH 2/2] kasan: cleanup of kasan_enabled() checks
-
-Right, I saw these two patches, and have rebased code to sit on top of
-them. There are some conflicts, I have handled them manually. I only
-mentioned the cover-letter one to state the whole patchset.
-
-Sabyrzhan Tasbola [PATCH 0/2] kasan: cleanups for kasan_enabled() checks
-Sabyrzhan Tasbola ├─>[PATCH 2/2] kasan: cleanup of kasan_enabled() checks
-Sabyrzhan Tasbola └─>[PATCH 1/2] kasan: remove __kasan_save_free_info wrapper
-
-Thanks
-Baoquan
-
-> 
-> But I don't know if there will be any conflicts with these.
-> 
-> >
-> > v2->v3:
-> > - Fix a building error on UML ARCH when CONFIG_KASAN is not set. The
-> >   change of fixing is appended into patch patch 11. This is reported
-> >   by LKP, thanks to them.
-> >
-> > v1->v2:
-> > - Add __ro_after_init for kasan_arg_disabled, and remove redundant blank
-> >   lines in mm/kasan/common.c. Thanks to Marco.
-> > - Fix a code bug in <linux/kasan-enabled.h> when CONFIG_KASAN is unset,
-> >   this is found out by SeongJae and Lorenzo, and also reported by LKP
-> >   report, thanks to them.
-> > - Add a missing kasan_enabled() checking in kasan_report(). This will
-> >   cause below KASAN report info even though kasan=off is set:
-> >      ==================================================================
-> >      BUG: KASAN: stack-out-of-bounds in tick_program_event+0x130/0x150
-> >      Read of size 4 at addr ffff00005f747778 by task swapper/0/1
-> >
-> >      CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.16.0+ #8 PREEMPT(voluntary)
-> >      Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F31n (SCP: 2.10.20220810) 09/30/2022
-> >      Call trace:
-> >       show_stack+0x30/0x90 (C)
-> >       dump_stack_lvl+0x7c/0xa0
-> >       print_address_description.constprop.0+0x90/0x310
-> >       print_report+0x104/0x1f0
-> >       kasan_report+0xc8/0x110
-> >       __asan_report_load4_noabort+0x20/0x30
-> >       tick_program_event+0x130/0x150
-> >       ......snip...
-> >      ==================================================================
-> >
-> > - Add jump_label_init() calling before kasan_init() in setup_arch() in these
-> >   architectures: xtensa, arm. Because they currenly rely on
-> >   jump_label_init() in main() which is a little late. Then the early static
-> >   key kasan_flag_enabled in kasan_init() won't work.
-> >
-> > - In UML architecture, change to enable kasan_flag_enabled in arch_mm_preinit()
-> >   because kasan_init() is enabled before main(), there's no chance to operate
-> >   on static key in kasan_init().
-> >
-> > Baoquan He (12):
-> >   mm/kasan: add conditional checks in functions to return directly if
-> >     kasan is disabled
-> >   mm/kasan: move kasan= code to common place
-> >   mm/kasan/sw_tags: don't initialize kasan if it's disabled
-> >   arch/arm: don't initialize kasan if it's disabled
-> >   arch/arm64: don't initialize kasan if it's disabled
-> >   arch/loongarch: don't initialize kasan if it's disabled
-> >   arch/powerpc: don't initialize kasan if it's disabled
-> >   arch/riscv: don't initialize kasan if it's disabled
-> >   arch/x86: don't initialize kasan if it's disabled
-> >   arch/xtensa: don't initialize kasan if it's disabled
-> >   arch/um: don't initialize kasan if it's disabled
-> >   mm/kasan: make kasan=on|off take effect for all three modes
-> >
-> >  arch/arm/kernel/setup.c                |  6 ++++++
-> >  arch/arm/mm/kasan_init.c               |  2 ++
-> >  arch/arm64/mm/kasan_init.c             |  6 ++++++
-> >  arch/loongarch/mm/kasan_init.c         |  2 ++
-> >  arch/powerpc/mm/kasan/init_32.c        |  5 ++++-
-> >  arch/powerpc/mm/kasan/init_book3e_64.c |  3 +++
-> >  arch/powerpc/mm/kasan/init_book3s_64.c |  3 +++
-> >  arch/riscv/mm/kasan_init.c             |  3 +++
-> >  arch/um/kernel/mem.c                   |  5 ++++-
-> >  arch/x86/mm/kasan_init_64.c            |  3 +++
-> >  arch/xtensa/kernel/setup.c             |  1 +
-> >  arch/xtensa/mm/kasan_init.c            |  3 +++
-> >  include/linux/kasan-enabled.h          |  6 ++++--
-> >  mm/kasan/common.c                      | 20 ++++++++++++++++--
-> >  mm/kasan/generic.c                     | 17 ++++++++++++++--
-> >  mm/kasan/hw_tags.c                     | 28 ++------------------------
-> >  mm/kasan/init.c                        |  6 ++++++
-> >  mm/kasan/quarantine.c                  |  3 +++
-> >  mm/kasan/report.c                      |  4 +++-
-> >  mm/kasan/shadow.c                      | 11 +++++++++-
-> >  mm/kasan/sw_tags.c                     |  6 ++++++
-> >  21 files changed, 107 insertions(+), 36 deletions(-)
-> 
-> One part that's still missing is a Documentation change.
-> 
-> 
-> >
-> > --
-> > 2.41.0
-> >
-> 
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index 57b074e0cfbb..d8b9cf093f83 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -15,6 +15,7 @@
+ #include <linux/irqflags_types.h>
+ #include <linux/typecheck.h>
+ #include <linux/cleanup.h>
++#include <linux/dept.h>
+ #include <asm/irqflags.h>
+ #include <asm/percpu.h>
+ 
+@@ -55,8 +56,10 @@ extern void trace_hardirqs_off(void);
+ # define lockdep_softirqs_enabled(p)	((p)->softirqs_enabled)
+ # define lockdep_hardirq_enter()			\
+ do {							\
+-	if (__this_cpu_inc_return(hardirq_context) == 1)\
++	if (__this_cpu_inc_return(hardirq_context) == 1) { \
+ 		current->hardirq_threaded = 0;		\
++		dept_hardirq_enter();			\
++	}						\
+ } while (0)
+ # define lockdep_hardirq_threaded()		\
+ do {						\
+@@ -131,6 +134,8 @@ do {						\
+ # define lockdep_softirq_enter()		\
+ do {						\
+ 	current->softirq_context++;		\
++	if (current->softirq_context == 1)	\
++		dept_softirq_enter();		\
+ } while (0)
+ # define lockdep_softirq_exit()			\
+ do {						\
+diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock_internal.h
+index 8f82b4eb542f..3e30fea95f92 100644
+--- a/include/linux/local_lock_internal.h
++++ b/include/linux/local_lock_internal.h
+@@ -30,6 +30,7 @@ typedef struct {
+ 		.name = #lockname,			\
+ 		.wait_type_inner = LD_WAIT_CONFIG,	\
+ 		.lock_type = LD_LOCK_PERCPU,		\
++		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
+ 	},						\
+ 	.owner = NULL,
+ 
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index dd634103b014..ebfc781c3095 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -12,6 +12,7 @@
+ 
+ #include <linux/lockdep_types.h>
+ #include <linux/smp.h>
++#include <linux/dept_ldt.h>
+ #include <asm/percpu.h>
+ 
+ struct task_struct;
+@@ -39,6 +40,8 @@ static inline void lockdep_copy_map(struct lockdep_map *to,
+ 	 */
+ 	for (i = 0; i < NR_LOCKDEP_CACHING_CLASSES; i++)
+ 		to->class_cache[i] = NULL;
++
++	dept_map_copy(&to->dmap, &from->dmap);
+ }
+ 
+ /*
+@@ -428,7 +431,8 @@ enum xhlock_context_t {
+  * Note that _name must not be NULL.
+  */
+ #define STATIC_LOCKDEP_MAP_INIT(_name, _key) \
+-	{ .name = (_name), .key = (void *)(_key), }
++	{ .name = (_name), .key = (void *)(_key), \
++	  .dmap = DEPT_MAP_INITIALIZER(_name, _key) }
+ 
+ static inline void lockdep_invariant_state(bool force) {}
+ static inline void lockdep_free_task(struct task_struct *task) {}
+@@ -510,33 +514,89 @@ extern bool read_lock_is_recursive(void);
+ #define lock_acquire_shared(l, s, t, n, i)		lock_acquire(l, s, t, 1, 1, n, i)
+ #define lock_acquire_shared_recursive(l, s, t, n, i)	lock_acquire(l, s, t, 2, 1, n, i)
+ 
+-#define spin_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
+-#define spin_acquire_nest(l, s, t, n, i)	lock_acquire_exclusive(l, s, t, n, i)
+-#define spin_release(l, i)			lock_release(l, i)
+-
+-#define rwlock_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
++#define spin_acquire(l, s, t, i)					\
++do {									\
++	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
++	lock_acquire_exclusive(l, s, t, NULL, i);			\
++} while (0)
++#define spin_acquire_nest(l, s, t, n, i)				\
++do {									\
++	ldt_lock(&(l)->dmap, s, t, n, i);				\
++	lock_acquire_exclusive(l, s, t, n, i);				\
++} while (0)
++#define spin_release(l, i)						\
++do {									\
++	ldt_unlock(&(l)->dmap, i);					\
++	lock_release(l, i);						\
++} while (0)
++#define rwlock_acquire(l, s, t, i)					\
++do {									\
++	ldt_wlock(&(l)->dmap, s, t, NULL, i);				\
++	lock_acquire_exclusive(l, s, t, NULL, i);			\
++} while (0)
+ #define rwlock_acquire_read(l, s, t, i)					\
+ do {									\
++	ldt_rlock(&(l)->dmap, s, t, NULL, i, !read_lock_is_recursive());\
+ 	if (read_lock_is_recursive())					\
+ 		lock_acquire_shared_recursive(l, s, t, NULL, i);	\
+ 	else								\
+ 		lock_acquire_shared(l, s, t, NULL, i);			\
+ } while (0)
+-
+-#define rwlock_release(l, i)			lock_release(l, i)
+-
+-#define seqcount_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
+-#define seqcount_acquire_read(l, s, t, i)	lock_acquire_shared_recursive(l, s, t, NULL, i)
+-#define seqcount_release(l, i)			lock_release(l, i)
+-
+-#define mutex_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
+-#define mutex_acquire_nest(l, s, t, n, i)	lock_acquire_exclusive(l, s, t, n, i)
+-#define mutex_release(l, i)			lock_release(l, i)
+-
+-#define rwsem_acquire(l, s, t, i)		lock_acquire_exclusive(l, s, t, NULL, i)
+-#define rwsem_acquire_nest(l, s, t, n, i)	lock_acquire_exclusive(l, s, t, n, i)
+-#define rwsem_acquire_read(l, s, t, i)		lock_acquire_shared(l, s, t, NULL, i)
+-#define rwsem_release(l, i)			lock_release(l, i)
++#define rwlock_release(l, i)						\
++do {									\
++	ldt_unlock(&(l)->dmap, i);					\
++	lock_release(l, i);						\
++} while (0)
++#define seqcount_acquire(l, s, t, i)					\
++do {									\
++	ldt_wlock(&(l)->dmap, s, t, NULL, i);				\
++	lock_acquire_exclusive(l, s, t, NULL, i);			\
++} while (0)
++#define seqcount_acquire_read(l, s, t, i)				\
++do {									\
++	ldt_rlock(&(l)->dmap, s, t, NULL, i, false);			\
++	lock_acquire_shared_recursive(l, s, t, NULL, i);		\
++} while (0)
++#define seqcount_release(l, i)						\
++do {									\
++	ldt_unlock(&(l)->dmap, i);					\
++	lock_release(l, i);						\
++} while (0)
++#define mutex_acquire(l, s, t, i)					\
++do {									\
++	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
++	lock_acquire_exclusive(l, s, t, NULL, i);			\
++} while (0)
++#define mutex_acquire_nest(l, s, t, n, i)				\
++do {									\
++	ldt_lock(&(l)->dmap, s, t, n, i);				\
++	lock_acquire_exclusive(l, s, t, n, i);				\
++} while (0)
++#define mutex_release(l, i)						\
++do {									\
++	ldt_unlock(&(l)->dmap, i);					\
++	lock_release(l, i);						\
++} while (0)
++#define rwsem_acquire(l, s, t, i)					\
++do {									\
++	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
++	lock_acquire_exclusive(l, s, t, NULL, i);			\
++} while (0)
++#define rwsem_acquire_nest(l, s, t, n, i)				\
++do {									\
++	ldt_lock(&(l)->dmap, s, t, n, i);				\
++	lock_acquire_exclusive(l, s, t, n, i);				\
++} while (0)
++#define rwsem_acquire_read(l, s, t, i)					\
++do {									\
++	ldt_lock(&(l)->dmap, s, t, NULL, i);				\
++	lock_acquire_shared(l, s, t, NULL, i);				\
++} while (0)
++#define rwsem_release(l, i)						\
++do {									\
++	ldt_unlock(&(l)->dmap, i);					\
++	lock_release(l, i);						\
++} while (0)
+ 
+ #define lock_map_acquire(l)			lock_acquire_exclusive(l, 0, 0, NULL, _THIS_IP_)
+ #define lock_map_acquire_try(l)			lock_acquire_exclusive(l, 0, 1, NULL, _THIS_IP_)
+diff --git a/include/linux/lockdep_types.h b/include/linux/lockdep_types.h
+index eae115a26488..0c3389ed26b6 100644
+--- a/include/linux/lockdep_types.h
++++ b/include/linux/lockdep_types.h
+@@ -11,6 +11,7 @@
+ #define __LINUX_LOCKDEP_TYPES_H
+ 
+ #include <linux/types.h>
++#include <linux/dept.h>
+ 
+ #define MAX_LOCKDEP_SUBCLASSES		8UL
+ 
+@@ -77,6 +78,7 @@ struct lock_class_key {
+ 		struct hlist_node		hash_entry;
+ 		struct lockdep_subclass_key	subkeys[MAX_LOCKDEP_SUBCLASSES];
+ 	};
++	struct dept_key				dkey;
+ };
+ 
+ extern struct lock_class_key __lockdep_no_validate__;
+@@ -195,6 +197,7 @@ struct lockdep_map {
+ 	int				cpu;
+ 	unsigned long			ip;
+ #endif
++	struct dept_map			dmap;
+ };
+ 
+ struct pin_cookie { unsigned int val; };
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index bf535f0118bb..dae4f3fede49 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -29,6 +29,7 @@ struct device;
+ 		, .dep_map = {					\
+ 			.name = #lockname,			\
+ 			.wait_type_inner = LD_WAIT_SLEEP,	\
++			.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
+ 		}
+ #else
+ # define __DEP_MAP_MUTEX_INITIALIZER(lockname)
+diff --git a/include/linux/percpu-rwsem.h b/include/linux/percpu-rwsem.h
+index 288f5235649a..11eece738f1f 100644
+--- a/include/linux/percpu-rwsem.h
++++ b/include/linux/percpu-rwsem.h
+@@ -22,7 +22,7 @@ struct percpu_rw_semaphore {
+ };
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+-#define __PERCPU_RWSEM_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname },
++#define __PERCPU_RWSEM_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname, .dmap = DEPT_MAP_INITIALIZER(lockname, NULL) },
+ #else
+ #define __PERCPU_RWSEM_DEP_MAP_INIT(lockname)
+ #endif
+diff --git a/include/linux/rtmutex.h b/include/linux/rtmutex.h
+index ede4c6bf6f22..ac68c3e5e2ec 100644
+--- a/include/linux/rtmutex.h
++++ b/include/linux/rtmutex.h
+@@ -91,6 +91,7 @@ do { \
+ 	.dep_map = {					\
+ 		.name = #mutexname,			\
+ 		.wait_type_inner = LD_WAIT_SLEEP,	\
++		.dmap = DEPT_MAP_INITIALIZER(mutexname, NULL),\
+ 	}
+ #else
+ #define __DEP_MAP_RT_MUTEX_INITIALIZER(mutexname)
+diff --git a/include/linux/rwlock_types.h b/include/linux/rwlock_types.h
+index 1948442e7750..6e58dfc84997 100644
+--- a/include/linux/rwlock_types.h
++++ b/include/linux/rwlock_types.h
+@@ -10,6 +10,7 @@
+ 	.dep_map = {							\
+ 		.name = #lockname,					\
+ 		.wait_type_inner = LD_WAIT_CONFIG,			\
++		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),		\
+ 	}
+ #else
+ # define RW_DEP_MAP_INIT(lockname)
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index f1aaf676a874..0f349c83a7dc 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -22,6 +22,7 @@
+ 	.dep_map = {					\
+ 		.name = #lockname,			\
+ 		.wait_type_inner = LD_WAIT_SLEEP,	\
++		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
+ 	},
+ #else
+ # define __RWSEM_DEP_MAP_INIT(lockname)
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index a8a8661839b6..5f18e11be14e 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -51,7 +51,7 @@ static inline void __seqcount_init(seqcount_t *s, const char *name,
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 
+ # define SEQCOUNT_DEP_MAP_INIT(lockname)				\
+-		.dep_map = { .name = #lockname }
++		.dep_map = { .name = #lockname, .dmap = DEPT_MAP_INITIALIZER(lockname, NULL) }
+ 
+ /**
+  * seqcount_init() - runtime initializer for seqcount_t
+diff --git a/include/linux/spinlock_types_raw.h b/include/linux/spinlock_types_raw.h
+index 91cb36b65a17..3dcc551ded25 100644
+--- a/include/linux/spinlock_types_raw.h
++++ b/include/linux/spinlock_types_raw.h
+@@ -31,11 +31,13 @@ typedef struct raw_spinlock {
+ 	.dep_map = {					\
+ 		.name = #lockname,			\
+ 		.wait_type_inner = LD_WAIT_SPIN,	\
++		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
+ 	}
+ # define SPIN_DEP_MAP_INIT(lockname)			\
+ 	.dep_map = {					\
+ 		.name = #lockname,			\
+ 		.wait_type_inner = LD_WAIT_CONFIG,	\
++		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
+ 	}
+ 
+ # define LOCAL_SPIN_DEP_MAP_INIT(lockname)		\
+@@ -43,6 +45,7 @@ typedef struct raw_spinlock {
+ 		.name = #lockname,			\
+ 		.wait_type_inner = LD_WAIT_CONFIG,	\
+ 		.lock_type = LD_LOCK_PERCPU,		\
++		.dmap = DEPT_MAP_INITIALIZER(lockname, NULL),\
+ 	}
+ #else
+ # define RAW_SPIN_DEP_MAP_INIT(lockname)
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index 344ad51c8f6c..61c0ca3a1ef8 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -53,7 +53,7 @@ int __init_srcu_struct_fast_updown(struct srcu_struct *ssp, const char *name,
+ 	__init_srcu_struct_fast_updown((ssp), #ssp, &__srcu_key); \
+ })
+ 
+-#define __SRCU_DEP_MAP_INIT(srcu_name)	.dep_map = { .name = #srcu_name },
++#define __SRCU_DEP_MAP_INIT(srcu_name)	.dep_map = { .name = #srcu_name, .dmap = DEPT_MAP_INITIALIZER(srcu_name, NULL) },
+ #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
+ int init_srcu_struct(struct srcu_struct *ssp);
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index f2a9456f63f6..18b238931699 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -250,10 +250,10 @@ static bool dept_working(void)
+  * Even k == NULL is considered as a valid key because it would use
+  * &->map_key as the key in that case.
+  */
+-struct dept_key __dept_no_validate__;
++extern struct lock_class_key __lockdep_no_validate__;
+ static bool valid_key(struct dept_key *k)
+ {
+-	return &__dept_no_validate__ != k;
++	return &__lockdep_no_validate__.dkey != k;
+ }
+ 
+ /*
+@@ -1921,7 +1921,7 @@ void dept_softirqs_off(void)
+ 	dept_task()->softirqs_enabled = false;
+ }
+ 
+-void dept_hardirqs_off(void)
++void noinstr dept_hardirqs_off(void)
+ {
+ 	/*
+ 	 * Assumes that it's called with IRQ disabled so that accessing
+@@ -1943,7 +1943,7 @@ void dept_softirq_enter(void)
+ /*
+  * Ensure it's the outmost hardirq context.
+  */
+-void dept_hardirq_enter(void)
++void noinstr dept_hardirq_enter(void)
+ {
+ 	struct dept_task *dt = dept_task();
+ 
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 2d4c5bab5af8..dc97f2753ef8 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -1224,6 +1224,8 @@ void lockdep_register_key(struct lock_class_key *key)
+ 	struct lock_class_key *k;
+ 	unsigned long flags;
+ 
++	dept_key_init(&key->dkey);
++
+ 	if (WARN_ON_ONCE(static_obj(key)))
+ 		return;
+ 	hash_head = keyhashentry(key);
+@@ -4361,6 +4363,8 @@ static void __trace_hardirqs_on_caller(void)
+  */
+ void lockdep_hardirqs_on_prepare(void)
+ {
++	dept_hardirqs_on();
++
+ 	if (unlikely(!debug_locks))
+ 		return;
+ 
+@@ -4481,6 +4485,8 @@ EXPORT_SYMBOL_GPL(lockdep_hardirqs_on);
+  */
+ void noinstr lockdep_hardirqs_off(unsigned long ip)
+ {
++	dept_hardirqs_off();
++
+ 	if (unlikely(!debug_locks))
+ 		return;
+ 
+@@ -4525,6 +4531,8 @@ void lockdep_softirqs_on(unsigned long ip)
+ {
+ 	struct irqtrace_events *trace = &current->irqtrace;
+ 
++	dept_softirqs_on_ip(ip);
++
+ 	if (unlikely(!lockdep_enabled()))
+ 		return;
+ 
+@@ -4563,6 +4571,8 @@ void lockdep_softirqs_on(unsigned long ip)
+  */
+ void lockdep_softirqs_off(unsigned long ip)
+ {
++	dept_softirqs_off();
++
+ 	if (unlikely(!lockdep_enabled()))
+ 		return;
+ 
+@@ -4940,6 +4950,8 @@ void lockdep_init_map_type(struct lockdep_map *lock, const char *name,
+ {
+ 	int i;
+ 
++	ldt_init(&lock->dmap, &key->dkey, subclass, name);
++
+ 	for (i = 0; i < NR_LOCKDEP_CACHING_CLASSES; i++)
+ 		lock->class_cache[i] = NULL;
+ 
+@@ -5736,6 +5748,12 @@ void lock_set_class(struct lockdep_map *lock, const char *name,
+ {
+ 	unsigned long flags;
+ 
++	/*
++	 * dept_map_(re)init() might be called twice redundantly. But
++	 * there's no choice as long as Dept relies on Lockdep.
++	 */
++	ldt_set_class(&lock->dmap, name, &key->dkey, subclass, ip);
++
+ 	if (unlikely(!lockdep_enabled()))
+ 		return;
+ 
+@@ -5753,6 +5771,8 @@ void lock_downgrade(struct lockdep_map *lock, unsigned long ip)
+ {
+ 	unsigned long flags;
+ 
++	ldt_downgrade(&lock->dmap, ip);
++
+ 	if (unlikely(!lockdep_enabled()))
+ 		return;
+ 
+@@ -6588,6 +6608,8 @@ void lockdep_unregister_key(struct lock_class_key *key)
+ 	bool found = false;
+ 	bool need_callback = false;
+ 
++	dept_key_destroy(&key->dkey);
++
+ 	might_sleep();
+ 
+ 	if (WARN_ON_ONCE(static_obj(key)))
+-- 
+2.17.1
 
 
