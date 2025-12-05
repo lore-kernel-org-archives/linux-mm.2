@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B0D2D3748F
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 19:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B1DED3748A
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 19:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0D676B00A4; Fri,  5 Dec 2025 14:44:00 -0500 (EST)
+	id 61A046B00A5; Fri,  5 Dec 2025 14:44:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE4CF6B00A5; Fri,  5 Dec 2025 14:44:00 -0500 (EST)
+	id 5F1776B00A6; Fri,  5 Dec 2025 14:44:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E9AB6B00A6; Fri,  5 Dec 2025 14:44:00 -0500 (EST)
+	id 4931F6B00A7; Fri,  5 Dec 2025 14:44:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7EB6B00A4
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 14:44:00 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55F6713A83F
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:44:00 +0000 (UTC)
-X-FDA: 84186443040.01.4488ACA
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 243406B00A5
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 14:44:02 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF0B288731
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:44:01 +0000 (UTC)
+X-FDA: 84186443082.13.BA8C57E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7020D180013
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:43:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bG8r4+TG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764963838; a=rsa-sha256;
+	by imf30.hostedemail.com (Postfix) with ESMTP id DC3778000D
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:43:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B50gJJe+;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764963839; a=rsa-sha256;
 	cv=none;
-	b=IxWp5rkCR8z453FiJK7NWz5GOzVRqx6G1R7hrNbtbKX4dmYug3r3HhXx8quDRJau1LsPcR
-	lLJlq2W8TnD8ak4NILM263SqeC2lQrocrAtoqOnIFVuAZrwjvo499JSGEjq4A5GEftvrr7
-	gkpJENrQygtNxmOWYNvipuGPqZ8cBac=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bG8r4+TG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	b=jtoACuJdliP+x/lPFPT48Kx3YePztd+2etLpEUDvreeg5DxZ3eBGt6GlHIzw2Lz/I47V50
+	7CL29a6WNnMbqLQ3XPLrCsbhTnLK+Z8GMWf/9YmX6CiEzwMVKduuKjL9u+R4tihmSA3tgd
+	sErAiPvrBqHF4RYjoe0CNSNjx8LL4yI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764963838;
+	s=arc-20220608; t=1764963839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=28/8tfMC75pQinTBeHNvG9yzM1hZ7BX7uOwwgytA2G8=;
-	b=Qo2gBk+pIyR4C9xt+4JlbtT573yvRkjCQHZ4Tbe5IS+igDqZjTtaqYWcKaRuOBfjjPoy2l
-	h+3wivyIfaBRlftMULjeXv0SeonqOzdYlGv7giO2mZJIFj2At+AsvIK62D5qxf5+1h2Gsp
-	Tz3dYHGRdWiQ2vXIJwqLliUIzId2xrU=
+	bh=KN3k01qXdQF2epr2K802FQKSrDMrpnUVF4u+hivAXuA=;
+	b=B2kVPPbAGTCyrUP+RcSgScWWrA574U9sOHxUbl9IMJF5zGWyO4IRvqdNFyGYZ2f8sydfJ/
+	/C0W07x3upkctxhFTHeh2mWSacnD14k8IXNZ+qZI+VzkpEQFxDIOBk7E5MOhdpedniiBRa
+	wCU5G0zQ530mKZ9d0grOJaS0hhAuU8w=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B50gJJe+;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB6B660122;
-	Fri,  5 Dec 2025 19:43:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC54C19423;
-	Fri,  5 Dec 2025 19:43:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 50049600C4;
+	Fri,  5 Dec 2025 19:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A7BC4AF09;
+	Fri,  5 Dec 2025 19:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764963837;
-	bh=rsAZCC1GicmUXlKf4H8XnwfDPh7I06Agv/cIdYL5d/E=;
+	s=k20201202; t=1764963839;
+	bh=Ax0XJ3SLkb8eRcjcIlng0zDw88FzPQRgdgX0WIl+XlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bG8r4+TGPBq8JdMI99CGKczNdBPbwqnDzkM39pqwwWU/vnFzi6Bag5ZEpW+u0Jirx
-	 zboqNziGq/19qyAZZUCMcYrN7T8E1rAUj3RQXjzLOEAaFuXIu0Wo9tMXlv6/IC6QR8
-	 1dwpal2sBw2psuWprfn6rWoV7sqlLfW8CWBpk3JhCuHrLUBI9DJI6CWljrVG93Rf8i
-	 OEjJYUoEWxse11M5YQy9mxktK7KpO2f9t6myotcMwsR+CzA1wqdrrUI0qalyhREykG
-	 o2d752teuo5arDTstYv7hdM0VB6i6CWZjwlbhbs/YQH7aE8tIvn8zUDvQ683FZMMj4
-	 jirSfQpBGmKJQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3A859F40070;
-	Fri,  5 Dec 2025 14:43:56 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 05 Dec 2025 14:43:56 -0500
-X-ME-Sender: <xms:_DUzafFcBaG4jPg4D8sbFMOWcqGX8o3my6R4h3xSbt71_PkDbMYL4A>
-    <xme:_DUzaduvD2_2xIv1NNnxVlzlkFOmiHLzLY1NnWW2yQD-AxchrgIlakMWkFV3oq2dL
-    IclhOjoqBe82OpC06-7FmFgGR3hu7NmcibVgVBkwSkHIwrFDSq5D94>
-X-ME-Received: <xmr:_DUzaaZhRwWxCdA19CEbtsX6gwweRvFWjlTExz8NEu1DoJaCmeWVXAvLHhGfAw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdelvdehucetufdoteggodetrfdotf
+	b=B50gJJe+zy2CmyadOs9v2nJwfOBawMgzgYYaRwCkL0bWZb43RXMgGzz8YqndkhnlE
+	 p0tlM5pPw9fjIeae5ef2AhgkMFqe8QVsJYZ3dOjUsfsYwapA7Tx9ReIV8kYLVmFfPH
+	 FiYMGEsNTIBOBD4VJVMGQi1oe3221/RFrrDqb/AW0zQMr0D4OmZDBKRAcTr0zxpezx
+	 jYnksKWelwvfB8Uscz2gMsfY5ix25fMgsjZUGEEiSJFa6chIFL8YWwUfiZIKERer3v
+	 FuVIIW08rbCRtnzsZdz8J1CJwWKFJhbQ5jsOxWr3j3CDk7qHNGj2qXEGmF+h0pjlOv
+	 Jhpfpam8jRUTw==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B4A18F40070;
+	Fri,  5 Dec 2025 14:43:57 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Fri, 05 Dec 2025 14:43:57 -0500
+X-ME-Sender: <xms:_TUzaQ2zRfgODJ8GiHU_OOOdDKkxPgb0kIB1EPbhADsaBFus6pm_2g>
+    <xme:_TUzaceBoQwcqq-MXj6onckAP6UjVs8dDKO86h6sgSAFwmdwqsYWsQWa_Sorxxy76
+    o-VyNnZawGvQYm7dvrcheEhVtjWVK_Vf6ZS7IrZJcyvzQxg5ZdpDls>
+X-ME-Received: <xmr:_TUzaSLLh0xxlkg2mI4VTkFqNlB9o6SV6PJfxtCHOzQYrR3WIOM2C26ycEckgw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdelvdegucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
     lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
     ephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhirhihlhcuufhh
@@ -89,14 +89,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdelvdehucetufdoteggod
     rgesshhushgvrdgtiidprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorh
     grtghlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
     pdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:_DUzaVVuHl4NNy7AwcqTu9la-Qmhnw29Y4OuvUp3IahUpwgV5kwYhg>
-    <xmx:_DUzacJhF-z7yibzS-YmPhdHp_VfBz6JmXtOpdJm-N_P7AlP79AnOQ>
-    <xmx:_DUzaTFJhPf_gFQuVYGTsSidI5GTgHIXZigLo0rCYa0qvNihyBBuTw>
-    <xmx:_DUzaRyCMOY1iKosHXX8lJdigAshRIR9QQ-XRbsbyE4Lu38MbtWr8w>
-    <xmx:_DUzaQjGEvZq3ITBE7g0TO9w70jezsrMDU-zzQq8pTQ1x74XbKLKeYbX>
+X-ME-Proxy: <xmx:_TUzaSHAoFk4AU4laEnfnnusDl9OaiK8H_75DEfZRXgkE365mRwJKg>
+    <xmx:_TUzaZ59IWgSGeDipfDQffzuYB_eVFJ_NPvhYg_x1BTJU2FsNC_yWQ>
+    <xmx:_TUzad3NqVN-BAfSzs9p5lfRSalpgVUpgz_s9R4iIf5by7LX-Wz0Ow>
+    <xmx:_TUzaViH7E22QzLY3Z1ngcP-2Zc7FFj3JkmCBFgQjaQPNURR7NBZrg>
+    <xmx:_TUzaZToJOl_fvZlwmX5en7a_AhITgyPBo8C9pIeRjWto-ZQeiKG93-s>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Dec 2025 14:43:55 -0500 (EST)
+ 5 Dec 2025 14:43:57 -0500 (EST)
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>
@@ -117,22 +117,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH 01/11] mm: Change the interface of prep_compound_tail()
-Date: Fri,  5 Dec 2025 19:43:37 +0000
-Message-ID: <20251205194351.1646318-2-kas@kernel.org>
+Subject: [PATCH 02/11] mm: Rename the 'compound_head' field in the 'struct page' to 'compound_info'
+Date: Fri,  5 Dec 2025 19:43:38 +0000
+Message-ID: <20251205194351.1646318-3-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251205194351.1646318-1-kas@kernel.org>
 References: <20251205194351.1646318-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DC3778000D
+X-Stat-Signature: db37xrmmh995bf7qxn4wgbuxudprugca
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7020D180013
-X-Rspamd-Server: rspam10
-X-Stat-Signature: e19wmgkgphdmiyqjwpz8bmruc3f7yjyd
-X-HE-Tag: 1764963838-281709
-X-HE-Meta: U2FsdGVkX18nnGPVNIvB0f9YrPp/aicDefQmtrDFMRsJ0//9lXIJzwjbWJ+v5vkP293/TGP71ZRhCgHkSTn+bE7Rd6qvIASKdFkgygvsxt9+yKTqZspW68TWjd4Gyh0wK/+XgMCjIbifvN0LnXZsz3kMtD93f4M+GvMII+ti3zVRwDE0gObbUJH/4QK/2nlKIh+0szczmYyHiXO8/nZj8eXKP977adJYjHggF0N4R2WaWOSlfI7fCDqrWp4eiLocbc3YSBXxHeuJ93DREYFTdAoeZ3zpPFA18X9b0v4ocmTGIx/R3utv0mRZjw6m0+XzefZ6sUyE6n03/l5NmWPCPa4ZSLu74D0QEaxcf53AmWD1Q7sS+CEppeA900NBSn/tezmH+Fv8kVnGUPU/Rgl7ihZ4wZaKd1EYoP4k/Wbk7Hfgl2w17dtO1mvsTNvP+G5S39CNlbtAKhZnJ7aW9RLIFVrxWNFw6YHSvUccSwA4bNYTOE4meOZ2UUrDt47Ie+9ThmKPv/jd2VYZJpLEOxr6v7piddKhn0quHX8UaEmYs6Jw5+ZfYorGyijGImO85r7IXT6laRFGxyLIi7KRqFYYI/azl8CkOSRy+CzuH+zP52BJHxggVqybsaqBRV8sbdLDgj42G6FpITq6HuFecWqUazUvvZAsa2VNpH6Be8KHjCuVany5ucGkTNgGB4E6FnVTibN7RD7fthAK5XAi0SkEj5GU5slNO9NZFkot0jatdEcBNSWWCdufGJUJbZ/+WVv2NBL6ssJ74LSiE6+csAg6VZcEbN8FpJIovhpXVUvRYasdQ8RnJ6LFfkBWktwx3jjZzLvFI/BVYrya34xXbpKwseFQkVTLR4lNJL1ps3P+biUNJnYl+1yoCo2eQP4/fUjAZeOmgrIflCLZ5RNqjoX4hszQlxPngYykHshx+ufcugdjSb/1jPbiVL/ZqVJzlDmXebWSNnnbZumIdcQ09H2
- +pgvPlgG
- KbZMC4Lciw0teZx9YwUa93jn13e0dU7cNppnbT3th+uc+U1kmmXHSzHTvA94WqGIUuMMU/CEd61kYsyl3ZLP29Aoql5oCt3U5Z+SFVoroVerRVJVKhHlVNp9X9p+SxKEiMXAn1yk4sKlmTjZt2b9dO0ah789Ufz3VW7WNMwCDXjlALEEnKPEDnoUj1+mQvIdhp6p1s0x/mxLhrklT8XSGSiOeqLgElCaBDyTnwtJf7lqvitqiFOC0bgQIl3F8NAHr0aY5O4/fmkgzlSpk5qrrLhicT0xNsTWgWFT8AQ8aRZ/6uv2fkjoD277HnQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1764963839-993982
+X-HE-Meta: U2FsdGVkX1/G3TD1jzJkDVWA5eKZGPvQFbSf2gTZAAUhbQnrru6ape1TbNf6zE05Hm5oI1K7q2UExqkpOhqZ/l7rDpiY9RJmkth4aXV+MBa7M5b/vGLpKmaqqDiuGb964bEuSPMfKsg+TY7KAjFLokv3t2lDmBgPQHQKP0Pi6rV9sKNeyU35/ILtzli4ixX0FF3UJisc1Cy/QmRMYD0VdYZ6sgS/cOrQA+npxx1FHN86a81Rq//0z3CnfYDnCSI/dWCREvVBePcD7OkyjjPLn9hl9Mf5nEbJU0GnLHa2hC7pvCZhBruAUowvdhJhuwDDjppsa8MptgjeSUyfapjOICXZ/9VjU6JoLkYBAhGfMY5TKkKFCJLPmBEUDZ4WakEwHSQtdx/9Gd4fi+9yT3oY/E1cF2Qybg5ln9HobPh3MoyUGdioHBnccnJ75vQkddgMyMQup0MtFcrvkUi//R5vIIkE8AdYlr5uwTVYKkfSRtoTQxRC494zTF/gRIE2Df0IUheaz6C1vhPjPnGRNm/VWn122Td7Azr/iBikOWwY/xIzBjGj3q/Y6JkiXj8GSlwjJt2c1NOb8WkoOFwDSUZy9O93gdnYBYQVrtoxQj6UyQr1znhuzSmuej7NBSJBtc1oiHNQIDay4f+4yjYl3B7zJNXdUpzshpX1MsIe1cUgxD6B3VjSLcWbgBIxbfMnzsQPEKSdiiogfgb7JCq6t34Q7Wx/UHHVTI2spEKVzdqSQd8K9oILsW6+03IA7tdZXavRZKzAyTHYANfNAEA6Lyu/GIU/tSEN3/ZIYMto0p3OaUGApGbuatfOm19r+yK4Hhs0M+XUW/hXn5Y6pkq6cD+JjNvPDspZFALdokQpxzFCZ/FS2P6nLik6OQXvwJvUkZXi23CtEziXZV5AifT/Hbjyg0Ro+KY2ri8nyEr3ACrhwI4bVXhVZePyfmOBwOeak/JW+fA3RHeL05nGc1f4ILK
+ 4H03RCdW
+ EQuq/hGLACbrf45q9DoCDyA0vnQQ5V0p1IZkWZRIxafoFzS4R6LCRA4YDMCNyVwySBiuOaWFrYRIVQf3oW1urjlwpnHVLHhh2AGJ6cl7erDEsOpSCnFuGYPcrB77anrKBM1yGbCb1A7oZ0A1bg4U5g3PFDSSFkqpd8Ect69+P1Pok3jtX5uobGuvRGA+IVoSn2I9bnLJaq6AR5D9DbU/WJrzZwGI037HTcCVb2QeNwgosNNPIjmM03Q4GFXg4O521gjITK/O1w2uqGMQHk0iEHCnYS+tc0i6oJjsNLE55lcWefbXHP2jX5oDBCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,132 +141,286 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of passing down the head page and tail page index, pass the tail
-and head pages directly, as well as the order of the compound page.
+The 'compound_head' field in the 'struct page' encodes whether the page
+is a tail and where to locate the head page. Bit 0 is set if the page is
+a tail, and the remaining bits in the field point to the head page.
 
-This is a preparation for changing how the head position is encoded in
-the tail page.
+As preparation for changing how the field encodes information about the
+head page, rename the field to 'compound_info'.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 ---
- include/linux/page-flags.h |  4 +++-
- mm/hugetlb.c               |  8 +++++---
- mm/internal.h              | 11 +++++------
- mm/mm_init.c               |  2 +-
- mm/page_alloc.c            |  2 +-
- 5 files changed, 15 insertions(+), 12 deletions(-)
+ .../admin-guide/kdump/vmcoreinfo.rst          |  2 +-
+ Documentation/mm/vmemmap_dedup.rst            |  6 +++---
+ include/linux/mm_types.h                      | 20 +++++++++----------
+ include/linux/page-flags.h                    | 18 ++++++++---------
+ include/linux/types.h                         |  2 +-
+ kernel/vmcore_info.c                          |  2 +-
+ mm/page_alloc.c                               |  2 +-
+ mm/slab.h                                     |  2 +-
+ mm/util.c                                     |  2 +-
+ 9 files changed, 28 insertions(+), 28 deletions(-)
 
+diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+index 404a15f6782c..7663c610fe90 100644
+--- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
++++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+@@ -141,7 +141,7 @@ nodemask_t
+ The size of a nodemask_t type. Used to compute the number of online
+ nodes.
+ 
+-(page, flags|_refcount|mapping|lru|_mapcount|private|compound_order|compound_head)
++(page, flags|_refcount|mapping|lru|_mapcount|private|compound_order|compound_info)
+ ----------------------------------------------------------------------------------
+ 
+ User-space tools compute their values based on the offset of these
+diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
+index b4a55b6569fa..1863d88d2dcb 100644
+--- a/Documentation/mm/vmemmap_dedup.rst
++++ b/Documentation/mm/vmemmap_dedup.rst
+@@ -24,7 +24,7 @@ For each base page, there is a corresponding ``struct page``.
+ Within the HugeTLB subsystem, only the first 4 ``struct page`` are used to
+ contain unique information about a HugeTLB page. ``__NR_USED_SUBPAGE`` provides
+ this upper limit. The only 'useful' information in the remaining ``struct page``
+-is the compound_head field, and this field is the same for all tail pages.
++is the compound_info field, and this field is the same for all tail pages.
+ 
+ By removing redundant ``struct page`` for HugeTLB pages, memory can be returned
+ to the buddy allocator for other uses.
+@@ -124,10 +124,10 @@ Here is how things look before optimization::
+  |           |
+  +-----------+
+ 
+-The value of page->compound_head is the same for all tail pages. The first
++The value of page->compound_info is the same for all tail pages. The first
+ page of ``struct page`` (page 0) associated with the HugeTLB page contains the 4
+ ``struct page`` necessary to describe the HugeTLB. The only use of the remaining
+-pages of ``struct page`` (page 1 to page 7) is to point to page->compound_head.
++pages of ``struct page`` (page 1 to page 7) is to point to page->compound_info.
+ Therefore, we can remap pages 1 to 7 to page 0. Only 1 page of ``struct page``
+ will be used for each HugeTLB page. This will allow us to free the remaining
+ 7 pages to the buddy allocator.
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 90e5790c318f..a94683272869 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -125,14 +125,14 @@ struct page {
+ 			atomic_long_t pp_ref_count;
+ 		};
+ 		struct {	/* Tail pages of compound page */
+-			unsigned long compound_head;	/* Bit zero is set */
++			unsigned long compound_info;	/* Bit zero is set */
+ 		};
+ 		struct {	/* ZONE_DEVICE pages */
+ 			/*
+-			 * The first word is used for compound_head or folio
++			 * The first word is used for compound_info or folio
+ 			 * pgmap
+ 			 */
+-			void *_unused_pgmap_compound_head;
++			void *_unused_pgmap_compound_info;
+ 			void *zone_device_data;
+ 			/*
+ 			 * ZONE_DEVICE private pages are counted as being
+@@ -383,7 +383,7 @@ struct folio {
+ 	/* private: avoid cluttering the output */
+ 				/* For the Unevictable "LRU list" slot */
+ 				struct {
+-					/* Avoid compound_head */
++					/* Avoid compound_info */
+ 					void *__filler;
+ 	/* public: */
+ 					unsigned int mlock_count;
+@@ -484,7 +484,7 @@ struct folio {
+ FOLIO_MATCH(flags, flags);
+ FOLIO_MATCH(lru, lru);
+ FOLIO_MATCH(mapping, mapping);
+-FOLIO_MATCH(compound_head, lru);
++FOLIO_MATCH(compound_info, lru);
+ FOLIO_MATCH(__folio_index, index);
+ FOLIO_MATCH(private, private);
+ FOLIO_MATCH(_mapcount, _mapcount);
+@@ -503,7 +503,7 @@ FOLIO_MATCH(_last_cpupid, _last_cpupid);
+ 	static_assert(offsetof(struct folio, fl) ==			\
+ 			offsetof(struct page, pg) + sizeof(struct page))
+ FOLIO_MATCH(flags, _flags_1);
+-FOLIO_MATCH(compound_head, _head_1);
++FOLIO_MATCH(compound_info, _head_1);
+ FOLIO_MATCH(_mapcount, _mapcount_1);
+ FOLIO_MATCH(_refcount, _refcount_1);
+ #undef FOLIO_MATCH
+@@ -511,13 +511,13 @@ FOLIO_MATCH(_refcount, _refcount_1);
+ 	static_assert(offsetof(struct folio, fl) ==			\
+ 			offsetof(struct page, pg) + 2 * sizeof(struct page))
+ FOLIO_MATCH(flags, _flags_2);
+-FOLIO_MATCH(compound_head, _head_2);
++FOLIO_MATCH(compound_info, _head_2);
+ #undef FOLIO_MATCH
+ #define FOLIO_MATCH(pg, fl)						\
+ 	static_assert(offsetof(struct folio, fl) ==			\
+ 			offsetof(struct page, pg) + 3 * sizeof(struct page))
+ FOLIO_MATCH(flags, _flags_3);
+-FOLIO_MATCH(compound_head, _head_3);
++FOLIO_MATCH(compound_info, _head_3);
+ #undef FOLIO_MATCH
+ 
+ /**
+@@ -583,8 +583,8 @@ struct ptdesc {
+ #define TABLE_MATCH(pg, pt)						\
+ 	static_assert(offsetof(struct page, pg) == offsetof(struct ptdesc, pt))
+ TABLE_MATCH(flags, pt_flags);
+-TABLE_MATCH(compound_head, pt_list);
+-TABLE_MATCH(compound_head, _pt_pad_1);
++TABLE_MATCH(compound_info, pt_list);
++TABLE_MATCH(compound_info, _pt_pad_1);
+ TABLE_MATCH(mapping, __page_mapping);
+ TABLE_MATCH(__folio_index, pt_index);
+ TABLE_MATCH(rcu_head, pt_rcu_head);
 diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 0091ad1986bf..2c1153dd7e0e 100644
+index 2c1153dd7e0e..446f89c01a4c 100644
 --- a/include/linux/page-flags.h
 +++ b/include/linux/page-flags.h
-@@ -865,7 +865,9 @@ static inline bool folio_test_large(const struct folio *folio)
- 	return folio_test_head(folio);
- }
- 
--static __always_inline void set_compound_head(struct page *page, struct page *head)
-+static __always_inline void set_compound_head(struct page *page,
-+					      struct page *head,
-+					      unsigned int order)
- {
- 	WRITE_ONCE(page->compound_head, (unsigned long)head + 1);
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 0455119716ec..a55d638975bd 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3212,6 +3212,7 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
- 
- /* Initialize [start_page:end_page_number] tail struct pages of a hugepage */
- static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
-+					struct hstate *h,
- 					unsigned long start_page_number,
- 					unsigned long end_page_number)
- {
-@@ -3220,6 +3221,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
- 	struct page *page = folio_page(folio, start_page_number);
- 	unsigned long head_pfn = folio_pfn(folio);
- 	unsigned long pfn, end_pfn = head_pfn + end_page_number;
-+	unsigned int order = huge_page_order(h);
- 
+@@ -213,7 +213,7 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
  	/*
- 	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
-@@ -3227,7 +3229,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+ 	 * Only addresses aligned with PAGE_SIZE of struct page may be fake head
+ 	 * struct page. The alignment check aims to avoid access the fields (
+-	 * e.g. compound_head) of the @page[1]. It can avoid touch a (possibly)
++	 * e.g. compound_info) of the @page[1]. It can avoid touch a (possibly)
+ 	 * cold cacheline in some cases.
  	 */
- 	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
- 		__init_single_page(page, pfn, zone, nid);
--		prep_compound_tail((struct page *)folio, pfn - head_pfn);
-+		prep_compound_tail(page, &folio->page, order);
- 		set_page_count(page, 0);
- 	}
- }
-@@ -3247,7 +3249,7 @@ static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
- 	__folio_set_head(folio);
- 	ret = folio_ref_freeze(folio, 1);
- 	VM_BUG_ON(!ret);
--	hugetlb_folio_init_tail_vmemmap(folio, 1, nr_pages);
-+	hugetlb_folio_init_tail_vmemmap(folio, h, 1, nr_pages);
- 	prep_compound_head((struct page *)folio, huge_page_order(h));
- }
+ 	if (IS_ALIGNED((unsigned long)page, PAGE_SIZE) &&
+@@ -223,7 +223,7 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
+ 		 * because the @page is a compound page composed with at least
+ 		 * two contiguous pages.
+ 		 */
+-		unsigned long head = READ_ONCE(page[1].compound_head);
++		unsigned long head = READ_ONCE(page[1].compound_info);
  
-@@ -3304,7 +3306,7 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
- 			 * time as this is early in boot and there should
- 			 * be no contention.
- 			 */
--			hugetlb_folio_init_tail_vmemmap(folio,
-+			hugetlb_folio_init_tail_vmemmap(folio, h,
- 					HUGETLB_VMEMMAP_RESERVE_PAGES,
- 					pages_per_huge_page(h));
- 		}
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..0355da7cb6df 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -810,13 +810,12 @@ static inline void prep_compound_head(struct page *page, unsigned int order)
- 		INIT_LIST_HEAD(&folio->_deferred_list);
- }
+ 		if (likely(head & 1))
+ 			return (const struct page *)(head - 1);
+@@ -281,7 +281,7 @@ static __always_inline int page_is_fake_head(const struct page *page)
  
--static inline void prep_compound_tail(struct page *head, int tail_idx)
-+static inline void prep_compound_tail(struct page *tail,
-+				      struct page *head, unsigned int order)
+ static __always_inline unsigned long _compound_head(const struct page *page)
  {
--	struct page *p = head + tail_idx;
--
--	p->mapping = TAIL_MAPPING;
--	set_compound_head(p, head);
--	set_page_private(p, 0);
-+	tail->mapping = TAIL_MAPPING;
-+	set_compound_head(tail, head, order);
-+	set_page_private(tail, 0);
+-	unsigned long head = READ_ONCE(page->compound_head);
++	unsigned long head = READ_ONCE(page->compound_info);
+ 
+ 	if (unlikely(head & 1))
+ 		return head - 1;
+@@ -320,13 +320,13 @@ static __always_inline unsigned long _compound_head(const struct page *page)
+ 
+ static __always_inline int PageTail(const struct page *page)
+ {
+-	return READ_ONCE(page->compound_head) & 1 || page_is_fake_head(page);
++	return READ_ONCE(page->compound_info) & 1 || page_is_fake_head(page);
  }
  
- void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 7712d887b696..87d1e0277318 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1102,7 +1102,7 @@ static void __ref memmap_init_compound(struct page *head,
- 		struct page *page = pfn_to_page(pfn);
+ static __always_inline int PageCompound(const struct page *page)
+ {
+ 	return test_bit(PG_head, &page->flags.f) ||
+-	       READ_ONCE(page->compound_head) & 1;
++	       READ_ONCE(page->compound_info) & 1;
+ }
  
- 		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
--		prep_compound_tail(head, pfn - head_pfn);
-+		prep_compound_tail(page, head, order);
- 		set_page_count(page, 0);
- 	}
- 	prep_compound_head(head, order);
+ #define	PAGE_POISON_PATTERN	-1l
+@@ -348,7 +348,7 @@ static const unsigned long *const_folio_flags(const struct folio *folio,
+ {
+ 	const struct page *page = &folio->page;
+ 
+-	VM_BUG_ON_PGFLAGS(page->compound_head & 1, page);
++	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
+ 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+ 	return &page[n].flags.f;
+ }
+@@ -357,7 +357,7 @@ static unsigned long *folio_flags(struct folio *folio, unsigned n)
+ {
+ 	struct page *page = &folio->page;
+ 
+-	VM_BUG_ON_PGFLAGS(page->compound_head & 1, page);
++	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
+ 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+ 	return &page[n].flags.f;
+ }
+@@ -869,12 +869,12 @@ static __always_inline void set_compound_head(struct page *page,
+ 					      struct page *head,
+ 					      unsigned int order)
+ {
+-	WRITE_ONCE(page->compound_head, (unsigned long)head + 1);
++	WRITE_ONCE(page->compound_info, (unsigned long)head + 1);
+ }
+ 
+ static __always_inline void clear_compound_head(struct page *page)
+ {
+-	WRITE_ONCE(page->compound_head, 0);
++	WRITE_ONCE(page->compound_info, 0);
+ }
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 6dfdb8e8e4c3..3a65f0ef4a73 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -234,7 +234,7 @@ struct ustat {
+  *
+  * This guarantee is important for few reasons:
+  *  - future call_rcu_lazy() will make use of lower bits in the pointer;
+- *  - the structure shares storage space in struct page with @compound_head,
++ *  - the structure shares storage space in struct page with @compound_info,
+  *    which encode PageTail() in bit 0. The guarantee is needed to avoid
+  *    false-positive PageTail().
+  */
+diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
+index e066d31d08f8..782bc2050a40 100644
+--- a/kernel/vmcore_info.c
++++ b/kernel/vmcore_info.c
+@@ -175,7 +175,7 @@ static int __init crash_save_vmcoreinfo_init(void)
+ 	VMCOREINFO_OFFSET(page, lru);
+ 	VMCOREINFO_OFFSET(page, _mapcount);
+ 	VMCOREINFO_OFFSET(page, private);
+-	VMCOREINFO_OFFSET(page, compound_head);
++	VMCOREINFO_OFFSET(page, compound_info);
+ 	VMCOREINFO_OFFSET(pglist_data, node_zones);
+ 	VMCOREINFO_OFFSET(pglist_data, nr_zones);
+ #ifdef CONFIG_FLATMEM
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ed82ee55e66a..fe77c00c99df 100644
+index fe77c00c99df..cecd6d89ff60 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -717,7 +717,7 @@ void prep_compound_page(struct page *page, unsigned int order)
- 
- 	__SetPageHead(page);
- 	for (i = 1; i < nr_pages; i++)
--		prep_compound_tail(page, i);
-+		prep_compound_tail(page + i, page, order);
- 
- 	prep_compound_head(page, order);
- }
+@@ -704,7 +704,7 @@ static inline bool pcp_allowed_order(unsigned int order)
+  * The first PAGE_SIZE page is called the "head page" and have PG_head set.
+  *
+  * The remaining PAGE_SIZE pages are called "tail pages". PageTail() is encoded
+- * in bit 0 of page->compound_head. The rest of bits is pointer to head page.
++ * in bit 0 of page->compound_info. The rest of bits is pointer to head page.
+  *
+  * The first tail page's ->compound_order holds the order of allocation.
+  * This usage means that zero-order pages may not be compound.
+diff --git a/mm/slab.h b/mm/slab.h
+index 078daecc7cf5..b471877af296 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -104,7 +104,7 @@ struct slab {
+ #define SLAB_MATCH(pg, sl)						\
+ 	static_assert(offsetof(struct page, pg) == offsetof(struct slab, sl))
+ SLAB_MATCH(flags, flags);
+-SLAB_MATCH(compound_head, slab_cache);	/* Ensure bit 0 is clear */
++SLAB_MATCH(compound_info, slab_cache);	/* Ensure bit 0 is clear */
+ SLAB_MATCH(_refcount, __page_refcount);
+ #ifdef CONFIG_MEMCG
+ SLAB_MATCH(memcg_data, obj_exts);
+diff --git a/mm/util.c b/mm/util.c
+index 8989d5767528..cbf93cf3223a 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1244,7 +1244,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+ again:
+ 	memset(&ps->folio_snapshot, 0, sizeof(struct folio));
+ 	memcpy(&ps->page_snapshot, page, sizeof(*page));
+-	head = ps->page_snapshot.compound_head;
++	head = ps->page_snapshot.compound_info;
+ 	if ((head & 1) == 0) {
+ 		ps->idx = 0;
+ 		foliop = (struct folio *)&ps->page_snapshot;
 -- 
 2.51.2
 
