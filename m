@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AEDAD2CDF5
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 00:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE626D2CDF2
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 00:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6949A6B00D6; Thu,  4 Dec 2025 19:58:51 -0500 (EST)
+	id 9A1E46B00DB; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 644C86B00DB; Thu,  4 Dec 2025 19:58:51 -0500 (EST)
+	id 9534D6B00DE; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5341C6B00DD; Thu,  4 Dec 2025 19:58:51 -0500 (EST)
+	id 7A4EA6B00DF; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D8426B00D6
-	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:58:51 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E07A01A03E8
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:50 +0000 (UTC)
-X-FDA: 84183607620.21.8B7C621
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61E766B00DB
+	for <linux-mm@kvack.org>; Thu,  4 Dec 2025 19:58:52 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28E9E1331EB
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:52 +0000 (UTC)
+X-FDA: 84183607704.10.3C256AE
 Received: from mail-oi1-f202.google.com (mail-oi1-f202.google.com [209.85.167.202])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 20688180007
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="iox/LpKk";
-	spf=pass (imf24.hostedemail.com: domain of 3SC4yaQYKCL0dydjlqjrrjoh.frpolqx0-ppnydfn.ruj@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3SC4yaQYKCL0dydjlqjrrjoh.frpolqx0-ppnydfn.ruj@flex--avagin.bounces.google.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 656B440004
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 00:58:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZWYoQZEs;
+	spf=pass (imf27.hostedemail.com: domain of 3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764896329;
+	s=arc-20220608; t=1764896330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K6yuyWg6J+6tRA6+qXQKoG2t2/jCR8bZmCcJlfiuOoE=;
-	b=yXBZL/RjEeSP82YBuX1Axv2vt6zyxLb2nd6yS9RIXDXFZh+oyLICodootSxEVjHpI7c/lS
-	EhyWSYhTDuzXvZYy0qE8hG4MofBRZGDEEQ+kCBQTNRVFpaqiWHB7kVykPJMDWJ6yzVtleF
-	+CFFS7kjSmPVp41XYImCcWyiE2VKBZ4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="iox/LpKk";
-	spf=pass (imf24.hostedemail.com: domain of 3SC4yaQYKCL0dydjlqjrrjoh.frpolqx0-ppnydfn.ruj@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3SC4yaQYKCL0dydjlqjrrjoh.frpolqx0-ppnydfn.ruj@flex--avagin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764896329; a=rsa-sha256;
+	bh=bVE0N0KUpY0wO1fMUhmyg8I9ioeDz1sYwcQ5NNPx/VI=;
+	b=lbFMkOBSWXHCReEOtXoj1mam/tnybujFDyYO8c6BPJZYd8Wvx4p2S+/DvEpjjzEhXjly6A
+	IIP4daLiIf4QCMoCZasZfL1dlKdy48pPjxDU3YIXLEhevSdPux2PuH2tmxtrUXgOTDYQ9z
+	qFMQrCT8AtnDFrPVw938QHGxs2hE1n8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764896330; a=rsa-sha256;
 	cv=none;
-	b=kIRbY3wx9BU5Gv4P0Rgn1J4ho9l1vY5Qp1ilRbwJ254ejn7E7G6Npayi+0KwCa4xGGZZuk
-	rBXIzOSI0x0Is4MNtdnE1apO5BEJYju2A2RwXIZbmB7HJB4R0lI0z16c+Gq/8OkZXcC/nv
-	y2U6CMyff0fKUB1kxD4StCqL9C/MF9g=
-Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-453799e65bbso514442b6e.1
-        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 16:58:48 -0800 (PST)
+	b=p4wZpZ3s26x40gCWcOeROBab/lAVYEPtbpc5bXOtAl6KF0zNSz/IurUWEYehyhXAstJzud
+	W7u1FsnyGDgXNfYG/iYVuAoDUh2EzOs5zIx99XyCCPDneZR5a2/D4qn0x4J4JOhGfJE2Wv
+	+dQXwoaOE3wYoiq0oPKZxVFUo3gbrKg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZWYoQZEs;
+	spf=pass (imf27.hostedemail.com: domain of 3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3SS4yaQYKCL4ezekmrksskpi.gsqpmry1-qqozego.svk@flex--avagin.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-450b8303c1cso2153395b6e.0
+        for <linux-mm@kvack.org>; Thu, 04 Dec 2025 16:58:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764896328; x=1765501128; darn=kvack.org;
+        d=google.com; s=20230601; t=1764896329; x=1765501129; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K6yuyWg6J+6tRA6+qXQKoG2t2/jCR8bZmCcJlfiuOoE=;
-        b=iox/LpKk4n/zkL6vdw4Yp1uM/69Dy/HzjT2/A7gPBcWf6aeX462w4aee5KqHQO0jwA
-         4KQ24okVW7zpUy6ctuj8Sf/zsG2L148pbWd3+6o3chW3dwLcOSfkEMg4DlV0davSaAH/
-         hCSFzhIiTMkwKUCmy3c13YlBjxTZNa0XwGPaO7WBULEvrO3cUwEpnoQeSMLZQhco3vza
-         xP/7/qXxSVADDPFcFtjBA2bqPwmlzzOhqwfuCFclrWDM1Ze3XCSxJSFbltYoNE3FjxVV
-         E1RNOZAYdWUrHtAn9gBCp04uBU9qJ0fTjSiLIZOXQAU/vVoxRPt5MPafZdwL9FhXGfQm
-         Du3g==
+        bh=bVE0N0KUpY0wO1fMUhmyg8I9ioeDz1sYwcQ5NNPx/VI=;
+        b=ZWYoQZEsbUbpGvDOG9vWIBN+lKyUjjUtWQ/mWxiPYEc0L6ZQkuTVrHIrilzG+KMz8/
+         Ldy3mGWvaJSSU6GJJOk+3KBplRcErkb2TIQ+gpf7Or/tyabhBEJTEk+KUEgkw8s8gdin
+         Sz7etf+6N0OaO5EtQAum3gy0VsJAWTb/Jd41xvLdUEhWLagZdUTvAAD7GP5rJQWaKf1K
+         ymfm+OGcJ2Cv4KbmURTnllFF+yI6F6OMQGT3N4zhtYp5aovo8f1HeEafeyoRYRFlFI9O
+         5P6mG8qQGYI4ZyhUYSF44Xs4IIrFgdp8NTBkrYV/mPCcWHlHhOvWLXBhWzvAd8e1vAV2
+         j8vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764896328; x=1765501128;
+        d=1e100.net; s=20230601; t=1764896329; x=1765501129;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K6yuyWg6J+6tRA6+qXQKoG2t2/jCR8bZmCcJlfiuOoE=;
-        b=b50UUDSLEoVMD1kylvYBwkE6H/9vgVxj5tqsJdrOkyvc9nut3qX9VkiBK1KyUKPBhT
-         CTKyIzkfTHDXAVta2/BPhgOARo6naXgmmRyd0+b58bO1/sWv7XHxa8b2otWO8UwbdcKW
-         m/jfbfwrn1NijSqEgIUydEkAznopX/TvURYBPBMji+psGvYu+JHz7DyA2H4i/XN2K5qy
-         C+lkZPXbwPsQ7Dt/FewwysVLQj87WAjAJIR6HqjXF7pn4oEG6SsjZOkAKF9F1uQutgfu
-         PT/GNo39TYV0GGs3AldZ896unhmkaYxvmmC7K2cTXnrI++ber070v79qZtpP61pDQPOZ
-         sZ3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXaQNFUHTHmU050zEpwUCvlo1CNAfGMy+VVvMRqcVCH3jV+WeEaLXbRPspSGhiyus900I0sOsPgew==@kvack.org
-X-Gm-Message-State: AOJu0Yyxp3w90veaPo2i05JsYQw2XGf5CbmQEPHE0HVIgzZOrqHjQMP6
-	31//mGjRSYgNh5IZwfCtWSLGoIpqhjpUXNu5H3kxMJQQ6pJUCk2A7CVNnuJlaONZ3xLMW0fSuZO
-	BGqlelw==
-X-Google-Smtp-Source: AGHT+IFADxKy/vFest5snAc0m/D0WWFhbz7XE0sMmrJDgeiYPmoKVCscGluChmmNgyVRHEbkPAnHLRJv63w=
-X-Received: from ioxv4.prod.google.com ([2002:a05:6602:584:b0:948:a326:e2d6])
- (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6808:1899:b0:450:d09a:8ce7
- with SMTP id 5614622812f47-45379cc4f26mr2830491b6e.20.1764896328239; Thu, 04
- Dec 2025 16:58:48 -0800 (PST)
-Date: Fri,  5 Dec 2025 00:58:31 +0000
+        bh=bVE0N0KUpY0wO1fMUhmyg8I9ioeDz1sYwcQ5NNPx/VI=;
+        b=vyGKxRxA3CYOjUyqdTihp+ebvurHM7xbfj+LK/U/bG3QjHylFAJ/gkaMaQ0AtgJ4Xm
+         mxLMiJMIj40ppyebcQ0z9AfKkFrSX+vRogJ1NaE6750QaZaOG/1rFu0b/tp2idqDRWQ+
+         hXVPKh/sGezsdFOsumTHr8qCddq82xRtv6nV2ylfFQoObqeKorDxl9M56452ah3Caa/N
+         XdwTTH+agehif94LIgLPRF4R17Zg00HgCTxL87K4oqByUkPMBITiX26ln4+BkGLx6mfq
+         3Fs5i2Cz/n7yZRtuv7eNG3kEjQBaoBheLh42g/UdnJbzvfvf/2jXLx3/msFIgg9AQqUC
+         lb2A==
+X-Forwarded-Encrypted: i=1; AJvYcCU/0Mh4IYEWBbQxAm19gnhGi9x5IRPQWC8HQCAMPrx1jWqfRjOtXLQyKFlGbsKWbL7u+DR6pmGVqA==@kvack.org
+X-Gm-Message-State: AOJu0YwNK5NVBxi0UD9O7MWx7LhCqL9pujhI7xWJBxRTsD/UMWWptWwW
+	w3r81wzPsaBqFYm7XZ9PnPBcqWWHxmOf6EQ+tYqkm+cYUJTsRcHKvzfgGIaaha9o/M1g9WSsiK2
+	yeCiLGQ==
+X-Google-Smtp-Source: AGHT+IFifApyQ81uqcVNp3ozqjh2VV5F+exYOtd6RAsz1O9td1lhZ/L2nTazk9kUzTzPa/vDQgHRCZrkH4g=
+X-Received: from iobfb16.prod.google.com ([2002:a05:6602:3f90:b0:949:11f9:31f7])
+ (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6808:11c4:b0:450:b3ec:c154
+ with SMTP id 5614622812f47-4536e3de299mr4587772b6e.25.1764896329505; Thu, 04
+ Dec 2025 16:58:49 -0800 (PST)
+Date: Fri,  5 Dec 2025 00:58:32 +0000
 In-Reply-To: <20251205005841.3942668-1-avagin@google.com>
 Mime-Version: 1.0
 References: <20251205005841.3942668-1-avagin@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251205005841.3942668-4-avagin@google.com>
-Subject: [PATCH 2/3] selftests/cgroup: Add a test for the misc.mask cgroup interface
+Message-ID: <20251205005841.3942668-5-avagin@google.com>
+Subject: [PATCH 3/3] Documentation: cgroup-v2: Document misc.mask interface
 From: Andrei Vagin <avagin@google.com>
 To: Kees Cook <kees@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
@@ -96,15 +96,15 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
 	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>, 
 	Andrei Vagin <avagin@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 20688180007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: hs793kktyuga1in3f8kr4rta7aewtuyb
-X-HE-Tag: 1764896328-649335
-X-HE-Meta: U2FsdGVkX190Ce9iWjfDm3azpgursu+dlX5hVGLhar+A9vITmUU4kIal5RRAeqgpTLasHPzbpbms7QfM95RM1Xj59CGzB3L1GWIwpzT+CcLDgcBJ6aQ8DQzO/3UKyOjSZoaNEhtCMgJcp/P9jpT183B9ZNMjA0iodH8kqzWNSkS/DwnMHylO0lG6hnwWJv8HhsRmyAsW6rCvZPHN8bdWlO1vuH2/NXBp99SUVkxUI1N2odfp1cd9r6d/JKNz6mHKpTUE4MnOmEqEsSKmriCRciZfZHw2FC9BmkLcR3u+xg7fmMjGT1zoOwBKvvOPIVwATRiJGlB/ityVgRtTMW+Uqw72+LJq3CEPk02PhN0qQuDrpQn9QLiNxkxJEHuFhqrwh/LSKRHg1Pv+i5JGXHBLL6w3HSnuSaZBYR29h/zqNj4kbXF6ravZoVQaLac0ORnyTGTESKm6r+p+vZdTuLhcrnBHl5K0g7aOtSfoAf6qG4g4eJ9YsuIPC1eyr/Cyq2NwZefbTORfzrl5RxfmuOlfYfz//5SO7IhIp5B5c0S/VvR5/llafiFHwGXSawUblDcinoVIJ5glcSaLl34fWpnp4oB0SiBTMMwWHc01dTH/EZP75IEhIe8ZenJFH+pzOQ+XRTSlaYP4SpsT/gR3pXWHVh3HiDhwW50mG346YEp8qI6H6sBj+kd8Vma5R0xuIbZL1P5JQfvTl76vIAkcYR/aamVGbuCr+4b6B9P+VI+qnpxUBd3kiatJXqkKm2VWkaieXZhYoW1eu/yk0ibHPmQd4NErZeUHzsPobcakqUREY+NnjtA+xKGnIO2sUJoD+13es06ed+5Rage8lTBHh8QPjbnnIeUFzO9BMZcyAlMciAfiO9HLcHCVIbeW6NXZaA7Rk43y7HAKTDRpV6IZG5f2AcFjRTE6c9pUTcP7/uCft9yH7y90TkkLpS7nrP9+/WfaEIFL+/ktPK5iJ3ZdUvl
- GBwT1khh
- Ibib92qqCIcu5sWNazyBQO7iyKkLzCW5pCHhv6bO+nzUhkQPnd7stVfH69jqofU4w8qIBolRqG2DKZP83nOVueDYOvCHlGufrTenqjBLjv1hVUQXeY5xhGmwawuDyqOFTIzMLvs+O2b46M7wL4TtWAKKci3MDLOzaq16RykArq2KdUrgp3WmRmtVSi7o1Y50+gro1jZ2OLm3AlVJZmoJaYn1/ReaskDyXhI5k4BcbTGiBPJKGTdx0lJu+rWlhQ3AzK/0fdRRMAIMHHZaKOZrMiKrNNdFfeJIUZQ3WeSqWe+S01NffxGMD8m3sQ05OcIDXrQh1Qsj5HP3aL6r5I9xgc4PoC5rJIhWt+xLD/R6H7zf/C01HHUFEo7WWCmkYeHrcQDsW+cj/XWOB1AouR5K7XangBAHM3WBEpCdcQiFrj1ulvGVIVTM5TJhz8We7BGb/+L3UELOCXM4PhYR0NRBG2XyFw52IrL0VBLI/R+51bBtMO8hHXIU1rW4NdG76IMJ8MTEuLZnY762ec82VwgIiFCsP2s8uE7mOzffHEf9iC/WhFSo=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 656B440004
+X-Stat-Signature: mpxpiskuaakxkdjjqw3718u5xdfgbgsw
+X-HE-Tag: 1764896330-149488
+X-HE-Meta: U2FsdGVkX18RE/KIKHDu0UspIfUJlj1WaIjk2TJ/Z/98ldPS8pbpghz088aAfDhoR0HtDOHmMnNQE8ZUd+RrqmfZAHoO1D2yRiareEri2PGhc+IGxrXISg12+c88ibNEx+kUp8LG4NiZ/FI6D1LoWlRAKjlkXdgg2l047KKixjXrn/pXLvZx9ACpDy0bzFfn/NNJ7cn6vKpKR1EXW0UkyTS/FhEE3ff8/6TDeAthB1mFYtP7FZfIaAD0GOlekY5uI0XTuC/xYXQLhgsf7uaW7FLqa1a7Bn1Gytm0yQV+MJjTex+RyU+eBK7IiWJ/rf84lCZldfJtZthT9HLkDShEmqdgSa2QDV8EyeyCUhx4ZnWFndOqdPig0ZvA41izGmLmG1EL7IJhdyYaZePfWV8XJxWguUcPc8GD6hu+4EvE6mWtyZKgeVL3RcZUwFChz1sPkWP4w5hp7yE0UZiIXVbsVRXQgbRTKUi961ZD7neb46x2dBlPVPdzKT+4/MN7UxSRoESQVeVOrd/MRxk5g/WWL+yZbOOXhSfO6+paSmyb+JzUanOAvNS3OniEND18/niWEPUKoY4l6opcLFLwbkiYI9r+EdbjiLsccNke7I+kBzREzSlQf5Y08eiGMbWiqTbJz/XgYK8ZvdyMmpebJLo1aVFpawaySGUhLgTBef6HCmJBpI3NcIbDS5ikwspXmqmHWq2KouHpVU08KN+HV3b47lYdC9nsGeepCCMoL2rDu/TzP/oEISSjNM1YClOk7dCCaZiNwp0hZhg2NJuSS3oyH/NvQg1VcsPjGFRo6VUr/ixO/hJuy6gNKRf50QQg3rEc9tunW6Lgxc8dXR0Es4HYYWVA4fgDn/LBty9o0PxgaSNQlZa7Vke5ZgXK3MbZdQf0YvDDjL/5YckMU4TFr+jZVu0yY5HQmnSMt0vWbkEO7RZa8Bdq30ukaQUJXCozJbnSkcQ1XMIlyT7/0T+QKVq
+ oMsFgEBc
+ BwDa+cesfhvxJl47RsG2UF4iFdtNNzE/Vx4/Lby242Lfi8LGLHqoYL0JCMUTTRAz7p0lSh4akrHY25SW6MLB/lWbe9Q4u5C1Q5yyVY/EweeGnW+aQ+DokvbKwCumJNjlfxiOhMAc1JiIuovnieLxQ/FLFgvPyc7/LfsWlkQaLDntJb/2AypUVQPDkB0Bt1ihqJum49Y/TCngZq58vNigxXmSJCp6aswhpHt16YEcQZcZ5tiwUuLVsdP8xGaizkkQaffM11x4yXsPuti2pS37bqciP6A+xsyZXg92GCvCyVAB/FtNe7GyykC6VyKMFw+JwHgnjAa4WqCCmrPibXSKDSCQna8EfFI0vjaG1q2gJlVMzu0phCaHSnwzxGu5w+bh65mAbTS8uKoILtbO359Jg1fAFc8kdoGkxvKq8yEoCZBqE0BWor5RWj8K+NewsU1ca48rORn7Jjb34CV3OinAgDX39pleEnKARFLnDV2IbmUl0I8yrx7VN5h9XnisTBoDZmjRBtPlD5QtZ1CwuDSOrcyQv9mKldmCLCd5fSUMs0zmm4Sg=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,187 +112,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a selftest for the misc.mask cgroup interface. The test verifies
-that the misc.mask file is present and has the correct default value,
-that it is possible to write a new mask to the file, and that the mask is
-inherited by sub-cgroups.
+Updates the cgroup-v2 documentation to include details about the newly
+introduced 'misc.mask' interface. This interface, part of the 'misc'
+cgroup controller, allows masking out hardware capabilities (AT_HWCAP,
+AT_HWCAP2, AT_HWCAP3, AT_HWCAP4) reported to user-space processes within
+a cgroup.
 
 Signed-off-by: Andrei Vagin <avagin@google.com>
 ---
- tools/testing/selftests/cgroup/.gitignore  |   1 +
- tools/testing/selftests/cgroup/Makefile    |   2 +
- tools/testing/selftests/cgroup/config      |   1 +
- tools/testing/selftests/cgroup/test_misc.c | 118 +++++++++++++++++++++
- 4 files changed, 122 insertions(+)
- create mode 100644 tools/testing/selftests/cgroup/test_misc.c
+ Documentation/admin-guide/cgroup-v2.rst | 25 +++++++++++++++++++++++++
+ Documentation/arch/arm64/elf_hwcaps.rst | 21 +++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/tools/testing/selftests/cgroup/.gitignore b/tools/testing/selftests/cgroup/.gitignore
-index 952e4448bf07..3ced02a3634b 100644
---- a/tools/testing/selftests/cgroup/.gitignore
-+++ b/tools/testing/selftests/cgroup/.gitignore
-@@ -7,6 +7,7 @@ test_hugetlb_memcg
- test_kill
- test_kmem
- test_memcontrol
-+test_misc
- test_pids
- test_zswap
- wait_inotify
-diff --git a/tools/testing/selftests/cgroup/Makefile b/tools/testing/selftests/cgroup/Makefile
-index e01584c2189a..6e9e92f89d8a 100644
---- a/tools/testing/selftests/cgroup/Makefile
-+++ b/tools/testing/selftests/cgroup/Makefile
-@@ -15,6 +15,7 @@ TEST_GEN_PROGS += test_hugetlb_memcg
- TEST_GEN_PROGS += test_kill
- TEST_GEN_PROGS += test_kmem
- TEST_GEN_PROGS += test_memcontrol
-+TEST_GEN_PROGS += test_misc
- TEST_GEN_PROGS += test_pids
- TEST_GEN_PROGS += test_zswap
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 4c072e85acdf..9d9d923e0d4e 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -2924,6 +2924,31 @@ Miscellaneous controller provides 3 interface files. If two misc resources (res_
+         cgroup i.e. not hierarchical. The file modified event generated on
+         this file reflects only the local events.
  
-@@ -31,5 +32,6 @@ $(OUTPUT)/test_hugetlb_memcg: $(LIBCGROUP_O)
- $(OUTPUT)/test_kill: $(LIBCGROUP_O)
- $(OUTPUT)/test_kmem: $(LIBCGROUP_O)
- $(OUTPUT)/test_memcontrol: $(LIBCGROUP_O)
-+$(OUTPUT)/test_misc: $(LIBCGROUP_O)
- $(OUTPUT)/test_pids: $(LIBCGROUP_O)
- $(OUTPUT)/test_zswap: $(LIBCGROUP_O)
-diff --git a/tools/testing/selftests/cgroup/config b/tools/testing/selftests/cgroup/config
-index 39f979690dd3..9e3d03736f5a 100644
---- a/tools/testing/selftests/cgroup/config
-+++ b/tools/testing/selftests/cgroup/config
-@@ -1,6 +1,7 @@
- CONFIG_CGROUPS=y
- CONFIG_CGROUP_CPUACCT=y
- CONFIG_CGROUP_FREEZER=y
-+CONFIG_CGROUP_MISC=y
- CONFIG_CGROUP_SCHED=y
- CONFIG_MEMCG=y
- CONFIG_PAGE_COUNTER=y
-diff --git a/tools/testing/selftests/cgroup/test_misc.c b/tools/testing/selftests/cgroup/test_misc.c
-new file mode 100644
-index 000000000000..50e8acb51852
---- /dev/null
-+++ b/tools/testing/selftests/cgroup/test_misc.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
++Miscellaneous controller provides one interface file to control masks.
 +
-+#include <errno.h>
-+#include <linux/limits.h>
-+#include <signal.h>
-+#include <string.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <unistd.h>
++  misc.mask
++	A read-write flat-keyed file shown in all cgroups. It allows
++	setting/reading the masks.  The file format is a series of lines, each
++	describing a mask of a specific mask type.
 +
-+#include "../kselftest.h"
-+#include "cgroup_util.h"
++	The file has the following format for each line::
 +
-+/*
-+ * This test checks that misc.mask works correctly.
-+ */
-+static int test_misc_mask(const char *root)
-+{
-+	int ret = KSFT_FAIL;
-+	char *cg_misc, *cg_misc_sub = NULL;
++	  $NAME\t$LOCAL_MASK\t$EFFECTIVE_MASK
 +
-+	cg_misc = cg_name(root, "misc_test");
-+	if (!cg_misc)
-+		goto cleanup;
++	Where $NAME is the mask type name, $LOCAL_MASK is the mask for the
++	current cgroup, and $EFFECTIVE_MASK is the effective mask for the
++	current cgroup, which is a combination of the masks from the current
++	cgroup and all its ancestors.
 +
-+	cg_misc_sub = cg_name(root, "misc_test/sub");
-+	if (!cg_misc_sub)
-+		goto cleanup;
++	To set a mask, write a string in the following format to the file::
 +
-+	if (cg_create(cg_misc))
-+		goto cleanup;
++	  $NAME $MASK
 +
-+	if (cg_read_strcmp(cg_misc, "misc.mask",
-+			   "AT_HWCAP\t0x00000000000000\t0x00000000000000\n"))
-+		goto cleanup;
++	For example, to set a mask for the mask_a type, you would write the
++	following to the file::
 +
-+	if (cg_write(cg_misc, "misc.mask", "AT_HWCAP 0xf0000000000000"))
-+		goto cleanup;
++	  # echo "mask_a 0x3000" > misc.mask
 +
-+	if (cg_read_strcmp(cg_misc, "misc.mask",
-+			   "AT_HWCAP\t0xf0000000000000\t0xf0000000000000\n"))
-+		goto cleanup;
+ Migration and Ownership
+ ~~~~~~~~~~~~~~~~~~~~~~~
+ 
+diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
+index a15df4956849..5526daff5d30 100644
+--- a/Documentation/arch/arm64/elf_hwcaps.rst
++++ b/Documentation/arch/arm64/elf_hwcaps.rst
+@@ -450,3 +450,24 @@ HWCAP3_LSFE
+ 
+ For interoperation with userspace, the kernel guarantees that bits 62
+ and 63 of AT_HWCAP will always be returned as 0.
 +
-+	if (cg_write(cg_misc, "cgroup.subtree_control", "+misc"))
-+		goto cleanup;
++5. Masking hwcaps for a group of processes
++--------------------------------
 +
-+	if (cg_create(cg_misc_sub))
-+		goto cleanup;
++The misc cgroup controller provides a mechanism to mask hwcaps for a specific
++workload. This can be useful for limiting the features available to a
++containerized application.
 +
-+	if (cg_read_strcmp(cg_misc_sub, "misc.mask",
-+			   "AT_HWCAP\t0x00000000000000\t0xf0000000000000\n"))
-+		goto cleanup;
++To mask hwcaps, you can write a mask to the ``misc.mask`` file in the cgroup
++directory. The mask is specified per AT_HWCAP entry (AT_HWCAP, AT_HWCAP2,
++AT_HWCAP3) in the format ``<HWCAP_ENTRY_NAME> <BITMASK>``.
 +
-+	if (cg_write(cg_misc_sub, "misc.mask", "AT_HWCAP 0x01000000000000"))
-+		goto cleanup;
++For example, to mask ``HWCAP_FP`` and ``HWCAP_ASIMD`` (which are represented by
++bits 0 and 1 of AT_HWCAP, so a mask of 0x3) for a workload, you would write the
++mask for AT_HWCAP to the ``misc.mask`` file in the new cgroup directory::
 +
-+	if (cg_read_strcmp(cg_misc_sub, "misc.mask",
-+			   "AT_HWCAP\t0x01000000000000\t0xf1000000000000\n"))
-+		goto cleanup;
++    # echo "AT_HWCAP 0x3" > /sys/fs/cgroup/misc/my-workload/misc.mask
 +
-+	ret = KSFT_PASS;
-+
-+cleanup:
-+	cg_enter_current(root);
-+	cg_destroy(cg_misc_sub);
-+	cg_destroy(cg_misc);
-+	free(cg_misc);
-+	free(cg_misc_sub);
-+
-+	return ret;
-+}
-+
-+#define T(x) { x, #x }
-+struct misc_test {
-+	int (*fn)(const char *root);
-+	const char *name;
-+} tests[] = {
-+	T(test_misc_mask),
-+};
-+#undef T
-+
-+int main(int argc, char **argv)
-+{
-+	char root[PATH_MAX];
-+
-+	ksft_print_header();
-+	ksft_set_plan(ARRAY_SIZE(tests));
-+	if (cg_find_unified_root(root, sizeof(root), NULL))
-+		ksft_exit_skip("cgroup v2 isn't mounted\n");
-+
-+	/*
-+	 * Check that misc controller is available:
-+	 * misc is listed in cgroup.controllers
-+	 */
-+	if (cg_read_strstr(root, "cgroup.controllers", "misc"))
-+		ksft_exit_skip("misc controller isn't available\n");
-+
-+	if (cg_read_strstr(root, "cgroup.subtree_control", "misc"))
-+		if (cg_write(root, "cgroup.subtree_control", "+misc"))
-+			ksft_exit_skip("Failed to set misc controller\n");
-+
-+	for (int i = 0; i < ARRAY_SIZE(tests); i++) {
-+		switch (tests[i].fn(root)) {
-+		case KSFT_PASS:
-+			ksft_test_result_pass("%s\n", tests[i].name);
-+			break;
-+		case KSFT_SKIP:
-+			ksft_test_result_skip("%s\n", tests[i].name);
-+			break;
-+		default:
-+			ksft_test_result_fail("%s\n", tests[i].name);
-+			break;
-+		}
-+	}
-+
-+	ksft_finished();
-+}
++Any new processes started in this cgroup will have the specified hwcaps
++masked. You can verify this by reading the ``misc.mask`` file, which will
++show the effective mask for the cgroup.
 -- 
 2.52.0.223.gf5cc29aaa4-goog
 
