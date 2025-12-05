@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 204DFD32D99
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 21:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41231D374A8
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 21:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 591226B00AB; Fri,  5 Dec 2025 16:35:00 -0500 (EST)
+	id 964256B00E7; Fri,  5 Dec 2025 16:36:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 568A96B00AD; Fri,  5 Dec 2025 16:35:00 -0500 (EST)
+	id 914FA6B02EE; Fri,  5 Dec 2025 16:36:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A57B6B00AE; Fri,  5 Dec 2025 16:35:00 -0500 (EST)
+	id 82B876B02F5; Fri,  5 Dec 2025 16:36:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C4686B00AB
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 16:35:00 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D0D9688316
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 21:34:59 +0000 (UTC)
-X-FDA: 84186722718.19.550798A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1818FC0004
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 21:34:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gh8ajqRA;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 54A5B6B02EE
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 16:36:15 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 206B81A0280
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 21:36:15 +0000 (UTC)
+X-FDA: 84186725910.09.42CB085
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6197010000E
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 21:36:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQScRciw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764970573; a=rsa-sha256;
+	cv=none;
+	b=ELTLbd3NyOQ5355I6qT8rOeoj5pSIaWce/10DBHzWi+SCB+yrm69ZMTBLpk+PCaKgoy/6B
+	6Swi843ny2RWTBkCC6R+pq2jhKYapO0MnVnYgDOZeIVzd6S0eql7lijgITtH4bjx29GUKE
+	1EltF7Y3U+qGxhFYn0Dgh9OdKdZkZ7k=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQScRciw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764970498;
+	s=arc-20220608; t=1764970573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WZ22Y+HvgVG7y/fRMxlUcTppE5xJHccjbNmRWDH4csc=;
-	b=Y7GS/ND/HsP4p7PwisRLgXkrsiXHg65HMTK54Ib0dGjcJQKMDbD5uPCo4p3oAtZDTlEVkM
-	8jAkoNOHbPkIpHhDmdTzWDw+q+0GD4gixNBQUsf7JU2XHgMv80FCxfr4JGprg++ymc0Iur
-	bjFNNWcqT83GrKzrHaK9d8dvSV+NffU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764970498; a=rsa-sha256;
-	cv=none;
-	b=krfHdk7YIvIZ6HZxrHrqbfLzOlwpfeMmIO7tQA3HwYmO1u2+PjCvvEwFaM5ew89E3wfa4f
-	AqV5LrEX89eZCLPQUogIu0M1dX4w6Dm83/SO49R2X2NkCSejzlmpWo15ownGp6xh3vUBUP
-	JQ9dg2KdIC4UdUW6LgJUWZCtKUyXIXU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gh8ajqRA;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=HUEh2IP/z55sIDgHlZ2+F+aGI4FPtzh1lBk3A0If0sI=;
+	b=IyIOr7gF9W7RuxjhXjDcfmh9ZwzjNReljXtM6Oi9slHr4TYjgZfCSogPdrsmYkLPlGkRGJ
+	/IMg3hYrcuTN42xuTCNgCGN4p6FI2p5kIcxY/EEj3fyDER8DhF9Wcw86IRwspH41Qalf7h
+	Q1UnQ8r9LokQIXtRLmHLA6AEmaiR4wY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 70FD360156;
-	Fri,  5 Dec 2025 21:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8AEC4CEF1;
-	Fri,  5 Dec 2025 21:34:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 87E174187D;
+	Fri,  5 Dec 2025 21:36:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0B6C116B1;
+	Fri,  5 Dec 2025 21:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764970497;
-	bh=pIWFu1CpvEX7ARO6h8yJ5dcbxsEBwILGEiRBs91Q2JU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gh8ajqRAdx3KnvpVzycs8kZ9NxVSF8yjDJuVXe53wnCjS5LnpIVL4+aNqaWp288YU
-	 3w0PoKfc1wCSHDVk2USqz1GQ63BPL+4hGYC0lMXJCmyUe3nYS/QCa+mC/Aaj9+n+4U
-	 HTuA6pi7Bown/zCHdd/J3ZDu9FdIms8EeWa+ADYhQGMS4ttS/+EVpklKpMBf54v6rD
-	 pcOvrW2sLm2HOhYl5uLML5TvP5QNZR4jouoaz8cKPQByQ+JSHmscjNsZ2+iMNoMcRK
-	 tG0vltG31lDKB8ZRsNGy24xJbpSlfjc0ejInjaE2Pbxff++sAEke6sszaQsK5Fzx+5
-	 Fb/VLbA5rUxNw==
-Message-ID: <1b659d59-b1c1-4910-baab-0eef7cda234f@kernel.org>
-Date: Fri, 5 Dec 2025 22:34:48 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
- optimization
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Usama Arif <usamaarif642@gmail.com>, kernel-team@meta.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20251205194351.1646318-1-kas@kernel.org>
- <e1c50f7e-cec4-4676-b5d6-f6446cd64ba5@kernel.org>
- <bdie34dgpltxd5ayvjvqkusx4thdrrebgllvwp333psfuu4vgj@bkfxg2c5sfr2>
- <01e5d0b3-dbf8-4f77-b38a-f48c46f7c31e@kernel.org>
- <ysvhofzg5mdtvxfujdsmffkuqna72pr52ehrpglmlhxnvwstas@xurgptkgtnbe>
+	s=k20201202; t=1764970572;
+	bh=8+3PE0lZoghyFccjBGOORkbaZfzCOnFQSwGHJ0dG7Nw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TQScRciweFV75igopSCBmTYjX821Laicmf3q6LqdAmvGFsMgieDUeLyMJKTNyrRYe
+	 14C+OFiYJOluVspijOX35hj+jk8gyjZ59Ucz+6I4aQOZatMBrZQKLb+dZyy37FM+S/
+	 YQTpa+5Kzde0Anbrnzy++QjCyc3np0ZFFzQId6uUmAEctUdV3ytc4Wh9Wb4zdtwEjx
+	 sYRJpo0fxMhOISmPIQ36l4iU5dNKgMl8rWuJEPCumdeuzFoCfChdaJf1O0usLZNWZ8
+	 QbSSqVSFC7cYd0iLNCZBRVhF6exH3C7y65890AB0OCZX4t68AhGw904+jMXiEQBY36
+	 FSZreQdP747uw==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <ysvhofzg5mdtvxfujdsmffkuqna72pr52ehrpglmlhxnvwstas@xurgptkgtnbe>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1818FC0004
-X-Stat-Signature: igk89xrd6qqtcrfjdjr38xczkqgg51um
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	stable@vger.kernel.org,
+	Liu Shixin <liushixin2@huawei.com>
+Subject: [PATCH v1 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
+Date: Fri,  5 Dec 2025 22:35:55 +0100
+Message-ID: <20251205213558.2980480-2-david@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251205213558.2980480-1-david@kernel.org>
+References: <20251205213558.2980480-1-david@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1764970497-674656
-X-HE-Meta: U2FsdGVkX1+aBRhpRQp9ivUsL3WVxkxM24fkVxyQUDklOVLI56D/ea558RFaPow5f29yphR3byvHZV3w3mv9dsWYUfWFBYefwTQ5y5f8dduMyI8aIfxB+SAsc2b+PrZrJ5rBT4a3rD+pdlABzIParxPAg/jMo58qkhhi3NMXxOrZOD+yHz1S+Ecu4cNNh9HxTA9m80+g9ZGjiPkB5pAterSpIllVQ2NTXw4Lqfyi7XMjR+JZbIuQiPKvqOxAevTlbsNnD5NsyWtHsUBfykLYmKzA6JEXxz24tYNlvjR1pvwVycKfF8Ck0EkVW5Ee0i8XHs6uzEcYWlVk4A/wwQwQERGjBurPWBXX34YYIF/jPGU+pnKY8oBRgyEMiAmsM1cLVlGmSyK4/YGfbaz9Y4MOP2Taf3Qp9SKxtLahlXMVM2kRWwHp5EYM9P8qUYY/soMk7mMuwvO6YI2qgC56ep5E0nBpQWFOkjuEI3IOvmp+jylP9a63zhioWILYFCvYjiplI2HNGGt27hukVF5ndZV1/5MDk4xpLxBLw/FbbrbNAbAZt7m4P9NCovi0MS7Le8s+naAM8V3DtYZ6F56GLp46t4WXNv+nrWO4mNF1M73ljRqbab0AAP0dHN2g5tGfJlVvV5zKqWrlBx0i/XMnQbDJ+6QV9zh5/lsPKfwEAG1RSTS9lz5QGG0ZTPG4cna2X9CMIWZ8oAnbqrKmlKTCo6V0fcTAxuIYFmUKJqy42lo16pm0hVIYAofP9cG9y2zMs9fuLe2hCepMzN+9pWtI2xdNoY7qxkN8TOfBtn/YY/G6tAQmUzik9aJW9zE8AEZ+jtzGCnrsCY40gl7ovjvbvMPWxv63bdlphyv6pnt9RadRvLNJ3gwGG3n3qt6eiVsaIcV80qUszblN9AkiZsl2gI8si62spaXdQJv287LXYg4ElKon2j/nuMZXd6OSbPEsRxj4wDP0R9o9cv/dVHyaomC
- v23IoGAu
- S8UmmKcgK+u4LEsRy6BfRfT7ADEuIWO3K45RRthBr+NqKnG9gXrq//sGpzD9ljNN3axI1ZaisaeRY/WFZJO53JyeP9VySvIlivQEOjpMk3rqnM4oPPAlTQcscOFwBRG7bOAcNDA2LF1JNH4Ai34Qz9rWJ5FLRXEx1ZiMB/Cyd+Ov8krm9DFb2idLxBOuKwZD8B3y/1aLT5AMh7Z8HpraOddNqOnL45eP5a93kZ7c8vBWTfqEaSJJPnfQCYATLPPxwEPzK
+X-Rspamd-Queue-Id: 6197010000E
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 7kqw73he6prywna9a5grcqaj98psb9gs
+X-HE-Tag: 1764970573-403008
+X-HE-Meta: U2FsdGVkX1/AKvVI/rMM6IQdcQC4uxpOLB63yGfntYgvS/1lmfwqYsUUZX6rMweTsFNAFuoTL6OZlNXaxGJb0GdTtWreNMpWiFhCP4uzam6+EriMgab8KudS5CIIMKXQPAMtmYk7ltv7+TPEiW4nqTdj7bN1h+DPc+2SBRHj1+uoNq+kOCY36mIV8sH4tpwISSVvwJn5PhBivnyJnV4ZTmqJpuIgp58CsIdA2OwJLiMDa6e2JGflv5ALqn0M2/U98MOuuWqaiVCOnn/4BOwJjw9q9P1p2K/LhQI9ovGwpUnUI2EFT8jlTF7SxTuKUjWts7w3aeRfinhNvWFVP0QbYXwOAFu+AZHd/ZcXWm5oVFU39j7C1XdYMmO59ZJTCLsbD6wwuGB8MaJsf3Y3hW3E5QfiARwE9Spr1S3YhlZUEEjckHbCGHLUrT8olgNIGcl/MHGYNdxmBuw4BHJdVNnw1WsRRGNwouW8w3SvgB/upGG5fEUB6rlEanYhjAKnU1g7Cue69wqVfJg5+6zVIbfrbD0Oo/nfwYTLJM2PYzkzGRUDo38kJ/e2o3AqAe7jQzvS3Q8I388G5gZsXEljCAJaFgQnAHO523zNp2GIOonaRdNnDrRDA2oQQyTZHaVFGOZs0RmHAqEwdYbweKg9Bfw6d1IAMO23X98gYvFFzsPuNv7d6LkRdy+aFwmacOWUkScK1d81+rd3sUzIwMFubRLZJNyho0AMLbIrZpv2LzUj1arcxzStbVISTsP7EsfB/5S9m6ec8S13fQN60c59tATveCqNN++AKOi8KE5tuODr1vrzElBh1SmtFfOleKH8IXFCPMSOMKjvvSIs5RCaCgU7ETmhlOewK7KB09ovfv75zvYm3M11hEn0LQmfraP3BK7XHj1Xy43Cywu6t1EY7BoJ5C3mxaO8ZXBeG9dFzSVkA7HG8j/AlVtzPU6G0wRIIJ0W0P/DavI5vgwRafEqqKu
+ yF7cNfni
+ YKaSK0VDU/x65tKlstz8XS08PazwdHEqq8taggr+7k3eoeeGcHI6uS/lffgkNVHPR30xXTSrpfyBPMNaA8S04SlAP4PIbYm2RboLw4C6iPem26rkciiJ0CfIsB1iJ3J4lBhZUUHEthylvuGkUHCrhdhHYgeIlWytNjd0mPPIpVK5/V7XBffQLnzsi2gUAzhyQni5u9DvkqmYUO9vLNdkGkpnGcs2d3eR9W34Hdt53qrIALiUQalW18Rjfau8QGCQYYF647irWqtdhqiHfOgvTvzIe+E7w3o8/v2NWPNKTPtaL+7UfsA/+kO2bM28PkyzSa/Bj9ldqT3Jr5m/vhf8C0lmGCA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,82 +112,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/5/25 21:54, Kiryl Shutsemau wrote:
-> On Fri, Dec 05, 2025 at 09:44:30PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/5/25 21:33, Kiryl Shutsemau wrote:
->>> On Fri, Dec 05, 2025 at 09:16:08PM +0100, David Hildenbrand (Red Hat) wrote:
->>>> On 12/5/25 20:43, Kiryl Shutsemau wrote:
->>>>> This series removes "fake head pages" from the HugeTLB vmemmap
->>>>> optimization (HVO) by changing how tail pages encode their relationship
->>>>> to the head page.
->>>>>
->>>>> It simplifies compound_head() and page_ref_add_unless(). Both are in the
->>>>> hot path.
->>>>>
->>>>> Background
->>>>> ==========
->>>>>
->>>>> HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
->>>>> and remapping the freed virtual addresses to a single physical page.
->>>>> Previously, all tail page vmemmap entries were remapped to the first
->>>>> vmemmap page (containing the head struct page), creating "fake heads" -
->>>>> tail pages that appear to have PG_head set when accessed through the
->>>>> deduplicated vmemmap.
->>>>>
->>>>> This required special handling in compound_head() to detect and work
->>>>> around fake heads, adding complexity and overhead to a very hot path.
->>>>>
->>>>> New Approach
->>>>> ============
->>>>>
->>>>> For architectures/configs where sizeof(struct page) is a power of 2 (the
->>>>> common case), this series changes how position of the head page is encoded
->>>>> in the tail pages.
->>>>>
->>>>> Instead of storing a pointer to the head page, the ->compound_info
->>>>> (renamed from ->compound_head) now stores a mask.
->>>>
->>>> (we're in the merge window)
->>>>
->>>> That doesn't seem to be suitable for the memdesc plans, where we want all
->>>> tail pages do directly point at the allocated memdesc (e.g., struct folio),
->>>> no?
->>>
->>> Sure. My understanding is that it is going to eliminate a need in
->>> compound_head() completely. I don't see the conflict so far.
->>
->> Right. All compound_head pointers will point at the allocated memdesc.
->>
->> Would we still have to detect fake head pages though (at least for some
->> transition period)?
-> 
-> If we need to detect if the memdesc is tail it should be as trivial as
-> comparing the given memdesc to the memdesc - 1. If they match, you are
-> looking at the tail.
+We switched from (wrongly) using the page count to an independent
+shared count. Now, shared page tables have a refcount of 1 (excluding
+speculative references) and instead use ptdesc->pt_share_count to
+identify sharing.
 
-How could you assume memdesc - 1 exists without performing other checks?
+We didn't convert hugetlb_pmd_shared(), so right now, we would never
+detect a shared PMD table as such, because sharing/unsharing no longer
+touches the refcount of a PMD table.
 
-> 
-> But I don't think we wound need it.
+Page migration, like mbind() or migrate_pages() would allow for migrating
+folios mapped into such shared PMD tables, even though the folios are
+not exclusive. In smaps we would account them as "private" although they
+are "shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+pagemap interface.
 
-I would guess so.
+Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
 
-> 
-> The memdesc itself doesn't hold anything you want to touch if don't hold
-> reference to the folio. You wound need dereference memdesc and after it
-> you don't care if the memdesc it tail.
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Cc: <stable@vger.kernel.org>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+ include/linux/hugetlb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hopefully.
-
-So the real question is how this would affect the transition period 
-(some memdescs allocated, others not allocated separately) that Willy 
-might soon want to start. And the dual mode where, whether "struct 
-folio" is allocated separately will be a config option.
-
-Let's wait for Willy's reply.
-
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 019a1c5281e4e..03c8725efa289 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1326,7 +1326,7 @@ static inline __init void hugetlb_cma_reserve(int order)
+ #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
+ {
+-	return page_count(virt_to_page(pte)) > 1;
++	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
+ }
+ #else
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
 -- 
-Cheers
+2.52.0
 
-David
 
