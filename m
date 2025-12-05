@@ -4,84 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCD4D3748A
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 19:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93F3BD3748A
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 19:42:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B6496B02B9; Fri,  5 Dec 2025 14:35:58 -0500 (EST)
+	id E53B76B02BB; Fri,  5 Dec 2025 14:42:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 067756B02BB; Fri,  5 Dec 2025 14:35:58 -0500 (EST)
+	id E2C3C6B02BD; Fri,  5 Dec 2025 14:42:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE5B76B02BC; Fri,  5 Dec 2025 14:35:57 -0500 (EST)
+	id D1C366B02BE; Fri,  5 Dec 2025 14:42:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DA2F76B02B9
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 14:35:57 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEF0AC02F6
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:35:57 +0000 (UTC)
-X-FDA: 84186422754.25.39EFCC4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2A5E340014
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:35:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X2q1VX+f;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id BCA356B02BB
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 14:42:31 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73195B7CB6
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:42:31 +0000 (UTC)
+X-FDA: 84186439302.08.F012B35
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 852DA140006
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:42:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="a/bdHesi";
+	spf=none (imf26.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764963749; a=rsa-sha256;
+	cv=none;
+	b=NLCF2JXz5ZuK3GT3tN7kqolVCmX3nb0aTQi/zSEdQAgmtudisqlNbIYOgq2UPPIauW4Ilz
+	rIVrNf6lpgergs+QaccKtMaWvt6NFAzvSVWjbWRc36tjJ9ZIdC6K2/vzkC708ZDU8Vcbcn
+	Lj28218ObX5O/bTbrn67SkrWp2UBQGI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764963356;
+	s=arc-20220608; t=1764963749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jYMIlr5sZlLtMHMecqz1/Hy+Y9yUyCbq7gJT/lE17rU=;
-	b=ulygfRU3kX6/8H4UiWJnWktkJSvnuheOCtCSQYdN6eX4LkxgVpIiv0ml+ZkwcpvGlrP7yr
-	AAZjqV+tJauIV0+VDlwkyxRs2SLNRsNFmuu2OuRkM8+vRiDckzIrq9V5h/4/f2vL0ZRbJm
-	CVco6CKe1zaMUIC4M2vgHbRp66JJbgY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Mgm/FMtyke96+ZxY7cquZNmO3PwSewNHSLs9FqvP1Zw=;
+	b=yidDf1547aLxC5tqVJxrItHsMj9XsB4nfm3V94cVSbDKA4x6g9XaWpcdZsEHSbx/VGj37P
+	IT/ox5BENEUcoBdbNcHXxtfi9oyoZ+KSy9q2Hu6prhESAetX5ZZKDojQQ2oEgamIIRXJxX
+	L0J4m25KyGDYlSFvBp5W/mYs1i3wMG4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X2q1VX+f;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764963356; a=rsa-sha256;
-	cv=none;
-	b=1rcnD50C80L7m1j6gkNhpb7YzCeXAm/Rn8iDc6XBMPO2jhSqAhnShj2UYo8Yj1eJmZlUeW
-	s5nJZkYHexo03QtYQKGjI3J6hpaN+9u0RjZQ+EHoD5sIBNOTe65NJy+oBR/mpNZ0XRETex
-	aQIry7k0ZjlUvgxurdRC1PANQW5nENk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8787A60122
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:35:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1E9C4CEF1;
-	Fri,  5 Dec 2025 19:35:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764963355;
-	bh=Jo4zjCKoG72AfS5e5YfO2hAlRtFfxB493GBbVpdnDZI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=X2q1VX+fPSakm2kn9lOkU7VM3+bYchl6VDy99IAV7b8yB95z6MriO7Qs46gLDOqHo
-	 oVrmeZK9xba0I/uQn8CnDddO0nr3aolWK+w4C4XbWCrsLyGhLqu7HQeDK3EuVU32lA
-	 Y7zp7m8oMQfT9XiIjV6788caylne2dgns3SNRxpU3dA1ot3uJBixNour2ORLUiRWM0
-	 24DkMadpERWJghahN2fWVcn25wDsAabQCp/G2bXCEVJ8swbuRjeQ+Hwj/vM4CY/m88
-	 /MyyYtHohUGvElnGU5d+r216P2lRT5wM9LilhOjAvnmJGxCoHL3ZPFcgMBX8uOgQAY
-	 2QYxp88BIquNA==
-From: SeongJae Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2025-12-06
-Date: Fri,  5 Dec 2025 11:35:39 -0800
-Message-ID: <20251205193540.75695-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="a/bdHesi";
+	spf=none (imf26.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=Mgm/FMtyke96+ZxY7cquZNmO3PwSewNHSLs9FqvP1Zw=; b=a/bdHesi5AkSwr4bQh57WNPXRe
+	W2wtAQOpBBAlcZei2JB8AuobRhAdof+Qt5iT4owdX6N6cKp4zyn9WbDfOpYDzT6a4wbMcbjERRy12
+	McbStsV5v73E52GB9/rc7S90e6eUxLj64tT9+irQrOTaQqWZC/e24LUKJPnvZBFZ6HvkTS9kfLgk4
+	Pft2YbM1xe5fEaecIe9i1HJXvh21A4BCViEf/hLCVvRBGqzj+HUfRCyR4xP1fBOPLQV+0o6tbuEqE
+	xZi5nZP2QCYLNLhZyw+9MD/Hgr3yKlIa1Am5XQ4AxoIaqDMNKJHO+dzWI+21eiR+BiXKZooCBdUzn
+	3TV/HJlQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vRbgm-00000009yBh-3a3v;
+	Fri, 05 Dec 2025 19:42:00 +0000
+Message-ID: <14afa916-565e-4c25-8e19-ddb87644ae8b@infradead.org>
+Date: Fri, 5 Dec 2025 11:41:58 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v24 25/28] riscv: create a config for shadow stack and
+ landing pad instr support
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Christian Brauner <brauner@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+ Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+ Zong Li <zong.li@sifive.com>, Andreas Korb
+ <andreas.korb@aisec.fraunhofer.de>,
+ Valentin Haudiquet <valentin.haudiquet@canonical.com>
+References: <20251204-v5_user_cfi_series-v24-0-ada7a3ba14dc@rivosinc.com>
+ <20251204-v5_user_cfi_series-v24-25-ada7a3ba14dc@rivosinc.com>
+ <b5feba48-7e7c-4ab9-a193-072f3980f525@infradead.org>
+ <aTMjS-Ok-DrJJjQY@debug.ba.rivosinc.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <aTMjS-Ok-DrJJjQY@debug.ba.rivosinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: puftr8pqqqznwf5o9uehojxod9dq9joe
+X-Rspamd-Queue-Id: 852DA140006
+X-Stat-Signature: 853ifda6kq6ded317i3zf838n7p86ssm
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2A5E340014
-X-HE-Tag: 1764963356-862799
-X-HE-Meta: U2FsdGVkX19QLltvbtJ7HgFSmRge38du9bqrHNyOfYfFdFhEemO+7rNuLtJwlo6uebcYQC98Knqi3nDGgWLfsDLCNPzLfCn5gJqJluPhZ7tTrw8n+PEBBZ1u3Kvmbms1amfW6CKMT0yRQhjWVtEyUvOp9sQqZEbeo3U4BIuBOmaWxctk4vci+2a02Dg6dY5WKNFoO6rRjPVSuS56acohAIAqifYMy76ffjOarY9Ro+WeqKue8VxsTgal0qGrtbJTWH43w0w36qrQ1DjQY8ranpYTDnoPPS9qZwm9JK5VH8R+9zRctOmlBD71BsB7TJALJT3XXg5spUYDFlqs4Eg5odgbudFriNnYLSPj3IxQ10q/7aFglnQzAbusC9hp2b9mqeeG6aj6GO95clA7sLHPJjCla0c9hXNX+mNpCWFC5a4I4NaE+e3nYw3y/3hzFtiw18xY0C7MZn+SbBAYIXJkVGYLj8T2+eSlv0+KZ9svFSbVyuse9M55mToxVogdS80u2GMFH8gL1STYuwa/wfZXb7O5jVr78GySDMZ65/jHRjuu4UNZD/0GWfHNRtcgElD/q1wEtgEtqHfi4kAQFQDJLRGCYVD7wpW4gebYrqFpa5gIEbeewxd8QX/XEu0oClUIaIh9bkf4hZgVftqYR0AEjajspZrwyaTCEzHi0HHiOKdJkHIv9HJC0jWxJhwOb9BTojJxLAa54m9aUeB21yBnDNauuo8FwuCdL4QErnbpoUfh/wVgS/6uICn/YG5pTrmO80dojJrBw3Xl5G0837YJWP2TJp3E+aTf/RxYahPbfm0Z58L0NS6Kw5vh3WpFdstbbKEs11AMzR2HPkh2/K+Klhwqntdlq0g9cYya/xtfvgOAF72dCQjZxm5C5zmVlH6U1q9CoIcu4APSPWmk83AcY7Ch085EbT/4ufV0EwXwp+8VhzXhD1Gr4WtnMzJl8NQLALhL/jcA7elpEHUSWil
- y595N2Q4
- YO5uhs0HQR6l56pAStfv8rmNVcesMAgRUF4PgPQX7jjMeAzbMY+whLEbdQf1YZzbWqxA4GvLt4O38MbN2Hvnc2sVFD91xqftB2XME8u9h+T2Rt9Dix47Fq39OeNY0uwsWMxWR0RRAhBtPrhdKg6wfVCskszmltiXAqg1WYHa+9Zy5JV/j5L23AMSdcFUq/9POUiaHyTtMsQow/xSRAOkF+wH1NEljOpYP/D1gxMg0Af1eNY8vtdh+9ZQP4QnohJ8b0xi3bLMxh3YIxbs/kyRp7EXZUh0QbH9P3o9iv0qcaQ+Ocsdb+18vGk2PSg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1764963748-224388
+X-HE-Meta: U2FsdGVkX1/Hox8XrWD/HESwMJNFR22FULion5GQbcZoJmKtqhpYKykLV+LZziPftwjc0rs/HckeEXTJ0q2tldEnMS9M86YG4dBZF8AWB3OarveY0TjIQs1C/lDb3HPkCeddovul1sTrjO+K+RAHPG3Lo7TdK500euHHQBMxN4fD+K1pCyr/kEfjJ7BO6ZZENDJeocxU5RIbBeRGoZuyi9OTK52KC+dGexDuwVUajgY0wLjVACKobpD8lh8M84ckZiL4z5yd1Wz05qTTT2nhhFbG+RpT14CWdnpnN8+/5F+EM4lZA2uIMQdW0KVpXW12o3yBpVULVQnNmY9jkql3sasU5092JC5TTaORzvMmqhcl0fuEX8UuhA+TyxKxFHlOmVP5u0E8ygp8Z67ua30LfGBBwkVzevC+gISBbgcFC/ZQOpVF/4JzxCU2BFARdaa/qyXhh6JBEoyYw06xiQeUf8f5ezY0+k2KbbuYnFAOzDfR7/LJYSyGTKsHCID9i3dyr0RVRNsm3e1LwNhlpz8l7hn46uPEzGYgGBDgCmJe+1L44hCtixX3hVNTOj92YNtB4+3O+Sqc4Y25MkhxaKyi+sZPY9UvuKF3jSfvo6e2kut0Qqe/TA7ZTwUeLqTpjEqBFhjZeQd3Ktfve/iAQgVN/tnrW7e2KQNIp1Ydi/ylebpw5RVn81b0bY9u01Rw98YXJI6iRj4MfNBcfNmtGu01yQp3Yb4EQPGwbWaGXkBNsjPZYuCMBly2GWIxzVCfNtRS+BIWpWJYDnUT1KYf3QDp7ZdhgFDea7Pa6EDIrV8W/JbdMMhvh0nTNpMNhhFyegU3f/jFNhYr4XKq6BY/TiZv0hd8dJOP0WI2CGN4ohOEcJc+X/srLWe/CgcDQzgAZmg5NjGl2mO1oq1tlu0sMFwi6eydpeuby7b13aqX64sZkhetW+1S9TEg+C2vV4/KS9dVOKjsJLGvuLcC95v+0fU
+ FdemtoqC
+ rqfFCyYz4KZhsagvCCx0Qfts8SWM9QRH6cFivpt9ILKxxmWJCkW1uAVXlH2WSacFOgUkYU4766HQRXK9YOtFLPMjhbCNSOJ9ovr/8u5dKf7w7AraeAXJyrPkDFChlKvNrQ3xtXm0qDR+Y3atrPqDEDwH90eapoZDeV+JRZ0Ry1453d1aETkd6Q6aFdAZCqAIfokXbVkV7O7mncIK47VYCfV12i+yiXlJPAtUfG1XhJ+N8kpiY5uq4vQnuIRXUL9qDeJH+tjcTqkNYUAYH32oGn20PaLhNi6sM+S9r/peL374T52I311r2EmnTmv2CvpXQkVlniwk8V98TvE04WhG4MxHE7+OVnvAHKj9bNIpyz/RB5y+RyZXO2NfvU6svXAYG6mLtj441DytZ/WqkuML2AEDQZVdlKLEgXe2fv3d4vStaCyqg5utnY6EIn9GDoxHkKaBiD9zDqX4TQYj/zpat5bPXJ9obxTXgDX6+O+i9JCeNiE1dWML+G91RJI2XYT7ev3hsk0bmjM6BucLQORvypMBlStp7yB5RGCBJ7xfEqi6KORisNCvntGZ+Yrc9hF/zW7A4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,55 +127,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
 
 
-This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
-(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
-for the week of 2025-12-08.
+On 12/5/25 10:24 AM, Deepak Gupta wrote:
+> On Thu, Dec 04, 2025 at 02:17:27PM -0800, Randy Dunlap wrote:
+>>
+>>
+>> On 12/4/25 12:04 PM, Deepak Gupta wrote:
+>>> This patch creates a config for shadow stack support and landing pad instr
+>>> support. Shadow stack support and landing instr support can be enabled by
+>>> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` wires
+>>> up path to enumerate CPU support and if cpu support exists, kernel will
+>>> support cpu assisted user mode cfi.
+>>>
+>>> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS`,
+>>> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
+>>>
+>>> Reviewed-by: Zong Li <zong.li@sifive.com>
+>>> Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
+>>> Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
+>>> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+>>> ---
+>>>  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
+>>>  arch/riscv/configs/hardening.config |  4 ++++
+>>>  2 files changed, 26 insertions(+)
+>>>
+>>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+>>> index 0c6038dc5dfd..f5574c6f66d8 100644
+>>> --- a/arch/riscv/Kconfig
+>>> +++ b/arch/riscv/Kconfig
+>>> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
+>>>
+>>>            If unsure, say N.
+>>>
+>>> +config RISCV_USER_CFI
+>>> +    def_bool y
+>>> +    bool "riscv userspace control flow integrity"
+>>> +    depends on 64BIT && \
+>>> +        $(cc-option,-mabi=lp64 -march=rv64ima_zicfiss_zicfilp -fcf-protection=full)
+>>> +    depends on RISCV_ALTERNATIVE
+>>> +    select RISCV_SBI
+>>> +    select ARCH_HAS_USER_SHADOW_STACK
+>>> +    select ARCH_USES_HIGH_VMA_FLAGS
+>>> +    select DYNAMIC_SIGFRAME
+>>> +    help
+>>> +      Provides CPU assisted control flow integrity to userspace tasks.
+>>
+>>                CPU-assisted
+>>
+>>> +      Control flow integrity is provided by implementing shadow stack for
+>>> +      backward edge and indirect branch tracking for forward edge in program.
+>>> +      Shadow stack protection is a hardware feature that detects function
+>>> +      return address corruption. This helps mitigate ROP attacks.
+>>> +      Indirect branch tracking enforces that all indirect branches must land
+>>> +      on a landing pad instruction else CPU will fault. This mitigates against
+>>> +      JOP / COP attacks. Applications must be enabled to use it, and old user-
+>>> +      space does not get protection "for free".
+>>> +      default y.
+>>
+>>       Default is y if hardware supports it.
+>> ?
+> 
+> No default Y means support is built in the kernel for cfi.
 
-On the week of 2025-12-08, I will travel Japan for OSSummit Japan and LPC.
-Attending video calls on the usual Pacific time-optimized time slot during the
-week will be challenging for me.  So let's do the chats for the week without
-the pre-booked time slots, but as an unlimited and possibly in-person version.
-That is, let's make it can happen at any time and any place (not only Google
-Meet but also somewhere in Tokyo, Japan) as long as we can.
+  (if the compiler supports it?)
 
-If you have any DAMON topic that you want to discuss with me during the week,
-send an email to sj@kernel.org saying you have a topic to discuss, with
-when/where you want to meet.  Then we can further adjust our schedule.  If you
-also attend OSSummit Japan or LPC in person, you are also very welcome to just
-reach out to me in person at any time/place without making appointment.  Then,
-we can have an instant in-person DAMON Beer/Coffee/Tea chat.
+> If hardware doesn't support CFI instructions, then kernel will do following
+> 
+> - prctls to manage shadow stack/landing pad enable/disable will fail.
+> - vDSO will not have shadow stack instructions in it.
 
-So next time slots including six virtual-only ones are as below.
+Thanks for the info.
 
-(week of 2025-12-08 is all reservable for virtual and/or in-person chats in
-Tokyo, Japan)
-2025-12-22 (Mon) 18:00 PT (not yet reserved)
-2025-12-24 (Wed) 09:30 PT (not yet reserved)
-2026-01-05 (Mon) 18:00 PT (not yet reserved)
-2026-01-07 (Wed) 09:30 PT (not yet reserved)
-2026-01-19 (Mon) 18:00 PT (not yet reserved)
-2026-01-21 (Wed) 09:30 PT (not yet reserved)
+-- 
+~Randy
 
-Please reach out to me (sj@kernel.org or whatever) to reserve the
-not-yet-reserved time slots for your topics.  The reservation is made in a
-First-Come First-Served way, and I will send a Google Meet link to
-reservation-confirmed attendees.
-
-Please note that other time slots are also available on demands.
-
-Shared Calendar
----------------
-
-You can get the schedule via this shared Google Calendar:
-https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
-
-You can also get the past and upcoming schedules via
-https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
-
-
-Thanks,
-SJ
 
