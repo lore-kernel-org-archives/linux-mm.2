@@ -4,115 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9251D374B7
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 23:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02573D33995
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 23:32:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 010626B0320; Fri,  5 Dec 2025 18:32:22 -0500 (EST)
+	id 2D0046B0321; Fri,  5 Dec 2025 18:32:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F29DE6B0321; Fri,  5 Dec 2025 18:32:21 -0500 (EST)
+	id 2A6CF6B0323; Fri,  5 Dec 2025 18:32:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E669A6B0322; Fri,  5 Dec 2025 18:32:21 -0500 (EST)
+	id 1E4A76B0324; Fri,  5 Dec 2025 18:32:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D1CC06B0320
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:32:21 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8EF7D896EC
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 23:32:21 +0000 (UTC)
-X-FDA: 84187018482.10.2AFA15C
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C78611A0005
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 23:32:19 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fZA/Ano6";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764977539; a=rsa-sha256;
-	cv=none;
-	b=phPV+auuxpS81YY/smXmjf4m00BrsgJ6LQD1er2IrSLCSR6BaBkmGaen4emhYCK6b6VE2Z
-	DijaLM0NY70tgRV/oequ6UOnSyF+0ixHz8FGxnLxrl0QcSlmu1Mj6oHbBA1pgo2mQaUD2f
-	Knswi2i0hIhD0t6I1IuyusiL08P2m90=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fZA/Ano6";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 082036B0321
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 18:32:23 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1834C0380
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 23:32:22 +0000 (UTC)
+X-FDA: 84187018524.11.6D471F5
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D85C51C000E
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 23:32:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R6vFyLQL;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764977539;
+	s=arc-20220608; t=1764977540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DjASHCs44SnDjJeYh3qYw2ycI6GE9TKZGAruEoGfPyQ=;
-	b=tf6hQJZxbhaGGHFjOgZ1ZAIrlDkI6uLm/AeBKHGLzdbqWIyStQa7HMwjPTwllhETAdKXQI
-	lqtyxof9mCQPWKC+uh56TBgwl9x66f16iRbgTgGc87e+ZwfcMU/GUJcZ29LCrk4ORxKHzi
-	1l/5n/X+I+vEauUFxF8fbZ38GYS5/Rg=
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-78c2e5745bdso8073717b3.0
-        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 15:32:19 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xVNIZshLyuSr21iBy7gYlmgdiF5+BHlPixcUrdxDgUM=;
+	b=B3DakQhx8jIOnSD4Hwu6L9+SuM02dg4VqMDoInlLWcSbHXJaQvjVzfEYC8F5Zu37iwjzXX
+	wRm2VspcUnu81h+qo6mDQCjoOgT1/9oIIrGMptoJ8zsRihpVQAFKaBh2huRmxzMZmqkVyM
+	7oU4WtO/qWrhlAmGma3gDD1n+ZcODTc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764977540; a=rsa-sha256;
+	cv=none;
+	b=pg41HgpyPXrckWdA3ORXXGckmktQ91oYk9rBhJRP4F5IP0PMD0gUrb7Xy6fvjR090Cum3E
+	PBVIxUnli7SvMV9/69OCliVitKLBMy3JVC5k4LVcPgiwDB59fF9yZHvlsw+Y36kBzEaw5U
+	L+4DhFadTfoXDny8ePPQ8u3yoeQ6Ex4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R6vFyLQL;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-63f996d4e1aso3028474d50.0
+        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 15:32:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764977539; x=1765582339; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DjASHCs44SnDjJeYh3qYw2ycI6GE9TKZGAruEoGfPyQ=;
-        b=fZA/Ano6ZE+c242nhda1OoZHMIvbM73ndypYmSbreismpT7vgyxcO30B9yWB4+zffW
-         xR3mxROMQkbRPs3QJnuCi+HsZV+ps+esk5WgS/H0C3oH4UzEkgis+XAQZfXSVureu9jo
-         emOG7APPqqfU/nqzc+UInCk9Qymxkrt9a2o+scRzic9MY1Q1XM430P2J/B0qAvcdBzCJ
-         eag/zZawl76/yt+paqwHGDVHpX8jlC6V15bXvfcg7w4GIROtI4Hw+2ETP72wfc4IQpPY
-         7c67nwmwMDRKJZJ0nvqQLSkh6UWFjlx2inshadxLQJjSGLbcSeK3KK6C8PhiCnemaEdM
-         GWAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764977539; x=1765582339;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764977540; x=1765582340; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DjASHCs44SnDjJeYh3qYw2ycI6GE9TKZGAruEoGfPyQ=;
-        b=deIfXMS9xt0ZxWeuE7gBXTAMNIZnxj0LoYC468nqfuFVWUcwkTbsuWpIfICsDzMSYS
-         nH1RFoqcB29Nwpf+TThkhQOVYnCjY05zB28a8DymzxqxLW1P36cy8+QJyPb/FgFZPemB
-         mWtS7u0PJ8ZvEHVyn/F8LyNs3XspahVtmUnlM2aWfazivDMrhkJWy9Kn/atITjQ4ijWe
-         WNSGD8r7AfT0XDBCgGc0Tsp4JUY+0dhQzeLqnpxXcexe6a9aLH1nFpBNyXMvjCENpuql
-         nEeDKuis0IPbmDKuzMrHIf4XAZSZPxyI+JUMCBMJoU09QENmtIUfbZAGNCkgN+myrBl+
-         aAYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFneWItX15n5jkK6Ys/idN7+Z5TCKt4W4XGTtvCL5VQXK8dv2Vc0aoQFPAwJ4kgz51Bf9QNZpWEw==@kvack.org
-X-Gm-Message-State: AOJu0Yx24dWEyoB0WauAz+9qKTNIuvTAdcsI8NS8DfB/FITu/yg/At11
-	p2a6EO0ETYIIv4/PyVquzslCzGy1BBc8wt0WqfLfFTLDtX7p1vmJ7ZEl
-X-Gm-Gg: ASbGnct3ehYooG4vNoE5yA+DHHLnz+0GYtUL68HsuBMbYZ1lcFqAcNJjr6rlR68oeXW
-	KiXmM4wUgXUBoIAM5zeZZU+bebSXdyWycAF30DoiDv7B/P94sX4EtTUJegiBLVOrWhhWZZpaCei
-	T+OSODjxscuvjlCBgeRBlfuA+YNdEUnX4zmw3sX2UydrX0mBj7B/WmHsyArqMfVVcPZm9qV0BMo
-	f5ops6wpjtxs7fYaQA5SDZYLkmsmiXUwCTTO2RConfrzcHOYkdTvbrfnt1vijzKTe/f7TBpJt/u
-	twOC+BNUeo03qgEVgaXvcVgnpjFGqwr1usDzkObzyXD7tzo/cnnpnX2VcIynuz6bx1USR723oRX
-	2wRwCS8plmoeQJmuW4M2HqXONTBuc/PbqYsx4fUqySf6dQioyEwZB81qZ6T/so++XTC5jq6ftsF
-	4jkOickdd1ZMIR42xyN9h0AA==
-X-Google-Smtp-Source: AGHT+IHM12t6gDjzVKLcRmx1gB6wbrzIhaFWpatYaAHdWKPgKCT1195aVWoslNVYKST9kzwC9iOyBA==
-X-Received: by 2002:a05:690c:7002:b0:786:4f8a:39b5 with SMTP id 00721157ae682-78c33c9797amr14147897b3.59.1764977538563;
-        Fri, 05 Dec 2025 15:32:18 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78c1b4d66fesm22045327b3.23.2025.12.05.15.32.17
+        bh=xVNIZshLyuSr21iBy7gYlmgdiF5+BHlPixcUrdxDgUM=;
+        b=R6vFyLQLq0nFkzXtBz56Jc6nAC1J4zbEM33tQd/g2V6BlFKiH1l5GaO6rKAmoWu3WK
+         euAB+oEE9bPWoCT+xy3aPMU9KfbR8ygunwiExMq7fMUndBEjBXm4x9JxKcv/bwqwIeX0
+         RmcoHwQ8bU/RGsYyrgimUTr6Z9AZHYqmoyNY3q+wHFoEN8PM29ffoQIE/1Abn4TQrf4G
+         p22XQ/6a1gTAIchz2x9gDvWnkeHZdihRmDZ86jyKN8eC6LCICSoh0pL6L+sGEnCzKzfm
+         /6q3NVeOeHCBdQODPJrlPzFqHV84hWtIF72Gq0HFtBOHe+gBqI8viSmeI733Xe2XGfDm
+         /E3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764977540; x=1765582340;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xVNIZshLyuSr21iBy7gYlmgdiF5+BHlPixcUrdxDgUM=;
+        b=GP4pPObqwlAXYVhpDgkf02GJDRQvO+PCmRL1z1z/4kSUp61L+CXK3jHWIjmXGVpw3c
+         AtogAYi0xraJ/t8Nk7db9aEWtCsytlq6zLK+bD5zoW6kSurMyZfZVp1MPGFJr+Q16COC
+         6L5yQTqEvUT/7RrIKzp2BgIvO0XrGubtDJPYADW53ARoilMjmCZCICOwFuaFbS1uV2zB
+         fXwJnklajX1EJy+4WzpJ1nxLSeVR8/IdphcfYFZts0rNRhhBRXkuo7hcedyGMhPBg1RI
+         YDAejqi8OgdIBDRHR6c2dOTwMy+JIJrd6Lv/JD+mxeZlQ6ZalTABGJk6GdvYL2f8ykbN
+         qseQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUOKOckTwLRJnWlSyTE4YkTWaVGH4WuIGxZLN4ZbBevOKrQ/Bgk3K9JCDmJ+cngXdt30UP4GuocTA==@kvack.org
+X-Gm-Message-State: AOJu0YyRP1wKIEFcKXteRHVUpnlntNL4Y6PX0fGxb+cwvunIevktqBky
+	4LdeXXYXktMAHPia0v+hKCxH4GCHjTUCb13GTdT8DXJ8lIBkfcUvhxcN
+X-Gm-Gg: ASbGnct6YWGQcspzIu5FEuBX2zAXi/hsGY5rN0Dd1AJQ8hm35CeDBWR6LMxSZWQG0fm
+	lyVrzR/wWYS6w6Z2vmI3b+xtttr+x6NJI2QHuwbIcDGdmHZVn0W3iK5uMJ+Frry0Rhh5jLUwQBw
+	yQjRBtsvMEgqPHt2J8C/wL1OAKYqr8RqCQ92LaUyhum3iGnvv+1pjKD8KjLusYP0BEU+JMRc/fJ
+	Wq3CmcdQiPvZceZVZeRLZErOjz8pi0Bd8HgM2GUV7Gs+C8NOTYaDd8WJAyxJWnMEe9USYO7hz4R
+	3oEZ6bytKTxIT7Vyp3b3WC63ndBtXunsAI1JEZRovwJP4Ao1ZOMD8pclLC+pYIISSZK1QrqtBo6
+	QJ8jVBPay20vs04x7ycAba2bcNTrz4U1iq14cSQtP6p+g4UMzVwXuGpQ+BR/vniTaR7wYJkllpH
+	Us8mNl/T6EyqZLrXIQV+8qSA==
+X-Google-Smtp-Source: AGHT+IGQ5c7kUmmwqDGLvrjuZJ0aZLEBVHhDBqk12LjM5CR3AT6ty5CjA/zMORi2krLA1PmCDUq99w==
+X-Received: by 2002:a05:690e:1401:b0:644:41e5:dea1 with SMTP id 956f58d0204a3-6444e756d86mr556035d50.4.1764977539865;
+        Fri, 05 Dec 2025 15:32:19 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:72::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6443f2b80casm2356630d50.9.2025.12.05.15.32.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 15:32:18 -0800 (PST)
+        Fri, 05 Dec 2025 15:32:19 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: willy@infradead.org,
-	david@kernel.org
-Cc: linux-doc@vger.kernel.org,
+To: 
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	kernel-team@meta.com
-Subject: [RFC LPC2025 PATCH 0/4] Deprecate zone_reclaim_mode
-Date: Fri,  5 Dec 2025 15:32:11 -0800
-Message-ID: <20251205233217.3344186-1-joshua.hahnjy@gmail.com>
+	linux-trace-kernel@vger.kernel.org
+Subject: [RFC LPC2025 PATCH 1/4] mm/khugepaged: Remove hpage_collapse_scan_abort
+Date: Fri,  5 Dec 2025 15:32:12 -0800
+Message-ID: <20251205233217.3344186-2-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251205233217.3344186-1-joshua.hahnjy@gmail.com>
+References: <20251205233217.3344186-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4oaj4q5m8txwpsgj6nx1sh8k85nmidag
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D85C51C000E
+X-Stat-Signature: 7getmxcirxkw7s38nfcoofn9padgxwhs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C78611A0005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1764977539-625819
-X-HE-Meta: U2FsdGVkX1+APw7rQCqBC0iDzP/7iu53FdQ4Lo0N8bIpOpCyayA0kNqhofM6f8blr5GMm/iAx7iuaoNXyP0kZbdfA8YoWxtqr/6j+cX8UrucGJb5oQo5Y8FxmMBdLmxTMhmUE3nWXcJcfk2oM/QqPjAhb95TMtp/rUjyErmjoC7UnTmJm+4b4ST9x0XlmTntJs1DPhNxz/+txbYtM367OqtGdaXNLigvboH5y58QtcmkTRtfRa52/kcBUs2SZy6+t82D82bbSq9A2TKTE8sNuSuM4e6PjE224ke72VhRwh5c2JVr3lxwDjg8LWZJJJGE6leN8/XF8o2SPB5CH5BeuA8S3Om4U32oHY5+ObwRh7ktvaWbXtpBWEg8dZiSCvIMcJnUwnCOf2zM3Vrk9nPBMfWMYeHL50BUOW4vxupn98Is1XtOOg0o9y23KsT1C/X8dq7tNoA74cWkO7JnO+Z/EN3Kpc6VWJuM++QfMuBMtQP0RVxvWmTt7yWmq/6C6ZqV9hL6ZNL5m5EvLw6Y9PwS1Rv/tFXuceEtc/3zzrM6T6nYiEntnWOVUtQPKjLmVkXisHBEkRdXrtljcc61yd+Oub14ChbVJEp5318ssKczil+6L6CvUy+AELPKvIKqYG6GZSVhPzrkKILT0smsCjnskzPXWBZ6coHSJYTsQCDRvIUaNFM9mFDPxTSEZv7VRwpn0TYs+C+wSwDxkaw+2zuDr0CrWGH3b6K7EagTXiRKkovp2RAlHNojISsMj3WWO61j7tuhH4w8GtlcCVbYh5W7Wq2cXYEdzJdWrMz81nrW5t06+1H86emanjmHToczqECHqETu9WBGdqGElDSjOhqDYaR/+K+KGXCJN2ko7dHPsjay9KZAkzmOEZ1o0OKGrnxdsViq+RAhUxycVgCZk/hO5S0ZR19xmlWv3Ewd2/ropq9ptUIHO+2Dn4Z+d0icqqkoGWZoGhBgmNvbjFqJk1J
- wJee9xNb
- RmI5TDEheUQPpuNQttTslI7hhiLqhco57EraqztUUyNqZpAxLSFNgX4wC+4GIgIGPbaz2x6XxKbywujraVDxj3jPTEWny1m/4L/rIvPK78wK1syijXSoXM44aETDY8lC7l+yfBdYzPVtbkDoQ1oxlMpvojU6XvO8+zoTpssqMyoEqXVV9u5dh+Ksbb8C1K+0lRB6POBPqlo7V7qJzqHzfK+KoTnXypKL57tL68lYZCto0NgrSGkHwrMXrPvTalOMMm+h51MbTJbQyJzfij0d02CeZVWcaL/Yisz0AZms2QcTpN6Ta47vW94fsfzW7MS9t8mOfTyrWOev0Nb9iGlHGTE0sWz3pLxs6qtNt/Lw5c5dRFmsH22HDMZ8aPf+BM3Mb88jAq82DBcljxWcCp0+zsVBB0L/KZV28bAvJMb52I+ZuwFE3/93e7aSCccQpYtYSmLYD2O9U222X8O8njKUikoiswaPayiWJke5vDBalqKPR+BtB6/xsulyg/P5uVJJfjuEwiHqBJWHl0gjW1u3MDHr4BXEShqcc+xNPiYr9qczAzv6Uk6rTZ4MEycLw5VEKktH+jl6i+NHI3/YAyWwbdhCZRtMZXTaEqNeM/fVN+GeV4sNpIV2iB2/lLik3MvcjJXoK1FpeYN3yiU+eASoro8EghNmKLmDtDsx5DFxXfVldEHM=
+X-HE-Tag: 1764977540-55458
+X-HE-Meta: U2FsdGVkX18lsTPc3iPcn2q+Qo9OFuP8hO844ECDGeyLjWA8QdlEnzdLwVuCAfSGqJ3OHiQmtmWvPnGa6AUaNVk3+RKOYQIkH2xoarfzw/19D+/+065NuG1PBRJLhg1B92095Px9ey9ZI3jo/WE0E662bdxmQXYbKmIbrn4HdTK37jjRyHqJyuB5SO2IYUr1Cgv5ddNgKlwK0W10PkcIOb7HSScJnuAocJCf5264rIyccpZmoAw8pAq51UZ+3qLCwxXRw06MHblOHAsbtZ0OpbRma7JjuC8G9g+nj7fTuUUNieixa7I7V9Cb0OjdzyEz1sqx1lxJHaBvemK2lURRUnYNJKPO9Bn4vWrnZImWv251TeTsxHMceeikVfg5+jUzD8ZnPshEKeDMrL5eaGITUXv1iOKWMv01eWrmCBUYyUdJkF9UKjDGMoWc1jBkUc3/qFHND/qp733eU1smY1/GlKn93ynVEVRzaQTGnJjTa3hlnUdQ+eVd2ANwu4E586HgFofDU92vJFN5tuUARbOfo/apgtHJC4IH4fK6GO4zrGODuR0V6koSrl3gNG9im7ZnE9Gv2EEEmfyy84mePhGqWeRl0rIgmbjeq38Pvu0bjU0npAW4zRHbb+bTQB+9S0UBj+HTtzfsFg/cL56xnB9Sak2S8uACu91P5KHe3Bt+qTT9ptj6nVErnsVVoom2GV74a+vdDxdrTyYkLgQb5XrhIBw94TGfo8P4SL/xprHG1JlHGOG8/WjyjhxLYwpLlBpZwmqRs+c3zG0B7e97GgtQc7qNXcTa4TbH/c67zEp83ESAK5aykEI5t2dIMy+qOE9yUEk7HWXCwUYAAIOz3ip9I8L6DYcmnkMtKIXmDgnf2yj+hoQJnxkknsuCwhnI6ZuYQ7QxLXXOKjjkCWvUYu8rTLB22VoTHLVxcexQWZfRhKQV1iBv+7R/sjglQKMhsQjrtF+BkYmbOyLxe2JkaAm
+ hqv7p37N
+ Q1Xc9UsLtBptXjgi5Sjxh+h6hpGOm7pSxdKl62zrrT0IY6UqK+RLhDsczkjeQjumMEVCYx3MVUUO98MLWFNoHRvR/oHmLlFiRTVVwaA76Ml/IiPnrycnaA4nyH/P6GIyasaRPHyRC6Q0C6XFImBx/YhcWsixbe3aigxLwVy+Shs3jrNTITfzdZRxXokCu1oCA2qOoHF8BphcXF9wF493z528pRZBpgGEawSdmMzrVdT0xasEzTXNu99JJ6P1bUpOZn90jY10RNiAG3G7KhnDm//MhTlcIm7jkjBSzEZpFD6o0QuIQ8DULPluY5VcP+Er3TMSAUTeDcsgnm76Jv1jGzhVtNFN6QYcUVixbdK6aAeis020N5061hUMoFC6chM7pehVI9g4UDjVfZ5lYY8EO1PxxRJp3tiYrNDLOWU/ApK3fRyVEB25VuY1NitjRiJnJEegu9xXo9t7mGCrdTd+yBhj/er3vHMowhFxe47PryEsoGxFJSj6miVH58OPLM6DCV2JTpNj4MtElsEmyFMyNm+BCnJ1RmMORo1EXX48n8AXyqPVIikK7y0q7+5cmBGniGZhnrlPqHhKsxzI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,171 +134,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello folks, 
-This is a code RFC for my upcoming discussion at LPC 2025 in Tokyo [1].
+Commit 14a4e2141e24 ("mm, thp: only collapse hugepages to nodes with
+affinity for zone_reclaim_mode") introduced khugepaged_scan_abort,
+which was later renamed to hpage_collapse_scan_abort. It prevents
+collapsing hugepages to remote nodes when zone_reclaim_mode is enabled
+as to prefer reclaiming & allocating locally instead of allocating on a
+far away remote node (distance > RECLAIM_DISTANCE).
 
-<preface>
-You might notice that the RFC that I'm sending out is different from the
-proposed abstract. Initially when I submitted my proposal, I was interested
-in addressing how fallback allocations work under pressure for
-NUMA-restricted allocations. Soon after, Johannes proposed a patch [2] which
-addressed the problem I was investigating, so I wanted to explore a different
-direction in the same area of fallback allocations.
+With the zone_reclaim_mode sysctl being deprecated later in the series,
+remove hpage_collapse_scan_abort, its callers, and its associated values
+in the scan_result enum.
 
-At the same time, I was also thinking about zone_reclaim_mode [3]. I thought
-that LPC would be a good opportunity to discuss deprecating zone_reclaim_mode,
-so I hope to discuss this topic at LPC during my presentation slot.
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ include/trace/events/huge_memory.h |  1 -
+ mm/khugepaged.c                    | 34 ------------------------------
+ 2 files changed, 35 deletions(-)
 
-Sorry for the patch submission so close to the conference as well. I thought
-it would still be better to send this RFC out late, instead of just presenting
-the topic at the conference without giving folks some time to think about it.
-</preface>
-
-zone_reclaim_mode was introduced in 2005 to prevent the kernel from facing
-the high remote access latency associated with NUMA systems. With it enabled,
-when the kernel sees that the local node is full, it will stall allocations and
-trigger direct reclaim locally, instead of making a remote allocation, even
-when there may still be free memory. Thsi is the preferred way to consume memory
-if remote memory access is more expensive than performing direct reclaim.
-The choice is made on a system-wide basis, but can be toggled at runtime.
-
-This series deprecates the zone_reclaim_mode sysctl in favor of other NUMA
-aware mechanisms, such as NUMA balancing, memory.reclaim, membind, and
-tiering / promotion / demotion. Let's break down what differences there are
-in these mechanisms, based on workload characteristics.
-
-Scenario 1) Workload fits in a single NUMA node
-In this case, if the rest of the NUMA node is unused, the zone_reclaim_mode
-does nothing. On the other hand, if there are several workloads competing
-for memory in the same NUMA node, with sum(workload_mem) > mem_capacity(node),
-then zone_reclaim_mode is actively harmful. Direct reclaim is aggressively
-triggered whenever one workload makes an allocation that goes over the limit,
-and there is no fairness mechanism to prevent one workload from completely
-blocking the other workload from making progress.
-
-Scenario 2) Workload does not fit in a single NUMA node
-Again, in this case, zone_reclaim_mode is actively harmful. Direct reclaim
-will constantly be triggered whenever memory goes above the limit, leading
-to memory thrashing. Moreover, even if the user really wants avoid remote
-allocations, membind is a better alternative in this case; zone_reclaim_mode
-forces the user to make the decision for all workloads on the system, whereas
-membind gives per-process granularity.
-
-Scenario 3) Workload size is approximately the same as the NUMA capacity
-This is probably the case for most workloads. When it is uncertain whether
-memory consumption will exceed the capacity, it doesn't really make a lot
-of sense to make a system-wide bet on whether direct reclaim is better or
-worse than remote allocations. In other words, it might make more sense to
-allow memory to spill over to remote nodes, and let the kernel handle the
-NUMA balancing depending on how cold or hot the newly allocated memory is.
-
-These examples might make it seem like zone_reclaim_mode is harmful for
-all scenarios. But that is not the case:
-
-Scenario 4) Newly allocated memory is going to be hot
-This is probably the scenario that makes zone_reclaim_mode shine the most.
-If the newly allocated memory is going to be hot, then it makes much more
-sense to try and reclaim locally, which would kick out cold(er) memory and
-prevent eating any remote memory access latency frequently.
-
-Scenario 5) Tiered NUMA system makes remote access latency higher
-In some tiered memory scenarios, remote access latency can be higher for
-lower memory tiers. In these scenarios, the cost of direct reclaim may be
-cheaper, relative to placing hot memory on a remote node with high access
-latency.
-
-Now, let me try and present a case for deprecating zone_reclaim_mode, despite
-these two scenarios where it performs as intended.
-In scenario 4, the catch is that the system is not an oracle that can predict
-that newly allocated memory is going to be hot. In fact, a lot of the kernel
-assumes that newly allocated memory is cold, and it has to "prove" that it
-is hot through accesses. In a perfect world, the kernel would be able to
-selectively trigger direct reclaim or allocate remotely, based on whehter the
-current allocation will be cold or hot in the future.
-
-But without these insights, it is difficult to make a system-wide bet and
-always trigger direct reclaim locally, when we might be reclaiming or
-evicting relatively hotter memory from the local node in order to make room.
-
-In scenario 5, remote access latency is higher, which means the cost of
-placing hot memory in remote nodes is higher. But today, we have many
-strategies that can help us overcome the higher cost of placing hot memory in
-remote nodes. If the system has tiered memory with different memory
-access characteristics per-node, then the user is probably already enabling
-promotion and demotion mechanisms that can quickly correct the placement of
-hot pages in lower tiers. In these systems, it might make more sense to allow
-the kernel to naturally consume all of the memory it can (whether it is local
-or on a lower tier remote node), then allow the kernel to then take corrective
-action based on what it finds as hot or cold memory.
-
-Of course, demonstrating that there are alternatives is not enough to warrant
-a deprecation. I think that the real benefit of this patch comes in reduced
-sysctl maintenance and what I think is much easier code to read.
-
-This series which has 466 deletions and 9 insertions:
-- Deprecates the zone_reclaim_mode sysctl (patch 4)
-- Deprecates the min_slab_ratio sysctl (patch 3)
-- Deprecates the min_unmapped_ratio sysctl (patch 3)
-- Removes the node_reclaim() function and simplifies the get_page_from_freelist
-  watermark checks (which is already a very large function) (patch 2)
-- Simplifies hpage_collapse_scan_{pmd, file} (patch 1).
-- There are also more opportunities for future cleanup, like removing
-  __node_reclaim and converting its last caller to use try_to_free_pages
-  (suggested by Johannes Weiner)
-
-Here are some discussion points that I hope to discuss at LPC:
-- For workloads that are assumed to fit in a NUMA node, is membind really
-  enough to achieve the same effect?
-- Is NUMA balancing good enough to correct action when memory spills over to
-  remote nodes, and end up being accessed frequently?
-- How widely is zone_reclaim_mode currently being used?
-- Are there usecases for zone_reclaim_mode that cannot be replaced by any
-  of the mentioned alternatives?
-- Now that node_reclaim() is deprecated in patch 2, patch 3 deprecates
-  min_slab_ratio and min_unmapped_ratio. Does this change make sense?
-  IOW, should proactive reclaim via memory.reclaim still care about
-  these thresholds before making a decision to reclaim?
-- If we agree that there are better alternatives to zone_reclaim_mode, how
-  should we make the transition to deprecate it, along with the other
-  sysctls that are deprecated in this series (min_{slab, unmapped}_ratio)?
-
-Please also note that I've excluded all individual email addresses for the
-Cc list. It was ~30 addresses, as I just wanted to avoid spamming
-maintainers and reviewers, so I've just left the mailing list targets.
-The individuals are Cc-ed in the relevant patches, though.
-
-Thank you everyone. I'm looking forward to discussing this idea with you all!
-Joshua
-
-[1] https://lpc.events/event/19/contributions/2142/
-[2] https://lore.kernel.org/linux-mm/20250919162134.1098208-1-hannes@cmpxchg.org/
-[3] https://lore.kernel.org/all/20250805205048.1518453-1-joshua.hahnjy@gmail.com/
-
-Joshua Hahn (4):
-  mm/khugepaged: Remove hpage_collapse_scan_abort
-  mm/vmscan/page_alloc: Remove node_reclaim
-  mm/vmscan/page_alloc: Deprecate min_{slab, unmapped}_ratio
-  mm/vmscan: Deprecate zone_reclaim_mode
-
- Documentation/admin-guide/sysctl/vm.rst       |  78 ---------
- Documentation/mm/physical_memory.rst          |   9 -
- .../translations/zh_CN/mm/physical_memory.rst |   8 -
- arch/powerpc/include/asm/topology.h           |   4 -
- include/linux/mmzone.h                        |   8 -
- include/linux/swap.h                          |   5 -
- include/linux/topology.h                      |   6 -
- include/linux/vm_event_item.h                 |   4 -
- include/trace/events/huge_memory.h            |   1 -
- include/uapi/linux/mempolicy.h                |  14 --
- mm/internal.h                                 |  22 ---
- mm/khugepaged.c                               |  34 ----
- mm/page_alloc.c                               | 120 +------------
- mm/vmscan.c                                   | 158 +-----------------
- mm/vmstat.c                                   |   4 -
- 15 files changed, 9 insertions(+), 466 deletions(-)
-
-
-base-commit: e4c4d9892021888be6d874ec1be307e80382f431
+diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+index 4cde53b45a85..1c0b146d1286 100644
+--- a/include/trace/events/huge_memory.h
++++ b/include/trace/events/huge_memory.h
+@@ -20,7 +20,6 @@
+ 	EM( SCAN_PTE_MAPPED_HUGEPAGE,	"pte_mapped_hugepage")		\
+ 	EM( SCAN_LACK_REFERENCED_PAGE,	"lack_referenced_page")		\
+ 	EM( SCAN_PAGE_NULL,		"page_null")			\
+-	EM( SCAN_SCAN_ABORT,		"scan_aborted")			\
+ 	EM( SCAN_PAGE_COUNT,		"not_suitable_page_count")	\
+ 	EM( SCAN_PAGE_LRU,		"page_not_in_lru")		\
+ 	EM( SCAN_PAGE_LOCK,		"page_locked")			\
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 97d1b2824386..a93228a53ee4 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -40,7 +40,6 @@ enum scan_result {
+ 	SCAN_PTE_MAPPED_HUGEPAGE,
+ 	SCAN_LACK_REFERENCED_PAGE,
+ 	SCAN_PAGE_NULL,
+-	SCAN_SCAN_ABORT,
+ 	SCAN_PAGE_COUNT,
+ 	SCAN_PAGE_LRU,
+ 	SCAN_PAGE_LOCK,
+@@ -830,30 +829,6 @@ struct collapse_control khugepaged_collapse_control = {
+ 	.is_khugepaged = true,
+ };
+ 
+-static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
+-{
+-	int i;
+-
+-	/*
+-	 * If node_reclaim_mode is disabled, then no extra effort is made to
+-	 * allocate memory locally.
+-	 */
+-	if (!node_reclaim_enabled())
+-		return false;
+-
+-	/* If there is a count for this node already, it must be acceptable */
+-	if (cc->node_load[nid])
+-		return false;
+-
+-	for (i = 0; i < MAX_NUMNODES; i++) {
+-		if (!cc->node_load[i])
+-			continue;
+-		if (node_distance(nid, i) > node_reclaim_distance)
+-			return true;
+-	}
+-	return false;
+-}
+-
+ #define khugepaged_defrag()					\
+ 	(transparent_hugepage_flags &				\
+ 	 (1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG))
+@@ -1355,10 +1330,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		 * hit record.
+ 		 */
+ 		node = folio_nid(folio);
+-		if (hpage_collapse_scan_abort(node, cc)) {
+-			result = SCAN_SCAN_ABORT;
+-			goto out_unmap;
+-		}
+ 		cc->node_load[node]++;
+ 		if (!folio_test_lru(folio)) {
+ 			result = SCAN_PAGE_LRU;
+@@ -2342,11 +2313,6 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 		}
+ 
+ 		node = folio_nid(folio);
+-		if (hpage_collapse_scan_abort(node, cc)) {
+-			result = SCAN_SCAN_ABORT;
+-			folio_put(folio);
+-			break;
+-		}
+ 		cc->node_load[node]++;
+ 
+ 		if (!folio_test_lru(folio)) {
 -- 
 2.47.3
 
