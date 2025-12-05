@@ -4,99 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A28EDD32D9B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 15:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BF7D32D9D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Dec 2025 15:07:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8F776B017D; Fri,  5 Dec 2025 10:07:26 -0500 (EST)
+	id A93B86B017B; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C66996B017F; Fri,  5 Dec 2025 10:07:26 -0500 (EST)
+	id A449B6B017F; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA4BC6B0180; Fri,  5 Dec 2025 10:07:26 -0500 (EST)
+	id 981D46B0180; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 10BCD6B017D
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 10:07:26 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B95BD1A01D8
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:07:25 +0000 (UTC)
-X-FDA: 84185746050.15.18245F4
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6DCD5A0016
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:07:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jU6SpZYj;
-	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 867876B017B
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 10:07:29 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 32AA1132B8D
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:07:29 +0000 (UTC)
+X-FDA: 84185746218.07.52CE784
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 36D5880007
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 15:07:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jTeFy8wh;
+	spf=pass (imf30.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764947243;
+	s=arc-20220608; t=1764947247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5e1JDxNMsKeBjrN3+x94DCexyw30V6kM+/jaZC8wkNo=;
-	b=Onyyp02kNhd5Gji7wTmoIYvoJ03KR3zOgph5h7NMiOwup4b5Q5Ee0wTlaMtSAfC/Q0J+Kl
-	QTlL3NTNtT8XMBhflWFZVBAY2Bxqe5W3Yi3Xt2R1u76iPeDnKcVEG5EbMgHaDsZ3uohSZ0
-	T1ZMvqznKh8YLA72mUbyNPILgxLQFNM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jU6SpZYj;
-	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764947243; a=rsa-sha256;
+	bh=u9Sh1gr9sSQ2OQz4zUzJ40SzpPcpTrnjv9Hty5mB8+A=;
+	b=e28sR/mjgAnA4q6pAwba0THuKf0VK+tfBQoPTPiDc/HPD5GiMoExTi6yxcQ8XFLapc5z0D
+	C3AwblmILBSmuF67+msziXOmDN5xw8IFTsBm3BiQI1GCjDSP7lKjo7XuA7CuJKN4FqQTdW
+	ASFy3msb2zFf4l17ZZ6GS1F0vEgSCik=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764947247; a=rsa-sha256;
 	cv=none;
-	b=jspk2rUdLV8rHjoKZfV4WUTjrbYevHbQ9b4sL9xm1mthkKxmI0VcChdPNV67Z5STxb4pgf
-	tpi6Di6lDujliG2V5lksfhJRbo5bRRfQZxRuPhdIBuRCrwjEPPsVRuOoQxtG0bZOnAGZ16
-	XIB7VVnLDCrSmDfjI5AQ5TXtyN27fwY=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so28202315e9.2
-        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 07:07:23 -0800 (PST)
+	b=YF4y7og2uK5I0P5mRoF9pZXTMTLNpC3xMugoiuI1+onB+dquQ39Ns9HkH7Ti3rLOf2WlJF
+	/KmNkXavGKCbjUk95MRSwZrsgIl8sKjK4N+6X1k6JH0PzNPJReVnXj1nyrrN0Kx/+1S9Cb
+	ZxWmm41RlDYdPC/BPYKY0NdhzIeI4JM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jTeFy8wh;
+	spf=pass (imf30.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42e2e3c3a83so1081759f8f.1
+        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 07:07:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764947242; x=1765552042; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1764947246; x=1765552046; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5e1JDxNMsKeBjrN3+x94DCexyw30V6kM+/jaZC8wkNo=;
-        b=jU6SpZYjZbv3H7GWwBcNxquEiOw2lvcwEhSk8S77+FuKX9X25pDpbx9375H5qzquNS
-         9yvw3QSNkS+XQFi4SadxVjZgxjwdg4CFS3zMJ1AKfTuQ/OGfET95mVZs115JFHDHYzKq
-         j2s6utB3+lbEZzLFwpv+yxdixqBpElERtakeUAKoUBDr2w1DSE+VRYKg7sjhj7TznozW
-         I40uWAnI7s9s+d38UFyZH9pOOYzW054uKxbT2t16cg59UQi+hr6zBQssXjP3pgXG5r01
-         kKtfbI1hJFYZBTkImGAiE/Z9n8th45W5mBfStNYH7Tj2lDNTVAmUKi/9Q3ZsV2GRpGrZ
-         hyww==
+        bh=u9Sh1gr9sSQ2OQz4zUzJ40SzpPcpTrnjv9Hty5mB8+A=;
+        b=jTeFy8whGavqdveuPhlkABAqUMCvy9UN1n7tIWAd2iQwI1sUFgiKS0cFfC+DRRY8R0
+         zVnjPVOKPVbUJIujmoLddZmqjb8aneZQwP51Uf3DhvYezUDMoOVmG4PQ+dIowRZQayof
+         OtFmv4PTfxmVfEIk6Gl930oWp+VEATmTb8KBM2ImtNWYIxfbZMgRHOtsNZkCFqtqKK+1
+         A2i0Hk0eO7HHckFAk1bfZHc+Zc7gAVLMHR1zExmsKOZ6GxgPJAwtqCmiB1hO7xYmQt4f
+         ytadZyrtxzP4tWgPzgiY4NZal7iAN26/mkJmiKMzj+7vsJXpiXLmqCPQABLhBcBj9Fx9
+         ga/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764947242; x=1765552042;
+        d=1e100.net; s=20230601; t=1764947246; x=1765552046;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5e1JDxNMsKeBjrN3+x94DCexyw30V6kM+/jaZC8wkNo=;
-        b=UXcZRzGQ1FmbedrvsxLkAGkN4pGg11I39w9B30SraMI6axnPupl1azDvzlSrCd/CcB
-         NHTx+PuNeFESa5XQcrU99ec4tykL+7FGLiIpSyzD3K6xUwi1upHG4Ly2I3eP9f41Yb51
-         h03qmJ9KwGlF6hQLDGZn69xxgYzA7AlL4H0Rm4KARNMtEuF1GE23KZdTX4geD2ekRDpx
-         G99UqXczpd8B/xEHOFfx3kmUq4Zcxkn+7Q7xkOQmXrxBn9hH38LiJZdSKjKx9d7lrkRy
-         +vIa5tmq5hCdETSjHTx9V3bmMazdnMXIhUllnx8cO6ONzsbF8XXkvQDiuhxkZ/QtNGyk
-         zhbw==
-X-Gm-Message-State: AOJu0YwaV4JXZNT6Bgd/00xg50j4S9jjwHASV28twBw+1jImM20DCP3p
-	2oKD6TCPscgEoHni7bMOBdEqNC05L2XKp93FVN8DvQEPozGweEhio34hUkjSy2DCJA8Oo1O5iwD
-	LI94x/WKeEBTx3oQJPLyhngVp+SiJzuA=
-X-Gm-Gg: ASbGncum/XFAiV8pusKujK5EkMYSsfhlU/FSA8OaZ+pXADrlzSNgrEODfuUz2XeQI1M
-	WPSBWuNwDzjSGFg55D5Jz4XYEkz3f0s00x0JJTsvIPrg+JkfhjQCpVlrz9HuPnyBJwXo/Joy7l4
-	SMX6fISWBGmitD8I6NsMnCDnoToW/GTORv4fQrySwPcklbvtL8cHxVUv32PrAfRZgky1mlVgJo7
-	dvTrSMFR6dfZnw9JYoNjmElo7k7EUbKdww97vYgABqFYeLxHlthUEk9vne38dIH49oMPTZlPpgU
-	/o+0Epe8g0IjyrryauDb17mQpAxe2CXDUQ==
-X-Google-Smtp-Source: AGHT+IGM8UyEJTTT9Z6uFlHy6NNxt69p9mMEtv2ZpYk3WvAawcJYPmX38Eb9ObakRfbW3X3Kb6QvbtgtLouD0E5YqJ4=
-X-Received: by 2002:a05:600c:45d1:b0:471:1435:b0ea with SMTP id
- 5b1f17b1804b1-4792f38d501mr76181395e9.24.1764947241641; Fri, 05 Dec 2025
- 07:07:21 -0800 (PST)
+        bh=u9Sh1gr9sSQ2OQz4zUzJ40SzpPcpTrnjv9Hty5mB8+A=;
+        b=hfLVBqr/4oM/URcW2O9/+dbd8STqB2LbOVY+Oaw59URxhzAlWGg0ntzDqoLe+GKKZO
+         +lDb8dSYvv4gJM2QvKBxLWC4kv/dN7JRKBe9REwQLnAfgYJMDoBlNLXkURvbN9bP4kcJ
+         sGEjwYqVjD9EFRCi8Kc5YFP/pKAcXvAV19EfTpodfq43hmR+TopUtZcbLLortpcJjXl3
+         NCj77mpQfgPE2CVXVTyo7w0lYbxhy9EErFfzFBu26vz9MZD0HinRRpkLwFEArCiMlmkH
+         r1HoQDjjfSJx8n3eC56tEcOM3kcuUxVQfRNMecLe4yfQQ67L08EmsIV3U3jzM4hqb3ww
+         olOA==
+X-Gm-Message-State: AOJu0YzQdwI3EHir7t3IEWPwFg1gg4gO2wwLCkHXyxSvIHbBlLNkYXCb
+	ga8JmVRVxNaHFZR8K9YSb2bzx8/6H8XIWU06hxO7huMpedl8uVfUM9R20gKUg+ac7NtQFAHtDRa
+	f4GgUhXWWVPiLZQkWqwTJN9Ebi6ORZ1s=
+X-Gm-Gg: ASbGnctN4HIcq+Vwa3MUhLxXuVBLJ+GzUf16ofkKWXVmdh0TAWHfUyAcrHYyVw9ay5d
+	yGG/eWNv4sLL9gZPvxar/MJll0cw7RnKwIHZwN4Jsq8IURfZ0CTTakgPLcLTy+b+D/5GzGG8Z60
+	B1jxTaj68GLk3gF7NxiiiH2/FqA/rmyMutvXLhcOtODQawOAtYQGbfBc4VG8hJC+ySTkY51+2pw
+	y9PtoFc5AFpVyL3KMFAg63j6DhdY/TiBiIFa2Lv9rEtDniaTkoNDwuB7Hr6PpuLv2sLbf7Jv7vA
+	TaDcV6Fg2OF3GqnTg4vvY5JTWV+GYVqlTw==
+X-Google-Smtp-Source: AGHT+IFPNstD42JyEsdAwcyvNzKrPqWXxWF88WKwbukJxgV5AcHCpundKVhQRbFA20xriAn3ElLB1BNzDwQJkxHjQm4=
+X-Received: by 2002:a05:6000:2c09:b0:429:8b01:c08d with SMTP id
+ ffacd0b85a97d-42f731bc24dmr11041756f8f.41.1764947245574; Fri, 05 Dec 2025
+ 07:07:25 -0800 (PST)
 MIME-Version: 1.0
-References: <20251128033320.1349620-1-bhe@redhat.com> <20251128033320.1349620-2-bhe@redhat.com>
- <CA+fCnZfDYHUVKX-hdX3SgmuvJEU-U+MuUJGjs-wJJnfRDHz2sw@mail.gmail.com> <aTKHzmxR3JA2R7qD@fedora>
-In-Reply-To: <aTKHzmxR3JA2R7qD@fedora>
+References: <20251128033320.1349620-1-bhe@redhat.com> <CA+fCnZcVV5=AJUNfy6G2T-UZCbAL=7NivmWkBr6LMSnzzTZ8Kg@mail.gmail.com>
+ <aTKGYzREbj/6Hwz6@fedora>
+In-Reply-To: <aTKGYzREbj/6Hwz6@fedora>
 From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Fri, 5 Dec 2025 16:07:10 +0100
-X-Gm-Features: AQt7F2oIzOZoI9YYmMGEGfR2euyjD-iV_heXJVsHmHq5B90kIr5LFLwzTYtsmlM
-Message-ID: <CA+fCnZdZQFVBf_NkrKk0U+TAptfi6RRmCkPY5ZpOUeObBpwAnQ@mail.gmail.com>
-Subject: Re: [PATCH v4 01/12] mm/kasan: add conditional checks in functions to
- return directly if kasan is disabled
+Date: Fri, 5 Dec 2025 16:07:14 +0100
+X-Gm-Features: AQt7F2pv1BpZjdGZf4uiwOOKMqx6h_y-AphkDn6MuXmCXnyvxBMukG84fsup2wA
+Message-ID: <CA+fCnZewpfDzdo51s6eGPzNohdQ6xHkBwX-Sxo1qty8pBgHZ4w@mail.gmail.com>
+Subject: Re: [PATCH v4 00/12] mm/kasan: make kasan=on|off work for all three modes
 To: Baoquan He <bhe@redhat.com>
 Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com, 
 	dvyukov@google.com, vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
@@ -105,14 +104,14 @@ Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com,
 	lorenzo.stoakes@oracle.com, snovitoll@gmail.com, christophe.leroy@csgroup.eu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6DCD5A0016
-X-Rspamd-Server: rspam02
-X-Stat-Signature: soqex37eaeua1w6ri38iz4uhscpztpah
 X-Rspam-User: 
-X-HE-Tag: 1764947243-480673
-X-HE-Meta: U2FsdGVkX1+HmX0kFYImsb0zamOTdjsechhykGBuXqonTKVox2ycxchK93wZdT0UEhFBJAe1h3jaR7mD3hvZEuUE51jySIjBOqMOdYGvj4BJk3u7/TGEVqqxP+BL+xdXQHtZ7hHiBvlrHrRQWy9OIfiRgA9GyF2kQGWTawJiWnJw+0lwWjjM+Wy/mkQwuY6kKL+r/+Jfuih3EBUed74cKetLFTso4dZZ6oGuQ/vom+qw9KE88opVKxeDyYpGwayF85RPjZrO8EXzstnDpXWFAg/gfX+uZSp1AYIW1J3LIfQ1zzLgNaT1T8UDU1yPzr88+dbE2+D8GlXyq1bCkkrZ50BZ2NCjMB9dhHVKiAl5dskHfyYOILvR8G7bvzo/qXB248mATatzvxef3mwefXz8Qdv6JSayIAQSk0F7BSbFfEYpIP2AOpV4CEcjHzwKobLdlQm3X7lx+YNIE6ze+qhVREEObK60PRK24sDBuFTRrNHSXRWPdz3lFKvkH2ZS9bLZjWLOWVj9YJs619vFOSulqchgRhsmDpgcssHVlV4bL5NxwOn2lmkTOzPAr9GTxylEmjXIQGeajyfJpYpShw/9yUwXK4ujCTxcLmhZ5u4f8xhrKEIdDlWEQG/pLEY/jY/2CulG/1Y/zMnhAOi5ZGQ0WcWvNZz2WU5g7Q383LF9da1hnFyYzD5dXSYBvX6UmCb22X3LFVYGuqNdPWHjX/PZCN9kdoBBRs8ifrG2S2kMTwEdcyQENnpzrYeZ887cehV7W6KAu7WnIGsDieFYEniUu0hkj0aaVk8x7lDyJgW31t/ATO+ChmfVDqHM8yTHgJ2Dfhtv3qFWVFk+QdrhTGesKkIWhehGnsHfoNGHFe+upP3ZmykYcSAVZ9QmcDp0ydDFziPu86MASKlu0Cd+V+P9YJQm/9cY3+1FfgabWvf6ctJ9rsYQmo/rZND8uYKtRZb6kYtiIbrzOm/AcJ5kDor
- FgpV/Or3
- UaKTAecbR56/kfRz8LhoGOZg9U14lT1/UqJKZh/EeRDpqO38TZP1Ea6GxYhNncSHUzg1y2OHlAjRL7Osf7W8wQz4dqhHHXwocCzwWnclFDofORIJ3B0oQCYOlgBlEzA2nVlMotnrq3sn1kGvsyAL9NqEFgROVG1R9TM1vxPxGI8OBmfEypytdUry/1QdYmdHW6LBrFeycOosO2PKLaXcUZMWgGs83OAty29HL0JOylv19aokOunIociaWln52hwWfK+pxcH9wYiH5FRbrOnUGVcre6j74ZE6KKF6KWrTVZCN7vdavJq4P6RV0uy1d+tVp1pzjK3/r7RbvHT3gIW4oWHR5HAAoTlmoTp3OCjqyfBj5ua0eNP/ixBAjoa8vRiQlzGpt/mQWjnZrnpbiCgbX4LEVmtrtb3LrDXbJwQKnXFcKsa8FBW+hGw1bggJjqQUr3GMwZN7h3kw5QXlEvRRRVdFw5HbqMeJV49YiOfrDwerpUm3fqfY2d/ab9TlwVP/uml5zbQwi+Pvbt9S8fZU165eryaDJwyqQt2Iu
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 36D5880007
+X-Stat-Signature: i1th5uzqhji5q19rmfa54kkgksa9x9c8
+X-HE-Tag: 1764947246-205392
+X-HE-Meta: U2FsdGVkX19XC3SH09dJ8iIHmqplCXTLQJsTPeEVnPuuoxzDdyMpv0VOacmIc9tCDKmoso824VBOICFeT4NNSsg682727qEaoeETtt/JJWnOHtmlPMJCCxnbx5hdK2DIDKXfTeP5K9vVGdTD9TkHr+O//sQtJbmITJwMXLtp8ecOX9ZTU+HV8iuWhIt934Ukvb2G1Hcx6t0NFhpESKuTArCd+xLPpRvEJYLgc+EWYsr+PPYiqGAsbFV2pRrES835MaiFNucfggiGhrOXPRqHzOrOli98oGVtPKZiVp2mGqv7++9yGOnFbJdD/fhSVlvefsVMFBXwp8K+v+uDZVgHYrczrkhG1yUe9rrHabXVHY+fBGKVogM/TevHYMMAAwevAg+dAqKCndr1Gm/111a36yQpfl5N5Lnogf+lhmd8CUIHSDWR/4FijDk8pz+6pES9yc95NBbqL8IaEL0SsBFMEz94YFQpqOvqfwxbkYzELbiAz7n4Gt//xmb0/AQm9BukxLT6AsdcHjVbjA6DVM8qHR/Jhc+hMIxC6VjQLI57SluEmnEQcb5QUI8qpKS6Wpz2CdpjWGSVTUGxuh9sePzgtSWVIAD4XlkbbfXa+l9e8MKmRwOg/HXJOXl2qJNFmlaA1TSBBnzeY4ZufrzLomsr5Tr9vlAOHqj8pLhMhh2wYn8Y2UfI/W6GI5cLu8AdUcJ09yNTYi3pLqbxLYH0D38AbdigW4FlVufIwtmI4yt1rNWDMKPrgC+Pb9dLRGzg6RoEoprJZhMs2VXrp5KFGEXEq9wrnbFdKFSbjLpX+kcVc2wW7RHoL6FjVSWt+dgm3DXMVw0XkM+Hg2PJJBNkZtn0De56Ywd6fYGaZwxYdfpKOFmCwH35e+hJhuSS826Jjlar95+PTFIwlMRIlyaFmieOiMYwrcAzSvNtOVJ9Ts68Sj69GdKJbQzZpC0Z3mM5ffMzEuxuEEUD2/9fPrYlotO
+ zejoL9kR
+ 14gpNfLJ+HHNTwMc5e+VjmGLeMhAENrYwC4pdp7ODoRW8qG2Tg4ge228U0/F9MKV3+vquQNW3+1bm2iqO0aIls24HpnkdG+XPah2xdkiBnEXxD63pTy5h7hgrx5x8WN3HJPLKhsR2kC72p+Kco2Jmy5PEoB0Rct3CPqgNe14z4vnS1CJMfBWVMRA0zZNWo+S75feZfrTzsBU3NtHFfvUmySXBqHGKM2vkibivcJqEsEpzHzIaTBy9QhtWlriC07uygAwjPRdb9oe/cpfNwJmdav4vvH0rNPc3I1QRziWmdRiGUbnuy93kukQacVelReC/XigGeSEvDcODw0JfkucIyGDHghZAUMxWqyJmNiQQMTXEYeBqrFOnHu70+o/aPsoLwtIjSn40v6aWStqqBOlnDGSRAqcFI9f546MOtVhXlwmOxXMMiUpxFfq3jH3RnPWvM4Cd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,50 +120,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 5, 2025 at 8:21=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
+On Fri, Dec 5, 2025 at 8:14=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
 >
-> On 12/04/25 at 05:38pm, Andrey Konovalov wrote:
-> > On Fri, Nov 28, 2025 at 4:33=E2=80=AFAM Baoquan He <bhe@redhat.com> wro=
-te:
-> > >
-> > > The current codes only check if kasan is disabled for hw_tags
-> > > mode. Here add the conditional checks for functional functions of
-> > > generic mode and sw_tags mode.
-> > >
-> > > This is prepared for later adding kernel parameter kasan=3Don|off for
-> > > all three kasan modes.
-> > >
-> > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > ---
-> > >  mm/kasan/generic.c    | 17 +++++++++++++++--
-> > >  mm/kasan/init.c       |  6 ++++++
-> > >  mm/kasan/quarantine.c |  3 +++
-> > >  mm/kasan/report.c     |  4 +++-
-> > >  mm/kasan/shadow.c     | 11 ++++++++++-
-> > >  mm/kasan/sw_tags.c    |  3 +++
-> > >  6 files changed, 40 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-> > > index 2b8e73f5f6a7..aff822aa2bd6 100644
-> > > --- a/mm/kasan/generic.c
-> > > +++ b/mm/kasan/generic.c
-> > > @@ -214,12 +214,13 @@ bool kasan_byte_accessible(const void *addr)
-> > >
-> > >  void kasan_cache_shrink(struct kmem_cache *cache)
-> > >  {
-> > > -       kasan_quarantine_remove_cache(cache);
-> > > +       if (kasan_enabled())
-> >
-> > Please move these checks to include/linux/kasan.h and add __helpers to
-> > consistent with how it's done for other KASAN annotation calls.
-> > Otherwise eventually these checks start creeping into lower level
-> > functions and the logic of checking when and whether KASAN is enabled
-> > becomes a mess.
+> > I also wonder if we should keep this kasan=3Doff functionality
+> > conservative and limit it to x86 and arm64 (since these are the only
+> > two tested architectures).
 >
-> Not sure if I got it correctly. Are you suggesting it should be done
-> like kasan_populate_vmalloc()/__kasan_populate_vmalloc(),
-> kasan_release_vmalloc()/__kasan_release_vmalloc()?
+> We may not need to do that. I tested on arm64 because it has sw_tags and
+> hw_tags. And if x86_64 and arm64 works well with kasan=3Doff in generic
+> mode, it should be fine on other architectures. I am a little more
+> familiar with operations on x86/arm64 than others.  I can manage to get
+> power system to test kasan=3Doff in generic mode, if that is required.
+> From my side, I would like to see x86_64/arm64/s390/power to have
+> kasan=3Doff because RHEL support these architectures. I need consult peop=
+le
+> to make clear how to change in s390. Will post patch later or ask other
+> people to help do that.
+>
+> While there seems to be no reason we don't let other arch-es have this
+> benefit if the underlying code has paved the way, the arch side only need=
+s
+> two lines of judgement code. Personal opinion.
 
-Yes, please (assuming you're referring to how these functions are
-defined with all Sabyrzhan's patches applied).
+OK, but it would be great if the arch maintainers could review and
+test the changes.
 
