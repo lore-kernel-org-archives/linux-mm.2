@@ -4,106 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FB36D3ABF5
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 04:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DC2D12692
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 04:46:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DBAA6B0350; Fri,  5 Dec 2025 23:17:30 -0500 (EST)
+	id 237216B00BF; Fri,  5 Dec 2025 23:46:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B38B6B0351; Fri,  5 Dec 2025 23:17:30 -0500 (EST)
+	id 1E8296B00C0; Fri,  5 Dec 2025 23:46:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F0256B0352; Fri,  5 Dec 2025 23:17:30 -0500 (EST)
+	id 0FD7A6B00C1; Fri,  5 Dec 2025 23:46:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E7B86B0350
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 23:17:30 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 433621603D6
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 04:17:29 +0000 (UTC)
-X-FDA: 84187737018.12.E6CDA66
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6E151C0014
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 04:17:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fb1xsmdB;
-	spf=pass (imf10.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764994647; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F2B956B00BF
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 23:46:46 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7294458CFF
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 04:46:46 +0000 (UTC)
+X-FDA: 84187810812.06.58764BD
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D476240004
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 04:46:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YcMdmBAR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764996404; a=rsa-sha256;
 	cv=none;
-	b=r38Vx08OUc57cJZRncJ343NCZFnUcXWx3Ejh5d0/Bct4P/hI4F17HkUBitKDsM9nK9Uhqs
-	2vNXEEgNDB6jZW5RW5H6TPbLxji5gPa3+2B3g+d1n9Oyryb1IPXp9e4Xjo569c7cNisWfL
-	Z1/EGiTkR3HVgvUiwwlYJ0kgV+Xc6Zc=
+	b=tIjOEXxgYqZXZ2rxY1aGRlD2pjfrKXOGyRN8bko8ZqjCkhwGQ7RLfN3pjbNgu3fQaK26Dt
+	w2WM4BvQdJmo6arUtABy/unnqZjOgg33HniRbA+zrCElRd12z7hSZWvYWHBR7vmHYNgWAG
+	HeirG18ygaf2Y42V3lr6P2TZO9kEkhY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fb1xsmdB;
-	spf=pass (imf10.hostedemail.com: domain of rgbi3307@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YcMdmBAR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764994647;
+	s=arc-20220608; t=1764996404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gCGqBpcBaXv11CyxxHq0NCH/Lzi9jNJrRnRrD7ZpxfE=;
-	b=ZdwSMIT6sh5VCeeOzppXysAx8mdpGQT4BwfN1CyCqBMcQBgi7lpptM8KMrjx3BOAaSPfp5
-	jlNSGIV1gfc0MMpyIXzJlhxT4tJShwcnd/gzV6RPUI7sQ2cj91DCIKPLMDBmwM9OfssVIR
-	G3fKyJnjiayWQZHDzrhIMHPItO/omwY=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6433f99eb15so2559617d50.3
-        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 20:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764994646; x=1765599446; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gCGqBpcBaXv11CyxxHq0NCH/Lzi9jNJrRnRrD7ZpxfE=;
-        b=Fb1xsmdBevO9R9riAsLin4IpnmYL85lONgDau1D9mRJIB1ciyxEohD05WjqWsqzH+b
-         h62zmbrKwAvDDCsULoZgzVvyZ7LUqX0EZhzFHn7qSC1p9iZMmlFFBkSoPjLr4pKUwSc5
-         +JrsGQUn9V6jXpxODEQdfIXl/8oXmcJFLcNdV3Mcg0fioLJYJYoT3FwB8Y7QxUniOeC8
-         wMDoQxbzJoW7zecU0BYtik6HOF2oFEzZ1N1dUh+13MWLBuaMh8kfPi3MMhsYz6L3bqah
-         HnnaB8cysJOhMqM92F0s7s/KnpD00HHecAEAIlRTh+jwc+5Fvr0T2keeXBRhsqHiw0ew
-         DHzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764994646; x=1765599446;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gCGqBpcBaXv11CyxxHq0NCH/Lzi9jNJrRnRrD7ZpxfE=;
-        b=Tr+KRefVGyTXjC8Gjr184Jl4W3TmFzsbpT3k/9SrVNZYseBRl6RdxNeNx2bGT0g8fo
-         Ys2RdaNmr0wD5Krhd4UJmj2tgY7BLPXrGAzVUYSL7qyUZKXbQzoIVTVCwNRT5jgbgWY1
-         p3u6J3UxR+7rrLbJBVjEGRhnFANcsGARRq4Hlwnm7ggW8645QV3WK0N1sY5jiyXn3cKH
-         n3v7P4H1COIYviwafUxE9zvgGxvypkk1g1NDdg/DuRy7amO0M7PYAh32bAVGevi68Yb3
-         913Ug6naOSS95koz2mhp/rWdbEVDeJURRbGPUXdH6iegy5o8p0lByl6Qk8aVJMXFSyet
-         omDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWHzF97Rpuehdp49asp+mbGBxcyqIp20gxnoJ8MsVf9Qy0hQlMtJnjbgTncaNoBckv/+ZY7ec3AAA==@kvack.org
-X-Gm-Message-State: AOJu0Yy2fMFha5NtXBQq5sGWNv1UhwBfM0N96o35nQ6z7UCstK6GEOmU
-	QamZVIgv8rzib7+g7BzETN7/+sgwTiBcBJuKxjYl1pZYW/l4ilsGUKioNkWBkqmCnVnU9WzXbEH
-	N+v4z43I+3mM3tyQWvGfat060d1FlE3Q=
-X-Gm-Gg: ASbGncsUlz/U2WLkXxSRF4uQ7t7fOdegS6ahPv+sMatB+WsN05drYUTZmvOAr9qnztW
-	nzXJXG4lqppCdksrXl6WpoVdazeEMnYAWArw5gt8Pnq9kFT83SOo7t4401G3quxI6+vZczjBVRI
-	7DUCu6/zNygFh+1B/hQj6f+nIxHlnDR3SxTRM61tBdlhlERODmg6TbAi1MHI5k27o3XeP/MqAOH
-	1Wu/eylyQ5X8YevcY0qmsSmHygKVKbYYTePyFkg9cG+cJjtLmV9dgr9cikcUxwccnV7/tav
-X-Google-Smtp-Source: AGHT+IG9/xl2G4VhMoTHl18YwbsrHUhUMHPjfhhJlIvvUrtycYH1yJ1ZnRNrFaa/+v46+WADeOT9m+FhNo77BNMtitY=
-X-Received: by 2002:a05:690e:124c:b0:63f:a6da:4b3b with SMTP id
- 956f58d0204a3-6444e74c6d5mr956904d50.14.1764994646353; Fri, 05 Dec 2025
- 20:17:26 -0800 (PST)
+	bh=hhP7S8qlErGHiwE2TF7DUYgSiMwArrAPCORjneejlhc=;
+	b=GQPV6cdibtlilHbq6m0UXA++Yz8mdI2MCO56qEZM0hlon5YbhTiQ6wSILM7Pt1uvjZoERq
+	nNo/G+FQTbkzc3rHZKAm5c7rYWBEC0pOrlIsgxN1DGKr0P10rgz/DNiRR17PxKdoNJflpk
+	viUmLUHwkaGQiqEJniG0n7IKu6Ss2t0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764996404; x=1796532404;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0/OFQQ1evWTB8rK2UtfDgnk9iVMhRHz6Lo1vbaODj7M=;
+  b=YcMdmBAR03pNvDs/zggsUnq/HC11FkslIdRVtweODTSjNRCu/nOpzC/l
+   kqkXhVIp5aFCAobCvdGDoPmmA+80qZghJgo39IBPg+mzFKuXO2QVYsv9+
+   OeAd4K47bOQsBoaMcm6WCRqJJhsF3AeRqdMqz95QXPzj5iff56uZiZO9Q
+   vc7OydNUn5BV0ZKYbKbOAQdDPC5rsqyywUtI6UGo9hgNIH8OX98AoYPu0
+   sO/9aDiDjfe521lXxB52+eSrZzoDuBH4XJnCUSNwA6f70iXeBRixGBaKo
+   az1vndd72Ajf8U9BKE54SvEhoX35cKh1sKX0VPoanqK4V5ljYZXvgxvkR
+   Q==;
+X-CSE-ConnectionGUID: d9w7kp4XQeqHOQRqtu8Muw==
+X-CSE-MsgGUID: d+bzizErTemXNymr1CD5PA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="70647713"
+X-IronPort-AV: E=Sophos;i="6.20,254,1758610800"; 
+   d="scan'208";a="70647713"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 20:46:42 -0800
+X-CSE-ConnectionGUID: bLCFu+86SBSWq0DTMpHGIQ==
+X-CSE-MsgGUID: xb3xY/zMRWCGLVwNVeCjNA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,254,1758610800"; 
+   d="scan'208";a="218817889"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 05 Dec 2025 20:46:38 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vRkBo-00000000FrN-1VtG;
+	Sat, 06 Dec 2025 04:46:36 +0000
+Date: Sat, 6 Dec 2025 12:45:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	kent.overstreet@linux.dev, vbabka@suse.cz, harry.yoo@oracle.com,
+	da.gomez@kernel.org, jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH 1/1] alloc_tag: skip rcu barrier on module unload if
+ profiling was not enabled
+Message-ID: <202512061204.aGmmZds2-lkp@intel.com>
+References: <20251204220957.360838-1-surenb@google.com>
 MIME-Version: 1.0
-References: <20251206011716.7185-1-rgbi3307@gmail.com> <20251206015010.47826-1-sj@kernel.org>
-In-Reply-To: <20251206015010.47826-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Sat, 6 Dec 2025 13:17:15 +0900
-X-Gm-Features: AQt7F2qsagOSR-iF20VCYZdpEZUQbABvnzlLKK-suACb2kbHTO0bBCSTeAWiK2w
-Message-ID: <CAHOvCC78_ci_6dg=ctt5HjgZDn4bVmNZw-qfATvShnn_7qoMaA@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/damon/stat: deduplicate intervals_goal setup in damon_stat_build_ctx()
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, lienze@kylinos.cn
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6E151C0014
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251204220957.360838-1-surenb@google.com>
+X-Stat-Signature: yrs4xqfiqnth76xihe11pqhrxqrr88ep
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ng73enhk9xgfuk1n66ey77ycnhrai1x9
-X-HE-Tag: 1764994647-846460
-X-HE-Meta: U2FsdGVkX1+ZDJKQMvmazYj+ZQlMBhCLpXGqaGxoJMEazpZ1ym8hArD0l8sf3Sam5Gga/DJK1/jjlm1fGQA5robNALxYwWf7eYaB9zaILuOB+m14JA9NZAWC7Dke3xaRuLZC6uAwSbr37OBEM+Hamw8PmN29BiY59gCK5WNlybpDeyTRMLQq/2Hq9SRz6JN8eO47PePpIK4UgSsWJoKT+olRxqHscUUlOZPodmFP8L7kRSY3K2yYJcynN1ZFkzTrNMXOXjoixr3SN7VxoUWkfPPpjE4Li5JmPhWFuKOv9V7TLqZ9OFRSgbtIq7OJqfA0x823WEAqkY/KnXtGtSCkGBEUTcCYZv7EXL1hLcztAbpJGMFQaQEOZE2JCeUwj6oT/DzjK8FTo8FnZ+77J8Y91zlGLFK2KmJUrMBxpR+Yx/5HBvoPJ5uH0mXeGE3et24bL5x+wA3uioZ9U9sNhpDPyo/MtQWQAqD6dx5DxlNRFr8JKfctJlMc5ecm5uY3GrVyTjA5M/dkBQpeGf0U1rPmhjdk7kmIhoGM1JATNG7JwUww3fxKMDwPpR2YcTmgKCzfhTa5YMNcXy8YZ+OVTe09ScT5l11C5LPyVy/Stj8e1UJRk5NsmiBeHx8/xaL1Ekfqld4lVszqj3qFbimyTUO8Ln0KZpLhYJ5P7WJMyz3WJCXqvQQELHsm3aSZBDHbRRVGcIAl44b0b+QroqBaI9xplmNwE500YfYVMxJp2U6cPBo9GXCQJHDws6XfI7mQwGeaswfv+GM1ECBE3esIR5/57+4IxyxEBy1oH8nEkDkET47j3La8qqR+TSXbfsFvZy8SqW+jsPmCKHYwnBcwPzuRiJZ2BhcgyausDxUxsLVaUUWjaCNnrn1kxJzZkvZB0ECWF8F3cyR7vTTfdMrIFKZhT6OlHMFbNnyZe1RMufv1eTYS1sWV8BOkxnGLBJJofNR8hidMzIDeDYwQ9n5sZFA
- m9DeoaB1
- 1BXZYMYkTBl+DnKUuwDDJbS/PzxemYSK6t50K8Sj5bVzhQLicK5WsVBJ/2cs9ctS0wNN4/mL8W0Mb/jRNnf4KbIuBa/pe9Fsq2+CdTAr/jWPeE7laDQ+8tY57EbroZM4alqO37C5jcEUj5AG76Kh31HiGlhGE5M7nBjFuFVhNCbCo/JM3kAukpVaPcSSQV9dPsuHBk+23NQgNiz8APHJjB5qYTp0YpCLMNs7kSVU1HU74PCGgci4diBEKhoHPT2Wra0iPT90rFRSlIZ5lXGPdd8Q9Fp8iQJrOmdnplYT9Je0p3TH+VYWShTt+zgyM3s35Q2ISVFN9+xChfXvzB1yaZ7Rj4/3FbAa+U6vM22Nn3eoow4NzdFrl8PmSpscmtY4RTO1yXvgE+cWTQkU23SqR+tywHJ+HM5GQ9P5wRnQSNXstULs7CSdoi0Bc7m3d+WF3W9EX
+X-Rspamd-Queue-Id: D476240004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1764996403-753534
+X-HE-Meta: U2FsdGVkX1/l+bsu0v1DanNEG44YBdXQwFZHd85HDu5wDzAjgs7Y281nfo/jgZL0Xh3xX4hOFopWKUzexhav10M14kZaPbG2XIfvWFo3q2NcouPR7HrSrC9qvpzwPLsnfrQbqCGgNs9M0IwMMDba4+PPZS4DBa8EAMIDMDCquDTgPBiZqe+FhOfE5CbVHAdY4WTD2IsZhHqSkKY1if0JSx/QjwwxffunXiIk6Ru4LwmsoYEJJrPLcs6Kuwtn+wCfaSlYvRBtqFhhPeuB/Ndb5XDVCd/tWw+vPNilMszTP7rPwxQQVdSwSeNcXNJkxmM1WkeMpaHid+lWDH2Y6zUU4EodGp9B0+NWOft1Y7wE99mfvmbX0kBQmEVgn5oJId8TVuQ6v5QsyYDbTLzUs5eh4mrb4p1iLiPY6ZMheBcNqPH414QLCPrsJikKl1tTMO0QCkOJsHQtXC2ApOVu2cK4JsVrYE4P9JfchN+qopJfxHozB6XGpvkbHCISHmLNEzm37a2hLgxrBNlNsRjotvYkFnxcS0lzjR9cIYzMQwrbfw5IOgYw1WpU2c+4rcUSXE4WWLeWv7cYIo0xil1Seht9JKbgptBMkgRSBIeuh1G+LGbulTKHmUVMqqfg7NG47ugvk4Yl4tpn2cMs4O3e/wWRqfmEHOijZFJ4mTn/LKwDVzZv+v1ZDTcmBKVyl4cIStJB69j0+tA7YwIH2FXs48CnbPgadIkWfslj5qX2GWEKyQGCiw/emUXZOUFHkRlpcLbq9QILQzjjXUXgUCDzVtR8euHFwx+CDSzohdpMNCWFsMVxvGRU/hNNKwf2d/SktiaW5YckADP4MbTfxasuIDM22Zbqa4+oDoSxqZ1aZzpe53PEsW12E5cQiN565ifk3saDcA/ciT/JEpecNBViJguRC5V67gGGY9xJsN4wHoI5rpEiW9h/5kJdHG5dd2xYKzawe5NeXoQL0zY5FAXAHhx
+ TI+h90bu
+ adok2/qmc0edAtlVRTcr4Sjyko+qX+2ntG8Gn8bx2ebUsK3GejlLL6XUe96rSvqv+i5TruBkSPbx/nQgtJsfjnQKYKs4VpYfFmo0j/rI03FO6WJMB/D3FjCV9wLu7PBFkXQLxQWAiX8wdHNdXvg6NfC145kSiX7f2xiNTfNyFn0/LH7cRo6oFcDI9pNZPDbTG4DMeDITvFWXNZSSPNplXakiBXsnjnDqL24eOEUmXcj0XCYokWjMW91UaKL2v/xz0Y3e+ypEI1R17xHo3MK0lrVHdq5sRIy+uW1NjbTVzdmnzqZkIcxqCwPyO4fXmv06wcst/h9BI2ouctURE2GCIxJyq8zM4bT+AOzy0dht1Q0CY1j2ZLZUKotHk/5w55ARtx6Afo8PmNGLa7to=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,35 +111,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 6 Dec 2025 at 10:50, SeongJae Park <sj@kernel.org> wrote:
->
-> On Sat,  6 Dec 2025 10:17:13 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
->
-> > The damon_stat_build_ctx() function sets the values of intervals_goal
-> > structure members.  These values are applied to damon_ctx in
-> > damon_set_attrs().  However, It is resetting the values that were already
-> > applied previously to the same values.  I suggest removing this code as it
-> > constitutes duplicate execution.
-> >
-> > Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
-> > Reviewed-by: Enze Li <lienze@kylinos.cn>
->
-> I show Enze did suggest changes [1] to v2 of this patch.  But I don't show Enze
-> gave Reviewed-by: tag to the patch.  Am I missing something?
+Hi Suren,
 
-I added "Reviewed-by: Enze".
-It is just minor commit message format suggestion.
-Am I putting too much emphasis on this?
-Should I delete "Reviewed-by: Enze"?
+kernel test robot noticed the following build warnings:
 
->
-> [1] https://lore.kernel.org/875xal44lf.fsf@
->
-> > Reviewed-by: SeongJae Park <sj@kernel.org>
->
->
-> Thanks,
-> SJ
->
-> [...]
+[auto build test WARNING on 3f43be96f919cc611dcb2a4e38dd464831f4513e]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Suren-Baghdasaryan/alloc_tag-skip-rcu-barrier-on-module-unload-if-profiling-was-not-enabled/20251205-061310
+base:   3f43be96f919cc611dcb2a4e38dd464831f4513e
+patch link:    https://lore.kernel.org/r/20251204220957.360838-1-surenb%40google.com
+patch subject: [PATCH 1/1] alloc_tag: skip rcu barrier on module unload if profiling was not enabled
+config: riscv-randconfig-001-20251206 (https://download.01.org/0day-ci/archive/20251206/202512061204.aGmmZds2-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 14bf95b06a18b9b59c89601cbc0e5a6f2176b118)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251206/202512061204.aGmmZds2-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512061204.aGmmZds2-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> lib/codetag.c:37:13: warning: unused variable 'flush_rcu_on_module_unload' [-Wunused-variable]
+      37 | static bool flush_rcu_on_module_unload;
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 warning generated.
+
+
+vim +/flush_rcu_on_module_unload +37 lib/codetag.c
+
+    34	
+    35	static DEFINE_MUTEX(codetag_lock);
+    36	static LIST_HEAD(codetag_types);
+  > 37	static bool flush_rcu_on_module_unload;
+    38	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
