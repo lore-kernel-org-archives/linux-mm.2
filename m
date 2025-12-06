@@ -4,127 +4,233 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 112EDD3B7D0
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 16:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB0A1D3B7D0
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 16:42:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6041D6B0006; Sat,  6 Dec 2025 11:42:37 -0500 (EST)
+	id 4F4086B0007; Sat,  6 Dec 2025 11:42:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B4EF6B0007; Sat,  6 Dec 2025 11:42:37 -0500 (EST)
+	id 4CB2E6B0008; Sat,  6 Dec 2025 11:42:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A5996B0008; Sat,  6 Dec 2025 11:42:37 -0500 (EST)
+	id 3935B6B000A; Sat,  6 Dec 2025 11:42:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3781C6B0006
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 11:42:37 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EA731A05C0
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 16:42:36 +0000 (UTC)
-X-FDA: 84189614712.29.6A8D198
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 69DCB10000A
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 16:42:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Eu2ZKlHk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765039354; a=rsa-sha256;
-	cv=none;
-	b=CUoNN2X/O6BbAlM+eVUgWL1xbM3j57Rsaebhmw1hWgSBY4YRxdFMrSBzWMylHPM9dEq7zI
-	FeHb+D7wBsztWcrIX9XpV5lhrLmCUff1shzR+QQx0Em0N0yDSlhOiMbbBhBi2GJxWFMmxj
-	eABaPoz7C4RXDjeWBiUzJwAeAe4/AUQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Eu2ZKlHk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765039354;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 290AE6B0007
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 11:42:56 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C393ABA24A
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 16:42:55 +0000 (UTC)
+X-FDA: 84189615510.27.07497EC
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4F5BA10000A
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 16:42:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SLSHX3Xy;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="s/uSM7UK";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765039372; a=rsa-sha256;
+	cv=pass;
+	b=tCLQrkzAFXx/mN+++ZrX3+g/p4PfbHe/z45fHxEve4xkHhvHrP5J9/2HAi/7hXidEXbQzw
+	NtT71ZtY+NwnUGJJYDKUdFC58FFLyQ3AusWYKRwjImhkEaJlQ0I5Sqf/1gdJFJ1I2FRYn/
+	H/nn/xtZJ6hDDxhb85eXIpz+hEf6Jrs=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SLSHX3Xy;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="s/uSM7UK";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765039372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IUVnhRgN/Rg7m5EOLZSinAiBqoc/zaIUE34tSehSniQ=;
-	b=6QZL5uY7ct3h+ThyRGZL7/lBnl9+27YpySH1uZyPq9zhrH5sm9/+zAzlXcRT3sZGVD6CEJ
-	zmfKwl66+GLYjPwJ9SiLM5+mAKDAimEbzgGbJL/P/2t+xB8rHp+sFUtDQH1fhRMYJ1Y1Sj
-	Vd2vsLEPgSEq6uyoAWfJbMg68bTjbFE=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b75c7cb722aso437214766b.1
-        for <linux-mm@kvack.org>; Sat, 06 Dec 2025 08:42:34 -0800 (PST)
+	bh=2ftAvfPYWrLMpfwn71IRRWmVXQYbJbGynhCgsmF2ils=;
+	b=AljLdliZ7CoONXE3GKjw8Kdogo6mDR31CQTTPUSZsN+JNO0afMOX0TEBtidYqS2VmaUALJ
+	G+Li7y5OwaK4UwYRbQLhgDyIm7svPN4JNOujA+NO67QA0zCS1NyeTBmuUmlV0DbIPzk4/d
+	OgUqwPOPgiA5DVKWorX3TmU9pPEA+6Y=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B6Gb1Jd2431688;
+	Sat, 6 Dec 2025 16:42:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=2ftAvfPYWrLMpfwn71
+	IRRWmVXQYbJbGynhCgsmF2ils=; b=SLSHX3XyLeeqlJZzPza/OIMhmmRn3c0AKy
+	TgRH5xGsWW115g9ekiFm1yRUIUbO/qOICwZDuD9BC4kBD/xj550BzVAaXUC0bus/
+	OenFEUR6BYo9JB0oJLWamXJUTdMeRF6AxMRRDDWnu0LLmOZhnEbvw9UD+O/jQX09
+	PUXdxnHk2NvRyVVulrReaQM0P+0hE298GrRk1XU1wE8wmwRt5Be4ZRkCVhmMLUD4
+	EhLTrsnzPw50nkwEW6S8nErWCk500MqV4cdbdvPuxMjkBYkkHOKpYoXxUXJUehPY
+	H4oL5pWNoHiqp80jzB6oFbYlr1WTqSPmFTGwdElQ45K87bVWAPiA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4avr5e002h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 06 Dec 2025 16:42:47 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B6CiBTH039895;
+	Sat, 6 Dec 2025 16:42:45 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012002.outbound.protection.outlook.com [52.101.48.2])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4avaxg50b0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 06 Dec 2025 16:42:45 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nSS1O/4E7FOtSXwgUtzj/pyRSwGWV6epE0RAVzKyL0DO0YX8fk1v7eDCSvyHtpitT2Ly7CmOgo2qMuoHKaYv0nvg0JSHE8jhGBVv4EJTGH2VpkqHwBz8plENIM7BSkjGVvwLXgb8ii9w5k2zSHybVXWzbjmBgABUX3N60Ic90RCo9iT8IUYGQPpM8YNKbPDYNZ0mw/Y8crUlvzt3boIshRw5LNjNMYpNW98rlDdkE+BbFuSN8MQyjIBLOjTkyIoJmhZqPySGhL07fhVqdSPNczTvVphhQoLw4OJNTAEFgQy/ej+O6PnDDV2COTDSV1fCJot/W+i7Dd631RtRIgq8Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2ftAvfPYWrLMpfwn71IRRWmVXQYbJbGynhCgsmF2ils=;
+ b=S+iaMGFUtdVurjETZeGVwEVsJutFwAsiYcXpAcu+IWvYq8hSRArDTyqPwH1o3Cn4NCzPP5fFbtoGVKS3wy0VGaKk0paZ28iBQsUAOxK3tQZUj4LhfkUnSCkIZYUBXpv3ktMUMFpqZqI3/B56BMGnqsVARlS+g+O932HkHliAOIIqGZY7Jsz5SNwcnJN4hNCFyJqkBr9b0Z3jZAiN5OlxY60J7cy3bujbhcOXVtSzoSdiBPLt/xzvFc9DMzvKO0xeDkugsGyR1r+6VyVjzYT9WtLrky3sQV0Oq2fdYiaqG39Z1oVhUUJrf5F3n5izV5UoCPjkaGai1awuZKt+O6Zx1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765039353; x=1765644153; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IUVnhRgN/Rg7m5EOLZSinAiBqoc/zaIUE34tSehSniQ=;
-        b=Eu2ZKlHkIjp3g8plWhOlQw2g1Zbxwvg6LqqvWYCqitOsX8m7aMQaoXizYrASzEkf2C
-         4vL4pasBPaA6PKn9wz2u+oE0fDHoDC2SlF4NawiQpt1GY3+H/WVuXTNCJoajGrW4Y3dt
-         37Q0j7MezvHW+ta/1v0QNUXMOde3t6HiPqWJhO4dpieuj1DDTDPo8XfvNZfOC8eFx8+2
-         UzeqBWHqeGwWo1gjesPxHCRah/EAAPy3IQnDHx53Pg2ZcPCHS9iqcgK7Sr9Vh6LutHfe
-         xm92lAMrwNOIIvhG7mUCA6/xnUwjSftpf8tDb25EuF9qkeWhkSMC/gE4i/mMZAqGbBIz
-         +/Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765039353; x=1765644153;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IUVnhRgN/Rg7m5EOLZSinAiBqoc/zaIUE34tSehSniQ=;
-        b=Ezru6coDeAtfk7N+0QhNRU+13VOoYwQe/5OOrvu3u2NTcxNQhf8EL/Y6kI02Da44Q9
-         guitce6u6jgZ7g3vGXOV37zkVQ6LtASMWT7/Y33C7OEhsYDtMqf5qX755wzB6KdBJZm9
-         657wdLXxRe9P87uaYXlpjEGKRzIf+Oz+U+dmK3PdJov1ZD3lovFNLWuLqjuqkGAZGrQZ
-         e2dWt0oy7/yUnkaObMrCyi/7YupFE+Ju8S7jag27Mr9hi30yjvV9Kw4rDp3ZMGeDxu3y
-         f/V3lESRxD0mvSkzSeoqW9v6WQ94Hz9JdyuBxJvL8be9Q4PcpRT0kG6RV90bJE51IR0d
-         KE2w==
-X-Forwarded-Encrypted: i=1; AJvYcCV8d/rfCkYnZFgb1oRQ9zMoB5xQ+Bkz1KtxZoW4Har1O+YJAUWeaaWSCmAJ0zFh/QNxKlVmZMl/xg==@kvack.org
-X-Gm-Message-State: AOJu0YxueRS0d/daWGLxTIZs0u8XYPv6C4feDLCYwkvJdoL6+hJ58hTg
-	ZunsPkiWfZl8zWgJ4SnFI5LH9iJBFdfm1sDft7xv6mf88yWm9uu0tt8c
-X-Gm-Gg: ASbGncvdA2EOZLp3Q4oRPzlZ5AzmgeOTAAZc7dUhhnMj9ZWIAIOn0DrExWg647VRHwt
-	rIGKnb/HY6FDwocyY8PQElFbzDssPWRr0FzewtS2yNxLw/aOrKCkgFjvEL4m4gmQoCnwu1mZ+db
-	gL/q7TafF+aTMwvPbG3bdNuOAI2ujoUc8w761O+O4Pz8niiIy4TuGqqlQspluLUPekTN+YQlj2V
-	bltOYqCDGRYOlW9vKVx6XvJbS0xCZibA1tfNye9OUIYPf5P4mlF9w4aAmtrgswgWFALtbWAv2yW
-	RwVGzTPIfxmtythB0QOmVQHiRE2vSGSWvJ6RH48qwSiltfokt1PzfUrn8ERRk8S7glHstFReLz/
-	HjQRaq7wM/MsmWfqOhgtkE/9xWWWadp/PhOmQNhirstVpaJ4gPonjLbfhJ4t1rUDcASd2kTIHiP
-	0ZQ6zLuXsIdejdaMHDPtNsnu9FBW1CHq1CuZwwsroP/J5qce80yT0woUhbhrDjyvdJGn4hS3FTT
-	krzpBxNBzPq
-X-Google-Smtp-Source: AGHT+IE+8Gk2g1muHy19wVmTqRZP+AXJSE6d+Qfl6STvjWPSPB4wFTbRv3maDzo8Xp0GtaUHkINJeA==
-X-Received: by 2002:a17:907:da1:b0:b7a:1b3:5e52 with SMTP id a640c23a62f3a-b7a242bf4b2mr295821366b.17.1765039352297;
-        Sat, 06 Dec 2025 08:42:32 -0800 (PST)
-Received: from ?IPV6:2a02:6b6f:e750:1800:450:cba3:aec3:a1fd? ([2a02:6b6f:e750:1800:450:cba3:aec3:a1fd])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7a01a33399sm474489566b.58.2025.12.06.08.42.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Dec 2025 08:42:31 -0800 (PST)
-Message-ID: <3ed10ea4-347f-4d01-82aa-1d92d2804ced@gmail.com>
-Date: Sat, 6 Dec 2025 16:42:30 +0000
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2ftAvfPYWrLMpfwn71IRRWmVXQYbJbGynhCgsmF2ils=;
+ b=s/uSM7UK1+mEIgKaeglbln5tEkod09uTi1Mj8DT1Z7LPPu/RWPyYZvma6L784EoopntWa2iHLF62FOa373OUXZpa9r481/GedAI5I9eGeziO8PIQhfaQ1+ViK9KZbFLXiBvtALmAQdyC43t88t1d/Xdjowtc/RVAI4WKpSMQvOI=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CH4PR10MB8075.namprd10.prod.outlook.com (2603:10b6:610:236::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.13; Sat, 6 Dec
+ 2025 16:42:37 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9388.003; Sat, 6 Dec 2025
+ 16:42:37 +0000
+Date: Sat, 6 Dec 2025 16:42:35 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        oliver.sang@intel.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
+Message-ID: <90d5f255-fb6e-4af8-832f-c0fbf72f7a25@lucifer.local>
+References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
+ <b2b2ce39-200c-4dd0-a46a-8d3f184b7d51@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2b2ce39-200c-4dd0-a46a-8d3f184b7d51@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0048.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:152::17) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/11] mm/hugetlb: Refactor code around vmemmap_walk
-Content-Language: en-GB
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20251205194351.1646318-1-kas@kernel.org>
- <20251205194351.1646318-6-kas@kernel.org>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20251205194351.1646318-6-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ckpp38kx715x5ges8pr9ab19cy5zat7d
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH4PR10MB8075:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55b2609f-0554-4ad4-769a-08de34e67704
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?HJSOUOKMD3VeTvnL1dNYqFsqVTmZESVSMqL47MpJBCTpuw8IzqFi9Ju1eLOQ?=
+ =?us-ascii?Q?ZBY0gE/W6awVXPT1BWeL366Nsmc/h3TVMoOGLfYowotxX3/d3mWlJoxKw+rh?=
+ =?us-ascii?Q?zV96DLmFxjE7b0iLbtfZFUy2VllS0saKzA93yq48GY4A/nrQFNjEcvC3jjm0?=
+ =?us-ascii?Q?bpjJsdzENelQppATVMgjICowi34iST84RRdTWBLdZt2mdFUp72lRK7cMdvuo?=
+ =?us-ascii?Q?rfCFCkwUc1KvrfGOI3fqLpidULYR2ePqwcMFTJR+Ix9qSuJC56Jv9D7w8O9u?=
+ =?us-ascii?Q?bkthPENFamPu/o5nsKo2ccQHX+ytmaodcI7LgXsKbB4MXrsbrtSjhwZ7ithD?=
+ =?us-ascii?Q?hQC/dONXW5868Ek2PW9WShKXUF7h9HkyFwSAMne8639s5xvWf4u/hnq5ct5u?=
+ =?us-ascii?Q?7lfYq5IbujiuYIoicp7dzPNm6gF9X2wjSRPbEtUMxV4NDaa6voLL4I0m9aJu?=
+ =?us-ascii?Q?weCVgzs9PDbrCbnEqOYDBtPEJ/QUdda5wMPHg23buvko6Duqw5FMeNSSglyq?=
+ =?us-ascii?Q?CDDoD+UMd+GCWd3pJNiLZZDfPROUsulS0HuUla2me2wabS4/qjBjuKw33c8y?=
+ =?us-ascii?Q?fPnSrp+hAWdLgObH+e3johD45cuakFk8nIce/CJN8UwRy7nfXXkLzBlIyQHC?=
+ =?us-ascii?Q?M9LDtRnRN+yIa+Ud+BkYVjdlbOqTdsZdqaQ8tRIhXALD8Uw4f5D7PNyTKVH4?=
+ =?us-ascii?Q?S86AFj1oHiAciscQVUAuTQ4eWlddZAd87T/2FoWEN04lHdc+WH/prmPrFE8n?=
+ =?us-ascii?Q?YPMo0jIICBZaWkNiDV/L5LHGjGfpypZ/4L226nl9ChIWp15h1HLMwhAQTJTz?=
+ =?us-ascii?Q?EKIVWOLPiqRsYteNIsYWiDRCJ3qtvdNjeO4UfZsSB9dx+lVYZrG8fI8RsG1G?=
+ =?us-ascii?Q?dKudUYPf2unnzOiW6BGkaVnnD9fTzaA/MdR9ySfZCppsMajZeQKHK0qaM8up?=
+ =?us-ascii?Q?ltPZAcJSjS6pRkdXA03v+EXdSltH9uO+jE7zwnOkeL1EymxjaYe4m2coEbxN?=
+ =?us-ascii?Q?IoOOX0Tl/ax19OiR3Ii04H8tceGpms/8dfacfcdVbMzFMZrDFOMMwmN0y42m?=
+ =?us-ascii?Q?L7dxGnPd9jEnXjBHFCu+5bi9w1pswryv35faypq4gH13DSpvhJkMOGL3Gsn6?=
+ =?us-ascii?Q?8fRsImEwbSVdI1jGufmn0AEFPEIhrp3xV48LMtXs6XoZRy4iKZd3e8qm5vM7?=
+ =?us-ascii?Q?c8c/mihYdOkt7bQF81q7Wpv9r7idRlHP0b3uDh0tptgBq0lDE/wLFOmGAGm5?=
+ =?us-ascii?Q?GxBzAEAk+Lb5rMA9NhWHam/Wr8ksp1NaK9i6/n3oYgAWiutDUn3c0ZPSFnBM?=
+ =?us-ascii?Q?HZAUI5i0UbwPc1byvgSv7BVNNWnmSy0ZJWsQEZpZgY/3eU89YzISeHncECRY?=
+ =?us-ascii?Q?VkkOfaN+RwbKkJVbK6Mi94mNkIkLpEn5PXXsP7F2bEEIoS16+Jrv7KouQJ/I?=
+ =?us-ascii?Q?61DLVjo1YFWUBvaJOlxwhsfEVVBLxqvaDazsgE9Dyj69FakgmRd1lg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hbcJ70A4fpLSEKm0Zlljaqcg0w0X44tpWEpsUYg+SdU2F0vveeMnV+th+aHd?=
+ =?us-ascii?Q?8hZxg0n5FSIzKAFEwzmBX68PW9ZpZoFuReuUsla8/n+QXrkryCi5aTto7PZg?=
+ =?us-ascii?Q?lzmQhurgUmw5MrLRLedliRnyZ3GyhxrEClIYCtliRAkxd30uA65NjYKdrN4s?=
+ =?us-ascii?Q?571uddzoLJLlA3xv/tHt82M2Vn3Y8Uwsk7tD1i00lkrkfXEA5eaMi7XzRU+O?=
+ =?us-ascii?Q?vCe0oob+krjK6m/vAEUhAQqsn9tz4/mjCTGJAsA1p9VZZblL/PTGBEDUKqS8?=
+ =?us-ascii?Q?Lze7aJtqTKp4aphiMp93lVk40DqqsAUHscl2G5cdtxCntl2R8id8IWevAYZD?=
+ =?us-ascii?Q?1vpzgrbBKJjSrLa93WlzZ1ROub1f1+wLlDsaXA7kFDlxRMIXi0SR36+tluRC?=
+ =?us-ascii?Q?b0use4pGZL6a/HAe5d0ty7ccevuXubCArB2ovMUCLRiPpMGKJprQ5zChZNok?=
+ =?us-ascii?Q?hGWCHU3GM0gDxYH9vmScrjryuYrIAZor2cu9NMUIEVNigxGABU9nSCnt6GHB?=
+ =?us-ascii?Q?wltkNF0bn1S9NLAlDSJxJPLQQ0i0hvNwtxrYblJkvSY4xypUlqWXH3mRnR4C?=
+ =?us-ascii?Q?9mfr+t7H5kkivQPnMjw1RvB0ZKO3wy5Vaw6fPuYgSoVghQtEeveMrrL5v8MD?=
+ =?us-ascii?Q?rUXbQaPk8MASGf1fAVoWeJU9ek72EKymYxEsvAEhQZIRCMI7YPgc95JtLlKf?=
+ =?us-ascii?Q?1MqH9DVDGwK7YzoJeKHwpKAc7b0wVr+Fz5aoLM+xkzknJaohUoNfaqsMG3E3?=
+ =?us-ascii?Q?sG0r63xPOiR9of9jZx1qZkk5uGDHRnGKAol2Fas0aMjHLfCac19ptstroUIw?=
+ =?us-ascii?Q?UUUByVidzhv0CCeQfr/T0IxJwSPiyXUMrfwUC8izji91pw+F1woS9rMUqlhl?=
+ =?us-ascii?Q?I5ZIQ5omhR4umwRGgdZ7WOCXyQsKgSw1+JAD4Fg3cc3FcyuIu9NFG3jbSzyc?=
+ =?us-ascii?Q?tWss3o7AaosBSscmnnoBP06epT0huDGEo/73jWe0tl4TCI7DGJ1+K0dwVKpk?=
+ =?us-ascii?Q?KXVpp14Cei/n9lSI+q+1QO8T2887zVxLm/oqe5GbjB4AdB8NF9HRwHw/Snfx?=
+ =?us-ascii?Q?MTmqIkgYyMjAYUUNWoegJN7sieYfoxWBuKvOYAY0/Cv2MWpZJbC+Ezy9lseb?=
+ =?us-ascii?Q?UrNx1Vstb9eDht9rNgeZbLolPrzUO3cOYYSSpmoE6+dw0eX9nGHWB5S4TQB6?=
+ =?us-ascii?Q?ycwm9lFuq4mnBhJV0bnbCE5hlIRqGhB/6ANW0oasJuhHzagX7B4EYlseEXAg?=
+ =?us-ascii?Q?WTs9L8HDK/q0HRVBm37JiseBamlVx2AGwPwW9dSF0+ZqbknQvNuEFzKm1uA5?=
+ =?us-ascii?Q?kUZh6HzKUlrIGtqnSxUbvQO7KWB0T/JsPCiN1Asnmg1nvNVksn412kjBKyI8?=
+ =?us-ascii?Q?dJDKBGn5EEfLfitB3Gjon1bevRvzep/9yUWo9hpfMvPiXJ5UIZZqI3bk5+YL?=
+ =?us-ascii?Q?4gyzK87GFqt2pt0S+Y8/bMcl6GppjN5H/Po2ujTq8P7a3I4cvDwbTE6bKaEM?=
+ =?us-ascii?Q?9KlheezZGU4QYVcUas8kEPq7WIy9PJQJhZpYuwH0Qyferk1yAWO0Tfjykxrl?=
+ =?us-ascii?Q?p3CqzmkonptX/XGv/3fbmrhhhjrF0pCR1syidsGyXlUMF+uO95vBEJHWuTWY?=
+ =?us-ascii?Q?ZLuZ18QSZW6MRJ6dOw8E2Hs+xKs2LR/oWh2EtGZT03NtW0Q+ogQubr9Ak2Q/?=
+ =?us-ascii?Q?4H3MJg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	M/tDjvbK4Ia8XYgKqsHoYihh+EGvPcAFTotMHezMRnaiEC54Sl9ljSTtRyH3+tJgZYu8oThUZeq/UKA7h+0LzFK/t67kx2iYcx4iwXeDDYY7OffzgeqAtUGC8vNvjqaYHkhdyi61jpf6kiWkiSEWHKP8YzEH6qGnP3+2r8f59QkXHCx7NHjsfHYb7UVI8KavNpe8OHY6Kb5LgVClncT6mrkW0T1Sv9zn/YvFJTZLnV3Rfd/z6InnmXTmDm1e90jWHyUzU/RrKmGE7UWVZcXlnLc8gTZHDWjsYuvJjajMFGLGtk+ukGG48YIsCvlFDO7BTd4WBv/N6zX9A+jGivgoYg1gLbUn2srrPRglcNnYmXoKcHTtSofZmuENZwIQg9UslhGd6ZSIBkJrtHzot0QblqHgl7MYBJbayGql10nNPWyXaJ3hTajwdtewjF0gP+3R4x8XP8sNPudRfYXGXhS5KlvCrVQqZIndRNN7qkwcGzyQwo33SZcb/qdKpejd4PsnxTb9X+/KqvzhVEtbINgo8txTz3NJXZpSegLH81UUwbyREaE/allsNGxwMW0q/B9Evn3TYlwov5malKLkEj5t5XKSDWscq1H6bUghJeTPe9Q=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55b2609f-0554-4ad4-769a-08de34e67704
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2025 16:42:37.7740
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +VYWfKoTh37XvDME3x1YwfuR9OSKuM5U9inXw2jfk6M2x+IibJsV3JQJlDIrJcXfKK1mNtYfW/gCzfMRzMLwoY+tbaFGxIw9Sg4FiPmpA2k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH4PR10MB8075
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 phishscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2512060136
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDEzNiBTYWx0ZWRfX6c4cRS8AQ3ep
+ GiEFYf5DDT7K9TD37vhYw3G0V/GtpJcaC8Gt3fp0yHSAqweFSC6yXgf5pdIlwG5zsmWkIWFlK6Q
+ je36eOZmOQiHVcySWlSEt4aGSSY+X+2iRB+RLL8tYzgBSlX+O6tw2rrB44QoqF/1JxE8pxs8ivd
+ cEkJztQPY1aEdClHroWkSFeaqkiCCE5O1H9jrgaTC7VXB5ZaoQUa0Ko3CqszjHn+056eLvj1EAk
+ LOactePNzy/BTjfD4S5DavdyTalHGDa/1+MqesCLJkQCEKx7DbXPoDiwjaDVhvE6XHo8NA8Op9X
+ VzKTXVLKhMv22Nmldvd6NvD300ipvEpc27yYzmm22pq9h3VXq+xfxz8vTUmmO4l1Du9+OF3xUIC
+ mkP8J+by5fVPnA8x36dYR18FyZ1+DYj3gWEJftuEGm1zrN0mjyA=
+X-Proofpoint-ORIG-GUID: rs7sA84ruAybZHMJuNSWI0ZqZQjaGxkF
+X-Proofpoint-GUID: rs7sA84ruAybZHMJuNSWI0ZqZQjaGxkF
+X-Authority-Analysis: v=2.4 cv=MfVhep/f c=1 sm=1 tr=0 ts=69345d07 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=yPCof4ZbAAAA:8 a=ZjCSb0mWAa6jfW16Vi8A:9
+ a=CjuIK1q_8ugA:10 cc=ntf awl=host:12099
+X-Rspamd-Queue-Id: 4F5BA10000A
+X-Stat-Signature: ejjqjwpd3wzepmonr5i783w7wxcxb5g5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69DCB10000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765039354-908269
-X-HE-Meta: U2FsdGVkX19amDyXakmkpxMIrNglEfrVAgn4yKePj1afyT0B/6CMKE3flQtgkPQ5UpQH6LdJSCKj6o2Oi9lZzYbp7bJz7LxDaURomVN+iUkOJ5IFIxs5MSaddVQNkGuWIQjyvCwhZxdG9L+D7MUdLre8mBREJSTETthMkyCvpFkpmjJOF4VP27XdQjqQlhthyTCOQWsCLwz7hrBfJcJnRq3NLRhOOMRSYuijgHBZnFl44TrXskwwNMn0ksCwqxLMOEsV4cg7/N28wfV02yjmeThyVq1PP3PA84VReBadeVenNmV55wz5dyJPZD0H7mKmoNV/R7IoJVeMu/GT4AvvV471UaCE474xPHBve3SNBsvpqmfPs33x/yxik3kW+8AarqsJS2ORRDrVJ31lgl0Ecc2qwMuv2lWON0arz6s5XDIOzPJ467EnHcCw18Gex47EFilVrYW8a1suxvsK7B4HuHiH79crfNFv90j9rtOUyeLOFU6h8mgrZjNzI/iKz4NNjDqwugHQ+/K+Gz7ePXYlgNDfAzdW/CaPq8rN+Z1f5GZpZja7W9QB4SWleJ6TJE6S0J2AlUnWrUPP+RZi7p4bG0N+asP+trONrDyphfrArq3LrG6U4CVL0dDENgrXZfEz7YysCAFH4KXkGykNzO61+zovsXtyh9Eh7CxTqFAfXwnbWMGsgQH08vC8CMqBpJ+f9mbdJfUkf3ATaxSrclgwhlq4uxUnueJhbBq8MeYLlJkXbyJJ35ve6/B/TqNZeI0w7XP2nJ/bBHWfd514w7tChUcId81zJxMc9NgP/K7n3LEEJmRZdlFYGwO6Ao0+xNIpzKOHHnC8XV7FhYn40PManF1pEmgnuP196Ps/Fo2OhYa9TH/lVKwm8l2XtACpgj99mEtmHwt9GrfztbzRa8XlGtAL/Nfqmi2n+zYic12aEgHMAeFepV+bIE9nsXxztV9xf+OHHGvhaq2/O/0zLgx
- V7cOOU/3
- cBuW/sGyy2ZPKqz0buQ/d/Q/YhjwZthqzwWxleFKzrZC5g+p9Ze3enMp/6VfSdnR08FLopZRUw9R2GPoLg3Coy2k2KzjFRF3q5XszsUMKSw5Bn0yD5MG/jA8t/6engjOx1eLCllvVuzAy/8oKliiLXcNJyxYh26kOHA84GYzLA8I2/4bpLyr/CcAjrdlnPhiecz7KZw0PE12/JyjBiof/xByVt0SD7ETLtCNlWfE2c4qhycZmQqcOv0hBwYPitjQpzTaa2R/DdJLSiWrLaQUXpr8mvUqxWydslNB4WCp2Cocfco+ISeM3wmvvNBMm8mAu11oo5BJsUh2tYy5MLOdHTSZBMHlu7dPX8mfzVxdb2PCSNmUw3eNlWE+5Rhtvlstyrq6clHX7eq8ST1cOQ3mlKdBzqn6n3wiLYyN+SymToPjd3beIO4XLEnI+/YXErqdOvJ+g4eTikvUKJgNm7P4PPFi1EhsEW+SnOPfga3p0gYCLunnFLUTNO3W/ZuB/wewoYlcYLnmC/vAJ33nvWY3dY9CmXeZHl8Facu/jiHbTNseDV0eprYkk61xesyYy6wL/MM4emr9H9Y82a9Sdsc1RaRQSXGBjiIRPdYEEfdFfcZcZnxY=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1765039372-697332
+X-HE-Meta: U2FsdGVkX1/4wz1MEDgf43+tEOfXvMDuexcxnlICMdTsHez5fei9shTfX3woinEvCU/MC6yTLsMhOmN3zWhCZrZAkyEDjQBATA+qGkMYCuAPZRQE1LXxTuNXiL81RZtWUFVvQR+lclR+VfEAAleZFGXsLEHnpyM4VU2vGXf1PigiPlG8DkYOQOkS/p4+26PkxoDyW1hR0QEfWwa7TfJhWFemeD2RQZK38ENOhwOGRIZLgcVUQYgRCbF/N9mKjxVtBhBakowSk/fBDYVz2lBtLPBOXDshRDBjJi6lLpLbSoj+VUGjToXwS7v7ZYxQaKul+keY3grOjJnmZu1/pKyyrq2rmOCVjAPnvUpjtFquYFOp65dSnjBCuJnSJPfTsReT5JchPLArSFFr48dr2xfz/U35oh1FIGFXZGWRNfErlyzepBoThJD83FNPCYUjWZn2MU992y5Xv4dyKB2RiY2oEXT3ssolpB0Zl2HfYs0NkIa4N56M16eCLyxMT2uNg+bEvZlmq9iZPrdiLOfk6SEJXWeEd+kTdZCDaIvygipoizLnytZmGnodESE9UbQk77qiGpQNJuRNkHrDDFOY0myoSVYUBGGlwTYKGjZlLsxqZIpxXh9XgRtHu5s4Dv14bLI/ZNROdwST47YwYWaR5A0nSfHqTjZt/dH/yWw8dOi+uN8+sIVu0wCyfIZ8/xtdmOQ+JYk/rTMOOGZVPRXeVpD3YA6qWZ2wa0eMFPIMRRJl8T7du7Dsw2Bs6pP15pC5QiuNPgNmjsyweZTh8prmxvG90RGE1TqXxfxUdJAeAX2tvBu0I/Jh1/RGYCyKUBhp/xNzJ/6KGVTzAby5FDsQHSDQ1WwnlDMqTVvFL0LleECpg2D8a87TrCjmvBKee1F0Fkf9JAvCYb32mjFw+kPWkMDlkTtY5LUnjMzfM1NB5sFOWj4qtPLH6JY7zqa44o0gNqE0ZwFETGMUUAeiDDMvrfY
+ xQWyr8Pb
+ OvLW4MfaIHrMN9Rlfb076NBHlCgdNpi8ELGspWIv+V4wnd7HH/8580lfAQy3sGvd8WqvmzF4hralHilK3EbGur3DtgjZLweyiqCU643C6cHts/fG52cKqIAh/FUsVcCF7Ec/O6VpD4n3KX6Fuviem+CEueBVLSu6CjnObD2Alp0uxgp5SOe5AlCN02A6SlTWucJckz6jWNgAgqCRRA9oJcycI097TE8JUNfE1r1kravrdfzy6G3qN2nlITNkUh8sFLGlXBF/XFLxZgpQxWe5qL3biLWD4hNQ7nud6u5ZoeSX6GWH06QpEX20yKaRdGVEIZoswz9gOKGbIchx9lwBCIQNPcud6Oh3qkXLO9vLl4PId5DawlpOWvKFLYxaph+DlpyyarrM+GI4KlIDBbsmWi9GFK1bAx652VqQhcIFFkmr0xwZN7rlyyudVbQSgfyZ38vEFxo98XpWfUSjx8yOHRPcfxnZpg/i/Zik7tkAJWBXK92LVEsEEPazcetKjCMbaIws/rtWhVd9X0/OkwV2UYmieIV/olqgxotzrVP1xGIXa4yeqRoHvXQekbHhVjA9YbiRRoP3wQ1E84Rq3x+lhbKWdO4CzvTs/7nOs4AashMaBaMDMmJq0HZ/4nl7xp3faYK7uGWpbAItvX8M+VdurLOBBPg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,422 +239,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Dec 05, 2025 at 11:56:32AM -0800, John Hubbard wrote:
+> On 12/5/25 9:50 AM, Lorenzo Stoakes wrote:
+> > Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly changed
+> > how VMA flags are declared, utilising an enum of VMA bit values and
+> > ifdef-fery VM_xxx flag declarations via macro.
+> >
+> > As part of this change, it uses INIT_VM_FLAG() to define VM_xxx flags from
+> > the newly introduced VMA bit numbers.
+> >
+> > However, use of this macro results in apparently unfortunate macro
+> > expansion and resulted in a performance degradation.This appears to be due
+> > to the (__force int), which is required for the sparse typechecking to
+> > work.
+> >
+> > Avoid macro expansion issues by simply using 1UL << bitnum.
+> >
+> > Reported-by: kernel test robot <oliver.sang@intel.com>
+> > Closes: https://lore.kernel.org/oe-lkp/202512041634.150c7e4f-lkp@intel.com
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > ---
+> >
+> > Andrew - note I've referenced the linux-next commit number above, could you
+> > replace with the upstream commit hash once your PR is taken? Thanks!
+> >
+> >   include/linux/mm.h | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index a2f38fb68840..c4438b30c140 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -395,7 +395,8 @@ enum {
+> >   #undef DECLARE_VMA_BIT
+> >   #undef DECLARE_VMA_BIT_ALIAS
+> >
+> > -#define INIT_VM_FLAG(name) BIT((__force int) VMA_ ## name ## _BIT)
+> > +#define INIT_VM_FLAG(name) (1UL << (__force int)(VMA_ ## name ## _BIT))
+>
+> OK, so now maybe we don't need all of the rust/bindings/bindings_helper.h
+> changes? Those were because Rust's bindgen doesn't properly handle
+> nested macros, as I recall.
 
+Ah seems you're right, I just tried a clang/rust build with those dropped and it
+worked fine.
 
-On 05/12/2025 19:43, Kiryl Shutsemau wrote:
-> To prepare for removing fake head pages, the vmemmap_walk code is being reworked.
-> 
-> The reuse_page and reuse_addr variables are being eliminated. There will
-> no longer be an expectation regarding the reuse address in relation to
-> the operated range. Instead, the caller will provide head and tail
-> vmemmap pages, along with the vmemmap_start address where the head page
-> is located.
-> 
-> Currently, vmemmap_head and vmemmap_tail are set to the same page, but
-> this will change in the future.
-> 
-> The only functional change is that __hugetlb_vmemmap_optimize_folio()
-> will abandon optimization if memory allocation fails.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> ---
->  mm/hugetlb_vmemmap.c | 184 ++++++++++++++++++-------------------------
->  1 file changed, 77 insertions(+), 107 deletions(-)
-> 
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index ba0fb1b6a5a8..f5ee499b8563 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -24,8 +24,9 @@
->   *
->   * @remap_pte:		called for each lowest-level entry (PTE).
->   * @nr_walked:		the number of walked pte.
-> - * @reuse_page:		the page which is reused for the tail vmemmap pages.
-> - * @reuse_addr:		the virtual address of the @reuse_page page.
-> + * @vmemmap_start:	the start of vmemmap range, where head page is located
-> + * @vmemmap_head:	the page to be installed as first in the vmemmap range
-> + * @vmemmap_tail:	the page to be installed as non-first in the vmemmap range
->   * @vmemmap_pages:	the list head of the vmemmap pages that can be freed
->   *			or is mapped from.
->   * @flags:		used to modify behavior in vmemmap page table walking
-> @@ -34,11 +35,14 @@
->  struct vmemmap_remap_walk {
->  	void			(*remap_pte)(pte_t *pte, unsigned long addr,
->  					     struct vmemmap_remap_walk *walk);
-> +
->  	unsigned long		nr_walked;
-> -	struct page		*reuse_page;
-> -	unsigned long		reuse_addr;
-> +	unsigned long		vmemmap_start;
-> +	struct page		*vmemmap_head;
-> +	struct page		*vmemmap_tail;
->  	struct list_head	*vmemmap_pages;
->  
-> +
->  /* Skip the TLB flush when we split the PMD */
->  #define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
->  /* Skip the TLB flush when we remap the PTE */
-> @@ -140,14 +144,7 @@ static int vmemmap_pte_entry(pte_t *pte, unsigned long addr,
->  {
->  	struct vmemmap_remap_walk *vmemmap_walk = walk->private;
->  
-> -	/*
-> -	 * The reuse_page is found 'first' in page table walking before
-> -	 * starting remapping.
-> -	 */
-> -	if (!vmemmap_walk->reuse_page)
-> -		vmemmap_walk->reuse_page = pte_page(ptep_get(pte));
-> -	else
-> -		vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
-> +	vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
->  	vmemmap_walk->nr_walked++;
->  
->  	return 0;
-> @@ -207,18 +204,12 @@ static void free_vmemmap_page_list(struct list_head *list)
->  static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
->  			      struct vmemmap_remap_walk *walk)
->  {
-> -	/*
-> -	 * Remap the tail pages as read-only to catch illegal write operation
-> -	 * to the tail pages.
-> -	 */
-> -	pgprot_t pgprot = PAGE_KERNEL_RO;
->  	struct page *page = pte_page(ptep_get(pte));
->  	pte_t entry;
->  
->  	/* Remapping the head page requires r/w */
-> -	if (unlikely(addr == walk->reuse_addr)) {
-> -		pgprot = PAGE_KERNEL;
-> -		list_del(&walk->reuse_page->lru);
-> +	if (unlikely(addr == walk->vmemmap_start)) {
-> +		list_del(&walk->vmemmap_head->lru);
->  
->  		/*
->  		 * Makes sure that preceding stores to the page contents from
-> @@ -226,9 +217,16 @@ static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
->  		 * write.
->  		 */
->  		smp_wmb();
-> +
-> +		entry = mk_pte(walk->vmemmap_head, PAGE_KERNEL);
-> +	} else {
-> +		/*
-> +		 * Remap the tail pages as read-only to catch illegal write
-> +		 * operation to the tail pages.
-> +		 */
-> +		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL_RO);
->  	}
->  
-> -	entry = mk_pte(walk->reuse_page, pgprot);
->  	list_add(&page->lru, walk->vmemmap_pages);
->  	set_pte_at(&init_mm, addr, pte, entry);
->  }
-> @@ -255,16 +253,13 @@ static inline void reset_struct_pages(struct page *start)
->  static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
->  				struct vmemmap_remap_walk *walk)
->  {
-> -	pgprot_t pgprot = PAGE_KERNEL;
->  	struct page *page;
->  	void *to;
->  
-> -	BUG_ON(pte_page(ptep_get(pte)) != walk->reuse_page);
-> -
->  	page = list_first_entry(walk->vmemmap_pages, struct page, lru);
->  	list_del(&page->lru);
->  	to = page_to_virt(page);
-> -	copy_page(to, (void *)walk->reuse_addr);
-> +	copy_page(to, (void *)walk->vmemmap_start);
->  	reset_struct_pages(to);
->  
->  	/*
-> @@ -272,7 +267,7 @@ static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
->  	 * before the set_pte_at() write.
->  	 */
->  	smp_wmb();
-> -	set_pte_at(&init_mm, addr, pte, mk_pte(page, pgprot));
-> +	set_pte_at(&init_mm, addr, pte, mk_pte(page, PAGE_KERNEL));
->  }
->  
->  /**
-> @@ -282,22 +277,17 @@ static void vmemmap_restore_pte(pte_t *pte, unsigned long addr,
->   *             to remap.
->   * @end:       end address of the vmemmap virtual address range that we want to
->   *             remap.
-> - * @reuse:     reuse address.
-> - *
->   * Return: %0 on success, negative error code otherwise.
->   */
-> -static int vmemmap_remap_split(unsigned long start, unsigned long end,
-> -			       unsigned long reuse)
-> +static int vmemmap_remap_split(unsigned long start, unsigned long end)
->  {
->  	struct vmemmap_remap_walk walk = {
->  		.remap_pte	= NULL,
-> +		.vmemmap_start	= start,
->  		.flags		= VMEMMAP_SPLIT_NO_TLB_FLUSH,
->  	};
->  
-> -	/* See the comment in the vmemmap_remap_free(). */
-> -	BUG_ON(start - reuse != PAGE_SIZE);
-> -
-> -	return vmemmap_remap_range(reuse, end, &walk);
-> +	return vmemmap_remap_range(start, end, &walk);
->  }
->  
->  /**
-> @@ -308,7 +298,8 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end,
->   *		to remap.
->   * @end:	end address of the vmemmap virtual address range that we want to
->   *		remap.
-> - * @reuse:	reuse address.
-> + * @vmemmap_head: the page to be installed as first in the vmemmap range
-> + * @vmemmap_tail: the page to be installed as non-first in the vmemmap range
->   * @vmemmap_pages: list to deposit vmemmap pages to be freed.  It is callers
->   *		responsibility to free pages.
->   * @flags:	modifications to vmemmap_remap_walk flags
-> @@ -316,69 +307,40 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end,
->   * Return: %0 on success, negative error code otherwise.
->   */
->  static int vmemmap_remap_free(unsigned long start, unsigned long end,
-> -			      unsigned long reuse,
-> +			      struct page *vmemmap_head,
-> +			      struct page *vmemmap_tail,
->  			      struct list_head *vmemmap_pages,
->  			      unsigned long flags)
+Have added to TODO to send a patch to remove those after this one lands, thanks!
 
-Need to fix the doc above vmemmap_remap_free as it mentions reuse.
->  {
->  	int ret;
->  	struct vmemmap_remap_walk walk = {
->  		.remap_pte	= vmemmap_remap_pte,
-> -		.reuse_addr	= reuse,
-> +		.vmemmap_start	= start,
-> +		.vmemmap_head	= vmemmap_head,
-> +		.vmemmap_tail	= vmemmap_tail,
->  		.vmemmap_pages	= vmemmap_pages,
->  		.flags		= flags,
->  	};
-> -	int nid = page_to_nid((struct page *)reuse);
-> -	gfp_t gfp_mask = GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
-> +
-> +	ret = vmemmap_remap_range(start, end, &walk);
-> +	if (!ret || !walk.nr_walked)
-> +		return ret;
-> +
-> +	end = start + walk.nr_walked * PAGE_SIZE;
->  
->  	/*
-> -	 * Allocate a new head vmemmap page to avoid breaking a contiguous
-> -	 * block of struct page memory when freeing it back to page allocator
-> -	 * in free_vmemmap_page_list(). This will allow the likely contiguous
-> -	 * struct page backing memory to be kept contiguous and allowing for
-> -	 * more allocations of hugepages. Fallback to the currently
-> -	 * mapped head page in case should it fail to allocate.
-> +	 * vmemmap_pages contains pages from the previous vmemmap_remap_range()
-> +	 * call which failed.  These are pages which were removed from
-> +	 * the vmemmap. They will be restored in the following call.
->  	 */
-> -	walk.reuse_page = alloc_pages_node(nid, gfp_mask, 0);
-> -	if (walk.reuse_page) {
-> -		copy_page(page_to_virt(walk.reuse_page),
-> -			  (void *)walk.reuse_addr);
-> -		list_add(&walk.reuse_page->lru, vmemmap_pages);
-> -		memmap_pages_add(1);
-> -	}
-> +	walk = (struct vmemmap_remap_walk) {
-> +		.remap_pte	= vmemmap_restore_pte,
-> +		.vmemmap_start	= start,
-> +		.vmemmap_pages	= vmemmap_pages,
-> +		.flags		= 0,
-> +	};
->  
-> -	/*
-> -	 * In order to make remapping routine most efficient for the huge pages,
-> -	 * the routine of vmemmap page table walking has the following rules
-> -	 * (see more details from the vmemmap_pte_range()):
-> -	 *
-> -	 * - The range [@start, @end) and the range [@reuse, @reuse + PAGE_SIZE)
-> -	 *   should be continuous.
-> -	 * - The @reuse address is part of the range [@reuse, @end) that we are
-> -	 *   walking which is passed to vmemmap_remap_range().
-> -	 * - The @reuse address is the first in the complete range.
-> -	 *
-> -	 * So we need to make sure that @start and @reuse meet the above rules.
-> -	 */
-> -	BUG_ON(start - reuse != PAGE_SIZE);
-> -
-> -	ret = vmemmap_remap_range(reuse, end, &walk);
-> -	if (ret && walk.nr_walked) {
-> -		end = reuse + walk.nr_walked * PAGE_SIZE;
-> -		/*
-> -		 * vmemmap_pages contains pages from the previous
-> -		 * vmemmap_remap_range call which failed.  These
-> -		 * are pages which were removed from the vmemmap.
-> -		 * They will be restored in the following call.
-> -		 */
-> -		walk = (struct vmemmap_remap_walk) {
-> -			.remap_pte	= vmemmap_restore_pte,
-> -			.reuse_addr	= reuse,
-> -			.vmemmap_pages	= vmemmap_pages,
-> -			.flags		= 0,
-> -		};
-> -
-> -		vmemmap_remap_range(reuse, end, &walk);
-> -	}
-> +	vmemmap_remap_range(start + PAGE_SIZE, end, &walk);
+Cheers, Lorenzo
 
-
-I think this should be vmemmap_remap_range(start, end, &walk)? Otherwise if start failed to remap,
-you wont restore it?
-
->  
->  	return ret;
->  }
-> @@ -415,29 +377,27 @@ static int alloc_vmemmap_page_list(unsigned long start, unsigned long end,
->   *		to remap.
->   * @end:	end address of the vmemmap virtual address range that we want to
->   *		remap.
-> - * @reuse:	reuse address.
->   * @flags:	modifications to vmemmap_remap_walk flags
->   *
->   * Return: %0 on success, negative error code otherwise.
->   */
->  static int vmemmap_remap_alloc(unsigned long start, unsigned long end,
-> -			       unsigned long reuse, unsigned long flags)
-> +			       unsigned long flags)
->  {
->  	LIST_HEAD(vmemmap_pages);
->  	struct vmemmap_remap_walk walk = {
->  		.remap_pte	= vmemmap_restore_pte,
-> -		.reuse_addr	= reuse,
-> +		.vmemmap_start	= start,
->  		.vmemmap_pages	= &vmemmap_pages,
->  		.flags		= flags,
->  	};
->  
-> -	/* See the comment in the vmemmap_remap_free(). */
-> -	BUG_ON(start - reuse != PAGE_SIZE);
-> +	start += HUGETLB_VMEMMAP_RESERVE_SIZE;
->  
->  	if (alloc_vmemmap_page_list(start, end, &vmemmap_pages))
->  		return -ENOMEM;
->  
-> -	return vmemmap_remap_range(reuse, end, &walk);
-> +	return vmemmap_remap_range(start, end, &walk);
->  }
->  
->  DEFINE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
-> @@ -454,8 +414,7 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
->  					   struct folio *folio, unsigned long flags)
->  {
->  	int ret;
-> -	unsigned long vmemmap_start = (unsigned long)&folio->page, vmemmap_end;
-> -	unsigned long vmemmap_reuse;
-> +	unsigned long vmemmap_start, vmemmap_end;
->  
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
->  	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio), folio);
-> @@ -466,9 +425,8 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
->  	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
->  		synchronize_rcu();
->  
-> +	vmemmap_start	= (unsigned long)folio;
->  	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
-> -	vmemmap_reuse	= vmemmap_start;
-> -	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
->  
->  	/*
->  	 * The pages which the vmemmap virtual address range [@vmemmap_start,
-> @@ -477,7 +435,7 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
->  	 * When a HugeTLB page is freed to the buddy allocator, previously
->  	 * discarded vmemmap pages must be allocated and remapping.
->  	 */
-> -	ret = vmemmap_remap_alloc(vmemmap_start, vmemmap_end, vmemmap_reuse, flags);
-> +	ret = vmemmap_remap_alloc(vmemmap_start, vmemmap_end, flags);
->  	if (!ret) {
->  		folio_clear_hugetlb_vmemmap_optimized(folio);
->  		static_branch_dec(&hugetlb_optimize_vmemmap_key);
-> @@ -565,9 +523,9 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
->  					    struct list_head *vmemmap_pages,
->  					    unsigned long flags)
->  {
-> -	int ret = 0;
-> -	unsigned long vmemmap_start = (unsigned long)&folio->page, vmemmap_end;
-> -	unsigned long vmemmap_reuse;
-> +	unsigned long vmemmap_start, vmemmap_end;
-> +	struct page *vmemmap_head, *vmemmap_tail;
-> +	int nid, ret = 0;
->  
->  	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
->  	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio), folio);
-> @@ -592,9 +550,21 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
->  	 */
->  	folio_set_hugetlb_vmemmap_optimized(folio);
->  
-> +	nid = folio_nid(folio);
-> +	vmemmap_head = alloc_pages_node(nid, GFP_KERNEL, 0);
-
-Should we add __GFP_NORETRY | __GFP_NOWARN here? It was there in the previous code. I am guessing
-that it was there in the previous code as its an optimization and if it fails its not a big issue.
-
-
-> +
-> +	if (!vmemmap_head) {
-> +		ret = -ENOMEM;
-> +		goto out;
-> +	}
-> +
-> +	copy_page(page_to_virt(vmemmap_head), folio);
-> +	list_add(&vmemmap_head->lru, vmemmap_pages);
-> +	memmap_pages_add(1);
-> +
-> +	vmemmap_tail	= vmemmap_head;
-> +	vmemmap_start	= (unsigned long)folio;
->  	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
-> -	vmemmap_reuse	= vmemmap_start;
-> -	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
->  
->  	/*
->  	 * Remap the vmemmap virtual address range [@vmemmap_start, @vmemmap_end)
-> @@ -602,8 +572,10 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
->  	 * mapping the range to vmemmap_pages list so that they can be freed by
->  	 * the caller.
->  	 */
-> -	ret = vmemmap_remap_free(vmemmap_start, vmemmap_end, vmemmap_reuse,
-> +	ret = vmemmap_remap_free(vmemmap_start, vmemmap_end,
-> +				 vmemmap_head, vmemmap_tail,
->  				 vmemmap_pages, flags);
-
-The doc above this also mentions vmemmap_reuse.
-
-> +out:
->  	if (ret) {
->  		static_branch_dec(&hugetlb_optimize_vmemmap_key);
->  		folio_clear_hugetlb_vmemmap_optimized(folio);
-> @@ -632,21 +604,19 @@ void hugetlb_vmemmap_optimize_folio(const struct hstate *h, struct folio *folio)
->  
->  static int hugetlb_vmemmap_split_folio(const struct hstate *h, struct folio *folio)
->  {
-> -	unsigned long vmemmap_start = (unsigned long)&folio->page, vmemmap_end;
-> -	unsigned long vmemmap_reuse;
-> +	unsigned long vmemmap_start, vmemmap_end;
->  
->  	if (!vmemmap_should_optimize_folio(h, folio))
->  		return 0;
->  
-> +	vmemmap_start	= (unsigned long)folio;
->  	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
-> -	vmemmap_reuse	= vmemmap_start;
-> -	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
->  
->  	/*
->  	 * Split PMDs on the vmemmap virtual address range [@vmemmap_start,
->  	 * @vmemmap_end]
->  	 */
-> -	return vmemmap_remap_split(vmemmap_start, vmemmap_end, vmemmap_reuse);
-> +	return vmemmap_remap_split(vmemmap_start, vmemmap_end);
->  }
->  
->  static void __hugetlb_vmemmap_optimize_folios(struct hstate *h,
-
+>
+> > +
+> >   #define VM_READ		INIT_VM_FLAG(READ)
+> >   #define VM_WRITE	INIT_VM_FLAG(WRITE)
+> >   #define VM_EXEC		INIT_VM_FLAG(EXEC)
+> > --
+> > 2.52.0
+> >
+>
+> thanks,
+> --
+> John Hubbard
+>
 
