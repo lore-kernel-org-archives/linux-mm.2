@@ -4,185 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07642D3B7D2
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 10:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CDA6D3B7D2
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 12:03:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 596606B0372; Sat,  6 Dec 2025 05:22:25 -0500 (EST)
+	id 51D8C6B0005; Sat,  6 Dec 2025 07:03:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56E536B0373; Sat,  6 Dec 2025 05:22:25 -0500 (EST)
+	id 4CE736B0006; Sat,  6 Dec 2025 07:03:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45CB06B0374; Sat,  6 Dec 2025 05:22:25 -0500 (EST)
+	id 3E4696B0007; Sat,  6 Dec 2025 07:03:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 31AC36B0372
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 05:22:25 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4AC5140481
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 10:22:24 +0000 (UTC)
-X-FDA: 84188656608.23.4269606
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010039.outbound.protection.outlook.com [52.101.193.39])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5B5BC100002
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 10:22:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=BL6d5MGg;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of bharata@amd.com designates 52.101.193.39 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765016541;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2858E6B0005
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 07:03:41 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B648A1404F7
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 12:03:40 +0000 (UTC)
+X-FDA: 84188911800.18.407A89D
+Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 873BD140002
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 12:03:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=nabijaczleweli.xyz header.s=202505 header.b=TiOYYR44;
+	dmarc=pass (policy=none) header.from=nabijaczleweli.xyz;
+	spf=pass (imf26.hostedemail.com: domain of nabijaczleweli@nabijaczleweli.xyz designates 139.28.40.42 as permitted sender) smtp.mailfrom=nabijaczleweli@nabijaczleweli.xyz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765022619; a=rsa-sha256;
+	cv=none;
+	b=qGKcPr9uMJvfJs9Bp8RZ+BtQvrlhqXnu9zGNAJyQruGxQIM3lzSDJU1JxwPxS0mHxHah1M
+	2qFJmtU3mJnGsjlgii3sX55ufMbA/hdcGglz/8XiXzntwrwbtnLQ91fZ380NJd7Q31tFLU
+	KkRLsfBToKlki2GY2y/jGl1JTMm6eaI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=nabijaczleweli.xyz header.s=202505 header.b=TiOYYR44;
+	dmarc=pass (policy=none) header.from=nabijaczleweli.xyz;
+	spf=pass (imf26.hostedemail.com: domain of nabijaczleweli@nabijaczleweli.xyz designates 139.28.40.42 as permitted sender) smtp.mailfrom=nabijaczleweli@nabijaczleweli.xyz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765022619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UTyygqUebNbvg9QSWDmATgQVFkmSv6lNIk/to1GDUJA=;
-	b=jSIcWAhkMU315CsES49Cq0YW7Y4DcITITKbPxLxs1f4NQkohWe6lZJYzl/8w9QJXbs7mJp
-	WRTgEXso8fzSsJZv4jj94X8BVWWduvQiLy/ArmreCQQ1qrkL4jCfRU2NhhRGLEruGBujbT
-	fbFVCLcq/bb30jySrci6zBZoiHiQFNA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765016541; a=rsa-sha256;
-	cv=pass;
-	b=UO5XdCzezA1HNXyD3Rhjpu5gQxnMgylLc+QAwhXk2fYsfYNBwdTwUaU/3Gb4Zn8NcfXTp2
-	ug1GG0IcetE61coo2utRI6QW7iyHHmd8TE4XwObuRXUpi6uiF4VOyOVJnctHiIF1lBKohW
-	J6T1WzBR9mQB5bBoFVd11dNHMLH+hcI=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=BL6d5MGg;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of bharata@amd.com designates 52.101.193.39 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nhKSf+7iNbtaxy3D2wqw2ojSMtUhKWxADkfH/uiIYeSZRHrCysa114Rc349XvWue8bczKAYUyGd0d4DIJsWPLEemZiRkdtsUvIF7mpK7K4qnAfP2j9wyyIpMq+qoyYiugSULyOLixZ9xyUUM96yDPIkzxbFPtkLJH0apkhLwIKtiYSZIbnQRAQlWJLlS/PliCACMT6BLPmCpkQ35O+MWXdpSVWlIabXwkvLQW9fzgJQCQOqSNLLpT0mwc5oTkYZq8wEwFrt5KDzvhboVWwkF9g2Wwdl9aSqY4uoAYdkScNWG6uEqmzuVMXd6erl3W41S+5HJ2t6kgYiVaGve5+TtCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UTyygqUebNbvg9QSWDmATgQVFkmSv6lNIk/to1GDUJA=;
- b=MLpQfT65EK2ZXJJdqpLdUwmgkkYeVwOWai0Ef57f8TGi8j9cYNZYYCpRJuSFVvMvildT5o1PQKq9KxFrbmnsHcx8cTNCVvxZ8ZvY+S7VWaY5ASwa0ZyCmXxhlGf3lvplv4TKzhTDRVrhtqu7cZQEatfUD5PKD0yvV29Axx28CXHiYD5h36G6p5cUJqiTkJoHaN2SAk93Ng1/nZSe4D+iFmVwE6605uljnTSwOm7uBPRE5k8T79XGnRssI4Gpa4ov1srDjPoG+baDlUM48+bCM35LKMNpa/J10QS2QHWO6JdtaaoTix7a36jNJWfsurYixk/s2pM4yxDbOKbvqxrZYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=samsung.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UTyygqUebNbvg9QSWDmATgQVFkmSv6lNIk/to1GDUJA=;
- b=BL6d5MGgvowVWW+2XskEjY/pXFXvnrouP8mgfZZGT3UL10zfL6ssXAmZOytrmAdPBEvWBgs3mv31rVD83/81rB30kTajAl7RN2O96EjNOJRyJgGzLlN92PaGVYGelbQkWoez79QbtiNmHDufdV6h1oYtxIW4d9+3ZQPF3EU2GsE=
-Received: from BL0PR02CA0032.namprd02.prod.outlook.com (2603:10b6:207:3c::45)
- by MW4PR12MB7333.namprd12.prod.outlook.com (2603:10b6:303:21b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.12; Sat, 6 Dec
- 2025 10:22:16 +0000
-Received: from BL02EPF00029927.namprd02.prod.outlook.com
- (2603:10b6:207:3c:cafe::c4) by BL0PR02CA0032.outlook.office365.com
- (2603:10b6:207:3c::45) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.12 via Frontend Transport; Sat,
- 6 Dec 2025 10:22:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BL02EPF00029927.mail.protection.outlook.com (10.167.249.52) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9412.4 via Frontend Transport; Sat, 6 Dec 2025 10:22:15 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sat, 6 Dec
- 2025 04:22:14 -0600
-Received: from [10.252.223.214] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Sat, 6 Dec 2025 02:22:07 -0800
-Message-ID: <ff6fe9be-26db-4f7b-8f2e-339b8e456f6b@amd.com>
-Date: Sat, 6 Dec 2025 15:52:06 +0530
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jajk78jjtKbg0lMmJm0cgRRVhN1VJQ7uL2nvYQuTEy0=;
+	b=ESQbmpFn73X8ok/N/K7onCFiofyyUR+mf6e7P8flWLdbSJRGYOHg7hYTr/nhEVFpYkm5Xg
+	W7RhiKdFekbwgSjwHqw8SZpzpivBaQ7LMdpESHEXr/r79MeUchTOvLGAsHuJW9ooprMLVl
+	3DxZ718/1XZC8TfMPbxnvHox9N2HlJQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
+	s=202505; t=1765022616;
+	bh=lOLBjT1FhIQMNdS5V7F5ONlL7N51IXCMEKC6ONpFAww=;
+	h=Date:From:To:Subject:From;
+	b=TiOYYR44wI5xIrclsohvgNwsQncXwoWRlLwldFtgG2KBbS+JTVL1jfneLLqAyTNor
+	 0I6EkMasJxa6Kj+2y0fvlaHQOc+CiacTwUHxqDMtDGqbhiI9Z/0R5DIiAeuY4AyOGP
+	 9GzPaML6fgMcDYBrI2o9g7T94R6dhE7WaoPJyy1MFI5rbvFpJGqQwGMlW/oY0RvCqc
+	 5xJaZ2oCQPPjMAWA4cCud+so5n6K7JtqcuZySRFoGX1HSAlFnzJlZBBbVi/vPE4ZH3
+	 hQSxbzXgTiP+GUNVsvHU1v9QM7eenkKDuALIWSDeyXwx6Kz+aLcGRzYLOFhPEMQPEO
+	 lk0ebJtN1MR/g==
+Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
+	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id 0749FE3F4;
+	Sat,  6 Dec 2025 13:03:36 +0100 (CET)
+Date: Sat, 6 Dec 2025 13:03:35 +0100
+From: 
+	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] tmpfs: enforce the immutable flag on open files
+Message-ID: <znhu3eyffewvvhleewehuvod2wrf4tz6vxrouoakiarjtxt5uy@tarta.nabijaczleweli.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 3/8] mm: Hot page tracking and promotion
-To: Alok Rathore <alok.rathore@samsung.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>, <gourry@gourry.net>,
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
-	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<akpm@linux-foundation.org>, <david@redhat.com>, <byungchul@sk.com>,
-	<kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
-	<balbirs@nvidia.com>, <shivankg@amd.com>, <alokrathore20@gmail.com>,
-	<cpgs@samsung.com>
-References: <20251110052343.208768-1-bharata@amd.com>
- <20251110052343.208768-4-bharata@amd.com>
- <CGME20251126132450epcas5p123220533572f40d70799294cd3ca4819@epcas5p1.samsung.com>
- <1983025922.01764165001727.JavaMail.epsvc@epcpadp1new>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <1983025922.01764165001727.JavaMail.epsvc@epcpadp1new>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00029927:EE_|MW4PR12MB7333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 595999ce-d77d-4634-3b09-08de34b153df
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WU9wZzJrRU5ieFRtMkN5Wm1Od0Y1dnhSd3ZZUEFpd2lQV3R4OEFRV2ZkZ0xB?=
- =?utf-8?B?TjYvdG5yaUp1T1lBRGV6Z0x1ZlBLWTA0SEg3R2hxVEdJcjJsc3BDRkNhV0Vn?=
- =?utf-8?B?R0lxeXQvQVFRcjNoN1lTWStVVDZSa25BWlRmNUtRRkdERlJ6UzRBZjlHNm5r?=
- =?utf-8?B?NFllSjlVQU5XTXgrK0x6aXVmcTJQT3NpNUFPWURaUFNXU21hSVRENDFFWVlI?=
- =?utf-8?B?QlFhSi9nRHd3MXVJbGM5NWlXV1BmbVRtK2JYVGd6cjc2NllYYjJ1TmRTTkQ0?=
- =?utf-8?B?Rk9sWWg2YWpDRWxCdjRCb3hOSis3aWtjcnhmTTN2SGJ2ZTZ1YXpMdnZZMzIx?=
- =?utf-8?B?c0ZqaU5KVGg1VGJDRTh2THBoT0xyOHM2SmFqZU92SUtuQ3NQNk10dG1DZ2lQ?=
- =?utf-8?B?MmZOOWI0ZWMwQllSTGtGY0VJaVo4VTJ3dmJ2L09GL2JpSkkvVHh0dVR1Yi9K?=
- =?utf-8?B?OFNwdzBXU3k4UlhlMHNJV2ZRVVZqSDhkWC9qQXVXMmxIeXFXY0EvbUQxQmNo?=
- =?utf-8?B?dUJKd2hwaW1qeW52b2M0Ry9aajJjWnA1RCsyaEcya212L29kSlJaZEg5bmlO?=
- =?utf-8?B?eFVoSzRsVjJHUVJvVFN5Vm41V1ZVeHdJanM5dG9Tb3lvSWxuMkFrVzQrTXBw?=
- =?utf-8?B?M1ZCS1JQMVZYaUI0bGVqdmdBTHZ2TEdCSjBaOFk5SVB2c0dRc0ZoaW10U2J2?=
- =?utf-8?B?czhWVFV6R2drY0h2dXJBZ1RsaU1wWTVJRkVJOXVseTFsSlNRWFlWT3RuSGFs?=
- =?utf-8?B?SHJJUWNCS2wydkx1QW8zdzJBaTMwSjZNMmwvNjRhSkFCL0ZRNjlkckoxSVU2?=
- =?utf-8?B?Z0tCYXFZWFEvTlp6K2J1QnBSNmVQQzJoRlE0RHlNRURWTXdlbVpUenBhMkNu?=
- =?utf-8?B?Y01VNzFGa3R2UzM5WnpFSllSeWhKNHVyZTZwa3NnMjZIdWFKUjFFRmFEMWZv?=
- =?utf-8?B?dDRSS1RpNnlWeit1ZkVCWmdaVThKTzZQVHBVVG5obXl2OUgvWXVIV1dYZW4v?=
- =?utf-8?B?dzZOS1phcmMvdy85MGFoOTd6RzZ4TUxqTEFvVFhhK1AvYkhocWsrUWY1dlBz?=
- =?utf-8?B?TzlhQ1I0d0F1NjMzRmtLcEw3MktITDVESDFBaDg3eCtJbW12YVRwL0FOcDMv?=
- =?utf-8?B?YkpWcVRVb1FHakhWbVBCZnZSK0Z3Y3V4NjRIcFBMemlzcmp3TWcwQmcyL1Bw?=
- =?utf-8?B?dVl1Wkk3ekNhTmZKT0JWeC8vWTloeEtGdUd1ZmFTdDFwYUEyeE5nbnlvVTVL?=
- =?utf-8?B?eGNxNmFBdUtVYUYyVFA4K3pMMHlOOHpVdlp4SUNQT1BsRXVic3lvK0N5L1dQ?=
- =?utf-8?B?bWhxYkJPbnl3WnFNVkZLUFlqRWlWQlBJTms1cGNkZHZPS1cyOHNFaXBqTFZw?=
- =?utf-8?B?bmVjVUpEYUU2VUNaamNpQ1M5Qm9jZEZyblduWVVQMWdycVhxSzlsbzdxRmM3?=
- =?utf-8?B?MnNRZittQWZqT1Q4UGVYWEVuYTlPNHFFaExaU2RNc2gwaGFjUDdDVUJrWG01?=
- =?utf-8?B?cCtDUjh1S1loSngzbjA4RUNBejRjeCtZSXVzZGdlVlJaN0h1cmVsdVYyTHdP?=
- =?utf-8?B?MTZ2Z1Z2SkluTG1zYUIrc2s5b0xHNXdUeTUzL0Nwd1hkbXBiY2JOWTRON3Zv?=
- =?utf-8?B?V0YwYWpSbCsxc3hPQ1JtYm9ORWdxalVHSjBxd05XZWppbTR0Zlo4c0dhbTF2?=
- =?utf-8?B?Y0U3UnRhTHF4ak43M1J0VUIzOGRsOGlaRTgvUjNLclZoZDZkdFJlbTlZL2d4?=
- =?utf-8?B?Y1dpdHAyMjQ2KzdDTE5tbERuY3ZCK3A2eXZ1Z0RxekpaMUZCT1NndmRSZ3U0?=
- =?utf-8?B?cGgyWkxoMVJscVFZMGNZek1PWVlKT2d0Yzkva1IrRUlMLzJ1bEZaQkRmNmFR?=
- =?utf-8?B?U3UzY0Fsak5aRGg3N0xaMExuc2dpOHl1S0JaOEZRb2FwdTFXTHVIb0RSa2c1?=
- =?utf-8?B?a0dXQldMVzBDNFNYVjdXUFFLTWJiNmxneEcyS2VhQUxzMEdrblV1M3MvSXZr?=
- =?utf-8?B?MDBWMDJVSG1SK1NBaDhuR0M2U0UvNGFhZUFmdWxHQ1Z1cFVIU1JiNUdOTTJq?=
- =?utf-8?B?MTJiZjJ5VlF2M2R2ODJPOTV4WndkS0ptbXlrUT09?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2025 10:22:15.3766
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 595999ce-d77d-4634-3b09-08de34b153df
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00029927.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7333
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5B5BC100002
-X-Stat-Signature: rd3fq8gpq4uqfrxwi71613n3xio6m9we
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iyozfdnhfasyy5ay"
+Content-Disposition: inline
+User-Agent: NeoMutt/20231221-2-4202cf-dirty
 X-Rspam-User: 
-X-HE-Tag: 1765016541-86595
-X-HE-Meta: U2FsdGVkX1/FDcYCBloeqmDpE6Cg2EG+KWJjYIyEtF6mOuk8Z1V5RAXmcrLGlIOtWCcuj9qGsvp4NhVHbzXZzTHeNLpSL5V+97jD+M2+OUx8v8XR8u1oHeYkRTpx/aYQ612uZDja79HLcSrANQzLRBLjVjO3pmQbft2J4ywWErVekR7zpuFsr60XkU3OxLyNubUyjAM2MK8n4Q/MQNIrImSs0R8ZmjaN0V4meoIXd8kQr9jga+IYv3W23JjXR3dqdaURG+l8t2nU8uQnAuKDY1BiFNyO134dmbqYOaLO/71COVt+0G5KUtdHH5RvG874xYCWIegknittpmgjM86Xoxqg2iDagZViUOKzOCVeH82jeXGcDhXFfgAJNDFGa3CqC4o54O89LxFLpYUrtrjHAZDbUoJDw0EYPFJrH99RTauMMyRttNVl09HuveyMJNtXJ+FZ6HOwYXVJwyrepW4dVKTF7zZ0pdOuFFJsbwE07yPLdd+FMwGhbeEZACob80S3sNSrZDJb5Vl98JU1cq/kqluV2rfNp83Do57q8eHaVebarJqnt96SyfxSPv0NQYqNeJvcaR6IkZbmtkklyPW9axInkfcPTWJjOH+8ypoMSbpZcaoce0N+P4O8YwJs1++m6ar/fpY2X4skgqefPydo3CKfGxXCp8JNGTn/K9N4eI1Pr0RYZovMb78aAAamoOO3rbWjw/ybSAU9NsDottgF9YwoWBy0nYJxKi3v19UPef0F9H3F1mKEUcHQf2iA22aHjW9zmfqaD7wdOgIE38FXRgfHN3ADgGi5OhPyZBfdo4ZQh2wAg5ahz03v6Mxc4Pkigfv+5V1K26CNobxbYiYZzv+U7ALWjzyDJkdQl3Y4ujGmSpJODoV/fMyqZIj7tur4oWYuLlql0XBSpoedm3ugdwwAcGXs4JvYmcXQcVxuD32p+vPv9FDoKaolUSncm3fbkfFyc4F3Lfa/+7ZgkRF
- Dmg==
+X-Rspamd-Queue-Id: 873BD140002
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 7hxdro44e1ybbbikjg8oz8r5as9z9mqg
+X-HE-Tag: 1765022618-540350
+X-HE-Meta: U2FsdGVkX1/Fgrz67bUAyzWti1dRBazayhG6pnm5GyeXLc+UJhCQzeuxgzRqg94Ng4TRiT/72zF863sE3AyEjSNzkQb/WEpz/oP9FtVLE6v56b+E5VrCqZyEbnmgr459km4midMpb1NUWcvnmyQ+7E0uj7d9tsWd2WMADiRahGpDjt5tEjgdMzDfaSNgfMsWiOmCmEw2FumAUREnczb+2wJkwr1xVAmV7zfbq8gcNfTi8apxKwDs550MqEoQ0OXDHeXBS22lhkXbHmWAMN8cjsF7znBiBQE4+VYS94vMu0/yDO+SFgDcOqOL7Ou4KVYPpDWrNjy5WdDCBfSDZat8Cqj8mVVhYOQeGJ/8f5FkQByzO6drgPtdXEh/SQaqmSCISyKc4/PSSqT7zYgOVaoLaJmSVDy3DJrCAU+CD4CFuFgj0VeYusDwiashFYbWsGFCaJswQ/uYWJb8UqHNI2W+aOLM1xvlMeOhqg792PRgNKtSFgFPhXQDMN377+CpvkCvsioqDo54Y8QW6KXFa4XeLbB+i7zSlY+BkUqOpuR7eepIQ1kKENTKEBeazxhST1m1kL1t1CPfbu25L1DNtRk0G3btVB/L3IIxufadgW+3Kp54sWu2zdrjKJBk6FQmU1JvF4m7xSJUAahC4EYR3FxOboeuOJizDdEKJ6/e97iwNuMSFQaFLVY2a1G2R366kJFlVVW43q3RXrySsEjrvt6XY3HjrqF4ubNFchKTN/ADKJlkQjNsdM41q2bC59gdimyduNfwvLAC6aZbaaMupc1AulrmszkoodeW0qgRlQQSrbnmEfqIE2rj/u+e+2XfM7YB1tassnUMSiteEr3a1HOCQTth63kiVEgqFh7WpWZDn3g1wwRY2blPXRIZXEoYrN1ud5E8bfT37e+rIIME1H9qhOPg5bkpdM/JKe4uiZZJgAv6y/QE+pd4mMmnQgbE3oJTZr+gFQau70hSuX0/l9L
+ 1azAH6gz
+ DmjGbz+g5tJQnpp2Nb0FJkIUwJwXyr+UN1VSs42mTITSZaWfXlV5KOCVYiuAHUTt3JII7QenOGj+y2gk6cT+B5XSBfFIPhvlOKLOwT9Y21jIwhHygBsCaAgMlpMWMY762qUMDekW05OUg+peS3FAM9F0pfvU24VwOY1UdJW/p/9z9UoByj/ljUwpoEY7F4gGYy+W67YzsOdUo/d2LxEthFtnGQ6jhqLUed19Lz6IgGZjrLfVHrXJy98WRhO//F6RPdrgnpT2ex3sIikq03SkttVSXlbuZycjXs6ebQxNY5jSvmcOFKXSU5/SVSgCpUxL5VqbkExlYZWott+wubsG368X1l8HyB1X07V7Q434AtrRmqE8Nmbb82q7H2OUkaQxadySwY0TjJiA+0/rxSa5lQoZZqzb3EtXj2cpuOy9/A1maUoNQ7ZT+GEzsWU0+gjRu/0Gk3m7PQlVCu1R8SHFvGDXZ+/Js7ry05b/jHSTA1ZCK1ObSboaU7wR5T48z8TThZPALGFnORo4B4D6sA4h2wt3Yifkr/zKMSVSsLCLcsAAGd6RlXQeMIBAdZ9T6SWYDSF6iBSEO0DsMXxZ8o3SxvnWKYA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,47 +90,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26-Nov-25 6:54 PM, Alok Rathore wrote:
->> +/*
->> + * Walks the PFNs of the zone, isolates and migrates them in batches.
->> + */
->> +static void kmigrated_walk_zone(unsigned long start_pfn, unsigned long end_pfn,
->> +                int src_nid)
->> +{
->> +    int cur_nid = NUMA_NO_NODE;
->> +    LIST_HEAD(migrate_list);
->> +    int batch_count = 0;
->> +    struct folio *folio;
->> +    struct page *page;
->> +    unsigned long pfn;
->> +
->> +    pfn = start_pfn;
->> +    do {
->> +        unsigned long nid = NUMA_NO_NODE, freq = 0, time = 0, nr = 1;
->> +
->> +        if (!pfn_valid(pfn))
->> +            goto out_next;
->> +
->> +        page = pfn_to_online_page(pfn);
->> +        if (!page)
->> +            goto out_next;
->> +
->> +        folio = page_folio(page);
->> +        nr = folio_nr_pages(folio);
->> +        if (folio_nid(folio) != src_nid)
->> +            goto out_next;
->> +
->> +        if (!folio_test_lru(folio))
->> +            goto out_next;
->> +
->> +        if (pghot_get_hotness(pfn, &nid, &freq, &time))
-> 
-> Better to remove freq value, it’s not used later.
 
-Yes, can be removed. I am leaving it here just for a future possibility
-of having kmigrated being driven to migrate hottest pages on priority
-compared to hot pages at which point frequency value may come in handy.
+--iyozfdnhfasyy5ay
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Bharata.
+This useful behaviour is implemented for most filesystems,
+and wants to be implemented for every filesystem, quoth ref:
+  There is general agreement that we should standardize all file systems
+  to prevent modifications even for files that were opened at the time
+  the immutable flag is set.  Eventually, a change to enforce this at
+  the VFS layer should be landing in mainline.
+
+References: commit 02b016ca7f99 ("ext4: enforce the immutable flag on
+ open files")
+Signed-off-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz>
+---
+/ext4# uname -a
+Linux tarta 6.18.0-10912-g416f99c3b16f-dirty #1 SMP PREEMPT_DYNAMIC Sat Dec=
+  6 12:14:41 CET 2025 x86_64 GNU/Linux
+/ext4# while sleep 1; do echo $$; done > file &
+[1] 262
+/ext4# chattr +i file
+/ext4# sh: line 25: echo: write error: Operation not permitted
+sh: line 25: echo: write error: Operation not permitted
+sh: line 25: echo: write error: Operation not permitted
+sh: line 25: echo: write error: Operation not permitted
+fg
+while sleep 1; do
+    echo $$;
+done > file
+^C
+/ext4# mount -t tmpfs tmpfs /tmp
+/ext4# cd /tmp
+/tmp# while sleep 1; do echo $$; done > file &
+[1] 284
+/tmp# chattr +i file
+/tmp# sh: line 35: echo: write error: Operation not permitted
+sh: line 35: echo: write error: Operation not permitted
+sh: line 35: echo: write error: Operation not permitted
+
+ mm/filemap.c | 10 ++++++++--
+ mm/shmem.c   | 12 ++++++++++++
+ 2 files changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index ebd75684cb0a..0b0d5cfbcd44 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3945,12 +3945,18 @@ EXPORT_SYMBOL(filemap_map_pages);
+=20
+ vm_fault_t filemap_page_mkwrite(struct vm_fault *vmf)
+ {
+-	struct address_space *mapping =3D vmf->vma->vm_file->f_mapping;
++	struct file *file =3D vmf->vma->vm_file;
++	struct address_space *mapping =3D file->f_mapping;
+ 	struct folio *folio =3D page_folio(vmf->page);
+ 	vm_fault_t ret =3D VM_FAULT_LOCKED;
+=20
++	if (unlikely(IS_IMMUTABLE(file_inode(file)))) {
++		ret =3D VM_FAULT_SIGBUS;
++		goto out;
++	}
++
+ 	sb_start_pagefault(mapping->host->i_sb);
+-	file_update_time(vmf->vma->vm_file);
++	file_update_time(file);
+ 	folio_lock(folio);
+ 	if (folio->mapping !=3D mapping) {
+ 		folio_unlock(folio);
+diff --git a/mm/shmem.c b/mm/shmem.c
+index d578d8e765d7..5d3fbf4efb3d 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1294,6 +1294,14 @@ static int shmem_setattr(struct mnt_idmap *idmap,
+ 	bool update_mtime =3D false;
+ 	bool update_ctime =3D true;
+=20
++	if (unlikely(IS_IMMUTABLE(inode)))
++		return -EPERM;
++
++	if (unlikely(IS_APPEND(inode) &&
++		     (attr->ia_valid & (ATTR_MODE | ATTR_UID |
++					ATTR_GID | ATTR_TIMES_SET))))
++		return -EPERM;
++
+ 	error =3D setattr_prepare(idmap, dentry, attr);
+ 	if (error)
+ 		return error;
+@@ -3475,6 +3483,10 @@ static ssize_t shmem_file_write_iter(struct kiocb *i=
+ocb, struct iov_iter *from)
+ 	ret =3D generic_write_checks(iocb, from);
+ 	if (ret <=3D 0)
+ 		goto unlock;
++	if (unlikely(IS_IMMUTABLE(inode))) {
++		ret =3D -EPERM;
++		goto unlock;
++	}
+ 	ret =3D file_remove_privs(file);
+ 	if (ret)
+ 		goto unlock;
+--=20
+2.39.5
+
+--iyozfdnhfasyy5ay
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmk0G5cACgkQvP0LAY0m
+WPFvIBAAk19V5uv/iePKa0AKLG5tkWQK6HUqaR/8OfHJ7jzQLHX65huV5VexvAwJ
+BAu0GmaA97FjfnVlMjDfNGvrQYCr3qQz1WQqsjMMb87VkcO7I0qwAfkhzzhX9RXv
+cxgzUbyBzM+yGmI7P4GU+LjV1dO10p0+5rd1gFIfzJkwyhN2wf5jgSziFu5phiYl
+QBboDk9cgz7js6nefDMOUUf8nbdWPwdUueWmKfTHTim14FplslAwlX3X19UDU5Mi
+KdA96wd9XTA1kVcduDchwFX1VflYdibzEGmtPMKMenYVnGskDDM+qAlJalno4/wK
+D3LZsw0Q6bT0CE+md3NGaaaH7p+6nYyBTXvt+MkaF5cjesXUZg3175L5LYsO+T2L
+Ub0yAEXgJpIFl9UIPoTAASRqlYXCv3HUKL8mAAOQH21okpgkAzgqvwXEOaDagA2R
+n7U2zSIl6gr2TJgL4HVsUdwEVkKy+lmxKy2oc78ny0RXFrFDCJMAcnQuIL/7poz/
+q9qErl3EtfPEvHj/r+T6CFK3YOwMa/SePinBcnvh4o2eD+5Lo0W2DJcKnL/gEPXQ
+uoXSzjexYmpI0MOZR+rKWiYgmTM3Ll6Wp2CwPsC9hD1ChMsTlEQsoeKwVpzZCnVP
+rt+HO4oIjacRf4EyHnyARf8q5jUEWMXDsJmrUf9hZLCL81GuB64=
+=ybT3
+-----END PGP SIGNATURE-----
+
+--iyozfdnhfasyy5ay--
 
