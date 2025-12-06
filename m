@@ -4,89 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 508A0D3ABE7
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 03:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 302C9D3ABF5
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 03:44:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8A286B034B; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
+	id 1F6416B034E; Fri,  5 Dec 2025 22:44:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A614D6B034D; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
+	id 1CEDA6B034F; Fri,  5 Dec 2025 22:44:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99EB46B034E; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
+	id 0E4206B0350; Fri,  5 Dec 2025 22:44:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 870776B034B
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4B11B133A52
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:12:59 +0000 (UTC)
-X-FDA: 84187574478.27.51E1390
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6EB1AC0009
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:12:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iTlcIo5A;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764990777; a=rsa-sha256;
-	cv=none;
-	b=YdzW2/qrvFqx0imXX7zfDZeTr/OJEKvUS+Av/wojOTBpoC+a6shmx/SCbhNoGV+MCWmbkN
-	vMuhayJx0OXnZq9beTlPloVIz1tOaumQ29ExxN+DaqiAjmJElMnMIu0XMQKCOa33xqiT09
-	L4Rb/z425FFDUA+BtK7HKuqCkgE6ABk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iTlcIo5A;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F17BF6B034E
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 22:44:14 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 82AD9C03EE
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:44:14 +0000 (UTC)
+X-FDA: 84187653228.24.F847659
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8E9E416000A
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:44:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="NYirB/XO";
+	spf=pass (imf08.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764990777;
+	s=arc-20220608; t=1764992652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0r0xWOI04btkf8CfXl7VnZlJgk5q6qnmfk/5+zubQG8=;
-	b=mJeSnlIRyxDm3gNBAAEgA0QS37QS0fnphP75u7AJ4vJplqk/Ur3CzxyKmBl4pm1dtD6+gn
-	cPBvsin9cb6qb5vO0fmzq1+k3OoRiSN6kTdiC9ysx2LhET6U54yQmWMfT+lxrc2mxV0M+W
-	pdqOurLl6bmIOUq1ajuqtufXBR6610Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 958BE600CB;
-	Sat,  6 Dec 2025 03:12:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB32BC4CEF1;
-	Sat,  6 Dec 2025 03:12:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764990776;
-	bh=Ond4FsQaolgVCGsRJYSEIPpQjsP6TpYyCVBBKlrYlkw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iTlcIo5A2CSxaOfsU/36rIuiZVE8XTtuN8cNug06D1JYu8K1UVaqVLH1Tji2J8Be3
-	 1qq58LFe4uU5K0xARRmj/Uq+4aGluze/UdesMrNWCE9pvYt5z5WpgAS0kgy/Dtw5iM
-	 JQ/UmcocYUbj2IlspcIRn49SlAHTD2z/eO9DGpQk=
-Date: Fri, 5 Dec 2025 19:12:55 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Hildenbrand
- <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
- Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
-Message-Id: <20251205191255.e6da75c8511d23159f44b59f@linux-foundation.org>
-In-Reply-To: <20251206114034.24bdbf1f@canb.auug.org.au>
-References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
-	<20251205121501.bf47efd78d0a1a8f0370645c@linux-foundation.org>
-	<20251206114034.24bdbf1f@canb.auug.org.au>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=B5yKXImvbgtz2yovFNQUHLcbnuea9LQbWcCyrFf1PMk=;
+	b=eRe8WR6GObZ4Ha2jTXqJt6+47NLj5Fjdfx3ofMxipwDZDSGme7+ajaOVFdgzVtVsVrWDbF
+	9NRRRcfHDu2KVNSU70Gh3L60dxWPYpXJYBt/GhX275WMne0adu5s4tRtyMEZ7LoeJwAt+1
+	0/Wb0/7lDonB7iDtGaTCYjIftC9ObkU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764992652; a=rsa-sha256;
+	cv=none;
+	b=cTF4FabqlsrPTe2muBNOU9+Cors/ksqhUod6t8bfdidlIFN5x6ps099HGMQWWlHRGjBxwI
+	0I9p8CndmnQZ2dVJNma1i2w81PwN4pEX8ToUTaoghIFQd4CpunLSnLLkPxYsdZ3D9Zj9RX
+	6ZOYwdp1A6AEM014AqIy/FHqH9tRM9w=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="NYirB/XO";
+	spf=pass (imf08.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b7636c96b9aso371988466b.2
+        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 19:44:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1764992651; x=1765597451; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=B5yKXImvbgtz2yovFNQUHLcbnuea9LQbWcCyrFf1PMk=;
+        b=NYirB/XOnrNvoVERiqoJIU3QhQtEr2Wwzn7Ri14mqZee19J+aObvZrn52y6qtazg6Q
+         ZPrVFiJ1ZZ2TgSmAkKb4oquA0U9169glFF3fEvmrYW73v3pBQ/MZfkOiHUziZKwO7iHZ
+         vcda6dlQaKh+jJjHbBMPh8/AAMrR5d+p/fPkQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764992651; x=1765597451;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B5yKXImvbgtz2yovFNQUHLcbnuea9LQbWcCyrFf1PMk=;
+        b=iHejTqKEThPIE49A6koTeg9ec3rKhsKGLbvGhqtaNmJZIqYh152EIVThucMvJlT80p
+         aXGpJpg0SSirTtoO7gQbrAkEmNGdEkAeXDdOk6IzAAwGAX7qc2p7TR6oT2sEThPiIt9H
+         v7lQA4B96H7CVzMp5+699nlCLxKPvqFRYOshtR08iLrJgSQePP6sgz9o2sa3BshbksIh
+         t4uljYrXR0BCT9sM/LLmfi7Gx4dbkQL3dry+MIf0e2y5tWhJ5lhOkaih9PN0PABwOH+w
+         QOLQcLI6rGh6qDSbse3dwQTFAWIJ0RaVh1DXmffW6MY4UblF0HQk6pOxX4PI55Wpz6jG
+         B4IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhLSTnzu3VbB+yqVYczAWctUlrdb6TZ0ZH9puKcDd3YmSUEmhIoZQdkzknUqGkpT53CGdWqE2bAg==@kvack.org
+X-Gm-Message-State: AOJu0YwDQFe0uASE0bVyQmRpRWkelxh3TA9qeGXZZR2acK6zuLZNTPCq
+	zLQ4xbbPiVwv5pm3bfpIsEPjeE752c90R15ttAm3Ol5+/69X50xMN7fiBNvp0Ch4vt13E0TFhWi
+	kVNJwUCv6cg==
+X-Gm-Gg: ASbGnctdEBmUsHyg3WamfhogASQxb/kcm/X14E0uGllDEX0WFmV0z86epX3iw27eBHp
+	UVCnrki02FegCCfIYL+VzanykaOj2Yi3Ih0dMWhu3j7vaT7zVYuXqoGfNVLsXNT8iCtvCayNMPm
+	HTWK2tEq+tPh96l41siNXfzLSmYbOZMs8XwxooVKIimwclKMpwZWKpeA9Eu33wsm7GHPTSjY4a3
+	BA0u4u4IdkNavQgGzyvhhgkScvKvle3QVap6h1IcJ+FTm6XBTaSY9ARxArbJnQ4zg5404fifuYa
+	5OLm10pII/x9x/Aj9OgM6D340mTF8olQYzITnHyzkaLeVe5nkJZIuoDL8MllsC9YoPvFbS8XpBy
+	OY6xkMoz0rf/uiwRSTGeqVRN49R4b0iC2iv7cZeBx27KxIbCU9I/ie3Rve6rr37KPHuWG9rv15W
+	GmVHfZcUVAaK+qPoq8AGPA1puNth3EgGJ1Nt7f+vyZFguGkzDWg1YDQaq2yej8
+X-Google-Smtp-Source: AGHT+IHlPFOV4PcWBEYCWGEDiVYpcnOYyo9DFiCyG5FMOnrNpEHdbzqadOw6s680o7C8L2QZrq+KEg==
+X-Received: by 2002:a17:907:c1f:b0:b79:fe9d:9fec with SMTP id a640c23a62f3a-b7a244e424cmr125461366b.33.1764992650707;
+        Fri, 05 Dec 2025 19:44:10 -0800 (PST)
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b79f44994basm524098666b.20.2025.12.05.19.44.09
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Dec 2025 19:44:09 -0800 (PST)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6419b7b4b80so4150058a12.2
+        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 19:44:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXiyu8HX2XspzRT6o12jjz0odpgsHRCbRvPUm2OkMuAXdmn6hlXieDwZ6PnAG1ZG5WpsTCnEJAY5w==@kvack.org
+X-Received: by 2002:a17:907:5c6:b0:b72:fd32:a463 with SMTP id
+ a640c23a62f3a-b7a242bff7cmr135251366b.23.1764992649368; Fri, 05 Dec 2025
+ 19:44:09 -0800 (PST)
+MIME-Version: 1.0
+References: <20251203212918.82f1c9d3947940aeae263878@linux-foundation.org>
+ <CAHk-=wj1aw7p-JkWdcJOkQQ279qgppG7_1kxFQAqaak7fEQAjw@mail.gmail.com> <20251206025434.GA1422789@nvidia.com>
+In-Reply-To: <20251206025434.GA1422789@nvidia.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 5 Dec 2025 19:43:52 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wj681NMt4ofHWVDzbcb2CjyAZWnVYX=9eJ5tmYjEONNBA@mail.gmail.com>
+X-Gm-Features: AQt7F2ryDYxuiAxHRVl65vEABcWsri0dTWnBJNGoQshzjLrlHPuL2xKoXV2N73c
+Message-ID: <CAHk-=wj681NMt4ofHWVDzbcb2CjyAZWnVYX=9eJ5tmYjEONNBA@mail.gmail.com>
+Subject: Re: [GIT PULL] MM updates for 6.19-rc1
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	mm-commits@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8E9E416000A
+X-Stat-Signature: czswgq8iisg8amngccmrpec3xummu6nr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6EB1AC0009
-X-Rspamd-Server: rspam10
-X-Stat-Signature: t4hyygqjk71ofmssozrjrqw8qgmg6mhy
-X-HE-Tag: 1764990777-493283
-X-HE-Meta: U2FsdGVkX19jRzdnKUD017VnU8X+3BE6Kp4VPwPJ0QM4EXhUoxGqaIcY61xHsUkfIv4AQ1LDwAWbsGHYMV0rCTFcdSb7pY8Y4GrmJOr/IT8TZiL6CI+gZ4KitlUP4eeer+gtN3PU6IqckGvOMYZA29XvWcdzQiJrbyKL30vv45hyP7Wd1QjT12X1P0sj6sOefX9OuU64gCfwg2zBAPHAgsR7S8hyqK1//cGIBVenAQe4pjDEyVSdj2T1U67o9wFp3uAt/SahyCf+F5wlMBrmwdZWnEc3mfHTWoI5rYRuGQtP+tXbflUv46rZHVTcVNcSmg4ZWcbwtqtXFDx1m0852agGBIGUOI6/GjEoB0s4AcbZRAaEePR30LZ+nnLeXGXewvFNIlwFKAbslHVJaCBvzyC2CMulAggBgekpuJYV/EJ5SyIjw3RfXxLwU7coB9ePuBNZK8SxBDraXdt9ZED0BQAUR1MA/YQOIed9sZVjrHSXAKBD9mWNcRpC0W2yGqhO2FuE0/REMQdPZvCwGIMzQ5M1suTbpPogSDcKDYqNzU9RhdjP1u0Gg+qG/0uaoasas/f8drpZ9rE2NBBWMswfLV0hJeLSjh0MU+CiKt1r/kUMqMt0wAWLtaK80Q7tBKY2YL7djOg8Cnbkxpxx9HTp4S2rq4QFgmOdcRnaknoIUXy08i1cocm2Wn2fPt0A38rF4C/aBLnwrUoBfr1a6cuE/ufhQ77c+XrAaQQn7gvlcVf0MY5s3fMpHaKlPfkriLZDg+M+pYvs3c0fgdKvvRUP0VB/Toxp3M04twWqhbhkFkh3NGxcXtxpB/h5skD4oZvOQFkwF2e8EuszjOn1sfatUuKkwmGd+Bkmaw16IIWs7/JqXO4TM6p/JuH6WOTX0DDmAERi32+xhsNnju0hiliKq1h9WgqqtuFZUegroCAIisWFRjf/uP4mb9LgEJynB5DOrrjWtwQ60ed8JoRkuax
- fGmHiA6m
- cbhNLjYXXlo7t6cYCMvF0ZloT+xrmlJb1IOVzXoVq4hg0ZrUDKHbLi2gLQhgjOyqW8++v8gEl8dXFKVAuz23guT1w4eeAjahIJG0+jc39DOUKFTgblqQMoaZTr0OtboBgbp9VruLVESFcQFhviBDoj+y92JOSfaQfSaIKtgnQe+GM3pl6RjOr4D1M/70Pw2ZHwwXUi4f8aT3poonHDvMbqdWLf1NXXcbSa+LAtLi/tOmzCHTtDnoTnXUGhdpxCV/xtDBhXwueD0poVC+x2O2Z6Ql6m4IOfRzqXfniVE8aa0sMfp/qyL3i9oZLSZ0dmxYCNwOM7Rh6uTbMQ/I5TpHnh8QedTLRVBpuk7XTds4hiNtHMDlpu4fluljR8A==
+X-HE-Tag: 1764992652-712825
+X-HE-Meta: U2FsdGVkX1/7opjSX1jsTM5PAvyq4t4Rt9bGI3NEBLH7F/S5tgwPvH1GRS+Hi2Qq8sNvBMcGRd22Ipe5PpX5etjs3vy4meK08tneYKAwxgb4dhUvihWA2dWhfu4r6vI1jSKSN51bxvGOG+Ic/5j5tc6A9/L883FO5HhTmkOXeVWrMeEyrK+r06kdz6JlfwTm7yElTYrdPnM4tiVpqNPD8O3hMXzs/4iWh7ltOEinf5lq1z6dLJrKjnjgpTxo+agYqqlpeqbHmO+Wp6av5KOcRINd/HpE3ZfxuuIQEFXT7yWfrhIZ6GXE8CmAnGNjI0UQgdejITyupq1bCKL8RRedyt3Aw3yLOQis7E5vc9xPUV/VMb4+ZNlurFzI6DDqoxxa5AmXm+McHwWQ9SLPu4JHkkL6RtFC9qfg127XHZdtbzonUpmEqUBsTzqOuo/AkgsYPb8ZiIaNEQXZ30TBbf/ySJPR3HE26W0uXvNF2onlNO/FzzEzwYY3/YLAzGEo2wg3jCE3DDuGCANghLETtgC4NSszrvpd4zhqItGxztEEy+KhWZJA5en3Yp8eGuJEAOqf8C8kfldDxMS0hP1PCtJ+Ws2X7Wibp07RPPMvu0pVjiZb/33frKJfp+trXAbojnrQuC0h5qLzyypLpRzTPxAEtJz1zsWCUGpI3+FNP3mC+vv1yb5bNnXBuM1LrNOXXFC4mcZLpHvfwq3a4tzyF+Lfq32C97kDp72mChHaNIAwsJ/EJInU8Xh7wbI/Aj3LCpmh8hkXz5V+NpFUMCjO9fGWjQf82qvw8Mw4eNDwgediGGmKNLYR9siQ3HS8j1+xAcHF+USGMmtipLNbNyGrUE2AY94tJDmr2+kk3bn/lKVeIroNM7hmsyRs3rXASCOLJ5OEQN7NJ+Y/zyHNyGDnCUBarW6g3NgqZWQXEYO/vzxmAwJrzCNG3gIJtUOnefkefl10xuUnKy2B5s+/mvtIEB7
+ ADPK1iN7
+ vAI5y2/BEhaupPbmj7jOroxuthQKPUwZUFucOhrYlD6uZH329+oLGIdPpL2tUS7DDJiDYpkjcAAqrnQs0BjjrQvEvoLXjt+3D88srOENhGTiq4Dzbzgxj6JHK/qhRWNxkUAXOHrxF7kOhbTpaKdqBuwJiJgp8A5QotSNPFwMpW4X6wr3vdqboYV5ZwQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,44 +126,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 6 Dec 2025 11:40:34 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+On Fri, 5 Dec 2025 at 18:54, Jason Gunthorpe <jgg@nvidia.com> wrote:
+>
+> Reverting it now works well enough too. Let's see if Ankit can prepare
+> a new revision and perhaps Alex can forward it next week or very early
+> rc1 after LPC.
 
-> Hi Andrew,
-> 
-> On Fri, 5 Dec 2025 12:15:01 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> > I'm not really sure what's the best way to determine this.  I use
-> > 
-> > hp2:/usr/src/mm> git tag --contains 2b6a3f061f11  
-> > mm-everything-2025-11-29-19-43
-> > mm-everything-2025-12-01-19-02
-> > mm-everything-2025-12-03-23-49
-> > mm-everything-2025-12-05-00-55
-> > mm-stable-2025-12-03-21-26
-> > 
-> 
-> What does "git branch --contains 2b6a3f061f11" say in your tree?
+So adding that memory poisoning logic at mmap time looks crazy to me.
+The mmap has *nothing* to do with memory poisoning. The memory is
+there whether it is mapped or not, and admittedly it's harder to
+_access_ when not mapped, but it still has nothing to do with mmap.
 
-hp2:/usr/src/mm> git branch --contains 2b6a3f061f11
-* linus
-  mm-everything
-  mm-new
-  mm-stable
-  mm-unstable
-hp2:/usr/src/mm> git branch -r --contains 2b6a3f061f11 
-  linus/master
-  origin/mm-everything
-  origin/mm-new
-  origin/mm-stable
-  origin/mm-unstable
+As far as I can tell, that memory poisoning logic should be
+added/removed when the device is registered or unregistered, and there
+is nothing about mmap that should have any effect what-so-ever.
 
-kinda random, but it tells me "that's in mm-stable", which is what counts.
-
-> In my linux-next tree it says (I need the -r to check remote branches):
-> 
-> $ git branch -r --contains 2b6a3f061f11
->   mm-stable/mm-stable
->   mm-unstable/mm-unstable
-> 
-> but I don't export my remotes to my published tree.
+                     Linus
 
