@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E22CD339BC
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 14:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91F82D339BC
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 15:15:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1658F6B0006; Sat,  6 Dec 2025 09:52:34 -0500 (EST)
+	id DD3296B0006; Sat,  6 Dec 2025 10:15:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 116A16B0007; Sat,  6 Dec 2025 09:52:34 -0500 (EST)
+	id D8AC36B0007; Sat,  6 Dec 2025 10:15:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02BDC6B0008; Sat,  6 Dec 2025 09:52:33 -0500 (EST)
+	id C9A096B0008; Sat,  6 Dec 2025 10:15:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E56456B0006
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 09:52:33 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 937CE13B37A
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 14:52:33 +0000 (UTC)
-X-FDA: 84189337386.30.B2FDF3D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E46CD16000E
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 14:52:31 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ikIe1NO4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765032752; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B7CED6B0006
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 10:15:26 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 39C6E8A9D5
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 15:15:26 +0000 (UTC)
+X-FDA: 84189395052.14.EE4AE93
+Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C88CA10001B
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 15:15:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=nabijaczleweli.xyz header.s=202505 header.b=Y08LxnbG;
+	spf=pass (imf05.hostedemail.com: domain of nabijaczleweli@nabijaczleweli.xyz designates 139.28.40.42 as permitted sender) smtp.mailfrom=nabijaczleweli@nabijaczleweli.xyz;
+	dmarc=pass (policy=none) header.from=nabijaczleweli.xyz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765034124; a=rsa-sha256;
 	cv=none;
-	b=qD+8brEcdI05+yh+SoUoeuVcim3+5T4OZn2v0A9zz6XmZjEJyLf3GdnBgtapsTA5Xat9rG
-	oFK1Udnx7jJ2s6pW9BBimcmloHj5Rx9no32rgMZh04da2q8MWrYhyQL6ZIazTvEcRZC2dj
-	N8QB0bh25bRH8q4hZq/S/dPNZ48VHfs=
+	b=40mm4Lj8AbOl4OKp13cgjTATZSlzGZ12Va1sJznYyeQiXgxKxJ7HuIdKRQ53xTRTAqYy5p
+	GT3Widpz7CgI9q7pWuK2EDhUKU0BdZk/+9k4EWtMbvFY7A6ivI8N+P2rnrzIxKAkpQdByE
+	j2NJetdObEqqlYwMPRQlw33HLHzEnp0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ikIe1NO4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=nabijaczleweli.xyz header.s=202505 header.b=Y08LxnbG;
+	spf=pass (imf05.hostedemail.com: domain of nabijaczleweli@nabijaczleweli.xyz designates 139.28.40.42 as permitted sender) smtp.mailfrom=nabijaczleweli@nabijaczleweli.xyz;
+	dmarc=pass (policy=none) header.from=nabijaczleweli.xyz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765032752;
+	s=arc-20220608; t=1765034124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZqwMvBtUJWPrmT91INyPoIBLUBdh0zP7NqgxLQJ2wg=;
-	b=46wbVqxSzxouUTHlcZ484P/fg3roktW3+FJopza18TcLG/oG8uWFLM0edz2joZBZCnYO3V
-	bZpNk6azRaL0bjES2GEhXwViapC0R2W4GMY8rSfeBhcUiPCIoWsry6+RR2n2B2UUAfCNsc
-	03dI/Wz83LscP94jUeu43oaaGllU058=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCCFF402CE;
-	Sat,  6 Dec 2025 14:52:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74272C4CEF5;
-	Sat,  6 Dec 2025 14:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765032750;
-	bh=SEbZ80lBXdpClEDzmIi3Wv7dns58zlOZQfMpHJXSaIM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikIe1NO4LSyNCV9jlh6K6+5Bb52VPYIF59Bem8EGre2R5FRW+JBRHmh73sdQ7V7l2
-	 PME8Yzj3RduaGzq8CQThFLdmL5D3Id/Zuus6/W6B1zA7KHTeSFp+II93/LadudMZvW
-	 NU+hkmuoJXMYgmXHA5NTW0BUajtZXwdZ12xzx0k/aYb7f3f7LNSBEHmoq8Es39NylF
-	 2K70Q6idaIL/A0tP0iVK/dzkOj7YVYmqFWAYItsP+JteyBpKYsZgmnDQZEEW8P0/ND
-	 fpI2uYrpRvIKpVlUU8UCR4FJMpWLATfS2wl9JEZpz/Q6qgId7Qnwr+vPPDl0fJv6c6
-	 vTpcrMLlPpxLA==
-From: SeongJae Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SeongJae Park <sj@kernel.org>,
-	JaeJoon Jung <rgbi3307@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH v3] mm/damon/stat: deduplicate intervals_goal setup in damon_stat_build_ctx()
-Date: Sat,  6 Dec 2025 06:52:21 -0800
-Message-ID: <20251206145222.6302-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <924cfaa0-ad83-4d68-a6da-c1e8537b3232@kylinos.cn>
-References: 
+	bh=GaWnZ1VmKo6XRt2u7MWd4WFW7mk6d2I2802dOjaa1YE=;
+	b=nxgrO2ql1ACStfVeA7PfkXeUw/R+8IBz0QKWnnsAT4fK9VfDVF3Xb42yCwZ9RbQrBqvGtF
+	j4z+0OCxcPOlorgN6B9qbsilS18hdqS7SVLBouwkyZQWKJs1pulrqnDPQl/qYE65q6PLcw
+	/uJ266aE86tI7Up1PYHctt8I2Ce4UG8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
+	s=202505; t=1765034121;
+	bh=KZFZP3kx6PjyeS8vSsvChZpNDzoCxrRGkgYPfKdT3Oc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y08LxnbGyuvpFL8xnero7Z+OvguAtqj5WvOGU5sMkPnpuyFqL/Ow3YRyBXssR1eeZ
+	 hcu3X3NZJbxsxXlESkG0BA3DqPCOj1jsCMwTRGUZBd3L5lisbKW5do0S1/d1Pe4x/J
+	 3LnBpRVRRzGMK0U3HaRToYJiTijj3FRcuBPWFK/BM8vHCeaJKDZvJc2/m5EJoxEz8C
+	 4l5jWhFX1Dt4O0NU+BtNyDoVbdpOQK+QZKi5Xl1+Hb0PI2Wfn9vwyTJrqARqAZsdcZ
+	 pgGo7b+79Q5CNXgl385bKhFbJn5ryDD0gMETuhFe56PRRM216ejsFCAryQhBusfx2O
+	 RH6jKXVSFhWYg==
+Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
+	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id 5A25EE4E8;
+	Sat,  6 Dec 2025 16:15:21 +0100 (CET)
+Date: Sat, 6 Dec 2025 16:15:21 +0100
+From: 
+	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tmpfs: enforce the immutable flag on open files
+Message-ID: <7xukn5ime27nvcxxvmddmh7bqc5uoyd7ytrph2ubyhoushhp7x@tarta.nabijaczleweli.xyz>
+References: <znhu3eyffewvvhleewehuvod2wrf4tz6vxrouoakiarjtxt5uy@tarta.nabijaczleweli.xyz>
+ <aTQnFQIc3ylSci1u@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E46CD16000E
-X-Stat-Signature: e51wzuqc6hx5drynq1478ndxww6gf3uy
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cgfp6ofqlwp5ih5i"
+Content-Disposition: inline
+In-Reply-To: <aTQnFQIc3ylSci1u@casper.infradead.org>
+User-Agent: NeoMutt/20231221-2-4202cf-dirty
+X-Rspamd-Queue-Id: C88CA10001B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765032751-730108
-X-HE-Meta: U2FsdGVkX19jH3rehZOpHvmQFWEo8NIbvIPAu0g2t4GLLx/WQ2641xvEitehGtJlm86pap9Kmq1ILiGGi2KRx/Jz+tjZA1prSF6SGAsDIIjjNCT2R+T1Vp5cnxxWjI4WHia+k99GFD92+rS9vox/WhZMxT3bMGLze/qx2iRFPBhG7NUAFVv60vyH6/T7ESAW6fEoey9DVByF2OLp8Fmo8Pb+T885SOanJ2DPqwMIMIMPDRYPQjklTGLJgnahelM/YAblZxBDj684yRF4aToQ/7wTS/HVesg+bArCO3SrJMeWi2boL4cyOQK+RLOg5wSvkdx0J5lYs6bLvRj7B5w+Yq1Q7n1kkDdFW33pUATba22E6Be/O4Cy5fiQRpapw3OAt7fu1gYhW5w1EdFAk0rtEs5YzetTRPjCPEyVWARMk2sHqf/BnNDE8qAlKAzTAe+YCDeps9qIoDJXYF76rqhVGXO7RP1EX9aozX+H5GrTu4XU7SwzM6Jo1iDtdq55YjZWVAl91RX+3aikPLo1PmZbM0HpdszMlwYG70XBIHE4akjTRqUsr+dwnAIY9gNr3StDbpb7Fax/Cn98sPCgZKP7vHpwOGve8pyWVjYJi6UBKbGeulgfI8RD6gTgGlA22nCAE0wa9cDRYW7mEaAtGPm3dlX6YpIWYQdDJ+2mUdEij5bQnrfN8TtFcoefCf0QrCKdKhozNs53+VwwYXApC0ZgtKpyUENTRth31aZkF9FmhhbZzMIkiab91vP7MoTWeI8rb1uFxQCB/xF+W36WOPPztGPUmfK1kkDpxzSzs4BERTZOxeS0ToefKDyS+CNTy+lOmaOTUDvjvX2K4Qbkr+bi1cKDHximj03o/3leZXCCNW4G+fHYipETUA5ZblTnxH/SxT17KJjQYKJKBLgr3VRuc63lthPXFncOuNlp/t4edgqNI3tr5w3PVHpBugyKi1TO1RZ23E0j6A+drJBC7qw
- ZIDHRy2V
- 4aG3WLEfwWxJl0sXJqfH1ZwLAFF//D1rk+gKYq2adzO7ywqA5N5FxAnwUdcIgh9Z9ShJmoLeBJOuaICccd+O4n3G4Mss7F5SwtNAOer0LF4kzZp8S/mxc3QXZumZBodoIe/DVpn/bT0BODwHfuhYw0F1IXyRGbQlico2LdMHt4Pif35kAfikr6dVqyjbM4nyD27fWy+Z1Xq/zeB6bGsZJQjJE156JTVvPFCMDPAY3M2EjwyYG2TvGkf/X6jWegcpEygMd3hPfJfR18UnygNu1l3HQ3NCuE38YyVgUGW+Eu5uG6SG54IIJr1S78V0S2GnrX+vd
+X-Rspamd-Server: rspam12
+X-Stat-Signature: t8a4577wr4s1sjrtbupjma45m5k394nb
+X-HE-Tag: 1765034123-610906
+X-HE-Meta: U2FsdGVkX1+va3pFPh8v5zKtjNF+tRub0Bgqoma061oVNBaZRyfkNbL9zwlQfCpEJNDddp0VSeSr4NHwsJmxwWPzHa1Yoba6yZpn61+EG4gTkvw6SzgMHks9Ll+wv5OfF3v1wZs6HRFektwot8xpC7npWqHe7PyZpDEe5zOEZINtBvLx7i8066Lgd83J+ap6aYfb03XWtZXTaXeVwaKPcV24913oD1rEox4Abq0ll2uT53f1NQgSKtJKWj3LAFlkMeWuxTdy4OINJ1dgzNAGqCce9l6q3aWG4jYDMiokvd1GSzRViGEX4i1d/puia4VhTpjoDrWnjg45dITT4ZkbIsCiT+hSpcY1D+z4Q6a5g2ALk9ddcjXSqRLZfEkn/2sD/yvdN9xo0JELqDzJFdXTTetSd9TwdBAqOk7QIblchqvHk9qmz9oEu+aez868v9GpLcWUgzOwgzpJW8hLFz4/TIrGb/XLMuF422N58EBQGHVrtvYgyGqwRVCTPsxBTcqKWU/PpRKmBu7IspC8/XuQB6N+w22ZKysjMA3AXQ9+Z1bUCdYZBfS1Vls+/0sistAfPPzwaEZpLfog0i1FngnrGXbVma+rXb4koHWFQfeSCi+j52pozC2br2sTYLEkP1tSXaSaDwCUkt9Zn8FD9K6xf079Pq51AFZ2ybFfxJQPBUdhUSwOHXVxuD6EI6nhEONfSRB9IoIJSCnZquxHlRUHypH8meVWDL00zsM+XhoQU9OT5zq94q7tQZZlUeQcNokomhKIxZdZTdlrGBOHXBUmx6UaYZIHZ5JKnULFXOpmNBUt72ku5l0hEXN1skmSPY4CKBwUVPWoTvm484RGNDzyVVRQCUnu74a2JteCIxXpFVJ8ZS0KfUslAoQKC2IFXDmuPujHWCAYb3A/aOFsztWqR35EsEl5HHGak7Ngkw8BhPbJo7V283aTlPjzJBssck7Rg7ozEtON1sXgji1pBjk
+ rpfDxsat
+ tKujvFtm7ASJX7fpe/L0fHIdt7ockEIiibIxxRbZnB+uXWtSJ99fgpuiOj9N9cx++yikilNcS42uVMFywOXeHsDfSVpCKuTfmXUwun2RrLI6OIH06V51or6ds+QjLlYduXm4Kxk+XkI3A93M35V6DGj51QQfEDi/yCDL+JK+CJhQewHHCcZrXRwC34XokiuyimHiFL+6E4jcOqPe5UtZ5ZI0o4I9QASVUDocPXne1vcFzk8CZaiHqEwDyohUV+FsppCFQMx4ZbKFTq4ZdCukBFhthwjb7SlxStK/Ky1uDqHR1BpbZ1bKKCBfZ78K/no1IJULWbxXUgaVSzDMKQ6LPqfHcqIaC/j+8lPGrdgo5sA1g/lp6oexn6WLp2zU0+rER3uxPi1N1GoWWHjR5BLDu3cqVWJpWxtR3WkSs2RaHydRrNQ8yXgvYx8R56BLRXoCa3fFDi0/cumKy4o5lmVPGci/zOFnz22WlcgKNX42MAh7Ad3r0hSl+iepBLg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,51 +94,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 6 Dec 2025 15:58:45 +0800 Enze Li <lienze@kylinos.cn> wrote:
 
-> On 2025/12/6 12:17, JaeJoon Jung wrote:
-> > On Sat, 6 Dec 2025 at 10:50, SeongJae Park <sj@kernel.org> wrote:
-> >>
-> >> On Sat,  6 Dec 2025 10:17:13 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> >>
-> >>> The damon_stat_build_ctx() function sets the values of intervals_goal
-> >>> structure members.  These values are applied to damon_ctx in
-> >>> damon_set_attrs().  However, It is resetting the values that were already
-> >>> applied previously to the same values.  I suggest removing this code as it
-> >>> constitutes duplicate execution.
-> >>>
-> >>> Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
-> >>> Reviewed-by: Enze Li <lienze@kylinos.cn>
-> >>
-> >> I show Enze did suggest changes [1] to v2 of this patch.  But I don't show Enze
-> >> gave Reviewed-by: tag to the patch.  Am I missing something?
-> > 
-> > I added "Reviewed-by: Enze".
-> > It is just minor commit message format suggestion.
-> > Am I putting too much emphasis on this?
+--cgfp6ofqlwp5ih5i
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: tags are kind of approval.  Those should be offered by the
-reviewer.  Please refert to the doc [1] for more details.
+On Sat, Dec 06, 2025 at 12:52:37PM +0000, Matthew Wilcox wrote:
+> On Sat, Dec 06, 2025 at 01:03:35PM +0100, Ahelenia Ziemia=C5=84ska wrote:
+> > diff --git a/mm/filemap.c b/mm/filemap.c
+> > index ebd75684cb0a..0b0d5cfbcd44 100644
+> > --- a/mm/filemap.c
+> > +++ b/mm/filemap.c
+> > @@ -3945,12 +3945,18 @@ EXPORT_SYMBOL(filemap_map_pages);
+> > =20
+> >  vm_fault_t filemap_page_mkwrite(struct vm_fault *vmf)
+> >  {
+> > -	struct address_space *mapping =3D vmf->vma->vm_file->f_mapping;
+> > +	struct file *file =3D vmf->vma->vm_file;
+> > +	struct address_space *mapping =3D file->f_mapping;
+> >  	struct folio *folio =3D page_folio(vmf->page);
+> >  	vm_fault_t ret =3D VM_FAULT_LOCKED;
+> > =20
+> > +	if (unlikely(IS_IMMUTABLE(file_inode(file)))) {
+> > +		ret =3D VM_FAULT_SIGBUS;
+> > +		goto out;
+> I don't believe you tested this code path.  It contains a rather obvious
+> bug.
+You're right, I tested this on ext4 twice and didn't realise;
+this ought just be return VM_FAULT_SIGBUS;.
 
-[1] https://origin.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
+But even this doesn't work, because shmem{,_anon}_vm_ops
+don't have a page_mkwrite callback at all,
+much less it being filemap_page_mkwrite().
 
-> > Should I delete "Reviewed-by: Enze"?
+I'm not sure how I concluded that they do.
 
-Because Enze offered the tag below, no change is needed.
+Adding a shmem_page_mkwrite() works for the mmap case.
 
-> 
-> I have carefully reviewed both the commit message and the code changes
-> in the patch, it looks good to me.
-> 
-> Feel free to add,
-> 
-> Reviewed-by: Enze Li <lienze@kylinos.cn>
+--cgfp6ofqlwp5ih5i
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thank you for your review, Enze.
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmk0SIgACgkQvP0LAY0m
+WPEJuw/9Erzsnr20+rOiCsWz5rYiM3TNgbwGsRk18gmS2o+p/08ml/hJlTB/rrAX
+2w0kL7ZuFmvicgXhv8XMr+va91MpBfkstKKZfI5ZIT6dQwX46iro+UDdIWW9L4hk
+9kpUESrdbiAMtBi1LKSNYhG5WhNPXSPSnnz/rxYGJiZGvOW//G6aS5lvwc4mROmr
+j/eJcZQPPItA40Nsuu0WATp4QINtDre5uhOxQx7CR4rupvCcD8Kh6DU817TfI6iF
+XrxvqN8udiZkza/x1tHVVgsNq9DHYSxa2Jq9CncnX7v59EdP8EfW+O8el4jPFp0q
+G9TamELg4MIvRHYY99tGEwUCbDy/xq3EaPLwgdtEvrcan/9xvMuglPwtzGnCYWrF
+5y8+3DpiYo5+f/tsOIEgVwvNt3CQ1VQZLy5USeHUaBht2RpeWmTfTBPHzq9F3D5A
+281yLY+khYuHymTbzPm6qAQgo7ZKTg3EWqWkFpaQ6XI8IIF9puoNS38bP2X1DC+I
+fBxuIpqmft+o9AgiK5dzGK/fSTqcsyQJQc3Qlu1MCjLSwBtYQaV29MnV1KQEPuvu
+ljkh1/gLsngTmFjBQNWOhD5knQXskC2BxslmnYftxYbnrX4YJwVmmX2PnxQHKDW8
+cg9pdfgGJ+/KFTxnNrMElCXWC0Y8pTzzNzQ5dvENTBG96fT1r6E=
+=3sVJ
+-----END PGP SIGNATURE-----
 
-Thanks,
-SJ
-
-[...]
+--cgfp6ofqlwp5ih5i--
 
