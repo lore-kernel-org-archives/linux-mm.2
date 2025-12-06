@@ -4,88 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 775FCD3ABD6
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 01:14:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B83BD3ABD6
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 01:18:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 978CA6B00BB; Fri,  5 Dec 2025 20:14:23 -0500 (EST)
+	id 512916B0336; Fri,  5 Dec 2025 20:18:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9295B6B00BD; Fri,  5 Dec 2025 20:14:23 -0500 (EST)
+	id 4C3116B0337; Fri,  5 Dec 2025 20:18:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E446B00BE; Fri,  5 Dec 2025 20:14:23 -0500 (EST)
+	id 400D86B0338; Fri,  5 Dec 2025 20:18:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 728E76B00BB
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:14:23 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D4041A0351
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:14:23 +0000 (UTC)
-X-FDA: 84187275606.21.3C8C0E6
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2DE951C0004
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:14:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=pIFhq44v;
-	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764983661;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JFglSonZ7YxPo3VRt1KcGMtrxiomR8dgNDoQ6a4aYpo=;
-	b=tSPVoCsXDjRuWBeD5K4HLE5iVWraepfe5ZIQITtM43o6b6JpN6ga4faUNqm4UCIrCxqdMi
-	DjUzJLgal9HhYVRi6LyGcPcNPdFv7E8aQ6L6Gc8moikISFmO+E1KPbtwWGfD8J7Nl8/P0N
-	nYUbYX0IjyuJ1l9N46dRtDfWsY6IXg8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=pIFhq44v;
-	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764983661; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FFEE6B0336
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:18:13 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5816130FCB
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:18:12 +0000 (UTC)
+X-FDA: 84187285224.25.AF167F2
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E88DD160015
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:18:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aa0KI5lm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764983891; a=rsa-sha256;
 	cv=none;
-	b=PDtl7xtX4tgRgjrzX7bK63ENMPDZaTAFpkILkMuhKRHOQgldf0wX+a5T0kw1oEyHnW+6mO
-	ygGW1ezO88FkWwMERhKxef6xOGHJsqfGDp1O1Y1kpzNQy5rpZR6wKiB8eHI4Ba/cYkXQY5
-	+E8z+sd7u+1TbL8F3M5d1/IMjiwgcHY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=JFglSonZ7YxPo3VRt1KcGMtrxiomR8dgNDoQ6a4aYpo=; b=pIFhq44vqodCt8SjmE1bmMLqDH
-	sw/i9MjfSnzBvRq551S7WyLZ7WpZK/+4+Uc91Y6TtqNJlCy/jF9dLdUAIARA53nQcT5/HAIz3GTQ7
-	YKGPWKIDOJwZuAvd5h0NdJsSh7xUmo3dD8ZIgdbcwWDUqmNH2qvkyYbPGm85TtgyArNtAd845GKs9
-	PrS7WHSo1gXniWkZ567QJmeL0YKuPOgzvspw5QgUeViMxAZ3jiGXqLZFIjWMLUSQI0egs+BSsj0b+
-	lX1OexNykLC6IHcQXw3WyM5zJxmyozP46LNa8WjYZRIQ0wt+2YPiES6pPOPvw2gGbIW5vjVMdHpfp
-	SyzdI3Jg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vRgsd-00000003sZU-0kc6;
-	Sat, 06 Dec 2025 01:14:35 +0000
-Date: Sat, 6 Dec 2025 01:14:35 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
-Message-ID: <20251206011435.GM1712166@ZenIV>
-References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
+	b=51h38xYcppESLTll6PYARXPesdZ1KWquCpJfC4cR5nZTqpalOUzG2oLY0QJ2Oo2+LjTOke
+	GJdLBOW6oKquEYEV59S7Vp/ghmvfnlXCkCh4zHd4U5/pFsvBg+oHKKQ3c7phmyVSks5y0B
+	88Qyi3pFwD9zHC2rIGJQ9seXPKGXbpA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aa0KI5lm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1764983891;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IAX/oOkxrywzWDIxKOdKl4z84YNY9koHwOweb+G4qdY=;
+	b=LXeizTJylby6R4cJors0ie1DzfwB93hvwIuFuy8Fkex+eC9MSvN9ReqG56gcNOtoYEoWOb
+	1gmFtEINFfQafYr074hgAGtUOv6kQKKrDe6dvy1VPNPd4jF1lqg679ApiSawvQD8y7jZsI
+	tKajS3PKyaSm00ye55hNuEOXISyw/rw=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29844c68068so36409925ad.2
+        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 17:18:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764983890; x=1765588690; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IAX/oOkxrywzWDIxKOdKl4z84YNY9koHwOweb+G4qdY=;
+        b=aa0KI5lm33HF4KTR/y5ilMobhPCUAdeMXmNUgjIEu8sFDfY3FRL1xm85MEY5L3H99k
+         2fQeeRLMfMAKjF1f2tlDMzEle2/b7tEN//q9OVzozduy4lSVrmyGu9gFfylOBPggXHUg
+         jzr13HS2OgW142GQxWvbRdoDq1CPJkz/H1swR9UURVbWi0T3Hif4cmUnpxCvU2zNjmgT
+         BI7l+nqfkAk6pVIFY6CjGpc4AwAHo/8hoC954z0jDvfBR5vAqiu7Nti30WftTp9Y3YqI
+         BBO6OdocGawsdykM5Zbwu7Ca86ZqxFN8I/DebhIxKUh/e3hIWYG7gvms+4BT9FBTCytG
+         nIkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764983890; x=1765588690;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IAX/oOkxrywzWDIxKOdKl4z84YNY9koHwOweb+G4qdY=;
+        b=CTn9fREbu4pVt8cZiH6g77wMCCMWXhTzKYDeR8H4az5DVqGMDtxn6HxDS4TPyeJxfA
+         6K/GmKFcV+ziVVb0q3f/h4ESbzrK99gzqlaZRFw9Ik7bccWIFLxW1pEqnx+iCwdczAyE
+         ax0uuItDdZmwI/mqy4HNpA5kz4VJFDrmbeKLxTSXKSWuteDSSqzuy/NHEaMBkERR3Arw
+         F2MS/s00Fm/XEKK8881QPsPM3ClMcuSEIKIZdF4a2z53aHJvmALrZ22AKITDuwdAhirL
+         Yv/u0w/T67VnKT9l1VTQWNdV0hAhy1il7PNnJ6IuWG8b5vH7LD+Hg42vUpEnpS0D5wsQ
+         KKww==
+X-Forwarded-Encrypted: i=1; AJvYcCUUzxwMungZML3QguLMuVJyrn3yeflmXtc5w1rUV/2MDU/PmS/XDxK867S7GTrTteJax8ci4j8abA==@kvack.org
+X-Gm-Message-State: AOJu0YySfeN0ojI2ddvM09tDMkZ3T1Yrf5pE0HOSuE4WDQlNCxYOZvqR
+	y36avpQCzO2ZYnMIOSXO+q7SrNQOjbwIo2w+gQQYwZkOZuy/EXme3goh
+X-Gm-Gg: ASbGncsPULu7/GoZHwcYP+KEcMzdfQTg22YxpSZUkg6US7KfQZqekfMkqYqzXjiLqWe
+	czp5s7Z9/nQ0e+dIubfR8cwWrX+QKTlNDS7fnO26cSqFqoBz0qt1MtKbN19m3+8mlo60vyiWokm
+	0f8Y72UW98Di5dAB9XpqEYCl2jOf0UU5oDm6eD9AA9VSsikac12hsQliN4BAbFg0fB5vzGfWVja
+	b87THH97zliUz0CCKEEElZv/p94oLfDO0jOztPIYPERVlj66oQ9dxbDmK5LXcnH4XjMbJzyqbU3
+	O1ZKP84UmpoTfmo2QB+kVDkbKHm94K1GdtPUo9Wg27I936AKLEq6/EFN5r/CXwysdOiOCdanUy5
+	CWvPNSMM0ask59IS9o48LziGX/Fn7rL4UX1r5zCWftbB/NkqFNCofiwvHiOT2TOhVfacbVhMhL0
+	VeBySZu4lXQEpy
+X-Google-Smtp-Source: AGHT+IG/Xpf1V10q4as3omd8fCWUSSIhwxXG2nccEzJUjb74z58QvX4UZ04y2ZngrrltvPo2fNxGNA==
+X-Received: by 2002:a17:903:3d0d:b0:298:33c9:eda2 with SMTP id d9443c01a7336-29df5e1b1bemr7213565ad.33.1764983889620;
+        Fri, 05 Dec 2025 17:18:09 -0800 (PST)
+Received: from HP-Note-Host.. ([222.234.91.137])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29dae99f006sm60542625ad.50.2025.12.05.17.18.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 17:18:08 -0800 (PST)
+From: JaeJoon Jung <rgbi3307@gmail.com>
+To: sj@kernel.org
+Cc: JaeJoon Jung <rgbi3307@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	lienze@kylinos.cn
+Subject: [PATCH v3] mm/damon/stat: deduplicate intervals_goal setup in damon_stat_build_ctx()
+Date: Sat,  6 Dec 2025 10:17:13 +0900
+Message-ID: <20251206011716.7185-1-rgbi3307@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
-X-Stat-Signature: c651ud84bqxni9mt3f6q888cah3g4cdz
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2DE951C0004
-X-HE-Tag: 1764983660-179917
-X-HE-Meta: U2FsdGVkX192oBl+j/ovTM7+BhByvN9XvBZtuDzuu1rH3F967HlDNjC3YgQJRM7I90pKtRhTbWuEWkkEpG/jo2H7NNIIxvEwrB8sDaFbjQcdji02ysFUg3b9oqwPiSOGyqf9NrVExkWO5hi7Rnrpf9O9UHuQer+W4gA+iRzGcH+5W8iAgiJMforP0l5a+2sHWG1CRD+YIUWIHTv4uvM5YLlzKI904CVYfVi7WwWN2HhhDOaoks38GCgw75XLNcrpvoEPpP1yVNPLQkydnRpI9ryrz7C/OMugcMm603bBiYKdjXOB+d2d4HtxbSwzWF1zFdsKIY1Sx0qqUjDnO2G9IpCqvzdOgGnlKjoLWKaEw8rAAQ9rQhw787NOSIkTzg+H6NWkyLebn5Ugx3vvs0q3fQf+OYjSzNhOehugXOUmQpwZzOzsBG0vLwSehTOW0Lc2EKv8k4BV1A1Kp+KQJkyjrFomm9heeeOt36uo33dQJVf9TZ0XiQKbLDJ1M1RbLmdxFrwEL1UTxuzTRGcbUkPBLu2Ge3UMOSPT5oovNvjHs6IyqUkJTPsxvnEclHVXsSLJZAYURQ9aq3GqUxrlOkRwIOH40gu5HyrFzW30CuLN7qwwpGoKpFpH4nH+0o9cxxrD2t5ERFgyDQGlToi2F+f4odB582v/zXX3Mu6YQScGQHDLVw64nxgqrJDc8fArMl3a7VF7V1XxE3GoJnQIDASac+YtsYhWZI5QK6L0d6y+ojf2VLqf3Tnkyv8oRip654Nb0P08JRvGWscEAKfLec9UnWAkNx6BVDLZ6y7BGanxlnufGS7J9gceHeJ/0ADplx1DtfgA+4WpKhyBj45lsyhmt/Aknmp8rBR586gC8WJX6xg1xrvmysJeDxD3gQ3XdunSxfo7ftLLBGdiQCHC1OkJFzmVXSUe7gjvfinQecgGCOogGeS4P6FUCf33fLBJyRRnBSMooKOhseX0xTNJuRE
- IBSAID6m
- RVoohm6e2B3GqK/9EJUd5zWgJ1ZxFPT3FF6cz3EMbaW1WWu8SeskdUKfIQ06vAKALOR0tI6ysxQXhSih36d7WwO3G12a8uaxVnAlbEqGzIUwBpX2yqBatFmlpSw24zpYfjVy65Wa9dJ3QMLUZfvtxaJGx+lekqyssWBWHQKnCdWQjEcFq8WQTXH8xF2HpTwDlhBQRnsMgR/GPQrU1vwMxYuIWBDdKlgsg6d2u0WqK2ObFyU9D61icdVPIMDj2QLJ/Boj3FOF1N0wbKfrMEnvabd3Ma1Mfew03y4xFbrT8WJepGBfNp4eBz6/+UCrNrB6iwR2rB+OjqaS+6NGaBf/RH+BtoI9qAnBgL5L5GpmYuxX8xT0wizEWfT9HUzd7YuzTtRinSwVUGFnnYQiTeWX0Ef81bajWU3Vl+pzfGUL7Uhsr9CITBH1z9MM67vZ8u2BpMBQy
+X-Rspamd-Queue-Id: E88DD160015
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 4hc6ob4sokto16ms6udehfan1i8yoe9g
+X-HE-Tag: 1764983890-974318
+X-HE-Meta: U2FsdGVkX1+Jy8UKbtDyxpy26MjraXhUHtU5Ev1Z0SYRya45csg3Rb7Qu+xeHpx3RJ3ub18GIZxWI8Jmjtj8BpoNlzPpbFgrYuQ9/dGEdF0eZ28KnGUdhmTntUDzv6mFaiGXXiXGO2sOkWd5aMtEI2lPx5fIHG7FnlkOv/b3zGepdVJUkzcjc+Hq7Fy+Yjkk5QocjIcIzfz3vWfo1IQuWONe82NuvZV1tolYkP21heR419eGodGG/RpdWoRfBrzk3roS+0sxh7mrG7FGsW57NgoX5yJuhh4Axbx9+peRC1ZwF/D11BGRsJvJO4pymk8sQ04SxjkqWXEpgiJrnQKmxhzDtwr0TxGbBL/61iMlIg87RFcAXsp0BYkJ6whdYGR8urUaM4Wre0MKTmpCMXHniz9boBd4ucgq+ylnMdgOfLId4y/ZehNkogCVqyLF5LWU4zCGLn/xJg41rMMLvijyE7Dfa66B3v0ytJwgPVlfg07//o53ea8X456VHOBQ2M/X4TaeXOj0hrxCUicZmlt/IX8Faj/siE/CPtF3SnBxreFf3fB5trmzyXP9PbZaOVIdWIIXD/Z68tLWVYyZ/z9BUcHAcxuqH17sfXu5KGVx3P/LKOVaf+f8494vT45XjRLqrC972mFkYcEIMqYb+o2k7FyMRDfkchRK9evAuJIvX2PaX4lfAk+Mx3UKH9SDAbQjDzc0ZlUwi8xRFasnna+PzRqgzroLB78XCFc1LeSkixkxMEVNZ577JMDV7YUiTNOGctAS+8roMYysa8vARkjpay9co12S2pKJx+FJQ0uR/LdpMybAMFXZjykYBbd0viGCwQBut3j81eSOXLn3MoJf/DB2mYIY8vaCSMWWIgBEvstCYfPB8A6yETpL0jg/o1DTIU38SuFfui5s0gEseBy3uQ1JLmH1niuJk50+OMx4znYGMYuHC2walWNomylOz4KFg6zsOKY3XCCReMHWIwZ
+ N5GkETLg
+ NGIR/zKeMYgANT7pVrxIxffnHxZ7C7m2yvDq0ONX9bjSFtaBXqALKvKPcfosgrBZpRLuOFcLc8lV78/3/PJ6dAvrgA+BQF/GrNYPLvXEzozsqwkJYbodr34d7UnEYVawhTefgac8movOhiNQ1LdGIEZelOaN0d9QoFxeO3iLHzQFGFj515YNnrxmMq2n6tgTPVjnEN63HL41cv9LFo7S+KdKohd/R3UugU7YgpAXXA69Bo0rAc5vyHsMB/lyTsZeKK0hK2ZuE+RP8TQ7pE093OdGyb9dkp8NkPFRMvNBDHiOET6atq8Y3qO+Ai5JJkpgtD5WTqjNT1PEhsxFDS6Xg4fT6yc9ONMnLDs0HkoQ2r+iPlyHBgErYdZ5eCzOqo2e9vhikaGUg5vIdlEaO+KOi+3uuMCAJlhtCiIV3ydvh2cKurZ4ehlNRj1xqBSznQy33K6e6EDESVu/8BqqKNDbUmbsnbYyBf3N6G3GA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,25 +118,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 05, 2025 at 05:50:37PM +0000, Lorenzo Stoakes wrote:
-> Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly changed
-> how VMA flags are declared, utilising an enum of VMA bit values and
-> ifdef-fery VM_xxx flag declarations via macro.
-> 
-> As part of this change, it uses INIT_VM_FLAG() to define VM_xxx flags from
-> the newly introduced VMA bit numbers.
-> 
-> However, use of this macro results in apparently unfortunate macro
-> expansion and resulted in a performance degradation.This appears to be due
-> to the (__force int), which is required for the sparse typechecking to
-> work.
+The damon_stat_build_ctx() function sets the values of intervals_goal
+structure members.  These values are applied to damon_ctx in
+damon_set_attrs().  However, It is resetting the values that were already
+applied previously to the same values.  I suggest removing this code as it
+constitutes duplicate execution.
 
-> -#define INIT_VM_FLAG(name) BIT((__force int) VMA_ ## name ## _BIT)
-> +#define INIT_VM_FLAG(name) (1UL << (__force int)(VMA_ ## name ## _BIT))
+Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
+Reviewed-by: Enze Li <lienze@kylinos.cn>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/stat.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-What the hell is __bitwise doing on these enum values?
-Could we please get rid of that ridiculous cargo-culting?
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index bf8626859902..51dd29685915 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -173,14 +173,6 @@ static struct damon_ctx *damon_stat_build_ctx(void)
+ 	if (damon_set_attrs(ctx, &attrs))
+ 		goto free_out;
+ 
+-	/*
+-	 * auto-tune sampling and aggregation interval aiming 4% DAMON-observed
+-	 * accesses ratio, keeping sampling interval in [5ms, 10s] range.
+-	 */
+-	ctx->attrs.intervals_goal = (struct damon_intervals_goal) {
+-		.access_bp = 400, .aggrs = 3,
+-		.min_sample_us = 5000, .max_sample_us = 10000000,
+-	};
+ 	if (damon_select_ops(ctx, DAMON_OPS_PADDR))
+ 		goto free_out;
+ 
+-- 
+2.43.0
 
-Bitwise operations on BIT NUMBERS make no sense whatsoever; why are those
-declared __bitwise?
 
