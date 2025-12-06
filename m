@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6F09D3ABD6
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 01:25:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09636D3ABD5
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 01:50:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C016C6B0337; Fri,  5 Dec 2025 20:25:54 -0500 (EST)
+	id 22E426B033A; Fri,  5 Dec 2025 20:50:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD9986B0339; Fri,  5 Dec 2025 20:25:54 -0500 (EST)
+	id 1DEAF6B033B; Fri,  5 Dec 2025 20:50:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B15D06B033A; Fri,  5 Dec 2025 20:25:54 -0500 (EST)
+	id 0CFB76B033C; Fri,  5 Dec 2025 20:50:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A0D6A6B0337
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:25:54 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2125E1A0370
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:25:54 +0000 (UTC)
-X-FDA: 84187304628.04.D54C6D1
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7505E4000B
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:25:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=O7BwMqIr;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764984352; a=rsa-sha256;
-	cv=none;
-	b=1a85PLLVqLKeeTsSdWJHOLWCxZ6ALJKyWx4JHYRf0LSAkPRDgd71W/mvQAUn8Avz8ZKoK8
-	DGxWkAyeIa2VVxLFY5EJimzLv5qoKYfXoK7N9qrzqzsdj54/3n6q9pc3F8YGcHD1NPJY2W
-	amCS+uJGRTIntJxTNU8nSPN/F5nsBZU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=O7BwMqIr;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	by kanga.kvack.org (Postfix) with ESMTP id ED2B36B033A
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 20:50:21 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80A2513AACD
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:50:21 +0000 (UTC)
+X-FDA: 84187366242.29.F041A35
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CCEDE180002
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 01:50:19 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X2LVbotm;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764984352;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1764985819;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AxMUTPrkAZTGMcrjPXj4RfoXgnl9iUjMPVIZTyujls0=;
-	b=vZiZAV0MXI4mbLsKurRtNhbn14nIIDc0xaqGug/HlJlmYleLwuHkCEL7PQJXw/Z7maacPd
-	Rqaz7OhfyAgPfBcJHmh2yxv1x6d+pM9JjpsuxVb6pJvihc98IRzfoW9/fFmI8GEKDWj0Hl
-	eUUVeVF0/lIS6ha7gf8wp/pq4vnsYSA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AxMUTPrkAZTGMcrjPXj4RfoXgnl9iUjMPVIZTyujls0=; b=O7BwMqIrdFF9CkePwh/M+8p5j0
-	t4FAqufD8mv2VNTzJqb/h605ECIFwGCAiGrNqEIKAEVJYf0LBFd0ajsBc6hByElUVyl4+Sfqno9Fh
-	mnxI2LRXGgcIjeCrNS6HsfOnwjbJQIX3vJG7XS1NFanddj17lgKrf4+qJ/g7AtRZ09ovAB6JUCP17
-	Cjnw2ULSn0Gs9k0ZaeW7QAnyGRK1VH+L78Zwvp/uQrxSPXldbUwaXUKVOpIJ8V1UmoPhWpYGswWBR
-	yaA1cBZws5Yx0o+OFaHH/LvIJgyAY8VtR78129HrLenoEI1RLaSYurLWPsv8HTbl8WqCmdLccsiro
-	uOClFnIw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vRh3o-000000040At-19iq;
-	Sat, 06 Dec 2025 01:26:08 +0000
-Date: Sat, 6 Dec 2025 01:26:08 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
-Message-ID: <20251206012608.GN1712166@ZenIV>
-References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
- <20251206011435.GM1712166@ZenIV>
+	bh=k+EA2M+YwG2tZU0ByqQdVVcLyLHcuelq6lmEGe5JBXM=;
+	b=ngHeimRSPlSYPvMzmr9k7VrQhsHADse+1na7Q9sgyhOSSNOtLUFrGU3ZG/No/YFD2lCSJr
+	1s4cWw8/DuFZ2jGDW5ZFANBsmdsPi6sgHHI2L4MmW1lmRKnR5W0m83023R1yLKx/tysH3c
+	GC8xAeBEO6lwH+u3YypggewhvmNaZkA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764985819; a=rsa-sha256;
+	cv=none;
+	b=BjdzKNJNUvik/TAEJyNiAJ8286rPl486P8IZdAJoTbtPYe5aeiZyVuERps+zQrKMvW6ptf
+	Z/+TDujBApgUaMqcnIlnnHIh0wL9jLU7qJbKxam8z3Cr3LN6NqA/IuSPhcPsIlGK/1BnZX
+	51j2tON95COj+U1mfM0tdrgYUmFXrfM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X2LVbotm;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75BB1402FA;
+	Sat,  6 Dec 2025 01:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F43BC4CEF1;
+	Sat,  6 Dec 2025 01:50:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764985818;
+	bh=in0qOOSwH8FtqkBiehP6uo5dV7ebZ+JdQOSUFNW/f2g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=X2LVbotmeW7bX2yMDAAtRgWtuVUYdisjNhKqgiHW4KGSPhy1fBfq2sC2dF74d8dC5
+	 jUSj5xI2VzLUnKhbGS2U67PiOyX67Ut5Y371RGCIr9TdGUTJr/drglqz4BKDpdHEFG
+	 NxmyY59f07yY/YmyHbp5Ka7IISkhpl5xSJubakZ9yww7nZb8uUsoqrtKr0lCXn+dho
+	 PfB68H9nrDXv9lLxkn66NW5Rj1U7713kf6lRznH6r51VA+tguE4Vyu5uTHLhEFxk1z
+	 P0Nsp0nKLk6f+httVUR2BHOceg8Fg/zI5Ellh/1p2LDeLj8pY4Gsn5Obn9EGMXlOvb
+	 ljhzJZQ75auDw==
+From: SeongJae Park <sj@kernel.org>
+To: JaeJoon Jung <rgbi3307@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	lienze@kylinos.cn
+Subject: Re: [PATCH v3] mm/damon/stat: deduplicate intervals_goal setup in damon_stat_build_ctx()
+Date: Fri,  5 Dec 2025 17:50:10 -0800
+Message-ID: <20251206015010.47826-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251206011716.7185-1-rgbi3307@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251206011435.GM1712166@ZenIV>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7505E4000B
-X-Stat-Signature: dx6c1urhqhmu46sace4g618pdat3ea77
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CCEDE180002
+X-Stat-Signature: xmzq1cej48jh17frts6mgbyieghg97u8
 X-Rspam-User: 
-X-HE-Tag: 1764984352-881363
-X-HE-Meta: U2FsdGVkX1/NA9fN5LaTMTpJobEuOywUgxjp54EuLwkqAj7EJ1xL49jNNAe9h5AVjzLL3ifMn26Gc/AJ8A8+k/jvcSHSQsSsNW0/pimg+vkbEINiCnetpK24ef+b2Is8z5adAlLgAwhwiDIC9id8vVukVozNemkAGjTbWTYfEfYTrYill5BHQzrgJf0xkqVEYoAaRGiLacmr+JAWzMHHz4LM5KPr5LfWQABu/eOrZjM8ds2lb2u+znpjEEHlxt4CDTYBveKl3JbUFH5ovCuuaqx8IIhVituWZjK1TJlWe3qBOO0s77xDnD0+v2pwHTNaWb0kcfJfC/yu8dhgFsYIQFRPQGvc713/nsJv+drk47a0wdNhgR0+YFM/fFFzXbgBJsrOFRsFehE6fwmIbv7WlIYDmsdYWlyRmwbGxX9i0NnHK3/sClAESE0vyftLnmH4DxTz5suxTk8uv7gDwGM5JDhT6ghWli0VM9mXBMZScfIaRXGqx4YDvaX/3XscA1vnPLwiBevZfXapnAt169dr7WBHLYUvKwU4JWohMj+eI9UmXx2s6iOgAD+29gbTPRKOk2yB7MflClZLXW4ZdHcAze1kltGWv5wyKNG9EWpczB59/UPV4guObVAcCtVdy64KMZHjRWdGTdIu3VT1t/NrqOAXhiROU3rXczBYOqN9j/ijfVjBUa98xFqDeiEPzDDlCDWnJ1EU6Lhqe31d6stladdPWE14481h04hzZhoFEnL8LfbUJjJc93+fL+/o5w2WvbLEfv51p0qpd1q5CHSU5DRl4j8BG44myrkYLyOCZwUJE39+qr6ExIlpIYvchIz+ZFIimTjDCU7hkHqRSA0PYG3o5GlqWFzwIcIWYNm397WsDSHIy26sMI6v6qbPAp+rm7jz6kzALKrymPB+V49izakZOxkm7Ilky3b5Ew1OBJLPWE5+ag5X/NfGcXTALYtBsIHW9g1sZvMv5mzWjZg
- 8M6R2dtu
- tTpuFncXbWRd1qYzMHE2x1AHn2SRDM7q/Y0il2jKW8C6HRt1QhrrliuFLfxnyUT1caUipsgPk115djIeNbes1SCYF30d0Sf8pN/U0EXEr9WB7UQ8i7B7oveD4vBIPAHzTQjq2FwUFpDso8ZLIGOREJhkD/yUM/uAAt7qT8e2JfYbfCpbUTsceK8V999PnqVQIKg1c0C+2OiEeyIMPokPxjCp8QAQxNz4FdwOfKnBvRTWznqUwQXjjjcNpzaGDj3p1nSab8ltegNU/FR2L8RNy0+kJVF/Mxda1VMfZv+QGavz5WcCz2FxoqkxpF3wgmxb8XHmg8aMyeBqyoFlwwvrX7Uhqno8fXUItNMiu7JNS7rDO3TAcLE0z6LSHw9LKboyapG95G+nPCgoISvCkAFiTmFC00zN3mK0GcPXsyi1C5Myb7BO2Ti64tGI5WDfzXsyedTO+
+X-HE-Tag: 1764985819-39428
+X-HE-Meta: U2FsdGVkX1/bbgHsFcfNGJJCYz71c9+kpycz10UKi764SG6C4egxdDe+qDAOZu2ILtEeE3uVO6zlOCQNApGbJ4jovUCBmTp8Go0qBwsaDvcyrS0/S1Jlqsx06Meohn+hcXLYqBdI6SaDwnAv1VIvBwZMQeCERdLdroWGruqxLp7dS5ogtKLX0Y4ZevFz0zCZ/Y1zszZCwbtrWSMq+8SON8R+W4hbjzT6U89H4dFA+NLk73+GAl97w3/XbG14JDWVhK5081OaWfaZI5CMk+giMk8sbSof4Q1YKpil8h4j4mJRF4tXUVSea1HYqGAPMf5XtApKG0QSYaqGOk3XfuYKTL1iXToG4yY5WbbeOxzDLgLD2Z0idY67qoa4xGLYe/MeelxqDKYlYshKaYiaWYDWgIylkC2zr5ToeW+EqNIss1xIGNzbrRDurWEiWkJV4OCoQhK0Kp+Ft6ts931+T5voftVmbSENxTNzCgNPDUsGJC7ZZrG+AN7zsVDfhwrF6ou6bkoKm/ko9RcuYf0GaJchBRFeC35pwMWd9sBSIVKGQQcer3NcAEIqVPIS8gDQimit19M9mYoQKbpZUvqD/rmnRZPivqGvWDMzsjeqg5keSmqfSYXXsVxY27KMbRKoPqXaE3g531+uz45wQkbW5ZbGA1HvGsTXmGlV4BFIJXkS1pntNrJ/jjsPveNIO1DTDMtJnPd8Dsn8jLbWSFWQrODtyAQKUA8/s5x7erAZow/nPsKCv/LbMe0iRpAPL8XN8rqxoSjTvwQSHKvtBF1FnBMZppEpPvd9Ek10pz7yEWaak7f+dpleLa7xMbGNjtX9U6W9qxYzg3KiGUeLr7tcv/0TPpfi955ZsF5/r1dF55949qcRxYI+XwLHOsLdHzwuGt6zilLxPHRRsTF3Tftrz2PReMcxZz7CTNtKmEO1CmjhIGFETyxq7bxlI4Fztk3/4Dz9h3SjYiiDopdPDzdUoxw
+ An0Hq1sJ
+ TzrFXd8ikVh5ZUIb+GfFSb3xwOj2QJg7KrjZiby6ZK4S2g23yrCtuBZnzkM+4mkMw6IS9sKaMMhaycZ0e4m6CB3y6Gul1zOI7MR8YfxuhQ565ozFsGAJjkKAnJMCElMPh59o/4dwA777r/DR8/IxR+p6V9bSgXG2L5x5RJPW5DlnLznDiySbPPfsIxd/RF06tUq50SiLk/q/epMtNWtBpn0yAaCjv7psFS88+PW5Wum07WaJYWLWbeZXPvB2rH2D/Gg+/GvD/e7zjh3Z2RH45eS3K47BkJsTlMgVsmX0Jc9oPrpg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,35 +93,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 06, 2025 at 01:14:35AM +0000, Al Viro wrote:
-> On Fri, Dec 05, 2025 at 05:50:37PM +0000, Lorenzo Stoakes wrote:
-> > Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly changed
-> > how VMA flags are declared, utilising an enum of VMA bit values and
-> > ifdef-fery VM_xxx flag declarations via macro.
-> > 
-> > As part of this change, it uses INIT_VM_FLAG() to define VM_xxx flags from
-> > the newly introduced VMA bit numbers.
-> > 
-> > However, use of this macro results in apparently unfortunate macro
-> > expansion and resulted in a performance degradation.This appears to be due
-> > to the (__force int), which is required for the sparse typechecking to
-> > work.
-> 
-> > -#define INIT_VM_FLAG(name) BIT((__force int) VMA_ ## name ## _BIT)
-> > +#define INIT_VM_FLAG(name) (1UL << (__force int)(VMA_ ## name ## _BIT))
-> 
-> What the hell is __bitwise doing on these enum values?
-> Could we please get rid of that ridiculous cargo-culting?
-> 
-> Bitwise operations on BIT NUMBERS make no sense whatsoever; why are those
-> declared __bitwise?
+On Sat,  6 Dec 2025 10:17:13 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
 
-FWIW, bitwise does make sense for things like (1 << SOME_CONSTANT);
-then you get warned about arithmetics and conversions to integer
-for those, with bitwise operations explicitly allowed.
+> The damon_stat_build_ctx() function sets the values of intervals_goal
+> structure members.  These values are applied to damon_ctx in
+> damon_set_attrs().  However, It is resetting the values that were already
+> applied previously to the same values.  I suggest removing this code as it
+> constitutes duplicate execution.
+> 
+> Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
+> Reviewed-by: Enze Li <lienze@kylinos.cn>
 
-VM_... are such; VMA_..._BIT are not.  VM_READ | VM_EXEC is fine;
-VM_READ + 14 is nonsense and should be warned about.  That's where
-__bitwise would make sense.  On bit numbers it's not - what makes
-VMA_BIT_MAYREAD ^ VMA_BIT_SHARED any better than 3 * VMA_BIT_MAYREAD?
+I show Enze did suggest changes [1] to v2 of this patch.  But I don't show Enze
+gave Reviewed-by: tag to the patch.  Am I missing something?
+
+[1] https://lore.kernel.org/875xal44lf.fsf@
+
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
