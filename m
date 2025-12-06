@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D502D3B7E1
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 23:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E45ECD3B7E1
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 23:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D31CB6B0012; Sat,  6 Dec 2025 18:04:00 -0500 (EST)
+	id 5B8966B0028; Sat,  6 Dec 2025 18:04:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D09A56B0022; Sat,  6 Dec 2025 18:04:00 -0500 (EST)
+	id 568B76B0029; Sat,  6 Dec 2025 18:04:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C202C6B0023; Sat,  6 Dec 2025 18:04:00 -0500 (EST)
+	id 47F076B002A; Sat,  6 Dec 2025 18:04:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B31C76B0012
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 18:04:00 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F41F52689
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:04:00 +0000 (UTC)
-X-FDA: 84190575840.10.98F484A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C6F7414000F
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:03:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uJ2JZwXM;
-	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 358296B0028
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 18:04:08 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0245A5276E
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:04:07 +0000 (UTC)
+X-FDA: 84190576176.30.86AC569
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 75B7720002
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:04:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PP/6uH1l";
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765062238; a=rsa-sha256;
-	cv=none;
-	b=5VbxG94o71Tl8f8RfqdpAWPS8l6l3veXaZA839z95NcA2L4LO5nqY3h9C68XtT1emqt5BC
-	jhKCjL2F73S3mT74FiRRhLsH2YdCg9osOUz7NB+Z3b0Avn0L03o2fstRKNsKiDQsEesUpL
-	yjuKDefy7KmLIWNS1Xg4+CeRCrEkstg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765062238;
+	s=arc-20220608; t=1765062246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o7YoGpMyUPp3jH132CIdD3VVC6kyvyTZv2wvu2Rm4MU=;
-	b=jENMq4JIYZesbx6TYo3IYmXTmhE3nnixd+ZNxVNXxPbq1+RPRWhRPYc/fRSqA/Q26kYmje
-	g//+igbBri+AaQbU1qNfPWTUSDbJWP2aUMrgM8Rqp2H78/aVLUU3evpF9KPM7KHHysGD9O
-	+Ex01fl23iDYQVMUfhitAYpXoFhLLM8=
+	bh=SsouCjCTK+Xvffe+Utaw9VRxSR5nciNCZ2+1iVBaPZE=;
+	b=8RbBzCsS2FF9Fc50cZW39ogSAXzYgYHOI/y389znISUHEKYmSVN8jWpE4f74uGDH3fSv9i
+	3Iqf+jA9m9HnIkKNy1qcNLAJQXi4lGs5mFBjLBIUebd5pvQmnma7lutBzmMM/FkJjNXoMD
+	udLO+nBKv8Qf8e10ZZzDA9v40m37g/k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765062246; a=rsa-sha256;
+	cv=none;
+	b=BktRFUgnU04RTvY1dOQfWDxqXaGjItI0JragJFx1GF0V80DH0SlZhdunVgcZpGewhpBLXm
+	mNEq/8SVl9YIWYAqFVK/ql17DNMzK1RVDR/60F94hEVfnIE3CoN5KbQGz52uquQUutHang
+	sVX6QvKMsyb4b69b5H/YWjvg1L+brUw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uJ2JZwXM;
-	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PP/6uH1l";
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C791B43CEA;
-	Sat,  6 Dec 2025 23:03:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BDEC4CEF5;
-	Sat,  6 Dec 2025 23:03:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EF62660148;
+	Sat,  6 Dec 2025 23:04:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85669C113D0;
+	Sat,  6 Dec 2025 23:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765062237;
-	bh=fGPbJKByL7S+VIwHfLLrxZLls7YbYHHkduUbnM1vhgk=;
+	s=k20201202; t=1765062245;
+	bh=gXncaBYBOs5IUsTyWV7q0US4snXFBOIObGWREdQ9Sns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJ2JZwXMPZBVSnMwc5z8fugeGrViXv1sYM2jgFTCIoMG++wHeJDsoqlg2QWMyz1fG
-	 /D34iNvXn6M1p4hEMRSR80EXzWx5TeD/YRn4gwPgpNUCQIsRcEdDJn4HH8cUc530+Z
-	 X9dHrgt33cuDK7Q9iVwzJvfxywhfHrIuKYqc8x/HPgLuQzzPHrJPpoZCilQbQV9dOD
-	 MPBWe8RhC+HfjVA/0WNKEKtWzH3M9hSus+AN8uv7wPg+eA1RA6A5l67e4n9a6VdDag
-	 vDH2yDJC1sTAhvwujm6FimvTkDOlCN4Am9/l9c5dKYMRMxpQWn++1R0J682zSIP+3Y
-	 3eHXsYi/SqXYA==
+	b=PP/6uH1lLGKx06Es/lMFIkxEUOdrjqMxQZboNQnpa8XyO/ODoN3HjDooRNgm86nTt
+	 S86qplm9dvPcMC+CNcYHMszhOH8tHaNYzLhZi+vaCP58EJwfMCdX9ATQeohFf1BCva
+	 oA74WnIF8xgRxjm0Rrop9ODQK0j50sSH/cJeOPb/jWI9GBMwhbc+3V5TyBWoU4Mjj5
+	 WxIw3HAmoq1udOQhiDake+op+JCEroNQh2FKK6GPrB6DyGxAkFJUMLi5eBOUZFvFJD
+	 n2LaVBSZ4L2nxbcD1wzso1+kTX7ohRFUbtN6dtPzjHubChlbaptgloKgC27OEmAOds
+	 Acg2cBDX7hLLg==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -94,22 +94,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kexec@lists.infradead.org
-Subject: [RFC PATCH 08/10] mm: hugetlb: disable CMA if liveupdate is enabled
-Date: Sun,  7 Dec 2025 00:02:18 +0100
-Message-ID: <20251206230222.853493-9-pratyush@kernel.org>
+Subject: [RFC PATCH 09/10] mm: hugetlb: allow freezing the inode
+Date: Sun,  7 Dec 2025 00:02:19 +0100
+Message-ID: <20251206230222.853493-10-pratyush@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251206230222.853493-1-pratyush@kernel.org>
 References: <20251206230222.853493-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C6F7414000F
-X-Stat-Signature: w1dzkjethi8bru7t4yb5stio1orck7en
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 75B7720002
+X-Stat-Signature: xakmuuttyzxhdooow9temph93atnj63t
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1765062238-12787
-X-HE-Meta: U2FsdGVkX1/nzNGUW3lYoy7kKNifr6N8glpYqypDKiUPya4CO/yJ5czy6cqvFv5s+/TUmLpKo92e24SZ2Hq26xMSb2DVLSb+lB/FxuOPXqeYS8kJogv3q+ByOwLeQ95gR3G7DOrBiW2t1vJnHZhWWyOxa9m08JA7xRHGeMzuFRW5BvFl9GXHliRqIe73hLPCtouAkj32Q7MLy+RR67AnY6D8pb/TufPAhy22hAkZrYvy4IQ30/6cSMpo8bbUT+wPkaTI/EDonTaifsnw2CVQLeJ/n6L8XKlLdT1j477Z1F79vggRJbdx8tsIMh8QTOQE3zPE3KyBqBmG0pvRmanv4OW5orlxBhtuBzgzoKRR9PHt225cNhxdsycY5kFOgdQ/TOUFqq3TyJOtR4AKwqsDuoFM7QcZSqzEMElV9RksueW2+HR6XcyPcpaTe+SktEN6vitkZvp+DV+rrHaLZ3mx/Y8AMXrH49Hnzii6GbWpledxEqM7YV0Z4UhO27f++DC8Ow2IFfjBJR0VSy5Y5SwkajxQf01IIvlPA1M9Lit/E8Es4lLpdd7moxyZ/rpRfJOSaSe14UPRPF7CEdZkEE/HjtQHr44wqUieZfVkTSK9KaakY5RFgtcqwEdU6umhAJV+d0Wa/M/7mhbTCAEPBIJugM7PwcdWksL9JvX8k1sOculV2x/QI7m2Myu43XYd8wlNyPLyp8dENSZLhJGB3HyLXRlrIEeVAu3H0uCzNDwj3U/8os3KnIGFqRAKRwvvDTcC06Z7iWjiwDr3I0P6lNnOgbeCSrdhBaiJY4Ey0RDd2tbUDMve0Xjiqkg+1ysXNuTTcVj3s9eXXrZ+KiyWK0xnESi/N4VZH624wWwD6tG/BBK2bqTihmBWXpXKdUk+zt1YxSvX6Jg92IAR9b06K687tVKv2xkkV/Feo0L1D+1s7hF9ne2aoyaWubyA8uIAg8Gr+hLFptv9TfzKupUFpqK
- v1dELTQn
- C6cOouO2hBiWoEOZdwSSwiTcqSdQN17Fd02YwK3OPWDhgghKQK/WnaUu29h4JG/YLZzRrSlfDBIEcCcrJVDkPJGJc+J5G16EjpQxmKmPDjwgOPk7XCQ7GIKLonCcy/uqur2NdSAjlLnn8gcMxA7ix+A0akFE+XzAIMZnOec7Glur/70wRia7PPjp+zDwyMNOCMJFm79qY/GxrjdqVTw63b5UEuNqX7BfXAkMFU4CkV8reWHPf2l/DUen95O1w5HYckcv9OGv7kcyezuI=
+X-HE-Tag: 1765062246-129376
+X-HE-Meta: U2FsdGVkX1/kXNjotjO2lo5qEJa7MzAIg6m4uJspQ0Lch724dXnEJJP4DrFXXuIljruPkHol7cLOMqUcCGXBzuj3qxccAkKpLBeJDi+p2V1dX1OnnR4fzTQVlck6URfSIeCkzIaBO3wWgjAStWqzfPYf3gsXu0agExsO+XYJEqHWJzl8IOJyfdtRRKZKYEZQGYRCit624p8917pKMWxcsLUJnWLa3yjLeCKuOmUUBgylx40yauZZ9dDa1u4Q4rvDFu4tVwm89C3xbOLrbi0kOFizBZ0IgfBbI3AGI6G6yn8PlhnSkoyaL7Acy2BWZZ5QWb7oo3aaL+2nmlFZZi3Al2UnUbvr7B0AaUStLaERkNPZ9ji4SMenTrnAXXIUkjh/ivC2GkCzRaFZaLQGc5EYAW4MjRY5fSaV2/5tEBmqYBK5YgEZ1I7NjwjODiMBneOcxo+DSLCNt212MFMiixvtozNLClpgGGEEs4iNOcxIGZYi8C/3/WKfWCBRNeR3lPDu8TV0o//kzTFDVSbbG70tOfjNaIJgdHQgxV3EiP5cr2aMwMHaDyV5/BVzg87TvCpk+R+vRjDlgDtsSVySLGWcmhagitY5UCkgoDfNBToqtjbOdc7IxrahDN1TYz00w0D++gZvOF+BtUtJA2VPxL+gZNTuvgSK7vYNY+B4/vzm5tEk6OqvrIMpzMi1qQ+VuQUQF2PaMXcD1ZkvvRuCkOWw/w9Tea2f6k6x7S8rOuwO0HtygqJuGwRej+tWh1DdYXyGmJAeSfUB2Zn6dRGkInZEn6V8ZtsFUe5w7esQSMRTU5WzdpjLmJF+ij9r9A7K0MqAirYLYDWOHlgyCAVVYJWswDSq185QzR70igE62SE0KfgkNQWv9a2Y2NDNE6PIXKbVDRlDo3RxnoTXvsVbITJedj5I0AvQh96oFapFCT7KRzpRA7ZGil+oQwm68S0tWEnxz8QKLiq1hsHK5AqKF4f
+ 47Y0LuPA
+ BB8QcAZzYDD1qJXu7dYFUu6Q0QTmKo9mac6+CfmBqgJyeT+xxmJmwmxHAFovO29ZQyZoXfBaGzTX0YgGclLKXjoW2G35rPGpwuo/r/77l4qED81OeSuyc/0Nc8Gw//kjAzPnQGCHmb7NSy67kSIrkJH5j7Mkml3zzpub64wT+MI6x4fGUlBx2fZdzoMTbbZ6Dy+VQfA0GsNJft03GsmycxywVNobHMe5nDdH21OgZEcOeV4hzN+iG55lb/hdM6o5ezWBomhegrL7jfKY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,55 +118,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hugetlb live update support does not yet work with CMA. Print a warning
-and disable CMA if the config for live updating hugetlb is enabled, and
-liveupdate is enabled at runtime.
+To prepare a hugetlb inode for live update, its index -> folio mappings
+must be serialized. Once the mappings are serialized, they cannot change
+since it would cause the serialized data to become inconsistent. This
+can be done by pinning the folios to avoid migration, and by making sure
+no folios can be added to or removed from the inode.
+
+While mechanisms to pin folios already exist, the only way to stop folios
+being added or removed are the grow and shrink file seals.  But file seals
+come with their own semantics, one of which is that they can't be removed.
+This doesn't work with liveupdate since it can be cancelled or error out,
+which would need the seals to be removed and the file's normal
+functionality to be restored.
+
+Introduce a frozen flag that indicates this status. It is internal to
+hugetlbfs and is not directly exposed to userspace. It functions similar
+to F_SEAL_GROW | F_SEAL_SHRINK, but additionally disallows hole
+punching, and can be removed.
 
 Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 ---
- kernel/liveupdate/Kconfig | 3 +++
- mm/hugetlb_cma.c          | 7 +++++++
- 2 files changed, 10 insertions(+)
+ fs/hugetlbfs/inode.c    | 14 +++++++++++++-
+ include/linux/hugetlb.h |  8 ++++++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index 86e76aed8a93..4676fea6d8a6 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -82,6 +82,9 @@ config LIVEUPDATE_HUGETLB
- 	  use hugetlb memfd to back VM memory, or for other user workloads needing
- 	  to live update huge pages.
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index f42548ee9083..9af0372c7aea 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -673,6 +673,11 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
  
-+	  Enabling this config disables CMA for hugetlb pages. It is not yet
-+	  supported with live update.
-+
- 	  If unsure, say N.
+ 	inode_lock(inode);
  
- endmenu
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index e8e4dc7182d5..fa3bb776c0d2 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -4,6 +4,7 @@
- #include <linux/cma.h>
- #include <linux/compiler.h>
- #include <linux/mm_inline.h>
-+#include <linux/liveupdate.h>
- 
- #include <asm/page.h>
- #include <asm/setup.h>
-@@ -152,6 +153,12 @@ void __init hugetlb_cma_reserve(int order)
- 	if (!hugetlb_cma_size)
- 		return;
- 
-+	if (IS_ENABLED(CONFIG_LIVEUPDATE_HUGETLB) && liveupdate_enabled()) {
-+		pr_warn("HugeTLB: CMA not supported with live update. Falling back to pre-allocating pages.\n");
-+		hugetlb_cma_size = 0;
-+		return;
++	if (info->frozen) {
++		inode_unlock(inode);
++		return -EPERM;
 +	}
 +
- 	hugetlb_bootmem_set_nodes();
+ 	/* protected by i_rwsem */
+ 	if (info->seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+ 		inode_unlock(inode);
+@@ -743,6 +748,11 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
  
- 	for (nid = 0; nid < MAX_NUMNODES; nid++) {
+ 	inode_lock(inode);
+ 
++	if (info->frozen) {
++		error = -EPERM;
++		goto out;
++	}
++
+ 	/* We need to check rlimit even when FALLOC_FL_KEEP_SIZE */
+ 	error = inode_newsize_ok(inode, offset + len);
+ 	if (error)
+@@ -864,7 +874,8 @@ static int hugetlbfs_setattr(struct mnt_idmap *idmap,
+ 			return -EINVAL;
+ 		/* protected by i_rwsem */
+ 		if ((newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
+-		    (newsize > oldsize && (info->seals & F_SEAL_GROW)))
++		    (newsize > oldsize && (info->seals & F_SEAL_GROW)) ||
++		    ((newsize != oldsize) && info->frozen))
+ 			return -EPERM;
+ 		hugetlb_vmtruncate(inode, newsize);
+ 	}
+@@ -933,6 +944,7 @@ static struct inode *hugetlbfs_get_inode(struct super_block *sb,
+ 		simple_inode_init_ts(inode);
+ 		inode->i_mapping->i_private_data = resv_map;
+ 		info->seals = F_SEAL_SEAL;
++		info->frozen = false;
+ 		switch (mode & S_IFMT) {
+ 		default:
+ 			init_special_inode(inode, mode, dev);
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 8e63e46b8e1f..d70a3015c759 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -511,6 +511,7 @@ static inline struct hugetlbfs_sb_info *HUGETLBFS_SB(struct super_block *sb)
+ struct hugetlbfs_inode_info {
+ 	struct inode vfs_inode;
+ 	unsigned int seals;
++	bool frozen;
+ };
+ 
+ static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
+@@ -531,6 +532,13 @@ static inline struct hstate *hstate_inode(struct inode *i)
+ {
+ 	return HUGETLBFS_SB(i->i_sb)->hstate;
+ }
++
++/* Must be called with inode lock taken exclusive. */
++static inline void hugetlb_i_freeze(struct inode *inode, bool freeze)
++{
++	HUGETLBFS_I(inode)->frozen = freeze;
++}
++
+ #else /* !CONFIG_HUGETLBFS */
+ 
+ #define is_file_hugepages(file)			false
 -- 
 2.43.0
 
