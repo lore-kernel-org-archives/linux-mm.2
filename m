@@ -4,97 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71DBED3ABE7
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 03:09:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 508A0D3ABE7
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 03:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCAB86B0349; Fri,  5 Dec 2025 22:09:26 -0500 (EST)
+	id A8A286B034B; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7C936B034B; Fri,  5 Dec 2025 22:09:26 -0500 (EST)
+	id A614D6B034D; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A5B6B034C; Fri,  5 Dec 2025 22:09:26 -0500 (EST)
+	id 99EB46B034E; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A16B26B0349
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 22:09:26 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D4AE896D7
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:09:26 +0000 (UTC)
-X-FDA: 84187565532.26.5007D80
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7C87F1C0016
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:09:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.172 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=samsung.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764990564; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 870776B034B
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 22:12:59 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4B11B133A52
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:12:59 +0000 (UTC)
+X-FDA: 84187574478.27.51E1390
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6EB1AC0009
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:12:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iTlcIo5A;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764990777; a=rsa-sha256;
 	cv=none;
-	b=aGqykoBG91KkreZfUwncyek4L3Ilsi+BPuR3OhrNEOnKQwaRCqIr5zb0cbaREnDMh/IkQ0
-	k96ZR/n6CEj41ule8h7DUDFSVrmkRP8YPZknYEHfyUAy1Rpr0sj3wowdQvQXIPzwkUbDBx
-	CoVm5oaMAIY80DN0WujVSG9T4QDqVr4=
+	b=YdzW2/qrvFqx0imXX7zfDZeTr/OJEKvUS+Av/wojOTBpoC+a6shmx/SCbhNoGV+MCWmbkN
+	vMuhayJx0OXnZq9beTlPloVIz1tOaumQ29ExxN+DaqiAjmJElMnMIu0XMQKCOa33xqiT09
+	L4Rb/z425FFDUA+BtK7HKuqCkgE6ABk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.172 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=samsung.com (policy=none)
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iTlcIo5A;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764990564;
+	s=arc-20220608; t=1764990777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=slWDcKcwAJ+Y2tqjA/MblIFxfiG7s1k+JhDbc/3/jDE=;
-	b=vohXDj3reiFZDdBQ3wZdw91WzU3cJTYAjJ2h/lmn4plJXMiYshqAjLbJDPBg71X5hj1el5
-	tSMlo3IjjMb5ZMoEADHNTpyO5UHyTNWjuydL+NoXuGTY3JzbgasnJVXFvSrfTdh02G9TNi
-	LC6tpjs4Hp+BbwstPW1R5UqtCfmc8bU=
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4dNYB91xC6z9tqH;
-	Sat,  6 Dec 2025 04:09:21 +0100 (CET)
-From: Pankaj Raghav <p.raghav@samsung.com>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nico Pache <npache@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	mcgrof@kernel.org,
-	gost.dev@samsung.com,
-	kernel@pankajraghav.com,
-	tytso@mit.edu,
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [RFC v2 3/3] blkdev: remove CONFIG_TRANSPARENT_HUGEPAGES dependency for LBS devices
-Date: Sat,  6 Dec 2025 04:08:58 +0100
-Message-ID: <20251206030858.1418814-4-p.raghav@samsung.com>
-In-Reply-To: <20251206030858.1418814-1-p.raghav@samsung.com>
-References: <20251206030858.1418814-1-p.raghav@samsung.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7C87F1C0016
-X-Stat-Signature: ogi4g7hgwdghxpsjy7t5hk1u77cr3k8x
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0r0xWOI04btkf8CfXl7VnZlJgk5q6qnmfk/5+zubQG8=;
+	b=mJeSnlIRyxDm3gNBAAEgA0QS37QS0fnphP75u7AJ4vJplqk/Ur3CzxyKmBl4pm1dtD6+gn
+	cPBvsin9cb6qb5vO0fmzq1+k3OoRiSN6kTdiC9ysx2LhET6U54yQmWMfT+lxrc2mxV0M+W
+	pdqOurLl6bmIOUq1ajuqtufXBR6610Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 958BE600CB;
+	Sat,  6 Dec 2025 03:12:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB32BC4CEF1;
+	Sat,  6 Dec 2025 03:12:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764990776;
+	bh=Ond4FsQaolgVCGsRJYSEIPpQjsP6TpYyCVBBKlrYlkw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iTlcIo5A2CSxaOfsU/36rIuiZVE8XTtuN8cNug06D1JYu8K1UVaqVLH1Tji2J8Be3
+	 1qq58LFe4uU5K0xARRmj/Uq+4aGluze/UdesMrNWCE9pvYt5z5WpgAS0kgy/Dtw5iM
+	 JQ/UmcocYUbj2IlspcIRn49SlAHTD2z/eO9DGpQk=
+Date: Fri, 5 Dec 2025 19:12:55 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Hildenbrand
+ <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
+ Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
+Message-Id: <20251205191255.e6da75c8511d23159f44b59f@linux-foundation.org>
+In-Reply-To: <20251206114034.24bdbf1f@canb.auug.org.au>
+References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
+	<20251205121501.bf47efd78d0a1a8f0370645c@linux-foundation.org>
+	<20251206114034.24bdbf1f@canb.auug.org.au>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1764990564-555363
-X-HE-Meta: U2FsdGVkX19hvLM9+/uTE7ZMsFQNuMZDXGtUT1beoKZvIpqts7SgAxP+YYmAi9Ojl9WxgGHcCyV/9AZwcCNj8mYN6/4oi9DFo1KRsmT+9xArKIMduoTgYRA4tgs6KsKlTVhB2FSo5L+QKErrWH6b5YPQz7se5KFmb7NeaEWg7qTcG4OkPjiR4Uwm6Mx3hU+ToVhAoxsHXNH6i0IdNT2iTaou2EdkpQqWMPKdjh66CkgJNPlEKzHKLwYGGS4ap0BJJKbLxZMl+d/wTGJhX24QFijs7tsz86Ne0DlO4LmAax+lWgLV4pNjuMQ7+I6lepI6aJyHXTJhz5/ePw9ixKMN021Er2L0nHALLBML+DeDv3s9qF4uGibN0lbEYYUJIQ9rjy0/ImW3Zeh9tgjlwf0APFce9ilXDk5Kwal6LtwKWgHFnYgU6IOfYlI7sl+2+aaBV8rw6tqcT355jE8CqV9VI0niyWQVwdlPpQOU3rIExAj8g5Tdsmc+/8slb6M4PlA0NAijYOjJe4M+V284f/R2KyVnfu2CDJRMbIUCfdJNICOelHd+YievL9zKfcTsDZOo+TWZkFdih865OU0ih5nrkmM7mt9i5j5dVS4/oGbF1AzlxJ4WvRJvxqHfk5cFTMMZnGxOipL9l4eEgRAFB6yPyuo5OmSvF6Pzbb/g6kWslh5o9RfHJWSSD2spyxmnzdBDJRWhJPfl7C0frSgSzpFQKqgb+pNc+rqqCIG1L3OtSiccUS+1xOQLSufRLkP7GI5cyOvUEAoy4zwiNlnXcNYdYw51l93yJUL5olzY4MVrOsGuZ7417t6830fNxJjmUlQy3JrlN2VqKnlgvDeBbNDUdjlyeZL0qX2tqhalqLBs+I5dDDoIUhDvrs+kxBf1axdhl513oi9Dneq8BMR+QFd2Ywq/LsbVbV28QfeofG5EhQdlfsi2AVA9EonwsydoIlVsaGXfwAIggUc+wkmtoA7
- eCKtHUda
- j+tqT/CdHtOamrSuIk2nRH+5+m6oVrnmmJyhnwuDsJlgu+EshkRRQVeNvjJaTELiBc7pKVRoPCBCBMXZMZTfYWPDmQZxSEcxKLehPLRSs2syMZ1yqwP9XrdGbXa6ynm0Z7q/DIJ3Xt115MKzEWkpyr3zqWjugNKQIC1+U2joKx+8460jcIYA4WZejG8AdPkVqzmiZTX3ZsOzO82fPwhlOWk21krRXq34IncOIJM5gccfONp2jflfJEz9CfXsMZC9Pt3InCbYqRnjc55wmBWa3/nU6Yfo9GMnqtWsK4w1MYWhG0BeOJNeOaikWIwoHXf6YDF1P6VVCj5um2ZcyYPjI6KiVZMD2uZGEUt99wQG2tvlC7tg5cEmUtr96OQxWkL4Q3DDX/IpyHftZSal11+UzV0RvpSat59eezTc4OQC7H2YVW5rP5Mq5xjzIkRQYpCXS1O19s6f3C+Aj7OY=
+X-Rspamd-Queue-Id: 6EB1AC0009
+X-Rspamd-Server: rspam10
+X-Stat-Signature: t4hyygqjk71ofmssozrjrqw8qgmg6mhy
+X-HE-Tag: 1764990777-493283
+X-HE-Meta: U2FsdGVkX19jRzdnKUD017VnU8X+3BE6Kp4VPwPJ0QM4EXhUoxGqaIcY61xHsUkfIv4AQ1LDwAWbsGHYMV0rCTFcdSb7pY8Y4GrmJOr/IT8TZiL6CI+gZ4KitlUP4eeer+gtN3PU6IqckGvOMYZA29XvWcdzQiJrbyKL30vv45hyP7Wd1QjT12X1P0sj6sOefX9OuU64gCfwg2zBAPHAgsR7S8hyqK1//cGIBVenAQe4pjDEyVSdj2T1U67o9wFp3uAt/SahyCf+F5wlMBrmwdZWnEc3mfHTWoI5rYRuGQtP+tXbflUv46rZHVTcVNcSmg4ZWcbwtqtXFDx1m0852agGBIGUOI6/GjEoB0s4AcbZRAaEePR30LZ+nnLeXGXewvFNIlwFKAbslHVJaCBvzyC2CMulAggBgekpuJYV/EJ5SyIjw3RfXxLwU7coB9ePuBNZK8SxBDraXdt9ZED0BQAUR1MA/YQOIed9sZVjrHSXAKBD9mWNcRpC0W2yGqhO2FuE0/REMQdPZvCwGIMzQ5M1suTbpPogSDcKDYqNzU9RhdjP1u0Gg+qG/0uaoasas/f8drpZ9rE2NBBWMswfLV0hJeLSjh0MU+CiKt1r/kUMqMt0wAWLtaK80Q7tBKY2YL7djOg8Cnbkxpxx9HTp4S2rq4QFgmOdcRnaknoIUXy08i1cocm2Wn2fPt0A38rF4C/aBLnwrUoBfr1a6cuE/ufhQ77c+XrAaQQn7gvlcVf0MY5s3fMpHaKlPfkriLZDg+M+pYvs3c0fgdKvvRUP0VB/Toxp3M04twWqhbhkFkh3NGxcXtxpB/h5skD4oZvOQFkwF2e8EuszjOn1sfatUuKkwmGd+Bkmaw16IIWs7/JqXO4TM6p/JuH6WOTX0DDmAERi32+xhsNnju0hiliKq1h9WgqqtuFZUegroCAIisWFRjf/uP4mb9LgEJynB5DOrrjWtwQ60ed8JoRkuax
+ fGmHiA6m
+ cbhNLjYXXlo7t6cYCMvF0ZloT+xrmlJb1IOVzXoVq4hg0ZrUDKHbLi2gLQhgjOyqW8++v8gEl8dXFKVAuz23guT1w4eeAjahIJG0+jc39DOUKFTgblqQMoaZTr0OtboBgbp9VruLVESFcQFhviBDoj+y92JOSfaQfSaIKtgnQe+GM3pl6RjOr4D1M/70Pw2ZHwwXUi4f8aT3poonHDvMbqdWLf1NXXcbSa+LAtLi/tOmzCHTtDnoTnXUGhdpxCV/xtDBhXwueD0poVC+x2O2Z6Ql6m4IOfRzqXfniVE8aa0sMfp/qyL3i9oZLSZ0dmxYCNwOM7Rh6uTbMQ/I5TpHnh8QedTLRVBpuk7XTds4hiNtHMDlpu4fluljR8A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,36 +95,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that dependency between CONFIG_TRANSPARENT_HUGEPAGES and large
-folios are removed, enable LBS devices even when THP config is disabled.
+On Sat, 6 Dec 2025 11:40:34 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
 
-Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
----
- include/linux/blkdev.h | 5 -----
- 1 file changed, 5 deletions(-)
+> Hi Andrew,
+> 
+> On Fri, 5 Dec 2025 12:15:01 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+> >
+> > I'm not really sure what's the best way to determine this.  I use
+> > 
+> > hp2:/usr/src/mm> git tag --contains 2b6a3f061f11  
+> > mm-everything-2025-11-29-19-43
+> > mm-everything-2025-12-01-19-02
+> > mm-everything-2025-12-03-23-49
+> > mm-everything-2025-12-05-00-55
+> > mm-stable-2025-12-03-21-26
+> > 
+> 
+> What does "git branch --contains 2b6a3f061f11" say in your tree?
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 70b671a9a7f7..b6379d73f546 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -270,16 +270,11 @@ static inline dev_t disk_devt(struct gendisk *disk)
- 	return MKDEV(disk->major, disk->first_minor);
- }
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- /*
-  * We should strive for 1 << (PAGE_SHIFT + MAX_PAGECACHE_ORDER)
-  * however we constrain this to what we can validate and test.
-  */
- #define BLK_MAX_BLOCK_SIZE      SZ_64K
--#else
--#define BLK_MAX_BLOCK_SIZE      PAGE_SIZE
--#endif
--
- 
- /* blk_validate_limits() validates bsize, so drivers don't usually need to */
- static inline int blk_validate_block_size(unsigned long bsize)
--- 
-2.50.1
+hp2:/usr/src/mm> git branch --contains 2b6a3f061f11
+* linus
+  mm-everything
+  mm-new
+  mm-stable
+  mm-unstable
+hp2:/usr/src/mm> git branch -r --contains 2b6a3f061f11 
+  linus/master
+  origin/mm-everything
+  origin/mm-new
+  origin/mm-stable
+  origin/mm-unstable
 
+kinda random, but it tells me "that's in mm-stable", which is what counts.
+
+> In my linux-next tree it says (I need the -r to check remote branches):
+> 
+> $ git branch -r --contains 2b6a3f061f11
+>   mm-stable/mm-stable
+>   mm-unstable/mm-unstable
+> 
+> but I don't export my remotes to my published tree.
 
