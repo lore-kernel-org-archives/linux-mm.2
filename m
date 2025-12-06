@@ -4,81 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8096FD3B7D8
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 19:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12490D3B7DB
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 19:53:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 825266B0005; Sat,  6 Dec 2025 14:15:38 -0500 (EST)
+	id 216286B0005; Sat,  6 Dec 2025 14:53:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D5E86B0006; Sat,  6 Dec 2025 14:15:38 -0500 (EST)
+	id 1C76E6B0006; Sat,  6 Dec 2025 14:53:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C4466B0008; Sat,  6 Dec 2025 14:15:38 -0500 (EST)
+	id 0B6B36B0008; Sat,  6 Dec 2025 14:53:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 505196B0005
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 14:15:38 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CBDA116062B
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 19:15:37 +0000 (UTC)
-X-FDA: 84190000314.14.F7D7F3C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EFAD980006
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 19:15:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=THhQt6mt;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765048536; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E4F9C6B0005
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 14:53:24 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7C31DC0661
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 19:53:24 +0000 (UTC)
+X-FDA: 84190095528.15.3394DD4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 163D8160015
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 19:53:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=deD02HSm;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf08.hostedemail.com: domain of loberman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=loberman@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765050802; a=rsa-sha256;
 	cv=none;
-	b=xjwkYUxiB4QmZBKNstPriTcqDMx8x0ndkMUUyzGsaxqR5FXMPQbMhqshVr54FTAQILGANr
-	OB7fVD4OPSYC3IGC+pLsCSVa2m1D6m0YA3LSCBBedLnxP5umnkJWBcGxt73dwlP+FPL6yp
-	2SpEppETIck/v+XgJ+FguWI3ZES4Xmw=
+	b=IjHTohuuk1n3WoR1eivjX8T7iU2ddTT2CDpjliQ1N4/3lnx94jRun2N5Qu8HVTJ/HVFfkm
+	Y5yG8psd/H4fR6TU0vLvX/HRq4KfKs4rTP+LjU+IwnMvGD0HIRDRLo7TSgqqRwyhUBosYm
+	Nn6sDzw8LjQeVCF5OXYuzbV+MfdEcws=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=THhQt6mt;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=deD02HSm;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf08.hostedemail.com: domain of loberman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=loberman@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765048536;
+	s=arc-20220608; t=1765050802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ns9bM/77NKDNRA/Co+ivV3ky1nePuL1gSr3mLppBjCI=;
-	b=Tezjbsp2bGP+Ui8036sFumxl/RzjPhf82J2XHGwdaVDIUAeAok98xCwipKl7/jJHxwUm6H
-	tJC692ST0D9mPLa//9b7N5rjbeh1yKr4eHUyhosGby3BN0lxTF4fsJJO9S3vViYORuZk0M
-	uFQtXddhMffgep4GVKBfoECuXdRjWY8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B24B443219;
-	Sat,  6 Dec 2025 19:15:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E19C4CEF5;
-	Sat,  6 Dec 2025 19:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765048534;
-	bh=hhuzlQ1kyf5SoTrWQ+U0QSgPNDGdfmXR/BP8lVTHyMw=;
-	h=Date:From:To:Cc:Subject:From;
-	b=THhQt6mtWnD/sBXU2j/eJBL5r2qtgJ2XR13mMOTD2Rd0FmI3Y1nL7vmkEF3EtCVGW
-	 4Ru9JzcqT3/4lkHStaASe3zTy5NcOEVRd3Idnb6QMj96JKhntk/Mb45kKIp6uBcUwO
-	 86E58YkDVgNPINt/bzD86RCEQTDkMdsWGc9z7Jrk=
-Date: Sat, 6 Dec 2025 11:15:33 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mm-commits@vger.kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: [GIT PULL] non-MM updates for 6.19-rc1
-Message-Id: <20251206111533.f1b18ce84d0854b5f6d86a8f@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qrpYMWO98nw/C1zuKpSbDBvFxM74soYI7+nWen4/2Ko=;
+	b=UdZugc0Um/j2VD4fXtimbioEfUIQMkCmxlI5+T92wpc+Dmu/u+I4mQogcGdIijxEA8QGYl
+	qBZRc+uL6jhhvRQIlun5HYxiUhmFgPrARpyCGbSz/dItYGYsxSO0e/Ng0cThWsfV9DL0Uh
+	u3hx0jxdVTaX25iOdGLcsboeld5TZ1w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765050801;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qrpYMWO98nw/C1zuKpSbDBvFxM74soYI7+nWen4/2Ko=;
+	b=deD02HSmUuYFJ0K1UyifIlayx/fOBwMNMXKqujlg93eNfBGEG8ZfO2KCVGD8lIw7pRoHpA
+	MbU+7I7cj/sh36fbCKnr3GFJEMJWzQ36we6GUiyf4JykDwa/pcPtg9oc4vVASyMKTr5ZJQ
+	nbG+DnVeWWURBYBo2ML25RW9hCsEuhw=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-192-VwcsFthGNWSPDI3PVQwaBA-1; Sat, 06 Dec 2025 14:53:18 -0500
+X-MC-Unique: VwcsFthGNWSPDI3PVQwaBA-1
+X-Mimecast-MFC-AGG-ID: VwcsFthGNWSPDI3PVQwaBA_1765050797
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-7b89ee2c1a4so5644745b3a.2
+        for <linux-mm@kvack.org>; Sat, 06 Dec 2025 11:53:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765050797; x=1765655597;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qrpYMWO98nw/C1zuKpSbDBvFxM74soYI7+nWen4/2Ko=;
+        b=QL82FagRzB54VYcgzn741xFOlMx9MQzlLWtZQBUoTlYH8vYDkUezb+WwlqqMyKchjt
+         4T9ligoNRaCx7WVowEAtIofPu/RirF+OviNTh7CbQ9jFPB3cF+mfxu0tHshs4vqW9DsO
+         BfRmYjGb0xBGsLikrYi5EYDIUpisNIPX1l8I4apZyfgby8QdsGETN/oYk7JPfK2nd8Pi
+         Y4PToFaLNqCY7DNj9J0f45x54GsGdYwpv4AuRMJK5qgnH77qDzWu0tcMIUWpSrq0iBzu
+         fuUS9Ey7sDwkaJreDGPunrc8cbhaXgYAZrAdsNJCXchJK0l1ss2WIlJacd7pFM2Y5TS6
+         6VRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXNAoVBaCTLrtMYzJZAINIlIFfrb5Bo9C9PqRGHTBHO1UjXHcyPLPZkdKVLoAdXwPx/GxO133P88A==@kvack.org
+X-Gm-Message-State: AOJu0YxnBTVTF5G039vtM9iFBsO/fIvbMByCVg56FqX5WVXGL1r7IeNl
+	0E9U+dxnYA9AMnYtbPTSAFluuO4zSq4GhkqZ54fv1Rrh/i0AJ6n1qkJbs179RcbMpqqn1W/bqpG
+	klkq8Npr9bocJtOspWtyBz3xKH0/bXiWC9SGemLiTcAH7d10LqbmI
+X-Gm-Gg: ASbGncszk0oPQmqjvwX7IHVffM0ge0PipPqvuTxt+B2JmzhtQfat/WQGQ4IAZ5aaoE1
+	reqMeWP0YjldAzaGHES9eLMCQow3NJgNr5HrnvxJma+xoMO6FQtd/9paCpx1ARIFUbmOXoPH+rY
+	Om1yN9k2xl3Emb9by+lXFsm8paiyxGRJ+4i8Dh5J4yniYZMDny5/yT2RvwPbNDC14O640xkeOkb
+	vxTFrYXNi3WgjoOmgUoKHrHgrNchl/1yjnY472B8y4f+sayD5+e8YWge1oM2X55pa0kCCo0mkCa
+	7sgxFvFFBgAubpWF7JHrqDs4NKk8ZpT8GDdoSIXsu2kWD+hxs1vlvp25e09rNoyun+Q07F51aX6
+	9S3xzbzUvDHkqWaGMXNxeka1JqWnaH4dbLANO0Xhz21PO035k7ag4UX3OftRHawGiA3XYk7ILau
+	OyRBE=
+X-Received: by 2002:a05:7023:b01:b0:11b:d4a8:d24d with SMTP id a92af1059eb24-11e03260ecamr2282830c88.12.1765050796770;
+        Sat, 06 Dec 2025 11:53:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH2aPGE6vYb1dltrITpg8eumtVfZJj4Id5GKymqQwmguys9MRcgGbHoYX1yIz3YPyGVGfbLsw==
+X-Received: by 2002:a05:7023:b01:b0:11b:d4a8:d24d with SMTP id a92af1059eb24-11e03260ecamr2282813c88.12.1765050796257;
+        Sat, 06 Dec 2025 11:53:16 -0800 (PST)
+Received: from syn-2600-6c64-4e7f-603b-9b92-b2ac-3267-27e9.biz6.spectrum.com ([2600:6c64:4e7f:603b:9b92:b2ac:3267:27e9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df7703bd7sm35128784c88.10.2025.12.06.11.53.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Dec 2025 11:53:15 -0800 (PST)
+Message-ID: <6640379f1ef7e9305b77d1e322b04d9534a3fff5.camel@redhat.com>
+Subject: Re: [PATCH v1 0/4] mm/hugetlb: fixes for PMD table sharing (incl.
+ using mmu_gather)
+From: Laurence Oberman <loberman@redhat.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, 
+	linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org, Will Deacon
+ <will@kernel.org>,  "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,  Peter
+ Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Muchun Song
+ <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Rik van Riel
+ <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Prakash Sangappa
+ <prakash.sangappa@oracle.com>, Nadav Amit <nadav.amit@gmail.com>
+Date: Sat, 06 Dec 2025 14:53:02 -0500
+In-Reply-To: <20251205213558.2980480-1-david@kernel.org>
+References: <20251205213558.2980480-1-david@kernel.org>
+User-Agent: Evolution 3.40.4 (3.40.4-11.el9_6.1)
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1WuJf6EPsToq5o5Ev1Ej-_MLdpRNWmRoJR7bMDnsQQ8_1765050797
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 163D8160015
+X-Stat-Signature: y9sme944wekz88bqwwmf89sx1bo545mi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EFAD980006
-X-Rspamd-Server: rspam10
-X-Stat-Signature: mipenyjgn67r1pfw8njj3imaafw8gan3
-X-HE-Tag: 1765048535-883258
-X-HE-Meta: U2FsdGVkX19QmLtKGX4BuDuaFMFO4stcwOlCWCOuOH4MT5lAVOZ6Tgz0Nq0jmYHgz/VJOfy2ChPjyndZ2jnkqzfGE87PitcYq0Ai9ejBNWkEH+YPvUBl8k8gZDlcHxRhUDYE8BX8zJp+ZV+164xCDJJSu0ZlfG88m9Ymgzp36eqqKqZfVmCBIodIUd9fqEqXpqlXi3Tn6AUbGs+687JmkE+WtZmmODyE8PvQCYmHdvL6+GmykBNC9c02tu/fB0qLx55SWw5yfLOZY95FYbfdVqjGNh7cnmyeI5k9o5sRB4A0oedMBJInHEuAqfmU+/jlIq/VaRlqfekqvRk45sN6+1tfuZHZVzG4cq6jP4bCkn1f7WCn8otHloQpqjrMr4Zsi5+F2V0YO/BblFHyTYqWvPaOWmqU7Lga48ZNDni/kw+oz3fSFFrpZTORHuNJXOs5ieEOzgYXU8YkdIV1axPFhnpcMCgDPdUFdkROuSLrlELEjAQ9jUVQLKMYZg6prIIIDUKWAzZZBEDOJdsgAVkYefBWiJaNONiDx6YORx/kJF5qcbdKlJqBs7SneOrJ5HFDcS4ChDZeHbwoTUSjhb4fbKahbL3jyPm5tuA1+W4mDgA7iEtYF1+H1QLjUyygSfves6Jcw93meUuJh+4qnFlomqB7MTxLu7b/D/h5e182p0QJAXOVMUc4/RX5FxQQCdDKXvVaX3f1RYG6dl1ygkpqg13bR70yrjZLbC32bk0Ze0rMm5/Sxg2K4q4WyckkDVRsKd67DDw0BTOBezzpa2qC28Xj+aAiOIGDj0O3Lu+kKq6H+H5AOaHsl6KlNF3QnFNZgg0kxGQzC//d91DUBKamv+PvLPirEx0CSORvqjob8DNtpeg8yRWN15fZVtZ7dqmlckkBPjbI/+cx/Lb3hbyoXfVc61nvqLh6wd9XyUKTug9nacyOVePA8lZDR91JNu5Hq7Zc1wvdymIYTb4h5z+
- 1ZwmtbVX
- XyZohSH0BsWaFamqbQKmY7yMIc6KVnlnb5DK3+XcPhCaX7EkCUHXw5NzKXLNbYLjxAXdmGz47O/X5PchNK89oF5jImFa4RIHFRkUIDMdocud4KnZsp/Q3VIAGwn+vE170AJnPMXtlDgjJHraxtqZnpU62XuXmlcjsLfwM5RQFqCy4rBYbt83gfxwjgx3xrNGLNDD6nWAcj/7xPhoNqKPrn/VP8fbXPD5xwONMTwNrZszpQ9YDq+8cNnf6RuAbn2Sw0vMDdP9QmPKZafWSVu2jeh9IGEuLrQb54raqkpwitlIqFsjNFqDpPRBJsIwEPzcwIqJ0OsjPPjZlu7Nfq+nZS7xm+41ugySjIh8S
+X-HE-Tag: 1765050801-606344
+X-HE-Meta: U2FsdGVkX1/PE4A/HVzDrhoPW6Sa/4MtOiPyffti48JurR+Lz0Sh7TmCGpq5fT9Lr6C7azQpLkaPx34WaAzbi4jgCruKw7NzZBcwbXcAfEgbQAwJzT4tUuBWPqL+jfN8Cj+2SRSAiAclU8Lzx6Donn0eZ1YrSjkrh4zF/ZLoohhTEcUJhzNqUIZhyvDBoYxFCvTCDANP9xhimIOsUyK1CrL7n00e5ecjLZMCyFbEQKSNS8qevD0SAIZsZ2Tqi7ZVdqSy+Jy/i3BCE+P3yQovn7vAEn7GDPGgqRKXAYGMK1S5n11j/XuugJBPIUoUxTkAdhZsKrvSP69+7LV7y+POFNwNgEgI1Jxhwme9cI2XVYwOmXo25G0fRqWao71tqo9uErtTqvGFqoto0rj79De9f0wbZAEya55DNhM9aRzOoDNgPEJ0YEYolt59XmzMwIAq2XK2mKn6ucsLODV5sDflejqER5YDE77yiy6Auz8wIrD2gCJdkThev2f+anTrd6tXpItd++P9O+qKr9MEQ8ILmZYcGs8dunF+oKlqhWBifW0h9S0sxxV2+9mS8a8X28RDh3IHJgevxSsfCdPMS8agFIhgfbFmxjnQJx5RKV/tWRpNkO6WaEmtlnFYBLAhEjG6g24EACLZK5Ijmfkodv1hL8kkANX8aHYzlVj6OZPfIrfhJSR3tRuvbun3/HkQKNSDEwS8x6RFnUpFzsr6XomQnh+ZuS9+nTQLTnL2SVcMPQhDOWH5ZARC9IIzUAxJBsVF7CoGo8gwb2bf3X+nlSg4qC0QQeab6gWJ/ysygUap1t3LzzGb/rhuOLs8H7Cz98BgwVUIiEF9s3iBd6kiPzUDQce4UCwav8UDt2KK7dye1wmo/HzBADWdtq4AS9wfJ4FiFCqKMKBcr7EhpTCcRYfGOzSqLA4AsETrk/vP4VmEaskoWKxh+0tLi4jOLWjJ/go9AEE6tTuZkAp6MMRZRJc
+ IIPKzDqD
+ nOuW+aj4upVndrkNyVNlUUq3girAFlJwY5+uM+t7Yod+omAjkci39IfauPQW4+v6Q5iVohlLxU+Qkwo1ugq2WpBxhyWBdLq7tdfkst02tEetzXV0L8csZ84+k2uIFCohcejHA922De/fxd7Ycct8mM95tBZBiZjKt7VH5LCbJBa0TMyP3e4XBko2JLThzF+FQTeE8me2+XAHAZqC1I8Ng3Dnp6cyTxH5trBFnDKanTLSUfo2EwjPuwhV860IQtIUEbwO2A5pEBjt9l4Ne70/k5/Z4zG8o6eJwOdJRfy5Q5kYYHbNxZhYd4A7UaDuYLC1cq79Q5IWJVmGUcJ1I28myIzfl15NmkicGgCS2GkLsspJl+am4tT+tCOWMh8uT+D9vscveXHKDYkLRSfrCmgTuRtF7fxQeQ9H/umOJFxkPv9Fc8J+q5yFRqCG4fphO9YHzvpgo7g8bqPfnBL4wds+5H63StIb70G1Y3LyBagixu8QFocTYtIZXAwrfkXaSChXkAeTf5gk6EeXcHpkNrvUrlMwZ0p43pd8I51dKmVYFxoWmnOhk4c7kSeg2Ah8IyBAFMv3Wu1Iq52kuKXlEh7U1foR231efD5TG04vERZk24e84FyNKy3O7mpf3QF8VLkHfNSZWrZO45ZVck7DUEW+sROP2HEAAM3ihYJBTKP6qexIGlBmgLNNqrJmLCjhQpy0iJjxhhX6tuBgmOCLyRMx3Q6ZEEaq/6xIoDfTJHgZ7SNdJc8W/EQnTzBHHkyp6trEcok0SgNlTPo8N82CILMiSIxSTjXQ0HjEc/mDnqdD+uTyWwg8CyTvq1cGJeD+0lXbrYYnDGG90/mAASPS54l2Qiczu18RdR9xRM4Dt0DJ++fwmQTmTgNOpie7TuFjZasEu3LYhp3QlJHtuSWd0ZVFxH8M5ymlWUBf1cnVK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,830 +141,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 2025-12-05 at 22:35 +0100, David Hildenbrand (Red Hat) wrote:
+> One functional fix, one performance regression fix, and two related
+> comment fixes.
+> 
+> I cleaned up my prototype I recently shared [1] for the performance
+> fix,
+> deferring most of the cleanups I had in the prototype to a later
+> point.
+> While doing that I identified the other things.
+> 
+> The goal of this patch set is to be backported to stable trees
+> "fairly"
+> easily. At least patch #1 and #4.
+> 
+> Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
+> Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
+> Patch #4 is a fix for the reported performance regression due to
+> excessive
+> IPI broadcasts during fork()+exit().
+> 
+> The last patch is all about TLB flushes, IPIs and mmu_gather.
+> Read: complicated
+> 
+> I added as much comments + description that I possibly could, and I
+> am
+> hoping for review from Jann.
+> 
+> There are plenty of cleanups in the future to be had + one reasonable
+> optimization on x86. But that's all out of scope for this series.
+> 
+> Compile tested on plenty of architectures.
+> 
+> Runtime tested, with a focus on fixing the performance regression
+> using
+> the original reproducer [2] on x86.
+> 
+> I'm still busy with more testing (making sure that my TLB flushing
+> changes
+> are good), but sending this out already so people can test and review
+> while I am soon heading for LPC.
+> 
+> [1]
+> https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+> [2]
+> https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/
+> 
+> Cc: Will Deacon <will@kernel.org>
+> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Nick Piggin <npiggin@gmail.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Cc: Rik van Riel <riel@surriel.com>
+> Cc: Harry Yoo <harry.yoo@oracle.com>
+> Cc: Uschakow, Stanislav" <suschako@amazon.de>
+> Cc: Laurence Oberman <loberman@redhat.com>
+> Cc: Prakash Sangappa <prakash.sangappa@oracle.com>
+> Cc: Nadav Amit <nadav.amit@gmail.com>
+> 
+> David Hildenbrand (Red Hat) (4):
+>   mm/hugetlb: fix hugetlb_pmd_shared()
+>   mm/hugetlb: fix two comments related to huge_pmd_unshare()
+>   mm/rmap: fix two comments related to huge_pmd_unshare()
+>   mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
+>     using mmu_gather
+> 
+>  include/asm-generic/tlb.h |  69 +++++++++++++++++++-
+>  include/linux/hugetlb.h   |  21 ++++---
+>  mm/hugetlb.c              | 129 ++++++++++++++++++++----------------
+> --
+>  mm/mmu_gather.c           |   6 ++
+>  mm/mprotect.c             |   2 +-
+>  mm/rmap.c                 |  45 +++++++------
+>  6 files changed, 178 insertions(+), 94 deletions(-)
+> 
+
+For the Series passed generic testing with a focus on the CVE
+regression and looks good.
+
+Tested-by: Laurence Oberman <loberman@redhat.com>
 
-Linus, please merge this batch of non-MM updates for the upcoming -rc
-cycle.  I'll have a second much smaller batch next week.
-
-Thanks.
-
-
-Conflicts which I'm presently seeing and their linux-next resolutions
-are as follows:
-
-tools/testing/selftests/drivers/net/gro.c
-tools/testing/selftests/drivers/net/hw/toeplitz.c, vs net-next tree:
-https://lkml.kernel.org/r/20251124125006.3953f1d5@canb.auug.org.au
-https://lkml.kernel.org/r/20251126103039.222a1589@canb.auug.org.au
-
-tools/testing/selftests/vfio/lib/include/vfio_util.h, vs vfio tree:
-https://lkml.kernel.org/r/20251201103154.32226085@canb.auug.org.au
-
-tools/testing/selftests/vfio/lib/vfio_pci_device.c, vs vfio tree:
-https://lkml.kernel.org/r/20251201103154.32226085@canb.auug.org.au
-https://lkml.kernel.org/r/20251201101046.009b0919@canb.auug.org.au
-
-tools/testing/selftests/vfio/lib/vfio_pci_driver.c, vs vfio tree:
-https://lkml.kernel.org/r/20251201101312.4dfd2b19@canb.auug.org.au
-
-tools/testing/selftests/vfio/vfio_iommufd_setup_test.c, vs vfio tree:
-https://lkml.kernel.org/r/20251201101549.5792d6df@canb.auug.org.au
-
-
-The following changes since commit 7c9580f44f90f7a4c11fc7831efe323ebe446091:
-
-  mm/filemap: fix logic around SIGBUS in filemap_map_pages() (2025-11-24 14:25:18 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2025-12-06-11-14
-
-for you to fetch changes up to aa514a297a0c175239f24a2e582ebd37f0727494:
-
-  calibrate: update header inclusion (2025-11-27 14:24:45 -0800)
-
-----------------------------------------------------------------
-Significant patch series in this pull request:
-
-- The 6 patch series "panic: sys_info: Refactor and fix a potential
-  issue" from Andy Shevchenko fixes a build issue and does some cleanup in
-  ib/sys_info.c.
-
-- The 9 patch series "Implement mul_u64_u64_div_u64_roundup()" from
-  David Laight enhances the 64-bit math code on behalf of a PWM driver and
-  beefs up the test module for these library functions.
-
-- The 2 patch series "scripts/gdb/symbols: make BPF debug info available
-  to GDB" from Ilya Leoshkevich makes BPF symbol names, sizes, and line
-  numbers available to the GDB debugger.
-
-- The 4 patch series "Enable hung_task and lockup cases to dump system
-  info on demand" from Feng Tang adds a sysctl which can be used to cause
-  additional info dumping when the hung-task and lockup detectors fire.
-
-- The 6 patch series "lib/base64: add generic encoder/decoder, migrate
-  users" from Kuan-Wei Chiu adds a general base64 encoder/decoder to lib/
-  and migrates several users away from their private implementations.
-
-- The 2 patch series "rbree: inline rb_first() and rb_last()" from Eric
-  Dumazet makes TCP a little faster.
-
-- The 9 patch series "liveupdate: Rework KHO for in-kernel users" from
-  Pasha Tatashin reworks the KEXEC Handover interfaces in preparation for
-  Live Update Orchestrator (LUO), and possibly for other future clients.
-
-- The 13 patch series "kho: simplify state machine and enable dynamic
-  updates" from Pasha Tatashin increases the flexibility of KEXEC
-  Handover.  Also preparation for LUO.
-
-- The 18 patch series "Live Update Orchestrator" from Pasha Tatashin is
-  a major new feature targeted at cloud environments.  Quoting the [0/N]:
-
-    This series introduces the Live Update Orchestrator, a kernel subsystem
-    designed to facilitate live kernel updates using a kexec-based reboot.
-    This capability is critical for cloud environments, allowing hypervisors
-    to be updated with minimal downtime for running virtual machines.  LUO
-    achieves this by preserving the state of selected resources, such as
-    memory, devices and their dependencies, across the kernel transition.
-
-    As a key feature, this series includes support for preserving memfd file
-    descriptors, which allows critical in-memory data, such as guest RAM or
-    any other large memory region, to be maintained in RAM across the kexec
-    reboot.
-
-  Mike Rappaport merits a mention here, for his extensive review and
-  testing work.
-
-- The 3 patch series "kexec: reorganize kexec and kdump sysfs" from
-  Sourabh Jain moves the kexec and kdump sysfs entries from /sys/kernel/
-  to /sys/kernel/kexec/ and adds back-compatibility symlinks which can
-  hopefully be removed one day.
-
-- The 2 patch series "kho: fixes for vmalloc restoration" from Mike
-  Rapoport fixes a BUG which was being hit during KHO restoration of
-  vmalloc() regions.
-
-----------------------------------------------------------------
-Ahmet Eray Karadag (1):
-      ocfs2: mark inode bad upon validation failure during read
-
-Alice Ryhl (1):
-      uaccess: gate _copy_[to|from]_user on !INLINE_COPY_FROM_USER
-
-Andrew Morton (1):
-      Merge branch 'mm-hotfixes-stable' into mm-nonmm-stable in order to be able to merge "kho: make debugfs interface optional" into mm-nonmm-stable.
-
-Andy Shevchenko (9):
-      panic: sys_info: capture si_bits_global before iterating over it
-      panic: sys_info: align constant definition names with parameters
-      panic: sys_info:replace struct sys_info_name with plain array of strings
-      panic: sys_info: rewrite a fix for a compilation error (`make W=1`)
-      panic: sys_info: deduplicate local variable 'table; assignments
-      panic: sys_info: factor out read and write handlers
-      util_macros.h: fix kernel-doc for u64_to_user_ptr()
-      math.h: amend abs() kernel-doc and add a note about signed type limits
-      calibrate: update header inclusion
-
-Ankan Biswas (1):
-      lib/xz: remove dead IA-64 (Itanium) support code
-
-Bala-Vignesh-Reddy (1):
-      selftests: complete kselftest include centralization
-
-Borislav Petkov (AMD) (1):
-      lib/Kconfig.debug: cleanup CONFIG_DEBUG_SECTION_MISMATCH help text
-
-Breno Leitao (1):
-      vmcoreinfo: track and log recoverable hardware errors
-
-Carlos López (1):
-      checkpatch: add IDR to the deprecated list
-
-Chia-Liang Wang (1):
-      lib: ratelimit: fix spelling mistake 'seperately'
-
-Christoph Hellwig (1):
-      kernel/hung_task: unexport sysctl_hung_task_timeout_secs
-
-David Laight (9):
-      lib: mul_u64_u64_div_u64(): rename parameter 'c' to 'd'
-      lib: mul_u64_u64_div_u64(): combine overflow and divide by zero checks
-      lib: mul_u64_u64_div_u64(): simplify check for a 64bit product
-      lib: add mul_u64_add_u64_div_u64() and mul_u64_u64_div_u64_roundup()
-      lib: add tests for mul_u64_u64_div_u64_roundup()
-      lib: test_mul_u64_u64_div_u64(): test both generic and arch versions
-      lib: mul_u64_u64_div_u64(): optimise multiply on 32bit x86
-      lib: mul_u64_u64_div_u64(): optimise the divide code
-      lib: test_mul_u64_u64_div_u64(): test the 32bit code on 64bit
-
-Deepanshu Kartikey (1):
-      ocfs2: validate cl_bpc in allocator inodes to prevent divide-by-zero
-
-Dmitry Antipov (8):
-      ocfs2: add extra flags check in ocfs2_ioctl_move_extents()
-      ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
-      ocfs2: annotate flexible array members with __counted_by_le()
-      ocfs2: add extra consistency check to ocfs2_dx_dir_lookup_rec()
-      ocfs2: add directory size check to ocfs2_find_dir_space_id()
-      ocfs2: add boundary check to ocfs2_check_dir_entry()
-      ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
-      ocfs2: add extra consistency checks for chain allocator dinodes
-
-Douglas Anderson (1):
-      init/main.c: wrap long kernel cmdline when printing to logs
-
-Dr. David Alan Gilbert (1):
-      lib/xxhash: remove more unused xxh functions
-
-Eric Dumazet (2):
-      rbtree: inline rb_first()
-      rbtree: inline rb_last()
-
-Feng Tang (4):
-      docs: panic: correct some sys_ifo names in sysctl doc
-      hung_task: add hung_task_sys_info sysctl to dump sys info on task-hung
-      watchdog: add sys_info sysctls to dump sys info on system lockup
-      sys_info: add a default kernel sys_info mask
-
-Guan-Chun Wu (4):
-      lib/base64: rework encode/decode for speed and stricter validation
-      lib: add KUnit tests for base64 encoding/decoding
-      fscrypt: replace local base64url helpers with lib/base64
-      ceph: replace local base64 helpers with lib/base64
-
-Gustavo Padovan (1):
-      MAINTAINERS: remove Gustavo from sync framework
-
-Hao Ge (1):
-      mailmap: add entry for Hao Ge
-
-Ilias Stamatis (1):
-      Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"
-
-Ilya Leoshkevich (2):
-      scripts/gdb/radix-tree: add lx-radix-tree-command
-      scripts/gdb/symbols: make BPF debug info available to GDB
-
-Jarkko Sakkinen (1):
-      MAINTAINERS: TPM DEVICE DRIVER: update the W-tag
-
-Joseph Qi (2):
-      ocfs2: use correct endian in ocfs2_dinode_has_extents
-      ocfs2: convert to host endian in ocfs2_validate_inode_block
-
-Justinien Bouron (1):
-      kexec_core: remove superfluous page offset handling in segment loading
-
-Kuan-Wei Chiu (3):
-      Revert "lib/plist.c: enforce memory ordering in plist_check_list"
-      lib/base64: add support for multiple variants
-      lib/base64: optimize base64_decode() with reverse lookup tables
-
-Lance Yang (1):
-      MAINTAINERS: add Petr as a reviewer of hung task detector
-
-Li RongQing (1):
-      hung_task: panic when there are more than N hung tasks at the same time
-
-Lukas Bulwahn (1):
-      treewide: drop outdated compiler version remarks in Kconfig help texts
-
-Martin Kepplinger-Novaković (3):
-      mailmap: update name and email addresses
-      CREDITS: update Martin's information
-      MAINTAINERS: apply name and email address changes for Martin
-
-Mateusz Guzik (1):
-      fork: stop ignoring NUMA while handling cached thread stacks
-
-Mike Rapoport (Microsoft) (3):
-      kho: drop notifiers
-      kho: kho_restore_vmalloc: fix initialization of pages array
-      kho: fix restoring of contiguous ranges of order-0 pages
-
-Oleg Nesterov (1):
-      release_task: kill unnecessary rcu_read_lock() around dec_rlimit_ucounts()
-
-Onur Özkan (2):
-      checkpatch: detect unhandled placeholders in cover letters
-      checkpatch: document new check PLACEHOLDER_USE
-
-Pasha Tatashin (32):
-      kho: make debugfs interface optional
-      kho: add interfaces to unpreserve folios, page ranges, and vmalloc
-      memblock: unpreserve memory in case of error
-      test_kho: unpreserve memory in case of error
-      kho: don't unpreserve memory during abort
-      liveupdate: kho: move to kernel/liveupdate
-      MAINTAINERS: update KHO maintainers
-      kho: fix misleading log message in kho_populate()
-      kho: convert __kho_abort() to return void
-      kho: introduce high-level memory allocation API
-      kho: preserve FDT folio only once during initialization
-      kho: verify deserialization status and fix FDT alignment access
-      kho: always expose output FDT in debugfs
-      kho: simplify serialization and remove __kho_abort
-      kho: remove global preserved_mem_map and store state in FDT
-      kho: remove abort functionality and support state refresh
-      kho: update FDT dynamically for subtree addition/removal
-      kho: allow kexec load before KHO finalization
-      kho: allow memory preservation state updates after finalization
-      kho: add Kconfig option to enable KHO by default
-      liveupdate: luo_core: Live Update Orchestrator
-      liveupdate: luo_core: integrate with KHO
-      kexec: call liveupdate_reboot() before kexec
-      liveupdate: luo_session: add sessions support
-      liveupdate: luo_core: add user interface
-      liveupdate: luo_file: implement file systems callbacks
-      liveupdate: luo_session: add ioctls for file preservation
-      docs: add luo documentation
-      MAINTAINERS: add liveupdate entry
-      selftests/liveupdate: add userspace API selftests
-      selftests/liveupdate: add simple kexec-based selftest for LUO
-      selftests/liveupdate: add kexec test for multiple and empty sessions
-
-Petr Pavlu (1):
-      taint/module: remove unnecessary taint_flag.module field
-
-Pratyush Yadav (9):
-      MAINTAINERS: add Pratyush as a reviewer for KHO
-      mm: shmem: use SHMEM_F_* flags instead of VM_* flags
-      mm: shmem: allow freezing inode mapping
-      mm: shmem: export some functions to internal.h
-      liveupdate: luo_file: add private argument to store runtime state
-      mm: memfd_luo: allow preserving memfd
-      docs: add documentation for memfd preservation via LUO
-      kho: free chunks using free_page() instead of kfree()
-      test_kho: always print restore status
-
-Ran Xiaokai (1):
-      KHO: fix boot failure due to kmemleak access to non-PRESENT pages
-
-Randy Dunlap (1):
-      taint: add reminder about updating docs and scripts
-
-Ryusuke Konishi (1):
-      MAINTAINERS: update nilfs2 entry
-
-Sourabh Jain (6):
-      crash: let architecture decide crash memory export to iomem_resource
-      Documentation/ABI: add kexec and kdump sysfs interface
-      crash: export crashkernel CMA reservation to userspace
-      kexec: move sysfs entries to /sys/kernel/kexec
-      Documentation/ABI: mark old kexec sysfs deprecated
-      Documentation/ABI: new kexec and kdump sysfs interface
-
-Thomas Weißschuh (1):
-      compiler.h: remove ARCH_SEL()
-
-Thorsten Blum (4):
-      nilfs2: replace vmalloc + copy_from_user with vmemdup_user
-      ocfs2: replace deprecated strcpy in ocfs2_create_xattr_block
-      ocfs2: replace deprecated strcpy with strscpy
-      init: replace simple_strtoul with kstrtoul to improve lpj_setup
-
-Vlad Kulikov (1):
-      ipc: create_ipc_ns: drop mqueue mount on sysctl setup failure
-
-WangYuli (1):
-      .mailmap: add entry for WangYuli
-
-Xie Yuanbin (1):
-      include/linux/once_lite.h: fix judgment in WARN_ONCE with clang
-
-Ye Bin (1):
-      dynamic_debug: add support for print stack
-
-Yu-Chun Lin (1):
-      mailmap: add entry for Yu-Chun Lin
-
-Yury Norov (NVIDIA) (1):
-      uaccess: decouple INLINE_COPY_FROM_USER and CONFIG_RUST
-
-Zhichi Lin (1):
-      scs: fix a wrong parameter in __scs_magic
-
-Zhou Yuhang (1):
-      samples: fix coding style issues in Kconfig
-
-Zhu Yanjun (1):
-      liveupdate: kho: use %pe format specifier for error pointer printing
-
-zhang jiao (1):
-      fs/proc/page: remove unused KPMBITS
-
- .mailmap                                           |   9 +-
- CREDITS                                            |   9 +-
- .../ABI/obsolete/sysfs-kernel-kexec-kdump          |  71 ++
- Documentation/ABI/testing/sysfs-kernel-kexec-kdump |  61 ++
- Documentation/admin-guide/dynamic-debug-howto.rst  |   5 +-
- Documentation/admin-guide/kernel-parameters.txt    |  20 +-
- Documentation/admin-guide/sysctl/kernel.rst        |  32 +-
- Documentation/core-api/index.rst                   |   1 +
- Documentation/core-api/kho/concepts.rst            |   2 +-
- Documentation/core-api/liveupdate.rst              |  61 ++
- Documentation/dev-tools/checkpatch.rst             |  10 +
- Documentation/driver-api/hw-recoverable-errors.rst |  60 ++
- Documentation/driver-api/index.rst                 |   1 +
- Documentation/mm/index.rst                         |   1 +
- Documentation/mm/memfd_preservation.rst            |  23 +
- Documentation/userspace-api/index.rst              |   1 +
- Documentation/userspace-api/ioctl/ioctl-number.rst |   2 +
- Documentation/userspace-api/liveupdate.rst         |  20 +
- MAINTAINERS                                        |  34 +-
- arch/Kconfig                                       |  19 +-
- arch/arm/Kconfig                                   |   2 -
- arch/arm/configs/aspeed_g5_defconfig               |   2 +-
- arch/powerpc/include/asm/crash_reserve.h           |   8 +
- arch/x86/include/asm/div64.h                       |  39 +-
- arch/x86/kernel/cpu/mce/core.c                     |   4 +
- drivers/acpi/apei/ghes.c                           |  36 +
- drivers/nvme/common/auth.c                         |   4 +-
- drivers/pci/pcie/aer.c                             |   2 +
- fs/ceph/crypto.c                                   |  60 +-
- fs/ceph/crypto.h                                   |   6 +-
- fs/ceph/dir.c                                      |   5 +-
- fs/ceph/inode.c                                    |   2 +-
- fs/crypto/fname.c                                  |  89 +--
- fs/nilfs2/ioctl.c                                  |  35 +-
- fs/ocfs2/dir.c                                     |  42 +-
- fs/ocfs2/inode.c                                   |  49 +-
- fs/ocfs2/move_extents.c                            |  14 +-
- fs/ocfs2/ocfs2_fs.h                                |  22 +-
- fs/ocfs2/refcounttree.c                            |   5 +-
- fs/ocfs2/xattr.c                                   |   2 +-
- fs/proc/page.c                                     |   1 -
- include/linux/base64.h                             |  10 +-
- include/linux/compiler.h                           |   6 -
- include/linux/crash_reserve.h                      |   6 +
- include/linux/dynamic_debug.h                      |  17 +-
- include/linux/kexec_handover.h                     |  57 +-
- include/linux/kho/abi/luo.h                        | 166 ++++
- include/linux/kho/abi/memfd.h                      |  77 ++
- include/linux/liveupdate.h                         | 138 ++++
- include/linux/math.h                               |  13 +-
- include/linux/math64.h                             |  59 +-
- include/linux/once_lite.h                          |   2 +-
- include/linux/panic.h                              |   1 -
- include/linux/rbtree.h                             |  32 +-
- include/linux/shmem_fs.h                           |  23 +
- include/linux/sys_info.h                           |   2 +-
- include/linux/uaccess.h                            |   6 +-
- include/linux/util_macros.h                        |   4 +-
- include/linux/vmcore_info.h                        |   8 +
- include/linux/xxhash.h                             |  46 +-
- include/uapi/linux/liveupdate.h                    | 216 +++++
- include/uapi/linux/vmcore.h                        |   9 +
- init/Kconfig                                       |  20 +
- init/calibrate.c                                   |  13 +-
- init/main.c                                        |  97 ++-
- ipc/namespace.c                                    |   9 +-
- kernel/Kconfig.kexec                               |  24 -
- kernel/Makefile                                    |   3 +-
- kernel/configs/debug.config                        |   2 +-
- kernel/crash_reserve.c                             |   3 +
- kernel/exit.c                                      |   4 +-
- kernel/fork.c                                      |  63 +-
- kernel/hung_task.c                                 |  56 +-
- kernel/kexec_core.c                                | 161 +++-
- kernel/kexec_handover_internal.h                   |  20 -
- kernel/ksysfs.c                                    |  68 +-
- kernel/liveupdate/Kconfig                          |  75 ++
- kernel/liveupdate/Makefile                         |  12 +
- kernel/{ => liveupdate}/kexec_handover.c           | 716 ++++++++---------
- kernel/{ => liveupdate}/kexec_handover_debug.c     |   0
- kernel/liveupdate/kexec_handover_debugfs.c         | 221 +++++
- kernel/liveupdate/kexec_handover_internal.h        |  55 ++
- kernel/liveupdate/luo_core.c                       | 450 +++++++++++
- kernel/liveupdate/luo_file.c                       | 889 +++++++++++++++++++++
- kernel/liveupdate/luo_internal.h                   | 110 +++
- kernel/liveupdate/luo_session.c                    | 646 +++++++++++++++
- kernel/module/main.c                               |   2 +-
- kernel/panic.c                                     |  52 +-
- kernel/resource.c                                  |  10 +-
- kernel/scs.c                                       |   2 +-
- kernel/vmcore_info.c                               |  17 +
- kernel/watchdog.c                                  |  44 +-
- lib/Kconfig.debug                                  |  63 +-
- lib/base64.c                                       | 189 +++--
- lib/dynamic_debug.c                                |   1 +
- lib/math/div64.c                                   | 185 +++--
- lib/math/test_mul_u64_u64_div_u64.c                | 191 +++--
- lib/plist.c                                        |   4 +-
- lib/ratelimit.c                                    |   2 +-
- lib/rbtree.c                                       |  29 -
- lib/sys_info.c                                     | 169 ++--
- lib/test_kho.c                                     | 140 ++--
- lib/tests/Makefile                                 |   1 +
- lib/tests/base64_kunit.c                           | 294 +++++++
- lib/usercopy.c                                     |   4 +-
- lib/xxhash.c                                       |  29 -
- lib/xz/xz_dec_bcj.c                                |  95 ---
- lib/xz/xz_private.h                                |   4 -
- mm/Makefile                                        |   1 +
- mm/internal.h                                      |   6 +
- mm/memblock.c                                      |  93 ++-
- mm/memfd_luo.c                                     | 516 ++++++++++++
- mm/shmem.c                                         |  49 +-
- rust/helpers/rbtree.c                              |  10 +
- rust/helpers/uaccess.c                             |  12 +
- samples/Kconfig                                    |  22 +-
- samples/vfs/Makefile                               |   1 +
- scripts/checkpatch.pl                              |  11 +
- scripts/gdb/linux/bpf.py                           | 253 ++++++
- scripts/gdb/linux/constants.py.in                  |   3 +
- scripts/gdb/linux/radixtree.py                     | 139 +++-
- scripts/gdb/linux/symbols.py                       | 105 ++-
- tools/testing/selftests/Makefile                   |   1 +
- tools/testing/selftests/acct/acct_syscall.c        |   2 +-
- tools/testing/selftests/alsa/conf.c                |   2 +-
- tools/testing/selftests/alsa/mixer-test.c          |   2 +-
- tools/testing/selftests/alsa/pcm-test.c            |   2 +-
- tools/testing/selftests/alsa/test-pcmtest-driver.c |   2 +-
- tools/testing/selftests/alsa/utimer-test.c         |   2 +-
- tools/testing/selftests/arm64/abi/hwcap.c          |   2 +-
- tools/testing/selftests/arm64/abi/ptrace.c         |   2 +-
- tools/testing/selftests/arm64/abi/syscall-abi.c    |   2 +-
- tools/testing/selftests/arm64/fp/fp-ptrace.c       |   2 +-
- tools/testing/selftests/arm64/fp/fp-stress.c       |   2 +-
- tools/testing/selftests/arm64/fp/sve-probe-vls.c   |   2 +-
- tools/testing/selftests/arm64/fp/sve-ptrace.c      |   2 +-
- tools/testing/selftests/arm64/fp/vec-syscfg.c      |   2 +-
- tools/testing/selftests/arm64/fp/za-ptrace.c       |   2 +-
- tools/testing/selftests/arm64/fp/zt-ptrace.c       |   2 +-
- tools/testing/selftests/arm64/gcs/gcs-stress.c     |   2 +-
- tools/testing/selftests/arm64/pauth/pac.c          |   2 +-
- tools/testing/selftests/arm64/tags/tags_test.c     |   2 +-
- tools/testing/selftests/bpf/xskxceiver.c           |   2 +-
- .../selftests/breakpoints/breakpoint_test.c        |   2 +-
- .../selftests/breakpoints/breakpoint_test_arm64.c  |   2 +-
- .../breakpoints/step_after_suspend_test.c          |   2 +-
- tools/testing/selftests/cachestat/test_cachestat.c |   2 +-
- tools/testing/selftests/capabilities/test_execve.c |   2 +-
- .../testing/selftests/capabilities/validate_cap.c  |   2 +-
- tools/testing/selftests/cgroup/test_core.c         |   2 +-
- tools/testing/selftests/cgroup/test_cpu.c          |   2 +-
- tools/testing/selftests/cgroup/test_cpuset.c       |   2 +-
- tools/testing/selftests/cgroup/test_freezer.c      |   2 +-
- .../testing/selftests/cgroup/test_hugetlb_memcg.c  |   2 +-
- tools/testing/selftests/cgroup/test_kill.c         |   2 +-
- tools/testing/selftests/cgroup/test_kmem.c         |   2 +-
- tools/testing/selftests/cgroup/test_memcontrol.c   |   2 +-
- tools/testing/selftests/cgroup/test_pids.c         |   2 +-
- tools/testing/selftests/cgroup/test_zswap.c        |   2 +-
- tools/testing/selftests/clone3/clone3.c            |   2 +-
- .../clone3/clone3_cap_checkpoint_restore.c         |   2 +-
- .../selftests/clone3/clone3_clear_sighand.c        |   2 +-
- tools/testing/selftests/clone3/clone3_selftests.h  |   2 +-
- tools/testing/selftests/clone3/clone3_set_tid.c    |   2 +-
- tools/testing/selftests/connector/proc_filter.c    |   2 +-
- tools/testing/selftests/core/close_range_test.c    |   2 +-
- tools/testing/selftests/core/unshare_test.c        |   2 +-
- tools/testing/selftests/coredump/stackdump_test.c  |   2 +-
- tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c |   2 +-
- tools/testing/selftests/drivers/dma-buf/udmabuf.c  |   2 +-
- tools/testing/selftests/drivers/ntsync/ntsync.c    |   2 +-
- .../drivers/s390x/uvdevice/test_uvdevice.c         |   2 +-
- tools/testing/selftests/exec/check-exec.c          |   2 +-
- tools/testing/selftests/exec/execveat.c            |   2 +-
- tools/testing/selftests/exec/load_address.c        |   2 +-
- tools/testing/selftests/exec/non-regular.c         |   2 +-
- tools/testing/selftests/exec/null-argv.c           |   2 +-
- tools/testing/selftests/exec/recursion-depth.c     |   2 +-
- tools/testing/selftests/fchmodat2/fchmodat2_test.c |   2 +-
- tools/testing/selftests/filelock/ofdlocks.c        |   2 +-
- .../selftests/filesystems/anon_inode_test.c        |   2 +-
- .../selftests/filesystems/binderfs/binderfs_test.c |   2 +-
- tools/testing/selftests/filesystems/devpts_pts.c   |   2 +-
- .../filesystems/epoll/epoll_wakeup_test.c          |   2 +-
- .../selftests/filesystems/eventfd/eventfd_test.c   |   2 +-
- tools/testing/selftests/filesystems/fclog.c        |   2 +-
- .../testing/selftests/filesystems/file_stressor.c  |   2 +-
- .../selftests/filesystems/fuse/fusectl_test.c      |   2 +-
- tools/testing/selftests/filesystems/kernfs_test.c  |   2 +-
- .../filesystems/mount-notify/mount-notify_test.c   |   2 +-
- .../mount-notify/mount-notify_test_ns.c            |   2 +-
- .../selftests/filesystems/nsfs/iterate_mntns.c     |   2 +-
- .../selftests/filesystems/overlayfs/dev_in_maps.c  |   2 +-
- .../filesystems/overlayfs/set_layers_via_fds.c     |   2 +-
- .../filesystems/statmount/listmount_test.c         |   2 +-
- .../filesystems/statmount/statmount_test.c         |   2 +-
- .../filesystems/statmount/statmount_test_ns.c      |   2 +-
- tools/testing/selftests/filesystems/utils.c        |   2 +-
- .../selftests/futex/functional/futex_numa_mpol.c   |   2 +-
- .../selftests/futex/functional/futex_priv_hash.c   |   2 +-
- .../selftests/futex/functional/futex_requeue.c     |   2 +-
- .../selftests/futex/functional/futex_requeue_pi.c  |   2 +-
- .../functional/futex_requeue_pi_mismatched_ops.c   |   2 +-
- .../functional/futex_requeue_pi_signal_restart.c   |   2 +-
- .../selftests/futex/functional/futex_wait.c        |   2 +-
- .../functional/futex_wait_private_mapped_file.c    |   2 +-
- .../futex/functional/futex_wait_timeout.c          |   2 +-
- .../functional/futex_wait_uninitialized_heap.c     |   2 +-
- .../futex/functional/futex_wait_wouldblock.c       |   2 +-
- .../selftests/futex/functional/futex_waitv.c       |   2 +-
- tools/testing/selftests/hid/hid_common.h           |   2 +-
- tools/testing/selftests/intel_pstate/aperf.c       |   2 +-
- tools/testing/selftests/iommu/iommufd_utils.h      |   2 +-
- tools/testing/selftests/ipc/msgque.c               |   2 +-
- tools/testing/selftests/ir/ir_loopback.c           |   2 +-
- tools/testing/selftests/kcmp/kcmp_test.c           |   2 +-
- tools/testing/selftests/kho/vmtest.sh              |   1 +
- tools/testing/selftests/kselftest_harness.h        |   2 +-
- .../selftests/kselftest_harness/harness-selftest.c |   2 +-
- tools/testing/selftests/landlock/audit.h           |   2 +-
- tools/testing/selftests/landlock/common.h          |   2 +-
- tools/testing/selftests/lib.mk                     |   3 +
- tools/testing/selftests/liveupdate/.gitignore      |   9 +
- tools/testing/selftests/liveupdate/Makefile        |  34 +
- tools/testing/selftests/liveupdate/config          |  11 +
- tools/testing/selftests/liveupdate/do_kexec.sh     |  16 +
- tools/testing/selftests/liveupdate/liveupdate.c    | 348 ++++++++
- .../selftests/liveupdate/luo_kexec_simple.c        |  89 +++
- .../selftests/liveupdate/luo_multi_session.c       | 162 ++++
- .../testing/selftests/liveupdate/luo_test_utils.c  | 266 ++++++
- .../testing/selftests/liveupdate/luo_test_utils.h  |  44 +
- .../testing/selftests/lsm/lsm_get_self_attr_test.c |   2 +-
- .../testing/selftests/lsm/lsm_list_modules_test.c  |   2 +-
- .../testing/selftests/lsm/lsm_set_self_attr_test.c |   2 +-
- .../selftests/media_tests/media_device_open.c      |   2 +-
- .../selftests/media_tests/media_device_test.c      |   2 +-
- .../selftests/membarrier/membarrier_test_impl.h    |   2 +-
- tools/testing/selftests/mincore/mincore_selftest.c |   4 +-
- tools/testing/selftests/mm/compaction_test.c       |   2 +-
- tools/testing/selftests/mm/cow.c                   |   2 +-
- tools/testing/selftests/mm/droppable.c             |   2 +-
- tools/testing/selftests/mm/guard-regions.c         |   2 +-
- tools/testing/selftests/mm/gup_longterm.c          |   2 +-
- tools/testing/selftests/mm/gup_test.c              |   2 +-
- tools/testing/selftests/mm/hmm-tests.c             |   2 +-
- tools/testing/selftests/mm/hugepage-mmap.c         |   2 +-
- tools/testing/selftests/mm/hugepage-mremap.c       |   2 +-
- tools/testing/selftests/mm/hugetlb-madvise.c       |   2 +-
- tools/testing/selftests/mm/hugetlb-read-hwpoison.c |   2 +-
- tools/testing/selftests/mm/hugetlb-soft-offline.c  |   2 +-
- tools/testing/selftests/mm/hugetlb_dio.c           |   2 +-
- .../selftests/mm/hugetlb_fault_after_madv.c        |   2 +-
- tools/testing/selftests/mm/hugetlb_madv_vs_map.c   |   2 +-
- tools/testing/selftests/mm/ksm_functional_tests.c  |   2 +-
- tools/testing/selftests/mm/ksm_tests.c             |   2 +-
- tools/testing/selftests/mm/madv_populate.c         |   2 +-
- tools/testing/selftests/mm/map_fixed_noreplace.c   |   2 +-
- tools/testing/selftests/mm/map_hugetlb.c           |   2 +-
- tools/testing/selftests/mm/map_populate.c          |   2 +-
- tools/testing/selftests/mm/mdwe_test.c             |   2 +-
- tools/testing/selftests/mm/memfd_secret.c          |   2 +-
- tools/testing/selftests/mm/merge.c                 |   2 +-
- tools/testing/selftests/mm/migration.c             |   2 +-
- tools/testing/selftests/mm/mkdirty.c               |   2 +-
- tools/testing/selftests/mm/mlock-random-test.c     |   2 +-
- tools/testing/selftests/mm/mlock2-tests.c          |   2 +-
- tools/testing/selftests/mm/mrelease_test.c         |   2 +-
- tools/testing/selftests/mm/mremap_dontunmap.c      |   2 +-
- tools/testing/selftests/mm/mremap_test.c           |   2 +-
- tools/testing/selftests/mm/mseal_test.c            |   2 +-
- tools/testing/selftests/mm/on-fault-limit.c        |   2 +-
- tools/testing/selftests/mm/pagemap_ioctl.c         |   2 +-
- tools/testing/selftests/mm/pfnmap.c                |   2 +-
- tools/testing/selftests/mm/pkey-helpers.h          |   2 +-
- tools/testing/selftests/mm/prctl_thp_disable.c     |   2 +-
- tools/testing/selftests/mm/process_madv.c          |   2 +-
- tools/testing/selftests/mm/rmap.c                  |   2 +-
- tools/testing/selftests/mm/soft-dirty.c            |   2 +-
- tools/testing/selftests/mm/split_huge_page_test.c  |   2 +-
- tools/testing/selftests/mm/thuge-gen.c             |   2 +-
- tools/testing/selftests/mm/transhuge-stress.c      |   2 +-
- tools/testing/selftests/mm/uffd-common.h           |   2 +-
- tools/testing/selftests/mm/uffd-wp-mremap.c        |   2 +-
- tools/testing/selftests/mm/va_high_addr_switch.c   |   2 +-
- tools/testing/selftests/mm/virtual_address_range.c |   2 +-
- tools/testing/selftests/mm/vm_util.c               |   2 +-
- tools/testing/selftests/mm/vm_util.h               |   2 +-
- .../selftests/mount_setattr/mount_setattr_test.c   |   2 +-
- .../move_mount_set_group_test.c                    |   2 +-
- tools/testing/selftests/mqueue/mq_open_tests.c     |   2 +-
- tools/testing/selftests/mqueue/mq_perf_tests.c     |   2 +-
- .../mseal_system_mappings/sysmap_is_sealed.c       |   4 +-
- .../selftests/namespaces/file_handle_test.c        |   2 +-
- tools/testing/selftests/namespaces/init_ino_test.c |   2 +-
- tools/testing/selftests/namespaces/nsid_test.c     |   2 +-
- tools/testing/selftests/nci/nci_dev.c              |   2 +-
- tools/testing/selftests/net/af_unix/diag_uid.c     |   2 +-
- tools/testing/selftests/net/af_unix/msg_oob.c      |   2 +-
- tools/testing/selftests/net/af_unix/scm_inq.c      |   2 +-
- tools/testing/selftests/net/af_unix/scm_pidfd.c    |   2 +-
- tools/testing/selftests/net/af_unix/scm_rights.c   |   2 +-
- tools/testing/selftests/net/af_unix/unix_connect.c |   2 +-
- tools/testing/selftests/net/bind_timewait.c        |   2 +-
- tools/testing/selftests/net/bind_wildcard.c        |   2 +-
- tools/testing/selftests/net/can/test_raw_filter.c  |   2 +-
- tools/testing/selftests/net/cmsg_sender.c          |   2 +-
- tools/testing/selftests/net/epoll_busy_poll.c      |   2 +-
- tools/testing/selftests/net/gro.c                  |   2 +-
- tools/testing/selftests/net/ip_local_port_range.c  |   2 +-
- tools/testing/selftests/net/ipsec.c                |   2 +-
- tools/testing/selftests/net/ipv6_fragmentation.c   |   2 +-
- .../selftests/net/netfilter/conntrack_dump_flush.c |   2 +-
- tools/testing/selftests/net/netlink-dumps.c        |   2 +-
- tools/testing/selftests/net/ovpn/ovpn-cli.c        |   2 +-
- tools/testing/selftests/net/proc_net_pktgen.c      |   2 +-
- tools/testing/selftests/net/psock_fanout.c         |   2 +-
- tools/testing/selftests/net/psock_tpacket.c        |   2 +-
- .../selftests/net/reuseaddr_ports_exhausted.c      |   2 +-
- tools/testing/selftests/net/reuseport_bpf.c        |   2 +-
- tools/testing/selftests/net/reuseport_bpf_numa.c   |   2 +-
- tools/testing/selftests/net/rxtimestamp.c          |   2 +-
- tools/testing/selftests/net/sk_so_peek_off.c       |   2 +-
- tools/testing/selftests/net/so_incoming_cpu.c      |   2 +-
- tools/testing/selftests/net/socket.c               |   2 +-
- tools/testing/selftests/net/tap.c                  |   2 +-
- tools/testing/selftests/net/tcp_ao/lib/setup.c     |   2 +-
- .../selftests/net/tcp_fastopen_backup_key.c        |   2 +-
- tools/testing/selftests/net/tcp_port_share.c       |   2 +-
- tools/testing/selftests/net/tls.c                  |   2 +-
- tools/testing/selftests/net/toeplitz.c             |   2 +-
- tools/testing/selftests/net/tun.c                  |   2 +-
- tools/testing/selftests/net/udpgso_bench_tx.c      |   2 +-
- tools/testing/selftests/openat2/helpers.h          |   2 +-
- tools/testing/selftests/openat2/openat2_test.c     |   2 +-
- .../testing/selftests/openat2/rename_attack_test.c |   2 +-
- tools/testing/selftests/openat2/resolve_test.c     |   2 +-
- .../selftests/pci_endpoint/pci_endpoint_test.c     |   2 +-
- tools/testing/selftests/perf_events/mmap.c         |   2 +-
- .../testing/selftests/perf_events/remove_on_exec.c |   2 +-
- .../selftests/perf_events/sigtrap_threads.c        |   2 +-
- .../selftests/perf_events/watermark_signal.c       |   2 +-
- tools/testing/selftests/pid_namespace/pid_max.c    |   2 +-
- .../selftests/pid_namespace/regression_enomem.c    |   2 +-
- tools/testing/selftests/pidfd/pidfd.h              |   2 +-
- tools/testing/selftests/pidfd/pidfd_bind_mount.c   |   2 +-
- tools/testing/selftests/pidfd/pidfd_fdinfo_test.c  |   2 +-
- .../selftests/pidfd/pidfd_file_handle_test.c       |   2 +-
- tools/testing/selftests/pidfd/pidfd_getfd_test.c   |   2 +-
- tools/testing/selftests/pidfd/pidfd_info_test.c    |   2 +-
- tools/testing/selftests/pidfd/pidfd_open_test.c    |   2 +-
- tools/testing/selftests/pidfd/pidfd_poll_test.c    |   2 +-
- tools/testing/selftests/pidfd/pidfd_setattr_test.c |   2 +-
- tools/testing/selftests/pidfd/pidfd_setns_test.c   |   2 +-
- tools/testing/selftests/pidfd/pidfd_test.c         |   2 +-
- tools/testing/selftests/pidfd/pidfd_wait.c         |   2 +-
- tools/testing/selftests/pidfd/pidfd_xattr_test.c   |   2 +-
- .../selftests/prctl/set-anon-vma-name-test.c       |   2 +-
- tools/testing/selftests/prctl/set-process-name.c   |   2 +-
- tools/testing/selftests/proc/proc-maps-race.c      |   2 +-
- tools/testing/selftests/proc/proc-pid-vm.c         |   2 +-
- tools/testing/selftests/proc/proc-pidns.c          |   2 +-
- tools/testing/selftests/ptrace/get_set_sud.c       |   2 +-
- tools/testing/selftests/ptrace/get_syscall_info.c  |   2 +-
- tools/testing/selftests/ptrace/set_syscall_info.c  |   2 +-
- tools/testing/selftests/ptrace/vmaccess.c          |   2 +-
- tools/testing/selftests/resctrl/resctrl.h          |   2 +-
- tools/testing/selftests/ring-buffer/map_test.c     |   2 +-
- .../testing/selftests/riscv/abi/pointer_masking.c  |   2 +-
- tools/testing/selftests/riscv/hwprobe/cbo.c        |   2 +-
- tools/testing/selftests/riscv/hwprobe/hwprobe.c    |   2 +-
- tools/testing/selftests/riscv/hwprobe/which-cpus.c |   2 +-
- tools/testing/selftests/riscv/mm/mmap_bottomup.c   |   2 +-
- tools/testing/selftests/riscv/mm/mmap_default.c    |   2 +-
- tools/testing/selftests/riscv/mm/mmap_test.h       |   2 +-
- .../testing/selftests/riscv/sigreturn/sigreturn.c  |   2 +-
- tools/testing/selftests/riscv/vector/v_initval.c   |   2 +-
- .../testing/selftests/riscv/vector/vstate_prctl.c  |   2 +-
- .../testing/selftests/rseq/basic_percpu_ops_test.c |   2 +-
- tools/testing/selftests/rseq/rseq.c                |   2 +-
- tools/testing/selftests/rtc/rtctest.c              |   2 +-
- .../testing/selftests/seccomp/seccomp_benchmark.c  |   2 +-
- tools/testing/selftests/seccomp/seccomp_bpf.c      |   2 +-
- tools/testing/selftests/sgx/main.c                 |   2 +-
- tools/testing/selftests/signal/mangle_uc_sigmask.c |   2 +-
- tools/testing/selftests/signal/sas.c               |   2 +-
- tools/testing/selftests/sparc64/drivers/adi-test.c |   2 +-
- tools/testing/selftests/sync/sync_test.c           |   2 +-
- .../selftests/syscall_user_dispatch/sud_test.c     |   2 +-
- tools/testing/selftests/tdx/tdx_guest_test.c       |   2 +-
- tools/testing/selftests/timens/timens.h            |   2 +-
- tools/testing/selftests/timers/adjtick.c           |   2 +-
- .../testing/selftests/timers/alarmtimer-suspend.c  |   2 +-
- tools/testing/selftests/timers/change_skew.c       |   2 +-
- .../testing/selftests/timers/clocksource-switch.c  |   2 +-
- tools/testing/selftests/timers/freq-step.c         |   2 +-
- .../testing/selftests/timers/inconsistency-check.c |   2 +-
- tools/testing/selftests/timers/leap-a-day.c        |   2 +-
- tools/testing/selftests/timers/leapcrash.c         |   2 +-
- tools/testing/selftests/timers/mqueue-lat.c        |   2 +-
- tools/testing/selftests/timers/nanosleep.c         |   2 +-
- tools/testing/selftests/timers/nsleep-lat.c        |   2 +-
- tools/testing/selftests/timers/posix_timers.c      |   2 +-
- tools/testing/selftests/timers/raw_skew.c          |   2 +-
- tools/testing/selftests/timers/rtcpie.c            |   2 +-
- tools/testing/selftests/timers/set-2038.c          |   2 +-
- tools/testing/selftests/timers/set-tai.c           |   2 +-
- tools/testing/selftests/timers/set-timer-lat.c     |   2 +-
- tools/testing/selftests/timers/set-tz.c            |   2 +-
- tools/testing/selftests/timers/skew_consistency.c  |   2 +-
- tools/testing/selftests/timers/threadtest.c        |   2 +-
- tools/testing/selftests/timers/valid-adjtimex.c    |   2 +-
- tools/testing/selftests/tmpfs/bug-link-o-tmpfile.c |   2 +-
- tools/testing/selftests/tty/tty_tstamp_update.c    |   2 +-
- tools/testing/selftests/uevent/uevent_filtering.c  |   2 +-
- tools/testing/selftests/user_events/abi_test.c     |   2 +-
- tools/testing/selftests/user_events/dyn_test.c     |   2 +-
- tools/testing/selftests/user_events/ftrace_test.c  |   2 +-
- tools/testing/selftests/user_events/perf_test.c    |   2 +-
- .../selftests/user_events/user_events_selftests.h  |   2 +-
- tools/testing/selftests/vDSO/vdso_test_abi.c       |   2 +-
- tools/testing/selftests/vDSO/vdso_test_chacha.c    |   2 +-
- .../testing/selftests/vDSO/vdso_test_correctness.c |   2 +-
- tools/testing/selftests/vDSO/vdso_test_getcpu.c    |   2 +-
- tools/testing/selftests/vDSO/vdso_test_getrandom.c |   2 +-
- .../selftests/vDSO/vdso_test_gettimeofday.c        |   2 +-
- .../testing/selftests/vfio/lib/include/vfio_util.h |   2 +-
- tools/testing/selftests/vfio/lib/vfio_pci_device.c |   2 +-
- tools/testing/selftests/vfio/lib/vfio_pci_driver.c |   2 +-
- .../testing/selftests/vfio/vfio_dma_mapping_test.c |   2 +-
- .../selftests/vfio/vfio_iommufd_setup_test.c       |   2 +-
- .../testing/selftests/vfio/vfio_pci_device_test.c  |   2 +-
- .../testing/selftests/vfio/vfio_pci_driver_test.c  |   2 +-
- .../testing/selftests/wireguard/qemu/kernel.config |   2 +-
- .../testing/selftests/x86/corrupt_xstate_header.c  |   2 +-
- tools/testing/selftests/x86/helpers.h              |   2 +-
- tools/testing/selftests/x86/lam.c                  |   2 +-
- tools/testing/selftests/x86/syscall_numbering.c    |   2 +-
- tools/testing/selftests/x86/test_mremap_vdso.c     |   2 +-
- tools/testing/selftests/x86/test_vsyscall.c        |   2 +-
- tools/testing/selftests/x86/xstate.h               |   2 +-
- 440 files changed, 8032 insertions(+), 1802 deletions(-)
- create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-kexec-kdump
- create mode 100644 Documentation/ABI/testing/sysfs-kernel-kexec-kdump
- create mode 100644 Documentation/core-api/liveupdate.rst
- create mode 100644 Documentation/driver-api/hw-recoverable-errors.rst
- create mode 100644 Documentation/mm/memfd_preservation.rst
- create mode 100644 Documentation/userspace-api/liveupdate.rst
- create mode 100644 include/linux/kho/abi/luo.h
- create mode 100644 include/linux/kho/abi/memfd.h
- create mode 100644 include/linux/liveupdate.h
- create mode 100644 include/uapi/linux/liveupdate.h
- delete mode 100644 kernel/kexec_handover_internal.h
- create mode 100644 kernel/liveupdate/Kconfig
- create mode 100644 kernel/liveupdate/Makefile
- rename kernel/{ => liveupdate}/kexec_handover.c (75%)
- rename kernel/{ => liveupdate}/kexec_handover_debug.c (100%)
- create mode 100644 kernel/liveupdate/kexec_handover_debugfs.c
- create mode 100644 kernel/liveupdate/kexec_handover_internal.h
- create mode 100644 kernel/liveupdate/luo_core.c
- create mode 100644 kernel/liveupdate/luo_file.c
- create mode 100644 kernel/liveupdate/luo_internal.h
- create mode 100644 kernel/liveupdate/luo_session.c
- create mode 100644 lib/tests/base64_kunit.c
- create mode 100644 mm/memfd_luo.c
- create mode 100644 scripts/gdb/linux/bpf.py
- create mode 100644 tools/testing/selftests/liveupdate/.gitignore
- create mode 100644 tools/testing/selftests/liveupdate/Makefile
- create mode 100644 tools/testing/selftests/liveupdate/config
- create mode 100755 tools/testing/selftests/liveupdate/do_kexec.sh
- create mode 100644 tools/testing/selftests/liveupdate/liveupdate.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_kexec_simple.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_multi_session.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.h
 
 
