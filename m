@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7C26D3ABD5
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 02:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5732DD3ABE0
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 02:26:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30D776B033C; Fri,  5 Dec 2025 21:19:01 -0500 (EST)
+	id 368676B00BD; Fri,  5 Dec 2025 21:26:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BDF86B033D; Fri,  5 Dec 2025 21:19:01 -0500 (EST)
+	id 319656B00BE; Fri,  5 Dec 2025 21:26:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ACFB6B033E; Fri,  5 Dec 2025 21:19:01 -0500 (EST)
+	id 208476B00BF; Fri,  5 Dec 2025 21:26:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 02DA46B033C
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 21:19:01 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1F981603B6
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 02:19:00 +0000 (UTC)
-X-FDA: 84187438440.27.0E20EEE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D81F6B00BD
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 21:26:41 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72938C03E6
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 02:26:40 +0000 (UTC)
+X-FDA: 84187457760.30.177BA6C
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E2531140006
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 02:18:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=bdEcVnFr;
-	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id C1806A0003
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 02:26:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=M7+aYeR7;
+	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764987539;
+	s=arc-20220608; t=1764987998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vAiD+sW2byU1J2Xu/2qEmRZszPnNdC5pgRnrIbr+nS8=;
-	b=TVcsdnLKCuccjK71PlFxC3GgvE4ee7MiKK0slW1NFVSyPdTV6VgI8IdoP9neLb7we2Gu2P
-	8VLs0el2A4hq3rMKb4HUbOKFlmfTiTNe9RKKkN7u8sezRO+X6IKLPTsian80YzbX8055tj
-	7sSkv7UoLH5v8Db4CuE0+2pP+OW4z+Y=
+	bh=4YraZ21sr3pEy95zok5HC/hyqaMU3Jyx/mXxfjHFQH0=;
+	b=vbV08uVyRoJGQ4T9R+NUVL8Piemg5nZEe213/6cdLiWHj2RbxzIhxXVRutgsdAFv7vRCZo
+	xmIAvH9l9PR/qyFS4TTqnokjnvlTGmTDOr+jIKiVIfvIO1maAxQK6c2iFegZTk4gjTqPQZ
+	H59z5rwpSdN5N9MDpqjAibRg6wyYpgk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=bdEcVnFr;
-	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=M7+aYeR7;
+	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764987539; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764987998; a=rsa-sha256;
 	cv=none;
-	b=0ODQZrreNFrg2+IBH9B7ra1MaKpkqSgUv2YG5KFWDsHAWEEkRKsOVqWhvT9PZo3SbDxuum
-	OVKhtqZVpr4dZWilGXj8UKnp+21kcwWxSC5cSYNJHQ6e/LZn564XS1r7J4KIanedxsgBCi
-	jy+2OL1iSVFqlHKRasgfqMXRsOBkrXc=
+	b=eb9M5ZY1ARpeKZ568hrNxswgen/qbYnlxeyOWMfrpqm80fsMrlOz/jYD+Mf7V2rzDo8ySw
+	HNDTy7RlszkQVQOqJJyC2n7prvta4rHzrS4M1bNZxv5899c19LPkuqked3ghQRv0pDAM2x
+	lAmMGM2byKNFC92PFMnaxyZkJuq34x0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=vAiD+sW2byU1J2Xu/2qEmRZszPnNdC5pgRnrIbr+nS8=; b=bdEcVnFr5FdsRzdBiToyXg4M6L
-	9UzyFFjENZ0VvozJLjwVlq6h5vpBpkvllZJKjFbp3ZPsb3nWYR6IhOUjhUOFcSGKWpUWFzdxsfn0v
-	5OLmjJCigQHm/jwbfIJFcokNEH34ciXvglrCyjP9S/i9MYk1we/KkcbPFo69OROB7r6RrLRGW3x9X
-	Qa9KANlompuLXa0Xp2Dfe+QV0shTgOPqriL5/1difEYhYw1i6QpE9cVa7TfvvTI4+Vbhn2AwTE96U
-	GPcVX0FQiuNMTav30l/h+blrNgufFSu4PhjkZBewKz4/6EsaW1z2I86OxHmQRps6Y+2A8MOou0Nmb
-	QWWrYFtw==;
+	bh=4YraZ21sr3pEy95zok5HC/hyqaMU3Jyx/mXxfjHFQH0=; b=M7+aYeR7DGAortFobUdduH7USL
+	LqdGydqLAv5JwVi6Z45lZw6tnqK6pZpUfN2NQ1TdRS9BDRO7ZJeff9FPq0dxgDtAt1d9TiZkh3TGL
+	u6y/fMcbZi/MceBbe+isJywhaPpBCK/S+1Mqx+GB3qf1iE4AtxTaqWlNluJq4nbAtk2n1ONmZuAL6
+	mWNsGo3ebZIJfkUX4UpMcaJjgGHUP5BMIOphaokkON24yOu9PUxA4uxAbsABd4wdcQbs9IZXt/41p
+	TotVDCa9I4va5CrG2V5d4Yk/Pm3kcEm89iCBYnwB1aiGX4i55xbx4mun1YvgielcqcAy039yAekuX
+	An+kvVsQ==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1vRhs3-000000005W6-1y18;
-	Fri, 05 Dec 2025 21:18:04 -0500
-Message-ID: <414f56e94f641aff9bb3db2c4feac70997580d45.camel@surriel.com>
-Subject: Re: [PATCH v1 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
+	id 1vRhzu-000000005aL-3EMY;
+	Fri, 05 Dec 2025 21:26:11 -0500
+Message-ID: <bf3c6fc4118c5d63b87ace078d94848b19aa16d2.camel@surriel.com>
+Subject: Re: [PATCH v1 2/4] mm/hugetlb: fix two comments related to
+ huge_pmd_unshare()
 From: Rik van Riel <riel@surriel.com>
 To: "David Hildenbrand (Red Hat)" <david@kernel.org>, 
 	linux-kernel@vger.kernel.org
@@ -82,11 +83,11 @@ Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org, Will Deacon
  <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Harry Yoo	
  <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>, Prakash
  Sangappa <prakash.sangappa@oracle.com>, Nadav Amit <nadav.amit@gmail.com>,
- stable@vger.kernel.org,  Liu Shixin <liushixin2@huawei.com>
-Date: Fri, 05 Dec 2025 21:18:04 -0500
-In-Reply-To: <20251205213558.2980480-2-david@kernel.org>
+ Liu Shixin	 <liushixin2@huawei.com>
+Date: Fri, 05 Dec 2025 21:26:11 -0500
+In-Reply-To: <20251205213558.2980480-3-david@kernel.org>
 References: <20251205213558.2980480-1-david@kernel.org>
-	 <20251205213558.2980480-2-david@kernel.org>
+	 <20251205213558.2980480-3-david@kernel.org>
 Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
  eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
@@ -115,14 +116,14 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-X-Stat-Signature: 9pimrdcif3g74q9x9cunc6sf594c16ef
-X-Rspamd-Queue-Id: E2531140006
+X-Stat-Signature: kt77hw4j1n1yjuqdsx6a5ifcsetyrygp
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1764987538-736737
-X-HE-Meta: U2FsdGVkX1+mfLx4IXvZUQ3uJFtqxIoAcgWmy6TFpUSS4Egp6UQ1v6uA+GWjaddEZ9icfo0OdbCAsaArP+VQBA/RYKa//EMXiNlO/TJwHUrX6VljMRcE7Hby0eQFMQLTQoGUcoBFWOrTDhTC1qWfAtO0CQXG0shQuPDY1TLQ5m2CXTw4ThxaJv6hVYfpx790ATQ8MD0rXuqOphFNB5PThkPZiMjTLcXB9AtTuzCNGL1JYSK1Hd3yT8yLLPKEdjNlJGtCz1Qp8nx7ZDBUaf4g+e05eGYebZ4zcDqaU9GBTtz1O0IwAVXRudBAcPOgiiO+CovMS+Jll0iXM6hPSUb0DZ1DNWdpIl/nAcxvuFnzTEEWZJwAQFrTdKjdp0JjTHRoduLwXmm0+R1gzwE4or7ka/uer4WJ0pnMCZb3uhu5mTM9SaBiE6INtzFjeG+7n/6QRbtWTUuwpMCT0H0SlAuR5iGdcXriZMcV/RKdFLtTWw83QvqLFV7ko/O+vJDYlsTPBi4wrpW81MUKGCJfP3yD5aOxjWvcxpoPp+yd+79CAd8EQT5ydzZZWSfOtd9RST+4vjzSGYe9bJWxM60U+d/zrHpufvNUTXwgWVczrlOoQCMJbGdDixby+BcFwQqYej5PrC175BtNac1oE4fh36zMSfA439E0QtXZxnyqAREjoJHhhLWywYfa3NGpquf6TBYDCgzASblENurxb/nnm1jBijwnJlv8CshOH6x0iJeb4Rof3fLvAgsdZdRgR2/8kvNwwRZEWHcBnF8FH0b7mPuGgEROo8G0NWm3rRD1j+TkZ51KcESvkR5SO6hA9ebAT+kWbRtQ9S/+k9oN7gLrLarvYH1MMHhGQ5dntjm4NwmvKYsXBnABVGbKeD+3QvaAmU7X3rtVTygq0XsUCJEl1ART3TmvnySrMvVfXbOymjZ4ne78xQUvmWbsQ9FFubWTosl1ktJ580jpB1qKp/z8woI
- ZrYOyWF7
- 8VM3P25xUNlUnMdY6KppmQCm9iQkY0uYtBqK7hqgpqZx/gLRQO4QlMBg/QIQggIf0zUGxm31GurCAJDehX1jY0SgYPY5fvz2V/zcffW8aulZ1yFOVXTtNchHrowjhx/FXFsitbDAuPocGJ8gC9c/BDYUVP1LsytkG0GtnXszGAGkBuq4ySEYVmytcAuXikZVHn66qOZ3zk46lCnJeu/Mg2quhb4mx+0VFI6ZPG01rldlNyd1gPtyWy3RKoh9ljfumTru8tmDtrCMGlCkUFlzt1yMUmOpljjPK7QTt74g0rPoMVxcw5MsVH2wpGBRGp30m6X6zS1Rk4e2e6J5NDiV9DTXrGquCgk4KgxyVop1cr7houBJkiWL650+mJ3UcRcY2iGX7Qqad1wsZGU+py9p4c8yTadhrC6BqTw06h8fsBtxT1fE4vf9sNz4K1Fi09BteNTQR
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C1806A0003
+X-HE-Tag: 1764987998-776572
+X-HE-Meta: U2FsdGVkX18/g5daPZ7t+cBSgCiu3XFM1J8HZLFmItQzV/rk05MCKfDB/hcQg5XUS5A0jgpLSCpV3LFhbFGA5o0/iHV09Xz22UFt7bRufBpU/gUF0rEpX6FkPndE9bO1e7udw76oQsLmYfiRbDkJEXsW+hp3+rYs/5PFL468+/qEjY8e5xxgMMwTWiUQe4AZvEILws1budoS9BCpvPk6/Dtb1imQVo3xp6ZkrTka9wrQJySmoYRnbDDJRL3XFlxtlXB4UZgsD6TNWWS+S8hGNEmsYrUquRSroO+fuvvZ/h/8X4d5OC75yEARA1cfSLs3TV35nv4j0seN1HBDuWWXsmvwbRF+O86INdbhUdMjXHgGd7XJ+0tXycVxOT6PSZQnLMMA7ndw4lSnq1g7E7ihPPXzPGYdCHlWX34kMUfVWG8IGfe4uue0G2Z/9s3MucKfjm0+l6oKLcV9MrFoTWONfvYP1v3oRTWUg83gfUawE+tkvuzSwZPUgxNwEkCobVSR+jeTmn6sin5/1hvU2BkqKTbnKeIFADfbuK4OKlNh+6XpKtZcT7TUKY9LpkJ6+Y8rVZJkMtbvUaUBVvwV4GQkDug5nu81cQ1zRgoLuXiFnMP7khDLg4ASGSgwR78ULDDq5QiNcNDxF6MCGLawMdPqTu5ewNMgfmj9wjaJKxQgg+Fwipib4HaDUG2w3aw9U22YQtyeLKpd7OT4jtvyj0l35pcoKfy0l4BOPUCQME520NLMYLUAOd9FEsExc1z5G2m4v2JXisyFi5P5S99rZP43UczkBQmdyxboWWuNq1ePVetePA556yspQUNXx5cVWftWD+pjOqUQibU4EVqGDBOwY6cBNhDLsSTtP1BnfzZpzVGvePK5DOmUz/MRK5h7n1teDFiLsMRPuW7BCvmSIhHooHKIvxVWMlLER7j9opAt2YGeYKl/HRUKAbKu2uEOQyAvaxNiSOIa2K9WgJh95E5
+ lu5VEJuK
+ Jf9W7WmfnihkF9Mu4bRBI0Eww3wiqjmFzYgYATFSzQPVhdT6yHJNNG7ZUr4e4Z8iKbILktSPXhiPXweHZ30Hvwtzw6rIdR6KAdMLNH2qhkhzlvmBNuD5kR1I6glkRysbQCPf88HaJIoGRoA9wbMUuKohK66DwIdOUcDDQkRgRgXqxpA/yEKVg+EcH7NInCY88G9WbY8tl85Tdu+ve0s3kQViqHQeb4CfxiRp5PGj0h3KwFRJF/O5S2rZH4BncGfTskQ78Nwx8F5sEMYIGztd98yjhWK8Qctr7sIE+u+5unkF/VAQJYmW/8ijpVZMQMa9+ZPaygXbEHFxFnGp2GH7Yaet/oJnMb0+mrtM6iQ16zXApuUCr9ZHyo50VrSpJ91m9kR+HogbNsXS++JNjV+wRz1az5RhAeR9Oc7KcxOcEEG4Md3ThdUZi5HCxPAESWIpc/YPk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,17 +134,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, 2025-12-05 at 22:35 +0100, David Hildenbrand (Red Hat) wrote:
 >=20
-> Fix it by properly using ptdesc_pmd_is_shared() in
-> hugetlb_pmd_shared().
+> So let's simplify the comments a bit.
 >=20
 > Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared
 > count")
-> Cc: <stable@vger.kernel.org>
 > Cc: Liu Shixin <liushixin2@huawei.com>
 > Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->=20
-Reviewed-by: Rik van Riel <riel@surriel.com>
 
+Reviewed-by: Rik van Riel <riel@surriel.com>
 
 --=20
 All Rights Reversed.
