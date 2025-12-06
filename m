@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFCB7D12692
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 03:09:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 366D2D3ABE7
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 03:09:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54F566B0345; Fri,  5 Dec 2025 22:09:17 -0500 (EST)
+	id 8D3046B0347; Fri,  5 Dec 2025 22:09:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DA5F6B0347; Fri,  5 Dec 2025 22:09:17 -0500 (EST)
+	id 85C7A6B0349; Fri,  5 Dec 2025 22:09:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C8AA6B0348; Fri,  5 Dec 2025 22:09:17 -0500 (EST)
+	id 725476B034A; Fri,  5 Dec 2025 22:09:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2363A6B0345
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 22:09:17 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C0A5E1A038B
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:09:16 +0000 (UTC)
-X-FDA: 84187565112.06.8CF0FA0
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 26481A0008
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:09:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A4A86B0347
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 22:09:22 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB9CA13ABCD
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:09:21 +0000 (UTC)
+X-FDA: 84187565322.14.ED2A8B0
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 363151A000C
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 03:09:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=samsung.com (policy=none);
-	spf=pass (imf15.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764990555; a=rsa-sha256;
-	cv=none;
-	b=zvo2+J3NW5jinn5bHp3+bTdva88GRLQBlwdlHhU/doMjL9CshIvCy+azK+JtESRpqifH3t
-	zLhSh5KxiFlWA3Cf+Ach8/BTMSqr7DYyRFIuEjL6m9NUr/8K1YYubsiP+gFaEZ3Y839ac0
-	IFKGBgMrEi1IFRDzjRmCXPOW8TGxuBc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=samsung.com (policy=none);
-	spf=pass (imf15.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
+	spf=pass (imf19.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=samsung.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764990555;
+	s=arc-20220608; t=1764990560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eBUzztVeoZWHnWCfnCvjYKFoIzhnkIayGx47QEAvlKM=;
-	b=otG/rWCG54k3Bae6AOyzIB4kbHhpqWo6dc7m9ygQ0uRzMdvi8qgrhf20O/sntuZsKj7zcj
-	I7oZqT9aArpchJmxo/lWm/bX58A7ywWaaH/zP7kpQI0SpqbztCK2OeAmvz911VpxZEYem2
-	0CwPdVIOfHkwFw8Ts7b2luJyTyl+gpw=
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	bh=JpEvM5QA3+28q85zNJsdqsm5CDxo4uLtsD4iFf1UZ1I=;
+	b=wktNQlAtJ0nVu3CMmjZ0Os3x+wt4gMQnpWWXBfdWIahKDwOTnOOix2o6KvMdBvWtMZVEUt
+	ayfxbwmZYK8WT/gQ8SEUrTonQTeGuhURsKhJ62RIr2+Ej+iud6bfsbv7ZjZw6OEWBMMxPK
+	A1mq8TBmCKrcYmNp5xiL9brL0ZZ9Rxg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764990560; a=rsa-sha256;
+	cv=none;
+	b=n4cwdl5Yxf9a7nk1oQNLsuDCabIPpvyI+4BY6/KrDFCzgsdyYnVMgiLexcPvZQ2e0ywwuJ
+	b00PcJnnSjjTDOV4o0ZjDqB3Xe/uTmsI4oqi8G1CouRx4FAXXY5JbJlG4Fg+qSv5iRWGJ2
+	5aOn5EEJghuSWkEhWyXzek9hH/o19Kc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=samsung.com (policy=none)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dNY9z2JYNz9tv1;
-	Sat,  6 Dec 2025 04:09:11 +0100 (CET)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4dNYB4093Rz9v56;
+	Sat,  6 Dec 2025 04:09:16 +0100 (CET)
 From: Pankaj Raghav <p.raghav@samsung.com>
 To: Suren Baghdasaryan <surenb@google.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -80,21 +80,21 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel@pankajraghav.com,
 	tytso@mit.edu,
 	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [RFC v2 1/3] filemap: set max order to be min order if THP is disabled
-Date: Sat,  6 Dec 2025 04:08:56 +0100
-Message-ID: <20251206030858.1418814-2-p.raghav@samsung.com>
+Subject: [RFC v2 2/3] huge_memory: skip warning if min order and folio order are same in split
+Date: Sat,  6 Dec 2025 04:08:57 +0100
+Message-ID: <20251206030858.1418814-3-p.raghav@samsung.com>
 In-Reply-To: <20251206030858.1418814-1-p.raghav@samsung.com>
 References: <20251206030858.1418814-1-p.raghav@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 363151A000C
+X-Stat-Signature: tiy5f18k38gif11jm8thumkui79eeeek
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 26481A0008
-X-Rspamd-Server: rspam10
-X-Stat-Signature: qi9cmt9g7975t46ihs4h3889t8onod74
-X-HE-Tag: 1764990554-884940
-X-HE-Meta: U2FsdGVkX18mo+3uH+adSLtV+PwNnfLs4B/9dzOKuQGko/zlyPipArMC3d+feEPDDBtv4ZYkpIT6NShxbeDAA0M/3C5pRiR/qavBpd8ZfHftzJYd4UzFBd6K2orMWUaIXVX1hQaUg84V2qP7TqM9/NkjqgIrB4TxuxDpA4mW921BL//fT6I7wE/n3GS+tEUcpysRHx05ZEps0f/4oRTCuNa7OGwC5AqSzji0nrky6Nam0yyaP//b/AiSPhd4tKHe8T1A63Qeih+Yq5scMcaRgQ08rjzcDAetfPubqRyxF98CynOx5Rf3en0MHD0HIKdbbPutBL/6aGj/0UTlgv9MAog4FhKdkjfcUm9vUVM+40xOjA+yZvb2rRasdba2fZt+K5kLbr1S5MxB03jBLb0oAGC+41OTBwFmxCcsuG6RjPwI4NDVwB3RAGFLLYPw8LCSwclJ56D8c+mbrmUj56pO+1kyG4YSKaN61uosFfsZLLtWXYYCh37ZUGIN2HfisKW4TQjQN+Bsx3fnUY5lBAneeJR4MDHdONNRVeXdx84rlscPfwR/MmdgSFhx/tVD5io7+tpuoGZTH0dgckSAc7wnrHbLwwTEc/3n/Sw946mowtzWpws1XyGnCpHGZwYNBawLLp+KDdfwJQMrbZurgwJCG7Nb9zAapVUbWkhHcFTFZ3/hO17WIMZ4gNa+jGRZor0ktfxvV+8LF5TtAtGq+fee3EGbl+zTmlarMCow7IiYxI4gTDmJks6SpSKQuHyr4Lt0M9zWreoNatsGGGGxFb1OHLm6CGS82JyHSsQ8+4Vz4eiFjL9l3Sk/LrSYZ0qz7sHXb/gnqDSYTp9KrHmLSoaBUj26nh13X5YOSjouWzfg/s63UKZj19QmPiHq3TdEX3jtmIU91j9mgvy8dPHrWCY5GjfqbRqky9LJIRaEYiOq9gm7amRTyT7Sk0DdGJ/OCT5tCQfK0jbuJHLqwt61wmQ
- rO1S4b3K
- v6OXvj9UKGpNLBcxK/Jm6k/Cf6R+s8lzVU8H9fQAIazyyyDivL0bxl4i6xwpWqnj7sLFlUPzT6RaBqubKzYfvHpItoef30DNMPLR+jMTyWfcPejL5gOyZ61H3A8WFhpSvumwWtBJG3h/GdvYwWRZCh9FFcGnslRhmOtpQEbKrg2fL6tcWLJdgB9PIaf8DQ3yT0dhGlkzVxGRqnQb0KiuYbso3QsSjGCfCgcBeYYnX+7qi085MVsOrote1+99Esd/e7XduDosgWBQQgMEeWHwU7APheCGaMoSOzLAQQ8TH9zRwOkzf0I+2RMS3QdXXLEaRwbVAjs1meofY+GE=
+X-HE-Tag: 1764990559-112548
+X-HE-Meta: U2FsdGVkX18XabhEqyHEE2sM9HYVNXGaidwa24o2KQE70i3aJmY89szDTpx8+PTeVNcXRDNg4XTVqSKB4iEmHF/ehRx3KRZfkdSO5m6DNYN2QdNH5N9Mef+vKN++9OAmNJ5Ask0nwh4WgDAtYZOhFcjf2iHBPB1wW7nwWNcIQyQ5e/3B5CsL08CN3Gc9yVGEgp4iX7MqsxmKroFdoPxSQxKby7Vehi5HGamcs4XGJjDPnLZPUgwqfXO6ADM2FmikkMv24Opzdk2WIR3R6a0b6NN9lQohxZnxebObf9Kv4oUXlR6mRego95HuNMpQGyFcjybk3isrrHgrurRw/BwoEYVdKQ6ZVckPibcslbWyRdNoQl2t2AtrAU0HAOYLiSO5DjKfmyCEeobSGuTpu5hcSLXTwyeR4VlhdJl4y4Ww3ZWkrZb7JWGNy12Z0dfEJ/oyZz+ph+cqcwA0hMwCgwO2uLi/LfX5TQ2tONktt4XUuEDmiVC4UUksm80mI95WlRikvhB4ZfVtxIXzVvSVsOJSabJ46O2MFMSPvqJ5bh+NKc0Kdw2IQqKiTbxmwrEWcIumRoM9gnRWx4+KBa6HnDGgV/EIa2yDDbF+PQNtNKAr9AS9xAboBRSnkVaYsk7yJPdxRDU8ryzKL64lzmKF5FtMxjqz2hax8kKikJYX+ds7ZqdEcNcqpIw8IhC4ZG2sp+84zRNPedQp7LJ3SDqXl1yYiYBsyScHHNmhF6+k4Cx3nL5HnxXyQssoakLneRtVCnrpCrNyUeFq4ww2KyAgR3e1UrD956Gek/YROsMY4hPorEoVhxuLTgAM9mwgeLnSiT8kHc+C54hP9XxMStp3TXrBYoFpJmOIO7BpvPSljeGw78+AvyYI3DcDBaEn6bag3s+ZZultDMAiwearRYRVWWCgFNIdFRieXRSR+LyqKCsoBc4/FD7KT3n6B5IBaavLPSajVDsUOsdEq/5Nwuor9I9
+ Bh192yXe
+ HR4iqp232xtpHMli+dxqYcaegKUJArH8yIRiakIAOrmaPFJeYCcsi3zyY1ZQC7of/SEIQCZsU3p8jUoXvWo+eB7jeo7oz3BOttKTGyXaBhFLl+u/M3WyICPZ8fqpg4kdZx6OchXriNp6isyTDAEJdY/AWVayGlUZNrfXX3IZ7dPSiPk2nXgecUUPuIIMNWJyaMYV9+6lVjT5G46fbR2JVB7dDYu4u7bIogTCr37q9sAK2VZJVCb+Wuh9EWrPk0T5aeFnZEBM7fCGYwQY0ej5ovHk48EOfzylfj9Iwkq01FPjHxmbt38ViKvpGNlEoZ7h5J3uqH4LAmoWrT7zvGf9C+eoKByJ1jSM6Q9CGWiBysnOFqAx7z94kkL8KI3LJJMErtSiifqt/HValtr7/CwnrxTNe9ws1a+O9MKMLRhFVRxxe4dwGRcako9b38qwnlPtB7QOYwX+igCFUFdIrYEVk0K0uqSYXzWvRyLz/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,72 +103,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Large folios in the page cache depend on the splitting infrastructure from
-THP. To remove the dependency between large folios and
-CONFIG_TRANSPARENT_HUGEPAGE, set the min order == max order if THP is
-disabled. This will make sure the splitting code will not be required
-when THP is disabled, therefore, removing the dependency between large
-folios and THP.
+When THP is disabled, file-backed large folios max order is capped to the
+min order to avoid using the splitting infrastructure.
+
+Currently, splitting calls will create a warning when called with THP
+disabled. But splitting call does not have to do anything when min order
+is same as the folio order.
+
+So skip the warning in folio split functions if the min order is same as
+the folio order for file backed folios.
+
+Due to issues with circular dependency, move the definition of split
+function for !CONFIG_TRANSPARENT_HUGEPAGES to mm/memory.c
 
 Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
 ---
- include/linux/pagemap.h | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ include/linux/huge_mm.h | 40 ++++++++--------------------------------
+ mm/memory.c             | 41 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 32 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 09b581c1d878..1bb0d4432d4b 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -397,9 +397,7 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
-  */
- static inline size_t mapping_max_folio_size_supported(void)
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 21162493a0a0..71e309f2d26a 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -612,42 +612,18 @@ can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
  {
--	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
--		return 1U << (PAGE_SHIFT + MAX_PAGECACHE_ORDER);
--	return PAGE_SIZE;
-+	return 1U << (PAGE_SHIFT + MAX_PAGECACHE_ORDER);
+ 	return false;
  }
- 
- /*
-@@ -422,16 +420,17 @@ static inline void mapping_set_folio_order_range(struct address_space *mapping,
- 						 unsigned int min,
- 						 unsigned int max)
+-static inline int
+-split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+-		unsigned int new_order)
+-{
+-	VM_WARN_ON_ONCE_PAGE(1, page);
+-	return -EINVAL;
+-}
+-static inline int split_huge_page_to_order(struct page *page, unsigned int new_order)
+-{
+-	VM_WARN_ON_ONCE_PAGE(1, page);
+-	return -EINVAL;
+-}
++int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
++		unsigned int new_order);
++int split_huge_page_to_order(struct page *page, unsigned int new_order);
+ static inline int split_huge_page(struct page *page)
  {
--	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
--		return;
+-	VM_WARN_ON_ONCE_PAGE(1, page);
+-	return -EINVAL;
+-}
 -
- 	if (min > MAX_PAGECACHE_ORDER)
- 		min = MAX_PAGECACHE_ORDER;
- 
- 	if (max > MAX_PAGECACHE_ORDER)
- 		max = MAX_PAGECACHE_ORDER;
- 
--	if (max < min)
-+	/* Large folios depend on THP infrastructure for splitting.
-+	 * If THP is disabled, we cap the max order to min order to avoid
-+	 * splitting the folios.
-+	 */
-+	if ((max < min) || !IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
- 		max = min;
- 
- 	mapping->flags = (mapping->flags & ~AS_FOLIO_ORDER_MASK) |
-@@ -463,16 +462,12 @@ static inline void mapping_set_large_folios(struct address_space *mapping)
- static inline unsigned int
- mapping_max_folio_order(const struct address_space *mapping)
- {
--	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
--		return 0;
- 	return (mapping->flags & AS_FOLIO_ORDER_MAX_MASK) >> AS_FOLIO_ORDER_MAX;
+-static inline unsigned int min_order_for_split(struct folio *folio)
+-{
+-	VM_WARN_ON_ONCE_FOLIO(1, folio);
+-	return 0;
+-}
+-
+-static inline int split_folio_to_list(struct folio *folio, struct list_head *list)
+-{
+-	VM_WARN_ON_ONCE_FOLIO(1, folio);
+-	return -EINVAL;
++	return split_huge_page_to_list_to_order(page, NULL, 0);
  }
  
- static inline unsigned int
- mapping_min_folio_order(const struct address_space *mapping)
- {
--	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
--		return 0;
- 	return (mapping->flags & AS_FOLIO_ORDER_MIN_MASK) >> AS_FOLIO_ORDER_MIN;
- }
+-static inline int try_folio_split_to_order(struct folio *folio,
+-		struct page *page, unsigned int new_order)
+-{
+-	VM_WARN_ON_ONCE_FOLIO(1, folio);
+-	return -EINVAL;
+-}
++unsigned int min_order_for_split(struct folio *folio);
++int split_folio_to_list(struct folio *folio, struct list_head *list);
++int try_folio_split_to_order(struct folio *folio,
++		struct page *page, unsigned int new_order);
  
+ static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+ static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
+diff --git a/mm/memory.c b/mm/memory.c
+index 6675e87eb7dd..4eccdf72a46e 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4020,6 +4020,47 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
+ {
+ 	BUILD_BUG();
+ }
++
++int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
++				     unsigned int new_order)
++{
++	struct folio *folio = page_folio(page);
++	unsigned int order = mapping_min_folio_order(folio->mapping);
++
++	if (!folio_test_anon(folio) && order == folio_order(folio))
++		return -EINVAL;
++
++	VM_WARN_ON_ONCE_PAGE(1, page);
++	return -EINVAL;
++}
++
++int split_huge_page_to_order(struct page *page, unsigned int new_order)
++{
++	return split_huge_page_to_list_to_order(page, NULL, new_order);
++}
++
++int split_folio_to_list(struct folio *folio, struct list_head *list)
++{
++	unsigned int order = mapping_min_folio_order(folio->mapping);
++
++	if (!folio_test_anon(folio) && order == folio_order(folio))
++		return -EINVAL;
++
++	VM_WARN_ON_ONCE_FOLIO(1, folio);
++	return -EINVAL;
++}
++
++unsigned int min_order_for_split(struct folio *folio)
++{
++	return split_folio_to_list(folio, NULL);
++}
++
++
++int try_folio_split_to_order(struct folio *folio, struct page *page,
++			     unsigned int new_order)
++{
++	return split_folio_to_list(folio, NULL);
++}
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ static bool wp_can_reuse_anon_folio(struct folio *folio,
 -- 
 2.50.1
 
