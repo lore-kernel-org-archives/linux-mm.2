@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21964D3B7E5
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 23:02:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9508D3B7E5
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 23:03:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 762C76B0005; Sat,  6 Dec 2025 18:02:57 -0500 (EST)
+	id 407E86B0006; Sat,  6 Dec 2025 18:03:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 714966B0006; Sat,  6 Dec 2025 18:02:57 -0500 (EST)
+	id 3DF906B0008; Sat,  6 Dec 2025 18:03:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 602F16B0008; Sat,  6 Dec 2025 18:02:57 -0500 (EST)
+	id 2F5E16B000A; Sat,  6 Dec 2025 18:03:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4984E6B0005
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 18:02:57 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1A95140698
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:02:56 +0000 (UTC)
-X-FDA: 84190573152.25.8E2C581
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 203826B0006
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 18:03:05 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C04D7160696
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:03:04 +0000 (UTC)
+X-FDA: 84190573488.11.8B2CD88
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 202841C0015
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:02:54 +0000 (UTC)
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1F6F61C000A
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:03:02 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="RJBCBR/k";
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ml5Ukipu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765062183; a=rsa-sha256;
+	cv=none;
+	b=wvr6jHc0tYk29K8MrUzT8A7GFRY1omx+vrGVb79Cc+UzKMPQTxD0FOp4RbWd+cu50utX8C
+	swZ/YcIkKsJJd/l/JS8mLE9JX/MKic42D1/ppHj4s912jMolid+54HoEHZu2+eNgQjJuEI
+	OeevqnQqgxyIbutd6QV0TKCkBuvmX2I=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ml5Ukipu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765062175;
+	s=arc-20220608; t=1765062183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=o3VAh2os3b+UvZGIBlby5rPpcBqmxelHC3H161To+tI=;
-	b=kaoGX7SNkviqOPwUb9uST+E+4dNlxs4CyLFSc7fVUw0//+DBwvPbqr/veh+iwtKQnwcWD8
-	dNYWjqGLObsRnAINbF8DpMLLEYMbIMGF94cSVztOqyFWFGkvLO/1I1Ib3O9jh2JhdXvGZk
-	qaw3J51Iy5zS7dDyu9gf/Q1OGggSlm0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="RJBCBR/k";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765062175; a=rsa-sha256;
-	cv=none;
-	b=GpyUzI567irhpcgvq2qUfiy08avftbz3BC5QAW1Nao5kv3znf6d1mVgianZZ1Lz3IRSmc1
-	eltDdeQhZpzjYJy3J/3L9+IEUE43NEDYM6AEibeEcwJyl0FXt/wnmomqD62v6d8cezMjuY
-	SF4i4vqid+3KYu1z2kQFvaQzOImw3SU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/fSuPodiX5EHH+jhfOMD50dY+Ip+73J2brCzGUDDF9k=;
+	b=xsJtnQIAsKGdqG4TB8xV8BnzhqyNh5pSpTah5NWH+Y6ui0EbA9CDz+3/zCvT+OhANXnDBL
+	qms2E9kyvRWF9rMdZ7d6Wdy6eOmRIqnfHKbfwAEywuSkGAJ1b8ZqOyxsJEayknKGqymXly
+	oimvJmpett0rWb63S2mvkQXU3DL6lFI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E000A41906;
-	Sat,  6 Dec 2025 23:02:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9A8C4CEF5;
-	Sat,  6 Dec 2025 23:02:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3378E4411D;
+	Sat,  6 Dec 2025 23:03:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EF5C4CEF5;
+	Sat,  6 Dec 2025 23:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765062173;
-	bh=6DUm1o6LCjuGMMwws850Z+v4EVJVfUy729NCTOuuZtE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RJBCBR/km2500aF5vgAXFl6sUru0D8L/mlvyTxge58ga11iRXtwqV4rZElGW2RXqg
-	 zI+NNmcWWWu3PXbyBtbL82tMygV7P2Y2s+a5eRNBX+S2Zpkz3zGQ8t2rCOXLtUPMPf
-	 0TFY7poJ2yZ71jSgZbywl0CirbqQZq9w4nSuX6DR2ooegCM7gNgsI0bDxKHdtoxCA0
-	 f1T/uevcfPw8Akk2IWz6/w8oRykDBX2GW7ZdedUy/1pXla2938KeChFUtrKICAT/Re
-	 tO3BqDFipykd34xCADSx6l81cmz7BZ4JIHm92V+b0En3krxgHIzLuVqGg9JLiyNPFl
-	 dvmE30P27EkpQ==
+	s=k20201202; t=1765062182;
+	bh=YZifJ1dvIIR+mXezMnWNnfK3KMOuY+73A/Qwip8J2FI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ml5Ukipu2YIRmfC2zWNaddAoSeT997AL8NgvuFYBfAl+b37rS4w9nWuzGNZoxFgMe
+	 tv2qDqnGU3eYwsHM7C3pccFIoU3CqoJQTdYQcYgpyp8FPYjc4wvmEAKLHuBxTFJzw1
+	 6dukN6uux6gsGXX3mMqy0ZIcODl5PAQ6EjwK9nog6kkER5K4xx8XDvSLxw+yme8qsS
+	 ZjO5k7OvTyEFPOY0dtt+cLzux+zmWbbwHZtIOkdOZ4z0Meb9uIPVNPuWkuAMLFNIDH
+	 L4v65ddsy8Fcy3wovhmFFJNavsXA3rv+KXK1nJZGXWMTGbi8EAUNAeJMbYzL1K6e8G
+	 HN4m4uDjC8/ag==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -94,20 +94,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kexec@lists.infradead.org
-Subject: [RFC PATCH 00/10] liveupdate: hugetlb support
-Date: Sun,  7 Dec 2025 00:02:10 +0100
-Message-ID: <20251206230222.853493-1-pratyush@kernel.org>
+Subject: [RFC PATCH 01/10] kho: drop restriction on maximum page order
+Date: Sun,  7 Dec 2025 00:02:11 +0100
+Message-ID: <20251206230222.853493-2-pratyush@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251206230222.853493-1-pratyush@kernel.org>
+References: <20251206230222.853493-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1F6F61C000A
+X-Stat-Signature: p78toupa9juame6k3tnq3c4pd5eo54y8
 X-Rspam-User: 
-X-Stat-Signature: x9cudnahpp4piyakeuwq1i35cio3zm49
-X-Rspamd-Queue-Id: 202841C0015
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765062174-499415
-X-HE-Meta: U2FsdGVkX1+aqq5XGK0660/E2UmSt3y7LKySiQ48CQI8+unm1kZZKK82rMLtEdxAPYZZnW0dcoqIkV3lJXhm6arefrccn536N5lUITSEbbh/jFzmOjF3dJTvR6bwEjMByM1V4KEJS61IzAGMM8EjWWT8NZQ221pbQv6w/4w9aCyttiCmyIfqwM4aLBX/yDWMt/V7M+nNvmiM6GKjiA3QkCn3z3CE9RR+8b3SY0py6mCitAdA8zKUXVLGMCS4SXa2uBYspYrrH2jc+xLRlpjbsXmq4UWmqMzUyx3SeF3taOFpkXHNvKtQh/uxAxnxp5cv0Wtjt7yT21HlK5eIwKwpUCyNoNuVvEiKJnM3HA5N2071lkD2BJt3uARwYWrOmPYlzmvST8OIZSY/BjWZOnRj7MULfjka6Vkc7JHtyHBmpZUdR7SbmMjyWvSxNwTK8YmE4hhjgKbXWzqIzDe/FFmB0OH83lmwztxORi1VPslI4sEwW2mQS16Pdd4MjvVzGysZhk8BDqEgwCNW0joz5GPraATIl1GkBRvTa0ya2tnJGhykuEppPfqo5F9htzVa2e4jACSRHExeYVdahSivDwYlxrgdRovw5wli+3oQoK5cJMpFfiotcTBg1sMqStngF3e0Cz84RMfsnebicoZw+uS/CY0WGEOSvHUjUiCwTl5WjHN6rj3XtTToB0EszlRGOFifGlOiYiNc/+B4xYADrt4aQxBEc19KbWC57xKJL/cwsuae0BbP35SNYhmDDQRKeOv0O+01yOwhKv1jmSoJdL8wOoNVuvmrhJE3QwoyfmnubQUnuyFSrsXfu+5iQzD5T8e8dlugAMG41xJT7SgXDuMn+haNzzKkdwU7ROESAGCCFD3nBcW1crxsC8tTNF6TbxhwiPRYXzJ3lBdO8/d7BmjAdzx9jjE5WmDQtmWuWjAbLsD3QaZ7t79CqJFFLnsEE5QbcawKQ3BxM4zXs8PEAXD
- kRIL/N6M
- DfIbBsPCPI1LrogWXaez7XNR16gVJEFfZKL4jiUDbtrl4jsTN/vBsxNun40R/crWNtxuuYmYaIYYW89HuOqmbSOgLpGFEpgFyYvNj+pIxVisfRqoQ/vSK/PEv/zwukXaooGNR+fVX+3E0pvIEOYwdSXihx+C6NQb2NFO6kEWqPLAfyF7UxmZGH4C9z2X02JFA2uJr8YiwOfQhyau+dKVIFZEWRPnQbnJuYKZkvxm0XnCrdDOx+5NSneM4JUlF0HbQR1dEB8t67q8IBWSA1lF3Xs0NCj7V/C4/zSmWnkmxQLveRd/hVJgGkNGIK0gwKCHt5xWfGXgtY6CLbGxtTlLpJc1zUZv+rg7u7AtWEaC+u+iuiMUuQljX9OaNOzL/pKwbPWdXWUgJSco2jNEq0auRKYCARr1TIzSSpzHH48kNXImQR2nwO3pPmcjL6w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1765062182-2628
+X-HE-Meta: U2FsdGVkX19u8tHFSvablWwya5OorzyeEMbV7eNIe/30rHMesgJR8LpjxMVSbmQrcVi8KwnRyYhJd869wZLUoT7XuZmwmwbM+NT9VntswQuw6K8kK9V8mRDjiiKUqpKBymsU+1wtqeCTLV9tHYKs0IXwgt8/jM6uFOeuqL00UMyTKC9SwvDqiPgK+OdjP8jn83nj9IgVVRH1TcO0BScemAruBlav7dnPFU+VVfp4vCCunthoaOw64/p9IeIwMLn5cgNZwkQ1FnwkLF2BRmzaBABlhySVfY9/F5LtLkVB2QsTByoZKOEnf1a8tLqetKSYPl0lodPH0bYi28ywKOhYE7HbmqmmzR/+YSWF9DR2SxjvMhoFb+Db4RawIfvfrJbcriAM5SEiHMuyCBx1zDlFttA85boUNKD+WEQ8oSumF0M6EqWaLjF9qnQlI48cviTwYnUmp0d2IIiwNZpnWEuBBktt3iVSRAiMw5pIgrAMJmv6AM933BmxqFIdfQk5+r+esQw2rk7vFf266DbzQH8w0WSJ9g/jXYhgHgI89hNjIdpJjQfLiLAq24xHezRVO1YCRumWQJIgFxUPhLdx6UQl+vrYAStqj8uYFMpFYrlItGHzLspcWXq4jcD2H9gDUIvZtpUrMgBU2K3o2hUnwWguv4ZHXBt150LuytOFPM4Cc8Wi3VHc59y1qkXBnqwIoZx4+ov9cSNk6WfkbD+Ut5XV5iJs/9KrnsgQEOtytseuaMxumWymnWF2x6xWCa+X0vExCTYPlQFZnoFMYT3bwWP8lTiq0hQiSiwVLdhb86hC4U0KQoTZN3eFB04smyg5WTZ6nA/FE0tZwYud8HbRhvQXhKJMOaYlADETQ7m/Q0dlHzOyZ4iBbcdvLLhzp2c2XiWg1IneysLF/KpMTqBgOmGYqap1Q1HqM3r1iR+e1GsMZcPYKx//qbqE6b7QTPNOF/S8OwAAyks0Mk7KO7GZGbY
+ ulY7kFyv
+ LC8wpCesies3Nx6jkrlQqmId9UC9ADe3Ex2+V7zjgXCyaQoBBxBe75xi5joEayOqUY7sUM4Zw5ssbxgzRiAYSGSx/wdVeeacsX4SkxtWN85scSyvUDVaHcsa7+iGWXK/iMivsLC1GHS8IE7W09BOagHMp44hJdX3EAnrI5Iu9XM7qCtKd+jNsRtbXYzRz6VS1c4EpJD7X+74RwZVy6yKzyT+v4R4rZcpZke7odHwzAis03FYJO0dn9wahW5M7K+zvgHQM/N9kb0f6ap5CbQzdqmNzGA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,118 +118,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series adds support for live updating hugetlb-backed memfd,
-including support for 1G huge pages. This allows live updating VMs which
-use hugepages to back VM memory.
+KHO currently restricts the maximum order of a restored page to the
+maximum order supported by the buddy allocator. While this works fine
+for much of the data passed across kexec, it is possible to have pages
+larger than MAX_PAGE_ORDER.
 
-Please take a look at this patch series [0] to know more about the Live
-Update Orchestrator (LUO). It also includes patches for live updating a
-shmem-backed memfd. This series is a follow up to that, adding huge page
-support as well.
+For one, it is possible to get a larger order when using
+kho_preserve_pages() if the number of pages is large enough, since it
+tries to combine multiple aligned 0-order preservations into one higher
+order preservation.
 
-You can also read this LWN article [1] to learn more about KHO and Live
-Update Orchestrator, though do note that this article is a bit
-out-of-date. LUO has since evolved. For example, subsystems have been
-replaced with FLB, and the state machine has been simplified.
+For another, upcoming support for hugepages can have gigantic hugepages
+being preserved over KHO.
 
-This series is based on top of mm-non-unstable, which includes the LUO
-FLB patches [2].
+There is no real reason for this limit. The KHO preservation machinery
+can handle any page order. Remove this artificial restriction on max
+page order.
 
-This series uses LUO FLB to track how many pages are preserved for each
-hstate, to ensure the live updated kernel does not over-allocate
-hugepages.
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+---
 
-Areas for Discussion
-====================
+Notes:
+    This patch can be taken independent of hugetlb live update support.
 
-Why is this an RFC?
--------------------
+ kernel/liveupdate/kexec_handover.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-While I believe the code is in decent shape, I have only done some basic
-testing and have not put it through more intensive testing, including
-testing on ARM64. I am also not completely confident on the handling of
-reservations and cgroup charging, even though it appears to work on the
-surface.
-
-The goal of this is to start discussion at high level points so we can
-at least agree on the general direction. This also gives people some
-time to see the code, before the session discussing this at LPC 2025
-[3].
-
-Disabling scratch-only earlier in boot
---------------------------------------
-
-Patch 2 moves KHO memory initialization to earlier in boot. Detailed
-discussion on the topic is in patch 2's message.
-
-Allocating gigantic hugepages after paging_init() on x86
---------------------------------------------------------
-
-To allow KHO to work with gigantic hugepages on x86, patch 2 moves
-gigantic huge page allocation after paging_init(). This can have some
-impact on ability to allocate gigantic pages, but I believe the impact
-should not be severe. See patch 2 for more detailed discussion and test
-results.
-
-Early-boot access to LUO FLB data
----------------------------------
-
-To work with gigantic page allocation, LUO FLB data is needed in early
-boot, before LUO is fully initialized. Patch 3 adds support for fetching
-LUO FLB data in early boot.
-
-Preserving the entire huge page pool vs only used
--------------------------------------------------
-
-This series makes a design decision on preserving only the number of
-preserved huge pages for each hstate, instead of preserving the entire
-huge page pool. Both approaches were brought up in the Live Update
-meetings. Patch 6 discusses the reasoning in more detail.
-
-[0] https://lore.kernel.org/linux-mm/20251125165850.3389713-1-pasha.tatashin@soleen.com/T/#u
-[1] https://lwn.net/Articles/1033364/
-[2] https://lore.kernel.org/linux-mm/20251125225006.3722394-1-pasha.tatashin@soleen.com/T/#u
-[3] https://lpc.events/event/19/contributions/2044/
-
-Pratyush Yadav (10):
-  kho: drop restriction on maximum page order
-  kho: disable scratch-only earlier in boot
-  liveupdate: do early initialization before hugepages are allocated
-  liveupdate: flb: allow getting FLB data in early boot
-  mm: hugetlb: export some functions to hugetlb-internal header
-  liveupdate: hugetlb subsystem FLB state preservation
-  mm: hugetlb: don't allocate pages already in live update
-  mm: hugetlb: disable CMA if liveupdate is enabled
-  mm: hugetlb: allow freezing the inode
-  liveupdate: allow preserving hugetlb-backed memfd
-
- Documentation/mm/memfd_preservation.rst |   9 +
- MAINTAINERS                             |   2 +
- arch/x86/kernel/setup.c                 |  19 +-
- fs/hugetlbfs/inode.c                    |  14 +-
- include/linux/hugetlb.h                 |   8 +
- include/linux/kho/abi/hugetlb.h         |  98 ++++
- include/linux/liveupdate.h              |  12 +
- kernel/liveupdate/Kconfig               |  15 +
- kernel/liveupdate/kexec_handover.c      |  13 +-
- kernel/liveupdate/luo_core.c            |  30 +-
- kernel/liveupdate/luo_flb.c             |  69 ++-
- kernel/liveupdate/luo_internal.h        |   2 +
- mm/Makefile                             |   1 +
- mm/hugetlb.c                            | 113 ++--
- mm/hugetlb_cma.c                        |   7 +
- mm/hugetlb_internal.h                   |  50 ++
- mm/hugetlb_luo.c                        | 699 ++++++++++++++++++++++++
- mm/memblock.c                           |   1 -
- mm/memfd_luo.c                          |   4 -
- mm/mm_init.c                            |  15 +-
- 20 files changed, 1099 insertions(+), 82 deletions(-)
- create mode 100644 include/linux/kho/abi/hugetlb.h
- create mode 100644 mm/hugetlb_internal.h
- create mode 100644 mm/hugetlb_luo.c
-
-
-base-commit: 55b7d75112c25b3e2a5eadc11244c330a5c00a41
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 9dc51fab604f..9aa128909ecf 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -234,7 +234,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+ 	 * check also implicitly makes sure phys is order-aligned since for
+ 	 * non-order-aligned phys addresses, magic will never be set.
+ 	 */
+-	if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC || info.order > MAX_PAGE_ORDER))
++	if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC))
+ 		return NULL;
+ 	nr_pages = (1 << info.order);
+ 
 -- 
 2.43.0
 
