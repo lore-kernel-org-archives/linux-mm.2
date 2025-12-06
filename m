@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21DEDD3B7E1
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 23:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A2FD3B7E1
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 23:03:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C5556B000C; Sat,  6 Dec 2025 18:03:28 -0500 (EST)
+	id EDECB6B000D; Sat,  6 Dec 2025 18:03:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B8A6B000D; Sat,  6 Dec 2025 18:03:28 -0500 (EST)
+	id EB5FD6B000E; Sat,  6 Dec 2025 18:03:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B23E6B000E; Sat,  6 Dec 2025 18:03:28 -0500 (EST)
+	id DCC696B0010; Sat,  6 Dec 2025 18:03:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 67D4F6B000C
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 18:03:28 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE36313B801
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:03:27 +0000 (UTC)
-X-FDA: 84190574454.19.BB96CE6
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C94026B000D
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 18:03:35 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 992ED160692
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:03:35 +0000 (UTC)
+X-FDA: 84190574790.03.AF8E3B4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6ADE54000C
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:03:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tUUDtxnD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765062206; a=rsa-sha256;
-	cv=none;
-	b=13Q9g6npJa2sSblJHmZ76p1m7Q9GNtYVGnBC5eqIbx7gwJP8y/3CIFG04AONKH5sPlEUhg
-	ntgkHnlAYmBhu2SuLYVqHmTYgEDyVIfAEp6vHpbtAywzo9n9/qUnH4/IMnfgYp1jPS3uM9
-	5F5PhxQVcfoyadzBmKzSSe3RkOW9D2k=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tUUDtxnD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1591980004
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 23:03:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2hpO4bO;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765062206;
+	s=arc-20220608; t=1765062214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BiUTuUfe5vAoZQo+9tpLwvrSqI7Z3ZybwMJj6eLoJo8=;
-	b=ZgTXfcPCcfsJPJ64wNqWgRoYIVKajg6u20dFIFIKvSOmOdaXp6oAtmJPEdC0kbqiIjX6G4
-	tociJN77f09Vqh7mudtSNfcULpTs06+05WD583Ruo2U8xyeoZmkAQW2Z+TAotLt5CNE/EH
-	4RQIi4SZI8X5oiUm7kXQBQvBaUrOBgQ=
+	bh=/W0zQoNOacOk69UP9iFtSpg99/UK2NmVzsBZAwvune8=;
+	b=gLzSFhWrsCJ34uMZh9v15usNOmxcDTDwU7ux2fTa48MLeOQ8SaJHRfa224YQLG2ZAHZTMe
+	7glSLYYBJTIC+/wU62Ifv9LxTROcGuQpC0aDBigSCAQD/Fyh9r94BV5bphpSGpMiom6igY
+	IV/36sc/p/Mcs4+FqciX3PkYDI5V4wo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765062214; a=rsa-sha256;
+	cv=none;
+	b=4CE503Se2uYhCX0VckHBzVrDXn97sH9c0AI5pilUCTRbX3Tqyeik561d+qPYBsQgK576K7
+	3/7u1yCsNg3fhFMRgKVSDh4fINulPwyfO242CkVaADJUUxiO8Lg874LctmErchex7SwwGr
+	4OpZKg+nTnN0KYdOKmFp6+vYEKpOh+M=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2hpO4bO;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC2946014C;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9715D60147;
+	Sat,  6 Dec 2025 23:03:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E9DC4CEF5;
 	Sat,  6 Dec 2025 23:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE274C4CEF5;
-	Sat,  6 Dec 2025 23:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765062205;
-	bh=KGnOcfnpQ9BU9FZJbzrgiU8lnduu/8HRPawdKcV6t1k=;
+	s=k20201202; t=1765062213;
+	bh=Ox02xBcc//UKEAF8uiKCw4Rli2lYMNILbHVcsJbEz2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUUDtxnD5j/gPnDazGeJDlVfGjKWIZmBD0OblMoGkBSR3WryqOqAP2BtduJHW0Ts1
-	 zib5G2oPsbnoO0PpF3BE0aBcSjgf6rrxSEeHGJHAqhF6kJ1LszXt5G2ohGlc6+yUdy
-	 s1fCdKColhX6jzjtk3VgF8N3NHN5Ai/CNEdqHnMiqpgkchklfoS77EULfkVIzP83kL
-	 M4+grCe+p4WBo9sEMdr8CqWz1LBua/gXhaTVXsVMG/RhWBproCM+CptJ+pjKgNbYVp
-	 fqabR6XaYXZQVJh7v5K0/LZS5/J14mfdaibZoq4izdmEGRDNVjD6mVEdyWP87vNXgC
-	 jzCJjlTmsF/Gw==
+	b=e2hpO4bO+wM9UQfsdrf2uqicJ0FhxW6Sm9mZD278uMA/3d+W7v++CxtfI+PDsnr3i
+	 uuqVGuNh09q4miQgjKdGoJNcTK29NQuti8nBQgSG6/7qnipDYKeuMd6FkmQjKF8Zsz
+	 rjpuKq43X6t5HMWMg7cDp/xDL8Y7Jy5WaFPxm2Oxc6WqBifJ3A1KiTNCMuqXYCcbVv
+	 AOTDaP2dy8xNgBDLJhL2fubY1EdA3HJb/0Dr3FAMUcqAoVorb3NR7BPyZ8iBs6ftlt
+	 P2Oc3bHYta6eCIoR+ClYxLrAOr5DayoOTb1odeFfyWG+c2YS/C+O0wJd1dVKE8ZaeW
+	 +iJZejAXfvvTw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -94,22 +94,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kexec@lists.infradead.org
-Subject: [RFC PATCH 04/10] liveupdate: flb: allow getting FLB data in early boot
-Date: Sun,  7 Dec 2025 00:02:14 +0100
-Message-ID: <20251206230222.853493-5-pratyush@kernel.org>
+Subject: [RFC PATCH 05/10] mm: hugetlb: export some functions to hugetlb-internal header
+Date: Sun,  7 Dec 2025 00:02:15 +0100
+Message-ID: <20251206230222.853493-6-pratyush@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251206230222.853493-1-pratyush@kernel.org>
 References: <20251206230222.853493-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6ADE54000C
-X-Stat-Signature: tyfj59c9auuyungytfdngfxxtdfkh7o6
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1591980004
+X-Stat-Signature: 514ohzq5dpezx3okekzpf8k9xrfdsdp6
 X-Rspam-User: 
-X-HE-Tag: 1765062206-934566
-X-HE-Meta: U2FsdGVkX18wxkr4UNfbAPmmjd6RXP+du3H9ZuvJGii9cgpXVfd3w7wod92nSXA3yHUlD/BfkFC504Gsp6/tBgqzI2rLvdKt7LcuFp1sYr9Pkf6vnYDVBXDiFb7T7fOuIWOO4H3M3DdOl6ALW2X80sJegUfMvdpELGMF9VIRyusyPSE0fG3JFy3S0Z9sjG2LMX+gWuNOwDzXRHzSBcoNiZaNhuSJEyHCd6vDnz5gakUQKAJkNvkFCg/4g5UA6TfXauLeKMRoIiuQZ0TnzOcrbqEiV9cSKFvino7qdjqjg6fdZXhWOvidb9DXeKkAgWjTYfWqs4/ewgZvzlECZvUi7oRBycXvPEbx5fo2qWYdYgaY5E1v1o9Fi0qtc/elEbGPHlCj8BHv/t1aIlVElO3YtSMaWKqJ9oqXYEoiyfJ+m+n5CMLXb4usfazP089ebc/LOaiJVDjzbwDtFDQb7QlR4mbXcr94KG0vSl8NRpZ0BYTrlSPNoKBhvA61H+sShWjr8GIX0eWJqZ0YvyyoW7blSMPBQxUrDOTgY/9o4mmE9EkVl9nNecEb61RWJuULuSwqrgV4s8NqztCjhzAGzMe1raFwSPpftHLysYi6C4zqseUqret6rSJG2PPzPk9brU91D1g0ODStejG7xumByauGreijLwtPSSbAShKtn/E4OiqOj/QkbYaqDaP0h1E29VSrWd7ZRofGobY3u9ZHaS/w3rO8z03qIzLBAvfmTA19n1FQACGk/oq+cAGkw1/MOvmQj1m4/CiUaQL2YMCZplUVoeBPYqufOCTBlh3IIIJJ2f/wOz7vfju9EZZ+fFR9drtfv039U4Lbx1pl4eNkT8at854nLgn/Ede6fKuUQLImRiPQqMgDdGEQCtaJMSXPpsksvIZczAnIQHixFXsfpgHxTun91gavkupFQ9oqMz7I1vLFkkcaIhv8hDjl/i0Ut8WfSW7MRHhQ65SyWp670g3
- yh+IKxTA
- 8KxSZ8wrm/1falMT8e8NAzNaqxb+2RJbT4boYkxVcNYS392hu0iZOIHWEmUX3HmCwJ6Rkde80w2OYwbfZRhHw5RPkSU4LTZ8fZLpl6CDSFXwyQAW4LEfNAYb2O1kie4y7G6A5EUW00i/dppEEJRwbRXm/1CJ5RawkxG+jA35zvHHx4sfPqgTHP03xlcJEtEgzMLTx
+X-HE-Tag: 1765062213-929698
+X-HE-Meta: U2FsdGVkX18EHayKS9PeESleSiEashfpkot8tT7tXdXLt8Tb4ujYysX8DOLIBLlu4afSCN+24kQPS9X0dqMTy2JPqgVs0qPJTWjLzD6pcKH1rKe2pD2g7FFxemHW465pYbtNe8L/HoQHg+gv/uppVyvJza8xc+Z09rHzOWhEjMlbpVXsIXr2czckvppzT7DarHfJayfTyROAwLlmbGhVvpGlFzlNN7L2d4NtJTupF40QswfoDxGI53Vb5wos5vmB4AxZSJluagPrP1+tSYBkwAv+S7pI3I5AsXOFGrfYMWqunAgfDOYqw2Mxeqw833MAz00kyD+uioLjZQgAxNEihvc236r/9g9F85UAp0SrNWGKRPUHq45F66OIx/kEcJeNcwBsKMS5nV3VzpuTLhk02G5HKBpgtxaRPTV5/WQpjRtXziTrjZw5vwzyvzVh3fyfe+qd9uqagbf7S1svEiqLt5AYexAj2y8XLw81zjPDwGdQrghLpM7YKt+y5nK52ovxcmznVOQFCxN2ckYudXx0BgVxHMNM1OuoJAJqehc/pWOcWzM/9QTzA45H7zNCxnmdczIJo+wTp2PyGYvDSW5JXwjF41p/qfR10kQhC4AJTSG+1xd+7b4tncgkU+9fvAdLMG1hQyIjzXC+sTGMMJN4ejXhSR7nlqBDiHE2W261U5Cu3uGnyxBZrOybahOfbZt6z3w4o7VgYk/PCVRvScdcGjERkgYhTLY/vUAkSTD7ni257sIyKgCi9TbYEB9VKNAqTHw2EI0XNsFv77+BDzja7rQDbu9Tr4sayDTwU0fLyA/IgOrcaNtVK+2qi3K/46/p9kNSYMpYsOYdoknEuKnDDiwNTWLp1Lvp2x2y1nM1ZG4bz7WMMUHIrL4rzB5GXpFaft/DoMqcW1uxrVGWTu0hrSRsOWlzPv9PkIxcoauYEN1dww75wgEvEDB8kFU6PiMgbVJbucgdUjcfXdtfOe+
+ G66xmV6Y
+ mIsA36GwOGd7M1w0ccs+7qiuh7GhbxexlERr2v02XGH73Yy3/gH5r+qUAwMmuSWymKMU60fzEZzxXMzcVBcSU3Xg2moFXE1km39O5Hx6XYbdSNnkNPvShbcSSHro/FfNT4fxL3VgvWwF8znfon60Ghy1zvI3i/hKzuQ3yDIv3z4nqV2AX6MpvgcaerIX70DvlynBRvxyLRMKzwLETRcgj0loxQWwSpzQGEqGg9gnkYAGTrRI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,152 +118,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To support hugepage preservation using LUO, the hugetlb subsystem needs
-to get liveupdate data when it allocates the hugepages to find out how
-many pages are coming from live update. This data is preserved via LUO
-FLB.
+A later commit will add support for live updating a memfd backed by
+HugeTLB. It needs access to these internal functions to prepare the
+folios and properly queue them to the hstate and the file. Move them out
+to a separate hugetlb-internal header.
 
-Since gigantic hugepage allocations happen before LUO (and much of the
-rest of the system) is initialized, the usual
-liveupdate_flb_get_incoming() can not work.
-
-Add a read-only variant that fetches the FLB data but does not trigger
-its retrieve or do any locking or reference counting. It is the caller's
-responsibility to make sure there are no side effects of using this data
-to the proper retrieve call that would happen later.
-
-Refactor the logic to find the right FLB in the serialized data in a
-helper that can be used from both luo_flb_retrieve_one() (called from
-luo_flb_get_incoming()), and from luo_flb_get_incoming_early().
+There does exist include/linux/hugetlb.h, but that contains higher level
+routines. It also prefixes the function names to make it clear they
+belong to hugetlb. These are low-level routines that do not need to be
+exposed to the public API, and renaming them to prefix with hugetlb is
+going to cause a lot of code churn. So create mm/hugetlb_internal.h that
+contains these definitions.
 
 Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 ---
- include/linux/liveupdate.h  |  6 ++++
- kernel/liveupdate/luo_flb.c | 69 +++++++++++++++++++++++++++++--------
- 2 files changed, 60 insertions(+), 15 deletions(-)
+ MAINTAINERS           |  1 +
+ mm/hugetlb.c          | 33 +++++++++------------------------
+ mm/hugetlb_internal.h | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 45 insertions(+), 24 deletions(-)
+ create mode 100644 mm/hugetlb_internal.h
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index 78e8c529e4e7..39b429d2c62c 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -232,6 +232,7 @@ int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2722f98d0ed7..fc23a0381e19 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11540,6 +11540,7 @@ F:	mm/hugetlb.c
+ F:	mm/hugetlb_cgroup.c
+ F:	mm/hugetlb_cma.c
+ F:	mm/hugetlb_cma.h
++F:	mm/hugetlb_internal.h
+ F:	mm/hugetlb_vmemmap.c
+ F:	mm/hugetlb_vmemmap.h
+ F:	tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 0455119716ec..0f818086bf4f 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -55,6 +55,8 @@
+ #include "hugetlb_cma.h"
+ #include <linux/page-isolation.h>
  
- int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp);
- int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp);
-+int liveupdate_flb_incoming_early(struct liveupdate_flb *flb, u64 *datap);
- 
- #else /* CONFIG_LIVEUPDATE */
- 
-@@ -283,5 +284,10 @@ static inline int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb,
- 	return -EOPNOTSUPP;
- }
- 
-+int liveupdate_flb_incoming_early(struct liveupdate_flb *flb, u64 *datap)
-+{
-+	return -EOPNOTSUPP;
-+}
++#include "hugetlb_internal.h"
 +
- #endif /* CONFIG_LIVEUPDATE */
- #endif /* _LINUX_LIVEUPDATE_H */
-diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index e80ac5b575ec..fb287734a88e 100644
---- a/kernel/liveupdate/luo_flb.c
-+++ b/kernel/liveupdate/luo_flb.c
-@@ -145,12 +145,25 @@ static void luo_flb_file_unpreserve_one(struct liveupdate_flb *flb)
- 	}
- }
- 
-+static struct luo_flb_ser *luo_flb_find_ser(struct luo_flb_header *fh,
-+					    const char *name)
-+{
-+	if (!fh->active)
-+		return ERR_PTR(-ENODATA);
-+
-+	for (int i = 0; i < fh->header_ser->count; i++) {
-+		if (!strcmp(fh->ser[i].name, name))
-+			return &fh->ser[i];
-+	}
-+
-+	return ERR_PTR(-ENOENT);
-+}
-+
- static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
+ int hugetlb_max_hstate __read_mostly;
+ unsigned int default_hstate_idx;
+ struct hstate hstates[HUGE_MAX_HSTATE];
+@@ -733,9 +735,8 @@ static int allocate_file_region_entries(struct resv_map *resv,
+  * fail; region_chg will always allocate at least 1 entry and a region_add for
+  * 1 page will only require at most 1 entry.
+  */
+-static long region_add(struct resv_map *resv, long f, long t,
+-		       long in_regions_needed, struct hstate *h,
+-		       struct hugetlb_cgroup *h_cg)
++long region_add(struct resv_map *resv, long f, long t, long in_regions_needed,
++		struct hstate *h, struct hugetlb_cgroup *h_cg)
  {
- 	struct luo_flb_private *private = luo_flb_get_private(flb);
--	struct luo_flb_header *fh = &luo_flb_global.incoming;
- 	struct liveupdate_flb_op_args args = {0};
--	bool found = false;
-+	struct luo_flb_ser *ser;
- 	int err;
+ 	long add = 0, actual_regions_needed = 0;
  
- 	guard(mutex)(&private->incoming.lock);
-@@ -158,20 +171,12 @@ static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
- 	if (private->incoming.obj)
- 		return 0;
+@@ -800,8 +801,7 @@ static long region_add(struct resv_map *resv, long f, long t,
+  * zero.  -ENOMEM is returned if a new file_region structure or cache entry
+  * is needed and can not be allocated.
+  */
+-static long region_chg(struct resv_map *resv, long f, long t,
+-		       long *out_regions_needed)
++long region_chg(struct resv_map *resv, long f, long t, long *out_regions_needed)
+ {
+ 	long chg = 0;
  
--	if (!fh->active)
--		return -ENODATA;
-+	ser = luo_flb_find_ser(&luo_flb_global.incoming, flb->compatible);
-+	if (IS_ERR(ser))
-+		return PTR_ERR(ser);
+@@ -836,8 +836,7 @@ static long region_chg(struct resv_map *resv, long f, long t,
+  * routine.  They are kept to make reading the calling code easier as
+  * arguments will match the associated region_chg call.
+  */
+-static void region_abort(struct resv_map *resv, long f, long t,
+-			 long regions_needed)
++void region_abort(struct resv_map *resv, long f, long t, long regions_needed)
+ {
+ 	spin_lock(&resv->lock);
+ 	VM_BUG_ON(!resv->region_cache_count);
+@@ -1162,19 +1161,6 @@ void resv_map_release(struct kref *ref)
+ 	kfree(resv_map);
+ }
  
--	for (int i = 0; i < fh->header_ser->count; i++) {
--		if (!strcmp(fh->ser[i].name, flb->compatible)) {
--			private->incoming.data = fh->ser[i].data;
--			private->incoming.count = fh->ser[i].count;
--			found = true;
--			break;
--		}
--	}
+-static inline struct resv_map *inode_resv_map(struct inode *inode)
+-{
+-	/*
+-	 * At inode evict time, i_mapping may not point to the original
+-	 * address space within the inode.  This original address space
+-	 * contains the pointer to the resv_map.  So, always use the
+-	 * address space embedded within the inode.
+-	 * The VERY common case is inode->mapping == &inode->i_data but,
+-	 * this may not be true for device special inodes.
+-	 */
+-	return (struct resv_map *)(&inode->i_data)->i_private_data;
+-}
 -
--	if (!found)
--		return -ENOENT;
-+	private->incoming.data = ser->data;
-+	private->incoming.count = ser->count;
- 
- 	args.flb = flb;
- 	args.data = private->incoming.data;
-@@ -188,6 +193,40 @@ static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
- 	return 0;
+ static struct resv_map *vma_resv_map(struct vm_area_struct *vma)
+ {
+ 	VM_BUG_ON_VMA(!is_vm_hugetlb_page(vma), vma);
+@@ -1887,14 +1873,14 @@ void free_huge_folio(struct folio *folio)
+ /*
+  * Must be called with the hugetlb lock held
+  */
+-static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio)
++void account_new_hugetlb_folio(struct hstate *h, struct folio *folio)
+ {
+ 	lockdep_assert_held(&hugetlb_lock);
+ 	h->nr_huge_pages++;
+ 	h->nr_huge_pages_node[folio_nid(folio)]++;
  }
  
-+/**
-+ * liveupdate_flb_incoming_early - Fetch FLB data in early boot.
-+ * @flb:   The FLB definition
-+ * @datap: Pointer to serialized state handle of the FLB
-+ *
-+ * This function is intended to be called during early boot, before the
-+ * liveupdate subsystem is fully initialized. It must only be called after
-+ * liveupdate_early_init().
-+ *
-+ * Directly returns the u64 handle to the serialized state of the FLB, and does
-+ * not trigger its retrieve. A later fetch of the FLB will trigger the retrieve.
-+ * Callers must make sure there are no side effects because of this.
-+ *
-+ * Return: 0 on success, -errno on failure. -ENODATA means no incoming FLB data,
-+ * -ENOENT means specific FLB not found in incoming data, and -EOPNOTSUPP when
-+ * live update is disabled or not early initialization not finished.
+-static void init_new_hugetlb_folio(struct folio *folio)
++void init_new_hugetlb_folio(struct folio *folio)
+ {
+ 	__folio_set_hugetlb(folio);
+ 	INIT_LIST_HEAD(&folio->lru);
+@@ -2006,8 +1992,7 @@ static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
+ 	return folio;
+ }
+ 
+-static void prep_and_add_allocated_folios(struct hstate *h,
+-					struct list_head *folio_list)
++void prep_and_add_allocated_folios(struct hstate *h, struct list_head *folio_list)
+ {
+ 	unsigned long flags;
+ 	struct folio *folio, *tmp_f;
+diff --git a/mm/hugetlb_internal.h b/mm/hugetlb_internal.h
+new file mode 100644
+index 000000000000..edfb4eb75828
+--- /dev/null
++++ b/mm/hugetlb_internal.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright (C) 2025 Pratyush Yadav <pratyush@kernel.org>
 + */
-+int __init liveupdate_flb_incoming_early(struct liveupdate_flb *flb, u64 *datap)
++#ifndef __HUGETLB_INTERNAL_H
++#define __HUGETLB_INTERNAL_H
++
++#include <linux/mm.h>
++#include <linux/hugetlb.h>
++#include <linux/hugetlb_cgroup.h>
++#include <linux/list.h>
++
++void init_new_hugetlb_folio(struct folio *folio);
++void account_new_hugetlb_folio(struct hstate *h, struct folio *folio);
++
++long region_chg(struct resv_map *resv, long f, long t, long *out_regions_needed);
++long region_add(struct resv_map *resv, long f, long t, long in_regions_needed,
++		struct hstate *h, struct hugetlb_cgroup *h_cg);
++void region_abort(struct resv_map *resv, long f, long t, long regions_needed);
++void prep_and_add_allocated_folios(struct hstate *h, struct list_head *folio_list);
++
++static inline struct resv_map *inode_resv_map(struct inode *inode)
 +{
-+	struct luo_flb_ser *ser;
-+
-+	if (!luo_early_initialized()) {
-+		pr_warn("LUO FLB retrieved before LUO early init!\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	ser = luo_flb_find_ser(&luo_flb_global.incoming, flb->compatible);
-+	if (IS_ERR(ser))
-+		return PTR_ERR(ser);
-+
-+	*datap = ser->data;
-+	return 0;
++	/*
++	 * At inode evict time, i_mapping may not point to the original
++	 * address space within the inode.  This original address space
++	 * contains the pointer to the resv_map.  So, always use the
++	 * address space embedded within the inode.
++	 * The VERY common case is inode->mapping == &inode->i_data but,
++	 * this may not be true for device special inodes.
++	 */
++	return (struct resv_map *)(&inode->i_data)->i_private_data;
 +}
 +
- static void luo_flb_file_finish_one(struct liveupdate_flb *flb)
- {
- 	struct luo_flb_private *private = luo_flb_get_private(flb);
++#endif /* __HUGETLB_INTERNAL_H */
 -- 
 2.43.0
 
