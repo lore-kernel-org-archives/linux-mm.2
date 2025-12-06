@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F0DD3ABC1
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 00:39:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19FEBD3ABCC
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Dec 2025 00:40:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5651A6B0330; Fri,  5 Dec 2025 19:39:49 -0500 (EST)
+	id 713AF6B0331; Fri,  5 Dec 2025 19:40:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53B676B0331; Fri,  5 Dec 2025 19:39:49 -0500 (EST)
+	id 6EAE26B0333; Fri,  5 Dec 2025 19:40:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 479136B0332; Fri,  5 Dec 2025 19:39:49 -0500 (EST)
+	id 6010D6B0334; Fri,  5 Dec 2025 19:40:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3401A6B0330
-	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:39:49 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C27E652373
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 00:39:48 +0000 (UTC)
-X-FDA: 84187188456.30.02C7AE1
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E412E10000B
-	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 00:39:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dOxnEWX8;
-	spf=pass (imf14.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764981586; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CD7A6B0331
+	for <linux-mm@kvack.org>; Fri,  5 Dec 2025 19:40:43 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D065DC03A1
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 00:40:42 +0000 (UTC)
+X-FDA: 84187190724.01.5352169
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 96695180003
+	for <linux-mm@kvack.org>; Sat,  6 Dec 2025 00:40:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=canb.auug.org.au header.s=202503 header.b=JlTgd6m+;
+	dmarc=pass (policy=none) header.from=canb.auug.org.au;
+	spf=pass (imf24.hostedemail.com: domain of sfr@canb.auug.org.au designates 150.107.74.76 as permitted sender) smtp.mailfrom=sfr@canb.auug.org.au
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1764981641; a=rsa-sha256;
 	cv=none;
-	b=0YpU9gVNJOsQgXRlhiCdqjdppJpR7TVvHEiNEstrhi9cOD0CtCT/3eQlPLD/PwDlZ5xkCN
-	ffYoUFxYZq8JzswO8GoIumAjeD1eA2o/8VBDUe17rONEzliCrH2cGfP6wFk0iIqlL8kuop
-	qh5eoYIJxYJfCkIUeiD5ck4N3hH+Cu0=
+	b=jc3C1rP9YI/z8Y8i2XKOR7ZYwoeulAvbrIS61m4b2aOW/1FWL9UdCrxASLnEHQ8s8aiOWZ
+	vwMhf9buJjD/Po7UJHSPBN2FqDNaExA7SfiXu7LyNHdIJyDwWGHMEyD17hu2O4FtueKPcZ
+	ps/vh/OfliERW4RUOJ0nFeRDtWPYK2c=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=canb.auug.org.au header.s=202503 header.b=JlTgd6m+;
+	dmarc=pass (policy=none) header.from=canb.auug.org.au;
+	spf=pass (imf24.hostedemail.com: domain of sfr@canb.auug.org.au designates 150.107.74.76 as permitted sender) smtp.mailfrom=sfr@canb.auug.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1764981586;
+	s=arc-20220608; t=1764981641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iS/PxCWZGwuJJcdGTqcqS3555N7P9Ocak8WOUuC5XsA=;
-	b=ws1liRfYOEpVpmSUGQ9MLcO3wVWnzwUUpVEpQL0qzWCEAuxsB3ezNF08hfPpFSSD9GDlo3
-	nd9hcGmshgjrhQccz7mjThyKlSwk7Sn9VUkGPLJjtuxXwz5/TTs3D8Q8MXr41qYlIkxAsQ
-	YNmicSw1ufGmK4Q6zAFQEHzoWqFB8yo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dOxnEWX8;
-	spf=pass (imf14.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-78665368a5cso25939867b3.3
-        for <linux-mm@kvack.org>; Fri, 05 Dec 2025 16:39:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764981586; x=1765586386; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iS/PxCWZGwuJJcdGTqcqS3555N7P9Ocak8WOUuC5XsA=;
-        b=dOxnEWX8uzgEepW2F2b+dJoqv+WPbMxpgN51SfKS7+lg6RjcMbJnKI70yZIdz95E/o
-         n1GNqX5VUSb6d/rbi8by862+BTwnfBbJhjMJceJTFeB5GhjwfQorvdVO4m4yjpvjW6SS
-         EFPePLCZexgr9lu9gZyjXQWr+jTxRL1H6H09kS1+C0Y2dw4ows5wu7evya/2v4n8M95Q
-         S66zjdo1PhHKYDoxSd1HbMeTfEK0kKDUC/sC09IrLSZ2jDR1dSpVAWpxwwqsWtJnT8OT
-         lemxxzjvbKlRPrnKJx2rDQW4KEcKUZLCTO5j5t1tqqHb97z1DYwoisPs2iraltfMjfyY
-         NLQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764981586; x=1765586386;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iS/PxCWZGwuJJcdGTqcqS3555N7P9Ocak8WOUuC5XsA=;
-        b=bWPMTFRwjzqAN0QmeNCtJjPg1PwHAR0zo1Tf8kz/2YgmRZ0snlCDMfwNxW7nDAWSs1
-         G7q+5e0iDB7hZ53AQWaPuhZRURkwmb5ltU0S6yx1Szfu3tlXejysI/bTQV/JBI5d8Dw+
-         VyemxkghK0Wh4ys039k7iNePMzdWaLMglFk0ufjDY3FLwiTcP6do/BnuAPIrhMqBHCz3
-         s3lSmJvKB8l0Bk6bcMykQVy1p5HtJQky0KfeUflO78zAXOlxN05hc0GMAIrjbLBE6ZTQ
-         NkjWIP6/4mgixBHX08uo/gzTAwZEMfifWOe7fS4p5TVsOJQAS3Hf4m+OPJc+CH5PIQfU
-         AtLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWbAXAe+dRTE9kp869exNIiEU9USJRcx8SKFiMqDz7mCiEF0wA1y0btC+ghL86o3nApFqV8IU9rQ==@kvack.org
-X-Gm-Message-State: AOJu0YxMMzyEfXRlpA2hXNIW0ADo11DVeXTUq9VcoF9k9+kgpUUaLU0U
-	+k8Rj3Se3FXuf0fECLElzHtCbDvKklbHoXSD8Ao2SDCiHZX+0dDwzyS+gJ4V/w81ANgIMtcS+Se
-	gdLdBLK/NOkijLgu7uulaaQWh4c+XvCM=
-X-Gm-Gg: ASbGncsdPInyXsstB0v5b3+P9Kxu0TF3AI8Z/GqjcIJDK4DrELnEgdtgA1a7AkDHm8f
-	jAEvMXpHIIEQIQOxlORwJs+sEpsX593tqv6Q+szblhwkEtfmdzC+5ZTeFnVTPw2fHg94l3wrefC
-	9ajHZwVOxd5tL5VRE85JyIcDmBcN66FpWgzaTyHveDF1WTKKQGQCN7w3+BwFiASOPZRytZfM9kz
-	LN8F8zE+UotfXg7hyVGHTVP79SBw+h6S/xWEKiJ0XkRQRvdy8PeDjmUCx8Zr9J5N1+1x5Wr
-X-Google-Smtp-Source: AGHT+IFNW2ikPffWpMB1hHHqvH6d1j54Kr483iTS45ilSSv6UXPYq8AygE7VN1mbYMiSFkmdAW2f1RCFz5pUEWe2auM=
-X-Received: by 2002:a05:690c:ed3:b0:788:7f:98b with SMTP id
- 00721157ae682-78c33b09d37mr10716447b3.14.1764981585915; Fri, 05 Dec 2025
- 16:39:45 -0800 (PST)
+	bh=BtXnuTDmcEUZiOSbF4M8KvSQ+xlfsptEnFqR1tvQwGg=;
+	b=u/pvK06eVlJzEPqynwuYGxkx3ZQQjN3hwEbPu/8q7RS8sC8lHr3doOneZiqem0nDx3l8wR
+	sHkwAKCBVBQlklgeQ+TpOiIUp/yCYYRS8nHzk50yWheZdX2UFVIguNXk106l7T8uhu/4M/
+	tdz5DYpNdL8/IkRgwPXqY9WojbMPDrg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1764981637;
+	bh=BtXnuTDmcEUZiOSbF4M8KvSQ+xlfsptEnFqR1tvQwGg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JlTgd6m+KKY8gFS7UEpJnBHMyqLZyo+EtxCLwGpXdcgmhIZWz2cpoY3Z2WpAy5SaR
+	 /Ymp4byQinbtONHj889+HME7elA/Nac2AiLmwiCWLBFqTeV9DcjSgFyie3rOgqP1Ni
+	 CqJ74/d1+dUzViNyjcaJxUeNvXzlGdl01b078Q1fAmbJKk1inVdjyzZL2L4HPUodaS
+	 Zo+6joFdBJE8xzo9ehrx4fv5DvqiQJCe7Dxq2Cnh2JGwtVmRWXAsfKtzOEn6P3L3ES
+	 DqBmVT4Iad2kZiuyZApWcWUJXbAZqfGaqjext1svbMj2dSoZ9wRBi5FyOGJpNR4Nuu
+	 dOtBbimwFYPUg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4dNTtX0sr1z4wDn;
+	Sat, 06 Dec 2025 11:40:35 +1100 (AEDT)
+Date: Sat, 6 Dec 2025 11:40:34 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Hildenbrand
+ <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
+ Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, oliver.sang@intel.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: avoid use of BIT() macro for initialising VMA flags
+Message-ID: <20251206114034.24bdbf1f@canb.auug.org.au>
+In-Reply-To: <20251205121501.bf47efd78d0a1a8f0370645c@linux-foundation.org>
+References: <20251205175037.1287366-1-lorenzo.stoakes@oracle.com>
+	<20251205121501.bf47efd78d0a1a8f0370645c@linux-foundation.org>
 MIME-Version: 1.0
-References: <20251203080440.16096-1-rgbi3307@gmail.com> <6932b0cb.170a0220.2d16ee.eb89SMTPIN_ADDED_BROKEN@mx.google.com>
-In-Reply-To: <6932b0cb.170a0220.2d16ee.eb89SMTPIN_ADDED_BROKEN@mx.google.com>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Sat, 6 Dec 2025 09:39:34 +0900
-X-Gm-Features: AQt7F2qlyVil-aB12oBUhKCB7DUC91KtzDgwvf1_MltJSfNq8gM-a4Nox-P1RR4
-Message-ID: <CAHOvCC4SVz1TH4OaququJUcYfo6hvBE-BcVgZcVBGt=u4HxJog@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/damon/stat: deduplicate intervals_goal setup in damon_stat_build_ctx()
-To: Enze Li <lienze@kylinos.cn>
-Cc: sj@kernel.org, damon@lists.linux.dev, linux-mm@kvack.org, 
-	rgbi3307@naver.com, enze.li@gmx.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E412E10000B
-X-Stat-Signature: jhu38bockh3drqy15a69tesa6dwzme19
+Content-Type: multipart/signed; boundary="Sig_/2k7/Wn4z0R2/dm.AyJ_l8ot";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 96695180003
+X-Stat-Signature: pyshohp6a9qxgpgazg1n19geeqxox9nt
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1764981586-538577
-X-HE-Meta: U2FsdGVkX1/V8Ic8ByN/nj+SNwXMPQW7sWonurBxnETLfsaPDKukQkrKGcz4o5xSJ3YsUCTnHC04VpuNf9pVxZ1SsB6fKXfipgHeYMdRDju2uhYCLsRGSBvxV9/KJVxtDiiy1psGp8s3xmSLxx261jCp9ygsRQ+0KFqOE8i+1tyj+QDotD5JT0I684s8nEfd0QyO97dsxR8RP+uQ3OTvjqnaiyJYWfeG6VPr4/m5q8JK98pTv97cKrSMDZSN49AJLblT9IReNYCXmQd0ru8hdc9hRCHYmVRpcZ5q9AaLlojFjFpnOx/xlz3z/gsWEPr9nuByIJKhnHS5oowSdvT4H+oW+D2m6m9FfFnCvh7eAOJeq0rIGpMcZFAo90MZA9SypSZik2uS2grPy3ZRb18UrtOXC74/bs+Smr/+7RgG/63k7K04BnXuW9S12MWFqUTuCHpTLT+IsHtaMASfAkUMmUf7Hi4y6Wcy/0cporGtg+Ja418Hhm2bvstGY6fEb5juh4NJ1pYO/rBrSQratA7SFBxPEBecWj+dFxopf21K6ryCl5uICyFE1hjqKm5DA4Sz+Zxb2UNWbEZjlLMPq3jQXPYJDc6VskFvd9eHUbtpTJVbTxwry/gcraCGez9rG4my0AuqfiR2eGBQHf542UJaNhdZFa2VZYR3XfgzX4qIkUeuSyVxsKqk20DWTDVwjxrR7o8n5y/DQUxNR3tomGlKEK7PsHXyQHJnbjcb3CNERS9P4Igb1qYooeyx3TJSwpu4BMMJHbrAYCIExPTF4Fx71T9FA0n2rx/JfMuk8KOfZtr/gXYryk8wMvlop8AUeMTwRRjhfULTb0m7+Z1bsSPqYM9czCG6ooqu/411QVhhM+YhHWZLTcKeIbRvZoeeOyN+5c7/S4LJ8AIWTQR0aQtGUmUWoCCH93JVOeyuvjOFov/ta/YRyYuCjkNJm35b8GhcfsDIGwSqiI+qaA2EMXi
- Y7i+Twpu
- 2AKhHIvrYFW08ylhpyKzjiwtJhPed0IaHa4rSN/9m8KtlN/JVzgcYUuVIVXi1zmg2hsvYOfENvWdGm8lBygdL4nVTiR72YxEo3ThBuOTk/mF/jWJPrVDX28ubGPk2A3QGpcfbWH4UgJfnG0bgX2WjT2fTRuGivW5QtXFxgW5rQI6qZVxbePwbLu683cTPAPHte2SNrPsdAnEAQL8ydRwN0uJijGJQSO4gss7edJxLCcsyWNXxxGlyZWxpSelcF1+cIkCTPmjHUa+44BBZrH2oFXgQFNJFOiRQtsTIlazHFwYME6e55q0Nkqn/ASEl1cSnX5OnIWapPu8NyoZ6zyOsZ24ObgeUVG/u2ZpU0xnX++KPY25kUilwdwpmkpP2uZt/Abs8ZZM6En+6HGN2CzI33HSeSwlszYYDphInZnpVC038uclMNohc+pr4gycIMp3a4uwkt0phReWAdFNkMov+8gGbpKB0TfK1a4zNLE4IQPpzqRfrZKKmqTeDUw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-HE-Tag: 1764981640-874925
+X-HE-Meta: U2FsdGVkX1+e548uvn9ba4TxQCT6DolSBcV2xuizkwJXh9/PGV3CI6pQ4gBAbIkGJQKqEl3whDpxBB3ieGbfC1gNNgxVVjZXVSsb+EVwOv5j0j+ZlM4e2BpK8lLC2ZLNJGG5C8jq2G7EnXssOYo4nIdsoHsUl1ElsZwu8mRkr0ETZ5+dNke7RtG17ee6M9ZOr4PeCzcKy4z3AjEFNzcC2j9HZMv2yWSHlD9yIH/vWzemunZ+6sxsSGNGMXX1ejD9fUykZ8gP43J2QQYa2y6T6MEQx5ZQ9573TznUjmNWN/32XahHZSJElxJBgO9JAS4g5bFG31aejyKTbw2rYksNRsJ6qipJ3tPn2uVAHhaDxSkmbJEL8ZhIlXXrq4n54ABEdYmz26UjJZwwsXbWhesMtNM1XeSUqZzJsrHdU2qZU6ImOs/0gST+H3cJmiSHVR3LrVbOpZ/YeRmUp16t4l5iFGlgjobXiIA7vBWl0vmXmrmRJAEb6i2ocZ7mTl+TGfrDnk+MebBQ/FrUNMKOpJXC/kZeAMsQw9fO9c2FRbZjE/UoL5HMcprZrbo47+W/ysb9Tx2BL2JSW/5nsvQ7G5dFZuyVYyRWVoUmDTtGiwQmr1HN3yhUaiyZR0Z1ULXvrdUhzlHWFAI85RiCR5uNNqc9onO+kzdwskb2F7LO0Woi/xK8FiCz8eZFiiMw/RvlS/o7WUs6uDcl7DNq9p9DQxon++6SLNcjnckOVDVwdXkWpKyGhyskIJyxQgJxGBl3rM6OtGrYNJCm232c5OrYusmjPPc+21C5atnAkOFzrMsmK6gf+NXZQjGo3S4sFP80fWeTeS40A6X7OYQ4yPqOfzcZzQTY6fBxQuAW6AtmrQlKqCRYRVVvYRidbW3aBwwUXl8zzui3g3zzZVOo9GFsBxqH3bxZwya2yzYPdDwIAw6a/vN/obFlY3amaUMIkXyO7RL8sjmMqpVMb6J8mFQxCI9
+ CiXR0lyG
+ /ZwpPtk/PZHG+pApUatF/Bd9jusHSLewkpQ79Bq57VXq4y6I1e8Y5p7jKjKtE5fbEZiZFxPZ5m18fQ1ISKAH6TmHMawjWx+UZQVl4O4tqrWBF3BLLZJD/Y4NFf7iRJ8INjsO8LIiFJHvzPn+bH3Ey3hlSGVXsIbC7hAf+COGLsNfhQGsBjKUI7LJ7LQjpJBFYZu1XM00EOb2pXVZXykSXCms2c1PlkPhfYm3VVtlxnwFqTnq+bBTpQgIqrmjmlZ/vApWVFDikIOk1okXO9jEjqiin/JRcif4TGV4DiR1/jMd6X+M2AvQIjgBjAXEIUx4Yfe3Q2gYFc/WFkBgBU0WphWX0xPbUryi0ZaZYi0UMBzQWQk+86YnP4ZO6tg1yPYoX7K7bIlTPRZwJtTNPBEsyumMdcKsdl5JdNwGKdcRNcBF7sI6WUZNTRmM/yA==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,62 +96,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Enze,
+--Sig_/2k7/Wn4z0R2/dm.AyJ_l8ot
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your kind help.  I will reflect it in v3 and send it again.
+Hi Andrew,
 
-Thanks,
-JaeJoon
+On Fri, 5 Dec 2025 12:15:01 -0800 Andrew Morton <akpm@linux-foundation.org>=
+ wrote:
+>
+> I'm not really sure what's the best way to determine this.  I use
+>=20
+> hp2:/usr/src/mm> git tag --contains 2b6a3f061f11 =20
+> mm-everything-2025-11-29-19-43
+> mm-everything-2025-12-01-19-02
+> mm-everything-2025-12-03-23-49
+> mm-everything-2025-12-05-00-55
+> mm-stable-2025-12-03-21-26
+>=20
 
-On Fri, 5 Dec 2025 at 19:15, Enze Li <lienze@kylinos.cn> wrote:
->
-> Hello JaeJoon,
->
-> Thanks for your patch!  I've a trivial comment inline, see below.
->
-> On Wed, Dec 03 2025 at 05:04:33 PM +0900, Jung-JaeJoon wrote:
->
-> > The damon_stat_build_ctx() function sets the values
-> > of attrs.intervals_goal structure members.
-> > These values are applied to damon_ctx in damon_set_attrs().
-> > However, It is resetting the values that were already applied previously
-> > to the same values.
-> > I suggest removing this code as it constitutes duplicate execution.
->
-> Would you mind reformatting the patch description?  The kernel community
-> documentation recommends wrapping lines at 75 columns [1].  While the
-> current length is within the limit, adjusting it for more balanced line
-> lengths would improve readability.  Also, I suggest using two spaces
-> after a period instead of a line break.
->
-> [1] https://www.kernel.org/doc/html/latest/process/submitting-patches.html#subject-line
->
-> Thanks,
-> Enze
->
-> >
-> > Signed-off-by: Jung-JaeJoon <rgbi3307@gmail.com>
-> > Reviewed-by: SeongJae Park <sj@kernel.org>
-> > ---
-> >  mm/damon/stat.c | 8 --------
-> >  1 file changed, 8 deletions(-)
-> >
-> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-> > index bf8626859902..51dd29685915 100644
-> > --- a/mm/damon/stat.c
-> > +++ b/mm/damon/stat.c
-> > @@ -173,14 +173,6 @@ static struct damon_ctx *damon_stat_build_ctx(void)
-> >       if (damon_set_attrs(ctx, &attrs))
-> >               goto free_out;
-> >
-> > -     /*
-> > -      * auto-tune sampling and aggregation interval aiming 4% DAMON-observed
-> > -      * accesses ratio, keeping sampling interval in [5ms, 10s] range.
-> > -      */
-> > -     ctx->attrs.intervals_goal = (struct damon_intervals_goal) {
-> > -             .access_bp = 400, .aggrs = 3,
-> > -             .min_sample_us = 5000, .max_sample_us = 10000000,
-> > -     };
-> >       if (damon_select_ops(ctx, DAMON_OPS_PADDR))
-> >               goto free_out;
+What does "git branch --contains 2b6a3f061f11" say in your tree?
+
+In my linux-next tree it says (I need the -r to check remote branches):
+
+$ git branch -r --contains 2b6a3f061f11
+  mm-stable/mm-stable
+  mm-unstable/mm-unstable
+
+but I don't export my remotes to my published tree.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/2k7/Wn4z0R2/dm.AyJ_l8ot
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmkze4IACgkQAVBC80lX
+0GxJ1wf9FjRXxkCifSnD2o6oPXU1dzWD12+T1qOEp+Gbgygy/V3np4Ol7YzeN6+6
+Ox7m/oMSPYd2gieqDRjHn82L0qFvwJ1H3WYeao6LS7ngg7sGu1r3VI2fv9TWOk+d
+8aHSspGV9Kmm5aU2tanchUj15raPNiEECRrWd90kQTCGu8K4M0vi4Esb1unNF7Hy
+N7rbY3mHFsDuIRaZ/It3fjBvmemDu7O5sKrhdPxF/syfrpASBhxKMpVJqxu4aLvQ
+ENW3fcZpspDHBCplTVROXXAkjtRnXXbgNZyaTX8mufVf7kqbVnbC3LiC/9DXpWN2
+FNeFzOmOYEGYhN7TL7QNEiI3z6zypg==
+=Vvb2
+-----END PGP SIGNATURE-----
+
+--Sig_/2k7/Wn4z0R2/dm.AyJ_l8ot--
 
