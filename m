@@ -4,137 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94445D2CE17
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 12:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1CC2D2CE17
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 12:22:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 672CD6B0005; Sun,  7 Dec 2025 07:16:06 -0500 (EST)
+	id 043B96B0005; Sun,  7 Dec 2025 07:22:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 624366B0006; Sun,  7 Dec 2025 07:16:06 -0500 (EST)
+	id F36DD6B0006; Sun,  7 Dec 2025 07:22:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 512EE6B0008; Sun,  7 Dec 2025 07:16:06 -0500 (EST)
+	id E4C166B0008; Sun,  7 Dec 2025 07:22:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 427126B0005
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 07:16:06 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA95C896C6
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 12:16:05 +0000 (UTC)
-X-FDA: 84192571890.10.DDA8E5F
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EE35D1A000F
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 12:16:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fUGovo+S;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D480F6B0005
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 07:22:58 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D1F1BA913
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 12:22:58 +0000 (UTC)
+X-FDA: 84192589236.28.7078193
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 966E540003
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 12:22:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YASaU66R;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765110176; a=rsa-sha256;
+	cv=none;
+	b=TTo51VuaIgHgd38OCwcYbUGhag6iKlT50xbRmW+bNErkK6Abc8AtcJHReOEhRasezOMIwQ
+	mtoOyRfI/65zsgVSPsGOPhU3HKwUXJe8bmozgw+tHd91FKr+kGqyrewPVz/Q2L0UikuWqe
+	oTKRfd0QNZZFXgtDOm+CpJgDtpUfw3U=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YASaU66R;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765109764;
+	s=arc-20220608; t=1765110176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QT4cc6ryECaLEhMTXcgpX95Fpt+0IiUEEALeoLDPVjE=;
-	b=gdHnEBQUiKR/jKMF0ZyYKFdUVroDSpYi/o0WSz4vGJQX7bydzsbNoFZDOGCXQg8CnsANHJ
-	YuRYKwtQ3gG+wZISwnzeTeGpmdJKkjHthUnlnh2hhjnVeGheNb9jmFZefy9Ax0TqTGHVgV
-	DQQUSiYJu09XfqpA94R6QmpNycv4Sss=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fUGovo+S;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765109764; a=rsa-sha256;
-	cv=none;
-	b=KO2gwxYcTDRrOK4tZbh6QHe8qP3FPddghJ8McEUiuDdByzr84uoBBsyP0JAjiTG4puJ3vK
-	gTzXCE+fj2I5k1V3t80PmZsADw1YyaG2Qu3LcdGI0Erc6x1R/dPXVlxlm23IQdeZgwFxoG
-	HYABYsQV8UpeotWe8mHrm5tR3+tZ0fg=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso43433085e9.3
-        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 04:16:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765109762; x=1765714562; darn=kvack.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QT4cc6ryECaLEhMTXcgpX95Fpt+0IiUEEALeoLDPVjE=;
-        b=fUGovo+SNqWPYix9UjGrWZPkCiVi7c+32vvT8hGbQZUEyKoZP4FdXZQ8j4pguNkXJb
-         FcV3jrKAw8am5kTjcwxMdR9rWW8FoeJiwyYXq+6hlMryl0ux/ve/X4XACDIHdDVrC6DT
-         DKQx7yxZMkXEU4pYfgqHWIed7kEVBt155GfmelF3xe1KrpeI1FRZD05HgknUQsbHfugs
-         jpb/9M7kumip+Q6Cihf5USO8Tb56oNHgs94TMDuhMWXbBdtzOEez7/070A33VbmU5PaT
-         k+bALzI5H6DQmbGjhOFGIM6kW7RCccAH4ugH44Ag4ruqK0bIkecXZcmucTnxqo+ph81L
-         qRhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765109762; x=1765714562;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QT4cc6ryECaLEhMTXcgpX95Fpt+0IiUEEALeoLDPVjE=;
-        b=X00AObSaZXfCounkMU/3O9f7BP3n13CQKrv6tDqJzKiO7cf5xD5MkFpeVbTrRe4Zpm
-         QSfBsAwy7pI1RUJgdBNB7DeIUFBFSULMZEHMEgjuBMLLCNOtsVrWHJM5IsLlEhEAeJ9Z
-         UW6zTeFMcrH96YDeAQHJ+X3t71GxrzjeuNGfD+7NlPCkgxdShzVLk1sed9/n/vzG+Ecw
-         kTmlBZNgAvirlYCfzmBbWmzPl+pN0gwrtvSgx9ae7llsgrL0c9+hhU9ZplT7olgzRJin
-         FkAvB1gz2GdBy2siIctMMDj/UYb9YyMux54jCTQTSF7PvoV3E/4ZDsv73i8pJKvUUquC
-         WirA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxhgJTxhziw9idAmFnih4aWX6XGbTmGfFkI1kT5m+5BHVR6cgKsfMoPB5qZQCh7/bLiePr6DWsoQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw3YP3AuvJA1Eofg1mxYsIOzRJYM0v4jTxv/ULOaxxapzltUXaQ
-	D36eE+KakV1bJyUNu/3VUKLV41PSotmSSUSn4aBEK8MoLATqmqGMOuO2
-X-Gm-Gg: ASbGncv6FO1osp3jNxpenNQHwyo55issI/sMgqH0cr9bmmlgMKJUeejwdeDt+2i3yQz
-	uHVhsKZtL+gzj8K5FENv+o4gPeril0ab57OVSoRuZIS9C0OoWxmBEgm0Rfv4dokoz4OoIuFjUu4
-	m3bBC1mx+oSl0xg3xf1t/URqW4d+G0uS1dH8PlXEpl2cm/cUE89rD63HWIOVkou0RC8LSBtH5wq
-	Fnu/GpVRc1S87evXCI+k0cueGWhojogj2MP2p42Cv8iemZU3z+L70nbBX/A6kQta8CHZ4sVNNgy
-	/1d3peuDvlsqc53FI0kkGBtwy/f85Rql/z9VJMdFhnKXd8xsvdwKldJhegACZbMsGf824u2rmnD
-	c3jC34M+y3WjXJqOZJp6pcfmWOhzzYARRHZghIVlFZ0rH29sPgf3yJbY88FXUmB5RLdrm3wSR63
-	VRTPQn3MzCxs/cg6HKUvtnSHDTnOrC3gI=
-X-Google-Smtp-Source: AGHT+IHC8ivIALeWoT4SzaWmpNaTZ5behrXBR6LHuS1Z2YNL9+AnBuHGkZlkWoEmSgwayqVBsaaMLw==
-X-Received: by 2002:a05:600c:524a:b0:477:9b35:3e36 with SMTP id 5b1f17b1804b1-47939df1419mr40530125e9.2.1765109761978;
-        Sun, 07 Dec 2025 04:16:01 -0800 (PST)
-Received: from smtpclient.apple ([212.59.70.42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479311e707asm181916185e9.10.2025.12.07.04.15.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 07 Dec 2025 04:16:00 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH v1 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-From: Nadav Amit <nadav.amit@gmail.com>
-In-Reply-To: <20251205213558.2980480-5-david@kernel.org>
-Date: Sun, 7 Dec 2025 14:15:47 +0200
-Cc: linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org,
- linux-mm@kvack.org,
- Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0914A8DB-447C-4E62-B151-62E5E4E99749@gmail.com>
-References: <20251205213558.2980480-1-david@kernel.org>
- <20251205213558.2980480-5-david@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3864.200.81.1.6)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=MfotD+6H+6J4066EQ9hPObSWyDy2leAU4Sg4BgVcv1k=;
+	b=5/WPYHn89+9lxj0udR6cOkG1MErANBi4+TifXwo/fwZt9AutKoV273j7PqbOrhyw2hSaXi
+	9P6/dRcJspX9cOAn3uFWrT+MnpJhOVGXVfj72seAUx5W1rXKrK/nOhMo1q0KEBzcTx0gXZ
+	n+9H58Lrosf63Ne+jyEz1ogNdKeYZXM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765110175;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MfotD+6H+6J4066EQ9hPObSWyDy2leAU4Sg4BgVcv1k=;
+	b=YASaU66RVEvMSth+i5o0PfQ4TPgXAHI2CdB4n+i7VK8DZuS6JWsUeFeS+3jR7U3bYRTVmJ
+	VoqI9ElmBMWQZ3HdyNA3Pmcr/D1M03S/ygAr0E5SRqC3QFbbefWAQpgZ9i/kszGNhBjbU4
+	5pXv+dzhOrHlYfoCOqGOtTNpj1MZMps=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-q4QCS8LQPhqac6KU_IASdg-1; Sun,
+ 07 Dec 2025 07:22:52 -0500
+X-MC-Unique: q4QCS8LQPhqac6KU_IASdg-1
+X-Mimecast-MFC-AGG-ID: q4QCS8LQPhqac6KU_IASdg_1765110170
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5FD2A1956052;
+	Sun,  7 Dec 2025 12:22:50 +0000 (UTC)
+Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2DD6A1953986;
+	Sun,  7 Dec 2025 12:22:43 +0000 (UTC)
+From: Chunyu Hu <chuhu@redhat.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	shuah@kernel.org,
+	linux-mm@kvack.org
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	chuhu@redhat.com,
+	Luiz Capitulino <luizcap@redhat.com>
+Subject: [PATCH v1 1/3] selftests/mm: fix va_high_addr_switch.sh return value
+Date: Sun,  7 Dec 2025 20:22:37 +0800
+Message-ID: <20251207122239.3228920-1-chuhu@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 966E540003
+X-Stat-Signature: g8s5hs3jd6npkxwt9ndrt76xd3tem8kt
 X-Rspam-User: 
-X-Stat-Signature: to65uctre3f7i7oucqtwt48otjomixs6
-X-Rspamd-Queue-Id: EE35D1A000F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765109763-189866
-X-HE-Meta: U2FsdGVkX1+qv+hB9+8ghQLxdYpkM1+irEFM88LG/wgp+YrRjxNLdOrM2D5U1YYuTkWOTTeIhd1BtWQS9nTHod9R7PmD06KNFKDKSgjWDNSaa7ERhW76+pHk9QmolOtxMoKIxs82qpWpI+qk1+//ac+98neln476Zf8ah0w0Gs6EV0Kd/excxuhqBhvYgwPhBSpOjw4WBRl2DqDxo3ICZyIKknHbBVfqtsugnRRFQOYeo0nafo54hSqcaYATCZUHBYuDSBQLB5m/PClCZ68zGU63qRZpWlBWDEyl5ME9ozbXwZqhSl69RDuynzUsv6q55WX+zn1JHB63DqsxOmXYLe7tnv3ibHrEw7X0919FtKSGv60AOFgbnmU0qy1ZnWwTNJa+2ww+zM85DT/0f9YIpj6mBpjjS/4DknJhFA88DaawRVYgAtkLLG9b4ITZWs7isH+x3jHpCAfOsDl3mynyVEVWuPqRtKffWjtgOEZcX5vwqk8dio1fw8soL8G8VjgEAQYv+3MlhADly7sXGymCdIrzj8aqZVeaaTphM3mLkqxvvL0eAHhJtVP4EHqbeuBxIgoAtoFO34LP4JfsaSfLZhNrNgPmCiqQQuydjKAGBpNaFqrRc8NiciX97rKJU7Il9weR7fSIG1BWFFdXyjI850/TG+6Lp9BChW/PGVYt2CwFr97vn745TQuDKU4VAWMJm3mhEnJWsCUBAZK20uyd31DO0QJJwNWfJ5YAe5Rm9PVoCKO2yotl/FjqRlGp1N/H7Xn6oeCt5OYfbGxcPmKY0o2B6UnPNUkRXkf+SzvCe3rss71uZVmnQJjDx192P3iewI38eWwYByMJIeohDEyy2TBiBOqnkpHo1bypiHvlrmXcVK0TejsBgNrL820KxyVuM1sIXpMyxbf1tjpn2uycUbnxJOO+RYlmdz61HXgK8U6/7UUoZAiSh/eSmL3oUg9mwBMUJ8vaEqbNmlWuWcw
- iZALyihu
- ljRTudEqX/lyvMbfPbBgvR5O8wyYaNKDrkNEeVfGIryu6lOZlURfKcq7HK6XfFek5GsXYAspph8hMzCVlk2Fru69WCL8S6WuvG+1BtEo1N/XLWjD6rJ6QYxqswn8yznpYF7Rg/UeJy8gVapQhKxiZjvHJR0LidI1ltU2SBbGw473DvUl8pILmPfnTyeyAGOQFWp9p51vijUyORbiiNeSJqZCLoJeXs8+cJSsLrpZOyv3/+lXhlcy1PBR4BrCABJ0B55IVO7vNbdREcCwx3lKP3fGGxbgOpsFi3qxj4sjGumEAWslsMTIzNuBRCRGPvgDXF6A+T87ii0DyNiMUPPkTS9k5p2MmP2XMdVNzwo3/GEDa6lH+sAdj7SnYGH7AnjfIlg90+nEjpzqHgIyscnIxeflBuZUbMjkN2J4MVnW8f7K+gHo46i91byOEGTfVfHU1c6SU+Egk6HGPUL0JS/EsOWgdKn8fdIeEcgkJxOdPFWlWr12kDwag+5/sjMpw7XSHF2Bp95VbdlL18GabtelpAloVlQ==
+X-HE-Tag: 1765110176-827383
+X-HE-Meta: U2FsdGVkX18QSWIH6Y1rmsjQdneKIrRxjF2/BG/DkS2jmVL6wmfrTyak/2yjsxMeVJI++bgpkfPa+N1C7m6AsWojV8jQw5G1kVfI95QlzxM162q4ZC1FchfVzqTPAguaAWxRbhjzqry3HdynBOnOd3r5R6KAGtr64dCappURpDKOc/fHBp06yX5XrRDi843n5uBlXDKg5TT8USd9dYZoD6XxSXHQ6TK9HAmv0kIDsKI4+CCgmC66SWbwB2XQR68VeoCeHWDTn9tXd94EwtOkS4NtOz4JfGzmD7w7jCiez7q4jh7tgKk62XOUOzIcCGyDnnfHbzhr24XWa05a15Amdar6z8wGq/w1dTlF4+KYnm9T7qn+kwN+Ou++ckui53E+8+3gnuVmVYxY9G0A8rIRfUsaOvG5+OAo0sLqk0MGVeM2IGDLDQ+F6Jh3Lpf4yHcgiDCOdHnSz9jI1YON7JFj5Hpvbn9xEhvm/0vm0LhkzFpDH4QgHASzvDe4QJb6nhb4vYjqTRw0APYTe9DdIOKPKIrf3qaZEom0EFevj46sL4W2ZzLOgqbL+eJdNToDUteyRsW1PV9hE0ePapE2on0g6F52Ubvj8jJtg9X/rvV7EYRjXGMRI7qATjEWWC+EWeWpWFcXLEmSLrUEk1LmlaL8DmXTHFs/dxX+PQbZDqoLPYnjSoq+QOOrQAr9l/jn4RU4vDt0PiXTIloo1nwwsQLdK2++9CZpOjblo5TfqT202yxu7e7pvV3bveysLC9EeMEqiHr/dWeNWKKRlEtl44joDfdzHjn/oVQdN1DGx353Xu4jZJ7n7/xRtf8+ah77bgfo0OJ8N9cg1Rhqy80dKqpeVsrAvi2fFNZR3o+QSeg26MXayd0Wfqab0qG+DJpcqeQd+oF7QlgGCGU7Ja1luP+i5znqMt5WoTdW6qZN5QO2cbn83AYbEvdbpz5sYvgvtIVgdfUIfLByeESIhvnashB
+ 06ABidg1
+ QFJv6zWZa4URgS+wo/mcEOejklaj3ZzeZ+9DpNtsgrk1UV3MCJjhSK15VQlXvquCL3fUZl3i5FL00OnCfZONMjWkjYxzy3gYrKLLhLWBp9gLkR+tAHtJgzQ0yTaOTFIcU+6YF0pyWLLfrO5+ScZDPi9EzxufbmGO8OGfIUDmhcm+Z37CrGgSi6op1vh8/waSHOXA5PHWjynp4kqEmzFzVg7AurilH2qhFESCr2/4jfhZjos3s2Y8S/7/NJo9Ljse+HRjW3j4nBRvZnUyBUEgParFG9FyvU5cet2ghLJDGVhMvYOJnjytWTmH/Gk2Mqvg3cppG2/2v7Hw+k7raB3Lg4Y93Yy/v5JzcddYiGkKLcveFhr9sNpl1j+Lb34fzP48VrDmb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,23 +110,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Patch series "Fix va_high_addr_switch.sh test failure - again", v1.
 
-> On 5 Dec 2025, at 23:35, David Hildenbrand (Red Hat) =
-<david@kernel.org> wrote:
->=20
-> @@ -400,6 +411,7 @@ static inline void __tlb_reset_range(struct =
-mmu_gather *tlb)
-> 	tlb->cleared_pmds =3D 0;
-> 	tlb->cleared_puds =3D 0;
-> 	tlb->cleared_p4ds =3D 0;
-> +	tlb->unshared_tables =3D 0;
-> 	/*
-> 	 * Do not reset mmu_gather::vma_* fields here, we do not
-> 	 * call into tlb_start_vma() again to set them if there is an
+There are two issues exist for the  va_high_addr_switch test. One issue is
+the test return value is ignored in va_high_addr_switch.sh. The second is
+the va_high_addr_switch requires 6 hugepages but it requires 5.
 
-I understand you don=E2=80=99t want to initialize fully_unshared_tables =
-here, but
-tlb_gather_mmu() needs to happen somewhere. So you probably want it to
-take place in tlb_gather_mmu(), no?
+Besides that, the nr_hugepages setup in run_vmtests.sh for arm64 can be
+done in va_high_addr_switch.sh too.
+
+This patch: (of 3)
+
+The return value should be return value of va_high_addr_switch, otherwise
+a test failure would be silently ignored.
+
+Fixes: d9d957bd7b61 ("selftests/mm: alloc hugepages in va_high_addr_switch test")
+CC: Luiz Capitulino <luizcap@redhat.com>
+Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+---
+ tools/testing/selftests/mm/va_high_addr_switch.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
+index a7d4b02b21dd..f89fe078a8e6 100755
+--- a/tools/testing/selftests/mm/va_high_addr_switch.sh
++++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
+@@ -114,4 +114,6 @@ save_nr_hugepages
+ # 4 keep_mapped pages, and one for tmp usage
+ setup_nr_hugepages 5
+ ./va_high_addr_switch --run-hugetlb
++retcode=$?
+ restore_nr_hugepages
++exit $retcode
+-- 
+2.49.0
 
 
