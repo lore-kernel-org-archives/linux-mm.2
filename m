@@ -4,102 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8ADD2CE17
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 12:39:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7590D2CE17
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 13:30:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F9D56B0005; Sun,  7 Dec 2025 07:39:24 -0500 (EST)
+	id 8502D6B0005; Sun,  7 Dec 2025 08:30:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4831F6B0006; Sun,  7 Dec 2025 07:39:24 -0500 (EST)
+	id 7D93B6B0006; Sun,  7 Dec 2025 08:30:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34B716B0008; Sun,  7 Dec 2025 07:39:24 -0500 (EST)
+	id 6A1416B0008; Sun,  7 Dec 2025 08:30:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 206AA6B0005
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 07:39:24 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABB9F52B26
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 12:39:23 +0000 (UTC)
-X-FDA: 84192630606.27.6A4A1F9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 03458180010
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 12:39:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j0MPFla5;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 529FC6B0005
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 08:30:08 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D902C8AD9D
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 13:30:07 +0000 (UTC)
+X-FDA: 84192758454.14.31B107A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0D6CD40008
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 13:30:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SBvonLGT;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765111162; a=rsa-sha256;
-	cv=none;
-	b=d5x9uXulBt9aNQxWGKBf+l4m7V0Zt9ij3Hq0Bicf3zqbLMVr37DcHt2TpyO1MQzj9kVQEp
-	LQtzM3io9yAe+IP9n6BkNpjP++V1NqNTmgrBIy3jlwbqcVC2veoiRAHr7Jaii0LYydm8z5
-	HSn1DD0/8AXA0nTkAw1S3a7Bhtp1wuY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765111162;
+	s=arc-20220608; t=1765114206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G+tAs3zNXiqRvuXVGF6Pctt/OzAoFUsb7IrHe6WohS4=;
-	b=a+bxm6QwVi/Ui+T1WXD5e+RGtqImT7FS0JFJ/3AgDKUywD6IRcviF9ch8ke1uWfoOlozLy
-	HfCGV5w2BMr1npdrvO0wwWdSuTxX3iAt6WoK6pZOIIyTdn6NLvK6fE0zw8HVrwMtdGlh0i
-	caMTMul0sAKt56iL8q860VyU0RCCi6E=
+	bh=X4CcmwI6jF+W/oiC3+GfY1xusUUjAEGgOx/edMOtJNg=;
+	b=z/ulHwYy+NReb0BDiVciQnYeikcP5lMzXvO9akUZXTcfUaZIHqz9/0QLT1X7oGQ1fCUwXt
+	P490c/HjapdmgwBgQKIpjlcRrmpS8EyJtOWoQxHmnqox/aC3NFAlGU/z3wY6+X3pjh8yIW
+	RplhNSzFdievaazxMne1jHwm1YpoKU0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j0MPFla5;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SBvonLGT;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765114206; a=rsa-sha256;
+	cv=none;
+	b=uT4lgAJ+6Q5htiFPoRIOgzo03fDwr4AEruknofVIhRIvD1i10AF0np06Cz6rv7i+QK/rjC
+	+yVLg1Ac4HEdZ8bsaiGD3RQ+/aNElljPy4ThzO5F2xbpKpuHbWUFmEy8SQcSSxH1TNZ+8b
+	NybIyTjLoCmes+OGkE7KIoGxju88nqs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A9D960008;
-	Sun,  7 Dec 2025 12:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E14C4CEFB;
-	Sun,  7 Dec 2025 12:39:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D66574383E;
+	Sun,  7 Dec 2025 13:30:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1CFC4CEFB;
+	Sun,  7 Dec 2025 13:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765111160;
-	bh=EDc/Ngb1HhThAXOD7k5e16o4L5UdHvj6G/GaIzURyHE=;
+	s=k20201202; t=1765114204;
+	bh=vUj8g8Psox09HQaPHL5N2VH3SgGfVIcj+mdYuXo3InY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j0MPFla55Igf6JYotD4zn3bR76m/U/xQjs3q3ZMqJopt9AYI0rPAlbxo+C0QqslCv
-	 eKPyvW19I4GQDtiTkAhTrQD5nDqmh3RthlxWAf8lKyoagQbNXZFQ+xaJAuR/946JXI
-	 4LhPNsW6osRoKI5nbkX68Lcndo7tXjSmvrR+hJONbEJtOoV4m0O8mr8cEx0vxOqxVM
-	 F6IBzsyRzU0IlQNIcCB4WT9GU/1A913ajVoi1VzTGcPNcnviFPdZ5tpzSv2hMFkjOx
-	 j3cGSrwa0orHQroytDD03PY2FkvYDWoPXLv7Whw72v1O1riVVO300gsqy1Ccvt8B6a
-	 nw/aLSciIFdBw==
-Message-ID: <3a408dd9-a38c-4202-b79f-91bff843ee82@kernel.org>
-Date: Sun, 7 Dec 2025 13:39:10 +0100
+	b=SBvonLGTXqz1PcsnUePtdYKDTi9Gl02t6CD492eW1INa3wDqJ/ePv2CG0pgzezxls
+	 +M12t/nzClqfCXASGkO4k0QH8BVQuYRsWatI3sjF8kPIGY40UWGg2t5v2EAmxKQ/su
+	 aDSP+WEP3WwQwkv6NotWMjazy63GekVMNhqXySHaEi9K8ifdi8aK1x3f3AOlUDL28S
+	 OEl+uXN5uUgLVSaZNA5FcEQWt30G6mzITHgWY2X2IvsBY6kjYTbNqMuQ+O95J66MUL
+	 NIsK2O7ENzktEr6xuXEXaCZcEH3WRRJHLYB9IolEf4b/tRKuvQRvFvKDHddr9ZIepg
+	 TgWlRYxOkR0yA==
+Message-ID: <7cf016ec-70e4-4244-82f6-32718dc38cc6@kernel.org>
+Date: Sun, 7 Dec 2025 14:30:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-To: Nadav Amit <nadav.amit@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>, stable@vger.kernel.org
-References: <20251205213558.2980480-1-david@kernel.org>
- <20251205213558.2980480-5-david@kernel.org>
- <0914A8DB-447C-4E62-B151-62E5E4E99749@gmail.com>
- <C9D5EFFF-05D9-435C-96C1-4B13134E2904@gmail.com>
+Subject: Re: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize
+ online check
+To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>,
+ "open list:MEMORY HOT(UN)PLUG" <linux-mm@kvack.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: skhan@linuxfoundation.org, david.hunter.linux@gmail.com
+References: <20251206212507.135503-1-swarajgaikwad1925@gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <C9D5EFFF-05D9-435C-96C1-4B13134E2904@gmail.com>
+In-Reply-To: <20251206212507.135503-1-swarajgaikwad1925@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03458180010
-X-Stat-Signature: gh6ynjga4hkywgir9jhpu8iykbhm18qe
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: unedgywutmumh4q6o48brd3ra543wuzs
+X-Rspamd-Queue-Id: 0D6CD40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1765111161-519719
-X-HE-Meta: U2FsdGVkX1+gH3CZR5uXdPIOLYOk9UBNhgsSz1PQ9iLFKiNBupVl8UAJNiFuS9fUh4vKPg7Si8xBwmx4VJmUr5Ul2h3Bap1fn4R9Q7TfNSuhDLYFpQ2uNqPMWgTrahEEMJoWMR/5r2yRwg3C+pWWpTYVipjxqBJZ12oi6QjhRyN791+8GaO8Q+HcaXUEI08eVn/Fzt0xfTWUGij9p9DcDfZsFP8Cbi26Sz+DO1fbyqUcY8rdbiAFctpQBe6//tTNfxa6PK2qCzigk3ngELJ+e1h8j2lALWlysArRo2KekcUWDHAdVPr8CDvRk932dSyM8+GLe+srVSeYK689OSuDfWg5gY+XI8nGecUWiq7Bza0IC8YbmxOSF5O8A1HKu79LJJsJuu6TapYW3QUjExHvtP/HxMZWVXeFe0zYHr5kJIZFd9Dz58UodMAWrYoIU2BvbEky+ttexdaKVWzbxSOmTPRklH/ugzGnLLVe9yRZAlE3TawmxqYP8+W7w2P0eky/5DQjD+LyCr6YQyuzZA/tAH+vpCOwQ+sLsVc+1icO70iZE9zyXVT51eePRELLWLrvLMDm+KVhCUJDYmmgiWx7AqnsGc2mk1BM202O54Vy80Nu2qAUp9/8jmFQ034XsmJFutjj7c5cVD8YillPI/RGpyp3wIb/6d21NUwWW08UZQ50YbzTvGYRaCVWxUl4T+h/0d3SLf3fDEGXVNUeYIBFLY7iKAHVjz/FsM//gvwXm57Mt+Z2fBHhyOBVLXXV9MSu1mS4EBbWK7ctEl7fhFuSy6qj6Q1VAr7+sB6cTReD4xPaSqOy7zMcmLP4uoT4j92iqdIOkq4lsBdIzEVMRKb0ng79IfIQlWi9hCB3u0QsRHTA18mxxPrww32/Qf0vRMwMU1FF8xiFRGMDuOHk7ntNZADMH7rubMeloRFMjXaS2fsv9lVsztNimAvwoEMUi6L/CXFb/BUn5zsNabYoBtQ
- ITf5T1L4
- /d+kRl8fuf3AIYBMjXA7E4H13QPdtGal9TKTe12kWsKFyU2Itz4L7GWzDR1KdosA+e5oNxoRKMLTv+uXwRiN3i3eHdx0JvOAjmSXuyd+MFutaCUQcKU9ZZ8RUAoN69mS3OHqAEUoIyXSzZ9XbyANbAR5ZFcsedGU+dsquI7qTORwEQpUYxdbko7WAs+RZs7d+f4UN28UbC6DUELvW+W9VUpWMk1lUdir65l5edJyuv2YcHhkr2SaYyvXpcLtPR/AemLXEMjyya9jzC3pFSQQR8UjQo+SXC7Kvk3CUAu6phh3pX3g1/8ieIPw3Pbp21X/H+UsPjBwK8Wm6f2SuEYJxBf8qzfCR3pCb7RlMt5wukS99bAk3eoWOS/hHet2sM4LGlzhvVtIz/cySlDIPjheYq5jdfH5OmosgnMYP
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765114205-89819
+X-HE-Meta: U2FsdGVkX19vr3AGFK70Kcq0eyVZ3rPzCFtTwZ28HMzvZCYGihzhw1yLehUs2oE/taO0Zs0jqEdqmk5DS88NZhHG10vdO5ZVvbu+Xxm9C3K6iFnfYxZ4COhxFj6fmqUWmKmayy4OwsxMdcZtyBU8CwynMq0rw9yHenYSLTVKMAOrN62mc4xGkx+26OaVnf5rBHl8Fco9rytIK+dz/eW+G96fi09TXYM8/zLtdlhEauBisJrMPvVlbvFkMUwuExHQo7Traw8xH5q9tn8pVOjQvpcezuWtrSaefbUXcvC58ONzB8ZxqN0VIIH7ky986NSoNctjI3s2/QzFAijdr1ZAz6R77EBgYWFN5krMO4c4/WQG1DDegKgOuKkvP99vnAYBkzWFo/OeEtRSXzDkhazCeXDUctDxJp4zq65amoqDAzvx+SC6GhFr1MkV5O+U91ipmgZQbp05bhAJ7+bM0db0bJnrHSSKx+lO1U+zAeZp4Ctr7tZseg6lKDq7xWn63wk5y8n9ADvoQq0FiyPqY3e9PCOe9J3iOkOBZmTjdu0MSAYbgL+OHrPOx0FWFyLmO9i0Q9Jvf5bpAUjUWxOZON4Uzyx1eBQic/R4k5Q7XR+2pglGUS5hZu558r9QlFEgXBt9Dh7zyxC9ZOIw+q9sJYi26mSaQeIA42nvlk5QMgabi+R2cqIqHvVSJ4+c+u7h3vZERX5+yX8T4453Ku0PhgYBRFb1zKIagc9oArlyhB8/leCkNKpk1q3qYLCTrptpdcTiG5j55aG4Aba/Y2CDTFxipEWXOy04k52kFxs+tdJJpFLD4ubLbaoQPbCt3GIBXz9+cGWEmAfsas/9g2qrRrmne6BJQ0OXwv0pyJiEegjEOPTUumJ6oRwOQ/1e8hWlPFy0lexTGBUzf9H69hiVu6Iw72erS6iYWQOdwl+ZT6hP4PSCNJYt9Mh27KxL4aTB9vwu7Ak0KnZ4rx8qZXS2vTu
+ N1EJ1gj5
+ v2mkiy8pmVbWV4KDDcO/2rB9571Yt4KpLwdGkR/4SCQJfsbt1pV1FXj0Elu/HpXRvUMxrqHNn+Qf+gT6mYi11SQO3CeZzc5+9nK3PPnCc2TrGoHpAImnntbY6UPnGXZOAJxmf82KNW0EJLV5VEH5d4hR801WTt1ityx11MCwehGzhaj/yfbM7omoHs9kzCopsM09DDyLiqF3xTM5WieaP4rU8w9jpCRtoBoLnb47KzhI7zRmWODV1YscpoP0WKJ9NIS8fgZrhE6jZhGE3oQOJ0kK7GUKsI3Kr9qvU/vzPS509N41clJf0BJAXyb5vj1dmGekqJxn3vSMuom+pJigcusgAMaAAK/uWQjAYD3Se2hzhDBs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,36 +98,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/7/25 13:24, Nadav Amit wrote:
+On 12/6/25 22:25, Swaraj Gaikwad wrote:
+> The auto_movable_can_online_movable() function currently walks all
+> populated zones when nid == NUMA_NO_NODE,
 > 
+> Since adjust_present_page_count() is called every time memory is
+> onlined/offlined and already updates present page counts, we can
+> maintain cached global statistics that are updated incrementally. This
+> eliminates the need to walk all zones for the NUMA_NO_NODE case.
 > 
->> On 7 Dec 2025, at 14:15, Nadav Amit <nadav.amit@gmail.com> wrote:
->>
->>
->>> On 5 Dec 2025, at 23:35, David Hildenbrand (Red Hat) <david@kernel.org> wrote:
->>>
->>> @@ -400,6 +411,7 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
->>>
->>
->> @@ -400,6 +411,7 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
->> 	tlb->cleared_pmds = 0;
->> 	tlb->cleared_puds = 0;
->> 	tlb->cleared_p4ds = 0;
->> +	tlb->unshared_tables = 0;
->> 	/*
->> 	 * Do not reset mmu_gather::vma_* fields here, we do not
->> 	 * call into tlb_start_vma() again to set them if there is an
->>
->> I understand you don’t want to initialize fully_unshared_tables here, but
->> tlb_gather_mmu() needs to happen somewhere. So you probably want it to
->> take place in tlb_gather_mmu(), no?
+> This patch introduces a static global_auto_movable_stats structure that
+> caches kernel_early_pages and movable_pages counts. The cache is updated
+> in adjust_present_page_count() whenever pages are onlined/offlined, and
+> is read directly in auto_movable_can_online_movable() when
+> nid == NUMA_NO_NODE.
 > 
-> To clarify my messed up response: the code needs to initialize fully_unshared_tables
-> somewhere during tlb_gather_mmu() invocation.
+> Testing: Built and booted the kernel successfully. Ran the memory
+> management test suite in tools/testing/selftests/mm/ with
+> ./run_vmtests.sh - all tests passed.
+> 
+> Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+> ---
+>   mm/memory_hotplug.c | 15 +++++++++++----
+>   1 file changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 63b9d500ec6c..ba43edba8c92 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -50,6 +50,8 @@ enum {
+>   
+>   static int memmap_mode __read_mostly = MEMMAP_ON_MEMORY_DISABLE;
+>   
+> +static struct auto_movable_stats global_auto_movable_stats;
+> +
+>   static inline unsigned long memory_block_memmap_size(void)
+>   {
+>   	return PHYS_PFN(memory_block_size_bytes()) * sizeof(struct page);
+> @@ -851,9 +853,7 @@ static bool auto_movable_can_online_movable(int nid, struct memory_group *group,
+>   
+>   	/* Walk all relevant zones and collect MOVABLE vs. KERNEL stats. */
+>   	if (nid == NUMA_NO_NODE) {
+> -		/* TODO: cache values */
 
-Good point, __tlb_gather_mmu() needs to initialize it explicitly!
+The TODO was a bit unspecific: should have been "cache values if walking 
+all zones becomes a performance problem".
 
-Thanks a lot for the review, appreciated!
+Is there a performance impact, or are you able to show a performance 
+difference?
 
 -- 
 Cheers
