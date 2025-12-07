@@ -4,231 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFC33D2CE17
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 15:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE141D2CE17
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 16:18:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B94F46B0005; Sun,  7 Dec 2025 10:42:20 -0500 (EST)
+	id D00406B0005; Sun,  7 Dec 2025 11:18:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1E976B0007; Sun,  7 Dec 2025 10:42:20 -0500 (EST)
+	id CAFD26B0007; Sun,  7 Dec 2025 11:18:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9983A6B0008; Sun,  7 Dec 2025 10:42:20 -0500 (EST)
+	id BC6936B0008; Sun,  7 Dec 2025 11:18:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EA9E6B0005
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 10:42:20 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F1B301A0829
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 15:42:19 +0000 (UTC)
-X-FDA: 84193091598.05.787893C
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7521F4000D
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 15:42:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eAM3wLMZ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=OwEDjvj9;
-	spf=pass (imf12.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765122137;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A9EAC6B0005
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 11:18:04 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44088C08A0
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 16:18:04 +0000 (UTC)
+X-FDA: 84193181688.28.2754778
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AC908A0017
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 16:18:02 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hx/RPkQJ";
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765124282; a=rsa-sha256;
+	cv=none;
+	b=uHY/wKYA82qMtnks+gIwLspKea2HeTPaUaSrkEUDnEp7CqTI3/QZD5ool5EqEIUpx1C2qX
+	dgoy34VBZ9DBMn4Ar4Z11PrFJ1bpRKYm4/ZcLOnyDawjj0+S5n4oG2vC8M5PGZvhCmO7zO
+	HwufPwkOrOits7far9jGvlf44vpeupI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hx/RPkQJ";
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765124282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=liYRHWl9pdch2jXZ4eDwREstGpzDhvVmVYT7I49wltA=;
-	b=z7bx1cKhCu1fEmB8K4+8y7mP9nWoRe3Uqh42Xawv2P4C1zHidvTSreLASJsfKMgSSpDwR6
-	U/kWX7p78AoA902QiRpMbTJykivozjD5ThCySd8eNOU1kJNu9YsYbu4EBEUgbVAJk84sae
-	Zbzbg57Cel4V9R29o4Oc1MY6F6p7KrY=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eAM3wLMZ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=OwEDjvj9;
-	spf=pass (imf12.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1765122137; a=rsa-sha256;
-	cv=pass;
-	b=2tGOFOX0rSl4Zt7I6HPOuKJGeSJdQGj4znQ+T+2xd6J5NV81gFZ6M8AKPHI6+B4bwZ705U
-	AVDL/a13/GqdNipnyQpgi/VZmxAaSuexOFXHYk+yaMjBhYP7ROwLeXNwSuj3NTleF869H7
-	THAfwBWOkJjFDYcwNWsMGQr9TlOTdNY=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B7FcKEp296847;
-	Sun, 7 Dec 2025 15:41:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=liYRHWl9pdch2jXZ
-	4eDwREstGpzDhvVmVYT7I49wltA=; b=eAM3wLMZUAXJC+OGsydUbxW1YqeYx9RN
-	4MP0Dj6WuT3Ju3XhceQl9xU905qLjqogM16DVBAKJ4bribfNQTn8A/iYbCdY5HKG
-	UNhYNIMB8DMYPXXRMGpwgRkA+ZGjLKDqjkzYathgjveb91xPg2ZsbSPdr3cb+otA
-	pjQzHYLedTFsZgwn9FwJ9zyXuzo0yfeuJ8vqUerru2ToKh502HHPYqDjVvsxJWTy
-	fUabMU92ISMHZREWEKvOv8HtwaD7uPiqHbUhIeWv4S1EJ8UBGk/dkdnRXTqcgQK9
-	Era0kjO5AQF6wHZ2U5s+Kw9atItCtYRmxCzVIgX/6eEowHykQgmcug==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4awc50808h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 07 Dec 2025 15:41:59 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B7DieAo040650;
-	Sun, 7 Dec 2025 15:41:58 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011006.outbound.protection.outlook.com [52.101.62.6])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4avaxaphfr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 07 Dec 2025 15:41:58 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hQSCdnNWqA3snOfFZi3pwP3KhoIQNtc3/tAg7M7f79rDr0ly0nF+uPVbWivaUiR5ZP09U6U5OYgFCcfIFDpTOE1hu4I4IydPwM9ARltFM6k23dxzjJbdXxF/9RU0bKur39Sspzbg8+bCD122iz5gPAJnJEbv6wbl6RPQM94KQX//VV1DxYEl+OZ/trzUrGxeE3GqqLgBcSeiJ2ZRly1NHz5/UDw0ZyOHoJLkox+S8K6AHqmCUlcU4OnGhcZYmHn8s3MCx5AfVtAca+68Wpv9JoOeiAy3H+IkjbdY8cuuI66bx3G0HImfh+/6tp0dozSDIc0NKGaJ9S52gy+n+B5KIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=liYRHWl9pdch2jXZ4eDwREstGpzDhvVmVYT7I49wltA=;
- b=w0gNx+ws1zFaBefzNxt9Olkkj5KyOrYpghcXZ6RMhKhDNjDSZ7y8g0JNStZ5yBOJ1sppKgGcHrThBzARS2Jq4gzuQyRjvZ1jY6SAPslnXdS0+6SUQF6VzPVviB6seBoh+gjEkuWVPmdQ1VzAPWOu+ylcTAhERV8DLRQS+jQyynn+2XKwCPrf2ptBrTWiGJWiRsSqD5mcK1IDOC1DI6nYMk8Vn63w3+8kY1OidyYxHLwojq2dgzujz2Wt3trWKQOKcchvLEwyIYMQAkSvMPjJ26qjBDryO0NvDxBm77cvxOfvAM0fCkioCxE9NCujtD8PmizdFNN5PYZUTxzVzBMfdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=liYRHWl9pdch2jXZ4eDwREstGpzDhvVmVYT7I49wltA=;
- b=OwEDjvj95CCh90lAZdHgYc6sCwvuOw5pqOgRVJlbhGJSlOOs4LntbVDRP8aYkNF2SnL2JRUxI48V8ughyIP/ebsZhiEa1qp2oscprLF+XmVAj3yoQGDVy6xosyvKz5wqv3RcMhjpVujXlN1lYCB9Kmc31larM1/LsoOfBcwPrnA=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by IA1PR10MB6146.namprd10.prod.outlook.com (2603:10b6:208:3aa::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Sun, 7 Dec
- 2025 15:41:55 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9388.011; Sun, 7 Dec 2025
- 15:41:55 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: vbabka@suse.cz
-Cc: surenb@google.com, Liam.Howlett@oracle.com, cl@gentwo.org,
-        rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
-        urezki@gmail.com, sidhartha.kumar@oracle.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
-        maple-tree@lists.infradead.org, linux-modules@vger.kernel.org,
-        mcgrof@kernel.org, petr.pavlu@suse.com, samitolvanen@google.com,
-        atomlin@atomlin.com, lucas.demarchi@intel.com,
-        akpm@linux-foundation.org, jonathanh@nvidia.com,
-        stable@vger.kernel.org, Daniel Gomez <da.gomez@samsung.com>
-Subject: [PATCH V3] mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction
-Date: Mon,  8 Dec 2025 00:41:47 +0900
-Message-ID: <20251207154148.117723-1-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0124.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2b9::11) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IFbtioVwjPgTz9RGOWKLcWwm2r+DeWEZdEQueuSwrKI=;
+	b=OQVZqvw86pPGmD2TJDWPDwVusAFHr36IlH0skptWs/XqteFZD43gO6BGUiCJluESqSMAlM
+	H3+xrvA+XvrzdK6UQdpRUqKpIOpIe1y4Hj4aoDsQQg0UspdjhNRqkXT7w1ZHTwvZXZFTMF
+	jjiK/P2+QbKqqKGmDfoGLDQFxHcIEc4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 735C343DF5;
+	Sun,  7 Dec 2025 16:18:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9F6C4CEFB;
+	Sun,  7 Dec 2025 16:17:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765124281;
+	bh=WY1HUCK6dVbMqOfj9ILVOTmqrGtjd3bt/apdnq21NBQ=;
+	h=Date:From:To:Cc:Subject:From;
+	b=hx/RPkQJGYp1jmeiZaTximUFvCYqIJZZPTgJT2m90fCUQsopjNrtxQqgpUMFlk1vJ
+	 0gEi28LOD/N1i25hYXfZvJSg3+BbfYnsjD+NnJbetIHjdZE8fxfsLYTWiHweFDr1gb
+	 SrEbmqEkhd5GWYLECay4Og3DqkhbOPbVQ3F/QFTKpXywVnP/1kBLKPHcpmqXZM253V
+	 SV19htCktSZ4e2FrALNWzXIok9bFTeuWOUCt0aP9aCkRJOBhA+ouM1sYibzx243lzG
+	 Ybt1cXhfp3889SXIKo5H18TgDhiAxgGWdoTF0qBHlJQiiqI9yUCzS50j2+LeAlliaK
+	 lkZHrm+cwPivw==
+Date: Sun, 7 Dec 2025 18:17:56 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] memblock: introduce check_pages boot parameter
+Message-ID: <aTWotB5ev3q9VdXj@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|IA1PR10MB6146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 514e02f4-2b66-44a9-9617-08de35a72647
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?20nMfrqzJPNnOO4w2t2c+Z0kog9aauMROlGk7xgHxP/YB3aJNJ00UBQjKaVx?=
- =?us-ascii?Q?Cq8RW3UYh/RxWFC1DZhXkcmOUFT7DPbeW1chNE3Jz9WNKnNt7JiTgsw3PCMz?=
- =?us-ascii?Q?rpHiABnOBtRaN0S4prsDEI0LIA6cthFDbdWwmGIGwxn20MFwn5UzR+JL3qk2?=
- =?us-ascii?Q?B5EJH+LSkDmnGmz4UJJoQ4JIX4XO5hxGIZnzVKD7g8I0zgqb/KJV0aljkDwm?=
- =?us-ascii?Q?Ztu+39NzM8KwGlnAZdEyRvHTlBOGs1AKcjKWoT4doVEIG2hBiOYsL+VRKNUG?=
- =?us-ascii?Q?wfuszHPdZfKrimUIOaZ23+/ORTIbsOVbAo6SzrghPNvwVJ+qXF+eBQcHFMiC?=
- =?us-ascii?Q?3M+S1udh9BiHuAlCSEoZLA8uAs9jw322wpFL3aa1MoWcYcueEEL8Uw9lyWh9?=
- =?us-ascii?Q?YB84hXqjOHq+TvxaRUa6UChMKrdTZRJQwnaFWMrgBniheE7DmJwuTcLLQvM2?=
- =?us-ascii?Q?lwrGMemTqw68dWzwkAOufh748tdrwHCwNYSrey3g4KpcY/8m8m83VDbJyCof?=
- =?us-ascii?Q?whSd13wgJPHaidw3ffXcr7RxdaD9BCuHPx7iqlXfaunV0GQlXoMAzhRxNioS?=
- =?us-ascii?Q?o1xZMRPpgyf1IURTiSOMI2Fed6CwmJudZqmXvO/XY8iLXrBCPkH3zZ4FNgrT?=
- =?us-ascii?Q?8PyKLaUW15YbqTS/NACQinwPXvFui8hGpeLtr0pj5Oo+uttuwhN7JlXijOgh?=
- =?us-ascii?Q?tfBpzw+FaKruYg0ZiLZ8skLdk2peeMoVLTRtqIV45tmxhTrEtQ52AA5RLo4s?=
- =?us-ascii?Q?2UP4AQV/1981WeUG1DJApWLE30M96Q0Dv7Sy6yA2DrFETtk6c0buCZ8nOfDH?=
- =?us-ascii?Q?LszMHes87LDjXLFlNjc/0kcak/f/SJcQN3WikoiCO/Ez1diBg84nPawwHHOk?=
- =?us-ascii?Q?dRLksB3IeY10JVkt/KSZiazdPrPh+H1fX+5ahrwESyfcXGZ9CzHbDOoDazkr?=
- =?us-ascii?Q?ZBe4g9xqpdza3x5I4FEho4S0Lyz+BM2E3vVPWvPDVtbocke/YyC4lHIkvbXM?=
- =?us-ascii?Q?h0nmpzc75fLZWBn9D95dgKP6efpnpUSUAIMPLPhr6PzixBgrlSO5yBKhsEKq?=
- =?us-ascii?Q?3rWMSB2ZID6h2oic7u0YyDgCer0GXweih+sm2VWYimBWg2fyU8Mc9B/a3mgR?=
- =?us-ascii?Q?dtcX8xtezui1+cX/q1C83QZN7saHoK51Q4rQ2dRsaHgxSytxaSlswMzDOmaf?=
- =?us-ascii?Q?yBlfCktwc2ZztHNFEMogxjnFWro4J7ekVLpRBtaGXnWYBXiuxcWF1clVw5sc?=
- =?us-ascii?Q?7OELXatj0G30h5UB7mTvLFrQsY9p9+rXv/URudKbmBYUN0g3m1g8XT5vrkxN?=
- =?us-ascii?Q?yXygHHWcYAqE0bOG0avrzj9PbjxZRYkQBNy4jqgJ2xYFJrsWqFaqXVoLRK/I?=
- =?us-ascii?Q?86MlU7S4QqjoAyFq0OswMAxs5rIUoXTdOXlHh5nIEqW12SOaFEFA+TvDdS7i?=
- =?us-ascii?Q?guK0HTN6cUrp1KNTZv1hAnWVdqdsEjEO19tdOWLOMD18R3/PMCw2vw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BuXJyiIrlk+zwEy318JLOXtkMmPPXaXlULfTgrRpHt5lxkSP0UGw5SoisERK?=
- =?us-ascii?Q?gRS1I4Rgx4dWemqa68aP3WXdAhZeTX2y5JJyJ7f+PRD8l74Yz9/7OWA19q29?=
- =?us-ascii?Q?JpnN1amGZZW4TAi0PH0yADeph+DiuVIW5NRK0iLP2sNv0PeEJqBuZX8vZauy?=
- =?us-ascii?Q?sekXX52OJCLFnan/mFoxrsxU3OWfCHnnW7EZr7GJlcz7YT2NH2JMX2NWJpyA?=
- =?us-ascii?Q?1ezjWOxfEdh8PjRL6v2kBh5O0DLno7hzWjZJnWI5/FWA+ZekKvrd+OUNrumO?=
- =?us-ascii?Q?HTh/mpSqaiurGwoCfQ29ifpS5b4q9hSF8wa9mGA/Dh6OHuDqmj35Lan4ea0P?=
- =?us-ascii?Q?qafUeaLa5zFYqgKa/z0M48Cs8KtbZCtWBE+bCjx/aJYMW9l/KscZykPbaOMw?=
- =?us-ascii?Q?DLF1a7TZu7JaP896Y9rVh6Xkui9qGohGV9UAf62I2Z3NBD7jlX5Jf0USSEq8?=
- =?us-ascii?Q?ddV/G6qbB2Yj7b+ssKkX3CmkddCn5oazI89Ts3U/+NCe2GZa+4E3QrQri4hv?=
- =?us-ascii?Q?FXQnRIIFNN3s9owW3jwOwqPXu5/Q5Bv3pvngJnJsnxz7nUi5vevbAf/GqTOc?=
- =?us-ascii?Q?st4NakUDniezgUOMHStjOsVFR1LLrkhHb2+JUnycw23RFYHQ1nF2gnzPmpS5?=
- =?us-ascii?Q?n5kT84fEuFa2ZysBnX33TkT8E9EdNRRuoE/88nRp0AGZjUl7tRF0CC9uGoiH?=
- =?us-ascii?Q?+homI0R7pRnnt4BhNN0fOL3XpBIqC6vQwlWTqf6qgjGKYH4pK+jRu/F+upux?=
- =?us-ascii?Q?bL1P2z0UT9FC6ZJ8WmshPvFFL7nFUvCm6oQbe/SQnRq+QNj8uwedq/+q6tLl?=
- =?us-ascii?Q?gLWKtzrkLfdEP4aY5I3UwBh1hvyn+27SEQeqPomPq8IRKjTLclk9A5TnGbpR?=
- =?us-ascii?Q?75CEQ0MG05pGo7cYDnxvQ1E/PVDaFnzjrGYhi5BDmI6ji4GRYa8qOcY7JvUC?=
- =?us-ascii?Q?feX7cyUfQbWRWFVoOwAFWyb9ZCsfF+uDdZs+bwoeAXtwkzC1PVW9PUTrUROv?=
- =?us-ascii?Q?C+tHaMZ/7KRKDsLoddBdOP5VGGi+UrLVubArhRIqmRQ4gg1Y/IRmO1nldk8w?=
- =?us-ascii?Q?cucBf2CbA/G06AgIvuUOAfbuAhfJNYJbVx5T6Z6CzZgo/DyRJiD+OUMgzsV+?=
- =?us-ascii?Q?GPrxnhISMJkjVvcnsC4U4iVtxzQLXaF7UlV+NAZ2LkLDnVRVyHltl2eOO+yq?=
- =?us-ascii?Q?b7iwpnhvzDFviFVtQVEJfT3qBbyojjilulIkTcYKRf5bRRUoHekdXbeHyVfg?=
- =?us-ascii?Q?7jlYJzNeSVFLYQm4Mswv0nuNQVufn8e2/i3U880Xb5i1smjNvmPYks/jw2b/?=
- =?us-ascii?Q?+qzzUGy8t36MPVvek2XuZ76Xvm/+3gypdxFjHN+qUJQUpZEp4JiE41Xq8OhN?=
- =?us-ascii?Q?wtwYV7ddLIHtCFp4+MtgKMdVcwHLU+wJelguqXXwZ3j7AEixk0Rpjy0brTpf?=
- =?us-ascii?Q?UCIVOOXQLGIWmJIvGVUGVsPIYhZaaCb0NCLvtNpH4exe8baqjMpSDnttR9kL?=
- =?us-ascii?Q?3YtAxtNX7ANFp1LgOhf7d3PCa0lRZlqGS4nhLv6tAYccqUxg8HaJX4Pw12Vw?=
- =?us-ascii?Q?DJmDtowM/q0j0aEBB6+KZTjMgvotI0UtBVfzAXwk?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	aFrPZ5YGoUZyjtxapdjdXpx/+RjhdUXxoo48Lu/V9cKGBJJUrtc0ySG+9MATuvpuWv9P7bAfmdJYN4Op9bNzQbT6rzbfhByNP+3C33MKmapIQf5cFcM5eJISkFEDpF7zGkth+f1/fKgqxPfxvCJ6CagFSYfJ4Uu1I8Bwfh6nozdkJkI1alWORk+HtBhCBau/uTHTWByPVT/5PUN9kNubv44bWKCZ8XLEOdzSE1DkhVogHzKLFZYvhPCMLnsuBlEUxUm/s7SHVHWDwXT6wk9A9WoWf15YVOFEVcJR7G3qTZSndEPEFF96E8sL/WSy469nnh3lVje/uYKVAi2q+BkscKctkwo0Tdvknb+A+ep6ZAIY7Ty52g2lGYoLUZ25lvz4AQuvXQL1Oyvl+i7TatZ3hSE4CgCco6zXhVVFYVmhrJnU9n9xiJ19biU8Mhx5ROF5u1JPaGRD7+FE4thPOx2qvfLvztFO8bh92ohuFLcboWavfEqxNEKVwxF9t9RN/9IaUK3XMcj5rvgFhNFfUFS94LENYfhMQPoxmUDHYhnrLJwqxddGsIURI4FcBbEi1Q2QR11X3rvuQluA/qdBiZa7lx/F06OioY4GWdCpr7dcCYM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 514e02f4-2b66-44a9-9617-08de35a72647
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2025 15:41:55.2665
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YVnkJ9UzQPCaTekhjAkwlHzeRD20feuPNW0a6PCGBeA1nM5yPdvG8Q4Jkvr2QhstMWP98ECVVy/yQ9pejmK1Fg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6146
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 malwarescore=0 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512070136
-X-Proofpoint-GUID: dXHtGo4MFhzRC8bb_kxShdLQi2dRJ5m8
-X-Authority-Analysis: v=2.4 cv=CoKys34D c=1 sm=1 tr=0 ts=6935a047 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8
- a=pGLkceISAAAA:8 a=hD80L64hAAAA:8 a=yPCof4ZbAAAA:8 a=yO4LRhKTJlilM3sNaQcA:9
- cc=ntf awl=host:12098
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA3MDEzNyBTYWx0ZWRfX4rYOX9kZk96z
- x2cIN34J4ejyTjqyyOSRu82tt2tiXwAhMHQ71gL2b6Zq1HaF3sPslsDxwvRxQ53WVkgKt87YxMR
- 2Hr3TrZq0PSdx8bjolA22Tx+FRU9tf2NcRYWB5HHuhqprDRpqr4aAGsDs9uEcoWEF9PidouEBl2
- FnGznj6Tpp6SIGgrbrr/fY6DUanrpbSCo9Ggj+cQXcEtMcvpYRNHodA5KCdl178bOV4rrX9+U5p
- e9SlM4Uxb33QYvDwHZRytkCh/hu+0t/TYKnd+EX/UOJF7Q/e9y6k3HTWB7oc1QF8qiolgQFhK6/
- 5PsZJ5vYAf44k7nrlX5BvzcVLkwiGcc2iQeiICKArlJq5DpRprIgXTZ2iDL4vJ9VB+0dQhcu6ke
- xzlpRajAbdXbH0CUiSmBjbANgDO5TIv/w8RH4r30RXOOA1fJgJs=
-X-Proofpoint-ORIG-GUID: dXHtGo4MFhzRC8bb_kxShdLQi2dRJ5m8
-X-Stat-Signature: yxq96ottew1h4mns7wbnkn3qxf5ow7xs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: AC908A0017
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7521F4000D
-X-HE-Tag: 1765122136-849555
-X-HE-Meta: U2FsdGVkX1+GbTgZO2PBmz7y6UzM0lpJzFSZ9j1dMNDHMRPQGqrD/zY8p3OVCwHiYb4Hs0gL+DKit3K0uNCnhn6mGj5dCFjRnOlMde9TRRlBn+8iE00yTMGvUKS6q2e8QFBt1xwc9jbFVu1pQItceit4QMsg5D89TbaHwHfclrgmV/zHCRmzQ60QWvmhR/tJVIumWoPOl4JQH3bUscxvfmxoX+3MbDTQxRHXtb/gWVW33bZz/UxEhlqcbRdAnswi9W5wtP/sp1xvXm8U9tBnqJErsQnIWTZKkY3YLGupr/qSJK7wInSCMD8DUtIX9TFsz0+zrrtY5MvR8Y87tV/dSAF6OMNNRmXkYyakDgcxG6xdaBwCXJjCUxkwKH+IX2pbWgtv0QYnrco7cnADWmPrx7Or1z/l0M1YO41w1hIoginOTELGe5ZsDHv2GW9YCLEhi9kImPZvcjjLyK7ZDDgvOCq+7NK+U+A/ZTDS9OGWvraMs0FlCUBXLZRlVfyCOy+fQaPKpfeKkn48g/mPEncbhmxBrGSEFbgo2WHkPKCShtZjMg38VjgjZJR537fmbF+qGAbWpzHsJDOjXac9JwhMO3QNOuopqXxHMEbkFzRdVVvMEDugqt77wb3imt+3jhH/1o62fq/ExKazmoU9EYL4ZuOTRahhK+xSnf/9QUGNPKxd4/OzlNlXpp0ywrcAbZA2wHZLBogFSGYDycpVNmtttBx555XB1NuNRcXjWYtqkG1YeCeoghe3JNmDVzhdRnbsku+8PMwuYbKtQ2X3G278vZGuJp88phFanSdS3K4A3zcZ9ahFK7fi4ShUjpRMiw9RBDdff8pPhuYDoeYNYxPJjIAo5sFhl+IJBtFlLe7U+WMrdsur914Jm2TYGHZ2Z3tS1d2yqqU6SJIgxDDOdLHNDIoQUiHi+kYxcTjQwHTxNaVsljRyQdXA6sLlGZdfBQbsgtuvGNqRphMI6OhR3M0
- H5liHqvD
- fbVYWB2Oe/7VTsxEbQp+0GLfxmZdxdw9zBe8QD/HAJnWZS5nbbzqhXK8cHjSkk7Xde3u5/av4okOnYvm/TR0tADox68QZx1GvAj5c3q+LL3lzX4XaWvhvxKPD/bTYK3fVWUf7RHZopDuim7FW25lGhDemSEeO3UbRk46QOHxUI96B7ew=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bbtrmwzpcdugfmxeuf36bc484gm9bp9m
+X-HE-Tag: 1765124282-689383
+X-HE-Meta: U2FsdGVkX1/EzOuz6ke5VXoeUftSsLvqCQbaq88FSH6Z0CZZqGhXq2AWlakFnqXdn1kzWK/QU7e0VsDF2NsilzvWcGuA3Gye6EhIO89B39z2PzUUEv70MLuVgepAcICDNtwnf0S3vsiNWrU77Pg8pP6Fa/tB/YROnfWkqcmQvsCqffOX9fLdKYJhBwEQIlI77d0VKX1vw2achMY2d1ZvBwm5r576MwRkJDc4SDoTSYPx+UoChoELJcQvReDwXUZ0TGL0GhLdTeR4OAmZsFupCYb4RTDDK6hG9gq+oH9lcs05sVxOGefL0ZzL9f+PM5TK3/Mpol47ytZnORmk7E1gvvOAEcXaKcVjB3naxZaU7OAoWi/Q3BAntVz8su9S/GdqPAjZjo2h4Da4+q1VI3f3tZOeYxyS7ljubHF19XhiMLPmJ8wxUEdxbTsn6YKWJxLiWrP5urZgogFsuX8q5SG1s04DRwlCIKhupd3qriUxvS3aa+q02iqM8Y5cDjzSJ1v+s3vSv6JUIlE05JdZSarmp0Hi6RcBlTMZDREemHkREbdxQliSomK6tTXz0I6WsnKSC/OZWb9+z68R45Wp0AobJwdIuhZQGfbCfiLhyTxXu6YugFgdI8BIYAou7A3oRCo89rxSAN5B1jJPyCrN8egc170Rx4E5Yf2dqT5zzYV3faN139/1xcZQ5EaR5dNMN/oUcjpnx2ogTsPcLG+2V+GQa8VXkz5JZvbFuXJeNXKOeEqnxWypqy6FJTQLLMERjce+3XDJVzbYNlV8tsaU7SNPxn06DkPkSE5RwTr1z/lVi+Gn2wbsg78cV/4NKttbjOcoZz4nNqA768VGrV9DF0lyMSQu6u6V1VjqmRa7pU+742GF6Kb5vXUcNaOSlGuOiny8Juyn4+uUrlEQx6NziTKr5ugf0UDUCy+K087TuciYAhpp/dbtyVFzepe9zq8CqS/qR8aUKppUJu4TwkzEMqD
+ 3rWpGiAt
+ VIuxcF+j5B27OpgRNpOLGbILfOI8AGxHf0tV5Lz534BGb3P3cBJMB7e859zNxPm1QAhdnoofCQEB9t9/CaYv5zV6IFHgyJR4W27qSLB+5RLg9wSEYHhXNd5xyy2p9ETvmAttqD+XxBWeYqj5YQdbaQAamYCRI8wypwtTgWsRnM6SQM7PHRHsWRd8NBg7iw8bZfsYUojD/4cI2qVAluaR/WvW3q4BD6VVXMX1RDZXiQJO/5H8Sxm4xEP443OOVXOV8xUr15+8SVb06WdX+ehkTtzD/OziPGuJm+FnDUM15ikODMeX64IYPq3GBu7wQYWJddEQypQlk70CQC4LXjN02SFq+oKORO9Fh5504Sp+9s/npWI0aeONOKorDoM9mWnkV8kq3SA6k+IbduAw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -237,261 +90,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
-caches when a cache is destroyed. This is unnecessary; only the RCU
-sheaves belonging to the cache being destroyed need to be flushed.
+Hi Linus,
 
-As suggested by Vlastimil Babka, introduce a weaker form of
-kvfree_rcu_barrier() that operates on a specific slab cache.
+The following changes since commit ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d:
 
-Factor out flush_rcu_sheaves_on_cache() from flush_all_rcu_sheaves() and
-call it from flush_all_rcu_sheaves() and kvfree_rcu_barrier_on_cache().
+  Linux 6.18-rc7 (2025-11-23 14:53:16 -0800)
 
-Call kvfree_rcu_barrier_on_cache() instead of kvfree_rcu_barrier() on
-cache destruction.
+are available in the Git repository at:
 
-The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
-5900X machine (1 socket), by loading slub_kunit module.
+  https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/memblock-6.19-rc1
 
-Before:
-  Total calls: 19
-  Average latency (us): 18127
-  Total time (us): 344414
+for you to fetch changes up to 83c8f7b5e194eaf3fb268c513e23e23e892de8ed:
 
-After:
-  Total calls: 19
-  Average latency (us): 10066
-  Total time (us): 191264
+  mm/mm_init: Introduce a boot parameter for check_pages (2025-12-04 19:40:25 +0200)
 
-Two performance regression have been reported:
-  - stress module loader test's runtime increases by 50-60% (Daniel)
-  - internal graphics test's runtime on Tegra23 increases by 35% (Jon)
+----------------------------------------------------------------
+memblock: introduce check_pages boot parameter
 
-They are fixed by this change.
+... to decouple simple checks for page state on allocation and free from
+CONFIG_DEBUG_VM.
 
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c9301@suse.cz
-Reported-and-tested-by: Daniel Gomez <da.gomez@samsung.com>
-Closes: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org
-Reported-and-tested-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
+check_pages parameter allows enabling page checking without building kernel
+with CONFIG_DEBUG_VM or forcing init_on_{alloc, free} or other heavier
+mechanisms.
 
-v2 -> v3:
-- Addressed Suren's comment [1], thanks!
+----------------------------------------------------------------
+Joshua Hahn (1):
+      mm/mm_init: Introduce a boot parameter for check_pages
 
-[1] https://lore.kernel.org/linux-mm/CAJuCfpE+g65Dm8-r=psDJQf_O1rfBG62DOzx4mE1mb+ottUKmQ@mail.gmail.com 
+ Documentation/admin-guide/kernel-parameters.txt |  8 ++++++++
+ mm/mm_init.c                                    | 10 +++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
- include/linux/slab.h |  7 ++++++
- mm/slab.h            |  1 +
- mm/slab_common.c     | 52 +++++++++++++++++++++++++++++------------
- mm/slub.c            | 55 ++++++++++++++++++++++++--------------------
- 4 files changed, 75 insertions(+), 40 deletions(-)
-
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index cf443f064a66..2482992248dc 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -1150,10 +1150,17 @@ static inline void kvfree_rcu_barrier(void)
- 	rcu_barrier();
- }
- 
-+static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-+{
-+	rcu_barrier();
-+}
-+
- static inline void kfree_rcu_scheduler_running(void) { }
- #else
- void kvfree_rcu_barrier(void);
- 
-+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
-+
- void kfree_rcu_scheduler_running(void);
- #endif
- 
-diff --git a/mm/slab.h b/mm/slab.h
-index f730e012553c..e767aa7e91b0 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -422,6 +422,7 @@ static inline bool is_kmalloc_normal(struct kmem_cache *s)
- 
- bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
- void flush_all_rcu_sheaves(void);
-+void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
- 
- #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
- 			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 84dfff4f7b1f..dd8a49d6f9cc 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -492,7 +492,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
- 		return;
- 
- 	/* in-flight kfree_rcu()'s may include objects from our cache */
--	kvfree_rcu_barrier();
-+	kvfree_rcu_barrier_on_cache(s);
- 
- 	if (IS_ENABLED(CONFIG_SLUB_RCU_DEBUG) &&
- 	    (s->flags & SLAB_TYPESAFE_BY_RCU)) {
-@@ -2038,25 +2038,13 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
- }
- EXPORT_SYMBOL_GPL(kvfree_call_rcu);
- 
--/**
-- * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-- *
-- * Note that a single argument of kvfree_rcu() call has a slow path that
-- * triggers synchronize_rcu() following by freeing a pointer. It is done
-- * before the return from the function. Therefore for any single-argument
-- * call that will result in a kfree() to a cache that is to be destroyed
-- * during module exit, it is developer's responsibility to ensure that all
-- * such calls have returned before the call to kmem_cache_destroy().
-- */
--void kvfree_rcu_barrier(void)
-+static inline void __kvfree_rcu_barrier(void)
- {
- 	struct kfree_rcu_cpu_work *krwp;
- 	struct kfree_rcu_cpu *krcp;
- 	bool queued;
- 	int i, cpu;
- 
--	flush_all_rcu_sheaves();
--
- 	/*
- 	 * Firstly we detach objects and queue them over an RCU-batch
- 	 * for all CPUs. Finally queued works are flushed for each CPU.
-@@ -2118,8 +2106,43 @@ void kvfree_rcu_barrier(void)
- 		}
- 	}
- }
-+
-+/**
-+ * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-+ *
-+ * Note that a single argument of kvfree_rcu() call has a slow path that
-+ * triggers synchronize_rcu() following by freeing a pointer. It is done
-+ * before the return from the function. Therefore for any single-argument
-+ * call that will result in a kfree() to a cache that is to be destroyed
-+ * during module exit, it is developer's responsibility to ensure that all
-+ * such calls have returned before the call to kmem_cache_destroy().
-+ */
-+void kvfree_rcu_barrier(void)
-+{
-+	flush_all_rcu_sheaves();
-+	__kvfree_rcu_barrier();
-+}
- EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
- 
-+/**
-+ * kvfree_rcu_barrier_on_cache - Wait for in-flight kvfree_rcu() calls on a
-+ *                               specific slab cache.
-+ * @s: slab cache to wait for
-+ *
-+ * See the description of kvfree_rcu_barrier() for details.
-+ */
-+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-+{
-+	if (s->cpu_sheaves)
-+		flush_rcu_sheaves_on_cache(s);
-+	/*
-+	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
-+	 * on a specific slab cache.
-+	 */
-+	__kvfree_rcu_barrier();
-+}
-+EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
-+
- static unsigned long
- kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
- {
-@@ -2215,4 +2238,3 @@ void __init kvfree_rcu_init(void)
- }
- 
- #endif /* CONFIG_KVFREE_RCU_BATCHED */
--
-diff --git a/mm/slub.c b/mm/slub.c
-index 785e25a14999..7cec2220712b 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4118,42 +4118,47 @@ static void flush_rcu_sheaf(struct work_struct *w)
- 
- 
- /* needed for kvfree_rcu_barrier() */
--void flush_all_rcu_sheaves(void)
-+void flush_rcu_sheaves_on_cache(struct kmem_cache *s)
- {
- 	struct slub_flush_work *sfw;
--	struct kmem_cache *s;
- 	unsigned int cpu;
- 
--	cpus_read_lock();
--	mutex_lock(&slab_mutex);
-+	mutex_lock(&flush_lock);
- 
--	list_for_each_entry(s, &slab_caches, list) {
--		if (!s->cpu_sheaves)
--			continue;
-+	for_each_online_cpu(cpu) {
-+		sfw = &per_cpu(slub_flush, cpu);
- 
--		mutex_lock(&flush_lock);
-+		/*
-+		 * we don't check if rcu_free sheaf exists - racing
-+		 * __kfree_rcu_sheaf() might have just removed it.
-+		 * by executing flush_rcu_sheaf() on the cpu we make
-+		 * sure the __kfree_rcu_sheaf() finished its call_rcu()
-+		 */
- 
--		for_each_online_cpu(cpu) {
--			sfw = &per_cpu(slub_flush, cpu);
-+		INIT_WORK(&sfw->work, flush_rcu_sheaf);
-+		sfw->s = s;
-+		queue_work_on(cpu, flushwq, &sfw->work);
-+	}
- 
--			/*
--			 * we don't check if rcu_free sheaf exists - racing
--			 * __kfree_rcu_sheaf() might have just removed it.
--			 * by executing flush_rcu_sheaf() on the cpu we make
--			 * sure the __kfree_rcu_sheaf() finished its call_rcu()
--			 */
-+	for_each_online_cpu(cpu) {
-+		sfw = &per_cpu(slub_flush, cpu);
-+		flush_work(&sfw->work);
-+	}
- 
--			INIT_WORK(&sfw->work, flush_rcu_sheaf);
--			sfw->s = s;
--			queue_work_on(cpu, flushwq, &sfw->work);
--		}
-+	mutex_unlock(&flush_lock);
-+}
- 
--		for_each_online_cpu(cpu) {
--			sfw = &per_cpu(slub_flush, cpu);
--			flush_work(&sfw->work);
--		}
-+void flush_all_rcu_sheaves(void)
-+{
-+	struct kmem_cache *s;
-+
-+	cpus_read_lock();
-+	mutex_lock(&slab_mutex);
- 
--		mutex_unlock(&flush_lock);
-+	list_for_each_entry(s, &slab_caches, list) {
-+		if (!s->cpu_sheaves)
-+			continue;
-+		flush_rcu_sheaves_on_cache(s);
- 	}
- 
- 	mutex_unlock(&slab_mutex);
 -- 
-2.43.0
-
+Sincerely yours,
+Mike.
 
