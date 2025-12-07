@@ -4,108 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64B37D1CDC6
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 10:17:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D4EBD2CE17
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 10:38:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 400686B0005; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
+	id BFC126B0005; Sun,  7 Dec 2025 05:38:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D7D16B0006; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
+	id BD3A96B0006; Sun,  7 Dec 2025 05:38:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 314656B0008; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
+	id AE8F76B0008; Sun,  7 Dec 2025 05:38:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 207F96B0005
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7086A5AD32
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 10:17:43 +0000 (UTC)
-X-FDA: 84192273606.29.E5D0B5D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CEF6F80007
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 10:17:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=e0Ag1vWK;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 98D5F6B0005
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 05:38:01 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C131BB231
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 10:38:01 +0000 (UTC)
+X-FDA: 84192324762.04.74BECF0
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3F6F7180003
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 10:37:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YMZPA7Ws;
+	spf=pass (imf24.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765102661;
+	s=arc-20220608; t=1765103879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l/FsuuJCcZoCb22S9JB86X0uGzLpM2EDTQg6Y65RI0s=;
-	b=OpV58XhzLlvskrjnXtdXUV0OqVSc14IGELcIsKxiJrSqh3knj7TfBTXf9FXYxCKh2IslMx
-	Cz1H7+VfFkZIEM4kSlcaiLq0bcQ5zQlDflQJ5XuqEFTkFehhjte0+Gf/xXa51fMq2TTIU4
-	YIVplizhT7WPL75J+xXVUSVLbh57tIA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765102661; a=rsa-sha256;
+	bh=yiFmqmVM8Tzc3/pX6LppdlSzcPKAUCpuWPYMDLim8AI=;
+	b=IpXrfedbtcaBFZzQIOzwdA3ewCx+pXgZiFypywRSpo0XZvfqZ8OAnXLwNbJScRxYBFVVC6
+	X3H60SP+Qv5QzLyvhEX+aQ8n9Hz71a+xzdBTjR7UTk+ZLgmJjipeWic0NOCIBjf80MCn9w
+	ToG4h/XWRKrEJpYDNQbuxTuTZzRlC74=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765103879; a=rsa-sha256;
 	cv=none;
-	b=gy+kpdomi6bwjs17OTrJ6F1eF2Mxfjj/HybsyXxU2ta0pIGAEeZ8fsZuE+XCBjj41l0kB3
-	r1KS/GfSu8H9syQx3djIYbcm7eqzjVckbcQ9YSKCY7mNKZs+X//DOSrSUfnXHlGzNLBptN
-	481rLLIZmSNxW4CPTq81zJdLJpINTEg=
+	b=gYENX1fkvndX5BKHKHz52MPPCHyG0bfTvOGLC9nWXwy0FMc4A7AEbA7UVKE9H4v+M9pXpt
+	LFjxQDldcL1u/lY2kyrIoed+1CGbVf7k9o6OaVY2Wd0vROl2k/0XBJyr2Gz38/pdb0HeBp
+	ygfnVzAEyIHy41vCjT2tB8dFPG3Wk74=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=e0Ag1vWK;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765102661; x=1796638661;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4OTCbyhf1L0NfU0vkTZn3R2TLNYI5fcz4Hk48AVEa4E=;
-  b=e0Ag1vWKNRFtUJZVkMIzW0lvRYqfgQS8keDGOkf6bSuGWF1Z65mr4uK7
-   oOIjDUuE0N9Tk75Y4zM5ZMP6AF3Gc6Ox7E8lFUMuQ/ysLx3lLyyFMingR
-   2p6Qa3BR3wBV82bEFiMtB2c/vfXw1Q4oNpXr5Yp1j5KL1EPHLJKk8vIm0
-   VjgED6c+kFTD7T+fd+NREEdNsV63hu7T7XMCK1qLnZf7AWsmWm1hJasRU
-   /zfE+6NHuZf4fq5GNKD3b7j/OtwSOuOR2RiaoJ2/DeN8Sl6nij+wI8SDG
-   g+IezRT70szyhj5aKzp1gPp13mnP/oa+h2fFbmnkj2tMHOyBlOvBbmiLi
-   Q==;
-X-CSE-ConnectionGUID: Dcw5kQ15SbefBuz1kQzYkg==
-X-CSE-MsgGUID: wWi74U1WRiW72ECYYXTi1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11634"; a="67109552"
-X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
-   d="scan'208";a="67109552"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 02:17:39 -0800
-X-CSE-ConnectionGUID: 3NrRWvoXSoeo1ZFpbg7u6w==
-X-CSE-MsgGUID: bPLbiwQdRHiVnvJBbk6kVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
-   d="scan'208";a="226345264"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 07 Dec 2025 02:17:37 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vSBpe-00000000JBd-01z4;
-	Sun, 07 Dec 2025 10:17:34 +0000
-Date: Sun, 7 Dec 2025 18:16:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Subject: Re: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize
- online check
-Message-ID: <202512071758.SKaL9BlQ-lkp@intel.com>
-References: <20251206212507.135503-1-swarajgaikwad1925@gmail.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YMZPA7Ws;
+	spf=pass (imf24.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso17377225e9.2
+        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 02:37:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765103878; x=1765708678; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yiFmqmVM8Tzc3/pX6LppdlSzcPKAUCpuWPYMDLim8AI=;
+        b=YMZPA7WsX4/TyXQ25wqYEX4RurWECzAWBPbTgYcsjG103+qljRM18SEItDYINs76oB
+         G0KD4qcq0qFKlGjgsBMImdt+fDe7tHNm2A8W8jPJvvyHoQ3UI7ony5TBIXDa0ZylUAhX
+         Fjm/wcQj/R0IgOE8iAlMUHqObkHT51JPfc3LGZCX0x7FiGl8SjUHLoOLrzCTSeAL/iZ8
+         diTRFnjNkrrhY2pS4+4Jgu0CtrH1WIPmLuuqc1UvVq0jf4ZcSCuB42vpcgr02CewtWa0
+         8xvXUbwBcMTjkneikoY9Zv4B1ROrumbTGl5TMwkIcFU1xIPk7ypL1xCihIbbETJfEexk
+         Q3Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765103878; x=1765708678;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yiFmqmVM8Tzc3/pX6LppdlSzcPKAUCpuWPYMDLim8AI=;
+        b=ZRF7qDj8KWBgsQShA01d2rDH9IanGmlmR303DQudDl8/YaowpHdM/X4NpriRuyt+Lz
+         cSTxjQpi8y5Rk8zA1dUN4Jp7iv1G85MyE1gIn1ksX6gaO/CsZ76CiB0IBHCF+sYxZeR0
+         NSF7SYPqhoZGwz6U+Xx+irJ0CGD0VhwHbI1NXrQhpGjsFbquhfRdwKN8L5XiN9vMd3dL
+         JGqjvogrZ7ZGknHz8LLc3cHR/rHd3k28EcHNRKRq5KPK/X76wSdc+0+V4P+5dD+NHoGp
+         zeVCEB5GGsTTkLpFX+WwsUMpfL7Q9xomYl6Iqh4fRy5PCv1bhBR+ozHu7J2Dm6Cmg1Xa
+         lXZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXi72P6GuilfqOfCLaSlIwQOZ2X/i/DAJxissq4p3anok3F9SEBdl0e5TFUPqD2uz9oPKJgMUDQfw==@kvack.org
+X-Gm-Message-State: AOJu0Yw48gjjvAmGTrogMN7vviXJ6A00YB3oDog0fqPPI8k47P2+RKCu
+	3/TWotFDHXku8sYiL6GO8xbvMFRCF0xaaeHfJLpA3PYjPaxFVNnJMUw4
+X-Gm-Gg: ASbGncsItn6hefI/XhsMaxy8NMVFhsEhU/OBFuGfgrpmoXv5jvRr8B+6Cq9OqunhGod
+	RocT3stRWWqrRsTHmtXWEOlajhoRPDYDadcx0+UraGzsNl5QzG/gSI40fmEMy6iD+b4OIbLOuqo
+	Zi8QFpNnag0Wf15eWxtbFN6rNi59ZaAqp5udhj+QfsGIfEWUBIB03mCsv2D0CWJ1WKO7TdgzPQj
+	kx3BbSBZh6qad1KgI+/9vWrlrcDTxtXNF7DaSJuINVVjcIgoJHtSeY+hRgRX4QlB0vXxUGTYxOh
+	FdEPs4pFFRWaQj3bFgW8Q7MogAH30r/tUg4TSg7QDmy4lnmHpicEECO381HgZmBpQWJj8x3qn0e
+	PT8jYDZwtRbkrErePr9s8gV+PaXinLzOHbJYu79iRUuO5gRDH/YnHzc+vNETTlZ2+gJsmQiV63X
+	Tx0zjQlNHPLcydPf13MZ8ufpWgaQ/F7fJSX8NjRr4jOMlNIzZXJQvV
+X-Google-Smtp-Source: AGHT+IFHsj32Bs/JaOUHvHxvy9WXs85BjT7KVW4hKHqqWBOsdWdXQQobTbt0UPYwtiptAXg+ckH2Sw==
+X-Received: by 2002:a05:600c:d2:b0:479:3a86:dc1e with SMTP id 5b1f17b1804b1-4793a86dcc6mr28759625e9.36.1765103877360;
+        Sun, 07 Dec 2025 02:37:57 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4792b04e03bsm99035395e9.7.2025.12.07.02.37.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Dec 2025 02:37:57 -0800 (PST)
+Date: Sun, 7 Dec 2025 10:37:55 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, oleg@redhat.com,
+ brauner@kernel.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 2/2] pid: only take pidmap_lock once on alloc
+Message-ID: <20251207103755.70be2f89@pumpkin>
+In-Reply-To: <CAGudoHFjrMsQaDzndo3sM1Jn_WROBrZ0PeQbU89-tDakLAOvew@mail.gmail.com>
+References: <20251206131955.780557-1-mjguzik@gmail.com>
+	<20251206131955.780557-3-mjguzik@gmail.com>
+	<aTUq5bRdPNpup8GQ@casper.infradead.org>
+	<CAGudoHFjrMsQaDzndo3sM1Jn_WROBrZ0PeQbU89-tDakLAOvew@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251206212507.135503-1-swarajgaikwad1925@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CEF6F80007
-X-Stat-Signature: rnndq9f3wdrsjszp79mqgfbux8ccniss
+X-Rspamd-Queue-Id: 3F6F7180003
+X-Stat-Signature: n61th8au8fat4zhhaqn43uhmprabwo4g
 X-Rspam-User: 
-X-HE-Tag: 1765102660-896226
-X-HE-Meta: U2FsdGVkX19duy+tE4xWOPfOThocNe9ysMjn0rlE8MSrTh06iO4hwGXd5Pq748iYVoyZYzyuIIc+2856qXzVNDxvT6C6wty/UdpDFTVOZP/1zv9Ha3HWZiWz+egq4ZTRgAKJwkhAnwyiLy2n8BoLYGAYfPxVyQTVxuK63wCPcnN+z4hhvayrulp8bQQbuLXm5uvqjuUxmL+zTHn8iC20SN39u2AV5wZ1VRYcTc5blzGYOVHboPH7ncFkpoP09w+K7mcdyenwsCh44M7wwrK1EB+w/AzCgqkSjCZ4ucEWiH6X2QZN66X1aZPGQM2mWSYdSHpON2D/yn87i7HJUy/1C8HV6XoNMqcVoX+uWCJP9HHFh+MOUfjlzeDEA+6stGJEnkE7baHfk+sqyR7CTkrDS1hRoWfJrRsPXlAmcm7pHtzfv4d7/rlNOlPYRUqeGtVgAicYGn6xylG9y391q3m7/AuTQAZ/VXdTekcG4AkS74QvnIfzTdfTlv4WImy/L8V6tnrc0VQ+bBtm1xIuM4+Iqt9tKkoM+spl/cBCrHS8onjnTBvXsKvQAnur9RJJ0cAs17QwJxKzD4o+3JFB11dC0TJTlnU7zXAHeomDuhqbv99+LkppwXWNgtAxyee2Iw43BcbrbFusmOrQFWk+Qz2LvXcRB1mDWjEb4IbTqiSbRT6xppbGy2L5UZkdEpfjm5ljKkR1OUMxG0iLXAaoxEItUml1sa+WFNPqFkTrx1xxs0NtK1sxUGxzak4Rl9dZbT0PIYSRbyMtVqFuoAYXR+sTnEv+XUCunRwAhWGSnZ6ytu9T30pZV9du9LCkQq2Rmx9QT7jxqgxnioovnNpxqRDFBWkV69GJ+pXaqHxb+v15HEuRmzFRHlt02eNattu0dpn1iyxSOINmYUbO6ikvqrGbt+knmfPnZEgpvpN/x6RLGmJZa25Rt+37I0BasQyxAs202zmblM9V1Pn+hGAHIyw
- tp+aVyYQ
- jmmjmbZ2mkPaW34sc1zzLSGOig7kNEQCk8RfyItlYcK0XnuJnQDT8PENVzZZ6y/TuFlzcNuSHniKXtQXfp4h6ZYghNRP5NLO5+A3Hvm1CuwNNcAOfC6OGVYm+z5HMdaexC1DF5iNjiKOlBj2bqYMbtVQDARnkI6dbjDHQLIqUiM/TaNrsB9IhrCexDCHaNGQEzLVIdrD2xeq1wSi+4Y2OR7Oe2+UP7tEZobh/QQkEmqSFN+g+w9ED7V+J27UG4b+0bW6PYBV109jE9SIAf+N6WgPmYl5bq/T3dIktq9yYChZVb7eY3sd9J73yAfGzvd7VpD6rcV9B9p8xkOry5E8JeG1EmQ9CW/BVW76O4maQhddB9sDzRftD7yYD85Gqt5kVf8BP6kcd6fuaobIvLjYvAznq7Jn/gaG1kXFeRCXX8t7Mc8oIVgupNG9kJOpVbeR+J//ePPEbVHS0p2vNfgZbdFrh6g==
+X-HE-Tag: 1765103879-534321
+X-HE-Meta: U2FsdGVkX1/m5PpKxwJVYI9LyL2xjtfXNfBj96dI9rK0s2R8A5Sdlrzm9XGpdy/d94V1fP3t2q3jPTo+4g+eV1cMg7cU/zjBtH8ZCmuXJ+lqY5MywmTFdVldCSI+YiNW+XK8m5LRGqcJakFtxRUY8Knkis71K8qEFIZPptPTnbzyicpbQxltGDEzA07t+6DV+DgrQboh29n1OOBuKTczK0H/l4QEdSxNuMg7dV2eKS6y1DjeOCwmLJCe9kRzufqWf6aZApVfK77Ezio4rg6Oo7HtrqKFzD8HrzqsBDH3/uiQ2ViTtP3W0OcQks8oM1nBC933vf1+FjnImjv8r/JIEiuGDhW942Iuv5a/YwSidWmk471wtMEfHh+J6iu6PT1zlK9cvOGxAtfoRJMLd/bNZV4+amqgmJh5i9teRUXVFteQx9hZyH4Ah9ZYun/vttoGZbQbShy6Vgh6FFsTb5bMAuoFtowCeTBhycMswJcKNwVDqLbgDrqC7JtiYhp6xTTWX8ThQ/frWGEsdrxfyw/8Aadq+LhpsN/Nh452ogDOKMCT+jMAnF7HCIDKQQvK/QvLkBhIN3GbBsNeqXTjWP8PkuL1K0+qBNTo10GUutIzum3MH7CRPSalFkJzzjG7IgJIqZWZwGo0d0+qg8wntLjfFshQPnDiXWFnhIttHfNeEJ3TkZYgbQAYCHqsPcuDaCMuob8FhGx0y0YfzUi0QfitQ9jVwXvYmtGIFpSfYF48V4zeIq1KiCBXAAqY0wcGgCrHA6LnBMD6RB5ssrCjz4RcOh7UmpdQmzfiW1aP90IIj8qmcgI7FhNI0ZT2sK5QzgXciG/DnlOyC6SFJEt1UeCIaWrKjTBu19w+52KG23cBYPnnfZtuqrV2xCsQU0NH+NfpBEPcvgTABEb/M0+gAPtud9d2jUei3kiJEBxN7Y+wq+vDATqSUy32h+CWWJIX7vxro0LFOXUe0oEeJIRr6K9
+ 1dGxjH20
+ 4KsB7dStywXHZQfamdBJU3NNNMi01ondkeXnXXKmEhgpBsjABkqvix69Q441U5Nl+KjOZuHTs5kSfV+UGXJj0WLWqKxS0wrFJR3dLoW44WYOrKH4kzz2yKGVLYpQkWr09yWhsj2IDQAkH+Iuo2k9AVkmZ1HMXoKMFMrs22zM80DcK+rlS5yIHro3f856oObhjXzv+Q4copoh4aBmCsA5ZMWLxkBno2R6TW3xEvl+q+uL9ju0Sf9vIfFnWrBqlYD6a95z67fV+WY1q7oiAP7parHBLDFArDvaeeN9Y8+WRuNB2QBx+6aQmwCVTULnGj01ZDEMxmgSwJLQduxs60m2Ag9K8JgbP92HaT56zr6XXXgKoCsBF8UbhAJKCwL/7LGPjxZFD4B+A6K7pVGsUrs+BJRdcr6kvHjQHBLeFRLp7fVPuFk5iX5JnMdEdTfDXvKdBHHupTMCnmMf0Q4iopyGw6A3mEodXIqiI3pL+lWFo4CPhPEu9XJ2O420JmJf7rDeXG3H87yRc6TPcvS8l9Qhbr6g4zoprkyABHXQF1B2j4HHMExvCqaHJWo6PVw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,43 +125,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Swaraj,
+On Sun, 7 Dec 2025 10:21:35 +0100
+Mateusz Guzik <mjguzik@gmail.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> On Sun, Dec 7, 2025 at 8:21=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
+g> wrote:
+> >
+> > On Sat, Dec 06, 2025 at 02:19:55PM +0100, Mateusz Guzik wrote: =20
+> > > -     if (!pid)
+> > > +     if (unlikely(!pid)) =20
+> >
+> > Does this change anything?  I was under the impression that gcc already
+> > treats !p as unlikely. =20
+>=20
+> I don't know if gcc is guaranteed to act like that, most of my
+> experience is with clang which was rather inconsistent about it.
+>=20
 
-[auto build test WARNING on 3cfeff1d2304237b1c14628d695a6df44daff48f]
+If nothing else unlikely() are information for the human (and other) reader.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Swaraj-Gaikwad/mm-memory_hotplug-Cache-auto_movable-stats-to-optimize-online-check/20251206-235737
-base:   3cfeff1d2304237b1c14628d695a6df44daff48f
-patch link:    https://lore.kernel.org/r/20251206212507.135503-1-swarajgaikwad1925%40gmail.com
-patch subject: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize online check
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251207/202512071758.SKaL9BlQ-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251207/202512071758.SKaL9BlQ-lkp@intel.com/reproduce)
+In my experience, a simple if () is always coded as a forwards jump around
+the controlled code - regardless of any likely/unlikely annotation.
+Similarly 'if () continue/break' is an immediate jump to the loop end code.
+You need to add a non-empty 'else' branch, or something before the
+continue/break for the un/likely to have an effect (an asm() comment will d=
+o).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512071758.SKaL9BlQ-lkp@intel.com/
+While some instruction sets have explicit 'branch expected taken' markers
+others (like x86 - except P6) don't.
+Similarly some cpu predict backwards branches taken if their is nothing
+in the branch predictor, others (including some x86) just use the relevant
+branch predictor 'slot' without regard for the actual branch address.
+Then there is the branch prediction done by the instruction fetch/decode
+unit, that has a tendency to use markers on the cache line - so doesn't
+necessarily even check it is a branch instruction!
 
-All warnings (new ones prefixed by >>):
+Basically the coder doesn't have much control at all on many cpu.
 
->> mm/memory_hotplug.c:53:34: warning: tentative definition of variable with internal linkage has incomplete non-array type 'struct auto_movable_stats' [-Wtentative-definition-incomplete-type]
-      53 | static struct auto_movable_stats global_auto_movable_stats;
-         |                                  ^
-   mm/memory_hotplug.c:53:15: note: forward declaration of 'struct auto_movable_stats'
-      53 | static struct auto_movable_stats global_auto_movable_stats;
-         |               ^
-   1 warning generated.
+Oh, and using un/likely() can make the code worse.
 
+	David
 
-vim +53 mm/memory_hotplug.c
-
-    52	
-  > 53	static struct auto_movable_stats global_auto_movable_stats;
-    54	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+=20
 
