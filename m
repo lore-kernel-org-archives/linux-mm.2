@@ -4,93 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A39AFD2CE17
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 08:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F75AD1CDC6
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 09:13:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 761E96B0005; Sun,  7 Dec 2025 03:55:29 -0500 (EST)
+	id 82B8C6B0005; Sun,  7 Dec 2025 04:13:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 739D46B0006; Sun,  7 Dec 2025 03:55:29 -0500 (EST)
+	id 7DC436B0006; Sun,  7 Dec 2025 04:13:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 677716B0008; Sun,  7 Dec 2025 03:55:29 -0500 (EST)
+	id 6CA976B0008; Sun,  7 Dec 2025 04:13:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5407E6B0005
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 03:55:29 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF4221A072D
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 08:55:28 +0000 (UTC)
-X-FDA: 84192066336.11.99A4939
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 29ECE100008
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 08:55:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf14.hostedemail.com: domain of 3_kA1aQkbAKUXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3_kA1aQkbAKUXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765097727; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 557B76B0005
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 04:13:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC55EC0771
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 09:13:17 +0000 (UTC)
+X-FDA: 84192111234.21.2DF5642
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D132840003
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 09:13:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=h3vFmyyz;
+	dmarc=pass (policy=reject) header.from=fb.com;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=843621ec3c=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=843621ec3c=amastro@meta.com"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765098796; a=rsa-sha256;
 	cv=none;
-	b=pVYvWHqXZPbqz5plhkeBg0qGCnQkJfGpaPj5pmoFEz8Rjr+TObcZIESOaBTYkNS/ZHc2L+
-	tAEHi2oifeP5GdVDtrlIF6VSPi6iqytvVwGoiHSmt1f0kTlK4lNsDgbR/xE3b4GBdrwVeW
-	lWrtHw2b+KQT8QwGn0LOjmGJO3vYop8=
+	b=dxqC/lcI8rqRDrGug8z/fLtWB6B0XivTkYufbj2O/8EoG+6b3+XCuD3BFVD6qESHwY2F8g
+	J7b3UhE4H06vqzLGva1URLSf8Q2GdWXXSZgTMfz/pnHVpgFYWqAwOkoXgk+O42G+a3qTGe
+	FXi4+Dhv9n4/pNRU5VZedBd0RLepCYM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf14.hostedemail.com: domain of 3_kA1aQkbAKUXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3_kA1aQkbAKUXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=h3vFmyyz;
+	dmarc=pass (policy=reject) header.from=fb.com;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=843621ec3c=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=843621ec3c=amastro@meta.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765097727;
+	s=arc-20220608; t=1765098796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=Rg3NpO2qsBNiFF6xlTcbeS7yfrEriXZCD0JTQIYZjKQ=;
-	b=8MQKFlG0NwiZTEVaCNVwp1YWzn3DX2FCzmI7FebflXZeG3+NL2TiY5K47/inhj/oPw7Beh
-	VHUZ5scozO55U6iT1l/HKW3QpA0ztBJoZHPnxHiNniO2tAFcpGcgaFnGHeLWOkrqCZd612
-	+32+2eo7fcY22ptqTqeuzMp3JJXq8zo=
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-65747d01bb0so5373839eaf.0
-        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 00:55:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765097726; x=1765702526;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Rg3NpO2qsBNiFF6xlTcbeS7yfrEriXZCD0JTQIYZjKQ=;
-        b=j39LPxRBdENi/nFjLkHmwzDq/QGrQHUsSMtQFJmnj2s4+x5Y4dlnektSjz8wPcuneq
-         KHp7NJk7xqktepMfFXy82PtTy7lQHG2WiLAsJL6xeAsAeGLHw8wnsUIgruZzZxKIyJ2M
-         VRJHPELwaqxRjE0+6rZQIqnsbj222u+XhDnllutDxPzx1AtAdyS0N8geZUJ8s+T+SJRm
-         DtZRXBzg6HkHfe2R5bPiVeSJ312RH3XlneOfEJvf3W6mqs8c8XS0ZOAFtU/FE6OU4Yjk
-         GWgXKhfEv/wHzVzyalu9cxRa1EaElJA59CKGYOaI5fXGnvN4F4ObcUf/mJcqsf+CutZ2
-         XgWw==
-X-Forwarded-Encrypted: i=1; AJvYcCWNGaGR1dgw01cxJFo+MvBEdQ+H28CJGpCBBMfVaRg1mih9qDPf0Qy650iA0FQcZa9DObwNPQDyyg==@kvack.org
-X-Gm-Message-State: AOJu0YxKBrCnMRep7cnf2kF4B/TEMn2ZxCW/4TkeUbvN9Mxwv6vutDQF
-	l+Eptx5Ga/QmItuM6L5YTPvqMnYOhnEPx9bBgLb+dKwVDEGpb78L2AF9F5a+uvPgADPVA1V/v4Z
-	Ku6Q1UEQSlzreYVd6znnG6pr+rH1dZ509yydcZq0Gj/LI9tjRMy1kSEmg2W0=
-X-Google-Smtp-Source: AGHT+IHVK+oaWYxHEadC5NNhsPw1HdmPhptHVRCyjazvlI4ChZAHNuTSFIdFwEwt0ocKs9fANO0NecW0qePdhCSwhKjQtkORS1y7
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MDlVOO4f4jLAtS9IkeS/9IQLKfCdvmm9Ok7QfBI5TfU=;
+	b=bwX9iS3nk85s+OquKVHboTLqhA5Ko8v0Dip/zBGqDMh0Q9zeFoAEx14GQwAmm1bXJujkqH
+	TVrVelJ4WFsIHxbh15tRBVlHNb0UNj8gS+QRZ4HKoLSeaR1UGZZkJjqQ5ZlPFWayjVqDe5
+	k2EvT2PpfcSBsfSw7Mpg4As74JxMrhY=
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B79BpKM1056663;
+	Sun, 7 Dec 2025 01:13:12 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=s2048-2025-q2; bh=MDlVOO4f4jLAtS9IkeS/
+	9IQLKfCdvmm9Ok7QfBI5TfU=; b=h3vFmyyzFQZlcvxDC4RX+Io337UfOupkB3ps
+	lbBnEwkFb6xeEPelHp6gWcQtCSbyszT/wKXehF/DkQGXR4I4mVmRFArNSdeeSm6t
+	KNN0cQCAfHT3TjtuXJvqentwhO8cqzVCq0Ft4rE6bPji6kjnPompCXlgBIYGXeAo
+	zMIsDx6paoCV9jzYv7SqDCQd8kOp2A4ijlpcnz4I/4R03HAy7o9r17osRq7R0Nft
+	66//SDNWtFMkOOss8Zp6vK70IZ4J24LJ9X/CPsHsNTP0qP5iHtoyqHsA9rmJg9I2
+	XEBtmSaBiUzQIb1801oBUiMsXFt8SAgxMwAtOTtJ5Sh/bvCseQ==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4avk3h3s6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 07 Dec 2025 01:13:11 -0800 (PST)
+Received: from devgpu015.cco6.facebook.com (2620:10d:c085:108::4) by
+ mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Sun, 7 Dec 2025 09:13:10 +0000
+Date: Sun, 7 Dec 2025 01:13:05 -0800
+From: Alex Mastro <amastro@fb.com>
+To: Peter Xu <peterx@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+        Nico Pache
+	<npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+        David Hildenbrand
+	<david@redhat.com>,
+        Alex Williamson <alex@shazbot.org>, Zhi Wang
+	<zhiw@nvidia.com>,
+        David Laight <david.laight.linux@gmail.com>,
+        Yi Liu
+	<yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+        Kevin Tian
+	<kevin.tian@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 0/4] mm/vfio: huge pfnmaps with !MAP_FIXED mappings
+Message-ID: <aTVFIdUJcCQjlrdn@devgpu015.cco6.facebook.com>
+References: <20251204151003.171039-1-peterx@redhat.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:160b:b0:659:9a49:8ec5 with SMTP id
- 006d021491bc7-6599a9792ccmr2050790eaf.73.1765097726197; Sun, 07 Dec 2025
- 00:55:26 -0800 (PST)
-Date: Sun, 07 Dec 2025 00:55:26 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <693540fe.a70a0220.38f243.004c.GAE@google.com>
-Subject: [syzbot] [mm?] general protection fault in lru_gen_test_recent (2)
-From: syzbot <syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org, 
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, mhocko@kernel.org, shakeel.butt@linux.dev, 
-	syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: krhwwijwjws7t771issmdpj9qqcms3r9
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20251204151003.171039-1-peterx@redhat.com>
+X-Originating-IP: [2620:10d:c085:108::4]
+X-Proofpoint-ORIG-GUID: rYM6VHrLaiGfh2WtIn0VoaPTRfmLm5To
+X-Proofpoint-GUID: rYM6VHrLaiGfh2WtIn0VoaPTRfmLm5To
+X-Authority-Analysis: v=2.4 cv=eunSD4pX c=1 sm=1 tr=0 ts=69354528 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=FOH2dFAWAAAA:8 a=m7gy3HII4n3VcIQTDVgA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA3MDA4MSBTYWx0ZWRfX0TmA0tB2xvRP
+ HsbJlb4gLpCkEB3XVUB7P8A2XzW7+l82bAsnRz4S692hRozxpbJLVJni4Z0uf4IPoBXkUgPoP4H
+ OxcwpZROFi6sVjPORqKT1jeOsaUaM3fLiPBGVDHx0+ilM6E6c3zBmBc8MSsazlHQGb60xp0y/CX
+ mChKP0Q2d1cmFAbGaVr8e3wSJ+E60i1Ysfk6kAIaHXT1efJoEo7YhfTDZjpUXmOqsLQjCdGX15Z
+ PU3D2TlQjaKBjQfDmulUgW3Q43TAIr9fDPnmAxCzohOmn768lizyX84jYUj0a1xwOdEfD7ctXot
+ l/8d99thZGtCSTcSftN7RPUq5TrQiWkxeOY24cBNF+tXYyD9k7ApDKM2niwel8CYERYZG+jaxUx
+ NE8gnNj34kdprJW/W61kLdQMwvbCKg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 29ECE100008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765097726-249732
-X-HE-Meta: U2FsdGVkX18Kd/yR1v5yY1GY6BKemkA9r2RTlqQruD3CfAAtWnPHKLX+GtCFYL3FXXIXIf0gxZmFo7J6dsaCsOmxnMV9tqm4XRVjhKTz+acgBfsX6bcEPRsLweb5/aSnYLBeqkFYORyl0HbVfHwSrcpv/qjA1hJC6kDP+MFqBBFfnwwSnCG393ic4V8EejZ/7eqnpIUksR2EasoqpIRPljX8k1nVrHVkzu3d5m4wQ0ZpTMxEGZnOjpPSzaeza9vvwHj9CQwDkRGAIHT8C51kpKCtjX21EUjYY6RWHu/3KqB4e6nOoI3maHj3WN5cYPKlJcief/cCyiuEpI/gpDd64pPRT/O5oXpv6JqIQa0jF59Eoc1MtcWeW9pBZK1rU8mTJUGNz/jVGouDsbiKx0Fii9S8SqUr8gJKdxvLhGvfsYX30tH6+8i+f8RohsUDMTTOPa9NID15ovA9gVDKE2i+iGAZoQFvo64dC/RNVw+oRFxO0fv9krrdLiiDHzTrtCnBIG4eEJ3qUZWvoY7KBy+toQzYugN48fcVxgl/sO6IKh70dsZ41xyXRFWNZcqXkKg49ZD5dNAFkVAbwpPA5iY2x+TZ7Xr6sVBy6fRg4ySMLiB4g+oJE1B1vZTM4ynj3jfGQDF0mp2d56n5im/bVahdOroafIEpjE6bGgqLpTlSUm+6gXq70LdCcnS/c7KDmsMfStoJqUM/s7NDhqCSNRMs004FlT5Oj/rRRq1Q1thYReg5LB5bPcCLMVnk80vG1KEACxELNu33rxguRo+IIFCEGVXCZu6Ait+jylAcOO/kLTyMlONqknWGd/BqLP0ddGOCXQb7tj+hMr4pTDVWsDEoATOBcKiQRCkOhAryfeGx6wbHQ6DM+AP33E9njEF5LQrkCDsgwPjorwPgpixMiENxfuXJIns7zZIhAwYcjXz7/s0XEKtp4/MexcyAwHGPbPcpNqcsgQRqyS48yOOtNYa
- j2N/r52Q
- GtFAMlaEx7SkTBjxyjpxPRJ00l5KVI88wA6rOYa1xxbUZMzgN1Qucvh8irXV+enGmOKnlnInmnFnGXMwRJhPd+lcETe2G0xUxwEzPC2Zd5IVTFGlvNByrw7Mi5ITM6AqtjBcLnlqDiNWDFJ+PQnB3X9OlWEAzml4NxvSSbmT+6d/5eh/IeATn4L5cr68LUpacVpraMODsrKB9aKLb3UtmaIxpMe5GLx8hY2TMH+jnsJQUtf4nj6hhoSHWSZi6m3pL8NyRWyujf6ofbCKr7BaHAwXmLMVXFv4Nz+Ru969xHRhhC1zPOwzw8wxLfYv6/dWk8Y6eSzzUhYmEZh1+Qy6rWZn7TBUNbBGI6r4/Niqr9V2jjUopuHVWvDfYFRuB+wIO0AiY1GmCJxGIARqIpHZxRp4p90OMTlKFNmaPZ3R8jOiNWjM7H7luT5kTFYQULflWUE+IiSncouK2iPRlRTABmBhRqG/ZKTbHx3wF2fsNAoje9RuQt302h801a1rQ6jafLovUTErcE8rvlpYpe+LU0Ogn1wDthTo8iHA8aWQRAuLMyQPrDgbSFUmZ8hxwdZL6QIncyar2RiOdFcrYn5PxTwhmqFPHOJyEhKxOuwvpmxW1SGxXeRFKfd7Z2uEuZTldd4FRI8IFQNZCTH2qcBgpu7VAzTwXnCL91szU4ZMJBuuZapczNxc+T4lVUZS4CvRTskx8RGUqwrTtX9z+I3uWu0XRd+Cj+8ZLZtcmW/dizmq8dlD4rdvs5x+Do9fxnRREg/I+veI1cMREyp3ePbVZnAD6YskUj6I1Pcrmw8pwNF5DjOGMQHRTpipD4DMxYJMzw5vwiuqT8NFRRBU/MBgIAq0y5LkPKrX8H5XbRoZ9DX7AENuaEyJIwhBPCn7MjYXz/GYoG5a8QdS1Yv8L549nCFapEYQNphfdxESmsDWtNXR9lRvLvSpNUyPjcayIM2L9d/Pjm97NasVIhyK+WdO/8vG9QOrB
- hnky1Hlx
- zklv7423f3KfUTjO1QMRSrfKaIEMUNwsQ2gIVHOY3rH+o1TKitCVntiUpw/1isQmBtWm0x6FRH2Se5ZgDQb8zUME4vEiICfNJmFsQePisjVCi2u5LMDKw9T/0eksAhlhdbilvlAB3K8wKu1M5SPMJ2IrJaYKbh58VL6IbaC14Y898qbLxZG+falaM1snliKyCxwm7/wQZzn/vSRuDdIQWqe29O7/Q5X3COZVW40coDSmXR0Sx9Xr26GyGG6B++fDdgwhPl6JtlvISssJ9RuU75qjtbEdk9Lu78AdHVwIpMe9mI/7f1AWZn3B2NjKhLqdOMxGtKj4ya1/Arch0HLBbd0U7QWtm6BVo3Jb1tevmp4q9h9DZKkiBqVzKHVJV8tgmiGIBzyFiOJYF1EHPEWyviE25689oVwjC82zcCSwZTGgmqthgDh1KMb7h2pppHfYNE3piAGVJ7eBkzmfEqNKJdcRFeSbAJX2qp8P/S8oS4QMG0kj9VFs/aQ5mpGpMNSY
+X-Rspamd-Queue-Id: D132840003
+X-Rspamd-Server: rspam10
+X-Stat-Signature: f5ssbxcidx7jdoiu7449sr8ugeoi8uia
+X-HE-Tag: 1765098795-574750
+X-HE-Meta: U2FsdGVkX1+gNSRmYnSv668KsNHgtNXigj5cguHcV/FN893K3PoHWUoVv5bjuzqUfbZRHnYqbksUTjfG5Nr7nbi5sXLN4pi2tPmAmJVEqLafQpJAgKr50GbJF//i+M6o7zQNKCWqxYQlSiihyh65uzSG41ZAe4vF9BaljD/e+vkA9EqJvnWCnRpgoQmX8C/reaQuv0sDCfoRqW65oGO+JjIxsY+eRelmyruS58vEhVH5H+YQzmgz/KhoPIlybLlgrOaY/vbRZQO7G4v8Hmb59sRUlm9eUh7S4gcSeVRAAKkzJdzQXn/xiChDklLlDgfMckPUTY0JfXwBpBK//pPuZjokSaqKUhnn1wm/EINLUVzaV12I63RbTKRlp66pNQzjX10D+iOhdx1hy2ebgvQeYhRagz1w65waHRt8ttII5LUPEsK7cI15DbdsAXhJA0V4QZZDdqzL5ddbeBu9xSn3W5/TSloB9sDnYYTEcMxFFbbiFM1XDqEvzeaOL2KyWhL0i4zaSCdCjobriXSmeT2WgDvi8V+XhTfwiRk9HGDYxA1kRyLEIN9lVdAM1KJoWsIFjSffPwoX9pDSGoHwPrvvJFTdJ8Ox67FNy+ZgYJOsEehZkNfWpIL2fi4Z+eI6yyN2zSGTGMZnCFIfqlwh7C7I3irtE+x62BTEUZF7FBGb6hEiOrgBvPiguUc890vPATb4K99JtOlTMKVBZgYZjfysz8DbwkFK3hyCcpJv06WHJPkJpw8E2JL52BnM2wpWC00ZAba1p/ge6Wj8R1Rt6BUykVDDkFt8LujrbPi2wFez9B8XXtDfxzttXuGERi3Jd8if7AcIj/pnJGWA4xFZqf0hjFMiYc7Yf+naqoPExl0vnwh4HDMLxRmFgogYzZye+Azsmi+shF0r8ERHLxsF/dEkwWUNseKMnrIZue55in5OYPWurTVIbddfhCtuTQOpZo9WwlBcr/s3RCnGJi6LYRk
+ rWFMyN7/
+ rZXbBK4rPZLs/L+n4/f7bWtej9NW592bFPKY40IB9z26okyNaFvh36Xlisn5g4B4aotyOo2QfHa2wgNj+n+VvfttoVB1xzbkAmbTIETtw4DR3KSQ6ePUXTw/BVf8HawDiItw/bwPxEgoVGRE6P1BFiu1gshJq0s8dM6L7cOQGvbgm/g0xNcGHDZiMn723sWnKIQMG6P5TDCHqjzA7tdacIq4MtP3xAK43Q6L3F2VdV4I4MYGVDtcrDspZcN3vmC5r/mYvexMQjMevs4mD3xTIRAXtnB7Y/hUMxIO623cnRL++BcbiRZ/LIh6ioNojGhBHFdF9aM8QiTmCM8Y/sWGM2cYpPc3Tdez/GDHOA6ubLgonqta54mCtiqastY1XXsyoRP8bNBTFabiB6/jo9JaF7y7OtCu9gCQ9F3bukFvNaVgYqIt2liXWLF4y07AM/YKAjmk02wuwBgS6C7dneUtVT0mtkg5/q3VzTaSzLD+BeDVYb7h1OkGuMyqkrZt9DCcbUF+wGdlHnogkary1mPet3LbVDzzzPfkMeOOFtC6zkbE+wCWlJbb3ZM51eqEubpMbkIXCGGDxIVjqdDyGnUQ99vdTs3C6f6euMm7dIYeqIROeJXo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,130 +125,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Thu, Dec 04, 2025 at 10:09:59AM -0500, Peter Xu wrote:
+> Alex Mastro: thanks for the testing offered in v1, but since this series
+> was rewritten, a re-test will be needed.  I hence didn't collect the T-b.
+ 
+Thank Peter, LGTM.
 
-syzbot found the following issue on:
+Tested-by: Alex Mastro <amastro@fb.com>
 
-HEAD commit:    c06c303832ec ocfs2: fix xattr array entry __counted_by error
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14cbfc1a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5aef7d5187304591
-dashboard link: https://syzkaller.appspot.com/bug?extid=e008db2ac01e282550ee
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=127f2992580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15cf4eb4580000
+$ cc -Og -Wall -Wextra test_vfio_map_dma.c -o test_vfio_map_dma
+$ ./test_vfio_map_dma 0000:05:00.0 4 0x600000 0x800000000 0x100000000
+opening 0000:05:00.0 via /dev/vfio/39
+BAR 4: size=0x2000000000, offset=0x40000000000, flags=0x7
+mmap'd BAR 4: offset=0x600000, size=0x800000000 -> vaddr=0x7fdac0600000
+VFIO_IOMMU_MAP_DMA: vaddr=0x7fdac0600000, iova=0x100000000, size=0x800000000
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c06c3038.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/1a5115eeda38/vmlinux-c06c3038.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/98eb17e54bb8/bzImage-c06c3038.xz
+$ sudo bpftrace -q -e 'fexit:vfio_pci_mmap_huge_fault { printf("order=%d, ret=0x%x\n", args.order, retval); }' 2>&1 > ~/dump
+$ cat ~/dump | sort | uniq -c | sort -nr
+    512 order=9, ret=0x100
+     31 order=18, ret=0x100
+      2
+      1 order=18, ret=0x800
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e008db2ac01e282550ee@syzkaller.appspotmail.com
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc00000009c0: 0000 [#1] SMP KASAN NOPTI
-KASAN: probably user-memory-access in range [0x0000000000004e00-0x0000000000004e07]
-CPU: 2 UID: 0 PID: 6121 Comm: syz.0.27 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:mem_cgroup_lruvec include/linux/memcontrol.h:720 [inline]
-RIP: 0010:lru_gen_test_recent+0xee/0x320 mm/workingset.c:275
-Code: 38 80 b5 ff 48 85 db 0f 84 79 01 00 00 e8 2a 80 b5 ff 49 8d bd 00 4e 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e a3 01 00 00 4d 63 b5 00 4e 00
-RSP: 0018:ffffc90003e17828 EFLAGS: 00010206
-RAX: dffffc0000000000 RBX: ffff888100068000 RCX: ffffc90003e1772c
-RDX: 00000000000009c0 RSI: ffffffff82096446 RDI: 0000000000004e00
-RBP: ffffc90003e178c0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: ffff888028282ff0 R12: ffffc90003e178e0
-R13: 0000000000000000 R14: ffffc90003e178b0 R15: 0000000000000000
-FS:  00007f6361dfa6c0(0000) GS:ffff8880d6b0d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000409000000 CR3: 0000000039516000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- lru_gen_refault mm/workingset.c:296 [inline]
- workingset_refault+0x251/0xca0 mm/workingset.c:546
- filemap_add_folio+0x23d/0x610 mm/filemap.c:981
- do_read_cache_folio+0x23c/0x5c0 mm/filemap.c:4063
- freader_get_folio+0x33a/0x930 lib/buildid.c:58
- freader_fetch+0xbd/0x740 lib/buildid.c:101
- __build_id_parse.isra.0+0xdd/0x6c0 lib/buildid.c:289
- do_procmap_query+0xb0e/0x1080 fs/proc/task_mmu.c:733
- procfs_procmap_ioctl+0x9d/0xe0 fs/proc/task_mmu.c:813
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f6360f8f7c9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f6361dfa038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f63611e5fa0 RCX: 00007f6360f8f7c9
-RDX: 0000200000000180 RSI: 00000000c0686611 RDI: 0000000000000003
-RBP: 00007f6361013f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f63611e6038 R14: 00007f63611e5fa0 R15: 00007ffe36ff8138
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:mem_cgroup_lruvec include/linux/memcontrol.h:720 [inline]
-RIP: 0010:lru_gen_test_recent+0xee/0x320 mm/workingset.c:275
-Code: 38 80 b5 ff 48 85 db 0f 84 79 01 00 00 e8 2a 80 b5 ff 49 8d bd 00 4e 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e a3 01 00 00 4d 63 b5 00 4e 00
-RSP: 0018:ffffc90003e17828 EFLAGS: 00010206
-
-RAX: dffffc0000000000 RBX: ffff888100068000 RCX: ffffc90003e1772c
-RDX: 00000000000009c0 RSI: ffffffff82096446 RDI: 0000000000004e00
-RBP: ffffc90003e178c0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: ffff888028282ff0 R12: ffffc90003e178e0
-R13: 0000000000000000 R14: ffffc90003e178b0 R15: 0000000000000000
-FS:  00007f6361dfa6c0(0000) GS:ffff8880d6b0d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000409000000 CR3: 0000000039516000 CR4: 0000000000352ef0
-----------------
-Code disassembly (best guess):
-   0:	38 80 b5 ff 48 85    	cmp    %al,-0x7ab7004b(%rax)
-   6:	db 0f                	fisttpl (%rdi)
-   8:	84 79 01             	test   %bh,0x1(%rcx)
-   b:	00 00                	add    %al,(%rax)
-   d:	e8 2a 80 b5 ff       	call   0xffb5803c
-  12:	49 8d bd 00 4e 00 00 	lea    0x4e00(%r13),%rdi
-  19:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-  20:	fc ff df
-  23:	48 89 fa             	mov    %rdi,%rdx
-  26:	48 c1 ea 03          	shr    $0x3,%rdx
-* 2a:	0f b6 04 02          	movzbl (%rdx,%rax,1),%eax <-- trapping instruction
-  2e:	84 c0                	test   %al,%al
-  30:	74 08                	je     0x3a
-  32:	3c 03                	cmp    $0x3,%al
-  34:	0f 8e a3 01 00 00    	jle    0x1dd
-  3a:	4d                   	rex.WRB
-  3b:	63                   	.byte 0x63
-  3c:	b5 00                	mov    $0x0,%ch
-  3e:	4e                   	rex.WRX
-
-
+test_vfio_map_dma.c
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+#include <errno.h>
+#include <fcntl.h>
+#include <libgen.h>
+#include <linux/limits.h>
+#include <linux/types.h>
+#include <linux/vfio.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+#define ensure(cond)                                                             \
+	do {                                                                     \
+		if (!(cond)) {                                                   \
+			fprintf(stderr,                                          \
+				"%s:%d Condition failed: '%s' (errno=%d: %s)\n", \
+				__FILE__, __LINE__, #cond, errno,                \
+				strerror(errno));                                \
+			exit(EXIT_FAILURE);                                      \
+		}                                                                \
+	} while (0)
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+static uint32_t group_for_bdf(const char *bdf)
+{
+	char path[PATH_MAX];
+	char link[PATH_MAX];
+	int ret;
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/iommu_group",
+		 bdf);
+	ret = readlink(path, link, sizeof(link));
+	ensure(ret > 0);
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+	const char *filename = basename(link);
+	ensure(filename);
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+	return strtoul(filename, NULL, 0);
+}
 
-If you want to undo deduplication, reply with:
-#syz undup
+int main(int argc, char **argv)
+{
+	int ret;
+
+	if (argc != 6) {
+		printf("usage: %s <vfio_bdf> <bar_idx> <bar_offset> <size> <iova>\n",
+		       argv[0]);
+		printf("example: %s 0000:05:00.0 2 0x20000 0x1000 0x100000\n",
+		       argv[0]);
+		return 1;
+	}
+
+	const char *bdf = argv[1];
+	uint32_t bar_idx = strtoul(argv[2], NULL, 0);
+	uint64_t bar_offs = strtoull(argv[3], NULL, 0);
+	uint64_t size = strtoull(argv[4], NULL, 0);
+	uint64_t iova = strtoull(argv[5], NULL, 0);
+
+	uint32_t group_num = group_for_bdf(bdf);
+	char group_path[PATH_MAX];
+	snprintf(group_path, sizeof(group_path), "/dev/vfio/%u", group_num);
+
+	int container_fd = open("/dev/vfio/vfio", O_RDWR);
+	ensure(container_fd >= 0);
+
+	printf("opening %s via %s\n", bdf, group_path);
+	int group_fd = open(group_path, O_RDWR);
+	ensure(group_fd >= 0);
+
+	ret = ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container_fd);
+	ensure(!ret);
+
+	ret = ioctl(container_fd, VFIO_SET_IOMMU, VFIO_TYPE1v2_IOMMU);
+	ensure(!ret);
+
+	int device_fd = ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, bdf);
+	ensure(device_fd >= 0);
+
+	/* Get region info for the BAR */
+	struct vfio_region_info region_info = {
+		.argsz = sizeof(region_info),
+		.index = bar_idx,
+	};
+	ret = ioctl(device_fd, VFIO_DEVICE_GET_REGION_INFO, &region_info);
+	ensure(!ret);
+
+	printf("BAR %u: size=0x%llx, offset=0x%llx, flags=0x%x\n", bar_idx,
+	       region_info.size, region_info.offset, region_info.flags);
+
+	ensure(region_info.flags & VFIO_REGION_INFO_FLAG_MMAP);
+	ensure(bar_offs + size <= region_info.size);
+
+	/* mmap the BAR at the specified offset */
+	void *bar_mmap = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED,
+			      device_fd, region_info.offset + bar_offs);
+	ensure(bar_mmap != MAP_FAILED);
+
+	ret = madvise(bar_mmap, size, MADV_HUGEPAGE);
+	ensure(!ret);
+
+	printf("mmap'd BAR %u: offset=0x%lx, size=0x%lx -> vaddr=%p\n", bar_idx,
+	       bar_offs, size, bar_mmap);
+
+	/* Map the mmap'd address into IOMMU using VFIO_IOMMU_MAP_DMA */
+	struct vfio_iommu_type1_dma_map dma_map = {
+		.argsz = sizeof(dma_map),
+		.flags = VFIO_DMA_MAP_FLAG_READ | VFIO_DMA_MAP_FLAG_WRITE,
+		.vaddr = (uint64_t)bar_mmap,
+		.iova = iova,
+		.size = size,
+	};
+
+	printf("VFIO_IOMMU_MAP_DMA: vaddr=%p, iova=0x%llx, size=0x%lx\n",
+	       bar_mmap, (unsigned long long)dma_map.iova, size);
+
+	ret = ioctl(container_fd, VFIO_IOMMU_MAP_DMA, &dma_map);
+	ensure(!ret);
+
+	/* Cleanup */
+	struct vfio_iommu_type1_dma_unmap dma_unmap = {
+		.argsz = sizeof(dma_unmap),
+		.iova = dma_map.iova,
+		.size = size,
+	};
+	ret = ioctl(container_fd, VFIO_IOMMU_UNMAP_DMA, &dma_unmap);
+	ensure(!ret);
+
+	ret = munmap(bar_mmap, size);
+	ensure(!ret);
+
+	close(device_fd);
+	close(group_fd);
+	close(container_fd);
+
+	return 0;
+}
 
