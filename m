@@ -4,112 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7F5ED1CDC6
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 09:21:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64B37D1CDC6
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Dec 2025 10:17:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 275016B0005; Sun,  7 Dec 2025 04:21:51 -0500 (EST)
+	id 400686B0005; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 225E86B0006; Sun,  7 Dec 2025 04:21:51 -0500 (EST)
+	id 3D7D16B0006; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13B8B6B0008; Sun,  7 Dec 2025 04:21:51 -0500 (EST)
+	id 314656B0008; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 020B36B0005
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 04:21:50 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AAF2B133EB8
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 09:21:50 +0000 (UTC)
-X-FDA: 84192132780.30.29961E1
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CD6FD180002
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 09:21:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XSinBBeC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765099308; a=rsa-sha256;
-	cv=none;
-	b=k8QXMwgsnJ1PPKLmuImqgSX1QKUoXRuqWcftiMcpzkw1ucItZO0BN89vXE5d6GBSm0Op9F
-	rcgLPB0tx2X85Q4GqOTIl5BuM5E+Kx1LrGrPjfvC3cwsoKJ8/1GQi72bk5EqCyfIKfpzWX
-	XfwBbeUHxJtR0qqY07yFTqcb4s9SU8E=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XSinBBeC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 207F96B0005
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 05:17:44 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7086A5AD32
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 10:17:43 +0000 (UTC)
+X-FDA: 84192273606.29.E5D0B5D
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CEF6F80007
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 10:17:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=e0Ag1vWK;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765099308;
+	s=arc-20220608; t=1765102661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DOvgY9knLW/q8oFaX8tcGdmBqB6enF0wMS5RI0Lf0GA=;
-	b=FYlnyHcU9KpPlZvKWXrng+fDIS7oG7XB5CZo63osuRDypo9GzlCYtbtDhuaqJwdmGfl62q
-	t4N/Cft8thh0tfD+ty8PnGrIiiXmtZYii47zQFiUVQV3MXFcFglpRboAQPyHo35VGz8Iqk
-	D1Rt19ZRQElJ8XaGz+2QsUjnzW7GjK4=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640e9f5951aso6658355a12.1
-        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 01:21:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765099307; x=1765704107; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DOvgY9knLW/q8oFaX8tcGdmBqB6enF0wMS5RI0Lf0GA=;
-        b=XSinBBeCyj5C6X4ZbgylRtW8S1Y4pItkNSHZnwumP29cXm8VGthemi1ZyXBjlKHCH/
-         Vu3ct9TeTfCtP3fmhyGgBIB3QVdvNHkI+493KaQjL16si6W4RkgTAmBKO2AihoKpAnlt
-         hHBn6JFOPfPSo/44J5oZ0QSA8XJThjZwUr0hQt2Lcz37spqjxYcMMYRYpNy6BHJ8s2Se
-         tgIiV9+JNiwq55Rt1Cipr5PL6eYs1kUucY12LrAuWzz4e/mlWkVSWMx5bYSzfzJq9AG5
-         ZszSEdSky3BtAwJMNVy7nXnAVEvHS4ERskW7zCi19hrXGy4fd8qRasPTLoYiOTb1647w
-         SPxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765099307; x=1765704107;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DOvgY9knLW/q8oFaX8tcGdmBqB6enF0wMS5RI0Lf0GA=;
-        b=GCdzH2UXoNUvRHD3GtGJrA7RgAUP+8eflI8xJ8AuGaDPTECPUlZwUmKBNSnYw1AnWL
-         qVMmmyhvCwOkx0JdOz5OYo/GKe7V1USDGsz1+JQuxiok+61535EtI0nWqsHx7AqGGmkh
-         gmxGl666IgkxhYhKqd3wCxqio6S5Q9lgwUNvgkh8BXNleD4yyO6zsgbVeMBXweEbwcyW
-         2LH48atifeG52waJcK//E/sUc3yg4FNPdqNsk8VKqYF4aeB6BjggK9bcuKm4PvFmanCm
-         uOBMt2HBFF8KPAiYJzvWTzZM4hGOcxRM3D5YhTOw6K37fyekHSjFiErgZ3Uc7C77aG1C
-         uDbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMTdsHsHeOg7rNtgO01S/o8f7Qs6icu9/mLrGuRs/9+PS4ehlfBxN+RU8VF+G79oZCPTJ7nM7/Hg==@kvack.org
-X-Gm-Message-State: AOJu0YyiToFiQVKFdw+VwNojqI9Tw47nGh7/GhLUbQ9E5roz9AvoIoLW
-	SRIq/ht43dWzLCw23ZpnagtjCk2Hb1IIobA+7qq4CzoZ17T3H3Zot7plFbg/rp5SPf+LIyhLU/Z
-	IBm3vq0i7K5wmCpw8FDooFVQMqaJIa3s=
-X-Gm-Gg: ASbGncvW3VdvS7gIyPYJW0CyEIywcAA3TWQBKMZOgnihLuxMsgARi3sWuXKTBW2axPG
-	jSv/Oi7JXZUyGIamg1x790d9UO281D+ZQHcIG6z+RhYFKdCxiY4cbyJwTtMjbzgmJaZW479XNwx
-	n6OXE9xmQSE63CmMkMIG5yCB3nzFfix9iP1NvqqbjzWQtzL9xOUsfrM7aPW3mUJIU+Qj+QUDX5f
-	ZCjLCbVeZZezCudzfVRdrs17CZ2/OKzz0L/7+l2wdpkoANboEzCCmlaRAVtAydIdKOAnoDVR//y
-	sIbKSOGTGcb4aB2Bn6cQOG1Qdw==
-X-Google-Smtp-Source: AGHT+IE3f6+lERRTkhgYiXq3WxT75J4vw1ZgvUH3e0qfRSUXuaIevkmchnqMJ7PQ613xIwPYrVjTKig6hmvR9YqtDco=
-X-Received: by 2002:a05:6402:40ce:b0:640:9bb0:a059 with SMTP id
- 4fb4d7f45d1cf-6491809850dmr4243505a12.10.1765099306875; Sun, 07 Dec 2025
- 01:21:46 -0800 (PST)
+	bh=l/FsuuJCcZoCb22S9JB86X0uGzLpM2EDTQg6Y65RI0s=;
+	b=OpV58XhzLlvskrjnXtdXUV0OqVSc14IGELcIsKxiJrSqh3knj7TfBTXf9FXYxCKh2IslMx
+	Cz1H7+VfFkZIEM4kSlcaiLq0bcQ5zQlDflQJ5XuqEFTkFehhjte0+Gf/xXa51fMq2TTIU4
+	YIVplizhT7WPL75J+xXVUSVLbh57tIA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765102661; a=rsa-sha256;
+	cv=none;
+	b=gy+kpdomi6bwjs17OTrJ6F1eF2Mxfjj/HybsyXxU2ta0pIGAEeZ8fsZuE+XCBjj41l0kB3
+	r1KS/GfSu8H9syQx3djIYbcm7eqzjVckbcQ9YSKCY7mNKZs+X//DOSrSUfnXHlGzNLBptN
+	481rLLIZmSNxW4CPTq81zJdLJpINTEg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=e0Ag1vWK;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765102661; x=1796638661;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4OTCbyhf1L0NfU0vkTZn3R2TLNYI5fcz4Hk48AVEa4E=;
+  b=e0Ag1vWKNRFtUJZVkMIzW0lvRYqfgQS8keDGOkf6bSuGWF1Z65mr4uK7
+   oOIjDUuE0N9Tk75Y4zM5ZMP6AF3Gc6Ox7E8lFUMuQ/ysLx3lLyyFMingR
+   2p6Qa3BR3wBV82bEFiMtB2c/vfXw1Q4oNpXr5Yp1j5KL1EPHLJKk8vIm0
+   VjgED6c+kFTD7T+fd+NREEdNsV63hu7T7XMCK1qLnZf7AWsmWm1hJasRU
+   /zfE+6NHuZf4fq5GNKD3b7j/OtwSOuOR2RiaoJ2/DeN8Sl6nij+wI8SDG
+   g+IezRT70szyhj5aKzp1gPp13mnP/oa+h2fFbmnkj2tMHOyBlOvBbmiLi
+   Q==;
+X-CSE-ConnectionGUID: Dcw5kQ15SbefBuz1kQzYkg==
+X-CSE-MsgGUID: wWi74U1WRiW72ECYYXTi1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11634"; a="67109552"
+X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
+   d="scan'208";a="67109552"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 02:17:39 -0800
+X-CSE-ConnectionGUID: 3NrRWvoXSoeo1ZFpbg7u6w==
+X-CSE-MsgGUID: bPLbiwQdRHiVnvJBbk6kVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
+   d="scan'208";a="226345264"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 07 Dec 2025 02:17:37 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vSBpe-00000000JBd-01z4;
+	Sun, 07 Dec 2025 10:17:34 +0000
+Date: Sun, 7 Dec 2025 18:16:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Subject: Re: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize
+ online check
+Message-ID: <202512071758.SKaL9BlQ-lkp@intel.com>
+References: <20251206212507.135503-1-swarajgaikwad1925@gmail.com>
 MIME-Version: 1.0
-References: <20251206131955.780557-1-mjguzik@gmail.com> <20251206131955.780557-3-mjguzik@gmail.com>
- <aTUq5bRdPNpup8GQ@casper.infradead.org>
-In-Reply-To: <aTUq5bRdPNpup8GQ@casper.infradead.org>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Sun, 7 Dec 2025 10:21:35 +0100
-X-Gm-Features: AQt7F2qIgG7x1XRP_ygSDiP1LRfgTA-lBEZIDe8d-fhDcgS3auCKA34L-aS3_r4
-Message-ID: <CAGudoHFjrMsQaDzndo3sM1Jn_WROBrZ0PeQbU89-tDakLAOvew@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] pid: only take pidmap_lock once on alloc
-To: Matthew Wilcox <willy@infradead.org>
-Cc: oleg@redhat.com, brauner@kernel.org, linux-kernel@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4ghejrcz5bztrrbpyx6rmrkyrbniqtg6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251206212507.135503-1-swarajgaikwad1925@gmail.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CEF6F80007
+X-Stat-Signature: rnndq9f3wdrsjszp79mqgfbux8ccniss
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD6FD180002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765099308-200580
-X-HE-Meta: U2FsdGVkX19YVhhhq0sRnEu6MSuT/S0VqcRD5nM/QIfkOYNUKz9++TCzmn+21BHplOgX4In3D7j6ixciE4qEA+Yu0A8h6HO2dmXEKx0W4w942gUQHe/XvnocvApSqpcWF+6+TcQXBmENh3OKZdxH/poyMhqBMzzuQkMwjCZKb6G8F8G1xQYD+rWJFUivtIhqyigLdVlS519xBxd9yH8tquPGJa2wDHufmNmcGYEHcpDnSwtYfb/6G/AUchlQJJnYtOOrNDVHPwSZxCTOIoX8IRZFpe58P+7nFU89hHXBfcNzG2E8grNNsA6Hbhj/oXdR412I/bcsTnc6LcTZCGkqdIff5RYWniRajR0yVcw5oT7Itos6PYZi76Bnik+9Z+AKZtkZzaWZMddtn36W9ADKkw276OyI37NXAc2Go6OKQlfTeXwpzJ7XIiktTS0VMJotQxy3ycEHfjXDdbDf8eA+pslOLNOwRA0S0ZD1VK7cjJWpapB8BuR10WeUO5cbakIteMXrJj0gTnTEAT6+yr6dKxuvhBf9YWKqoC+fy7IdZekhvOvGtzZzydzGPnhcGDMkWav5voyx80btUntAeG/B+OCOPJqI5Q60wD7WtgCz+NQLo8GESYRP7Do1Lan5TuYIzeEPOGkIIQn2AZj33szg4Yg6iusyO1y6k8heE6B0y31gutImwZ9iCrlou7GhhJLbs34+uC/bWZwundg3Vawi+MuMrvCiJlDlhhF2qVVQE72/96AKbW3p1c9Ay2QRdU+u63R1gm7wqKyxGGpoGdp+KW/6jhWDLJmClKDfm36cCYWqXN5FpPDUgz/tn4WIY67ZmOI85eoIYah1lyRXQQdsmDUxKUNTCZnzkfw3/E3kTj8lJgn4MO3/IHVcT0v+TjhXAv5IDhEDNoCTqrtzvBmBWrmoHdxZ1IxtHamzxLD280czqEYm1sz9L0+okmjYaEt+3gPdJ+Zt6J12A92HQ/g
- 5SoQ/KZZ
- gMwHdapyCX1qA5HIga3CILz/mCO6fpTaDraImcX4vim4HxKPekk7zR+fh5rYY3iI128mEXVg8Hnqg4NMRTQ8xjJ0MrOgFHvkyDjkoLQXXTiNSFrExLg8vLtPm4ogY4P5JVWTB8w/e4hNvmjaXw3uyh09zzIbJonC3jW2xbeM1AnWrNcPMhfXDrXqtktMLUmvlesGaJs4xcpekCf2LW2itTK80w7+/tvoQIensKa29K645o6oNHTolJn+X1XxqQNgmpK1/tbWdFZ31B6r+Kg3Wtd3wGKs8PM7bgUD9Au83t1Xom4p+W2EHXuPgKFMz+XxGXOx38PnpXbaaMQcKBfKS8idHicBYUYVRPm2AUfuRCdY924fpoDj9Vyx2WkycXuNJw3GV9rTwrP/HJyLTRymT77zU/2iRS9UpkQBxPaXbyPMb0QnufghqBGsej1i/7HgGttXiRe16SbOjjYc=
+X-HE-Tag: 1765102660-896226
+X-HE-Meta: U2FsdGVkX19duy+tE4xWOPfOThocNe9ysMjn0rlE8MSrTh06iO4hwGXd5Pq748iYVoyZYzyuIIc+2856qXzVNDxvT6C6wty/UdpDFTVOZP/1zv9Ha3HWZiWz+egq4ZTRgAKJwkhAnwyiLy2n8BoLYGAYfPxVyQTVxuK63wCPcnN+z4hhvayrulp8bQQbuLXm5uvqjuUxmL+zTHn8iC20SN39u2AV5wZ1VRYcTc5blzGYOVHboPH7ncFkpoP09w+K7mcdyenwsCh44M7wwrK1EB+w/AzCgqkSjCZ4ucEWiH6X2QZN66X1aZPGQM2mWSYdSHpON2D/yn87i7HJUy/1C8HV6XoNMqcVoX+uWCJP9HHFh+MOUfjlzeDEA+6stGJEnkE7baHfk+sqyR7CTkrDS1hRoWfJrRsPXlAmcm7pHtzfv4d7/rlNOlPYRUqeGtVgAicYGn6xylG9y391q3m7/AuTQAZ/VXdTekcG4AkS74QvnIfzTdfTlv4WImy/L8V6tnrc0VQ+bBtm1xIuM4+Iqt9tKkoM+spl/cBCrHS8onjnTBvXsKvQAnur9RJJ0cAs17QwJxKzD4o+3JFB11dC0TJTlnU7zXAHeomDuhqbv99+LkppwXWNgtAxyee2Iw43BcbrbFusmOrQFWk+Qz2LvXcRB1mDWjEb4IbTqiSbRT6xppbGy2L5UZkdEpfjm5ljKkR1OUMxG0iLXAaoxEItUml1sa+WFNPqFkTrx1xxs0NtK1sxUGxzak4Rl9dZbT0PIYSRbyMtVqFuoAYXR+sTnEv+XUCunRwAhWGSnZ6ytu9T30pZV9du9LCkQq2Rmx9QT7jxqgxnioovnNpxqRDFBWkV69GJ+pXaqHxb+v15HEuRmzFRHlt02eNattu0dpn1iyxSOINmYUbO6ikvqrGbt+knmfPnZEgpvpN/x6RLGmJZa25Rt+37I0BasQyxAs202zmblM9V1Pn+hGAHIyw
+ tp+aVyYQ
+ jmmjmbZ2mkPaW34sc1zzLSGOig7kNEQCk8RfyItlYcK0XnuJnQDT8PENVzZZ6y/TuFlzcNuSHniKXtQXfp4h6ZYghNRP5NLO5+A3Hvm1CuwNNcAOfC6OGVYm+z5HMdaexC1DF5iNjiKOlBj2bqYMbtVQDARnkI6dbjDHQLIqUiM/TaNrsB9IhrCexDCHaNGQEzLVIdrD2xeq1wSi+4Y2OR7Oe2+UP7tEZobh/QQkEmqSFN+g+w9ED7V+J27UG4b+0bW6PYBV109jE9SIAf+N6WgPmYl5bq/T3dIktq9yYChZVb7eY3sd9J73yAfGzvd7VpD6rcV9B9p8xkOry5E8JeG1EmQ9CW/BVW76O4maQhddB9sDzRftD7yYD85Gqt5kVf8BP6kcd6fuaobIvLjYvAznq7Jn/gaG1kXFeRCXX8t7Mc8oIVgupNG9kJOpVbeR+J//ePPEbVHS0p2vNfgZbdFrh6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,16 +114,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 7, 2025 at 8:21=E2=80=AFAM Matthew Wilcox <willy@infradead.org>=
- wrote:
->
-> On Sat, Dec 06, 2025 at 02:19:55PM +0100, Mateusz Guzik wrote:
-> > -     if (!pid)
-> > +     if (unlikely(!pid))
->
-> Does this change anything?  I was under the impression that gcc already
-> treats !p as unlikely.
+Hi Swaraj,
 
-I don't know if gcc is guaranteed to act like that, most of my
-experience is with clang which was rather inconsistent about it.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on 3cfeff1d2304237b1c14628d695a6df44daff48f]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Swaraj-Gaikwad/mm-memory_hotplug-Cache-auto_movable-stats-to-optimize-online-check/20251206-235737
+base:   3cfeff1d2304237b1c14628d695a6df44daff48f
+patch link:    https://lore.kernel.org/r/20251206212507.135503-1-swarajgaikwad1925%40gmail.com
+patch subject: [PATCH] mm/memory_hotplug: Cache auto_movable stats to optimize online check
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251207/202512071758.SKaL9BlQ-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251207/202512071758.SKaL9BlQ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512071758.SKaL9BlQ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/memory_hotplug.c:53:34: warning: tentative definition of variable with internal linkage has incomplete non-array type 'struct auto_movable_stats' [-Wtentative-definition-incomplete-type]
+      53 | static struct auto_movable_stats global_auto_movable_stats;
+         |                                  ^
+   mm/memory_hotplug.c:53:15: note: forward declaration of 'struct auto_movable_stats'
+      53 | static struct auto_movable_stats global_auto_movable_stats;
+         |               ^
+   1 warning generated.
+
+
+vim +53 mm/memory_hotplug.c
+
+    52	
+  > 53	static struct auto_movable_stats global_auto_movable_stats;
+    54	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
