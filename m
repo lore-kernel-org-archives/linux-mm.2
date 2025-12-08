@@ -4,120 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED149D3B7E2
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 18:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34AFAD3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 18:15:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E6B96B000C; Mon,  8 Dec 2025 13:15:30 -0500 (EST)
+	id 8F4A86B000D; Mon,  8 Dec 2025 13:15:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BED06B000D; Mon,  8 Dec 2025 13:15:30 -0500 (EST)
+	id 8CC116B0010; Mon,  8 Dec 2025 13:15:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D4766B000E; Mon,  8 Dec 2025 13:15:30 -0500 (EST)
+	id 7E2916B0011; Mon,  8 Dec 2025 13:15:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C1056B000C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 13:15:30 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0652D13A336
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:15:30 +0000 (UTC)
-X-FDA: 84197106420.21.C628B88
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F37DD4000E
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:15:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TdXKSt69;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BB446B000D
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 13:15:54 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C83313A0A5
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:15:54 +0000 (UTC)
+X-FDA: 84197107428.23.D54E120
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1FEC02001E
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:15:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Yrb0Bb4l;
+	spf=pass (imf03.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765217728;
+	s=arc-20220608; t=1765217752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sln3pvwp5otYUxdpdJdgmati+eSU2RmuymTJPmoiQpM=;
-	b=WXICMtn82CIhDMvq5r9QBNj95uAQnQPEAB8NSmlk8SyoGChrxLUH7qGa4FKgRAkXeszgI+
-	8jf92UEckG3rjbHQmsh4DmNFV+LR1JD86P93kLLXSbj6WSOnmu4I4cDIr1l9ZkwtH4atMw
-	jCJh6ycTkbf45buPla8XnBIV4lGCR2Q=
+	bh=R8J43gCwQQgVAiJUJZGTrDPf/rsilcNMXDG/0Q408jc=;
+	b=1xpyuqIDrd115vBJd/ZSXTNgf60N60vQXgEopEbWFNO+o2ScacdGysjXYDov7O8txyCltG
+	4yZknwTUPCur4F631xqzvcQZt4yMYk7bR0spYWi7glcIkgiJOfpk1sCssBth+vUrMnOWoh
+	cVBu6tmtWbREEFefEkaev0DPow+yPUk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TdXKSt69;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Yrb0Bb4l;
+	spf=pass (imf03.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765217728; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765217752; a=rsa-sha256;
 	cv=none;
-	b=iXfxz7+iUKm5/Nt0jT4abETarP//Y8+K/+4zCYPt7z5s9Lj3IcyMPS5SGkEUDIQ+nLehHj
-	kPSoq/NgflRU1oWy0CRr+/RR4rRTtYY3NqO/WqZBg3wYMUEjgSgwFNl/YrNph4PAUn8Rzt
-	at4+1AGtPVJAgUPJ7j1i3vAfiR1ILnQ=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47789cd2083so28837345e9.2
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 10:15:27 -0800 (PST)
+	b=IpUBB36rNESUnljC3bIV8D1yApR975ic1bxzseLpjAVPa06ohTonAw9ELFPcnbPiUxOt36
+	Hm0E/S3wvDUm7kFSYPnT+0MJnSKR6/hJIS9erS5L/+4FulOIXGELDHcRnQhU4rW4K0v/E6
+	Vh4HsVzKjBGPfuUSQjt099SXwq83Jk8=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-477770019e4so50839055e9.3
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 10:15:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1765217726; x=1765822526; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Sln3pvwp5otYUxdpdJdgmati+eSU2RmuymTJPmoiQpM=;
-        b=TdXKSt69dkL/cq9qv/k54XS8goBlY6ariis4TT36z1EuL30LFG5ja3I8514Z1RR+rU
-         K1xilodGCO3KVHDVgq4DYCxF05lfKU6qPBCRjzxUgUgJZi7LfUaBi35rgSCaAyo8KYeV
-         KUy+IaAzXxCl6/IMBe/u2AIm1VK2aBJZjVaok6dxxnyKkGJR53V8scvBiVRVrvazbRUr
-         Hf98XN0F5fAD3YwK5oSmczGXEz0wJDNr4h+UVEYWmx8wGi1uX82VfaeEUO6PkAT+IwI1
-         8KQusLzxyW0t0vKXzllFP9c06y6IUlMgG26kceZiWiY3yYLf2lJlG8H+CsFm019rtX4x
-         8X8Q==
+        d=suse.com; s=google; t=1765217751; x=1765822551; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R8J43gCwQQgVAiJUJZGTrDPf/rsilcNMXDG/0Q408jc=;
+        b=Yrb0Bb4lj8DbcsRkKgKSiF/6UCQIM+ZFaL/FnftEdmL7DeftqqSy+SW4Y/8ebii3qk
+         4D7jbYsuQg82ct/F/lWnlOyvlgKmg4YvvIJaV+Q7D87w39xrtVsN9ILqbZcHvwFeo7XG
+         7oW9xMC0hb3FoVOgcntV9sH6PaTfsl7Tk4j5i0DUuAA8w5jHaWAh2VfLnerxn8IUAhaS
+         +POhQpco7a+rTOoRwZdEzK1dZfpdTRSx45/sfQP7gQpmB3aNEvCplFu34chtsHqtufJ8
+         GE+Tv2w+0F553we3HK0VwzFfk9mvq0M18+37WR0f+SNmRj4zxF1qHZOzNMz74wUVmr2c
+         6kjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765217726; x=1765822526;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sln3pvwp5otYUxdpdJdgmati+eSU2RmuymTJPmoiQpM=;
-        b=woY+MAlJdvmjDrVUQ719BQBN2BlQI1/+Ce2kylUVff2XQo74n4DviegaA3EJoMFP0e
-         0bqRfKR3vqs5SfgO1uXXhkvJm051ODbuW7RDrO7dq+RRdco9Po3UObzvYtGJlrBNwEKe
-         PPuiqXvdkJriTqUVlf+Dx3JggkY/l29gbNfPAa9l9AWsM1zzumRCuXJIASGiUFuQZdzO
-         4oAteHGnujtf8YdQTn6FfeczxoGYlc5XRAQeDVY2cz27UkxQBWkZhD7zTFlLY3IsrkGq
-         aP0yAPhst/4KD30KDgWcy/vVoMByjsXyvzftZHbZGcNaDO4yYHEZI9VtORiBGdaOeZtP
-         Agyw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmS8uLvmQEUuycBQcf8MOkXhCnfzUCXOjiKesYTIElqoh/Me11Hwqli4ToUqANTb6h2ArF8EPQFQ==@kvack.org
-X-Gm-Message-State: AOJu0YwWZxiG2e3ajmm7vUXQcKNYTPbRSi/OYobFPPzB3EEruR2sloCZ
-	oAQI2qrezjeB0qmbiPAqk+GfhQr0ZoKy2C2SQH3LX/rK8nYQo/mrjvEbg0S6/I9OGBU=
-X-Gm-Gg: ASbGncvdOFqZEIbGEvQ186Uc6Y1CeWYRkpTNQXHljWCCG+finujgosXWfNCLm3eOtsW
-	4u9cztsjTLjdmS55nzRmlM+FWihOhsnKjIdoHzOleQEyf/u5/RQv4D4S9iEv+qSeAZ+b/RKdJkj
-	GmDeLnL4BawnQJOqZzcm2oEmsp9d+rhBk19lbSso5975C3kdianuGElyljkpmhvYUEsyZjCias7
-	7nwgwl0TAjSp2FcbJur0zS2WBnwyhNoYgyIJQEK35DDBlIYQw2w7ZgRfTJplL2u3omqmwVVjPm2
-	DCWEWgh1WZ/uo2ZcCbQ1r9ApmUfqh8/AnEX+OhsQsesipPn4PQgAUZk0Dsshmf5a2GEvDMIntXj
-	AS1j9gtg0GNde/SESUotjjVYBXVvE3JS/qcaEM0jD6W0xPVYl6gw790sdkFpfS+Duy5h3R/oesy
-	iOe7Z7H/NDcuEMutOdHWJ+VsdV
-X-Google-Smtp-Source: AGHT+IHb6iHzjgNSkuFH91TSV+zJDo74e7kLqQzZaPe0DRxIT7Dej3U1f8bQ3ScB0uEiS2OsyuRE0A==
-X-Received: by 2002:a05:600c:4f15:b0:477:214f:bd95 with SMTP id 5b1f17b1804b1-47939e3a6dcmr85980715e9.23.1765217726486;
-        Mon, 08 Dec 2025 10:15:26 -0800 (PST)
-Received: from localhost (109-81-89-155.rct.o2.cz. [109.81.89.155])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479310a6db3sm269869355e9.1.2025.12.08.10.15.25
+        d=1e100.net; s=20230601; t=1765217751; x=1765822551;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R8J43gCwQQgVAiJUJZGTrDPf/rsilcNMXDG/0Q408jc=;
+        b=MBtE9kwZOYBWxenuzfnALm8gwJbIAAvme01uIfNOifYZ/93mmm7472pme288IKhPLV
+         KpbpJNKP/iLMuioFrel3RrEfl+6HmI6FSyudvgNXkh0teDWjsuuTaYZpM7hIxaGnqYcb
+         TpxRO8lBqJ2G1pG1bjaj3zw+rOcSE++gJO5MkjCBhq8HHka6fRBEZhzRZ26wEOYLFxYJ
+         WEXqD+k2oOO3jb9qaEKqW/zTz1dkzKwRqWcXXQqEjysmDPDx4e2DDvvRxBOod45wiXW3
+         cnulUFNN4nWjRUQkv1KxjF4bvkiBUGZCGOapUg5FZyPgxoFOGH+PkBMg5HqLAfgoMBfo
+         z22Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXO5qP0kgFyD73FssfB9wqd9QUE9clnVwZCWASQ3n92DK0wIKT0v1muZO8y6Yr7IPec2GfVOGzXQA==@kvack.org
+X-Gm-Message-State: AOJu0YzDmI76exOTMYp0r0OX6zT1vXpvwA1GeabMjJwfOS/iip8RECyX
+	KOWZG8zaDBYzB7odJmKSjKcqfDiA4AakGiu33NHu+J4FhHpM9PGj9Zafrx4f6H+9Zyc=
+X-Gm-Gg: ASbGncvuSUtrNzv4LRhR6Kc/6n90gRFtEU2ZtK2z6gk2SovrR7tI1s7oS55Ev1Rqsdg
+	diyG4PD62oh0kc8ixFTNTLraRM0Ls/5gWqbKg5nRNEvfa/nYptCKIuLuIAN8eR31W7rBOGlfpG8
+	goGdc+ZdmHuWPabZRiC0oYh9mO7YTZk865r7okdmFE/+D2Ufe3kSlJ34XeEahykUZMr6gs6dihU
+	tczrvTgN+uTVuBry81jFZzrz8U8BamTMwDXrfJOFl1CtTavXVVjN3ZHaJXhTMkhcFjauUU8hQN6
+	PRGs63WcZEsn90015scpM9qWbqeFRJTyYYqImmqmB2H2nzjkuyhsCpa1CoK7kAOV3xqSwGYf1qy
+	xwtEoGIzjS0cE1QsMN1zKV9+TBnIVCzlhibsEMkmC8gCLMD5BbfOdrxngW5M8T1xFJBe9Q351EN
+	4lSPjR2C3YUd7i/H0xtt4PI/Se08o2QLc=
+X-Google-Smtp-Source: AGHT+IEt36ETzJErLHmXOiRn3Ib/UQS4igGV7/dPjeHWIxOPurlffSBsz4CtRRk4uiSDBZs1fMFwhg==
+X-Received: by 2002:a05:6000:2f83:b0:42b:3ace:63c6 with SMTP id ffacd0b85a97d-42f89f0c50emr8583747f8f.16.1765217750626;
+        Mon, 08 Dec 2025 10:15:50 -0800 (PST)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cc090bdsm26358878f8f.19.2025.12.08.10.15.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 10:15:25 -0800 (PST)
-Date: Mon, 8 Dec 2025 19:15:24 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, gourry@gourry.net,
-	david@kernel.org, vbabka@suse.cz, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-Message-ID: <aTcVvMFtKcVerNyz@tiehlicka>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <d35eca2bbdf8675c43d528571bb61c7520e669cb.camel@linux.ibm.com>
+        Mon, 08 Dec 2025 10:15:49 -0800 (PST)
+Date: Mon, 8 Dec 2025 19:15:48 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	"Paul E . McKenney" <paulmck@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH v2] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
+Message-ID: <okpn5az3myvmz4amfkhyixxzb3zemcm23omfqzggbp2vr4jnsl@r2rdp4xmbsfz>
+References: <20251205200106.3909330-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qwow556tghczrm2t"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d35eca2bbdf8675c43d528571bb61c7520e669cb.camel@linux.ibm.com>
-X-Stat-Signature: ye5mmnwg53h5f7yhapsi5rcbe5a697eg
-X-Rspamd-Queue-Id: F37DD4000E
+In-Reply-To: <20251205200106.3909330-1-shakeel.butt@linux.dev>
+X-Stat-Signature: 8ndhnp3pfudy15cco6u4oep9zqh1i6i8
+X-Rspamd-Queue-Id: 1FEC02001E
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1765217727-969802
-X-HE-Meta: U2FsdGVkX19jaTXTsvScJcyUKuLvw4KsDbgJhvQqdXoDSIa5PcBbM84nCqGdoIYtm2AxbLU+stCxXI7zuATT2Q2DE+d+Xik7ps+29tlBht+MqNRRRd7/EzIHkRVID1nphJWFKt78ctKu3nSW30JEJQ+c9IuRsCFchXsiDXq4RNOllfowsEXisJNUY3CcMJLaar8PMn0kSMco+ch5hACWU/NXCyIvx/i8gF0mLMw1iPpv+/0Xs7j60MVXHQAZnjKzti3419DSIpgM3Aq6lo5hQ8Kyi1nYxGsOvmFxtNDBZFT+4DdOOwp49FCjjIRmtLZ0l4xk/6aBaeTnRP4O09aob87yERnDK6It/TWmaCgIwy1txNiqOHhvsmeeNVlSY6/q0WMLrQB+Z0vz+BiNJ0krfgVj+XU07iOv9apYMU207knFNus9XmV95La5UY/sAUdiOAgqTIiXwYihgva93pX4DwAJBWlBYe/hIsYW4bGweP0EFIX2vdso3hkJwWzO1cdQ1lsU+JMkX6HlSPaxpCRAvOCaW5wEK29TLAzedASafA8jbdSj15MxTosLhnmC4AuhwhkxrBi3O207/SVYSrTzzcbJ48mOJvyJAew6aC+yj+UqLiD2zuPQ1yk4LV+EgzmxpA1jK6tWBHQffUeyQ1cPPzvcda/dYGwBChpHSnI5t5nyTlHRFYxb9xqoO4fG8mia1iD7olXj3oou3zaIiL76aWMQQ3MVF6BILpfYmq8u64HBLIcptjUAnkRpYk2HbFEg/LDLjpJ2cAkatqzIExt9RBW7Yg0eqQA0eWNKJPBo6hHUA0nznCV5uqDzjk3H5buT/ZcKEU+o/MsUtt4XpB7tMbPM+kp76NGE2tx3r5RyJN8pABeUeeNiXKkytTZ7PlMopEz1S5XFFqQYayIe8YmfrOZxKT5DOGoXTiNM28qdMFPde7U6QRCPDoJVXFim0rQx0Uruuy+9LNRe46eOrrY
- S805iQ+l
- JftoShOXqAdzSxQ82TcWKklAeh7YGJ/rs0r5ptK2oeX7uF3itS/j+Su16VVvXM6fznZHW/vsRphiuEfx7A+p5H4QLWqaCSI8H1IW8FRLl4ANbz2ZQxal8kPssH90WsmhT+7mV2RmH7MrPmojUtQ3GHE19607OYau4YvTx4nZsZetMV/33HK2/ShlLJbRWQ5UZY2ZjSsojegNp+o7qvL/PNVIgRbs7y0EKSodVkdJ7cmKDa3GIhAwg4+CarRIFXkPZoVjFSk2sIDqIqk/R6+VY+X6GPFFuISLCYX2FlStje+bqHtnnrefrvFvQK/tyZ/MokhQr9DAwu8Ci8ZciPNzlm4xQaDnxqkgR4sxujKWD5xQO01+bANLeq/RfhbCrYUG3Eiu10PxU4EHEbLklEbbwD/h7LQYJo0Krxx1eelE/dy3iQHG1yrqgNuF7XsGYPqqSZmBs
+X-HE-Tag: 1765217751-416182
+X-HE-Meta: U2FsdGVkX18k4Ee/czspLxrvWkCJwBYH4uHJFQzLBdTmfVH3AxQ4oUV80U7bMP8vI4PcclLOHhCxE+RgdL9PI60+awd4PndQRsyt7EAzJaTIYfTzO6khd7UhvzHxOCc3pgZevp+G63HuagrOcMpL+9hFo0CVRh7V33iTT9JsaNeXPmUz3daMnNz+2Q+rBcm4xh+P4vWrHTI5ZSK3X3O4yErzFNQI7nQRZ/SYVPpJIksTezjUWkoMWO9bHOTvZ4otGMQ0YxBc68Svsn1vTf71Ra6oBGl8JqcmUUOzbagc1803S0a/syEXc90VYJAPRa9XKBBGVXM+/jJjDC8aCXjGudTmxb+JsyKBBnweHAEsw1d29gJVI3KDWyFh1SoCZC9vJqfMJW94SK4UCjDDOL5VrbpW6A1AWP++gSfxW+C8+7S6DRG0bXSfHai0suyyzEzarSVFQZILv6RIieMM/mKM5RxKiDKOZxgqkdBD77Kmi8yku9Aqf8KH/xKeG7qebeU2aACD7bfvjng0ek7XIfeEE8hSInh6yxzLIxBDGuAnguDBMD+C3hmJCavKWZsuP8eFc5OkJ6GBN4CCVxZDlVixWCDO4CvT0TNf1ixw75/YwmiXG8DJaVKi9qB6QsGlISDqQxd/SV/uHCyf0HbZuZkQOA2+gsqm4eFiSwf/G7QqDmEZv6CteNBnpkIgMr9zphUPUbfFOktgp+c9tPtVaPPJ5zqeqg9M217FC/IOFGSIEcK9AuFi2c3miAl93qYMjFcU/fHk7ct/kob/OWz8sh7SpT0HiKlKU5sK6S0/42vdGMapuo+SaT/zSzgO0KLNWnrY07EcpKsHmoEa6lyqa2kwSYI4kh6IVL2WrKV52HszNlBCQDcKDemzvGW8lpUpjvBl+dzLf7H7CJdmyOE0orFmFZM5Ea95KB/sxAfcXX8PQXJdIXQVbzf8uBPw9My3rw8YIPGHDBMXEf/M5yOPPH8
+ SygeXSwB
+ lxGri5A3mvse9YvE6NWyrv/o7DGdqHba9jQNB3xq7dHQ7hRG5ONeueiuAj3fyceELX8HwJXwBgrR3QLdlJWBH+zrpdLtLQIbSJ1qP2kRYoWXCRNPC3y80Yb1nUMf3jXkswOmgFFR15VCssNnlQAPPQUMaDE0rlan8Twpqq49+082ok64fPiWmEOAnVDjRQlprJP9xhWtoJL37hsYG0rs05fh+15i+a05mjh1DmWqy1xHZibXaeUBiF2oKcJiBelbBg6n5P5fUZ7SWMclWa6bHgpEW60G6rC1xlk8fmbBKg+GaHiU6SPzUKcNZzJrAhCUNR6NMDdTtmq3O6n3yu4gM9PBm0DvBuUjzLA8rVy2OQzGCHBFfPoScVsogVmBbQjUT749wMmwy77sFA+AQUJI3/pAPhIhC3P46nOv+KpXPumcByzKR+kCBX9eX1O1QM0i1EQR63q8kkfOKJW4+azrfrOAC+BPjrsF1Nc74
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,51 +121,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 08-12-25 23:00:46, Aboorva Devarajan wrote:
-> On Mon, 2025-12-01 at 09:41 -0800, Andrew Morton wrote:
-> > On Mon,  1 Dec 2025 11:30:09 +0530 Aboorva Devarajan <aboorvad@linux.ibm.com> wrote:
-[...]
-> [83315.383433] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
-> [83315.383442] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
-> [83315.383448] page_type: f5(slab)
-> [83315.383454] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
-> [83315.383462] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
-> [83315.383470] page dumped because: isolation failed
-> ...
-> ...
-> ...
-> 
-> 
-> Given the following statement in the documentation, should this behavior be considered
-> expected?
-> 
-> >From Documentation/admin-guide/mm/memory-hotplug.rst:
-> "Further, memory offlining might retry for a long time (or even forever), until
-> aborted by the user."
 
-This is in line with trying to offline memory blocks containing the
-kernel memory as seen above. Retrying for ever on movable zones is a
-different issue as discussed in other reply.
+--qwow556tghczrm2t
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
+MIME-Version: 1.0
 
-> There's also a TODO in the code that confirms this issue:
-> 
-> mm/memory_hotplug.c
-> /*
->  * TODO: fatal migration failures should bail
->  * out
->  */
-> do_migrate_range(pfn, end_pfn);
-> 
-> 
-> A possible improvement would be to add a retry limit or timeout for pages that repeatedly
-> fail isolation, returning -EBUSY after N attempts instead of looping indefinitely for
-> umovable pages. This would make the behavior more predictable.
+On Fri, Dec 05, 2025 at 12:01:06PM -0800, Shakeel Butt <shakeel.butt@linux.=
+dev> wrote:
+> On x86-64, this_cpu_cmpxchg() uses CMPXCHG without LOCK prefix which
+> means it is only safe for the local CPU and not for multiple CPUs.
+> Recently the commit 36df6e3dbd7e ("cgroup: make css_rstat_updated nmi
+> safe") make css_rstat_updated lockless and uses lockless list to allow
+> reentrancy. Since css_rstat_updated can invoked from process context,
+					be
 
-I disagree. It is trivial to implement timeout retry in the userspace.
-Any retry attempts limit behavior will be much less predictable. It
-could have been a matter of timing that an operation succeeds. We've had
-exactly that kind of behavior before.
--- 
-Michal Hocko
-SUSE Labs
+> IRQ and NMI, it uses this_cpu_cmpxchg() to select the winner which will
+> inset the lockless lnode into the global per-cpu lockless list.
+   insert
+
+>=20
+> However the commit missed one case where lockless node of a cgroup can
+> be accessed and modified by another CPU doing the flushing. Basically
+> llist_del_first_init() in css_process_update_tree().
+>=20
+> On a cursory look, it can be questioned how css_process_update_tree()
+> can see a lockless node in global lockless list where the updater is at
+> this_cpu_cmpxchg() and before llist_add() call in css_rstat_updated().
+> This can indeed happen in the presence of IRQs/NMI.
+>=20
+> Consider this scenario: Updater for cgroup stat C on CPU A in process
+> context is after llist_on_list() check and before this_cpu_cmpxchg() in
+> css_rstat_updated() where it get interrupted by IRQ/NMI. In the IRQ/NMI
+				gets
+
+
+(sorry for another mail, when I read it I noticed those in a different
+buffer that may be applied if you decide for v2+)
+
+
+--qwow556tghczrm2t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaTcV0RsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+Ag1bAD8DcVIeicwScrrr2qtm+AA
+jyCckJM/q3WC/BusHmg8lhcBAP4FV0SLsim3T7JWzj8yc21NS+nT+TMN99yeRx8w
+1AoE
+=+If1
+-----END PGP SIGNATURE-----
+
+--qwow556tghczrm2t--
 
