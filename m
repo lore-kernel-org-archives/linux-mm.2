@@ -4,89 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A29D3B7E2
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 18:32:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E6B9D3B7E2
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 18:35:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DA046B0005; Mon,  8 Dec 2025 13:32:24 -0500 (EST)
+	id D94826B0006; Mon,  8 Dec 2025 13:35:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48A6A6B0007; Mon,  8 Dec 2025 13:32:24 -0500 (EST)
+	id D1E366B0007; Mon,  8 Dec 2025 13:35:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C71D6B0008; Mon,  8 Dec 2025 13:32:24 -0500 (EST)
+	id C0CCD6B0008; Mon,  8 Dec 2025 13:35:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D55F6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 13:32:24 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 04D531A026D
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:32:23 +0000 (UTC)
-X-FDA: 84197149008.01.A75B326
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 91D2D80005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:32:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ESVown7v;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765218742; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id AB9466B0006
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 13:35:36 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C0EB1401A7
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:35:36 +0000 (UTC)
+X-FDA: 84197157072.06.B963F99
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F2C068000F
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:35:33 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZXFKiJUl;
+	spf=pass (imf30.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765218934; a=rsa-sha256;
 	cv=none;
-	b=rpfCaTILq0/8uPnN8PnGVEEQmbPxIyF85evTdr20D5xWZ/CMcD8xiD63NJhjOpeNNhMAbV
-	+as9YEj0dgl2ljxad5zlVDpEx79o39z2nHyGpVU1BA044cdh3UkJk3KNHS+x8fCfY3gpOA
-	1UG//1uu/Bl0O5QBaQ0l4WPIsRJMWd0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765218742;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=lwyd3jUPEWR/OhT7XE6gIc1zvmU1w9/veXbWHF1vMDg=;
-	b=dJMlu/2yRPX8U1aUlsYAznL/cZdpODsH1hrCfXWJQq3+OmWEwqNDW97hynE74v3MXlbAC9
-	Zl3mZBGTynx0qlzZGcoZ7r2I8v9kpFX+QAdNrHzFFWbsODdY2ngVkMjfgwkcCXK1vPNphi
-	tZgDiHnx2BOo4MvkoOc73HldldH2cqQ=
+	b=hmA7nqpVK7gmAI+eoaIIa5YSzET4BEM/tCl4yya5nc2LOk/h/wMmc7ALw23PQcUnpcLJCU
+	8gFaPx9koB4h2TIJm2SU9O86vU3nqhWHFzYic2AzMyLfVEZfccLrDJr6JVTwYAF/AAGJHx
+	kkAyZ3PsDbPYmmOZiRMqOYtxNsW83xo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ESVown7v;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEBEB60173;
-	Mon,  8 Dec 2025 18:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A85BC4CEF1;
-	Mon,  8 Dec 2025 18:32:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765218741;
-	bh=pCrpHr+5nP6rYJTv7XfOJuqw4MWXOL0/IjDzYaKEs/M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ESVown7vYFsf/+ZVQt3bYja9Uz0eFlRxif443ije8LEY2I/bZu0gl7cwBVXAt5dMh
-	 kUoo+8H24YEWehD8j6z2wNQjFtCdps2adg+OWR/r3iKgpqB9H11autCk2IIQc8Z9Kh
-	 s7OeZz1AhJ1nuKin1uBbcpE4X8C2oClaqkBiwVPzaIIeI+WVlU2+dG6TCF/4gs4C1y
-	 PJYE7J4CiH10gEjYHlacSZjWlSQMCgIB5WSMe4Zv+ARTA2f4hCaDnVzyEmZZt7v+o4
-	 QjamIfXPlnBX0YC/aGbZZgPgp3za2gqMGJWv9cpUehdGTgKfFIddpFf789CCINE72G
-	 kLdW21k3V/RMQ==
-Date: Mon, 08 Dec 2025 08:32:20 -1000
-Message-ID: <6a075882857f0be33ef8361c18f54a76@kernel.org>
-From: Tejun Heo <tj@kernel.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZXFKiJUl;
+	spf=pass (imf30.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1765218934;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2wY2G3umTjO8QaTDkLQv7bCwYeE+8B+SB7EhcsgEzCs=;
+	b=OM6fIDT9HJhSt3bY1eCAJtPYi61WQcPgd4Mb8NcYC254RnYY0efTyowOAPf1DDk9Hy/r62
+	ZOtSRofDjlL3sOlrTwhzh7PHQlMsKvkBbadaNi3/73Th5hll7JKaNOND8QhU3Jfgz8fD7n
+	MkJxRX6lI2bFSDQhRIN6K5jInFR+8Jk=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42e2ce8681eso3300017f8f.0
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 10:35:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1765218932; x=1765823732; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2wY2G3umTjO8QaTDkLQv7bCwYeE+8B+SB7EhcsgEzCs=;
+        b=ZXFKiJUlCrqXqA8e2T1cWMRVDGfjjGrAzasbJa2w+iSUE9mXEiAsbt3X4XUJaRpdBU
+         XtnOJTBBSYuFDbrolLTX/bGbUFya+BME7fmct2rN/tjUg/fIQpyQ0UaPieSvRJL9goGh
+         kJ+YG75WiDv9UrlT7RlaNGQk/PZ8qp3k13/pdjIVF9MOJQcyi2IfXHh3KcSwwP9wasBT
+         ecFvzF2qY2o+qmM2Q0JXJhxSmO6ZUA7J10+7LzHlaL3RLmUTDmvBRXbQd58sHXpJkbxp
+         SW4RYXQjjgtX8SzTFdz599VIek1sQTON51utp+zOWD/lvDSYFKqqJY21fu22SuOfwQ92
+         YfcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765218932; x=1765823732;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2wY2G3umTjO8QaTDkLQv7bCwYeE+8B+SB7EhcsgEzCs=;
+        b=dgpqOd41PNmyphgH1ssyk3FP3cLZtQqHZBf5TGD6PQW0FdCz9SkcDMkvra/Pke5Um8
+         ycjrz9BF+U8TawmmFn2tWniGZRBEZxJN3Ufoxop/x8dLmIg9pdAYM30/te2GTIFcpkKt
+         1RkcIjQp2xqIU1ulXYvLnK+T6hraSTDFJib6pbXV1pbNwswurYVDh5HEToZLMd4VLhTZ
+         f9Ge5S2Rc8mPkEPAQ35mTEXuOCh1n1M3hFAupMppmgwjp8JRfBqN9WrHpTVBy9rvPWgW
+         SVeOFrhPtTpwOn0+z5QJmsoyrVIMfB8UNKhADWEsMjiqErOVVUhnSgu9roZmbW8QbVOp
+         QaCw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7X2AXjHTs5hTNbpBHHv7mvGAGNfimHbi9dnxt26pslfu1c7qlaDVLOnoP++6e/XFxpSwX1A3AnQ==@kvack.org
+X-Gm-Message-State: AOJu0YwRfXwSTnK/HdzACPPEGFJIWduMb2Ov+/fUSDgsrln1DckqnztT
+	I9QZNcpLCZAYrPI0LQOBKC0xgMa2wuRJBxD0ylrpNmcP1jwdEImYq4p47gCLzo+V84o=
+X-Gm-Gg: ASbGnctQa4cPbJM3Iix0evvNUQvKf1Wf6rbn3D+bMKfbtLJQQqQmhuQt6X0dqNri9Oq
+	01cj8LxQ1L+JOZjG3eQDjjPOvPi8f2F1t48EmnMWB7wv/I7rVenKOrWgu25EtktDcQfokvWf/fw
+	0dAXbNa0QgHC/MKi1RNbFLlW2Dobr8d1huIdAdLQlk0ldUsCeUQN6sB5nHZ52edKf3zUv4Y2voQ
+	KqHNupARmS63VMZeGOTKMujw7ibnI1C2BFF0MhQIxOad4fkkTx4+V1u5xjNlq1Oi7D1lwDEdKtJ
+	b4VRiePN25eTdphlO8I1lbdRh1xvfD6MuNFcZdUPhm+STTAmLfcrO+3fqttFkgbivuEj3QBZ6Ro
+	sDTzPtvaJxlZV4TVs2Tkzs3yqeuH0FSPwA/DXLv6Rp/UpL39KeZBM23+MAJMYHgRxcqWzkXKBNU
+	O/iXrswGt6oBoi9CMHdlwQLZGVHpPT0dI=
+X-Google-Smtp-Source: AGHT+IFG0X0Q1R93N8u/vWpDPDL2ng5Ky3tWYqQdQgUzDrHgsA9PHt4E0RmT1shTlNsMnNxjNNJR/A==
+X-Received: by 2002:a05:6000:4028:b0:427:454:43b4 with SMTP id ffacd0b85a97d-42f89f56dcdmr8989533f8f.48.1765218932357;
+        Mon, 08 Dec 2025 10:35:32 -0800 (PST)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7ca4f219sm25439566f8f.0.2025.12.08.10.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 10:35:31 -0800 (PST)
+Date: Mon, 8 Dec 2025 19:35:30 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
 To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Koutný <mkoutny@suse.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- JP Kobryn <inwardvessel@gmail.com>,
- Yosry Ahmed <yosry.ahmed@linux.dev>,
- linux-mm@kvack.org,
- cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH v2] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
-In-Reply-To: <20251205200106.3909330-1-shakeel.butt@linux.dev>
-References: <20251205200106.3909330-1-shakeel.butt@linux.dev>
-X-Rspamd-Queue-Id: 91D2D80005
-X-Stat-Signature: u3du34hx6j1yfyqe7cxh8e8qspstznns
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	"Paul E . McKenney" <paulmck@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] cgroup: rstat: force flush on css exit
+Message-ID: <hjxarrg2jy6cyy5hptjjbkop76jmb6mjdcazlcyqe6nnaoo3l7@7amn6gdssmeg>
+References: <20251204210600.2899011-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gmi5fsjbdr4tg4xt"
+Content-Disposition: inline
+In-Reply-To: <20251204210600.2899011-1-shakeel.butt@linux.dev>
+X-Rspamd-Queue-Id: F2C068000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1765218742-184024
-X-HE-Meta: U2FsdGVkX18CS6dl5od6eEzQ9x28NiN7NdggD22LftvmLvOu2915Uzu/xZGwiIQaPeY0yL3geUrofgJ9wZRELp4dfeR278Udo07xp+Zn38iD8r2uG7vlBvgxFQRgUH9iiT1qiw58bbLf3t6TEC4FGygjyQ8GM1tv008MAfosUUComfua3+qJeTr81Dhfu+h95RtXJ2Ub7ce65ZDxYtlrzxM26d88Rhx5jWdHJI4XGgSrxAjhKS/Rwr6c9Fo7JYMoriVOjKR5W47zzqVfgKJRnWWCURgk6RynPBJeKR5H6+in9O6z/1++ZiV1y8cwy5KG36FsNoOXe5xT9ZE2zbor9r42z+GsJKJVTRd+PnUfqEKijKN8OcZAupTFawwpN7w0a0JAl+ny8X4ib3gGPketpdzqV1e4ObAASSRgCxPSwHej9rX9jdiWI0T05Rdy1O75lvoOgmZkvKnHiLwinzMhvx1j6OuC8lkEPsrEBoCXzfHQRe9jr7a25edRDYurivdA56IfqQ/G1FKLh2b900qNmUw3Yf4bgcBj4djvTLKSWtbrBAo1LD31vVbiKHzWRMJCQiq/BOMVAcAJvR3DD1wkisziJxqTLpQpFyL/Xyp5lF5nk5eh8YMvJ9cKGOVyz+3d5JAMc/Ku6jqH26qZkq3UNCKkxcVcQ9DAxivqUZ9Fcp5+ITno+X5z5oETMdbYhkA/ommaROdx7ihRd18mxQVaXltQwf0j1EJuH2YFQejx3ajTPY65Vq77LmAQso6xq9o6oN0RZf2t8aVOJp2i7Pnf+zKFiRDGJe7WqC/RYreanHqfvL1ROVIiKo9WHCzF2xHjGstIXHRYrdVT1poFOimi0SVU1jR6N+YvM6t/RhwHvD9XZMzI0YwsPR5Y/QJbovh1plkRheohfffRO1d2QbgDaQSJuaHsUoMo95kz28nSpj/tdz7OFkg9heetDQR8qVPwaNmFEm/S+ZCwdm86WB+
- QML5mZYU
- UPYqgBEYTon9qkoIXTT8Qh4evHZRMzDSSl1kPWKYr+EEqNoFbbTgSm4RrGgoztVZte7KCeEH0NF9c1GTuYgKkllf3JfpEdG6KKLMLMDhrX19wrAreAVs6XZyUy8OmszRc+pXpmnt69W2q0LKq4Nh6MFnipNHck6CJ75Di5E/8riCIwvkDAHrb2EfLoKBPYmMlFqPP167+tt55twqZ6bmqU8IcO8Jfr1Zd1hSV30J8BqOtH0kUjf5U4Yajpw==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: acbketkt1yaneaa359sdeouuxeyt3b9g
+X-HE-Tag: 1765218933-137613
+X-HE-Meta: U2FsdGVkX19oFOvBkcCw9AAi8vdr5U/EXbSjKC1uDi3r3hVk6LuUa2uZwJWlt3X8/nHI3evIjUjJmlvB9NADKchdZvoRs3LdB06W47NS3qYUMCHGPxLl2V4mapztoqWAEE8zSrdWdPgsQ5ro0MoOvOTw/pqyVVsbylARhEUrAkyZ4zHblMDNUrgc2OyFzJUH4p8mnB5r/9132BebmGtEfuAwE/4dxMzfE0Gfptst1jCfKV0BJbfzN1cJrAhtLhZdvLzF1/skBK3doXPHp50PHk3kLCrYs6sqRiYBRC//LTcgM9yt6j6BZ30VCdQJ18+lVZYtpQe915C2cJjKBjLXsH4CmdAzLoaal4sef/bh9B7dv3vVREJOrCll8j/EWsmr2dqVm6uLRQ5wgSSheczr0hsGrongwdncmvQsFh/7+Gnz3GoPzr0fN4rT5eJ2gp5jyHzfgGtChwt/Pe2gBwu0ENyjO5Yc//sRhzhg0/GUJnRlTk22AGrSydxIdaH7WSqtXNVqccyAcEOewIJTuJqCW3a0oX4u4ec9qTM7aliEMaWa3D7wo1V27VAYi9052Z5ebn9PxHL8xCNs6p+tBafiGrCz+uxdyZoJ7b+TJj9/HhOgo6D/sF2sX/MWbQnQk4xzaMQIjK3nN22vLyJtBHIL2TTCNJHI/9Z+mgpv39/bzMGN/k2HlPcUKEbQWR+2QFJGaNfCQ/j48yUgKounxDaEzljTNPcc5zUE8Zwlra+o4pfLohdYeIfgyMd+0Q881GZVBnQiNi3ifJCGD7/hEO6q4BoZL8DnntwPKHu8VM5ZE9//BAxCYYSGE0DONU3mzMZWaPhEhOSnNWdEaICis0RGk4H/Rwgb8F1p02kG17FfNxXoQJ4/I6Rt/RLUIwxSYbIOmlopjVXJlT9Rs9Woh2ic+xaA/EweHwhls0hLfQuiw12IF99pxSvtNbtGZxVZWlnKZKYVKWmIssC6CyN814l
+ kFkwLclk
+ V7ygL2bVmpj+UWmiHF2Fwt4r2Iabr9YiMY9z+qFCsq/U7ULMPBDl0maozdWr85/FSgLXlWGRnyYW3hTra+FjzwDYTpx5IkoZFCCPab8fH78uncdgV4ducFSNwV+VOsmivasHmlkTCKlOdYGEPN1ciUZu+GXk6G6LroEO2GsiMXWD5SYYVKwxtmjkprsiwxKixLZITvVThgEDemSFl7uXXk0Z4G6UzMqZ25C1NiYsUv7f2mZzhb3pYvPYsRn4AUY1c/mkmsEXvCtgOpEoYamSAClqulNWUVbyLu76ct62o9jN3Y68ggwUgtmvcA4XejrM9ZeBqj6qBqaN9/Hy7xccxi8OevcV4sBAa/YU/GboUkZQMIXo4CnCg2usx65jMpzy80q7gq853GL1lmfnr9OA2cyN7aeBDv8wEbcwmORh+SNuuTfdomK0A8GBEog==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,9 +121,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Applied to cgroup/for-6.19-fixes w/ stable cc added.
 
-Thanks.
--- 
-tejun
+--gmi5fsjbdr4tg4xt
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] cgroup: rstat: force flush on css exit
+MIME-Version: 1.0
+
+Hi Shakeel.
+
+On Thu, Dec 04, 2025 at 01:06:00PM -0800, Shakeel Butt <shakeel.butt@linux.=
+dev> wrote:
+> Cuurently the rstat update side is lockless and transfers the css of
+> cgroup whose stats has been updated through lockless list (llist). There
+> is an expected race where rstat updater skips adding css to the llist
+> because it was already in the list but the flusher might not see those
+> updates done by the skipped updater.
+
+Notice that there's css_rstat_flush() in
+css_free_rwork_fn()/css_rstat_exit().
+
+> Usually the subsequent updater will take care of such situation but what
+> if the skipped updater was the last updater before the cgroup is removed
+> by the user. In that case stat updates by the skipped updater will be
+> lost. To avoid that let's always flush the stats of the offlined cgroup.
+
+Are you sure here that this is the different cause of the loss than the
+other with unlocked cmpxchg you posted later?
+
+> @@ -283,6 +283,16 @@ static struct cgroup_subsys_state *css_rstat_updated=
+_list(
+> =20
+>  	css_process_update_tree(root->ss, cpu);
+> =20
+> +	/*
+> +	 * We allow race between rstat updater and flusher which can cause a
+> +	 * scenario where the updater skips adding the css to the list but the
+> +	 * flusher might not see updater's updates. Usually the subsequent
+> +	 * updater would take care of that but what if that was the last updater
+> +	 * on that CPU before getting removed. Handle that scenario here.
+> +	 */
+> +	if (!css_is_online(root))
+> +		__css_process_update_tree(root, cpu);
+> +
+
+I'm thinking about this approach:
+
+@@ -482,6 +484,15 @@ void css_rstat_exit(struct cgroup_subsys_state *css)
+        if (!css->rstat_cpu)
+                return;
+
++       /*
++        * We allow race between rstat updater and flusher which can cause a
++        * scenario where the updater skips adding the css to the list but =
+the
++        * flusher might not see updater's updates. Usually the subsequent
++        * updater would take care of that but what if that was the last up=
+dater
++        * on that CPU before getting removed. Handle that scenario here.
++        */
++       for_each_possible_cpu(cpu)
++               css_rstat_updated(css, cpu);
+        css_rstat_flush(css);
+
+        /* sanity check */
+
+because that moves the special treating from relatively commonn
+css_rstat_updated_list() to only cgroup_exit().
+
+(I didn't check this wouldn't break anything.)
+
+Thanks,
+Michal
+
+--gmi5fsjbdr4tg4xt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaTcabxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AjUwgD/UQNbUH0dTJn/Ak6ywJAj
+LkSAHi07EwnjGVgZNMs62TUA/RMxBqM3KNIPKEcYvfDpyhH6tzQJOOgGI29G1Ncx
+RiUE
+=BgfL
+-----END PGP SIGNATURE-----
+
+--gmi5fsjbdr4tg4xt--
 
