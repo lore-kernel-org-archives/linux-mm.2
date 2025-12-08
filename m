@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB9C3D3B7E1
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3EA2D3ABEF
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E36206B0026; Mon,  8 Dec 2025 01:30:12 -0500 (EST)
+	id 55C376B0005; Mon,  8 Dec 2025 01:30:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0E086B0027; Mon,  8 Dec 2025 01:30:12 -0500 (EST)
+	id 4BED26B0027; Mon,  8 Dec 2025 01:30:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4A1F6B0028; Mon,  8 Dec 2025 01:30:12 -0500 (EST)
+	id 35F7F6B0028; Mon,  8 Dec 2025 01:30:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C11856B0026
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:12 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 83EE41345C0
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:12 +0000 (UTC)
-X-FDA: 84195329064.29.94646D8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2167B6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:14 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D99451A095C
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:13 +0000 (UTC)
+X-FDA: 84195329106.11.FA6D090
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D3C0F120006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bWYxgDEw;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 341288000F
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pATG9OqS;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175412; a=rsa-sha256;
+	cv=none;
+	b=rR/dgBuCgRly/mEPaIRA/p7SolOWL+28Ioxpyp5Rzu1vQrUwchcU8cxNk23x4KELjqQL65
+	26CoLKZOHFbwPMSNvk1IETN6/c9CEC+m07C1CQRnlZh7m4wCjZdX9o6n3cRDPnKiTyt+qC
+	SuOLTIWCyew0ezAt4MD1MP5qkydchbQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pATG9OqS;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175410;
+	s=arc-20220608; t=1765175412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=itENM1LK37FUtfHGhDXxQ/BBCcKj1prD9OHDpiMzp30=;
-	b=7IMi6V7sWzPMA2qpZ/014vlVxR1Snt7qOso1xhxPWdcm0uQD8qKy0p9/Jwox8jo4IIvSj0
-	29alkhLjvUL2O7a98TvYCVUN4Hr/1fgVzkpowvR/VVv4h1+HmAfrmJXYyKJLWmq+tl6JNl
-	ZeJwZkdYMyN1sBiYGMqfL2FUZVPXu+s=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bWYxgDEw;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175410; a=rsa-sha256;
-	cv=none;
-	b=4OO8ScJVf4ojQChwMwqRo1p0vo9uRXufDlYlucQ9E0PxRVUA4s5GeJfrBSGPtfEcM0ZvhD
-	fFtJu5h5joIk5ZZKOdunrut8RkbGmWKR+IZ6Jpl6bEdQ6cvKdW9RjbIANctum8vkezUe4q
-	ObipSsNzq4S8sXLo4JNmrGFRQcihWys=
+	bh=zu737/4dDOLh8+sLcrhj7haeT7YfinocaOoI/IVjjpA=;
+	b=5tJalbwqxOcLt3vMKxgbKVv4AR2MdvNbAlFUFpBzmf2v3FibTca+/6SlEZQ26jC742CrFf
+	SobY7fu638p/B8iZgYjnXZyVghBrcXhKN1sXUg066C45i6Q98inqQYMnGIhIfngjuUSm6u
+	OL6VEkeq9OW9NquYj7ry7aiMrAOymtg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CEEA443BD
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23296C116B1;
-	Mon,  8 Dec 2025 06:30:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6436740320;
+	Mon,  8 Dec 2025 06:30:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA33C113D0;
+	Mon,  8 Dec 2025 06:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765175409;
-	bh=At5tPajQSPLt9hOlFCrxmrzWPKun1WpQ7z3727tgAL0=;
+	s=k20201202; t=1765175411;
+	bh=55qSAyG5lbRxWMFpgyshAGzR1uB1VLHtbYjVj1MXVYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWYxgDEwewUI4Si1uvn2A7qlU6sI0b+yWp6SF/szJF2mbBBdXg0ZIAIekRW+ZOrrG
-	 6TbmzOGczenZfeBVT1eGwM8skmQNCoC+T7rzUAg1s/D7qKk5krfv223sDy+Et7SKYV
-	 oKDb/jYUtQD9s5Sp7d1+s6HJyBRA78C9StrcOfWWsYip5AOF/H+pRJNQBU5+6oOv9w
-	 bB8o7cqHCaJ9YJ8Qk3M3o0RMOD2nKZPDQiL6V77bFV/BxTWnDPT447D3IS3ql5eu4y
-	 Hm319ClPVM1KMf1IeY6kU7NtDbSWg2Wq3lUwZjBk+UOcPyDyvcpSJnwXRSjLE7qQRx
-	 /YO2G1qXPqUiw==
+	b=pATG9OqSqP99RXBWGY7fJfLyZtQHGWBxHulVCPM+ydODfXlD5TnhqK+S5lzerqbZp
+	 ekZhX9dMxDZRFfUaHT5/AvN0sqkS6YKZcSOE0NvI5G68DU6bsdO/BIMidyCJY5f5uD
+	 7Vk+6Q1+zj24SDQCehMBMTSI5cwHPpdF896WJoTaJl0qTwmmI0QgVvTKPuzlG2xCn0
+	 ziYlMA33EZHcUSw0rkmrwUQHl+DvAYvJdYA1LgqQtpp7+g2Bk8Z30yh6aCrZ5aB4dQ
+	 PxFDxYAGQxvIu08k+g0FHN14/31RkH8JClxSmy8if7CD2SAFIcNFLbMAxaYadwxx9A
+	 H0blcK8k17xZw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 13/37] mm/damon: extend damon_access_report for origin CPU reporting
-Date: Sun,  7 Dec 2025 22:29:17 -0800
-Message-ID: <20251208062943.68824-14-sj@kernel.org>
+Subject: [RFC PATCH v3 14/37] mm/damon/core: report access origin cpu of page faults
+Date: Sun,  7 Dec 2025 22:29:18 -0800
+Message-ID: <20251208062943.68824-15-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251208062943.68824-1-sj@kernel.org>
 References: <20251208062943.68824-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5p6cn93nyjaxp67zdihg33wad168by3c
+X-Rspamd-Queue-Id: 341288000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D3C0F120006
-X-HE-Tag: 1765175410-612878
-X-HE-Meta: U2FsdGVkX192vmstTrC1gB7EVt9e3AK0LIEIb31OanNWfbnAaUofnpPH9KYS2mDNpIXm9T36xZy91yMoyPf0UvokZTe7i8rTXEmwowAxhOZj+tfCzU4ixuddHzTEUPc/OQpqbkgd3RKCerpeWTQAmt6RdQ+8Cf5PVjl9j4imU8OAL9lfmmsmIfOleiysJmR4Y5g1t/PL6aElexLzK9yHPwqAy7SCOpu9IZoR6tCq0i9NBaiCMNr2saZ7pjssyY7MSC7ibKWD2yFx9rsingj2SNHqb2yo0rKhz/kJEgnMIhbhVWqX0WOoQcfs2aFrKkUzTDKVwEC7hiI7mocTWEneBu060aUatFdf8W0yotDvpZmm9Qlj8wCWvkLZxHqWb80IRTTl5lWKDWsWvrM2mhiG4O7iojUQvaWCVGmNnB4lwBh97gD3Rkf5JROPzDC1Q7ahTG3PB3284qB1OQn8PtltIOThOXLJ99/kfvuVyO1oG3hlXkUVjaHg6o12y76+IXO9unDXK7Y0Zwq3hJ0wPU2/0w7aFbqJvBMSghB3VneYY2s83glFlulWFHJbgOH0v9/+ewr9pyLAzGv2W699WbeKv+clMRMrMEZSImx/pAhiXSGpq2XcfcwwAv7ZB+dxDnXmdJyokRxTOe3OOSwSn3d+AL7KnH0NMyNnkUv1He1vYdYfsZT8ytl/o10Dxds+zEeJndJwkOAKFT6eQsSFeDrsthMq+SjohOgXy1iFgnQeOpdmdEpBXZL6K46YMQgx0R52JmkoLnJ+mBK9jJ5jPrK10m+Z79FxHgo7kpcvUM34z/5hlJKyXF8G45WHeCkSFwFxI5EVpAXYqQioz+VYQHDdfD9oa6D/1P/rTE/1a1puXaBW30vrnuL1uE2hgKRDF12esMSFFrlNwGG6LTkUyRYjSQXlcxtvTvuDMtYlypQvndOm5gqmVf728MS7SSS9WYhKkLZxYObt6V3VMTYdUZc
- 9gL2hDNo
- gqRH0dfqcLxapzuo6+OfAyxEekliTixjvXls+Sue6VEmrr5YnXSf3rvEbsAuwUM54SGngj0PmPE09BqUkTgG5cPkaWT6mc/pYAJcnsYQ0rlXW/m2Po5N1Es9mmLrVXJP443eWx3MxmG/EJyHIt1PuhO1YWPKY3+7D1hkPgyNN3Fg153f6FWh5RjXTtFvGSe0WwntFvR80b3rA91OovK/C/CdYU+UjfO2202SYkbMnwzaaDEXhR4Dd+zQUpOYCNqQBkB7Gwmahqwv5XHHm2Beb0sdQ3S0TKNvuT5wyqNyGERjPSFu6W0e0CjWVxno1Ebu1kZlCgoPAnRas0HSCqEh0DD6DLFv62Iwy9uHlKiRqweqUuc5zR0OBvikuDk5y8HoShVGT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: gofsunnnae8fty6t89fuuxani74jp1g5
+X-HE-Tag: 1765175411-431451
+X-HE-Meta: U2FsdGVkX1/RsGuc+ztWTKt/0TiWauxJ1QaPpbdvCUDCm+6MkMFhSawNHIipg+Xqg5w/wXoxpwDmWMFZJR8tc/lo20dt5bWaw2lFDZsX6tpt+O1yVzs2QFT5CwxGpRtmIAclM9Ao2U1/MrihZXIl0p37hUD4DTQIM1yVCiF97ii3OweGfsWz7M/RR+n1PUX4YzK5M8A2AnqDCJWNDFvM0avULYVKsvjA0SOoEZyCyZGffIazcw+NGjDQDOPVQqKP6bVuDsZZUp5/SYzfop22GkZUDhTuU+X0TkFMw/ec7VsiSJ5MHXGvo2kYNWwPR81ZHHTpnRC+rx5bwXPNKd9EjdRqtKf9fxVqxzxgs0zfuNK2ZGaC+fzxb9y0cbFMJK5+9PO2lCG2JKtQAWBHXKIrp3x1Qb2TnMyUw4PjhGNGYvVh4JW5GunAVLR8PVZfDtdUdA87IFcGx2Tkcm2KjB7LpaqXTgC5FBuhLjD6PWjFX0kVa2vi3x4iH0yTr7kus6q+RkCPC7hwZE07qWM7e9k0M+SIBAbKwU3TUDkf3iUFiz8l1Gm+xwwYGvGhbJuxCNZwSaeC9Z4z4Uyu79LMvLGcdWQ7ZjWj4RxqD5eb9PsNo8E+AaUUHR2KFeqgB/E3SCITt9aiD7a+n1MeCX3UC32LGhQCCTCk5W3H1YyRlLw5RciKrMG77krsrj555t5mdHRxf98YGCKL6v4L+FaJE5jd+ylR/PC21jRgi2O8SIXzjkSs5Veyj+zJDe1l+RCHxDVsJ9QJGMaN93J0Dhn/WKTNvvp2RE2LZu4TuYm2/LPN7FR7zazwW3xXj6My8NLVKCiYvgn5VXG8L/pEQnAaggOkSqAQStRbk5RZAbIAKaPQW4Z7hLzmkXAY6a2ASGDOjl1/HWAX4NsKzmxAG6uypz3+v97rTWBbN6zTgkAp2hvMrPecJ9MkT+fngAvz4/rSZE1bYwb7S+zLldASaHwfu5P
+ Kfz937Y8
+ Gp3a52kDn8nHggbIwqhJrmqfSHfrqCt7TZi2137AX0ImOOvUp2mCy2GVh7xLx30vGCBw9PbHIsthm3ttfUlqXYzZqTM3XNHsRCJi4BliWVSBAuyGFLnWi+julPx98tUmGwZi73PCCNpo1JwUofuX/ctuobTlF/sYp+5q0e0OQ9NwwoBuOy2S0zP2x/kbPq0qu4tUqPqenN935+cME9V0nYfHzDOeupRnOFZTSBTfEJCE7hsAMZzFZcJag2auddsBIQhKT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,34 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a field to damon_access_report that can be used to report which CPU
-has made the reporting access.
+The CPU that executes the page fault event reporting function is the CPU
+that made the access.  Report the origin CPU of the access.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index b04c2e36833a..e23a10ba7c92 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -115,6 +115,7 @@ struct damon_target {
-  * struct damon_access_report - Represent single acces report information.
-  * @addr:		The start address of the accessed address range.
-  * @size:		The size of the accessed address range.
-+ * @cpu:		The id of the CPU that made the access.
-  *
-  * Any DAMON API callers that notified access events can report the information
-  * to DAMON using damon_report_access().  This struct contains the reporting
-@@ -123,6 +124,7 @@ struct damon_target {
- struct damon_access_report {
- 	unsigned long addr;
- 	unsigned long size;
-+	unsigned int cpu;
- /* private: */
- 	unsigned long report_jiffies;	/* when this report is made */
- };
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index a14754a47c7f..d2f842d8afd2 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1585,6 +1585,7 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
+ {
+ 	struct damon_access_report access_report = {
+ 		.size = 1,	/* todo: set appripriately */
++		.cpu = smp_processor_id(),
+ 	};
+ 
+ 	if (huge_pmd)
 -- 
 2.47.3
 
