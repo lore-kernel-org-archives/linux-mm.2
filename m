@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08ABFD3B7E1
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA2AD3ABEF
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:29:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B00F86B0007; Mon,  8 Dec 2025 01:29:53 -0500 (EST)
+	id 18B646B0008; Mon,  8 Dec 2025 01:29:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD8286B0008; Mon,  8 Dec 2025 01:29:53 -0500 (EST)
+	id ED0FC6B000A; Mon,  8 Dec 2025 01:29:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92B076B000A; Mon,  8 Dec 2025 01:29:53 -0500 (EST)
+	id DE58F6B000C; Mon,  8 Dec 2025 01:29:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CAC76B0007
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:29:53 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C8CE1A095C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:53 +0000 (UTC)
-X-FDA: 84195328266.06.405B3BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 74C17180008
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rVfo/zWF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175391; a=rsa-sha256;
-	cv=none;
-	b=MqzQ/MWCd97J4NHHbGN5qYcsKG+nZukNElGDUWjAyGZP6tV7sudeiaqZ/nEKFCsR0U0rJz
-	b5gtnVaFp41mznCB/gP1uyFXYfcqkDl1QIsCKWhfImOAHiH24dOrYqPoYrA0k1ViIZBUuo
-	MluIKvCn96xDfjVr99DIft6gFSFZ5Us=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rVfo/zWF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CD26B6B0008
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:29:54 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7785D134634
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:54 +0000 (UTC)
+X-FDA: 84195328308.01.3C57E59
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EBE2240007
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWJkADCO;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175391;
+	s=arc-20220608; t=1765175393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XDceMF5uWD7gybheGJZ5fPtf0heRIRyNAkUJN4RN01c=;
-	b=NOO0/ZZNTxjkKFW/PZ4oF3wNZA/cmQ/YPmALJwv/o7qJbNDHWq7oZrYayqimC1id3hNAxA
-	ku9Gp3ZfR/yAmPcvqcvhLK+GNaom7s50ovqi4VksuYcj/4pG9vNh/9IbGWsHThJzddtE4W
-	2Fezgyauihd7P4o8+/ZlZZ4q+MpphAI=
+	bh=JTpdOjMePAbJCICrJ1hk1OO/l6yEIJCwckjXTMbmJ5g=;
+	b=aeqWwiCozWfmiAhCPUREnw/UVbPz6sJYZ0l/YKNvw+TUKobOPahU7wFVu2zdW4Rsa7SPBz
+	Jv8Qo67piM55DCw6HjQBNXazoWzA7Fcw61rtonBRd/QgQdSSRl22AS3xuNQsr4YBWEsivf
+	7kxQnveCPbYYxjSoYJdvc5fl1Ru8Nmk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWJkADCO;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175393; a=rsa-sha256;
+	cv=none;
+	b=cMSppOk35Bvt6EmYBjbZ562caYRQU+JAuRJheoD4i2YaJZ9Lt6uXaFb0GLpSuGg37YPY/l
+	HBI8BtlunrNz2AXMNss3jN4pdRr4M5jtxvXPa0e8ULracIErKPpj+otzgvfzOa1kiKHgEU
+	QjPvwLP8ft+TQTCFVPVYVFB4SMHSXTw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A373443F2B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0EFA560147
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1035C4CEF1;
 	Mon,  8 Dec 2025 06:29:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD43C116B1;
-	Mon,  8 Dec 2025 06:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765175390;
-	bh=ZxPuOve16IrlwUTG5ESII4iH+1SrqZ6IkyUiguVkjLE=;
+	s=k20201202; t=1765175391;
+	bh=rQEjNspwX8hWrc2KTuqlN5FanQkO7AzzeHJdwmQvvNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rVfo/zWFzj33IhJkSn+EyozYUUTyO623/XtYnG369BniJsYKzB4HGum70XDruWtdN
-	 ojCFPbh0qcnhxVBagiY2tJE0oL4lrOLicZTXRC89eew0ch4PnE+j4YZYtK+ILS8/kQ
-	 CxBv2zBRlHx4FqOTslKi7vkvI+tx+h5jJRNg+BAukN/0A3kHAJzUsxYZNHXlTd85k6
-	 W9xdhrHRmqTSD86en4WZMI/e8McaIUmwqpgXCxeJul/RB2DOzfi537YDBOQ4oawV++
-	 mG8vVzKh1IMbPE1N6kj8UvVU+FbD2dyM7rGJxDRekmosWf58pUq16xKx/g+cQKUwaL
-	 cWkwZNoS/3WKA==
+	b=KWJkADCOqjmtshNcqcdsfl9W/5939KuuwE2xNNVM99lQcloQ/Y4+rNRFo46AhWiSn
+	 B0t4CRnuVzxhJnf+RR8AzAJYe3g0S/4/7dW/7F6UbdtyvIfaCNilyUxbaSBA4HV/ez
+	 AH4s9HbPno59H1ha813qr5bA/da59GKO61xaGQcb+ulTBsranuFY6sGzAPx6M+rmGS
+	 f9YDz8YmUdoYeyIQDt5c4Kmgc0rNZhiOO4U/7exoW6pBmSCgUEyU4GSZXFsXRL12SO
+	 1kjX9szQ10x2ZeH3A/RDddmTq1FDtQ7++SEXJB59PaOZA+1ezIRRzKw1nfrfKRnNzB
+	 P66fBYR26aDcA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 01/37] mm/damon/core: implement damon_report_access()
-Date: Sun,  7 Dec 2025 22:29:05 -0800
-Message-ID: <20251208062943.68824-2-sj@kernel.org>
+Subject: [RFC PATCH v3 02/37] mm/damon: define struct damon_sample_control
+Date: Sun,  7 Dec 2025 22:29:06 -0800
+Message-ID: <20251208062943.68824-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251208062943.68824-1-sj@kernel.org>
 References: <20251208062943.68824-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 74C17180008
-X-Stat-Signature: s4nkjaed9wm6q5otuf3jkxc5syrsyurs
+X-Stat-Signature: ptbfzq74j5c6kr54aj3hg6ympsjtynr1
+X-Rspamd-Queue-Id: EBE2240007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1765175391-134643
-X-HE-Meta: U2FsdGVkX19dDHgG8X1Vt+o9jFQ01au6BipPsDnNrIqV0/IX/+M+kYIBx2fJngCcuD9OogWWxquIZvc1spTPaTkiGklgtDzUGmElXl7XbtYteN+xT6WOygO3EPq/TD9BoUVcxR7akGYqQYGTJu+yWTbvl+r1tsiewgI5HNGTStrLF94z4zZZRn2zNFE+xre/0tDmgITPDCpsP8qk+NRTg3xmlHtehaYW3LnwHtJcKmf1KErY6hv3HLPzyEOQApLhLDD3MI1yHokxZHvKnI6E7rhHOUEnuONosbQyuDATrx31vMD4GFOvciHj0im6rNt3hRGF88gUDWuiwMtuzs8t2FHAL4W/na2WCRZE7TXHkWpBAE7IJ0zjXNink4GyMinQhFzDUUrlmh8CfNATeUwebupJzhZZa8k2rvGZPOJJybaKyXWNJk9eHS+1Gv8oJ6n+9SBtA93v3dvHuaEhCPYbtPfXVH9nCIbptgbeER9uiH1zp8ORgrtunGzEjVeWuRRgJk8RXr0kkp/Mo2XyQ5YhqXcLzs+5bHFpmouB7xnrpXWBh4yTdsAWcT98Gp5Iz9edTjhY2K9BPi71raT+ZQqEUQNVUmh8P/ucZnQ7DpTMOo/HGUSUNgkvUPb6t/83pyxhTT576RhJ8HsPr6WvdkBrZveZ6M/PxxaQByqaeOssFvESdPeQee7vE57o6/SDv/JWV+Q04wDF0CqBWLVtAS3gRcOe5ZzpsO3q86ycJns/oNh0gD3HGPpMfiEG9ASPyFP32CG5lQuH5hVRy806QafwVpLkUuXzUI5YYulRgB1Tz3678HlqamwqQT+TCDRlkipmNpRmAcIZKs0bdLZZ6W1NNwDhF6rMuZlox3R6P46QMJ+vUrVpNa+Oc+G8gEgvJSAkrPwtvQYNZn8qH+VzuP+x5EAiQdLiN493mDnMfdK96fZKm3BfAY0oyWld3obpTDB7fOdqsSpCERwTs54Ut1g
- MV3f8qBI
- q7EZB96NfxCj7ykYIOuBf+MIPGIdLdgtvrcd2RrlbZdWChIFDAzNwO05RsvCpmxcD08mtM7w4miLNidNCjKBV3RNCkiJ6iGm5krUPZFj7ETb/+er+aS2rC1jYKwliAgs746yZayby59i6ZV5e31FLD5QhCDL/s6QDqe0VjFUyJ+cA+juOavBHYDZHpOp6HShf1SI5stL6qB3VFNSvha2OGSnI8m9FKbqmEMkh+LegFFrx5upovZ8vLU991pFZ8GYBOZb/Hbkwsiwdj5Ejsk5maV3qQrtu08Vv1R5L+9VEjGGnpM+TOP3HxpO6597rvSNbJDw725tH3A+5yLQ=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765175392-820535
+X-HE-Meta: U2FsdGVkX19c/WG56sSRoGBI6ygy48OwAdwOopL537QvmcfIZHeML73O4rJA4CG9ajPhIJDAKoEBta8WBaim0r0XhOBfwFS1HDTIY1QC2tsEiTPfVhAW8aU3Tii2o+9imOypg2O2UVxDU3BBUONbJhMnFXV6pNGGM032/U91WHOrf5jHga2Evchb7rix+wyaohRmMSnx4iK6gGcnMAmSCrjLyAO4iR1esnyfMebAv2pdZz0qcI4soF7ubfAb49pX2eLzz0W/pPApGPbB+1ERKJpW6XjTqz+Hhi9zifk9L0xij4K6rEABgHAsZMCU9NCH8LNaTNAaRojn5CRmxZs+9aVXtL5suam41zF14amJWAdftmLctpESycHIQfuSb537BH9+B9MO3HD0NFtoosXN4/JoxcfLmSzX2lwVfdNzai2JcXYvZQDETELr8H6KupMPU7niVi9l9oFcxthJfdSLvd/GC0LNjxZpI0EVpODsKp3iOLp0K7gMAm4wzs3So1IdNNdoGvKgPJFDExnFO2lkRkJt7mI4h/nozhVYFaaYE5fRK1YtiVPoWEm/YJfBcffO3QiQeg/c0BIeNghpYYjxkUVBvipFEaEJT2p1d2vADpgnQjlb13kbVx8LDNbzTbzxRpSZE3SKbDZlgEbTmKvctA26TvkErezhc57xmwqR5ZjI73Z+aB6MpCwrcR7xFBzlBjXzuZosxK6VR6yKWH2PR8KlmKCKbb7lLNwjP3SHuD0NH/spzEytVwxNACxJ9L2oi1U6UyRriWsBvLW5J1zhqB6Jj2vc0n8lpN4evgIux9Vw9Vx35d5dW2cL+27Eng/ssOkEgLRG2JAvclMZ1C1H6+PNuzjGKgDjvZi5apvKdPj0fsXUJxEqkQZcGw4GSMy8a04DWTtL27BoFxNUaRb0C0gPF+MiaLoorRkWtxEWPs8QxX2OfI29DrNtcGV1UHtrrS/7Zn7CRWLUb6aX5yt
+ ld7qNCn2
+ 0YpELa5xjXJMIvgTkcwABpIOWYsbYlSG46l1us1u8AIwK3vEA3FlU1R8Jt3h0MEI8ah5ZN/2ZTFXCiYRcir5lj4vUsRTqoB3SLb5A+imrfimytyFWxtn5cek+7JCWrWqXhzwNSp1M3BGdnulkLHPi7hw0mDCpIL5Ks6KqwSzg+1sRcOHbWVossLZztejSvf516yLbD4DmKCoDpvWhH6oY7M/vycVuVRWEvoLoB1cDSSVzmHs4W0pqkoebTh+BSELYsHoPQ3gIPFoMZEhRMk0VtiUTfzKZdv6v5xKExjPPDHMJG4BKU/6Ut71TTx97A5TULWJ0MzUSJI2I+XRKb35c2Z5vnSNSDSU2M8uCt9AprRqeg5Z3IqExqf/r9ZR2zE4fqkgI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,140 +93,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To report access information to DAMON, DAMON API callers should
-implement their DAMON operation set and register that to the DAMON core
-layer.  It is a burden to do such implementation and registration,
-especially when existing kernel components want to simply report their
-observed access information.
-
-Add a new DAMON API function for simply reporting identified data
-accesses to DAMON, on the reporter' schedule.  The function internally
-uses mutex, so reporting kernel code should be safe to sleep.
-
-This API was also discussed at LSFMMBPF'25:
-https://lwn.net/Articles/1016525/
+All existing DAMON operation sets are using page table Accessed bits as
+their access check sampling primitive.  In following commits, the
+operation set for physical address space will be extended for multiple
+access sampling primitives, specifically page fault events.  Define a
+new DAMON core layer API data structure for controlling which primitives
+the given operation set should use.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 24 ++++++++++++++++++++++++
- mm/damon/core.c       | 37 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 61 insertions(+)
+ include/linux/damon.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index a67292a2f09d..1bee6e7fed1d 100644
+index 1bee6e7fed1d..b9359c76a6f1 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -110,6 +110,22 @@ struct damon_target {
- 	bool obsolete;
+@@ -765,6 +765,33 @@ struct damon_attrs {
+ 	unsigned long aggr_samples;
  };
  
 +/**
-+ * struct damon_access_report - Represent single acces report information.
-+ * @addr:		The start address of the accessed address range.
-+ * @size:		The size of the accessed address range.
++ * struct damon_primitives_enabled - Enablement of access sampling primitives.
 + *
-+ * Any DAMON API callers that notified access events can report the information
-+ * to DAMON using damon_report_access().  This struct contains the reporting
-+ * infomration.  Refer to damon_report_access() for more details.
++ * @page_table:	Page table Accessed bits scanning.
++ * @page_fault:	Page faults monitoring.
++ *
++ * Read &struct damon_sample_control for more details.
 + */
-+struct damon_access_report {
-+	unsigned long addr;
-+	unsigned long size;
-+/* private: */
-+	unsigned long report_jiffies;	/* when this report is made */
++struct damon_primitives_enabled {
++	bool page_table;
++	bool page_fault;
++};
++
++/**
++ * struct damon_sample_control - Low level access check sampling rules.
++ *
++ * @primitives_enabled:	Enablement of access check primitives.
++ *
++ * DAMON collect low level access information using sampling, and aggregate
++ * that to make higher access pattern picture.  It can use multiple sampling
++ * primitives including page table accessed bits and page fault events.  This
++ * struct is for controlling what sampling primitives to use (enable).
++ */
++struct damon_sample_control {
++	struct damon_primitives_enabled primitives_enabled;
 +};
 +
  /**
-  * enum damos_action - Represents an action of a Data Access Monitoring-based
-  * Operation Scheme.
-@@ -972,10 +988,18 @@ bool damon_is_running(struct damon_ctx *ctx);
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
- int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
+  * struct damon_ctx - Represents a context for each monitoring.  This is the
+  * main interface that allows users to set the attributes and get the results
+@@ -833,6 +860,7 @@ struct damon_ctx {
+ 	struct mutex kdamond_lock;
  
-+void damon_report_access(struct damon_access_report *report);
-+
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 				unsigned long *start, unsigned long *end,
- 				unsigned long min_sz_region);
+ 	struct damon_operations ops;
++	struct damon_sample_control sample_control;
+ 	unsigned long addr_unit;
+ 	unsigned long min_sz_region;
  
-+#else	/* CONFIG_DAMON */
-+
-+static inline void damon_report_access(struct damon_access_report *report)
-+{
-+}
-+
- #endif	/* CONFIG_DAMON */
- 
- #endif	/* _DAMON_H */
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index cc15d8ec9dce..7abd8c550c60 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -20,6 +20,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/damon.h>
- 
-+#define DAMON_ACCESS_REPORTS_CAP 1000
-+
- static DEFINE_MUTEX(damon_lock);
- static int nr_running_ctxs;
- static bool running_exclusive_ctxs;
-@@ -29,6 +31,11 @@ static struct damon_operations damon_registered_ops[NR_DAMON_OPS];
- 
- static struct kmem_cache *damon_region_cache __ro_after_init;
- 
-+static DEFINE_MUTEX(damon_access_reports_lock);
-+static struct damon_access_report damon_access_reports[
-+	DAMON_ACCESS_REPORTS_CAP];
-+static int damon_access_reports_len;
-+
- /* Should be called under damon_ops_lock with id smaller than NR_DAMON_OPS */
- static bool __damon_is_registered_ops(enum damon_ops_id id)
- {
-@@ -1271,6 +1278,8 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 			return err;
- 	}
- 	dst->ops = src->ops;
-+	if (err)
-+		return err;
- 	dst->addr_unit = src->addr_unit;
- 	dst->min_sz_region = src->min_sz_region;
- 
-@@ -1521,6 +1530,34 @@ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
- 	return 0;
- }
- 
-+/**
-+ * damon_report_access() - Report identified access events to DAMON.
-+ * @report:	The reporting access information.
-+ *
-+ * Report access events to DAMON.
-+ *
-+ * Context: May sleep.
-+ *
-+ * NOTE: we may be able to implement this as a lockless queue, and allow any
-+ * context.  As the overhead is unknown, and region-based DAMON logics would
-+ * guarantee the reports would be not made that frequently, let's start with
-+ * this simple implementation.
-+ */
-+void damon_report_access(struct damon_access_report *report)
-+{
-+	struct damon_access_report *dst;
-+
-+	/* silently fail for races */
-+	if (!mutex_trylock(&damon_access_reports_lock))
-+		return;
-+	dst = &damon_access_reports[damon_access_reports_len++];
-+	if (damon_access_reports_len == DAMON_ACCESS_REPORTS_CAP)
-+		damon_access_reports_len = 0;
-+	*dst = *report;
-+	dst->report_jiffies = jiffies;
-+	mutex_unlock(&damon_access_reports_lock);
-+}
-+
- /*
-  * Warn and fix corrupted ->nr_accesses[_bp] for investigations and preventing
-  * the problem being propagated.
 -- 
 2.47.3
 
