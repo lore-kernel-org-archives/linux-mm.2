@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA2CD3B7F2
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 14:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72FDD3B7F3
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 14:36:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D02CE6B0006; Mon,  8 Dec 2025 09:36:36 -0500 (EST)
+	id C66C76B0007; Mon,  8 Dec 2025 09:36:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB3A96B0007; Mon,  8 Dec 2025 09:36:36 -0500 (EST)
+	id C183C6B0008; Mon,  8 Dec 2025 09:36:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9986B0008; Mon,  8 Dec 2025 09:36:36 -0500 (EST)
+	id 934FF6B000A; Mon,  8 Dec 2025 09:36:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AB9316B0006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:36:36 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3208886C37
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 14:36:36 +0000 (UTC)
-X-FDA: 84196554792.07.7820601
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7C86F140006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 14:36:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VgBISZmH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765204594; a=rsa-sha256;
-	cv=none;
-	b=ZhKsI9TyU8KeW4OJpyuTsgWSrbkmYQZJ1QhkZ2dKth6ESu39fPPpulN/8u1vDph30MKCop
-	zNcvjZVt6nA6V5oKR0CtmopHGC9MBz2I9LMAWq+/o0FZgpcZvUbNNLaW0RXJpiaVHFvJ/K
-	4rsLPL7VxPuMDlQ9v0cu3rKsh1R2sJE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VgBISZmH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C9696B0007
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:36:37 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C9A51DF1C4
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 14:36:37 +0000 (UTC)
+X-FDA: 84196554834.05.AE04F85
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 66840C0002
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 14:36:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gWaD8wGw;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765204594;
+	s=arc-20220608; t=1765204595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=9p5QUci8O4FC0w+okpI2qpZqmhejRWVaq/F737u7QNY=;
-	b=vIcSH786+iPF5kw4aFYOsoPmGNf38VWgiUWO8hXWGRdts26qwjVPaoRBo3FtrtAwPqX2oI
-	O872jTO0rU1twpUaHwW+dAM1XQmIatS/7Im610wfDb/zNBraTW6cQvGsBakV7aIlzp3lPk
-	KyQjN7c2pdokg16K/LOlFIjP6++CijE=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640ca678745so7683161a12.2
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 06:36:34 -0800 (PST)
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=e9SP0T1+8QBCjJBHKElgO2TUG+1klrfqK3ioADSYafM=;
+	b=vuy7WncezwFLBqSjLz3cgIzg70eDLItjieVmNDZrT8h3XEmv/4J1YRM3pXSHs0IW8QtbSn
+	BxUWcDwCkvPSk0KSIBHcS3yXtsSb0ffCFvC76xpHu/vHd98/JCzYQddmuskzHo0u72kYjq
+	5KlIGyUp5iPsuhZco6fpRnhxLRSBcRE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765204595; a=rsa-sha256;
+	cv=none;
+	b=j6V5N4yyNN7Fyn3cyVHnZGSTc6OAkw9QSMfi+UQqTZRLj8ms0981EMH2TCUBUZzWEiLlVu
+	mEGSm23AtzIWKutxrBbiQoHrk8xTL8WJQtic3mpAWdk2cKFPOGPLZowSZAKalk53qhJtOV
+	rQtIi0nnUJre8Ad3icpm5dm+U0QLUyk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gWaD8wGw;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b7355f6ef12so551561166b.3
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 06:36:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765204593; x=1765809393; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9p5QUci8O4FC0w+okpI2qpZqmhejRWVaq/F737u7QNY=;
-        b=VgBISZmHAZnGhoM9eFIb3KiWH8AKGWxtXOqTFNjiSpg1gRInVTa8FlI7S9cl0uWjNi
-         tgCsycR7OK7nnPtq37hVyZB9tAPzUeV2EoTkPiH/H8vjT2wYOh7/GKI8J1hYl8We1bIl
-         aUlRefkew+cwtDY76sgtRM5RkCtoeWlQIBSZZUD6ZVCKHfd/9UJh5p3HpFnHuflSky8f
-         P7GYuxzZ/AppSQqVNRBznjyoU7+lL2N5qhEPRIwhAY28QCwEo3CT9gubBqEKURwnIHdM
-         4z8IeXEsrhciGOCaSD1pobga8ufPWhdswjZWrkG1K3BSa04ouFVskFQeLcexx4EcI8t0
-         l2FA==
+        d=gmail.com; s=20230601; t=1765204594; x=1765809394; darn=kvack.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=e9SP0T1+8QBCjJBHKElgO2TUG+1klrfqK3ioADSYafM=;
+        b=gWaD8wGwytuqhNSmQ9hjsnB6w5/kXQFmuhU5wwUxiqO2scxXeh8JAPIykT8vIns0Zr
+         GjSlzjyx2jKKnmDZ3lzXSnugTmXOE+xq6JWc6VrVvFzm/YtVdSPlt4mrH81FXfLPptFK
+         eicmV1vf4/uOrb0OavQ4c0LXsgJ8NPhjjBcKfWzWxnyL8LpMIeE4+XyujEedXeWC3Ea2
+         LHpcohKkyZTdfvoTg85MPyW3fesJ5JsKqX+GXWJaprRz9Uag1tYcKbSShvirYFwjaBQr
+         RPGf2AnhjIzztfMWZcVGi5O3eV5CCCxg/JXuyNkikzl1sK8+HBIymt2lszUtCLb9WonP
+         Qcqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765204593; x=1765809393;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9p5QUci8O4FC0w+okpI2qpZqmhejRWVaq/F737u7QNY=;
-        b=CtcF0ilKUPuaGjD/R4MrWeW3ufxp8ENlFoeZYhYxISSrTU9C7Mw5cFqrGY5sHWCG1F
-         xRkr2C5qQqCVzmkk/kFZpynoAKpk548IrFfQr96WgVBg2mIXGB3AvXI3KE8Hi3rRpODv
-         sNCAC+hu82ufUNzIhVfbdLqssQgmGxY+vscQUYQ3FDBwcEn91tnXs9py9UbVYIRjSu7K
-         SlJnJgSPfgGewCmlroC2SLn4xG5WyUZfUG3PbCJYASMdicijVbYzgrCPu+Fo6Tex2qcf
-         LBl0JaOL9a1euFxBijekPJ0V0jOfzTLE8u9jrScDeCadelHxwh9DFeI5sZ+mlR852f+w
-         CchA==
-X-Gm-Message-State: AOJu0Yxk1WqpeCi071LM4Ngb6ylK5frKxf6zMO0FXIubll8MV+hM1HWg
-	yo5tnQnYDndiMSwtvo/nRAb3B8oyP9SdtMmPU8UsE/JZ6v7Z4InOc78F
-X-Gm-Gg: ASbGnctLtacCnoE6lH0Dg0BqRjtiWQAtPBq7ABWPn+LF8n1r8s10sZ1qbaQPiKp151F
-	NQoRHQbb4J+vEqN2Z1f+nQv39K5HbmzKhaKUVFaW8sbvlVEnfpINXwn0Ees9PYzUKZwtWhrja74
-	JPCb2lglD8w+G1vSTFNo5f4rGuEvuSpAbq1/lkBLfx3Zd5Rq0HHOso4vzYdQoZ+7ezh4fFGxjSE
-	4CYsH3R+NBsv1GyHNrDtfeI0YGJ4rQnAWkEp+VqEOa2sgG+yg+cXsItZ9NJCf6+066WmGbnERuj
-	IT69Hj1+yNWn9SqdJxkdEQNfJU9GJvst8h8t7HcqtIlXeH0/h2g2vxaNpCbsNyrq4bAHfKIR+88
-	vA4u6/iiGselQaOG1KS1545yo0KXp9c39dO1zTfk3YNruXs9P2S1/7fnL22JiLPabQOH4w9/SKu
-	mYm1Skxr+Rlw==
-X-Google-Smtp-Source: AGHT+IHeV/K5NZfgKmuHzSRuLPIFTPYNz6UP1D/O4ofaYouzMUeLivypaHLuDlsaZggpXF/XfQEvGw==
-X-Received: by 2002:a05:6402:4315:b0:646:66f:86e9 with SMTP id 4fb4d7f45d1cf-6491a43294fmr6930613a12.19.1765204592722;
-        Mon, 08 Dec 2025 06:36:32 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765204594; x=1765809394;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e9SP0T1+8QBCjJBHKElgO2TUG+1klrfqK3ioADSYafM=;
+        b=Fd7S/te51uF66btm8DArZW+tDDSyyui2J7jCz5kiN7VuwGqWUQDhrTWQ4/p1HmytHb
+         g5zlJ3P7RPBVm6wF3A5bXbEiJbmb0cpGWO4MEQKOFltqiKzzNqxYaPEcHV2wyVlxcJV1
+         Lm0UOA7+2nhf20ie00DM4444GECKbudRuUbbQ1eQ0ff8jguMCstJHRct/033Fvn89i10
+         F5QaC7ZTqbhiTZB2Vrm2kHCInKUYOS/XoJAGWV5niJaY4sl1gZtixf7Q8i203bqS67Lx
+         ee4LF9lRJSaTD2PnWZs+T64Nnb1uSi4yD+irwDmvQnD0PFUFnBEs1uTzV9uuswYG99gk
+         99Ww==
+X-Gm-Message-State: AOJu0YwXdEpji2v6poaynnsszAstjyiMDgbrZO6W6sv35RLhdHbw9qpR
+	J6/uCNvi9P8hLm3/xtbUnQHB0gEpeqmZWWTD7/aGhdAA9xo8p1yGPKWz
+X-Gm-Gg: ASbGncspmBghFVdjeiSfzyVAiT+R0PpHcmv1I9aONqQR+x9bCuZH2q+9lNI3PM93pye
+	eqNMW2OzXJRfbfabuetk8Eufm75jxgmUmFhYnOskeO7jlZhZPsngLjP0iuQkhyz/RE8yXtnwrZl
+	frP1ji/6iCZP9IH6n4seja/1cEVaTpQq/EcMixlTbAFScMZg96unNs0K8gID7bg5igrtufcK8cq
+	ng+Upd7Odr5Iya/vTFFzD1wH4Vb7ODteKujDVS3woIxl9W9Ko4plZHGGsvHtPAX+SKpgEe5SfVF
+	QRwC7zImjwW4z/pIsY34I5wxW04N/vk9l8Qgn6PSYBDlOW9zfUhMkbGEf5lKd3bS3B2G0v8VeJr
+	hkUXQ8AUlly/f+HZ3FmdctglpMCtAom747f4gsRJZY6QqYJP7NHWrrC/DbdOfbYIkSPKMePsiKI
+	WvLcyuww+xNg==
+X-Google-Smtp-Source: AGHT+IEqNjKeBNlIS/Wm3s2NydVJmCTbTDvkFBE6U1wxZ+eNNdSlgL/llqPb8/t7I+r5AsLAbnONOg==
+X-Received: by 2002:a17:907:724f:b0:b73:278a:a499 with SMTP id a640c23a62f3a-b7a24306ab7mr967759566b.15.1765204593481;
+        Mon, 08 Dec 2025 06:36:33 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-647b2ec3019sm11109333a12.4.2025.12.08.06.36.32
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b79f49765f3sm1084790366b.37.2025.12.08.06.36.32
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 08 Dec 2025 06:36:32 -0800 (PST)
+        Mon, 08 Dec 2025 06:36:33 -0800 (PST)
 From: Wei Yang <richard.weiyang@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -103,18 +104,20 @@ To: akpm@linux-foundation.org,
 	nao.horiguchi@gmail.com
 Cc: linux-mm@kvack.org,
 	Wei Yang <richard.weiyang@gmail.com>
-Subject: [RFC Patch 00/11] Convert huge page split API to folio-style
-Date: Mon,  8 Dec 2025 14:36:05 +0000
-Message-Id: <20251208143616.20797-1-richard.weiyang@gmail.com>
+Subject: [RFC Patch  01/11] mm/huge_memory: relocate fundamental folio split comment to __folio_split()
+Date: Mon,  8 Dec 2025 14:36:06 +0000
+Message-Id: <20251208143616.20797-2-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7C86F140006
-X-Stat-Signature: te365ra95ieman6gh6iuu8ws1ituq9e5
+In-Reply-To: <20251208143616.20797-1-richard.weiyang@gmail.com>
+References: <20251208143616.20797-1-richard.weiyang@gmail.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 66840C0002
+X-Stat-Signature: zb848gw7nxgx4az3azzx3qxnof3uk3pw
 X-Rspam-User: 
-X-HE-Tag: 1765204594-363019
-X-HE-Meta: U2FsdGVkX19IfE0Of4OSc5UqNw4mI/wcFINk+mKb27vm0FOlDJ6QpSyc4FVOEkMPkswSHRckZVGmqQ0zay2IUfAtzCAe6ifD371hZtcyP0hZuqDyuTEWczQZ7cWMSDi+Etifmw9IKrmYIHlF2NG7upqKrqMoZXqG2PTWk89JH3sEXr+mf3SfWyFnCkFC2inP2yeGTVozLXdIjBU5tnwxejdw1O+Grw2m4BDwsHQgujPO2hMAI2MfrC/X396wsthbZ7WxiVvuqapaVWlN8cbJeMRlpKpqEERbIAf7Cyv49QNZ1Ajzk9qikgogWdPn1K0y/9V8UatXZo2BfOZn60gxKvNr60IV48CxVpNAxyd8JCuS6zIiXF/hm9DV5VeVaZb9bSY96H/2bhoYy5wt7OWo0XsJlGMlH/8HSQ5Nm0i7WBpM6tnreTjGYD88VM7AEa3JYTUt3ub4tSFqjMFNXhSD3rp1cXRX5jOI8yREe5rmkC8YxLRaGHgryMQZgttH9bOnyk416tCGXo0vOpG+JjEg+oGKjbdHNTSC3sygnHDuNyNu3TTR00P49uzKnHlZMH7zPKdpYEmACSHlgDOBggqlm4NzwTo7atJd23ql5Coavdt7vuvYV1JVCyc8MT3dUW3tyJ+IyZLB1MnF3YVzLnRyfPxiWv4AYduIFzYysWCGSFuUFHMZbGfgMQ53Mw9Sh1mEGN1Fv4SoHrF2hfGsIX7Wc2vXNZOU059smunz+S3w9SET5HAIr6VImzrCYVYtr/MEuPUdrt/8l1v7+y+QGwn7i2LmLsyMRupB8hrhZHQWk3UAi1mKDLX4l/vcJ0l8A0na8h2iD85y2Kx3o8iw9K5UsyZLn6GILClvN/Ml5PgLtLJuf/LOF7sSrKYqkU8pZ93N3qOLiEq0/DGzsJ01uupct2CqD4NpUJL7ApLWhJHBDwJMvYTMufhgMmNfUzRuIdmurUMEj9baFKH8lhdiKhz
- YOBMRQX+
- +eN5vDMKMfoHmNiwhMztNwrMDNKRu1jn5vdmnpFetIZ3b+Z8E/RMX2LW5sy/gSkorQ90RZSM6lYAWsdN4egPV6Aq4qnocR1YULhVFfsKNL0blj8VMFyHRjj70mBT+/UVCLUbo4ZY4TRRmMiWse5/3IgiKCghVJWqvghLcLlmaMHTPsjqTjyXWtpy0hSqKPGlLzSrImsxWhdfN/wjnBNQVoMD2mFmBVnASR8pV7rVCd5C7TJwhW6A/svImAuaOHe9fgGjhh8z7w9gT4Sr3gGF4sQwQWLov/Niw/HB5kY16qKIyAzQjWLiSCq/GdJD1e5a28TQnsDEzYXV9ClNpXXLuLtJRjxz2KyzpXyYlixrkx3ME7cM6jMdKpUSFt/+BkmqNTvvA/2qIhjdLXWC/Bgd4CJSMANjNHmIQdyR87Oya0KeS8F1tWnQcCgOsNBrVK4HWPzUTk+iTwD3YGHO+WC14hRIs3w/YSct6884OYg1yzEs4TNaC1q10XOhHJudIHM+2ItXNlfok3u1NGT+8XIZU10BYdm+VCX5LoD4o0lQNJiIgihzZFbIrHWi7B+rdSZbh2gI8EX00u5a2VDfl6OG6UJ1CsA==
+X-HE-Tag: 1765204595-72605
+X-HE-Meta: U2FsdGVkX1/kllKu2mo2OPz8Ft/JW+DWOLxpEjDMISThagjjx5N12svGpo2IXhR/cIHBV3+t57fMqV92+XDFpQLsrG1C6L5qh/yAizokwrVz4LIx9StzVZ5RmxTRbT7MiCbEpJeo2iAltPjGr622r18GVqWVnDrNpYSl1sbzhKiegd/mPaNWcz7aZQL0yIss2M5vkDYS0WjEOCS70tyTHjIfWJq/5fxhG8U/EYzgFaakgmxHo8LTk223WL8uUjny62/w6+cXucNP5KdCuuBh+OUVNMGFzWPmW6uMVqqqtH2iL1qZyZJhdBECtFYE9B0AsjYZUjIkwJWUfqWOY3O3RJyCasDFgcqOuyDtOPjz9r7M9xmxw4VsyLhLbUBGvcIxdUcvSYnGcX++DXuTKKLxbS6RbK5fbfYQPI0TEbkKN/aEXSp18N3tvjJbWoKob4Ptl/g19/RRfbz2zZ8bPJjYZsIuVrK09q+cnnyyjc1qL3Sn3GLmUa1VJYf2ZfsO2hNrNthy6MtCPL/tgGhZ0bzGenQBKsq47buFLtw/ae12W8cNrCKJo76RqRV+icpwzgIQCe5g1rJx0EiMsZY4AWnk47h+JJOj3EuMZTmkhv2sF5TshPJAuFWUVyc4EgYKTCshnrI+zOsRW4bj12mV999oRxtrI1RiJRN/hgnGw0t5x/suvqWiLiJ4XVnQRYnAhO09sn4Z0M7LkktPLlXv0RnLCyBC/keVZnzdnARLCc2jol13Z44NaU4gF6ovUN5Cyun/39frFuQNf6IevzxWH+M14ptOYJl/8g7P9bywc9CtNzh+wf9VRKOZeQktXRYYUUCUt+05KzvlyBx0pMqvK0mO7CT613iZ+X+5bqv89ejdxoedNMLCiMEXoRPYPZAHRxaKoIQNlzk+k6vI0BpJCgslVfr/qhGy3kdWAqRcgyDNQi3la4SZ/nbmhDfvuN8vGDKKAplcmXrwJN3nMmrfcMv
+ fE2tqzgW
+ ZdBPZsASgoDTTU+YYjMEgPw/fwfYrzKOEXwj4sbsyxq30gpfnsSdLzAaFN7cmWHgdfg9V+c8fyEGszFVKSz0eSJsJxNixG14F4MgMb6/ztm8NfLGUd0NBbZxnFakHreJc3N4dAm21VwiPO5YEw1zOFQDxUgl46F2tunFWY2eBeVgLyoXQ9gh8dj4GfuMNH9t0LetFqMU6Rlse25W9mIaYG55kG1+sOxjqdpVuA+/LCIoxFN2ijYfsUut7nGRSvJCnrAzaFcIrDpR65w01/t7NDa3DPapO9W/WKNnYvIau69M4rfYSiyzN950vmFt4jMVYe+mQOK/6sNVM0qn59p8COVpKuORW9kkZF33Io0g5FFPFsXwXBvAkoolk0fimbDP4r6d/MF8apsLTXscoBGSWJiZuVF+Aj1kFhZLnIwLQT6O+p7S07GdfdbWiQ0+lgzPqCRgnNb2AOYQUpjMJ0Xm9LFpbgPFE2JLxpZ1YC2b/HgYaSf+UL1dV8FckiyRNfiJ6OhMQRRL1IfXugCi+ZdOm4Sn+GI4N/WEw1E26FTEgwZDker9d5c9PBMCN5OWZuzUxbrz1OIuM5oMJeW5w4nGptyvzng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,76 +126,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series continues the effort to modernize the huge page
-management layer by converting internal users to the folio-style API
-and eliminating redundant, older page-style interfaces.
+The core function responsible for folio splitting has shifted over time.
+Historically, the mechanism was documented primarily within
+__split_huge_page_to_list_to_order().
 
-Currently, the code maintains two parallel sets of APIs for huge page
-splitting, which adds unnecessary complexity and maintenance burden:
+However, the current central function for folio splitting is now
+__folio_split().
 
-page-style APIs:
+To ensure documentation matches the current code structure, this commit
+moves the fundamental mechanism comment to __folio_split().
 
-    __split_huge_page_to_list_to_order
-    split_huge_page_to_list_to_order
-    split_huge_page_to_order
-    split_huge_page
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+---
+ mm/huge_memory.c | 96 +++++++++++++++++++++++-------------------------
+ 1 file changed, 46 insertions(+), 50 deletions(-)
 
-folio-style APIs:
-
-    try_folio_split_to_order
-    folio_split_unmapped
-    folio_split
-    split_folio
-    split_folio_to_list
-    split_folio_to_order
-    split_folio_to_list_to_order
-
-After cleanup, we would have:
-
-page-style:
-
-    split_huge_page
-
-folio-style:
-
-    try_folio_split_to_order
-    folio_split_unmapped
-    folio_split
-    folio_split_uniform
-    split_folio
-    split_folio_to_list
-    split_folio_to_order
-
-The only page-style API left is split_huge_page() which requires a 
-specified page to be locked after split. It is possible to rename and 
-convert it to folio-style. Currently it is left to get some comment.
-
-Wei Yang (11):
-  mm/huge_memory: relocate fundamental folio split comment to
-    __folio_split()
-  mm/huge_memory: remove split_folio_to_list_to_order() helper
-  mm/huge_memory: convert try_folio_split_to_order() to use
-    split_folio_to_order()
-  mm/memory-failure: convert try_to_split_thp_page() to use
-    split_folio_to_order()
-  mm/huge_memory: remove unused function split_huge_page_to_order()
-  mm/huge_memory: introduce __split_folio_and_update_stats() to
-    consolidate split task
-  mm/huge_memory: separate uniform/non uniform split logic in
-    __split_unmapped_folio()
-  mm/huge_memory: restrict @split_at check to non-uniform splits
-  mm/huge_memory: introduce folio_split_uniform() helper for uniform
-    splitting
-  mm/huge_memory: convert folio split helpers to use
-    folio_split_uniform()
-  mm/huge_memory: simplify split_huge_page() by calling __folio_split()
-    directly
-
- include/linux/huge_mm.h |  48 +++--------
- mm/huge_memory.c        | 181 ++++++++++++++++++++++------------------
- mm/memory-failure.c     |   7 +-
- 3 files changed, 116 insertions(+), 120 deletions(-)
-
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 8db0d81fca40..37a73bfb96ff 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3911,15 +3911,61 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+  * @list: after-split folios will be put on it if non NULL
+  * @split_type: perform uniform split or not (non-uniform split)
+  *
++ * This function splits a large folio into smaller folios of order @new_order.
++ * @page can point to any page of the large folio to split. The split operation
++ * does not change the position of @page.
++ *
++ * Prerequisites:
++ *
++ * 1) The caller must hold a reference on the @page's owning folio, also known
++ *    as the large folio.
++ *
++ * 2) The large folio must be locked.
++ *
++ * 3) The folio must not be pinned. Any unexpected folio references, including
++ *    GUP pins, will result in the folio not getting split; instead, the caller
++ *    will receive an -EAGAIN.
++ *
++ * 4) @new_order > 1, usually. Splitting to order-1 anonymous folios is not
++ *    supported for non-file-backed folios, because folio->_deferred_list, which
++ *    is used by partially mapped folios, is stored in subpage 2, but an order-1
++ *    folio only has subpages 0 and 1. File-backed order-1 folios are supported,
++ *    since they do not use _deferred_list.
++ *
+  * It calls __split_unmapped_folio() to perform uniform and non-uniform split.
+  * It is in charge of checking whether the split is supported or not and
+  * preparing @folio for __split_unmapped_folio().
+  *
++ * After splitting, the caller's folio reference will be transferred to @page,
++ * resulting in a raised refcount of @page after this call. The other pages may
++ * be freed if they are not mapped.
++ *
+  * After splitting, the after-split folio containing @lock_at remains locked
+  * and others are unlocked:
+  * 1. for uniform split, @lock_at points to one of @folio's subpages;
+  * 2. for buddy allocator like (non-uniform) split, @lock_at points to @folio.
+  *
++ * If @list is null, tail pages will be added to LRU list, otherwise, to @list.
++ *
++ * Pages in @new_order will inherit the mapping, flags, and so on from the
++ * huge page.
++ *
++ * Returns 0 if the huge page was split successfully.
++ *
++ * Returns -EAGAIN if the folio has unexpected reference (e.g., GUP) or if
++ * the folio was concurrently removed from the page cache.
++ *
++ * Returns -EBUSY when trying to split the huge zeropage, if the folio is
++ * under writeback, if fs-specific folio metadata cannot currently be
++ * released, or if some unexpected race happened (e.g., anon VMA disappeared,
++ * truncation).
++ *
++ * Callers should ensure that the order respects the address space mapping
++ * min-order if one is set for non-anonymous folios.
++ *
++ * Returns -EINVAL when trying to split to an order that is incompatible
++ * with the folio. Splitting to order 0 is compatible with all folios.
++ *
+  * Return: 0 - successful, <0 - failed (if -ENOMEM is returned, @folio might be
+  * split but not to @new_order, the caller needs to check)
+  */
+@@ -4136,53 +4182,6 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+ 	return ret;
+ }
+ 
+-/*
+- * This function splits a large folio into smaller folios of order @new_order.
+- * @page can point to any page of the large folio to split. The split operation
+- * does not change the position of @page.
+- *
+- * Prerequisites:
+- *
+- * 1) The caller must hold a reference on the @page's owning folio, also known
+- *    as the large folio.
+- *
+- * 2) The large folio must be locked.
+- *
+- * 3) The folio must not be pinned. Any unexpected folio references, including
+- *    GUP pins, will result in the folio not getting split; instead, the caller
+- *    will receive an -EAGAIN.
+- *
+- * 4) @new_order > 1, usually. Splitting to order-1 anonymous folios is not
+- *    supported for non-file-backed folios, because folio->_deferred_list, which
+- *    is used by partially mapped folios, is stored in subpage 2, but an order-1
+- *    folio only has subpages 0 and 1. File-backed order-1 folios are supported,
+- *    since they do not use _deferred_list.
+- *
+- * After splitting, the caller's folio reference will be transferred to @page,
+- * resulting in a raised refcount of @page after this call. The other pages may
+- * be freed if they are not mapped.
+- *
+- * If @list is null, tail pages will be added to LRU list, otherwise, to @list.
+- *
+- * Pages in @new_order will inherit the mapping, flags, and so on from the
+- * huge page.
+- *
+- * Returns 0 if the huge page was split successfully.
+- *
+- * Returns -EAGAIN if the folio has unexpected reference (e.g., GUP) or if
+- * the folio was concurrently removed from the page cache.
+- *
+- * Returns -EBUSY when trying to split the huge zeropage, if the folio is
+- * under writeback, if fs-specific folio metadata cannot currently be
+- * released, or if some unexpected race happened (e.g., anon VMA disappeared,
+- * truncation).
+- *
+- * Callers should ensure that the order respects the address space mapping
+- * min-order if one is set for non-anonymous folios.
+- *
+- * Returns -EINVAL when trying to split to an order that is incompatible
+- * with the folio. Splitting to order 0 is compatible with all folios.
+- */
+ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+ 				     unsigned int new_order)
+ {
+@@ -4200,9 +4199,6 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
+  * @list: after-split folios are added to @list if not null, otherwise to LRU
+  *        list
+  *
+- * It has the same prerequisites and returns as
+- * split_huge_page_to_list_to_order().
+- *
+  * Split a folio at @split_at to a new_order folio, leave the
+  * remaining subpages of the original folio as large as possible. For example,
+  * in the case of splitting an order-9 folio at its third order-3 subpages to
 -- 
 2.34.1
 
