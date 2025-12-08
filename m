@@ -4,93 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32798D3B7EA
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 19:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40F68D3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 20:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 296246B0006; Mon,  8 Dec 2025 14:29:28 -0500 (EST)
+	id 6EFA86B0006; Mon,  8 Dec 2025 15:09:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21FF76B0007; Mon,  8 Dec 2025 14:29:28 -0500 (EST)
+	id 6C6FB6B0007; Mon,  8 Dec 2025 15:09:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E9156B0008; Mon,  8 Dec 2025 14:29:28 -0500 (EST)
+	id 5DCC96B0008; Mon,  8 Dec 2025 15:09:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ED2036B0006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 14:29:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 801CFC02C4
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 19:29:27 +0000 (UTC)
-X-FDA: 84197292774.15.2F5A4E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A4BB214000C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 19:29:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=omgaDKgJ;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A80B6B0006
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 15:09:54 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9576C0246
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:09:53 +0000 (UTC)
+X-FDA: 84197394666.18.B5B1D40
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0D6218001C
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 20:09:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=OJFfRIEL;
+	spf=pass (imf02.hostedemail.com: domain of smostafa@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765222165;
+	s=arc-20220608; t=1765224592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uZxRQmbGH4nHaq1XSQ3AQekPFmPu+G4NIvi8PObqIks=;
-	b=XToW0ISlKKaWSOE+k6FFiFC6+7QYwXraOVV1pJzHjg201ERJOwm/L2HAubaVxj1k8mu7l6
-	VDOjBEjCEORXZw137gCZeufRvwMTOeLkqrZOrmNbrt2Qty1J00jL5mSDw5qaacH9YrThe7
-	47cN7+aecRogV0e0vfrXDMdONbXR35A=
+	bh=kHtc/+z90ueo42R+9ZDR9Ppw22giUiqfAKE3wYBFhaI=;
+	b=MPnJ73OD7ubjN93pvQr4bsXi1L2nSvDMx8Ukkc8LrGy26lPHWKssK5rbWCMRHGr1FXrBQ3
+	UKGRmut/vEpqzH+IcMPy4N/WeXc5OAfTWgjBaAMhC+jG0dE8RQKKCnoG+35+7ag5XsqZ+S
+	QuSgCKVVJA0gB1kkUdKg+FHW6dyBl20=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=omgaDKgJ;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765222165; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=OJFfRIEL;
+	spf=pass (imf02.hostedemail.com: domain of smostafa@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=smostafa@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765224592; a=rsa-sha256;
 	cv=none;
-	b=4QDd2le7MsNbt41Evo3g/+pUvfceSVKEbRaeitv+w13fLibTG+YCj86129jNBTI1m4ZeZY
-	efK4qF2TaabvqOaXapmls/58+6Wopg/JJ7TBOWKMKcyRvX+vyDc6HM8BxJMfAQJWW1m0XB
-	YL97a7lXdJNdPr9EVP8UjPMR7nBS7QE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ACA8A40DCB;
-	Mon,  8 Dec 2025 19:29:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF17C4CEF1;
-	Mon,  8 Dec 2025 19:29:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765222164;
-	bh=vc022swnydaWh/KukuNdQUEaOzu4LoIXqr+Qwn3IWN0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=omgaDKgJreyKgJLexcoMHjOwqx1MK/e5dP/JDVQ8JtQ92CSUv32+PjR1ugJgqVXTV
-	 7cRH6SFc4bHjO674c8wHy7txXJLVzI+PkxvA5ew5S+KxPUXU/uM0pxQ69d0kpF6I68
-	 FWqtuMpw2veFcwIldmiBnTKW0CqWhdWS/EEwfyflg1v1i0abgs33V1gSbh7tywyUSl
-	 ompLEcETY+wJOAbmFhWk9GXr3M5Y60o97QZRUfhu16xbWBtC5PsrwDWhIvw9sGEmXs
-	 wzSaEz3386mSZozz9ZBpsJx4uBZi4LKdmbCjMMDsDQz27z3HEmWUNj7X2cD0p6spmV
-	 R9He2QM6c+D6w==
-Message-ID: <245e6969-f45b-4d00-bf34-83da529cd3c1@kernel.org>
-Date: Mon, 8 Dec 2025 20:29:19 +0100
+	b=vziT3olr7o7DxOssf1/h8OQtHFJFgrGUgI4S1vBG5SFLczEjw9LiMZvrzcKatbXwEWUX3f
+	iZRfThXivK9uP20K8CJfP931/U/O6zX05v2rf/fwlihRg8FktBGx6QEpN/kGkxti2TfoTh
+	yh255nMApafVUNuTC2zzxPF9j2SDi3A=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ee147baf7bso1751cf.1
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 12:09:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765224591; x=1765829391; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kHtc/+z90ueo42R+9ZDR9Ppw22giUiqfAKE3wYBFhaI=;
+        b=OJFfRIEL17dGUaOT5qh5owcBEBtv5qmyQLB2tQ16XkQ7+G0O7fBnNOB6H1yCWcPnS2
+         hPiJ08E+JVE94o7U0bQFcx/wQOl83WEEeHmS9sJY31F7vUoYoTOKBW0LFq7Wrj1xsGvU
+         IkAYUVM026RRs9jnl5SVVtT0tDlXAn0pF1u7NP0tp9UQ0jPNu4VSjGOZfIbEqeLZ+B9q
+         ajFsDyHOGaVGQEiiodjPZoGpKEim9q8GTAvTeQiykXZrt9MqDtXT45Wc41CJizHj2rok
+         5pndtKiK/g8FvCpfe9ox6QgTOPvZ5J1IVpKDiE4c70mcIjXLp5ZW0XWWKicL95VZqliV
+         d/+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765224591; x=1765829391;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kHtc/+z90ueo42R+9ZDR9Ppw22giUiqfAKE3wYBFhaI=;
+        b=gwkZT6tERXyRxLdQEkRjV/I9i2RdHkDQkOvz0SFqZXloDnFjcWkVlYPU5Ut7SeRqKt
+         4aVNwUbmazB1cyerJfZM4/4OEnbgcgBPPlwfGkqbJr46Vk3qtiggcIU8flOTR/hzTx1H
+         QjsOjIY/rjQnohW+F6MCr8J3DrY0rIChrstfMCfxvIk8cUQ7KlgOrTp6RxRvUbUnOZQ3
+         o0momV5KUsa0IVQ+QFRkGzQq8fpQ3A1SAI1L0t+gyfa0xvFafkzNA+6LGnbASHTStVIG
+         VOoUT4qTzBuuERwzI9JrQBhIQLRVL0Ev39qlu4UgQ0pmJsao0LhBRbc7cYFY3jGV37V2
+         0x/A==
+X-Gm-Message-State: AOJu0YxYbfp3tQP4CMHAVaXRP8Xjii3wVx5NePKjM8Pxo5Wu1XQzuoTP
+	VBc6f16/Qcg8PTu0HJDoPg41BJK8QQ/KQPzHuzfZNjDbYfbwn8BGOgWhcatccXKakSaR0b8ncZJ
+	Utq6kpCtqy3B9QnYvQyP15GYMMP8Dk7EQq4Sr55oa
+X-Gm-Gg: ASbGncsxxOH69ywpIEWk1itbPAmm8L2Ilg8zyHe3I5QPi6kqK4aUeGdwym9my5Gcurd
+	/8HVVlrg8rXiVWrYpAF6zquji+8fnpg+6lDFXsqJTXgXLeXpAzPvt/xEepqQT62SujhmMAVWSkY
+	Z+8MSoozVmQEw1/aRN7nqnzMm58YBdm36qjYYr25BXHDSUE7hgfJtwvPnCuIHaSSgQDknJUy+GO
+	tGCxYZsCOiPAZXwF+8zaNgvCbInBs95fq5CjKXXzrwLhogFfBa+v8pDrXpNXWO2c/DjxA/NBe/8
+	3wQU
+X-Google-Smtp-Source: AGHT+IEpZoR/iQOyoic1B163k5XpJh88inqgJpWY7MOX9hadvYKtYDxWwg4ICG4nBzjKIlyip58I04JqGTDCPmwL53c=
+X-Received: by 2002:a05:622a:41:b0:4b7:94d7:8b4c with SMTP id
+ d75a77b69052e-4f1a4d2d82dmr2006671cf.0.1765224590828; Mon, 08 Dec 2025
+ 12:09:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
- lock-free
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, gourry@gourry.net, mhocko@suse.com
-Cc: vbabka@suse.cz, surenb@google.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
- <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
- <d35eca2bbdf8675c43d528571bb61c7520e669cb.camel@linux.ibm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <d35eca2bbdf8675c43d528571bb61c7520e669cb.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ijgbetqbdhx6n1wh7fgb85cky41oihms
-X-Rspamd-Queue-Id: A4BB214000C
+References: <20251124200811.2942432-1-smostafa@google.com> <20251124200811.2942432-3-smostafa@google.com>
+ <07434771-3233-4c88-b505-ee02da72c905@linux.intel.com> <aSV-Xi5uMJcMtk1b@google.com>
+In-Reply-To: <aSV-Xi5uMJcMtk1b@google.com>
+From: Mostafa Saleh <smostafa@google.com>
+Date: Mon, 8 Dec 2025 20:09:38 +0000
+X-Gm-Features: AQt7F2rms2NfQ0fmpo7RMgd6BkOwNRHXqeaRPgLhXlJQKJwBB3kdVgcG7LFHRKY
+Message-ID: <CAFgf54qGdWNB=Oa=vbU1hRN2XOxQSESGO6K0CiG4Qizv=T3+Qw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] drivers/iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, will@kernel.org, 
+	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz, 
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: gpherfk5j47wmifte76dgnk6iufktgtd
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1765222165-706563
-X-HE-Meta: U2FsdGVkX19MwrzdrOIRdAN27bvUr3xIedbEk20YpckSrhyQbXgYmaLxeqw1lgOdBWyTnSq0ipeCL7oEXOi2yNWOfM8K8/rt2OyvrOYcyw4jpviRpi0iKJZj9L188TTsoVrpJL3CIDxjCsVudcvisPx1brjXIDLmSJHeuR+g25YrZfuO2CvIxZ+t3SLQXozVG528hn3ANvqWbizwFiYedUGKnpM5jMEgqD9J568vSrCxRvGq3ww8ByWew3UNHMTbs4c2cxvD8fYu38p2ETnLxG8e8kd1s25uU9Nekyt3piB/XRHOhcu0RW3Ody/7fIsTfH3q2oQuoa4doD7UqIUfvXoRfo5Q8ehN80kp97mUUrFBElLh/E5o2ddW0T/5jwsRjZX9pMbIZ8FpFS5jKtC9XW+qi9fhZ6DWjJsWDrHb+BN+F1N0PjSUbvxqZMGV/uHunneCULXDvg3DfsfaBsP/hn8UvaytzAzYgRQ9/iYXmnWPzfr4C+Y82TidvXSVPFjM+49sjfg0Gn+Gkcqt94pzAXHo0jDhQLVqluaX4gx0BD41nXOkaAC7wK0QfDGpWcmvmJ59U+WLz0wiECLnUYm9oty9VnuqK+I3yIHpnumkWgWootOS19bxE7aa+LaIlXuigQ1NdT8Uw0eHan5z8axqkp52eb2Mrrxy2ypSoAgLxDCNwTMQGcu/pWKhzffAPbR5Z697S6in8+nUTyq9kTulHMGflg9D0bA52KCdD7QnE+DNrvfsGDAgFzNTlVLOOA1Zd/tnEF2Z9F/q8LeBIffTXekALSwXRgFQP4RiwfilNmImH6d/tVDLeTdG05jPnyosmGkZwN0pnfpUPGBT6XdBpsuEDzFZkMLlvLEQeegFJtiES8TC22suWKHNHslp0BQY6h17m8/iXQss1RLLeMxiKKPg6wDZ0fUUlIJNkdbi2RDdVgEfeasfG9V6XzPi5+Fdqgg9Sp4rkGLNuToBZNw
- vrKSent0
- TLcyIKi2PtHp5tBA1Aytd7pNpfba79IfhNIyd1NLG7sky2sN67MXHWSpqU8vtaEJJmauYEQzXBCy0Ppxx2p7GfqpQFD609nDDIBGQGl/G1vk+0SBEMG1n2o/m9xVNF0pw3UISwWGbfCad8ZfM8HRronlWJ3KuO581FD4zN+tN55IRKIlt9j5ZRSVOSdB4qpplPWDOYcLSCqItLWfds+B6TXib5DG90aDJtJUZWwG69/8pI4j5o89u5vss8kYvlmpeb/tQQKnz8adWw2p6ugLRl5pXVnavxD1a1+Hv+IxBmxpU9ZsFUTELAUQisYucmnVbYB5WKJstBaDEc0/ddYE1JSTQmKqHh7o5uiix
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0D6218001C
+X-HE-Tag: 1765224591-7383
+X-HE-Meta: U2FsdGVkX19VtMCo3etxCfG08Jiea8IIYw6AwnCKWlxfyLqxFqQVZslaT9dJs/X3ype8ih6PxAow01LwFTGqnYMi3Yku9xEpQ0sLlYCZQFIHDNEYG9K7uCN/HO0NCosJ/QEtJkEodGRZFWsaHATDC3Z7Ycsr/dX+AT6xFn7+11ecsf+n3yhJyLZiC8YEZj/xn7f9bS7y1wCSxVW6UZWwctiTWey043egitHqgW7Pc3ndEJlRorqlZBeIMvvIrQSLspivDNMah2LVFLWd6BbsKkujof0WWu4rPahsEZ0BCkV4xN3AWfkZcQtaFTWHqdw38yib378Ole1c2Fw/UuRYxekhPLHX7/u4NlV/Ri0QA+/41diPiirT5mbwIxRzuqvCk3DsQ/OwafwsTnhZsXVTQgtWJyq704n1qsTMrY50ANXubQe0xj0xhIacUosFoZPhOjuuizJY6bZtvgwZAvU7AN3iAJWkcGBZyG88Pnep0FuZL26SO2FCsAdpyfad3o2V/V4C90FWhYmlGjZUvYQxyfEGZSD7g7bUX1kVsBajqff15LPw9ANVPBIbmsVh5RwHqbHg4WYHeyHGrSGOc+zdjHPMaZuLamLoscmxV5p3w1bRoNzkGZHQufLsP6/5tpZjeHWnTf6dH9zpbLenkH0ETkpJaXsVkQa/J5W7EnSqbg7uDLXi+duzajcd8j5zV02z5mWd7zj2I2Xlat6xl1lNN38PbqVOUK2Y/EzdWpVdS40LNexOQP1rvTfnitz5dkDrYmYjmyQVTD9wL5vs2jCqvXbyAxCEo1p2zmDFS9AEIVhaIEB7dYoC5EXTRaPChrhSzVC8kfSDGbiWJ7S7V/ZkF6+G9j/xeOWfYrR2eGRaoQlxO8TB689VVTQdKwFko3WiDEMEfvI1l/jaKqnwO9O6R0z9Tbpichzp/TtepMDtLck4/wSUGRj0ugb6JGHQBNJw2UoJv3uod21q2kCDnNt
+ QQ/85MH5
+ ZJGYl4A+UCqA+LRpo5H+9i7DZY39poJK823Gwikt6nBhh7TxqRM4VPMkaQXTGq4wIR+Y/MmPYu8j5gWfJZoQ09xNlHjM5Zb/liE3z7xvV7JiQKJv65q3FdquIYz0XO3bsN1z8/S8HkO+IZcVYrEBUMnY6AdpbwWO0nHarIyWo7isvEmJyuN1zjOwTYobAuSkJHnIaFPDggHjJiq2GYD7Z/YYykQ+p7Zh+twX/aGhZ/FWhUxC7J1b9M9XNIbrMpb2iOIcmeslr1napTjFUVb171p2176yoVGslfnyHPnCFLGNFHqQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,84 +121,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/8/25 18:30, Aboorva Devarajan wrote:
-> On Mon, 2025-12-01 at 09:41 -0800, Andrew Morton wrote:
->> On Mon,  1 Dec 2025 11:30:09 +0530 Aboorva Devarajan <aboorvad@linux.ibm.com> wrote:
->>
->>> When page isolation loops indefinitely during memory offline, reading
->>> /proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_lock,
->>> causing hung task warnings.
->>
->> That's pretty bad behavior.
->>
->> I wonder if there are other problems which can be caused by this
->> lengthy hold time.
->>
->> It would be better to address the lengthy hold time rather that having
->> to work around it in one impacted site.
-> 
-> 
-> Sorry for the delayed response, I spent some time recreating this issue.
-> 
-> 
-> I've encountered this lengthy hold time several times during memory hot-unplug, with
-> operations hanging indefinitely (20+ hours). It occurs intermittently, and it has
-> different failure signatures, here's one example where isolation fails on a single
-> slab page continuously:
-> 
-> ..
-> [83310.373699] page dumped because: isolation failed
-> [83310.373704] failed to isolate pfn 4dc68
-> [83310.373708] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
-> [83310.373714] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
-> [83310.373722] page_type: f5(slab)
-> [83310.373727] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
-> [83310.373735] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
-> [83310.373741] page dumped because: isolation failed
-> [83310.373749] failed to isolate pfn 4dc68
-> [83310.373753] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
-> [83310.373760] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
-> [83310.373767] page_type: f5(slab)
-> [83310.373770] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
-> [83310.373774] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
-> [83310.373778] page dumped because: isolation failed
-> [83310.373788] failed to isolate pfn 4dc68
-> [83310.373791] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
-> [83310.373794] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
-> [83310.373797] page_type: f5(slab)
-> [83310.373799] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
-> [83310.373803] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
-> [83310.373809] page dumped because: isolation failed
-> [83315.383370] do_migrate_range: 1098409 callbacks suppressed
-> [83315.383377] failed to isolate pfn 4dc68
-> [83315.383406] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
-> [83315.383411] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
-> [83315.383416] page_type: f5(slab)
-> [83315.383420] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
-> [83315.383423] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
-> [83315.383426] page dumped because: isolation failed
-> [83315.383431] failed to isolate pfn 4dc68
-> [83315.383433] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
-> [83315.383442] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
-> [83315.383448] page_type: f5(slab)
-> [83315.383454] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
-> [83315.383462] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
-> [83315.383470] page dumped because: isolation failed
+On Tue, Nov 25, 2025 at 10:01=E2=80=AFAM Mostafa Saleh <smostafa@google.com=
+> wrote:
+>
+> On Tue, Nov 25, 2025 at 03:35:08PM +0800, Baolu Lu wrote:
+> > On 11/25/25 04:08, Mostafa Saleh wrote:
+> > > Add calls for the new iommu debug config IOMMU_DEBUG_PAGEALLOC:
+> > > - iommu_debug_init: Enable the debug mode if configured by the user.
+> > > - iommu_debug_map: Track iommu pages mapped, using physical address.
+> > > - iommu_debug_unmap_begin: Track start of iommu unmap operation, with
+> > >    IOVA and size.
+> > > - iommu_debug_unmap_end: Track the end of unmap operation, passing th=
+e
+> > >    actual unmapped size versus the tracked one at unmap_begin.
+> > >
+> > > We have to do the unmap_begin/end as once pages are unmapped we lose
+> > > the information of the physical address.
+> > > This is racy, but the API is racy by construction as it uses refcount=
+s
+> > > and doesn't attempt to lock/synchronize with the IOMMU API as that wi=
+ll
+> > > be costly, meaning that possibility of false negative exists.
+> > >
+> > > Signed-off-by: Mostafa Saleh <smostafa@google.com>
+> > > ---
+> > >   drivers/iommu/iommu-debug-pagealloc.c | 26 +++++++++++++
+> > >   drivers/iommu/iommu.c                 | 12 +++++-
+> > >   include/linux/iommu-debug-pagealloc.h | 56 ++++++++++++++++++++++++=
++++
+> > >   3 files changed, 92 insertions(+), 2 deletions(-)
+> > >
+> >
+> > Remove "drivers/" from the commit title.
+> >
+> > $ git log --oneline drivers/iommu/iommu.c
+>
+> My bad, I will fix it.
+>
+> >
+> > [...]
+> > > diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/io=
+mmu-debug-pagealloc.h
+> > > index 83e64d70bf6c..454303ec09c2 100644
+> > > --- a/include/linux/iommu-debug-pagealloc.h
+> > > +++ b/include/linux/iommu-debug-pagealloc.h
+> > > @@ -8,10 +8,66 @@
+> > >   #ifndef __LINUX_IOMMU_DEBUG_PAGEALLOC_H
+> > >   #define __LINUX_IOMMU_DEBUG_PAGEALLOC_H
+> > > +struct iommu_domain;
+> > > +
+> > >   #ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+> > > +DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
+> > > +
+> > >   extern struct page_ext_operations page_iommu_debug_ops;
+> > > +void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys=
+,
+> > > +                  size_t size);
+> > > +void __iommu_debug_unmap_begin(struct iommu_domain *domain,
+> > > +                          unsigned long iova, size_t size);
+> > > +void __iommu_debug_unmap_end(struct iommu_domain *domain,
+> > > +                        unsigned long iova, size_t size, size_t unma=
+pped);
+> > > +
+> > > +static inline void iommu_debug_map(struct iommu_domain *domain,
+> > > +                              phys_addr_t phys, size_t size)
+> > > +{
+> > > +   if (static_branch_unlikely(&iommu_debug_initialized))
+> > > +           __iommu_debug_map(domain, phys, size);
+> > > +}
+> > > +
+> > > +static inline void iommu_debug_unmap_begin(struct iommu_domain *doma=
+in,
+> > > +                                      unsigned long iova, size_t siz=
+e)
+> > > +{
+> > > +   if (static_branch_unlikely(&iommu_debug_initialized))
+> > > +           __iommu_debug_unmap_begin(domain, iova, size);
+> > > +}
+> > > +
+> > > +static inline void iommu_debug_unmap_end(struct iommu_domain *domain=
+,
+> > > +                                    unsigned long iova, size_t size,
+> > > +                                    size_t unmapped)
+> > > +{
+> > > +   if (static_branch_unlikely(&iommu_debug_initialized))
+> > > +           __iommu_debug_unmap_end(domain, iova, size, unmapped);
+> > > +}
+> > > +
+> > > +void iommu_debug_init(void);
+> > > +
+> > > +#else
+> > > +static inline void iommu_debug_map(struct iommu_domain *domain,
+> > > +                              phys_addr_t phys, size_t size)
+> > > +{
+> > > +}
+> > > +
+> > > +static inline void iommu_debug_unmap_begin(struct iommu_domain *doma=
+in,
+> > > +                                      unsigned long iova, size_t siz=
+e)
+> > > +{
+> > > +}
+> > > +
+> > > +static inline void iommu_debug_unmap_end(struct iommu_domain *domain=
+,
+> > > +                                    unsigned long iova, size_t size,
+> > > +                                    size_t unmapped)
+> > > +{
+> > > +}
+> > > +
+> > > +static inline void iommu_debug_init(void)
+> > > +{
+> > > +}
+> >
+> > I suppose that all these should go to drivers/iommu/iommu-priv.h, as
+> > they are for use in other files inside the IOMMU subsystem.
+>
+> It seemed better to have all the feature functions/declarations in one
+> isolated file, as it is included outside of the iommu susbsystem also.
+> I have no strong opinion, I can keep them in drivers/iommu/iommu-priv.h
+> if you think it's better. But then we will have to include also
+> "iommu-debug-pagealloc.h" for the static key to avoid including extra
+> files to linux/mm.h.
+>
+> Thanks,
+> Mostafa
+>
 
-When starting memory offlining we do a racy check whether memory 
-offlining will succeed in has_unmovable_pages().
+Hi Baolu,
 
-It's racy because briefly after the check, a kernel page could get 
-allocated, before we isolate all the free pages.
+I plan to post a new version soon. So far, I only have the commit
+subject rewrites. Do you have any opinion on the header file split or
+the unmap size part?
 
-I assume that's what happened here.
+Thanks,
+Mostafa
 
-But even performing another has_unmovable_pages() check after isolating 
-the free pages will not catch all cases: in particular movable pages 
-that are longterm-pinned.
-
--- 
-Cheers
-
-David
+> >
+> > > +
+> > >   #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
+> > >   #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
+> >
+> > Thanks,
+> > baolu
 
