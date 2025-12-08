@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB2BCEBF88
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 100F9D3ABEF
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:31:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49A546B00AF; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
+	id 732A06B00B0; Mon,  8 Dec 2025 01:30:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 473066B00B0; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
+	id 6B2606B00B1; Mon,  8 Dec 2025 01:30:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B0AA6B00B1; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
+	id 55CD96B00B2; Mon,  8 Dec 2025 01:30:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 279C96B00AF
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03E4E52E8C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:45 +0000 (UTC)
-X-FDA: 84195330450.15.07E881F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 64FD5C0008
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P0xtLSkF;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175443; a=rsa-sha256;
-	cv=none;
-	b=UtDTJMDyKhWiVxxuZKDxa/+FMJa7mYhI84teH4PWizzt3B/lX1eK6wt4ZPHSz/KKnv8FMY
-	EITDJsqiwQTIh48RQgcRs4L/wQuFsbj7WEGccrwJs/3qx1S1HqRgu3jQkWW0UP+MVxtxJU
-	jJVtIIk+4RwaLlEr8Yv1AgbOWbIq8jE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P0xtLSkF;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 445766B00B0
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:46 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BFBCC09E7
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:46 +0000 (UTC)
+X-FDA: 84195330492.01.546EBCB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 851EF120003
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q3OgjpkR;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175443;
+	s=arc-20220608; t=1765175444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TASd7ypsbHELRl/iQIgcgE3faoafoP9DiIxXpNk8vUM=;
-	b=AWBN0exDBN42WCpcC2tq5uhsJdOvEOyfH1v/4aFVEXzh9UEAnDhqogsSqMoLmZWtLsbWUn
-	AgbzIYwTrHWTh4kmuXM9ow5J/sBQcRfQ6rz0oLcEesIb9MHaMRrx6+P4D0QGi3GOVsMsVu
-	4UK/dOc6f8Wpq7isB1HUMWtdeVEAOjI=
+	bh=Vs+TNNoZomxHDqLV1TkT4vZ3S/gMoYTABs/OCdkeUKQ=;
+	b=2zpcQeYIWIg6LohZ7DadNuIoqA17Mkvp8QCpkSmxzxVuCBaAEg4tZHfrUQBOX3/S/3WLvG
+	eAW9fmlhjp2rtDEs/EJvPOuOk9W+NGObZAsIdCRYyymMn+w4OMZOnBUHurOzDBligBvOvq
+	p0sJ4GA565LXdT7WWMPCLiwba3Xn0pM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175444; a=rsa-sha256;
+	cv=none;
+	b=APxFQN7O1xfoHM4qVOCd3DsYhFpyeAVg0xskDeswy4wKlq+TVyET76Rlu1/ll3WNDQ1RX+
+	SaWNGiKd7QvNzFW8xyfSul0ry3BHujbqdYvCGekqZaVgqWkc7xya1TXtycX7cYyZnzQfTu
+	zhW5NoooXyduK1cnTRE3w1bPuctby28=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q3OgjpkR;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 969354390F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 20E026013F;
+	Mon,  8 Dec 2025 06:30:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D208FC116B1;
 	Mon,  8 Dec 2025 06:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA08C4CEF1;
-	Mon,  8 Dec 2025 06:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765175442;
-	bh=3vYcUeBmXr4garxcQHjJx07QLWWSN2yZSMq4StEXQLo=;
+	s=k20201202; t=1765175443;
+	bh=I2gSrUS/ytzkCO1hJUdsffUlWhdJJTl9/yHYyXuCFtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0xtLSkFs7pqEae043u1j3xnB95Eun6fs+QGZgZO9d81R7nVANe8WzFd7INUNaH5J
-	 G0cu5g13QicS+7SpfXLfFYjeCO7OZky97UtEnCU1Fg8vOIqL0guCnn+Met1AgHKg5M
-	 5NTPXJXNgEVF4hk8vk1FGAsAu82jhb0v522m+QxbyOFfL7UlnXHN/ha84/c+mqS2eq
-	 0qSRuP9CaCpfcNNAkk+LdrdatyCNz+99Jk1hlLUrlAc3UBxmBAqyPlfv8/yoebiFZt
-	 WeGrFytSTuFCntaqviHlHDTKBMaMONUSg6xP56TYbN2K/XjRoJDfgJDnBS6pPwmnAS
-	 6VzqV0nDquVZQ==
+	b=Q3OgjpkR49zDj2QFoLmWOx92p1HIbZX2mIXn+c67LiZRVhV/qmtiAN6QAivmIiS4B
+	 acDRY6oMBC+L0ZilJc+sJkWCdFl6QnzirMYRi4xbUIHciCmy8M8pTK/m3wfxNoDxgB
+	 B9MAp6q8QV5L2+NgGWfBqAHMqeR2DF6/lspaRDe2lrRAZeEatsa23zcG4MdlpXXZHt
+	 YNw7GTz9W9bblfkR6tQBFR54YxALWklwnM4OokbXLsYUZrrsJGhz8bjoUeLVTwiFIc
+	 sanfNZ6mWEvnJObpLzN1GM1HOMrC7EMmHduLAzCsUvNasOziiHbeWwnizarubsYom7
+	 RJ32Q0TBhwnew==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 34/37] mm/damon/core: report whether the page fault was for writing
-Date: Sun,  7 Dec 2025 22:29:38 -0800
-Message-ID: <20251208062943.68824-35-sj@kernel.org>
+Subject: [RFC PATCH v3 35/37] mm/damon/core: support write access sample filter
+Date: Sun,  7 Dec 2025 22:29:39 -0800
+Message-ID: <20251208062943.68824-36-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251208062943.68824-1-sj@kernel.org>
 References: <20251208062943.68824-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64FD5C0008
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 851EF120003
+X-Stat-Signature: 8uyj1kcxa4d856dtzkwddsu7b8t7q9jb
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 5kmmkq5txy3zhnyut4edzdtatdocwgxq
-X-HE-Tag: 1765175443-798716
-X-HE-Meta: U2FsdGVkX1+zCVnfMaMTvhtKZbj5KhYyFvzO0O1Gn1R51rYK0zhAlgBY4R6QprtkzFmf8Emu9FF4V7r92qa+aiRtSOiHMhjZ0d7gifQi2RrS8vPUYC3SJ3eOOrVNe6evvrDIykVFxRlZsF5VUgsd3FJPr/7bkefREh2IM1RU7qvPW1gIGGy9tbNIcNKrWQ7I0xclujP6awWb7LD6qK03wphJU/hNFngdNlEwg9AYPYefzTomV8D+kzMlaO+4d1W26jhlEBEqA3bhk7/AdeoTKrC9AfP4xRnbIvgTuucCUHkbs8vI1W3OH9PH3nrx5Ja96FempwWHwn1hWcn8Jx+mTYF9jjOo3CrxPP3m7fActGoS3hGw77/PD7nT0lAvUO/aumPTevXnMJMtFnK4ChmNytRBrF3rP88MPbUHZLM0dSf1XnWUQ7uY6WRWsB1cfW5A3HEFETVvAR4k38p5AXoKVZAbXib6fWXdh/9MBt2vVNEGqTC7LR04ejinEii7ecufv4GQb+Fjr8O+CQgK3UA7c7jL/9ibsETTHaCFPhJKaemwVdXAG26GRcuxGqjok/jezJfzgnmm3srw+cIQgArs241hCOY2JZ5RxrlSEkEkv4qIQ4CHFKQH5RFUGx6SS+xl2l6J92JrOadpB/VsM2193ARwpsc3/vR8N8WAioPRRzY9oSE3eSukm/JQEcDQCTtoMD4WYBCLFFcoMmEbv/2YEvVEL16L9VjkRoTbrxglJnZ93BUjEmAKO1Hw0IuTnOAG0ZfhvbMytXGkE03gKxDEQqMU5HwHMll6O/qvyuUh+5qvoZ3bMtJ4UT1gefVrFlSKHWsNixFiH0I9S97cMBis4Prabxru0rEfrpfbZhc4lkb0kad1mBPmGS3X8VhizVgW8NcXnXgzmJZG53VIyf2Vjvqr8V96VuY9n3oZAyfmbNDqx/6NshNaCcyH0pAHekQYlXQhClT36HINS3w4com
- C047fW4x
- 7tZCiiTRjHSUBwe2vz07sjeJagMc8h4MYZpHxUYySDuyEjMylReu4TgWJIcFaG3jAphOBytIU5GKw48A0Hsj2O5voV9EjWBfqwef7uQMSat2HRuzxIpFtw6vNof/7dPRL/H2SagMKyJnHXHHwXBkRwX2HS25YBWbdIMW9VAmT8MVGK1A8crTvkgs1lW7TZ8lcKvU8TtLmlyjoKLEFfHPR3cfuHQ==
+X-HE-Tag: 1765175444-991319
+X-HE-Meta: U2FsdGVkX19V2tO0GrXFiDVQwfbx/SMykKSCjpcYLLtDqu6sw2L0M1UZjhYl4b7uRBIEtsyXj+l1CG96hLnUp7os66lPh0zuWmPMbYkCCPzNlxNgidtzIutKkhIOtLrAZSLu7W9/AmtTO7W7DiEOfmW6iXEexgDVSM5VYEnF5/Eb160gAcGU5pJYmwqyujk3eAIjK6jZQGCVH/4S7c7eE94n84MLcpeIxSsScg08ubePWgfMRkLdsj+LsTJNcl1HfdIyhCIyhbAOtkH4IC9GWl22pw7WxvmNwTewu3J/Bd3bhU/wLHNfyayoqzOzXEuBMfCDRLgnbMti4fRURoHEIpCHfnGQ4r69xmB0fg6sXSkC9/XJXL1JBub+2KPtVRt0jCwIiW4CssyTXA8EFrtn00Rzq+9DwwME7b4OgwVGL6BdH8FCHP/+wTjJldrb0cMSzNubVrhSk79ndYZOapaRvW7wsTATwFHIx8A2H8tAdD+F8socC/33wPWPDaJZ5NNkHLjyFQZNxtT6ZLmXrsbtr7DmVATmsLyNvdxZFON01aT7wg50ACZF79g47LwQiNWTkqB5xDhF8HZJ6Tl/LTsFTRf2+CZDr2KuAQZzdpGjkqSfJP0Nv2TbDkCgQYY96+6VTccKLWfnPF/hywW1qnznMsGSiW2qOGGC77dLKq6Y220bpJHdipw6damUvc0sOYAiQWZ0+QDOtFONtt0p8TGWSqM8yxzAW/Sdmjnm4XnbC69vDApGIThKipQYx8RAYnqym0PlkUIEsgh+S9TqjbxIZd/Pt+YmW05xXyvuXMLEV9l+XIf5zSZ+/2p5vFqTmjG984v/jC+oP37UQHaylMoFQFUW6wxTspk+dhDE0VkhSKDyRcYAbRtHq9CiCSF23Hc8DqqyVhUcnspCiCz0Vam7VJsUzI5juAgnrwDaMIb0+QpXxg7SKquNMJPr9HgnSuhtd1bUdKqtfGwUJauNvWO
+ 87Pjgx9A
+ 9i/EyZhomHsjXkkmONVPbTp1rP2XVEj8x5gM0JVHN/6hpRIdnrnRvc6kfbSjehzVBh2sQut62mKfTXVSxU0W/gvJI6spGQcjhC1bcQZepiU8ohacCVo5MLb8Lz2FTGK+97hNsUfgu18wLpTLQskaYPIY8MZTLx/bWAfGC2Cjb3fPD3ecppUghqX0nNxyZlP8xG7Up
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,26 +94,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The page fault event reporting function can know if the access was for
-writing or reading.  Add the information to the report.
+Now page fault events based access reports contain information about if
+the access was for a read or a write.  Doing sampling results filtering
+based on the information can be useful.  Introduce a new type of damon
+sample filter for that.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/damon.h | 9 ++++++---
+ mm/damon/core.c       | 5 +++++
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 9299fc91ba27..f9fd26f7eab8 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -790,12 +790,14 @@ struct damon_primitives_enabled {
+  *
+  * @DAMON_FILTER_TYPE_CPUMASK:	Filter by access-generated CPUs.
+  * @DAMON_FILTER_TYPE_THREADS:	Filter by access-generated threads.
++ * @DAMON_FILTER_TYPE_WRITE:	Filter by whether the access was for writing.
+  *
+  * Read &struct damon_sample_control for more details.
+  */
+ enum damon_sample_filter_type {
+ 	DAMON_FILTER_TYPE_CPUMASK,
+ 	DAMON_FILTER_TYPE_THREADS,
++	DAMON_FILTER_TYPE_WRITE,
+ };
+ 
+ /**
+@@ -836,9 +838,10 @@ struct damon_sample_filter {
+  * that to make higher access pattern picture.  It can use multiple sampling
+  * primitives including page table accessed bits and page fault events.  It can
+  * also filter in/out specific types of sampled access events to monitor
+- * accesses of specific types, such as access-generated CPUs and threads.  This
+- * struct is for controlling what sampling primitives to use (enable), and what
+- * sampled access events should be filtered in/out.
++ * accesses of specific types, such as access-generated CPUs, threads, and
++ * whether it was for read or writes.  This struct is for controlling what
++ * sampling primitives to use (enable), and what sampled access events should
++ * be filtered in/out.
+  */
+ struct damon_sample_control {
+ 	struct damon_primitives_enabled primitives_enabled;
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 782af39ef0c0..e2fd17b83a92 100644
+index e2fd17b83a92..5f29e4dee267 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -1732,6 +1732,7 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
- 		.size = 1,	/* todo: set appripriately */
- 		.cpu = smp_processor_id(),
- 		.tid = task_pid_vnr(current),
-+		.is_write = vmf->flags & FAULT_FLAG_WRITE,
- 	};
- 
- 	if (huge_pmd)
+@@ -1336,6 +1336,8 @@ static int damon_commit_sample_filter_arg(struct damon_sample_filter *dst,
+ 				src->nr_tids);
+ 		dst->nr_tids = src->nr_tids;
+ 		break;
++	case DAMON_FILTER_TYPE_WRITE:
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -2912,6 +2914,9 @@ static bool damon_sample_filter_matching(struct damon_access_report *report,
+ 			break;
+ 		}
+ 		break;
++	case DAMON_FILTER_TYPE_WRITE:
++		matched = report->is_write;
++		break;
+ 	default:
+ 		break;
+ 	}
 -- 
 2.47.3
 
