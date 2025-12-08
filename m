@@ -4,236 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0093D3ABEF
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 09:10:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EF9D3B7DD
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 09:12:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F9C16B0005; Mon,  8 Dec 2025 04:10:18 -0500 (EST)
+	id B8BB26B0005; Mon,  8 Dec 2025 04:12:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AA9B6B0007; Mon,  8 Dec 2025 04:10:18 -0500 (EST)
+	id B3BF66B0007; Mon,  8 Dec 2025 04:12:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14B716B0008; Mon,  8 Dec 2025 04:10:18 -0500 (EST)
+	id A51D76B0008; Mon,  8 Dec 2025 04:12:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 023C56B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 04:10:17 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BF3F13BF86
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:10:17 +0000 (UTC)
-X-FDA: 84195732474.25.0C43DFB
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3FB74A0008
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:10:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765185015; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 943666B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 04:12:51 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D0255C055
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:12:51 +0000 (UTC)
+X-FDA: 84195738942.14.13979B4
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8EBC510000D
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:12:48 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Mx5UAvzq;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765185169; a=rsa-sha256;
 	cv=none;
-	b=UWxqm8RO7B5/2+p9leF+vsL5+BzgboTomacoQwaGe5p9+/9CJBvZy/H1fUIQPUpkRl/qDF
-	OZ4m0KerHsToBXJab4JioRMu6v/4NXZ8d9bYbERPcFo+CHeOmP2wdUE7K6OwlzKNIsOLAQ
-	LmR0m0CqkUJPDury3zOhd0vyCFoacrM=
+	b=Eiw0a4chB47GHqahEdwIP485hI393EKFc86N2DsYjjNbMs0KIoXW10mCwTVuQJ1s7UkCv3
+	YhrkDwRwlDMSHcjxlidJQf6G4GrngONE/hCGurf76Kygz+9lFJxiMTZSEgwpKecouHwZLp
+	G7dLq6+fJ4mweaDCh5gGcPZ3+1GxgoU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Mx5UAvzq;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765185015;
+	s=arc-20220608; t=1765185169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
-	b=4sv73nr30rp7fWi8x7Tpu6nokijKAhN4du/q4SXwoUOgdLxFPAGked9zFENIY7idwUM1tk
-	OofTwVVSIQ/minbuKh3suI/NCYT6dXDFWt7fm60Zg9WUjq6vqIkDtucltA22P4UJg8/trl
-	p/lHjYLYht7JlMmJj4b6lw+MEtOx8wY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 93DB433850;
-	Mon,  8 Dec 2025 09:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765185013; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
-	b=qbFQo5VB0Iul7UVh2ZyZuyOxVM5KlTpv4skLywclN0SxSnke7ngeM66KO4zA2TxcJlq7wD
-	WVR9H6El58W5byQHKEvr6xJrXO8d2rGbKazD0ZsB46ohpoVpFdY5Z36F9+zJOHRxTBpvvj
-	cNxw8dNv89Dpc/DI+HekMKd0W/wcDx4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765185013;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
-	b=q1xhIigmYLviznowQZOuwEJsrEMdUqD5Y5HMelkhRZdg1vTOExqbFO+9e26NAG98oGxHSs
-	bnpMEjeOAdGyJuBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765185013; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
-	b=qbFQo5VB0Iul7UVh2ZyZuyOxVM5KlTpv4skLywclN0SxSnke7ngeM66KO4zA2TxcJlq7wD
-	WVR9H6El58W5byQHKEvr6xJrXO8d2rGbKazD0ZsB46ohpoVpFdY5Z36F9+zJOHRxTBpvvj
-	cNxw8dNv89Dpc/DI+HekMKd0W/wcDx4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765185013;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
-	b=q1xhIigmYLviznowQZOuwEJsrEMdUqD5Y5HMelkhRZdg1vTOExqbFO+9e26NAG98oGxHSs
-	bnpMEjeOAdGyJuBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 284B03EA63;
-	Mon,  8 Dec 2025 09:10:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eDCHCfWVNmk2CgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 08 Dec 2025 09:10:13 +0000
-Message-ID: <b9f0889c-597a-4a6c-8d32-606e948f7916@suse.cz>
-Date: Mon, 8 Dec 2025 10:10:12 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dNV09ujwV90UIPL0Dt0iMnzXsCn/ow1KknLix/jixxQ=;
+	b=u2+PT4DN395yg2D6R0ZKuKQhifwyk8i0CEIR7KrlKk006rV1jq13LzRB2CkkqMJwzobbYH
+	mP5JSIil43L8ZSK9/CvyIEDm+VZRATOb5vfvxi1ZQD0aE5AlfDiUQ4AEqAIK/6WytME+D3
+	u3+bpAz2qpyv9TU3wn9NkOzFVc3w4E8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765185169; x=1796721169;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XCFUPIGNuKR4fx2rE/+j1YwzFyXvjLuNtBVuxrtgrjQ=;
+  b=Mx5UAvzqMOx44x39f1Hp/YJXZuuJIoeZ/dwyX8bOS3Kso9c+bABHzy2d
+   DoVjbwKpjxN869XHsRRThqpJfFlOe3bgON2yUdJo+UpdicTgn/iLCELwG
+   lnoYiqG1/h4bjarsoQiUoMqCEqSGKHz9+7+XrgQ9Jr2dt/1Qtap6BzZNs
+   vmEZhniaexbQQ/WjyuJm0OTJMaftrqSbT0S0C7E0TCRn0IK5ZvnLCK/F4
+   6q4WPVeukGksqyh7DszAu+6KHqG6IHT7RTq0W6TgaiQX3WNMwuE+GmDCz
+   S5AxW5sq+w5FjtXQd1rUezqNs1Cof2z3bDB/nhrNxv/Gxt3Uv0IV8yZvP
+   Q==;
+X-CSE-ConnectionGUID: RqljRA24SB2DQOOvrEYoUA==
+X-CSE-MsgGUID: 2vtleZb6TJ+tMQmUtmxoMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67159462"
+X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
+   d="scan'208";a="67159462"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 01:12:46 -0800
+X-CSE-ConnectionGUID: 4YhYLOEeQHy6B4HMp9FbOw==
+X-CSE-MsgGUID: Ayc5aL68TGS6NaA64WqTYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
+   d="scan'208";a="195164358"
+Received: from baandr0id001.iind.intel.com ([10.66.253.151])
+  by orviesa010.jf.intel.com with ESMTP; 08 Dec 2025 01:12:46 -0800
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Subject: [PATCH] tools/mm/slabinfo: recognize --partial/-p option
+Date: Mon,  8 Dec 2025 14:40:18 +0530
+Message-Id: <20251208091018.2701315-1-kaushlendra.kumar@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 04/13] KVM: guest_memfd: Add stub for
- kvm_arch_gmem_invalidate
-Content-Language: en-US
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oupton@kernel.org" <oupton@kernel.org>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "david@kernel.org" <david@kernel.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
- <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
- "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com"
- <riel@surriel.com>, "baohua@kernel.org" <baohua@kernel.org>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "jgross@suse.com" <jgross@suse.com>,
- "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
- "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "prsampat@amd.com" <prsampat@amd.com>,
- "mlevitsk@redhat.com" <mlevitsk@redhat.com>,
- "isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "jthoughton@google.com" <jthoughton@google.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "vannapurve@google.com" <vannapurve@google.com>,
- "jackmanb@google.com" <jackmanb@google.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
- <xmarcalx@amazon.co.uk>
-References: <20251205165743.9341-1-kalyazin@amazon.com>
- <20251205165743.9341-5-kalyazin@amazon.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251205165743.9341-5-kalyazin@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3FB74A0008
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8EBC510000D
+X-Stat-Signature: 1ctsjxetc6i1r6cbds7ahxgkuqitz6cr
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ztcqymw3x3kegwf9omx5hpea9ekg9jcw
-X-HE-Tag: 1765185014-928769
-X-HE-Meta: U2FsdGVkX192DonFD2CqJFZKsGHAqRN71jvB8NhLwP+P7cCGWbZF1/iDZCEr8bbJ3Vuqo8oWZqaUKqYzDTP1w34WE+LwC+IdmvnlA0r03vNpxbU6H0PuGB1JZPuNqLw2GnKCbwN6jz4EY//tDrMBCVVPtkXfDj4yTFYrGC9de4BhaOFBO3ZLz4QVpDb6v4SP0uT6OfbbPnrQ0D2sD53VB2aba/L2dBYdU7ioyGMoO9DJ53MavAfoUlWJzH2Wr83D43c78qIQxHrVOKAsxTBbqe0KJeItj+zoXlBI2r0RlObzQEhP+IgY4lmheQEeCjNWjf9XsuJ4evzrcTDgIKLwPGsx5+27hrExCOEbEYYPn90B7qRDbQOs1Z3dBNdz2h7Hdo22dx52J9UQEeEfCFP7V2utGOqZzleYmFy3mRSiTN1LA1hEGc+s2UJRoUzu9I5rRQeGiTwYxpUMhCU7hqhW6cWj+EMUbl2h2zt/nw1HexGcRX5hwB0x1LzySdZ6ClB3/Qz2Qll2cVC7io20wJTBdLzqrO88UCb3q0jTBjkg6H2dYS5VpG67NNo3eXu+MmlKhTByI+BcTYNMXNHX3NUbhRtWSZwQluZt9UgiYaj+4Pz5KscF12txZeC82oby2a3iXg+cf5igu5R3vaiOb25DgDW5mw34MEAz/SFJtnym4YDKMiKDIf5cFvlBwP0A5c/e5C3HK5qir44Tn3bB0KCwfFQue4+S38OsBu9diTfQgEoBOYJ7HfX+6MKR1MAJpllcAd4znJi2nsn6PIdSaVtEQWsqzKnk/N2M9bnSFv5bZSdzAQxbWfFoPhtWSv6rB4L2hwHbVrcUlLqGOZAJdDrMzKoqnkEANoPc/+O+Zg6mWwgqZQRzPqvihNSTq/EoynpKepsAXiAc6aLo27C3bJKpXpkIb+kR7NlIwuTJFKUsiPbAGsbVltvbl7vqeyNnGD9e99P4sEjUWMof+dvf5uh
- lBdQ8oKJ
- up5L3fo6S6lmydtPf3xWlHElnyZchhPRtnStzPPeCQeo1nzqb3zIunuI0JbTksQr6gFUqRTNjkzBP1ju4PHYKAXbFW1gGUuvzyE7kgOGa6DzbhNW1iHF0Qts4mjJT2ndbp9ZeahQAvWEU/YyK+rG9EwxfRSo6MZPQPigHzX5P/cJBhR0VTI/AJKbCI/dfxeaJ7WBG9AqVtBulki3yejhmfUd06jKGu/+NNX3RFsB6ZM4VCTqYUABw3JlXhJlRV5VoY46tv3DHrOj19HZQqQDO3MrKL5ELlkMhI8VLPOxL2c4auW05jAXY1RwOOhRKOyXoLcjVFjXo58KZaJ6j9UzvZ9UGrLuiCJszMt04bVqCM4QhbU1HP4DjwrZ/Y7ZzMzOkD9mxLJ+ez/MPyeCY1wDhcrRID6eCwyIuw8pI+y0fI/vdOVH4SkGImeyohFKQlf1i2Bmd7+gbK00rZQHPLWtzj7J8dlz+Wy0GYxch6XXyINGu0OYNv41HtHDsiQ==
+X-HE-Tag: 1765185168-589786
+X-HE-Meta: U2FsdGVkX19rHoLy2RUrU2qg9QMG0zGmaLLoRPze1EZsCtOJapik9dJxX/0L6EMZSuBjdpw5N7reRmFagtKVOnyYQdEhG323UcbPJmqS2ga04dyD8zUP6HORJ+LOJ6qm2nCYuXg+EgiSDhnpOAvmrMCWqpoCPZEm1KiSRr2t/aOoFiH9nYchFL2SG+neA/rSGwFD2FRg+dxEQGU7H+YDxnTl6yhR9xoKdzb0b86E0KzHhyxGHX+e0dBYzdL+nI8JJMFbXrJWevOsgTKiU8PLPptlOaR/umo1gHePDpqOWcPKtyqlis4tgkHP4E8bLYgMX0UdU8NRqDolgx0FbIDbnD2o9xew9wRQYpF2z4VMFfUIu8QDHolL7V/rMZsi0y7ETbBUEtWaNpL51jgXUWkSI+l2ZzjDQjvPGVUySHaVGl0+FzMrKdH+Pb1WQJmBV6nMBQWID+CG6FRXCUBIrxO7kmiHxGGoijld4k26YWGFVF2HopblZ4J5hvStRJfiG1n/hhRFWkZkPYVOSYgXZcLzFjJ2JeLJCezMJh74fdEfehNmiPCRFVDBOGp5+8ylKqvK9KFnwAaGitLwH1e7HDyPVKwEGao8JqpKKJXPp45EeAZsptQz3KVpCewS9WGDQnuXnVKArE6Gjz3LdL6ul6ZW1KRpIeduwUuGbq8LgcB5/boiL6hJGuMmYCpOS1Lm7XFoJ4ELWowmuQ+Pa9fDworl5xZO5jEMoVTbEgKkJpfb3OAF+wyvastWk7NU14BERyhXurhe8OH3qgZh4mXdbfmlHyEpmsobETyG8G/Cw4tc23Hs8Z+753SkZebuW17Ha0/sinnSNtzH2/66ldU07PymmlVervXchciRtqx1NVqybOX0qETcIBIZWub+3Xqdp63k
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,19 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/5/25 17:58, Kalyazin, Nikita wrote:
-> From: Patrick Roy <patrick.roy@linux.dev>
-> 
-> Add a no-op stub for kvm_arch_gmem_invalidate if
-> CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=n. This allows defining
-> kvm_gmem_free_folio without ifdef-ery, which allows more cleanly using
-> guest_memfd's free_folio callback for non-arch-invalidation related
-> code.
-> 
-> Acked-by: David Hildenbrand (Red Hat)" <david@kernel.org
-> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
-> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+The long option "partial" maps to 'p' but the short options string
+and switch handled 'P', causing -p/--partial to be rejected as invalid.
+Use lowercase 'p' consistently in the getopt short string and the switch
+to enable sorting by partial slabs.
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+---
+ tools/mm/slabinfo.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+index 7c51d283504d..7f239da26ed2 100644
+--- a/tools/mm/slabinfo.c
++++ b/tools/mm/slabinfo.c
+@@ -125,7 +125,7 @@ static void usage(void)
+ 		"-n|--numa              Show NUMA information\n"
+ 		"-N|--lines=K           Show the first K slabs\n"
+ 		"-o|--ops               Show kmem_cache_ops\n"
+-		"-P|--partial           Sort by number of partial slabs\n"
++		"-p|--partial           Sort by number of partial slabs\n"
+ 		"-r|--report            Detailed report on single slabs\n"
+ 		"-s|--shrink            Shrink slabs\n"
+ 		"-S|--Size              Sort by size\n"
+@@ -1427,7 +1427,7 @@ int main(int argc, char *argv[])
+ 
+ 	page_size = getpagesize();
+ 
+-	while ((c = getopt_long(argc, argv, "aABd::DefhilLnN:oPrsStTUvXz1",
++	while ((c = getopt_long(argc, argv, "aABd::DefhilLnN:oprsStTUvXz1",
+ 						opts, NULL)) != -1)
+ 		switch (c) {
+ 		case 'a':
+@@ -1481,7 +1481,7 @@ int main(int argc, char *argv[])
+ 		case 'r':
+ 			show_report = 1;
+ 			break;
+-		case 'P':
++		case 'p':
+ 			sort_partial = 1;
+ 			break;
+ 		case 's':
+-- 
+2.34.1
 
 
