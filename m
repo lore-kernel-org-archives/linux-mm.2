@@ -4,141 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF3ED3B7EA
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 17:32:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6D1D3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 17:32:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 542C36B0005; Mon,  8 Dec 2025 12:32:02 -0500 (EST)
+	id 062496B0007; Mon,  8 Dec 2025 12:32:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F3AB6B0007; Mon,  8 Dec 2025 12:32:02 -0500 (EST)
+	id 03A1E6B0008; Mon,  8 Dec 2025 12:32:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E2716B0008; Mon,  8 Dec 2025 12:32:02 -0500 (EST)
+	id EB9916B000A; Mon,  8 Dec 2025 12:32:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BEEE6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 12:32:02 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C800D57ABB
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 17:32:01 +0000 (UTC)
-X-FDA: 84196996842.01.0F31B1C
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 62A02140017
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 17:31:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ek8IKmY8;
-	spf=pass (imf09.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D9DA56B0007
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 12:32:30 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A8CCC0296
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 17:32:30 +0000 (UTC)
+X-FDA: 84196998060.15.F1FDC8D
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7390A40004
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 17:32:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=e5zZFVEV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765215148; a=rsa-sha256;
+	cv=none;
+	b=mW32dz00B8WUONTcKpvmUlbGLA1DECHQj2sCKkLHmKwPzuBBcI0Rvtc55TOWYOoyzvAhu5
+	SGvoO08ydsR4h8BjmScnPYTDPAEy5wZ4d9LDdabTxO/lfB2ibmPeTESvBXLR/T8N5CS5Vo
+	FiGtkNei/EkCHqjGK2gjpl8tLjYN7Bs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=e5zZFVEV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765215119;
+	s=arc-20220608; t=1765215148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NRPbf4ywtrBif5u8FvR4fJIgXpdQsnXNbd/L15InNNA=;
-	b=vVAMNAQJxc4Uxyi5l/QE3Y8oXEaAvQprWL+/BGnDWENIEV66zA9hCQQRiHlNjmQLOFQLiK
-	y4p77Qqj3PR2AbQui1LZY/mNVUDyKo+oXEBcK1YxdC2AEx8CSvlINlk+WLifVPaAzXEW+S
-	2LVS4YpezVdDHbmXZPevx/nW18z3fVI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765215119; a=rsa-sha256;
-	cv=none;
-	b=rn06t+EUDalMzuuKzyIXRPOQX/JJAPol2+TdZZE+K3ylblCO4l5kSWkEZ0lrmULm3GSqI1
-	GwBMmYaDm2GnUtFUUnUGEn+943Eyh3SpuSB6mb9n9T7oVbo/LYJIwaAjzPtOQG6qH+l7sW
-	UFIN8glJHmvqlk/M+p5Qg1f0TT/l2N4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ek8IKmY8;
-	spf=pass (imf09.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B87HoTL002688;
-	Mon, 8 Dec 2025 17:31:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=NRPbf4
-	ywtrBif5u8FvR4fJIgXpdQsnXNbd/L15InNNA=; b=Ek8IKmY8Pm0iIgnFpvH3EW
-	VXo7NYGHn3S8hikBkvvZxkSLXmk0Jp8UW7Y2/lSXdBxPYFoyxh7aSjjzSBOJb2hb
-	2I2WdX3XkwSonXq0R3m+uSigYqV7jMmd5DYBQESX4dh5tGgly9DSE5MTlJLfni3B
-	Cv7FYfecbDxEykC2n6KC6mrxwflrXiO02Pf+TVA9Pw+tNNrJakf70MikwA/dASbH
-	Tw/hwfL1XbuV4IZ+JjTq+QsOaPg3XU0tpJvl/x4ftOq/uONBsJZ+JvsrGFi82Iud
-	zZHtXjQNIqvgJ+q8qwe8Ofmy6bHZqU5azteky6J+RfxSuA7wNB5yISAN6BLChvkA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avawv0nac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Dec 2025 17:31:53 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B8HR1iQ028942;
-	Mon, 8 Dec 2025 17:31:53 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avawv0naa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Dec 2025 17:31:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8FY7q3012812;
-	Mon, 8 Dec 2025 17:31:52 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aw0ajprab-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Dec 2025 17:31:52 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B8HVoHo16777532
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Dec 2025 17:31:50 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 185C820043;
-	Mon,  8 Dec 2025 17:31:50 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C62B020040;
-	Mon,  8 Dec 2025 17:31:46 +0000 (GMT)
-Received: from aboo.ibm.com (unknown [9.36.5.167])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  8 Dec 2025 17:31:46 +0000 (GMT)
-Message-ID: <d35eca2bbdf8675c43d528571bb61c7520e669cb.camel@linux.ibm.com>
-Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction
- reads lock-free
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, gourry@gourry.net,
-        mhocko@suse.com, david@kernel.org
-Cc: vbabka@suse.cz, surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
-        ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
-References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
-		 <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=kvvNrbzxfKIfhL9wonNMP6XRUhQd8y0eo6+8602KYfA=;
+	b=53fiKo7U5H3x3I5+ftjvMEndjx0Iqfwlmcy336F5kIWE3ZyvnD24V0biR1LBCuYCTsyftO
+	bf3thP/1I66BtiK3g19joVT4nETdbGIA3rnbPJDTRicEl8SbvWGW+LU/zALqtPAezfu8MH
+	VjhuaV1XB3cH8Jp9lQCJ2J5Oa3WBj1w=
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-37b983fbd45so42315921fa.3
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 09:32:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765215147; x=1765819947; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kvvNrbzxfKIfhL9wonNMP6XRUhQd8y0eo6+8602KYfA=;
+        b=e5zZFVEVN4Y6kRPEwZBmJMTgNzwiXp4fkmdndwEvG98Qr0ZD5a9ukUPP2XUx5rwQ0w
+         HErgG+JUrXcQ1+uwt78zSWA8hcC2DKoMp9MjHB8B863HTgwmMQItMUESIsvkTL4U73iw
+         ToVEu0gWPGV22WtQ80NpGJSL/PCHxppSt8ob84TQwyJIbj1zy5+ZQJajs+R6fLO64D4Z
+         YTlpoIUBkAvNfOlL+FoJh8mwWtrYt4qG6W3fT/Yn+CviwDWqMLNR/KpEcVO6t48r8pjN
+         CjkqsCGpNjbosS31RDU0BN19Wi3Kd/IarZR89/SGWbMjBWn67cD7mPDJEO7oYK42V/sO
+         PT8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765215147; x=1765819947;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kvvNrbzxfKIfhL9wonNMP6XRUhQd8y0eo6+8602KYfA=;
+        b=oZIS623QXPuXcbOq+8AnQNocd6iKFerTjfQl2ZniUZAJpgfnCapTHwxfxE/+l7KSJR
+         lRbj8ZLm1t5FXIvMA7Wj2uK3pNRRdpxAbYvMpGb0K3lkGw/jYMtAEApOcDmBttZu0Ydm
+         U9birlpfdJs6nGrNZVXyuN9E8H/PgFgT6NovubmMJAYkxVhhiUhk8o9fe2aYmry69dUe
+         gpJ9sCgpN3S8nNFeGqVCabjL5u+nXc3K8nCjCoS/1Y2SQ+6MFs0PZMehntMxv8U61aER
+         RQClx/USQzEUovI9ONIMJSbWbjKwRvL4iHPofhui17KOIwkAw1LwmTpP9alLAj8/D3FQ
+         wHlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXEIhce2snXGzVlRzTilAQ+cLAU1YdUnGe3IPpQ4PlgWhKLt8HGZJkBaihuwBb9SX5Qfc5G+t7e7A==@kvack.org
+X-Gm-Message-State: AOJu0YySxz03RhCjGkAwzJ/zHWdujPT4XCfe74X4sZ30O9jyogZt7hT9
+	zsaRuaCZRT9BkqT7QB8d5OE+TGsQPX1qsOE4fpRIeyaCTId2SvUxZtwB
+X-Gm-Gg: ASbGncszYUDwO6BxuVmWM1J5QnpGmENa9SazAkEW6JCZQ8dMdI6XWixBS8595PtPgWz
+	kd/tOqAGrLXG2u1rLSN1gI9h1FyH7s13TiXcgOW3x7n2mfbEhuoQgQQQ0oKvc9v5BdBWnYerIWR
+	O/0mQ9rg3et/18vKPI+71F7me/fDAJDY3t/DNq+1WprRF6h5sTZSPqadKa8B3mk9W9Z43xhYG8w
+	r7evYmMtZcOVwutpYXYBqoTS7lfsVC8vOEvsncpGX7BUZlRAgOsp7WfI8DcWN+2GT/r+vLF3OhQ
+	bMMDESyCk76jjZdSbuvs4a+FX3IWZx54i/Ks+7hcTHbupe7QSeSopf2QzawU7xdRWQFx1xJ2J9m
+	lmgt61l+UNUdd9Ecm1S0WkGFwOfv0pY2DvtXWinZJvHvgH4Jk4fjN
+X-Google-Smtp-Source: AGHT+IFsm7rxgn02r1lDEyDh6oMhj9/rBDOaoFL0QYsFnQGFM2lDhg6gWYfXyuZuPifV8on94YS5pg==
+X-Received: by 2002:a05:6512:689:b0:595:90f9:b9d2 with SMTP id 2adb3069b0e04-59874372abamr3094454e87.3.1765215146407;
+        Mon, 08 Dec 2025 09:32:26 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597dfc08b25sm2722262e87.6.2025.12.08.09.32.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 09:32:25 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 8 Dec 2025 18:32:24 +0100
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+Message-ID: <aTcLqNyqm_WIyn99@milan>
+References: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
+ <96aa9bf7-1f1d-4870-90d2-84d3d6d4254c@arm.com>
+ <DESNXS1K25LW.2E7ZWFWV56PZD@google.com>
 MIME-Version: 1.0
-Date: Mon, 08 Dec 2025 23:00:46 +0530
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: adW5n7PXyjOhYlUV2HCe3nlMUBU9jlrz
-X-Proofpoint-ORIG-GUID: -f4J37UvQXOw_46QqKsl_df0HLLnOb-I
-X-Authority-Analysis: v=2.4 cv=aY9sXBot c=1 sm=1 tr=0 ts=69370b89 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=GEmWsRkYQ48VsW4USWEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAwNyBTYWx0ZWRfX3KytDWOEC8O4
- Tmp/tkle4v7H0P+F59MU70PbP35tXUr8uwPZymbGBqHs0Y1edLKbqBU3cHWLKK0MMUL/AIuCpWP
- YejRNsieP9nwoqRCyh/erBHrAIGtc5czE2NRchlNyKh8VSwSgfFYjtGXSIxFCTICe6uhFpQUuWK
- E6fseK7dKAdYg8J0fCYZSbXUEl0Y5lpW6psWdC+196LI24LZJvDasOIqryznoDDj+pHeIBF7aKQ
- v51DwWHKWm5Lz3REzFb710qYewRFU5hHyvAV3tNq68dKiTjfgnE12jfjfvm6F7irLEqilxwU7eB
- X/lBM0GzK58MTCitvlta48encY6FuQzeuUQlmLvTln4FO4SLH7FXGzFWXkN+hnQe1ePn51jKfyt
- 8zMJy57MOJLhTkI+RKHzCl0DHwznLw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011 phishscore=0 lowpriorityscore=0 bulkscore=0
- adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060007
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 62A02140017
-X-Stat-Signature: 9hrdqcbbt4hwgmrtymwiua3mp1wn71af
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DESNXS1K25LW.2E7ZWFWV56PZD@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1765215119-857132
-X-HE-Meta: U2FsdGVkX1+YDKRcOujGJ2BRfTBhtcFdixFkhxR5gKQtq631PFTwvQvGUggX/0kz0QL8/R4+/fzde/48epjKUTXMSIvQwQbMqs9bfFVtmtUvxEGZqkS1lzBrzOMuFWlNyrfi4BjiGRD/Qph/dLS8qFA0SOb3M7KZLOSZ1g013jURyFqA1azeWINciAmXNqLxoL1ggERh6eopIkLrIhBHWSGCxHoaMxpFcoMwHPDwi2eCxcuR0ORan3VeJjP+/B4NRi0rDlIJDl9v4QpX4lSBDdUiVzcp8Ui6a+tb/RCeLXtd+Dn+9SEO7xl27aMf5WjXXKRnDqV7ktuzKU7udQQKdsqmtmhpSvp3c8NXEdrsScdLWliR0rHLAN6laN8Xp8mB9B6oMA1dI2te4zKp6CmnNwFXzkenkmc34y82Ywy1DFoFhdrVQNmOFIZ+gd7m6+s/9Z9bXrFZvMlzb5MgR8zdll2a/5MDEAlBfmWRwza3cVKaLJfAyFdY9e1sJS601zJREpLjlz2AVTps6lI1f2l+2Xt4VBBI/1ojCS4FaBlnFSNGLewQv7/zSxV9ETXtKG5t9D/C/fYG8iD7k2FWk13hluZnwez1jJQTKwDEEloS383GWrKWLsiQ5TwaHPlRpQjeRf0PpsO/Z+tWGSLSUc/EeQCpmGKHhq9FD9kBtp6zklhQs97pi+TvHzfsG9Nhx4/pfFj3AflU1R9x20Xvb7WK1zoCx2wQQKwhcEHh5qlQLoksl8dgE+H9kh5drXbZ6NNyFyEiGEiu4ByiHRyms8M4XcpBWc1ZSjH6CRzaYRmNa4zJpSGT2MPPHof99FjF9BOTNbbjAGm1bFZE5ZxJugbEdtZmMmSNwT3YuWJ3wvMuoQxAPVviEqc63l2iEFFmtg/yiZjY0HddZhcVmWYx9Nl46jnpGC0EVfTRKpzMewuMfKTxQokvk8dp7zG/BtsS8gfhOQqfrv0O+UH4f2+D8Xz
- I00AyrG5
- S521zzgGW7QgcAMDfPJ/pEFNB+CTY2jYzYaaxkUsCrzDToiAC3GpLcfkhVhb52CSME3SoqI82SapUq62fMK8WLPXnEEC7s+ryRD33gQ98OlylGzV7YQ2AW40RxbcI6z5PKmrTUdXIbFDoQQfAWUTFTRyq5bfd2vlnyvU6W6QfVkfYJMysAMWsbkQ0dC5OcCaFHlkzr12ZgBIN4PFKxSdwzoG3DgtWoyj7AvL+Xj5xmsOJjx7Y00o5wZ89Kza1EDkmWmJh
+X-Rspamd-Queue-Id: 7390A40004
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 7zbgdsd1xaddawjusg7h3img95yt6eoc
+X-HE-Tag: 1765215148-733885
+X-HE-Meta: U2FsdGVkX18iXNdJAV4h0AwPva/pgmVdJVO5Jy5dm3/3CBqMgl+24Q08uKrXaW2R1TH/O7C/QJ8xLkiUol5NExOEy/P13qMTQJ6y5OjK0Snajl/9QBMj7jNUvNHtGOU4QfQpZnRJGI0S4dgEyYcNU27Oc/leRjKo3P5mwjwViCcUQ8b2C8oU3mV/omU/31n+lHrbKpcScQ7T9hPqvaQqONikJVI4jb106wFgxjE9vA1KmqJ+iqfvx0DJhHmTeIzywG1x1OcIU2M3LVoyS6fSgn4xoxEctnTPW8M/h3hpR4mEKbetJ8Leb71+Q0ntrokW4qjNockLQn3MChpZf1scGWCMat7S0KnRHewGyBhh/8YzEKpxpuB50FyCyeQle5dDscO+YI4oCffUgvD779GNrFUyNcX/4t66RmRpzp3BSdFS4HGlD4nBppxUE6XYcAnw38kRJyuZyjLjvgyan584Z1xA7eRpc9NG0gLs7x447SHMLFDS/lW7HcrZ20039IZQxBlCnStJ7x3KRKB9hHEpzr2VpYpZDbaxTPe2PJzpye5v7kMh/hYbtPI5LxnSFk4qgPQoxIfpAKjENoHoyip9c1nO8mZnHmQKXl7pLDeZr6EU/OZrFfG3VC2loqZZuOHzD7CxqiS1GQ1n2m0w7sKFGJfEGYA+WpWbpn382NoKpG2aSeKm2U9JzJvKKls7BeNjn5PpO0omJdpHp9MY6MeTJsbSJjHvV2+u/yJkJWxQx5pRtAFiNiTmJ/ttkgN6o5kD3TrMLK/6aaOh4/RjyLti0FiX0V7RSAmpGTjXhFv4h8EPAvLGI0FDGL4BoDYeD8Zkti+5v7N+iV3UL4gyNJqw7JkmrpsiNJ6KrzBBL9unpjekSkKdtFwHh6gqQwMJEloQzX7VUB4z+ZZQqxYhcGYi6KtntjuHToetbBgh0jHXlqfS/hbRjMAckz0osNjXAysxMif5bTnsbuJ2nDC3bZY
+ REnP0N/M
+ XMpbO8N90vlpJCgSPTp6WNQtlbAen6uZFYPLO9tuqYcPuGvf0i8qVuoc8DVaJUjV6zVBuxJ3CGjFNAD7+X5+Cb+LR1Ks10RKFt9ZFYjpdmSzt8pYTtt6Pe1SXqhbApJKXA3riEnTznGT53bmyrLluT46nyQJRhzpF6YCUTrltPQ3o8lbrx5j7q0NFGCP7nFq9L95/zrF+jZiKmmBE15/9+AF0d8CWGbbXh2Luv+qfOaUNl8AWPRkNoLJKHmxxUji5De5QWL3COfnxkiELNEn8FNgBH3XkwcCZwaL3ZEyqiXrMnLdqZK3mrLGwLgeILiJbZw/6ZLYXlSFMFXGsViMaDKMNKc185HJj+ILdniaD+ZLjg3Z114IV8By/+CHFWCu0BcsIXjS+xHi7mXeyAGeOwBUBc0bZUBJ8L1gX5N2gTjiWn8PAyc/AyLZnoWnQp51VpfJ7Qd7wxZ9VLnhSeAjwV1XRpYy0NeYgRVdkwFqjg//jPIaa7mqScfcRywLkO7y41yzoSUFNHFTpjUc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,197 +122,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2025-12-01 at 09:41 -0800, Andrew Morton wrote:
-> On Mon,=C2=A0 1 Dec 2025 11:30:09 +0530 Aboorva Devarajan <aboorvad@linux=
-.ibm.com> wrote:
->=20
-> > When page isolation loops indefinitely during memory offline, reading
-> > /proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_loc=
-k,
-> > causing hung task warnings.
->=20
-> That's pretty bad behavior.
->=20
-> I wonder if there are other problems which can be caused by this
-> lengthy hold time.
->=20
-> It would be better to address the lengthy hold time rather that having
-> to work around it in one impacted site.
+On Mon, Dec 08, 2025 at 07:39:39AM +0000, Brendan Jackman wrote:
+> Hi Anshuman, thanks a lot for taking a look.
+> 
+> On Mon Dec 8, 2025 at 6:41 AM UTC, Anshuman Khandual wrote:
+> > Please add <asm-generic/pgalloc.h> in mm/vmalloc.c - otherwise it does not
+> > get built as GFP_PGTABLE_KERNEL is not available. But otherwise LGTM.
+> 
+> Oh, but that's not correct, IIUC we shouldn't directly be including
+> asm-generic headers from here.
+> 
+> So while in principle GFP_PGTABLE_KERNEL is a sensible common
+> demoninator here, it doesn't actually exist at all everywhere, e.g. it
+> doesn't look like m68k defines it for Motorola. 
+> 
+> So maybe the best way here is a really vague:
+> 
+> /* 
+>  * Different archs allocate pagetables in different ways, assume
+>  * GFP_KERNEL as a common denominator.
+>  */
+> might_alloc(GFP_KERNEL)
+> 
+> ... a bit yucky but I think still useful.
+> 
+> Any thoughts?
+>
+Maybe just add a comment why that might_sleep() is there?
 
+We can simply state that page table allocation path is hard-coded
+internally to use GFP_KERNEL flag.
 
-Sorry for the delayed response, I spent some time recreating this issue.
+Thanks!
 
-
-I've encountered this lengthy hold time several times during memory hot-unp=
-lug, with
-operations hanging indefinitely (20+ hours). It occurs intermittently, and =
-it has=C2=A0
-different failure signatures, here's one example where isolation fails on a=
- single
-slab page continuously:
-
-..
-[83310.373699] page dumped because: isolation failed
-[83310.373704] failed to isolate pfn 4dc68
-[83310.373708] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0=
-x0 pfn:0x4dc68
-[83310.373714] flags: 0x23ffffe00000000(node=3D2|zone=3D0|lastcpupid=3D0x1f=
-ffff)
-[83310.373722] page_type: f5(slab)
-[83310.373727] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5dea=
-dbeef0000122
-[83310.373735] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000=
-000000000000
-[83310.373741] page dumped because: isolation failed
-[83310.373749] failed to isolate pfn 4dc68
-[83310.373753] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0=
-x0 pfn:0x4dc68
-[83310.373760] flags: 0x23ffffe00000000(node=3D2|zone=3D0|lastcpupid=3D0x1f=
-ffff)
-[83310.373767] page_type: f5(slab)
-[83310.373770] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5dea=
-dbeef0000122
-[83310.373774] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000=
-000000000000
-[83310.373778] page dumped because: isolation failed
-[83310.373788] failed to isolate pfn 4dc68
-[83310.373791] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0=
-x0 pfn:0x4dc68
-[83310.373794] flags: 0x23ffffe00000000(node=3D2|zone=3D0|lastcpupid=3D0x1f=
-ffff)
-[83310.373797] page_type: f5(slab)
-[83310.373799] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5dea=
-dbeef0000122
-[83310.373803] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000=
-000000000000
-[83310.373809] page dumped because: isolation failed
-[83315.383370] do_migrate_range: 1098409 callbacks suppressed
-[83315.383377] failed to isolate pfn 4dc68
-[83315.383406] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0=
-x0 pfn:0x4dc68
-[83315.383411] flags: 0x23ffffe00000000(node=3D2|zone=3D0|lastcpupid=3D0x1f=
-ffff)
-[83315.383416] page_type: f5(slab)
-[83315.383420] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5dea=
-dbeef0000122
-[83315.383423] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000=
-000000000000
-[83315.383426] page dumped because: isolation failed
-[83315.383431] failed to isolate pfn 4dc68
-[83315.383433] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0=
-x0 pfn:0x4dc68
-[83315.383442] flags: 0x23ffffe00000000(node=3D2|zone=3D0|lastcpupid=3D0x1f=
-ffff)
-[83315.383448] page_type: f5(slab)
-[83315.383454] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5dea=
-dbeef0000122
-[83315.383462] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000=
-000000000000
-[83315.383470] page dumped because: isolation failed
-...
-...
-...
-
-
-Given the following statement in the documentation, should this behavior be=
- considered
-expected?
-
-From Documentation/admin-guide/mm/memory-hotplug.rst:
-"Further, memory offlining might retry for a long time (or even forever), u=
-ntil
-aborted by the user."
-
-
-There's also a TODO in the code that confirms this issue:
-
-mm/memory_hotplug.c
-/*
- * TODO: fatal migration failures should bail
- * out
- */
-do_migrate_range(pfn, end_pfn);
-
-
-A possible improvement would be to add a retry limit or timeout for pages t=
-hat repeatedly
-fail isolation, returning -EBUSY after N attempts instead of looping indefi=
-nitely for
-umovable pages. This would make the behavior more predictable.
-
-
------
-
-
-In addition to the above, I've also seen test_pages_isolated() return -EBUS=
-Y at the final
-isolation check for the same page-block continuously
-
-int test_pages_isolated(unsigned long start_pfn, unsigned long end_pfn,
-			enum pb_isolate_mode mode)
-{
-	...
-
-	/* Check all pages are free or marked as ISOLATED */
-	zone =3D page_zone(page);
-	spin_lock_irqsave(&zone->lock, flags);
-	pfn =3D __test_page_isolated_in_pageblock(start_pfn, end_pfn, mode);=20
-	spin_unlock_irqrestore(&zone->lock, flags);
-
-	ret =3D pfn < end_pfn ? -EBUSY : 0;=20
-        ...
-
-out:
-	...
-	return ret;
-}
-
-When __test_page_isolated_in_pageblock() encounters a page that isn't PageB=
-uddy, PageHWPoison,
-or PageOffline with count 0, it returns that pfn, causing -EBUSY.=C2=A0
-
-
-I'll work on capturing more traces for this failure scenario and follow up.
-
->=20
-> > Make procfs reads lock-free since percpu_pagelist_high_fraction is a si=
-mple
-> > integer with naturally atomic reads, writers still serialize via the mu=
-tex.
-> >=20
-> > This prevents hung task warnings when reading the procfs file during
-> > long-running memory offline operations.
-> >=20
-> > ...
-> >=20
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -6611,11 +6611,14 @@ static int percpu_pagelist_high_fraction_sysctl=
-_handler(const struct ctl_table *
-> > =C2=A0	int old_percpu_pagelist_high_fraction;
-> > =C2=A0	int ret;
-> > =C2=A0
-> > +	if (!write)
-> > +		return proc_dointvec_minmax(table, write, buffer, length, ppos);
-> > +
-> > =C2=A0	mutex_lock(&pcp_batch_high_lock);
-> > =C2=A0	old_percpu_pagelist_high_fraction =3D percpu_pagelist_high_fract=
-ion;
-> > =C2=A0
-> > =C2=A0	ret =3D proc_dointvec_minmax(table, write, buffer, length, ppos)=
-;
-> > -	if (!write || ret < 0)
-> > +	if (ret < 0)
-> > =C2=A0		goto out;
-> > =C2=A0
-> > =C2=A0	/* Sanity checking to avoid pcp imbalance */
->=20
-> That being said, I'll grab the patch and shall put a cc:stable on it,
-> see what people think about this hold-time issue.
-
-Thanks.
-
-
-Regards,
-Aboorva
+--
+Uladzislau Rezki
 
