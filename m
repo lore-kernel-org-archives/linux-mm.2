@@ -4,96 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3132FD3B7DE
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 11:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D7E3D3B7DE
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 11:07:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FFC76B0005; Mon,  8 Dec 2025 06:02:02 -0500 (EST)
+	id C12116B0005; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D87E6B0007; Mon,  8 Dec 2025 06:02:02 -0500 (EST)
+	id B9AC26B0007; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 615066B0008; Mon,  8 Dec 2025 06:02:02 -0500 (EST)
+	id A3BCC6B0008; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 54ABC6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:02:02 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF760600EF
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:02:01 +0000 (UTC)
-X-FDA: 84196014042.05.2A673CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2984C14000D
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:01:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8791D6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4413BC0A96
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:07:06 +0000 (UTC)
+X-FDA: 84196026852.06.C259682
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B52B6140002
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:07:03 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ghs95GrY;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765191720; a=rsa-sha256;
-	cv=none;
-	b=WIdZCRJiitRrbzyCe3hGQ0RdoyFb+J0oa0Rbi+kDB3zqGHfQ/1w7VkU6LauY9PdzIDVN7u
-	BFscpqIw9chgdOD1zOXiNqBActJQt6EwCGfe88fOAbs7EYTGnBA8D9jmPZHoaj1FnM9sWo
-	WUSb8JnvcK1fTRT609hbBDiuG4+hB2c=
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uvVGmJPF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+bKPYHgm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t2HE9luv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cAAp537e;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765191720;
+	s=arc-20220608; t=1765192024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pFh8DpXD28yC7tfeBPL98X7h300UEWaFcuCl/N+wtkI=;
-	b=rcuv1lgaOJLDFFpRd0qrOb4yJJYDISF/1409fD+YuYjLyU4Gn+Rh+yNZmF8tl1QEh8zwOk
-	2W6bvo8tiqgi3QFaviiWVG9SupoB/5rVQYgIrIj1elbyEsLWdkf70XGV0HWIhKH0JRW/qN
-	PUWN/uyt777rEYiCIOySaYwRFeQqu+o=
+	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
+	b=3DZ5UYgl7qbm4HS0xpXXokBSEsXygc2IsTZ9+XjUAD3FIDzD4AKrMnJkoj6TfRQg6N65uO
+	1/diOfQm6cq/ysTYtP5tjGnyPn2B/nj+0k/NcmHik68guUGCQYfuZunnNPEehC1kz8W76c
+	SGlOCLN9/+8D67kSbYhKL5Lz4C/GzUY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765192024; a=rsa-sha256;
+	cv=none;
+	b=SrPxrxzB4OaQHH59JliXFpTyHzYx4K55DvENxWpYahbxeydZyzMOLF63zFXiigiwtIquAt
+	RSZyaN+94hyBD4YgbfSakXr/4+wWRFahKjMdkvnXiT2dLqW55T4PsZ3hjrqMXA8+4MGi/d
+	b314VAx41cuMLW/WTkkN5I5EYdvtsDg=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ghs95GrY;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1155D40B6E;
-	Mon,  8 Dec 2025 11:01:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327EDC4CEF1;
-	Mon,  8 Dec 2025 11:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765191718;
-	bh=R/IYT/sJW+5X1kFREBNtpFtBsBV21sa2yHFx+ZlhqgU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ghs95GrY5ScohXYjFvZ3Pct4IVKtbIQFTq16pcDwX0qW1JK1QBau1Eh4h8ro3QLRI
-	 Vz6R82+4uv53h+UH3QRrhJB5mpkhVo60A2ypV5I1iR9JCpnv6XrgnmBVoaQtx6t0Ta
-	 knH69Qdc29CMD4l9ax37fvZFgvqN/+wT4qDRiFSKNeoPyaem5QpFlDzNboEj81qbmH
-	 WsF7g6QNw08rWLujeDvsJVWNi7TpHJIYm+kk55N9KQLCaYuD7mrkg9dZec9HuGXtyh
-	 Yt4Hp1p5GtbhjiElQrv/r70VZeUDKIro4myDjeGBfi1ch2sh0BpSY80y8tSes4XpjX
-	 ASvRwt7YDTwxA==
-Message-ID: <246da543-58a9-4b61-8c88-5ceaca9dc12a@kernel.org>
-Date: Mon, 8 Dec 2025 12:01:49 +0100
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uvVGmJPF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+bKPYHgm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t2HE9luv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cAAp537e;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B49D05BEAE;
+	Mon,  8 Dec 2025 11:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765192022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
+	b=uvVGmJPFJ5/wdertQ2fxjHO4IKZehROBaU1yuFt6i/OExjCI6tAZ9ZsaG1yR+13vep9gEK
+	b5CgOayS7JDsh8rCaFxjJkpiU4RGwwViZoXmamJU4oD9mjKjTBEnOcPuP64SIXanmkcVmV
+	9fR1hXiE/revnG7A270jrD699RfSUVQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765192022;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
+	b=+bKPYHgmc008xRvDGE1Z/pqEUvLUqWoiv5ieKau6cK/GQoGErpeCGz6rDsue3e5MMC5LpQ
+	IiXoaD75Ylje9HDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1765192020; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
+	b=t2HE9luvKuTJd0pKq+mDtJFXP4i45e85SA3ueHlgM3JfMieZOb9MXeTAgnUthWz+t6R8JF
+	8zoleo13eByKYI+9SC4qLtULwPhRJfwJJY2zuliXyjm3k7j6j3XUsedtUp5P/rfnI9KYew
+	2gIoWlfd7JNh2KvEcF4iejtOZpYalks=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1765192020;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
+	b=cAAp537e5t+w/ygfx4FbubBaid5sJqoO1aZFCf/1SpW9HqmqCHf4TJszLackcezVJ8ZA2w
+	XbE4Ws5C1T7qTIDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 926A03EA63;
+	Mon,  8 Dec 2025 11:07:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id POYKI1SxNmkpeQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 08 Dec 2025 11:07:00 +0000
+Message-ID: <5649e224-bb6a-4b63-bb27-5541216df0b6@suse.cz>
+Date: Mon, 8 Dec 2025 12:07:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
-To: Lance Yang <ioworker0@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- aneesh.kumar@kernel.org, arnd@arndb.de, harry.yoo@oracle.com,
- jannh@google.com, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, liushixin2@huawei.com, loberman@redhat.com,
- lorenzo.stoakes@oracle.com, muchun.song@linux.dev, nadav.amit@gmail.com,
- npiggin@gmail.com, osalvador@suse.de, peterz@infradead.org,
- pfalcato@suse.de, prakash.sangappa@oracle.com, riel@surriel.com,
- stable@vger.kernel.org, vbabka@suse.cz, will@kernel.org,
- Lance Yang <lance.yang@linux.dev>
-References: <20251205213558.2980480-2-david@kernel.org>
- <20251208023231.1257-1-ioworker0@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
+ populating guest memory
 Content-Language: en-US
-In-Reply-To: <20251208023231.1257-1-ioworker0@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Michael Roth <michael.roth@amd.com>,
+ FirstName LastName <vannapurve@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, ashish.kalra@amd.com,
+ david@redhat.com, ira.weiny@intel.com, kvm@vger.kernel.org,
+ liam.merwick@oracle.com, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com,
+ seanjc@google.com, thomas.lendacky@amd.com, yan.y.zhao@intel.com
+References: <20251203142648.trx6sslxvxr26yzd@amd.com>
+ <20251203205910.1137445-1-vannapurve@google.com>
+ <20251203231208.vsoibqhlosy2cjxs@amd.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <20251203231208.vsoibqhlosy2cjxs@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2984C14000D
-X-Stat-Signature: oi6akp5nnot9y4id8gfrf6hmy77ji63j
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B52B6140002
+X-Stat-Signature: 53gz3dozq7saokbwzaqp6ykbu3cbj693
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1765191719-43325
-X-HE-Meta: U2FsdGVkX19crVf3IZ/sJcewRk8BL2DbZ5N3B2V5JjuSzYO1/d/cuJJAAf29g4cR81Dj6faax95CJWlqJJvybgOgWWCLRKm9fv0C+5UWLa5/25stOI1O5SHn1RQ9URvDmzO/QjnwQbvgzKVzjTRC5Ap0/7MrQH8bjAbkzuxooiAqPbPIy/MdosIb5hm3aLkBxOfa+7qTr5dshCC7bZqY0SaT6ThRcO9awdrD3ZUaOP3e+Vn1dM4sy4+suYBewoNjdsCfxTcVMwv29rvR3He3pBIlH+SU4TYoaZu6CARUtMfgV4XatfybdRhNbQUCESssYDDVmjC9m5cBI7X1s/uw7c/0LW17IkFmmpL2RLdSyBS86dfiVO6B+kyhsfGoxl2YPpLKtRsgy5VBHbsIY6u2MjFTFEuU1oswXjgKI/Mdm8UDxI6Uch2guPi80WKidM2sPP2UxaoxQxSGFz51STUrFS3IYm5Ehtu7dhbGOx9py5NiwamY3kIohUosIUma5MdH0YUq1ezLYhj/6kWE8jUj92bOq1hSMGD9Yw6uw/E710lhaz6fqkj1O7xyzm2xpxOaYwJn4Tqzk/bzwhpnbA6CtvgKTYjHIJCa+Se4KxrVHkqTqnPP+V6EMz7cmhURdpW309bgv7/fQfE4ZiDp5kD4ZuT/JiBJomi6CsnDGWtchF9QlGQJxqFb8jtyN4TcdvjYAx8EMV1xNqJCB4uVYOqrp6FnGrzdVW8EF86rHYFBeh87R4ItYqNHFD++qr1cNZAsgkgsWH+bUmCUVOuOYah48owCXOdSfM3jYeM6m1dybR9iLzgadKNHVfFBlDV5lIdjHZ6ikr/TGwyTQbU4G7n2zEGR2sxG/40aVWHVUpLsEjRfpEA2RdDfE2erzHF5mR6dn74Iv3uD4CBDYudb2oI7d1id9pObE2MDdZttsKSAUOAIiD+n/z5kswtJrCXMjrLX2IspSoaHFypbOEBiz85
- V6yO5pKd
- zZr2yC2IPneesqcW2YrdWWhIoL+qDazfEriLBfMtsBR9c5k4SO9pDHXplgdzoMzwfeVFUhlFHLInFmM3mTbhJ3pdSQycl/zxCyRbmQx/NJP5d4HLVflHyaTCCdHBF0ad8p05/E2A15GsPRreT+9ErHuSsLOObBh0EDvliZDTls4cbBj1i+3yXsUPo0OH8MHllNr8G24usm1wB9aJRsdSEkMtKw0aKng9dC8yrc86fMAAT/26gPXKkqyVpAOIT0JNbWrsgwDoEDycWmEnii4cBP92v0qzYBrnrs6bzrx/nXkLVvHAVSbFK3FHc1kOduBxi4aZjr3kxvd1ngTIHksWZCPzBit9tnNVeb9qIPkjPjV2V7JCHp6e8CPxZ3rOJQqFy2hSOnIEcU6DojzXtnKLzufVuyHkDvym39LsvAz1q1gUwmCc=
+X-HE-Tag: 1765192023-895244
+X-HE-Meta: U2FsdGVkX19G9xknUCjd0QrgyBZeJwR+6YlX/Ytx5qe2ZjocrjgCSOkK0P8bqTPqsXHTOxI2axCp+zhXu0yrDjhCnWqMqq+l2GKCL7Je+X79kQ5hUQ6l2Z2k3a938ND4S/XQduSlUUgvDbknER0ootY2FV9i/T5dpF0GprgqInesN9zfWXSrUsTIMdYmSYjqBYLhxiRGgn6Cbd8On+jOUuE1Bz1KzIvdXJ4i2UOHB4IIG8iMs2mYFC0S8/olML0UlwTVWNyyyDW8466F7XXShUCb2qnQsQL+/9HG424WMrpN/QxfSFy0Ud4ylsH7Rbw6eV/n66tDho3eF164I3f/SFeqCVqLaqQBLBLFn4UoTuZcplF/eBHf8ppAOU/JWV17R/83ofJMT3Vb7ylH5YCgwEu9snjml2YX6MDCobXNh1sfPJd7qVTP+DdtpioynP7ID5eoq60XEG1yKoeFf2u2OA1kfC+360VYYNt9K+lNMIE6o9qJF4h8lF21bYjVJJvuxF+xA5sIw2413zF3kFZ3bTvagRk6w1VcIng8H6irXTrPNNbzM3sDQzJOfH8/4bmuZ9ZAGMlh/HJZ+0Ajqt4Tmj7XgVSKvrkPaND8Ze2OKnp5Gu3O0kzwpjfdc+mzN4H++YSh9Dn1d9WquXsdta7Eyl4QjxoKGhXM/zDodbnO8u8jZlY9GOyB0RV5ndv+uV7RNQ7qmBKEQwovMAOiMHzU+lL6c/MyoBOo8JVEGxzpWvVTJlKybL8RnT3zi6JHqO9VFHBVTNP4QlmxECl6+vhg/J2irn7icnfgHSzsc8Tp/vt0gG1LaVA9mfBT6dKL9ZGGsF/qT1D3CJYAOQ7mpqijoaaeRVzNW8QTxguh6Jedh3bay68q0urYpgKV7vGUOTOckYh94igs6lvkSgKugnwiynjRbEjgwmix89AIIGFT27m7Ppl1OCwWQGpDnVgt5Zu9/IjECWB4mCQlIZYKo5M
+ XEqU5Ox0
+ BTnwGNtDwYghgngL42shghl2aemoCXH73eR/JZ74gnwUcdwYQWv8WzR/ZqdgeMGydKPSuADMc0/9c+1QkPd50VHGLA7ewfu2Er6xzOYmHcYBSvKYNj5iCYSKjtYTbOlX/4Bw50CnhHUd/sI8kHeO+Vh7A2RJjs7/GfX6N0SbFCpjMVdCgYYgzjpgcuH7GLRgcipuK57vNbmDvq1PstP7CtXh3B92hYK8Kebz4aeuIrilP9+170AoWQAqPE9sm1GpWvJUpBY1CeDXd1mvq3sQibkktq3X7mdkkt9E6lfa8sEYDXbpFtU+WJm+2ep0EEFtQrEWfpzLoP4I8YVbaWt7bRYB6rA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,51 +184,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/8/25 03:32, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
+On 12/4/25 00:12, Michael Roth wrote:
+> On Wed, Dec 03, 2025 at 08:59:10PM +0000, FirstName LastName wrote:
+>> 
+>> e.g. 4K page based population logic will keep things simple and can be
+>> further simplified if we can add PAGE_ALIGNED(params.uaddr) restriction.
 > 
-> 
-> On Fri,  5 Dec 2025 22:35:55 +0100, David Hildenbrand (Red Hat) wrote:
->> We switched from (wrongly) using the page count to an independent
->> shared count. Now, shared page tables have a refcount of 1 (excluding
->> speculative references) and instead use ptdesc->pt_share_count to
->> identify sharing.
->>
->> We didn't convert hugetlb_pmd_shared(), so right now, we would never
->> detect a shared PMD table as such, because sharing/unsharing no longer
->> touches the refcount of a PMD table.
->>
->> Page migration, like mbind() or migrate_pages() would allow for migrating
->> folios mapped into such shared PMD tables, even though the folios are
->> not exclusive. In smaps we would account them as "private" although they
->> are "shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
->> pagemap interface.
->>
->> Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
->>
->> Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
->> Cc: <stable@vger.kernel.org>
->> Cc: Liu Shixin <liushixin2@huawei.com>
->> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> ---
-> 
-> Tested on x86 with two independent processes sharing a 1GiB hugetlbfs file
-> (aligned a 1GiB boundary).
-> 
-> Before the fix, even though PMD sharing worked (pt_share_count=1),
-> hugetlb_pmd_shared() returned false because page_count() was still 1,
-> causing smaps to report it as "Private" and pagemap to set it
-> PM_MMAP_EXCLUSIVE incorrectly :(
-> 
-> After the fix, hugetlb_pmd_shared() correctly detects the sharing, smaps
-> reports it as "Shared", and PM_MMAP_EXCLUSIVE is cleared ;)
-> 
-> Tested-by: Lance Yang <lance.yang@linux.dev>
+> I'm still hesitant to pull the trigger on retroactively enforcing
+> page-aligned uaddr for SNP, but if the maintainers are good with it then
+> no objection from me.
 
-Thanks a lot Lance for the testing and thanks to everybody for the review!
+IMHO it would be for the best. If there are no known users that would break,
+it's worth trying. The "do not break userspace" rule isn't about eliminating
+any theoretical possibility, but indeed about known breakages (and reacting
+appropriately to reports about previously unknown breakages). Perhaps any
+such users would be also willing to adjust and not demand a revert.
 
--- 
-Cheers
-
-David
 
