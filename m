@@ -4,132 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121A4D3B7EA
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 15:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABE0AD3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 16:29:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B16F6B000C; Mon,  8 Dec 2025 10:49:02 -0500 (EST)
+	id C75166B0005; Mon,  8 Dec 2025 11:29:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 762216B000D; Mon,  8 Dec 2025 10:49:02 -0500 (EST)
+	id C4CE76B0007; Mon,  8 Dec 2025 11:29:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 651246B000E; Mon,  8 Dec 2025 10:49:02 -0500 (EST)
+	id B62E86B0008; Mon,  8 Dec 2025 11:29:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 524056B000C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 10:49:02 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6BC9567BA
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 15:49:01 +0000 (UTC)
-X-FDA: 84196737282.02.28065DF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A823D10000C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 15:48:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bImn0q+X;
-	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A44876B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:29:32 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45033C0241
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:29:32 +0000 (UTC)
+X-FDA: 84196839384.12.2D27F73
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 09C84A0009
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:29:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765211370; a=rsa-sha256;
+	cv=none;
+	b=xyEjs1A2Ha9TyBZZWUxAQhdp4ScBkwSDWeqeiLOtNKoftiKVgK0nBMkE+K3d8qyJrAZmS5
+	aIKpLlY2xSEwiiKjpeF3Jcg9TOd3ezOvMzrqULHG6CmD/0oueIAZkUgyf+pMjbRE6pgRBU
+	nBnhlXC8wyWwNkcVSGrUJlk7kFJnhQ4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765208939;
+	s=arc-20220608; t=1765211370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JhyQmCNeRAwE6U6BA2EWgkizTxmpe6QSDSUOhKlflR4=;
-	b=1ZEt89rhFh5VHsmY/puero26DOhdGaJttEvDPij5GsEJAkpkYGIoxvn5IppM3YSgj463Kr
-	/IRD1gBmmH07xUDf3nt2JnEDkkTgpmoHJz+NyUHE+EJKzhe6+6dQ5mSL4wPx4eSEcXlKEd
-	yVMFNQu9pTDHAYhH6DhsQMcsoCiQDc4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765208939; a=rsa-sha256;
-	cv=none;
-	b=YnC8w0nGyNgtpgHhrBkCftJQdstPjtRDY4ho4elzFuc5EFrbpttcnkFk41HbxbTrW7gV8W
-	79Fh0lhcs/XxxavSTFafr3vDkQ3y31ULnhjHh+bleCeAvtNMLwNDkU5XKg+hn0zBueIV7x
-	VWb8/6mpgAqUKOHjGkVE0TN/hl2cB6E=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bImn0q+X;
-	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765208939;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JhyQmCNeRAwE6U6BA2EWgkizTxmpe6QSDSUOhKlflR4=;
-	b=bImn0q+XSkq4EyUGdTGQbilSrSNM4mk2g0h7SCQkhCOQgRbCD1tfKsXucKwvsOs2yQQzBX
-	FGTUOsr0SCGP27E1tqOc+81cXNcTcnhbkvTKgW9G0H50V87TaeKtfeh+j2sJX3UkRoP2pM
-	aWI7Z0ymGLwwvdg5LYXJOy18W8zDgrc=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-OSzEpONSO3WmoagQ2abDAw-1; Mon, 08 Dec 2025 10:48:57 -0500
-X-MC-Unique: OSzEpONSO3WmoagQ2abDAw-1
-X-Mimecast-MFC-AGG-ID: OSzEpONSO3WmoagQ2abDAw_1765208937
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-297d50cd8c4so127209265ad.0
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 07:48:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765208937; x=1765813737;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JhyQmCNeRAwE6U6BA2EWgkizTxmpe6QSDSUOhKlflR4=;
-        b=R+wyAr8AYTTWFwfOGnAvUMb+VXZHx/NPmfHDZIWd/FtPzcLEssByzm7U0U0h3Z3qkn
-         GIMNO9CHDSEaHr1JDhX+ni15usij7AqS4oIF1Fh3y9ihp2Wj62T1ivLj64Nqzb+w1QeY
-         h87ijpF21sajgi/6jtyHoKWMgbBZEFJlQgxbISl46Pzpj02izi0U9AEvEpqOhmlTmiLM
-         gTFLxJT13Yu+gVPdJZdclrw4QrHNCYSjQVBNXn2fYXJ0wQBzoaqtyU4QpJQ0Y9F2TRTR
-         DL/ERqcRBG3tV+avPAu0KkqX7xbIdWiHHyRhwyVIcSXamURWS+Y3CT9TBxgUIXpO4njY
-         o6xg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5ZfzyAoDDpsTEKDzU8b0oFWxzjgiPC7TbPPK2Uhff3SRKqngWpsJ58dS28MZ9oQydxU8nSdbv3Q==@kvack.org
-X-Gm-Message-State: AOJu0Yzsyi62JhEvQAte9UKPM/uXEzb2zpFooCcr8bcsiWU+9VTNAFIo
-	b9qw2JQEezb7x/glT+5VtpAWM4Lyq+2UKqFAs0QMEWuu8fhXtqTNzyVAI4SHndQVuBjubJiAGC2
-	sO8LY3inCftnDvNW8asv7JgpQTu4s7IWceLPeUM2VWcMvtNbgnXb9
-X-Gm-Gg: ASbGncvS9HRX3yU9Ax986vnrBIc1jj0+Q7qd7wcZOZXkYaEf34y3Z6Px9ei31SsgpBX
-	dkkXiZWdS4SfITezotLkR5z6FVQWc+Rmh65dHt1XY2+WlHaPBNT0++UAkp682Z6EUdJBxNmLg2N
-	V7C87DUxR3yq0D2lbXlxBARBMdgGp4EBybJzrRXqCFtO8YkZZGOhLzDbIfCEQ4F4CFKD+aprCeU
-	Jw/7Lljl4R+LJ12XlgpC/Imc7zxYCvcMzj9aTB2G9vEnXwUGW3ZVH3vIXtWsOkuWuMl526IKzks
-	zb5Gaj5+Y1rEZE2ElFTC3UPJvvUQUMugAulHAL8B/HSRZaQw4bPe8L5VQc21VQLoOVlGDabEIsL
-	vCg5WIbvIvNhLfRF2L6w3NlIzXxNKBoO6/Gt69qX9n9lb2QE8X69u92HEZ4/zx9UXX6VFyFDvxg
-	==
-X-Received: by 2002:a05:7022:3885:b0:119:e56b:c749 with SMTP id a92af1059eb24-11e0315a389mr5832007c88.14.1765208936631;
-        Mon, 08 Dec 2025 07:48:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2lGw6J4rXoBC0qYrZWnyNE9vY/xTzaJH9ksV8ZOu8KN7rKkS8AprfXcNKR4rpLa/DSIhIfw==
-X-Received: by 2002:a05:7022:3885:b0:119:e56b:c749 with SMTP id a92af1059eb24-11e0315a389mr5831983c88.14.1765208936210;
-        Mon, 08 Dec 2025 07:48:56 -0800 (PST)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-48-76-65-77-217.dsl.bell.ca. [76.65.77.217])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df76edd4fsm54746101c88.8.2025.12.08.07.48.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Dec 2025 07:48:55 -0800 (PST)
-Message-ID: <8b67305a-9057-49fd-92b2-343d237890cb@redhat.com>
-Date: Mon, 8 Dec 2025 10:48:50 -0500
+	bh=wiWKTOWf28Kw9tRcwwsL/2NSPuC962ebgl+JWXOTXLE=;
+	b=5gUWrxu8FzwmrP95xPeIEA2CywgSo6AOUN41RLRfHGJfLIvwsmqn6bZPuSlUpx6NnygRbS
+	2jEXkfmzsTZ66OT9+dvcFPJsKN/FaXfYvpv4x/hf19ZQEbyG9rPu+WcovyEqK1z/K+ha6+
+	ycEtiNKy5gn/MlXUhcpW1+RjG0AORrU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dQ6rH30jGzHnGjc;
+	Tue,  9 Dec 2025 00:29:19 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 37DA840565;
+	Tue,  9 Dec 2025 00:29:27 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 8 Dec
+ 2025 16:29:25 +0000
+Date: Mon, 8 Dec 2025 16:29:24 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: <shiju.jose@huawei.com>, <rafael@kernel.org>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>, <linuxarm@huawei.com>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20251208162924.00004a38@huawei.com>
+In-Reply-To: <20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
+References: <20251121182825.237-1-shiju.jose@huawei.com>
+	<20251121182825.237-2-shiju.jose@huawei.com>
+	<20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] selftests/mm: remove arm64 nr_hugepages setup for
- va_high_addr_switch test
-To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
- david@kernel.org, shuah@kernel.org, linux-mm@kvack.org
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com
-References: <20251207122239.3228920-1-chuhu@redhat.com>
- <20251207122239.3228920-2-chuhu@redhat.com>
- <20251207122239.3228920-3-chuhu@redhat.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20251207122239.3228920-3-chuhu@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MoG0dDNiYTvdFi2aoB4qUrem3pJ-d1C4AUve0rweFQw_1765208937
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A823D10000C
-X-Stat-Signature: hqw31i6u3knajnop45hrffq35jtuozqo
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Queue-Id: 09C84A0009
+X-Stat-Signature: 53nm7medym9mopbofmiiz5trk4j8ea7y
 X-Rspam-User: 
-X-HE-Tag: 1765208939-778998
-X-HE-Meta: U2FsdGVkX1/z4kXekdFNZj8vcbA8pRDMpUy5l9yHIE8rusaBV1u3wR2aH8q22HKSIpfiapGpdRGLISBeTEFEdNcdzjcjYp5WCBJW6kesiBh/Sy626DDV89CLJWo/09dcWXlBk9hH4L2ibaPKTyM0Lhy53SXqVdfo9dMxJlLDr4MwEujJhpU4LTAS4z3bOZgZHRJY1rTuVofdfz2oWj/s3jLKnGo5UAy/3+KLmLQbppDN5o5NtoXgMi79QXjB43F3GMoQCOgWMfz8V6pkbr2VtS+zgrpiHPvdEqsNK4CM1UP7Xv3FiIHQTNijMP4Z+DqyFYaG6g6wfXnLmu7udXM06uFZvjvEVZhuHdPsqPlZj9MgNOskkjRu2eIaZmayba8H0xyu72CHn3zonnm7nNM7GO7hXC8iV7xAowUDO1W4YSfJ5+rGe3jdMic4w5NSYhl9A9EaIL6nZi1rAlYLoihwK4iFsSQ+Vgj7z4sp/rC2Q8piCQDL9Av8Ve4bkte20ZH6Ad6QiCI9nN65UMgCUJCRkmfWlFmFKnl2u16GW4t4G4yr511NwVC143CSX8mc7++9uoWzMNvbi74R2uXcFUOpFbfLtEwpCsYtVGD8e1FYystoR/wuP/zJSX9Pl2iyOJy6y7BSnJe8Ray9iLyaD9oWoBuOVTS8sWNc8S85mYrVMS0ZqDxfjuzYuGFe0ND9a1eGlvnJ8A1s2IVEa/m1jAmsL1kJr4a2yO5SN7w60r4auUIjq5zfM2z/gLvoqPk8m7kxUGpJzkdlPVdY3rzQAvKUwz1ZQ0FYjRoY1+No6UicT98h3/OYzJiPF7jDror5fKnxaTcW++kO25dYfcgJ+i6Nvsq3eXbUgZnBeUAQbwQ+WZH9EdTzKkQJWIS23f9PoOTlg9PuVeFatCN/gr5CyzKKxxJYqRe5AVWzDQnV9tpgbFxosTH0HTWYhFDpZArSYoYIzn/gtYEiVwlRYQKBseM
- WRcXzPQC
- euSAleMNtzu45+eONbgvuBp+QyIBjH9Ev1vwMfQzw+NvDfvmUY93yXSuYTrU+TZXEQfVRepu9KaSFVj/0sUzDTBga8DyQvBGwEXRyjc6Mcg56w3jr3CFbLMoTiN0W6ZSnUKlLY1p3y/UlYpFHXvLQMYb1TIwXuRJQ5tiAQd8ihURVPszNN8PMGQHMduyNxAd6b23+Jv83WLPafs+QQtzBF3JUdQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765211369-108123
+X-HE-Meta: U2FsdGVkX19S9D+cs9yc+nsfYsZq1nPTvOoIrx3eSyZ/VnAfAikjQt680FlYKYARpL93mbPvl8ymkh6v3Im0ndvQHdAyxUPrRBrvMTAMdVttdPnNbbh4YRnQHP2cUaBKRlBbE9B+2cD2tYtOnHRzUp1MeLVo44FCmQWSU20FskQkDFyGd843FxHxyBG7ciqHHMP0J4sbqLokigl0tAsrTvYsgPgDsLRE5Njn1MrMWh1x10kcCUszSoRdV2zzz5lQ0l4QKwOFLUKsBePoyWjrSGnT/OhTqy0V9biQW/W3wwI8jUDzJpWzGmqGBOfnKTZdm+/Wgvlm8y8B657avIORgR71OdF2fJsEs4d4OQxAj8reoKHnaNa3DzYUSHa37WRplVSaHn6OvfBys1hj9+ihYRDw/fCIwEsXi+dX/zTzFkYkGca5HzIg/6+O2ztzqOXQMsumiFN+CoCVZGtqQ8R0m2ysdMZzDmWqwsUqiSq9FkYmLDU0ZqQeDk3urav+vxdSdqkDi01QmOY4h31x7s/umblVHbp2QrOLI183kOyTYyOy35wo6763zJ0HYbUMVZ0ZTzgXP3Q37aYzQ7pIZ2tqx4F7OJZhMO0rUnSQagsFB3YsvXxsiPrJNjAvcfLrUsuGFTdr+8PgkY7jnGACcDsMjhtQJ7JQH3RjW6658oEdIObtajfiZ/1haoUEgRSk6TEVYeTSAzo5h3+5ZdvzJbSHTsnAM0VuEU8AqNjsZeif29KpHTYV6XjQHnebDTJoiKpVcYbq+c4OgTUyNeiK8tTsPA8mjT2bQ7ASk6SdfIGgxxzvAt1obfYQY8FdhpoNOPqFaW2j2KoH+eqULM8KnLIMOXgT5Ca78CHPH4f8eMwppMKHPsW7l3VIdfE+SSVHScjECP85w24GFYvr8eyMgfJdih5lnNiZI/0DUYXK9bvnhUhCQz8DuAjoepjNeSqhyRDI4++obAKCWt8VClGORvX
+ azMjykwF
+ 04zCHJdJOPqLE/qkBPvJL0C6pusXp4Ef9Nxc/IugUxl5in4DMblkEH9zaxxZOaEZ6LMjhLaGQq2BGdZ0jqIUERyPp1qMsOVBmRJhxJ65TSwcEzbLYulFYLB1tCoEhN/WLtWLQOGb/KWFWDsc/DpRJ0AN2HZNt/FNb3b/nCo2AXluL4drkwdL4LNsA+CL2jB3wofGT63UNnN6eICfp8iT6zFpjgg0I2E2QVE2A+yBaeGmqxD1oeR9oR7hq+1wu3T52SzbKemSlw9O5C8Ao8Dd1p9+5WdTMqT7aqba2iNsCy/Q2ziST4aWlDAtO4dzVbLzNGztx5KXio/3gBiw1cKdjsLtunkV9j3+0AxbpulioEuq63EHYqR0kRb+zvZJIV/H1u0aEctojWvehqysLoaRon1mgDEPaBKAwsQ3l9MQHQwUAY/EOHOwGqMJzTUwlBT4TtcSw6HiRHr91MxiJVm8BjfDGJ92Bj7JZWdWB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,40 +105,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-12-07 07:22, Chunyu Hu wrote:
-> arm64 and x86_64 has the same nr_hugepages requriement for running the
-> va_high_addr_switch test. Since commit d9d957bd7b61 ("selftests/mm: alloc
-> hugepages in va_high_addr_switch test"), the setup can be done in
-> va_high_addr_switch.sh. So remove the duplicated setup.
-> 
-> CC: Luiz Capitulino <luizcap@redhat.com>
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+On Tue, 25 Nov 2025 08:36:27 +0100
+Borislav Petkov <bp@alien8.de> wrote:
 
-Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+> On Fri, Nov 21, 2025 at 06:28:20PM +0000, shiju.jose@huawei.com wrote:
+> > From: Shiju Jose <shiju.jose@huawei.com>
+> > 
+> > ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
+> > Driver adds support for RAS2 feature table, which provides interfaces for
+> > platform RAS features, for eg. HW-based memory scrubbing, and logical to
+> > PA translation service. RAS2 uses PCC channel subspace for communicating
+> > with the ACPI compliant HW platform.
+> > 
+> > Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
+> > Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 
-> ---
->   tools/testing/selftests/mm/run_vmtests.sh | 8 --------
->   1 file changed, 8 deletions(-)
+Just picking out one point where I disagree.
+
 > 
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index d9173f2312b7..2dadbfc6e535 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -412,15 +412,7 @@ if [ $VADDR64 -ne 0 ]; then
->   	fi
->   
->   	# va high address boundary switch test
-> -	ARCH_ARM64="arm64"
-> -	prev_nr_hugepages=$(cat /proc/sys/vm/nr_hugepages)
-> -	if [ "$ARCH" == "$ARCH_ARM64" ]; then
-> -		echo 6 > /proc/sys/vm/nr_hugepages
-> -	fi
->   	CATEGORY="hugevm" run_test bash ./va_high_addr_switch.sh
-> -	if [ "$ARCH" == "$ARCH_ARM64" ]; then
-> -		echo $prev_nr_hugepages > /proc/sys/vm/nr_hugepages
-> -	fi
->   fi # VADDR64
->   
->   # vmalloc stability smoke test
+> > +
+> > +	struct ras2_mem_ctx **pctx_list __free(kfree) = kzalloc(ras2_tab->num_pcc_descs * sizeof(*pctx_list), GFP_KERNEL);  
+> 
+> Function member declarations at the beginning of the function, pls, and then
+> you can remove this ugly linebreak too.
+
+No to this suggestion.  Doing so breaks the rules that Linus has laid
+out for use of __free. Constructor and destructor must be next to each
+other. See guidance in cleanup.h.  This stuff is new, so it's perfectly
+fine for a subsystem maintainer to say they don't want it used, but
+if it is used then it should be done according to the agreed style.
+
+Various folk have already experienced a grumpy Linus when they put the
+declarations separate from the constructor.
+
+FWIW there is a long thread on the ksummit list that repeats and
+extends the discussions that lead to the guidance notes in the header.
+
+https://lore.kernel.org/ksummit/B92B21C0-093D-4F52-A7E3-1A7DDC83749B@zytor.com/T/#t
+
+Jonathan
+
 
 
