@@ -4,116 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6D1D3B7EA
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 17:32:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C56F1D3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 18:11:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 062496B0007; Mon,  8 Dec 2025 12:32:31 -0500 (EST)
+	id ABF416B0005; Mon,  8 Dec 2025 13:11:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03A1E6B0008; Mon,  8 Dec 2025 12:32:30 -0500 (EST)
+	id A49AE6B0007; Mon,  8 Dec 2025 13:11:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB9916B000A; Mon,  8 Dec 2025 12:32:30 -0500 (EST)
+	id 910E86B0008; Mon,  8 Dec 2025 13:11:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D9DA56B0007
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 12:32:30 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A8CCC0296
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 17:32:30 +0000 (UTC)
-X-FDA: 84196998060.15.F1FDC8D
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7390A40004
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 17:32:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e5zZFVEV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765215148; a=rsa-sha256;
-	cv=none;
-	b=mW32dz00B8WUONTcKpvmUlbGLA1DECHQj2sCKkLHmKwPzuBBcI0Rvtc55TOWYOoyzvAhu5
-	SGvoO08ydsR4h8BjmScnPYTDPAEy5wZ4d9LDdabTxO/lfB2ibmPeTESvBXLR/T8N5CS5Vo
-	FiGtkNei/EkCHqjGK2gjpl8tLjYN7Bs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e5zZFVEV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7A85B6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 13:11:37 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29FFBB61DD
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:11:37 +0000 (UTC)
+X-FDA: 84197096634.27.835B478
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 21D1F4000B
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 18:11:34 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JvPIYM2H;
+	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765215148;
+	s=arc-20220608; t=1765217495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kvvNrbzxfKIfhL9wonNMP6XRUhQd8y0eo6+8602KYfA=;
-	b=53fiKo7U5H3x3I5+ftjvMEndjx0Iqfwlmcy336F5kIWE3ZyvnD24V0biR1LBCuYCTsyftO
-	bf3thP/1I66BtiK3g19joVT4nETdbGIA3rnbPJDTRicEl8SbvWGW+LU/zALqtPAezfu8MH
-	VjhuaV1XB3cH8Jp9lQCJ2J5Oa3WBj1w=
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-37b983fbd45so42315921fa.3
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 09:32:28 -0800 (PST)
+	bh=lAVxCtgsHDTISHvy9/P05UNsVuYDEFlartNvwhkv40M=;
+	b=qmYbMDaFW/Y7BWmV8iRUqujx5nilGJkIKYOQOtfA9Ar1Twem8pte8J7ZYDR2dM+U+lBl1K
+	3EL63GeexnVabq8VTFgTvuZqAy4IcbrDk7QwAyeCuZoeein8NxyBX0KaVz8VNizuedzl7z
+	c0TMIq2tHZd6WSBf2+su4xsrlVdcvG8=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JvPIYM2H;
+	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765217495; a=rsa-sha256;
+	cv=none;
+	b=3tbXjHmsEr2xsh8PThx1dGREyIQKCt5L7fnajdtCA1cDrr8uJNLcXhjLIlUP17zAVxwGw4
+	Un3FKFocxC5mVhcAANiQ1hfDFJe1s0Yworv1+rCuUmWkB/zlF2r4wyqblhNIlc3uBHQinB
+	Tt8h0yBQfwbWXQzZzbeFTkxCCdkArnY=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42f8e39cf89so828095f8f.3
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 10:11:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765215147; x=1765819947; darn=kvack.org;
+        d=suse.com; s=google; t=1765217493; x=1765822293; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kvvNrbzxfKIfhL9wonNMP6XRUhQd8y0eo6+8602KYfA=;
-        b=e5zZFVEVN4Y6kRPEwZBmJMTgNzwiXp4fkmdndwEvG98Qr0ZD5a9ukUPP2XUx5rwQ0w
-         HErgG+JUrXcQ1+uwt78zSWA8hcC2DKoMp9MjHB8B863HTgwmMQItMUESIsvkTL4U73iw
-         ToVEu0gWPGV22WtQ80NpGJSL/PCHxppSt8ob84TQwyJIbj1zy5+ZQJajs+R6fLO64D4Z
-         YTlpoIUBkAvNfOlL+FoJh8mwWtrYt4qG6W3fT/Yn+CviwDWqMLNR/KpEcVO6t48r8pjN
-         CjkqsCGpNjbosS31RDU0BN19Wi3Kd/IarZR89/SGWbMjBWn67cD7mPDJEO7oYK42V/sO
-         PT8w==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lAVxCtgsHDTISHvy9/P05UNsVuYDEFlartNvwhkv40M=;
+        b=JvPIYM2Hla1xnaSI9N0q1rHT6GM9k6Sj2lzxcJ1G48j6moYIVemA/rgguL7oOw2QjI
+         pfA2Eh/H1udPCJPhigEDRh35hR6jQizZyjWmRd+22PWIYKLjGPNG3lgSBG+P3gayReim
+         HSO/cRMMowfpwhp9wi3ogW55M89pHktWIwY5viTySh82Qfn4YvqXivUIpcf3W5g4GmCW
+         vV9zpit+7fMC/jlyc9Dq8Bx/Al4ZxlGzgh45qjihtlJ8pJzZPIqcsBnbyQhc06MA9EzZ
+         BOM9SzCdXUmvJIHJe13gXLLgtQsu0ViG0WBBMD/3XI57e/Kl79LxkY0paAW2z1ib75z6
+         UnnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765215147; x=1765819947;
+        d=1e100.net; s=20230601; t=1765217493; x=1765822293;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kvvNrbzxfKIfhL9wonNMP6XRUhQd8y0eo6+8602KYfA=;
-        b=oZIS623QXPuXcbOq+8AnQNocd6iKFerTjfQl2ZniUZAJpgfnCapTHwxfxE/+l7KSJR
-         lRbj8ZLm1t5FXIvMA7Wj2uK3pNRRdpxAbYvMpGb0K3lkGw/jYMtAEApOcDmBttZu0Ydm
-         U9birlpfdJs6nGrNZVXyuN9E8H/PgFgT6NovubmMJAYkxVhhiUhk8o9fe2aYmry69dUe
-         gpJ9sCgpN3S8nNFeGqVCabjL5u+nXc3K8nCjCoS/1Y2SQ+6MFs0PZMehntMxv8U61aER
-         RQClx/USQzEUovI9ONIMJSbWbjKwRvL4iHPofhui17KOIwkAw1LwmTpP9alLAj8/D3FQ
-         wHlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXEIhce2snXGzVlRzTilAQ+cLAU1YdUnGe3IPpQ4PlgWhKLt8HGZJkBaihuwBb9SX5Qfc5G+t7e7A==@kvack.org
-X-Gm-Message-State: AOJu0YySxz03RhCjGkAwzJ/zHWdujPT4XCfe74X4sZ30O9jyogZt7hT9
-	zsaRuaCZRT9BkqT7QB8d5OE+TGsQPX1qsOE4fpRIeyaCTId2SvUxZtwB
-X-Gm-Gg: ASbGncszYUDwO6BxuVmWM1J5QnpGmENa9SazAkEW6JCZQ8dMdI6XWixBS8595PtPgWz
-	kd/tOqAGrLXG2u1rLSN1gI9h1FyH7s13TiXcgOW3x7n2mfbEhuoQgQQQ0oKvc9v5BdBWnYerIWR
-	O/0mQ9rg3et/18vKPI+71F7me/fDAJDY3t/DNq+1WprRF6h5sTZSPqadKa8B3mk9W9Z43xhYG8w
-	r7evYmMtZcOVwutpYXYBqoTS7lfsVC8vOEvsncpGX7BUZlRAgOsp7WfI8DcWN+2GT/r+vLF3OhQ
-	bMMDESyCk76jjZdSbuvs4a+FX3IWZx54i/Ks+7hcTHbupe7QSeSopf2QzawU7xdRWQFx1xJ2J9m
-	lmgt61l+UNUdd9Ecm1S0WkGFwOfv0pY2DvtXWinZJvHvgH4Jk4fjN
-X-Google-Smtp-Source: AGHT+IFsm7rxgn02r1lDEyDh6oMhj9/rBDOaoFL0QYsFnQGFM2lDhg6gWYfXyuZuPifV8on94YS5pg==
-X-Received: by 2002:a05:6512:689:b0:595:90f9:b9d2 with SMTP id 2adb3069b0e04-59874372abamr3094454e87.3.1765215146407;
-        Mon, 08 Dec 2025 09:32:26 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597dfc08b25sm2722262e87.6.2025.12.08.09.32.25
+        bh=lAVxCtgsHDTISHvy9/P05UNsVuYDEFlartNvwhkv40M=;
+        b=HeERtQtECX3F3OblUQ0Xs6MQWISxEzDgrQVZ5yY6Eqo/V2BjtJ2B3DOl2cBbj1T8Hy
+         itgvpxpwVvtOpCK16yjJVUP7iFAb5ny0LIlwxEDboVad+Su2+xU+Inx/qO5liJih5Wlr
+         faKWSgF68P7nhQ3p75RyILBhPt882zqX3k9zfwQXB05vva8mkYIl0b4tyy6p7Hkr1+b6
+         9zHtQ2ix2bNSqUHgDowNDEGHhi7i8Ed0gzhPY2B2jHdfmr9kbUqV04bkwXMD/KhFSMvQ
+         fgqQ2jMN66ulkKLGIDR6bJzA79D2GSbx8Y8sWxBHMmsj/7MQoaIbkVDvTrFk8+5D5akT
+         AVlA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFi3uPHLttR/4n4usXy24AzWbMOw1CsgSaTGGz1k+TpmJTxcn+oBtjhefM5eg/Y/71WEYaiV+9+g==@kvack.org
+X-Gm-Message-State: AOJu0YwyHc2vo5Qox4qMuX76T8/S3y2kPgDbHw5RQt1X8F3ORIU9IQaJ
+	9uDvPExbkxQZvX3iVTZBxAUxf8ENnymsBU0VrgAlYiS86r2EFWVYt9aWEpC4fw7bQXc=
+X-Gm-Gg: ASbGncu9mfRacjKpxb0gz3SGwVrDlJ6CsTi7EI+rknf9NdIc5Dfcetq4en5kXoJWU3P
+	ebck6ZYnlMuBH0tFjc06bJJIcf5uJn4tW8LO2jirSqRjo4l6gNMQ2dC4q+gLga4mjXU9SoLK0nQ
+	tl2U2aFrWlf2Hg3xy8/IHnNCfR1BysQY6LsYYPNhngjwj8WONLDm2qtdAt+y7JPshXtxeGa/080
+	Xkzvh/z/lWrdFPYDBz5FYiwSOyy/4yAnClW5QlFfwYtDkB7aBZzJnvxiseCl0onkak9JCtjPh/T
+	oyMttBD6eUFVLZJ0AyM+H1p3r+S9jKC2TauFy8nlhB5VfwtJNGPDbkNmaifspnanRTSmrftmFJE
+	UuLdvKmT86RYjarZ6E+5Ai0xZxhYPmg+xDPE68ckBWT26us4/31mUPtpn8zUBBFwQxkhezd/7aJ
+	b1IiixYSrwky5xwp2+/ntRoT8xFNTn3ko=
+X-Google-Smtp-Source: AGHT+IE+2cVlYAMMuUHrQ6cEon/NMQFTDjniz+P5clfRxxL6UeMGxUZ/BfmxJjmjGXBtngb+pB63Gw==
+X-Received: by 2002:a05:6000:430d:b0:42b:55a1:2174 with SMTP id ffacd0b85a97d-42f89f70f4emr9230131f8f.59.1765217493354;
+        Mon, 08 Dec 2025 10:11:33 -0800 (PST)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cbff352sm26981207f8f.17.2025.12.08.10.11.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 09:32:25 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 8 Dec 2025 18:32:24 +0100
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
-Message-ID: <aTcLqNyqm_WIyn99@milan>
-References: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
- <96aa9bf7-1f1d-4870-90d2-84d3d6d4254c@arm.com>
- <DESNXS1K25LW.2E7ZWFWV56PZD@google.com>
+        Mon, 08 Dec 2025 10:11:32 -0800 (PST)
+Date: Mon, 8 Dec 2025 19:11:31 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	"Paul E . McKenney" <paulmck@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH v2] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
+Message-ID: <rrpswcxeciypobup7rdwvjknnsjkcnov2xdabbfng7se5yihk5@4wayqftotykw>
+References: <20251205200106.3909330-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xxdwkhj7rhflr6ss"
 Content-Disposition: inline
-In-Reply-To: <DESNXS1K25LW.2E7ZWFWV56PZD@google.com>
+In-Reply-To: <20251205200106.3909330-1-shakeel.butt@linux.dev>
+X-Stat-Signature: ss3qg718g78cr777g3hxzu3dtf8fgfkf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7390A40004
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 7zbgdsd1xaddawjusg7h3img95yt6eoc
-X-HE-Tag: 1765215148-733885
-X-HE-Meta: U2FsdGVkX18iXNdJAV4h0AwPva/pgmVdJVO5Jy5dm3/3CBqMgl+24Q08uKrXaW2R1TH/O7C/QJ8xLkiUol5NExOEy/P13qMTQJ6y5OjK0Snajl/9QBMj7jNUvNHtGOU4QfQpZnRJGI0S4dgEyYcNU27Oc/leRjKo3P5mwjwViCcUQ8b2C8oU3mV/omU/31n+lHrbKpcScQ7T9hPqvaQqONikJVI4jb106wFgxjE9vA1KmqJ+iqfvx0DJhHmTeIzywG1x1OcIU2M3LVoyS6fSgn4xoxEctnTPW8M/h3hpR4mEKbetJ8Leb71+Q0ntrokW4qjNockLQn3MChpZf1scGWCMat7S0KnRHewGyBhh/8YzEKpxpuB50FyCyeQle5dDscO+YI4oCffUgvD779GNrFUyNcX/4t66RmRpzp3BSdFS4HGlD4nBppxUE6XYcAnw38kRJyuZyjLjvgyan584Z1xA7eRpc9NG0gLs7x447SHMLFDS/lW7HcrZ20039IZQxBlCnStJ7x3KRKB9hHEpzr2VpYpZDbaxTPe2PJzpye5v7kMh/hYbtPI5LxnSFk4qgPQoxIfpAKjENoHoyip9c1nO8mZnHmQKXl7pLDeZr6EU/OZrFfG3VC2loqZZuOHzD7CxqiS1GQ1n2m0w7sKFGJfEGYA+WpWbpn382NoKpG2aSeKm2U9JzJvKKls7BeNjn5PpO0omJdpHp9MY6MeTJsbSJjHvV2+u/yJkJWxQx5pRtAFiNiTmJ/ttkgN6o5kD3TrMLK/6aaOh4/RjyLti0FiX0V7RSAmpGTjXhFv4h8EPAvLGI0FDGL4BoDYeD8Zkti+5v7N+iV3UL4gyNJqw7JkmrpsiNJ6KrzBBL9unpjekSkKdtFwHh6gqQwMJEloQzX7VUB4z+ZZQqxYhcGYi6KtntjuHToetbBgh0jHXlqfS/hbRjMAckz0osNjXAysxMif5bTnsbuJ2nDC3bZY
- REnP0N/M
- XMpbO8N90vlpJCgSPTp6WNQtlbAen6uZFYPLO9tuqYcPuGvf0i8qVuoc8DVaJUjV6zVBuxJ3CGjFNAD7+X5+Cb+LR1Ks10RKFt9ZFYjpdmSzt8pYTtt6Pe1SXqhbApJKXA3riEnTznGT53bmyrLluT46nyQJRhzpF6YCUTrltPQ3o8lbrx5j7q0NFGCP7nFq9L95/zrF+jZiKmmBE15/9+AF0d8CWGbbXh2Luv+qfOaUNl8AWPRkNoLJKHmxxUji5De5QWL3COfnxkiELNEn8FNgBH3XkwcCZwaL3ZEyqiXrMnLdqZK3mrLGwLgeILiJbZw/6ZLYXlSFMFXGsViMaDKMNKc185HJj+ILdniaD+ZLjg3Z114IV8By/+CHFWCu0BcsIXjS+xHi7mXeyAGeOwBUBc0bZUBJ8L1gX5N2gTjiWn8PAyc/AyLZnoWnQp51VpfJ7Qd7wxZ9VLnhSeAjwV1XRpYy0NeYgRVdkwFqjg//jPIaa7mqScfcRywLkO7y41yzoSUFNHFTpjUc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 21D1F4000B
+X-HE-Tag: 1765217494-578919
+X-HE-Meta: U2FsdGVkX19vBuwg8vzT4ffdBKSvWDpCyLm48lIejP91jr1ktvuiokIPtMuGiSqzR+H9FhZ9zlX7l+QKGB3OqFoOmmQ/bLJlogVcRS6ZZ+jX+vPHCkkw4RhwrGi7five9avDzs2N8g2UKbRIwx15zFnlPB7kbLuoEAyZsVYdyvC9TBTiJQRPOErIV1cHFmohIA1sYfXnPstWAoSZTRpILYuMXy2mZ3CVAiV8Y931zCA+gN/JOJ/9MSaXWtW62aKamvsHX+RK2Q4WsvBloJiwzHTykwNvX4GgB97Yixu7uQhNYxSpVLZ/itr0ivZ7zxolQziqVghGsXtKmxUfFC20aOz58QM7hUh1HXGThr3T+BnAbSkllFrvErt0CBb9nKSn9UakiG8gjiRaFhAc+VBOk7xuwdvnLDFtx8ix6hLZ4/XDzVb3gR/Gy3xV1/7QKSREhtfBBzaszQpSug46ediIkM3dmZt4GkffPP1wyTh6h0B2bxYDSwbcLZBYF2bjvGhzDYeGfC8AtKIvoldijxLjLiopqw/Y3zrJdkF3oth9qp188ggDocrdWUOj9HnN0zyBznp+TsoB431Owb3PMfr1ehh7ICswj4pGYaisbhl++HsnM2Vk8BFLQeOue22yZ0i5hkSFaYns1xWvqvYfXxJ9PY5viloHRxzKVZzyj75uvECz11Z1hoDVRETs5n9br9lGtkf8Ed54pmrAuqG7yGiwXKLi9wNTr3L8hsO4DwIs0htV4BxIk/8ZwsbH5tYa/eBZkBYggGo6k/EOWsG7FrS5YfgsS4iXllhaWd2iAji5sri1GTFxaOoaDpG9Il0GxXGWo6ymMzKwU3PvzEFZfkXRR+7LPIVaQi3my6rRHX3pcQRBm4ypMqnrvhuJ5kHWponWWPQqQC6ZA0RUV5zqJOezd8lLFlQDZtkrZqYOsgYbMEW0lG/LNpZMlOrcVneU8DOAntgK0s0BAZiR5y7B1qA
+ OMJoiai2
+ d5gFgKwVMRjzi2eXCDB1dTOC35zdOXLOmtXK1HM7Gzq6UPcEuSMXUQi3OWeHFxfbe4t6HAMJ9NeOf9hP7b6TaZM8tNDfe3J6zEAM97Q+junCFOIj9nJmyuMNlE7I1o4ipAtQDQNdCXvuPLRjdsMYdZjn9HQDpEoMldlpIPvGPtdsE6AlzT7L3WECdO28VfSDK9ki9yY0dwsWCDPlyZepNzBwyi7Nd+7nyYAkEWn12f/fZrbijCGyeX8EIz0npGbF01TXdOGTMYlU1Blx3IBhAaL1WfwCUYTIIWsE1vknRQ0tXGAHMyxXjCffkpm9cP7a372BbHzsNevoUhd5xBL7J2taghNprk0xk8J9QKNScDsB7HzDgshsVghyblYeTNmomybjHMvVx9401mTWoZ7ac/Io9y99/VQ81+9yKGnsvw9C4yUf+aijDIpxd9YHpO2ocnO/LCpPtBBJCqqYJL8NXuJzOTACQWnPQ+8Ur
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,39 +121,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Dec 08, 2025 at 07:39:39AM +0000, Brendan Jackman wrote:
-> Hi Anshuman, thanks a lot for taking a look.
-> 
-> On Mon Dec 8, 2025 at 6:41 AM UTC, Anshuman Khandual wrote:
-> > Please add <asm-generic/pgalloc.h> in mm/vmalloc.c - otherwise it does not
-> > get built as GFP_PGTABLE_KERNEL is not available. But otherwise LGTM.
-> 
-> Oh, but that's not correct, IIUC we shouldn't directly be including
-> asm-generic headers from here.
-> 
-> So while in principle GFP_PGTABLE_KERNEL is a sensible common
-> demoninator here, it doesn't actually exist at all everywhere, e.g. it
-> doesn't look like m68k defines it for Motorola. 
-> 
-> So maybe the best way here is a really vague:
-> 
-> /* 
->  * Different archs allocate pagetables in different ways, assume
->  * GFP_KERNEL as a common denominator.
->  */
-> might_alloc(GFP_KERNEL)
-> 
-> ... a bit yucky but I think still useful.
-> 
-> Any thoughts?
->
-Maybe just add a comment why that might_sleep() is there?
 
-We can simply state that page table allocation path is hard-coded
-internally to use GFP_KERNEL flag.
+--xxdwkhj7rhflr6ss
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
+MIME-Version: 1.0
 
-Thanks!
+On Fri, Dec 05, 2025 at 12:01:06PM -0800, Shakeel Butt <shakeel.butt@linux.=
+dev> wrote:
+> On x86-64, this_cpu_cmpxchg() uses CMPXCHG without LOCK prefix which
+> means it is only safe for the local CPU and not for multiple CPUs.
+=2E..
+> The CMPXCNG without LOCK on CPU A is not safe and thus we need LOCK
+> prefix.
 
---
-Uladzislau Rezki
+Does it mean that this_cpu_cmpxchg() is generally useless? (It appears
+so from your analysis.)
+
+> Now concurrently CPU B is running the flusher and it calls
+> llist_del_first_init() for CPU A and got rstatc_pcpu->lnode of cgroup C
+> which was added by the IRQ/NMI updater.
+
+Or it's rather the case where rstat code combines both this_cpu_* and
+remote access from the flusher.
+
+Documentation/core-api/this_cpu_ops.rst washes its hands with:
+| Please note that accesses by remote processors to a per cpu area are
+| exceptional situations and may impact performance and/or correctness
+| (remote write operations) of local RMW operations via this_cpu_*.
+
+I see there's currently only one other user of that in kernel/scs.c
+(__scs_alloc() vs scs_cleanup() without even WRITE_ONCE, but the race
+would involve CPU hotplug, so its impact may be limited(?)).
+
+I think your learnt-the-hard-way discovery should not only be in
+cgroup.c but also in this this_cpu_ops.rst document to be wary
+especially with this_cpu_cmpxchg (when dealing with pointers and not
+more tolerable counters).
+
+
+> Consider this scenario: Updater for cgroup stat C on CPU A in process
+> context is after llist_on_list() check and before this_cpu_cmpxchg() in
+> css_rstat_updated() where it get interrupted by IRQ/NMI. In the IRQ/NMI
+> context, a new updater calls css_rstat_updated() for same cgroup C and
+> successfully inserts rstatc_pcpu->lnode.
+>=20
+> Now imagine CPU B calling init_llist_node() on cgroup C's
+> rstatc_pcpu->lnode of CPU A and on CPU A, the process context updater
+> calling this_cpu_cmpxchg(rstatc_pcpu->lnode) concurrently.
+
+Sounds feasible to me.
+
+Thanks,
+Michal
+
+--xxdwkhj7rhflr6ss
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaTcU0RsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+Ah/WgD+KoG41+NA0shwqndSMfLf
+NKaf3TLNxpT5rbMR72AmSkIA/0gUzIXL2v+ADYvYPkK/71qUo+l1A7Ki6u8nCkZi
+f5gN
+=Aghw
+-----END PGP SIGNATURE-----
+
+--xxdwkhj7rhflr6ss--
 
