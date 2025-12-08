@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50622CEBF88
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 03:50:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D34CEBF88
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 03:50:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52DF86B0005; Sun,  7 Dec 2025 22:50:12 -0500 (EST)
+	id 83D3F6B0007; Sun,  7 Dec 2025 22:50:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DF4D6B0007; Sun,  7 Dec 2025 22:50:12 -0500 (EST)
+	id 814D26B0008; Sun,  7 Dec 2025 22:50:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CD396B0008; Sun,  7 Dec 2025 22:50:12 -0500 (EST)
+	id 729DF6B000A; Sun,  7 Dec 2025 22:50:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29AA76B0005
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 22:50:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C454EC0985
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:50:11 +0000 (UTC)
-X-FDA: 84194925822.01.46B8077
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 16234A0006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:50:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Z1snep9X;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 62E716B0007
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 22:50:25 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3ECB13460C
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:50:24 +0000 (UTC)
+X-FDA: 84194926368.18.8046369
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2162F40009
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:50:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=iiOhRbA1;
+	spf=pass (imf01.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765165823; a=rsa-sha256;
+	cv=none;
+	b=369zEe6c0kNmbnnrWl/qErtsIOkn6vciE7Bvn9W41/7eSoJa0B6DiK3fDR6ZrXqcmKpDbi
+	kWTWsX5q+vFgvVe3mefodMYON3jRDSRJ6OPqGrqrH6r9Bu33SU/wG+STrdhgbAZBIrsE2k
+	ZDESIXydfHtk+Kjl1+3Dfn8dlhX9hr0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=iiOhRbA1;
+	spf=pass (imf01.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765165810;
+	s=arc-20220608; t=1765165823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Mty2zn4dwIlfoS/rTSTz6mOhmsuS4SWDSU08vOSH3ts=;
-	b=kiVpq/K4fmtA9KOhdZIoQeUS1hjjBeW8DW84BzgA2WTfgGftDqUhmuvg+RcvLj8LqpUBds
-	mlcMhi2WEPL4TTuxaN6X7brBD+BgIIEvInFkIkP2/syzE4+8I6XiG14ro2VTKe9EWn+1Es
-	psPJa6jJBdPcdkvI3LPFpTJropDNpeg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Z1snep9X;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765165810; a=rsa-sha256;
-	cv=none;
-	b=8koMSRXXuzob9TEoyE232ft/DQoCaTxpHev0L2g6jHAdJn/Ir/K6ZD8nx2v26aqocQdX4N
-	vpx/q0UFAtDP/IJ+wHIj34zRhmj+gOJMwWSbiw/FYeakPgyU9SFuJzX96f6v9KH7ppCjBX
-	E79t7GIyxqQCZ86y3PcyyrM+/8rckyY=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29812589890so56023715ad.3
-        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 19:50:08 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HQt8uoJWMBYj/YlVtM/kz+RuiqvE92xrlYMKIfu5C3o=;
+	b=Z92w9fdb/BHdk7o+h7657UYaWpR7euA59+pOx4Jegzq+EE6X5OAyzcvxVRrtdb7AzKeK1W
+	Ln5UVt0l1RWFmT+Ej5uh0f4UG+dqJjXp4A86eWTgM5URDBnm7hEw/kYzImvy1BHUyP7tbk
+	zdEv7gL0PUDtq0n/xlXV+nZTwS7cEe8=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-297dd95ffe4so35830445ad.3
+        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 19:50:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1765165807; x=1765770607; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mty2zn4dwIlfoS/rTSTz6mOhmsuS4SWDSU08vOSH3ts=;
-        b=Z1snep9XVNKGXFLqKpEyMQvo/j7N68Fbq8zfFqFOIViSh0747aERGZxYbcvTTsli7K
-         JUK2h8lh/mgMDDDGn5+iuvj/Gh9cgi3jBTGHyY7PC52vvI77cvqWbpwhTCO0PA1z1dv5
-         6FLgrzbpNo/iWp5p5At64/g8gabK2GE1RnRTwc3lr+01evrNYbfTVMHF1ULQqJhtjSKb
-         WE+Yk4a2Q8CZ0dpJb1gShqyNKUzCW3/PjX49c9wTURmuFTdNdJQgdoFML5E/1ArKqZgY
-         06xA8WoUNL0076FwUSQznx/iX7SifH04gNqlG4cFKcBYn7eacF/OfAdX7GL501F+MZ4E
-         WEgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765165807; x=1765770607;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=bytedance.com; s=google; t=1765165822; x=1765770622; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Mty2zn4dwIlfoS/rTSTz6mOhmsuS4SWDSU08vOSH3ts=;
-        b=VX4Xi7unz+SMQpGABYnv1U8rhZgI3IykCtyAkJCP5rWocqX33h1krPnbIguceRtqAW
-         O3HZv9kJ+/ArgEmz6WVyeZfUEFoQwqyRMiufvC1P3lKEzruIW+sgaNBWRpSTDLYM9k1o
-         undFkDe9ROAnojKNrjpbj9+MqISopBBb6lFtOvRRZxLEZEKK47AgaVhGAw61RdKAgQlb
-         HBSnx5JS8SKyHFTg5muFU5ue9NHrakdOz7JgE+P1JwXlycdIBVhX119hE0oLLSb6GWPw
-         80F08fswgrCYVFM5PdP3Hw/+vzMsdq/UCsuKpjzpjACmFiDOqqZdSwBNTR7T8UY32mRF
-         d7Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWEOYt6oB4At08E0uL/y3gjLNfp6iuNuIDYZvZv0gMPDfYd3qULfA7CPPXCiQfK4z78LbEC+zLxw==@kvack.org
-X-Gm-Message-State: AOJu0YwVWZV8fiXbO6XHfGJxJZrkf5iuU6Y2c2iNC66fypjJwOlFQJCF
-	WBehWRzjYNwDvLYc0DJcxyJfvsRCtY0Tr3JycYliCNXxRGoIPKUyWXjSJoqKFI9fSJg=
-X-Gm-Gg: ASbGncvcWt8HHB05TBhPftg6Lq01XK11TUobiV7NYY7KwqSa6TZmwnM0JEFml9eKDTc
-	vqhzIVQ8B7cBVRo5L1tBQROSVqoht6dPRNVIx6bQpJuX6KOGHrIU1nn6uqKT1h7sNvg+29QH0Xr
-	8ugwnHioL+lHwIso1/ESNSRlvexavSbEMIfYWF/wttNxNM7akHmGmp6RPN/E8oVsTfH/82w03Mk
-	GMvcaPrDkar8uMKi36WxHjCCcfVt6BwE2XaL54S8eTFzoyUYdx9mFYltBQETeb+zGLtDo7tCy/T
-	6q3tS9yFmZfIt2k96Nq0s5Xm4F1cvlxF6gl29mufoaZQyOzGFJvwSpno+7R6KOQO1MwEIxyzAm5
-	3UzbH6P6505HWC07kcbAbJuvE2R+zjtAetZLDrG2OXZg+fZ2ChSr4Ia+dBzn52nsilw+4yO2X4p
-	VoGr+tjmJscwilQst5nCWzZmje177sBXWh12WhtJs+vYEZ
-X-Google-Smtp-Source: AGHT+IFUgzn7oN/GX+yC51QRUlb1+YHbrj6+uDfWoUdYP/BClYG3/VlS/j6Bvy5yLNw6/cq82JDAwg==
-X-Received: by 2002:a17:903:1a30:b0:295:20b8:e104 with SMTP id d9443c01a7336-29df5ddd373mr63685045ad.58.1765165807515;
-        Sun, 07 Dec 2025 19:50:07 -0800 (PST)
+        bh=HQt8uoJWMBYj/YlVtM/kz+RuiqvE92xrlYMKIfu5C3o=;
+        b=iiOhRbA1f9jXIPttcskpagmbP+4dk56mAtWadOEeUASDwnpkrDfQwLVyUpua/wLy6V
+         kVbiITLeGkWHRfz1Iz9CgWvDi6w/lo4s68V2FlQ9UnnjR4YxBnuSm4TYWQWhSw0TQ2Ec
+         hQacEI6RAKx+gW4Qqs/a7BMrMxpOG+mGmWPHjNqIyuvigTrR3lCXMOTaCqKHpnraQLJF
+         2Kna9LBj/YR34jfhmyD5R7JlWMc4/IpQupLUYIG8MODcq3YI/C0qboaWhiq7pIgFzuNz
+         IEe8YqyeAnd+fbPL9W77RgKLEwtunc8ije9RfsYofMJJHKj+6CNE1ACWse9cXq8G1H3u
+         ouFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765165822; x=1765770622;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HQt8uoJWMBYj/YlVtM/kz+RuiqvE92xrlYMKIfu5C3o=;
+        b=Ps5OdmnYA2+HpcB5j5pDddoJ8LozrPjshCnMrXJtFU47hZySp44JcYgYiQ8KY7VwZL
+         jjHzz17eycH9rP2YLIbfp/KQX2MrAWoeADnVSm0dK+JYWUX2EhQ/pW4tQ5YCw0loOV55
+         eXO0nVGK+bFY0xX4vK1smmmaLW0qUY/Ts3mlmFtgO/qCFDJJIUZrTUkpMwOEMgNZxaRo
+         u6XknxsiUU4sn8rDkAlOQa/AzzeSRp1X+N4ToZeutrfuDdLbWzgj0oeudmX7H8WkT5mn
+         yhLvHPyBdVGwqO+7jgmwUaB+cMzAYgzUnzWwzrPIi9MMwLaXSKsDWGtS285KbGryVrfO
+         h4Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6P2F134Cd+59aiO+tXf8HgyEXSQNkmvCEMx1AI48xEPeEw4JTGPKYy/NqZOWSEq2X++a4hw7Z0w==@kvack.org
+X-Gm-Message-State: AOJu0Yw49maF2MFU4r78TN2y2rGYJPO+mnO8q24CKxYF9Y0e2aCdpGZD
+	AYe5nn9o9lUffMjNxcy0ArHM4K2piXkWVkyEZz/wb3JVbR6e2rg8FnkLOS9/uzGOkkk=
+X-Gm-Gg: ASbGncuPZIIbKf0nscWQqyVezmlfgjOrO81LbBe7NW+AaWg/USRTZAjFR48URTPIgpz
+	QkXANe7bdMP62hCgKhoFK7j/jn6s6Or5eLD7zmJFglDv9e+X7YqVXG03HiQ150ymW35idliVhyI
+	sRvbCsenkxbXBIJKJ5p4OrNlR62GmNaSHO+tV52KpzZQctCHxeX9PPQAMDfSHGBt/hAxuv8v6Rc
+	zpSE1h0xotMgvFdaLmFurVVPGpfIKpnegAgTdg2DgEzmBJISejw3cnXRjUpOG+4WB1P9OX6o8wX
+	ot8yejn1blJ58dMufByCG28mqvOTbaXWtaflKrfUOywbvyDUDc+hlnxTiFuopTFVFmn3WBGPgCL
+	f/LwAuGULTPf+VXaPSeEdE0AUz4nrrUPVhZyzM7R+EbzZdi02EStN/1us1HZKn+SdMEkY0pnxqU
+	jmcXFJFCswcUMg03/t+2ZQJsqmlT8uQcv0R1zw0Rp0BfT2
+X-Google-Smtp-Source: AGHT+IG6fRjq+lmQBsuqNIpVk2L76QYaDW/Ee1RxLF8vMbBYaZ5Umod8j+UA/guL3/HnA5D4KRUWHA==
+X-Received: by 2002:a17:903:2cb:b0:296:3f23:b910 with SMTP id d9443c01a7336-29df579eb0cmr58912355ad.9.1765165821912;
+        Sun, 07 Dec 2025 19:50:21 -0800 (PST)
 Received: from L6YN4KR4K9.bytedance.net ([139.177.225.240])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29daeae6d96sm108871275ad.102.2025.12.07.19.49.53
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29daeae6d96sm108871275ad.102.2025.12.07.19.50.08
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 07 Dec 2025 19:50:07 -0800 (PST)
+        Sun, 07 Dec 2025 19:50:21 -0800 (PST)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: aou@eecs.berkeley.edu,
 	alex@ghiti.fr,
@@ -132,20 +134,22 @@ To: aou@eecs.berkeley.edu,
 	yonghong.song@linux.dev,
 	yury.norov@gmail.com,
 	zong.li@sifive.com
-Subject: [PATCH v2 0/3] RISC-V: add percpu.h to include/asm
-Date: Mon,  8 Dec 2025 11:49:41 +0800
-Message-Id: <20251208034944.73113-1-cuiyunhui@bytedance.com>
+Subject: [PATCH v2 1/3] riscv: remove irqflags.h inclusion in asm/bitops.h
+Date: Mon,  8 Dec 2025 11:49:42 +0800
+Message-Id: <20251208034944.73113-2-cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20251208034944.73113-1-cuiyunhui@bytedance.com>
+References: <20251208034944.73113-1-cuiyunhui@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2162F40009
 X-Rspam-User: 
-X-Stat-Signature: jzcji7s1qjjtex5wk5rkeduzq1mudneo
-X-Rspamd-Queue-Id: 16234A0006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1765165808-231542
-X-HE-Meta: U2FsdGVkX1/ZZGUPWI58M+wnnChlQk9kiUg9a4fxgh2HjEd525Ikl06iNvNosur2OXgbBhP3tGun0vYFhyUmgEnXb0XccaO5P9XF0FXNKBB6GPTaNpcKF8mpmRuYRpJuOhbW3gMXwq+EEuyW2DVQZXtV/j/hrXWO5dmYPQQ8HG/VRCdbmI/I8RUiMEYOKidwfx4AbFkXD4tIBZiUho8NL7XI7LBeR/2ArenNRZ9Kk5vt/4JVvSN22f7y6WwvdTkjbK+sa4sd/EvOCTba3Nl8eMLjBpyv/Sj1whlHlM3E+DGX9Ta7sX1PxqG8SeRpDdpKabxHHhJTnler4FivHtky+WL3560Mp4Ia1s746jcVs3lX3BG4qcFyhIA6+EiHxaFgfH/u6zdjerxzo6XGDnjvdUloA5//n5AL0xC/H6bNSuJedT8ESPhYNP4Z5infbrR986dU/2hsC4Fs0t+KfXGoUFTxLXtaXx9UuzYXNoo0CalbFmqgSVcoLrwj7oxrlF/i9MuCumizs9Lc/IDsd7/8xFAJCIKsYHkJ7Kbs54jgdOdUA69FR+0EJUjI2Gh/OjfMmbeFxP78oOhelf/UYgkD3rdY+50uBli98m51goH9q2R/Gcv0bpO9qxhkMABMlioL3sanFlwv6lJKopnqUiPNiZesoKsfHIuS8WLw/+pQnZLUM+0HzAFRQiXWtxt9munksqCyCLyqaP/xNAdsFH8BBVtw+cAPcAsIyAOw3pd/f+7USQHu92pZapj774/js30Hyw4vZT8HAm/5vLhsmMksKI7JXe5ufv86e7t23u3pAlSmqX8y+PgFdAS26G6Fbo64U5i+m8NMGa8VScBopJgaBZhGOrgsZ9cNCVlph8nOlJOLwZXsuxACQpM9VkyBHXfD/alLIJkEOezqnEfJmsU/lzKW12gBq/OisxvpUIg26d9Rrw+MW4YVhBST2eKag7KV7i1LUBr6ig3op8vGK/C
- g0HJ1iRS
- yiV3jfFvXotSimRx8/Wi3gs4d+yYZjSs3mZdDtQeFwMFkt5CLTFppnS4+W4dN0I+GBwVgj3dhMk7Pl5OlU86eVzU6EvLU8wsBc7sWOb2pAIZjDWTJdDh1aicQRACZmVoXqBmdVt5U1pP+G6Ghe/7+yW0OtDcLDxQsX6axKTbcI+XipOrufKY1pj9qE3orAZCPLD9dmyZl6zC7cSDzqFrJsJwVvfEOia4Ryi1BkECPxSRNxtZ5EdP6XMdN252Tp4ZpfINwpyp9D4iy+q0ReVZWw1I9b+45okZUuWe7vgOwfDRqUtQsQtifQUhSDicQRl+wD18b
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 1dc15b5m8gtnsxbotisqgz3psqfrhags
+X-HE-Tag: 1765165822-493617
+X-HE-Meta: U2FsdGVkX1/YnjWus9F4LObiYWQtRmO4Vy/Be8j9Z8X8ajUs4KFR8T3IDKRWVDsOrwH8arMiBpyxqGZKjSjuzSPcm3U654E56qKN0B6euNcsdo/xuCf9/Fha2ibeF/Xh9eUXg5xJOzXcQmpyOdpLUVl6qeZQlYEEiKM5MoFAtmti6ph7Nw8mXKURu0jwWcgzklLrWEkfMAgeppy/fovDUpoGb43EG2skPClQ4Tp1hCk2Nw9c8d9MTwKnl2hM/wPG8d+nGQEo58otj3nneZ8PdD7XV0LM1M0h/LWLCol6MaotGAEjvAWL1fEJaB8KVRAmPuYXzu8JVgkJQbTe5CP9Ib8DWAh4r1hOUZ7vI7KTJ2uA/zoljKAkRwG4saZM1bK5uYoi3LlpTA40n631dzDhk3Wpe9o1N7Ebb1F7T3Cnjgf1KjHMzpqv0uca3rZvcPx0M8dpbswuhRfpC3amNjY8BVPdiq3JdGBfKywKucOXN/RdQvQMnOST4szsFGuMEhil447m/WNUkimdi2Msavt4yhUisiiBFFiSFjaafQxsxbaCRQxSAW7xp3DTug1aYauWMxadVpeYzz6USTEVsK6AEP3YG5RPdsMT1dsklX6r08IpjRUNwfgq3Z6ubF/0OnRjUScBkgULnPR33x9WfqfWL31WjLE/yDMy9StoiMxqrGhsVasVYqSSVS56nw/2OisW8ikaHkNFfwaVsxgukQ/dGE07sCm11tOlOinXJ2qPiQhyBw7aBCU8qiJ1YQFpCfSpqoBRqStmld9efN9SoOLJ++qCQJdlHEjMAaPEEPG42eUt5lXYCJ0UnEvAe7lfKZBOmXyAct51nXtvjE7ghfajXQGpttJW5l2QXrUz2SD2jkj9BiNK3FgrLbFX39hF6bKHmb40tg4NEqfS0BXEr1+SoagrsSeCHSJzo99miipahQgyBl5oKrkt7ls+/YRsetoIRtBT4G0LXlKQw5gdcuH
+ 3hiy0a5W
+ WmJUI1zwpyH8ir383DyJNXrYsq5PQZvHbzIz/OjRRkg2PZMoFv8jtoG2ct+Yca0RkAXQm1jXdimP9i14msvarTqmSiODFy5eFDO+OC9LgSbKG3RhmmZpXjHN/Xh9HGHCEJHIHJvhNYJtKmolTu8ih6F2m0M4zr+l8BwPgTnRM4eREYudHhURL4H3SDiCMlW5Wjy7YeOs39kFisRqZto5CcPmVPAEoUFqL52/trLaxQRwMGtbBENpbairg4OyzqL4VXHE/fzCnsdacEeO/y6CQMnuBS/L7nmj2v1gblglnX5RsLke3tdtfX8PZb0v7t0peZrUN/f0KXjMwV10YLuCECr+mI251j9hjei/I4QYfLtHyKqmGalXmX4PtlrM6kvGK4RZy03qi70CMB8lXSEi/RkxD4JQ5t0rF7AXcjvJZtY5dXAh4ySDvaJ3w0GvT5EIMd7PM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,26 +158,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-v1->v2:
-1. Support percpu add/and/or operations for non-ZABHA
-2. Implement optimization: store percpu offset in thread_info
+The arch/riscv/include/asm/bitops.h does not functionally require
+including /linux/irqflags.h. Additionally, adding
+arch/riscv/include/asm/percpu.h causes a circular inclusion:
+kernel/bounds.c
+->include/linux/log2.h
+->include/linux/bitops.h
+->arch/riscv/include/asm/bitops.h
+->include/linux/irqflags.h
+->include/linux/find.h
+->return val ? __ffs(val) : size;
+->arch/riscv/include/asm/bitops.h
 
-Yunhui Cui (3):
-  riscv: remove irqflags.h inclusion in asm/bitops.h
-  riscv: introduce percpu.h into include/asm
-  riscv: store percpu offset into thread_info
+The compilation log is as follows:
+CC      kernel/bounds.s
+In file included from ./include/linux/bitmap.h:11,
+               from ./include/linux/cpumask.h:12,
+               from ./arch/riscv/include/asm/processor.h:55,
+               from ./arch/riscv/include/asm/thread_info.h:42,
+               from ./include/linux/thread_info.h:60,
+               from ./include/asm-generic/preempt.h:5,
+               from ./arch/riscv/include/generated/asm/preempt.h:1,
+               from ./include/linux/preempt.h:79,
+               from ./arch/riscv/include/asm/percpu.h:8,
+               from ./include/linux/irqflags.h:19,
+               from ./arch/riscv/include/asm/bitops.h:14,
+               from ./include/linux/bitops.h:68,
+               from ./include/linux/log2.h:12,
+               from kernel/bounds.c:13:
+./include/linux/find.h: In function 'find_next_bit':
+./include/linux/find.h:66:30: error: implicit declaration of function '__ffs' [-Wimplicit-function-declaration]
+   66 |                 return val ? __ffs(val) : size;
+      |                              ^~~~~
 
- arch/riscv/include/asm/asm.h         |   6 +-
- arch/riscv/include/asm/bitops.h      |   1 -
- arch/riscv/include/asm/percpu.h      | 242 +++++++++++++++++++++++++++
- arch/riscv/include/asm/switch_to.h   |   8 +
- arch/riscv/include/asm/thread_info.h |   5 +-
- arch/riscv/kernel/asm-offsets.c      |   1 +
- arch/riscv/kernel/smpboot.c          |   7 +
- arch/riscv/net/bpf_jit_comp64.c      |   9 +-
- 8 files changed, 263 insertions(+), 16 deletions(-)
- create mode 100644 arch/riscv/include/asm/percpu.h
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+---
+ arch/riscv/include/asm/bitops.h | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/arch/riscv/include/asm/bitops.h b/arch/riscv/include/asm/bitops.h
+index 238092125c118..3c1a15be54d80 100644
+--- a/arch/riscv/include/asm/bitops.h
++++ b/arch/riscv/include/asm/bitops.h
+@@ -11,7 +11,6 @@
+ #endif /* _LINUX_BITOPS_H */
+ 
+ #include <linux/compiler.h>
+-#include <linux/irqflags.h>
+ #include <asm/barrier.h>
+ #include <asm/bitsperlong.h>
+ 
 -- 
 2.39.5
 
