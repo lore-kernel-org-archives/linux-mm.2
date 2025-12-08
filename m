@@ -4,125 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D12D3B7DE
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 10:48:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0D89D3B7E2
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 10:55:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A5446B0005; Mon,  8 Dec 2025 05:48:50 -0500 (EST)
+	id 100CD6B0005; Mon,  8 Dec 2025 05:55:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0562E6B0007; Mon,  8 Dec 2025 05:48:50 -0500 (EST)
+	id 0B2486B0007; Mon,  8 Dec 2025 05:55:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E871D6B0008; Mon,  8 Dec 2025 05:48:49 -0500 (EST)
+	id F0A0A6B0008; Mon,  8 Dec 2025 05:55:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D65C46B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 05:48:49 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7C52B160A5A
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 10:48:49 +0000 (UTC)
-X-FDA: 84195980778.21.6D31A69
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9C1E920014
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 10:48:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=trlcaSQW;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DE9986B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 05:55:12 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9092B5C136
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 10:55:12 +0000 (UTC)
+X-FDA: 84195996864.20.F9B1EC8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 660951C000A
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 10:55:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HFLmpun7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765190927;
+	s=arc-20220608; t=1765191310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DxbeF2ils8a/WP1gcY1lf7VSr0dWgYXqsJf0XSTeT5c=;
-	b=oLGZyD5CaM6ryOiVkekt0h6YxGL1skbkseq8tdwonMA0FQ0CvBgVYMNiDw5lqS3DQ8cZpx
-	cxIU9LsDPA/Ct6WcizeMWzOsnbaSlgTq9eqDWLqHluVkEnuKFiIWFbOmnjGd9p12x/feJi
-	aNKcmu8zbX/ZWxUAo7JTKA/9I5zPWbI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765190927; a=rsa-sha256;
-	cv=none;
-	b=suLtky1LF1/o3G5bGm86SKF00ohb0Vp6UtoAAA/pixnZ3GGA1GuvpJmS+3v+aoYEIaj7Dz
-	pKQeV7D0Mil00j0j1jZklt3pO0HF5V+6ldy0EP2jj/cASF2o+b2gAMQtc1VhSH4HWwYjKi
-	BoHBNOdaQ0j+R4NQqhyKhKoyNpuYJdU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fPMHQJSTY9xmM6T/8cvtqWn8Bv6tYIQNB4XorzJ49/A=;
+	b=AGq7uBFWQctlEM8p/t8WA9fdi/AAsKrwmWpk3kUMTOK3elKHWtBs9/X38h3tfsl0zGF89k
+	UcwyO3mR8J1sefUtlkX628HghRZyDgA27JeRM361SJ2wzuEV/As9NxInemaEcl45MPeqXd
+	9UXuu426YD/zzY9szEEs4f/Mjn0Pz2Q=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=trlcaSQW;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABC3240AD9;
-	Mon,  8 Dec 2025 10:48:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83F9C19421;
-	Mon,  8 Dec 2025 10:48:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765190926;
-	bh=rcNksnfe6yY86JGogzwOwacOXhLYj1M/JZHVPYbr7X0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=trlcaSQWYBzrnbny2MMx8VNEQCqlwLvbkDMkgUROpD5e1JCj5v2+wVDjPtR2HbbLt
-	 lRqFE33DfsJPCH9gFtA1gtiSxNUVCRnX3DBenJvw+Td4XgvlhWswGuFmG+X70Q2P9Y
-	 wxyPBY5/LRWzBjfV2gM1lDKNHTzrAz6BeScF+hwrQDDD6PCv1dSNlnjmiskTmzLcFf
-	 Pg7y2WXsD5gifCUr8yYD60DcdcVDKerpdYau59Qiz8q2K7rTg8Fje9QlIiDp4e1X5c
-	 nI5i2bvS9XnGxOSAfUBxQK1jqfnEMSCDilNp1FsV46qIlo+pmmkjBoXx7ge5YaFLdh
-	 wIUvcigTabV7Q==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 280C9F40068;
-	Mon,  8 Dec 2025 05:48:45 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 08 Dec 2025 05:48:45 -0500
-X-ME-Sender: <xms:Da02aRk-30AokWEJl_zHP3tZAQk3SRaGGby9UXLSEB8v0QT2zvT3DQ>
-    <xme:Da02aTpMBMIWgYd9R9X0q1CcTw6FtZKH6Y4NFJzBYFAl3FgZkeFR6_1RGKQh7yqrM
-    yEB8FB8RjVlfA66u4QXgijvruMDzj9FTz8lmsbDBRenErlfIhJ4pA>
-X-ME-Received: <xmr:Da02aQknVucOW0l-XHMMnb6z8azwz90k7NCqDsVJlLt41gEVmEG5vF_7guVoqg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieegjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopeefiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    ohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghkph
-    hmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehmuhgthhhu
-    nhdrshhonhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepohhsrghlvhgrughorhesshhushgvrdguvgdprhgtphht
-    thhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhgsrggskhgrsehsuh
-    hsvgdrtgiipdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgv
-    rdgtohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrgh
-X-ME-Proxy: <xmx:Da02aUaADskLn7TlDBumoCTkxl3JM5pYFFPJVrxO7vYyqH6gz7B_rw>
-    <xmx:Da02aUEFpLbHRWQ3eTNEXt_48wOOFRkSzAvYKUcdsjhJQHLLPqUTHQ>
-    <xmx:Da02afMKabkartllZSf0AHe7sfCc6EQb9ExU-PW5JnxoMKYSArnoKA>
-    <xmx:Da02aSw4VC5kJGsxMes9Na5AP-7k4fmMZsRmuD0liTXI2B8VeGnz4A>
-    <xmx:Da02aUm7TOir-Cy1Avs20u74eEtlGINRXFYhpFEykZYxH2B_H9vyvhio>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Dec 2025 05:48:44 -0500 (EST)
-Date: Mon, 8 Dec 2025 10:48:43 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 07/11] mm: Drop fake head checks and fix a race condition
-Message-ID: <2l523g5soivzdi5yinyxdmkdd3k46q4buh5zprdeynplgeay2m@ivmuipyx33hy>
-References: <20251205194351.1646318-1-kas@kernel.org>
- <20251205194351.1646318-8-kas@kernel.org>
- <17002374-e135-46a5-9e4c-c317ac9823ae@gmail.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HFLmpun7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765191310; a=rsa-sha256;
+	cv=none;
+	b=x7RdFWCAlug/UImllGtNyGEuyvyqPjbXwgBcksX23j1bexvOzyYds1Wq2vcb8ZQjsw/5pt
+	aYEqAmuoIpEs8zmPF+tBx3MRzcBLufDxuG1CSD7o7nvbi0rBiKnD5bDB2XLmnym5fkHc9R
+	/D7imqK9fpj2lPlh/1Hg0FyOiZpjWNQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765191310; x=1796727310;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eR6tluPg0scmT3evh+gt/RDJtWwlSItlA1pzm/H9EXs=;
+  b=HFLmpun7mqYLMT54EaynfdBpst9BdEWZOVpKHNYDp0Wj1902HiO/1pVl
+   u0pWlV+1KfaxjNqL4ULOWpJEC01G2x08T+CncgMyE0MrbIOI/UeCYJQvG
+   pqRJ6ODq228RSu9EbxHjuxNYLu/0KMRlab35UKlabIihdQ2XPr9xuH3yL
+   wPVEq1FZ63gV63rp41mDkTF/S1pA1DM2OQzwgana4QvLh32BVnv/YnSJX
+   SPt8x6EfSeoa4r7tXYFkty3LqGifSp2sXQAAlz5Xj1GsFyTeqE6E4sQ/2
+   ZVofazd/gmk3hgb6Qto43msXfnQBLS/UMPbOztMwEdc640whd6/z1sI0t
+   w==;
+X-CSE-ConnectionGUID: DLuxccmdTq2dWflS4yOfJA==
+X-CSE-MsgGUID: qCcalTtgRgyR+zUrSqL6yQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67211059"
+X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
+   d="scan'208";a="67211059"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 02:55:09 -0800
+X-CSE-ConnectionGUID: rQ5oMGpKSXiK9wbMmzZ9FQ==
+X-CSE-MsgGUID: 2QiPkdgaTCSuRBOcCamOFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
+   d="scan'208";a="200375991"
+Received: from baandr0id001.iind.intel.com ([10.66.253.151])
+  by orviesa004.jf.intel.com with ESMTP; 08 Dec 2025 02:55:08 -0800
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Subject: [PATCH v2] tools/mm/slabinfo: Fix --partial long option mapping
+Date: Mon,  8 Dec 2025 16:22:40 +0530
+Message-Id: <20251208105240.2719773-1-kaushlendra.kumar@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17002374-e135-46a5-9e4c-c317ac9823ae@gmail.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9C1E920014
-X-Stat-Signature: d7ri8fkqkd6qm3dh83msg6a5aaj384ew
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1765190927-837754
-X-HE-Meta: U2FsdGVkX19s8yoFy+1DDD4o0LJJYXs+2MJI66pyv4yai52j5kMG3R3w/5YPXNT9CZOuSmPDW0m9XoVi7ZIudWNDXaCPHAxOhka2/yJiGmbk3v1nZOBStNW0HzNrYtyQsYrMNQpZNfABTbBbTNcpP3c/2eydOVxg85E2daNnQRk5EWzL9aUc7Tq/YPqymd1sc9oAg7HLp8By07hD7xqb3B8JeZ7v6yCNoNMFXgL8yQKRVF1u4r6Lx94ZbFnUFl3mNiEE+Cl3bzrw/CQD/gK4VgJ60S2nXLHtPArs4zQSVZTMmUX8o1j0bKr0N1OAkqOQEV0I82cRPT6VoQ1lz9dJy6lf/8lKCR1FzgTph26CEdxPxJtW4F7ve2BVOpH9nwTx3hdLXhvleOeOauQLZW1pR76LVm6x0mGPehDLpXO6R3wSmljHofVImnHyTj96SWwBoiFpLgbLgv9TTTk69y9j9EZL45U1Pf9ZnU5NlqQVw1vgR8jVj0KMymqOoaCNgQ7OuaWmMftpsA3lkjdYRYlNnd5f7b46B0ZXhbqalC+ktodP8Z78rbdvf2Az2DxmDBSNcCb8S3KyrgKnTUeWt/gN7gUdQMuBGkkbCX1rxmcs8NTpC+J/aWjeOmHSB/0yjzf/Y270knIp7gGQ/j8drfENEoafRqEKGwJWqVE4xkxM2evCbinLbo7BK88ZsYk4RA+pkK2qrbqSqZ+GODhFirjm7FDGEzn+gBzZIRpEe2SM660dF+XaZXFPihbdhayjZXT1ODRMXv/iNpZye6yNW5z+30BDTk6FSWiN8o+cTVCtlDhqo6c2LbZnHsXXqmTW4kW6oyvVc7y5+sg25xCfZ4CSvyTj3bECotgcE1mZbNSo4SXd/tLQHQzzYGr7/Uyxt/o3Xbxa+FG8wkjLK+Nz2rf9ntTnl6v8jCq03qxGwygWo8+0uo973KzeeA==
+X-Stat-Signature: 1aki3qos533dtofskj3w3cszg3f7d87q
+X-Rspamd-Queue-Id: 660951C000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1765191310-809004
+X-HE-Meta: U2FsdGVkX19AdhIRh1cALVfUcBcvC15rlb+LA9v1+sSPx3KX/yzS/y8sMSgUdaLwDnC6gMKmgU5UkFhVizPh5JhKvHERENz2ZxV3DrU5zRkAOePBuNaK5uUX5uj9ZEV/A4HwjVmyf6xMlh9wvsa4ya+ZLj2bMp7Sfn4KWsntN3zig0DnkEyyjdg0y7NUKgioNkzPd9iqW4Zxy+DsLgvDH6+0urhmi0M8uXbYm3j2mgiszp0ysSAvrTS1dKqpiVaB15yuYS1CsBQ6AoStCzEOKf3+LVKhDEKTZKzA++1fCloa36BIBxmrcBy15iOgycdXxUAGHs9WEWv1Ye/yYzUsgpXOMUE4mTzbYljl53E+5Cx27aieAPLvPGJ1G/0lgwuXpMfNcyb/PR6suB9BSxPt6cMk35toprIfO/p1rl/omjB4/ajDHcFsfLQE3DaXfLCdMMDqRCbdCNnhGN4QeaCdfK1tUaF8m30aCl0qhSMDqqFt9zfL4JMRuTgFqSfTJfDj9NyLYAJfqr2d0mkFCX7eaBamNV78RO2Nqsa/HgdLw811eRJYzKFoS2nm4XYlqmN6scGUZc3RXBcAmP9yDKeGZXsckl8MJBPVEBEyE9SP6phytoC7B0XNuKWOMseh53SHLIstuFqS+73QIg1nbQcJIxXBM386opDJlrv+3qQmxMjfn2Dq5aEnC3Sj5E3WCkwkosivRoq+K5jrBktxVnncLVr4E+zdFy/8Ot95bcuxdjXjrg7vbOF/huAdbHW3LInvGWhubxM0P6uBr8olVPXDAOn8h4Y1P3hm1fmLiPabB3mXkxqn/r1JTon/OBH7NfwbGtlI2YuYu3UvxWLuhe4wghdcQc2XUsEfIdtefbKiAKL4aBgYdJk+8cmbx9HoDJjKirhoVECcAJJYFqBa5PVLUa2NPYP4Qvx4gbSspgWqE90zXTUuMbTO37SfMhW7YW3kG0Ruu+MHUHazNF1+dhj
+ P1GU5c8J
+ yROzlx/C3KV6vLrODdJTbCQv+M5cbuFKzJrFTkkSscr1hXxrHqxBzpItQKwRINIGC2D54nl0sYlyDrBVXV9AvsE4Bx568TIF70xr4eJMWxbOunglob77CmySKvzcWgpXz2MgyP88urtzqY6xg3sC8zWwdc/LhmI6BWs5o7apjaq0D9RY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,34 +101,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 06, 2025 at 05:27:29PM +0000, Usama Arif wrote:
-> 
-> 
-> On 05/12/2025 19:43, Kiryl Shutsemau wrote:
-> > Fake heads are no longer in use, so checks for them should be removed.
-> > 
-> > It simplifies compound_head() and page_ref_add_unless() substantially.
-> > 
-> 
-> Would be good to mention in the commit message what the race condition is as
-> its there in the subject. Probably can copy some text from the cover letter.
+The long option "--partial" was incorrectly mapped to lowercase 'p' in
+the opts[] array, but the getopt string and switch case handle uppercase
+'P'. This mismatch caused --partial to be rejected.
 
-I forgot to update subject for the patch.
+Fix the long_options mapping to use 'P' so --partial works correctly
+alongside the existing -P short option.
 
-Yes, there's a race window in page_fixed_fake_head() between checking
-PG_head and checking compound_info/head in the first tail page.
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+---
+v2: Keep existing -P behavior instead of changing to -p per review
+feedback
 
-But the race seems to be harmless.
+ tools/mm/slabinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Unlike the race in 1d798ca3f164 ("mm: make compound_head() robust") the
-caller always gets valid pointer to a struct page. It might not belong
-to the same compound page anymore if the caller doesn't hold reference
-for the page. But it shouldn't be a news for speculative page lookup
-path. Caller would need to re-check the page after obtaining reference
-anyway.
-
-I will drop "and fix a race condition".
-
+diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+index 7c51d283504d..39f7eae7eecd 100644
+--- a/tools/mm/slabinfo.c
++++ b/tools/mm/slabinfo.c
+@@ -1405,7 +1405,7 @@ struct option opts[] = {
+ 	{ "numa", no_argument, NULL, 'n' },
+ 	{ "lines", required_argument, NULL, 'N'},
+ 	{ "ops", no_argument, NULL, 'o' },
+-	{ "partial", no_argument, NULL, 'p'},
++	{ "partial", no_argument, NULL, 'P'},
+ 	{ "report", no_argument, NULL, 'r' },
+ 	{ "shrink", no_argument, NULL, 's' },
+ 	{ "Size", no_argument, NULL, 'S'},
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.34.1
+
 
