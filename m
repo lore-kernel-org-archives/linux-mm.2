@@ -4,121 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B64FFD2CE17
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 03:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1F2ED2CE17
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 03:24:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BC9E6B0007; Sun,  7 Dec 2025 22:11:38 -0500 (EST)
+	id C21676B0005; Sun,  7 Dec 2025 22:24:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26CE76B0008; Sun,  7 Dec 2025 22:11:38 -0500 (EST)
+	id BD2546B0007; Sun,  7 Dec 2025 22:24:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 135D76B000A; Sun,  7 Dec 2025 22:11:38 -0500 (EST)
+	id AE8466B0008; Sun,  7 Dec 2025 22:24:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0360D6B0007
-	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 22:11:38 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCA7D16038D
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:11:37 +0000 (UTC)
-X-FDA: 84194828634.12.5E11ED3
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F278E40002
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:11:35 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=hqaPaYjA;
-	spf=pass (imf04.hostedemail.com: domain of "prvs=84371f8181=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=84371f8181=amastro@meta.com";
-	dmarc=pass (policy=reject) header.from=fb.com
+	by kanga.kvack.org (Postfix) with ESMTP id 96ECC6B0005
+	for <linux-mm@kvack.org>; Sun,  7 Dec 2025 22:24:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20FE3C0999
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:24:01 +0000 (UTC)
+X-FDA: 84194859882.28.A929897
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 49ABC8000D
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:23:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b="j00J0/IH";
+	spf=pass (imf02.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765164239; a=rsa-sha256;
+	cv=none;
+	b=lnFL0Sk95JjLVqvdgFBP60s8QjxicfEtHePzF1B94MHgtMHNbdAAkQGV6SJweIEgqBn6QU
+	lPCuzp2BlgMycU9UBZFracsNuBTYp2cWS83pGPrL7oTqK08Li2mp+CoAjU9Crb2JPDPa53
+	vQoXwtlxfx1TR7BiHsdVpEwIym8COmk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765163496;
+	s=arc-20220608; t=1765164239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vd6Iz1i7itJ92zcgMPFF3i5AUH9Px70FcbBba7Gfk6M=;
-	b=eCqSUUWS+QfPgKg1L0c+CCKl0vYReODVfIaQ645rBGR5qJJYjxbRuE2CHJjqA6QTfD5XRm
-	GoRnsdn4aF+DNOPtfNNzrQ8Ji3wIRLVpSy2vJQOEKdz2Xq8xy5WxTAl6pdtXhPsii/Dt2B
-	LN6AJYAONuKRHD331W80qYhiyHsCs5w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765163496; a=rsa-sha256;
-	cv=none;
-	b=tBeWSd5462GaBB6j5JMnzImu3/xL/XtaXRmSDZmSffHHtp1OS2vXN1MOsM/sWtTBbruirw
-	UjgoLheyGD9ZmqPSp8FsPqpjjRFWoDJD1AgVwyoueaFrUB0xj3PZvI1diwDVeLAfj8bzB7
-	x+oYGsbQWEO5RXP4Pv7Ck3HtFiTCHck=
+	bh=xgnn6MwSl2S/6LuXc1sx4ksRMJ6UXHwQQO3rL1/acEI=;
+	b=J3/aWGpyVoUtQkx6V9QEh3YKYNLV0mhYgo4yvqNnvXcGmzaEIRO4/b8lFt0arqAMQXArtm
+	XrQCT5nw8I0nEIBG+Gw4EAGssA4L5oEpATK8h2hoeUDw169Pk2Wp6GTPtRqRkeczVtSgyH
+	Gaz8ZTHpDiz4dppzPpwFPn8+23R34+w=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=hqaPaYjA;
-	spf=pass (imf04.hostedemail.com: domain of "prvs=84371f8181=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=84371f8181=amastro@meta.com";
-	dmarc=pass (policy=reject) header.from=fb.com
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B7NFkRA217946;
-	Sun, 7 Dec 2025 19:11:33 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=s2048-2025-q2; bh=Vd6Iz1i7itJ92zcgMPFF
-	3i5AUH9Px70FcbBba7Gfk6M=; b=hqaPaYjAlt9ijhOTPQmQOTzQj2qeNXJost3q
-	DWaewwUgsDwIXC70YkMc5vZywxyQN0xQD86SElBn4yASIJ8WF57OIOUvVH6QJ1x7
-	Vl/SDrGoD9IngZwCcS6Cxxp52ACtYW2WQHLtPAxnhgaw/m/kY2LlZc25fgks8YR3
-	gm/RDHmQ9Su5vI0mbZJ5ilGszdfwRPGbEjiCZDJaueckzMrSPUoh7902mxi6pj7o
-	+MBNXQEodgp/gc9RrzVNUlj4+pbHwGAtx+FTgBk2jnvau3lpocBy5nOEL981sz+g
-	JJI3ORqZpPjkk0q04u0KWOfhzWkMdvj+vFAJ52/rP5VMe5aiFA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4avhd5784v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Sun, 07 Dec 2025 19:11:32 -0800 (PST)
-Received: from devgpu015.cco6.facebook.com (2620:10d:c0a8:1b::30) by
- mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Mon, 8 Dec 2025 03:11:30 +0000
-Date: Sun, 7 Dec 2025 19:11:25 -0800
-From: Alex Mastro <amastro@fb.com>
-To: Peter Xu <peterx@redhat.com>
-CC: <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
-        Nico Pache
-	<npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
-        David Hildenbrand
-	<david@redhat.com>,
-        Alex Williamson <alex@shazbot.org>, Zhi Wang
-	<zhiw@nvidia.com>,
-        David Laight <david.laight.linux@gmail.com>,
-        Yi Liu
-	<yi.l.liu@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Kevin Tian
-	<kevin.tian@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 4/4] vfio-pci: Best-effort huge pfnmaps with
- !MAP_FIXED mappings
-Message-ID: <aTZB3VFArpJJMKMN@devgpu015.cco6.facebook.com>
-References: <20251204151003.171039-1-peterx@redhat.com>
- <20251204151003.171039-5-peterx@redhat.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b="j00J0/IH";
+	spf=pass (imf02.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=xgnn6MwSl2S/6LuXc1sx4ksRMJ6UXHwQQO3rL1/acEI=; 
+	b=j00J0/IHH6pOHYr1EdBh3Pfn8wlSyxziIWLWdek3IBYXF/P9SrYAS3Gs51jEyFdh4bjSifxC5jv
+	ii/aC2PJTyv2sutj7cdM1hTQDoP11Fm7e8tRWpwlKpbH3qbQyXE9iJaiBJTT9/oEt8Qqh5dj2jl/A
+	sFjnI0WvAu3E5l4ciYVVvKt9wuMZmGO/nQt5qlvI2+wbpFMOuwABCwOoaul2lAm0svQMCmIOHK8Iu
+	LObyEF8YMbjrRvOIDBI5CnA5xXUkOe0fFG6nup7EtGu1xBcvk+jf7XHzMwvlD43xzEKTsaReTdJsb
+	64CGxDvsyKlgTkA/Ye8oSpj2YQV0I0VR1a+Q==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vSRqn-008iGp-1h;
+	Mon, 08 Dec 2025 11:23:50 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 08 Dec 2025 11:23:49 +0800
+Date: Mon, 8 Dec 2025 11:23:49 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, SeongJae Park <sj@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>,
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+	"kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"clabbe@baylibre.com" <clabbe@baylibre.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>,
+	"surenb@google.com" <surenb@google.com>,
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>,
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Message-ID: <aTZExW2LgFNTfwVJ@gondor.apana.org.au>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
+ <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
+ <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
+ <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
+ <aSaUUez5J1w5WyE-@gondor.apana.org.au>
+ <j7vaexpi3lmheowozkymesvekasccdgnxijjip66ryngj66llf@kolcsjasxxdy>
+ <SA1PR11MB8476756D7255F1EA1EBE322AC9DEA@SA1PR11MB8476.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251204151003.171039-5-peterx@redhat.com>
-X-Originating-IP: [2620:10d:c0a8:1b::30]
-X-Authority-Analysis: v=2.4 cv=ZIPaWH7b c=1 sm=1 tr=0 ts=693641e4 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=cCa_CVtDXYSc011Sr6sA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: i1OkR2zPIMdJjvRRdpVqF_xjZi1juKv5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA4MDAyNSBTYWx0ZWRfX5nK+Tc/ZJJsi
- QhadGeGPvSVp4T22yoZpnRWgwVPvXIObvTMLv/q5HpmzEZ9aAbwzhIqHBWCp/QIGaBmDfuJref1
- M6e9US7i0Zap/5ba16bT8drdORPBRsp/ijkfkWcc5kVe+sQuSyp7A2LKKuSfwpcSCuVawQq5MCa
- cwnUKALCjyJ+dSlOXUDnI0/jANwfFjarErArnOQO+TLf/kOmDc7ARoHladPfiZz9rdvpcCR0lGM
- lvnPrmVJVz7jIL8OOrcfy903DNdunbEWn4fshx8Rmr/ZQElJ2wr4+QiixNQwJlbQizQVabQdg64
- giEypRJBLACssjRlqeyqwLJxcAO8c5eg5pui/UiNtIPW1Cq0pRmmM5URPCRLBA+7C8j680Pqthb
- GPfaVMG4dr5wOYy0nxktuOJmRrneUQ==
-X-Proofpoint-ORIG-GUID: i1OkR2zPIMdJjvRRdpVqF_xjZi1juKv5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F278E40002
-X-Stat-Signature: 8njr9x7gshh7qr9qo4fporrwi8txwfbg
+In-Reply-To: <SA1PR11MB8476756D7255F1EA1EBE322AC9DEA@SA1PR11MB8476.namprd11.prod.outlook.com>
+X-Rspamd-Queue-Id: 49ABC8000D
+X-Stat-Signature: n53z1r8ag444p17spfujmydjs4ybsr8c
 X-Rspam-User: 
-X-HE-Tag: 1765163495-394229
-X-HE-Meta: U2FsdGVkX19aJKFy42/c2lJL5x3zS96tnLlvh8I5st26Y37czn1S0uUaZ3VO94bpSHqj3AatFc33AHsb43ncT7rUuJq5SNubvMxndIMPe3Jb8Cvnuxl1l2BxO+LOCKSdEB+JtIiuAf0P24Qm6pNdwdBLYZTyBylVTthgINOxdj+mjGiyfbjcueQebGHPhR1/BthBysE+ePRgnCMD0nfdKLeqrE85Axgd5Qc2hR4zk7AeVaaD6HyPuGlKkUwNFHoS2R8r3plbS1qpVAg5IF8jcSEf+UmwRmK0Z8OqDFXtd1n3JL4nJQivHMwWyRdMjQKb8rv6QYaRgGBlqskPCm/549WTYPUIC415ybfuyuN0sYrDsWRxyGvC1duyUF3yxJ2B2MQwzWECPuDzp1GYrZ5z6Da6yGthqe+7ByMPHvkB8eJ4WF+/gz91gMOEZ4FRkJHteuKaWaG9p/vgI1W5w5GdZ6zuhwNy9jFjemCL74LwHKpLS4eBtGNwu4z+W+1WdMHBzQ72wfsXDnMkTCkzgqq44nJa6mneGCs202JYC1KC7Q1pk6r3iLBYigHWFBig5Ec1aJJvoZswSV1v14Pi09yqyJIxlbJt3GnESOirDJClIZKqmpOe+FH2sPvXLGlvl4kB9V01yFEWncc+pFDL6EZavtl5JNeIcQ96HmjKemDOR1SMKnWJgc6Bc2d1Vpv12rq9XiFNQD+f5ZNLiQzIpMs7xRrRGaLPbovmlt9fpBvb63K05IADlNhevCiJUMn9SVnBkvsy+YtpbLlL7xVYCvEZWUMHhSgROXwSQfAzyt/QsJUST2CYqpYyDeKR6N/mmD4wpXN45ZxmdSIEK4+cucdjDOOmOavWYWWZmewxkbwxSGEcIo4TrDhlnou3BmEjaiVt8brwZVAbxaCzpKS3zmDJLV80splt7HxBCTyOhCrA9zOPp0pfvRAsQDHKem+txNnqEcz3moEceSufwjE2jNo
- Ic8EBpjd
- j4x1OlKp+Ks6uouYX+a3S/MssStAuNAciss/dMr0pTWkGaDJYYj6bpmskGE0s9/nePt34ezzCnZvV8xfeXHI12DJ7KpnnwzRTT7FOTSvvj2e3WPYbsfBIpofe3FTnPkmK4c/6Ku1aNJweh6bzqNASutvDDgvlYEBjyueZy26z8WrDIpBuWsw/Y4vDP6PaJ9iRu9LHNy2SE+zdnD71Yxp3I+vZD0HzPjfklqkqM9qBnZ6wY27OcUL+gcOokwP6hcR0UtQN
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765164237-72376
+X-HE-Meta: U2FsdGVkX18c1pjWsa/ki51Se9jD47NCWZ4PIPaCefohgDKSJ8Oh6qt835aiU+xOrOeUM26SZplbcgbv4Sn3jZbwBI3t6pDmce5ftKy+l6mjVWMu8vGRlmY36ba6rHXOg05MZOHsrUSk/xdTLAVqsovtpKy2vWdYDxXU0lcuUAmBeuBQ/EO6y6ia82t9X6uT9AxpomqUbxfU1KHI7THa6DkYvn3WBSol/CbEPge28G6hEg0GypshXe8FMSN6YUFSmkvFFGlCLWPwTkpA7HzZgTbXY7A+xq3OBdMdr1ZZSMg06r7x2yWqlFTc0lHQfZmxJ3VOOXFjyNmFqtFgGP50UC3r2Tc1aULC+9pTYGwRGbTwxVc4ffGX5zxCjTncGCEIbyNHuHRVJ1JzkH/d6WSZRMTJ33VNe+XlLrsKADRj+z2bb23aBAaxoDGs4Po+FJzjBiA6QcVfSRiNs+2TlZ/whxZlcy+wvFb7Z6wWFbG03kDvjt9f+0+4jOE6uVM21rlfeH0AEBHv9rFC6X6Br16ByC+PuOdMfsTtUfwK901JsF2asKmmb2MLbUcm71YFu8/jOTE6mWa0+PDrEEEi1MNDT2V2SJA7olRgW+h+zxeJRb1803kE52nlHhyBJunuICAtbbwEVELTSodHzlSRwrviEDsItX6atcgcHl7MyE7c1/HSyzsGdI5jX4OGj/F5vN/FmP8BO52gvY4K2tU96hY3KwIphBuOqTn72lUBJvE2hP77DAroZjbfw0FqjO20Sm/HM3v5K9CQIrvi5DvbHOlUgjGVXozqAHwB5eckYGGtTpSxwFJsLPxM64DMV//D18GtslWn69rJnwp+NwNdw486ZmP8zMMB1jULrGtu7Zw9kxBKEKDeNTMviv36EoOZBY6S24TH9eyltEd9+JswI9ODk86/C7KYx8rjM2kgvKdAFNVrd3LifLhj+mdJL6F8HxovLRXagNrsspaZqBCCL34
+ oHCCgfDo
+ /v4tO2Hm2FjWnLLOYnLlFkV/u5UIOb0EqR1chJSt2MXjSjGmEEX2pGgihK97b53/RYccAmkZ4BrJhUQVLSY7B0McaJhkmYz8E1I9qK+rc+rxSYJkMNKV4fOo9V0GUtPPT9EAuuPZnBvEQLjNi4V6t3wqid4K1K/5JJF0xBvmm2GnQsadpZFq/oyjMwt0U1TxG6Kgjh2K/pk8NhnRAyB4P2Z+BKnZyhfk7IPZ1hvcA2Y98pj3CRqZTaGJiWDFUU9IaeyP7szKNrxb6Rj55IsLMoKpBfQ5SrfkeaRf/OLA/RjSJOkjt6ERTXNV1Sr7CzGmd1/yDkTeWTN7O8C3XIzY+SahXhrUOrhEdJ/5JXTIExGqHYv3tNdWIvu9VkA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,9 +121,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Dec 04, 2025 at 10:10:03AM -0500, Peter Xu wrote:
-> To achieve that, a custom vfio_device's get_mapping_hint() for vfio-pci
-> devices is needed.
+On Wed, Nov 26, 2025 at 08:05:40PM +0000, Sridhar, Kanchana P wrote:
+>
+> Herbert, to make sure I understand, will you be implementing all of these
+> features in crypto_acomp for software compressors? I would appreciate it
+> if you can clarify:
+> 
+> 1) Error & compressed length propagation to the dst sg->length only for
+>     non-batching compressors.
+>     a) For batching compressors, this wouldn't apply since errors could occur
+>         for any page in the batch, and the first page (dst sg->length) could have
+>         successfully compressed.
 
-nit get_mapping_order() 
+This would be the first step.
+
+> 2) Will you also be handling the case where zswap can send an SG list batch
+>      with multiple pages to a non-batching compressor, and the crypto_acomp
+>      API will internally compress each page sequentially, propagate
+>      errors/compress lengths before returning?
+>         
+> If so, this would really standardize the code in zswap for batching and
+> non-batching compressors.
+
+Yes this will be done as the next step.  My understanding is that
+your patch-set doesn't require this yet as all non-batching compressors
+will have a batch size of 1.
+
+But yes this certainly will be extended, not just with sequential
+processing, but we could also use pcrypt/cryptd to parallelise the
+compression across CPUs.
+
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
