@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5303BD3ABEF
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:35:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A7D0D3B7E1
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:35:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCE046B0030; Mon,  8 Dec 2025 01:35:27 -0500 (EST)
+	id 90FD56B0032; Mon,  8 Dec 2025 01:35:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7EEF6B0032; Mon,  8 Dec 2025 01:35:27 -0500 (EST)
+	id 898E36B0088; Mon,  8 Dec 2025 01:35:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F92D6B0088; Mon,  8 Dec 2025 01:35:27 -0500 (EST)
+	id 7AFCB6B0095; Mon,  8 Dec 2025 01:35:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 899D06B0030
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:35:27 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50D1AC09E5
+	by kanga.kvack.org (Postfix) with ESMTP id 6A4A16B0032
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:35:29 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 278F213BF5A
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:35:29 +0000 (UTC)
+X-FDA: 84195342378.05.29DEC8A
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 55204120003
 	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:35:27 +0000 (UTC)
-X-FDA: 84195342294.13.5E4F38D
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7CA1012000C
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:35:25 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=M7DLv8ce;
-	spf=pass (imf29.hostedemail.com: domain of 3rHE2aQgKCLkiZrnmlhtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jasonmiu.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3rHE2aQgKCLkiZrnmlhtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jasonmiu.bounces.google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MC4S6X1m;
+	spf=pass (imf29.hostedemail.com: domain of 3rnE2aQgKCLskbtponjvhpphmf.dpnmjovy-nnlwbdl.psh@flex--jasonmiu.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3rnE2aQgKCLskbtponjvhpphmf.dpnmjovy-nnlwbdl.psh@flex--jasonmiu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175727; a=rsa-sha256;
+	cv=none;
+	b=UDNxYhatb18ZS993152eUKB8zrQGI8UkhaRrJraDCIbTOR2VwuTcT0ObFkUiedv8m2zeZT
+	WoDbQLJoENXiYIkFbcJLKUQoiI8LuO/eHCNH9nwy2X2/8irjP7p/gLP5x3KG4FSiiCwOxv
+	86r0aZTvUT+ncqKG7xCOlfqciw8XpJI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175725;
+	s=arc-20220608; t=1765175727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWGLthrm17VZY/kZ1kLIqDTWzrsbdUmIFsSZPiZHtvE=;
-	b=l687M54dWE72fjqHip8G1mKeLtY2INIICouLR9OYGdpJDoefjNsCLBPfAAYCEliK4XCB+R
-	+S9zbWDItrFtByBaJuR96YlmBJtx99znycNkJYCtIPh5JKmyWfA2QwqeIaigwvjRq+CP31
-	JurU3tkd+cBtH56U3NaWMd+bjtTyH/4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175725; a=rsa-sha256;
-	cv=none;
-	b=32vqlxDbnu9urrRpjpGtPo1XNoj4CWzmhfHv48DCaancTk0YoaGrQjIQLukfs8XzqJsdDP
-	gsGLx7uz6pPyObtv2H5OGLPJ068Nu0b0ICX3o+ZkLB/Dc/GKSWa9L2SM0VWERpAGoO84Hh
-	5AU4MmhGmSmkg5SG7EmpY6FfotDx/wI=
+	bh=7YniVUU6/+lQD/EVhfTXqpFE+9KZzpnPEHhqtMsCQi8=;
+	b=sqp+c2f9c8dXxIQ2Y11KN30AZZFG91sWEV+jvLrw+Ox8ODaWYM77KyjAUOaHmuipsbeABy
+	iOnjovBs7kFeFIb78RwVbrhy2qHWMamC82mYLpMMcjuyfSQmBtjynPm0cGRc7Mr+fVAqsN
+	mUwSpV+2GJ/NMLRrJkLbE43jcIz7q2M=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=M7DLv8ce;
-	spf=pass (imf29.hostedemail.com: domain of 3rHE2aQgKCLkiZrnmlhtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jasonmiu.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3rHE2aQgKCLkiZrnmlhtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jasonmiu.bounces.google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=MC4S6X1m;
+	spf=pass (imf29.hostedemail.com: domain of 3rnE2aQgKCLskbtponjvhpphmf.dpnmjovy-nnlwbdl.psh@flex--jasonmiu.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3rnE2aQgKCLskbtponjvhpphmf.dpnmjovy-nnlwbdl.psh@flex--jasonmiu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2a45fea6efbso6122309eec.0
-        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 22:35:25 -0800 (PST)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b9ceccbd7e8so8388985a12.0
+        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 22:35:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765175724; x=1765780524; darn=kvack.org;
+        d=google.com; s=20230601; t=1765175726; x=1765780526; darn=kvack.org;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=fWGLthrm17VZY/kZ1kLIqDTWzrsbdUmIFsSZPiZHtvE=;
-        b=M7DLv8ceUniv/nSzkvScRJ7Tgy/BLZV1D8cN60ja+DjEAPB6uJ4wv/75721uqwWAHM
-         jOzTB3J2TJgu8zzdGcCMEV8qE2WeXCTlPxNwhHFDwtO3l/PR+WP7g14u+vEUFk3FPNOp
-         Pbr0PjG/7+YJEZ/73c24dEUX3s6xt7zwGEn1BMGP+dC6AmQu0/oyqmpcTWxUyCqrpXbG
-         o4xlzBINGNnRBEuqRhk83GtV6sgYfdAx16JD3u97ADHYXat6bu+UbQDgfaL2e/9KPk57
-         Gtr6QBliC5CyOxYUSN/hGuflLGYwEqx8ebSA+Cr8CgJccn/MNhClJM2oiL+wlHULn1O4
-         Rxkw==
+        bh=7YniVUU6/+lQD/EVhfTXqpFE+9KZzpnPEHhqtMsCQi8=;
+        b=MC4S6X1mk1iFBeZ2NYc97q5eIlrplR/z0X5co4PX77jKaI6TzoWNiWj2dgGpV7zTlv
+         Krw6eeygZ+sCJjnhLGEm9nhaAMx9+j2nFma9cWXCDO9axQ7w0aq2xPwiEnyPkFnQXYtd
+         sEWUfHmEnwtcbjxuvA+HI7wvr2FPA9fQtpZYr74XWwHMG6ll5z5cpx9cF8O5WzUhpRFH
+         lcRyuSzrTqdEQCMMBd8/81ctu/tq7zhS2lSNckdWpWHYFlHSN8cybyBYbnsnyUetW/9i
+         tEgWTWENdvjxHxkfdiCd3fXtg94yyBu01kIcYhzT3mJDkZuYKCI6yrRLsrh0yratuLe0
+         4CRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765175724; x=1765780524;
+        d=1e100.net; s=20230601; t=1765175726; x=1765780526;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fWGLthrm17VZY/kZ1kLIqDTWzrsbdUmIFsSZPiZHtvE=;
-        b=twjemgaLMPLo40VKpewksew8Tlkec9la5Ott8DkOnekY8AM7T3FlKiU8WlxmCIM3Qf
-         VZrXbqHmyz+ibwFbl8VMDuvO2thwjZGhlveDBr7IWY22raO87Z9l/NJH3aBP5PF5t/bZ
-         VZFTEh3cpNLK1Tap6pR2WfOgkeoevy8f6Rc53iTdpGoKz23ma3tJRuO9iLJ0B1rNReM9
-         RiagM05SsurfrCCgjLdxjr9oR/JTqBISJ32yfcckUBIpjD5oP55fT2FUwH7iiYIHBP4h
-         YZxw/9oPookbsfN5N1u4QiHNDT9YHnsSfP6o2X+bDHvDLcxYL9rRFOsnTa2y5LJmgsmn
-         69hQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLiMJQnALk14vfaeni2q2Tc26Swfz0NXMlW9f8AjzW/EGB5c6yIz4wA6qbkybE5r+rmV1QrcNWQg==@kvack.org
-X-Gm-Message-State: AOJu0YxTTw/Xx2BOgS+0OV8Y+X1QlVP3CSCqCoRTAFvGpBx4lBdgaSrP
-	2nb0Dm/KOhhvVKeMizzlBRhX60/4l1DhZgSxafKHOkvEcPR95BL+xe91WshuJH8jXkWm7zCCvQD
-	EGN1wSPOW+fnLQg==
-X-Google-Smtp-Source: AGHT+IE52W/7TLCYcpmlAdIuWyjwOhdTqcu4K+TbfvCAqg+fup4VReiWzpmBimfJipR5TfiJCImuAU4n5P+1rw==
-X-Received: from dlbsy3.prod.google.com ([2002:a05:7022:fa03:b0:11b:1966:8735])
+        bh=7YniVUU6/+lQD/EVhfTXqpFE+9KZzpnPEHhqtMsCQi8=;
+        b=N183j8C2Fr+hzaNfJVEFKNsqUDHUlW499a8zvZfBdUJdxO8QL1AMEUa8NRI1Kplmsw
+         v8u0z1XyZyubnVFK+k9EnBOAhHXIapHw0ab2/E64lfJPoUJGW/gdAptGFTpqrqkUByI/
+         04nnFIRZ98Gh8iLw1FadiumEOujnp23JtVGgi+2kYX4ds+g4ExfEhwvgmHkQTVvBsAhp
+         DiOPPUjoCdnSaiV5BVxl7shCZa0jcTWNg70s69YWYdbd4sKOk1GMQS463hMOZJ+E0FvO
+         r7cGs6PnDqEdx+L0hbprZ5of8o5PUUXLSsCc6HJGI1ejsxZNksx8s1dO3mfk8vcLjlyf
+         n1iQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXATXzDSuCx1lx03vu5sS72WWoQbSOr+zHKj+UTTCqTj7yYc24WWlhRUgHmNpPIu+OzFqAuKxGBpA==@kvack.org
+X-Gm-Message-State: AOJu0YzAqPhbUTAcP7SJ701o38xr52SRU13yPQR22up8OqTx7krCLkW8
+	CUsUJek957WStwHhcPv7fLp7xSApHS8dcdqwdDvapxtJ5c0Y9KHHslaL990IM4KSgORuuIGlRVA
+	MgMzDPZBQGvbfxw==
+X-Google-Smtp-Source: AGHT+IHU6+/mDElXpIos6i8CNSp+95UxIucCYl80yGbmgb7FYlxpfDXUEFziZxt82S/j1o9ILLaNDoE1BFGUog==
+X-Received: from dybhw4.prod.google.com ([2002:a05:7301:2b84:b0:2a4:559f:7c4e])
  (user=jasonmiu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7023:d04:b0:119:e569:f85b with SMTP id a92af1059eb24-11df601cb27mr9499750c88.18.1765175724135;
- Sun, 07 Dec 2025 22:35:24 -0800 (PST)
-Date: Sun,  7 Dec 2025 22:35:10 -0800
+ 2002:a05:7301:fae:b0:2a4:3593:9698 with SMTP id 5a478bee46e88-2abc71f7ec6mr4262433eec.21.1765175726144;
+ Sun, 07 Dec 2025 22:35:26 -0800 (PST)
+Date: Sun,  7 Dec 2025 22:35:11 -0800
 In-Reply-To: <20251208063513.3633942-1-jasonmiu@google.com>
 Mime-Version: 1.0
 References: <20251208063513.3633942-1-jasonmiu@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251208063513.3633942-2-jasonmiu@google.com>
-Subject: [PATCH 1/4] kho: Introduce KHO FDT ABI header
+Message-ID: <20251208063513.3633942-3-jasonmiu@google.com>
+Subject: [PATCH 2/4] kho: Relocate vmalloc preservation structure to KHO ABI header
 From: Jason Miu <jasonmiu@google.com>
 To: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
@@ -96,14 +96,14 @@ To: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
 	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7CA1012000C
-X-Stat-Signature: kqxpeyzu79xn37ctmjf46tn9soeiy34y
+X-Rspamd-Queue-Id: 55204120003
+X-Stat-Signature: yiqp6t5r8ptrsd7m1unbwhgn4qkjrenz
 X-Rspam-User: 
-X-HE-Tag: 1765175725-815824
-X-HE-Meta: U2FsdGVkX1+KLMOmOLDqkwIEU2DxAsHgQM4qd6f1UUFFT7XXIpYn2diQHf0sObG40iyfd3dTvJNfdMZwHIrf0hbb+e1mQeE7hfVq1nCwDAA1rwDYQIrNSyzqmoGpO06dBnhFsh0SFc1ajvyQxTsKlGOV5OuKH0D5fA6Ag76INo+7HYdd+azNzzZ+PpNcyE4gxFcTYP9Xhc3pgrmUuPedyC3xpm1LBEy2s/spfBmMcBFenIUQwuKKhpVvCuRboaVcpGQ8hyqg+BrGK61hoyzcI5v/qEdVj4TQGyCzCRQ9jvG3/AgoqN5HSioQdzEeD9BrpYdnncyZLd3FKyNX5J0C1iLNr6NQJP0lPpEWGO1RHxhOkHnCk8hiqmU/PivlzmXcmvfSL9PCrDJSj8+xczJhY7Z2UwlR1cCj7PKTcWNxG+zgE7oM2qEn1vp8hdxj2AVJt0zbfGg+xi9RHSLeDoJhPPPE3WyYJx6mCH+VMYVMdGfSy1FRsM3g4+U0zshrKtce4rszQ0FU0oHmZ9Qg1pWXkji7wTdxAANZckDQMnK0n//RwcVZaSS2df1twWSspc6O3D3FkcPk0FC/RYTc54cj/GTbS10P3Y+P1RPyE5ssjKc37klTKtWsAI2OM9aMf6IostVwG0955yUpLwyP1DsV7biY8v93BUfNCJxY1uiaR+QW8K6b5YEzHcCZWPvPF7GttcCS81yDLTho9aeCHqo4YvklH7HTFQN8CiHfsHicV3O2kbZNt8uAwhl0vs+NOqTF+YMTu8MHLJN1PktChGmLqFkuxcfGQTMElh7Ckj1E/SV+Zrmf0Md5TnBtVzD68uhMbwOx7IHLCNTykDrTehHOQhZCUM97Rnj8UZ+R3dxoTg7OqV/S7ZuD1JWXwVOX0AKibapwoIFlvFCy/y9WBE7SpngulxvhZC5NmmEWifiHNqDlJ7YsuULftbIQspXG6Yse4lhxN4E9SfHGhbfqZLc
- CCAVcu/o
- vjp7q041KCYeJxwO62NDV/Y0Hpo7UfpcAzw1OaPrJQk409gBDZMOwYTFU1VUAizyA76oD+3aA0ybRQBfrqoQQXdzpXIJFEnHp47FFz5eMvnQM1pOK8mMdCeSDjhYQvwX23puQRNWC32FaynVU5MGpeLBtNQnaQOMwl8wjcvUyFgR4syzcv39a3UptrGYGGwCkO7rt6BKmuzBEUETCjatmxhZ4PfqKDg2rzwMX8cUF9p+I0LhC46v5jVp7m42HAmTu6C/ttj4tOC6CbZuukZ78VLYjR9RSJuPPpY7DFA6wbhUKuLsyY7Z7NZlUlKniUd0zSgk6jiMkRVNGbKoMhJHU7jeLcZPPU4P6JFlwVoc8I1NvVM9hFOJdFqQOjeZHIglYb1xvz4smWCM5HeQGvv9xEoVolTtnA24DetZxm/zgBtZMNpYGEj0eIgTYdMKFRrAUiqTlbsqFCOgaZAumwh2byxKOxroZ36sk/DpWuBDT0P3TC+Ai8un08KCSg7ZbiDMYVBijcvJ/5w1lfEXYx7H2daAa6t/GMgtj1TEJf7c6AF0VHGnrfa0ur6ZG38WuTHAHpK9BHmYMPelXFFrAls88+SLqsQAMFFzi4ojv
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765175727-754294
+X-HE-Meta: U2FsdGVkX1+HRNmazMMb+uvFqTsThTlIHn6bnKWPI1wPZZK4MMd7v92enXX97rP/Egh8k3k6NFb3zcv71iyWHsyekB8ZDvFc9rQQV3Lw1YhJZJWk8FDsAyxiuoNXUWv2KLgkMI4kxqIVie5ktVKMcFgpEIJ+DiBNhInxxPwbD80zRj9tpqTcIkiT0204RxhsrnvPUGVa0idAGICVPylmenfBc6P3n+krsqdNKz6JfNmD14OruOmFjCwm5qzkF0XqcApdAfeJa8iTPwmGb9SKATGekLZaafvVv3oO+IDkJvoG4z2nrjVcMo97nJ3WKau+NfUGzHYsJSHokH8cSNEaIGbMp2U7q/cnBfnjmNlWtqFJhhd2RmWlLNU6anfIA1s7VNa1vsrnuDatqDTM4A0uwE4wLyNlSbbx1bEUBItyRKxBGnvIxBPl+l2XJs2I0Gvwjz1j5I6C0JwMDaqlC2Qdf4A9z4/se8y6zOcPCknpQwv4SW0o4m+cmXiYKU/NuslGT6iLjESLBYNl8cZJuY04cR+T0Ix+ybKcxkPoReFdr6gS5tYNffejDeqn2fRl05BgH1kMGIGSTNi2vssUhZIt+TlV2fth8H+eoxp5XN9jEZNY05E6SAipj/hHUzM/EA3kcX9G1xbL7GZzsDekU13s5u33s5UYjKpvrpXY8nrwcj1tsNwSQ291j0icC94n4iuKB7VxdD2etOhaUra+lzAHSbFp6DW1Ai4dwZsy1o6mgC/KSJc6eJUJjrH6EOGQ9vckArkErBc38jpE9fFtMBOsDy8CngasmIFwCQiLgDzpqSlhFGOGK7ckiZ8D8pOFrHRdgvJ6pr7jqrLho5wChlVkulwwv78LtEpvuAhEJRuOkXZgCyFsdAy4lzmfGNVDUiVje7NB61+2TWWQ+6xuoXcQsGits1nV3W0qQexuYRRQ3xp4PSb0usySaPRyJnqoh7vRcVtLL5i+pnHJOgbXMET
+ TW4TKqbb
+ IMhl0eEGY6qzXbXrWgTZKcadj8tgOb2d1ptFTSf69FTDtlr1DoQORUSw97QCq2q/zt6bbCIGisQavLp2xrBxu1xU5Z8qfTRC4o6exKtTMjmZDb6eJQhV045hgVMEmuSYT8r3wlV6qJPNz7X6Zt8JF+jrk523yUmvc52WEUjj1rTP5gAS7LkfGcVnPOWkFDsrrIUhbb6Sac1/Df6+xN38SH41FUQIhi6kZh3ZcDJCpr79TqYOQII/HWTwcnzUA00ROhpdUwuKkU6jvlSwO5iI/saSPkgUhCWcVUxAyCzEmzpmFuVpVWwjX5af6aypQsKz/vPkmXPuytXiz0OF/73nBHUnwLLgOlcGx3okgP5uMiPmK8QRDvtO8hcz02X+7dzkE3XeSrvxZSbKDain/mBQlDkTehb7vlVTQj8fxROI9ShrtTkX+V8ovBms7rZwMY05boTpkrk5sURm4CZrEjwmH7TT02IyoTtpvNaqmyjMGguF82TpNAE54HpL0LcYZFQ7p9cNvS5JTclH2rPJBwf0loYzt8NtcKdij8KmNJ2kZ83J8ErZLzmNGhePMoh1CT55eqdeKWj+QCjf+7EnPSGUGaK0YYWTC21xaXTop7mKCk6Qh3oCgMAC462ewDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,397 +112,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce the `include/linux/kho/abi/kexec_handover.h` header file,
-which defines the stable ABI for the KHO mechanism. This header specifies
-how preserved data is passed between kernels using an FDT.
+The `struct kho_vmalloc` defines the in-memory layout for preserving
+vmalloc regions across kexec. This layout is a contract between kernels
+and part of the KHO ABI.
 
-The ABI contract includes the FDT structure, node properties, and the
-"kho-v1" compatible string. By centralizing these definitions, this
-header serves as the foundational agreement for inter-kernel
-communication of preserved states, ensuring forward compatibility and
-preventing misinterpretation of data across kexec transitions.
+To reflect this relationship, the related structs and helper macros are
+relocated to the ABI header, `include/linux/kho/abi/kexec_handover.h`.
+This move places the structure's definition under the protection of the
+KHO_FDT_COMPATIBLE version string.
 
-Since the ABI definitions are now centralized in the header files, the
-YAML files that previously described the FDT interfaces are
-redundant. These redundant files have therefore been removed.
+The structure and its components are now also documented within the
+ABI header to describe the contract and prevent ABI breaks.
 
 Signed-off-by: Jason Miu <jasonmiu@google.com>
 ---
- Documentation/core-api/kho/bindings/kho.yaml  | 43 ----------
- .../core-api/kho/bindings/sub-fdt.yaml        | 27 ------
- Documentation/core-api/kho/concepts.rst       | 13 +++
- Documentation/core-api/kho/fdt.rst            | 79 +++--------------
- include/linux/kho/abi/kexec_handover.h        | 84 +++++++++++++++++++
- kernel/liveupdate/kexec_handover.c            | 19 ++---
- 6 files changed, 116 insertions(+), 149 deletions(-)
- delete mode 100644 Documentation/core-api/kho/bindings/kho.yaml
- delete mode 100644 Documentation/core-api/kho/bindings/sub-fdt.yaml
- create mode 100644 include/linux/kho/abi/kexec_handover.h
+ Documentation/core-api/kho/fdt.rst     |  6 ++
+ include/linux/kexec_handover.h         | 27 +--------
+ include/linux/kho/abi/kexec_handover.h | 78 ++++++++++++++++++++++++++
+ include/linux/kho/abi/memfd.h          |  2 +-
+ kernel/liveupdate/kexec_handover.c     | 15 -----
+ lib/test_kho.c                         |  1 +
+ 6 files changed, 88 insertions(+), 41 deletions(-)
 
-diff --git a/Documentation/core-api/kho/bindings/kho.yaml b/Documentation/core-api/kho/bindings/kho.yaml
-deleted file mode 100644
-index 11e8ab7b219d..000000000000
---- a/Documentation/core-api/kho/bindings/kho.yaml
-+++ /dev/null
-@@ -1,43 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
--%YAML 1.2
-----
--title: Kexec HandOver (KHO) root tree
--
--maintainers:
--  - Mike Rapoport <rppt@kernel.org>
--  - Changyuan Lyu <changyuanl@google.com>
--
--description: |
--  System memory preserved by KHO across kexec.
--
--properties:
--  compatible:
--    enum:
--      - kho-v1
--
--  preserved-memory-map:
--    description: |
--      physical address (u64) of an in-memory structure describing all preserved
--      folios and memory ranges.
--
--patternProperties:
--  "$[0-9a-f_]+^":
--    $ref: sub-fdt.yaml#
--    description: physical address of a KHO user's own FDT.
--
--required:
--  - compatible
--  - preserved-memory-map
--
--additionalProperties: false
--
--examples:
--  - |
--    kho {
--        compatible = "kho-v1";
--        preserved-memory-map = <0xf0be16 0x1000000>;
--
--        memblock {
--                fdt = <0x80cc16 0x1000000>;
--        };
--    };
-diff --git a/Documentation/core-api/kho/bindings/sub-fdt.yaml b/Documentation/core-api/kho/bindings/sub-fdt.yaml
-deleted file mode 100644
-index b9a3d2d24850..000000000000
---- a/Documentation/core-api/kho/bindings/sub-fdt.yaml
-+++ /dev/null
-@@ -1,27 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
--%YAML 1.2
-----
--title: KHO users' FDT address
--
--maintainers:
--  - Mike Rapoport <rppt@kernel.org>
--  - Changyuan Lyu <changyuanl@google.com>
--
--description: |
--  Physical address of an FDT blob registered by a KHO user.
--
--properties:
--  fdt:
--    description: |
--      physical address (u64) of an FDT blob.
--
--required:
--  - fdt
--
--additionalProperties: false
--
--examples:
--  - |
--    memblock {
--            fdt = <0x80cc16 0x1000000>;
--    };
-diff --git a/Documentation/core-api/kho/concepts.rst b/Documentation/core-api/kho/concepts.rst
-index d626d1dbd678..e96893937286 100644
---- a/Documentation/core-api/kho/concepts.rst
-+++ b/Documentation/core-api/kho/concepts.rst
-@@ -72,3 +72,16 @@ Public API
- ==========
- .. kernel-doc:: kernel/liveupdate/kexec_handover.c
-    :export:
-+
-+Internal API
-+============
-+.. kernel-doc:: kernel/liveupdate/kexec_handover_internal.h
-+
-+.. kernel-doc:: kernel/liveupdate/kexec_handover.c
-+   :internal:
-+
-+.. kernel-doc:: kernel/liveupdate/kexec_handover_debugfs.c
-+   :internal:
-+
-+.. kernel-doc:: kernel/liveupdate/kexec_handover_debug.c
-+   :internal:
 diff --git a/Documentation/core-api/kho/fdt.rst b/Documentation/core-api/kho/fdt.rst
-index 62505285d60d..4e080ccc420e 100644
+index 4e080ccc420e..4202b67fcdf9 100644
 --- a/Documentation/core-api/kho/fdt.rst
 +++ b/Documentation/core-api/kho/fdt.rst
-@@ -4,77 +4,18 @@
- KHO FDT
- =======
+@@ -14,6 +14,12 @@ directly in the ABI header file.
+ .. kernel-doc:: include/linux/kho/abi/kexec_handover.h
+    :doc: Kexec Handover ABI
  
--KHO uses the flattened device tree (FDT) container format and libfdt
--library to create and parse the data that is passed between the
--kernels. The properties in KHO FDT are stored in native format.
--It includes the physical address of an in-memory structure describing
--all preserved memory regions, as well as physical addresses of KHO users'
--own FDTs. Interpreting those sub FDTs is the responsibility of KHO users.
-+Kexec Handover ABI
-+==================
- 
--KHO nodes and properties
--========================
-+KHO uses the FDT to pass data between kernels. The exact structure of
-+this FDT is a stable contract between kernels and is documented
-+directly in the ABI header file.
- 
--Property ``preserved-memory-map``
-----------------------------------
++Kexec Handover ABI for vmalloc Preservation
++===========================================
++
 +.. kernel-doc:: include/linux/kho/abi/kexec_handover.h
-+   :doc: Kexec Handover ABI
- 
--KHO saves a special property named ``preserved-memory-map`` under the root node.
--This node contains the physical address of an in-memory structure for KHO to
--preserve memory regions across kexec.
--
--Property ``compatible``
-------------------------
--
--The ``compatible`` property determines compatibility between the kernel
--that created the KHO FDT and the kernel that attempts to load it.
--If the kernel that loads the KHO FDT is not compatible with it, the entire
--KHO process will be bypassed.
--
--Property ``fdt``
------------------
--
--Generally, a KHO user serialize its state into its own FDT and instructs
--KHO to preserve the underlying memory, such that after kexec, the new kernel
--can recover its state from the preserved FDT.
--
--A KHO user thus can create a node in KHO root tree and save the physical address
--of its own FDT in that node's property ``fdt`` .
--
--Examples
-+See Also
++   :doc: Kexec Handover ABI for vmalloc Preservation
++
+ See Also
  ========
  
--The following example demonstrates KHO FDT that preserves two memory
--regions created with ``reserve_mem`` kernel command line parameter::
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index 5f7b9de97e8d..a56ff3ffaf17 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -11,34 +11,11 @@ struct kho_scratch {
+ 	phys_addr_t size;
+ };
+ 
++struct kho_vmalloc;
++
+ struct folio;
+ struct page;
+ 
+-#define DECLARE_KHOSER_PTR(name, type) \
+-	union {                        \
+-		phys_addr_t phys;      \
+-		type ptr;              \
+-	} name
+-#define KHOSER_STORE_PTR(dest, val)               \
+-	({                                        \
+-		typeof(val) v = val;              \
+-		typecheck(typeof((dest).ptr), v); \
+-		(dest).phys = virt_to_phys(v);    \
+-	})
+-#define KHOSER_LOAD_PTR(src)                                                 \
+-	({                                                                   \
+-		typeof(src) s = src;                                         \
+-		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
+-	})
 -
--  /dts-v1/;
+-struct kho_vmalloc_chunk;
+-struct kho_vmalloc {
+-	DECLARE_KHOSER_PTR(first, struct kho_vmalloc_chunk *);
+-	unsigned int total_pages;
+-	unsigned short flags;
+-	unsigned short order;
+-};
 -
--  / {
--  	compatible = "kho-v1";
--
--	preserved-memory-map = <0x40be16 0x1000000>;
--
--  	memblock {
--		fdt = <0x1517 0x1000000>;
--  	};
--  };
--
--where the ``memblock`` node contains an FDT that is requested by the
--subsystem memblock for preservation. The FDT contains the following
--serialized data::
--
--  /dts-v1/;
--
--  / {
--  	compatible = "memblock-v1";
--
--  	n1 {
--  		compatible = "reserve-mem-v1";
--  		start = <0xc06b 0x4000000>;
--  		size = <0x04 0x00>;
--  	};
--
--  	n2 {
--  		compatible = "reserve-mem-v1";
--  		start = <0xc067 0x4000000>;
--  		size = <0x04 0x00>;
--  	};
--  };
-+- :doc:`/admin-guide/mm/kho`
-+- :doc:`/core-api/kho/concepts`
+ #ifdef CONFIG_KEXEC_HANDOVER
+ bool kho_is_enabled(void);
+ bool is_kho_boot(void);
 diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-new file mode 100644
-index 000000000000..d78df2d44cb6
---- /dev/null
+index d78df2d44cb6..74f4fa67e458 100644
+--- a/include/linux/kho/abi/kexec_handover.h
 +++ b/include/linux/kho/abi/kexec_handover.h
-@@ -0,0 +1,84 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
+@@ -10,6 +10,8 @@
+ #ifndef _LINUX_KHO_ABI_KEXEC_HANDOVER_H
+ #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
+ 
++#include <linux/types.h>
++
+ /**
+  * DOC: Kexec Handover ABI
+  *
+@@ -81,4 +83,80 @@
+ /* The FDT property for sub-FDTs. */
+ #define KHO_FDT_SUB_TREE_PROP_NAME "fdt"
+ 
++/**
++ * DOC: Kexec Handover ABI for vmalloc Preservation
++ *
++ * The Kexec Handover ABI for preserving vmalloc'ed memory is defined by
++ * a set of structures and helper macros. The layout of these structures is a
++ * stable contract between kernels and is versioned by the KHO_FDT_COMPATIBLE
++ * string.
++ *
++ * The preservation is managed through a main descriptor struct (`kho_vmalloc`),
++ * which points to a linked list of `kho_vmalloc_chunk` structures. These
++ * chunks contain the physical addresses of the preserved pages, allowing the
++ * next kernel to reconstruct the vmalloc area with the same content and layout.
++ * Helper macros are also defined for storing and loading pointers within
++ * these structures.
++ */
++
++/* Helper macro to define a union for a serializable pointer. */
++#define DECLARE_KHOSER_PTR(name, type)	\
++	union {                        \
++		u64 phys;              \
++		type ptr;              \
++	} name
++
++/* Stores the physical address of a serializable pointer. */
++#define KHOSER_STORE_PTR(dest, val)               \
++	({                                        \
++		typeof(val) v = val;              \
++		typecheck(typeof((dest).ptr), v); \
++		(dest).phys = virt_to_phys(v);    \
++	})
++
++/* Loads the stored physical address back to a pointer. */
++#define KHOSER_LOAD_PTR(src)						\
++	({                                                                   \
++		typeof(src) s = src;                                         \
++		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
++	})
 +
 +/*
-+ * Copyright (C) 2023 Alexander Graf <graf@amazon.com>
-+ * Copyright (C) 2025 Microsoft Corporation, Mike Rapoport <rppt@kernel.org>
-+ * Copyright (C) 2025 Google LLC, Changyuan Lyu <changyuanl@google.com>
-+ * Copyright (C) 2025 Google LLC, Jason Miu <jasonmiu@google.com>
++ * This header is embedded at the beginning of each `kho_vmalloc_chunk`
++ * and contains a pointer to the next chunk in the linked list,
++ * stored as a physical address for handover.
 + */
++struct kho_vmalloc_hdr {
++	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
++};
 +
-+#ifndef _LINUX_KHO_ABI_KEXEC_HANDOVER_H
-+#define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
++#define KHO_VMALLOC_SIZE				\
++	((PAGE_SIZE - sizeof(struct kho_vmalloc_hdr)) / \
++	 sizeof(u64))
 +
-+/**
-+ * DOC: Kexec Handover ABI
-+ *
-+ * This header defines the stable ABI for passing preserved data from one kernel
-+ * to the next using a Flattened Device Tree (FDT). The first kernel creates an
-+ * FDT which is then passed to the next kernel during a kexec handover.
-+ *
-+ * This interface is a contract. Any modification to the FDT structure, node
-+ * properties, compatible string, or the layout of the data structures
-+ * referenced here constitutes a breaking change. Such changes require
-+ * incrementing the version number in KHO_FDT_COMPATIBLE to prevent a new kernel
-+ * from misinterpreting data from an older kernel. Changes are allowed provided
-+ * the compatibility version is incremented; however, backward/forward
-+ * compatibility is only guaranteed for kernels supporting the same ABI version.
-+ *
-+ * FDT Structure Overview:
-+ *   The FDT serves as a central registry for physical
-+ *   addresses of preserved data structures and sub-FDTs. The first kernel
-+ *   populates this FDT with references to memory regions and other FDTs that
-+ *   need to persist across the kexec transition. The subsequent kernel then
-+ *   parses this FDT to locate and restore the preserved data.::
-+ *
-+ *     / {
-+ *         compatible = "kho-v1";
-+ *
-+ *         preserved-memory-map = <0x...>;
-+ *
-+ *         <subnode-name-1> {
-+ *             fdt = <0x...>;
-+ *         };
-+ *
-+ *         <subnode-name-2> {
-+ *             fdt = <0x...>;
-+ *         };
-+ *               ... ...
-+ *         <subnode-name-N> {
-+ *             fdt = <0x...>;
-+ *         };
-+ *     };
-+ *
-+ *   Root KHO Node (/):
-+ *     - compatible: "kho-v1"
-+ *
-+ *       Indentifies the overall KHO ABI version.
-+ *
-+ *     - preserved-memory-map: u64
-+ *
-+ *       Physical memory address pointing to the root of the
-+ *       preserved memory map data structure.
-+ *
-+ *   Subnodes (<subnode-name-N>):
-+ *     Subnodes can also be added to the root node to
-+ *     describe other preserved data blobs. The <subnode-name-N>
-+ *     is provided by the subsystem that uses KHO for preserving its
-+ *     data.
-+ *
-+ *     - fdt: u64
-+ *
-+ *       Physical address pointing to a subnode FDT blob that is also
-+ *       being preserved.
++/*
++ * Each chunk is a single page and is part of a linked list that describes
++ * a preserved vmalloc area. It contains the header with the link to the next
++ * chunk and an array of physical addresses of the pages that make up the
++ * preserved vmalloc area.
 + */
++struct kho_vmalloc_chunk {
++	struct kho_vmalloc_hdr hdr;
++	u64 phys[KHO_VMALLOC_SIZE];
++};
 +
-+/* The compatible string for the KHO FDT root node. */
-+#define KHO_FDT_COMPATIBLE "kho-v1"
++static_assert(sizeof(struct kho_vmalloc_chunk) == PAGE_SIZE);
 +
-+/* The FDT property for the preserved memory map. */
-+#define KHO_FDT_MEMORY_MAP_PROP_NAME "preserved-memory-map"
++/*
++ * Describes a preserved vmalloc memory area, including the
++ * total number of pages, allocation flags, page order, and a pointer to the
++ * first chunk of physical page addresses.
++ */
++struct kho_vmalloc {
++	DECLARE_KHOSER_PTR(first, struct kho_vmalloc_chunk *);
++	unsigned int total_pages;
++	unsigned short flags;
++	unsigned short order;
++};
 +
-+/* The FDT property for sub-FDTs. */
-+#define KHO_FDT_SUB_TREE_PROP_NAME "fdt"
-+
-+#endif	/* _LINUX_KHO_ABI_KEXEC_HANDOVER_H */
+ #endif	/* _LINUX_KHO_ABI_KEXEC_HANDOVER_H */
+diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+index da7d063474a1..1af4c9dc5a06 100644
+--- a/include/linux/kho/abi/memfd.h
++++ b/include/linux/kho/abi/memfd.h
+@@ -12,7 +12,7 @@
+ #define _LINUX_KHO_ABI_MEMFD_H
+ 
+ #include <linux/types.h>
+-#include <linux/kexec_handover.h>
++#include <linux/kho/abi/kexec_handover.h>
+ 
+ /**
+  * DOC: memfd Live Update ABI
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 9dc51fab604f..d3d02a9ea391 100644
+index d3d02a9ea391..a180b3367e8f 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -15,6 +15,7 @@
- #include <linux/count_zeros.h>
- #include <linux/kexec.h>
+@@ -882,21 +882,6 @@ void kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
+ }
+ EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
+ 
+-struct kho_vmalloc_hdr {
+-	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
+-};
+-
+-#define KHO_VMALLOC_SIZE				\
+-	((PAGE_SIZE - sizeof(struct kho_vmalloc_hdr)) / \
+-	 sizeof(phys_addr_t))
+-
+-struct kho_vmalloc_chunk {
+-	struct kho_vmalloc_hdr hdr;
+-	phys_addr_t phys[KHO_VMALLOC_SIZE];
+-};
+-
+-static_assert(sizeof(struct kho_vmalloc_chunk) == PAGE_SIZE);
+-
+ /* vmalloc flags KHO supports */
+ #define KHO_VMALLOC_SUPPORTED_FLAGS	(VM_ALLOC | VM_ALLOW_HUGE_VMAP)
+ 
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index 47de56280795..3431daca6968 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -19,6 +19,7 @@
+ #include <linux/printk.h>
+ #include <linux/vmalloc.h>
  #include <linux/kexec_handover.h>
 +#include <linux/kho/abi/kexec_handover.h>
- #include <linux/libfdt.h>
- #include <linux/list.h>
- #include <linux/memblock.h>
-@@ -33,10 +34,7 @@
- #include "../kexec_internal.h"
- #include "kexec_handover_internal.h"
  
--#define KHO_FDT_COMPATIBLE "kho-v1"
--#define PROP_PRESERVED_MEMORY_MAP "preserved-memory-map"
--#define PROP_SUB_FDT "fdt"
--
-+/* The magic token for preserved pages */
- #define KHO_PAGE_MAGIC 0x4b484f50U /* ASCII for 'KHOP' */
+ #include <net/checksum.h>
  
- /*
-@@ -378,7 +376,7 @@ static void kho_update_memory_map(struct khoser_mem_chunk *first_chunk)
- 	void *ptr;
- 	u64 phys;
- 
--	ptr = fdt_getprop_w(kho_out.fdt, 0, PROP_PRESERVED_MEMORY_MAP, NULL);
-+	ptr = fdt_getprop_w(kho_out.fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, NULL);
- 
- 	/* Check and discard previous memory map */
- 	phys = get_unaligned((u64 *)ptr);
-@@ -468,7 +466,7 @@ static bool __init kho_mem_deserialize(const void *fdt)
- 	u64 mem;
- 	int len;
- 
--	mem_ptr = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
-+	mem_ptr = fdt_getprop(fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, &len);
- 	if (!mem_ptr || len != sizeof(u64)) {
- 		pr_err("failed to get preserved memory bitmaps\n");
- 		return false;
-@@ -733,7 +731,8 @@ int kho_add_subtree(const char *name, void *fdt)
- 		goto out_pack;
- 	}
- 
--	err = fdt_setprop(root_fdt, off, PROP_SUB_FDT, &phys, sizeof(phys));
-+	err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
-+			  &phys, sizeof(phys));
- 	if (err < 0)
- 		goto out_pack;
- 
-@@ -764,7 +763,7 @@ void kho_remove_subtree(void *fdt)
- 		const u64 *val;
- 		int len;
- 
--		val = fdt_getprop(root_fdt, off, PROP_SUB_FDT, &len);
-+		val = fdt_getprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME, &len);
- 		if (!val || len != sizeof(phys_addr_t))
- 			continue;
- 
-@@ -1310,7 +1309,7 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
- 	if (offset < 0)
- 		return -ENOENT;
- 
--	val = fdt_getprop(fdt, offset, PROP_SUB_FDT, &len);
-+	val = fdt_getprop(fdt, offset, KHO_FDT_SUB_TREE_PROP_NAME, &len);
- 	if (!val || len != sizeof(*val))
- 		return -EINVAL;
- 
-@@ -1330,7 +1329,7 @@ static __init int kho_out_fdt_setup(void)
- 	err |= fdt_finish_reservemap(root);
- 	err |= fdt_begin_node(root, "");
- 	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
--	err |= fdt_property(root, PROP_PRESERVED_MEMORY_MAP, &empty_mem_map,
-+	err |= fdt_property(root, KHO_FDT_MEMORY_MAP_PROP_NAME, &empty_mem_map,
- 			    sizeof(empty_mem_map));
- 	err |= fdt_end_node(root);
- 	err |= fdt_finish(root);
 -- 
 2.52.0.223.gf5cc29aaa4-goog
 
