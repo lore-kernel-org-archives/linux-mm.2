@@ -4,114 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1014DD3B7EA
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 19:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32798D3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 19:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 753916B0007; Mon,  8 Dec 2025 14:08:06 -0500 (EST)
+	id 296246B0006; Mon,  8 Dec 2025 14:29:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7053E6B0008; Mon,  8 Dec 2025 14:08:06 -0500 (EST)
+	id 21FF76B0007; Mon,  8 Dec 2025 14:29:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F3046B000A; Mon,  8 Dec 2025 14:08:06 -0500 (EST)
+	id 0E9156B0008; Mon,  8 Dec 2025 14:29:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 493826B0007
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 14:08:06 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE82912CFE
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 19:08:05 +0000 (UTC)
-X-FDA: 84197238930.11.55CC08A
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 113AF40003
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 19:08:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=fasheh.com header.s=google header.b=a5A21kIA
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765220884; a=rsa-sha256;
-	cv=none;
-	b=ZZoenh3xzCSq6+VCa2zFWmbeHkeoYjV2Ycdm8m15NcSslgYKebk7n+5Hh/W1cgWxsj1SNP
-	1TFYXtZf+XQih+oUpZT+nzKEUlN1xt97oOM5vz2O4c7lzXvUcgPat3X34U1hlpuf9sfd53
-	J11PMP7aYabIP+qJwtyevVm1xKwxGaY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=fasheh.com header.s=google header.b=a5A21kIA;
-	dmarc=none;
-	spf=none (imf12.hostedemail.com: domain of mark@fasheh.com has no SPF policy when checking 209.85.160.175) smtp.mailfrom=mark@fasheh.com
+	by kanga.kvack.org (Postfix) with ESMTP id ED2036B0006
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 14:29:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 801CFC02C4
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 19:29:27 +0000 (UTC)
+X-FDA: 84197292774.15.2F5A4E7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A4BB214000C
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 19:29:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=omgaDKgJ;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765220884;
+	s=arc-20220608; t=1765222165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4yPID28DpX/lRAgXOsnJ1NIPQsZ48K9MGkXMnfljxvE=;
-	b=NLwU0MakfXF47+ddPPEcQXy81No0VWvSp2qMYl6As2lNjynhSfSlXJAYMAxv5sJ5/7dydy
-	05Rk6GsIF0/N9v8JWSqUOBP+WBPQjQo13VZaHJb0eAN4OVrX06QWO1q1b/hNVILITX8r1Q
-	E3euF0sdlESDm+BwQUYjuDYKJj31tkk=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4ed75832448so66920171cf.2
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 11:08:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fasheh.com; s=google; t=1765220883; x=1765825683; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4yPID28DpX/lRAgXOsnJ1NIPQsZ48K9MGkXMnfljxvE=;
-        b=a5A21kIA0Un22fegv+OcVzqd8PhGu7UmuFRJ4FuPGYRzs6hhgVwkuvPX3LNZSKbDzF
-         S4xOXKJXjsv9M5pUdwf9gNNudWVRxTCfHSKX97Yn1W7yndNUdBoUGPih7Wq1A5iAA9+u
-         BiqhTO2+bXhH7VK2Px7h5Pd92dpeIGGwKaEymgR+yvqR5MHuriyDLN9genFlZA7wZjU2
-         vO1alT3X9to0RhTikPMr9jLcB955rEmnVUEDOoN4WIuZ2Y8pmu/tVka9YFozr8mCSpYV
-         +TnEvM/mBBII0DmRt6KmsAqwR5DQzOkw3lcSufBv6MQPOs77LVKDK7gbGQ4rJ2bVp6pT
-         rRkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765220883; x=1765825683;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4yPID28DpX/lRAgXOsnJ1NIPQsZ48K9MGkXMnfljxvE=;
-        b=MMq8onj2fyCgsQgq7N41WXY6w9pUJZM2Eb8nK+9JZU/erkUPpnxwMd4AAPvAymYaFQ
-         U5e1+Zbahp+f3vc85I8E4Jv2xvivI+ENiZZE57OTjY7L6E7cl2wOrlygdKtdMn8PQNdd
-         xpDd4ZiiQAkkJD11HUHhoJzZfQi8MeDE3XTjLpVmWjLqFz6Fc8dHd/ruUGg1R37RjoAJ
-         3AWtY/MZKfqVWBWXeSVgBmOApwOkEfdn3vl7y6/pUxiQyRFBRluWOpNhmn01z5oJro9y
-         IDzmDhM3R+p6OKYYoLjVQfj6NBUNd9m4f3oj4wKgOLYUCpQ86WTnV4uzPNNHVP52Fp5H
-         E+tg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/e+EGMlHL1Mq2FxmBsc4up/0FJGuefyc2zPRl2vUHvunZGMkqYfGWYjtGDTWKTJgu5wT7qidSXg==@kvack.org
-X-Gm-Message-State: AOJu0Yzdmvz1c5ei5aN5je9IBSgKnWyDG4LIjJLiEcljFGP4Kp6mh5pJ
-	51vWow5DSykTk7LKWRQPOEdS4MpjHXtKAxnH/EGcunqIZ0LzvSAzg1wO3VNtKsg5kgix81WYcv4
-	ZNOpAEpu3eQFWPfRjzElb3r1cSAM66G2rkx90toC/ieVLCG71nsxZ
-X-Gm-Gg: ASbGnctGyLJHAPzlyntHbYM1lJgqo7WRiqSrUmm488ZSWTNRLg/aP1Y9WnCJdtAJD1E
-	4/R9mhTZEaMF/k//YeJ9O/0bLoEhXGPLU2gHvT7uwdpwb1INuZeS+KUBHt9OuNfQeJ7/WGh2qAy
-	jA2UrfnahjCiH//Z6gCCov5PshBl+AnDls1YMbRn/INaF3azFt/WS3HBvzeRiM3bW/IeG14mARf
-	mjl9X539pbraULozYjBqDKl9EhwMN9YT3XUIBkomUJVDCj92y7C7l0WTts9PCCdaSQ4DCfRTPmy
-	jaW/X14u0KPnjExmwhwCFLnOINg=
-X-Google-Smtp-Source: AGHT+IF1FXVD37QbUsQ0Ik7oXHDWD0jOrlfrEIfFomFdjurHr8pgoEPacv+H7BJz2eBcQ5cFiqmqRanY3KfCqKHA/R8=
-X-Received: by 2002:a05:622a:4d91:b0:4ee:56c0:712f with SMTP id
- d75a77b69052e-4f03ff60e91mr134665501cf.76.1765220882981; Mon, 08 Dec 2025
- 11:08:02 -0800 (PST)
+	bh=uZxRQmbGH4nHaq1XSQ3AQekPFmPu+G4NIvi8PObqIks=;
+	b=XToW0ISlKKaWSOE+k6FFiFC6+7QYwXraOVV1pJzHjg201ERJOwm/L2HAubaVxj1k8mu7l6
+	VDOjBEjCEORXZw137gCZeufRvwMTOeLkqrZOrmNbrt2Qty1J00jL5mSDw5qaacH9YrThe7
+	47cN7+aecRogV0e0vfrXDMdONbXR35A=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=omgaDKgJ;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765222165; a=rsa-sha256;
+	cv=none;
+	b=4QDd2le7MsNbt41Evo3g/+pUvfceSVKEbRaeitv+w13fLibTG+YCj86129jNBTI1m4ZeZY
+	efK4qF2TaabvqOaXapmls/58+6Wopg/JJ7TBOWKMKcyRvX+vyDc6HM8BxJMfAQJWW1m0XB
+	YL97a7lXdJNdPr9EVP8UjPMR7nBS7QE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ACA8A40DCB;
+	Mon,  8 Dec 2025 19:29:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF17C4CEF1;
+	Mon,  8 Dec 2025 19:29:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765222164;
+	bh=vc022swnydaWh/KukuNdQUEaOzu4LoIXqr+Qwn3IWN0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=omgaDKgJreyKgJLexcoMHjOwqx1MK/e5dP/JDVQ8JtQ92CSUv32+PjR1ugJgqVXTV
+	 7cRH6SFc4bHjO674c8wHy7txXJLVzI+PkxvA5ew5S+KxPUXU/uM0pxQ69d0kpF6I68
+	 FWqtuMpw2veFcwIldmiBnTKW0CqWhdWS/EEwfyflg1v1i0abgs33V1gSbh7tywyUSl
+	 ompLEcETY+wJOAbmFhWk9GXr3M5Y60o97QZRUfhu16xbWBtC5PsrwDWhIvw9sGEmXs
+	 wzSaEz3386mSZozz9ZBpsJx4uBZi4LKdmbCjMMDsDQz27z3HEmWUNj7X2cD0p6spmV
+	 R9He2QM6c+D6w==
+Message-ID: <245e6969-f45b-4d00-bf34-83da529cd3c1@kernel.org>
+Date: Mon, 8 Dec 2025 20:29:19 +0100
 MIME-Version: 1.0
-References: <20251206111533.f1b18ce84d0854b5f6d86a8f@linux-foundation.org>
- <CAHk-=wgG3xqJn1=SVw-npsdwCRtyY=sYbLa7HFkmj_Q0U=vdHQ@mail.gmail.com>
- <5e5e24eb-6af9-464c-ab1e-f9ee55a05a24@linux.alibaba.com> <CAHk-=wgvMBRrcR=DzsRKcLdZpmg-kJz49D1CzafjrWj+BzAGiQ@mail.gmail.com>
- <f72b8316-ddae-466e-a72d-0df9960d6c82@linux.alibaba.com> <nrgonfemkkz2bnwfkpzycfbz3luspjm65dakyjt4e4nuawklbw@cw3jqnedbyjf>
-In-Reply-To: <nrgonfemkkz2bnwfkpzycfbz3luspjm65dakyjt4e4nuawklbw@cw3jqnedbyjf>
-From: Mark Fasheh <mark@fasheh.com>
-Date: Mon, 8 Dec 2025 11:07:52 -0800
-X-Gm-Features: AQt7F2q3dlmMzj7bH-szN3EmMIipF57sJYb2u4-9z5qtFRDR9mlHljT3ULZgYkg
-Message-ID: <CAGe7X7kDBqTn_G458pAvDMJPw6GUjrZAow1DEkzZJiry+kNH1A@mail.gmail.com>
-Subject: Re: [GIT PULL] non-MM updates for 6.19-rc1
-To: Heming Zhao <heming.zhao@suse.com>
-Cc: Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Linus Torvalds <torvalds@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dmitry Antipov <dmantipov@yandex.ru>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mm-commits@vger.kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 113AF40003
-X-Stat-Signature: mbfjo78twnrikgp8nxqe7mnqhogckft6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: make percpu_pagelist_high_fraction reads
+ lock-free
+To: Aboorva Devarajan <aboorvad@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, gourry@gourry.net, mhocko@suse.com
+Cc: vbabka@suse.cz, surenb@google.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251201060009.1420792-1-aboorvad@linux.ibm.com>
+ <20251201094112.07eb1e588b6da2ee70c4641d@linux-foundation.org>
+ <d35eca2bbdf8675c43d528571bb61c7520e669cb.camel@linux.ibm.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <d35eca2bbdf8675c43d528571bb61c7520e669cb.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ijgbetqbdhx6n1wh7fgb85cky41oihms
+X-Rspamd-Queue-Id: A4BB214000C
 X-Rspam-User: 
-X-HE-Tag: 1765220883-709309
-X-HE-Meta: U2FsdGVkX1/SUrKtg+k6RT9+qbcA07LfYOLXzPOGAjF39rLbRwaSJalG8eNIfFnwgXlPy5hgdLR/nWVNfgFrabMkBYni08+gKfS0ILldzsON3yS6pI2aV9v0u+iKpekIQQObGxDtIHHmS91c5+EyOv0zo3W76YQ+vNa4HLxQZXwoyruBEa8WvgLRiNYP4MbhwzMjjNVdAcARudoaISEumIFx2rMFuaKEnvdOBCsYH2HGYmCrYiihWuV2nlfEuNCX0PGtC5crxwyYRZiNNXfYfsMmWdyyvMcpZxZ59cDr7UlNzu40te/x/wJ+nHWFItw5aP+7T2MxfkdkhenNFc/pv9YMpaLdujPtxnOq+nvR0mU2hgaOOMoKzy1Z4CSn7+Kq2pU2a0dqbzGCMH2zZHSkEWji1WrFgF6QAZZC/tLIbBbebUTZMbXu+T2cU6kbvjkZCAltBSoWS0T3rVccEqbVyxkupOPhfH/TWoZMUWgNQb0j/yYsAykbZthPlu6kwojvMhbKRtkjbWrNRBPVdHxjVqV+Sv7ofBM8IobEVlcJncy8zn4stlzmHvLgN+AT4gRODZLH+sMg+LpA83ovwCreXxbhTm41Fza6ayozAfAL1R8uFnY5CYMPTSQ4qsGuUqiyLrjSF8A97aY34RLYyHpK/SXToD51JnsZ24C9aIRPu/NjrV/FTbLaDJCAM5/4UU5KE8DUH/nkoxs4DOZ7XLztcogG5w6N1W2RdbwraV++0JtWFLNcbMte/UngFPlBs0qz2nRqrXZEUwVKDlmsKHxWgZAF60aECOhKNcl2oMuOYijjlNhBjQIBVxc3/YyS5xWc9K1dRrw3c1eN6YoPrQ0lxyd3/CpUJejvqBPDOctG2mc6YeW9CWnMvYT3mp4OB1BuOsxbHtAAufbAh7R6sMDnzfiFTIfrXGprXvt7IQ6vQji36P3cBzmRVTxqdgop7B0jQ2o1fkXkKp23doLrYvX
- cwAahCsr
- 7uPNVPn8z6foxBMq8JULA0N17LL+Sn1iQ6EDtjD0lS7MOyZ1jpsZzgDTkkn7eBmIMmmv6W002fMhI0TMps6LVCuOB74hIPQ6Xbyvueu/C80Jc1pxKArDS4kxsWUAAqikQXmRhqQztVONRlZlRk/t9YrLlaIpqaVr3MBS8
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765222165-706563
+X-HE-Meta: U2FsdGVkX19MwrzdrOIRdAN27bvUr3xIedbEk20YpckSrhyQbXgYmaLxeqw1lgOdBWyTnSq0ipeCL7oEXOi2yNWOfM8K8/rt2OyvrOYcyw4jpviRpi0iKJZj9L188TTsoVrpJL3CIDxjCsVudcvisPx1brjXIDLmSJHeuR+g25YrZfuO2CvIxZ+t3SLQXozVG528hn3ANvqWbizwFiYedUGKnpM5jMEgqD9J568vSrCxRvGq3ww8ByWew3UNHMTbs4c2cxvD8fYu38p2ETnLxG8e8kd1s25uU9Nekyt3piB/XRHOhcu0RW3Ody/7fIsTfH3q2oQuoa4doD7UqIUfvXoRfo5Q8ehN80kp97mUUrFBElLh/E5o2ddW0T/5jwsRjZX9pMbIZ8FpFS5jKtC9XW+qi9fhZ6DWjJsWDrHb+BN+F1N0PjSUbvxqZMGV/uHunneCULXDvg3DfsfaBsP/hn8UvaytzAzYgRQ9/iYXmnWPzfr4C+Y82TidvXSVPFjM+49sjfg0Gn+Gkcqt94pzAXHo0jDhQLVqluaX4gx0BD41nXOkaAC7wK0QfDGpWcmvmJ59U+WLz0wiECLnUYm9oty9VnuqK+I3yIHpnumkWgWootOS19bxE7aa+LaIlXuigQ1NdT8Uw0eHan5z8axqkp52eb2Mrrxy2ypSoAgLxDCNwTMQGcu/pWKhzffAPbR5Z697S6in8+nUTyq9kTulHMGflg9D0bA52KCdD7QnE+DNrvfsGDAgFzNTlVLOOA1Zd/tnEF2Z9F/q8LeBIffTXekALSwXRgFQP4RiwfilNmImH6d/tVDLeTdG05jPnyosmGkZwN0pnfpUPGBT6XdBpsuEDzFZkMLlvLEQeegFJtiES8TC22suWKHNHslp0BQY6h17m8/iXQss1RLLeMxiKKPg6wDZ0fUUlIJNkdbi2RDdVgEfeasfG9V6XzPi5+Fdqgg9Sp4rkGLNuToBZNw
+ vrKSent0
+ TLcyIKi2PtHp5tBA1Aytd7pNpfba79IfhNIyd1NLG7sky2sN67MXHWSpqU8vtaEJJmauYEQzXBCy0Ppxx2p7GfqpQFD609nDDIBGQGl/G1vk+0SBEMG1n2o/m9xVNF0pw3UISwWGbfCad8ZfM8HRronlWJ3KuO581FD4zN+tN55IRKIlt9j5ZRSVOSdB4qpplPWDOYcLSCqItLWfds+B6TXib5DG90aDJtJUZWwG69/8pI4j5o89u5vss8kYvlmpeb/tQQKnz8adWw2p6ugLRl5pXVnavxD1a1+Hv+IxBmxpU9ZsFUTELAUQisYucmnVbYB5WKJstBaDEc0/ddYE1JSTQmKqHh7o5uiix
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,50 +99,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Dec 7, 2025 at 11:58=E2=80=AFPM Heming Zhao <heming.zhao@suse.com> =
-wrote:
->
-> On Mon, Dec 08, 2025 at 12:01:09PM +0800, Joseph Qi wrote:
-> > It seems now new_xh->xh_count is 0. That's means, it is trying to add a
-> > new entry and here 'last' is pointing the next free entry.
-> > If so, the original code seems right.
-> >
-> > Heming, could you please verify this? I'm not familiar with this logic.=
-..
-> >
-> > Thanks,
-> > Joseph
+On 12/8/25 18:30, Aboorva Devarajan wrote:
+> On Mon, 2025-12-01 at 09:41 -0800, Andrew Morton wrote:
+>> On Mon,  1 Dec 2025 11:30:09 +0530 Aboorva Devarajan <aboorvad@linux.ibm.com> wrote:
+>>
+>>> When page isolation loops indefinitely during memory offline, reading
+>>> /proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_lock,
+>>> causing hung task warnings.
+>>
+>> That's pretty bad behavior.
+>>
+>> I wonder if there are other problems which can be caused by this
+>> lengthy hold time.
+>>
+>> It would be better to address the lengthy hold time rather that having
+>> to work around it in one impacted site.
+> 
+> 
+> Sorry for the delayed response, I spent some time recreating this issue.
+> 
+> 
+> I've encountered this lengthy hold time several times during memory hot-unplug, with
+> operations hanging indefinitely (20+ hours). It occurs intermittently, and it has
+> different failure signatures, here's one example where isolation fails on a single
+> slab page continuously:
+> 
+> ..
+> [83310.373699] page dumped because: isolation failed
+> [83310.373704] failed to isolate pfn 4dc68
+> [83310.373708] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
+> [83310.373714] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
+> [83310.373722] page_type: f5(slab)
+> [83310.373727] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
+> [83310.373735] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
+> [83310.373741] page dumped because: isolation failed
+> [83310.373749] failed to isolate pfn 4dc68
+> [83310.373753] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
+> [83310.373760] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
+> [83310.373767] page_type: f5(slab)
+> [83310.373770] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
+> [83310.373774] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
+> [83310.373778] page dumped because: isolation failed
+> [83310.373788] failed to isolate pfn 4dc68
+> [83310.373791] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
+> [83310.373794] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
+> [83310.373797] page_type: f5(slab)
+> [83310.373799] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
+> [83310.373803] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
+> [83310.373809] page dumped because: isolation failed
+> [83315.383370] do_migrate_range: 1098409 callbacks suppressed
+> [83315.383377] failed to isolate pfn 4dc68
+> [83315.383406] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
+> [83315.383411] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
+> [83315.383416] page_type: f5(slab)
+> [83315.383420] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
+> [83315.383423] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
+> [83315.383426] page dumped because: isolation failed
+> [83315.383431] failed to isolate pfn 4dc68
+> [83315.383433] page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4dc68
+> [83315.383442] flags: 0x23ffffe00000000(node=2|zone=0|lastcpupid=0x1fffff)
+> [83315.383448] page_type: f5(slab)
+> [83315.383454] raw: 023ffffe00000000 c0000028e001fa00 5deadbeef0000100 5deadbeef0000122
+> [83315.383462] raw: 0000000000000000 0000000001e101e1 00000002f5000000 0000000000000000
+> [83315.383470] page dumped because: isolation failed
 
-Thanks Joseph and Heming for looking into this.
+When starting memory offlining we do a racy check whether memory 
+offlining will succeed in has_unmovable_pages().
 
+It's racy because briefly after the check, a kernel page could get 
+allocated, before we isolate all the free pages.
 
-> In ocfs2_reflink_xattrs(), when preserve_security is false, the function =
-sets
-> 'args.xattr_reflinked'. IMUC, it means that if users want to preserve sec=
-urity
-> xattr items, the args.xattr_reflinked is NULL, this then results in
-> ocfs2_reflink_xattr_header() not executing the cleanup jobs, (in the code=
- area
-> defined by "if (args->xattr_reflinked && !args->xattr_reflinked(xe))").
->
-> Regarding the clean jobs:
-> - by default, it only handles three types:
->   OCFS2_XATTR_INDEX_[SECURITY|POSIX_ACL_ACCESS|POSIX_ACL_DEFAULT]
-> - it cleans the first item and shifts forward the remaining items.
->
-> It seems Linus' patch does not handle all cases. If new_xh->xh_count is 1=
-,
-> le16_add_cpu(&new_xh->xh_count, -1) makes it to 0, and it will miss the c=
-leanup
-> job.
+I assume that's what happened here.
 
-It's been a while since I've look at Ocfs2 xattr so take what I say
-with a grain of salt :)
+But even performing another has_unmovable_pages() check after isolating 
+the free pages will not catch all cases: in particular movable pages 
+that are longterm-pinned.
 
-That said, I agree that the cleanup code looks suspect. I think the
-answer is to always memset the entry that we just removed even when
-xh_count becomes zero.
+-- 
+Cheers
 
-Thanks,
-  --Mark
+David
 
