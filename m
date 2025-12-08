@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 974C3D3B7E1
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6880D3ABEF
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5C4E6B0012; Mon,  8 Dec 2025 01:30:05 -0500 (EST)
+	id 3FCB36B0023; Mon,  8 Dec 2025 01:30:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0DA16B0023; Mon,  8 Dec 2025 01:30:05 -0500 (EST)
+	id 3D22D6B0024; Mon,  8 Dec 2025 01:30:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4AF26B0024; Mon,  8 Dec 2025 01:30:05 -0500 (EST)
+	id 29C3D6B0026; Mon,  8 Dec 2025 01:30:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C22526B0012
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:05 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8D74F13BF06
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:05 +0000 (UTC)
-X-FDA: 84195328770.26.B230EFD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 198126B0023
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:09 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D503D1409B9
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:08 +0000 (UTC)
+X-FDA: 84195328896.15.89FDEC9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E492C20005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:03 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vIXLTVp7;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2154A180017
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrQsyBz8;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175407; a=rsa-sha256;
+	cv=none;
+	b=FuPSRSkiIxS5pLDqmS5A263bF3VuB2YaeS/b0DueD+h+9DpGH4GyEuBXTMs/Zv7PKTEAN4
+	XhMcG27+Rxfdn6uvhco8I9vMdkmkxdtZagFbOghUMBhtiyqYzmW7p9J/NsXvldGHFd1BXF
+	frX1f8x/MHvnQsM0YtA1iO4i8IlCU0g=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrQsyBz8;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175404;
+	s=arc-20220608; t=1765175407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P/GatQzawiRVOwDD76ziPTwekmn8Gf3vA0FAXj3N8q0=;
-	b=dUtWZBFZFBfhU5I9s/hcURFnRQjOaYye9c+Fw03Nc2iyQPTChIafj8Ghq1MdNxndqmFJfj
-	hmh3NocU+/Gg2Uk6M9s25jHvYPldie5T+8x3Qb0AHlX/VQ0ES5sW6gyXosgpiwcLp5noAo
-	6GNI8D/qEQuz+iaYUd3cNcbE9DmwtTk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vIXLTVp7;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175404; a=rsa-sha256;
-	cv=none;
-	b=ZVpljVXBT3mXMxrRQJyt8Aca5Xaa2haSivIL2124jhO6OBMOnlI9o0gpQzoFi3n2IkqhDZ
-	VvWpusbRmXWPCJiVzEE0iWFvozzaqkz+h3Cizq1P0IfRCAv0urwnFljhcREVeiaK2/4cY6
-	TcJG8UGLiLPo89vnNd78wNpfUI9BThA=
+	bh=YtiQu7y1N5n3nIwsJ7F/jkWnOdCija2bRihCwM5o24s=;
+	b=lWzrdXLCXWT1FeL2jZ7OFJxjYgkAAf7WCUieBDm7OS9+3LeJH5m7mBNvl+pv/din+zvWZp
+	P38kn0t55mAHaKYFmdHkc8jBQWBdHHbACojuALcNFyrpIyTpdag7e5EZp0w+/yh6uHro3a
+	r+okqaGjiYrZ7Uk772vK1RLES9vopNs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AA3CE40571;
+	by sea.source.kernel.org (Postfix) with ESMTP id 486D844400;
+	Mon,  8 Dec 2025 06:30:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED04C19422;
 	Mon,  8 Dec 2025 06:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F03BC113D0;
-	Mon,  8 Dec 2025 06:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765175403;
-	bh=HqSr2dVJCwPH4hyJgJqnf3m06RGc89x094A8SJ4rv+U=;
+	s=k20201202; t=1765175406;
+	bh=kYp0neqPpPeaEbB6UDhepmoNhZxaB6USicxvRIelMVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIXLTVp7/6bmfAS4G3mn84o+NgRZe3aM4W/0ATsBaPJzAgWfWNp65xQP4uEu1kdg0
-	 eUpGG6eFBBMNmeW6wAd++++tZOEbSTTNVxLqwrcCzUz2kidF6/9WUWaaielwjVdNp+
-	 Gro5lJ8x5IxhUltkdEspo/9xmJMmARN5eKNuJg5S7gzqrXqqyRgfyPrWQOcmDn3z9S
-	 EO5af6uaHfyA2E1iz6nDyGmklI35B/a+ZnsuEFhxUgcb2IJHmEEz7O/YtuNKHy75fI
-	 3lCfVjr1NBlLNIXLR6AgKS+mlyr8jVC77Z96iJCPNPTSRALlrP2uIiv4ITYocQ5lVF
-	 p/+ec5asC+fsA==
+	b=nrQsyBz8XneqoGt7kXomZMNDszLsyaBphQqI9vhbG/YI16Pk0iW7d03rE3DlFfjcH
+	 /d2/T5SnePvleWqUN/ynQ6+MkGu1ux7qkdv56zSaWrorVThi7vccv2O7FOU2f30Pbj
+	 vWEH2ISNFqZfr0P/g8KhnZLwCw0HuI9E88kyjWBRvlz31dszh+xI/+7zKsh13toUEx
+	 Pxc/n6MUXc9E0Qfc5e/wPZiUcvMGqUqreRpJDsQXsBRAFWpf6f0Pb2XRLs4r/i9Pui
+	 0Pp70UFcW8yzd9Qeq00aGp5n3F6E4a3Dz4PuEWlnM+QojTeDHRJ1ZaA8eZcXIvnIdR
+	 hAMpBTcrwmBgQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 10/37] mm/damon/sysfs: connect primitives directory with core
-Date: Sun,  7 Dec 2025 22:29:14 -0800
-Message-ID: <20251208062943.68824-11-sj@kernel.org>
+Subject: [RFC PATCH v3 11/37] Docs/mm/damon/design: document page fault sampling primitive
+Date: Sun,  7 Dec 2025 22:29:15 -0800
+Message-ID: <20251208062943.68824-12-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251208062943.68824-1-sj@kernel.org>
 References: <20251208062943.68824-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tktsnsgjo83xio6jo5utpeasjhwyqoas
+X-Rspamd-Queue-Id: 2154A180017
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E492C20005
-X-HE-Tag: 1765175403-517617
-X-HE-Meta: U2FsdGVkX18TUZgw6n+IYkJI2pmMraZh/pLImGvjf0wTvrA2slIbevMkj6A70eQcDVUjCNfCBzAA6YJVSSOvpN+Je1kvlhZ9+5WzajGt4vj4mkqEUdzkkcGhlqHxmXXUhTS3z0yb1pdBJhGf5O9uPMhQGr2pjywS3iyjYBI03CJnDXKBkotvw3ycMD0m4G3gbKDpge5Rq1IEVGuLOCUOq/0hYfMljNVscD4Wv7LZAGETv2u/kp6IkZRu8jBQrwDKXedBjz988zeo0hyWcN4jCyq6ERYVqYmYZDd31T36z+2NjVjLTIgyiaLG8QmmLAh9elq+G1sT31j63Y+3IWHb+wSyQVDHoJBEjfP7kP9luPfWmdR+fMd0FrqPTXVXGf7LyKFX5AncU/G/ADqtZrZE/QUS8n2eu4K53vSf9tf5o3un9+Zdt+yyHgZLML8Q07ekz36OjzwSeM6FQl1dtN5VR1mo3CQ4Ul5Rq4/xVry4eDbzy14mWRWJ9EjYA1CGOynVqajPws9NrSr75ERy5cWEDKBQpPnHsdGCLD83QQfdpmZxRf8KrgilyV4HTakiWn/TuHMJDx28pnXE6ESSezNl4BFx/YhYF52iiG5s9WtAHEL6tqCsKgNOcHOECmxcx14KhPwV22hUGVG8PfD0Xzfa05uMRufa7MOIylbko/Zb/bc6KrxPtaZBoym6KKjCGBV3EPyAUxNOtpRC070X3G8ZwaOrOn+haOl8xEs2Bv+VDzFAzkfa003b9hviqCTJlFjZemc/m3zGR1KkPr9mCjAnqNjU6g/2UDth266Tl5IkG8+EdT8a4hp2RUQHSkdc0BAC4Z6fh+PdmnZtkjGfanU5HpbXPYd9KfAv0jTdqKCisjptQnQ4pnRXbwnPzbGxJQFu0ehtxVjNItf+F2OOp44BTG7OnUR4JdiBEwotfk6/PfIN7pv+A09BwlmNiFzkydy8yRZ/Yaxak2vLCGpJ3Gd
- dmgeKNaQ
- bCWEiX8vByDgTNEEB97RYJ74uRG1xLpYad6eEAVHwDJPjE5nXhnRtlfnNkTyGIuRd4CsH3pOHtl6d7nqtHNy5EJsDoyE5Y9yEiS/yGsPrRPXZLQomwgfznCVCah4s3vSuZ/1brFHtEeeFoQkj2y+Aee+Rh6pndg8qThHLwPKqw8CmRGgCBgAnMb9CbPnnRUrWllJcVwYt4cMl++cGOykQTRzsP3MuksoFHkaSz5dmch2V6K8s7BewTT4uEACfpbhGMLqZ1ZgdyqKxDJM=
+X-Rspamd-Server: rspam12
+X-Stat-Signature: gft5wbyd9n7wk3366k9ns8dagmctpcz7
+X-HE-Tag: 1765175406-820215
+X-HE-Meta: U2FsdGVkX19xEl7JVXJTXBKAwpTmKwrUmwmlld8qIn+8R8LRU+VnkksrK96AJEkBzmldEiGvAUgx9W6prnHNrArhqQj1UeAFR85BHO9KPMn2SlwJN91CwhyBf3XOmJoyZ5Oi2JfA4Kv1/ORVC/fpP4wsHciMfbhFWCYbci2TjNgTjXjazHz9N32FHU4LK/L2M2cLw99zWF9SBi4XK5cCPwzAigL21p7T/QYLxtuIZ6SoPukiqQxwYWe0joxFZWV4rGmT3AtCgw7rapCg0by9VrSok/Z2rQ0CjBNrq/JDe6Bd718bCkXOebHGev+8QcOb4CAUTfsPCU3AfKCkcPd+OsVhMzaEdIR9NzmusvP7Bjgk3klL6NlwetCNd+peZExAuYCckfRQlGzHt+9xGfQ7yAlNJ760R++zCbqUd6a9Gtze8+ucuYQH5/9O+6OmYaqa+iin2cRMNrci2MANwuhet0Ot/aQgIeoB5Ext82JVsmveyuPYTXQuHZt2X1xgmh1CMlBdTm7pyLmgCZx+xqwzraH/ELZpdz86A3ncjPThuqEJ3v2dydZ6C5Hq1ydtjRmaXodguXQqFkjGScs06ayJ5WAovKvCYlbSG5EoUtUhm2tycTUbEORnX1nkc25hpTRxUbJya/ARa7GjjQl1IVPSIb6YUBn124+I1u4ZzllsnVKvqdyeeln8I0IkSqe2MVbWQOrdqgWa0ji6r8s02C3fMNJ/tAPjBSC686NTtpvrKQJ6GBrZCi14nGlfIOgfwplzTVGQSKhWn28Tla0umfPBvhgyfL0SVeVnuBRfHGbTn8TSP7zCf1QoC0plm6JdLPgHiHUwekCzqJtHrk5jIrUSRihtvax94rO1YEI1KA5enyzFdd7DTrUDVo0ZiSAl1l9BGE/lXgjO9vrs8HEXI36noKHN7yHH2ZpYfXd2qSsGzbiUkt4p2mC4gQXxXdjN/RUF1jbyVPRFHcMvReIfZ0I
+ u90L7fPv
+ 2dBKDlAc84mxur5/I3lutpkglvMTVZEEnPr3pzLH302fJnnZcHR09ZNcpsiwPNvwbq0tknAN/VQMIrJZ5+M2hdUrLg0ilvzype1DO42FqpVX61xbHo0a9F8yc1KpxF4lU5NpZHt/kJ2o4Ee7QQOnR/C4APWrfwqGcLme3WioHFSp+lIRmkH7BVynocKt8jg8g9xlrNX0r3OjlYqaUtgBnGTNQAgMKYaTGiXWU8KFThM6v2C2O+lurQMkVU/YeqTlTXye538eK9xc9CJc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,47 +103,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The monitoring_attrs/sample/primitives/ directory is not connected with
-the core layer.  Make the connection.
+Update DAMON design document for support of page fault events based
+access check sampling primitives.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ Documentation/mm/damon/design.rst | 33 +++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 14478fd79953..16d58cde03e8 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1640,6 +1640,17 @@ static inline bool damon_sysfs_kdamond_running(
- 		damon_is_running(kdamond->damon_ctx);
- }
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 7fd819b8bbf7..a21973b33bc3 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -117,6 +117,7 @@ to make a reasonable trade-off.  Below shows this in detail::
+     <BIG UNMAPPED REGION 2>
+     <stack>
  
-+static int damon_sysfs_set_sample_control(
-+		struct damon_sample_control *control,
-+		struct damon_sysfs_sample *sysfs_sample)
-+{
-+	control->primitives_enabled.page_table =
-+		sysfs_sample->primitives->page_table;
-+	control->primitives_enabled.page_fault =
-+		sysfs_sample->primitives->page_fault;
-+	return 0;
-+}
++.. _damon_design_pte_accessed_bit_access_check:
+ 
+ PTE Accessed-bit Based Access Check
+ -----------------------------------
+@@ -135,6 +136,23 @@ the interference is the responsibility of sysadmins.  However, it solves the
+ conflict with the reclaim logic using ``PG_idle`` and ``PG_young`` page flags,
+ as Idle page tracking does.
+ 
++.. _damon_design_page_fault_access_check:
 +
- static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 		struct damon_sysfs_context *sys_ctx)
- {
-@@ -1654,6 +1665,10 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 		ctx->min_sz_region = max(
- 				DAMON_MIN_REGION / sys_ctx->addr_unit, 1);
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
-+	if (err)
-+		return err;
-+	err = damon_sysfs_set_sample_control(&ctx->sample_control,
-+			sys_ctx->attrs->sample);
- 	if (err)
- 		return err;
- 	err = damon_sysfs_add_targets(ctx, sys_ctx->targets);
++Monitoring-purpose Page Faults Based Access Check
++-------------------------------------------------
++
++The operation set implementation for the physical address space (``paddr``) can
++do the access check using monitoring-purpose page fault events in a way similar
++to NUMA balancing hinting faults.  When it is being used, ``paddr`` installs
++the page protection in a way similar to that of NUMA balancing hinting faults.
++Then the page fault handler reports the faults happend by the installed page
++protection to DAMON core layer.
++
++``paddr`` uses :ref:`accessed-bit based check
++<damon_design_pte_accessed_bit_access_check>` by default, and users can change
++it to use this page faults based one, using :ref:`access sampling primitives
++selection <damon_design_sampling_primitives_selection>`.
++
+ .. _damon_design_addr_unit:
+ 
+ Address Unit
+@@ -244,6 +262,21 @@ maximum number of regions after the split.
+ In this way, DAMON provides its best-effort quality and minimal overhead while
+ keeping the bounds users set for their trade-off.
+ 
++.. _damon_design_sampling_primitives_selection:
++
++Access Sampling Primitives Selection
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Some operations set implementations could utilize multiple access sampling
++primitives.  For example, the operations set implementation for physical
++address space (``paddr``) support two promitives at the moment: 1) page tables'
++Accessed bits, and access monitoring-purpose page fault events.  In future, it
++could be extended for more hardware features such as AMD IBS or CXL HMU, and
++support from the operations set implementation for virtual address spaces
++(``vaddr``).  DAMON API callers or ABI users can select what primitives to use.
++
++At the moment, only exclusive use of the primitives is supported.
++
+ 
+ .. _damon_design_age_tracking:
+ 
 -- 
 2.47.3
 
