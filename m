@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72CDCEBF88
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB2BCEBF88
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:31:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 277996B00AE; Mon,  8 Dec 2025 01:30:44 -0500 (EST)
+	id 49A546B00AF; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24CA26B00AF; Mon,  8 Dec 2025 01:30:44 -0500 (EST)
+	id 473066B00B0; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 053766B00B0; Mon,  8 Dec 2025 01:30:43 -0500 (EST)
+	id 3B0AA6B00B1; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E27426B00AE
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:43 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 279C96B00AF
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:45 -0500 (EST)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B23801409CD
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:43 +0000 (UTC)
-X-FDA: 84195330366.15.2103E26
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03E4E52E8C
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:45 +0000 (UTC)
+X-FDA: 84195330450.15.07E881F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0232412000F
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QEs8xFy9;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 64FD5C0008
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P0xtLSkF;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175442; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175443; a=rsa-sha256;
 	cv=none;
-	b=352XbT/xFW2sHNziSu8oFadHEA0aw97EzVEKcizZ8FXpNcxy5t1f6RhMseuBoHR86XXaro
-	RVPs0YSr5G9QAU4BxYVzJVbsJTLWfzCJwSmaixLE/zwyNSRUoG3ViHYRBdzhNDPPmWJcST
-	cpKQAPk4z8B8GGbzd6avroBraqEqTJM=
+	b=UtDTJMDyKhWiVxxuZKDxa/+FMJa7mYhI84teH4PWizzt3B/lX1eK6wt4ZPHSz/KKnv8FMY
+	EITDJsqiwQTIh48RQgcRs4L/wQuFsbj7WEGccrwJs/3qx1S1HqRgu3jQkWW0UP+MVxtxJU
+	jJVtIIk+4RwaLlEr8Yv1AgbOWbIq8jE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QEs8xFy9;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P0xtLSkF;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175442;
+	s=arc-20220608; t=1765175443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xx9JGFYIe5Z+LiZgfTzEP+XvXJiwtZJ197mOvlSTf58=;
-	b=ZD1+opBdefb3qJ02A8MUSBEE9BSxayqbgq/Rp0Tk5q7gyX44G3Am3qup3ukMb9y8Dhsy+3
-	VXeEW5wg+sRnUpGl1HFJ94IvP0ALBk/00U+ALmDgCg440+lKKtu0apyONWrCpzbOr58RVY
-	0lw043zHEMHzg9KpWRexwxEd8DeidR0=
+	bh=TASd7ypsbHELRl/iQIgcgE3faoafoP9DiIxXpNk8vUM=;
+	b=AWBN0exDBN42WCpcC2tq5uhsJdOvEOyfH1v/4aFVEXzh9UEAnDhqogsSqMoLmZWtLsbWUn
+	AgbzIYwTrHWTh4kmuXM9ow5J/sBQcRfQ6rz0oLcEesIb9MHaMRrx6+P4D0QGi3GOVsMsVu
+	4UK/dOc6f8Wpq7isB1HUMWtdeVEAOjI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 333FA40802
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E86C113D0;
-	Mon,  8 Dec 2025 06:30:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 969354390F;
+	Mon,  8 Dec 2025 06:30:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA08C4CEF1;
+	Mon,  8 Dec 2025 06:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765175441;
-	bh=RBgupw+0+IFAQYuywBDofV0MFSFxSZkVNemgNSqd6d8=;
+	s=k20201202; t=1765175442;
+	bh=3vYcUeBmXr4garxcQHjJx07QLWWSN2yZSMq4StEXQLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEs8xFy9N/5t6MNK2CW9AAKR6gDNiwtRhj8gFt5ysY2bEKeVLIvwaRR/qG925Ypc2
-	 64UnTu0Zd/Oyj/x+WezlY5QUBF6+gk0sNwB1wrGtSYiT2cIlajPMqNFriu35CaQYyW
-	 uJSfF5aQP7wPFdZ9SYEfJUgQeDjB2PQDtkF6fPWt5rNaxZJ90HRSuFIngFYB+itSdE
-	 1hbpcmy4Uc1E1kMcpDAmlIuwDlWc2+f2UQz0kq8y8lYCUBoLfb2E5ecL3inu0dgdU/
-	 TWH0+AzWqtrCn/xMZrNdLQMrt67rpb8tnfnF6nghvTQiDYEzVZ9qtjcAaUms3XANOw
-	 qqQzxtBHmf7Ng==
+	b=P0xtLSkFs7pqEae043u1j3xnB95Eun6fs+QGZgZO9d81R7nVANe8WzFd7INUNaH5J
+	 G0cu5g13QicS+7SpfXLfFYjeCO7OZky97UtEnCU1Fg8vOIqL0guCnn+Met1AgHKg5M
+	 5NTPXJXNgEVF4hk8vk1FGAsAu82jhb0v522m+QxbyOFfL7UlnXHN/ha84/c+mqS2eq
+	 0qSRuP9CaCpfcNNAkk+LdrdatyCNz+99Jk1hlLUrlAc3UBxmBAqyPlfv8/yoebiFZt
+	 WeGrFytSTuFCntaqviHlHDTKBMaMONUSg6xP56TYbN2K/XjRoJDfgJDnBS6pPwmnAS
+	 6VzqV0nDquVZQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 33/37] mm/damon: support reporting write access
-Date: Sun,  7 Dec 2025 22:29:37 -0800
-Message-ID: <20251208062943.68824-34-sj@kernel.org>
+Subject: [RFC PATCH v3 34/37] mm/damon/core: report whether the page fault was for writing
+Date: Sun,  7 Dec 2025 22:29:38 -0800
+Message-ID: <20251208062943.68824-35-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251208062943.68824-1-sj@kernel.org>
 References: <20251208062943.68824-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0232412000F
+X-Rspamd-Queue-Id: 64FD5C0008
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-Stat-Signature: tokr1dz3srdwzb75yepu5xy9rkjymy41
-X-HE-Tag: 1765175441-78986
-X-HE-Meta: U2FsdGVkX1+WLtkEfqUnLTzfzHmuStD7rygb+Fjh2jx7skhUVi/Z4Pnjr+Gf53n26xoOdAHSKMHcahxQtFD0ZBQx5ezkHdTqO2bye35EsuMuVGvgpU/ob+YFFzI4Qpm3pGY6MefCPCDBw5H+nWTiuoXC++cI4VuWiMBwN5LE57gkjh/pFzOEPRUj71hHlBA3rnyVon33OGqsGCydYP4mR5yHt1U23SBVu4BwnlQUv06Fcqw2Qr/kzLlezImzJr0Kvma0ReqvVjZHElI/+Bt8MfFmnZh6jgz6eqoSisRntXD1JYraq9k/WWfOKWjxUnaqd4Rg09Menm/4pKzE0Lhf/w1Mcfs92Urg18OCpi0Ww0E4YjNMXEAFlakQ3TWhvuddFxmyE+L6kA6bO2+3kF8MWWqOH63NCa6few1UnFupqsxNr+1dYTKzRGtKdBIHLk5YkiTGqmIdZIzuGHb3np7U3ZaceZGJGXm56OjsXJxK3QbfX/SOS4cxYxHS3dQSZtRnxuHyx8q0o5w8+bn0gmjMXTRg9I7HUqpBQxrXf1iDbbwUhvuOqGr8gz4AEUG7vLdE/mWN1zN7M03f58jZLpSSG2/smNJupzIYVb6zvdVrzniBtJzmAulJt+31ldnbd5FABQqV9aY53so8idlIUD6aSTmqYu0ETwO+LWHWUFPyqNEECvPoVChoyXJAUq9G53L+fvxAuM/J6QQQYvZc/M/8wv4aEoUj9PK10yWXBGa4n3X6ojqjuLDDTENqItu/Sn89Y2BPy5megy3gNQz/JLGDYQHVfxJc90wFOfo6wlqdHH3VpBtTya0DuOU+zEPLcEdDReNy257lFLbLQC/5iqgTO3IQUYbmDFAXXrhCLEJR+OKD23EWFf3LduAyLlCizc8m41tQGH2dLD2Oj9K8yn+mUBrUUr/HIVm/EyVVxGfzc3+c3V5nW+a8IeMLZZzvWzqq1n+3KeacsldCedDRVGo
- SfkqYDLP
- mnj3J3gmiCTZE5llkRws+wllQ/5NgSQM+p0ogTakdbT4I9a1MObZTntJB0xL5su+QV7MbLbjSQ0rl5rfvccdjN8GXCVEngXf1hin15pUGkQ02eCMznqP5hwWScTTdEnj85oCaOdhpNJvRi9dWb5UVIWeP3tMnkYLaKHCJJairgPiYwiaD+hZNxvNoWNJpC+H0wVS+t1FtO+voRNW/bWV7pQSAaycDCj0f16y+hU2ZpnQ8TjZcfHPMN31BeNF9Kxpds92fgtduk8sWRlZatMKL9Hyn12KIEryRAcevQSkq/UAltXmcERuPtEtdF93Mm/632ZIIYMxRLf1+Y4rQVZMuL6ngLQ==
+X-Stat-Signature: 5kmmkq5txy3zhnyut4edzdtatdocwgxq
+X-HE-Tag: 1765175443-798716
+X-HE-Meta: U2FsdGVkX1+zCVnfMaMTvhtKZbj5KhYyFvzO0O1Gn1R51rYK0zhAlgBY4R6QprtkzFmf8Emu9FF4V7r92qa+aiRtSOiHMhjZ0d7gifQi2RrS8vPUYC3SJ3eOOrVNe6evvrDIykVFxRlZsF5VUgsd3FJPr/7bkefREh2IM1RU7qvPW1gIGGy9tbNIcNKrWQ7I0xclujP6awWb7LD6qK03wphJU/hNFngdNlEwg9AYPYefzTomV8D+kzMlaO+4d1W26jhlEBEqA3bhk7/AdeoTKrC9AfP4xRnbIvgTuucCUHkbs8vI1W3OH9PH3nrx5Ja96FempwWHwn1hWcn8Jx+mTYF9jjOo3CrxPP3m7fActGoS3hGw77/PD7nT0lAvUO/aumPTevXnMJMtFnK4ChmNytRBrF3rP88MPbUHZLM0dSf1XnWUQ7uY6WRWsB1cfW5A3HEFETVvAR4k38p5AXoKVZAbXib6fWXdh/9MBt2vVNEGqTC7LR04ejinEii7ecufv4GQb+Fjr8O+CQgK3UA7c7jL/9ibsETTHaCFPhJKaemwVdXAG26GRcuxGqjok/jezJfzgnmm3srw+cIQgArs241hCOY2JZ5RxrlSEkEkv4qIQ4CHFKQH5RFUGx6SS+xl2l6J92JrOadpB/VsM2193ARwpsc3/vR8N8WAioPRRzY9oSE3eSukm/JQEcDQCTtoMD4WYBCLFFcoMmEbv/2YEvVEL16L9VjkRoTbrxglJnZ93BUjEmAKO1Hw0IuTnOAG0ZfhvbMytXGkE03gKxDEQqMU5HwHMll6O/qvyuUh+5qvoZ3bMtJ4UT1gefVrFlSKHWsNixFiH0I9S97cMBis4Prabxru0rEfrpfbZhc4lkb0kad1mBPmGS3X8VhizVgW8NcXnXgzmJZG53VIyf2Vjvqr8V96VuY9n3oZAyfmbNDqx/6NshNaCcyH0pAHekQYlXQhClT36HINS3w4com
+ C047fW4x
+ 7tZCiiTRjHSUBwe2vz07sjeJagMc8h4MYZpHxUYySDuyEjMylReu4TgWJIcFaG3jAphOBytIU5GKw48A0Hsj2O5voV9EjWBfqwef7uQMSat2HRuzxIpFtw6vNof/7dPRL/H2SagMKyJnHXHHwXBkRwX2HS25YBWbdIMW9VAmT8MVGK1A8crTvkgs1lW7TZ8lcKvU8TtLmlyjoKLEFfHPR3cfuHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,37 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_report_access() callers could know whether the reporting access
-was for reading or writing.  The information can be used for
-fine-grained monitoring, such as monitoring only read-only accesses or
-write-only accesses.  Extend the reporting data structure so that the
-caller can pass the information.
+The page fault event reporting function can know if the access was for
+writing or reading.  Add the information to the report.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index e3408280ea72..9299fc91ba27 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -117,6 +117,7 @@ struct damon_target {
-  * @size:		The size of the accessed address range.
-  * @cpu:		The id of the CPU that made the access.
-  * @tid:		The task id of the task that made the access.
-+ * @is_write:		Whether the access is write.
-  *
-  * Any DAMON API callers that notified access events can report the information
-  * to DAMON using damon_report_access().  This struct contains the reporting
-@@ -127,6 +128,7 @@ struct damon_access_report {
- 	unsigned long size;
- 	unsigned int cpu;
- 	pid_t tid;
-+	bool is_write;
- /* private: */
- 	unsigned long report_jiffies;	/* when this report is made */
- };
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 782af39ef0c0..e2fd17b83a92 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1732,6 +1732,7 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
+ 		.size = 1,	/* todo: set appripriately */
+ 		.cpu = smp_processor_id(),
+ 		.tid = task_pid_vnr(current),
++		.is_write = vmf->flags & FAULT_FLAG_WRITE,
+ 	};
+ 
+ 	if (huge_pmd)
 -- 
 2.47.3
 
