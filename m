@@ -4,102 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E089D3ABEF
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 05:19:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40ABACEBF88
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:01:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33A56B0005; Mon,  8 Dec 2025 00:19:55 -0500 (EST)
+	id 0B8826B0005; Mon,  8 Dec 2025 01:00:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE4CA6B0007; Mon,  8 Dec 2025 00:19:55 -0500 (EST)
+	id 090696B0007; Mon,  8 Dec 2025 01:00:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFAB06B0008; Mon,  8 Dec 2025 00:19:55 -0500 (EST)
+	id EC1266B0008; Mon,  8 Dec 2025 01:00:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BFF566B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 00:19:55 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4C96F13464A
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 05:19:55 +0000 (UTC)
-X-FDA: 84195151950.21.223D044
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 89F49A0003
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 05:19:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OOnzSdlY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3-F82aQgKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3-F82aQgKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765171193; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DAC616B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:00:58 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69E0DC095D
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:00:58 +0000 (UTC)
+X-FDA: 84195255396.15.8FD8884
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CFDFF80017
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:00:56 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aR2NDUD0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765173656; a=rsa-sha256;
 	cv=none;
-	b=gp1kltDPL1koRu+c5pPov1KtUUNTCVGMU3tplmg4Oa92RV/J8k5SupYynHBeVwQ8sgkDD6
-	ciKEjZE0CH+u9gWCwht52HnidCqeuN52zBFwaujTk42LsMQ0kEEwgKMY+YToWZ6xM0jj6a
-	H9IMyeyYzuJ7C8vehiVfiyZbcaBcqc8=
+	b=R23TokDY+Nh4jopgIcGtbco019+LLfs9+2z+uNp7Arwb/BuENEP4DMa8CnlV2R1VVy8A+n
+	mDCkL9eG6Cd81dKRlPjzalXkJJUFg/RgEWpIWi2a54QVJEPtXKoWuYiXmYclpuZBmE6ySH
+	7IaCE/lk4VlunMPueiWPbxCM0RiNlvw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OOnzSdlY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3-F82aQgKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3-F82aQgKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aR2NDUD0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765171193;
+	s=arc-20220608; t=1765173656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=O7UnlqZp5/SsOXN8+FZw5E727rrgqLolPXcKhpWhG6I=;
-	b=GGidwAGLTrcYTmNkjkdVKQUDFan5tiADQAYOrQ6nYBzJHLLcA96HiD8+JkthBL5ADDUYYe
-	lIwNLbRTfIAK/8cNggGOPrEj4gQMn4MBxw1kHYOqdUFQIU0Q6vLpdwg4NSWxn8GFksLqZ8
-	651piJynoeC+JEAVSw/KVZEKVat4Ps0=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7b9208e1976so7535106b3a.1
-        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 21:19:53 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=g7J/YDQQZ73q/SxVb4kAtd4MfgYR+nLwZii4e9V0PbI=;
+	b=kKViVqoACaP4zjb6pjifFi3iXBI7Xn+uvkqCNNtYGNn+l6i53wr4+APBL+Ijyr1OeRIPVk
+	G9p9XukzgVvmuqz9DPxjYvubEj1aMO7hOGrZMeoTqHYRYnsnlnVH1y+5eWweNRodPCTdf5
+	SqPmMM52RPbqd7Gg156NdJIzjVUDERo=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2956d816c10so47713305ad.1
+        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 22:00:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765171192; x=1765775992; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=O7UnlqZp5/SsOXN8+FZw5E727rrgqLolPXcKhpWhG6I=;
-        b=OOnzSdlYAUSEXxV7NHYiqICOvz+lHd4R1C5FABX0hncrqF6C4wjmyQ3eSmgGAgI3yz
-         mQvufwk3eTfSzpdsEO/cYhV04hDsAj+ecBf7Shs2lLbdRXjFcHDvIUQHFzLks6MMIf5W
-         ixw4T6y55sKS6NAYyb7AXGUzSGvIefyfGEt5rdt1rNCwwOsfoK56SDA/utClcIf7VgDJ
-         ia6bf1/8MUXvFep78zsF7g1noBRFKm84aE4TBt7HUrhe5nn6BFciMrjueA3VDAg5NHor
-         nYuE+/s0Kw1LTtJk8dT5v+ZBN+ODciHTReZyfYSV3zvDz3ddfoeOQ4jzJjU+sGZYG8RR
-         BCFg==
+        d=gmail.com; s=20230601; t=1765173656; x=1765778456; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=g7J/YDQQZ73q/SxVb4kAtd4MfgYR+nLwZii4e9V0PbI=;
+        b=aR2NDUD0XY3ojtM8UR7Kf8Kf3wT2VuHiN7hdlS1lI92mc77yJf6Ar3JQaL/AzPV3Sn
+         pyzB5bIWunZYbTHCMO7qQrHVhpCwTjTskj+AJI8Dp+dGLv29RDjRlwY6gldBXMgZ3P+e
+         D+IVNlBG+BxqTDWHYAELIF2aInQBG1F6CWtRE7ZWh4K+28ThftAxzwk6goD3ko0NXjVf
+         B2I79n/5Wksw2hSRjglrV3niOh80w5MlB47vJ3ot6stgpdzmb/P8e5cpMbo4Kkrm0wvQ
+         X53CBjcItjFl2TLERZfESggpOJKh0VTmYC8T0IwsDHCxUHvoQuse9fsaKhl6LfHJQmiV
+         cOYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765171192; x=1765775992;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O7UnlqZp5/SsOXN8+FZw5E727rrgqLolPXcKhpWhG6I=;
-        b=gdpLPyWb9C/rp7l3vx2LTjwK1W7esivsut5Q6CaODv2N35M5bhGbrgscrakkNCTGM2
-         HIUaDtH195rfCOarShnqJ+hjuSMzlzme9lb815y3IR6Tjq0mRlZbbIK733d2+wBSBmHE
-         zYWvOsLQ2CpyFMnxfi/JFq9n+WrdDQZFcKba37w2QyzCRJNax+j3JX5ejA0YCWlVXZyC
-         paO5vllCAXnVRrgwWkxsh5s8AZ1X1GwjDVHkugAMwvylX2cunfqkqWOt/PWI0zyMMtc1
-         XBcN7fCV/ic+PzueSB8MQ66XOXHct5U0gogokW/0dMBbwfMPlJtYEN2eAibjzoh0Cxyb
-         LoQw==
-X-Gm-Message-State: AOJu0Yx6GoXJNpasqrw6+D1N+lQInYBZ+tLLYcuKd8Ch1Mcht1M3iLLG
-	uXgOko0xKp0NVldauneoegJ017oNAvMFhxyvoHqSBQexOJe72Of0ey7eeTdBeZawBPvzRNQRZ/x
-	k68D3jHhnsjQBeQ==
-X-Google-Smtp-Source: AGHT+IGFL2y2uE0l1gR2kksUADBN/WD1xSApgUUsBRkgzcvvHK9GFS9UzGKDu1JX0VVjnQvvR6P2iD/uyZ96xg==
-X-Received: from pgbfq17.prod.google.com ([2002:a05:6a02:2991:b0:bd9:a349:94b8])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:2444:b0:366:14af:9bc2 with SMTP id adf61e73a8af0-366181421b6mr6673453637.76.1765171192210;
- Sun, 07 Dec 2025 21:19:52 -0800 (PST)
-Date: Mon, 08 Dec 2025 05:19:49 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPRfNmkC/yWMWwqAIBAArxL7naBi9LhKRFhtulAaGhFId0/qb
- +ZjJkHEQBihKxIEvCiSd1lEWcBstTPIaMkOkstKSN6wSbFr19vmZ7aTsef4c10pXbcCFQoOOT4 CrnR/4354nhdDPVPfaAAAAA==
-X-Change-Id: 20251208-b4-vmalloc-might_alloc-754a791e4e10
-X-Mailer: b4 0.14.2
-Message-ID: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
-Subject: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1765173656; x=1765778456;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g7J/YDQQZ73q/SxVb4kAtd4MfgYR+nLwZii4e9V0PbI=;
+        b=nWjCuH6fZPYNBePnLk1TnvPS0x9I+sS/CxP8mG4RJ/V5t83tJDXCTu8z0KA2PvoGcL
+         F0wGWbYLDNcjE1h3jFhnvah2X+SnyOxquem0RzOyeyCJhbtb+daiQgUdueAucPA7imW9
+         nz7Z2ohZLCmcNlwvHT3y4w/FOdPjXSaLXju/WjHIqRqcBlYcFOgM1yIBbE3RXFai1fIm
+         wbaKechiq3IKW6XT7VPjzxOOyR0866s5cGnQSCJzVRrBp8mQwaQ7h+/ZppZ0HKPcYLkB
+         stA8jqfKl6GW9AFcaSkIbpmHVBGMBFYeabhneSQebAJKm+YaqVqIxD4qT35YGAKhHOuk
+         s6Tg==
+X-Gm-Message-State: AOJu0YzYgWLHUYopbHg3aXkrcR+eaI0Aq3GeXASPDSWt8xOnxZlb+r09
+	1ahVTaTC9z0CV4FZYw3oxLx+7frIlNCjhgvyIxFwoIyegVd7jq/MAiGa
+X-Gm-Gg: ASbGncv5qtiDVwJcmkCKMjoJd4EW1t6MoPvy7JSYRMbl3Qw4lGPnhjqM0YUjMYPaQ9C
+	7ayxCED4ULZuuCmAG9ZG8UQb3KCj1pFIF3nMrEbTc84P3Xm5WwzTGaSiydGpwcErpl5k+jodb+V
+	Q2QTUa/Rsf+34k2H6GsQpZ+9awESahnqJR8EXPCuSIKa4MZlvLV97ZK6OO3haKuJJLH3IG7hxdc
+	wqJaz8DnGp/IuYXzrbPRmhwzVqlzwQw9wdEZ8lZJXN+bk7gzZxUQqLRjPcxoRXz4VYkOpSORjWU
+	a1yj6YLPV9s5JIc0gAuu6T3Kqc7XhU8GSaWJ9nshGyNuSjmgY5CoojF7lTVVYFUofgLzQIusfVy
+	oOhww9gATn1Z2DR0CdE65ejyEqTcps9zeCe/dJzJxyhW2tYlbu0JdCiTIaqvCeTYQ6fCJ0KUu/q
+	XJMuQqveUxIR07WEBAWniQBW9vJL+Z7XkVxFMo0MWwt2g9/KQyZo3FKgwjrgo+S0c8epc=
+X-Google-Smtp-Source: AGHT+IHXIrsIQkPW0r8bo+8VPEAaIOW9AaDvu1kQ2wNp/zv3km50T88Zq0l5Qov4Ovlwt8mRRYGeIw==
+X-Received: by 2002:a17:902:e5c2:b0:295:6122:5c42 with SMTP id d9443c01a7336-29df5792c2bmr59443985ad.24.1765173655633;
+        Sun, 07 Dec 2025 22:00:55 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:764b:de35:13a7:56dd])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae4cfcfasm110235295ad.41.2025.12.07.22.00.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Dec 2025 22:00:55 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+e008db2ac01e282550ee@syzkaller.appspot.com,
+	Yu Zhao <yuzhao@google.com>
+Subject: [PATCH] mm/workingset: fix crash from corrupted shadow entries in lru_gen
+Date: Mon,  8 Dec 2025 11:30:45 +0530
+Message-ID: <20251208060046.2933866-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ihdm63dah95qtu51spjxsdaqxfs9jd6n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89F49A0003
-X-Rspamd-Server: rspam10
-X-Stat-Signature: ebuimo9x6ceyr73ddye56mfym8so9i37
-X-HE-Tag: 1765171193-624742
-X-HE-Meta: U2FsdGVkX19w9/6zq7/ge+HtLzNtwc+PfB3DrG5/GRnzj/aBoPCwRbzb6Gz1KmCDayDAReVKoDiWRiMCdzXpQeFptwR22dqt1WP+wjkGlXU9aMi3731+UJJFTZUrBikFLBXIAc2+7VeYL7xF98r8qKpdALgBtdilcHMBMn8PduSdnT9wHYzgeZJE7s0NGODLmqgwQQxmFvXAqBml5x66wX1IdPKXiYzYSwa3VwR/NtMu8qMw/H09eSEHV16nPQTXfoRiTQB5+Wo+YO63z2IUKwhluH7qWyNNefU3mae37WpX40c6mHh4FFRuEA19bEiDc2xqbU7wynyOXiQq+y06PcHtAmotG47bhKEPzDe+CRKtZmu3WYPYw+dIwzbhpIFskEKACsd8KKHyKHlrwkD2Z5kIjSJjDJy9A4Rh1+mi340crBot62dHTW6nYOd8TB6bqsix7lDlOOQ9/BPJZ66p6ZIfgX2Qh0Ik1gjxyhJn6am9HKfLRkwaFAwzbGV48VORgxcKYRHeFZPXwgEKrJ6nrL5qvs1dI6gZzhu/IWgSrQUV1Rg+P9ZdMq0z89z1YIk0l8ocfbBNGGLnEd5Hb/gUG2Vsa2/QINVVUMTbHQrYLmQdCZMmjgGmthsSj0usApTuAzASaqJbpp3ZUnjScBrsHHTDgnNx++DxuyMj4DXU5MssB+VJUEmAWHO1stcfxXf7YJl5yjT4BL7UGrVIRvV0EvVUQBYbE/uZYtemaRpbxbxE4w0YzRhJZ0CSZ0Y1ZTnEVnzubiSfPoRQTQQVG/KLSODilg1fUAUfesxVVj0A6UEsIp3AfhQaJMOidYFFy21cEOJdctvDsYEQYZpntKFHIU8hsT1h42YIl09dl58St0mwLOWtipZRWyf/99nNkUbdiQ8/g9mkRM/NaAR/kfwVr8BO5HvW2p7A5hKgMcWQ3atUm3i/sRV6MO6jho9Duhn6oJvosJvml1haYkHJPcy
- v4CxuMj2
- MkGligJ0VnHbtwxxU4fhw06uA7fOENjRXzJtbqK3LZkU0WYJdZecrbrFc5S+JvCCFD7K8JVFE6m+GJrVE09JPk57D4Ym5Lw0RcPqFEBq2c971bLIWRCy/4aOK3zXuuV3T3CjT/XGtDVIKJV+PiXoyMyQghZ+AhDWtOm1m/YHiYgaXJd8CzDJEBPtRu9L6EX43qKSS6Ph/qnr6xOmr6cXffHVEuXG1qbMZ46suT1nlKp3NdMvXyzMfQMqR/N6cNei2dQz9/XkyKYCghNTouHgRHTBddSa7Mj6XdGJR9R+6m2yI7RIaQ5FICKfaFT0qXKcvWyHOshCmn37PwGEnvSpXDQLT3VuPAudDhYUKA3bPbMawvQBqSls1UZtFrWq7uMJ/Da+u2u55hL3Cht6kUqCqNn5tvZ619f+cliLcKfYWXkLdb0BlG8KtEJuxFOLV9Hd6p8YZs2MyVDq/lt2RQ7TmJqZB6Cj/pVYlyLwlEveEDAqpzUw2QuFdmOYZ080cOUkpWbBVrSgLZYtiMiK0aMMJLiR4/Kr/54NRebf5jii+70KegNEZGNxzqQqdEG8aF4PH7+2RAji4F0j5BcRYQVE4edhaWuhSPOoH8ejBAzjH8liyZgKljSYdvO/IAmBJlrw8kp3u
+X-Rspamd-Queue-Id: CFDFF80017
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1765173656-466115
+X-HE-Meta: U2FsdGVkX18oSMb57xxcGQeeCnv4iTnpf7tjr7+hX6ZarUZ0x06To5iU1VTeN+rXY+nWTIlfs/EkpWmMkH7BUiih+aMtD6emGb9wOuzoFbhfMe9cTU99sZaUPeu+BPD0dCb8Ki9ypyjl8Y5Mcwzp844mzjw7MQ8qe2PgJ3tdD7mFJw3+dlnxUikuWsSm9F+Ej33Mcnfb0vr/nP8QHXIfnSl2b6JNryqcy7ciD9xYmRBWs9t2P2oCNxdj/bC04bPkk8m9wIg1hta+WKaAmRupXn14rEd1SwyCThBF1/M6UrDssC0MXOys908jkOgd8C57yNOd3FC5KF0cJQ6zyGYoLT1Z+/KFntlQs3bq48HVIy2U8wLO3hfVkilwMYaQRjXPeMvOTdOKT3hVroM7ntxK+oaOwWCe5OZGScfoTbVUV5V2b0vR1OVHSgcbSzNbeS/KsvSZDAw6xFEvBMCLrP296yLLsHRkUfk/r2d/c8yOYz01Cf6LKdNR6hcE9B9oamUt3UMaacaQO+SAsKfxjvwMJfPZ6qhUA10FDTSLNS4Oaew6HMkY0J7pNsTSJYkWCFxLX1m41Xry2mahMRMZxLz8yHwLtSYpA6aDNPLOH8ndEcVW3D0AltZUQEdzkEtZ/oNV10MkhPRVSg2Vaczkw8qGQM4chV800eabzNjW5nVdDy7eWCURWnXxh9KNxCetsaf4Ws84TnUwpRhK78U4ozeZ9Vg8KYT/dt/+fxoV69wVcSo6dI7Hf2a3Jo+9p5CcvO87/H/xeD5EalbNXHhco6PJnJSdUyjke+e4/wi9Cw7NZIVP0h6lIS0Pvs52PhqsZzvEHh7M5hz9aSfDQQ106pg4QsAh+Ozc3rH/nYADyZdHRH6stlU4/B+aJn3Om9VzbcqgrA0tKz4vCtr3+qZ2DB5IfrrosU7TFAtlxru1Rhee/oymWsXHNfcS9dyvd23Zbp4t+miIzxr5jeMDBeSncJg
+ moZ1svyh
+ V1Omew2JNALshkLPTbmS3Yfc3cq6ytl/sXK1sHuX+7HSsvDzB4fj0+jKz3owJ5sw96ykvGjU3mvTHRevGg3g11Y/meBu6tKtwzN96443tXSw/UiQOu3CrgGA7wSbHwZDBLCRoVaho5jt9aqcj2Q45zfUTMOuUc8TeO0f8tw37x2jff2eYWfVBDs2AiFmBo0J5BblXnlNDvSjWxbA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,45 +127,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The only reason vmap_range_noflush() can sleep is because of pagetable
-allocations. This might_sleep() is accurate, but we have a more
-precise way to express this particular case, so help readers out by
-using that.
+Syzbot reported crashes in lru_gen_test_recent() and subsequent NULL
+pointer dereferences in the page cache code:
 
-Note that the actual GFP flags used to allocate here are arch-specific.
-But as long as GFP_PGTABLE_KERNEL includes blockable flags, it should
-serve as a reasonable common-denominator here.
+  Oops: general protection fault in lru_gen_test_recent+0xfc/0x370
+  KASAN: probably user-memory-access in range [0x0000000000004e00-0x0000000000004e07]
 
-This also ensures there is an fs_reclaim_acquire() even no pagetables
-are actually allocated, which could potentially do a better job at
-catching filesystem bugs.
+And later:
 
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  #PF: supervisor instruction fetch in kernel mode
+  RIP: 0010:0x0
+  Call Trace:
+   filemap_read_folio+0xc8/0x2a0
+
+Investigation revealed that unpack_shadow() can extract an invalid node ID
+from shadow entries, causing NODE_DATA(nid) to return NULL for pgdat. In
+the reported case, the shadow value was 0x0000000000000041, which is
+suspiciously small and indicates corruption.
+
+When this NULL pgdat is passed to mem_cgroup_lruvec(), it leads to crashes
+when dereferencing memcg->nodeinfo. The corrupted state also propagates
+through the call chain causing subsequent crashes in page cache code.
+
+The root cause of shadow entry corruption is unclear and may indicate a
+deeper issue in xarray management, page cache eviction/refault race
+conditions, or memory corruption. However, regardless of the source, the
+code should handle corrupted entries defensively.
+
+Fix this by:
+1. Checking if pgdat is NULL in lru_gen_test_recent() after unpacking the
+   shadow entry, and setting *lruvec to NULL to signal corruption.
+2. Adding a NULL check for lruvec in lru_gen_refault() to catch and skip
+   processing of corrupted entries before the corruption propagates further.
+
+This prevents the immediate crash while the root cause of shadow corruption
+can be investigated separately.
+
+Reported-by: syzbot+e008db2ac01e282550ee@syzkaller.appspot.com
+Closes: https://syzkaller.appspot.com/bug?extid=e008db2ac01e282550ee
+Fixes: b1a71694fb00c ("mm/mglru: rework refault detection")
+Cc: Yu Zhao <yuzhao@google.com>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 ---
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- mm/vmalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/workingset.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index a53c7462671bdd896f95712af71398ffbe22fb80..ff1876588b94ec69168324e93399dbd117a6959a 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -305,7 +305,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
- 	int err;
- 	pgtbl_mod_mask mask = 0;
+diff --git a/mm/workingset.c b/mm/workingset.c
+index e9f05634747a..0ec205a1ae92 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -270,7 +270,14 @@ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+ 	struct pglist_data *pgdat;
  
--	might_sleep();
-+	might_alloc(GFP_PGTABLE_KERNEL);
- 	BUG_ON(addr >= end);
+ 	unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
+-
++	/*
++	 * If pgdat is NULL, the shadow entry contains an invalid node ID.
++	 * Set lruvec to NULL so caller can detect and skip processing.
++	 */
++	if (unlikely(!pgdat)) {
++		*lruvec = NULL;
++		return false;
++	}
+ 	memcg = mem_cgroup_from_id(memcg_id);
+ 	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
  
- 	start = addr;
-
----
-base-commit: ecc46e02e0abe025a6e840cba2d647f23fd1d721
-change-id: 20251208-b4-vmalloc-might_alloc-754a791e4e10
-
-Best regards,
+@@ -294,9 +301,8 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 	rcu_read_lock();
+ 
+ 	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset);
+-	if (lruvec != folio_lruvec(folio))
++	if (!lruvec || lruvec != folio_lruvec(folio))
+ 		goto unlock;
+-
+ 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + type, delta);
+ 
+ 	if (!recent)
 -- 
-Brendan Jackman <jackmanb@google.com>
+2.43.0
 
 
