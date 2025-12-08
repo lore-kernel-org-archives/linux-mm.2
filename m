@@ -4,102 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21178D3B7DD
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 08:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64AB4D3B7DD
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 08:52:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ADF26B0005; Mon,  8 Dec 2025 03:51:37 -0500 (EST)
+	id D061C6B0007; Mon,  8 Dec 2025 03:51:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 765026B0007; Mon,  8 Dec 2025 03:51:37 -0500 (EST)
+	id CB69F6B0008; Mon,  8 Dec 2025 03:51:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6749C6B0008; Mon,  8 Dec 2025 03:51:37 -0500 (EST)
+	id BCCDC6B000A; Mon,  8 Dec 2025 03:51:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56B8F6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:51:37 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBC358B0E9
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 08:51:36 +0000 (UTC)
-X-FDA: 84195685392.25.6390013
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DD0654000D
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 08:51:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cr1DCUmR;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765183895; a=rsa-sha256;
-	cv=none;
-	b=kHiLo1mWs5tqam19elO84lSqF5jShIe/q2AYF4wcdgEK18Hov8GEltvB7AyVI98DDzrT7p
-	11oZIDp0FwaaalUjngfnL7UPjb+ZbYCd9H/LiS9tDlVf1zK6VzeJihQ0Vf4/kx13Xd4qh6
-	/6D/OfSmnlhlv4SGBvvHNbTUzkFlqVY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cr1DCUmR;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AFA9B6B0007
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 03:51:59 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A0058B1A2
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 08:51:59 +0000 (UTC)
+X-FDA: 84195686358.12.20F20EF
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8A4C31C0004
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 08:51:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of 3rJE2aQkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3rJE2aQkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765183895;
+	s=arc-20220608; t=1765183917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZupgdnI9DnGIKI6Kb2R3FbGbwkmxc3TNKDnNAKjVIyw=;
-	b=Fdahqb5DZruXw3AaagIkyOk5tN59vTcfI6P2LzqqxnIjASSxXwQf1jCmtCN1zYWjBn15Yz
-	TR2Qj6nnS6v2yCJprRnHnSsCOuT/92bTXHM4PMo3ZxWenGKizglc16XGDJpc6X2W2+PwbO
-	3P8mGHsssN5kf/TAJuo4LbozSagLJl4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA1F344237;
-	Mon,  8 Dec 2025 08:51:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAE7C4CEF1;
-	Mon,  8 Dec 2025 08:51:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765183893;
-	bh=VJIYaAqKOVNUR+Rg7ZHgeKhTWwi4euQtMnCdZt/0PUE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Cr1DCUmRwq97YX8qI+fsQH6Nnatf0InWW3TZngZE6rYJvidws+6jIYYjKa5bz/lIJ
-	 QoYjEKv1VH6g4Y74txefNK4WVb0kVzHyWc3ObUTBYEFcekosO9ijr9B/vFVzf1JPFw
-	 cbOXfnN/6d7fN9dAWqV/90UufL1GrZtdlpgf+l4ZfpxeOa6kwTSwB/QrXK2Tt/Xyl8
-	 VZ84ikJqfLUn9QVOdD/CCBfn0FitqNDB23iYppF+ERZHx64E0QZwuHCcYM+XC3tsUV
-	 mn4rQrhzzs2jVESkwOwNLCVnuMQ+QXrki/YpHTOZzQtqMbEMAeNElw0NShmrE8+tiA
-	 ohTB7nlmHwk7w==
-Message-ID: <3563e215-1301-4c2e-8a4b-b690dfa643d1@kernel.org>
-Date: Mon, 8 Dec 2025 09:51:26 +0100
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=sDe0xeAjgzNdxwDHvW7PBua6ENMGHlC7KWZQ6HmwjCc=;
+	b=ThBHClHuitKK9Ng9c97WB6z+YPJqg1ezMKlJ052lRK/ecnYSGyasyC06iUg/mZ5xEjd0mF
+	VoVhSTyJNjlhjgQDZ+L3CnjD39qCbBQIhMSrqBD+TVaYs1t3gwOqMjJD9K8ojBKvcDMXzx
+	4sPtWjgepNPR3T2JxKu3TWd2/e58ayE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765183917; a=rsa-sha256;
+	cv=none;
+	b=HdO/+uXXehESiM54tjZpzSFQ0yzI8FFuKXlT06r36/XOwRCsc7oY4Y3yoqbbTgVkn5Gx84
+	seLe0oWNMFK65+MNyz5PG5pkvKPTDCVJcmIV1zI3n0jg1gVVio0FO7LVR3NZ3m66vezWpz
+	2akjFReA5PAc7/ZlG40so4uVeo52iB8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of 3rJE2aQkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3rJE2aQkbAPktz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6574d3d44f9so5929857eaf.3
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 00:51:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765183916; x=1765788716;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sDe0xeAjgzNdxwDHvW7PBua6ENMGHlC7KWZQ6HmwjCc=;
+        b=PGQ2FfLoHXc+MfUeQRd5Ha4b83qh8JH0EBYC9/gkOrNEBhDkricoJIJZPM53EPxQoU
+         d3JolNq7vqktiwzBWdPGCZIdpiukxAhTJOAjKaUuC3MzioL9bT4Qw4fVQUwPK8f+6Wff
+         OtogrNi0romEvYRWNqeT/f17pPUO0BkBjzFdK2VhgIdS8LN33CHK2v/tX6z32bNkMUBA
+         gTV/4qxHcpkt36rdJjadsuAx3avCxCclNBorvBQTw0SLYtjwTwmoZt+o6yX5kUs8MjA9
+         ctvBXEyKuvdce+XDGrxwANladUQnW6gMDkBkqM5w1nShipjBnbchb3u7aJldyjUlhV3i
+         uOoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOBvQkpOljZbYICzyHyRVzlvgWcWJO6FQwQ7CosciUal0Pc1AtqnOIaRxpvEEiT1x27YIGdXEt7w==@kvack.org
+X-Gm-Message-State: AOJu0Yw47wPuq4u5TvCKA7+l8Ybt/OInpB51sjitsxfhxUctDINx48A1
+	e0a8lipQ6x7F4/aUrEvsPSfGTVLG74iK0sF4J6bL3NCN0zkx1zZhe2kXZC09kMonOnN+1Px1ona
+	u27T3vCskrfjJiuCzwQLJzUD/HLBr2l44z6u6Cxx6zG1nSNmK3wlwIBaJ46E=
+X-Google-Smtp-Source: AGHT+IGtvwHrx/AkNqeaV2m0nK1GvmPORsu2iOrdNfP1gsPjaxV0kpRKM/+woqeIgtcQqJxd9o9HWJOWGRoxEocNzE2nSi5KErBo
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11] mm/hugetlb: Eliminate fake head pages from vmemmap
- optimization
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Usama Arif <usamaarif642@gmail.com>, kernel-team@meta.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20251205194351.1646318-1-kas@kernel.org>
- <e1c50f7e-cec4-4676-b5d6-f6446cd64ba5@kernel.org>
- <bdie34dgpltxd5ayvjvqkusx4thdrrebgllvwp333psfuu4vgj@bkfxg2c5sfr2>
- <01e5d0b3-dbf8-4f77-b38a-f48c46f7c31e@kernel.org>
- <ysvhofzg5mdtvxfujdsmffkuqna72pr52ehrpglmlhxnvwstas@xurgptkgtnbe>
- <1b659d59-b1c1-4910-baab-0eef7cda234f@kernel.org>
- <3v5hdubqnil6w54kimvbgapghj7irjp7xuqma6uxtsrpvj22ph@6t47vsevdwyi>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <3v5hdubqnil6w54kimvbgapghj7irjp7xuqma6uxtsrpvj22ph@6t47vsevdwyi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DD0654000D
+X-Received: by 2002:a05:6820:2293:b0:657:7272:e011 with SMTP id
+ 006d021491bc7-6599a8c40cemr3736380eaf.5.1765183916719; Mon, 08 Dec 2025
+ 00:51:56 -0800 (PST)
+Date: Mon, 08 Dec 2025 00:51:56 -0800
+In-Reply-To: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <693691ac.a70a0220.38f243.009a.GAE@google.com>
+Subject: [syzbot ci] Re: mm/vmalloc: clarify why vmap_range_noflush() might sleep
+From: syzbot ci <syzbot+cie262549d3c7e101a@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, jackmanb@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, urezki@gmail.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8A4C31C0004
+X-Stat-Signature: wp57xd4cjcwbd9sh14k5p436jpjhi65p
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Stat-Signature: mfb1khht3hm8345ah1o1sguzbn6de9cw
-X-HE-Tag: 1765183894-540396
-X-HE-Meta: U2FsdGVkX1+NnXE/CDfbc19dy0X2M69T7jr6fE0OruQuD31TBLV7Eufifw95jk/3o6xykl1CPSwsBPq/hxgI4VfqnWxGEa5lspz8gtsXFn5Psie2tCLmxlbmsVNsjOLK11WRDWh0cJw6/ysuky6Q5npXpKhQaFii3rpcvGTzL3DJubflgfXkSpMgxdUr/R4yi8CD57OXRySX5vIzvdLlKh3//7n7Tr/S70y1SEd0/UGmTypWYUBL83vhrdT+UCcxXHUcI0Rp3h/rd/lVycY9y+EJWRaA6k6aNwHCAkqJsg9yEwGww0bx3jTJ2nc7R7TORW42dbsATEKmNcBrfdWgrwl53lb8OLBXPHBWR//4Y98AOEXieVw3Oee7JluObqWlzYweTXzA5IMpBF8pQgDKQ9pK85XtHVdrZGV4NYvlNfqgI3wFBeQoUhD+4M9hPu1CA3KTqnFr7G5sLm7vq6SIjUrD4jfhtdJst5G5N6sU115tZ8j7nU7e3onEvs6LGe1gBo87+L6ZBPnqORvCY9pFGH28AeDYzWEqwRf3xE56wSbFKL2D3/vmiVPGnj1WeKNI0LqqjJQhLLwZzDr8pEOzXKIWBhUs3yK9LBO7KtV30P8uJKCdg7LFTi+K/2pfQ9M9bYIEP+4Z0+ySfBwlswirshvnwMghAlqd5vjylXSqaGNGmv4cFJZF6t3xmOCoJSy0As6r1Hn+pCILSiWD4yJXglyKgcKL6bbPMAqZOgMJ3hNrBRAtKiixi75ngIQg2YB4B+6YFZ02Q0+jAFFKqaNpTJium1uOP1vEgPZVDwQTLGRl0Gi4dDNXjleP2KLFkWISJpUZU2BWH2MAndR7XfPViLiYrsgvFIYPVnT4+V7ckQ+b9x8DKLUV4+q0JeNJr7zXLE4xCRMjZcXWb/TfXow80owmbhv37/x6O5YAvtD20yrzm+U0lAzLhOmkEP6hBXaMPfLXFyUADf1F++cXdh6
- 4qhJYbZW
- e5gQA6TZd4NMhF3zje8S/XJTdTQve4pCwaCSHxnpH6sEIg7hloD/RAc0t0hUAT6O+sn73si0dinAyEGqrB7uWLaUWAcMmG4ixdpEBToh22gu2WTWEgki9H31JQwluAQBlmprLyu0hbENo9HkCOVSaW0Moqa508LWeLssP4o3ihiDJ7E3eaaFCj8mS40sJElhw9HBYQZ5FwSMAS5P/JjvjzeWSR89G7oIOuexmignGugsmKbAedbVn3pz/OVdOsPArrx+z
+X-HE-Tag: 1765183917-898995
+X-HE-Meta: U2FsdGVkX18OnIRGhUUFuROAhQJ4T1Pn68p8V8KychDwNJBkVBsBe4JlFjSj/AQbZWN2+Za6XqYsg4uSoaTfgS6bD57EUEfZCLyiAoG21Gkv8eBGtVnhQCtGyeen15GJOn04xfpACxR+ceHZkyhOgsLpwpESwHTmsJV5QE97snU7SzfCJy8m2rxpsvEyBuhTXlthKgsxtymybkdhbStiWYRhIyCFlXnoRkxqVXx3aOnBhgbEZvtMU32iJ1yfO9MXYZdErJ86Hh0M02VSY0iAr0GNcN/C7NgYsr2OFMmwnapZMYMd0ffRk/EK0ma6CVsCNJ099xhExN/jucg/Mw5KTd1MDNqtKRR1CXjVI803jmBHo7XDcFQg5QVwJ4kGYyhD5cEoHmWFfOblORbRZVj1Pu8EDNyNkJ36OAi43UixQlvZ6POA/dDujJR6QbDkmLcQPjHu2pSozZ1H4aDwEtnuJaTfxSOTagaSvI3GneLmf9ciojyq9+WMr1cbz1Y1x/kAChEM6PoWpaAogsVHY1nAGrI6OhXvDfEsRdjutQgpopLiF7o1/2HPvTMxJRIpVnrgPojN8OYVicOl8x/xnp3G0M0sCf7kCIUceD0By5Eu/c2hmH/xZFX912mmBKaBU9UgRRcn2NTcS2r2/2UB6PY4H6ydncvbqdvvcrfs1kFOUR1AbInDGA0oP/OVMUzraQCS5WnYxCEGUA8O4/WxpHRMJ1aw9E13Y/iFc20fdhv+3gh9LbeqfB6yGHIOTwDfjSvTRzpdfH+gtKEuTwlcRMpKg+MXdF6g8ejobG2AkxAMvPxkgf7LpWA0UeBOp8bWWeZzu9ZU3SdDW656uemKRbMEfXhKjcfOS7JYuyBdxv0LOBesK5i9bpRWcKcn6iYRDx4atvzeE04Lg5JG7eBIsBnQw2gFy/QiSBxoxg+rZ+sV7EoN31x46wo4qQ3Jz0dLfKy5xt9DsSlDy9sVdKw3IBg
+ q6OnG8wk
+ xWC/ki6TFvmxZJlL5mdcmd4aMttBUfSEYmFFycPA4MAYjoZvRz0O2pZFViM38hVdqt65SaX5z6MW8esVlYKG0VQrPq7V+l/ae4lm84+3WHLwKlr/8CTN+PEwi0MUTlYuTAXA5G9FQPjxUsUyjmtn6D9MiBe5ok4e+h9obXyIqMS0JhkVM2RiEbbxG7YYYgwjje+rTygnAo8dZ+k9vAxZYdveP6PkhBu93QOnhSdWPpJOvxBTSSyDLs9nfnwikAz9vk6j9ZuhGJbUdHt9nIix1MT834JdhekSU71azaXfYgBaX2aV+/O5r9yO7Ke99ye8j+rDgLd2lgIp4DhalH3Ojx7BV585m/PwBeIx34E5PY8OGfEVNPIN3m7/kz1eztkYr09zXtyl7eQ3Ryn+tB2v2LOxAoX7+9L0VVWshvw1fqIuYFHL01+AJB+Dycve3PfttAVTQCbRA2sTtWPbeBOPpNG594UuengWswQMxWS7qpl6uHKxevNev/hEv+knoq7jSVx6uYg2nRaKFVXwvamBjhGWXbjRQP5xHWYIEIwTlmwoPg2ZBCE5/L0pTo+T9OFqSkE4UuUF3GZy7XR3zsGFBA97/4v4VUxb2sMTi2pmIcew78hh+A1fK9YDvWbrqORCHQWNmYGbKQrwZ9pECK6FqBwXIgIo2w2kHvqDfdOifqDN1I6aclvTV2EvrE6MvLB9PxKHL+zF6hDqKZ1UL7GQhRK6Uf9UPUw777AzX1QTTNCEJAJngw/G0PdUh3DYnv4iTC6D5iKMSChltKPKilfVZGRYiRHSVG7RSuem/bl+0wNwh+fhHUlQNAJ+ur6Y9fhB4/gi1jiWDsRHF8FcNyboKXI8SjMYG2uMg82w1EQ/AdAqtP9+jrCrr26UUbAb08EqMff7Z+XHVjtXsFfRuE02JJtGeAmC9WdRjVRtLWOTBbsiOenO108XGSkpUPwntTdl1acU91UWVJKUlJ2vXKcUn8vB85KSF
+ 3CXbrXZG
+ bHQxe1n6KD6U8iE0k12t/HVgjJD+N8CB8XiocSdjfhzwpAY+dxMtBupCSwGs7Sj6h/0ABecGwB4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,70 +99,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/5/25 22:41, Kiryl Shutsemau wrote:
-> On Fri, Dec 05, 2025 at 10:34:48PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12/5/25 21:54, Kiryl Shutsemau wrote:
->>> On Fri, Dec 05, 2025 at 09:44:30PM +0100, David Hildenbrand (Red Hat) wrote:
->>>> On 12/5/25 21:33, Kiryl Shutsemau wrote:
->>>>> On Fri, Dec 05, 2025 at 09:16:08PM +0100, David Hildenbrand (Red Hat) wrote:
->>>>>> On 12/5/25 20:43, Kiryl Shutsemau wrote:
->>>>>>> This series removes "fake head pages" from the HugeTLB vmemmap
->>>>>>> optimization (HVO) by changing how tail pages encode their relationship
->>>>>>> to the head page.
->>>>>>>
->>>>>>> It simplifies compound_head() and page_ref_add_unless(). Both are in the
->>>>>>> hot path.
->>>>>>>
->>>>>>> Background
->>>>>>> ==========
->>>>>>>
->>>>>>> HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
->>>>>>> and remapping the freed virtual addresses to a single physical page.
->>>>>>> Previously, all tail page vmemmap entries were remapped to the first
->>>>>>> vmemmap page (containing the head struct page), creating "fake heads" -
->>>>>>> tail pages that appear to have PG_head set when accessed through the
->>>>>>> deduplicated vmemmap.
->>>>>>>
->>>>>>> This required special handling in compound_head() to detect and work
->>>>>>> around fake heads, adding complexity and overhead to a very hot path.
->>>>>>>
->>>>>>> New Approach
->>>>>>> ============
->>>>>>>
->>>>>>> For architectures/configs where sizeof(struct page) is a power of 2 (the
->>>>>>> common case), this series changes how position of the head page is encoded
->>>>>>> in the tail pages.
->>>>>>>
->>>>>>> Instead of storing a pointer to the head page, the ->compound_info
->>>>>>> (renamed from ->compound_head) now stores a mask.
->>>>>>
->>>>>> (we're in the merge window)
->>>>>>
->>>>>> That doesn't seem to be suitable for the memdesc plans, where we want all
->>>>>> tail pages do directly point at the allocated memdesc (e.g., struct folio),
->>>>>> no?
->>>>>
->>>>> Sure. My understanding is that it is going to eliminate a need in
->>>>> compound_head() completely. I don't see the conflict so far.
->>>>
->>>> Right. All compound_head pointers will point at the allocated memdesc.
->>>>
->>>> Would we still have to detect fake head pages though (at least for some
->>>> transition period)?
->>>
->>> If we need to detect if the memdesc is tail it should be as trivial as
->>> comparing the given memdesc to the memdesc - 1. If they match, you are
->>> looking at the tail.
->>
->> How could you assume memdesc - 1 exists without performing other checks?
-> 
-> Map zero page in front of every discontinuous vmemmap region :P
+syzbot ci has tested the following series
 
-Good luck convincing memory hotplug maintainers about this added 
-complexity when making vmemmap ranges (un)available ;)
+[v1] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+https://lore.kernel.org/all/20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com
+* [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
 
--- 
-Cheers
+and found the following issue:
+kernel build error
 
-David
+Full report is available here:
+https://ci.syzbot.org/series/ca5fb0b1-49a4-4066-b78d-d144e56e0d2b
+
+***
+
+kernel build error
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      3f43be96f919cc611dcb2a4e38dd464831f4513e
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/1d630f58-694e-4568-8ac0-62e02ea8a59d/config
+
+mm/vmalloc.c:308:14: error: use of undeclared identifier 'GFP_PGTABLE_KERNEL'
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
