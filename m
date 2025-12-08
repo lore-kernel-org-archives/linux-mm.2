@@ -4,105 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DD54D3B7EA
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 16:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77EAAD3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 16:48:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 325446B0005; Mon,  8 Dec 2025 11:47:11 -0500 (EST)
+	id C51DC6B0005; Mon,  8 Dec 2025 11:48:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D6A76B0007; Mon,  8 Dec 2025 11:47:11 -0500 (EST)
+	id C02056B0007; Mon,  8 Dec 2025 11:48:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EBD36B0008; Mon,  8 Dec 2025 11:47:11 -0500 (EST)
+	id B3F7D6B0008; Mon,  8 Dec 2025 11:48:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2E26B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:47:11 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74EAA140184
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:47:10 +0000 (UTC)
-X-FDA: 84196883820.05.9063CB9
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AD7AD20006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:47:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4H/ScCJX";
-	spf=pass (imf13.hostedemail.com: domain of 3CwE3aQsKCDoWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3CwE3aQsKCDoWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A2B386B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:48:53 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43BDB138094
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:48:53 +0000 (UTC)
+X-FDA: 84196888146.29.8239521
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 06B54C0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:48:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZTgF84OE;
+	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765212428;
+	s=arc-20220608; t=1765212531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y21xYnymZNnyNmi/HtnuQMz5IMpcwyYducXo/2wK1DU=;
-	b=rGaIQLMt746jqntX27GXR2b9sbQZNyrpZ8VfizLF5hcZq22bH4Utirhp+Nl/o8i83tV23a
-	ddRSeiv2MtOzv324EEz3tSRRjwZSne3eqJqGoYOtITlqh9aLpGyz1NCl2xwG5fcjMYBytw
-	+xy6jxHXzETn3DIjZRk/fzASNO6osCQ=
+	bh=NGTtmc49qGm8JmqTcihsC/mRcolGTztLq1MYlXidkeo=;
+	b=O/WbSEcevoEb2PP6Ce7dwOOhfSoOWxyIuEIQJTUg0zjPYF3ioNF2nNyBW6LZNBnAZHTXIS
+	GMSwo83p9SG0+NfoPZFdEOU0rxppnnnXlOyvRK7rtjmDOa6FC/HytGAycF9GKIlW8mqeNf
+	ebUiD6A8mBkRf9nNdCgvuZd0VnWToZc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="4H/ScCJX";
-	spf=pass (imf13.hostedemail.com: domain of 3CwE3aQsKCDoWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3CwE3aQsKCDoWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765212428; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZTgF84OE;
+	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765212531; a=rsa-sha256;
 	cv=none;
-	b=GzMkWzkAzvC6+cfWDSF3NxlR9FMZ1B+omhHQXOIZ4W9v3Q4qkElr5jypzUGJLuC84rVz0x
-	Y4WBaYj2isl1ucTzgOhMcQ7zHWXQDJRrnLiAN7afrbB9t6pmr6Gm2+mLA8iLqORQcpi28y
-	h74l08Haf6A1lSqCSIn+G/rDYMwxhfs=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7bf5cdef41dso8211633b3a.0
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 08:47:08 -0800 (PST)
+	b=PTKVvhsgXsJnw2uCl3qGVfDXIzTCpacTWFqpmN9JGrHX1g042zQnzExKzzO/EYyhxRBld3
+	gta0Uuoo+/Etn0iUtcC9PfVhxtGoSXB7K50y+mhKmqNXQkKlfuuNNnLjoduiDu0xgnUcLN
+	k6TC7e6cbt0hrytelZMTXnTo4Fe8WDY=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so43955645e9.2
+        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 08:48:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765212427; x=1765817227; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y21xYnymZNnyNmi/HtnuQMz5IMpcwyYducXo/2wK1DU=;
-        b=4H/ScCJXWP2DewEkA5ELvCry/sSNZDt0vsLVY5n3sonB3yHD+1WkdRtvDAkEE6yT7Z
-         GMG3B3G256LkK4WfwdE+qO1xoASYKd/IylRsItckZCAjg4dNC2gUJAfNSVhFzMN7QD61
-         KILnApFK1qYqmQ4MAXUHv+f+JcxLmblnsnkqW4wfRWQs5qPFaajZqUBoxX08nu9U+xlA
-         L4yvzKtEKuSnz66BPI1X5tNDk1UiVnzincpaU+oU5cDbhQbaDzAOSMvZ4GRCoHQYESwq
-         kkV5leXeZDyUOLFGErCl9aF4Yax41aUOdjJTmETRLaqcP6OKRVK0g5Wi5ntpFvFvelR3
-         chCQ==
+        d=suse.com; s=google; t=1765212529; x=1765817329; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NGTtmc49qGm8JmqTcihsC/mRcolGTztLq1MYlXidkeo=;
+        b=ZTgF84OEw3lBfyyJ7tf5kSBooOb4OWpzdDCGBbf8gGCyjOvWWMKCK+obry7X0WtRVs
+         EhIAPx8WjmhqgzJ7qD14HxsdO+wgrbR30C+7iBzI7mWzV1SWcYxmi03dEafUcQn/GEfe
+         +UxGYJ2GN9lW3HOjh7muwLHn3AApgFzHoB/W95ucmxgwnaW/G/Ai1bewczXl3Nh+UCtV
+         KzMR7X82ITdJmqxczfWwkhaFHwPTY0HXlxKJlGGzg2pK/rJobOJu7Uwus3/P2Tl6fnrr
+         14y+7jZi6wGnNWyTMYPH+eAIYZ03Gm5qVs8pOHOQH60rC+Wjn02jQtLI06PK5IakEUoN
+         x1Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765212427; x=1765817227;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y21xYnymZNnyNmi/HtnuQMz5IMpcwyYducXo/2wK1DU=;
-        b=fIO/ksdzrmoqbGocF1ogY0vbzOLL0LN5xsdSzAm9Zaaye4QCvqw6Bgclt14MEKxIsS
-         13ZWb+9kbVt+UEI5MWsFM8A/iE4LUvlA2j+7UIgT/2Q3f2okTJwm3amu2XsyudWMoCkm
-         ev9ie4nRkrUy50DntD/Mi7a/6Mdiv8bIKS60QaGwii/XvoO1+3wlQEPBF8jQBEu2VA+n
-         Zlc7wiVUQzJKrGT32pyI8O5YAsvKISzrMHb6liiPHuUWVmj7R1Rd9JtGCT7uA4JvLKaF
-         c4JwffL6en7ITXRqLbZt1ERR7etzqFdMFuhZfdptcjK40kqq6zW0mZIId6GLEz4w/PVS
-         30Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhs+dGt91fkmQuMhEo6mgKXwN2vbRRRRPcmp1UK1+HoYKM4iRj2nah8X+u/4vo5XLKkuvLshGgrw==@kvack.org
-X-Gm-Message-State: AOJu0Yyo6aX64SS4/p6ppf4R4gZlJ0PH0V/rk/iLSMRmAa5THaL2HJSe
-	TTrOGsnaf6EVwhkzdeRVmMDFaVtefnjGWKj5ryqUQzohX6/B2WZlxoeKA9d38f7cdqlHijYO4P8
-	6D8omp1sGsXEZc0sviSoC4FZL3g==
-X-Google-Smtp-Source: AGHT+IE5FQZIbtJOztigBOS9Avg82hSfSlcy7E3hwkLPHM/P7YdR0xqCIo+8j17gC4LIdPH64C7KVQUZllrbHiWF8g==
-X-Received: from pghx12.prod.google.com ([2002:a63:f70c:0:b0:bac:a20:5ee0])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:3d85:b0:35e:d74:e4b6 with SMTP id adf61e73a8af0-36617e37d65mr8176588637.7.1765212427234;
- Mon, 08 Dec 2025 08:47:07 -0800 (PST)
-Date: Mon, 08 Dec 2025 08:47:05 -0800
-In-Reply-To: <E3AB23B6-9B6C-432C-BD92-27520ADA0739@nvidia.com>
-Mime-Version: 1.0
-References: <20251117224701.1279139-1-ackerleytng@google.com>
- <20251117224701.1279139-5-ackerleytng@google.com> <E3AB23B6-9B6C-432C-BD92-27520ADA0739@nvidia.com>
-Message-ID: <diqzy0nc53au.fsf@google.com>
-Subject: Re: [RFC PATCH 4/4] XArray: test: Increase split order test range in check_split()
-From: Ackerley Tng <ackerleytng@google.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: willy@infradead.org, akpm@linux-foundation.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@redhat.com, michael.roth@amd.com, 
-	vannapurve@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: qb6jj515whcmxm381cqadq6woyrrg14c
+        d=1e100.net; s=20230601; t=1765212529; x=1765817329;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NGTtmc49qGm8JmqTcihsC/mRcolGTztLq1MYlXidkeo=;
+        b=jfFZlfxBnwXxIoNd28u/69dS9oGmkVHzaAyGVk/xPZcTzDnrqW77SitRddFSd802G5
+         pbDenxtRlFPrTMJ1j5wmT8h0GkpfaeaZEU5xN4bNRjDjCfQoT+H0sNh1I4eBejCis7x9
+         sbcW1rnr4hUcPQgBHEJEFjVQPhpVxXp97drPz014BzfJPN0BxExECEGZq6h29pv2SMr4
+         lSaEFUj/PRA6I+LiK6o1v9JLBCN9NZRMsE7JCus2k8t8gZ5T0j8gcILFpCpnPBAQd6i9
+         AzzngsqxKGYAU4xiyBotBjDJIvxIQhN3RUyoDMU531lo4BC/bo3QaUehvc40ny36iod8
+         kDFA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKfBoqi+4LWsBe8mVFbFuuuSQx2RsqByIuQdRuIsRSdiA2ikIJ/IG4MhgwwSrMdxEv2gBhfGHpYw==@kvack.org
+X-Gm-Message-State: AOJu0YwSMIIx5E3fioEEtYSPAtJRWZdrm8jHstOA2ZnCEpKx43UshgzQ
+	nfwwVj0UAo1lHI2KLA6UZ/S8zFwt9+GxX/cgdOyCLHqt/bg6IYqQuOkopDKqkIAkt6Q=
+X-Gm-Gg: ASbGncsRrsFxb2bQGOLP7hRj9RHJ4gXtliY0LbEMk2HRnsiWronaCCvLd2B3QrvTc51
+	CXh/7V4emFCPfLkVoCzkO4yEnjLLQ5DkVa3ROZEdzCZQ1HZpZMd/C+38TF8TR+8fpsibGBJqfLT
+	dwTkFnm+CL8d6h2BqcVBLzAtsn4V8/7CZdqveUcL5yjCo24hpK3YgOnTXDj7ZhjpD9hijtq+XSn
+	8udn64VLcDiKKKr6ryNvVWMT3dP3ZHXRbg3CEAD3P76e/38YFLx8BNm/xujPBgzz5boArKIe3AG
+	NFLJ1p+kC6kXMGz0N/ljWMxw+vpbVLMNyUC8m2bFuNoZYQAXP3+hSaZUMSxfiTHohV0MuoCAdsY
+	abWvUxgnhg0q8KfcpHi9VFfXoWybPmRSXw5uFV4x7PyoCr+/ECdxk/yds/KvuTfz/IZXjNpYSvA
+	9yGOmO9O7uZItpGdzT/+d/Fh7m66NgMsInAhGLpm8Kzw==
+X-Google-Smtp-Source: AGHT+IEsJ/iSaDvwNh18lu2wFHnkomxJ8Hvg1XZtgMMg6hpjOz1LIBWnTk3op1li+CYOfSPEkMphCw==
+X-Received: by 2002:a05:600c:1552:b0:477:73cc:82c2 with SMTP id 5b1f17b1804b1-47939dfbb50mr84510895e9.9.1765212529294;
+        Mon, 08 Dec 2025 08:48:49 -0800 (PST)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d331e62sm26750068f8f.35.2025.12.08.08.48.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 08:48:48 -0800 (PST)
+Date: Mon, 8 Dec 2025 17:48:47 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Andrei Vagin <avagin@gmail.com>
+Cc: Chen Ridong <chenridong@huaweicloud.com>, 
+	Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	criu@lists.linux.dev, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Vipin Sharma <vipinsh@google.com>, Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH 0/3] cgroup/misc: Add hwcap masks to the misc controller
+Message-ID: <6dmgfe5vbbuqw7ycsm4l2ecpv4eppdsau4t22kitjcjglg2gna@dyjlwhfhviif>
+References: <20251205005841.3942668-1-avagin@google.com>
+ <57a7d8c3-a911-4729-bc39-ba3a1d810990@huaweicloud.com>
+ <CANaxB-x5qVv_yYR7aYYdrd26uFRk=Zsd243+TeBWMn47wi++eA@mail.gmail.com>
+ <bc10cdcb-840f-400e-85b8-3e8ae904f763@huaweicloud.com>
+ <CANaxB-yOfS1KPZaZJ_4WG8XeZnB9M_shtWOOONTXQ2CW4mqsSA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qhatuyfusoefghqk"
+Content-Disposition: inline
+In-Reply-To: <CANaxB-yOfS1KPZaZJ_4WG8XeZnB9M_shtWOOONTXQ2CW4mqsSA@mail.gmail.com>
+X-Stat-Signature: 11bzuak8rxrc46qayrpu5ohawxj6h478
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AD7AD20006
-X-HE-Tag: 1765212428-142305
-X-HE-Meta: U2FsdGVkX19Bf2C8YXBt/rWJ8R9oYunc32IJbLlD9YLkbrfvFWwfYrl+g81A9RAbukvqZ45oa0QSRdNUJqPk+83ER4hD9r9GdEKFdhqcVpLj9pVeAQks7wQALDSkkp5o6uEv0N5OMqU9+8V2lYznbFVaQnIcUKm/AjzK0ewWuRBgk2XjDm/SHhI3ibzm2k+jwNePvUV1Q6S4uSPmcHVl1JG0Ud9o9q1ACwPoaB4oFx54vLJY0gdqWC02PFROeEi+nDCB59p6siO57xBjtC7w7BMI2sgWALSH4tvraJF51cDw5lYvbZ0nPmL9Cle0nR/Tn5uExVK7k8QFZyIBHn2JbErt4lmmq5sAhWJB7HTA/64VS+gtYgqwqZ+oR3vaR/sOTXHDsT9S1RC37c4kkfM5lLsRlAH+E3gZlYKkqQWlQo4LkpNGa1t0W4pIUv50dwsxGCT7IzOevNTBDPplAm+I7B7GZxwONlvhS4eAaojMjw5hpjwvFiaHuFS+r/k8WKYbGXDTiHazWs3IwiF9BUUJn64wLoqhopfa8noVuSVJZ9IhOZW5MkVImTTeSbROJo74vDgfi2zqcFu1rqNioZLHvo3ZDcPXKadF30qiStiCEEtt0qRMQ7HvzVK6OMT6Lv9Krq3snFUvt8NTqpLKU3LmbRxd/fbtYW6kzGixG9rWJzXaFM1j1jFzhs0KqS+ipt44+M8MYAfXiA//YeDUWMkzB+HrwwstZq4xIewOtQoC6W1HAEZABp9uxNxJj/AePqhxk2AlnN20dUtjIqdtFIpKRAacmaXKS/dOM1NpaEDVtt6iWR+Y/r1CxmN7lACKH943i8eJ9T20lxmJz319Gbaio9GB+a6vxddUrXDRUN+tH/Viq9y2GzcVpXzOspGXWc9W+za90Tai+98KjNUKNoa7CbzgVgNFDf8GhqNATxd7HM76GxIzKA5jiRF4j8FQlHZu86c3C3RTgM/HAZhxhSz
- v502Ls2d
- VXts6c3gVmNDIosDKDivf2ukTqJGUGqrnMtnnqWRDBKEfZjbwXaF22X0ZmQ7t/aT53cwAtKRLrK76qtLxNzV7/UDlb9VDVDeUVEMvUy0uX+tOtYSE01vGMV2GVrGGCsevZW+afOfICMEg+rv26IYgKDpWrNPz2BKvblkGFZp0Ftr/MP3ZOXq0oiSaeuFcfEy1iWqSDPbV2m9uajsbKuKGGjgiy0JUcpAXb8UgSuufqvl2emW+iM0dI05zooVetoAhHKT5EZHJrmuRrLD5S/MjbWHcnQy9w2wWFCX9kjt3BsCUCWxemILrbh6NSnMKJ+JudWQbv96frcjIrbjzRI0fMz8p7SlHpH3kJRQH+WBisiAP22iaF38OiykXXM/sqOZTWqN/v9nkFyzJMVtKGoIVjCNz7EwZYzUbySG7rjHlPIKyn4sl4+P+N5zMA0RtrpibV8v5t9UInZvSA8MnhK1jr2V/2B+bdz7Vnq3+ptS1YWILZ4d5Qf7x3NrIq8SjIaD8iBM0d8jEauD0B47OSGuAlwmGZ10YkIF7ZxV8kAzTogXrGtKt+yKYufBjw0IJOL+2b4KxCf4E+lAPDWYhYkOnZu8pcFjuaUoCd9NCQ4tVzV6GxtvyQkvZSpYKJocg7AspSqfBJNVXRf6N/PYZruAMp9pO2W0HSwl1pt7CqUzgIYmtDzUca7IjJZo0W9UTd8zkESqzBpZ4GO79pNU/2zMnQd3Gsw==
+X-Rspamd-Queue-Id: 06B54C0005
+X-HE-Tag: 1765212530-573625
+X-HE-Meta: U2FsdGVkX1/bfHOii01orYT4DXCmAY0j6PVNDZT7LIC9InYo+TvNWlMVtQbPen+67h3cfdiJP0UbDp/p3EwPj+Lnu/x7Cb+BBW7EHIBgx5dQlIb3WbcBr9YGNcS8VJiqBndAULREb2DukGuKaPj9Nlz05IK7C3C8+D/ctTX3Z3++NqFkNsCX6xm6bTRAw2InyECZ0aqiZ5hkfBwrqraIKQrB2xiTEiPcaCrO6j+4oJqi+Ctavv4H8Vh+37Gc3g1QE5SVkLi8XBrqNmyDi4bF1CrTovVxMHWCSeEuY7haqeAMucv9FWM0HcHo+ZYsMtI4eQdQBw/hMPgOWyerON1lCBeKtd51nFqkqEGdNjn07T6hQfcBRks/wqWLik/7T2oR+fVtDGYRrCa2kulqEYv7ZDxCu4ixOM9ejA+fqliWlpr1BEyyZYblPPpsy0uRJL5brE3dO4Zty55wN0NDn9In7+u89yp4+a9WJEANdOEiYa9awrFQWeo023S1zmhF+1TRsmyLoUg5edT8R2TmAippeB2OJlBzk5myGMiXkz8HC3EZ+FedIMBDtBgunjiGuAV2vu82oXwxS57kYL3i2izfZ0QjtoAQtaVYYoC5MxpeK05TzTniP2XPYMz721zCiSLMJHVtTKZ8azwQgQb37YiyH82LoFt5Nxc4QWgyPoEZ6CuUuEUZdY7DZMIYWx7zB5W0P05ctewucDf1B1blrrTXeY9EFrOGPZwmje1dvice76kHxhqZ/jPsLAk1z/5THDug/ltoUelBrTsMC5+IlPqGyzNj8enx+gI12mTr5ayca6jMSgQ00hyy7cTeR4MhLnCsCgBoGt5McqOZeMKXL0ofFVCJAswVkheAme5ZvWkpwOeriKe2r/opM4wXi/nqXfxW1GOTzVRPEOMM4nrQA7CIIgIdOqpJWll+SYgUN4xRwKYb+ifZH3HhdIOelH/TVD2I/y1Pc6D3xYWlh2nrgP5
+ 9lRTrLHa
+ rHEnx1nO5zZbRKdSV1CejhtBVhLjKsRXiTNnJPig7NzpfF7tNk8fV5U2QOBZqpzCh9qWJCksM23GC+Vui/fj4PCPNwYA2xAetAcI6fw/Y0ZbCSu0RTZRC8KhqQ4WQaTNr5Kcf4knpse4p3OiMXGDeKpsjW4DK3Dr4w5wr7LPOiupaJ0tt3KHMC/JVWun5gQNnIx116HDgjOt1GG/W2mparSKY0ShyVpJMO2n4gJcgD9X5kALUW1RfinkuL8uogZKOFkYo/t7Sje3dqSkMPp+ocIQTdWSq8sF+E2TRmmEMigHlve/oHb2S5cErLw33chfMN53vazlc0x/T48Z7mjSmpkftt2W10iyDzIlSu3GjPhMsclL+fLuXspN4+8hYXFjTSmsh/yenubPVEWsUXiDnjqN3OrKhoAJiW8ZphQx7nAfIylyo50XDKbmIgHY3wrZL9qTdZzGGiy+Rz5c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,65 +126,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Zi Yan <ziy@nvidia.com> writes:
 
-> On 17 Nov 2025, at 17:47, Ackerley Tng wrote:
->
->> Expand the range of order values for check_split_1() from 2 *
->> XA_CHUNK_SHIFT to 4 * XA_CHUNK_SHIFT to test splitting beyond 2 levels.
->>
->> Separate the loops for check_split_1() and check_split_2() calls, since
->> xas_try_split() does not yet support splitting beyond 2 levels.
->
-> xas_try_split() is designed to only split at most 1 level. It is used
-> for non-uniform split, which always splits a folio from order N to order N-1.
->
+--qhatuyfusoefghqk
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH 0/3] cgroup/misc: Add hwcap masks to the misc controller
+MIME-Version: 1.0
 
-Thanks for explaining! In the next revision, I'll rename
+Hello Andrei.
 
-  + check_split_1() to check_split_uniform() and
-  + check_split_2() to check_split_non_uniform()
+On Fri, Dec 05, 2025 at 12:19:04PM -0800, Andrei Vagin <avagin@gmail.com> wrote:
+> If we are talking about C/R use cases, it should be configured when
+> container is started. It can be adjusted dynamically, but all changes
+> will affect only new processes. The auxiliary vectors are set on execve.
 
-in an earlier patch before, fixing the wording, in this patch, to be
+The questions by Ridong are getting at the reasons why cgroup API
+doesn't sound like a good match for these values.
+I understand it's tempting to implement this by simply copying some
+masks from the enclosing cgroup but since there's little to be done upon
+(dynamic) change or a process migration it's overkill.
 
-  Separate the loops for check_split_uniform() and
-  check_split_non_uniform() calls. Expanding the range of order values
-  only applies for uniform splits, since non-uniform splits always split
-  a folio from order N to order N-1.
+So I'd look at how other [1] adjustments between fork-exec are done and
+fit it with them. I guess prctl would be an option as a substitute for
+non-existent setauxval().
 
->>
->> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->> ---
->>  lib/test_xarray.c | 6 +++++-
->>  1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/test_xarray.c b/lib/test_xarray.c
->> index 42626fb4dc0e..fbdf647e4ef8 100644
->> --- a/lib/test_xarray.c
->> +++ b/lib/test_xarray.c
->> @@ -1905,12 +1905,16 @@ static noinline void check_split(struct xarray *xa)
->>
->>  	XA_BUG_ON(xa, !xa_empty(xa));
->>
->> -	for (order = 1; order < 2 * XA_CHUNK_SHIFT; order++) {
->> +	for (order = 1; order < 4 * XA_CHUNK_SHIFT; order++) {
->>  		for (new_order = 0; new_order < order; new_order++) {
->>  			check_split_1(xa, 0, order, new_order);
->>  			check_split_1(xa, 1UL << order, order, new_order);
->>  			check_split_1(xa, 3UL << order, order, new_order);
->> +		}
->> +	}
->>
->> +	for (order = 1; order < 2 * XA_CHUNK_SHIFT; order++) {
->> +		for (new_order = 0; new_order < order; new_order++) {
->>  			check_split_2(xa, 0, order, new_order);
->>  			check_split_2(xa, 1UL << order, order, new_order);
->>  			check_split_2(xa, 3UL << order, order, new_order);
->> --
->> 2.52.0.rc1.455.g30608eb744-goog
->
->
-> --
-> Best Regards,
-> Yan, Zi
+Thanks,
+Michal
+
+[1] Yes, I admit cgroup migration is among them too. Another one is
+setns(2) which is IMO a closer concept for this modified view of HW, I'm
+not sure whether hardware namespaces had been brought up (and rejected)
+in the past.
+
+
+--qhatuyfusoefghqk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaTcBbBsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+Ai8MAEAyeSN6KCarnIABEa5QMqm
+oISbZ1p14CvmHATzKA1bOyEBALyv5+on7iSaLxmoTq8ygkMxgB3VKwZP81DcFFDB
+DEQF
+=v5da
+-----END PGP SIGNATURE-----
+
+--qhatuyfusoefghqk--
 
