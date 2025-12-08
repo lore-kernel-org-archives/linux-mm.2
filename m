@@ -4,93 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF532D3ABEF
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 07:18:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FF92D3ABEF
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 07:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9B7A6B0005; Mon,  8 Dec 2025 02:18:29 -0500 (EST)
+	id 89B0A6B0005; Mon,  8 Dec 2025 02:39:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4C4E6B0007; Mon,  8 Dec 2025 02:18:29 -0500 (EST)
+	id 84BA16B0007; Mon,  8 Dec 2025 02:39:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A61936B0008; Mon,  8 Dec 2025 02:18:29 -0500 (EST)
+	id 73A616B0008; Mon,  8 Dec 2025 02:39:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 924346B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 02:18:29 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DA69BC352
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 07:18:29 +0000 (UTC)
-X-FDA: 84195450738.18.DE1F2B8
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 91ABD140006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 07:18:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3wns2aQkbAOMXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3wns2aQkbAOMXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765178307; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D11F6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 02:39:44 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BAAE35BEF5
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 07:39:43 +0000 (UTC)
+X-FDA: 84195504246.04.FC783C9
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 154924000B
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 07:39:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=b2o03NNF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3vIA2aQgKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3vIA2aQgKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765179582; a=rsa-sha256;
 	cv=none;
-	b=o6RtrzIYiQ+8yj+2RC6uIfdc12oGug6xLsHTms8b6E65xryIcgDG+yMbGWTXBUT6Z0fM6t
-	CzcyzvGCPladqPMrhCVDoTX2GA56YxS5PryeNnHKRx0Q3483vV/+ls2jPJTcnsYqsw4gh4
-	Ak2ShUzmuH0W00Dcr0Zo0gWjcp/aZ+4=
+	b=X3DZg7d1R4I2X41Js9V4Z67jPGJvA9TVOeE6t78PyHMIkQCA60DHDtsrmue1tzDIhoeofW
+	F1l8wOmmbullRDbKjtSbFZ6Y2JN/xcf0yxbrB1zAvo29fFIk+xOk0lWjfaZ/bQ3tbpodnb
+	YQHwLOYVZhzvDEx5G5Q61qqoPOY/rpo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3wns2aQkbAOMXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3wns2aQkbAOMXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=b2o03NNF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3vIA2aQgKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3vIA2aQgKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765178307;
+	s=arc-20220608; t=1765179582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=jIinOqVwgE0m1B+fJuAGYu794SpoG6g4HIkbNJ3Np30=;
-	b=8dQ1oqbWrOvJ8zLJTHm596q7NR/R82io5dLp3m+LLnVmdA6AXL/eAV9kxaiuZtQpohYmSN
-	bmz9FcRwhGI3Q0kWENy+1vO19oCt3ek/EwUnMMJGfQymlCK1KFoGt6zYpjoemc9bTMAoCb
-	eEzly+RTJqtN/T9SAAlOaxDIM4cUFBg=
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-6574f3b6ec1so6121469eaf.3
-        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 23:18:27 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v+1ssDKimEy1YWQnfRj6jC4uzuK7az5xDxnS/OPdEg0=;
+	b=k3POhAvz1zy+w/5AeVj3FxMLbnV1/2jxAN5UOxkFm9galRTfn7P2gSFZMQ+cf8vLRRyvZn
+	BBP5ksZ+e/WtzjXHm0B8aN3AlpAsXr1xHgH6cDQkDeaqepXC9oSns2wb90kRkgaaFJFKZ+
+	bBsU+iG6kS4TXsoh6sv6ZlXeMiB8iSc=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477cf2230c8so35609135e9.0
+        for <linux-mm@kvack.org>; Sun, 07 Dec 2025 23:39:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765179580; x=1765784380; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=v+1ssDKimEy1YWQnfRj6jC4uzuK7az5xDxnS/OPdEg0=;
+        b=b2o03NNFK4FEm+ifYFv0Jjs2fuBLu8FXxybEYL9tqNCYe8rjd0e8kggK/xXqQFjl4U
+         Hlh29kU4TIrhAuM6UeuHH6y0tcP+z+znUqpaqP7GkncdN/4SheWXL23Fx9gGJ3E+yXgC
+         tvIKpKcl2tJrQESEsy1PpAk+EimbPcYp9fsKfjSd20DcMSUEqIuEI+SdcADSrfUkJAm2
+         5swOW7sFaUeXndNpLsVjaqfaca8GrHcCsWyXrIY1S3eZF/9FinXBr2piWC8Ef0psKtW9
+         fR+oUSf0tKNjni6iabUEX8ICu2tUfPR4BdW8W7xde3gNLFABXC+YVYG6cperlmftQJFC
+         EINA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765178306; x=1765783106;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jIinOqVwgE0m1B+fJuAGYu794SpoG6g4HIkbNJ3Np30=;
-        b=YxtAFGy7ZziHy8ftnP1hqJV+YxnAjeUhQct1RY++X10MtlD05bTncIDszSMXqKS54R
-         mhO9loUo3h0t0awVW6gsAbuUho6kicH1twrJkmXONLpwkbUmm4744Acnomh7i05fC2dh
-         SDIbBteMjF+4OkLXiky95aD91CybB5alENVBN2KRsw8EZC4hJRh0NUSqK7YUwXkxZdtP
-         59nJ/Z4fe1PWxDq7I9oFrodMFNqqHrKGNceVw7nVeKd7TVbLr+fZCygAw4A0OVie7XnZ
-         5q6KavjstRuvxO4NlnCbvfQZuFWXqiFwI7El+2DUjIDBCWb0cZ/WbH0jlRbeeLePDfEQ
-         fnnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGGDuB1gCAcJ+Ty9M0VRZPHsEG9beXN52lWly2SX24c/ohlmcunFpoi3TsJsP6Mb7wCijSMPCB8w==@kvack.org
-X-Gm-Message-State: AOJu0YwK16cmNWrz+2jH+Ar/GQAUq4g/hjK9jlLXr9GSF/v6NbPkw9Dy
-	u+pdD+xjj3N29tcVeCrYUSkjTEHa4G7MymHDVm+PjSfyMg9yedI72qrPP2Nhdb/XI755f1vBfd0
-	zZ2mAWucDRuMRunqxT0i5m6XFyyNYG43dlnnuDLUSfzJULypnPzz2+e655Y0=
-X-Google-Smtp-Source: AGHT+IFAlIBsrcf7U1J/QwXBwMnChmQs2/uEkmL81SP7lVa+9RWb5xKi/Wlk0rxybf3mTO4G32lBWzqGMob2ZPELX+iiniMF1ERx
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:168a:b0:659:9a49:8e9a with SMTP id
- 006d021491bc7-6599a8c7cc1mr2600412eaf.30.1765178306575; Sun, 07 Dec 2025
- 23:18:26 -0800 (PST)
-Date: Sun, 07 Dec 2025 23:18:26 -0800
-In-Reply-To: <690255ff.050a0220.32483.0218.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69367bc2.a70a0220.38f243.008c.GAE@google.com>
-Subject: Re: [syzbot] [net?] kernel BUG in filemap_fault (3)
-From: syzbot <syzbot+85cfa48c1a69a20ba5ed@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, kuniyu@google.com, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com, willemb@google.com, willy@infradead.org
+        d=1e100.net; s=20230601; t=1765179580; x=1765784380;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=v+1ssDKimEy1YWQnfRj6jC4uzuK7az5xDxnS/OPdEg0=;
+        b=Y2fqvilWAv7PNiubm5jZYujz4mroty28z4owjD9VPBV8ST5EjriPjz7+CZ+ACP5DAs
+         hkMcpOJbqUyRcmtP7Y1/zGmH/HxWiOm//pqZU4Fp3nrRj7yemV+yxLynBzFK35BJZSWs
+         wuKErXmGKO4sbt0lEwWvdKtrMhYY6GuiBD1GgAzbcPnFLgHZzJVlOOn7eGj8C0ZoEJt8
+         6p5F3KXIpcrDJ/AzwAjxSQA90OuPXPsvnZVSpoCfz4jypVoy59NI3Ffuq1U71xr0Xdcb
+         5q4f9pQtB8Wl0c3JuhXy25q2MRxqeYLauUVKBDPASaZzQznLNNNNWk59WqhKqUvSHlF1
+         tzRA==
+X-Gm-Message-State: AOJu0YxjhwLRUYI8z06WxB7bnPX0h3OL0GCrEX5XFNu3is/VHa4f+YTE
+	+GPlPOHWhPPF2Xra/yckl8udhvwcu2CLNB/B1Yh11LobUB1ojjB5DlzWElpxmkkjKH6ptXFEpW8
+	y+02t8VAPgm9AFg==
+X-Google-Smtp-Source: AGHT+IHvVBiPRFe3ztaMxMTZdIQQQD0RDtpj8NlE3BbQLqpyQhxnvDTt5CPJ2CvTqc9YXyalpRNMld9mzGp21w==
+X-Received: from wmfu9.prod.google.com ([2002:a05:600c:1389:b0:477:98b9:1e26])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:6289:b0:477:7a95:b971 with SMTP id 5b1f17b1804b1-47939e48f61mr76546105e9.31.1765179580124;
+ Sun, 07 Dec 2025 23:39:40 -0800 (PST)
+Date: Mon, 08 Dec 2025 07:39:39 +0000
+In-Reply-To: <96aa9bf7-1f1d-4870-90d2-84d3d6d4254c@arm.com>
+Mime-Version: 1.0
+References: <20251208-b4-vmalloc-might_alloc-v1-1-94a9bb8ecb08@google.com> <96aa9bf7-1f1d-4870-90d2-84d3d6d4254c@arm.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DESNXS1K25LW.2E7ZWFWV56PZD@google.com>
+Subject: Re: [PATCH] mm/vmalloc: clarify why vmap_range_noflush() might sleep
+From: Brendan Jackman <jackmanb@google.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>, Brendan Jackman <jackmanb@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: gmoorzhbnddji9cxp867jsewghi96bib
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 154924000B
+X-Stat-Signature: uw8snfhox5gh4p56jgcpz1kbi998chkw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 91ABD140006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765178307-73023
-X-HE-Meta: U2FsdGVkX18pk4CvfroAbMqX/aQkHTbX5SEpoXi/bIhpbVNmjuqqsk/tiAHmre64X9FKDoPj288j2kZT+0FYvRc5dZDTyIavOP14QuVaLfNAh/90bIAQnjHEBB2Yoxr7RGy2RC+noZ4/SYrv1OSeqb+Guo7TjkfWmt4i6mP4Hf8/8+c5DAv/vGNFRWXmFwAjPmGRJ2+3NIa4MlRdjYrgr3G679R9kC3jsDK3eEDeqDNkTGin6njyORgqyLounfOuotXqjI9zA6hOXiweMH6atlHyPY/Qvo91XRMxS3O46wK/4WUHf6vm0UPltolO+b9PSGw3UgamaX1P/IbFu08H5t+Xm/n+VzP3AX/xvjY+K664lWCdzArstpyJC1FB/XUGi37bJ9seaNhx1SJ0I5mcef8NFw//4sLlgsbI1g+k9PKHlzhJh+d4dzYEVy6D6XGhoFW+KQiwizyyLQrFPiY8OJMGiriuAPuKPZFuEvlttHfqE/tzrvLxKHQcz2O8rnIKuKmBMtOvV6ftSb8A91BxAzUEVTgeskZqJglDX0MNJSfEEV2VhMMH7CSyC1uAT29Z6V/lwFw3uIB4drCYtJpbGmhuMLHwzCoyncGMcmlfCWASqpUuXFZWmyeu8jggAJLev/TA+bKnbnRuRiE3yokCNvNkl2i40vba+879uaLF/yEb5uSKmzhqXmhe7SntEXzw32rl6s0F06HWWLPgMOr9s+AYamGShpwSW7aXQcw2H5061ukDR5209XT8dMk7iy+SJLUhFJlj0yd2cEaZR2rDbm4IHLJFxLkPnOKHTAZ9kUbly60laOUNKMVZVJ8jMowKbiMSk+sf3HgSklHNYsFtnDvIDY0mI9soc9mrpCsmHP+upnH1Ar/hh2lS+RQsc/6pe2jDqQ9jt1EXaBL/7gcIdFiBxEJx2+f2H3FGDrpmyq3+4RZrNiNgFjTk71sWUbb0xwBCVCd4/DKMZI2xL4d
- kSBPSj4F
- Bl1/z+/efOMs2BjMaeBEypvp2g628BCJDsRqhywQ+S2Fh60O9B2qTF0/S1Go8KG7VAjN6/Eb5WCHXkKgNNgGpvoAcPrFv0RNxoA2qSb5hFoJUsqktZ1IGlH9/n+11EDA12cCxUwW9MVQkhsDtsaQAH8Amu5XEAh0b0aFZeBjPfAeEQd8zTxoX7jmPMdqCQyCYu7jwIsMBfHxFYvxEwVev81RRjFLX1w5IzCa+vZ4M5ANDRrvue/GiipJPoFhMHtwCGPURd8FVZ4FM0IH5ROwydyn+tYlxZTY4s5CvwkSxRCyOh896cj6XKy7RmexNDv2CVydFekgipPuJCVThtKGeTgHhrzJWXUDRYmxIWLq1CG5nT8AOLn6y9k6POtY27s1/D4KkWrDohd1khSk1vqSP+2u+r1sZc1P7qNv6DIvQER1FklC5s+EkprTBHUPK8PUW7T7wF8ieyR3C1kftI20IpmkCbYa18y5wZ5VQfJgDV8/SDEi4ZDijM4hXaG7oNe7OHGBBMzzrOGYjC1enN7Ir+wD8mQD3LSsHkqH31/7otSlq8aPPWGMXWwq+tyPpPu6Mhw6EO0Nc4kpmBNNvYJ9n2K56l/gvB5+tec0oWBhaItV4lrCQm7Xstm1IMqBqXfek07sy/au5tFcgjE3pmAxS00VfvoUi5m5LIb4AThYzINcG2ghIIu0/GeLEVfDe2RrCpxNu
+X-HE-Tag: 1765179581-138717
+X-HE-Meta: U2FsdGVkX1/Ar6MlH0qcTVfbJoX+yNDKRENVkf3DLYvZ4paSQ17M46V3q1PJqjjlj9pDMfvQQ73qjjPYYZ498cIzY5sEAY6VD2qMQwwH+syS1kT0ThBK/E+ljCCOLk0jYCBO2sj7zE8aLVrx84F3d7XbuVE+EfyPMwNT9J1t1pdHiif2WyAvCVj/XA3A0Hn5JC6lHXCYlj+wz50jqL+iN7lbSjAA4jEkKI+HKffusO+XNi/ZUKZkIZlF6sECZO+yZDyl2ID+CoeU2rmLVookMWuSKntUClswrnwS7g/eFIALZ7NxOdg7pMOUS56vhf4hVI1QByGkffA1Fn6otuHCs++RgBtEG0ZgP1L0iBSAaD3tZhDKnVt10ogqaaNGF4OdxURFbhL4AX976AVMma7PHz9AmWvxzoHPRIzVISedolYLsSp7uEZe7RGqmPmrd2g/dFRSs5xhZTkZoL1/fJzc4HGTKKBXC9dv/+GAnwcFGqj4Tt5jQ6ienT/hSEaDtLEHFwh/f1Gg8xJsHjhJLQTmzNd8Om6I+hgZ0OD6R+OfrYLND3r1Hn0dboAuljBqmPn6szuqHAhsRz/Wi9rcbpdTSTdKwFhoLZzUgjz9LAIONxqiixXwnSm9bJxOfiTWb982GImDCJ5BwY7a3n67beHdFDWS4OXY302Sj7HAbN8xU+4a03OZsni8j8KRH2erdkR7av3KF0c30QEmWdeTVMAOdPWlzIy1qRMasRoegm7Pg+/ytYzUdGPnN+hxvKBzu1NbCfsunuEfL9e3iwTk6yd6jh0IASYamr5pB4bsfIJFfFnLNE8s+tgP9bN7Rij0wv4vtgU8BKmH7QpcpGqRzqlX9JSP+4xHI2h59c+vtzHHta0C/PMly/RXchtl9/k/rNmcFGEvVxzYdB4W0AKtBtBCFrkefhhwOgyWmv20kYA0ixNlkPDZgRPxJa3y+fYFl5xE1q5ulsYvJrHulCDxHuC
+ GPa+1fKb
+ UEWMw6QYFx08toWPnxdVVFlgsFK/ilNrgR4f+1jgKSINMxIXWI/y/wSfWu6bL0Nq99FDaiwwA1SUiIbEl+P6E+gqSY0H+WXP2hUXrCCcVrbXMop1H8Ltco0GkwO4isLVE/wEBfXcpgU2UoYcN1Csyg1D1FgsUmmobU03hpS8ATgOlsD7l/LnZieHBRjGpVHcmFaI9mwhIPTFhqZByrREZ3rXcM9VriT3jlcbmvZzy1IXs9r2LSnjG++Rmms/wRjRYUXTFc1/C9kPRx962H5cxwsOyQE6E3QESMsKWusssolGTb3q0CAKqwNm0ZKG5iUUlD61A
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,161 +108,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+Hi Anshuman, thanks a lot for taking a look.
 
-HEAD commit:    67a454e6b1c6 Merge tag 'memblock-6.19-rc1' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=125ee992580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=675cacd7a6e90ec3
-dashboard link: https://syzkaller.appspot.com/bug?extid=85cfa48c1a69a20ba5ed
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11988a1a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=115ee992580000
+On Mon Dec 8, 2025 at 6:41 AM UTC, Anshuman Khandual wrote:
+> Please add <asm-generic/pgalloc.h> in mm/vmalloc.c - otherwise it does not
+> get built as GFP_PGTABLE_KERNEL is not available. But otherwise LGTM.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/0720a50dee77/disk-67a454e6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/69f7900759fa/vmlinux-67a454e6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2f0fa3e38fe5/bzImage-67a454e6.xz
+Oh, but that's not correct, IIUC we shouldn't directly be including
+asm-generic headers from here.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+85cfa48c1a69a20ba5ed@syzkaller.appspotmail.com
+So while in principle GFP_PGTABLE_KERNEL is a sensible common
+demoninator here, it doesn't actually exist at all everywhere, e.g. it
+doesn't look like m68k defines it for Motorola. 
 
- exit_task_work include/linux/task_work.h:40 [inline]
- do_exit+0x6c5/0x2310 kernel/exit.c:971
- do_group_exit+0x21c/0x2d0 kernel/exit.c:1112
- get_signal+0x1285/0x1340 kernel/signal.c:3034
- arch_do_signal_or_restart+0x9a/0x7a0 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
- exit_to_user_mode_loop+0x87/0x4f0 kernel/entry/common.c:75
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
- do_syscall_64+0x2e3/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-------------[ cut here ]------------
-kernel BUG at mm/filemap.c:3579!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 7393 Comm: syz.1.310 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:filemap_fault+0x1215/0x1290 mm/filemap.c:3579
-Code: 38 c1 0f 8c 8e fc ff ff 4c 89 e7 e8 b5 f2 2c 00 e9 81 fc ff ff e8 1b a1 c6 ff 48 89 df 48 c7 c6 80 a9 74 8b e8 dc f7 2c ff 90 <0f> 0b e8 04 a1 c6 ff 48 8b 3c 24 48 c7 c6 00 b0 74 8b e8 c4 f7 2c
-RSP: 0018:ffffc9000c3d7280 EFLAGS: 00010246
-RAX: c461c012ec26ac00 RBX: ffffea0001682000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffffffff8d7867c7 RDI: 00000000ffffffff
-RBP: ffffc9000c3d73b8 R08: ffffffff8f817677 R09: 1ffffffff1f02ece
-R10: dffffc0000000000 R11: fffffbfff1f02ecf R12: dffffc0000000000
-R13: 1ffffd40002d0401 R14: ffffea0001682018 R15: ffffea0001682008
-FS:  00007faedeecb6c0(0000) GS:ffff888125e44000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fc2f31bef98 CR3: 000000007da76000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __do_fault+0x138/0x390 mm/memory.c:5320
- do_shared_fault mm/memory.c:5819 [inline]
- do_fault mm/memory.c:5893 [inline]
- do_pte_missing+0x6ad/0x3330 mm/memory.c:4401
- handle_pte_fault mm/memory.c:6273 [inline]
- __handle_mm_fault mm/memory.c:6411 [inline]
- handle_mm_fault+0x1b26/0x32b0 mm/memory.c:6580
- do_user_addr_fault+0x764/0x1380 arch/x86/mm/fault.c:1387
- handle_page_fault arch/x86/mm/fault.c:1476 [inline]
- exc_page_fault+0x82/0x100 arch/x86/mm/fault.c:1532
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0010:__put_user_nocheck_4+0x3/0x10 arch/x86/lib/putuser.S:104
-Code: d9 0f 01 cb 89 01 31 c9 0f 01 ca c3 cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 01 cb <89> 01 31 c9 0f 01 ca e9 c1 75 03 00 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc9000c3d78b8 EFLAGS: 00050202
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000020000005f7b0
-RDX: ffff88801eb45b80 RSI: 0000000000000002 RDI: 00000000ffffffff
-RBP: ffffc9000c3d7a30 R08: ffffc9000c3d7667 R09: 1ffff9200187aecc
-R10: dffffc0000000000 R11: fffff5200187aecd R12: 0000000000000002
-R13: dffffc0000000000 R14: 0000000000000000 R15: 000020000005f780
- ____sys_recvmsg+0x2ab/0x460 net/socket.c:2825
- ___sys_recvmsg+0x1b5/0x510 net/socket.c:2854
- do_recvmmsg+0x307/0x770 net/socket.c:2949
- __sys_recvmmsg net/socket.c:3023 [inline]
- __do_sys_recvmmsg net/socket.c:3046 [inline]
- __se_sys_recvmmsg net/socket.c:3039 [inline]
- __x64_sys_recvmmsg+0x190/0x240 net/socket.c:3039
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7faeddf8f749
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007faedeecb038 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
-RAX: ffffffffffffffda RBX: 00007faede1e6090 RCX: 00007faeddf8f749
-RDX: 0000000000010106 RSI: 00002000000000c0 RDI: 0000000000000003
-RBP: 00007faede013f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000002 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007faede1e6128 R14: 00007faede1e6090 R15: 00007ffe1a004ab8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:filemap_fault+0x1215/0x1290 mm/filemap.c:3579
-Code: 38 c1 0f 8c 8e fc ff ff 4c 89 e7 e8 b5 f2 2c 00 e9 81 fc ff ff e8 1b a1 c6 ff 48 89 df 48 c7 c6 80 a9 74 8b e8 dc f7 2c ff 90 <0f> 0b e8 04 a1 c6 ff 48 8b 3c 24 48 c7 c6 00 b0 74 8b e8 c4 f7 2c
-RSP: 0018:ffffc9000c3d7280 EFLAGS: 00010246
-RAX: c461c012ec26ac00 RBX: ffffea0001682000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffffffff8d7867c7 RDI: 00000000ffffffff
-RBP: ffffc9000c3d73b8 R08: ffffffff8f817677 R09: 1ffffffff1f02ece
-R10: dffffc0000000000 R11: fffffbfff1f02ecf R12: dffffc0000000000
-R13: 1ffffd40002d0401 R14: ffffea0001682018 R15: ffffea0001682008
-FS:  00007faedeecb6c0(0000) GS:ffff888125f44000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd80c2bd48 CR3: 000000007da76000 CR4: 00000000003526f0
-----------------
-Code disassembly (best guess):
-   0:	d9 0f                	(bad)  (%rdi)
-   2:	01 cb                	add    %ecx,%ebx
-   4:	89 01                	mov    %eax,(%rcx)
-   6:	31 c9                	xor    %ecx,%ecx
-   8:	0f 01 ca             	clac
-   b:	c3                   	ret
-   c:	cc                   	int3
-   d:	cc                   	int3
-   e:	cc                   	int3
-   f:	cc                   	int3
-  10:	90                   	nop
-  11:	90                   	nop
-  12:	90                   	nop
-  13:	90                   	nop
-  14:	90                   	nop
-  15:	90                   	nop
-  16:	90                   	nop
-  17:	90                   	nop
-  18:	90                   	nop
-  19:	90                   	nop
-  1a:	90                   	nop
-  1b:	90                   	nop
-  1c:	90                   	nop
-  1d:	90                   	nop
-  1e:	90                   	nop
-  1f:	90                   	nop
-  20:	90                   	nop
-  21:	90                   	nop
-  22:	90                   	nop
-  23:	90                   	nop
-  24:	90                   	nop
-  25:	90                   	nop
-  26:	90                   	nop
-  27:	0f 01 cb             	stac
-* 2a:	89 01                	mov    %eax,(%rcx) <-- trapping instruction
-  2c:	31 c9                	xor    %ecx,%ecx
-  2e:	0f 01 ca             	clac
-  31:	e9 c1 75 03 00       	jmp    0x375f7
-  36:	90                   	nop
-  37:	90                   	nop
-  38:	90                   	nop
-  39:	90                   	nop
-  3a:	90                   	nop
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
-  3e:	90                   	nop
-  3f:	90                   	nop
+So maybe the best way here is a really vague:
 
+/* 
+ * Different archs allocate pagetables in different ways, assume
+ * GFP_KERNEL as a common denominator.
+ */
+might_alloc(GFP_KERNEL)
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+... a bit yucky but I think still useful.
+
+Any thoughts?
 
