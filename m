@@ -4,178 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D7E3D3B7DE
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 11:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A77EED3B7DE
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 11:19:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C12116B0005; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
+	id C9FBE6B0005; Mon,  8 Dec 2025 06:19:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9AC26B0007; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
+	id C50356B0007; Mon,  8 Dec 2025 06:19:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3BCC6B0008; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
+	id B65CE6B0008; Mon,  8 Dec 2025 06:19:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8791D6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:07:06 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4413BC0A96
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:07:06 +0000 (UTC)
-X-FDA: 84196026852.06.C259682
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B52B6140002
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:07:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uvVGmJPF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+bKPYHgm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t2HE9luv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cAAp537e;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A63146B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:19:50 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 595F7C0A8C
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:19:50 +0000 (UTC)
+X-FDA: 84196058940.15.20C3818
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 80BD41C0007
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 11:19:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KJyCOd0s;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765192788; a=rsa-sha256;
+	cv=none;
+	b=EBwBVTUrQycrAbGn4gOKB6TdwGiIuqHlsaVdc3Zhjg0e1R4ahi/+1ECbEz23zWjKuR9Crd
+	v0GjqmrItHIPnBvsGnTiOSwieSxq7JnqDvwzjqpuQiCL439m3YGmfe9wRJ/RoGVLjgk6yI
+	QNOeFl533HVg/OvYQ5Ziiu9yPk2LiRY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765192024;
+	s=arc-20220608; t=1765192788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
-	b=3DZ5UYgl7qbm4HS0xpXXokBSEsXygc2IsTZ9+XjUAD3FIDzD4AKrMnJkoj6TfRQg6N65uO
-	1/diOfQm6cq/ysTYtP5tjGnyPn2B/nj+0k/NcmHik68guUGCQYfuZunnNPEehC1kz8W76c
-	SGlOCLN9/+8D67kSbYhKL5Lz4C/GzUY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765192024; a=rsa-sha256;
-	cv=none;
-	b=SrPxrxzB4OaQHH59JliXFpTyHzYx4K55DvENxWpYahbxeydZyzMOLF63zFXiigiwtIquAt
-	RSZyaN+94hyBD4YgbfSakXr/4+wWRFahKjMdkvnXiT2dLqW55T4PsZ3hjrqMXA8+4MGi/d
-	b314VAx41cuMLW/WTkkN5I5EYdvtsDg=
+	bh=bJ+UX1f/i7J9Lg9XaP0g4tjEJcH8V9NR5R44t+064a8=;
+	b=bBfxkwZRZJfRXiCYpZijcOEdrlTgScuHZExTH6Xxr5Qyl/zWKoQaO2M9+13gmC5olf8dJU
+	qeVzA3ABR71kVJQPC6qe6j1UzQb+B+8dWriAD09rJeoFhmAOe9MlChwQWO/udOEIiz8QB3
+	sVocw9sN4ns072YKinkIi4lOC8rYI9k=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uvVGmJPF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+bKPYHgm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t2HE9luv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cAAp537e;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B49D05BEAE;
-	Mon,  8 Dec 2025 11:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765192022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
-	b=uvVGmJPFJ5/wdertQ2fxjHO4IKZehROBaU1yuFt6i/OExjCI6tAZ9ZsaG1yR+13vep9gEK
-	b5CgOayS7JDsh8rCaFxjJkpiU4RGwwViZoXmamJU4oD9mjKjTBEnOcPuP64SIXanmkcVmV
-	9fR1hXiE/revnG7A270jrD699RfSUVQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765192022;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
-	b=+bKPYHgmc008xRvDGE1Z/pqEUvLUqWoiv5ieKau6cK/GQoGErpeCGz6rDsue3e5MMC5LpQ
-	IiXoaD75Ylje9HDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765192020; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
-	b=t2HE9luvKuTJd0pKq+mDtJFXP4i45e85SA3ueHlgM3JfMieZOb9MXeTAgnUthWz+t6R8JF
-	8zoleo13eByKYI+9SC4qLtULwPhRJfwJJY2zuliXyjm3k7j6j3XUsedtUp5P/rfnI9KYew
-	2gIoWlfd7JNh2KvEcF4iejtOZpYalks=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765192020;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3WjBghSU5cybVuNWVFQf0RboaQHsBf4dPXN/4v+tGXQ=;
-	b=cAAp537e5t+w/ygfx4FbubBaid5sJqoO1aZFCf/1SpW9HqmqCHf4TJszLackcezVJ8ZA2w
-	XbE4Ws5C1T7qTIDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 926A03EA63;
-	Mon,  8 Dec 2025 11:07:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id POYKI1SxNmkpeQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 08 Dec 2025 11:07:00 +0000
-Message-ID: <5649e224-bb6a-4b63-bb27-5541216df0b6@suse.cz>
-Date: Mon, 8 Dec 2025 12:07:00 +0100
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KJyCOd0s;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 788B34446B;
+	Mon,  8 Dec 2025 11:19:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DCAC19421;
+	Mon,  8 Dec 2025 11:19:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765192787;
+	bh=utFRhFXUCE6FElyvINX/I4j0gvr5jg6S50AXtbxYzJ4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KJyCOd0sbc5PFglHH+kOhFKv/Fw0iRUEQWpq9FLXAuO1oDYIgOazxilVyYyuaQ+Cr
+	 A15raKGZnm/DWRk/wHCbfQ6IZ1a7Qk0jKfr65KHHgz8ffFIcYWqWYCDdxg4WcdFPns
+	 +yxdBylwRBYyOiZtySBX1W6eQa2AvxdcG4TqTsYGlrc+f3yoG0p6VS2iJwo+wx42ZE
+	 +FoUSa0QUEKcF9HxrUpnyXcCxtQy6/PUhRXCsCwH2icnb0kpAnnErOlMJekBCH2U9u
+	 tqhvP6c7NAgeSxEiYfDWFeFR9lqYEBx6hwa7YmTN5fRq3hzWFIfoRlLrfPen/e5WHe
+	 5bZ+vKJfmrz1g==
+Message-ID: <3b7ff190-4efe-47d0-82fb-68135a031b0f@kernel.org>
+Date: Mon, 8 Dec 2025 12:19:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
+Subject: Re: [RFC PATCH v3 05/37] mm/{mprotect,memory}: (no upstream-aimed
+ hack) implement MM_CP_DAMON
+To: SeongJae Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20251208062943.68824-1-sj@kernel.org>
+ <20251208062943.68824-6-sj@kernel.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>,
- FirstName LastName <vannapurve@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, ashish.kalra@amd.com,
- david@redhat.com, ira.weiny@intel.com, kvm@vger.kernel.org,
- liam.merwick@oracle.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com,
- seanjc@google.com, thomas.lendacky@amd.com, yan.y.zhao@intel.com
-References: <20251203142648.trx6sslxvxr26yzd@amd.com>
- <20251203205910.1137445-1-vannapurve@google.com>
- <20251203231208.vsoibqhlosy2cjxs@amd.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251203231208.vsoibqhlosy2cjxs@amd.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20251208062943.68824-6-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B52B6140002
-X-Stat-Signature: 53gz3dozq7saokbwzaqp6ykbu3cbj693
+X-Rspamd-Queue-Id: 80BD41C0007
+X-Stat-Signature: wtd5xrnrc5uszhwxzg7hcemfb7kf7b58
 X-Rspam-User: 
-X-HE-Tag: 1765192023-895244
-X-HE-Meta: U2FsdGVkX19G9xknUCjd0QrgyBZeJwR+6YlX/Ytx5qe2ZjocrjgCSOkK0P8bqTPqsXHTOxI2axCp+zhXu0yrDjhCnWqMqq+l2GKCL7Je+X79kQ5hUQ6l2Z2k3a938ND4S/XQduSlUUgvDbknER0ootY2FV9i/T5dpF0GprgqInesN9zfWXSrUsTIMdYmSYjqBYLhxiRGgn6Cbd8On+jOUuE1Bz1KzIvdXJ4i2UOHB4IIG8iMs2mYFC0S8/olML0UlwTVWNyyyDW8466F7XXShUCb2qnQsQL+/9HG424WMrpN/QxfSFy0Ud4ylsH7Rbw6eV/n66tDho3eF164I3f/SFeqCVqLaqQBLBLFn4UoTuZcplF/eBHf8ppAOU/JWV17R/83ofJMT3Vb7ylH5YCgwEu9snjml2YX6MDCobXNh1sfPJd7qVTP+DdtpioynP7ID5eoq60XEG1yKoeFf2u2OA1kfC+360VYYNt9K+lNMIE6o9qJF4h8lF21bYjVJJvuxF+xA5sIw2413zF3kFZ3bTvagRk6w1VcIng8H6irXTrPNNbzM3sDQzJOfH8/4bmuZ9ZAGMlh/HJZ+0Ajqt4Tmj7XgVSKvrkPaND8Ze2OKnp5Gu3O0kzwpjfdc+mzN4H++YSh9Dn1d9WquXsdta7Eyl4QjxoKGhXM/zDodbnO8u8jZlY9GOyB0RV5ndv+uV7RNQ7qmBKEQwovMAOiMHzU+lL6c/MyoBOo8JVEGxzpWvVTJlKybL8RnT3zi6JHqO9VFHBVTNP4QlmxECl6+vhg/J2irn7icnfgHSzsc8Tp/vt0gG1LaVA9mfBT6dKL9ZGGsF/qT1D3CJYAOQ7mpqijoaaeRVzNW8QTxguh6Jedh3bay68q0urYpgKV7vGUOTOckYh94igs6lvkSgKugnwiynjRbEjgwmix89AIIGFT27m7Ppl1OCwWQGpDnVgt5Zu9/IjECWB4mCQlIZYKo5M
- XEqU5Ox0
- BTnwGNtDwYghgngL42shghl2aemoCXH73eR/JZ74gnwUcdwYQWv8WzR/ZqdgeMGydKPSuADMc0/9c+1QkPd50VHGLA7ewfu2Er6xzOYmHcYBSvKYNj5iCYSKjtYTbOlX/4Bw50CnhHUd/sI8kHeO+Vh7A2RJjs7/GfX6N0SbFCpjMVdCgYYgzjpgcuH7GLRgcipuK57vNbmDvq1PstP7CtXh3B92hYK8Kebz4aeuIrilP9+170AoWQAqPE9sm1GpWvJUpBY1CeDXd1mvq3sQibkktq3X7mdkkt9E6lfa8sEYDXbpFtU+WJm+2ep0EEFtQrEWfpzLoP4I8YVbaWt7bRYB6rA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1765192788-936867
+X-HE-Meta: U2FsdGVkX1/CqIZvCjvHmj6X7wKjsNRrwGSYjHz7Vf7VJVqf097N0rNQMAetCLtyvXXwgB3yHEW3HI197D8NO7EGS3gSlrik62umZADO8He7xOoXss6u1gRrqqrCjoBuCO50ZPiK+kEwAiGZo4DHa/NJHIiCXNofi7puYlK8Km65YVgoE1sTyHA+LWnYlvdAPiMwDFt/vajFH5dkcIzKHC07jLpXKwdhEHTHDsMJok3nrwtMXv4qVbsQGlbrTzNNCn14SJTpiKdTbZAwSuRvbmLATXKUmuiYu2cZqs79OMgrogAqyo+B1Jl4quxxyeebZDerawqyWPf+qvpgipH2o/gHJFIysccl1aWoOrGcCbsZvbK2V4gGKFtSf7XQtr9qk9J+OKENcHusOwP2FinEKkIpDoY5WxcJihXxazXNa0YTRoa51B4GiGLoonrgPEkLzenDcZmyhhKaShBywePwyLRa5eRi/rJP3e5dwC5gYu1uHhN6iSub4vqDwVl6MI8fmE3VqHjj17J5AQhOZLsjD2qKGNoUW1BvqrFAmnol1VyTm0exUWoKXZBRN9z7BvBfOCqJUQTteYFQaCTvqY+uHHF69yVc3IoIH5f6Fax5lGjH/FLch58wkd6/PMpZ7OjEEjnaceQxgjoovjemMtNqaYmw3k0D+LhUgiGT2hHlOUkS2ueDIf9rx/hywo4cSd6E5OG3ZVnZ1+PqAdkXRKqY5BiP66ICjoCvN+J931R+RDIkBlk36FT555/n28sCODJiPnsKBs2owTfcdPxUH+iC6apbRBl0kvosIfNG5Pl+iF/4am/7omm4d69z77jXBQrjCSyG2EF06JSJXbxdIzg/cgYz9U/EsJddCzQBE6NbVOj76xsWMC4ITgl4L1qAI4mw2ROfKsDiEGeELhWFUWKWDvuluQ3AMBHroEiWkmz5zrO06Ge2/TAFKHTOQkM17XIfSsL2EuErGFOo84ZqM+y
+ MNKu3tYr
+ SwXTedHCLjAf5l5kLKht5GKULzGCj1lsKd3l0CtraeqQjcNqbrJK94Vw0EXR3lEW7y7TsarvfGgkbGKGYYYIwaAzpr1buyTRtMyfDWj3XZexjEo59Cx/kHbW2M67BIogv3TLAsvf68clgdglJGVPv/Tyh7sriIwxZoSWTSUjiZr7GlDx77Ir8rv51j6kxku3i635W/teQkomxna5rUE1TSDKabOZu0j+/AzBvTD6oVqIHWY7YQUTxWDRiMxi9KjQeHZ49ju05x34RcrQCq0jemUNc+eFdAZd3Z3IvlcVaV13AI1HS+tuRBntwV+7XsiQX6uauV9dyQYLnUq9It0UrYftIVEo8m3fkp/hi47E6IrceGH2ykKBwPt79dYihZfTEZqSK6LUPP67t2t5t1gGkCZGhVLerrwCklcRzjWDH2tdvYZo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,20 +101,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/4/25 00:12, Michael Roth wrote:
-> On Wed, Dec 03, 2025 at 08:59:10PM +0000, FirstName LastName wrote:
->> 
->> e.g. 4K page based population logic will keep things simple and can be
->> further simplified if we can add PAGE_ALIGNED(params.uaddr) restriction.
+On 12/8/25 07:29, SeongJae Park wrote:
+> Note that this is not upstreamable as-is.  This is only for helping
+> discussion of other changes of its series.
 > 
-> I'm still hesitant to pull the trigger on retroactively enforcing
-> page-aligned uaddr for SNP, but if the maintainers are good with it then
-> no objection from me.
+> DAMON is using Accessed bits of page table entries as the major source
+> of the access information.  It lacks some additional information such as
+> which CPU was making the access.  Page faults could be another source of
+> information for such additional information.
+> 
+> Implement another change_protection() flag for such use cases, namely
+> MM_CP_DAMON.  DAMON will install PAGE_NONE protections using the flag.
+> To avoid interfering with NUMA_BALANCING, which is also using PAGE_NON
+> protection, pass the faults to DAMON only when NUMA_BALANCING is
+> disabled.
+> 
+> Again, this is not upstreamable as-is.  There were comments about this
+> on the previous version, and I was unable to take time on addressing
+> those.  As a result, this version is not addressing any of those
+> previous comments.  I'm sending this, though, to help discussions on
+> patches of its series, except this one.  Please forgive me adding this
+> to your inbox without addressing your comments, and ignore.  I will
+> establish another discussion for this part later.
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>   include/linux/mm.h |  1 +
+>   mm/memory.c        | 60 ++++++++++++++++++++++++++++++++++++++++++++--
+>   mm/mprotect.c      |  5 ++++
+>   3 files changed, 64 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 553cf9f438f1..2cba5a0196da 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2848,6 +2848,7 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+>   #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+>   #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+>   					    MM_CP_UFFD_WP_RESOLVE)
+> +#define MM_CP_DAMON                        (1UL << 4)
+>   
+>   bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+>   			     pte_t pte);
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 6675e87eb7dd..5dc85adb1e59 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -78,6 +78,7 @@
+>   #include <linux/sched/sysctl.h>
+>   #include <linux/pgalloc.h>
+>   #include <linux/uaccess.h>
+> +#include <linux/damon.h>
+>   
+>   #include <trace/events/kmem.h>
+>   
+> @@ -6172,6 +6173,54 @@ static vm_fault_t wp_huge_pud(struct vm_fault *vmf, pud_t orig_pud)
+>   	return VM_FAULT_FALLBACK;
+>   }
+>   
+> +/*
+> + * NOTE: This is only poc purpose "hack" that will not be upstreamed as is.
+> + * More discussions between all stakeholders including maintainers of MM core,
+> + * NUMA balancing, and DAMON should be made to make this upstreamable.
+> + * (https://lore.kernel.org/20251128193947.80866-1-sj@kernel.org)
+> + *
+> + * This function is called from page fault handler, for page faults on
+> + * P{TE,MD}-protected but vma-accessible pages.  DAMON is making the fake
+> + * protection for access sampling purpose.  This function simply clear the
+> + * protection and report this access to DAMON, by calling
+> + * damon_report_page_fault().
+> + *
+> + * The protection clear code is copied from NUMA fault handling code for PTE.
+> + * Again, this is only poc purpose "hack" to show what information DAMON want
+> + * from page fault events, rather than an upstream-aimed version.
+> + */
+> +static vm_fault_t do_damon_page(struct vm_fault *vmf, bool huge_pmd)
+> +{
+> +	struct vm_area_struct *vma = vmf->vma;
+> +	struct folio *folio;
+> +	pte_t pte, old_pte;
+> +	bool writable = false, ignore_writable = false;
+> +	bool pte_write_upgrade = vma_wants_manual_pte_write_upgrade(vma);
+> +
+> +	spin_lock(vmf->ptl);
+> +	old_pte = ptep_get(vmf->pte);
+> +	if (unlikely(!pte_same(old_pte, vmf->orig_pte))) {
+> +		pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +		return 0;
+> +	}
+> +	pte = pte_modify(old_pte, vma->vm_page_prot);
+> +	writable = pte_write(pte);
+> +	if (!writable && pte_write_upgrade &&
+> +			can_change_pte_writable(vma, vmf->address, pte))
+> +		writable = true;
+> +	folio = vm_normal_folio(vma, vmf->address, pte);
+> +	if (folio && folio_test_large(folio))
+> +		numa_rebuild_large_mapping(vmf, vma, folio, pte,
+> +				ignore_writable, pte_write_upgrade);
+> +	else
+> +		numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
+> +				writable);
+> +	pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +
+> +	damon_report_page_fault(vmf, huge_pmd);
+> +	return 0;
+> +}
+> +
+>   /*
+>    * These routines also need to handle stuff like marking pages dirty
+>    * and/or accessed for architectures that don't do it in hardware (most
+> @@ -6236,8 +6285,11 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+>   	if (!pte_present(vmf->orig_pte))
+>   		return do_swap_page(vmf);
+>   
+> -	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
+> +	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
+> +		if (sysctl_numa_balancing_mode == NUMA_BALANCING_DISABLED)
+> +			return do_damon_page(vmf, false);
+>   		return do_numa_page(vmf);
+> +	}
+>   
+>   	spin_lock(vmf->ptl);
+>   	entry = vmf->orig_pte;
+> @@ -6363,8 +6415,12 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
+>   		return 0;
+>   	}
+>   	if (pmd_trans_huge(vmf.orig_pmd)) {
+> -		if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma))
+> +		if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma)) {
+> +			if (sysctl_numa_balancing_mode ==
+> +					NUMA_BALANCING_DISABLED)
+> +				return do_damon_page(&vmf, true);
+>   			return do_huge_pmd_numa_page(&vmf);
+> +		}
 
-IMHO it would be for the best. If there are no known users that would break,
-it's worth trying. The "do not break userspace" rule isn't about eliminating
-any theoretical possibility, but indeed about known breakages (and reacting
-appropriately to reports about previously unknown breakages). Perhaps any
-such users would be also willing to adjust and not demand a revert.
+I recall that we had a similar discussion already. Ah, it was around 
+some arm MTE tag storage reuse [1].
 
+The idea was to let do_*_numa_page() handle the restoring so we don't 
+end up with such duplicated code.
+
+[1] 
+https://lore.kernel.org/all/20240125164256.4147-1-alexandru.elisei@arm.com/
+
+-- 
+Cheers
+
+David
 
