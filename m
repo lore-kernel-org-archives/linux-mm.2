@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2F74D3B7E1
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72CDCEBF88
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 06:30:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 005D36B00AD; Mon,  8 Dec 2025 01:30:43 -0500 (EST)
+	id 277996B00AE; Mon,  8 Dec 2025 01:30:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECF9F6B00AE; Mon,  8 Dec 2025 01:30:42 -0500 (EST)
+	id 24CA26B00AF; Mon,  8 Dec 2025 01:30:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D99E96B00AF; Mon,  8 Dec 2025 01:30:42 -0500 (EST)
+	id 053766B00B0; Mon,  8 Dec 2025 01:30:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C389C6B00AD
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:42 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E7E613BF06
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:42 +0000 (UTC)
-X-FDA: 84195330324.28.D503714
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E27426B00AE
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 01:30:43 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B23801409CD
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:43 +0000 (UTC)
+X-FDA: 84195330366.15.2103E26
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D71D3160015
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=StSBOZTR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175441; a=rsa-sha256;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0232412000F
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QEs8xFy9;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765175442; a=rsa-sha256;
 	cv=none;
-	b=bIwSNgjrhj9MJR/SjpUG2W1fwpMXghKJDyZ8JFyARw+0quwIp51r7J6+qhX6ooidiW8bTH
-	7V4ME8jSp/gNdk2OWZKD4S4yE1bT0RxSMhN6A0Al3RNT3wNi0YLSaiSSLFsr+oqlKw9mJb
-	rBQf3A6TCnAioxuP4aV6m4OZPKzINv8=
+	b=352XbT/xFW2sHNziSu8oFadHEA0aw97EzVEKcizZ8FXpNcxy5t1f6RhMseuBoHR86XXaro
+	RVPs0YSr5G9QAU4BxYVzJVbsJTLWfzCJwSmaixLE/zwyNSRUoG3ViHYRBdzhNDPPmWJcST
+	cpKQAPk4z8B8GGbzd6avroBraqEqTJM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=StSBOZTR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QEs8xFy9;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765175440;
+	s=arc-20220608; t=1765175442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ga6pUOUWxBf8cJW/zE+V9QG90RqHitd4NAzcQwvoS8I=;
-	b=DlQMDvOBl0QBilKaw9OAWdrateEwG6Qv1nX0a6Km9DoCihl8DKAKaf9JJBdiKP0KKOFH2W
-	nFgaJnywdu0VS+2ZGbE9wa5MRGxu/UO2LTKOxvISSsHPfPxWj+2sc66iVnLbTmOwHm1Qgn
-	yl0Blq8GYLy4HQ03iwY9g1M09gy/GZs=
+	bh=Xx9JGFYIe5Z+LiZgfTzEP+XvXJiwtZJ197mOvlSTf58=;
+	b=ZD1+opBdefb3qJ02A8MUSBEE9BSxayqbgq/Rp0Tk5q7gyX44G3Am3qup3ukMb9y8Dhsy+3
+	VXeEW5wg+sRnUpGl1HFJ94IvP0ALBk/00U+ALmDgCg440+lKKtu0apyONWrCpzbOr58RVY
+	0lw043zHEMHzg9KpWRexwxEd8DeidR0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02D4444418;
+	by sea.source.kernel.org (Postfix) with ESMTP id 333FA40802
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 06:30:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E86C113D0;
 	Mon,  8 Dec 2025 06:30:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB2EC19421;
-	Mon,  8 Dec 2025 06:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765175439;
-	bh=P2SgdyCf2ZU0vqy/RDrIyCr5Bu1z5InvNin3lNvOuEg=;
+	s=k20201202; t=1765175441;
+	bh=RBgupw+0+IFAQYuywBDofV0MFSFxSZkVNemgNSqd6d8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StSBOZTRBdXApkEJVKfwmFrboFQjqC8MYLknLXOmdgrtgFNEfFPug4wod06n0TzlM
-	 Y8QuzC0Gq3JOT8dUBFwR6Qx9y0F0KrPfAEY8XUYd5nDDcbx6V+3Q4fBnP74VG8Pr/F
-	 lYTrYA1aiL0qrEx8xfvE5IWHjMD99J/QzETrf9oANE9uBVsuWecK6XBCmzxXxAyFZt
-	 r8OCoBqkIhk+XAcaktUDsn9HHy7dF3X4pAW0aLtPYLd8QVy6OwbWaEAeCEKI4XkqiD
-	 n8qkFLT/O1CemZfo1ng1PzlIz8YzOFy6N78a4vhQhnO0in7P1mRNOhmEXqhg3laGLb
-	 EwcNqZHFCo6xQ==
+	b=QEs8xFy9N/5t6MNK2CW9AAKR6gDNiwtRhj8gFt5ysY2bEKeVLIvwaRR/qG925Ypc2
+	 64UnTu0Zd/Oyj/x+WezlY5QUBF6+gk0sNwB1wrGtSYiT2cIlajPMqNFriu35CaQYyW
+	 uJSfF5aQP7wPFdZ9SYEfJUgQeDjB2PQDtkF6fPWt5rNaxZJ90HRSuFIngFYB+itSdE
+	 1hbpcmy4Uc1E1kMcpDAmlIuwDlWc2+f2UQz0kq8y8lYCUBoLfb2E5ecL3inu0dgdU/
+	 TWH0+AzWqtrCn/xMZrNdLQMrt67rpb8tnfnF6nghvTQiDYEzVZ9qtjcAaUms3XANOw
+	 qqQzxtBHmf7Ng==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 32/37] Docs/admin-guide/mm/damon/usage: document tids_arr file
-Date: Sun,  7 Dec 2025 22:29:36 -0800
-Message-ID: <20251208062943.68824-33-sj@kernel.org>
+Subject: [RFC PATCH v3 33/37] mm/damon: support reporting write access
+Date: Sun,  7 Dec 2025 22:29:37 -0800
+Message-ID: <20251208062943.68824-34-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251208062943.68824-1-sj@kernel.org>
 References: <20251208062943.68824-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D71D3160015
-X-Stat-Signature: wzmum1dycsojeaqg1e7r8y8u4eocfd81
+X-Rspamd-Queue-Id: 0232412000F
 X-Rspam-User: 
-X-HE-Tag: 1765175440-61097
-X-HE-Meta: U2FsdGVkX1+nbk/pkr78qOprdvaYNQRORycfStk+MuPd1PJeFR1PHGKmvBoO6fx8zflE1ScPE5An1V5LP14C8+GmdgLFSl8XHnScLqW+p0np6IPQjH/b0xlyjuKY1rnWuw0Cj1QMM6tXIybUbhMqDn+xsjrQQ+gifsKOW0ZUYm5gakDt6+oJxGCEyRieQUMeYD2yWP5FnzQfx/TxNfVP9/4S8eT2BgYtgz/PEP7eOTSugLIBZbfxE/gtAEVLSdZy5aknmT8Jaa/a5laC5Xby6FbZCswP0s5EJVcSnbJ6XvJTmNt9MGQwuIMXF+DTC5CKiqx+fireU3lm6To+nWfEkrW/60clKRJAYfxFgfF4E9teKGrnySR+bRdRnrM3c+FnUO2VOwx57AB+84HY96Kg3ptiAxb9yqU18hFzf4YiX/tM6RD0fZ5H8dJm2c7ttnVSEQUgEJwp+BrfewRw0h/ZW3/WB/9WKHJ/h4BtXLNqpH6t2Ylg8NYaraWjWN8thZpyaCTAkCO+I3z8p9ikkx2zdQNw/D+vpQ781UgFHzZc+eGyZlKPz7mJzjPSkepww/oomeImN0C+Axh/RgJpTZYxx3edSgLxSwz3ZoDU+xzWPfbPTdA/Tn4PHpmz1hHC87mvi6ImRvwzpCRFBTibw1l//TOnfqGSp8cCgxzDlGk5YJNOC0/yBSRx3Zl23dptER9dJW2PGy7t8pD1q7fjCNbO5MXa/8PTx1za11uKPg/bFTsNF+FUQIh0jqMWquZaLARRhH7L/R9+3j30PbZ18Uio+Q4ur0jqg+wswZg/X6mc7A+ZAmqydBuefhKUs8RziVRn3ECRAywUT0IXJ40O7E/u3FL6Tst8PuF8h6EwlXdhXBG8G7AzHjDgV7/4VohfryHUPAua48XEriTDlEgD/wTc9aCe3Xzh0Dq23TrtRPuZwyhgYMBIltOLlkYF0BmEBjCcrcikFAAP5L6fFHXzDPT
- ZY7HwEYQ
- NSx/DItfdLOk4Ens9r+DiKGwh1bfniOiGv0vX879yRYwXr5TJjdoHrxk7+LSr602XhA68hElU+7tsrrUqXyYEJsZHTOzs2zRJcYGLHDR+vg9KzgYjxdwgU3dGU8OdBrB8dYY7aqe86/95zdATblVt7OGBWKx01MR8HF3Bc1EGCxa7QWOAHmjFYZoFaZ/M7f+DKZyhIJEr3tgGVIAotTc19fLZMs1Ynm785jTEOBS1hcyOTQEiLbZIrPNv5GYJcj4Zzt32aFMJMw4tw9wsqRLJJpYeiCQEJ3SmQcC5piqC+tpDFEfScijyCnYYBBTTT3pmxp8/YH/mT1amaA2UhJNFAKL00JcbEhuJKKFc
+X-Rspamd-Server: rspam12
+X-Stat-Signature: tokr1dz3srdwzb75yepu5xy9rkjymy41
+X-HE-Tag: 1765175441-78986
+X-HE-Meta: U2FsdGVkX1+WLtkEfqUnLTzfzHmuStD7rygb+Fjh2jx7skhUVi/Z4Pnjr+Gf53n26xoOdAHSKMHcahxQtFD0ZBQx5ezkHdTqO2bye35EsuMuVGvgpU/ob+YFFzI4Qpm3pGY6MefCPCDBw5H+nWTiuoXC++cI4VuWiMBwN5LE57gkjh/pFzOEPRUj71hHlBA3rnyVon33OGqsGCydYP4mR5yHt1U23SBVu4BwnlQUv06Fcqw2Qr/kzLlezImzJr0Kvma0ReqvVjZHElI/+Bt8MfFmnZh6jgz6eqoSisRntXD1JYraq9k/WWfOKWjxUnaqd4Rg09Menm/4pKzE0Lhf/w1Mcfs92Urg18OCpi0Ww0E4YjNMXEAFlakQ3TWhvuddFxmyE+L6kA6bO2+3kF8MWWqOH63NCa6few1UnFupqsxNr+1dYTKzRGtKdBIHLk5YkiTGqmIdZIzuGHb3np7U3ZaceZGJGXm56OjsXJxK3QbfX/SOS4cxYxHS3dQSZtRnxuHyx8q0o5w8+bn0gmjMXTRg9I7HUqpBQxrXf1iDbbwUhvuOqGr8gz4AEUG7vLdE/mWN1zN7M03f58jZLpSSG2/smNJupzIYVb6zvdVrzniBtJzmAulJt+31ldnbd5FABQqV9aY53so8idlIUD6aSTmqYu0ETwO+LWHWUFPyqNEECvPoVChoyXJAUq9G53L+fvxAuM/J6QQQYvZc/M/8wv4aEoUj9PK10yWXBGa4n3X6ojqjuLDDTENqItu/Sn89Y2BPy5megy3gNQz/JLGDYQHVfxJc90wFOfo6wlqdHH3VpBtTya0DuOU+zEPLcEdDReNy257lFLbLQC/5iqgTO3IQUYbmDFAXXrhCLEJR+OKD23EWFf3LduAyLlCizc8m41tQGH2dLD2Oj9K8yn+mUBrUUr/HIVm/EyVVxGfzc3+c3V5nW+a8IeMLZZzvWzqq1n+3KeacsldCedDRVGo
+ SfkqYDLP
+ mnj3J3gmiCTZE5llkRws+wllQ/5NgSQM+p0ogTakdbT4I9a1MObZTntJB0xL5su+QV7MbLbjSQ0rl5rfvccdjN8GXCVEngXf1hin15pUGkQ02eCMznqP5hwWScTTdEnj85oCaOdhpNJvRi9dWb5UVIWeP3tMnkYLaKHCJJairgPiYwiaD+hZNxvNoWNJpC+H0wVS+t1FtO+voRNW/bWV7pQSAaycDCj0f16y+hU2ZpnQ8TjZcfHPMN31BeNF9Kxpds92fgtduk8sWRlZatMKL9Hyn12KIEryRAcevQSkq/UAltXmcERuPtEtdF93Mm/632ZIIYMxRLf1+Y4rQVZMuL6ngLQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,47 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON usage document for the threads based access sampling
-results filtering.
+damon_report_access() callers could know whether the reporting access
+was for reading or writing.  The information can be used for
+fine-grained monitoring, such as monitoring only read-only accesses or
+write-only accesses.  Extend the reporting data structure so that the
+caller can pass the information.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ include/linux/damon.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 365a4548a5ba..d22d80710355 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -67,7 +67,7 @@ comma (",").
-     │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
-     │ │ │ │ │ │ sample/primitives/page_table,page_faults
-     │ │ │ │ │ │ sample/filters/nr_filters
--    │ │ │ │ │ │ │ 0/type,matching,allow,cpumask
-+    │ │ │ │ │ │ │ 0/type,matching,allow,cpumask,tid_arr
-     │ │ │ │ │ │ nr_regions/min,max
-     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
-     │ │ │ │ │ │ :ref:`0 <sysfs_target>`/pid_target,obsolete_target
-@@ -260,13 +260,14 @@ context, in the order of the directory names.  Writing ``0`` to ``nr_filters``
- removes the directories.
- 
- Under the individual filter directory, five files, ``type``, ``matching``,
--``allow``, and ``cpumask`` exist.  The first three files are same to the
--properties of the filter specified on the :ref:`design doc
-+``allow``, ``cpumask`` and ``tid_arr`` exist.  The first three files are same
-+to the properties of the filter specified on the :ref:`design doc
- <damon_design_sampling_results_filters>`.
- 
--Users can specify the cpumask of the filter by writing it to ``cpumask``.  The
--format for ``cpumask`` input is same to that for other cpumask inputs like that
--for cgroup cpusets.
-+Users can specify the cpumask and thread id array of the filter by writing
-+those to ``cpumask`` and ``tid_arr``.  The format for ``cpumask`` input is same
-+to that for other cpumask inputs like that for cgroup cpusets.  For
-+``tid_arr``, users can write array of the thread ids, separated by a comma.
- 
- .. _damon_usage_sysfs_monitoring_intervals_goal:
- 
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index e3408280ea72..9299fc91ba27 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -117,6 +117,7 @@ struct damon_target {
+  * @size:		The size of the accessed address range.
+  * @cpu:		The id of the CPU that made the access.
+  * @tid:		The task id of the task that made the access.
++ * @is_write:		Whether the access is write.
+  *
+  * Any DAMON API callers that notified access events can report the information
+  * to DAMON using damon_report_access().  This struct contains the reporting
+@@ -127,6 +128,7 @@ struct damon_access_report {
+ 	unsigned long size;
+ 	unsigned int cpu;
+ 	pid_t tid;
++	bool is_write;
+ /* private: */
+ 	unsigned long report_jiffies;	/* when this report is made */
+ };
 -- 
 2.47.3
 
