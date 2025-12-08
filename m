@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D3A7D3ABEF
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 09:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0093D3ABEF
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 09:10:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A18D6B0005; Mon,  8 Dec 2025 04:02:22 -0500 (EST)
+	id 2F9C16B0005; Mon,  8 Dec 2025 04:10:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72B396B0007; Mon,  8 Dec 2025 04:02:22 -0500 (EST)
+	id 2AA9B6B0007; Mon,  8 Dec 2025 04:10:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CBFA6B0008; Mon,  8 Dec 2025 04:02:22 -0500 (EST)
+	id 14B716B0008; Mon,  8 Dec 2025 04:10:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 490336B0005
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 04:02:22 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E9DBE1A09B4
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:02:21 +0000 (UTC)
-X-FDA: 84195712482.01.DCBC6A1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 023C56B0005
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 04:10:17 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BF3F13BF86
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:10:17 +0000 (UTC)
+X-FDA: 84195732474.25.0C43DFB
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A0F2340008
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:02:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZYfHOZP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wGqxsgRx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PUQYhYVj;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=i6npeldE;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765184539; a=rsa-sha256;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3FB74A0008
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 09:10:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765185015; a=rsa-sha256;
 	cv=none;
-	b=VFUzKQ58GJRwhdwvvAd7xZ3XW7Rd306MK5uDGrmKxJ6r4Gk8jyctSVqUcmvm3CYLWg33pF
-	RgA6YSVBXmP7qijkJS2sCPB8tuS0iSF51gjRLPhJ2nLo6Zr+Jr4sDRmVuNMfVEp+XRHsEj
-	IlraNRTbVwKDuGQ+5bQnox591q6PEVQ=
+	b=UWxqm8RO7B5/2+p9leF+vsL5+BzgboTomacoQwaGe5p9+/9CJBvZy/H1fUIQPUpkRl/qDF
+	OZ4m0KerHsToBXJab4JioRMu6v/4NXZ8d9bYbERPcFo+CHeOmP2wdUE7K6OwlzKNIsOLAQ
+	LmR0m0CqkUJPDury3zOhd0vyCFoacrM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZYfHOZP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wGqxsgRx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PUQYhYVj;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=i6npeldE;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qbFQo5VB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=q1xhIigm;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765184539;
+	s=arc-20220608; t=1765185015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l43ZE4Xy8aFmolhlk6dLxu7ZrVCecFJdofea5EdHUu8=;
-	b=r8SQOfnsEBM+KFS8BEO0aLrTExuaKVVMkrf8L2K0aiK+Tojhd05agnh58dWIC5vMjusJ16
-	6+nd0aD43WTpnM4o+3Tl9i5ngU52BYiOfMDYsQGpwAzSzeNSUweJeuNm/N5sV8UyNmjEk3
-	xlWnCWBBD6RCr0/AFxDlhMoxWM5IEhs=
+	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
+	b=4sv73nr30rp7fWi8x7Tpu6nokijKAhN4du/q4SXwoUOgdLxFPAGked9zFENIY7idwUM1tk
+	OofTwVVSIQ/minbuKh3suI/NCYT6dXDFWt7fm60Zg9WUjq6vqIkDtucltA22P4UJg8/trl
+	p/lHjYLYht7JlMmJj4b6lw+MEtOx8wY=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E973E33879;
-	Mon,  8 Dec 2025 09:02:16 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 93DB433850;
+	Mon,  8 Dec 2025 09:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765184538; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1765185013; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l43ZE4Xy8aFmolhlk6dLxu7ZrVCecFJdofea5EdHUu8=;
-	b=JZYfHOZPDddX4h2kOIhHrw84UTWCqzLpT4p6SMBDa1A4g9/tMtA6QSzyBLjiE8Xj5i22on
-	bVFFoMbSITzh8keTBBY4H5KIg28E84XHu0Rg/Lam6NKebekF1nngBSY5tpG/HX5oG0PWjN
-	1cPRhwDMhE7JiYnjwxTt+01HhnK01x4=
+	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
+	b=qbFQo5VB0Iul7UVh2ZyZuyOxVM5KlTpv4skLywclN0SxSnke7ngeM66KO4zA2TxcJlq7wD
+	WVR9H6El58W5byQHKEvr6xJrXO8d2rGbKazD0ZsB46ohpoVpFdY5Z36F9+zJOHRxTBpvvj
+	cNxw8dNv89Dpc/DI+HekMKd0W/wcDx4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765184538;
+	s=susede2_ed25519; t=1765185013;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l43ZE4Xy8aFmolhlk6dLxu7ZrVCecFJdofea5EdHUu8=;
-	b=wGqxsgRx/TSn/jQyhTseKJkMHCdf8HJnpbqgp2EMKyty5fmA6U9I+yoiN0kJA79lzDsU2J
-	sCXxVw6zW08Vr4Bg==
+	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
+	b=q1xhIigmYLviznowQZOuwEJsrEMdUqD5Y5HMelkhRZdg1vTOExqbFO+9e26NAG98oGxHSs
+	bnpMEjeOAdGyJuBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765184536; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1765185013; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l43ZE4Xy8aFmolhlk6dLxu7ZrVCecFJdofea5EdHUu8=;
-	b=PUQYhYVjZ9P3rTqkenJReRsDhx8Gp71CrUP6hf51eJoK6vuE0baq0PpJ1DAMloat0bv8Q2
-	873m9HdKTrPn0TX3jxAIz8c3tiwUAEmod5u6U3kaSFjCq551MZNNrZbPJ/Xon4BqVFT1fO
-	3itLZvMJnTI+LQtQs7Tld543M46V/w8=
+	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
+	b=qbFQo5VB0Iul7UVh2ZyZuyOxVM5KlTpv4skLywclN0SxSnke7ngeM66KO4zA2TxcJlq7wD
+	WVR9H6El58W5byQHKEvr6xJrXO8d2rGbKazD0ZsB46ohpoVpFdY5Z36F9+zJOHRxTBpvvj
+	cNxw8dNv89Dpc/DI+HekMKd0W/wcDx4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765184536;
+	s=susede2_ed25519; t=1765185013;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l43ZE4Xy8aFmolhlk6dLxu7ZrVCecFJdofea5EdHUu8=;
-	b=i6npeldEMPfgVebYlxnHuWJDuydcblE8YhinC8OENODCX2zA52ashEdKd3iNnjRuoMJElQ
-	cbl86cPk9gpb77Cg==
+	bh=r3C5jOe1fBLhDSskapJBKq38cWJCsbg+0IkowPX/JG8=;
+	b=q1xhIigmYLviznowQZOuwEJsrEMdUqD5Y5HMelkhRZdg1vTOExqbFO+9e26NAG98oGxHSs
+	bnpMEjeOAdGyJuBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6ABB83EA63;
-	Mon,  8 Dec 2025 09:02:16 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 284B03EA63;
+	Mon,  8 Dec 2025 09:10:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vluqGRiUNml/AgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 08 Dec 2025 09:02:16 +0000
-Message-ID: <8828d51f-bbcf-4d08-b99f-a2cf64fe4b75@suse.cz>
-Date: Mon, 8 Dec 2025 10:02:15 +0100
+	id eDCHCfWVNmk2CgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 08 Dec 2025 09:10:13 +0000
+Message-ID: <b9f0889c-597a-4a6c-8d32-606e948f7916@suse.cz>
+Date: Mon, 8 Dec 2025 10:10:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 03/13] mm: introduce AS_NO_DIRECT_MAP
+Subject: Re: [PATCH v8 04/13] KVM: guest_memfd: Add stub for
+ kvm_arch_gmem_invalidate
 Content-Language: en-US
-To: John Hubbard <jhubbard@nvidia.com>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -154,6 +154,7 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
  <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
  "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+ "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
  "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
  <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
  "shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com"
@@ -181,8 +182,7 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
  <xmarcalx@amazon.co.uk>
 References: <20251205165743.9341-1-kalyazin@amazon.com>
- <20251205165743.9341-4-kalyazin@amazon.com>
- <3d26bfb2-2c82-4625-a371-96879ff43c3d@nvidia.com>
+ <20251205165743.9341-5-kalyazin@amazon.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -223,17 +223,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <3d26bfb2-2c82-4625-a371-96879ff43c3d@nvidia.com>
+In-Reply-To: <20251205165743.9341-5-kalyazin@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A0F2340008
-X-Stat-Signature: ucjy8e14oqt9fkphg9j3xzqjxwgszfzn
+X-Rspamd-Queue-Id: 3FB74A0008
 X-Rspam-User: 
-X-HE-Tag: 1765184539-453510
-X-HE-Meta: U2FsdGVkX1+Co2jP4YtHci9qSkDUCUWNvucTWLK8EJSrbZLUtbTxehngdW4XSJ8D+UwjYFscVi2/QcWHsm+p7ms7F5cwE0X5bZekqYpfusKTMkXpB3sGjCCPTsqyJWg4TXpAcsKa9vaqTxIZuZ2F3VZI/19mmC1VT99x2zOAp3ZohvhmB7fiZDAbxFcEJ+m4vySqaFlWjHSFfhLq3Lhds3OkKERK3pEDUsIGIFMxyUjxiq7OhGMjHrmma2uj01qk8BsnITUomppib5KnySsTT0vpv5N7bORfMxoUPERnNS4Q/H6HcGsrIlxz57vnAPhAbzaNlWk7tvgHdRJmWj11KW4pf5M4vFhdfcgUsxu3DnFqvww6HFLJTuIF0bOecO7o7Zs1PXZVkuQqN8hwPqFdAQvET9PLrUKnucSlTwXupaL+TDIGAG5Uk+l00gZmsi7DlYdKe1zuDCPkRaZn81cId3GcHynIpBmBIv9XuUYiORR6EXdmO85udWTgr35QiswNC3j5Jo9ZFm6BeVj9fjGJzqNo0G56O/IppbAm2XAl4kfbX+WY3w7SU4G3WNzc70BidpqojgRSC7Xi9uGQSntVk6ZSHypGW96tVJztGY5eNW0WPfRbqtiB85PuR7ApLZWKbS1H8hHNvK36rO3xbA5XC08gpZfpJC1uCyugQuU4Gj4EhmEVjnJdmT2BMnPX9OE7lLqTgern9HLhFfW0D4NTorIejBY/3uYqAoLS5KfqtdDxWcPLNAsTI2FVIhhfn+AKeQRnb50u3Sv4XlytLiWlHMKr1PM38z5Cub22nza4DY4jNNroIgqpPAN3pKsYSGAxlUfS4TKK40L03+d6QVDNL49m6syG0bT+IwhIaDpiUUPQmxuFljlSBpWsTC7GYNYn+7dc+VjykUKqg/HOM3sMtM/XfSGzrfrnmWJgEvjSln7PRaVfWCWk0Y0C2HJg0ZtqqNQUrsg71QH/bY3KvRk
- suQoaN0q
- h6d1JzXMuqGhWaNGTJ/JUWCSX+u23oxRShoh2IMJwnh0quOlqmkpr7vTt06XnXf46kEB5ydCoBaUNEmJmmR2REOQGLhzYOoMWUzDt49YoevzPn0cYJtRyEW7YXQtDHEmV3VHW1XgX/sWVlz5t2AclAKqhIQAoOG8raMKBW5ywCK5xBYoRSVC2q+0FRwHODi1Kri7Aowb/6wCZPwyBoZWMlWDjpfD16xtTHN2Ar+z8hubY7PavUTCfU9roXAE3AxzKi1q718X9SwRFkrCHq54RRtlL9ADvVV9mvm7kP3iJ2qlZiyNyRqLDcMwQEDv4KKXGeLPgmMge+5TKLLt2thepePyV1KoxqRKdb8IvPV5+IZWoxI+rit6oF9zW26dk61hTRXEXGGOzxU1FqFKmfVCpZKCbq5QgDAyC2JrODKStlliODgwNf6yOionfLLGI2P8DcIKV
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ztcqymw3x3kegwf9omx5hpea9ekg9jcw
+X-HE-Tag: 1765185014-928769
+X-HE-Meta: U2FsdGVkX192DonFD2CqJFZKsGHAqRN71jvB8NhLwP+P7cCGWbZF1/iDZCEr8bbJ3Vuqo8oWZqaUKqYzDTP1w34WE+LwC+IdmvnlA0r03vNpxbU6H0PuGB1JZPuNqLw2GnKCbwN6jz4EY//tDrMBCVVPtkXfDj4yTFYrGC9de4BhaOFBO3ZLz4QVpDb6v4SP0uT6OfbbPnrQ0D2sD53VB2aba/L2dBYdU7ioyGMoO9DJ53MavAfoUlWJzH2Wr83D43c78qIQxHrVOKAsxTBbqe0KJeItj+zoXlBI2r0RlObzQEhP+IgY4lmheQEeCjNWjf9XsuJ4evzrcTDgIKLwPGsx5+27hrExCOEbEYYPn90B7qRDbQOs1Z3dBNdz2h7Hdo22dx52J9UQEeEfCFP7V2utGOqZzleYmFy3mRSiTN1LA1hEGc+s2UJRoUzu9I5rRQeGiTwYxpUMhCU7hqhW6cWj+EMUbl2h2zt/nw1HexGcRX5hwB0x1LzySdZ6ClB3/Qz2Qll2cVC7io20wJTBdLzqrO88UCb3q0jTBjkg6H2dYS5VpG67NNo3eXu+MmlKhTByI+BcTYNMXNHX3NUbhRtWSZwQluZt9UgiYaj+4Pz5KscF12txZeC82oby2a3iXg+cf5igu5R3vaiOb25DgDW5mw34MEAz/SFJtnym4YDKMiKDIf5cFvlBwP0A5c/e5C3HK5qir44Tn3bB0KCwfFQue4+S38OsBu9diTfQgEoBOYJ7HfX+6MKR1MAJpllcAd4znJi2nsn6PIdSaVtEQWsqzKnk/N2M9bnSFv5bZSdzAQxbWfFoPhtWSv6rB4L2hwHbVrcUlLqGOZAJdDrMzKoqnkEANoPc/+O+Zg6mWwgqZQRzPqvihNSTq/EoynpKepsAXiAc6aLo27C3bJKpXpkIb+kR7NlIwuTJFKUsiPbAGsbVltvbl7vqeyNnGD9e99P4sEjUWMof+dvf5uh
+ lBdQ8oKJ
+ up5L3fo6S6lmydtPf3xWlHElnyZchhPRtnStzPPeCQeo1nzqb3zIunuI0JbTksQr6gFUqRTNjkzBP1ju4PHYKAXbFW1gGUuvzyE7kgOGa6DzbhNW1iHF0Qts4mjJT2ndbp9ZeahQAvWEU/YyK+rG9EwxfRSo6MZPQPigHzX5P/cJBhR0VTI/AJKbCI/dfxeaJ7WBG9AqVtBulki3yejhmfUd06jKGu/+NNX3RFsB6ZM4VCTqYUABw3JlXhJlRV5VoY46tv3DHrOj19HZQqQDO3MrKL5ELlkMhI8VLPOxL2c4auW05jAXY1RwOOhRKOyXoLcjVFjXo58KZaJ6j9UzvZ9UGrLuiCJszMt04bVqCM4QhbU1HP4DjwrZ/Y7ZzMzOkD9mxLJ+ez/MPyeCY1wDhcrRID6eCwyIuw8pI+y0fI/vdOVH4SkGImeyohFKQlf1i2Bmd7+gbK00rZQHPLWtzj7J8dlz+Wy0GYxch6XXyINGu0OYNv41HtHDsiQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,37 +242,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12/5/25 19:35, John Hubbard wrote:
-> On 12/5/25 8:58 AM, Kalyazin, Nikita wrote:
->> From: Patrick Roy <patrick.roy@linux.dev>
->> 
->> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
->> set to not present. Currently, mappings that match this description are
->> secretmem mappings (memfd_secret()). Later, some guest_memfd
->> configurations will also fall into this category.
->> 
->> Reject this new type of mappings in all locations that currently reject
->> secretmem mappings, on the assumption that if secretmem mappings are
->> rejected somewhere, it is precisely because of an inability to deal with
->> folios without direct map entries, and then make memfd_secret() use
->> AS_NO_DIRECT_MAP on its address_space to drop its special
->> vma_is_secretmem()/secretmem_mapping() checks.
->> 
->> This drops a optimization in gup_fast_folio_allowed() where
->> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
->> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
->> by default"), so the secretmem check did not actually end up elided in
->> most cases anymore anyway.
+On 12/5/25 17:58, Kalyazin, Nikita wrote:
+> From: Patrick Roy <patrick.roy@linux.dev>
 > 
-> The above paragraph can be part (most) of a commit description for
-> a separate patch for the gup aspects. Let's split it out that way,
-> because it is a distinct change, and the diffs can stand alone
-> from this patch here.
+> Add a no-op stub for kvm_arch_gmem_invalidate if
+> CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=n. This allows defining
+> kvm_gmem_free_folio without ifdef-ery, which allows more cleanly using
+> guest_memfd's free_folio callback for non-arch-invalidation related
+> code.
+> 
+> Acked-by: David Hildenbrand (Red Hat)" <david@kernel.org
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
 
-I assume the separated gup change will be ordered as the earlier one,
-because keeping "check_secretmem" together with newly checking
-mapping_no_direct_map() would be incorrect. Make sense.
-
-> thanks,
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
 
