@@ -4,113 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50F9CD3B7EA
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 21:31:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0EF0D3B7EA
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Dec 2025 21:50:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5319F6B0006; Mon,  8 Dec 2025 16:31:13 -0500 (EST)
+	id 2F0DE6B0006; Mon,  8 Dec 2025 16:50:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5093B6B0007; Mon,  8 Dec 2025 16:31:13 -0500 (EST)
+	id 2C7EF6B0007; Mon,  8 Dec 2025 16:50:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 446F66B0008; Mon,  8 Dec 2025 16:31:13 -0500 (EST)
+	id 1DDC76B0008; Mon,  8 Dec 2025 16:50:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 323FB6B0006
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:31:13 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0E07BB806E
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 21:31:13 +0000 (UTC)
-X-FDA: 84197599626.13.5C80D79
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 39CE9140013
-	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 21:31:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ub4+FvzN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765229471; a=rsa-sha256;
-	cv=none;
-	b=m5Vi4aSL2wZp7549rvcDccM4i+wMJDz/1MfCN82otdojFdm53vWA7mruZJSKlJOJKyIc+o
-	gjL8xlIiNZvq9GN8hp7hQJomUUT601dgLE2AA4c/Do/EDvIcpO1LJi12/py+Iw7+A0iE0Q
-	5sNoDdtBfBT50dziuu4BAM/AG9dAC5s=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ub4+FvzN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DED26B0006
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 16:50:24 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9771988DAD
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 21:50:23 +0000 (UTC)
+X-FDA: 84197647926.15.9D551E9
+Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 79BEC1C001D
+	for <linux-mm@kvack.org>; Mon,  8 Dec 2025 21:50:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=nabijaczleweli.xyz header.s=202505 header.b="V67/bGoV";
+	spf=pass (imf20.hostedemail.com: domain of nabijaczleweli@nabijaczleweli.xyz designates 139.28.40.42 as permitted sender) smtp.mailfrom=nabijaczleweli@nabijaczleweli.xyz;
+	dmarc=pass (policy=none) header.from=nabijaczleweli.xyz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1765229471;
+	s=arc-20220608; t=1765230622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GbkMTjdP41ZWpVnOfAvx7UHNDJQrnVEwvaxDiEcsLhk=;
-	b=u1C2UPdcurLGuhpqlbbkTSuEepJNtfTFR9xPVyJit+PgM1vH+ps4K0iJ+B2xPYjT/QCQlY
-	KdZUSG+urWpqHbcB8DenrgnOsZNATzuYiXXV6dHq2dof4/GyV+Z0iGkSTiCPYKROb8+2Jp
-	5o0QxtzlM3Ds42PwlXDPUPXweUsiR4Q=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ed67a143c5so148241cf.0
-        for <linux-mm@kvack.org>; Mon, 08 Dec 2025 13:31:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765229470; x=1765834270; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GbkMTjdP41ZWpVnOfAvx7UHNDJQrnVEwvaxDiEcsLhk=;
-        b=Ub4+FvzNO//URg+Dg9AMSfiIrk44t2WLwyyCJoxO7H1YZbtkUzcHdTi8ruFZEc0BvY
-         lCtHaPZV6XcSBWue2rkldwhMK4OJmrRR0mC4PthNDm/ixdTG/7YPOZoGbIIHEdVw+8L7
-         gUpA1i/WPSl2vimBiuhh0GDEddiHak8tC0GSnMY8tYCne8NsTmEGnqwbKMz0vgYF12TP
-         s2dMAEt0EqEWAUo287dgzqI/1NTLQFyoonWbB9D3JvM0GzJSTFfGKtq23ipgeO/1qbw4
-         xscRJLjzJik/yCUhhm2ISqKb6SFjksUjkcGY1RA77zNDNsr5IVy62+AGcFphsa00D1Xs
-         JrFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765229470; x=1765834270;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GbkMTjdP41ZWpVnOfAvx7UHNDJQrnVEwvaxDiEcsLhk=;
-        b=c+ReedqxDtpK7hClXY52hvm+A5kEP7oVymYPwOUlyFqtdSiOVX+MVPefsq1gzCyTHd
-         zQA5TgK1AhagTEAJOvDjLof9zECp2Nle/meOPo7g0eEbq1zDeKqsiurWlvBjdCn3alWJ
-         ssZ42my+RIMM5OK9oS6NhuJv69EZ1y8TexGGpEZVLe5nq4p7RzsYLU48Hu8w7ZNVR4OT
-         IHjWfmqCdSP6D9fWxoAf7iHCcZ8DR5gQfp7QkoRMmj275+Oa0uRrcYqj46jgwLAvR1cC
-         8Go2oGokBnpRhdM9h+P88veF4ryUcdLDwZp56MTyDGTv/0xWCP87KjGg34j9RZN8H7zc
-         saiA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFOzfVEeledMQiRg8ALBHrTK5ETi5lKTZAPOQ5O6DUfuDZldhZJ4EOC76NKw2Zhy5wX34R15KPHQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyl+RRN1hYaQfF37s1kXFO4v0yO2xPdRxV6GqQz2xTiJibAB1gK
-	OiCzIl5FNTvNe6+FuqrJ7/dEFsXOGstF8SVgigi9C1IBjulud0wfWWXkUbe8uz/nSuyplB8WFuc
-	maE6ZjwwA1E7MtGiQh/FTR7JpBnaf7PqJcIy2ipZz
-X-Gm-Gg: ASbGncuCr1S94zE5H3fr3THkuFU0dbCTGcycfxTXPZbl3ti/CSIXxbxbo/uFDGEisHc
-	eUqMIeBn0P3i3aIPDsXIqwID4L+RLBvfep0fpOHpgymQ/9eGGf87Ew+McWQValCc7qUY3sE9IMl
-	nuecxUqsGCr3mesQncWrW7wb183zG29g6zCHGXSlBoa5s2PTA1/2cj/YYr+44UT+oSV/wS6p+WJ
-	G4YhZBKtdWobgJVDrRpYcsP210K8xEDeoGLU4tdzSR0qEmbY5OzA9v6Oj7DhU9aHnUy6naQEw==
-X-Google-Smtp-Source: AGHT+IG29GaBxwHWZQc2LB9NRpX+zT3/jUbD+9n9oxYqOMrPzqlyPGzUr1sjF/e6u05Vs4J0g5cc6rgCzdD1pfVFPDU=
-X-Received: by 2002:ac8:5914:0:b0:4b2:ecb6:e6dd with SMTP id
- d75a77b69052e-4f1a5e7b540mr854641cf.1.1765229469904; Mon, 08 Dec 2025
- 13:31:09 -0800 (PST)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eqMMKLzelUBtEKmZgNR6yYEg8hojrIVFnJusXP4KLGE=;
+	b=CJNaH9UNUN0nrZtEh6Mwd4uXnARYpLpS5w7nQxB1x55JJlfS3tQ5Qrg9WUsOsz/wSGz/6F
+	dNov9shsidesNfGm9t6EYb/rDdEVY4M5dmCB9QDDxerbVVXl1auPKxw5G7lG1bANb5Lm4x
+	xDrvpH0kDEupx/9yhrV1b9Rzxh5aSac=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=nabijaczleweli.xyz header.s=202505 header.b="V67/bGoV";
+	spf=pass (imf20.hostedemail.com: domain of nabijaczleweli@nabijaczleweli.xyz designates 139.28.40.42 as permitted sender) smtp.mailfrom=nabijaczleweli@nabijaczleweli.xyz;
+	dmarc=pass (policy=none) header.from=nabijaczleweli.xyz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1765230622; a=rsa-sha256;
+	cv=none;
+	b=HfwTk+xq9QazLRDlt0Yhx6i1nP0Rp+fcuOBJFfRxf0aCRRgkbG4OEZBgwN1XCbP93qmdrj
+	pNE8DXC8gh34kA4hHuB98hwIz9x7X5rvWdpkMqOICqkbz01KgJ/QnISwFJiPkzEcmm+0jK
+	dbbeOvlwVUHivWakM1/UYa7gxpKs6/o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
+	s=202505; t=1765230615;
+	bh=0PKTKFXGxd2aclzI0UHRl6n4Lefqy7Wq32pHokcYqTI=;
+	h=Date:From:To:Subject:From;
+	b=V67/bGoV09QofbjWU4KsbuLK8Sx4FsQn9jUzwP+hKMTBBDW32BzV5SP0q5DRvQQvZ
+	 WDkU7dC+1G7lXXx8FR1iluvXmVI5h0E/T4kY4TCuRBFYn437KsczLnzPsbkXto2Ml3
+	 JG/BH9cgZtfy7AEecgAi1u8RCvvK4UKgvW0biU5leRRrTKUTWaX/P+r4PWnKzK2DyL
+	 lr0p30t0aTot37tKd/gsxZIhQQxVNZA43VWW3cdieM6bek6BxabNI09GbwwU6uoJHY
+	 C3h0ZPPcj7DN/jvOq7n4d0xwPRqMeu/CSswflCGyuQHiQhtisET4lWyg+7pr2/euTL
+	 aEi97hEEgvd1Q==
+Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
+	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id C4621F3BE;
+	Mon,  8 Dec 2025 22:50:15 +0100 (CET)
+Date: Mon, 8 Dec 2025 22:50:15 +0100
+From: 
+	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
+To: Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] tmpfs: enforce the immutable flag on open files
+Message-ID: <toyfbuhwbqa4zfgnojghr4v7k2ra6uh3g3sikbuwata3iozi3m@tarta.nabijaczleweli.xyz>
 MIME-Version: 1.0
-References: <20251204220957.360838-1-surenb@google.com> <202512061207.7zufoIcC-lkp@intel.com>
-In-Reply-To: <202512061207.7zufoIcC-lkp@intel.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Dec 2025 06:30:58 +0900
-X-Gm-Features: AQt7F2pnkHbec3VF5ekmZv-cl7lVMbNag4cTqBp9jjapgjBroeJ40ilDtAS4xhQ
-Message-ID: <CAJuCfpGkdz7QhOGuS2SSTw09FrQkQLPFpQuLtMkmFAbJhGGbKQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] alloc_tag: skip rcu barrier on module unload if
- profiling was not enabled
-To: kernel test robot <lkp@intel.com>
-Cc: akpm@linux-foundation.org, oe-kbuild-all@lists.linux.dev, 
-	kent.overstreet@linux.dev, vbabka@suse.cz, harry.yoo@oracle.com, 
-	da.gomez@kernel.org, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: efnermfeu6593era65rhwyobhkb61di8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="27dnkjatirtu5y4b"
+Content-Disposition: inline
+User-Agent: NeoMutt/20231221-2-4202cf-dirty
+X-Stat-Signature: 63ems5r67de9k77hxetwww5t9c9wbwu8
+X-Rspamd-Queue-Id: 79BEC1C001D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 39CE9140013
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1765229471-282328
-X-HE-Meta: U2FsdGVkX18Hi8r9nhP+9BzgMVdDqGQTHaUoAhJcp+NUCdrx21HczeQ9JEDUFOHcljmprVSxWuZTzoGbBDdcn3jtjS/H7EKV6gx7Kd5QqsvZcsOnWKrJtdYK7aEPZrxIqC6iqrSquMO29p+E+7EtYRWSdWz5AdR/OEvziJMtRsG7HNMEeY5xsiJID4/AOCCRxLbR1B9PldW/cQwuAbIKqbaQKhQVPsN0M7rL59yD68r6lZYjJOjYY149NFbKmG/0FMrQuRd987awlHuRGqgG9Ad3aOB3mPUMY4l4FeyvQlJQOnDVcAZKCEwYf9UYerMf60X1wLdHqu03SM4bBYhs6vgVngO/9aTBHAoJQ8B/Ak+2hmRhmJN89yV/SSK3ngfH7gOQDW8cEviVJbC6PSunQHS4K2oxHDKvn1KHPW53zA/t6HcrHcjvNSGy28A0QTtiMRnU61N/CU/4nofudob71XocEVLb88y6I0aVTkutEU8xnU4yXps/A+A4RRaSt0taBp+6AYISpGrZw0J/xZmncdzd68w829xstWeo6sI8F1XGQ+OhMR9CC4CcINKwEKnGaudU5MJ7ezgt5919T6Tw9YwOC76/Mq9+aP6Ha1l0/kSTViD/sxuzZ3PRQmXc+GU0maUL0cFtlRAAF8VG/EIGUGQ/e4oyBXrQXeA+/W6wHAW4QgLi8aX3ieI8NU0HmoJ1Jgf+l+Ar8go8utyxjCt7vNz9hGJab1XBScY2O1v3IRN6tg1BuoXvtZlLxGOAU0aIJRgxnsMbAg9baEhuVuujNyTA/xZYqIAC7uHJI4njZ5z2Cvs3UEQqUy+xLsyZApZMQpbRjF68zPQRHrisR1VR3OCxjFuZFHTSC/vXnYRO6i3kCkQ0PjUPzSmoPgAeZeQ/aogmBBj1rK9YwvbxsexCigPH3JX6ShQ0Ggti5ZL1MHjZdqhqccrnJsggxh02mTzQtdsMs/ybZYwfPUmxDxT
- kuBMdtsd
- 8KjcBWIKYGNg/3Rk0gsUQrdXt2kkTdl/RFvan/4joskV5FliBEFo0XN8KxqvhCSzlKy5+CwrSyINrDyOgz/UxFxOaSAOqUK1gVfLLQOKHWVmKHyEk3EsYVzLo5KXd9Fljuq/UwV80oHRb5CdmLJ+7QZX7jdTucq3uoSRFcQsvUE84G3dzOgui5rVGS135VRyk2QZNeO09iLPwR71fqWwM56Q/lI3sE7nkrMmoWOg0WwPA3pLmS0FExHd4URp7B5aq8BbRYMgZ9n3owoO3UgmLklNP0Hn2q5nZ0VPMuTC2bNhSZrUR69BE04iGhERB+JukxZR9b9IbGXl1cpGzjsjYeEhc/dGSTrGicQJX8k73VWRYhqGjr5CzJQDxy//tNOeLJjIvLspxvBnwcW0=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1765230621-60011
+X-HE-Meta: U2FsdGVkX1+26Dg5Wk0QPRZh1/INect47DpUx4gxRdSPE1xvnaRiVqfRDY8bfYvCHDPBgFiEX2CC3zqZdB7m91qd+hsqfJcQAHA7saQGPTX8y3uNJTqBuHRVHaaZTHJO07yAXscuQS7HFLBWCkcSefOgeGMggI2E44EH0HYZOdVcxqRwCQD1vpRnpEWkt5CYBAxq/kldonADEIAv1f+xUp7StH/kXfo0nBF2EuGWvmKa+7G93VA7PpOAHo3e2oCpNV2Oj3D5PvfebZZDjAjB3Y8lq+IxbGD2yEprNiZ4OCoYzAkReuMhmmW6ihHV/oM9yCoFfaiYEGk7T5v6/zkirE3nU4J5lzT5Mc9J91Q09+DxzN2+M1qwxu1Im33QFMclGH5O/jwuYRHu/isQxa/3YcRMR8LYvi/aO7Cu/U4shGAgwUv5njKhePkPOnoSmtEoxrYLCpgWG3yOB3JkXI/LVgwetzQCF4YYXaOcZbx66vrbYoANyL/nXvU90TMfHS+UMmG7946Fck8mvEQ5OFjDlFiCe0nfflODtK1dPT+jSplog636rLBW2oYSs9S28fL0WP9PlaWUt3WicoKWhpeFb7AGAFsXPSpS3MXQ3R9ZobwrZZJeoAEdBgxR6I0ZsacjfRlvjt2fbNy0KlDGgpjtG+d80mn3HdiAh9CVnH9DPcObPI5xgihb3eYTyFtwPtUuZG5H4n5kjdvBdhWKLFsvtkS9S3BwVfhkeJqtYGoa3FXjnGGUS2QCGysvgb7OzBCqYEtyTsq+bBQLLfbJv+SUoUdViwuI7tRsdnaXJkhODJZVhq7mBTVNyH8gu547KI4i6ChXTG3WPdH5X6cWVHJ4frHDcB9Yq7BC4W30Q0kWZ4Bhi29j9lmXtZnRvDdiA8LqUVTjGotqMlbASX2olheZtyVdospQNZmbNBXUTj+xbiASvN8sEgpxKtorEXL9CV7YY5pruC5UpCFDEmDwOco
+ MIMLoi3P
+ 6hJek9RgYsHkw67L7L5rqVmThwclttkd7WCvVVXv8XM6xju317UES+mAqoOPZVHHtdKJ1nRTQWeU7suSSyZbJomgDwin8rXtOsCymcDLkX0RChd4b5+dRqjhYBVOeLegVE4sMgTwYU2PBfbY79K3iTaE2MJqz/yNggH4051T/xkEMe2pWQ3zo65ayHhPDOGVkadkYPYmd34Pa2pViv5h4IpHxsq/UrPTanBFpj34yG5aXb2oypbx929qAA3qNKVqFvw3Zy2Cj5xpcDu4PS4GGAxWjSb8fglzwaDIHBi5qqrrVFSDTE07ijvUXVDaIAeg2LWYxDb/VIMv+zdO+4GMtNvnsViYuXyh5gwj8A43xw0AwuSMq7ShEhv6FFRyhtc7g9VYYXXgVJWnNEeDpmJhcA0z/WF5vAKBqi9EMSz9IeyqoXXg022VpAChXES3QJK+o740DBVFZn61X2ADGAWeTu8lzNGfJVMoPhTFv9kZSYcHmNXgNS/4jZVr5nj7fCWO9ALmoExt/664Nq43Q7qyIcDY4Puf5MoXnEHlcnGvIKlYIf1kLgQqeEzUQzXhamqnw8OA9AL3jje3TkuKJ83SbeeLcW4cb+ZLD+nEpU41B2LU5tGQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,58 +89,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Dec 6, 2025 at 2:08=E2=80=AFPM kernel test robot <lkp@intel.com> wr=
-ote:
->
-> Hi Suren,
->
-> kernel test robot noticed the following build warnings:
->
-> [auto build test WARNING on 3f43be96f919cc611dcb2a4e38dd464831f4513e]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Suren-Baghdasaryan=
-/alloc_tag-skip-rcu-barrier-on-module-unload-if-profiling-was-not-enabled/2=
-0251205-061310
-> base:   3f43be96f919cc611dcb2a4e38dd464831f4513e
-> patch link:    https://lore.kernel.org/r/20251204220957.360838-1-surenb%4=
-0google.com
-> patch subject: [PATCH 1/1] alloc_tag: skip rcu barrier on module unload i=
-f profiling was not enabled
-> config: parisc-randconfig-002-20251206 (https://download.01.org/0day-ci/a=
-rchive/20251206/202512061207.7zufoIcC-lkp@intel.com/config)
-> compiler: hppa-linux-gcc (GCC) 15.1.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20251206/202512061207.7zufoIcC-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202512061207.7zufoIcC-lkp=
-@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
-> >> lib/codetag.c:37:13: warning: 'flush_rcu_on_module_unload' defined but=
- not used [-Wunused-variable]
->       37 | static bool flush_rcu_on_module_unload;
->          |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Thanks! I'll fix it and repost after Plumbers as the original issue
-seems to be resolved by Harry's patches and this optimization is not
-urgent anymore.
+--27dnkjatirtu5y4b
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->
-> vim +/flush_rcu_on_module_unload +37 lib/codetag.c
->
->     34
->     35  static DEFINE_MUTEX(codetag_lock);
->     36  static LIST_HEAD(codetag_types);
->   > 37  static bool flush_rcu_on_module_unload;
->     38
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+This useful behaviour is implemented for most filesystems,
+and wants to be implemented for every filesystem, quoth ref:
+  There is general agreement that we should standardize all file systems
+  to prevent modifications even for files that were opened at the time
+  the immutable flag is set.  Eventually, a change to enforce this at
+  the VFS layer should be landing in mainline.
+
+References: commit 02b016ca7f99 ("ext4: enforce the immutable flag on
+ open files")
+Signed-off-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz>
+---
+v1: https://lore.kernel.org/linux-fsdevel/znhu3eyffewvvhleewehuvod2wrf4tz6v=
+xrouoakiarjtxt5uy@tarta.nabijaczleweli.xyz/t/#u
+
+shmem_page_mkwrite()'s return 0; falls straight into do_page_mkwrite()'s
+	if (unlikely(!(ret & VM_FAULT_LOCKED))) {
+		folio_lock(folio);
+Given the unlikely, is it better to folio_lock(folio); return VM_FAULT_LOCK=
+ED; instead?
+
+/ext4# uname -a
+Linux tarta 6.18.0-10912-g416f99c3b16f-dirty #1 SMP PREEMPT_DYNAMIC Sat Dec=
+  6 12:14:41 CET 2025 x86_64 GNU/Linux
+/ext4# while sleep 1; do echo $$; done > file &
+[1] 262
+/ext4# chattr +i file
+/ext4# sh: line 25: echo: write error: Operation not permitted
+sh: line 25: echo: write error: Operation not permitted
+sh: line 25: echo: write error: Operation not permitted
+sh: line 25: echo: write error: Operation not permitted
+fg
+while sleep 1; do
+    echo $$;
+done > file
+^C
+/ext4# mount -t tmpfs tmpfs /tmp
+/ext4# cd /tmp
+/tmp# while sleep 1; do echo $$; done > file &
+[1] 284
+/tmp# chattr +i file
+/tmp# sh: line 35: echo: write error: Operation not permitted
+sh: line 35: echo: write error: Operation not permitted
+sh: line 35: echo: write error: Operation not permitted
+
+$ cat test.c
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/fs.h>
+#include <sys/mman.h>
+int main(int, char **argv) {
+	int fd =3D open(argv[1], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	ftruncate(fd, 1024 * 1024);
+	char *addr =3D mmap(NULL, 1024 * 1024, PROT_READ | PROT_WRITE, MAP_SHARED,=
+ fd, 0);
+	addr[0] =3D 0x69;
+	int attrs =3D FS_IMMUTABLE_FL;
+	ioctl(3, FS_IOC_SETFLAGS, &attrs);
+	addr[1024 * 1024 - 1] =3D 0x69;
+}
+
+# strace ./test /tmp/file
+execve("./test", ["./test", "/tmp/file"], 0x7ffc720bead8 /* 22 vars */) =3D=
+ 0
+=2E..
+openat(AT_FDCWD, "/tmp/file", O_RDWR|O_CREAT|O_TRUNC, 0666) =3D 3
+ftruncate(3, 1048576)                   =3D 0
+mmap(NULL, 1048576, PROT_READ|PROT_WRITE, MAP_SHARED, 3, 0) =3D 0x7f09bbf2a=
+000
+ioctl(3, FS_IOC_SETFLAGS, [FS_IMMUTABLE_FL]) =3D 0
+--- SIGBUS {si_signo=3DSIGBUS, si_code=3DBUS_ADRERR, si_addr=3D0x7f09bc029f=
+ff} ---
++++ killed by SIGBUS +++
+Bus error
+# tr -d \\0 < /tmp/file; echo
+i
+
+ mm/shmem.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index d578d8e765d7..432935f79f35 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1294,6 +1294,14 @@ static int shmem_setattr(struct mnt_idmap *idmap,
+ 	bool update_mtime =3D false;
+ 	bool update_ctime =3D true;
+=20
++	if (unlikely(IS_IMMUTABLE(inode)))
++		return -EPERM;
++
++	if (unlikely(IS_APPEND(inode) &&
++		     (attr->ia_valid & (ATTR_MODE | ATTR_UID |
++					ATTR_GID | ATTR_TIMES_SET))))
++		return -EPERM;
++
+ 	error =3D setattr_prepare(idmap, dentry, attr);
+ 	if (error)
+ 		return error;
+@@ -2763,6 +2771,17 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ 	return ret;
+ }
+=20
++static vm_fault_t shmem_page_mkwrite(struct vm_fault *vmf)
++{
++	struct file *file =3D vmf->vma->vm_file;
++
++	if (unlikely(IS_IMMUTABLE(file_inode(file))))
++		return VM_FAULT_SIGBUS;
++
++	file_update_time(file);
++	return 0;
++}
++
+ unsigned long shmem_get_unmapped_area(struct file *file,
+ 				      unsigned long uaddr, unsigned long len,
+ 				      unsigned long pgoff, unsigned long flags)
+@@ -3475,6 +3494,10 @@ static ssize_t shmem_file_write_iter(struct kiocb *i=
+ocb, struct iov_iter *from)
+ 	ret =3D generic_write_checks(iocb, from);
+ 	if (ret <=3D 0)
+ 		goto unlock;
++	if (unlikely(IS_IMMUTABLE(inode))) {
++		ret =3D -EPERM;
++		goto unlock;
++	}
+ 	ret =3D file_remove_privs(file);
+ 	if (ret)
+ 		goto unlock;
+@@ -5286,6 +5309,7 @@ static const struct super_operations shmem_ops =3D {
+ static const struct vm_operations_struct shmem_vm_ops =3D {
+ 	.fault		=3D shmem_fault,
+ 	.map_pages	=3D filemap_map_pages,
++	.page_mkwrite	=3D shmem_page_mkwrite,
+ #ifdef CONFIG_NUMA
+ 	.set_policy     =3D shmem_set_policy,
+ 	.get_policy     =3D shmem_get_policy,
+@@ -5295,6 +5319,7 @@ static const struct vm_operations_struct shmem_vm_ops=
+ =3D {
+ static const struct vm_operations_struct shmem_anon_vm_ops =3D {
+ 	.fault		=3D shmem_fault,
+ 	.map_pages	=3D filemap_map_pages,
++	.page_mkwrite	=3D shmem_page_mkwrite,
+ #ifdef CONFIG_NUMA
+ 	.set_policy     =3D shmem_set_policy,
+ 	.get_policy     =3D shmem_get_policy,
+--=20
+2.39.5
+
+--27dnkjatirtu5y4b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmk3SBIACgkQvP0LAY0m
+WPFVnhAAmdkHtpNU4LAEDVg6qRIA6QyAykW1zd+zM6yKhMtP7gmbFJd9fcy8TyGl
+Ym7JXRoma+VxA8xfl8pnbMOiRaR2gEo+iAd418PHg09BvY13PRtt2/nWQ6vzTlKM
+M4qSVZZC6tIKEEuPmEti98M/Zn12iHorTGSQ2OgNVLhvs7DDnkUn4VkLW45Z+DEb
+e73zuGnFA5stBNUcKeOw2aqAKo/1d2PYu4rGFQb1FMFBMvvVHbI4YRpSSnUJfPkH
+iohvghgxPe896hoImjFhJUWX53td7U+smRFWVJQhxky85zap95NyPlCjf6Xd3wOX
+i+XqvQFnbybc8FQNxs5j6cikVrXDNvPuZ4IfqadnpowmuDtMkZ0s2ZSFGN916k+6
+TqyXUnIkzA/ORdHs2Y2cpN0Gg+EHP8jD6OPkv41oRptJujkyRC0zFYOio6AV+QNs
+QgGPCwzk4NlmEi23a0OzYD4NApOVo3eCEnFQaooqz0xbb5FuMga7P2oBPPqnJ2+r
+09TAninZR0PuNtyuyi+LXhF7A3nBotUNfSL/8D8nssvLTHzMd+a1mRMARo/IE/JH
+uIAa2S30dmYsrVBrJMmfn0mG2utJL3NC5GXFpsjiQeDzCq1Jb0oh3LUNvS1lxHXn
+IOabN4FYeHB6R5f4//gB0Ldx5wFCdoupMn0mPSQJjewfWend1/k=
+=rA2t
+-----END PGP SIGNATURE-----
+
+--27dnkjatirtu5y4b--
 
